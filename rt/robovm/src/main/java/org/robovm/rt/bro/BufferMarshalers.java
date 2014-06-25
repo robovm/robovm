@@ -47,9 +47,8 @@ public class BufferMarshalers {
         static {
             try {
                 Field f1 = Buffer.class.getDeclaredField("effectiveDirectAddress");
-                if (f1.getType() != int.class) {
-                    // Make sure we don't mess up here when we start using a 64-bit capable Android class lib.
-                    throw new Error("java.nio.Buffer.effectiveDirectAddress should be an int");
+                if (f1.getType() != long.class) {
+                    throw new Error("java.nio.Buffer.effectiveDirectAddress should be a long");
                 }
                 EFFECTIVE_DIRECT_ADDRESS_OFFSET = VM.getInstanceFieldOffset(VM.getFieldAddress(f1));
                 Field f2 = Buffer.class.getDeclaredField("_elementSizeShift");
@@ -77,7 +76,7 @@ public class BufferMarshalers {
             }
 
             if (buffer.isDirect()) {
-                return VM.getInt(VM.getObjectAddress(buffer) + EFFECTIVE_DIRECT_ADDRESS_OFFSET);
+                return VM.getLong(VM.getObjectAddress(buffer) + EFFECTIVE_DIRECT_ADDRESS_OFFSET);
             } else {
                 Object array = buffer.array();
                 int offset = buffer.arrayOffset();
@@ -115,7 +114,7 @@ public class BufferMarshalers {
             int offset = 0;
             int shift = VM.getInt(VM.getObjectAddress(buffer) + _ELEMENT_SIZE_SHIFT_OFFSET);
             if (buffer.isDirect()) {
-                src = VM.getInt(VM.getObjectAddress(buffer) + EFFECTIVE_DIRECT_ADDRESS_OFFSET);
+                src = VM.getLong(VM.getObjectAddress(buffer) + EFFECTIVE_DIRECT_ADDRESS_OFFSET);
             } else {
                 if (buffer.hasArray()) {
                     array = buffer.array();

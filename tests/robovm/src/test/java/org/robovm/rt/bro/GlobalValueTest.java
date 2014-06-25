@@ -95,7 +95,7 @@ public class GlobalValueTest {
     }
     
     private static void bind(Class<?> cls) {
-        long ptr = VM.getPointer(VM.getObjectAddress(memory) + EFFECTIVE_DIRECT_ADDRESS_OFFSET);
+        long ptr = VM.getLong(VM.getObjectAddress(memory) + EFFECTIVE_DIRECT_ADDRESS_OFFSET);
         for (Method m : cls.getDeclaredMethods()) {
             if (m.getAnnotation(GlobalValue.class) != null) {
                 VM.bindBridgeMethod(m, ptr);
@@ -110,9 +110,8 @@ public class GlobalValueTest {
     static {
         try {
             Field f1 = Buffer.class.getDeclaredField("effectiveDirectAddress");
-            if (f1.getType() != int.class) {
-                // Make sure we don't mess up here when we start using a 64-bit capable Android class lib.
-                throw new Error("java.nio.Buffer.effectiveDirectAddress should be an int");
+            if (f1.getType() != long.class) {
+                throw new Error("java.nio.Buffer.effectiveDirectAddress should be a long");
             }
             EFFECTIVE_DIRECT_ADDRESS_OFFSET = VM.getInstanceFieldOffset(VM.getFieldAddress(f1));
         } catch (NoSuchFieldException e) {

@@ -45,9 +45,8 @@ import org.robovm.apple.security.*;
     static {
         try {
             java.lang.reflect.Field f1 = Buffer.class.getDeclaredField("effectiveDirectAddress");
-            if (f1.getType() != int.class) {
-                // Make sure we don't mess up here when we start using a 64-bit capable Android class lib.
-                throw new Error("java.nio.Buffer.effectiveDirectAddress should be an int");
+            if (f1.getType() != long.class) {
+                throw new Error("java.nio.Buffer.effectiveDirectAddress should be a long");
             }
             EFFECTIVE_DIRECT_ADDRESS_OFFSET = VM.getInstanceFieldOffset(VM.getFieldAddress(f1));
         } catch (NoSuchFieldException e) {
@@ -59,7 +58,7 @@ import org.robovm.apple.security.*;
         if (!bytes.isDirect()) {
             throw new IllegalArgumentException("Direct ByteBuffer expected");
         }
-        return VM.getInt(VM.getObjectAddress(bytes) + EFFECTIVE_DIRECT_ADDRESS_OFFSET);
+        return VM.getLong(VM.getObjectAddress(bytes) + EFFECTIVE_DIRECT_ADDRESS_OFFSET);
     }
     
     /*<bind>*/static { ObjCRuntime.bind(NSData.class); }/*</bind>*/

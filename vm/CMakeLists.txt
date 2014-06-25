@@ -95,6 +95,8 @@ if(DARWIN)
 endif()
 
 # Set up global C and C++ compiler flags
+set(C_FLAGS "${C_FLAGS}")
+set(CXX_FLAGS "${CXX_FLAGS} -std=gnu++11")
 set(C_CXX_FLAGS "${C_CXX_FLAGS} -Wall -fvisibility=hidden -fdata-sections -ffunction-sections")
 set(C_CXX_FLAGS "${C_CXX_FLAGS} -fno-omit-frame-pointer") # The unwind code relies on frame pointers being present.
 if(CARCH)
@@ -132,7 +134,7 @@ if(IOS)
 endif()
 
 set(CMAKE_C_FLAGS_RELEASE "-Os -DNDEBUG")
-set(CMAKE_CXX_FLAGS_RELEASE "-Os -DNDEBUG -std=gnu++11")
+set(CMAKE_CXX_FLAGS_RELEASE "-Os -DNDEBUG")
 
 set(CMAKE_C_FLAGS_DEBUG "${CMAKE_C_FLAGS_DEBUG} ${C_CXX_FLAGS} ${C_FLAGS}")
 set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} ${C_CXX_FLAGS} ${CXX_FLAGS}")

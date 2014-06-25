@@ -74,10 +74,6 @@ might have to #include some other header
 
 U_NAMESPACE_USE
 
-// RoboVM note: When set this allows us to intercept lookups in the data file and modify
-// the entry names to support loading of data files not compiled for this ICU version.
-void (*icuModTocEntryNameFunc)(const char *, char *) = NULL;
-
 /*
  *  Forward declarations
  */
@@ -1045,14 +1041,6 @@ static UDataMemory *doLoadFromCommonData(UBool isICUData, const char * /*pkgName
 
         if(U_SUCCESS(*subErrorCode) && pCommonData!=NULL) {
             int32_t length;
-
-            // RoboVM note: Hack to intercept lookups in the data file and modify the entry names.
-            char modTocEntryName[64];
-            if (icuModTocEntryNameFunc) {
-                icuModTocEntryNameFunc(tocEntryName, modTocEntryName);
-                tocEntryName = modTocEntryName;
-            }
-            // RoboVM note: End hack.
 
             /* look up the data piece in the common data */
             pHeader=pCommonData->vFuncs->Lookup(pCommonData, tocEntryName, &length, subErrorCode);

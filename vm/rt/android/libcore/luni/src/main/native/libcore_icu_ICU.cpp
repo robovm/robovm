@@ -61,6 +61,15 @@
 #include <time.h>
 #include <unistd.h>
 
+// RoboVM note: Start change.
+#if defined(__APPLE__)
+#include <mach-o/dyld.h> // for _NSGetExecutablePath()
+#include <libgen.h>      // for dirname()
+#endif
+#include "icudt51l.dat.gz.h"
+#include "zlib.h"
+// RoboVM note: End chage.
+
 // TODO: put this in a header file and use it everywhere!
 // DISALLOW_COPY_AND_ASSIGN disallows the copy and operator= functions.
 // It goes in the private: declarations in a class.
@@ -665,50 +674,82 @@ extern "C" jstring Java_libcore_icu_ICU_getBestDateTimePatternNative(JNIEnv* env
   return env->NewString(result.getBuffer(), result.length());
 }
 
-// RoboVM note: The code below was added to support different ICU .dat files and 
-// determine which one to use at runtime rather than at compile time.
-// iOS 5.0/5.1 use ICU 4.8 while iOS 6.0 uses ICU 49.
-// We had to add a hack to icu4c/common/udata.cpp to intercept lookups in the data
-// file and modify the entry names.
-
-// Paths of supported ICU versions in order of preference
-const char * const supportedIcuPaths[] = { "icudt48l", "icudt49l", "icudt46l", "icudt51l", "icudt53l", NULL };
-// The ICU path we're using
-static const char *icuPath = NULL;
-
-extern void (*icuModTocEntryNameFunc)(const char *, char *);
-
-static void modTocEntryName(const char *oldTocEntryName, char *newTocEntryName) {
-    if (!strncmp(oldTocEntryName, U_ICUDATA_NAME, sizeof(U_ICUDATA_NAME) - 1)) {
-        strcpy(newTocEntryName, icuPath);
-        strcat(newTocEntryName, &oldTocEntryName[sizeof(U_ICUDATA_NAME) - 1]);
-    } else {
-        strcpy(newTocEntryName, oldTocEntryName);
+// RoboVM note: Start change.
+#if (__APPLE__)
+static std::string getExecutablePath() {
+    std::string exePath;
+    uint32_t size = 0;
+    char empty[] = ""; 
+    char* buf = empty;
+    _NSGetExecutablePath(buf, &size);
+    buf = (char*) alloca(size);
+    if (_NSGetExecutablePath(buf, &size) == -1) {
+        abort();
     }
+    buf = realpath(buf, NULL);
+    if (!buf) {
+        abort();
+    }
+    exePath = buf;
+    free(buf);
+    return exePath;
 }
+#endif
+
+static bool findCustomICUData(std::string& result) {
+#if (__APPLE__)
+    std::string exePath = getExecutablePath();
+    std::string basePath = dirname((char*) exePath.c_str());
+#else
+    // TODO: Implement custom ICU data lookup on Linux.
+    std::string basePath = "/usr/share/icu";
+#endif
+    std::string icuDataPath = basePath;
+    icuDataPath += "/";
+    icuDataPath += U_ICUDATA_NAME;
+    icuDataPath += ".dat";
+    if (!access(icuDataPath.c_str(), R_OK)) {
+        result = icuDataPath;
+        return true;
+    }
+    return false;
+}
+
+static int inflate(const void *src, int srcLen, void *dst, int dstLen) {
+    z_stream strm  = {0};
+    strm.total_in  = strm.avail_in  = srcLen;
+    strm.total_out = strm.avail_out = dstLen;
+    strm.next_in   = (Bytef *) src;
+    strm.next_out  = (Bytef *) dst;
+
+    strm.zalloc = Z_NULL;
+    strm.zfree  = Z_NULL;
+    strm.opaque = Z_NULL;
+
+    int err = -1;
+    int ret = -1;
+
+    err = inflateInit2(&strm, (15 + 16)); // 15 window bits, gzipped data (16)
+    if (err == Z_OK) {
+        err = inflate(&strm, Z_FINISH);
+        if (err == Z_STREAM_END) {
+            ret = strm.total_out;
+        } else {
+            inflateEnd(&strm);
+            return err;
+        }
+    } else {
+        inflateEnd(&strm);
+        return err;
+    }
+
+    inflateEnd(&strm);
+    return ret;
+}
+// RoboVM note: End change.
 
 int register_libcore_icu_ICU(JNIEnv* env) {
     std::string path;
-    for (unsigned int i = 0; supportedIcuPaths[i] != NULL; i++) {
-        path = u_getDataDirectory();
-        path += "/";
-        path += supportedIcuPaths[i];
-        path += ".dat";
-        if (!access(path.c_str(), R_OK)) {
-            icuPath = supportedIcuPaths[i];
-            break;
-        }
-    }
-
-    if (!icuPath) {
-        // None of the supported paths found.
-        ALOGE("No supported ICU data file found in %s", u_getDataDirectory()); \
-        abort();
-    }
-
-    icuModTocEntryNameFunc = modTocEntryName;
-
-// RoboVM note: This ends the changes made to support different ICU versions.
 
     #define FAIL_WITH_STRERROR(s) \
         ALOGE("Couldn't " s " '%s': %s", path.c_str(), strerror(errno)); \
@@ -718,6 +759,37 @@ int register_libcore_icu_ICU(JNIEnv* env) {
             ALOGE("Couldn't initialize ICU (" s "): %s (%s)", u_errorName(status), path.c_str()); \
             abort(); \
         }
+
+    // RoboVM note: Start change. Look for custom ICU data and fall back to builtin minimal data if not found.
+    if (!findCustomICUData(path)) {
+        ALOGI("Using builtin minimal ICU data");
+        void* data = malloc(out_icudt51l_dat_len);
+        if (!data) {
+            ALOGE("Failed to allocate %d bytes for builtin ICU data", out_icudt51l_dat_len);
+            abort();
+        }
+        int ret = inflate(out_icudt51l_dat_gz, out_icudt51l_dat_gz_len, data, out_icudt51l_dat_len);
+        if (ret != out_icudt51l_dat_len) {
+            ALOGE("Failed to inflate %d->%d bytes of builtin ICU data: %d", 
+                out_icudt51l_dat_gz_len, out_icudt51l_dat_len, ret);
+            abort();
+        }
+
+        UErrorCode status = U_ZERO_ERROR;
+        udata_setCommonData(data, &status);
+        MAYBE_FAIL_WITH_ICU_ERROR("udata_setCommonData");
+        // Tell ICU it can *only* use our data.
+        udata_setFileAccess(UDATA_NO_FILES, &status);
+        MAYBE_FAIL_WITH_ICU_ERROR("udata_setFileAccess");
+        // Force initialization up front so we can report a nice clear error and bail.
+        u_init(&status);
+        MAYBE_FAIL_WITH_ICU_ERROR("u_init");
+
+        return 0;
+    }
+
+    ALOGI("Using custom ICU data file: '%s'", path.c_str());
+    // RoboVM note: End change.
 
     // Open the file and get its length.
     ScopedFd fd(open(path.c_str(), O_RDONLY));

@@ -6,10 +6,6 @@ include_directories(
   libnativehelper/include/nativehelper
 )
 
-add_definitions(-DICU_DATA_DIR="/usr/share/icu")
-if(IOS AND X86)
-  add_definitions(-DICU_DATA_DIR_PREFIX_ENV_VAR="IPHONE_SIMULATOR_ROOT")
-endif()
 add_definitions(-DHAVE_ANDROID_OS=1)
 
 set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -include AndroidConfig.h")

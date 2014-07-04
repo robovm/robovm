@@ -19,6 +19,7 @@ package org.robovm.apple.uikit;
 import java.io.*;
 import java.nio.*;
 import java.util.*;
+
 import org.robovm.objc.*;
 import org.robovm.objc.annotation.*;
 import org.robovm.objc.block.*;
@@ -50,6 +51,11 @@ import org.robovm.apple.coreimage.*;
     public UIScreenEdgePanGestureRecognizer() {}
     protected UIScreenEdgePanGestureRecognizer(SkipInit skipInit) { super(skipInit); }
     /*</constructors>*/
+    
+    public UIScreenEdgePanGestureRecognizer(UIGestureRecognizer target, Selector action) {
+        super(target, action);
+    }
+    
     /*<properties>*/
     @Property(selector = "edges")
     public native UIRectEdge getEdges();

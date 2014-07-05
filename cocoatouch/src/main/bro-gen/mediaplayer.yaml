@@ -17,7 +17,7 @@ enums:
     MPMovieControlMode: {first: MPMovieControlModeDefault, marshaler: ValuedEnum.AsMachineSizedSIntMarshaler}
     MPMovieControlStyle: {first: MPMovieControlStyleNone, marshaler: ValuedEnum.AsMachineSizedSIntMarshaler}
     MPMovieFinishReason: {first: MPMovieFinishReasonPlaybackEnded, marshaler: ValuedEnum.AsMachineSizedSIntMarshaler}
-    MPMovieLoadState: {first: MPMovieLoadStateUnknown, marshaler: ValuedEnum.AsMachineSizedSIntMarshaler}
+    MPMovieLoadState: {first: MPMovieLoadStateUnknown, bits: true, marshaler: Bits.AsMachineSizedIntMarshaler}
     MPMovieMediaTypeMask: {first: MPMovieMediaTypeMaskNone, bits: true, marshaler: Bits.AsMachineSizedIntMarshaler}
     MPMoviePlaybackState: {first: MPMoviePlaybackStateStopped, marshaler: ValuedEnum.AsMachineSizedSIntMarshaler}
     MPMovieRepeatMode: {first: MPMovieRepeatModeNone, marshaler: ValuedEnum.AsMachineSizedSIntMarshaler}

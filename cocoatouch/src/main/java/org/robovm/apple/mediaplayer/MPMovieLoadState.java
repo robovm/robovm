@@ -34,26 +34,31 @@ import org.robovm.apple.coregraphics.*;
 /*<javadoc>*/
 
 /*</javadoc>*/
-/*<annotations>*/@Marshaler(ValuedEnum.AsMachineSizedSIntMarshaler.class)/*</annotations>*/
-public enum /*<name>*/MPMovieLoadState/*</name>*/ implements ValuedEnum {
+/*<annotations>*/@Marshaler(Bits.AsMachineSizedIntMarshaler.class)/*</annotations>*/
+public final class /*<name>*/MPMovieLoadState/*</name>*/ extends Bits</*<name>*/MPMovieLoadState/*</name>*/> {
     /*<values>*/
-    Unknown(0L),
-    Playable(1L),
-    PlaythroughOK(2L),
-    Stalled(4L);
+    public static final MPMovieLoadState Unknown = new MPMovieLoadState(0L);
+    public static final MPMovieLoadState Playable = new MPMovieLoadState(1L);
+    public static final MPMovieLoadState PlaythroughOK = new MPMovieLoadState(2L);
+    public static final MPMovieLoadState Stalled = new MPMovieLoadState(4L);
     /*</values>*/
 
-    private final long n;
+    /*<bind>*/
+    /*</bind>*/
+    /*<constants>*//*</constants>*/
+    /*<methods>*//*</methods>*/
 
-    private /*<name>*/MPMovieLoadState/*</name>*/(long n) { this.n = n; }
-    public long value() { return n; }
-    public static /*<name>*/MPMovieLoadState/*</name>*/ valueOf(long n) {
-        for (/*<name>*/MPMovieLoadState/*</name>*/ v : values()) {
-            if (v.n == n) {
-                return v;
-            }
-        }
-        throw new IllegalArgumentException("No constant with value " + n + " found in " 
-            + /*<name>*/MPMovieLoadState/*</name>*/.class.getName());
+    private static final /*<name>*/MPMovieLoadState/*</name>*/[] values = _values(/*<name>*/MPMovieLoadState/*</name>*/.class);
+
+    public /*<name>*/MPMovieLoadState/*</name>*/(long value) { super(value); }
+    private /*<name>*/MPMovieLoadState/*</name>*/(long value, long mask) { super(value, mask); }
+    protected /*<name>*/MPMovieLoadState/*</name>*/ wrap(long value, long mask) {
+        return new /*<name>*/MPMovieLoadState/*</name>*/(value, mask);
+    }
+    protected /*<name>*/MPMovieLoadState/*</name>*/[] _values() {
+        return values;
+    }
+    public static /*<name>*/MPMovieLoadState/*</name>*/[] values() {
+        return values.clone();
     }
 }

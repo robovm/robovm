@@ -27,7 +27,7 @@ classes:
         methods:
             '-addAssetWithRequest:':
                 name: "addAsset"
-    NKLibrary:
+    NKLibrary: # DONE
         properties:
             'issues':
                 type: "NSArray<NKIssue>"

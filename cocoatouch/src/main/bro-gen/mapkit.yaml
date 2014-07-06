@@ -1,5 +1,5 @@
 package: org.robovm.apple.mapkit
-include: [foundation.yaml, corefoundation.yaml, coregraphics.yaml, corelocation.yaml, uikit.yaml]
+include: [foundation.yaml, corefoundation.yaml, coregraphics.yaml, corelocation.yaml, uikit.yaml, dispatch.yaml]
 library: MapKit
 framework: MapKit
 clang_args: ['-x', 'objective-c']
@@ -8,7 +8,6 @@ headers:
     - /System/Library/Frameworks/MapKit.framework/Headers/MKFoundation.h
 typedefs:
     'void (^)(NSData *, NSError *)': '@Block VoidBlock2<NSData, NSError>'
-    'CGFloat MKZoomScale': "Double" ### Different type @annotation???
     
 enums:
     MKAnnotationViewDragState: { marshaler: ValuedEnum.AsMachineSizedUIntMarshaler }
@@ -42,7 +41,6 @@ classes:
     MKMapSize: {}
     MKMapRect: {}
     MKTileOverlayPath: {}
-    MKZoomScale: {}
 
     MKAnnotationView: # DONE
         methods:
@@ -149,18 +147,16 @@ classes:
             '-startWithQueue:completionHandler:':
                 name: "start"
                 parameters:
-                   # queue:
-                    #    type: "" dispatch_queue_t?? TODO
                     completionHandler:
                         type: "@Block VoidBlock2<MKMapSnapshot, NSError>"            
     MKMapView: # DONE
         properties:
             'annotations':
-                type: "NSArray<MKAnnotation>"
+                type: "NSArray<NSObject>" # MKAnnotation
             'selectedAnnotations':
-                type: "NSArray<MKAnnotation>"
+                type: "NSArray<NSObject>" # MKAnnotation
             'overlays':
-                type: "NSArray<MKOverlay>"
+                type: "NSArray<NSObject>" # MKOverlay
         methods:
             '-setRegion:animated:':
                 trim_after_first_colon: true
@@ -188,17 +184,17 @@ classes:
                 trim_after_first_colon: true
                 parameters:
                     annotations:
-                        type: "NSArray<MKAnnotation>"
+                        type: "NSArray<NSObject>" # MKAnnotation
             '-removeAnnotation:':
                 trim_after_first_colon: true
             '-removeAnnotations:':
                 trim_after_first_colon: true
                 parameters:
                     annotations:
-                        type: "NSArray<MKAnnotation>"
+                        type: "NSArray<NSObject>" # MKAnnotation
             '-annotationsInMapRect:':
                 name: "getAnnotations"
-                return_type: "NSSet<MKAnnotation>"
+                return_type: "NSSet<NSObject>" # MKAnnotation
             '-viewForAnnotation:':
                 name: "getView"
             '-dequeueReusableAnnotationViewWithIdentifier:':
@@ -211,21 +207,21 @@ classes:
                 trim_after_first_colon: true
                 parameters:
                     annotations:
-                        type: "NSArray<MKAnnotation>"
+                        type: "NSArray<NSObject>" # MKAnnotation
             '-addOverlay:level:':
                 trim_after_first_colon: true
             '-addOverlays:level:':
                 trim_after_first_colon: true
                 parameters:
                     overlays:
-                        type: "NSArray<MKOverlay>"
+                        type: "NSArray<NSObject>" # MKOverlay
             '-removeOverlay:':
                 trim_after_first_colon: true
             '-removeOverlays:':
                 trim_after_first_colon: true
                 parameters:
                     overlays:
-                        type: "NSArray<MKOverlay>"
+                        type: "NSArray<NSObject>" # MKOverlay
             '-insertOverlay:atIndex:level:':
                 trim_after_first_colon: true
             '-insertOverlay:aboveOverlay:':
@@ -236,7 +232,7 @@ classes:
                 trim_after_first_colon: true
             '-overlaysInLevel:':
                 name: "getOverlays"
-                return_type: "NSArray<MKOverlay>"
+                return_type: "NSArray<NSObject>" # MKOverlay
             '-rendererForOverlay:':
                 name: "getOverlayRenderer"
             '-viewForOverlay:':
@@ -247,7 +243,7 @@ classes:
                 trim_after_first_colon: true
                 parameters:
                     overlays:
-                        type: "NSArray<MKOverlay>"
+                        type: "NSArray<NSObject>" # MKOverlay
             '-insertOverlay:atIndex:':
                 trim_after_first_colon: true
             '-exchangeOverlayAtIndex:withOverlayAtIndex:':
@@ -261,7 +257,7 @@ classes:
     MKOverlayPathRenderer: # DONE
         properties:
             'lineDashPattern':
-                type: "NSArray<Double>"
+                type: "NSArray<NSNumber>"
         methods:
             '-applyStrokePropertiesToContext:atZoomScale:':
                 name: "applyStrokeProperties"
@@ -274,7 +270,7 @@ classes:
     MKOverlayPathView: # DONE
         properties:
             'lineDashPattern':
-                type: "NSArray<Double>"
+                type: "NSArray<NSNumber>"
         methods:
             '-applyStrokePropertiesToContext:atZoomScale:':
                 name: "applyStrokeProperties"
@@ -538,7 +534,7 @@ functions:
         static: true
         
     MKRoadWidthAtZoomScale:
-        class: MKZoomScale
+        class: MapKit
         name: "getRoadWidth"
         
     MKMetersPerMapPointAtLatitude:

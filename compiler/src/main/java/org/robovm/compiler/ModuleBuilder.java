@@ -102,6 +102,10 @@ public class ModuleBuilder {
         namedMetadata.put(md.getName(), md);
     }
 
+    public UnnamedMetadata newUnnamedMetadata() {
+        return newUnnamedMetadata(null);
+    }
+    
     public UnnamedMetadata newUnnamedMetadata(Metadata value) {
         UnnamedMetadata md = new UnnamedMetadata(unnamedMetadata.size(), value);
         unnamedMetadata.put(md.getIndex(), md);

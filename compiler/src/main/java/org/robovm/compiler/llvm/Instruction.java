@@ -28,6 +28,7 @@ import java.util.Set;
 public abstract class Instruction {
     BasicBlock basicBlock;
     private List<Metadata> metadata;
+    private List<Object> attachments;
 
     public Set<Variable> getWritesTo() {
         return Collections.emptySet();
@@ -41,10 +42,33 @@ public abstract class Instruction {
         return metadata == null ? Collections.<Metadata>emptyList() : metadata;
     }
     
-    public void addMetadata(Metadata md) {
+    public Instruction addMetadata(Metadata md) {
         if (metadata == null) {
             metadata = new ArrayList<>();
         }
         metadata.add(md);
+        return this;
+    }
+    
+    public Instruction attach(Object o) {
+        if (attachments == null) {
+            attachments = new ArrayList<>();
+        }
+        attachments.add(o);
+        return this;
+    }
+    
+    public List<Object> getAttachments() {
+        return attachments == null ? Collections.emptyList() : attachments;
+    }
+    
+    @SuppressWarnings("unchecked")
+    public <T> T getAttachment(Class<T> cls) {
+        for (Object o : getAttachments()) {
+            if (cls.isInstance(o)) {
+                return (T) o;
+            }
+        }
+        return null;
     }
 }

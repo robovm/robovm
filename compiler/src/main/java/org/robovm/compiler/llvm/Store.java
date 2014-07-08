@@ -48,6 +48,14 @@ public class Store extends Instruction {
         this.alignment = alignment;
     }
     
+    public Value getValue() {
+        return value;
+    }
+    
+    public Value getPointer() {
+        return pointer;
+    }
+    
     @Override
     public Set<VariableRef> getReadsFrom() {
         Set<VariableRef> result = new HashSet<VariableRef>();

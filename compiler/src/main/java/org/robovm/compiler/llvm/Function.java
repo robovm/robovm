@@ -144,8 +144,9 @@ public class Function {
         throw new IllegalStateException("Variable " + var + " not defined");
     }
     
-    public void add(Instruction instruction) {
+    public Instruction add(Instruction instruction) {
         getCurrentBasicBlock().add(instruction);
+        return instruction;
     }
     
     @Override

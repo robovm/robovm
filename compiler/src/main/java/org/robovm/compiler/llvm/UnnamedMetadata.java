@@ -22,13 +22,21 @@ package org.robovm.compiler.llvm;
  */
 public class UnnamedMetadata {
     private final int index;
-    private final Metadata value;
+    private Metadata value;
+
+    public UnnamedMetadata(int index) {
+        this.index = index;
+    }
 
     public UnnamedMetadata(int index, Metadata value) {
         this.index = index;
         this.value = value;
     }
 
+    public void setValue(Metadata value) {
+        this.value = value;
+    }
+    
     public UnnamedMetadataRef ref() {
         return new UnnamedMetadataRef(this);
     }

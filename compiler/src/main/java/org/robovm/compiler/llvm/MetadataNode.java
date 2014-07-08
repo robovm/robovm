@@ -16,6 +16,8 @@
  */
 package org.robovm.compiler.llvm;
 
+import java.util.List;
+
 /**
  *
  * @version $Id$
@@ -26,7 +28,11 @@ public class MetadataNode extends Metadata {
     public MetadataNode(Value ... values) {
         this.values = values;
     }
-    
+
+    public MetadataNode(List<? extends Value> values) {
+        this.values = values.toArray(new Value[values.size()]);
+    }
+
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();

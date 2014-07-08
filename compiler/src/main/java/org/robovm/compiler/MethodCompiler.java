@@ -278,7 +278,7 @@ public class MethodCompiler extends AbstractMethodCompiler {
         }
         
         if (emitCheckStackOverflow) {
-        	call(CHECK_STACK_OVERFLOW);
+            call(CHECK_STACK_OVERFLOW);
         }
         
         Value trycatchContext = null;
@@ -377,8 +377,8 @@ public class MethodCompiler extends AbstractMethodCompiler {
                 int sel = selChanges.get(unit);
                 // trycatchContext->sel = sel
                 Variable selPtr = function.newVariable(new PointerType(I32));
-                function.add(new Getelementptr(selPtr, trycatchContext, 0, 1));
-                function.add(new Store(new IntegerConstant(sel), selPtr.ref()));
+                function.add(new Getelementptr(selPtr, trycatchContext, 0, 1)).attach(unit);
+                function.add(new Store(new IntegerConstant(sel), selPtr.ref())).attach(unit);
             }
             
             if (unit instanceof DefinitionStmt) {
@@ -392,7 +392,7 @@ public class MethodCompiler extends AbstractMethodCompiler {
                 if (!body.getTraps().isEmpty()) {
                     trycatchLeave(function);
                 }
-                returnVoid();
+                returnVoid((ReturnVoidStmt) unit);
             } else if (unit instanceof IfStmt) {
                 if_((IfStmt) unit);
             } else if (unit instanceof LookupSwitchStmt) {
@@ -526,7 +526,7 @@ public class MethodCompiler extends AbstractMethodCompiler {
             Type type = getLocalType(v.getType());
             VariableRef var = new VariableRef(local.getName(), new PointerType(type));
             Variable tmp = function.newVariable(type);
-            function.add(new Load(tmp, var, !sootMethod.getActiveBody().getTraps().isEmpty()));
+            function.add(new Load(tmp, var, !sootMethod.getActiveBody().getTraps().isEmpty())).attach(unit);
             return new VariableRef(tmp);
         } else if (v instanceof soot.jimple.IntConstant) {
             return new IntegerConstant(((soot.jimple.IntConstant) v).value);
@@ -542,7 +542,7 @@ public class MethodCompiler extends AbstractMethodCompiler {
             String s = ((soot.jimple.StringConstant) v).value;
             Trampoline trampoline = new LdcString(className, s);
             trampolines.add(trampoline);
-            return call(trampoline.getFunctionRef(), env);
+            return call(unit, trampoline.getFunctionRef(), env);
         } else if (v instanceof soot.jimple.ClassConstant) {
             // ClassConstant is either the internal name of a class or the descriptor of an array
             String targetClassName = ((soot.jimple.ClassConstant) v).getValue();
@@ -550,7 +550,7 @@ public class MethodCompiler extends AbstractMethodCompiler {
                 String primitiveDesc = targetClassName.substring(1);
                 Variable result = function.newVariable(OBJECT_PTR);
                 function.add(new Load(result, new ConstantBitcast(
-                        new GlobalRef("array_" + primitiveDesc, CLASS_PTR), new PointerType(OBJECT_PTR))));
+                        new GlobalRef("array_" + primitiveDesc, CLASS_PTR), new PointerType(OBJECT_PTR)))).attach(unit);
                 return result.ref();
             } else {
                 FunctionRef fn = null;
@@ -561,20 +561,20 @@ public class MethodCompiler extends AbstractMethodCompiler {
                     trampolines.add(trampoline);
                     fn = trampoline.getFunctionRef();
                 }
-                return call(fn, env);
+                return call(unit, fn, env);
             }
         }
         throw new IllegalArgumentException("Unknown Immediate type: " + v.getClass());
     }
 
-    private Value widenToI32Value(Value value, boolean unsigned) {
+    private Value widenToI32Value(Unit unit, Value value, boolean unsigned) {
         Type type = value.getType();
         if (type instanceof IntegerType && ((IntegerType) type).getBits() < 32) {
             Variable t = function.newVariable(I32);
             if (unsigned) {
-                function.add(new Zext(t, value, I32));
+                function.add(new Zext(t, value, I32)).attach(unit);
             } else {
-                function.add(new Sext(t, value, I32));
+                function.add(new Sext(t, value, I32)).attach(unit);
             }
             return t.ref();
         } else {
@@ -582,17 +582,27 @@ public class MethodCompiler extends AbstractMethodCompiler {
         }
     }
     
-    private Value narrowFromI32Value(Type type, Value value) {
+    private Value narrowFromI32Value(Unit unit, Type type, Value value) {
         if (value.getType() == I32 && ((IntegerType) type).getBits() < 32) {
             Variable t = function.newVariable(type);
-            function.add(new Trunc(t, value, type));
+            function.add(new Trunc(t, value, type)).attach(unit);
             value = t.ref();
         }
         return value;
     }
     
     private Value call(Value fn, Value ... args) {
-        return Functions.call(this.function, fn, args);
+        return call(null, fn, args);
+    }
+    
+    private Value call(Unit unit, Value fn, Value ... args) {
+        Variable result = null;
+        Type returnType = ((FunctionType) fn.getType()).getReturnType();
+        if (returnType != VOID) {
+            result = function.newVariable(returnType);
+        }
+        function.add(new Call(result, fn, args)).attach(unit);
+        return result == null ? null : result.ref();
     }
     
 //    private Value callOrInvoke(Unit unit, Value fn, Value ... args) {
@@ -685,7 +695,6 @@ public class MethodCompiler extends AbstractMethodCompiler {
         }
     }
     
-    @SuppressWarnings("unchecked")
     private Value invokeExpr(Stmt stmt, InvokeExpr expr) {
         SootMethodRef methodRef = expr.getMethodRef();
         ArrayList<Value> args = new ArrayList<Value>();
@@ -698,7 +707,7 @@ public class MethodCompiler extends AbstractMethodCompiler {
         int i = 0;
         for (soot.Value sootArg : (List<soot.Value>) expr.getArgs())  {
             Value arg = immediate(stmt, (Immediate) sootArg);
-            args.add(narrowFromI32Value(getType(methodRef.parameterType(i)), arg));
+            args.add(narrowFromI32Value(stmt, getType(methodRef.parameterType(i)), arg));
             i++;
         }
         Value result = null;
@@ -734,9 +743,9 @@ public class MethodCompiler extends AbstractMethodCompiler {
                 functionRef = trampoline.getFunctionRef();
             }
         }
-        result = call(functionRef, args.toArray(new Value[0]));
+        result = call(stmt, functionRef, args.toArray(new Value[0]));
         if (result != null) {
-            return widenToI32Value(result, methodRef.returnType().equals(CharType.v()));
+            return widenToI32Value(stmt, result, methodRef.returnType().equals(CharType.v()));
         } else {
             return null;
         }
@@ -745,17 +754,17 @@ public class MethodCompiler extends AbstractMethodCompiler {
     private void checkNull(Stmt stmt, Value base) {
         NullCheckTag nullCheckTag = (NullCheckTag) stmt.getTag("NullCheckTag");
         if (nullCheckTag == null || nullCheckTag.needCheck()) {
-            call(CHECK_NULL, env, base);
+            call(stmt, CHECK_NULL, env, base);
         }
     }
     
     private void checkBounds(Stmt stmt, Value base, Value index) {
         ArrayCheckTag arrayCheckTag = (ArrayCheckTag) stmt.getTag("ArrayCheckTag");
         if (arrayCheckTag == null || arrayCheckTag.isCheckLower()) {
-            call(CHECK_LOWER, env, base, index);
+            call(stmt, CHECK_LOWER, env, base, index);
         }
         if (arrayCheckTag == null || arrayCheckTag.isCheckUpper()) {
-            call(CHECK_UPPER, env, base, index);
+            call(stmt, CHECK_UPPER, env, base, index);
         }
     }
     
@@ -802,9 +811,9 @@ public class MethodCompiler extends AbstractMethodCompiler {
             ParameterRef ref = (ParameterRef) rightOp;
             int index = (sootMethod.isStatic() ? 1 : 2) + ref.getIndex();
             Value p = new VariableRef("p" + index, getType(ref.getType()));
-            result = widenToI32Value(p, isUnsigned(ref.getType()));
+            result = widenToI32Value(stmt, p, isUnsigned(ref.getType()));
         } else if (rightOp instanceof CaughtExceptionRef) {
-            result = call(BC_EXCEPTION_CLEAR, env);
+            result = call(stmt, BC_EXCEPTION_CLEAR, env);
         } else if (rightOp instanceof ArrayRef) {
             ArrayRef ref = (ArrayRef) rightOp;
             VariableRef base = (VariableRef) immediate(stmt, (Immediate) ref.getBase());
@@ -817,8 +826,8 @@ public class MethodCompiler extends AbstractMethodCompiler {
                 Value index = immediate(stmt, (Immediate) ref.getIndex());
                 checkNull(stmt, base);
                 checkBounds(stmt, base, index);
-                result = call(getArrayLoad(ref.getType()), base, index);
-                result = widenToI32Value(result, isUnsigned(ref.getType()));
+                result = call(stmt, getArrayLoad(ref.getType()), base, index);
+                result = widenToI32Value(stmt, result, isUnsigned(ref.getType()));
             }
         } else if (rightOp instanceof InstanceFieldRef) {
             InstanceFieldRef ref = (InstanceFieldRef) rightOp;
@@ -837,8 +846,8 @@ public class MethodCompiler extends AbstractMethodCompiler {
                 trampolines.add(trampoline);
                 fn = trampoline.getFunctionRef();
             }
-            result = call(fn, env, base);
-            result = widenToI32Value(result, isUnsigned(ref.getType()));
+            result = call(stmt, fn, env, base);
+            result = widenToI32Value(stmt, result, isUnsigned(ref.getType()));
         } else if (rightOp instanceof StaticFieldRef) {
             StaticFieldRef ref = (StaticFieldRef) rightOp;
             FunctionRef fn = Intrinsics.getIntrinsic(sootMethod, stmt);
@@ -854,8 +863,8 @@ public class MethodCompiler extends AbstractMethodCompiler {
                     fn = trampoline.getFunctionRef();
                 }
             }
-            result = call(fn, env);
-            result = widenToI32Value(result, isUnsigned(ref.getType()));
+            result = call(stmt, fn, env);
+            result = widenToI32Value(stmt, result, isUnsigned(ref.getType()));
         } else if (rightOp instanceof Expr) {
             if (rightOp instanceof BinopExpr) {
                 BinopExpr expr = (BinopExpr) rightOp;
@@ -866,80 +875,80 @@ public class MethodCompiler extends AbstractMethodCompiler {
                 Value op2 = immediate(stmt, (Immediate) expr.getOp2());
                 if (rightOp instanceof AddExpr) {
                     if (rightType instanceof IntegerType) {
-                        function.add(new Add(resultVar, op1, op2));
+                        function.add(new Add(resultVar, op1, op2)).attach(stmt);
                     } else {
-                        function.add(new Fadd(resultVar, op1, op2));
+                        function.add(new Fadd(resultVar, op1, op2)).attach(stmt);
                     }
                 } else if (rightOp instanceof AndExpr) {
-                    function.add(new And(resultVar, op1, op2));
+                    function.add(new And(resultVar, op1, op2)).attach(stmt);
                 } else if (rightOp instanceof CmpExpr) {
                     Variable t1 = function.newVariable(I1);
                     Variable t2 = function.newVariable(I1);
                     Variable t3 = function.newVariable(resultVar.getType());
                     Variable t4 = function.newVariable(resultVar.getType());
-                    function.add(new Icmp(t1, Condition.slt, op1, op2));
-                    function.add(new Icmp(t2, Condition.sgt, op1, op2));
-                    function.add(new Zext(t3, new VariableRef(t1), resultVar.getType()));
-                    function.add(new Zext(t4, new VariableRef(t2), resultVar.getType()));
-                    function.add(new Sub(resultVar, new VariableRef(t4), new VariableRef(t3)));
+                    function.add(new Icmp(t1, Condition.slt, op1, op2)).attach(stmt);
+                    function.add(new Icmp(t2, Condition.sgt, op1, op2)).attach(stmt);
+                    function.add(new Zext(t3, new VariableRef(t1), resultVar.getType())).attach(stmt);
+                    function.add(new Zext(t4, new VariableRef(t2), resultVar.getType())).attach(stmt);
+                    function.add(new Sub(resultVar, new VariableRef(t4), new VariableRef(t3))).attach(stmt);
                 } else if (rightOp instanceof DivExpr) {
                     if (rightType instanceof IntegerType) {
                         FunctionRef f = rightType == I64 ? LDIV : IDIV;
-                        result = call(f, env, op1, op2);
+                        result = call(stmt, f, env, op1, op2);
                     } else {
                         // float or double
-                        function.add(new Fdiv(resultVar, op1, op2));
+                        function.add(new Fdiv(resultVar, op1, op2)).attach(stmt);
                     }
                 } else if (rightOp instanceof MulExpr) {
                     if (rightType instanceof IntegerType) {
-                        function.add(new Mul(resultVar, op1, op2));
+                        function.add(new Mul(resultVar, op1, op2)).attach(stmt);
                     } else {
-                        function.add(new Fmul(resultVar, op1, op2));
+                        function.add(new Fmul(resultVar, op1, op2)).attach(stmt);
                     }
                 } else if (rightOp instanceof OrExpr) {
-                    function.add(new Or(resultVar, op1, op2));
+                    function.add(new Or(resultVar, op1, op2)).attach(stmt);
                 } else if (rightOp instanceof RemExpr) {
                     if (rightType instanceof IntegerType) {
                         FunctionRef f = rightType == I64 ? LREM : IREM;
-                        result = call(f, env, op1, op2);
+                        result = call(stmt, f, env, op1, op2);
                     } else {
                         FunctionRef f = rightType == DOUBLE ? DREM : FREM;
-                        result = call(f, env, op1, op2);
+                        result = call(stmt, f, env, op1, op2);
                     }
                 } else if (rightOp instanceof ShlExpr || rightOp instanceof ShrExpr || rightOp instanceof UshrExpr) {
                     IntegerType type = (IntegerType) op1.getType();
                     int bits = type.getBits();
                     Variable t = function.newVariable(op2.getType());
-                    function.add(new And(t, op2, new IntegerConstant(bits - 1, (IntegerType) op2.getType())));
+                    function.add(new And(t, op2, new IntegerConstant(bits - 1, (IntegerType) op2.getType()))).attach(stmt);
                     Value shift = t.ref();
                     if (((IntegerType) shift.getType()).getBits() < bits) {
                         Variable tmp = function.newVariable(type);
-                        function.add(new Zext(tmp, shift, type));
+                        function.add(new Zext(tmp, shift, type)).attach(stmt);
                         shift = tmp.ref();
                     }
                     if (rightOp instanceof ShlExpr) {
-                        function.add(new Shl(resultVar, op1, shift));
+                        function.add(new Shl(resultVar, op1, shift)).attach(stmt);
                     } else if (rightOp instanceof ShrExpr) {
-                        function.add(new Ashr(resultVar, op1, shift));
+                        function.add(new Ashr(resultVar, op1, shift)).attach(stmt);
                     } else {
-                        function.add(new Lshr(resultVar, op1, shift));
+                        function.add(new Lshr(resultVar, op1, shift)).attach(stmt);
                     }
                 } else if (rightOp instanceof SubExpr) {
                     if (rightType instanceof IntegerType) {
-                        function.add(new Sub(resultVar, op1, op2));
+                        function.add(new Sub(resultVar, op1, op2)).attach(stmt);
                     } else {
-                        function.add(new Fsub(resultVar, op1, op2));
+                        function.add(new Fsub(resultVar, op1, op2)).attach(stmt);
                     }
                 } else if (rightOp instanceof XorExpr) {
-                    function.add(new Xor(resultVar, op1, op2));
+                    function.add(new Xor(resultVar, op1, op2)).attach(stmt);
                 } else if (rightOp instanceof XorExpr) {
-                    function.add(new Xor(resultVar, op1, op2));
+                    function.add(new Xor(resultVar, op1, op2)).attach(stmt);
                 } else if (rightOp instanceof CmplExpr) {
                     FunctionRef f = op1.getType() == FLOAT ? FCMPL : DCMPL;
-                    function.add(new Call(resultVar, f, op1, op2));
+                    function.add(new Call(resultVar, f, op1, op2)).attach(stmt);
                 } else if (rightOp instanceof CmpgExpr) {
                     FunctionRef f = op1.getType() == FLOAT ? FCMPG : DCMPG;
-                    function.add(new Call(resultVar, f, op1, op2));
+                    function.add(new Call(resultVar, f, op1, op2)).attach(stmt);
                 } else {
                     throw new IllegalArgumentException("Unknown type for rightOp: " + rightOp.getClass());
                 }
@@ -958,30 +967,30 @@ public class MethodCompiler extends AbstractMethodCompiler {
                         if (fromType.getBits() < toType.getBits()) {
                             // Widening
                             if (isUnsigned(sootSourceType)) {
-                                function.add(new Zext(v, op, toType));
+                                function.add(new Zext(v, op, toType)).attach(stmt);
                             } else {
-                                function.add(new Sext(v, op, toType));
+                                function.add(new Sext(v, op, toType)).attach(stmt);
                             }
                         } else if (fromType.getBits() == toType.getBits()) {
-                            function.add(new Bitcast(v, op, toType));
+                            function.add(new Bitcast(v, op, toType)).attach(stmt);
                         } else {
                             // Narrow
-                            function.add(new Trunc(v, op, toType));
+                            function.add(new Trunc(v, op, toType)).attach(stmt);
                         }
-                        result = widenToI32Value(v.ref(), isUnsigned(sootTargetType));
+                        result = widenToI32Value(stmt, v.ref(), isUnsigned(sootTargetType));
                     } else if (targetType instanceof FloatingPointType && sourceType instanceof IntegerType) {
                         // we always to a signed conversion since if op is char it has already been zero extended to I32
                         Variable v = function.newVariable(targetType);
-                        function.add(new Sitofp(v, op, targetType));
+                        function.add(new Sitofp(v, op, targetType)).attach(stmt);
                         result = v.ref();
                     } else if (targetType instanceof FloatingPointType && sourceType instanceof FloatingPointType) {
                         Variable v = function.newVariable(targetType);
                         if (targetType == FLOAT && sourceType == DOUBLE) {
-                            function.add(new Fptrunc(v, op, targetType));
+                            function.add(new Fptrunc(v, op, targetType)).attach(stmt);
                         } else if (targetType == DOUBLE && sourceType == FLOAT) {
-                            function.add(new Fpext(v, op, targetType));
+                            function.add(new Fpext(v, op, targetType)).attach(stmt);
                         } else {
-                            function.add(new Bitcast(v, op, targetType));
+                            function.add(new Bitcast(v, op, targetType)).attach(stmt);
                         }
                         result = v.ref();
                     } else {
@@ -999,7 +1008,7 @@ public class MethodCompiler extends AbstractMethodCompiler {
                             throw new IllegalArgumentException();
                         }
                         Variable v = function.newVariable(targetType);
-                        function.add(new Call(v, f, op));
+                        function.add(new Call(v, f, op)).attach(stmt);
                         result = v.ref();
                     }
                 } else {
@@ -1008,13 +1017,13 @@ public class MethodCompiler extends AbstractMethodCompiler {
                         soot.Type primType = ((soot.ArrayType) sootTargetType).getElementType();
                         GlobalRef arrayClassPtr = new GlobalRef("array_" + getDescriptor(primType), CLASS_PTR);
                         Variable arrayClass = function.newVariable(CLASS_PTR);
-                        function.add(new Load(arrayClass, arrayClassPtr));
-                        result = call(CHECKCAST_PRIM_ARRAY, env, arrayClass.ref(), op);
+                        function.add(new Load(arrayClass, arrayClassPtr)).attach(stmt);
+                        result = call(stmt, CHECKCAST_PRIM_ARRAY, env, arrayClass.ref(), op);
                     } else {
                         String targetClassName = getInternalName(sootTargetType);
                         Trampoline trampoline = new Checkcast(this.className, targetClassName);
                         trampolines.add(trampoline);
-                        result = call(trampoline.getFunctionRef(), env, op);
+                        result = call(stmt, trampoline.getFunctionRef(), env, op);
                     }
                 }
             } else if (rightOp instanceof InstanceOfExpr) {
@@ -1025,13 +1034,13 @@ public class MethodCompiler extends AbstractMethodCompiler {
                     soot.Type primType = ((soot.ArrayType) checkType).getElementType();
                     GlobalRef arrayClassPtr = new GlobalRef("array_" + getDescriptor(primType), CLASS_PTR);
                     Variable arrayClass = function.newVariable(CLASS_PTR);
-                    function.add(new Load(arrayClass, arrayClassPtr));
-                    result = call(INSTANCEOF_PRIM_ARRAY, env, arrayClass.ref(), op);
+                    function.add(new Load(arrayClass, arrayClassPtr)).attach(stmt);
+                    result = call(stmt, INSTANCEOF_PRIM_ARRAY, env, arrayClass.ref(), op);
                 } else {
                     String targetClassName = getInternalName(checkType);
                     Trampoline trampoline = new Instanceof(this.className, targetClassName);
                     trampolines.add(trampoline);
-                    result = call(trampoline.getFunctionRef(), env, op);
+                    result = call(stmt, trampoline.getFunctionRef(), env, op);
                 }
             } else if (rightOp instanceof NewExpr) {
                 String targetClassName = getInternalName(((NewExpr) rightOp).getBaseType());
@@ -1043,36 +1052,36 @@ public class MethodCompiler extends AbstractMethodCompiler {
                     trampolines.add(trampoline);
                     fn = trampoline.getFunctionRef();
                 }
-                result = call(fn, env);
+                result = call(stmt, fn, env);
             } else if (rightOp instanceof NewArrayExpr) {
                 NewArrayExpr expr = (NewArrayExpr) rightOp;
                 Value size = immediate(stmt, (Immediate) expr.getSize());
                 if (expr.getBaseType() instanceof PrimType) {
-                    result = call(getNewArray(expr.getBaseType()), env, size);
+                    result = call(stmt, getNewArray(expr.getBaseType()), env, size);
                 } else {
                     String targetClassName = getInternalName(expr.getType());
                     Trampoline trampoline = new Anewarray(this.className, targetClassName);
                     trampolines.add(trampoline);
-                    result = call(trampoline.getFunctionRef(), env, size);
+                    result = call(stmt, trampoline.getFunctionRef(), env, size);
                 }
             } else if (rightOp instanceof NewMultiArrayExpr) {
                 NewMultiArrayExpr expr = (NewMultiArrayExpr) rightOp;
                 if (expr.getBaseType().numDimensions == 1 && expr.getBaseType().getElementType() instanceof PrimType) {
                     Value size = immediate(stmt, (Immediate) expr.getSize(0));
-                    result = call(getNewArray(expr.getBaseType().getElementType()), env, size);
+                    result = call(stmt, getNewArray(expr.getBaseType().getElementType()), env, size);
                 } else {
                     for (int i = 0; i < expr.getSizeCount(); i++) {
                         Value size = immediate(stmt, (Immediate) expr.getSize(i));
                         Variable ptr = function.newVariable(new PointerType(I32));
-                        function.add(new Getelementptr(ptr, dims.ref(), 0, i));
-                        function.add(new Store(size, ptr.ref()));
+                        function.add(new Getelementptr(ptr, dims.ref(), 0, i)).attach(stmt);
+                        function.add(new Store(size, ptr.ref())).attach(stmt);
                     }
                     Variable dimsI32 = function.newVariable(new PointerType(I32));
-                    function.add(new Bitcast(dimsI32, dims.ref(), dimsI32.getType()));
+                    function.add(new Bitcast(dimsI32, dims.ref(), dimsI32.getType())).attach(stmt);
                     String targetClassName = getInternalName(expr.getType());
                     Trampoline trampoline = new Multianewarray(this.className, targetClassName);
                     trampolines.add(trampoline);
-                    result = call(trampoline.getFunctionRef(), env, new IntegerConstant(expr.getSizeCount()), dimsI32.ref());
+                    result = call(stmt, trampoline.getFunctionRef(), env, new IntegerConstant(expr.getSizeCount()), dimsI32.ref());
                 }
             } else if (rightOp instanceof InvokeExpr) {
                 result = invokeExpr(stmt, (InvokeExpr) rightOp);
@@ -1080,7 +1089,7 @@ public class MethodCompiler extends AbstractMethodCompiler {
                 Value op = immediate(stmt, (Immediate) ((LengthExpr) rightOp).getOp());
                 checkNull(stmt, op);
                 Variable v = function.newVariable(I32);
-                function.add(new Call(v, ARRAY_LENGTH, op));
+                function.add(new Call(v, ARRAY_LENGTH, op)).attach(stmt);
                 result = v.ref();
             } else if (rightOp instanceof NegExpr) {
                 NegExpr expr = (NegExpr) rightOp;
@@ -1088,9 +1097,9 @@ public class MethodCompiler extends AbstractMethodCompiler {
                 Type rightType = op.getType();
                 Variable v = function.newVariable(op.getType());
                 if (rightType instanceof IntegerType) {
-                    function.add(new Sub(v, new IntegerConstant(0, (IntegerType) rightType), op));
+                    function.add(new Sub(v, new IntegerConstant(0, (IntegerType) rightType), op)).attach(stmt);
                 } else {
-                    function.add(new Fmul(v, new FloatingPointConstant(-1.0, (FloatingPointType) rightType), op));
+                    function.add(new Fmul(v, new FloatingPointConstant(-1.0, (FloatingPointType) rightType), op)).attach(stmt);
                 }
                 result = v.ref();
             } else {
@@ -1105,10 +1114,10 @@ public class MethodCompiler extends AbstractMethodCompiler {
         if (leftOp instanceof Local) {
             Local local = (Local) leftOp;
             VariableRef v = new VariableRef(local.getName(), new PointerType(getLocalType(leftOp.getType())));
-            function.add(new Store(result, v, !sootMethod.getActiveBody().getTraps().isEmpty()));
+            function.add(new Store(result, v, !sootMethod.getActiveBody().getTraps().isEmpty())).attach(stmt);
         } else {
             Type leftType = getType(leftOp.getType());
-            Value narrowedResult = narrowFromI32Value(leftType, result);
+            Value narrowedResult = narrowFromI32Value(stmt, leftType, result);
             if (leftOp instanceof ArrayRef) {
                 ArrayRef ref = (ArrayRef) leftOp;
                 VariableRef base = (VariableRef) immediate(stmt, (Immediate) ref.getBase());
@@ -1116,9 +1125,9 @@ public class MethodCompiler extends AbstractMethodCompiler {
                 checkNull(stmt, base);
                 checkBounds(stmt, base, index);
                 if (leftOp.getType() instanceof RefLikeType) {
-                    call(BC_SET_OBJECT_ARRAY_ELEMENT, env, base, index, narrowedResult);
+                    call(stmt, BC_SET_OBJECT_ARRAY_ELEMENT, env, base, index, narrowedResult);
                 } else {
-                    call(getArrayStore(leftOp.getType()), base, index, narrowedResult);
+                    call(stmt, getArrayStore(leftOp.getType()), base, index, narrowedResult);
                 }
             } else if (leftOp instanceof InstanceFieldRef) {
                 InstanceFieldRef ref = (InstanceFieldRef) leftOp;
@@ -1137,7 +1146,7 @@ public class MethodCompiler extends AbstractMethodCompiler {
                     trampolines.add(trampoline);
                     fn = trampoline.getFunctionRef();
                 }
-                call(fn, env, base, narrowedResult);
+                call(stmt, fn, env, base, narrowedResult);
             } else if (leftOp instanceof StaticFieldRef) {
                 StaticFieldRef ref = (StaticFieldRef) leftOp;
                 FunctionRef fn = null;
@@ -1151,7 +1160,7 @@ public class MethodCompiler extends AbstractMethodCompiler {
                     trampolines.add(trampoline);
                     fn = trampoline.getFunctionRef();
                 }
-                call(fn, env, narrowedResult);
+                call(stmt, fn, env, narrowedResult);
             } else {
                 throw new IllegalArgumentException("Unknown type for leftOp: " + leftOp.getClass());
             }
@@ -1163,12 +1172,12 @@ public class MethodCompiler extends AbstractMethodCompiler {
          * op is an Immediate.
          */
         Value op = immediate(stmt, (Immediate) stmt.getOp());
-        Value value = narrowFromI32Value(function.getType().getReturnType(), op);
-        function.add(new Ret(value));
+        Value value = narrowFromI32Value(stmt, function.getType().getReturnType(), op);
+        function.add(new Ret(value)).attach(stmt);
     }
     
-    private void returnVoid() {
-        function.add(new Ret());
+    private void returnVoid(ReturnVoidStmt stmt) {
+        function.add(new Ret()).attach(stmt);
     }
     
     private void if_(IfStmt stmt) {
@@ -1190,11 +1199,11 @@ public class MethodCompiler extends AbstractMethodCompiler {
             c = Icmp.Condition.sle;
         }
         Variable result = function.newVariable(Type.I1);
-        function.add(new Icmp(result, c, op1, op2));
+        function.add(new Icmp(result, c, op1, op2)).attach(stmt);
         Unit nextUnit = sootMethod.getActiveBody().getUnits().getSuccOf(stmt);
         function.add(new Br(new VariableRef(result), 
                 function.newBasicBlockRef(new Label(stmt.getTarget())), 
-                function.newBasicBlockRef(new Label(nextUnit))));
+                function.newBasicBlockRef(new Label(nextUnit)))).attach(stmt);
     }
     
     private void lookupSwitch(LookupSwitchStmt stmt) {
@@ -1206,7 +1215,7 @@ public class MethodCompiler extends AbstractMethodCompiler {
         }
         BasicBlockRef def = function.newBasicBlockRef(new Label(stmt.getDefaultTarget()));
         Value key = immediate(stmt, (Immediate) stmt.getKey());
-        function.add(new Switch(key, def, targets));
+        function.add(new Switch(key, def, targets)).attach(stmt);
     }
     
     private void tableSwitch(TableSwitchStmt stmt) {
@@ -1217,18 +1226,18 @@ public class MethodCompiler extends AbstractMethodCompiler {
         }
         BasicBlockRef def = function.newBasicBlockRef(new Label(stmt.getDefaultTarget()));
         Value key = immediate(stmt, (Immediate) stmt.getKey());
-        function.add(new Switch(key, def, targets));
+        function.add(new Switch(key, def, targets)).attach(stmt);
     }
     
     private void goto_(GotoStmt stmt) {
-        function.add(new Br(function.newBasicBlockRef(new Label(stmt.getTarget()))));
+        function.add(new Br(function.newBasicBlockRef(new Label(stmt.getTarget())))).attach(stmt);
     }
     
     private void throw_(ThrowStmt stmt) {
         Value obj = immediate(stmt, (Immediate) stmt.getOp());
         checkNull(stmt, obj);
-        call(BC_THROW, env, obj);
-        function.add(new Unreachable());
+        call(stmt, BC_THROW, env, obj);
+        function.add(new Unreachable()).attach(stmt);
     }
     
     private void invoke(InvokeStmt stmt) {
@@ -1238,13 +1247,12 @@ public class MethodCompiler extends AbstractMethodCompiler {
     private void enterMonitor(EnterMonitorStmt stmt) {
         Value op = immediate(stmt, (Immediate) stmt.getOp());
         checkNull(stmt, op);
-        call(MONITORENTER, env, op);
+        call(stmt, MONITORENTER, env, op);
     }
     
     private void exitMonitor(ExitMonitorStmt stmt) {
         Value op = immediate(stmt, (Immediate) stmt.getOp());
         checkNull(stmt, op);
-        call(MONITOREXIT, env, op);
+        call(stmt, MONITOREXIT, env, op);
     }
-    
 }

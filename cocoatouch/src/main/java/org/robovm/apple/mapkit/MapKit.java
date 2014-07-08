@@ -55,17 +55,17 @@ import org.robovm.apple.dispatch.*;
      * @since Available in iOS 4.0 and later.
      */
     @GlobalValue(symbol="MKMapSizeWorld", optional=true)
-    public static native NSString MapSizeWorld();
+    public static native @ByVal MKMapSize MapSizeWorld();
     /**
      * @since Available in iOS 4.0 and later.
      */
     @GlobalValue(symbol="MKMapRectWorld", optional=true)
-    public static native NSString MapRectWorld();
+    public static native @ByVal MKMapRect MapRectWorld();
     /**
      * @since Available in iOS 4.0 and later.
      */
     @GlobalValue(symbol="MKMapRectNull", optional=true)
-    public static native NSString MapRectNull();
+    public static native @ByVal MKMapRect MapRectNull();
     /**
      * @since Available in iOS 6.0 and later.
      */

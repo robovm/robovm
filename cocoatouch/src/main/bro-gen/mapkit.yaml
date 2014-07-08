@@ -632,11 +632,9 @@ values:
       
     MK(.*MapSize.*):
         name: "#{g[0]}"
-        type: NSString   
       
     MK(.*MapRect.*):
         name: "#{g[0]}"
-        type: NSString    
     
     MK(.*ErrorDomain):
         name: "#{g[0]}"

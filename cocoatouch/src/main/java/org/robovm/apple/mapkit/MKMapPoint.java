@@ -68,8 +68,9 @@ import org.robovm.apple.dispatch.*;
     /**
      * @since Available in iOS 4.0 and later.
      */
+    public CLLocationCoordinate2D toCoordinate() { return toCoordinate(this); }
     @Bridge(symbol="MKCoordinateForMapPoint", optional=true)
-    public native @ByVal CLLocationCoordinate2D toCoordinate();
+    private static native @ByVal CLLocationCoordinate2D toCoordinate(@ByVal MKMapPoint mapPoint);
     /**
      * @since Available in iOS 4.0 and later.
      */

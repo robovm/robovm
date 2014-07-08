@@ -63,52 +63,62 @@ import org.robovm.apple.dispatch.*;
     /**
      * @since Available in iOS 4.0 and later.
      */
+    public MKMapRect union(MKMapRect rect2) { return union(this, rect2); }
     @Bridge(symbol="MKMapRectUnion", optional=true)
-    public native @ByVal MKMapRect union(@ByVal MKMapRect rect2);
+    private static native @ByVal MKMapRect union(@ByVal MKMapRect rect1, @ByVal MKMapRect rect2);
     /**
      * @since Available in iOS 4.0 and later.
      */
+    public MKMapRect intersection(MKMapRect rect2) { return intersection(this, rect2); }
     @Bridge(symbol="MKMapRectIntersection", optional=true)
-    public native @ByVal MKMapRect intersection(@ByVal MKMapRect rect2);
+    private static native @ByVal MKMapRect intersection(@ByVal MKMapRect rect1, @ByVal MKMapRect rect2);
     /**
      * @since Available in iOS 4.0 and later.
      */
+    public MKMapRect inset(double dx, double dy) { return inset(this, dx, dy); }
     @Bridge(symbol="MKMapRectInset", optional=true)
-    public native @ByVal MKMapRect inset(double dx, double dy);
+    private static native @ByVal MKMapRect inset(@ByVal MKMapRect rect, double dx, double dy);
     /**
      * @since Available in iOS 4.0 and later.
      */
+    public MKMapRect offset(double dx, double dy) { return offset(this, dx, dy); }
     @Bridge(symbol="MKMapRectOffset", optional=true)
-    public native @ByVal MKMapRect offset(double dx, double dy);
+    private static native @ByVal MKMapRect offset(@ByVal MKMapRect rect, double dx, double dy);
     /**
      * @since Available in iOS 4.0 and later.
      */
+    public void divide(MKMapRect slice, MKMapRect remainder, double amount, CGRectEdge edge) { divide(this, slice, remainder, amount, edge); }
     @Bridge(symbol="MKMapRectDivide", optional=true)
-    public native void divide(MKMapRect slice, MKMapRect remainder, double amount, CGRectEdge edge);
+    private static native void divide(@ByVal MKMapRect rect, MKMapRect slice, MKMapRect remainder, double amount, CGRectEdge edge);
     /**
      * @since Available in iOS 4.0 and later.
      */
+    public boolean containsPoint(MKMapPoint point) { return containsPoint(this, point); }
     @Bridge(symbol="MKMapRectContainsPoint", optional=true)
-    public native boolean containsPoint(@ByVal MKMapPoint point);
+    private static native boolean containsPoint(@ByVal MKMapRect rect, @ByVal MKMapPoint point);
     /**
      * @since Available in iOS 4.0 and later.
      */
+    public boolean containsRect(MKMapRect rect2) { return containsRect(this, rect2); }
     @Bridge(symbol="MKMapRectContainsRect", optional=true)
-    public native boolean containsRect(@ByVal MKMapRect rect2);
+    private static native boolean containsRect(@ByVal MKMapRect rect1, @ByVal MKMapRect rect2);
     /**
      * @since Available in iOS 4.0 and later.
      */
+    public boolean intersectsRect(MKMapRect rect2) { return intersectsRect(this, rect2); }
     @Bridge(symbol="MKMapRectIntersectsRect", optional=true)
-    public native boolean intersectsRect(@ByVal MKMapRect rect2);
+    private static native boolean intersectsRect(@ByVal MKMapRect rect1, @ByVal MKMapRect rect2);
     /**
      * @since Available in iOS 4.0 and later.
      */
+    public boolean isSpanning180thMeridian() { return isSpanning180thMeridian(this); }
     @Bridge(symbol="MKMapRectSpans180thMeridian", optional=true)
-    public native boolean isSpanning180thMeridian();
+    private static native boolean isSpanning180thMeridian(@ByVal MKMapRect rect);
     /**
      * @since Available in iOS 4.0 and later.
      */
+    public MKMapRect remainder() { return remainder(this); }
     @Bridge(symbol="MKMapRectRemainder", optional=true)
-    public native @ByVal MKMapRect remainder();
+    private static native @ByVal MKMapRect remainder(@ByVal MKMapRect rect);
     /*</methods>*/
 }

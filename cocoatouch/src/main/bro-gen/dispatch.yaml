@@ -62,6 +62,9 @@ functions:
     dispatch_(retain|release|(get|set)_context|set_finalizer_f|suspend|resume|set_target_queue):
         class: DispatchObject
         name: "#{g[0].camelize}"
+        parameters:
+            object:
+                type: DispatchObject
     dispatch_(.*):
         class: Dispatch
         name: "#{g[0].camelize}"

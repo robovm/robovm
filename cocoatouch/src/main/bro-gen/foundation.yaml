@@ -1815,7 +1815,27 @@ classes:
             '+.*': {exclude: true}
             '-.*': {exclude: true}
 
-    NSValue: {}
+    NSValue: # DONE
+        skip_def_constructor: true
+        methods:
+            '+value:withObjCType:':
+                exclude: true
+            '+valueWithBytes:objCType:':
+                visibility: protected
+            '+valueWithNonretainedObject:':
+                name: valueOfNonretainedObject
+            '+valueWithPointer:':
+                name: valueOf
+            '+valueWithRange:':
+                name: valueOf
+            '-initWithBytes:objCType:':
+                exclude: true
+            '-isEqualToValue:':
+                name: isEqualTo
+            '-getValue:':
+                name: storeValueAtAddress
+            '-objCType':
+                visibility: protected
     NSValueTransformer: {}
     NSXMLParser: {}
 

@@ -42,38 +42,43 @@ import org.robovm.apple.security.*;
     /*<bind>*/static { ObjCRuntime.bind(NSValue.class); }/*</bind>*/
     /*<constants>*//*</constants>*/
     /*<constructors>*/
-    public NSValue() {}
     protected NSValue(SkipInit skipInit) { super(skipInit); }
-    public NSValue(VoidPtr value, BytePtr type) { super((SkipInit) null); initObject(initWithBytes$objCType$(value, type)); }
     /*</constructors>*/
     /*<properties>*/
     
     /*</properties>*/
     /*<members>*//*</members>*/
+
+    public String getObjCType() {
+        BytePtr p = objCType();
+        return p == null ? null : p.toStringAsciiZ();
+    }
+
+    public static NSValue valueOf(VoidPtr value, String type) {
+        BytePtr p = type == null ? null : BytePtr.toBytePtrAsciiZ(type);
+        return valueWithBytes$objCType$(value, p);
+    }
+
     /*<methods>*/
     @Method(selector = "getValue:")
-    public native void getValue$(VoidPtr value);
+    public native void storeValueAtAddress(VoidPtr value);
     @Method(selector = "objCType")
-    public native BytePtr objCType();
-    @Method(selector = "initWithBytes:objCType:")
-    protected native @Pointer long initWithBytes$objCType$(VoidPtr value, BytePtr type);
+    protected native BytePtr objCType();
     @Method(selector = "valueWithBytes:objCType:")
-    public static native NSValue valueWithBytes$objCType$(VoidPtr value, BytePtr type);
-    @Method(selector = "value:withObjCType:")
-    public static native NSValue value$withObjCType$(VoidPtr value, BytePtr type);
+    protected static native NSValue valueWithBytes$objCType$(VoidPtr value, BytePtr type);
     @Method(selector = "nonretainedObjectValue")
     public native NSObject nonretainedObjectValue();
     @Method(selector = "pointerValue")
     public native VoidPtr pointerValue();
     @Method(selector = "isEqualToValue:")
-    public native boolean isEqualToValue$(NSValue value);
+    public native boolean isEqualTo(NSValue value);
     @Method(selector = "valueWithNonretainedObject:")
-    public static native NSValue valueWithNonretainedObject$(NSObject anObject);
+    public static native NSValue valueOfNonretainedObject(NSObject anObject);
     @Method(selector = "valueWithPointer:")
-    public static native NSValue valueWithPointer$(VoidPtr pointer);
+    public static native NSValue valueOf(VoidPtr pointer);
     @Method(selector = "rangeValue")
     public native @ByVal NSRange rangeValue();
     @Method(selector = "valueWithRange:")
-    public static native NSValue valueWithRange$(@ByVal NSRange range);
+    public static native NSValue valueOf(@ByVal NSRange range);
     /*</methods>*/
 }

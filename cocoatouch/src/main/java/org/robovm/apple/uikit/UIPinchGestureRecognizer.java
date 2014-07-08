@@ -19,7 +19,6 @@ package org.robovm.apple.uikit;
 import java.io.*;
 import java.nio.*;
 import java.util.*;
-
 import org.robovm.objc.*;
 import org.robovm.objc.annotation.*;
 import org.robovm.objc.block.*;
@@ -52,7 +51,7 @@ import org.robovm.apple.coreimage.*;
     protected UIPinchGestureRecognizer(SkipInit skipInit) { super(skipInit); }
     /*</constructors>*/
     
-    public UIPinchGestureRecognizer(UIGestureRecognizer target, Selector action) {
+    public UIPinchGestureRecognizer(NSObject target, Selector action) {
         super(target, action);
     }
     

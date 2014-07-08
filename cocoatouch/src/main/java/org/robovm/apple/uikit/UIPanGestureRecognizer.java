@@ -19,7 +19,6 @@ package org.robovm.apple.uikit;
 import java.io.*;
 import java.nio.*;
 import java.util.*;
-
 import org.robovm.objc.*;
 import org.robovm.objc.annotation.*;
 import org.robovm.objc.block.*;
@@ -52,7 +51,7 @@ import org.robovm.apple.coreimage.*;
     protected UIPanGestureRecognizer(SkipInit skipInit) { super(skipInit); }
     /*</constructors>*/
     
-    public UIPanGestureRecognizer(UIGestureRecognizer target, Selector action) {
+    public UIPanGestureRecognizer(NSObject target, Selector action) {
         super(target, action);
     }
     

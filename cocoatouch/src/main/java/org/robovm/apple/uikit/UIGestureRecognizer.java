@@ -49,7 +49,7 @@ import org.robovm.apple.coreimage.*;
     /*<constructors>*/
     public UIGestureRecognizer() {}
     protected UIGestureRecognizer(SkipInit skipInit) { super(skipInit); }
-    public UIGestureRecognizer(UIGestureRecognizer target, Selector action) { super((SkipInit) null); initObject(initWithTarget$action$(target, action)); }
+    public UIGestureRecognizer(NSObject target, Selector action) { super((SkipInit) null); initObject(initWithTarget$action$(target, action)); }
     /*</constructors>*/
     /*<properties>*/
     @Property(selector = "state")
@@ -80,7 +80,7 @@ import org.robovm.apple.coreimage.*;
     /*<members>*//*</members>*/
     /*<methods>*/
     @Method(selector = "initWithTarget:action:")
-    protected native @Pointer long initWithTarget$action$(UIGestureRecognizer target, Selector action);
+    protected native @Pointer long initWithTarget$action$(NSObject target, Selector action);
     @Method(selector = "addTarget:action:")
     public native void addTarget(NSObject target, Selector action);
     @Method(selector = "removeTarget:action:")

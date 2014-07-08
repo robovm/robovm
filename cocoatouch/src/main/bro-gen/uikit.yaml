@@ -1219,6 +1219,10 @@ classes:
 
     UIGestureRecognizer: # DONE
         methods:
+            '-initWithTarget:action:':
+                parameters:
+                    target:
+                        type: NSObject
             '-locationInView:':
                 name: getLocationInView
             '-locationOfTouch:inView:':

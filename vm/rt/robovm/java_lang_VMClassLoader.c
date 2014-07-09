@@ -15,6 +15,8 @@
  */
 #include <robovm.h>
 
+#define LOG_TAG "java.lang.VMClassLoader"
+
 char* toBinaryName(Env* env, Object* className) {
     if (!className) {
         rvmThrowNew(env, java_lang_NullPointerException, "className");
@@ -39,7 +41,19 @@ Class* Java_java_lang_VMClassLoader_findClassInClasspathForLoader(Env* env, Clas
     char* classNameUTF = toBinaryName(env, name);
     if (!classNameUTF) return NULL;
     Class* clazz = rvmFindClassInClasspathForLoader(env, classNameUTF, cl);
-    if (!clazz) return NULL;
+    if (!clazz) {
+        char* p = classNameUTF;
+        while (*p != '\0') {
+            if (*p == '/') *p = '.';
+            p++;
+        }
+        // TODO: Should we use WARNF?
+        TRACEF("VMClassLoader.findClassInClasspathForLoader() failed to load '%s'. "
+              "Use the -forcelinkclasses command line option "
+              "or add <forceLinkClasses><pattern>%s</pattern></forceLinkClasses> "
+              "to your robovm.xml file to link it in.",
+              classNameUTF, classNameUTF);
+    }
     return clazz;
 }
 

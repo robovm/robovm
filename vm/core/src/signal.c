@@ -56,7 +56,7 @@ static inline int sem_post(sem_t* sem) {
  * handler on.
  */
 
-static InstanceField* stackStateField = NULL;
+static Method* throwableInitMethod = NULL;
 static CallStack* dumpThreadStackTraceCallStack = NULL;
 static sem_t dumpThreadStackTraceCallSemaphore;
 
@@ -72,8 +72,8 @@ void registerDarwinExceptionHandler(void) {
 #endif
 
 jboolean rvmInitSignals(Env* env) {
-    stackStateField = rvmGetInstanceField(env, java_lang_Throwable, "stackState", "J");
-    if (!stackStateField) return FALSE;
+    throwableInitMethod = rvmGetClassMethod(env, java_lang_Throwable, "init", "(Ljava/lang/Throwable;J)V");
+    if (!throwableInitMethod) return FALSE;
     if (sem_init(&dumpThreadStackTraceCallSemaphore, 0, 0) != 0) {
         return FALSE;
     }
@@ -206,16 +206,24 @@ static void signalHandler_npe_so(int signum, siginfo_t* info, void* context) {
         }
 
         if (exClass) {
-            Object* throwable = rvmAllocateObject(env, exClass);
-            if (!throwable) {
-                throwable = rvmExceptionClear(env);
-            }
             Frame fakeFrame;
             fakeFrame.prev = (Frame*) getFramePointer((ucontext_t*) context);
             fakeFrame.returnAddress = getPC((ucontext_t*) context);
+            Object* throwable = NULL;
             CallStack* callStack = captureCallStackFromFrame(env, &fakeFrame);
-            rvmSetLongInstanceFieldValue(env, throwable, stackStateField, PTR_TO_LONG(callStack));
-            rvmRaiseException(env, throwable);
+            if (callStack) {
+                throwable = rvmAllocateObject(env, exClass);
+                if (throwable) {
+                    rvmCallVoidClassMethod(env, exClass, throwableInitMethod, throwable, PTR_TO_LONG(callStack));
+                    if (rvmExceptionCheck(env)) {
+                        throwable = NULL;
+                    }
+                }
+            }
+            if (!throwable) {
+                throwable = rvmExceptionClear(env);
+            }
+            rvmRaiseException(env, throwable); // Never returns!
         }
     }
 

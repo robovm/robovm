@@ -143,6 +143,22 @@ public class Throwable implements java.io.Serializable {
     }
 
     /**
+     * RoboVM note: Called by RoboVM to initialize StackOverflowError and 
+     * NullPointerException instances from a signal handler. We cannot call a 
+     * constructor from a signal handler as that could cause stack overflow if 
+     * we're handling a StackOverflowError already. Using a static method which 
+     * doesn't call any other methods prevents stack overflow detection being
+     * added to this method.
+     */
+    @SuppressWarnings("unchecked")
+    static void init(Throwable t, long stackState) {
+        t.stackState = stackState;
+        t.stackTrace = EmptyArray.STACK_TRACE_ELEMENT;
+        t.suppressedExceptions = Collections.EMPTY_LIST;
+        t.cause = t;
+    }
+
+    /**
      * Records the stack trace from the point where this method has been called
      * to this {@code Throwable}. This method is invoked by the {@code Throwable} constructors.
      *

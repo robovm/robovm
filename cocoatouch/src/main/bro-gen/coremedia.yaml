@@ -1,0 +1,86 @@
+package: org.robovm.apple.coremedia
+include: [foundation.yaml, corefoundation.yaml]
+library: CoreMedia
+framework: CoreMedia
+clang_args: ['-x', 'objective-c']
+headers:
+    - /System/Library/Frameworks/CoreMedia.framework/Headers/CoreMedia.h
+    - /System/Library/Frameworks/CoreMedia.framework/Headers/CMBase.h
+typedefs: {}
+    
+enums:
+    CMAttachmentMode: { first: kCMAttachmentMode_ShouldNotPropagate, prefix: kCMAttachmentMode_ }
+    
+classes:
+
+    # Opaque Types
+    CMAttachmentBearerRef:
+        name: "CMAttachmentBearer"
+        extends: CFType
+    CMBlockBuffer:
+        extends: CFType
+    CMBufferQueue:
+        extends: CFType
+    CMFormatDescription:
+        extends: CFType
+    CMSampleBuffer:
+        extends: CFType
+    CMTime:
+        extends: CFType
+    CMTimeRange:
+        extends: CFType
+        
+    
+
+protocols: {}
+
+functions:
+    # CMAttachment
+    CMSetAttachment:
+        class: CMAttachmentBearer
+        name: "add"
+    CMGetAttachment:
+        class: CMAttachmentBearer
+        name: "get"
+    CMRemoveAttachment:
+        class: CMAttachmentBearer
+        name: "remove"
+    CMRemoveAllAttachments:
+        class: CMAttachmentBearer
+        name: "removeAll"
+    CMCopyDictionaryOfAttachments:
+        class: CMAttachmentBearer
+        name: "copyDictionaryOfAttachments"
+    CMSetAttachments:
+        class: CMAttachmentBearer
+        name: "setAttachments"
+    CMPropagateAttachments:
+        class: CMAttachmentBearer
+        name: "propagateAttachments"
+
+    # Make sure we don't miss any functions if new ones are introduced in a later version
+    (CM.*):
+        class: CoreMedia
+        name: "Function__#{g[0]}"
+    (kCM.*):
+        class: CoreMedia
+        name: "Function__#{g[0]}"
+
+values:   
+    # Make sure we don't miss any values if new ones are introduced in a later version
+    (CM):
+        class: CoreMedia
+        name: "Value__#{g[0]}"
+    (kCM.*):
+        class: CoreMedia
+        name: "Value__#{g[0]}"
+
+constants:
+    # Make sure we don't miss any constants if new ones are introduced in a later version
+    (CM.*):
+        class: CoreMedia
+        name: "Constant__#{g[0]}"
+        
+    (kCM.*):
+        class: CoreMedia
+        name: "Constant__#{g[0]}"

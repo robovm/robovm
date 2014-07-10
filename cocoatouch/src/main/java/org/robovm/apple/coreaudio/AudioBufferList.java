@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.robovm.apple.mapkit;
+package org.robovm.apple.coreaudio;
 
 /*<imports>*/
 import java.io.*;
@@ -28,39 +28,33 @@ import org.robovm.rt.bro.annotation.*;
 import org.robovm.rt.bro.ptr.*;
 import org.robovm.apple.foundation.*;
 import org.robovm.apple.corefoundation.*;
-import org.robovm.apple.coregraphics.*;
-import org.robovm.apple.corelocation.*;
-import org.robovm.apple.uikit.*;
-import org.robovm.apple.dispatch.*;
 /*</imports>*/
 
 /*<javadoc>*/
 
 /*</javadoc>*/
 /*<annotations>*//*</annotations>*/
-/*<visibility>*/public/*</visibility>*/ interface /*<name>*/MKOverlay/*</name>*/ 
-    /*<implements>*/extends MKAnnotation/*</implements>*/ {
+/*<visibility>*/public/*</visibility>*/ class /*<name>*/AudioBufferList/*</name>*/ 
+    extends /*<extends>*/Struct<AudioBufferList>/*</extends>*/ 
+    /*<implements>*//*</implements>*/ {
 
-    /*<ptr>*/
-    /*</ptr>*/
+    /*<ptr>*/public static class AudioBufferListPtr extends Ptr<AudioBufferList, AudioBufferListPtr> {}/*</ptr>*/
     /*<bind>*/
     /*</bind>*/
     /*<constants>*//*</constants>*/
-    /*<properties>*/
-    @Property(selector = "coordinate")
-    @ByVal CLLocationCoordinate2D getCoordinate();
-    @Property(selector = "boundingMapRect")
-    @ByVal MKMapRect getBoundingMapRect();
-    /*</properties>*/
-    /*<methods>*/
-    @Method(selector = "intersectsMapRect:")
-    boolean intersects(@ByVal MKMapRect mapRect);
-    /**
-     * @since Available in iOS 7.0 and later.
-     */
-    @Method(selector = "canReplaceMapContent")
-    boolean canReplaceMapContent();
-    /*</methods>*/
-    /*<adapter>*/
-    /*</adapter>*/
+    /*<constructors>*/
+    public AudioBufferList() {}
+    public AudioBufferList(int mNumberBuffers, AudioBuffer mBuffers) {
+        this.mNumberBuffers(mNumberBuffers);
+        this.mBuffers(mBuffers);
+    }
+    /*</constructors>*/
+    /*<properties>*//*</properties>*/
+    /*<members>*/
+    @StructMember(0) public native int mNumberBuffers();
+    @StructMember(0) public native AudioBufferList mNumberBuffers(int mNumberBuffers);
+    @StructMember(1) public native @Array({1}) AudioBuffer mBuffers();
+    @StructMember(1) public native AudioBufferList mBuffers(@Array({1}) AudioBuffer mBuffers);
+    /*</members>*/
+    /*<methods>*//*</methods>*/
 }

@@ -75,9 +75,9 @@ import org.robovm.apple.dispatch.*;
     @Method(selector = "mapRectForRect:")
     public native @ByVal MKMapRect getMapRect(@ByVal CGRect rect);
     @Method(selector = "canDrawMapRect:zoomScale:")
-    public native boolean canDrawMapRect(@ByVal MKMapRect mapRect, @MachineSizedFloat double zoomScale);
+    public native boolean canDraw(@ByVal MKMapRect mapRect, @MachineSizedFloat double zoomScale);
     @Method(selector = "drawMapRect:zoomScale:inContext:")
-    public native void drawMapRect(@ByVal MKMapRect mapRect, @MachineSizedFloat double zoomScale, CGContext context);
+    public native void draw(@ByVal MKMapRect mapRect, @MachineSizedFloat double zoomScale, CGContext context);
     @Method(selector = "setNeedsDisplay")
     public native void setNeedsDisplay();
     @Method(selector = "setNeedsDisplayInMapRect:")

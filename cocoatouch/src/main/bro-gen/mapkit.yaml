@@ -28,9 +28,9 @@ categories:
             '-MKCoordinateSpanValue':
                 name: "getCoordinateSpanValue"
             '+valueWithMKCoordinate:':
-                name: "getValue"
+                name: "create"
             '+valueWithMKCoordinateSpan:':
-                name: "getValue"
+                name: "create"
    
 classes:
 
@@ -51,9 +51,9 @@ classes:
     MKCircle: # DONE
         methods:
             '+circleWithCenterCoordinate:radius:':
-                name: "getCircle"
+                name: "create"
             '+circleWithMapRect:':
-                name: "getCircle"
+                name: "create"
     MKCircleRenderer: {} # DONE
     MKCircleView: {} # DONE
     MKDirections: # DONE
@@ -86,9 +86,11 @@ classes:
     MKGeodesicPolyline: # DONE
         methods:
             '+polylineWithPoints:count:':
-                name: "createPolyline"
+                name: "create"
+                visibility: private
             '+polylineWithCoordinates:count:':
-                name: "createPolyline"
+                name: "create"
+                visibility: private
     MKLocalSearch: # DONE
         methods:
             '-initWithRequest:':
@@ -106,9 +108,9 @@ classes:
     MKMapCamera: # DONE
         methods:
             '+camera':
-                property: true
+                name: "create"
             '+cameraLookingAtCenterCoordinate:fromEyeCoordinate:eyeAltitude:':
-                name: "getCamera"    
+                name: "create"    
     MKMapItem: # DONE
         properties:
             'isCurrentLocation':
@@ -174,8 +176,14 @@ classes:
                 name: "getMapRectThatFits"
             '-setCamera:animated:':
                 trim_after_first_colon: true
-            '-convert.*':
-                trim_after_first_colon: true
+            '-convertCoordinate:toPointToView:':
+                name: "convertCoordinateToPointToView"
+            '-convertPoint:toCoordinateFromView:':
+                name: "convertPointToCoordinateFromView"
+            '-convertRegion:toRectToView:':
+                name: "convertRegionToRectToView"
+            '-convertRect:toRegionFromView:':
+                name: "convertRectToRegionFromView"
             '-setUserTrackingMode:animated:':
                 trim_after_first_colon: true
             '-addAnnotation:':
@@ -251,9 +259,11 @@ classes:
     MKMultiPoint: # DONE
         methods:
             '-points':
-                property: true
+                name: "getPoints0"
+                visibility: protected
             '-getCoordinates:range:':
-                trim_after_first_colon: true
+                name: "getCoordinates0"
+                visibility: protected
     MKOverlayPathRenderer: # DONE
         properties:
             'lineDashPattern':
@@ -293,9 +303,9 @@ classes:
             '-mapRectForRect:':
                 name: "getMapRect"
             '-canDrawMapRect:zoomScale:':
-                trim_after_first_colon: true
+                name: "canDraw"
             '-drawMapRect:zoomScale:inContext:':
-                trim_after_first_colon: true
+                name: "draw"
             '-setNeedsDisplayInMapRect:':
                 name: "setNeedsDisplay"
             '-setNeedsDisplayInMapRect:zoomScale:':
@@ -313,9 +323,9 @@ classes:
             '-mapRectForRect:':
                 name: "getMapRect"
             '-canDrawMapRect:zoomScale:':
-                trim_after_first_colon: true
+                name: "canDraw"
             '-drawMapRect:zoomScale:inContext:':
-                trim_after_first_colon: true
+                name: "draw"
             '-setNeedsDisplayInMapRect:':
                 name: "setNeedsDisplay"
             '-setNeedsDisplayInMapRect:zoomScale:':
@@ -336,15 +346,19 @@ classes:
         methods:
             '+polygonWithPoints:count:':
                 name: "create"
+                visibility: private
             '+polygonWithPoints:count:interiorPolygons:':
                 name: "create"
+                visibility: private
                 parameters:
                     interiorPolygons:
                         type: "NSArray<MKPolygon>"
             '+polygonWithCoordinates:count:':
                 name: "create"
+                visibility: private
             '+polygonWithCoordinates:count:interiorPolygons:':
                 name: "create"
+                visibility: private
                 parameters:
                     interiorPolygons:
                         type: "NSArray<MKPolygon>"    
@@ -360,8 +374,10 @@ classes:
         methods:
             '+polylineWithPoints:count:':
                 name: "create"
+                visibility: private
             '+polylineWithCoordinates:count:':
                 name: "create"
+                visibility: private
     MKPolylineRenderer: # DONE
         methods:
             '-initWithPolyline:':
@@ -460,7 +476,7 @@ protocols:
     MKOverlay: # DONE
         methods:
             '-intersectsMapRect:':
-                trim_after_first_colon: true
+                name: "intersects"
     MKReverseGeocoderDelegate: # DONE
         methods:
             '-reverseGeocoder:didFindPlacemark:':
@@ -510,15 +526,15 @@ functions:
 
     MKMapRectContainsPoint:
         class: MKMapRect
-        name: "containsPoint"
+        name: "contains"
         
     MKMapRectContainsRect:
         class: MKMapRect
-        name: "containsRect"
+        name: "contains"
         
     MKMapRectIntersectsRect:
         class: MKMapRect
-        name: "intersectsRect"
+        name: "intersects"
  
     MKMapRectSpans180thMeridian:
         class: MKMapRect
@@ -527,6 +543,27 @@ functions:
     MKMapRectRemainder:
         class: MKMapRect
         name: "remainder"
+        
+    MKMapRectEqualToRect:
+        class: MKMapRect
+        name: "equals"
+    
+    MKMapRectIsNull:
+        class: MKMapRect
+        name: "isNull"
+    
+    MKMapRectIsEmpty:
+        class: MKMapRect
+        name: "isEmpty"
+    
+    MKMapRectGet(.*):
+        class: MKMapRect
+        name: "get#{g[0]}"
+        
+    MKMapRectMake:
+        class: MKMapRect
+        name: "create"
+        static: true
  
     MKCoordinateRegionForMapRect:
         class: MKCoordinateRegion
@@ -577,27 +614,6 @@ functions:
     MKStringFromMapSize:
         class: MKMapSize
         name: "asString"
-        
-    MKMapRectMake:
-        class: MKMapRect
-        name: "create"
-        static: true
-        
-    MKMapRectEqualToRect:
-        class: MKMapRect
-        name: "equalsRect"
-    
-    MKMapRectIsNull:
-        class: MKMapRect
-        name: "isNull"
-    
-    MKMapRectIsEmpty:
-        class: MKMapRect
-        name: "isEmpty"
-    
-    MKMapRectGet(.*):
-        class: MKMapRect
-        name: "get#{g[0]}"
     
     MKStringFromMapRect:
         class: MKMapRect

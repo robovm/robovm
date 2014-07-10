@@ -1,0 +1,73 @@
+package: org.robovm.apple.coreaudio
+include: [foundation.yaml, corefoundation.yaml]
+library: CoreAudio
+framework: CoreAudio
+clang_args: ['-x', 'objective-c']
+headers:
+    - /System/Library/Frameworks/CoreAudio.framework/Headers/CoreAudioTypes.h
+typedefs: {}
+    
+enums:
+    AudioError: { first: kAudio_UnimplementedError, prefix: kAudio_, postfix: Error }
+    AudioStreamRate: { first: kAudioStreamAnyRate, prefix: kAudioStream, postfix: Rate }
+    AudioFormat: { first: kAudioFormatLinearPCM, prefix: kAudioFormat }
+    AudioStreamBasicDescriptionFlag: { first: kAudioFormatFlagIsFloat, prefix: k, bits: true, marshaler: Bits.AsMachineSizedIntMarshaler }
+    AudioStreamBasicDescriptionCombinationFlag: { first: kAudioFormatFlagsNativeEndian, prefix: k, bits: true, marshaler: Bits.AsMachineSizedIntMarshaler }
+    AudioSMPTETimeType: { first: kSMPTETimeType24, prefix: kSMPTETimeType }
+    AudioSMPTETimeState: { first: kSMPTETimeValid, prefix: kSMPTETime }
+    AudioTimeStampFlag: { first: kAudioTimeStampSampleTimeValid, prefix: kAudioTimeStamp, bits: true, marshaler: Bits.AsMachineSizedIntMarshaler }
+    AudioTimeStampCombinationFlag: { first: kAudioTimeStampSampleHostTimeValid, prefix: kAudioTimeStamp, bits: true, marshaler: Bits.AsMachineSizedIntMarshaler }
+    AudioChannelLabel: { first: kAudioChannelLabel_Unknown, prefix: kAudioChannelLabel_ }
+    AudioChannelBit: { first: kAudioChannelBit_Left, prefix: kAudioChannelBit_ }
+    AudioChannelFlag: { first: kAudioChannelFlags_AllOff, prefix: kAudioChannelFlags_, bits: true, marshaler: Bits.AsMachineSizedIntMarshaler }
+    AudioChannelCoordinate: { first: kAudioChannelCoordinates_LeftRight, prefix: kAudioChannelCoordinates_ }
+    AudioChannelLayoutTag: { first: kAudioChannelLayoutTag_UseChannelDescriptions, prefix: kAudioChannelLayoutTag_ }
+    AudioMPEG4ObjectId: { first: kMPEG4Object_AAC_Main, prefix: kMPEG4Object_ }
+    
+classes:
+    # Structs:
+    AudioValueRange: {}
+    AudioValueTranslation: {}
+    AudioBuffer: {}
+    AudioBufferList: {}
+    AudioStreamBasicDescription: {}
+    AudioStreamPacketDescription: {}
+    SMPTETime: {}
+    AudioTimeStamp: {}
+    AudioClassDescription: {}
+    AudioChannelDescription: {}
+    AudioChannelLayout: {}
+
+protocols: {}
+
+functions:
+    # Make sure we don't miss any functions if new ones are introduced in a later version
+    (Audio.*):
+        class: CoreAudio
+        name: "Function__#{g[0]}"
+    (kAudio.*):
+        class: CoreAudio
+        name: "Function__#{g[0]}"
+
+values:   
+    # Make sure we don't miss any values if new ones are introduced in a later version
+    (Audio.*):
+        class: CoreAudio
+        name: "Value__#{g[0]}"
+    (kAudio.*):
+        class: CoreAudio
+        name: "Value__#{g[0]}"
+
+constants:
+    k(AudioUnitSampleFractionBits):
+        class: CoreAudio
+        name: "#{g[0]}"
+
+    # Make sure we don't miss any constants if new ones are introduced in a later version
+    (Audio.*):
+        class: CoreAudio
+        name: "Constant__#{g[0]}"
+        
+    (kAudio.*):
+        class: CoreAudio
+        name: "Constant__#{g[0]}"

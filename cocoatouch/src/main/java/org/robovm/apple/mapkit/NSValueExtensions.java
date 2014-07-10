@@ -58,10 +58,10 @@ import org.robovm.apple.dispatch.*;
     @Method(selector = "MKCoordinateSpanValue")
     public static native @ByVal MKCoordinateSpan getCoordinateSpanValue(NSValue thiz);
     @Method(selector = "valueWithMKCoordinate:")
-    protected static native NSValue getValue(ObjCClass clazz, @ByVal CLLocationCoordinate2D coordinate);
-    public static NSValue getValue(@ByVal CLLocationCoordinate2D coordinate) { return getValue(ObjCClass.getByType(NSValue.class), coordinate); }
+    protected static native NSValue create(ObjCClass clazz, @ByVal CLLocationCoordinate2D coordinate);
+    public static NSValue create(@ByVal CLLocationCoordinate2D coordinate) { return create(ObjCClass.getByType(NSValue.class), coordinate); }
     @Method(selector = "valueWithMKCoordinateSpan:")
-    protected static native NSValue getValue(ObjCClass clazz, @ByVal MKCoordinateSpan span);
-    public static NSValue getValue(@ByVal MKCoordinateSpan span) { return getValue(ObjCClass.getByType(NSValue.class), span); }
+    protected static native NSValue create(ObjCClass clazz, @ByVal MKCoordinateSpan span);
+    public static NSValue create(@ByVal MKCoordinateSpan span) { return create(ObjCClass.getByType(NSValue.class), span); }
     /*</methods>*/
 }

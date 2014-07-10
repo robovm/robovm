@@ -93,21 +93,21 @@ import org.robovm.apple.dispatch.*;
     /**
      * @since Available in iOS 4.0 and later.
      */
-    public boolean containsPoint(MKMapPoint point) { return containsPoint(this, point); }
+    public boolean contains(MKMapPoint point) { return contains(this, point); }
     @Bridge(symbol="MKMapRectContainsPoint", optional=true)
-    private static native boolean containsPoint(@ByVal MKMapRect rect, @ByVal MKMapPoint point);
+    private static native boolean contains(@ByVal MKMapRect rect, @ByVal MKMapPoint point);
     /**
      * @since Available in iOS 4.0 and later.
      */
-    public boolean containsRect(MKMapRect rect2) { return containsRect(this, rect2); }
+    public boolean contains(MKMapRect rect2) { return contains(this, rect2); }
     @Bridge(symbol="MKMapRectContainsRect", optional=true)
-    private static native boolean containsRect(@ByVal MKMapRect rect1, @ByVal MKMapRect rect2);
+    private static native boolean contains(@ByVal MKMapRect rect1, @ByVal MKMapRect rect2);
     /**
      * @since Available in iOS 4.0 and later.
      */
-    public boolean intersectsRect(MKMapRect rect2) { return intersectsRect(this, rect2); }
+    public boolean intersects(MKMapRect rect2) { return intersects(this, rect2); }
     @Bridge(symbol="MKMapRectIntersectsRect", optional=true)
-    private static native boolean intersectsRect(@ByVal MKMapRect rect1, @ByVal MKMapRect rect2);
+    private static native boolean intersects(@ByVal MKMapRect rect1, @ByVal MKMapRect rect2);
     /**
      * @since Available in iOS 4.0 and later.
      */

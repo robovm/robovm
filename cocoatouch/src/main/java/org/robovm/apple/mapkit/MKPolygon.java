@@ -60,17 +60,37 @@ import org.robovm.apple.dispatch.*;
     public native @ByVal MKMapRect getBoundingMapRect();
     /*</properties>*/
     /*<members>*//*</members>*/
+    public static MKPolygon create(MKMapPoint[] points) {
+        MKMapPoint first = Struct.allocate(MKMapPoint.class, points.length);
+        first.update(points);
+        return create(first, points.length);
+    }
+    public static MKPolygon create(MKMapPoint[] points, NSArray<MKPolygon> interiorPolygons) {
+        MKMapPoint first = Struct.allocate(MKMapPoint.class, points.length);
+        first.update(points);
+        return create(first, points.length, interiorPolygons);
+    }
+    public static MKPolygon create(CLLocationCoordinate2D[] coords) {
+        CLLocationCoordinate2D first = Struct.allocate(CLLocationCoordinate2D.class, coords.length);
+        first.update(coords);
+        return create(first, coords.length);
+    }
+    public static MKPolygon create(CLLocationCoordinate2D[] coords, NSArray<MKPolygon> interiorPolygons) {
+        CLLocationCoordinate2D first = Struct.allocate(CLLocationCoordinate2D.class, coords.length);
+        first.update(coords);
+        return create(first, coords.length, interiorPolygons);
+    }
     /*<methods>*/
     @Method(selector = "polygonWithPoints:count:")
-    public static native MKPolygon create(MKMapPoint points, @MachineSizedUInt long count);
+    private static native MKPolygon create(MKMapPoint points, @MachineSizedUInt long count);
     @Method(selector = "polygonWithPoints:count:interiorPolygons:")
-    public static native MKPolygon create(MKMapPoint points, @MachineSizedUInt long count, NSArray<MKPolygon> interiorPolygons);
+    private static native MKPolygon create(MKMapPoint points, @MachineSizedUInt long count, NSArray<MKPolygon> interiorPolygons);
     @Method(selector = "polygonWithCoordinates:count:")
-    public static native MKPolygon create(CLLocationCoordinate2D coords, @MachineSizedUInt long count);
+    private static native MKPolygon create(CLLocationCoordinate2D coords, @MachineSizedUInt long count);
     @Method(selector = "polygonWithCoordinates:count:interiorPolygons:")
-    public static native MKPolygon create(CLLocationCoordinate2D coords, @MachineSizedUInt long count, NSArray<MKPolygon> interiorPolygons);
+    private static native MKPolygon create(CLLocationCoordinate2D coords, @MachineSizedUInt long count, NSArray<MKPolygon> interiorPolygons);
     @Method(selector = "intersectsMapRect:")
-    public native boolean intersectsMapRect(@ByVal MKMapRect mapRect);
+    public native boolean intersects(@ByVal MKMapRect mapRect);
     /**
      * @since Available in iOS 7.0 and later.
      */

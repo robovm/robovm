@@ -184,13 +184,13 @@ import org.robovm.apple.dispatch.*;
     @Method(selector = "setCamera:animated:")
     public native void setCamera(MKMapCamera camera, boolean animated);
     @Method(selector = "convertCoordinate:toPointToView:")
-    public native @ByVal CGPoint convertCoordinate(@ByVal CLLocationCoordinate2D coordinate, UIView view);
+    public native @ByVal CGPoint convertCoordinateToPointToView(@ByVal CLLocationCoordinate2D coordinate, UIView view);
     @Method(selector = "convertPoint:toCoordinateFromView:")
-    public native @ByVal CLLocationCoordinate2D convertPoint(@ByVal CGPoint point, UIView view);
+    public native @ByVal CLLocationCoordinate2D convertPointToCoordinateFromView(@ByVal CGPoint point, UIView view);
     @Method(selector = "convertRegion:toRectToView:")
-    public native @ByVal CGRect convertRegion(@ByVal MKCoordinateRegion region, UIView view);
+    public native @ByVal CGRect convertRegionToRectToView(@ByVal MKCoordinateRegion region, UIView view);
     @Method(selector = "convertRect:toRegionFromView:")
-    public native @ByVal MKCoordinateRegion convertRect(@ByVal CGRect rect, UIView view);
+    public native @ByVal MKCoordinateRegion convertRectToRegionFromView(@ByVal CGRect rect, UIView view);
     /**
      * @since Available in iOS 5.0 and later.
      */

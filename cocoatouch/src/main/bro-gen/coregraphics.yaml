@@ -105,15 +105,13 @@ functions:
     # CGAffineTransform
     CGAffineTransformMake:
         exclude: true
-    CGAffineTransform(Make.*):
+    CGAffineTransformMake(.*):
         class: CGAffineTransform
-        name: "#{g[0]}"
+        name: "create#{g[0]}"
         static: true
     CGAffineTransform(.*):
         class: CGAffineTransform
         name: "#{g[0]}"
-        static: true
-        visibility: protected
 
     # CGBitmapContext
     CGBitmapContext(CreateImage):
@@ -589,39 +587,43 @@ functions:
     CGPointMake:
         exclude: true
     CGPointMakeWithDictionaryRepresentation:
-        exclude: true
+        class: CGPoint
+        name: fromDictionary
+        visibility: private
+        parameters:
+            dict:
+                type: 'NSDictionary<NSString, NSNumber>'
     CGPointCreateDictionaryRepresentation:
-        exclude: true
-    CGPoint(Make.*):
+        class: CGPoint
+        name: toDictionary
+        return_type: 'NSDictionary<NSString, NSNumber>'
+    CGPoint(Apply).*:
         class: CGPoint
         name: "#{g[0]}"
-        static: true
     CGPoint(.*):
         class: CGPoint
         name: "#{g[0]}"
-        static: true
-        visibility: protected
 
     # CGRect
     CGRectMake:
         exclude: true
     CGRectMakeWithDictionaryRepresentation:
-        exclude: true
+        class: CGRect
+        name: fromDictionary
+        visibility: private
+        parameters:
+            dict:
+                type: 'NSDictionary<NSString, NSNumber>'
     CGRectCreateDictionaryRepresentation:
-        exclude: true
-    CGRect(Make.*):
+        class: CGRect
+        name: toDictionary
+        return_type: 'NSDictionary<NSString, NSNumber>'
+    CGRect(Contains|Intersects|Apply).*:
         class: CGRect
         name: "#{g[0]}"
-        static: true
-    CGRect(Divide):
-        class: CGRect
-        name: "#{g[0]}"
-        static: true
     CGRect(.*):
         class: CGRect
         name: "#{g[0]}"
-        static: true
-        visibility: protected
 
     # CGShading
     CGShading(Retain|Release):
@@ -639,18 +641,22 @@ functions:
     CGSizeMake:
         exclude: true
     CGSizeMakeWithDictionaryRepresentation:
-        exclude: true
+        class: CGSize
+        name: fromDictionary
+        visibility: private
+        parameters:
+            dict:
+                type: 'NSDictionary<NSString, NSNumber>'
     CGSizeCreateDictionaryRepresentation:
-        exclude: true
-    CGSize(Make.*):
+        class: CGSize
+        name: toDictionary
+        return_type: 'NSDictionary<NSString, NSNumber>'
+    CGSize(Apply).*:
         class: CGSize
         name: "#{g[0]}"
-        static: true
     CGSize(.*):
         class: CGSize
         name: "#{g[0]}"
-        static: true
-        visibility: protected
 
     # CGVector
     CGVectorMake:

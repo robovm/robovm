@@ -55,11 +55,15 @@ import org.robovm.apple.foundation.*;
     @StructMember(1) public native @MachineSizedFloat double height();
     @StructMember(1) public native CGSize height(@MachineSizedFloat double height);
     /*</members>*/
-    
-    public CGSize applyAffineTransform(CGAffineTransform t) {
-        return applyAffineTransform(this, t);
+
+    public static CGSize fromDictionary(NSDictionary<NSString, NSNumber> dict) {
+        CGSize s = new CGSize();
+        if (!fromDictionary(dict, s)) {
+            throw new IllegalArgumentException("Failed to create CGSize from dictionary " + dict);
+        }
+        return s;
     }
-    
+
     @Override
     public boolean equals(Object obj) {
         return obj instanceof CGSize && equalToSize(this, (CGSize) obj);
@@ -69,12 +73,25 @@ import org.robovm.apple.foundation.*;
     /**
      * @since Available in iOS 2.0 and later.
      */
+    public boolean equalToSize(CGSize size2) { return equalToSize(this, size2); }
     @Bridge(symbol="CGSizeEqualToSize", optional=true)
-    protected static native boolean equalToSize(@ByVal CGSize size1, @ByVal CGSize size2);
+    private static native boolean equalToSize(@ByVal CGSize size1, @ByVal CGSize size2);
     /**
      * @since Available in iOS 2.0 and later.
      */
+    public NSDictionary<NSString, NSNumber> toDictionary() { return toDictionary(this); }
+    @Bridge(symbol="CGSizeCreateDictionaryRepresentation", optional=true)
+    private static native NSDictionary<NSString, NSNumber> toDictionary(@ByVal CGSize size);
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
+    @Bridge(symbol="CGSizeMakeWithDictionaryRepresentation", optional=true)
+    private static native boolean fromDictionary(NSDictionary<NSString, NSNumber> dict, CGSize size);
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
+    public CGSize apply(CGAffineTransform t) { return apply(this, t); }
     @Bridge(symbol="CGSizeApplyAffineTransform", optional=true)
-    protected static native @ByVal CGSize applyAffineTransform(@ByVal CGSize size, @ByVal CGAffineTransform t);
+    private static native @ByVal CGSize apply(@ByVal CGSize size, @ByVal CGAffineTransform t);
     /*</methods>*/
 }

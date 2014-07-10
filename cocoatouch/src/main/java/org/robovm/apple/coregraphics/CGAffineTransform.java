@@ -68,30 +68,6 @@ import org.robovm.apple.foundation.*;
     @StructMember(5) public native CGAffineTransform ty(@MachineSizedFloat double ty);
     /*</members>*/
     
-    public CGAffineTransform invert() {
-        return invert(this);
-    }
-
-    public boolean isIdentity() {
-        return isIdentity(this);
-    }
-
-    public CGAffineTransform rotate(double angle) {
-        return rotate(this, angle);
-    }
-
-    public CGAffineTransform scale(double sx, double sy) {
-        return scale(this, sx, sy);
-    }
-
-    public CGAffineTransform translate(double tx, double ty) {
-        return translate(this, tx, ty);
-    }
-
-    public CGAffineTransform concat(CGAffineTransform t) {
-        return concat(this, t);
-    }
-
     @Override
     public boolean equals(Object obj) {
         return obj instanceof CGAffineTransform && equalToTransform(this, (CGAffineTransform) obj);
@@ -102,51 +78,58 @@ import org.robovm.apple.foundation.*;
      * @since Available in iOS 2.0 and later.
      */
     @Bridge(symbol="CGAffineTransformMakeTranslation", optional=true)
-    public static native @ByVal CGAffineTransform makeTranslation(@MachineSizedFloat double tx, @MachineSizedFloat double ty);
+    public static native @ByVal CGAffineTransform createTranslation(@MachineSizedFloat double tx, @MachineSizedFloat double ty);
     /**
      * @since Available in iOS 2.0 and later.
      */
     @Bridge(symbol="CGAffineTransformMakeScale", optional=true)
-    public static native @ByVal CGAffineTransform makeScale(@MachineSizedFloat double sx, @MachineSizedFloat double sy);
+    public static native @ByVal CGAffineTransform createScale(@MachineSizedFloat double sx, @MachineSizedFloat double sy);
     /**
      * @since Available in iOS 2.0 and later.
      */
     @Bridge(symbol="CGAffineTransformMakeRotation", optional=true)
-    public static native @ByVal CGAffineTransform makeRotation(@MachineSizedFloat double angle);
+    public static native @ByVal CGAffineTransform createRotation(@MachineSizedFloat double angle);
     /**
      * @since Available in iOS 2.0 and later.
      */
+    public boolean isIdentity() { return isIdentity(this); }
     @Bridge(symbol="CGAffineTransformIsIdentity", optional=true)
-    protected static native boolean isIdentity(@ByVal CGAffineTransform t);
+    private static native boolean isIdentity(@ByVal CGAffineTransform t);
     /**
      * @since Available in iOS 2.0 and later.
      */
+    public CGAffineTransform translate(@MachineSizedFloat double tx, @MachineSizedFloat double ty) { return translate(this, tx, ty); }
     @Bridge(symbol="CGAffineTransformTranslate", optional=true)
-    protected static native @ByVal CGAffineTransform translate(@ByVal CGAffineTransform t, @MachineSizedFloat double tx, @MachineSizedFloat double ty);
+    private static native @ByVal CGAffineTransform translate(@ByVal CGAffineTransform t, @MachineSizedFloat double tx, @MachineSizedFloat double ty);
     /**
      * @since Available in iOS 2.0 and later.
      */
+    public CGAffineTransform scale(@MachineSizedFloat double sx, @MachineSizedFloat double sy) { return scale(this, sx, sy); }
     @Bridge(symbol="CGAffineTransformScale", optional=true)
-    protected static native @ByVal CGAffineTransform scale(@ByVal CGAffineTransform t, @MachineSizedFloat double sx, @MachineSizedFloat double sy);
+    private static native @ByVal CGAffineTransform scale(@ByVal CGAffineTransform t, @MachineSizedFloat double sx, @MachineSizedFloat double sy);
     /**
      * @since Available in iOS 2.0 and later.
      */
+    public CGAffineTransform rotate(@MachineSizedFloat double angle) { return rotate(this, angle); }
     @Bridge(symbol="CGAffineTransformRotate", optional=true)
-    protected static native @ByVal CGAffineTransform rotate(@ByVal CGAffineTransform t, @MachineSizedFloat double angle);
+    private static native @ByVal CGAffineTransform rotate(@ByVal CGAffineTransform t, @MachineSizedFloat double angle);
     /**
      * @since Available in iOS 2.0 and later.
      */
+    public CGAffineTransform invert() { return invert(this); }
     @Bridge(symbol="CGAffineTransformInvert", optional=true)
-    protected static native @ByVal CGAffineTransform invert(@ByVal CGAffineTransform t);
+    private static native @ByVal CGAffineTransform invert(@ByVal CGAffineTransform t);
     /**
      * @since Available in iOS 2.0 and later.
      */
+    public CGAffineTransform concat(CGAffineTransform t2) { return concat(this, t2); }
     @Bridge(symbol="CGAffineTransformConcat", optional=true)
-    protected static native @ByVal CGAffineTransform concat(@ByVal CGAffineTransform t1, @ByVal CGAffineTransform t2);
+    private static native @ByVal CGAffineTransform concat(@ByVal CGAffineTransform t1, @ByVal CGAffineTransform t2);
     /**
      * @since Available in iOS 2.0 and later.
      */
+    public boolean equalToTransform(CGAffineTransform t2) { return equalToTransform(this, t2); }
     @Bridge(symbol="CGAffineTransformEqualToTransform", optional=true)
-    protected static native boolean equalToTransform(@ByVal CGAffineTransform t1, @ByVal CGAffineTransform t2);
+    private static native boolean equalToTransform(@ByVal CGAffineTransform t1, @ByVal CGAffineTransform t2);
     /*</methods>*/
 }

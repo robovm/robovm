@@ -56,8 +56,12 @@ import org.robovm.apple.foundation.*;
     @StructMember(1) public native CGPoint y(@MachineSizedFloat double y);
     /*</members>*/
     
-    public CGPoint applyAffineTransform(CGAffineTransform t) {
-        return applyAffineTransform(this, t);
+    public static CGPoint fromDictionary(NSDictionary<NSString, NSNumber> dict) {
+        CGPoint p = new CGPoint();
+        if (!fromDictionary(dict, p)) {
+            throw new IllegalArgumentException("Failed to create CGPoint from dictionary " + dict);
+        }
+        return p;
     }
     
     @Override
@@ -69,12 +73,25 @@ import org.robovm.apple.foundation.*;
     /**
      * @since Available in iOS 2.0 and later.
      */
+    public boolean equalToPoint(CGPoint point2) { return equalToPoint(this, point2); }
     @Bridge(symbol="CGPointEqualToPoint", optional=true)
-    protected static native boolean equalToPoint(@ByVal CGPoint point1, @ByVal CGPoint point2);
+    private static native boolean equalToPoint(@ByVal CGPoint point1, @ByVal CGPoint point2);
     /**
      * @since Available in iOS 2.0 and later.
      */
+    public NSDictionary<NSString, NSNumber> toDictionary() { return toDictionary(this); }
+    @Bridge(symbol="CGPointCreateDictionaryRepresentation", optional=true)
+    private static native NSDictionary<NSString, NSNumber> toDictionary(@ByVal CGPoint point);
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
+    @Bridge(symbol="CGPointMakeWithDictionaryRepresentation", optional=true)
+    private static native boolean fromDictionary(NSDictionary<NSString, NSNumber> dict, CGPoint point);
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
+    public CGPoint apply(CGAffineTransform t) { return apply(this, t); }
     @Bridge(symbol="CGPointApplyAffineTransform", optional=true)
-    protected static native @ByVal CGPoint applyAffineTransform(@ByVal CGPoint point, @ByVal CGAffineTransform t);
+    private static native @ByVal CGPoint apply(@ByVal CGPoint point, @ByVal CGAffineTransform t);
     /*</methods>*/
 }

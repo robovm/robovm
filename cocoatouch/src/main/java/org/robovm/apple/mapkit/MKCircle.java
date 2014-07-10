@@ -62,11 +62,11 @@ import org.robovm.apple.dispatch.*;
     /*<members>*//*</members>*/
     /*<methods>*/
     @Method(selector = "circleWithCenterCoordinate:radius:")
-    public static native MKCircle getCircle(@ByVal CLLocationCoordinate2D coord, double radius);
+    public static native MKCircle create(@ByVal CLLocationCoordinate2D coord, double radius);
     @Method(selector = "circleWithMapRect:")
-    public static native MKCircle getCircle(@ByVal MKMapRect mapRect);
+    public static native MKCircle create(@ByVal MKMapRect mapRect);
     @Method(selector = "intersectsMapRect:")
-    public native boolean intersectsMapRect(@ByVal MKMapRect mapRect);
+    public native boolean intersects(@ByVal MKMapRect mapRect);
     /**
      * @since Available in iOS 7.0 and later.
      */

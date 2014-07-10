@@ -58,13 +58,23 @@ import org.robovm.apple.dispatch.*;
     public native @ByVal MKMapRect getBoundingMapRect();
     /*</properties>*/
     /*<members>*//*</members>*/
+    public static MKPolyline create(MKMapPoint[] points) {
+        MKMapPoint first = Struct.allocate(MKMapPoint.class, points.length);
+        first.update(points);
+        return create(first, points.length);
+    }
+    public static MKPolyline create(CLLocationCoordinate2D[] coords) {
+        CLLocationCoordinate2D first = Struct.allocate(CLLocationCoordinate2D.class, coords.length);
+        first.update(coords);
+        return create(first, coords.length);
+    }
     /*<methods>*/
     @Method(selector = "polylineWithPoints:count:")
-    public static native MKPolyline create(MKMapPoint points, @MachineSizedUInt long count);
+    private static native MKPolyline create(MKMapPoint points, @MachineSizedUInt long count);
     @Method(selector = "polylineWithCoordinates:count:")
-    public static native MKPolyline create(CLLocationCoordinate2D coords, @MachineSizedUInt long count);
+    private static native MKPolyline create(CLLocationCoordinate2D coords, @MachineSizedUInt long count);
     @Method(selector = "intersectsMapRect:")
-    public native boolean intersectsMapRect(@ByVal MKMapRect mapRect);
+    public native boolean intersects(@ByVal MKMapRect mapRect);
     /**
      * @since Available in iOS 7.0 and later.
      */

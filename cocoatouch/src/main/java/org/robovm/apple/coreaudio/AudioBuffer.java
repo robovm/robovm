@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.robovm.apple.mapkit;
+package org.robovm.apple.coreaudio;
 
 /*<imports>*/
 import java.io.*;
@@ -28,39 +28,36 @@ import org.robovm.rt.bro.annotation.*;
 import org.robovm.rt.bro.ptr.*;
 import org.robovm.apple.foundation.*;
 import org.robovm.apple.corefoundation.*;
-import org.robovm.apple.coregraphics.*;
-import org.robovm.apple.corelocation.*;
-import org.robovm.apple.uikit.*;
-import org.robovm.apple.dispatch.*;
 /*</imports>*/
 
 /*<javadoc>*/
 
 /*</javadoc>*/
 /*<annotations>*//*</annotations>*/
-/*<visibility>*/public/*</visibility>*/ interface /*<name>*/MKOverlay/*</name>*/ 
-    /*<implements>*/extends MKAnnotation/*</implements>*/ {
+/*<visibility>*/public/*</visibility>*/ class /*<name>*/AudioBuffer/*</name>*/ 
+    extends /*<extends>*/Struct<AudioBuffer>/*</extends>*/ 
+    /*<implements>*//*</implements>*/ {
 
-    /*<ptr>*/
-    /*</ptr>*/
+    /*<ptr>*/public static class AudioBufferPtr extends Ptr<AudioBuffer, AudioBufferPtr> {}/*</ptr>*/
     /*<bind>*/
     /*</bind>*/
     /*<constants>*//*</constants>*/
-    /*<properties>*/
-    @Property(selector = "coordinate")
-    @ByVal CLLocationCoordinate2D getCoordinate();
-    @Property(selector = "boundingMapRect")
-    @ByVal MKMapRect getBoundingMapRect();
-    /*</properties>*/
-    /*<methods>*/
-    @Method(selector = "intersectsMapRect:")
-    boolean intersects(@ByVal MKMapRect mapRect);
-    /**
-     * @since Available in iOS 7.0 and later.
-     */
-    @Method(selector = "canReplaceMapContent")
-    boolean canReplaceMapContent();
-    /*</methods>*/
-    /*<adapter>*/
-    /*</adapter>*/
+    /*<constructors>*/
+    public AudioBuffer() {}
+    public AudioBuffer(int mNumberChannels, int mDataByteSize, VoidPtr mData) {
+        this.mNumberChannels(mNumberChannels);
+        this.mDataByteSize(mDataByteSize);
+        this.mData(mData);
+    }
+    /*</constructors>*/
+    /*<properties>*//*</properties>*/
+    /*<members>*/
+    @StructMember(0) public native int mNumberChannels();
+    @StructMember(0) public native AudioBuffer mNumberChannels(int mNumberChannels);
+    @StructMember(1) public native int mDataByteSize();
+    @StructMember(1) public native AudioBuffer mDataByteSize(int mDataByteSize);
+    @StructMember(2) public native VoidPtr mData();
+    @StructMember(2) public native AudioBuffer mData(VoidPtr mData);
+    /*</members>*/
+    /*<methods>*//*</methods>*/
 }

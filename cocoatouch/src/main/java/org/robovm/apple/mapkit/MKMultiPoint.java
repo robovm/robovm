@@ -56,10 +56,18 @@ import org.robovm.apple.dispatch.*;
     public native @MachineSizedUInt long getPointCount();
     /*</properties>*/
     /*<members>*//*</members>*/
+    public MKMapPoint[] getPoints() {
+        return getPoints0().toArray((int) getPointCount());
+    }
+    public CLLocationCoordinate2D[] getCoordinates(@ByVal NSRange range) {
+        CLLocationCoordinate2D coords = Struct.allocate(CLLocationCoordinate2D.class, (int)range.length());
+        getCoordinates0(coords, range);
+        return coords.toArray((int) range.length());
+    }
     /*<methods>*/
     @Method(selector = "points")
-    public native MKMapPoint getPoints();
+    protected native MKMapPoint getPoints0();
     @Method(selector = "getCoordinates:range:")
-    public native void getCoordinates(CLLocationCoordinate2D coords, @ByVal NSRange range);
+    protected native void getCoordinates0(CLLocationCoordinate2D coords, @ByVal NSRange range);
     /*</methods>*/
 }

@@ -93,7 +93,7 @@ import org.robovm.apple.dispatch.*;
     @Method(selector = "loadTileAtPath:result:")
     public native void loadTile(@ByVal MKTileOverlayPath path, @Block VoidBlock2<NSData, NSError> result);
     @Method(selector = "intersectsMapRect:")
-    public native boolean intersectsMapRect(@ByVal MKMapRect mapRect);
+    public native boolean intersects(@ByVal MKMapRect mapRect);
     /**
      * @since Available in iOS 4.0 and later.
      */

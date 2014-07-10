@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.robovm.apple.mapkit;
+package org.robovm.apple.coreaudio;
 
 /*<imports>*/
 import java.io.*;
@@ -28,39 +28,41 @@ import org.robovm.rt.bro.annotation.*;
 import org.robovm.rt.bro.ptr.*;
 import org.robovm.apple.foundation.*;
 import org.robovm.apple.corefoundation.*;
-import org.robovm.apple.coregraphics.*;
-import org.robovm.apple.corelocation.*;
-import org.robovm.apple.uikit.*;
-import org.robovm.apple.dispatch.*;
 /*</imports>*/
 
 /*<javadoc>*/
 
 /*</javadoc>*/
 /*<annotations>*//*</annotations>*/
-/*<visibility>*/public/*</visibility>*/ interface /*<name>*/MKOverlay/*</name>*/ 
-    /*<implements>*/extends MKAnnotation/*</implements>*/ {
+public enum /*<name>*/AudioMPEG4ObjectId/*</name>*/ implements ValuedEnum {
+    /*<values>*/
+    AAC_Main(1L),
+    AAC_LC(2L),
+    AAC_SSR(3L),
+    AAC_LTP(4L),
+    AAC_SBR(5L),
+    AAC_Scalable(6L),
+    TwinVQ(7L),
+    CELP(8L),
+    HVXC(9L);
+    /*</values>*/
 
-    /*<ptr>*/
-    /*</ptr>*/
     /*<bind>*/
     /*</bind>*/
     /*<constants>*//*</constants>*/
-    /*<properties>*/
-    @Property(selector = "coordinate")
-    @ByVal CLLocationCoordinate2D getCoordinate();
-    @Property(selector = "boundingMapRect")
-    @ByVal MKMapRect getBoundingMapRect();
-    /*</properties>*/
-    /*<methods>*/
-    @Method(selector = "intersectsMapRect:")
-    boolean intersects(@ByVal MKMapRect mapRect);
-    /**
-     * @since Available in iOS 7.0 and later.
-     */
-    @Method(selector = "canReplaceMapContent")
-    boolean canReplaceMapContent();
-    /*</methods>*/
-    /*<adapter>*/
-    /*</adapter>*/
+    /*<methods>*//*</methods>*/
+
+    private final long n;
+
+    private /*<name>*/AudioMPEG4ObjectId/*</name>*/(long n) { this.n = n; }
+    public long value() { return n; }
+    public static /*<name>*/AudioMPEG4ObjectId/*</name>*/ valueOf(long n) {
+        for (/*<name>*/AudioMPEG4ObjectId/*</name>*/ v : values()) {
+            if (v.n == n) {
+                return v;
+            }
+        }
+        throw new IllegalArgumentException("No constant with value " + n + " found in " 
+            + /*<name>*/AudioMPEG4ObjectId/*</name>*/.class.getName());
+    }
 }

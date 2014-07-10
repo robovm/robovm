@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.robovm.apple.mapkit;
+package org.robovm.apple.coremedia;
 
 /*<imports>*/
 import java.io.*;
@@ -28,39 +28,33 @@ import org.robovm.rt.bro.annotation.*;
 import org.robovm.rt.bro.ptr.*;
 import org.robovm.apple.foundation.*;
 import org.robovm.apple.corefoundation.*;
-import org.robovm.apple.coregraphics.*;
-import org.robovm.apple.corelocation.*;
-import org.robovm.apple.uikit.*;
-import org.robovm.apple.dispatch.*;
 /*</imports>*/
 
 /*<javadoc>*/
 
 /*</javadoc>*/
 /*<annotations>*//*</annotations>*/
-/*<visibility>*/public/*</visibility>*/ interface /*<name>*/MKOverlay/*</name>*/ 
-    /*<implements>*/extends MKAnnotation/*</implements>*/ {
+/*<visibility>*/public/*</visibility>*/ class /*<name>*/CMTimeRange/*</name>*/ 
+    extends /*<extends>*/Struct<CMTimeRange>/*</extends>*/ 
+    /*<implements>*//*</implements>*/ {
 
-    /*<ptr>*/
-    /*</ptr>*/
+    /*<ptr>*/public static class CMTimeRangePtr extends Ptr<CMTimeRange, CMTimeRangePtr> {}/*</ptr>*/
     /*<bind>*/
     /*</bind>*/
     /*<constants>*//*</constants>*/
-    /*<properties>*/
-    @Property(selector = "coordinate")
-    @ByVal CLLocationCoordinate2D getCoordinate();
-    @Property(selector = "boundingMapRect")
-    @ByVal MKMapRect getBoundingMapRect();
-    /*</properties>*/
-    /*<methods>*/
-    @Method(selector = "intersectsMapRect:")
-    boolean intersects(@ByVal MKMapRect mapRect);
-    /**
-     * @since Available in iOS 7.0 and later.
-     */
-    @Method(selector = "canReplaceMapContent")
-    boolean canReplaceMapContent();
-    /*</methods>*/
-    /*<adapter>*/
-    /*</adapter>*/
+    /*<constructors>*/
+    public CMTimeRange() {}
+    public CMTimeRange(CMTime start, CMTime duration) {
+        this.start(start);
+        this.duration(duration);
+    }
+    /*</constructors>*/
+    /*<properties>*//*</properties>*/
+    /*<members>*/
+    @StructMember(0) public native @ByVal CMTime start();
+    @StructMember(0) public native CMTimeRange start(@ByVal CMTime start);
+    @StructMember(1) public native @ByVal CMTime duration();
+    @StructMember(1) public native CMTimeRange duration(@ByVal CMTime duration);
+    /*</members>*/
+    /*<methods>*//*</methods>*/
 }

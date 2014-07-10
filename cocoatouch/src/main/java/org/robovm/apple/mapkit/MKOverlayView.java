@@ -109,14 +109,14 @@ import org.robovm.apple.dispatch.*;
      */
     @Deprecated
     @Method(selector = "canDrawMapRect:zoomScale:")
-    public native boolean canDrawMapRect(@ByVal MKMapRect mapRect, @MachineSizedFloat double zoomScale);
+    public native boolean canDraw(@ByVal MKMapRect mapRect, @MachineSizedFloat double zoomScale);
     /**
      * @since Available in iOS 4.0 and later.
      * @deprecated Deprecated in iOS 7.0.
      */
     @Deprecated
     @Method(selector = "drawMapRect:zoomScale:inContext:")
-    public native void drawMapRect(@ByVal MKMapRect mapRect, @MachineSizedFloat double zoomScale, CGContext context);
+    public native void draw(@ByVal MKMapRect mapRect, @MachineSizedFloat double zoomScale, CGContext context);
     /**
      * @since Available in iOS 4.0 and later.
      * @deprecated Deprecated in iOS 7.0.

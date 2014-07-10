@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.robovm.apple.mapkit;
+package org.robovm.apple.coreaudio;
 
 /*<imports>*/
 import java.io.*;
@@ -28,39 +28,24 @@ import org.robovm.rt.bro.annotation.*;
 import org.robovm.rt.bro.ptr.*;
 import org.robovm.apple.foundation.*;
 import org.robovm.apple.corefoundation.*;
-import org.robovm.apple.coregraphics.*;
-import org.robovm.apple.corelocation.*;
-import org.robovm.apple.uikit.*;
-import org.robovm.apple.dispatch.*;
 /*</imports>*/
 
 /*<javadoc>*/
 /*</javadoc>*/
 /*<annotations>*//*</annotations>*/
-/*<visibility>*/public/*</visibility>*/ class /*<name>*/MKOverlayAdapter/*</name>*/ 
-    extends /*<extends>*/MKAnnotationAdapter/*</extends>*/ 
-    /*<implements>*/implements MKOverlay/*</implements>*/ {
+/*<visibility>*/public/*</visibility>*/ class /*<name>*/CoreAudio/*</name>*/ 
+    extends /*<extends>*/Object/*</extends>*/ 
+    /*<implements>*//*</implements>*/ {
 
     /*<ptr>*/
     /*</ptr>*/
     /*<bind>*/
     /*</bind>*/
-    /*<constants>*//*</constants>*/
+    /*<constants>*/
+    public static final int AudioUnitSampleFractionBits = 24;
+    /*</constants>*/
     /*<constructors>*//*</constructors>*/
-    /*<properties>*/
-    @NotImplemented("coordinate")
-    public @ByVal CLLocationCoordinate2D getCoordinate() { throw new UnsupportedOperationException(); }
-    @NotImplemented("boundingMapRect")
-    public @ByVal MKMapRect getBoundingMapRect() { throw new UnsupportedOperationException(); }
-    /*</properties>*/
+    /*<properties>*//*</properties>*/
     /*<members>*//*</members>*/
-    /*<methods>*/
-    @NotImplemented("intersectsMapRect:")
-    public boolean intersects(@ByVal MKMapRect mapRect) { throw new UnsupportedOperationException(); }
-    /**
-     * @since Available in iOS 7.0 and later.
-     */
-    @NotImplemented("canReplaceMapContent")
-    public boolean canReplaceMapContent() { throw new UnsupportedOperationException(); }
-    /*</methods>*/
+    /*<methods>*//*</methods>*/
 }

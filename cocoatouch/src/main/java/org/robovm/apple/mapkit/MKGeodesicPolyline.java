@@ -55,10 +55,20 @@ import org.robovm.apple.dispatch.*;
     
     /*</properties>*/
     /*<members>*//*</members>*/
+    public static MKGeodesicPolyline create(MKMapPoint[] points) {
+        MKMapPoint first = Struct.allocate(MKMapPoint.class, points.length);
+        first.update(points);
+        return create(first, points.length);
+    }
+    public static MKGeodesicPolyline create(CLLocationCoordinate2D[] coords) {
+        CLLocationCoordinate2D first = Struct.allocate(CLLocationCoordinate2D.class, coords.length);
+        first.update(coords);
+        return create(first, coords.length);
+    }
     /*<methods>*/
     @Method(selector = "polylineWithPoints:count:")
-    public static native MKGeodesicPolyline createPolyline(MKMapPoint points, @MachineSizedUInt long count);
+    private static native MKGeodesicPolyline create(MKMapPoint points, @MachineSizedUInt long count);
     @Method(selector = "polylineWithCoordinates:count:")
-    public static native MKGeodesicPolyline createPolyline(CLLocationCoordinate2D coords, @MachineSizedUInt long count);
+    private static native MKGeodesicPolyline create(CLLocationCoordinate2D coords, @MachineSizedUInt long count);
     /*</methods>*/
 }

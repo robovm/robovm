@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.robovm.apple.mapkit;
+package org.robovm.apple.coreaudio;
 
 /*<imports>*/
 import java.io.*;
@@ -28,39 +28,44 @@ import org.robovm.rt.bro.annotation.*;
 import org.robovm.rt.bro.ptr.*;
 import org.robovm.apple.foundation.*;
 import org.robovm.apple.corefoundation.*;
-import org.robovm.apple.coregraphics.*;
-import org.robovm.apple.corelocation.*;
-import org.robovm.apple.uikit.*;
-import org.robovm.apple.dispatch.*;
 /*</imports>*/
 
 /*<javadoc>*/
 
 /*</javadoc>*/
 /*<annotations>*//*</annotations>*/
-/*<visibility>*/public/*</visibility>*/ interface /*<name>*/MKOverlay/*</name>*/ 
-    /*<implements>*/extends MKAnnotation/*</implements>*/ {
+public enum /*<name>*/AudioSMPTETimeType/*</name>*/ implements ValuedEnum {
+    /*<values>*/
+    _24(0L),
+    _25(1L),
+    _30Drop(2L),
+    _30(3L),
+    _2997(4L),
+    _2997Drop(5L),
+    _60(6L),
+    _5994(7L),
+    _60Drop(8L),
+    _5994Drop(9L),
+    _50(10L),
+    _2398(11L);
+    /*</values>*/
 
-    /*<ptr>*/
-    /*</ptr>*/
     /*<bind>*/
     /*</bind>*/
     /*<constants>*//*</constants>*/
-    /*<properties>*/
-    @Property(selector = "coordinate")
-    @ByVal CLLocationCoordinate2D getCoordinate();
-    @Property(selector = "boundingMapRect")
-    @ByVal MKMapRect getBoundingMapRect();
-    /*</properties>*/
-    /*<methods>*/
-    @Method(selector = "intersectsMapRect:")
-    boolean intersects(@ByVal MKMapRect mapRect);
-    /**
-     * @since Available in iOS 7.0 and later.
-     */
-    @Method(selector = "canReplaceMapContent")
-    boolean canReplaceMapContent();
-    /*</methods>*/
-    /*<adapter>*/
-    /*</adapter>*/
+    /*<methods>*//*</methods>*/
+
+    private final long n;
+
+    private /*<name>*/AudioSMPTETimeType/*</name>*/(long n) { this.n = n; }
+    public long value() { return n; }
+    public static /*<name>*/AudioSMPTETimeType/*</name>*/ valueOf(long n) {
+        for (/*<name>*/AudioSMPTETimeType/*</name>*/ v : values()) {
+            if (v.n == n) {
+                return v;
+            }
+        }
+        throw new IllegalArgumentException("No constant with value " + n + " found in " 
+            + /*<name>*/AudioSMPTETimeType/*</name>*/.class.getName());
+    }
 }

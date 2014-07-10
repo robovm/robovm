@@ -8,21 +8,14 @@ headers:
 typedefs: {}
     
 enums:
-    AudioError: { first: kAudio_UnimplementedError, prefix: kAudio_, postfix: Error }
-    AudioStreamRate: { first: kAudioStreamAnyRate, prefix: kAudioStream, postfix: Rate }
-    AudioFormat: { first: kAudioFormatLinearPCM, prefix: kAudioFormat }
-    AudioStreamBasicDescriptionFlag: { first: kAudioFormatFlagIsFloat, prefix: k, bits: true, marshaler: Bits.AsMachineSizedIntMarshaler }
-    AudioStreamBasicDescriptionCombinationFlag: { first: kAudioFormatFlagsNativeEndian, prefix: k, bits: true, marshaler: Bits.AsMachineSizedIntMarshaler }
-    AudioSMPTETimeType: { first: kSMPTETimeType24, prefix: kSMPTETimeType }
-    AudioSMPTETimeState: { first: kSMPTETimeValid, prefix: kSMPTETime }
-    AudioTimeStampFlag: { first: kAudioTimeStampSampleTimeValid, prefix: kAudioTimeStamp, bits: true, marshaler: Bits.AsMachineSizedIntMarshaler }
-    AudioTimeStampCombinationFlag: { first: kAudioTimeStampSampleHostTimeValid, prefix: kAudioTimeStamp, bits: true, marshaler: Bits.AsMachineSizedIntMarshaler }
-    AudioChannelLabel: { first: kAudioChannelLabel_Unknown, prefix: kAudioChannelLabel_ }
-    AudioChannelBit: { first: kAudioChannelBit_Left, prefix: kAudioChannelBit_ }
+    AudioError: { first: kAudio_UnimplementedError, prefix: kAudio_, suffix: Error }
+    AudioFormat: { first: kAudioFormatLinearPCM, prefix: kAudioFormat, marshaler: ValuedEnum.AsMachineSizedUIntMarshaler }
+    SMPTETimeType: { first: kSMPTETimeType24, prefix: kSMPTETimeType, marshaler: ValuedEnum.AsMachineSizedUIntMarshaler }
+    SMPTEStateFlags: { first: kSMPTETimeValid, prefix: kSMPTETime, marshaler: ValuedEnum.AsMachineSizedUIntMarshaler }
+    AudioChannelLabel: { first: kAudioChannelLabel_Unknown, prefix: kAudioChannelLabel_, marshaler: ValuedEnum.AsMachineSizedUIntMarshaler }
+    AudioChannelBit: { first: kAudioChannelBit_Left, prefix: kAudioChannelBit_, bits: true, marshaler: Bits.AsMachineSizedIntMarshaler }
     AudioChannelFlag: { first: kAudioChannelFlags_AllOff, prefix: kAudioChannelFlags_, bits: true, marshaler: Bits.AsMachineSizedIntMarshaler }
-    AudioChannelCoordinate: { first: kAudioChannelCoordinates_LeftRight, prefix: kAudioChannelCoordinates_ }
-    AudioChannelLayoutTag: { first: kAudioChannelLayoutTag_UseChannelDescriptions, prefix: kAudioChannelLayoutTag_ }
-    AudioMPEG4ObjectId: { first: kMPEG4Object_AAC_Main, prefix: kMPEG4Object_ }
+    AudioChannelLayoutTag: { first: kAudioChannelLayoutTag_UseChannelDescriptions, prefix: kAudioChannelLayoutTag_, marshaler: ValuedEnum.AsMachineSizedUIntMarshaler }
     
 classes:
     # Structs:
@@ -30,13 +23,23 @@ classes:
     AudioValueTranslation: {}
     AudioBuffer: {}
     AudioBufferList: {}
-    AudioStreamBasicDescription: {}
+    AudioStreamBasicDescription:
+        mFormatID:
+            type: AudioFormat
     AudioStreamPacketDescription: {}
-    SMPTETime: {}
+    SMPTETime:
+        mType:
+            type: SMPTETimeType
+        mFlags:
+            type: SMPTEStateFlags
     AudioTimeStamp: {}
     AudioClassDescription: {}
-    AudioChannelDescription: {}
-    AudioChannelLayout: {}
+    AudioChannelDescription:
+        mChannelFlags:
+            type: AudioChannelFlag
+    AudioChannelLayout:
+        mChannelBitmap:
+            type: AudioChannelBit
 
 protocols: {}
 
@@ -60,6 +63,27 @@ values:
 
 constants:
     k(AudioUnitSampleFractionBits):
+        class: CoreAudio
+        name: "#{g[0]}"
+    k(AudioStreamAnyRate):
+        class: CoreAudio
+        name: "#{g[0]}"
+    k(AudioTimeStamp.*):
+        class: CoreAudio
+        name: "#{g[0]}"
+    k(AudioFormatFlag.*):
+        class: CoreAudio
+        name: "#{g[0]}"
+    k(LinearPCMFormatFlag.*):
+        class: CoreAudio
+        name: "#{g[0]}"
+    k(AppleLosslessFormatFlag.*):
+        class: CoreAudio
+        name: "#{g[0]}"
+    k(MPEG4Object.*):
+        class: CoreAudio
+        name: "#{g[0]}"
+    k(AudioChannelCoordinates.*):
         class: CoreAudio
         name: "#{g[0]}"
 

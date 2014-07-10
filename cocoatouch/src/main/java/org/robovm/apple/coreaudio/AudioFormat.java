@@ -33,7 +33,7 @@ import org.robovm.apple.corefoundation.*;
 /*<javadoc>*/
 
 /*</javadoc>*/
-/*<annotations>*//*</annotations>*/
+/*<annotations>*/@Marshaler(ValuedEnum.AsMachineSizedUIntMarshaler.class)/*</annotations>*/
 public enum /*<name>*/AudioFormat/*</name>*/ implements ValuedEnum {
     /*<values>*/
     LinearPCM(1819304813L),

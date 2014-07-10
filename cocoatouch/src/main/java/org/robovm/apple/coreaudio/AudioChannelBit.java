@@ -33,27 +33,27 @@ import org.robovm.apple.corefoundation.*;
 /*<javadoc>*/
 
 /*</javadoc>*/
-/*<annotations>*//*</annotations>*/
-public enum /*<name>*/AudioChannelBit/*</name>*/ implements ValuedEnum {
+/*<annotations>*/@Marshaler(Bits.AsMachineSizedIntMarshaler.class)/*</annotations>*/
+public final class /*<name>*/AudioChannelBit/*</name>*/ extends Bits</*<name>*/AudioChannelBit/*</name>*/> {
     /*<values>*/
-    Left(1L),
-    Right(2L),
-    Center(4L),
-    LFEScreen(8L),
-    LeftSurround(16L),
-    RightSurround(32L),
-    LeftCenter(64L),
-    RightCenter(128L),
-    CenterSurround(256L),
-    LeftSurroundDirect(512L),
-    RightSurroundDirect(1024L),
-    TopCenterSurround(2048L),
-    VerticalHeightLeft(4096L),
-    VerticalHeightCenter(8192L),
-    VerticalHeightRight(16384L),
-    TopBackLeft(32768L),
-    TopBackCenter(65536L),
-    TopBackRight(131072L);
+    public static final AudioChannelBit Left = new AudioChannelBit(1L);
+    public static final AudioChannelBit Right = new AudioChannelBit(2L);
+    public static final AudioChannelBit Center = new AudioChannelBit(4L);
+    public static final AudioChannelBit LFEScreen = new AudioChannelBit(8L);
+    public static final AudioChannelBit LeftSurround = new AudioChannelBit(16L);
+    public static final AudioChannelBit RightSurround = new AudioChannelBit(32L);
+    public static final AudioChannelBit LeftCenter = new AudioChannelBit(64L);
+    public static final AudioChannelBit RightCenter = new AudioChannelBit(128L);
+    public static final AudioChannelBit CenterSurround = new AudioChannelBit(256L);
+    public static final AudioChannelBit LeftSurroundDirect = new AudioChannelBit(512L);
+    public static final AudioChannelBit RightSurroundDirect = new AudioChannelBit(1024L);
+    public static final AudioChannelBit TopCenterSurround = new AudioChannelBit(2048L);
+    public static final AudioChannelBit VerticalHeightLeft = new AudioChannelBit(4096L);
+    public static final AudioChannelBit VerticalHeightCenter = new AudioChannelBit(8192L);
+    public static final AudioChannelBit VerticalHeightRight = new AudioChannelBit(16384L);
+    public static final AudioChannelBit TopBackLeft = new AudioChannelBit(32768L);
+    public static final AudioChannelBit TopBackCenter = new AudioChannelBit(65536L);
+    public static final AudioChannelBit TopBackRight = new AudioChannelBit(131072L);
     /*</values>*/
 
     /*<bind>*/
@@ -61,17 +61,17 @@ public enum /*<name>*/AudioChannelBit/*</name>*/ implements ValuedEnum {
     /*<constants>*//*</constants>*/
     /*<methods>*//*</methods>*/
 
-    private final long n;
+    private static final /*<name>*/AudioChannelBit/*</name>*/[] values = _values(/*<name>*/AudioChannelBit/*</name>*/.class);
 
-    private /*<name>*/AudioChannelBit/*</name>*/(long n) { this.n = n; }
-    public long value() { return n; }
-    public static /*<name>*/AudioChannelBit/*</name>*/ valueOf(long n) {
-        for (/*<name>*/AudioChannelBit/*</name>*/ v : values()) {
-            if (v.n == n) {
-                return v;
-            }
-        }
-        throw new IllegalArgumentException("No constant with value " + n + " found in " 
-            + /*<name>*/AudioChannelBit/*</name>*/.class.getName());
+    public /*<name>*/AudioChannelBit/*</name>*/(long value) { super(value); }
+    private /*<name>*/AudioChannelBit/*</name>*/(long value, long mask) { super(value, mask); }
+    protected /*<name>*/AudioChannelBit/*</name>*/ wrap(long value, long mask) {
+        return new /*<name>*/AudioChannelBit/*</name>*/(value, mask);
+    }
+    protected /*<name>*/AudioChannelBit/*</name>*/[] _values() {
+        return values;
+    }
+    public static /*<name>*/AudioChannelBit/*</name>*/[] values() {
+        return values.clone();
     }
 }

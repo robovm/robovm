@@ -44,7 +44,7 @@ import org.robovm.apple.corefoundation.*;
     /*<constants>*//*</constants>*/
     /*<constructors>*/
     public SMPTETime() {}
-    public SMPTETime(short mSubframes, short mSubframeDivisor, int mCounter, int mType, int mFlags, short mHours, short mMinutes, short mSeconds, short mFrames) {
+    public SMPTETime(short mSubframes, short mSubframeDivisor, int mCounter, SMPTETimeType mType, SMPTEStateFlags mFlags, short mHours, short mMinutes, short mSeconds, short mFrames) {
         this.mSubframes(mSubframes);
         this.mSubframeDivisor(mSubframeDivisor);
         this.mCounter(mCounter);
@@ -64,10 +64,10 @@ import org.robovm.apple.corefoundation.*;
     @StructMember(1) public native SMPTETime mSubframeDivisor(short mSubframeDivisor);
     @StructMember(2) public native int mCounter();
     @StructMember(2) public native SMPTETime mCounter(int mCounter);
-    @StructMember(3) public native int mType();
-    @StructMember(3) public native SMPTETime mType(int mType);
-    @StructMember(4) public native int mFlags();
-    @StructMember(4) public native SMPTETime mFlags(int mFlags);
+    @StructMember(3) public native SMPTETimeType mType();
+    @StructMember(3) public native SMPTETime mType(SMPTETimeType mType);
+    @StructMember(4) public native SMPTEStateFlags mFlags();
+    @StructMember(4) public native SMPTETime mFlags(SMPTEStateFlags mFlags);
     @StructMember(5) public native short mHours();
     @StructMember(5) public native SMPTETime mHours(short mHours);
     @StructMember(6) public native short mMinutes();

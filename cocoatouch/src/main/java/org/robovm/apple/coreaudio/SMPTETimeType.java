@@ -33,18 +33,21 @@ import org.robovm.apple.corefoundation.*;
 /*<javadoc>*/
 
 /*</javadoc>*/
-/*<annotations>*//*</annotations>*/
-public enum /*<name>*/AudioMPEG4ObjectId/*</name>*/ implements ValuedEnum {
+/*<annotations>*/@Marshaler(ValuedEnum.AsMachineSizedUIntMarshaler.class)/*</annotations>*/
+public enum /*<name>*/SMPTETimeType/*</name>*/ implements ValuedEnum {
     /*<values>*/
-    AAC_Main(1L),
-    AAC_LC(2L),
-    AAC_SSR(3L),
-    AAC_LTP(4L),
-    AAC_SBR(5L),
-    AAC_Scalable(6L),
-    TwinVQ(7L),
-    CELP(8L),
-    HVXC(9L);
+    _24(0L),
+    _25(1L),
+    _30Drop(2L),
+    _30(3L),
+    _2997(4L),
+    _2997Drop(5L),
+    _60(6L),
+    _5994(7L),
+    _60Drop(8L),
+    _5994Drop(9L),
+    _50(10L),
+    _2398(11L);
     /*</values>*/
 
     /*<bind>*/
@@ -54,15 +57,15 @@ public enum /*<name>*/AudioMPEG4ObjectId/*</name>*/ implements ValuedEnum {
 
     private final long n;
 
-    private /*<name>*/AudioMPEG4ObjectId/*</name>*/(long n) { this.n = n; }
+    private /*<name>*/SMPTETimeType/*</name>*/(long n) { this.n = n; }
     public long value() { return n; }
-    public static /*<name>*/AudioMPEG4ObjectId/*</name>*/ valueOf(long n) {
-        for (/*<name>*/AudioMPEG4ObjectId/*</name>*/ v : values()) {
+    public static /*<name>*/SMPTETimeType/*</name>*/ valueOf(long n) {
+        for (/*<name>*/SMPTETimeType/*</name>*/ v : values()) {
             if (v.n == n) {
                 return v;
             }
         }
         throw new IllegalArgumentException("No constant with value " + n + " found in " 
-            + /*<name>*/AudioMPEG4ObjectId/*</name>*/.class.getName());
+            + /*<name>*/SMPTETimeType/*</name>*/.class.getName());
     }
 }

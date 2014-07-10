@@ -33,7 +33,7 @@ import org.robovm.apple.corefoundation.*;
 /*<javadoc>*/
 
 /*</javadoc>*/
-/*<annotations>*//*</annotations>*/
+/*<annotations>*/@Marshaler(ValuedEnum.AsMachineSizedUIntMarshaler.class)/*</annotations>*/
 public enum /*<name>*/AudioChannelLayoutTag/*</name>*/ implements ValuedEnum {
     /*<values>*/
     UseChannelDescriptions(0L),

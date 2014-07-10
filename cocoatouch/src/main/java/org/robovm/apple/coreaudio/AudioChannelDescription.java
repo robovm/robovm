@@ -44,7 +44,7 @@ import org.robovm.apple.corefoundation.*;
     /*<constants>*//*</constants>*/
     /*<constructors>*/
     public AudioChannelDescription() {}
-    public AudioChannelDescription(AudioChannelLabel mChannelLabel, int mChannelFlags, FloatBuffer mCoordinates) {
+    public AudioChannelDescription(AudioChannelLabel mChannelLabel, AudioChannelFlag mChannelFlags, FloatBuffer mCoordinates) {
         this.mChannelLabel(mChannelLabel);
         this.mChannelFlags(mChannelFlags);
         this.mCoordinates(mCoordinates);
@@ -54,8 +54,8 @@ import org.robovm.apple.corefoundation.*;
     /*<members>*/
     @StructMember(0) public native AudioChannelLabel mChannelLabel();
     @StructMember(0) public native AudioChannelDescription mChannelLabel(AudioChannelLabel mChannelLabel);
-    @StructMember(1) public native int mChannelFlags();
-    @StructMember(1) public native AudioChannelDescription mChannelFlags(int mChannelFlags);
+    @StructMember(1) public native AudioChannelFlag mChannelFlags();
+    @StructMember(1) public native AudioChannelDescription mChannelFlags(AudioChannelFlag mChannelFlags);
     @StructMember(2) public native @Array({3}) FloatBuffer mCoordinates();
     @StructMember(2) public native AudioChannelDescription mCoordinates(@Array({3}) FloatBuffer mCoordinates);
     /*</members>*/

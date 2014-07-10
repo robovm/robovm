@@ -44,7 +44,7 @@ import org.robovm.apple.corefoundation.*;
     /*<constants>*//*</constants>*/
     /*<constructors>*/
     public AudioStreamBasicDescription() {}
-    public AudioStreamBasicDescription(double mSampleRate, int mFormatID, int mFormatFlags, int mBytesPerPacket, int mFramesPerPacket, int mBytesPerFrame, int mChannelsPerFrame, int mBitsPerChannel, int mReserved) {
+    public AudioStreamBasicDescription(double mSampleRate, AudioFormat mFormatID, int mFormatFlags, int mBytesPerPacket, int mFramesPerPacket, int mBytesPerFrame, int mChannelsPerFrame, int mBitsPerChannel, int mReserved) {
         this.mSampleRate(mSampleRate);
         this.mFormatID(mFormatID);
         this.mFormatFlags(mFormatFlags);
@@ -60,8 +60,8 @@ import org.robovm.apple.corefoundation.*;
     /*<members>*/
     @StructMember(0) public native double mSampleRate();
     @StructMember(0) public native AudioStreamBasicDescription mSampleRate(double mSampleRate);
-    @StructMember(1) public native int mFormatID();
-    @StructMember(1) public native AudioStreamBasicDescription mFormatID(int mFormatID);
+    @StructMember(1) public native AudioFormat mFormatID();
+    @StructMember(1) public native AudioStreamBasicDescription mFormatID(AudioFormat mFormatID);
     @StructMember(2) public native int mFormatFlags();
     @StructMember(2) public native AudioStreamBasicDescription mFormatFlags(int mFormatFlags);
     @StructMember(3) public native int mBytesPerPacket();

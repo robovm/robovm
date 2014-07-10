@@ -33,10 +33,11 @@ import org.robovm.apple.corefoundation.*;
 /*<javadoc>*/
 
 /*</javadoc>*/
-/*<annotations>*//*</annotations>*/
-public enum /*<name>*/AudioStreamRate/*</name>*/ implements ValuedEnum {
+/*<annotations>*/@Marshaler(ValuedEnum.AsMachineSizedUIntMarshaler.class)/*</annotations>*/
+public enum /*<name>*/SMPTEStateFlags/*</name>*/ implements ValuedEnum {
     /*<values>*/
-    AnyRate(0L);
+    Valid(1L),
+    Running(2L);
     /*</values>*/
 
     /*<bind>*/
@@ -46,15 +47,15 @@ public enum /*<name>*/AudioStreamRate/*</name>*/ implements ValuedEnum {
 
     private final long n;
 
-    private /*<name>*/AudioStreamRate/*</name>*/(long n) { this.n = n; }
+    private /*<name>*/SMPTEStateFlags/*</name>*/(long n) { this.n = n; }
     public long value() { return n; }
-    public static /*<name>*/AudioStreamRate/*</name>*/ valueOf(long n) {
-        for (/*<name>*/AudioStreamRate/*</name>*/ v : values()) {
+    public static /*<name>*/SMPTEStateFlags/*</name>*/ valueOf(long n) {
+        for (/*<name>*/SMPTEStateFlags/*</name>*/ v : values()) {
             if (v.n == n) {
                 return v;
             }
         }
         throw new IllegalArgumentException("No constant with value " + n + " found in " 
-            + /*<name>*/AudioStreamRate/*</name>*/.class.getName());
+            + /*<name>*/SMPTEStateFlags/*</name>*/.class.getName());
     }
 }

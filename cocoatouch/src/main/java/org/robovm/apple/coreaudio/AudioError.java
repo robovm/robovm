@@ -36,13 +36,13 @@ import org.robovm.apple.corefoundation.*;
 /*<annotations>*//*</annotations>*/
 public enum /*<name>*/AudioError/*</name>*/ implements ValuedEnum {
     /*<values>*/
-    UnimplementedError(-4L),
-    FileNotFoundError(-43L),
-    FilePermissionError(-54L),
-    TooManyFilesOpenError(-42L),
-    BadFilePathError(561017960L),
-    ParamError(-50L),
-    MemFullError(-108L);
+    Unimplemented(-4L),
+    FileNotFound(-43L),
+    FilePermission(-54L),
+    TooManyFilesOpen(-42L),
+    BadFilePath(561017960L),
+    Param(-50L),
+    MemFull(-108L);
     /*</values>*/
 
     /*<bind>*/

@@ -44,7 +44,7 @@ import org.robovm.apple.corefoundation.*;
     /*<constants>*//*</constants>*/
     /*<constructors>*/
     public AudioChannelLayout() {}
-    public AudioChannelLayout(AudioChannelLayoutTag mChannelLayoutTag, int mChannelBitmap, int mNumberChannelDescriptions, AudioChannelDescription mChannelDescriptions) {
+    public AudioChannelLayout(AudioChannelLayoutTag mChannelLayoutTag, AudioChannelBit mChannelBitmap, int mNumberChannelDescriptions, AudioChannelDescription mChannelDescriptions) {
         this.mChannelLayoutTag(mChannelLayoutTag);
         this.mChannelBitmap(mChannelBitmap);
         this.mNumberChannelDescriptions(mNumberChannelDescriptions);
@@ -55,8 +55,8 @@ import org.robovm.apple.corefoundation.*;
     /*<members>*/
     @StructMember(0) public native AudioChannelLayoutTag mChannelLayoutTag();
     @StructMember(0) public native AudioChannelLayout mChannelLayoutTag(AudioChannelLayoutTag mChannelLayoutTag);
-    @StructMember(1) public native int mChannelBitmap();
-    @StructMember(1) public native AudioChannelLayout mChannelBitmap(int mChannelBitmap);
+    @StructMember(1) public native AudioChannelBit mChannelBitmap();
+    @StructMember(1) public native AudioChannelLayout mChannelBitmap(AudioChannelBit mChannelBitmap);
     @StructMember(2) public native int mNumberChannelDescriptions();
     @StructMember(2) public native AudioChannelLayout mNumberChannelDescriptions(int mNumberChannelDescriptions);
     @StructMember(3) public native @Array({1}) AudioChannelDescription mChannelDescriptions();

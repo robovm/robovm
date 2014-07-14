@@ -1,5 +1,5 @@
 package: org.robovm.apple.coremedia
-include: [foundation.yaml, corefoundation.yaml]
+include: [foundation.yaml, corefoundation.yaml, dispatch.yaml, coreaudio.yaml, coregraphics.yaml] # , corevideo.yaml, audiotoolbox.yaml
 library: CoreMedia
 framework: CoreMedia
 clang_args: ['-x', 'objective-c']
@@ -8,55 +8,466 @@ headers:
     - /System/Library/Frameworks/CoreMedia.framework/Headers/CMBase.h
 typedefs: {}
     
+# typedef CMTime (*CMBufferGetTimeCallback)(
+#	CMBufferRef buf,	/*! @param buf Buffer being interrogated. */
+#	void *refcon);		/*! @param refcon Client refcon. Can be NULL. */
+#
+#typedef Boolean (*CMBufferGetBooleanCallback)(
+#	CMBufferRef buf,	/*! @param buf Buffer being interrogated. */
+#	void *refcon);		/*! @param refcon Client refcon. Can be NULL. */
+#
+# typedef CFComparisonResult (*CMBufferCompareCallback)(
+#	CMBufferRef buf1,	/*! @param buf Buffer being compared. */
+#	CMBufferRef buf2,	/*! @param buf Other buffer being compared. */
+#	void *refcon);		/*! @param refcon Client refcon. Can be NULL. */
+#
+# typedef size_t (*CMBufferGetSizeCallback)(
+#	CMBufferRef buf,	/*! @param buf Buffer being interrogated. */
+#	void *refcon);		/*! @param refcon Client refcon. Can be NULL. */
+#
+# typedef void (*CMBufferQueueTriggerCallback)(
+#	void *triggerRefcon,						/*! @param triggerRefcon Refcon for trigger callback.  */
+#	CMBufferQueueTriggerToken triggerToken );	/*! @param triggerToken Trigger whose condition became true. */
+#
+# typedef OSStatus (*CMBufferValidationCallback)( CMBufferQueueRef queue, CMBufferRef buf, void *validationRefCon );
+# typedef OSStatus (*CMSampleBufferMakeDataReadyCallback)
+#	(CMSampleBufferRef sbuf,	/*! @param sbuf
+#									The CMSampleBuffer to make ready. */
+#	void *makeDataReadyRefcon);	/*! @param makeDataReadyRefcon
+#									Client refcon provided to CMSampleBufferCreate.
+#									For example, it could point at info about the
+#									scheduled read that needs to be forced to finish. */
+# typedef void (*CMSampleBufferInvalidateCallback)
+#	(CMSampleBufferRef sbuf,	/*! @param sbuf
+#									The CMSampleBuffer being invalidated. */
+#	uint64_t invalidateRefCon);	/*! @param invalidateRefCon
+#									Reference constant provided when the callback was set up. */
+
+
 enums:
-    CMAttachmentMode: { first: kCMAttachmentMode_ShouldNotPropagate, prefix: kCMAttachmentMode_ }
-    
+    CMAttachmentMode: { first: kCMAttachmentMode_ShouldNotPropagate, prefix: kCMAttachmentMode_, marshaler: ValuedEnum.AsMachineSizedUIntMarshaler }
+    CMClockError: { first: kCMClockError_MissingRequiredParameter, prefix: kCMClockError_ }
+    CMTimebaseError: { first: kCMTimebaseError_MissingRequiredParameter, prefix: kCMTimebaseError_ }
+    CMSyncError: { first: kCMSyncError_MissingRequiredParameter, prefix: kCMSyncError_ }
+    CMBlockBufferError: { first: kCMBlockBufferNoErr, prefix: kCMBlockBuffer, suffix: Err }
+    CMBlockBufferFlag: { first: kCMBlockBufferAssureMemoryNowFlag, prefix: kCMBlockBuffer, suffix: Flag, bits: true, marshaler: Bits.AsMachineSizedIntMarshaler }
+    CMBufferQueueError: { first: kCMBufferQueueError_AllocationFailed, prefix: kCMBufferQueueError_ }
+    CMBufferQueueTriggerCondition: { first: kCMBufferQueueTrigger_WhenDurationBecomesLessThan, prefix: kCMBufferQueueTrigger_, marshaler: ValuedEnum.AsMachineSizedIntMarshaler }
+    CMFormatDescriptionError: { first: kCMFormatDescriptionError_InvalidParameter, prefix: kCMFormatDescriptionError_ }
+    CMMediaType: { first: kCMMediaType_Video, prefix: kCMMediaType_ }
+    CMAudioCodecType: { first: kCMAudioCodecType_AAC_LCProtected, prefix: kCMAudioCodecType_ }
+    CMAudioFormatDescriptionMask: { first: kCMAudioFormatDescriptionMask_StreamBasicDescription, prefix: kCMAudioFormatDescriptionMask_, bits: true, marshaler: Bits.AsMachineSizedUIntMarshaler }
+    CMPixelFormatType: { first: kCMPixelFormat_32ARGB, prefix: kCMPixelFormat }
+    CMVideoCodecType: { first: kCMVideoCodecType_422YpCbCr8, prefix: kCMVideoCodecType }
+    CMMPEG2VideoProfile: { first: kCMMPEG2VideoProfile_HDV_720p30, prefix: kCMMPEG2VideoProfile_ }
+    CMMuxedStreamType: { first: kCMMuxedStreamType_MPEG1System, prefix: kCMMuxedStreamType_ }
+    CMClosedCaptionFormatType: { first: kCMClosedCaptionFormatType_CEA608, prefix: kCMClosedCaptionFormatType }
+    CMTextFormatType: { first: kCMTextFormatType_QTText, prefix: kCMTextFormatType_ }
+    CMTextDisplayFlag: { first: kCMTextDisplayFlag_scrollIn, prefix: kCMTextDisplayFlag_, bits: true, marshaler: Bits.AsMachineSizedUIntMarshaler }
+    CMTextJustification: { first: kCMTextJustification_left_top, prefix: kCMTextJustification_ }
+    CMSubtitleFormatType: { first: kCMSubtitleFormatType_3GText, prefix: kCMSubtitleFormatType }
+    CMTimeCodeFormatType: { first: kCMTimeCodeFormatType_TimeCode32, prefix: kCMTimeCodeFormatType_ }
+    CMTimeCodeFlag: { first: kCMTimeCodeFlag_DropFrame, prefix: kCMTimeCodeFlag_, bits: true, marshaler: Bits.AsMachineSizedIntMarshaler }
+    CMMetadataFormatType: { first: kCMMetadataFormatType_ICY, prefix: kCMMetadataFormatType_ }
+    CMSampleBufferError: { first: kCMSampleBufferError_AllocationFailed, prefix: kCMSampleBufferError_ }
+    CMSampleBufferFlag: { first: kCMSampleBufferFlag_AudioBufferList_Assure16ByteAlignment, prefix: kCMSampleBufferFlag_, bits: true, marshaler: Bits.AsMachineSizedIntMarshaler }
+    CMSimpleQueueError: { first: kCMSimpleQueueError_AllocationFailed, prefix: kCMSimpleQueueError_ }
+    CMTimeFlag: { first: kCMTimeFlags_Valid, prefix: kCMTimeFlags_, bits: true, marshaler: Bits.AsMachineSizedUIntMarshaler }
+    CMTimeRoundingMethod: { first: kCMTimeRoundingMethod_RoundHalfAwayFromZero, prefix: kCMTimeRoundingMethod_, marshaler: ValuedEnum.AsMachineSizedUIntMarshaler }
+
+
+
 classes:
+    CoreMedia:
+        annotations: ['@Marshaler(NSString.AsStringMarshaler.class)']
 
     # Opaque Types
+    CMAttachmentBearer:
+        extends: CFType
     CMAttachmentBearerRef:
         name: "CMAttachmentBearer"
         extends: CFType
     CMBlockBuffer:
         extends: CFType
+    OpaqueCMBlockBuffer:
+        name: "CMBlockBuffer"
+        extends: CFType
+    CMBufferRef:
+        name: "CMBuffer"
+        extends: CFType
+    CMBuffer:
+        extends: CFType
     CMBufferQueue:
+        extends: CFType
+    opaqueCMBufferQueue:
+        name: "CMBufferQueue"
+        extends: CFType
+    CMBufferQueueTriggerToken:
+        extends: CFType
+    opaqueCMBufferQueueTriggerToken:
+        name: "CMBufferQueueTriggerToken"
+        extends: CFType
+    CMClockOrTimebase:
+        extends: CFType
+    CMClock:
         extends: CFType
     CMFormatDescription:
         extends: CFType
+    opaqueCMFormatDescription:
+        name: "CMFormatDescription"
+        extends: CFType
+    CMAudioFormatDescription:
+        extends: CMFormatDescription
+    CMClosedCaptionFormatDescription:
+        extends: CMFormatDescription
+    CMMetadataFormatDescription:
+        extends: CMFormatDescription
+    CMMuxedFormatDescription:
+        extends: CMFormatDescription
+    CMTextFormatDescription:
+        extends: CMFormatDescription
+    CMTimeCodeFormatDescription:
+        extends: CMFormatDescription
+    CMVideoFormatDescription:
+        extends: CMFormatDescription
     CMSampleBuffer:
+        extends: CFType
+    opaqueCMSampleBuffer:
+        name: "CMSampleBuffer"
         extends: CFType
     CMTime:
         extends: CFType
+    CMTimebase:
+        extends: CFType
     CMTimeRange:
         extends: CFType
+    CMMemoryPool:
+        extends: CFType
+    OpaqueCMMemoryPool:
+        name: "CMMemoryPool"
+        extends: CFType
+    CMSimpleQueue:
+        extends: CFType
+    opaqueCMSimpleQueue:
+        name: "CMSimpleQueue"
+        extends: CFType
         
-    
+    # Structs
+    CMBlockBufferCustomBlockSource: {}
+    CMBufferCallbacks: {}
+    CMVideoDimensions: {}
+    CMSampleTimingInfo: {}
+    CMTime: {}
+    CMTimeRange: {}
+    CMTimeMapping: {}
 
 protocols: {}
 
 functions:
+    (CM.*)GetTypeID:
+        class: "#{g[0]}"
+        name: getClassTypeID
+
     # CMAttachment
-    CMSetAttachment:
-        class: CMAttachmentBearer
-        name: "add"
-    CMGetAttachment:
-        class: CMAttachmentBearer
-        name: "get"
-    CMRemoveAttachment:
-        class: CMAttachmentBearer
-        name: "remove"
-    CMRemoveAllAttachments:
-        class: CMAttachmentBearer
-        name: "removeAll"
-    CMCopyDictionaryOfAttachments:
+    CMCopyDictionaryOfAttachments: # create wrapper
         class: CMAttachmentBearer
         name: "copyDictionaryOfAttachments"
-    CMSetAttachments:
+        visibility: protected
+    CMGetAttachment: # create separate methods get getAttachment and getAttachmentMode
         class: CMAttachmentBearer
-        name: "setAttachments"
-    CMPropagateAttachments:
+        name: "getAttachment"
+        visibility: protected
+    CM(.*Attachment.?):
         class: CMAttachmentBearer
-        name: "propagateAttachments"
+        name: "#{g[0]}"
+
+    # CMClock
+    CMClockGetHostTimeClock:
+        class: CMClock
+        name: "getHostTimeClock"
+    CMClockConvertHostTimeToSystemUnits:
+        class: CMClock
+        name: "convertHostTimeToSystemUnits"
+    CMClockMakeHostTimeFromSystemUnits:
+        class: CMClock
+        name: "createHostTimeFromSystemUnits"
+    CMClockMightDrift:
+        class: CMClock
+        name: "mightDrift"
+        static: true
+    CMClock(.*):
+        class: CMClock
+        name: "#{g[0]}"
+
+    # CMAudioClock
+    CMAudioClockCreate: # TODO create wrapper
+        class: CMClock
+        name: "createAudioClock"
+        visibility: protected
+
+    # CMTimebase
+    CMTimebaseCreateWithMasterClock: # TODO create wrapper
+        class: CMTimebase
+        name: "create"
+        visibility: protected
+    CMTimebaseCreateWithMasterTimebase: # TODO wrapper
+        class: CMTimebase
+        name: "create"
+        visibility: protected
+    CMTimebaseGetTimeWithTimeScale:
+        class: CMTimebase
+        name: "getTime"
+    CMTimebaseGetTimeAndRate:
+        exclude: true
+    CMTimebase(.*):   # OS_DISPATCH_SOURCE  Why isn't it being converted?
+        class: CMTimebase
+        name: "#{g[0]}"
+
+    # CMSync
+    CMSyncGetRelativeRateAndAnchorTime:
+        exclude: true
+    CMSyncMightDrift:
+        class: CMClockOrTimebase
+        name: "mightDrift"
+        static: true
+    CMSync(.*):
+        class: CMClockOrTimebase
+        name: "#{g[0]}"
+
+    # CMBlockBuffer
+    CMBlockBufferCreate.*: # TODO create wrapper functions
+        class: CMBlockBuffer
+        name: "create"
+        visibility: protected
+    CMBlockBuffer(ReplaceDataBytes): # create instance wrapper
+        class: CMBlockBuffer
+        name: "#{g[0]}"
+        static: true
+        visibility: protected
+        return_type: CMBlockBufferError
+    CMBlockBuffer(FillDataBytes): # create instance wrapper
+        class: CMBlockBuffer
+        name: "#{g[0]}"
+        static: true
+        visibility: protected
+        return_type: CMBlockBufferError
+    CMBlockBuffer(GetDataPointer): # TODO create wrapper
+        class: CMBlockBuffer
+        name: "#{g[0]}"
+        visibility: protected
+        return_type: CMBlockBufferError
+    CMBlockBuffer(Get.*): 
+        class: CMBlockBuffer
+        name: "#{g[0]}"
+    CMBlockBuffer(Is.*):
+        class: CMBlockBuffer
+        name: "#{g[0]}"
+    CMBlockBuffer(.*):
+        class: CMBlockBuffer
+        name: "#{g[0]}"
+        return_type: CMBlockBufferError
+        
+    # CMBufferQueue
+    CMBufferQueue(GetCallbacks.*):
+        class: CMBufferQueue
+        name: "#{g[0]}"
+    CMBufferQueueCreate: # TODO wrapper
+        class: CMBufferQueue
+        name: "create"
+        visibility: protected
+    CMBufferQueue(Enqueue|MarkEndOfData|Reset|RemoveTrigger|SetValidationCallback):
+        class: CMBufferQueue
+        name: "#{g[0]}"
+        return_type: CMBufferQueueError
+    CMBufferQueue(Reset)WithCallback:
+        class: CMBufferQueue
+        name: "#{g[0]}"
+        return_type: CMBufferQueueError
+    CMBufferQueue(InstallTrigger).*: # TODO wrapper
+        class: CMBufferQueue
+        name: "#{g[0]}"
+        visibility: protected
+        return_type: CMBufferQueueError
+    CMBufferQueue(CallForEachBuffer): # TODO callback class
+        class: CMBufferQueue
+        name: "#{g[0]}"
+        return_type: CMBufferQueueError
+    CMBufferQueue(.*):
+        class: CMBufferQueue
+        name: "#{g[0]}"
+
+    # CMFormatDescription
+    CMFormatDescriptionCreate: # TODO wrapper
+        class: CMFormatDescription
+        name: "create"
+        visibility: protected
+    CMFormatDescriptionEqual.*:
+        class: CMFormatDescription
+        name: "equals"
+    CMFormatDescription(.*):
+        class: CMFormatDescription
+        name: "#{g[0]}"
+
+    # CMAudioFormatDescription
+    CMAudioFormatDescriptionCreate: # TODO wrapper
+        class: CMAudioFormatDescription
+        name: "create"
+        visibility: protected
+    CMAudioFormatDescription(CreateSummary): # TODO wrapper
+        class: CMAudioFormatDescription
+        name: "#{g[0]}"
+        visibility: protected
+    CMAudioFormatDescriptionEqual:
+        class: CMAudioFormatDescription
+        name: "equals"
+    CMAudioFormatDescription(.*):
+        class: CMAudioFormatDescription
+        name: "#{g[0]}"
+
+    # CMVideoFormatDescription
+    CMVideoFormatDescriptionCreate.*: # TODO wrapper
+        class: CMVideoFormatDescription
+        name: "create"
+        visibility: protected
+    CMVideoFormatDescription(GetH264ParameterSetAtIndex): # TODO simplify
+        class: CMVideoFormatDescription
+        name: "#{g[0]}"
+    CMVideoFormatDescription(.*):
+        class: CMVideoFormatDescription
+        name: "#{g[0]}"
+
+    # CMMuxedFormatDescription
+    CMMuxedFormatDescriptionCreate: # TODO wrapper
+        class: CMMuxedFormatDescription
+        name: "create"
+        visibility: protected
+    
+    # CMTextFormatDescription
+    
+    # Maybe simplify get.* methods
+    CMTextFormatDescription(.*):
+        class: CMTextFormatDescription
+        name: "#{g[0]}"
+  
+    # CMTimeCodeFormatDescription
+    CMTimeCodeFormatDescriptionCreate: # TODO wrapper
+        class: CMTimeCodeFormatDescription
+        name: "create"
+        visibility: protected
+    CMTimeCodeFormatDescription(GetTimeCodeFlags):
+        class: CMTimeCodeFormatDescription
+        name: "#{g[0]}"
+        return_type: CMTimeCodeFlag
+    CMTimeCodeFormatDescription(.*):
+        class: CMTimeCodeFormatDescription
+        name: "#{g[0]}"
+
+    # CMMetadataFormatDescription
+    CMMetadataFormatDescriptionCreateWithKeys: # TODO wrapper
+        class: CMMetadataFormatDescription
+        name: "create"
+        visibility: protected
+    CMMetadataFormatDescription(.*):
+        class: CMMetadataFormatDescription
+        name: "#{g[0]}"
+   
+    # CMMemoryPool
+    CMMemoryPool(.*):
+        class: CMMemoryPool
+        name: "#{g[0]}"
+
+    # CMSampleBuffer
+    CMSampleBuffer(Create.*): # TODO wrapper
+        class: CMSampleBuffer
+        name: "#{g[0]}"
+        visibility: protected
+    CMAudioSampleBufferCreateWithPacketDescriptions: # TODO wrap
+        class: CMSampleBuffer
+        name: "createAudioSampleBuffer"
+        visibility: protected
+    CMSampleBuffer(CopySampleBuffer)ForRange: # TODO wrap
+        class: CMSampleBuffer
+        name: "#{g[0]}"
+        visibility: protected
+    CMSampleBuffer(SetDataBuffer)FromAudioBufferList: # TODO wrap
+        class: CMSampleBuffer
+        name: "#{g[0]}"
+        visibility: protected
+    CMSampleBuffer(GetAudioBufferList)WithRetainedBlockBuffer: # TODO wrap
+        class: CMSampleBuffer
+        name: "#{g[0]}"
+        visibility: protected
+    CMSampleBuffer(GetAudioStreamPacketDescriptions): # TODO wrap
+        class: CMSampleBuffer
+        name: "#{g[0]}"
+        visibility: protected
+    CMSampleBufferGetAudioStreamPacketDescriptionsPtr:
+        exclude: true
+    CMSampleBuffer(CopyPCMDataIntoAudioBufferList|SetDataReady|MakeDataReady|TrackDataReadiness|Invalidate):
+        class: CMSampleBuffer
+        name: "#{g[0]}"
+        return_type: CMSampleBufferError
+    CMSampleBuffer(SetInvalidateCallback): # TODO callback parameter?
+        class: CMSampleBuffer
+        name: "#{g[0]}"
+        return_type: CMSampleBufferError
+    CMSampleBuffer(GetSampleTimingInfoArray|GetOutputSampleTimingInfoArray|GetSampleTimingInfo|GetSampleSizeArray): # TODO wrap
+        class: CMSampleBuffer
+        name: "#{g[0]}"
+        visibility: protected
+        return_type: CMSampleBufferError
+    CMSampleBuffer(CallForEachSample): # TODO callback
+        class: CMSampleBuffer
+        name: "#{g[0]}"
+        return_type: CMSampleBufferError
+    CMSampleBuffer(.*):
+        class: CMSampleBuffer
+        name: "#{g[0]}"
+
+    # CMSimpleQueue
+    CMSimpleQueueCreate: # TODO wrap
+        class: CMSimpleQueue
+        name: "create"
+        visibility: protected
+    CMSimpleQueue(.*):
+        class: CMSimpleQueue
+        name: "#{g[0]}"
+
+    # CMTimeRange
+    CMTimeRangeMake.*:
+        class: CMTimeRange
+        name: "create"
+    CMTimeRangeGetUnion:
+        class: CMTimeRange
+        name: "union"
+    CMTimeRangeGetIntersection:
+        class: CMTimeRange
+        name: "intersection"
+    CMTimeRangeEqual:
+        class: CMTimeRange
+        name: "equals"
+    CMTimeRange(.*):
+        class: CMTimeRange
+        name: "#{g[0]}"
+
+    # CMTime
+    CMTimeMake.*:
+        class: CMTime
+        name: "create"
+ #   CMTime(Add|Subtract|Multiply|MultiplyByFloat64|MultiplyByRatio|Compare|Minimum|Maximum):
+ #       class: CMTime
+ #       name: "#{g[0]}"
+ #       static: true
+    CMTime(CopyDescription): # TODO create asString wrapper
+        class: CMTime
+        name: "#{g[0]}"
+        visibility: protected
+    CMTimeShow:
+        class: CMTime
+        name: "print"
+    CMTime(.*):
+        class: CMTime
+        name: "#{g[0]}"
 
     # Make sure we don't miss any functions if new ones are introduced in a later version
     (CM.*):
@@ -66,7 +477,110 @@ functions:
         class: CoreMedia
         name: "Function__#{g[0]}"
 
-values:   
+values: # TODO converts keys, notifications... Strings to NSStrings/CFStrings??
+    kCMTimebaseNotificationKey_(.*):
+        class: CMTimebase
+        name: "NotificationKey#{g[0]}"
+    kCMTimebaseNotification_(.*):
+        class: CMTimebase
+        name: "Notification#{g[0]}"
+    kCMTimebase(.*):
+        class: CMTimebase
+        name: "#{g[0]}"
+        
+    kCMTime(.*):
+        class: CMTime
+        name: "#{g[0]}"  
+        
+    kCMTimeRange(.*):
+        class: CMTimeRange
+        name: "#{g[0]}"
+        
+    kCMFormatDescriptionExtension_(.*):
+        class: CMFormatDescription
+        name: "Extension#{g[0]}"
+    kCMFormatDescriptionKey_(.*):
+        class: CMFormatDescription
+        name: "Key#{g[0]}"
+    kCMFormatDescriptionColorPrimaries_(.*):
+        class: CMFormatDescription
+        name: "ColorPrimaries#{g[0]}"
+    kCMFormatDescriptionVendor_(.*):
+        class: CMFormatDescription
+        name: "Vendor#{g[0]}"
+    kCMFormatDescriptionExtensionKey_(.*):
+        class: CMFormatDescription
+        name: "ExtensionKey#{g[0]}"
+        
+    kCMTextFormatDescriptionExtension_(.*):
+        class: CMTextFormatDescription
+        name: "Extension#{g[0]}"
+    kCMTextFormatDescriptionRect_(.*):
+        class: CMTextFormatDescription
+        name: "Rect#{g[0]}"
+    kCMTextFormatDescriptionStyle_(.*):
+        class: CMTextFormatDescription
+        name: "Style#{g[0]}"
+    kCMTextFormatDescriptionColor_(.*):
+        class: CMTextFormatDescription
+        name: "Color#{g[0]}"
+        
+    kCMMetadataFormatDescriptionKey_(.*):
+        class: CMMetadataFormatDescription
+        name: "Key#{g[0]}"     
+    kCMFormatDescription(.*):
+        class: CMMetadataFormatDescription
+        name: "#{g[0]}"
+        
+    kCM(TimingInfoInvalid):
+        class: CMSampleTimingInfo
+        name: "#{g[0]}"
+        
+    kCMSampleBufferNotification_(.*):
+        class: CMSampleBuffer
+        name: "Notification#{g[0]}"    
+    kCMSampleBufferConduitNotification_(.*):
+        class: CMSampleBuffer
+        name: "ConduitNotification#{g[0]}"
+    kCMSampleBufferConduitNotificationParameter_(.*):
+        class: CMSampleBuffer
+        name: "ConduitNotificationParameter#{g[0]}"
+    kCMSampleBufferConsumerNotification_(.*):
+        class: CMSampleBuffer
+        name: "ConsumerNotification#{g[0]}"
+    kCMSampleAttachmentKey_(.*):
+        class: CMSampleBuffer
+        name: "SampleAttachmentKey#{g[0]}"
+    kCMSampleBufferAttachmentKey_(.*):
+        class: CMSampleBuffer
+        name: "SampleBufferAttachmentKey#{g[0]}"
+    kCMSampleBufferDroppedFrameReason_(.*):
+        class: CMSampleBuffer
+        name: "DroppedFrameReason#{g[0]}"
+    kCMSampleBufferDroppedFrameReasonInfo_(.*):
+        class: CMSampleBuffer
+        name: "DroppedFrameReasonInfo#{g[0]}"
+    
+    kCMMemoryPoolOption_(.*):
+        class: CMMemoryPool
+        name: "Option#{g[0]}"
+    
+    kCMTextMarkupAttribute_(.*):
+        class: CMTextMarkup
+        name: "Attribute#{g[0]}"
+    kCMTextMarkupGenericFontName_(.*):
+        class: CMTextMarkup
+        name: "GenericFontName#{g[0]}"
+    kCMTextVerticalLayout_(.*):
+        class: CMTextMarkup
+        name: "VerticalLayout#{g[0]}"
+    kCMTextMarkupAlignmentType_(.*):
+        class: CMTextMarkup
+        name: "AlignmentType#{g[0]}"
+    kCMTextMarkupCharacterEdgeStyle_(.*):
+        class: CMTextMarkup
+        name: "CharacterEdgeStyle#{g[0]}"
+        
     # Make sure we don't miss any values if new ones are introduced in a later version
     (CM):
         class: CoreMedia
@@ -76,6 +590,19 @@ values:
         name: "Value__#{g[0]}"
 
 constants:
+    kCMTime(MaxTimescale):
+        class: CMTime
+        name: "#{g[0]}"
+    
+    kCMBlockBuffer(CustomBlockSourceVersion):
+        class: CMBlockBuffer
+        name: "#{g[0]}"
+
+    kCMPersistentTrackID_Invalid:
+        class: CoreMedia
+        name: "PersistentTrackIDInvalid"
+        
+        
     # Make sure we don't miss any constants if new ones are introduced in a later version
     (CM.*):
         class: CoreMedia

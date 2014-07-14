@@ -12,6 +12,9 @@ enums:
     EABluetoothAccessoryPickerErrorCode: { first: EABluetoothAccessoryPickerAlreadyConnected, marshaler: ValuedEnum.AsMachineSizedSIntMarshaler }
         
 classes:
+    ExternalAccessory:
+        annotations: ['@Marshaler(NSString.AsStringMarshaler.class)']
+
     EAAccessory: # DONE
         properties:
             'protocolStrings':

@@ -148,6 +148,9 @@ enums:
     NSXMLParserError: { suffix: Error }
 
 classes:
+    Foundation:
+        annotations: ['@Marshaler(NSString.AsStringMarshaler.class)']
+
     NSRange: {}
     NSDecimal: {}
     NSZone: {}

@@ -12,6 +12,9 @@ enums:
     GCControllerPlayerIndex: { first: GCControllerPlayerIndexUnset, prefix: GCControllerPlayerIndex }
         
 classes:
+    GameController:
+        annotations: ['@Marshaler(NSString.AsStringMarshaler.class)']
+
     GCController: # DONE
         methods:
             '+controllers':

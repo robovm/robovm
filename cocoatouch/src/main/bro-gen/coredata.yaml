@@ -21,6 +21,8 @@ enums:
     # Don't know what to do with this one
     Ignored: {first: NSFetchRequestExpressionType, exclude: true}
 classes:
+    CoreData:
+        annotations: ['@Marshaler(NSString.AsStringMarshaler.class)']
 
     NSAtomicStore: {}
     NSAtomicStoreCacheNode: {}

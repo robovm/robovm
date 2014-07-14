@@ -16,6 +16,8 @@ enums:
     CLRegionState: {}
 
 classes:
+    CoreLocation:
+        annotations: ['@Marshaler(NSString.AsStringMarshaler.class)']
 
     # Structs
     CLLocationCoordinate2D: {}

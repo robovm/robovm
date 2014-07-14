@@ -23,6 +23,8 @@ enums:
     GLKViewDrawableStencilFormat: {}
 
 classes:
+    GLKit:
+        annotations: ['@Marshaler(NSString.AsStringMarshaler.class)']
 
     # Opaque types
     _GLKMatrixStack:

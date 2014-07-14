@@ -16,6 +16,9 @@ enums:
     MCEncryptionPreference: {}
         
 classes:
+    MultipeerConnectivity:
+        annotations: ['@Marshaler(NSString.AsStringMarshaler.class)']
+
     MCAdvertiserAssistant: # DONE
         properties:
             'discoveryInfo':

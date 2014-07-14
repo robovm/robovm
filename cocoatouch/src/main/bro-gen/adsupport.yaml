@@ -10,6 +10,9 @@ typedefs: {}
 enums: {}
         
 classes:
+    AdSupport:
+        annotations: ['@Marshaler(NSString.AsStringMarshaler.class)']
+
     ASIdentifierManager:
         methods:
             '+sharedManager':

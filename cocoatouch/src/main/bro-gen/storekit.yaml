@@ -15,6 +15,9 @@ enums:
     SKErrorCode: {first: SKErrorUnknown}
 
 classes:
+    StoreKit:
+        annotations: ['@Marshaler(NSString.AsStringMarshaler.class)']
+
     SKDownload: {} # DONE
     SKMutablePayment: {} # DONE
     SKPayment: # DONE

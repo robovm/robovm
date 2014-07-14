@@ -16,6 +16,9 @@ categories:
     CALayerDelegate@NSObject: {protocol: true}
 
 classes:
+    CoreAnimation:
+        annotations: ['@Marshaler(NSString.AsStringMarshaler.class)']
+
     # Structs
     CATransform3D: {}
 

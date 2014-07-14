@@ -287,6 +287,9 @@ categories:
     UIResponderStandardEditActions@NSObject: {protocol: true}
 
 classes:
+    UIKit:
+        annotations: ['@Marshaler(NSString.AsStringMarshaler.class)']
+
     # Structs
     UIEdgeInsets: {}
     UIOffset: {}

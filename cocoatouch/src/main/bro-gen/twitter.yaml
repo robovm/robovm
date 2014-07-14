@@ -12,6 +12,9 @@ enums:
     TWTweetComposeViewControllerResult: {first: TWTweetComposeViewControllerResultCancelled, marshaler: ValuedEnum.AsMachineSizedSIntMarshaler}
         
 classes:
+    Twitter:
+        annotations: ['@Marshaler(NSString.AsStringMarshaler.class)']
+
     TWRequest:
         properties:
             'parameters':

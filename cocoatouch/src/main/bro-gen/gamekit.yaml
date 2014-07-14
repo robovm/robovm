@@ -46,6 +46,9 @@ enums:
     GKVoiceChatServiceError: { first: GKVoiceChatServiceInternalError, suffix: Error, marshaler: ValuedEnum.AsMachineSizedSIntMarshaler }
         
 classes:
+    GameKit:
+        annotations: ['@Marshaler(NSString.AsStringMarshaler.class)']
+
     GKAchievement: # DONE
         methods:
             '-reportAchievementWithCompletionHandler:':

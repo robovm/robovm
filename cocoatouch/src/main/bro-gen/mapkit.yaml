@@ -33,6 +33,8 @@ categories:
                 name: "create"
    
 classes:
+    MapKit:
+        annotations: ['@Marshaler(NSString.AsStringMarshaler.class)']
 
     # Structs:
     MKCoordinateSpan: {}

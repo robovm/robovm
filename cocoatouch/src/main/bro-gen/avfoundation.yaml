@@ -55,6 +55,9 @@ categories:
     AVTimeCoding: {}
     
 classes:
+    AVFoundation:
+        annotations: ['@Marshaler(NSString.AsStringMarshaler.class)']
+
     AVAsset: # DONE
         properties:
             'tracks':

@@ -33,7 +33,7 @@ import org.robovm.apple.accounts.*;
 
 /*<javadoc>*/
 /*</javadoc>*/
-/*<annotations>*/@Library("StoreKit")/*</annotations>*/
+/*<annotations>*/@Library("StoreKit") @Marshaler(NSString.AsStringMarshaler.class)/*</annotations>*/
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/StoreKit/*</name>*/ 
     extends /*<extends>*/Object/*</extends>*/ 
     /*<implements>*//*</implements>*/ {

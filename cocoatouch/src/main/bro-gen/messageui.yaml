@@ -14,6 +14,9 @@ enums:
     MessageComposeResult: {}
         
 classes:
+    MessageUI:
+        annotations: ['@Marshaler(NSString.AsStringMarshaler.class)']
+
     MFMailComposeViewController:
         methods:
             '-setMessageBody:isHTML:':

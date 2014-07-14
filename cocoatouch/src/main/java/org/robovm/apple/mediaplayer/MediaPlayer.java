@@ -33,7 +33,7 @@ import org.robovm.apple.coregraphics.*;
 
 /*<javadoc>*/
 /*</javadoc>*/
-/*<annotations>*/@Library("MediaPlayer")/*</annotations>*/
+/*<annotations>*/@Library("MediaPlayer") @Marshaler(NSString.AsStringMarshaler.class)/*</annotations>*/
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/MediaPlayer/*</name>*/ 
     extends /*<extends>*/Object/*</extends>*/ 
     /*<implements>*//*</implements>*/ {

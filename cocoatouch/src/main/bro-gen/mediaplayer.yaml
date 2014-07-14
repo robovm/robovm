@@ -39,6 +39,8 @@ categories:
                 name: dismissMoviePlayerViewController
 
 classes:
+    MediaPlayer:
+        annotations: ['@Marshaler(NSString.AsStringMarshaler.class)']
 
     MPChangePlaybackRateCommand: # DONE
         properties:

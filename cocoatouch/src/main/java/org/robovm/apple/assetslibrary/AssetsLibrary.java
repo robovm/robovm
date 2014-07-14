@@ -32,7 +32,7 @@ import org.robovm.apple.coregraphics.*;
 
 /*<javadoc>*/
 /*</javadoc>*/
-/*<annotations>*/@Library("AssetsLibrary")/*</annotations>*/
+/*<annotations>*/@Library("AssetsLibrary") @Marshaler(NSString.AsStringMarshaler.class)/*</annotations>*/
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/AssetsLibrary/*</name>*/ 
     extends /*<extends>*/Object/*</extends>*/ 
     /*<implements>*//*</implements>*/ {

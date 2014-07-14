@@ -11,6 +11,9 @@ enums:
     SSReadingListErrorCode: {first: SSReadingListErrorURLSchemeNotAllowed, prefix: "SSReadingListError", marshaler: ValuedEnum.AsMachineSizedSIntMarshaler}
         
 classes:
+    SafariServices:
+        annotations: ['@Marshaler(NSString.AsStringMarshaler.class)']
+
     SSReadingList: # DONE
         methods:
             '-addReadingListItemWithURL:title:previewText:error:':

@@ -9,6 +9,8 @@ fi
 [ "x$ARCH" == 'x' ] && ARCH=auto
 [ "x$OS" == 'x' ] && OS=auto
 [ "x$TARGET" == 'x' ] && TARGET=/tmp/robovm-vts.$ARCH
+EXTRA_ARGS=
+[ "x$DEBUG" == 'x1' ] && EXTRA_ARGS="$EXTRA_ARGS -debug"
 
 export PATH
 
@@ -57,6 +59,7 @@ if [ ! -x $TARGET/vts ]; then
     -verbose \
     -use-debug-libs \
     -dynamic-jni \
+    $EXTRA_ARGS \
     -cp $CP
 fi
 

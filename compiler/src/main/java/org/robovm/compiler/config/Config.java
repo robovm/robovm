@@ -146,7 +146,7 @@ public class Config {
     private File ccBinPath = null;
     
     private boolean clean = false;
-    private boolean debug = true;
+    private boolean debug = false;
     private boolean useDebugLibs = false;
     private boolean skipLinking = false;
     private boolean skipInstall = false;
@@ -619,7 +619,7 @@ public class Config {
         
         File osDir = new File(cacheDir, os.toString());
         File archDir = new File(osDir, arch.toString());
-        cacheDir = new File(archDir, "default");
+        cacheDir = new File(archDir, debug ? "debug" : "release");
         cacheDir.mkdirs();
 
         this.clazzes = new Clazzes(this, realBootclasspath, classpath);

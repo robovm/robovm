@@ -325,72 +325,79 @@ public class ClassCompiler {
     }
 
     private PassManager createPassManager() {
-        // Sets up the passes we would get with PassManagerBuilder (see PassManagerBuilder.cpp) at 
-        // O2 level except the TailCallEliminationPass which promotes all calls to tail calls which
-        // we don't want since it messes up stack traces.
-        
         PassManager passManager = new PassManager();
-        passManager.addAlwaysInlinerPass();
-        passManager.addPromoteMemoryToRegisterPass();
-
-        passManager.addTypeBasedAliasAnalysisPass();
-        passManager.addBasicAliasAnalysisPass();
-        passManager.addGlobalOptimizerPass();
-        passManager.addIPSCCPPass();
-        passManager.addDeadArgEliminationPass();
-        passManager.addInstructionCombiningPass();
-        passManager.addCFGSimplificationPass();
-        passManager.addPruneEHPass();
-        passManager.addFunctionInliningPass();
-        passManager.addFunctionAttrsPass();
-//        if (optLevel > 2) {
-//            passManager.addArgumentPromotionPass();
-//        }
-        passManager.addScalarReplAggregatesPass();
         
-        passManager.addEarlyCSEPass();
-        passManager.addSimplifyLibCallsPass();
-        passManager.addJumpThreadingPass();
-        passManager.addCorrelatedValuePropagationPass();
-        passManager.addCFGSimplificationPass();
-        passManager.addInstructionCombiningPass();
+        if (config.isDebug()) {
+            // Minimal passes. Just inline functions marked 'alwaysinline'.
+            passManager.addAlwaysInlinerPass();
+        } else {
+            // Sets up the passes we would get with PassManagerBuilder (see PassManagerBuilder.cpp) at 
+            // O2 level except the TailCallEliminationPass which promotes all calls to tail calls which
+            // we don't want since it messes up stack traces.
         
-        //passManager.addTailCallEliminationPass();
-        passManager.addCFGSimplificationPass();
-        passManager.addReassociatePass();
-        passManager.addCFGSimplificationPass();
-        passManager.addReassociatePass();
-        passManager.addLoopRotatePass();
-        passManager.addLICMPass();
-        passManager.addLoopUnswitchPass();
-        passManager.addInstructionCombiningPass();
-        passManager.addIndVarSimplifyPass();
-        passManager.addLoopIdiomPass();
-        passManager.addLoopDeletionPass();
+            passManager.addAlwaysInlinerPass();
+            passManager.addPromoteMemoryToRegisterPass();
+    
+            passManager.addTypeBasedAliasAnalysisPass();
+            passManager.addBasicAliasAnalysisPass();
+            passManager.addGlobalOptimizerPass();
+            passManager.addIPSCCPPass();
+            passManager.addDeadArgEliminationPass();
+            passManager.addInstructionCombiningPass();
+            passManager.addCFGSimplificationPass();
+            passManager.addPruneEHPass();
+            passManager.addFunctionInliningPass();
+            passManager.addFunctionAttrsPass();
+//            if (optLevel > 2) {
+//                passManager.addArgumentPromotionPass();
+//            }
+            passManager.addScalarReplAggregatesPass();
+            
+            passManager.addEarlyCSEPass();
+            passManager.addSimplifyLibCallsPass();
+            passManager.addJumpThreadingPass();
+            passManager.addCorrelatedValuePropagationPass();
+            passManager.addCFGSimplificationPass();
+            passManager.addInstructionCombiningPass();
+            
+            //passManager.addTailCallEliminationPass();
+            passManager.addCFGSimplificationPass();
+            passManager.addReassociatePass();
+            passManager.addCFGSimplificationPass();
+            passManager.addReassociatePass();
+            passManager.addLoopRotatePass();
+            passManager.addLICMPass();
+            passManager.addLoopUnswitchPass();
+            passManager.addInstructionCombiningPass();
+            passManager.addIndVarSimplifyPass();
+            passManager.addLoopIdiomPass();
+            passManager.addLoopDeletionPass();
+            
+            passManager.addLoopVectorizePass();
+            
+            passManager.addLoopUnrollPass();
+            
+            passManager.addGVNPass();
+            passManager.addMemCpyOptPass();
+            passManager.addSCCPPass();
+            
+            passManager.addInstructionCombiningPass();
+            passManager.addJumpThreadingPass();
+            passManager.addCorrelatedValuePropagationPass();
+            passManager.addDeadStoreEliminationPass();
+    
+            passManager.addSLPVectorizePass();
+            
+            passManager.addAggressiveDCEPass();
+            passManager.addCFGSimplificationPass();
+            passManager.addInstructionCombiningPass();
+    
+            passManager.addStripDeadPrototypesPass();
+    
+            passManager.addGlobalDCEPass();
+            passManager.addConstantMergePass();
+        }
         
-        passManager.addLoopVectorizePass();
-        
-        passManager.addLoopUnrollPass();
-        
-        passManager.addGVNPass();
-        passManager.addMemCpyOptPass();
-        passManager.addSCCPPass();
-        
-        passManager.addInstructionCombiningPass();
-        passManager.addJumpThreadingPass();
-        passManager.addCorrelatedValuePropagationPass();
-        passManager.addDeadStoreEliminationPass();
-
-        passManager.addSLPVectorizePass();
-        
-        passManager.addAggressiveDCEPass();
-        passManager.addCFGSimplificationPass();
-        passManager.addInstructionCombiningPass();
-
-        passManager.addStripDeadPrototypesPass();
-
-        passManager.addGlobalDCEPass();
-        passManager.addConstantMergePass();
         return passManager;
     }
     

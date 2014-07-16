@@ -40,6 +40,8 @@ public class JimpleLocal implements Local
     int fixedHashCode;
     boolean isHashCodeChosen;
 
+    int index = -1; // RoboVM note: Added in RoboVM.
+
     /** Constructs a JimpleLocal of the given name and type. */
     public JimpleLocal(String name, Type t)
     {
@@ -63,7 +65,10 @@ public class JimpleLocal implements Local
     /** Returns a clone of the current JimpleLocal. */
     public Object clone()
     {
-        return new JimpleLocal(name, type);
+        // RoboVM note: Changed to also clone index.
+        JimpleLocal l = new JimpleLocal(name, type);
+        l.index = this.index;
+        return l;
     }
 
     /** Returns the name of this object. */
@@ -77,6 +82,16 @@ public class JimpleLocal implements Local
     {
         this.name = name;
     }
+
+    // RoboVM note: Start changes.
+    public int getIndex() {
+        return index;
+    }
+
+    public void setIndex(int index) {
+        this.index = index;
+    }
+    // RoboVM note: End changes.
 
     /** Returns a hashCode consistent with object equality. */
     public int hashCode()

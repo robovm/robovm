@@ -85,6 +85,9 @@ public abstract class Body extends AbstractHost implements Serializable
     /** The chain of traps for this Body. */
     protected Chain<Trap> trapChain = new HashChain<Trap>();
 
+    // RoboVM note: Added
+    protected List<LocalVariable> localVariables = new ArrayList<>();
+
     /** The chain of units for this Body. */
     protected PatchingChain<Unit> unitChain = new PatchingChain<Unit>(new HashChain<Unit>());
 
@@ -228,6 +231,7 @@ public abstract class Body extends AbstractHost implements Serializable
         validateLocals();
         validateTraps();
         validateUnitBoxes();
+        validateLocalVariables(); // RoboVM note: Added
         if (Options.v().debug() || Options.v().validate()) {
             validateUses();
             validateValueBoxes();
@@ -295,6 +299,21 @@ public abstract class Body extends AbstractHost implements Serializable
         }
     }
 
+    // RoboVM note: Added
+    public void validateLocalVariables()
+    {
+        Iterator<LocalVariable> it = getLocalVariables().iterator();
+        while (it.hasNext())
+        {
+            LocalVariable lv = it.next();
+            if (!unitChain.contains(lv.getStartUnit()))
+                throw new RuntimeException("start not in chain"+" in "+getMethod());
+
+            if (lv.getEndUnit() != null && !unitChain.contains(lv.getEndUnit()))
+                throw new RuntimeException("end not in chain"+" in "+getMethod());
+        }
+    }
+
     /** Verifies that the UnitBoxes of this Body all point to a Unit contained within this body. */
     public void validateUnitBoxes()
     {
@@ -344,6 +363,11 @@ public abstract class Body extends AbstractHost implements Serializable
 
     /** Returns a backed view of the traps found in this Body. */
     public Chain<Trap> getTraps() {return trapChain;}
+
+    // RoboVM note: Added
+    public List<LocalVariable> getLocalVariables() {
+        return localVariables;
+    }
 
     /** Return LHS of the first identity stmt assigning from \@this. **/
     public Local getThisLocal()

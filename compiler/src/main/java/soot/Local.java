@@ -42,4 +42,16 @@ public interface Local extends Value, Numberable, Immediate
 
     /** Sets the type of the current variable. */
     public void setType(Type t);
+
+    /**
+     * Returns the index of the bytecode local variable this Local represents or
+     * -1 if it doesn't represent a local variable.
+     * RoboVM note: Added in RoboVM.
+     */
+    public int getIndex();
+    /**
+     * Sets the index of the bytecode local variable this Local represents.
+     * RoboVM note: Added in RoboVM.
+     */
+    public void setIndex(int index);
 }

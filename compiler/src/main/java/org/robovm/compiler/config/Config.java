@@ -150,6 +150,7 @@ public class Config {
     private boolean useDebugLibs = false;
     private boolean skipLinking = false;
     private boolean skipInstall = false;
+    private boolean dumpIntermediates = false;
     
     private File osArchDepLibDir;
     private File tmpDir;
@@ -211,6 +212,10 @@ public class Config {
 
     public boolean isUseDebugLibs() {
         return useDebugLibs;
+    }
+
+    public boolean isDumpIntermediates() {
+        return dumpIntermediates;
     }
     
     public boolean isSkipRuntimeLib() {
@@ -891,6 +896,11 @@ public class Config {
 
         public Builder useDebugLibs(boolean b) {
             config.useDebugLibs = b;
+            return this;
+        }
+        
+        public Builder dumpIntermediates(boolean b) {
+            config.dumpIntermediates = b;
             return this;
         }
         

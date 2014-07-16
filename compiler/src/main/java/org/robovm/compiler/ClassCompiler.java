@@ -42,6 +42,7 @@ import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
 import org.robovm.compiler.clazz.Clazz;
 import org.robovm.compiler.clazz.ClazzInfo;
@@ -266,15 +267,6 @@ public class ClassCompiler {
     public void compile(Clazz clazz) throws IOException {
         reset();        
         
-//        File llFile = config.getLlFile(clazz);
-//        File bcFile = config.getBcFile(clazz);
-//        File sFile = config.getSFile(clazz);
-        File oFile = config.getOFile(clazz);
-//        llFile.getParentFile().mkdirs();
-//        bcFile.getParentFile().mkdirs();
-//        sFile.getParentFile().mkdirs();
-        oFile.getParentFile().mkdirs();
-
         Arch arch = config.getArch();
         OS os = config.getOs();
 
@@ -283,7 +275,6 @@ public class ClassCompiler {
             output.reset();
             compile(clazz, output);
         } catch (Throwable t) {
-//            FileUtils.deleteQuietly(llFile);
             if (t instanceof IOException) {
                 throw (IOException) t;
             }
@@ -293,12 +284,26 @@ public class ClassCompiler {
             throw new RuntimeException(t);
         }
 
+        byte[] llData = output.toByteArray();
+        
+        if (config.isDumpIntermediates()) {
+            File llFile = config.getLlFile(clazz);
+            llFile.getParentFile().mkdirs();
+            FileUtils.writeByteArrayToFile(llFile, llData);
+        }
+        
         Context context = new Context();
-        Module module = Module.parseIR(context, output.toByteArray(), clazz.getClassName());
+        Module module = Module.parseIR(context, llData, clazz.getClassName());
         PassManager passManager = createPassManager();
         passManager.run(module);
         passManager.dispose();
 
+        if (config.isDumpIntermediates()) {
+            File bcFile = config.getBcFile(clazz);
+            bcFile.getParentFile().mkdirs();
+            module.writeBitcode(bcFile);
+        }
+        
         String triple = config.getTriple();
         Target target = Target.lookupTarget(triple);
         TargetMachine targetMachine = target.createTargetMachine(triple, "generic", null, null, null, null);
@@ -317,6 +322,14 @@ public class ClassCompiler {
         patchAsmWithFunctionSizes(clazz, new ByteArrayInputStream(asm), output);
         asm = output.toByteArray();
 
+        if (config.isDumpIntermediates()) {
+            File sFile = config.getSFile(clazz);
+            sFile.getParentFile().mkdirs();
+            FileUtils.writeByteArrayToFile(sFile, asm);
+        }
+        
+        File oFile = config.getOFile(clazz);
+        oFile.getParentFile().mkdirs();
         BufferedOutputStream oOut = new BufferedOutputStream(new FileOutputStream(oFile));
         targetMachine.assemble(asm, clazz.getClassName(), oOut);
         oOut.close();

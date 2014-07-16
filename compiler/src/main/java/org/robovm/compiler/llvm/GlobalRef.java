@@ -82,6 +82,6 @@ public class GlobalRef extends Constant {
 
     @Override
     public String toString() {
-        return "@" + name;
+        return "@\"" + name + "\"";
     }
 }

@@ -53,9 +53,9 @@ public class FunctionDeclaration {
         StringBuilder sb = new StringBuilder();
         sb.append("declare ");
         sb.append(returnType.toString());
-        sb.append(" @");
+        sb.append(" @\"");
         sb.append(name);
-        sb.append('(');
+        sb.append("\"(");
         for (int i = 0; i < parameterTypes.length; i++) {
             if (type.isVarargs() || i > 0) {
                 sb.append(", ");

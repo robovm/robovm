@@ -28,6 +28,10 @@ import org.robovm.rt.bro.annotation.*;
 import org.robovm.rt.bro.ptr.*;
 import org.robovm.apple.foundation.*;
 import org.robovm.apple.corefoundation.*;
+import org.robovm.apple.dispatch.*;
+import org.robovm.apple.coreaudio.*;
+import org.robovm.apple.coreanimation.*;
+import org.robovm.apple.coregraphics.*;
 /*</imports>*/
 
 /*<javadoc>*/
@@ -45,37 +49,50 @@ import org.robovm.apple.corefoundation.*;
     /*</constructors>*/
     /*<properties>*//*</properties>*/
     /*<members>*//*</members>*/
+    public NSDictionary<?, ?> getAttachments(CMAttachmentMode attachmentMode) {
+    	return copyDictionaryOfAttachments(null, this, attachmentMode);
+    }
+    
+    public CFType getAttachment(String key) {
+        return getAttachment(key, null);
+    }
+    
+    public CMAttachmentMode getAttachmentMode(String key) {
+        IntPtr mode = new IntPtr();
+        getAttachment(key, mode);
+        return CMAttachmentMode.valueOf(mode.get());
+    }
     /*<methods>*/
     /**
      * @since Available in iOS 4.0  and later.
      */
     @Bridge(symbol="CMSetAttachment", optional=true)
-    public native void add(CFString key, CFType value, CMAttachmentMode attachmentMode);
+    public native void setAttachment(String key, CFType value, CMAttachmentMode attachmentMode);
     /**
      * @since Available in iOS 4.0  and later.
      */
     @Bridge(symbol="CMGetAttachment", optional=true)
-    public native CFType get(CFString key, IntPtr attachmentModeOut);
+    protected native CFType getAttachment(String key, IntPtr attachmentModeOut);
     /**
      * @since Available in iOS 4.0  and later.
      */
     @Bridge(symbol="CMRemoveAttachment", optional=true)
-    public native void remove(CFString key);
+    public native void removeAttachment(String key);
     /**
      * @since Available in iOS 4.0  and later.
      */
     @Bridge(symbol="CMRemoveAllAttachments", optional=true)
-    public native void removeAll();
+    public native void removeAllAttachments();
     /**
      * @since Available in iOS 4.0  and later.
      */
     @Bridge(symbol="CMCopyDictionaryOfAttachments", optional=true)
-    public static native CFDictionary copyDictionaryOfAttachments(CFAllocator allocator, CMAttachmentBearer target, CMAttachmentMode attachmentMode);
+    protected static native NSDictionary<?, ?> copyDictionaryOfAttachments(CFAllocator allocator, CMAttachmentBearer target, CMAttachmentMode attachmentMode);
     /**
      * @since Available in iOS 4.0  and later.
      */
     @Bridge(symbol="CMSetAttachments", optional=true)
-    public native void setAttachments(CFDictionary theAttachments, CMAttachmentMode attachmentMode);
+    public native void setAttachment(NSDictionary<?, ?> theAttachments, CMAttachmentMode attachmentMode);
     /**
      * @since Available in iOS 4.0  and later.
      */

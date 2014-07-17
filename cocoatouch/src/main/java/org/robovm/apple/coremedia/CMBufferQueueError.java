@@ -37,11 +37,20 @@ import org.robovm.apple.coregraphics.*;
 /*<javadoc>*/
 
 /*</javadoc>*/
-/*<annotations>*/@Marshaler(ValuedEnum.AsMachineSizedUIntMarshaler.class)/*</annotations>*/
-public enum /*<name>*/CMAttachmentMode/*</name>*/ implements ValuedEnum {
+/*<annotations>*//*</annotations>*/
+public enum /*<name>*/CMBufferQueueError/*</name>*/ implements ValuedEnum {
+	No(0L),
     /*<values>*/
-    ShouldNotPropagate(0L),
-    ShouldPropagate(1L);
+    AllocationFailed(-12760L),
+    RequiredParameterMissing(-12761L),
+    InvalidCMBufferCallbacksStruct(-12762L),
+    EnqueueAfterEndOfData(-12763L),
+    QueueIsFull(-12764L),
+    BadTriggerDuration(-12765L),
+    CannotModifyQueueFromTriggerCallback(-12766L),
+    InvalidTriggerCondition(-12767L),
+    InvalidTriggerToken(-12768L),
+    InvalidBuffer(-12769L);
     /*</values>*/
 
     /*<bind>*/
@@ -51,15 +60,15 @@ public enum /*<name>*/CMAttachmentMode/*</name>*/ implements ValuedEnum {
 
     private final long n;
 
-    private /*<name>*/CMAttachmentMode/*</name>*/(long n) { this.n = n; }
+    private /*<name>*/CMBufferQueueError/*</name>*/(long n) { this.n = n; }
     public long value() { return n; }
-    public static /*<name>*/CMAttachmentMode/*</name>*/ valueOf(long n) {
-        for (/*<name>*/CMAttachmentMode/*</name>*/ v : values()) {
+    public static /*<name>*/CMBufferQueueError/*</name>*/ valueOf(long n) {
+        for (/*<name>*/CMBufferQueueError/*</name>*/ v : values()) {
             if (v.n == n) {
                 return v;
             }
         }
         throw new IllegalArgumentException("No constant with value " + n + " found in " 
-            + /*<name>*/CMAttachmentMode/*</name>*/.class.getName());
+            + /*<name>*/CMBufferQueueError/*</name>*/.class.getName());
     }
 }

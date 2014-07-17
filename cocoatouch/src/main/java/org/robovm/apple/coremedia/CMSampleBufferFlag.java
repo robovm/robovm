@@ -37,11 +37,10 @@ import org.robovm.apple.coregraphics.*;
 /*<javadoc>*/
 
 /*</javadoc>*/
-/*<annotations>*/@Marshaler(ValuedEnum.AsMachineSizedUIntMarshaler.class)/*</annotations>*/
-public enum /*<name>*/CMAttachmentMode/*</name>*/ implements ValuedEnum {
+/*<annotations>*/@Marshaler(Bits.AsMachineSizedIntMarshaler.class)/*</annotations>*/
+public final class /*<name>*/CMSampleBufferFlag/*</name>*/ extends Bits</*<name>*/CMSampleBufferFlag/*</name>*/> {
     /*<values>*/
-    ShouldNotPropagate(0L),
-    ShouldPropagate(1L);
+    public static final CMSampleBufferFlag AudioBufferList_Assure16ByteAlignment = new CMSampleBufferFlag(1L);
     /*</values>*/
 
     /*<bind>*/
@@ -49,17 +48,17 @@ public enum /*<name>*/CMAttachmentMode/*</name>*/ implements ValuedEnum {
     /*<constants>*//*</constants>*/
     /*<methods>*//*</methods>*/
 
-    private final long n;
+    private static final /*<name>*/CMSampleBufferFlag/*</name>*/[] values = _values(/*<name>*/CMSampleBufferFlag/*</name>*/.class);
 
-    private /*<name>*/CMAttachmentMode/*</name>*/(long n) { this.n = n; }
-    public long value() { return n; }
-    public static /*<name>*/CMAttachmentMode/*</name>*/ valueOf(long n) {
-        for (/*<name>*/CMAttachmentMode/*</name>*/ v : values()) {
-            if (v.n == n) {
-                return v;
-            }
-        }
-        throw new IllegalArgumentException("No constant with value " + n + " found in " 
-            + /*<name>*/CMAttachmentMode/*</name>*/.class.getName());
+    public /*<name>*/CMSampleBufferFlag/*</name>*/(long value) { super(value); }
+    private /*<name>*/CMSampleBufferFlag/*</name>*/(long value, long mask) { super(value, mask); }
+    protected /*<name>*/CMSampleBufferFlag/*</name>*/ wrap(long value, long mask) {
+        return new /*<name>*/CMSampleBufferFlag/*</name>*/(value, mask);
+    }
+    protected /*<name>*/CMSampleBufferFlag/*</name>*/[] _values() {
+        return values;
+    }
+    public static /*<name>*/CMSampleBufferFlag/*</name>*/[] values() {
+        return values.clone();
     }
 }

@@ -37,29 +37,28 @@ import org.robovm.apple.coregraphics.*;
 /*<javadoc>*/
 
 /*</javadoc>*/
-/*<annotations>*/@Marshaler(ValuedEnum.AsMachineSizedUIntMarshaler.class)/*</annotations>*/
-public enum /*<name>*/CMAttachmentMode/*</name>*/ implements ValuedEnum {
-    /*<values>*/
-    ShouldNotPropagate(0L),
-    ShouldPropagate(1L);
-    /*</values>*/
+/*<annotations>*//*</annotations>*/
+/*<visibility>*/public/*</visibility>*/ class /*<name>*/CMTimeMapping/*</name>*/ 
+    extends /*<extends>*/Struct<CMTimeMapping>/*</extends>*/ 
+    /*<implements>*//*</implements>*/ {
 
+    /*<ptr>*/public static class CMTimeMappingPtr extends Ptr<CMTimeMapping, CMTimeMappingPtr> {}/*</ptr>*/
     /*<bind>*/
     /*</bind>*/
     /*<constants>*//*</constants>*/
-    /*<methods>*//*</methods>*/
-
-    private final long n;
-
-    private /*<name>*/CMAttachmentMode/*</name>*/(long n) { this.n = n; }
-    public long value() { return n; }
-    public static /*<name>*/CMAttachmentMode/*</name>*/ valueOf(long n) {
-        for (/*<name>*/CMAttachmentMode/*</name>*/ v : values()) {
-            if (v.n == n) {
-                return v;
-            }
-        }
-        throw new IllegalArgumentException("No constant with value " + n + " found in " 
-            + /*<name>*/CMAttachmentMode/*</name>*/.class.getName());
+    /*<constructors>*/
+    public CMTimeMapping() {}
+    public CMTimeMapping(CMTimeRange source, CMTimeRange target) {
+        this.source(source);
+        this.target(target);
     }
+    /*</constructors>*/
+    /*<properties>*//*</properties>*/
+    /*<members>*/
+    @StructMember(0) public native @ByVal CMTimeRange source();
+    @StructMember(0) public native CMTimeMapping source(@ByVal CMTimeRange source);
+    @StructMember(1) public native @ByVal CMTimeRange target();
+    @StructMember(1) public native CMTimeMapping target(@ByVal CMTimeRange target);
+    /*</members>*/
+    /*<methods>*//*</methods>*/
 }

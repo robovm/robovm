@@ -38,10 +38,10 @@ import org.robovm.apple.coregraphics.*;
 
 /*</javadoc>*/
 /*<annotations>*/@Marshaler(ValuedEnum.AsMachineSizedUIntMarshaler.class)/*</annotations>*/
-public enum /*<name>*/CMAttachmentMode/*</name>*/ implements ValuedEnum {
+public enum /*<name>*/CMTextFormatType/*</name>*/ implements ValuedEnum {
     /*<values>*/
-    ShouldNotPropagate(0L),
-    ShouldPropagate(1L);
+    QTText(1952807028L),
+    _3GText(1954034535L);
     /*</values>*/
 
     /*<bind>*/
@@ -51,15 +51,15 @@ public enum /*<name>*/CMAttachmentMode/*</name>*/ implements ValuedEnum {
 
     private final long n;
 
-    private /*<name>*/CMAttachmentMode/*</name>*/(long n) { this.n = n; }
+    private /*<name>*/CMTextFormatType/*</name>*/(long n) { this.n = n; }
     public long value() { return n; }
-    public static /*<name>*/CMAttachmentMode/*</name>*/ valueOf(long n) {
-        for (/*<name>*/CMAttachmentMode/*</name>*/ v : values()) {
+    public static /*<name>*/CMTextFormatType/*</name>*/ valueOf(long n) {
+        for (/*<name>*/CMTextFormatType/*</name>*/ v : values()) {
             if (v.n == n) {
                 return v;
             }
         }
         throw new IllegalArgumentException("No constant with value " + n + " found in " 
-            + /*<name>*/CMAttachmentMode/*</name>*/.class.getName());
+            + /*<name>*/CMTextFormatType/*</name>*/.class.getName());
     }
 }

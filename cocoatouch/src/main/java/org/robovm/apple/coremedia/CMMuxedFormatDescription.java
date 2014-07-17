@@ -35,31 +35,28 @@ import org.robovm.apple.coregraphics.*;
 /*</imports>*/
 
 /*<javadoc>*/
-
 /*</javadoc>*/
-/*<annotations>*/@Marshaler(ValuedEnum.AsMachineSizedUIntMarshaler.class)/*</annotations>*/
-public enum /*<name>*/CMAttachmentMode/*</name>*/ implements ValuedEnum {
-    /*<values>*/
-    ShouldNotPropagate(0L),
-    ShouldPropagate(1L);
-    /*</values>*/
+/*<annotations>*/@Library("CoreMedia")/*</annotations>*/
+/*<visibility>*/public/*</visibility>*/ class /*<name>*/CMMuxedFormatDescription/*</name>*/ 
+    extends /*<extends>*/CMFormatDescription/*</extends>*/ 
+    /*<implements>*//*</implements>*/ {
 
-    /*<bind>*/
-    /*</bind>*/
+    /*<ptr>*/public static class CMMuxedFormatDescriptionPtr extends Ptr<CMMuxedFormatDescription, CMMuxedFormatDescriptionPtr> {}/*</ptr>*/
+    /*<bind>*/static { Bro.bind(CMMuxedFormatDescription.class); }/*</bind>*/
     /*<constants>*//*</constants>*/
-    /*<methods>*//*</methods>*/
-
-    private final long n;
-
-    private /*<name>*/CMAttachmentMode/*</name>*/(long n) { this.n = n; }
-    public long value() { return n; }
-    public static /*<name>*/CMAttachmentMode/*</name>*/ valueOf(long n) {
-        for (/*<name>*/CMAttachmentMode/*</name>*/ v : values()) {
-            if (v.n == n) {
-                return v;
-            }
-        }
-        throw new IllegalArgumentException("No constant with value " + n + " found in " 
-            + /*<name>*/CMAttachmentMode/*</name>*/.class.getName());
+    /*<constructors>*//*</constructors>*/
+    /*<properties>*//*</properties>*/
+    /*<members>*//*</members>*/
+    public static CMMuxedFormatDescription create(CMMuxedStreamType muxType, NSDictionary<?, ?> extensions) {
+        CMFormatDescriptionPtr ptr = new CMFormatDescriptionPtr();
+        create(null, muxType, extensions, ptr);
+        return (CMMuxedFormatDescription)ptr.get();
     }
+    /*<methods>*/
+    /**
+     * @since Available in iOS 4.0 and later.
+     */
+    @Bridge(symbol="CMMuxedFormatDescriptionCreate", optional=true)
+    protected static native int create(CFAllocator allocator, CMMuxedStreamType muxType, NSDictionary<?, ?> extensions, CMFormatDescription.CMFormatDescriptionPtr outDesc);
+    /*</methods>*/
 }

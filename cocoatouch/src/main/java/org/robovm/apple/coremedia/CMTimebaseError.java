@@ -37,11 +37,15 @@ import org.robovm.apple.coregraphics.*;
 /*<javadoc>*/
 
 /*</javadoc>*/
-/*<annotations>*/@Marshaler(ValuedEnum.AsMachineSizedUIntMarshaler.class)/*</annotations>*/
-public enum /*<name>*/CMAttachmentMode/*</name>*/ implements ValuedEnum {
+/*<annotations>*//*</annotations>*/
+public enum /*<name>*/CMTimebaseError/*</name>*/ implements ValuedEnum {
+	No(0L),
     /*<values>*/
-    ShouldNotPropagate(0L),
-    ShouldPropagate(1L);
+    MissingRequiredParameter(-12748L),
+    InvalidParameter(-12749L),
+    AllocationFailed(-12750L),
+    TimerIntervalTooShort(-12751L),
+    ReadOnly(-12757L);
     /*</values>*/
 
     /*<bind>*/
@@ -51,15 +55,15 @@ public enum /*<name>*/CMAttachmentMode/*</name>*/ implements ValuedEnum {
 
     private final long n;
 
-    private /*<name>*/CMAttachmentMode/*</name>*/(long n) { this.n = n; }
+    private /*<name>*/CMTimebaseError/*</name>*/(long n) { this.n = n; }
     public long value() { return n; }
-    public static /*<name>*/CMAttachmentMode/*</name>*/ valueOf(long n) {
-        for (/*<name>*/CMAttachmentMode/*</name>*/ v : values()) {
+    public static /*<name>*/CMTimebaseError/*</name>*/ valueOf(long n) {
+        for (/*<name>*/CMTimebaseError/*</name>*/ v : values()) {
             if (v.n == n) {
                 return v;
             }
         }
         throw new IllegalArgumentException("No constant with value " + n + " found in " 
-            + /*<name>*/CMAttachmentMode/*</name>*/.class.getName());
+            + /*<name>*/CMTimebaseError/*</name>*/.class.getName());
     }
 }

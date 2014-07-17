@@ -37,11 +37,25 @@ import org.robovm.apple.coregraphics.*;
 /*<javadoc>*/
 
 /*</javadoc>*/
-/*<annotations>*/@Marshaler(ValuedEnum.AsMachineSizedUIntMarshaler.class)/*</annotations>*/
-public enum /*<name>*/CMAttachmentMode/*</name>*/ implements ValuedEnum {
+/*<annotations>*//*</annotations>*/
+public enum /*<name>*/CMSampleBufferError/*</name>*/ implements ValuedEnum {
+	No(0L),
     /*<values>*/
-    ShouldNotPropagate(0L),
-    ShouldPropagate(1L);
+    AllocationFailed(-12730L),
+    RequiredParameterMissing(-12731L),
+    AlreadyHasDataBuffer(-12732L),
+    BufferNotReady(-12733L),
+    SampleIndexOutOfRange(-12734L),
+    BufferHasNoSampleSizes(-12735L),
+    BufferHasNoSampleTimingInfo(-12736L),
+    ArrayTooSmall(-12737L),
+    InvalidEntryCount(-12738L),
+    CannotSubdivide(-12739L),
+    SampleTimingInfoInvalid(-12740L),
+    InvalidMediaTypeForOperation(-12741L),
+    InvalidSampleData(-12742L),
+    InvalidMediaFormat(-12743L),
+    Invalidated(-12744L);
     /*</values>*/
 
     /*<bind>*/
@@ -51,15 +65,15 @@ public enum /*<name>*/CMAttachmentMode/*</name>*/ implements ValuedEnum {
 
     private final long n;
 
-    private /*<name>*/CMAttachmentMode/*</name>*/(long n) { this.n = n; }
+    private /*<name>*/CMSampleBufferError/*</name>*/(long n) { this.n = n; }
     public long value() { return n; }
-    public static /*<name>*/CMAttachmentMode/*</name>*/ valueOf(long n) {
-        for (/*<name>*/CMAttachmentMode/*</name>*/ v : values()) {
+    public static /*<name>*/CMSampleBufferError/*</name>*/ valueOf(long n) {
+        for (/*<name>*/CMSampleBufferError/*</name>*/ v : values()) {
             if (v.n == n) {
                 return v;
             }
         }
         throw new IllegalArgumentException("No constant with value " + n + " found in " 
-            + /*<name>*/CMAttachmentMode/*</name>*/.class.getName());
+            + /*<name>*/CMSampleBufferError/*</name>*/.class.getName());
     }
 }

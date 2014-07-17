@@ -37,11 +37,12 @@ import org.robovm.apple.coregraphics.*;
 /*<javadoc>*/
 
 /*</javadoc>*/
-/*<annotations>*/@Marshaler(ValuedEnum.AsMachineSizedUIntMarshaler.class)/*</annotations>*/
-public enum /*<name>*/CMAttachmentMode/*</name>*/ implements ValuedEnum {
+/*<annotations>*/@Marshaler(Bits.AsMachineSizedIntMarshaler.class)/*</annotations>*/
+public final class /*<name>*/CMTimeCodeFlag/*</name>*/ extends Bits</*<name>*/CMTimeCodeFlag/*</name>*/> {
     /*<values>*/
-    ShouldNotPropagate(0L),
-    ShouldPropagate(1L);
+    public static final CMTimeCodeFlag DropFrame = new CMTimeCodeFlag(1L);
+    public static final CMTimeCodeFlag _24HourMax = new CMTimeCodeFlag(2L);
+    public static final CMTimeCodeFlag NegTimesOK = new CMTimeCodeFlag(4L);
     /*</values>*/
 
     /*<bind>*/
@@ -49,17 +50,17 @@ public enum /*<name>*/CMAttachmentMode/*</name>*/ implements ValuedEnum {
     /*<constants>*//*</constants>*/
     /*<methods>*//*</methods>*/
 
-    private final long n;
+    private static final /*<name>*/CMTimeCodeFlag/*</name>*/[] values = _values(/*<name>*/CMTimeCodeFlag/*</name>*/.class);
 
-    private /*<name>*/CMAttachmentMode/*</name>*/(long n) { this.n = n; }
-    public long value() { return n; }
-    public static /*<name>*/CMAttachmentMode/*</name>*/ valueOf(long n) {
-        for (/*<name>*/CMAttachmentMode/*</name>*/ v : values()) {
-            if (v.n == n) {
-                return v;
-            }
-        }
-        throw new IllegalArgumentException("No constant with value " + n + " found in " 
-            + /*<name>*/CMAttachmentMode/*</name>*/.class.getName());
+    public /*<name>*/CMTimeCodeFlag/*</name>*/(long value) { super(value); }
+    private /*<name>*/CMTimeCodeFlag/*</name>*/(long value, long mask) { super(value, mask); }
+    protected /*<name>*/CMTimeCodeFlag/*</name>*/ wrap(long value, long mask) {
+        return new /*<name>*/CMTimeCodeFlag/*</name>*/(value, mask);
+    }
+    protected /*<name>*/CMTimeCodeFlag/*</name>*/[] _values() {
+        return values;
+    }
+    public static /*<name>*/CMTimeCodeFlag/*</name>*/[] values() {
+        return values.clone();
     }
 }

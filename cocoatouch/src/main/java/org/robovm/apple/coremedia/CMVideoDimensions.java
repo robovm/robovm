@@ -37,29 +37,28 @@ import org.robovm.apple.coregraphics.*;
 /*<javadoc>*/
 
 /*</javadoc>*/
-/*<annotations>*/@Marshaler(ValuedEnum.AsMachineSizedUIntMarshaler.class)/*</annotations>*/
-public enum /*<name>*/CMAttachmentMode/*</name>*/ implements ValuedEnum {
-    /*<values>*/
-    ShouldNotPropagate(0L),
-    ShouldPropagate(1L);
-    /*</values>*/
+/*<annotations>*//*</annotations>*/
+/*<visibility>*/public/*</visibility>*/ class /*<name>*/CMVideoDimensions/*</name>*/ 
+    extends /*<extends>*/Struct<CMVideoDimensions>/*</extends>*/ 
+    /*<implements>*//*</implements>*/ {
 
+    /*<ptr>*/public static class CMVideoDimensionsPtr extends Ptr<CMVideoDimensions, CMVideoDimensionsPtr> {}/*</ptr>*/
     /*<bind>*/
     /*</bind>*/
     /*<constants>*//*</constants>*/
-    /*<methods>*//*</methods>*/
-
-    private final long n;
-
-    private /*<name>*/CMAttachmentMode/*</name>*/(long n) { this.n = n; }
-    public long value() { return n; }
-    public static /*<name>*/CMAttachmentMode/*</name>*/ valueOf(long n) {
-        for (/*<name>*/CMAttachmentMode/*</name>*/ v : values()) {
-            if (v.n == n) {
-                return v;
-            }
-        }
-        throw new IllegalArgumentException("No constant with value " + n + " found in " 
-            + /*<name>*/CMAttachmentMode/*</name>*/.class.getName());
+    /*<constructors>*/
+    public CMVideoDimensions() {}
+    public CMVideoDimensions(int width, int height) {
+        this.width(width);
+        this.height(height);
     }
+    /*</constructors>*/
+    /*<properties>*//*</properties>*/
+    /*<members>*/
+    @StructMember(0) public native int width();
+    @StructMember(0) public native CMVideoDimensions width(int width);
+    @StructMember(1) public native int height();
+    @StructMember(1) public native CMVideoDimensions height(int height);
+    /*</members>*/
+    /*<methods>*//*</methods>*/
 }

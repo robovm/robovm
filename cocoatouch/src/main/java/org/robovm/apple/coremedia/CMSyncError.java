@@ -37,11 +37,13 @@ import org.robovm.apple.coregraphics.*;
 /*<javadoc>*/
 
 /*</javadoc>*/
-/*<annotations>*/@Marshaler(ValuedEnum.AsMachineSizedUIntMarshaler.class)/*</annotations>*/
-public enum /*<name>*/CMAttachmentMode/*</name>*/ implements ValuedEnum {
+/*<annotations>*//*</annotations>*/
+public enum /*<name>*/CMSyncError/*</name>*/ implements ValuedEnum {
     /*<values>*/
-    ShouldNotPropagate(0L),
-    ShouldPropagate(1L);
+    MissingRequiredParameter(-12752L),
+    InvalidParameter(-12753L),
+    AllocationFailed(-12754L),
+    RateMustBeNonZero(-12755L);
     /*</values>*/
 
     /*<bind>*/
@@ -51,15 +53,15 @@ public enum /*<name>*/CMAttachmentMode/*</name>*/ implements ValuedEnum {
 
     private final long n;
 
-    private /*<name>*/CMAttachmentMode/*</name>*/(long n) { this.n = n; }
+    private /*<name>*/CMSyncError/*</name>*/(long n) { this.n = n; }
     public long value() { return n; }
-    public static /*<name>*/CMAttachmentMode/*</name>*/ valueOf(long n) {
-        for (/*<name>*/CMAttachmentMode/*</name>*/ v : values()) {
+    public static /*<name>*/CMSyncError/*</name>*/ valueOf(long n) {
+        for (/*<name>*/CMSyncError/*</name>*/ v : values()) {
             if (v.n == n) {
                 return v;
             }
         }
         throw new IllegalArgumentException("No constant with value " + n + " found in " 
-            + /*<name>*/CMAttachmentMode/*</name>*/.class.getName());
+            + /*<name>*/CMSyncError/*</name>*/.class.getName());
     }
 }

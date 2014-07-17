@@ -37,11 +37,15 @@ import org.robovm.apple.coregraphics.*;
 /*<javadoc>*/
 
 /*</javadoc>*/
-/*<annotations>*/@Marshaler(ValuedEnum.AsMachineSizedUIntMarshaler.class)/*</annotations>*/
-public enum /*<name>*/CMAttachmentMode/*</name>*/ implements ValuedEnum {
+/*<annotations>*/@Marshaler(Bits.AsMachineSizedIntMarshaler.class)/*</annotations>*/
+public final class /*<name>*/CMTimeFlag/*</name>*/ extends Bits</*<name>*/CMTimeFlag/*</name>*/> {
     /*<values>*/
-    ShouldNotPropagate(0L),
-    ShouldPropagate(1L);
+    public static final CMTimeFlag Valid = new CMTimeFlag(1L);
+    public static final CMTimeFlag HasBeenRounded = new CMTimeFlag(2L);
+    public static final CMTimeFlag PositiveInfinity = new CMTimeFlag(4L);
+    public static final CMTimeFlag NegativeInfinity = new CMTimeFlag(8L);
+    public static final CMTimeFlag Indefinite = new CMTimeFlag(16L);
+    public static final CMTimeFlag ImpliedValueFlagsMask = new CMTimeFlag(28L);
     /*</values>*/
 
     /*<bind>*/
@@ -49,17 +53,17 @@ public enum /*<name>*/CMAttachmentMode/*</name>*/ implements ValuedEnum {
     /*<constants>*//*</constants>*/
     /*<methods>*//*</methods>*/
 
-    private final long n;
+    private static final /*<name>*/CMTimeFlag/*</name>*/[] values = _values(/*<name>*/CMTimeFlag/*</name>*/.class);
 
-    private /*<name>*/CMAttachmentMode/*</name>*/(long n) { this.n = n; }
-    public long value() { return n; }
-    public static /*<name>*/CMAttachmentMode/*</name>*/ valueOf(long n) {
-        for (/*<name>*/CMAttachmentMode/*</name>*/ v : values()) {
-            if (v.n == n) {
-                return v;
-            }
-        }
-        throw new IllegalArgumentException("No constant with value " + n + " found in " 
-            + /*<name>*/CMAttachmentMode/*</name>*/.class.getName());
+    public /*<name>*/CMTimeFlag/*</name>*/(long value) { super(value); }
+    private /*<name>*/CMTimeFlag/*</name>*/(long value, long mask) { super(value, mask); }
+    protected /*<name>*/CMTimeFlag/*</name>*/ wrap(long value, long mask) {
+        return new /*<name>*/CMTimeFlag/*</name>*/(value, mask);
+    }
+    protected /*<name>*/CMTimeFlag/*</name>*/[] _values() {
+        return values;
+    }
+    public static /*<name>*/CMTimeFlag/*</name>*/[] values() {
+        return values.clone();
     }
 }

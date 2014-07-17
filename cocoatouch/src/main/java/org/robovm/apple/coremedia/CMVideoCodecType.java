@@ -38,10 +38,36 @@ import org.robovm.apple.coregraphics.*;
 
 /*</javadoc>*/
 /*<annotations>*/@Marshaler(ValuedEnum.AsMachineSizedUIntMarshaler.class)/*</annotations>*/
-public enum /*<name>*/CMAttachmentMode/*</name>*/ implements ValuedEnum {
+public enum /*<name>*/CMVideoCodecType/*</name>*/ implements ValuedEnum {
     /*<values>*/
-    ShouldNotPropagate(0L),
-    ShouldPropagate(1L);
+    _422YpCbCr8(846624121L),
+    _Animation(1919706400L),
+    _Cinepak(1668704612L),
+    _JPEG(1785750887L),
+    _JPEG_OpenDML(1684890161L),
+    _SorensonVideo(1398165809L),
+    _SorensonVideo3(1398165811L),
+    _H263(1748121139L),
+    _H264(1635148593L),
+    _MPEG4Video(1836070006L),
+    _MPEG2Video(1836069494L),
+    _MPEG1Video(1836069238L),
+    _DVCNTSC(1685480224L),
+    _DVCPAL(1685480304L),
+    _DVCProPAL(1685483632L),
+    _DVCPro50NTSC(1685468526L),
+    _DVCPro50PAL(1685468528L),
+    _DVCPROHD720p60(1685481584L),
+    _DVCPROHD720p50(1685481585L),
+    _DVCPROHD1080i60(1685481526L),
+    _DVCPROHD1080i50(1685481525L),
+    _DVCPROHD1080p30(1685481523L),
+    _DVCPROHD1080p25(1685481522L),
+    _AppleProRes4444(1634743400L),
+    _AppleProRes422HQ(1634755432L),
+    _AppleProRes422(1634755438L),
+    _AppleProRes422LT(1634755443L),
+    _AppleProRes422Proxy(1634755439L);
     /*</values>*/
 
     /*<bind>*/
@@ -51,15 +77,15 @@ public enum /*<name>*/CMAttachmentMode/*</name>*/ implements ValuedEnum {
 
     private final long n;
 
-    private /*<name>*/CMAttachmentMode/*</name>*/(long n) { this.n = n; }
+    private /*<name>*/CMVideoCodecType/*</name>*/(long n) { this.n = n; }
     public long value() { return n; }
-    public static /*<name>*/CMAttachmentMode/*</name>*/ valueOf(long n) {
-        for (/*<name>*/CMAttachmentMode/*</name>*/ v : values()) {
+    public static /*<name>*/CMVideoCodecType/*</name>*/ valueOf(long n) {
+        for (/*<name>*/CMVideoCodecType/*</name>*/ v : values()) {
             if (v.n == n) {
                 return v;
             }
         }
         throw new IllegalArgumentException("No constant with value " + n + " found in " 
-            + /*<name>*/CMAttachmentMode/*</name>*/.class.getName());
+            + /*<name>*/CMVideoCodecType/*</name>*/.class.getName());
     }
 }

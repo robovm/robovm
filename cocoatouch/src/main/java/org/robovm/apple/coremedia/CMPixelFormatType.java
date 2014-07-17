@@ -38,10 +38,24 @@ import org.robovm.apple.coregraphics.*;
 
 /*</javadoc>*/
 /*<annotations>*/@Marshaler(ValuedEnum.AsMachineSizedUIntMarshaler.class)/*</annotations>*/
-public enum /*<name>*/CMAttachmentMode/*</name>*/ implements ValuedEnum {
+public enum /*<name>*/CMPixelFormatType/*</name>*/ implements ValuedEnum {
     /*<values>*/
-    ShouldNotPropagate(0L),
-    ShouldPropagate(1L);
+    _32ARGB(32L),
+    _32BGRA(1111970369L),
+    _24RGB(24L),
+    _16BE555(16L),
+    _16BE565(1110783541L),
+    _16LE555(1278555445L),
+    _16LE565(1278555701L),
+    _16LE5551(892679473L),
+    _422YpCbCr8(846624121L),
+    _422YpCbCr8_yuvs(2037741171L),
+    _444YpCbCr8(1983066168L),
+    _4444YpCbCrA8(1983131704L),
+    _422YpCbCr16(1983000886L),
+    _422YpCbCr10(1983000880L),
+    _444YpCbCr10(1983131952L),
+    _8IndexedGray_WhiteIsZero(40L);
     /*</values>*/
 
     /*<bind>*/
@@ -51,15 +65,15 @@ public enum /*<name>*/CMAttachmentMode/*</name>*/ implements ValuedEnum {
 
     private final long n;
 
-    private /*<name>*/CMAttachmentMode/*</name>*/(long n) { this.n = n; }
+    private /*<name>*/CMPixelFormatType/*</name>*/(long n) { this.n = n; }
     public long value() { return n; }
-    public static /*<name>*/CMAttachmentMode/*</name>*/ valueOf(long n) {
-        for (/*<name>*/CMAttachmentMode/*</name>*/ v : values()) {
+    public static /*<name>*/CMPixelFormatType/*</name>*/ valueOf(long n) {
+        for (/*<name>*/CMPixelFormatType/*</name>*/ v : values()) {
             if (v.n == n) {
                 return v;
             }
         }
         throw new IllegalArgumentException("No constant with value " + n + " found in " 
-            + /*<name>*/CMAttachmentMode/*</name>*/.class.getName());
+            + /*<name>*/CMPixelFormatType/*</name>*/.class.getName());
     }
 }

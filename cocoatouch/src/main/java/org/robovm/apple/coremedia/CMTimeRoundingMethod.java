@@ -38,10 +38,15 @@ import org.robovm.apple.coregraphics.*;
 
 /*</javadoc>*/
 /*<annotations>*/@Marshaler(ValuedEnum.AsMachineSizedUIntMarshaler.class)/*</annotations>*/
-public enum /*<name>*/CMAttachmentMode/*</name>*/ implements ValuedEnum {
+public enum /*<name>*/CMTimeRoundingMethod/*</name>*/ implements ValuedEnum {
     /*<values>*/
-    ShouldNotPropagate(0L),
-    ShouldPropagate(1L);
+    RoundHalfAwayFromZero(1L),
+    RoundTowardZero(2L),
+    RoundAwayFromZero(3L),
+    QuickTime(4L),
+    RoundTowardPositiveInfinity(5L),
+    RoundTowardNegativeInfinity(6L),
+    Default(1L);
     /*</values>*/
 
     /*<bind>*/
@@ -51,15 +56,15 @@ public enum /*<name>*/CMAttachmentMode/*</name>*/ implements ValuedEnum {
 
     private final long n;
 
-    private /*<name>*/CMAttachmentMode/*</name>*/(long n) { this.n = n; }
+    private /*<name>*/CMTimeRoundingMethod/*</name>*/(long n) { this.n = n; }
     public long value() { return n; }
-    public static /*<name>*/CMAttachmentMode/*</name>*/ valueOf(long n) {
-        for (/*<name>*/CMAttachmentMode/*</name>*/ v : values()) {
+    public static /*<name>*/CMTimeRoundingMethod/*</name>*/ valueOf(long n) {
+        for (/*<name>*/CMTimeRoundingMethod/*</name>*/ v : values()) {
             if (v.n == n) {
                 return v;
             }
         }
         throw new IllegalArgumentException("No constant with value " + n + " found in " 
-            + /*<name>*/CMAttachmentMode/*</name>*/.class.getName());
+            + /*<name>*/CMTimeRoundingMethod/*</name>*/.class.getName());
     }
 }

@@ -74,6 +74,10 @@ public class ModuleBuilder {
         symbols.add(f.getName());
     }
     
+    public List<Function> getFunctions() {
+        return functions;
+    }
+
     public boolean hasSymbol(String name) {
         return symbols.contains(name);
     }

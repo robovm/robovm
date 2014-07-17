@@ -1295,6 +1295,18 @@ public class ClassFile {
 	  }
       }
 
+      // RoboVM note: Start change. Keep track of the start and end instructions for the scope of local vars.
+      LocalVariableTable_attribute la = ca.findLocalVariableTable();
+      if (la != null) {
+          for (local_variable_table_entry entry : la.local_variable_table) {
+              entry.start_inst = bc.locateInst(entry.start_pc);
+              if (entry.start_pc + entry.length < ca.code_length) {
+                  entry.end_inst = bc.locateInst(entry.start_pc + entry.length);
+              }
+          }
+      }
+      // RoboVM note: End change.
+
       return head;
    }
 

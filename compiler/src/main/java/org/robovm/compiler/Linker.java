@@ -240,7 +240,7 @@ public class Linker {
                             .add(new ArrayConstantBuilder(I32).add(interfaceIds).build())
                             .build()));
 
-                if (!ci.isInterface() && !ci.isFinal() && typeInfo.children.isEmpty()) {
+                if (!config.isDebug() && !ci.isInterface() && !ci.isFinal() && typeInfo.children.isEmpty()) {
                     // Non-final class with 0 children. Override every lookup function with one
                     // which doesn't do any lookup.
                     for (MethodInfo mi : ci.getMethods()) {

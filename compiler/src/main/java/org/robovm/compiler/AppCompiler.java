@@ -293,6 +293,8 @@ public class AppCompiler {
                     builder.debug(true);
                 } else if ("-use-debug-libs".equals(args[i])) {
                     builder.useDebugLibs(true);
+                } else if ("-dump-intermediates".equals(args[i])) {
+                    builder.dumpIntermediates(true);
                 } else if ("-dynamic-jni".equals(args[i])) {
                     builder.useDynamicJni(true);
                 } else if ("-skiprt".equals(args[i])) {

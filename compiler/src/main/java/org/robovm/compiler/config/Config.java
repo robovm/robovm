@@ -146,10 +146,11 @@ public class Config {
     private File ccBinPath = null;
     
     private boolean clean = false;
-    private boolean debug = true;
+    private boolean debug = false;
     private boolean useDebugLibs = false;
     private boolean skipLinking = false;
     private boolean skipInstall = false;
+    private boolean dumpIntermediates = false;
     
     private File osArchDepLibDir;
     private File tmpDir;
@@ -211,6 +212,10 @@ public class Config {
 
     public boolean isUseDebugLibs() {
         return useDebugLibs;
+    }
+
+    public boolean isDumpIntermediates() {
+        return dumpIntermediates;
     }
     
     public boolean isSkipRuntimeLib() {
@@ -619,7 +624,7 @@ public class Config {
         
         File osDir = new File(cacheDir, os.toString());
         File archDir = new File(osDir, arch.toString());
-        cacheDir = new File(archDir, "default");
+        cacheDir = new File(archDir, debug ? "debug" : "release");
         cacheDir.mkdirs();
 
         this.clazzes = new Clazzes(this, realBootclasspath, classpath);
@@ -891,6 +896,11 @@ public class Config {
 
         public Builder useDebugLibs(boolean b) {
             config.useDebugLibs = b;
+            return this;
+        }
+        
+        public Builder dumpIntermediates(boolean b) {
+            config.dumpIntermediates = b;
             return this;
         }
         

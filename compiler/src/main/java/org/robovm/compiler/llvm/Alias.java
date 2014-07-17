@@ -50,9 +50,9 @@ public class Alias {
     
     public String getDefinition() {
         StringBuilder sb = new StringBuilder();
-        sb.append('@');
+        sb.append("@\"");
         sb.append(name);
-        sb.append(" = alias ");
+        sb.append("\" = alias ");
         if (linkage != null) {
             sb.append(linkage);
             sb.append(' ');

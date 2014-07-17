@@ -199,6 +199,7 @@ public class MethodCompiler extends AbstractMethodCompiler {
 
     private Function function;
     private Map<Unit, List<Trap>> trapsAt;
+    private Map<SameLocalKey, List<Local>> sameLocals;
     private Value env;
     
     private Variable dims;
@@ -239,6 +240,24 @@ public class MethodCompiler extends AbstractMethodCompiler {
         PackManager.v().getPack("jop").apply(body);
         PackManager.v().getPack("jap").apply(body);
 
+        // Soot potentially splits local variables into multiple Locals. This
+        // creates a mapping which we use to reuse the same alloca slot for
+        // Locals which occupy the same local variable slot index and are of
+        // the same type. We use the getSameLocal(Local) method to map a Local
+        // to the Local we want to use.
+        sameLocals = new HashMap<>();
+        for (Local local : body.getLocals()) {
+            if (local.getIndex() != -1) {
+                SameLocalKey key = new SameLocalKey(local.getIndex(), local.getType());
+                List<Local> l = sameLocals.get(key);
+                if (l == null) {
+                    l = new ArrayList<>();
+                    sameLocals.put(key, l);
+                }
+                l.add(local);
+            }
+        }
+
         PatchingChain<Unit> units = body.getUnits();
         Map<Unit, List<Unit>> branchTargets = getBranchTargets(body);
         Map<Unit, Integer> trapHandlers = getTrapHandlers(body);
@@ -251,7 +270,7 @@ public class MethodCompiler extends AbstractMethodCompiler {
             if (unit instanceof DefinitionStmt) {
                 DefinitionStmt stmt = (DefinitionStmt) unit;
                 if (stmt.getLeftOp() instanceof Local) {
-                    Local local = (Local) stmt.getLeftOp();
+                    Local local = getSameLocal((Local) stmt.getLeftOp());
                     if (!locals.contains(local)) {
                         Type type = getLocalType(local.getType());
                         function.add(new Alloca(function.newVariable(local.getName(), type), type));
@@ -419,6 +438,14 @@ public class MethodCompiler extends AbstractMethodCompiler {
         return function;
     }
 
+    private Local getSameLocal(Local local) {
+        if (local.getIndex() == -1) {
+            // Not a Local for a local variable but rather a stack Local.
+            return local;
+        }
+        return sameLocals.get(new SameLocalKey(local.getIndex(), local.getType())).get(0);
+    }
+
     private void compileObjectInit() {
         call(REGISTER_FINALIZABLE, env, function.getParameterRef(1));
         function.add(new Ret());
@@ -522,7 +549,7 @@ public class MethodCompiler extends AbstractMethodCompiler {
     private Value immediate(Unit unit, Immediate v) {
         // v is either a soot.Local or a soot.jimple.Constant
         if (v instanceof soot.Local) {
-            Local local = (Local) v;
+            Local local = getSameLocal((Local) v);
             Type type = getLocalType(v.getType());
             VariableRef var = new VariableRef(local.getName(), new PointerType(type));
             Variable tmp = function.newVariable(type);
@@ -1112,7 +1139,7 @@ public class MethodCompiler extends AbstractMethodCompiler {
         soot.Value leftOp = stmt.getLeftOp();
 
         if (leftOp instanceof Local) {
-            Local local = (Local) leftOp;
+            Local local = getSameLocal((Local) leftOp);
             VariableRef v = new VariableRef(local.getName(), new PointerType(getLocalType(leftOp.getType())));
             function.add(new Store(result, v, !sootMethod.getActiveBody().getTraps().isEmpty())).attach(stmt);
         } else {
@@ -1254,5 +1281,51 @@ public class MethodCompiler extends AbstractMethodCompiler {
         Value op = immediate(stmt, (Immediate) stmt.getOp());
         checkNull(stmt, op);
         call(stmt, MONITOREXIT, env, op);
+    }
+
+    /**
+     * Key wrapping a local variable slot index and type. Two {@link SameLocalKey}
+     * instances with the same index and type have the same hash code and equal
+     * each other.
+     */
+    private static class SameLocalKey {
+        private final int index;
+        private final soot.Type type;
+        public SameLocalKey(int index, soot.Type type) {
+            this.index = index;
+            this.type = type;
+        }
+        @Override
+        public int hashCode() {
+            final int prime = 31;
+            int result = 1;
+            result = prime * result + index;
+            result = prime * result + ((type == null) ? 0 : type.hashCode());
+            return result;
+        }
+        @Override
+        public boolean equals(Object obj) {
+            if (this == obj) {
+                return true;
+            }
+            if (obj == null) {
+                return false;
+            }
+            if (getClass() != obj.getClass()) {
+                return false;
+            }
+            SameLocalKey other = (SameLocalKey) obj;
+            if (index != other.index) {
+                return false;
+            }
+            if (type == null) {
+                if (other.type != null) {
+                    return false;
+                }
+            } else if (!type.equals(other.type)) {
+                return false;
+            }
+            return true;
+        }
     }
 }

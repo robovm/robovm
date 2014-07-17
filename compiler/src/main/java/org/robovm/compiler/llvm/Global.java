@@ -89,9 +89,9 @@ public class Global {
     
     public String getDefinition() {
         StringBuilder sb = new StringBuilder();
-        sb.append('@');
+        sb.append("@\"");
         sb.append(name);
-        sb.append(" = ");
+        sb.append("\" = ");
         if (linkage != null) {
             sb.append(linkage);
             sb.append(' ');
@@ -116,6 +116,6 @@ public class Global {
     
     @Override
     public String toString() {
-        return "@" + name;
+        return "@\"" + name + "\"";
     }
 }

@@ -864,6 +864,7 @@ swtch:
         else {
             Local l = Jimple.v().newLocal(name,
                 UnknownType.v());
+            l.setIndex(index); // RoboVM note: Added
 
             listBody.getLocals().add(l);
             /*if (debug_type != null){

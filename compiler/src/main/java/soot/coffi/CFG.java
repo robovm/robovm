@@ -349,6 +349,7 @@ public class CFG {
 	    adjustExceptionTable();
       	    adjustLineNumberTable();
 	    adjustBranchTargets();
+	    adjustLocalVariableTable();
 	}
 
 	// we should prune the code and exception table here.
@@ -820,6 +821,28 @@ public class CFG {
 	    }
 	}
     }
+
+    // RoboVM note: Added to adjust local variable tables after JSR elimination
+    private void adjustLocalVariableTable()
+    {
+        Code_attribute ca = method.locate_code_attribute();
+        LocalVariableTable_attribute la = ca.findLocalVariableTable();
+        if (la == null)
+            return;
+
+        for (local_variable_table_entry element0 : la.local_variable_table) {
+            Instruction oldinst = element0.start_inst;
+            Instruction newinst = replacedInsns.get(oldinst);
+            if (newinst != null)
+                element0.start_inst = newinst;
+            if (element0.end_inst != null) {
+                oldinst = element0.end_inst;
+                newinst = replacedInsns.get(oldinst);
+                if (newinst != null)
+                    element0.end_inst = newinst;
+            }
+        }
+    }
     
    /** Reconstructs the instruction stream by appending the Instruction
     * lists associated with each basic block.
@@ -900,6 +923,7 @@ public class CFG {
 		    }
                         
                     Local local = Jimple.v().newLocal(name, UnknownType.v());
+                    local.setIndex(0); // RoboVM note: Added
 
                     listBody.getLocals().add(local);
 
@@ -929,6 +953,7 @@ public class CFG {
 		    }
 
                     Local local = Jimple.v().newLocal(name, UnknownType.v());
+                    local.setIndex(currentLocalIndex); // RoboVM note: Added
                     initialLocals.add(local);
                     listBody.getLocals().add(local);
 
@@ -1491,6 +1516,26 @@ public class CFG {
 		}
 	    }
 	}
+
+	// RoboVM note: Start change. Create LocalVariables for local_variable_table_entrys.
+	Code_attribute ca = method.locate_code_attribute();
+        LocalVariableTable_attribute la = ca.findLocalVariableTable();
+        if (la != null) {
+            for (local_variable_table_entry entry : la.local_variable_table) {
+                if (!(constant_pool[entry.name_index] instanceof CONSTANT_Utf8_info)) {
+                    throw new RuntimeException( "What? A local variable table name_index isn't a UTF8 entry?");
+                }
+                String name = ((CONSTANT_Utf8_info) (constant_pool[entry.name_index])).convert();
+                Stmt startStmt = instructionToFirstStmt.get(entry.start_inst);
+                Stmt endStmt = null;
+                if (entry.end_inst != null) {
+                    endStmt = instructionToFirstStmt.get(entry.end_inst);
+                }
+                soot.LocalVariable lv = new LocalVariable(name, entry.index, startStmt, endStmt);
+                listBody.getLocalVariables().add(lv);
+            }
+        }
+	// RoboVM note: End change.
     }
 
     private Type byteCodeTypeOf(Type type)

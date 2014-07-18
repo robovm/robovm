@@ -32,13 +32,14 @@ import org.robovm.apple.dispatch.*;
 import org.robovm.apple.coreaudio.*;
 import org.robovm.apple.coreanimation.*;
 import org.robovm.apple.coregraphics.*;
+import org.robovm.apple.corevideo.*;
 /*</imports>*/
 
 /*<javadoc>*/
 /*</javadoc>*/
 /*<annotations>*//*</annotations>*/
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/CMBufferQueueTriggerToken/*</name>*/ 
-    extends /*<extends>*/CFType/*</extends>*/ 
+    extends /*<extends>*/NativeObject/*</extends>*/ 
     /*<implements>*//*</implements>*/ {
 
     /*<ptr>*/public static class CMBufferQueueTriggerTokenPtr extends Ptr<CMBufferQueueTriggerToken, CMBufferQueueTriggerTokenPtr> {}/*</ptr>*/

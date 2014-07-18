@@ -32,23 +32,24 @@ import org.robovm.apple.dispatch.*;
 import org.robovm.apple.coreaudio.*;
 import org.robovm.apple.coreanimation.*;
 import org.robovm.apple.coregraphics.*;
+import org.robovm.apple.corevideo.*;
 /*</imports>*/
 
 /*<javadoc>*/
 
 /*</javadoc>*/
 /*<annotations>*//*</annotations>*/
-/*<visibility>*/public/*</visibility>*/ class /*<name>*/CMBufferCallbacks/*</name>*/ 
-    extends /*<extends>*/Struct<CMBufferCallbacks>/*</extends>*/ 
+/*<visibility>*//*</visibility>*/ class /*<name>*/CMBufferCallbacksStruct/*</name>*/ 
+    extends /*<extends>*/Struct<CMBufferCallbacksStruct>/*</extends>*/ 
     /*<implements>*//*</implements>*/ {
 
-    /*<ptr>*/public static class CMBufferCallbacksPtr extends Ptr<CMBufferCallbacks, CMBufferCallbacksPtr> {}/*</ptr>*/
+    /*<ptr>*/public static class CMBufferCallbacksStructPtr extends Ptr<CMBufferCallbacksStruct, CMBufferCallbacksStructPtr> {}/*</ptr>*/
     /*<bind>*/
     /*</bind>*/
     /*<constants>*//*</constants>*/
     /*<constructors>*/
-    public CMBufferCallbacks() {}
-    public CMBufferCallbacks(int version, @Pointer long refcon, FunctionPtr getDecodeTimeStamp, FunctionPtr getPresentationTimeStamp, FunctionPtr getDuration, FunctionPtr isDataReady, FunctionPtr compare, String dataBecameReadyNotification, FunctionPtr getSize) {
+    public CMBufferCallbacksStruct() {}
+    public CMBufferCallbacksStruct(int version, @Pointer long refcon, FunctionPtr getDecodeTimeStamp, FunctionPtr getPresentationTimeStamp, FunctionPtr getDuration, FunctionPtr isDataReady, FunctionPtr compare, String dataBecameReadyNotification, FunctionPtr getSize) {
         this.version(version);
         this.refcon(refcon);
         this.getDecodeTimeStamp(getDecodeTimeStamp);
@@ -63,23 +64,23 @@ import org.robovm.apple.coregraphics.*;
     /*<properties>*//*</properties>*/
     /*<members>*/
     @StructMember(0) public native int version();
-    @StructMember(0) public native CMBufferCallbacks version(int version);
+    @StructMember(0) public native CMBufferCallbacksStruct version(int version);
     @StructMember(1) public native @Pointer long refcon();
-    @StructMember(1) public native CMBufferCallbacks refcon(@Pointer long refcon);
+    @StructMember(1) public native CMBufferCallbacksStruct refcon(@Pointer long refcon);
     @StructMember(2) public native FunctionPtr getDecodeTimeStamp();
-    @StructMember(2) public native CMBufferCallbacks getDecodeTimeStamp(FunctionPtr getDecodeTimeStamp);
+    @StructMember(2) public native CMBufferCallbacksStruct getDecodeTimeStamp(FunctionPtr getDecodeTimeStamp);
     @StructMember(3) public native FunctionPtr getPresentationTimeStamp();
-    @StructMember(3) public native CMBufferCallbacks getPresentationTimeStamp(FunctionPtr getPresentationTimeStamp);
+    @StructMember(3) public native CMBufferCallbacksStruct getPresentationTimeStamp(FunctionPtr getPresentationTimeStamp);
     @StructMember(4) public native FunctionPtr getDuration();
-    @StructMember(4) public native CMBufferCallbacks getDuration(FunctionPtr getDuration);
+    @StructMember(4) public native CMBufferCallbacksStruct getDuration(FunctionPtr getDuration);
     @StructMember(5) public native FunctionPtr isDataReady();
-    @StructMember(5) public native CMBufferCallbacks isDataReady(FunctionPtr isDataReady);
+    @StructMember(5) public native CMBufferCallbacksStruct isDataReady(FunctionPtr isDataReady);
     @StructMember(6) public native FunctionPtr compare();
-    @StructMember(6) public native CMBufferCallbacks compare(FunctionPtr compare);
+    @StructMember(6) public native CMBufferCallbacksStruct compare(FunctionPtr compare);
     @StructMember(7) public native String dataBecameReadyNotification();
-    @StructMember(7) public native CMBufferCallbacks dataBecameReadyNotification(String dataBecameReadyNotification);
+    @StructMember(7) public native CMBufferCallbacksStruct dataBecameReadyNotification(String dataBecameReadyNotification);
     @StructMember(8) public native FunctionPtr getSize();
-    @StructMember(8) public native CMBufferCallbacks getSize(FunctionPtr getSize);
+    @StructMember(8) public native CMBufferCallbacksStruct getSize(FunctionPtr getSize);
     /*</members>*/
     /*<methods>*//*</methods>*/
 }

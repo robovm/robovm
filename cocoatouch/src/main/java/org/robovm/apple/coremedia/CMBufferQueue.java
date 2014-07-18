@@ -32,6 +32,7 @@ import org.robovm.apple.dispatch.*;
 import org.robovm.apple.coreaudio.*;
 import org.robovm.apple.coreanimation.*;
 import org.robovm.apple.coregraphics.*;
+import org.robovm.apple.corevideo.*;
 /*</imports>*/
 
 /*<javadoc>*/
@@ -43,18 +44,6 @@ import org.robovm.apple.coregraphics.*;
 
     /*<ptr>*/public static class CMBufferQueuePtr extends Ptr<CMBufferQueue, CMBufferQueuePtr> {}/*</ptr>*/
     
-    public interface GetTimeCallback {
-        CMTime getTime(CMBuffer buffer);
-    }
-    public interface GetBooleanCallback {
-        boolean getBoolean(CMBuffer buffer);
-    }
-    public interface CompareCallback {
-        CFComparisonResult compare(CMBuffer buffer1, CMBuffer buffer2);
-    }
-    public interface GetSizeCallback {
-        int getSize(CMBuffer buffer);
-    }
     public interface ResetCallback {
         void reset(CMBuffer buffer);
     }
@@ -70,12 +59,7 @@ import org.robovm.apple.coregraphics.*;
     
     private static java.util.concurrent.atomic.AtomicLong refconId = new java.util.concurrent.atomic.AtomicLong();
     private static java.util.concurrent.atomic.AtomicLong triggerId = new java.util.concurrent.atomic.AtomicLong();
-    private static Map<Long, GetTimeCallback> getDecodeTimeStampCallbacks = new HashMap<Long, GetTimeCallback>();
-    private static Map<Long, GetTimeCallback> getPresentationTimeStampCallbacks = new HashMap<Long, GetTimeCallback>();
-    private static Map<Long, GetTimeCallback> getDurationCallbacks = new HashMap<Long, GetTimeCallback>();
-    private static Map<Long, GetBooleanCallback> isDataReadyCallbacks = new HashMap<Long, GetBooleanCallback>();
-    private static Map<Long, CompareCallback> compareCallbacks = new HashMap<Long, CompareCallback>();
-    private static Map<Long, GetSizeCallback> getSizeCallbacks = new HashMap<Long, GetSizeCallback>();
+    private static Map<Long, CMBufferQueueCallbacks> bufferQueueCallbacks = new HashMap<Long, CMBufferQueueCallbacks>();
     private static Map<Long, ResetCallback> resetCallbacks = new HashMap<Long, ResetCallback>();
     private static Map<Long, TriggerCallback> triggerCallbacks = new HashMap<Long, TriggerCallback>();
     private static Map<Long, ValidationCallback> validationCallbacks = new HashMap<Long, ValidationCallback>();
@@ -116,49 +100,49 @@ import org.robovm.apple.coregraphics.*;
     /*<members>*//*</members>*/
     @Callback
     private static CMTime cbGetDecodeTimeStamp(CMBuffer buffer, @Pointer long refcon) {
-        GetTimeCallback callback = null;
-        synchronized (getDecodeTimeStampCallbacks) {
-            callback = getDecodeTimeStampCallbacks.get(refcon);
+        CMBufferQueueCallbacks callback = null;
+        synchronized (bufferQueueCallbacks) {
+            callback = bufferQueueCallbacks.get(refcon);
         }
-        return callback.getTime(buffer);
+        return callback.getDecodeTimeStamp(buffer);
     }
     @Callback
     private static CMTime cbGetPresentationTimeStamp(CMBuffer buffer, @Pointer long refcon) {
-        GetTimeCallback callback = null;
-        synchronized (getPresentationTimeStampCallbacks) {
-            callback = getPresentationTimeStampCallbacks.get(refcon);
+        CMBufferQueueCallbacks callback = null;
+        synchronized (bufferQueueCallbacks) {
+            callback = bufferQueueCallbacks.get(refcon);
         }
-        return callback.getTime(buffer);
+        return callback.getPresentationTimeStamp(buffer);
     }
     @Callback
     private static CMTime cbGetDuration(CMBuffer buffer, @Pointer long refcon) {
-        GetTimeCallback callback = null;
-        synchronized (getDurationCallbacks) {
-            callback = getDurationCallbacks.get(refcon);
+        CMBufferQueueCallbacks callback = null;
+        synchronized (bufferQueueCallbacks) {
+            callback = bufferQueueCallbacks.get(refcon);
         }
-        return callback.getTime(buffer);
+        return callback.getDuration(buffer);
     }
     @Callback
     private static boolean cbIsDataReady(CMBuffer buffer, @Pointer long refcon) {
-        GetBooleanCallback callback = null;
-        synchronized (isDataReadyCallbacks) {
-            callback = isDataReadyCallbacks.get(refcon);
+        CMBufferQueueCallbacks callback = null;
+        synchronized (bufferQueueCallbacks) {
+            callback = bufferQueueCallbacks.get(refcon);
         }
-        return callback.getBoolean(buffer);
+        return callback.isDataReady(buffer);
     }
     @Callback
     private static CFComparisonResult cbCompare(CMBuffer buffer1, CMBuffer buffer2, @Pointer long refcon) {
-        CompareCallback callback = null;
-        synchronized (compareCallbacks) {
-            callback = compareCallbacks.get(refcon);
+        CMBufferQueueCallbacks callback = null;
+        synchronized (bufferQueueCallbacks) {
+            callback = bufferQueueCallbacks.get(refcon);
         }
         return callback.compare(buffer1, buffer2);
     }
     @Callback
     private static int cbGetSize(CMBuffer buffer, @Pointer long refcon) {
-        GetSizeCallback callback = null;
-        synchronized (getSizeCallbacks) {
-            callback = getSizeCallbacks.get(refcon);
+        CMBufferQueueCallbacks callback = null;
+        synchronized (bufferQueueCallbacks) {
+            callback = bufferQueueCallbacks.get(refcon);
         }
         return callback.getSize(buffer);
     }
@@ -195,26 +179,9 @@ import org.robovm.apple.coregraphics.*;
         callback.invoke(buffer);
     }
     
-    @Override
-    protected void dispose (boolean finalizing) throws Throwable {
-        synchronized (getDecodeTimeStampCallbacks) {
-            getDecodeTimeStampCallbacks.clear();
-            getPresentationTimeStampCallbacks.clear();
-            getDurationCallbacks.clear();
-            isDataReadyCallbacks.clear();
-            compareCallbacks.clear();
-            getSizeCallbacks.clear();
-            resetCallbacks.clear();
-            triggerCallbacks.clear();
-            validationCallbacks.clear();
-            forEachCallbacks.clear();
-        }
-        super.dispose(finalizing);
-    }
-    
-    public static CMBufferQueue create(@MachineSizedSInt long capacity, GetTimeCallback getDecodeTimeStampCallback, GetTimeCallback getPresentationTimeStampCallback, GetTimeCallback getDurationCallback, GetBooleanCallback isDataReadyCallback, CompareCallback compareCallback, GetSizeCallback getSizeCallback) {
+    public static CMBufferQueue create(@MachineSizedSInt long capacity, CMBufferQueueCallbacks callback) {
         long refconId = CMBufferQueue.refconId.getAndIncrement();
-        CMBufferCallbacks callbacks = new CMBufferCallbacks();
+        CMBufferCallbacksStruct callbacks = new CMBufferCallbacksStruct();
         callbacks.refcon(refconId);
         callbacks.getDecodeTimeStamp(new FunctionPtr(cbGetDecodeTimeStamp));
         callbacks.getPresentationTimeStamp(new FunctionPtr(cbGetPresentationTimeStamp));
@@ -223,16 +190,14 @@ import org.robovm.apple.coregraphics.*;
         callbacks.compare(new FunctionPtr(cbCompare));
         callbacks.getSize(new FunctionPtr(cbGetSize));
         CMBufferQueuePtr ptr = new CMBufferQueuePtr();
-        create(null, capacity, callbacks, ptr);
-        synchronized (getDecodeTimeStampCallbacks) {
-            getDecodeTimeStampCallbacks.put(refconId, getDecodeTimeStampCallback);
-            getPresentationTimeStampCallbacks.put(refconId, getPresentationTimeStampCallback);
-            getDurationCallbacks.put(refconId, getDurationCallback);
-            isDataReadyCallbacks.put(refconId, isDataReadyCallback);
-            compareCallbacks.put(refconId, compareCallback);
-            getSizeCallbacks.put(refconId, getSizeCallback);
+        CMBufferQueueError err = create(null, capacity, callbacks, ptr);
+        if (err == CMBufferQueueError.No) {
+            synchronized (bufferQueueCallbacks) {
+                bufferQueueCallbacks.put(refconId, callback);
+            }
+            return ptr.get();
         }
-        return ptr.get();
+        return null;
     }
     
     public CMBufferQueueError reset(ResetCallback callback) {
@@ -283,18 +248,8 @@ import org.robovm.apple.coregraphics.*;
     /**
      * @since Available in iOS 4.0 and later.
      */
-    @Bridge(symbol="CMBufferQueueGetCallbacksForUnsortedSampleBuffers", optional=true)
-    public static native CMBufferCallbacks getCallbacksForUnsortedSampleBuffers();
-    /**
-     * @since Available in iOS 4.3 and later.
-     */
-    @Bridge(symbol="CMBufferQueueGetCallbacksForSampleBuffersSortedByOutputPTS", optional=true)
-    public static native CMBufferCallbacks getCallbacksForSampleBuffersSortedByOutputPTS();
-    /**
-     * @since Available in iOS 4.0 and later.
-     */
     @Bridge(symbol="CMBufferQueueCreate", optional=true)
-    protected static native int create(CFAllocator allocator, @MachineSizedSInt long capacity, CMBufferCallbacks callbacks, CMBufferQueue.CMBufferQueuePtr queueOut);
+    protected static native CMBufferQueueError create(CFAllocator allocator, @MachineSizedSInt long capacity, CMBufferCallbacksStruct callbacks, CMBufferQueue.CMBufferQueuePtr queueOut);
     /**
      * @since Available in iOS 4.0 and later.
      */
@@ -304,22 +259,22 @@ import org.robovm.apple.coregraphics.*;
      * @since Available in iOS 4.0 and later.
      */
     @Bridge(symbol="CMBufferQueueEnqueue", optional=true)
-    public native CMBufferQueueError enqueue(CMBuffer buf);
+    public native CMBufferQueueError enqueue(CFType buf);
     /**
      * @since Available in iOS 4.0 and later.
      */
     @Bridge(symbol="CMBufferQueueDequeueAndRetain", optional=true)
-    public native CMBuffer dequeueAndRetain();
+    public native CFType dequeueAndRetain();
     /**
      * @since Available in iOS 4.0 and later.
      */
     @Bridge(symbol="CMBufferQueueDequeueIfDataReadyAndRetain", optional=true)
-    public native CMBuffer dequeueIfDataReadyAndRetain();
+    public native CFType dequeueIfDataReadyAndRetain();
     /**
      * @since Available in iOS 4.0 and later.
      */
     @Bridge(symbol="CMBufferQueueGetHead", optional=true)
-    public native CMBuffer getHead();
+    public native CFType getHead();
     /**
      * @since Available in iOS 4.0 and later.
      */

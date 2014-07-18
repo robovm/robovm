@@ -32,13 +32,14 @@ import org.robovm.apple.dispatch.*;
 import org.robovm.apple.coreaudio.*;
 import org.robovm.apple.coreanimation.*;
 import org.robovm.apple.coregraphics.*;
+import org.robovm.apple.corevideo.*;
 /*</imports>*/
 
 /*<javadoc>*/
 /*</javadoc>*/
 /*<annotations>*/@Library("CoreMedia")/*</annotations>*/
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/CMClock/*</name>*/ 
-    extends /*<extends>*/CFType/*</extends>*/ 
+    extends /*<extends>*/CMClockOrTimebase/*</extends>*/ 
     /*<implements>*//*</implements>*/ {
 
     /*<ptr>*/public static class CMClockPtr extends Ptr<CMClock, CMClockPtr> {}/*</ptr>*/

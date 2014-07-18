@@ -32,6 +32,7 @@ import org.robovm.apple.dispatch.*;
 import org.robovm.apple.coreaudio.*;
 import org.robovm.apple.coreanimation.*;
 import org.robovm.apple.coregraphics.*;
+import org.robovm.apple.corevideo.*;
 /*</imports>*/
 
 /*<javadoc>*/
@@ -51,55 +52,6 @@ import org.robovm.apple.coregraphics.*;
     /*</constructors>*/
     /*<properties>*//*</properties>*/
     /*<members>*//*</members>*/
-    public static CMBlockBuffer create(int subBlockCapacity) {
-        CMBlockBufferPtr ptr = new CMBlockBufferPtr();
-        create(null, subBlockCapacity, 0, ptr);
-        return ptr.get();
-    }
-    
-    public static CMBlockBuffer create( VoidPtr memoryBlock, @MachineSizedUInt long blockLength, CMBlockBufferCustomBlockSource customBlockSource, @MachineSizedUInt long offsetToData, @MachineSizedUInt long dataLength) {
-        CMBlockBufferPtr ptr = new CMBlockBufferPtr();
-        create(null, memoryBlock, blockLength, null, customBlockSource, offsetToData, dataLength, 0, ptr);
-        return ptr.get();
-    }
-    
-    public static CMBlockBuffer create(CMBlockBuffer targetBuffer, @MachineSizedUInt long offsetToData, @MachineSizedUInt long dataLength) {
-        CMBlockBufferPtr ptr = new CMBlockBufferPtr();
-        create(null, targetBuffer, offsetToData, dataLength, 0, ptr);
-        return ptr.get();
-    }
-    
-    public static CMBlockBuffer create(CMBlockBuffer sourceBuffer, CMBlockBufferCustomBlockSource customBlockSource, @MachineSizedUInt long offsetToData, @MachineSizedUInt long dataLength) {
-        CMBlockBufferPtr ptr = new CMBlockBufferPtr();
-        create(null, sourceBuffer, null, customBlockSource, offsetToData, dataLength, 0, ptr);
-        return ptr.get();
-    }
-    
-    public void replaceDataBytes(VoidPtr sourceBytes, @MachineSizedUInt long offsetIntoDestination, @MachineSizedUInt long dataLength){
-        replaceDataBytes(sourceBytes, this, offsetIntoDestination, dataLength);
-    }
-    
-    public void fillDataBytes(byte fillByte,  @MachineSizedUInt long offsetIntoDestination, @MachineSizedUInt long dataLength){
-        fillDataBytes(fillByte, this, offsetIntoDestination, dataLength);
-    }
-    
-    public BytePtr getDataPointer(@MachineSizedUInt long offset) {
-        BytePtr.BytePtrPtr ptr = new BytePtr.BytePtrPtr();
-        getDataPointer(offset, null, null, ptr);
-        return ptr.get();
-    }
-    
-    public @MachineSizedUInt long getDataPointerLengthAtOffset(@MachineSizedUInt long offset) {
-        MachineSizedUIntPtr ptr = new MachineSizedUIntPtr();
-        getDataPointer(offset, ptr, null, null);
-        return ptr.get();
-    }
-    
-    public @MachineSizedUInt long getDataPointerLength(@MachineSizedUInt long offset) {
-        MachineSizedUIntPtr ptr = new MachineSizedUIntPtr();
-        getDataPointer(offset, null, ptr, null);
-        return ptr.get();
-    }
     /*<methods>*/
     /**
      * @since Available in iOS 4.0 and later.

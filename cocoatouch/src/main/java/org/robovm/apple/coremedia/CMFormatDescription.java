@@ -32,6 +32,7 @@ import org.robovm.apple.dispatch.*;
 import org.robovm.apple.coreaudio.*;
 import org.robovm.apple.coreanimation.*;
 import org.robovm.apple.coregraphics.*;
+import org.robovm.apple.corevideo.*;
 /*</imports>*/
 
 /*<javadoc>*/
@@ -49,7 +50,7 @@ import org.robovm.apple.coregraphics.*;
     /*</constructors>*/
     /*<properties>*//*</properties>*/
     /*<members>*//*</members>*/
-    public static CMFormatDescription create(CMMediaType mediaType, int mediaSubtype, NSDictionary<?, ?> extensions) {
+    public static CMFormatDescription create(CMMediaType mediaType, int mediaSubtype, NSDictionary<NSString, ?> extensions) {
         CMFormatDescriptionPtr ptr = new CMFormatDescriptionPtr();
         create(null, mediaType, mediaSubtype, extensions, ptr);
         return ptr.get();
@@ -59,7 +60,7 @@ import org.robovm.apple.coregraphics.*;
      * @since Available in iOS 4.0 and later.
      */
     @Bridge(symbol="CMFormatDescriptionCreate", optional=true)
-    protected static native int create(CFAllocator allocator, CMMediaType mediaType, int mediaSubtype, NSDictionary<?, ?> extensions, CMFormatDescription.CMFormatDescriptionPtr descOut);
+    protected static native int create(CFAllocator allocator, CMMediaType mediaType, int mediaSubtype, NSDictionary<NSString, ?> extensions, CMFormatDescription.CMFormatDescriptionPtr descOut);
     /**
      * @since Available in iOS 4.0 and later.
      */
@@ -89,7 +90,7 @@ import org.robovm.apple.coregraphics.*;
      * @since Available in iOS 4.0 and later.
      */
     @Bridge(symbol="CMFormatDescriptionGetExtensions", optional=true)
-    public native NSDictionary<?, ?> getExtensions();
+    public native NSDictionary<NSString, ?> getExtensions();
     /**
      * @since Available in iOS 4.0 and later.
      */

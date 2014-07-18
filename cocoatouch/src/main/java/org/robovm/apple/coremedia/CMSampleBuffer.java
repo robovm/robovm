@@ -90,9 +90,34 @@ import org.robovm.apple.corevideo.*;
         callback.makeDataReady(buffer);
     }
     
-    public static CMSampleBuffer create(CMBlockBuffer dataBuffer, boolean dataReady, MakeDataReadyCallback callback, CMFormatDescription formatDescription, @MachineSizedSInt long numSamples, CMSampleTimingInfo[] sampleTimingArray, long[] sampleSizeArray) {
-        
-    }
+//    public static CMSampleBuffer create(CMBlockBuffer dataBuffer, boolean dataReady, MakeDataReadyCallback callback, CMFormatDescription formatDescription, @MachineSizedSInt long numSamples, CMSampleTimingInfo[] sampleTimingArray, long[] sampleSizeArray) {
+//        if (sampleTimingArray == null) {
+//            throw new NullPointerException("sampleTimingArray");
+//        }
+//        if (sampleSizeArray == null) {
+//            throw new NullPointerException("sampleSizeArray");
+//        }
+//
+//        long refconId = CMSampleBuffer.refconId.getAndIncrement();
+//        
+//        CMSampleTimingInfoPtr sampleTimingPtr = Struct.allocate(CMSampleTimingInfoPtr.class, sampleTimingArray.length);
+//        sampleTimingPtr.set(sampleTimingArray);
+//        
+//        MachineSizedUIntPtr sampleSizePtr = Struct.allocate(MachineSizedUIntPtr.class, sampleSizeArray.length);
+//        sampleSizePtr.set(sampleSizeArray);
+//        
+//        CMSampleBufferPtr ptr = new CMSampleBufferPtr();
+//        CMSampleBufferError err = create(null, dataBuffer, dataReady, new FunctionPtr(cbMakeDataReady), refconId, formatDescription, numSamples, sampleTimingArray.length, sampleTimingPtr, sampleSizeArray.length, sampleSizePtr, ptr);
+//        if (err == CMSampleBufferError.No) {
+//            CMSampleBuffer buffer = ptr.get();
+//            buffer.localRefconId = refconId;
+//            synchronized (makeDataReadyCallbacks) {
+//                makeDataReadyCallbacks.put(refconId, callback);
+//            }
+//            return buffer;
+//        }
+//        return null;
+//    }
     /*<methods>*/
     /**
      * @since Available in iOS 4.0 and later.

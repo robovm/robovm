@@ -32,6 +32,7 @@ import org.robovm.apple.dispatch.*;
 import org.robovm.apple.coreaudio.*;
 import org.robovm.apple.coreanimation.*;
 import org.robovm.apple.coregraphics.*;
+import org.robovm.apple.corevideo.*;
 /*</imports>*/
 
 /*<javadoc>*/
@@ -41,7 +42,7 @@ import org.robovm.apple.coregraphics.*;
 public enum /*<name>*/CMSubtitleFormatType/*</name>*/ implements ValuedEnum {
     /*<values>*/
     _3GText(1954034535L),
-    _WebVTT(2004251764L);
+    WebVTT(2004251764L);
     /*</values>*/
 
     /*<bind>*/

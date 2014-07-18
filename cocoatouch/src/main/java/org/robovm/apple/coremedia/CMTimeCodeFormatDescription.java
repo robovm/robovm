@@ -32,6 +32,7 @@ import org.robovm.apple.dispatch.*;
 import org.robovm.apple.coreaudio.*;
 import org.robovm.apple.coreanimation.*;
 import org.robovm.apple.coregraphics.*;
+import org.robovm.apple.corevideo.*;
 /*</imports>*/
 
 /*<javadoc>*/
@@ -47,7 +48,7 @@ import org.robovm.apple.coregraphics.*;
     /*<constructors>*//*</constructors>*/
     /*<properties>*//*</properties>*/
     /*<members>*//*</members>*/
-    public static CMTimeCodeFormatDescription create(CMTimeCodeFormatType timeCodeFormatType, @ByVal CMTime frameDuration, int frameQuanta, int tcFlags, NSDictionary<?, ?> extensions) {
+    public static CMTimeCodeFormatDescription create(CMTimeCodeFormatType timeCodeFormatType, @ByVal CMTime frameDuration, int frameQuanta, int tcFlags, NSDictionary<NSString, ?> extensions) {
         CMTimeCodeFormatDescriptionPtr ptr = new CMTimeCodeFormatDescriptionPtr();
         create(null, timeCodeFormatType, frameDuration, frameQuanta, tcFlags, extensions, ptr);
         return (CMTimeCodeFormatDescription)ptr.get();
@@ -57,7 +58,7 @@ import org.robovm.apple.coregraphics.*;
      * @since Available in iOS 4.0 and later.
      */
     @Bridge(symbol="CMTimeCodeFormatDescriptionCreate", optional=true)
-    protected static native int create(CFAllocator allocator, CMTimeCodeFormatType timeCodeFormatType, @ByVal CMTime frameDuration, int frameQuanta, int tcFlags, NSDictionary<?, ?> extensions, CMTimeCodeFormatDescription.CMTimeCodeFormatDescriptionPtr descOut);
+    protected static native int create(CFAllocator allocator, CMTimeCodeFormatType timeCodeFormatType, @ByVal CMTime frameDuration, int frameQuanta, int tcFlags, NSDictionary<NSString, ?> extensions, CMTimeCodeFormatDescription.CMTimeCodeFormatDescriptionPtr descOut);
     /**
      * @since Available in iOS 4.0 and later.
      */

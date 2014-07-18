@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.robovm.apple.coremedia;
+package org.robovm.apple.corevideo;
 
 /*<imports>*/
 import java.io.*;
@@ -28,20 +28,34 @@ import org.robovm.rt.bro.annotation.*;
 import org.robovm.rt.bro.ptr.*;
 import org.robovm.apple.foundation.*;
 import org.robovm.apple.corefoundation.*;
-import org.robovm.apple.dispatch.*;
-import org.robovm.apple.coreaudio.*;
-import org.robovm.apple.coreanimation.*;
 import org.robovm.apple.coregraphics.*;
+import org.robovm.apple.opengles.*;
+import org.robovm.apple.coremedia.*;
 /*</imports>*/
 
 /*<javadoc>*/
 
 /*</javadoc>*/
-/*<annotations>*/@Marshaler(ValuedEnum.AsMachineSizedUIntMarshaler.class)/*</annotations>*/
-public enum /*<name>*/CMAttachmentMode/*</name>*/ implements ValuedEnum {
+/*<annotations>*//*</annotations>*/
+public enum /*<name>*/CVReturn/*</name>*/ implements ValuedEnum {
     /*<values>*/
-    ShouldNotPropagate(0L),
-    ShouldPropagate(1L);
+    Success(0L),
+    First(-6660L),
+    Error(-6660L),
+    InvalidArgument(-6661L),
+    AllocationFailed(-6662L),
+    InvalidDisplay(-6670L),
+    DisplayLinkAlreadyRunning(-6671L),
+    DisplayLinkNotRunning(-6672L),
+    DisplayLinkCallbacksNotSet(-6673L),
+    InvalidPixelFormat(-6680L),
+    InvalidSize(-6681L),
+    InvalidPixelBufferAttributes(-6682L),
+    PixelBufferNotOpenGLCompatible(-6683L),
+    WouldExceedAllocationThreshold(-6689L),
+    PoolAllocationFailed(-6690L),
+    InvalidPoolAttributes(-6691L),
+    Last(-6699L);
     /*</values>*/
 
     /*<bind>*/
@@ -51,15 +65,15 @@ public enum /*<name>*/CMAttachmentMode/*</name>*/ implements ValuedEnum {
 
     private final long n;
 
-    private /*<name>*/CMAttachmentMode/*</name>*/(long n) { this.n = n; }
+    private /*<name>*/CVReturn/*</name>*/(long n) { this.n = n; }
     public long value() { return n; }
-    public static /*<name>*/CMAttachmentMode/*</name>*/ valueOf(long n) {
-        for (/*<name>*/CMAttachmentMode/*</name>*/ v : values()) {
+    public static /*<name>*/CVReturn/*</name>*/ valueOf(long n) {
+        for (/*<name>*/CVReturn/*</name>*/ v : values()) {
             if (v.n == n) {
                 return v;
             }
         }
         throw new IllegalArgumentException("No constant with value " + n + " found in " 
-            + /*<name>*/CMAttachmentMode/*</name>*/.class.getName());
+            + /*<name>*/CVReturn/*</name>*/.class.getName());
     }
 }

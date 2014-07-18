@@ -1,5 +1,5 @@
 package: org.robovm.apple.coremedia
-include: [foundation.yaml, corefoundation.yaml, dispatch.yaml, coreaudio.yaml, coreanimation.yaml, coregraphics.yaml] # , corevideo.yaml, audiotoolbox.yaml
+include: [foundation.yaml, corefoundation.yaml, dispatch.yaml, coreaudio.yaml, coreanimation.yaml, coregraphics.yaml, corevideo.yaml] # , audiotoolbox.yaml
 library: CoreMedia
 framework: CoreMedia
 clang_args: ['-x', 'objective-c']
@@ -7,33 +7,34 @@ headers:
     - /System/Library/Frameworks/CoreMedia.framework/Headers/CoreMedia.h
     - /System/Library/Frameworks/CoreMedia.framework/Headers/CMBase.h
 typedefs:
-    'CMTimeCodeFormatDescriptionRef': 'CMTimeCodeFormatDescription'
-    'CMAudioFormatDescriptionRef': 'CMAudioFormatDescription'
-    'CMVideoFormatDescriptionRef': 'CMVideoFormatDescription'
-    'CMTextFormatDescriptionRef': 'CMTextFormatDescription'
+    CMTimeCodeFormatDescriptionRef: CMTimeCodeFormatDescription
+    CMAudioFormatDescriptionRef: CMAudioFormatDescription
+    CMVideoFormatDescriptionRef: CMVideoFormatDescription
+    CMTextFormatDescriptionRef: CMTextFormatDescription
+    OS_dispatch_source: DispatchSource
 
 enums:
-    CMAttachmentMode: { first: kCMAttachmentMode_ShouldNotPropagate, prefix: kCMAttachmentMode_, marshaler: ValuedEnum.AsMachineSizedUIntMarshaler }
+    # CMAttachmentMode: { first: kCMAttachmentMode_ShouldNotPropagate, prefix: kCMAttachmentMode_, marshaler: ValuedEnum.AsMachineSizedUIntMarshaler }
     CMClockError: { first: kCMClockError_MissingRequiredParameter, prefix: kCMClockError_ }
     CMTimebaseError: { first: kCMTimebaseError_MissingRequiredParameter, prefix: kCMTimebaseError_ }
     CMSyncError: { first: kCMSyncError_MissingRequiredParameter, prefix: kCMSyncError_ }
     CMBlockBufferError: { first: kCMBlockBufferNoErr, prefix: kCMBlockBuffer, suffix: Err }
-  #  CMBlockBufferFlag: { first: kCMBlockBufferAssureMemoryNowFlag, prefix: kCMBlockBuffer, suffix: Flag, bits: true, marshaler: Bits.AsMachineSizedIntMarshaler } # TODO fix
+    CMBlockBufferFlag: { first: kCMBlockBufferAssureMemoryNowFlag, prefix: kCMBlockBuffer, suffix: Flag, bits: true, marshaler: Bits.AsMachineSizedIntMarshaler }
     CMBufferQueueError: { first: kCMBufferQueueError_AllocationFailed, prefix: kCMBufferQueueError_ }
     CMBufferQueueTriggerCondition: { first: kCMBufferQueueTrigger_WhenDurationBecomesLessThan, prefix: kCMBufferQueueTrigger_ }
     CMFormatDescriptionError: { first: kCMFormatDescriptionError_InvalidParameter, prefix: kCMFormatDescriptionError_ }
     CMMediaType: { first: kCMMediaType_Video, prefix: kCMMediaType_, marshaler: ValuedEnum.AsMachineSizedUIntMarshaler }
     CMAudioCodecType: { first: kCMAudioCodecType_AAC_LCProtected, prefix: kCMAudioCodecType_, marshaler: ValuedEnum.AsMachineSizedUIntMarshaler }
     CMAudioFormatDescriptionMask: { first: kCMAudioFormatDescriptionMask_StreamBasicDescription, prefix: kCMAudioFormatDescriptionMask_, bits: true, marshaler: Bits.AsMachineSizedIntMarshaler }
-    CMPixelFormatType: { first: kCMPixelFormat_32ARGB, prefix: kCMPixelFormat, marshaler: ValuedEnum.AsMachineSizedUIntMarshaler }
-    CMVideoCodecType: { first: kCMVideoCodecType_422YpCbCr8, prefix: kCMVideoCodecType, marshaler: ValuedEnum.AsMachineSizedUIntMarshaler }
+    CMPixelFormatType: { first: kCMPixelFormat_32ARGB, prefix: kCMPixelFormat_, marshaler: ValuedEnum.AsMachineSizedUIntMarshaler }
+    CMVideoCodecType: { first: kCMVideoCodecType_422YpCbCr8, prefix: kCMVideoCodecType_, marshaler: ValuedEnum.AsMachineSizedUIntMarshaler }
     CMMPEG2VideoProfile: { first: kCMMPEG2VideoProfile_HDV_720p30, prefix: kCMMPEG2VideoProfile_, marshaler: ValuedEnum.AsMachineSizedUIntMarshaler }
     CMMuxedStreamType: { first: kCMMuxedStreamType_MPEG1System, prefix: kCMMuxedStreamType_, marshaler: ValuedEnum.AsMachineSizedUIntMarshaler }
     CMClosedCaptionFormatType: { first: kCMClosedCaptionFormatType_CEA608, prefix: kCMClosedCaptionFormatType, marshaler: ValuedEnum.AsMachineSizedUIntMarshaler }
     CMTextFormatType: { first: kCMTextFormatType_QTText, prefix: kCMTextFormatType_, marshaler: ValuedEnum.AsMachineSizedUIntMarshaler }
     CMTextDisplayFlag: { first: kCMTextDisplayFlag_scrollIn, prefix: kCMTextDisplayFlag_, bits: true, marshaler: Bits.AsMachineSizedIntMarshaler }
     CMTextJustification: { first: kCMTextJustification_left_top, prefix: kCMTextJustification_ }
-    CMSubtitleFormatType: { first: kCMSubtitleFormatType_3GText, prefix: kCMSubtitleFormatType, marshaler: ValuedEnum.AsMachineSizedUIntMarshaler }
+    CMSubtitleFormatType: { first: kCMSubtitleFormatType_3GText, prefix: kCMSubtitleFormatType_, marshaler: ValuedEnum.AsMachineSizedUIntMarshaler }
     CMTimeCodeFormatType: { first: kCMTimeCodeFormatType_TimeCode32, prefix: kCMTimeCodeFormatType_, marshaler: ValuedEnum.AsMachineSizedUIntMarshaler }
     CMTimeCodeFlag: { first: kCMTimeCodeFlag_DropFrame, prefix: kCMTimeCodeFlag_, bits: true, marshaler: Bits.AsMachineSizedIntMarshaler }
     CMMetadataFormatType: { first: kCMMetadataFormatType_ICY, prefix: kCMMetadataFormatType_, marshaler: ValuedEnum.AsMachineSizedUIntMarshaler }
@@ -48,38 +49,32 @@ classes:
         annotations: ['@Marshaler(NSString.AsStringMarshaler.class)']
 
     # Opaque Types
-    CMAttachmentBearer:
-        extends: CFType
-    CMAttachmentBearerRef:
-        name: "CMAttachmentBearer"
-        extends: CFType
+    #CMAttachmentBearer:
+    #    extends: CFType
+    #CMAttachmentBearerRef:
+    #    name: "CMAttachmentBearer"
+    #    extends: CFType
     CMBlockBuffer:
         extends: CFType
     OpaqueCMBlockBuffer:
         name: "CMBlockBuffer"
-        extends: CFType
-    CMBufferRef:
-        name: "CMBuffer"
-        extends: CFType
-    CMBuffer:
         extends: CFType
     CMBufferQueue:
         extends: CFType
     opaqueCMBufferQueue:
         name: "CMBufferQueue"
         extends: CFType
-    CMBufferQueueTriggerToken:
-        extends: CFType
+    CMBufferQueueTriggerToken: {}
     opaqueCMBufferQueueTriggerToken:
         name: "CMBufferQueueTriggerToken"
         extends: CFType
     CMClockOrTimebase:
         extends: CFType
     CMClock:
-        extends: CFType
+        extends: CMClockOrTimebase
     OpaqueCMClock:
         name: "CMClock"
-        extends: CFType
+        extends: CMClockOrTimebase
     CMFormatDescription:
         extends: CFType
     opaqueCMFormatDescription:
@@ -108,16 +103,18 @@ classes:
         add_ptr: true
     CMSampleBuffer:
         extends: CFType
+        implements: CMBuffer
     opaqueCMSampleBuffer:
         name: "CMSampleBuffer"
         extends: CFType
+        implements: CMBuffer
     CMTime:
         extends: CFType
     CMTimebase:
-        extends: CFType
+        extends: CMClockOrTimebase
     OpaqueCMTimebase:
         name: "CMTimebase"
-        extends: CFType
+        extends: CMClockOrTimebase
     CMTimeRange:
         extends: CFType
     CMMemoryPool:
@@ -134,8 +131,10 @@ classes:
     # Structs
     CMBlockBufferCustomBlockSource: {}
     CMBufferCallbacks:
+        name: "CMBufferCallbacksStruct"
         refcon:
             type: "@Pointer long"
+        visibility: ""
     CMVideoDimensions: {}
     CMSampleTimingInfo: {}
     CMTime:
@@ -151,20 +150,21 @@ functions:
         name: getClassTypeID
 
     # CMAttachment
-    CMCopyDictionaryOfAttachments:
-        class: CMAttachmentBearer
-        name: "copyDictionaryOfAttachments"
-        visibility: protected
-    CMGetAttachment:
-        class: CMAttachmentBearer
-        name: "getAttachment"
-        visibility: protected
-    CMSetAttachments: 
-        class: CMAttachmentBearer
-        name: "setAttachment"
+    #CMCopyDictionaryOfAttachments:
+    #    class: CMAttachmentBearer
+    #    name: "copyDictionaryOfAttachments"
+    #    visibility: protected
+    #CMGetAttachment:
+    #    class: CMAttachmentBearer
+    #    name: "getAttachment"
+    #    visibility: protected
+    #CMSetAttachments: 
+    #    class: CMAttachmentBearer
+    #    name: "setAttachment"
     CM(.*Attachment.?):
-        class: CMAttachmentBearer
-        name: "#{g[0]}"
+        exclude: true
+    #    class: CMAttachmentBearer
+    #    name: "#{g[0]}"
 
     # CMClock
     CMClock(GetHostTimeClock):
@@ -307,10 +307,12 @@ functions:
     CMBufferQueue(GetCallbacks.*):
         class: CMBufferQueue
         name: "#{g[0]}"
+        exclude: true
     CMBufferQueueCreate:
         class: CMBufferQueue
         name: "create"
         visibility: protected
+        return_type: CMBufferQueueError
     CMBufferQueue(Enqueue|MarkEndOfData|Reset|RemoveTrigger):
         class: CMBufferQueue
         name: "#{g[0]}"
@@ -352,10 +354,17 @@ functions:
         name: "#{g[0]}"
 
     # CMFormatDescription
-    CMFormatDescriptionCreate: # TODO wrapper
+    CMFormatDescriptionCreate:
         class: CMFormatDescription
         name: "create"
         visibility: protected
+        parameters:
+            extensions:
+                type: "NSDictionary<NSString, ?>"
+    CMFormatDescription(GetExtensions):
+        class: CMFormatDescription
+        name: "#{g[0]}"
+        return_type: "NSDictionary<NSString, ?>"
     CMFormatDescriptionEqual.*:
         class: CMFormatDescription
         name: "equals"
@@ -368,6 +377,9 @@ functions:
         class: CMAudioFormatDescription
         name: "create"
         visibility: protected
+        parameters:
+            extensions:
+                type: "NSDictionary<NSString, ?>"
     CMAudioFormatDescription(CreateSummary):
         class: CMAudioFormatDescription
         name: "#{g[0]}"
@@ -389,6 +401,9 @@ functions:
         class: CMVideoFormatDescription
         name: "create"
         visibility: protected
+        parameters:
+            extensions:
+                type: "NSDictionary<NSString, ?>"
     CMVideoFormatDescription(GetH264ParameterSetAtIndex):
         class: CMVideoFormatDescription
         name: "#{g[0]}"
@@ -402,7 +417,10 @@ functions:
         class: CMMuxedFormatDescription
         name: "create"
         visibility: protected
-    
+        parameters:
+            extensions:
+                type: "NSDictionary<NSString, ?>"
+
     # CMTextFormatDescription
     CMTextFormatDescription(GetDefaultTextBox):
         class: CMTextFormatDescription
@@ -438,6 +456,9 @@ functions:
         class: CMTimeCodeFormatDescription
         name: "create"
         visibility: protected
+        parameters:
+            extensions:
+                type: "NSDictionary<NSString, ?>"
     CMTimeCodeFormatDescription(GetTimeCodeFlags):
         class: CMTimeCodeFormatDescription
         name: "#{g[0]}"
@@ -485,6 +506,9 @@ functions:
         class: CMSampleBuffer
         name: "#{g[0]}"
         visibility: protected
+    CMSampleBufferDataIsReady:
+        class: CMSampleBuffer
+        name: "isDataReady"
     CMSampleBufferGetAudioStreamPacketDescriptionsPtr:
         exclude: true
     CMSampleBuffer(CopyPCMDataIntoAudioBufferList|SetDataReady|MakeDataReady|TrackDataReadiness|Invalidate):
@@ -789,7 +813,6 @@ constants:
     kCMPersistentTrackID_Invalid:
         class: CoreMedia
         name: "PersistentTrackIDInvalid"
-        
         
     # Make sure we don't miss any constants if new ones are introduced in a later version
     (CM.*):

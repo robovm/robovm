@@ -32,6 +32,7 @@ import org.robovm.apple.dispatch.*;
 import org.robovm.apple.coreaudio.*;
 import org.robovm.apple.coreanimation.*;
 import org.robovm.apple.coregraphics.*;
+import org.robovm.apple.corevideo.*;
 /*</imports>*/
 
 /*<javadoc>*/
@@ -46,10 +47,8 @@ import org.robovm.apple.coregraphics.*;
     /*<bind>*/static { Bro.bind(CoreMedia.class); }/*</bind>*/
     /*<constants>*/
     public static final int PersistentTrackIDInvalid = 0;
-    public static final int Constant__kCMBlockBufferAssureMemoryNowFlag = 1;
-    public static final int Constant__kCMBlockBufferAlwaysCopyDataFlag = 2;
-    public static final int Constant__kCMBlockBufferDontOptimizeDepthFlag = 4;
-    public static final int Constant__kCMBlockBufferPermitEmptyReferenceFlag = 8;
+    public static final int Constant__kCMAttachmentMode_ShouldNotPropagate = 0;
+    public static final int Constant__kCMAttachmentMode_ShouldPropagate = 1;
     /*</constants>*/
     /*<constructors>*//*</constructors>*/
     /*<properties>*//*</properties>*/

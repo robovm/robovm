@@ -32,6 +32,7 @@ import org.robovm.apple.dispatch.*;
 import org.robovm.apple.coreaudio.*;
 import org.robovm.apple.coreanimation.*;
 import org.robovm.apple.coregraphics.*;
+import org.robovm.apple.corevideo.*;
 /*</imports>*/
 
 /*<javadoc>*/
@@ -41,33 +42,33 @@ import org.robovm.apple.coregraphics.*;
 public enum /*<name>*/CMVideoCodecType/*</name>*/ implements ValuedEnum {
     /*<values>*/
     _422YpCbCr8(846624121L),
-    _Animation(1919706400L),
-    _Cinepak(1668704612L),
-    _JPEG(1785750887L),
-    _JPEG_OpenDML(1684890161L),
-    _SorensonVideo(1398165809L),
-    _SorensonVideo3(1398165811L),
-    _H263(1748121139L),
-    _H264(1635148593L),
-    _MPEG4Video(1836070006L),
-    _MPEG2Video(1836069494L),
-    _MPEG1Video(1836069238L),
-    _DVCNTSC(1685480224L),
-    _DVCPAL(1685480304L),
-    _DVCProPAL(1685483632L),
-    _DVCPro50NTSC(1685468526L),
-    _DVCPro50PAL(1685468528L),
-    _DVCPROHD720p60(1685481584L),
-    _DVCPROHD720p50(1685481585L),
-    _DVCPROHD1080i60(1685481526L),
-    _DVCPROHD1080i50(1685481525L),
-    _DVCPROHD1080p30(1685481523L),
-    _DVCPROHD1080p25(1685481522L),
-    _AppleProRes4444(1634743400L),
-    _AppleProRes422HQ(1634755432L),
-    _AppleProRes422(1634755438L),
-    _AppleProRes422LT(1634755443L),
-    _AppleProRes422Proxy(1634755439L);
+    Animation(1919706400L),
+    Cinepak(1668704612L),
+    JPEG(1785750887L),
+    JPEG_OpenDML(1684890161L),
+    SorensonVideo(1398165809L),
+    SorensonVideo3(1398165811L),
+    H263(1748121139L),
+    H264(1635148593L),
+    MPEG4Video(1836070006L),
+    MPEG2Video(1836069494L),
+    MPEG1Video(1836069238L),
+    DVCNTSC(1685480224L),
+    DVCPAL(1685480304L),
+    DVCProPAL(1685483632L),
+    DVCPro50NTSC(1685468526L),
+    DVCPro50PAL(1685468528L),
+    DVCPROHD720p60(1685481584L),
+    DVCPROHD720p50(1685481585L),
+    DVCPROHD1080i60(1685481526L),
+    DVCPROHD1080i50(1685481525L),
+    DVCPROHD1080p30(1685481523L),
+    DVCPROHD1080p25(1685481522L),
+    AppleProRes4444(1634743400L),
+    AppleProRes422HQ(1634755432L),
+    AppleProRes422(1634755438L),
+    AppleProRes422LT(1634755443L),
+    AppleProRes422Proxy(1634755439L);
     /*</values>*/
 
     /*<bind>*/

@@ -15,7 +15,6 @@
  */
 package org.robovm.apple.coremedia;
 
-/*<imports>*/
 import java.io.*;
 import java.nio.*;
 import java.util.*;
@@ -32,23 +31,7 @@ import org.robovm.apple.dispatch.*;
 import org.robovm.apple.coreaudio.*;
 import org.robovm.apple.coreanimation.*;
 import org.robovm.apple.coregraphics.*;
-/*</imports>*/
 
-/*<javadoc>*/
-/*</javadoc>*/
-/*<annotations>*//*</annotations>*/
-/*<visibility>*/public/*</visibility>*/ class /*<name>*/CMBuffer/*</name>*/ 
-    extends /*<extends>*/CFType/*</extends>*/ 
-    /*<implements>*//*</implements>*/ {
-
-    /*<ptr>*/public static class CMBufferPtr extends Ptr<CMBuffer, CMBufferPtr> {}/*</ptr>*/
-    /*<bind>*/
-    /*</bind>*/
-    /*<constants>*//*</constants>*/
-    /*<constructors>*/
-    protected CMBuffer() {}
-    /*</constructors>*/
-    /*<properties>*//*</properties>*/
-    /*<members>*//*</members>*/
-    /*<methods>*//*</methods>*/
+public interface CMBuffer {
+    
 }

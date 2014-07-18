@@ -32,6 +32,7 @@ import org.robovm.apple.dispatch.*;
 import org.robovm.apple.coreaudio.*;
 import org.robovm.apple.coreanimation.*;
 import org.robovm.apple.coregraphics.*;
+import org.robovm.apple.corevideo.*;
 /*</imports>*/
 
 /*<javadoc>*/
@@ -47,7 +48,7 @@ import org.robovm.apple.coregraphics.*;
     /*<constructors>*//*</constructors>*/
     /*<properties>*//*</properties>*/
     /*<members>*//*</members>*/
-    public static CMMuxedFormatDescription create(CMMuxedStreamType muxType, NSDictionary<?, ?> extensions) {
+    public static CMMuxedFormatDescription create(CMMuxedStreamType muxType, NSDictionary<NSString, ?> extensions) {
         CMFormatDescriptionPtr ptr = new CMFormatDescriptionPtr();
         create(null, muxType, extensions, ptr);
         return (CMMuxedFormatDescription)ptr.get();
@@ -57,6 +58,6 @@ import org.robovm.apple.coregraphics.*;
      * @since Available in iOS 4.0 and later.
      */
     @Bridge(symbol="CMMuxedFormatDescriptionCreate", optional=true)
-    protected static native int create(CFAllocator allocator, CMMuxedStreamType muxType, NSDictionary<?, ?> extensions, CMFormatDescription.CMFormatDescriptionPtr outDesc);
+    protected static native int create(CFAllocator allocator, CMMuxedStreamType muxType, NSDictionary<NSString, ?> extensions, CMFormatDescription.CMFormatDescriptionPtr outDesc);
     /*</methods>*/
 }

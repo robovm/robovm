@@ -440,7 +440,7 @@ functions:
                 type: "CMTextFormatDescription"
             outFontName:
                 type: "CFString.CFStringPtr"
-    CMTextFormatDescription(Get.*):   # TODO : getDefaultStyleColorComponents
+    CMTextFormatDescription(Get.*):
         class: CMTextFormatDescription
         name: "#{g[0]}"
         visibility: protected
@@ -486,32 +486,44 @@ functions:
         class: CMSampleBuffer
         name: "#{g[0]}"
         visibility: protected
+        parameters:
+            makeDataReadyRefcon:
+                type: "@Pointer long"
+        return_type: CMSampleBufferError
     CMAudioSampleBufferCreateWithPacketDescriptions: # TODO wrap
         class: CMSampleBuffer
         name: "createAudioSampleBuffer"
         visibility: protected
+        parameters:
+            makeDataReadyRefcon:
+                type: "@Pointer long"
+        return_type: CMSampleBufferError
     CMSampleBuffer(CopySampleBuffer)ForRange: # TODO wrap
         class: CMSampleBuffer
         name: "#{g[0]}"
         visibility: protected
+        return_type: CMSampleBufferError
     CMSampleBuffer(SetDataBuffer)FromAudioBufferList: # TODO wrap
         class: CMSampleBuffer
         name: "#{g[0]}"
         visibility: protected
+        return_type: CMSampleBufferError
     CMSampleBuffer(GetAudioBufferList)WithRetainedBlockBuffer: # TODO wrap
         class: CMSampleBuffer
         name: "#{g[0]}"
         visibility: protected
+        return_type: CMSampleBufferError
     CMSampleBuffer(GetAudioStreamPacketDescriptions): # TODO wrap
         class: CMSampleBuffer
         name: "#{g[0]}"
         visibility: protected
+        return_type: CMSampleBufferError
     CMSampleBufferDataIsReady:
         class: CMSampleBuffer
         name: "isDataReady"
     CMSampleBufferGetAudioStreamPacketDescriptionsPtr:
         exclude: true
-    CMSampleBuffer(CopyPCMDataIntoAudioBufferList|SetDataReady|MakeDataReady|TrackDataReadiness|Invalidate):
+    CMSampleBuffer(CopyPCMDataIntoAudioBufferList|SetDataReady|MakeDataReady|TrackDataReadiness|Invalidate|SetOutputPresentationTimeStamp):
         class: CMSampleBuffer
         name: "#{g[0]}"
         return_type: CMSampleBufferError
@@ -529,6 +541,9 @@ functions:
         class: CMSampleBuffer
         name: "#{g[0]}"
         return_type: CMSampleBufferError
+        parameters:
+            refcon:
+                type: "@Pointer long"
     CMSampleBuffer(.*):
         class: CMSampleBuffer
         name: "#{g[0]}"

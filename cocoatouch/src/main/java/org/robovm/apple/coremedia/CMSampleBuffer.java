@@ -89,37 +89,41 @@ import org.robovm.apple.corevideo.*;
         }
         callback.makeDataReady(buffer);
     }
+    
+    public static CMSampleBuffer create(CMBlockBuffer dataBuffer, boolean dataReady, MakeDataReadyCallback callback, CMFormatDescription formatDescription, @MachineSizedSInt long numSamples, CMSampleTimingInfo[] sampleTimingArray, long[] sampleSizeArray) {
+        
+    }
     /*<methods>*/
     /**
      * @since Available in iOS 4.0 and later.
      */
     @Bridge(symbol="CMSampleBufferCreate", optional=true)
-    protected static native int create(CFAllocator allocator, CMBlockBuffer dataBuffer, boolean dataReady, FunctionPtr makeDataReadyCallback, VoidPtr makeDataReadyRefcon, CMFormatDescription formatDescription, @MachineSizedSInt long numSamples, @MachineSizedSInt long numSampleTimingEntries, CMSampleTimingInfo sampleTimingArray, @MachineSizedSInt long numSampleSizeEntries, MachineSizedUIntPtr sampleSizeArray, CMSampleBuffer.CMSampleBufferPtr sBufOut);
+    protected static native CMSampleBufferError create(CFAllocator allocator, CMBlockBuffer dataBuffer, boolean dataReady, FunctionPtr makeDataReadyCallback, @Pointer long makeDataReadyRefcon, CMFormatDescription formatDescription, @MachineSizedSInt long numSamples, @MachineSizedSInt long numSampleTimingEntries, CMSampleTimingInfo sampleTimingArray, @MachineSizedSInt long numSampleSizeEntries, MachineSizedUIntPtr sampleSizeArray, CMSampleBuffer.CMSampleBufferPtr sBufOut);
     /**
      * @since Available in iOS 4.0 and later.
      */
     @Bridge(symbol="CMAudioSampleBufferCreateWithPacketDescriptions", optional=true)
-    protected static native int createAudioSampleBuffer(CFAllocator allocator, CMBlockBuffer dataBuffer, boolean dataReady, FunctionPtr makeDataReadyCallback, VoidPtr makeDataReadyRefcon, CMFormatDescription formatDescription, @MachineSizedSInt long numSamples, @ByVal CMTime sbufPTS, AudioStreamPacketDescription packetDescriptions, CMSampleBuffer.CMSampleBufferPtr sBufOut);
+    protected static native CMSampleBufferError createAudioSampleBuffer(CFAllocator allocator, CMBlockBuffer dataBuffer, boolean dataReady, FunctionPtr makeDataReadyCallback, @Pointer long makeDataReadyRefcon, CMFormatDescription formatDescription, @MachineSizedSInt long numSamples, @ByVal CMTime sbufPTS, AudioStreamPacketDescription packetDescriptions, CMSampleBuffer.CMSampleBufferPtr sBufOut);
     /**
      * @since Available in iOS 4.0 and later.
      */
     @Bridge(symbol="CMSampleBufferCreateForImageBuffer", optional=true)
-    protected static native int createForImageBuffer(CFAllocator allocator, CVImageBuffer imageBuffer, boolean dataReady, FunctionPtr makeDataReadyCallback, VoidPtr makeDataReadyRefcon, CMVideoFormatDescription formatDescription, CMSampleTimingInfo sampleTiming, CMSampleBuffer.CMSampleBufferPtr sBufOut);
+    protected static native CMSampleBufferError createForImageBuffer(CFAllocator allocator, CVImageBuffer imageBuffer, boolean dataReady, FunctionPtr makeDataReadyCallback, @Pointer long makeDataReadyRefcon, CMVideoFormatDescription formatDescription, CMSampleTimingInfo sampleTiming, CMSampleBuffer.CMSampleBufferPtr sBufOut);
     /**
      * @since Available in iOS 4.0 and later.
      */
     @Bridge(symbol="CMSampleBufferCreateCopy", optional=true)
-    protected static native int createCopy(CFAllocator allocator, CMSampleBuffer sbuf, CMSampleBuffer.CMSampleBufferPtr sbufCopyOut);
+    protected static native CMSampleBufferError createCopy(CFAllocator allocator, CMSampleBuffer sbuf, CMSampleBuffer.CMSampleBufferPtr sbufCopyOut);
     /**
      * @since Available in iOS 4.0 and later.
      */
     @Bridge(symbol="CMSampleBufferCreateCopyWithNewTiming", optional=true)
-    protected static native int createCopyWithNewTiming(CFAllocator allocator, CMSampleBuffer originalSBuf, @MachineSizedSInt long numSampleTimingEntries, CMSampleTimingInfo sampleTimingArray, CMSampleBuffer.CMSampleBufferPtr sBufCopyOut);
+    protected static native CMSampleBufferError createCopyWithNewTiming(CFAllocator allocator, CMSampleBuffer originalSBuf, @MachineSizedSInt long numSampleTimingEntries, CMSampleTimingInfo sampleTimingArray, CMSampleBuffer.CMSampleBufferPtr sBufCopyOut);
     /**
      * @since Available in iOS 4.0 and later.
      */
     @Bridge(symbol="CMSampleBufferCopySampleBufferForRange", optional=true)
-    protected static native int copySampleBuffer(CFAllocator allocator, CMSampleBuffer sbuf, @ByVal CFRange sampleRange, CMSampleBuffer.CMSampleBufferPtr sBufOut);
+    protected static native CMSampleBufferError copySampleBuffer(CFAllocator allocator, CMSampleBuffer sbuf, @ByVal CFRange sampleRange, CMSampleBuffer.CMSampleBufferPtr sBufOut);
     /**
      * @since Available in iOS 4.0 and later.
      */
@@ -144,17 +148,17 @@ import org.robovm.apple.corevideo.*;
      * @since Available in iOS 4.0 and later.
      */
     @Bridge(symbol="CMSampleBufferSetDataBufferFromAudioBufferList", optional=true)
-    protected native int setDataBuffer(CFAllocator bbufStructAllocator, CFAllocator bbufMemoryAllocator, int flags, AudioBufferList bufferList);
+    protected native CMSampleBufferError setDataBuffer(CFAllocator bbufStructAllocator, CFAllocator bbufMemoryAllocator, int flags, AudioBufferList bufferList);
     /**
      * @since Available in iOS 4.0 and later.
      */
     @Bridge(symbol="CMSampleBufferGetAudioBufferListWithRetainedBlockBuffer", optional=true)
-    protected native int getAudioBufferList(MachineSizedUIntPtr bufferListSizeNeededOut, AudioBufferList bufferListOut, @MachineSizedUInt long bufferListSize, CFAllocator bbufStructAllocator, CFAllocator bbufMemoryAllocator, int flags, CMBlockBuffer.CMBlockBufferPtr blockBufferOut);
+    protected native CMSampleBufferError getAudioBufferList(MachineSizedUIntPtr bufferListSizeNeededOut, AudioBufferList bufferListOut, @MachineSizedUInt long bufferListSize, CFAllocator bbufStructAllocator, CFAllocator bbufMemoryAllocator, int flags, CMBlockBuffer.CMBlockBufferPtr blockBufferOut);
     /**
      * @since Available in iOS 4.0 and later.
      */
     @Bridge(symbol="CMSampleBufferGetAudioStreamPacketDescriptions", optional=true)
-    protected native int getAudioStreamPacketDescriptions(@MachineSizedUInt long packetDescriptionsSize, AudioStreamPacketDescription packetDescriptionsOut, MachineSizedUIntPtr packetDescriptionsSizeNeededOut);
+    protected native CMSampleBufferError getAudioStreamPacketDescriptions(@MachineSizedUInt long packetDescriptionsSize, AudioStreamPacketDescription packetDescriptionsOut, MachineSizedUIntPtr packetDescriptionsSizeNeededOut);
     /**
      * @since Available in iOS 7.0 and later.
      */
@@ -229,7 +233,7 @@ import org.robovm.apple.corevideo.*;
      * @since Available in iOS 4.0 and later.
      */
     @Bridge(symbol="CMSampleBufferSetOutputPresentationTimeStamp", optional=true)
-    public native int setOutputPresentationTimeStamp(@ByVal CMTime outputPresentationTimeStamp);
+    public native CMSampleBufferError setOutputPresentationTimeStamp(@ByVal CMTime outputPresentationTimeStamp);
     /**
      * @since Available in iOS 4.0 and later.
      */
@@ -279,6 +283,6 @@ import org.robovm.apple.corevideo.*;
      * @since Available in iOS 4.0 and later.
      */
     @Bridge(symbol="CMSampleBufferCallForEachSample", optional=true)
-    public native CMSampleBufferError callForEachSample(FunctionPtr callback, VoidPtr refcon);
+    public native CMSampleBufferError callForEachSample(FunctionPtr callback, @Pointer long refcon);
     /*</methods>*/
 }

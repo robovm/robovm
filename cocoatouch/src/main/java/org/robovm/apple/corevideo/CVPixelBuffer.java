@@ -66,7 +66,7 @@ import org.robovm.apple.coremedia.*;
      * @since Available in iOS 4.0 and later.
      */
     @Bridge(symbol="CVPixelBufferCreateResolvedAttributesDictionary", optional=true)
-    protected static native CVReturn createResolvedAttributesDictionary(CFAllocator allocator, NSArray<?> attributes, NSDictionary<?, ?>.NSDictionary<?, ?>Ptr resolvedDictionaryOut);
+    protected static native CVReturn createResolvedAttributesDictionary(CFAllocator allocator, NSArray<?> attributes, NSDictionary.NSDictionaryPtr resolvedDictionaryOut);
     /**
      * @since Available in iOS 4.0 and later.
      */
@@ -81,7 +81,7 @@ import org.robovm.apple.coremedia.*;
      * @since Available in iOS 4.0 and later.
      */
     @Bridge(symbol="CVPixelBufferCreateWithPlanarBytes", optional=true)
-    protected static native CVReturn create(CFAllocator allocator, @MachineSizedUInt long width, @MachineSizedUInt long height, int pixelFormatType, VoidPtr dataPtr, @MachineSizedUInt long dataSize, @MachineSizedUInt long numberOfPlanes, VoidPtr.VoidPtrPtr planeBaseAddress, size_t.size_tPtr planeWidth, size_t.size_tPtr planeHeight, size_t.size_tPtr planeBytesPerRow, FunctionPtr releaseCallback, VoidPtr releaseRefCon, NSDictionary<?, ?> pixelBufferAttributes, CVPixelBuffer.CVPixelBufferPtr pixelBufferOut);
+    protected static native CVReturn create(CFAllocator allocator, @MachineSizedUInt long width, @MachineSizedUInt long height, int pixelFormatType, VoidPtr dataPtr, @MachineSizedUInt long dataSize, @MachineSizedUInt long numberOfPlanes, VoidPtr.VoidPtrPtr planeBaseAddress, MachineSizedUIntPtr planeWidth, MachineSizedUIntPtr planeHeight, MachineSizedUIntPtr planeBytesPerRow, FunctionPtr releaseCallback, VoidPtr releaseRefCon, NSDictionary<?, ?> pixelBufferAttributes, CVPixelBuffer.CVPixelBufferPtr pixelBufferOut);
     /**
      * @since Available in iOS 4.0 and later.
      */

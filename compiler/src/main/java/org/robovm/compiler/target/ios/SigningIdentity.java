@@ -67,27 +67,37 @@ public class SigningIdentity implements Comparable<SigningIdentity> {
         throw new IllegalArgumentException("No signing identity found matching '" + search + "'");
     }
     
+    protected static List<SigningIdentity> parse(String securityOutput) {
+        /* Output from security looks like this:
+         *   1) 433D4A1CD97F77226F67959905A2840265A92D31 "iPhone Developer: Rolf Hudson (HS5OW37HQP)" (CSSMERR_TP_CERT_REVOKED)
+         *   2) F8E60167BD74A2E9FC39B239E58CCD73BE1112E6 "iPhone Developer: Rolf Hudson (HS5OW37HQP)"
+         *   3) AC2EC9D4D26889649DE4196FBFD54BF5924169F9 "iPhone Distribution: Acme Inc"
+         *     3 valid identities found
+         */
+        ArrayList<SigningIdentity> ids = new ArrayList<SigningIdentity>();
+        Pattern pattern = Pattern.compile("^\\d+\\)\\s+([0-9A-F]+)\\s+\"([^\"]*)\"\\s*(.*)");
+        for (String line : securityOutput.split("\n")) {
+            line = line.trim();
+            Matcher matcher = pattern.matcher(line);
+            if (!matcher.find()) {
+                break;
+            }
+            String name = matcher.group(2);
+            String fingerprint = matcher.group(1);
+            String flags = matcher.group(3);
+            // See cssmerr.h for possible CSSMERR_TP_CERT_* constants.
+            if (flags == null || !flags.contains("CSSMERR_TP_CERT_")) {
+                ids.add(new SigningIdentity(name, fingerprint));
+            }
+        }
+        Collections.sort(ids);
+        return ids;
+    }
+
     public static List<SigningIdentity> list() {
         try {
-            String out = new Executor(Logger.NULL_LOGGER, "security")
-                .args("find-identity", "-v", "-p", "codesigning").execCapture();
-            /* Output from security looks like this:
-             *   1) 62480BA6FC7FACD7CA4100812ABAE9C86FB43DCF "iPhone Developer: Niklas Therning (NZ2HZ85PAR)"
-             *   2) 069675F14EDB7A7482A7357B34A9383D84B7DFEA "iPhone Distribution: Trillian AB"
-             *     2 valid identities found
-             */
-            ArrayList<SigningIdentity> ids = new ArrayList<SigningIdentity>();
-            Pattern pattern = Pattern.compile("^\\d+\\) ([0-9A-F]+) \"(.*)\"$");
-            for (String line : out.split("\n")) {
-                line = line.trim();
-                Matcher matcher = pattern.matcher(line);
-                if (!matcher.find()) {
-                    break;
-                }
-                ids.add(new SigningIdentity(matcher.group(2), matcher.group(1)));
-            }
-            Collections.sort(ids);
-            return ids;
+            return parse(new Executor(Logger.NULL_LOGGER, "security")
+                .args("find-identity", "-v", "-p", "codesigning").execCapture());
         } catch (IOException e) {
             throw new RuntimeException(e);
         }

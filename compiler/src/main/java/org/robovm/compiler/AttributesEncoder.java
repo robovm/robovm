@@ -100,7 +100,7 @@ public class AttributesEncoder {
         encodeAttributes(sootClass);
         Constant classAttributes = encodeAttributes(sootClass);
         if (classAttributes != null) {
-            Global g = new Global("ClassAttributes_" + mangleClass(sootClass), classAttributes, true);
+            Global g = new Global(Symbols.classAttributesSymbol(sootClass), classAttributes, true);
             mb.addGlobal(g);
             this.classAttributes = g;
         }
@@ -108,7 +108,7 @@ public class AttributesEncoder {
         for (SootField field : sootClass.getFields()) {
             Constant fieldAttributes = encodeAttributes(field);
             if (fieldAttributes != null) {
-                Global g = new Global("FieldAttributes_" + mangleField(field), fieldAttributes, true);
+                Global g = new Global(Symbols.fieldAttributesSymbol(field), fieldAttributes, true);
                 mb.addGlobal(g);
                 this.fieldAttributes.put(field, g);
             }
@@ -117,7 +117,7 @@ public class AttributesEncoder {
         for (SootMethod method : sootClass.getMethods()) {
             Constant methodAttributes = encodeAttributes(method);
             if (methodAttributes != null) {
-                Global g = new Global("MethodAttributes_" + mangleMethod(method), methodAttributes, true);
+                Global g = new Global(Symbols.methodAttributesSymbol(method), methodAttributes, true);
                 mb.addGlobal(g);
                 this.methodAttributes.put(method, g);
             }

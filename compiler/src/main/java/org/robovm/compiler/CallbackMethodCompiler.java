@@ -18,10 +18,7 @@ package org.robovm.compiler;
 
 import static org.robovm.compiler.Bro.*;
 import static org.robovm.compiler.Functions.*;
-import static org.robovm.compiler.Mangler.*;
 import static org.robovm.compiler.Types.*;
-import static org.robovm.compiler.llvm.FunctionAttribute.*;
-import static org.robovm.compiler.llvm.Linkage.*;
 import static org.robovm.compiler.llvm.Type.*;
 
 import java.util.ArrayList;
@@ -75,16 +72,12 @@ public class CallbackMethodCompiler extends BroMethodCompiler {
     }
     
     private Function callback(SootMethod method) {
-        return new FunctionBuilder(method)
-            .type(getCallbackFunctionType(method)).suffix("_callback")
-            .linkage(external).attribs(noinline, optsize).build();
+        return FunctionBuilder.callback(method, getCallbackFunctionType(method));
     }
 
     private Function callback(SootMethod method, Type returnType) {
         FunctionType ft = getCallbackFunctionType(method);
-        return new FunctionBuilder(method)
-            .type(new FunctionType(returnType, ft.isVarargs(), ft.getParameterTypes())).suffix("_callback")
-            .linkage(external).attribs(noinline, optsize).build();
+        return FunctionBuilder.callback(method, new FunctionType(returnType, ft.isVarargs(), ft.getParameterTypes()));
     }
     
     private Function compileCallback(ModuleBuilder moduleBuilder, SootMethod method) {
@@ -115,13 +108,12 @@ public class CallbackMethodCompiler extends BroMethodCompiler {
             callbackFn = callback(method, t);
         }
         moduleBuilder.addFunction(callbackFn);
-        moduleBuilder.addAlias(new Alias(mangleMethod(originalMethod) + "_callback_i8p", 
+        moduleBuilder.addAlias(new Alias(Symbols.callbackPtrSymbol(originalMethod), 
                 Linkage._private, new ConstantBitcast(callbackFn.ref(), I8_PTR_PTR)));
 
-        String targetName = mangleMethod(originalMethod);
-        if (originalMethod.isSynchronized()) {
-            targetName += "_synchronized";
-        }
+        String targetName = originalMethod.isSynchronized() 
+                ? Symbols.synchronizedWrapperSymbol(originalMethod) 
+                : Symbols.methodSymbol(originalMethod);
         FunctionRef targetFn = new FunctionRef(targetName, getFunctionType(originalMethod));
         
         // Increase the attach count for the current thread (attaches the thread

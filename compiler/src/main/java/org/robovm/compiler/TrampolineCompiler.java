@@ -17,10 +17,8 @@
 package org.robovm.compiler;
 
 import static org.robovm.compiler.Access.*;
-import static org.robovm.compiler.Bro.*;
 import static org.robovm.compiler.Functions.*;
 import static org.robovm.compiler.Mangler.*;
-import static org.robovm.compiler.Strings.*;
 import static org.robovm.compiler.Types.*;
 import static org.robovm.compiler.llvm.FunctionAttribute.*;
 import static org.robovm.compiler.llvm.Linkage.*;
@@ -65,7 +63,6 @@ import org.robovm.compiler.trampoline.Invokeinterface;
 import org.robovm.compiler.trampoline.Invokespecial;
 import org.robovm.compiler.trampoline.Invokevirtual;
 import org.robovm.compiler.trampoline.LdcClass;
-import org.robovm.compiler.trampoline.LdcString;
 import org.robovm.compiler.trampoline.Multianewarray;
 import org.robovm.compiler.trampoline.NativeCall;
 import org.robovm.compiler.trampoline.New;
@@ -111,20 +108,6 @@ public class TrampolineCompiler {
         this.mb = mb;
         this.dependencies = new HashSet<String>();
         
-        if (t instanceof LdcString) {
-            byte[] modUtf8 = stringToModifiedUtf8Z(t.getTarget());
-            Global g = new Global(getStringVarName(modUtf8) + "_ptr", weak, new NullConstant(OBJECT_PTR));
-            if (!mb.hasSymbol(g.getName())) {
-                mb.addGlobal(g);
-            }
-            Function f = new FunctionBuilder(t).linkage(weak).build();
-            mb.addFunction(f);
-            Value result = call(f, BC_LDC_STRING, f.getParameterRef(0), g.ref(),
-                    mb.getString(t.getTarget()), new IntegerConstant(t.getTarget().length()));
-            f.add(new Ret(result));
-            return;
-        }
-        
         /*
          * Check if the target class exists and is accessible. Also check that
          * field accesses and method calls are compatible with the target 
@@ -147,11 +130,11 @@ public class TrampolineCompiler {
                 mb.addFunction(f);
                 return;
             }
-            String fnName = mangleClass(t.getTarget()) + "_allocator_clinit";
+            String fnName = Symbols.clinitWrapperSymbol(Symbols.allocatorSymbol(t.getTarget()));
             alias(t, fnName);
         } else if (t instanceof Instanceof) {
             if (isArray(t.getTarget())) {
-                String fnName = "array_" + mangleClass(t.getTarget()) + "_instanceof";
+                String fnName = Symbols.arrayinstanceofSymbol(t.getTarget());
                 if (!mb.hasSymbol(fnName)) {
                     Function fn = new FunctionBuilder(t).name(fnName).linkage(weak).build();
                     Value arrayClass = callLdcArray(fn, t.getTarget());
@@ -161,12 +144,12 @@ public class TrampolineCompiler {
                 }
                 alias(t, fnName);
             } else {
-                String fnName = mangleClass(t.getTarget()) + "_instanceof";
+                String fnName = Symbols.instanceofSymbol(t.getTarget());
                 alias(t, fnName);
             }
         } else if (t instanceof Checkcast) {
             if (isArray(t.getTarget())) {
-                String fnName = "array_" + mangleClass(t.getTarget()) + "_checkcast";
+                String fnName = Symbols.arraycheckcastSymbol(t.getTarget());
                 if (!mb.hasSymbol(fnName)) {
                     Function fn = new FunctionBuilder(t).name(fnName).linkage(weak).build();
                     Value arrayClass = callLdcArray(fn, t.getTarget());
@@ -176,7 +159,7 @@ public class TrampolineCompiler {
                 }
                 alias(t, fnName);
             } else {
-                String fnName = mangleClass(t.getTarget()) + "_checkcast";
+                String fnName = Symbols.checkcastSymbol(t.getTarget());
                 alias(t, fnName);
             }
         } else if (t instanceof LdcClass) {
@@ -184,11 +167,11 @@ public class TrampolineCompiler {
                 FunctionRef fn = createLdcArray(t.getTarget());
                 alias(t, fn.getName());
             } else {
-                String fnName = mangleClass(t.getTarget()) + "_ldc_ext";
+                String fnName = Symbols.ldcExternalSymbol(t.getTarget());
                 alias(t, fnName);
             }
         } else if (t instanceof Anewarray) {
-            String fnName = "array_" + mangleClass(t.getTarget()) + "_new";
+            String fnName = Symbols.anewarraySymbol(t.getTarget());
             if (!mb.hasSymbol(fnName)) {
                 Function fn = new FunctionBuilder(t).name(fnName).linkage(weak).build();
                 Value arrayClass = callLdcArray(fn, t.getTarget());
@@ -199,7 +182,7 @@ public class TrampolineCompiler {
             }
             alias(t, fnName);
         } else if (t instanceof Multianewarray) {
-            String fnName = "array_" + mangleClass(t.getTarget()) + "_multi";
+            String fnName = Symbols.multianewarraySymbol(t.getTarget());
             if (!mb.hasSymbol(fnName)) {
                 Function fn = new FunctionBuilder(t).name(fnName).linkage(weak).build();
                 Value arrayClass = callLdcArray(fn, t.getTarget());
@@ -239,8 +222,7 @@ public class TrampolineCompiler {
                 fn.add(new Ret(result));
                 mb.addFunction(fn);
             } else {
-                Global g = new Global("native_" + mangleMethod(nc.getTarget(), 
-                        nc.getMethodName(), nc.getMethodDesc()) + "_ptr", 
+                Global g = new Global(Symbols.nativeMethodPtrSymbol(nc), 
                         new NullConstant(I8_PTR));
                 mb.addGlobal(g);
                 Function fn = new FunctionBuilder(nc).linkage(_private).attribs(alwaysinline, optsize).build();
@@ -344,10 +326,9 @@ public class TrampolineCompiler {
     }
     
     private void createTrampolineAliasForField(FieldAccessor t, SootField field) {
-        String fnName = mangleField(field);
-        fnName += t.isGetter() ? "_getter" : "_setter";
+        String fnName = t.isGetter() ? Symbols.getterSymbol(field) : Symbols.setterSymbol(field);
         if (t.isStatic()) {
-            fnName += "_clinit";
+            fnName = Symbols.clinitWrapperSymbol(fnName);
         }
         alias(t, fnName);
     }
@@ -369,18 +350,20 @@ public class TrampolineCompiler {
     }
     
     private void createTrampolineAliasForMethod(Invoke t, SootMethod rm) {
-        String fnName = mangleMethod(rm);
+        String fnName = null;
         if (t instanceof Invokeinterface) {
-            fnName += "_lookup";
+            fnName = Symbols.lookupWrapperSymbol(rm);
         } else if (t instanceof Invokevirtual 
                 && !Modifier.isFinal(rm.getDeclaringClass().getModifiers()) 
                 && !Modifier.isFinal(rm.getModifiers())) {
-            fnName += "_lookup";
+            fnName = Symbols.lookupWrapperSymbol(rm);
         } else if (rm.isSynchronized()) {
-            fnName += "_synchronized";
+            fnName = Symbols.synchronizedWrapperSymbol(rm);
+        } else {
+            fnName = Symbols.methodSymbol(rm);
         }
         if (t.isStatic()) {
-            fnName += "_clinit";
+            fnName = Symbols.clinitWrapperSymbol(fnName);
         }
         alias(t, fnName);
     }
@@ -409,11 +392,11 @@ public class TrampolineCompiler {
         if (isPrimitiveComponentType(targetClass)) {
             throw new IllegalArgumentException();
         }
-        String fnName = "array_" + mangleClass(targetClass) + "_ldc";
+        String fnName = Symbols.arrayldcSymbol(targetClass);
         FunctionRef fnRef = new FunctionRef(fnName, new FunctionType(OBJECT_PTR, ENV_PTR));
         if (!mb.hasSymbol(fnName)) {
             Function fn = new FunctionBuilder(fnRef).name(fnName).linkage(weak).build();
-            Global g = new Global("array_" + mangleClass(targetClass) + "_ptr", weak, new NullConstant(OBJECT_PTR));
+            Global g = new Global(Symbols.arrayPtrSymbol(targetClass), weak, new NullConstant(OBJECT_PTR));
             if (!mb.hasSymbol(g.getName())) {
                 mb.addGlobal(g);
             }

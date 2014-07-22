@@ -17,8 +17,9 @@
 package org.robovm.compiler;
 
 import static org.robovm.compiler.Functions.*;
-import static org.robovm.compiler.Mangler.*;
+import static org.robovm.compiler.Strings.*;
 import static org.robovm.compiler.Types.*;
+import static org.robovm.compiler.llvm.Linkage.*;
 import static org.robovm.compiler.llvm.Type.*;
 
 import java.util.ArrayList;
@@ -99,7 +100,6 @@ import org.robovm.compiler.trampoline.Invokespecial;
 import org.robovm.compiler.trampoline.Invokestatic;
 import org.robovm.compiler.trampoline.Invokevirtual;
 import org.robovm.compiler.trampoline.LdcClass;
-import org.robovm.compiler.trampoline.LdcString;
 import org.robovm.compiler.trampoline.Multianewarray;
 import org.robovm.compiler.trampoline.New;
 import org.robovm.compiler.trampoline.PutField;
@@ -201,6 +201,7 @@ public class MethodCompiler extends AbstractMethodCompiler {
     private Map<Unit, List<Trap>> trapsAt;
     private Map<SameLocalKey, List<Local>> sameLocals;
     private Value env;
+    private ModuleBuilder moduleBuilder;
     
     private Variable dims;
     
@@ -211,6 +212,7 @@ public class MethodCompiler extends AbstractMethodCompiler {
     protected Function doCompile(ModuleBuilder moduleBuilder, SootMethod method) {
         function = FunctionBuilder.method(method);
         moduleBuilder.addFunction(function);
+        this.moduleBuilder = moduleBuilder;
         
         env = function.getParameterRef(0);
 
@@ -340,7 +342,7 @@ public class MethodCompiler extends AbstractMethodCompiler {
                         landingPad.add(new NullConstant(I8_PTR));
                     } else {
                         catches.add(getInternalName(exClass));
-                        Global g = new Global(mangleClass(exClass) + "_info_struct", I8_PTR, true);
+                        Global g = new Global(Symbols.infoStructSymbol(getInternalName(exClass)), I8_PTR, true);
                         if (!moduleBuilder.hasSymbol(g.getName())) {
                             moduleBuilder.addGlobal(g);
                         }
@@ -526,9 +528,7 @@ public class MethodCompiler extends AbstractMethodCompiler {
                     value = new IntegerConstant(ltag.getLongValue());
                 } else if (tag instanceof StringConstantValueTag) {
                     String s = ((StringConstantValueTag) tag).getStringValue();
-                    Trampoline trampoline = new LdcString(className, s);
-                    trampolines.add(trampoline);
-                    value = call(trampoline.getFunctionRef(), env);
+                    value = call(ldcString(s), env);
                 }
                 
                 if (value != null) {
@@ -567,9 +567,7 @@ public class MethodCompiler extends AbstractMethodCompiler {
             return new NullConstant(OBJECT_PTR);
         } else if (v instanceof soot.jimple.StringConstant) {
             String s = ((soot.jimple.StringConstant) v).value;
-            Trampoline trampoline = new LdcString(className, s);
-            trampolines.add(trampoline);
-            return call(unit, trampoline.getFunctionRef(), env);
+            return call(unit, ldcString(s), env);
         } else if (v instanceof soot.jimple.ClassConstant) {
             // ClassConstant is either the internal name of a class or the descriptor of an array
             String targetClassName = ((soot.jimple.ClassConstant) v).getValue();
@@ -592,6 +590,22 @@ public class MethodCompiler extends AbstractMethodCompiler {
             }
         }
         throw new IllegalArgumentException("Unknown Immediate type: " + v.getClass());
+    }
+
+    private FunctionRef ldcString(String s) {
+        byte[] modUtf8 = stringToModifiedUtf8Z(s);
+        FunctionRef fref = new FunctionRef(Symbols.ldcStringSymbol(modUtf8), new FunctionType(OBJECT_PTR, ENV_PTR));
+        if (moduleBuilder.hasSymbol(fref.getName())) {
+            return fref;
+        }
+        Global g = new Global(Symbols.ldcStringPtrSymbol(modUtf8), weak, new NullConstant(OBJECT_PTR));
+        moduleBuilder.addGlobal(g);
+        Function f = new FunctionBuilder(fref).linkage(weak).build();
+        moduleBuilder.addFunction(f);
+        Value result = Functions.call(f, BC_LDC_STRING, f.getParameterRef(0), g.ref(),
+                moduleBuilder.getString(s), new IntegerConstant(s.length()));
+        f.add(new Ret(result));
+        return fref;
     }
 
     private Value widenToI32Value(Unit unit, Value value, boolean unsigned) {
@@ -862,7 +876,7 @@ public class MethodCompiler extends AbstractMethodCompiler {
             checkNull(stmt, base);
             FunctionRef fn = null;
             if (canAccessDirectly(ref)) {
-                fn = new FunctionRef(mangleField(ref.getFieldRef()) + "_getter", 
+                fn = new FunctionRef(Symbols.getterSymbol(ref.getFieldRef()), 
                         new FunctionType(getType(ref.getType()), ENV_PTR, OBJECT_PTR));
             } else {
                 soot.Type runtimeType = ref.getBase().getType();
@@ -880,7 +894,7 @@ public class MethodCompiler extends AbstractMethodCompiler {
             FunctionRef fn = Intrinsics.getIntrinsic(sootMethod, stmt);
             if (fn == null) {
                 if (canAccessDirectly(ref)) {
-                    fn = new FunctionRef(mangleField(ref.getFieldRef()) + "_getter", 
+                    fn = new FunctionRef(Symbols.getterSymbol(ref.getFieldRef()), 
                             new FunctionType(getType(ref.getType()), ENV_PTR));
                 } else {
                     String targetClassName = getInternalName(ref.getFieldRef().declaringClass());
@@ -1162,7 +1176,7 @@ public class MethodCompiler extends AbstractMethodCompiler {
                 checkNull(stmt, base);
                 FunctionRef fn = null;
                 if (canAccessDirectly(ref)) {
-                    fn = new FunctionRef(mangleField(ref.getFieldRef()) + "_setter", 
+                    fn = new FunctionRef(Symbols.setterSymbol(ref.getFieldRef()), 
                             new FunctionType(VOID, ENV_PTR, OBJECT_PTR, getType(ref.getType())));
                 } else {
                     soot.Type runtimeType = ref.getBase().getType();
@@ -1178,7 +1192,7 @@ public class MethodCompiler extends AbstractMethodCompiler {
                 StaticFieldRef ref = (StaticFieldRef) leftOp;
                 FunctionRef fn = null;
                 if (canAccessDirectly(ref)) {
-                    fn = new FunctionRef(mangleField(ref.getFieldRef()) + "_setter", 
+                    fn = new FunctionRef(Symbols.setterSymbol(ref.getFieldRef()), 
                             new FunctionType(VOID, ENV_PTR, getType(ref.getType())));
                 } else {
                     String targetClassName = getInternalName(ref.getFieldRef().declaringClass());

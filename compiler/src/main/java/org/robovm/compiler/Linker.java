@@ -163,10 +163,10 @@ public class Linker {
             StructureConstant infoErrorStruct = createClassInfoErrorStruct(mb, clazz.getClazzInfo());
             Global info = null;
             if (infoErrorStruct == null) {
-                info = new Global(mangleClass(clazz.getInternalName()) + "_info_struct", external, I8_PTR, false);
+                info = new Global(Symbols.infoStructSymbol(clazz.getInternalName()), external, I8_PTR, false);
             } else {
                 typeInfo.error = true;
-                info = new Global(mangleClass(clazz.getInternalName()) + "_info_struct", infoErrorStruct);
+                info = new Global(Symbols.infoStructSymbol(clazz.getInternalName()), infoErrorStruct);
             }
             mb.addGlobal(info);
             if (clazz.isInBootClasspath()) {
@@ -212,7 +212,7 @@ public class Linker {
             TypeInfo typeInfo = typeInfos.get(ci);
             if (typeInfo.error) {
                 // Add an empty TypeInfo
-                mb.addGlobal(new Global(mangleClass(clazz.getInternalName()) + "_typeinfo", 
+                mb.addGlobal(new Global(Symbols.typeInfoSymbol(clazz.getInternalName()), 
                         new StructureConstantBuilder()
                             .add(new IntegerConstant(typeInfo.id))
                             .add(new IntegerConstant(0))
@@ -229,7 +229,7 @@ public class Linker {
                 for (int i = 0; i < typeInfo.interfaceTypes.length; i++) {
                     interfaceIds[i] = typeInfo.interfaceTypes[i].id;
                 }
-                mb.addGlobal(new Global(mangleClass(clazz.getInternalName()) + "_typeinfo", 
+                mb.addGlobal(new Global(Symbols.typeInfoSymbol(clazz.getInternalName()), 
                         new StructureConstantBuilder()
                             .add(new IntegerConstant(typeInfo.id))
                             .add(new IntegerConstant((typeInfo.classTypes.length - 1) * 4 + 5 * 4))
@@ -483,10 +483,10 @@ public class Linker {
 
     private Function createLookup(ModuleBuilder mb, ClazzInfo ci, MethodInfo mi) {
         Function function = FunctionBuilder.lookup(ci, mi, false);
-        String targetFnName = mangleMethod(ci.getInternalName(), mi.getName(), mi.getDesc());
-        if (mi.isSynchronized()) {
-            targetFnName += "_synchronized";
-        }
+        String targetFnName = mi.isSynchronized() 
+                ? Symbols.synchronizedWrapperSymbol(ci.getInternalName(), mi.getName(), mi.getDesc()) 
+                : Symbols.methodSymbol(ci.getInternalName(), mi.getName(), mi.getDesc());
+
         FunctionRef fn = new FunctionRef(targetFnName, function.getType());
         if (!mb.hasSymbol(fn.getName())) {
             mb.addFunctionDeclaration(new FunctionDeclaration(fn));
@@ -497,7 +497,7 @@ public class Linker {
     }
    
     private Value getInfoStruct(ModuleBuilder mb, Function f, Clazz clazz) {
-        return new ConstantBitcast(mb.getGlobalRef(mangleClass(clazz.getInternalName()) + "_info_struct"), I8_PTR_PTR);
+        return new ConstantBitcast(mb.getGlobalRef(Symbols.infoStructSymbol(clazz.getInternalName())), I8_PTR_PTR);
     }
 
 }

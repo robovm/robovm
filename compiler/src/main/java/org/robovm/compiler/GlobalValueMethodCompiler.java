@@ -18,7 +18,6 @@ package org.robovm.compiler;
 
 import static org.robovm.compiler.Annotations.*;
 import static org.robovm.compiler.Functions.*;
-import static org.robovm.compiler.Mangler.*;
 import static org.robovm.compiler.Types.*;
 import static org.robovm.compiler.llvm.Linkage.*;
 import static org.robovm.compiler.llvm.Type.*;
@@ -87,7 +86,7 @@ public class GlobalValueMethodCompiler extends BroMethodCompiler {
 
         // Load the address of the resolved @GlobalValue method
         Variable valuePtr = fn.newVariable(new PointerType(valueType));
-        Global valuePtrPtr = new Global(getGlobalValuePtrName(method), 
+        Global valuePtrPtr = new Global(Symbols.globalValuePtrSymbol(method), 
                 _private, new NullConstant(I8_PTR));
         moduleBuilder.addGlobal(valuePtrPtr);
         fn.add(new Load(valuePtr, new ConstantBitcast(valuePtrPtr.ref(), new PointerType(valuePtr.getType()))));
@@ -120,9 +119,5 @@ public class GlobalValueMethodCompiler extends BroMethodCompiler {
         }
         
         return fn;
-    }
-
-    public static String getGlobalValuePtrName(SootMethod method) {
-        return "global_value_" + mangleMethod(method) + "_ptr";
     }
 }

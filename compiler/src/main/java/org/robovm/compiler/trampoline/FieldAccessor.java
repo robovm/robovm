@@ -16,7 +16,7 @@
  */
 package org.robovm.compiler.trampoline;
 
-import static org.robovm.compiler.Mangler.*;
+import org.robovm.compiler.Symbols;
 
 
 /**
@@ -101,6 +101,6 @@ public abstract class FieldAccessor extends Trampoline {
     
     @Override
     public String toString() {
-        return super.toString() + "_" + mangleString(fieldName) + "_" + mangleString(fieldDesc);
+        return Symbols.trampolineFieldSymbol(this, getCallingClass(), getTarget(), getFieldName(), getFieldDesc());
     }
 }

@@ -16,7 +16,7 @@
  */
 package org.robovm.compiler.trampoline;
 
-import static org.robovm.compiler.Mangler.*;
+import org.robovm.compiler.Symbols;
 
 
 /**
@@ -84,6 +84,6 @@ public class Invokespecial extends Invoke {
     
     @Override
     public String toString() {
-        return super.toString() + "_" + mangleString(runtimeClass);
+        return Symbols.trampolineMethodSymbol(this, getCallingClass(), getTarget(), getMethodName(), getMethodDesc(), runtimeClass);
     }
 }

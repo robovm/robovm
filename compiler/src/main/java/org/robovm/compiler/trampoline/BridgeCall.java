@@ -16,8 +16,7 @@
  */
 package org.robovm.compiler.trampoline;
 
-import static org.robovm.compiler.Mangler.*;
-
+import org.robovm.compiler.Symbols;
 import org.robovm.compiler.Types;
 import org.robovm.compiler.llvm.FunctionType;
 
@@ -107,6 +106,6 @@ public class BridgeCall extends Trampoline {
     
     @Override
     public String toString() {
-        return super.toString() + "_" + mangleString(methodName) + "_" + mangleString(methodDesc);
+        return Symbols.trampolineMethodSymbol(this, getCallingClass(), getTarget(), getMethodName(), getMethodDesc());
     }
 }

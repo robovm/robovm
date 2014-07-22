@@ -16,7 +16,7 @@
  */
 package org.robovm.compiler;
 
-import static org.robovm.compiler.Mangler.*;
+import static org.robovm.compiler.Symbols.*;
 import static org.robovm.compiler.Types.*;
 import static org.robovm.compiler.llvm.FunctionAttribute.*;
 import static org.robovm.compiler.llvm.Linkage.*;
@@ -53,24 +53,16 @@ public class FunctionBuilder {
     private String section = null;
     private List<String> parameterNames = new ArrayList<String>();
     
-    public FunctionBuilder() {
-        this((String) null, (FunctionType) null);
-    }
-    
     public FunctionBuilder(Trampoline t) {
         this(t.getFunctionRef());
     }
-    
+
     public FunctionBuilder(FunctionRef ref) {
         this(ref.getName(), ref.getType());
     }
-    
-    public FunctionBuilder(SootMethod method) {
-        this(mangleMethod(method), getFunctionType(method));
-    }
-    
-    public FunctionBuilder(ClazzInfo ci, MethodInfo mi) {
-        this(mangleMethod(ci.getInternalName(), mi.getName(), mi.getDesc()), getFunctionType(mi.getDesc(), mi.isStatic()));
+
+    public FunctionBuilder(String name, FunctionRef ref) {
+        this(name, ref.getType());
     }
     
     public FunctionBuilder(String name, FunctionType type) {
@@ -81,11 +73,6 @@ public class FunctionBuilder {
 
     public FunctionBuilder name(String name) {
         this.name = name;
-        return this;
-    }
-    
-    public FunctionBuilder suffix(String suffix) {
-        this.name += suffix;
         return this;
     }
     
@@ -135,8 +122,8 @@ public class FunctionBuilder {
     }
     
     public static Function allocator(SootClass sootClass) {
-        return new FunctionBuilder(mangleClass(sootClass), new FunctionType(OBJECT_PTR, ENV_PTR))
-                .suffix("_allocator").linkage(_private).attribs(alwaysinline, optsize).build();
+        return new FunctionBuilder(allocatorSymbol(getInternalName(sootClass)), new FunctionType(OBJECT_PTR, ENV_PTR))
+                .linkage(_private).attribs(alwaysinline, optsize).build();
     }
     
     public static Function instanceOf(Clazz clazz) {
@@ -146,8 +133,8 @@ public class FunctionBuilder {
         return instanceOf(getInternalName(sootClass));
     }
     public static Function instanceOf(String internalName) {
-        return new FunctionBuilder(mangleClass(internalName), new FunctionType(I32, ENV_PTR, OBJECT_PTR))
-                .suffix("_instanceof").linkage(external).attribs(alwaysinline, optsize).build();
+        return new FunctionBuilder(instanceofSymbol(internalName), new FunctionType(I32, ENV_PTR, OBJECT_PTR))
+                .linkage(external).attribs(alwaysinline, optsize).build();
     }
     
     public static Function checkcast(Clazz clazz) {
@@ -157,18 +144,18 @@ public class FunctionBuilder {
         return checkcast(getInternalName(sootClass));
     }
     public static Function checkcast(String internalName) {
-        return new FunctionBuilder(mangleClass(internalName), new FunctionType(OBJECT_PTR, ENV_PTR, OBJECT_PTR))
-                .suffix("_checkcast").linkage(external).attribs(alwaysinline, optsize).build();
+        return new FunctionBuilder(checkcastSymbol(internalName), new FunctionType(OBJECT_PTR, ENV_PTR, OBJECT_PTR))
+                .linkage(external).attribs(alwaysinline, optsize).build();
     }
 
     public static Function trycatchEnter(SootClass sootClass) {
-        return new FunctionBuilder(mangleClass(sootClass), new FunctionType(OBJECT_PTR, ENV_PTR))
-                .suffix("_trycatchenter").linkage(external).attribs(alwaysinline, optsize).build();
+        return new FunctionBuilder(trycatchenterSymbol(getInternalName(sootClass)), new FunctionType(OBJECT_PTR, ENV_PTR))
+                .linkage(external).attribs(alwaysinline, optsize).build();
     }
     
     public static Function ldcInternal(String internalName) {
-        return new FunctionBuilder(mangleClass(internalName), new FunctionType(OBJECT_PTR, ENV_PTR))
-                .suffix("_ldc").linkage(_private).attribs(alwaysinline, optsize).build();
+        return new FunctionBuilder(ldcInternalSymbol(internalName), new FunctionType(OBJECT_PTR, ENV_PTR))
+                .linkage(_private).attribs(alwaysinline, optsize).build();
     }
     
     public static Function ldcInternal(SootClass sootClass) {
@@ -176,12 +163,12 @@ public class FunctionBuilder {
     }
     
     public static Function ldcExternal(SootClass sootClass) {
-        return new FunctionBuilder(mangleClass(sootClass), new FunctionType(OBJECT_PTR, ENV_PTR))
-                .suffix("_ldc_ext").linkage(external).attribs(noinline, optsize).build();
+        return new FunctionBuilder(ldcExternalSymbol(getInternalName(sootClass)), new FunctionType(OBJECT_PTR, ENV_PTR))
+                .linkage(external).attribs(noinline, optsize).build();
     }
     
     public static Function getter(SootField field) {
-        String name = mangleField(field) + "_getter";
+        String name = getterSymbol(field);
         if (field.isStatic()) {
             return new FunctionBuilder(name, new FunctionType(getType(field.getType()), ENV_PTR))
                 .linkage(_private).attribs(alwaysinline, optsize).build();
@@ -192,7 +179,7 @@ public class FunctionBuilder {
     }
     
     public static Function setter(SootField field) {
-        String name = mangleField(field) + "_setter";
+        String name = setterSymbol(field);
         if (field.isStatic()) {
             return new FunctionBuilder(name, new FunctionType(VOID, ENV_PTR, getType(field.getType())))
                 .linkage(_private).attribs(alwaysinline, optsize).build();
@@ -203,42 +190,43 @@ public class FunctionBuilder {
     }
     
     public static Function clinitWrapper(FunctionRef targetFn) {
-        return new FunctionBuilder(targetFn).suffix("_clinit")
+        return new FunctionBuilder(clinitWrapperSymbol(targetFn.getName()), targetFn)
                 .linkage(external).attribs(noinline, optsize).build();
     }
 
     public static Function lookup(SootMethod method, boolean isWeak) {
-        return new FunctionBuilder(method).suffix("_lookup").linkage(isWeak ? weak : external).build();
+        return new FunctionBuilder(lookupWrapperSymbol(method), 
+                getFunctionType(method)).linkage(isWeak ? weak : external).build();
     }
 
     public static Function lookup(ClazzInfo ci, MethodInfo mi, boolean isWeak) {
-        return new FunctionBuilder(ci, mi).suffix("_lookup").linkage(isWeak ? weak : external).build();
+        return new FunctionBuilder(
+                lookupWrapperSymbol(ci.getInternalName(), mi.getName(), mi.getDesc()), 
+                getFunctionType(mi.getDesc(),  mi.isStatic()))
+            .linkage(isWeak ? weak : external).build();
     }
 
-    public static Function structMember(SootMethod method) {
-        return new FunctionBuilder(method).linkage(external).attribs(noinline, optsize).build();
-    }
-    
-    public static Function structSizeOf(SootMethod method) {
-        return new FunctionBuilder(method).linkage(external).attribs(noinline, optsize).build();
-    }
-    
     public static Function synchronizedWrapper(SootMethod method) {
-        return new FunctionBuilder(method).suffix("_synchronized")
+        return new FunctionBuilder(synchronizedWrapperSymbol(method), getFunctionType(method))
                 .linkage(external).attribs(noinline, optsize).build();
     }
     
     public static Function method(SootMethod method) {
-        return new FunctionBuilder(method).linkage(external)
+        return new FunctionBuilder(methodSymbol(method), getFunctionType(method)).linkage(external)
                 .attribs(noinline, optsize).build();
     }
     
-    public static Function infoStruct(String internalName) {
-        return new FunctionBuilder(mangleClass(internalName), new FunctionType(I8_PTR_PTR))
-                .suffix("_info").linkage(external).attribs(alwaysinline, optsize).build();
+    public static Function info(String internalName) {
+        return new FunctionBuilder(infoSymbol(internalName), new FunctionType(I8_PTR_PTR))
+                .linkage(external).attribs(alwaysinline, optsize).build();
     }
     
     public static Function infoStruct(SootClass sootClass) {
-        return infoStruct(getInternalName(sootClass));
+        return info(getInternalName(sootClass));
+    }
+    
+    public static Function callback(SootMethod method, FunctionType functionType) {
+        return new FunctionBuilder(callbackSymbol(method), functionType)
+                .linkage(external).attribs(noinline, optsize).build();
     }
 }

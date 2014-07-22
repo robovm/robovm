@@ -18,7 +18,6 @@ package org.robovm.compiler;
 
 import static org.robovm.compiler.Annotations.*;
 import static org.robovm.compiler.Functions.*;
-import static org.robovm.compiler.Mangler.*;
 import static org.robovm.compiler.Types.*;
 import static org.robovm.compiler.llvm.Type.*;
 
@@ -84,7 +83,6 @@ import org.robovm.compiler.llvm.VariableRef;
 import org.robovm.compiler.plugin.CompilerPlugin;
 import org.robovm.compiler.trampoline.FieldAccessor;
 import org.robovm.compiler.trampoline.Invoke;
-import org.robovm.compiler.trampoline.LdcString;
 import org.robovm.compiler.trampoline.Trampoline;
 import org.robovm.llvm.Context;
 import org.robovm.llvm.Module;
@@ -415,25 +413,21 @@ public class ClassCompiler {
     }
     
     private void patchAsmWithFunctionSizes(Clazz clazz, InputStream inStream, OutputStream outStream) throws IOException {
+        String labelPrefix = config.getOs().getFamily() == OS.Family.darwin ? "_" : "";
+        String localLabelPrefix = config.getOs().getFamily() == OS.Family.darwin ? "L" : ".L";
+        
         Set<String> functionNames = new HashSet<String>();
         for (SootMethod method : clazz.getSootClass().getMethods()) {
             if (!method.isAbstract()) {
-                String name = mangleMethod(method);
-                if (config.getOs().getFamily() == OS.Family.darwin) {
-                    name = "_" + name;
-                }                
+                String name = labelPrefix + Symbols.methodSymbol(method);
                 functionNames.add(name);
             }
         }
         
-        String localLabelPrefix = ".L";
-        String prefix = mangleClass(clazz.getInternalName());
-        if (config.getOs().getFamily() == OS.Family.darwin) {
-            localLabelPrefix = "L";
-            prefix = "_" + prefix;
-        }
-        String infoStructLabel = prefix + "_info_struct";
-        Pattern methodImplPattern = Pattern.compile("\\s*\\.(?:quad|long)\\s+(" + Pattern.quote(prefix) + "[^\\s]+).*");
+        String infoStructLabel = labelPrefix + Symbols.infoStructSymbol(clazz.getInternalName());
+        Pattern methodImplPattern = Pattern.compile("\\s*\\.(?:quad|long)\\s+\"?(" 
+                + Pattern.quote(labelPrefix + Symbols.methodSymbolPrefix(clazz.getInternalName())) 
+                + "[^\\s\"]+)\"?.*");
         
         BufferedReader in = null;
         BufferedWriter out = null;
@@ -446,12 +440,12 @@ public class ClassCompiler {
                 if (currentFunction == null) {
                     out.write(line);
                     out.write('\n');
-                    if (line.startsWith(prefix)) {
-                        int colon = line.indexOf(':');
-                        if (colon == -1) {
-                            continue;
-                        }
+                    int colon = line.indexOf(':');
+                    if (colon != -1) {
                         String label = line.substring(0, colon);
+                        if (label.startsWith("\"") && label.endsWith("\"")) {
+                            label = label.substring(1, label.length() - 1);
+                        }
                         if (functionNames.contains(label)) {
                             currentFunction = label;
                         } else if (label.equals(infoStructLabel)) {
@@ -459,9 +453,10 @@ public class ClassCompiler {
                         }
                     }
                 } else if (line.trim().equals(".cfi_endproc") || line.trim().startsWith(".section") || line.trim().startsWith(".globl")) {
+                    out.write("\"");
                     out.write(localLabelPrefix);
                     out.write(currentFunction);
-                    out.write("_end:\n\n");
+                    out.write("_end\":\n\n");
                     currentFunction = null;
                     out.write(line);
                     out.write('\n');
@@ -474,20 +469,18 @@ public class ClassCompiler {
             while ((line = in.readLine()) != null) {
                 out.write(line);
                 out.write('\n');
-                if (line.contains(prefix)) {
-                    Matcher matcher = methodImplPattern.matcher(line);
-                    if (matcher.matches()) {
-                        String functionName = matcher.group(1);
-                        if (functionNames.contains(functionName)) {
-                            line = in.readLine();
-                            if (line.contains(String.valueOf(DUMMY_METHOD_SIZE))) {
-                                out.write("\t.long\t");
-                                out.write(localLabelPrefix + functionName + "_end - " + functionName);
-                                out.write('\n');
-                            } else {
-                                out.write(line);
-                                out.write('\n');                                
-                            }
+                Matcher matcher = methodImplPattern.matcher(line);
+                if (matcher.matches()) {
+                    String functionName = matcher.group(1);
+                    if (functionNames.contains(functionName)) {
+                        line = in.readLine();
+                        if (line.contains(String.valueOf(DUMMY_METHOD_SIZE))) {
+                            out.write("\t.long\t");
+                            out.write("\"" + localLabelPrefix + functionName + "_end\" - \"" + functionName + "\"");
+                            out.write('\n');
+                        } else {
+                            out.write(line);
+                            out.write('\n');
                         }
                     }
                 }
@@ -608,10 +601,9 @@ public class ClassCompiler {
                 createLookupFunction(method);
             }
             if (method.isStatic()) {
-                String fnName = mangleMethod(method);
-                if (method.isSynchronized()) {
-                    fnName += "_synchronized";
-                }
+                String fnName = method.isSynchronized() 
+                        ? Symbols.synchronizedWrapperSymbol(method) 
+                        : Symbols.methodSymbol(method);
                 FunctionRef fn = new FunctionRef(fnName, getFunctionType(method));
                 mb.addFunction(createClassInitWrapperFunction(fn));
             }
@@ -634,12 +626,12 @@ public class ClassCompiler {
             if (!sootClass.isInterface()) {
                 config.getVTableCache().get(sootClass);
             }
-            classInfoStruct = new Global(mangleClass(sootClass) + "_info_struct", Linkage.weak, createClassInfoStruct());
+            classInfoStruct = new Global(Symbols.infoStructSymbol(clazz.getInternalName()), Linkage.weak, createClassInfoStruct());
         } catch (IllegalArgumentException e) {
             // VTable throws this if any of the superclasses of the class is actually an interface.
             // Shouldn't happen frequently but the DRLVM test suite has some tests for this.
             // The Linker will take care of making sure the class cannot be loaded at runtime.
-            classInfoStruct = new Global(mangleClass(sootClass) + "_info_struct", I8_PTR, true);
+            classInfoStruct = new Global(Symbols.infoStructSymbol(clazz.getInternalName()), I8_PTR, true);
         }
         mb.addGlobal(classInfoStruct);
         
@@ -679,7 +671,7 @@ public class ClassCompiler {
         ci.addDependencies(catches);
         
         for (Trampoline t : trampolines) {
-            if (!(t instanceof LdcString)) {
+            {
                 String desc = t.getTarget();
                 if (desc.charAt(0) == 'L' || desc.charAt(0) == '[') {
                     // Target is a descriptor
@@ -766,7 +758,7 @@ public class ClassCompiler {
     
     private Constant createVTableStruct() {
         VTable vtable = config.getVTableCache().get(sootClass);
-        String name = mangleClass(sootClass) + "_vtable";
+        String name = Symbols.vtableSymbol(getInternalName(sootClass));
         for (VTable.Entry entry : vtable.getEntries()) {
             FunctionRef fref = entry.getFunctionRef();
             if (fref != null && !mb.hasSymbol(fref.getName())) {
@@ -780,7 +772,7 @@ public class ClassCompiler {
     
     private Constant createITableStruct() {
         ITable itable = config.getITableCache().get(sootClass);
-        String name = mangleClass(sootClass) + "_itable";
+        String name = Symbols.itableSymbol(getInternalName(sootClass));
         Global itableStruct = new Global(name, Linkage._private, itable.getStruct(), true);
         mb.addGlobal(itableStruct);
         return new ConstantBitcast(itableStruct.ref(), I8_PTR);
@@ -795,8 +787,8 @@ public class ClassCompiler {
             for (SootClass ifs : interfaces) {
                 ITable itable = config.getITableCache().get(ifs);
                 if (itable.size() > 0) {
-                    String name = mangleClass(sootClass) + "_itable" + (i++);
-                    String typeInfoName = mangleClass(ifs) + "_typeinfo";
+                    String name = Symbols.itableSymbol(getInternalName(sootClass), i++);
+                    String typeInfoName = Symbols.typeInfoSymbol(getInternalName(ifs));
                     if (!mb.hasSymbol(typeInfoName)) {
                         mb.addGlobal(new Global(typeInfoName, Linkage.external, I8_PTR, true));
                     }
@@ -812,7 +804,7 @@ public class ClassCompiler {
             if (tables.isEmpty()) {
                 return new NullConstant(I8_PTR);
             } else {
-                Global itablesStruct = new Global(mangleClass(sootClass) + "_itables", Linkage._private,
+                Global itablesStruct = new Global(Symbols.itablesSymbol(getInternalName(sootClass)), Linkage._private,
                         new StructureConstantBuilder()
                             .add(new IntegerConstant((short) tables.size()))
                             .add(tables.get(0)) // cache value must never be null
@@ -865,12 +857,12 @@ public class ClassCompiler {
         header.add(getString(getInternalName(sootClass)));
         if (sootClass.declaresMethod("<clinit>", Collections.emptyList(), VoidType.v())) {
             SootMethod method = sootClass.getMethod("<clinit>", Collections.emptyList(), VoidType.v());
-            header.add(new FunctionRef(mangleMethod(method), getFunctionType(method)));            
+            header.add(new FunctionRef(Symbols.methodSymbol(method), getFunctionType(method)));            
         } else {
             header.add(new NullConstant(I8_PTR));
         }
-        mb.addGlobal(new Global(mangleClass(sootClass) + "_typeinfo", Linkage.external, I8_PTR, true));
-        header.add(new GlobalRef(mangleClass(sootClass) + "_typeinfo", I8_PTR)); // TypeInfo* generated by Linker
+        mb.addGlobal(new Global(Symbols.typeInfoSymbol(getInternalName(sootClass)), Linkage.external, I8_PTR, true));
+        header.add(new GlobalRef(Symbols.typeInfoSymbol(getInternalName(sootClass)), I8_PTR)); // TypeInfo* generated by Linker
 
         if (!sootClass.isInterface()) {
             header.add(createVTableStruct());
@@ -1075,23 +1067,23 @@ public class ClassCompiler {
                 body.add(new ConstantBitcast(attributesEncoder.getMethodAttributes(m).ref(), I8_PTR));
             }
             if (!m.isAbstract()) {
-                body.add(new ConstantBitcast(new FunctionRef(mangleMethod(m), getFunctionType(m)), I8_PTR));
+                body.add(new ConstantBitcast(new FunctionRef(Symbols.methodSymbol(m), getFunctionType(m)), I8_PTR));
                 body.add(new IntegerConstant(DUMMY_METHOD_SIZE)); // Size of function. This value will be modified later by patching the .s file.
                 if (m.isSynchronized()) {
-                    body.add(new ConstantBitcast(new FunctionRef(mangleMethod(m) + "_synchronized", getFunctionType(m)), I8_PTR));
+                    body.add(new ConstantBitcast(new FunctionRef(Symbols.synchronizedWrapperSymbol(m), getFunctionType(m)), I8_PTR));
                 }
             }
             if (hasBridgeAnnotation(m)) {
                 if (!readBooleanElem(getAnnotation(m, BRIDGE), "dynamic", false)) {
-                    body.add(new GlobalRef(BridgeMethodCompiler.getTargetFnPtrName(m), I8_PTR));
+                    body.add(new GlobalRef(Symbols.bridgePtrSymbol(m), I8_PTR));
                 } else {
                     body.add(new NullConstant(I8_PTR));
                 }
             } else if (hasGlobalValueAnnotation(m)) {
-                body.add(new GlobalRef(GlobalValueMethodCompiler.getGlobalValuePtrName(m), I8_PTR));
+                body.add(new GlobalRef(Symbols.globalValuePtrSymbol(m), I8_PTR));
             }
             if (hasCallbackAnnotation(m)) {
-                body.add(new AliasRef(mangleMethod(m) + "_callback_i8p", I8_PTR));
+                body.add(new AliasRef(Symbols.callbackPtrSymbol(m), I8_PTR));
             }
         }
         

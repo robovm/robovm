@@ -16,10 +16,9 @@
  */
 package org.robovm.compiler.trampoline;
 
-import static org.robovm.compiler.Mangler.*;
-
 import java.io.Serializable;
 
+import org.robovm.compiler.Symbols;
 import org.robovm.compiler.llvm.FunctionRef;
 import org.robovm.compiler.llvm.FunctionType;
 
@@ -110,7 +109,6 @@ public abstract class Trampoline implements Comparable<Trampoline>, Serializable
     
     @Override
     public String toString() {
-        return getClass().getSimpleName() + "_" + mangleString(callingClass) 
-                + "_" + mangleString(target);
+        return Symbols.trampolineSymbol(this, getCallingClass(), getTarget());
     }
 }

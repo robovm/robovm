@@ -43,8 +43,8 @@ import org.objectweb.asm.ClassWriter;
 import org.objectweb.asm.Label;
 import org.objectweb.asm.MethodVisitor;
 import org.robovm.compiler.CompilerException;
-import org.robovm.compiler.Mangler;
 import org.robovm.compiler.ModuleBuilder;
+import org.robovm.compiler.Symbols;
 import org.robovm.compiler.Types;
 import org.robovm.compiler.clazz.Clazz;
 import org.robovm.compiler.config.Config;
@@ -665,7 +665,7 @@ public class ObjCBlockPlugin extends AbstractCompilerPlugin {
             String[][] targetMethodAnnotations) {
         
         StringBuilder key = new StringBuilder(
-            Mangler.mangleMethod(Types.getInternalName(targetMethod.getDeclaringClass()), 
+            Symbols.methodSymbol(Types.getInternalName(targetMethod.getDeclaringClass()), 
                 targetMethod.getName(), 
                 Arrays.asList(actualTypes).subList(1, actualTypes.length), actualTypes[0]));
         

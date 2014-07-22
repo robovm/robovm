@@ -16,14 +16,13 @@
  */
 package org.robovm.compiler;
 
+import static org.robovm.compiler.Annotations.*;
 import static org.robovm.compiler.Bro.*;
 import static org.robovm.compiler.Functions.*;
-import static org.robovm.compiler.Mangler.*;
 import static org.robovm.compiler.Types.*;
 import static org.robovm.compiler.llvm.Linkage.*;
 import static org.robovm.compiler.llvm.ParameterAttribute.*;
 import static org.robovm.compiler.llvm.Type.*;
-import static org.robovm.compiler.Annotations.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -157,7 +156,7 @@ public class BridgeMethodCompiler extends BroMethodCompiler {
         // Load the address of the resolved @Bridge method
         Variable targetFn = fn.newVariable(targetFnType);
         if (!dynamic) {
-            Global targetFnPtr = new Global(getTargetFnPtrName(originalMethod), 
+            Global targetFnPtr = new Global(Symbols.bridgePtrSymbol(originalMethod), 
                     _private, new NullConstant(I8_PTR));
             moduleBuilder.addGlobal(targetFnPtr);
             fn.add(new Load(targetFn, new ConstantBitcast(targetFnPtr.ref(), new PointerType(targetFnType))));
@@ -338,9 +337,5 @@ public class BridgeMethodCompiler extends BroMethodCompiler {
                         new IntegerConstant(flags));
             }
         }
-    }
-    
-    public static String getTargetFnPtrName(SootMethod method) {
-        return "bridge_" + mangleMethod(method) + "_ptr";
     }
 }

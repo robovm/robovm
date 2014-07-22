@@ -16,10 +16,10 @@
  */
 package org.robovm.compiler.trampoline;
 
-import static org.robovm.compiler.Mangler.*;
 import static org.robovm.compiler.Types.*;
 import static org.robovm.compiler.llvm.Type.*;
 
+import org.robovm.compiler.Symbols;
 import org.robovm.compiler.llvm.FunctionType;
 
 
@@ -98,6 +98,6 @@ public class PutField extends FieldAccessor {
     
     @Override
     public String toString() {
-        return super.toString() + "_" + mangleString(runtimeClass);
+        return Symbols.trampolineFieldSymbol(this, getCallingClass(), getTarget(), getFieldName(), getFieldDesc(), runtimeClass);
     }
 }

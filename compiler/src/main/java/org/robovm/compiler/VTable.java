@@ -17,7 +17,6 @@
 package org.robovm.compiler;
 
 import static org.robovm.compiler.Functions.*;
-import static org.robovm.compiler.Mangler.*;
 import static org.robovm.compiler.Types.*;
 import static org.robovm.compiler.llvm.Type.*;
 
@@ -178,10 +177,10 @@ public class VTable {
             if (Modifier.isAbstract(modifiers)) {
                 return null;
             }
-            String functionName = mangleMethod(declaringClass.replace('.', '/'), name, desc);
-            if (Modifier.isSynchronized(modifiers)) {
-                functionName += "_synchronized";
-            }
+            String owner = declaringClass.replace('.', '/');
+            String functionName = Modifier.isSynchronized(modifiers) 
+                    ? Symbols.synchronizedWrapperSymbol(owner, name, desc) 
+                    : Symbols.methodSymbol(owner, name, desc);
             return new FunctionRef(functionName, getFunctionType(desc, Modifier.isStatic(modifiers)));
         }
         

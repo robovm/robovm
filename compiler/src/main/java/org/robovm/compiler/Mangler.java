@@ -16,75 +16,31 @@
  */
 package org.robovm.compiler;
 
-import static org.robovm.compiler.Types.*;
-
-import java.util.List;
-
-import soot.SootClass;
-import soot.SootField;
-import soot.SootFieldRef;
-import soot.SootMethod;
-import soot.SootMethodRef;
 
 /**
- * @author niklas
- *
+ * Mangles native method signatures into short and long JNI function names.
+ * See {@link http://docs.oracle.com/javase/8/docs/technotes/guides/jni/spec/design.html#resolving_native_method_names}
+ * for how a VM resolves JNI functions.
  */
 public class Mangler {
-    private static final char[] HEX_CHARS = "0123456789ABCDEF".toCharArray();
 
-    public static String mangleClass(SootClass clazz) {
-        return mangleString(getInternalName(clazz));
-    }
-    
-    public static String mangleClass(String internalName) {
-        return mangleString(internalName);
-    }
-    
-    public static String mangleMethod(SootMethod method) {
-        return mangleMethod(method.makeRef());
-    }
-    
-    @SuppressWarnings("unchecked")
-    public static String mangleMethod(SootMethodRef methodRef) {
-        return mangleMethod(getInternalName(methodRef.declaringClass()), methodRef.name(), 
-                methodRef.parameterTypes(), methodRef.returnType());
-    }
-    
-    public static String mangleMethod(String owner, String name, List<soot.Type> parameterTypes, soot.Type returnType) {
-        StringBuilder sb = new StringBuilder();
-        sb.append(mangleString(owner));
-        sb.append("_");
-        sb.append(mangleString(name));
-        if (!parameterTypes.isEmpty()) {
-            sb.append("__");
-            for (soot.Type parameterType : parameterTypes) {
-                sb.append(mangleString(getDescriptor(parameterType)));
-            }
-        }
-        sb.append("__");
-        sb.append(mangleString(getDescriptor(returnType)));
-        return sb.toString();
-    }
-    
-    public static String mangleMethod(String owner, String name, String desc) {
-        StringBuilder sb = new StringBuilder();
-        sb.append(mangleString(owner));
-        sb.append("_");
-        sb.append(mangleString(name));
-        if (!desc.startsWith("()")) {
-            sb.append("__");
-            sb.append(mangleString(desc.substring(1, desc.indexOf(')'))));
-        }
-        sb.append("__");
-        sb.append(mangleString(desc.substring(desc.indexOf(')') + 1)));
-        return sb.toString();
-    }
-    
+    /**
+     * Returns the short version of the JNI function name for a method.
+     * 
+     * @param owner the internal name of the class of the method.
+     * @param name the name of the method.
+     */
     public static String mangleNativeMethod(String owner, String name) {
         return mangleNativeMethod(owner, name, null);
     }
     
+    /**
+     * Returns the long version of the JNI function name for a method.
+     * 
+     * @param owner the internal name of the class of the method.
+     * @param name the name of the method.
+     * @param desc the method descriptor.
+     */
     public static String mangleNativeMethod(String owner, String name, String desc) {
         StringBuilder sb = new StringBuilder();
         sb.append("Java_");
@@ -98,7 +54,7 @@ public class Mangler {
         return sb.toString();
     }
     
-    public static String mangleNativeString(String name) {
+    private static String mangleNativeString(String name) {
         StringBuilder sb = new StringBuilder();
         for (int i = 0; i < name.length(); i++) {
             char c = name.charAt(i);
@@ -114,49 +70,6 @@ public class Mangler {
                 sb.append("_");
             } else {
                 sb.append(String.format("_0%04x", (int) c));
-            }
-        }
-        return sb.toString();
-    }
-
-    public static String mangleField(SootField field) {
-        return mangleField(getInternalName(field.getDeclaringClass()), field.getName(), field.getType());
-    }
-    
-    public static String mangleField(SootFieldRef field) {
-        return mangleField(getInternalName(field.declaringClass()), field.name(), field.type());
-    }
-    
-    public static String mangleField(String owner, String name, soot.Type type) {
-        return mangleField(owner, name, getDescriptor(type));
-    }
-    
-    public static String mangleField(String owner, String name, String desc) {
-        StringBuilder sb = new StringBuilder();
-        sb.append(mangleString(owner));
-        sb.append("_");
-        sb.append(mangleString(name));
-        sb.append("__");
-        sb.append(mangleString(desc));
-        return sb.toString();
-    }
-    
-    public static String mangleString(String name) {
-        return mangleModifiedUtf8(Strings.stringToModifiedUtf8(name));
-    }
-    
-    public static String mangleModifiedUtf8(byte[] s) {
-        StringBuilder sb = new StringBuilder();
-        for (int i = 0; i < s.length; i++) {
-            byte c = s[i];
-            if (c >= '0' && c <= '9' || c >= 'A' && c <= 'Z' || c >= 'a' && c <= 'z') {
-                sb.append((char) c);
-            } else if (c == '/') {
-                sb.append('_');
-            } else {
-                sb.append('$');
-                sb.append(HEX_CHARS[(c >> 4) & 0xf]);
-                sb.append(HEX_CHARS[c & 0xf]);
             }
         }
         return sb.toString();

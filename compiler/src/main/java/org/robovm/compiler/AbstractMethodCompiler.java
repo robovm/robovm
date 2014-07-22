@@ -17,7 +17,6 @@
 package org.robovm.compiler;
 
 import static org.robovm.compiler.Functions.*;
-import static org.robovm.compiler.Mangler.*;
 import static org.robovm.compiler.Types.*;
 
 import java.util.HashSet;
@@ -81,7 +80,7 @@ public abstract class AbstractMethodCompiler {
     protected abstract Function doCompile(ModuleBuilder moduleBuilder, SootMethod method);
 
     private void compileSynchronizedWrapper(ModuleBuilder moduleBuilder, SootMethod method) {
-        String targetName = mangleMethod(method);
+        String targetName = Symbols.methodSymbol(method);
         Function syncFn = FunctionBuilder.synchronizedWrapper(method);
         moduleBuilder.addFunction(syncFn);
         FunctionType functionType = syncFn.getType();

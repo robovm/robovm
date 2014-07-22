@@ -1,5 +1,5 @@
 package: org.robovm.apple.avfoundation
-include: [foundation.yaml, dispatch.yaml, coreanimation.yaml, corefoundation.yaml, coregraphics.yaml, coreaudio.yaml, coremedia.yaml, corevideo.yaml ] #, audiotoolbox.yaml, mediatoolbox.yaml
+include: [foundation.yaml, dispatch.yaml, coreanimation.yaml, corefoundation.yaml, coregraphics.yaml, coreaudio.yaml, coremedia.yaml, corevideo.yaml, audiotoolbox.yaml, mediatoolbox.yaml ]
 library: AVFoundation
 framework: AVFoundation
 clang_args: ['-x', 'objective-c']
@@ -7,7 +7,7 @@ headers:
     - /System/Library/Frameworks/AVFoundation.framework/Headers/AVFoundation.h
     - /System/Library/Frameworks/AVFoundation.framework/Headers/AVBase.h
 typedefs:
-    'void (^)(CMSampleBufferRef, NSError *)': '@Block VoidBlock2<CMSampleBufferRef, NSError>'
+    'void (^)(CMSampleBufferRef, NSError *)': '@Block VoidBlock2<CMSampleBuffer, NSError>'
     'void (^)(CMTime)': '@Block VoidBlock1<CMTime>'
     
 enums:
@@ -24,8 +24,8 @@ enums:
     AVAudioSessionCategoryOptions: { marshaler: ValuedEnum.AsMachineSizedUIntMarshaler }
     AVAudioSessionInterruptionType: { marshaler: ValuedEnum.AsMachineSizedUIntMarshaler }
     AVAudioSessionErrorCode: {}
-    AVAudioSessionInterruptionFlags: { first: AVAudioSessionInterruptionFlags_ShouldResume, prefix: AVAudioSessionInterruptionFlags_, marshaler: ValuedEnum.AsMachineSizedUIntMarshaler }
-    AVAudioSessionSetActiveFlags: { first: AVAudioSessionSetActiveFlags_NotifyOthersOnDeactivation, prefix: AVAudioSessionSetActiveFlags_, marshaler: ValuedEnum.AsMachineSizedUIntMarshaler }
+    AVAudioSessionInterruptionFlag: { first: AVAudioSessionInterruptionFlags_ShouldResume, prefix: AVAudioSessionInterruptionFlags_, bits: true, marshaler: Bits.AsMachineSizedIntMarshaler }
+    AVAudioSessionSetActiveFlag: { first: AVAudioSessionSetActiveFlags_NotifyOthersOnDeactivation, prefix: AVAudioSessionSetActiveFlags_, bits: true, marshaler: Bits.AsMachineSizedIntMarshaler }
     AVAudioQuality: { first: AVAudioQualityMin }
     AVCaptureDevicePosition: {}
     AVCaptureFlashMode: {}
@@ -45,15 +45,30 @@ enums:
     AVSpeechBoundary: {}
     
 categories:
-    AVAudioSessionHardwareConfiguration: {}
-    AVAudioSessionDeprecated: {}
-    AVMediaSelectionOptionFiltering: {}
-    AVOutputSettingsAssistant_SourceInformation: {}
-    AVPlayerItemLegibleOutput_NativeRepresentation: {}
-    AVPlayerItemLegibleOutput_TextStylingResolution: {}
-    NSValueAVFoundationExtensions: {}
-    AVTimeCoding: {}
-    
+    NSValueAVFoundationExtensions: # DONE
+        methods:
+            '-CMTimeValue':
+                name: "getTime"
+            '-CMTimeRangeValue':
+                name: "getTimeRange"
+            '-CMTimeMappingValue':
+                name: "getTimeMapping"
+            '+valueWith.*':
+                name: "create"
+    AVTimeCoding: # DONE
+        methods:
+            '-encodeCMTime:forKey:':
+                trim_after_first_colon: true
+            '-decodeCMTimeForKey:':
+                name: "decodeCMTime"
+            '-encodeCMTimeRange:forKey:':
+                trim_after_first_colon: true
+            '-decodeCMTimeRangeForKey:':
+                name: "decodeCMTimeRange"
+            '-encodeCMTimeMapping:forKey:':
+                trim_after_first_colon: true
+            '-decodeCMTimeMappingForKey:':
+                name: "decodeCMTimeMapping"
 classes:
     AVFoundation:
         annotations: ['@Marshaler(NSString.AsStringMarshaler.class)']
@@ -79,10 +94,10 @@ classes:
             '-trackWithTrackID:':
                 name: "getTrack"
             '-tracksWithMediaType:':
-                name: "getTracks"
+                name: "getTracksWithType"
                 return_type: "NSArray<AVAssetTrack>"
             '-tracksWithMediaCharacteristic:':
-                name: "getTracks"
+                name: "getTracksWithCharacteristic"
                 return_type: "NSArray<AVAssetTrack>"
             '-metadataForFormat:':
                 name: "getMetadata"
@@ -145,7 +160,7 @@ classes:
                     requestedTimes:
                         type: "NSArray<NSValue>"
                     handler: 
-                        type: "@Block VoidBlock5<CMTime, CGImageRef, CMTime, AVAssetImageGeneratorResult, NSError>"
+                        type: "@Block VoidBlock5<CMTime, CGImage, CMTime, AVAssetImageGeneratorResult, NSError>"
             '+assetImageGeneratorWithAsset:':
                 name: "create"
     AVAssetReader: # DONE
@@ -242,7 +257,7 @@ classes:
     AVAssetTrack: # DONE
         properties:
             'formatDescriptions':
-                type: "NSArray<CMFormatDescriptions>"
+                type: "NSArray<?>" # CMFormatDescription
             'segments':
                 type: "NSArray<AVAssetTrackSegment>"
             'commonMetadata':
@@ -426,6 +441,72 @@ classes:
                 name: "getPeakPower"
             '-averagePowerForChannel:':
                 name: "getAveragePower"
+    AVAudioSession: # DONE
+        properties:
+            'availableInputs':
+                type: "NSArray<AVAudioSessionPortDescription>"
+            'inputDataSources':
+                type: "NSArray<AVAudioSessionDataSourceDescription>"
+            'outputDataSources':
+                type: "NSArray<AVAudioSessionDataSourceDescription>"
+        methods:
+            '-setActive:.*':
+                trim_after_first_colon: true
+            '-setCategory:.*':
+                trim_after_first_colon: true
+            '-requestRecordPermission:':
+                trim_after_first_colon: true
+                parameters:
+                    response:
+                        type: "@Block VoidBooleanBlock"
+            '-setMode:error:':
+                trim_after_first_colon: true
+            '-overrideOutputAudioPort:error:':
+                trim_after_first_colon: true
+            '-setPreferredInput:error:':
+                trim_after_first_colon: true
+            '+sharedInstance':
+                return_type: "AVAudioSession"
+            '-setPreferredSampleRate:error:':
+                trim_after_first_colon: true
+            '-setPreferredIOBufferDuration:error:':
+                trim_after_first_colon: true
+            '-setPreferredInputNumberOfChannels:error:':
+                trim_after_first_colon: true
+            '-setPreferredOutputNumberOfChannels:error:':
+                trim_after_first_colon: true
+            '-setInputGain:error:':
+                trim_after_first_colon: true
+            '-setInputDataSource:error:':
+                trim_after_first_colon: true
+            '-setOutputDataSource:error:':
+                trim_after_first_colon: true
+            '-setPreferredHardwareSampleRate:error:':
+                trim_after_first_colon: true
+    AVAudioSessionChannelDescription: {} # DONE
+    AVAudioSessionDataSourceDescription: # DONE
+        properties:
+            'supportedPolarPatterns':
+                type: "NSArray<NSString>"
+        methods:
+            '-setPreferredPolarPattern:error:':
+                trim_after_first_colon: true
+    AVAudioSessionPortDescription: # DONE
+        properties:
+            'channels':
+                type: "NSArray<AVAudioSessionChannelDescription>"
+            'dataSources':
+                type: "NSArray<AVAudioSessionDataSourceDescription>"
+        methods:
+            '-setPreferredDataSource:error:':
+                trim_after_first_colon: true
+    AVAudioSessionRouteDescription: # DONE
+        properties:
+            'inputs':
+                type: "NSArray<AVAudioSessionPortDescription>"
+            'outputs':
+                type: "NSArray<AVAudioSessionPortDescription>"
+    AVCaptureAudioChannel: {} # DONE
     AVCaptureAudioDataOutput: # DONE
         methods:
             '-setSampleBufferDelegate:queue:':
@@ -489,7 +570,7 @@ classes:
             '+deviceInputWithDevice:error:':
                 name: "create"
                 return_type: "AVCaptureDeviceInput" 
-    AVCaptureDeviceInputSource: {}
+    AVCaptureDeviceInputSource: {} # DONE
     AVCaptureFileOutput: # DONE
         methods:
             '-startRecordingToOutputFileURL:recordingDelegate:':
@@ -498,6 +579,7 @@ classes:
         properties:
             'ports':
                 type: "NSArray<AVCaptureInputPort>"
+    AVCaptureInputPort: {} # DONE
     AVCaptureMetadataOutput: # DONE
         properties:
             'availableMetadataObjectTypes':
@@ -590,11 +672,11 @@ classes:
     AVComposition: # DONE
         properties:
             'tracks':
-                type: "NSArray<AVCompositionTrack>"
+                type: "NSArray<AVAssetTrack>" # AVCompositionTrack
     AVCompositionTrack: # DONE
         properties:
             'segments':
-                type: "NSArray<AVCompositionTrackSegment>"
+                type: "NSArray<AVAssetTrackSegment>" # AVCompositionTrackSegment
     AVCompositionTrackSegment: # DONE
         methods:
             '-initWithURL:trackID:sourceTimeRange:targetTimeRange:':
@@ -605,7 +687,120 @@ classes:
                 name: "create"
             '+compositionTrackSegmentWithTimeRange:':
                 name: "create"
-    AVMetadataItem: {}
+    AVFrameRateRange: {} # DONE
+    AVMediaSelectionGroup: # DONE
+        properties:
+            'options':
+                type: "NSArray<AVMediaSelectionOption>"
+        methods:
+            '-mediaSelectionOptionWithPropertyList:':
+                name: "getMediaSelectionOption"
+            '+playableMediaSelectionOptionsFromArray:':
+                name: "getPlayableMediaSelectionOptions"
+                return_type: "NSArray<AVMediaSelectionOption>"
+                parameters:
+                    mediaSelectionOptions:
+                        type: "NSArray<AVMediaSelectionOption>"
+            '+mediaSelectionOptionsFromArray:filteredAndSortedAccordingToPreferredLanguages:':
+                name: "getMediaSelectionOptions"
+                return_type: "NSArray<AVMediaSelectionOption>"
+                parameters:
+                    mediaSelectionOptions:
+                        type: "NSArray<AVMediaSelectionOption>"
+                    preferredLanguages:
+                        type: "NSArray<NSString>"
+            '+mediaSelectionOptionsFromArray:withLocale:':
+                name: "getMediaSelectionOption"
+                return_type: "NSArray<AVMediaSelectionOption>"
+                parameters:
+                    mediaSelectionOptions:
+                        type: "NSArray<AVMediaSelectionOption>"
+            '+mediaSelectionOptionsFromArray:withMediaCharacteristics:':
+                name: "getMediaSelectionOptionsWithMediaCharacteristics"
+                return_type: "NSArray<AVMediaSelectionOption>"
+                parameters:
+                    mediaSelectionOptions:
+                        type: "NSArray<AVMediaSelectionOption>"
+                    mediaCharacteristics:
+                        type: "NSArray<NSString>"
+            '+mediaSelectionOptionsFromArray:withoutMediaCharacteristics:':
+                name: "getMediaSelectionOptionsWithoutMediaCharacteristics"
+                return_type: "NSArray<AVMediaSelectionOption>"
+                parameters:
+                    mediaSelectionOptions:
+                        type: "NSArray<AVMediaSelectionOption>"
+                    mediaCharacteristics:
+                        type: "NSArray<NSString>"
+    AVMediaSelectionOption: # DONE
+        properties:
+            'mediaSubTypes':
+                type: "NSArray<NSNumber>"
+            'commonMetadata':
+                type: "NSArray<AVMetadataItem>"
+            'availableMetadataFormats':
+                type: "NSArray<NSString>"
+        methods:
+            '-hasMediaCharacteristic:':
+                trim_after_first_colon: true
+            '-metadataForFormat:':
+                name: "getMetadata"
+                parameters:
+                    format:
+                        type: "NSString"
+                return_type: "NSArray<AVMetadataItem>"
+            '-associatedMediaSelectionOptionInMediaSelectionGroup:':
+                name: "getAssociatedMediaSelectionOption"
+            '-propertyList':
+                property: true
+            '-displayNameWithLocale:':
+                name: "getDisplayName"
+    AVMetadataItem: # DONE
+        properties:
+            'key':
+                type: "NSString"
+            'value':
+                type: "NSObject"
+            'extraAttributes':
+                type: "NSDictionary<NSString, ?>"
+        methods:
+            '-statusOfValueForKey:error:':
+                name: "getStatusOfValue"
+            '-loadValuesAsynchronouslyForKeys:completionHandler:':
+                name: "loadValuesAsynchronously"
+                parameters:
+                    keys:
+                        type: "NSArray<NSString>"
+            '+metadataItemsFromArray:filteredAndSortedAccordingToPreferredLanguages:':
+                name: "getMetadataItems"
+                return_type: "NSArray<AVMetadataItem>"
+                parameters:
+                    metadataItems:
+                        type: "NSArray<AVMetadataItem>"
+                    preferredLanguages:
+                        type: "NSArray<AVMetadataItem>"
+            '+metadataItemsFromArray:withLocale:':
+                name: "getMetadataItems"
+                return_type: "NSArray<AVMetadataItem>"
+                parameters:
+                    metadataItems:
+                        type: "NSArray<AVMetadataItem>"
+            '+metadataItemsFromArray:withKey:keySpace:':
+                name: "getMetadataItems"
+                return_type: "NSArray<AVMetadataItem>"
+                parameters:
+                    metadataItems:
+                        type: "NSArray<AVMetadataItem>"
+            '+metadataItemsFromArray:filteredByMetadataItemFilter:':
+                name: "getMetadataItems"
+                return_type: "NSArray<AVMetadataItem>"
+                parameters:
+                    metadataItems:
+                        type: "NSArray<AVMetadataItem>"
+    AVMetadataItemFilter: # DONE
+        methods:
+            '+metadataItemFilterForSharing':
+                name: "sharedInstance"
+    AVMetadataObject: {} # DONE
     AVMutableAudioMix: # DONE
         properties:
             'inputParameters':
@@ -626,7 +821,7 @@ classes:
     AVMutableComposition: # DONE
         properties:
             'tracks':
-                type: "NSArray<AVMutableCompositionTrack>"
+                type: "NSArray<AVAssetTrack>" # AVMutableCompositionTrack
         methods:
             '+composition':
                 name: "create"
@@ -647,7 +842,7 @@ classes:
     AVMutableCompositionTrack: # DONE
         properties:
             'segments':
-                type: "NSArray<AVCompositionTrackSegment>"
+                type: "NSArray<AVAssetTrackSegment>" # AVCompositionTrackSegment
         methods:
             '-insertTimeRange:ofTrack:atTime:error:':
                 trim_after_first_colon: true
@@ -655,7 +850,7 @@ classes:
                 trim_after_first_colon: true
                 parameters:
                     timeRanges:
-                        type: "NSArray<CMTimeRange>"
+                        type: "NSArray<?>" # CMTimeRange
             '-insertEmptyTimeRange:':
                 trim_after_first_colon: true
             '-removeTimeRange:':
@@ -667,7 +862,17 @@ classes:
                 parameters:
                     trackSegments:
                         type: "NSArray<AVCompositionTrackSegment>"
-    AVMutableMetadataItem: {}
+    AVMutableMetadataItem: # DONE
+        properties:
+            'key':
+                type: "NSString"
+            'value':
+                type: "NSObject"
+            'extraAttributes':
+                type: "NSDictionary<NSString, ?>"
+        methods:
+            '+metadataItem':
+                name: "create"
     AVMutableTimedMetadataGroup: # DONE
         properties:
             'items':
@@ -684,7 +889,7 @@ classes:
     AVMutableVideoCompositionInstruction: # DONE
         properties:
             'layerInstructions':
-                type: "NSArray<AVMutableVideoCompositionLayerInstruction>"
+                type: "NSArray<AVVideoCompositionLayerInstruction>" # AVMutableVideoCompositionLayerInstruction
         methods:
             '+videoCompositionInstruction':
                 name: "create"
@@ -705,6 +910,18 @@ classes:
             '+videoCompositionLayerInstructionWithAssetTrack:':
                 name: "create"
             '+videoCompositionLayerInstruction':
+                name: "create"
+    AVOutputSettingsAssistant: # DONE
+        properties:
+            'audioSettings':
+                type: "NSDictionary<NSString, ?>"
+            'videoSettings':
+                type: "NSDictionary<NSString, ?>"
+        methods:
+            '+availableOutputSettingsPresets':
+                name: "getAvailableOutputSettingsPresets"
+                return_type: "NSArray<NSString>"
+            '+outputSettingsAssistantWithPreset:':
                 name: "create"
     AVPlayer: # DONE
         methods:
@@ -736,7 +953,7 @@ classes:
                 name: "addBoundaryTimeObserver"
                 parameters:
                     times:
-                        type: "NSArray<CMTime>"
+                        type: "NSArray<?>" # CMTime
             '-removeTimeObserver:':
                 trim_after_first_colon: true
             '-setMediaSelectionCriteria:forMediaCharacteristic:':
@@ -822,6 +1039,15 @@ classes:
             '-extendedLogDataStringEncoding':
                 property: true
     AVPlayerItemErrorLogEvent: {} # DONE
+    AVPlayerItemLegibleOutput: # DONE
+        methods:
+            '-setDelegate:queue:':
+                trim_after_first_colon: true
+            '-initWithMediaSubtypesForNativeRepresentation:':
+                name: "init"
+                parameters:
+                    subtypes:
+                        type: "NSArray<NSNumber>"
     AVPlayerItemOutput: # DONE
         methods:
             '-itemTimeForHostTime:':
@@ -888,6 +1114,34 @@ classes:
         methods:
             '+synchronizedLayerWithPlayerItem:':
                 name: "create"
+    AVTextStyleRule: # DONE
+        properties:
+            'textMarkupAttributes':
+                type: "NSDictionary<NSString, ?>"
+        methods:
+            '-init.*':
+                name: "init"
+                parameters:
+                    textMarkupAttributes:
+                        type: "NSDictionary<NSString, ?>"
+            '+propertyListForTextStyleRules:':
+                name: "createPropertyList"
+                parameters:
+                    textStyleRules:
+                        type: "NSArray<AVTextStyleRule>"
+            '+textStyleRulesFromPropertyList:':
+                name: "createTextStyleRulesArray"
+                return_type: "NSArray<AVTextStyleRule>"
+            '+textStyleRuleWithTextMarkupAttributes:':
+                name: "create"
+                parameters:
+                    textMarkupAttributes:
+                        type: "NSDictionary<NSString, ?>"
+            '+textStyleRuleWithTextMarkupAttributes:textSelector:':
+                name: "create"
+                parameters:
+                    textMarkupAttributes:
+                        type: "NSDictionary<NSString, ?>"
     AVTimedMetadataGroup: # DONE
         properties:
             'items':
@@ -928,7 +1182,7 @@ classes:
             '+videoCompositionWithPropertiesOfAsset:':
                 name: "create"
             '-isValidForAsset:timeRange:validationDelegate:':
-                trim_after_first_colon: true
+                name: "isValid"
     AVVideoCompositionCoreAnimationTool: # DONE
         methods:
             '+videoCompositionCoreAnimationToolWithAdditionalLayer:asTrackID:':
@@ -953,6 +1207,10 @@ classes:
             '-getCropRectangleRampForTime:startCropRectangle:endCropRectangle:timeRange:':
                 name: "getCropRectangleRamp" 
     AVVideoCompositionRenderContext: {} # DONE
+
+    # Structs
+    AVPixelAspectRatio: {}
+    AVEdgeWidths: {}
 
 protocols:
     AVAssetResourceLoaderDelegate: # DONE
@@ -998,6 +1256,15 @@ protocols:
                 name: "endInterruptionWithFlags"
             '-audioRecorderEndInterruption:':
                 name: "endInterruption"
+    AVAudioSessionDelegate: # DONE
+        methods:
+            '-endInterruptionWithFlags:':
+                name: "endInterruption"
+                parameters:
+                    flags:
+                        type: "AVAudioSessionInterruptionFlag"
+            '-inputIsAvailableChanged:':
+                name: "inputAvailabilityChanged"
     AVCaptureAudioDataOutputSampleBufferDelegate: # DONE
         methods:
             '-captureOutput:didOutputSampleBuffer:fromConnection:':
@@ -1027,12 +1294,31 @@ protocols:
                 name: "didOutputSampleBuffer"
             '-captureOutput:didDropSampleBuffer:fromConnection:':
                 name: "didDropSampleBuffer"
+    AVPlayerItemLegibleOutputPushDelegate: # DONE
+        methods:
+            '-legibleOutput:didOutputAttributedStrings:nativeSampleBuffers:forItemTime:':
+                name: "didOutputAttributedStrings"
+                parameters:
+                    strings:
+                        type: "NSArray<NSAttributedString>"
+                    nativeSamples:
+                        type: "NSArray<?>" # CMSampleBuffer
     AVPlayerItemOutputPullDelegate: # DONE
         methods:
             '-outputMediaDataWillChange:':
                 name: "mediaDataWillChange"
             '-outputSequenceWasFlushed:':
                 name: "sequenceWasFlushed"
+    AVVideoCompositionValidationHandling: # DONE
+        methods:
+            '-videoComposition:shouldContinueValidatingAfterFindingInvalidValueForKey:':
+                name: "shouldContinueValidatingAfterFindingInvalidValue"
+            '-videoComposition:shouldContinueValidatingAfterFindingEmptyTimeRange:':
+                name: "shouldContinueValidatingAfterFindingEmptyTimeRange"
+            '-videoComposition:shouldContinueValidatingAfterFindingInvalidTimeRangeInInstruction:':
+                name: "shouldContinueValidatingAfterFindingInvalidTimeRange"
+            '-videoComposition:shouldContinueValidatingAfterFindingInvalidTrackIDInInstruction:layerInstruction:asset:':
+                name: "shouldContinueValidatingAfterFindingInvalidTrackID"
     AVVideoCompositing: # DONE
         properties:
             'sourcePixelBufferAttributes':
@@ -1051,7 +1337,176 @@ functions:
         class: AVFoundation
         name: "Function__#{g[0]}"
 
-values:  
+values:
+    AVFormat(.*)Key:
+        class: AVFoundation
+        name: "AVFormat#{g[0]}Key"
+
+    AVSampleRate(.*)Key:
+        class: AVFoundation
+        name: "AVSampleRate#{g[0]}Key"
+
+    AV(NumberOfChannels)Key:
+        class: AVFoundation
+        name: "#{g[0]}Key"
+
+    AVLinearPCM(.*)Key:
+        class: AVFoundation
+        name: "AVLinearPCM#{g[0]}Key"
+    AVLinearPCM(.*):
+        class: AVFoundation
+        name: "AVLinearPCM#{g[0]}"
+        
+    AVEncoder(.*)Key:
+        class: AVFoundation
+        name: "AVEncoder#{g[0]}Key"
+        
+    AVSampleRateConverter(.*)Key:
+        class: AVFoundation
+        name: "AVSampleRateConverter#{g[0]}Key"
+    AVSampleRateConverterAlgorithm_(.*):
+        class: AVFoundation
+        name: "AVSampleRateConverterAlgorithm_#{g[0]}"
+        
+    AVChannelLayout(.*)Key:
+        class: AVFoundation
+        name: "AVChannelLayout#{g[0]}Key"
+        
+    AVAudioBitRateStrategy_(.*):
+        class: AVFoundation
+        name: "AVAudioBitRateStrategy#{g[0]}"
+        
+    AVAudioSession(.*)Notification:
+        class: AVFoundation
+        name: "AVAudioSession#{g[0]}Notification"
+    AVAudioSession(.*)Key:
+        class: AVFoundation
+        name: "AVAudioSession#{g[0]}Key"
+    AVAudioSessionCategory(.*):
+        class: AVFoundation
+        name: "AVAudioSessionCategory#{g[0]}"
+    AVAudioSessionMode(.*):
+        class: AVFoundation
+        name: "AVAudioSessionMode#{g[0]}"
+    AVAudioSessionPort(.*):
+        class: AVFoundation
+        name: "AVAudioSessionPort#{g[0]}"
+    AVAudioSessionLocation(.*):
+        class: AVFoundation
+        name: "AVAudioSessionLocation#{g[0]}"
+    AVAudioSessionOrientation(.*):
+        class: AVFoundation
+        name: "AVAudioSessionOrientation#{g[0]}"
+    AVAudioSessionPolarPattern(.*):
+        class: AVFoundation
+        name: "AVAudioSessionPolarPattern#{g[0]}"
+        
+    AVCoreAnimation(BeginTimeAtZero):
+        class: AVFoundation
+        name: "AVCoreAnimation#{g[0]}"
+        
+    AVLayerVideoGravityResize(.*):
+        class: AVFoundation
+        name: "AVLayerVideoGravityResize#{g[0]}"
+        
+    AVURLAsset(.*)Key:
+        class: AVFoundation
+        name: "AVURLAsset#{g[0]}Key"
+        
+    AVAssetExportPreset(.*):
+        class: AVFoundation
+        name: "AVAssetExportPreset#{g[0]}"
+    AVAssetImageGenerator(.*):
+        class: AVFoundation
+        name: "AVAssetImageGenerator#{g[0]}"
+    AVTrackAssociationType(.*):
+        class: AVFoundation
+        name: "AVTrackAssociationType#{g[0]}"
+        
+    AVAudioTimePitchAlgorithm(.*):
+        class: AVFoundation
+        name: "AVAudioTimePitchAlgorithm#{g[0]}"
+        
+    AVCaptureDevice(.*)Notification:
+        class: AVFoundation
+        name: "AVCaptureDevice#{g[0]}Notification"
+    AVCapture(MaxAvailableTorchLevel):
+        class: AVFoundation
+        name: "AVCapture#{g[0]}"
+        
+    AVCaptureSession(.*)Notification:
+        class: AVFoundation
+        name: "AVCaptureSession#{g[0]}Notification"
+    AVCaptureSession(.*)Key:
+        class: AVFoundation
+        name: "AVCaptureSession#{g[0]}Key"
+    AVCaptureSessionPreset(.*):
+        class: AVFoundation
+        name: "AVCaptureSessionPreset#{g[0]}"
+    AVCapture(.*)Notification:
+        class: AVFoundation
+        name: "AVCapture#{g[0]}Notification"
+        
+    AVFoundation(ErrorDomain):
+        class: AVFoundation
+        name: "#{g[0]}"
+        
+    AVError(.*)Key:
+        class: AVFoundation
+        name: "AVError#{g[0]}Key"
+        
+    AVMediaType(.*):
+        class: AVFoundation
+        name: "AVMediaType#{g[0]}"
+        
+    AVMediaCharacteristic(.*):
+        class: AVFoundation
+        name: "AVMediaCharacteristic#{g[0]}"
+        
+    AVFileType(.*):
+        class: AVFoundation
+        name: "AVFileType#{g[0]}"
+        
+    AVMetadata(.*):
+        class: AVFoundation
+        name: "AVMetadata#{g[0]}"
+        
+    AVOutputSettingsPreset(.*):
+        class: AVFoundation
+        name: "AVOutputSettingsPreset#{g[0]}"
+        
+    AVPlayerItem(.*)Notification:
+        class: AVFoundation
+        name: "AVPlayerItem#{g[0]}Notification"
+    AVPlayerItem(.*)Key:
+        class: AVFoundation
+        name: "AVPlayerItem#{g[0]}Key"
+        
+    AVPlayerItemLegibleOutput(.*):
+        class: AVFoundation
+        name: "AVPlayerItemLegibleOutput#{g[0]}"
+        
+    AVSpeechUtterance(.*):
+        class: AVFoundation
+        name: "AVSpeechUtterance#{g[0]}"
+        
+    AVVideo(.*)Key:
+        class: AVFoundation
+        name: "AVVideo#{g[0]}Key"
+    AVVideoCodec(.*):
+        class: AVFoundation
+        name: "AVVideoCodec#{g[0]}"
+    AVVideoScalingMode(.*):
+        class: AVFoundation
+        name: "AVVideoScalingMode#{g[0]}"
+    AVVideoProfileLevelH264(.*):
+        class: AVFoundation
+        name: "AVVideoProfileLevelH264#{g[0]}"
+    AVVideoH264EntropyMode(.*):
+        class: AVFoundation
+        name: "AVVideoH264EntropyMode#{g[0]}"
+    
+
     # Make sure we don't miss any values if new ones are introduced in a later version
     (AV.*):
         class: AVFoundation

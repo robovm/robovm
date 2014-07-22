@@ -1,0 +1,348 @@
+package: org.robovm.apple.audiotoolbox
+include: [foundation.yaml, corefoundation.yaml, coregraphics.yaml, opengles.yaml, coreaudio.yaml, coremedia.yaml]
+library: AudioToolbox
+framework: AudioToolbox
+clang_args: ['-x', 'objective-c']
+headers:
+    - /System/Library/Frameworks/AudioToolbox.framework/Headers/AudioToolbox.h
+typedefs:
+    'AudioConverterRef': 'AudioConverter'
+
+enums:
+    AudioConverterProperty: { first: kAudioConverterPropertyMinimumInputBufferSize, marshaler: ValuedEnum.AsMachineSizedUIntMarshaler }
+    AudioConverterDitherAlgorithm: { first: kDitherAlgorithm_TPDF }
+    AudioConverterQuality: { first: kAudioConverterQuality_Max }
+    AudioConverterSampleRateConverterComplexity: { first: kAudioConverterSampleRateConverterComplexity_Linear, marshaler: ValuedEnum.AsMachineSizedUIntMarshaler }
+    AudioConverterPrimeMethod: { first: kConverterPrimeMethod_Pre }
+    AudioConverterError: { first: kAudioConverterErr_FormatNotSupported }
+    AudioFileType: { first: kAudioFileAIFFType, suffix: Type, marshaler: ValuedEnum.AsMachineSizedUIntMarshaler }
+    AudioFileError: { first: kAudioFileUnspecifiedError, suffix: Error, marshaler: ValuedEnum.AsMachineSizedUIntMarshaler }
+    AudioFileFlag: { first: kAudioFileFlags_EraseFile, bits: true, marshaler: Bits.AsMachineSizedIntMarshaler }
+    AudioFilePermission: { first: kAudioFileReadPermission }
+    AudioFileLoopDirection: { first: kAudioFileLoopDirection_NoLooping }
+    AudioFileRegionFlag: { first: kAudioFileRegionFlag_LoopEnable, bits: true, marshaler: Bits.AsMachineSizedIntMarshaler }
+    AudioFileProperty: { first: kAudioFilePropertyFileFormat, marshaler: ValuedEnum.AsMachineSizedUIntMarshaler }
+    AudioFileGlobalInfo: { first: kAudioFileGlobalInfo_ReadableTypes, marshaler: ValuedEnum.AsMachineSizedUIntMarshaler }
+    AudioFileStreamFlag: { first: kAudioFileStreamPropertyFlag_PropertyIsCached, bits: true, marshaler: Bits.AsMachineSizedIntMarshaler }
+    AudioFileStreamError: { first: kAudioFileStreamError_UnsupportedFileType, marshaler: ValuedEnum.AsMachineSizedUIntMarshaler }
+    AudioFileStreamProperty: { first: kAudioFileStreamProperty_ReadyToProducePackets, marshaler: ValuedEnum.AsMachineSizedUIntMarshaler }
+    AudioPanningMode: { first: kPanningMode_SoundField }
+    AudioBalanceFadeType: { first: kAudioBalanceFadeType_MaxUnityGain }
+    AudioFormatProperty: { first: kAudioFormatProperty_FormatInfo, marshaler: ValuedEnum.AsMachineSizedUIntMarshaler }
+    AudioFormatError: { first: kAudioFormatUnspecifiedError, suffix: Error, marshaler: ValuedEnum.AsMachineSizedUIntMarshaler }
+    AudioQueueError: { first: kAudioQueueErr_InvalidBuffer }
+    AudioQueueProperty: { first: kAudioQueueProperty_IsRunning, marshaler: ValuedEnum.AsMachineSizedUIntMarshaler }
+    AudioQueuePitchAlgorithm: { first: kAudioQueueTimePitchAlgorithm_Spectral, marshaler: ValuedEnum.AsMachineSizedUIntMarshaler }
+    AudioQueueHardwareCodecPolicy: { first: kAudioQueueHardwareCodecPolicy_Default }
+    AudioQueueParam: { first: kAudioQueueParam_Volume }
+    AudioQueueProcessingTapFlag: { first: kAudioQueueProcessingTap_PreEffects, bits: true, marshaler: Bits.AsMachineSizedIntMarshaler }
+    AudioServicesError: { first: kAudioServicesNoError, suffix: Error, marshaler: ValuedEnum.AsMachineSizedUIntMarshaler }
+    AudioServicesProperty: { first: kAudioServicesPropertyIsUISound, marshaler: ValuedEnum.AsMachineSizedUIntMarshaler }
+    AudioHardwereServiceProperty: { first: kAudioHardwareServiceProperty_ServiceRestarted, marshaler: ValuedEnum.AsMachineSizedUIntMarshaler }
+    AudioSessionError: { first: kAudioSessionNoError, suffix: Error, marshaler: ValuedEnum.AsMachineSizedUIntMarshaler }
+    AudioSessionInterruptionState: { first: kAudioSessionBeginInterruption }
+    AudioSessionCategory: { first: kAudioSessionCategory_AmbientSound, marshaler: ValuedEnum.AsMachineSizedUIntMarshaler }
+    AudioSessionOverrideAudioRoute: { first: kAudioSessionOverrideAudioRoute_None, marshaler: ValuedEnum.AsMachineSizedUIntMarshaler }
+    AudioSessionRouteChangeReason: { first: kAudioSessionRouteChangeReason_Unknown }
+    AudioSessionInterruptionType: { first: kAudioSessionInterruptionType_ShouldResume, marshaler: ValuedEnum.AsMachineSizedUIntMarshaler }
+    AudioSessionMode: { first: kAudioSessionMode_Default, marshaler: ValuedEnum.AsMachineSizedUIntMarshaler }
+    AudioSessionProperty: { first: kAudioSessionProperty_PreferredHardwareSampleRate, marshaler: ValuedEnum.AsMachineSizedUIntMarshaler }
+    AUGraphError: { first: kAUGraphErr_NodeNotFound }
+    AUNodeInteraction: { first: kAUNodeInteraction_Connection }
+    CAFFileHeader: { first: kCAF_FileType, marshaler: ValuedEnum.AsMachineSizedUIntMarshaler }
+    CAFChunkType: { first: kCAF_StreamDescriptionChunkID, marshaler: ValuedEnum.AsMachineSizedUIntMarshaler }
+    CAFLinearPCMFormatFlag: { first: kCAFLinearPCMFormatFlagIsFloat, bits: true, marshaler: Bits.AsMachineSizedIntMarshaler }
+    CAFMarkerType: { first: kCAFMarkerType_Generic, marshaler: ValuedEnum.AsMachineSizedUIntMarshaler }
+    CAFSMPTETimeType: { first: kCAF_SMPTE_TimeTypeNone }
+    CAFRegionFlag: { first: kCAFRegionFlag_LoopEnable, bits: true, marshaler: Bits.AsMachineSizedIntMarshaler }
+    ExtAudioFileProperty: { first: kExtAudioFileProperty_FileDataFormat, marshaler: ValuedEnum.AsMachineSizedUIntMarshaler }
+    ExtAudioFileError: { first: kExtAudioFileError_CodecUnavailableInputConsumed }
+    MusicEventType: { first: kMusicEventType_NULL, marshaler: ValuedEnum.AsMachineSizedUIntMarshaler }
+    MusicSequenceType: { first: kMusicSequenceType_Beats, marshaler: ValuedEnum.AsMachineSizedUIntMarshaler }
+    MusicSequenceFileType: { first: kMusicSequenceFile_MIDIType, marshaler: ValuedEnum.AsMachineSizedUIntMarshaler }
+    AudioToolboxError: { first: kAudioToolboxErr_InvalidSequenceType }
+    MusicTrackProperty: { first: kSequenceTrackProperty_LoopInfo }
+
+classes:
+    AudioToolbox:
+        annotations: ['@Marshaler(NSString.AsStringMarshaler.class)']
+
+    # Opaque Types
+    AudioConverter:
+        extends: CFType
+        add_ptr: true
+    OpaqueAudioFileID:
+        name: "AudioFile"
+        extends: CFType
+    AudioFileID:
+        name: "AudioFile"
+        extends: CFType
+    OpaqueAudioFileStreamID:
+        name: "AudioFileStream"
+        extends: CFType
+    AudioFileStreamID:
+        name: "AudioFileStream"
+        extends: CFType
+    AudioQueue:
+        extends: CFType
+    OpaqueAudioQueue:
+        name: "AudioQueue"
+        extends: CFType
+    OpaqueAUGraph:
+        name: "AUGraph"
+        extends: CFType
+    AUGraph:
+        extends: CFType
+    OpaqueExtAudioFile:
+        name: "ExtAudioFile"
+        extends: CFType
+    ExtAudioFile:
+        extends: CFType
+    OpaqueAudioQueueTimeline:
+        name: "AudioQueueTimeline"
+        extends: CFType
+    AudioQueueTimeline:
+        extends: CFType
+    OpaqueAudioQueueProcessingTap:
+        name: "AudioQueueProcessingTap"
+    AudioQueueProcessingTap:
+        add_ptr: true
+    OpaqueAudioComponentInstance:
+        name: "AudioComponentInstance"
+    AudioComponentInstance:
+        add_ptr: true
+    OpaqueMIDIEndpoint:
+        name: "MIDIEndpoint"
+        add_ptr: true
+
+    # Structs
+    AudioConverterPrimeInfo: {}
+    AudioFile_SMPTE_Time:
+        name: "AudioFileSMPTETime"
+    AudioFileMarker: {}
+    AudioFileMarkerList: {}
+    AudioFileRegion: {}
+    AudioFileRegionList: {}
+    AudioFramePacketTranslation: {}
+    AudioBytePacketTranslation: {}
+    AudioFilePacketTableInfo: {}
+    AudioFileTypeAndFormatID: {}
+    AudioPanningInfo: {}
+    AudioBalanceFade: {}
+    AudioFormatInfo: {}
+    ExtendedAudioFormatInfo: {}
+    AudioFormatListItem: {}
+    AudioQueueBuffer: {}
+    AudioQueueParameterEvent: {}
+    AudioQueueLevelMeterState: {}
+    AudioQueueChannelAssignment: {}
+    AudioUnitNodeConnection:
+        name: "AUNodeConnection"
+    AUNodeConnection: {}
+    AUNodeRenderCallback: {}
+    #AUNodeInteraction: {}
+    AudioComponentDescription: {}
+    AURenderCallbackStruct: {}
+    CAFFileHeader: {}
+    CAFChunkHeader: {}
+    CAF_UUID_ChunkHeader:
+        name: "CAFUUIDChunkHeader"
+    CAFAudioDescription: {}
+    CAFAudioFormatListItem: {}
+    CAFPacketTableHeader: {}
+    CAFDataChunk: {}
+    CAF_SMPTE_Time:
+        name: "CAFSMPTETime"
+    CAFMarker: {}
+    CAFMarkerChunk: {}
+    CAFRegion: {}
+    CAFRegionChunk: {}
+    CAFInstrumentChunk: {}
+    CAFStringID: {}
+    CAFStrings: {}
+    CAFInfoStrings: {}
+    CAFPositionPeak: {}
+    CAFPeakChunk: {}
+    CAFOverviewSample: {}
+    CAFOverviewChunk: {}
+    CAFUMIDChunk: {}
+    MIDINoteMessage: {}
+    MIDIChannelMessage: {}
+    MIDIRawData: {}
+    MIDIMetaEvent: {}
+    MusicEventUserData: {}
+    ExtendedNoteOnEvent: {}
+    ParameterEvent: {}
+    ExtendedTempoEvent: {}
+    AUPresetEvent: {}
+    AURenderCallbackStruct: {}
+    CABarBeatTime: {}
+    MusicTrackLoopInfo: {}
+    MusicDeviceNoteParams: {}
+    NoteParamsControlValue: {}
+    
+    MusicPlayer: {}
+    MusicSequence: {}
+    MusicTrack: {}
+    MusicEventIterator: {}
+
+protocols: {}
+
+functions:
+    (Audio.*)GetTypeID:
+        class: "#{g[0]}"
+        name: getClassTypeID
+    
+    # AudioConverter
+    AudioConverter(New.*):
+        class: AudioConverter
+        name: "create"
+        return_type: AudioConverterError
+        visibility: protected
+    AudioConverter(.*Property.*):
+        class: AudioConverter
+        name: "#{g[0]}"
+        return_type: AudioConverterError
+        visibility: protected
+    AudioConverter(.*Buffer):
+        class: AudioConverter
+        name: "#{g[0]}"
+        return_type: AudioConverterError
+        visibility: protected
+    AudioConverterDispose:
+        exclude: true
+    AudioConverter(.*):
+        class: AudioConverter
+        name: "#{g[0]}"
+        return_type: AudioConverterError
+
+    # AudioFile
+    AudioFileClose:
+        class: AudioFile
+        name: "closeFile"
+        return_type: AudioFileError
+    AudioFile(.*):
+        class: AudioFile
+        name: "#{g[0]}"
+        return_type: AudioFileError
+
+    # AudioFileStream
+    AudioFileStream(.*):
+        class: AudioFileStream
+        name: "#{g[0]}"
+        return_type: AudioFileStreamError
+
+    # AudioQueue
+    AudioQueueDispose:
+        exclude: true
+    AudioQueue(.*):
+        class: AudioQueue
+        name: "#{g[0]}"
+        return_type: AudioQueueError
+
+    # AudioServices
+    AudioServices(.*):
+        class: AudioServices
+        name: "#{g[0]}"
+
+    # AudioHardwareService
+    AudioHardwareService(.*):
+        class: AudioHardwareService
+        name: "#{g[0]}"
+
+    # AudioSession
+    AudioSession(.*):
+        class: AudioSession
+        name: "#{g[0]}"
+
+    # AUGraph
+    NewAUGraph:
+        class: AUGraph
+        name: "create"
+    DisposeAUGraph:
+        exclude: true
+    AUGraphClose:
+        exclude: true
+    (.*)AUGraph:
+        class: AUGraph
+        name: "#{g[0]}"
+    AUGraph(.*):
+        class: AUGraph
+        name: "#{g[0]}"
+
+    # ExtAudioFile
+    ExtAudioFileDispose:
+        exclude: true
+    ExtAudioFile(.*):
+        class: ExtAudioFile
+        name: "#{g[0]}"
+
+    # MusicPlayer:
+    NewMusicPlayer:
+        class: MusicPlayer
+        name: "create"
+    (.*)MusicPlayer:
+        class: MusicPlayer
+        name: "#{g[0]}" 
+    MusicPlayer(.*):
+        class: MusicPlayer
+        name: "#{g[0]}"
+    
+    # MusicSequence
+    NewMusicSequence:
+        class: MusicSequence
+        name: "create"
+    (.*)MusicSequence:
+        class: MusicSequence
+        name: "#{g[0]}" 
+    MusicSequence(.*):
+        class: MusicSequence
+        name: "#{g[0]}"
+
+    # MusicTrack
+    (.*)MusicTrack:
+        class: MusicTrack
+        name: "#{g[0]}" 
+    MusicTrack(.*):
+        class: MusicTrack
+        name: "#{g[0]}"
+
+    # MusicEventIterator
+    NewMusicEventIterator:
+        class: MusicEventIterator
+        name: "create"
+    (.*)MusicEventIterator:
+        class: MusicEventIterator
+        name: "#{g[0]}" 
+    MusicEventIterator(.*):
+        class: MusicEventIterator
+        name: "#{g[0]}"
+
+    # Make sure we don't miss any functions if new ones are introduced in a later version
+    (Audio.*):
+        class: AudioToolbox
+        name: "Function__#{g[0]}"
+    (kAudio.*):
+        class: AudioToolbox
+        name: "Function__#{g[0]}"
+
+values:
+
+    # Make sure we don't miss any values if new ones are introduced in a later version
+    (Audio):
+        class: AudioToolbox
+        name: "Value__#{g[0]}"
+    (kAudio.*):
+        class: AudioToolbox
+        name: "Value__#{g[0]}"
+
+constants:       
+        
+    # Make sure we don't miss any constants if new ones are introduced in a later version
+    (Audio.*):
+        class: AudioToolbox
+        name: "Constant__#{g[0]}"
+        
+    (kAudio.*):
+        class: AudioToolbox
+        name: "Constant__#{g[0]}"

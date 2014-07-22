@@ -33,6 +33,7 @@ import org.robovm.apple.coreaudio.*;
 import org.robovm.apple.coreanimation.*;
 import org.robovm.apple.coregraphics.*;
 import org.robovm.apple.corevideo.*;
+import org.robovm.apple.audiotoolbox.*;
 /*</imports>*/
 
 /*<javadoc>*/

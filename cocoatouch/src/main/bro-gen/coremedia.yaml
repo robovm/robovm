@@ -1,5 +1,5 @@
 package: org.robovm.apple.coremedia
-include: [foundation.yaml, corefoundation.yaml, dispatch.yaml, coreaudio.yaml, coreanimation.yaml, coregraphics.yaml, corevideo.yaml] # , audiotoolbox.yaml
+include: [foundation.yaml, corefoundation.yaml, dispatch.yaml, coreaudio.yaml, coreanimation.yaml, coregraphics.yaml, corevideo.yaml, audiotoolbox.yaml]
 library: CoreMedia
 framework: CoreMedia
 clang_args: ['-x', 'objective-c']
@@ -482,7 +482,7 @@ functions:
         name: "#{g[0]}"
 
     # CMSampleBuffer
-    CMSampleBuffer(Create.*): # TODO wrapper
+    CMSampleBuffer(Create.*):
         class: CMSampleBuffer
         name: "#{g[0]}"
         visibility: protected
@@ -490,7 +490,7 @@ functions:
             makeDataReadyRefcon:
                 type: "@Pointer long"
         return_type: CMSampleBufferError
-    CMAudioSampleBufferCreateWithPacketDescriptions: # TODO wrap
+    CMAudioSampleBufferCreateWithPacketDescriptions:
         class: CMSampleBuffer
         name: "createAudioSampleBuffer"
         visibility: protected
@@ -498,22 +498,28 @@ functions:
             makeDataReadyRefcon:
                 type: "@Pointer long"
         return_type: CMSampleBufferError
-    CMSampleBuffer(CopySampleBuffer)ForRange: # TODO wrap
+    CMSampleBuffer(CopySampleBuffer)ForRange:
         class: CMSampleBuffer
         name: "#{g[0]}"
         visibility: protected
         return_type: CMSampleBufferError
-    CMSampleBuffer(SetDataBuffer)FromAudioBufferList: # TODO wrap
+    CMSampleBuffer(SetDataBuffer)FromAudioBufferList:
         class: CMSampleBuffer
         name: "#{g[0]}"
         visibility: protected
         return_type: CMSampleBufferError
-    CMSampleBuffer(GetAudioBufferList)WithRetainedBlockBuffer: # TODO wrap
+        parameters:
+            flags:
+                type: "CMSampleBufferFlag"
+    CMSampleBuffer(GetAudioBufferList)WithRetainedBlockBuffer:
         class: CMSampleBuffer
         name: "#{g[0]}"
         visibility: protected
         return_type: CMSampleBufferError
-    CMSampleBuffer(GetAudioStreamPacketDescriptions): # TODO wrap
+        parameters:
+            flags:
+                type: "CMSampleBufferFlag"
+    CMSampleBuffer(GetAudioStreamPacketDescriptions):
         class: CMSampleBuffer
         name: "#{g[0]}"
         visibility: protected
@@ -527,7 +533,7 @@ functions:
         class: CMSampleBuffer
         name: "#{g[0]}"
         return_type: CMSampleBufferError
-    CMSampleBuffer(SetInvalidateCallback): # TODO callback parameter?
+    CMSampleBuffer(SetInvalidateCallback):
         class: CMSampleBuffer
         name: "#{g[0]}"
         return_type: CMSampleBufferError
@@ -537,9 +543,10 @@ functions:
         name: "#{g[0]}"
         visibility: protected
         return_type: CMSampleBufferError
-    CMSampleBuffer(CallForEachSample): # TODO callback
+    CMSampleBuffer(CallForEachSample):
         class: CMSampleBuffer
         name: "#{g[0]}"
+        visibility: protected
         return_type: CMSampleBufferError
         parameters:
             refcon:

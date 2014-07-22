@@ -1,0 +1,107 @@
+package: org.robovm.apple.mediatoolbox
+include: [foundation.yaml, corefoundation.yaml, coremedia.yaml, coreaudio.yaml, audiotoolbox.yaml]
+library: MediaToolbox
+framework: MediaToolbox
+clang_args: ['-x', 'objective-c']
+headers:
+    - /System/Library/Frameworks/MediaToolbox.framework/Headers/MediaToolbox.h
+typedefs:
+    'MTAudioProcessingTapRef': MTAudioProcessingTap
+
+enums:
+    MTAudioProcessingTapCreationFlag: { first: kMTAudioProcessingTapCreationFlag_PreEffects, bits: true, marshaler: Bits.AsMachineSizedIntMarshaler }
+    MTAudioProcessingTapFlag: { first: kMTAudioProcessingTapFlag_StartOfStream, bits: true, marshaler: Bits.AsMachineSizedIntMarshaler }
+    
+    
+# typedef void (*MTAudioProcessingTapInitCallback)(
+#		MTAudioProcessingTapRef tap,
+#		void *clientInfo,
+#		void **tapStorageOut);
+
+# typedef void (*MTAudioProcessingTapFinalizeCallback)(MTAudioProcessingTapRef tap);
+    
+# typedef void (*MTAudioProcessingTapPrepareCallback)(
+#		MTAudioProcessingTapRef tap,
+#		CMItemCount maxFrames,
+#		const AudioStreamBasicDescription *processingFormat);
+
+# typedef void (*MTAudioProcessingTapUnprepareCallback)(MTAudioProcessingTapRef tap);
+
+#typedef void (*MTAudioProcessingTapProcessCallback)(
+#		MTAudioProcessingTapRef tap,
+#		CMItemCount numberFrames,
+#		MTAudioProcessingTapFlags flags,
+#		AudioBufferList *bufferListInOut,
+#		CMItemCount *numberFramesOut,
+#		MTAudioProcessingTapFlags *flagsOut);
+
+classes:
+    MediaToolbox:
+        annotations: ['@Marshaler(NSString.AsStringMarshaler.class)']
+
+    # Opaque Types
+    MTAudioProcessingTap:
+        extends: CFType
+    opaqueMTAudioProcessingTap:
+        name: "MTAudioProcessingTap"
+        extends: CFType
+
+    # Structs
+    MTAudioProcessingTapCallbacks:
+        name: "MTAudioProcessingTapCallbacksStruct"
+        finalize:
+            name: "finalizeCbk"
+        visibility: ""
+
+protocols: {}
+
+functions:
+    (MT.*)GetTypeID:
+        class: "#{g[0]}"
+        name: getClassTypeID
+    
+    MTAudioProcessingTap(Create):
+        class: MTAudioProcessingTap
+        name: "#{g[0]}"
+        visibility: protected
+        parameters:
+            flags:
+                type: "MTAudioProcessingTapCreationFlag"
+    MTAudioProcessingTap(GetSourceAudio):
+        class: MTAudioProcessingTap
+        name: "#{g[0]}"
+        visibility: protected
+    MTAudioProcessingTap(.*):
+        class: MTAudioProcessingTap
+        name: "#{g[0]}"
+
+    # Make sure we don't miss any functions if new ones are introduced in a later version
+    (MT.*):
+        class: MediaToolbox
+        name: "Function__#{g[0]}"
+    (kMT.*):
+        class: MediaToolbox
+        name: "Function__#{g[0]}"
+
+values:
+    # Make sure we don't miss any values if new ones are introduced in a later version
+    (MT):
+        class: MediaToolbox
+        name: "Value__#{g[0]}"
+    (kMT.*):
+        class: MediaToolbox
+        name: "Value__#{g[0]}"
+
+constants:
+    kMTAudioProcessingTap(CallbacksVersion).*:
+        class: MTAudioProcessingTap
+        name: "#{g[0]}"
+      
+    # Make sure we don't miss any constants if new ones are introduced in a later version
+    (MT.*):
+        class: MediaToolbox
+        name: "Constant__#{g[0]}"
+        
+    (kMT.*):
+        class: MediaToolbox
+        name: "Constant__#{g[0]}"

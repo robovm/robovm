@@ -41,11 +41,91 @@ import org.robovm.apple.coremedia.*;
     /*<implements>*//*</implements>*/ {
 
     /*<ptr>*/public static class CVPixelBufferPtr extends Ptr<CVPixelBuffer, CVPixelBufferPtr> {}/*</ptr>*/
+    
+    public interface ReleaseBytesCallback {
+        void release(VoidPtr baseAddress);
+    }
+    public interface ReleasePlanarBytesCallback {
+        void release(VoidPtr dataPtr, @MachineSizedUInt long dataSize, @MachineSizedUInt long numberOfPlanes, VoidPtr planeAddresses);
+    }
+    
+    private static java.util.concurrent.atomic.AtomicLong refconId = new java.util.concurrent.atomic.AtomicLong();
+    private long localRefconId;
+    private static Map<Long, ReleaseBytesCallback> releaseBytesCallbacks = new HashMap<Long, ReleaseBytesCallback>();
+    private static Map<Long, ReleasePlanarBytesCallback> releasePlanarBytesCallbacks = new HashMap<Long, ReleasePlanarBytesCallback>();
+    private static final java.lang.reflect.Method cbReleaseBytes;
+    private static final java.lang.reflect.Method cbReleasePlanarBytes;
+    
+    static {
+        try {
+            cbReleaseBytes = CMSampleBuffer.class.getDeclaredMethod("cbReleaseBytes", long.class, VoidPtr.class);
+            cbReleasePlanarBytes = CMSampleBuffer.class.getDeclaredMethod("cbReleasePlanarBytes", long.class, VoidPtr.class, long.class, long.class, VoidPtr.class);
+        } catch (Throwable e) {
+            throw new Error(e);
+        }
+    }
     /*<bind>*/static { Bro.bind(CVPixelBuffer.class); }/*</bind>*/
     /*<constants>*//*</constants>*/
     /*<constructors>*//*</constructors>*/
     /*<properties>*//*</properties>*/
     /*<members>*//*</members>*/
+    @Callback
+    private static void cbReleaseBytes(long refcon, VoidPtr baseAddress) {
+        ReleaseBytesCallback callback = null;
+        synchronized (releaseBytesCallbacks) {
+            callback = releaseBytesCallbacks.get(refcon);
+        }
+        callback.release(baseAddress);
+    }
+    @Callback
+    private static void cbReleasePlanarBytes(long refcon, VoidPtr dataPtr, @MachineSizedUInt long dataSize, @MachineSizedUInt long numberOfPlanes, VoidPtr planeAddresses) {
+        ReleasePlanarBytesCallback callback = null;
+        synchronized (releasePlanarBytesCallbacks) {
+            callback = releasePlanarBytesCallbacks.get(refcon);
+        }
+        callback.release(dataPtr, dataSize, numberOfPlanes, planeAddresses);
+    }
+    
+    public static NSDictionary<NSString, ?> createResolvedAttributesDictionary(NSArray<NSDictionary<NSString, ?>> attributes) {
+        NSDictionary.NSDictionaryPtr ptr = new NSDictionary.NSDictionaryPtr();
+        createResolvedAttributesDictionary(null, attributes, ptr);
+        return (NSDictionary<NSString, ?>)ptr.get();
+    }
+    public static CVPixelBuffer create(@MachineSizedUInt long width, @MachineSizedUInt long height, CVPixelFormatType pixelFormatType, NSDictionary<NSString, ?> pixelBufferAttributes) {
+        long refconId = CVPixelBuffer.refconId.getAndIncrement();
+        
+        CVPixelBufferPtr ptr = new CVPixelBufferPtr();
+        CVReturn err = create(null, width, height, pixelFormatType, pixelBufferAttributes, ptr);
+        if (err == CVReturn.Success) {
+            CVPixelBuffer buffer = ptr.get();
+            buffer.localRefconId = refconId;
+            return buffer;
+        }
+        return null;
+    }
+    public static CVPixelBuffer create(@MachineSizedUInt long width, @MachineSizedUInt long height, CVPixelFormatType pixelFormatType, VoidPtr baseAddress, long bytesPerRow, ReleaseBytesCallback releaseCallback, NSDictionary<NSString, ?> pixelBufferAttributes) {
+        long refconId = CVPixelBuffer.refconId.getAndIncrement();
+        
+        CVPixelBufferPtr ptr = new CVPixelBufferPtr();
+        CVReturn err = create(null, width, height, pixelFormatType, baseAddress, bytesPerRow, new FunctionPtr(cbReleaseBytes), refconId, pixelBufferAttributes, ptr);
+        if (err == CVReturn.Success) {
+            CVPixelBuffer buffer = ptr.get();
+            buffer.localRefconId = refconId;
+            synchronized (releaseBytesCallbacks) {
+                releaseBytesCallbacks.put(refconId, releaseCallback);
+            }
+            return buffer;
+        }
+        return null;
+    }
+    public long[] getExtendedPixels() {
+        MachineSizedUIntPtr left = new MachineSizedUIntPtr();
+        MachineSizedUIntPtr right = new MachineSizedUIntPtr();
+        MachineSizedUIntPtr top = new MachineSizedUIntPtr();
+        MachineSizedUIntPtr bottom = new MachineSizedUIntPtr();
+        getExtendedPixels(left, right, top, bottom);
+        return new long[] {left.get(), right.get(), top.get(), bottom.get()};
+    }
     /*<methods>*/
     /**
      * @since Available in iOS 4.0 and later.
@@ -66,22 +146,22 @@ import org.robovm.apple.coremedia.*;
      * @since Available in iOS 4.0 and later.
      */
     @Bridge(symbol="CVPixelBufferCreateResolvedAttributesDictionary", optional=true)
-    protected static native CVReturn createResolvedAttributesDictionary(CFAllocator allocator, NSArray<?> attributes, NSDictionary<?, ?>.NSDictionary<?, ?>Ptr resolvedDictionaryOut);
+    protected static native CVReturn createResolvedAttributesDictionary(CFAllocator allocator, NSArray<NSDictionary<NSString, ?>> attributes, NSDictionary.NSDictionaryPtr resolvedDictionaryOut);
     /**
      * @since Available in iOS 4.0 and later.
      */
     @Bridge(symbol="CVPixelBufferCreate", optional=true)
-    protected static native CVReturn create(CFAllocator allocator, @MachineSizedUInt long width, @MachineSizedUInt long height, int pixelFormatType, NSDictionary<?, ?> pixelBufferAttributes, CVPixelBuffer.CVPixelBufferPtr pixelBufferOut);
+    protected static native CVReturn create(CFAllocator allocator, @MachineSizedUInt long width, @MachineSizedUInt long height, CVPixelFormatType pixelFormatType, NSDictionary<NSString, ?> pixelBufferAttributes, CVPixelBuffer.CVPixelBufferPtr pixelBufferOut);
     /**
      * @since Available in iOS 4.0 and later.
      */
     @Bridge(symbol="CVPixelBufferCreateWithBytes", optional=true)
-    protected static native CVReturn create(CFAllocator allocator, @MachineSizedUInt long width, @MachineSizedUInt long height, int pixelFormatType, VoidPtr baseAddress, @MachineSizedUInt long bytesPerRow, FunctionPtr releaseCallback, VoidPtr releaseRefCon, NSDictionary<?, ?> pixelBufferAttributes, CVPixelBuffer.CVPixelBufferPtr pixelBufferOut);
+    protected static native CVReturn create(CFAllocator allocator, @MachineSizedUInt long width, @MachineSizedUInt long height, CVPixelFormatType pixelFormatType, VoidPtr baseAddress, @MachineSizedUInt long bytesPerRow, FunctionPtr releaseCallback, @Pointer long releaseRefCon, NSDictionary<NSString, ?> pixelBufferAttributes, CVPixelBuffer.CVPixelBufferPtr pixelBufferOut);
     /**
      * @since Available in iOS 4.0 and later.
      */
     @Bridge(symbol="CVPixelBufferCreateWithPlanarBytes", optional=true)
-    protected static native CVReturn create(CFAllocator allocator, @MachineSizedUInt long width, @MachineSizedUInt long height, int pixelFormatType, VoidPtr dataPtr, @MachineSizedUInt long dataSize, @MachineSizedUInt long numberOfPlanes, VoidPtr.VoidPtrPtr planeBaseAddress, size_t.size_tPtr planeWidth, size_t.size_tPtr planeHeight, size_t.size_tPtr planeBytesPerRow, FunctionPtr releaseCallback, VoidPtr releaseRefCon, NSDictionary<?, ?> pixelBufferAttributes, CVPixelBuffer.CVPixelBufferPtr pixelBufferOut);
+    protected static native CVReturn create(CFAllocator allocator, @MachineSizedUInt long width, @MachineSizedUInt long height, CVPixelFormatType pixelFormatType, VoidPtr dataPtr, @MachineSizedUInt long dataSize, @MachineSizedUInt long numberOfPlanes, VoidPtr.VoidPtrPtr planeBaseAddress, MachineSizedUIntPtr planeWidth, MachineSizedUIntPtr planeHeight, MachineSizedUIntPtr planeBytesPerRow, FunctionPtr releaseCallback, VoidPtr releaseRefCon, NSDictionary<NSString, ?> pixelBufferAttributes, CVPixelBuffer.CVPixelBufferPtr pixelBufferOut);
     /**
      * @since Available in iOS 4.0 and later.
      */

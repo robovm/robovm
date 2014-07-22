@@ -44,9 +44,9 @@ import org.robovm.apple.coremedia.*;
     /*</ptr>*/
     /*<bind>*/static { Bro.bind(CoreVideo.class); }/*</bind>*/
     /*<constants>*/
-    public static final int Constant__kCVTimeIsIndefinite = 1;
-    public static final int Constant__kCVTimeStampVideoHostTimeValid = 3;
-    public static final int Constant__kCVTimeStampIsInterlaced = 196608;
+    public static final int CVTimeIsIndefinite = 1;
+    public static final int CVTimeStampVideoHostTimeValid = 3;
+    public static final int CVTimeStampIsInterlaced = 196608;
     /*</constants>*/
     /*<constructors>*//*</constructors>*/
     /*<properties>*//*</properties>*/

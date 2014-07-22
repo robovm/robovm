@@ -1,0 +1,176 @@
+/*
+ * Copyright (C) 2014 Trillian Mobile AB
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+package org.robovm.apple.avfoundation;
+
+/*<imports>*/
+import java.io.*;
+import java.nio.*;
+import java.util.*;
+import org.robovm.objc.*;
+import org.robovm.objc.annotation.*;
+import org.robovm.objc.block.*;
+import org.robovm.rt.*;
+import org.robovm.rt.bro.*;
+import org.robovm.rt.bro.annotation.*;
+import org.robovm.rt.bro.ptr.*;
+import org.robovm.apple.foundation.*;
+import org.robovm.apple.dispatch.*;
+import org.robovm.apple.coreanimation.*;
+import org.robovm.apple.corefoundation.*;
+import org.robovm.apple.coregraphics.*;
+import org.robovm.apple.coreaudio.*;
+import org.robovm.apple.coremedia.*;
+import org.robovm.apple.corevideo.*;
+import org.robovm.apple.audiotoolbox.*;
+import org.robovm.apple.mediatoolbox.*;
+/*</imports>*/
+
+/*<javadoc>*/
+/**
+ * @since Available in iOS 4.0 and later.
+ */
+/*</javadoc>*/
+/*<annotations>*/@Library("AVFoundation") @NativeClass/*</annotations>*/
+/*<visibility>*/public/*</visibility>*/ class /*<name>*/AVAsset/*</name>*/ 
+    extends /*<extends>*/NSObject/*</extends>*/ 
+    /*<implements>*/implements AVAsynchronousKeyValueLoading/*</implements>*/ {
+
+    /*<ptr>*/public static class AVAssetPtr extends Ptr<AVAsset, AVAssetPtr> {}/*</ptr>*/
+    /*<bind>*/static { ObjCRuntime.bind(AVAsset.class); }/*</bind>*/
+    /*<constants>*//*</constants>*/
+    /*<constructors>*/
+    public AVAsset() {}
+    protected AVAsset(SkipInit skipInit) { super(skipInit); }
+    /*</constructors>*/
+    /*<properties>*/
+    @Property(selector = "duration")
+    public native @ByVal CMTime getDuration();
+    @Property(selector = "preferredRate")
+    public native float getPreferredRate();
+    @Property(selector = "preferredVolume")
+    public native float getPreferredVolume();
+    @Property(selector = "preferredTransform")
+    public native @ByVal CGAffineTransform getPreferredTransform();
+    /**
+     * @since Available in iOS 4.0 and later.
+     * @deprecated Deprecated in iOS 5.0.
+     */
+    @Deprecated
+    @Property(selector = "naturalSize")
+    public native @ByVal CGSize getNaturalSize();
+    @Property(selector = "providesPreciseDurationAndTiming")
+    public native boolean isProvidesPreciseDurationAndTiming();
+    /**
+     * @since Available in iOS 5.0 and later.
+     */
+    @Property(selector = "referenceRestrictions")
+    public native AVAssetReferenceRestrictions getReferenceRestrictions();
+    @Property(selector = "tracks")
+    public native NSArray<AVAssetTrack> getTracks();
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
+    @Property(selector = "trackGroups")
+    public native NSArray<AVAssetTrackGroup> getTrackGroups();
+    /**
+     * @since Available in iOS 5.0 and later.
+     */
+    @Property(selector = "creationDate")
+    public native AVMetadataItem getCreationDate();
+    @Property(selector = "lyrics")
+    public native String getLyrics();
+    @Property(selector = "commonMetadata")
+    public native NSArray<AVMetadataItem> getCommonMetadata();
+    @Property(selector = "availableMetadataFormats")
+    public native NSArray<NSString> getAvailableMetadataFormats();
+    /**
+     * @since Available in iOS 4.3 and later.
+     */
+    @Property(selector = "availableChapterLocales")
+    public native NSArray<NSLocale> getAvailableChapterLocales();
+    /**
+     * @since Available in iOS 5.0 and later.
+     */
+    @Property(selector = "availableMediaCharacteristicsWithMediaSelectionOptions")
+    public native NSArray<NSString> getAvailableMediaCharacteristics();
+    /**
+     * @since Available in iOS 4.2 and later.
+     */
+    @Property(selector = "hasProtectedContent")
+    public native boolean isHasProtectedContent();
+    /**
+     * @since Available in iOS 4.3 and later.
+     */
+    @Property(selector = "isPlayable")
+    public native boolean isPlayable();
+    /**
+     * @since Available in iOS 4.3 and later.
+     */
+    @Property(selector = "isExportable")
+    public native boolean isExportable();
+    /**
+     * @since Available in iOS 4.3 and later.
+     */
+    @Property(selector = "isReadable")
+    public native boolean isReadable();
+    /**
+     * @since Available in iOS 4.3 and later.
+     */
+    @Property(selector = "isComposable")
+    public native boolean isComposable();
+    /**
+     * @since Available in iOS 5.0 and later.
+     */
+    @Property(selector = "isCompatibleWithSavedPhotosAlbum")
+    public native boolean isCompatibleWithSavedPhotosAlbum();
+    /*</properties>*/
+    /*<members>*//*</members>*/
+    /*<methods>*/
+    @Method(selector = "assetWithURL:")
+    public static native NSObject create(NSURL URL);
+    @Method(selector = "cancelLoading")
+    public native void cancelLoading();
+    @Method(selector = "trackWithTrackID:")
+    public native AVAssetTrack getTrack(int trackID);
+    @Method(selector = "tracksWithMediaType:")
+    public native NSArray<AVAssetTrack> getTracksWithType(String mediaType);
+    @Method(selector = "tracksWithMediaCharacteristic:")
+    public native NSArray<AVAssetTrack> getTracksWithCharacteristic(String mediaCharacteristic);
+    @Method(selector = "metadataForFormat:")
+    public native NSArray<AVMetadataItem> getMetadata(String format);
+    /**
+     * @since Available in iOS 4.3 and later.
+     */
+    @Method(selector = "chapterMetadataGroupsWithTitleLocale:containingItemsWithCommonKeys:")
+    public native NSArray<AVTimedMetadataGroup> getChapterMetadataGroups(NSLocale locale, NSArray<AVMetadataItem> commonKeys);
+    /**
+     * @since Available in iOS 6.0 and later.
+     */
+    @Method(selector = "chapterMetadataGroupsBestMatchingPreferredLanguages:")
+    public native NSArray<AVTimedMetadataGroup> getChapterMetadataGroups(NSArray<NSString> preferredLanguages);
+    /**
+     * @since Available in iOS 5.0 and later.
+     */
+    @Method(selector = "mediaSelectionGroupForMediaCharacteristic:")
+    public native AVMediaSelectionGroup getMediaSelectionGroup(String mediaCharacteristic);
+    @Method(selector = "unusedTrackID")
+    public native int getUnusedTrackID();
+    @Method(selector = "statusOfValueForKey:error:")
+    public native AVKeyValueStatus getStatusOfValue(String key, NSError.NSErrorPtr outError);
+    @Method(selector = "loadValuesAsynchronouslyForKeys:completionHandler:")
+    public native void loadValuesAsynchronously(NSArray<NSString> keys, @Block Runnable handler);
+    /*</methods>*/
+}

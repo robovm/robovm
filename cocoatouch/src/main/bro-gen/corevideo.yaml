@@ -159,15 +159,42 @@ functions:
         name: "#{g[0]}"
 
     # CVPixelBuffer
-    CVPixelBuffer(CreateResolvedAttributesDictionary): # WRAP
+    CVPixelBuffer(CreateResolvedAttributesDictionary):
         class: CVPixelBuffer
         name: "#{g[0]}"
         visibility: protected
-    CVPixelBuffer(Create).*: # WRAP
+        parameters:
+            attributes:
+                type: "NSArray<NSDictionary<NSString, ?>>"
+            resolvedDictionaryOut:
+                type: "NSDictionary.NSDictionaryPtr"
+    CVPixelBuffer(Create)WithPlanarBytes: # TODO wrap
         class: CVPixelBuffer
         name: "#{g[0]}"
         visibility: protected
-    CVPixelBuffer(GetExtendedPixels): # WRAP
+        parameters:
+            planeWidth:
+                type: "MachineSizedUIntPtr"
+            planeHeight:
+                type: "MachineSizedUIntPtr"
+            planeBytesPerRow:
+                type: "MachineSizedUIntPtr"
+            pixelBufferAttributes:
+                type: "NSDictionary<NSString, ?>"
+            pixelFormatType:
+                type: "CVPixelFormatType"
+    CVPixelBuffer(Create).*:
+        class: CVPixelBuffer
+        name: "#{g[0]}"
+        visibility: protected
+        parameters:
+            pixelBufferAttributes:
+                type: "NSDictionary<NSString, ?>"
+            pixelFormatType:
+                type: "CVPixelFormatType"
+            releaseRefCon:
+                type: "@Pointer long"
+    CVPixelBuffer(GetExtendedPixels):
         class: CVPixelBuffer
         name: "#{g[0]}"
         visibility: protected
@@ -279,8 +306,15 @@ values:
         class: CoreVideo
         name: "Value__#{g[0]}"
 
-constants:       
+constants:
+    kCVTimeStamp(.*):
+        class: CoreVideo
+        name: "CVTimeStamp#{g[0]}"
         
+    kCVTime(.*):
+        class: CoreVideo
+        name: "CVTime#{g[0]}"
+
     # Make sure we don't miss any constants if new ones are introduced in a later version
     (CV.*):
         class: CoreVideo

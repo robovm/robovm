@@ -28,6 +28,7 @@ import org.robovm.rt.bro.annotation.*;
 import org.robovm.rt.bro.ptr.*;
 import org.robovm.apple.coregraphics.*;
 import org.robovm.apple.foundation.*;
+import org.robovm.apple.coreimage.*;
 import org.robovm.apple.opengles.*;
 /*</imports>*/
 
@@ -50,12 +51,12 @@ import org.robovm.apple.opengles.*;
     /*<members>*//*</members>*/
     /*<methods>*/
     @NotImplemented("displayLayer:")
-    public void displayLayer$(CALayer layer) { throw new UnsupportedOperationException(); }
+    public void displayLayer(CALayer layer) { throw new UnsupportedOperationException(); }
     @NotImplemented("drawLayer:inContext:")
-    public void drawLayer$inContext$(CALayer layer, CGContext ctx) { throw new UnsupportedOperationException(); }
+    public void drawLayer(CALayer layer, CGContext ctx) { throw new UnsupportedOperationException(); }
     @NotImplemented("layoutSublayersOfLayer:")
-    public void layoutSublayersOfLayer$(CALayer layer) { throw new UnsupportedOperationException(); }
+    public void layoutSublayers(CALayer layer) { throw new UnsupportedOperationException(); }
     @NotImplemented("actionForLayer:forKey:")
-    public CAAction actionForLayer$forKey$(CALayer layer, String event) { throw new UnsupportedOperationException(); }
+    public CAAction getAction(CALayer layer, String event) { throw new UnsupportedOperationException(); }
     /*</methods>*/
 }

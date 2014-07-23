@@ -28,6 +28,7 @@ import org.robovm.rt.bro.annotation.*;
 import org.robovm.rt.bro.ptr.*;
 import org.robovm.apple.coregraphics.*;
 import org.robovm.apple.foundation.*;
+import org.robovm.apple.coreimage.*;
 import org.robovm.apple.opengles.*;
 /*</imports>*/
 
@@ -53,7 +54,7 @@ import org.robovm.apple.opengles.*;
     /*<members>*//*</members>*/
     /*<methods>*/
     @Method(selector = "functionWithName:")
-    public static native NSObject functionWithName$(String name);
+    public static native CAValueFunction create(String name);
     @Method(selector = "encodeWithCoder:")
     public native void encode(NSCoder aCoder);
     /*</methods>*/

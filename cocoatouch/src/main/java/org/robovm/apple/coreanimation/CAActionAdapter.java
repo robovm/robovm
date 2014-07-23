@@ -28,6 +28,7 @@ import org.robovm.rt.bro.annotation.*;
 import org.robovm.rt.bro.ptr.*;
 import org.robovm.apple.coregraphics.*;
 import org.robovm.apple.foundation.*;
+import org.robovm.apple.coreimage.*;
 import org.robovm.apple.opengles.*;
 /*</imports>*/
 
@@ -50,6 +51,6 @@ import org.robovm.apple.opengles.*;
     /*<members>*//*</members>*/
     /*<methods>*/
     @NotImplemented("runActionForKey:object:arguments:")
-    public void runActionForKey$object$arguments$(String event, NSObject anObject, NSDictionary<?, ?> dict) { throw new UnsupportedOperationException(); }
+    public void runAction(String event, NSObject anObject, NSDictionary<NSString, ?> dict) { throw new UnsupportedOperationException(); }
     /*</methods>*/
 }

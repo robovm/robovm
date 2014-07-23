@@ -28,6 +28,7 @@ import org.robovm.rt.bro.annotation.*;
 import org.robovm.rt.bro.ptr.*;
 import org.robovm.apple.coregraphics.*;
 import org.robovm.apple.foundation.*;
+import org.robovm.apple.coreimage.*;
 import org.robovm.apple.opengles.*;
 /*</imports>*/
 
@@ -176,13 +177,13 @@ import org.robovm.apple.opengles.*;
     @Property(selector = "setMinificationFilterBias:")
     public native void setMinificationFilterBias(float v);
     @Property(selector = "emitterCells")
-    public native NSArray<?> getEmitterCells();
+    public native NSArray<CAEmitterCell> getEmitterCells();
     @Property(selector = "setEmitterCells:")
-    public native void setEmitterCells(NSArray<?> v);
+    public native void setEmitterCells(NSArray<CAEmitterCell> v);
     @Property(selector = "style")
-    public native NSDictionary<?, ?> getStyle();
+    public native NSDictionary<NSString, ?> getStyle();
     @Property(selector = "setStyle:")
-    public native void setStyle(NSDictionary<?, ?> v);
+    public native void setStyle(NSDictionary<NSString, ?> v);
     @Property(selector = "beginTime")
     public native double getBeginTime();
     @Property(selector = "setBeginTime:")
@@ -219,11 +220,11 @@ import org.robovm.apple.opengles.*;
     /*<members>*//*</members>*/
     /*<methods>*/
     @Method(selector = "shouldArchiveValueForKey:")
-    public native boolean shouldArchiveValueForKey$(String key);
+    public native boolean shouldArchiveValue(String key);
     @Method(selector = "emitterCell")
-    public static native NSObject emitterCell();
+    public static native CAEmitterCell create();
     @Method(selector = "defaultValueForKey:")
-    public static native NSObject defaultValueForKey$(String key);
+    public static native NSObject getDefaultValue(String key);
     @Method(selector = "encodeWithCoder:")
     public native void encode(NSCoder aCoder);
     /*</methods>*/

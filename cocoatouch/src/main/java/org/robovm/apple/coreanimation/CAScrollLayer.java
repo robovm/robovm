@@ -28,6 +28,7 @@ import org.robovm.rt.bro.annotation.*;
 import org.robovm.rt.bro.ptr.*;
 import org.robovm.apple.coregraphics.*;
 import org.robovm.apple.foundation.*;
+import org.robovm.apple.coreimage.*;
 import org.robovm.apple.opengles.*;
 /*</imports>*/
 
@@ -55,8 +56,8 @@ import org.robovm.apple.opengles.*;
     /*<members>*//*</members>*/
     /*<methods>*/
     @Method(selector = "scrollToPoint:")
-    public native void scrollToPoint$(@ByVal CGPoint p);
+    public native void scrollTo(@ByVal CGPoint p);
     @Method(selector = "scrollToRect:")
-    public native void scrollToRect$(@ByVal CGRect r);
+    public native void scrollTo(@ByVal CGRect r);
     /*</methods>*/
 }

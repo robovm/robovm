@@ -28,6 +28,7 @@ import org.robovm.rt.bro.annotation.*;
 import org.robovm.rt.bro.ptr.*;
 import org.robovm.apple.coregraphics.*;
 import org.robovm.apple.foundation.*;
+import org.robovm.apple.coreimage.*;
 import org.robovm.apple.opengles.*;
 /*</imports>*/
 
@@ -45,7 +46,7 @@ import org.robovm.apple.opengles.*;
     /*<constructors>*/
     public CALayer() {}
     protected CALayer(SkipInit skipInit) { super(skipInit); }
-    public CALayer(CALayer layer) { super((SkipInit) null); initObject(initWithLayer$(layer)); }
+    public CALayer(CALayer layer) { super((SkipInit) null); initObject(init(layer)); }
     /*</constructors>*/
     /*<properties>*/
     @Property(selector = "bounds")
@@ -91,9 +92,9 @@ import org.robovm.apple.opengles.*;
     @Property(selector = "superlayer")
     public native CALayer getSuperlayer();
     @Property(selector = "sublayers")
-    public native NSArray<?> getSublayers();
+    public native NSArray<CALayer> getSublayers();
     @Property(selector = "setSublayers:")
-    public native void setSublayers(NSArray<?> v);
+    public native void setSublayers(NSArray<CALayer> v);
     @Property(selector = "sublayerTransform")
     public native @ByVal CATransform3D getSublayerTransform();
     @Property(selector = "setSublayerTransform:")
@@ -187,13 +188,13 @@ import org.robovm.apple.opengles.*;
     @Property(selector = "setCompositingFilter:")
     public native void setCompositingFilter(NSObject v);
     @Property(selector = "filters")
-    public native NSArray<?> getFilters();
+    public native NSArray<CIFilter> getFilters();
     @Property(selector = "setFilters:")
-    public native void setFilters(NSArray<?> v);
+    public native void setFilters(NSArray<CIFilter> v);
     @Property(selector = "backgroundFilters")
-    public native NSArray<?> getBackgroundFilters();
+    public native NSArray<CIFilter> getBackgroundFilters();
     @Property(selector = "setBackgroundFilters:")
-    public native void setBackgroundFilters(NSArray<?> v);
+    public native void setBackgroundFilters(NSArray<CIFilter> v);
     @Property(selector = "shouldRasterize")
     public native boolean isShouldRasterize();
     @Property(selector = "setShouldRasterize:")
@@ -223,9 +224,9 @@ import org.robovm.apple.opengles.*;
     @Property(selector = "setShadowPath:")
     public native void setShadowPath(CGPath v);
     @Property(selector = "actions")
-    public native NSDictionary<?, ?> getActions();
+    public native NSDictionary<NSString, ?> getActions();
     @Property(selector = "setActions:")
-    public native void setActions(NSDictionary<?, ?> v);
+    public native void setActions(NSDictionary<NSString, ?> v);
     @Property(selector = "name")
     public native String getName();
     @Property(selector = "setName:")
@@ -235,9 +236,9 @@ import org.robovm.apple.opengles.*;
     @Property(selector = "setDelegate:", strongRef = true)
     public native void setDelegate(CALayerDelegate v);
     @Property(selector = "style")
-    public native NSDictionary<?, ?> getStyle();
+    public native NSDictionary<NSString, ?> getStyle();
     @Property(selector = "setStyle:")
-    public native void setStyle(NSDictionary<?, ?> v);
+    public native void setStyle(NSDictionary<NSString, ?> v);
     @Property(selector = "visibleRect")
     public native @ByVal CGRect getVisibleRect();
     @Property(selector = "beginTime")
@@ -276,63 +277,63 @@ import org.robovm.apple.opengles.*;
     /*<members>*//*</members>*/
     /*<methods>*/
     @Method(selector = "initWithLayer:")
-    protected native @Pointer long initWithLayer$(CALayer layer);
+    protected native @Pointer long init(CALayer layer);
     @Method(selector = "presentationLayer")
-    public native NSObject presentationLayer();
+    public native CALayer getPresentationLayer();
     @Method(selector = "modelLayer")
-    public native NSObject modelLayer();
+    public native CALayer getModelLayer();
     @Method(selector = "shouldArchiveValueForKey:")
-    public native boolean shouldArchiveValueForKey$(String key);
+    public native boolean shouldArchiveValue(String key);
     @Method(selector = "affineTransform")
-    public native @ByVal CGAffineTransform affineTransform();
+    public native @ByVal CGAffineTransform getAffineTransform();
     @Method(selector = "setAffineTransform:")
     public native void setAffineTransform(@ByVal CGAffineTransform m);
     @Method(selector = "contentsAreFlipped")
-    public native boolean contentsAreFlipped();
+    public native boolean areContentsFlipped();
     @Method(selector = "removeFromSuperlayer")
     public native void removeFromSuperlayer();
     @Method(selector = "addSublayer:")
-    public native void addSublayer$(CALayer layer);
+    public native void addSublayer(CALayer layer);
     @Method(selector = "insertSublayer:atIndex:")
-    public native void insertSublayer$atIndex$(CALayer layer, int idx);
+    public native void insertSublayerAt(CALayer layer, int idx);
     @Method(selector = "insertSublayer:below:")
-    public native void insertSublayer$below$(CALayer layer, CALayer sibling);
+    public native void insertSublayerBelow(CALayer layer, CALayer sibling);
     @Method(selector = "insertSublayer:above:")
-    public native void insertSublayer$above$(CALayer layer, CALayer sibling);
+    public native void insertSublayerAbove(CALayer layer, CALayer sibling);
     @Method(selector = "replaceSublayer:with:")
-    public native void replaceSublayer$with$(CALayer layer, CALayer layer2);
+    public native void replaceSublayer(CALayer layer, CALayer layer2);
     @Method(selector = "convertPoint:fromLayer:")
-    public native @ByVal CGPoint convertPoint$fromLayer$(@ByVal CGPoint p, CALayer l);
+    public native @ByVal CGPoint convertPointFromLayer(@ByVal CGPoint p, CALayer l);
     @Method(selector = "convertPoint:toLayer:")
-    public native @ByVal CGPoint convertPoint$toLayer$(@ByVal CGPoint p, CALayer l);
+    public native @ByVal CGPoint convertPointToLayer(@ByVal CGPoint p, CALayer l);
     @Method(selector = "convertRect:fromLayer:")
-    public native @ByVal CGRect convertRect$fromLayer$(@ByVal CGRect r, CALayer l);
+    public native @ByVal CGRect convertRectFromLayer(@ByVal CGRect r, CALayer l);
     @Method(selector = "convertRect:toLayer:")
-    public native @ByVal CGRect convertRect$toLayer$(@ByVal CGRect r, CALayer l);
+    public native @ByVal CGRect convertRectToLayer(@ByVal CGRect r, CALayer l);
     @Method(selector = "convertTime:fromLayer:")
-    public native double convertTime$fromLayer$(double t, CALayer l);
+    public native double convertTimeFromLayer(double t, CALayer l);
     @Method(selector = "convertTime:toLayer:")
-    public native double convertTime$toLayer$(double t, CALayer l);
+    public native double convertTimeToLayer(double t, CALayer l);
     @Method(selector = "hitTest:")
-    public native CALayer hitTest$(@ByVal CGPoint p);
+    public native CALayer hitTest(@ByVal CGPoint p);
     @Method(selector = "containsPoint:")
-    public native boolean containsPoint$(@ByVal CGPoint p);
+    public native boolean containsPoint(@ByVal CGPoint p);
     @Method(selector = "display")
     public native void display();
     @Method(selector = "setNeedsDisplay")
     public native void setNeedsDisplay();
     @Method(selector = "setNeedsDisplayInRect:")
-    public native void setNeedsDisplayInRect(@ByVal CGRect r);
+    public native void setNeedsDisplay(@ByVal CGRect r);
     @Method(selector = "needsDisplay")
     public native boolean needsDisplay();
     @Method(selector = "displayIfNeeded")
     public native void displayIfNeeded();
     @Method(selector = "drawInContext:")
-    public native void drawInContext$(CGContext ctx);
+    public native void draw(CGContext ctx);
     @Method(selector = "renderInContext:")
-    public native void renderInContext$(CGContext ctx);
+    public native void render(CGContext ctx);
     @Method(selector = "preferredFrameSize")
-    public native @ByVal CGSize preferredFrameSize();
+    public native @ByVal CGSize getPreferredFrameSize();
     @Method(selector = "setNeedsLayout")
     public native void setNeedsLayout();
     @Method(selector = "needsLayout")
@@ -342,29 +343,29 @@ import org.robovm.apple.opengles.*;
     @Method(selector = "layoutSublayers")
     public native void layoutSublayers();
     @Method(selector = "actionForKey:")
-    public native CAAction actionForKey$(String event);
+    public native CAAction getAction(String event);
     @Method(selector = "addAnimation:forKey:")
-    public native void addAnimation$forKey$(CAAnimation anim, String key);
+    public native void addAnimation(CAAnimation anim, String key);
     @Method(selector = "removeAllAnimations")
     public native void removeAllAnimations();
     @Method(selector = "removeAnimationForKey:")
-    public native void removeAnimationForKey$(String key);
+    public native void removeAnimation(String key);
     @Method(selector = "animationKeys")
-    public native NSArray<?> animationKeys();
+    public native NSArray<NSString> getAnimationKeys();
     @Method(selector = "animationForKey:")
-    public native CAAnimation animationForKey$(String key);
+    public native CAAnimation getAnimation(String key);
     @Method(selector = "layer")
-    public static native NSObject layer();
+    public static native CALayer create();
     @Method(selector = "defaultValueForKey:")
-    public static native NSObject defaultValueForKey$(String key);
+    public static native NSObject getDefaultValue(String key);
     @Method(selector = "needsDisplayForKey:")
-    public static native boolean needsDisplayForKey$(String key);
+    public static native boolean needsDisplay(String key);
     @Method(selector = "defaultActionForKey:")
-    public static native CAAction defaultActionForKey$(String event);
+    public static native CAAction getDefaultAction(String event);
     @Method(selector = "scrollPoint:")
-    public native void scrollPoint$(@ByVal CGPoint p);
+    public native void scrollTo(@ByVal CGPoint p);
     @Method(selector = "scrollRectToVisible:")
-    public native void scrollRectToVisible$(@ByVal CGRect r);
+    public native void scrollTo(@ByVal CGRect r);
     @Method(selector = "encodeWithCoder:")
     public native void encode(NSCoder aCoder);
     /*</methods>*/

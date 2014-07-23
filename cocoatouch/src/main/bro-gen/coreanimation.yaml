@@ -1,5 +1,5 @@
 package: org.robovm.apple.coreanimation
-include: [coregraphics.yaml, foundation.yaml, opengles.yaml]
+include: [coregraphics.yaml, foundation.yaml, coreimage.yaml, opengles.yaml]
 library: QuartzCore
 framework: QuartzCore
 clang_args: ['-x', 'objective-c']
@@ -10,8 +10,12 @@ enums:
     CAEdgeAntialiasingMask: {bits: true}
 
 categories:
-    NSValue: {}
-
+    NSValue: # DONE
+        methods:
+            '-CATransform3DValue':
+                name: "getTransform3DValue"
+            '+valueWithCATransform3D:':
+                name: "create"
     CAAnimationDelegate@NSObject: {protocol: true}
     CALayerDelegate@NSObject: {protocol: true}
 
@@ -22,56 +26,248 @@ classes:
     # Structs
     CATransform3D: {}
 
-    # CADisplayLink:
-    #     methods:
-    #         '+displayLinkWithTarget:selector:':
-    #             name: create
-    CALayer: {}
-    CAAnimation:
+    CAAnimation: # DONE
         properties:
             'delegate':
                 type: CAAnimationDelegate
-    CAAnimationGroup: {}
-    CABasicAnimation: {}
-    CADisplayLink: {}
-    CAEAGLLayer:
-        protocols: [EAGLDrawable]
-    CAEmitterCell: {}
-    CAEmitterLayer: {}
-    CAGradientLayer: {}
-    CAKeyframeAnimation:
+        methods:
+            '-shouldArchiveValueForKey:':
+                name: "shouldArchiveValue"
+            '+animation':
+                name: "create"
+                return_type: "CAAnimation"
+            '+defaultValueForKey:':
+                name: "getDefaultValue"
+    CAAnimationGroup: # DONE
         properties:
+            'animations':
+                type: "NSArray<CAAnimation>"
+    CABasicAnimation: {} # DONE
+    CADisplayLink: # DONE
+        methods:
+            '-addToRunLoop:forMode:':
+                trim_after_first_colon: true
+            '-removeFromRunLoop:forMode:':
+                trim_after_first_colon: true
+            '+displayLinkWithTarget:selector:':
+                name: "create"
+    CAEAGLLayer: # DONE
+        protocols: [EAGLDrawable]
+    CAEmitterCell: # DONE
+        properties:
+            'emitterCells':
+                type: "NSArray<CAEmitterCell>"
+            'style':
+                type: "NSDictionary<NSString, ?>"   
+        methods:
+            '-shouldArchiveValueForKey:':
+                name: "shouldArchiveValue"
+            '+emitterCell':
+                name: "create"
+                return_type: CAEmitterCell
+            '+defaultValueForKey:':
+                name: "getDefaultValue"
+    CAEmitterLayer: # DONE
+        properties:
+            'emitterCells':
+                type: "NSArray<CAEmitterCell>"
+    CAGradientLayer: # DONE
+        properties:
+            'colors':
+                type: "NSArray<?>" # CGColor
+            'locations':
+                type: "NSArray<NSNumber>"
+    CAKeyframeAnimation: # DONE
+        properties:
+            'values':
+                type: "NSArray<?>"
+            'keyTimes':
+                type: "NSArray<NSNumber>"
+            'timingFunctions':
+                type: "NSArray<CAMediaTimingFunction>"
             'tensionValues':
                 type: "NSArray<NSNumber>"
-    CALayer:
+            'continuityValues':
+                type: "NSArray<NSNumber>"
+            'biasValues':
+                type: "NSArray<NSNumber>"
+    CALayer: # DONE
         properties:
             'delegate':
                 type: CALayerDelegate
             'edgeAntialiasingMask':
                 type: CAEdgeAntialiasingMask
+            'sublayers':
+                type: "NSArray<CALayer>"
+            'filters':
+                type: "NSArray<CIFilter>"
+            'backgroundFilters':
+                type: "NSArray<CIFilter>"
+            'actions':
+                type: "NSDictionary<NSString, ?>" # CAAction
+            'style':
+                type: "NSDictionary<NSString, ?>"    
         methods:
             '-init':
                 exclude: true
-    CAMediaTimingFunction: {}
-    CAPropertyAnimation: {}
-    CAReplicatorLayer: {}
-    CAScrollLayer: {}
-    CAShapeLayer: {}
-    CATextLayer: {}
-    CATiledLayer: {}
-    CATransaction: {}
-    CATransformLayer: {}
-    CATransition: {}
-    CAValueFunction: {}
+            '-initWithLayer:':
+                name: "init"
+            '-presentationLayer':
+                property: true
+                return_type: "CALayer"
+            '-modelLayer':
+                property: true
+                return_type: "CALayer"
+            '-shouldArchiveValueForKey:':
+                name: "shouldArchiveValue"
+            '-affineTransform':
+                property: true
+            '-contentsAreFlipped':
+                name: "areContentsFlipped"
+            '-addSublayer:':
+                trim_after_first_colon: true
+            '-insertSublayer:atIndex:':
+                name: "insertSublayerAt"
+            '-insertSublayer:below:':
+                name: "insertSublayerBelow"
+            '-insertSublayer:above:':
+                name: "insertSublayerAbove"
+            '-replaceSublayer:with:':
+                trim_after_first_colon: true
+            '-convertPoint:fromLayer:':
+                name: "convertPointFromLayer"
+            '-convertPoint:toLayer:':
+                name: "convertPointToLayer"
+            '-convertRect:fromLayer:':
+                name: "convertRectFromLayer"
+            '-convertRect:toLayer:':
+                name: "convertRectToLayer"
+            '-convertTime:fromLayer:':
+                name: "convertTimeFromLayer"
+            '-convertTime:toLayer:':
+                name: "convertTimeToLayer"
+            '-hitTest:':
+                trim_after_first_colon: true
+            '-containsPoint:':
+                trim_after_first_colon: true
+            '-setNeedsDisplayInRect:':
+                name: "setNeedsDisplay"
+            '-drawInContext:':
+                name: "draw"
+            '-renderInContext:':
+                name: "render"
+            '-preferredFrameSize':
+                property: true
+            '-actionForKey:':
+                name: "getAction"
+            '-addAnimation:forKey:':
+                trim_after_first_colon: true
+            '-removeAnimationForKey:':
+                name: "removeAnimation"
+            '-animationKeys':
+                property: true
+                return_type: "NSArray<NSString>"
+            '-animationForKey:':
+                name: "getAnimation"
+            '+layer':
+                name: "create"
+                return_type: "CALayer"
+            '+defaultValueForKey:':
+                name: "getDefaultValue"
+            '+needsDisplayForKey:':
+                name: "needsDisplay"
+            '+defaultActionForKey:':
+                name: "getDefaultAction"
+            '-scrollPoint:':
+                name: "scrollTo"
+            '-scrollRectToVisible:':
+                name: "scrollTo"
+    CAMediaTimingFunction: # DONE
+        methods:
+            '-initWithControlPoints::::':
+                name: "init"
+            '-getControlPointAtIndex:values:':
+                name: "getControlPoint"
+                visibility: protected
+            '+functionWithName:':
+                name: "create"
+                return_type: "CAMediaTimingFunction"
+            '+functionWithControlPoints::::':
+                name: "create"
+                return_type: "CAMediaTimingFunction"
+    CAPropertyAnimation: # DONE
+        methods:
+            '+animationWithKeyPath:':
+                name: "create"
+    CAReplicatorLayer: {} # DONE
+    CAScrollLayer: # DONE
+        methods:
+            '-scrollToPoint:':
+                name: "scrollTo"
+            '-scrollToRect:':
+                name: "scrollTo"
+    CAShapeLayer: # DONE
+        properties:
+            'lineDashPattern':
+                type: "NSArray<NSNumber>"
+    CATextLayer: {} # DONE
+    CATiledLayer: # DONE
+        methods:
+            '+fadeDuration':
+                property: true
+    CATransaction: # DONE
+        methods:
+            '+animationDuration':
+                property: true
+            '+animationTimingFunction':
+                property: true
+            '+disableActions':
+                property: true
+            '+completionBlock':
+                property: true
+            '+valueForKey:':
+                name: "get"
+            '+setValue:forKey:':
+                name: "put"
+                visibility: "protected"
+    CATransformLayer: {} # DONE
+    CATransition: # DONE
+        properties:
+            'filter':
+                type: "CIFilter"
+    CAValueFunction: # DONE
+        methods:
+            '+functionWithName:':
+                name: "create"
+                return_type: "CAValueFunction"
 
 protocols:
-    CAAction: {}
-    CAMediaTiming: {}
-    CAAnimationDelegate: {}
-    CALayerDelegate: {}
+    CAAction: # DONE
+        methods:
+            '-runActionForKey:object:arguments:':
+                name: "runAction"
+                parameters:
+                    dict:
+                        type: "NSDictionary<NSString, ?>"
+    CAMediaTiming: {} # DONE
+    CAAnimationDelegate: # DONE
+        methods:
+            '-animationDidStart:':
+                name: "didStart"
+            '-animationDidStop:finished:':
+                name: "didStop"
+    CALayerDelegate: # DONE
+        methods:
+            '-displayLayer:':
+                trim_after_first_colon: true
+            '-drawLayer:inContext:':
+                trim_after_first_colon: true
+            '-layoutSublayersOfLayer:':
+                name: "layoutSublayers"
+            '-actionForLayer:forKey:':
+                name: "getAction"
 
 functions:
-
     CATransform3D(Make.*):
         class: CATransform3D
         static: true

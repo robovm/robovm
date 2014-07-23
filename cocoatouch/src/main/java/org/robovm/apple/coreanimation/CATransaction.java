@@ -28,6 +28,7 @@ import org.robovm.rt.bro.annotation.*;
 import org.robovm.rt.bro.ptr.*;
 import org.robovm.apple.coregraphics.*;
 import org.robovm.apple.foundation.*;
+import org.robovm.apple.coreimage.*;
 import org.robovm.apple.opengles.*;
 /*</imports>*/
 
@@ -50,6 +51,9 @@ import org.robovm.apple.opengles.*;
     
     /*</properties>*/
     /*<members>*//*</members>*/
+    public static void put (String key, NSObject value) {
+        put(value, key);
+    }
     /*<methods>*/
     @Method(selector = "begin")
     public static native void begin();
@@ -62,24 +66,24 @@ import org.robovm.apple.opengles.*;
     @Method(selector = "unlock")
     public static native void unlock();
     @Method(selector = "animationDuration")
-    public static native double animationDuration();
+    public static native double getAnimationDuration();
     @Method(selector = "setAnimationDuration:")
     public static native void setAnimationDuration(double dur);
     @Method(selector = "animationTimingFunction")
-    public static native CAMediaTimingFunction animationTimingFunction();
+    public static native CAMediaTimingFunction getAnimationTimingFunction();
     @Method(selector = "setAnimationTimingFunction:")
     public static native void setAnimationTimingFunction(CAMediaTimingFunction function);
     @Method(selector = "disableActions")
-    public static native boolean disableActions();
+    public static native boolean isDisableActions();
     @Method(selector = "setDisableActions:")
     public static native void setDisableActions(boolean flag);
     @Method(selector = "completionBlock")
-    public static native @Block Runnable completionBlock();
+    public static native @Block Runnable getCompletionBlock();
     @Method(selector = "setCompletionBlock:")
     public static native void setCompletionBlock(@Block Runnable block);
     @Method(selector = "valueForKey:")
-    public static native NSObject valueForKey$(String key);
+    public static native NSObject get(String key);
     @Method(selector = "setValue:forKey:")
-    public static native void setValue$forKey$(NSObject anObject, String key);
+    protected static native void put(NSObject anObject, String key);
     /*</methods>*/
 }

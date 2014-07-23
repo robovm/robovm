@@ -28,6 +28,7 @@ import org.robovm.rt.bro.annotation.*;
 import org.robovm.rt.bro.ptr.*;
 import org.robovm.apple.coregraphics.*;
 import org.robovm.apple.foundation.*;
+import org.robovm.apple.coreimage.*;
 import org.robovm.apple.opengles.*;
 /*</imports>*/
 
@@ -48,9 +49,9 @@ import org.robovm.apple.opengles.*;
     /*</properties>*/
     /*<methods>*/
     @Method(selector = "animationDidStart:")
-    void animationDidStart$(CAAnimation anim);
+    void didStart(CAAnimation anim);
     @Method(selector = "animationDidStop:finished:")
-    void animationDidStop$finished$(CAAnimation anim, boolean flag);
+    void didStop(CAAnimation anim, boolean flag);
     /*</methods>*/
     /*<adapter>*/
     /*</adapter>*/

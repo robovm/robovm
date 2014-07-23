@@ -28,6 +28,7 @@ import org.robovm.rt.bro.annotation.*;
 import org.robovm.rt.bro.ptr.*;
 import org.robovm.apple.coregraphics.*;
 import org.robovm.apple.foundation.*;
+import org.robovm.apple.coreimage.*;
 import org.robovm.apple.opengles.*;
 /*</imports>*/
 
@@ -92,9 +93,9 @@ import org.robovm.apple.opengles.*;
     @Property(selector = "setLineDashPhase:")
     public native void setLineDashPhase(@MachineSizedFloat double v);
     @Property(selector = "lineDashPattern")
-    public native NSArray<?> getLineDashPattern();
+    public native NSArray<NSNumber> getLineDashPattern();
     @Property(selector = "setLineDashPattern:")
-    public native void setLineDashPattern(NSArray<?> v);
+    public native void setLineDashPattern(NSArray<NSNumber> v);
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/

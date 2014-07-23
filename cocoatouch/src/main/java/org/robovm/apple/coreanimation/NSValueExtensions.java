@@ -28,6 +28,7 @@ import org.robovm.rt.bro.annotation.*;
 import org.robovm.rt.bro.ptr.*;
 import org.robovm.apple.coregraphics.*;
 import org.robovm.apple.foundation.*;
+import org.robovm.apple.coreimage.*;
 import org.robovm.apple.opengles.*;
 /*</imports>*/
 
@@ -51,9 +52,9 @@ import org.robovm.apple.opengles.*;
     /*<members>*//*</members>*/
     /*<methods>*/
     @Method(selector = "CATransform3DValue")
-    public static native @ByVal CATransform3D CATransform3DValue(NSValue thiz);
+    public static native @ByVal CATransform3D getTransform3DValue(NSValue thiz);
     @Method(selector = "valueWithCATransform3D:")
-    protected static native NSValue valueWithCATransform3D$(ObjCClass clazz, @ByVal CATransform3D t);
-    public static NSValue valueWithCATransform3D$(@ByVal CATransform3D t) { return valueWithCATransform3D$(ObjCClass.getByType(NSValue.class), t); }
+    protected static native NSValue create(ObjCClass clazz, @ByVal CATransform3D t);
+    public static NSValue create(@ByVal CATransform3D t) { return create(ObjCClass.getByType(NSValue.class), t); }
     /*</methods>*/
 }

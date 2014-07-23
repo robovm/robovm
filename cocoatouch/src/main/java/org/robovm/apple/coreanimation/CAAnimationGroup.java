@@ -28,6 +28,7 @@ import org.robovm.rt.bro.annotation.*;
 import org.robovm.rt.bro.ptr.*;
 import org.robovm.apple.coregraphics.*;
 import org.robovm.apple.foundation.*;
+import org.robovm.apple.coreimage.*;
 import org.robovm.apple.opengles.*;
 /*</imports>*/
 
@@ -48,9 +49,9 @@ import org.robovm.apple.opengles.*;
     /*</constructors>*/
     /*<properties>*/
     @Property(selector = "animations")
-    public native NSArray<?> getAnimations();
+    public native NSArray<CAAnimation> getAnimations();
     @Property(selector = "setAnimations:")
-    public native void setAnimations(NSArray<?> v);
+    public native void setAnimations(NSArray<CAAnimation> v);
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/

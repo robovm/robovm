@@ -28,6 +28,7 @@ import org.robovm.rt.bro.annotation.*;
 import org.robovm.rt.bro.ptr.*;
 import org.robovm.apple.coregraphics.*;
 import org.robovm.apple.foundation.*;
+import org.robovm.apple.coreimage.*;
 import org.robovm.apple.opengles.*;
 /*</imports>*/
 
@@ -63,12 +64,12 @@ import org.robovm.apple.opengles.*;
     /*<members>*//*</members>*/
     /*<methods>*/
     @Method(selector = "addToRunLoop:forMode:")
-    public native void addToRunLoop$forMode$(NSRunLoop runloop, String mode);
+    public native void addToRunLoop(NSRunLoop runloop, String mode);
     @Method(selector = "removeFromRunLoop:forMode:")
-    public native void removeFromRunLoop$forMode$(NSRunLoop runloop, String mode);
+    public native void removeFromRunLoop(NSRunLoop runloop, String mode);
     @Method(selector = "invalidate")
     public native void invalidate();
     @Method(selector = "displayLinkWithTarget:selector:")
-    public static native CADisplayLink displayLinkWithTarget$selector$(NSObject target, Selector sel);
+    public static native CADisplayLink create(NSObject target, Selector sel);
     /*</methods>*/
 }

@@ -28,6 +28,7 @@ import org.robovm.rt.bro.annotation.*;
 import org.robovm.rt.bro.ptr.*;
 import org.robovm.apple.coregraphics.*;
 import org.robovm.apple.foundation.*;
+import org.robovm.apple.coreimage.*;
 import org.robovm.apple.opengles.*;
 /*</imports>*/
 
@@ -48,9 +49,9 @@ import org.robovm.apple.opengles.*;
     /*</constructors>*/
     /*<properties>*/
     @Property(selector = "drawableProperties")
-    public native NSDictionary<?, ?> getDrawableProperties();
+    public native NSDictionary<NSString, ?> getDrawableProperties();
     @Property(selector = "setDrawableProperties:")
-    public native void setDrawableProperties(NSDictionary<?, ?> v);
+    public native void setDrawableProperties(NSDictionary<NSString, ?> v);
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/

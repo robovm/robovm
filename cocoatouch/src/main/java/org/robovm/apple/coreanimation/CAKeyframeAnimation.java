@@ -28,6 +28,7 @@ import org.robovm.rt.bro.annotation.*;
 import org.robovm.rt.bro.ptr.*;
 import org.robovm.apple.coregraphics.*;
 import org.robovm.apple.foundation.*;
+import org.robovm.apple.coreimage.*;
 import org.robovm.apple.opengles.*;
 /*</imports>*/
 
@@ -56,13 +57,13 @@ import org.robovm.apple.opengles.*;
     @Property(selector = "setPath:")
     public native void setPath(CGPath v);
     @Property(selector = "keyTimes")
-    public native NSArray<?> getKeyTimes();
+    public native NSArray<NSNumber> getKeyTimes();
     @Property(selector = "setKeyTimes:")
-    public native void setKeyTimes(NSArray<?> v);
+    public native void setKeyTimes(NSArray<NSNumber> v);
     @Property(selector = "timingFunctions")
-    public native NSArray<?> getTimingFunctions();
+    public native NSArray<CAMediaTimingFunction> getTimingFunctions();
     @Property(selector = "setTimingFunctions:")
-    public native void setTimingFunctions(NSArray<?> v);
+    public native void setTimingFunctions(NSArray<CAMediaTimingFunction> v);
     @Property(selector = "calculationMode")
     public native String getCalculationMode();
     @Property(selector = "setCalculationMode:")
@@ -72,13 +73,13 @@ import org.robovm.apple.opengles.*;
     @Property(selector = "setTensionValues:")
     public native void setTensionValues(NSArray<NSNumber> v);
     @Property(selector = "continuityValues")
-    public native NSArray<?> getContinuityValues();
+    public native NSArray<NSNumber> getContinuityValues();
     @Property(selector = "setContinuityValues:")
-    public native void setContinuityValues(NSArray<?> v);
+    public native void setContinuityValues(NSArray<NSNumber> v);
     @Property(selector = "biasValues")
-    public native NSArray<?> getBiasValues();
+    public native NSArray<NSNumber> getBiasValues();
     @Property(selector = "setBiasValues:")
-    public native void setBiasValues(NSArray<?> v);
+    public native void setBiasValues(NSArray<NSNumber> v);
     @Property(selector = "rotationMode")
     public native String getRotationMode();
     @Property(selector = "setRotationMode:")

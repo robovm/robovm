@@ -28,6 +28,7 @@ import org.robovm.rt.bro.annotation.*;
 import org.robovm.rt.bro.ptr.*;
 import org.robovm.apple.coregraphics.*;
 import org.robovm.apple.foundation.*;
+import org.robovm.apple.coreimage.*;
 import org.robovm.apple.opengles.*;
 /*</imports>*/
 
@@ -48,9 +49,9 @@ import org.robovm.apple.opengles.*;
     /*</constructors>*/
     /*<properties>*/
     @Property(selector = "emitterCells")
-    public native NSArray<?> getEmitterCells();
+    public native NSArray<CAEmitterCell> getEmitterCells();
     @Property(selector = "setEmitterCells:")
-    public native void setEmitterCells(NSArray<?> v);
+    public native void setEmitterCells(NSArray<CAEmitterCell> v);
     @Property(selector = "birthRate")
     public native float getBirthRate();
     @Property(selector = "setBirthRate:")

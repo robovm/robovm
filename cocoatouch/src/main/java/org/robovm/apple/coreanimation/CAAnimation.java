@@ -28,6 +28,7 @@ import org.robovm.rt.bro.annotation.*;
 import org.robovm.rt.bro.ptr.*;
 import org.robovm.apple.coregraphics.*;
 import org.robovm.apple.foundation.*;
+import org.robovm.apple.coreimage.*;
 import org.robovm.apple.opengles.*;
 /*</imports>*/
 
@@ -101,14 +102,14 @@ import org.robovm.apple.opengles.*;
     public static native double getCurrentMediaTime();
     
     @Method(selector = "shouldArchiveValueForKey:")
-    public native boolean shouldArchiveValueForKey$(String key);
+    public native boolean shouldArchiveValue(String key);
     @Method(selector = "animation")
-    public static native NSObject animation();
+    public static native CAAnimation create();
     @Method(selector = "defaultValueForKey:")
-    public static native NSObject defaultValueForKey$(String key);
+    public static native NSObject getDefaultValue(String key);
     @Method(selector = "encodeWithCoder:")
     public native void encode(NSCoder aCoder);
     @Method(selector = "runActionForKey:object:arguments:")
-    public native void runActionForKey$object$arguments$(String event, NSObject anObject, NSDictionary<?, ?> dict);
+    public native void runAction(String event, NSObject anObject, NSDictionary<NSString, ?> dict);
     /*</methods>*/
 }

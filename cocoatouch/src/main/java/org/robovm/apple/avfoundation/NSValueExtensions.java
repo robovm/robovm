@@ -61,17 +61,17 @@ import org.robovm.apple.mediatoolbox.*;
      * @since Available in iOS 4.0 and later.
      */
     @Method(selector = "CMTimeValue")
-    public static native @ByVal CMTime getTime(NSValue thiz);
+    public static native @ByVal CMTime getTimeValue(NSValue thiz);
     /**
      * @since Available in iOS 4.0 and later.
      */
     @Method(selector = "CMTimeRangeValue")
-    public static native @ByVal CMTimeRange getTimeRange(NSValue thiz);
+    public static native @ByVal CMTimeRange getTimeRangeValue(NSValue thiz);
     /**
      * @since Available in iOS 4.0 and later.
      */
     @Method(selector = "CMTimeMappingValue")
-    public static native @ByVal CMTimeMapping getTimeMapping(NSValue thiz);
+    public static native @ByVal CMTimeMapping getTimeMappingValue(NSValue thiz);
     /**
      * @since Available in iOS 4.0 and later.
      */

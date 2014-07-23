@@ -28,6 +28,7 @@ import org.robovm.rt.bro.annotation.*;
 import org.robovm.rt.bro.ptr.*;
 import org.robovm.apple.coregraphics.*;
 import org.robovm.apple.foundation.*;
+import org.robovm.apple.coreimage.*;
 import org.robovm.apple.opengles.*;
 /*</imports>*/
 
@@ -50,8 +51,8 @@ import org.robovm.apple.opengles.*;
     /*<members>*//*</members>*/
     /*<methods>*/
     @NotImplemented("animationDidStart:")
-    public void animationDidStart$(CAAnimation anim) { throw new UnsupportedOperationException(); }
+    public void didStart(CAAnimation anim) { throw new UnsupportedOperationException(); }
     @NotImplemented("animationDidStop:finished:")
-    public void animationDidStop$finished$(CAAnimation anim, boolean flag) { throw new UnsupportedOperationException(); }
+    public void didStop(CAAnimation anim, boolean flag) { throw new UnsupportedOperationException(); }
     /*</methods>*/
 }

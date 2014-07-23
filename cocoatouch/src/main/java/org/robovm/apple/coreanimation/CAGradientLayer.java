@@ -28,6 +28,7 @@ import org.robovm.rt.bro.annotation.*;
 import org.robovm.rt.bro.ptr.*;
 import org.robovm.apple.coregraphics.*;
 import org.robovm.apple.foundation.*;
+import org.robovm.apple.coreimage.*;
 import org.robovm.apple.opengles.*;
 /*</imports>*/
 
@@ -52,9 +53,9 @@ import org.robovm.apple.opengles.*;
     @Property(selector = "setColors:")
     public native void setColors(NSArray<?> v);
     @Property(selector = "locations")
-    public native NSArray<?> getLocations();
+    public native NSArray<NSNumber> getLocations();
     @Property(selector = "setLocations:")
-    public native void setLocations(NSArray<?> v);
+    public native void setLocations(NSArray<NSNumber> v);
     @Property(selector = "startPoint")
     public native @ByVal CGPoint getStartPoint();
     @Property(selector = "setStartPoint:")

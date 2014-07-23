@@ -28,6 +28,7 @@ import org.robovm.rt.bro.annotation.*;
 import org.robovm.rt.bro.ptr.*;
 import org.robovm.apple.coregraphics.*;
 import org.robovm.apple.foundation.*;
+import org.robovm.apple.coreimage.*;
 import org.robovm.apple.opengles.*;
 /*</imports>*/
 
@@ -45,21 +46,26 @@ import org.robovm.apple.opengles.*;
     /*<constructors>*/
     public CAMediaTimingFunction() {}
     protected CAMediaTimingFunction(SkipInit skipInit) { super(skipInit); }
-    public CAMediaTimingFunction(float c1x, float c1y, float c2x, float c2y) { super((SkipInit) null); initObject(initWithControlPoints$$$$(c1x, c1y, c2x, c2y)); }
+    public CAMediaTimingFunction(float c1x, float c1y, float c2x, float c2y) { super((SkipInit) null); initObject(init(c1x, c1y, c2x, c2y)); }
     /*</constructors>*/
     /*<properties>*/
     
     /*</properties>*/
     /*<members>*//*</members>*/
+    public float getControlPoint(@MachineSizedUInt long idx) {
+        FloatPtr ptr = new FloatPtr();
+        getControlPoint(idx, ptr);
+        return ptr.get();
+    }
     /*<methods>*/
     @Method(selector = "initWithControlPoints::::")
-    protected native @Pointer long initWithControlPoints$$$$(float c1x, float c1y, float c2x, float c2y);
+    protected native @Pointer long init(float c1x, float c1y, float c2x, float c2y);
     @Method(selector = "getControlPointAtIndex:values:")
-    public native void getControlPointAtIndex$values$(@MachineSizedUInt long idx, FloatPtr ptr);
+    protected native void getControlPoint(@MachineSizedUInt long idx, FloatPtr ptr);
     @Method(selector = "functionWithName:")
-    public static native NSObject functionWithName$(String name);
+    public static native CAMediaTimingFunction create(String name);
     @Method(selector = "functionWithControlPoints::::")
-    public static native NSObject functionWithControlPoints$$$$(float c1x, float c1y, float c2x, float c2y);
+    public static native CAMediaTimingFunction create(float c1x, float c1y, float c2x, float c2y);
     @Method(selector = "encodeWithCoder:")
     public native void encode(NSCoder aCoder);
     /*</methods>*/

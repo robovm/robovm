@@ -28,6 +28,7 @@ import org.robovm.rt.bro.annotation.*;
 import org.robovm.rt.bro.ptr.*;
 import org.robovm.apple.coregraphics.*;
 import org.robovm.apple.foundation.*;
+import org.robovm.apple.coreimage.*;
 import org.robovm.apple.opengles.*;
 /*</imports>*/
 
@@ -48,13 +49,13 @@ import org.robovm.apple.opengles.*;
     /*</properties>*/
     /*<methods>*/
     @Method(selector = "displayLayer:")
-    void displayLayer$(CALayer layer);
+    void displayLayer(CALayer layer);
     @Method(selector = "drawLayer:inContext:")
-    void drawLayer$inContext$(CALayer layer, CGContext ctx);
+    void drawLayer(CALayer layer, CGContext ctx);
     @Method(selector = "layoutSublayersOfLayer:")
-    void layoutSublayersOfLayer$(CALayer layer);
+    void layoutSublayers(CALayer layer);
     @Method(selector = "actionForLayer:forKey:")
-    CAAction actionForLayer$forKey$(CALayer layer, String event);
+    CAAction getAction(CALayer layer, String event);
     /*</methods>*/
     /*<adapter>*/
     /*</adapter>*/

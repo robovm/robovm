@@ -28,6 +28,7 @@ import org.robovm.rt.bro.annotation.*;
 import org.robovm.rt.bro.ptr.*;
 import org.robovm.apple.coregraphics.*;
 import org.robovm.apple.foundation.*;
+import org.robovm.apple.coreimage.*;
 import org.robovm.apple.opengles.*;
 /*</imports>*/
 
@@ -64,9 +65,9 @@ import org.robovm.apple.opengles.*;
     @Property(selector = "setEndProgress:")
     public native void setEndProgress(float v);
     @Property(selector = "filter")
-    public native NSObject getFilter();
+    public native CIFilter getFilter();
     @Property(selector = "setFilter:")
-    public native void setFilter(NSObject v);
+    public native void setFilter(CIFilter v);
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/

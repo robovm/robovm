@@ -28,6 +28,7 @@ import org.robovm.rt.bro.annotation.*;
 import org.robovm.rt.bro.ptr.*;
 import org.robovm.apple.coregraphics.*;
 import org.robovm.apple.foundation.*;
+import org.robovm.apple.coreimage.*;
 import org.robovm.apple.opengles.*;
 /*</imports>*/
 
@@ -48,7 +49,7 @@ import org.robovm.apple.opengles.*;
     /*</properties>*/
     /*<methods>*/
     @Method(selector = "runActionForKey:object:arguments:")
-    void runActionForKey$object$arguments$(String event, NSObject anObject, NSDictionary<?, ?> dict);
+    void runAction(String event, NSObject anObject, NSDictionary<NSString, ?> dict);
     /*</methods>*/
     /*<adapter>*/
     /*</adapter>*/

@@ -42,8 +42,8 @@ import org.robovm.apple.mediatoolbox.*;
 
 /*</javadoc>*/
 /*<annotations>*//*</annotations>*/
-/*<visibility>*/public/*</visibility>*/ interface /*<name>*/AVPlayerItemLegibleOutputPushDelegate/*</name>*/ 
-    /*<implements>*/extends AVPlayerItemOutputPushDelegate/*</implements>*/ {
+/*<visibility>*/public/*</visibility>*/ interface /*<name>*/AVSpeechSynthesizerDelegate/*</name>*/ 
+    /*<implements>*/extends NSObjectProtocol/*</implements>*/ {
 
     /*<ptr>*/
     /*</ptr>*/
@@ -54,11 +54,18 @@ import org.robovm.apple.mediatoolbox.*;
     
     /*</properties>*/
     /*<methods>*/
-    /**
-     * @since Available in iOS 7.0 and later.
-     */
-    @Method(selector = "legibleOutput:didOutputAttributedStrings:nativeSampleBuffers:forItemTime:")
-    void didOutputAttributedStrings(AVPlayerItemLegibleOutput output, NSArray<NSAttributedString> strings, NSArray<?> nativeSamples, @ByVal CMTime itemTime);
+    @Method(selector = "speechSynthesizer:didStartSpeechUtterance:")
+    void didStartSpeechUtterance(AVSpeechSynthesizer synthesizer, AVSpeechUtterance utterance);
+    @Method(selector = "speechSynthesizer:didFinishSpeechUtterance:")
+    void didFinishSpeechUtterance(AVSpeechSynthesizer synthesizer, AVSpeechUtterance utterance);
+    @Method(selector = "speechSynthesizer:didPauseSpeechUtterance:")
+    void didPauseSpeechUtterance(AVSpeechSynthesizer synthesizer, AVSpeechUtterance utterance);
+    @Method(selector = "speechSynthesizer:didContinueSpeechUtterance:")
+    void didContinueSpeechUtterance(AVSpeechSynthesizer synthesizer, AVSpeechUtterance utterance);
+    @Method(selector = "speechSynthesizer:didCancelSpeechUtterance:")
+    void didCancelSpeechUtterance(AVSpeechSynthesizer synthesizer, AVSpeechUtterance utterance);
+    @Method(selector = "speechSynthesizer:willSpeakRangeOfSpeechString:utterance:")
+    void willSpeak(AVSpeechSynthesizer synthesizer, @ByVal NSRange characterRange, AVSpeechUtterance utterance);
     /*</methods>*/
     /*<adapter>*/
     /*</adapter>*/

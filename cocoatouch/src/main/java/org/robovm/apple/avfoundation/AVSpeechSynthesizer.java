@@ -39,27 +39,41 @@ import org.robovm.apple.mediatoolbox.*;
 /*</imports>*/
 
 /*<javadoc>*/
+/**
+ * @since Available in iOS 7.0 and later.
+ */
 /*</javadoc>*/
-/*<annotations>*//*</annotations>*/
-/*<visibility>*/public/*</visibility>*/ class /*<name>*/AVPlayerItemLegibleOutputPushDelegateAdapter/*</name>*/ 
-    extends /*<extends>*/AVPlayerItemOutputPushDelegateAdapter/*</extends>*/ 
-    /*<implements>*/implements AVPlayerItemLegibleOutputPushDelegate/*</implements>*/ {
+/*<annotations>*/@Library("AVFoundation") @NativeClass/*</annotations>*/
+/*<visibility>*/public/*</visibility>*/ class /*<name>*/AVSpeechSynthesizer/*</name>*/ 
+    extends /*<extends>*/NSObject/*</extends>*/ 
+    /*<implements>*//*</implements>*/ {
 
-    /*<ptr>*/
-    /*</ptr>*/
-    /*<bind>*/
-    /*</bind>*/
+    /*<ptr>*/public static class AVSpeechSynthesizerPtr extends Ptr<AVSpeechSynthesizer, AVSpeechSynthesizerPtr> {}/*</ptr>*/
+    /*<bind>*/static { ObjCRuntime.bind(AVSpeechSynthesizer.class); }/*</bind>*/
     /*<constants>*//*</constants>*/
-    /*<constructors>*//*</constructors>*/
+    /*<constructors>*/
+    public AVSpeechSynthesizer() {}
+    protected AVSpeechSynthesizer(SkipInit skipInit) { super(skipInit); }
+    /*</constructors>*/
     /*<properties>*/
-    
+    @Property(selector = "delegate")
+    public native AVSpeechSynthesizerDelegate getDelegate();
+    @Property(selector = "setDelegate:", strongRef = true)
+    public native void setDelegate(AVSpeechSynthesizerDelegate v);
+    @Property(selector = "isSpeaking")
+    public native boolean isSpeaking();
+    @Property(selector = "isPaused")
+    public native boolean isPaused();
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
-    /**
-     * @since Available in iOS 7.0 and later.
-     */
-    @NotImplemented("legibleOutput:didOutputAttributedStrings:nativeSampleBuffers:forItemTime:")
-    public void didOutputAttributedStrings(AVPlayerItemLegibleOutput output, NSArray<NSAttributedString> strings, NSArray<?> nativeSamples, @ByVal CMTime itemTime) { throw new UnsupportedOperationException(); }
+    @Method(selector = "speakUtterance:")
+    public native void addSpeakUtterance(AVSpeechUtterance utterance);
+    @Method(selector = "stopSpeakingAtBoundary:")
+    public native boolean stopSpeaking(AVSpeechBoundary boundary);
+    @Method(selector = "pauseSpeakingAtBoundary:")
+    public native boolean pauseSpeaking(AVSpeechBoundary boundary);
+    @Method(selector = "continueSpeaking")
+    public native boolean continueSpeaking();
     /*</methods>*/
 }

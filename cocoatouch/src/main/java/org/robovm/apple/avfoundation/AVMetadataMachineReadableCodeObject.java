@@ -39,27 +39,30 @@ import org.robovm.apple.mediatoolbox.*;
 /*</imports>*/
 
 /*<javadoc>*/
-
+/**
+ * @since Available in iOS 7.0 and later.
+ */
 /*</javadoc>*/
-/*<annotations>*//*</annotations>*/
-/*<visibility>*/public/*</visibility>*/ interface /*<name>*/AVPlayerItemLegibleOutputPushDelegate/*</name>*/ 
-    /*<implements>*/extends AVPlayerItemOutputPushDelegate/*</implements>*/ {
+/*<annotations>*/@Library("AVFoundation") @NativeClass/*</annotations>*/
+/*<visibility>*/public/*</visibility>*/ class /*<name>*/AVMetadataMachineReadableCodeObject/*</name>*/ 
+    extends /*<extends>*/AVMetadataObject/*</extends>*/ 
+    /*<implements>*//*</implements>*/ {
 
-    /*<ptr>*/
-    /*</ptr>*/
-    /*<bind>*/
-    /*</bind>*/
+    /*<ptr>*/public static class AVMetadataMachineReadableCodeObjectPtr extends Ptr<AVMetadataMachineReadableCodeObject, AVMetadataMachineReadableCodeObjectPtr> {}/*</ptr>*/
+    /*<bind>*/static { ObjCRuntime.bind(AVMetadataMachineReadableCodeObject.class); }/*</bind>*/
     /*<constants>*//*</constants>*/
+    /*<constructors>*/
+    public AVMetadataMachineReadableCodeObject() {}
+    protected AVMetadataMachineReadableCodeObject(SkipInit skipInit) { super(skipInit); }
+    /*</constructors>*/
     /*<properties>*/
-    
+    @Property(selector = "corners")
+    public native NSArray<NSDictionary<NSString, ?>> getCorners();
+    @Property(selector = "stringValue")
+    public native String getStringValue();
     /*</properties>*/
+    /*<members>*//*</members>*/
     /*<methods>*/
-    /**
-     * @since Available in iOS 7.0 and later.
-     */
-    @Method(selector = "legibleOutput:didOutputAttributedStrings:nativeSampleBuffers:forItemTime:")
-    void didOutputAttributedStrings(AVPlayerItemLegibleOutput output, NSArray<NSAttributedString> strings, NSArray<?> nativeSamples, @ByVal CMTime itemTime);
+    
     /*</methods>*/
-    /*<adapter>*/
-    /*</adapter>*/
 }

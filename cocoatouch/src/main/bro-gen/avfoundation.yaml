@@ -48,11 +48,11 @@ categories:
     NSValueAVFoundationExtensions: # DONE
         methods:
             '-CMTimeValue':
-                name: "getTime"
+                name: "getTimeValue"
             '-CMTimeRangeValue':
-                name: "getTimeRange"
+                name: "getTimeRangeValue"
             '-CMTimeMappingValue':
-                name: "getTimeMapping"
+                name: "getTimeMappingValue"
             '+valueWith.*':
                 name: "create"
     AVTimeCoding: # DONE
@@ -754,6 +754,7 @@ classes:
                 property: true
             '-displayNameWithLocale:':
                 name: "getDisplayName"
+    AVMetadataFaceObject: {} # DONE
     AVMetadataItem: # DONE
         properties:
             'key':
@@ -800,6 +801,10 @@ classes:
         methods:
             '+metadataItemFilterForSharing':
                 name: "sharedInstance"
+    AVMetadataMachineReadableCodeObject: # DONE
+        properties:
+            'corners':
+                type: "NSArray<NSDictionary<NSString, ?>>"
     AVMetadataObject: {} # DONE
     AVMutableAudioMix: # DONE
         properties:
@@ -1110,6 +1115,29 @@ classes:
                 parameters:
                     items:
                         type: "NSArray<AVPlayerItem>"
+    AVSpeechSynthesisVoice: # DONE
+        methods:
+            '+speechVoices':
+                name: "getSpeechVoices"
+                return_type: "NSArray<AVSpeechSynthesisVoice>"
+            '+currentLanguageCode':
+                name: "getCurrentLanguageCode"
+            '+voiceWithLanguage:':
+                name: "create"
+    AVSpeechSynthesizer: # DONE
+        methods:
+            '-speakUtterance:':
+                name: "addSpeakUtterance"
+            '-stopSpeakingAtBoundary:':
+                name: "stopSpeaking"
+            '-pauseSpeakingAtBoundary:':
+                name: "pauseSpeaking"
+    AVSpeechUtterance: # DONE
+        methods:
+            '-initWithString:':
+                name: "init"
+            '+speechUtteranceWithString:':
+                name: "create"
     AVSynchronizedLayer: # DONE
         methods:
             '+synchronizedLayerWithPlayerItem:':
@@ -1309,6 +1337,24 @@ protocols:
                 name: "mediaDataWillChange"
             '-outputSequenceWasFlushed:':
                 name: "sequenceWasFlushed"
+    AVPlayerItemOutputPushDelegate: # DONE
+        methods:
+            '-outputSequenceWasFlushed:':
+                name: "wasFlushed"
+    AVSpeechSynthesizerDelegate: # DONE
+        methods:
+            '-speechSynthesizer:didStartSpeechUtterance:':
+                name: "didStartSpeechUtterance"
+            '-speechSynthesizer:didFinishSpeechUtterance:':
+                name: "didFinishSpeechUtterance"
+            '-speechSynthesizer:didPauseSpeechUtterance:':
+                name: "didPauseSpeechUtterance"
+            '-speechSynthesizer:didContinueSpeechUtterance:':
+                name: "didContinueSpeechUtterance"
+            '-speechSynthesizer:didCancelSpeechUtterance:':
+                name: "didCancelSpeechUtterance"
+            '-speechSynthesizer:willSpeakRangeOfSpeechString:utterance:':
+                name: "willSpeak"
     AVVideoCompositionValidationHandling: # DONE
         methods:
             '-videoComposition:shouldContinueValidatingAfterFindingInvalidValueForKey:':

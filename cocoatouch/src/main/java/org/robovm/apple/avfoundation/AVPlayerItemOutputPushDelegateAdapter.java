@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.robovm.apple.opengles;
+package org.robovm.apple.avfoundation;
 
 /*<imports>*/
 import java.io.*;
@@ -27,14 +27,23 @@ import org.robovm.rt.bro.*;
 import org.robovm.rt.bro.annotation.*;
 import org.robovm.rt.bro.ptr.*;
 import org.robovm.apple.foundation.*;
+import org.robovm.apple.dispatch.*;
+import org.robovm.apple.coreanimation.*;
+import org.robovm.apple.corefoundation.*;
+import org.robovm.apple.coregraphics.*;
+import org.robovm.apple.coreaudio.*;
+import org.robovm.apple.coremedia.*;
+import org.robovm.apple.corevideo.*;
+import org.robovm.apple.audiotoolbox.*;
+import org.robovm.apple.mediatoolbox.*;
 /*</imports>*/
 
 /*<javadoc>*/
 /*</javadoc>*/
 /*<annotations>*//*</annotations>*/
-/*<visibility>*/public/*</visibility>*/ class /*<name>*/EAGLDrawableAdapter/*</name>*/ 
+/*<visibility>*/public/*</visibility>*/ class /*<name>*/AVPlayerItemOutputPushDelegateAdapter/*</name>*/ 
     extends /*<extends>*/NSObject/*</extends>*/ 
-    /*<implements>*/implements EAGLDrawable/*</implements>*/ {
+    /*<implements>*/implements AVPlayerItemOutputPushDelegate/*</implements>*/ {
 
     /*<ptr>*/
     /*</ptr>*/
@@ -43,13 +52,11 @@ import org.robovm.apple.foundation.*;
     /*<constants>*//*</constants>*/
     /*<constructors>*//*</constructors>*/
     /*<properties>*/
-    @NotImplemented("drawableProperties")
-    public NSDictionary<NSString, ?> getDrawableProperties() { throw new UnsupportedOperationException(); }
-    @NotImplemented("setDrawableProperties:")
-    public void setDrawableProperties(NSDictionary<NSString, ?> v) { throw new UnsupportedOperationException(); }
+    
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
-    
+    @NotImplemented("outputSequenceWasFlushed:")
+    public void wasFlushed(AVPlayerItemOutput output) { throw new UnsupportedOperationException(); }
     /*</methods>*/
 }

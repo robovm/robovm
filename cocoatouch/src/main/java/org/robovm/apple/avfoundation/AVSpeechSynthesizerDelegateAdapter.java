@@ -41,9 +41,9 @@ import org.robovm.apple.mediatoolbox.*;
 /*<javadoc>*/
 /*</javadoc>*/
 /*<annotations>*//*</annotations>*/
-/*<visibility>*/public/*</visibility>*/ class /*<name>*/AVPlayerItemLegibleOutputPushDelegateAdapter/*</name>*/ 
-    extends /*<extends>*/AVPlayerItemOutputPushDelegateAdapter/*</extends>*/ 
-    /*<implements>*/implements AVPlayerItemLegibleOutputPushDelegate/*</implements>*/ {
+/*<visibility>*/public/*</visibility>*/ class /*<name>*/AVSpeechSynthesizerDelegateAdapter/*</name>*/ 
+    extends /*<extends>*/NSObject/*</extends>*/ 
+    /*<implements>*/implements AVSpeechSynthesizerDelegate/*</implements>*/ {
 
     /*<ptr>*/
     /*</ptr>*/
@@ -56,10 +56,17 @@ import org.robovm.apple.mediatoolbox.*;
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
-    /**
-     * @since Available in iOS 7.0 and later.
-     */
-    @NotImplemented("legibleOutput:didOutputAttributedStrings:nativeSampleBuffers:forItemTime:")
-    public void didOutputAttributedStrings(AVPlayerItemLegibleOutput output, NSArray<NSAttributedString> strings, NSArray<?> nativeSamples, @ByVal CMTime itemTime) { throw new UnsupportedOperationException(); }
+    @NotImplemented("speechSynthesizer:didStartSpeechUtterance:")
+    public void didStartSpeechUtterance(AVSpeechSynthesizer synthesizer, AVSpeechUtterance utterance) { throw new UnsupportedOperationException(); }
+    @NotImplemented("speechSynthesizer:didFinishSpeechUtterance:")
+    public void didFinishSpeechUtterance(AVSpeechSynthesizer synthesizer, AVSpeechUtterance utterance) { throw new UnsupportedOperationException(); }
+    @NotImplemented("speechSynthesizer:didPauseSpeechUtterance:")
+    public void didPauseSpeechUtterance(AVSpeechSynthesizer synthesizer, AVSpeechUtterance utterance) { throw new UnsupportedOperationException(); }
+    @NotImplemented("speechSynthesizer:didContinueSpeechUtterance:")
+    public void didContinueSpeechUtterance(AVSpeechSynthesizer synthesizer, AVSpeechUtterance utterance) { throw new UnsupportedOperationException(); }
+    @NotImplemented("speechSynthesizer:didCancelSpeechUtterance:")
+    public void didCancelSpeechUtterance(AVSpeechSynthesizer synthesizer, AVSpeechUtterance utterance) { throw new UnsupportedOperationException(); }
+    @NotImplemented("speechSynthesizer:willSpeakRangeOfSpeechString:utterance:")
+    public void willSpeak(AVSpeechSynthesizer synthesizer, @ByVal NSRange characterRange, AVSpeechUtterance utterance) { throw new UnsupportedOperationException(); }
     /*</methods>*/
 }

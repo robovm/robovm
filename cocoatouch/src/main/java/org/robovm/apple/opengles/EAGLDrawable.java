@@ -43,9 +43,9 @@ import org.robovm.apple.foundation.*;
     /*<constants>*//*</constants>*/
     /*<properties>*/
     @Property(selector = "drawableProperties")
-    NSDictionary<?, ?> getDrawableProperties();
+    NSDictionary<NSString, ?> getDrawableProperties();
     @Property(selector = "setDrawableProperties:")
-    void setDrawableProperties(NSDictionary<?, ?> v);
+    void setDrawableProperties(NSDictionary<NSString, ?> v);
     /*</properties>*/
     /*<methods>*/
     

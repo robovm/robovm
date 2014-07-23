@@ -39,27 +39,33 @@ import org.robovm.apple.mediatoolbox.*;
 /*</imports>*/
 
 /*<javadoc>*/
-
+/**
+ * @since Available in iOS 7.0 and later.
+ */
 /*</javadoc>*/
-/*<annotations>*//*</annotations>*/
-/*<visibility>*/public/*</visibility>*/ interface /*<name>*/AVPlayerItemLegibleOutputPushDelegate/*</name>*/ 
-    /*<implements>*/extends AVPlayerItemOutputPushDelegate/*</implements>*/ {
+/*<annotations>*/@Library("AVFoundation") @NativeClass/*</annotations>*/
+/*<visibility>*/public/*</visibility>*/ class /*<name>*/AVSpeechSynthesisVoice/*</name>*/ 
+    extends /*<extends>*/NSObject/*</extends>*/ 
+    /*<implements>*//*</implements>*/ {
 
-    /*<ptr>*/
-    /*</ptr>*/
-    /*<bind>*/
-    /*</bind>*/
+    /*<ptr>*/public static class AVSpeechSynthesisVoicePtr extends Ptr<AVSpeechSynthesisVoice, AVSpeechSynthesisVoicePtr> {}/*</ptr>*/
+    /*<bind>*/static { ObjCRuntime.bind(AVSpeechSynthesisVoice.class); }/*</bind>*/
     /*<constants>*//*</constants>*/
+    /*<constructors>*/
+    public AVSpeechSynthesisVoice() {}
+    protected AVSpeechSynthesisVoice(SkipInit skipInit) { super(skipInit); }
+    /*</constructors>*/
     /*<properties>*/
-    
+    @Property(selector = "language")
+    public native String getLanguage();
     /*</properties>*/
+    /*<members>*//*</members>*/
     /*<methods>*/
-    /**
-     * @since Available in iOS 7.0 and later.
-     */
-    @Method(selector = "legibleOutput:didOutputAttributedStrings:nativeSampleBuffers:forItemTime:")
-    void didOutputAttributedStrings(AVPlayerItemLegibleOutput output, NSArray<NSAttributedString> strings, NSArray<?> nativeSamples, @ByVal CMTime itemTime);
+    @Method(selector = "speechVoices")
+    public static native NSArray<AVSpeechSynthesisVoice> getSpeechVoices();
+    @Method(selector = "currentLanguageCode")
+    public static native String getCurrentLanguageCode();
+    @Method(selector = "voiceWithLanguage:")
+    public static native AVSpeechSynthesisVoice create(String language);
     /*</methods>*/
-    /*<adapter>*/
-    /*</adapter>*/
 }

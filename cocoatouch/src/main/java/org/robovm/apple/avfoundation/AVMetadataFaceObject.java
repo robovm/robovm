@@ -39,27 +39,36 @@ import org.robovm.apple.mediatoolbox.*;
 /*</imports>*/
 
 /*<javadoc>*/
-
+/**
+ * @since Available in iOS 6.0 and later.
+ */
 /*</javadoc>*/
-/*<annotations>*//*</annotations>*/
-/*<visibility>*/public/*</visibility>*/ interface /*<name>*/AVPlayerItemLegibleOutputPushDelegate/*</name>*/ 
-    /*<implements>*/extends AVPlayerItemOutputPushDelegate/*</implements>*/ {
+/*<annotations>*/@Library("AVFoundation") @NativeClass/*</annotations>*/
+/*<visibility>*/public/*</visibility>*/ class /*<name>*/AVMetadataFaceObject/*</name>*/ 
+    extends /*<extends>*/AVMetadataObject/*</extends>*/ 
+    /*<implements>*//*</implements>*/ {
 
-    /*<ptr>*/
-    /*</ptr>*/
-    /*<bind>*/
-    /*</bind>*/
+    /*<ptr>*/public static class AVMetadataFaceObjectPtr extends Ptr<AVMetadataFaceObject, AVMetadataFaceObjectPtr> {}/*</ptr>*/
+    /*<bind>*/static { ObjCRuntime.bind(AVMetadataFaceObject.class); }/*</bind>*/
     /*<constants>*//*</constants>*/
+    /*<constructors>*/
+    public AVMetadataFaceObject() {}
+    protected AVMetadataFaceObject(SkipInit skipInit) { super(skipInit); }
+    /*</constructors>*/
     /*<properties>*/
-    
+    @Property(selector = "faceID")
+    public native @MachineSizedSInt long getFaceID();
+    @Property(selector = "hasRollAngle")
+    public native boolean isHasRollAngle();
+    @Property(selector = "rollAngle")
+    public native @MachineSizedFloat double getRollAngle();
+    @Property(selector = "hasYawAngle")
+    public native boolean isHasYawAngle();
+    @Property(selector = "yawAngle")
+    public native @MachineSizedFloat double getYawAngle();
     /*</properties>*/
+    /*<members>*//*</members>*/
     /*<methods>*/
-    /**
-     * @since Available in iOS 7.0 and later.
-     */
-    @Method(selector = "legibleOutput:didOutputAttributedStrings:nativeSampleBuffers:forItemTime:")
-    void didOutputAttributedStrings(AVPlayerItemLegibleOutput output, NSArray<NSAttributedString> strings, NSArray<?> nativeSamples, @ByVal CMTime itemTime);
+    
     /*</methods>*/
-    /*<adapter>*/
-    /*</adapter>*/
 }

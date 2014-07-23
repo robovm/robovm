@@ -14,7 +14,7 @@ classes:
     OpenGLES:
         annotations: ['@Marshaler(NSString.AsStringMarshaler.class)']
 
-    EAGLContext:
+    EAGLContext: # DONE
         methods:
             '+currentContext':
                 name: getCurrentContext
@@ -24,10 +24,13 @@ classes:
                 name: renderBufferStorage
             '-presentRenderbuffer:':
                 name: presentRenderbuffer
-    EAGLSharegroup: {}
+    EAGLSharegroup: {} # DONE
 
 protocols:
-    EAGLDrawable: {}
+    EAGLDrawable: # DONE
+        properties:
+            'drawableProperties':
+                type: "NSDictionary<NSString, ?>"
 
 functions:
 

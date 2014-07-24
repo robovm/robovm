@@ -116,6 +116,7 @@ public class LocalSplitter extends BodyTransformer
                                         
                     defsToVisit.add(s);
                     markedBoxes.add(loBox);
+                    boxToUnit.put(loBox, s); // RoboVM note: Added
                     
                     while(!boxesToVisit.isEmpty() || !defsToVisit.isEmpty())
                     {
@@ -168,6 +169,7 @@ public class LocalSplitter extends BodyTransformer
                                         {
                                             markedBoxes.add(b);
                                             defsToVisit.addLast(u);
+                                            boxToUnit.put(b, u); // RoboVM note: Added
                                         }
                                     }    
                                 }
@@ -176,6 +178,11 @@ public class LocalSplitter extends BodyTransformer
                     }
                 }
             }
+
+            // RoboVM note: Added in RoboVM to merge webs referring to the same
+            // local variable in the original source code. This prevents 
+            // splitting of such Locals.
+            webs = mergeWebs(body, webs, boxToUnit, localUses);
         }
 
         // Assign locals appropriately.
@@ -226,4 +233,92 @@ public class LocalSplitter extends BodyTransformer
             Timers.v().splitPhase2Timer.end();
 
     }   
+
+    /**
+     * Merges webs referring to the same local variable in the original source 
+     * code. This prevents splitting of Locals which correspond to local 
+     * variables. Splitting would otherwise interfere with debug info
+     * generation.
+     * RoboVM note: Added in RoboVM.
+     */
+    private List<List> mergeWebs(Body body, List<List> webs, Map<ValueBox, Unit> boxToUnit, LocalUses localUses) {
+        List<List> result = new ArrayList<>();
+        LinkedList<List> websCopy = new LinkedList<>(webs);
+        while (!websCopy.isEmpty()) {
+            // Compare the local variable of the first web with the rest. If two
+            // webs refer to the same local variable we merge them into one.
+            List<ValueBox> web1 = websCopy.removeFirst();
+            Local local1 = (Local) web1.get(0).getValue();
+            if (local1.getIndex() == -1) {
+                // The Local doesn't refer to a local variable in the bytecode but rather a stack slot.
+                result.add(web1);
+                continue;
+            }
+            List<ValueBox> mergedWeb = new ArrayList<>(web1);
+            Set<LocalVariable> lvs1 = findLocalVariables(web1, local1, boxToUnit, body);
+            for (Iterator<List> it2 = websCopy.iterator(); it2.hasNext();) {
+                List<ValueBox> web2 = it2.next();
+                Local local2 = (Local) web2.get(0).getValue();
+                if (!local1.equals(local2)) {
+                    continue;
+                }
+                Set<LocalVariable> lvs2 = findLocalVariables(web2, local2, boxToUnit, body);
+                if (!lvs1.isEmpty() && lvs1.equals(lvs2)) {
+                    mergedWeb.addAll(web2);
+                    it2.remove();
+                }
+            }
+            result.add(mergedWeb);
+        }
+
+        return result;
+    }
+
+    /**
+     * RoboVM note: Added in RoboVM.
+     */
+    private Set<LocalVariable> findLocalVariables(List<ValueBox> web, Local local, Map<ValueBox, Unit> boxToUnit, Body body) {
+        Set<LocalVariable> lvs = new HashSet<>();
+        if (local.getIndex() != -1) {
+            for (ValueBox box : web) {
+                LocalVariable lv = findLocalVariable(body, local.getIndex(), boxToUnit.get(box));
+                if (lv != null) {
+                    lvs.add(lv);
+                }
+            }
+            if (lvs.size() > 1) {
+                // Verify that all LocalVariables refer to a variable with the same name.
+                String name = null;
+                for (LocalVariable lv : lvs) {
+                    if (name == null) {
+                        name = lv.getName();
+                    } else {
+                        if (!lv.getName().equals(name)) {
+                            throw new IllegalStateException("Found LocalVariables do " 
+                                    + "not refer to a variable with the same name: " + lvs);
+                        }
+                    }
+                }
+            }
+        }
+        return lvs;
+    }
+
+    /**
+     * Finds a {@link LocalVariable} with the specified local variable index
+     * at the specified {@link Unit} or {@code null} if none was found.
+     * RoboVM note: Added in RoboVM.
+     */
+    private LocalVariable findLocalVariable(Body body, int index, Unit unit) {
+        PatchingChain<Unit> units = body.getUnits();
+        for (LocalVariable lv : body.getLocalVariables()) {
+            if (lv.getIndex() == index) {
+                if ((unit == lv.getStartUnit() || units.follows(unit, lv.getStartUnit()))
+                        && (lv.getEndUnit() == null || units.follows(lv.getEndUnit(), unit))) {
+                    return lv;
+                }
+            }
+        }
+        return null;
+    }
 }

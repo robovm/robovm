@@ -53,40 +53,40 @@ import org.robovm.apple.coreimage.*;
     /*<members>*//*</members>*/
     /*<methods>*/
     @Method(selector = "CGPointValue")
-    public static native @ByVal CGPoint CGPointValue(NSValue thiz);
+    public static native @ByVal CGPoint getPointValue(NSValue thiz);
     @Method(selector = "CGSizeValue")
-    public static native @ByVal CGSize CGSizeValue(NSValue thiz);
+    public static native @ByVal CGSize getSizeValue(NSValue thiz);
     @Method(selector = "CGRectValue")
-    public static native @ByVal CGRect CGRectValue(NSValue thiz);
+    public static native @ByVal CGRect getRectValue(NSValue thiz);
     @Method(selector = "CGAffineTransformValue")
-    public static native @ByVal CGAffineTransform CGAffineTransformValue(NSValue thiz);
+    public static native @ByVal CGAffineTransform getAffineTransformValue(NSValue thiz);
     @Method(selector = "UIEdgeInsetsValue")
-    public static native @ByVal UIEdgeInsets UIEdgeInsetsValue(NSValue thiz);
+    public static native @ByVal UIEdgeInsets getEdgeInsetsValue(NSValue thiz);
     /**
      * @since Available in iOS 5.0 and later.
      */
     @Method(selector = "UIOffsetValue")
-    public static native @ByVal UIOffset UIOffsetValue(NSValue thiz);
+    public static native @ByVal UIOffset getOffsetValue(NSValue thiz);
     @Method(selector = "valueWithCGPoint:")
-    protected static native NSValue valueOf(ObjCClass clazz, @ByVal CGPoint point);
-    public static NSValue valueOf(@ByVal CGPoint point) { return valueOf(ObjCClass.getByType(NSValue.class), point); }
+    protected static native NSValue create(ObjCClass clazz, @ByVal CGPoint point);
+    public static NSValue create(@ByVal CGPoint point) { return create(ObjCClass.getByType(NSValue.class), point); }
     @Method(selector = "valueWithCGSize:")
-    protected static native NSValue valueOf(ObjCClass clazz, @ByVal CGSize size);
-    public static NSValue valueOf(@ByVal CGSize size) { return valueOf(ObjCClass.getByType(NSValue.class), size); }
+    protected static native NSValue create(ObjCClass clazz, @ByVal CGSize size);
+    public static NSValue create(@ByVal CGSize size) { return create(ObjCClass.getByType(NSValue.class), size); }
     @Method(selector = "valueWithCGRect:")
-    protected static native NSValue valueOf(ObjCClass clazz, @ByVal CGRect rect);
-    public static NSValue valueOf(@ByVal CGRect rect) { return valueOf(ObjCClass.getByType(NSValue.class), rect); }
+    protected static native NSValue create(ObjCClass clazz, @ByVal CGRect rect);
+    public static NSValue create(@ByVal CGRect rect) { return create(ObjCClass.getByType(NSValue.class), rect); }
     @Method(selector = "valueWithCGAffineTransform:")
-    protected static native NSValue valueOf(ObjCClass clazz, @ByVal CGAffineTransform transform);
-    public static NSValue valueOf(@ByVal CGAffineTransform transform) { return valueOf(ObjCClass.getByType(NSValue.class), transform); }
+    protected static native NSValue create(ObjCClass clazz, @ByVal CGAffineTransform transform);
+    public static NSValue create(@ByVal CGAffineTransform transform) { return create(ObjCClass.getByType(NSValue.class), transform); }
     @Method(selector = "valueWithUIEdgeInsets:")
-    protected static native NSValue valueOf(ObjCClass clazz, @ByVal UIEdgeInsets insets);
-    public static NSValue valueOf(@ByVal UIEdgeInsets insets) { return valueOf(ObjCClass.getByType(NSValue.class), insets); }
+    protected static native NSValue create(ObjCClass clazz, @ByVal UIEdgeInsets insets);
+    public static NSValue create(@ByVal UIEdgeInsets insets) { return create(ObjCClass.getByType(NSValue.class), insets); }
     /**
      * @since Available in iOS 5.0 and later.
      */
     @Method(selector = "valueWithUIOffset:")
-    protected static native NSValue valueOf(ObjCClass clazz, @ByVal UIOffset insets);
-    public static NSValue valueOf(@ByVal UIOffset insets) { return valueOf(ObjCClass.getByType(NSValue.class), insets); }
+    protected static native NSValue create(ObjCClass clazz, @ByVal UIOffset insets);
+    public static NSValue create(@ByVal UIOffset insets) { return create(ObjCClass.getByType(NSValue.class), insets); }
     /*</methods>*/
 }

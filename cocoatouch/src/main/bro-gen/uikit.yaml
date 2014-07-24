@@ -276,9 +276,12 @@ categories:
 
     NSValue: # DONE
         methods:
+            '-CG(.*Value)':
+                name: "get#{g[0]}"
+            '-UI(.*Value)':
+                name: "get#{g[0]}"
             '+valueWith.*':
-                name: valueOf
-
+                name: create
     UIAccessibility@NSObject: {protocol: true}
     UIAccessibilityAction@NSObject: {protocol: true}
     UIAccessibilityContainer@NSObject: {protocol: true}

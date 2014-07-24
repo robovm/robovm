@@ -41,6 +41,7 @@ import java.util.zip.ZipFile;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
+import org.robovm.compiler.CompilerException;
 import org.robovm.compiler.ITable;
 import org.robovm.compiler.MarshalerLookup;
 import org.robovm.compiler.VTable;
@@ -551,6 +552,26 @@ public class Config {
         this.weakFrameworks = config.weakFrameworks;
     }
     
+    private void loadPluginsFromClassPath() throws IOException {
+        try (InputStream in = getClass().getResourceAsStream("/META-INF/robovm/plugins.properties")) {
+            if (in != null) {
+                Properties p = new Properties();
+                p.load(in);
+                String value;
+                for (int i = 1; (value = p.getProperty("compiler.plugin." + i)) != null; i++) {
+                    Class<CompilerPlugin> c = (Class<CompilerPlugin>) getClass().getClassLoader().loadClass(value);
+                    compilerPlugins.add(c.newInstance());
+                }
+            }
+        } catch (ClassNotFoundException e) {
+            throw new CompilerException(e);
+        } catch (InstantiationException e) {
+            throw new CompilerException(e);
+        } catch (IllegalAccessException e) {
+            throw new CompilerException(e);
+        }
+    }
+
     private Config build() throws IOException {
         if (home == null) {
             home = Home.find();
@@ -636,6 +657,7 @@ public class Config {
             new ObjCMemberPlugin(),
             new AnnotationImplPlugin()
         ));
+        loadPluginsFromClassPath();
 
         mergeConfigsFromClasspath();
         

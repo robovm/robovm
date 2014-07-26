@@ -1,0 +1,102 @@
+package: org.robovm.apple.addressbookui
+include: [foundation.yaml, uikit.yaml, addressbook.yaml]
+library: AddressBookUI
+framework: AddressBookUI
+clang_args: ['-x', 'objective-c']
+headers:
+    - /System/Library/Frameworks/AddressBookUI.framework/Headers/AddressBookUI.h
+typedefs: {}
+
+enums: {}
+    
+classes:
+    ABNewPersonViewController: # DONE
+        properties:
+            'displayedPerson':
+                type: "ABPerson"
+            'parentGroup':
+                type: "ABGroup"
+    ABPeoplePickerNavigationController: # DONE
+        properties:
+            'displayedProperties':
+                type: "NSArray<NSNumber>"
+    ABPersonViewController: # DONE
+        properties:
+            'displayedPerson':
+                type: "ABPerson"
+            'displayedProperties':
+                type: "NSArray<NSNumber>"
+        methods:
+            '-setHighlightedItemForProperty:withIdentifier:':
+                name: "setHighlightedItem"
+    ABUnknownPersonViewController: # DONE
+        properties:
+            'displayedPerson':
+                type: "ABPerson"
+
+protocols:
+    ABNewPersonViewControllerDelegate: # DONE
+        methods:
+            '-newPersonViewController:didCompleteWithNewPerson:':
+                name: "didComplete"
+                parameters:
+                    person:
+                        type: "ABPerson"
+    ABPeoplePickerNavigationControllerDelegate: # DONE
+        methods:
+            '-peoplePickerNavigationControllerDidCancel:':
+                name: "didCancel"
+            '-peoplePickerNavigationController:shouldContinueAfterSelectingPerson:':
+                name: "shouldContinue"
+                parameters:
+                    person:
+                        type: "ABPerson"
+            '-peoplePickerNavigationController:shouldContinueAfterSelectingPerson:property:identifier:':
+                name: "shouldContinue"
+                parameters:
+                    person:
+                        type: "ABPerson"
+    ABPersonViewControllerDelegate: # DONE
+        methods:
+            '-personViewController:shouldPerformDefaultActionForPerson:property:identifier:':
+                name: "shouldPerformDefaultAction"  
+                parameters:
+                    person:
+                        type: "ABPerson"
+    ABUnknownPersonViewControllerDelegate: # DONE
+        methods:
+            '-unknownPersonViewController:didResolveToPerson:':
+                name: "didResolveToPerson"
+                parameters:
+                    person:
+                        type: "ABPerson"
+            '-unknownPersonViewController:shouldPerformDefaultActionForPerson:property:identifier:':
+                name: "shouldPerformDefaultAction"
+                parameters:
+                    person:
+                        type: "ABPerson"
+
+functions:
+    AB(CreateString)WithAddressDictionary:
+        class: ABAddressFormating
+        name: "#{g[0]}"
+        parameters:
+            address:
+                type: "NSDictionary<NSString, ?>"
+
+    # Make sure we don't miss any functions if new ones are introduced in a later version
+    (AB.*):
+        class: AddressBookUI
+        name: "Function__#{g[0]}"
+
+values:
+    # Make sure we don't miss any values if new ones are introduced in a later version
+    (AB.*):
+        class: AddressBookUI
+        name: "Value__#{g[0]}"   
+
+constants:
+    # Make sure we don't miss any constants if new ones are introduced in a later version
+    (AB.*):
+        class: AddressBookUI
+        name: "Constant__#{g[0]}"

@@ -18,6 +18,8 @@ a.out
 /eclipse/feature/target/
 /eclipse/update-site/target/
 /dist/target/
+/dist/compiler/target/
+/dist/package/target/
 /tests/libcore/target/
 /tests/robovm/target/
 /tests/drlvm/robovm-vts.env

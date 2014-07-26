@@ -34,39 +34,37 @@ import org.robovm.apple.coregraphics.*;
 /*</imports>*/
 
 /*<javadoc>*/
-/**
- * @since Available in iOS 4.0 and later.
- */
-/*</javadoc>*/
-/*<annotations>*/@Marshaler(ValuedEnum.AsMachineSizedSIntMarshaler.class)/*</annotations>*/
-public enum /*<name>*/ADError/*</name>*/ implements ValuedEnum {
-    /*<values>*/
-    Unknown(0L),
-    ServerFailure(1L),
-    LoadingThrottled(2L),
-    InventoryUnavailable(3L),
-    ConfigurationError(4L),
-    BannerVisibleWithoutContent(5L),
-    ApplicationInactive(6L),
-    AdUnloaded(7L);
-    /*</values>*/
 
+/*</javadoc>*/
+/*<annotations>*//*</annotations>*/
+/*<visibility>*/public/*</visibility>*/ interface /*<name>*/ADInterstitialAdDelegate/*</name>*/ 
+    /*<implements>*/extends NSObjectProtocol/*</implements>*/ {
+
+    /*<ptr>*/
+    /*</ptr>*/
     /*<bind>*/
     /*</bind>*/
     /*<constants>*//*</constants>*/
-    /*<methods>*//*</methods>*/
-
-    private final long n;
-
-    private /*<name>*/ADError/*</name>*/(long n) { this.n = n; }
-    public long value() { return n; }
-    public static /*<name>*/ADError/*</name>*/ valueOf(long n) {
-        for (/*<name>*/ADError/*</name>*/ v : values()) {
-            if (v.n == n) {
-                return v;
-            }
-        }
-        throw new IllegalArgumentException("No constant with value " + n + " found in " 
-            + /*<name>*/ADError/*</name>*/.class.getName());
-    }
+    /*<properties>*/
+    
+    /*</properties>*/
+    /*<methods>*/
+    @Method(selector = "interstitialAdDidUnload:")
+    void didUnload(ADInterstitialAd interstitialAd);
+    @Method(selector = "interstitialAd:didFailWithError:")
+    void didFail(ADInterstitialAd interstitialAd, NSError error);
+    /**
+     * @since Available in iOS 5.0 and later.
+     */
+    @Method(selector = "interstitialAdWillLoad:")
+    void willLoad(ADInterstitialAd interstitialAd);
+    @Method(selector = "interstitialAdDidLoad:")
+    void didLoad(ADInterstitialAd interstitialAd);
+    @Method(selector = "interstitialAdActionShouldBegin:willLeaveApplication:")
+    boolean shouldBeginAction(ADInterstitialAd interstitialAd, boolean willLeave);
+    @Method(selector = "interstitialAdActionDidFinish:")
+    void didFinishAction(ADInterstitialAd interstitialAd);
+    /*</methods>*/
+    /*<adapter>*/
+    /*</adapter>*/
 }

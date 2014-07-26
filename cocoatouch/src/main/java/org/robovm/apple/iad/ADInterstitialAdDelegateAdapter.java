@@ -36,9 +36,9 @@ import org.robovm.apple.coregraphics.*;
 /*<javadoc>*/
 /*</javadoc>*/
 /*<annotations>*//*</annotations>*/
-/*<visibility>*/public/*</visibility>*/ class /*<name>*/ADBannerViewDelegateAdapter/*</name>*/ 
+/*<visibility>*/public/*</visibility>*/ class /*<name>*/ADInterstitialAdDelegateAdapter/*</name>*/ 
     extends /*<extends>*/NSObject/*</extends>*/ 
-    /*<implements>*/implements ADBannerViewDelegate/*</implements>*/ {
+    /*<implements>*/implements ADInterstitialAdDelegate/*</implements>*/ {
 
     /*<ptr>*/
     /*</ptr>*/
@@ -51,18 +51,20 @@ import org.robovm.apple.coregraphics.*;
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
+    @NotImplemented("interstitialAdDidUnload:")
+    public void didUnload(ADInterstitialAd interstitialAd) { throw new UnsupportedOperationException(); }
+    @NotImplemented("interstitialAd:didFailWithError:")
+    public void didFail(ADInterstitialAd interstitialAd, NSError error) { throw new UnsupportedOperationException(); }
     /**
      * @since Available in iOS 5.0 and later.
      */
-    @NotImplemented("bannerViewWillLoadAd:")
-    public void willLoadAd(ADBannerView banner) { throw new UnsupportedOperationException(); }
-    @NotImplemented("bannerViewDidLoadAd:")
-    public void didLoadAd(ADBannerView banner) { throw new UnsupportedOperationException(); }
-    @NotImplemented("bannerView:didFailToReceiveAdWithError:")
-    public void didFailToReceiveAd(ADBannerView banner, NSError error) { throw new UnsupportedOperationException(); }
-    @NotImplemented("bannerViewActionShouldBegin:willLeaveApplication:")
-    public boolean shouldBeginAction(ADBannerView banner, boolean willLeave) { throw new UnsupportedOperationException(); }
-    @NotImplemented("bannerViewActionDidFinish:")
-    public void didFinishAction(ADBannerView banner) { throw new UnsupportedOperationException(); }
+    @NotImplemented("interstitialAdWillLoad:")
+    public void willLoad(ADInterstitialAd interstitialAd) { throw new UnsupportedOperationException(); }
+    @NotImplemented("interstitialAdDidLoad:")
+    public void didLoad(ADInterstitialAd interstitialAd) { throw new UnsupportedOperationException(); }
+    @NotImplemented("interstitialAdActionShouldBegin:willLeaveApplication:")
+    public boolean shouldBeginAction(ADInterstitialAd interstitialAd, boolean willLeave) { throw new UnsupportedOperationException(); }
+    @NotImplemented("interstitialAdActionDidFinish:")
+    public void didFinishAction(ADInterstitialAd interstitialAd) { throw new UnsupportedOperationException(); }
     /*</methods>*/
 }

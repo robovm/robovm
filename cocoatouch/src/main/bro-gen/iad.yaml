@@ -1,5 +1,5 @@
 package: org.robovm.apple.iad
-include: [foundation.yaml, uikit.yaml, addressbook.yaml]
+include: [foundation.yaml, uikit.yaml, addressbook.yaml, mediaplayer.yaml, coregraphics.yaml]
 library: iAd
 framework: iAd
 clang_args: ['-x', 'objective-c']
@@ -55,6 +55,20 @@ protocols:
             '-bannerViewActionShouldBegin:willLeaveApplication:':
                 name: "shouldBeginAction"
             '-bannerViewActionDidFinish:':
+                name: "didFinishAction"
+    ADInterstitialAdDelegate: # DONE
+        methods:
+            '-interstitialAdDidUnload:':
+                name: "didUnload"
+            '-interstitialAd:didFailWithError:':
+                name: "didFail"
+            '-interstitialAdWillLoad:':
+                name: "willLoad"
+            '-interstitialAdDidLoad:':
+                name: "didLoad"
+            '-interstitialAdActionShouldBegin:willLeaveApplication:':
+                name: "shouldBeginAction"
+            '-interstitialAdActionDidFinish:':
                 name: "didFinishAction"
 
 functions:

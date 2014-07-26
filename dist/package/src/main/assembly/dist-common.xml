@@ -2,7 +2,7 @@
 
   <fileSets>
     <fileSet>
-      <directory>${basedir}/../vm/binaries</directory>
+      <directory>${basedir}/../../vm/binaries</directory>
       <includes>
         <include>**/*</include>
       </includes>
@@ -11,7 +11,7 @@
       <outputDirectory>lib/vm</outputDirectory>
     </fileSet>
     <fileSet>
-      <directory>${basedir}/../bin</directory>
+      <directory>${basedir}/../../bin</directory>
       <includes>
         <include>*</include>
       </includes>
@@ -19,7 +19,7 @@
       <outputDirectory>bin</outputDirectory>
     </fileSet>
     <fileSet>
-      <directory>${basedir}/../compiler</directory>
+      <directory>${basedir}/../../compiler</directory>
       <outputDirectory>license/compiler</outputDirectory>
       <includes>
         <include>LICENSE.txt</include>
@@ -27,7 +27,7 @@
       </includes>
     </fileSet>
     <fileSet>
-      <directory>${basedir}/../cocoatouch</directory>
+      <directory>${basedir}/../../cocoatouch</directory>
       <outputDirectory>license/cocoatouch</outputDirectory>
       <includes>
         <include>LICENSE.txt</include>
@@ -35,7 +35,7 @@
       </includes>
     </fileSet>
     <fileSet>
-      <directory>${basedir}/../objc</directory>
+      <directory>${basedir}/../../objc</directory>
       <outputDirectory>license/objc</outputDirectory>
       <includes>
         <include>LICENSE.txt</include>
@@ -43,7 +43,7 @@
       </includes>
     </fileSet>
     <fileSet>
-      <directory>${basedir}/../rt</directory>
+      <directory>${basedir}/../../rt</directory>
       <outputDirectory>license/rt</outputDirectory>
       <includes>
         <include>LICENSE.txt</include>
@@ -51,7 +51,7 @@
       </includes>
     </fileSet>
     <fileSet>
-      <directory>${basedir}/../vm</directory>
+      <directory>${basedir}/../../vm</directory>
       <outputDirectory>license/vm</outputDirectory>
       <includes>
         <include>LICENSE.txt</include>

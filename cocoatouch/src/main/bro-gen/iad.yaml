@@ -1,0 +1,84 @@
+package: org.robovm.apple.iad
+include: [foundation.yaml, uikit.yaml, addressbook.yaml]
+library: iAd
+framework: iAd
+clang_args: ['-x', 'objective-c']
+headers:
+    - /System/Library/Frameworks/iAd.framework/Headers/iAd.h
+typedefs: {}
+
+enums:
+    ADError: {}
+    ADAdType: {}
+    ADInterstitialPresentationPolicy: {}
+
+categories:
+    iAdPreroll: # DONE
+        methods:
+            '-playPrerollAdWithCompletionHandler:':
+                name: "playPrerollAd"
+    iAdAdditions: {} # DONE
+    
+classes:
+    ADBannerView: # DONE
+        properties:
+            'requiredContentSizeIdentifiers':
+                type: "NSSet<NSString>"
+            'currentContentSizeIdentifier':
+                type: "NSString"
+        methods:
+            '-initWithAdType:':
+                name: "init"
+            '+sizeFromBannerContentSizeIdentifier:':
+                name: "getSizeForIdentifier"
+                parameters:
+                    contentSizeIdentifier:
+                        type: "NSString"
+    ADClient: # DONE
+        methods:
+            '-determineAppInstallationAttributionWithCompletionHandler:':
+                name: "determineAppInstallationAttribution"  
+    ADInterstitialAd: # DONE
+        methods:
+            '-presentInView:':
+                name: "present"
+
+protocols:
+    ADBannerViewDelegate: # DONE
+        methods:
+            '-bannerViewWillLoadAd:':
+                name: "willLoadAd"
+            '-bannerViewDidLoadAd:':
+                name: "didLoadAd"
+            '-bannerView:didFailToReceiveAdWithError:':
+                name: "didFailToReceiveAd"
+            '-bannerViewActionShouldBegin:willLeaveApplication:':
+                name: "shouldBeginAction"
+            '-bannerViewActionDidFinish:':
+                name: "didFinishAction"
+
+functions:
+    # Make sure we don't miss any functions if new ones are introduced in a later version
+    (AD.*):
+        class: IAd
+        name: "Function__#{g[0]}"
+
+values:
+    AD(ErrorDomain):  # This could probably be moved to ADError
+        class: IAd
+        name: "#{g[0]}"
+
+    ADBannerContentSizeIdentifier(.*): # This could be put into a separate class and also the ADBannerView function getSize
+        class: IAd
+        name: "ADBannerContentSizeIdentifier#{g[0]}"
+
+    # Make sure we don't miss any values if new ones are introduced in a later version
+    (AD.*):
+        class: IAd
+        name: "Value__#{g[0]}"   
+
+constants:
+    # Make sure we don't miss any constants if new ones are introduced in a later version
+    (AD.*):
+        class: IAd
+        name: "Constant__#{g[0]}"

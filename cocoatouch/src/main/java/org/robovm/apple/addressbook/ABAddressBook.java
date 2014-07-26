@@ -66,9 +66,9 @@ import org.robovm.apple.corefoundation.*;
     /*<members>*//*</members>*/
     @Callback
     private void cbRequestAccess(boolean granted, NSError error) {
-        if (requestAccessHandler != null) {
-            requestAccessHandler.requestAccess(granted, error);
-        }
+//        if (requestAccessHandler != null) {
+//            requestAccessHandler.requestAccess(granted, error);
+//        }
     }
     @Callback
     private static void cbExternalChange(ABAddressBook addressBook, NSDictionary<?, ?> info, @Pointer long refcon) {
@@ -88,8 +88,8 @@ import org.robovm.apple.corefoundation.*;
     }
     
     public void requestAccess(RequestAccessCompletionHandler handler) {
-        requestAccessHandler = handler;
-        requestAccess(new FunctionPtr(cbRequestAccess));
+//        requestAccessHandler = handler;
+//        requestAccess(new FunctionPtr(cbRequestAccess));
     }
     
     public boolean save() {
@@ -105,24 +105,24 @@ import org.robovm.apple.corefoundation.*;
     }
     
     public void registerExternalChangeCallback(ExternalChangeCallback callback) {
-        long refconId = ABAddressBook.changeCallbackId.getAndIncrement();
-        registerExternalChangeCallback(new FunctionPtr(cbExternalChange), refconId);
-        synchronized (externalChangeCallbacks) {
-            externalChangeCallbacks.put(refconId, callback);
-        }
+//        long refconId = ABAddressBook.changeCallbackId.getAndIncrement();
+//        registerExternalChangeCallback(new FunctionPtr(cbExternalChange), refconId);
+//        synchronized (externalChangeCallbacks) {
+//            externalChangeCallbacks.put(refconId, callback);
+//        }
     }
     public void unregisterExternalChangeCallback(ExternalChangeCallback callback) {
-        long refconId = 0;
-        synchronized (externalChangeCallbacks) {
-            for (Entry<Long, ExternalChangeCallback> entry : externalChangeCallbacks.entrySet()) {
-                if (entry.getValue() == callback) {
-                    refconId = entry.getKey();
-                    externalChangeCallbacks.remove(refconId);
-                    break;
-                }
-            }
-        }
-        unregisterExternalChangeCallback(new FunctionPtr(cbExternalChange), refconId);
+//        long refconId = 0;
+//        synchronized (externalChangeCallbacks) {
+//            for (Entry<Long, ExternalChangeCallback> entry : externalChangeCallbacks.entrySet()) {
+//                if (entry.getValue() == callback) {
+//                    refconId = entry.getKey();
+//                    externalChangeCallbacks.remove(refconId);
+//                    break;
+//                }
+//            }
+//        }
+//        unregisterExternalChangeCallback(new FunctionPtr(cbExternalChange), refconId);
     }
     /*<methods>*/
     /**

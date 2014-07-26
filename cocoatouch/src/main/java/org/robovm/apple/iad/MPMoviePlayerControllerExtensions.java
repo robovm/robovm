@@ -50,16 +50,16 @@ import org.robovm.apple.addressbook.*;
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
-    /**
-     * @since Available in iOS 7.0 and later.
-     */
-    @Method(selector = "playPrerollAdWithCompletionHandler:")
-    public static native void playPrerollAd(MPMoviePlayerController thiz, @Block VoidBlock1<NSError> completionHandler);
-    /**
-     * @since Available in iOS 7.0 and later.
-     */
-    @Method(selector = "preparePrerollAds")
-    protected static native void preparePrerollAds(ObjCClass clazz);
-    public static void preparePrerollAds() { preparePrerollAds(ObjCClass.getByType(MPMoviePlayerController.class)); }
+//    /**
+//     * @since Available in iOS 7.0 and later.
+//     */
+//    @Method(selector = "playPrerollAdWithCompletionHandler:")
+//    public static native void playPrerollAd(MPMoviePlayerController thiz, @Block VoidBlock1<NSError> completionHandler);
+//    /**
+//     * @since Available in iOS 7.0 and later.
+//     */
+//    @Method(selector = "preparePrerollAds")
+//    protected static native void preparePrerollAds(ObjCClass clazz);
+//    public static void preparePrerollAds() { preparePrerollAds(ObjCClass.getByType(MPMoviePlayerController.class)); }
     /*</methods>*/
 }

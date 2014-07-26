@@ -49,10 +49,10 @@ import org.robovm.apple.addressbook.*;
     protected ADInterstitialAd(SkipInit skipInit) { super(skipInit); }
     /*</constructors>*/
     /*<properties>*/
-    @Property(selector = "delegate")
-    public native ADInterstitialAdDelegate getDelegate();
-    @Property(selector = "setDelegate:", strongRef = true)
-    public native void setDelegate(ADInterstitialAdDelegate v);
+//    @Property(selector = "delegate")
+//    public native ADInterstitialAdDelegate getDelegate();
+//    @Property(selector = "setDelegate:", strongRef = true)
+//    public native void setDelegate(ADInterstitialAdDelegate v);
     @Property(selector = "isLoaded")
     public native boolean isLoaded();
     @Property(selector = "isActionInProgress")

@@ -112,8 +112,8 @@ import org.robovm.apple.addressbook.*;
      * @since Available in iOS 4.0 and later.
      * @deprecated Deprecated in iOS 6.0.
      */
-    @Deprecated
-    @Method(selector = "sizeFromBannerContentSizeIdentifier:")
-    public static native @ByVal CGSize getSizeForIdentifier(NSString contentSizeIdentifier);
+//    @Deprecated
+//    @Method(selector = "sizeFromBannerContentSizeIdentifier:")
+//    public static native @ByVal CGSize getSizeForIdentifier(NSString contentSizeIdentifier);
     /*</methods>*/
 }

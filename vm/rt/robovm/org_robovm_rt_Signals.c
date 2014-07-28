@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2012 Trillian Mobile AB
+ * Copyright (C) 2014 Trillian Mobile AB
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,15 +13,16 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-#ifndef ROBOVM_SIGNAL_H
-#define ROBOVM_SIGNAL_H
+#include <robovm.h>
 
-extern jboolean rvmInitSignals(Env* env);
-extern jboolean rvmSetupSignals(Env* env);
-extern void rvmTearDownSignals(Env* env);
-extern void rvmRestoreSignalMask(Env* env);
-extern void rvmInstallChainingSignals(Env* env);
-extern void rvmReinstallSavedSignals(Env* env, void* state);
-extern void* rvmSaveSignals(Env* env);
+void Java_org_robovm_rt_Signals_installChainingSignals(Env* env, Class* c) {
+    rvmInstallChainingSignals(env);
+}
 
-#endif
+void Java_org_robovm_rt_Signals_reinstallSavedSignals(Env* env, Class* c, jlong state) {
+    rvmReinstallSavedSignals(env, LONG_TO_PTR(state));
+}
+
+jlong Java_org_robovm_rt_Signals_saveSignals(Env* env, Class* c) {
+    return PTR_TO_LONG(rvmSaveSignals(env));
+}

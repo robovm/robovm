@@ -21,6 +21,7 @@ set(SRC
   java_lang_reflect_Method.c 
   java_lang_reflect_Proxy.c 
   java_net_NetworkInterface.c 
+  org_robovm_rt_Signals.c 
   org_robovm_rt_VM.c 
   org_robovm_rt_bro_Dl.c 
   sun_misc_Unsafe.c 

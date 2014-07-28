@@ -43,6 +43,16 @@ static inline int sem_post(sem_t* sem) {
 #define LOG_TAG "core.signal"
 
 #define DUMP_THREAD_STACK_TRACE_SIGNAL SIGUSR1
+// The signal used in libcore's AsynchronousSocketCloseMonitor.cpp
+#if defined(__APPLE__)
+#define BLOCKED_THREAD_SIGNAL SIGUSR2
+#else
+#define BLOCKED_THREAD_SIGNAL (SIGRTMIN + 2)
+#endif
+
+typedef struct {
+    struct sigaction blockedThreadSignal;
+} SavedSignals;
 
 /*
  * The common way to implement stack overflow detection is to catch SIGSEGV and see if the
@@ -59,8 +69,13 @@ static inline int sem_post(sem_t* sem) {
 static Method* throwableInitMethod = NULL;
 static CallStack* dumpThreadStackTraceCallStack = NULL;
 static sem_t dumpThreadStackTraceCallSemaphore;
+#if defined(DARWIN)
+static struct sigaction sigbusFallback;
+#endif
+static struct sigaction sigsegvFallback;
 
-static void signalHandler_npe_so(int signum, siginfo_t* info, void* context);
+static void signalHandler_npe_so_nochaining(int signum, siginfo_t* info, void* context);
+static void signalHandler_npe_so_chaining(int signum, siginfo_t* info, void* context);
 static void signalHandler_dump_thread(int signum, siginfo_t* info, void* context);
 
 #if defined(DARWIN)
@@ -83,35 +98,76 @@ jboolean rvmInitSignals(Env* env) {
     return TRUE;
 }
 
-static jboolean installSignalHandlers(Env* env) {
+static struct sigaction create_sigaction(void (*f)(int, siginfo_t*, void*)) {
     struct sigaction sa;
-
     sigemptyset(&sa.sa_mask);
     sa.sa_flags = SA_SIGINFO | SA_ONSTACK;
-    sa.sa_sigaction = &signalHandler_npe_so;
+    sa.sa_sigaction = f;
+    return sa;
+}
 
+static int installSignalHandlerIfNeeded(int signum, struct sigaction sa, struct sigaction* savedsa) {
+    struct sigaction oldsa;
+
+    sigaction(signum, NULL, &oldsa);
+
+    if (oldsa.sa_sigaction != sa.sa_sigaction) {
+        int res = sigaction(signum, &sa, NULL);
+        if (res == 0 && savedsa) {
+            *savedsa = oldsa;
+        }
+        return res;
+    }
+    return 0;
+}
+
+static jboolean installChainingSignals(Env* env) {
 #if defined(DARWIN)
     // On Darwin SIGBUS is generated when dereferencing NULL pointers
-    if (sigaction(SIGBUS, &sa, NULL) != 0) {
+    if (installSignalHandlerIfNeeded(SIGBUS, create_sigaction(&signalHandler_npe_so_chaining), &sigbusFallback) != 0) {
         rvmThrowInternalErrorErrno(env, errno);
-        rvmTearDownSignals(env);
         return FALSE;
     }
 #endif
 
-    if (sigaction(SIGSEGV, &sa, NULL) != 0) {
+    if (installSignalHandlerIfNeeded(SIGSEGV, create_sigaction(&signalHandler_npe_so_chaining), &sigsegvFallback) != 0) {
         rvmThrowInternalErrorErrno(env, errno);
-        rvmTearDownSignals(env);
         return FALSE;
     }
 
-    sigemptyset(&sa.sa_mask);
-    sa.sa_flags = SA_SIGINFO | SA_ONSTACK;
-    sa.sa_sigaction = &signalHandler_dump_thread;
+    return TRUE;
+}
 
-    if (sigaction(DUMP_THREAD_STACK_TRACE_SIGNAL, &sa, NULL) != 0) {
+static jboolean reinstallSavedSignals(Env* env, SavedSignals* savedSignals) {
+    if (installSignalHandlerIfNeeded(DUMP_THREAD_STACK_TRACE_SIGNAL, create_sigaction(&signalHandler_dump_thread), NULL) != 0) {
         rvmThrowInternalErrorErrno(env, errno);
-        rvmTearDownSignals(env);
+        return FALSE;
+    }
+
+    if (installSignalHandlerIfNeeded(BLOCKED_THREAD_SIGNAL, savedSignals->blockedThreadSignal, NULL) != 0) {
+        rvmThrowInternalErrorErrno(env, errno);
+        return FALSE;
+    }
+
+    return TRUE;
+}
+
+static jboolean installSignals(Env* env) {
+#if defined(DARWIN)
+    // On Darwin SIGBUS is generated when dereferencing NULL pointers
+    if (installSignalHandlerIfNeeded(SIGBUS, create_sigaction(&signalHandler_npe_so_nochaining), NULL) != 0) {
+        rvmThrowInternalErrorErrno(env, errno);
+        return FALSE;
+    }
+#endif
+
+    if (installSignalHandlerIfNeeded(SIGSEGV, create_sigaction(&signalHandler_npe_so_nochaining), NULL) != 0) {
+        rvmThrowInternalErrorErrno(env, errno);
+        return FALSE;
+    }
+
+    if (installSignalHandlerIfNeeded(DUMP_THREAD_STACK_TRACE_SIGNAL, create_sigaction(&signalHandler_dump_thread), NULL) != 0) {
+        rvmThrowInternalErrorErrno(env, errno);
         return FALSE;
     }
 
@@ -126,7 +182,7 @@ static jboolean installSignalHandlers(Env* env) {
 }
 
 jboolean rvmSetupSignals(Env* env) {
-    if (!installSignalHandlers(env)) {
+    if (!installSignals(env)) {
         return FALSE;
     }
     return TRUE;
@@ -137,6 +193,31 @@ void rvmRestoreSignalMask(Env* env) {
 }
 
 void rvmTearDownSignals(Env* env) {
+}
+
+void rvmInstallChainingSignals(Env* env) {
+    static jboolean called = FALSE;
+    if (called) {
+        FATAL("rvmInstallChainingSignals() called twice");
+        abort();
+    }
+    installChainingSignals(env);
+    called = TRUE;
+}
+
+void rvmReinstallSavedSignals(Env* env, void* state) {
+    SavedSignals* savedSignals = (SavedSignals*) state;
+    reinstallSavedSignals(env, savedSignals);
+    free(savedSignals);
+}
+
+void* rvmSaveSignals(Env* env) {
+    SavedSignals* state = malloc(sizeof(SavedSignals));
+    if (!state) {
+        rvmThrowOutOfMemoryError(env);
+        return NULL;
+    }
+    return state;
 }
 
 void dumpThreadStackTrace(Env* env, Thread* thread, CallStack* callStack) {
@@ -181,10 +262,9 @@ static inline void* getPC(ucontext_t* context) {
 #endif
 }
 
-static void signalHandler_npe_so(int signum, siginfo_t* info, void* context) {
-    // rvmGetEnv() uses pthread_getspecific() which isn't listed as 
-    // async-signal-safe. Others (e.g. mono) do this too so we assume it is safe 
-    // in practice.
+static void signalHandler_npe_so(int signum, siginfo_t* info, void* context, jboolean chain) {
+    // SIGSEGV/SIGBUS are synchronous signals so we shouldn't have to worry about only calling
+    // async-signal-safe function here.
     Env* env = rvmGetEnv();
     if (env && rvmIsNonNativeFrame(env)) {
         // We now know the fault occurred in non-native code and not in our 
@@ -227,11 +307,31 @@ static void signalHandler_npe_so(int signum, siginfo_t* info, void* context) {
         }
     }
 
-    struct sigaction sa;
-    sa.sa_flags = 0;
-    sa.sa_handler = SIG_DFL;
-    sigaction(signum, &sa, NULL);
+    if (chain) {
+        // Chain to the saved handler. That handler MUST NOT recover from the signal.
+        struct sigaction* sa = &sigsegvFallback;
+#if defined(DARWIN)
+        if (signum == SIGBUS) {
+            sa = &sigbusFallback;
+        }
+#endif
+        sigaction(signum, sa, NULL);
+    } else {
+        signal(signum, SIG_DFL);
+    }
     kill(0, signum);
+}
+
+// Signal handler used by default. Does not chain to the previously installed handler. Just delegates to SIG_DFL
+// in case a SIGSEGV/SIGBUS is cused by something else than an NPE or SOE.
+static void signalHandler_npe_so_nochaining(int signum, siginfo_t* info, void* context) {
+    signalHandler_npe_so(signum, info, context, FALSE);
+}
+
+// Signal handler used . Does not chain to the previously installed handler. Just delegates to SIG_DFL
+// in case a SIGSEGV/SIGBUS is cused by something else than an NPE or SOE.
+static void signalHandler_npe_so_chaining(int signum, siginfo_t* info, void* context) {
+    signalHandler_npe_so(signum, info, context, TRUE);
 }
 
 static void signalHandler_dump_thread(int signum, siginfo_t* info, void* context) {

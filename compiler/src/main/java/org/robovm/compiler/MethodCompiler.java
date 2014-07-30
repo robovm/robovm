@@ -256,7 +256,9 @@ public class MethodCompiler extends AbstractMethodCompiler {
                     Local local = (Local) stmt.getLeftOp();
                     if (!locals.contains(local)) {
                         Type type = getLocalType(local.getType());
-                        function.add(new Alloca(function.newVariable(local.getName(), type), type));
+                        Alloca alloca = new Alloca(function.newVariable(local.getName(), type), type);
+                        alloca.attach(local);
+                        function.add(alloca);
                         locals.add(local);
                     }
                 }

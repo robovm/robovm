@@ -45,7 +45,7 @@ public class Clazzes {
     private final List<Clazz> allClasses = new ArrayList<Clazz>();
 
     private boolean sootInitialized = false;
-    
+
     public Clazzes(Config config, List<File> bootclasspath, List<File> classpath) throws IOException {
         this.config = config;
         Set<File> seen = new HashSet<File>();
@@ -55,16 +55,16 @@ public class Clazzes {
         paths.addAll(classpathPaths);
         populateCache();
     }
-    
+
     Config getConfig() {
         return config;
     }
-    
+
     private static boolean isArchive(File f) {
         String name = f.getName().toLowerCase();
         return name.endsWith(".zip") || name.endsWith(".jar");
     }
-    
+
     private void addPaths(List<File> files, List<Path> cp, Set<File> seen, boolean inBootclasspath) throws IOException {
         for (File file : files) {
             if (!file.exists()) {
@@ -85,13 +85,13 @@ public class Clazzes {
         }
 
     }
-    
+
     private Path createPath(File file, List<Path> cp, boolean inBootclasspath) throws IOException {
-        return file.isDirectory() 
-                ? new DirectoryPath(file, this, cp.size(), inBootclasspath) 
+        return file.isDirectory()
+                ? new DirectoryPath(file, this, cp.size(), inBootclasspath)
                 : new ZipFilePath(file, this, cp.size(), inBootclasspath);
     }
-    
+
     public Path createResourcesBootclasspathPath(File file) throws IOException {
         return createPath(file, bootclasspathPaths, true);
     }
@@ -99,7 +99,7 @@ public class Clazzes {
     public Path createResourcesClasspathPath(File file) throws IOException {
         return createPath(file, classpathPaths, false);
     }
-    
+
     private boolean isEmpty(File dir) {
         for (File f : dir.listFiles()) {
             if (f.isFile()) {
@@ -111,7 +111,7 @@ public class Clazzes {
         }
         return true;
     }
-    
+
     private void populateCache() {
         for (Path p : paths) {
             for (Clazz clazz : p.listClasses()) {
@@ -122,7 +122,7 @@ public class Clazzes {
             }
         }
     }
-    
+
     public Clazz load(String internalName) {
         Clazz clazz = cache.get(internalName);
         if (clazz == null) {
@@ -136,7 +136,7 @@ public class Clazzes {
         }
         return clazz;
     }
-    
+
     public List<Path> getBootclasspathPaths() {
         return Collections.unmodifiableList(bootclasspathPaths);
     }
@@ -144,15 +144,15 @@ public class Clazzes {
     public List<Path> getClasspathPaths() {
         return Collections.unmodifiableList(classpathPaths);
     }
-    
+
     public List<Path> getPaths() {
         return Collections.unmodifiableList(paths);
     }
-    
+
     public List<Clazz> listClasses() {
         return Collections.unmodifiableList(allClasses);
     }
-    
+
     SootClass getSootClass(Clazz clazz) {
         if (!sootInitialized) {
             initializeSoot(this);
@@ -160,7 +160,7 @@ public class Clazzes {
         }
         return Scene.v().loadClassAndSupport(clazz.getClassName());
     }
-    
+
     private static String getSootClasspath(Clazzes clazzes) {
         StringBuilder sb = new StringBuilder();
         for (Path path : clazzes.getPaths()) {
@@ -177,7 +177,7 @@ public class Clazzes {
         }
         return sb.toString();
     }
-    
+
     private static void initializeSoot(Clazzes clazzes) {
         soot.G.reset();
         Options.v().set_output_format(Options.output_format_jimple);
@@ -188,30 +188,36 @@ public class Clazzes {
         Options.v().set_soot_classpath(getSootClasspath(clazzes));
 
         /*
-         * Disable the jb.dae phase (DeadAssignmentEliminator) since it removes 
+         * Enable the use-original-names phase to merge local variables and
+         * verbose logging for debugging purposes only.
+         */
+        // Options.v().set_verbose(true);
+        // Options.v().setPhaseOption("jb", "use-original-names:true");
+        /*
+         * Disable the jb.dae phase (DeadAssignmentEliminator) since it removes
          * LDC instructions which would have thrown a NoClassDefFoundError.
          * TODO: Report this to soot as a bug?
          */
         Options.v().setPhaseOption("jb.dae", "enabled:false");
-        /* 
-         * Disable the jb.uce phase (UnreachableCodeEliminator) since it seems 
-         * to remove try-catch blocks which catches a non-existing Throwable 
-         * class. This should generate a NoClassDefFoundError at runtime but 
+        /*
+         * Disable the jb.uce phase (UnreachableCodeEliminator) since it seems
+         * to remove try-catch blocks which catches a non-existing Throwable
+         * class. This should generate a NoClassDefFoundError at runtime but
          * with the UCE in place no exception is thrown.
          */
         Options.v().setPhaseOption("jb.uce", "enabled:false");
-        
+
         /*
          * Enable jap.npc (NullPointerChecker) and jap.abc (ArrayBoundsChecker)
-         * phases in the annotation pack. The annotation pack is enabled by 
+         * phases in the annotation pack. The annotation pack is enabled by
          * default but all its phases are disabled by default.
          */
         Options.v().setPhaseOption("jap.npc", "enabled:true");
         Options.v().setPhaseOption("jap.abc", "enabled:true");
 
         /*
-         * Enable the jop (Jimple optimization) pack but disable all phases
-         * for now.
+         * Enable the jop (Jimple optimization) pack but disable all phases for
+         * now.
          */
         Options.v().setPhaseOption("jop", "enabled:true");
         Options.v().setPhaseOption("jop.cse", "enabled:false");
@@ -227,7 +233,7 @@ public class Clazzes {
         Options.v().setPhaseOption("jop.uce2", "enabled:false");
         Options.v().setPhaseOption("jop.ubf2", "enabled:false");
         Options.v().setPhaseOption("jop.ule", "enabled:false");
-        
+
         Scene.v().loadNecessaryClasses();
     }
 

@@ -39,6 +39,10 @@ public class Alloca extends Instruction {
         return Collections.singleton(result);
     }
     
+    public Variable getResult() {
+        return result;
+    }
+    
     @Override
     public String toString() {
         return result + " = alloca " + type;

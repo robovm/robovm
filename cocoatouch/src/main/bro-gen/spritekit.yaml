@@ -1,0 +1,404 @@
+package: org.robovm.apple.spritekit
+include: [foundation.yaml, uikit.yaml, coregraphics.yaml, coreanimation.yaml, dispatch.yaml, coreimage.yaml, avfoundation.yaml]
+library: SpriteKit
+framework: SpriteKit
+clang_args: ['-x', 'objective-c']
+headers:
+    - /System/Library/Frameworks/SpriteKit.framework/Headers/SpriteKit.h
+    - /System/Library/Frameworks/SpriteKit.framework/Headers/SpriteKitBase.h
+typedefs:
+    'void (^)(SKNode *, CGFloat)': '@Block VoidBlock2<SKNode, Float>'
+    'void (^)(SKNode *, BOOL *)': '@Block VoidBlock2<SKNode, Boolean>'
+    'void (^)(SKPhysicsBody *, BOOL *)': '@Block VoidBlock2<SKPhysicsBody, Boolean>'
+    'void (^)(SKPhysicsBody *, CGPoint, CGVector, BOOL *)': '@Block VoidBlock4<SKPhysicsBody, CGPoint, CGVector, Boolean>'
+
+enums:
+    SKActionTimingMode: {}
+    SKInterpolationMode: {}
+    SKRepeatMode: {}
+    SKLabelVerticalAlignmentMode: {}
+    SKLabelHorizontalAlignmentMode: {}
+    SKBlendMode: {}
+    SKSceneScaleMode: {}
+    SKTextureFilteringMode: {}
+    SKTransitionDirection: {}
+
+categories:
+    SKNodeTouches: # DONE
+        methods:
+            '-locationInNode:':
+                trim_after_first_colon: true
+            '-previousLocationInNode:':
+                trim_after_first_colon: true
+
+classes:
+    SpriteKit:
+        annotations: ['@Marshaler(NSString.AsStringMarshaler.class)']
+
+    SKAction: # DONE
+        methods:
+            '+moveBy.*':
+                name: "moveBy"
+            '+moveTo.*':
+                trim_after_first_colon: true
+            '+rotateBy.*':
+                name: "rotateBy"
+            '+rotateTo.*':
+                name: "rotateTo"
+            '+resizeBy.*':
+                name: "resizeBy"
+            '+resizeToWidth:height:duration:':
+                name: "resizeTo"
+            '+resizeTo.*':
+                trim_after_first_colon: true
+            '+scaleBy:duration:':
+                trim_after_first_colon: true
+            '+scaleXBy:y:duration:':
+                name: "scaleBy"
+            '+scaleTo:duration:':
+                trim_after_first_colon: true
+            '+scaleXTo:y:duration:':
+                name: "scaleTo"
+            '+scaleXTo:duration:':
+                trim_after_first_colon: true
+            '+scaleYTo:duration:':
+                trim_after_first_colon: true
+            '+sequence:':
+                trim_after_first_colon: true
+                parameters:
+                    actions:
+                        type: "NSArray<SKAction>"
+            '+group:':
+                trim_after_first_colon: true
+                parameters:
+                    actions:
+                        type: "NSArray<SKAction>"
+            '+repeatAction:count:':
+                name: "repeat"
+            '+repeatActionForever:':
+                name: "repeatForever"
+            '+fadeInWithDuration:':
+                name: "fadeIn"
+            '+fadeOutWithDuration:':
+                name: "fadeOut"
+            '+fadeAlphaBy:duration:':
+                trim_after_first_colon: true
+            '+fadeAlphaTo:duration:':
+                trim_after_first_colon: true
+            '+setTexture:.*':
+                trim_after_first_colon: true
+            '+animateWithTextures:timePerFrame:.*':
+                name: "animate"
+                parameters:
+                    textures:
+                        type: "NSArray<SKTexture>"
+            '+playSoundFileNamed:waitForCompletion:':
+                name: "playSound"
+            '+colorizeWithColor.*':
+                name: "colorize"
+            '+followPath:.*':
+                trim_after_first_colon: true
+            '+speedBy:duration:':
+                trim_after_first_colon: true
+            '+speedTo:duration:':
+                trim_after_first_colon: true
+            '+waitForDuration:.*':
+                name: "wait"
+            '+performSelector:onTarget:':
+                ignore: true
+            '+runBlock:':
+                trim_after_first_colon: true
+            '+runBlock:queue:':
+                trim_after_first_colon: true
+                parameters:
+                    queue:
+                        type: "DispatchQueue"
+            '+runAction:onChildWithName:':
+                trim_after_first_colon: true
+            '+customActionWithDuration:actionBlock:':
+                name: "customAction"
+    SKCropNode: {} # DONE
+    SKEffectNode: {} # DONE
+    SKEmitterNode: # DONE
+        methods:
+            '-advanceSimulationTime:':
+                trim_after_first_colon: true
+    SKKeyframeSequence: # DONE
+        methods:
+            '-initWithKeyframeValues:times:':
+                name: "init"
+                parameters:
+                    values:
+                        type: "NSArray<NSObject>"
+                    times:
+                        type: "NSArray<NSNumber>"
+            '-initWithCapacity:':
+                name: "init"
+            '-addKeyframeValue:time:':
+                name: "add"
+            '-removeLastKeyframe':
+                name: "removeLast"
+            '-removeKeyframeAtIndex:':
+                name: "remove"
+            '-setKeyframeValue:forIndex:':
+                name: "setValue"
+            '-setKeyframeTime:forIndex:':
+                name: "setTime"
+            '-setKeyframeValue:time:forIndex:':
+                name: "set"
+            '-getKeyframeValueForIndex:':
+                name: "getValue"
+            '-getKeyframeTimeForIndex:':
+                name: "getTime"
+            '-sampleAtTime:':
+                name: "getSample"
+    SKLabelNode: # DONE
+        methods:
+            '-initWithFontNamed:':
+                name: "init"
+            '+labelNodeWithFontNamed:':
+                name: "create"
+    SKNode: # DONE
+        properties:
+            'children':
+                type: "NSArray<SKNode>"
+            'userData':
+                type: "NSMutableDictionary<?, ?>"
+        methods:
+            '-addChild:':
+                trim_after_first_colon: true
+            '-insertChild:atIndex:':
+                trim_after_first_colon: true
+            '-removeChildrenInArray:':
+                name: "removeChildren"
+                parameters:
+                    nodes:
+                        type: "NSArray<SKNode>"
+            '-childNodeWithName:':
+                name: "getChild"
+            '-enumerateChildNodesWithName:usingBlock:':
+                name: "enumerateChildNodes"
+            '-inParentHierarchy:':
+                name: "isInParentHierarchy"
+            '-runAction:.*':
+                trim_after_first_colon: true
+            '-actionForKey:':
+                name: "getAction"
+            '-removeActionForKey:':
+                name: "removeAction"
+            '-containsPoint:':
+                trim_after_first_colon: true
+            '-nodeAtPoint:':
+                name: "getNodeAtPoint"
+            '-nodesAtPoint:':
+                name: "getNodesAtPoint"
+                return_type: "NSArray<SKNode>"
+            '-convertPoint:fromNode:':
+                name: "convertPointFromNode"
+            '-convertPoint:toNode:':
+                name: "convertPointToNode"
+            '-intersectsNode:':
+                trim_after_first_colon: true
+            '+node':
+                name: "create"
+    SKPhysicsBody: # DONE
+        properties:
+            'joints':
+                type: "NSArray<SKPhysicsJoint>"
+        methods:
+            '-applyForce:.*':
+                trim_after_first_colon: true
+            '-applyTorque:':
+                trim_after_first_colon: true
+            '-applyImpulse:':
+                trim_after_first_colon: true
+            '-applyAngularImpulse:':
+                trim_after_first_colon: true
+            '-allContactedBodies':
+                property: true
+                return_type: "NSArray<SKPhysicsBody>"
+            '+bodyWithCircleOfRadius:.*':
+                name: "createCircle"
+            '+bodyWithRectangleOfSize:.*':
+                name: "createRectangle"
+            '+bodyWithPolygonFromPath:.*':
+                name: "createPolygon"
+            '+bodyWithEdgeFromPoint:toPoint:':
+                name: "createEdge"
+            '+bodyWithEdgeChainFromPath:':
+                name: "createEdgeChain"
+            '+bodyWithEdgeLoopFromPath:':
+                name: "createEdgeLoop"
+            '+bodyWithEdgeLoopFromRect:':
+                name: "createEdgeLoop"
+            '+bodyWithBodies:':
+                name: "create"
+                parameters:
+                    bodies:
+                        type: "NSArray<SKPhysicsBody>"
+    SKPhysicsContact: {} # DONE
+    SKPhysicsJoint: {} # DONE
+    SKPhysicsJointFixed: # DONE
+        methods:
+            '+jointWithBodyA:bodyB:anchor:':
+                name: "create"
+    SKPhysicsJointLimit: # DONE
+        methods:
+            '+jointWithBodyA:bodyB:anchorA:anchorB:':
+                name: "create"
+    SKPhysicsJointPin: # DONE
+        methods:
+            '+jointWithBodyA:bodyB:anchor:':
+                name: "create"
+    SKPhysicsJointSliding: # DONE
+        methods:
+            '+jointWithBodyA:bodyB:anchor:axis:':
+                name: "create"
+    SKPhysicsJointSpring: # DONE
+        methods:
+            '+jointWithBodyA:bodyB:anchorA:anchorB:':
+                name: "create"
+    SKPhysicsWorld: # DONE
+        methods:
+            '-addJoint:':
+                trim_after_first_colon: true
+            '-removeJoint:':
+                trim_after_first_colon: true
+            '-bodyAtPoint:':
+                name: "getBodyAtPoint"
+            '-bodyInRect:':
+                name: "getBodyInRect"
+            '-bodyAlongRayStart:end:':
+                name: "getBodyAlongRay"
+            '-enumerateBodiesAtPoint:usingBlock:':
+                trim_after_first_colon: true
+            '-enumerateBodiesInRect:usingBlock:':
+                trim_after_first_colon: true
+            '-enumerateBodiesAlongRayStart:end:usingBlock:':
+                name: "enumerateBodiesAlongRay"
+    SKScene: # DONE
+        methods:
+            '-initWithSize:':
+                name: "init"
+            '-convertPointFromView:':
+                trim_after_first_colon: true
+            '-convertPointToView:':
+                trim_after_first_colon: true
+            '-update:':
+                trim_after_first_colon: true
+            '-didMoveToView:':
+                trim_after_first_colon: true
+            '-willMoveFromView:':
+                trim_after_first_colon: true
+            '-didChangeSize:':
+                trim_after_first_colon: true
+            '+sceneWithSize:':
+                name: "create"
+    SKShapeNode: {} # DONE
+    SKSpriteNode: # DONE
+        methods:
+            '-init.*':
+                name: "init"
+            '+spriteNodeWith.*':
+                name: "create"
+    SKTexture: # DONE
+        methods:
+            '-textureByApplyingCIFilter:':
+                name: "newTextureByApplyingCIFilter"
+            '-textureRect':
+                property: true
+            '-preloadWithCompletionHandler:':
+                name: "preload"
+            '+textureWith.*':
+                name: "create"
+            '+preloadTextures:withCompletionHandler:':
+                trim_after_first_colon: true
+                parameters:
+                    textures:
+                        type: "NSArray<SKTexture>"
+    SKTextureAtlas: # DONE
+        properties:
+            'textureNames':
+                type: "NSArray<NSString>"
+        methods:
+            '-textureNamed:':
+                name: "getTexture"
+            '-preloadWithCompletionHandler:':
+                name: "preload"
+            '+atlasNamed:':
+                name: "create"
+            '+preloadTextureAtlases:withCompletionHandler:':
+                trim_after_first_colon: true
+                parameters:
+                    textureAtlases:
+                        type: "NSArray<SKTextureAtlas>"
+    SKTransition: # DONE
+        methods:
+            '+crossFadeWithDuration:':
+                name: "crossFade"
+            '+fadeWith.*':
+                name: "fade"
+            '+flipHorizontalWithDuration:':
+                name: "flipHorizontal"
+            '+flipVerticalWithDuration:':
+                name: "flipVertical"
+            '+revealWithDirection:duration:':
+                name: "reveal"
+            '+moveInWithDirection:duration:':
+                name: "moveIn"
+            '+pushWithDirection:duration:':
+                name: "push"
+            '+doorsOpenHorizontalWithDuration:':
+                name: "doorsOpenHorizontal"
+            '+doorsOpenVerticalWithDuration:':
+                name: "doorsOpenVertical"
+            '+doorsCloseHorizontalWithDuration:':
+                name: "doorsCloseHorizontal"
+            '+doorsCloseVerticalWithDuration:':
+                name: "doorsCloseVertical"
+            '+doorwayWithDuration:':
+                name: "doorway"
+            '+transitionWithCIFilter:duration:':
+                name: "create"
+    SKVideoNode: # DONE
+        methods:
+            '-initWith.*':
+                name: "init"
+            '+videoNodeWith.*':
+                name: "create"    
+    SKView: # DONE
+        methods:
+            '-presentScene:.*':
+                trim_after_first_colon: true
+            '-textureFromNode:':
+                name: "getTextureFromNode"
+            '-convertPoint:toScene:':
+                name: "convertPointToScene"
+            '-convertPoint:fromScene:':
+                name: "convertPointFromScene"
+
+protocols:
+    SKPhysicsContactDelegate: # DONE
+        methods:
+            '-didBeginContact:':
+                trim_after_first_colon: true
+            '-didEndContact:':
+                trim_after_first_colon: true
+    
+functions:
+    # Make sure we don't miss any functions if new ones are introduced in a later version
+    (SK.*):
+        class: SpriteKit
+        name: "Function__#{g[0]}"
+
+values: 
+    # Make sure we don't miss any values if new ones are introduced in a later version
+    (SK.*):
+        class: SpriteKit
+        name: "Value__#{g[0]}"
+
+constants:
+    # Make sure we don't miss any constants if new ones are introduced in a later version
+    (SK.*):
+        class: SpriteKit
+        name: "Constant__#{g[0]}"

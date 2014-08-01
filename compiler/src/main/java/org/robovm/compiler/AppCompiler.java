@@ -33,12 +33,17 @@ import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
 import java.util.UUID;
+import java.util.concurrent.Executor;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
 
 import org.apache.commons.exec.ExecuteException;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
 import org.json.simple.JSONObject;
 import org.json.simple.JSONValue;
+import org.robovm.compiler.ClassCompiler.CompilationCallback;
 import org.robovm.compiler.clazz.Clazz;
 import org.robovm.compiler.clazz.Dependency;
 import org.robovm.compiler.clazz.Path;
@@ -111,6 +116,16 @@ public class AppCompiler {
 
     private static final String TRUSTED_CERTIFICATE_STORE_CLASS = 
             "com/android/org/conscrypt/TrustedCertificateStore";
+
+    /**
+     * An {@link Executor} which runs tasks immediately without creating a
+     * seperate thread.
+     */
+    private static final Executor SAME_THREAD_EXECUTOR = new Executor() {
+        public void execute(Runnable r) {
+            r.run();
+        }
+    };
     
     private final Config config;
     private final ClassCompiler classCompiler;
@@ -198,9 +213,13 @@ public class AppCompiler {
         return classes;
     }    
     
-    private void compile(Clazz clazz, Set<Clazz> compileQueue, Set<Clazz> compiled) throws IOException {
+    private boolean compile(Executor executor, CompilationCallback callback, 
+            Clazz clazz, Set<Clazz> compileQueue, Set<Clazz> compiled) throws IOException {
+
+        boolean result = false;
         if (config.isClean() || classCompiler.mustCompile(clazz)) {
-            classCompiler.compile(clazz);
+            classCompiler.compile(clazz, executor, callback);
+            result = true;
         }
         for (Dependency dep : clazz.getClazzInfo().getDependencies()) {
             Clazz depClazz = config.getClazzes().load(dep.getClassName());
@@ -208,32 +227,91 @@ public class AppCompiler {
                 compileQueue.add(depClazz);
             }
         }
+        return result;
     }
     
     public void compile() throws IOException {
         updateCheck();
-        
+
+        config.getLogger().debug("Compiling classes using %d threads", config.getThreads());
+
+        final Executor executor = (config.getThreads() <= 1)
+                ? SAME_THREAD_EXECUTOR : Executors.newFixedThreadPool(config.getThreads());
+        class HandleFailureCallback implements CompilationCallback {
+            volatile Throwable t;
+            @Override
+            public void success(Clazz clazz) {
+            }
+            @Override
+            public void failure(Clazz clazz, Throwable t) {
+                // Compilation failed. Save the error and stop the executor.
+                this.t = t;
+                if (executor instanceof ExecutorService) {
+                    ((ExecutorService) executor).shutdown();
+                }
+            }
+        };
+        HandleFailureCallback callback = new HandleFailureCallback();
+
+        long start = System.currentTimeMillis();
+        int compiledCount = 0;
         TreeSet<Clazz> compileQueue = getRootClasses();
         Set<Clazz> linkClasses = new HashSet<Clazz>();
         while (!compileQueue.isEmpty() && !Thread.currentThread().isInterrupted()) {
             Clazz clazz = compileQueue.pollFirst();
             if (!linkClasses.contains(clazz)) {
-                compile(clazz, compileQueue, linkClasses);
+                if (compile(executor, callback, clazz, compileQueue, linkClasses)) {
+                    compiledCount++;
+                    if (callback.t != null) {
+                        // We have a failed compilation. Stop compiling.
+                        break;
+                    }
+                }
                 linkClasses.add(clazz);
             }
         }
+
+        // Shutdown the executor and wait for running tasks to complete.
+        if (executor instanceof ExecutorService) {
+            ExecutorService executorService = (ExecutorService) executor;
+            executorService.shutdown();
+            try {
+                executorService.awaitTermination(Long.MAX_VALUE, TimeUnit.DAYS);
+            } catch (InterruptedException e) {}
+        }
+
+        if (callback.t != null) {
+            // The compilation failed. Rethrow the exception in the callback.
+            if (callback.t instanceof IOException) {
+                throw (IOException) callback.t;
+            }
+            if (callback.t instanceof RuntimeException) {
+                throw (RuntimeException) callback.t;
+            }
+            if (callback.t instanceof Error) {
+                throw (Error) callback.t;
+            }
+            throw new CompilerException(callback.t);
+        }
+
+        long duration = System.currentTimeMillis() - start;
+        config.getLogger().debug("Compiled %d classes in %.2f seconds", compiledCount, duration / 1000.0);
+
         if (Thread.currentThread().isInterrupted()) {
             return;
         }
-        
+
         if (linkClasses.contains(config.getClazzes().load(TRUSTED_CERTIFICATE_STORE_CLASS))) {
             if (config.getCacerts() != null) {
                 config.addResourcesPath(config.getClazzes().createResourcesBootclasspathPath(
                         config.getHome().getCacertsPath(config.getCacerts())));
             }
         }
-        
+
+        start = System.currentTimeMillis();
         linker.link(linkClasses);
+        duration = System.currentTimeMillis() - start;
+        config.getLogger().debug("Linked %d classes in %.2f seconds", linkClasses.size(), duration / 1000.0);
     }
         
     public static void main(String[] args) throws IOException {
@@ -271,6 +349,17 @@ public class AppCompiler {
                     builder.home(new Config.Home(new File(args[++i])));
                 } else if ("-tmp".equals(args[i])) {
                     builder.tmpDir(new File(args[++i]));
+                } else if ("-threads".equals(args[i])) {
+                    String s = args[++i];
+                    try {
+                        int n = Integer.parseInt(s);
+                        // Make sure n > 0 and cap at 128 threads.
+                        n = Math.max(n, 1);
+                        n = Math.min(n, 128);
+                        builder.threads(n);
+                    } catch (NumberFormatException e) {
+                        throw new IllegalArgumentException("Unparsable thread count: " + s);
+                    }
                 } else if ("-run".equals(args[i])) {
                     run = true;
                 } else if ("-verbose".equals(args[i])) {
@@ -551,6 +640,9 @@ public class AppCompiler {
                          + "                        option has been given. A pattern is an ANT style path pattern,\n" 
                          + "                        e.g. com.foo.**.bar.*.Main. An alternative syntax using # is\n" 
                          + "                        also supported, e.g. com.##.#.Main.");
+        System.err.println("  -threads <n>          The number of threads to use during class compilation. By\n" 
+                         + "                        default the number returned by Runtime.availableProcessors()\n" 
+                         + "                        will be used (" + Runtime.getRuntime().availableProcessors() + " on this host).");
         System.err.println("  -run                  Run the executable directly without installing it (-d is\n" 
                          + "                        ignored). The executable will be executed from the\n" 
                          + "                        temporary dir specified with -tmp.");

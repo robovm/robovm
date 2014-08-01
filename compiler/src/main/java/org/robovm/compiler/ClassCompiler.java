@@ -38,6 +38,8 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.concurrent.Executor;
+import java.util.concurrent.RejectedExecutionException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -262,7 +264,7 @@ public class ClassCompiler {
         return dependencies.isEmpty();
     }
     
-    public void compile(Clazz clazz) throws IOException {
+    public void compile(Clazz clazz, Executor executor, CompilationCallback callback) throws IOException {
         reset();        
         
         Arch arch = config.getArch();
@@ -282,7 +284,31 @@ public class ClassCompiler {
             throw new RuntimeException(t);
         }
 
-        byte[] llData = output.toByteArray();
+        scheduleMachineCodeGeneration(executor, callback, config, clazz, output.toByteArray());
+    }
+
+    private static void scheduleMachineCodeGeneration(Executor executor, final CompilationCallback callback,
+            final Config config, final Clazz clazz, final byte[] llData) {
+        
+        try {
+            executor.execute(new Runnable() {
+                @Override
+                public void run() {
+                    try {
+                        generateMachineCode(config, clazz, llData);
+                        callback.success(clazz);
+                    } catch (Throwable t) {
+                        callback.failure(clazz, t);
+                    }
+                }
+            });
+        } catch (RejectedExecutionException e) {
+            // Ignore. The executor has been shutdown for some reason.
+        }
+    }
+    
+    private static void generateMachineCode(Config config, Clazz clazz, byte[] llData) throws IOException {
+        ByteArrayOutputStream output = new ByteArrayOutputStream(256 * 1024);
         
         if (config.isDumpIntermediates()) {
             File llFile = config.getLlFile(clazz);
@@ -292,7 +318,7 @@ public class ClassCompiler {
         
         Context context = new Context();
         Module module = Module.parseIR(context, llData, clazz.getClassName());
-        PassManager passManager = createPassManager();
+        PassManager passManager = createPassManager(config);
         passManager.run(module);
         passManager.dispose();
 
@@ -317,7 +343,7 @@ public class ClassCompiler {
         
         byte[] asm = output.toByteArray();
         output.reset();
-        patchAsmWithFunctionSizes(clazz, new ByteArrayInputStream(asm), output);
+        patchAsmWithFunctionSizes(config, clazz, new ByteArrayInputStream(asm), output);
         asm = output.toByteArray();
 
         if (config.isDumpIntermediates()) {
@@ -335,7 +361,7 @@ public class ClassCompiler {
         targetMachine.dispose();
     }
 
-    private PassManager createPassManager() {
+    private static PassManager createPassManager(Config config) {
         PassManager passManager = new PassManager();
         
         if (config.isDebug()) {
@@ -412,7 +438,7 @@ public class ClassCompiler {
         return passManager;
     }
     
-    private void patchAsmWithFunctionSizes(Clazz clazz, InputStream inStream, OutputStream outStream) throws IOException {
+    private static void patchAsmWithFunctionSizes(Config config, Clazz clazz, InputStream inStream, OutputStream outStream) throws IOException {
         String labelPrefix = config.getOs().getFamily() == OS.Family.darwin ? "_" : "";
         String localLabelPrefix = config.getOs().getFamily() == OS.Family.darwin ? "L" : ".L";
         
@@ -1315,5 +1341,10 @@ public class ClassCompiler {
             List<SootField> instanceFields, StructureType instanceType) {
         return getFieldPtr(f, base, offsetof(instanceType, 1, 
                 1 + instanceFields.indexOf(field), 1), getType(field.getType()));
+    }
+    
+    public interface CompilationCallback {
+        void success(Clazz clazz);
+        void failure(Clazz clazz, Throwable t);
     }
 }

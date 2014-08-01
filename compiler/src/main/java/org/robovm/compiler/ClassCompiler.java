@@ -308,7 +308,6 @@ public class ClassCompiler {
     }
     
     private static void generateMachineCode(Config config, Clazz clazz, byte[] llData) throws IOException {
-        ByteArrayOutputStream output = new ByteArrayOutputStream(256 * 1024);
         
         if (config.isDumpIntermediates()) {
             File llFile = config.getLlFile(clazz);
@@ -335,7 +334,8 @@ public class ClassCompiler {
         targetMachine.setFunctionSections(true);
         targetMachine.setDataSections(true);
         targetMachine.getOptions().setNoFramePointerElim(true);
-        output.reset();
+
+        ByteArrayOutputStream output = new ByteArrayOutputStream(256 * 1024);
         targetMachine.emit(module, output, CodeGenFileType.AssemblyFile);
         
         module.dispose();
@@ -669,8 +669,10 @@ public class ClassCompiler {
             compilerPlugin.afterClass(config, clazz, mb);
         }
         
-        out.write(mb.build().toString().getBytes("UTF-8"));
-        
+        OutputStreamWriter writer = new OutputStreamWriter(out, "UTF-8");
+        mb.build().write(writer);
+        writer.flush();
+
         ci.setCatchNames(catches);
         ci.setTrampolines(trampolines);
         

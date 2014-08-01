@@ -264,7 +264,7 @@ public class ClassCompiler {
         return dependencies.isEmpty();
     }
     
-    public void compile(Clazz clazz, Executor executor, CompilationCallback callback) throws IOException {
+    public void compile(Clazz clazz, Executor executor, ClassCompilerListener listener) throws IOException {
         reset();        
         
         Arch arch = config.getArch();
@@ -284,10 +284,10 @@ public class ClassCompiler {
             throw new RuntimeException(t);
         }
 
-        scheduleMachineCodeGeneration(executor, callback, config, clazz, output.toByteArray());
+        scheduleMachineCodeGeneration(executor, listener, config, clazz, output.toByteArray());
     }
 
-    private static void scheduleMachineCodeGeneration(Executor executor, final CompilationCallback callback,
+    private static void scheduleMachineCodeGeneration(Executor executor, final ClassCompilerListener listener,
             final Config config, final Clazz clazz, final byte[] llData) {
         
         try {
@@ -296,9 +296,9 @@ public class ClassCompiler {
                 public void run() {
                     try {
                         generateMachineCode(config, clazz, llData);
-                        callback.success(clazz);
+                        listener.success(clazz);
                     } catch (Throwable t) {
-                        callback.failure(clazz, t);
+                        listener.failure(clazz, t);
                     }
                 }
             });
@@ -308,7 +308,7 @@ public class ClassCompiler {
     }
     
     private static void generateMachineCode(Config config, Clazz clazz, byte[] llData) throws IOException {
-        
+
         if (config.isDumpIntermediates()) {
             File llFile = config.getLlFile(clazz);
             llFile.getParentFile().mkdirs();
@@ -1343,10 +1343,5 @@ public class ClassCompiler {
             List<SootField> instanceFields, StructureType instanceType) {
         return getFieldPtr(f, base, offsetof(instanceType, 1, 
                 1 + instanceFields.indexOf(field), 1), getType(field.getType()));
-    }
-    
-    public interface CompilationCallback {
-        void success(Clazz clazz);
-        void failure(Clazz clazz, Throwable t);
     }
 }

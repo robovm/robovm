@@ -43,7 +43,6 @@ import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
 import org.json.simple.JSONObject;
 import org.json.simple.JSONValue;
-import org.robovm.compiler.ClassCompiler.CompilationCallback;
 import org.robovm.compiler.clazz.Clazz;
 import org.robovm.compiler.clazz.Dependency;
 import org.robovm.compiler.clazz.Path;
@@ -213,34 +212,40 @@ public class AppCompiler {
         return classes;
     }    
     
-    private boolean compile(Executor executor, CompilationCallback callback, 
-            Clazz clazz, Set<Clazz> compileQueue, Set<Clazz> compiled) throws IOException {
+    private boolean compile(Executor executor, ClassCompilerListener listener, 
+            Clazz clazz, Set<Clazz> compileQueue, Set<Clazz> compiled, 
+            boolean compileDependencies) throws IOException {
 
         boolean result = false;
         if (config.isClean() || classCompiler.mustCompile(clazz)) {
-            classCompiler.compile(clazz, executor, callback);
+            classCompiler.compile(clazz, executor, listener);
             result = true;
         }
-        for (Dependency dep : clazz.getClazzInfo().getDependencies()) {
-            Clazz depClazz = config.getClazzes().load(dep.getClassName());
-            if (depClazz != null && !compiled.contains(depClazz)) {
-                compileQueue.add(depClazz);
+        if (compileDependencies) {
+            for (Dependency dep : clazz.getClazzInfo().getDependencies()) {
+                Clazz depClazz = config.getClazzes().load(dep.getClassName());
+                if (depClazz != null && !compiled.contains(depClazz)) {
+                    compileQueue.add(depClazz);
+                }
             }
         }
         return result;
     }
-    
-    public void compile() throws IOException {
-        updateCheck();
+
+    public Set<Clazz> compile(Collection<Clazz> rootClasses, boolean compileDependencies, 
+            final ClassCompilerListener listener) throws IOException {
 
         config.getLogger().debug("Compiling classes using %d threads", config.getThreads());
 
         final Executor executor = (config.getThreads() <= 1)
                 ? SAME_THREAD_EXECUTOR : Executors.newFixedThreadPool(config.getThreads());
-        class HandleFailureCallback implements CompilationCallback {
+        class HandleFailureListener implements ClassCompilerListener {
             volatile Throwable t;
             @Override
             public void success(Clazz clazz) {
+                if (listener != null) {
+                    listener.success(clazz);
+                }
             }
             @Override
             public void failure(Clazz clazz, Throwable t) {
@@ -249,20 +254,23 @@ public class AppCompiler {
                 if (executor instanceof ExecutorService) {
                     ((ExecutorService) executor).shutdown();
                 }
+                if (listener != null) {
+                    listener.failure(clazz, t);
+                }
             }
         };
-        HandleFailureCallback callback = new HandleFailureCallback();
+        HandleFailureListener listenerWrapper = new HandleFailureListener();
 
+        TreeSet<Clazz> compileQueue = new TreeSet<>(rootClasses);
         long start = System.currentTimeMillis();
-        int compiledCount = 0;
-        TreeSet<Clazz> compileQueue = getRootClasses();
         Set<Clazz> linkClasses = new HashSet<Clazz>();
+        int compiledCount = 0;
         while (!compileQueue.isEmpty() && !Thread.currentThread().isInterrupted()) {
             Clazz clazz = compileQueue.pollFirst();
             if (!linkClasses.contains(clazz)) {
-                if (compile(executor, callback, clazz, compileQueue, linkClasses)) {
+                if (compile(executor, listenerWrapper, clazz, compileQueue, linkClasses, compileDependencies)) {
                     compiledCount++;
-                    if (callback.t != null) {
+                    if (listenerWrapper.t != null) {
                         // We have a failed compilation. Stop compiling.
                         break;
                     }
@@ -280,22 +288,30 @@ public class AppCompiler {
             } catch (InterruptedException e) {}
         }
 
-        if (callback.t != null) {
+        if (listenerWrapper.t != null) {
             // The compilation failed. Rethrow the exception in the callback.
-            if (callback.t instanceof IOException) {
-                throw (IOException) callback.t;
+            if (listenerWrapper.t instanceof IOException) {
+                throw (IOException) listenerWrapper.t;
             }
-            if (callback.t instanceof RuntimeException) {
-                throw (RuntimeException) callback.t;
+            if (listenerWrapper.t instanceof RuntimeException) {
+                throw (RuntimeException) listenerWrapper.t;
             }
-            if (callback.t instanceof Error) {
-                throw (Error) callback.t;
+            if (listenerWrapper.t instanceof Error) {
+                throw (Error) listenerWrapper.t;
             }
-            throw new CompilerException(callback.t);
+            throw new CompilerException(listenerWrapper.t);
         }
 
         long duration = System.currentTimeMillis() - start;
         config.getLogger().debug("Compiled %d classes in %.2f seconds", compiledCount, duration / 1000.0);
+
+        return linkClasses;
+    }
+
+    public void compile() throws IOException {
+        updateCheck();
+
+        Set<Clazz> linkClasses = compile(getRootClasses(), true, null);
 
         if (Thread.currentThread().isInterrupted()) {
             return;
@@ -308,12 +324,12 @@ public class AppCompiler {
             }
         }
 
-        start = System.currentTimeMillis();
+        long start = System.currentTimeMillis();
         linker.link(linkClasses);
-        duration = System.currentTimeMillis() - start;
+        long duration = System.currentTimeMillis() - start;
         config.getLogger().debug("Linked %d classes in %.2f seconds", linkClasses.size(), duration / 1000.0);
     }
-        
+
     public static void main(String[] args) throws IOException {
         
         AppCompiler compiler = null;

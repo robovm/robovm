@@ -262,15 +262,12 @@ static inline void* getPC(ucontext_t* context) {
 #endif
 }
 
-static void signalHandler_npe_so(int signum, siginfo_t* info, void* context, jboolean chain) {
+static void signalHandler_npe_so(int signum, siginfo_t* info, void* context) {
     // SIGSEGV/SIGBUS are synchronous signals so we shouldn't have to worry about only calling
-    // async-signal-safe function here.
+    // async-signal-safe functions here.
     Env* env = rvmGetEnv();
     if (env && rvmIsNonNativeFrame(env)) {
-        // We now know the fault occurred in non-native code and not in our 
-        // native code or in any non-async-signal-safe system function. It 
-        // should be safe to do things here that would normally be unsafe to do
-        // in a signal handler.
+        // We now know the fault occurred in non-native code.
         void* faultAddr = info->si_addr;
         void* stackAddr = env->currentThread->stackAddr;
         Class* exClass = NULL;
@@ -306,32 +303,37 @@ static void signalHandler_npe_so(int signum, siginfo_t* info, void* context, jbo
             rvmRaiseException(env, throwable); // Never returns!
         }
     }
-
-    if (chain) {
-        // Chain to the saved handler. That handler MUST NOT recover from the signal.
-        struct sigaction* sa = &sigsegvFallback;
-#if defined(DARWIN)
-        if (signum == SIGBUS) {
-            sa = &sigbusFallback;
-        }
-#endif
-        sigaction(signum, sa, NULL);
-    } else {
-        signal(signum, SIG_DFL);
-    }
-    kill(0, signum);
 }
 
 // Signal handler used by default. Does not chain to the previously installed handler. Just delegates to SIG_DFL
-// in case a SIGSEGV/SIGBUS is cused by something else than an NPE or SOE.
+// in case a SIGSEGV/SIGBUS is cused by something other than an NPE or SOE.
 static void signalHandler_npe_so_nochaining(int signum, siginfo_t* info, void* context) {
-    signalHandler_npe_so(signum, info, context, FALSE);
+    signalHandler_npe_so(signum, info, context);
+    // If we come this far it means that the cause of the signal wasn't an NPE or SOE but something
+    // fatal happened in native code. Delegate to the default handler.
+    signal(signum, SIG_DFL);
+    raise(signum);
 }
 
-// Signal handler used . Does not chain to the previously installed handler. Just delegates to SIG_DFL
-// in case a SIGSEGV/SIGBUS is cused by something else than an NPE or SOE.
+// Signal handler which chains to the previous handler in case a SIGSEGV/SIGBUS is cused by something other than an NPE or SOE.
 static void signalHandler_npe_so_chaining(int signum, siginfo_t* info, void* context) {
-    signalHandler_npe_so(signum, info, context, TRUE);
+    signalHandler_npe_so(signum, info, context);
+    // If we come this far it means that the cause of the signal wasn't an NPE or SOE but something
+    // fatal happened in native code. Chained to the previous handler.
+    struct sigaction* sa = &sigsegvFallback;
+#if defined(DARWIN)
+    if (signum == SIGBUS) {
+        sa = &sigbusFallback;
+    }
+#endif
+    if (sa->sa_flags & SA_SIGINFO) {
+        sa->sa_sigaction(signum, info, context);
+    } else if (sa->sa_handler != SIG_DFL) {
+        sa->sa_handler(signum);
+    } else {
+        signal(signum, SIG_DFL);
+        raise(signum);
+    }
 }
 
 static void signalHandler_dump_thread(int signum, siginfo_t* info, void* context) {

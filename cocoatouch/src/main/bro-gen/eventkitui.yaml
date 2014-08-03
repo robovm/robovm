@@ -1,0 +1,67 @@
+package: org.robovm.apple.eventkitui
+include: [foundation.yaml, eventkit.yaml, uikit.yaml]
+library: EventKitUI
+framework: EventKitUI
+clang_args: ['-x', 'objective-c']
+headers:
+    - /System/Library/Frameworks/EventKitUI.framework/Headers/EventKitUI.h
+    - /System/Library/Frameworks/EventKitUI.framework/Headers/EventKitUIDefines.h
+typedefs: {}
+    
+enums:
+    EKCalendarChooserSelectionStyle: { first: EKCalendarChooserSelectionStyleSingle }
+    EKCalendarChooserDisplayStyle: { first: EKCalendarChooserDisplayAllCalendars }
+    EKEventEditViewAction: { first: EKEventEditViewActionCanceled }
+    EKEventViewAction: { first: EKEventViewActionDone }
+        
+classes:
+    EventKitUI:
+        annotations: ['@Marshaler(NSString.AsStringMarshaler.class)']
+
+    EKCalendarChooser: # DONE
+        properties:
+            'selectedCalendars':
+                type: "NSSet<EKCalendar>"
+        methods:
+            '-init.*':
+                name: "init"      
+    EKEventEditViewController: {} # DONE
+    EKEventViewController: {} # DONE
+
+protocols:
+    EKCalendarChooserDelegate: # DONE
+        methods:
+            '-calendarChooserSelectionDidChange:':
+                name: "didChangeSelection"
+            '-calendarChooserDidFinish:':
+                name: "didFinish"
+            '-calendarChooserDidCancel:':
+                name: "didCancel"
+    EKEventEditViewDelegate: # DONE
+        methods:
+            '-eventEditViewController:didCompleteWithAction:':
+                name: "didComplete"
+            '-eventEditViewControllerDefaultCalendarForNewEvents:':
+                name: "getDefaultCalendarForNewEvents"
+    EKEventViewDelegate: # DONE
+        methods:
+            '-eventViewController:didCompleteWithAction:':
+                name: "didComplete"
+
+functions:
+    # Make sure we don't miss any functions if new ones are introduced in a later version
+    (EK.*):
+        class: EventKitUI
+        name: "Function__#{g[0]}"
+
+values:
+    # Make sure we don't miss any values if new ones are introduced in a later version
+    (EK.*):
+        class: EventKitUI
+        name: "Value__#{g[0]}"
+
+constants:
+    # Make sure we don't miss any constants if new ones are introduced in a later version
+    (EK.*):
+        class: EventKitUI
+        name: "Constant__#{g[0]}"

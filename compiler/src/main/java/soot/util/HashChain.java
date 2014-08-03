@@ -45,6 +45,22 @@ public class HashChain<E> extends AbstractCollection<E>
     private E firstItem;
     private E lastItem;
     private long stateCount = 0;  
+    private HashMap<E, Integer> objectIndexes = null; // RoboVM note: Added
+
+    /**
+     * Lazily creates the objectIndexes Map.
+     * RoboVM note: Added in RoboVM.
+     */
+    private HashMap<E, Integer> getObjectIndexes() {
+        if (objectIndexes == null) {
+            Object[] array = toArray();
+            objectIndexes = new HashMap<>(array.length);
+            for (int i = 0; i < array.length; i++) {
+                objectIndexes.put((E) array[i], i);
+            }
+        }
+        return objectIndexes;
+    }
 
     /** Erases the contents of the current HashChain. */
     public void clear() 
@@ -52,12 +68,14 @@ public class HashChain<E> extends AbstractCollection<E>
         stateCount++;
         firstItem = lastItem = null;
         map.clear();
+        objectIndexes = null; // RoboVM note: Added
     }
 
     public void swapWith(E out, E in)
     {
         insertBefore(in, out);
         remove(out);
+        objectIndexes = null; // RoboVM note: Added
     }
     
     /** Adds the given object to this HashChain. */
@@ -97,6 +115,24 @@ public class HashChain<E> extends AbstractCollection<E>
 
     public boolean follows(E someObject, E someReferenceObject)
     {
+        // RoboVM note: Optimized using objectIndexes Map
+        if (someObject == null) {
+            return true;
+        }
+        Integer idx1 = getObjectIndexes().get(someObject);
+        if (idx1 == null) {
+            throw new NoSuchElementException("HashChain.follows(...) with object that is not in the chain: " + someObject.toString() );
+        }
+        Integer idx2 = getObjectIndexes().get(someReferenceObject);
+        if (idx2 == null) {
+            return true;
+        }
+        return idx1 > idx2;
+    }
+
+    // RoboVM note: Kept the old follows() to be able to test against the new version.
+    public boolean followsOld(E someObject, E someReferenceObject)
+    {
         Iterator it = iterator(someObject);
         while(it.hasNext()) {
 
@@ -134,6 +170,7 @@ public class HashChain<E> extends AbstractCollection<E>
         
         Link newLink = temp.insertAfter(toInsert);
         map.put(toInsert, newLink);    
+        objectIndexes = null; // RoboVM note: Added
     }
 
     public void insertAfter(List<E> toInsert, E point)
@@ -151,6 +188,7 @@ public class HashChain<E> extends AbstractCollection<E>
                 insertAfter(o, previousPoint);
                 previousPoint = o;
             }
+        objectIndexes = null; // RoboVM note: Added
     }
     
     public void insertAfter(Chain<E> toInsert, E point)
@@ -168,6 +206,7 @@ public class HashChain<E> extends AbstractCollection<E>
                 insertAfter(o, previousPoint);
                 previousPoint = o;
             }
+        objectIndexes = null; // RoboVM note: Added
     }
 
     public void insertBefore(E toInsert, E point)
@@ -186,6 +225,7 @@ public class HashChain<E> extends AbstractCollection<E>
         
         Link newLink = temp.insertBefore(toInsert);
         map.put(toInsert, newLink);
+        objectIndexes = null; // RoboVM note: Added
     }
     
     public void insertBefore(List<E> toInsert, E point)
@@ -201,6 +241,7 @@ public class HashChain<E> extends AbstractCollection<E>
                 E o = it.next();
                 insertBefore(o, point);
             }
+        objectIndexes = null; // RoboVM note: Added
     }
 
     public void insertBefore(Chain<E> toInsert, E point)
@@ -216,6 +257,7 @@ public class HashChain<E> extends AbstractCollection<E>
                 E o = it.next();
                 insertBefore(o, point);
             }
+        objectIndexes = null; // RoboVM note: Added
     }
 
     public static HashChain listToHashChain(List list) {
@@ -244,6 +286,7 @@ public class HashChain<E> extends AbstractCollection<E>
         
         	link.unlinkSelf();
         	map.remove(item);
+                objectIndexes = null; // RoboVM note: Added
         	return true;
         }
         return false;
@@ -269,6 +312,7 @@ public class HashChain<E> extends AbstractCollection<E>
             firstItem = lastItem = item;
         }
         map.put(item, newLink);
+        objectIndexes = null; // RoboVM note: Added
     }
 
     public void addLast(E item)
@@ -291,6 +335,7 @@ public class HashChain<E> extends AbstractCollection<E>
             firstItem = lastItem = item;
         }            
         map.put(item, newLink);
+        objectIndexes = null; // RoboVM note: Added
     }
     
     public void removeFirst()
@@ -299,6 +344,7 @@ public class HashChain<E> extends AbstractCollection<E>
         Object item = firstItem;
         map.get(firstItem).unlinkSelf();
         map.remove(item);
+        objectIndexes = null; // RoboVM note: Added
     }
 
     public void removeLast()
@@ -307,6 +353,7 @@ public class HashChain<E> extends AbstractCollection<E>
         Object item = lastItem;
         map.get(lastItem).unlinkSelf();
         map.remove(item);
+        objectIndexes = null; // RoboVM note: Added
     }
 
     public E getFirst()
@@ -583,6 +630,7 @@ public class HashChain<E> extends AbstractCollection<E>
                 currentLink.unlinkSelf();
                 map.remove(currentLink.getItem());
                 state = false;
+                HashChain.this.objectIndexes = null;  // RoboVM note: Added
             }
 
         }

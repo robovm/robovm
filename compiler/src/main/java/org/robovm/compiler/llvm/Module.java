@@ -18,6 +18,8 @@ package org.robovm.compiler.llvm;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.StringWriter;
+import java.io.Writer;
 import java.net.URL;
 import java.util.Collection;
 
@@ -55,64 +57,72 @@ public class Module {
         this.unnamedMetadata = unnamedMetadata;
     }
 
-    @Override
-    public String toString() {
-        StringBuilder sb = new StringBuilder();
+    public void write(Writer writer) throws IOException {
         for (URL g : includes) {
             InputStream in = null;
             try {
                 in = g.openStream();
-                sb.append(IOUtils.toString(in, "UTF-8"));
+                IOUtils.copy(in, writer, "UTF-8");
             } catch (IOException e) {
                 throw new RuntimeException(e);
             } finally {
                 IOUtils.closeQuietly(in);
             }
-            sb.append("\n");
+            writer.write("\n");
         }
-        sb.append("\n");
+        writer.write("\n");
         for (String s : asm) {
-            sb.append("module asm \"");
-            sb.append(s);
-            sb.append("\"\n");
+            writer.write("module asm \"");
+            writer.write(s);
+            writer.write("\"\n");
         }
-        sb.append("\n");
+        writer.write("\n");
         for (UserType type : types) {
-            sb.append(type.getAlias());
-            sb.append(" = type ");
-            sb.append(type.getDefinition());
-            sb.append("\n");
+            writer.write(type.getAlias());
+            writer.write(" = type ");
+            writer.write(type.getDefinition());
+            writer.write("\n");
         }
-        sb.append("\n");
+        writer.write("\n");
         for (FunctionDeclaration fd : functionDeclarations) {
-            sb.append(fd.toString());
-            sb.append("\n");
+            writer.write(fd.toString());
+            writer.write("\n");
         }
-        sb.append("\n");
+        writer.write("\n");
         for (Global g : globals) {
-            sb.append(g.getDefinition());
-            sb.append("\n");
+            writer.write(g.getDefinition());
+            writer.write("\n");
         }
-        sb.append("\n");
+        writer.write("\n");
         for (Alias a : aliases) {
-            sb.append(a.getDefinition());
-            sb.append("\n");
+            writer.write(a.getDefinition());
+            writer.write("\n");
         }
-        sb.append("\n");
+        writer.write("\n");
         for (Function f : functions) {
-            sb.append(f.toString());
-            sb.append("\n");
+            writer.write(f.toString());
+            writer.write("\n");
         }
-        sb.append("\n");
+        writer.write("\n");
         for (NamedMetadata md : namedMetadata) {
-            sb.append(md.toString());
-            sb.append("\n");
+            writer.write(md.toString());
+            writer.write("\n");
         }
-        sb.append("\n");
+        writer.write("\n");
         for (UnnamedMetadata md : unnamedMetadata) {
-            sb.append(md.getDefinition());
-            sb.append("\n");
+            writer.write(md.getDefinition());
+            writer.write("\n");
         }
-        return sb.toString();
+    }
+
+    @Override
+    public String toString() {
+        StringWriter sw = new StringWriter();
+        try {
+            write(sw);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        return sw.toString();
     }
 }

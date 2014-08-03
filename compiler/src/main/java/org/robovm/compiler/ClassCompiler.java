@@ -38,6 +38,8 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.concurrent.Executor;
+import java.util.concurrent.RejectedExecutionException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -262,7 +264,7 @@ public class ClassCompiler {
         return dependencies.isEmpty();
     }
     
-    public void compile(Clazz clazz) throws IOException {
+    public void compile(Clazz clazz, Executor executor, ClassCompilerListener listener) throws IOException {
         reset();        
         
         Arch arch = config.getArch();
@@ -282,8 +284,31 @@ public class ClassCompiler {
             throw new RuntimeException(t);
         }
 
-        byte[] llData = output.toByteArray();
+        scheduleMachineCodeGeneration(executor, listener, config, clazz, output.toByteArray());
+    }
+
+    private static void scheduleMachineCodeGeneration(Executor executor, final ClassCompilerListener listener,
+            final Config config, final Clazz clazz, final byte[] llData) {
         
+        try {
+            executor.execute(new Runnable() {
+                @Override
+                public void run() {
+                    try {
+                        generateMachineCode(config, clazz, llData);
+                        listener.success(clazz);
+                    } catch (Throwable t) {
+                        listener.failure(clazz, t);
+                    }
+                }
+            });
+        } catch (RejectedExecutionException e) {
+            // Ignore. The executor has been shutdown for some reason.
+        }
+    }
+    
+    private static void generateMachineCode(Config config, Clazz clazz, byte[] llData) throws IOException {
+
         if (config.isDumpIntermediates()) {
             File llFile = config.getLlFile(clazz);
             llFile.getParentFile().mkdirs();
@@ -292,7 +317,7 @@ public class ClassCompiler {
         
         Context context = new Context();
         Module module = Module.parseIR(context, llData, clazz.getClassName());
-        PassManager passManager = createPassManager();
+        PassManager passManager = createPassManager(config);
         passManager.run(module);
         passManager.dispose();
 
@@ -309,7 +334,8 @@ public class ClassCompiler {
         targetMachine.setFunctionSections(true);
         targetMachine.setDataSections(true);
         targetMachine.getOptions().setNoFramePointerElim(true);
-        output.reset();
+
+        ByteArrayOutputStream output = new ByteArrayOutputStream(256 * 1024);
         targetMachine.emit(module, output, CodeGenFileType.AssemblyFile);
         
         module.dispose();
@@ -317,7 +343,7 @@ public class ClassCompiler {
         
         byte[] asm = output.toByteArray();
         output.reset();
-        patchAsmWithFunctionSizes(clazz, new ByteArrayInputStream(asm), output);
+        patchAsmWithFunctionSizes(config, clazz, new ByteArrayInputStream(asm), output);
         asm = output.toByteArray();
 
         if (config.isDumpIntermediates()) {
@@ -335,7 +361,7 @@ public class ClassCompiler {
         targetMachine.dispose();
     }
 
-    private PassManager createPassManager() {
+    private static PassManager createPassManager(Config config) {
         PassManager passManager = new PassManager();
         
         if (config.isDebug()) {
@@ -412,7 +438,7 @@ public class ClassCompiler {
         return passManager;
     }
     
-    private void patchAsmWithFunctionSizes(Clazz clazz, InputStream inStream, OutputStream outStream) throws IOException {
+    private static void patchAsmWithFunctionSizes(Config config, Clazz clazz, InputStream inStream, OutputStream outStream) throws IOException {
         String labelPrefix = config.getOs().getFamily() == OS.Family.darwin ? "_" : "";
         String localLabelPrefix = config.getOs().getFamily() == OS.Family.darwin ? "L" : ".L";
         
@@ -643,8 +669,10 @@ public class ClassCompiler {
             compilerPlugin.afterClass(config, clazz, mb);
         }
         
-        out.write(mb.build().toString().getBytes("UTF-8"));
-        
+        OutputStreamWriter writer = new OutputStreamWriter(out, "UTF-8");
+        mb.build().write(writer);
+        writer.flush();
+
         ci.setCatchNames(catches);
         ci.setTrampolines(trampolines);
         

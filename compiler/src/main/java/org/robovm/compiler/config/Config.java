@@ -152,6 +152,7 @@ public class Config {
     private boolean skipLinking = false;
     private boolean skipInstall = false;
     private boolean dumpIntermediates = false;
+    private int threads = Runtime.getRuntime().availableProcessors();
     
     private File osArchDepLibDir;
     private File tmpDir;
@@ -233,6 +234,10 @@ public class Config {
     
     public boolean isUseDynamicJni() {
         return useDynamicJni != null && useDynamicJni.booleanValue();
+    }
+    
+    public int getThreads() {
+        return threads;
     }
     
     public File getMainJar() {
@@ -943,6 +948,11 @@ public class Config {
         
         public Builder useDynamicJni(boolean b) {
             config.useDynamicJni = b;
+            return this;
+        }
+        
+        public Builder threads(int threads) {
+            config.threads = threads;
             return this;
         }
         

@@ -16,6 +16,9 @@
  */
 package org.robovm.compiler.llvm;
 
+import java.io.IOException;
+import java.io.StringWriter;
+import java.io.Writer;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -149,54 +152,62 @@ public class Function {
         return instruction;
     }
     
-    @Override
-    public String toString() {
+    public void write(Writer writer) throws IOException {
         Type returnType = type.getReturnType();
         Type[] parameterTypes = type.getParameterTypes();
-        StringBuilder sb = new StringBuilder();
-        sb.append("define ");
+        writer.write("define ");
         if (linkage != null) {
-            sb.append(linkage);
-            sb.append(' ');
+            writer.write(linkage.toString());
+            writer.write(' ');
         }
-        sb.append(returnType.toString());
-        sb.append(" @\"");
-        sb.append(name);
-        sb.append("\"(");
+        writer.write(returnType.toString());
+        writer.write(" @\"");
+        writer.write(name);
+        writer.write("\"(");
         for (int i = 0; i < parameterTypes.length; i++) {
             if (type.isVarargs() || i > 0) {
-                sb.append(", ");
+                writer.write(", ");
             }
-            sb.append(parameterTypes[i].toString());
+            writer.write(parameterTypes[i].toString());
             if (parameterAttributes[i] != null) {
                 for (ParameterAttribute attrib : parameterAttributes[i]) {
-                    sb.append(' ');
-                    sb.append(attrib);
+                    writer.write(' ');
+                    writer.write(attrib.toString());
                 }
             }
-            sb.append(" %");
-            sb.append(parameterNames[i]);
+            writer.write(" %");
+            writer.write(parameterNames[i]);
         }
         if (type.isVarargs()) {
-            sb.append("...");
+            writer.write("...");
         }
-        sb.append(")");
+        writer.write(")");
         if (attributes != null && attributes.length > 0) {
             for (FunctionAttribute attr : attributes) {
-                sb.append(' ');
-                sb.append(attr.toString());
+                writer.write(' ');
+                writer.write(attr.toString());
             }
         }
         if (section != null) {
-            sb.append(" section \"");
-            sb.append(section);
-            sb.append('"');
+            writer.write(" section \"");
+            writer.write(section);
+            writer.write('"');
         }
-        sb.append(" {\n");
+        writer.write(" {\n");
         for (BasicBlock bb : basicBlockList) {
-            sb.append(bb.toString());
+            writer.write(bb.toString());
         }
-        sb.append("}\n");
-        return sb.toString();
+        writer.write("}\n");
+    }
+
+    @Override
+    public String toString() {
+        StringWriter sw = new StringWriter();
+        try {
+            write(sw);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        return sw.toString();
     }
 }

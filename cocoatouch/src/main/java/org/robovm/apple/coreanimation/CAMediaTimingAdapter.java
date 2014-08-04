@@ -75,9 +75,9 @@ import org.robovm.apple.opengles.*;
     @NotImplemented("setAutoreverses:")
     public void setAutoreverses(boolean v) { throw new UnsupportedOperationException(); }
     @NotImplemented("fillMode")
-    public String getFillMode() { throw new UnsupportedOperationException(); }
+    public NSString getFillMode() { throw new UnsupportedOperationException(); }
     @NotImplemented("setFillMode:")
-    public void setFillMode(String v) { throw new UnsupportedOperationException(); }
+    public void setFillMode(NSString v) { throw new UnsupportedOperationException(); }
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/

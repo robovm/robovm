@@ -21,6 +21,7 @@ import static org.robovm.rt.bro.MarshalerFlags.*;
 import java.io.*;
 import java.nio.*;
 import java.util.*;
+
 import org.robovm.objc.*;
 import org.robovm.objc.annotation.*;
 import org.robovm.objc.block.*;
@@ -124,14 +125,30 @@ import org.robovm.apple.dispatch.*;
         dispose(true);
     }
     
-    public final void dispose() throws Throwable {
+    public final void dispose() {
         dispose(false);
     }
     
-    protected void dispose(boolean finalizing) throws Throwable {
-        release();
+    protected void doDispose() {
+        // Only release once
+        long handle = getHandle();
+        if (handle != 0) {
+            release(handle);
+        }
+    }
+    
+    protected void dispose(boolean finalizing) {
+        long handle = getHandle();
+        if (handle != 0) {
+            doDispose();
+            setHandle(0);
+        }
         if (finalizing) {
-            super.finalize();
+            try {
+                super.finalize();
+            } catch (Throwable e) {
+                throw new RuntimeException(e);
+            }
         }
     }
     

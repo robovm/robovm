@@ -100,54 +100,24 @@ import org.robovm.apple.opengles.*;
     @StructMember(15) public native CATransform3D m44(@MachineSizedFloat double m44);
     /*</members>*/
     
-    public boolean isIdentity() {
-        return isIdentity(this);
-    }
-    
     @Override
     public boolean equals(Object o) {
         return o instanceof CATransform3D && equalToTransform(this, (CATransform3D) o);
-    }
-    
-    public CATransform3D translate(double tx, double ty, double tz) {
-        return translate(this, tx, ty, tz);
-    }
-    
-    public CATransform3D scale(double sx, double sy, double sz) {
-        return scale(this, sx, sy, sz);
-    }
-    
-    public CATransform3D rotate(double angle, double x, double y, double z) {
-        return rotate(this, angle, x, y, z);
-    }
-    
-    public CATransform3D concat(CATransform3D b) {
-        return concat(this, b);
-    }
-    
-    public CATransform3D invert() {
-        return invert(this);
-    }
-    
-    public boolean isAffine() {
-        return isAffine(this);
-    }
-    
-    public CGAffineTransform getAffineTransform() {
-        return getAffineTransform(this);
     }
     
     /*<methods>*/
     /**
      * @since Available in iOS 2.0 and later.
      */
+    public boolean isIdentity() { return isIdentity(this); }
     @Bridge(symbol="CATransform3DIsIdentity", optional=true)
-    protected static native boolean isIdentity(@ByVal CATransform3D t);
+    private static native boolean isIdentity(@ByVal CATransform3D t);
     /**
      * @since Available in iOS 2.0 and later.
      */
+    public boolean equalToTransform(CATransform3D b) { return equalToTransform(this, b); }
     @Bridge(symbol="CATransform3DEqualToTransform", optional=true)
-    protected static native boolean equalToTransform(@ByVal CATransform3D a, @ByVal CATransform3D b);
+    private static native boolean equalToTransform(@ByVal CATransform3D a, @ByVal CATransform3D b);
     /**
      * @since Available in iOS 2.0 and later.
      */
@@ -166,28 +136,33 @@ import org.robovm.apple.opengles.*;
     /**
      * @since Available in iOS 2.0 and later.
      */
+    public CATransform3D translate(@MachineSizedFloat double tx, @MachineSizedFloat double ty, @MachineSizedFloat double tz) { return translate(this, tx, ty, tz); }
     @Bridge(symbol="CATransform3DTranslate", optional=true)
-    protected static native @ByVal CATransform3D translate(@ByVal CATransform3D t, @MachineSizedFloat double tx, @MachineSizedFloat double ty, @MachineSizedFloat double tz);
+    private static native @ByVal CATransform3D translate(@ByVal CATransform3D t, @MachineSizedFloat double tx, @MachineSizedFloat double ty, @MachineSizedFloat double tz);
     /**
      * @since Available in iOS 2.0 and later.
      */
+    public CATransform3D scale(@MachineSizedFloat double sx, @MachineSizedFloat double sy, @MachineSizedFloat double sz) { return scale(this, sx, sy, sz); }
     @Bridge(symbol="CATransform3DScale", optional=true)
-    protected static native @ByVal CATransform3D scale(@ByVal CATransform3D t, @MachineSizedFloat double sx, @MachineSizedFloat double sy, @MachineSizedFloat double sz);
+    private static native @ByVal CATransform3D scale(@ByVal CATransform3D t, @MachineSizedFloat double sx, @MachineSizedFloat double sy, @MachineSizedFloat double sz);
     /**
      * @since Available in iOS 2.0 and later.
      */
+    public CATransform3D rotate(@MachineSizedFloat double angle, @MachineSizedFloat double x, @MachineSizedFloat double y, @MachineSizedFloat double z) { return rotate(this, angle, x, y, z); }
     @Bridge(symbol="CATransform3DRotate", optional=true)
-    protected static native @ByVal CATransform3D rotate(@ByVal CATransform3D t, @MachineSizedFloat double angle, @MachineSizedFloat double x, @MachineSizedFloat double y, @MachineSizedFloat double z);
+    private static native @ByVal CATransform3D rotate(@ByVal CATransform3D t, @MachineSizedFloat double angle, @MachineSizedFloat double x, @MachineSizedFloat double y, @MachineSizedFloat double z);
     /**
      * @since Available in iOS 2.0 and later.
      */
+    public CATransform3D concat(CATransform3D b) { return concat(this, b); }
     @Bridge(symbol="CATransform3DConcat", optional=true)
-    protected static native @ByVal CATransform3D concat(@ByVal CATransform3D a, @ByVal CATransform3D b);
+    private static native @ByVal CATransform3D concat(@ByVal CATransform3D a, @ByVal CATransform3D b);
     /**
      * @since Available in iOS 2.0 and later.
      */
+    public CATransform3D invert() { return invert(this); }
     @Bridge(symbol="CATransform3DInvert", optional=true)
-    protected static native @ByVal CATransform3D invert(@ByVal CATransform3D t);
+    private static native @ByVal CATransform3D invert(@ByVal CATransform3D t);
     /**
      * @since Available in iOS 2.0 and later.
      */
@@ -196,12 +171,14 @@ import org.robovm.apple.opengles.*;
     /**
      * @since Available in iOS 2.0 and later.
      */
+    public boolean isAffine() { return isAffine(this); }
     @Bridge(symbol="CATransform3DIsAffine", optional=true)
-    protected static native boolean isAffine(@ByVal CATransform3D t);
+    private static native boolean isAffine(@ByVal CATransform3D t);
     /**
      * @since Available in iOS 2.0 and later.
      */
+    public CGAffineTransform getAffineTransform() { return getAffineTransform(this); }
     @Bridge(symbol="CATransform3DGetAffineTransform", optional=true)
-    protected static native @ByVal CGAffineTransform getAffineTransform(@ByVal CATransform3D t);
+    private static native @ByVal CGAffineTransform getAffineTransform(@ByVal CATransform3D t);
     /*</methods>*/
 }

@@ -41,6 +41,7 @@ extern void* rvmCopyMemory(Env* env, const void* src, size_t size);
 extern Object* rvmNewDirectByteBuffer(Env* env, void* address, jlong capacity);
 extern void* rvmGetDirectBufferAddress(Env* env, Object* buf);
 extern jlong rvmGetDirectBufferCapacity(Env* env, Object* buf);
+extern void rvmGenerateHeapDump(Env* env);
 
 // Moves n 16-bit values from src to dest. src and dest must be 16-bit aligned.
 static inline void rvmMoveMemory16(void* dest, const void* src, size_t n) {

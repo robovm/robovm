@@ -909,3 +909,7 @@ jlong rvmGetDirectBufferCapacity(Env* env, Object* buf) {
     jlong capacity = rvmGetIntInstanceFieldValue(env, buf, java_nio_Buffer_capacity);
     return capacity & 0x00000000ffffffffULL;
 }
+
+void rvmGenerateHeapDump(Env* env) {
+    gcHeapDump();
+}

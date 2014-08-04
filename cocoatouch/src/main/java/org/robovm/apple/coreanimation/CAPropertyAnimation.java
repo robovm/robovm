@@ -68,6 +68,6 @@ import org.robovm.apple.opengles.*;
     /*<members>*//*</members>*/
     /*<methods>*/
     @Method(selector = "animationWithKeyPath:")
-    public static native NSObject create(String path);
+    public static native CAPropertyAnimation create(String path);
     /*</methods>*/
 }

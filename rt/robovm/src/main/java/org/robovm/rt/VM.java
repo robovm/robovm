@@ -93,7 +93,9 @@ public final class VM {
         return result;
     }
     private static native final Class<?>[] listClasses0(Class<?> assignableToClass, ClassLoader classLoader);
-    
+
+    public native static final void generateHeapDump();
+
     public native static final long allocateMemory(int size);
     public native static final long allocateMemoryUncollectable(int size);
     public native static final long allocateMemoryAtomic(int size);

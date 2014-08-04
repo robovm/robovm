@@ -49,13 +49,13 @@ import org.robovm.apple.opengles.*;
     /*</constructors>*/
     /*<properties>*/
     @Property(selector = "type")
-    public native String getType();
+    public native NSString getType();
     @Property(selector = "setType:")
-    public native void setType(String v);
+    public native void setType(NSString v);
     @Property(selector = "subtype")
-    public native String getSubtype();
+    public native NSString getSubtype();
     @Property(selector = "setSubtype:")
-    public native void setSubtype(String v);
+    public native void setSubtype(NSString v);
     @Property(selector = "startProgress")
     public native float getStartProgress();
     @Property(selector = "setStartProgress:")

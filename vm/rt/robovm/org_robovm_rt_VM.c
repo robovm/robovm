@@ -400,3 +400,7 @@ DoubleArray* Java_org_robovm_rt_VM_newDoubleArray(Env* env, Class* c, jlong addr
 ObjectArray* Java_org_robovm_rt_VM_listClasses0(Env* env, Class* c, Class* instanceofClass, ClassLoader* classLoader) {
     return rvmListClasses(env, instanceofClass, classLoader);
 }
+
+ObjectArray* Java_org_robovm_rt_VM_generateHeapDump(Env* env, Class* c) {
+    rvmGenerateHeapDump(env);
+}

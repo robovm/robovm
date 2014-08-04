@@ -65,9 +65,9 @@ import org.robovm.apple.opengles.*;
     @Property(selector = "setEndPoint:")
     public native void setEndPoint(@ByVal CGPoint v);
     @Property(selector = "type")
-    public native String getType();
+    public native NSString getType();
     @Property(selector = "setType:")
-    public native void setType(String v);
+    public native void setType(NSString v);
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/

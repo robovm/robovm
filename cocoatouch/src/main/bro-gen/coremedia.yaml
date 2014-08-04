@@ -12,6 +12,13 @@ typedefs:
     CMVideoFormatDescriptionRef: CMVideoFormatDescription
     CMTextFormatDescriptionRef: CMTextFormatDescription
     OS_dispatch_source: DispatchSource
+private_typedefs:
+    "__CFString *": String
+    "__CFString **": "NSString.NSStringPtr"
+    "__CFData *": NSData
+    "__CFURL *": NSURL
+    "__CFDictionary *": "NSDictionary<?, ?>"
+    "__CFArray *": "NSArray<?>"
 
 enums:
     # CMAttachmentMode: { first: kCMAttachmentMode_ShouldNotPropagate, prefix: kCMAttachmentMode_, marshaler: ValuedEnum.AsMachineSizedUIntMarshaler }
@@ -63,10 +70,6 @@ classes:
         extends: CFType
     opaqueCMBufferQueue:
         name: "CMBufferQueue"
-        extends: CFType
-    CMBufferQueueTriggerToken: {}
-    opaqueCMBufferQueueTriggerToken:
-        name: "CMBufferQueueTriggerToken"
         extends: CFType
     CMClockOrTimebase:
         extends: CFType
@@ -135,6 +138,9 @@ classes:
         refcon:
             type: "@Pointer long"
         visibility: ""
+    CMBufferQueueTriggerToken: {}
+    opaqueCMBufferQueueTriggerToken:
+        name: "CMBufferQueueTriggerToken"
     CMVideoDimensions: {}
     CMSampleTimingInfo: {}
     CMTime:

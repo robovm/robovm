@@ -78,16 +78,16 @@ import org.robovm.apple.audiotoolbox.*;
     
     static {
         try {
-            cbGetDecodeTimeStamp = CMBufferQueue.class.getDeclaredMethod("cbGetDecodeTimeStamp", CMBuffer.class, long.class);
-            cbGetPresentationTimeStamp = CMBufferQueue.class.getDeclaredMethod("cbGetPresentationTimeStamp", CMBuffer.class, long.class);
-            cbGetDuration = CMBufferQueue.class.getDeclaredMethod("cbGetDuration", CMBuffer.class, long.class);
-            cbIsDataReady = CMBufferQueue.class.getDeclaredMethod("cbIsDataReady", CMBuffer.class, long.class);         
-            cbCompare = CMBufferQueue.class.getDeclaredMethod("cbCompare", CMBuffer.class, CMBuffer.class, long.class);
-            cbGetSize = CMBufferQueue.class.getDeclaredMethod("cbGetSize", CMBuffer.class, long.class);
-            cbReset = CMBufferQueue.class.getDeclaredMethod("cbReset", CMBuffer.class, long.class);
+            cbGetDecodeTimeStamp = CMBufferQueue.class.getDeclaredMethod("cbGetDecodeTimeStamp", CFType.class, long.class);
+            cbGetPresentationTimeStamp = CMBufferQueue.class.getDeclaredMethod("cbGetPresentationTimeStamp", CFType.class, long.class);
+            cbGetDuration = CMBufferQueue.class.getDeclaredMethod("cbGetDuration", CFType.class, long.class);
+            cbIsDataReady = CMBufferQueue.class.getDeclaredMethod("cbIsDataReady", CFType.class, long.class);         
+            cbCompare = CMBufferQueue.class.getDeclaredMethod("cbCompare", CFType.class, CFType.class, long.class);
+            cbGetSize = CMBufferQueue.class.getDeclaredMethod("cbGetSize", CFType.class, long.class);
+            cbReset = CMBufferQueue.class.getDeclaredMethod("cbReset", CFType.class, long.class);
             cbTrigger = CMBufferQueue.class.getDeclaredMethod("cbTrigger", long.class, CMBufferQueueTriggerToken.class);
-            cbValidate = CMBufferQueue.class.getDeclaredMethod("cbValidate", CMBufferQueue.class, CMBuffer.class, long.class);
-            cbForEach = CMBufferQueue.class.getDeclaredMethod("cbForEach", CMBuffer.class, long.class);
+            cbValidate = CMBufferQueue.class.getDeclaredMethod("cbValidate", CMBufferQueue.class, CFType.class, long.class);
+            cbForEach = CMBufferQueue.class.getDeclaredMethod("cbForEach", CFType.class, long.class);
         } catch (Throwable e) {
             throw new Error(e);
         }
@@ -100,60 +100,60 @@ import org.robovm.apple.audiotoolbox.*;
     /*<properties>*//*</properties>*/
     /*<members>*//*</members>*/
     @Callback
-    private static CMTime cbGetDecodeTimeStamp(CMBuffer buffer, @Pointer long refcon) {
+    private static CMTime cbGetDecodeTimeStamp(CFType buffer, @Pointer long refcon) {
         CMBufferQueueCallbacks callback = null;
         synchronized (bufferQueueCallbacks) {
             callback = bufferQueueCallbacks.get(refcon);
         }
-        return callback.getDecodeTimeStamp(buffer);
+        return callback.getDecodeTimeStamp((CMBuffer)buffer);
     }
     @Callback
-    private static CMTime cbGetPresentationTimeStamp(CMBuffer buffer, @Pointer long refcon) {
+    private static CMTime cbGetPresentationTimeStamp(CFType buffer, @Pointer long refcon) {
         CMBufferQueueCallbacks callback = null;
         synchronized (bufferQueueCallbacks) {
             callback = bufferQueueCallbacks.get(refcon);
         }
-        return callback.getPresentationTimeStamp(buffer);
+        return callback.getPresentationTimeStamp((CMBuffer)buffer);
     }
     @Callback
-    private static CMTime cbGetDuration(CMBuffer buffer, @Pointer long refcon) {
+    private static CMTime cbGetDuration(CFType buffer, @Pointer long refcon) {
         CMBufferQueueCallbacks callback = null;
         synchronized (bufferQueueCallbacks) {
             callback = bufferQueueCallbacks.get(refcon);
         }
-        return callback.getDuration(buffer);
+        return callback.getDuration((CMBuffer)buffer);
     }
     @Callback
-    private static boolean cbIsDataReady(CMBuffer buffer, @Pointer long refcon) {
+    private static boolean cbIsDataReady(CFType buffer, @Pointer long refcon) {
         CMBufferQueueCallbacks callback = null;
         synchronized (bufferQueueCallbacks) {
             callback = bufferQueueCallbacks.get(refcon);
         }
-        return callback.isDataReady(buffer);
+        return callback.isDataReady((CMBuffer)buffer);
     }
     @Callback
-    private static CFComparisonResult cbCompare(CMBuffer buffer1, CMBuffer buffer2, @Pointer long refcon) {
+    private static CFComparisonResult cbCompare(CFType buffer1, CFType buffer2, @Pointer long refcon) {
         CMBufferQueueCallbacks callback = null;
         synchronized (bufferQueueCallbacks) {
             callback = bufferQueueCallbacks.get(refcon);
         }
-        return callback.compare(buffer1, buffer2);
+        return callback.compare((CMBuffer)buffer1, (CMBuffer)buffer2);
     }
     @Callback
-    private static int cbGetSize(CMBuffer buffer, @Pointer long refcon) {
+    private static int cbGetSize(CFType buffer, @Pointer long refcon) {
         CMBufferQueueCallbacks callback = null;
         synchronized (bufferQueueCallbacks) {
             callback = bufferQueueCallbacks.get(refcon);
         }
-        return callback.getSize(buffer);
+        return callback.getSize((CMBuffer)buffer);
     }
     @Callback
-    private static void cbReset(CMBuffer buffer, @Pointer long refcon) {
+    private static void cbReset(CFType buffer, @Pointer long refcon) {
         ResetCallback callback = null;
         synchronized (resetCallbacks) {
             callback = resetCallbacks.get(refcon);
         }
-        callback.reset(buffer);
+        callback.reset((CMBuffer)buffer);
     }
     @Callback
     private static void cbTrigger(@Pointer long refcon, CMBufferQueueTriggerToken triggerToken) {
@@ -164,20 +164,20 @@ import org.robovm.apple.audiotoolbox.*;
         callback.trigger(triggerToken);
     }
     @Callback
-    private static void cbValidate(CMBufferQueue bufferQueue, CMBuffer buffer, @Pointer long refcon) {
+    private static void cbValidate(CMBufferQueue bufferQueue, CFType buffer, @Pointer long refcon) {
         ValidationCallback callback = null;
         synchronized (validationCallbacks) {
             callback = validationCallbacks.get(refcon);
         }
-        callback.validate(bufferQueue, buffer);
+        callback.validate(bufferQueue, (CMBuffer)buffer);
     }
     @Callback
-    private static void cbForEach(CMBuffer buffer, @Pointer long refcon) {
+    private static void cbForEach(CFType buffer, @Pointer long refcon) {
         ForEachCallback callback = null;
         synchronized (forEachCallbacks) {
             callback = forEachCallbacks.get(refcon);
         }
-        callback.invoke(buffer);
+        callback.invoke((CMBuffer)buffer);
     }
     
     public static CMBufferQueue create(@MachineSizedSInt long capacity, CMBufferQueueCallbacks callback) {

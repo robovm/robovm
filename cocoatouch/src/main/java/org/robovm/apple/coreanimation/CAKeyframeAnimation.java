@@ -65,9 +65,9 @@ import org.robovm.apple.opengles.*;
     @Property(selector = "setTimingFunctions:")
     public native void setTimingFunctions(NSArray<CAMediaTimingFunction> v);
     @Property(selector = "calculationMode")
-    public native String getCalculationMode();
+    public native NSString getCalculationMode();
     @Property(selector = "setCalculationMode:")
-    public native void setCalculationMode(String v);
+    public native void setCalculationMode(NSString v);
     @Property(selector = "tensionValues")
     public native NSArray<NSNumber> getTensionValues();
     @Property(selector = "setTensionValues:")
@@ -81,11 +81,15 @@ import org.robovm.apple.opengles.*;
     @Property(selector = "setBiasValues:")
     public native void setBiasValues(NSArray<NSNumber> v);
     @Property(selector = "rotationMode")
-    public native String getRotationMode();
+    public native NSString getRotationMode();
     @Property(selector = "setRotationMode:")
-    public native void setRotationMode(String v);
+    public native void setRotationMode(NSString v);
     /*</properties>*/
     /*<members>*//*</members>*/
+
+    @Method(selector = "animationWithKeyPath:")
+    public static native CAKeyframeAnimation create(String path);
+
     /*<methods>*/
     
     /*</methods>*/

@@ -64,9 +64,9 @@ import org.robovm.apple.opengles.*;
     /*<members>*//*</members>*/
     /*<methods>*/
     @Method(selector = "addToRunLoop:forMode:")
-    public native void addToRunLoop(NSRunLoop runloop, String mode);
+    public native void addToRunLoop(NSRunLoop runloop, NSString mode);
     @Method(selector = "removeFromRunLoop:forMode:")
-    public native void removeFromRunLoop(NSRunLoop runloop, String mode);
+    public native void removeFromRunLoop(NSRunLoop runloop, NSString mode);
     @Method(selector = "invalidate")
     public native void invalidate();
     @Method(selector = "displayLinkWithTarget:selector:")

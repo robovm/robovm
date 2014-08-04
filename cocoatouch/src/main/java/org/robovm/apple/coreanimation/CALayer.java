@@ -116,9 +116,9 @@ import org.robovm.apple.opengles.*;
     @Property(selector = "setContentsRect:")
     public native void setContentsRect(@ByVal CGRect v);
     @Property(selector = "contentsGravity")
-    public native String getContentsGravity();
+    public native NSString getContentsGravity();
     @Property(selector = "setContentsGravity:")
-    public native void setContentsGravity(String v);
+    public native void setContentsGravity(NSString v);
     @Property(selector = "contentsScale")
     public native @MachineSizedFloat double getContentsScale();
     @Property(selector = "setContentsScale:")
@@ -128,13 +128,13 @@ import org.robovm.apple.opengles.*;
     @Property(selector = "setContentsCenter:")
     public native void setContentsCenter(@ByVal CGRect v);
     @Property(selector = "minificationFilter")
-    public native String getMinificationFilter();
+    public native NSString getMinificationFilter();
     @Property(selector = "setMinificationFilter:")
-    public native void setMinificationFilter(String v);
+    public native void setMinificationFilter(NSString v);
     @Property(selector = "magnificationFilter")
-    public native String getMagnificationFilter();
+    public native NSString getMagnificationFilter();
     @Property(selector = "setMagnificationFilter:")
-    public native void setMagnificationFilter(String v);
+    public native void setMagnificationFilter(NSString v);
     @Property(selector = "minificationFilterBias")
     public native float getMinificationFilterBias();
     @Property(selector = "setMinificationFilterBias:")
@@ -270,9 +270,9 @@ import org.robovm.apple.opengles.*;
     @Property(selector = "setAutoreverses:")
     public native void setAutoreverses(boolean v);
     @Property(selector = "fillMode")
-    public native String getFillMode();
+    public native NSString getFillMode();
     @Property(selector = "setFillMode:")
-    public native void setFillMode(String v);
+    public native void setFillMode(NSString v);
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/

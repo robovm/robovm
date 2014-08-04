@@ -44,17 +44,16 @@ import org.robovm.apple.opengles.*;
     /*<bind>*/static { ObjCRuntime.bind(CAValueFunction.class); }/*</bind>*/
     /*<constants>*//*</constants>*/
     /*<constructors>*/
-    public CAValueFunction() {}
     protected CAValueFunction(SkipInit skipInit) { super(skipInit); }
     /*</constructors>*/
     /*<properties>*/
     @Property(selector = "name")
-    public native String getName();
+    public native NSString getName();
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
     @Method(selector = "functionWithName:")
-    public static native CAValueFunction create(String name);
+    public static native CAValueFunction create(NSString name);
     @Method(selector = "encodeWithCoder:")
     public native void encode(NSCoder aCoder);
     /*</methods>*/

@@ -74,9 +74,9 @@ import org.robovm.apple.opengles.*;
     @Property(selector = "setAutoreverses:")
     void setAutoreverses(boolean v);
     @Property(selector = "fillMode")
-    String getFillMode();
+    NSString getFillMode();
     @Property(selector = "setFillMode:")
-    void setFillMode(String v);
+    void setFillMode(NSString v);
     /*</properties>*/
     /*<methods>*/
     

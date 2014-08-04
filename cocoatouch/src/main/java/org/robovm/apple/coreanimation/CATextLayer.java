@@ -53,9 +53,9 @@ import org.robovm.apple.opengles.*;
     @Property(selector = "setString:")
     public native void setString(NSObject v);
     @Property(selector = "font")
-    public native VoidPtr getFont();
+    protected native @Pointer long getFontPtr();
     @Property(selector = "setFont:")
-    public native void setFont(VoidPtr v);
+    protected native void setFontPtr(@Pointer long v);
     @Property(selector = "fontSize")
     public native @MachineSizedFloat double getFontSize();
     @Property(selector = "setFontSize:")
@@ -69,15 +69,44 @@ import org.robovm.apple.opengles.*;
     @Property(selector = "setWrapped:")
     public native void setWrapped(boolean v);
     @Property(selector = "truncationMode")
-    public native String getTruncationMode();
+    public native NSString getTruncationMode();
     @Property(selector = "setTruncationMode:")
-    public native void setTruncationMode(String v);
+    public native void setTruncationMode(NSString v);
     @Property(selector = "alignmentMode")
-    public native String getAlignmentMode();
+    public native NSString getAlignmentMode();
     @Property(selector = "setAlignmentMode:")
-    public native void setAlignmentMode(String v);
+    public native void setAlignmentMode(NSString v);
     /*</properties>*/
     /*<members>*//*</members>*/
+
+    // Font is either a CTFontRef, a CGFontRef, an instance of NSFont (OS X only), or an NSString naming the font.
+    /**
+     * Returns the value of the {@code font} property. Either a  {@link CTFont},
+     * {@link CGFont} or {@link String}.
+     */
+    public Object getFont() {
+        long ptr = getFontPtr();
+        if (ptr == 0) {
+            return null;
+        }
+        org.robovm.apple.corefoundation.CFType cfObj = 
+                org.robovm.apple.corefoundation.CFType.Marshaler.toObject(
+                        org.robovm.apple.corefoundation.CFType.class, ptr, 0);
+        if (cfObj instanceof org.robovm.apple.corefoundation.CFString) {
+            return cfObj.toString();
+        }
+        return cfObj;
+    }
+//    public void setFont(CTFont font) {
+//        setFont(font.getHandle());
+//    }
+    public void setFont(CGFont font) {
+        setFontPtr(font.getHandle());
+    }
+    public void setFont(String font) {
+        setFontPtr(new NSString(font).getHandle());
+    }
+
     /*<methods>*/
     
     /*</methods>*/

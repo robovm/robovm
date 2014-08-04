@@ -81,13 +81,13 @@ import org.robovm.apple.opengles.*;
     @Property(selector = "setEmitterShape:")
     public native void setEmitterShape(String v);
     @Property(selector = "emitterMode")
-    public native String getEmitterMode();
+    public native NSString getEmitterMode();
     @Property(selector = "setEmitterMode:")
-    public native void setEmitterMode(String v);
+    public native void setEmitterMode(NSString v);
     @Property(selector = "renderMode")
-    public native String getRenderMode();
+    public native NSString getRenderMode();
     @Property(selector = "setRenderMode:")
-    public native void setRenderMode(String v);
+    public native void setRenderMode(NSString v);
     @Property(selector = "preservesDepth")
     public native boolean isPreservesDepth();
     @Property(selector = "setPreservesDepth:")

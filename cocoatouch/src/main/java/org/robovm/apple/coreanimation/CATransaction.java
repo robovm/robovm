@@ -51,7 +51,7 @@ import org.robovm.apple.opengles.*;
     
     /*</properties>*/
     /*<members>*//*</members>*/
-    public static void put (String key, NSObject value) {
+    public static void put(NSString key, NSObject value) {
         put(value, key);
     }
     /*<methods>*/
@@ -82,8 +82,8 @@ import org.robovm.apple.opengles.*;
     @Method(selector = "setCompletionBlock:")
     public static native void setCompletionBlock(@Block Runnable block);
     @Method(selector = "valueForKey:")
-    public static native NSObject get(String key);
+    public static native NSObject get(NSString key);
     @Method(selector = "setValue:forKey:")
-    protected static native void put(NSObject anObject, String key);
+    protected static native void put(NSObject anObject, NSString key);
     /*</methods>*/
 }

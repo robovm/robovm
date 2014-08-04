@@ -47,8 +47,14 @@ classes:
         methods:
             '-addToRunLoop:forMode:':
                 trim_after_first_colon: true
+                parameters:
+                    mode:
+                        type: NSString
             '-removeFromRunLoop:forMode:':
                 trim_after_first_colon: true
+                parameters:
+                    mode:
+                        type: NSString
             '+displayLinkWithTarget:selector:':
                 name: "create"
     CAEAGLLayer: # DONE
@@ -59,6 +65,10 @@ classes:
                 type: "NSArray<CAEmitterCell>"
             'style':
                 type: "NSDictionary<NSString, ?>"   
+            'minificationFilter':
+                type: NSString
+            'magnificationFilter':
+                type: NSString
         methods:
             '-shouldArchiveValueForKey:':
                 name: "shouldArchiveValue"
@@ -71,12 +81,18 @@ classes:
         properties:
             'emitterCells':
                 type: "NSArray<CAEmitterCell>"
+            'emitterMode':
+                type: NSString
+            'renderMode':
+                type: NSString
     CAGradientLayer: # DONE
         properties:
             'colors':
                 type: "NSArray<?>" # CGColor
             'locations':
                 type: "NSArray<NSNumber>"
+            'type':
+                type: NSString
     CAKeyframeAnimation: # DONE
         properties:
             'values':
@@ -91,6 +107,10 @@ classes:
                 type: "NSArray<NSNumber>"
             'biasValues':
                 type: "NSArray<NSNumber>"
+            'calculationMode':
+                type: NSString
+            'rotationMode':
+                type: NSString
     CALayer: # DONE
         properties:
             'delegate':
@@ -107,6 +127,12 @@ classes:
                 type: "NSDictionary<NSString, ?>" # CAAction
             'style':
                 type: "NSDictionary<NSString, ?>"    
+            'minificationFilter':
+                type: NSString
+            'magnificationFilter':
+                type: NSString
+            'contentsGravity':
+                type: NSString
         methods:
             '-init':
                 exclude: true
@@ -192,6 +218,9 @@ classes:
             '+functionWithName:':
                 name: "create"
                 return_type: "CAMediaTimingFunction"
+                parameters:
+                    name:
+                        type: NSString
             '+functionWithControlPoints::::':
                 name: "create"
                 return_type: "CAMediaTimingFunction"
@@ -199,8 +228,12 @@ classes:
         methods:
             '+animationWithKeyPath:':
                 name: "create"
+                return_type: CAPropertyAnimation
     CAReplicatorLayer: {} # DONE
     CAScrollLayer: # DONE
+        properties:
+            'scrollMode':
+                type: NSString
         methods:
             '-scrollToPoint:':
                 name: "scrollTo"
@@ -210,7 +243,22 @@ classes:
         properties:
             'lineDashPattern':
                 type: "NSArray<NSNumber>"
-    CATextLayer: {} # DONE
+            'fillRule':
+                type: NSString
+            'lineCap':
+                type: NSString
+            'lineJoin':
+                type: NSString
+    CATextLayer: # DONE
+        properties:
+            'font':
+                name: fontPtr
+                type: '@Pointer long'
+                visibility: protected
+            'alignmentMode':
+                type: NSString
+            'truncationMode':
+                type: NSString
     CATiledLayer: # DONE
         methods:
             '+fadeDuration':
@@ -227,19 +275,36 @@ classes:
                 property: true
             '+valueForKey:':
                 name: "get"
+                parameters:
+                    key:
+                        type: NSString
             '+setValue:forKey:':
                 name: "put"
                 visibility: "protected"
+                parameters:
+                    key:
+                        type: NSString
     CATransformLayer: {} # DONE
     CATransition: # DONE
         properties:
             'filter':
                 type: "CIFilter"
+            'type':
+                type: NSString
+            'subtype':
+                type: NSString
     CAValueFunction: # DONE
+        skip_def_constructor: true
+        properties:
+            'name':
+                type: NSString
         methods:
             '+functionWithName:':
                 name: "create"
                 return_type: "CAValueFunction"
+                parameters:
+                    name:
+                        type: NSString
 
 protocols:
     CAAction: # DONE
@@ -247,9 +312,14 @@ protocols:
             '-runActionForKey:object:arguments:':
                 name: "runAction"
                 parameters:
+                    key:
+                        type: NSString
                     dict:
                         type: "NSDictionary<NSString, ?>"
-    CAMediaTiming: {} # DONE
+    CAMediaTiming: # DONE
+        properties:
+            'fillMode':
+                type: NSString
     CAAnimationDelegate: # DONE
         methods:
             '-animationDidStart:':
@@ -270,12 +340,9 @@ protocols:
 functions:
     CATransform3D(Make.*):
         class: CATransform3D
-        static: true
         name: "#{g[0]}"
     CATransform3D(.*):
         class: CATransform3D
-        static: true
-        visibility: protected
         name: "#{g[0]}"
 
     CA(CurrentMediaTime):
@@ -289,6 +356,10 @@ functions:
 
 values: 
 
+    k?CA((On|Fill|Filter|EmitterLayer|GradientLayerAxial|Animation|Gravity|MediaTimingFunction|FillRule|LineJoin|LineCap|LineJoin|Scroll|Truncation|Alignment|Transaction|Transition|ValueFunction).*):
+        class: CoreAnimation
+        name: "#{g[0]}"
+        type: NSString
     k?CA(.*):
         class: CoreAnimation
         name: "#{g[0]}"

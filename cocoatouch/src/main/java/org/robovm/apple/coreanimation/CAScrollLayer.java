@@ -49,9 +49,9 @@ import org.robovm.apple.opengles.*;
     /*</constructors>*/
     /*<properties>*/
     @Property(selector = "scrollMode")
-    public native String getScrollMode();
+    public native NSString getScrollMode();
     @Property(selector = "setScrollMode:")
-    public native void setScrollMode(String v);
+    public native void setScrollMode(NSString v);
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/

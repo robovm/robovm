@@ -140,7 +140,7 @@ import org.robovm.apple.mediatoolbox.*;
     /*<members>*//*</members>*/
     /*<methods>*/
     @Method(selector = "assetWithURL:")
-    public static native NSObject create(NSURL URL);
+    public static native AVAsset create(NSURL URL);
     @Method(selector = "cancelLoading")
     public native void cancelLoading();
     @Method(selector = "trackWithTrackID:")

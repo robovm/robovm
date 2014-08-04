@@ -256,6 +256,7 @@ classes:
         methods:
             '+blockOperationWithBlock:':
                 name: create
+                return_type: "NSBlockOperation"
             '-addExecutionBlock:':
                 trim_after_first_colon: true
             '-executionBlocks': # We cannot marshal NSArray<BlockType>

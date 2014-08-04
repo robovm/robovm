@@ -54,6 +54,6 @@ import org.robovm.apple.security.*;
     @Method(selector = "addExecutionBlock:")
     public native void addExecutionBlock(@Block Runnable block);
     @Method(selector = "blockOperationWithBlock:")
-    public static native NSObject create(@Block Runnable block);
+    public static native NSBlockOperation create(@Block Runnable block);
     /*</methods>*/
 }

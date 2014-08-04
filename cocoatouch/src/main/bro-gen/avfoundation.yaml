@@ -91,6 +91,7 @@ classes:
         methods:
             '+assetWithURL:':
                 name: "create"
+                return_type: "AVAsset"
             '-trackWithTrackID:':
                 name: "getTrack"
             '-tracksWithMediaType:':
@@ -936,8 +937,10 @@ classes:
                 name: "init"
             '+playerWithURL:':
                 name: "create"
+                return_type: "AVPlayer"
             '+playerWithPlayerItem:':
                 name: "create"
+                return_type: "AVPlayer"
             '-replaceCurrentItemWithPlayerItem:':
                 name: "replaceCurrentItem"
             '-currentTime':

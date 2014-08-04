@@ -199,9 +199,9 @@ import org.robovm.apple.mediatoolbox.*;
     @Method(selector = "initWithPlayerItem:")
     protected native @Pointer long init(AVPlayerItem item);
     @Method(selector = "playerWithURL:")
-    public static native NSObject create(NSURL URL);
+    public static native AVPlayer create(NSURL URL);
     @Method(selector = "playerWithPlayerItem:")
-    public static native NSObject create(AVPlayerItem item);
+    public static native AVPlayer create(AVPlayerItem item);
     @Method(selector = "play")
     public native void play();
     @Method(selector = "pause")

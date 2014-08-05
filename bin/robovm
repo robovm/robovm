@@ -1,9 +1,9 @@
 #!/bin/bash
 
-BASE=$(cd $(dirname $0)/..; pwd -P)
+BASE=$(cd "$(dirname "$0")/.."; pwd -P)
 COMPILER_JAR="$BASE/lib/robovm-dist-compiler.jar"
 if [ -f "$COMPILER_JAR" ]; then
-    export ROBOVM_HOME=$BASE
+    export ROBOVM_HOME="$BASE"
 else
     if [ "x$ROBOVM_DEV_ROOT" != 'x' ]; then
         COMPILER_JAR=$(ls "$ROBOVM_DEV_ROOT"/dist/compiler/target/robovm-dist-compiler-*-nodep.jar 2> /dev/null)

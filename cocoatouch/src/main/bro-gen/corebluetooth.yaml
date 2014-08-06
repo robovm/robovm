@@ -1,0 +1,330 @@
+package: org.robovm.apple.corebluetooth
+include: [foundation.yaml, corefoundation.yaml, dispatch.yaml]
+library: CoreBluetooth
+framework: CoreBluetooth
+clang_args: ['-x', 'objective-c']
+headers:
+    - /System/Library/Frameworks/CoreBluetooth.framework/Headers/CoreBluetooth.h
+    - /System/Library/Frameworks/CoreBluetooth.framework/Headers/CBDefines.h
+typedefs: {}
+    
+enums:
+    CBCentralManagerState: {}
+    CBCharacteristicProperties: { bits: true, marshaler: Bits.AsMachineSizedIntMarshaler }
+    CBError: {}
+    CBATTError: {}
+    CBPeripheralState: {}
+    CBCharacteristicWriteType: {}
+    CBAttributePermissions: { bits: true, marshaler: Bits.AsMachineSizedIntMarshaler }
+    CBPeripheralManagerAuthorizationStatus: {}
+    CBPeripheralManagerState: {}
+    CBPeripheralManagerConnectionLatency: {}
+        
+classes:
+    CoreBluetooth:
+        annotations: ['@Marshaler(NSString.AsStringMarshaler.class)']
+
+    CBATTRequest: {} # DONE
+    CBCentral: {} # DONE
+    CBCentralManager: # DONE
+        methods:
+            '-initWithDelegate:queue:':
+                name: "init"
+            '-initWithDelegate:queue:options:':
+                name: "init"
+                parameters:
+                    options:
+                        type: "NSDictionary<NSString, ?>"
+            '-retrievePeripherals:':
+                trim_after_first_colon: true
+                parameters:
+                    peripheralUUIDs:
+                        type: "NSArray<?>" # CFUUID
+            '-retrievePeripheralsWithIdentifiers:':
+                name: "retrievePeripherals"
+                return_type: "NSArray<CBPeripheral>"
+                parameters:
+                    identifiers:
+                        type: "NSArray<NSUUID>"
+            '-retrieveConnectedPeripheralsWithServices:':
+                name: "retrieveConnectedPeripherals"
+                return_type: "NSArray<CBPeripheral>"
+                parameters:
+                    serviceUUIDs:
+                        type: "NSArray<CBUUID>"
+            '-scanForPeripheralsWithServices:options:':
+                name: "scanForPeripherals"
+                parameters:
+                    serviceUUIDs:
+                        type: "NSArray<CBUUID>"
+                    options:
+                        type: "NSDictionary<NSString, ?>"
+            '-connectPeripheral:options:':
+                trim_after_first_colon: true
+                parameters:
+                    options:
+                        type: "NSDictionary<NSString, ?>"
+            '-cancelPeripheralConnection:':
+                trim_after_first_colon: true
+    CBCharacteristic: # DONE
+        properties:
+            'descriptors':
+                type: "NSArray<CBDescriptor>"
+            'isBroadcasted':
+                name: "broadcasted"
+            'isNotifying':
+                name: "notifying"
+    CBDescriptor: {} # DONE
+    CBMutableCharacteristic: # DONE
+        properties:
+            'subscribedCentrals':
+                type: "NSArray<CBCentral>"
+            'descriptors':
+                type: "NSArray<CBDescriptor>"
+        methods:
+            '-initWithType:properties:value:permissions:':
+                name: "init"
+    CBMutableDescriptor: # DONE
+        methods:
+            '-initWithType:value:':
+                name: "init"
+    CBMutableService: # DONE
+        properties:
+            'isPrimary':
+                name: "primary"
+            'includedServices':
+                type: "NSArray<CBService>"
+            'characteristics':
+                type: "NSArray<CBCharacteristic>"
+        methods:
+            '-initWithType:primary:':
+                name: "init"
+    CBPeripheral: # DONE
+        properties:
+            'isConnected':
+                name: "connected"
+            'services':
+                type: "NSArray<CBService>"
+        methods:
+            '-discoverServices:':
+                trim_after_first_colon: true
+                parameters:
+                    serviceUUIDs:
+                        type: "NSArray<CBUUID>"
+            '-discoverIncludedServices:forService:':
+                trim_after_first_colon: true
+                parameters:
+                    includedServiceUUIDs:
+                        type: "NSArray<CBUUID>"
+            '-discoverCharacteristics:forService:':
+                trim_after_first_colon: true
+                parameters:
+                    characteristicUUIDs:
+                        type: "NSArray<CBUUID>"
+            '-readValueForCharacteristic:':
+                name: "readValue"
+            '-writeValue:forCharacteristic:type:':
+                trim_after_first_colon: true
+            '-setNotifyValue:forCharacteristic:':
+                trim_after_first_colon: true
+            '-discoverDescriptorsForCharacteristic:':
+                name: "discoverDescriptors"
+            '-readValueForDescriptor:':
+                name: "readValue"
+            '-writeValue:forDescriptor:':
+                trim_after_first_colon: true
+    CBPeripheralManager: # DONE
+        properties:
+            'isAdvertising':
+                name: "advertising"
+        methods:
+            '-initWithDelegate:queue:':
+                name: "init"
+            '-initWithDelegate:queue:options:':
+                name: "init"
+                parameters:
+                    options:
+                        type: "NSDictionary<NSString, ?>"
+            '-startAdvertising:':
+                trim_after_first_colon: true
+                parameters:
+                    advertisementData:
+                        type: "NSDictionary<NSString, ?>"
+            '-setDesiredConnectionLatency:forCentral:':
+                trim_after_first_colon: true
+            '-addService:':
+                trim_after_first_colon: true
+            '-removeService:':
+                trim_after_first_colon: true
+            '-respondToRequest:withResult:':
+                trim_after_first_colon: true
+            '-updateValue:forCharacteristic:onSubscribedCentrals:':
+                trim_after_first_colon: true
+                parameters:
+                    centrals:
+                        type: "NSArray<CBCentral>" 
+    CBService: # DONE
+        properties:
+            'isPrimary':
+                name: "primary"
+            'includedServices':
+                type: "NSArray<CBService>"
+            'characteristics':
+                type: "NSArray<CBCharacteristic>"
+    CBUUID: # DONE
+        methods:
+            '+UUIDWithString:':
+                name: "create"
+            '+UUIDWithData:':
+                name: "create"
+            '+UUIDWithCFUUID:':
+                name: "create"
+            '+UUIDWithNSUUID:':
+                name: "create"
+
+protocols:
+    CBCentralManagerDelegate: # DONE
+        methods:
+            '-centralManagerDidUpdateState:':
+                name: "didUpdateState"
+            '-centralManager:willRestoreState:':
+                name: "willRestoreState"
+                parameters:
+                    dict:
+                        type: "NSDictionary<NSString, ?>"
+            '-centralManager:didRetrievePeripherals:':
+                name: "didRetrievePeripherals"
+                parameters:
+                    peripherals:
+                        type: "NSArray<CBPeripheral>"
+            '-centralManager:didRetrieveConnectedPeripherals:':
+                name: "didRetrieveConnectedPeripherals"
+                parameters:
+                    peripherals:
+                        type: "NSArray<CBPeripheral>"
+            '-centralManager:didDiscoverPeripheral:advertisementData:RSSI:':
+                name: "didDiscoverPeripheral"
+                parameters:
+                    advertisementData:
+                        type: "NSDictionary<NSString, ?>"
+                    RSSI:
+                        name: "rssi"
+            '-centralManager:didConnectPeripheral:':
+                name: "didConnectPeripheral"
+            '-centralManager:didFailToConnectPeripheral:error:':
+                name: "didFailToConnectPeripheral"
+            '-centralManager:didDisconnectPeripheral:error:':
+                name: "didDisconnectPeripheral"
+    CBPeripheralDelegate: # DONE
+        methods:
+            '-peripheralDidUpdateName:':
+                name: "didUpdateName"
+            '-peripheralDidInvalidateServices:':
+                name: "didInvalidateServices"
+            '-peripheral:didModifyServices:':
+                name: "didModifyServices"
+                parameters:
+                    invalidatedServices:
+                        type: "NSArray<CBService>"
+            '-peripheralDidUpdateRSSI:error:':
+                name: "didUpdateRSSI"
+            '-peripheral:didDiscoverServices:':
+                name: "didDiscoverServices"
+            '-peripheral:didDiscoverIncludedServicesForService:error:':
+                name: "didDiscoverIncludedServices"
+            '-peripheral:didDiscoverCharacteristicsForService:error:':
+                name: "didDiscoverCharacteristics"
+            '-peripheral:didUpdateValueForCharacteristic:error:':
+                name: "didUpdateValue"
+            '-peripheral:didWriteValueForCharacteristic:error:':
+                name: "didWriteValue"
+            '-peripheral:didUpdateNotificationStateForCharacteristic:error:':
+                name: "didUpdateNotificationState"
+            '-peripheral:didDiscoverDescriptorsForCharacteristic:error:':
+                name: "didDiscoverDescriptors"
+            '-peripheral:didUpdateValueForDescriptor:error:':
+                name: "didUpdateValue"
+            '-peripheral:didWriteValueForDescriptor:error:':
+                name: "didWriteValue"
+    CBPeripheralManagerDelegate: # DONE
+        methods:
+            '-peripheralManagerDidUpdateState:':
+                name: "didUpdateState"
+            '-peripheralManager:willRestoreState:':
+                name: "willRestoreState"
+                parameters:
+                    dict:
+                        type: "NSDictionary<NSString, ?>"
+            '-peripheralManagerDidStartAdvertising:error:':
+                name: "didStartAdvertising"
+            '-peripheralManager:didAddService:error:':
+                name: "didAddService"
+            '-peripheralManager:central:didSubscribeToCharacteristic:':
+                name: "didSubscribeToCharacteristic"
+            '-peripheralManager:central:didUnsubscribeFromCharacteristic:':
+                name: "didUnsubscribeFromCharacteristic"
+            '-peripheralManager:didReceiveReadRequest:':
+                name: "didReceiveReadRequest"
+            '-peripheralManager:didReceiveWriteRequests:':
+                name: "didReceiveWriteRequests"
+                parameters:
+                    requests:
+                        type: "NSArray<CBATTRequest>"
+            '-peripheralManagerIsReadyToUpdateSubscribers:':
+                name: "readyToUpdateSubscribers"
+
+functions:
+    # Make sure we don't miss any functions if new ones are introduced in a later version
+    (CB.*):
+        class: CoreBluetooth
+        name: "Function__#{g[0]}"
+
+values:
+    CBAdvertisement(.*)Key:
+        class: CoreBluetooth
+        name: "CBAdvertisement#{g[0]}Key"
+        type: NSString
+    CBAdvertisement(DataIsConnectable):
+        class: CoreBluetooth
+        name: "CBAdvertisement#{g[0]}"
+        type: NSString
+        
+    CBCentralManager(.*)Key:
+        class: CoreBluetooth
+        name: "CBCentralManager#{g[0]}Key"
+        type: NSString
+        
+    CBConnectPeripheral(.*)Key:
+        class: CoreBluetooth
+        name: "CBConnectPeripheral#{g[0]}Key"
+        type: NSString
+   
+    CBErrorDomain:
+        class: CoreBluetooth
+        name: "ErrorDomain"
+        type: NSString
+    CBATTErrorDomain:
+        class: CoreBluetooth
+        name: "ATTErrorDomain"
+        type: NSString
+        
+    CBPeripheralManager(.*)Key:
+        class: CoreBluetooth
+        name: "CBPeripheralManager#{g[0]}Key"
+        type: NSString
+        
+    CBUUID(.*)String:
+        class: CoreBluetooth
+        name: "CBUUID#{g[0]}String"
+        type: NSString
+   
+    # Make sure we don't miss any values if new ones are introduced in a later version
+    (CB.*):
+        class: CoreBluetooth
+        name: "Value__#{g[0]}"
+
+constants:
+    # Make sure we don't miss any constants if new ones are introduced in a later version
+    (CB):
+        class: CoreBluetooth
+        name: "Constant__#{g[0]}"

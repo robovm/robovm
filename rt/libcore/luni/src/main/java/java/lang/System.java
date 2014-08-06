@@ -434,7 +434,9 @@ public final class System {
         // RoboVM note: Android uses getenv("JAVA_HOME") here with "/system" as fallback.
         p.put("java.home", VM.basePath());
 
-        p.put("java.io.tmpdir", "/tmp");
+        // RoboVM note: Use value of $TMPDIR if set. Otherwise use /tmp as Android does.
+        String tmpdir = getenv("TMPDIR");
+        p.put("java.io.tmpdir", tmpdir != null ? tmpdir : "/tmp");
 
         String ldLibraryPath = getenv("LD_LIBRARY_PATH");
         if (ldLibraryPath != null) {

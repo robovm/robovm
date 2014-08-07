@@ -73,25 +73,30 @@ values:
         class: DispatchSourceType
         type: DispatchSourceType
         name: "#{g[0].camelize}"
+        dereference: false
     _dispatch_data_(empty):
         class: DispatchData
         type: DispatchData
         name: "#{g[0].camelize}"
+        dereference: false
     _dispatch_main_q:
         class: DispatchQueue
         type: DispatchQueue
         name: getMainQueue
         readonly: true
+        dereference: false
     _dispatch_queue_attr_concurrent:
         class: DispatchQueueAttr
         type: DispatchQueueAttr
         name: Concurrent
         readonly: true
+        dereference: false
     _dispatch_data_(.*):
         class: DispatchData
         type: DispatchData
         name: "#{g[0].camelize}"
         readonly: true
+        dereference: false
     dispatch_(.*):
         class: Dispatch
 constants:

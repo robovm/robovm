@@ -47,7 +47,7 @@ import org.robovm.rt.bro.ptr.*;
     /**
      * @since Available in iOS 5.0 and later.
      */
-    @GlobalValue(symbol="_dispatch_data_empty", optional=true)
+    @GlobalValue(symbol="_dispatch_data_empty", optional=true, dereference=false)
     public static native DispatchData Empty();
     /**
      * @since Available in iOS 5.0 and later.
@@ -57,12 +57,12 @@ import org.robovm.rt.bro.ptr.*;
     /**
      * @since Available in iOS 5.0 and later.
      */
-    @GlobalValue(symbol="_dispatch_data_destructor_free", optional=true)
+    @GlobalValue(symbol="_dispatch_data_destructor_free", optional=true, dereference=false)
     public static native DispatchData DestructorFree();
     /**
      * @since Available in iOS 7.0 and later.
      */
-    @GlobalValue(symbol="_dispatch_data_destructor_munmap", optional=true)
+    @GlobalValue(symbol="_dispatch_data_destructor_munmap", optional=true, dereference=false)
     public static native DispatchData DestructorMunmap();
     
     /**

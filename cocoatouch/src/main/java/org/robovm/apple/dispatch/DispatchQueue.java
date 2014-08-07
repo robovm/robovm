@@ -52,7 +52,7 @@ import org.robovm.rt.bro.ptr.*;
     /**
      * @since Available in iOS 4.0 and later.
      */
-    @GlobalValue(symbol="_dispatch_main_q", optional=true)
+    @GlobalValue(symbol="_dispatch_main_q", optional=true, dereference=false)
     public static native DispatchQueue getMainQueue();
     
     /**

@@ -104,7 +104,7 @@ public class StructMemberMethodCompiler extends BroMethodCompiler {
         if (method.getParameterCount() == 0) {
             // Getter
             Value result = loadValueForGetter(method, function, memberType, memberPtr.ref(),
-                    function.getParameterRef(0), MarshalerFlags.CALL_TYPE_STRUCT_MEMBER);
+                    function.getParameterRef(0), true, MarshalerFlags.CALL_TYPE_STRUCT_MEMBER);
             function.add(new Ret(result));
             
         } else {

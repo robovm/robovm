@@ -38,4 +38,12 @@ public @interface GlobalValue {
      * a call to the method will throw {@link UnsatisfiedLinkError}. 
      */
     boolean optional() default false;
+
+    /**
+     * Set to {@code false} to specify that the address of the symbol should be
+     * used as and not be dereferenced. This is useful for structs compiled into
+     * the library. The default is {@code true}. Can only be used on getter 
+     * methods.
+     */
+    boolean dereference() default true;
 }

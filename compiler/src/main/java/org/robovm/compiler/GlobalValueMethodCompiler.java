@@ -55,7 +55,7 @@ public class GlobalValueMethodCompiler extends BroMethodCompiler {
         super(config);
     }
 
-    private void validateGlobalValueMethod(SootMethod method) {
+    private void validateGlobalValueMethod(SootMethod method, AnnotationTag globalValueAnnotation) {
         if (!method.isStatic()) {
             throw new IllegalArgumentException("@GlobalValue annotated method " 
                     + method + " must be static");
@@ -71,13 +71,24 @@ public class GlobalValueMethodCompiler extends BroMethodCompiler {
                 + ". It should either take 0 arguments and return a non-void " 
                 + "type or take 1 argument and return void");
         }
+        // dereference can only be false for getters
+        if (method.getReturnType() == VoidType.v()) {
+            // Setter
+            boolean dereference = readBooleanElem(globalValueAnnotation, "dereference", true);
+            if (!dereference) {
+                throw new IllegalArgumentException("Only @GlobalValue getter methods " 
+                        + "are allowed to have dereference=false");
+            }
+        }
     }
     
     protected Function doCompile(ModuleBuilder moduleBuilder, SootMethod method) {
-        validateGlobalValueMethod(method);
-        
         AnnotationTag globalValueAnnotation = getAnnotation(method, GLOBAL_VALUE);
+        
+        validateGlobalValueMethod(method, globalValueAnnotation);
+        
         boolean optional = readBooleanElem(globalValueAnnotation, "optional", false);
+        boolean dereference = readBooleanElem(globalValueAnnotation, "dereference", true);
 
         Function fn = FunctionBuilder.method(method);
         moduleBuilder.addFunction(fn);
@@ -108,7 +119,7 @@ public class GlobalValueMethodCompiler extends BroMethodCompiler {
         if (method.getParameterCount() == 0) {
             // Getter
             Value result = loadValueForGetter(method, fn, valueType, valuePtr.ref(), 
-                    env, MarshalerFlags.CALL_TYPE_GLOBAL_VALUE);
+                    env, dereference, MarshalerFlags.CALL_TYPE_GLOBAL_VALUE);
             fn.add(new Ret(result));
         } else {
             // Setter

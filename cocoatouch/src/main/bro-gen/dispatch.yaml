@@ -8,6 +8,17 @@ typedefs:
     _NSZone: void
     "Protocol *": ObjCProtocol
     dispatch_queue_t: DispatchQueue
+    'void (^)(dispatch_data_t, int)': '@Block VoidBlock2<DispatchData, Integer>'
+    'void (^)(int)': '@Block VoidBlock1<Integer>'
+    'void (^)(size_t)': '@Block("(@MachineSizedUInt)") VoidBlock1<Long>'
+#    typedef void (^dispatch_io_handler_t)(bool done, dispatch_data_t data,
+#        int error);
+    dispatch_io_handler_t: '@Block VoidBlock3<Boolean, DispatchData, Integer>'
+# typedef bool (^dispatch_data_applier_t)(dispatch_data_t region,
+#     size_t offset,
+#     const void *buffer,
+#     size_t size);
+    dispatch_data_applier_t: '@Block("(,@MachineSizedUInt,,@MachineSizedUInt)") VoidBlock4<DispatchData, Long, VoidPtr, Long>'
 classes:
     timespec:
         visibility: ''
@@ -23,6 +34,25 @@ classes:
         name: "#{g[0].camelize}"
         extends: DispatchObject
 functions:
+    dispatch_(barrier_)?a?sync_f:
+        exclude: true
+    dispatch_after_f:
+        exclude: true
+    dispatch_apply_f:
+        exclude: true
+    dispatch_once_f:
+        exclude: true
+    dispatch_source_set_(event|cancel|registration)_handler_f:
+        exclude: true
+    dispatch_group_(async|notify)_f:
+        exclude: true
+    dispatch_(get|set)_context:
+        exclude: true
+    dispatch_set_finalizer_f:
+        exclude: true
+    dispatch_queue_(get|set)_specific:
+        exclude: true
+
     dispatch_((barrier_)?a?sync.*):
         class: DispatchQueue
         name: "#{g[0].camelize}"

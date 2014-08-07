@@ -73,19 +73,14 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge(symbol="dispatch_once", optional=true)
     public static native void once(MachineSizedSIntPtr predicate, @Block Runnable block);
     /**
-     * @since Available in iOS 4.0 and later.
-     */
-    @Bridge(symbol="dispatch_once_f", optional=true)
-    public static native void onceF(MachineSizedSIntPtr predicate, VoidPtr context, FunctionPtr function);
-    /**
      * @since Available in iOS 5.0 and later.
      */
     @Bridge(symbol="dispatch_read", optional=true)
-    public static native void read(int fd, @MachineSizedUInt long length, DispatchQueue queue, ObjCBlock handler);
+    public static native void read(int fd, @MachineSizedUInt long length, DispatchQueue queue, @Block VoidBlock2<DispatchData, Integer> handler);
     /**
      * @since Available in iOS 5.0 and later.
      */
     @Bridge(symbol="dispatch_write", optional=true)
-    public static native void write(int fd, DispatchData data, DispatchQueue queue, ObjCBlock handler);
+    public static native void write(int fd, DispatchData data, DispatchQueue queue, @Block VoidBlock2<DispatchData, Integer> handler);
     /*</methods>*/
 }

@@ -94,7 +94,7 @@ import org.robovm.rt.bro.ptr.*;
      * @since Available in iOS 5.0 and later.
      */
     @Bridge(symbol="dispatch_data_apply", optional=true)
-    public native boolean apply(FunctionPtr applier);
+    public native boolean apply(@Block("(,@MachineSizedUInt,,@MachineSizedUInt)") VoidBlock4<DispatchData, Long, VoidPtr, Long> applier);
     /**
      * @since Available in iOS 5.0 and later.
      */

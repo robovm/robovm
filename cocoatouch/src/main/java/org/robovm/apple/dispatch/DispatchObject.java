@@ -57,21 +57,6 @@ import org.robovm.rt.bro.ptr.*;
     /**
      * @since Available in iOS 4.0 and later.
      */
-    @Bridge(symbol="dispatch_get_context", optional=true)
-    public native VoidPtr getContext();
-    /**
-     * @since Available in iOS 4.0 and later.
-     */
-    @Bridge(symbol="dispatch_set_context", optional=true)
-    public native void setContext(VoidPtr context);
-    /**
-     * @since Available in iOS 4.0 and later.
-     */
-    @Bridge(symbol="dispatch_set_finalizer_f", optional=true)
-    public native void setFinalizerF(FunctionPtr finalizer);
-    /**
-     * @since Available in iOS 4.0 and later.
-     */
     @Bridge(symbol="dispatch_suspend", optional=true)
     public native void suspend();
     /**

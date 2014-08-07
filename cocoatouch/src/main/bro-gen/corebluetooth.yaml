@@ -41,7 +41,7 @@ classes:
                     peripheralUUIDs:
                         type: "NSArray<?>" # CFUUID
             '-retrievePeripheralsWithIdentifiers:':
-                name: "retrievePeripherals"
+                name: "retrievePeripheralsWithId"
                 return_type: "NSArray<CBPeripheral>"
                 parameters:
                     identifiers:

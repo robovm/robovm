@@ -81,7 +81,7 @@ import org.robovm.apple.dispatch.*;
      * @since Available in iOS 7.0 and later.
      */
     @Method(selector = "retrievePeripheralsWithIdentifiers:")
-    public native NSArray<CBPeripheral> retrievePeripherals(NSArray<NSUUID> identifiers);
+    public native NSArray<CBPeripheral> retrievePeripheralsWithId(NSArray<NSUUID> identifiers);
     /**
      * @since Available in iOS 5.0 and later.
      * @deprecated Deprecated in iOS 7.0.

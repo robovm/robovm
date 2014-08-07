@@ -325,6 +325,6 @@ values:
 
 constants:
     # Make sure we don't miss any constants if new ones are introduced in a later version
-    (CB):
+    (CB.*):
         class: CoreBluetooth
         name: "Constant__#{g[0]}"

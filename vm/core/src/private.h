@@ -112,20 +112,17 @@ typedef struct CallInfo {
     jint returnType;
 } CallInfo;
 
-static inline CallInfo* call0AllocateCallInfo(Env* env, void* function, jint ptrArgsCount, jint intArgsCount, jint longArgsCount, jint floatArgsCount, jint doubleArgsCount) {
-    CallInfo* ci = rvmAllocateMemory(env, sizeof(CallInfo));
-    if (!ci) return NULL;
-    ci->function = function;
-    jint stackArgsSize = ptrArgsCount + intArgsCount + longArgsCount + floatArgsCount + doubleArgsCount;
-    stackArgsSize -= MIN(ptrArgsCount + intArgsCount + longArgsCount, MAX_INT_ARGS);
-    stackArgsSize -= MIN(floatArgsCount + doubleArgsCount, MAX_FP_ARGS);
-    if (stackArgsSize > 0) {
-        ci->stackArgsSize = stackArgsSize;
-        ci->stackArgs = rvmAllocateMemory(env, stackArgsSize * sizeof(void*));
-        if (!ci->stackArgs) return NULL;
-    }
-    return ci;
-}
+#define CALL0_ALLOCATE_CALL_INFO(/* Env* */ _env, /* void* */ _function, /* jint */ _ptrArgsCount, /* jint */ _intArgsCount, /* jint */ _longArgsCount, /* jint */ _floatArgsCount, /* jint */ _doubleArgsCount) ({ \
+    jint _stackArgsSize = _ptrArgsCount + _intArgsCount + _longArgsCount + _floatArgsCount + _doubleArgsCount; \
+    _stackArgsSize -= MIN(_ptrArgsCount + _intArgsCount + _longArgsCount, MAX_INT_ARGS); \
+    _stackArgsSize -= MIN(_floatArgsCount + _doubleArgsCount, MAX_FP_ARGS); \
+    CallInfo* _ci = (CallInfo*) alloca(sizeof(CallInfo) + _stackArgsSize * sizeof(void*)); \
+    memset(_ci, 0, sizeof(CallInfo)); \
+    _ci->function = _function; \
+    _ci->stackArgsSize = _stackArgsSize; \
+    _ci->stackArgs = (void**) &_ci[1]; \
+    _ci; \
+})
 
 static inline void call0AddLong(CallInfo* ci, jlong j) {
     if (ci->intArgsIndex < MAX_INT_ARGS) {
@@ -243,18 +240,15 @@ typedef struct CallInfo {
  * sizeof(void*) == 4 bytes.
  */
 
-static inline CallInfo* call0AllocateCallInfo(Env* env, void* function, jint ptrArgsCount, jint intArgsCount, jint longArgsCount, jint floatArgsCount, jint doubleArgsCount) {
-    CallInfo* ci = rvmAllocateMemory(env, sizeof(CallInfo));
-    if (!ci) return NULL;
-    ci->function = function;
-    jint stackArgsSize = ptrArgsCount + intArgsCount + (longArgsCount << 1) + floatArgsCount + (doubleArgsCount << 1);
-    if (stackArgsSize > 0) {
-        ci->stackArgsSize = stackArgsSize;
-        ci->stackArgs = rvmAllocateMemory(env, stackArgsSize * sizeof(void*));
-        if (!ci->stackArgs) return NULL;
-    }
-    return ci;
-}
+#define CALL0_ALLOCATE_CALL_INFO(/* Env* */ _env, /* void* */ _function, /* jint */ _ptrArgsCount, /* jint */ _intArgsCount, /* jint */ _longArgsCount, /* jint */ _floatArgsCount, /* jint */ _doubleArgsCount) ({ \
+    jint _stackArgsSize = _ptrArgsCount + _intArgsCount + (_longArgsCount << 1) + _floatArgsCount + (_doubleArgsCount << 1); \
+    CallInfo* _ci = (CallInfo*) alloca(sizeof(CallInfo) + _stackArgsSize * sizeof(void*)); \
+    memset(_ci, 0, sizeof(CallInfo)); \
+    _ci->function = _function; \
+    _ci->stackArgsSize = _stackArgsSize; \
+    _ci->stackArgs = (void**) &_ci[1]; \
+    _ci; \
+})
 
 static inline void call0AddInt(CallInfo* ci, jint i) {
     *((jint*) &(ci->stackArgs[ci->stackArgsIndex++])) = i;
@@ -351,19 +345,16 @@ typedef struct CallInfo {
  * sizeof(void*) == 4 bytes.
  */
 
-static inline CallInfo* call0AllocateCallInfo(Env* env, void* function, jint ptrArgsCount, jint intArgsCount, jint longArgsCount, jint floatArgsCount, jint doubleArgsCount) {
-    CallInfo* ci = rvmAllocateMemory(env, sizeof(CallInfo));
-    if (!ci) return NULL;
-    ci->function = function;
-    jint stackArgsSize = ptrArgsCount + intArgsCount + (longArgsCount << 1) + floatArgsCount + (doubleArgsCount << 1);
-    stackArgsSize -= MIN(stackArgsSize, MAX_REG_ARGS);
-    if (stackArgsSize > 0) {
-        ci->stackArgsSize = stackArgsSize;
-        ci->stackArgs = rvmAllocateMemory(env, stackArgsSize * sizeof(void*));
-        if (!ci->stackArgs) return NULL;
-    }
-    return ci;
-}
+#define CALL0_ALLOCATE_CALL_INFO(/* Env* */ _env, /* void* */ _function, /* jint */ _ptrArgsCount, /* jint */ _intArgsCount, /* jint */ _longArgsCount, /* jint */ _floatArgsCount, /* jint */ _doubleArgsCount) ({ \
+    jint _stackArgsSize = _ptrArgsCount + _intArgsCount + (_longArgsCount << 1) + _floatArgsCount + (_doubleArgsCount << 1); \
+    _stackArgsSize -= MIN(_stackArgsSize, MAX_REG_ARGS); \
+    CallInfo* _ci = (CallInfo*) alloca(sizeof(CallInfo) + _stackArgsSize * sizeof(void*)); \
+    memset(_ci, 0, sizeof(CallInfo)); \
+    _ci->function = _function; \
+    _ci->stackArgsSize = _stackArgsSize; \
+    _ci->stackArgs = (void**) &_ci[1]; \
+    _ci; \
+})
 
 static inline void call0AddInt(CallInfo* ci, jint i) {
     if (ci->regArgsIndex < MAX_REG_ARGS) {

@@ -52,7 +52,7 @@ import org.robovm.rt.bro.ptr.*;
     /**
      * @since Available in iOS 4.0 and later.
      */
-    @GlobalValue(symbol="_dispatch_main_q", optional=true)
+    @GlobalValue(symbol="_dispatch_main_q", optional=true, dereference=false)
     public static native DispatchQueue getMainQueue();
     
     /**
@@ -63,28 +63,13 @@ import org.robovm.rt.bro.ptr.*;
     /**
      * @since Available in iOS 4.0 and later.
      */
-    @Bridge(symbol="dispatch_async_f", optional=true)
-    public native void asyncF(VoidPtr context, FunctionPtr work);
-    /**
-     * @since Available in iOS 4.0 and later.
-     */
     @Bridge(symbol="dispatch_sync", optional=true)
     public native void sync(@Block Runnable block);
     /**
      * @since Available in iOS 4.0 and later.
      */
-    @Bridge(symbol="dispatch_sync_f", optional=true)
-    public native void syncF(VoidPtr context, FunctionPtr work);
-    /**
-     * @since Available in iOS 4.0 and later.
-     */
     @Bridge(symbol="dispatch_apply", optional=true)
-    public static native void apply(@MachineSizedUInt long iterations, DispatchQueue queue, ObjCBlock block);
-    /**
-     * @since Available in iOS 4.0 and later.
-     */
-    @Bridge(symbol="dispatch_apply_f", optional=true)
-    public static native void applyF(@MachineSizedUInt long iterations, DispatchQueue queue, VoidPtr context, FunctionPtr work);
+    public static native void apply(@MachineSizedUInt long iterations, DispatchQueue queue, @Block("(@MachineSizedUInt)") VoidBlock1<Long> block);
     /**
      * @since Available in iOS 4.0 and later.
      * @deprecated Deprecated in iOS 6.0.
@@ -113,11 +98,6 @@ import org.robovm.rt.bro.ptr.*;
     @Bridge(symbol="dispatch_after", optional=true)
     public static native void after(long when, DispatchQueue queue, @Block Runnable block);
     /**
-     * @since Available in iOS 4.0 and later.
-     */
-    @Bridge(symbol="dispatch_after_f", optional=true)
-    public static native void afterF(long when, DispatchQueue queue, VoidPtr context, FunctionPtr work);
-    /**
      * @since Available in iOS 4.3 and later.
      */
     @Bridge(symbol="dispatch_barrier_async", optional=true)
@@ -125,27 +105,7 @@ import org.robovm.rt.bro.ptr.*;
     /**
      * @since Available in iOS 4.3 and later.
      */
-    @Bridge(symbol="dispatch_barrier_async_f", optional=true)
-    public native void barrierAsyncF(VoidPtr context, FunctionPtr work);
-    /**
-     * @since Available in iOS 4.3 and later.
-     */
     @Bridge(symbol="dispatch_barrier_sync", optional=true)
     public native void barrierSync(@Block Runnable block);
-    /**
-     * @since Available in iOS 4.3 and later.
-     */
-    @Bridge(symbol="dispatch_barrier_sync_f", optional=true)
-    public native void barrierSyncF(VoidPtr context, FunctionPtr work);
-    /**
-     * @since Available in iOS 5.0 and later.
-     */
-    @Bridge(symbol="dispatch_queue_set_specific", optional=true)
-    public native void setSpecific(VoidPtr key, VoidPtr context, FunctionPtr destructor);
-    /**
-     * @since Available in iOS 5.0 and later.
-     */
-    @Bridge(symbol="dispatch_queue_get_specific", optional=true)
-    public native VoidPtr getSpecific(VoidPtr key);
     /*</methods>*/
 }

@@ -57,11 +57,6 @@ import org.robovm.rt.bro.ptr.*;
     /**
      * @since Available in iOS 4.0 and later.
      */
-    @Bridge(symbol="dispatch_group_async_f", optional=true)
-    public native void asyncF(DispatchQueue queue, VoidPtr context, FunctionPtr work);
-    /**
-     * @since Available in iOS 4.0 and later.
-     */
     @Bridge(symbol="dispatch_group_wait", optional=true)
     public native @MachineSizedSInt long await(long timeout);
     /**
@@ -69,11 +64,6 @@ import org.robovm.rt.bro.ptr.*;
      */
     @Bridge(symbol="dispatch_group_notify", optional=true)
     public native void notify(DispatchQueue queue, @Block Runnable block);
-    /**
-     * @since Available in iOS 4.0 and later.
-     */
-    @Bridge(symbol="dispatch_group_notify_f", optional=true)
-    public native void notifyF(DispatchQueue queue, VoidPtr context, FunctionPtr work);
     /**
      * @since Available in iOS 4.0 and later.
      */

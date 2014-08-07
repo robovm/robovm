@@ -47,52 +47,52 @@ import org.robovm.rt.bro.ptr.*;
     /**
      * @since Available in iOS 4.0 and later.
      */
-    @GlobalValue(symbol="_dispatch_source_type_data_add", optional=true)
+    @GlobalValue(symbol="_dispatch_source_type_data_add", optional=true, dereference=false)
     public static native DispatchSourceType DataAdd();
     /**
      * @since Available in iOS 4.0 and later.
      */
-    @GlobalValue(symbol="_dispatch_source_type_data_or", optional=true)
+    @GlobalValue(symbol="_dispatch_source_type_data_or", optional=true, dereference=false)
     public static native DispatchSourceType DataOr();
     /**
      * @since Available in iOS 4.0 and later.
      */
-    @GlobalValue(symbol="_dispatch_source_type_mach_send", optional=true)
+    @GlobalValue(symbol="_dispatch_source_type_mach_send", optional=true, dereference=false)
     public static native DispatchSourceType MachSend();
     /**
      * @since Available in iOS 4.0 and later.
      */
-    @GlobalValue(symbol="_dispatch_source_type_mach_recv", optional=true)
+    @GlobalValue(symbol="_dispatch_source_type_mach_recv", optional=true, dereference=false)
     public static native DispatchSourceType MachRecv();
     /**
      * @since Available in iOS 4.0 and later.
      */
-    @GlobalValue(symbol="_dispatch_source_type_proc", optional=true)
+    @GlobalValue(symbol="_dispatch_source_type_proc", optional=true, dereference=false)
     public static native DispatchSourceType Proc();
     /**
      * @since Available in iOS 4.0 and later.
      */
-    @GlobalValue(symbol="_dispatch_source_type_read", optional=true)
+    @GlobalValue(symbol="_dispatch_source_type_read", optional=true, dereference=false)
     public static native DispatchSourceType Read();
     /**
      * @since Available in iOS 4.0 and later.
      */
-    @GlobalValue(symbol="_dispatch_source_type_signal", optional=true)
+    @GlobalValue(symbol="_dispatch_source_type_signal", optional=true, dereference=false)
     public static native DispatchSourceType Signal();
     /**
      * @since Available in iOS 4.0 and later.
      */
-    @GlobalValue(symbol="_dispatch_source_type_timer", optional=true)
+    @GlobalValue(symbol="_dispatch_source_type_timer", optional=true, dereference=false)
     public static native DispatchSourceType Timer();
     /**
      * @since Available in iOS 4.0 and later.
      */
-    @GlobalValue(symbol="_dispatch_source_type_vnode", optional=true)
+    @GlobalValue(symbol="_dispatch_source_type_vnode", optional=true, dereference=false)
     public static native DispatchSourceType Vnode();
     /**
      * @since Available in iOS 4.0 and later.
      */
-    @GlobalValue(symbol="_dispatch_source_type_write", optional=true)
+    @GlobalValue(symbol="_dispatch_source_type_write", optional=true, dereference=false)
     public static native DispatchSourceType Write();
     /*</methods>*/
 }

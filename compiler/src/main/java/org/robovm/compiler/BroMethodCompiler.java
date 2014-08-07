@@ -33,6 +33,7 @@ import org.robovm.compiler.MarshalerLookup.ValueMarshalerMethod;
 import org.robovm.compiler.config.Config;
 import org.robovm.compiler.llvm.Alloca;
 import org.robovm.compiler.llvm.ArrayType;
+import org.robovm.compiler.llvm.Bitcast;
 import org.robovm.compiler.llvm.ConstantBitcast;
 import org.robovm.compiler.llvm.DataLayout;
 import org.robovm.compiler.llvm.Fpext;
@@ -760,7 +761,7 @@ public abstract class BroMethodCompiler extends AbstractMethodCompiler {
     }
 
     protected Value loadValueForGetter(SootMethod method, Function fn, Type memberType,
-            Value memberPtr, Value env, long flags) {
+            Value memberPtr, Value env, boolean dereference, long flags) {
             
         soot.Type type = method.getReturnType();
         
@@ -771,9 +772,16 @@ public abstract class BroMethodCompiler extends AbstractMethodCompiler {
         } else if (memberType instanceof ArrayType) {
             // The member is an array contained in the current struct
             result = memberPtr;
-        } else {
+        } else if (dereference) {
             Variable tmp = fn.newVariable(memberType);
             fn.add(new Load(tmp, memberPtr));
+            result = tmp.ref();
+        } else {
+            // Do not dereference the pointer but use it as is. This is needed for
+            // global values such as _dispatch_main_q which is a struct and not a
+            // pointer which we should load. We want the address of the struct.
+            Variable tmp = fn.newVariable(memberType);
+            fn.add(new Bitcast(tmp, memberPtr, tmp.getType()));
             result = tmp.ref();
         }
         

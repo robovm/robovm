@@ -26,7 +26,7 @@ static jbyte testCall0ReturnByte_target(jbyte b) {
     return b << 1;
 }
 static void testCall0ReturnByte(CuTest* tc) {
-    CallInfo* ci = call0AllocateCallInfo(NULL, testCall0ReturnByte_target, 0, 1, 0, 0, 0);
+    CallInfo* ci = CALL0_ALLOCATE_CALL_INFO(NULL, testCall0ReturnByte_target, 0, 1, 0, 0, 0);
     CuAssertPtrNotNull(tc, ci);
     call0AddInt(ci, 16);
     jbyte (*f)(CallInfo*) = (jbyte (*)(CallInfo*)) _call0;
@@ -39,7 +39,7 @@ static jint testCall0ReturnInt_target(jint i) {
     return i >> 8;
 }
 static void testCall0ReturnInt(CuTest* tc) {
-    CallInfo* ci = call0AllocateCallInfo(NULL, testCall0ReturnInt_target, 0, 1, 0, 0, 0);
+    CallInfo* ci = CALL0_ALLOCATE_CALL_INFO(NULL, testCall0ReturnInt_target, 0, 1, 0, 0, 0);
     CuAssertPtrNotNull(tc, ci);
     call0AddInt(ci, 0xdeadbeef);
     jint (*f)(CallInfo*) = (jint (*)(CallInfo*)) _call0;
@@ -52,7 +52,7 @@ static void* testCall0ReturnPtr_target(void* p) {
     return p + sizeof(void*);
 }
 static void testCall0ReturnPtr(CuTest* tc) {
-    CallInfo* ci = call0AllocateCallInfo(NULL, testCall0ReturnPtr_target, 1, 0, 0, 0, 0);
+    CallInfo* ci = CALL0_ALLOCATE_CALL_INFO(NULL, testCall0ReturnPtr_target, 1, 0, 0, 0, 0);
     CuAssertPtrNotNull(tc, ci);
     call0AddPtr(ci, testCall0ReturnPtr_target);
     void* (*f)(CallInfo*) = (void* (*)(CallInfo*)) _call0;
@@ -65,7 +65,7 @@ static jlong testCall0ReturnLong_target(jlong j) {
     return j << 8;
 }
 static void testCall0ReturnLong(CuTest* tc) {
-    CallInfo* ci = call0AllocateCallInfo(NULL, testCall0ReturnLong_target, 0, 0, 1, 0, 0);
+    CallInfo* ci = CALL0_ALLOCATE_CALL_INFO(NULL, testCall0ReturnLong_target, 0, 0, 1, 0, 0);
     CuAssertPtrNotNull(tc, ci);
     call0AddLong(ci, 0xdeadbeef);
     jlong (*f)(CallInfo*) = (jlong (*)(CallInfo*)) _call0;
@@ -78,7 +78,7 @@ static jfloat testCall0ReturnFloat_target(jfloat f) {
     return f * f;
 }
 static void testCall0ReturnFloat(CuTest* tc) {
-    CallInfo* ci = call0AllocateCallInfo(NULL, testCall0ReturnFloat_target, 0, 0, 0, 1, 0);
+    CallInfo* ci = CALL0_ALLOCATE_CALL_INFO(NULL, testCall0ReturnFloat_target, 0, 0, 0, 1, 0);
     CuAssertPtrNotNull(tc, ci);
     call0AddFloat(ci, 3.14f);
     jfloat (*f)(CallInfo*) = (jfloat (*)(CallInfo*)) _call0;
@@ -91,7 +91,7 @@ static jdouble testCall0ReturnDouble_target(jdouble d) {
     return d * d;
 }
 static void testCall0ReturnDouble(CuTest* tc) {
-    CallInfo* ci = call0AllocateCallInfo(NULL, testCall0ReturnDouble_target, 0, 0, 0, 0, 1);
+    CallInfo* ci = CALL0_ALLOCATE_CALL_INFO(NULL, testCall0ReturnDouble_target, 0, 0, 0, 0, 1);
     CuAssertPtrNotNull(tc, ci);
     call0AddDouble(ci, -3.14);
     jdouble (*f)(CallInfo*) = (jdouble (*)(CallInfo*)) _call0;
@@ -109,7 +109,7 @@ static jlong testCall0OneArgOfEach_target(void* p, jint i, jlong l, jfloat f, jd
     return 0x0123456789abcdefLL;
 }
 static void testCall0OneArgOfEach(CuTest* tc) {
-    CallInfo* ci = call0AllocateCallInfo(NULL, testCall0OneArgOfEach_target, 1, 1, 1, 1, 1);
+    CallInfo* ci = CALL0_ALLOCATE_CALL_INFO(NULL, testCall0OneArgOfEach_target, 1, 1, 1, 1, 1);
     CuAssertPtrNotNull(tc, ci);
     call0AddPtr(ci, testCall0OneArgOfEach_target);
     call0AddInt(ci, -100);
@@ -176,7 +176,7 @@ static jint testCall0ManyArgsOfEach_target(
     return 1;
 }
 static void testCall0ManyArgsOfEach(CuTest* tc) {
-    CallInfo* ci = call0AllocateCallInfo(NULL, testCall0ManyArgsOfEach_target, 8, 8, 8, 8, 8);
+    CallInfo* ci = CALL0_ALLOCATE_CALL_INFO(NULL, testCall0ManyArgsOfEach_target, 8, 8, 8, 8, 8);
     CuAssertPtrNotNull(tc, ci);
     call0AddPtr(ci, testCall0ManyArgsOfEach_target + 0xcab1);
     call0AddInt(ci, -100);
@@ -246,7 +246,7 @@ void testCall0Unwind_target(void** ptrs) {
 }
 void testCall0Unwind(CuTest* tc) {
     void* callers[10] = {0};
-    CallInfo* ci = call0AllocateCallInfo(NULL, testCall0Unwind_target, 1, 0, 0, 0, 0);
+    CallInfo* ci = CALL0_ALLOCATE_CALL_INFO(NULL, testCall0Unwind_target, 1, 0, 0, 0, 0);
     CuAssertPtrNotNull(tc, ci);
     call0AddPtr(ci, callers);
     void (*f)(CallInfo*) = (void (*)(CallInfo*)) _call0;

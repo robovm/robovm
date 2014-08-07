@@ -1178,7 +1178,7 @@ void rvmInitialize(Env* env, Class* clazz) {
         return;
     }
 
-    CallInfo* callInfo = call0AllocateCallInfo(env, initializer, 1, 0, 0, 0, 0);
+    CallInfo* callInfo = CALL0_ALLOCATE_CALL_INFO(env, initializer, 1, 0, 0, 0, 0);
     call0AddPtr(callInfo, env);
     void (*f)(CallInfo*) = (void (*)(CallInfo*)) _call0;
     rvmPushGatewayFrame(env);

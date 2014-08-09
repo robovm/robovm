@@ -25,6 +25,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Properties;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -135,6 +136,12 @@ public class IOSTarget extends AbstractTarget {
         if (launchParameters.getStderrFifo() != null) {
             args.add("--stderr");
             args.add(launchParameters.getStderrFifo());
+        }
+        if (launchParameters.getEnvironment() != null) {
+            for (Entry<String, String> entry : launchParameters.getEnvironment().entrySet()) {
+                args.add("--setenv");
+                args.add(entry.getKey() + "=" + entry.getValue());
+            }
         }
         if (!launchParameters.getArguments().isEmpty()) {
             args.add("--args");

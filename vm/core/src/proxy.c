@@ -415,8 +415,7 @@ void _rvmProxyHandler(CallInfo* callInfo) {
     jint argsCount = rvmGetParameterCount((Method*) method);
     jvalue *jvalueArgs = NULL;
     if (argsCount > 0) {
-        jvalueArgs = (jvalue*) rvmAllocateMemory(env, sizeof(jvalue) * argsCount);
-        if (!jvalueArgs) goto errorPop;
+        jvalueArgs = (jvalue*) alloca(sizeof(jvalue) * argsCount);
 
         const char* desc = method->method.desc;
         const char* c;
@@ -496,8 +495,6 @@ void _rvmProxyHandler(CallInfo* callInfo) {
 
     return;
 
-errorPop:
-    rvmPopGatewayFrame(env);
 error:
     rvmRaiseException(env, rvmExceptionOccurred(env));
 }

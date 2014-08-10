@@ -80,17 +80,17 @@ classes:
                 name: "enumerateAssets"
                 parameters:
                     enumerationBlock:
-                        type: "@Block VoidBlock2<ALAssetsGroup, Boolean>"
+                        type: "@Block VoidBlock3<ALAsset, Long, Boolean>"
             '-enumerateAssetsWithOptions:usingBlock:':
                 name: "enumerateAssets"
                 parameters:
                     enumerationBlock:
-                        type: "@Block VoidBlock2<ALAssetsGroup, Boolean>"
+                        type: "@Block VoidBlock3<ALAsset, Long, Boolean>"
             '-enumerateAssetsAtIndexes:options:usingBlock:':
                 name: "enumerateAssets"
                 parameters:
                     enumerationBlock:
-                        type: "@Block VoidBlock2<ALAssetsGroup, Boolean>"
+                        type: "@Block VoidBlock3<ALAsset, Long, Boolean>"
             '-addAsset:':
                 trim_after_first_colon: true
     ALAssetsLibrary: # DONE

@@ -24,6 +24,7 @@
 
 #define LOG_TAG "core.memory"
 
+#define MIN_HEAP_SIZE (4*1024*1024) // 4MB
 #define OBJECTS_GC_ROOTS_INITIAL_SIZE 2048
 #define INTERNAL_GC_ROOTS_INITIAL_SIZE 1024
 
@@ -256,11 +257,10 @@ jboolean initGC(Options* options) {
     if (options->maxHeapSize > 0) {
         GC_set_max_heap_size(options->maxHeapSize);
     }
-    if (options->initialHeapSize > 0) {
-        size_t now = GC_get_heap_size();
-        if (options->initialHeapSize > now) {
-            GC_expand_hp(options->initialHeapSize - now);
-        }
+    jlong initialHeapSize = options->initialHeapSize < MIN_HEAP_SIZE ? MIN_HEAP_SIZE : options->initialHeapSize;
+    size_t now = GC_get_heap_size();
+    if (initialHeapSize > now) {
+        GC_expand_hp(initialHeapSize - now);
     }
 
     objectArrayGCKind = GC_new_kind(GC_new_free_list(), GC_DS_LENGTH, 1, 1);

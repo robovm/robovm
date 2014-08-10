@@ -77,7 +77,12 @@ while true; do
     fi
 done
 
-exec ./test.out -rvm:log=silent -rvm:mx256M $@
+if [ "x$ROBOVM_DEV_ROOT" == 'x' ]; then
+    echo "ROBOVM_DEV_ROOT not set"
+    exit 1
+fi
+
+$ROBOVM_DEV_ROOT/tests/dalvik/robovm-runner "$(pwd)/test.out" -rvm:log=silent -rvm:mx256M $@
 #cp=classes
 #if [ -r classes-ex ]; then
 #    cp=classes:classes-ex

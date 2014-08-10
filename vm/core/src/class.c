@@ -522,6 +522,8 @@ jboolean rvmIsInstanceOf(Env* env, Object* obj, Class* clazz) {
 
 static jboolean fixClassPointer(Env* env, Class* c, void* data) {
     c->object.clazz = java_lang_Class;
+    // Make sure the GC descriptor has been set properly as well.
+    rvmSetupGcDescriptor(env, c);
     return TRUE;
 }
 
@@ -805,13 +807,17 @@ Class* rvmAllocateClass(Env* env, const char* className, Class* superclass, Clas
     if (!clazz) return NULL;
 
     /*
-     * NOTE: All classes we load before we have cached java.lang.Class will have NULL here so it is 
-     * important that we cache java.lang.Class as soon as possible. However, we have to cache
-     * java.lang.Object first since it is the superclass of java.lang.Class. This means that
-     * the java_lang_Object global variable will actually have NULL as clazz until we fix this in
-     * rvmInitClasses().
+     * NOTE: rvmAllocateMemoryForClass() will set a fake clazz->object.clazz value for allocated classes
+     * just to make sure it has a valid GC descriptor at all times. Before we have cached java.lang.Class
+     * we don't want to overwrite this fake value which is why we test if java_lang_Class has been set
+     * below. Since java.lang.Class extends java.lang.Object there will be a short period of time
+     * when the java_lang_Object global will have this fake value as clazz. rvmInitClasses() fixes
+     * this right after both java.lang.Object and java.lang.Class have been loaded.
      */
-    clazz->object.clazz = java_lang_Class;
+
+    if (java_lang_Class) {
+        clazz->object.clazz = java_lang_Class;
+    }
     clazz->name = className;
     clazz->superclass = superclass;
     clazz->classLoader = classLoader;
@@ -1085,6 +1091,9 @@ Method* rvmGetMethods(Env* env, Class* clazz) {
 
 jboolean rvmRegisterClass(Env* env, Class* clazz) {
     assert(CLASS_IS_STATE_ALLOCATED(clazz));
+
+    // We should now have enough of the class set up to build its GC descriptor
+    rvmSetupGcDescriptor(env, clazz);
 
     // TODO: Check that the superclass and all interfaces are accessible to the new class
     // TODO: Verify the class hierarchy (class doesn't override final methods, changes public -> private, etc)

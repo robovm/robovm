@@ -18,6 +18,7 @@
 
 extern jboolean rvmInitMemory(Env* env);
 extern Class* rvmAllocateMemoryForClass(Env* env, jint classDataSize);
+extern void rvmSetupGcDescriptor(Env* env, Class* clazz);
 extern Object* rvmAllocateMemoryForObject(Env* env, Class* clazz);
 extern jboolean rvmIsCriticalOutOfMemoryError(Env* env, Object* throwable);
 extern void rvmRegisterFinalizer(Env* env, Object* obj);

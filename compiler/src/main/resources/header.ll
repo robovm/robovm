@@ -6,8 +6,8 @@
 %VITable = type {i16, [0 x i8*]}
 %ITable = type {%TypeInfo*, %VITable}
 %ITables = type {i16, %ITable*, [0 x %ITable*]}
-; NOTE: The compiler assumes that %Class is a multiple of 8 in size (currently 84 bytes)
-%Class = type {i8*, i8*, i8*, %TypeInfo*, %VITable*, %ITables*, i8*, i8*, i8*, i8*, i8*, i32, i8*, i8*, i8*, i8*, i8*, i32, i32, i32, i16, i16, i32}
+; NOTE: The compiler assumes that %Class is a multiple of 8 in size (currently 88 bytes + 0 bytes padding)
+%Class = type {i8*, i8*, i8*, i8*, %TypeInfo*, %VITable*, %ITables*, i8*, i8*, i8*, i8*, i8*, i32, i8*, i8*, i8*, i8*, i8*, i32, i32, i32, i16, i16}
 %Method = type opaque
 %Field = type opaque
 %Object = type {%Class*, i8*}
@@ -161,39 +161,39 @@ define private i32* @Object_lockPtr(%Object* %o) alwaysinline {
 }
 
 define private %TypeInfo* @Class_typeInfo(%Class* %c) alwaysinline {
-    %1 = getelementptr %Class* %c, i32 0, i32 3 ; Class->typeInfo
+    %1 = getelementptr %Class* %c, i32 0, i32 4 ; Class->typeInfo
     %2 = load volatile %TypeInfo** %1
     ret %TypeInfo* %2
 }
 
 define private %VITable* @Class_vitable(%Class* %c) alwaysinline {
-    %1 = getelementptr %Class* %c, i32 0, i32 4 ; Class->vitable
+    %1 = getelementptr %Class* %c, i32 0, i32 5 ; Class->vitable
     %2 = load volatile %VITable** %1
     ret %VITable* %2
 }
 
 define private %ITables* @Class_itables(%Class* %c) alwaysinline {
-    %1 = getelementptr %Class* %c, i32 0, i32 5 ; Class->itables
+    %1 = getelementptr %Class* %c, i32 0, i32 6 ; Class->itables
     %2 = load volatile %ITables** %1
     ret %ITables* %2
 }
 
 define private %Class* @Class_superclass(%Class* %c) alwaysinline {
-    %1 = getelementptr %Class* %c, i32 0, i32 8 ; Class->superclass
+    %1 = getelementptr %Class* %c, i32 0, i32 9 ; Class->superclass
     %2 = load volatile i8** %1
     %3 = bitcast i8* %2 to %Class*
     ret %Class* %3
 }
 
 define private %Class* @Class_componentType(%Class* %c) alwaysinline {
-    %1 = getelementptr %Class* %c, i32 0, i32 9 ; Class->componentType
+    %1 = getelementptr %Class* %c, i32 0, i32 10 ; Class->componentType
     %2 = load volatile i8** %1
     %3 = bitcast i8* %2 to %Class*
     ret %Class* %3
 }
 
 define private i32 @Class_flags(%Class* %c) alwaysinline {
-    %1 = getelementptr %Class* %c, i32 0, i32 11 ; Class->flags
+    %1 = getelementptr %Class* %c, i32 0, i32 12 ; Class->flags
     %2 = load volatile i32* %1
     ret i32 %2
 }

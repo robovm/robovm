@@ -416,10 +416,12 @@ functions:
 values:
     MIDINetwork(.*)ServiceType:
         class: CoreMIDI
-        name: "MIDINetworkServiceType#{g[0]}"
+        name: "NetworkServiceType#{g[0]}"
+        type: NSString
     MIDINetworkNotification(.*):
         class: CoreMIDI
-        name: "MIDINetworkNotification#{g[0]}"
+        name: "NetworkNotification#{g[0]}"
+        type: NSString
    
     # Make sure we don't miss any values if new ones are introduced in a later version
     (MIDI.*):

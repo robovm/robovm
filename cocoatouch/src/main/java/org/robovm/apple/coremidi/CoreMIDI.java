@@ -49,16 +49,16 @@ import org.robovm.apple.corefoundation.*;
      * @since Available in iOS 4.2 and later.
      */
     @GlobalValue(symbol="MIDINetworkBonjourServiceType", optional=true)
-    public static native String MIDINetworkServiceTypeBonjour();
+    public static native NSString NetworkServiceTypeBonjour();
     /**
      * @since Available in iOS 4.2 and later.
      */
     @GlobalValue(symbol="MIDINetworkNotificationContactsDidChange", optional=true)
-    public static native String MIDINetworkNotificationContactsDidChange();
+    public static native NSString NetworkNotificationContactsDidChange();
     /**
      * @since Available in iOS 4.2 and later.
      */
     @GlobalValue(symbol="MIDINetworkNotificationSessionDidChange", optional=true)
-    public static native String MIDINetworkNotificationSessionDidChange();
+    public static native NSString NetworkNotificationSessionDidChange();
     /*</methods>*/
 }

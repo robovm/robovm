@@ -1,0 +1,21 @@
+#!/bin/bash
+
+SELF=$(basename $0)
+BASE=$(cd $(dirname $0)/../..; pwd -P)
+
+SSH_HOST=
+
+if [ -f "$BASE/tests/dalvik/robovm.env" ]; then
+  . $BASE/tests/dalvik/robovm.env
+fi
+
+if [ "x$SSH_HOST" != 'x' -a "x$SSH_HOST" != 'xlocalhost' ]; then
+  TARGET=$(pwd)
+  rsync -a --delete $TARGET/ $SSH_HOST:$TARGET/ > /dev/null
+  ssh $SSH_HOST "$@"
+  result=$?
+else
+  exec "$@"
+  result=$?
+fi
+exit $result

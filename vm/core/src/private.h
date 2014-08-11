@@ -20,7 +20,9 @@
 #include <robovm.h>
 
 /* memory.c */
-#define MAKE_GC_BITMAP(offset) ((offset>>2) > 30 ? -1 : (1 << (31 - (offset>>2))))
+#define GC_BITMAP_BITS (sizeof(void*)<<3)
+#define GC_BITMAP_MAX_OFFSET ((GC_BITMAP_BITS - 2) << 2)
+#define MAKE_GC_BITMAP(offset) (offset > GC_BITMAP_MAX_OFFSET ? -1 : (1 << ((GC_BITMAP_BITS - 1) - (offset >> 2))))
 
 typedef void (*CleanupHandler)(Env*, Object*);
 

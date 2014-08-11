@@ -20,6 +20,7 @@ a.out
 /dist/target/
 /dist/compiler/target/
 /dist/package/target/
+/tests/dalvik/robovm*.env
 /tests/libcore/target/
 /tests/robovm/target/
 /tests/drlvm/robovm-vts.env

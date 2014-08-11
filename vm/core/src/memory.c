@@ -17,12 +17,14 @@
 #include <string.h>
 #include <stdint.h>
 #include <gc/gc_mark.h>
+#include <gc/gc_gcj.h>
 #include "private.h"
 #include "uthash.h"
 #include "utlist.h"
 
 #define LOG_TAG "core.memory"
 
+#define MIN_HEAP_SIZE (4*1024*1024) // 4MB
 #define OBJECTS_GC_ROOTS_INITIAL_SIZE 2048
 #define INTERNAL_GC_ROOTS_INITIAL_SIZE 1024
 
@@ -85,12 +87,15 @@ static jint objectGCRootsSize = 0;
 static Mutex referentsLock;
 static Mutex gcRootsLock;
 
-// The GC kind used when allocating Objects (and Classes which are also Objects)
-static uint32_t objectGCKind;
-// The GC kind used when allocating large arrays
-static uint32_t largeArrayGCKind;
-// The GC kind used when allocating primitive arrays and Objects containing no references
-static uint32_t atomicObjectGCKind;
+// The GC kind used when allocating Object arrays
+static uint32_t objectArrayGCKind;
+
+// The GC descriptor used for object instances which have no references to other objects.
+#define REF_FREE_GC_DESCRIPTOR ((0 << GC_DS_TAGS) | GC_DS_LENGTH)
+// The GC descriptor used for objects which have to be marked using the markObject() mark procedure.
+static void* markObjectGcDescriptor = NULL;
+// A fake Class used as clazz pointer before java_lang_Class has been loaded.
+static Class fakeClass;
 
 static inline struct GC_ms_entry* markRegion(void** start, void** end, struct GC_ms_entry* mark_stack_ptr, struct GC_ms_entry* mark_stack_limit) {
     void** p = start;
@@ -111,6 +116,9 @@ static struct GC_ms_entry* markObject(GC_word* addr, struct GC_ms_entry* mark_st
         return mark_stack_ptr;
     }
 
+    // This mark procedure should never be called for array instances.
+    assert(!CLASS_IS_ARRAY(obj->clazz));
+
     mark_stack_ptr = GC_MARK_AND_PUSH(obj->clazz, mark_stack_ptr, mark_stack_limit, NULL);
 
     if (obj->clazz == java_lang_Class) {
@@ -129,12 +137,6 @@ static struct GC_ms_entry* markObject(GC_word* addr, struct GC_ms_entry* mark_st
         mark_stack_ptr = GC_MARK_AND_PUSH(clazz->_methods, mark_stack_ptr, mark_stack_limit, NULL);
         void** start = (void**) (((char*) clazz) + offsetof(Class, data));
         void** end = (void**) (((char*) start) + clazz->classRefCount * sizeof(Object*));
-        mark_stack_ptr = markRegion(start, end, mark_stack_ptr, mark_stack_limit);
-    } else if (CLASS_IS_ARRAY(obj->clazz)) {
-        // Only small arrays of objects are allocated using this mark proc. Mark all values in the array.
-        ObjectArray* array = (ObjectArray*) obj;
-        void** start = (void**) (((char*) array) + offsetof(ObjectArray, values));
-        void** end = (void**) (((char*) start) + sizeof(Object*) * array->length);
         mark_stack_ptr = markRegion(start, end, mark_stack_ptr, mark_stack_limit);
     } else {
         // Object* - for each Class in the hierarchy of obj's Class we mark the first instanceRefCount*sizeof(Object*) bytes
@@ -201,7 +203,7 @@ static void dumpRefs(void** start, void** end) {
 }
 
 static void heapDumpCallback(void* ptr, unsigned char kind, size_t sz, void* data) {
-    if (kind == objectGCKind || kind == largeArrayGCKind || kind == atomicObjectGCKind) {
+    if (kind == GC_gcj_kind || kind == objectArrayGCKind) {
         Object* obj = (Object*) ptr;
         if (obj->clazz == java_lang_Class) {
             Class* clazz = (Class*) obj;
@@ -251,20 +253,23 @@ jboolean initGC(Options* options) {
     GC_set_no_dls(1);
     GC_set_java_finalization(1);
     GC_INIT();
+    GC_init_gcj_malloc(GC_GCJ_RESERVED_MARK_PROC_INDEX, NULL);
     if (options->maxHeapSize > 0) {
         GC_set_max_heap_size(options->maxHeapSize);
     }
-    if (options->initialHeapSize > 0) {
-        size_t now = GC_get_heap_size();
-        if (options->initialHeapSize > now) {
-            GC_expand_hp(options->initialHeapSize - now);
-        }
+    jlong initialHeapSize = options->initialHeapSize < MIN_HEAP_SIZE ? MIN_HEAP_SIZE : options->initialHeapSize;
+    size_t now = GC_get_heap_size();
+    if (initialHeapSize > now) {
+        GC_expand_hp(initialHeapSize - now);
     }
 
-    objectGCKind = GC_new_kind(GC_new_free_list(), GC_MAKE_PROC(GC_new_proc(markObject), 0), 0, 1);
-    largeArrayGCKind = GC_new_kind(GC_new_free_list(), GC_DS_LENGTH, 1, 1);
-    atomicObjectGCKind = GC_new_kind(GC_new_free_list(), GC_DS_LENGTH, 0, 1);
+    objectArrayGCKind = GC_new_kind(GC_new_free_list(), GC_DS_LENGTH, 1, 1);
     referentEntryGCKind = gcNewDirectBitmapKind(REFERENT_ENTRY_GC_BITMAP);
+    markObjectGcDescriptor = (void*) GC_MAKE_PROC(GC_new_proc(markObject), 0);
+
+    // Set up the fakeClass Class pointer so that it has a proper gcDescriptor
+    memset(&fakeClass, 0, sizeof(Class));
+    fakeClass.gcDescriptor = (void*) ((sizeof(Class) << GC_DS_TAG_BITS) | GC_DS_LENGTH);
 
     if (rvmInitMutex(&referentsLock) != 0) {
         return FALSE;
@@ -317,6 +322,15 @@ void* gcAllocate(size_t size) {
         // Force GC and try again
         GC_gcollect();
         m = GC_MALLOC(size);
+    }
+    return m;
+}
+void* gcAllocateObject(size_t size, void* clazz) {
+    void* m = GC_gcj_malloc(size, clazz);
+    if (!m) {
+        // Force GC and try again
+        GC_gcollect();
+        m = GC_gcj_malloc(size, clazz);
     }
     return m;
 }
@@ -686,8 +700,62 @@ jboolean rvmInitMemory(Env* env) {
     return TRUE;
 }
 
+static void* buildGcBitmapDescriptor(Class* clazz) {
+    uint64_t descriptor = 0;
+    if (clazz->superclass) {
+        descriptor = (uint64_t) buildGcBitmapDescriptor(clazz->superclass);
+    }
+    jint startOffset = clazz->instanceDataOffset;
+    jint endOffset = startOffset + clazz->instanceRefCount * sizeof(Object*);
+    if (endOffset > GC_BITMAP_MAX_OFFSET) {
+        return markObjectGcDescriptor;
+    }
+    for (jint offset = startOffset; offset < endOffset; offset += sizeof(Object*)) {
+        descriptor |= MAKE_GC_BITMAP(offset);
+    }
+    return (void*) (descriptor | GC_DS_BITMAP);
+}
+
+void rvmSetupGcDescriptor(Env* env, Class* clazz) {
+    if (clazz->object.clazz == &fakeClass) {
+        // The proper class has not been set yet. We will be called again.
+        return;
+    }
+
+    if (CLASS_IS_PRIMITIVE(clazz) || (CLASS_IS_ARRAY(clazz) && CLASS_IS_PRIMITIVE(clazz->componentType))) {
+        // Primitive classes and array of primitives have no references that need to be scanned.
+        // The Class pointer and the monitor (if fat) are allocated uncollectably
+        // and will be reachable even if we allocate this using REF_FREE_GC_DESCRIPTOR.
+        clazz->gcDescriptor = REF_FREE_GC_DESCRIPTOR;
+    } else if (clazz == java_lang_Class || CLASS_IS_FINALIZABLE(clazz) || CLASS_IS_REFERENCE(clazz) 
+        || (clazz->superclass && clazz->superclass == org_robovm_rt_bro_Struct)
+        || (clazz->superclass && clazz->superclass == java_nio_MemoryBlock)
+        || (clazz == java_nio_MemoryBlock) || rvmIsSubClass(java_lang_Throwable, clazz)) {
+
+        // These types of objects must be marked specially. We could probably
+        // do this using GC bitmap descriptors instead.
+
+        clazz->gcDescriptor = markObjectGcDescriptor;
+    } else if (CLASS_IS_REF_FREE(clazz)) {
+        // Objects with 0 instance reference fields contain no pointers except for the Class
+        // pointer and possibly a fat monitor. Those are allocated uncollectably
+        // and will be reachable even if we tell the GC this is reference free.
+        clazz->gcDescriptor = REF_FREE_GC_DESCRIPTOR;
+    } else {
+        // TODO: Use GC bitmap descriptors for small Objects.
+        clazz->gcDescriptor = buildGcBitmapDescriptor(clazz);
+    }
+    if (IS_TRACE_ENABLED) {
+        if (clazz->gcDescriptor == markObjectGcDescriptor) {
+            TRACEF("Using markObjectGcDescriptor for %s", clazz->name);
+        } else {
+            TRACEF("Using GC_GS_BITMAP descriptor %p for %s", clazz->gcDescriptor, clazz->name);
+        }
+    }
+}
+
 Class* rvmAllocateMemoryForClass(Env* env, jint classDataSize) {
-    Class* m = (Class*) gcAllocateKind(classDataSize, objectGCKind);
+    Class* m = (Class*) gcAllocateObject(classDataSize, &fakeClass);
     if (!m) {
         rvmThrowOutOfMemoryError(env);
         return NULL;
@@ -696,27 +764,7 @@ Class* rvmAllocateMemoryForClass(Env* env, jint classDataSize) {
 }
 
 Object* rvmAllocateMemoryForObject(Env* env, Class* clazz) {
-    Object* m = NULL;
-    if (CLASS_IS_FINALIZABLE(clazz) || CLASS_IS_REFERENCE(clazz) 
-        || (clazz->superclass && clazz->superclass == org_robovm_rt_bro_Struct)
-        || (clazz->superclass && clazz->superclass == java_nio_MemoryBlock)
-        || (clazz == java_nio_MemoryBlock)) {
-
-        // These types of objects must be marked specially. We could probably
-        // do this using GC bitmap descriptors instead. Also instances of
-        // java.lang.Throwable must be marked specially but it has at least 1
-        // reference field and will thus not be allocated atomically.
-
-        m = (Object*) gcAllocateKind(clazz->instanceDataSize, objectGCKind);
-    } else if (CLASS_IS_REF_FREE(clazz)) {
-        // Objects with 0 instance reference fields contain no pointers except for the Class
-        // pointer and possibly a fat monitor. Those are allocated uncollectably
-        // and will be reachable even if we alocate this atomically.
-        m = (Object*) gcAllocateKind(clazz->instanceDataSize, atomicObjectGCKind);
-    } else {
-        // TODO: Use GC bitmap descriptors for small Objects.
-        m = (Object*) gcAllocateKind(clazz->instanceDataSize, objectGCKind);
-    }
+    Object* m = (Object*) gcAllocateObject(clazz->instanceDataSize, clazz);
     if (!m) {
         if (clazz == java_lang_OutOfMemoryError) {
             // We can't even allocate an OutOfMemoryError object. Prevent
@@ -742,18 +790,15 @@ Array* rvmAllocateMemoryForArray(Env* env, Class* arrayClass, jint length) {
     }
     Array* m = NULL;
     if (CLASS_IS_PRIMITIVE(arrayClass->componentType)) {
-        // Primitive array objects contain no pointers except for the Class
-        // pointer and possibly a fat monitor. Those are allocated uncollectably
-        // and will be reachable even if we alocate this atomically.
-        m = (Array*) gcAllocateKind((size_t) size, atomicObjectGCKind);
-    } else if (length < 30) {
-        // TODO: Use GC bitmap descriptor for small Object arrays.
-        m = (Array*) gcAllocateKind((size_t) size, objectGCKind);
+        m = (Array*) gcAllocateObject((size_t) size, arrayClass);
     } else {
-        // Large Object array. Conservatively scanned. Only the lock (if thin) 
+        // Object array. Conservatively scanned. Only the lock (if thin) 
         // and the length fields could become a problem if they look like 
         // pointers into the heap.
-        m = (Array*) gcAllocateKind((size_t) size, largeArrayGCKind);
+        // TODO: This doesn't benefit from thread local allocation. We
+        // could have used gcAllocate() but that would have made object
+        // arrays invisible to the heapDumpCallback().
+        m = (Array*) gcAllocateKind((size_t) size, objectArrayGCKind);
     }
     if (!m) {
         rvmThrowOutOfMemoryError(env);

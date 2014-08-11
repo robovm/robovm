@@ -36,5 +36,4 @@ if [ -r src-ex ]; then
     cp=classes:classes-ex
 fi
 
-$ROBOVM_DEV_ROOT/bin/robovm -tmp `pwd`/tmp -d `pwd` \
-    -o test.out -debug -use-debug-libs -verbose -forcelinkclasses '##.#' -cp "$cp" Main > robovm.log 2>&1
+$ROBOVM_DEV_ROOT/tests/dalvik/robovm-builder -forcelinkclasses '##.#' -cp "$cp" Main > robovm.log 2>&1

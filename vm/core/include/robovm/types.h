@@ -152,13 +152,16 @@ struct TypeInfo {
 };
 
 /* 
- * Represents a java.lang.Class instance
+ * Represents a java.lang.Class instance. Size must be multiple of 8 bytes. Must correspond to the %Class type in header.ll in compiler.
  */
 struct Class {
   Object object;
   void* _data;             // Reserve the memory needed to store the instance fields for java.lang.Class. 
                            // java.lang.Class has a single field, (SoftReference<ClassCache<T>> cacheRef).
                            // void* gives enough space to store that reference.
+  void* gcDescriptor;      // Descriptor used by the GC to find pointers in instances of this class.
+                           // NOTE: If the offset of gcDescriptor changes the EXTGC_MARK_DESCR_OFFSET value in the 
+                           // root CMakeLists.txt MUST also be modified.
   TypeInfo* typeInfo;      // Info on all types this class implements.
   VITable* vitable;
   ITables* itables;
@@ -174,8 +177,7 @@ struct Class {
   Method* _methods;        // Lazily loaded linked list of methods. Use rvmGetMethods() to get this value.
   void* attributes;
   jint classDataSize;
-  jint instanceDataOffset; // The offset from the base of Object->data
-                           // where the instance fields of this class can be found.
+  jint instanceDataOffset; // The offset from the base of the Object where the instance fields of this class can be found.
   jint instanceDataSize;   // The total number of bytes needed to store instances of this class.
   unsigned short classRefCount;
   unsigned short instanceRefCount;

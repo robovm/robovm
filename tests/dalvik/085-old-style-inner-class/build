@@ -22,6 +22,5 @@ set -e
 mkdir classes
 ${JAVAC} -source 1.4 -target 1.4 -d classes `find src -name '*.java'`
 
-# RoboVM note: Call robovm instead of dx
-$ROBOVM_DEV_ROOT/bin/robovm -tmp `pwd`/tmp -d `pwd` \
-    -o test.out -debug -use-debug-libs -verbose -cp classes Main > robovm.log 2>&1
+# RoboVM note: Call robovm-builder instead of dx
+$ROBOVM_DEV_ROOT/tests/dalvik/robovm-builder -cp classes Main > robovm.log 2>&1

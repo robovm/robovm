@@ -95,7 +95,7 @@ if(DARWIN)
 endif()
 
 # Set up global C and C++ compiler flags
-set(C_FLAGS "${C_FLAGS}")
+set(C_FLAGS "${C_FLAGS} -std=gnu99")
 set(CXX_FLAGS "${CXX_FLAGS} -std=gnu++11")
 set(C_CXX_FLAGS "${C_CXX_FLAGS} -Wall -fvisibility=hidden -fdata-sections -ffunction-sections")
 set(C_CXX_FLAGS "${C_CXX_FLAGS} -fno-omit-frame-pointer") # The unwind code relies on frame pointers being present.

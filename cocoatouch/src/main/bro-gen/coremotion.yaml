@@ -77,12 +77,12 @@ classes:
                 name: "queryStepCount"
                 parameters:
                     handler:
-                        type: "@Block VoidBlock2<Long, NSError>"
+                        type: '@Block("(@MachineSizedSInt,)") VoidBlock2<Long, NSError>'
             '-startStepCountingUpdatesToQueue:updateOn:withHandler:':
                 name: "startStepCountingUpdates"
                 parameters:
                     handler:
-                        type: "@Block VoidBlock3<Long, NSDate, NSError>"
+                        type: '@Block("(@MachineSizedSInt,,)") VoidBlock3<Long, NSDate, NSError>'
 
     # Structs
     CMAcceleration: {}

@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.robovm.apple.adsupport;
+package org.robovm.apple.coremidi;
 
 /*<imports>*/
 import java.io.*;
@@ -27,34 +27,31 @@ import org.robovm.rt.bro.*;
 import org.robovm.rt.bro.annotation.*;
 import org.robovm.rt.bro.ptr.*;
 import org.robovm.apple.foundation.*;
+import org.robovm.apple.corefoundation.*;
 /*</imports>*/
 
 /*<javadoc>*/
-/**
- * @since Available in iOS 6.0 and later.
- */
+
 /*</javadoc>*/
-/*<annotations>*/@Library("AdSupport") @NativeClass/*</annotations>*/
-/*<visibility>*/public/*</visibility>*/ class /*<name>*/ASIdentifierManager/*</name>*/ 
-    extends /*<extends>*/NSObject/*</extends>*/ 
+/*<annotations>*//*</annotations>*/
+/*<visibility>*/public/*</visibility>*/ class /*<name>*/MIDIValueMap/*</name>*/ 
+    extends /*<extends>*/Struct<MIDIValueMap>/*</extends>*/ 
     /*<implements>*//*</implements>*/ {
 
-    /*<ptr>*/public static class ASIdentifierManagerPtr extends Ptr<ASIdentifierManager, ASIdentifierManagerPtr> {}/*</ptr>*/
-    /*<bind>*/static { ObjCRuntime.bind(ASIdentifierManager.class); }/*</bind>*/
+    /*<ptr>*/public static class MIDIValueMapPtr extends Ptr<MIDIValueMap, MIDIValueMapPtr> {}/*</ptr>*/
+    /*<bind>*/
+    /*</bind>*/
     /*<constants>*//*</constants>*/
     /*<constructors>*/
-    public ASIdentifierManager() {}
-    protected ASIdentifierManager(SkipInit skipInit) { super(skipInit); }
+    public MIDIValueMap() {}
+    public MIDIValueMap(ByteBuffer value) {
+        this.value(value);
+    }
     /*</constructors>*/
-    /*<properties>*/
-    @Property(selector = "advertisingIdentifier")
-    public native NSUUID getAdvertisingIdentifier();
-    @Property(selector = "isAdvertisingTrackingEnabled")
-    public native boolean isAdvertisingTrackingEnabled();
-    /*</properties>*/
-    /*<members>*//*</members>*/
-    /*<methods>*/
-    @Method(selector = "sharedManager")
-    public static native ASIdentifierManager sharedManager();
-    /*</methods>*/
+    /*<properties>*//*</properties>*/
+    /*<members>*/
+    @StructMember(0) public native @Array({128}) ByteBuffer value();
+    @StructMember(0) public native MIDIValueMap value(@Array({128}) ByteBuffer value);
+    /*</members>*/
+    /*<methods>*//*</methods>*/
 }

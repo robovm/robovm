@@ -79,11 +79,11 @@ import org.robovm.apple.avfoundation.*;
     @Method(selector = "bodyAlongRayStart:end:")
     public native SKPhysicsBody getBodyAlongRay(@ByVal CGPoint start, @ByVal CGPoint end);
     @Method(selector = "enumerateBodiesAtPoint:usingBlock:")
-    public native void enumerateBodiesAtPoint(@ByVal CGPoint point, @Block VoidBlock2<SKPhysicsBody, Boolean> block);
+    public native void enumerateBodiesAtPoint(@ByVal CGPoint point, @Block VoidBlock2<SKPhysicsBody, BytePtr> block);
     @Method(selector = "enumerateBodiesInRect:usingBlock:")
-    public native void enumerateBodiesInRect(@ByVal CGRect rect, @Block VoidBlock2<SKPhysicsBody, Boolean> block);
+    public native void enumerateBodiesInRect(@ByVal CGRect rect, @Block VoidBlock2<SKPhysicsBody, BytePtr> block);
     @Method(selector = "enumerateBodiesAlongRayStart:end:usingBlock:")
-    public native void enumerateBodiesAlongRay(@ByVal CGPoint start, @ByVal CGPoint end, @Block VoidBlock4<SKPhysicsBody, CGPoint, CGVector, Boolean> block);
+    public native void enumerateBodiesAlongRay(@ByVal CGPoint start, @ByVal CGPoint end, @Block VoidBlock4<SKPhysicsBody, CGPoint, CGVector, BytePtr> block);
     @Method(selector = "encodeWithCoder:")
     public native void encode(NSCoder aCoder);
     /*</methods>*/

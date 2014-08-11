@@ -80,17 +80,17 @@ classes:
                 name: "enumerateAssets"
                 parameters:
                     enumerationBlock:
-                        type: "@Block VoidBlock3<ALAsset, Long, Boolean>"
+                        type: '@Block("(,@MachineSizedUInt,)") VoidBlock3<ALAsset, Long, BytePtr>'
             '-enumerateAssetsWithOptions:usingBlock:':
                 name: "enumerateAssets"
                 parameters:
                     enumerationBlock:
-                        type: "@Block VoidBlock3<ALAsset, Long, Boolean>"
+                        type: '@Block("(,@MachineSizedUInt,)") VoidBlock3<ALAsset, Long, BytePtr>'
             '-enumerateAssetsAtIndexes:options:usingBlock:':
                 name: "enumerateAssets"
                 parameters:
                     enumerationBlock:
-                        type: "@Block VoidBlock3<ALAsset, Long, Boolean>"
+                        type: '@Block("(,@MachineSizedUInt,)") VoidBlock3<ALAsset, Long, BytePtr>'
             '-addAsset:':
                 trim_after_first_colon: true
     ALAssetsLibrary: # DONE
@@ -99,7 +99,7 @@ classes:
                 name: "enumerateGroups"
                 parameters:
                     enumerationBlock:
-                        type: "@Block VoidBlock2<ALAssetsGroup, Boolean>"
+                        type: "@Block VoidBlock2<ALAssetsGroup, BytePtr>"
                     failureBlock:
                         type: "@Block VoidBlock1<NSError>"
             '-assetForURL:resultBlock:failureBlock:':

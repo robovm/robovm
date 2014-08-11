@@ -53,7 +53,7 @@ import org.robovm.apple.coregraphics.*;
     /*<members>*//*</members>*/
     /*<methods>*/
     @Method(selector = "enumerateGroupsWithTypes:usingBlock:failureBlock:")
-    public native void enumerateGroups(ALAssetsGroupType types, @Block VoidBlock2<ALAssetsGroup, Boolean> enumerationBlock, @Block VoidBlock1<NSError> failureBlock);
+    public native void enumerateGroups(ALAssetsGroupType types, @Block VoidBlock2<ALAssetsGroup, BytePtr> enumerationBlock, @Block VoidBlock1<NSError> failureBlock);
     @Method(selector = "assetForURL:resultBlock:failureBlock:")
     public native void getAsset(NSURL assetURL, @Block VoidBlock1<ALAsset> resultBlock, @Block VoidBlock1<NSError> failureBlock);
     /**

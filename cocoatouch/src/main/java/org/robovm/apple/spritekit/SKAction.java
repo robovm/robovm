@@ -157,7 +157,7 @@ import org.robovm.apple.avfoundation.*;
     @Method(selector = "runAction:onChildWithName:")
     public static native SKAction runAction(SKAction action, String name);
     @Method(selector = "customActionWithDuration:actionBlock:")
-    public static native SKAction customAction(double seconds, @Block VoidBlock2<SKNode, Float> block);
+    public static native SKAction customAction(double seconds, @Block(",@MachineSizedFloat") VoidBlock2<SKNode, Double> block);
     @Method(selector = "encodeWithCoder:")
     public native void encode(NSCoder aCoder);
     /*</methods>*/

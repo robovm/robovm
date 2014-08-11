@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.robovm.apple.adsupport;
+package org.robovm.apple.coremidi;
 
 /*<imports>*/
 import java.io.*;
@@ -27,34 +27,23 @@ import org.robovm.rt.bro.*;
 import org.robovm.rt.bro.annotation.*;
 import org.robovm.rt.bro.ptr.*;
 import org.robovm.apple.foundation.*;
+import org.robovm.apple.corefoundation.*;
 /*</imports>*/
 
 /*<javadoc>*/
-/**
- * @since Available in iOS 6.0 and later.
- */
 /*</javadoc>*/
-/*<annotations>*/@Library("AdSupport") @NativeClass/*</annotations>*/
-/*<visibility>*/public/*</visibility>*/ class /*<name>*/ASIdentifierManager/*</name>*/ 
-    extends /*<extends>*/NSObject/*</extends>*/ 
+/*<annotations>*//*</annotations>*/
+/*<visibility>*//*</visibility>*/ class /*<name>*/MIDISetup/*</name>*/ 
+    extends /*<extends>*/MIDIObject/*</extends>*/ 
     /*<implements>*//*</implements>*/ {
 
-    /*<ptr>*/public static class ASIdentifierManagerPtr extends Ptr<ASIdentifierManager, ASIdentifierManagerPtr> {}/*</ptr>*/
-    /*<bind>*/static { ObjCRuntime.bind(ASIdentifierManager.class); }/*</bind>*/
+    /*<ptr>*/public static class MIDISetupPtr extends Ptr<MIDISetup, MIDISetupPtr> {}/*</ptr>*/
+    /*<bind>*/static { Bro.bind(MIDISetup.class); }/*</bind>*/
     /*<constants>*//*</constants>*/
     /*<constructors>*/
-    public ASIdentifierManager() {}
-    protected ASIdentifierManager(SkipInit skipInit) { super(skipInit); }
+    protected MIDISetup() {}
     /*</constructors>*/
-    /*<properties>*/
-    @Property(selector = "advertisingIdentifier")
-    public native NSUUID getAdvertisingIdentifier();
-    @Property(selector = "isAdvertisingTrackingEnabled")
-    public native boolean isAdvertisingTrackingEnabled();
-    /*</properties>*/
+    /*<properties>*//*</properties>*/
     /*<members>*//*</members>*/
-    /*<methods>*/
-    @Method(selector = "sharedManager")
-    public static native ASIdentifierManager sharedManager();
-    /*</methods>*/
+    /*<methods>*//*</methods>*/
 }

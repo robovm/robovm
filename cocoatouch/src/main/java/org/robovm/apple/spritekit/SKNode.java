@@ -131,7 +131,7 @@ import org.robovm.apple.avfoundation.*;
     @Method(selector = "childNodeWithName:")
     public native SKNode getChild(String name);
     @Method(selector = "enumerateChildNodesWithName:usingBlock:")
-    public native void enumerateChildNodes(String name, @Block VoidBlock2<SKNode, Boolean> block);
+    public native void enumerateChildNodes(String name, @Block VoidBlock2<SKNode, BytePtr> block);
     @Method(selector = "inParentHierarchy:")
     public native boolean isInParentHierarchy(SKNode parent);
     @Method(selector = "runAction:")

@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.robovm.apple.adsupport;
+package org.robovm.apple.coremidi;
 
 /*<imports>*/
 import java.io.*;
@@ -27,34 +27,38 @@ import org.robovm.rt.bro.*;
 import org.robovm.rt.bro.annotation.*;
 import org.robovm.rt.bro.ptr.*;
 import org.robovm.apple.foundation.*;
+import org.robovm.apple.corefoundation.*;
 /*</imports>*/
 
 /*<javadoc>*/
-/**
- * @since Available in iOS 6.0 and later.
- */
 /*</javadoc>*/
-/*<annotations>*/@Library("AdSupport") @NativeClass/*</annotations>*/
-/*<visibility>*/public/*</visibility>*/ class /*<name>*/ASIdentifierManager/*</name>*/ 
-    extends /*<extends>*/NSObject/*</extends>*/ 
+/*<annotations>*/@Library("CoreMIDI") @Marshaler(NSString.AsStringMarshaler.class)/*</annotations>*/
+/*<visibility>*/public/*</visibility>*/ class /*<name>*/CoreMIDI/*</name>*/ 
+    extends /*<extends>*/Object/*</extends>*/ 
     /*<implements>*//*</implements>*/ {
 
-    /*<ptr>*/public static class ASIdentifierManagerPtr extends Ptr<ASIdentifierManager, ASIdentifierManagerPtr> {}/*</ptr>*/
-    /*<bind>*/static { ObjCRuntime.bind(ASIdentifierManager.class); }/*</bind>*/
+    /*<ptr>*/
+    /*</ptr>*/
+    /*<bind>*/static { Bro.bind(CoreMIDI.class); }/*</bind>*/
     /*<constants>*//*</constants>*/
-    /*<constructors>*/
-    public ASIdentifierManager() {}
-    protected ASIdentifierManager(SkipInit skipInit) { super(skipInit); }
-    /*</constructors>*/
-    /*<properties>*/
-    @Property(selector = "advertisingIdentifier")
-    public native NSUUID getAdvertisingIdentifier();
-    @Property(selector = "isAdvertisingTrackingEnabled")
-    public native boolean isAdvertisingTrackingEnabled();
-    /*</properties>*/
+    /*<constructors>*//*</constructors>*/
+    /*<properties>*//*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
-    @Method(selector = "sharedManager")
-    public static native ASIdentifierManager sharedManager();
+    /**
+     * @since Available in iOS 4.2 and later.
+     */
+    @GlobalValue(symbol="MIDINetworkBonjourServiceType", optional=true)
+    public static native NSString NetworkServiceTypeBonjour();
+    /**
+     * @since Available in iOS 4.2 and later.
+     */
+    @GlobalValue(symbol="MIDINetworkNotificationContactsDidChange", optional=true)
+    public static native NSString NetworkNotificationContactsDidChange();
+    /**
+     * @since Available in iOS 4.2 and later.
+     */
+    @GlobalValue(symbol="MIDINetworkNotificationSessionDidChange", optional=true)
+    public static native NSString NetworkNotificationSessionDidChange();
     /*</methods>*/
 }

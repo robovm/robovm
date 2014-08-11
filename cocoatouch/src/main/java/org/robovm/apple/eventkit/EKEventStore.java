@@ -139,7 +139,7 @@ import org.robovm.apple.corelocation.*;
     @Method(selector = "eventsMatchingPredicate:")
     public native NSArray<EKEvent> getEvents(NSPredicate predicate);
     @Method(selector = "enumerateEventsMatchingPredicate:usingBlock:")
-    public native void enumerateEvents(NSPredicate predicate, @Block VoidBlock2<EKEvent, Boolean> block);
+    public native void enumerateEvents(NSPredicate predicate, @Block VoidBlock2<EKEvent, BytePtr> block);
     @Method(selector = "predicateForEventsWithStartDate:endDate:calendars:")
     public native NSPredicate getPredicateForEvents(NSDate startDate, NSDate endDate, NSArray<EKCalendar> calendars);
     /**

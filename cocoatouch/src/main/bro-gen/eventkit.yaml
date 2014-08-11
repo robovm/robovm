@@ -116,7 +116,7 @@ classes:
                 name: "enumerateEvents"
                 parameters:
                     block:
-                        type: "@Block VoidBlock2<EKEvent, Boolean>"
+                        type: "@Block VoidBlock2<EKEvent, BytePtr>"
             '-predicateForEventsWithStartDate:endDate:calendars:':
                 name: "getPredicateForEvents"
                 parameters:

@@ -65,11 +65,11 @@ import org.robovm.apple.coregraphics.*;
     @Method(selector = "numberOfAssets")
     public native @MachineSizedSInt long getNumberOfAssets();
     @Method(selector = "enumerateAssetsUsingBlock:")
-    public native void enumerateAssets(@Block VoidBlock3<ALAsset, Long, Boolean> enumerationBlock);
+    public native void enumerateAssets(@Block("(,@MachineSizedUInt,)") VoidBlock3<ALAsset, Long, BytePtr> enumerationBlock);
     @Method(selector = "enumerateAssetsWithOptions:usingBlock:")
-    public native void enumerateAssets(NSEnumerationOptions options, @Block VoidBlock3<ALAsset, Long, Boolean> enumerationBlock);
+    public native void enumerateAssets(NSEnumerationOptions options, @Block("(,@MachineSizedUInt,)") VoidBlock3<ALAsset, Long, BytePtr> enumerationBlock);
     @Method(selector = "enumerateAssetsAtIndexes:options:usingBlock:")
-    public native void enumerateAssets(NSIndexSet indexSet, NSEnumerationOptions options, @Block VoidBlock3<ALAsset, Long, Boolean> enumerationBlock);
+    public native void enumerateAssets(NSIndexSet indexSet, NSEnumerationOptions options, @Block("(,@MachineSizedUInt,)") VoidBlock3<ALAsset, Long, BytePtr> enumerationBlock);
     /**
      * @since Available in iOS 5.0 and later.
      */

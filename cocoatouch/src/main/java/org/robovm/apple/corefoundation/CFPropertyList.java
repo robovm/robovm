@@ -36,8 +36,7 @@ import org.robovm.apple.dispatch.*;
     extends /*<extends>*/CFType/*</extends>*/ 
     /*<implements>*//*</implements>*/ {
 
-    /*<ptr>*/
-    /*</ptr>*/
+    /*<ptr>*/public static class CFPropertyListPtr extends Ptr<CFPropertyList, CFPropertyListPtr> {}/*</ptr>*/
     /*<bind>*/static { Bro.bind(CFPropertyList.class); }/*</bind>*/
     /*<constants>*//*</constants>*/
     /*<constructors>*//*</constructors>*/

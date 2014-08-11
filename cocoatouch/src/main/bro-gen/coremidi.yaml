@@ -1,0 +1,433 @@
+package: org.robovm.apple.coremidi
+include: [foundation.yaml, corefoundation.yaml]
+library: CoreMIDI
+framework: CoreMIDI
+clang_args: ['-x', 'objective-c']
+headers:
+    - /System/Library/Frameworks/CoreMIDI.framework/Headers/CoreMIDI.h
+typedefs:
+    'MIDIObjectRef': MIDIObject
+    'MIDIClientRef': MIDIClient
+    'MIDIPortRef': MIDIPort
+    'MIDIDeviceRef': MIDIDevice
+    'MIDIEntityRef': MIDIEntity
+    'MIDIEndpointRef': MIDIEndpoint
+    'MIDIDeviceListRef': MIDIDeviceList
+    'MIDISetupRef': MIDISetup
+    'MIDIThruConnectionRef': MIDIThruConnection
+    'MIDIDriverRef': MIDIDriver
+private_typedefs:
+    "__CFString *": String
+    "__CFString **": "NSString.NSStringPtr"
+    "__CFData *": NSData
+    "__CFURL *": NSURL
+    "__CFDictionary *": "NSDictionary<?, ?>"
+    "__CFArray *": "NSArray<?>"
+    "CFPropertyListRef": CFPropertyList
+    
+enums:
+    MIDINetworkConnectionPolicy: { first: MIDINetworkConnectionPolicy_NoOne, marshaler: ValuedEnum.AsMachineSizedUIntMarshaler }
+    MIDIError: { first: kMIDIInvalidClient }
+    MIDIObjectType: { first: kMIDIObjectType_Other, marshaler: ValuedEnum.AsMachineSizedSIntMarshaler }
+    MIDINotificationMessageID: { first: kMIDIMsgSetupChanged, marshaler: ValuedEnum.AsMachineSizedSIntMarshaler }
+    MIDITransformType: { first: kMIDITransform_None, marshaler: ValuedEnum.AsMachineSizedUIntMarshaler }
+    MIDITransformControlType: { first: kMIDIControlType_7Bit, marshaler: ValuedEnum.AsMachineSizedUIntMarshaler }
+        
+classes:
+    CoreMIDI:
+        annotations: ['@Marshaler(NSString.AsStringMarshaler.class)']
+
+    MIDINetworkConnection: # DONE
+        methods:
+            '+connectionWithHost:':
+                name: "create"
+                return_type: MIDINetworkConnection
+    MIDINetworkHost: # DONE
+        methods:
+            '-hasSameAddressAs:':
+                trim_after_first_colon: true
+            '+hostWithName:address:port:':
+                name: "create"
+                return_type: "MIDINetworkHost"
+            '+hostWithName:netService:':
+                name: "create"
+                return_type: "MIDINetworkHost"
+            '+hostWithName:netServiceName:netServiceDomain:':
+                name: "create"
+                return_type: "MIDINetworkHost"
+    MIDINetworkSession: # DONE
+        methods:
+            '-contacts':
+                property: true
+                return_type: "NSSet<MIDINetworkHost>"
+            '-(addContact|removeContact):':
+                trim_after_first_colon: true
+            '-connections':
+                property: true
+                return_type: "NSSet<MIDINetworkConnection>"
+            '-(addConnection|removeConnection):':
+                trim_after_first_colon: true
+            '-sourceEndpoint':
+                property: true
+            '-destinationEndpoint':
+                property: true
+   
+    MIDIObject:
+        extends: NativeObject
+        add_ptr: true
+    MIDIClient:
+        extends: MIDIObject
+    OpaqueMIDIClient:
+        name: MIDIClient
+        extends: MIDIObject
+    MIDIPort:
+        extends: MIDIObject
+    OpaqueMIDIPort:
+        name: MIDIPort
+        extends: MIDIObject
+    MIDIDevice:
+        extends: MIDIObject
+    OpaqueMIDIDevice:
+        name: MIDIDevice
+        extends: MIDIObject
+    MIDIDeviceList:
+        extends: MIDIObject
+    OpaqueMIDIDeviceList:
+        name: MIDIDeviceList
+        extends: MIDIObject
+    MIDIEntity:
+        extends: MIDIObject
+    OpaqueMIDIEntity:
+        name: MIDIEntity
+        extends: MIDIObject
+    MIDIEndpoint:
+        extends: MIDIObject
+    OpaqueMIDIEndpoint:
+        name: MIDIEndpoint
+        extends: MIDIObject
+    MIDISetup:
+        extends: MIDIObject
+        visibility: ''
+    OpaqueMIDISetup:
+        name: MIDISetup
+        extends: MIDIObject
+        visibility: ''
+    MIDIThruConnection:
+        extends: MIDIObject
+    OpaqueMIDIThruConnection:
+        name: MIDIThruConnection
+        extends: MIDIObject
+    MIDIDriver:
+        extends: MIDIDriverInterface
+   
+    # Structs
+    MIDIPacketList:
+        skip_def_constructor: true
+    MIDISysexSendRequest: {}
+    MIDINotification: {}
+    MIDIPacket: {}
+    MIDIObjectAddRemoveNotification: {}
+    MIDIObjectPropertyChangeNotification: {}
+    MIDIIOErrorNotification: {}
+    MIDIDriverInterface: {}
+    MIDIValueMap: {}
+    MIDITransform: {}
+    MIDIControlTransform: {}
+    MIDIThruConnectionEndpoint: {}
+    MIDIThruConnectionParams: {}
+    
+protocols: {}
+
+functions:
+    # MIDI
+    MIDI(Send):
+        class: MIDI
+        name: "#{g[0]}"
+        return_type: MIDIError
+    MIDI(SendSysex):
+        class: MIDI
+        name: "#{g[0]}"
+        return_type: MIDIError
+    MIDI(FlushOutput):
+        class: MIDI
+        name: "#{g[0]}"
+        return_type: MIDIError
+    MIDI(Restart):
+        class: MIDI
+        name: "#{g[0]}"
+        return_type: MIDIError
+    MIDI(GetSerialPortOwner|SetSerialPortOwner):
+        class: MIDI
+        name: "#{g[0]}"
+    MIDI(GetSerialPortDrivers):
+        class: MIDI
+        name: "#{g[0]}"
+    MIDI(GetDevice|GetExternalDevice):
+        class: MIDI
+        name: "#{g[0]}"
+    MIDI(GetNumberOfDevices|GetNumberOfExternalDevices):
+        class: MIDI
+        name: "#{g[0]}"
+    MIDI(GetNumberOfSources|GetSource|GetNumberOfDestinations|GetDestination):
+        class: MIDI
+        name: "#{g[0]}"
+
+    # MIDISetup
+    MIDISetup(.*):
+        class: MIDI
+        name: "#{g[0]}"
+        return_type: MIDIError
+
+    # MIDIClient
+    MIDIClient(Create):
+        class: MIDIClient
+        name: "#{g[0]}"
+        visibility: protected
+        return_type: MIDIError
+        parameters:
+            notifyRefCon:
+                type: "@Pointer long"
+    MIDIClient(.*):
+        class: MIDIClient
+        name: "#{g[0]}"
+        return_type: MIDIError
+
+    # MIDIEntity
+    MIDIEntity(GetDevice):
+        class: MIDIEntity
+        name: "#{g[0]}"
+        visibility: protected
+        return_type: MIDIError
+    MIDIEntity(AddOrRemoveEndpoints):
+        class: MIDIEntity
+        name: "#{g[0]}"
+        return_type: MIDIError
+    MIDIEntity(.*):
+        class: MIDIEntity
+        name: "#{g[0]}"
+
+    # MIDIPort
+    MIDIInputPortCreate:
+        class: MIDIPort
+        name: "createInputPort"
+        visibility: protected
+        return_type: MIDIError
+        parameters:
+            refCon:
+                type: "@Pointer long"
+    MIDIOutputPortCreate:
+        class: MIDIPort
+        name: "createOutputPort"
+        visibility: protected
+        return_type: MIDIError
+    MIDIPort(ConnectSource):
+        class: MIDIPort
+        name: "#{g[0]}"
+        return_type: MIDIError
+        visibility: protected
+        parameters:
+            connRefCon:
+                type: "@Pointer long"
+    MIDIPort(.*):
+        class: MIDIPort
+        name: "#{g[0]}"
+        return_type: MIDIError
+
+    # MIDIDeviceList
+    MIDIDeviceList(GetDevice|GetNumberOfDevices):
+        class: MIDIDeviceList
+        name: "#{g[0]}"
+    MIDIDeviceList(.*):
+        class: MIDIDeviceList
+        name: "#{g[0]}"
+        return_type: MIDIError
+
+    # MIDIDevice
+    MIDIDevice(AddEntity):
+        class: MIDIDevice
+        name: "#{g[0]}"
+        visibility: protected
+        return_type: MIDIError
+    MIDI(.*Device?):
+        class: MIDIDevice
+        name: "#{g[0]}"
+    MIDIExternalDeviceCreate:
+        class: MIDIDevice
+        name: "createExternal"
+        visibility: protected
+        return_type: MIDIError
+    MIDIDeviceCreate:
+        class: MIDIDevice
+        name: "create"
+        visibility: protected
+        return_type: MIDIError
+    MIDIDevice(RemoveEntity|Dispose):
+        class: MIDIDevice
+        name: "#{g[0]}"
+        return_type: MIDIError
+    MIDIDevice(.*):
+        class: MIDIDevice
+        name: "#{g[0]}"
+
+    # MIDIEndpoint
+    MIDIEndpoint(SetRefCons):
+        class: MIDIEndpoint
+        name: "#{g[0]}"
+        visibility: protected
+        return_type: MIDIError
+        parameters:
+            ref1:
+                type: "@Pointer long"
+            ref2:
+                type: "@Pointer long"
+    MIDIEndpoint(GetRefCons):
+        exclude: true
+    MIDIEndpoint(GetEntity):
+        class: MIDIEndpoint
+        name: "#{g[0]}"
+        visibility: protected
+        return_type: MIDIError
+    MIDI(Received):
+        class: MIDIEndpoint
+        name: "#{g[0]}"
+        return_type: MIDIError
+    MIDIEndpoint(.*):
+        class: MIDIEndpoint
+        name: "#{g[0]}"
+        return_type: MIDIError
+    MIDIDestinationCreate:
+        class: MIDIEndpoint
+        name: "createDestination"
+        visibility: protected
+        return_type: MIDIError
+        parameters:
+            refCon:
+                type: "@Pointer long"
+    MIDISourceCreate:
+        class: MIDIEndpoint
+        name: "createSource"
+        visibility: protected
+        return_type: MIDIError
+
+    # MIDIObject
+    MIDIObject(GetStringProperty):
+        class: MIDIObject
+        name: "#{g[0]}"
+        return_type: MIDIError
+        visibility: protected
+        parameters:
+            str:
+                type: "NSString.NSStringPtr"
+    MIDIObject(GetDataProperty):
+        class: MIDIObject
+        name: "#{g[0]}"
+        return_type: MIDIError
+        visibility: protected
+        parameters:
+            outData:
+                type: "NSData.NSDataPtr"
+    MIDIObject(GetDictionaryProperty):
+        class: MIDIObject
+        name: "#{g[0]}"
+        return_type: MIDIError
+        visibility: protected
+        parameters:
+            outDict:
+                type: "NSDictionary.NSDictionaryPtr"
+    MIDIObject(Get.*):
+        class: MIDIObject
+        name: "#{g[0]}"
+        return_type: MIDIError
+        visibility: protected
+    MIDIObject(FindByUniqueID):
+        class: MIDIObject
+        name: "#{g[0]}"
+        return_type: MIDIError
+        visibility: protected
+    MIDIObject(.*):
+        class: MIDIObject
+        name: "#{g[0]}"
+        return_type: MIDIError
+
+    # MIDIPacketList
+    # TODO: Init -> protected, call in constructors
+    MIDIPacketList(Add): # TODO wrap
+        class: MIDIPacketList
+        name: "#{g[0]}"
+        visibility: protected
+    MIDIPacketList(.*):
+        class: MIDIPacketList
+        name: "#{g[0]}"
+
+    # MIDIPacket
+    MIDIPacket(.*):
+        class: MIDIPacket
+        name: "#{g[0]}"
+
+    # MIDIDriver
+    MIDIGetDriverIORunLoop:
+        class: MIDIDriver
+        name: "getIORunLoop"
+    MIDIGetDriverDeviceList:
+        class: MIDIDriver
+        name: "getDeviceList"
+    MIDIDriver(.*):
+        class: MIDIDriver
+        name: "#{g[0]}"
+
+    # MIDIThruConnectionParams
+    # TODO Initialize -> protected, call in constructors
+    MIDIThruConnectionParams(.*):
+        class: MIDIThruConnectionParams
+        name: "#{g[0]}"
+
+    # MIDIThruConnection
+    MIDIThruConnection(Create):
+        class: MIDIThruConnection
+        name: "#{g[0]}"
+        return_type: MIDIError
+        visibility: protected
+    MIDIThruConnection(GetParams):
+        class: MIDIThruConnection
+        name: "#{g[0]}"
+        return_type: MIDIError
+        visibility: protected
+        parameters:
+            outConnectionParams:
+                type: "NSData.NSDataPtr"
+    MIDIThruConnection(Find):
+        class: MIDIThruConnection
+        name: "#{g[0]}"
+        return_type: MIDIError
+        visibility: protected
+        parameters:
+            outConnectionList:
+                type: "NSData.NSDataPtr"
+    MIDIThruConnection(.*):
+        class: MIDIThruConnection
+        name: "#{g[0]}"
+        return_type: MIDIError
+
+    # Make sure we don't miss any functions if new ones are introduced in a later version
+    (MIDI.*):
+        class: CoreMIDI
+        name: "Function__#{g[0]}"
+
+values:
+    MIDINetwork(.*)ServiceType:
+        class: CoreMIDI
+        name: "MIDINetworkServiceType#{g[0]}"
+    MIDINetworkNotification(.*):
+        class: CoreMIDI
+        name: "MIDINetworkNotification#{g[0]}"
+   
+    # Make sure we don't miss any values if new ones are introduced in a later version
+    (MIDI.*):
+        class: CoreMIDI
+        name: "Value__#{g[0]}"
+
+constants:
+    # Make sure we don't miss any constants if new ones are introduced in a later version
+    (MIDI.*):
+        class: CoreMIDI
+        name: "Constant__#{g[0]}"

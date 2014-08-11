@@ -199,6 +199,7 @@ classes:
         extends: CFType
     CFPropertyList:
         extends: CFType
+        add_ptr: true
     __CFReadStream:
         name: CFReadStream
         extends: CFType

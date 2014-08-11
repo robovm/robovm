@@ -1,0 +1,89 @@
+package: org.robovm.apple.coretelephony
+include: [foundation.yaml, corefoundation.yaml]
+library: CoreTelephony
+framework: CoreTelephony
+clang_args: ['-x', 'objective-c']
+headers:
+    - /System/Library/Frameworks/CoreTelephony.framework/Headers/CTCall.h
+    - /System/Library/Frameworks/CoreTelephony.framework/Headers/CTCallCenter.h
+    - /System/Library/Frameworks/CoreTelephony.framework/Headers/CTCarrier.h
+    - /System/Library/Frameworks/CoreTelephony.framework/Headers/CTSubscriber.h
+    - /System/Library/Frameworks/CoreTelephony.framework/Headers/CTSubscriberInfo.h
+    - /System/Library/Frameworks/CoreTelephony.framework/Headers/CTTelephonyNetworkInfo.h
+typedefs: {}
+    
+enums:
+    CTErrorDomain: { first: kCTErrorDomainNoError }
+        
+classes:
+    CoreTelephony:
+        annotations: ['@Marshaler(NSString.AsStringMarshaler.class)']
+
+    CTCall: # DONE
+        properties:
+            'callState':
+                name: "callState0"
+                visibility: protected
+                type: NSString
+    CTCallCenter: # DONE
+        properties:
+            'currentCalls':
+                type: "NSSet<CTCall>"
+            'callEventHandler':
+                type: "@Block VoidBlock1<CTCall>"
+    CTCarrier: {} # DONE
+    CTSubscriber: {} # DONE
+    CTSubscriberInfo: # DONE
+        methods:
+            '+subscriber':
+                property: true
+    CTTelephonyNetworkInfo: # DONE
+        properties:
+            'subscriberCellularProviderDidUpdateNotifier':
+                type: "@Block VoidBlock1<CTCarrier>"
+            'currentRadioAccessTechnology':
+                name: "currentRadioAccessTechnology0"
+                visibility: protected
+                type: NSString
+
+    # Structs
+    CTError: {}
+
+protocols: {}
+
+functions:
+    # Make sure we don't miss any functions if new ones are introduced in a later version
+    (CT.*):
+        class: CoreTelephony
+        name: "Function__#{g[0]}"
+
+values:
+    CTSubscriberTokenRefreshed:
+        class: CoreTelephony
+        name: "CTSubscriberTokenRefreshedNotification"
+        
+    CTRadioAccessTechnology(.*)Notification:
+        class: CoreTelephony
+        name: "CTRadioAccessTechnology#{g[0]}Notification"
+    CTRadioAccessTechnology(.*):
+        class: CTRadioAccessTechnology
+        name: "#{g[0]}Value"
+        type: NSString
+        visibility: protected
+        
+    CTCallState(.*):
+        class: CTCallState
+        name: "#{g[0]}Value"
+        type: NSString
+        visibility: protected
+   
+    # Make sure we don't miss any values if new ones are introduced in a later version
+    (CT.*):
+        class: CoreTelephony
+        name: "Value__#{g[0]}"
+
+constants:
+    # Make sure we don't miss any constants if new ones are introduced in a later version
+    (CT.*):
+        class: CoreTelephony
+        name: "Constant__#{g[0]}"

@@ -98,7 +98,6 @@ endif()
 set(C_FLAGS "${C_FLAGS} -std=gnu99")
 set(CXX_FLAGS "${CXX_FLAGS} -std=gnu++11")
 set(C_CXX_FLAGS "${C_CXX_FLAGS} -Wall -fvisibility=hidden -fdata-sections -ffunction-sections")
-set(C_CXX_FLAGS "${C_CXX_FLAGS} -fno-omit-frame-pointer") # The unwind code relies on frame pointers being present.
 if(CARCH)
   set(C_CXX_FLAGS "${C_CXX_FLAGS} -arch ${CARCH}")
 else()

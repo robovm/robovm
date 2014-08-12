@@ -1240,8 +1240,10 @@ Object* rvmAllocateObject(Env* env, Class* clazz) {
         rvmThrowNew(env, java_lang_InstantiationException, "");
         return NULL;
     }
-    rvmInitialize(env, clazz);
-    if (rvmExceptionOccurred(env)) return NULL;
+    if (!CLASS_IS_STATE_INITIALIZED(clazz)) {
+        rvmInitialize(env, clazz);
+        if (rvmExceptionOccurred(env)) return NULL;
+    }
     Object* obj = rvmAllocateMemoryForObject(env, clazz);
     if (!obj) return NULL;
     obj->clazz = clazz;

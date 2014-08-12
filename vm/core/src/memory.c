@@ -307,7 +307,7 @@ uint32_t gcNewDirectBitmapKind(uint32_t bitmap) {
     return GC_new_kind(GC_new_free_list(), bitmap | GC_DS_BITMAP, 0, 1);
 }
 
-static void* gcAllocateKind(size_t size, uint32_t kind) {
+static inline void* gcAllocateKind(size_t size, uint32_t kind) {
     void* m = GC_generic_malloc(size, kind);
     if (!m) {
         // Force GC and try again
@@ -325,7 +325,7 @@ void* gcAllocate(size_t size) {
     }
     return m;
 }
-void* gcAllocateObject(size_t size, void* clazz) {
+static inline void* gcAllocateObject(size_t size, void* clazz) {
     void* m = GC_gcj_malloc(size, clazz);
     if (!m) {
         // Force GC and try again
@@ -334,7 +334,7 @@ void* gcAllocateObject(size_t size, void* clazz) {
     }
     return m;
 }
-void* gcAllocateUncollectable(size_t size) {
+static inline void* gcAllocateUncollectable(size_t size) {
     void* m = GC_MALLOC_UNCOLLECTABLE(size);
     if (!m) {
         // Force GC and try again
@@ -343,7 +343,7 @@ void* gcAllocateUncollectable(size_t size) {
     }
     return m;
 }
-void* gcAllocateAtomic(size_t size) {
+static inline void* gcAllocateAtomic(size_t size) {
     void* m = GC_MALLOC_ATOMIC(size);
     if (!m) {
         // Force GC and try again
@@ -355,7 +355,7 @@ void* gcAllocateAtomic(size_t size) {
     }
     return m;
 }
-void* gcAllocateAtomicUncollectable(size_t size) {
+static inline void* gcAllocateAtomicUncollectable(size_t size) {
     void* m = GC_MALLOC_ATOMIC_UNCOLLECTABLE(size);
     if (!m) {
         // Force GC and try again

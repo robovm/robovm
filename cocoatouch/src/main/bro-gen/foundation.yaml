@@ -1617,24 +1617,24 @@ classes:
     NSString: # DONE
         methods:
             '+stringWithCharacters:length:':
-                visibility: private
+                visibility: protected
                 return_type: '@Pointer long'
                 parameters:
                     characters:
                         type: "@Pointer long"
             '-initWithCharacters:length:':
                 constructor: false
-                visibility: private
+                visibility: protected
                 parameters:
                     characters:
                         type: "@Pointer long"
             '-init.*': { exclude: true }
             "-characterAtIndex:":
-                visibility: private
+                visibility: protected
             "-length":
-                visibility: private
+                visibility: protected
             "-getCharacters:range:":
-                visibility: private
+                visibility: protected
                 parameters:
                     buffer:
                         type: "@Pointer long"

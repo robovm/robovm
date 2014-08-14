@@ -43,34 +43,31 @@ import org.robovm.apple.security.*;
     public static class AsStringMarshaler {
         @MarshalsPointer
         public static String toObject(Class<?> cls, long handle, long flags) {
-            NSString o = ObjCObject.toObjCObject(NSString.class, handle);
-            try {
-                return o != null ? o.toString() : null;
-            } finally {
-                if (o != null) {
-                    o.dispose();
+            if (handle != 0) {
+                long length = length(handle, sel_length);
+                if (length == 0) {
+                    return EMPTY_STRING;
                 }
+                char[] chars = new char[(int) length];
+                getCharacters$range$(handle, sel_getCharacters$range$, VM.getArrayValuesAddress(chars), new NSRange(0, length));
+                return VM.newStringNoCopy(chars, 0, (int) length);
             }
+            return null;
         }
         @MarshalsPointer
         public static long toNative(String o, long flags) {
             if (o == null) {
                 return 0L;
             }
-            NSString s = new NSString(o);
-            try {
-                long handle = s.getHandle();
-                // retainCount is now 1
-                retain(handle); // Make sure the retainCount is 1 when we exit this try block
-                // retainCount is now 2
-                if ((flags & MarshalerFlags.CALL_TYPE_CALLBACK) > 0) {
-                    // NSStrings returned by callbacks should be autoreleased
-                    autorelease(handle);
-                }
-                return handle; // retainCount is 1 after the return
-            } finally {
-                s.dispose();
+            long handle = stringWithCharacters$length$(getChars(o), o.length());
+            // retainCount is now 1
+            retain(handle); // Make sure the retainCount is 1 when we exit this try block
+            // retainCount is now 2
+            if ((flags & MarshalerFlags.CALL_TYPE_CALLBACK) > 0) {
+                // NSStrings returned by callbacks should be autoreleased
+                autorelease(handle);
             }
+            return handle; // retainCount is 1 after the return
         }
         @AfterBridgeCall
         public static void afterJavaToNative(String before, long after, long flags) {
@@ -85,7 +82,9 @@ import org.robovm.apple.security.*;
     
     private static final String EMPTY_STRING = "";
     private static final long STRING_VALUE_OFFSET;    
-    private static final long STRING_OFFSET_OFFSET;    
+    private static final long STRING_OFFSET_OFFSET;   
+    private static final Selector sel_length = Selector.register("length");
+    private static final Selector sel_getCharacters$range$ = Selector.register("getCharacters:range:");
     /*<bind>*/static { ObjCRuntime.bind(NSString.class); }/*</bind>*/
     static {
         try {
@@ -127,17 +126,20 @@ import org.robovm.apple.security.*;
         getCharacters$range$(VM.getArrayValuesAddress(chars), new NSRange(0, len));
         return VM.newStringNoCopy(chars, 0, len);
     }
-    
+
+    @Bridge protected static native @MachineSizedUInt long length(@Pointer long handle, Selector sel);
+    @Bridge protected static native void getCharacters$range$(@Pointer long handle, Selector sel, @Pointer long buffer, @ByVal NSRange aRange);
+
     /*<methods>*/
     @Method(selector = "length")
-    private native @MachineSizedUInt long length();
+    protected native @MachineSizedUInt long length();
     @Method(selector = "characterAtIndex:")
-    private native short characterAtIndex$(@MachineSizedUInt long index);
+    protected native short characterAtIndex$(@MachineSizedUInt long index);
     @Method(selector = "getCharacters:range:")
-    private native void getCharacters$range$(@Pointer long buffer, @ByVal NSRange aRange);
+    protected native void getCharacters$range$(@Pointer long buffer, @ByVal NSRange aRange);
     @Method(selector = "initWithCharacters:length:")
-    private native @Pointer long initWithCharacters$length$(@Pointer long characters, @MachineSizedUInt long length);
+    protected native @Pointer long initWithCharacters$length$(@Pointer long characters, @MachineSizedUInt long length);
     @Method(selector = "stringWithCharacters:length:")
-    private static native @Pointer long stringWithCharacters$length$(@Pointer long characters, @MachineSizedUInt long length);
+    protected static native @Pointer long stringWithCharacters$length$(@Pointer long characters, @MachineSizedUInt long length);
     /*</methods>*/
 }

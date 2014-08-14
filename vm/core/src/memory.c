@@ -77,6 +77,18 @@ typedef struct ReferentEntry {
     CleanupHandlerList* cleanupHandlers;
     UT_hash_handle hh;
 } ReferentEntry;
+typedef struct LoadedClass {
+    Class* key;
+    UT_hash_handle hh;
+} LoadedClass;
+typedef struct HeapStat {
+    Class* key;
+    jlong numberOfInstances;
+    jlong numberOfBytes;
+    jlong numberOfLiveInstances;
+    jlong numberOfLiveBytes;
+    UT_hash_handle hh;
+} HeapStat;
 static ReferentEntry* referents = NULL;
 static uint32_t referentEntryGCKind;
 
@@ -192,61 +204,256 @@ static void gcWarnProc(char* msg, GC_word arg) {
     WARNF(msg, arg);
 }
 
-static void dumpRefs(void** start, void** end) {
+static void dumpRefs(void* parent, void** start, void** end) {
     void** p = start;
     while (p < end) {
         if (*p) {
-            fprintf(stderr, "\t%p\n", *p);
+            fprintf(stderr, "  n%p -> n%p\n", parent, *p);
         }
         p++;
     }
 }
 
 static void heapDumpCallback(void* ptr, unsigned char kind, size_t sz, void* data) {
-    if (kind == GC_gcj_kind || kind == objectArrayGCKind) {
+    if ((kind == GC_gcj_kind || kind == objectArrayGCKind) && ptr) {
         Object* obj = (Object*) ptr;
-        if (obj->clazz == java_lang_Class) {
-            Class* clazz = (Class*) obj;
-            fprintf(stderr, "%p (class %s of size %d bytes)\n", clazz, clazz->name, clazz->classDataSize);
-            if (clazz->_data) {
-                fprintf(stderr, "\t%p\n", clazz->_data);
-            }
-            void** start = (void**) (((char*) clazz) + offsetof(Class, data));
-            void** end = (void**) (((char*) start) + clazz->classRefCount * sizeof(Object*));
-            dumpRefs(start, end);
-        } else if (CLASS_IS_ARRAY(obj->clazz)) {
-            fprintf(stderr, "%p (array of type %s of length %d elements)\n", obj, obj->clazz->name, ((Array*) obj)->length);
-            if (!CLASS_IS_PRIMITIVE(obj->clazz->componentType)) {
-                ObjectArray* array = (ObjectArray*) obj;
-                void** start = (void**) (((char*) array) + offsetof(ObjectArray, values));
-                void** end = (void**) (((char*) start) + sizeof(Object*) * array->length);
-                dumpRefs(start, end);
-            }
-        } else {
-            Class* clazz = obj->clazz;
-            fprintf(stderr, "%p (object of type %s of size %d bytes)\n", obj, clazz->name, clazz->instanceDataSize);
-            while (clazz != NULL) {
-                void** start = (void**) (((char*) obj) + clazz->instanceDataOffset);
-                void** end = (void**) (((char*) start) + clazz->instanceRefCount * sizeof(Object*));
-                if (clazz == java_lang_ref_Reference) {
-                    void** referent_start = (void**) (((char*) obj) + java_lang_ref_Reference_referent->offset);
-                    void** referent_end = (void**) (((char*) referent_start) + sizeof(Object*));
-                    if (*referent_start) {
-                        fprintf(stderr, "\t%p (weak)\n", *referent_start);
-                    }
-                    dumpRefs(start, referent_start);
-                    dumpRefs(referent_end, end);
-                } else {
-                    dumpRefs(start, end);
+        if (obj->clazz) {
+            if (obj->clazz == java_lang_Class) {
+                Class* clazz = (Class*) obj;
+                fprintf(stderr, "  n%p [label=\"Class %s]\n", clazz, clazz->name); //, clazz->classDataSize);
+                if (clazz->_data) {
+                    fprintf(stderr, "  n%p -> n%p\n", clazz, clazz->_data);
                 }
-                clazz = clazz->superclass;
+                void** start = (void**) (((char*) clazz) + offsetof(Class, data));
+                void** end = (void**) (((char*) start) + clazz->classRefCount * sizeof(Object*));
+                dumpRefs(clazz, start, end);
+            } else if (CLASS_IS_ARRAY(obj->clazz)) {
+                if (obj->clazz->name[1] == 'C') {
+                    // Array of chars. Include the 29 first characters in the dump.
+                    char s[30];
+                    memset(s, 0, sizeof(s));
+                    jint length = ((Array*) obj)->length;
+                    length = length > sizeof(s) - 1 ? sizeof(s) - 1 : length;
+                    for (jint i = 0; i < length; i++) {
+                        s[i] = (char) ((CharArray*) obj)->values[i];
+                    }
+                    fprintf(stderr, "  n%p [label=\"%s[%d] = %s\"]\n", obj, obj->clazz->name, ((Array*) obj)->length, s);
+                } else {
+                    fprintf(stderr, "  n%p [label=\"%s[%d]\"]\n", obj, obj->clazz->name, ((Array*) obj)->length);
+                    if (!CLASS_IS_PRIMITIVE(obj->clazz->componentType)) {
+                        ObjectArray* array = (ObjectArray*) obj;
+                        void** start = (void**) (((char*) array) + offsetof(ObjectArray, values));
+                        void** end = (void**) (((char*) start) + sizeof(Object*) * array->length);
+                        dumpRefs(array, start, end);
+                    }
+                }
+            } else {
+                Class* clazz = obj->clazz;
+                fprintf(stderr, "  n%p [label=\"Instance %s\"]\n", obj, obj->clazz->name);
+                while (clazz != NULL) {
+                    void** start = (void**) (((char*) obj) + clazz->instanceDataOffset);
+                    void** end = (void**) (((char*) start) + clazz->instanceRefCount * sizeof(Object*));
+                    if (clazz == java_lang_ref_Reference) {
+                        void** referent_start = (void**) (((char*) obj) + java_lang_ref_Reference_referent->offset);
+                        void** referent_end = (void**) (((char*) referent_start) + sizeof(Object*));
+                        //if (*referent_start) {
+                            //fprintf(stderr, "\t%p (weak)\n", *referent_start);
+                        //}
+                        dumpRefs(obj, start, referent_start);
+                        dumpRefs(obj, referent_end, end);
+                    } else {
+                        dumpRefs(obj, start, end);
+                    }
+                    clazz = clazz->superclass;
+                }
             }
         }
     }
 }
 
-void gcHeapDump() {
+jboolean buildLoadedClassesHash(Env* env, Class* clazz, void* data) {
+    LoadedClass** hashPtr = (LoadedClass**) data;
+    LoadedClass* entry = calloc(1, sizeof(LoadedClass));
+    entry->key = clazz;
+    HASH_ADD_PTR(*hashPtr, key, entry);
+    return TRUE;
+}
+
+typedef struct {
+    LoadedClass* loadedClasses;
+    HeapStat** statsHashPtr;
+} HeapStatsCallbackData;
+
+static int heapStatsCallback(void* ptr, unsigned char kind, size_t sz, int live, void* _data) {
+    HeapStatsCallbackData* data = (HeapStatsCallbackData*) _data;
+    LoadedClass* loadedClasses = data->loadedClasses;
+    HeapStat** statsHashPtr = data->statsHashPtr;
+
+    Class* key = NULL;
+    if (kind == GC_gcj_kind || kind == objectArrayGCKind) {
+        Object* obj = (Object*) ptr;
+        if (obj && obj->clazz) {
+            LoadedClass* loadedClass;
+            HASH_FIND_PTR(loadedClasses, &(obj->clazz), loadedClass);
+            if (!loadedClass) {
+                return 0; // Don't clear this object
+            }
+            key = obj->clazz;
+        }
+    }
+
+    HeapStat* stat;
+    HASH_FIND_PTR(*statsHashPtr, &key, stat);
+    if (!stat) {
+        stat = calloc(1, sizeof(HeapStat));
+        stat->key = key;
+        HASH_ADD_PTR(*statsHashPtr, key, stat);
+    }
+    stat->numberOfInstances++;
+    stat->numberOfBytes += sz;
+    if (live) {
+        stat->numberOfLiveInstances++;
+        stat->numberOfLiveBytes += sz;
+    }
+    return 0; // live ? 0 : 1;
+}
+
+static int sortHeapStatsByNumberOfBytesDesc(void* _a, void* _b) {
+    HeapStat* a = (HeapStat*) _a;
+    HeapStat* b = (HeapStat*) _b;
+    jlong aval = a->numberOfBytes;
+    jlong bval = b->numberOfBytes;
+    return aval < bval ? 1 : (aval > bval ? -1 : 0);
+}
+
+static int sortHeapStatsByNumberOfInstancesDesc(void* _a, void* _b) {
+    HeapStat* a = (HeapStat*) _a;
+    HeapStat* b = (HeapStat*) _b;
+    jlong aval = a->numberOfInstances;
+    jlong bval = b->numberOfInstances;
+    return aval < bval ? 1 : (aval > bval ? -1 : 0);
+}
+
+static int sortHeapStatsByNumberOfLiveBytesDesc(void* _a, void* _b) {
+    HeapStat* a = (HeapStat*) _a;
+    HeapStat* b = (HeapStat*) _b;
+    jlong aval = a->numberOfLiveBytes;
+    jlong bval = b->numberOfLiveBytes;
+    return aval < bval ? 1 : (aval > bval ? -1 : 0);
+}
+
+static int sortHeapStatsByNumberOfLiveInstancesDesc(void* _a, void* _b) {
+    HeapStat* a = (HeapStat*) _a;
+    HeapStat* b = (HeapStat*) _b;
+    jlong aval = a->numberOfLiveInstances;
+    jlong bval = b->numberOfLiveInstances;
+    return aval < bval ? 1 : (aval > bval ? -1 : 0);
+}
+
+static int sortHeapStatsByNumberOfDeadBytesDesc(void* _a, void* _b) {
+    HeapStat* a = (HeapStat*) _a;
+    HeapStat* b = (HeapStat*) _b;
+    jlong aval = a->numberOfBytes - a->numberOfLiveBytes;
+    jlong bval = b->numberOfBytes - b->numberOfLiveBytes;
+    return aval < bval ? 1 : (aval > bval ? -1 : 0);
+}
+
+static int sortHeapStatsByNumberOfDeadInstancesDesc(void* _a, void* _b) {
+    HeapStat* a = (HeapStat*) _a;
+    HeapStat* b = (HeapStat*) _b;
+    jlong aval = a->numberOfInstances - a->numberOfLiveInstances;
+    jlong bval = b->numberOfInstances - b->numberOfLiveInstances;
+    return aval < bval ? 1 : (aval > bval ? -1 : 0);
+}
+
+static void printHeapStatsHash(FILE* file, HeapStat* statsHash, const char* title, jint max) {
+    HeapStat* stat;
+    HeapStat* tmp;
+
+    fprintf(file, "%*s\n", (int) (90 / 2 + strlen(title) / 2), title);
+    fprintf(file, "         Total         |         Live          |         Dead          |\n");
+    fprintf(file, " Instances |   Bytes   | Instances |   Bytes   | Instances |   Bytes   | Type of object\n");
+    fprintf(file, "-----------------------------------------------------------------------------------------\n");
+
+    jint i = 0;
+    HASH_ITER(hh, statsHash, stat, tmp) {
+        Class* clazz = stat->key;
+        fprintf(file, " %9lld | %9lld | %9lld | %9lld | %9lld | %9lld | %s\n", 
+            stat->numberOfInstances, 
+            stat->numberOfBytes, 
+            stat->numberOfLiveInstances, 
+            stat->numberOfLiveBytes, 
+            stat->numberOfInstances- stat->numberOfLiveInstances, 
+            stat->numberOfBytes - stat->numberOfLiveBytes, 
+            clazz ? clazz->name : "VM internal memory");
+        i++;
+        if (i >= max) {
+            break;
+        }
+    }
+}
+
+static void freeLoadedClassesHash(LoadedClass* loadedClassesHash) {
+    LoadedClass* loadedClass;
+    LoadedClass* tmp;
+    HASH_ITER(hh, loadedClassesHash, loadedClass, tmp) {
+        HASH_DEL(loadedClassesHash, loadedClass);
+        free(loadedClass);
+    }
+}
+
+static void freeHeapStatsHash(HeapStat* statsHash) {
+    HeapStat* stat;
+    HeapStat* tmp;
+    HASH_ITER(hh, statsHash, stat, tmp) {
+        HASH_DEL(statsHash, stat);
+        free(stat);
+    }
+}
+
+static void logGcHeapStats() {
+    Env* env = rvmGetEnv();
+    if (!env) {
+        return;
+    }
+
+    LoadedClass* loadedClassesHash = NULL;
+    rvmIterateLoadedClasses(env, buildLoadedClassesHash, &loadedClassesHash);
+
+    HeapStat* statsHash = NULL;
+    HeapStatsCallbackData data = {loadedClassesHash, &statsHash};
+    GC_apply_to_each_object(heapStatsCallback, &data);
+
+    time_t timestamp;
+    struct tm timeinfo;
+    time(&timestamp);
+    localtime_r(&timestamp, &timeinfo);
+    char d[256];
+    strftime(d, sizeof(d), "%F %T", &timeinfo);
+
+    fprintf(stderr, "Heap stats before GC at %s:\n", d);
+
+    HASH_SORT(statsHash, sortHeapStatsByNumberOfBytesDesc);
+    printHeapStatsHash(stderr, statsHash, "*** Heap objects sorted by size ***", 20);
+    HASH_SORT(statsHash, sortHeapStatsByNumberOfInstancesDesc);
+    printHeapStatsHash(stderr, statsHash, "*** Heap objects sorted by number of instances ***", 20);
+    HASH_SORT(statsHash, sortHeapStatsByNumberOfLiveBytesDesc);
+    printHeapStatsHash(stderr, statsHash, "*** Heap objects sorted by live size ***", 20);
+    HASH_SORT(statsHash, sortHeapStatsByNumberOfLiveInstancesDesc);
+    printHeapStatsHash(stderr, statsHash, "*** Heap objects sorted by number of live instances ***", 20);
+    HASH_SORT(statsHash, sortHeapStatsByNumberOfDeadBytesDesc);
+    printHeapStatsHash(stderr, statsHash, "*** Heap objects sorted by dead size ***", 20);
+    HASH_SORT(statsHash, sortHeapStatsByNumberOfDeadInstancesDesc);
+    printHeapStatsHash(stderr, statsHash, "*** Heap objects sorted by number of dead instances ***", 20);
+
+    freeLoadedClassesHash(loadedClassesHash);
+    freeHeapStatsHash(statsHash);
+}
+
+void gcHeapDump(Env* env) {
+    fprintf(stderr, "digraph {\n");
     GC_apply_to_each_live_object(heapDumpCallback, NULL);
+    fprintf(stderr, "}\n");
 }
 
 jboolean initGC(Options* options) {
@@ -280,6 +487,10 @@ jboolean initGC(Options* options) {
 
     GC_set_warn_proc(gcWarnProc);
     GC_allow_register_threads();
+
+    if (options->enableGCHeapStats) {
+        GC_set_start_callback(logGcHeapStats);
+    }
 
     return TRUE;
 }
@@ -956,5 +1167,5 @@ jlong rvmGetDirectBufferCapacity(Env* env, Object* buf) {
 }
 
 void rvmGenerateHeapDump(Env* env) {
-    gcHeapDump();
+    gcHeapDump(env);
 }

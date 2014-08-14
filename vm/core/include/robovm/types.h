@@ -362,6 +362,7 @@ typedef struct Options {
     jint logLevel;
     jlong maxHeapSize;
     jlong initialHeapSize;
+    jboolean enableGCHeapStats;
     char basePath[PATH_MAX];
     char executablePath[PATH_MAX];
     char** rawBootclasspath; 

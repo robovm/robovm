@@ -141,6 +141,8 @@ jboolean rvmInitOptions(int argc, char* argv[], Options* options, jboolean ignor
                         }
                         options->mainClass = s;
                     }
+                } else if (startsWith(arg, "EnableGCHeapStats")) {
+                    options->enableGCHeapStats = TRUE;
                 } else if (startsWith(arg, "D")) {
                     char* s = strdup(&arg[1]);
                     // Split the arg string on the '='. 'key' will have the

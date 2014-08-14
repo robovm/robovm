@@ -6,3 +6,9 @@
 
 RoboVM Objective-C Bridge
 Copyright (C) 2012 Trillian Mobile AB
+
+The RoboVM Objective-C Bridge includes code (contained in the LongMap.java file) 
+from the libGDX project which is released under the Apache License 2.0. For 
+copyright and authors information please see 
+https://github.com/libgdx/libgdx/blob/master/AUTHORS.
+http://libgdx.badlogicgames.com/

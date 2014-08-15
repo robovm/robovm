@@ -138,6 +138,9 @@ classes:
                 exclude: true
             '-initWithLayer:':
                 name: "init"
+                parameters:
+                    layer:
+                        type: CALayer
             '-presentationLayer':
                 property: true
                 return_type: "CALayer"

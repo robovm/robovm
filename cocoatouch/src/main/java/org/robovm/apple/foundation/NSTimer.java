@@ -44,7 +44,7 @@ import org.robovm.apple.security.*;
     /*<constructors>*/
     public NSTimer() {}
     protected NSTimer(SkipInit skipInit) { super(skipInit); }
-    public NSTimer(NSDate date, double ti, NSTimer t, Selector s, NSTimer ui, boolean rep) { super((SkipInit) null); initObject(initWithFireDate$interval$target$selector$userInfo$repeats$(date, ti, t, s, ui, rep)); }
+    public NSTimer(NSDate date, double ti, NSObject t, Selector s, NSObject ui, boolean rep) { super((SkipInit) null); initObject(initWithFireDate$interval$target$selector$userInfo$repeats$(date, ti, t, s, ui, rep)); }
     /*</constructors>*/
     /*<properties>*/
     
@@ -52,7 +52,7 @@ import org.robovm.apple.security.*;
     /*<members>*//*</members>*/
     /*<methods>*/
     @Method(selector = "initWithFireDate:interval:target:selector:userInfo:repeats:")
-    protected native @Pointer long initWithFireDate$interval$target$selector$userInfo$repeats$(NSDate date, double ti, NSTimer t, Selector s, NSTimer ui, boolean rep);
+    protected native @Pointer long initWithFireDate$interval$target$selector$userInfo$repeats$(NSDate date, double ti, NSObject t, Selector s, NSObject ui, boolean rep);
     @Method(selector = "fire")
     public native void fire();
     @Method(selector = "fireDate")

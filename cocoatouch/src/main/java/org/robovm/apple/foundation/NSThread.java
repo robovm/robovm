@@ -47,7 +47,7 @@ import org.robovm.apple.security.*;
     /**
      * @since Available in iOS 2.0 and later.
      */
-    public NSThread(NSThread target, Selector selector, NSThread argument) { super((SkipInit) null); initObject(initWithTarget$selector$object$(target, selector, argument)); }
+    public NSThread(NSObject target, Selector selector, NSObject argument) { super((SkipInit) null); initObject(initWithTarget$selector$object$(target, selector, argument)); }
     /*</constructors>*/
     /*<properties>*/
     
@@ -95,7 +95,7 @@ import org.robovm.apple.security.*;
      * @since Available in iOS 2.0 and later.
      */
     @Method(selector = "initWithTarget:selector:object:")
-    protected native @Pointer long initWithTarget$selector$object$(NSThread target, Selector selector, NSThread argument);
+    protected native @Pointer long initWithTarget$selector$object$(NSObject target, Selector selector, NSObject argument);
     /**
      * @since Available in iOS 2.0 and later.
      */

@@ -47,8 +47,8 @@ import org.robovm.apple.security.*;
     /**
      * @since Available in iOS 2.0 and later.
      */
-    public NSURLConnection(NSURLRequest request, NSURLConnection delegate, boolean startImmediately) { super((SkipInit) null); initObject(initWithRequest$delegate$startImmediately$(request, delegate, startImmediately)); }
-    public NSURLConnection(NSURLRequest request, NSURLConnection delegate) { super((SkipInit) null); initObject(initWithRequest$delegate$(request, delegate)); }
+    public NSURLConnection(NSURLRequest request, NSURLConnectionDelegate delegate, boolean startImmediately) { super((SkipInit) null); initObject(initWithRequest$delegate$startImmediately$(request, delegate, startImmediately)); }
+    public NSURLConnection(NSURLRequest request, NSURLConnectionDelegate delegate) { super((SkipInit) null); initObject(initWithRequest$delegate$(request, delegate)); }
     /*</constructors>*/
     /*<properties>*/
     
@@ -59,9 +59,9 @@ import org.robovm.apple.security.*;
      * @since Available in iOS 2.0 and later.
      */
     @Method(selector = "initWithRequest:delegate:startImmediately:")
-    protected native @Pointer long initWithRequest$delegate$startImmediately$(NSURLRequest request, NSURLConnection delegate, boolean startImmediately);
+    protected native @Pointer long initWithRequest$delegate$startImmediately$(NSURLRequest request, NSURLConnectionDelegate delegate, boolean startImmediately);
     @Method(selector = "initWithRequest:delegate:")
-    protected native @Pointer long initWithRequest$delegate$(NSURLRequest request, NSURLConnection delegate);
+    protected native @Pointer long initWithRequest$delegate$(NSURLRequest request, NSURLConnectionDelegate delegate);
     /**
      * @since Available in iOS 5.0 and later.
      */

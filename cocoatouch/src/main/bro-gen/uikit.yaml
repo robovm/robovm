@@ -509,7 +509,12 @@ classes:
         methods:
             '+sharedAccelerometer':
                 name: getSharedAccelerometer
-    UIAccessibilityElement: {} # DONE
+    UIAccessibilityElement: # DONE
+        methods:
+            '-initWithAccessibilityContainer:':
+                parameters:
+                    container:
+                        type: UIView
     UIActionSheet: # DONE
         methods:
             '-initWithTitle:delegate:cancelButtonTitle:destructiveButtonTitle:otherButtonTitles:':

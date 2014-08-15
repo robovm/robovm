@@ -46,11 +46,11 @@ import org.robovm.apple.uikit.*;
     /*<constructors>*/
     public PKAddPassesViewController() {}
     protected PKAddPassesViewController(SkipInit skipInit) { super(skipInit); }
-    public PKAddPassesViewController(PKAddPassesViewController pass) { super((SkipInit) null); initObject(init(pass)); }
+    public PKAddPassesViewController(PKPass pass) { super((SkipInit) null); initObject(initWithPass$(pass)); }
     /**
      * @since Available in iOS 7.0 and later.
      */
-    public PKAddPassesViewController(NSArray<PKPass> passes) { super((SkipInit) null); initObject(init(passes)); }
+    public PKAddPassesViewController(NSArray<PKPass> passes) { super((SkipInit) null); initObject(initWithPasses$(passes)); }
     /*</constructors>*/
     /*<properties>*/
     @Property(selector = "delegate")
@@ -61,11 +61,11 @@ import org.robovm.apple.uikit.*;
     /*<members>*//*</members>*/
     /*<methods>*/
     @Method(selector = "initWithPass:")
-    protected native @Pointer long init(PKAddPassesViewController pass);
+    protected native @Pointer long initWithPass$(PKPass pass);
     /**
      * @since Available in iOS 7.0 and later.
      */
     @Method(selector = "initWithPasses:")
-    protected native @Pointer long init(NSArray<PKPass> passes);
+    protected native @Pointer long initWithPasses$(NSArray<PKPass> passes);
     /*</methods>*/
 }

@@ -1767,6 +1767,10 @@ classes:
                 property: true
             '-currentRequest':
                 property: true
+            '-initWithRequest:delegate:.*':
+                parameters:
+                    delegate:
+                        type: NSURLConnectionDelegate
     NSURLCredential: {}
     NSURLCredentialStorage: {}
     NSURLProtectionSpace:

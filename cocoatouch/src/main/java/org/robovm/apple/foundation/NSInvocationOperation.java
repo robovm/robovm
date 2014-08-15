@@ -46,7 +46,7 @@ import org.robovm.apple.security.*;
     /*<constructors>*/
     public NSInvocationOperation() {}
     protected NSInvocationOperation(SkipInit skipInit) { super(skipInit); }
-    public NSInvocationOperation(NSInvocationOperation target, Selector sel, NSInvocationOperation arg) { super((SkipInit) null); initObject(initWithTarget$selector$object$(target, sel, arg)); }
+    public NSInvocationOperation(NSObject target, Selector sel, NSObject arg) { super((SkipInit) null); initObject(initWithTarget$selector$object$(target, sel, arg)); }
     public NSInvocationOperation(NSInvocation inv) { super((SkipInit) null); initObject(initWithInvocation$(inv)); }
     /*</constructors>*/
     /*<properties>*/
@@ -55,7 +55,7 @@ import org.robovm.apple.security.*;
     /*<members>*//*</members>*/
     /*<methods>*/
     @Method(selector = "initWithTarget:selector:object:")
-    protected native @Pointer long initWithTarget$selector$object$(NSInvocationOperation target, Selector sel, NSInvocationOperation arg);
+    protected native @Pointer long initWithTarget$selector$object$(NSObject target, Selector sel, NSObject arg);
     @Method(selector = "initWithInvocation:")
     protected native @Pointer long initWithInvocation$(NSInvocation inv);
     @Method(selector = "invocation")

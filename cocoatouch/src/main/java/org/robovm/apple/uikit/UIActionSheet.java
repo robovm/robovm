@@ -19,6 +19,7 @@ package org.robovm.apple.uikit;
 import java.io.*;
 import java.nio.*;
 import java.util.*;
+
 import org.robovm.objc.*;
 import org.robovm.objc.annotation.*;
 import org.robovm.objc.block.*;
@@ -58,7 +59,7 @@ import org.robovm.apple.coreimage.*;
     public UIActionSheet(String title, UIActionSheetDelegate delegate, String cancelButtonTitle, 
             String destructiveButtonTitle, String ... otherButtonTitles) {
         super((SkipInit) null);
-        initObject(initWithTitle$delegate$cancelButtonTitle$destructiveButtonTitle$otherButtonTitles$(title, delegate, cancelButtonTitle, destructiveButtonTitle));
+        initObject(initWithTitle$delegate$cancelButtonTitle$destructiveButtonTitle$otherButtonTitles$(title, delegate, cancelButtonTitle, destructiveButtonTitle, 0));
         for (String otherButtonTitle : otherButtonTitles) {
             addButton(otherButtonTitle);
         }
@@ -66,7 +67,7 @@ import org.robovm.apple.coreimage.*;
     }
     
     @Method(selector = "initWithTitle:delegate:cancelButtonTitle:destructiveButtonTitle:otherButtonTitles:")
-    protected native @Pointer long initWithTitle$delegate$cancelButtonTitle$destructiveButtonTitle$otherButtonTitles$(String title, UIActionSheetDelegate delegate, String cancelButtonTitle, String destructiveButtonTitle);
+    protected native @Pointer long initWithTitle$delegate$cancelButtonTitle$destructiveButtonTitle$otherButtonTitles$(String title, UIActionSheetDelegate delegate, String cancelButtonTitle, String destructiveButtonTitle, @Pointer long otherButtonTitles);
     
     /*<properties>*/
     @Property(selector = "delegate")

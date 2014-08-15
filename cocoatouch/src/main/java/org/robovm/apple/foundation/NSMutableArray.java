@@ -63,7 +63,7 @@ import org.robovm.apple.security.*;
         @Override
         public void add(int index, U element) {
             checkNull(element);
-            if (index != array.count() + 1) {
+            if (index < 0 || index > array.count()) {
                 checkIndex(index);
             }
             ((NSMutableArray<U>) array).insertObject$atIndex$(element, index);

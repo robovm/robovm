@@ -59,9 +59,9 @@ import org.robovm.apple.coregraphics.*;
     @Method(selector = "bannerView:didFailToReceiveAdWithError:")
     void didFailToReceiveAd(ADBannerView banner, NSError error);
     @Method(selector = "bannerViewActionShouldBegin:willLeaveApplication:")
-    boolean shouldBeginAction(ADBannerView banner, boolean willLeave);
+    boolean actionShouldBegin(ADBannerView banner, boolean willLeave);
     @Method(selector = "bannerViewActionDidFinish:")
-    void didFinishAction(ADBannerView banner);
+    void actionDidFinish(ADBannerView banner);
     /*</methods>*/
     /*<adapter>*/
     /*</adapter>*/

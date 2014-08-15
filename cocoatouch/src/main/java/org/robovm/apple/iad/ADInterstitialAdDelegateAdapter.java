@@ -63,8 +63,8 @@ import org.robovm.apple.coregraphics.*;
     @NotImplemented("interstitialAdDidLoad:")
     public void didLoad(ADInterstitialAd interstitialAd) { throw new UnsupportedOperationException(); }
     @NotImplemented("interstitialAdActionShouldBegin:willLeaveApplication:")
-    public boolean shouldBeginAction(ADInterstitialAd interstitialAd, boolean willLeave) { throw new UnsupportedOperationException(); }
+    public boolean actionShouldBegin(ADInterstitialAd interstitialAd, boolean willLeave) { throw new UnsupportedOperationException(); }
     @NotImplemented("interstitialAdActionDidFinish:")
-    public void didFinishAction(ADInterstitialAd interstitialAd) { throw new UnsupportedOperationException(); }
+    public void actionDidFinish(ADInterstitialAd interstitialAd) { throw new UnsupportedOperationException(); }
     /*</methods>*/
 }

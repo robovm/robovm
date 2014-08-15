@@ -48,13 +48,10 @@ import org.robovm.apple.corefoundation.*;
     
     private static java.util.concurrent.atomic.AtomicLong changeCallbackId = new java.util.concurrent.atomic.AtomicLong();
     private static Map<Long, ExternalChangeCallback> externalChangeCallbacks = new HashMap<Long, ExternalChangeCallback>();
-    private RequestAccessCompletionHandler requestAccessHandler;
-    private static final java.lang.reflect.Method cbRequestAccess;
     private static final java.lang.reflect.Method cbExternalChange;
     
     static {
         try {
-            cbRequestAccess = ABAddressBook.class.getDeclaredMethod("cbRequestAccess", boolean.class, NSError.class);
             cbExternalChange = ABAddressBook.class.getDeclaredMethod("cbExternalChange", ABAddressBook.class, NSDictionary.class, long.class);
         } catch (Throwable e) {
             throw new Error(e);
@@ -65,12 +62,6 @@ import org.robovm.apple.corefoundation.*;
     /*<constructors>*//*</constructors>*/
     /*<properties>*//*</properties>*/
     /*<members>*//*</members>*/
-    @Callback
-    private void cbRequestAccess(boolean granted, NSError error) {
-        if (requestAccessHandler != null) {
-            requestAccessHandler.requestAccess(granted, error);
-        }
-    }
     @Callback
     private static void cbExternalChange(ABAddressBook addressBook, NSDictionary<?, ?> info, @Pointer long refcon) {
         ExternalChangeCallback callback = null;
@@ -86,11 +77,6 @@ import org.robovm.apple.corefoundation.*;
     public static ABAddressBook create(NSDictionary<NSString, ?> options) {
         ABAddressBook addressBook = create(options, null);
         return addressBook;
-    }
-    
-    public void requestAccess(RequestAccessCompletionHandler handler) {
-        requestAccessHandler = handler;
-        requestAccess(new FunctionPtr(cbRequestAccess));
     }
     
     public boolean save() {
@@ -147,7 +133,7 @@ import org.robovm.apple.corefoundation.*;
      * @since Available in iOS 6.0 and later.
      */
     @Bridge(symbol="ABAddressBookRequestAccessWithCompletion", optional=true)
-    protected native void requestAccess(FunctionPtr completion);
+    public native void requestAccess(@Block RequestAccessCompletionHandler completion);
     @Bridge(symbol="ABAddressBookSave", optional=true)
     protected native boolean save(NSError.NSErrorPtr error);
     @Bridge(symbol="ABAddressBookHasUnsavedChanges", optional=true)

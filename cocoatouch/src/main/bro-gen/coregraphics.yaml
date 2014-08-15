@@ -50,7 +50,7 @@ classes:
     CGSize: {}
     CGVector: {}
 
-    # Opague types
+    # Opaque types
     CGBitmapContext:
         extends: CGContext
     CGColor:

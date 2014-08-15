@@ -352,6 +352,7 @@ typedef struct SystemProperty SystemProperty;
 struct SystemProperty {
   char* key;
   char* value;
+  SystemProperty* prev;
   SystemProperty* next;
 };
 

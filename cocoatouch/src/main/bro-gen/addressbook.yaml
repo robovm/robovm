@@ -11,7 +11,7 @@ typedefs:
     'ABRecordRef': 'ABRecord'
     'ABMultiValueRef': 'ABMultiValue'
     'ABMutableMultiValueRef': 'ABMutableMultiValue'
-    
+
 private_typedefs:
     "__CFString *": String
     "__CFString **": "NSString.NSStringPtr"
@@ -61,7 +61,9 @@ functions:
     ABAddressBook(RequestAccess)WithCompletion:
         class: ABAddressBook
         name: "#{g[0]}"
-        visibility: protected
+        parameters:
+            completion:
+                type: '@Block RequestAccessCompletionHandler'
     ABAddressBook(Save|AddRecord|RemoveRecord):
         class: ABAddressBook
         name: "#{g[0]}"

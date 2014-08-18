@@ -47,7 +47,6 @@ import org.robovm.apple.coregraphics.*;
     /*<bind>*/static { ObjCRuntime.bind(ADClient.class); }/*</bind>*/
     /*<constants>*//*</constants>*/
     /*<constructors>*/
-    public ADClient() {}
     protected ADClient(SkipInit skipInit) { super(skipInit); }
     /*</constructors>*/
     /*<properties>*/
@@ -64,6 +63,6 @@ import org.robovm.apple.coregraphics.*;
      * @since Available in iOS 7.1 and later.
      */
     @Method(selector = "sharedClient")
-    public static native ADClient sharedClient();
+    public static native ADClient getSharedClient();
     /*</methods>*/
 }

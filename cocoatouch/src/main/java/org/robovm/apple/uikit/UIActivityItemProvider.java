@@ -49,7 +49,7 @@ import org.robovm.apple.coreimage.*;
     /*<constructors>*/
     public UIActivityItemProvider() {}
     protected UIActivityItemProvider(SkipInit skipInit) { super(skipInit); }
-    public UIActivityItemProvider(UIActivityItemProvider placeholderItem) { super((SkipInit) null); initObject(initWithPlaceholderItem$(placeholderItem)); }
+    public UIActivityItemProvider(NSObject placeholderItem) { super((SkipInit) null); initObject(initWithPlaceholderItem$(placeholderItem)); }
     /*</constructors>*/
     /*<properties>*/
     @Property(selector = "placeholderItem")
@@ -60,7 +60,7 @@ import org.robovm.apple.coreimage.*;
     /*<members>*//*</members>*/
     /*<methods>*/
     @Method(selector = "initWithPlaceholderItem:")
-    protected native @Pointer long initWithPlaceholderItem$(UIActivityItemProvider placeholderItem);
+    protected native @Pointer long initWithPlaceholderItem$(NSObject placeholderItem);
     @Method(selector = "item")
     public native NSObject getItem();
     @Method(selector = "activityViewControllerPlaceholderItem:")

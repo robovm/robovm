@@ -35,10 +35,14 @@ classes:
                     contentSizeIdentifier:
                         type: "NSString"
     ADClient: # DONE
+        skip_def_constructor: true
         methods:
+            '+sharedClient':
+                name: getSharedClient
             '-determineAppInstallationAttributionWithCompletionHandler:':
                 name: "determineAppInstallationAttribution"  
     ADInterstitialAd: # DONE
+        visibility: 'public final'
         methods:
             '-presentInView:':
                 name: "present"
@@ -53,9 +57,9 @@ protocols:
             '-bannerView:didFailToReceiveAdWithError:':
                 name: "didFailToReceiveAd"
             '-bannerViewActionShouldBegin:willLeaveApplication:':
-                name: "shouldBeginAction"
+                name: "actionShouldBegin"
             '-bannerViewActionDidFinish:':
-                name: "didFinishAction"
+                name: "actionDidFinish"
     ADInterstitialAdDelegate: # DONE
         methods:
             '-interstitialAdDidUnload:':
@@ -67,9 +71,9 @@ protocols:
             '-interstitialAdDidLoad:':
                 name: "didLoad"
             '-interstitialAdActionShouldBegin:willLeaveApplication:':
-                name: "shouldBeginAction"
+                name: "actionShouldBegin"
             '-interstitialAdActionDidFinish:':
-                name: "didFinishAction"
+                name: "actionDidFinish"
 
 functions:
     # Make sure we don't miss any functions if new ones are introduced in a later version
@@ -84,7 +88,7 @@ values:
 
     ADBannerContentSizeIdentifier(.*): # This could be put into a separate class and also the ADBannerView function getSize
         class: IAd
-        name: "ADBannerContentSizeIdentifier#{g[0]}"
+        name: "BannerContentSizeIdentifier#{g[0]}"
 
     # Make sure we don't miss any values if new ones are introduced in a later version
     (AD.*):

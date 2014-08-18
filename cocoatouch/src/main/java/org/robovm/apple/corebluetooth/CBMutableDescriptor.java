@@ -47,7 +47,7 @@ import org.robovm.apple.dispatch.*;
     /*<constructors>*/
     public CBMutableDescriptor() {}
     protected CBMutableDescriptor(SkipInit skipInit) { super(skipInit); }
-    public CBMutableDescriptor(CBUUID UUID, CBMutableDescriptor value) { super((SkipInit) null); initObject(init(UUID, value)); }
+    public CBMutableDescriptor(CBUUID UUID, NSObject value) { super((SkipInit) null); initObject(init(UUID, value)); }
     /*</constructors>*/
     /*<properties>*/
     
@@ -55,6 +55,6 @@ import org.robovm.apple.dispatch.*;
     /*<members>*//*</members>*/
     /*<methods>*/
     @Method(selector = "initWithType:value:")
-    protected native @Pointer long init(CBUUID UUID, CBMutableDescriptor value);
+    protected native @Pointer long init(CBUUID UUID, NSObject value);
     /*</methods>*/
 }

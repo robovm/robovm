@@ -66,7 +66,7 @@ public abstract class ObjCObject extends NativeObject {
      */
     static final Object objcBridgeLock = new Object();
 
-    private static final HashMap<Long, ObjCObjectRef> peers = new HashMap<>();
+    private static final LongMap<ObjCObjectRef> peers = new LongMap<>();
 
     private static final long CUSTOM_CLASS_OFFSET;
     

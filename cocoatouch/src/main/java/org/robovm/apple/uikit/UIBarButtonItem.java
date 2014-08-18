@@ -49,13 +49,13 @@ import org.robovm.apple.coreimage.*;
     /*<constructors>*/
     public UIBarButtonItem() {}
     protected UIBarButtonItem(SkipInit skipInit) { super(skipInit); }
-    public UIBarButtonItem(UIImage image, UIBarButtonItemStyle style, UIBarButtonItem target, Selector action) { super((SkipInit) null); initObject(initWithImage$style$target$action$(image, style, target, action)); }
+    public UIBarButtonItem(UIImage image, UIBarButtonItemStyle style, NSObject target, Selector action) { super((SkipInit) null); initObject(initWithImage$style$target$action$(image, style, target, action)); }
     /**
      * @since Available in iOS 5.0 and later.
      */
-    public UIBarButtonItem(UIImage image, UIImage landscapeImagePhone, UIBarButtonItemStyle style, UIBarButtonItem target, Selector action) { super((SkipInit) null); initObject(initWithImage$landscapeImagePhone$style$target$action$(image, landscapeImagePhone, style, target, action)); }
-    public UIBarButtonItem(String title, UIBarButtonItemStyle style, UIBarButtonItem target, Selector action) { super((SkipInit) null); initObject(initWithTitle$style$target$action$(title, style, target, action)); }
-    public UIBarButtonItem(UIBarButtonSystemItem systemItem, UIBarButtonItem target, Selector action) { super((SkipInit) null); initObject(initWithBarButtonSystemItem$target$action$(systemItem, target, action)); }
+    public UIBarButtonItem(UIImage image, UIImage landscapeImagePhone, UIBarButtonItemStyle style, NSObject target, Selector action) { super((SkipInit) null); initObject(initWithImage$landscapeImagePhone$style$target$action$(image, landscapeImagePhone, style, target, action)); }
+    public UIBarButtonItem(String title, UIBarButtonItemStyle style, NSObject target, Selector action) { super((SkipInit) null); initObject(initWithTitle$style$target$action$(title, style, target, action)); }
+    public UIBarButtonItem(UIBarButtonSystemItem systemItem, NSObject target, Selector action) { super((SkipInit) null); initObject(initWithBarButtonSystemItem$target$action$(systemItem, target, action)); }
     public UIBarButtonItem(UIView customView) { super((SkipInit) null); initObject(initWithCustomView$(customView)); }
     /*</constructors>*/
     /*<properties>*/
@@ -97,16 +97,16 @@ import org.robovm.apple.coreimage.*;
     /*<members>*//*</members>*/
     /*<methods>*/
     @Method(selector = "initWithImage:style:target:action:")
-    protected native @Pointer long initWithImage$style$target$action$(UIImage image, UIBarButtonItemStyle style, UIBarButtonItem target, Selector action);
+    protected native @Pointer long initWithImage$style$target$action$(UIImage image, UIBarButtonItemStyle style, NSObject target, Selector action);
     /**
      * @since Available in iOS 5.0 and later.
      */
     @Method(selector = "initWithImage:landscapeImagePhone:style:target:action:")
-    protected native @Pointer long initWithImage$landscapeImagePhone$style$target$action$(UIImage image, UIImage landscapeImagePhone, UIBarButtonItemStyle style, UIBarButtonItem target, Selector action);
+    protected native @Pointer long initWithImage$landscapeImagePhone$style$target$action$(UIImage image, UIImage landscapeImagePhone, UIBarButtonItemStyle style, NSObject target, Selector action);
     @Method(selector = "initWithTitle:style:target:action:")
-    protected native @Pointer long initWithTitle$style$target$action$(String title, UIBarButtonItemStyle style, UIBarButtonItem target, Selector action);
+    protected native @Pointer long initWithTitle$style$target$action$(String title, UIBarButtonItemStyle style, NSObject target, Selector action);
     @Method(selector = "initWithBarButtonSystemItem:target:action:")
-    protected native @Pointer long initWithBarButtonSystemItem$target$action$(UIBarButtonSystemItem systemItem, UIBarButtonItem target, Selector action);
+    protected native @Pointer long initWithBarButtonSystemItem$target$action$(UIBarButtonSystemItem systemItem, NSObject target, Selector action);
     @Method(selector = "initWithCustomView:")
     protected native @Pointer long initWithCustomView$(UIView customView);
     /**

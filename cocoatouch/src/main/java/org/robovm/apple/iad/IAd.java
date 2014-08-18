@@ -56,27 +56,27 @@ import org.robovm.apple.coregraphics.*;
      */
     @Deprecated
     @GlobalValue(symbol="ADBannerContentSizeIdentifier320x50", optional=true)
-    public static native String ADBannerContentSizeIdentifier320x50();
+    public static native String BannerContentSizeIdentifier320x50();
     /**
      * @since Available in iOS 4.0 and later.
      * @deprecated Deprecated in iOS 4.2.
      */
     @Deprecated
     @GlobalValue(symbol="ADBannerContentSizeIdentifier480x32", optional=true)
-    public static native String ADBannerContentSizeIdentifier480x32();
+    public static native String BannerContentSizeIdentifier480x32();
     /**
      * @since Available in iOS 4.2 and later.
      * @deprecated Deprecated in iOS 6.0.
      */
     @Deprecated
     @GlobalValue(symbol="ADBannerContentSizeIdentifierPortrait", optional=true)
-    public static native String ADBannerContentSizeIdentifierPortrait();
+    public static native String BannerContentSizeIdentifierPortrait();
     /**
      * @since Available in iOS 4.2 and later.
      * @deprecated Deprecated in iOS 6.0.
      */
     @Deprecated
     @GlobalValue(symbol="ADBannerContentSizeIdentifierLandscape", optional=true)
-    public static native String ADBannerContentSizeIdentifierLandscape();
+    public static native String BannerContentSizeIdentifierLandscape();
     /*</methods>*/
 }

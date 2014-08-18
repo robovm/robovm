@@ -17,6 +17,7 @@
 #include <string.h>
 #include <stdio.h>
 #include <stdarg.h>
+#include <ctype.h>
 #include <dlfcn.h>
 #include <signal.h>
 #if defined(IOS) && (defined(RVM_ARMV7) || defined(RVM_THUMBV7))
@@ -34,7 +35,27 @@ static Method* java_lang_Daemons_start = NULL;
 extern int registerCoreLibrariesJni(JNIEnv* env);
 
 static inline jint startsWith(char* s, char* prefix) {
-    return s && strncmp(s, prefix, strlen(prefix)) == 0;
+    return s && strncasecmp(s, prefix, strlen(prefix)) == 0;
+}
+
+static char* trim(char* str) {
+    char* orig = str;
+
+    // Trim leading space
+    while (isspace(*str)) str++;
+
+    if (*str != 0) {
+        // Trim trailing space
+        char* end = str + strlen(str) - 1;
+        while (end > str && isspace(*end)) end--;
+        // Write new null terminator
+        *(end + 1) = 0;
+    }
+
+    if (str != orig) {
+        memmove(orig, str, strlen(str) + 1);
+    }
+    return orig;
 }
 
 static char* absolutize(char* basePath, char* rel, char* dest) {
@@ -68,8 +89,72 @@ static jboolean initClasspathEntries(Env* env, char* basePath, char** raw, Class
     return TRUE;
 }
 
+static void parseArg(char* arg, Options* options) {
+    if (startsWith(arg, "log=trace")) {
+        if (options->logLevel == 0) options->logLevel = LOG_LEVEL_TRACE;
+    } else if (startsWith(arg, "log=debug")) {
+        if (options->logLevel == 0) options->logLevel = LOG_LEVEL_DEBUG;
+    } else if (startsWith(arg, "log=info")) {
+        if (options->logLevel == 0) options->logLevel = LOG_LEVEL_INFO;
+    } else if (startsWith(arg, "log=warn")) {
+        if (options->logLevel == 0) options->logLevel = LOG_LEVEL_WARN;
+    } else if (startsWith(arg, "log=error")) {
+        if (options->logLevel == 0) options->logLevel = LOG_LEVEL_ERROR;
+    } else if (startsWith(arg, "log=fatal")) {
+        if (options->logLevel == 0) options->logLevel = LOG_LEVEL_FATAL;
+    } else if (startsWith(arg, "log=silent")) {
+        if (options->logLevel == 0) options->logLevel = LOG_LEVEL_SILENT;
+    } else if (startsWith(arg, "mx") || startsWith(arg, "ms")) {
+        char* unit;
+        jlong n = strtol(&arg[2], &unit, 10);
+        if (n > 0) {
+            if (unit[0] != '\0') {
+                switch (unit[0]) {
+                case 'g':
+                case 'G':
+                    n *= 1024 * 1024 * 1024;
+                    break;
+                case 'm':
+                case 'M':
+                    n *= 1024 * 1024;
+                    break;
+                case 'k':
+                case 'K':
+                    n *= 1024;
+                    break;
+                }
+            }
+        }
+        if (startsWith(arg, "mx")) {
+            options->maxHeapSize = n;
+        } else {
+            options->initialHeapSize = n;
+        }
+    } else if (startsWith(arg, "MainClass=")) {
+        if (!options->mainClass) {
+            char* s = strdup(&arg[10]);
+            jint j;
+            for (j = 0; s[j] != 0; j++) {
+                if (s[j] == '.') s[j] = '/';
+            }
+            options->mainClass = s;
+        }
+    } else if (startsWith(arg, "EnableGCHeapStats")) {
+        options->enableGCHeapStats = TRUE;
+    } else if (startsWith(arg, "D")) {
+        char* s = strdup(&arg[1]);
+        // Split the arg string on the '='. 'key' will have the
+        // part on the left and 's' will have the value on the right
+        char* key = strsep(&s, "=");
+
+        SystemProperty* property = calloc(1, sizeof(SystemProperty));
+        property->key = key;
+        property->value = s;
+        DL_APPEND(options->properties, property);
+    }
+}
+
 jboolean rvmInitOptions(int argc, char* argv[], Options* options, jboolean ignoreRvmArgs) {
-    SystemProperty** nextProperty = &options->properties; //Keep a pointer to where the next SystemProperty* will go.
     char path[PATH_MAX];
     if (!realpath(argv[0], path)) {
         return FALSE;
@@ -87,76 +172,31 @@ jboolean rvmInitOptions(int argc, char* argv[], Options* options, jboolean ignor
 
     strcpy(options->basePath, path);
 
+    // Look for a robovm.ini next to the executable
+    strcat(path, "/robovm.ini");
+    FILE* f = fopen(path, "r");
+    if (f) {
+        char* line = NULL;
+        size_t linecap = 0;
+        ssize_t linelen;
+        while ((linelen = getline(&line, &linecap, f)) > 0) {
+            line = trim(line);
+            if (strlen(line) > 0 && line[0] != '#') {
+                parseArg(line, options);
+            }
+        }
+        if (line) {
+            free(line);
+        }
+        fclose(f);
+    }
+
     jint firstJavaArg = 1;
     for (i = 1; i < argc; i++) {
         if (startsWith(argv[i], "-rvm:")) {
             if (!ignoreRvmArgs) {
                 char* arg = &argv[i][5];
-                if (startsWith(arg, "log=trace")) {
-                    if (options->logLevel == 0) options->logLevel = LOG_LEVEL_TRACE;
-                } else if (startsWith(arg, "log=debug")) {
-                    if (options->logLevel == 0) options->logLevel = LOG_LEVEL_DEBUG;
-                } else if (startsWith(arg, "log=info")) {
-                    if (options->logLevel == 0) options->logLevel = LOG_LEVEL_INFO;
-                } else if (startsWith(arg, "log=warn")) {
-                    if (options->logLevel == 0) options->logLevel = LOG_LEVEL_WARN;
-                } else if (startsWith(arg, "log=error")) {
-                    if (options->logLevel == 0) options->logLevel = LOG_LEVEL_ERROR;
-                } else if (startsWith(arg, "log=fatal")) {
-                    if (options->logLevel == 0) options->logLevel = LOG_LEVEL_FATAL;
-                } else if (startsWith(arg, "log=silent")) {
-                    if (options->logLevel == 0) options->logLevel = LOG_LEVEL_SILENT;
-                } else if (startsWith(arg, "mx") || startsWith(arg, "ms")) {
-                    char* unit;
-                    jlong n = strtol(&arg[2], &unit, 10);
-                    if (n > 0) {
-                        if (unit[0] != '\0') {
-                            switch (unit[0]) {
-                            case 'g':
-                            case 'G':
-                                n *= 1024 * 1024 * 1024;
-                                break;
-                            case 'm':
-                            case 'M':
-                                n *= 1024 * 1024;
-                                break;
-                            case 'k':
-                            case 'K':
-                                n *= 1024;
-                                break;
-                            }
-                        }
-                    }
-                    if (startsWith(arg, "mx")) {
-                        options->maxHeapSize = n;
-                    } else {
-                        options->initialHeapSize = n;
-                    }
-                } else if (startsWith(arg, "MainClass=")) {
-                    if (!options->mainClass) {
-                        char* s = strdup(&arg[10]);
-                        jint j;
-                        for (j = 0; s[j] != 0; j++) {
-                            if (s[j] == '.') s[j] = '/';
-                        }
-                        options->mainClass = s;
-                    }
-                } else if (startsWith(arg, "D")) {
-                    char* s = strdup(&arg[1]);
-                    // Split the arg string on the '='. 'key' will have the
-                    // part on the left and 's' will have the value on the right
-                    char* key = strsep(&s, "=");
-
-                    *nextProperty = malloc(sizeof(SystemProperty));
-
-                    (*nextProperty)->key = key;
-                    (*nextProperty)->value = s;
-                    (*nextProperty)->next = NULL;
-
-                    //Set the nextProperty variable to the 'next' field on the
-                    //property we just created.
-                    nextProperty = &((*nextProperty)->next);
-                }
+                parseArg(arg, options);
             }
             firstJavaArg++;
         } else {

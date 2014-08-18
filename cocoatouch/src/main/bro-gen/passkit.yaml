@@ -19,9 +19,10 @@ classes:
     PKAddPassesViewController: # DONE
         methods:
             '-initWithPass:':
-                name: "init"
+                parameters:
+                    pass:
+                        type: PKPass
             '-initWithPasses:':
-                name: "init"
                 parameters:
                     passes:
                         type: "NSArray<PKPass>"

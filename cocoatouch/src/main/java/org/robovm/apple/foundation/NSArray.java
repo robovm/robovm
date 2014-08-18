@@ -19,6 +19,7 @@ package org.robovm.apple.foundation;
 import java.io.*;
 import java.nio.*;
 import java.util.*;
+
 import org.robovm.objc.*;
 import org.robovm.objc.annotation.*;
 import org.robovm.objc.block.*;
@@ -115,6 +116,9 @@ import org.robovm.apple.security.*;
     
     public NSArray(Collection<T> c) {
         super((SkipInit) null);
+        if (c == null) {
+            throw new NullPointerException("c");
+        }
         if (c instanceof NSArray) {
             initObject(initWithArray$((NSArray<T>) c));
         } else {
@@ -126,6 +130,9 @@ import org.robovm.apple.security.*;
     @SuppressWarnings("unchecked")
     public NSArray(T ... objects) {
         super((SkipInit) null);
+        if (objects == null) {
+            throw new NullPointerException("objects");
+        }
         initWithObjects(objects);
     }
     
@@ -141,14 +148,17 @@ import org.robovm.apple.security.*;
     }
     
     private void initWithObjects(NSObject[] objects) {
-        VoidPtr.VoidPtrPtr ptr = Struct.allocate(VoidPtr.VoidPtrPtr.class, objects.length);
-        for (int i = 0; i < objects.length; i++) {
-            checkNull(objects[i]);
-            ptr.set(objects[i].getHandle());
-            ptr = ptr.next();
+        VoidPtr.VoidPtrPtr ptr = null;
+        if (objects.length > 0) {
+            ptr = Struct.allocate(VoidPtr.VoidPtrPtr.class, objects.length);
+            for (int i = 0; i < objects.length; i++) {
+                checkNull(objects[i]);
+                ptr.set(objects[i].getHandle());
+                ptr = ptr.next();
+            }
+            ptr = ptr.previous(objects.length);
         }
-        ptr = ptr.previous(objects.length);
-        initObject(initWithObjects$count$(ptr.getHandle(), objects.length));
+        initObject(initWithObjects$count$(ptr != null ? ptr.getHandle() : 0, objects.length));
     }
     
     protected AbstractList<T> createAdapter() {

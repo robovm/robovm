@@ -85,22 +85,51 @@ import org.robovm.apple.coreimage.*;
     /*</properties>*/
     /*<members>*//*</members>*/
     
+    private static final Selector handleTouchEvent = Selector.register("handleTouchEvent");
     private static final Selector handleEvent = Selector.register("handleEvent");
     private static class ListenerWrapper extends NSObject {
         private final Listener listener;
         private final UIControlEvents controlEvent;
-        private ListenerWrapper(Listener listener, UIControlEvents controlEvent) {
+        private final Selector selector;
+        private ListenerWrapper(Listener listener, UIControlEvents controlEvent, Selector selector) {
             this.listener = listener;
             this.controlEvent = controlEvent;
+            this.selector = selector;
         }
-        @Method(selector = "handleEvent")
-        private void handleEvent(UIControl control, UIEvent event) {
+        @Method(selector = "handleTouchEvent")
+        private void handleTouchEvent(UIControl control, UIEvent event) {
             if (controlEvent == UIControlEvents.TouchDown) {
                 ((OnTouchDownListener) listener).onTouchDown(control, event);
             } else if (controlEvent == UIControlEvents.TouchUpInside) {
                 ((OnTouchUpInsideListener) listener).onTouchUpInside(control, event);
             } else if (controlEvent == UIControlEvents.TouchUpOutside) {
                 ((OnTouchUpOutsideListener) listener).onTouchUpOutside(control, event);
+            } else if (controlEvent == UIControlEvents.TouchCancel) {
+                ((OnTouchCancelListener) listener).onTouchCancel(control, event);
+            } else if (controlEvent == UIControlEvents.TouchDownRepeat) {
+                ((OnTouchDownRepeatListener) listener).onTouchDownRepeat(control, event);
+            } else if (controlEvent == UIControlEvents.TouchDragEnter) {
+                ((OnTouchDragEnterListener) listener).onTouchDragEnter(control, event);
+            } else if (controlEvent == UIControlEvents.TouchDragExit) {
+                ((OnTouchDragExitListener) listener).onTouchDragExit(control, event);
+            } else if (controlEvent == UIControlEvents.TouchDragInside) {
+                ((OnTouchDragInsideListener) listener).onTouchDragInside(control, event);
+            } else if (controlEvent == UIControlEvents.TouchDragOutside) {
+                ((OnTouchDragOutsideListener) listener).onTouchDragOutside(control, event);
+            }
+        }
+        @Method(selector = "handleEvent")
+        private void handleEvent(UIControl control) {
+            if (controlEvent == UIControlEvents.ValueChanged) {
+                ((OnValueChangedListener) listener).onValueChanged(control);
+            } else if (controlEvent == UIControlEvents.EditingChanged) {
+                ((OnEditingChangedListener) listener).onEditingChanged(control);
+            } else if (controlEvent == UIControlEvents.EditingDidBegin) {
+                ((OnEditingDidBeginListener) listener).onEditingDidBegin(control);
+            } else if (controlEvent == UIControlEvents.EditingDidEnd) {
+                ((OnEditingDidEndListener) listener).onEditingDidEnd(control);
+            } else if (controlEvent == UIControlEvents.EditingDidEndOnExit) {
+                ((OnEditingDidEndOnExitListener) listener).onEditingDidEndOnExit(control);
             }
         }
     }
@@ -133,19 +162,19 @@ import org.robovm.apple.coreimage.*;
         void onTouchCancel(UIControl control, UIEvent event);
     }
     public interface OnValueChangedListener extends Listener {
-        void onValueChanged(UIControl control, UIEvent event);
+        void onValueChanged(UIControl control);
     }
     public interface OnEditingDidBeginListener extends Listener {
-        void onEditingDidBegin(UIControl control, UIEvent event);
+        void onEditingDidBegin(UIControl control);
     }
     public interface OnEditingChangedListener extends Listener {
-        void onEditingChanged(UIControl control, UIEvent event);
+        void onEditingChanged(UIControl control);
     }
     public interface OnEditingDidEndListener extends Listener {
-        void onEditingDidEnd(UIControl control, UIEvent event);
+        void onEditingDidEnd(UIControl control);
     }
     public interface OnEditingDidEndOnExitListener extends Listener {
-        void onEditingDidEndOnExit(UIControl control, UIEvent event);
+        void onEditingDidEndOnExit(UIControl control);
     }
     
     public void addOnTouchDownListener(OnTouchDownListener l) {
@@ -204,12 +233,20 @@ import org.robovm.apple.coreimage.*;
         }
     }
     private void addListener(Listener listener, UIControlEvents controlEvent) {
-        ListenerWrapper wrapper = new ListenerWrapper(listener, controlEvent);
+        Selector selector = handleTouchEvent;
+        if (listener instanceof OnValueChangedListener 
+                || listener instanceof OnEditingChangedListener 
+                || listener instanceof OnEditingDidBeginListener 
+                || listener instanceof OnEditingDidEndListener 
+                || listener instanceof OnEditingDidEndOnExitListener) {
+            selector = handleEvent;
+        }
+        ListenerWrapper wrapper = new ListenerWrapper(listener, controlEvent, selector);
         List<ListenerWrapper> listeners = getListeners(true);
         synchronized (listeners) {
             listeners.add(wrapper);
         }
-        addTarget(wrapper, handleEvent, controlEvent);
+        addTarget(wrapper, selector, controlEvent);
     }
     
     public void removeListener(Listener listener) {
@@ -221,7 +258,7 @@ import org.robovm.apple.coreimage.*;
             for (Iterator<ListenerWrapper> it = listeners.iterator(); it.hasNext();) {
                 ListenerWrapper wrapper = it.next();
                 if (wrapper.listener == listener) {
-                    removeTarget(wrapper, handleEvent, wrapper.controlEvent);
+                    removeTarget(wrapper, wrapper.selector, wrapper.controlEvent);
                     it.remove();
                     break;
                 }

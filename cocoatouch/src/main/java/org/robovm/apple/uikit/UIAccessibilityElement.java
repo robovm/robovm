@@ -49,7 +49,7 @@ import org.robovm.apple.coreimage.*;
     /*<constructors>*/
     public UIAccessibilityElement() {}
     protected UIAccessibilityElement(SkipInit skipInit) { super(skipInit); }
-    public UIAccessibilityElement(UIAccessibilityElement container) { super((SkipInit) null); initObject(initWithAccessibilityContainer$(container)); }
+    public UIAccessibilityElement(UIView container) { super((SkipInit) null); initObject(initWithAccessibilityContainer$(container)); }
     /*</constructors>*/
     /*<properties>*/
     @Property(selector = "accessibilityContainer")
@@ -94,6 +94,6 @@ import org.robovm.apple.coreimage.*;
     /*<members>*//*</members>*/
     /*<methods>*/
     @Method(selector = "initWithAccessibilityContainer:")
-    protected native @Pointer long initWithAccessibilityContainer$(UIAccessibilityElement container);
+    protected native @Pointer long initWithAccessibilityContainer$(UIView container);
     /*</methods>*/
 }

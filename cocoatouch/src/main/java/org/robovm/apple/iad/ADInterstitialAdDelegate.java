@@ -61,9 +61,9 @@ import org.robovm.apple.coregraphics.*;
     @Method(selector = "interstitialAdDidLoad:")
     void didLoad(ADInterstitialAd interstitialAd);
     @Method(selector = "interstitialAdActionShouldBegin:willLeaveApplication:")
-    boolean shouldBeginAction(ADInterstitialAd interstitialAd, boolean willLeave);
+    boolean actionShouldBegin(ADInterstitialAd interstitialAd, boolean willLeave);
     @Method(selector = "interstitialAdActionDidFinish:")
-    void didFinishAction(ADInterstitialAd interstitialAd);
+    void actionDidFinish(ADInterstitialAd interstitialAd);
     /*</methods>*/
     /*<adapter>*/
     /*</adapter>*/

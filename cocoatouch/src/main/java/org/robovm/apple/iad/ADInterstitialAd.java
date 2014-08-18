@@ -39,7 +39,7 @@ import org.robovm.apple.coregraphics.*;
  */
 /*</javadoc>*/
 /*<annotations>*/@Library("iAd") @NativeClass/*</annotations>*/
-/*<visibility>*/public/*</visibility>*/ class /*<name>*/ADInterstitialAd/*</name>*/ 
+/*<visibility>*/public final/*</visibility>*/ class /*<name>*/ADInterstitialAd/*</name>*/ 
     extends /*<extends>*/NSObject/*</extends>*/ 
     /*<implements>*//*</implements>*/ {
 

@@ -61,8 +61,8 @@ import org.robovm.apple.coregraphics.*;
     @NotImplemented("bannerView:didFailToReceiveAdWithError:")
     public void didFailToReceiveAd(ADBannerView banner, NSError error) { throw new UnsupportedOperationException(); }
     @NotImplemented("bannerViewActionShouldBegin:willLeaveApplication:")
-    public boolean shouldBeginAction(ADBannerView banner, boolean willLeave) { throw new UnsupportedOperationException(); }
+    public boolean actionShouldBegin(ADBannerView banner, boolean willLeave) { throw new UnsupportedOperationException(); }
     @NotImplemented("bannerViewActionDidFinish:")
-    public void didFinishAction(ADBannerView banner) { throw new UnsupportedOperationException(); }
+    public void actionDidFinish(ADBannerView banner) { throw new UnsupportedOperationException(); }
     /*</methods>*/
 }

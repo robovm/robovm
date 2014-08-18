@@ -19,6 +19,7 @@ package org.robovm.apple.coretelephony;
 import java.io.*;
 import java.nio.*;
 import java.util.*;
+
 import org.robovm.objc.*;
 import org.robovm.objc.annotation.*;
 import org.robovm.objc.block.*;
@@ -41,38 +42,81 @@ import org.robovm.apple.corefoundation.*;
     /*</ptr>*/
     /*<bind>*/static { Bro.bind(CTRadioAccessTechnology.class); }/*</bind>*/
     /*<constants>*//*</constants>*/
-    public static CTRadioAccessTechnology GPRS = new CTRadioAccessTechnology(GPRSValue());
-    public static CTRadioAccessTechnology Edge = new CTRadioAccessTechnology(EdgeValue());
-    public static CTRadioAccessTechnology WCDMA = new CTRadioAccessTechnology(WCDMAValue());
-    public static CTRadioAccessTechnology HSDPA = new CTRadioAccessTechnology(HSDPAValue());
-    public static CTRadioAccessTechnology HSUPA = new CTRadioAccessTechnology(HSUPAValue());
-    public static CTRadioAccessTechnology CDMA1x = new CTRadioAccessTechnology(CDMA1xValue());
-    public static CTRadioAccessTechnology CDMAEVDORev0 = new CTRadioAccessTechnology(CDMAEVDORev0Value());
-    public static CTRadioAccessTechnology CDMAEVDORevA = new CTRadioAccessTechnology(CDMAEVDORevAValue());
-    public static CTRadioAccessTechnology CDMAEVDORevB = new CTRadioAccessTechnology(CDMAEVDORevBValue());
-    public static CTRadioAccessTechnology eHRPD = new CTRadioAccessTechnology(eHRPDValue());
-    public static CTRadioAccessTechnology LTE = new CTRadioAccessTechnology(LTEValue());
+    public static CTRadioAccessTechnology GPRS = new CTRadioAccessTechnology() {
+        public NSString value() {
+            return GPRSValue();
+        }
+    };
+    public static CTRadioAccessTechnology Edge = new CTRadioAccessTechnology() {
+        public NSString value() {
+            return EdgeValue();
+        }
+    };
+    public static CTRadioAccessTechnology WCDMA = new CTRadioAccessTechnology() {
+        public NSString value() {
+            return WCDMAValue();
+        }
+    };
+    public static CTRadioAccessTechnology HSDPA = new CTRadioAccessTechnology() {
+       public NSString value() {
+           return HSDPAValue();
+       }
+    };
+    public static CTRadioAccessTechnology HSUPA = new CTRadioAccessTechnology() {
+        public NSString value() {
+            return HSUPAValue();
+        }
+    };
+    public static CTRadioAccessTechnology CDMA1x = new CTRadioAccessTechnology() {
+        public NSString value() {
+            return CDMA1xValue();
+        }
+    };
+    public static CTRadioAccessTechnology CDMAEVDORev0 = new CTRadioAccessTechnology() {
+        public NSString value() {
+            return CDMAEVDORev0Value();
+        }
+    };
+    public static CTRadioAccessTechnology CDMAEVDORevA = new CTRadioAccessTechnology() {
+        public NSString value() {
+            return CDMAEVDORevAValue();
+        }
+    };
+    public static CTRadioAccessTechnology CDMAEVDORevB = new CTRadioAccessTechnology() {
+        public NSString value() {
+            return CDMAEVDORevBValue();
+        }
+    };
+    public static CTRadioAccessTechnology eHRPD = new CTRadioAccessTechnology() {
+        public NSString value() {
+            return eHRPDValue();
+        }
+    };
+    public static CTRadioAccessTechnology LTE = new CTRadioAccessTechnology() {
+        public NSString value() {
+            return LTEValue();
+        }
+    };
     private static CTRadioAccessTechnology[] values = new CTRadioAccessTechnology[] {GPRS, Edge, WCDMA, HSDPA, HSUPA, CDMA1x, CDMAEVDORev0, CDMAEVDORevA, CDMAEVDORevB, eHRPD, LTE};
     
-    private NSString value;
-    
-    private CTRadioAccessTechnology(NSString value) {
-        this.value = value;
+    private CTRadioAccessTechnology() {
     }
     /*<constructors>*//*</constructors>*/
     /*<properties>*//*</properties>*/
     /*<members>*//*</members>*/
     public NSString value() {
-        return value;
+        return null;
     }
     
     public static CTRadioAccessTechnology valueOf(NSString value) {
+        if (value == null) throw new NullPointerException("Value cannot be null!");
         for (CTRadioAccessTechnology v : values) {
-            if (v.value.equals(value)) {
+            if (v.value().equals(value)) {
                 return v;
             }
         }
-        return null;
+        throw new IllegalArgumentException("No constant with value " + value + " found in " 
+            + /*<name>*/CTRadioAccessTechnology/*</name>*/.class.getName());
     }
     /*<
     /*<methods>*/

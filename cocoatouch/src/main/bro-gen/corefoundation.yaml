@@ -78,7 +78,9 @@ classes:
     CFSetCallBacks: {}
     CFSocketContext: {}
     CFSocketSignature: {}
-    CFStreamClientContext: {}
+    CFStreamClientContext:
+        info:
+            type: "@Pointer long"
     CFStreamError:
         domain:
             type: CFStreamErrorDomain

@@ -1,0 +1,451 @@
+package: org.robovm.apple.coreservices
+include: [foundation.yaml, corefoundation.yaml]
+library: CFNetwork
+framework: CFNetwork
+clang_args: ['-x', 'objective-c']
+headers:
+    - /System/Library/Frameworks/CFNetwork.framework/Headers/CFNetwork.h
+    - /System/Library/Frameworks/CFNetwork.framework/Headers/CFNetworkDefs.h
+typedefs:
+    'CFStreamError *': 'CFStreamError.CFStreamErrorPtr'
+private_typedefs:
+    "__CFString *": String
+    "__CFString **": "NSString.NSStringPtr"
+    "__CFData *": NSData
+    "__CFURL *": NSURL
+    "__CFDictionary *": "NSDictionary<?, ?>"
+    "__CFArray *": "NSArray<?>"
+    
+enums:
+    CFHostInfoType: {}
+    CFNetDiagnosticStatus: { first: kCFNetDiagnosticNoErr }
+    CFNetServicesError: {}
+    CFNetServiceMonitorType: { prefix: kCFNetServiceMonitor }
+    CFNetServiceOptions: { first: kCFNetServiceFlagNoAutoRename, prefix: kCFNetServiceFlag, bits: true, marshaler: Bits.AsMachineSizedIntMarshaler }
+    CFNetServiceBrowserFlags: { first: kCFNetServiceFlagMoreComing, bits: true, marshaler: Bits.AsMachineSizedIntMarshaler }
+    CFNetworkErrors: {}
+    CFStreamErrorCodeType: { first: kCFStreamErrorSOCKSSubDomainNone }
+
+classes:
+    CoreServices:
+        annotations: ['@Marshaler(NSString.AsStringMarshaler.class)']
+
+    __CFHost:
+        name: CFHost
+        extends: CFType
+    CFHostClientContext:
+        visibility: ''
+        info:
+            type: "@Pointer long"
+    _CFHTTPAuthentication:
+        name: CFHTTPAuthentication
+        extends: CFType
+    __CFHTTPMessage:
+        name: CFHTTPMessage
+        extends: CFType
+    __CFNetDiagnostic:
+        name: CFNetDiagnostic
+        extends: CFType
+    __CFNetService:
+        name: CFNetService
+        extends: CFType
+    CFNetServiceClientContext:
+        visibility: ''
+        info:
+            type: "@Pointer long"
+    __CFNetServiceMonitor:
+        name: CFNetServiceMonitor
+        extends: CFType
+    __CFNetServiceBrowser:
+        name: CFNetServiceBrowser
+        extends: CFType
+    CFHTTPStream:
+        extends: CFReadStream
+
+protocols: {}
+
+functions:
+    (CF.*)GetTypeID:
+        class: "#{g[0]}"
+        name: getClassTypeID
+
+    # CFFTPStream
+    CFReadStreamCreateWithFTPURL:
+        class: CFFTPStream
+        name: "createReadStream"
+        visibility: protected
+    CFFTP(CreateParsedResourceListing):
+        class: CFFTPStream
+        name: "#{g[0]}"
+        visibility: protected
+        parameters:
+            parsed:
+                type: "NSDictionary.NSDictionaryPtr"
+    CFWriteStreamCreateWithFTPURL:
+        class: CFFTPStream
+        name: "createWriteStream"
+        visibility: protected
+    
+    # CFHost
+    CFHostCreateWith.*:
+        class: CFHost
+        name: "create"
+        visibility: protected
+    CFHost(CreateCopy):
+        class: CFHost
+        name: "#{g[0]}"
+        visibility: protected
+    CFHost(StartInfoResolution):
+        class: CFHost
+        name: "#{g[0]}"
+        visibility: protected
+    CFHost(GetAddressing):
+        class: CFHost
+        name: "#{g[0]}"
+        visibility: protected
+        return_type: "NSArray<NSData>"
+    CFHost(GetNames):
+        class: CFHost
+        name: "#{g[0]}"
+        visibility: protected
+        return_type: "NSArray<NSString>"
+    CFHost(GetReachability):
+        class: CFHost
+        name: "#{g[0]}"
+        visibility: protected
+    CFHost(SetClient):
+        class: CFHost
+        name: "setCallback"
+        visibility: protected
+    CFHost(Schedule)WithRunLoop:
+        class: CFHost
+        name: "#{g[0]}"
+        parameters:
+            runLoopMode:
+                type: "CFString"
+    CFHost(Unschedule)FromRunLoop:
+        class: CFHost
+        name: "#{g[0]}"
+        parameters:
+            runLoopMode:
+                type: "CFString"
+    CFStreamCreatePairWithSocketToCFHost:
+        class: CFHost
+        name: "createSocketStreamPair"
+        visibility: protected
+    CFHost(.*):
+        class: CFHost
+        name: "#{g[0]}"
+
+    # CFHTTPAuthentication
+    CFHTTPAuthentication(Create)FromResponse:
+        class: CFHTTPAuthentication
+        name: "#{g[0]}"
+        visibility: protected
+    CFHTTPAuthentication(IsValid):
+        class: CFHTTPAuthentication
+        name: "#{g[0]}"
+        visibility: protected
+    CFHTTPAuthenticationCopy(Domains):
+        class: CFHTTPAuthentication
+        name: "get#{g[0]}"
+        return_type: "NSArray<NSURL>"
+    CFHTTPAuthenticationCopy(.*):
+        class: CFHTTPAuthentication
+        name: "get#{g[0]}"
+    CFHTTPAuthentication(.*):
+        class: CFHTTPAuthentication
+        name: "#{g[0]}"
+
+    # CFHTTPMessage
+    CFHTTPMessage(CreateRequest):
+        class: CFHTTPMessage
+        name: "#{g[0]}"
+        visibility: protected
+        parameters:
+            httpVersion:
+                type: CFString
+    CFHTTPMessage(CreateResponse):
+        class: CFHTTPMessage
+        name: "#{g[0]}"
+        visibility: protected
+        parameters:
+            httpVersion:
+                type: CFString
+    CFHTTPMessage(CreateEmpty):
+        class: CFHTTPMessage
+        name: "#{g[0]}"
+        visibility: protected
+    CFHTTPMessage(CreateCopy):
+        class: CFHTTPMessage
+        name: "#{g[0]}"
+        visibility: protected
+    CFHTTPMessageCopy(Version):
+        class: CFHTTPMessage
+        name: "get#{g[0]}0"
+        visibility: protected
+        return_type: CFString
+    CFHTTPMessageCopy(AllHeaderFields):
+        class: CFHTTPMessage
+        name: "get#{g[0]}"
+        return_type: "NSDictionary<NSString, NSString>"
+    CFHTTPMessageCopy(.*):
+        class: CFHTTPMessage
+        name: "get#{g[0]}"
+    CFHTTPMessage(AppendBytes):
+        class: CFHTTPMessage
+        name: "#{g[0]}"
+        visibility: protected
+        parameters:
+            newBytes:
+                type: "@Pointer long"
+    CFHTTPMessage(AddAuthentication):
+        class: CFHTTPMessage
+        name: "#{g[0]}0"
+        visibility: protected
+        parameters:
+            authenticationScheme:
+                type: CFString
+    CFHTTPMessage(ApplyCredentials):
+        class: CFHTTPMessage
+        name: "#{g[0]}"
+        visibility: protected
+    CFHTTPMessage(ApplyCredentialDictionary):
+        class: CFHTTPMessage
+        name: "#{g[0]}"
+        visibility: protected
+    CFHTTPMessage(.*):
+        class: CFHTTPMessage
+        name: "#{g[0]}"
+
+    # CFHTTPStream
+    CFReadStream(Create).*:
+        class: CFHTTPStream
+        name: "#{g[0]}"
+        visibility: protected
+    CFHTTPReadStream(.*):
+        class: CFHTTPStream
+        name: "#{g[0]}"
+        visibility: protected 
+
+    # CFNetDiagnostic
+    CFNetDiagnostic(Create).*:
+        class: CFNetDiagnostic
+        name: "#{g[0]}"
+        visibility: protected
+    CFNetDiagnosticCopy(NetworkStatusPassively):
+        class: CFNetDiagnostic
+        name: "get#{g[0]}"
+        visibility: protected
+        parameters:
+            description:
+                type: "NSString.NSStringPtr"
+    CFNetDiagnostic(.*):
+        class: CFNetDiagnostic
+        name: "#{g[0]}"
+
+    # CFNetServiceBrowser
+    CFNetServiceBrowser(Create):
+        class: CFNetServiceBrowser
+        name: "#{g[0]}"
+        visibility: protected
+    CFNetServiceBrowser(SearchForDomains):
+        class: CFNetServiceBrowser
+        name: "#{g[0]}"
+        visibility: protected
+    CFNetServiceBrowser(SearchForServices):
+        class: CFNetServiceBrowser
+        name: "#{g[0]}"
+        visibility: protected
+    CFNetServiceBrowser(StopSearch):
+        class: CFNetServiceBrowser
+        name: "#{g[0]}"
+        visibility: protected
+    CFNetServiceBrowser(Schedule)WithRunLoop:
+        class: CFNetServiceBrowser
+        name: "#{g[0]}"
+        parameters:
+            runLoopMode:
+                type: "CFString"
+    CFNetServiceBrowser(Unschedule)FromRunLoop:
+        class: CFNetServiceBrowser
+        name: "#{g[0]}"
+        parameters:
+            runLoopMode:
+                type: "CFString"
+    CFNetServiceBrowser(.*):
+        class: CFNetServiceBrowser
+        name: "#{g[0]}"
+
+    # CFNetServiceMonitor
+    CFNetServiceMonitor(Create):
+        class: CFNetServiceMonitor
+        name: "#{g[0]}"
+        visibility: protected
+    CFNetServiceMonitor(Start):
+        class: CFNetServiceMonitor
+        name: "#{g[0]}"
+        visibility: protected
+    CFNetServiceMonitor(Stop):
+        class: CFNetServiceMonitor
+        name: "#{g[0]}"
+        visibility: protected
+    CFNetServiceMonitor(Schedule)WithRunLoop:
+        class: CFNetServiceMonitor
+        name: "#{g[0]}"
+        parameters:
+            runLoopMode:
+                type: "CFString"
+    CFNetServiceMonitor(Unschedule)FromRunLoop:
+        class: CFNetServiceMonitor
+        name: "#{g[0]}"
+        parameters:
+            runLoopMode:
+                type: "CFString"
+    CFNetServiceMonitor(.*):
+        class: CFNetServiceMonitor
+        name: "#{g[0]}"
+
+    # CFNetService
+    CFNetService(Create.*):
+        class: CFNetService
+        name: "#{g[0]}"
+        visibility: protected
+    CFNetService(Register)WithOptions:
+        class: CFNetService
+        name: "#{g[0]}"
+        visibility: protected
+        parameters:
+            options:
+                type: CFNetServiceOptions
+    CFNetService(Resolve)WithTimeout:
+        class: CFNetService
+        name: "#{g[0]}"
+        visibility: protected
+    CFNetService(GetAddressing):
+        class: CFNetService
+        name: "#{g[0]}"
+        return_type: "NSArray<NSData>"
+    CFNetServiceCreateDictionaryWithTXTData:
+        class: CFNetService
+        name: "parseTXTData"
+        visibility: protected
+        return_type: "NSDictionary<NSString, NSData>"
+    CFNetServiceCreateTXTDataWithDictionary:
+        class: CFNetService
+        name: "createTXTData"
+        visibility: protected
+        parameters:
+            keyValuePairs:
+                type: "NSDictionary<NSString, ?>"
+    CFNetService(SetClient):
+        class: CFNetService
+        name: "setCallback"
+        visibility: protected
+    CFNetService(Schedule)WithRunLoop:
+        class: CFNetService
+        name: "#{g[0]}"
+        parameters:
+            runLoopMode:
+                type: "CFString"
+    CFNetService(Unschedule)FromRunLoop:
+        class: CFNetService
+        name: "#{g[0]}"
+        parameters:
+            runLoopMode:
+                type: "CFString"
+    CFStreamCreatePairWithSocketToNetService:
+        class: CFNetService
+        name: "createSocketStreamPair"
+        visibility: protected
+    CFNetService(.*):
+        class: CFNetService
+        name: "#{g[0]}"
+
+    # CFProxySupport
+    CFNetworkCopy(SystemProxySettings):
+        class: CFProxySupport
+        name: "get#{g[0]}0"
+        visibility: protected
+    CFNetworkCopyProxiesForURL:
+        exclude: true # CocoaTouch SystemConfiguration doesn't have the necessary methods.
+        class: CFProxySupport
+        name: "getProxies0"
+        return_type: "NSArray<NSDictionary<?, ?>>"
+    CFNetworkCopyProxiesForAutoConfigurationScript:
+        class: CFProxySupport
+        name: "getProxies0"
+        return_type: "NSArray<NSDictionary<?, ?>>"
+        visibility: protected
+    CFNetwork(ExecuteProxyAutoConfigurationScript):
+        class: CFProxySupport
+        name: "#{g[0]}"
+        visibility: protected
+    CFNetwork(ExecuteProxyAutoConfigurationURL):
+        class: CFProxySupport
+        name: "#{g[0]}"
+        visibility: protected
+
+    # Make sure we don't miss any functions if new ones are introduced in a later version
+    (kCF.*):
+        class: CoreServices
+        name: "Function__#{g[0]}"
+    (CF.*):
+        class: CoreServices
+        name: "Function__#{g[0]}"
+
+values:
+    kCFHTTP(Version.*):
+        class: CFHTTPVersion
+        name: "#{g[0]}Value"
+        type: CFString
+        visibility: protected
+        
+    kCFHTTPAuthenticationScheme(.*):
+        class: CFHTTPAuthenticationScheme
+        name: "#{g[0]}Value"
+        type: CFString
+        visibility: protected
+    kCF(HTTPAuthentication.*):
+        class: CFHTTPMessage
+        name: "#{g[0]}"
+        type: NSString
+        visibility: protected
+        
+    kCFNetworkProxies(.*):
+        class: CFSystemProxySettings
+        name: "#{g[0]}"
+        type: NSString
+        visibility: protected
+    kCFProxy(TypeKey):
+        class: CFProxy
+        name: "#{g[0]}"
+        type: NSString
+        visibility: protected
+    kCFProxyType(.*):
+        class: CFProxyType
+        name: "#{g[0]}Value"
+        type: NSString
+        visibility: protected
+    kCFProxy(.*):
+        class: CFProxy
+        name: "#{g[0]}"
+        type: NSString
+        visibility: protected
+    
+    # Make sure we don't miss any values if new ones are introduced in a later version
+    (kCF.*):
+        class: CoreServices
+        name: "Value__#{g[0]}"
+    (CF.*):
+        class: CoreServices
+        name: "Value__#{g[0]}"
+
+constants:
+    # Make sure we don't miss any constants if new ones are introduced in a later version
+    (kCF.*):
+        class: CoreServices
+        name: "Constant__#{g[0]}"
+    (CF.*):
+        class: CoreServices
+        name: "Constant__#{g[0]}"

@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.robovm.apple.corefoundation;
+package org.robovm.apple.coreservices;
 
 /*<imports>*/
 import java.io.*;
@@ -26,24 +26,25 @@ import org.robovm.rt.*;
 import org.robovm.rt.bro.*;
 import org.robovm.rt.bro.annotation.*;
 import org.robovm.rt.bro.ptr.*;
-import org.robovm.apple.dispatch.*;
+import org.robovm.apple.foundation.*;
+import org.robovm.apple.corefoundation.*;
 /*</imports>*/
 
 /*<javadoc>*/
 
 /*</javadoc>*/
 /*<annotations>*//*</annotations>*/
-/*<visibility>*/public/*</visibility>*/ class /*<name>*/CFStreamClientContext/*</name>*/ 
-    extends /*<extends>*/Struct<CFStreamClientContext>/*</extends>*/ 
+/*<visibility>*//*</visibility>*/ class /*<name>*/CFNetServiceClientContext/*</name>*/ 
+    extends /*<extends>*/Struct<CFNetServiceClientContext>/*</extends>*/ 
     /*<implements>*//*</implements>*/ {
 
-    /*<ptr>*/public static class CFStreamClientContextPtr extends Ptr<CFStreamClientContext, CFStreamClientContextPtr> {}/*</ptr>*/
+    /*<ptr>*/public static class CFNetServiceClientContextPtr extends Ptr<CFNetServiceClientContext, CFNetServiceClientContextPtr> {}/*</ptr>*/
     /*<bind>*/
     /*</bind>*/
     /*<constants>*//*</constants>*/
     /*<constructors>*/
-    public CFStreamClientContext() {}
-    public CFStreamClientContext(@MachineSizedSInt long version, @Pointer long info, FunctionPtr retain, FunctionPtr release, FunctionPtr copyDescription) {
+    public CFNetServiceClientContext() {}
+    public CFNetServiceClientContext(@MachineSizedSInt long version, @Pointer long info, FunctionPtr retain, FunctionPtr release, FunctionPtr copyDescription) {
         this.version(version);
         this.info(info);
         this.retain(retain);
@@ -54,15 +55,15 @@ import org.robovm.apple.dispatch.*;
     /*<properties>*//*</properties>*/
     /*<members>*/
     @StructMember(0) public native @MachineSizedSInt long version();
-    @StructMember(0) public native CFStreamClientContext version(@MachineSizedSInt long version);
+    @StructMember(0) public native CFNetServiceClientContext version(@MachineSizedSInt long version);
     @StructMember(1) public native @Pointer long info();
-    @StructMember(1) public native CFStreamClientContext info(@Pointer long info);
+    @StructMember(1) public native CFNetServiceClientContext info(@Pointer long info);
     @StructMember(2) public native FunctionPtr retain();
-    @StructMember(2) public native CFStreamClientContext retain(FunctionPtr retain);
+    @StructMember(2) public native CFNetServiceClientContext retain(FunctionPtr retain);
     @StructMember(3) public native FunctionPtr release();
-    @StructMember(3) public native CFStreamClientContext release(FunctionPtr release);
+    @StructMember(3) public native CFNetServiceClientContext release(FunctionPtr release);
     @StructMember(4) public native FunctionPtr copyDescription();
-    @StructMember(4) public native CFStreamClientContext copyDescription(FunctionPtr copyDescription);
+    @StructMember(4) public native CFNetServiceClientContext copyDescription(FunctionPtr copyDescription);
     /*</members>*/
     /*<methods>*//*</methods>*/
 }

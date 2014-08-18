@@ -19,6 +19,7 @@ package org.robovm.apple.coretelephony;
 import java.io.*;
 import java.nio.*;
 import java.util.*;
+
 import org.robovm.objc.*;
 import org.robovm.objc.annotation.*;
 import org.robovm.objc.block.*;
@@ -41,31 +42,46 @@ import org.robovm.apple.corefoundation.*;
     /*</ptr>*/
     /*<bind>*/static { Bro.bind(CTCallState.class); }/*</bind>*/
     /*<constants>*//*</constants>*/
-    public static CTCallState Dialing = new CTCallState(DialingValue());
-    public static CTCallState Incoming = new CTCallState(IncomingValue());
-    public static CTCallState Connected = new CTCallState(ConnectedValue());
-    public static CTCallState Disconnected = new CTCallState(DisconnectedValue());
+    public static CTCallState Dialing = new CTCallState() {
+        public NSString value() {
+            return DialingValue();
+        }
+    };
+    public static CTCallState Incoming = new CTCallState() {
+        public NSString value() {
+            return IncomingValue();
+        }
+    };
+    public static CTCallState Connected = new CTCallState() {
+        public NSString value() {
+            return ConnectedValue();
+        }
+    };
+    public static CTCallState Disconnected = new CTCallState() {
+        public NSString value() {
+            return DisconnectedValue();
+        }
+    };
     private static CTCallState[] values = new CTCallState[] {Dialing, Incoming, Connected, Disconnected};
     
-    private NSString value;
-    
-    private CTCallState(NSString value) {
-        this.value = value;
+    private CTCallState() {
     }
     /*<constructors>*//*</constructors>*/
     /*<properties>*//*</properties>*/
     /*<members>*//*</members>*/
     public NSString value() {
-        return value;
+        return null;
     }
     
     public static CTCallState valueOf(NSString value) {
+        if (value == null) throw new NullPointerException("Value cannot be null!");
         for (CTCallState v : values) {
-            if (v.value.equals(value)) {
+            if (v.value().equals(value)) {
                 return v;
             }
         }
-        return null;
+        throw new IllegalArgumentException("No constant with value " + value + " found in " 
+            + /*<name>*/CTCallState/*</name>*/.class.getName());
     }
     /*<methods>*/
     /**

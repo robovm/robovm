@@ -45,7 +45,7 @@ import org.robovm.apple.foundation.*;
     /*<constructors>*/
     public ACAccount() {}
     protected ACAccount(SkipInit skipInit) { super(skipInit); }
-    public ACAccount(ACAccountType type) { super((SkipInit) null); initObject(initWithAccountType$(type)); }
+    public ACAccount(ACAccountType type) { super((SkipInit) null); initObject(init(type)); }
     /*</constructors>*/
     /*<properties>*/
     @Property(selector = "identifier")
@@ -75,6 +75,6 @@ import org.robovm.apple.foundation.*;
     /*<members>*//*</members>*/
     /*<methods>*/
     @Method(selector = "initWithAccountType:")
-    protected native @Pointer long initWithAccountType$(ACAccountType type);
+    protected native @Pointer long init(ACAccountType type);
     /*</methods>*/
 }

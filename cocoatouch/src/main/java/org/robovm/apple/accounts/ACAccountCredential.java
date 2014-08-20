@@ -45,8 +45,8 @@ import org.robovm.apple.foundation.*;
     /*<constructors>*/
     public ACAccountCredential() {}
     protected ACAccountCredential(SkipInit skipInit) { super(skipInit); }
-    public ACAccountCredential(String token, String secret) { super((SkipInit) null); initObject(initWithOAuthToken$tokenSecret$(token, secret)); }
-    public ACAccountCredential(String token, String refreshToken, NSDate expiryDate) { super((SkipInit) null); initObject(initWithOAuth2Token$refreshToken$expiryDate$(token, refreshToken, expiryDate)); }
+    public ACAccountCredential(String token, String secret) { super((SkipInit) null); initObject(init(token, secret)); }
+    public ACAccountCredential(String token, String refreshToken, NSDate expiryDate) { super((SkipInit) null); initObject(init(token, refreshToken, expiryDate)); }
     /*</constructors>*/
     /*<properties>*/
     @Property(selector = "oauthToken")
@@ -57,8 +57,8 @@ import org.robovm.apple.foundation.*;
     /*<members>*//*</members>*/
     /*<methods>*/
     @Method(selector = "initWithOAuthToken:tokenSecret:")
-    protected native @Pointer long initWithOAuthToken$tokenSecret$(String token, String secret);
+    protected native @Pointer long init(String token, String secret);
     @Method(selector = "initWithOAuth2Token:refreshToken:expiryDate:")
-    protected native @Pointer long initWithOAuth2Token$refreshToken$expiryDate$(String token, String refreshToken, NSDate expiryDate);
+    protected native @Pointer long init(String token, String refreshToken, NSDate expiryDate);
     /*</methods>*/
 }

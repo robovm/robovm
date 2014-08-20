@@ -69,7 +69,7 @@ import org.robovm.apple.corefoundation.*;
     }
     
     public static CFHTTPVersion valueOf(CFString value) {
-        if (value == null) throw new NullPointerException("Value cannot be null!");
+        if (value == null) throw new NullPointerException("value");
         for (CFHTTPVersion v : values) {
             if (v.value().equals(value)) {
                 return v;

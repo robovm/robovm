@@ -815,7 +815,6 @@ classes:
         skip_def_constructor: true
         methods:
             '+exceptionWithName:reason:userInfo:': {exclude: true}
-            '-raise': {exclude: true}
             '-callStackSymbols':
                 property: true
                 return_type: 'NSArray<NSString>'

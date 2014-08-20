@@ -109,7 +109,7 @@ import org.robovm.apple.corefoundation.*;
     }
     
     public static CFProxyType valueOf(NSString value) {
-        if (value == null) throw new NullPointerException("Value cannot be null!");
+        if (value == null) throw new NullPointerException("value");
         for (CFProxyType v : values) {
             if (v.value().equals(value)) {
                 return v;

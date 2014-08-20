@@ -47,61 +47,6 @@ import org.robovm.apple.foundation.*;
     /**
      * @since Available in iOS 5.0 and later.
      */
-    @GlobalValue(symbol="ACAccountTypeIdentifierTwitter", optional=true)
-    public static native NSString AccountTypeIdentifierTwitter();
-    /**
-     * @since Available in iOS 6.0 and later.
-     */
-    @GlobalValue(symbol="ACAccountTypeIdentifierFacebook", optional=true)
-    public static native NSString AccountTypeIdentifierFacebook();
-    /**
-     * @since Available in iOS 6.0 and later.
-     */
-    @GlobalValue(symbol="ACAccountTypeIdentifierSinaWeibo", optional=true)
-    public static native NSString AccountTypeIdentifierSinaWeibo();
-    /**
-     * @since Available in iOS 7.0 and later.
-     */
-    @GlobalValue(symbol="ACAccountTypeIdentifierTencentWeibo", optional=true)
-    public static native NSString AccountTypeIdentifierTencentWeibo();
-    /**
-     * @since Available in iOS 6.0 and later.
-     */
-    @GlobalValue(symbol="ACFacebookAppIdKey", optional=true)
-    public static native NSString FacebookAppIdKey();
-    /**
-     * @since Available in iOS 6.0 and later.
-     */
-    @GlobalValue(symbol="ACFacebookPermissionsKey", optional=true)
-    public static native NSString FacebookPermissionsKey();
-    /**
-     * @since Available in iOS 6.0 and later.
-     */
-    @GlobalValue(symbol="ACFacebookAudienceKey", optional=true)
-    public static native NSString FacebookAudienceKey();
-    /**
-     * @since Available in iOS 6.0 and later.
-     */
-    @GlobalValue(symbol="ACFacebookAudienceEveryone", optional=true)
-    public static native NSString FacebookAudienceEveryone();
-    /**
-     * @since Available in iOS 6.0 and later.
-     */
-    @GlobalValue(symbol="ACFacebookAudienceFriends", optional=true)
-    public static native NSString FacebookAudienceFriends();
-    /**
-     * @since Available in iOS 6.0 and later.
-     */
-    @GlobalValue(symbol="ACFacebookAudienceOnlyMe", optional=true)
-    public static native NSString FacebookAudienceOnlyMe();
-    /**
-     * @since Available in iOS 7.0 and later.
-     */
-    @GlobalValue(symbol="ACTencentWeiboAppIdKey", optional=true)
-    public static native NSString TencentWeiboAppIdKey();
-    /**
-     * @since Available in iOS 5.0 and later.
-     */
     @GlobalValue(symbol="ACAccountStoreDidChangeNotification", optional=true)
     public static native NSString AccountStoreDidChangeNotification();
     /**

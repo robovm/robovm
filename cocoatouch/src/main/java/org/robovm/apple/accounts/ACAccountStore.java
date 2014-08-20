@@ -51,11 +51,17 @@ import org.robovm.apple.foundation.*;
     public native NSArray<ACAccount> getAccounts();
     /*</properties>*/
     /*<members>*//*</members>*/
+    public ACAccountType getAccountType(ACAccountTypeIdentifier typeIdentifier) {
+        return getAccountType(typeIdentifier.value());
+    }
+    public void requestAccessToAccounts(ACAccountType accountType, ACAccountOptions options, @Block VoidBlock2<Boolean, NSError> completion) {
+        requestAccessToAccounts(accountType, options.data, completion);
+    }
     /*<methods>*/
     @Method(selector = "accountWithIdentifier:")
     public native ACAccount getAccount(String identifier);
     @Method(selector = "accountTypeWithAccountTypeIdentifier:")
-    public native ACAccountType getAccountType(NSString typeIdentifier);
+    protected native ACAccountType getAccountType(NSString typeIdentifier);
     @Method(selector = "accountsWithAccountType:")
     public native NSArray<ACAccount> getAccounts(ACAccountType accountType);
     @Method(selector = "saveAccount:withCompletionHandler:")
@@ -68,7 +74,7 @@ import org.robovm.apple.foundation.*;
     @Method(selector = "requestAccessToAccountsWithType:withCompletionHandler:")
     public native void requestAccessToAccounts(ACAccountType accountType, @Block VoidBlock2<Boolean, NSError> handler);
     @Method(selector = "requestAccessToAccountsWithType:options:completion:")
-    public native void requestAccessToAccounts(ACAccountType accountType, NSDictionary<NSString, ?> options, @Block VoidBlock2<Boolean, NSError> completion);
+    protected native void requestAccessToAccounts(ACAccountType accountType, NSDictionary<NSString, ?> options, @Block VoidBlock2<Boolean, NSError> completion);
     @Method(selector = "renewCredentialsForAccount:completion:")
     public native void renewCredentials(ACAccount account, @Block VoidBlock2<ACAccountCredentialRenewResult, NSError> completionHandler);
     @Method(selector = "removeAccount:withCompletionHandler:")

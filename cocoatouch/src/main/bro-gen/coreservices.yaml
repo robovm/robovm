@@ -79,6 +79,8 @@ functions:
         name: "#{g[0]}"
         visibility: protected
         parameters:
+            buffer:
+                type: "@Pointer long"
             parsed:
                 type: "NSDictionary.NSDictionaryPtr"
     CFWriteStreamCreateWithFTPURL:

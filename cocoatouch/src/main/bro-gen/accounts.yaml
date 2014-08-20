@@ -16,8 +16,14 @@ classes:
     Accounts:
         annotations: ['@Marshaler(NSString.AsStringMarshaler.class)']
 
-    ACAccount: {}
-    ACAccountCredential: {}
+    ACAccount:
+        methods:
+            '-initWithAccountType:':
+                name: init
+    ACAccountCredential:
+        methods:
+            '-init.*':
+                name: init
     ACAccountStore:
         properties:
             'accounts':
@@ -27,6 +33,7 @@ classes:
                 name: getAccount
             '-accountTypeWithAccountTypeIdentifier:':
                 name: getAccountType
+                visibility: protected
                 parameters:
                     typeIdentifier:
                         type: NSString
@@ -36,19 +43,17 @@ classes:
             '-saveAccount:withCompletionHandler:':
                 name: saveAccount
                 parameters:
-                    account: {}
                     completionHandler:
                         type: "@Block VoidBlock2<Boolean, NSError>"
             '-requestAccessToAccountsWithType:withCompletionHandler:':
                 name: requestAccessToAccounts
                 parameters:
-                    accountType: {}
                     handler:
                         type: "@Block VoidBlock2<Boolean, NSError>"                   
             '-requestAccessToAccountsWithType:options:completion:':
                 name: requestAccessToAccounts
+                visibility: protected
                 parameters:
-                   accountType: {}
                    options:
                         type: "NSDictionary<NSString, ?>"
                    completion:
@@ -56,19 +61,25 @@ classes:
             '-renewCredentialsForAccount:completion:':
                 name: renewCredentials
                 parameters:
-                    account: {}
                     completionHandler:
                         type: "@Block VoidBlock2<ACAccountCredentialRenewResult, NSError>" 
             '-removeAccount:withCompletionHandler:':
                 name: removeAccount
                 parameters:
-                    account: {}
                     completionHandler:
                         type: "@Block VoidBlock2<Boolean, NSError>"
-    ACAccountType:
+    ACAccountType: # DONE
         properties:
             'identifier':
+                name: identifier0
                 type: NSString
+                visibility: protected
+                
+    ACAccountOptions: {}
+    ACFacebookOptions:
+        extends: ACAccountOptions
+    ACTencentWeiboOptions:
+        extends: ACAccountOptions
 
 protocols: {}
 
@@ -79,22 +90,33 @@ functions:
         name: "Function__#{g[0]}"
 
 values:
-    AC(ErrorDomain):
+    ACAccountTypeIdentifier(.*):
+        class: ACAccountTypeIdentifier
+        name: "#{g[0]}Value"
         type: NSString
+        visibility: protected
+        
+    ACFacebook(.*Key):
+        class: ACFacebookOptions
         name: "#{g[0]}"
-    AC(AccountTypeIdentifier.*):
         type: NSString
-        name: "#{g[0]}"
-    AC(Facebook.*):
+        visibility: protected
+    ACFacebookAudience(.*):
+        class: ACFacebookAudience
+        name: "#{g[0]}Value"
         type: NSString
+        visibility: protected
+        
+    ACTencentWeibo(.*Key):
+        class: ACTencentWeiboOptions
         name: "#{g[0]}"
-    AC(LinkedIn.*):
         type: NSString
-        name: "#{g[0]}"
-    AC(TencentWeibo.*):
-        type: NSString
-        name: "#{g[0]}"
+        visibility: protected
+        
     AC(.*Notification):
+        type: NSString
+        name: "#{g[0]}"
+    AC(ErrorDomain):
         type: NSString
         name: "#{g[0]}"
    

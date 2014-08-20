@@ -19,6 +19,7 @@ package org.robovm.apple.accounts;
 import java.io.*;
 import java.nio.*;
 import java.util.*;
+
 import org.robovm.objc.*;
 import org.robovm.objc.annotation.*;
 import org.robovm.objc.block.*;
@@ -30,35 +31,40 @@ import org.robovm.apple.foundation.*;
 /*</imports>*/
 
 /*<javadoc>*/
-/**
- * @since Available in iOS 5.0 and later.
- */
 /*</javadoc>*/
-/*<annotations>*/@Library("Accounts") @NativeClass/*</annotations>*/
-/*<visibility>*/public/*</visibility>*/ class /*<name>*/ACAccountType/*</name>*/ 
-    extends /*<extends>*/NSObject/*</extends>*/ 
+/*<annotations>*/@Library("Accounts")/*</annotations>*/
+/*<visibility>*/public/*</visibility>*/ class /*<name>*/ACTencentWeiboOptions/*</name>*/ 
+    extends /*<extends>*/ACAccountOptions/*</extends>*/ 
     /*<implements>*//*</implements>*/ {
 
-    /*<ptr>*/public static class ACAccountTypePtr extends Ptr<ACAccountType, ACAccountTypePtr> {}/*</ptr>*/
-    /*<bind>*/static { ObjCRuntime.bind(ACAccountType.class); }/*</bind>*/
+    /*<ptr>*/
+    /*</ptr>*/
+    /*<bind>*/static { Bro.bind(ACTencentWeiboOptions.class); }/*</bind>*/
     /*<constants>*//*</constants>*/
-    /*<constructors>*/
-    public ACAccountType() {}
-    protected ACAccountType(SkipInit skipInit) { super(skipInit); }
-    /*</constructors>*/
-    public ACAccountTypeIdentifier getIdentifier() {
-        return ACAccountTypeIdentifier.valueOf(getIdentifier0());
-    }
-    /*<properties>*/
-    @Property(selector = "accountTypeDescription")
-    public native String getAccountTypeDescription();
-    @Property(selector = "identifier")
-    protected native NSString getIdentifier0();
-    @Property(selector = "accessGranted")
-    public native boolean isAccessGranted();
-    /*</properties>*/
+    /*<constructors>*//*</constructors>*/
+    /*<properties>*//*</properties>*/
     /*<members>*//*</members>*/
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
+    public String getAppId() {
+        if (data.containsKey(AppIdKey())) {
+            NSString val = (NSString)data.get(AppIdKey());
+            return val.toString();
+        }
+        return null;
+    }
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
+    public void setAppId(String appId) {
+        data.put(AppIdKey(), new NSString(appId));
+    }
     /*<methods>*/
-    
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
+    @GlobalValue(symbol="ACTencentWeiboAppIdKey", optional=true)
+    protected static native NSString AppIdKey();
     /*</methods>*/
 }

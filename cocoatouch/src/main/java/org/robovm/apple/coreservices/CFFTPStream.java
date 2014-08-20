@@ -19,6 +19,7 @@ package org.robovm.apple.coreservices;
 import java.io.*;
 import java.nio.*;
 import java.util.*;
+
 import org.robovm.objc.*;
 import org.robovm.objc.annotation.*;
 import org.robovm.objc.block.*;
@@ -53,6 +54,14 @@ import org.robovm.apple.corefoundation.*;
     /**
      * @since Available in iOS 2.0 and later.
      */
+    public static NSDictionary<NSString, ?> createParsedResourceListing(byte[] bytes) {
+        NSDictionary.NSDictionaryPtr ptr = new NSDictionary.NSDictionaryPtr<>();
+        createParsedResourceListing(CoreFoundation.AllocatorDefault(), VM.getArrayValuesAddress(bytes), bytes.length, ptr);
+        return (NSDictionary<NSString, ?>)ptr.get();
+    }
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
     public static CFWriteStream createWriteStream(NSURL ftpURL) {
         return createWriteStream(null, ftpURL);
     }
@@ -66,7 +75,7 @@ import org.robovm.apple.corefoundation.*;
      * @since Available in iOS 2.0 and later.
      */
     @Bridge(symbol="CFFTPCreateParsedResourceListing", optional=true)
-    protected static native @MachineSizedSInt long createParsedResourceListing(CFAllocator alloc, BytePtr buffer, @MachineSizedSInt long bufferLength, NSDictionary.NSDictionaryPtr parsed);
+    protected static native @MachineSizedSInt long createParsedResourceListing(CFAllocator alloc, @Pointer long buffer, @MachineSizedSInt long bufferLength, NSDictionary.NSDictionaryPtr parsed);
     /**
      * @since Available in iOS 2.0 and later.
      */

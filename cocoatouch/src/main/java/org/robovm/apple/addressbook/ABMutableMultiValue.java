@@ -34,7 +34,7 @@ import org.robovm.apple.corefoundation.*;
 /*</javadoc>*/
 /*<annotations>*/@Library("AddressBook")/*</annotations>*/
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/ABMutableMultiValue/*</name>*/ 
-    extends /*<extends>*/CFType/*</extends>*/ 
+    extends /*<extends>*/ABMultiValue/*</extends>*/ 
     /*<implements>*//*</implements>*/ {
 
     /*<ptr>*/
@@ -44,6 +44,29 @@ import org.robovm.apple.corefoundation.*;
     /*<constructors>*//*</constructors>*/
     /*<properties>*//*</properties>*/
     /*<members>*//*</members>*/
+    /**
+     * 
+     * @param value
+     * @param label
+     * @return the identifier of this value.
+     */
+    public int addValue(CFType value, String label) {
+        IntPtr ptr = new IntPtr();
+        addValue(value, label, ptr);
+        return ptr.get();
+    }
+    /**
+     * 
+     * @param value
+     * @param label
+     * @param index
+     * @return the identifier of this value.
+     */
+    public int insertValue(CFType value, String label, @MachineSizedSInt long index) {
+        IntPtr ptr = new IntPtr();
+        insertValue(value, label, index, ptr);
+        return ptr.get();
+    }
     /*<methods>*/
     @Bridge(symbol="ABMultiValueCreateMutable", optional=true)
     public static native ABMutableMultiValue create(ABPropertyType type);

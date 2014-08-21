@@ -38,7 +38,7 @@ classes:
     ABMultiValue:
         extends: CFType
     ABMutableMultiValue:
-        extends: CFType
+        extends: ABMultiValue
     ABRecord:
         extends: CFType
         

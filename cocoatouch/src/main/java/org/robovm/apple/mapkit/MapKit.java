@@ -51,68 +51,7 @@ import org.robovm.apple.dispatch.*;
     /*<methods>*/
     @GlobalValue(symbol="MKAnnotationCalloutInfoDidChangeNotification", optional=true)
     public static native NSString AnnotationCalloutInfoDidChangeNotification();
-    /**
-     * @since Available in iOS 4.0 and later.
-     */
-    @GlobalValue(symbol="MKMapSizeWorld", optional=true)
-    public static native @ByVal MKMapSize MapSizeWorld();
-    /**
-     * @since Available in iOS 4.0 and later.
-     */
-    @GlobalValue(symbol="MKMapRectWorld", optional=true)
-    public static native @ByVal MKMapRect MapRectWorld();
-    /**
-     * @since Available in iOS 4.0 and later.
-     */
-    @GlobalValue(symbol="MKMapRectNull", optional=true)
-    public static native @ByVal MKMapRect MapRectNull();
-    /**
-     * @since Available in iOS 6.0 and later.
-     */
-    @GlobalValue(symbol="MKLaunchOptionsDirectionsModeKey", optional=true)
-    public static native NSString LaunchOptionsDirectionsModeKey();
-    /**
-     * @since Available in iOS 6.0 and later.
-     */
-    @GlobalValue(symbol="MKLaunchOptionsMapTypeKey", optional=true)
-    public static native NSString LaunchOptionsMapTypeKey();
-    /**
-     * @since Available in iOS 6.0 and later.
-     */
-    @GlobalValue(symbol="MKLaunchOptionsShowsTrafficKey", optional=true)
-    public static native NSString LaunchOptionsShowsTrafficKey();
-    /**
-     * @since Available in iOS 6.0 and later.
-     */
-    @GlobalValue(symbol="MKLaunchOptionsDirectionsModeDriving", optional=true)
-    public static native NSString LaunchOptionsDirectionsModeDriving();
-    /**
-     * @since Available in iOS 6.0 and later.
-     */
-    @GlobalValue(symbol="MKLaunchOptionsDirectionsModeWalking", optional=true)
-    public static native NSString LaunchOptionsDirectionsModeWalking();
-    /**
-     * @since Available in iOS 6.0 and later.
-     */
-    @GlobalValue(symbol="MKLaunchOptionsMapCenterKey", optional=true)
-    public static native NSString LaunchOptionsMapCenterKey();
-    /**
-     * @since Available in iOS 6.0 and later.
-     */
-    @GlobalValue(symbol="MKLaunchOptionsMapSpanKey", optional=true)
-    public static native NSString LaunchOptionsMapSpanKey();
-    /**
-     * @since Available in iOS 7.0 and later.
-     */
-    @GlobalValue(symbol="MKLaunchOptionsCameraKey", optional=true)
-    public static native NSString LaunchOptionsCameraKey();
     @GlobalValue(symbol="MKErrorDomain", optional=true)
     public static native NSString ErrorDomain();
-    
-    /**
-     * @since Available in iOS 4.0 and later.
-     */
-    @Bridge(symbol="MKRoadWidthAtZoomScale", optional=true)
-    public static native @MachineSizedFloat double getRoadWidth(@MachineSizedFloat double zoomScale);
     /*</methods>*/
 }

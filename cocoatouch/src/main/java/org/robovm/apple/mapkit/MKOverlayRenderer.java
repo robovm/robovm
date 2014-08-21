@@ -64,6 +64,12 @@ import org.robovm.apple.dispatch.*;
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
+    /**
+     * @since Available in iOS 4.0 and later.
+     */
+    @Bridge(symbol="MKRoadWidthAtZoomScale", optional=true)
+    public static native @MachineSizedFloat double getRoadWidth(@MachineSizedFloat double zoomScale);
+    
     @Method(selector = "initWithOverlay:")
     protected native @Pointer long init(MKOverlay overlay);
     @Method(selector = "pointForMapPoint:")

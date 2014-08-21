@@ -24,13 +24,13 @@ categories:
     NSValueMapKitGeometryExtensions: # DONE
         methods:
             '-MKCoordinateValue':
-                name: "getCoordinateValue"
+                name: getCoordinateValue
             '-MKCoordinateSpanValue':
-                name: "getCoordinateSpanValue"
+                name: getCoordinateSpanValue
             '+valueWithMKCoordinate:':
-                name: "create"
+                name: create
             '+valueWithMKCoordinateSpan:':
-                name: "create"
+                name: create
    
 classes:
     MapKit:
@@ -53,20 +53,20 @@ classes:
     MKCircle: # DONE
         methods:
             '+circleWithCenterCoordinate:radius:':
-                name: "create"
+                name: create
             '+circleWithMapRect:':
-                name: "create"
+                name: create
     MKCircleRenderer: {} # DONE
     MKCircleView: {} # DONE
     MKDirections: # DONE
         methods:
             '-calculateDirectionsWithCompletionHandler:':
-                name: "calculateDirections"
+                name: calculateDirections
                 parameters:
                     completionHandler:
                         type: "@Block VoidBlock2<MKDirectionsResponse, NSError>"
             '-calculateETAWithCompletionHandler:':
-                name: "calculateETA"
+                name: calculateETA
                 parameters:
                     completionHandler:
                         type: "@Block VoidBlock2<MKETAResponse, NSError>"
@@ -77,7 +77,7 @@ classes:
             '-destination':
                 property: true
             '-initWithContentsOfURL:':
-                name: "init"
+                name: init
             '+isDirectionsRequestURL:':
                 trim_after_first_colon: true
     MKDirectionsResponse: # DONE
@@ -88,17 +88,17 @@ classes:
     MKGeodesicPolyline: # DONE
         methods:
             '+polylineWithPoints:count:':
-                name: "create"
+                name: create
                 visibility: private
             '+polylineWithCoordinates:count:':
-                name: "create"
+                name: create
                 visibility: private
     MKLocalSearch: # DONE
         methods:
             '-initWithRequest:':
-                name: "init"
+                name: init
             '-startWithCompletionHandler:':
-                name: "start"
+                name: start
                 parameters:
                     completionHandler:
                         type: "@Block VoidBlock2<MKLocalSearchResponse, NSError>"
@@ -110,25 +110,27 @@ classes:
     MKMapCamera: # DONE
         methods:
             '+camera':
-                name: "create"
+                name: create
             '+cameraLookingAtCenterCoordinate:fromEyeCoordinate:eyeAltitude:':
-                name: "create"    
+                name: create
     MKMapItem: # DONE
         properties:
             'isCurrentLocation':
-                name: "currentLocation"
+                name: currentLocation
         methods:
             '-initWithPlacemark:':
-                name: "init"
+                name: init
             '-openInMapsWithLaunchOptions:':
-                name: "openInMaps"
+                name: openInMaps
+                visibility: protected
                 parameters:
                     launchOptions:
                         type: "NSDictionary<NSString, ?>"
             '+mapItemForCurrentLocation':
-                name: "getCurrentLocationMapItem"
+                name: getCurrentLocationMapItem
             '+openMapsWithItems:launchOptions:':
-                name: "openMaps"
+                name: openMaps
+                visibility: protected
                 parameters:
                     mapItems:
                         type: "NSArray<MKMapItem>"
@@ -137,19 +139,19 @@ classes:
     MKMapSnapshot: # DONE
         methods:
             '-pointForCoordinate:':
-                name: "getPoint"
+                name: getPoint
     MKMapSnapshotOptions: {} # DONE
     MKMapSnapshotter: # DONE
         methods:
             '-initWithOptions:':
-                name: "init"
+                name: init
             '-startWithCompletionHandler:':
-                name: "start"
+                name: start
                 parameters:
                     completionHandler:
                         type: "@Block VoidBlock2<MKMapSnapshot, NSError>"
             '-startWithQueue:completionHandler:':
-                name: "start"
+                name: start
                 parameters:
                     completionHandler:
                         type: "@Block VoidBlock2<MKMapSnapshot, NSError>"            
@@ -167,25 +169,25 @@ classes:
             '-setCenterCoordinate:animated:':
                 trim_after_first_colon: true
             '-regionThatFits:':
-                name: "getRegionThatFits"
+                name: getRegionThatFits
             '-setVisibleMapRect:animated:':
                 trim_after_first_colon: true
             '-mapRectThatFits:':
-                name: "getMapRectThatFits"
+                name: getMapRectThatFits
             '-setVisibleMapRect:edgePadding:animated:':
                 trim_after_first_colon: true
             '-mapRectThatFits:edgePadding:':
-                name: "getMapRectThatFits"
+                name: getMapRectThatFits
             '-setCamera:animated:':
                 trim_after_first_colon: true
             '-convertCoordinate:toPointToView:':
-                name: "convertCoordinateToPointToView"
+                name: convertCoordinateToPointToView
             '-convertPoint:toCoordinateFromView:':
-                name: "convertPointToCoordinateFromView"
+                name: convertPointToCoordinateFromView
             '-convertRegion:toRectToView:':
-                name: "convertRegionToRectToView"
+                name: convertRegionToRectToView
             '-convertRect:toRegionFromView:':
-                name: "convertRectToRegionFromView"
+                name: convertRectToRegionFromView
             '-setUserTrackingMode:animated:':
                 trim_after_first_colon: true
             '-addAnnotation:':
@@ -203,12 +205,12 @@ classes:
                     annotations:
                         type: "NSArray<NSObject>" # MKAnnotation
             '-annotationsInMapRect:':
-                name: "getAnnotations"
+                name: getAnnotations
                 return_type: "NSSet<NSObject>" # MKAnnotation
             '-viewForAnnotation:':
-                name: "getView"
+                name: getView
             '-dequeueReusableAnnotationViewWithIdentifier:':
-                name: "dequeueReusableAnnotationView"
+                name: dequeueReusableAnnotationView
             '-selectAnnotation:animated:':
                 trim_after_first_colon: true
             '-deselectAnnotation:animated:':
@@ -235,18 +237,18 @@ classes:
             '-insertOverlay:atIndex:level:':
                 trim_after_first_colon: true
             '-insertOverlay:aboveOverlay:':
-                name: "insertOverlayAbove"
+                name: insertOverlayAbove
             '-insertOverlay:belowOverlay:':
-                name: "insertOverlayBelow"
+                name: insertOverlayBelow
             '-exchangeOverlay:withOverlay:':
                 trim_after_first_colon: true
             '-overlaysInLevel:':
-                name: "getOverlays"
+                name: getOverlays
                 return_type: "NSArray<NSObject>" # MKOverlay
             '-rendererForOverlay:':
-                name: "getOverlayRenderer"
+                name: getOverlayRenderer
             '-viewForOverlay:':
-                name: "getOverlayView"
+                name: getOverlayView
             '-addOverlay:':
                 trim_after_first_colon: true
             '-addOverlays:':
@@ -257,14 +259,14 @@ classes:
             '-insertOverlay:atIndex:':
                 trim_after_first_colon: true
             '-exchangeOverlayAtIndex:withOverlayAtIndex:':
-                name: "exchangeOverlay"
+                name: exchangeOverlay
     MKMultiPoint: # DONE
         methods:
             '-points':
                 name: "getPoints0"
                 visibility: protected
             '-getCoordinates:range:':
-                name: "getCoordinates0"
+                name: getCoordinates0
                 visibility: protected
     MKOverlayPathRenderer: # DONE
         properties:
@@ -272,9 +274,9 @@ classes:
                 type: "NSArray<NSNumber>"
         methods:
             '-applyStrokePropertiesToContext:atZoomScale:':
-                name: "applyStrokeProperties"
+                name: applyStrokeProperties
             '-applyFillPropertiesToContext:atZoomScale:':
-                name: "applyFillProperties"
+                name: applyFillProperties
             '-strokePath:inContext:':
                 trim_after_first_colon: true
             '-fillPath:inContext:':
@@ -285,9 +287,9 @@ classes:
                 type: "NSArray<NSNumber>"
         methods:
             '-applyStrokePropertiesToContext:atZoomScale:':
-                name: "applyStrokeProperties"
+                name: applyStrokeProperties
             '-applyFillPropertiesToContext:atZoomScale:':
-                name: "applyFillProperties"
+                name: applyFillProperties
             '-strokePath:inContext:':
                 trim_after_first_colon: true
             '-fillPath:inContext:':
@@ -295,48 +297,48 @@ classes:
     MKOverlayRenderer: # DONE
         methods:
             '-initWithOverlay:':
-                name: "init"
+                name: init
             '-pointForMapPoint:':
-                name: "getPoint"
+                name: getPoint
             '-mapPointForPoint:':
-                name: "getMapPoint"
+                name: getMapPoint
             '-rectForMapRect:':
-                name: "getRect"
+                name: getRect
             '-mapRectForRect:':
-                name: "getMapRect"
+                name: getMapRect
             '-canDrawMapRect:zoomScale:':
-                name: "canDraw"
+                name: canDraw
             '-drawMapRect:zoomScale:inContext:':
-                name: "draw"
+                name: draw
             '-setNeedsDisplayInMapRect:':
-                name: "setNeedsDisplay"
+                name: setNeedsDisplay
             '-setNeedsDisplayInMapRect:zoomScale:':
-                name: "setNeedsDisplay"
+                name: setNeedsDisplay
     MKOverlayView: # DONE
         methods:
             '-initWithOverlay:':
-                name: "init"
+                name: init
             '-pointForMapPoint:':
-                name: "getPoint"
+                name: getPoint
             '-mapPointForPoint:':
-                name: "getMapPoint"
+                name: getMapPoint
             '-rectForMapRect:':
-                name: "getRect"
+                name: getRect
             '-mapRectForRect:':
-                name: "getMapRect"
+                name: getMapRect
             '-canDrawMapRect:zoomScale:':
-                name: "canDraw"
+                name: canDraw
             '-drawMapRect:zoomScale:inContext:':
-                name: "draw"
+                name: draw
             '-setNeedsDisplayInMapRect:':
-                name: "setNeedsDisplay"
+                name: setNeedsDisplay
             '-setNeedsDisplayInMapRect:zoomScale:':
-                name: "setNeedsDisplay"
+                name: setNeedsDisplay
     MKPinAnnotationView: {} # DONE
     MKPlacemark: # DONE
         methods:
             '-initWithCoordinate:addressDictionary:':
-                name: "init"
+                name: init
                 parameters:
                     addressDictionary:
                         type: "NSDictionary<NSString, ?>"  
@@ -347,19 +349,19 @@ classes:
                 type: "NSArray<MKPolygon>"
         methods:
             '+polygonWithPoints:count:':
-                name: "create"
+                name: create
                 visibility: private
             '+polygonWithPoints:count:interiorPolygons:':
-                name: "create"
+                name: create
                 visibility: private
                 parameters:
                     interiorPolygons:
                         type: "NSArray<MKPolygon>"
             '+polygonWithCoordinates:count:':
-                name: "create"
+                name: create
                 visibility: private
             '+polygonWithCoordinates:count:interiorPolygons:':
-                name: "create"
+                name: create
                 visibility: private
                 parameters:
                     interiorPolygons:
@@ -367,31 +369,31 @@ classes:
     MKPolygonRenderer: # DONE
         methods:
             '-initWithPolygon:':
-                name: "init"
+                name: init
     MKPolygonView: # DONE
         methods:
             '-initWithPolygon:':
-                name: "init"
+                name: init
     MKPolyline: # DONE
         methods:
             '+polylineWithPoints:count:':
-                name: "create"
+                name: create
                 visibility: private
             '+polylineWithCoordinates:count:':
-                name: "create"
+                name: create
                 visibility: private
     MKPolylineRenderer: # DONE
         methods:
             '-initWithPolyline:':
-                name: "init"
+                name: init
     MKPolylineView: # DONE
         methods:
             '-initWithPolyline:':
-                name: "init"
+                name: init
     MKReverseGeocoder: # DONE
         methods:
             '-initWithCoordinate:':
-                name: "init"
+                name: init
     MKRoute: # DONE
         properties:
             'advisoryNotices':
@@ -403,228 +405,208 @@ classes:
     MKTileOverlay: # DONE
         methods:
             '-initWithURLTemplate:':
-                name: "init"
+                name: init
             '-URLForTilePath:':
-                name: "getURL"
+                name: getURL
             '-loadTileAtPath:result:':
-                name: "loadTile"
+                name: loadTile
     MKTileOverlayRenderer: # DONE
         methods:
             '-initWithTileOverlay:':
-                name: "init"
+                name: init
     MKUserLocation: {} # DONE
     MKUserTrackingBarButtonItem: # DONE
         methods:
             '-initWithMapView:':
-                name: "init"
+                name: init
 
 protocols:
     MKAnnotation: {} # DONE
     MKMapViewDelegate: # DONE
         methods:
             '-mapView:regionWillChangeAnimated:':
-                name: "willChangeRegion"
+                name: willChangeRegion
             '-mapView:regionDidChangeAnimated:':
-                name: "didChangeRegion"
+                name: didChangeRegion
             '-mapViewWillStartLoadingMap:':
-                name: "willStartLoadingMap"
+                name: willStartLoadingMap
             '-mapViewDidFinishLoadingMap:':
-                name: "didFinishLoadingMap"
+                name: didFinishLoadingMap
             '-mapViewDidFailLoadingMap:withError:':
-                name: "didFailLoadingMap"
+                name: didFailLoadingMap
             '-mapViewWillStartRenderingMap:':
-                name: "willStartRenderingMap"
+                name: willStartRenderingMap
             '-mapViewDidFinishRenderingMap:fullyRendered:':
-                name: "didFinishRenderingMap"
+                name: didFinishRenderingMap
             '-mapView:viewForAnnotation:':
-                name: "getAnnotationView"
+                name: getAnnotationView
             '-mapView:didAddAnnotationViews:':
-                name: "didAddAnnotationViews"
+                name: didAddAnnotationViews
                 parameters:
                     views:
                         type: "NSArray<MKAnnotationView>"
             '-mapView:annotationView:calloutAccessoryControlTapped:':
-                name: "calloutAccessoryControlTapped"
+                name: calloutAccessoryControlTapped
             '-mapView:didSelectAnnotationView:':
-                name: "didSelectAnnotationView"
+                name: didSelectAnnotationView
             '-mapView:didDeselectAnnotationView:':
-                name: "didDeselectAnnotationView"
+                name: didDeselectAnnotationView
             '-mapViewWillStartLocatingUser:':
-                name: "willStartLocatingUser"
+                name: willStartLocatingUser
             '-mapViewDidStopLocatingUser:':
-                name: "didStopLocatingUser"
+                name: didStopLocatingUser
             '-mapView:didUpdateUserLocation:':
-                name: "didUpdateUserLocation"
+                name: didUpdateUserLocation
             '-mapView:didFailToLocateUserWithError:':
-                name: "didFailToLocateUser"
+                name: didFailToLocateUser
             '-mapView:annotationView:didChangeDragState:fromOldState:':
-                name: "didChangeDragState"
+                name: didChangeDragState
             '-mapView:didChangeUserTrackingMode:animated:':
-                name: "didChangeUserTrackingMode"
+                name: didChangeUserTrackingMode
             '-mapView:rendererForOverlay:':
-                name: "getOverlayRenderer"
+                name: getOverlayRenderer
             '-mapView:didAddOverlayRenderers:':
-                name: "didAddOverlayRenderers"
+                name: didAddOverlayRenderers
                 parameters:
                     renderers:
                         type: "NSArray<MKOverlayRenderer>"
             '-mapView:viewForOverlay:':
-                name: "getOverlayView"
+                name: getOverlayView
             '-mapView:didAddOverlayViews:':
-                name: "didAddOverlayViews"
+                name: didAddOverlayViews
                 parameters:
                     overlayViews:
                         type: "NSArray<MKOverlayView>"
     MKOverlay: # DONE
         methods:
             '-intersectsMapRect:':
-                name: "intersects"
+                name: intersects
     MKReverseGeocoderDelegate: # DONE
         methods:
             '-reverseGeocoder:didFindPlacemark:':
-                name: "didFindPlacemark"
+                name: didFindPlacemark
             '-reverseGeocoder:didFailWithError:':
-                name: "didFail"
+                name: didFail
                 
 functions:
+    # MKCoordinateRegion
     MKCoordinateRegionMake:
         class: MKCoordinateRegion
-        name: "create"
+        name: create
         static: true
-
     MKCoordinateRegionMakeWithDistance:
         class: MKCoordinateRegion
-        name: "create"
+        name: create
         static: true
-        
+    MKCoordinateRegionForMapRect:
+        class: MKCoordinateRegion
+        name: create
+        static: true
+
+    # MKMapPoint
     MKMapPointForCoordinate:
         class: MKMapPoint
-        name: "create"
+        name: create
         static: true
-        
     MKCoordinateForMapPoint:
         class: MKMapPoint
-        name: "toCoordinate"
+        name: toCoordinate
+    MKMetersPerMapPointAtLatitude:
+        class: MKMapPoint
+        name: getMetersPerMapPoint
+        static: true 
+    MKMapPointsPerMeterAtLatitude:
+        class: MKMapPoint
+        name: getMapPointsPerMeter
+        static: true
+    MKMetersBetweenMapPoints:
+        class: MKMapPoint
+        name: getMetersBetween
+        static: true
+    MKMapPointMake:
+        class: MKMapPoint
+        name: create
+        static: true
+    MKMapPointEqualToPoint:
+        class: MKMapPoint
+        name: equalsPoint
+    MKStringFromMapPoint:
+        class: MKMapPoint
+        name: asString
 
+    # MKMapRect
     MKMapRectUnion:
         class: MKMapRect
-        name: "union"
-        
+        name: union
     MKMapRectIntersection:
         class: MKMapRect
-        name: "intersection"
-
+        name: intersection
     MKMapRectInset:
         class: MKMapRect
-        name: "inset"
-        
+        name: inset
     MKMapRectOffset:
         class: MKMapRect
-        name: "offset"
-    
+        name: offset
     MKMapRectDivide:
         class: MKMapRect
-        name: "divide"
-
+        name: divide
     MKMapRectContainsPoint:
         class: MKMapRect
-        name: "contains"
-        
+        name: contains
     MKMapRectContainsRect:
         class: MKMapRect
-        name: "contains"
-        
+        name: contains
     MKMapRectIntersectsRect:
         class: MKMapRect
-        name: "intersects"
- 
+        name: intersects
     MKMapRectSpans180thMeridian:
         class: MKMapRect
-        name: "isSpanning180thMeridian"
- 
+        name: isSpanning180thMeridian
     MKMapRectRemainder:
         class: MKMapRect
-        name: "remainder"
-        
+        name: remainder
     MKMapRectEqualToRect:
         class: MKMapRect
-        name: "equals"
-    
+        name: equals
     MKMapRectIsNull:
         class: MKMapRect
-        name: "isNull"
-    
+        name: isNull
     MKMapRectIsEmpty:
         class: MKMapRect
-        name: "isEmpty"
-    
+        name: isEmpty
     MKMapRectGet(.*):
         class: MKMapRect
         name: "get#{g[0]}"
-        
     MKMapRectMake:
         class: MKMapRect
-        name: "create"
+        name: create
         static: true
- 
-    MKCoordinateRegionForMapRect:
-        class: MKCoordinateRegion
-        name: "create"
-        static: true
-        
-    MKRoadWidthAtZoomScale:
-        class: MapKit
-        name: "getRoadWidth"
-        
-    MKMetersPerMapPointAtLatitude:
-        class: MKMapPoint
-        name: "getMetersPerMapPoint"
-        static: true
-        
-    MKMapPointsPerMeterAtLatitude:
-        class: MKMapPoint
-        name: "getMapPointsPerMeter"
-        static: true
- 
-    MKMetersBetweenMapPoints:
-        class: MKMapPoint
-        name: "getMetersBetween"
-        static: true
-        
-    MKMapPointMake:
-        class: MKMapPoint
-        name: "create"
-        static: true
-        
-    MKMapPointEqualToPoint:
-        class: MKMapPoint
-        name: "equalsPoint"
-    
-    MKStringFromMapPoint:
-        class: MKMapPoint
-        name: "asString"
-    
-    MKMapSizeMake:
-        class: MKMapSize
-        name: "create"
-        static: true
-        
-    MKMapSizeEqualToSize:
-        class: MKMapSize
-        name: "equalsSize"
-        
-    MKStringFromMapSize:
-        class: MKMapSize
-        name: "asString"
-    
     MKStringFromMapRect:
         class: MKMapRect
-        name: "asString"
-    
+        name: asString
+
+    # MKCoordinateSpan
     MKCoordinateSpanMake:
         class: MKCoordinateSpan
-        name: "create"
+        name: create
         static: true
+
+    # MKOverlayRenderer
+    MKRoadWidthAtZoomScale:
+        class: MKOverlayRenderer
+        name: getRoadWidth
+
+    # MKMapSize
+    MKMapSizeMake:
+        class: MKMapSize
+        name: create
+        static: true   
+    MKMapSizeEqualToSize:
+        class: MKMapSize
+        name: equalsSize 
+    MKStringFromMapSize:
+        class: MKMapSize
+        name: asString
  
     # Make sure we don't miss any functions if new ones are introduced in a later version
     (MK.*):
@@ -632,28 +614,29 @@ functions:
         name: "Function__#{g[0]}"
 
 values:
-    MK(.*Property.*):
+    MKMapSize(.*):
+        class: MKMapSize
+        name: "get#{g[0]}Size"
+      
+    MKMapRect(.*):
+        class: MKMapRect
+        name: "get#{g[0]}Rect"
+        
+    MKLaunchOptions(.*Key):
+        class: MKLaunchOptions
         name: "#{g[0]}"
         type: NSString
-
+        visibility: protected
+        
+    MKLaunchOptionsDirectionsMode(.*):
+        class: MKDirectionsMode
+        name: "#{g[0]}Value"
+        type: NSString
+        visibility: protected
+    
     MK(.*Notification):
         name: "#{g[0]}"
         type: NSString
-
-    MK(.*Key):
-        name: "#{g[0]}"
-        type: NSString
-        
-    MK(.*DirectionsMode.*):
-        name: "#{g[0]}"
-        type: NSString
-      
-    MK(.*MapSize.*):
-        name: "#{g[0]}"
-      
-    MK(.*MapRect.*):
-        name: "#{g[0]}"
-    
     MK(.*ErrorDomain):
         name: "#{g[0]}"
         readonly: true

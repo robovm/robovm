@@ -117,7 +117,7 @@ import org.robovm.apple.corefoundation.*;
     }
     
     public static CFHTTPAuthenticationScheme valueOf(CFString value) {
-        if (value == null) throw new NullPointerException("Value cannot be null!");
+        if (value == null) throw new NullPointerException("value");
         for (CFHTTPAuthenticationScheme v : values) {
             if (v.value().equals(value)) {
                 return v;

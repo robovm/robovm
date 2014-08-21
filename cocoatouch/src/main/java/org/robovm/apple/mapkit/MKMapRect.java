@@ -63,6 +63,17 @@ import org.robovm.apple.dispatch.*;
     /**
      * @since Available in iOS 4.0 and later.
      */
+    @GlobalValue(symbol="MKMapRectWorld", optional=true)
+    public static native @ByVal MKMapRect getWorldRect();
+    /**
+     * @since Available in iOS 4.0 and later.
+     */
+    @GlobalValue(symbol="MKMapRectNull", optional=true)
+    public static native @ByVal MKMapRect getNullRect();
+    
+    /**
+     * @since Available in iOS 4.0 and later.
+     */
     public MKMapRect union(MKMapRect rect2) { return union(this, rect2); }
     @Bridge(symbol="MKMapRectUnion", optional=true)
     private static native @ByVal MKMapRect union(@ByVal MKMapRect rect1, @ByVal MKMapRect rect2);

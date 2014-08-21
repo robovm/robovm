@@ -71,14 +71,20 @@ import org.robovm.apple.dispatch.*;
     public native void setUrl(NSURL v);
     /*</properties>*/
     /*<members>*//*</members>*/
+    public boolean openInMaps(MKLaunchOptions launchOptions) {
+        return openInMaps(launchOptions.options);
+    }
+    public static boolean openMaps(NSArray<MKMapItem> mapItems, MKLaunchOptions launchOptions) {
+        return openMaps(mapItems, launchOptions.options);
+    }
     /*<methods>*/
     @Method(selector = "initWithPlacemark:")
     protected native @Pointer long init(MKPlacemark placemark);
     @Method(selector = "openInMapsWithLaunchOptions:")
-    public native boolean openInMaps(NSDictionary<NSString, ?> launchOptions);
+    protected native boolean openInMaps(NSDictionary<NSString, ?> launchOptions);
     @Method(selector = "mapItemForCurrentLocation")
     public static native MKMapItem getCurrentLocationMapItem();
     @Method(selector = "openMapsWithItems:launchOptions:")
-    public static native boolean openMaps(NSArray<MKMapItem> mapItems, NSDictionary<NSString, ?> launchOptions);
+    protected static native boolean openMaps(NSArray<MKMapItem> mapItems, NSDictionary<NSString, ?> launchOptions);
     /*</methods>*/
 }

@@ -37,14 +37,13 @@ import org.robovm.apple.dispatch.*;
 /*<javadoc>*/
 
 /*</javadoc>*/
-/*<annotations>*//*</annotations>*/
+/*<annotations>*/@Library("MapKit")/*</annotations>*/
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/MKMapSize/*</name>*/ 
     extends /*<extends>*/Struct<MKMapSize>/*</extends>*/ 
     /*<implements>*//*</implements>*/ {
 
     /*<ptr>*/public static class MKMapSizePtr extends Ptr<MKMapSize, MKMapSizePtr> {}/*</ptr>*/
-    /*<bind>*/
-    /*</bind>*/
+    /*<bind>*/static { Bro.bind(MKMapSize.class); }/*</bind>*/
     /*<constants>*//*</constants>*/
     /*<constructors>*/
     public MKMapSize() {}
@@ -60,5 +59,11 @@ import org.robovm.apple.dispatch.*;
     @StructMember(1) public native double height();
     @StructMember(1) public native MKMapSize height(double height);
     /*</members>*/
-    /*<methods>*//*</methods>*/
+    /*<methods>*/
+    /**
+     * @since Available in iOS 4.0 and later.
+     */
+    @GlobalValue(symbol="MKMapSizeWorld", optional=true)
+    public static native @ByVal MKMapSize getWorldSize();
+    /*</methods>*/
 }

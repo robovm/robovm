@@ -169,7 +169,7 @@ static jint attachThread(VM* vm, Env** envPtr, char* name, Object* group, jboole
         rvmUnlockThreadsList();
         goto error;
     }
-    if (!rvmSetupSignals(env)) {
+    if (!rvmInstallThreadSignalMask(env)) {
         rvmUnlockThreadsList();
         goto error;
     }
@@ -197,7 +197,6 @@ error_remove:
     rvmLockThreadsList();
     DL_DELETE(threads, thread);
     pthread_cond_broadcast(&threadsChangedCond);
-    rvmTearDownSignals(env);
     rvmUnlockThreadsList();
 error:
     if (env) env->currentThread = NULL;
@@ -258,7 +257,6 @@ static jint detachThread(Env* env, jboolean ignoreAttachCount, jboolean unregist
     thread->status = THREAD_ZOMBIE;
     DL_DELETE(threads, thread);
     pthread_cond_broadcast(&threadsChangedCond);
-    rvmTearDownSignals(env);
     env->currentThread = NULL;
     pthread_setspecific(tlsEnvKey, NULL);
     rvmUnlockThreadsList();
@@ -329,7 +327,7 @@ static void* startThreadEntryPoint(void* _args) {
     setThreadEnv(env);
     if (!rvmExceptionOccurred(env)) {
         if (initThread(env, thread, threadObj)) {
-            if (rvmSetupSignals(env)) {
+            if (rvmInstallThreadSignalMask(env)) {
                 failure = FALSE;
                 thread->stackAddr = getStackAddress();
             }

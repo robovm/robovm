@@ -401,6 +401,6 @@ ObjectArray* Java_org_robovm_rt_VM_listClasses0(Env* env, Class* c, Class* insta
     return rvmListClasses(env, instanceofClass, classLoader);
 }
 
-ObjectArray* Java_org_robovm_rt_VM_generateHeapDump(Env* env, Class* c) {
+void Java_org_robovm_rt_VM_generateHeapDump(Env* env, Class* c) {
     rvmGenerateHeapDump(env);
 }

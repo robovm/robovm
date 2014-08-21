@@ -77,6 +77,7 @@ static struct sigaction sigsegvFallback;
 static void signalHandler_npe_so_nochaining(int signum, siginfo_t* info, void* context);
 static void signalHandler_npe_so_chaining(int signum, siginfo_t* info, void* context);
 static void signalHandler_dump_thread(int signum, siginfo_t* info, void* context);
+static jboolean installNoChainingSignals(Env* env);
 
 #if defined(DARWIN)
 // Weak stub for the function in vm/debug/src/debug.c. If librobovm-debug.a isn't
@@ -90,6 +91,9 @@ jboolean rvmInitSignals(Env* env) {
     throwableInitMethod = rvmGetClassMethod(env, java_lang_Throwable, "init", "(Ljava/lang/Throwable;J)V");
     if (!throwableInitMethod) return FALSE;
     if (sem_init(&dumpThreadStackTraceCallSemaphore, 0, 0) != 0) {
+        return FALSE;
+    }
+    if (!installNoChainingSignals(env)) {
         return FALSE;
     }
 #if defined(DARWIN)
@@ -135,6 +139,11 @@ static jboolean installChainingSignals(Env* env) {
         return FALSE;
     }
 
+    if (installSignalHandlerIfNeeded(DUMP_THREAD_STACK_TRACE_SIGNAL, create_sigaction(&signalHandler_dump_thread), NULL) != 0) {
+        rvmThrowInternalErrorErrno(env, errno);
+        return FALSE;
+    }
+
     return TRUE;
 }
 
@@ -152,7 +161,7 @@ static jboolean reinstallSavedSignals(Env* env, SavedSignals* savedSignals) {
     return TRUE;
 }
 
-static jboolean installSignals(Env* env) {
+static jboolean installNoChainingSignals(Env* env) {
 #if defined(DARWIN)
     // On Darwin SIGBUS is generated when dereferencing NULL pointers
     if (installSignalHandlerIfNeeded(SIGBUS, create_sigaction(&signalHandler_npe_so_nochaining), NULL) != 0) {
@@ -171,44 +180,38 @@ static jboolean installSignals(Env* env) {
         return FALSE;
     }
 
+    return TRUE;
+}
+
+jboolean rvmInstallThreadSignalMask(Env* env) {
     int err;
     if ((err = pthread_sigmask(0, NULL, &env->currentThread->signalMask)) != 0) {
         rvmThrowInternalErrorErrno(env, err);
-        rvmTearDownSignals(env);
         return FALSE;        
     }
-
     return TRUE;
 }
 
-jboolean rvmSetupSignals(Env* env) {
-    if (!installSignals(env)) {
-        return FALSE;
-    }
-    return TRUE;
+jboolean rvmRestoreThreadSignalMask(Env* env) {
+    return pthread_sigmask(SIG_SETMASK, &env->currentThread->signalMask, NULL) == 0 ? TRUE : FALSE;
 }
 
-void rvmRestoreSignalMask(Env* env) {
-    pthread_sigmask(SIG_SETMASK, &env->currentThread->signalMask, NULL);
-}
-
-void rvmTearDownSignals(Env* env) {
-}
-
-void rvmInstallChainingSignals(Env* env) {
+jboolean rvmInstallChainingSignals(Env* env) {
     static jboolean called = FALSE;
     if (called) {
         FATAL("rvmInstallChainingSignals() called twice");
         abort();
     }
-    installChainingSignals(env);
+    jboolean r = installChainingSignals(env);
     called = TRUE;
+    return r;
 }
 
-void rvmReinstallSavedSignals(Env* env, void* state) {
+jboolean rvmReinstallSavedSignals(Env* env, void* state) {
     SavedSignals* savedSignals = (SavedSignals*) state;
-    reinstallSavedSignals(env, savedSignals);
+    jboolean r = reinstallSavedSignals(env, savedSignals);
     free(savedSignals);
+    return r;
 }
 
 void* rvmSaveSignals(Env* env) {

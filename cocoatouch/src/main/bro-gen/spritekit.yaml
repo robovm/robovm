@@ -7,7 +7,7 @@ headers:
     - /System/Library/Frameworks/SpriteKit.framework/Headers/SpriteKit.h
     - /System/Library/Frameworks/SpriteKit.framework/Headers/SpriteKitBase.h
 typedefs:
-    'void (^)(SKNode *, CGFloat)': '@Block(",@MachineSizedFloat") VoidBlock2<SKNode, Double>'
+    'void (^)(SKNode *, CGFloat)': '@Block("(,@MachineSizedFloat)") VoidBlock2<SKNode, Double>'
     'void (^)(SKNode *, BOOL *)': '@Block VoidBlock2<SKNode, BytePtr>'
     'void (^)(SKPhysicsBody *, BOOL *)': '@Block VoidBlock2<SKPhysicsBody, BytePtr>'
     'void (^)(SKPhysicsBody *, CGPoint, CGVector, BOOL *)': '@Block VoidBlock4<SKPhysicsBody, CGPoint, CGVector, BytePtr>'

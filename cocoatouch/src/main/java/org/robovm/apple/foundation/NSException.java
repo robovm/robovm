@@ -91,6 +91,8 @@ import org.robovm.apple.security.*;
      */
     @Method(selector = "callStackSymbols")
     public native NSArray<NSString> getCallStackSymbols();
+    @Method(selector = "raise")
+    public native void raise();
     @Method(selector = "encodeWithCoder:")
     public native void encode(NSCoder aCoder);
     /*</methods>*/

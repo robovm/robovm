@@ -17,11 +17,10 @@
 #define ROBOVM_SIGNAL_H
 
 extern jboolean rvmInitSignals(Env* env);
-extern jboolean rvmSetupSignals(Env* env);
-extern void rvmTearDownSignals(Env* env);
-extern void rvmRestoreSignalMask(Env* env);
-extern void rvmInstallChainingSignals(Env* env);
-extern void rvmReinstallSavedSignals(Env* env, void* state);
+extern jboolean rvmInstallThreadSignalMask(Env* env);
+extern jboolean rvmRestoreThreadSignalMask(Env* env);
+extern jboolean rvmInstallChainingSignals(Env* env);
+extern jboolean rvmReinstallSavedSignals(Env* env, void* state);
 extern void* rvmSaveSignals(Env* env);
 
 #endif

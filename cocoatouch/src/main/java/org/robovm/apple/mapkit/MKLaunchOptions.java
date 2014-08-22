@@ -107,7 +107,7 @@ import org.robovm.apple.dispatch.*;
     public @ByVal CLLocationCoordinate2D getMapCenter() {
         if (options.containsKey(MapCenterKey())) {
             NSValue val = (NSValue)options.get(MapCenterKey());
-            return null; // TODO get value from nsvalue
+            return NSValueExtensions.getCoordinateValue(val);
         }
         return null;
     }
@@ -115,7 +115,7 @@ import org.robovm.apple.dispatch.*;
      * @since Available in iOS 6.0 and later.
      */
     public void setMapCenter(@ByVal CLLocationCoordinate2D center) {
-//        options.put(MapCenterKey(), ); TODO put center in nsvalue
+        options.put(MapCenterKey(), NSValueExtensions.create(center));
     }
     /**
      * @since Available in iOS 6.0 and later.
@@ -123,7 +123,7 @@ import org.robovm.apple.dispatch.*;
     public @ByVal MKCoordinateSpan getMapSpan() {
         if (options.containsKey(MapSpanKey())) {
             NSValue val = (NSValue)options.get(MapSpanKey());
-            return null; // TODO get value from nsvalue
+            return NSValueExtensions.getCoordinateSpanValue(val);
         }
         return null;
     }
@@ -131,7 +131,7 @@ import org.robovm.apple.dispatch.*;
      * @since Available in iOS 6.0 and later.
      */
     public void setMapSpan(@ByVal MKCoordinateSpan span) {
-//        options.put(MapSpanKey(), ); TODO put span in nsvalue
+        options.put(MapSpanKey(), NSValueExtensions.create(span));
     }
     /**
      * @since Available in iOS 7.0 and later.

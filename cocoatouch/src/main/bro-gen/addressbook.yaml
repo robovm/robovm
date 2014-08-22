@@ -196,15 +196,15 @@ functions:
     ABMultiValue(Create)Mutable.*:
         class: ABMutableMultiValue
         name: "#{g[0]}"
-    ABMultiValue(AddValue)AndLabel: # TODO ignore pointer
+    ABMultiValue(AddValueAndLabel): # TODO ignore pointer
         class: ABMutableMultiValue
         name: "#{g[0]}"
         visibility: protected
-    ABMultiValue(InsertValue)AndLabelAtIndex: # TODO ignore pointer
+    ABMultiValue(InsertValueAndLabel)AtIndex: # TODO ignore pointer
         class: ABMutableMultiValue
         name: "#{g[0]}"
         visibility: protected
-    ABMultiValue(RemoveValue)AndLabelAtIndex:
+    ABMultiValue(RemoveValueAndLabel)AtIndex:
         class: ABMutableMultiValue
         name: "#{g[0]}"
     ABMultiValue(ReplaceValue|ReplaceLabel)AtIndex:

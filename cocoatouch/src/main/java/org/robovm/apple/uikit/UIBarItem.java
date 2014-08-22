@@ -41,7 +41,7 @@ import org.robovm.apple.coreimage.*;
 /*<annotations>*/@Library("UIKit") @NativeClass/*</annotations>*/
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/UIBarItem/*</name>*/ 
     extends /*<extends>*/NSObject/*</extends>*/ 
-    /*<implements>*//*</implements>*/ {
+    /*<implements>*/implements UIAppearanceContainer/*</implements>*/ {
 
     /*<ptr>*/public static class UIBarItemPtr extends Ptr<UIBarItem, UIBarItemPtr> {}/*</ptr>*/
     /*<bind>*/static { ObjCRuntime.bind(UIBarItem.class); }/*</bind>*/

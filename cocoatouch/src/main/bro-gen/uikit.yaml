@@ -657,6 +657,7 @@ classes:
                 trim_after_first_colon: true
 
     UIBarItem: # DONE
+        protocols: [UIAppearanceContainer]
         methods:
             '-setTitleTextAttributes:forState:':
                 name: setTitleTextAttributes

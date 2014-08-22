@@ -19,6 +19,7 @@ package org.robovm.apple.foundation;
 import java.io.*;
 import java.nio.*;
 import java.util.*;
+
 import org.robovm.objc.*;
 import org.robovm.objc.annotation.*;
 import org.robovm.objc.block.*;
@@ -186,7 +187,37 @@ import org.robovm.apple.security.*;
     public NSDictionary() {}
     protected NSDictionary(SkipInit skipInit) { super(skipInit); }
     /*</constructors>*/
-    
+
+    @SuppressWarnings("unchecked")
+    public NSDictionary(K k, V v) {
+        super((SkipInit) null);
+        initObject(initWithObjects$forKeys$(new NSArray<V>(v), new NSArray<K>(k)));
+    }
+
+    @SuppressWarnings("unchecked")
+    public NSDictionary(K k1, V v1, K k2, V v2) {
+        super((SkipInit) null);
+        initObject(initWithObjects$forKeys$(new NSArray<V>(v1, v2), new NSArray<K>(k1, k2)));
+    }
+
+    @SuppressWarnings("unchecked")
+    public NSDictionary(K k1, V v1, K k2, V v2, K k3, V v3) {
+        super((SkipInit) null);
+        initObject(initWithObjects$forKeys$(new NSArray<V>(v1, v2, v3), new NSArray<K>(k1, k2, k3)));
+    }
+
+    @SuppressWarnings("unchecked")
+    public NSDictionary(K k1, V v1, K k2, V v2, K k3, V v3, K k4, V v4) {
+        super((SkipInit) null);
+        initObject(initWithObjects$forKeys$(new NSArray<V>(v1, v2, v3, v4), new NSArray<K>(k1, k2, k3, k4)));
+    }
+
+    @SuppressWarnings("unchecked")
+    public NSDictionary(K k1, V v1, K k2, V v2, K k3, V v3, K k4, V v4, K k5, V v5) {
+        super((SkipInit) null);
+        initObject(initWithObjects$forKeys$(new NSArray<V>(v1, v2, v3, v4, v5), new NSArray<K>(k1, k2, k3, k4, k5)));
+    }
+
     public NSDictionary(Map<K, V> m) {
         super((SkipInit) null);
         if (m instanceof NSDictionary) {

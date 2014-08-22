@@ -19,6 +19,7 @@ package org.robovm.apple.foundation;
 import java.io.*;
 import java.nio.*;
 import java.util.*;
+
 import org.robovm.objc.*;
 import org.robovm.objc.annotation.*;
 import org.robovm.objc.block.*;
@@ -27,6 +28,7 @@ import org.robovm.rt.bro.*;
 import org.robovm.rt.bro.annotation.*;
 import org.robovm.rt.bro.ptr.*;
 import org.robovm.apple.corefoundation.*;
+import org.robovm.apple.foundation.NSObject.SkipInit;
 import org.robovm.apple.security.*;
 /*</imports>*/
 
@@ -49,6 +51,27 @@ import org.robovm.apple.security.*;
     public NSMutableDictionary() {
         super();
     }
+    
+    public NSMutableDictionary(K k, V v) {
+        super(k, v);
+    }
+
+    public NSMutableDictionary(K k1, V v1, K k2, V v2) {
+        super(k1, v1, k2, v2);
+    }
+
+    public NSMutableDictionary(K k1, V v1, K k2, V v2, K k3, V v3) {
+        super(k1, v1, k2, v2, k3, v3);
+    }
+
+    public NSMutableDictionary(K k1, V v1, K k2, V v2, K k3, V v3, K k4, V v4) {
+        super(k1, v1, k2, v2, k3, v3, k4, v4);
+    }
+
+    public NSMutableDictionary(K k1, V v1, K k2, V v2, K k3, V v3, K k4, V v4, K k5, V v5) {
+        super(k1, v1, k2, v2, k3, v3, k4, v4, k5, v5);
+    }
+
     public NSMutableDictionary(Map<K, V> m) {
         super(m);
     }

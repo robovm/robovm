@@ -27,7 +27,7 @@ import org.robovm.rt.bro.ptr.*;
 class sockaddr_in6 extends Struct<sockaddr_in6> {
     private static final byte AF_INET6 = 30;
     
-    public static class sockaddr_inPtr extends Ptr<sockaddr_in6, sockaddr_inPtr> {}
+    public static class sockaddr_in6Ptr extends Ptr<sockaddr_in6, sockaddr_in6Ptr> {}
     
     public sockaddr_in6() {
         sin6_len((byte)sizeOf());

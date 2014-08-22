@@ -69,6 +69,24 @@ import org.robovm.apple.security.*;
         }
     }
     
+    /**
+     * Registers a default java uncaught exception handler that forwards exceptions to RoboVM's signal handlers.
+     * Use this if you want Java exceptions to be logged by crash reporters.
+     */
+    public static void registerDefaultJavaUncaughtExceptionHandler() {
+        Thread.setDefaultUncaughtExceptionHandler(new java.lang.Thread.UncaughtExceptionHandler() {
+            @Override
+            public void uncaughtException (Thread thread, Throwable ex) {
+                StringWriter sw = new StringWriter();
+                PrintWriter pw = new PrintWriter(sw);
+                ex.printStackTrace(pw);
+                pw.flush();
+                Foundation.log(sw.toString());
+                NSException exception = new NSException(ex.getClass().getName(), sw.toString(), new NSDictionary<>());
+                exception.raise();
+            }
+        });
+    }
     /*<methods>*/
     @Bridge(symbol="NSSetUncaughtExceptionHandler", optional=true)
     private static native void setUncaughtExceptionHandler(FunctionPtr p0);

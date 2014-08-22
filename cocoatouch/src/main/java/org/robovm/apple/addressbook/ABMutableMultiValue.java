@@ -50,9 +50,9 @@ import org.robovm.apple.corefoundation.*;
      * @param label
      * @return the identifier of this value.
      */
-    public int addValue(CFType value, String label) {
+    public int addValueAndLabel(CFType value, String label) {
         IntPtr ptr = new IntPtr();
-        addValue(value, label, ptr);
+        addValueAndLabel(value, label, ptr);
         return ptr.get();
     }
     /**
@@ -62,9 +62,9 @@ import org.robovm.apple.corefoundation.*;
      * @param index
      * @return the identifier of this value.
      */
-    public int insertValue(CFType value, String label, @MachineSizedSInt long index) {
+    public int insertValueAndLabel(CFType value, String label, @MachineSizedSInt long index) {
         IntPtr ptr = new IntPtr();
-        insertValue(value, label, index, ptr);
+        insertValueAndLabel(value, label, index, ptr);
         return ptr.get();
     }
     /*<methods>*/
@@ -73,11 +73,11 @@ import org.robovm.apple.corefoundation.*;
     @Bridge(symbol="ABMultiValueCreateMutableCopy", optional=true)
     public static native ABMutableMultiValue create(ABMultiValue multiValue);
     @Bridge(symbol="ABMultiValueAddValueAndLabel", optional=true)
-    protected native boolean addValue(CFType value, String label, IntPtr outIdentifier);
+    protected native boolean addValueAndLabel(CFType value, String label, IntPtr outIdentifier);
     @Bridge(symbol="ABMultiValueInsertValueAndLabelAtIndex", optional=true)
-    protected native boolean insertValue(CFType value, String label, @MachineSizedSInt long index, IntPtr outIdentifier);
+    protected native boolean insertValueAndLabel(CFType value, String label, @MachineSizedSInt long index, IntPtr outIdentifier);
     @Bridge(symbol="ABMultiValueRemoveValueAndLabelAtIndex", optional=true)
-    public native boolean removeValue(@MachineSizedSInt long index);
+    public native boolean removeValueAndLabel(@MachineSizedSInt long index);
     @Bridge(symbol="ABMultiValueReplaceValueAtIndex", optional=true)
     public native boolean replaceValue(CFType value, @MachineSizedSInt long index);
     @Bridge(symbol="ABMultiValueReplaceLabelAtIndex", optional=true)

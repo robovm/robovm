@@ -19,6 +19,7 @@ package org.robovm.apple.uikit;
 import java.io.*;
 import java.nio.*;
 import java.util.*;
+
 import org.robovm.objc.*;
 import org.robovm.objc.annotation.*;
 import org.robovm.objc.block.*;
@@ -27,6 +28,7 @@ import org.robovm.rt.bro.*;
 import org.robovm.rt.bro.annotation.*;
 import org.robovm.rt.bro.ptr.*;
 import org.robovm.apple.foundation.*;
+import org.robovm.apple.uikit.UIControl.Listener;
 import org.robovm.apple.coreanimation.*;
 import org.robovm.apple.coregraphics.*;
 import org.robovm.apple.coredata.*;
@@ -46,6 +48,48 @@ import org.robovm.apple.coreimage.*;
     /*<ptr>*/public static class UIBarButtonItemPtr extends Ptr<UIBarButtonItem, UIBarButtonItemPtr> {}/*</ptr>*/
     /*<bind>*/static { ObjCRuntime.bind(UIBarButtonItem.class); }/*</bind>*/
     /*<constants>*//*</constants>*/
+    
+    public interface OnClickListener {
+        void onClick(UIBarButtonItem barButtonItem);
+    }
+    
+    private static final Selector handleClick = Selector.register("handleClick");
+    private static class ListenerWrapper extends NSObject {
+        private final OnClickListener listener;
+        private ListenerWrapper(OnClickListener listener) {
+            this.listener = listener;
+        }
+        @Method(selector = "handleClick")
+        private void handleClick(UIBarButtonItem barButtonItem) {
+            listener.onClick(barButtonItem);
+        }
+    }
+    
+    public UIBarButtonItem(UIImage image, UIBarButtonItemStyle style, OnClickListener listener) { 
+        super((SkipInit) null);
+        ListenerWrapper l = new ListenerWrapper(listener);
+        initObject(initWithImage$style$target$action$(image, style, l, handleClick));
+        this.addStrongRef(l);
+    }
+    public UIBarButtonItem(UIImage image, UIImage landscapeImagePhone, UIBarButtonItemStyle style, OnClickListener listener) {
+        super((SkipInit) null);
+        ListenerWrapper l = new ListenerWrapper(listener);
+        initObject(initWithImage$landscapeImagePhone$style$target$action$(image, landscapeImagePhone, style, l, handleClick));
+        this.addStrongRef(l);
+    }
+    public UIBarButtonItem(String title, UIBarButtonItemStyle style, OnClickListener listener) {
+        super((SkipInit) null);
+        ListenerWrapper l = new ListenerWrapper(listener);
+        initObject(initWithTitle$style$target$action$(title, style, l, handleClick));
+        this.addStrongRef(l);
+    }
+    public UIBarButtonItem(UIBarButtonSystemItem systemItem, OnClickListener listener) {
+        super((SkipInit) null);
+        ListenerWrapper l = new ListenerWrapper(listener);
+        initObject(initWithBarButtonSystemItem$target$action$(systemItem, l, handleClick));
+        this.addStrongRef(l);
+    }
+    
     /*<constructors>*/
     public UIBarButtonItem() {}
     protected UIBarButtonItem(SkipInit skipInit) { super(skipInit); }

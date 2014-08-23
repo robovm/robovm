@@ -44,6 +44,15 @@ import org.robovm.apple.corefoundation.*;
     /*<constructors>*//*</constructors>*/
     /*<properties>*//*</properties>*/
     /*<members>*//*</members>*/
+    public String getName() {
+        CFString val = (CFString)getValue(ABGroupProperty.Name);
+        if (val != null) return val.toString();
+        return null;
+    }
+    public void setName(String name) {
+        setValue(ABGroupProperty.Name, new CFString(name));
+    }
+    
     public boolean addMember(ABPerson person) {
         return addMember(person, null);
     }

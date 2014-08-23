@@ -33,19 +33,48 @@ import org.robovm.apple.corefoundation.*;
 /*<javadoc>*/
 /*</javadoc>*/
 /*<annotations>*/@Library("AddressBook")/*</annotations>*/
-/*<visibility>*/public/*</visibility>*/ class /*<name>*/AddressBook/*</name>*/ 
+/*<visibility>*/public/*</visibility>*/ class /*<name>*/ABPersonKind/*</name>*/ 
     extends /*<extends>*/Object/*</extends>*/ 
     /*<implements>*//*</implements>*/ {
 
     /*<ptr>*/
     /*</ptr>*/
-    /*<bind>*/static { Bro.bind(AddressBook.class); }/*</bind>*/
+    /*<bind>*/static { Bro.bind(ABPersonKind.class); }/*</bind>*/
     /*<constants>*//*</constants>*/
+    public static final ABPersonKind Person = new ABPersonKind() {
+        public NSNumber value() {
+            return PersonValue();
+        }
+    };
+    public static final ABPersonKind Organization = new ABPersonKind() {
+        public NSNumber value() {
+            return OrganizationValue();
+        }
+    };
+    private static ABPersonKind[] values = new ABPersonKind[] {Person, Organization};
+    
+    private ABPersonKind() {
+    }
     /*<constructors>*//*</constructors>*/
     /*<properties>*//*</properties>*/
     /*<members>*//*</members>*/
+    public NSNumber value() {
+        return null;
+    }
+    
+    public static ABPersonKind valueOf(NSNumber value) {
+        for (ABPersonKind v : values) {
+            if (v.value().intValue() == value.intValue()) {
+                return v;
+            }
+        }
+        throw new IllegalArgumentException("No constant with value " + value + " found in " 
+            + /*<name>*/ABPersonKind/*</name>*/.class.getName());
+    }
     /*<methods>*/
-    @GlobalValue(symbol="ABAddressBookErrorDomain", optional=true)
-    public static native String ABAddressBookErrorDomain();
+    @GlobalValue(symbol="kABPersonKindPerson", optional=true)
+    protected static native NSNumber PersonValue();
+    @GlobalValue(symbol="kABPersonKindOrganization", optional=true)
+    protected static native NSNumber OrganizationValue();
     /*</methods>*/
 }

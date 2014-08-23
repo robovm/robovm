@@ -72,12 +72,16 @@ import org.robovm.apple.corefoundation.*;
     }
     
     /**
-     * Add a toll-free bridges Cocoa Foundation object and a label.
+     * Add a toll-free bridged Cocoa Foundation object and a label.
      * @param value
      * @param label
-     * @param outIdentifier
-     * @return
+     * @return the id of the added value.
      */
+    protected int addNSValueAndLabel(NSObject value, CFString label) {
+        IntPtr ptr = new IntPtr();
+        addNSValueAndLabel(value, label, ptr);
+        return ptr.get();
+    }
     @Bridge(symbol="ABMultiValueAddValueAndLabel", optional=true)
     protected native boolean addNSValueAndLabel(NSObject value, CFString label, IntPtr outIdentifier);
     /*<methods>*/

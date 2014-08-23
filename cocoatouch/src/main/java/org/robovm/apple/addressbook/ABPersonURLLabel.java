@@ -33,19 +33,28 @@ import org.robovm.apple.corefoundation.*;
 /*<javadoc>*/
 /*</javadoc>*/
 /*<annotations>*/@Library("AddressBook")/*</annotations>*/
-/*<visibility>*/public/*</visibility>*/ class /*<name>*/AddressBook/*</name>*/ 
-    extends /*<extends>*/Object/*</extends>*/ 
+/*<visibility>*/public/*</visibility>*/ class /*<name>*/ABPersonURLLabel/*</name>*/ 
+    extends /*<extends>*/ABPropertyLabel/*</extends>*/ 
     /*<implements>*//*</implements>*/ {
 
     /*<ptr>*/
     /*</ptr>*/
-    /*<bind>*/static { Bro.bind(AddressBook.class); }/*</bind>*/
+    /*<bind>*/static { Bro.bind(ABPersonURLLabel.class); }/*</bind>*/
     /*<constants>*//*</constants>*/
+    public static final ABPersonURLLabel HomePage = new ABPersonURLLabel() {
+        public CFString value() {
+            return HomePageLabel();
+        }
+    };
+    
+    private ABPersonURLLabel() {
+        values = new ABPropertyLabel[] {Work, Home, Other, HomePage};
+    }
     /*<constructors>*//*</constructors>*/
     /*<properties>*//*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
-    @GlobalValue(symbol="ABAddressBookErrorDomain", optional=true)
-    public static native String ABAddressBookErrorDomain();
+    @GlobalValue(symbol="kABPersonHomePageLabel", optional=true)
+    protected static native CFString HomePageLabel();
     /*</methods>*/
 }

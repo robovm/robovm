@@ -15,7 +15,6 @@
  */
 package org.robovm.apple.addressbook;
 
-/*<imports>*/
 import java.io.*;
 import java.nio.*;
 import java.util.*;
@@ -28,24 +27,37 @@ import org.robovm.rt.bro.annotation.*;
 import org.robovm.rt.bro.ptr.*;
 import org.robovm.apple.foundation.*;
 import org.robovm.apple.corefoundation.*;
-/*</imports>*/
 
-/*<javadoc>*/
-/*</javadoc>*/
-/*<annotations>*/@Library("AddressBook")/*</annotations>*/
-/*<visibility>*/public/*</visibility>*/ class /*<name>*/AddressBook/*</name>*/ 
-    extends /*<extends>*/Object/*</extends>*/ 
-    /*<implements>*//*</implements>*/ {
-
-    /*<ptr>*/
-    /*</ptr>*/
-    /*<bind>*/static { Bro.bind(AddressBook.class); }/*</bind>*/
-    /*<constants>*//*</constants>*/
-    /*<constructors>*//*</constructors>*/
-    /*<properties>*//*</properties>*/
-    /*<members>*//*</members>*/
-    /*<methods>*/
-    @GlobalValue(symbol="ABAddressBookErrorDomain", optional=true)
-    public static native String ABAddressBookErrorDomain();
-    /*</methods>*/
+@Library("AddressBook")
+public class ABPersonDate {
+    static { Bro.bind(ABPersonDate.class); }
+    
+    private NSDate date;
+    private CFString label;
+    
+    public ABPersonDate(NSDate date, String label) {
+        this.date = date;
+        this.label = new CFString(label);
+    }
+    
+    public ABPersonDate(NSDate date, ABPersonDateLabel label) {
+        this.date = date;
+        this.label = label.value();
+    }
+    
+    protected ABPersonDate(NSDate date, CFString label) {
+        this.date = date;
+        this.label = label;
+    }
+    
+    public NSDate getDate() {
+        return date;
+    }
+    
+    public String getLabel() {
+        return label.toString();
+    }
+    protected CFString getLabel0() {
+        return label;
+    }
 }

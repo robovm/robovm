@@ -40,7 +40,9 @@ import org.robovm.apple.corefoundation.*;
     /*<ptr>*/
     /*</ptr>*/
     /*<bind>*/static { Bro.bind(ABRecord.class); }/*</bind>*/
-    /*<constants>*//*</constants>*/
+    /*<constants>*/
+    public static final int InvalidID = -1;
+    /*</constants>*/
     /*<constructors>*//*</constructors>*/
     /*<properties>*//*</properties>*/
     /*<members>*//*</members>*/

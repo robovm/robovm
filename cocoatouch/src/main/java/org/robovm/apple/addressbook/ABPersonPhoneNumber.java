@@ -15,7 +15,6 @@
  */
 package org.robovm.apple.addressbook;
 
-/*<imports>*/
 import java.io.*;
 import java.nio.*;
 import java.util.*;
@@ -28,24 +27,42 @@ import org.robovm.rt.bro.annotation.*;
 import org.robovm.rt.bro.ptr.*;
 import org.robovm.apple.foundation.*;
 import org.robovm.apple.corefoundation.*;
-/*</imports>*/
 
-/*<javadoc>*/
-/*</javadoc>*/
-/*<annotations>*/@Library("AddressBook")/*</annotations>*/
-/*<visibility>*/public/*</visibility>*/ class /*<name>*/AddressBook/*</name>*/ 
-    extends /*<extends>*/Object/*</extends>*/ 
-    /*<implements>*//*</implements>*/ {
-
-    /*<ptr>*/
-    /*</ptr>*/
-    /*<bind>*/static { Bro.bind(AddressBook.class); }/*</bind>*/
-    /*<constants>*//*</constants>*/
-    /*<constructors>*//*</constructors>*/
-    /*<properties>*//*</properties>*/
-    /*<members>*//*</members>*/
-    /*<methods>*/
-    @GlobalValue(symbol="ABAddressBookErrorDomain", optional=true)
-    public static native String ABAddressBookErrorDomain();
-    /*</methods>*/
+@Library("numberBook")
+public class ABPersonPhoneNumber {
+    static { Bro.bind(ABPersonPhoneNumber.class); }
+    
+    private CFString number;
+    private CFString label;
+    
+    public ABPersonPhoneNumber(String number, String label) {
+        this.number = new CFString(number);
+        this.label = new CFString(label);
+    }
+    
+    public ABPersonPhoneNumber(String number, ABPersonPhoneLabel label) {
+        this.number = new CFString(number);
+        this.label = label.value();
+    }
+    
+    protected ABPersonPhoneNumber(CFString number, CFString label) {
+        this.number = number;
+        this.label = label;
+    }
+    
+    public String getNumber() {
+        return number.toString();
+    }
+    
+    public String getLabel() {
+        return label.toString();
+    }
+    
+    protected CFString getNumber0() {
+        return number;
+    }
+    
+    protected CFString getLabel0() {
+        return label;
+    }
 }

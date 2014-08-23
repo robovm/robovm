@@ -40,7 +40,9 @@ import org.robovm.apple.corefoundation.*;
     /*<ptr>*/
     /*</ptr>*/
     /*<bind>*/static { Bro.bind(ABMultiValue.class); }/*</bind>*/
-    /*<constants>*//*</constants>*/
+    /*<constants>*/
+    public static final int InvalidIdentifier = -1;
+    /*</constants>*/
     /*<constructors>*//*</constructors>*/
     /*<properties>*//*</properties>*/
     /*<members>*//*</members>*/

@@ -48,6 +48,18 @@ classes:
         extends: ABRecord
     ABSource:
         extends: ABRecord
+        
+    ABProperty: {}
+    ABPersonProperty:
+        extends: ABProperty
+    ABGroupProperty:
+        extends: ABProperty
+    ABSourceProperty:
+        extends: ABProperty
+        
+    ABPropertyLabel: {}
+    ABPersonPhoneLabel:
+        extends: ABPropertyLabel
 
 functions:
     # ABAddressBook
@@ -118,11 +130,12 @@ functions:
     ABRecordCopyValue:
         class: ABRecord
         name: "getValue"
-    ABRecord(SetValue): # Wrap without nserror
+        visibility: protected
+    ABRecord(SetValue): 
         class: ABRecord
         name: "#{g[0]}"
         visibility: protected
-    ABRecord(RemoveValue): # Wrap without nserror
+    ABRecord(RemoveValue):
         class: ABRecord
         name: "#{g[0]}"
         visibility: protected
@@ -184,6 +197,7 @@ functions:
     ABMultiValueCopyLabelAtIndex:
         class: ABMultiValue
         name: "getLabel"
+        return_type: CFString
     ABMultiValue(GetIndex)ForIdentifier:
         class: ABMultiValue
         name: "indexOf"
@@ -196,20 +210,36 @@ functions:
     ABMultiValue(Create)Mutable.*:
         class: ABMutableMultiValue
         name: "#{g[0]}"
-    ABMultiValue(AddValueAndLabel): # TODO ignore pointer
+    ABMultiValue(AddValueAndLabel):
         class: ABMutableMultiValue
         name: "#{g[0]}"
         visibility: protected
-    ABMultiValue(InsertValueAndLabel)AtIndex: # TODO ignore pointer
+        parameters:
+            label:
+                type: CFString
+    ABMultiValue(InsertValueAndLabel)AtIndex:
         class: ABMutableMultiValue
         name: "#{g[0]}"
         visibility: protected
+        parameters:
+            label:
+                type: CFString
     ABMultiValue(RemoveValueAndLabel)AtIndex:
         class: ABMutableMultiValue
         name: "#{g[0]}"
-    ABMultiValue(ReplaceValue|ReplaceLabel)AtIndex:
+        parameters:
+            label:
+                type: CFString
+    ABMultiValue(ReplaceValue)AtIndex:
         class: ABMutableMultiValue
         name: "#{g[0]}"
+    ABMultiValue(ReplaceLabel)AtIndex:
+        class: ABMutableMultiValue
+        name: "#{g[0]}"
+        visibility: protected
+        parameters:
+            label:
+                type: CFString
     ABMultiValue(.*):
         class: ABMultiValue
         name: "#{g[0]}"
@@ -236,18 +266,29 @@ functions:
             person:
                 type: ABPerson
     ABPersonGetTypeOfProperty:
-        class: ABPerson
-        name: "getPropertyType"
+        class: ABPersonProperty
+        name: "getType"
+        visibility: protected
     ABPersonCopy(LocalizedPropertyName):
-        class: ABPerson
+        class: ABPersonProperty
         name: "get#{g[0]}"
+        visibility: protected
+    ABPersonGet(CompositeNameFormat):
+        class: ABPerson
+        name: "getConstant#{g[0]}"
     ABPerson(GetCompositeNameFormat)ForRecord:
         class: ABPerson
         name: "#{g[0]}"
+        parameters:
+            record:
+                type: ABPerson
     ABPersonCopy(CompositeNameDelimiter)ForRecord:
         class: ABPerson
         name: "get#{g[0]}"
-    ABPerson(SetImageData): # todo wrap without error
+        parameters:
+            record:
+                type: ABPerson
+    ABPerson(SetImageData):
         class: ABPerson
         name: "#{g[0]}"
         parameters:
@@ -266,7 +307,7 @@ functions:
         parameters:
             person:
                 type: "ABPerson"
-    ABPerson(RemoveImageData): # TODO wrap without error
+    ABPerson(RemoveImageData):
         class: ABPerson
         name: "#{g[0]}"
         parameters:
@@ -311,21 +352,55 @@ values:
     ABAddressBook(ErrorDomain):
         class: AddressBook
         name: "ABAddressBook#{g[0]}"
-        
-    kABSource(.*)Property:
-        class: AddressBook
-        name: "ABSource#{g[0]}Property"
 
+    # Properties
+    kABPerson(.*)Property:
+        class: ABPersonProperty
+        name: "#{g[0]}Value"
+        visibility: protected
+    kABGroup(.*)Property:
+        class: ABGroupProperty
+        name: "#{g[0]}Value"
+    kABSource(.*)Property:
+        class: ABSourceProperty
+        name: "#{g[0]}Value"
+
+    # Labels
+    # Generic labels
+    kAB(WorkLabel):
+        class: ABPropertyLabel
+        name: "#{g[0]}"
+        visibility: protected
+        type: CFString
+    kAB(HomeLabel):
+        class: ABPropertyLabel
+        name: "#{g[0]}"
+        visibility: protected
+        type: CFString
+    kAB(OtherLabel):
+        class: ABPropertyLabel
+        name: "#{g[0]}"
+        visibility: protected
+        type: CFString
+    # Specific labels
+    kABPersonPhone(.*Label):
+        class: ABPersonPhoneLabel
+        name: "#{g[0]}"
+        visibility: protected
+        type: CFString
     kAB(.*)Label:
         class: AddressBook
         name: "AB#{g[0]}Label"
 
-    kABPerson(.*)Property:
-        class: AddressBook
-        name: "ABPerson#{g[0]}Property"
+    kABPersonAddress(.*)Key:
+        class: ABPersonAddressPart
+        name: "#{g[0]}Value"
+        visibility: protected
+        type: NSString
+    
     kABPerson(.*)Key:
         class: AddressBook
-        name: "ABPerson#{g[0]}Key"      
+        name: "ABPerson#{g[0]}Key"
     kABPersonKind(.*):
         class: AddressBook
         name: "ABPersonKind#{g[0]}"
@@ -335,10 +410,6 @@ values:
     kABPersonSocialProfileService(.*):
         class: AddressBook
         name: "ABPersonSocialProfileService#{g[0]}"
-        
-    kABGroup(.*)Property:
-        class: AddressBook
-        name: "ABGroup#{g[0]}Property"
 
     # Make sure we don't miss any values if new ones are introduced in a later version
     (AB.*):

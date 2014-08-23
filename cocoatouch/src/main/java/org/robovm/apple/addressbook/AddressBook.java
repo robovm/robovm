@@ -52,104 +52,12 @@ import org.robovm.apple.corefoundation.*;
     /*<methods>*/
     @GlobalValue(symbol="ABAddressBookErrorDomain", optional=true)
     public static native String ABAddressBookErrorDomain();
-    /**
-     * @since Available in iOS 4.0 and later.
-     */
-    @GlobalValue(symbol="kABSourceNameProperty", optional=true)
-    public static native int ABSourceNameProperty();
-    /**
-     * @since Available in iOS 4.0 and later.
-     */
-    @GlobalValue(symbol="kABSourceTypeProperty", optional=true)
-    public static native int ABSourceTypeProperty();
-    @GlobalValue(symbol="kABWorkLabel", optional=true)
-    public static native String ABWorkLabel();
-    @GlobalValue(symbol="kABHomeLabel", optional=true)
-    public static native String ABHomeLabel();
-    @GlobalValue(symbol="kABOtherLabel", optional=true)
-    public static native String ABOtherLabel();
-    @GlobalValue(symbol="kABPersonFirstNameProperty", optional=true)
-    public static native int ABPersonFirstNameProperty();
-    @GlobalValue(symbol="kABPersonLastNameProperty", optional=true)
-    public static native int ABPersonLastNameProperty();
-    @GlobalValue(symbol="kABPersonMiddleNameProperty", optional=true)
-    public static native int ABPersonMiddleNameProperty();
-    @GlobalValue(symbol="kABPersonPrefixProperty", optional=true)
-    public static native int ABPersonPrefixProperty();
-    @GlobalValue(symbol="kABPersonSuffixProperty", optional=true)
-    public static native int ABPersonSuffixProperty();
-    @GlobalValue(symbol="kABPersonNicknameProperty", optional=true)
-    public static native int ABPersonNicknameProperty();
-    @GlobalValue(symbol="kABPersonFirstNamePhoneticProperty", optional=true)
-    public static native int ABPersonFirstNamePhoneticProperty();
-    @GlobalValue(symbol="kABPersonLastNamePhoneticProperty", optional=true)
-    public static native int ABPersonLastNamePhoneticProperty();
-    @GlobalValue(symbol="kABPersonMiddleNamePhoneticProperty", optional=true)
-    public static native int ABPersonMiddleNamePhoneticProperty();
-    @GlobalValue(symbol="kABPersonOrganizationProperty", optional=true)
-    public static native int ABPersonOrganizationProperty();
-    @GlobalValue(symbol="kABPersonJobTitleProperty", optional=true)
-    public static native int ABPersonJobTitleProperty();
-    @GlobalValue(symbol="kABPersonDepartmentProperty", optional=true)
-    public static native int ABPersonDepartmentProperty();
-    @GlobalValue(symbol="kABPersonEmailProperty", optional=true)
-    public static native int ABPersonEmailProperty();
-    @GlobalValue(symbol="kABPersonBirthdayProperty", optional=true)
-    public static native int ABPersonBirthdayProperty();
-    @GlobalValue(symbol="kABPersonNoteProperty", optional=true)
-    public static native int ABPersonNoteProperty();
-    @GlobalValue(symbol="kABPersonCreationDateProperty", optional=true)
-    public static native int ABPersonCreationDateProperty();
-    @GlobalValue(symbol="kABPersonModificationDateProperty", optional=true)
-    public static native int ABPersonModificationDateProperty();
-    @GlobalValue(symbol="kABPersonAddressProperty", optional=true)
-    public static native int ABPersonAddressProperty();
-    @GlobalValue(symbol="kABPersonAddressStreetKey", optional=true)
-    public static native String ABPersonAddressStreetKey();
-    @GlobalValue(symbol="kABPersonAddressCityKey", optional=true)
-    public static native String ABPersonAddressCityKey();
-    @GlobalValue(symbol="kABPersonAddressStateKey", optional=true)
-    public static native String ABPersonAddressStateKey();
-    @GlobalValue(symbol="kABPersonAddressZIPKey", optional=true)
-    public static native String ABPersonAddressZIPKey();
-    @GlobalValue(symbol="kABPersonAddressCountryKey", optional=true)
-    public static native String ABPersonAddressCountryKey();
-    @GlobalValue(symbol="kABPersonAddressCountryCodeKey", optional=true)
-    public static native String ABPersonAddressCountryCodeKey();
-    @GlobalValue(symbol="kABPersonDateProperty", optional=true)
-    public static native int ABPersonDateProperty();
     @GlobalValue(symbol="kABPersonAnniversaryLabel", optional=true)
     public static native String ABPersonAnniversaryLabel();
-    @GlobalValue(symbol="kABPersonKindProperty", optional=true)
-    public static native int ABPersonKindProperty();
     @GlobalValue(symbol="kABPersonKindPerson", optional=true)
     public static native CFNumber ABPersonKindPerson();
     @GlobalValue(symbol="kABPersonKindOrganization", optional=true)
     public static native CFNumber ABPersonKindOrganization();
-    @GlobalValue(symbol="kABPersonPhoneProperty", optional=true)
-    public static native int ABPersonPhoneProperty();
-    @GlobalValue(symbol="kABPersonPhoneMobileLabel", optional=true)
-    public static native String ABPersonPhoneMobileLabel();
-    /**
-     * @since Available in iOS 3.0 and later.
-     */
-    @GlobalValue(symbol="kABPersonPhoneIPhoneLabel", optional=true)
-    public static native String ABPersonPhoneIPhoneLabel();
-    @GlobalValue(symbol="kABPersonPhoneMainLabel", optional=true)
-    public static native String ABPersonPhoneMainLabel();
-    @GlobalValue(symbol="kABPersonPhoneHomeFAXLabel", optional=true)
-    public static native String ABPersonPhoneHomeFAXLabel();
-    @GlobalValue(symbol="kABPersonPhoneWorkFAXLabel", optional=true)
-    public static native String ABPersonPhoneWorkFAXLabel();
-    /**
-     * @since Available in iOS 5.0 and later.
-     */
-    @GlobalValue(symbol="kABPersonPhoneOtherFAXLabel", optional=true)
-    public static native String ABPersonPhoneOtherFAXLabel();
-    @GlobalValue(symbol="kABPersonPhonePagerLabel", optional=true)
-    public static native String ABPersonPhonePagerLabel();
-    @GlobalValue(symbol="kABPersonInstantMessageProperty", optional=true)
-    public static native int ABPersonInstantMessageProperty();
     @GlobalValue(symbol="kABPersonInstantMessageServiceKey", optional=true)
     public static native String ABPersonInstantMessageServiceKey();
     @GlobalValue(symbol="kABPersonInstantMessageServiceYahoo", optional=true)
@@ -189,12 +97,8 @@ import org.robovm.apple.corefoundation.*;
     public static native String ABPersonInstantMessageServiceGaduGadu();
     @GlobalValue(symbol="kABPersonInstantMessageUsernameKey", optional=true)
     public static native String ABPersonInstantMessageUsernameKey();
-    @GlobalValue(symbol="kABPersonURLProperty", optional=true)
-    public static native int ABPersonURLProperty();
     @GlobalValue(symbol="kABPersonHomePageLabel", optional=true)
     public static native String ABPersonHomePageLabel();
-    @GlobalValue(symbol="kABPersonRelatedNamesProperty", optional=true)
-    public static native int ABPersonRelatedNamesProperty();
     @GlobalValue(symbol="kABPersonFatherLabel", optional=true)
     public static native String ABPersonFatherLabel();
     @GlobalValue(symbol="kABPersonMotherLabel", optional=true)
@@ -217,11 +121,6 @@ import org.robovm.apple.corefoundation.*;
     public static native String ABPersonAssistantLabel();
     @GlobalValue(symbol="kABPersonManagerLabel", optional=true)
     public static native String ABPersonManagerLabel();
-    /**
-     * @since Available in iOS 5.0 and later.
-     */
-    @GlobalValue(symbol="kABPersonSocialProfileProperty", optional=true)
-    public static native int ABPersonSocialProfileProperty();
     /**
      * @since Available in iOS 5.0 and later.
      */
@@ -277,7 +176,5 @@ import org.robovm.apple.corefoundation.*;
      */
     @GlobalValue(symbol="kABPersonSocialProfileServiceFlickr", optional=true)
     public static native String ABPersonSocialProfileServiceFlickr();
-    @GlobalValue(symbol="kABGroupNameProperty", optional=true)
-    public static native int ABGroupNameProperty();
     /*</methods>*/
 }

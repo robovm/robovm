@@ -44,6 +44,156 @@ import org.robovm.apple.corefoundation.*;
     /*<constructors>*//*</constructors>*/
     /*<properties>*//*</properties>*/
     /*<members>*//*</members>*/
+    public String getFirstName() {
+        CFString val = (CFString)getValue(ABPersonProperty.FirstName);
+        return val.toString();
+    }
+    public void setFirstName(String firstName) {
+        setValue(ABPersonProperty.FirstName, new CFString(firstName));
+    }
+    public String getLastName() {
+        CFString val = (CFString)getValue(ABPersonProperty.LastName);
+        return val.toString();
+    }
+    public void setLastName(String lastName) {
+        setValue(ABPersonProperty.LastName, new CFString(lastName));
+    }
+    public String getMiddleName() {
+        CFString val = (CFString)getValue(ABPersonProperty.MiddleName);
+        return val.toString();
+    }
+    public void setMiddleName(String middleName) {
+        setValue(ABPersonProperty.MiddleName, new CFString(middleName));
+    }
+    public String getPrefix() {
+        CFString val = (CFString)getValue(ABPersonProperty.Prefix);
+        return val.toString();
+    }
+    public void setPrefix(String prefix) {
+        setValue(ABPersonProperty.Prefix, new CFString(prefix));
+    }
+    public String getSuffix() {
+        CFString val = (CFString)getValue(ABPersonProperty.Suffix);
+        return val.toString();
+    }
+    public void setSuffix(String suffix) {
+        setValue(ABPersonProperty.Suffix, new CFString(suffix));
+    }
+    public String getNickname() {
+        CFString val = (CFString)getValue(ABPersonProperty.Nickname);
+        return val.toString();
+    }
+    public void setNickname(String nickname) {
+        setValue(ABPersonProperty.Nickname, new CFString(nickname));
+    }
+    public String getFirstNamePhonetic() {
+        CFString val = (CFString)getValue(ABPersonProperty.FirstNamePhonetic);
+        return val.toString();
+    }
+    public void setFirstNamePhonetic(String firstNamePhonetic) {
+        setValue(ABPersonProperty.FirstNamePhonetic, new CFString(firstNamePhonetic));
+    }
+    public String getLastNamePhonetic() {
+        CFString val = (CFString)getValue(ABPersonProperty.LastNamePhonetic);
+        return val.toString();
+    }
+    public void setLastNamePhonetic(String lastNamePhonetic) {
+        setValue(ABPersonProperty.LastNamePhonetic, new CFString(lastNamePhonetic));
+    }
+    public String getMiddleNamePhonetic() {
+        CFString val = (CFString)getValue(ABPersonProperty.MiddleNamePhonetic);
+        return val.toString();
+    }
+    public void setMiddleNamePhonetic(String middleNamePhonetic) {
+        setValue(ABPersonProperty.MiddleNamePhonetic, new CFString(middleNamePhonetic));
+    }
+    public String getOrganization() {
+        CFString val = (CFString)getValue(ABPersonProperty.Organization);
+        return val.toString();
+    }
+    public void setOrganization(String organization) {
+        setValue(ABPersonProperty.Organization, new CFString(organization));
+    }
+    public String getJobTitle() {
+        CFString val = (CFString)getValue(ABPersonProperty.JobTitle);
+        return val.toString();
+    }
+    public void setJobTitle(String jobTitle) {
+        setValue(ABPersonProperty.JobTitle, new CFString(jobTitle));
+    }
+    public String getDepartment() {
+        CFString val = (CFString)getValue(ABPersonProperty.Department);
+        return val.toString();
+    }
+    public void setDepartment(String department) {
+        setValue(ABPersonProperty.Department, new CFString(department));
+    }
+    public List<ABPersonEmailAddress> getEmailAddresses() {
+        ABMultiValue val = (ABMultiValue)getValue(ABPersonProperty.Email);
+        List<ABPersonEmailAddress> list = new ArrayList<>();
+        long size = val.getCount();
+        for (int i = 0; i < size; i++) {
+            CFString address = (CFString)val.getValue(i);
+            CFString label = (CFString)val.getLabel(i);
+            list.add(new ABPersonEmailAddress(address, label));
+        }
+        return list;
+    }
+    public void setEmailAddresses(List<ABPersonEmailAddress> emailAddresses) {
+        ABMutableMultiValue val = ABMutableMultiValue.create(ABPropertyType.MultiString);
+        for (ABPersonEmailAddress address : emailAddresses) {
+            val.addValueAndLabel(address.getAddress0(), address.getLabel0(), null);
+        }
+        setValue(ABPersonProperty.Email, val);
+    }
+    public NSDate getBirthday() {
+        NSDate val = (NSDate)getNSValue(ABPersonProperty.Birthday);
+        return val;
+    }
+    public void setBirthday(NSDate birthday) {
+        setNSValue(ABPersonProperty.Birthday, birthday);
+    }
+    public String getNote() {
+        CFString val = (CFString)getValue(ABPersonProperty.Note);
+        return val.toString();
+    }
+    public void setNote(String note) {
+        setValue(ABPersonProperty.Note, new CFString(note));
+    }
+    public NSDate getCreationDate() {
+        NSDate val = (NSDate)getNSValue(ABPersonProperty.CreationDate);
+        return val;
+    }
+    public void setCreationDate(NSDate creationDate) {
+        setNSValue(ABPersonProperty.CreationDate, creationDate);
+    }
+    public NSDate getModificationDate() {
+        NSDate val = (NSDate)getNSValue(ABPersonProperty.ModificationDate);
+        return val;
+    }
+    public void setModificationDate(NSDate modificationDate) {
+        setNSValue(ABPersonProperty.ModificationDate, modificationDate);
+    }
+    public List<ABPersonAddress> getAddresses() {
+        ABMultiValue val = (ABMultiValue)getValue(ABPersonProperty.Address);
+        List<ABPersonAddress> list = new ArrayList<ABPersonAddress>();
+        long size = val.getCount();
+        for (int i = 0; i < size; i++) {
+            NSDictionary<?, ?> address = (NSDictionary<?, ?>)val.getNSValue(i);
+            list.add(new ABPersonAddress(address));
+        }
+        return list;
+    }
+    public void setAddresses(List<ABPersonAddress> addresses) {
+        
+    }
+    
+    public boolean setImageData(NSData imageData) {
+        return setImageData(imageData, null);
+    }
+    public boolean removeImageData() {
+        return removeImageData(null);
+    }
     /*<methods>*/
     @Bridge(symbol="ABPersonCreate", optional=true)
     public static native ABRecord create();
@@ -62,10 +212,6 @@ import org.robovm.apple.corefoundation.*;
      */
     @Bridge(symbol="ABPersonCopyArrayOfAllLinkedPeople", optional=true)
     public native NSArray<?> getAllLinkedPeople();
-    @Bridge(symbol="ABPersonGetTypeOfProperty", optional=true)
-    public static native ABPropertyType getPropertyType(int property);
-    @Bridge(symbol="ABPersonCopyLocalizedPropertyName", optional=true)
-    public static native String getLocalizedPropertyName(int property);
     @Bridge(symbol="ABPersonGetSortOrdering", optional=true)
     public static native ABPersonSortOrdering getSortOrdering();
     /**
@@ -74,17 +220,17 @@ import org.robovm.apple.corefoundation.*;
      */
     @Deprecated
     @Bridge(symbol="ABPersonGetCompositeNameFormat", optional=true)
-    public static native ABPersonCompositeNameFormat getCompositeNameFormat();
+    public static native ABPersonCompositeNameFormat getConstantCompositeNameFormat();
     /**
      * @since Available in iOS 7.0 and later.
      */
     @Bridge(symbol="ABPersonGetCompositeNameFormatForRecord", optional=true)
-    public static native ABPersonCompositeNameFormat getCompositeNameFormat(ABRecord record);
+    public native ABPersonCompositeNameFormat getCompositeNameFormat();
     /**
      * @since Available in iOS 7.0 and later.
      */
     @Bridge(symbol="ABPersonCopyCompositeNameDelimiterForRecord", optional=true)
-    public static native String getCompositeNameDelimiter(ABRecord record);
+    public native String getCompositeNameDelimiter();
     @Bridge(symbol="ABPersonSetImageData", optional=true)
     protected native boolean setImageData(NSData imageData, NSError.NSErrorPtr error);
     @Bridge(symbol="ABPersonCopyImageData", optional=true)

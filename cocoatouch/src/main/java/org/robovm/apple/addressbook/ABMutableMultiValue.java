@@ -52,7 +52,7 @@ import org.robovm.apple.corefoundation.*;
      */
     public int addValueAndLabel(CFType value, String label) {
         IntPtr ptr = new IntPtr();
-        addValueAndLabel(value, label, ptr);
+        addValueAndLabel(value, new CFString(label), ptr);
         return ptr.get();
     }
     /**
@@ -64,8 +64,11 @@ import org.robovm.apple.corefoundation.*;
      */
     public int insertValueAndLabel(CFType value, String label, @MachineSizedSInt long index) {
         IntPtr ptr = new IntPtr();
-        insertValueAndLabel(value, label, index, ptr);
+        insertValueAndLabel(value, new CFString(label), index, ptr);
         return ptr.get();
+    }
+    public boolean replaceLabel(String label, @MachineSizedSInt long index) {
+        return replaceLabel(new CFString(label), index);
     }
     /*<methods>*/
     @Bridge(symbol="ABMultiValueCreateMutable", optional=true)
@@ -73,14 +76,14 @@ import org.robovm.apple.corefoundation.*;
     @Bridge(symbol="ABMultiValueCreateMutableCopy", optional=true)
     public static native ABMutableMultiValue create(ABMultiValue multiValue);
     @Bridge(symbol="ABMultiValueAddValueAndLabel", optional=true)
-    protected native boolean addValueAndLabel(CFType value, String label, IntPtr outIdentifier);
+    protected native boolean addValueAndLabel(CFType value, CFString label, IntPtr outIdentifier);
     @Bridge(symbol="ABMultiValueInsertValueAndLabelAtIndex", optional=true)
-    protected native boolean insertValueAndLabel(CFType value, String label, @MachineSizedSInt long index, IntPtr outIdentifier);
+    protected native boolean insertValueAndLabel(CFType value, CFString label, @MachineSizedSInt long index, IntPtr outIdentifier);
     @Bridge(symbol="ABMultiValueRemoveValueAndLabelAtIndex", optional=true)
     public native boolean removeValueAndLabel(@MachineSizedSInt long index);
     @Bridge(symbol="ABMultiValueReplaceValueAtIndex", optional=true)
     public native boolean replaceValue(CFType value, @MachineSizedSInt long index);
     @Bridge(symbol="ABMultiValueReplaceLabelAtIndex", optional=true)
-    public native boolean replaceLabel(String label, @MachineSizedSInt long index);
+    protected native boolean replaceLabel(CFString label, @MachineSizedSInt long index);
     /*</methods>*/
 }

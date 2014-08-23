@@ -22,6 +22,7 @@ enums:
         
 categories:
     NSValueMapKitGeometryExtensions: # DONE
+        visibility: 'final'
         methods:
             '-MKCoordinateValue':
                 name: getCoordinateValue

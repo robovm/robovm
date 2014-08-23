@@ -44,20 +44,47 @@ import org.robovm.apple.corefoundation.*;
     /*<constructors>*//*</constructors>*/
     /*<properties>*//*</properties>*/
     /*<members>*//*</members>*/
-    public boolean setValue(int property, CFType value) {
-        return setValue(property, value, null);
+    public CFType getValue(ABProperty property) {
+        return getValue(property.value());
+    }
+    public boolean setValue(ABProperty property, CFType value) {
+        return setValue(property.value(), value, null);
+    }
+    public boolean removeValue(ABProperty property) {
+        return removeValue(property.value(), null);
     }
     
-    public boolean removeValue(int property) {
-        return removeValue(property, null);
+    /**
+     * Use this in order to get a toll-free bridged Cocoa Foundation object.
+     * Use this method only for properties whose type is toll-free bridged!
+     * @param property
+     * @return a toll-free bridged Cocoa Foundation object.
+     */
+    public NSObject getNSValue(ABProperty property) {
+        return getNSValue(property.value());
     }
+    /**
+     * Set a toll-free bridged Cocoa Foundation object.
+     * Use this method only for properties whose type is toll-free bridged!
+     * @param property
+     * @param value
+     * @return
+     */
+    public boolean setNSValue(ABProperty property, NSObject value) {
+        return setNSValue(property.value(), value, null);
+    }
+    
+    @Bridge(symbol="ABRecordCopyValue", optional=true)
+    protected native NSObject getNSValue(int property);
+    @Bridge(symbol="ABRecordSetValue", optional=true)
+    protected native boolean setNSValue(int property, NSObject value, NSError.NSErrorPtr error);
     /*<methods>*/
     @Bridge(symbol="ABRecordGetRecordID", optional=true)
     public native int getRecordID();
     @Bridge(symbol="ABRecordGetRecordType", optional=true)
     public native ABRecordType getRecordType();
     @Bridge(symbol="ABRecordCopyValue", optional=true)
-    public native CFType getValue(int property);
+    protected native CFType getValue(int property);
     @Bridge(symbol="ABRecordSetValue", optional=true)
     protected native boolean setValue(int property, CFType value, NSError.NSErrorPtr error);
     @Bridge(symbol="ABRecordRemoveValue", optional=true)

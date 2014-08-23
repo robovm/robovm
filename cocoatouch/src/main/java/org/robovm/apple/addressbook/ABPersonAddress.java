@@ -18,6 +18,7 @@ package org.robovm.apple.addressbook;
 import java.io.*;
 import java.nio.*;
 import java.util.*;
+
 import org.robovm.objc.*;
 import org.robovm.objc.annotation.*;
 import org.robovm.objc.block.*;
@@ -32,12 +33,75 @@ import org.robovm.apple.corefoundation.*;
 public class ABPersonAddress {
     static { Bro.bind(ABPersonAddress.class); }
     
-    private NSDictionary<?, ?> data;
+    private NSDictionary<NSString, NSString> data;
+    private CFString label;
     
-    public ABPersonAddress() {
+    public ABPersonAddress(String label) {
+        this.label = new CFString(label);
     }
     
-    protected ABPersonAddress(NSDictionary<?, ?> data) {
+    public ABPersonAddress(ABPropertyLabel label) {
+        this.label = label.value();
+    }
+    
+    protected ABPersonAddress(NSDictionary<NSString, NSString> data, CFString label) {
         this.data = data;
+        this.label = label;
+    }
+    
+    public String getAddressPart(ABPersonAddressPart part) {
+        NSString str = data.get(part.value());
+        return str.toString();
+    }
+    public void setAddressPart(ABPersonAddressPart part, String s) {
+        data.put(part.value(), new NSString(s));
+    }
+    
+    public String getLabel() {
+        return label.toString();
+    }
+    public CFString getLabel0() {
+        return label;
+    }
+    
+    public NSDictionary<NSString, NSString> getDictionary() {
+        return data;
+    }
+    
+    public String getStreet() {
+        return getAddressPart(ABPersonAddressPart.Street);
+    }
+    public void setStreet(String s) {
+        setAddressPart(ABPersonAddressPart.Street, s);
+    }
+    public String getCity() {
+        return getAddressPart(ABPersonAddressPart.City);
+    }
+    public void setCity(String s) {
+        setAddressPart(ABPersonAddressPart.City, s);
+    }
+    public String getState() {
+        return getAddressPart(ABPersonAddressPart.State);
+    }
+    public void setState(String s) {
+        setAddressPart(ABPersonAddressPart.State, s);
+    }
+    public String getZIP() {
+        return getAddressPart(ABPersonAddressPart.ZIP);
+    }
+    public void setZIP(String s) {
+        setAddressPart(ABPersonAddressPart.ZIP, s);
+    }
+    public String getCountry() {
+        return getAddressPart(ABPersonAddressPart.Country);
+    }
+    public void setCountry(String s) {
+        setAddressPart(ABPersonAddressPart.Country, s);
+    }
+    public String getCountryCode() {
+        return getAddressPart(ABPersonAddressPart.CountryCode);
+    }
+    public void setCountryCode(String s) {
+        setAddressPart(ABPersonAddressPart.CountryCode, s);
     }
 }

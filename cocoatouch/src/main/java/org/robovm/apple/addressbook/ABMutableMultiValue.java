@@ -70,6 +70,16 @@ import org.robovm.apple.corefoundation.*;
     public boolean replaceLabel(String label, @MachineSizedSInt long index) {
         return replaceLabel(new CFString(label), index);
     }
+    
+    /**
+     * Add a toll-free bridges Cocoa Foundation object and a label.
+     * @param value
+     * @param label
+     * @param outIdentifier
+     * @return
+     */
+    @Bridge(symbol="ABMultiValueAddValueAndLabel", optional=true)
+    protected native boolean addNSValueAndLabel(NSObject value, CFString label, IntPtr outIdentifier);
     /*<methods>*/
     @Bridge(symbol="ABMultiValueCreateMutable", optional=true)
     public static native ABMutableMultiValue create(ABPropertyType type);

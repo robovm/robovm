@@ -42,32 +42,32 @@ import org.robovm.apple.corefoundation.*;
     /*<bind>*/static { Bro.bind(ABPersonAddressPart.class); }/*</bind>*/
     /*<constants>*//*</constants>*/
     public static final ABPersonAddressPart Street = new ABPersonAddressPart() {
-        public CFString value() {
+        public NSString value() {
             return StreetValue();
         }
     };
     public static final ABPersonAddressPart City = new ABPersonAddressPart() {
-        public CFString value() {
+        public NSString value() {
             return CityValue();
         }
     };
     public static final ABPersonAddressPart State = new ABPersonAddressPart() {
-        public CFString value() {
+        public NSString value() {
             return StateValue();
         }
     };
     public static final ABPersonAddressPart ZIP = new ABPersonAddressPart() {
-        public CFString value() {
+        public NSString value() {
             return ZIPValue();
         }
     };
     public static final ABPersonAddressPart Country = new ABPersonAddressPart() {
-        public CFString value() {
+        public NSString value() {
             return CountryValue();
         }
     };
     public static final ABPersonAddressPart CountryCode = new ABPersonAddressPart() {
-        public CFString value() {
+        public NSString value() {
             return CountryCodeValue();
         }
     };
@@ -78,7 +78,7 @@ import org.robovm.apple.corefoundation.*;
     /*<constructors>*//*</constructors>*/
     /*<properties>*//*</properties>*/
     /*<members>*//*</members>*/
-    public CFString value() {
+    public NSString value() {
         return null;
     }
     

@@ -19,6 +19,7 @@ package org.robovm.apple.addressbook;
 import java.io.*;
 import java.nio.*;
 import java.util.*;
+
 import org.robovm.objc.*;
 import org.robovm.objc.annotation.*;
 import org.robovm.objc.block.*;
@@ -174,19 +175,67 @@ import org.robovm.apple.corefoundation.*;
     public void setModificationDate(NSDate modificationDate) {
         setNSValue(ABPersonProperty.ModificationDate, modificationDate);
     }
+    @SuppressWarnings("unchecked")
     public List<ABPersonAddress> getAddresses() {
         ABMultiValue val = (ABMultiValue)getValue(ABPersonProperty.Address);
         List<ABPersonAddress> list = new ArrayList<ABPersonAddress>();
         long size = val.getCount();
         for (int i = 0; i < size; i++) {
-            NSDictionary<?, ?> address = (NSDictionary<?, ?>)val.getNSValue(i);
-            list.add(new ABPersonAddress(address));
+            NSDictionary<NSString, NSString> address = (NSDictionary<NSString, NSString>)val.getNSValue(i);
+            CFString label = val.getLabel(i);
+            list.add(new ABPersonAddress(address, label));
         }
         return list;
     }
     public void setAddresses(List<ABPersonAddress> addresses) {
-        
+        ABMutableMultiValue val = ABMutableMultiValue.create(ABPropertyType.MultiDictionary);
+        for (ABPersonAddress address : addresses) {
+            val.addNSValueAndLabel(address.getDictionary(), address.getLabel0(), null);
+        }
+        setValue(ABPersonProperty.Address, val);
     }
+//    public List<ABPersonDate> getDates() { TODO
+//        
+//    } 
+//    public void setDates(List<ABPersonDate> dates) {
+//        
+//    }
+//    public ABPersonKind getKind() {
+//        
+//    }
+//    public void setKind(ABPersonKind kind) {
+//        
+//    }
+//    public List<ABPersonPhoneNumber> getPhoneNumbers() {
+//        
+//    }
+//    public void setPhoneNumbers(List<ABPersonPhoneNumber> phoneNumbers) {
+//        
+//    }
+//    public List<ABPersonInstantMessagingAccount> getInstantMessagingAccounts() {
+//        
+//    }
+//    public void setInstantMessagingAccounts(List<ABPersonInstantMessagingAccount> instantMessagingAccounts) {
+//        
+//    }
+//    public List<ABPersonSocialProfile> getSocialProfiles() {
+//        
+//    }
+//    public void setSocialProfiles(List<ABPersonSocialProfile> socialProfiles) {
+//        
+//    }
+//    public List<ABPersonURL> getURLs() {
+//        
+//    }
+//    public void setURLs(List<ABPersonURL> urls) {
+//        
+//    }
+//    public List<ABPersonRelatedName> getRelatedNames() {
+//        
+//    }
+//    public void setRelatedNames(List<ABPersonRelatedName> relatedNames) {
+//        
+//    }
     
     public boolean setImageData(NSData imageData) {
         return setImageData(imageData, null);

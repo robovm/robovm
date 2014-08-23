@@ -55,7 +55,11 @@ import org.robovm.apple.foundation.*;
         return getAccountType(typeIdentifier.value());
     }
     public void requestAccessToAccounts(ACAccountType accountType, ACAccountOptions options, @Block VoidBlock2<Boolean, NSError> completion) {
-        requestAccessToAccounts(accountType, options.data, completion);
+        if (options == null) {
+            requestAccessToAccounts(accountType, null, completion);
+        } else {
+            requestAccessToAccounts(accountType, options.data, completion);
+        }
     }
     /*<methods>*/
     @Method(selector = "accountWithIdentifier:")

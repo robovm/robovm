@@ -45,7 +45,11 @@ public abstract class NativeObject {
      * @return a {@link NativeObject} that points to the same memory 
      *         location as this {@link NativeObject}.
      */
+    @SuppressWarnings("unchecked")
     public <U extends NativeObject> U as(Class<U> type) {
+        if (getClass() == type || type.isAssignableFrom(getClass())) {
+            return (U) this;
+        }
         return MarshalerLookup.toObject(type, handle);
     }
 

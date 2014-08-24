@@ -62,15 +62,14 @@ public abstract class Struct<T extends Struct<T>> extends NativeObject implement
         return o;
     }
 
-    /**
-     * Casts this {@link Struct} to another {@link Struct} type.
-     * 
-     * @param type the type to cast to.
-     * @return a {@link Struct} that points to the same memory 
-     *         location as this {@link Struct}.
-     */
-    public <U extends Struct<U>> U as(Class<U> type) {
-        return Struct.toStruct(type, getHandle());
+    @SuppressWarnings("unchecked")
+    public <U extends NativeObject> U as(Class<U> type) {
+        if (Struct.class.isAssignableFrom(type)) {
+            @SuppressWarnings("rawtypes")
+            Class c = type;
+            return (U) Struct.toStruct(c, getHandle());
+        }
+        return super.as(type);
     }
     
     protected int _sizeOf() {

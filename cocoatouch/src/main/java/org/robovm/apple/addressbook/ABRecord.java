@@ -80,7 +80,9 @@ import org.robovm.apple.corefoundation.*;
         }
     }
 
-    /*<constants>*//*</constants>*/
+    /*<constants>*/
+    public static final int InvalidID = -1;
+    /*</constants>*/
     /*<constructors>*//*</constructors>*/
     /*<properties>*//*</properties>*/
     /*<members>*//*</members>*/

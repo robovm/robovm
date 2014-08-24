@@ -19,6 +19,7 @@ package org.robovm.apple.addressbook;
 import java.io.*;
 import java.nio.*;
 import java.util.*;
+
 import org.robovm.objc.*;
 import org.robovm.objc.annotation.*;
 import org.robovm.objc.block.*;
@@ -44,6 +45,21 @@ import org.robovm.apple.corefoundation.*;
     /*<constructors>*//*</constructors>*/
     /*<properties>*//*</properties>*/
     /*<members>*//*</members>*/
+    public String getName() {
+        CFString val = (CFString)getValue(ABSourceProperty.Name);
+        if (val != null) return val.toString();
+        return null;
+    }
+    public void setName(String name) {
+        setValue(ABSourceProperty.Name, new CFString(name));
+    }
+    public ABSourceType getType() {
+        NSNumber val = (NSNumber)getNSValue(ABSourceProperty.Type);
+        return ABSourceType.valueOf(val.intValue());
+    }
+    public void setType(ABSourceType type) {
+        setNSValue(ABSourceProperty.Type, NSNumber.valueOf((int)type.value()));
+    }
     /*<methods>*/
     /*</methods>*/
 }

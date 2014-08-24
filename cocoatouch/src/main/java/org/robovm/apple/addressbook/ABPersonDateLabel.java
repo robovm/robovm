@@ -33,19 +33,27 @@ import org.robovm.apple.corefoundation.*;
 /*<javadoc>*/
 /*</javadoc>*/
 /*<annotations>*/@Library("AddressBook")/*</annotations>*/
-/*<visibility>*/public/*</visibility>*/ class /*<name>*/AddressBook/*</name>*/ 
-    extends /*<extends>*/Object/*</extends>*/ 
+/*<visibility>*/public/*</visibility>*/ class /*<name>*/ABPersonDateLabel/*</name>*/ 
+    extends /*<extends>*/ABPropertyLabel/*</extends>*/ 
     /*<implements>*//*</implements>*/ {
 
     /*<ptr>*/
     /*</ptr>*/
-    /*<bind>*/static { Bro.bind(AddressBook.class); }/*</bind>*/
+    /*<bind>*/static { Bro.bind(ABPersonDateLabel.class); }/*</bind>*/
     /*<constants>*//*</constants>*/
+    public static final ABPersonDateLabel Anniversary = new ABPersonDateLabel() {
+        public CFString value() {
+            return AnniversaryLabel();
+        }
+    };
+    private ABPersonDateLabel() {
+        values = new ABPropertyLabel[] {Work, Home, Other, Anniversary};
+    }
     /*<constructors>*//*</constructors>*/
     /*<properties>*//*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
-    @GlobalValue(symbol="ABAddressBookErrorDomain", optional=true)
-    public static native String ABAddressBookErrorDomain();
+    @GlobalValue(symbol="kABPersonAnniversaryLabel", optional=true)
+    protected static native CFString AnniversaryLabel();
     /*</methods>*/
 }

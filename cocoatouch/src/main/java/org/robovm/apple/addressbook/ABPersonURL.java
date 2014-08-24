@@ -15,7 +15,6 @@
  */
 package org.robovm.apple.addressbook;
 
-/*<imports>*/
 import java.io.*;
 import java.nio.*;
 import java.util.*;
@@ -28,24 +27,40 @@ import org.robovm.rt.bro.annotation.*;
 import org.robovm.rt.bro.ptr.*;
 import org.robovm.apple.foundation.*;
 import org.robovm.apple.corefoundation.*;
-/*</imports>*/
 
-/*<javadoc>*/
-/*</javadoc>*/
-/*<annotations>*/@Library("AddressBook")/*</annotations>*/
-/*<visibility>*/public/*</visibility>*/ class /*<name>*/AddressBook/*</name>*/ 
-    extends /*<extends>*/Object/*</extends>*/ 
-    /*<implements>*//*</implements>*/ {
-
-    /*<ptr>*/
-    /*</ptr>*/
-    /*<bind>*/static { Bro.bind(AddressBook.class); }/*</bind>*/
-    /*<constants>*//*</constants>*/
-    /*<constructors>*//*</constructors>*/
-    /*<properties>*//*</properties>*/
-    /*<members>*//*</members>*/
-    /*<methods>*/
-    @GlobalValue(symbol="ABAddressBookErrorDomain", optional=true)
-    public static native String ABAddressBookErrorDomain();
-    /*</methods>*/
+@Library("AddressBook")
+public class ABPersonURL {
+    static { Bro.bind(ABPersonURL.class); }
+    
+    private CFString url;
+    private CFString label;
+    
+    public ABPersonURL(String url, String label) {
+        this.url = new CFString(url);
+        this.label = new CFString(label);
+    }
+    
+    public ABPersonURL(String url, ABPersonURLLabel label) {
+        this.url = new CFString(url);
+        this.label = label.value();
+    }
+    
+    protected ABPersonURL(CFString url, CFString label) {
+        this.url = url;
+        this.label = label;
+    }
+    
+    public String getURL() {
+        return url.toString();
+    }
+    public CFString getURL0() {
+        return url;
+    }
+    
+    public String getLabel() {
+        return label.toString();
+    }
+    protected CFString getLabel0() {
+        return label;
+    }
 }

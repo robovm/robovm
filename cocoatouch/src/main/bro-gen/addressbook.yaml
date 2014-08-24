@@ -60,6 +60,12 @@ classes:
     ABPropertyLabel: {}
     ABPersonPhoneLabel:
         extends: ABPropertyLabel
+    ABPersonDateLabel:
+        extends: ABPropertyLabel
+    ABPersonURLLabel:
+        extends: ABPropertyLabel
+    ABPersonRelatedNameLabel:
+        extends: ABPropertyLabel
 
 functions:
     # ABAddressBook
@@ -349,10 +355,6 @@ functions:
         name: "Function__#{g[0]}"
 
 values:
-    ABAddressBook(ErrorDomain):
-        class: AddressBook
-        name: "ABAddressBook#{g[0]}"
-
     # Properties
     kABPerson(.*)Property:
         class: ABPersonProperty
@@ -365,6 +367,39 @@ values:
         class: ABSourceProperty
         name: "#{g[0]}Value"
 
+    # Keys
+    kABPersonAddress(.*)Key:
+        class: ABPersonAddressPart
+        name: "#{g[0]}Value"
+        visibility: protected
+        type: NSString
+    kABPersonInstantMessage(.*Key):
+        class: ABPersonInstantMessageAccount
+        name: "#{g[0]}"
+        visibility: protected
+        type: NSString
+    kABPersonSocialProfile(.*Key):
+        class: ABPersonSocialProfile
+        name: "#{g[0]}"
+        visibility: protected
+        type: NSString
+    
+    kABPersonKind(.*):
+        class: ABPersonKind
+        name: "#{g[0]}Value"
+        visibility: protected
+        type: NSNumber    
+    kABPersonInstantMessageService(.*):
+        class: ABPersonInstantMessageService
+        name: "#{g[0]}Value"
+        visibility: protected
+        type: NSString
+    kABPersonSocialProfileService(.*):
+        class: ABPersonSocialProfileService
+        name: "#{g[0]}Value"
+        visibility: protected
+        type: NSString
+    
     # Labels
     # Generic labels
     kAB(WorkLabel):
@@ -388,28 +423,26 @@ values:
         name: "#{g[0]}"
         visibility: protected
         type: CFString
-    kAB(.*)Label:
-        class: AddressBook
-        name: "AB#{g[0]}Label"
-
-    kABPersonAddress(.*)Key:
-        class: ABPersonAddressPart
-        name: "#{g[0]}Value"
+    kABPerson(AnniversaryLabel):
+        class: ABPersonDateLabel
+        name: "#{g[0]}"
         visibility: protected
-        type: NSString
-    
-    kABPerson(.*)Key:
+        type: CFString
+    kABPerson(HomePageLabel):
+        class: ABPersonURLLabel
+        name: "#{g[0]}"
+        visibility: protected
+        type: CFString
+    kABPerson(.*Label):
+        class: ABPersonRelatedNameLabel
+        name: "#{g[0]}"
+        visibility: protected
+        type: CFString
+
+    ABAddressBook(ErrorDomain):
         class: AddressBook
-        name: "ABPerson#{g[0]}Key"
-    kABPersonKind(.*):
-        class: AddressBook
-        name: "ABPersonKind#{g[0]}"
-    kABPersonInstantMessageService(.*):
-        class: AddressBook
-        name: "ABPersonInstantMessageService#{g[0]}"
-    kABPersonSocialProfileService(.*):
-        class: AddressBook
-        name: "ABPersonSocialProfileService#{g[0]}"
+        name: "ABAddressBook#{g[0]}"
+
 
     # Make sure we don't miss any values if new ones are introduced in a later version
     (AB.*):
@@ -420,18 +453,17 @@ values:
         name: "Value__#{g[0]}"
 
 constants:
-    kABRecord(.*):
-        class: AddressBook
-        name: "ABRecord#{g[0]}"
-    kABProperty(.*):
-        class: AddressBook
-        name: "ABProperty#{g[0]}"
-    kABSource(.*):
-        class: AddressBook
-        name: "ABSource#{g[0]}"
+    kABRecord(InvalidID):
+        class: ABRecord
+        name: "#{g[0]}"
+    kABProperty(InvalidID):
+        class: ABProperty
+        name: "#{g[0]}"
+    kABSourceTypeSearchableMask:
+        exclude: true
     kABMultiValue(.*):
-        class: AddressBook
-        name: "ABMultiValue#{g[0]}"
+        class: ABMultiValue
+        name: "#{g[0]}"
 
     # Make sure we don't miss any constants if new ones are introduced in a later version
     (AB.*):

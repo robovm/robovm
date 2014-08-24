@@ -32,6 +32,7 @@ import org.robovm.apple.corefoundation.*;
 
 /*<javadoc>*/
 /*</javadoc>*/
+@Marshaler(ABRecord.Marshaler.class)
 /*<annotations>*/@Library("AddressBook")/*</annotations>*/
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/ABRecord/*</name>*/ 
     extends /*<extends>*/CFType/*</extends>*/ 
@@ -40,10 +41,53 @@ import org.robovm.apple.corefoundation.*;
     /*<ptr>*/
     /*</ptr>*/
     /*<bind>*/static { Bro.bind(ABRecord.class); }/*</bind>*/
+
+    public static class Marshaler {
+        @MarshalsPointer
+        public static ABRecord toObject(Class<? extends ABRecord> cls, long handle, long flags) {
+            return toObject(cls, handle, flags, true);
+        }
+        static ABRecord toObject(Class<? extends ABRecord> cls, long handle, long flags, boolean retain) {
+            if (handle == 0) {
+                return null;
+            }
+            int recordType = getRecordType(handle);
+            Class<? extends ABRecord> subcls = null;
+            switch (recordType) {
+            case 0: // kABPersonType
+                subcls = ABPerson.class;
+                break;
+            case 1: // kABGroupType
+                subcls = ABGroup.class;
+                break;
+            case 2: // kABSourceType
+                subcls = ABSource.class;
+                break;
+            default:
+                throw new Error("Unrecognized record type " + recordType);
+            }
+            ABRecord o = (ABRecord) NativeObject.Marshaler.toObject(subcls, handle, flags);
+            if (retain) {
+                retain(handle);
+            }
+            return o;
+        }
+    }
+    public static class NoRetainMarshaler {
+        @MarshalsPointer
+        public static ABRecord toObject(Class<? extends ABRecord> cls, long handle, long flags) {
+            return Marshaler.toObject(cls, handle, flags, false);
+        }
+    }
+
     /*<constants>*//*</constants>*/
     /*<constructors>*//*</constructors>*/
     /*<properties>*//*</properties>*/
     /*<members>*//*</members>*/
+
+    @Bridge(symbol="ABRecordGetRecordType", optional=true)
+    static native int getRecordType(@Pointer long handle);
+
     public CFType getValue(ABProperty property) {
         return getValue(property.value());
     }

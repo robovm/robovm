@@ -19,16 +19,21 @@ classes:
     ABPeoplePickerNavigationController: # DONE
         properties:
             'displayedProperties':
+                name: displayedProperties0
                 type: "NSArray<NSNumber>"
+                visibility: protected
     ABPersonViewController: # DONE
         properties:
             'displayedPerson':
                 type: "ABPerson"
             'displayedProperties':
+                name: displayedProperties0
                 type: "NSArray<NSNumber>"
+                visibility: protected
         methods:
             '-setHighlightedItemForProperty:withIdentifier:':
                 name: "setHighlightedItem"
+                visibility: protected
     ABUnknownPersonViewController: # DONE
         properties:
             'displayedPerson':
@@ -47,12 +52,12 @@ protocols:
             '-peoplePickerNavigationControllerDidCancel:':
                 name: "didCancel"
             '-peoplePickerNavigationController:shouldContinueAfterSelectingPerson:':
-                name: "shouldContinue"
+                name: "shouldContinueAfterSelectingPerson"
                 parameters:
                     person:
                         type: "ABPerson"
             '-peoplePickerNavigationController:shouldContinueAfterSelectingPerson:property:identifier:':
-                name: "shouldContinue"
+                name: "shouldContinueAfterSelectingPerson"
                 parameters:
                     person:
                         type: "ABPerson"

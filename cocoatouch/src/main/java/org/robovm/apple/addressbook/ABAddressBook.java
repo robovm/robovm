@@ -175,12 +175,12 @@ import org.robovm.apple.corefoundation.*;
      * @since Available in iOS 4.0 and later.
      */
     @Bridge(symbol="ABAddressBookCopyArrayOfAllPeopleInSource", optional=true)
-    public native NSArray<?> getAllPeople(ABRecord source);
+    public native NSArray<?> getAllPeopleInSource(ABSource source);
     /**
      * @since Available in iOS 4.0 and later.
      */
     @Bridge(symbol="ABAddressBookCopyArrayOfAllPeopleInSourceWithSortOrdering", optional=true)
-    public native NSArray<?> getAllPeople(ABRecord source, ABPersonSortOrdering sortOrdering);
+    public native NSArray<?> getAllPeopleInSource(ABSource source, ABPersonSortOrdering sortOrdering);
     @Bridge(symbol="ABAddressBookCopyPeopleWithName", optional=true)
     public native NSArray<?> getPeople(String name);
     @Bridge(symbol="ABAddressBookGetGroupWithRecordID", optional=true)
@@ -193,6 +193,6 @@ import org.robovm.apple.corefoundation.*;
      * @since Available in iOS 4.0 and later.
      */
     @Bridge(symbol="ABAddressBookCopyArrayOfAllGroupsInSource", optional=true)
-    public native NSArray<?> getAllGroups(ABRecord source);
+    public native NSArray<?> getAllGroupsInSource(ABSource source);
     /*</methods>*/
 }

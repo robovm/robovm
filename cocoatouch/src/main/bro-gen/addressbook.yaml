@@ -112,10 +112,17 @@ functions:
         class: ABAddressBook
         name: "get#{g[0]}"
         return_type: "NSArray<?>" # ABSource
-    ABAddressBookCopyArrayOf(AllPeople).*:
+    ABAddressBookCopyArrayOf(AllPeople):
         class: ABAddressBook
         name: "get#{g[0]}"
         return_type: "NSArray<?>" # ABPerson
+    ABAddressBookCopyArrayOf(AllPeopleInSource).*:
+        class: ABAddressBook
+        name: "get#{g[0]}"
+        return_type: "NSArray<?>" # ABPerson
+        parameters:
+            source:
+                type: ABSource
     ABAddressBookCopy(People)WithName:
         class: ABAddressBook
         name: "get#{g[0]}"
@@ -124,10 +131,17 @@ functions:
         class: ABAddressBook
         name: "#{g[0]}"
         return_type: ABGroup
-    ABAddressBookCopyArrayOf(AllGroups).*:
+    ABAddressBookCopyArrayOf(AllGroups):
         class: ABAddressBook
         name: "get#{g[0]}"
         return_type: "NSArray<?>" # ABGroup
+    ABAddressBookCopyArrayOf(AllGroupsInSource).*:
+        class: ABAddressBook
+        name: "get#{g[0]}"
+        return_type: "NSArray<?>" # ABGroup
+        parameters:
+            source:
+                type: ABSource
     ABAddressBook(.*):
         class: ABAddressBook
         name: "#{g[0]}"
@@ -251,6 +265,10 @@ functions:
         name: "#{g[0]}"
 
     # ABPerson
+    ABPerson(Create):
+        class: ABPerson
+        name: "#{g[0]}"
+        return_type: ABPerson
     ABPerson(Create)InSource:
         class: ABPerson
         name: "#{g[0]}"
@@ -261,6 +279,7 @@ functions:
     ABPersonCopy(Source):
         class: ABPerson
         name: "get#{g[0]}"
+        return_type: ABSource
         parameters:
             person:
                 type: ABPerson

@@ -48,6 +48,25 @@ import org.robovm.apple.addressbook.*;
     public ABPersonViewController() {}
     protected ABPersonViewController(SkipInit skipInit) { super(skipInit); }
     /*</constructors>*/
+    public List<ABPersonProperty> getDisplayedProperties() {
+        NSArray<NSNumber> p = getDisplayedProperties0();
+        List<ABPersonProperty> properties = new ArrayList<>();
+        if (p == null) return properties;
+        for (NSNumber property : p) {
+            properties.add(ABPersonProperty.valueOf(property.intValue()));
+        }
+        return properties;
+    }
+    public void setDisplayedProperties(ABPersonProperty...properties) {
+        setDisplayedProperties(Arrays.asList(properties));
+    }
+    public void setDisplayedProperties(List<ABPersonProperty> properties) {
+        NSMutableArray<NSNumber> p = new NSMutableArray<>();
+        for (ABPersonProperty property : properties) {
+            p.add(NSNumber.valueOf(property.value()));
+        }
+        setDisplayedProperties0(p);
+    }
     /*<properties>*/
     @Property(selector = "personViewDelegate")
     public native ABPersonViewControllerDelegate getPersonViewDelegate();
@@ -62,9 +81,9 @@ import org.robovm.apple.addressbook.*;
     @Property(selector = "setDisplayedPerson:")
     public native void setDisplayedPerson(ABPerson v);
     @Property(selector = "displayedProperties")
-    public native NSArray<NSNumber> getDisplayedProperties();
+    protected native NSArray<NSNumber> getDisplayedProperties0();
     @Property(selector = "setDisplayedProperties:")
-    public native void setDisplayedProperties(NSArray<NSNumber> v);
+    protected native void setDisplayedProperties0(NSArray<NSNumber> v);
     @Property(selector = "allowsEditing")
     public native boolean isAllowsEditing();
     @Property(selector = "setAllowsEditing:")
@@ -91,8 +110,11 @@ import org.robovm.apple.addressbook.*;
     public native void setShouldShowLinkedPeople(boolean v);
     /*</properties>*/
     /*<members>*//*</members>*/
+    public void setHighlightedItem(ABPersonProperty property, int identifier) {
+        setHighlightedItem(property.value(), identifier);
+    }
     /*<methods>*/
     @Method(selector = "setHighlightedItemForProperty:withIdentifier:")
-    public native void setHighlightedItem(int property, int identifier);
+    protected native void setHighlightedItem(int property, int identifier);
     /*</methods>*/
 }

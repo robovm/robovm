@@ -50,9 +50,9 @@ import org.robovm.apple.addressbook.*;
     @Method(selector = "peoplePickerNavigationControllerDidCancel:")
     void didCancel(ABPeoplePickerNavigationController peoplePicker);
     @Method(selector = "peoplePickerNavigationController:shouldContinueAfterSelectingPerson:")
-    boolean shouldContinue(ABPeoplePickerNavigationController peoplePicker, ABPerson person);
+    boolean shouldContinueAfterSelectingPerson(ABPeoplePickerNavigationController peoplePicker, ABPerson person);
     @Method(selector = "peoplePickerNavigationController:shouldContinueAfterSelectingPerson:property:identifier:")
-    boolean shouldContinue(ABPeoplePickerNavigationController peoplePicker, ABPerson person, int property, int identifier);
+    boolean shouldContinueAfterSelectingPerson(ABPeoplePickerNavigationController peoplePicker, ABPerson person, int property, int identifier);
     /*</methods>*/
     /*<adapter>*/
     /*</adapter>*/

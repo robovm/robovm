@@ -48,15 +48,34 @@ import org.robovm.apple.addressbook.*;
     public ABPeoplePickerNavigationController() {}
     protected ABPeoplePickerNavigationController(SkipInit skipInit) { super(skipInit); }
     /*</constructors>*/
+    public List<ABPersonProperty> getDisplayedProperties() {
+        NSArray<NSNumber> p = getDisplayedProperties0();
+        List<ABPersonProperty> properties = new ArrayList<>();
+        if (p == null) return properties;
+        for (NSNumber property : p) {
+            properties.add(ABPersonProperty.valueOf(property.intValue()));
+        }
+        return properties;
+    }
+    public void setDisplayedProperties(ABPersonProperty...properties) {
+        setDisplayedProperties(Arrays.asList(properties));
+    }
+    public void setDisplayedProperties(List<ABPersonProperty> properties) {
+        NSMutableArray<NSNumber> p = new NSMutableArray<>();
+        for (ABPersonProperty property : properties) {
+            p.add(NSNumber.valueOf(property.value()));
+        }
+        setDisplayedProperties0(p);
+    }
     /*<properties>*/
     @Property(selector = "peoplePickerDelegate")
     public native ABPeoplePickerNavigationControllerDelegate getPeoplePickerDelegate();
     @Property(selector = "setPeoplePickerDelegate:", strongRef = true)
     public native void setPeoplePickerDelegate(ABPeoplePickerNavigationControllerDelegate v);
     @Property(selector = "displayedProperties")
-    public native NSArray<NSNumber> getDisplayedProperties();
+    protected native NSArray<NSNumber> getDisplayedProperties0();
     @Property(selector = "setDisplayedProperties:")
-    public native void setDisplayedProperties(NSArray<NSNumber> v);
+    protected native void setDisplayedProperties0(NSArray<NSNumber> v);
     @Property(selector = "addressBook")
     public native ABAddressBook getAddressBook();
     @Property(selector = "setAddressBook:")

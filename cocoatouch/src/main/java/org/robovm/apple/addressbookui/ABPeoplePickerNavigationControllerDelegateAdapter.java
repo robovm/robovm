@@ -52,8 +52,8 @@ import org.robovm.apple.addressbook.*;
     @NotImplemented("peoplePickerNavigationControllerDidCancel:")
     public void didCancel(ABPeoplePickerNavigationController peoplePicker) { throw new UnsupportedOperationException(); }
     @NotImplemented("peoplePickerNavigationController:shouldContinueAfterSelectingPerson:")
-    public boolean shouldContinue(ABPeoplePickerNavigationController peoplePicker, ABPerson person) { throw new UnsupportedOperationException(); }
+    public boolean shouldContinueAfterSelectingPerson(ABPeoplePickerNavigationController peoplePicker, ABPerson person) { throw new UnsupportedOperationException(); }
     @NotImplemented("peoplePickerNavigationController:shouldContinueAfterSelectingPerson:property:identifier:")
-    public boolean shouldContinue(ABPeoplePickerNavigationController peoplePicker, ABPerson person, int property, int identifier) { throw new UnsupportedOperationException(); }
+    public boolean shouldContinueAfterSelectingPerson(ABPeoplePickerNavigationController peoplePicker, ABPerson person, int property, int identifier) { throw new UnsupportedOperationException(); }
     /*</methods>*/
 }

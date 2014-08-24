@@ -403,7 +403,7 @@ import org.robovm.apple.corefoundation.*;
     }
     /*<methods>*/
     @Bridge(symbol="ABPersonCreate", optional=true)
-    public static native ABRecord create();
+    public static native ABPerson create();
     /**
      * @since Available in iOS 4.0 and later.
      */
@@ -413,7 +413,7 @@ import org.robovm.apple.corefoundation.*;
      * @since Available in iOS 4.0 and later.
      */
     @Bridge(symbol="ABPersonCopySource", optional=true)
-    public native ABRecord getSource();
+    public native ABSource getSource();
     /**
      * @since Available in iOS 4.0 and later.
      */

@@ -41,137 +41,38 @@ import org.robovm.apple.corefoundation.*;
     /*</ptr>*/
     /*<bind>*/static { Bro.bind(ABPersonProperty.class); }/*</bind>*/
     /*<constants>*//*</constants>*/
-    public static final ABPersonProperty FirstName = new ABPersonProperty() {
-        public int value() {
-            return FirstNameValue();
-        }
-    };
-    public static final ABPersonProperty LastName = new ABPersonProperty() {
-        public int value() {
-            return LastNameValue();
-        }
-    };
-    public static final ABPersonProperty MiddleName = new ABPersonProperty() {
-        public int value() {
-            return MiddleNameValue();
-        }
-    };
-    public static final ABPersonProperty Prefix = new ABPersonProperty() {
-        public int value() {
-            return PrefixValue();
-        }
-    };
-    public static final ABPersonProperty Suffix = new ABPersonProperty() {
-        public int value() {
-            return SuffixValue();
-        }
-    };
-    public static final ABPersonProperty Nickname = new ABPersonProperty() {
-        public int value() {
-            return NicknameValue();
-        }
-    };
-    public static final ABPersonProperty FirstNamePhonetic = new ABPersonProperty() {
-        public int value() {
-            return FirstNamePhoneticValue();
-        }
-    };
-    public static final ABPersonProperty LastNamePhonetic = new ABPersonProperty() {
-        public int value() {
-            return LastNamePhoneticValue();
-        }
-    };
-    public static final ABPersonProperty MiddleNamePhonetic = new ABPersonProperty() {
-        public int value() {
-            return MiddleNamePhoneticValue();
-        }
-    };
-    public static final ABPersonProperty Organization = new ABPersonProperty() {
-        public int value() {
-            return OrganizationValue();
-        }
-    };
-    public static final ABPersonProperty JobTitle = new ABPersonProperty() {
-        public int value() {
-            return JobTitleValue();
-        }
-    };
-    public static final ABPersonProperty Department = new ABPersonProperty() {
-        public int value() {
-            return DepartmentValue();
-        }
-    };
-    public static final ABPersonProperty Email = new ABPersonProperty() {
-        public int value() {
-            return EmailValue();
-        }
-    };
-    public static final ABPersonProperty Birthday = new ABPersonProperty() {
-        public int value() {
-            return BirthdayValue();
-        }
-    };
-    public static final ABPersonProperty Note = new ABPersonProperty() {
-        public int value() {
-            return NoteValue();
-        }
-    };
-    public static final ABPersonProperty CreationDate = new ABPersonProperty() {
-        public int value() {
-            return CreationDateValue();
-        }
-    };
-    public static final ABPersonProperty ModificationDate = new ABPersonProperty() {
-        public int value() {
-            return ModificationDateValue();
-        }
-    };
-    public static final ABPersonProperty Address = new ABPersonProperty() {
-        public int value() {
-            return AddressValue();
-        }
-    };
-    public static final ABPersonProperty Date = new ABPersonProperty() {
-        public int value() {
-            return DateValue();
-        }
-    };
-    public static final ABPersonProperty Kind = new ABPersonProperty() {
-        public int value() {
-            return KindValue();
-        }
-    };
-    public static final ABPersonProperty Phone = new ABPersonProperty() {
-        public int value() {
-            return PhoneValue();
-        }
-    };
-    public static final ABPersonProperty InstantMessage = new ABPersonProperty() {
-        public int value() {
-            return InstantMessageValue();
-        }
-    };
-    public static final ABPersonProperty URL = new ABPersonProperty() {
-        public int value() {
-            return URLValue();
-        }
-    };
-    public static final ABPersonProperty RelatedNames = new ABPersonProperty() {
-        public int value() {
-            return RelatedNamesValue();
-        }
-    };
+    public static final ABPersonProperty FirstName = new ABPersonProperty("FirstNameValue");
+    public static final ABPersonProperty LastName = new ABPersonProperty("LastNameValue");
+    public static final ABPersonProperty MiddleName = new ABPersonProperty("MiddleNameValue");
+    public static final ABPersonProperty Prefix = new ABPersonProperty("PrefixValue");
+    public static final ABPersonProperty Suffix = new ABPersonProperty("SuffixValue");
+    public static final ABPersonProperty Nickname = new ABPersonProperty("NicknameValue");
+    public static final ABPersonProperty FirstNamePhonetic = new ABPersonProperty("FirstNamePhoneticValue");
+    public static final ABPersonProperty LastNamePhonetic = new ABPersonProperty("LastNamePhoneticValue");
+    public static final ABPersonProperty MiddleNamePhonetic = new ABPersonProperty("MiddleNamePhoneticValue");
+    public static final ABPersonProperty Organization = new ABPersonProperty("OrganizationValue");
+    public static final ABPersonProperty JobTitle = new ABPersonProperty("JobTitleValue");
+    public static final ABPersonProperty Department = new ABPersonProperty("DepartmentValue");
+    public static final ABPersonProperty Email = new ABPersonProperty("DepartmentValue");
+    public static final ABPersonProperty Birthday = new ABPersonProperty("BirthdayValue");
+    public static final ABPersonProperty Note = new ABPersonProperty("NoteValue");
+    public static final ABPersonProperty CreationDate = new ABPersonProperty("CreationDateValue");
+    public static final ABPersonProperty ModificationDate = new ABPersonProperty("ModificationDateValue");
+    public static final ABPersonProperty Address = new ABPersonProperty("AddressValue");
+    public static final ABPersonProperty Date = new ABPersonProperty("DateValue");
+    public static final ABPersonProperty Kind = new ABPersonProperty("KindValue");
+    public static final ABPersonProperty Phone = new ABPersonProperty("PhoneValue");
+    public static final ABPersonProperty InstantMessage = new ABPersonProperty("InstantMessageValue");
+    public static final ABPersonProperty URL = new ABPersonProperty("URLValue");
+    public static final ABPersonProperty RelatedNames = new ABPersonProperty("RelatedNamesValue");
     /**
      * @since Available in iOS 5.0 and later.
      */
-    public static final ABPersonProperty SocialProfile = new ABPersonProperty() {
-        public int value() {
-            return SocialProfileValue();
-        }
-    };
+    public static final ABPersonProperty SocialProfile = new ABPersonProperty("SocialProfileValue");
     private static ABPersonProperty[] values = new ABPersonProperty[] {FirstName, LastName, Prefix, Suffix, Nickname, FirstNamePhonetic, LastNamePhonetic, MiddleNamePhonetic, Organization, JobTitle, Department, Email, Birthday, Note, CreationDate, ModificationDate, Address, Date, Kind, Phone, InstantMessage, URL, RelatedNames, SocialProfile};
-    
-    private ABPersonProperty () {
+
+    private ABPersonProperty(String getterName) {
+        super(getterName);
     }
     /*<constructors>*//*</constructors>*/
     /*<properties>*//*</properties>*/

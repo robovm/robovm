@@ -44,11 +44,18 @@ import org.robovm.apple.corefoundation.*;
     /*<constants>*/
     public static final int InvalidID = -1;
     /*</constants>*/
+    
+    private final LazyGlobalValue<Integer> lazyGlobalValue;
+    
+    protected ABProperty(String getterName) {
+        lazyGlobalValue = new LazyGlobalValue<>(getClass(), getterName);
+    }
+    
     /*<constructors>*//*</constructors>*/
     /*<properties>*//*</properties>*/
     /*<members>*//*</members>*/
     public int value() {
-        return -1;
+        return lazyGlobalValue.value().intValue();
     }
     /*<methods>*//*</methods>*/
 }

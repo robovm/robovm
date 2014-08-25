@@ -382,9 +382,11 @@ values:
     kABGroup(.*)Property:
         class: ABGroupProperty
         name: "#{g[0]}Value"
+        visibility: protected
     kABSource(.*)Property:
         class: ABSourceProperty
         name: "#{g[0]}Value"
+        visibility: protected
 
     # Keys
     kABPersonAddress(.*)Key:

@@ -44,22 +44,15 @@ import org.robovm.apple.corefoundation.*;
     /**
      * @since Available in iOS 4.0 and later.
      */
-    public static final ABSourceProperty Name = new ABSourceProperty() {
-        public int value() {
-            return NameValue();
-        }
-    };
+    public static final ABSourceProperty Name = new ABSourceProperty("NameValue");
     /**
      * @since Available in iOS 4.0 and later.
      */
-    public static final ABSourceProperty Type = new ABSourceProperty() {
-        public int value() {
-            return TypeValue();
-        }
-    };
+    public static final ABSourceProperty Type = new ABSourceProperty("TypeValue");
     private static ABSourceProperty[] values = new ABSourceProperty[] {Name, Type};
     
-    private ABSourceProperty () {
+    private ABSourceProperty (String getterName) {
+        super(getterName);
     }
     /*<constructors>*//*</constructors>*/
     /*<properties>*//*</properties>*/
@@ -78,11 +71,11 @@ import org.robovm.apple.corefoundation.*;
      * @since Available in iOS 4.0 and later.
      */
     @GlobalValue(symbol="kABSourceNameProperty", optional=true)
-    public static native int NameValue();
+    protected static native int NameValue();
     /**
      * @since Available in iOS 4.0 and later.
      */
     @GlobalValue(symbol="kABSourceTypeProperty", optional=true)
-    public static native int TypeValue();
+    protected static native int TypeValue();
     /*</methods>*/
 }

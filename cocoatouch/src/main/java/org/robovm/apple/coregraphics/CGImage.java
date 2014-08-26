@@ -58,7 +58,7 @@ import org.robovm.apple.foundation.*;
     }
     
     public static CGImage createWithMaskingColors(CGImage image, double[] components) {
-    		return createWithMaskingColors(image, VM.getArrayValuesAddress(CoreGraphics.toMachineSizedFloatArray(components)));
+        return createWithMaskingColors(image, VM.getArrayValuesAddress(CoreGraphics.toMachineSizedFloatArray(components)));
     }
     
     public static CGImage createWithJPEGDataProvider(CGDataProvider source, 

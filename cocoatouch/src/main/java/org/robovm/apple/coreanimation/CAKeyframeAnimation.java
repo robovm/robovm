@@ -90,6 +90,9 @@ import org.robovm.apple.opengles.*;
     @Method(selector = "animationWithKeyPath:")
     public static native CAKeyframeAnimation create(String path);
 
+    @Method(selector = "animation")
+    public static native CAKeyframeAnimation create();
+    
     /*<methods>*/
     
     /*</methods>*/

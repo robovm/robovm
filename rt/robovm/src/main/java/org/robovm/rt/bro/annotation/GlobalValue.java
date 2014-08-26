@@ -34,15 +34,15 @@ public @interface GlobalValue {
     /**
      * Set to {@code true} to make this {@link GlobalValue} optional. If
      * {@code true} the binding process ({@link Bro#bind()}) will not fail even
-     * if the symbol of this {@link GlobalValue} isn't available. Instead
-     * a call to the method will throw {@link UnsatisfiedLinkError}. 
+     * if the symbol of this {@link GlobalValue} isn't available. Instead a call
+     * to the method will throw {@link UnsatisfiedLinkError}.
      */
     boolean optional() default false;
 
     /**
      * Set to {@code false} to specify that the address of the symbol should be
-     * used as and not be dereferenced. This is useful for structs compiled into
-     * the library. The default is {@code true}. Can only be used on getter 
+     * used as is and not be dereferenced. This is useful for structs compiled
+     * into the library. The default is {@code true}. Can only be used on getter
      * methods.
      */
     boolean dereference() default true;

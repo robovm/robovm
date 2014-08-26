@@ -41,14 +41,11 @@ import org.robovm.apple.corefoundation.*;
     /*</ptr>*/
     /*<bind>*/static { Bro.bind(ABGroupProperty.class); }/*</bind>*/
     /*<constants>*//*</constants>*/
-    public static final ABGroupProperty Name = new ABGroupProperty() {
-        public int value() {
-            return NameValue();
-        }
-    };
+    public static final ABGroupProperty Name = new ABGroupProperty("NameValue");
     private static ABGroupProperty[] values = new ABGroupProperty[] {Name};
     
-    private ABGroupProperty () {
+    private ABGroupProperty(String getterName) {
+        super(getterName);
     }
     /*<constructors>*//*</constructors>*/
     /*<properties>*//*</properties>*/
@@ -64,6 +61,6 @@ import org.robovm.apple.corefoundation.*;
     }
     /*<methods>*/
     @GlobalValue(symbol="kABGroupNameProperty", optional=true)
-    public static native int NameValue();
+    protected static native int NameValue();
     /*</methods>*/
 }

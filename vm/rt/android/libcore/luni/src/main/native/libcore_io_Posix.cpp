@@ -1180,7 +1180,7 @@ extern "C" jint Java_libcore_io_Posix_sendtoBytes(JNIEnv* env, jobject, jobject 
     const sockaddr* to = (javaInetAddress != NULL) ? reinterpret_cast<const sockaddr*>(&ss) : NULL;
 #if defined(__APPLE__)
     // RoboVM note: sendto() fails on Darwin for connected datagram sockets if a destination address is specified even if
-    // that address is identical to the address. connected to DatagramSocket.send() and DatagramChannelImpl.send() have 
+    // that address is identical to the address connected to. DatagramSocket.send() and DatagramChannelImpl.send() have 
     // already checked that the connected address and the address in the packet are identical. DatagramSocket.send() calls 
     // PlainDatagramSocketImpl.send() which calls this function with a null address if the socket is connected.
     // DatagramChannelImpl.send() however still passes the address into this function. When this happens we have to call

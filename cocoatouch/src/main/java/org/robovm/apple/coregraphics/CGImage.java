@@ -57,6 +57,10 @@ import org.robovm.apple.foundation.*;
                 shouldInterpolate, intent);
     }
     
+    public static CGImage createWithMaskingColors(CGImage image, double[] components) {
+    		return createWithMaskingColors(image, VM.getArrayValuesAddress(CoreGraphics.toMachineSizedFloatArray(components)));
+    }
+    
     public static CGImage createWithJPEGDataProvider(CGDataProvider source, 
             boolean shouldInterpolate, CGColorRenderingIntent intent) {
         return createWithJPEGDataProvider(source, null, shouldInterpolate, intent);

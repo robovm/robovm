@@ -5,6 +5,7 @@ include_directories(.. ../include ../crypto)
 set(SRC
   bio_ssl.c
   d1_both.c
+  d1_clnt.c
   d1_enc.c
   d1_lib.c
   d1_pkt.c
@@ -40,6 +41,7 @@ set(SRC
   ssl_sess.c
   ssl_stat.c
   ssl_txt.c
+#  ssltest.c # RoboVM note: Doesn't seem to be needed.
   t1_clnt.c
   t1_enc.c
   t1_lib.c

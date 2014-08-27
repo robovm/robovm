@@ -16,64 +16,69 @@ categories:
     iAdPreroll: # DONE
         methods:
             '-playPrerollAdWithCompletionHandler:':
-                name: "playPrerollAd"
+                name: playPrerollAd
     iAdAdditions: {} # DONE
     
 classes:
     ADBannerView: # DONE
         properties:
             'requiredContentSizeIdentifiers':
+                name: requiredContentSizeIdentifiers0
                 type: "NSSet<NSString>"
+                visibility: protected
             'currentContentSizeIdentifier':
-                type: "NSString"
+                name: currentContentSizeIdentifier0
+                type: NSString
+                visibility: protected
         methods:
             '-initWithAdType:':
-                name: "init"
+                name: init
             '+sizeFromBannerContentSizeIdentifier:':
-                name: "getSizeForIdentifier"
+                name: getSizeForIdentifier
+                visibility: protected
                 parameters:
                     contentSizeIdentifier:
-                        type: "NSString"
+                        type: NSString
     ADClient: # DONE
         skip_def_constructor: true
         methods:
             '+sharedClient':
                 name: getSharedClient
             '-determineAppInstallationAttributionWithCompletionHandler:':
-                name: "determineAppInstallationAttribution"  
+                name: determineAppInstallationAttribution 
     ADInterstitialAd: # DONE
         visibility: 'public final'
         methods:
             '-presentInView:':
-                name: "present"
+                name: present
 
 protocols:
     ADBannerViewDelegate: # DONE
         methods:
             '-bannerViewWillLoadAd:':
-                name: "willLoadAd"
+                name: willLoadAd
             '-bannerViewDidLoadAd:':
-                name: "didLoadAd"
+                name: didLoadAd
             '-bannerView:didFailToReceiveAdWithError:':
-                name: "didFailToReceiveAd"
+                name: didFailToReceiveAd
             '-bannerViewActionShouldBegin:willLeaveApplication:':
-                name: "actionShouldBegin"
+                name: actionShouldBegin
             '-bannerViewActionDidFinish:':
-                name: "actionDidFinish"
+                name: actionDidFinish
     ADInterstitialAdDelegate: # DONE
         methods:
             '-interstitialAdDidUnload:':
-                name: "didUnload"
+                name: didUnload
             '-interstitialAd:didFailWithError:':
-                name: "didFail"
+                name: didFail
             '-interstitialAdWillLoad:':
-                name: "willLoad"
+                name: willLoad
             '-interstitialAdDidLoad:':
-                name: "didLoad"
+                name: didLoad
             '-interstitialAdActionShouldBegin:willLeaveApplication:':
-                name: "actionShouldBegin"
+                name: actionShouldBegin
             '-interstitialAdActionDidFinish:':
-                name: "actionDidFinish"
+                name: actionDidFinish
 
 functions:
     # Make sure we don't miss any functions if new ones are introduced in a later version
@@ -82,13 +87,15 @@ functions:
         name: "Function__#{g[0]}"
 
 values:
-    AD(ErrorDomain):  # This could probably be moved to ADError
+    AD(ErrorDomain):
         class: IAd
         name: "#{g[0]}"
 
-    ADBannerContentSizeIdentifier(.*): # This could be put into a separate class and also the ADBannerView function getSize
-        class: IAd
-        name: "BannerContentSizeIdentifier#{g[0]}"
+    ADBannerContentSizeIdentifier(.*):
+        class: ADBannerContentSizeIdentifier
+        name: "Size#{g[0]}Value"
+        type: NSString
+        visibility: protected
 
     # Make sure we don't miss any values if new ones are introduced in a later version
     (AD.*):

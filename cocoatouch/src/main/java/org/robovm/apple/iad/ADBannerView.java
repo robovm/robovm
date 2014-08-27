@@ -54,6 +54,48 @@ import org.robovm.apple.coregraphics.*;
      */
     public ADBannerView(ADAdType type) { super((SkipInit) null); initObject(init(type)); }
     /*</constructors>*/
+    /**
+     * @since Available in iOS 4.0 and later.
+     * @deprecated Deprecated in iOS 6.0.
+     */
+    @Deprecated
+    public Set<ADBannerContentSizeIdentifier> getRequiredContentSizeIdentifiers() {
+        NSSet<NSString> ids = getRequiredContentSizeIdentifiers0();
+        Set<ADBannerContentSizeIdentifier> set = new HashSet<>();
+        for (NSString id : ids) {
+            set.add(ADBannerContentSizeIdentifier.valueOf(id));
+        }
+        return set;
+    }
+    /**
+     * @since Available in iOS 4.0 and later.
+     * @deprecated Deprecated in iOS 6.0.
+     */
+    @Deprecated
+    public void setRequiredContentSizeIdentifiers(Set<ADBannerContentSizeIdentifier> identifiers) {
+        NSSet<NSString> ids = new NSMutableSet<>();
+        for (ADBannerContentSizeIdentifier id : identifiers) {
+            ids.add(id.value());
+        }
+        setRequiredContentSizeIdentifiers0(ids);
+    }
+    /**
+     * @since Available in iOS 4.0 and later.
+     * @deprecated Deprecated in iOS 6.0.
+     */
+    @Deprecated
+    public ADBannerContentSizeIdentifier getCurrentContentSizeIdentifier() {
+        NSString identifier = getCurrentContentSizeIdentifier0();
+        return ADBannerContentSizeIdentifier.valueOf(identifier);
+    }
+    /**
+     * @since Available in iOS 4.0 and later.
+     * @deprecated Deprecated in iOS 6.0.
+     */
+    @Deprecated
+    public void setCurrentContentSizeIdentifier(ADBannerContentSizeIdentifier identifier) {
+        setCurrentContentSizeIdentifier0(identifier.value());
+    }
     /*<properties>*/
     /**
      * @since Available in iOS 6.0 and later.
@@ -78,28 +120,28 @@ import org.robovm.apple.coregraphics.*;
      */
     @Deprecated
     @Property(selector = "requiredContentSizeIdentifiers")
-    public native NSSet<NSString> getRequiredContentSizeIdentifiers();
+    protected native NSSet<NSString> getRequiredContentSizeIdentifiers0();
     /**
      * @since Available in iOS 4.0 and later.
      * @deprecated Deprecated in iOS 6.0.
      */
     @Deprecated
     @Property(selector = "setRequiredContentSizeIdentifiers:")
-    public native void setRequiredContentSizeIdentifiers(NSSet<NSString> v);
+    protected native void setRequiredContentSizeIdentifiers0(NSSet<NSString> v);
     /**
      * @since Available in iOS 4.0 and later.
      * @deprecated Deprecated in iOS 6.0.
      */
     @Deprecated
     @Property(selector = "currentContentSizeIdentifier")
-    public native NSString getCurrentContentSizeIdentifier();
+    protected native NSString getCurrentContentSizeIdentifier0();
     /**
      * @since Available in iOS 4.0 and later.
      * @deprecated Deprecated in iOS 6.0.
      */
     @Deprecated
     @Property(selector = "setCurrentContentSizeIdentifier:")
-    public native void setCurrentContentSizeIdentifier(NSString v);
+    protected native void setCurrentContentSizeIdentifier0(NSString v);
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
@@ -116,6 +158,6 @@ import org.robovm.apple.coregraphics.*;
      */
     @Deprecated
     @Method(selector = "sizeFromBannerContentSizeIdentifier:")
-    public static native @ByVal CGSize getSizeForIdentifier(NSString contentSizeIdentifier);
+    protected static native @ByVal CGSize getSizeForIdentifier(NSString contentSizeIdentifier);
     /*</methods>*/
 }

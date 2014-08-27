@@ -40,7 +40,7 @@ classes:
         methods:
             '-passes':
                 property: true
-                type: "NSArray<PKPass>"
+                return_type: "NSArray<PKPass>"
             '-passWithPassTypeIdentifier:serialNumber:':
                 name: "getPass"
                 parameters:
@@ -69,13 +69,23 @@ functions:
         name: "Function__#{g[0]}"
 
 values:
-    PK(.*Notification):
+    PKPassLibrary(DidChangeNotification):
+        class: PKPassLibrary
         name: "#{g[0]}"
         type: NSString
 
-    PK(.*Key):
-        name: "#{g[0]}"
+    PKPassLibrary(PassTypeIdentifier|SerialNumber)UserInfoKey:
+        class: PKRemovedPassInfo
+        name: "#{g[0]}Key"
         type: NSString
+        visibility: protected
+    PKPassLibrary(.*)UserInfoKey:
+        class: PKPassLibraryNotificationArgs
+        name: "#{g[0]}Key"
+        type: NSString
+        visibility: protected
+        
+        
         
     PK(.*ErrorDomain):
         name: "#{g[0]}"

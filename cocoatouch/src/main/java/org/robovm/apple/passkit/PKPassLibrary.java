@@ -40,6 +40,17 @@ import org.robovm.apple.uikit.*;
     extends /*<extends>*/NSObject/*</extends>*/ 
     /*<implements>*//*</implements>*/ {
 
+    public static class Notifications {
+        public NSObject observeDidChange(final VoidBlock1<PKPassLibraryNotificationArgs> block) {
+            return NSNotificationCenter.getDefaultCenter().addObserver(DidChangeNotification(), null, NSOperationQueue.getMainQueue(), new VoidBlock1<NSNotification>() {
+                @Override
+                public void invoke (NSNotification a) {
+                    block.invoke(new PKPassLibraryNotificationArgs(a));
+                }
+            });
+        }
+    }
+    
     /*<ptr>*/public static class PKPassLibraryPtr extends Ptr<PKPassLibrary, PKPassLibraryPtr> {}/*</ptr>*/
     /*<bind>*/static { ObjCRuntime.bind(PKPassLibrary.class); }/*</bind>*/
     /*<constants>*//*</constants>*/
@@ -52,8 +63,14 @@ import org.robovm.apple.uikit.*;
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
+    /**
+     * @since Available in iOS 6.0 and later.
+     */
+    @GlobalValue(symbol="PKPassLibraryDidChangeNotification", optional=true)
+    public static native NSString DidChangeNotification();
+    
     @Method(selector = "passes")
-    public native NSArray<?> getPasses();
+    public native NSArray<PKPass> getPasses();
     @Method(selector = "passWithPassTypeIdentifier:serialNumber:")
     public native PKPass getPass(NSString identifier, String serialNumber);
     @Method(selector = "removePass:")

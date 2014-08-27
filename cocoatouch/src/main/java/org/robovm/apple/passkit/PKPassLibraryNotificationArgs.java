@@ -19,6 +19,7 @@ package org.robovm.apple.passkit;
 import java.io.*;
 import java.nio.*;
 import java.util.*;
+
 import org.robovm.objc.*;
 import org.robovm.objc.annotation.*;
 import org.robovm.objc.block.*;
@@ -75,10 +76,14 @@ import org.robovm.apple.uikit.*;
      * @since Available in iOS 6.0 and later.
      */
     @SuppressWarnings("unchecked")
-    public NSArray<PKRemovedPassInfo> getRemovedPassInfos() {
+    public List<PKRemovedPassInfo> getRemovedPassInfos() {
         if (data.containsKey(RemovedPassInfosKey())) {
             NSArray<NSDictionary<NSString, ?>> val = (NSArray<NSDictionary<NSString, ?>>)data.get(RemovedPassInfosKey());
-            return val;
+            List<PKRemovedPassInfo> list = new ArrayList<>();
+            for (NSDictionary<NSString, ?> v : val) {
+                list.add(new PKRemovedPassInfo(v));
+            }
+            return list;
         }
         return null;
     }

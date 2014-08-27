@@ -19,6 +19,7 @@ package org.robovm.apple.passkit;
 import java.io.*;
 import java.nio.*;
 import java.util.*;
+
 import org.robovm.objc.*;
 import org.robovm.objc.annotation.*;
 import org.robovm.objc.block.*;
@@ -41,9 +42,34 @@ import org.robovm.apple.uikit.*;
     /*</ptr>*/
     /*<bind>*/static { Bro.bind(PKRemovedPassInfo.class); }/*</bind>*/
     /*<constants>*//*</constants>*/
+    private NSDictionary<NSString, ?> data;
+    
+    protected PKRemovedPassInfo (NSDictionary<NSString, ?> data) {
+        this.data = data;
+    }
     /*<constructors>*//*</constructors>*/
     /*<properties>*//*</properties>*/
     /*<members>*//*</members>*/
+    /**
+     * @since Available in iOS 6.0 and later.
+     */
+    public String getPassTypeIdentifier() {
+        if (data.containsKey(PassTypeIdentifierKey())) {
+            NSString val = (NSString)data.get(PassTypeIdentifierKey());
+            return val.toString();
+        }
+        return null;
+    }
+    /**
+     * @since Available in iOS 6.0 and later.
+     */
+    public String getSerialNumber() {
+        if (data.containsKey(SerialNumberKey())) {
+            NSString val = (NSString)data.get(SerialNumberKey());
+            return val.toString();
+        }
+        return null;
+    }
     /*<methods>*/
     /**
      * @since Available in iOS 6.0 and later.

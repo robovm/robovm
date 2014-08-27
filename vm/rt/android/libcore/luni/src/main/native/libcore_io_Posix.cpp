@@ -1124,6 +1124,32 @@ extern "C" jint Java_libcore_io_Posix_recvfromBytes(JNIEnv* env, jobject, jobjec
     memset(&ss, 0, sizeof(ss));
     sockaddr* from = (javaInetSocketAddress != NULL) ? reinterpret_cast<sockaddr*>(&ss) : NULL;
     socklen_t* fromLength = (javaInetSocketAddress != NULL) ? &sl : 0;
+#if defined(__APPLE__)
+    /*
+     * When reading empty (byteCount==0) datagram packets it seems like recvfrom() on OSX/iOS just returns without
+     * setting the remote address properly. We work around this here by reading a packet of maximum 1 byte but we
+     * discard that byte. recvfrom() is packet-oriented when used with UDP so if the remote sent an empty packet
+     * we should only get 0 bytes anyway. And if the remote sent more bytes in the packet those would have been
+     * discarded anyway since the caller only wants 0 bytes. See #344.
+     */
+    if (byteCount == 0) {
+        int fd = jniGetFDFromFileDescriptor(env, javaFd);
+        if (fd != -1) {
+            int type = 0;
+            socklen_t size = sizeof(type);
+            int rc = throwIfMinusOne(env, "getsockopt", TEMP_FAILURE_RETRY(getsockopt(fd, SOL_SOCKET, SO_TYPE, &type, &size)));
+            if (rc == -1) {
+                return rc;
+            }
+            if (type == SOCK_DGRAM) {
+                char b;
+                jint recvCount = NET_FAILURE_RETRY(env, ssize_t, recvfrom, javaFd, &b, 1, flags, from, fromLength);
+                fillInetSocketAddress(env, recvCount, javaInetSocketAddress, ss);
+                return recvCount >= 0 ? 0 : recvCount;
+            }
+        }
+    }
+#endif
     jint recvCount = NET_FAILURE_RETRY(env, ssize_t, recvfrom, javaFd, bytes.get() + byteOffset, byteCount, flags, from, fromLength);
     fillInetSocketAddress(env, recvCount, javaInetSocketAddress, ss);
     return recvCount;
@@ -1180,7 +1206,7 @@ extern "C" jint Java_libcore_io_Posix_sendtoBytes(JNIEnv* env, jobject, jobject 
     const sockaddr* to = (javaInetAddress != NULL) ? reinterpret_cast<const sockaddr*>(&ss) : NULL;
 #if defined(__APPLE__)
     // RoboVM note: sendto() fails on Darwin for connected datagram sockets if a destination address is specified even if
-    // that address is identical to the address. connected to DatagramSocket.send() and DatagramChannelImpl.send() have 
+    // that address is identical to the address connected to. DatagramSocket.send() and DatagramChannelImpl.send() have 
     // already checked that the connected address and the address in the packet are identical. DatagramSocket.send() calls 
     // PlainDatagramSocketImpl.send() which calls this function with a null address if the socket is connected.
     // DatagramChannelImpl.send() however still passes the address into this function. When this happens we have to call

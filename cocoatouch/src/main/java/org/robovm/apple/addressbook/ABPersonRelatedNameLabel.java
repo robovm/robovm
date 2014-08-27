@@ -19,6 +19,7 @@ package org.robovm.apple.addressbook;
 import java.io.*;
 import java.nio.*;
 import java.util.*;
+
 import org.robovm.objc.*;
 import org.robovm.objc.annotation.*;
 import org.robovm.objc.block.*;
@@ -41,67 +42,34 @@ import org.robovm.apple.corefoundation.*;
     /*</ptr>*/
     /*<bind>*/static { Bro.bind(ABPersonRelatedNameLabel.class); }/*</bind>*/
     /*<constants>*//*</constants>*/
-    public static final ABPersonRelatedNameLabel Father = new ABPersonRelatedNameLabel() {
-        public CFString value() {
-            return FatherLabel();
-        }
-    };
-    public static final ABPersonRelatedNameLabel Mother = new ABPersonRelatedNameLabel() {
-        public CFString value() {
-            return MotherLabel();
-        }
-    };
-    public static final ABPersonRelatedNameLabel Parent = new ABPersonRelatedNameLabel() {
-        public CFString value() {
-            return ParentLabel();
-        }
-    };
-    public static final ABPersonRelatedNameLabel Brother = new ABPersonRelatedNameLabel() {
-        public CFString value() {
-            return BrotherLabel();
-        }
-    };
-    public static final ABPersonRelatedNameLabel Sister = new ABPersonRelatedNameLabel() {
-        public CFString value() {
-            return SisterLabel();
-        }
-    };
-    public static final ABPersonRelatedNameLabel Child = new ABPersonRelatedNameLabel() {
-        public CFString value() {
-            return ChildLabel();
-        }
-    };
-    public static final ABPersonRelatedNameLabel Friend = new ABPersonRelatedNameLabel() {
-        public CFString value() {
-            return FriendLabel();
-        }
-    };
-    public static final ABPersonRelatedNameLabel Spouse = new ABPersonRelatedNameLabel() {
-        public CFString value() {
-            return SpouseLabel();
-        }
-    };
-    public static final ABPersonRelatedNameLabel Partner = new ABPersonRelatedNameLabel() {
-        public CFString value() {
-            return PartnerLabel();
-        }
-    };
-    public static final ABPersonRelatedNameLabel Assistant = new ABPersonRelatedNameLabel() {
-        public CFString value() {
-            return AssistantLabel();
-        }
-    };
-    public static final ABPersonRelatedNameLabel Manager = new ABPersonRelatedNameLabel() {
-        public CFString value() {
-            return ManagerLabel();
-        }
-    };
-    private ABPersonRelatedNameLabel() {
-        values = new ABPropertyLabel[] {Work, Home, Other, Father, Mother, Parent, Brother, Sister, Child, Friend, Spouse, Partner, Assistant, Manager};
+    public static final ABPersonRelatedNameLabel Father = new ABPersonRelatedNameLabel("FatherLabel");
+    public static final ABPersonRelatedNameLabel Mother = new ABPersonRelatedNameLabel("MotherLabel");
+    public static final ABPersonRelatedNameLabel Parent = new ABPersonRelatedNameLabel("ParentLabel");
+    public static final ABPersonRelatedNameLabel Brother = new ABPersonRelatedNameLabel("BrotherLabel");
+    public static final ABPersonRelatedNameLabel Sister = new ABPersonRelatedNameLabel("SisterLabel");
+    public static final ABPersonRelatedNameLabel Child = new ABPersonRelatedNameLabel("ChildLabel");
+    public static final ABPersonRelatedNameLabel Friend = new ABPersonRelatedNameLabel("FriendLabel");
+    public static final ABPersonRelatedNameLabel Spouse = new ABPersonRelatedNameLabel("SpouseLabel");
+    public static final ABPersonRelatedNameLabel Partner = new ABPersonRelatedNameLabel("PartnerLabel");
+    public static final ABPersonRelatedNameLabel Assistant = new ABPersonRelatedNameLabel("AssistantLabel");
+    public static final ABPersonRelatedNameLabel Manager = new ABPersonRelatedNameLabel("ManagerLabel");
+    private static ABPropertyLabel[] values = new ABPropertyLabel[] {Work, Home, Other, Father, Mother, Parent, Brother, Sister, Child, Friend, Spouse, Partner, Assistant, Manager};
+    
+    private ABPersonRelatedNameLabel(String getterName) {
+        super(getterName);
     }
     /*<constructors>*//*</constructors>*/
     /*<properties>*//*</properties>*/
     /*<members>*//*</members>*/
+    public static ABPropertyLabel valueOf(CFString value) {
+        for (ABPropertyLabel v : values) {
+            if (v.value().equals(value)) {
+                return v;
+            }
+        }
+        throw new IllegalArgumentException("No constant with value " + value + " found in " 
+            + /*<name>*/ABPersonRelatedNameLabel/*</name>*/.class.getName());
+    }
     /*<methods>*/
     @GlobalValue(symbol="kABPersonFatherLabel", optional=true)
     protected static native CFString FatherLabel();

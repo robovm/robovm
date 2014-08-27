@@ -19,6 +19,7 @@ package org.robovm.apple.accounts;
 import java.io.*;
 import java.nio.*;
 import java.util.*;
+
 import org.robovm.objc.*;
 import org.robovm.objc.annotation.*;
 import org.robovm.objc.block.*;
@@ -43,44 +44,31 @@ import org.robovm.apple.foundation.*;
     /**
      * @since Available in iOS 5.0 and later.
      */
-    public static ACAccountTypeIdentifier Twitter = new ACAccountTypeIdentifier() {
-        public NSString value() {
-            return TwitterValue();
-        }
-    };
+    public static final ACAccountTypeIdentifier Twitter = new ACAccountTypeIdentifier("TwitterValue");
     /**
      * @since Available in iOS 6.0 and later.
      */
-    public static ACAccountTypeIdentifier Facebook = new ACAccountTypeIdentifier() {
-        public NSString value() {
-            return FacebookValue();
-        }
-    };
+    public static final ACAccountTypeIdentifier Facebook = new ACAccountTypeIdentifier("FacebookValue");
     /**
      * @since Available in iOS 6.0 and later.
      */
-    public static ACAccountTypeIdentifier SinaWeibo = new ACAccountTypeIdentifier() {
-        public NSString value() {
-            return SinaWeiboValue();
-        }
-    };
+    public static final ACAccountTypeIdentifier SinaWeibo = new ACAccountTypeIdentifier("SinaWeiboValue");
     /**
      * @since Available in iOS 7.0 and later.
      */
-    public static ACAccountTypeIdentifier TencentWeibo = new ACAccountTypeIdentifier() {
-        public NSString value() {
-            return TencentWeiboValue();
-        }
-    };
+    public static final ACAccountTypeIdentifier TencentWeibo = new ACAccountTypeIdentifier("TencentWeiboValue");
     private static ACAccountTypeIdentifier[] values = new ACAccountTypeIdentifier[] {Twitter, Facebook, SinaWeibo, TencentWeibo};
     
-    private ACAccountTypeIdentifier() {
+    private final LazyGlobalValue<NSString> lazyGlobalValue;
+    
+    private ACAccountTypeIdentifier(String getterName) {
+        lazyGlobalValue = new LazyGlobalValue<>(getClass(), getterName);
     }
     /*<constructors>*//*</constructors>*/
     /*<properties>*//*</properties>*/
     /*<members>*//*</members>*/
     public NSString value() {
-        return null;
+        return lazyGlobalValue.value();
     }
     
     public static ACAccountTypeIdentifier valueOf(NSString value) {

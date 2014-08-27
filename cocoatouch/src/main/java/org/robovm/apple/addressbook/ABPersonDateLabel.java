@@ -19,6 +19,7 @@ package org.robovm.apple.addressbook;
 import java.io.*;
 import java.nio.*;
 import java.util.*;
+
 import org.robovm.objc.*;
 import org.robovm.objc.annotation.*;
 import org.robovm.objc.block.*;
@@ -41,17 +42,24 @@ import org.robovm.apple.corefoundation.*;
     /*</ptr>*/
     /*<bind>*/static { Bro.bind(ABPersonDateLabel.class); }/*</bind>*/
     /*<constants>*//*</constants>*/
-    public static final ABPersonDateLabel Anniversary = new ABPersonDateLabel() {
-        public CFString value() {
-            return AnniversaryLabel();
-        }
-    };
-    private ABPersonDateLabel() {
-        values = new ABPropertyLabel[] {Work, Home, Other, Anniversary};
+    public static final ABPersonDateLabel Anniversary = new ABPersonDateLabel("AnniversaryLabel");
+    private static final ABPropertyLabel[] values = new ABPropertyLabel[] {Work, Home, Other, Anniversary};
+    
+    private ABPersonDateLabel(String getterName) {
+        super(getterName);
     }
     /*<constructors>*//*</constructors>*/
     /*<properties>*//*</properties>*/
     /*<members>*//*</members>*/
+    public static ABPropertyLabel valueOf(CFString value) {
+        for (ABPropertyLabel v : values) {
+            if (v.value().equals(value)) {
+                return v;
+            }
+        }
+        throw new IllegalArgumentException("No constant with value " + value + " found in " 
+            + /*<name>*/ABPersonDateLabel/*</name>*/.class.getName());
+    }
     /*<methods>*/
     @GlobalValue(symbol="kABPersonAnniversaryLabel", optional=true)
     protected static native CFString AnniversaryLabel();

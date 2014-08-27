@@ -42,39 +42,25 @@ import org.robovm.apple.corefoundation.*;
     /*</ptr>*/
     /*<bind>*/static { Bro.bind(CTCallState.class); }/*</bind>*/
     /*<constants>*//*</constants>*/
-    public static CTCallState Dialing = new CTCallState() {
-        public NSString value() {
-            return DialingValue();
-        }
-    };
-    public static CTCallState Incoming = new CTCallState() {
-        public NSString value() {
-            return IncomingValue();
-        }
-    };
-    public static CTCallState Connected = new CTCallState() {
-        public NSString value() {
-            return ConnectedValue();
-        }
-    };
-    public static CTCallState Disconnected = new CTCallState() {
-        public NSString value() {
-            return DisconnectedValue();
-        }
-    };
+    public static final CTCallState Dialing = new CTCallState("DialingValue");
+    public static final CTCallState Incoming = new CTCallState("IncomingValue");
+    public static final CTCallState Connected = new CTCallState("ConnectedValue");
+    public static final CTCallState Disconnected = new CTCallState("DisconnectedValue");
     private static CTCallState[] values = new CTCallState[] {Dialing, Incoming, Connected, Disconnected};
     
-    private CTCallState() {
+    private final LazyGlobalValue<NSString> lazyGlobalValue;
+    
+    private CTCallState(String getterName) {
+        lazyGlobalValue = new LazyGlobalValue<>(getClass(), getterName);
     }
     /*<constructors>*//*</constructors>*/
     /*<properties>*//*</properties>*/
     /*<members>*//*</members>*/
     public NSString value() {
-        return null;
+        return lazyGlobalValue.value();
     }
     
     public static CTCallState valueOf(NSString value) {
-        if (value == null) throw new NullPointerException("Value cannot be null!");
         for (CTCallState v : values) {
             if (v.value().equals(value)) {
                 return v;

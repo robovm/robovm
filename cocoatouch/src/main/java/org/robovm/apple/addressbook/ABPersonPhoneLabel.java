@@ -19,6 +19,7 @@ package org.robovm.apple.addressbook;
 import java.io.*;
 import java.nio.*;
 import java.util.*;
+
 import org.robovm.objc.*;
 import org.robovm.objc.annotation.*;
 import org.robovm.objc.block.*;
@@ -41,54 +42,36 @@ import org.robovm.apple.corefoundation.*;
     /*</ptr>*/
     /*<bind>*/static { Bro.bind(ABPersonPhoneLabel.class); }/*</bind>*/
     /*<constants>*//*</constants>*/
-    public static final ABPersonPhoneLabel Mobile = new ABPersonPhoneLabel() {
-        public CFString value() {
-            return MobileLabel();
-        }
-    };
+    public static final ABPersonPhoneLabel Mobile = new ABPersonPhoneLabel("MobileLabel");
     /**
      * @since Available in iOS 3.0 and later.
      */
-    public static final ABPersonPhoneLabel IPhone = new ABPersonPhoneLabel() {
-        public CFString value() {
-            return IPhoneLabel();
-        }
-    };
-    public static final ABPersonPhoneLabel Main = new ABPersonPhoneLabel() {
-        public CFString value() {
-            return MainLabel();
-        }
-    };
-    public static final ABPersonPhoneLabel HomeFAX = new ABPersonPhoneLabel() {
-        public CFString value() {
-            return HomeFAXLabel();
-        }
-    };
-    public static final ABPersonPhoneLabel WorkFAX = new ABPersonPhoneLabel() {
-        public CFString value() {
-            return WorkFAXLabel();
-        }
-    };
+    public static final ABPersonPhoneLabel IPhone = new ABPersonPhoneLabel("IPhoneLabel");
+    public static final ABPersonPhoneLabel Main = new ABPersonPhoneLabel("MainLabel");
+    public static final ABPersonPhoneLabel HomeFAX = new ABPersonPhoneLabel("HomeFAXLabel");
+    public static final ABPersonPhoneLabel WorkFAX = new ABPersonPhoneLabel("WorkFAXLabel");
     /**
      * @since Available in iOS 5.0 and later.
      */
-    public static final ABPersonPhoneLabel OtherFAX = new ABPersonPhoneLabel() {
-        public CFString value() {
-            return OtherFAXLabel();
-        }
-    };
-    public static final ABPersonPhoneLabel Pager = new ABPersonPhoneLabel() {
-        public CFString value() {
-            return OtherFAXLabel();
-        }
-    };
+    public static final ABPersonPhoneLabel OtherFAX = new ABPersonPhoneLabel("OtherFAXLabel");
+    public static final ABPersonPhoneLabel Pager = new ABPersonPhoneLabel("PagerLabel");
+    private static ABPropertyLabel[] values = new ABPropertyLabel[] {Work, Home, Other, Mobile, Main, HomeFAX, WorkFAX, Pager, IPhone, OtherFAX};
     
-    private ABPersonPhoneLabel() {
-        values = new ABPropertyLabel[] {Work, Home, Other, Mobile, Main, HomeFAX, WorkFAX, Pager, IPhone, OtherFAX};
+    private ABPersonPhoneLabel(String getterName) {
+        super(getterName);
     }
     /*<constructors>*//*</constructors>*/
     /*<properties>*//*</properties>*/
     /*<members>*//*</members>*/
+    public static ABPropertyLabel valueOf(CFString value) {
+        for (ABPropertyLabel v : values) {
+            if (v.value().equals(value)) {
+                return v;
+            }
+        }
+        throw new IllegalArgumentException("No constant with value " + value + " found in " 
+            + /*<name>*/ABPersonPhoneLabel/*</name>*/.class.getName());
+    }
     /*<methods>*/
     @GlobalValue(symbol="kABPersonPhoneMobileLabel", optional=true)
     protected static native CFString MobileLabel();

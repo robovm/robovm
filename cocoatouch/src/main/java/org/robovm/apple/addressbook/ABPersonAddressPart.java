@@ -19,6 +19,7 @@ package org.robovm.apple.addressbook;
 import java.io.*;
 import java.nio.*;
 import java.util.*;
+
 import org.robovm.objc.*;
 import org.robovm.objc.annotation.*;
 import org.robovm.objc.block.*;
@@ -41,45 +42,24 @@ import org.robovm.apple.corefoundation.*;
     /*</ptr>*/
     /*<bind>*/static { Bro.bind(ABPersonAddressPart.class); }/*</bind>*/
     /*<constants>*//*</constants>*/
-    public static final ABPersonAddressPart Street = new ABPersonAddressPart() {
-        public NSString value() {
-            return StreetValue();
-        }
-    };
-    public static final ABPersonAddressPart City = new ABPersonAddressPart() {
-        public NSString value() {
-            return CityValue();
-        }
-    };
-    public static final ABPersonAddressPart State = new ABPersonAddressPart() {
-        public NSString value() {
-            return StateValue();
-        }
-    };
-    public static final ABPersonAddressPart ZIP = new ABPersonAddressPart() {
-        public NSString value() {
-            return ZIPValue();
-        }
-    };
-    public static final ABPersonAddressPart Country = new ABPersonAddressPart() {
-        public NSString value() {
-            return CountryValue();
-        }
-    };
-    public static final ABPersonAddressPart CountryCode = new ABPersonAddressPart() {
-        public NSString value() {
-            return CountryCodeValue();
-        }
-    };
-    private static ABPersonAddressPart[] values = new ABPersonAddressPart[] {};
+    public static final ABPersonAddressPart Street = new ABPersonAddressPart("StreetValue");
+    public static final ABPersonAddressPart City = new ABPersonAddressPart("CityValue");
+    public static final ABPersonAddressPart State = new ABPersonAddressPart("StateValue");
+    public static final ABPersonAddressPart ZIP = new ABPersonAddressPart("ZIPValue");
+    public static final ABPersonAddressPart Country = new ABPersonAddressPart("CountryValue");
+    public static final ABPersonAddressPart CountryCode = new ABPersonAddressPart("CountryCodeValue");
+    private static ABPersonAddressPart[] values = new ABPersonAddressPart[] {Street, City, State, ZIP, Country, CountryCode};
     
-    private ABPersonAddressPart() {
+    private final LazyGlobalValue<NSString> lazyGlobalValue;
+    
+    private ABPersonAddressPart(String getterName) {
+        lazyGlobalValue = new LazyGlobalValue<>(getClass(), getterName);
     }
     /*<constructors>*//*</constructors>*/
     /*<properties>*//*</properties>*/
     /*<members>*//*</members>*/
     public NSString value() {
-        return null;
+        return lazyGlobalValue.value();
     }
     
     public static ABPersonAddressPart valueOf(int value) {

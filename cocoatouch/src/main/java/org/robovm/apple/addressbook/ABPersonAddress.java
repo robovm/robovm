@@ -28,6 +28,7 @@ import org.robovm.rt.bro.annotation.*;
 import org.robovm.rt.bro.ptr.*;
 import org.robovm.apple.foundation.*;
 import org.robovm.apple.corefoundation.*;
+import org.robovm.apple.addressbookui.ABAddressFormating;
 
 @Library("AddressBook")
 public class ABPersonAddress {
@@ -103,5 +104,13 @@ public class ABPersonAddress {
     }
     public void setCountryCode(String s) {
         setAddressPart(ABPersonAddressPart.CountryCode, s);
+    }
+    
+    @Override
+    public String toString () {
+        return toString(false);
+    }
+    public String toString(boolean addCountryName) {
+        return ABAddressFormating.createString(data, addCountryName);
     }
 }

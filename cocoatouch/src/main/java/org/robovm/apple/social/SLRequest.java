@@ -58,9 +58,12 @@ import org.robovm.apple.accounts.*;
     @Property(selector = "URL")
     public native NSURL getURL();
     @Property(selector = "parameters")
-    public native NSDictionary<NSString, NSString> getParameters();
+    public native NSDictionary<NSString, NSObject> getParameters();
     /*</properties>*/
     /*<members>*//*</members>*/
+    public static SLRequest create(SLServiceType serviceType, SLRequestMethod requestMethod, NSURL url, NSDictionary<NSString, NSObject> parameters) {
+        return create(serviceType.value(), requestMethod, url, parameters);
+    }
     /*<methods>*/
     @Method(selector = "addMultipartData:withName:type:filename:")
     public native void addMultipartData(NSData data, String name, String type, String filename);
@@ -69,6 +72,6 @@ import org.robovm.apple.accounts.*;
     @Method(selector = "performRequestWithHandler:")
     public native void performRequest(@Block VoidBlock3<NSString, SLRequestMethod, NSURL> handler);
     @Method(selector = "requestForServiceType:requestMethod:URL:parameters:")
-    public static native SLRequest create(NSString serviceType, SLRequestMethod requestMethod, NSURL url, NSDictionary<NSString, NSString> parameters);
+    protected static native SLRequest create(NSString serviceType, SLRequestMethod requestMethod, NSURL url, NSDictionary<NSString, NSObject> parameters);
     /*</methods>*/
 }

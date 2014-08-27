@@ -61,11 +61,17 @@ import org.robovm.apple.accounts.*;
     public native void setDelegate(SKStoreProductViewControllerDelegate v);
     /*</properties>*/
     /*<members>*//*</members>*/
+    /**
+     * @since Available in iOS 6.0 and later.
+     */
+    public void loadProduct(SKStoreProductParameters parameters, @Block VoidBlock2<Boolean, NSError> block) {
+        loadProduct(parameters.getDictionary(), block);
+    }
     /*<methods>*/
     /**
      * @since Available in iOS 6.0 and later.
      */
     @Method(selector = "loadProductWithParameters:completionBlock:")
-    public native void loadProduct(NSDictionary<NSString, ?> parameters, @Block VoidBlock2<Boolean, NSError> block);
+    protected native void loadProduct(NSDictionary<NSString, ?> parameters, @Block VoidBlock2<Boolean, NSError> block);
     /*</methods>*/
 }

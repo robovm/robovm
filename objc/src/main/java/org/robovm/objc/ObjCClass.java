@@ -242,13 +242,24 @@ public final class ObjCClass extends ObjCObject {
         for (Entry<String, Method> entry : getCallbacks(type).entrySet()) {
             String selName = entry.getKey();
             Method method = entry.getValue();
+            boolean isClassMethod = method.getParameterTypes()[0] == ObjCClass.class;
+            if (isClassMethod && method.getDeclaringClass() != type) {
+                // Java doesn't support overriding static methods so the callback 
+                // method for a class method of a super class cannot be used to route
+                // calls to a static method in a subclass. There must be a @Method
+                // annotation on the static method (and thus a @Callback method) in
+                // the custom class.
+                continue;
+            }
             Selector selector = Selector.register(selName);
             String encoding = null;
             TypeEncoding typeEncoding = method.getAnnotation(TypeEncoding.class);
             if (typeEncoding != null) {
                 encoding = typeEncoding.value();
             } else {
-                long methodPtr = ObjCRuntime.class_getInstanceMethod(superclass.getHandle(), selector.getHandle());
+                long methodPtr = isClassMethod 
+                        ? ObjCRuntime.class_getClassMethod(superclass.getHandle(), selector.getHandle())
+                        : ObjCRuntime.class_getInstanceMethod(superclass.getHandle(), selector.getHandle());
                 if (methodPtr != 0L) {
                     long encodingPtr = ObjCRuntime.method_getTypeEncoding(methodPtr);
                     if (encodingPtr != 0L) {
@@ -257,7 +268,9 @@ public final class ObjCClass extends ObjCObject {
                 }
             }
             long impl = VM.getCallbackMethodImpl(method);
-            if (!ObjCRuntime.class_addMethod(handle, selector.getHandle(), impl, encoding != null ? VM.getStringUTFChars(encoding) : 0L)) {
+            // For class methods we need to add the method to the meta-class of the class we are creating
+            long ownerHandle = isClassMethod ? ObjCRuntime.object_getClass(handle) : handle;
+            if (!ObjCRuntime.class_addMethod(ownerHandle, selector.getHandle(), impl, encoding != null ? VM.getStringUTFChars(encoding) : 0L)) {
                 throw new ObjCClassNotFoundException("Failed to add method " + selName + " to custom Objective-C class for Java class: " + type);
             }
         }

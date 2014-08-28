@@ -163,7 +163,10 @@ public class ObjCRuntime {
 
     @Bridge
     public static native @Pointer long class_getInstanceMethod(@Pointer long aClass, @Pointer long aSelector);
-    
+
+    @Bridge
+    public static native @Pointer long class_getClassMethod(@Pointer long aClass, @Pointer long aSelector);
+
     @Bridge
     public static native boolean class_addMethod(@Pointer long cls, @Pointer long name, @Pointer long imp, @Pointer long types);
     

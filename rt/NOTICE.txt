@@ -26,7 +26,7 @@ copyright 1995-2012, International Business Machines Corporation and others and
 released under the ICU License. http://site.icu-project.org
 
 The RoboVM Runtime Library includes the kXML 2 library which is copyright
-2002,2003, Stefan Haustein and released under the BSD License.
+2002,2003, Stefan Haustein and released under the MIT License.
 http://kxml.sourceforge.net/kxml2/
 
 The RoboVM Runtime Library includes software developed by W3C which is copyright
@@ -35,12 +35,14 @@ National de Recherche en Informatique et en Automatique, Keio University) and
 released under the W3C License. http://www.w3.org
 
 The RoboVM Runtime Library includes the Bouncy Castle Crypto APIs which is
-copyright 2000-2013 The Legion Of The Bouncy Castle and released under an
-adaptation of the MIT X11 License. http://www.bouncycastle.org
+copyright 2000-2013, The Legion of the Bouncy Castle Inc. and released under 
+the MIT license.
+http://www.bouncycastle.org
 
 The RoboVM Runtime Library includes the SQLite JDBC driver which is copyright
 Christian Werner <chw@ch-werner.de> and others and released under a BSD like
-license.
+license (TCL/TK License without the "GOVERNMENT USE" section).
+http://www.ch-werner.de/javasqlite/
 
 The RoboVM Runtime Library includes the Apache Xalan project which is copyright
 1999-2006 The Apache Software Foundation and released under the Apache License

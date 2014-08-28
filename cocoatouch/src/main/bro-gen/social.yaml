@@ -30,12 +30,12 @@ classes:
             '-addURL:':
                 trim_after_first_colon: true
             '+isAvailableForServiceType:':
-                name: "isAvailable"
+                name: isAvailable
                 parameters:
                     serviceType:
                         type: NSString
             '+composeViewControllerForServiceType:':
-                name: "create"
+                name: create
                 parameters:
                     serviceType:
                         type: NSString
@@ -43,24 +43,25 @@ classes:
     SLRequest: # DONE
         properties:
             'parameters':
-                type: "NSDictionary<NSString, NSString>"
+                type: "NSDictionary<NSString, NSObject>"
         methods:
             '-addMultipartData:withName:type:filename:':
                 trim_after_first_colon: true
             '-preparedURLRequest':
-                name: "getPreparedURLRequest"
+                name: getPreparedURLRequest
             '-performRequestWithHandler:':
-                name: "performRequest"
+                name: performRequest
                 parameters:
                     handler:
                         type: "@Block VoidBlock3<NSString, SLRequestMethod, NSURL>"
             '+requestForServiceType:requestMethod:URL:parameters:':
-                name: "create"
+                name: create
+                visibility: protected
                 parameters:
                     serviceType:
                         type: NSString
                     parameters:
-                        type: 'NSDictionary<NSString, NSString>'
+                        type: "NSDictionary<NSString, NSObject>"
 
 protocols: {}
 
@@ -72,9 +73,11 @@ functions:
         name: "Function__#{g[0]}"
 
 values:
-    SL(ServiceType.*):
-        name: "#{g[0]}"
+    SLServiceType(.*):
+        class: SLServiceType
+        name: "#{g[0]}Value"
         type: NSString
+        visibility: protected
 
     # Make sure we don't miss any values if new ones are introduced in a later version
     (SL.*):

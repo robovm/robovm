@@ -97,6 +97,12 @@ import org.robovm.apple.accounts.*;
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
+    /**
+     * @since Available in iOS 6.0 and later.
+     */
+    @GlobalValue(symbol="SKDownloadTimeRemainingUnknown", optional=true)
+    public static native double TimeRemainingUnknown();
+    
     
     /*</methods>*/
 }

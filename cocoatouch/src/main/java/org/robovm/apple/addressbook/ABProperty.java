@@ -50,7 +50,6 @@ import org.robovm.apple.corefoundation.*;
     protected ABProperty(String getterName) {
         lazyGlobalValue = new LazyGlobalValue<>(getClass(), getterName);
     }
-    
     /*<constructors>*//*</constructors>*/
     /*<properties>*//*</properties>*/
     /*<members>*//*</members>*/

@@ -42,74 +42,65 @@ import org.robovm.apple.corefoundation.*;
     /*</ptr>*/
     /*<bind>*/static { Bro.bind(CTRadioAccessTechnology.class); }/*</bind>*/
     /*<constants>*//*</constants>*/
-    public static CTRadioAccessTechnology GPRS = new CTRadioAccessTechnology() {
-        public NSString value() {
-            return GPRSValue();
-        }
-    };
-    public static CTRadioAccessTechnology Edge = new CTRadioAccessTechnology() {
-        public NSString value() {
-            return EdgeValue();
-        }
-    };
-    public static CTRadioAccessTechnology WCDMA = new CTRadioAccessTechnology() {
-        public NSString value() {
-            return WCDMAValue();
-        }
-    };
-    public static CTRadioAccessTechnology HSDPA = new CTRadioAccessTechnology() {
-       public NSString value() {
-           return HSDPAValue();
-       }
-    };
-    public static CTRadioAccessTechnology HSUPA = new CTRadioAccessTechnology() {
-        public NSString value() {
-            return HSUPAValue();
-        }
-    };
-    public static CTRadioAccessTechnology CDMA1x = new CTRadioAccessTechnology() {
-        public NSString value() {
-            return CDMA1xValue();
-        }
-    };
-    public static CTRadioAccessTechnology CDMAEVDORev0 = new CTRadioAccessTechnology() {
-        public NSString value() {
-            return CDMAEVDORev0Value();
-        }
-    };
-    public static CTRadioAccessTechnology CDMAEVDORevA = new CTRadioAccessTechnology() {
-        public NSString value() {
-            return CDMAEVDORevAValue();
-        }
-    };
-    public static CTRadioAccessTechnology CDMAEVDORevB = new CTRadioAccessTechnology() {
-        public NSString value() {
-            return CDMAEVDORevBValue();
-        }
-    };
-    public static CTRadioAccessTechnology eHRPD = new CTRadioAccessTechnology() {
-        public NSString value() {
-            return eHRPDValue();
-        }
-    };
-    public static CTRadioAccessTechnology LTE = new CTRadioAccessTechnology() {
-        public NSString value() {
-            return LTEValue();
-        }
-    };
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
+    public static final CTRadioAccessTechnology GPRS = new CTRadioAccessTechnology("GPRSValue");
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
+    public static final CTRadioAccessTechnology Edge = new CTRadioAccessTechnology("EdgeValue");
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
+    public static final CTRadioAccessTechnology WCDMA = new CTRadioAccessTechnology("WCDMAValue");
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
+    public static final CTRadioAccessTechnology HSDPA = new CTRadioAccessTechnology("HSDPAValue");
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
+    public static final CTRadioAccessTechnology HSUPA = new CTRadioAccessTechnology("HSUPAValue");
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
+    public static final CTRadioAccessTechnology CDMA1x = new CTRadioAccessTechnology("CDMA1xValue");
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
+    public static final CTRadioAccessTechnology CDMAEVDORev0 = new CTRadioAccessTechnology("CDMAEVDORev0Value");
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
+    public static final CTRadioAccessTechnology CDMAEVDORevA = new CTRadioAccessTechnology("CDMAEVDORevAValue");
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
+    public static final CTRadioAccessTechnology CDMAEVDORevB = new CTRadioAccessTechnology("CDMAEVDORevBValue");
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
+    public static final CTRadioAccessTechnology eHRPD = new CTRadioAccessTechnology("eHRPDValue");
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
+    public static final CTRadioAccessTechnology LTE = new CTRadioAccessTechnology("LTEValue");
     private static CTRadioAccessTechnology[] values = new CTRadioAccessTechnology[] {GPRS, Edge, WCDMA, HSDPA, HSUPA, CDMA1x, CDMAEVDORev0, CDMAEVDORevA, CDMAEVDORevB, eHRPD, LTE};
     
-    private CTRadioAccessTechnology() {
+    private final LazyGlobalValue<NSString> lazyGlobalValue;
+    
+    private CTRadioAccessTechnology(String getterName) {
+        lazyGlobalValue = new LazyGlobalValue<>(getClass(), getterName);
     }
     /*<constructors>*//*</constructors>*/
     /*<properties>*//*</properties>*/
     /*<members>*//*</members>*/
     public NSString value() {
-        return null;
+        return lazyGlobalValue.value();
     }
     
     public static CTRadioAccessTechnology valueOf(NSString value) {
-        if (value == null) throw new NullPointerException("Value cannot be null!");
         for (CTRadioAccessTechnology v : values) {
             if (v.value().equals(value)) {
                 return v;
@@ -118,7 +109,6 @@ import org.robovm.apple.corefoundation.*;
         throw new IllegalArgumentException("No constant with value " + value + " found in " 
             + /*<name>*/CTRadioAccessTechnology/*</name>*/.class.getName());
     }
-    /*<
     /*<methods>*/
     /**
      * @since Available in iOS 7.0 and later.

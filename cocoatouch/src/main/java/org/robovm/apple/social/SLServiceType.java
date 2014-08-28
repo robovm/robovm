@@ -19,6 +19,7 @@ package org.robovm.apple.social;
 import java.io.*;
 import java.nio.*;
 import java.util.*;
+
 import org.robovm.objc.*;
 import org.robovm.objc.annotation.*;
 import org.robovm.objc.block.*;
@@ -33,38 +34,74 @@ import org.robovm.apple.accounts.*;
 
 /*<javadoc>*/
 /*</javadoc>*/
-/*<annotations>*/@Library("Social") @Marshaler(NSString.AsStringMarshaler.class)/*</annotations>*/
-/*<visibility>*/public/*</visibility>*/ class /*<name>*/Social/*</name>*/ 
+/*<annotations>*/@Library("Social")/*</annotations>*/
+/*<visibility>*/public/*</visibility>*/ class /*<name>*/SLServiceType/*</name>*/ 
     extends /*<extends>*/Object/*</extends>*/ 
     /*<implements>*//*</implements>*/ {
 
     /*<ptr>*/
     /*</ptr>*/
-    /*<bind>*/static { Bro.bind(Social.class); }/*</bind>*/
+    /*<bind>*/static { Bro.bind(SLServiceType.class); }/*</bind>*/
     /*<constants>*//*</constants>*/
+    /**
+     * @since Available in iOS 6.0 and later.
+     */
+    public static final SLServiceType Twitter = new SLServiceType("TwitterValue");
+    /**
+     * @since Available in iOS 6.0 and later.
+     */
+    public static final SLServiceType Facebook = new SLServiceType("FacebookValue");
+    /**
+     * @since Available in iOS 6.0 and later.
+     */
+    public static final SLServiceType SinaWeibo = new SLServiceType("SinaWeiboValue");
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
+    public static final SLServiceType TencentWeibo = new SLServiceType("TencentWeiboValue");
+    private static SLServiceType[] values = new SLServiceType[] {Twitter, Facebook, SinaWeibo, TencentWeibo};
+    
+    private final LazyGlobalValue<NSString> lazyGlobalValue;
+    
+    private SLServiceType (String getterName) {
+        lazyGlobalValue = new LazyGlobalValue<>(getClass(), getterName);
+    }
     /*<constructors>*//*</constructors>*/
     /*<properties>*//*</properties>*/
     /*<members>*//*</members>*/
+    public NSString value() {
+        return lazyGlobalValue.value();
+    }
+    
+    public static SLServiceType valueOf(NSString value) {
+        for (SLServiceType v : values) {
+            if (v.value().equals(value)) {
+                return v;
+            }
+        }
+        throw new IllegalArgumentException("No constant with value " + value + " found in " 
+            + /*<name>*/SLServiceType/*</name>*/.class.getName());
+    }
     /*<methods>*/
     /**
      * @since Available in iOS 6.0 and later.
      */
     @GlobalValue(symbol="SLServiceTypeTwitter", optional=true)
-    public static native NSString ServiceTypeTwitter();
+    protected static native NSString TwitterValue();
     /**
      * @since Available in iOS 6.0 and later.
      */
     @GlobalValue(symbol="SLServiceTypeFacebook", optional=true)
-    public static native NSString ServiceTypeFacebook();
+    protected static native NSString FacebookValue();
     /**
      * @since Available in iOS 6.0 and later.
      */
     @GlobalValue(symbol="SLServiceTypeSinaWeibo", optional=true)
-    public static native NSString ServiceTypeSinaWeibo();
+    protected static native NSString SinaWeiboValue();
     /**
      * @since Available in iOS 7.0 and later.
      */
     @GlobalValue(symbol="SLServiceTypeTencentWeibo", optional=true)
-    public static native NSString ServiceTypeTencentWeibo();
+    protected static native NSString TencentWeiboValue();
     /*</methods>*/
 }

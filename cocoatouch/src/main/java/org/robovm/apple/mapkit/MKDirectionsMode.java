@@ -19,6 +19,7 @@ package org.robovm.apple.mapkit;
 import java.io.*;
 import java.nio.*;
 import java.util.*;
+
 import org.robovm.objc.*;
 import org.robovm.objc.annotation.*;
 import org.robovm.objc.block.*;
@@ -48,32 +49,26 @@ import org.robovm.apple.dispatch.*;
     /**
      * @since Available in iOS 6.0 and later.
      */
-    public static MKDirectionsMode Driving = new MKDirectionsMode() {
-        public NSString value() {
-            return DrivingValue();
-        }
-    };
+    public static final MKDirectionsMode Driving = new MKDirectionsMode("DrivingValue");
     /**
      * @since Available in iOS 6.0 and later.
      */
-    public static MKDirectionsMode Walking = new MKDirectionsMode() {
-        public NSString value() {
-            return WalkingValue();
-        }
-    };
+    public static final MKDirectionsMode Walking = new MKDirectionsMode("WalkingValue");
     private static MKDirectionsMode[] values = new MKDirectionsMode[] {Driving, Walking};
     
-    private MKDirectionsMode() {
+    private final LazyGlobalValue<NSString> lazyGlobalValue;
+    
+    private MKDirectionsMode(String getterName) {
+        lazyGlobalValue = new LazyGlobalValue<>(getClass(), getterName);
     }
     /*<constructors>*//*</constructors>*/
     /*<properties>*//*</properties>*/
     /*<members>*//*</members>*/
     public NSString value() {
-        return null;
+        return lazyGlobalValue.value();
     }
     
     public static MKDirectionsMode valueOf(NSString value) {
-        if (value == null) throw new NullPointerException("Value cannot be null!");
         for (MKDirectionsMode v : values) {
             if (v.value().equals(value)) {
                 return v;

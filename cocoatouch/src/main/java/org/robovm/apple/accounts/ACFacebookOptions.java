@@ -19,6 +19,7 @@ package org.robovm.apple.accounts;
 import java.io.*;
 import java.nio.*;
 import java.util.*;
+
 import org.robovm.objc.*;
 import org.robovm.objc.annotation.*;
 import org.robovm.objc.block.*;
@@ -62,6 +63,7 @@ import org.robovm.apple.foundation.*;
     /**
      * @since Available in iOS 6.0 and later.
      */
+    @SuppressWarnings("unchecked")
     public String[] getPermissions() {
         String[] permissions = new String[0];
         if (data.containsKey(PermissionsKey())) {

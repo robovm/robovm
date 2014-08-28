@@ -23,11 +23,11 @@ classes:
     SKPayment: # DONE
         methods:
             '+paymentWithProduct:':
-                name: "createFromProduct"
-                return_type: "SKPayment"
+                name: createFromProduct
+                return_type: SKPayment
             '+paymentWithProductIdentifier:':
-                name: "createFromProductIdentifier"
-                return_type: "SKPayment"
+                name: createFromProductIdentifier
+                return_type: SKPayment
     SKPaymentQueue: # DONE
         properties:
             'transactions':
@@ -36,7 +36,7 @@ classes:
             '-addPayment:':
                 trim_after_first_colon: true
             '-restoreCompletedTransactionsWithApplicationUsername:':
-                name: "restoreCompletedTransactions"
+                name: restoreCompletedTransactions
             '-finishTransaction:':
                 trim_after_first_colon: true
             '-startDownloads:':
@@ -64,7 +64,7 @@ classes:
             '-removeTransactionObserver:':
                 trim_after_first_colon: true
             '+defaultQueue':
-                name: "getDefaultQueue"
+                name: getDefaultQueue
     SKPaymentTransaction: # DONE
         properties:
             'downloads':
@@ -77,7 +77,7 @@ classes:
     SKProductsRequest: # DONE
         methods:
             '-initWithProductIdentifiers:':
-                name: "init"
+                name: init
                 parameters:
                     productIdentifiers:
                         type: "NSSet<NSString>"
@@ -90,10 +90,14 @@ classes:
     SKReceiptRefreshRequest: # DONE
         properties:
             'receiptProperties':
-                type: "NSDictionary<NSString, ?>"
+                name: receiptProperties0
+                visibility: protected
+                type: "NSDictionary<NSString, NSObject>"
         methods:
             '-initWithReceiptProperties:':
-                name: "init"
+                name: init
+                exclude: true
+                visibility: protected
                 parameters:
                     properties:
                         type: "NSDictionary<NSString, ?>"
@@ -101,7 +105,8 @@ classes:
     SKStoreProductViewController: # DONE
         methods:
             '-loadProductWithParameters:completionBlock:':
-                name: "loadProduct"
+                name: loadProduct
+                visibility: protected
                 parameters:
                     parameters:
                         type: "NSDictionary<NSString, ?>"
@@ -110,23 +115,23 @@ protocols:
     SKPaymentTransactionObserver: # DONE
         methods:
             '-paymentQueue:updatedTransactions:':
-                name: "updatedTransactions"
+                name: updatedTransactions
                 parameters:
                     queue: {}
                     transactions:
                         type: "NSArray<SKPaymentTransaction>"
             '-paymentQueue:removedTransactions:':
-                name: "removedTransactions"
+                name: removedTransactions
                 parameters:
                     queue: {}
                     transactions:
                         type: "NSArray<SKPaymentTransaction>"
             '-paymentQueue:restoreCompletedTransactionsFailedWithError:':
-                name: "restoreCompletedTransactionsFailed"
+                name: restoreCompletedTransactionsFailed
             '-paymentQueueRestoreCompletedTransactionsFinished:':
-                name: "restoreCompletedTransactionsFinished"
+                name: restoreCompletedTransactionsFinished
             '-paymentQueue:updatedDownloads:':
-                name: "updatedDownloads"
+                name: updatedDownloads
                 parameters:
                     queue: {}
                     downloads:
@@ -134,17 +139,17 @@ protocols:
     SKProductsRequestDelegate: # DONE
         methods:
             '-productsRequest:didReceiveResponse:':
-                name: "didReceiveResponse"
+                name: didReceiveResponse
     SKRequestDelegate: # DONE
         methods:
             '-requestDidFinish:':
-                name: "didFinish"
+                name: didFinish
             '-request:didFailWithError:':
-                name: "didFail"
+                name: didFail
     SKStoreProductViewControllerDelegate: # DONE
         methods:
             '-productViewControllerDidFinish:':
-                name: "didFinish"
+                name: didFinish
 
 functions:
     SK(TerminateForInvalidReceipt):
@@ -156,22 +161,27 @@ functions:
         class: StoreKit
         name: "Function__#{g[0]}"
 
-values:
-    SK(ReceiptProperty.*):
-        name: "#{g[0]}"
-        type: NSString
-        
+values: 
     SK(ErrorDomain):
         name: "#{g[0]}"
         type: NSString
         
-    SK(DownloadTimeRemainingUnknown):
+    SKDownload(TimeRemainingUnknown):
         name: "#{g[0]}"
+        class: SKDownload
         readonly: true
         
-    SK(StoreProductParameter.*):
-        name: "#{g[0]}"
+    SKReceiptProperty(.*):
+        class: SKReceiptRefreshRequestOptions
+        name: "#{g[0]}Key"
         type: NSString
+        visibility: protected
+        
+    SKStoreProductParameter(.*):
+        class: SKStoreProductParameters
+        name: "#{g[0]}Key"
+        type: NSString
+        visibility: protected
 
     # Make sure we don't miss any values if new ones are introduced in a later version
     (SK.*):

@@ -19,6 +19,7 @@ package org.robovm.apple.passkit;
 import java.io.*;
 import java.nio.*;
 import java.util.*;
+
 import org.robovm.objc.*;
 import org.robovm.objc.annotation.*;
 import org.robovm.objc.block.*;
@@ -32,25 +33,53 @@ import org.robovm.apple.uikit.*;
 
 /*<javadoc>*/
 /*</javadoc>*/
-/*<annotations>*/@Library("PassKit") @Marshaler(NSString.AsStringMarshaler.class)/*</annotations>*/
-/*<visibility>*/public/*</visibility>*/ class /*<name>*/PassKit/*</name>*/ 
+/*<annotations>*/@Library("PassKit")/*</annotations>*/
+/*<visibility>*/public/*</visibility>*/ class /*<name>*/PKRemovedPassInfo/*</name>*/ 
     extends /*<extends>*/Object/*</extends>*/ 
     /*<implements>*//*</implements>*/ {
 
     /*<ptr>*/
     /*</ptr>*/
-    /*<bind>*/static { Bro.bind(PassKit.class); }/*</bind>*/
+    /*<bind>*/static { Bro.bind(PKRemovedPassInfo.class); }/*</bind>*/
     /*<constants>*//*</constants>*/
+    private NSDictionary<NSString, ?> data;
+    
+    protected PKRemovedPassInfo (NSDictionary<NSString, ?> data) {
+        this.data = data;
+    }
     /*<constructors>*//*</constructors>*/
     /*<properties>*//*</properties>*/
     /*<members>*//*</members>*/
+    /**
+     * @since Available in iOS 6.0 and later.
+     */
+    public String getPassTypeIdentifier() {
+        if (data.containsKey(PassTypeIdentifierKey())) {
+            NSString val = (NSString)data.get(PassTypeIdentifierKey());
+            return val.toString();
+        }
+        return null;
+    }
+    /**
+     * @since Available in iOS 6.0 and later.
+     */
+    public String getSerialNumber() {
+        if (data.containsKey(SerialNumberKey())) {
+            NSString val = (NSString)data.get(SerialNumberKey());
+            return val.toString();
+        }
+        return null;
+    }
     /*<methods>*/
     /**
      * @since Available in iOS 6.0 and later.
      */
-    @GlobalValue(symbol="PKPassKitErrorDomain", optional=true)
-    public static native NSString PassKitErrorDomain();
-    @GlobalValue(symbol="PKErrorDomain", optional=true)
-    public static native NSString ErrorDomain();
+    @GlobalValue(symbol="PKPassLibraryPassTypeIdentifierUserInfoKey", optional=true)
+    protected static native NSString PassTypeIdentifierKey();
+    /**
+     * @since Available in iOS 6.0 and later.
+     */
+    @GlobalValue(symbol="PKPassLibrarySerialNumberUserInfoKey", optional=true)
+    protected static native NSString SerialNumberKey();
     /*</methods>*/
 }

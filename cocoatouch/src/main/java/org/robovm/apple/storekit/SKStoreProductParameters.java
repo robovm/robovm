@@ -19,6 +19,7 @@ package org.robovm.apple.storekit;
 import java.io.*;
 import java.nio.*;
 import java.util.*;
+
 import org.robovm.objc.*;
 import org.robovm.objc.annotation.*;
 import org.robovm.objc.block.*;
@@ -33,23 +34,50 @@ import org.robovm.apple.accounts.*;
 
 /*<javadoc>*/
 /*</javadoc>*/
-/*<annotations>*/@Library("StoreKit") @Marshaler(NSString.AsStringMarshaler.class)/*</annotations>*/
-/*<visibility>*/public/*</visibility>*/ class /*<name>*/StoreKit/*</name>*/ 
+/*<annotations>*/@Library("StoreKit")/*</annotations>*/
+/*<visibility>*/public/*</visibility>*/ class /*<name>*/SKStoreProductParameters/*</name>*/ 
     extends /*<extends>*/Object/*</extends>*/ 
     /*<implements>*//*</implements>*/ {
 
     /*<ptr>*/
     /*</ptr>*/
-    /*<bind>*/static { Bro.bind(StoreKit.class); }/*</bind>*/
+    private NSDictionary<NSString, NSObject> data = new NSMutableDictionary<NSString, NSObject>();
+    
+    public SKStoreProductParameters() {
+    }
+    /**
+     * @since Available in iOS 6.0 and later.
+     */
+    public SKStoreProductParameters(String iTunesItemIdentifier) {
+        setITunesItemIdentifier(iTunesItemIdentifier);
+    }
+    /*<bind>*/static { Bro.bind(SKStoreProductParameters.class); }/*</bind>*/
     /*<constants>*//*</constants>*/
     /*<constructors>*//*</constructors>*/
     /*<properties>*//*</properties>*/
     /*<members>*//*</members>*/
+    public NSDictionary<NSString, NSObject> getDictionary() {
+        return data;
+    }
+    
+    /**
+     * @since Available in iOS 6.0 and later.
+     */
+    public String getITunesItemIdentifier() {
+        if (data.containsKey(ITunesItemIdentifierKey())) {
+            NSString val = (NSString)data.get(ITunesItemIdentifierKey());
+            return val.toString();
+        }
+        return null;
+    }
+    public void setITunesItemIdentifier(String identifier) {
+        data.put(ITunesItemIdentifierKey(), new NSString(identifier));
+    }
     /*<methods>*/
     /**
-     * @since Available in iOS 3.0 and later.
+     * @since Available in iOS 6.0 and later.
      */
-    @GlobalValue(symbol="SKErrorDomain", optional=true)
-    public static native NSString ErrorDomain();
+    @GlobalValue(symbol="SKStoreProductParameterITunesItemIdentifier", optional=true)
+    protected static native NSString ITunesItemIdentifierKey();
     /*</methods>*/
 }

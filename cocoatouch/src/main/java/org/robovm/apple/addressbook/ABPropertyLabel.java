@@ -19,6 +19,7 @@ package org.robovm.apple.addressbook;
 import java.io.*;
 import java.nio.*;
 import java.util.*;
+
 import org.robovm.objc.*;
 import org.robovm.objc.annotation.*;
 import org.robovm.objc.block.*;
@@ -41,31 +42,21 @@ import org.robovm.apple.corefoundation.*;
     /*</ptr>*/
     /*<bind>*/static { Bro.bind(ABPropertyLabel.class); }/*</bind>*/
     /*<constants>*//*</constants>*/
-    public static final ABPropertyLabel Work = new ABPropertyLabel() {
-        public CFString value() {
-            return WorkLabel();
-        }
-    };
-    public static final ABPropertyLabel Home = new ABPropertyLabel() {
-        public CFString value() {
-            return HomeLabel();
-        }
-    };
-    public static final ABPropertyLabel Other = new ABPropertyLabel() {
-        public CFString value() {
-            return OtherLabel();
-        }
-    };
-    static ABPropertyLabel[] values;
+    public static final ABPropertyLabel Work = new ABPropertyLabel("WorkLabel");
+    public static final ABPropertyLabel Home = new ABPropertyLabel("HomeLabel");
+    public static final ABPropertyLabel Other = new ABPropertyLabel("OtherLabel");
+    private static ABPropertyLabel[] values = new ABPropertyLabel[] {Work, Home, Other};
     
-    protected ABPropertyLabel () {
-        values = new ABPropertyLabel[] {Work, Home, Other};
+    private final LazyGlobalValue<CFString> lazyGlobalValue;
+    
+    protected ABPropertyLabel(String getterName) {
+        lazyGlobalValue = new LazyGlobalValue<>(getClass(), getterName);
     }
     /*<constructors>*//*</constructors>*/
     /*<properties>*//*</properties>*/
     /*<members>*//*</members>*/
     public CFString value() {
-        return null;
+        return lazyGlobalValue.value();
     }
     
     public static ABPropertyLabel valueOf(CFString value) {

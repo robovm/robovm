@@ -17,8 +17,10 @@ package org.robovm.apple.corefoundation;
 
 /*<imports>*/
 import java.io.*;
+import java.lang.reflect.Array;
 import java.nio.*;
 import java.util.*;
+
 import org.robovm.objc.*;
 import org.robovm.objc.annotation.*;
 import org.robovm.objc.block.*;
@@ -26,6 +28,7 @@ import org.robovm.rt.*;
 import org.robovm.rt.bro.*;
 import org.robovm.rt.bro.annotation.*;
 import org.robovm.rt.bro.ptr.*;
+import org.robovm.rt.bro.ptr.VoidPtr.VoidPtrPtr;
 import org.robovm.apple.dispatch.*;
 /*</imports>*/
 
@@ -44,6 +47,28 @@ import org.robovm.apple.dispatch.*;
     /*</constructors>*/
     /*<properties>*//*</properties>*/
     /*<members>*//*</members>*/
+    
+    public static CFArray create(CFType ... objects) {
+        if (objects == null) {
+            throw new NullPointerException("objects");
+        }
+        if (objects.length == 0) {
+            return create(null, null, 0, CoreFoundation.TypeArrayCallBacks());
+        }
+        CFTypePtr values = Struct.allocate(CFTypePtr.class, objects.length);
+        values.set(objects);
+        return create(null, values.as(VoidPtrPtr.class), objects.length, CoreFoundation.TypeArrayCallBacks());
+    }
+    
+    @SuppressWarnings("unchecked")
+    public <T extends NativeObject> T[] toArray(Class<T> type) {
+        T[] result = (T[]) Array.newInstance(type, (int) getCount());
+        for (int i = 0; i < result.length; i++) {
+            result[i] = getValueAtIndex(i).as(type);
+        }
+        return result;
+    }
+
     /*<methods>*/
     @Bridge(symbol="CFArrayGetTypeID", optional=true)
     public static native @MachineSizedUInt long getClassTypeID();

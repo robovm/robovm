@@ -18,6 +18,7 @@ package org.robovm.rt.bro.ptr;
 import java.lang.reflect.ParameterizedType;
 import java.util.concurrent.ConcurrentHashMap;
 
+import org.robovm.rt.VM;
 import org.robovm.rt.bro.MarshalerLookup;
 import org.robovm.rt.bro.NativeObject;
 import org.robovm.rt.bro.Struct;
@@ -73,6 +74,34 @@ public abstract class Ptr<S extends NativeObject, T extends Ptr<S, T>> extends S
         return (T) this;
     }
 
+    /**
+     * Copies {@code src.length} objects from {@code src} to the memory pointed 
+     * to by this {@link Ptr}. 
+     * 
+     * @param src the source.
+     */
+    public void set(S[] src) {
+        set(src, 0, src.length);
+    }
+    
+    /**
+     * Copies {@code count} objects from {@code src} starting at offset {@code offset}
+     * to the memory pointed to by this {@link Ptr}. 
+     * 
+     * @param src the source.
+     * @param offset the offset within the source array to start copying from.
+     * @param count the number of elements to copy.
+     */
+    public void set(S[] src, int offset, int count) {
+        int ptrSize = _sizeOf();
+        long ptr = getHandle() + ptrSize * offset;
+        for (int i = 0; i < count; i++) {
+            S o = src[i];
+            VM.setPointer(ptr, o == null ? 0L : o.getHandle());
+            ptr += ptrSize;
+        }
+    }
+    
     @SuppressWarnings("unchecked")
     private S toObject(long handle) {
         Class<S> type = (Class<S>) TYPE_CACHE.get(getClass());

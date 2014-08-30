@@ -226,6 +226,10 @@ public abstract class Struct<T extends Struct<T>> extends NativeObject implement
         return 0;
     }
     
+    public static int sizeOf(Struct<?> struct) {
+        return struct._sizeOf();
+    }
+    
     public static int offsetOf(int index) {
         return 0;
     }

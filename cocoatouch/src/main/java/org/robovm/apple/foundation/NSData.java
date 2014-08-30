@@ -95,6 +95,14 @@ import org.robovm.apple.security.*;
         initObject(initWithBytesNoCopy$length$freeWhenDone$(bytes.getHandle(), length, freeWhenDone));
     }
     
+    public <T extends Struct<T>> NSData(T structData) {
+        super((SkipInit) null);
+        if (structData == null) {
+            throw new NullPointerException("structData");
+        }
+        initObject(initWithBytes$length$(structData.getHandle(), Struct.sizeOf(structData)));
+    }
+    
     /*<properties>*/
     
     /*</properties>*/
@@ -109,6 +117,13 @@ import org.robovm.apple.security.*;
         byte[] bytes = new byte[length];
         getBytes$length$(VM.getArrayValuesAddress(bytes), length);
         return bytes;
+    }
+    
+    public <T extends Struct<T>> T getStructData(Class<T> type) {
+        int length = (int) getLength();
+        T struct = Struct.allocate(type);
+        getBytes$length$(struct.getHandle(), length);
+        return struct;
     }
     
     public static NSData fromBaseEncodedData(NSData base64Data, NSDataBase64DecodingOptions options) {

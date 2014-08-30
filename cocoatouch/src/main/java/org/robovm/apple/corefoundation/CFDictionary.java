@@ -19,6 +19,7 @@ package org.robovm.apple.corefoundation;
 import java.io.*;
 import java.nio.*;
 import java.util.*;
+
 import org.robovm.objc.*;
 import org.robovm.objc.annotation.*;
 import org.robovm.objc.block.*;
@@ -58,13 +59,13 @@ import org.robovm.apple.dispatch.*;
     }
     
     public void put(NativeObject key, NativeObject value) {
-        throw new UnsupportedOperationException();
+        throw new UnsupportedOperationException("CFDictionary is immutable. Use CFMutableDictionary instead!");
     }
     public void remove(NativeObject key) {
-        throw new UnsupportedOperationException();
+        throw new UnsupportedOperationException("CFDictionary is immutable. Use CFMutableDictionary instead!");
     }
     public void clear() {
-        throw new UnsupportedOperationException();
+        throw new UnsupportedOperationException("CFDictionary is immutable. Use CFMutableDictionary instead!");
     }
     /*<methods>*/
     @Bridge(symbol="CFDictionaryGetTypeID", optional=true)

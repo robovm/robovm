@@ -19,6 +19,7 @@ package org.robovm.apple.corefoundation;
 import java.io.*;
 import java.nio.*;
 import java.util.*;
+
 import org.robovm.objc.*;
 import org.robovm.objc.annotation.*;
 import org.robovm.objc.block.*;
@@ -84,9 +85,18 @@ import org.robovm.apple.foundation.NSObject.NSObjectPtr;
     public boolean contains(NativeObject value) {
         return containsValue(value.as(VoidPtr.class));
     }
-    
     public @MachineSizedSInt long size() {
         return getCount();
+    }
+    
+    public void add(NativeObject value) {
+        throw new UnsupportedOperationException("CFSet is immutable. Use CFMutableSet instead!");
+    }
+    public void remove(NativeObject value) {
+        throw new UnsupportedOperationException("CFSet is immutable. Use CFMutableSet instead!");
+    }
+    public void clear() {
+        throw new UnsupportedOperationException("CFSet is immutable. Use CFMutableSet instead!");
     }
     /*<methods>*/
     @Bridge(symbol="CFSetGetTypeID", optional=true)

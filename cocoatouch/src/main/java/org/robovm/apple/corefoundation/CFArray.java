@@ -19,6 +19,7 @@ package org.robovm.apple.corefoundation;
 import java.io.*;
 import java.nio.*;
 import java.util.*;
+
 import org.robovm.objc.*;
 import org.robovm.objc.annotation.*;
 import org.robovm.objc.block.*;
@@ -94,9 +95,24 @@ import org.robovm.apple.foundation.NSObject.NSObjectPtr;
     public <T extends NativeObject> T get(@MachineSizedSInt long index, Class<T> type) {
         return getValueAtIndex(index).as(type);
     }
-    
     public @MachineSizedSInt long size() {
         return getCount();
+    }
+    
+    public void add(NativeObject value) {
+        throw new UnsupportedOperationException("CFArray is immutable. Use CFMutableArray instead!");
+    }
+    public void insert(@MachineSizedSInt long idx, NativeObject value) {
+        throw new UnsupportedOperationException("CFArray is immutable. Use CFMutableArray instead!");
+    }
+    public void replace(@MachineSizedSInt long idx, NativeObject value) {
+        throw new UnsupportedOperationException("CFArray is immutable. Use CFMutableArray instead!");
+    }
+    public void remove(@MachineSizedSInt long idx) {
+        throw new UnsupportedOperationException("CFArray is immutable. Use CFMutableArray instead!");
+    }
+    public void clear() {
+        throw new UnsupportedOperationException("CFArray is immutable. Use CFMutableArray instead!");
     }
     /*<methods>*/
     @Bridge(symbol="CFArrayGetTypeID", optional=true)

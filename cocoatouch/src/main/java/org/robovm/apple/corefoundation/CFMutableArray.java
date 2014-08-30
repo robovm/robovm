@@ -43,6 +43,25 @@ import org.robovm.apple.dispatch.*;
     protected CFMutableArray() {}
     /*<properties>*//*</properties>*/
     /*<members>*//*</members>*/
+    public static CFMutableArray create() {
+        return createMutable(null, 0, CoreFoundation.TypeArrayCallBacks());
+    }
+    
+    public void add(NativeObject value) {
+        appendValue(value.as(VoidPtr.class));
+    }
+    public void insert(@MachineSizedSInt long idx, NativeObject value) {
+        insertValueAtIndex(idx, value.as(VoidPtr.class));
+    }
+    public void replace(@MachineSizedSInt long idx, NativeObject value) {
+        setValueAtIndex(idx, value.as(VoidPtr.class));
+    }
+    public void remove(@MachineSizedSInt long idx) {
+        removeValueAtIndex(idx);
+    }
+    public void clear() {
+        removeAllValues();
+    }
     /*<methods>*/
     @Bridge(symbol="CFArrayCreateMutable", optional=true)
     protected static native CFMutableArray createMutable(CFAllocator allocator, @MachineSizedSInt long capacity, CFArrayCallBacks callBacks);

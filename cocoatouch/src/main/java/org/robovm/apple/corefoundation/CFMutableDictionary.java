@@ -28,7 +28,6 @@ import org.robovm.rt.bro.annotation.*;
 import org.robovm.rt.bro.ptr.*;
 import org.robovm.apple.dispatch.*;
 /*</imports>*/
-import org.robovm.apple.foundation.NSObject;
 
 /*<javadoc>*/
 /*</javadoc>*/

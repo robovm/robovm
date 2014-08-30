@@ -43,20 +43,33 @@ import org.robovm.apple.dispatch.*;
     protected CFMutableSet() {}
     /*<properties>*//*</properties>*/
     /*<members>*//*</members>*/
+    public static CFMutableSet create() {
+        return createMutable(null, 0, CoreFoundation.TypeSetCallBacks());
+    }
+    
+    public void add(NativeObject value) {
+        addValue(value.as(VoidPtr.class));
+    }
+    public void remove(NativeObject value) {
+        removeValue(value.as(VoidPtr.class));
+    }
+    public void clear() {
+        removeAllValues();
+    }
     /*<methods>*/
     @Bridge(symbol="CFSetCreateMutable", optional=true)
-    public static native CFMutableSet createMutable(CFAllocator allocator, @MachineSizedSInt long capacity, CFSetCallBacks callBacks);
+    protected static native CFMutableSet createMutable(CFAllocator allocator, @MachineSizedSInt long capacity, CFSetCallBacks callBacks);
     @Bridge(symbol="CFSetCreateMutableCopy", optional=true)
-    public static native CFMutableSet createMutableCopy(CFAllocator allocator, @MachineSizedSInt long capacity, CFSet theSet);
+    protected static native CFMutableSet createMutableCopy(CFAllocator allocator, @MachineSizedSInt long capacity, CFSet theSet);
     @Bridge(symbol="CFSetAddValue", optional=true)
-    public native void addValue(VoidPtr value);
+    protected native void addValue(VoidPtr value);
     @Bridge(symbol="CFSetReplaceValue", optional=true)
-    public native void replaceValue(VoidPtr value);
+    protected native void replaceValue(VoidPtr value);
     @Bridge(symbol="CFSetSetValue", optional=true)
-    public native void setValue(VoidPtr value);
+    protected native void setValue(VoidPtr value);
     @Bridge(symbol="CFSetRemoveValue", optional=true)
-    public native void removeValue(VoidPtr value);
+    protected native void removeValue(VoidPtr value);
     @Bridge(symbol="CFSetRemoveAllValues", optional=true)
-    public native void removeAllValues();
+    protected native void removeAllValues();
     /*</methods>*/
 }

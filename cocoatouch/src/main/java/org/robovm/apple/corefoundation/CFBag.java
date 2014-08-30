@@ -48,22 +48,22 @@ import org.robovm.apple.dispatch.*;
     @Bridge(symbol="CFBagGetTypeID", optional=true)
     public static native @MachineSizedUInt long getClassTypeID();
     @Bridge(symbol="CFBagCreate", optional=true)
-    public static native CFBag create(CFAllocator allocator, VoidPtr.VoidPtrPtr values, @MachineSizedSInt long numValues, CFBagCallBacks callBacks);
+    protected static native CFBag create(CFAllocator allocator, VoidPtr.VoidPtrPtr values, @MachineSizedSInt long numValues, CFBagCallBacks callBacks);
     @Bridge(symbol="CFBagCreateCopy", optional=true)
-    public static native CFBag createCopy(CFAllocator allocator, CFBag theBag);
+    protected static native CFBag createCopy(CFAllocator allocator, CFBag theBag);
     @Bridge(symbol="CFBagGetCount", optional=true)
-    public native @MachineSizedSInt long getCount();
+    protected native @MachineSizedSInt long getCount();
     @Bridge(symbol="CFBagGetCountOfValue", optional=true)
-    public native @MachineSizedSInt long getCountOfValue(VoidPtr value);
+    protected native @MachineSizedSInt long getCountOfValue(VoidPtr value);
     @Bridge(symbol="CFBagContainsValue", optional=true)
-    public native boolean containsValue(VoidPtr value);
+    protected native boolean containsValue(VoidPtr value);
     @Bridge(symbol="CFBagGetValue", optional=true)
-    public native VoidPtr getValue(VoidPtr value);
+    protected native VoidPtr getValue(VoidPtr value);
     @Bridge(symbol="CFBagGetValueIfPresent", optional=true)
-    public native boolean getValueIfPresent(VoidPtr candidate, VoidPtr.VoidPtrPtr value);
+    protected native boolean getValueIfPresent(VoidPtr candidate, VoidPtr.VoidPtrPtr value);
     @Bridge(symbol="CFBagGetValues", optional=true)
-    public native void getValues(VoidPtr.VoidPtrPtr values);
+    protected native void getValues(VoidPtr.VoidPtrPtr values);
     @Bridge(symbol="CFBagApplyFunction", optional=true)
-    public native void applyFunction(FunctionPtr applier, VoidPtr context);
+    protected native void applyFunction(FunctionPtr applier, VoidPtr context);
     /*</methods>*/
 }

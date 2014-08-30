@@ -457,10 +457,6 @@ import org.robovm.apple.dispatch.*;
      */
     @GlobalValue(symbol="kCFErrorFilePathKey", optional=true)
     public static native CFString ErrorFilePathKey();
-    @GlobalValue(symbol="kCFBooleanTrue", optional=true)
-    public static native CFBoolean BooleanTrue();
-    @GlobalValue(symbol="kCFBooleanFalse", optional=true)
-    public static native CFBoolean BooleanFalse();
     @GlobalValue(symbol="kCFNumberPositiveInfinity", optional=true)
     public static native CFNumber NumberPositiveInfinity();
     @GlobalValue(symbol="kCFNumberNegativeInfinity", optional=true)

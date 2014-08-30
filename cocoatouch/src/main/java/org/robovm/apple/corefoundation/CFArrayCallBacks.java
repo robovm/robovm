@@ -33,7 +33,7 @@ import org.robovm.apple.dispatch.*;
 
 /*</javadoc>*/
 /*<annotations>*//*</annotations>*/
-/*<visibility>*/public/*</visibility>*/ class /*<name>*/CFArrayCallBacks/*</name>*/ 
+/*<visibility>*//*</visibility>*/ class /*<name>*/CFArrayCallBacks/*</name>*/ 
     extends /*<extends>*/Struct<CFArrayCallBacks>/*</extends>*/ 
     /*<implements>*//*</implements>*/ {
 

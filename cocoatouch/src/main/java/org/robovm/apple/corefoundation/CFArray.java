@@ -17,10 +17,8 @@ package org.robovm.apple.corefoundation;
 
 /*<imports>*/
 import java.io.*;
-import java.lang.reflect.Array;
 import java.nio.*;
 import java.util.*;
-
 import org.robovm.objc.*;
 import org.robovm.objc.annotation.*;
 import org.robovm.objc.block.*;
@@ -28,9 +26,10 @@ import org.robovm.rt.*;
 import org.robovm.rt.bro.*;
 import org.robovm.rt.bro.annotation.*;
 import org.robovm.rt.bro.ptr.*;
-import org.robovm.rt.bro.ptr.VoidPtr.VoidPtrPtr;
 import org.robovm.apple.dispatch.*;
 /*</imports>*/
+import org.robovm.apple.foundation.NSObject;
+import org.robovm.apple.foundation.NSObject.NSObjectPtr;
 
 /*<javadoc>*/
 /*</javadoc>*/
@@ -47,6 +46,29 @@ import org.robovm.apple.dispatch.*;
     /*</constructors>*/
     /*<properties>*//*</properties>*/
     /*<members>*//*</members>*/
+    public static CFArray create(Collection<NativeObject> objects) {
+        if (objects == null) {
+            throw new NullPointerException("objects");
+        }
+        if (objects.size() == 0 || objects.iterator().next() instanceof CFType) {
+            return create(objects.toArray(new CFType[objects.size()]));
+        }
+        if (objects.iterator().next() instanceof NSObject) {
+            return create(objects.toArray(new NSObject[objects.size()]));
+        }
+        throw new IllegalArgumentException("items can only be of type CFType or NSObject!");
+    }
+    public static CFArray create(NSObject ... objects) {
+        if (objects == null) {
+            throw new NullPointerException("objects");
+        }
+        if (objects.length == 0) {
+            return create(null, null, 0, CoreFoundation.TypeArrayCallBacks());
+        }
+        NSObjectPtr values = Struct.allocate(NSObjectPtr.class, objects.length);
+        values.set(objects);
+        return create(null, values.as(VoidPtr.VoidPtrPtr.class), objects.length, CoreFoundation.TypeArrayCallBacks());
+    }
     
     public static CFArray create(CFType ... objects) {
         if (objects == null) {
@@ -57,42 +79,49 @@ import org.robovm.apple.dispatch.*;
         }
         CFTypePtr values = Struct.allocate(CFTypePtr.class, objects.length);
         values.set(objects);
-        return create(null, values.as(VoidPtrPtr.class), objects.length, CoreFoundation.TypeArrayCallBacks());
+        return create(null, values.as(VoidPtr.VoidPtrPtr.class), objects.length, CoreFoundation.TypeArrayCallBacks());
     }
     
     @SuppressWarnings("unchecked")
     public <T extends NativeObject> T[] toArray(Class<T> type) {
-        T[] result = (T[]) Array.newInstance(type, (int) getCount());
+        T[] result = (T[]) java.lang.reflect.Array.newInstance(type, (int) getCount());
         for (int i = 0; i < result.length; i++) {
-            result[i] = getValueAtIndex(i).as(type);
+            result[i] = get(i, type);
         }
         return result;
     }
-
+    
+    public <T extends NativeObject> T get(@MachineSizedSInt long index, Class<T> type) {
+        return getValueAtIndex(index).as(type);
+    }
+    
+    public @MachineSizedSInt long size() {
+        return getCount();
+    }
     /*<methods>*/
     @Bridge(symbol="CFArrayGetTypeID", optional=true)
     public static native @MachineSizedUInt long getClassTypeID();
     @Bridge(symbol="CFArrayCreate", optional=true)
-    public static native CFArray create(CFAllocator allocator, VoidPtr.VoidPtrPtr values, @MachineSizedSInt long numValues, CFArrayCallBacks callBacks);
+    protected static native CFArray create(CFAllocator allocator, VoidPtr.VoidPtrPtr values, @MachineSizedSInt long numValues, CFArrayCallBacks callBacks);
     @Bridge(symbol="CFArrayCreateCopy", optional=true)
-    public static native CFArray createCopy(CFAllocator allocator, CFArray theArray);
+    protected static native CFArray createCopy(CFAllocator allocator, CFArray theArray);
     @Bridge(symbol="CFArrayGetCount", optional=true)
-    public native @MachineSizedSInt long getCount();
+    protected native @MachineSizedSInt long getCount();
     @Bridge(symbol="CFArrayGetCountOfValue", optional=true)
-    public native @MachineSizedSInt long getCountOfValue(@ByVal CFRange range, VoidPtr value);
+    protected native @MachineSizedSInt long getCountOfValue(@ByVal CFRange range, VoidPtr value);
     @Bridge(symbol="CFArrayContainsValue", optional=true)
-    public native boolean containsValue(@ByVal CFRange range, VoidPtr value);
+    protected native boolean containsValue(@ByVal CFRange range, VoidPtr value);
     @Bridge(symbol="CFArrayGetValueAtIndex", optional=true)
-    public native VoidPtr getValueAtIndex(@MachineSizedSInt long idx);
+    protected native VoidPtr getValueAtIndex(@MachineSizedSInt long idx);
     @Bridge(symbol="CFArrayGetValues", optional=true)
-    public native void getValues(@ByVal CFRange range, VoidPtr.VoidPtrPtr values);
+    protected native void getValues(@ByVal CFRange range, VoidPtr.VoidPtrPtr values);
     @Bridge(symbol="CFArrayApplyFunction", optional=true)
-    public native void applyFunction(@ByVal CFRange range, FunctionPtr applier, VoidPtr context);
+    protected native void applyFunction(@ByVal CFRange range, FunctionPtr applier, VoidPtr context);
     @Bridge(symbol="CFArrayGetFirstIndexOfValue", optional=true)
-    public native @MachineSizedSInt long getFirstIndexOfValue(@ByVal CFRange range, VoidPtr value);
+    protected native @MachineSizedSInt long getFirstIndexOfValue(@ByVal CFRange range, VoidPtr value);
     @Bridge(symbol="CFArrayGetLastIndexOfValue", optional=true)
-    public native @MachineSizedSInt long getLastIndexOfValue(@ByVal CFRange range, VoidPtr value);
+    protected native @MachineSizedSInt long getLastIndexOfValue(@ByVal CFRange range, VoidPtr value);
     @Bridge(symbol="CFArrayBSearchValues", optional=true)
-    public native @MachineSizedSInt long bSearchValues(@ByVal CFRange range, VoidPtr value, FunctionPtr comparator, VoidPtr context);
+    protected native @MachineSizedSInt long bSearchValues(@ByVal CFRange range, VoidPtr value, FunctionPtr comparator, VoidPtr context);
     /*</methods>*/
 }

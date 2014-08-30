@@ -28,6 +28,8 @@ import org.robovm.rt.bro.annotation.*;
 import org.robovm.rt.bro.ptr.*;
 import org.robovm.apple.dispatch.*;
 /*</imports>*/
+import org.robovm.apple.foundation.NSObject;
+import org.robovm.apple.foundation.NSObject.NSObjectPtr;
 
 /*<javadoc>*/
 /*</javadoc>*/
@@ -44,26 +46,68 @@ import org.robovm.apple.dispatch.*;
     /*</constructors>*/
     /*<properties>*//*</properties>*/
     /*<members>*//*</members>*/
+    public static CFSet create(Collection<NativeObject> objects) {
+        if (objects == null) {
+            throw new NullPointerException("objects");
+        }
+        if (objects.size() == 0 || objects.iterator().next() instanceof CFType) {
+            return create(objects.toArray(new CFType[objects.size()]));
+        }
+        if (objects.iterator().next() instanceof NSObject) {
+            return create(objects.toArray(new NSObject[objects.size()]));
+        }
+        throw new IllegalArgumentException("items can only be of type CFType or NSObject!");
+    }
+    public static CFSet create(NSObject ... objects) {
+        if (objects == null) {
+            throw new NullPointerException("objects");
+        }
+        if (objects.length == 0) {
+            return create(null, null, 0, CoreFoundation.TypeSetCallBacks());
+        }
+        NSObjectPtr values = Struct.allocate(NSObjectPtr.class, objects.length);
+        values.set(objects);
+        return create(null, values.as(VoidPtr.VoidPtrPtr.class), objects.length, CoreFoundation.TypeSetCallBacks());
+    }
+    public static CFSet create(CFType ... objects) {
+        if (objects == null) {
+            throw new NullPointerException("objects");
+        }
+        if (objects.length == 0) {
+            return create(null, null, 0, CoreFoundation.TypeSetCallBacks());
+        }
+        CFTypePtr values = Struct.allocate(CFTypePtr.class, objects.length);
+        values.set(objects);
+        return create(null, values.as(VoidPtr.VoidPtrPtr.class), objects.length, CoreFoundation.TypeSetCallBacks());
+    }
+    
+    public boolean contains(NativeObject value) {
+        return containsValue(value.as(VoidPtr.class));
+    }
+    
+    public @MachineSizedSInt long size() {
+        return getCount();
+    }
     /*<methods>*/
     @Bridge(symbol="CFSetGetTypeID", optional=true)
     public static native @MachineSizedUInt long getClassTypeID();
     @Bridge(symbol="CFSetCreate", optional=true)
-    public static native CFSet create(CFAllocator allocator, VoidPtr.VoidPtrPtr values, @MachineSizedSInt long numValues, CFSetCallBacks callBacks);
+    protected static native CFSet create(CFAllocator allocator, VoidPtr.VoidPtrPtr values, @MachineSizedSInt long numValues, CFSetCallBacks callBacks);
     @Bridge(symbol="CFSetCreateCopy", optional=true)
-    public static native CFSet createCopy(CFAllocator allocator, CFSet theSet);
+    protected static native CFSet createCopy(CFAllocator allocator, CFSet theSet);
     @Bridge(symbol="CFSetGetCount", optional=true)
-    public native @MachineSizedSInt long getCount();
+    protected native @MachineSizedSInt long getCount();
     @Bridge(symbol="CFSetGetCountOfValue", optional=true)
-    public native @MachineSizedSInt long getCountOfValue(VoidPtr value);
+    protected native @MachineSizedSInt long getCountOfValue(VoidPtr value);
     @Bridge(symbol="CFSetContainsValue", optional=true)
-    public native boolean containsValue(VoidPtr value);
+    protected native boolean containsValue(VoidPtr value);
     @Bridge(symbol="CFSetGetValue", optional=true)
-    public native VoidPtr getValue(VoidPtr value);
+    protected native VoidPtr getValue(VoidPtr value);
     @Bridge(symbol="CFSetGetValueIfPresent", optional=true)
-    public native boolean getValueIfPresent(VoidPtr candidate, VoidPtr.VoidPtrPtr value);
+    protected native boolean getValueIfPresent(VoidPtr candidate, VoidPtr.VoidPtrPtr value);
     @Bridge(symbol="CFSetGetValues", optional=true)
-    public native void getValues(VoidPtr.VoidPtrPtr values);
+    protected native void getValues(VoidPtr.VoidPtrPtr values);
     @Bridge(symbol="CFSetApplyFunction", optional=true)
-    public native void applyFunction(FunctionPtr applier, VoidPtr context);
+    protected native void applyFunction(FunctionPtr applier, VoidPtr context);
     /*</methods>*/
 }

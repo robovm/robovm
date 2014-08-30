@@ -45,11 +45,11 @@ import org.robovm.apple.dispatch.*;
     /*<members>*//*</members>*/
     /*<methods>*/
     @Bridge(symbol="CFStringCreateMutable", optional=true)
-    public static native CFMutableString createMutable(CFAllocator alloc, @MachineSizedSInt long maxLength);
+    protected static native CFMutableString createMutable(CFAllocator alloc, @MachineSizedSInt long maxLength);
     @Bridge(symbol="CFStringCreateMutableCopy", optional=true)
-    public static native CFMutableString createMutableCopy(CFAllocator alloc, @MachineSizedSInt long maxLength, CFString theString);
+    protected static native CFMutableString createMutableCopy(CFAllocator alloc, @MachineSizedSInt long maxLength, CFString theString);
     @Bridge(symbol="CFStringCreateMutableWithExternalCharactersNoCopy", optional=true)
-    public static native CFMutableString createMutableWithExternalCharactersNoCopy(CFAllocator alloc, ShortPtr chars, @MachineSizedSInt long numChars, @MachineSizedSInt long capacity, CFAllocator externalCharactersAllocator);
+    protected static native CFMutableString createMutableWithExternalCharactersNoCopy(CFAllocator alloc, ShortPtr chars, @MachineSizedSInt long numChars, @MachineSizedSInt long capacity, CFAllocator externalCharactersAllocator);
     @Bridge(symbol="CFStringAppend", optional=true)
     public native void append(CFString appendedString);
     @Bridge(symbol="CFStringAppendCharacters", optional=true)

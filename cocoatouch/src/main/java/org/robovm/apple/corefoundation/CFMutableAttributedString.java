@@ -45,9 +45,9 @@ import org.robovm.apple.dispatch.*;
     /*<members>*//*</members>*/
     /*<methods>*/
     @Bridge(symbol="CFAttributedStringCreateMutableCopy", optional=true)
-    public static native CFMutableAttributedString createMutableCopy(CFAllocator alloc, @MachineSizedSInt long maxLength, CFAttributedString aStr);
+    protected static native CFMutableAttributedString createMutableCopy(CFAllocator alloc, @MachineSizedSInt long maxLength, CFAttributedString aStr);
     @Bridge(symbol="CFAttributedStringCreateMutable", optional=true)
-    public static native CFMutableAttributedString createMutable(CFAllocator alloc, @MachineSizedSInt long maxLength);
+    protected static native CFMutableAttributedString createMutable(CFAllocator alloc, @MachineSizedSInt long maxLength);
     @Bridge(symbol="CFAttributedStringReplaceString", optional=true)
     public native void replaceString(@ByVal CFRange range, CFString replacement);
     @Bridge(symbol="CFAttributedStringSetAttributes", optional=true)

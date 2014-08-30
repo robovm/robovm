@@ -28,6 +28,7 @@ import org.robovm.rt.bro.annotation.*;
 import org.robovm.rt.bro.ptr.*;
 import org.robovm.apple.dispatch.*;
 /*</imports>*/
+import org.robovm.apple.foundation.NSObject;
 
 /*<javadoc>*/
 /*</javadoc>*/
@@ -43,20 +44,33 @@ import org.robovm.apple.dispatch.*;
     protected CFMutableDictionary() {}
     /*<properties>*//*</properties>*/
     /*<members>*//*</members>*/
+    public static CFMutableDictionary create() {
+        return createMutable(null, 0, CoreFoundation.TypeDictionaryKeyCallBacks(), CoreFoundation.TypeDictionaryValueCallBacks());
+    }
+    
+    public void put(NativeObject key, NativeObject value) {
+        setValue(key.as(VoidPtr.class), value.as(VoidPtr.class));
+    }
+    public void remove(NativeObject key) {
+        removeValue(key.as(VoidPtr.class));
+    }
+    public void clear() {
+        removeAllValues();
+    }
     /*<methods>*/
     @Bridge(symbol="CFDictionaryCreateMutable", optional=true)
-    public static native CFMutableDictionary createMutable(CFAllocator allocator, @MachineSizedSInt long capacity, CFDictionaryKeyCallBacks keyCallBacks, CFDictionaryValueCallBacks valueCallBacks);
+    protected static native CFMutableDictionary createMutable(CFAllocator allocator, @MachineSizedSInt long capacity, CFDictionaryKeyCallBacks keyCallBacks, CFDictionaryValueCallBacks valueCallBacks);
     @Bridge(symbol="CFDictionaryCreateMutableCopy", optional=true)
-    public static native CFMutableDictionary createMutableCopy(CFAllocator allocator, @MachineSizedSInt long capacity, CFDictionary theDict);
+    protected static native CFMutableDictionary createMutableCopy(CFAllocator allocator, @MachineSizedSInt long capacity, CFDictionary theDict);
     @Bridge(symbol="CFDictionaryAddValue", optional=true)
-    public native void addValue(VoidPtr key, VoidPtr value);
+    protected native void addValue(VoidPtr key, VoidPtr value);
     @Bridge(symbol="CFDictionarySetValue", optional=true)
-    public native void setValue(VoidPtr key, VoidPtr value);
+    protected native void setValue(VoidPtr key, VoidPtr value);
     @Bridge(symbol="CFDictionaryReplaceValue", optional=true)
-    public native void replaceValue(VoidPtr key, VoidPtr value);
+    protected native void replaceValue(VoidPtr key, VoidPtr value);
     @Bridge(symbol="CFDictionaryRemoveValue", optional=true)
-    public native void removeValue(VoidPtr key);
+    protected native void removeValue(VoidPtr key);
     @Bridge(symbol="CFDictionaryRemoveAllValues", optional=true)
-    public native void removeAllValues();
+    protected native void removeAllValues();
     /*</methods>*/
 }

@@ -45,9 +45,9 @@ import org.robovm.apple.dispatch.*;
     /*<members>*//*</members>*/
     /*<methods>*/
     @Bridge(symbol="CFDataCreateMutable", optional=true)
-    public static native CFMutableData createMutable(CFAllocator allocator, @MachineSizedSInt long capacity);
+    protected static native CFMutableData createMutable(CFAllocator allocator, @MachineSizedSInt long capacity);
     @Bridge(symbol="CFDataCreateMutableCopy", optional=true)
-    public static native CFMutableData createMutableCopy(CFAllocator allocator, @MachineSizedSInt long capacity, CFData theData);
+    protected static native CFMutableData createMutableCopy(CFAllocator allocator, @MachineSizedSInt long capacity, CFData theData);
     @Bridge(symbol="CFDataGetMutableBytePtr", optional=true)
     public native BytePtr getMutableBytePtr();
     @Bridge(symbol="CFDataSetLength", optional=true)

@@ -60,7 +60,8 @@ enums:
 
 classes:
     CFAllocatorContext: {}
-    CFArrayCallBacks: {}
+    CFArrayCallBacks:
+        visibility: ''
     CFBagCallBacks: {}
     CFBinaryHeapCallBacks: {}
     CFBinaryHeapCompareContext: {}
@@ -303,10 +304,12 @@ functions:
     CF(.*)(CreateMutable.*):
         class: "CFMutable#{g[0]}"
         name: "#{g[1]}"
+        visibility: protected
         return_type: "CFMutable#{g[0]}"
     CF(Array|Bag|BitVector|Dictionary|Set)(Add.*):
         class: "CFMutable#{g[0]}"
         name: "#{g[1]}"
+        visibility: protected
         parameters:
             theArray: {type: CFMutableArray}
             theBag: {type: CFMutableBag}
@@ -315,6 +318,7 @@ functions:
     CF(Array|Bag|BitVector|Dictionary|Set)(Append.*):
         class: "CFMutable#{g[0]}"
         name: "#{g[1]}"
+        visibility: protected
         parameters:
             theArray: {type: CFMutableArray}
             theBag: {type: CFMutableBag}
@@ -323,6 +327,7 @@ functions:
     CF(Array|Bag|BitVector|Dictionary|Set)(Exchange.*):
         class: "CFMutable#{g[0]}"
         name: "#{g[1]}"
+        visibility: protected
         parameters:
             theArray: {type: CFMutableArray}
             theBag: {type: CFMutableBag}
@@ -331,6 +336,7 @@ functions:
     CF(Array|Bag|BitVector|Dictionary|Set)(Insert.*):
         class: "CFMutable#{g[0]}"
         name: "#{g[1]}"
+        visibility: protected
         parameters:
             theArray: {type: CFMutableArray}
             theBag: {type: CFMutableBag}
@@ -339,6 +345,7 @@ functions:
     CF(Array|Bag|BitVector|Dictionary|Set)(Remove.*):
         class: "CFMutable#{g[0]}"
         name: "#{g[1]}"
+        visibility: protected
         parameters:
             theArray: {type: CFMutableArray}
             theBag: {type: CFMutableBag}
@@ -347,6 +354,7 @@ functions:
     CF(Array|Bag|BitVector|Dictionary|Set)(Replace.*):
         class: "CFMutable#{g[0]}"
         name: "#{g[1]}"
+        visibility: protected
         parameters:
             theArray: {type: CFMutableArray}
             theBag: {type: CFMutableBag}
@@ -355,6 +363,7 @@ functions:
     CF(Array|Bag|BitVector|Dictionary|Set)(SetValue.*):
         class: "CFMutable#{g[0]}"
         name: "#{g[1]}"
+        visibility: protected
         parameters:
             theArray: {type: CFMutableArray}
             theBag: {type: CFMutableBag}
@@ -363,6 +372,7 @@ functions:
     CF(Array|Bag|BitVector|Dictionary|Set)(Sort.*):
         class: "CFMutable#{g[0]}"
         name: "#{g[1]}"
+        visibility: protected
         parameters:
             theArray: {type: CFMutableArray}
             theBag: {type: CFMutableBag}
@@ -413,18 +423,23 @@ functions:
     CFArray(.*):
         class: CFArray
         name: "#{g[0]}"
+        visibility: protected
     CFAttributedString(.*):
         class: CFAttributedString
         name: "#{g[0]}"
     CFBag(.*):
         class: CFBag
         name: "#{g[0]}"
+        visibility: protected
     CFBinaryHeap(.*):
         class: CFBinaryHeap
         name: "#{g[0]}"
     CFBitVector(.*):
         class: CFBitVector
         name: "#{g[0]}"
+    CFBooleanGetValue:
+        class: CFBoolean
+        name: booleanValue
     CFBoolean(.*):
         class: CFBoolean
         name: "#{g[0]}"
@@ -464,6 +479,7 @@ functions:
     CFDictionary(.*):
         class: CFDictionary
         name: "#{g[0]}"
+        visibility: protected
     CFError(.*):
         class: CFError
         name: "#{g[0]}"
@@ -498,8 +514,9 @@ functions:
             options:
                 type: CFNumberFormatterOptionFlags
     CFNumber(.*):
-        class: CFNumberFormatter
+        class: CFNumber
         name: "#{g[0]}"
+        visibility: protected
     CFPlugInInstance(.*):
         class: CFPlugInInstance
         name: "#{g[0]}"
@@ -551,6 +568,7 @@ functions:
     CFSet(.*):
         class: CFSet
         name: "#{g[0]}"
+        visibility: protected
     CFSocket(GetSocketFlags):
         class: CFSocket
         name: "#{g[0]}"
@@ -651,8 +669,12 @@ values:
         name: "#{g[0]}"
     kCF(Allocator.*):
         name: "#{g[0]}"
-    kCF(Boolean.*):
+        
+    kCFBoolean(.*):
+        class: CFBoolean
         name: "#{g[0]}"
+        visibility: private
+        
     kCF(DateFormatter.*):
         name: "#{g[0]}"
     kCF(Error.*):

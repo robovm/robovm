@@ -45,18 +45,6 @@ import org.robovm.apple.dispatch.*;
     /*<properties>*//*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
-    @Bridge(symbol="CFNumberCreate", optional=true)
-    public static native CFNumber create(CFAllocator allocator, CFNumberType theType, VoidPtr valuePtr);
-    @Bridge(symbol="CFNumberGetType", optional=true)
-    public static native CFNumberType getType(CFNumber number);
-    @Bridge(symbol="CFNumberGetByteSize", optional=true)
-    public static native @MachineSizedSInt long getByteSize(CFNumber number);
-    @Bridge(symbol="CFNumberIsFloatType", optional=true)
-    public static native boolean isFloatType(CFNumber number);
-    @Bridge(symbol="CFNumberGetValue", optional=true)
-    public static native boolean getValue(CFNumber number, CFNumberType theType, VoidPtr valuePtr);
-    @Bridge(symbol="CFNumberCompare", optional=true)
-    public static native CFComparisonResult compare(CFNumber number, CFNumber otherNumber, VoidPtr context);
     @Bridge(symbol="CFNumberFormatterGetTypeID", optional=true)
     public static native @MachineSizedUInt long getClassTypeID();
     @Bridge(symbol="CFNumberFormatterCreate", optional=true)

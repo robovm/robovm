@@ -45,9 +45,9 @@ import org.robovm.apple.dispatch.*;
     /*<members>*//*</members>*/
     /*<methods>*/
     @Bridge(symbol="CFCharacterSetCreateMutable", optional=true)
-    public static native CFMutableCharacterSet createMutable(CFAllocator alloc);
+    protected static native CFMutableCharacterSet createMutable(CFAllocator alloc);
     @Bridge(symbol="CFCharacterSetCreateMutableCopy", optional=true)
-    public static native CFMutableCharacterSet createMutableCopy(CFAllocator alloc, CFCharacterSet theSet);
+    protected static native CFMutableCharacterSet createMutableCopy(CFAllocator alloc, CFCharacterSet theSet);
     @Bridge(symbol="CFCharacterSetAddCharactersInRange", optional=true)
     public native void addCharactersInRange(@ByVal CFRange theRange);
     @Bridge(symbol="CFCharacterSetRemoveCharactersInRange", optional=true)

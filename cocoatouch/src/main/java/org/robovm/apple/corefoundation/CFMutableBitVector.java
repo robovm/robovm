@@ -45,9 +45,9 @@ import org.robovm.apple.dispatch.*;
     /*<members>*//*</members>*/
     /*<methods>*/
     @Bridge(symbol="CFBitVectorCreateMutable", optional=true)
-    public static native CFMutableBitVector createMutable(CFAllocator allocator, @MachineSizedSInt long capacity);
+    protected static native CFMutableBitVector createMutable(CFAllocator allocator, @MachineSizedSInt long capacity);
     @Bridge(symbol="CFBitVectorCreateMutableCopy", optional=true)
-    public static native CFMutableBitVector createMutableCopy(CFAllocator allocator, @MachineSizedSInt long capacity, CFBitVector bv);
+    protected static native CFMutableBitVector createMutableCopy(CFAllocator allocator, @MachineSizedSInt long capacity, CFBitVector bv);
     @Bridge(symbol="CFBitVectorSetCount", optional=true)
     public native void setCount(@MachineSizedSInt long count);
     @Bridge(symbol="CFBitVectorFlipBitAtIndex", optional=true)

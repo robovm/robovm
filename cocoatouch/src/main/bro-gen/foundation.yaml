@@ -1583,6 +1583,9 @@ classes:
             "-objectEnumerator":
                 visibility: protected
                 return_type: NSEnumerator<T>
+            '-anyObject':
+                visibility: protected
+                return_type: T
 
             '+.*': {exclude: true}
             '-.*': {exclude: true}
@@ -1797,9 +1800,65 @@ classes:
     NSURLSessionDownloadTask: {}
     NSURLSessionTask: {}
     NSURLSessionUploadTask: {}
-    NSUserDefaults:
+    NSUserDefaults: # DONE
         methods:
-
+            '-objectForKey:':
+                name: get
+            '-removeObjectForKey:':
+                name: remove
+            '-stringForKey:':
+                name: getString
+            '-arrayForKey:':
+                name: getArray
+            '-dictionaryForKey:':
+                name: getDictionary
+            '-dataForKey:':
+                name: getData
+            '-stringArrayForKey':
+                name: getStringArray
+                return_type: "NSArray<NSString>"
+            '-integerForKey:':
+                name: getInteger
+            '-floatForKey:':
+                name: getFloat
+            '-doubleForKey:':
+                name: getDouble
+            '-boolForKey:':
+                name: getBoolean
+            '-URLForKey:':
+                name: getURL
+            '-set.*':
+                visibility: protected
+            '-registerDefaults:':
+                trim_after_first_colon: true
+            '-addSuiteNamed:':
+                name: addSuite
+            '-removeSuiteNamed:':
+                name: removeSuite
+            '-dictionaryRepresentation':
+                name: asDictionary
+            '-volatileDomainNames':
+                property: true
+                return_type: "NSArray<NSString>"
+            '-volatileDomainForName:':
+                name: getVolatileDomain
+            '-setVolatileDomain:forName:':
+                visibility: protected
+            '-removeVolatileDomainForName:':
+                name: removeVolatileDomain
+            '-persistentDomainNames':
+                property: true
+                return_type: "NSArray<NSString>"
+            '-persistentDomainForName:':
+                name: getPersistentDomain
+            '-setPersistentDomain:forName:':
+                visibility: protected
+            '-removePersistentDomainForName:':
+                name: removePersistentDomain
+            '-objectIsForcedForKey.*':
+                name: isObjectForced
+            '+standardUserDefaults':
+                property: true
             '-init.*': {exclude: true}
 
     NSUUID: # DONE

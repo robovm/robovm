@@ -166,6 +166,9 @@ import org.robovm.apple.security.*;
     public <U> U[] toArray(U[] a) {
         return adapter.toArray(a);
     }
+    public T any() {
+        return anyObject();
+    }
     
     /*<methods>*/
     @Method(selector = "count")
@@ -174,6 +177,8 @@ import org.robovm.apple.security.*;
     protected native NSObject member$(NSObject object);
     @Method(selector = "objectEnumerator")
     protected native NSEnumerator<T> objectEnumerator();
+    @Method(selector = "anyObject")
+    protected native T anyObject();
     @Method(selector = "initWithObjects:count:")
     protected native @Pointer long initWithObjects$count$(@Pointer long objects, @MachineSizedUInt long cnt);
     @Method(selector = "initWithSet:")

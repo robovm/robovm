@@ -49,86 +49,113 @@ import org.robovm.apple.security.*;
     
     /*</properties>*/
     /*<members>*//*</members>*/
+    public void put(String defaultName, NSObject value) {
+        setObject$forKey$(value, defaultName);
+    }
+    public void put(String defaultName, @MachineSizedSInt long value) {
+        setInteger$forKey$(value, defaultName);
+    }
+    public void put(String defaultName, float value) {
+        setFloat$forKey$(value, defaultName);
+    }
+    public void put(String defaultName, double value) {
+        setDouble$forKey$(value, defaultName);
+    }
+    public void put(String defaultName, boolean value) {
+        setBool$forKey$(value, defaultName);
+    }
+    /**
+     * @since Available in iOS 4.0 and later.
+     */
+    public void put(String defaultName, NSURL url) {
+        setURL$forKey$(url, defaultName);
+    }
+    public void setVolatileDomain(String domainName, NSDictionary<?, ?> domain) {
+        setVolatileDomain$forName$(domain, domainName);
+    }
+    public void setPersistentDomain(String domainName, NSDictionary<?, ?> domain) {
+        setPersistentDomain$forName$(domain, domainName);
+    }
     /*<methods>*/
     @Method(selector = "objectForKey:")
-    public native NSObject objectForKey$(String defaultName);
+    public native NSObject get(String defaultName);
     @Method(selector = "setObject:forKey:")
-    public native void setObject$forKey$(NSObject value, String defaultName);
+    protected native void setObject$forKey$(NSObject value, String defaultName);
     @Method(selector = "removeObjectForKey:")
-    public native void removeObjectForKey$(String defaultName);
+    public native void remove(String defaultName);
     @Method(selector = "stringForKey:")
-    public native String stringForKey$(String defaultName);
+    public native String getString(String defaultName);
     @Method(selector = "arrayForKey:")
-    public native NSArray<?> arrayForKey$(String defaultName);
+    public native NSArray<?> getArray(String defaultName);
     @Method(selector = "dictionaryForKey:")
-    public native NSDictionary<?, ?> dictionaryForKey$(String defaultName);
+    public native NSDictionary<?, ?> getDictionary(String defaultName);
     @Method(selector = "dataForKey:")
-    public native NSData dataForKey$(String defaultName);
+    public native NSData getData(String defaultName);
     @Method(selector = "stringArrayForKey:")
     public native NSArray<?> stringArrayForKey$(String defaultName);
     @Method(selector = "integerForKey:")
-    public native @MachineSizedSInt long integerForKey$(String defaultName);
+    public native @MachineSizedSInt long getInteger(String defaultName);
     @Method(selector = "floatForKey:")
-    public native float floatForKey$(String defaultName);
+    public native float getFloat(String defaultName);
     @Method(selector = "doubleForKey:")
-    public native double doubleForKey$(String defaultName);
+    public native double getDouble(String defaultName);
     @Method(selector = "boolForKey:")
-    public native boolean boolForKey$(String defaultName);
+    public native boolean getBoolean(String defaultName);
     /**
      * @since Available in iOS 4.0 and later.
      */
     @Method(selector = "URLForKey:")
-    public native NSURL URLForKey$(String defaultName);
+    public native NSURL getURL(String defaultName);
     @Method(selector = "setInteger:forKey:")
-    public native void setInteger$forKey$(@MachineSizedSInt long value, String defaultName);
+    protected native void setInteger$forKey$(@MachineSizedSInt long value, String defaultName);
     @Method(selector = "setFloat:forKey:")
-    public native void setFloat$forKey$(float value, String defaultName);
+    protected native void setFloat$forKey$(float value, String defaultName);
     @Method(selector = "setDouble:forKey:")
-    public native void setDouble$forKey$(double value, String defaultName);
+    protected native void setDouble$forKey$(double value, String defaultName);
     @Method(selector = "setBool:forKey:")
-    public native void setBool$forKey$(boolean value, String defaultName);
+    protected native void setBool$forKey$(boolean value, String defaultName);
     /**
      * @since Available in iOS 4.0 and later.
      */
     @Method(selector = "setURL:forKey:")
-    public native void setURL$forKey$(NSURL url, String defaultName);
+    protected native void setURL$forKey$(NSURL url, String defaultName);
     @Method(selector = "registerDefaults:")
-    public native void registerDefaults$(NSDictionary<?, ?> registrationDictionary);
+    public native void registerDefaults(NSDictionary<?, ?> registrationDictionary);
     @Method(selector = "addSuiteNamed:")
-    public native void addSuiteNamed$(String suiteName);
+    public native void addSuite(String suiteName);
     @Method(selector = "removeSuiteNamed:")
-    public native void removeSuiteNamed$(String suiteName);
+    public native void removeSuite(String suiteName);
     @Method(selector = "dictionaryRepresentation")
-    public native NSDictionary<?, ?> dictionaryRepresentation();
+    public native NSDictionary<?, ?> asDictionary();
     @Method(selector = "volatileDomainNames")
-    public native NSArray<?> volatileDomainNames();
+    public native NSArray<NSString> getVolatileDomainNames();
     @Method(selector = "volatileDomainForName:")
-    public native NSDictionary<?, ?> volatileDomainForName$(String domainName);
+    public native NSDictionary<?, ?> getVolatileDomain(String domainName);
     @Method(selector = "setVolatileDomain:forName:")
-    public native void setVolatileDomain$forName$(NSDictionary<?, ?> domain, String domainName);
+    protected native void setVolatileDomain$forName$(NSDictionary<?, ?> domain, String domainName);
     @Method(selector = "removeVolatileDomainForName:")
-    public native void removeVolatileDomainForName$(String domainName);
+    public native void removeVolatileDomain(String domainName);
     /**
      * @since Available in iOS 2.0 and later.
      * @deprecated Deprecated in iOS 7.0.
      */
     @Deprecated
     @Method(selector = "persistentDomainNames")
-    public native NSArray<?> persistentDomainNames();
+    public native NSArray<NSString> getPersistentDomainNames();
     @Method(selector = "persistentDomainForName:")
-    public native NSDictionary<?, ?> persistentDomainForName$(String domainName);
+    public native NSDictionary<?, ?> getPersistentDomain(String domainName);
     @Method(selector = "setPersistentDomain:forName:")
-    public native void setPersistentDomain$forName$(NSDictionary<?, ?> domain, String domainName);
+    protected native void setPersistentDomain$forName$(NSDictionary<?, ?> domain, String domainName);
     @Method(selector = "removePersistentDomainForName:")
-    public native void removePersistentDomainForName$(String domainName);
+    public native void removePersistentDomain(String domainName);
     @Method(selector = "synchronize")
     public native boolean synchronize();
     @Method(selector = "objectIsForcedForKey:")
-    public native boolean objectIsForcedForKey$(String key);
+    public native boolean isObjectForced(String key);
     @Method(selector = "objectIsForcedForKey:inDomain:")
-    public native boolean objectIsForcedForKey$inDomain$(String key, String domain);
+    public native boolean isObjectForced(String key, String domain);
     @Method(selector = "standardUserDefaults")
-    public static native NSUserDefaults standardUserDefaults();
+    public static native NSUserDefaults getStandardUserDefaults();
     @Method(selector = "resetStandardUserDefaults")
     public static native void resetStandardUserDefaults();
     /*</methods>*/

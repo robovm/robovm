@@ -19,6 +19,7 @@ package org.robovm.apple.corefoundation;
 import java.io.*;
 import java.nio.*;
 import java.util.*;
+
 import org.robovm.objc.*;
 import org.robovm.objc.annotation.*;
 import org.robovm.objc.block.*;
@@ -46,7 +47,7 @@ import org.robovm.apple.foundation.NSObject.NSObjectPtr;
     /*</constructors>*/
     /*<properties>*//*</properties>*/
     /*<members>*//*</members>*/
-    public static CFArray create(Collection<NativeObject> objects) {
+    public static <T extends NativeObject> CFArray create(Collection<T> objects) {
         if (objects == null) {
             throw new NullPointerException("objects");
         }
@@ -87,6 +88,15 @@ import org.robovm.apple.foundation.NSObject.NSObjectPtr;
         T[] result = (T[]) java.lang.reflect.Array.newInstance(type, (int) getCount());
         for (int i = 0; i < result.length; i++) {
             result[i] = get(i, type);
+        }
+        return result;
+    }
+    
+    public <T extends NativeObject> List<T> toList(Class<T> type) {
+        int size = (int) size();
+        List<T> result = new ArrayList<>(size);
+        for (int i = 0; i < size; i++) {
+            result.add(get(i, type));
         }
         return result;
     }

@@ -35,12 +35,13 @@ import org.robovm.apple.dispatch.*;
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/CFBoolean/*</name>*/ 
     extends /*<extends>*/CFPropertyList/*</extends>*/ 
     /*<implements>*//*</implements>*/ {
-
-    public static final CFBoolean TRUE = True();
-    public static final CFBoolean FALSE = False();
     
     /*<ptr>*/public static class CFBooleanPtr extends Ptr<CFBoolean, CFBooleanPtr> {}/*</ptr>*/
     /*<bind>*/static { Bro.bind(CFBoolean.class); }/*</bind>*/
+    
+    public static final CFBoolean TRUE = True();
+    public static final CFBoolean FALSE = False();
+    
     /*<constants>*//*</constants>*/
     /*<constructors>*/
     protected CFBoolean() {}

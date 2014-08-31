@@ -79,6 +79,11 @@ import org.robovm.apple.dispatch.*;
         getValue(CFNumberType.Float64Type, ptr);
         return ptr.as(DoublePtr.class).get();
     }
+    public boolean booleanValue() {
+        int b = intValue();
+        if (b == 0) return false;
+        return true;
+    }
     public static CFNumber valueOf(byte value) {
         return create(null, CFNumberType.SInt8Type, new BytePtr(value).as(VoidPtr.class));
     }
@@ -99,6 +104,9 @@ import org.robovm.apple.dispatch.*;
     }
     public static CFNumber valueOf(double value) {
         return create(null, CFNumberType.Float64Type, new DoublePtr(value).as(VoidPtr.class));
+    }
+    public static CFNumber valueOf(boolean value) {
+        return create(null, CFNumberType.SInt32Type, new IntPtr(value ? 1 : 0).as(VoidPtr.class));
     }
     /*<methods>*/
     @Bridge(symbol="CFNumberGetTypeID", optional=true)

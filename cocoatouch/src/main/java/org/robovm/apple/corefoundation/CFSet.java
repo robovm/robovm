@@ -19,6 +19,7 @@ package org.robovm.apple.corefoundation;
 import java.io.*;
 import java.nio.*;
 import java.util.*;
+
 import org.robovm.objc.*;
 import org.robovm.objc.annotation.*;
 import org.robovm.objc.block.*;
@@ -46,7 +47,7 @@ import org.robovm.apple.foundation.NSObject.NSObjectPtr;
     /*</constructors>*/
     /*<properties>*//*</properties>*/
     /*<members>*//*</members>*/
-    public static CFSet create(Collection<NativeObject> objects) {
+    public static <T extends NativeObject> CFSet create(Collection<T> objects) {
         if (objects == null) {
             throw new NullPointerException("objects");
         }

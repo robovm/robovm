@@ -142,13 +142,14 @@ import org.robovm.apple.coregraphics.*;
                 }
             });
         }
-        public static NSObject observePlaybackDidFinish(MPMoviePlayerController object, final VoidBlock2<MPMoviePlayerController, MPMovieFinishReason> block) {
+        public static NSObject observePlaybackDidFinish(MPMoviePlayerController object, final VoidBlock3<MPMoviePlayerController, MPMovieFinishReason, NSError> block) {
             return NSNotificationCenter.getDefaultCenter().addObserver(PlaybackDidFinishNotification(), object, NSOperationQueue.getMainQueue(), new VoidBlock1<NSNotification>() {
                 @Override
                 public void invoke (NSNotification a) {
                     NSDictionary<NSString, ?> data = a.getUserInfo();
                     NSNumber val = (NSNumber) data.get(PlaybackDidFinishReasonUserInfoKey());
-                    block.invoke((MPMoviePlayerController) a.getObject(), MPMovieFinishReason.valueOf(val.intValue()));
+                    NSError error = (NSError) data.get(new NSString("error"));
+                    block.invoke((MPMoviePlayerController) a.getObject(), MPMovieFinishReason.valueOf(val.intValue()), error);
                 }
             });
         }

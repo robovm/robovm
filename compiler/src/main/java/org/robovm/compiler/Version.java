@@ -57,10 +57,25 @@ public class Version {
      * Converts a version string on the form x.y.z into an integer which can
      * be compared to other versions converted into integers.
      */
-    private static int toInt(String v) {
-        boolean snapshot = v.endsWith("-SNAPSHOT");
-        if (snapshot) {
+    static long toLong(String v) {
+        String buildPart = "1";
+        long buildType = 700;
+        if (v.endsWith("-SNAPSHOT")) {
+            buildPart = "";
             v = v.substring(0, v.indexOf("-SNAPSHOT"));
+            buildType = 0;
+        } else if (v.contains("-alpha-")) {
+            buildPart = v.substring(v.lastIndexOf('-') + 1);
+            v = v.substring(0, v.indexOf("-alpha-"));
+            buildType = 100;
+        } else if (v.contains("-beta-")) {
+            buildPart = v.substring(v.lastIndexOf('-') + 1);
+            v = v.substring(0, v.indexOf("-beta-"));
+            buildType = 300;
+        } else if (v.contains("-rc-")) {
+            buildPart = v.substring(v.lastIndexOf('-') + 1);
+            v = v.substring(0, v.indexOf("-rc-"));
+            buildType = 500;
         }
         
         String[] parts = v.split("\\.");
@@ -68,13 +83,11 @@ public class Version {
             throw new IllegalArgumentException("Illegal version number: " + v);
         }
         
-        int major = parts.length > 0 ? Integer.parseInt(parts[0]) : 0;
-        int minor = parts.length > 1 ? Integer.parseInt(parts[1]) : 0;
-        int rev = parts.length > 2 ? Integer.parseInt(parts[2]) : 0;
-        int result = major * 10000000 + minor * 10000 + rev * 10;
-        if (!snapshot) {
-            result += 1;
-        }
+        long major = parts.length > 0 ? Long.parseLong(parts[0]) : 0;
+        long minor = parts.length > 1 ? Long.parseLong(parts[1]) : 0;
+        long rev = parts.length > 2 ? Long.parseLong(parts[2]) : 0;
+        long build = buildPart.isEmpty() ? 0 : Long.parseLong(buildPart);
+        long result = (((major * 1000 + minor) * 1000 + rev) * 1000) + build + buildType;
         return result;
     }
     
@@ -83,6 +96,10 @@ public class Version {
      * version number.
      */
     public static boolean isOlderThan(String otherVersion) {
-        return toInt(getVersion()) < toInt(otherVersion);
+        return toLong(getVersion()) < toLong(otherVersion);
+    }
+    
+    public static void main(String[] args) {
+        System.out.println(toLong("1.0.0-alpha-01"));
     }
 }

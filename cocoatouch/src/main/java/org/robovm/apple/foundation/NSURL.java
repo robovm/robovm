@@ -94,6 +94,12 @@ import org.robovm.apple.security.*;
         return value.get();
     }
     
+    public static String encodeURLString(String urlString, NSStringEncoding encoding) {
+        return new NSString(urlString).stringByAddingPercentEscapesUsingEncoding$(encoding);
+    }
+    public static String decodeURLString(String urlString, NSStringEncoding encoding) {
+        return new NSString(urlString).stringByReplacingPercentEscapesUsingEncoding$(encoding);
+    }
     /*<methods>*/
     @Method(selector = "initWithScheme:host:path:")
     protected native @Pointer long initWithScheme$host$path$(String scheme, String host, String path);

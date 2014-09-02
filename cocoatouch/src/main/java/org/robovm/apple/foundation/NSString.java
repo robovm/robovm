@@ -141,5 +141,9 @@ import org.robovm.apple.security.*;
     protected native @Pointer long initWithCharacters$length$(@Pointer long characters, @MachineSizedUInt long length);
     @Method(selector = "stringWithCharacters:length:")
     protected static native @Pointer long stringWithCharacters$length$(@Pointer long characters, @MachineSizedUInt long length);
+    @Method(selector = "stringByAddingPercentEscapesUsingEncoding:")
+    protected native String stringByAddingPercentEscapesUsingEncoding$(NSStringEncoding enc);
+    @Method(selector = "stringByReplacingPercentEscapesUsingEncoding:")
+    protected native String stringByReplacingPercentEscapesUsingEncoding$(NSStringEncoding enc);
     /*</methods>*/
 }

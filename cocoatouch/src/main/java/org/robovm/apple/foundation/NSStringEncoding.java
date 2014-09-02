@@ -34,7 +34,7 @@ import org.robovm.apple.security.*;
 
 /*</javadoc>*/
 /*<annotations>*//*</annotations>*/
-public enum /*<name>*/NSStringEncodings/*</name>*/ implements ValuedEnum {
+public enum /*<name>*/NSStringEncoding/*</name>*/ implements ValuedEnum {
     /*<values>*/
     ASCII(1L),
     NEXTSTEP(2L),
@@ -62,17 +62,22 @@ public enum /*<name>*/NSStringEncodings/*</name>*/ implements ValuedEnum {
     Proprietary(65536L);
     /*</values>*/
 
+    /*<bind>*/
+    /*</bind>*/
+    /*<constants>*//*</constants>*/
+    /*<methods>*//*</methods>*/
+
     private final long n;
 
-    private /*<name>*/NSStringEncodings/*</name>*/(long n) { this.n = n; }
+    private /*<name>*/NSStringEncoding/*</name>*/(long n) { this.n = n; }
     public long value() { return n; }
-    public static /*<name>*/NSStringEncodings/*</name>*/ valueOf(long n) {
-        for (/*<name>*/NSStringEncodings/*</name>*/ v : values()) {
+    public static /*<name>*/NSStringEncoding/*</name>*/ valueOf(long n) {
+        for (/*<name>*/NSStringEncoding/*</name>*/ v : values()) {
             if (v.n == n) {
                 return v;
             }
         }
         throw new IllegalArgumentException("No constant with value " + n + " found in " 
-            + /*<name>*/NSStringEncodings/*</name>*/.class.getName());
+            + /*<name>*/NSStringEncoding/*</name>*/.class.getName());
     }
 }

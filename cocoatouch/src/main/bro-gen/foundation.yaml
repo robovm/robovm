@@ -126,8 +126,8 @@ enums:
     NSStreamStatus: {}
     NSStringCompareOptions: { suffix: Search }
     NSStringEncodingConversionOptions: {}
-    NSStringEncodings: { first: NSASCIIStringEncoding, suffix: StringEncoding }
-    NSStringEncodings2: {first: NSProprietaryStringEncoding, merge_with: NSStringEncodings, prefix: NS, suffix: StringEncoding }
+    NSStringEncoding: { first: NSASCIIStringEncoding, suffix: StringEncoding }
+    NSStringEncoding2: {first: NSProprietaryStringEncoding, merge_with: NSStringEncoding, prefix: NS, suffix: StringEncoding }
     NSStringEnumerationOptions: {}
     NSTextCheckingType: {}
     NSTimeZoneNameStyle: {}
@@ -1640,6 +1640,8 @@ classes:
                 parameters:
                     buffer:
                         type: "@Pointer long"
+            '-stringBy.*PercentEscapes.*':
+                visibility: protected
             '+.*': {exclude: true}
             '-.*': {exclude: true}
 

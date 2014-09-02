@@ -52,7 +52,7 @@ import org.robovm.apple.coregraphics.*;
     @Property(selector = "extendedLogData")
     public native NSData getExtendedLogData();
     @Property(selector = "extendedLogDataStringEncoding")
-    public native @MachineSizedUInt long getExtendedLogDataStringEncoding();
+    public native NSStringEncoding getExtendedLogDataStringEncoding();
     @Property(selector = "events")
     public native NSArray<MPMovieAccessLogEvent> getEvents();
     /*</properties>*/

@@ -52,6 +52,36 @@ import org.robovm.apple.coregraphics.*;
     
     /*</properties>*/
     /*<members>*//*</members>*/
+    @Override
+    public long getPersistentID() {
+        NSNumber val = (NSNumber) getValue(MPMediaPlaylistProperty.PlaylistPersistendIDValue());
+        if (val != null) {
+            return val.longValue();
+        }
+        return 0;
+    }
+    public String getName() {
+        NSString val = (NSString) getValue(MPMediaPlaylistProperty.NameValue());
+        if (val != null) {
+            return val.toString();
+        }
+        return null;
+    }
+    public MPMediaPlaylistAttributes getPlaylistAttributes() {
+        NSNumber val = (NSNumber) getValue(MPMediaPlaylistProperty.PlaylistAttributesValue());
+        if (val != null) {
+            return new MPMediaPlaylistAttributes(val.intValue());
+        }
+        return null;
+    }
+    @SuppressWarnings("unchecked")
+    public NSArray<MPMediaItem> getSeedItems() {
+        NSArray<MPMediaItem> val = (NSArray<MPMediaItem>) getValue(MPMediaPlaylistProperty.SeedItemsValue());
+        if (val != null) {
+            return val;
+        }
+        return null;
+    }
     /*<methods>*/
     
     /*</methods>*/

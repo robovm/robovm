@@ -48,9 +48,24 @@ import org.robovm.apple.coregraphics.*;
     public MPMediaPropertyPredicate() {}
     protected MPMediaPropertyPredicate(SkipInit skipInit) { super(skipInit); }
     /*</constructors>*/
+    public MPMediaEntityProperty getProperty() {
+        return MPMediaEntityProperty.valueOf(getPropertyName());
+    }
+    public static MPMediaPropertyPredicate create(NSString property, NSObject value) {
+        return create(value, property);
+    }
+    public static MPMediaPropertyPredicate create(MPMediaEntityProperty property, NSObject value) {
+        return create(value, property.value());
+    }
+    public static MPMediaPropertyPredicate create(NSString property, NSObject value, MPMediaPredicateComparison comparisonType) {
+        return create(value, property, comparisonType);
+    }
+    public static MPMediaPropertyPredicate create(MPMediaEntityProperty property, NSObject value, MPMediaPredicateComparison comparisonType) {
+        return create(value, property.value(), comparisonType);
+    }
     /*<properties>*/
     @Property(selector = "property")
-    public native NSString getProperty();
+    public native NSString getPropertyName();
     @Property(selector = "value")
     public native NSObject getValue();
     @Property(selector = "comparisonType")
@@ -59,8 +74,8 @@ import org.robovm.apple.coregraphics.*;
     /*<members>*//*</members>*/
     /*<methods>*/
     @Method(selector = "predicateWithValue:forProperty:")
-    public static native MPMediaPropertyPredicate create(NSObject value, NSString property);
+    protected static native MPMediaPropertyPredicate create(NSObject value, NSString property);
     @Method(selector = "predicateWithValue:forProperty:comparisonType:")
-    public static native MPMediaPropertyPredicate create(NSObject value, NSString property, MPMediaPredicateComparison comparisonType);
+    protected static native MPMediaPropertyPredicate create(NSObject value, NSString property, MPMediaPredicateComparison comparisonType);
     /*</methods>*/
 }

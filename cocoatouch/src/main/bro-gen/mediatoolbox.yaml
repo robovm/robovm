@@ -51,7 +51,7 @@ classes:
         name: "MTAudioProcessingTapCallbacksStruct"
         finalize:
             name: "finalizeCbk"
-        visibility: ""
+        visibility: ''
 
 protocols: {}
 

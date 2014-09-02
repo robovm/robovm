@@ -11,7 +11,7 @@ typedefs:
 
 enums:
     MPMediaGrouping: {first: MPMediaGroupingTitle, marshaler: ValuedEnum.AsMachineSizedSIntMarshaler}
-    MPMediaPlaylistAttribute: {first: MPMediaPlaylistAttributeNone, marshaler: ValuedEnum.AsMachineSizedSIntMarshaler}
+    MPMediaPlaylistAttributes: {first: MPMediaPlaylistAttributeNone, bits: true, marshaler: Bits.AsMachineSizedIntMarshaler}
     MPMediaPredicateComparison: {first: MPMediaPredicateComparisonEqualTo, marshaler: ValuedEnum.AsMachineSizedSIntMarshaler}
     MPMediaType: {}
     MPMovieControlMode: {first: MPMovieControlModeDefault, marshaler: ValuedEnum.AsMachineSizedSIntMarshaler}
@@ -55,20 +55,33 @@ classes:
         methods:
             '-valueForProperty:':
                 name: getValue
+                visibility: protected
+                parameters:
+                    property:
+                        type: NSString
             '-enumerateValuesForProperties:usingBlock:':
                 name: enumerateValues
+                visibility: protected
                 parameters:
                     properties:
                         type: NSSet<NSString>
             '+canFilterByProperty:':
                 trim_after_first_colon: true
+                visibility: protected
+                parameters:
+                    property:
+                        type: NSString
 
     MPMediaItem: # DONE
         methods:
             '+persistentIDPropertyForGroupingType:':
-                name: getPersistentIDProperty
+                name: getPersistentIDProperty0
+                visibility: protected
+                return_type: NSString
             '+titlePropertyForGroupingType:':
-                name: getTitleProperty
+                name: getTitleProperty0
+                visibility: protected
+                return_type: NSString
     MPMediaItemArtwork: # DONE
         methods:
             '-imageWithSize:':
@@ -96,15 +109,18 @@ classes:
     MPMediaPropertyPredicate: # DONE
         properties:
             property:
+                name: propertyName
                 type: NSString
         methods:
             '+predicateWithValue:forProperty:':
                 name: create
+                visibility: protected
                 parameters:
                     property:
                         type: NSString
             '+predicateWithValue:forProperty:comparisonType:':
                 name: create
+                visibility: protected
                 parameters:
                     property:
                         type: NSString
@@ -182,7 +198,9 @@ classes:
     MPNowPlayingInfoCenter: # DONE
         properties:
             'nowPlayingInfo':
-                type: 'NSDictionary<NSString, ?>'
+                name: nowPlayingInfo0
+                type: 'NSDictionary<NSString, NSObject>'
+                visibility: protected
         methods:
             '+defaultCenter':
                 property: true
@@ -217,6 +235,7 @@ classes:
         properties:
             'allMetadata':
                 type: NSDictionary<NSString, ?>
+                visibility: protected
     MPVolumeView: # DONE
         methods:
             '-maximumVolumeSliderImageForState:':
@@ -244,8 +263,13 @@ classes:
             '-volumeThumbRectForBounds:volumeSliderRect:value:':
                 name: getVolumeThumbRect
 
-protocols:
+    MPMediaEntityProperty: {}
+    MPMediaItemProperty:
+        extends: MPMediaEntityProperty
+    MPMediaPlaylistProperty:
+        extends: MPMediaEntityProperty
 
+protocols:
     MPMediaPickerControllerDelegate: # DONE
         methods:
             '-mediaPicker:didPickMediaItems:':
@@ -282,22 +306,98 @@ functions:
         name: "Function__#{g[0]}"
 
 values:
+    MPMediaEntityPropertyPersistentID:
+        class: MPMediaEntityProperty
+        name: EntityPersistentIDValue
+        type: NSString
+        visibility: protected
+    MPMediaEntityProperty(.*):
+        class: MPMediaEntityProperty
+        name: "#{g[0]}Value"
+        type: NSString
+        visibility: protected
+    
+    MPMediaItemPropertyPersistentID:
+        class: MPMediaItemProperty
+        name: ItemPersistentIDValue
+        type: NSString
+        visibility: protected
+    MPMediaItemProperty(.*):
+        class: MPMediaItemProperty
+        name: "#{g[0]}Value"
+        type: NSString
+        visibility: protected
+        
+    MPMediaPlaylistPropertyPersistentID:
+        class: MPMediaPlaylistProperty
+        name: PlaylistPersistendIDValue
+        type: NSString
+        visibility: protected
+    MPMediaPlaylistProperty(.*):
+        class: MPMediaPlaylistProperty
+        name: "#{g[0]}Value"
+        type: NSString
+        visibility: protected
 
-    MP(.*Property.*):
+    MPNowPlayingInfoProperty(.*):
+        class: MPNowPlayingInfo
         name: "#{g[0]}"
         type: NSString
-
-    MP(.*Notification):
+        visibility: protected
+        
+    MPMoviePlayerTimedMetadataKey(.*):
+        class: MPTimedMetadata
         name: "#{g[0]}"
         type: NSString
+        visibility: protected
 
-    MP(.*Key):
+    MPMediaLibrary(DidChangeNotification):
+        class: MPMediaLibrary
         name: "#{g[0]}"
         type: NSString
-
-    MP(MoviePlayerTimedMetadataKey.*):
+    MPMediaPlayback(IsPreparedToPlayDidChangeNotification):
+        class: MPMusicPlayerController
         name: "#{g[0]}"
         type: NSString
+    MPMoviePlayerContentPreloadDidFinishNotification:
+        exclude: true
+    MPMoviePlayer(.*Notification):
+        class: MPMoviePlayerController
+        name: "#{g[0]}"
+        type: NSString
+    MPMovie(.*Notification):
+        class: MPMoviePlayerController
+        name: "#{g[0]}"
+        type: NSString
+    MPMusicPlayerController(.*Notification):
+        class: MPMusicPlayerController
+        name: "#{g[0]}"
+        type: NSString
+    MPVolumeView(.*Notification):
+        class: MPVolumeView
+        name: "#{g[0]}"
+        type: NSString
+        
+    MPMoviePlayer(PlaybackDidFinishReasonUserInfoKey):
+        class: MPMoviePlayerController
+        name: "#{g[0]}"
+        type: NSString
+        visibility: protected
+    MPMoviePlayer(TimedMetadataUserInfoKey):
+        class: MPMoviePlayerController
+        name: "#{g[0]}"
+        type: NSString
+        visibility: protected
+    MPMoviePlayerThumbnail(.*Key):
+        class: MPMoviePlayerThumbnailRequest
+        name: "#{g[0]}"
+        type: NSString
+        visibility: protected
+    MPMoviePlayerFullscreenAnimation(.*UserInfoKey):
+        class: MPMoviePlayerFullscreenAnimation
+        name: "#{g[0]}"
+        type: NSString
+        visibility: protected
 
     # Make sure we don't miss any values if new ones are introduced in a later version
     (k?MP.*):

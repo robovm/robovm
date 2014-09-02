@@ -40,8 +40,6 @@ import org.robovm.apple.coregraphics.*;
 
     /*<ptr>*/
     /*</ptr>*/
-    /*<bind>*/
-    /*</bind>*/
     /*<constants>*//*</constants>*/
     /*<properties>*/
     @Property(selector = "isPreparedToPlay")

@@ -85,8 +85,6 @@ values:
         type: NSString
         visibility: protected
         
-        
-        
     PK(.*ErrorDomain):
         name: "#{g[0]}"
         type: NSString

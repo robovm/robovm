@@ -40,6 +40,17 @@ import org.robovm.apple.coregraphics.*;
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/MPMediaLibrary/*</name>*/ 
     extends /*<extends>*/NSObject/*</extends>*/ 
     /*<implements>*//*</implements>*/ {
+    
+    public static class Notifications {
+        public static NSObject observeDidChange(final Runnable block) {
+            return NSNotificationCenter.getDefaultCenter().addObserver(DidChangeNotification(), null, NSOperationQueue.getMainQueue(), new VoidBlock1<NSNotification>() {
+                @Override
+                public void invoke (NSNotification a) {
+                    block.run();
+                }
+            });
+        }
+    }
 
     /*<ptr>*/public static class MPMediaLibraryPtr extends Ptr<MPMediaLibrary, MPMediaLibraryPtr> {}/*</ptr>*/
     /*<bind>*/static { ObjCRuntime.bind(MPMediaLibrary.class); }/*</bind>*/
@@ -54,6 +65,9 @@ import org.robovm.apple.coregraphics.*;
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
+    @GlobalValue(symbol="MPMediaLibraryDidChangeNotification", optional=true)
+    public static native NSString DidChangeNotification();
+    
     @Method(selector = "beginGeneratingLibraryChangeNotifications")
     public native void beginGeneratingLibraryChangeNotifications();
     @Method(selector = "endGeneratingLibraryChangeNotifications")

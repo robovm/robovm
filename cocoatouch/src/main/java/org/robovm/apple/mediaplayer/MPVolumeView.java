@@ -41,6 +41,31 @@ import org.robovm.apple.coregraphics.*;
     extends /*<extends>*/UIView/*</extends>*/ 
     /*<implements>*/implements NSCoding/*</implements>*/ {
 
+    public static class Notifications {
+        /**
+         * @since Available in iOS 7.0 and later.
+         */
+        public static NSObject observeWirelessRoutesAvailableChanges(final Runnable block) {
+            return NSNotificationCenter.getDefaultCenter().addObserver(WirelessRoutesAvailableDidChangeNotification(), null, NSOperationQueue.getMainQueue(), new VoidBlock1<NSNotification>() {
+                @Override
+                public void invoke (NSNotification a) {
+                    block.run();
+                }
+            });
+        }
+        /**
+         * @since Available in iOS 7.0 and later.
+         */
+        public static NSObject observeWirelessRouteActiveChanges(final Runnable block) {
+            return NSNotificationCenter.getDefaultCenter().addObserver(WirelessRouteActiveDidChangeNotification(), null, NSOperationQueue.getMainQueue(), new VoidBlock1<NSNotification>() {
+                @Override
+                public void invoke (NSNotification a) {
+                    block.run();
+                }
+            });
+        }
+    }
+    
     /*<ptr>*/public static class MPVolumeViewPtr extends Ptr<MPVolumeView, MPVolumeViewPtr> {}/*</ptr>*/
     /*<bind>*/static { ObjCRuntime.bind(MPVolumeView.class); }/*</bind>*/
     /*<constants>*//*</constants>*/
@@ -92,6 +117,17 @@ import org.robovm.apple.coregraphics.*;
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
+    @GlobalValue(symbol="MPVolumeViewWirelessRoutesAvailableDidChangeNotification", optional=true)
+    public static native NSString WirelessRoutesAvailableDidChangeNotification();
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
+    @GlobalValue(symbol="MPVolumeViewWirelessRouteActiveDidChangeNotification", optional=true)
+    public static native NSString WirelessRouteActiveDidChangeNotification();
+    
     @Method(selector = "sizeThatFits:")
     public native @ByVal CGSize calculateSizeThatFits(@ByVal CGSize size);
     /**

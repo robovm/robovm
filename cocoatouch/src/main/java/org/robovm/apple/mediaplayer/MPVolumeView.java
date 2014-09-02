@@ -45,22 +45,22 @@ import org.robovm.apple.coregraphics.*;
         /**
          * @since Available in iOS 7.0 and later.
          */
-        public static NSObject observeWirelessRoutesAvailableChanges(final Runnable block) {
-            return NSNotificationCenter.getDefaultCenter().addObserver(WirelessRoutesAvailableDidChangeNotification(), null, NSOperationQueue.getMainQueue(), new VoidBlock1<NSNotification>() {
+        public static NSObject observeWirelessRoutesAvailableDidChange(MPVolumeView object, final VoidBlock1<MPVolumeView> block) {
+            return NSNotificationCenter.getDefaultCenter().addObserver(WirelessRoutesAvailableDidChangeNotification(), object, NSOperationQueue.getMainQueue(), new VoidBlock1<NSNotification>() {
                 @Override
                 public void invoke (NSNotification a) {
-                    block.run();
+                    block.invoke((MPVolumeView) a.getObject());
                 }
             });
         }
         /**
          * @since Available in iOS 7.0 and later.
          */
-        public static NSObject observeWirelessRouteActiveChanges(final Runnable block) {
-            return NSNotificationCenter.getDefaultCenter().addObserver(WirelessRouteActiveDidChangeNotification(), null, NSOperationQueue.getMainQueue(), new VoidBlock1<NSNotification>() {
+        public static NSObject observeWirelessRouteActiveDidChange(MPVolumeView object, final VoidBlock1<MPVolumeView> block) {
+            return NSNotificationCenter.getDefaultCenter().addObserver(WirelessRouteActiveDidChangeNotification(), object, NSOperationQueue.getMainQueue(), new VoidBlock1<NSNotification>() {
                 @Override
                 public void invoke (NSNotification a) {
-                    block.run();
+                    block.invoke((MPVolumeView) a.getObject());
                 }
             });
         }

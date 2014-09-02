@@ -45,32 +45,32 @@ import org.robovm.apple.coregraphics.*;
         /**
          * @since Available in iOS 3.2 and later.
          */
-        public static NSObject observeIsPreparedToPlayChanges(final VoidBlock1<MPMediaPlayback> block) {
-            return NSNotificationCenter.getDefaultCenter().addObserver(IsPreparedToPlayDidChangeNotification(), null, NSOperationQueue.getMainQueue(), new VoidBlock1<NSNotification>() {
+        public static NSObject observeIsPreparedToPlayDidChange(MPMusicPlayerController object, final VoidBlock1<MPMediaPlayback> block) {
+            return NSNotificationCenter.getDefaultCenter().addObserver(IsPreparedToPlayDidChangeNotification(), object, NSOperationQueue.getMainQueue(), new VoidBlock1<NSNotification>() {
                 @Override
                 public void invoke (NSNotification a) {
                     block.invoke((MPMediaPlayback) a.getObject());
                 }
             });
         }
-        public static NSObject observePlaybackStateChanges(final VoidBlock1<MPMusicPlayerController> block) {
-            return NSNotificationCenter.getDefaultCenter().addObserver(PlaybackStateDidChangeNotification(), null, NSOperationQueue.getMainQueue(), new VoidBlock1<NSNotification>() {
+        public static NSObject observePlaybackStateDidChange(MPMusicPlayerController object, final VoidBlock1<MPMusicPlayerController> block) {
+            return NSNotificationCenter.getDefaultCenter().addObserver(PlaybackStateDidChangeNotification(), object, NSOperationQueue.getMainQueue(), new VoidBlock1<NSNotification>() {
                 @Override
                 public void invoke (NSNotification a) {
                     block.invoke((MPMusicPlayerController) a.getObject());
                 }
             });
         }
-        public static NSObject observeNowPlayingItemChanges(final VoidBlock1<MPMusicPlayerController> block) {
-            return NSNotificationCenter.getDefaultCenter().addObserver(NowPlayingItemDidChangeNotification(), null, NSOperationQueue.getMainQueue(), new VoidBlock1<NSNotification>() {
+        public static NSObject observeNowPlayingItemDidChange(MPMusicPlayerController object, final VoidBlock1<MPMusicPlayerController> block) {
+            return NSNotificationCenter.getDefaultCenter().addObserver(NowPlayingItemDidChangeNotification(), object, NSOperationQueue.getMainQueue(), new VoidBlock1<NSNotification>() {
                 @Override
                 public void invoke (NSNotification a) {
                     block.invoke((MPMusicPlayerController) a.getObject());
                 }
             });
         }
-        public static NSObject observeVolumeChanges(final VoidBlock1<MPMusicPlayerController> block) {
-            return NSNotificationCenter.getDefaultCenter().addObserver(VolumeDidChangeNotification(), null, NSOperationQueue.getMainQueue(), new VoidBlock1<NSNotification>() {
+        public static NSObject observeVolumeDidChange(MPMusicPlayerController object, final VoidBlock1<MPMusicPlayerController> block) {
+            return NSNotificationCenter.getDefaultCenter().addObserver(VolumeDidChangeNotification(), object, NSOperationQueue.getMainQueue(), new VoidBlock1<NSNotification>() {
                 @Override
                 public void invoke (NSNotification a) {
                     block.invoke((MPMusicPlayerController) a.getObject());

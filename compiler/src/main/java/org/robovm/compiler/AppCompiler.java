@@ -52,6 +52,8 @@ import org.robovm.compiler.config.Config.TargetType;
 import org.robovm.compiler.config.OS;
 import org.robovm.compiler.config.Resource;
 import org.robovm.compiler.log.ConsoleLogger;
+import org.robovm.compiler.plugin.CompilerPlugin;
+import org.robovm.compiler.plugin.CompilerPluginArgument;
 import org.robovm.compiler.target.LaunchParameters;
 import org.robovm.compiler.target.ios.IOSSimulatorLaunchParameters;
 import org.robovm.compiler.target.ios.IOSSimulatorLaunchParameters.Family;
@@ -333,6 +335,7 @@ public class AppCompiler {
     public static void main(String[] args) throws IOException {
         
         AppCompiler compiler = null;
+        Config.Builder builder = null;
         
         boolean verbose = false;
         boolean run = false;
@@ -341,8 +344,9 @@ public class AppCompiler {
         List<String> runArgs = new ArrayList<String>();
         List<String> launchArgs = new ArrayList<String>();
         try {
-            Config.Builder builder = new Config.Builder();
-            
+            builder = new Config.Builder();
+            Map<String, CompilerPluginArgument> pluginArguments = builder.fetchPluginArguments();
+ 
             int i = 0;
             while (i < args.length) {
                 if ("-cp".equals(args[i]) || "-classpath".equals(args[i])) {
@@ -409,7 +413,7 @@ public class AppCompiler {
                 } else if ("-clean".equals(args[i])) {
                     builder.clean(true);
                 } else if ("-help".equals(args[i]) || "-?".equals(args[i])) {
-                    printUsageAndExit(null);
+                    printUsageAndExit(null, builder.getCompilerPlugins());
                 } else if ("-version".equals(args[i])) {
                     printVersionAndExit();
                 } else if ("-cc".equals(args[i])) {
@@ -492,7 +496,16 @@ public class AppCompiler {
                 } else if (args[i].startsWith("-rvm:")) {
                     runArgs.add(args[i]);
                 } else if (args[i].startsWith("-")) {
-                    throw new IllegalArgumentException("Unrecognized option: " + args[i]);
+                    String argName = args[i].substring(1, args[i].length());
+                    CompilerPluginArgument arg = pluginArguments.get(argName);
+                    if (arg != null) {
+                        builder.addCompilerPluginArgument(argName);
+                        if(arg.hasValue()) {
+                            builder.addCompilerPluginArgument(args[++i]);
+                        }
+                    } else {
+                        throw new IllegalArgumentException("Unrecognized option: " + args[i]);
+                    }
                 } else {
                     builder.mainClass(args[i++]);
                     break;
@@ -545,7 +558,7 @@ public class AppCompiler {
             if (verbose && !(t instanceof StringIndexOutOfBoundsException) && !(t instanceof IllegalArgumentException)) {
                 t.printStackTrace();
             }
-            printUsageAndExit(message);            
+            printUsageAndExit(message, builder.getCompilerPlugins());
         }
         
         try {
@@ -595,7 +608,7 @@ public class AppCompiler {
             if (verbose && !(t instanceof ExecuteException)) {
                 t.printStackTrace();
             }
-            printUsageAndExit(message);
+            printUsageAndExit(message, builder.getCompilerPlugins());
         }
     }
     
@@ -604,10 +617,11 @@ public class AppCompiler {
         System.exit(0);
     }
     
-    private static void printUsageAndExit(String errorMessage) {
+    private static void printUsageAndExit(String errorMessage, List<CompilerPlugin> plugins) {
         if (errorMessage != null) {
             System.err.format("robovm: %s\n", errorMessage);
         }
+        // @formatter:off 
         System.err.println("Usage: robovm [-options] class [run-args]");
         System.err.println("   or  robovm [-options] -jar jarfile [run-args]");
         System.err.println("Options:");
@@ -737,6 +751,7 @@ public class AppCompiler {
                          + "                        the latest).");
         
         System.exit(errorMessage != null ? 1 : 0);
+        // @formatter:on
     }
     
     private class UpdateChecker extends Thread {

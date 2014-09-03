@@ -750,9 +750,30 @@ public class AppCompiler {
         System.err.println("  -ios-sim-sdk <sdk>    The iOS SDK version to run the application on (defaults to\n" 
                          + "                        the latest).");
         
+        if(plugins != null) {
+            for(CompilerPlugin plugin: plugins) {
+                if(plugin.getArguments().size() > 0) {
+                    System.err.println(plugin.getClass().getSimpleName() + " options:");
+                    for(CompilerPluginArgument arg: plugin.getArguments()) {
+                        String argString = "  -" + arg.getName() + (arg.hasValue()? " " + arg.getValueName(): "");
+                        int whitespace = Math.max(1, 24 - argString.length());
+                        System.err.println(argString + repeat(" ", whitespace) + arg.getDescription());
+                    }
+                }
+            }
+        }
         System.exit(errorMessage != null ? 1 : 0);
         // @formatter:on
     }
+    
+    private static String repeat(String s, int n) {
+        StringBuilder builder = new StringBuilder();
+        for (int i = 0; i < n; i++) {
+            builder.append(s);
+        }
+        return builder.toString();
+    }
+
     
     private class UpdateChecker extends Thread {
         private final String address;

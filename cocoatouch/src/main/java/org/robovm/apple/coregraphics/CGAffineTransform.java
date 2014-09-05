@@ -77,6 +77,12 @@ import org.robovm.apple.foundation.*;
     /**
      * @since Available in iOS 2.0 and later.
      */
+    @GlobalValue(symbol="CGAffineTransformIdentity", optional=true)
+    public static native @ByVal CGAffineTransform Identity();
+    
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
     @Bridge(symbol="CGAffineTransformMakeTranslation", optional=true)
     public static native @ByVal CGAffineTransform createTranslation(@MachineSizedFloat double tx, @MachineSizedFloat double ty);
     /**

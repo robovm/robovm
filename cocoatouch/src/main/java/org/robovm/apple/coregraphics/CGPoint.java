@@ -73,6 +73,12 @@ import org.robovm.apple.foundation.*;
     /**
      * @since Available in iOS 2.0 and later.
      */
+    @GlobalValue(symbol="CGPointZero", optional=true)
+    public static native @ByVal CGPoint Zero();
+    
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
     public boolean equalToPoint(CGPoint point2) { return equalToPoint(this, point2); }
     @Bridge(symbol="CGPointEqualToPoint", optional=true)
     private static native boolean equalToPoint(@ByVal CGPoint point1, @ByVal CGPoint point2);

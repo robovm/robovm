@@ -79,6 +79,22 @@ import org.robovm.apple.foundation.*;
     /**
      * @since Available in iOS 2.0 and later.
      */
+    @GlobalValue(symbol="CGRectZero", optional=true)
+    public static native @ByVal CGRect Zero();
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
+    @GlobalValue(symbol="CGRectNull", optional=true)
+    public static native @ByVal CGRect Null();
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
+    @GlobalValue(symbol="CGRectInfinite", optional=true)
+    public static native @ByVal CGRect Infinite();
+    
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
     public @MachineSizedFloat double getMinX() { return getMinX(this); }
     @Bridge(symbol="CGRectGetMinX", optional=true)
     private static native @MachineSizedFloat double getMinX(@ByVal CGRect rect);

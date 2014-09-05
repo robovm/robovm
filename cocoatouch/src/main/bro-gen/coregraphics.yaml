@@ -679,7 +679,8 @@ values:
         exclude: true
 
     # CGAffineTransform
-    CG(AffineTransform.*):
+    CGAffineTransform(.*):
+        class: CGAffineTransform
         name: "#{g[0]}"
 
     # CGColorSpace
@@ -695,15 +696,18 @@ values:
         exclude: true
 
     # CGPoint
-    CG(Point.*):
+    CGPoint(.*):
+        class: CGPoint
         name: "#{g[0]}"
 
     # CGRect
-    CG(Rect.*):
+    CGRect(.*):
+        class: CGRect
         name: "#{g[0]}"
 
     # CGSize
-    CG(Size.*):
+    CGSize(.*):
+        class: CGSize
         name: "#{g[0]}"
 
     # Make sure we don't miss any values if new ones are introduced in a later CoreGraphics

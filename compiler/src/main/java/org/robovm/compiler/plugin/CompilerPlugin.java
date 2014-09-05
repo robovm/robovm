@@ -17,6 +17,7 @@
 package org.robovm.compiler.plugin;
 
 import java.io.IOException;
+import java.util.List;
 
 import org.robovm.compiler.ModuleBuilder;
 import org.robovm.compiler.clazz.Clazz;
@@ -31,6 +32,10 @@ import soot.SootMethod;
  * process and modify classes and methods during the compilation.
  */
 public interface CompilerPlugin {
+    /**
+     * Returns the plugin's arguments to be parsed from XML or the command line
+     */
+    List<CompilerPluginArgument> getArguments();
 
     /**
      * Called just before a class is about to be compiled. Modifications to the 

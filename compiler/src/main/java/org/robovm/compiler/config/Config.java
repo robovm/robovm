@@ -34,6 +34,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
+import java.util.TreeMap;
 import java.util.jar.Attributes;
 import java.util.jar.JarFile;
 import java.util.zip.ZipEntry;
@@ -52,6 +53,7 @@ import org.robovm.compiler.clazz.Path;
 import org.robovm.compiler.llvm.DataLayout;
 import org.robovm.compiler.log.Logger;
 import org.robovm.compiler.plugin.CompilerPlugin;
+import org.robovm.compiler.plugin.CompilerPluginArgument;
 import org.robovm.compiler.plugin.annotation.AnnotationImplPlugin;
 import org.robovm.compiler.plugin.objc.ObjCBlockPlugin;
 import org.robovm.compiler.plugin.objc.ObjCMemberPlugin;
@@ -122,6 +124,8 @@ public class Config {
     private ArrayList<File> bootclasspath;
     @ElementList(required = false, entry = "classpathentry")
     private ArrayList<File> classpath;
+    @ElementList(required = false, entry = "argument")
+    private ArrayList<String> pluginArguments;
     @Element(required = false, name = "target")
     private TargetType targetType;
     
@@ -165,7 +169,15 @@ public class Config {
     private MarshalerLookup marshalerLookup;
     private List<CompilerPlugin> compilerPlugins = new ArrayList<>();
 
-    protected Config() {
+    protected Config() throws IOException {
+        // Add standard plugins
+        this.compilerPlugins.addAll(0, Arrays.asList(
+                new ObjCProtocolProxyPlugin(),
+                new ObjCBlockPlugin(),
+                new ObjCMemberPlugin(),
+                new AnnotationImplPlugin()
+                ));
+        this.loadPluginsFromClassPath();
     }
     
     public Home getHome() {
@@ -330,6 +342,10 @@ public class Config {
     
     public List<CompilerPlugin> getCompilerPlugins() {
         return compilerPlugins;
+    }
+    
+    public List<String> getCompilerPluginArguments() {
+        return pluginArguments;
     }
     
     public List<File> getBootclasspath() {
@@ -653,16 +669,7 @@ public class Config {
         cacheDir = new File(archDir, debug ? "debug" : "release");
         cacheDir.mkdirs();
 
-        this.clazzes = new Clazzes(this, realBootclasspath, classpath);
-
-        // Add standard plugins
-        compilerPlugins.addAll(0, Arrays.asList(
-            new ObjCProtocolProxyPlugin(),
-            new ObjCBlockPlugin(),
-            new ObjCMemberPlugin(),
-            new AnnotationImplPlugin()
-        ));
-        loadPluginsFromClassPath();
+        this.clazzes = new Clazzes(this, realBootclasspath, classpath);        
 
         mergeConfigsFromClasspath();
         
@@ -822,12 +829,12 @@ public class Config {
             File rtClasses = new File(dir, "rt/target/classes/");
             File rtSource = rtJar;
             if (!rtJar.exists() || rtJar.isDirectory()) {
-            	if(!rtClasses.exists() || rtClasses.isFile()) {
-                throw new IllegalArgumentException(error 
-                        + "rt/target/" + rtJarName + " missing or invalid");
-            	} else {
-            		rtSource = rtClasses;
-            	}
+                if (!rtClasses.exists() || rtClasses.isFile()) {
+                    throw new IllegalArgumentException(error
+                            + "rt/target/" + rtJarName + " missing or invalid");
+                } else {
+                    rtSource = rtClasses;
+                }
             }
 
             return new Home(dir, binDir, vmBinariesDir, rtSource);
@@ -837,7 +844,7 @@ public class Config {
     public static class Builder {
         final Config config;
         
-        public Builder() {
+        public Builder() throws IOException {
             this.config = new Config();
         }
         
@@ -1154,6 +1161,13 @@ public class Config {
             return this;
         }
         
+        public void addCompilerPluginArgument(String argName) {
+            if(config.pluginArguments == null) {
+                config.pluginArguments = new ArrayList<>();
+            }
+            config.pluginArguments.add(argName);
+        }
+        
         public Config build() throws IOException {
             return config.build();
         }
@@ -1232,6 +1246,24 @@ public class Config {
             
             return serializer;
         }
+        
+        /**
+         * Fetches the {@link CompilerPluginArgument}s of all registered plugins
+         * for parsing.
+         */
+        public Map<String, CompilerPluginArgument> fetchPluginArguments() {
+            Map<String, CompilerPluginArgument> args = new TreeMap<>();
+            for (CompilerPlugin plugin : config.compilerPlugins) {
+                for (CompilerPluginArgument arg : plugin.getArguments()) {
+                    args.put(arg.getName(), arg);
+                }
+            }
+            return args;
+        }
+
+        public List<CompilerPlugin> getCompilerPlugins() {
+            return config.compilerPlugins;
+        }       
     }
 
     public static final class Lib {

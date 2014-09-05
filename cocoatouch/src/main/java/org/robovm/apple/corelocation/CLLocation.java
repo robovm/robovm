@@ -76,6 +76,12 @@ import org.robovm.apple.foundation.*;
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
+    /**
+     * @since Available in iOS 6.0 and later.
+     */
+    @GlobalValue(symbol="CLLocationDistanceMax", optional=true)
+    public static native double LocationDistanceMax();
+    
     @Method(selector = "initWithLatitude:longitude:")
     protected native @Pointer long initWithLatitude$longitude$(double latitude, double longitude);
     @Method(selector = "initWithCoordinate:altitude:horizontalAccuracy:verticalAccuracy:timestamp:")

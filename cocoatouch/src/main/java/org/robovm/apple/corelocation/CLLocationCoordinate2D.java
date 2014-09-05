@@ -58,6 +58,12 @@ import org.robovm.apple.foundation.*;
     /**
      * @since Available in iOS 4.0 and later.
      */
+    @GlobalValue(symbol="kCLLocationCoordinate2DInvalid", optional=true)
+    public static native @ByVal CLLocationCoordinate2D Invalid();
+    
+    /**
+     * @since Available in iOS 4.0 and later.
+     */
     @Bridge(symbol="CLLocationCoordinate2DIsValid", optional=true)
     private static native boolean isValid(@ByVal CLLocationCoordinate2D coord);
     /*</methods>*/

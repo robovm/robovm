@@ -51,39 +51,5 @@ import org.robovm.apple.foundation.*;
      */
     @GlobalValue(symbol="kCLErrorUserInfoAlternateRegionKey", optional=true)
     public static native NSString ErrorUserInfoAlternateRegionKey();
-    @GlobalValue(symbol="kCLDistanceFilterNone", optional=true)
-    public static native double DistanceFilterNone();
-    /**
-     * @since Available in iOS 4.0 and later.
-     */
-    @GlobalValue(symbol="kCLLocationAccuracyBestForNavigation", optional=true)
-    public static native double LocationAccuracyBestForNavigation();
-    @GlobalValue(symbol="kCLLocationAccuracyBest", optional=true)
-    public static native double LocationAccuracyBest();
-    @GlobalValue(symbol="kCLLocationAccuracyNearestTenMeters", optional=true)
-    public static native double LocationAccuracyNearestTenMeters();
-    @GlobalValue(symbol="kCLLocationAccuracyHundredMeters", optional=true)
-    public static native double LocationAccuracyHundredMeters();
-    @GlobalValue(symbol="kCLLocationAccuracyKilometer", optional=true)
-    public static native double LocationAccuracyKilometer();
-    @GlobalValue(symbol="kCLLocationAccuracyThreeKilometers", optional=true)
-    public static native double LocationAccuracyThreeKilometers();
-    /**
-     * @since Available in iOS 6.0 and later.
-     */
-    @GlobalValue(symbol="CLLocationDistanceMax", optional=true)
-    public static native double LocationDistanceMax();
-    /**
-     * @since Available in iOS 6.0 and later.
-     */
-    @GlobalValue(symbol="CLTimeIntervalMax", optional=true)
-    public static native double TimeIntervalMax();
-    /**
-     * @since Available in iOS 4.0 and later.
-     */
-    @GlobalValue(symbol="kCLLocationCoordinate2DInvalid", optional=true)
-    public static native @ByVal CLLocationCoordinate2D LocationCoordinate2DInvalid();
-    @GlobalValue(symbol="kCLHeadingFilterNone", optional=true)
-    public static native double HeadingFilterNone();
     /*</methods>*/
 }

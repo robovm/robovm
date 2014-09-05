@@ -170,19 +170,26 @@ values:
         name: "#{g[0]}"
         type: NSString
 
-    kCL(LocationAccuracy.*):
-        name: "#{g[0]}"
+    kCLLocationAccuracy(.*):
+        class: CLLocationAccuracy
+        name: "#{g[0]}Value"
+        visibility: protected
 
     CL(LocationDistanceMax):
+        class: CLLocation
         name: "#{g[0]}"
     CL(TimeIntervalMax):
+        class: CLLocationManager
         name: "#{g[0]}"
     kCL(DistanceFilterNone):
+        class: CLLocationManager
         name: "#{g[0]}"
     kCL(HeadingFilterNone):
+        class: CLLocationManager
         name: "#{g[0]}"
 
-    kCL(LocationCoordinate2DInvalid):
+    kCLLocationCoordinate2D(Invalid):
+        class: CLLocationCoordinate2D
         name: "#{g[0]}"
 
     # Make sure we don't miss any values if new ones are introduced in a later version

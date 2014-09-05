@@ -70,7 +70,7 @@ import org.robovm.apple.accounts.*;
     @Method(selector = "preparedURLRequest")
     public native NSURLRequest getPreparedURLRequest();
     @Method(selector = "performRequestWithHandler:")
-    public native void performRequest(@Block VoidBlock3<NSString, SLRequestMethod, NSURL> handler);
+    public native void performRequest(@Block VoidBlock3<NSData, NSHTTPURLResponse, NSError> handler);
     @Method(selector = "requestForServiceType:requestMethod:URL:parameters:")
     protected static native SLRequest create(NSString serviceType, SLRequestMethod requestMethod, NSURL url, NSDictionary<NSString, NSObject> parameters);
     /*</methods>*/

@@ -53,7 +53,7 @@ classes:
                 name: performRequest
                 parameters:
                     handler:
-                        type: "@Block VoidBlock3<NSString, SLRequestMethod, NSURL>"
+                        type: "@Block VoidBlock3<NSData, NSHTTPURLResponse, NSError>"
             '+requestForServiceType:requestMethod:URL:parameters:':
                 name: create
                 visibility: protected

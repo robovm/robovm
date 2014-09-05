@@ -58,6 +58,12 @@ import org.robovm.apple.foundation.*;
         requestAccessToAccounts(accountType, options == null ? null : options.data, completion);
     }
     /*<methods>*/
+    /**
+     * @since Available in iOS 5.0 and later.
+     */
+    @GlobalValue(symbol="ACAccountStoreDidChangeNotification", optional=true)
+    public static native NSString DidChangeNotification();
+    
     @Method(selector = "accountWithIdentifier:")
     public native ACAccount getAccount(String identifier);
     @Method(selector = "accountTypeWithAccountTypeIdentifier:")

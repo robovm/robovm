@@ -113,7 +113,8 @@ values:
         type: NSString
         visibility: protected
         
-    AC(.*Notification):
+    ACAccountStore(DidChangeNotification):
+        class: ACAccountStore
         type: NSString
         name: "#{g[0]}"
     AC(ErrorDomain):

@@ -47,11 +47,6 @@ import org.robovm.apple.foundation.*;
     /**
      * @since Available in iOS 5.0 and later.
      */
-    @GlobalValue(symbol="ACAccountStoreDidChangeNotification", optional=true)
-    public static native NSString AccountStoreDidChangeNotification();
-    /**
-     * @since Available in iOS 5.0 and later.
-     */
     @GlobalValue(symbol="ACErrorDomain", optional=true)
     public static native NSString ErrorDomain();
     /*</methods>*/

@@ -19,6 +19,7 @@ package org.robovm.apple.eventkit;
 import java.io.*;
 import java.nio.*;
 import java.util.*;
+
 import org.robovm.objc.*;
 import org.robovm.objc.annotation.*;
 import org.robovm.objc.block.*;
@@ -42,6 +43,19 @@ import org.robovm.apple.corelocation.*;
     extends /*<extends>*/NSObject/*</extends>*/ 
     /*<implements>*//*</implements>*/ {
 
+    public static class Notifications {
+        /**
+         * @since Available in iOS 4.0 and later.
+         */
+        public static NSObject observeChanged(EKEventStore object, final VoidBlock1<EKEventStore> block) {
+            return NSNotificationCenter.getDefaultCenter().addObserver(ChangedNotification(), object, NSOperationQueue.getMainQueue(), new VoidBlock1<NSNotification>() {
+                @Override
+                public void invoke(NSNotification a) {
+                    block.invoke((EKEventStore) a.getObject());
+                }
+            });
+        }
+    }
     /*<ptr>*/public static class EKEventStorePtr extends Ptr<EKEventStore, EKEventStorePtr> {}/*</ptr>*/
     /*<bind>*/static { ObjCRuntime.bind(EKEventStore.class); }/*</bind>*/
     /*<constants>*//*</constants>*/
@@ -64,6 +78,12 @@ import org.robovm.apple.corelocation.*;
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
+    /**
+     * @since Available in iOS 4.0 and later.
+     */
+    @GlobalValue(symbol="EKEventStoreChangedNotification", optional=true)
+    public static native NSString ChangedNotification();
+    
     /**
      * @since Available in iOS 6.0 and later.
      */

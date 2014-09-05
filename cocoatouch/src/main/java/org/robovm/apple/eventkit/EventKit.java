@@ -50,11 +50,6 @@ import org.robovm.apple.corelocation.*;
     /**
      * @since Available in iOS 4.0 and later.
      */
-    @GlobalValue(symbol="EKEventStoreChangedNotification", optional=true)
-    public static native String EventStoreChangedNotification();
-    /**
-     * @since Available in iOS 4.0 and later.
-     */
     @GlobalValue(symbol="EKErrorDomain", optional=true)
     public static native String ErrorDomain();
     /*</methods>*/

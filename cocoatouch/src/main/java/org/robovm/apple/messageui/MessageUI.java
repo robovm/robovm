@@ -54,15 +54,5 @@ import org.robovm.apple.uikit.*;
     public static native NSString MessageComposeViewControllerAttachmentURL();
     @GlobalValue(symbol="MFMessageComposeViewControllerAttachmentAlternateFilename", optional=true)
     public static native NSString MessageComposeViewControllerAttachmentAlternateFilename();
-    /**
-     * @since Available in iOS 5.0 and later.
-     */
-    @GlobalValue(symbol="MFMessageComposeViewControllerTextMessageAvailabilityDidChangeNotification", optional=true)
-    public static native NSString MessageComposeViewControllerTextMessageAvailabilityDidChangeNotification();
-    /**
-     * @since Available in iOS 5.0 and later.
-     */
-    @GlobalValue(symbol="MFMessageComposeViewControllerTextMessageAvailabilityKey", optional=true)
-    public static native NSString MessageComposeViewControllerTextMessageAvailabilityKey();
     /*</methods>*/
 }

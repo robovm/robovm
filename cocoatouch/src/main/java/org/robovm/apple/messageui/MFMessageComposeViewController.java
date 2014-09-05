@@ -40,6 +40,25 @@ import org.robovm.apple.uikit.*;
     extends /*<extends>*/UINavigationController/*</extends>*/ 
     /*<implements>*//*</implements>*/ {
 
+    public static class Notifications {
+        /**
+         * @since Available in iOS 5.0 and later.
+         */
+        public static NSObject observeTextMessageAvailabilityDidChange(final VoidBlock1<Boolean> block) {
+            return NSNotificationCenter.getDefaultCenter().addObserver(TextMessageAvailabilityDidChangeNotification(), null, NSOperationQueue.getMainQueue(), new VoidBlock1<NSNotification>() {
+                @Override
+                public void invoke(NSNotification a) {
+                    NSDictionary<NSString, ?> data = a.getUserInfo();
+                    if (data.containsKey(TextMessageAvailabilityKey())) {
+                        NSNumber val = (NSNumber)data.get(TextMessageAvailabilityKey());
+                        block.invoke(val.booleanValue());
+                    } else {
+                        block.invoke(false);
+                    }
+                }
+            });
+        }
+    }
     /*<ptr>*/public static class MFMessageComposeViewControllerPtr extends Ptr<MFMessageComposeViewController, MFMessageComposeViewControllerPtr> {}/*</ptr>*/
     /*<bind>*/static { ObjCRuntime.bind(MFMessageComposeViewController.class); }/*</bind>*/
     /*<constants>*//*</constants>*/
@@ -69,6 +88,17 @@ import org.robovm.apple.uikit.*;
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
+    /**
+     * @since Available in iOS 5.0 and later.
+     */
+    @GlobalValue(symbol="MFMessageComposeViewControllerTextMessageAvailabilityDidChangeNotification", optional=true)
+    public static native NSString TextMessageAvailabilityDidChangeNotification();
+    /**
+     * @since Available in iOS 5.0 and later.
+     */
+    @GlobalValue(symbol="MFMessageComposeViewControllerTextMessageAvailabilityKey", optional=true)
+    protected static native NSString TextMessageAvailabilityKey();
+    
     /**
      * @since Available in iOS 7.0 and later.
      */

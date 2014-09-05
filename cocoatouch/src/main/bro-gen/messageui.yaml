@@ -53,15 +53,15 @@ protocols:
     MFMailComposeViewControllerDelegate:
         methods:
             '-mailComposeController:didFinishWithResult:error:':
-                name: "didFinish"
+                name: didFinish
     MFMessageComposeViewControllerDelegate:
         methods:
             '-messageComposeViewController:didFinishWithResult:':
-                name: "didFinish"
+                name: didFinish
 
 functions:
     # Make sure we don't miss any functions if new ones are introduced in a later version
-    (MF.*):
+    (k?MF.*):
         class: MessageUI
         name: "Function__#{g[0]}"
 
@@ -73,20 +73,26 @@ values:
     MF(MessageComposeViewControllerAttachment.*):
         name: "#{g[0]}"
         type: NSString
-    MF(.*Notification):
+    MFMessageComposeViewController(TextMessageAvailabilityDidChangeNotification):
+        class: MFMessageComposeViewController
         name: "#{g[0]}"
         type: NSString
+    MFMessageComposeViewController(TextMessageAvailabilityKey):
+        class: MFMessageComposeViewController
+        name: "#{g[0]}"
+        type: NSString
+        visibility: protected
     MF(.*Key):
         name: "#{g[0]}"
         type: NSString
     
     # Make sure we don't miss any values if new ones are introduced in a later version
-    (MF.*):
+    (k?MF.*):
         class: MessageUI
         name: "Value__#{g[0]}"
 
 constants:
     # Make sure we don't miss any constants if new ones are introduced in a later version
-    (MF.*):
+    (k?MF.*):
         class: MessageUI
         name: "Constant__#{g[0]}"

@@ -72,7 +72,7 @@ functions:
     # CFFTPStream
     CFReadStreamCreateWithFTPURL:
         class: CFFTPStream
-        name: "createReadStream"
+        name: createReadStream
         visibility: protected
     CFFTP(CreateParsedResourceListing):
         class: CFFTPStream
@@ -85,7 +85,7 @@ functions:
                 type: "NSDictionary.NSDictionaryPtr"
     CFWriteStreamCreateWithFTPURL:
         class: CFFTPStream
-        name: "createWriteStream"
+        name: createWriteStream
         visibility: protected
     
     # CFHost
@@ -117,23 +117,23 @@ functions:
         visibility: protected
     CFHost(SetClient):
         class: CFHost
-        name: "setCallback"
+        name: setCallback
         visibility: protected
     CFHost(Schedule)WithRunLoop:
         class: CFHost
         name: "#{g[0]}"
         parameters:
             runLoopMode:
-                type: "CFString"
+                type: CFString
     CFHost(Unschedule)FromRunLoop:
         class: CFHost
         name: "#{g[0]}"
         parameters:
             runLoopMode:
-                type: "CFString"
+                type: CFString
     CFStreamCreatePairWithSocketToCFHost:
         class: CFHost
-        name: "createSocketStreamPair"
+        name: createSocketStreamPair
         visibility: protected
     CFHost(.*):
         class: CFHost
@@ -268,13 +268,13 @@ functions:
         name: "#{g[0]}"
         parameters:
             runLoopMode:
-                type: "CFString"
+                type: CFString
     CFNetServiceBrowser(Unschedule)FromRunLoop:
         class: CFNetServiceBrowser
         name: "#{g[0]}"
         parameters:
             runLoopMode:
-                type: "CFString"
+                type: CFString
     CFNetServiceBrowser(.*):
         class: CFNetServiceBrowser
         name: "#{g[0]}"
@@ -297,13 +297,13 @@ functions:
         name: "#{g[0]}"
         parameters:
             runLoopMode:
-                type: "CFString"
+                type: CFString
     CFNetServiceMonitor(Unschedule)FromRunLoop:
         class: CFNetServiceMonitor
         name: "#{g[0]}"
         parameters:
             runLoopMode:
-                type: "CFString"
+                type: CFString
     CFNetServiceMonitor(.*):
         class: CFNetServiceMonitor
         name: "#{g[0]}"
@@ -330,35 +330,35 @@ functions:
         return_type: "NSArray<NSData>"
     CFNetServiceCreateDictionaryWithTXTData:
         class: CFNetService
-        name: "parseTXTData"
+        name: parseTXTData
         visibility: protected
         return_type: "NSDictionary<NSString, NSData>"
     CFNetServiceCreateTXTDataWithDictionary:
         class: CFNetService
-        name: "createTXTData"
+        name: createTXTData
         visibility: protected
         parameters:
             keyValuePairs:
                 type: "NSDictionary<NSString, ?>"
     CFNetService(SetClient):
         class: CFNetService
-        name: "setCallback"
+        name: setCallback
         visibility: protected
     CFNetService(Schedule)WithRunLoop:
         class: CFNetService
         name: "#{g[0]}"
         parameters:
             runLoopMode:
-                type: "CFString"
+                type: CFString
     CFNetService(Unschedule)FromRunLoop:
         class: CFNetService
         name: "#{g[0]}"
         parameters:
             runLoopMode:
-                type: "CFString"
+                type: CFString
     CFStreamCreatePairWithSocketToNetService:
         class: CFNetService
-        name: "createSocketStreamPair"
+        name: createSocketStreamPair
         visibility: protected
     CFNetService(.*):
         class: CFNetService
@@ -372,11 +372,11 @@ functions:
     CFNetworkCopyProxiesForURL:
         exclude: true # CocoaTouch SystemConfiguration doesn't have the necessary methods.
         class: CFProxySupport
-        name: "getProxies0"
+        name: getProxies0
         return_type: "NSArray<NSDictionary<?, ?>>"
     CFNetworkCopyProxiesForAutoConfigurationScript:
         class: CFProxySupport
-        name: "getProxies0"
+        name: getProxies0
         return_type: "NSArray<NSDictionary<?, ?>>"
         visibility: protected
     CFNetwork(ExecuteProxyAutoConfigurationScript):
@@ -389,10 +389,7 @@ functions:
         visibility: protected
 
     # Make sure we don't miss any functions if new ones are introduced in a later version
-    (kCF.*):
-        class: CoreServices
-        name: "Function__#{g[0]}"
-    (CF.*):
+    (k?CF.*):
         class: CoreServices
         name: "Function__#{g[0]}"
 
@@ -436,18 +433,12 @@ values:
         visibility: protected
     
     # Make sure we don't miss any values if new ones are introduced in a later version
-    (kCF.*):
-        class: CoreServices
-        name: "Value__#{g[0]}"
-    (CF.*):
+    (k?CF.*):
         class: CoreServices
         name: "Value__#{g[0]}"
 
 constants:
     # Make sure we don't miss any constants if new ones are introduced in a later version
-    (kCF.*):
-        class: CoreServices
-        name: "Constant__#{g[0]}"
-    (CF.*):
+    (k?CF.*):
         class: CoreServices
         name: "Constant__#{g[0]}"

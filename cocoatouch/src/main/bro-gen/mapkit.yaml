@@ -635,9 +635,8 @@ values:
         type: NSString
         visibility: protected
     
-    MK(.*Notification):
-        name: "#{g[0]}"
-        type: NSString
+    MKAnnotationCalloutInfoDidChangeNotification: # Deprecated in favor of KVO notifications
+        exclude: true
     MK(.*ErrorDomain):
         name: "#{g[0]}"
         readonly: true

@@ -49,8 +49,6 @@ import org.robovm.apple.dispatch.*;
     /*<properties>*//*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
-    @GlobalValue(symbol="MKAnnotationCalloutInfoDidChangeNotification", optional=true)
-    public static native NSString AnnotationCalloutInfoDidChangeNotification();
     @GlobalValue(symbol="MKErrorDomain", optional=true)
     public static native NSString ErrorDomain();
     /*</methods>*/

@@ -98,6 +98,17 @@ import org.robovm.apple.uikit.*;
     /*<members>*//*</members>*/
     /*<methods>*/
     /**
+     * @since Available in iOS 6.0 and later.
+     */
+    @GlobalValue(symbol="GKTurnTimeoutDefault", optional=true)
+    public static native double TimeoutDefault();
+    /**
+     * @since Available in iOS 6.0 and later.
+     */
+    @GlobalValue(symbol="GKTurnTimeoutNone", optional=true)
+    public static native double TimeoutNone();
+    
+    /**
      * @since Available in iOS 7.0 and later.
      */
     @Method(selector = "setLocalizableMessageWithKey:arguments:")

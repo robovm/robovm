@@ -74,6 +74,17 @@ import org.robovm.apple.uikit.*;
     /**
      * @since Available in iOS 7.0 and later.
      */
+    @GlobalValue(symbol="GKExchangeTimeoutDefault", optional=true)
+    public static native double TimeoutDefault();
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
+    @GlobalValue(symbol="GKExchangeTimeoutNone", optional=true)
+    public static native double TimeoutNone();
+    
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
     @Method(selector = "cancelWithLocalizableMessageKey:arguments:completionHandler:")
     public native void cancel(String key, NSArray<NSString> arguments, @Block VoidBlock1<NSError> completionHandler);
     /**

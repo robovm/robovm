@@ -19,6 +19,7 @@ package org.robovm.apple.gamekit;
 import java.io.*;
 import java.nio.*;
 import java.util.*;
+
 import org.robovm.objc.*;
 import org.robovm.objc.annotation.*;
 import org.robovm.objc.block.*;
@@ -39,7 +40,17 @@ import org.robovm.apple.uikit.*;
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/GKPlayer/*</name>*/ 
     extends /*<extends>*/NSObject/*</extends>*/ 
     /*<implements>*//*</implements>*/ {
-
+    
+    public static class Notifications {
+        public static NSObject observeDidChange(GKPlayer object, final VoidBlock1<GKPlayer> block) {
+            return NSNotificationCenter.getDefaultCenter().addObserver(DidChangeNotificationName(), object, NSOperationQueue.getMainQueue(), new VoidBlock1<NSNotification>() {
+                @Override
+                public void invoke(NSNotification a) {
+                    block.invoke((GKPlayer) a.getObject());
+                }
+            });
+        }
+    }
     /*<ptr>*/public static class GKPlayerPtr extends Ptr<GKPlayer, GKPlayerPtr> {}/*</ptr>*/
     /*<bind>*/static { ObjCRuntime.bind(GKPlayer.class); }/*</bind>*/
     /*<constants>*//*</constants>*/
@@ -62,6 +73,9 @@ import org.robovm.apple.uikit.*;
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
+    @GlobalValue(symbol="GKPlayerDidChangeNotificationName", optional=true)
+    public static native NSString DidChangeNotificationName();
+    
     @Method(selector = "loadPlayersForIdentifiers:withCompletionHandler:")
     public static native void loadPlayers(NSArray<NSString> identifiers, @Block VoidBlock2<NSArray<GKPlayer>, NSError> completionHandler);
     /**

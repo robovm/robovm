@@ -47,33 +47,6 @@ import org.robovm.apple.uikit.*;
     /*<methods>*/
     @GlobalValue(symbol="GKErrorDomain", optional=true)
     public static native NSString ErrorDomain();
-    @GlobalValue(symbol="GKPlayerDidChangeNotificationName", optional=true)
-    public static native NSString PlayerDidChangeNotificationName();
-    /**
-     * @since Available in iOS 6.0 and later.
-     */
-    @GlobalValue(symbol="GKTurnTimeoutDefault", optional=true)
-    public static native double TurnTimeoutDefault();
-    /**
-     * @since Available in iOS 6.0 and later.
-     */
-    @GlobalValue(symbol="GKTurnTimeoutNone", optional=true)
-    public static native double TurnTimeoutNone();
-    /**
-     * @since Available in iOS 7.0 and later.
-     */
-    @GlobalValue(symbol="GKExchangeTimeoutDefault", optional=true)
-    public static native double ExchangeTimeoutDefault();
-    /**
-     * @since Available in iOS 7.0 and later.
-     */
-    @GlobalValue(symbol="GKExchangeTimeoutNone", optional=true)
-    public static native double ExchangeTimeoutNone();
-    /**
-     * @since Available in iOS 4.1 and later.
-     */
-    @GlobalValue(symbol="GKPlayerAuthenticationDidChangeNotificationName", optional=true)
-    public static native NSString PlayerAuthenticationDidChangeNotificationName();
     @GlobalValue(symbol="GKSessionErrorDomain", optional=true)
     public static native NSString SessionErrorDomain();
     @GlobalValue(symbol="GKVoiceChatServiceErrorDomain", optional=true)

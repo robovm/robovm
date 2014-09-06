@@ -603,18 +603,6 @@ values:
         name: "#{g[0]}"
         type: NSString
         readonly: true
-    GK(TurnTimeoutDefault):
-        name: "#{g[0]}"
-        readonly: true
-    GK(TurnTimeoutNone):
-        name: "#{g[0]}"
-        readonly: true
-    GK(ExchangeTimeoutDefault):
-        name: "#{g[0]}"
-        readonly: true
-    GK(ExchangeTimeoutNone):
-        name: "#{g[0]}"
-        readonly: true
     GK(SessionErrorDomain):
         name: "#{g[0]}"
         type: NSString
@@ -623,11 +611,23 @@ values:
         name: "#{g[0]}"
         type: NSString
         readonly: true
-    GK(PlayerAuthenticationDidChangeNotificationName):
+        
+    GKTurn(Timeout.*):
+        class: GKTurnBasedMatch
+        name: "#{g[0]}"
+        readonly: true
+    GKExchange(Timeout.*):
+        class: GKTurnBasedExchange
+        name: "#{g[0]}"
+        readonly: true
+    
+    GKPlayer(AuthenticationDidChangeNotificationName):
+        class: GKLocalPlayer
         name: "#{g[0]}"
         type: NSString
         readonly: true
-    GK(PlayerDidChangeNotificationName):
+    GKPlayer(DidChangeNotificationName):
+        class: GKPlayer
         name: "#{g[0]}"
         type: NSString
         readonly: true

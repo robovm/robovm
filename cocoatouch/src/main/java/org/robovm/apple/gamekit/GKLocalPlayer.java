@@ -19,6 +19,7 @@ package org.robovm.apple.gamekit;
 import java.io.*;
 import java.nio.*;
 import java.util.*;
+
 import org.robovm.objc.*;
 import org.robovm.objc.annotation.*;
 import org.robovm.objc.block.*;
@@ -40,6 +41,16 @@ import org.robovm.apple.uikit.*;
     extends /*<extends>*/GKPlayer/*</extends>*/ 
     /*<implements>*//*</implements>*/ {
 
+    public static class Notifications {
+        public static NSObject observeAuthenticationDidChange(GKLocalPlayer object, final VoidBlock1<GKLocalPlayer> block) {
+            return NSNotificationCenter.getDefaultCenter().addObserver(AuthenticationDidChangeNotificationName(), object, NSOperationQueue.getMainQueue(), new VoidBlock1<NSNotification>() {
+                @Override
+                public void invoke(NSNotification a) {
+                    block.invoke((GKLocalPlayer) a.getObject());
+                }
+            });
+        }
+    }
     /*<ptr>*/public static class GKLocalPlayerPtr extends Ptr<GKLocalPlayer, GKLocalPlayerPtr> {}/*</ptr>*/
     /*<bind>*/static { ObjCRuntime.bind(GKLocalPlayer.class); }/*</bind>*/
     /*<constants>*//*</constants>*/
@@ -67,6 +78,12 @@ import org.robovm.apple.uikit.*;
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
+    /**
+     * @since Available in iOS 4.1 and later.
+     */
+    @GlobalValue(symbol="GKPlayerAuthenticationDidChangeNotificationName", optional=true)
+    public static native NSString AuthenticationDidChangeNotificationName();
+    
     @Method(selector = "loadFriendsWithCompletionHandler:")
     public native void loadFriends(@Block VoidBlock2<NSArray<NSString>, NSError> completionHandler);
     /**

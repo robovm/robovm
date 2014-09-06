@@ -19,6 +19,7 @@ package org.robovm.apple.newsstandkit;
 import java.io.*;
 import java.nio.*;
 import java.util.*;
+
 import org.robovm.objc.*;
 import org.robovm.objc.annotation.*;
 import org.robovm.objc.block.*;
@@ -36,7 +37,17 @@ import org.robovm.apple.foundation.*;
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/NKIssue/*</name>*/ 
     extends /*<extends>*/NSObject/*</extends>*/ 
     /*<implements>*//*</implements>*/ {
-
+    
+    public static class Notifications {
+        public static NSObject observeDownloadCompleted(NKIssue object, final VoidBlock1<NKIssue> block) {
+            return NSNotificationCenter.getDefaultCenter().addObserver(DownloadCompletedNotification(), object, NSOperationQueue.getMainQueue(), new VoidBlock1<NSNotification>() {
+                @Override
+                public void invoke(NSNotification a) {
+                    block.invoke((NKIssue) a.getObject());
+                }
+            });
+        }
+    }
     /*<ptr>*/public static class NKIssuePtr extends Ptr<NKIssue, NKIssuePtr> {}/*</ptr>*/
     /*<bind>*/static { ObjCRuntime.bind(NKIssue.class); }/*</bind>*/
     /*<constants>*//*</constants>*/
@@ -58,6 +69,9 @@ import org.robovm.apple.foundation.*;
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
+    @GlobalValue(symbol="NKIssueDownloadCompletedNotification", optional=true)
+    public static native NSString DownloadCompletedNotification();
+    
     @Method(selector = "addAssetWithRequest:")
     public native NKAssetDownload addAsset(NSURLRequest request);
     /*</methods>*/

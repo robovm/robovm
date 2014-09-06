@@ -22,14 +22,14 @@ classes:
                 type: "NSDictionary<NSString, ?>"
         methods:
             '-downloadWithDelegate:':
-                name: "download"
+                name: download
     NKIssue: # DONE
         properties:
             'downloadingAssets':
                 type: "NSArray<NKAssetDownload>"
         methods:
             '-addAssetWithRequest:':
-                name: "addAsset"
+                name: addAsset
     NKLibrary: # DONE
         properties:
             'issues':
@@ -38,9 +38,9 @@ classes:
                 type: "NSArray<NKAssetDownload>"
         methods:
             '-issueWithName:':
-                name: "getIssue"
+                name: getIssue
             '-addIssueWithName:date:':
-                name: "addIssue"
+                name: addIssue
             '-removeIssue:':
                 trim_after_first_colon: true
             '+sharedLibrary':
@@ -55,7 +55,8 @@ functions:
         name: "Function__#{g[0]}"
 
 values:
-    NK(.*Notification):
+    NKIssue(DownloadCompletedNotification):
+        class: NKIssue
         name: "#{g[0]}"
         type: NSString
     

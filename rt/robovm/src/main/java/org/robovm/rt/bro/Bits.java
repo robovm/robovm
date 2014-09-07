@@ -48,6 +48,44 @@ public abstract class Bits<T extends Bits<T>> implements Iterable<T>, Comparable
         this.mask = mask;
     }
     
+    @SuppressWarnings("unchecked")
+    public static <T extends Bits<T>> T with(T t) {
+        try {
+            return (T) t.getClass().getDeclaredConstructor(long.class).newInstance(t.value());
+        } catch (Exception e) {
+            throw new IllegalArgumentException();
+        }
+    }
+    
+    public static <T extends Bits<T>> T with(T t1, T t2) {
+        T t = with(t1);
+        return t.set(t2);
+    }
+    
+    public static <T extends Bits<T>> T with(T t1, T t2, T t3) {
+        T t = with(t1, t2);
+        return t.set(t3);
+    }
+    
+    public static <T extends Bits<T>> T with(T t1, T t2, T t3, T t4) {
+        T t = with(t1, t2, t3);
+        return t.set(t4);
+    }
+    
+    public static <T extends Bits<T>> T with(T t1, T t2, T t3, T t4, T t5) {
+        T t = with(t1, t2, t3, t4);
+        return t.set(t5);
+    }
+    
+    @SafeVarargs
+    public static <T extends Bits<T>> T with(T start, T... others) {
+        T t = with(start);
+        for (T e : others) {
+            t = t.set(e);
+        }
+        return t;
+    }
+    
     public long value() {
         return value;
     }
@@ -71,7 +109,7 @@ public abstract class Bits<T extends Bits<T>> implements Iterable<T>, Comparable
 
     public boolean contains(T bits) {
         Bits<?> bits_ = bits; // Avoids "... has private access in Bits" error with javac from OpenJDK 1.7
-        return (this.value | bits_.mask) == bits_.value;
+        return (bits_.mask & this.value) == bits_.value;
     }
     
     @Override

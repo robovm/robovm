@@ -88,7 +88,7 @@ enums:
     UIKeyboardType: {}
     UIKeyModifierFlags: {}
     UILayoutConstraintAxis: {}
-    UILayoutPriority: {}
+    UILayoutPriority: {first: UILayoutPriorityRequired}
     UILineBreakMode: {}
     UIMenuControllerArrowDirection: {}
     UIModalPresentationStyle: {}
@@ -931,11 +931,11 @@ classes:
     UIColor: # DONE
         methods:
             '+(black|darkGray|lightGray|white|gray|red|green|blue|cyan|yellow|magenta|orange)Color':
-                name: "color#{g[0][0].upcase}#{g[0][1..-1]}"
-            '+(purple|brown|clear|lightText|darkText|groupTableViewBackground|viewFlipsideBackground)Color':
-                name: "color#{g[0][0].upcase}#{g[0][1..-1]}"
-            '+(scrollViewTexturedBackground|underPageBackground)Color':
-                name: "color#{g[0][0].upcase}#{g[0][1..-1]}"
+                name: "#{g[0][0].downcase}#{g[0][1..-1]}"
+            '+(purple|brown|clear|lightText|darkText)Color':
+                name: "#{g[0][0].downcase}#{g[0][1..-1]}"
+            '+(groupTableViewBackground|viewFlipsideBackground|scrollViewTexturedBackground|underPageBackground)Color':
+                name: "#{g[0][0].downcase}#{g[0][1..-1]}Color"
             '-initWithHue:saturation:brightness:alpha:':
                 exclude: true
             '-initWithPatternImage:':
@@ -943,17 +943,17 @@ classes:
             '-initWithWhite:alpha:':
                 exclude: true
             '+colorWithCGColor:':
-                name: createFromCGColor
+                name: fromCGColor
             '+colorWithCIColor:':
-                name: createFromCIColor
+                name: fromCIColor
             '+colorWithHue:saturation:brightness:alpha:':
-                name: createFromHSBA
+                name: fromHSBA
             '+colorWithRed:green:blue:alpha:':
-                name: createFromRGBA
+                name: fromRGBA
             '+colorWithPatternImage:':
-                name: createFromPatternImage
+                name: fromPatternImage
             '+colorWithWhite:alpha:':
-                name: createFromWhiteAlpha
+                name: fromWhiteAlpha
             '-colorWithAlphaComponent:':
                 name: addAlpha
             '-getHue:saturation:brightness:alpha:':
@@ -1972,9 +1972,12 @@ classes:
     UIStoryboard: # DONE
         methods:
             '+storyboardWithName:bundle:':
-                name: createFromName
+                name: create
+            '-instantiateInitialViewController':
+                return_type: UIViewController
             '-instantiateViewControllerWithIdentifier:':
                 name: instantiateViewController
+                return_type: UIViewController
     UIStoryboardPopoverSegue: {} # DONE
     UIStoryboardSegue: # DONE
         properties:
@@ -2251,7 +2254,7 @@ classes:
             '+animateWithDuration:delay:options:animations:completion:':
                 name: animate
             '+animateWithDuration:delay:usingSpringWithDamping:initialSpringVelocity:options:animations:completion:':
-                trim_after_first_colon: true
+                name: animate
             '+transitionFromView:toView:duration:options:completion:':
                 name: transition
             '+transitionWithView:duration:options:animations:completion:':
@@ -2384,9 +2387,9 @@ classes:
             '-decodeRestorableStateWithCoder:':
                 name: decodeRestorableState
             '-snapshotViewAfterScreenUpdates:':
-                name: snapshotView
+                name: getSnapshot
             '-resizableSnapshotViewFromRect:afterScreenUpdates:withCapInsets:':
-                name: resizableSnapshotView
+                name: getResizableSnapshot
             '-drawViewHierarchyInRect:afterScreenUpdates:':
                 name: drawViewHierarchy
             '-endEditing:':
@@ -2480,6 +2483,16 @@ classes:
                 name: willAnimateFirstHalfOfRotation
             '-willAnimateSecondHalfOfRotationFromInterfaceOrientation:duration:':
                 name: willAnimateSecondHalfOfRotation
+            '-preferredStatusBarStyle':
+                property: true
+            '-preferredStatusBarUpdateAnimation':
+                property: true
+            '-childViewControllerForStatusBarStyle':
+                property: true
+            '-childViewControllerForStatusBarHidden':
+                property: true
+            '-transitionCoordinator':
+                property: true
 
     UIViewPrintFormatter: {} # DONE
     UIWebView: # DONE
@@ -2492,7 +2505,7 @@ classes:
                 trim_after_first_colon: true
             '-loadData:MIMEType:textEncodingName:baseURL:':
                 trim_after_first_colon: true
-    UIWindow:
+    UIWindow: # DONE
         methods:
             '-convertPoint:fromWindow:':
                 name: convertPointFromWindow
@@ -2610,19 +2623,25 @@ protocols:
                 name: didFinishLaunching
                 parameters:
                     launchOptions:
-                        type: "NSDictionary<NSString, ?>"
+                        type: UIApplicationLaunchOptions
             '-applicationDidFinishLaunching:':
                 name: didFinishLaunching
             '-application:didReceiveLocalNotification:':
                 name: didReceiveLocalNotification
             '-application:didReceiveRemoteNotification:':
                 name: didReceiveRemoteNotification
+                parameters:
+                    userInfo:
+                        type: UIRemoteNotification
             '-application:didRegisterForRemoteNotificationsWithDeviceToken:':
                 name: didRegisterForRemoteNotifications
             "-application:handleOpenURL:":
                 name: handleOpenURL
             "-application:openURL:sourceApplication:annotation:":
                 name: openURL
+                parameters:
+                    annotation:
+                        type: NSPropertyList
             '-application:willChangeStatusBarFrame:':
                 name: willChangeStatusBarFrame
             '-application:willChangeStatusBarOrientation:duration:':
@@ -2664,9 +2683,12 @@ protocols:
                 name: willFinishLaunching
                 parameters:
                     launchOptions:
-                        type: "NSDictionary<NSString, ?>"
+                        type: UIApplicationLaunchOptions
             '-application:didReceiveRemoteNotification:fetchCompletionHandler:':
                 name: didReceiveRemoteNotification
+                parameters:
+                    userInfo:
+                        type: UIRemoteNotification
             '-application:performFetchWithCompletionHandler:':
                 name: performFetch
             '-application:handleEventsForBackgroundURLSession:completionHandler:':
@@ -3512,7 +3534,12 @@ functions:
     (UI.*):
         name: "Function__#{g[0]}"
 
-values: 
+values:
+
+    UIApplicationLaunchOptions(.*Key):
+        class: UIApplicationLaunchOptions
+        name: "#{g[0]}"
+        type: NSString
 
     UI(.*Key):
         name: "#{g[0]}"
@@ -3586,9 +3613,7 @@ values:
     UI(ApplicationProtectedData.*):
         name: "#{g[0]}"
         type: NSString
-    UI(ApplicationLaunchOptions.*):
-        name: "#{g[0]}"
-        type: NSString
+        
     UI(ApplicationBackgroundFetchInterval.*):
         name: "#{g[0]}"
     UI(ContentSizeCategory.*):

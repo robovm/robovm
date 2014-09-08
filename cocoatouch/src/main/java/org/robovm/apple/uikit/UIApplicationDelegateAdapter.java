@@ -66,12 +66,12 @@ import org.robovm.apple.coreimage.*;
      * @since Available in iOS 6.0 and later.
      */
     @NotImplemented("application:willFinishLaunchingWithOptions:")
-    public boolean willFinishLaunching(UIApplication application, NSDictionary<NSString, ?> launchOptions) { throw new UnsupportedOperationException(); }
+    public boolean willFinishLaunching(UIApplication application, UIApplicationLaunchOptions launchOptions) { throw new UnsupportedOperationException(); }
     /**
      * @since Available in iOS 3.0 and later.
      */
     @NotImplemented("application:didFinishLaunchingWithOptions:")
-    public boolean didFinishLaunching(UIApplication application, NSDictionary<NSString, ?> launchOptions) { throw new UnsupportedOperationException(); }
+    public boolean didFinishLaunching(UIApplication application, UIApplicationLaunchOptions launchOptions) { throw new UnsupportedOperationException(); }
     @NotImplemented("applicationDidBecomeActive:")
     public void didBecomeActive(UIApplication application) { throw new UnsupportedOperationException(); }
     @NotImplemented("applicationWillResignActive:")
@@ -82,7 +82,7 @@ import org.robovm.apple.coreimage.*;
      * @since Available in iOS 4.2 and later.
      */
     @NotImplemented("application:openURL:sourceApplication:annotation:")
-    public boolean openURL(UIApplication application, NSURL url, String sourceApplication, NSObject annotation) { throw new UnsupportedOperationException(); }
+    public boolean openURL(UIApplication application, NSURL url, String sourceApplication, NSPropertyList annotation) { throw new UnsupportedOperationException(); }
     @NotImplemented("applicationDidReceiveMemoryWarning:")
     public void didReceiveMemoryWarning(UIApplication application) { throw new UnsupportedOperationException(); }
     @NotImplemented("applicationWillTerminate:")
@@ -111,7 +111,7 @@ import org.robovm.apple.coreimage.*;
      * @since Available in iOS 3.0 and later.
      */
     @NotImplemented("application:didReceiveRemoteNotification:")
-    public void didReceiveRemoteNotification(UIApplication application, NSDictionary<?, ?> userInfo) { throw new UnsupportedOperationException(); }
+    public void didReceiveRemoteNotification(UIApplication application, UIRemoteNotification userInfo) { throw new UnsupportedOperationException(); }
     /**
      * @since Available in iOS 4.0 and later.
      */
@@ -121,7 +121,7 @@ import org.robovm.apple.coreimage.*;
      * @since Available in iOS 7.0 and later.
      */
     @NotImplemented("application:didReceiveRemoteNotification:fetchCompletionHandler:")
-    public void didReceiveRemoteNotification(UIApplication application, NSDictionary<?, ?> userInfo, @Block VoidBlock1<UIBackgroundFetchResult> completionHandler) { throw new UnsupportedOperationException(); }
+    public void didReceiveRemoteNotification(UIApplication application, UIRemoteNotification userInfo, @Block VoidBlock1<UIBackgroundFetchResult> completionHandler) { throw new UnsupportedOperationException(); }
     /**
      * @since Available in iOS 7.0 and later.
      */

@@ -44,10 +44,6 @@ import org.robovm.apple.coreimage.*;
     /*</ptr>*/
     /*<bind>*/static { Bro.bind(UIKit.class); }/*</bind>*/
     /*<constants>*/
-    public static final float LayoutPriorityRequired = 1000;
-    public static final float LayoutPriorityDefaultHigh = 750;
-    public static final float LayoutPriorityDefaultLow = 250;
-    public static final float LayoutPriorityFittingSizeLevel = 50;
     public static final int SegmentedControlNoSegment = -1;
     public static final int AttachmentCharacter = 65532;
     /*</constants>*/
@@ -574,31 +570,6 @@ import org.robovm.apple.coreimage.*;
     @GlobalValue(symbol="UIApplicationBackgroundRefreshStatusDidChangeNotification", optional=true)
     public static native NSString ApplicationBackgroundRefreshStatusDidChangeNotification();
     /**
-     * @since Available in iOS 3.0 and later.
-     */
-    @GlobalValue(symbol="UIApplicationLaunchOptionsURLKey", optional=true)
-    public static native NSString ApplicationLaunchOptionsURLKey();
-    /**
-     * @since Available in iOS 3.0 and later.
-     */
-    @GlobalValue(symbol="UIApplicationLaunchOptionsSourceApplicationKey", optional=true)
-    public static native NSString ApplicationLaunchOptionsSourceApplicationKey();
-    /**
-     * @since Available in iOS 3.0 and later.
-     */
-    @GlobalValue(symbol="UIApplicationLaunchOptionsRemoteNotificationKey", optional=true)
-    public static native NSString ApplicationLaunchOptionsRemoteNotificationKey();
-    /**
-     * @since Available in iOS 4.0 and later.
-     */
-    @GlobalValue(symbol="UIApplicationLaunchOptionsLocalNotificationKey", optional=true)
-    public static native NSString ApplicationLaunchOptionsLocalNotificationKey();
-    /**
-     * @since Available in iOS 3.2 and later.
-     */
-    @GlobalValue(symbol="UIApplicationLaunchOptionsAnnotationKey", optional=true)
-    public static native NSString ApplicationLaunchOptionsAnnotationKey();
-    /**
      * @since Available in iOS 4.0 and later.
      */
     @GlobalValue(symbol="UIApplicationProtectedDataWillBecomeUnavailable", optional=true)
@@ -608,26 +579,6 @@ import org.robovm.apple.coreimage.*;
      */
     @GlobalValue(symbol="UIApplicationProtectedDataDidBecomeAvailable", optional=true)
     public static native NSString ApplicationProtectedDataDidBecomeAvailable();
-    /**
-     * @since Available in iOS 4.0 and later.
-     */
-    @GlobalValue(symbol="UIApplicationLaunchOptionsLocationKey", optional=true)
-    public static native NSString ApplicationLaunchOptionsLocationKey();
-    /**
-     * @since Available in iOS 5.0 and later.
-     */
-    @GlobalValue(symbol="UIApplicationLaunchOptionsNewsstandDownloadsKey", optional=true)
-    public static native NSString ApplicationLaunchOptionsNewsstandDownloadsKey();
-    /**
-     * @since Available in iOS 7.0 and later.
-     */
-    @GlobalValue(symbol="UIApplicationLaunchOptionsBluetoothCentralsKey", optional=true)
-    public static native NSString ApplicationLaunchOptionsBluetoothCentralsKey();
-    /**
-     * @since Available in iOS 7.0 and later.
-     */
-    @GlobalValue(symbol="UIApplicationLaunchOptionsBluetoothPeripheralsKey", optional=true)
-    public static native NSString ApplicationLaunchOptionsBluetoothPeripheralsKey();
     /**
      * @since Available in iOS 7.0 and later.
      */

@@ -64,12 +64,12 @@ import org.robovm.apple.coreimage.*;
      * @since Available in iOS 6.0 and later.
      */
     @Method(selector = "application:willFinishLaunchingWithOptions:")
-    boolean willFinishLaunching(UIApplication application, NSDictionary<NSString, ?> launchOptions);
+    boolean willFinishLaunching(UIApplication application, UIApplicationLaunchOptions launchOptions);
     /**
      * @since Available in iOS 3.0 and later.
      */
     @Method(selector = "application:didFinishLaunchingWithOptions:")
-    boolean didFinishLaunching(UIApplication application, NSDictionary<NSString, ?> launchOptions);
+    boolean didFinishLaunching(UIApplication application, UIApplicationLaunchOptions launchOptions);
     @Method(selector = "applicationDidBecomeActive:")
     void didBecomeActive(UIApplication application);
     @Method(selector = "applicationWillResignActive:")
@@ -80,7 +80,7 @@ import org.robovm.apple.coreimage.*;
      * @since Available in iOS 4.2 and later.
      */
     @Method(selector = "application:openURL:sourceApplication:annotation:")
-    boolean openURL(UIApplication application, NSURL url, String sourceApplication, NSObject annotation);
+    boolean openURL(UIApplication application, NSURL url, String sourceApplication, NSPropertyList annotation);
     @Method(selector = "applicationDidReceiveMemoryWarning:")
     void didReceiveMemoryWarning(UIApplication application);
     @Method(selector = "applicationWillTerminate:")
@@ -109,7 +109,7 @@ import org.robovm.apple.coreimage.*;
      * @since Available in iOS 3.0 and later.
      */
     @Method(selector = "application:didReceiveRemoteNotification:")
-    void didReceiveRemoteNotification(UIApplication application, NSDictionary<?, ?> userInfo);
+    void didReceiveRemoteNotification(UIApplication application, UIRemoteNotification userInfo);
     /**
      * @since Available in iOS 4.0 and later.
      */
@@ -119,7 +119,7 @@ import org.robovm.apple.coreimage.*;
      * @since Available in iOS 7.0 and later.
      */
     @Method(selector = "application:didReceiveRemoteNotification:fetchCompletionHandler:")
-    void didReceiveRemoteNotification(UIApplication application, NSDictionary<?, ?> userInfo, @Block VoidBlock1<UIBackgroundFetchResult> completionHandler);
+    void didReceiveRemoteNotification(UIApplication application, UIRemoteNotification userInfo, @Block VoidBlock1<UIBackgroundFetchResult> completionHandler);
     /**
      * @since Available in iOS 7.0 and later.
      */

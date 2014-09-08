@@ -52,9 +52,9 @@ import org.robovm.apple.coreimage.*;
     /*</constructors>*/
     /*<properties>*/
     @Property(selector = "priority")
-    public native float getPriority();
+    public native UILayoutPriority getPriority();
     @Property(selector = "setPriority:")
-    public native void setPriority(float v);
+    public native void setPriority(UILayoutPriority v);
     @Property(selector = "shouldBeArchived")
     public native boolean isShouldBeArchived();
     @Property(selector = "setShouldBeArchived:")

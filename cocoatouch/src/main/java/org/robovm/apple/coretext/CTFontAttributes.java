@@ -236,7 +236,7 @@ import org.robovm.apple.coretext.CTFont.CTFontPtr;
      * @since Available in iOS 3.2 and later.
      */
     public void setLanguages(List<String> languages) {
-        data.put(CTFontAttribute.LanguagesValue(), NSArray.toNSArray(languages));
+        data.put(CTFontAttribute.LanguagesValue(), NSArray.fromStrings(languages));
     }
     /**
      * @since Available in iOS 3.2 and later.

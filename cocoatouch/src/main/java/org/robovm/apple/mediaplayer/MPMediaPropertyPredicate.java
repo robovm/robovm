@@ -19,6 +19,7 @@ package org.robovm.apple.mediaplayer;
 import java.io.*;
 import java.nio.*;
 import java.util.*;
+
 import org.robovm.objc.*;
 import org.robovm.objc.annotation.*;
 import org.robovm.objc.block.*;
@@ -51,14 +52,8 @@ import org.robovm.apple.coregraphics.*;
     public MPMediaEntityProperty getProperty() {
         return MPMediaEntityProperty.valueOf(getPropertyName());
     }
-    public static MPMediaPropertyPredicate create(NSString property, NSObject value) {
-        return create(value, property);
-    }
     public static MPMediaPropertyPredicate create(MPMediaEntityProperty property, NSObject value) {
         return create(value, property.value());
-    }
-    public static MPMediaPropertyPredicate create(NSString property, NSObject value, MPMediaPredicateComparison comparisonType) {
-        return create(value, property, comparisonType);
     }
     public static MPMediaPropertyPredicate create(MPMediaEntityProperty property, NSObject value, MPMediaPredicateComparison comparisonType) {
         return create(value, property.value(), comparisonType);

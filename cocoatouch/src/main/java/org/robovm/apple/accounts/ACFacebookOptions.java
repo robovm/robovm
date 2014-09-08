@@ -19,6 +19,7 @@ package org.robovm.apple.accounts;
 import java.io.*;
 import java.nio.*;
 import java.util.*;
+
 import org.robovm.objc.*;
 import org.robovm.objc.annotation.*;
 import org.robovm.objc.block.*;
@@ -75,7 +76,7 @@ import org.robovm.apple.foundation.*;
      * @since Available in iOS 6.0 and later.
      */
     public void setPermissions(String...permissions) {
-        NSArray<NSString> p = NSArray.toNSArray(permissions);
+        NSArray<NSString> p = NSArray.fromStrings(permissions);
         data.put(PermissionsKey(), p);
     }
     /**

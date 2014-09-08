@@ -338,7 +338,7 @@ import org.robovm.apple.coreimage.*;
      * @since Available in iOS 7.0 and later.
      */
     @Method(selector = "animateWithDuration:delay:usingSpringWithDamping:initialSpringVelocity:options:animations:completion:")
-    public static native void animateWithDuration(double duration, double delay, @MachineSizedFloat double dampingRatio, @MachineSizedFloat double velocity, UIViewAnimationOptions options, @Block Runnable animations, @Block VoidBooleanBlock completion);
+    public static native void animate(double duration, double delay, @MachineSizedFloat double dampingRatio, @MachineSizedFloat double velocity, UIViewAnimationOptions options, @Block Runnable animations, @Block VoidBooleanBlock completion);
     /**
      * @since Available in iOS 4.0 and later.
      */
@@ -483,22 +483,22 @@ import org.robovm.apple.coreimage.*;
      * @since Available in iOS 6.0 and later.
      */
     @Method(selector = "contentHuggingPriorityForAxis:")
-    public native float getContentHuggingPriority(UILayoutConstraintAxis axis);
+    public native UILayoutPriority getContentHuggingPriority(UILayoutConstraintAxis axis);
     /**
      * @since Available in iOS 6.0 and later.
      */
     @Method(selector = "setContentHuggingPriority:forAxis:")
-    public native void setContentHuggingPriority(float priority, UILayoutConstraintAxis axis);
+    public native void setContentHuggingPriority(UILayoutPriority priority, UILayoutConstraintAxis axis);
     /**
      * @since Available in iOS 6.0 and later.
      */
     @Method(selector = "contentCompressionResistancePriorityForAxis:")
-    public native float getContentCompressionResistancePriority(UILayoutConstraintAxis axis);
+    public native UILayoutPriority getContentCompressionResistancePriority(UILayoutConstraintAxis axis);
     /**
      * @since Available in iOS 6.0 and later.
      */
     @Method(selector = "setContentCompressionResistancePriority:forAxis:")
-    public native void setContentCompressionResistancePriority(float priority, UILayoutConstraintAxis axis);
+    public native void setContentCompressionResistancePriority(UILayoutPriority priority, UILayoutConstraintAxis axis);
     /**
      * @since Available in iOS 6.0 and later.
      */
@@ -533,12 +533,12 @@ import org.robovm.apple.coreimage.*;
      * @since Available in iOS 7.0 and later.
      */
     @Method(selector = "snapshotViewAfterScreenUpdates:")
-    public native UIView snapshotView(boolean afterUpdates);
+    public native UIView getSnapshot(boolean afterUpdates);
     /**
      * @since Available in iOS 7.0 and later.
      */
     @Method(selector = "resizableSnapshotViewFromRect:afterScreenUpdates:withCapInsets:")
-    public native UIView resizableSnapshotView(@ByVal CGRect rect, boolean afterUpdates, @ByVal UIEdgeInsets capInsets);
+    public native UIView getResizableSnapshot(@ByVal CGRect rect, boolean afterUpdates, @ByVal UIEdgeInsets capInsets);
     /**
      * @since Available in iOS 7.0 and later.
      */

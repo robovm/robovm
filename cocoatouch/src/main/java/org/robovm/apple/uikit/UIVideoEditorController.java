@@ -69,7 +69,9 @@ import org.robovm.apple.coreimage.*;
     public native void setVideoQuality(UIImagePickerControllerQualityType v);
     /*</properties>*/
     /*<members>*//*</members>*/
-    
+    /**
+     * @since Available in iOS 3.1 and later.
+     */
     public static boolean canEditVideo(File file) {
         return canEditVideoAtPath$(file.getAbsolutePath());
     }

@@ -430,7 +430,7 @@ import org.robovm.apple.coreimage.*;
      * @since Available in iOS 7.0 and later.
      */
     @Method(selector = "preferredStatusBarStyle")
-    public native UIStatusBarStyle preferredStatusBarStyle();
+    public native UIStatusBarStyle getPreferredStatusBarStyle();
     /**
      * @since Available in iOS 7.0 and later.
      */
@@ -440,7 +440,7 @@ import org.robovm.apple.coreimage.*;
      * @since Available in iOS 7.0 and later.
      */
     @Method(selector = "preferredStatusBarUpdateAnimation")
-    public native UIStatusBarAnimation preferredStatusBarUpdateAnimation();
+    public native UIStatusBarAnimation getPreferredStatusBarUpdateAnimation();
     /**
      * @since Available in iOS 7.0 and later.
      */
@@ -540,12 +540,12 @@ import org.robovm.apple.coreimage.*;
      * @since Available in iOS 7.0 and later.
      */
     @Method(selector = "childViewControllerForStatusBarStyle")
-    public native UIViewController childViewControllerForStatusBarStyle();
+    public native UIViewController getChildViewControllerForStatusBarStyle();
     /**
      * @since Available in iOS 7.0 and later.
      */
     @Method(selector = "childViewControllerForStatusBarHidden")
-    public native UIViewController childViewControllerForStatusBarHidden();
+    public native UIViewController getChildViewControllerForStatusBarHidden();
     /**
      * @since Available in iOS 5.0 and later.
      * @deprecated Deprecated in iOS 6.0.
@@ -602,7 +602,7 @@ import org.robovm.apple.coreimage.*;
      * @since Available in iOS 7.0 and later.
      */
     @Method(selector = "transitionCoordinator")
-    public native UIViewControllerTransitionCoordinator transitionCoordinator();
+    public native UIViewControllerTransitionCoordinator getTransitionCoordinator();
     @Method(selector = "encodeWithCoder:")
     public native void encode(NSCoder aCoder);
     /*</methods>*/

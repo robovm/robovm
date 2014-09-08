@@ -56,10 +56,10 @@ import org.robovm.apple.coreimage.*;
     /*<members>*//*</members>*/
     /*<methods>*/
     @Method(selector = "instantiateInitialViewController")
-    public native NSObject instantiateInitialViewController();
+    public native UIViewController instantiateInitialViewController();
     @Method(selector = "instantiateViewControllerWithIdentifier:")
-    public native NSObject instantiateViewController(String identifier);
+    public native UIViewController instantiateViewController(String identifier);
     @Method(selector = "storyboardWithName:bundle:")
-    public static native UIStoryboard createFromName(String name, NSBundle storyboardBundleOrNil);
+    public static native UIStoryboard create(String name, NSBundle storyboardBundleOrNil);
     /*</methods>*/
 }

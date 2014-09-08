@@ -19,6 +19,7 @@ package org.robovm.apple.mediaplayer;
 import java.io.*;
 import java.nio.*;
 import java.util.*;
+
 import org.robovm.objc.*;
 import org.robovm.objc.annotation.*;
 import org.robovm.objc.block.*;
@@ -33,11 +34,31 @@ import org.robovm.apple.coregraphics.*;
 
 /*<javadoc>*/
 /*</javadoc>*/
+@Marshaler(MPMoviePlayerThumbnailRequest.Marshaler.class)
 /*<annotations>*/@Library("MediaPlayer")/*</annotations>*/
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/MPMoviePlayerThumbnailRequest/*</name>*/ 
     extends /*<extends>*/Object/*</extends>*/ 
     /*<implements>*//*</implements>*/ {
-
+    
+    public static class Marshaler {
+        @SuppressWarnings("unchecked")
+        @MarshalsPointer
+        public static MPMoviePlayerThumbnailRequest toObject(Class<MPMoviePlayerThumbnailRequest> cls, long handle, long flags) {
+            NSDictionary<NSString, ?> o = (NSDictionary<NSString, ?>) NSObject.Marshaler.toObject(NSDictionary.class, handle, flags);
+            if (o == null) {
+                return null;
+            }
+            return new MPMoviePlayerThumbnailRequest(o);
+        }
+        @MarshalsPointer
+        public static long toNative(MPMoviePlayerThumbnailRequest o, long flags) {
+            if (o == null) {
+                return 0L;
+            }
+            return NSObject.Marshaler.toNative(o.data, flags);
+        }
+    }
+    
     /*<ptr>*/
     /*</ptr>*/
     private NSDictionary<NSString, ?> data;

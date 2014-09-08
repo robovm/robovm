@@ -19,6 +19,7 @@ package org.robovm.apple.foundation;
 import java.io.*;
 import java.nio.*;
 import java.util.*;
+
 import org.robovm.objc.*;
 import org.robovm.objc.annotation.*;
 import org.robovm.objc.block.*;
@@ -36,7 +37,7 @@ import org.robovm.apple.security.*;
 /*<annotations>*/@Library("Foundation") @NativeClass/*</annotations>*/
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/NSArray/*</name>*/ <T extends NSObject>
     extends /*<extends>*/NSObject/*</extends>*/ 
-    /*<implements>*//*</implements>*/ implements List<T> {
+    /*<implements>*/implements NSPropertyList, List<T>/*</implements>*/ {
 
     public static class NSArrayPtr<T extends NSObject> extends Ptr<NSArray<T>, NSArrayPtr<T>> {}
     
@@ -256,7 +257,26 @@ import org.robovm.apple.security.*;
         writeToFile$atomically$(file.getAbsolutePath(), atomically);
     }
     
-    public static NSArray<NSString> toNSArray (String... strings) {
+    /**
+     * Use this method to convert a NSArray of NSString items to a List of String items. 
+     * Elements of this NSArray must be of type NSString, otherwise an exception will be thrown.
+     * @return
+     * @throws UnsupportedOperationException when the array items are not of type NSString.
+     */
+    public List<String> asStringList() {
+        List<String> list = new ArrayList<>();
+        if (size() == 0) 
+            return list;
+        if (!(get(0) instanceof NSString)) 
+            throw new UnsupportedOperationException("items must be of type NSString");
+        
+        for (T str : this) {
+            list.add(str.toString());
+        }
+        return list;
+    }
+    
+    public static NSArray<NSString> fromStrings (String... strings) {
         int length = strings.length;
         NSString[] nsStrings = new NSString[length];
 
@@ -266,7 +286,7 @@ import org.robovm.apple.security.*;
         return new NSArray<NSString>(nsStrings);
     }
 
-    public static NSArray<NSString> toNSArray (List<String> strings) {
+    public static NSArray<NSString> fromStrings (List<String> strings) {
         int size = strings.size();
         NSString[] nsStrings = new NSString[size];
 

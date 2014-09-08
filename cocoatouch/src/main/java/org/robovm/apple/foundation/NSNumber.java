@@ -36,7 +36,7 @@ import org.robovm.apple.security.*;
 /*<annotations>*/@Library("Foundation") @NativeClass/*</annotations>*/
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/NSNumber/*</name>*/ 
     extends /*<extends>*/NSValue/*</extends>*/ 
-    /*<implements>*//*</implements>*/ {
+    /*<implements>*/implements NSPropertyList/*</implements>*/ {
 
     /*<ptr>*/public static class NSNumberPtr extends Ptr<NSNumber, NSNumberPtr> {}/*</ptr>*/
     /*<bind>*/static { ObjCRuntime.bind(NSNumber.class); }/*</bind>*/

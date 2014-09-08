@@ -164,6 +164,7 @@ classes:
     NS.*Internal: { exclude: true }
 
     NSArray: # DONE
+        protocols: [NSPropertyList, "List<T>"]
         methods:
             "-initWithArray:":
                 visibility: protected
@@ -553,8 +554,8 @@ classes:
             '-.*': {exclude: true}
 
     NSData: # DONE
+        protocols: [NSPropertyList]
         methods:
-
             '-initWithData:':
             '-initWithBase64EncodedData:options:':
                 constructor: false
@@ -616,6 +617,7 @@ classes:
                     checkingTypes:
                         type: NSTextCheckingType
     NSDate: # DONE
+        protocols: [NSPropertyList]
         methods:
             '+timeIntervalSinceReferenceDate': {exclude: true}
             '+distant.*':
@@ -727,6 +729,7 @@ classes:
                 property: true
 
     NSDictionary: # DONE
+        protocols: [NSPropertyList, "Map<K, V>"]
         methods:
             "+dictionaryWithContentsOfFile:":
                 visibility: protected
@@ -1246,6 +1249,7 @@ classes:
                 name: getNull
     NSNumber: # DONE
         skip_def_constructor: true
+        protocols: [NSPropertyList]
         methods:
             "+numberWithBool:":
                 name: valueOf
@@ -1617,6 +1621,7 @@ classes:
                         type: NSString
 
     NSString: # DONE
+        protocols: [NSPropertyList]
         methods:
             '+stringWithCharacters:length:':
                 visibility: protected

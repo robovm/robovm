@@ -1254,8 +1254,8 @@ public class Config {
         public Map<String, CompilerPluginArgument> fetchPluginArguments() {
             Map<String, CompilerPluginArgument> args = new TreeMap<>();
             for (CompilerPlugin plugin : config.compilerPlugins) {
-                for (CompilerPluginArgument arg : plugin.getArguments()) {
-                    args.put(arg.getName(), arg);
+                for (CompilerPluginArgument arg : plugin.getArguments().getArguments()) {
+                    args.put(plugin.getArguments().getPrefix() + ":" + arg.getName(), arg);
                 }
             }
             return args;

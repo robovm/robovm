@@ -40,12 +40,12 @@ import org.robovm.apple.foundation.*;
     /*</ptr>*/
     /*<bind>*/static { Bro.bind(EAGLColorFormat.class); }/*</bind>*/
     /*<constants>*//*</constants>*/
-    public static EAGLColorFormat RGBA8 = new EAGLColorFormat("RGBA8Value");
-    public static EAGLColorFormat RGB565 = new EAGLColorFormat("RGB565Value");
+    public static final EAGLColorFormat RGBA8 = new EAGLColorFormat("RGBA8Value");
+    public static final EAGLColorFormat RGB565 = new EAGLColorFormat("RGB565Value");
     /**
      * @since Available in iOS 7.0 and later.
      */
-    public static EAGLColorFormat SRGBA8 = new EAGLColorFormat("SRGBA8Value");
+    public static final EAGLColorFormat SRGBA8 = new EAGLColorFormat("SRGBA8Value");
     private static EAGLColorFormat[] values = new EAGLColorFormat[] {RGBA8, RGB565, SRGBA8};
     
     private final LazyGlobalValue<NSString> lazyGlobalValue;

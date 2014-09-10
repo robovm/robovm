@@ -97,23 +97,23 @@ classes:
                     completionHandler:
                         type: "@Block VoidBlock2<NSArray<GKAchievementDescription>, NSError>"
             '-loadImageWithCompletionHandler:':
-                name: "loadImage"
+                name: loadImage
             '+incompleteAchievementImage':
-                name: "getIncompleteAchievementImage"
+                name: getIncompleteAchievementImage
             '+placeholderCompletedAchievementImage':
-                name: "getPlaceholderCompletedAchievementImage"
+                name: getPlaceholderCompletedAchievementImage
     GKAchievementViewController: {} # DONE
     GKChallenge: # DONE
         methods:
             '+loadReceivedChallengesWithCompletionHandler:':
-                name: "loadReceivedChallenges"
+                name: loadReceivedChallenges
                 parameters:
                     completionHandler:
                         type: "@Block VoidBlock2<NSArray<GKChallenge>, NSError>"
     GKChallengeEventHandler: # DONE
         methods:
             '+challengeEventHandler':
-                name: "getChallengeEventHandler"
+                name: getChallengeEventHandler
     GKFriendRequestComposeViewController: # DONE
         methods:
             '-addRecipientsWithPlayerIDs:':
@@ -127,7 +127,7 @@ classes:
                     emailAddresses:
                         type: "NSArray<NSString>"
             '+maxNumberOfRecipients':
-                name: "getMaxNumberOfRecipients"
+                name: getMaxNumberOfRecipients
     GKGameCenterViewController: {} # DONE
     GKInvite: {} # DONE
     GKLeaderboard: # DONE
@@ -137,24 +137,24 @@ classes:
                 type: "NSArray<GKScore>"
         methods:
             '-initWithPlayerIDs:':
-                name: "init"
+                name: init
                 parameters:
                     playerIDs:
                         type: "NSArray<NSString>"
             '-loadScoresWithCompletionHandler:':
-                name: "loadScores"
+                name: loadScores
                 parameters:
                     completionHandler:
                         type: "@Block VoidBlock2<NSArray<GKScore>, NSError>"
             '+loadCategoriesWithCompletionHandler:':
-                name: "loadCategories"
+                name: loadCategories
             '+loadLeaderboardsWithCompletionHandler:':
-                name: "loadLeaderboards"
+                name: loadLeaderboards
                 parameters:
                     completionHandler:
                         type: "@Block VoidBlock2<NSArray<GKLeaderboard>, NSError>"
             '-loadImageWithCompletionHandler:':
-                name: "loadImage"
+                name: loadImage
     GKLeaderboardSet:
         methods:
             '+loadLeaderboardSetsWithCompletionHandler:':
@@ -170,20 +170,20 @@ classes:
                 type: "NSArray<NSString>"
         methods:
             '-loadFriendsWithCompletionHandler:':
-                name: "loadFriends"
+                name: loadFriends
                 parameters:
                     completionHandler:
                         type: "@Block VoidBlock2<NSArray<NSString>, NSError>"
             '-setDefaultLeaderboardIdentifier:completionHandler:':
                 trim_after_first_colon: true
             '-loadDefaultLeaderboardIdentifierWithCompletionHandler:':
-                name: "loadDefaultLeaderboardIdentifier"
+                name: loadDefaultLeaderboardIdentifier
             '-generateIdentityVerificationSignatureWithCompletionHandler:':
-                name: "generateIdentityVerificationSignature"
+                name: generateIdentityVerificationSignature
             '-authenticateWithCompletionHandler:':
-                name: "authenticate"
+                name: authenticate
             '+localPlayer':
-                name: "create"
+                name: getLocalPlayer
             '-registerListener:':
                 trim_after_first_colon: true
             '-unregisterListener:':
@@ -241,28 +241,28 @@ classes:
                 type: "NSArray<NSString>"
         methods:
             '+maxPlayersAllowedForMatchOfType:':
-                name: "getMaxPlayersAllowed"
+                name: getMaxPlayersAllowed
     GKNotificationBanner: # DONE 
         methods:
             '+showBannerWithTitle:message:completionHandler:':
-                name: "showBanner"
+                name: showBanner
             '+showBannerWithTitle:message:duration:completionHandler:':
-                name: "showBanner"
+                name: showBanner
     GKPeerPickerController: {} # DONE
     GKPlayer: # DONE
         properties:
             'isFriend':
-                name: "friend"
+                name: friend
         methods:
             '+loadPlayersForIdentifiers:withCompletionHandler:':
-                name: "loadPlayers"
+                name: loadPlayers
                 parameters:
                     identifiers:
                         type: "NSArray<NSString>"
                     completionHandler:
                         type: "@Block VoidBlock2<NSArray<GKPlayer>, NSError>"
             '-loadPhotoForSize:withCompletionHandler:':
-                name: "loadPhoto"
+                name: loadPhoto
     GKScore: # DONE
         methods:
             '-initWithCategory:':
@@ -292,7 +292,7 @@ classes:
     GKSession: # DONE
         methods:
             '-displayNameForPeer:':
-                name: "getDisplayName"
+                name: getDisplayName
             '-sendData:toPeers:withDataMode:error:':
                 trim_after_first_colon: true
                 parameters:
@@ -303,17 +303,17 @@ classes:
             '-setDataReceiveHandler:withContext:':
                 trim_after_first_colon: true
             '-connectToPeer:withTimeout:':
-                name: "connect"
+                name: connect
             '-cancelConnectToPeer:':
-                name: "cancelConnect"
+                name: cancelConnect
             '-acceptConnectionFromPeer:error:':
-                name: "acceptConnection"
+                name: acceptConnection
             '-denyConnectionFromPeer:':
-                name: "denyConnection"
+                name: denyConnection
             '-disconnectPeerFromAllPeers:':
-                name: "disconnectPeer"
+                name: disconnectPeer
             '-peersWithConnectionState:':
-                name: "getPeers"
+                name: getPeers
                 return_type: "NSArray<NSString>"
     GKTurnBasedEventHandler: {} # DONE
     GKTurnBasedExchange: # DONE
@@ -324,12 +324,12 @@ classes:
                 type: "NSArray<?>" # What type ????
         methods:
             '-cancelWithLocalizableMessageKey:arguments:completionHandler:':
-                name: "cancel"
+                name: cancel
                 parameters:
                     arguments:
                         type: "NSArray<NSString>"
             '-replyWithLocalizableMessageKey:arguments:data:completionHandler:':
-                name: "reply"
+                name: reply
                 parameters:
                     arguments:
     GKTurnBasedExchangeReply: {} # DONE
@@ -341,75 +341,75 @@ classes:
                 type: "NSArray<GKTurnBasedExchange>"
         methods:
             '-setLocalizableMessageWithKey:arguments:':
-                name: "setLocalizableMessage"
+                name: setLocalizableMessage
                 parameters:
                     arguments:
                         type: "NSArray<NSString>"
             '-rematchWithCompletionHandler:':
-                name: "rematch"
+                name: rematch
             '-acceptInviteWithCompletionHandler:':
-                name: "acceptInvite"
+                name: acceptInvite
             '-declineInviteWithCompletionHandler:':
-                name: "declineInvite"
+                name: declineInvite
             '-removeWithCompletionHandler:':
-                name: "remove"
+                name: remove
             '-loadMatchDataWithCompletionHandler:':
-                name: "loadMatchData"
+                name: loadMatchData
             '-endTurnWithNextParticipants:turnTimeout:matchData:completionHandler:':
-                name: "endTurn"
+                name: endTurn
                 parameters:
                     nextParticipants:
                         type: "NSArray<GKTurnBasedParticipant>"
             '-participantQuitInTurnWithOutcome:nextParticipants:turnTimeout:matchData:completionHandler:':
-                name: "participantQuitInTurn"
+                name: participantQuitInTurn
                 parameters:
                     nextParticipants:
                         type: "NSArray<GKTurnBasedParticipant>"
             '-participantQuitOutOfTurnWithOutcome:withCompletionHandler:':
-                name: "participantQuitOutOfTurn"
+                name: participantQuitOutOfTurn
             '-endMatchInTurnWithMatchData:completionHandler:':
-                name: "endMatch"
+                name: endMatch
             '-endMatchInTurnWithMatchData:scores:achievements:completionHandler:':
-                name: "endMatch"
+                name: endMatch
                 parameters:
                     scores:
                         type: "NSArray<GKScore>"
                     achievements:
                         type: "NSArray<GKAchievement>"
             '-saveCurrentTurnWithMatchData:completionHandler:':
-                name: "saveCurrentTurn"
+                name: saveCurrentTurn
             '-saveMergedMatchData:withResolvedExchanges:completionHandler:':
                 trim_after_first_colon: true
                 parameters:
                     exchanges:
                         type: "NSArray<GKTurnBasedExchange>"
             '-sendExchangeToParticipants:data:localizableMessageKey:arguments:timeout:completionHandler:':
-                name: "sendExchange"
+                name: sendExchange
                 parameters:
                     participants:
                         type: "NSArray<GKTurnBasedParticipant>"
                     arguments:
                         type: "NSArray<NSString>"
             '-sendReminderToParticipants:localizableMessageKey:arguments:completionHandler:':
-                name: "sendReminder"
+                name: sendReminder
                 parameters:
                     participants:
                         type: "NSArray<GKTurnBasedParticipant>"
                     arguments:
                         type: "NSArray<NSString>"
             '-endTurnWithNextParticipant:matchData:completionHandler:':
-                name: "endTurn"
+                name: endTurn
             '-participantQuitInTurnWithOutcome:nextParticipant:matchData:completionHandler:':
-                name: "participantQuitInTurn"
+                name: participantQuitInTurn
             '+findMatchForRequest:withCompletionHandler:':
-                name: "findMatch"
+                name: findMatch
             '+loadMatchesWithCompletionHandler:':
-                name: "loadMatches"
+                name: loadMatches
                 parameters:
                     completionHandler:
                         type: "@Block VoidBlock2<NSArray<GKTurnBasedMatch>, NSError>"
             '+loadMatchWithID:withCompletionHandler:':
-                name: "loadMatches" 
+                name: loadMatches
     GKTurnBasedMatchmakerViewController: {} # DONE
     GKTurnBasedParticipant: {} # DONE
     GKVoiceChat: # DONE
@@ -422,9 +422,9 @@ classes:
     GKVoiceChatService: # DONE
         methods:
             '-startVoiceChatWithParticipantID:error:':
-                name: "startVoiceChat"
+                name: startVoiceChat
             '-stopVoiceChatWithParticipantID:':
-                name: "stopVoiceChat"
+                name: stopVoiceChat
             '-acceptCallID:error:':
                 trim_after_first_colon: true
             '-denyCallID:':

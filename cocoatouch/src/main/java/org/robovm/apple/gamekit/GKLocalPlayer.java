@@ -19,7 +19,6 @@ package org.robovm.apple.gamekit;
 import java.io.*;
 import java.nio.*;
 import java.util.*;
-
 import org.robovm.objc.*;
 import org.robovm.objc.annotation.*;
 import org.robovm.objc.block.*;
@@ -109,7 +108,7 @@ import org.robovm.apple.uikit.*;
     @Method(selector = "authenticateWithCompletionHandler:")
     public native void authenticate(@Block VoidBlock1<NSError> completionHandler);
     @Method(selector = "localPlayer")
-    public static native GKLocalPlayer create();
+    public static native GKLocalPlayer getLocalPlayer();
     /**
      * @since Available in iOS 7.0 and later.
      */

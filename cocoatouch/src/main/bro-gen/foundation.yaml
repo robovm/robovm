@@ -495,7 +495,6 @@ classes:
             '-systemVersion':
                 property: true
 
-
     NSComparisonPredicate: # DONE
         methods:
             '+predicateWithLeftExpression:rightExpression:modifier:type:options:': {exclude: true}
@@ -1177,7 +1176,7 @@ classes:
                     object:
                         type: NSObject
                     userInfo:
-                        type: 'NSDictionary<NSString, ?>'
+                        type: 'NSDictionary<NSString, NSObject>'
             '-name':
                 property: true
                 return_type: NSString
@@ -1185,7 +1184,7 @@ classes:
                 property: true
             '-userInfo':
                 property: true
-                return_type: 'NSDictionary<NSString, ?>'
+                return_type: 'NSDictionary<NSString, NSObject>'
     NSNotificationCenter: # DONE
         methods:
             '+defaultCenter':
@@ -1896,9 +1895,13 @@ classes:
             '+valueWithBytes:objCType:':
                 visibility: protected
             '+valueWithNonretainedObject:':
-                name: valueOfNonretainedObject
+                name: valueOf
+            '-nonretainedObjectValue':
+                name: objectValue
             '+valueWithPointer:':
                 name: valueOf
+            '-pointerValue':
+                name: pointerValue
             '+valueWithRange:':
                 name: valueOf
             '-initWithBytes:objCType:':
@@ -1906,7 +1909,8 @@ classes:
             '-isEqualToValue:':
                 name: isEqualTo
             '-getValue:':
-                name: storeValueAtAddress
+                name: getValue
+                visibility: protected
             '-objCType':
                 visibility: protected
     NSValueTransformer: {}

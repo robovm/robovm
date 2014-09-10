@@ -31,10 +31,9 @@ import org.robovm.apple.corefoundation.*;
 import org.robovm.apple.security.*;
 /*</imports>*/
 
-@Marshaler(NSObject.Marshaler.class)
 /*<annotations>*//*</annotations>*/
 /*<visibility>*/public/*</visibility>*/ interface /*<name>*/NSPropertyList/*</name>*/ 
-    /*<implements>*//*</implements>*/ {
+    /*<implements>*//*</implements>*/ extends NSObjectProtocol {
 
     /*<ptr>*/
     /*</ptr>*/

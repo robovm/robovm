@@ -59,21 +59,27 @@ import org.robovm.apple.security.*;
         return valueWithBytes$objCType$(value, p);
     }
 
+    public VoidPtr getValue() {
+        VoidPtr ptr = new VoidPtr();
+        getValue(ptr);
+        return ptr;
+    }
+    
     /*<methods>*/
     @Method(selector = "getValue:")
-    public native void storeValueAtAddress(VoidPtr value);
+    protected native void getValue(VoidPtr value);
     @Method(selector = "objCType")
     protected native BytePtr objCType();
     @Method(selector = "valueWithBytes:objCType:")
     protected static native NSValue valueWithBytes$objCType$(VoidPtr value, BytePtr type);
     @Method(selector = "nonretainedObjectValue")
-    public native NSObject nonretainedObjectValue();
+    public native NSObject objectValue();
     @Method(selector = "pointerValue")
     public native VoidPtr pointerValue();
     @Method(selector = "isEqualToValue:")
     public native boolean isEqualTo(NSValue value);
     @Method(selector = "valueWithNonretainedObject:")
-    public static native NSValue valueOfNonretainedObject(NSObject anObject);
+    public static native NSValue valueOf(NSObject anObject);
     @Method(selector = "valueWithPointer:")
     public static native NSValue valueOf(VoidPtr pointer);
     @Method(selector = "rangeValue")

@@ -66,9 +66,9 @@ import org.robovm.apple.coreimage.*;
     @Property(selector = "moreNavigationController")
     public native UINavigationController getMoreNavigationController();
     @Property(selector = "customizableViewControllers")
-    public native NSArray<?> getCustomizableViewControllers();
+    public native NSArray<UIViewController> getCustomizableViewControllers();
     @Property(selector = "setCustomizableViewControllers:")
-    public native void setCustomizableViewControllers(NSArray<?> v);
+    public native void setCustomizableViewControllers(NSArray<UIViewController> v);
     /**
      * @since Available in iOS 3.0 and later.
      */

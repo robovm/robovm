@@ -69,7 +69,7 @@ import org.robovm.apple.coreimage.*;
      * @since Available in iOS 7.0 and later.
      */
     @Method(selector = "splitViewControllerPreferredInterfaceOrientationForPresentation:")
-    UIInterfaceOrientation name(UISplitViewController splitViewController);
+    UIInterfaceOrientation getPreferredInterfaceOrientation(UISplitViewController splitViewController);
     /*</methods>*/
     /*<adapter>*/
     /*</adapter>*/

@@ -49,13 +49,13 @@ import org.robovm.apple.coreimage.*;
     /*<constructors>*/
     public UIAccessibilityElement() {}
     protected UIAccessibilityElement(SkipInit skipInit) { super(skipInit); }
-    public UIAccessibilityElement(UIView container) { super((SkipInit) null); initObject(initWithAccessibilityContainer$(container)); }
+    public UIAccessibilityElement(UIAccessibilityContainer container) { super((SkipInit) null); initObject(initWithAccessibilityContainer$(container)); }
     /*</constructors>*/
     /*<properties>*/
     @Property(selector = "accessibilityContainer")
-    public native NSObject getAccessibilityContainer();
+    public native UIAccessibilityContainer getAccessibilityContainer();
     @Property(selector = "setAccessibilityContainer:", strongRef = true)
-    public native void setAccessibilityContainer(NSObject v);
+    public native void setAccessibilityContainer(UIAccessibilityContainer v);
     @Property(selector = "isAccessibilityElement")
     public native boolean isIsAccessibilityElement();
     @Property(selector = "setIsAccessibilityElement:")
@@ -77,9 +77,9 @@ import org.robovm.apple.coreimage.*;
     @Property(selector = "setAccessibilityFrame:")
     public native void setAccessibilityFrame(@ByVal CGRect v);
     @Property(selector = "accessibilityTraits")
-    public native long getAccessibilityTraits();
-    @Property(selector = "setAccessibilityTraits:")
-    public native void setAccessibilityTraits(long v);
+    public native UIAccessibilityTraits getAccessibilityTraits();
+    @Property(selector = "setAccessibilityTraits:", strongRef = true)
+    public native void setAccessibilityTraits(UIAccessibilityTraits v);
     /**
      * @since Available in iOS 5.0 and later.
      */
@@ -94,6 +94,6 @@ import org.robovm.apple.coreimage.*;
     /*<members>*//*</members>*/
     /*<methods>*/
     @Method(selector = "initWithAccessibilityContainer:")
-    protected native @Pointer long initWithAccessibilityContainer$(UIView container);
+    protected native @Pointer long initWithAccessibilityContainer$(UIAccessibilityContainer container);
     /*</methods>*/
 }

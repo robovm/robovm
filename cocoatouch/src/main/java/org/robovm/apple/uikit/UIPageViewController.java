@@ -49,7 +49,7 @@ import org.robovm.apple.coreimage.*;
     /*<constructors>*/
     public UIPageViewController() {}
     protected UIPageViewController(SkipInit skipInit) { super(skipInit); }
-    public UIPageViewController(UIPageViewControllerTransitionStyle style, UIPageViewControllerNavigationOrientation navigationOrientation, NSDictionary<NSString, ?> options) { super((SkipInit) null); initObject(initWithTransitionStyle$navigationOrientation$options$(style, navigationOrientation, options)); }
+    public UIPageViewController(UIPageViewControllerTransitionStyle style, UIPageViewControllerNavigationOrientation navigationOrientation, UIPageViewControllerOptions options) { super((SkipInit) null); initObject(initWithTransitionStyle$navigationOrientation$options$(style, navigationOrientation, options)); }
     /*</constructors>*/
     /*<properties>*/
     @Property(selector = "delegate")
@@ -78,7 +78,7 @@ import org.robovm.apple.coreimage.*;
     /*<members>*//*</members>*/
     /*<methods>*/
     @Method(selector = "initWithTransitionStyle:navigationOrientation:options:")
-    protected native @Pointer long initWithTransitionStyle$navigationOrientation$options$(UIPageViewControllerTransitionStyle style, UIPageViewControllerNavigationOrientation navigationOrientation, NSDictionary<NSString, ?> options);
+    protected native @Pointer long initWithTransitionStyle$navigationOrientation$options$(UIPageViewControllerTransitionStyle style, UIPageViewControllerNavigationOrientation navigationOrientation, UIPageViewControllerOptions options);
     @Method(selector = "setViewControllers:direction:animated:completion:")
     public native void setViewControllers(NSArray<UIViewController> viewControllers, UIPageViewControllerNavigationDirection direction, boolean animated, @Block VoidBooleanBlock completion);
     /*</methods>*/

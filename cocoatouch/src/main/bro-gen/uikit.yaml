@@ -126,7 +126,7 @@ enums:
     UITableViewCellEditingStyle: {}
     UITableViewCellSelectionStyle: {}
     UITableViewCellSeparatorStyle: {}
-    UITableViewCellStateMask: {}
+    UITableViewCellStateMask: {suffix: mask}
     UITableViewCellStyle: {}
     UITableViewRowAnimation: {}
     UITableViewScrollPosition: {}
@@ -292,6 +292,12 @@ categories:
 classes:
     UIKit:
         annotations: ['@Marshaler(NSString.AsStringMarshaler.class)']
+
+    # Custom bits
+    UIAccessibilityTraits:
+        visibility: "public final"
+        extends: "Bits<UIAccessibilityTraits>"
+        annotations: ["@Marshaler(Bits.AsMachineSizedIntMarshaler.class)"]
 
     # Structs
     UIEdgeInsets: {}
@@ -510,11 +516,14 @@ classes:
             '+sharedAccelerometer':
                 name: getSharedAccelerometer
     UIAccessibilityElement: # DONE
+        properties:
+            'accessibilityContainer':
+                type: UIAccessibilityContainer
         methods:
             '-initWithAccessibilityContainer:':
                 parameters:
                     container:
-                        type: UIView
+                        type: UIAccessibilityContainer
     UIActionSheet: # DONE
         methods:
             '-initWithTitle:delegate:cancelButtonTitle:destructiveButtonTitle:otherButtonTitles:':
@@ -854,6 +863,7 @@ classes:
                 name: getLayoutAttributesForDecorationView
             '-layoutAttributesForElementsInRect:':
                 name: getLayoutAttributesForElements
+                return_type: "NSArray<UICollectionViewLayoutAttributes>"
             '-layoutAttributesForItemAtIndexPath:':
                 name: getLayoutAttributesForItem
             '-layoutAttributesForSupplementaryViewOfKind:atIndexPath:':
@@ -1301,15 +1311,15 @@ classes:
             '-initWithContentsOfFile:':
                 constructor: false
             '-resizableImageWithCapInsets:':
-                name: newResizable
+                name: createResizable
             '-resizableImageWithCapInsets:resizingMode:':
-                name: newResizable
+                name: createResizable
             '-imageWithAlignmentRectInsets:':
-                name: newWithAlignment
+                name: create
             '-imageWithRenderingMode:':
-                name: newWithRenderingMode
+                name: create
             '-stretchableImageWithLeftCapWidth:topCapHeight:':
-                name: newStretchable
+                name: createStretchable
             '-drawAtPoint:':
                 name: draw
             '-drawAtPoint:blendMode:alpha:':
@@ -1349,7 +1359,12 @@ classes:
                 type: "NSArray<UIImage>"
 
     UIInputView: {} # DONE
-    UIInterpolatingMotionEffect: {} # DONE
+    UIInterpolatingMotionEffect: # DONE
+        properties:
+            'minimumRelativeValue':
+                type: NSValue
+            'maximumRelativeValue':
+                type: NSValue
     UIKeyCommand: # DONE
         methods:
             '+keyCommandWithInput:modifierFlags:action:':
@@ -1524,7 +1539,7 @@ classes:
             '-initWithTransitionStyle:navigationOrientation:options:':
                 parameters:
                     options:
-                        type: "NSDictionary<NSString, ?>"
+                        type: UIPageViewControllerOptions
             '-setViewControllers:direction:animated:completion:':
                 trim_after_first_colon: true
                 parameters:
@@ -1737,9 +1752,9 @@ classes:
             '-removeItem:':
                 trim_after_first_colon: true
             '-targetOffsetFromCenterForItem:':
-                name: getTargetOffsetFromCenterForItem
+                name: getTargetOffset
             '-setTargetOffsetFromCenter:forItem:':
-                trim_after_first_colon: true
+                name: setTargetOffset
             '-setAngle:magnitude:':
                 name: setAngleAndMagnitude
 
@@ -2016,6 +2031,8 @@ classes:
     UITabBarController: # DONE
         properties:
             'viewControllers':
+                type: "NSArray<UIViewController>"
+            'customizableViewControllers':
                 type: "NSArray<UIViewController>"
         methods:
             '-setViewControllers:animated:':
@@ -3057,7 +3074,7 @@ protocols:
             '-splitViewControllerSupportedInterfaceOrientations:':
                 name: getSupportedInterfaceOrientations
             '-splitViewControllerPreferredInterfaceOrientationForPresentation:':
-                name:getPreferredInterfaceOrientation
+                name: getPreferredInterfaceOrientation
 
     UIStateRestoring:
         methods:
@@ -3088,6 +3105,7 @@ protocols:
                         type: "NSArray<UIViewController>"
             '-tabBarControllerSupportedInterfaceOrientations:':
                 name: getSupportedInterfaceOrientations
+                return_type: UIInterfaceOrientation
             '-tabBarControllerPreferredInterfaceOrientationForPresentation:':
                 name: getPreferredInterfaceOrientation
             '-tabBarController:interactionControllerForAnimationController:':
@@ -3119,7 +3137,7 @@ protocols:
                 parameters:
                     items:
                         type: "NSArray<UITabBarItem>"
-    UITableViewDataSource:
+    UITableViewDataSource: # DONE
         methods:
             '-numberOfSectionsInTableView:':
                 name: getNumberOfSections
@@ -3417,11 +3435,17 @@ protocols:
                 name: didStartLoad
 
     # Informal protocols (categories)
-    UIAccessibility: {}
+    UIAccessibility:
+        properties:
+            'isAccessibilityElement':
+                name: accessibilityElement
     UIAccessibilityAction:
         methods:
-            '-accessibilityScroll:':
-                name: accessibilityScroll
+            '-accessibility(.*):':
+                name: "#{g[0][0].downcase}#{g[0][1..-1]}"
+            '-accessibility(.*)':
+                name: "#{g[0][0].downcase}#{g[0][1..-1]}"
+            
     UIAccessibilityContainer:
         methods:
             '-accessibilityElementCount':
@@ -3541,13 +3565,57 @@ values:
         name: "#{g[0]}"
         type: NSString
 
+    UIPageViewControllerOption(.*Key):
+        class: UIPageViewControllerOptions
+        name: "#{g[0]}"
+        type: NSString
+
+    UIApplication(.*Notification):
+        class: UIApplication
+        name: "#{g[0]}"
+        type: NSString
+    UIApplication(ProtectedDataDidBecomeAvailable|ProtectedDataWillBecomeUnavailable):
+        class: UIApplication
+        name: "#{g[0]}Notification"
+        type: NSString
+    UI(ContentSizeCategoryDidChangeNotification):
+        class: UIApplication
+        name: "#{g[0]}"
+        type: NSString
+    UIApplication(.*UserInfoKey):
+        class: UIApplication
+        name: "#{g[0]}"
+        type: NSString
+        visibility: protected
+    UI(ContentSizeCategoryNewValueKey):
+        class: UIApplication
+        name: "#{g[0]}"
+        type: NSString
+        visibility: protected
+        
+    UIScreen(.*Notification):
+        class: UIScreen
+        name: "#{g[0]}"
+        type: NSString
+        
+    UIWindow(.*Notification):
+        class: UIWindow
+        name: "#{g[0]}"
+        type: NSString
+    UI(Keyboard.*Notification):
+        class: UIWindow
+        name: "#{g[0]}"
+        type: NSString
+    UIKeyboard(.*)UserInfoKey:
+        class: UIKeyboard
+        name: "#{g[0]}Key"
+        type: NSString
+        visibility: protected
+    
+    UI(WindowLevel.*):
+        name: "#{g[0]}"
+
     UI(.*Key):
-        name: "#{g[0]}"
-        type: NSString
-    NS(.*Notification):
-        name: "#{g[0]}"
-        type: NSString
-    UI(.*Notification):
         name: "#{g[0]}"
         type: NSString
 
@@ -3599,25 +3667,31 @@ values:
         name: "#{g[0]}"
         readonly: true
         type: NSString
-    UI(AccessibilityTrait.*):
-        name: "#{g[0]}"
+    UIAccessibilityTrait(.*):
+        class: UIAccessibilityTraits
+        name: "#{g[0]}Value"
+        visibility: protected
+        type: long
         readonly: true
     UI(AccessibilityAnnouncementKey.*):
         name: "#{g[0]}"
         readonly: true
         type: NSString
 
-    UI(ActivityType.*):
+    UIActivityType(.*):
+        class: UIActivityType
         name: "#{g[0]}"
-
-    UI(ApplicationProtectedData.*):
-        name: "#{g[0]}"
-        type: NSString
         
-    UI(ApplicationBackgroundFetchInterval.*):
+    UIApplication(BackgroundFetchInterval.*):
+        class: UIApplication
         name: "#{g[0]}"
-    UI(ContentSizeCategory.*):
-        name: "#{g[0]}"
+        
+    UIContentSizeCategory(.*):
+        class: UIContentSizeCategory
+        name: "#{g[0]}Value"
+        visibility: protected
+        type: NSString
+
     UI(TrackingRunLoopMode):
         name: "#{g[0]}"
     UIApplicationInvalidInterfaceOrientationException:
@@ -3687,9 +3761,6 @@ values:
 
     UIViewControllerHierarchyInconsistencyException:
         exclude: true
-
-    UI(WindowLevel.*):
-        name: "#{g[0]}"
 
     # Make sure we don't miss any values if new ones are introduced in a later UIKit
     (NS.*):

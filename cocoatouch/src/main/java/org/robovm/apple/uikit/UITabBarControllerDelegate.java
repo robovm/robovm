@@ -72,7 +72,7 @@ import org.robovm.apple.coreimage.*;
      * @since Available in iOS 7.0 and later.
      */
     @Method(selector = "tabBarControllerSupportedInterfaceOrientations:")
-    @MachineSizedUInt long getSupportedInterfaceOrientations(UITabBarController tabBarController);
+    UIInterfaceOrientation getSupportedInterfaceOrientations(UITabBarController tabBarController);
     /**
      * @since Available in iOS 7.0 and later.
      */

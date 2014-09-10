@@ -43,6 +43,94 @@ import org.robovm.apple.coreimage.*;
     extends /*<extends>*/UIView/*</extends>*/ 
     /*<implements>*//*</implements>*/ {
 
+    public static class Notifications {
+        public static NSObject observeDidBecomeVisible(final VoidBlock1<UIWindow> block) {
+            return NSNotificationCenter.getDefaultCenter().addObserver(DidBecomeVisibleNotification(), null, NSOperationQueue.getMainQueue(), new VoidBlock1<NSNotification>() {
+                @Override
+                public void invoke(NSNotification a) {
+                    block.invoke((UIWindow) a.getObject());
+                }
+            });
+        }
+        public static NSObject observeDidBecomeHidden(final VoidBlock1<UIWindow> block) {
+            return NSNotificationCenter.getDefaultCenter().addObserver(DidBecomeHiddenNotification(), null, NSOperationQueue.getMainQueue(), new VoidBlock1<NSNotification>() {
+                @Override
+                public void invoke(NSNotification a) {
+                    block.invoke((UIWindow) a.getObject());
+                }
+            });
+        }
+        public static NSObject observeDidBecomeKey(final VoidBlock1<UIWindow> block) {
+            return NSNotificationCenter.getDefaultCenter().addObserver(DidBecomeKeyNotification(), null, NSOperationQueue.getMainQueue(), new VoidBlock1<NSNotification>() {
+                @Override
+                public void invoke(NSNotification a) {
+                    block.invoke((UIWindow) a.getObject());
+                }
+            });
+        }
+        public static NSObject observeDidResignKey(final VoidBlock1<UIWindow> block) {
+            return NSNotificationCenter.getDefaultCenter().addObserver(DidResignKeyNotification(), null, NSOperationQueue.getMainQueue(), new VoidBlock1<NSNotification>() {
+                @Override
+                public void invoke(NSNotification a) {
+                    block.invoke((UIWindow) a.getObject());
+                }
+            });
+        }
+        public static NSObject observeKeyboardWillShow(final VoidBlock1<UIKeyboard> block) {
+            return NSNotificationCenter.getDefaultCenter().addObserver(KeyboardWillShowNotification(), null, NSOperationQueue.getMainQueue(), new VoidBlock1<NSNotification>() {
+                @Override
+                public void invoke(NSNotification a) {
+                    block.invoke(new UIKeyboard(a.getUserInfo()));
+                }
+            });
+        }
+        public static NSObject observeKeyboardDidShow(final VoidBlock1<UIKeyboard> block) {
+            return NSNotificationCenter.getDefaultCenter().addObserver(KeyboardDidShowNotification(), null, NSOperationQueue.getMainQueue(), new VoidBlock1<NSNotification>() {
+                @Override
+                public void invoke(NSNotification a) {
+                    block.invoke(new UIKeyboard(a.getUserInfo()));
+                }
+            });
+        }
+        public static NSObject observeKeyboardWillHide(final VoidBlock1<UIKeyboard> block) {
+            return NSNotificationCenter.getDefaultCenter().addObserver(KeyboardWillHideNotification(), null, NSOperationQueue.getMainQueue(), new VoidBlock1<NSNotification>() {
+                @Override
+                public void invoke(NSNotification a) {
+                    block.invoke(new UIKeyboard(a.getUserInfo()));
+                }
+            });
+        }
+        public static NSObject observeKeyboardDidHide(final VoidBlock1<UIKeyboard> block) {
+            return NSNotificationCenter.getDefaultCenter().addObserver(KeyboardDidHideNotification(), null, NSOperationQueue.getMainQueue(), new VoidBlock1<NSNotification>() {
+                @Override
+                public void invoke(NSNotification a) {
+                    block.invoke(new UIKeyboard(a.getUserInfo()));
+                }
+            });
+        }
+        /**
+         * @since Available in iOS 5.0 and later.
+         */
+        public static NSObject observeKeyboardWillChangeFrame(final VoidBlock1<UIKeyboard> block) {
+            return NSNotificationCenter.getDefaultCenter().addObserver(KeyboardWillChangeFrameNotification(), null, NSOperationQueue.getMainQueue(), new VoidBlock1<NSNotification>() {
+                @Override
+                public void invoke(NSNotification a) {
+                    block.invoke(new UIKeyboard(a.getUserInfo()));
+                }
+            });
+        }
+        /**
+         * @since Available in iOS 5.0 and later.
+         */
+        public static NSObject observeKeyboardDidChangeFrame(final VoidBlock1<UIKeyboard> block) {
+            return NSNotificationCenter.getDefaultCenter().addObserver(KeyboardDidChangeFrameNotification(), null, NSOperationQueue.getMainQueue(), new VoidBlock1<NSNotification>() {
+                @Override
+                public void invoke(NSNotification a) {
+                    block.invoke(new UIKeyboard(a.getUserInfo()));
+                }
+            });
+        }
+    }
     /*<ptr>*/public static class UIWindowPtr extends Ptr<UIWindow, UIWindowPtr> {}/*</ptr>*/
     /*<bind>*/static { ObjCRuntime.bind(UIWindow.class); }/*</bind>*/
     /*<constants>*//*</constants>*/
@@ -85,6 +173,33 @@ import org.robovm.apple.coreimage.*;
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
+    @GlobalValue(symbol="UIWindowDidBecomeVisibleNotification", optional=true)
+    public static native NSString DidBecomeVisibleNotification();
+    @GlobalValue(symbol="UIWindowDidBecomeHiddenNotification", optional=true)
+    public static native NSString DidBecomeHiddenNotification();
+    @GlobalValue(symbol="UIWindowDidBecomeKeyNotification", optional=true)
+    public static native NSString DidBecomeKeyNotification();
+    @GlobalValue(symbol="UIWindowDidResignKeyNotification", optional=true)
+    public static native NSString DidResignKeyNotification();
+    @GlobalValue(symbol="UIKeyboardWillShowNotification", optional=true)
+    public static native NSString KeyboardWillShowNotification();
+    @GlobalValue(symbol="UIKeyboardDidShowNotification", optional=true)
+    public static native NSString KeyboardDidShowNotification();
+    @GlobalValue(symbol="UIKeyboardWillHideNotification", optional=true)
+    public static native NSString KeyboardWillHideNotification();
+    @GlobalValue(symbol="UIKeyboardDidHideNotification", optional=true)
+    public static native NSString KeyboardDidHideNotification();
+    /**
+     * @since Available in iOS 5.0 and later.
+     */
+    @GlobalValue(symbol="UIKeyboardWillChangeFrameNotification", optional=true)
+    public static native NSString KeyboardWillChangeFrameNotification();
+    /**
+     * @since Available in iOS 5.0 and later.
+     */
+    @GlobalValue(symbol="UIKeyboardDidChangeFrameNotification", optional=true)
+    public static native NSString KeyboardDidChangeFrameNotification();
+    
     @Method(selector = "becomeKeyWindow")
     public native void becomeKeyWindow();
     @Method(selector = "resignKeyWindow")

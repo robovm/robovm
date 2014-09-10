@@ -82,9 +82,9 @@ import org.robovm.apple.coreimage.*;
     @Method(selector = "removeItem:")
     public native void removeItem(UIDynamicItem item);
     @Method(selector = "targetOffsetFromCenterForItem:")
-    public native @ByVal UIOffset getTargetOffsetFromCenterForItem(UIDynamicItem item);
+    public native @ByVal UIOffset getTargetOffset(UIDynamicItem item);
     @Method(selector = "setTargetOffsetFromCenter:forItem:")
-    public native void setTargetOffsetFromCenter(@ByVal UIOffset o, UIDynamicItem item);
+    public native void setTargetOffset(@ByVal UIOffset o, UIDynamicItem item);
     @Method(selector = "setAngle:magnitude:")
     public native void setAngleAndMagnitude(@MachineSizedFloat double angle, @MachineSizedFloat double magnitude);
     /*</methods>*/

@@ -55,31 +55,31 @@ import org.robovm.apple.coreimage.*;
      * @since Available in iOS 7.0 and later.
      */
     @NotImplemented("accessibilityActivate")
-    public boolean accessibilityActivate() { throw new UnsupportedOperationException(); }
+    public boolean activate() { throw new UnsupportedOperationException(); }
     /**
      * @since Available in iOS 4.0 and later.
      */
     @NotImplemented("accessibilityIncrement")
-    public void accessibilityIncrement() { throw new UnsupportedOperationException(); }
+    public void increment() { throw new UnsupportedOperationException(); }
     /**
      * @since Available in iOS 4.0 and later.
      */
     @NotImplemented("accessibilityDecrement")
-    public void accessibilityDecrement() { throw new UnsupportedOperationException(); }
+    public void decrement() { throw new UnsupportedOperationException(); }
     /**
      * @since Available in iOS 4.2 and later.
      */
     @NotImplemented("accessibilityScroll:")
-    public boolean accessibilityScroll(UIAccessibilityScrollDirection direction) { throw new UnsupportedOperationException(); }
+    public boolean scroll(UIAccessibilityScrollDirection direction) { throw new UnsupportedOperationException(); }
     /**
      * @since Available in iOS 5.0 and later.
      */
     @NotImplemented("accessibilityPerformEscape")
-    public boolean accessibilityPerformEscape() { throw new UnsupportedOperationException(); }
+    public boolean performEscape() { throw new UnsupportedOperationException(); }
     /**
      * @since Available in iOS 6.0 and later.
      */
     @NotImplemented("accessibilityPerformMagicTap")
-    public boolean accessibilityPerformMagicTap() { throw new UnsupportedOperationException(); }
+    public boolean performMagicTap() { throw new UnsupportedOperationException(); }
     /*</methods>*/
 }

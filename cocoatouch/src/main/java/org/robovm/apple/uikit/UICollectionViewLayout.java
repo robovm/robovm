@@ -70,7 +70,7 @@ import org.robovm.apple.coreimage.*;
     @Method(selector = "prepareLayout")
     public native void prepareLayout();
     @Method(selector = "layoutAttributesForElementsInRect:")
-    public native NSArray<?> getLayoutAttributesForElements(@ByVal CGRect rect);
+    public native NSArray<UICollectionViewLayoutAttributes> getLayoutAttributesForElements(@ByVal CGRect rect);
     @Method(selector = "layoutAttributesForItemAtIndexPath:")
     public native UICollectionViewLayoutAttributes getLayoutAttributesForItem(NSIndexPath indexPath);
     @Method(selector = "layoutAttributesForSupplementaryViewOfKind:atIndexPath:")

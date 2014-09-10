@@ -48,9 +48,9 @@ import org.robovm.apple.coreimage.*;
     /*<constructors>*//*</constructors>*/
     /*<properties>*/
     @NotImplemented("isAccessibilityElement")
-    public boolean isIsAccessibilityElement() { throw new UnsupportedOperationException(); }
+    public boolean isAccessibilityElement() { throw new UnsupportedOperationException(); }
     @NotImplemented("setIsAccessibilityElement:")
-    public void setIsAccessibilityElement(boolean v) { throw new UnsupportedOperationException(); }
+    public void setAccessibilityElement(boolean v) { throw new UnsupportedOperationException(); }
     @NotImplemented("accessibilityLabel")
     public String getAccessibilityLabel() { throw new UnsupportedOperationException(); }
     @NotImplemented("setAccessibilityLabel:")
@@ -64,9 +64,9 @@ import org.robovm.apple.coreimage.*;
     @NotImplemented("setAccessibilityValue:")
     public void setAccessibilityValue(String v) { throw new UnsupportedOperationException(); }
     @NotImplemented("accessibilityTraits")
-    public long getAccessibilityTraits() { throw new UnsupportedOperationException(); }
+    public UIAccessibilityTraits getAccessibilityTraits() { throw new UnsupportedOperationException(); }
     @NotImplemented("setAccessibilityTraits:")
-    public void setAccessibilityTraits(long v) { throw new UnsupportedOperationException(); }
+    public void setAccessibilityTraits(UIAccessibilityTraits v) { throw new UnsupportedOperationException(); }
     @NotImplemented("accessibilityFrame")
     public @ByVal CGRect getAccessibilityFrame() { throw new UnsupportedOperationException(); }
     @NotImplemented("setAccessibilityFrame:")

@@ -46,9 +46,9 @@ import org.robovm.apple.coreimage.*;
     /*<constants>*//*</constants>*/
     /*<properties>*/
     @Property(selector = "isAccessibilityElement")
-    boolean isIsAccessibilityElement();
+    boolean isAccessibilityElement();
     @Property(selector = "setIsAccessibilityElement:")
-    void setIsAccessibilityElement(boolean v);
+    void setAccessibilityElement(boolean v);
     @Property(selector = "accessibilityLabel")
     String getAccessibilityLabel();
     @Property(selector = "setAccessibilityLabel:")
@@ -62,9 +62,9 @@ import org.robovm.apple.coreimage.*;
     @Property(selector = "setAccessibilityValue:")
     void setAccessibilityValue(String v);
     @Property(selector = "accessibilityTraits")
-    long getAccessibilityTraits();
+    UIAccessibilityTraits getAccessibilityTraits();
     @Property(selector = "setAccessibilityTraits:")
-    void setAccessibilityTraits(long v);
+    void setAccessibilityTraits(UIAccessibilityTraits v);
     @Property(selector = "accessibilityFrame")
     @ByVal CGRect getAccessibilityFrame();
     @Property(selector = "setAccessibilityFrame:")

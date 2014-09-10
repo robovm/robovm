@@ -43,6 +43,52 @@ import org.robovm.apple.coreimage.*;
     extends /*<extends>*/NSObject/*</extends>*/ 
     /*<implements>*//*</implements>*/ {
 
+    public static class Notifications {
+        /**
+         * @since Available in iOS 3.2 and later.
+         */
+        public static NSObject observeDidConnect(final VoidBlock1<UIScreen> block) {
+            return NSNotificationCenter.getDefaultCenter().addObserver(DidConnectNotification(), null, NSOperationQueue.getMainQueue(), new VoidBlock1<NSNotification>() {
+                @Override
+                public void invoke(NSNotification a) {
+                    block.invoke((UIScreen) a.getObject());
+                }
+            });
+        }
+        /**
+         * @since Available in iOS 3.2 and later.
+         */
+        public static NSObject observeDidDisconnect(final VoidBlock1<UIScreen> block) {
+            return NSNotificationCenter.getDefaultCenter().addObserver(DidDisconnectNotification(), null, NSOperationQueue.getMainQueue(), new VoidBlock1<NSNotification>() {
+                @Override
+                public void invoke(NSNotification a) {
+                    block.invoke((UIScreen) a.getObject());
+                }
+            });
+        }
+        /**
+         * @since Available in iOS 3.2 and later.
+         */
+        public static NSObject observeModeDidChange(final VoidBlock1<UIScreen> block) {
+            return NSNotificationCenter.getDefaultCenter().addObserver(ModeDidChangeNotification(), null, NSOperationQueue.getMainQueue(), new VoidBlock1<NSNotification>() {
+                @Override
+                public void invoke(NSNotification a) {
+                    block.invoke((UIScreen) a.getObject());
+                }
+            });
+        }
+        /**
+         * @since Available in iOS 5.0 and later.
+         */
+        public static NSObject observeBrightnessDidChange(final VoidBlock1<UIScreen> block) {
+            return NSNotificationCenter.getDefaultCenter().addObserver(BrightnessDidChangeNotification(), null, NSOperationQueue.getMainQueue(), new VoidBlock1<NSNotification>() {
+                @Override
+                public void invoke(NSNotification a) {
+                    block.invoke((UIScreen) a.getObject());
+                }
+            });
+        }
+    }
     /*<ptr>*/public static class UIScreenPtr extends Ptr<UIScreen, UIScreenPtr> {}/*</ptr>*/
     /*<bind>*/static { ObjCRuntime.bind(UIScreen.class); }/*</bind>*/
     /*<constants>*//*</constants>*/
@@ -118,6 +164,27 @@ import org.robovm.apple.coreimage.*;
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
+    /**
+     * @since Available in iOS 3.2 and later.
+     */
+    @GlobalValue(symbol="UIScreenDidConnectNotification", optional=true)
+    public static native NSString DidConnectNotification();
+    /**
+     * @since Available in iOS 3.2 and later.
+     */
+    @GlobalValue(symbol="UIScreenDidDisconnectNotification", optional=true)
+    public static native NSString DidDisconnectNotification();
+    /**
+     * @since Available in iOS 3.2 and later.
+     */
+    @GlobalValue(symbol="UIScreenModeDidChangeNotification", optional=true)
+    public static native NSString ModeDidChangeNotification();
+    /**
+     * @since Available in iOS 5.0 and later.
+     */
+    @GlobalValue(symbol="UIScreenBrightnessDidChangeNotification", optional=true)
+    public static native NSString BrightnessDidChangeNotification();
+    
     /**
      * @since Available in iOS 4.0 and later.
      */

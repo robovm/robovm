@@ -71,6 +71,6 @@ import org.robovm.apple.coreimage.*;
      * @since Available in iOS 7.0 and later.
      */
     @NotImplemented("splitViewControllerPreferredInterfaceOrientationForPresentation:")
-    public UIInterfaceOrientation name(UISplitViewController splitViewController) { throw new UnsupportedOperationException(); }
+    public UIInterfaceOrientation getPreferredInterfaceOrientation(UISplitViewController splitViewController) { throw new UnsupportedOperationException(); }
     /*</methods>*/
 }

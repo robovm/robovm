@@ -43,6 +43,174 @@ import org.robovm.apple.coreimage.*;
     extends /*<extends>*/UIResponder/*</extends>*/ 
     /*<implements>*/implements UIActionSheetDelegate/*</implements>*/ {
 
+    public static class Notifications {
+        /**
+         * @since Available in iOS 4.0 and later.
+         */
+        public static NSObject observeDidEnterBackground(final Runnable block) {
+            return NSNotificationCenter.getDefaultCenter().addObserver(DidEnterBackgroundNotification(), null, NSOperationQueue.getMainQueue(), new VoidBlock1<NSNotification>() {
+                @Override
+                public void invoke(NSNotification a) {
+                    block.run();
+                }
+            });
+        }
+        /**
+         * @since Available in iOS 4.0 and later.
+         */
+        public static NSObject observeWillEnterForeground(final Runnable block) {
+            return NSNotificationCenter.getDefaultCenter().addObserver(WillEnterForegroundNotification(), null, NSOperationQueue.getMainQueue(), new VoidBlock1<NSNotification>() {
+                @Override
+                public void invoke(NSNotification a) {
+                    block.run();
+                }
+            });
+        }
+        public static NSObject observeDidFinishLaunching(final VoidBlock1<UIApplicationLaunchOptions> block) {
+            return NSNotificationCenter.getDefaultCenter().addObserver(DidFinishLaunchingNotification(), null, NSOperationQueue.getMainQueue(), new VoidBlock1<NSNotification>() {
+                @Override
+                public void invoke(NSNotification a) {
+                    if (a.getUserInfo() != null) {
+                        block.invoke(new UIApplicationLaunchOptions(a.getUserInfo()));
+                    } else {
+                        block.invoke(null);
+                    }
+                }
+            });
+        }
+        public static NSObject observeDidBecomeActive(final Runnable block) {
+            return NSNotificationCenter.getDefaultCenter().addObserver(DidBecomeActiveNotification(), null, NSOperationQueue.getMainQueue(), new VoidBlock1<NSNotification>() {
+                @Override
+                public void invoke(NSNotification a) {
+                    block.run();
+                }
+            });
+        }
+        public static NSObject observeWillResignActive(final Runnable block) {
+            return NSNotificationCenter.getDefaultCenter().addObserver(WillResignActiveNotification(), null, NSOperationQueue.getMainQueue(), new VoidBlock1<NSNotification>() {
+                @Override
+                public void invoke(NSNotification a) {
+                    block.run();
+                }
+            });
+        }
+        public static NSObject observeDidReceiveMemoryWarning(final Runnable block) {
+            return NSNotificationCenter.getDefaultCenter().addObserver(DidReceiveMemoryWarningNotification(), null, NSOperationQueue.getMainQueue(), new VoidBlock1<NSNotification>() {
+                @Override
+                public void invoke(NSNotification a) {
+                    block.run();
+                }
+            });
+        }
+        public static NSObject observeWillTerminate(final Runnable block) {
+            return NSNotificationCenter.getDefaultCenter().addObserver(WillTerminateNotification(), null, NSOperationQueue.getMainQueue(), new VoidBlock1<NSNotification>() {
+                @Override
+                public void invoke(NSNotification a) {
+                    block.run();
+                }
+            });
+        }
+        public static NSObject observeSignificantTimeChange(final Runnable block) {
+            return NSNotificationCenter.getDefaultCenter().addObserver(SignificantTimeChangeNotification(), null, NSOperationQueue.getMainQueue(), new VoidBlock1<NSNotification>() {
+                @Override
+                public void invoke(NSNotification a) {
+                    block.run();
+                }
+            });
+        }
+        public static NSObject observeWillChangeStatusBarOrientation(final VoidBlock1<UIInterfaceOrientation> block) {
+            return NSNotificationCenter.getDefaultCenter().addObserver(WillChangeStatusBarOrientationNotification(), null, NSOperationQueue.getMainQueue(), new VoidBlock1<NSNotification>() {
+                @Override
+                public void invoke(NSNotification a) {
+                    NSNumber val = (NSNumber)a.getUserInfo().get(StatusBarOrientationUserInfoKey());
+                    block.invoke(UIInterfaceOrientation.valueOf(val.intValue()));
+                }
+            });
+        }
+        public static NSObject observeDidChangeStatusBarOrientation(final VoidBlock1<UIInterfaceOrientation> block) {
+            return NSNotificationCenter.getDefaultCenter().addObserver(DidChangeStatusBarOrientationNotification(), null, NSOperationQueue.getMainQueue(), new VoidBlock1<NSNotification>() {
+                @Override
+                public void invoke(NSNotification a) {
+                    NSNumber val = (NSNumber)a.getUserInfo().get(StatusBarOrientationUserInfoKey());
+                    block.invoke(UIInterfaceOrientation.valueOf(val.intValue()));
+                }
+            });
+        }
+        public static NSObject observeWillChangeStatusBarFrame(final VoidBlock1<CGRect> block) {
+            return NSNotificationCenter.getDefaultCenter().addObserver(WillChangeStatusBarFrameNotification(), null, NSOperationQueue.getMainQueue(), new VoidBlock1<NSNotification>() {
+                @Override
+                public void invoke(NSNotification a) {
+                    NSValue val = (NSValue)a.getUserInfo().get(StatusBarFrameUserInfoKey());
+                    block.invoke(NSValueExtensions.getRectValue(val));
+                }
+            });
+        }
+        public static NSObject observeDidChangeStatusBarFrame(final VoidBlock1<CGRect> block) {
+            return NSNotificationCenter.getDefaultCenter().addObserver(DidChangeStatusBarFrameNotification(), null, NSOperationQueue.getMainQueue(), new VoidBlock1<NSNotification>() {
+                @Override
+                public void invoke(NSNotification a) {
+                    NSValue val = (NSValue)a.getUserInfo().get(StatusBarFrameUserInfoKey());
+                    block.invoke(NSValueExtensions.getRectValue(val));
+                }
+            });
+        }
+        /**
+         * @since Available in iOS 7.0 and later.
+         */
+        public static NSObject observeBackgroundRefreshStatusDidChange(final Runnable block) {
+            return NSNotificationCenter.getDefaultCenter().addObserver(BackgroundRefreshStatusDidChangeNotification(), null, NSOperationQueue.getMainQueue(), new VoidBlock1<NSNotification>() {
+                @Override
+                public void invoke(NSNotification a) {
+                    block.run();
+                }
+            });
+        }
+        /**
+         * @since Available in iOS 4.0 and later.
+         */
+        public static NSObject observeProtectedDataWillBecomeUnavailable(final Runnable block) {
+            return NSNotificationCenter.getDefaultCenter().addObserver(ProtectedDataWillBecomeUnavailableNotification(), null, NSOperationQueue.getMainQueue(), new VoidBlock1<NSNotification>() {
+                @Override
+                public void invoke(NSNotification a) {
+                    block.run();
+                }
+            });
+        }
+        /**
+         * @since Available in iOS 4.0 and later.
+         */
+        public static NSObject observeProtectedDataDidBecomeAvailable(final Runnable block) {
+            return NSNotificationCenter.getDefaultCenter().addObserver(ProtectedDataDidBecomeAvailableNotification(), null, NSOperationQueue.getMainQueue(), new VoidBlock1<NSNotification>() {
+                @Override
+                public void invoke(NSNotification a) {
+                    block.run();
+                }
+            });
+        }
+        /**
+         * @since Available in iOS 7.0 and later.
+         */
+        public static NSObject observeContentSizeCategoryDidChange(final VoidBlock1<UIContentSizeCategory> block) {
+            return NSNotificationCenter.getDefaultCenter().addObserver(ContentSizeCategoryDidChangeNotification(), null, NSOperationQueue.getMainQueue(), new VoidBlock1<NSNotification>() {
+                @Override
+                public void invoke(NSNotification a) {
+                    NSString val = (NSString)a.getUserInfo().get(ContentSizeCategoryNewValueKey());
+                    block.invoke(UIContentSizeCategory.valueOf(val));
+                }
+            });
+        }
+        /**
+         * @since Available in iOS 7.0 and later.
+         */
+        public static NSObject observeUserDidTakeScreenshot(final Runnable block) {
+            return NSNotificationCenter.getDefaultCenter().addObserver(UserDidTakeScreenshotNotification(), null, NSOperationQueue.getMainQueue(), new VoidBlock1<NSNotification>() {
+                @Override
+                public void invoke(NSNotification a) {
+                    block.run();
+                }
+            });
+        }
+    }
     /*<ptr>*/public static class UIApplicationPtr extends Ptr<UIApplication, UIApplicationPtr> {}/*</ptr>*/
     /*<bind>*/static { ObjCRuntime.bind(UIApplication.class); }/*</bind>*/
     /*<constants>*//*</constants>*/
@@ -179,6 +347,81 @@ import org.robovm.apple.coreimage.*;
     }
     
     /*<methods>*/
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
+    @GlobalValue(symbol="UIApplicationBackgroundFetchIntervalMinimum", optional=true)
+    public static native double BackgroundFetchIntervalMinimum();
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
+    @GlobalValue(symbol="UIApplicationBackgroundFetchIntervalNever", optional=true)
+    public static native double BackgroundFetchIntervalNever();
+    /**
+     * @since Available in iOS 4.0 and later.
+     */
+    @GlobalValue(symbol="UIApplicationDidEnterBackgroundNotification", optional=true)
+    public static native NSString DidEnterBackgroundNotification();
+    /**
+     * @since Available in iOS 4.0 and later.
+     */
+    @GlobalValue(symbol="UIApplicationWillEnterForegroundNotification", optional=true)
+    public static native NSString WillEnterForegroundNotification();
+    @GlobalValue(symbol="UIApplicationDidFinishLaunchingNotification", optional=true)
+    public static native NSString DidFinishLaunchingNotification();
+    @GlobalValue(symbol="UIApplicationDidBecomeActiveNotification", optional=true)
+    public static native NSString DidBecomeActiveNotification();
+    @GlobalValue(symbol="UIApplicationWillResignActiveNotification", optional=true)
+    public static native NSString WillResignActiveNotification();
+    @GlobalValue(symbol="UIApplicationDidReceiveMemoryWarningNotification", optional=true)
+    public static native NSString DidReceiveMemoryWarningNotification();
+    @GlobalValue(symbol="UIApplicationWillTerminateNotification", optional=true)
+    public static native NSString WillTerminateNotification();
+    @GlobalValue(symbol="UIApplicationSignificantTimeChangeNotification", optional=true)
+    public static native NSString SignificantTimeChangeNotification();
+    @GlobalValue(symbol="UIApplicationWillChangeStatusBarOrientationNotification", optional=true)
+    public static native NSString WillChangeStatusBarOrientationNotification();
+    @GlobalValue(symbol="UIApplicationDidChangeStatusBarOrientationNotification", optional=true)
+    public static native NSString DidChangeStatusBarOrientationNotification();
+    @GlobalValue(symbol="UIApplicationStatusBarOrientationUserInfoKey", optional=true)
+    protected static native NSString StatusBarOrientationUserInfoKey();
+    @GlobalValue(symbol="UIApplicationWillChangeStatusBarFrameNotification", optional=true)
+    public static native NSString WillChangeStatusBarFrameNotification();
+    @GlobalValue(symbol="UIApplicationDidChangeStatusBarFrameNotification", optional=true)
+    public static native NSString DidChangeStatusBarFrameNotification();
+    @GlobalValue(symbol="UIApplicationStatusBarFrameUserInfoKey", optional=true)
+    protected static native NSString StatusBarFrameUserInfoKey();
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
+    @GlobalValue(symbol="UIApplicationBackgroundRefreshStatusDidChangeNotification", optional=true)
+    public static native NSString BackgroundRefreshStatusDidChangeNotification();
+    /**
+     * @since Available in iOS 4.0 and later.
+     */
+    @GlobalValue(symbol="UIApplicationProtectedDataWillBecomeUnavailable", optional=true)
+    public static native NSString ProtectedDataWillBecomeUnavailableNotification();
+    /**
+     * @since Available in iOS 4.0 and later.
+     */
+    @GlobalValue(symbol="UIApplicationProtectedDataDidBecomeAvailable", optional=true)
+    public static native NSString ProtectedDataDidBecomeAvailableNotification();
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
+    @GlobalValue(symbol="UIContentSizeCategoryDidChangeNotification", optional=true)
+    public static native NSString ContentSizeCategoryDidChangeNotification();
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
+    @GlobalValue(symbol="UIContentSizeCategoryNewValueKey", optional=true)
+    protected static native NSString ContentSizeCategoryNewValueKey();
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
+    @GlobalValue(symbol="UIApplicationUserDidTakeScreenshotNotification", optional=true)
+    public static native NSString UserDidTakeScreenshotNotification();
+    
     @Bridge(symbol="UIApplicationMain", optional=true)
     protected static native int main(int argc, BytePtr.BytePtrPtr argv, String principalClassName, String delegateClassName);
     

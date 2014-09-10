@@ -57,13 +57,13 @@ import org.robovm.apple.coreimage.*;
     @Property(selector = "type")
     public native UIInterpolatingMotionEffectType getType();
     @Property(selector = "minimumRelativeValue")
-    public native NSObject getMinimumRelativeValue();
+    public native NSValue getMinimumRelativeValue();
     @Property(selector = "setMinimumRelativeValue:")
-    public native void setMinimumRelativeValue(NSObject v);
+    public native void setMinimumRelativeValue(NSValue v);
     @Property(selector = "maximumRelativeValue")
-    public native NSObject getMaximumRelativeValue();
+    public native NSValue getMaximumRelativeValue();
     @Property(selector = "setMaximumRelativeValue:")
-    public native void setMaximumRelativeValue(NSObject v);
+    public native void setMaximumRelativeValue(NSValue v);
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/

@@ -185,22 +185,22 @@ import org.robovm.apple.coreimage.*;
      * @since Available in iOS 5.0 and later.
      */
     @Method(selector = "resizableImageWithCapInsets:")
-    public native UIImage newResizable(@ByVal UIEdgeInsets capInsets);
+    public native UIImage createResizable(@ByVal UIEdgeInsets capInsets);
     /**
      * @since Available in iOS 6.0 and later.
      */
     @Method(selector = "resizableImageWithCapInsets:resizingMode:")
-    public native UIImage newResizable(@ByVal UIEdgeInsets capInsets, UIImageResizingMode resizingMode);
+    public native UIImage createResizable(@ByVal UIEdgeInsets capInsets, UIImageResizingMode resizingMode);
     /**
      * @since Available in iOS 6.0 and later.
      */
     @Method(selector = "imageWithAlignmentRectInsets:")
-    public native UIImage newWithAlignment(@ByVal UIEdgeInsets alignmentInsets);
+    public native UIImage create(@ByVal UIEdgeInsets alignmentInsets);
     /**
      * @since Available in iOS 7.0 and later.
      */
     @Method(selector = "imageWithRenderingMode:")
-    public native UIImage newWithRenderingMode(UIImageRenderingMode renderingMode);
+    public native UIImage create(UIImageRenderingMode renderingMode);
     @Method(selector = "imageNamed:")
     public static native UIImage createFromBundle(String name);
     @Method(selector = "imageWithContentsOfFile:")
@@ -250,7 +250,7 @@ import org.robovm.apple.coreimage.*;
     @Method(selector = "animatedImageWithImages:duration:")
     public static native UIImage createAnimated(NSArray<UIImage> images, double duration);
     @Method(selector = "stretchableImageWithLeftCapWidth:topCapHeight:")
-    public native UIImage newStretchable(@MachineSizedSInt long leftCapWidth, @MachineSizedSInt long topCapHeight);
+    public native UIImage createStretchable(@MachineSizedSInt long leftCapWidth, @MachineSizedSInt long topCapHeight);
     @Method(selector = "encodeWithCoder:")
     public native void encode(NSCoder aCoder);
     /*</methods>*/

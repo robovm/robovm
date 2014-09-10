@@ -53,32 +53,32 @@ import org.robovm.apple.coreimage.*;
      * @since Available in iOS 7.0 and later.
      */
     @Method(selector = "accessibilityActivate")
-    boolean accessibilityActivate();
+    boolean activate();
     /**
      * @since Available in iOS 4.0 and later.
      */
     @Method(selector = "accessibilityIncrement")
-    void accessibilityIncrement();
+    void increment();
     /**
      * @since Available in iOS 4.0 and later.
      */
     @Method(selector = "accessibilityDecrement")
-    void accessibilityDecrement();
+    void decrement();
     /**
      * @since Available in iOS 4.2 and later.
      */
     @Method(selector = "accessibilityScroll:")
-    boolean accessibilityScroll(UIAccessibilityScrollDirection direction);
+    boolean scroll(UIAccessibilityScrollDirection direction);
     /**
      * @since Available in iOS 5.0 and later.
      */
     @Method(selector = "accessibilityPerformEscape")
-    boolean accessibilityPerformEscape();
+    boolean performEscape();
     /**
      * @since Available in iOS 6.0 and later.
      */
     @Method(selector = "accessibilityPerformMagicTap")
-    boolean accessibilityPerformMagicTap();
+    boolean performMagicTap();
     /*</methods>*/
     /*<adapter>*/
     /*</adapter>*/

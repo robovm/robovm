@@ -48,12 +48,13 @@
 package java.lang.reflect;
 
 import java.lang.annotation.Annotation;
+import java.util.Arrays;
 
 import libcore.util.EmptyArray;
-
 import libcore.reflect.GenericSignatureParser;
 import libcore.reflect.ListOfTypes;
 import libcore.reflect.Types;
+
 import org.robovm.rt.VM;
 
 /**
@@ -283,7 +284,15 @@ public final class Constructor<T> extends AccessibleObject implements GenericDec
      */
     @Override
     public boolean equals(Object object) {
-        return object instanceof Constructor && toString().equals(object.toString());
+        if (this == object) {
+            return true;
+        }
+        if (!(object instanceof Constructor)) {
+            return false;
+        }
+        Constructor<?> rhs = (Constructor<?>) object;
+        return getDeclaringClass().equals(rhs.getDeclaringClass()) &&
+            Arrays.equals(getParameterTypes(false), rhs.getParameterTypes(false));
     }
 
     /**

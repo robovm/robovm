@@ -33,9 +33,9 @@ import soot.SootMethod;
  */
 public interface CompilerPlugin {
     /**
-     * Returns the plugin's arguments to be parsed from XML or the command line
+     * Returns the plugin's prefix arguments to be parsed from XML or the command line
      */
-    List<CompilerPluginArgument> getArguments();
+    CompilerPluginArguments getArguments();
 
     /**
      * Called just before a class is about to be compiled. Modifications to the 

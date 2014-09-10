@@ -393,11 +393,10 @@ public final class Method extends AccessibleObject implements GenericDeclaration
         Method rhs = (Method) object;
         // We don't compare exceptionTypes because two methods
         // can't differ only by their declared exceptions.
-        return declaringClass.equals(rhs.declaringClass) &&
-            name.equals(rhs.name) &&
-            getModifiers() == rhs.getModifiers() &&
-            returnType.equals(rhs.returnType) &&
-            Arrays.equals(parameterTypes, rhs.parameterTypes);
+        return getDeclaringClass().equals(rhs.getDeclaringClass()) &&
+            getName().equals(rhs.getName()) &&
+            getReturnType().equals(rhs.getReturnType()) &&
+            Arrays.equals(getParameterTypes(false), rhs.getParameterTypes(false));
     }
 
     /**
@@ -584,7 +583,7 @@ public final class Method extends AccessibleObject implements GenericDeclaration
                 Class<?> caller = VM.getStackClasses(0, 1)[0];
                 if (!checkAccessible(caller, this)) {
                     throw new IllegalAccessException(String.format("Attempt to access method %s.%s(%s) from class %s", 
-                            getDeclaringClass().getName(), getName(), toString(parameterTypes), caller.getName()));
+                            getDeclaringClass().getName(), getName(), toString(pTypes), caller.getName()));
                 }
             }
         }

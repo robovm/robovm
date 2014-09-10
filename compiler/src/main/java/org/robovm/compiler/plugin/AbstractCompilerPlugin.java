@@ -18,7 +18,6 @@ package org.robovm.compiler.plugin;
 
 import java.io.IOException;
 import java.util.Collections;
-import java.util.List;
 
 import org.robovm.compiler.ModuleBuilder;
 import org.robovm.compiler.clazz.Clazz;
@@ -33,8 +32,8 @@ import soot.SootMethod;
  */
 public abstract class AbstractCompilerPlugin implements CompilerPlugin {
     @Override
-    public List<CompilerPluginArgument> getArguments() {
-        return Collections.emptyList();
+    public CompilerPluginArguments getArguments() {
+        return new CompilerPluginArguments("", Collections.<CompilerPluginArgument>emptyList());
     }
     
     @Override

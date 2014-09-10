@@ -497,12 +497,12 @@ public class AppCompiler {
                     runArgs.add(args[i]);
                 } else if (args[i].startsWith("-")) {
                     String argName = args[i].substring(1, args[i].length());
+                    if(argName.contains("=")) {
+                        argName = argName.substring(0, argName.indexOf('='));
+                    }
                     CompilerPluginArgument arg = pluginArguments.get(argName);
                     if (arg != null) {
-                        builder.addCompilerPluginArgument(argName);
-                        if(arg.hasValue()) {
-                            builder.addCompilerPluginArgument(args[++i]);
-                        }
+                        builder.addCompilerPluginArgument(args[i].substring(1));                        
                     } else {
                         throw new IllegalArgumentException("Unrecognized option: " + args[i]);
                     }
@@ -752,9 +752,9 @@ public class AppCompiler {
         
         if(plugins != null) {
             for(CompilerPlugin plugin: plugins) {
-                if(plugin.getArguments().size() > 0) {
+                if(plugin.getArguments().getArguments().size() > 0) {
                     System.err.println(plugin.getClass().getSimpleName() + " options:");
-                    for(CompilerPluginArgument arg: plugin.getArguments()) {
+                    for(CompilerPluginArgument arg: plugin.getArguments().getArguments()) {
                         String argString = "  -" + arg.getName() + (arg.hasValue()? " " + arg.getValueName(): "");
                         int whitespace = Math.max(1, 24 - argString.length());
                         System.err.println(argString + repeat(" ", whitespace) + arg.getDescription());

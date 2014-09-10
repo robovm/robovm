@@ -49,8 +49,10 @@ package java.lang.reflect;
 
 import java.lang.annotation.Annotation;
 import java.util.Comparator;
+
 import libcore.reflect.GenericSignatureParser;
 import libcore.reflect.Types;
+
 import org.robovm.rt.VM;
 
 /**
@@ -219,7 +221,16 @@ public final class Field extends AccessibleObject implements Member {
      */
     @Override
     public boolean equals(Object object) {
-        return object instanceof Field && toString().equals(object.toString());
+        if (this == object) {
+            return true;
+        }
+        if (!(object instanceof Field)) {
+            return false;
+        }
+        Field rhs = (Field) object;
+        return getDeclaringClass().equals(rhs.getDeclaringClass()) &&
+                getType().equals(rhs.getType()) &&
+                getName().equals(rhs.getName());
     }
 
     private void checkAccess(Object receiver, boolean setter) throws IllegalAccessException {

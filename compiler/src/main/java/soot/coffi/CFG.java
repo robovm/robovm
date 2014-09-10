@@ -1531,7 +1531,8 @@ public class CFG {
                 if (entry.end_inst != null) {
                     endStmt = instructionToFirstStmt.get(entry.end_inst);
                 }
-                soot.LocalVariable lv = new LocalVariable(name, entry.index, startStmt, endStmt);
+                soot.LocalVariable lv = new LocalVariable(name, entry.index, startStmt, endStmt,
+                        ((CONSTANT_Utf8_info) constant_pool[entry.descriptor_index]).convert());
                 listBody.getLocalVariables().add(lv);
             }
         }

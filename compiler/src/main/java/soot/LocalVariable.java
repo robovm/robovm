@@ -26,12 +26,14 @@ public class LocalVariable {
     private int index;
     private UnitBox startUnit;
     private UnitBox endUnit;
+    private String descriptor;
 
-    public LocalVariable(String name, int index, Unit startUnit, Unit endUnit) {
+    public LocalVariable(String name, int index, Unit startUnit, Unit endUnit, String descriptor) {
         this.index = index;
         this.name = name;
         this.startUnit = Jimple.v().newStmtBox(startUnit);
         this.endUnit = Jimple.v().newStmtBox(endUnit);
+        this.descriptor = descriptor;
     }
 
     public String getName() {
@@ -47,11 +49,13 @@ public class LocalVariable {
         return endUnit.getUnit();
     }
 
+    public String getDescriptor() {
+        return descriptor;
+    }
+
     @Override
     public String toString() {
-        return "LocalVariable [name=" + name + ", index=" + index 
-                + ", startUnit=" + startUnit.getUnit() 
-                + ", endUnit=" + (endUnit == null ? null : endUnit.getUnit())
-                + "]";
+        return "LocalVariable [name=" + name + ", index=" + index + ", startUnit=" + startUnit + ", endUnit=" + (endUnit == null ? null : endUnit.getUnit())
+                + ", descriptor=" + descriptor + "]";
     }
 }

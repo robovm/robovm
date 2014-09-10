@@ -3607,7 +3607,7 @@ values:
         name: "#{g[0]}"
         type: NSString
     UIKeyboard(.*)UserInfoKey:
-        class: UIKeyboard
+        class: UIKeyboardAnimation
         name: "#{g[0]}Key"
         type: NSString
         visibility: protected

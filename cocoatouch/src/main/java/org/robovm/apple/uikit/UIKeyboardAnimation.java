@@ -36,24 +36,24 @@ import org.robovm.apple.coreimage.*;
 
 /*<javadoc>*/
 /*</javadoc>*/
-@Marshaler(UIKeyboard.Marshaler.class)
+@Marshaler(UIKeyboardAnimation.Marshaler.class)
 /*<annotations>*/@Library("UIKit")/*</annotations>*/
-/*<visibility>*/public/*</visibility>*/ class /*<name>*/UIKeyboard/*</name>*/ 
+/*<visibility>*/public/*</visibility>*/ class UIKeyboardAnimation 
     extends /*<extends>*/Object/*</extends>*/ 
     /*<implements>*//*</implements>*/ {
 
     public static class Marshaler {
         @SuppressWarnings("unchecked")
         @MarshalsPointer
-        public static UIKeyboard toObject(Class<UIKeyboard> cls, long handle, long flags) {
+        public static UIKeyboardAnimation toObject(Class<UIKeyboardAnimation> cls, long handle, long flags) {
             NSDictionary<NSString, NSObject> o = (NSDictionary<NSString, NSObject>) NSObject.Marshaler.toObject(NSDictionary.class, handle, flags);
             if (o == null) {
                 return null;
             }
-            return new UIKeyboard(o);
+            return new UIKeyboardAnimation(o);
         }
         @MarshalsPointer
-        public static long toNative(UIKeyboard o, long flags) {
+        public static long toNative(UIKeyboardAnimation o, long flags) {
             if (o == null) {
                 return 0L;
             }
@@ -66,10 +66,10 @@ import org.robovm.apple.coreimage.*;
     
     private NSDictionary<NSString, NSObject> data;
     
-    protected UIKeyboard(NSDictionary<NSString, NSObject> data) {
+    protected UIKeyboardAnimation(NSDictionary<NSString, NSObject> data) {
         this.data = data;
     }
-    /*<bind>*/static { Bro.bind(UIKeyboard.class); }/*</bind>*/
+    /*<bind>*/static { Bro.bind(UIKeyboardAnimation.class); }/*</bind>*/
     /*<constants>*//*</constants>*/
     /*<constructors>*//*</constructors>*/
     /*<properties>*//*</properties>*/

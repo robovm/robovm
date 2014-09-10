@@ -76,57 +76,57 @@ import org.robovm.apple.coreimage.*;
                 }
             });
         }
-        public static NSObject observeKeyboardWillShow(final VoidBlock1<UIKeyboard> block) {
+        public static NSObject observeKeyboardWillShow(final VoidBlock1<UIKeyboardAnimation> block) {
             return NSNotificationCenter.getDefaultCenter().addObserver(KeyboardWillShowNotification(), null, NSOperationQueue.getMainQueue(), new VoidBlock1<NSNotification>() {
                 @Override
                 public void invoke(NSNotification a) {
-                    block.invoke(new UIKeyboard(a.getUserInfo()));
+                    block.invoke(new UIKeyboardAnimation(a.getUserInfo()));
                 }
             });
         }
-        public static NSObject observeKeyboardDidShow(final VoidBlock1<UIKeyboard> block) {
+        public static NSObject observeKeyboardDidShow(final VoidBlock1<UIKeyboardAnimation> block) {
             return NSNotificationCenter.getDefaultCenter().addObserver(KeyboardDidShowNotification(), null, NSOperationQueue.getMainQueue(), new VoidBlock1<NSNotification>() {
                 @Override
                 public void invoke(NSNotification a) {
-                    block.invoke(new UIKeyboard(a.getUserInfo()));
+                    block.invoke(new UIKeyboardAnimation(a.getUserInfo()));
                 }
             });
         }
-        public static NSObject observeKeyboardWillHide(final VoidBlock1<UIKeyboard> block) {
+        public static NSObject observeKeyboardWillHide(final VoidBlock1<UIKeyboardAnimation> block) {
             return NSNotificationCenter.getDefaultCenter().addObserver(KeyboardWillHideNotification(), null, NSOperationQueue.getMainQueue(), new VoidBlock1<NSNotification>() {
                 @Override
                 public void invoke(NSNotification a) {
-                    block.invoke(new UIKeyboard(a.getUserInfo()));
+                    block.invoke(new UIKeyboardAnimation(a.getUserInfo()));
                 }
             });
         }
-        public static NSObject observeKeyboardDidHide(final VoidBlock1<UIKeyboard> block) {
+        public static NSObject observeKeyboardDidHide(final VoidBlock1<UIKeyboardAnimation> block) {
             return NSNotificationCenter.getDefaultCenter().addObserver(KeyboardDidHideNotification(), null, NSOperationQueue.getMainQueue(), new VoidBlock1<NSNotification>() {
                 @Override
                 public void invoke(NSNotification a) {
-                    block.invoke(new UIKeyboard(a.getUserInfo()));
+                    block.invoke(new UIKeyboardAnimation(a.getUserInfo()));
                 }
             });
         }
         /**
          * @since Available in iOS 5.0 and later.
          */
-        public static NSObject observeKeyboardWillChangeFrame(final VoidBlock1<UIKeyboard> block) {
+        public static NSObject observeKeyboardWillChangeFrame(final VoidBlock1<UIKeyboardAnimation> block) {
             return NSNotificationCenter.getDefaultCenter().addObserver(KeyboardWillChangeFrameNotification(), null, NSOperationQueue.getMainQueue(), new VoidBlock1<NSNotification>() {
                 @Override
                 public void invoke(NSNotification a) {
-                    block.invoke(new UIKeyboard(a.getUserInfo()));
+                    block.invoke(new UIKeyboardAnimation(a.getUserInfo()));
                 }
             });
         }
         /**
          * @since Available in iOS 5.0 and later.
          */
-        public static NSObject observeKeyboardDidChangeFrame(final VoidBlock1<UIKeyboard> block) {
+        public static NSObject observeKeyboardDidChangeFrame(final VoidBlock1<UIKeyboardAnimation> block) {
             return NSNotificationCenter.getDefaultCenter().addObserver(KeyboardDidChangeFrameNotification(), null, NSOperationQueue.getMainQueue(), new VoidBlock1<NSNotification>() {
                 @Override
                 public void invoke(NSNotification a) {
-                    block.invoke(new UIKeyboard(a.getUserInfo()));
+                    block.invoke(new UIKeyboardAnimation(a.getUserInfo()));
                 }
             });
         }

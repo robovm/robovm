@@ -116,6 +116,9 @@ protocols:
                 name: didUpdateToLocation
             '-locationManager:didUpdateLocations:':
                 name: didUpdateLocations
+                parameters:
+                    locations:
+                        type: "NSArray<CLLocation>"
             '-locationManager:didUpdateHeading:':
                 name: didUpdateHeading
             '-locationManagerShouldDisplayHeadingCalibration:':

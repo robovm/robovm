@@ -56,7 +56,7 @@ import org.robovm.apple.foundation.*;
      * @since Available in iOS 6.0 and later.
      */
     @Method(selector = "locationManager:didUpdateLocations:")
-    void didUpdateLocations(CLLocationManager manager, NSArray<?> locations);
+    void didUpdateLocations(CLLocationManager manager, NSArray<CLLocation> locations);
     /**
      * @since Available in iOS 3.0 and later.
      */

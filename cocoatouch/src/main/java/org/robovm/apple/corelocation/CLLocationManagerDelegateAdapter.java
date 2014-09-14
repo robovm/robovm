@@ -58,7 +58,7 @@ import org.robovm.apple.foundation.*;
      * @since Available in iOS 6.0 and later.
      */
     @NotImplemented("locationManager:didUpdateLocations:")
-    public void didUpdateLocations(CLLocationManager manager, NSArray<?> locations) { throw new UnsupportedOperationException(); }
+    public void didUpdateLocations(CLLocationManager manager, NSArray<CLLocation> locations) { throw new UnsupportedOperationException(); }
     /**
      * @since Available in iOS 3.0 and later.
      */

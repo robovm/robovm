@@ -29,6 +29,7 @@ import org.robovm.rt.bro.ptr.*;
 import org.robovm.apple.coregraphics.*;
 import org.robovm.apple.foundation.*;
 import org.robovm.apple.coreimage.*;
+import org.robovm.apple.coretext.*;
 import org.robovm.apple.opengles.*;
 /*</imports>*/
 
@@ -97,9 +98,9 @@ import org.robovm.apple.opengles.*;
         }
         return cfObj;
     }
-//    public void setFont(CTFont font) {
-//        setFont(font.getHandle());
-//    }
+    public void setFont(CTFont font) {
+        setFontPtr(font.getHandle());
+    }
     public void setFont(CGFont font) {
         setFontPtr(font.getHandle());
     }

@@ -1,5 +1,5 @@
 package: org.robovm.apple.coreanimation
-include: [coregraphics.yaml, foundation.yaml, coreimage.yaml, opengles.yaml]
+include: [coregraphics.yaml, foundation.yaml, coreimage.yaml, coretext.yaml, opengles.yaml]
 library: QuartzCore
 framework: QuartzCore
 clang_args: ['-x', 'objective-c']

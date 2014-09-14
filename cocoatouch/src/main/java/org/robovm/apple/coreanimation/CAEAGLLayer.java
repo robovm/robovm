@@ -29,6 +29,7 @@ import org.robovm.rt.bro.ptr.*;
 import org.robovm.apple.coregraphics.*;
 import org.robovm.apple.foundation.*;
 import org.robovm.apple.coreimage.*;
+import org.robovm.apple.coretext.*;
 import org.robovm.apple.opengles.*;
 /*</imports>*/
 
@@ -49,9 +50,9 @@ import org.robovm.apple.opengles.*;
     /*</constructors>*/
     /*<properties>*/
     @Property(selector = "drawableProperties")
-    public native NSDictionary<NSString, ?> getDrawableProperties();
+    public native EAGLDrawableProperties getDrawableProperties();
     @Property(selector = "setDrawableProperties:")
-    public native void setDrawableProperties(NSDictionary<NSString, ?> v);
+    public native void setDrawableProperties(EAGLDrawableProperties v);
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/

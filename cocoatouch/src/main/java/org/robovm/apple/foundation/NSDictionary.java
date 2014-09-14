@@ -19,6 +19,7 @@ package org.robovm.apple.foundation;
 import java.io.*;
 import java.nio.*;
 import java.util.*;
+
 import org.robovm.objc.*;
 import org.robovm.objc.annotation.*;
 import org.robovm.objc.block.*;
@@ -27,6 +28,7 @@ import org.robovm.rt.bro.*;
 import org.robovm.rt.bro.annotation.*;
 import org.robovm.rt.bro.ptr.*;
 import org.robovm.apple.corefoundation.*;
+import org.robovm.apple.uikit.*;
 import org.robovm.apple.security.*;
 /*</imports>*/
 
@@ -310,12 +312,31 @@ import org.robovm.apple.security.*;
         return writeToFile$atomically$(file.getAbsolutePath(), useAuxiliaryFile);
     }
     
-    public static NSDictionary<NSString, NSString> toNSDictionary (Map<String, String> map) {
-        Map<NSString, NSString> dictionary = new HashMap<NSString, NSString>();
-        for (Map.Entry<String, String> entry : map.entrySet()) {
-            dictionary.put(new NSString(entry.getKey()), new NSString(entry.getValue()));
+    /**
+     * Use this method to convert a NSDictionary with NSString keys to a Map with String keys. 
+     * Keys of this NSDictionary must be of type NSString, otherwise an exception will be thrown.
+     * @return
+     * @throws UnsupportedOperationException when the dictionary keys are not of type NSString.
+     */
+    public Map<String, V> asStringMap() {
+        Map<String, V> map = new HashMap<>();
+        if (size() == 0) 
+            return map;
+        if (!(allKeys().get(0) instanceof NSString)) 
+            throw new UnsupportedOperationException("keys must be of type NSString");
+        
+        for (java.util.Map.Entry<K, V> e : entrySet()) {
+            map.put(e.getKey().toString(), e.getValue());
         }
-        return new NSDictionary<NSString, NSString>(dictionary);
+        return map;
+    }
+    
+    public static <V extends NSObject> NSDictionary<NSString, V> fromStringMap (Map<String, V> map) {
+        Map<NSString, V> dictionary = new HashMap<>();
+        for (Map.Entry<String, V> entry : map.entrySet()) {
+            dictionary.put(new NSString(entry.getKey()), entry.getValue());
+        }
+        return new NSDictionary<NSString, V>(dictionary);
     }
     
     /*<methods>*/

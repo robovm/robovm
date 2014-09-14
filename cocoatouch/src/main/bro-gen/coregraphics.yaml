@@ -567,12 +567,21 @@ functions:
         name: "#{g[0]}"
         static: true
         return_type: "@org.robovm.rt.bro.annotation.Marshaler(CFType.NoRetainMarshaler.class) CGPDFContext"
+        parameters:
+            auxiliaryInfo:
+                type: CGPDFContextOptions
     CGPDFContextClose:
         class: CGPDFContext
         name: closeContext
         parameters:
             context:
                 type: CGPDFContext
+    CGPDFContext(BeginPage):
+        class: CGPDFContext
+        name: "#{g[0]}"
+        parameters:
+            pageInfo:
+                type: CGPDFBoxOptions
     CGPDFContext(.*):
         class: CGPDFContext
         name: "#{g[0]}"
@@ -673,6 +682,18 @@ functions:
         name: "#{g[0]}"
 
 values:
+
+    # CGPDFContext
+    kCGPDFContext(.*Box):
+        class: CGPDFBoxOptions
+        name: "#{g[0]}Key"
+        type: CFString
+        visibility: protected
+    kCGPDFContext(.*):
+        class: CGPDFContextOptions
+        name: "#{g[0]}Key"
+        type: CFString
+        visibility: protected
 
     # Exclude PDF related values for now
     kCGPDF(.*):

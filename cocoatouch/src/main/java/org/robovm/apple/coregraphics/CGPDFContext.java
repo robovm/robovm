@@ -49,12 +49,12 @@ import org.robovm.apple.foundation.*;
      * @since Available in iOS 2.0 and later.
      */
     @Bridge(symbol="CGPDFContextCreate", optional=true)
-    public static native @org.robovm.rt.bro.annotation.Marshaler(CFType.NoRetainMarshaler.class) CGPDFContext create(CGDataConsumer consumer, CGRect mediaBox, NSDictionary<?, ?> auxiliaryInfo);
+    public static native @org.robovm.rt.bro.annotation.Marshaler(CFType.NoRetainMarshaler.class) CGPDFContext create(CGDataConsumer consumer, CGRect mediaBox, CGPDFContextOptions auxiliaryInfo);
     /**
      * @since Available in iOS 2.0 and later.
      */
     @Bridge(symbol="CGPDFContextCreateWithURL", optional=true)
-    public static native @org.robovm.rt.bro.annotation.Marshaler(CFType.NoRetainMarshaler.class) CGPDFContext createWithURL(NSURL url, CGRect mediaBox, NSDictionary<?, ?> auxiliaryInfo);
+    public static native @org.robovm.rt.bro.annotation.Marshaler(CFType.NoRetainMarshaler.class) CGPDFContext createWithURL(NSURL url, CGRect mediaBox, CGPDFContextOptions auxiliaryInfo);
     /**
      * @since Available in iOS 2.0 and later.
      */
@@ -64,7 +64,7 @@ import org.robovm.apple.foundation.*;
      * @since Available in iOS 2.0 and later.
      */
     @Bridge(symbol="CGPDFContextBeginPage", optional=true)
-    public native void beginPage(NSDictionary<?, ?> pageInfo);
+    public static native void beginPage(CGContext context, CGPDFBoxOptions pageInfo);
     /**
      * @since Available in iOS 2.0 and later.
      */

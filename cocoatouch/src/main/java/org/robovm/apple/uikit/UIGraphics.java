@@ -56,11 +56,11 @@ import org.robovm.apple.coreimage.*;
     @Bridge(symbol="UIGraphicsPopContext", optional=true)
     public static native void popContext();
     @Bridge(symbol="UIRectFillUsingBlendMode", optional=true)
-    public static native void rectFillUsingBlendMode(@ByVal CGRect rect, CGBlendMode blendMode);
+    public static native void rectFill(@ByVal CGRect rect, CGBlendMode blendMode);
     @Bridge(symbol="UIRectFill", optional=true)
     public static native void rectFill(@ByVal CGRect rect);
     @Bridge(symbol="UIRectFrameUsingBlendMode", optional=true)
-    public static native void rectFrameUsingBlendMode(@ByVal CGRect rect, CGBlendMode blendMode);
+    public static native void rectFrame(@ByVal CGRect rect, CGBlendMode blendMode);
     @Bridge(symbol="UIRectFrame", optional=true)
     public static native void rectFrame(@ByVal CGRect rect);
     @Bridge(symbol="UIRectClip", optional=true)
@@ -71,7 +71,7 @@ import org.robovm.apple.coreimage.*;
      * @since Available in iOS 4.0 and later.
      */
     @Bridge(symbol="UIGraphicsBeginImageContextWithOptions", optional=true)
-    public static native void beginImageContextWithOptions(@ByVal CGSize size, boolean opaque, @MachineSizedFloat double scale);
+    public static native void beginImageContext(@ByVal CGSize size, boolean opaque, @MachineSizedFloat double scale);
     @Bridge(symbol="UIGraphicsGetImageFromCurrentImageContext", optional=true)
     public static native UIImage getImageFromCurrentImageContext();
     @Bridge(symbol="UIGraphicsEndImageContext", optional=true)
@@ -80,12 +80,12 @@ import org.robovm.apple.coreimage.*;
      * @since Available in iOS 3.2 and later.
      */
     @Bridge(symbol="UIGraphicsBeginPDFContextToFile", optional=true)
-    public static native boolean beginPDFContextToFile(String path, @ByVal CGRect bounds, NSDictionary<NSString, ?> documentInfo);
+    public static native boolean beginPDFContextToFile(String path, @ByVal CGRect bounds, CGPDFContextOptions documentInfo);
     /**
      * @since Available in iOS 3.2 and later.
      */
     @Bridge(symbol="UIGraphicsBeginPDFContextToData", optional=true)
-    public static native void beginPDFContextToData(NSMutableData data, @ByVal CGRect bounds, NSDictionary<NSString, ?> documentInfo);
+    public static native void beginPDFContextToData(NSMutableData data, @ByVal CGRect bounds, CGPDFContextOptions documentInfo);
     /**
      * @since Available in iOS 3.2 and later.
      */
@@ -100,7 +100,7 @@ import org.robovm.apple.coreimage.*;
      * @since Available in iOS 3.2 and later.
      */
     @Bridge(symbol="UIGraphicsBeginPDFPageWithInfo", optional=true)
-    public static native void beginPDFPageWithInfo(@ByVal CGRect bounds, NSDictionary<NSString, ?> pageInfo);
+    public static native void beginPDFPage(@ByVal CGRect bounds, CGPDFBoxOptions pageInfo);
     /**
      * @since Available in iOS 3.2 and later.
      */

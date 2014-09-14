@@ -44,9 +44,9 @@ import org.robovm.apple.foundation.*;
     /*<constructors>*//*</constructors>*/
     /*<properties>*/
     @NotImplemented("drawableProperties")
-    public NSDictionary<NSString, ?> getDrawableProperties() { throw new UnsupportedOperationException(); }
+    public EAGLDrawableProperties getDrawableProperties() { throw new UnsupportedOperationException(); }
     @NotImplemented("setDrawableProperties:")
-    public void setDrawableProperties(NSDictionary<NSString, ?> v) { throw new UnsupportedOperationException(); }
+    public void setDrawableProperties(EAGLDrawableProperties v) { throw new UnsupportedOperationException(); }
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/

@@ -30,7 +30,7 @@ protocols:
     EAGLDrawable: # DONE
         properties:
             'drawableProperties':
-                type: "NSDictionary<NSString, ?>"
+                type: EAGLDrawableProperties
 
 functions:
     EAGL(GetVersion):

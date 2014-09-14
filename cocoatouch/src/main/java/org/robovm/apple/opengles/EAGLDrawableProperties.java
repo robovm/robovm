@@ -32,11 +32,31 @@ import org.robovm.apple.foundation.*;
 
 /*<javadoc>*/
 /*</javadoc>*/
+@Marshaler(EAGLDrawableProperties.Marshaler.class)
 /*<annotations>*/@Library("OpenGLES")/*</annotations>*/
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/EAGLDrawableProperties/*</name>*/ 
     extends /*<extends>*/Object/*</extends>*/ 
     /*<implements>*//*</implements>*/ {
 
+    public static class Marshaler {
+        @SuppressWarnings("unchecked")
+        @MarshalsPointer
+        public static EAGLDrawableProperties toObject(Class<EAGLDrawableProperties> cls, long handle, long flags) {
+            NSDictionary<NSString, NSObject> o = (NSDictionary<NSString, NSObject>) NSObject.Marshaler.toObject(NSDictionary.class, handle, flags);
+            if (o == null) {
+                return null;
+            }
+            return new EAGLDrawableProperties(o);
+        }
+        @MarshalsPointer
+        public static long toNative(EAGLDrawableProperties o, long flags) {
+            if (o == null) {
+                return 0L;
+            }
+            return NSObject.Marshaler.toNative(o.data, flags);
+        }
+    }
+    
     /*<ptr>*/
     /*</ptr>*/
     private NSDictionary<NSString, NSObject> data;

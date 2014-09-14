@@ -57,7 +57,7 @@ import org.robovm.apple.coreimage.*;
      * @since Available in iOS 7.0 and later.
      */
     @Method(selector = "navigationControllerSupportedInterfaceOrientations:")
-    @MachineSizedUInt long getSupportedInterfaceOrientations(UINavigationController navigationController);
+    UIInterfaceOrientationMask getSupportedInterfaceOrientations(UINavigationController navigationController);
     /**
      * @since Available in iOS 7.0 and later.
      */

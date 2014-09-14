@@ -49,7 +49,7 @@ import org.robovm.apple.coreimage.*;
     /*<constructors>*/
     public NSTextTab() {}
     protected NSTextTab(SkipInit skipInit) { super(skipInit); }
-    public NSTextTab(NSTextAlignment alignment, @MachineSizedFloat double loc, NSDictionary<NSString, ?> options) { super((SkipInit) null); initObject(initWithTextAlignment$location$options$(alignment, loc, options)); }
+    public NSTextTab(NSTextAlignment alignment, @MachineSizedFloat double loc, NSTextTabOptions options) { super((SkipInit) null); initObject(initWithTextAlignment$location$options$(alignment, loc, options)); }
     /*</constructors>*/
     /*<properties>*/
     @Property(selector = "alignment")
@@ -57,12 +57,12 @@ import org.robovm.apple.coreimage.*;
     @Property(selector = "location")
     public native @MachineSizedFloat double getLocation();
     @Property(selector = "options")
-    public native NSDictionary<NSString, ?> getOptions();
+    public native NSTextTabOptions getOptions();
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
     @Method(selector = "initWithTextAlignment:location:options:")
-    protected native @Pointer long initWithTextAlignment$location$options$(NSTextAlignment alignment, @MachineSizedFloat double loc, NSDictionary<NSString, ?> options);
+    protected native @Pointer long initWithTextAlignment$location$options$(NSTextAlignment alignment, @MachineSizedFloat double loc, NSTextTabOptions options);
     @Method(selector = "columnTerminatorsForLocale:")
     public static native NSCharacterSet getColumnTerminators(NSLocale aLocale);
     @Method(selector = "encodeWithCoder:")

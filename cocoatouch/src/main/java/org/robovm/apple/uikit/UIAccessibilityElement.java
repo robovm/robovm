@@ -57,9 +57,9 @@ import org.robovm.apple.coreimage.*;
     @Property(selector = "setAccessibilityContainer:", strongRef = true)
     public native void setAccessibilityContainer(UIAccessibilityContainer v);
     @Property(selector = "isAccessibilityElement")
-    public native boolean isIsAccessibilityElement();
+    public native boolean isAccessibilityElement();
     @Property(selector = "setIsAccessibilityElement:")
-    public native void setIsAccessibilityElement(boolean v);
+    public native void setAccessibilityElement(boolean v);
     @Property(selector = "accessibilityLabel")
     public native String getAccessibilityLabel();
     @Property(selector = "setAccessibilityLabel:")

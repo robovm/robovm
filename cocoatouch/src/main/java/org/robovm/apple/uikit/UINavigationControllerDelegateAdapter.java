@@ -59,7 +59,7 @@ import org.robovm.apple.coreimage.*;
      * @since Available in iOS 7.0 and later.
      */
     @NotImplemented("navigationControllerSupportedInterfaceOrientations:")
-    public @MachineSizedUInt long getSupportedInterfaceOrientations(UINavigationController navigationController) { throw new UnsupportedOperationException(); }
+    public UIInterfaceOrientationMask getSupportedInterfaceOrientations(UINavigationController navigationController) { throw new UnsupportedOperationException(); }
     /**
      * @since Available in iOS 7.0 and later.
      */

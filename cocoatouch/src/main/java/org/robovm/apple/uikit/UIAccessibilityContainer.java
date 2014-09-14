@@ -52,9 +52,9 @@ import org.robovm.apple.coreimage.*;
     @Method(selector = "accessibilityElementCount")
     @MachineSizedSInt long getAccessibilityElementCount();
     @Method(selector = "accessibilityElementAtIndex:")
-    NSObject getAccessibilityElement(@MachineSizedSInt long index);
+    UIAccessibilityElement getAccessibilityElement(@MachineSizedSInt long index);
     @Method(selector = "indexOfAccessibilityElement:")
-    @MachineSizedSInt long indexOfAccessibilityElement(NSObject element);
+    @MachineSizedSInt long indexOfAccessibilityElement(UIAccessibilityElement element);
     /*</methods>*/
     /*<adapter>*/
     /*</adapter>*/

@@ -27,6 +27,7 @@ import org.robovm.rt.bro.*;
 import org.robovm.rt.bro.annotation.*;
 import org.robovm.rt.bro.ptr.*;
 import org.robovm.apple.corefoundation.*;
+import org.robovm.apple.uikit.*;
 import org.robovm.apple.security.*;
 /*</imports>*/
 
@@ -125,6 +126,10 @@ import org.robovm.apple.security.*;
         char[] chars = new char[len];
         getCharacters$range$(VM.getArrayValuesAddress(chars), new NSRange(0, len));
         return VM.newStringNoCopy(chars, 0, len);
+    }
+    
+    public static String getLocalizedString(String key) {
+        return NSBundle.getMainBundle().getLocalizedString(key, "", null);
     }
 
     @Bridge protected static native @MachineSizedUInt long length(@Pointer long handle, Selector sel);

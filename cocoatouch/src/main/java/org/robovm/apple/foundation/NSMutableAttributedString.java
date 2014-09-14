@@ -27,6 +27,7 @@ import org.robovm.rt.bro.*;
 import org.robovm.rt.bro.annotation.*;
 import org.robovm.rt.bro.ptr.*;
 import org.robovm.apple.corefoundation.*;
+import org.robovm.apple.uikit.*;
 import org.robovm.apple.security.*;
 /*</imports>*/
 
@@ -51,7 +52,7 @@ import org.robovm.apple.security.*;
     public NSMutableAttributedString(NSAttributedString attrStr) {
         super(attrStr);
     }
-    public NSMutableAttributedString(String str, NSDictionary<NSString, ?> attrs) {
+    public NSMutableAttributedString(String str, NSAttributedStringAttributes attrs) {
         super(str, attrs);
     }
     public NSMutableAttributedString(String str) {
@@ -62,19 +63,25 @@ import org.robovm.apple.security.*;
     
     /*</properties>*/
     /*<members>*//*</members>*/
+    public void removeAttribute(String name, @ByVal NSRange range) {
+        removeAttribute(new NSString(name), range);
+    }
+    public void removeAttribute(NSAttributedStringAttribute attribute, @ByVal NSRange range) {
+        removeAttribute(attribute.value(), range);
+    }
     /*<methods>*/
     @Method(selector = "replaceCharactersInRange:withString:")
     public native void replace(@ByVal NSRange range, String str);
     @Method(selector = "setAttributes:range:")
-    public native void setAttributes(NSDictionary<NSString, ?> attrs, @ByVal NSRange range);
+    public native void setAttributes(NSAttributedStringAttributes attrs, @ByVal NSRange range);
     @Method(selector = "mutableString")
     public native NSMutableString getMutableString();
     @Method(selector = "addAttribute:value:range:")
-    public native void addAttribute(NSString name, NSObject value, @ByVal NSRange range);
+    protected native void addAttribute(NSString name, NSObject value, @ByVal NSRange range);
     @Method(selector = "addAttributes:range:")
-    public native void addAttributes(NSDictionary<NSString, ?> attrs, @ByVal NSRange range);
+    public native void addAttributes(NSAttributedStringAttributes attrs, @ByVal NSRange range);
     @Method(selector = "removeAttribute:range:")
-    public native void removeAttribute(NSString name, @ByVal NSRange range);
+    protected native void removeAttribute(NSString name, @ByVal NSRange range);
     @Method(selector = "replaceCharactersInRange:withAttributedString:")
     public native void replace(@ByVal NSRange range, NSAttributedString attrString);
     @Method(selector = "insertAttributedString:atIndex:")

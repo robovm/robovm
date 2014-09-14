@@ -501,14 +501,14 @@ classes:
     NSTextTab: # DONE
         properties:
             'options':
-                type: "NSDictionary<NSString, ?>"
+                type: NSTextTabOptions
         methods:
             '+columnTerminatorsForLocale:':
                 name: getColumnTerminators
             '-initWithTextAlignment:location:options:':
                 parameters:
                     options:
-                        type: "NSDictionary<NSString, ?>"
+                        type: NSTextTabOptions
 
     UIAcceleration: {} # DONE
     UIAccelerometer: # DONE
@@ -517,6 +517,8 @@ classes:
                 name: getSharedAccelerometer
     UIAccessibilityElement: # DONE
         properties:
+            'isAccessibilityElement':
+                name: accessibilityElement
             'accessibilityContainer':
                 type: UIAccessibilityContainer
         methods:
@@ -2886,6 +2888,7 @@ protocols:
                 name: willShowViewController
             '-navigationControllerSupportedInterfaceOrientations:':
                 name: getSupportedInterfaceOrientations
+                return_type: UIInterfaceOrientationMask
             '-navigationControllerPreferredInterfaceOrientationForPresentation:':
                 name: getPreferredInterfaceOrientation
             '-navigationController:interactionControllerForAnimationController:':
@@ -3446,14 +3449,18 @@ protocols:
             '-accessibility(.*)':
                 name: "#{g[0][0].downcase}#{g[0][1..-1]}"
             
-    UIAccessibilityContainer:
+    UIAccessibilityContainer: # DONE
         methods:
             '-accessibilityElementCount':
                 property: true
             '-accessibilityElementAtIndex:':
                 name: getAccessibilityElement
+                return_type: UIAccessibilityElement
             '-indexOfAccessibilityElement:':
                 name: indexOfAccessibilityElement
+                parameters:
+                    element:
+                        type: UIAccessibilityElement
 
     UIAccessibilityFocus: {}
     UINibLoadingAdditions: {}
@@ -3503,6 +3510,28 @@ functions:
         visibility: protected
         name: "#{g[0]}"
 
+    # UIGraphics
+    UI(RectFill)UsingBlendMode:
+        class: UIGraphics
+        name: "#{g[0]}"
+    UI(RectFrame)UsingBlendMode:
+        class: UIGraphics
+        name: "#{g[0]}"
+    UIGraphics(BeginImageContext)WithOptions:
+        class: UIGraphics
+        name: "#{g[0]}"
+    UIGraphics(BeginPDFContext.*):
+        class: UIGraphics
+        name: "#{g[0]}"
+        parameters:
+            documentInfo:
+                type: CGPDFContextOptions
+    UIGraphics(BeginPDFPage)WithInfo:
+        class: UIGraphics
+        name: "#{g[0]}"
+        parameters:
+            pageInfo:
+                type: CGPDFBoxOptions  
     UIGraphics(.*):
         class: UIGraphics
         name: "#{g[0]}"
@@ -3612,6 +3641,23 @@ values:
         type: NSString
         visibility: protected
     
+    NS(TabColumnTerminatorsAttribute)Name:
+        class: NSTextTabOptions
+        name: "#{g[0]}"
+        type: NSString
+        visibility: protected
+    
+    NS(.*Attribute)Name:
+        class: NSAttributedStringAttribute
+        name: "#{g[0]}"
+        type: NSString
+        visibility: protected  
+    NSTextEffect(.*):
+        class: NSTextEffect
+        name: "#{g[0]}Value"
+        type: NSString
+        visibility: protected
+    
     UI(WindowLevel.*):
         name: "#{g[0]}"
 
@@ -3619,18 +3665,6 @@ values:
         name: "#{g[0]}"
         type: NSString
 
-    NS((Font|ParagraphStyle|ForegroundColor|BackgroundColor|Ligature)AttributeName):
-        name: "#{g[0]}"
-        type: NSString
-    NS((Kern|StrikethroughStyle|UnderlineStyle|StrokeColor|StrokeWidth)AttributeName):
-        name: "#{g[0]}"
-        type: NSString
-    NS((Shadow|TextEffect|Attachment|Link|BaselineOffset|UnderlineColor)AttributeName):
-        name: "#{g[0]}"
-        type: NSString
-    NS((StrikethroughColor|Obliqueness|Expansion|WritingDirection|VerticalGlyphForm)AttributeName):
-        name: "#{g[0]}"
-        type: NSString
     NS(.*DocumentAttribute):
         name: "#{g[0]}"
         type: NSString
@@ -3638,9 +3672,6 @@ values:
         name: "#{g[0]}"
         type: NSString
     NS(TextLayoutSection.*):
-        name: "#{g[0]}"
-        type: NSString
-    NS(TextEffect.*):
         name: "#{g[0]}"
         type: NSString
     NS(.*DocumentType):

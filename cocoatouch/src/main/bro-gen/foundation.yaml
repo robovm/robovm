@@ -1,5 +1,5 @@
 package: org.robovm.apple.foundation
-include: [corefoundation.yaml, security.yaml]
+include: [corefoundation.yaml, uikit.yaml, security.yaml]
 library: Foundation
 framework: Foundation
 path_match: ^.*/usr/include/objc/.*$
@@ -42,7 +42,7 @@ typedefs:
     'void (^)(NSData *)': '@Block VoidBlock1<NSData>'
     'void (^)(NSData *, NSURLResponse *, NSError *)': '@Block VoidBlock3<NSData, NSURLResponse, NSError>'
     'void (^)(NSDate *, BOOL, BOOL *)': '@Block VoidBlock3<NSDate, Boolean, BytePtr>'
-    'void (^)(NSDictionary *, NSRange, BOOL *)': '@Block("(,@ByVal,)") VoidBlock3<NSDictionary<NSString, ?>, NSRange, BytePtr>'
+    'void (^)(NSDictionary *, NSRange, BOOL *)': '@Block("(,@ByVal,)") VoidBlock3<NSDictionary<NSString, NSObject>, NSRange, BytePtr>'
     'void (^)(NSError *)': '@Block VoidBlock1<NSError>'
     'void (^)(NSFileHandle *)': '@Block VoidBlock1<NSFileHandle>'
     'void (^)(NSInputStream *)': '@Block VoidBlock1<NSInputStream>'
@@ -215,18 +215,22 @@ classes:
         methods:
             '-attribute:atIndex:effectiveRange:':
                 name: getAttribute
+                visibility: protected
                 parameters:
                     attrName:
                         type: NSString
             '-attribute:atIndex:longestEffectiveRange:inRange:':
                 name: getAttribute
+                visibility: protected
                 parameters:
                     attrName:
-                        type: NSString
+                        type: NSString    
             '-attributesAtIndex:effectiveRange:':
                 name: getAttributes
+                return_type: NSAttributedStringAttributes
             '-attributesAtIndex:longestEffectiveRange:inRange:':
                 name: getAttributes
+                return_type: NSAttributedStringAttributes
             '-attributedSubstringFromRange:':
                 name: substring
             '-length':
@@ -236,11 +240,13 @@ classes:
             '-initWithString:attributes:':
                 parameters:
                     attrs:
-                        type: "NSDictionary<NSString, ?>"
+                        type: NSAttributedStringAttributes
             '-enumerateAttributesInRange:options:usingBlock:':
-                name: enumerateAttributes
+                name: enumerateAttributes0
+                visibility: protected
             '-enumerateAttribute:inRange:options:usingBlock:':
-                trim_after_first_colon: true
+                name: enumerateAttribute0
+                visibility: protected
                 parameters:
                     attrName:
                         type: NSString
@@ -1041,11 +1047,12 @@ classes:
                 trim_after_first_colon: true
                 parameters:
                     attrs:
-                        type: "NSDictionary<NSString, ?>"
+                        type: NSAttributedStringAttributes
             '-mutableString':
                 property: true
             '-addAttribute:value:range:':
                 trim_after_first_colon: true
+                visibility: protected
                 parameters:
                     name:
                         type: NSString
@@ -1053,9 +1060,10 @@ classes:
                 trim_after_first_colon: true
                 parameters:
                     attrs:
-                        type: "NSDictionary<NSString, ?>"
+                        type: NSAttributedStringAttributes
             '-removeAttribute:range:':
                 trim_after_first_colon: true
+                visibility: protected
                 parameters:
                     name:
                         type: NSString

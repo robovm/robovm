@@ -226,11 +226,6 @@ import org.robovm.apple.coreimage.*;
     @GlobalValue(symbol="UIScrollViewDecelerationRateFast", optional=true)
     public static native @MachineSizedFloat double ScrollViewDecelerationRateFast();
     /**
-     * @since Available in iOS 7.0 and later.
-     */
-    @GlobalValue(symbol="NSTabColumnTerminatorsAttributeName", optional=true)
-    public static native NSString TabColumnTerminatorsAttributeName();
-    /**
      * @since Available in iOS 5.0 and later.
      * @deprecated Deprecated in iOS 7.0.
      */
@@ -530,116 +525,6 @@ import org.robovm.apple.coreimage.*;
     public static native @MachineSizedFloat double WindowLevelAlert();
     @GlobalValue(symbol="UIWindowLevelStatusBar", optional=true)
     public static native @MachineSizedFloat double WindowLevelStatusBar();
-    /**
-     * @since Available in iOS 6.0 and later.
-     */
-    @GlobalValue(symbol="NSFontAttributeName", optional=true)
-    public static native NSString FontAttributeName();
-    /**
-     * @since Available in iOS 6.0 and later.
-     */
-    @GlobalValue(symbol="NSParagraphStyleAttributeName", optional=true)
-    public static native NSString ParagraphStyleAttributeName();
-    /**
-     * @since Available in iOS 6.0 and later.
-     */
-    @GlobalValue(symbol="NSForegroundColorAttributeName", optional=true)
-    public static native NSString ForegroundColorAttributeName();
-    /**
-     * @since Available in iOS 6.0 and later.
-     */
-    @GlobalValue(symbol="NSBackgroundColorAttributeName", optional=true)
-    public static native NSString BackgroundColorAttributeName();
-    /**
-     * @since Available in iOS 6.0 and later.
-     */
-    @GlobalValue(symbol="NSLigatureAttributeName", optional=true)
-    public static native NSString LigatureAttributeName();
-    /**
-     * @since Available in iOS 6.0 and later.
-     */
-    @GlobalValue(symbol="NSKernAttributeName", optional=true)
-    public static native NSString KernAttributeName();
-    /**
-     * @since Available in iOS 6.0 and later.
-     */
-    @GlobalValue(symbol="NSStrikethroughStyleAttributeName", optional=true)
-    public static native NSString StrikethroughStyleAttributeName();
-    /**
-     * @since Available in iOS 6.0 and later.
-     */
-    @GlobalValue(symbol="NSUnderlineStyleAttributeName", optional=true)
-    public static native NSString UnderlineStyleAttributeName();
-    /**
-     * @since Available in iOS 6.0 and later.
-     */
-    @GlobalValue(symbol="NSStrokeColorAttributeName", optional=true)
-    public static native NSString StrokeColorAttributeName();
-    /**
-     * @since Available in iOS 6.0 and later.
-     */
-    @GlobalValue(symbol="NSStrokeWidthAttributeName", optional=true)
-    public static native NSString StrokeWidthAttributeName();
-    /**
-     * @since Available in iOS 6.0 and later.
-     */
-    @GlobalValue(symbol="NSShadowAttributeName", optional=true)
-    public static native NSString ShadowAttributeName();
-    /**
-     * @since Available in iOS 7.0 and later.
-     */
-    @GlobalValue(symbol="NSTextEffectAttributeName", optional=true)
-    public static native NSString TextEffectAttributeName();
-    /**
-     * @since Available in iOS 7.0 and later.
-     */
-    @GlobalValue(symbol="NSAttachmentAttributeName", optional=true)
-    public static native NSString AttachmentAttributeName();
-    /**
-     * @since Available in iOS 7.0 and later.
-     */
-    @GlobalValue(symbol="NSLinkAttributeName", optional=true)
-    public static native NSString LinkAttributeName();
-    /**
-     * @since Available in iOS 7.0 and later.
-     */
-    @GlobalValue(symbol="NSBaselineOffsetAttributeName", optional=true)
-    public static native NSString BaselineOffsetAttributeName();
-    /**
-     * @since Available in iOS 7.0 and later.
-     */
-    @GlobalValue(symbol="NSUnderlineColorAttributeName", optional=true)
-    public static native NSString UnderlineColorAttributeName();
-    /**
-     * @since Available in iOS 7.0 and later.
-     */
-    @GlobalValue(symbol="NSStrikethroughColorAttributeName", optional=true)
-    public static native NSString StrikethroughColorAttributeName();
-    /**
-     * @since Available in iOS 7.0 and later.
-     */
-    @GlobalValue(symbol="NSObliquenessAttributeName", optional=true)
-    public static native NSString ObliquenessAttributeName();
-    /**
-     * @since Available in iOS 7.0 and later.
-     */
-    @GlobalValue(symbol="NSExpansionAttributeName", optional=true)
-    public static native NSString ExpansionAttributeName();
-    /**
-     * @since Available in iOS 7.0 and later.
-     */
-    @GlobalValue(symbol="NSWritingDirectionAttributeName", optional=true)
-    public static native NSString WritingDirectionAttributeName();
-    /**
-     * @since Available in iOS 6.0 and later.
-     */
-    @GlobalValue(symbol="NSVerticalGlyphFormAttributeName", optional=true)
-    public static native NSString VerticalGlyphFormAttributeName();
-    /**
-     * @since Available in iOS 7.0 and later.
-     */
-    @GlobalValue(symbol="NSTextEffectLetterpressStyle", optional=true)
-    public static native NSString TextEffectLetterpressStyle();
     /**
      * @since Available in iOS 7.0 and later.
      */

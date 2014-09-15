@@ -74,6 +74,12 @@ import org.robovm.apple.coreimage.*;
     public native @MachineSizedFloat double getLeading();
     /*</properties>*/
     /*<members>*//*</members>*/
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
+    public static UIFont getPreferredFont(UIFontTextStyle style) {
+        return getPreferredFont(style.value());
+    }
     /*<methods>*/
     @Method(selector = "fontWithSize:")
     public native UIFont getFontWithSize(@MachineSizedFloat double fontSize);
@@ -86,7 +92,7 @@ import org.robovm.apple.coreimage.*;
      * @since Available in iOS 7.0 and later.
      */
     @Method(selector = "preferredFontForTextStyle:")
-    public static native UIFont getPreferredFontForTextStyle(String style);
+    protected static native UIFont getPreferredFont(NSString style);
     @Method(selector = "fontWithName:size:")
     public static native UIFont getFont(String fontName, @MachineSizedFloat double fontSize);
     @Method(selector = "familyNames")

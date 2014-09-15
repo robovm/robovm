@@ -1188,7 +1188,11 @@ classes:
             '+fontWithDescriptor:size:':
                 name: getFont
             '+preferredFontForTextStyle:':
-                name: getPreferredFontForTextStyle
+                name: getPreferredFont
+                visibility: protected
+                parameters:
+                    style:
+                        type: NSString
             '-fontWithSize:':
                 name: getFontWithSize
             '-fontDescriptor':
@@ -1200,46 +1204,52 @@ classes:
                 name: create
                 parameters:
                     attributes:
-                        type: "NSDictionary<NSString, ?>"
+                        type: UIFontDescriptorAttributes
             '+fontDescriptorWithName:size:':
                 name: create
             '+fontDescriptorWithName:matrix:':
                 name: create
             '+preferredFontDescriptorWithTextStyle:':
                 name: getPreferredFontDescriptor
+                visibility: protected
+                parameters:
+                    style:
+                        type: NSString
             '-objectForKey:':
-                name: getObject
+                name: getValue
+                visibility: protected
                 parameters:
                     anAttribute:
                         type: NSString
             '-fontAttributes':
                 property: true
-                return_type: "NSDictionary<NSString, ?>"
+                return_type: UIFontDescriptorAttributes
             '-matchingFontDescriptorsWithMandatoryKeys:':
                 name: getMatchingFontDescriptors
                 return_type: "NSArray<UIFontDescriptor>"
+                visibility: protected
                 parameters:
                     mandatoryKeys:
                         type: "NSSet<NSString>"
             '-initWithFontAttributes:':
                 parameters:
                     attributes:
-                        type: "NSDictionary<NSString, ?>"
+                        type: UIFontDescriptorAttributes
             '-fontDescriptorByAddingAttributes:':
-                name: createWithAttributes
+                name: newWithAttributes
                 parameters:
                     attributes:
-                        type: "NSDictionary<NSString, ?>"
+                        type: UIFontDescriptorAttributes
             '-fontDescriptorWithSymbolicTraits:':
-                name: createWithSymbolicTraits
+                name: newWithSymbolicTraits
             '-fontDescriptorWithSize:':
-                name: createWithSize
+                name: newWithSize
             '-fontDescriptorWithMatrix:':
-                name: createWithMatrix
+                name: newWithMatrix
             '-fontDescriptorWithFace:':
-                name: createWithFace
+                name: newWithFace
             '-fontDescriptorWithFamily:':
-                name: createWithFamily
+                name: newWithFamily
 
     UIGestureRecognizer: # DONE
         methods:
@@ -3658,10 +3668,22 @@ values:
         type: NSString
         visibility: protected
     
+    # UIFont
     UIFontDescriptor(.*)Attribute:
         class: UIFontDescriptorAttribute
         name: "#{g[0]}Value"
         type: NSString
+        visibility: protected
+    UIFontTextStyle(.*):
+        class: UIFontTextStyle
+        name: "#{g[0]}Value"
+        type: NSString
+        visibility: protected
+    UIFont(.*Trait):
+        class: UIFontDescriptorTraits
+        name: "#{g[0]}"
+        type: NSString
+        visibility: protected
     
     UI(WindowLevel.*):
         name: "#{g[0]}"
@@ -3743,11 +3765,6 @@ values:
     UI(EdgeInsetsZero):
         name: "#{g[0]}"
 
-    UI(FontTextStyle.*):
-        name: "#{g[0]}"
-    UI(Font.*Trait):
-        name: "#{g[0]}"
-        type: NSString
     UI(FontFeature.*):
         name: "#{g[0]}"
         type: NSString

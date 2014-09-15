@@ -49,7 +49,7 @@ import org.robovm.apple.coreimage.*;
     /*<constructors>*/
     public UIFontDescriptor() {}
     protected UIFontDescriptor(SkipInit skipInit) { super(skipInit); }
-    public UIFontDescriptor(NSDictionary<NSString, ?> attributes) { super((SkipInit) null); initObject(initWithFontAttributes$(attributes)); }
+    public UIFontDescriptor(UIFontDescriptorAttributes attributes) { super((SkipInit) null); initObject(initWithFontAttributes$(attributes)); }
     /*</constructors>*/
     /*<properties>*/
     @Property(selector = "postscriptName")
@@ -62,17 +62,29 @@ import org.robovm.apple.coreimage.*;
     public native UIFontDescriptorSymbolicTraits getSymbolicTraits();
     /*</properties>*/
     /*<members>*//*</members>*/
+    public NSObject getValue(String attribute) {
+        return getValue(new NSString(attribute));
+    }
+    public NSObject getValue(UIFontDescriptorAttribute attribute) {
+        return getValue(attribute.value());
+    }
+    public NSArray<UIFontDescriptor> getMatchingFontDescriptors(Set<String> mandatoryKeys) {
+        return getMatchingFontDescriptors(NSSet.fromStrings(mandatoryKeys));
+    }
+    public static UIFontDescriptor getPreferredFontDescriptor(UIFontTextStyle style) {
+        return getPreferredFontDescriptor(style.value());
+    }
     /*<methods>*/
     @Method(selector = "objectForKey:")
-    public native NSObject getObject(NSString anAttribute);
+    protected native NSObject getValue(NSString anAttribute);
     @Method(selector = "fontAttributes")
-    public native NSDictionary<NSString, ?> getFontAttributes();
+    public native UIFontDescriptorAttributes getFontAttributes();
     @Method(selector = "matchingFontDescriptorsWithMandatoryKeys:")
-    public native NSArray<UIFontDescriptor> getMatchingFontDescriptors(NSSet<NSString> mandatoryKeys);
+    protected native NSArray<UIFontDescriptor> getMatchingFontDescriptors(NSSet<NSString> mandatoryKeys);
     @Method(selector = "initWithFontAttributes:")
-    protected native @Pointer long initWithFontAttributes$(NSDictionary<NSString, ?> attributes);
+    protected native @Pointer long initWithFontAttributes$(UIFontDescriptorAttributes attributes);
     @Method(selector = "fontDescriptorByAddingAttributes:")
-    public native UIFontDescriptor createWithAttributes(NSDictionary<NSString, ?> attributes);
+    public native UIFontDescriptor newWithAttributes(UIFontDescriptorAttributes attributes);
     @Method(selector = "fontDescriptorWithSymbolicTraits:")
     public native UIFontDescriptor newWithSymbolicTraits(UIFontDescriptorSymbolicTraits symbolicTraits);
     @Method(selector = "fontDescriptorWithSize:")
@@ -84,13 +96,13 @@ import org.robovm.apple.coreimage.*;
     @Method(selector = "fontDescriptorWithFamily:")
     public native UIFontDescriptor newWithFamily(String newFamily);
     @Method(selector = "fontDescriptorWithFontAttributes:")
-    public static native UIFontDescriptor create(NSDictionary<NSString, ?> attributes);
+    public static native UIFontDescriptor create(UIFontDescriptorAttributes attributes);
     @Method(selector = "fontDescriptorWithName:size:")
     public static native UIFontDescriptor create(String fontName, @MachineSizedFloat double size);
     @Method(selector = "fontDescriptorWithName:matrix:")
     public static native UIFontDescriptor create(String fontName, @ByVal CGAffineTransform matrix);
     @Method(selector = "preferredFontDescriptorWithTextStyle:")
-    public static native UIFontDescriptor getPreferredFontDescriptor(String style);
+    protected static native UIFontDescriptor getPreferredFontDescriptor(NSString style);
     @Method(selector = "encodeWithCoder:")
     public native void encode(NSCoder aCoder);
     /*</methods>*/

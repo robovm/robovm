@@ -79,86 +79,6 @@ import org.robovm.apple.coreimage.*;
     /**
      * @since Available in iOS 7.0 and later.
      */
-    @GlobalValue(symbol="UIFontDescriptorFamilyAttribute", optional=true)
-    public static native NSString FontDescriptorFamilyAttribute();
-    /**
-     * @since Available in iOS 7.0 and later.
-     */
-    @GlobalValue(symbol="UIFontDescriptorNameAttribute", optional=true)
-    public static native NSString FontDescriptorNameAttribute();
-    /**
-     * @since Available in iOS 7.0 and later.
-     */
-    @GlobalValue(symbol="UIFontDescriptorFaceAttribute", optional=true)
-    public static native NSString FontDescriptorFaceAttribute();
-    /**
-     * @since Available in iOS 7.0 and later.
-     */
-    @GlobalValue(symbol="UIFontDescriptorSizeAttribute", optional=true)
-    public static native NSString FontDescriptorSizeAttribute();
-    /**
-     * @since Available in iOS 7.0 and later.
-     */
-    @GlobalValue(symbol="UIFontDescriptorVisibleNameAttribute", optional=true)
-    public static native NSString FontDescriptorVisibleNameAttribute();
-    /**
-     * @since Available in iOS 7.0 and later.
-     */
-    @GlobalValue(symbol="UIFontDescriptorMatrixAttribute", optional=true)
-    public static native NSString FontDescriptorMatrixAttribute();
-    /**
-     * @since Available in iOS 7.0 and later.
-     */
-    @GlobalValue(symbol="UIFontDescriptorCharacterSetAttribute", optional=true)
-    public static native NSString FontDescriptorCharacterSetAttribute();
-    /**
-     * @since Available in iOS 7.0 and later.
-     */
-    @GlobalValue(symbol="UIFontDescriptorCascadeListAttribute", optional=true)
-    public static native NSString FontDescriptorCascadeListAttribute();
-    /**
-     * @since Available in iOS 7.0 and later.
-     */
-    @GlobalValue(symbol="UIFontDescriptorTraitsAttribute", optional=true)
-    public static native NSString FontDescriptorTraitsAttribute();
-    /**
-     * @since Available in iOS 7.0 and later.
-     */
-    @GlobalValue(symbol="UIFontDescriptorFixedAdvanceAttribute", optional=true)
-    public static native NSString FontDescriptorFixedAdvanceAttribute();
-    /**
-     * @since Available in iOS 7.0 and later.
-     */
-    @GlobalValue(symbol="UIFontDescriptorFeatureSettingsAttribute", optional=true)
-    public static native NSString FontDescriptorFeatureSettingsAttribute();
-    /**
-     * @since Available in iOS 7.0 and later.
-     */
-    @GlobalValue(symbol="UIFontDescriptorTextStyleAttribute", optional=true)
-    public static native NSString FontDescriptorTextStyleAttribute();
-    /**
-     * @since Available in iOS 7.0 and later.
-     */
-    @GlobalValue(symbol="UIFontSymbolicTrait", optional=true)
-    public static native NSString FontSymbolicTrait();
-    /**
-     * @since Available in iOS 7.0 and later.
-     */
-    @GlobalValue(symbol="UIFontWeightTrait", optional=true)
-    public static native NSString FontWeightTrait();
-    /**
-     * @since Available in iOS 7.0 and later.
-     */
-    @GlobalValue(symbol="UIFontWidthTrait", optional=true)
-    public static native NSString FontWidthTrait();
-    /**
-     * @since Available in iOS 7.0 and later.
-     */
-    @GlobalValue(symbol="UIFontSlantTrait", optional=true)
-    public static native NSString FontSlantTrait();
-    /**
-     * @since Available in iOS 7.0 and later.
-     */
     @GlobalValue(symbol="UIFontFeatureTypeIdentifierKey", optional=true)
     public static native NSString FontFeatureTypeIdentifierKey();
     /**
@@ -166,36 +86,6 @@ import org.robovm.apple.coreimage.*;
      */
     @GlobalValue(symbol="UIFontFeatureSelectorIdentifierKey", optional=true)
     public static native NSString FontFeatureSelectorIdentifierKey();
-    /**
-     * @since Available in iOS 7.0 and later.
-     */
-    @GlobalValue(symbol="UIFontTextStyleHeadline", optional=true)
-    public static native String FontTextStyleHeadline();
-    /**
-     * @since Available in iOS 7.0 and later.
-     */
-    @GlobalValue(symbol="UIFontTextStyleBody", optional=true)
-    public static native String FontTextStyleBody();
-    /**
-     * @since Available in iOS 7.0 and later.
-     */
-    @GlobalValue(symbol="UIFontTextStyleSubheadline", optional=true)
-    public static native String FontTextStyleSubheadline();
-    /**
-     * @since Available in iOS 7.0 and later.
-     */
-    @GlobalValue(symbol="UIFontTextStyleFootnote", optional=true)
-    public static native String FontTextStyleFootnote();
-    /**
-     * @since Available in iOS 7.0 and later.
-     */
-    @GlobalValue(symbol="UIFontTextStyleCaption1", optional=true)
-    public static native String FontTextStyleCaption1();
-    /**
-     * @since Available in iOS 7.0 and later.
-     */
-    @GlobalValue(symbol="UIFontTextStyleCaption2", optional=true)
-    public static native String FontTextStyleCaption2();
     @GlobalValue(symbol="UIEdgeInsetsZero", optional=true)
     public static native @ByVal UIEdgeInsets EdgeInsetsZero();
     @GlobalValue(symbol="UIOffsetZero", optional=true)

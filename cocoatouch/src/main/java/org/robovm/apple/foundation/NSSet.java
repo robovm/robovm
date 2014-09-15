@@ -201,12 +201,13 @@ import org.robovm.apple.security.*;
         return new NSSet<NSString>(nsStrings);
     }
 
-    public static NSSet<NSString> fromStrings (List<String> strings) {
-        int size = strings.size();
-        NSString[] nsStrings = new NSString[size];
+    public static NSSet<NSString> fromStrings (Collection<String> strings) {
+        NSString[] nsStrings = new NSString[strings.size()];
 
-        for (int i = 0; i < size; i++) {
-            nsStrings[i] = new NSString(strings.get(i));
+        int i = 0;
+        for (String s : strings) {
+            nsStrings[i] = new NSString(s);
+            i++;
         }
         return new NSSet<NSString>(nsStrings);
     }

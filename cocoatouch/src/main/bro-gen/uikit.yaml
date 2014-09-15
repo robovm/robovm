@@ -3598,17 +3598,6 @@ functions:
         name: "Function__#{g[0]}"
 
 values:
-
-    NS(.*Attribute)Name:
-        class: NSAttributedStringAttribute
-        name: "#{g[0]}"
-        type: NSString
-        visibility: protected  
-    NSTextEffect(.*):
-        class: NSTextEffect
-        name: "#{g[0]}Value"
-        type: NSString
-        visibility: protected
     NS(TabColumnTerminatorsAttribute)Name:
         class: NSTextTabOptions
         name: "#{g[0]}"
@@ -3618,6 +3607,16 @@ values:
         class: NSTextStorage
         name: "#{g[0]}"
         type: NSString
+    NS(.*Attribute)Name:
+        class: NSAttributedStringAttribute
+        name: "#{g[0]}"
+        type: NSString
+        visibility: protected
+    NSTextEffect(.*):
+        class: NSTextEffect
+        name: "#{g[0]}Value"
+        type: NSString
+        visibility: protected
 
     # UIApplication
     UIApplicationLaunchOptions(.*Key):

@@ -37,6 +37,7 @@ import org.robovm.apple.coregraphics.*;
 /*<annotations>*/@Marshaler(Bits.AsMachineSizedIntMarshaler.class)/*</annotations>*/
 public final class /*<name>*/CTLineBoundsOptions/*</name>*/ extends Bits</*<name>*/CTLineBoundsOptions/*</name>*/> {
     /*<values>*/
+    public static final CTLineBoundsOptions None = new CTLineBoundsOptions(0L);
     public static final CTLineBoundsOptions ExcludeTypographicLeading = new CTLineBoundsOptions(1L);
     public static final CTLineBoundsOptions ExcludeTypographicShifts = new CTLineBoundsOptions(2L);
     public static final CTLineBoundsOptions UseHangingPunctuation = new CTLineBoundsOptions(4L);

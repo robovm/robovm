@@ -41,6 +41,7 @@ import org.robovm.apple.coreimage.*;
 /*<annotations>*//*</annotations>*/
 public final class /*<name>*/UIFontDescriptorSymbolicTraits/*</name>*/ extends Bits</*<name>*/UIFontDescriptorSymbolicTraits/*</name>*/> {
     /*<values>*/
+    public static final UIFontDescriptorSymbolicTraits None = new UIFontDescriptorSymbolicTraits(0L);
     public static final UIFontDescriptorSymbolicTraits TraitItalic = new UIFontDescriptorSymbolicTraits(1L);
     public static final UIFontDescriptorSymbolicTraits TraitBold = new UIFontDescriptorSymbolicTraits(2L);
     public static final UIFontDescriptorSymbolicTraits TraitExpanded = new UIFontDescriptorSymbolicTraits(32L);

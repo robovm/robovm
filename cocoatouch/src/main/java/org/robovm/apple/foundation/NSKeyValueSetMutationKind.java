@@ -37,6 +37,7 @@ import org.robovm.apple.security.*;
 /*<annotations>*/@Marshaler(Bits.AsMachineSizedIntMarshaler.class)/*</annotations>*/
 public final class /*<name>*/NSKeyValueSetMutationKind/*</name>*/ extends Bits</*<name>*/NSKeyValueSetMutationKind/*</name>*/> {
     /*<values>*/
+    public static final NSKeyValueSetMutationKind None = new NSKeyValueSetMutationKind(0L);
     public static final NSKeyValueSetMutationKind Union = new NSKeyValueSetMutationKind(1L);
     public static final NSKeyValueSetMutationKind Minus = new NSKeyValueSetMutationKind(2L);
     public static final NSKeyValueSetMutationKind Intersect = new NSKeyValueSetMutationKind(3L);

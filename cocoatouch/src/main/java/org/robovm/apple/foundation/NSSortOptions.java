@@ -37,6 +37,7 @@ import org.robovm.apple.security.*;
 /*<annotations>*/@Marshaler(Bits.AsMachineSizedIntMarshaler.class)/*</annotations>*/
 public final class /*<name>*/NSSortOptions/*</name>*/ extends Bits</*<name>*/NSSortOptions/*</name>*/> {
     /*<values>*/
+    public static final NSSortOptions None = new NSSortOptions(0L);
     public static final NSSortOptions Concurrent = new NSSortOptions(1L);
     public static final NSSortOptions Stable = new NSSortOptions(16L);
     /*</values>*/

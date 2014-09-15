@@ -37,6 +37,7 @@ import org.robovm.apple.security.*;
 /*<annotations>*/@Marshaler(Bits.AsMachineSizedIntMarshaler.class)/*</annotations>*/
 public final class /*<name>*/NSFileCoordinatorWritingOptions/*</name>*/ extends Bits</*<name>*/NSFileCoordinatorWritingOptions/*</name>*/> {
     /*<values>*/
+    public static final NSFileCoordinatorWritingOptions None = new NSFileCoordinatorWritingOptions(0L);
     public static final NSFileCoordinatorWritingOptions Deleting = new NSFileCoordinatorWritingOptions(1L);
     public static final NSFileCoordinatorWritingOptions Moving = new NSFileCoordinatorWritingOptions(2L);
     public static final NSFileCoordinatorWritingOptions Merging = new NSFileCoordinatorWritingOptions(4L);

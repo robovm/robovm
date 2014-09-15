@@ -37,6 +37,7 @@ import org.robovm.apple.dispatch.*;
 /*<annotations>*/@Marshaler(Bits.AsMachineSizedIntMarshaler.class)/*</annotations>*/
 public final class /*<name>*/CBCharacteristicProperties/*</name>*/ extends Bits</*<name>*/CBCharacteristicProperties/*</name>*/> {
     /*<values>*/
+    public static final CBCharacteristicProperties None = new CBCharacteristicProperties(0L);
     public static final CBCharacteristicProperties Broadcast = new CBCharacteristicProperties(1L);
     public static final CBCharacteristicProperties Read = new CBCharacteristicProperties(2L);
     public static final CBCharacteristicProperties WriteWithoutResponse = new CBCharacteristicProperties(4L);

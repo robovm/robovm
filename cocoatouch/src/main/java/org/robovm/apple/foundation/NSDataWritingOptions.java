@@ -37,6 +37,7 @@ import org.robovm.apple.security.*;
 /*<annotations>*/@Marshaler(Bits.AsMachineSizedIntMarshaler.class)/*</annotations>*/
 public final class /*<name>*/NSDataWritingOptions/*</name>*/ extends Bits</*<name>*/NSDataWritingOptions/*</name>*/> {
     /*<values>*/
+    public static final NSDataWritingOptions None = new NSDataWritingOptions(0L);
     public static final NSDataWritingOptions DataWritingAtomic = new NSDataWritingOptions(1L);
     /**
      * @since Available in iOS 6.0 and later.

@@ -42,6 +42,7 @@ import org.robovm.apple.audiotoolbox.*;
 /*<annotations>*/@Marshaler(Bits.AsMachineSizedIntMarshaler.class)/*</annotations>*/
 public final class /*<name>*/CMSampleBufferFlag/*</name>*/ extends Bits</*<name>*/CMSampleBufferFlag/*</name>*/> {
     /*<values>*/
+    public static final CMSampleBufferFlag None = new CMSampleBufferFlag(0L);
     public static final CMSampleBufferFlag AudioBufferList_Assure16ByteAlignment = new CMSampleBufferFlag(1L);
     /*</values>*/
 

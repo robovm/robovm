@@ -37,6 +37,7 @@ import org.robovm.apple.security.*;
 /*<annotations>*/@Marshaler(Bits.AsMachineSizedIntMarshaler.class)/*</annotations>*/
 public final class /*<name>*/NSJSONWritingOptions/*</name>*/ extends Bits</*<name>*/NSJSONWritingOptions/*</name>*/> {
     /*<values>*/
+    public static final NSJSONWritingOptions None = new NSJSONWritingOptions(0L);
     public static final NSJSONWritingOptions PrettyPrinted = new NSJSONWritingOptions(1L);
     /*</values>*/
 

@@ -37,6 +37,7 @@ import org.robovm.apple.security.*;
 /*<annotations>*/@Marshaler(Bits.AsMachineSizedIntMarshaler.class)/*</annotations>*/
 public final class /*<name>*/NSDataReadingOptions/*</name>*/ extends Bits</*<name>*/NSDataReadingOptions/*</name>*/> {
     /*<values>*/
+    public static final NSDataReadingOptions None = new NSDataReadingOptions(0L);
     public static final NSDataReadingOptions DataReadingMappedIfSafe = new NSDataReadingOptions(1L);
     public static final NSDataReadingOptions DataReadingUncached = new NSDataReadingOptions(2L);
     /**

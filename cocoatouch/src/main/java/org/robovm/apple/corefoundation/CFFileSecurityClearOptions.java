@@ -37,6 +37,7 @@ import org.robovm.apple.dispatch.*;
 /*<annotations>*/@Marshaler(Bits.AsMachineSizedIntMarshaler.class)/*</annotations>*/
 public final class /*<name>*/CFFileSecurityClearOptions/*</name>*/ extends Bits</*<name>*/CFFileSecurityClearOptions/*</name>*/> {
     /*<values>*/
+    public static final CFFileSecurityClearOptions None = new CFFileSecurityClearOptions(0L);
     public static final CFFileSecurityClearOptions Owner = new CFFileSecurityClearOptions(1L);
     public static final CFFileSecurityClearOptions Group = new CFFileSecurityClearOptions(2L);
     public static final CFFileSecurityClearOptions Mode = new CFFileSecurityClearOptions(4L);

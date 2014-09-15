@@ -35,6 +35,7 @@ import org.robovm.apple.dispatch.*;
 /*<annotations>*/@Marshaler(Bits.AsMachineSizedIntMarshaler.class)/*</annotations>*/
 public final class /*<name>*/CFCalendarComponentsOptionFlags/*</name>*/ extends Bits</*<name>*/CFCalendarComponentsOptionFlags/*</name>*/> {
     /*<values>*/
+    public static final CFCalendarComponentsOptionFlags None = new CFCalendarComponentsOptionFlags(0L);
     public static final CFCalendarComponentsOptionFlags Wrap = new CFCalendarComponentsOptionFlags(1L);
     /*</values>*/
 

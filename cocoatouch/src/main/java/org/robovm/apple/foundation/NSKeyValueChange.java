@@ -37,6 +37,7 @@ import org.robovm.apple.security.*;
 /*<annotations>*/@Marshaler(Bits.AsMachineSizedIntMarshaler.class)/*</annotations>*/
 public final class /*<name>*/NSKeyValueChange/*</name>*/ extends Bits</*<name>*/NSKeyValueChange/*</name>*/> {
     /*<values>*/
+    public static final NSKeyValueChange None = new NSKeyValueChange(0L);
     public static final NSKeyValueChange Setting = new NSKeyValueChange(1L);
     public static final NSKeyValueChange Insertion = new NSKeyValueChange(2L);
     public static final NSKeyValueChange Removal = new NSKeyValueChange(3L);

@@ -46,6 +46,7 @@ import org.robovm.apple.mediatoolbox.*;
 /*<annotations>*/@Marshaler(ValuedEnum.AsMachineSizedUIntMarshaler.class)/*</annotations>*/
 public final class /*<name>*/AVAudioSessionSetActiveOptions/*</name>*/ extends Bits</*<name>*/AVAudioSessionSetActiveOptions/*</name>*/> {
     /*<values>*/
+    public static final AVAudioSessionSetActiveOptions None = new AVAudioSessionSetActiveOptions(0L);
     public static final AVAudioSessionSetActiveOptions NotifyOthersOnDeactivation = new AVAudioSessionSetActiveOptions(1L);
     /*</values>*/
 

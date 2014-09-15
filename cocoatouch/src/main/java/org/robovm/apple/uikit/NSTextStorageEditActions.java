@@ -41,6 +41,7 @@ import org.robovm.apple.coreimage.*;
 /*<annotations>*/@Marshaler(Bits.AsMachineSizedIntMarshaler.class)/*</annotations>*/
 public final class /*<name>*/NSTextStorageEditActions/*</name>*/ extends Bits</*<name>*/NSTextStorageEditActions/*</name>*/> {
     /*<values>*/
+    public static final NSTextStorageEditActions None = new NSTextStorageEditActions(0L);
     public static final NSTextStorageEditActions Attributes = new NSTextStorageEditActions(1L);
     public static final NSTextStorageEditActions Characters = new NSTextStorageEditActions(2L);
     /*</values>*/

@@ -35,6 +35,7 @@ import org.robovm.apple.dispatch.*;
 /*<annotations>*/@Marshaler(Bits.AsMachineSizedIntMarshaler.class)/*</annotations>*/
 public final class /*<name>*/CFNotificationPostingOptions/*</name>*/ extends Bits</*<name>*/CFNotificationPostingOptions/*</name>*/> {
     /*<values>*/
+    public static final CFNotificationPostingOptions None = new CFNotificationPostingOptions(0L);
     public static final CFNotificationPostingOptions DeliverImmediately = new CFNotificationPostingOptions(1L);
     public static final CFNotificationPostingOptions PostToAllSessions = new CFNotificationPostingOptions(2L);
     /*</values>*/

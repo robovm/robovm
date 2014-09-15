@@ -39,6 +39,7 @@ import org.robovm.apple.coremedia.*;
 /*<annotations>*/@Marshaler(Bits.AsMachineSizedIntMarshaler.class)/*</annotations>*/
 public final class /*<name>*/CVPixelBufferLockFlags/*</name>*/ extends Bits</*<name>*/CVPixelBufferLockFlags/*</name>*/> {
     /*<values>*/
+    public static final CVPixelBufferLockFlags None = new CVPixelBufferLockFlags(0L);
     public static final CVPixelBufferLockFlags ReadOnly = new CVPixelBufferLockFlags(1L);
     /*</values>*/
 

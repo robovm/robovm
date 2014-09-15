@@ -35,6 +35,7 @@ import org.robovm.apple.dispatch.*;
 /*<annotations>*/@Marshaler(Bits.AsMachineSizedIntMarshaler.class)/*</annotations>*/
 public final class /*<name>*/CFGregorianUnitFlags/*</name>*/ extends Bits</*<name>*/CFGregorianUnitFlags/*</name>*/> {
     /*<values>*/
+    public static final CFGregorianUnitFlags None = new CFGregorianUnitFlags(0L);
     /**
      * @since Available in iOS 2.0 and later.
      * @deprecated Deprecated in iOS 7.0.

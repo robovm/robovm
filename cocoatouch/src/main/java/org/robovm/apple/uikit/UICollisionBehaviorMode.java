@@ -41,6 +41,7 @@ import org.robovm.apple.coreimage.*;
 /*<annotations>*/@Marshaler(Bits.AsMachineSizedIntMarshaler.class)/*</annotations>*/
 public final class /*<name>*/UICollisionBehaviorMode/*</name>*/ extends Bits</*<name>*/UICollisionBehaviorMode/*</name>*/> {
     /*<values>*/
+    public static final UICollisionBehaviorMode None = new UICollisionBehaviorMode(0L);
     public static final UICollisionBehaviorMode Items = new UICollisionBehaviorMode(1L);
     public static final UICollisionBehaviorMode Boundaries = new UICollisionBehaviorMode(2L);
     public static final UICollisionBehaviorMode Everything = new UICollisionBehaviorMode(-1L);

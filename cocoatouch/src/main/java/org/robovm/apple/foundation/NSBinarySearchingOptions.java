@@ -37,6 +37,7 @@ import org.robovm.apple.security.*;
 /*<annotations>*/@Marshaler(Bits.AsMachineSizedIntMarshaler.class)/*</annotations>*/
 public final class /*<name>*/NSBinarySearchingOptions/*</name>*/ extends Bits</*<name>*/NSBinarySearchingOptions/*</name>*/> {
     /*<values>*/
+    public static final NSBinarySearchingOptions None = new NSBinarySearchingOptions(0L);
     public static final NSBinarySearchingOptions FirstEqual = new NSBinarySearchingOptions(256L);
     public static final NSBinarySearchingOptions LastEqual = new NSBinarySearchingOptions(512L);
     public static final NSBinarySearchingOptions InsertionIndex = new NSBinarySearchingOptions(1024L);

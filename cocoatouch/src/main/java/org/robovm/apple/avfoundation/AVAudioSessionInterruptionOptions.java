@@ -46,6 +46,7 @@ import org.robovm.apple.mediatoolbox.*;
 /*<annotations>*/@Marshaler(ValuedEnum.AsMachineSizedUIntMarshaler.class)/*</annotations>*/
 public final class /*<name>*/AVAudioSessionInterruptionOptions/*</name>*/ extends Bits</*<name>*/AVAudioSessionInterruptionOptions/*</name>*/> {
     /*<values>*/
+    public static final AVAudioSessionInterruptionOptions None = new AVAudioSessionInterruptionOptions(0L);
     public static final AVAudioSessionInterruptionOptions ShouldResume = new AVAudioSessionInterruptionOptions(1L);
     /*</values>*/
 

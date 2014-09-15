@@ -40,6 +40,7 @@ import org.robovm.apple.coremedia.*;
 /*<annotations>*/@Marshaler(Bits.AsMachineSizedIntMarshaler.class)/*</annotations>*/
 public final class /*<name>*/CAFRegionFlag/*</name>*/ extends Bits</*<name>*/CAFRegionFlag/*</name>*/> {
     /*<values>*/
+    public static final CAFRegionFlag None = new CAFRegionFlag(0L);
     public static final CAFRegionFlag LoopEnable = new CAFRegionFlag(1L);
     public static final CAFRegionFlag PlayForward = new CAFRegionFlag(2L);
     public static final CAFRegionFlag PlayBackward = new CAFRegionFlag(4L);

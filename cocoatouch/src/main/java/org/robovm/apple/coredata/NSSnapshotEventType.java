@@ -35,6 +35,7 @@ import org.robovm.apple.foundation.*;
 /*<annotations>*/@Marshaler(Bits.AsMachineSizedIntMarshaler.class)/*</annotations>*/
 public final class /*<name>*/NSSnapshotEventType/*</name>*/ extends Bits</*<name>*/NSSnapshotEventType/*</name>*/> {
     /*<values>*/
+    public static final NSSnapshotEventType None = new NSSnapshotEventType(0L);
     public static final NSSnapshotEventType UndoInsertion = new NSSnapshotEventType(2L);
     public static final NSSnapshotEventType UndoDeletion = new NSSnapshotEventType(4L);
     public static final NSSnapshotEventType UndoUpdate = new NSSnapshotEventType(8L);

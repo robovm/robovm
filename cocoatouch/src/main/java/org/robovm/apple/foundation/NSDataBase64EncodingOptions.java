@@ -39,6 +39,7 @@ import org.robovm.apple.security.*;
 /*<annotations>*/@Marshaler(Bits.AsMachineSizedIntMarshaler.class)/*</annotations>*/
 public final class /*<name>*/NSDataBase64EncodingOptions/*</name>*/ extends Bits</*<name>*/NSDataBase64EncodingOptions/*</name>*/> {
     /*<values>*/
+    public static final NSDataBase64EncodingOptions None = new NSDataBase64EncodingOptions(0L);
     public static final NSDataBase64EncodingOptions _64CharacterLineLength = new NSDataBase64EncodingOptions(1L);
     public static final NSDataBase64EncodingOptions _76CharacterLineLength = new NSDataBase64EncodingOptions(2L);
     public static final NSDataBase64EncodingOptions EndLineWithCarriageReturn = new NSDataBase64EncodingOptions(16L);

@@ -37,6 +37,7 @@ import org.robovm.apple.security.*;
 /*<annotations>*/@Marshaler(Bits.AsMachineSizedIntMarshaler.class)/*</annotations>*/
 public final class /*<name>*/NSCalendarUnit/*</name>*/ extends Bits</*<name>*/NSCalendarUnit/*</name>*/> {
     /*<values>*/
+    public static final NSCalendarUnit None = new NSCalendarUnit(0L);
     public static final NSCalendarUnit Era = new NSCalendarUnit(2L);
     public static final NSCalendarUnit Year = new NSCalendarUnit(4L);
     public static final NSCalendarUnit Month = new NSCalendarUnit(8L);

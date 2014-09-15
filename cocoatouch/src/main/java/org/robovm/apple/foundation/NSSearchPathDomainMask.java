@@ -37,6 +37,7 @@ import org.robovm.apple.security.*;
 /*<annotations>*/@Marshaler(Bits.AsMachineSizedIntMarshaler.class)/*</annotations>*/
 public final class /*<name>*/NSSearchPathDomainMask/*</name>*/ extends Bits</*<name>*/NSSearchPathDomainMask/*</name>*/> {
     /*<values>*/
+    public static final NSSearchPathDomainMask None = new NSSearchPathDomainMask(0L);
     public static final NSSearchPathDomainMask UserDomainMask = new NSSearchPathDomainMask(1L);
     public static final NSSearchPathDomainMask LocalDomainMask = new NSSearchPathDomainMask(2L);
     public static final NSSearchPathDomainMask NetworkDomainMask = new NSSearchPathDomainMask(4L);

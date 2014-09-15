@@ -37,6 +37,7 @@ import org.robovm.apple.security.*;
 /*<annotations>*/@Marshaler(Bits.AsMachineSizedIntMarshaler.class)/*</annotations>*/
 public final class /*<name>*/NSMatchingFlags/*</name>*/ extends Bits</*<name>*/NSMatchingFlags/*</name>*/> {
     /*<values>*/
+    public static final NSMatchingFlags None = new NSMatchingFlags(0L);
     public static final NSMatchingFlags Progress = new NSMatchingFlags(1L);
     public static final NSMatchingFlags Completed = new NSMatchingFlags(2L);
     public static final NSMatchingFlags HitEnd = new NSMatchingFlags(4L);

@@ -40,6 +40,7 @@ import org.robovm.apple.coremedia.*;
 /*<annotations>*/@Marshaler(Bits.AsMachineSizedIntMarshaler.class)/*</annotations>*/
 public final class /*<name>*/AudioFileFlag/*</name>*/ extends Bits</*<name>*/AudioFileFlag/*</name>*/> {
     /*<values>*/
+    public static final AudioFileFlag None = new AudioFileFlag(0L);
     public static final AudioFileFlag EraseFile = new AudioFileFlag(1L);
     public static final AudioFileFlag DontPageAlignAudioData = new AudioFileFlag(2L);
     /*</values>*/

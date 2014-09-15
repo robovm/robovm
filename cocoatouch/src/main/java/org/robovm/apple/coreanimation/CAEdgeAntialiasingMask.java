@@ -39,6 +39,7 @@ import org.robovm.apple.opengles.*;
 /*<annotations>*//*</annotations>*/
 public final class /*<name>*/CAEdgeAntialiasingMask/*</name>*/ extends Bits</*<name>*/CAEdgeAntialiasingMask/*</name>*/> {
     /*<values>*/
+    public static final CAEdgeAntialiasingMask None = new CAEdgeAntialiasingMask(0L);
     public static final CAEdgeAntialiasingMask LeftEdge = new CAEdgeAntialiasingMask(1L);
     public static final CAEdgeAntialiasingMask RightEdge = new CAEdgeAntialiasingMask(2L);
     public static final CAEdgeAntialiasingMask BottomEdge = new CAEdgeAntialiasingMask(4L);

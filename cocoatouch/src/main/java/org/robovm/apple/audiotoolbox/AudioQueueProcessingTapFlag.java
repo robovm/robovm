@@ -40,6 +40,7 @@ import org.robovm.apple.coremedia.*;
 /*<annotations>*/@Marshaler(Bits.AsMachineSizedIntMarshaler.class)/*</annotations>*/
 public final class /*<name>*/AudioQueueProcessingTapFlag/*</name>*/ extends Bits</*<name>*/AudioQueueProcessingTapFlag/*</name>*/> {
     /*<values>*/
+    public static final AudioQueueProcessingTapFlag None = new AudioQueueProcessingTapFlag(0L);
     public static final AudioQueueProcessingTapFlag PreEffects = new AudioQueueProcessingTapFlag(1L);
     public static final AudioQueueProcessingTapFlag PostEffects = new AudioQueueProcessingTapFlag(2L);
     public static final AudioQueueProcessingTapFlag Siphon = new AudioQueueProcessingTapFlag(4L);

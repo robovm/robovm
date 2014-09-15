@@ -37,6 +37,7 @@ import org.robovm.apple.security.*;
 /*<annotations>*/@Marshaler(Bits.AsMachineSizedIntMarshaler.class)/*</annotations>*/
 public final class /*<name>*/NSNetServiceOptions/*</name>*/ extends Bits</*<name>*/NSNetServiceOptions/*</name>*/> {
     /*<values>*/
+    public static final NSNetServiceOptions None = new NSNetServiceOptions(0L);
     public static final NSNetServiceOptions NoAutoRename = new NSNetServiceOptions(1L);
     /**
      * @since Available in iOS 7.0 and later.

@@ -37,6 +37,7 @@ import org.robovm.apple.security.*;
 /*<annotations>*/@Marshaler(Bits.AsMachineSizedIntMarshaler.class)/*</annotations>*/
 public final class /*<name>*/NSRegularExpressionOptions/*</name>*/ extends Bits</*<name>*/NSRegularExpressionOptions/*</name>*/> {
     /*<values>*/
+    public static final NSRegularExpressionOptions None = new NSRegularExpressionOptions(0L);
     public static final NSRegularExpressionOptions CaseInsensitive = new NSRegularExpressionOptions(1L);
     public static final NSRegularExpressionOptions AllowCommentsAndWhitespace = new NSRegularExpressionOptions(2L);
     public static final NSRegularExpressionOptions IgnoreMetacharacters = new NSRegularExpressionOptions(4L);

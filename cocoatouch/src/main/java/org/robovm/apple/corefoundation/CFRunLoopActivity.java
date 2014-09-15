@@ -35,6 +35,7 @@ import org.robovm.apple.dispatch.*;
 /*<annotations>*/@Marshaler(Bits.AsMachineSizedIntMarshaler.class)/*</annotations>*/
 public final class /*<name>*/CFRunLoopActivity/*</name>*/ extends Bits</*<name>*/CFRunLoopActivity/*</name>*/> {
     /*<values>*/
+    public static final CFRunLoopActivity None = new CFRunLoopActivity(0L);
     public static final CFRunLoopActivity Entry = new CFRunLoopActivity(1L);
     public static final CFRunLoopActivity BeforeTimers = new CFRunLoopActivity(2L);
     public static final CFRunLoopActivity BeforeSources = new CFRunLoopActivity(4L);

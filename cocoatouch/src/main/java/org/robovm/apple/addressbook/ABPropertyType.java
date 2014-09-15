@@ -36,6 +36,7 @@ import org.robovm.apple.corefoundation.*;
 /*<annotations>*/@Marshaler(Bits.AsMachineSizedIntMarshaler.class)/*</annotations>*/
 public final class /*<name>*/ABPropertyType/*</name>*/ extends Bits</*<name>*/ABPropertyType/*</name>*/> {
     /*<values>*/
+    public static final ABPropertyType None = new ABPropertyType(0L);
     public static final ABPropertyType Invalid = new ABPropertyType(0L);
     public static final ABPropertyType String = new ABPropertyType(1L);
     public static final ABPropertyType Integer = new ABPropertyType(2L);

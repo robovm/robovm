@@ -37,6 +37,7 @@ import org.robovm.apple.coregraphics.*;
 /*<annotations>*/@Marshaler(Bits.AsMachineSizedIntMarshaler.class)/*</annotations>*/
 public final class /*<name>*/CTRunStatus/*</name>*/ extends Bits</*<name>*/CTRunStatus/*</name>*/> {
     /*<values>*/
+    public static final CTRunStatus None = new CTRunStatus(0L);
     public static final CTRunStatus NoStatus = new CTRunStatus(0L);
     public static final CTRunStatus RightToLeft = new CTRunStatus(1L);
     public static final CTRunStatus NonMonotonic = new CTRunStatus(2L);

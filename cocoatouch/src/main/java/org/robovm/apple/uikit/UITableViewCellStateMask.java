@@ -39,6 +39,7 @@ import org.robovm.apple.coreimage.*;
 /*<annotations>*/@Marshaler(Bits.AsMachineSizedIntMarshaler.class)/*</annotations>*/
 public final class /*<name>*/UITableViewCellStateMask/*</name>*/ extends Bits</*<name>*/UITableViewCellStateMask/*</name>*/> {
     /*<values>*/
+    public static final UITableViewCellStateMask None = new UITableViewCellStateMask(0L);
     public static final UITableViewCellStateMask DefaultMask = new UITableViewCellStateMask(0L);
     public static final UITableViewCellStateMask ShowingEditControlMask = new UITableViewCellStateMask(1L);
     public static final UITableViewCellStateMask ShowingDeleteConfirmationMask = new UITableViewCellStateMask(2L);

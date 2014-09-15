@@ -37,6 +37,7 @@ import org.robovm.apple.dispatch.*;
 /*<annotations>*/@Marshaler(Bits.AsMachineSizedIntMarshaler.class)/*</annotations>*/
 public final class /*<name>*/CFDataSearchFlags/*</name>*/ extends Bits</*<name>*/CFDataSearchFlags/*</name>*/> {
     /*<values>*/
+    public static final CFDataSearchFlags None = new CFDataSearchFlags(0L);
     public static final CFDataSearchFlags Backwards = new CFDataSearchFlags(1L);
     public static final CFDataSearchFlags Anchored = new CFDataSearchFlags(2L);
     /*</values>*/

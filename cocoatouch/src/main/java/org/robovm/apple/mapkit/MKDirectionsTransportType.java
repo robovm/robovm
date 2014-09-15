@@ -42,6 +42,7 @@ import org.robovm.apple.dispatch.*;
 /*<annotations>*/@Marshaler(ValuedEnum.AsMachineSizedUIntMarshaler.class)/*</annotations>*/
 public final class /*<name>*/MKDirectionsTransportType/*</name>*/ extends Bits</*<name>*/MKDirectionsTransportType/*</name>*/> {
     /*<values>*/
+    public static final MKDirectionsTransportType None = new MKDirectionsTransportType(0L);
     public static final MKDirectionsTransportType Automobile = new MKDirectionsTransportType(1L);
     public static final MKDirectionsTransportType Walking = new MKDirectionsTransportType(2L);
     public static final MKDirectionsTransportType Any = new MKDirectionsTransportType(268435455L);

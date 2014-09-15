@@ -37,6 +37,7 @@ import org.robovm.apple.security.*;
 /*<annotations>*/@Marshaler(Bits.AsMachineSizedIntMarshaler.class)/*</annotations>*/
 public final class /*<name>*/NSKeyValueObservingOptions/*</name>*/ extends Bits</*<name>*/NSKeyValueObservingOptions/*</name>*/> {
     /*<values>*/
+    public static final NSKeyValueObservingOptions None = new NSKeyValueObservingOptions(0L);
     public static final NSKeyValueObservingOptions New = new NSKeyValueObservingOptions(1L);
     public static final NSKeyValueObservingOptions Old = new NSKeyValueObservingOptions(2L);
     /**

@@ -40,6 +40,7 @@ import org.robovm.apple.coremedia.*;
 /*<annotations>*/@Marshaler(Bits.AsMachineSizedIntMarshaler.class)/*</annotations>*/
 public final class /*<name>*/CAFLinearPCMFormatFlag/*</name>*/ extends Bits</*<name>*/CAFLinearPCMFormatFlag/*</name>*/> {
     /*<values>*/
+    public static final CAFLinearPCMFormatFlag None = new CAFLinearPCMFormatFlag(0L);
     public static final CAFLinearPCMFormatFlag Float = new CAFLinearPCMFormatFlag(1L);
     public static final CAFLinearPCMFormatFlag LittleEndian = new CAFLinearPCMFormatFlag(2L);
     /*</values>*/

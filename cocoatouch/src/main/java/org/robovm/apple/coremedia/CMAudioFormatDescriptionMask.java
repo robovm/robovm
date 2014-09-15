@@ -42,6 +42,7 @@ import org.robovm.apple.audiotoolbox.*;
 /*<annotations>*/@Marshaler(Bits.AsMachineSizedIntMarshaler.class)/*</annotations>*/
 public final class /*<name>*/CMAudioFormatDescriptionMask/*</name>*/ extends Bits</*<name>*/CMAudioFormatDescriptionMask/*</name>*/> {
     /*<values>*/
+    public static final CMAudioFormatDescriptionMask None = new CMAudioFormatDescriptionMask(0L);
     public static final CMAudioFormatDescriptionMask StreamBasicDescription = new CMAudioFormatDescriptionMask(1L);
     public static final CMAudioFormatDescriptionMask MagicCookie = new CMAudioFormatDescriptionMask(2L);
     public static final CMAudioFormatDescriptionMask ChannelLayout = new CMAudioFormatDescriptionMask(4L);

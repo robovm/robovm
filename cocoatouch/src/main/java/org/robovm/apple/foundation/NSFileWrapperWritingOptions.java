@@ -39,6 +39,7 @@ import org.robovm.apple.security.*;
 /*<annotations>*/@Marshaler(Bits.AsMachineSizedIntMarshaler.class)/*</annotations>*/
 public final class /*<name>*/NSFileWrapperWritingOptions/*</name>*/ extends Bits</*<name>*/NSFileWrapperWritingOptions/*</name>*/> {
     /*<values>*/
+    public static final NSFileWrapperWritingOptions None = new NSFileWrapperWritingOptions(0L);
     public static final NSFileWrapperWritingOptions Atomic = new NSFileWrapperWritingOptions(1L);
     public static final NSFileWrapperWritingOptions WithNameUpdating = new NSFileWrapperWritingOptions(2L);
     /*</values>*/

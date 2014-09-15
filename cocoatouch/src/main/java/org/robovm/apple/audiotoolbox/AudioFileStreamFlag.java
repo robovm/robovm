@@ -40,6 +40,7 @@ import org.robovm.apple.coremedia.*;
 /*<annotations>*/@Marshaler(Bits.AsMachineSizedIntMarshaler.class)/*</annotations>*/
 public final class /*<name>*/AudioFileStreamFlag/*</name>*/ extends Bits</*<name>*/AudioFileStreamFlag/*</name>*/> {
     /*<values>*/
+    public static final AudioFileStreamFlag None = new AudioFileStreamFlag(0L);
     public static final AudioFileStreamFlag PropertyFlag_PropertyIsCached = new AudioFileStreamFlag(1L);
     public static final AudioFileStreamFlag PropertyFlag_CacheProperty = new AudioFileStreamFlag(2L);
     public static final AudioFileStreamFlag ParseFlag_Discontinuity = new AudioFileStreamFlag(1L);

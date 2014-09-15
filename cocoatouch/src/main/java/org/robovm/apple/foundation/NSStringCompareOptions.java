@@ -37,6 +37,7 @@ import org.robovm.apple.security.*;
 /*<annotations>*/@Marshaler(Bits.AsMachineSizedIntMarshaler.class)/*</annotations>*/
 public final class /*<name>*/NSStringCompareOptions/*</name>*/ extends Bits</*<name>*/NSStringCompareOptions/*</name>*/> {
     /*<values>*/
+    public static final NSStringCompareOptions None = new NSStringCompareOptions(0L);
     public static final NSStringCompareOptions CaseInsensitive = new NSStringCompareOptions(1L);
     public static final NSStringCompareOptions Literal = new NSStringCompareOptions(2L);
     public static final NSStringCompareOptions Backwards = new NSStringCompareOptions(4L);

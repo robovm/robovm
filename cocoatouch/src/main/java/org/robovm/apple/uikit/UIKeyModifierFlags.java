@@ -41,6 +41,7 @@ import org.robovm.apple.coreimage.*;
 /*<annotations>*/@Marshaler(Bits.AsMachineSizedIntMarshaler.class)/*</annotations>*/
 public final class /*<name>*/UIKeyModifierFlags/*</name>*/ extends Bits</*<name>*/UIKeyModifierFlags/*</name>*/> {
     /*<values>*/
+    public static final UIKeyModifierFlags None = new UIKeyModifierFlags(0L);
     public static final UIKeyModifierFlags AlphaShift = new UIKeyModifierFlags(65536L);
     public static final UIKeyModifierFlags Shift = new UIKeyModifierFlags(131072L);
     public static final UIKeyModifierFlags Control = new UIKeyModifierFlags(262144L);

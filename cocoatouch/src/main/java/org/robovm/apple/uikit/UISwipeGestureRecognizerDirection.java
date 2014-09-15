@@ -39,6 +39,7 @@ import org.robovm.apple.coreimage.*;
 /*<annotations>*/@Marshaler(Bits.AsMachineSizedIntMarshaler.class)/*</annotations>*/
 public final class /*<name>*/UISwipeGestureRecognizerDirection/*</name>*/ extends Bits</*<name>*/UISwipeGestureRecognizerDirection/*</name>*/> {
     /*<values>*/
+    public static final UISwipeGestureRecognizerDirection None = new UISwipeGestureRecognizerDirection(0L);
     public static final UISwipeGestureRecognizerDirection Right = new UISwipeGestureRecognizerDirection(1L);
     public static final UISwipeGestureRecognizerDirection Left = new UISwipeGestureRecognizerDirection(2L);
     public static final UISwipeGestureRecognizerDirection Up = new UISwipeGestureRecognizerDirection(4L);

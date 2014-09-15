@@ -39,6 +39,7 @@ import org.robovm.apple.coregraphics.*;
 /*<annotations>*/@Marshaler(Bits.AsMachineSizedIntMarshaler.class)/*</annotations>*/
 public final class /*<name>*/MPMediaType/*</name>*/ extends Bits</*<name>*/MPMediaType/*</name>*/> {
     /*<values>*/
+    public static final MPMediaType None = new MPMediaType(0L);
     public static final MPMediaType Music = new MPMediaType(1L);
     public static final MPMediaType Podcast = new MPMediaType(2L);
     public static final MPMediaType AudioBook = new MPMediaType(4L);

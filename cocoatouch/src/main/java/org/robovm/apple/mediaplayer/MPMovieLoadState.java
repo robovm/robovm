@@ -37,6 +37,7 @@ import org.robovm.apple.coregraphics.*;
 /*<annotations>*/@Marshaler(Bits.AsMachineSizedIntMarshaler.class)/*</annotations>*/
 public final class /*<name>*/MPMovieLoadState/*</name>*/ extends Bits</*<name>*/MPMovieLoadState/*</name>*/> {
     /*<values>*/
+    public static final MPMovieLoadState None = new MPMovieLoadState(0L);
     public static final MPMovieLoadState Unknown = new MPMovieLoadState(0L);
     public static final MPMovieLoadState Playable = new MPMovieLoadState(1L);
     public static final MPMovieLoadState PlaythroughOK = new MPMovieLoadState(2L);

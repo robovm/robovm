@@ -37,6 +37,7 @@ import org.robovm.apple.coregraphics.*;
 /*<annotations>*/@Marshaler(Bits.AsMachineSizedIntMarshaler.class)/*</annotations>*/
 public final class /*<name>*/CTFontOptions/*</name>*/ extends Bits</*<name>*/CTFontOptions/*</name>*/> {
     /*<values>*/
+    public static final CTFontOptions None = new CTFontOptions(0L);
     public static final CTFontOptions Default = new CTFontOptions(0L);
     public static final CTFontOptions PreventAutoActivation = new CTFontOptions(1L);
     public static final CTFontOptions PreferSystemFont = new CTFontOptions(4L);

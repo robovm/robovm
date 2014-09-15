@@ -36,6 +36,7 @@ import org.robovm.apple.corefoundation.*;
 /*<annotations>*/@Marshaler(Bits.AsMachineSizedIntMarshaler.class)/*</annotations>*/
 public final class /*<name>*/AudioChannelBit/*</name>*/ extends Bits</*<name>*/AudioChannelBit/*</name>*/> {
     /*<values>*/
+    public static final AudioChannelBit None = new AudioChannelBit(0L);
     public static final AudioChannelBit Left = new AudioChannelBit(1L);
     public static final AudioChannelBit Right = new AudioChannelBit(2L);
     public static final AudioChannelBit Center = new AudioChannelBit(4L);

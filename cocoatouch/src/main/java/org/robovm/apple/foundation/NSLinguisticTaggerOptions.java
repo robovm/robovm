@@ -37,6 +37,7 @@ import org.robovm.apple.security.*;
 /*<annotations>*/@Marshaler(Bits.AsMachineSizedIntMarshaler.class)/*</annotations>*/
 public final class /*<name>*/NSLinguisticTaggerOptions/*</name>*/ extends Bits</*<name>*/NSLinguisticTaggerOptions/*</name>*/> {
     /*<values>*/
+    public static final NSLinguisticTaggerOptions None = new NSLinguisticTaggerOptions(0L);
     public static final NSLinguisticTaggerOptions OmitWords = new NSLinguisticTaggerOptions(1L);
     public static final NSLinguisticTaggerOptions OmitPunctuation = new NSLinguisticTaggerOptions(2L);
     public static final NSLinguisticTaggerOptions OmitWhitespace = new NSLinguisticTaggerOptions(4L);

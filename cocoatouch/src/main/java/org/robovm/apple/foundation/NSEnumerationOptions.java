@@ -37,6 +37,7 @@ import org.robovm.apple.security.*;
 /*<annotations>*/@Marshaler(Bits.AsMachineSizedIntMarshaler.class)/*</annotations>*/
 public final class /*<name>*/NSEnumerationOptions/*</name>*/ extends Bits</*<name>*/NSEnumerationOptions/*</name>*/> {
     /*<values>*/
+    public static final NSEnumerationOptions None = new NSEnumerationOptions(0L);
     public static final NSEnumerationOptions Concurrent = new NSEnumerationOptions(1L);
     public static final NSEnumerationOptions Reverse = new NSEnumerationOptions(2L);
     /*</values>*/

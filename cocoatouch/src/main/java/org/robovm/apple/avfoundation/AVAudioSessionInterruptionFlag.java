@@ -48,6 +48,7 @@ import org.robovm.apple.mediatoolbox.*;
 /*<annotations>*/@Marshaler(Bits.AsMachineSizedIntMarshaler.class)/*</annotations>*/
 public final class /*<name>*/AVAudioSessionInterruptionFlag/*</name>*/ extends Bits</*<name>*/AVAudioSessionInterruptionFlag/*</name>*/> {
     /*<values>*/
+    public static final AVAudioSessionInterruptionFlag None = new AVAudioSessionInterruptionFlag(0L);
     public static final AVAudioSessionInterruptionFlag ShouldResume = new AVAudioSessionInterruptionFlag(1L);
     /*</values>*/
 

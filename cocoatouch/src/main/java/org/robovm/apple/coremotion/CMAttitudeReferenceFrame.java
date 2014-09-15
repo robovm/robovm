@@ -35,6 +35,7 @@ import org.robovm.apple.foundation.*;
 /*<annotations>*/@Marshaler(Bits.AsMachineSizedIntMarshaler.class)/*</annotations>*/
 public final class /*<name>*/CMAttitudeReferenceFrame/*</name>*/ extends Bits</*<name>*/CMAttitudeReferenceFrame/*</name>*/> {
     /*<values>*/
+    public static final CMAttitudeReferenceFrame None = new CMAttitudeReferenceFrame(0L);
     public static final CMAttitudeReferenceFrame ArbitraryZVertical = new CMAttitudeReferenceFrame(1L);
     public static final CMAttitudeReferenceFrame ArbitraryCorrectedZVertical = new CMAttitudeReferenceFrame(2L);
     public static final CMAttitudeReferenceFrame MagneticNorthZVertical = new CMAttitudeReferenceFrame(4L);

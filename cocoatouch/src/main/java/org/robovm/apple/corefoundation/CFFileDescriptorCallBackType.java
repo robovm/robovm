@@ -35,6 +35,7 @@ import org.robovm.apple.dispatch.*;
 /*<annotations>*/@Marshaler(Bits.AsMachineSizedIntMarshaler.class)/*</annotations>*/
 public final class /*<name>*/CFFileDescriptorCallBackType/*</name>*/ extends Bits</*<name>*/CFFileDescriptorCallBackType/*</name>*/> {
     /*<values>*/
+    public static final CFFileDescriptorCallBackType None = new CFFileDescriptorCallBackType(0L);
     public static final CFFileDescriptorCallBackType ReadCallBack = new CFFileDescriptorCallBackType(1L);
     public static final CFFileDescriptorCallBackType WriteCallBack = new CFFileDescriptorCallBackType(2L);
     /*</values>*/

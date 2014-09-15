@@ -42,6 +42,7 @@ import org.robovm.apple.audiotoolbox.*;
 /*<annotations>*/@Marshaler(Bits.AsMachineSizedIntMarshaler.class)/*</annotations>*/
 public final class /*<name>*/CMTimeFlag/*</name>*/ extends Bits</*<name>*/CMTimeFlag/*</name>*/> {
     /*<values>*/
+    public static final CMTimeFlag None = new CMTimeFlag(0L);
     public static final CMTimeFlag Valid = new CMTimeFlag(1L);
     public static final CMTimeFlag HasBeenRounded = new CMTimeFlag(2L);
     public static final CMTimeFlag PositiveInfinity = new CMTimeFlag(4L);

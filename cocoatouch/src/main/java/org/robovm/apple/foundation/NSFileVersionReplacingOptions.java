@@ -37,6 +37,7 @@ import org.robovm.apple.security.*;
 /*<annotations>*/@Marshaler(Bits.AsMachineSizedIntMarshaler.class)/*</annotations>*/
 public final class /*<name>*/NSFileVersionReplacingOptions/*</name>*/ extends Bits</*<name>*/NSFileVersionReplacingOptions/*</name>*/> {
     /*<values>*/
+    public static final NSFileVersionReplacingOptions None = new NSFileVersionReplacingOptions(0L);
     public static final NSFileVersionReplacingOptions ByMoving = new NSFileVersionReplacingOptions(1L);
     /*</values>*/
 

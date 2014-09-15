@@ -39,6 +39,7 @@ import org.robovm.apple.coreimage.*;
 /*<annotations>*/@Marshaler(Bits.AsMachineSizedIntMarshaler.class)/*</annotations>*/
 public final class /*<name>*/UIControlEvents/*</name>*/ extends Bits</*<name>*/UIControlEvents/*</name>*/> {
     /*<values>*/
+    public static final UIControlEvents None = new UIControlEvents(0L);
     public static final UIControlEvents TouchDown = new UIControlEvents(1L);
     public static final UIControlEvents TouchDownRepeat = new UIControlEvents(2L);
     public static final UIControlEvents TouchDragInside = new UIControlEvents(4L);

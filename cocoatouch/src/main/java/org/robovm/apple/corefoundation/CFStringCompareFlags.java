@@ -35,6 +35,7 @@ import org.robovm.apple.dispatch.*;
 /*<annotations>*/@Marshaler(Bits.AsMachineSizedIntMarshaler.class)/*</annotations>*/
 public final class /*<name>*/CFStringCompareFlags/*</name>*/ extends Bits</*<name>*/CFStringCompareFlags/*</name>*/> {
     /*<values>*/
+    public static final CFStringCompareFlags None = new CFStringCompareFlags(0L);
     public static final CFStringCompareFlags CaseInsensitive = new CFStringCompareFlags(1L);
     public static final CFStringCompareFlags Backwards = new CFStringCompareFlags(4L);
     public static final CFStringCompareFlags Anchored = new CFStringCompareFlags(8L);

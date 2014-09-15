@@ -37,6 +37,7 @@ import org.robovm.apple.security.*;
 /*<annotations>*/@Marshaler(Bits.AsMachineSizedIntMarshaler.class)/*</annotations>*/
 public final class /*<name>*/NSStringEncodingConversionOptions/*</name>*/ extends Bits</*<name>*/NSStringEncodingConversionOptions/*</name>*/> {
     /*<values>*/
+    public static final NSStringEncodingConversionOptions None = new NSStringEncodingConversionOptions(0L);
     public static final NSStringEncodingConversionOptions AllowLossy = new NSStringEncodingConversionOptions(1L);
     public static final NSStringEncodingConversionOptions ExternalRepresentation = new NSStringEncodingConversionOptions(2L);
     /*</values>*/

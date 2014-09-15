@@ -46,6 +46,7 @@ import org.robovm.apple.mediatoolbox.*;
 /*<annotations>*/@Marshaler(ValuedEnum.AsMachineSizedUIntMarshaler.class)/*</annotations>*/
 public final class /*<name>*/AVAudioSessionCategoryOptions/*</name>*/ extends Bits</*<name>*/AVAudioSessionCategoryOptions/*</name>*/> {
     /*<values>*/
+    public static final AVAudioSessionCategoryOptions None = new AVAudioSessionCategoryOptions(0L);
     public static final AVAudioSessionCategoryOptions MixWithOthers = new AVAudioSessionCategoryOptions(1L);
     public static final AVAudioSessionCategoryOptions DuckOthers = new AVAudioSessionCategoryOptions(2L);
     public static final AVAudioSessionCategoryOptions AllowBluetooth = new AVAudioSessionCategoryOptions(4L);

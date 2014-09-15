@@ -37,6 +37,7 @@ import org.robovm.apple.coregraphics.*;
 /*<annotations>*/@Marshaler(Bits.AsMachineSizedIntMarshaler.class)/*</annotations>*/
 public final class /*<name>*/CTUnderlinePattern/*</name>*/ extends Bits</*<name>*/CTUnderlinePattern/*</name>*/> {
     /*<values>*/
+    public static final CTUnderlinePattern None = new CTUnderlinePattern(0L);
     public static final CTUnderlinePattern Solid = new CTUnderlinePattern(0L);
     public static final CTUnderlinePattern Dot = new CTUnderlinePattern(256L);
     public static final CTUnderlinePattern Dash = new CTUnderlinePattern(512L);

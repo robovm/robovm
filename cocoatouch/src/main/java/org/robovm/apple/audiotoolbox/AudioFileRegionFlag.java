@@ -40,6 +40,7 @@ import org.robovm.apple.coremedia.*;
 /*<annotations>*/@Marshaler(Bits.AsMachineSizedIntMarshaler.class)/*</annotations>*/
 public final class /*<name>*/AudioFileRegionFlag/*</name>*/ extends Bits</*<name>*/AudioFileRegionFlag/*</name>*/> {
     /*<values>*/
+    public static final AudioFileRegionFlag None = new AudioFileRegionFlag(0L);
     public static final AudioFileRegionFlag LoopEnable = new AudioFileRegionFlag(1L);
     public static final AudioFileRegionFlag PlayForward = new AudioFileRegionFlag(2L);
     public static final AudioFileRegionFlag PlayBackward = new AudioFileRegionFlag(4L);

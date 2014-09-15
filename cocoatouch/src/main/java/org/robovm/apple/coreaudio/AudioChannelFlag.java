@@ -36,6 +36,7 @@ import org.robovm.apple.corefoundation.*;
 /*<annotations>*/@Marshaler(Bits.AsMachineSizedIntMarshaler.class)/*</annotations>*/
 public final class /*<name>*/AudioChannelFlag/*</name>*/ extends Bits</*<name>*/AudioChannelFlag/*</name>*/> {
     /*<values>*/
+    public static final AudioChannelFlag None = new AudioChannelFlag(0L);
     public static final AudioChannelFlag AllOff = new AudioChannelFlag(0L);
     public static final AudioChannelFlag RectangularCoordinates = new AudioChannelFlag(1L);
     public static final AudioChannelFlag SphericalCoordinates = new AudioChannelFlag(2L);

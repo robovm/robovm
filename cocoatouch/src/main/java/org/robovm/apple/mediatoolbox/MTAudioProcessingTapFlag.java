@@ -39,6 +39,7 @@ import org.robovm.apple.audiotoolbox.*;
 /*<annotations>*/@Marshaler(Bits.AsMachineSizedIntMarshaler.class)/*</annotations>*/
 public final class /*<name>*/MTAudioProcessingTapFlag/*</name>*/ extends Bits</*<name>*/MTAudioProcessingTapFlag/*</name>*/> {
     /*<values>*/
+    public static final MTAudioProcessingTapFlag None = new MTAudioProcessingTapFlag(0L);
     public static final MTAudioProcessingTapFlag StartOfStream = new MTAudioProcessingTapFlag(256L);
     public static final MTAudioProcessingTapFlag EndOfStream = new MTAudioProcessingTapFlag(512L);
     /*</values>*/

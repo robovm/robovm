@@ -39,6 +39,7 @@ import org.robovm.apple.coreimage.*;
 /*<annotations>*/@Marshaler(Bits.AsMachineSizedIntMarshaler.class)/*</annotations>*/
 public final class /*<name>*/UIInterfaceOrientationMask/*</name>*/ extends Bits</*<name>*/UIInterfaceOrientationMask/*</name>*/> {
     /*<values>*/
+    public static final UIInterfaceOrientationMask None = new UIInterfaceOrientationMask(0L);
     public static final UIInterfaceOrientationMask Portrait = new UIInterfaceOrientationMask(2L);
     public static final UIInterfaceOrientationMask LandscapeLeft = new UIInterfaceOrientationMask(16L);
     public static final UIInterfaceOrientationMask LandscapeRight = new UIInterfaceOrientationMask(8L);

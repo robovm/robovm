@@ -35,6 +35,7 @@ import org.robovm.apple.dispatch.*;
 /*<annotations>*/@Marshaler(Bits.AsMachineSizedIntMarshaler.class)/*</annotations>*/
 public final class /*<name>*/CFStringTokenizerUnitOptions/*</name>*/ extends Bits</*<name>*/CFStringTokenizerUnitOptions/*</name>*/> {
     /*<values>*/
+    public static final CFStringTokenizerUnitOptions None = new CFStringTokenizerUnitOptions(0L);
     public static final CFStringTokenizerUnitOptions UnitWord = new CFStringTokenizerUnitOptions(0L);
     public static final CFStringTokenizerUnitOptions UnitSentence = new CFStringTokenizerUnitOptions(1L);
     public static final CFStringTokenizerUnitOptions UnitParagraph = new CFStringTokenizerUnitOptions(2L);

@@ -39,6 +39,7 @@ import org.robovm.apple.coreimage.*;
 /*<annotations>*/@Marshaler(Bits.AsMachineSizedIntMarshaler.class)/*</annotations>*/
 public final class /*<name>*/UIRectCorner/*</name>*/ extends Bits</*<name>*/UIRectCorner/*</name>*/> {
     /*<values>*/
+    public static final UIRectCorner None = new UIRectCorner(0L);
     public static final UIRectCorner TopLeft = new UIRectCorner(1L);
     public static final UIRectCorner TopRight = new UIRectCorner(2L);
     public static final UIRectCorner BottomLeft = new UIRectCorner(4L);

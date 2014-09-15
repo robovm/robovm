@@ -37,6 +37,7 @@ import org.robovm.apple.security.*;
 /*<annotations>*/@Marshaler(Bits.AsMachineSizedIntMarshaler.class)/*</annotations>*/
 public final class /*<name>*/NSPropertyListMutabilityOptions/*</name>*/ extends Bits</*<name>*/NSPropertyListMutabilityOptions/*</name>*/> {
     /*<values>*/
+    public static final NSPropertyListMutabilityOptions None = new NSPropertyListMutabilityOptions(0L);
     public static final NSPropertyListMutabilityOptions Immutable = new NSPropertyListMutabilityOptions(0L);
     public static final NSPropertyListMutabilityOptions MutableContainers = new NSPropertyListMutabilityOptions(1L);
     public static final NSPropertyListMutabilityOptions MutableContainersAndLeaves = new NSPropertyListMutabilityOptions(2L);

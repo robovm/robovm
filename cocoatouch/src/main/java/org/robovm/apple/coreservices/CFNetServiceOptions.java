@@ -36,6 +36,7 @@ import org.robovm.apple.corefoundation.*;
 /*<annotations>*/@Marshaler(Bits.AsMachineSizedIntMarshaler.class)/*</annotations>*/
 public final class /*<name>*/CFNetServiceOptions/*</name>*/ extends Bits</*<name>*/CFNetServiceOptions/*</name>*/> {
     /*<values>*/
+    public static final CFNetServiceOptions None = new CFNetServiceOptions(0L);
     public static final CFNetServiceOptions NoAutoRename = new CFNetServiceOptions(1L);
     /*</values>*/
 

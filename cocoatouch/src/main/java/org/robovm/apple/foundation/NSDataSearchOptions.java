@@ -39,6 +39,7 @@ import org.robovm.apple.security.*;
 /*<annotations>*/@Marshaler(Bits.AsMachineSizedIntMarshaler.class)/*</annotations>*/
 public final class /*<name>*/NSDataSearchOptions/*</name>*/ extends Bits</*<name>*/NSDataSearchOptions/*</name>*/> {
     /*<values>*/
+    public static final NSDataSearchOptions None = new NSDataSearchOptions(0L);
     public static final NSDataSearchOptions Backwards = new NSDataSearchOptions(1L);
     public static final NSDataSearchOptions Anchored = new NSDataSearchOptions(2L);
     /*</values>*/

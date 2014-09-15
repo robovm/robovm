@@ -39,6 +39,7 @@ import org.robovm.apple.coremedia.*;
 /*<annotations>*/@Marshaler(Bits.AsMachineSizedIntMarshaler.class)/*</annotations>*/
 public final class /*<name>*/CVTimeStampFlag/*</name>*/ extends Bits</*<name>*/CVTimeStampFlag/*</name>*/> {
     /*<values>*/
+    public static final CVTimeStampFlag None = new CVTimeStampFlag(0L);
     public static final CVTimeStampFlag VideoTimeValid = new CVTimeStampFlag(1L);
     public static final CVTimeStampFlag HostTimeValid = new CVTimeStampFlag(2L);
     public static final CVTimeStampFlag SMPTETimeValid = new CVTimeStampFlag(4L);

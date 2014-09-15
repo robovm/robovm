@@ -39,6 +39,7 @@ import org.robovm.apple.security.*;
 /*<annotations>*/@Marshaler(Bits.AsMachineSizedIntMarshaler.class)/*</annotations>*/
 public final class /*<name>*/NSDirectoryEnumerationOptions/*</name>*/ extends Bits</*<name>*/NSDirectoryEnumerationOptions/*</name>*/> {
     /*<values>*/
+    public static final NSDirectoryEnumerationOptions None = new NSDirectoryEnumerationOptions(0L);
     public static final NSDirectoryEnumerationOptions SubdirectoryDescendants = new NSDirectoryEnumerationOptions(1L);
     public static final NSDirectoryEnumerationOptions PackageDescendants = new NSDirectoryEnumerationOptions(2L);
     public static final NSDirectoryEnumerationOptions HiddenFiles = new NSDirectoryEnumerationOptions(4L);

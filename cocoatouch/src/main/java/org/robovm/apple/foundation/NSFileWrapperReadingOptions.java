@@ -39,6 +39,7 @@ import org.robovm.apple.security.*;
 /*<annotations>*/@Marshaler(Bits.AsMachineSizedIntMarshaler.class)/*</annotations>*/
 public final class /*<name>*/NSFileWrapperReadingOptions/*</name>*/ extends Bits</*<name>*/NSFileWrapperReadingOptions/*</name>*/> {
     /*<values>*/
+    public static final NSFileWrapperReadingOptions None = new NSFileWrapperReadingOptions(0L);
     public static final NSFileWrapperReadingOptions Immediate = new NSFileWrapperReadingOptions(1L);
     public static final NSFileWrapperReadingOptions WithoutMapping = new NSFileWrapperReadingOptions(2L);
     /*</values>*/

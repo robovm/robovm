@@ -35,6 +35,7 @@ import org.robovm.apple.dispatch.*;
 /*<annotations>*/@Marshaler(Bits.AsMachineSizedIntMarshaler.class)/*</annotations>*/
 public final class /*<name>*/CFCalendarUnit/*</name>*/ extends Bits</*<name>*/CFCalendarUnit/*</name>*/> {
     /*<values>*/
+    public static final CFCalendarUnit None = new CFCalendarUnit(0L);
     public static final CFCalendarUnit Era = new CFCalendarUnit(2L);
     public static final CFCalendarUnit Year = new CFCalendarUnit(4L);
     public static final CFCalendarUnit Month = new CFCalendarUnit(8L);

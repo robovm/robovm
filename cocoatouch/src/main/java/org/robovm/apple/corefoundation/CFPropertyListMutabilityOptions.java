@@ -35,6 +35,7 @@ import org.robovm.apple.dispatch.*;
 /*<annotations>*/@Marshaler(Bits.AsMachineSizedIntMarshaler.class)/*</annotations>*/
 public final class /*<name>*/CFPropertyListMutabilityOptions/*</name>*/ extends Bits</*<name>*/CFPropertyListMutabilityOptions/*</name>*/> {
     /*<values>*/
+    public static final CFPropertyListMutabilityOptions None = new CFPropertyListMutabilityOptions(0L);
     public static final CFPropertyListMutabilityOptions Immutable = new CFPropertyListMutabilityOptions(0L);
     public static final CFPropertyListMutabilityOptions MutableContainers = new CFPropertyListMutabilityOptions(1L);
     public static final CFPropertyListMutabilityOptions MutableContainersAndLeaves = new CFPropertyListMutabilityOptions(2L);

@@ -36,6 +36,7 @@ import org.robovm.apple.corefoundation.*;
 /*<annotations>*/@Marshaler(Bits.AsMachineSizedIntMarshaler.class)/*</annotations>*/
 public final class /*<name>*/CFNetServiceBrowserFlags/*</name>*/ extends Bits</*<name>*/CFNetServiceBrowserFlags/*</name>*/> {
     /*<values>*/
+    public static final CFNetServiceBrowserFlags None = new CFNetServiceBrowserFlags(0L);
     public static final CFNetServiceBrowserFlags MoreComing = new CFNetServiceBrowserFlags(1L);
     public static final CFNetServiceBrowserFlags IsDomain = new CFNetServiceBrowserFlags(2L);
     public static final CFNetServiceBrowserFlags IsDefault = new CFNetServiceBrowserFlags(4L);

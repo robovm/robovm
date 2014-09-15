@@ -39,6 +39,7 @@ import org.robovm.apple.dispatch.*;
 /*<annotations>*/@Marshaler(Bits.AsMachineSizedIntMarshaler.class)/*</annotations>*/
 public final class /*<name>*/CBAttributePermissions/*</name>*/ extends Bits</*<name>*/CBAttributePermissions/*</name>*/> {
     /*<values>*/
+    public static final CBAttributePermissions None = new CBAttributePermissions(0L);
     public static final CBAttributePermissions Readable = new CBAttributePermissions(1L);
     public static final CBAttributePermissions Writeable = new CBAttributePermissions(2L);
     public static final CBAttributePermissions ReadEncryptionRequired = new CBAttributePermissions(4L);

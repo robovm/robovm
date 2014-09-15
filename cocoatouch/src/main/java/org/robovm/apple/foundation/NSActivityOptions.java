@@ -39,6 +39,7 @@ import org.robovm.apple.security.*;
 /*<annotations>*//*</annotations>*/
 public final class /*<name>*/NSActivityOptions/*</name>*/ extends Bits</*<name>*/NSActivityOptions/*</name>*/> {
     /*<values>*/
+    public static final NSActivityOptions None = new NSActivityOptions(0L);
     public static final NSActivityOptions IdleDisplaySleepDisabled = new NSActivityOptions(1099511627776L);
     public static final NSActivityOptions IdleSystemSleepDisabled = new NSActivityOptions(1048576L);
     public static final NSActivityOptions SuddenTerminationDisabled = new NSActivityOptions(16384L);

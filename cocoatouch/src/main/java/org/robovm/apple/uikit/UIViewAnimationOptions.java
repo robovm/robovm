@@ -41,6 +41,7 @@ import org.robovm.apple.coreimage.*;
 /*<annotations>*/@Marshaler(Bits.AsMachineSizedIntMarshaler.class)/*</annotations>*/
 public final class /*<name>*/UIViewAnimationOptions/*</name>*/ extends Bits</*<name>*/UIViewAnimationOptions/*</name>*/> {
     /*<values>*/
+    public static final UIViewAnimationOptions None = new UIViewAnimationOptions(0L);
     public static final UIViewAnimationOptions LayoutSubviews = new UIViewAnimationOptions(1L);
     public static final UIViewAnimationOptions AllowUserInteraction = new UIViewAnimationOptions(2L);
     public static final UIViewAnimationOptions BeginFromCurrentState = new UIViewAnimationOptions(4L);

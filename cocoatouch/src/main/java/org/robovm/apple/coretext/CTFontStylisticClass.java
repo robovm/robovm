@@ -37,6 +37,7 @@ import org.robovm.apple.coregraphics.*;
 /*<annotations>*/@Marshaler(ValuedEnum.AsMachineSizedUIntMarshaler.class)/*</annotations>*/
 public final class /*<name>*/CTFontStylisticClass/*</name>*/ extends Bits</*<name>*/CTFontStylisticClass/*</name>*/> {
     /*<values>*/
+    public static final CTFontStylisticClass None = new CTFontStylisticClass(0L);
     public static final CTFontStylisticClass ClassUnknown = new CTFontStylisticClass(0L);
     public static final CTFontStylisticClass ClassOldStyleSerifs = new CTFontStylisticClass(268435456L);
     public static final CTFontStylisticClass ClassTransitionalSerifs = new CTFontStylisticClass(536870912L);

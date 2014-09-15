@@ -39,6 +39,7 @@ import org.robovm.apple.coreimage.*;
 /*<annotations>*/@Marshaler(Bits.AsMachineSizedIntMarshaler.class)/*</annotations>*/
 public final class /*<name>*/UIDocumentState/*</name>*/ extends Bits</*<name>*/UIDocumentState/*</name>*/> {
     /*<values>*/
+    public static final UIDocumentState None = new UIDocumentState(0L);
     public static final UIDocumentState Normal = new UIDocumentState(0L);
     public static final UIDocumentState Closed = new UIDocumentState(1L);
     public static final UIDocumentState InConflict = new UIDocumentState(2L);

@@ -37,6 +37,7 @@ import org.robovm.apple.security.*;
 /*<annotations>*/@Marshaler(Bits.AsMachineSizedIntMarshaler.class)/*</annotations>*/
 public final class /*<name>*/NSNotificationCoalescing/*</name>*/ extends Bits</*<name>*/NSNotificationCoalescing/*</name>*/> {
     /*<values>*/
+    public static final NSNotificationCoalescing None = new NSNotificationCoalescing(0L);
     public static final NSNotificationCoalescing NoCoalescing = new NSNotificationCoalescing(0L);
     public static final NSNotificationCoalescing CoalescingOnName = new NSNotificationCoalescing(1L);
     public static final NSNotificationCoalescing CoalescingOnSender = new NSNotificationCoalescing(2L);

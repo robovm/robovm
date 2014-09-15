@@ -39,6 +39,7 @@ import org.robovm.apple.security.*;
 /*<annotations>*/@Marshaler(Bits.AsMachineSizedIntMarshaler.class)/*</annotations>*/
 public final class /*<name>*/NSDataBase64DecodingOptions/*</name>*/ extends Bits</*<name>*/NSDataBase64DecodingOptions/*</name>*/> {
     /*<values>*/
+    public static final NSDataBase64DecodingOptions None = new NSDataBase64DecodingOptions(0L);
     public static final NSDataBase64DecodingOptions IgnoreUnknownCharacters = new NSDataBase64DecodingOptions(1L);
     /*</values>*/
 

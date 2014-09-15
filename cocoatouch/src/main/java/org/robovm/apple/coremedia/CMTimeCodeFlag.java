@@ -42,6 +42,7 @@ import org.robovm.apple.audiotoolbox.*;
 /*<annotations>*/@Marshaler(Bits.AsMachineSizedIntMarshaler.class)/*</annotations>*/
 public final class /*<name>*/CMTimeCodeFlag/*</name>*/ extends Bits</*<name>*/CMTimeCodeFlag/*</name>*/> {
     /*<values>*/
+    public static final CMTimeCodeFlag None = new CMTimeCodeFlag(0L);
     public static final CMTimeCodeFlag DropFrame = new CMTimeCodeFlag(1L);
     public static final CMTimeCodeFlag _24HourMax = new CMTimeCodeFlag(2L);
     public static final CMTimeCodeFlag NegTimesOK = new CMTimeCodeFlag(4L);

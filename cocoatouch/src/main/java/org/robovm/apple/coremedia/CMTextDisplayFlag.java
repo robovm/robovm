@@ -42,6 +42,7 @@ import org.robovm.apple.audiotoolbox.*;
 /*<annotations>*/@Marshaler(Bits.AsMachineSizedIntMarshaler.class)/*</annotations>*/
 public final class /*<name>*/CMTextDisplayFlag/*</name>*/ extends Bits</*<name>*/CMTextDisplayFlag/*</name>*/> {
     /*<values>*/
+    public static final CMTextDisplayFlag None = new CMTextDisplayFlag(0L);
     public static final CMTextDisplayFlag scrollIn = new CMTextDisplayFlag(32L);
     public static final CMTextDisplayFlag scrollOut = new CMTextDisplayFlag(64L);
     public static final CMTextDisplayFlag scrollDirectionMask = new CMTextDisplayFlag(384L);

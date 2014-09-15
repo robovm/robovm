@@ -35,6 +35,7 @@ import org.robovm.apple.dispatch.*;
 /*<annotations>*/@Marshaler(Bits.AsMachineSizedIntMarshaler.class)/*</annotations>*/
 public final class /*<name>*/CFURLBookmarkResolutionOptions/*</name>*/ extends Bits</*<name>*/CFURLBookmarkResolutionOptions/*</name>*/> {
     /*<values>*/
+    public static final CFURLBookmarkResolutionOptions None = new CFURLBookmarkResolutionOptions(0L);
     public static final CFURLBookmarkResolutionOptions WithoutUIMask = new CFURLBookmarkResolutionOptions(256L);
     public static final CFURLBookmarkResolutionOptions WithoutMountingMask = new CFURLBookmarkResolutionOptions(512L);
     public static final CFURLBookmarkResolutionOptions WithSecurityScope = new CFURLBookmarkResolutionOptions(1024L);

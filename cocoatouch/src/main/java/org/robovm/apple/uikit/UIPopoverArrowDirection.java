@@ -39,6 +39,7 @@ import org.robovm.apple.coreimage.*;
 /*<annotations>*/@Marshaler(Bits.AsMachineSizedIntMarshaler.class)/*</annotations>*/
 public final class /*<name>*/UIPopoverArrowDirection/*</name>*/ extends Bits</*<name>*/UIPopoverArrowDirection/*</name>*/> {
     /*<values>*/
+    public static final UIPopoverArrowDirection None = new UIPopoverArrowDirection(0L);
     public static final UIPopoverArrowDirection Up = new UIPopoverArrowDirection(1L);
     public static final UIPopoverArrowDirection Down = new UIPopoverArrowDirection(2L);
     public static final UIPopoverArrowDirection Left = new UIPopoverArrowDirection(4L);

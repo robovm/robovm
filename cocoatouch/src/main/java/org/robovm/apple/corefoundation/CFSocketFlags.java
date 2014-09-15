@@ -35,6 +35,7 @@ import org.robovm.apple.dispatch.*;
 /*<annotations>*/@Marshaler(Bits.AsMachineSizedIntMarshaler.class)/*</annotations>*/
 public final class /*<name>*/CFSocketFlags/*</name>*/ extends Bits</*<name>*/CFSocketFlags/*</name>*/> {
     /*<values>*/
+    public static final CFSocketFlags None = new CFSocketFlags(0L);
     public static final CFSocketFlags AutomaticallyReenableReadCallBack = new CFSocketFlags(1L);
     public static final CFSocketFlags AutomaticallyReenableAcceptCallBack = new CFSocketFlags(2L);
     public static final CFSocketFlags AutomaticallyReenableDataCallBack = new CFSocketFlags(3L);

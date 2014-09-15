@@ -39,6 +39,7 @@ import org.robovm.apple.coreimage.*;
 /*<annotations>*/@Marshaler(Bits.AsMachineSizedIntMarshaler.class)/*</annotations>*/
 public final class /*<name>*/UIControlState/*</name>*/ extends Bits</*<name>*/UIControlState/*</name>*/> {
     /*<values>*/
+    public static final UIControlState None = new UIControlState(0L);
     public static final UIControlState Normal = new UIControlState(0L);
     public static final UIControlState Highlighted = new UIControlState(1L);
     public static final UIControlState Disabled = new UIControlState(2L);

@@ -37,6 +37,7 @@ import org.robovm.apple.coregraphics.*;
 /*<annotations>*/@Marshaler(Bits.AsMachineSizedIntMarshaler.class)/*</annotations>*/
 public final class /*<name>*/CTFontSymbolicTraits/*</name>*/ extends Bits</*<name>*/CTFontSymbolicTraits/*</name>*/> {
     /*<values>*/
+    public static final CTFontSymbolicTraits None = new CTFontSymbolicTraits(0L);
     public static final CTFontSymbolicTraits TraitItalic = new CTFontSymbolicTraits(1L);
     public static final CTFontSymbolicTraits TraitBold = new CTFontSymbolicTraits(2L);
     public static final CTFontSymbolicTraits TraitExpanded = new CTFontSymbolicTraits(32L);

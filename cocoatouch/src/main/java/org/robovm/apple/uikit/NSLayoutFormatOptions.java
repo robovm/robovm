@@ -39,6 +39,7 @@ import org.robovm.apple.coreimage.*;
 /*<annotations>*/@Marshaler(Bits.AsMachineSizedIntMarshaler.class)/*</annotations>*/
 public final class /*<name>*/NSLayoutFormatOptions/*</name>*/ extends Bits</*<name>*/NSLayoutFormatOptions/*</name>*/> {
     /*<values>*/
+    public static final NSLayoutFormatOptions None = new NSLayoutFormatOptions(0L);
     public static final NSLayoutFormatOptions AlignAllLeft = new NSLayoutFormatOptions(2L);
     public static final NSLayoutFormatOptions AlignAllRight = new NSLayoutFormatOptions(4L);
     public static final NSLayoutFormatOptions AlignAllTop = new NSLayoutFormatOptions(8L);

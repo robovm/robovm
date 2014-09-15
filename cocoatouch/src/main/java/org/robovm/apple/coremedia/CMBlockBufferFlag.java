@@ -42,6 +42,7 @@ import org.robovm.apple.audiotoolbox.*;
 /*<annotations>*/@Marshaler(Bits.AsMachineSizedIntMarshaler.class)/*</annotations>*/
 public final class /*<name>*/CMBlockBufferFlag/*</name>*/ extends Bits</*<name>*/CMBlockBufferFlag/*</name>*/> {
     /*<values>*/
+    public static final CMBlockBufferFlag None = new CMBlockBufferFlag(0L);
     public static final CMBlockBufferFlag AssureMemoryNow = new CMBlockBufferFlag(1L);
     public static final CMBlockBufferFlag AlwaysCopyData = new CMBlockBufferFlag(2L);
     public static final CMBlockBufferFlag DontOptimizeDepth = new CMBlockBufferFlag(4L);

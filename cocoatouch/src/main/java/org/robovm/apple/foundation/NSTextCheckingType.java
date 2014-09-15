@@ -37,6 +37,7 @@ import org.robovm.apple.security.*;
 /*<annotations>*//*</annotations>*/
 public final class /*<name>*/NSTextCheckingType/*</name>*/ extends Bits</*<name>*/NSTextCheckingType/*</name>*/> {
     /*<values>*/
+    public static final NSTextCheckingType None = new NSTextCheckingType(0L);
     public static final NSTextCheckingType Orthography = new NSTextCheckingType(1L);
     public static final NSTextCheckingType Spelling = new NSTextCheckingType(2L);
     public static final NSTextCheckingType Grammar = new NSTextCheckingType(4L);

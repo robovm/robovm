@@ -35,6 +35,7 @@ import org.robovm.apple.dispatch.*;
 /*<annotations>*/@Marshaler(Bits.AsMachineSizedIntMarshaler.class)/*</annotations>*/
 public final class /*<name>*/CFNumberFormatterOptionFlags/*</name>*/ extends Bits</*<name>*/CFNumberFormatterOptionFlags/*</name>*/> {
     /*<values>*/
+    public static final CFNumberFormatterOptionFlags None = new CFNumberFormatterOptionFlags(0L);
     public static final CFNumberFormatterOptionFlags ParseIntegersOnly = new CFNumberFormatterOptionFlags(1L);
     /*</values>*/
 

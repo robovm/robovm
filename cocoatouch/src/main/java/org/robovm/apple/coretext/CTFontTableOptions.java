@@ -37,6 +37,7 @@ import org.robovm.apple.coregraphics.*;
 /*<annotations>*/@Marshaler(Bits.AsMachineSizedIntMarshaler.class)/*</annotations>*/
 public final class /*<name>*/CTFontTableOptions/*</name>*/ extends Bits</*<name>*/CTFontTableOptions/*</name>*/> {
     /*<values>*/
+    public static final CTFontTableOptions None = new CTFontTableOptions(0L);
     public static final CTFontTableOptions NoOptions = new CTFontTableOptions(0L);
     /**
      * @since Available in iOS 3.2 and later.

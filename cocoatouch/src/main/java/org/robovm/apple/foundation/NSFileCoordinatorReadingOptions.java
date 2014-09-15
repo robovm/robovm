@@ -37,6 +37,7 @@ import org.robovm.apple.security.*;
 /*<annotations>*/@Marshaler(Bits.AsMachineSizedIntMarshaler.class)/*</annotations>*/
 public final class /*<name>*/NSFileCoordinatorReadingOptions/*</name>*/ extends Bits</*<name>*/NSFileCoordinatorReadingOptions/*</name>*/> {
     /*<values>*/
+    public static final NSFileCoordinatorReadingOptions None = new NSFileCoordinatorReadingOptions(0L);
     public static final NSFileCoordinatorReadingOptions WithoutChanges = new NSFileCoordinatorReadingOptions(1L);
     public static final NSFileCoordinatorReadingOptions ResolvesSymbolicLink = new NSFileCoordinatorReadingOptions(2L);
     /*</values>*/

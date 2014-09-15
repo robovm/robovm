@@ -38,6 +38,7 @@ import org.robovm.apple.corelocation.*;
 /*<annotations>*/@Marshaler(Bits.AsMachineSizedIntMarshaler.class)/*</annotations>*/
 public final class /*<name>*/EKEntityMask/*</name>*/ extends Bits</*<name>*/EKEntityMask/*</name>*/> {
     /*<values>*/
+    public static final EKEntityMask None = new EKEntityMask(0L);
     public static final EKEntityMask Event = new EKEntityMask(1L);
     public static final EKEntityMask Reminder = new EKEntityMask(2L);
     /*</values>*/

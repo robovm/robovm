@@ -35,6 +35,7 @@ import org.robovm.apple.dispatch.*;
 /*<annotations>*/@Marshaler(Bits.AsMachineSizedIntMarshaler.class)/*</annotations>*/
 public final class /*<name>*/CFURLEnumeratorOptions/*</name>*/ extends Bits</*<name>*/CFURLEnumeratorOptions/*</name>*/> {
     /*<values>*/
+    public static final CFURLEnumeratorOptions None = new CFURLEnumeratorOptions(0L);
     public static final CFURLEnumeratorOptions DefaultBehavior = new CFURLEnumeratorOptions(0L);
     public static final CFURLEnumeratorOptions DescendRecursively = new CFURLEnumeratorOptions(1L);
     public static final CFURLEnumeratorOptions SkipInvisibles = new CFURLEnumeratorOptions(2L);

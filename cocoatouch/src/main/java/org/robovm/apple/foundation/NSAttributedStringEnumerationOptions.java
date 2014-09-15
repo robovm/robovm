@@ -37,6 +37,7 @@ import org.robovm.apple.security.*;
 /*<annotations>*/@Marshaler(Bits.AsMachineSizedIntMarshaler.class)/*</annotations>*/
 public final class /*<name>*/NSAttributedStringEnumerationOptions/*</name>*/ extends Bits</*<name>*/NSAttributedStringEnumerationOptions/*</name>*/> {
     /*<values>*/
+    public static final NSAttributedStringEnumerationOptions None = new NSAttributedStringEnumerationOptions(0L);
     public static final NSAttributedStringEnumerationOptions Reverse = new NSAttributedStringEnumerationOptions(2L);
     public static final NSAttributedStringEnumerationOptions LongestEffectiveRangeNotRequired = new NSAttributedStringEnumerationOptions(1048576L);
     /*</values>*/

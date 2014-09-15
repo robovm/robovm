@@ -37,6 +37,7 @@ import org.robovm.apple.security.*;
 /*<annotations>*/@Marshaler(Bits.AsMachineSizedIntMarshaler.class)/*</annotations>*/
 public final class /*<name>*/NSURLBookmarkResolutionOptions/*</name>*/ extends Bits</*<name>*/NSURLBookmarkResolutionOptions/*</name>*/> {
     /*<values>*/
+    public static final NSURLBookmarkResolutionOptions None = new NSURLBookmarkResolutionOptions(0L);
     public static final NSURLBookmarkResolutionOptions outUI = new NSURLBookmarkResolutionOptions(256L);
     public static final NSURLBookmarkResolutionOptions outMounting = new NSURLBookmarkResolutionOptions(512L);
     public static final NSURLBookmarkResolutionOptions SecurityScope = new NSURLBookmarkResolutionOptions(1024L);

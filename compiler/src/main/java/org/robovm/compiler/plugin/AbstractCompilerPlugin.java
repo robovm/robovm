@@ -32,8 +32,8 @@ import soot.SootMethod;
  */
 public abstract class AbstractCompilerPlugin implements CompilerPlugin {
     @Override
-    public CompilerPluginArguments getArguments() {
-        return new CompilerPluginArguments("", Collections.<CompilerPluginArgument>emptyList());
+    public PluginArguments getArguments() {
+        return new PluginArguments("", Collections.<PluginArgument>emptyList());
     }
     
     @Override

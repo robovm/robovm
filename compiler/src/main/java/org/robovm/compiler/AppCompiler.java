@@ -53,7 +53,8 @@ import org.robovm.compiler.config.OS;
 import org.robovm.compiler.config.Resource;
 import org.robovm.compiler.log.ConsoleLogger;
 import org.robovm.compiler.plugin.CompilerPlugin;
-import org.robovm.compiler.plugin.CompilerPluginArgument;
+import org.robovm.compiler.plugin.Plugin;
+import org.robovm.compiler.plugin.PluginArgument;
 import org.robovm.compiler.target.LaunchParameters;
 import org.robovm.compiler.target.ios.IOSSimulatorLaunchParameters;
 import org.robovm.compiler.target.ios.IOSSimulatorLaunchParameters.Family;
@@ -345,7 +346,7 @@ public class AppCompiler {
         List<String> launchArgs = new ArrayList<String>();
         try {
             builder = new Config.Builder();
-            Map<String, CompilerPluginArgument> pluginArguments = builder.fetchPluginArguments();
+            Map<String, PluginArgument> pluginArguments = builder.fetchPluginArguments();
  
             int i = 0;
             while (i < args.length) {
@@ -413,7 +414,7 @@ public class AppCompiler {
                 } else if ("-clean".equals(args[i])) {
                     builder.clean(true);
                 } else if ("-help".equals(args[i]) || "-?".equals(args[i])) {
-                    printUsageAndExit(null, builder.getCompilerPlugins());
+                    printUsageAndExit(null, builder.getPlugins());
                 } else if ("-version".equals(args[i])) {
                     printVersionAndExit();
                 } else if ("-cc".equals(args[i])) {
@@ -500,9 +501,9 @@ public class AppCompiler {
                     if(argName.contains("=")) {
                         argName = argName.substring(0, argName.indexOf('='));
                     }
-                    CompilerPluginArgument arg = pluginArguments.get(argName);
+                    PluginArgument arg = pluginArguments.get(argName);
                     if (arg != null) {
-                        builder.addCompilerPluginArgument(args[i].substring(1));                        
+                        builder.addPluginArgument(args[i].substring(1));                        
                     } else {
                         throw new IllegalArgumentException("Unrecognized option: " + args[i]);
                     }
@@ -558,7 +559,7 @@ public class AppCompiler {
             if (verbose && !(t instanceof StringIndexOutOfBoundsException) && !(t instanceof IllegalArgumentException)) {
                 t.printStackTrace();
             }
-            printUsageAndExit(message, builder.getCompilerPlugins());
+            printUsageAndExit(message, builder.getPlugins());
         }
         
         try {
@@ -608,7 +609,7 @@ public class AppCompiler {
             if (verbose && !(t instanceof ExecuteException)) {
                 t.printStackTrace();
             }
-            printUsageAndExit(message, builder.getCompilerPlugins());
+            printUsageAndExit(message, builder.getPlugins());
         }
     }
     
@@ -617,7 +618,7 @@ public class AppCompiler {
         System.exit(0);
     }
     
-    private static void printUsageAndExit(String errorMessage, List<CompilerPlugin> plugins) {
+    private static void printUsageAndExit(String errorMessage, List<Plugin> plugins) {
         if (errorMessage != null) {
             System.err.format("robovm: %s\n", errorMessage);
         }
@@ -751,11 +752,11 @@ public class AppCompiler {
                          + "                        the latest).");
         
         if(plugins != null) {
-            for(CompilerPlugin plugin: plugins) {
+            for(Plugin plugin: plugins) {
                 if(plugin.getArguments().getArguments().size() > 0) {
                     System.err.println(plugin.getClass().getSimpleName() + " options:");
-                    for(CompilerPluginArgument arg: plugin.getArguments().getArguments()) {
-                        String argString = "  -" + arg.getName() + (arg.hasValue()? " " + arg.getValueName(): "");
+                    for(PluginArgument arg: plugin.getArguments().getArguments()) {
+                        String argString = "  -" + plugin.getArguments().getPrefix() + ":" + arg.getName() + (arg.hasValue()? " " + arg.getValueName(): "");
                         int whitespace = Math.max(1, 24 - argString.length());
                         System.err.println(argString + repeat(" ", whitespace) + arg.getDescription());
                     }

@@ -947,7 +947,7 @@ classes:
             '+(purple|brown|clear|lightText|darkText)Color':
                 name: "#{g[0][0].downcase}#{g[0][1..-1]}"
             '+(groupTableViewBackground|viewFlipsideBackground|scrollViewTexturedBackground|underPageBackground)Color':
-                name: "#{g[0][0].downcase}#{g[0][1..-1]}Color"
+                name: "#{g[0][0].downcase}#{g[0][1..-1]}"
             '-initWithHue:saturation:brightness:alpha:':
                 exclude: true
             '-initWithPatternImage:':
@@ -1231,15 +1231,15 @@ classes:
                     attributes:
                         type: "NSDictionary<NSString, ?>"
             '-fontDescriptorWithSymbolicTraits:':
-                name: newWithSymbolicTraits
+                name: createWithSymbolicTraits
             '-fontDescriptorWithSize:':
-                name: newWithSize
+                name: createWithSize
             '-fontDescriptorWithMatrix:':
-                name: newWithMatrix
+                name: createWithMatrix
             '-fontDescriptorWithFace:':
-                name: newWithFace
+                name: createWithFace
             '-fontDescriptorWithFamily:':
-                name: newWithFamily
+                name: createWithFamily
 
     UIGestureRecognizer: # DONE
         methods:
@@ -3658,6 +3658,11 @@ values:
         type: NSString
         visibility: protected
     
+    UIFontDescriptor(.*)Attribute:
+        class: UIFontDescriptorAttribute
+        name: "#{g[0]}Value"
+        type: NSString
+    
     UI(WindowLevel.*):
         name: "#{g[0]}"
 
@@ -3738,9 +3743,6 @@ values:
     UI(EdgeInsetsZero):
         name: "#{g[0]}"
 
-    UI(FontDescriptor.*Attribute):
-        name: "#{g[0]}"
-        type: NSString
     UI(FontTextStyle.*):
         name: "#{g[0]}"
     UI(Font.*Trait):

@@ -197,27 +197,27 @@ import org.robovm.apple.coreimage.*;
     @Method(selector = "darkTextColor")
     public static native UIColor darkText();
     @Method(selector = "groupTableViewBackgroundColor")
-    public static native UIColor groupTableViewBackgroundColor();
+    public static native UIColor groupTableViewBackground();
     /**
      * @since Available in iOS 2.0 and later.
      * @deprecated Deprecated in iOS 7.0.
      */
     @Deprecated
     @Method(selector = "viewFlipsideBackgroundColor")
-    public static native UIColor viewFlipsideBackgroundColor();
+    public static native UIColor viewFlipsideBackground();
     /**
      * @since Available in iOS 3.2 and later.
      * @deprecated Deprecated in iOS 7.0.
      */
     @Deprecated
     @Method(selector = "scrollViewTexturedBackgroundColor")
-    public static native UIColor scrollViewTexturedBackgroundColor();
+    public static native UIColor scrollViewTexturedBackground();
     /**
      * @since Available in iOS 5.0 and later.
      * @deprecated Deprecated in iOS 7.0.
      */
     @Deprecated
     @Method(selector = "underPageBackgroundColor")
-    public static native UIColor underPageBackgroundColor();
+    public static native UIColor underPageBackground();
     /*</methods>*/
 }

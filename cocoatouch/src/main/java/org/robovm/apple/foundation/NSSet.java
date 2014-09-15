@@ -19,6 +19,7 @@ package org.robovm.apple.foundation;
 import java.io.*;
 import java.nio.*;
 import java.util.*;
+
 import org.robovm.objc.*;
 import org.robovm.objc.annotation.*;
 import org.robovm.objc.block.*;
@@ -169,6 +170,45 @@ import org.robovm.apple.security.*;
     }
     public T any() {
         return anyObject();
+    }
+    
+    /**
+     * Use this method to convert a NSSet of NSString items to a Set of String items. 
+     * Elements of this NSASet must be of type NSString, otherwise an exception will be thrown.
+     * @return
+     * @throws UnsupportedOperationException when the set items are not of type NSString.
+     */
+    public Set<String> asStringSet() {
+        Set<String> set = new HashSet<>();
+        if (size() == 0) 
+            return set;
+        if (!(any() instanceof NSString)) 
+            throw new UnsupportedOperationException("items must be of type NSString");
+        
+        for (T str : this) {
+            set.add(str.toString());
+        }
+        return set;
+    }
+    
+    public static NSSet<NSString> fromStrings (String... strings) {
+        int length = strings.length;
+        NSString[] nsStrings = new NSString[length];
+
+        for (int i = 0; i < length; i++) {
+            nsStrings[i] = new NSString(strings[i]);
+        }
+        return new NSSet<NSString>(nsStrings);
+    }
+
+    public static NSSet<NSString> fromStrings (List<String> strings) {
+        int size = strings.size();
+        NSString[] nsStrings = new NSString[size];
+
+        for (int i = 0; i < size; i++) {
+            nsStrings[i] = new NSString(strings.get(i));
+        }
+        return new NSSet<NSString>(nsStrings);
     }
     
     /*<methods>*/

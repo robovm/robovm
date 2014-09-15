@@ -21,16 +21,16 @@ package org.robovm.compiler.plugin;
  * arguments for a {@link CompilerPlugin}. An argument can have an 
  * optional value (a second token to be parsed). 
  */
-public class CompilerPluginArgument {
+public class PluginArgument {
     private final String name;
     private final String valueName;
     private final String description;
     
-    public CompilerPluginArgument(String name, String description) {
+    public PluginArgument(String name, String description) {
         this(name, null, description);
     }
     
-    public CompilerPluginArgument(String name, String valueName, String description) {       
+    public PluginArgument(String name, String valueName, String description) {       
         this.name = name;
         this.valueName = valueName;
         this.description = description;

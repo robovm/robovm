@@ -19,8 +19,6 @@ package org.robovm.compiler.llvm;
 import java.util.Collections;
 import java.util.Set;
 
-
-
 /**
  *
  * @version $Id$
@@ -38,11 +36,15 @@ public class Alloca extends Instruction {
     public Set<Variable> getWritesTo() {
         return Collections.singleton(result);
     }
-    
+
     public Variable getResult() {
         return result;
     }
-    
+
+    public Type getType() {
+        return type;
+    }
+
     @Override
     public String toString() {
         return result + " = alloca " + type;

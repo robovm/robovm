@@ -2176,9 +2176,9 @@ classes:
     UITextField: # DONE
         properties:
             'defaultTextAttributes':
-                type: "NSDictionary<NSString, ?>"
+                type: NSAttributedStringAttributes
             'typingAttributes':
-                type: "NSDictionary<NSString, ?>"
+                type: NSAttributedStringAttributes
         methods:
             '-borderRectForBounds:':
                 name: getBorderRect
@@ -2223,9 +2223,9 @@ classes:
     UITextView: # DONE
         properties:
             'linkTextAttributes':
-                type: "NSDictionary<NSString, ?>"
+                type: NSAttributedStringAttributes
             'typingAttributes':
-                type: "NSDictionary<NSString, ?>"
+                type: NSAttributedStringAttributes
         methods:
             '-scrollRangeToVisible:':
                 trim_after_first_colon: true
@@ -3263,7 +3263,7 @@ protocols:
     UITextInput:
         properties:
             'markedTextStyle':
-                type: "NSDictionary<NSString, ?>"
+                type: UITextInputTextStyle
         methods:
             '-baseWritingDirectionForPosition:inDirection:':
                 name: getBaseWritingDirection
@@ -3301,7 +3301,7 @@ protocols:
                 name: getTextRange
             '-textStylingAtPosition:inDirection:':
                 name: getTextStyling
-                return_type: "NSDictionary<NSString, ?>"
+                return_type: UITextInputTextStyle
             '-frameForDictationResultPlaceholder:':
                 name: getDictationResultPlaceholderFrame
             '-selectionRectsForRange:':
@@ -3599,16 +3599,31 @@ functions:
 
 values:
 
+    NS(.*Attribute)Name:
+        class: NSAttributedStringAttribute
+        name: "#{g[0]}"
+        type: NSString
+        visibility: protected  
+    NSTextEffect(.*):
+        class: NSTextEffect
+        name: "#{g[0]}Value"
+        type: NSString
+        visibility: protected
+    NS(TabColumnTerminatorsAttribute)Name:
+        class: NSTextTabOptions
+        name: "#{g[0]}"
+        type: NSString
+        visibility: protected
+    NSTextStorage(.*Notification):
+        class: NSTextStorage
+        name: "#{g[0]}"
+        type: NSString
+
+    # UIApplication
     UIApplicationLaunchOptions(.*Key):
         class: UIApplicationLaunchOptions
         name: "#{g[0]}"
         type: NSString
-
-    UIPageViewControllerOption(.*Key):
-        class: UIPageViewControllerOptions
-        name: "#{g[0]}"
-        type: NSString
-
     UIApplication(.*Notification):
         class: UIApplication
         name: "#{g[0]}"
@@ -3631,12 +3646,20 @@ values:
         name: "#{g[0]}"
         type: NSString
         visibility: protected
-        
+
+    # UIDevice
+    UIDevice(.*Notification):
+        class: UIDevice
+        name: "#{g[0]}"
+        type: NSString
+
+    # UIScreen
     UIScreen(.*Notification):
         class: UIScreen
         name: "#{g[0]}"
         type: NSString
-        
+
+    # UIWindow
     UIWindow(.*Notification):
         class: UIWindow
         name: "#{g[0]}"
@@ -3650,22 +3673,9 @@ values:
         name: "#{g[0]}Key"
         type: NSString
         visibility: protected
-    
-    NS(TabColumnTerminatorsAttribute)Name:
-        class: NSTextTabOptions
+    UIWindow(Level.*):
+        class: UIWindowLevel
         name: "#{g[0]}"
-        type: NSString
-        visibility: protected
-    
-    NS(.*Attribute)Name:
-        class: NSAttributedStringAttribute
-        name: "#{g[0]}"
-        type: NSString
-        visibility: protected  
-    NSTextEffect(.*):
-        class: NSTextEffect
-        name: "#{g[0]}Value"
-        type: NSString
         visibility: protected
     
     # UIFont
@@ -3685,8 +3695,49 @@ values:
         type: NSString
         visibility: protected
     
-    UI(WindowLevel.*):
+    # UIPageViewController
+    UIPageViewControllerOption(.*Key):
+        class: UIPageViewControllerOptions
         name: "#{g[0]}"
+        type: NSString
+        visiblity: protected
+
+    # UIMenuController
+    UIMenuController(.*Notification):
+        class: UIMenuController
+        name: "#{g[0]}"
+        type: NSString
+
+    # UITableView
+    UITableView(.*Notification):
+        class: UITableView
+        name: "#{g[0]}"
+        type: NSString
+    
+    # UITextInput
+    UITextInputText(.*Key):
+        class: UITextInputTextStyle
+        name: "#{g[0]}"
+        type: NSString
+        visibility: protected
+
+    # UITextInputMode
+    UITextInput(.*)Notification:
+        class: UITextInputMode
+        name: "#{g[0]}"
+        type: NSString
+
+    # UITextField
+    UITextFieldText(.*Notification):
+        class: UITextField
+        name: "#{g[0]}"
+        type: NSString
+
+    # UITextView
+    UITextViewText(.*Notification):
+        class: UITextView
+        name: "#{g[0]}"
+        type: NSString
 
     UI(.*Key):
         name: "#{g[0]}"

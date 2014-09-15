@@ -43,6 +43,49 @@ import org.robovm.apple.coreimage.*;
     extends /*<extends>*/NSObject/*</extends>*/ 
     /*<implements>*//*</implements>*/ {
 
+    public static class Notifications {
+        public static NSObject observeOrientationDidChange(final Runnable block) {
+            return NSNotificationCenter.getDefaultCenter().addObserver(OrientationDidChangeNotification(), null, NSOperationQueue.getMainQueue(), new VoidBlock1<NSNotification>() {
+                @Override
+                public void invoke(NSNotification a) {
+                    block.run();
+                }
+            });
+        }
+        /**
+         * @since Available in iOS 3.0 and later.
+         */
+        public static NSObject observeBatteryStateDidChange(final Runnable block) {
+            return NSNotificationCenter.getDefaultCenter().addObserver(BatteryStateDidChangeNotification(), null, NSOperationQueue.getMainQueue(), new VoidBlock1<NSNotification>() {
+                @Override
+                public void invoke(NSNotification a) {
+                    block.run();
+                }
+            });
+        }
+        /**
+         * @since Available in iOS 3.0 and later.
+         */
+        public static NSObject observeBatteryLevelDidChange(final Runnable block) {
+            return NSNotificationCenter.getDefaultCenter().addObserver(BatteryLevelDidChangeNotification(), null, NSOperationQueue.getMainQueue(), new VoidBlock1<NSNotification>() {
+                @Override
+                public void invoke(NSNotification a) {
+                    block.run();
+                }
+            });
+        }
+        /**
+         * @since Available in iOS 3.0 and later.
+         */
+        public static NSObject observeProximityStateDidChange(final Runnable block) {
+            return NSNotificationCenter.getDefaultCenter().addObserver(ProximityStateDidChangeNotification(), null, NSOperationQueue.getMainQueue(), new VoidBlock1<NSNotification>() {
+                @Override
+                public void invoke(NSNotification a) {
+                    block.run();
+                }
+            });
+        }
+    }
     /*<ptr>*/public static class UIDevicePtr extends Ptr<UIDevice, UIDevicePtr> {}/*</ptr>*/
     /*<bind>*/static { ObjCRuntime.bind(UIDevice.class); }/*</bind>*/
     /*<constants>*//*</constants>*/
@@ -118,6 +161,24 @@ import org.robovm.apple.coreimage.*;
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
+    @GlobalValue(symbol="UIDeviceOrientationDidChangeNotification", optional=true)
+    public static native NSString OrientationDidChangeNotification();
+    /**
+     * @since Available in iOS 3.0 and later.
+     */
+    @GlobalValue(symbol="UIDeviceBatteryStateDidChangeNotification", optional=true)
+    public static native NSString BatteryStateDidChangeNotification();
+    /**
+     * @since Available in iOS 3.0 and later.
+     */
+    @GlobalValue(symbol="UIDeviceBatteryLevelDidChangeNotification", optional=true)
+    public static native NSString BatteryLevelDidChangeNotification();
+    /**
+     * @since Available in iOS 3.0 and later.
+     */
+    @GlobalValue(symbol="UIDeviceProximityStateDidChangeNotification", optional=true)
+    public static native NSString ProximityStateDidChangeNotification();
+    
     @Method(selector = "beginGeneratingDeviceOrientationNotifications")
     public native void beginGeneratingDeviceOrientationNotifications();
     @Method(selector = "endGeneratingDeviceOrientationNotifications")

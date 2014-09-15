@@ -43,6 +43,32 @@ import org.robovm.apple.coreimage.*;
     extends /*<extends>*/UIScrollView/*</extends>*/ 
     /*<implements>*/implements UITextInput/*</implements>*/ {
 
+    public static class Notifications {
+        public static NSObject observeDidBeginEditing(UITextView object, final VoidBlock1<UITextView> block) {
+            return NSNotificationCenter.getDefaultCenter().addObserver(DidBeginEditingNotification(), object, NSOperationQueue.getMainQueue(), new VoidBlock1<NSNotification>() {
+                @Override
+                public void invoke(NSNotification a) {
+                    block.invoke((UITextView) a.getObject());
+                }
+            });
+        }
+        public static NSObject observeTextDidChangeEditing(UITextView object, final VoidBlock1<UITextView> block) {
+            return NSNotificationCenter.getDefaultCenter().addObserver(DidChangeNotification(), object, NSOperationQueue.getMainQueue(), new VoidBlock1<NSNotification>() {
+                @Override
+                public void invoke(NSNotification a) {
+                    block.invoke((UITextView) a.getObject());
+                }
+            });
+        }
+        public static NSObject observeDidEndEditing(UITextView object, final VoidBlock1<UITextView> block) {
+            return NSNotificationCenter.getDefaultCenter().addObserver(DidEndEditingNotification(), object, NSOperationQueue.getMainQueue(), new VoidBlock1<NSNotification>() {
+                @Override
+                public void invoke(NSNotification a) {
+                    block.invoke((UITextView) a.getObject());
+                }
+            });
+        }
+    }
     /*<ptr>*/public static class UITextViewPtr extends Ptr<UITextView, UITextViewPtr> {}/*</ptr>*/
     /*<bind>*/static { ObjCRuntime.bind(UITextView.class); }/*</bind>*/
     /*<constants>*//*</constants>*/
@@ -132,12 +158,12 @@ import org.robovm.apple.coreimage.*;
      * @since Available in iOS 6.0 and later.
      */
     @Property(selector = "typingAttributes")
-    public native NSDictionary<NSString, ?> getTypingAttributes();
+    public native NSAttributedStringAttributes getTypingAttributes();
     /**
      * @since Available in iOS 6.0 and later.
      */
     @Property(selector = "setTypingAttributes:")
-    public native void setTypingAttributes(NSDictionary<NSString, ?> v);
+    public native void setTypingAttributes(NSAttributedStringAttributes v);
     @Property(selector = "inputView")
     public native UIView getInputView();
     @Property(selector = "setInputView:")
@@ -185,12 +211,12 @@ import org.robovm.apple.coreimage.*;
      * @since Available in iOS 7.0 and later.
      */
     @Property(selector = "linkTextAttributes")
-    public native NSDictionary<NSString, ?> getLinkTextAttributes();
+    public native NSAttributedStringAttributes getLinkTextAttributes();
     /**
      * @since Available in iOS 7.0 and later.
      */
     @Property(selector = "setLinkTextAttributes:")
-    public native void setLinkTextAttributes(NSDictionary<NSString, ?> v);
+    public native void setLinkTextAttributes(NSAttributedStringAttributes v);
     @Property(selector = "selectedTextRange")
     public native UITextRange getSelectedTextRange();
     @Property(selector = "setSelectedTextRange:")
@@ -198,9 +224,9 @@ import org.robovm.apple.coreimage.*;
     @Property(selector = "markedTextRange")
     public native UITextRange getMarkedTextRange();
     @Property(selector = "markedTextStyle")
-    public native NSDictionary<NSString, ?> getMarkedTextStyle();
+    public native UITextInputTextStyle getMarkedTextStyle();
     @Property(selector = "setMarkedTextStyle:")
-    public native void setMarkedTextStyle(NSDictionary<NSString, ?> v);
+    public native void setMarkedTextStyle(UITextInputTextStyle v);
     @Property(selector = "beginningOfDocument")
     public native UITextPosition getBeginningOfDocument();
     @Property(selector = "endOfDocument")
@@ -258,6 +284,13 @@ import org.robovm.apple.coreimage.*;
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
+    @GlobalValue(symbol="UITextViewTextDidBeginEditingNotification", optional=true)
+    public static native NSString DidBeginEditingNotification();
+    @GlobalValue(symbol="UITextViewTextDidChangeNotification", optional=true)
+    public static native NSString DidChangeNotification();
+    @GlobalValue(symbol="UITextViewTextDidEndEditingNotification", optional=true)
+    public static native NSString DidEndEditingNotification();
+    
     @Method(selector = "scrollRangeToVisible:")
     public native void scrollRangeToVisible(@ByVal NSRange range);
     /**
@@ -312,7 +345,7 @@ import org.robovm.apple.coreimage.*;
     @Method(selector = "shouldChangeTextInRange:replacementText:")
     public native boolean shouldChangeText(UITextRange range, String text);
     @Method(selector = "textStylingAtPosition:inDirection:")
-    public native NSDictionary<NSString, ?> getTextStyling(UITextPosition position, UITextStorageDirection direction);
+    public native UITextInputTextStyle getTextStyling(UITextPosition position, UITextStorageDirection direction);
     @Method(selector = "positionWithinRange:atCharacterOffset:")
     public native UITextPosition getPosition(UITextRange range, @MachineSizedSInt long offset);
     @Method(selector = "characterOffsetOfPosition:withinRange:")

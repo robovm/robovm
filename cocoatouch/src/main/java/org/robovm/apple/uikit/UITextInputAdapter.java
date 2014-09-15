@@ -54,9 +54,9 @@ import org.robovm.apple.coreimage.*;
     @NotImplemented("markedTextRange")
     public UITextRange getMarkedTextRange() { throw new UnsupportedOperationException(); }
     @NotImplemented("markedTextStyle")
-    public NSDictionary<NSString, ?> getMarkedTextStyle() { throw new UnsupportedOperationException(); }
+    public UITextInputTextStyle getMarkedTextStyle() { throw new UnsupportedOperationException(); }
     @NotImplemented("setMarkedTextStyle:")
-    public void setMarkedTextStyle(NSDictionary<NSString, ?> v) { throw new UnsupportedOperationException(); }
+    public void setMarkedTextStyle(UITextInputTextStyle v) { throw new UnsupportedOperationException(); }
     @NotImplemented("beginningOfDocument")
     public UITextPosition getBeginningOfDocument() { throw new UnsupportedOperationException(); }
     @NotImplemented("endOfDocument")
@@ -123,7 +123,7 @@ import org.robovm.apple.coreimage.*;
     @NotImplemented("shouldChangeTextInRange:replacementText:")
     public boolean shouldChangeText(UITextRange range, String text) { throw new UnsupportedOperationException(); }
     @NotImplemented("textStylingAtPosition:inDirection:")
-    public NSDictionary<NSString, ?> getTextStyling(UITextPosition position, UITextStorageDirection direction) { throw new UnsupportedOperationException(); }
+    public UITextInputTextStyle getTextStyling(UITextPosition position, UITextStorageDirection direction) { throw new UnsupportedOperationException(); }
     @NotImplemented("positionWithinRange:atCharacterOffset:")
     public UITextPosition getPosition(UITextRange range, @MachineSizedSInt long offset) { throw new UnsupportedOperationException(); }
     @NotImplemented("characterOffsetOfPosition:withinRange:")

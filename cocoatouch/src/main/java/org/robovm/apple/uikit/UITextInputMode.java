@@ -43,6 +43,19 @@ import org.robovm.apple.coreimage.*;
     extends /*<extends>*/NSObject/*</extends>*/ 
     /*<implements>*//*</implements>*/ {
 
+    public static class Notifications {
+        /**
+         * @since Available in iOS 4.2 and later.
+         */
+        public static NSObject observeCurrentModeDidChange(final VoidBlock1<UITextInputMode> block) {
+            return NSNotificationCenter.getDefaultCenter().addObserver(CurrentInputModeDidChange(), null, NSOperationQueue.getMainQueue(), new VoidBlock1<NSNotification>() {
+                @Override
+                public void invoke(NSNotification a) {
+                    block.invoke((UITextInputMode) a.getObject());
+                }
+            });
+        }
+    }
     /*<ptr>*/public static class UITextInputModePtr extends Ptr<UITextInputMode, UITextInputModePtr> {}/*</ptr>*/
     /*<bind>*/static { ObjCRuntime.bind(UITextInputMode.class); }/*</bind>*/
     /*<constants>*//*</constants>*/
@@ -56,6 +69,12 @@ import org.robovm.apple.coreimage.*;
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
+    /**
+     * @since Available in iOS 4.2 and later.
+     */
+    @GlobalValue(symbol="UITextInputCurrentInputModeDidChangeNotification", optional=true)
+    public static native NSString CurrentInputModeDidChange();
+    
     /**
      * @since Available in iOS 4.2 and later.
      * @deprecated Deprecated in iOS 7.0.

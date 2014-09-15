@@ -153,6 +153,11 @@ import org.robovm.apple.coreimage.*;
     }
     /*<methods>*/
     /**
+     * @since Available in iOS 7.0 and later.
+     */
+    @GlobalValue(symbol="NSTabColumnTerminatorsAttributeName", optional=true)
+    protected static native NSString TabColumnTerminatorsAttribute();
+    /**
      * @since Available in iOS 6.0 and later.
      */
     @GlobalValue(symbol="NSFontAttributeName", optional=true)

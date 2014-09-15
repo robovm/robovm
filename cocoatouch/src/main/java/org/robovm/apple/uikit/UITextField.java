@@ -43,6 +43,32 @@ import org.robovm.apple.coreimage.*;
     extends /*<extends>*/UIControl/*</extends>*/ 
     /*<implements>*/implements UITextInput, NSCoding/*</implements>*/ {
 
+    public static class Notifications {
+        public static NSObject observeDidBeginEditing(UITextField object, final VoidBlock1<UITextField> block) {
+            return NSNotificationCenter.getDefaultCenter().addObserver(DidBeginEditingNotification(), object, NSOperationQueue.getMainQueue(), new VoidBlock1<NSNotification>() {
+                @Override
+                public void invoke(NSNotification a) {
+                    block.invoke((UITextField) a.getObject());
+                }
+            });
+        }
+        public static NSObject observeDidEndEditing(UITextField object, final VoidBlock1<UITextField> block) {
+            return NSNotificationCenter.getDefaultCenter().addObserver(DidEndEditingNotification(), object, NSOperationQueue.getMainQueue(), new VoidBlock1<NSNotification>() {
+                @Override
+                public void invoke(NSNotification a) {
+                    block.invoke((UITextField) a.getObject());
+                }
+            });
+        }
+        public static NSObject observeTextDidChange(UITextField object, final VoidBlock1<UITextField> block) {
+            return NSNotificationCenter.getDefaultCenter().addObserver(DidChangeNotification(), object, NSOperationQueue.getMainQueue(), new VoidBlock1<NSNotification>() {
+                @Override
+                public void invoke(NSNotification a) {
+                    block.invoke((UITextField) a.getObject());
+                }
+            });
+        }
+    }
     /*<ptr>*/public static class UITextFieldPtr extends Ptr<UITextField, UITextFieldPtr> {}/*</ptr>*/
     /*<bind>*/static { ObjCRuntime.bind(UITextField.class); }/*</bind>*/
     /*<constants>*//*</constants>*/
@@ -90,12 +116,12 @@ import org.robovm.apple.coreimage.*;
      * @since Available in iOS 7.0 and later.
      */
     @Property(selector = "defaultTextAttributes")
-    public native NSDictionary<NSString, ?> getDefaultTextAttributes();
+    public native NSAttributedStringAttributes getDefaultTextAttributes();
     /**
      * @since Available in iOS 7.0 and later.
      */
     @Property(selector = "setDefaultTextAttributes:")
-    public native void setDefaultTextAttributes(NSDictionary<NSString, ?> v);
+    public native void setDefaultTextAttributes(NSAttributedStringAttributes v);
     @Property(selector = "placeholder")
     public native String getPlaceholder();
     @Property(selector = "setPlaceholder:")
@@ -150,12 +176,12 @@ import org.robovm.apple.coreimage.*;
      * @since Available in iOS 6.0 and later.
      */
     @Property(selector = "typingAttributes")
-    public native NSDictionary<NSString, ?> getTypingAttributes();
+    public native NSAttributedStringAttributes getTypingAttributes();
     /**
      * @since Available in iOS 6.0 and later.
      */
     @Property(selector = "setTypingAttributes:")
-    public native void setTypingAttributes(NSDictionary<NSString, ?> v);
+    public native void setTypingAttributes(NSAttributedStringAttributes v);
     @Property(selector = "clearButtonMode")
     public native UITextFieldViewMode getClearButtonMode();
     @Property(selector = "setClearButtonMode:")
@@ -201,9 +227,9 @@ import org.robovm.apple.coreimage.*;
     @Property(selector = "markedTextRange")
     public native UITextRange getMarkedTextRange();
     @Property(selector = "markedTextStyle")
-    public native NSDictionary<NSString, ?> getMarkedTextStyle();
+    public native UITextInputTextStyle getMarkedTextStyle();
     @Property(selector = "setMarkedTextStyle:")
-    public native void setMarkedTextStyle(NSDictionary<NSString, ?> v);
+    public native void setMarkedTextStyle(UITextInputTextStyle v);
     @Property(selector = "beginningOfDocument")
     public native UITextPosition getBeginningOfDocument();
     @Property(selector = "endOfDocument")
@@ -261,6 +287,13 @@ import org.robovm.apple.coreimage.*;
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
+    @GlobalValue(symbol="UITextFieldTextDidBeginEditingNotification", optional=true)
+    public static native NSString DidBeginEditingNotification();
+    @GlobalValue(symbol="UITextFieldTextDidEndEditingNotification", optional=true)
+    public static native NSString DidEndEditingNotification();
+    @GlobalValue(symbol="UITextFieldTextDidChangeNotification", optional=true)
+    public static native NSString DidChangeNotification();
+    
     @Method(selector = "borderRectForBounds:")
     public native @ByVal CGRect getBorderRect(@ByVal CGRect bounds);
     @Method(selector = "textRectForBounds:")
@@ -326,7 +359,7 @@ import org.robovm.apple.coreimage.*;
     @Method(selector = "shouldChangeTextInRange:replacementText:")
     public native boolean shouldChangeText(UITextRange range, String text);
     @Method(selector = "textStylingAtPosition:inDirection:")
-    public native NSDictionary<NSString, ?> getTextStyling(UITextPosition position, UITextStorageDirection direction);
+    public native UITextInputTextStyle getTextStyling(UITextPosition position, UITextStorageDirection direction);
     @Method(selector = "positionWithinRange:atCharacterOffset:")
     public native UITextPosition getPosition(UITextRange range, @MachineSizedSInt long offset);
     @Method(selector = "characterOffsetOfPosition:withinRange:")

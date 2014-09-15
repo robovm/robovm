@@ -42,8 +42,7 @@ import org.robovm.apple.coreimage.*;
 
     /*<ptr>*/
     /*</ptr>*/
-    /*<bind>*/
-    /*</bind>*/
+    /*<bind>*//*</bind>*/
     /*<constants>*//*</constants>*/
     /*<properties>*/
     @Property(selector = "selectedTextRange")
@@ -53,9 +52,9 @@ import org.robovm.apple.coreimage.*;
     @Property(selector = "markedTextRange")
     UITextRange getMarkedTextRange();
     @Property(selector = "markedTextStyle")
-    NSDictionary<NSString, ?> getMarkedTextStyle();
+    UITextInputTextStyle getMarkedTextStyle();
     @Property(selector = "setMarkedTextStyle:")
-    void setMarkedTextStyle(NSDictionary<NSString, ?> v);
+    void setMarkedTextStyle(UITextInputTextStyle v);
     @Property(selector = "beginningOfDocument")
     UITextPosition getBeginningOfDocument();
     @Property(selector = "endOfDocument")
@@ -121,7 +120,7 @@ import org.robovm.apple.coreimage.*;
     @Method(selector = "shouldChangeTextInRange:replacementText:")
     boolean shouldChangeText(UITextRange range, String text);
     @Method(selector = "textStylingAtPosition:inDirection:")
-    NSDictionary<NSString, ?> getTextStyling(UITextPosition position, UITextStorageDirection direction);
+    UITextInputTextStyle getTextStyling(UITextPosition position, UITextStorageDirection direction);
     @Method(selector = "positionWithinRange:atCharacterOffset:")
     UITextPosition getPosition(UITextRange range, @MachineSizedSInt long offset);
     @Method(selector = "characterOffsetOfPosition:withinRange:")

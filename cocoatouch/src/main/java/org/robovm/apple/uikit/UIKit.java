@@ -153,8 +153,6 @@ import org.robovm.apple.coreimage.*;
      */
     @GlobalValue(symbol="UITableViewAutomaticDimension", optional=true)
     public static native @MachineSizedFloat double TableViewAutomaticDimension();
-    @GlobalValue(symbol="UITableViewSelectionDidChangeNotification", optional=true)
-    public static native String Value__UITableViewSelectionDidChangeNotification();
     @GlobalValue(symbol="UIAccessibilityTraitKeyboardKey", optional=true)
     public static native NSString AccessibilityTraitKeyboardKey();
     @GlobalValue(symbol="UIAccessibilityTraitKeyboardKey", optional=true)
@@ -242,40 +240,6 @@ import org.robovm.apple.coreimage.*;
      */
     @GlobalValue(symbol="UIAccessibilityGuidedAccessStatusDidChangeNotification", optional=true)
     public static native String Value__UIAccessibilityGuidedAccessStatusDidChangeNotification();
-    @GlobalValue(symbol="UIDeviceOrientationDidChangeNotification", optional=true)
-    public static native String Value__UIDeviceOrientationDidChangeNotification();
-    /**
-     * @since Available in iOS 3.0 and later.
-     */
-    @GlobalValue(symbol="UIDeviceBatteryStateDidChangeNotification", optional=true)
-    public static native String Value__UIDeviceBatteryStateDidChangeNotification();
-    /**
-     * @since Available in iOS 3.0 and later.
-     */
-    @GlobalValue(symbol="UIDeviceBatteryLevelDidChangeNotification", optional=true)
-    public static native String Value__UIDeviceBatteryLevelDidChangeNotification();
-    /**
-     * @since Available in iOS 3.0 and later.
-     */
-    @GlobalValue(symbol="UIDeviceProximityStateDidChangeNotification", optional=true)
-    public static native String Value__UIDeviceProximityStateDidChangeNotification();
-    @GlobalValue(symbol="UITextInputTextBackgroundColorKey", optional=true)
-    public static native NSString TextInputTextBackgroundColorKey();
-    @GlobalValue(symbol="UITextInputTextColorKey", optional=true)
-    public static native NSString TextInputTextColorKey();
-    @GlobalValue(symbol="UITextInputTextFontKey", optional=true)
-    public static native NSString TextInputTextFontKey();
-    /**
-     * @since Available in iOS 4.2 and later.
-     */
-    @GlobalValue(symbol="UITextInputCurrentInputModeDidChangeNotification", optional=true)
-    public static native String Value__UITextInputCurrentInputModeDidChangeNotification();
-    @GlobalValue(symbol="UITextFieldTextDidBeginEditingNotification", optional=true)
-    public static native String Value__UITextFieldTextDidBeginEditingNotification();
-    @GlobalValue(symbol="UITextFieldTextDidEndEditingNotification", optional=true)
-    public static native String Value__UITextFieldTextDidEndEditingNotification();
-    @GlobalValue(symbol="UITextFieldTextDidChangeNotification", optional=true)
-    public static native String Value__UITextFieldTextDidChangeNotification();
     /**
      * @since Available in iOS 4.0 and later.
      */
@@ -349,16 +313,6 @@ import org.robovm.apple.coreimage.*;
      */
     @GlobalValue(symbol="UILocalNotificationDefaultSoundName", optional=true)
     public static native String LocalNotificationDefaultSoundName();
-    @GlobalValue(symbol="UIMenuControllerWillShowMenuNotification", optional=true)
-    public static native String Value__UIMenuControllerWillShowMenuNotification();
-    @GlobalValue(symbol="UIMenuControllerDidShowMenuNotification", optional=true)
-    public static native String Value__UIMenuControllerDidShowMenuNotification();
-    @GlobalValue(symbol="UIMenuControllerWillHideMenuNotification", optional=true)
-    public static native String Value__UIMenuControllerWillHideMenuNotification();
-    @GlobalValue(symbol="UIMenuControllerDidHideMenuNotification", optional=true)
-    public static native String Value__UIMenuControllerDidHideMenuNotification();
-    @GlobalValue(symbol="UIMenuControllerMenuFrameDidChangeNotification", optional=true)
-    public static native String Value__UIMenuControllerMenuFrameDidChangeNotification();
     /**
      * @since Available in iOS 3.0 and later.
      */
@@ -403,18 +357,6 @@ import org.robovm.apple.coreimage.*;
      */
     @GlobalValue(symbol="UITransitionContextToViewControllerKey", optional=true)
     public static native NSString TransitionContextToViewControllerKey();
-    @GlobalValue(symbol="UITextViewTextDidBeginEditingNotification", optional=true)
-    public static native String Value__UITextViewTextDidBeginEditingNotification();
-    @GlobalValue(symbol="UITextViewTextDidChangeNotification", optional=true)
-    public static native String Value__UITextViewTextDidChangeNotification();
-    @GlobalValue(symbol="UITextViewTextDidEndEditingNotification", optional=true)
-    public static native String Value__UITextViewTextDidEndEditingNotification();
-    @GlobalValue(symbol="UIWindowLevelNormal", optional=true)
-    public static native @MachineSizedFloat double WindowLevelNormal();
-    @GlobalValue(symbol="UIWindowLevelAlert", optional=true)
-    public static native @MachineSizedFloat double WindowLevelAlert();
-    @GlobalValue(symbol="UIWindowLevelStatusBar", optional=true)
-    public static native @MachineSizedFloat double WindowLevelStatusBar();
     /**
      * @since Available in iOS 7.0 and later.
      */
@@ -510,15 +452,5 @@ import org.robovm.apple.coreimage.*;
      */
     @GlobalValue(symbol="NSTextLayoutSectionsAttribute", optional=true)
     public static native NSString TextLayoutSectionsAttribute();
-    /**
-     * @since Available in iOS 7.0 and later.
-     */
-    @GlobalValue(symbol="NSTextStorageWillProcessEditingNotification", optional=true)
-    public static native String Value__NSTextStorageWillProcessEditingNotification();
-    /**
-     * @since Available in iOS 7.0 and later.
-     */
-    @GlobalValue(symbol="NSTextStorageDidProcessEditingNotification", optional=true)
-    public static native String Value__NSTextStorageDidProcessEditingNotification();
     /*</methods>*/
 }

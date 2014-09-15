@@ -68,8 +68,15 @@ import org.robovm.apple.coreimage.*;
     public NSObject getValue(UIFontDescriptorAttribute attribute) {
         return getValue(attribute.value());
     }
-    public NSArray<UIFontDescriptor> getMatchingFontDescriptors(Set<String> mandatoryKeys) {
-        return getMatchingFontDescriptors(NSSet.fromStrings(mandatoryKeys));
+    public NSArray<UIFontDescriptor> getMatchingFontDescriptors(String...mandatoryAttributes) {
+        return getMatchingFontDescriptors(NSSet.fromStrings(mandatoryAttributes));
+    }
+    public NSArray<UIFontDescriptor> getMatchingFontDescriptors(Set<UIFontDescriptorAttribute> mandatoryAttributes) {
+        NSSet<NSString> set = new NSMutableSet<>();
+        for (UIFontDescriptorAttribute attr : mandatoryAttributes) {
+            set.add(attr.value());
+        }
+        return getMatchingFontDescriptors(set);
     }
     public static UIFontDescriptor getPreferredFontDescriptor(UIFontTextStyle style) {
         return getPreferredFontDescriptor(style.value());

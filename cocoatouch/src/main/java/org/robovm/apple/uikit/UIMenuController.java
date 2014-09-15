@@ -43,6 +43,48 @@ import org.robovm.apple.coreimage.*;
     extends /*<extends>*/NSObject/*</extends>*/ 
     /*<implements>*//*</implements>*/ {
 
+    public static class Notifications {
+        public static NSObject observeWillShowMenu(final Runnable block) {
+            return NSNotificationCenter.getDefaultCenter().addObserver(WillShowMenuNotification(), null, NSOperationQueue.getMainQueue(), new VoidBlock1<NSNotification>() {
+                @Override
+                public void invoke(NSNotification a) {
+                    block.run();
+                }
+            });
+        }
+        public static NSObject observeDidShowMenu(final Runnable block) {
+            return NSNotificationCenter.getDefaultCenter().addObserver(DidShowMenuNotification(), null, NSOperationQueue.getMainQueue(), new VoidBlock1<NSNotification>() {
+                @Override
+                public void invoke(NSNotification a) {
+                    block.run();
+                }
+            });
+        }
+        public static NSObject observeWillHideMenu(final Runnable block) {
+            return NSNotificationCenter.getDefaultCenter().addObserver(WillHideMenuNotification(), null, NSOperationQueue.getMainQueue(), new VoidBlock1<NSNotification>() {
+                @Override
+                public void invoke(NSNotification a) {
+                    block.run();
+                }
+            });
+        }
+        public static NSObject observeDidHideMenu(final Runnable block) {
+            return NSNotificationCenter.getDefaultCenter().addObserver(DidHideMenuNotification(), null, NSOperationQueue.getMainQueue(), new VoidBlock1<NSNotification>() {
+                @Override
+                public void invoke(NSNotification a) {
+                    block.run();
+                }
+            });
+        }
+        public static NSObject observeMenuFrameDidChange(final Runnable block) {
+            return NSNotificationCenter.getDefaultCenter().addObserver(MenuFrameDidChangeNotification(), null, NSOperationQueue.getMainQueue(), new VoidBlock1<NSNotification>() {
+                @Override
+                public void invoke(NSNotification a) {
+                    block.run();
+                }
+            });
+        }
+    }
     /*<ptr>*/public static class UIMenuControllerPtr extends Ptr<UIMenuController, UIMenuControllerPtr> {}/*</ptr>*/
     /*<bind>*/static { ObjCRuntime.bind(UIMenuController.class); }/*</bind>*/
     /*<constants>*//*</constants>*/
@@ -80,6 +122,17 @@ import org.robovm.apple.coreimage.*;
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
+    @GlobalValue(symbol="UIMenuControllerWillShowMenuNotification", optional=true)
+    public static native NSString WillShowMenuNotification();
+    @GlobalValue(symbol="UIMenuControllerDidShowMenuNotification", optional=true)
+    public static native NSString DidShowMenuNotification();
+    @GlobalValue(symbol="UIMenuControllerWillHideMenuNotification", optional=true)
+    public static native NSString WillHideMenuNotification();
+    @GlobalValue(symbol="UIMenuControllerDidHideMenuNotification", optional=true)
+    public static native NSString DidHideMenuNotification();
+    @GlobalValue(symbol="UIMenuControllerMenuFrameDidChangeNotification", optional=true)
+    public static native NSString MenuFrameDidChangeNotification();
+    
     @Method(selector = "setMenuVisible:animated:")
     public native void setMenuVisible(boolean menuVisible, boolean animated);
     @Method(selector = "setTargetRect:inView:")

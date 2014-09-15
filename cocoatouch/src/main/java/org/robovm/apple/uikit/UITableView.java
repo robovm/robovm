@@ -43,6 +43,16 @@ import org.robovm.apple.coreimage.*;
     extends /*<extends>*/UIScrollView/*</extends>*/ 
     /*<implements>*/implements NSCoding/*</implements>*/ {
 
+    public static class Notifications {
+        public static NSObject observeSelectionDidChange(UITableView object, final VoidBlock1<UITableView> block) {
+            return NSNotificationCenter.getDefaultCenter().addObserver(SelectionDidChangeNotification(), object, NSOperationQueue.getMainQueue(), new VoidBlock1<NSNotification>() {
+                @Override
+                public void invoke(NSNotification a) {
+                    block.invoke((UITableView) a.getObject());
+                }
+            });
+        }
+    }
     /*<ptr>*/public static class UITableViewPtr extends Ptr<UITableView, UITableViewPtr> {}/*</ptr>*/
     /*<bind>*/static { ObjCRuntime.bind(UITableView.class); }/*</bind>*/
     /*<constants>*//*</constants>*/
@@ -220,6 +230,9 @@ import org.robovm.apple.coreimage.*;
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
+    @GlobalValue(symbol="UITableViewSelectionDidChangeNotification", optional=true)
+    public static native NSString SelectionDidChangeNotification();
+    
     @Method(selector = "initWithFrame:style:")
     protected native @Pointer long initWithFrame$style$(@ByVal CGRect frame, UITableViewStyle style);
     @Method(selector = "reloadData")

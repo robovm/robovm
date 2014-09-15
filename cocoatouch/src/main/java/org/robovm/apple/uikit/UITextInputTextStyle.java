@@ -35,24 +35,24 @@ import org.robovm.apple.coreimage.*;
 
 /*<javadoc>*/
 /*</javadoc>*/
-@Marshaler(UIPageViewControllerOptions.Marshaler.class)
+@Marshaler(UITextInputTextStyle.Marshaler.class)
 /*<annotations>*/@Library("UIKit")/*</annotations>*/
-/*<visibility>*/public/*</visibility>*/ class /*<name>*/UIPageViewControllerOptions/*</name>*/ 
+/*<visibility>*/public/*</visibility>*/ class /*<name>*/UITextInputTextStyle/*</name>*/ 
     extends /*<extends>*/Object/*</extends>*/ 
     /*<implements>*//*</implements>*/ {
 
     public static class Marshaler {
         @SuppressWarnings("unchecked")
         @MarshalsPointer
-        public static UIPageViewControllerOptions toObject(Class<UIPageViewControllerOptions> cls, long handle, long flags) {
+        public static UITextInputTextStyle toObject(Class<UITextInputTextStyle> cls, long handle, long flags) {
             NSDictionary<NSString, NSObject> o = (NSDictionary<NSString, NSObject>) NSObject.Marshaler.toObject(NSDictionary.class, handle, flags);
             if (o == null) {
                 return null;
             }
-            return new UIPageViewControllerOptions(o);
+            return new UITextInputTextStyle(o);
         }
         @MarshalsPointer
-        public static long toNative(UIPageViewControllerOptions o, long flags) {
+        public static long toNative(UITextInputTextStyle o, long flags) {
             if (o == null) {
                 return 0L;
             }
@@ -62,13 +62,15 @@ import org.robovm.apple.coreimage.*;
     
     /*<ptr>*/
     /*</ptr>*/
-    
     private NSDictionary<NSString, NSObject> data;
     
-    protected UIPageViewControllerOptions(NSDictionary<NSString, NSObject> data) {
+    protected UITextInputTextStyle(NSDictionary<NSString, NSObject> data) {
         this.data = data;
     }
-    /*<bind>*/static { Bro.bind(UIPageViewControllerOptions.class); }/*</bind>*/
+    public UITextInputTextStyle() {
+        this.data = new NSMutableDictionary<>();
+    }
+    /*<bind>*/static { Bro.bind(UITextInputTextStyle.class); }/*</bind>*/
     /*<constants>*//*</constants>*/
     /*<constructors>*//*</constructors>*/
     /*<properties>*//*</properties>*/
@@ -77,40 +79,43 @@ import org.robovm.apple.coreimage.*;
         return data;
     }
     
-    public UIPageViewControllerSpineLocation getSpineLocation() {
-        if (data.containsKey(SpineLocationKey())) {
-            NSNumber val = (NSNumber)data.get(SpineLocationKey());
-            return UIPageViewControllerSpineLocation.valueOf(val.intValue());
+    public UIColor getBackgroundColor() {
+        if (data.containsKey(BackgroundColorKey())) {
+            UIColor val = (UIColor)data.get(BackgroundColorKey());
+            return val;
         }
         return null;
     }
-    public void setSpineLocation(UIPageViewControllerSpineLocation spineLocation) {
-        data.put(SpineLocationKey(), NSNumber.valueOf((int)spineLocation.value()));
+    public void setBackgroundColor(UIColor color) {
+        data.put(BackgroundColorKey(), color);
     }
-    /**
-     * @since Available in iOS 6.0 and later.
-     */
-    public @MachineSizedFloat double getInterPageSpacing() {
-        if (data.containsKey(InterPageSpacingKey())) {
-            NSNumber val = (NSNumber)data.get(InterPageSpacingKey());
-            return val.floatValue();
+    public UIColor getTextColor() {
+        if (data.containsKey(ColorKey())) {
+            UIColor val = (UIColor)data.get(ColorKey());
+            return val;
         }
-        return 0;
+        return null;
     }
-    /**
-     * @since Available in iOS 6.0 and later.
-     */
-    public void setInterPageSpacing(@MachineSizedFloat double interPageSpacing) {
-        data.put(InterPageSpacingKey(), NSNumber.valueOf(interPageSpacing));
+    public void setTextColor(UIColor color) {
+        data.put(ColorKey(), color);
+    }
+    public UIFont getFont() {
+        if (data.containsKey(FontKey())) {
+            UIFont val = (UIFont)data.get(FontKey());
+            return val;
+        }
+        return null;
+    }
+    public void setFont(UIFont font) {
+        data.put(FontKey(), font);
     }
     /*<methods>*/
-    @GlobalValue(symbol="UIPageViewControllerOptionSpineLocationKey", optional=true)
-    public static native NSString SpineLocationKey();
-    /**
-     * @since Available in iOS 6.0 and later.
-     */
-    @GlobalValue(symbol="UIPageViewControllerOptionInterPageSpacingKey", optional=true)
-    public static native NSString InterPageSpacingKey();
+    @GlobalValue(symbol="UITextInputTextBackgroundColorKey", optional=true)
+    protected static native NSString BackgroundColorKey();
+    @GlobalValue(symbol="UITextInputTextColorKey", optional=true)
+    protected static native NSString ColorKey();
+    @GlobalValue(symbol="UITextInputTextFontKey", optional=true)
+    protected static native NSString FontKey();
     /*</methods>*/
     
     @Override

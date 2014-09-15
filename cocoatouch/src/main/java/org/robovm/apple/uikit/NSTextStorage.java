@@ -43,6 +43,30 @@ import org.robovm.apple.coreimage.*;
     extends /*<extends>*/NSMutableAttributedString/*</extends>*/ 
     /*<implements>*//*</implements>*/ {
 
+    public static class Notifications {
+        /**
+         * @since Available in iOS 7.0 and later.
+         */
+        public static NSObject observeWillProcessEditing(NSTextStorage object, final VoidBlock1<NSTextStorage> block) {
+            return NSNotificationCenter.getDefaultCenter().addObserver(WillProcessEditingNotification(), object, NSOperationQueue.getMainQueue(), new VoidBlock1<NSNotification>() {
+                @Override
+                public void invoke(NSNotification a) {
+                    block.invoke((NSTextStorage) a.getObject());
+                }
+            });
+        }
+        /**
+         * @since Available in iOS 7.0 and later.
+         */
+        public static NSObject observeDidProcessEditing(NSTextStorage object, final VoidBlock1<NSTextStorage> block) {
+            return NSNotificationCenter.getDefaultCenter().addObserver(DidProcessEditingNotification(), object, NSOperationQueue.getMainQueue(), new VoidBlock1<NSNotification>() {
+                @Override
+                public void invoke(NSNotification a) {
+                    block.invoke((NSTextStorage) a.getObject());
+                }
+            });
+        }
+    }
     /*<ptr>*/public static class NSTextStoragePtr extends Ptr<NSTextStorage, NSTextStoragePtr> {}/*</ptr>*/
     /*<bind>*/static { ObjCRuntime.bind(NSTextStorage.class); }/*</bind>*/
     /*<constants>*//*</constants>*/
@@ -74,6 +98,17 @@ import org.robovm.apple.coreimage.*;
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
+    @GlobalValue(symbol="NSTextStorageWillProcessEditingNotification", optional=true)
+    public static native NSString WillProcessEditingNotification();
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
+    @GlobalValue(symbol="NSTextStorageDidProcessEditingNotification", optional=true)
+    public static native NSString DidProcessEditingNotification();
+    
     @Method(selector = "addLayoutManager:")
     public native void addLayoutManager(NSLayoutManager aLayoutManager);
     @Method(selector = "removeLayoutManager:")

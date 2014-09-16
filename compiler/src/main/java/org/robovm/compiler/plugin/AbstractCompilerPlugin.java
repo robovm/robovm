@@ -30,7 +30,7 @@ import soot.SootMethod;
  * Abstract implementation for {@link CompilerPlugin} with empty 
  * implementations for all methods.
  */
-public abstract class AbstractCompilerPlugin implements CompilerPlugin {
+public abstract class AbstractCompilerPlugin extends CompilerPlugin {
     @Override
     public PluginArguments getArguments() {
         return new PluginArguments("", Collections.<PluginArgument>emptyList());

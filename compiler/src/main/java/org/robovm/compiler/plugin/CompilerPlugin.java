@@ -30,7 +30,7 @@ import soot.SootMethod;
  * Plugin interface which makes it possible to hook into the compilation
  * process and modify classes and methods during the compilation.
  */
-public interface CompilerPlugin extends Plugin {
+public abstract class CompilerPlugin extends Plugin {
     /**
      * Called just before a class is about to be compiled. Modifications to the 
      * underlying {@link SootClass} ({@link Clazz#getSootClass()}) should be
@@ -41,7 +41,7 @@ public interface CompilerPlugin extends Plugin {
      * @param moduleBuilder the {@link ModuleBuilder} holding the generated
      *        bitcode.
      */
-    void beforeClass(Config config, Clazz clazz, ModuleBuilder moduleBuilder) 
+    public abstract void beforeClass(Config config, Clazz clazz, ModuleBuilder moduleBuilder) 
             throws IOException;
     
     /**
@@ -54,7 +54,7 @@ public interface CompilerPlugin extends Plugin {
      * @param moduleBuilder the {@link ModuleBuilder} holding the generated
      *        bitcode.
      */
-    void beforeMethod(Config config, Clazz clazz, SootMethod method, 
+    public abstract void beforeMethod(Config config, Clazz clazz, SootMethod method, 
             ModuleBuilder moduleBuilder) throws IOException;
     
     /**
@@ -66,7 +66,7 @@ public interface CompilerPlugin extends Plugin {
      * @param moduleBuilder the {@link ModuleBuilder} holding the generated
      *        bitcode.
      */
-    void afterClass(Config config, Clazz clazz, ModuleBuilder moduleBuilder) 
+    public abstract void afterClass(Config config, Clazz clazz, ModuleBuilder moduleBuilder) 
             throws IOException;
     
     /**
@@ -80,6 +80,6 @@ public interface CompilerPlugin extends Plugin {
      *        bitcode.
      * @param function the function corresponding to the method.
      */
-    void afterMethod(Config config, Clazz clazz, SootMethod method,
+    public abstract void afterMethod(Config config, Clazz clazz, SootMethod method,
             ModuleBuilder moduleBuilder, Function function) throws IOException;
 }

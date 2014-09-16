@@ -23,19 +23,19 @@ import org.robovm.compiler.target.LaunchParameters;
  * Plugin interface which makes it possible to hook into the compilation
  * process and modify classes and methods during the compilation.
  */
-public interface LaunchPlugin extends Plugin {
+public abstract class LaunchPlugin extends Plugin {
     /**
      * Called before the launch of a RoboVM application
      */
-    public void beforeLaunch(Config config, LaunchParameters parameters);
+    public abstract void beforeLaunch(Config config, LaunchParameters parameters);
     
     /**
      * Called after the launch of a RoboVM application
      */
-    public void afterLaunch(Config config, LaunchParameters parameters);
+    public abstract void afterLaunch(Config config, LaunchParameters parameters, Process process);
     
     /**
      * Called when the launch failed
      */
-    public void launchFailed(Config config, LaunchParameters parameters);
+    public abstract void launchFailed(Config config, LaunchParameters parameters);
 }

@@ -34,6 +34,10 @@ import org.robovm.apple.foundation.*;
 /*</javadoc>*/
 /*<annotations>*//*</annotations>*/
 public enum /*<name>*/CLAuthorizationStatus/*</name>*/ implements ValuedEnum {
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    AuthorizedWhenInUse(4L), // NOTE: Available in iOS 8. Manually added for now.
     /*<values>*/
     NotDetermined(0L),
     Restricted(1L),

@@ -28,6 +28,7 @@ import org.robovm.rt.bro.annotation.*;
 import org.robovm.rt.bro.ptr.*;
 import org.robovm.apple.corefoundation.*;
 import org.robovm.apple.uikit.*;
+import org.robovm.apple.coregraphics.*;
 import org.robovm.apple.security.*;
 /*</imports>*/
 
@@ -109,6 +110,69 @@ import org.robovm.apple.security.*;
             }
         });
     }
+    
+    /* UIKit extensions */
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
+    public static NSAttributedString create(NSURL url, NSAttributedStringDocumentAttributes options) {
+        return NSAttributedStringExtensions.createFromURL(url, options);
+    }
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
+    public static NSAttributedString create(NSData data, NSAttributedStringDocumentAttributes options) {
+        return NSAttributedStringExtensions.createFromData(data, options);
+    }
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
+    public NSData getData(NSRange range, NSAttributedStringDocumentAttributes dict) {
+        return NSAttributedStringExtensions.getData(this, range, dict);
+    }
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
+    public NSFileWrapper getFileWrapper(NSRange range, NSAttributedStringDocumentAttributes dict) {
+        return NSAttributedStringExtensions.getFileWrapper(this, range, dict);
+    }
+    /**
+     * @since Available in iOS 6.0 and later.
+     */
+    public CGSize getSize() {
+        return NSAttributedStringExtensions.getSize(this);
+    }
+    /**
+     * @since Available in iOS 6.0 and later.
+     */
+    public void draw(CGPoint point) {
+        NSAttributedStringExtensions.draw(this, point);
+    }
+    /**
+     * @since Available in iOS 6.0 and later.
+     */
+    public void draw(CGRect rect) {
+        NSAttributedStringExtensions.draw(this, rect);
+    }
+    /**
+     * @since Available in iOS 6.0 and later.
+     */
+    public void draw(@ByVal CGRect rect, NSStringDrawingOptions options, NSStringDrawingContext context) {
+        NSAttributedStringExtensions.draw(this, rect, options, context);
+    }
+    /**
+     * @since Available in iOS 6.0 and later.
+     */
+    public CGRect getBoundingRect(@ByVal CGSize size, NSStringDrawingOptions options, NSStringDrawingContext context) {
+        return NSAttributedStringExtensions.getBoundingRect(this, size, options, context);
+    }
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
+    public static NSAttributedString create(NSTextAttachment attachment) {
+        return NSAttributedStringExtensions.createWithAttachment(attachment);
+    }
+    
     /*<methods>*/
     @Method(selector = "string")
     public native String getString();

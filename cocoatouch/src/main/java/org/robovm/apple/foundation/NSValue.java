@@ -19,7 +19,6 @@ package org.robovm.apple.foundation;
 import java.io.*;
 import java.nio.*;
 import java.util.*;
-
 import org.robovm.objc.*;
 import org.robovm.objc.annotation.*;
 import org.robovm.objc.block.*;
@@ -28,11 +27,8 @@ import org.robovm.rt.bro.*;
 import org.robovm.rt.bro.annotation.*;
 import org.robovm.rt.bro.ptr.*;
 import org.robovm.apple.corefoundation.*;
-import org.robovm.apple.coregraphics.CGAffineTransform;
-import org.robovm.apple.coregraphics.CGPoint;
-import org.robovm.apple.coregraphics.CGRect;
-import org.robovm.apple.coregraphics.CGSize;
 import org.robovm.apple.uikit.*;
+import org.robovm.apple.coregraphics.*;
 import org.robovm.apple.security.*;
 /*</imports>*/
 
@@ -71,48 +67,48 @@ import org.robovm.apple.security.*;
         return ptr;
     }
     
-    /* UIKit NSValue Extensions */
-    public @ByVal CGPoint pointValue() {
+    /* UIKit Extensions */
+    public CGPoint pointValue() {
         return NSValueExtensions.getPointValue(this);
     }
-    public @ByVal CGSize sizeValue() {
+    public CGSize sizeValue() {
         return NSValueExtensions.getSizeValue(this);
     }
-    public @ByVal CGRect rectValue() {
+    public CGRect rectValue() {
         return NSValueExtensions.getRectValue(this);
     }
-    public @ByVal CGAffineTransform affineTransformValue() {
+    public CGAffineTransform affineTransformValue() {
         return NSValueExtensions.getAffineTransformValue(this);
     }
-    public @ByVal UIEdgeInsets edgeInsetsValue() {
+    public UIEdgeInsets edgeInsetsValue() {
         return NSValueExtensions.getEdgeInsetsValue(this);
     }
     /**
      * @since Available in iOS 5.0 and later.
      */
-    public @ByVal UIOffset offsetValue() {
+    public UIOffset offsetValue() {
         return NSValueExtensions.getOffsetValue(this);
     }
 
-    public static NSValue valueOf(@ByVal CGPoint point) {
+    public static NSValue valueOf(CGPoint point) {
         return NSValueExtensions.create(point);
     }
-    public static NSValue valueOf(@ByVal CGSize size) {
+    public static NSValue valueOf(CGSize size) {
         return NSValueExtensions.create(size);
     }
-    public static NSValue valueOf(@ByVal CGRect rect) {
+    public static NSValue valueOf(CGRect rect) {
         return NSValueExtensions.create(rect);
     }
-    public static NSValue valueOf(@ByVal CGAffineTransform transform) {
+    public static NSValue valueOf(CGAffineTransform transform) {
         return NSValueExtensions.create(transform);
     }
-    public static NSValue valueOf(@ByVal UIEdgeInsets insets) {
+    public static NSValue valueOf(UIEdgeInsets insets) {
         return NSValueExtensions.create(insets);
     }
     /**
      * @since Available in iOS 5.0 and later.
      */
-    public static NSValue valueOf(@ByVal UIOffset insets) {
+    public static NSValue valueOf(UIOffset insets) {
         return NSValueExtensions.create(insets);
     }
     

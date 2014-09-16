@@ -28,6 +28,7 @@ import org.robovm.rt.bro.annotation.*;
 import org.robovm.rt.bro.ptr.*;
 import org.robovm.apple.corefoundation.*;
 import org.robovm.apple.uikit.*;
+import org.robovm.apple.coregraphics.*;
 import org.robovm.apple.security.*;
 /*</imports>*/
 
@@ -63,6 +64,12 @@ import org.robovm.apple.security.*;
     
     /*</properties>*/
     /*<members>*//*</members>*/
+    public void addAttribute(String name, NSObject value, @ByVal NSRange range) {
+        addAttribute(new NSString(name), value, range);
+    }
+    public void addAttribute(NSAttributedStringAttribute attribute, NSObject value, @ByVal NSRange range) {
+        addAttribute(attribute.value(), value, range);
+    }
     public void removeAttribute(String name, @ByVal NSRange range) {
         removeAttribute(new NSString(name), range);
     }

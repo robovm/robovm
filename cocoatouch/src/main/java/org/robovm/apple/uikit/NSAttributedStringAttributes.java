@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.robovm.apple.foundation;
+package org.robovm.apple.uikit;
 
 /*<imports>*/
 import java.io.*;
@@ -77,11 +77,13 @@ import org.robovm.apple.uikit.*;
         return data;
     }
     
-    public void put(String attribute, NSObject value) {
+    public NSAttributedStringAttributes set(String attribute, NSObject value) {
         data.put(new NSString(attribute), value);
+        return this;
     }
-    public void put(NSAttributedStringAttribute attribute, NSObject value) {
+    public NSAttributedStringAttributes set(NSAttributedStringAttribute attribute, NSObject value) {
         data.put(attribute.value(), value);
+        return this;
     }
     public NSObject get(String attribute) {
         return data.get(new NSString(attribute));
@@ -110,8 +112,9 @@ import org.robovm.apple.uikit.*;
     /**
      * @since Available in iOS 6.0 and later.
      */
-    public void setFont(UIFont font) {
-        put(NSAttributedStringAttribute.Font, font);
+    public NSAttributedStringAttributes setFont(UIFont font) {
+        set(NSAttributedStringAttribute.Font, font);
+        return this;
     }
     /**
      * @since Available in iOS 6.0 and later.
@@ -126,8 +129,9 @@ import org.robovm.apple.uikit.*;
     /**
      * @since Available in iOS 6.0 and later.
      */
-    public void setParagraphStyle(NSParagraphStyle paragraphStyle) {
-        put(NSAttributedStringAttribute.ParagraphStyle, paragraphStyle);
+    public NSAttributedStringAttributes setParagraphStyle(NSParagraphStyle paragraphStyle) {
+        set(NSAttributedStringAttribute.ParagraphStyle, paragraphStyle);
+        return this;
     }
     /**
      * @since Available in iOS 6.0 and later.
@@ -142,8 +146,9 @@ import org.robovm.apple.uikit.*;
     /**
      * @since Available in iOS 6.0 and later.
      */
-    public void setForegroundColor(UIColor color) {
-        put(NSAttributedStringAttribute.ForegroundColor, color);
+    public NSAttributedStringAttributes setForegroundColor(UIColor color) {
+        set(NSAttributedStringAttribute.ForegroundColor, color);
+        return this;
     }
     /**
      * @since Available in iOS 6.0 and later.
@@ -158,8 +163,9 @@ import org.robovm.apple.uikit.*;
     /**
      * @since Available in iOS 6.0 and later.
      */
-    public void setBackgroundColor(UIColor color) {
-        put(NSAttributedStringAttribute.BackgroundColor, color);
+    public NSAttributedStringAttributes setBackgroundColor(UIColor color) {
+        set(NSAttributedStringAttribute.BackgroundColor, color);
+        return this;
     }
     /**
      * @since Available in iOS 6.0 and later.
@@ -174,8 +180,9 @@ import org.robovm.apple.uikit.*;
     /**
      * @since Available in iOS 6.0 and later.
      */
-    public void setLigature(NSLigature ligature) {
-        put(NSAttributedStringAttribute.Ligature, NSNumber.valueOf(ligature.ordinal()));
+    public NSAttributedStringAttributes setLigature(NSLigature ligature) {
+        set(NSAttributedStringAttribute.Ligature, NSNumber.valueOf(ligature.ordinal()));
+        return this;
     }
     /**
      * @since Available in iOS 6.0 and later.
@@ -190,8 +197,9 @@ import org.robovm.apple.uikit.*;
     /**
      * @since Available in iOS 6.0 and later.
      */
-    public void setKerning(double kern) {
-        put(NSAttributedStringAttribute.Kern, NSNumber.valueOf(kern));
+    public NSAttributedStringAttributes setKerning(double kern) {
+        set(NSAttributedStringAttribute.Kern, NSNumber.valueOf(kern));
+        return this;
     }
     /**
      * @since Available in iOS 6.0 and later.
@@ -206,8 +214,9 @@ import org.robovm.apple.uikit.*;
     /**
      * @since Available in iOS 6.0 and later.
      */
-    public void setStrikethroughStyle(NSUnderlineStyle style) {
-        put(NSAttributedStringAttribute.StrikethroughStyle, NSNumber.valueOf((int)style.value()));
+    public NSAttributedStringAttributes setStrikethroughStyle(NSUnderlineStyle style) {
+        set(NSAttributedStringAttribute.StrikethroughStyle, NSNumber.valueOf((int)style.value()));
+        return this;
     }
     /**
      * @since Available in iOS 6.0 and later.
@@ -222,8 +231,9 @@ import org.robovm.apple.uikit.*;
     /**
      * @since Available in iOS 6.0 and later.
      */
-    public void setUnderlineStyle(NSUnderlineStyle style) {
-        put(NSAttributedStringAttribute.UnderlineStyle, NSNumber.valueOf((int)style.value()));
+    public NSAttributedStringAttributes setUnderlineStyle(NSUnderlineStyle style) {
+        set(NSAttributedStringAttribute.UnderlineStyle, NSNumber.valueOf((int)style.value()));
+        return this;
     }
     /**
      * @since Available in iOS 6.0 and later.
@@ -238,8 +248,9 @@ import org.robovm.apple.uikit.*;
     /**
      * @since Available in iOS 6.0 and later.
      */
-    public void setStrokeColor(UIColor color) {
-        put(NSAttributedStringAttribute.StrokeColor, color);
+    public NSAttributedStringAttributes setStrokeColor(UIColor color) {
+        set(NSAttributedStringAttribute.StrokeColor, color);
+        return this;
     }
     /**
      * @since Available in iOS 6.0 and later.
@@ -254,8 +265,9 @@ import org.robovm.apple.uikit.*;
     /**
      * @since Available in iOS 6.0 and later.
      */
-    public void setStrokeWidth(double width) {
-        put(NSAttributedStringAttribute.StrokeWidth, NSNumber.valueOf(width));
+    public NSAttributedStringAttributes setStrokeWidth(double width) {
+        set(NSAttributedStringAttribute.StrokeWidth, NSNumber.valueOf(width));
+        return this;
     }
     /**
      * @since Available in iOS 6.0 and later.
@@ -270,8 +282,9 @@ import org.robovm.apple.uikit.*;
     /**
      * @since Available in iOS 6.0 and later.
      */
-    public void setShadow(NSShadow shadow) {
-        put(NSAttributedStringAttribute.Shadow, shadow);
+    public NSAttributedStringAttributes setShadow(NSShadow shadow) {
+        set(NSAttributedStringAttribute.Shadow, shadow);
+        return this;
     }
     /**
      * @since Available in iOS 7.0 and later.
@@ -286,8 +299,9 @@ import org.robovm.apple.uikit.*;
     /**
      * @since Available in iOS 7.0 and later.
      */
-    public void setTextEffect(NSTextEffect textEffect) {
-        put(NSAttributedStringAttribute.TextEffect, textEffect.value());
+    public NSAttributedStringAttributes setTextEffect(NSTextEffect textEffect) {
+        set(NSAttributedStringAttribute.TextEffect, textEffect.value());
+        return this;
     }
     /**
      * @since Available in iOS 7.0 and later.
@@ -302,8 +316,9 @@ import org.robovm.apple.uikit.*;
     /**
      * @since Available in iOS 7.0 and later.
      */
-    public void setAttachment(NSTextAttachment attachment) {
-        put(NSAttributedStringAttribute.Attachment, attachment);
+    public NSAttributedStringAttributes setAttachment(NSTextAttachment attachment) {
+        set(NSAttributedStringAttribute.Attachment, attachment);
+        return this;
     }
     /**
      * @since Available in iOS 7.0 and later.
@@ -318,8 +333,9 @@ import org.robovm.apple.uikit.*;
     /**
      * @since Available in iOS 7.0 and later.
      */
-    public void setLink(NSURL link) {
-        put(NSAttributedStringAttribute.Link, link);
+    public NSAttributedStringAttributes setLink(NSURL link) {
+        set(NSAttributedStringAttribute.Link, link);
+        return this;
     }
     /**
      * @since Available in iOS 7.0 and later.
@@ -334,8 +350,9 @@ import org.robovm.apple.uikit.*;
     /**
      * @since Available in iOS 7.0 and later.
      */
-    public void setBaselineOffset(double offset) {
-        put(NSAttributedStringAttribute.BaselineOffset, NSNumber.valueOf(offset));
+    public NSAttributedStringAttributes setBaselineOffset(double offset) {
+        set(NSAttributedStringAttribute.BaselineOffset, NSNumber.valueOf(offset));
+        return this;
     }
     /**
      * @since Available in iOS 7.0 and later.
@@ -350,8 +367,9 @@ import org.robovm.apple.uikit.*;
     /**
      * @since Available in iOS 7.0 and later.
      */
-    public void setUnderlineColor(UIColor color) {
-        put(NSAttributedStringAttribute.UnderlineColor, color);
+    public NSAttributedStringAttributes setUnderlineColor(UIColor color) {
+        set(NSAttributedStringAttribute.UnderlineColor, color);
+        return this;
     }
     /**
      * @since Available in iOS 7.0 and later.
@@ -366,8 +384,9 @@ import org.robovm.apple.uikit.*;
     /**
      * @since Available in iOS 7.0 and later.
      */
-    public void setStrikethroughColor(UIColor color) {
-        put(NSAttributedStringAttribute.StrikethroughColor, color);
+    public NSAttributedStringAttributes setStrikethroughColor(UIColor color) {
+        set(NSAttributedStringAttribute.StrikethroughColor, color);
+        return this;
     }
     /**
      * @since Available in iOS 7.0 and later.
@@ -382,8 +401,9 @@ import org.robovm.apple.uikit.*;
     /**
      * @since Available in iOS 7.0 and later.
      */
-    public void setObliqueness(double obliqueness) {
-        put(NSAttributedStringAttribute.Obliqueness, NSNumber.valueOf(obliqueness));
+    public NSAttributedStringAttributes setObliqueness(double obliqueness) {
+        set(NSAttributedStringAttribute.Obliqueness, NSNumber.valueOf(obliqueness));
+        return this;
     }
     /**
      * @since Available in iOS 7.0 and later.
@@ -398,8 +418,9 @@ import org.robovm.apple.uikit.*;
     /**
      * @since Available in iOS 7.0 and later.
      */
-    public void setExpansion(double expansion) {
-        put(NSAttributedStringAttribute.Expansion, NSNumber.valueOf(expansion));
+    public NSAttributedStringAttributes setExpansion(double expansion) {
+        set(NSAttributedStringAttribute.Expansion, NSNumber.valueOf(expansion));
+        return this;
     }
     /**
      * @since Available in iOS 7.0 and later.
@@ -418,12 +439,13 @@ import org.robovm.apple.uikit.*;
     /**
      * @since Available in iOS 7.0 and later.
      */
-    public void setWritingDirections(List<NSTextDirection> writingDirections) {
+    public NSAttributedStringAttributes setWritingDirections(List<NSTextDirection> writingDirections) {
         NSArray<NSNumber> list = new NSMutableArray<>();
         for (NSTextDirection n : writingDirections) {
             list.add(NSNumber.valueOf(n.ordinal()));
         }
-        put(NSAttributedStringAttribute.WritingDirection, list);
+        set(NSAttributedStringAttribute.WritingDirection, list);
+        return this;
     }
     /**
      * @since Available in iOS 6.0 and later.
@@ -438,8 +460,60 @@ import org.robovm.apple.uikit.*;
     /**
      * @since Available in iOS 6.0 and later.
      */
-    public void setVerticalText(boolean vertical) {
-        put(NSAttributedStringAttribute.VerticalGlyphForm, vertical ? NSNumber.valueOf(1) : NSNumber.valueOf(0));
+    public NSAttributedStringAttributes setVerticalText(boolean vertical) {
+        set(NSAttributedStringAttribute.VerticalGlyphForm, vertical ? NSNumber.valueOf(1) : NSNumber.valueOf(0));
+        return this;
+    }
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
+    public boolean isSpeechPunctuation() {
+        if (contains(NSAttributedStringAttribute.SpeechPunctuation)) {
+            NSNumber val = (NSNumber)get(NSAttributedStringAttribute.SpeechPunctuation);
+            return val.booleanValue();
+        }
+        return false;
+    }
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
+    public NSAttributedStringAttributes setSpeechPunctuation(boolean punctuation) {
+        set(NSAttributedStringAttribute.SpeechPunctuation, NSNumber.valueOf(punctuation));
+        return this;
+    }
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
+    public String getSpeechLanguage() {
+        if (contains(NSAttributedStringAttribute.SpeechLanguage)) {
+            NSString val = (NSString)get(NSAttributedStringAttribute.SpeechLanguage);
+            return val.toString();
+        }
+        return null;
+    }
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
+    public NSAttributedStringAttributes setSpeechLanguage(String language) {
+        set(NSAttributedStringAttribute.SpeechLanguage, new NSString(language));
+        return this;
+    }
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
+    public double getSpeechPitch() {
+        if (contains(NSAttributedStringAttribute.SpeechPitch)) {
+            NSNumber val = (NSNumber)get(NSAttributedStringAttribute.SpeechPitch);
+            return val.doubleValue();
+        }
+        return 1;
+    }
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
+    public NSAttributedStringAttributes setSpeechPitch(double pitch) {
+        set(NSAttributedStringAttribute.SpeechPitch, NSNumber.valueOf(pitch));
+        return this;
     }
     
     @Override

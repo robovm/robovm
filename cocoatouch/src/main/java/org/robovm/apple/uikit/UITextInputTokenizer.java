@@ -31,6 +31,7 @@ import org.robovm.apple.coreanimation.*;
 import org.robovm.apple.coregraphics.*;
 import org.robovm.apple.coredata.*;
 import org.robovm.apple.coreimage.*;
+import org.robovm.apple.coretext.*;
 /*</imports>*/
 
 /*<javadoc>*/
@@ -50,13 +51,13 @@ import org.robovm.apple.coreimage.*;
     /*</properties>*/
     /*<methods>*/
     @Method(selector = "rangeEnclosingPosition:withGranularity:inDirection:")
-    UITextRange getRangeEnclosingPosition(UITextPosition position, UITextGranularity granularity, @MachineSizedSInt long direction);
+    UITextRange getRangeEnclosingPosition(UITextPosition position, UITextGranularity granularity, UITextDirection direction);
     @Method(selector = "isPosition:atBoundary:inDirection:")
-    boolean isPositionAtBoundary(UITextPosition position, UITextGranularity granularity, @MachineSizedSInt long direction);
+    boolean isPositionAtBoundary(UITextPosition position, UITextGranularity granularity, UITextDirection direction);
     @Method(selector = "positionFromPosition:toBoundary:inDirection:")
-    UITextPosition getPosition(UITextPosition position, UITextGranularity granularity, @MachineSizedSInt long direction);
+    UITextPosition getPosition(UITextPosition position, UITextGranularity granularity, UITextDirection direction);
     @Method(selector = "isPosition:withinTextUnit:inDirection:")
-    boolean isPositionWithinTextUnit(UITextPosition position, UITextGranularity granularity, @MachineSizedSInt long direction);
+    boolean isPositionWithinTextUnit(UITextPosition position, UITextGranularity granularity, UITextDirection direction);
     /*</methods>*/
     /*<adapter>*/
     /*</adapter>*/

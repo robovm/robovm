@@ -31,6 +31,7 @@ import org.robovm.apple.coreanimation.*;
 import org.robovm.apple.coregraphics.*;
 import org.robovm.apple.coredata.*;
 import org.robovm.apple.coreimage.*;
+import org.robovm.apple.coretext.*;
 /*</imports>*/
 
 /*<javadoc>*/
@@ -105,6 +106,8 @@ import org.robovm.apple.coreimage.*;
     protected static native long SelectedValue();
     @GlobalValue(symbol="UIAccessibilityTraitPlaysSound", optional=true)
     protected static native long PlaysSoundValue();
+    @GlobalValue(symbol="UIAccessibilityTraitKeyboardKey", optional=true)
+    protected static native long KeyboardKeyValue();
     @GlobalValue(symbol="UIAccessibilityTraitStaticText", optional=true)
     protected static native long StaticTextValue();
     @GlobalValue(symbol="UIAccessibilityTraitSummaryElement", optional=true)

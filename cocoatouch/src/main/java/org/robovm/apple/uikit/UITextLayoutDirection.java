@@ -31,13 +31,14 @@ import org.robovm.apple.coreanimation.*;
 import org.robovm.apple.coregraphics.*;
 import org.robovm.apple.coredata.*;
 import org.robovm.apple.coreimage.*;
+import org.robovm.apple.coretext.*;
 /*</imports>*/
 
 /*<javadoc>*/
 
 /*</javadoc>*/
 /*<annotations>*/@Marshaler(ValuedEnum.AsMachineSizedSIntMarshaler.class)/*</annotations>*/
-public enum /*<name>*/UITextLayoutDirection/*</name>*/ implements ValuedEnum {
+public enum /*<name>*/UITextLayoutDirection/*</name>*/ implements UITextDirection, ValuedEnum {
     /*<values>*/
     Right(2L),
     Left(3L),

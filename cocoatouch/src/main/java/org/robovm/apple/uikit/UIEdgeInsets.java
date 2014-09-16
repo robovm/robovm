@@ -31,6 +31,7 @@ import org.robovm.apple.coreanimation.*;
 import org.robovm.apple.coregraphics.*;
 import org.robovm.apple.coredata.*;
 import org.robovm.apple.coreimage.*;
+import org.robovm.apple.coretext.*;
 /*</imports>*/
 
 /*<javadoc>*/
@@ -71,6 +72,9 @@ import org.robovm.apple.coreimage.*;
     }
     
     /*<methods>*/
+    @GlobalValue(symbol="UIEdgeInsetsZero", optional=true)
+    public static native @ByVal UIEdgeInsets Zero();
+    
     @Bridge(symbol="NSStringFromUIEdgeInsets", optional=true)
     protected static native String toString(@ByVal UIEdgeInsets insets);
     @Bridge(symbol="UIEdgeInsetsFromString", optional=true)

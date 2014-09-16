@@ -31,6 +31,7 @@ import org.robovm.apple.coreanimation.*;
 import org.robovm.apple.coregraphics.*;
 import org.robovm.apple.coredata.*;
 import org.robovm.apple.coreimage.*;
+import org.robovm.apple.coretext.*;
 /*</imports>*/
 
 /*<javadoc>*/
@@ -40,6 +41,77 @@ import org.robovm.apple.coreimage.*;
 /*<visibility>*/public/*</visibility>*/ interface /*<name>*/UIAccessibility/*</name>*/ 
     /*<implements>*/extends NSObjectProtocol/*</implements>*/ {
 
+    public static class Notifications {
+        /**
+         * @since Available in iOS 6.0 and later.
+         */
+        public static NSObject observeAnnouncementDidFinish(final VoidBlock2<String, Boolean> block) {
+            return NSNotificationCenter.getDefaultCenter().addObserver(UIAccessibilityGlobals.AnnouncementDidFinishNotification(), null, NSOperationQueue.getMainQueue(), new VoidBlock1<NSNotification>() {
+                @Override
+                public void invoke(NSNotification a) {
+                    NSDictionary<NSString, NSObject> data = a.getUserInfo();
+                    NSString string = (NSString)data.get(UIAccessibilityGlobals.AnnouncementKeyStringValue());
+                    NSNumber successful = (NSNumber)data.get(UIAccessibilityGlobals.AnnouncementKeyWasSuccessful());
+                    block.invoke(string.toString(), successful.booleanValue());
+                }
+            });
+        }
+        /**
+         * @since Available in iOS 5.0 and later.
+         */
+        public static NSObject observeMonoAudioStatusDidChange(final Runnable block) {
+            return NSNotificationCenter.getDefaultCenter().addObserver(UIAccessibilityGlobals.MonoAudioStatusDidChangeNotification(), null, NSOperationQueue.getMainQueue(), new VoidBlock1<NSNotification>() {
+                @Override
+                public void invoke(NSNotification a) {
+                    block.run();
+                }
+            });
+        }
+        /**
+         * @since Available in iOS 5.0 and later.
+         */
+        public static NSObject observeClosedCaptioningStatusDidChange(final Runnable block) {
+            return NSNotificationCenter.getDefaultCenter().addObserver(UIAccessibilityGlobals.ClosedCaptioningStatusDidChangeNotification(), null, NSOperationQueue.getMainQueue(), new VoidBlock1<NSNotification>() {
+                @Override
+                public void invoke(NSNotification a) {
+                    block.run();
+                }
+            });
+        }
+        /**
+         * @since Available in iOS 6.0 and later.
+         */
+        public static NSObject observeInvertColorsStatusDidChange(final Runnable block) {
+            return NSNotificationCenter.getDefaultCenter().addObserver(UIAccessibilityGlobals.InvertColorsStatusDidChangeNotification(), null, NSOperationQueue.getMainQueue(), new VoidBlock1<NSNotification>() {
+                @Override
+                public void invoke(NSNotification a) {
+                    block.run();
+                }
+            });
+        }
+        /**
+         * @since Available in iOS 6.0 and later.
+         */
+        public static NSObject observeGuidedAccessStatusDidChange(final Runnable block) {
+            return NSNotificationCenter.getDefaultCenter().addObserver(UIAccessibilityGlobals.GuidedAccessStatusDidChangeNotification(), null, NSOperationQueue.getMainQueue(), new VoidBlock1<NSNotification>() {
+                @Override
+                public void invoke(NSNotification a) {
+                    block.run();
+                }
+            });
+        }
+        /**
+         * @since Available in iOS 4.0 and later.
+         */
+        public static NSObject observeVoiceOverStatusChanged(final Runnable block) {
+            return NSNotificationCenter.getDefaultCenter().addObserver(UIAccessibilityGlobals.VoiceOverStatusChangedNotification(), null, NSOperationQueue.getMainQueue(), new VoidBlock1<NSNotification>() {
+                @Override
+                public void invoke(NSNotification a) {
+                    block.run();
+                }
+            });
+        }
+    }
     /*<ptr>*/
     /*</ptr>*/
     /*<bind>/*</bind>*/

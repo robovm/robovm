@@ -31,13 +31,14 @@ import org.robovm.apple.coreanimation.*;
 import org.robovm.apple.coregraphics.*;
 import org.robovm.apple.coredata.*;
 import org.robovm.apple.coreimage.*;
+import org.robovm.apple.coretext.*;
 /*</imports>*/
 
 /*<javadoc>*/
 
 /*</javadoc>*/
 /*<annotations>*/@Marshaler(ValuedEnum.AsMachineSizedSIntMarshaler.class)/*</annotations>*/
-public enum /*<name>*/UITextStorageDirection/*</name>*/ implements ValuedEnum {
+public enum /*<name>*/UITextStorageDirection/*</name>*/ implements UITextDirection, ValuedEnum {
     /*<values>*/
     Forward(0L),
     Backward(1L);

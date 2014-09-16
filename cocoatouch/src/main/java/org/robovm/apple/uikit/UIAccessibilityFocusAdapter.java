@@ -31,6 +31,7 @@ import org.robovm.apple.coreanimation.*;
 import org.robovm.apple.coregraphics.*;
 import org.robovm.apple.coredata.*;
 import org.robovm.apple.coreimage.*;
+import org.robovm.apple.coretext.*;
 /*</imports>*/
 
 /*<javadoc>*/
@@ -55,16 +56,16 @@ import org.robovm.apple.coreimage.*;
      * @since Available in iOS 4.0 and later.
      */
     @NotImplemented("accessibilityElementDidBecomeFocused")
-    public void accessibilityElementDidBecomeFocused() { throw new UnsupportedOperationException(); }
+    public void didBecomeFocused() { throw new UnsupportedOperationException(); }
     /**
      * @since Available in iOS 4.0 and later.
      */
     @NotImplemented("accessibilityElementDidLoseFocus")
-    public void accessibilityElementDidLoseFocus() { throw new UnsupportedOperationException(); }
+    public void didLoseFocus() { throw new UnsupportedOperationException(); }
     /**
      * @since Available in iOS 4.0 and later.
      */
     @NotImplemented("accessibilityElementIsFocused")
-    public boolean accessibilityElementIsFocused() { throw new UnsupportedOperationException(); }
+    public boolean isFocused() { throw new UnsupportedOperationException(); }
     /*</methods>*/
 }

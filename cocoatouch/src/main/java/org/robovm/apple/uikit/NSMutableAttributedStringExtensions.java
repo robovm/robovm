@@ -31,6 +31,7 @@ import org.robovm.apple.coreanimation.*;
 import org.robovm.apple.coregraphics.*;
 import org.robovm.apple.coredata.*;
 import org.robovm.apple.coreimage.*;
+import org.robovm.apple.coretext.*;
 /*</imports>*/
 
 /*<javadoc>*/
@@ -51,6 +52,18 @@ import org.robovm.apple.coreimage.*;
     
     /*</properties>*/
     /*<members>*//*</members>*/
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
+    public static boolean readFromFileURL(NSMutableAttributedString thiz, NSURL url, NSAttributedStringDocumentAttributes opts) {
+        return readFromFileURL(thiz, url, opts, null, null);
+    }
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
+    public static boolean readFromData(NSMutableAttributedString thiz, NSData data, NSAttributedStringDocumentAttributes opts) {
+        return readFromData(thiz, data, opts, null, null);
+    }
     /*<methods>*/
     /**
      * @since Available in iOS 7.0 and later.
@@ -61,11 +74,11 @@ import org.robovm.apple.coreimage.*;
      * @since Available in iOS 7.0 and later.
      */
     @Method(selector = "readFromFileURL:options:documentAttributes:error:")
-    public static native boolean readFromFileURL(NSMutableAttributedString thiz, NSURL url, NSDictionary<NSString, ?> opts, NSDictionary.NSDictionaryPtr<?, ?> dict, NSError.NSErrorPtr error);
+    protected static native boolean readFromFileURL(NSMutableAttributedString thiz, NSURL url, NSAttributedStringDocumentAttributes opts, NSDictionary.NSDictionaryPtr<?, ?> dict, NSError.NSErrorPtr error);
     /**
      * @since Available in iOS 7.0 and later.
      */
     @Method(selector = "readFromData:options:documentAttributes:error:")
-    public static native boolean readFromData(NSMutableAttributedString thiz, NSData data, NSDictionary<NSString, ?> opts, NSDictionary.NSDictionaryPtr<?, ?> dict, NSError.NSErrorPtr error);
+    protected static native boolean readFromData(NSMutableAttributedString thiz, NSData data, NSAttributedStringDocumentAttributes opts, NSDictionary.NSDictionaryPtr<?, ?> dict, NSError.NSErrorPtr error);
     /*</methods>*/
 }

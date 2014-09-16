@@ -31,6 +31,7 @@ import org.robovm.apple.coreanimation.*;
 import org.robovm.apple.coregraphics.*;
 import org.robovm.apple.coredata.*;
 import org.robovm.apple.coreimage.*;
+import org.robovm.apple.coretext.*;
 /*</imports>*/
 
 /*<javadoc>*/
@@ -152,12 +153,12 @@ import org.robovm.apple.coreimage.*;
      * @since Available in iOS 5.0 and later.
      */
     @Method(selector = "setTitleTextAttributes:forState:")
-    public native void setTitleTextAttributes(NSDictionary<NSString, ?> attributes, UIControlState state);
+    public native void setTitleTextAttributes(NSAttributedStringAttributes attributes, UIControlState state);
     /**
      * @since Available in iOS 5.0 and later.
      */
     @Method(selector = "titleTextAttributesForState:")
-    public native NSDictionary<NSString, ?> getTitleTextAttributes(UIControlState state);
+    public native NSAttributedStringAttributes getTitleTextAttributes(UIControlState state);
     /**
      * @since Available in iOS 5.0 and later.
      */

@@ -1,5 +1,5 @@
 package: org.robovm.apple.uikit
-include: [foundation.yaml, coreanimation.yaml, coregraphics.yaml, coredata.yaml, coreimage.yaml]
+include: [foundation.yaml, coreanimation.yaml, coregraphics.yaml, coredata.yaml, coreimage.yaml, coretext.yaml]
 library: UIKit
 framework: UIKit
 clang_args: ['-x', 'objective-c']
@@ -167,13 +167,17 @@ categories:
                 return_type: "@Pointer long"
                 parameters:
                     options:
-                        type: "NSDictionary<NSString, ?>"
+                        type: NSAttributedStringDocumentAttributes
             '+attributedStringWithAttachment:':
                 name: createWithAttachment
             '-boundingRectWithSize:options:context:':
                 name: getBoundingRect
             '-dataFromRange:documentAttributes:error:':
                 name: getData
+                visibility: protected
+                parameters:
+                    dict:
+                        type: NSAttributedStringDocumentAttributes
             '-drawAtPoint:':
                 name: draw
             '-drawInRect:':
@@ -182,6 +186,10 @@ categories:
                 name: draw
             '-fileWrapperFromRange:documentAttributes:error:':
                 name: getFileWrapper
+                visibility: protected
+                parameters:
+                    dict:
+                        type: NSAttributedStringDocumentAttributes
             '-size':
                 name: getSize
 
@@ -213,14 +221,16 @@ categories:
                 name: fixAttributesInRange
             '-readFromData:options:documentAttributes:error:':
                 name: readFromData
+                visibility: protected
                 parameters:
                     opts:
-                        type: "NSDictionary<NSString, ?>"
+                        type: NSAttributedStringDocumentAttributes
             '-readFromFileURL:options:documentAttributes:error:':
                 name: readFromFileURL
+                visibility: protected
                 parameters:
                     opts:
-                        type: "NSDictionary<NSString, ?>"
+                        type: NSAttributedStringDocumentAttributes
 
     NSString: # DONE
         methods:
@@ -228,7 +238,7 @@ categories:
                 name: getBoundingRect
                 parameters:
                     attributes:
-                        type: "NSDictionary<NSString, ?>"
+                        type: NSAttributedStringAttributes
             '-drawAtPoint:forWidth:withFont:fontSize:lineBreakMode:baselineAdjustment:':
                 name: draw
             '-drawAtPoint:forWidth:withFont:lineBreakMode:':
@@ -239,14 +249,14 @@ categories:
                 name: draw
                 parameters:
                     attrs:
-                        type: "NSDictionary<NSString, ?>"
+                        type: NSAttributedStringAttributes
             '-drawAtPoint:withFont:':
                 name: draw
             '-drawInRect:withAttributes:':
                 name: draw
                 parameters:
                     attrs:
-                        type: "NSDictionary<NSString, ?>"
+                        type: NSAttributedStringAttributes
             '-drawInRect:withFont:':
                 name: draw
             '-drawInRect:withFont:lineBreakMode:':
@@ -257,12 +267,12 @@ categories:
                 name: draw
                 parameters:
                     attributes:
-                        type: "NSDictionary<NSString, ?>"
+                        type: NSAttributedStringAttributes
             '-sizeWithAttributes:':
                 name: getSize
                 parameters:
                     attrs:
-                        type: "NSDictionary<NSString, ?>"
+                        type: NSAttributedStringAttributes
             '-sizeWithFont:':
                 name: getSize
             '-sizeWithFont:constrainedToSize:':
@@ -635,6 +645,8 @@ classes:
 
     UIBarButtonItem: # DONE
         properties:
+            '(action|target)':
+                exclude: true
             'possibleTitles':
                 type: "NSArray<NSString>"
         methods:
@@ -674,10 +686,10 @@ classes:
                 name: setTitleTextAttributes
                 parameters:
                     attributes:
-                        type: "NSDictionary<NSString, ?>"
+                        type: NSAttributedStringAttributes
             '-titleTextAttributesForState:':
                 name: getTitleTextAttributes
-                return_type: "NSDictionary<NSString, ?>"
+                return_type: NSAttributedStringAttributes
 
     UIBezierPath: # DONE
         methods:
@@ -1454,7 +1466,7 @@ classes:
             'items':
                 type: "NSArray<UINavigationItem>"
             'titleTextAttributes':
-                type: "NSDictionary<NSString, ?>"
+                type: NSAttributedStringAttributes
         methods:
             '-backgroundImageForBarMetrics:':
                 name: getBackgroundImage
@@ -1857,7 +1869,7 @@ classes:
                 name: getScopeBarButtonDividerImage
             '-scopeBarButtonTitleTextAttributesForState:':
                 name: getScopeBarButtonTitleTextAttributes
-                return_type: "NSDictionary<NSString, ?>"
+                return_type: NSAttributedStringAttributes
             '-searchFieldBackgroundImageForState:':
                 name: getSearchFieldBackgroundImage
             '-setImage:forSearchBarIcon:state:':
@@ -1880,7 +1892,7 @@ classes:
                 name: setScopeBarButtonTitleTextAttributes
                 parameters:
                     attributes:
-                        type: "NSDictionary<NSString, ?>"
+                        type: NSAttributedStringAttributes
 
     UISearchDisplayController: # DONE
         methods:
@@ -1916,7 +1928,7 @@ classes:
                 name: getTitle
             '-titleTextAttributesForState:':
                 name: getTitleTextAttributes
-                return_type: "NSDictionary<NSString, ?>"
+                return_type: NSAttributedStringAttributes
             '-removeSegmentAtIndex:animated:':
                 name: removeSegment
             '-setTitle:forSegmentAtIndex:':
@@ -1937,7 +1949,7 @@ classes:
                 name: setTitleTextAttributes
                 parameters:
                     attributes:
-                        type: "NSDictionary<NSString, ?>"
+                        type: NSAttributedStringAttributes
             '-setContentPositionAdjustment:forSegmentType:barMetrics:':
                 name: setContentPositionAdjustment
 
@@ -3338,12 +3350,24 @@ protocols:
         methods:
             '-positionFromPosition:toBoundary:inDirection:':
                 name: getPosition
+                parameters:
+                    direction:
+                        type: UITextDirection
             '-rangeEnclosingPosition:withGranularity:inDirection:':
                 name: getRangeEnclosingPosition
+                parameters:
+                    direction:
+                        type: UITextDirection
             '-isPosition:atBoundary:inDirection:':
                 name: isPositionAtBoundary
+                parameters:
+                    direction:
+                        type: UITextDirection
             '-isPosition:withinTextUnit:inDirection:':
                 name: isPositionWithinTextUnit
+                parameters:
+                    direction:
+                        type: UITextDirection
     UITextInputTraits: {}
     UITextViewDelegate:
         methods:
@@ -3472,7 +3496,14 @@ protocols:
                     element:
                         type: UIAccessibilityElement
 
-    UIAccessibilityFocus: {}
+    UIAccessibilityFocus:
+        methods:
+            '-accessibilityElementDidBecomeFocused':
+                name: didBecomeFocused
+            '-accessibilityElementDidLoseFocus':
+                name: didLoseFocus
+            '-accessibilityElementIsFocused':
+                name: isFocused
     UINibLoadingAdditions: {}
     UIResponderStandardEditActions:
         methods:
@@ -3504,13 +3535,17 @@ protocols:
                 name: decreaseSize
 
 functions:
+    # NSTextAlignment
+    (NSTextAlignmentToCTTextAlignment):
+        name: "convert#{g[0]}"
+    (NSTextAlignment)From(CTTextAlignment):
+        name: "convert#{g[1]}To#{g[0]}"
 
-    # Skip until we have CoreText support
-    NSTextAlignmentToCTTextAlignment:
-        exclude: true
-    NSTextAlignmentFromCTTextAlignment:
-        exclude: true
-
+    # UIAccessibility
+    UIAccessibility(PostNotification):
+        class: UIAccessibilityGlobals
+        name: "#{g[0]}"
+        visibility: protected
     UIAccessibility(.*):
         class: UIAccessibilityGlobals
         name: "#{g[0]}"
@@ -3581,7 +3616,7 @@ functions:
         static: true
     (UI.*)FromString:
         class: "#{g[0]}"
-        name: "fromString"
+        name: fromString
     NSStringFrom.*:
         class: UIGeometry
         name: toString
@@ -3607,14 +3642,44 @@ values:
         class: NSTextStorage
         name: "#{g[0]}"
         type: NSString
+    NS(.*DocumentAttribute):
+        class: NSAttributedStringDocumentAttribute
+        name: "#{g[0]}"
+        type: NSString
+        visibility: protected
+    NS(TextLayoutSectionsAttribute):
+        class: NSAttributedStringDocumentAttribute
+        name: "#{g[0]}"
+        type: NSString
+        visibility: protected
     NS(.*Attribute)Name:
         class: NSAttributedStringAttribute
         name: "#{g[0]}"
         type: NSString
         visibility: protected
+    UITextAttribute(Font):
+        class: NSAttributedStringAttribute
+        name: "Text#{g[0]}Attribute"
+        type: NSString
+        visibility: protected
+    UITextAttribute(.*):
+        class: NSAttributedStringAttribute
+        name: "#{g[0]}Attribute"
+        type: NSString
+        visibility: protected
     NSTextEffect(.*):
         class: NSTextEffect
         name: "#{g[0]}Value"
+        type: NSString
+        visibility: protected
+    NS(.*)TextDocumentType:
+        class: NSDocumentType
+        name: "#{g[0]}Value"
+        type: NSString
+        visibility: protected
+    NSTextLayoutSection(.*):
+        class: NSTextLayoutSection
+        name: "#{g[0]}Key"
         type: NSString
         visibility: protected
 
@@ -3645,6 +3710,9 @@ values:
         name: "#{g[0]}"
         type: NSString
         visibility: protected
+    UIApplication(BackgroundFetchInterval.*):
+        class: UIApplication
+        name: "#{g[0]}"
 
     # UIDevice
     UIDevice(.*Notification):
@@ -3738,42 +3806,23 @@ values:
         name: "#{g[0]}"
         type: NSString
 
-    UI(.*Key):
-        name: "#{g[0]}"
-        type: NSString
-
-    NS(.*DocumentAttribute):
-        name: "#{g[0]}"
-        type: NSString
-    NS(TextLayoutSectionsAttribute):
-        name: "#{g[0]}"
-        type: NSString
-    NS(TextLayoutSection.*):
-        name: "#{g[0]}"
-        type: NSString
-    NS(.*DocumentType):
-        name: "#{g[0]}"
-        type: NSString
-
-    UI(NibExternalObjects):
-        name: "#{g[0]}"
-        type: NSString
-
-    UI(TextAttribute.*):
-        name: "#{g[0]}"
-        type: NSString
-
-    NS(TabColumnTerminatorsAttributeName):
-        name: "#{g[0]}"
-        type: NSString
-
-    UI(AccessibilityVoiceOverStatusChanged):
-        name: "#{g[0]}"
+    # UIAccessibility
+    UIAccessibility(ScreenChanged|LayoutChanged|Announcement|PageScrolled)Notification:
+        class: UIAccessibilityNotification
+        name: "#{g[0]}Notification"
         readonly: true
-        type: NSString
-    UI(AccessibilitySpeech.*):
+        visibility: protected
+    UIAccessibility(.*Notification):
+        class: UIAccessibilityGlobals
         name: "#{g[0]}"
-        readonly: true
+        type: NSString
+    UIAccessibility(VoiceOverStatusChanged):
+        class: UIAccessibilityGlobals
+        name: "#{g[0]}Notification"
+        type: NSString
+    UIAccessibility(AnnouncementKey.*):
+        class: UIAccessibilityGlobals
+        name: "#{g[0]}"
         type: NSString
     UIAccessibilityTrait(.*):
         class: UIAccessibilityTraits
@@ -3781,62 +3830,43 @@ values:
         visibility: protected
         type: long
         readonly: true
-    UI(AccessibilityAnnouncementKey.*):
-        name: "#{g[0]}"
-        readonly: true
+    UIAccessibilitySpeechAttribute(.*):
+        class: NSAttributedStringAttribute
+        name: "Speech#{g[0]}Attribute"
         type: NSString
+        visibility: protected
 
+    # UIActivity
     UIActivityType(.*):
         class: UIActivityType
         name: "#{g[0]}"
-        
-    UIApplication(BackgroundFetchInterval.*):
-        class: UIApplication
-        name: "#{g[0]}"
-        
+    
     UIContentSizeCategory(.*):
         class: UIContentSizeCategory
         name: "#{g[0]}Value"
         visibility: protected
         type: NSString
 
-    UI(TrackingRunLoopMode):
-        name: "#{g[0]}"
-    UIApplicationInvalidInterfaceOrientationException:
-        exclude: true
-    UI(BackgroundTaskInvalid):
-        name: "#{g[0]}"
-    UI(MinimumKeepAliveTimeout):
+    # UIKeyCommand
+    UIKeyInput(.*):
+        class: UIKeyCommand
         name: "#{g[0]}"
 
-    UI(CollectionElementKind.*):
+    # UIEdgeInsets
+    UIEdgeInsets(Zero):
+        class: UIEdgeInsets
         name: "#{g[0]}"
 
-    UI(EdgeInsetsZero):
+    # UIOffset
+    UIOffset(Zero):
+        class: UIOffset
         name: "#{g[0]}"
 
-    UI(FontFeature.*):
-        name: "#{g[0]}"
-        type: NSString
-
-    UI(ImagePickerController.*):
-        name: "#{g[0]}"
-        type: NSString
-
-    UI(KeyInput.*):
+    # UIScrollView
+    UIScrollView(DecelerationRate.*):
+        class: UIScrollView
         name: "#{g[0]}"
 
-    UI(LocalNotificationDefaultSoundName):
-        name: "#{g[0]}"
-
-    UI(NavigationControllerHideShowBarDuration):
-        name: "#{g[0]}"
-
-    UI(OffsetZero):
-        name: "#{g[0]}"
-
-    UI(PasteboardName.*):
-        name: "#{g[0]}"
     UI(PasteboardType.*):
         name: "#{g[0]}"
         readonly: true
@@ -3845,20 +3875,8 @@ values:
     UI(PrintErrorDomain):
         name: "#{g[0]}"
 
-    UI(ScrollViewDecelerationRate.*):
-        name: "#{g[0]}"
-
-    UI(TableViewIndexSearch):
-        name: "#{g[0]}"
-        type: NSString
-    UI(TableViewAutomaticDimension):
-        name: "#{g[0]}"
-
-    UI(LayoutFitting.*):
-        name: "#{g[0]}"
-    UI(ViewNoIntrinsicMetric):
-        name: "#{g[0]}"
-
+    UIApplicationInvalidInterfaceOrientationException:
+        exclude: true
     UIViewControllerHierarchyInconsistencyException:
         exclude: true
 

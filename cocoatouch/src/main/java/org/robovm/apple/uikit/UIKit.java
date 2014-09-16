@@ -31,6 +31,7 @@ import org.robovm.apple.coreanimation.*;
 import org.robovm.apple.coregraphics.*;
 import org.robovm.apple.coredata.*;
 import org.robovm.apple.coreimage.*;
+import org.robovm.apple.coretext.*;
 /*</imports>*/
 
 /*<javadoc>*/
@@ -54,287 +55,133 @@ import org.robovm.apple.coreimage.*;
     /**
      * @since Available in iOS 7.0 and later.
      */
-    @GlobalValue(symbol="UIKeyInputUpArrow", optional=true)
-    public static native String KeyInputUpArrow();
-    /**
-     * @since Available in iOS 7.0 and later.
-     */
-    @GlobalValue(symbol="UIKeyInputDownArrow", optional=true)
-    public static native String KeyInputDownArrow();
-    /**
-     * @since Available in iOS 7.0 and later.
-     */
-    @GlobalValue(symbol="UIKeyInputLeftArrow", optional=true)
-    public static native String KeyInputLeftArrow();
-    /**
-     * @since Available in iOS 7.0 and later.
-     */
-    @GlobalValue(symbol="UIKeyInputRightArrow", optional=true)
-    public static native String KeyInputRightArrow();
-    /**
-     * @since Available in iOS 7.0 and later.
-     */
-    @GlobalValue(symbol="UIKeyInputEscape", optional=true)
-    public static native String KeyInputEscape();
-    /**
-     * @since Available in iOS 7.0 and later.
-     */
     @GlobalValue(symbol="UIFontFeatureTypeIdentifierKey", optional=true)
-    public static native NSString FontFeatureTypeIdentifierKey();
+    public static native String Value__UIFontFeatureTypeIdentifierKey();
     /**
      * @since Available in iOS 7.0 and later.
      */
     @GlobalValue(symbol="UIFontFeatureSelectorIdentifierKey", optional=true)
-    public static native NSString FontFeatureSelectorIdentifierKey();
-    @GlobalValue(symbol="UIEdgeInsetsZero", optional=true)
-    public static native @ByVal UIEdgeInsets EdgeInsetsZero();
-    @GlobalValue(symbol="UIOffsetZero", optional=true)
-    public static native @ByVal UIOffset OffsetZero();
+    public static native String Value__UIFontFeatureSelectorIdentifierKey();
     /**
      * @since Available in iOS 6.0 and later.
      */
     @GlobalValue(symbol="UIViewNoIntrinsicMetric", optional=true)
-    public static native @MachineSizedFloat double ViewNoIntrinsicMetric();
+    public static native @MachineSizedFloat double Value__UIViewNoIntrinsicMetric();
     /**
      * @since Available in iOS 6.0 and later.
      */
     @GlobalValue(symbol="UILayoutFittingCompressedSize", optional=true)
-    public static native @ByVal CGSize LayoutFittingCompressedSize();
+    public static native @ByVal CGSize Value__UILayoutFittingCompressedSize();
     /**
      * @since Available in iOS 6.0 and later.
      */
     @GlobalValue(symbol="UILayoutFittingExpandedSize", optional=true)
-    public static native @ByVal CGSize LayoutFittingExpandedSize();
-    /**
-     * @since Available in iOS 3.0 and later.
-     */
-    @GlobalValue(symbol="UIScrollViewDecelerationRateNormal", optional=true)
-    public static native @MachineSizedFloat double ScrollViewDecelerationRateNormal();
-    /**
-     * @since Available in iOS 3.0 and later.
-     */
-    @GlobalValue(symbol="UIScrollViewDecelerationRateFast", optional=true)
-    public static native @MachineSizedFloat double ScrollViewDecelerationRateFast();
-    /**
-     * @since Available in iOS 5.0 and later.
-     * @deprecated Deprecated in iOS 7.0.
-     */
-    @Deprecated
-    @GlobalValue(symbol="UITextAttributeFont", optional=true)
-    public static native NSString TextAttributeFont();
-    /**
-     * @since Available in iOS 5.0 and later.
-     * @deprecated Deprecated in iOS 7.0.
-     */
-    @Deprecated
-    @GlobalValue(symbol="UITextAttributeTextColor", optional=true)
-    public static native NSString TextAttributeTextColor();
-    /**
-     * @since Available in iOS 5.0 and later.
-     * @deprecated Deprecated in iOS 7.0.
-     */
-    @Deprecated
-    @GlobalValue(symbol="UITextAttributeTextShadowColor", optional=true)
-    public static native NSString TextAttributeTextShadowColor();
-    /**
-     * @since Available in iOS 5.0 and later.
-     * @deprecated Deprecated in iOS 7.0.
-     */
-    @Deprecated
-    @GlobalValue(symbol="UITextAttributeTextShadowOffset", optional=true)
-    public static native NSString TextAttributeTextShadowOffset();
+    public static native @ByVal CGSize Value__UILayoutFittingExpandedSize();
     /**
      * @since Available in iOS 3.0 and later.
      */
     @GlobalValue(symbol="UITableViewIndexSearch", optional=true)
-    public static native NSString TableViewIndexSearch();
+    public static native String Value__UITableViewIndexSearch();
     /**
      * @since Available in iOS 5.0 and later.
      */
     @GlobalValue(symbol="UITableViewAutomaticDimension", optional=true)
-    public static native @MachineSizedFloat double TableViewAutomaticDimension();
-    @GlobalValue(symbol="UIAccessibilityTraitKeyboardKey", optional=true)
-    public static native NSString AccessibilityTraitKeyboardKey();
-    @GlobalValue(symbol="UIAccessibilityTraitKeyboardKey", optional=true)
-    public static native void AccessibilityTraitKeyboardKey(NSString v);
-    @GlobalValue(symbol="UIAccessibilityScreenChangedNotification", optional=true)
-    public static native int Value__UIAccessibilityScreenChangedNotification();
-    @GlobalValue(symbol="UIAccessibilityScreenChangedNotification", optional=true)
-    public static native void Value__UIAccessibilityScreenChangedNotification(int v);
-    @GlobalValue(symbol="UIAccessibilityLayoutChangedNotification", optional=true)
-    public static native int Value__UIAccessibilityLayoutChangedNotification();
-    @GlobalValue(symbol="UIAccessibilityLayoutChangedNotification", optional=true)
-    public static native void Value__UIAccessibilityLayoutChangedNotification(int v);
-    /**
-     * @since Available in iOS 4.0 and later.
-     */
-    @GlobalValue(symbol="UIAccessibilityAnnouncementNotification", optional=true)
-    public static native int Value__UIAccessibilityAnnouncementNotification();
-    /**
-     * @since Available in iOS 4.0 and later.
-     */
-    @GlobalValue(symbol="UIAccessibilityAnnouncementNotification", optional=true)
-    public static native void Value__UIAccessibilityAnnouncementNotification(int v);
-    /**
-     * @since Available in iOS 6.0 and later.
-     */
-    @GlobalValue(symbol="UIAccessibilityAnnouncementDidFinishNotification", optional=true)
-    public static native String Value__UIAccessibilityAnnouncementDidFinishNotification();
-    /**
-     * @since Available in iOS 6.0 and later.
-     */
-    @GlobalValue(symbol="UIAccessibilityAnnouncementKeyStringValue", optional=true)
-    public static native NSString AccessibilityAnnouncementKeyStringValue();
-    /**
-     * @since Available in iOS 6.0 and later.
-     */
-    @GlobalValue(symbol="UIAccessibilityAnnouncementKeyWasSuccessful", optional=true)
-    public static native NSString AccessibilityAnnouncementKeyWasSuccessful();
-    /**
-     * @since Available in iOS 4.2 and later.
-     */
-    @GlobalValue(symbol="UIAccessibilityPageScrolledNotification", optional=true)
-    public static native int Value__UIAccessibilityPageScrolledNotification();
-    /**
-     * @since Available in iOS 4.2 and later.
-     */
-    @GlobalValue(symbol="UIAccessibilityPageScrolledNotification", optional=true)
-    public static native void Value__UIAccessibilityPageScrolledNotification(int v);
-    /**
-     * @since Available in iOS 7.0 and later.
-     */
-    @GlobalValue(symbol="UIAccessibilitySpeechAttributePunctuation", optional=true)
-    public static native NSString AccessibilitySpeechAttributePunctuation();
-    /**
-     * @since Available in iOS 7.0 and later.
-     */
-    @GlobalValue(symbol="UIAccessibilitySpeechAttributeLanguage", optional=true)
-    public static native NSString AccessibilitySpeechAttributeLanguage();
-    /**
-     * @since Available in iOS 7.0 and later.
-     */
-    @GlobalValue(symbol="UIAccessibilitySpeechAttributePitch", optional=true)
-    public static native NSString AccessibilitySpeechAttributePitch();
-    /**
-     * @since Available in iOS 4.0 and later.
-     */
-    @GlobalValue(symbol="UIAccessibilityVoiceOverStatusChanged", optional=true)
-    public static native NSString AccessibilityVoiceOverStatusChanged();
-    /**
-     * @since Available in iOS 5.0 and later.
-     */
-    @GlobalValue(symbol="UIAccessibilityMonoAudioStatusDidChangeNotification", optional=true)
-    public static native String Value__UIAccessibilityMonoAudioStatusDidChangeNotification();
-    /**
-     * @since Available in iOS 5.0 and later.
-     */
-    @GlobalValue(symbol="UIAccessibilityClosedCaptioningStatusDidChangeNotification", optional=true)
-    public static native String Value__UIAccessibilityClosedCaptioningStatusDidChangeNotification();
-    /**
-     * @since Available in iOS 6.0 and later.
-     */
-    @GlobalValue(symbol="UIAccessibilityInvertColorsStatusDidChangeNotification", optional=true)
-    public static native String Value__UIAccessibilityInvertColorsStatusDidChangeNotification();
-    /**
-     * @since Available in iOS 6.0 and later.
-     */
-    @GlobalValue(symbol="UIAccessibilityGuidedAccessStatusDidChangeNotification", optional=true)
-    public static native String Value__UIAccessibilityGuidedAccessStatusDidChangeNotification();
+    public static native @MachineSizedFloat double Value__UITableViewAutomaticDimension();
     /**
      * @since Available in iOS 4.0 and later.
      */
     @GlobalValue(symbol="UIBackgroundTaskInvalid", optional=true)
-    public static native @MachineSizedUInt long BackgroundTaskInvalid();
+    public static native @MachineSizedUInt long Value__UIBackgroundTaskInvalid();
     /**
      * @since Available in iOS 4.0 and later.
      */
     @GlobalValue(symbol="UIMinimumKeepAliveTimeout", optional=true)
-    public static native double MinimumKeepAliveTimeout();
+    public static native double Value__UIMinimumKeepAliveTimeout();
     @GlobalValue(symbol="UITrackingRunLoopMode", optional=true)
-    public static native String TrackingRunLoopMode();
+    public static native String Value__UITrackingRunLoopMode();
     /**
      * @since Available in iOS 6.0 and later.
      */
     @GlobalValue(symbol="UIStateRestorationViewControllerStoryboardKey", optional=true)
-    public static native NSString StateRestorationViewControllerStoryboardKey();
+    public static native String Value__UIStateRestorationViewControllerStoryboardKey();
     /**
      * @since Available in iOS 6.0 and later.
      */
     @GlobalValue(symbol="UIApplicationStateRestorationBundleVersionKey", optional=true)
-    public static native NSString ApplicationStateRestorationBundleVersionKey();
+    public static native String Value__UIApplicationStateRestorationBundleVersionKey();
     /**
      * @since Available in iOS 6.0 and later.
      */
     @GlobalValue(symbol="UIApplicationStateRestorationUserInterfaceIdiomKey", optional=true)
-    public static native NSString ApplicationStateRestorationUserInterfaceIdiomKey();
+    public static native String Value__UIApplicationStateRestorationUserInterfaceIdiomKey();
     /**
      * @since Available in iOS 7.0 and later.
      */
     @GlobalValue(symbol="UIApplicationStateRestorationTimestampKey", optional=true)
-    public static native NSString ApplicationStateRestorationTimestampKey();
+    public static native String Value__UIApplicationStateRestorationTimestampKey();
     /**
      * @since Available in iOS 7.0 and later.
      */
     @GlobalValue(symbol="UIApplicationStateRestorationSystemVersionKey", optional=true)
-    public static native NSString ApplicationStateRestorationSystemVersionKey();
+    public static native String Value__UIApplicationStateRestorationSystemVersionKey();
     @GlobalValue(symbol="UICollectionElementKindSectionHeader", optional=true)
-    public static native String CollectionElementKindSectionHeader();
+    public static native String Value__UICollectionElementKindSectionHeader();
     @GlobalValue(symbol="UICollectionElementKindSectionFooter", optional=true)
-    public static native String CollectionElementKindSectionFooter();
+    public static native String Value__UICollectionElementKindSectionFooter();
     /**
      * @since Available in iOS 5.0 and later.
      */
     @GlobalValue(symbol="UIDocumentStateChangedNotification", optional=true)
     public static native String Value__UIDocumentStateChangedNotification();
     @GlobalValue(symbol="UINavigationControllerHideShowBarDuration", optional=true)
-    public static native @MachineSizedFloat double NavigationControllerHideShowBarDuration();
+    public static native @MachineSizedFloat double Value__UINavigationControllerHideShowBarDuration();
     @GlobalValue(symbol="UIImagePickerControllerMediaType", optional=true)
-    public static native NSString ImagePickerControllerMediaType();
+    public static native String Value__UIImagePickerControllerMediaType();
     @GlobalValue(symbol="UIImagePickerControllerOriginalImage", optional=true)
-    public static native NSString ImagePickerControllerOriginalImage();
+    public static native String Value__UIImagePickerControllerOriginalImage();
     @GlobalValue(symbol="UIImagePickerControllerEditedImage", optional=true)
-    public static native NSString ImagePickerControllerEditedImage();
+    public static native String Value__UIImagePickerControllerEditedImage();
     @GlobalValue(symbol="UIImagePickerControllerCropRect", optional=true)
-    public static native NSString ImagePickerControllerCropRect();
+    public static native String Value__UIImagePickerControllerCropRect();
     @GlobalValue(symbol="UIImagePickerControllerMediaURL", optional=true)
-    public static native NSString ImagePickerControllerMediaURL();
+    public static native String Value__UIImagePickerControllerMediaURL();
     /**
      * @since Available in iOS 4.1 and later.
      */
     @GlobalValue(symbol="UIImagePickerControllerReferenceURL", optional=true)
-    public static native NSString ImagePickerControllerReferenceURL();
+    public static native String Value__UIImagePickerControllerReferenceURL();
     /**
      * @since Available in iOS 4.1 and later.
      */
     @GlobalValue(symbol="UIImagePickerControllerMediaMetadata", optional=true)
-    public static native NSString ImagePickerControllerMediaMetadata();
+    public static native String Value__UIImagePickerControllerMediaMetadata();
     /**
      * @since Available in iOS 4.0 and later.
      */
     @GlobalValue(symbol="UILocalNotificationDefaultSoundName", optional=true)
-    public static native String LocalNotificationDefaultSoundName();
+    public static native String Value__UILocalNotificationDefaultSoundName();
     /**
      * @since Available in iOS 3.0 and later.
      */
     @GlobalValue(symbol="UINibExternalObjects", optional=true)
-    public static native NSString NibExternalObjects();
+    public static native String Value__UINibExternalObjects();
     /**
      * @since Available in iOS 2.0 and later.
      * @deprecated Deprecated in iOS 3.0.
      */
     @Deprecated
     @GlobalValue(symbol="UINibProxiedObjectsKey", optional=true)
-    public static native NSString NibProxiedObjectsKey();
+    public static native String Value__UINibProxiedObjectsKey();
     @GlobalValue(symbol="UIPasteboardNameGeneral", optional=true)
-    public static native String PasteboardNameGeneral();
+    public static native String Value__UIPasteboardNameGeneral();
     @GlobalValue(symbol="UIPasteboardNameFind", optional=true)
-    public static native String PasteboardNameFind();
+    public static native String Value__UIPasteboardNameFind();
     @GlobalValue(symbol="UIPasteboardChangedNotification", optional=true)
     public static native String Value__UIPasteboardChangedNotification();
     @GlobalValue(symbol="UIPasteboardChangedTypesAddedKey", optional=true)
-    public static native NSString PasteboardChangedTypesAddedKey();
+    public static native String Value__UIPasteboardChangedTypesAddedKey();
     @GlobalValue(symbol="UIPasteboardChangedTypesRemovedKey", optional=true)
-    public static native NSString PasteboardChangedTypesRemovedKey();
+    public static native String Value__UIPasteboardChangedTypesRemovedKey();
     @GlobalValue(symbol="UIPasteboardRemovedNotification", optional=true)
     public static native String Value__UIPasteboardRemovedNotification();
     @GlobalValue(symbol="UIPasteboardTypeListString", optional=true)
@@ -351,106 +198,22 @@ import org.robovm.apple.coreimage.*;
      * @since Available in iOS 7.0 and later.
      */
     @GlobalValue(symbol="UITransitionContextFromViewControllerKey", optional=true)
-    public static native NSString TransitionContextFromViewControllerKey();
+    public static native String Value__UITransitionContextFromViewControllerKey();
     /**
      * @since Available in iOS 7.0 and later.
      */
     @GlobalValue(symbol="UITransitionContextToViewControllerKey", optional=true)
-    public static native NSString TransitionContextToViewControllerKey();
+    public static native String Value__UITransitionContextToViewControllerKey();
+    
     /**
-     * @since Available in iOS 7.0 and later.
+     * @since Available in iOS 6.0 and later.
      */
-    @GlobalValue(symbol="NSPlainTextDocumentType", optional=true)
-    public static native NSString PlainTextDocumentType();
+    @Bridge(symbol="NSTextAlignmentToCTTextAlignment", optional=true)
+    public static native CTTextAlignment convertNSTextAlignmentToCTTextAlignment(NSTextAlignment nsTextAlignment);
     /**
-     * @since Available in iOS 7.0 and later.
+     * @since Available in iOS 6.0 and later.
      */
-    @GlobalValue(symbol="NSRTFTextDocumentType", optional=true)
-    public static native NSString RTFTextDocumentType();
-    /**
-     * @since Available in iOS 7.0 and later.
-     */
-    @GlobalValue(symbol="NSRTFDTextDocumentType", optional=true)
-    public static native NSString RTFDTextDocumentType();
-    /**
-     * @since Available in iOS 7.0 and later.
-     */
-    @GlobalValue(symbol="NSHTMLTextDocumentType", optional=true)
-    public static native NSString HTMLTextDocumentType();
-    /**
-     * @since Available in iOS 7.0 and later.
-     */
-    @GlobalValue(symbol="NSTextLayoutSectionOrientation", optional=true)
-    public static native NSString TextLayoutSectionOrientation();
-    /**
-     * @since Available in iOS 7.0 and later.
-     */
-    @GlobalValue(symbol="NSTextLayoutSectionRange", optional=true)
-    public static native NSString TextLayoutSectionRange();
-    /**
-     * @since Available in iOS 7.0 and later.
-     */
-    @GlobalValue(symbol="NSDocumentTypeDocumentAttribute", optional=true)
-    public static native NSString DocumentTypeDocumentAttribute();
-    /**
-     * @since Available in iOS 7.0 and later.
-     */
-    @GlobalValue(symbol="NSCharacterEncodingDocumentAttribute", optional=true)
-    public static native NSString CharacterEncodingDocumentAttribute();
-    /**
-     * @since Available in iOS 7.0 and later.
-     */
-    @GlobalValue(symbol="NSDefaultAttributesDocumentAttribute", optional=true)
-    public static native NSString DefaultAttributesDocumentAttribute();
-    /**
-     * @since Available in iOS 7.0 and later.
-     */
-    @GlobalValue(symbol="NSPaperSizeDocumentAttribute", optional=true)
-    public static native NSString PaperSizeDocumentAttribute();
-    /**
-     * @since Available in iOS 7.0 and later.
-     */
-    @GlobalValue(symbol="NSPaperMarginDocumentAttribute", optional=true)
-    public static native NSString PaperMarginDocumentAttribute();
-    /**
-     * @since Available in iOS 7.0 and later.
-     */
-    @GlobalValue(symbol="NSViewSizeDocumentAttribute", optional=true)
-    public static native NSString ViewSizeDocumentAttribute();
-    /**
-     * @since Available in iOS 7.0 and later.
-     */
-    @GlobalValue(symbol="NSViewZoomDocumentAttribute", optional=true)
-    public static native NSString ViewZoomDocumentAttribute();
-    /**
-     * @since Available in iOS 7.0 and later.
-     */
-    @GlobalValue(symbol="NSViewModeDocumentAttribute", optional=true)
-    public static native NSString ViewModeDocumentAttribute();
-    /**
-     * @since Available in iOS 7.0 and later.
-     */
-    @GlobalValue(symbol="NSReadOnlyDocumentAttribute", optional=true)
-    public static native NSString ReadOnlyDocumentAttribute();
-    /**
-     * @since Available in iOS 7.0 and later.
-     */
-    @GlobalValue(symbol="NSBackgroundColorDocumentAttribute", optional=true)
-    public static native NSString BackgroundColorDocumentAttribute();
-    /**
-     * @since Available in iOS 7.0 and later.
-     */
-    @GlobalValue(symbol="NSHyphenationFactorDocumentAttribute", optional=true)
-    public static native NSString HyphenationFactorDocumentAttribute();
-    /**
-     * @since Available in iOS 7.0 and later.
-     */
-    @GlobalValue(symbol="NSDefaultTabIntervalDocumentAttribute", optional=true)
-    public static native NSString DefaultTabIntervalDocumentAttribute();
-    /**
-     * @since Available in iOS 7.0 and later.
-     */
-    @GlobalValue(symbol="NSTextLayoutSectionsAttribute", optional=true)
-    public static native NSString TextLayoutSectionsAttribute();
+    @Bridge(symbol="NSTextAlignmentFromCTTextAlignment", optional=true)
+    public static native NSTextAlignment convertCTTextAlignmentToNSTextAlignment(CTTextAlignment ctTextAlignment);
     /*</methods>*/
 }

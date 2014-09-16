@@ -31,6 +31,7 @@ import org.robovm.apple.coreanimation.*;
 import org.robovm.apple.coregraphics.*;
 import org.robovm.apple.coredata.*;
 import org.robovm.apple.coreimage.*;
+import org.robovm.apple.coretext.*;
 /*</imports>*/
 
 /*<javadoc>*/
@@ -44,6 +45,42 @@ import org.robovm.apple.coreimage.*;
     /*</ptr>*/
     /*<bind>*/static { Bro.bind(NSAttributedStringAttribute.class); }/*</bind>*/
     /*<constants>*//*</constants>*/
+    /**
+     * @since Available in iOS 5.0 and later.
+     * @deprecated Deprecated in iOS 7.0.
+     */
+    @Deprecated
+    public static final NSAttributedStringAttribute TextFont = new NSAttributedStringAttribute("TextFontAttribute");
+    /**
+     * @since Available in iOS 5.0 and later.
+     * @deprecated Deprecated in iOS 7.0.
+     */
+    @Deprecated
+    public static final NSAttributedStringAttribute TextColor = new NSAttributedStringAttribute("TextColorAttribute");
+    /**
+     * @since Available in iOS 5.0 and later.
+     * @deprecated Deprecated in iOS 7.0.
+     */
+    @Deprecated
+    public static final NSAttributedStringAttribute TextShadowColor = new NSAttributedStringAttribute("TextShadowColorAttribute");
+    /**
+     * @since Available in iOS 5.0 and later.
+     * @deprecated Deprecated in iOS 7.0.
+     */
+    @Deprecated
+    public static final NSAttributedStringAttribute TextShadowOffset = new NSAttributedStringAttribute("TextShadowOffsetAttribute");
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
+    public static final NSAttributedStringAttribute SpeechPunctuation = new NSAttributedStringAttribute("SpeechPunctuationAttribute");
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
+    public static final NSAttributedStringAttribute SpeechLanguage = new NSAttributedStringAttribute("SpeechLanguageAttribute");
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
+    public static final NSAttributedStringAttribute SpeechPitch = new NSAttributedStringAttribute("SpeechPitchAttribute");
     /**
      * @since Available in iOS 6.0 and later.
      */
@@ -128,7 +165,8 @@ import org.robovm.apple.coreimage.*;
      * @since Available in iOS 6.0 and later.
      */
     public static final NSAttributedStringAttribute VerticalGlyphForm = new NSAttributedStringAttribute("VerticalGlyphFormAttribute");
-    private static NSAttributedStringAttribute[] values = new NSAttributedStringAttribute[] {Font, ParagraphStyle, ForegroundColor, BackgroundColor, Ligature, Kern, StrikethroughStyle, UnderlineStyle, StrokeColor, StrokeWidth, Shadow, VerticalGlyphForm, TextEffect, Attachment, Link, BaselineOffset, UnderlineColor, StrikethroughColor, Obliqueness, Expansion, WritingDirection};
+    private static NSAttributedStringAttribute[] values = new NSAttributedStringAttribute[] {Font, ParagraphStyle, ForegroundColor, BackgroundColor, Ligature, Kern, StrikethroughStyle, UnderlineStyle, StrokeColor, StrokeWidth, Shadow, VerticalGlyphForm, TextEffect, Attachment, Link, BaselineOffset, UnderlineColor, StrikethroughColor, Obliqueness, Expansion, WritingDirection, 
+        SpeechPunctuation, SpeechPitch, SpeechPitch};
     
     private final LazyGlobalValue<NSString> lazyGlobalValue;
     
@@ -152,6 +190,49 @@ import org.robovm.apple.coreimage.*;
             + /*<name>*/NSAttributedStringAttribute/*</name>*/.class.getName());
     }
     /*<methods>*/
+    /**
+     * @since Available in iOS 5.0 and later.
+     * @deprecated Deprecated in iOS 7.0.
+     */
+    @Deprecated
+    @GlobalValue(symbol="UITextAttributeFont", optional=true)
+    protected static native NSString TextFontAttribute();
+    /**
+     * @since Available in iOS 5.0 and later.
+     * @deprecated Deprecated in iOS 7.0.
+     */
+    @Deprecated
+    @GlobalValue(symbol="UITextAttributeTextColor", optional=true)
+    protected static native NSString TextColorAttribute();
+    /**
+     * @since Available in iOS 5.0 and later.
+     * @deprecated Deprecated in iOS 7.0.
+     */
+    @Deprecated
+    @GlobalValue(symbol="UITextAttributeTextShadowColor", optional=true)
+    protected static native NSString TextShadowColorAttribute();
+    /**
+     * @since Available in iOS 5.0 and later.
+     * @deprecated Deprecated in iOS 7.0.
+     */
+    @Deprecated
+    @GlobalValue(symbol="UITextAttributeTextShadowOffset", optional=true)
+    protected static native NSString TextShadowOffsetAttribute();
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
+    @GlobalValue(symbol="UIAccessibilitySpeechAttributePunctuation", optional=true)
+    protected static native NSString SpeechPunctuationAttribute();
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
+    @GlobalValue(symbol="UIAccessibilitySpeechAttributeLanguage", optional=true)
+    protected static native NSString SpeechLanguageAttribute();
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
+    @GlobalValue(symbol="UIAccessibilitySpeechAttributePitch", optional=true)
+    protected static native NSString SpeechPitchAttribute();
     /**
      * @since Available in iOS 6.0 and later.
      */

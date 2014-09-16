@@ -31,6 +31,7 @@ import org.robovm.apple.coreanimation.*;
 import org.robovm.apple.coregraphics.*;
 import org.robovm.apple.coredata.*;
 import org.robovm.apple.coreimage.*;
+import org.robovm.apple.coretext.*;
 /*</imports>*/
 
 /*<javadoc>*/
@@ -51,40 +52,55 @@ import org.robovm.apple.coreimage.*;
     
     /*</properties>*/
     /*<members>*//*</members>*/
-    
-    public static NSAttributedString createFromURL(NSURL url, NSDictionary<NSString, ?> options, NSDictionary.NSDictionaryPtr<?, ?> dict, NSError.NSErrorPtr error) {
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
+    public static NSAttributedString createFromURL(NSURL url, NSAttributedStringDocumentAttributes options) {
         NSAttributedString thiz = alloc(NSAttributedString.class);
-        initObject(thiz, initWithFileURL$options$documentAttributes$error$(thiz, url, options, dict, error));
+        initObject(thiz, initWithFileURL$options$documentAttributes$error$(thiz, url, options, null, null));
         return thiz;
     }
-
-    public static NSAttributedString createFromData(NSData data, NSDictionary<NSString, ?> options, NSDictionary.NSDictionaryPtr<?, ?> dict, NSError.NSErrorPtr error) {
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
+    public static NSAttributedString createFromData(NSData data, NSAttributedStringDocumentAttributes options) {
         NSAttributedString thiz = alloc(NSAttributedString.class);
-        initObject(thiz, initWithData$options$documentAttributes$error$(thiz, data, options, dict, error));
+        initObject(thiz, initWithData$options$documentAttributes$error$(thiz, data, options, null, null));
         return thiz;
     }
-
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
+    public static NSData getData(NSAttributedString thiz, @ByVal NSRange range, NSAttributedStringDocumentAttributes dict) {
+        return getData(thiz, range, dict, null);
+    }
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
+    public static NSFileWrapper getFileWrapper(NSAttributedString thiz, @ByVal NSRange range, NSAttributedStringDocumentAttributes dict) {
+        return getFileWrapper(thiz, range, dict, null);
+    }
     /*<methods>*/
     /**
      * @since Available in iOS 7.0 and later.
      */
     @Method(selector = "initWithFileURL:options:documentAttributes:error:")
-    protected static native @Pointer long initWithFileURL$options$documentAttributes$error$(NSAttributedString thiz, NSURL url, NSDictionary<NSString, ?> options, NSDictionary.NSDictionaryPtr<?, ?> dict, NSError.NSErrorPtr error);
+    protected static native @Pointer long initWithFileURL$options$documentAttributes$error$(NSAttributedString thiz, NSURL url, NSAttributedStringDocumentAttributes options, NSDictionary.NSDictionaryPtr<?, ?> dict, NSError.NSErrorPtr error);
     /**
      * @since Available in iOS 7.0 and later.
      */
     @Method(selector = "initWithData:options:documentAttributes:error:")
-    protected static native @Pointer long initWithData$options$documentAttributes$error$(NSAttributedString thiz, NSData data, NSDictionary<NSString, ?> options, NSDictionary.NSDictionaryPtr<?, ?> dict, NSError.NSErrorPtr error);
+    protected static native @Pointer long initWithData$options$documentAttributes$error$(NSAttributedString thiz, NSData data, NSAttributedStringDocumentAttributes options, NSDictionary.NSDictionaryPtr<?, ?> dict, NSError.NSErrorPtr error);
     /**
      * @since Available in iOS 7.0 and later.
      */
     @Method(selector = "dataFromRange:documentAttributes:error:")
-    public static native NSData getData(NSAttributedString thiz, @ByVal NSRange range, NSDictionary<?, ?> dict, NSError.NSErrorPtr error);
+    protected static native NSData getData(NSAttributedString thiz, @ByVal NSRange range, NSAttributedStringDocumentAttributes dict, NSError.NSErrorPtr error);
     /**
      * @since Available in iOS 7.0 and later.
      */
     @Method(selector = "fileWrapperFromRange:documentAttributes:error:")
-    public static native NSFileWrapper getFileWrapper(NSAttributedString thiz, @ByVal NSRange range, NSDictionary<?, ?> dict, NSError.NSErrorPtr error);
+    protected static native NSFileWrapper getFileWrapper(NSAttributedString thiz, @ByVal NSRange range, NSAttributedStringDocumentAttributes dict, NSError.NSErrorPtr error);
     /**
      * @since Available in iOS 6.0 and later.
      */

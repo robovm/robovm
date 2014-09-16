@@ -31,6 +31,7 @@ import org.robovm.apple.coreanimation.*;
 import org.robovm.apple.coregraphics.*;
 import org.robovm.apple.coredata.*;
 import org.robovm.apple.coreimage.*;
+import org.robovm.apple.coretext.*;
 /*</imports>*/
 
 /*<javadoc>*/
@@ -117,14 +118,6 @@ import org.robovm.apple.coreimage.*;
     public native UIView getCustomView();
     @Property(selector = "setCustomView:")
     public native void setCustomView(UIView v);
-    @Property(selector = "action")
-    public native Selector getAction();
-    @Property(selector = "setAction:")
-    public native void setAction(Selector v);
-    @Property(selector = "target")
-    public native NSObject getTarget();
-    @Property(selector = "setTarget:", strongRef = true)
-    public native void setTarget(NSObject v);
     /**
      * @since Available in iOS 5.0 and later.
      */

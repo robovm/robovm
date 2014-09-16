@@ -31,6 +31,7 @@ import org.robovm.apple.coreanimation.*;
 import org.robovm.apple.coregraphics.*;
 import org.robovm.apple.coredata.*;
 import org.robovm.apple.coreimage.*;
+import org.robovm.apple.coretext.*;
 /*</imports>*/
 
 /*<javadoc>*/
@@ -65,6 +66,9 @@ import org.robovm.apple.coreimage.*;
     }
     
     /*<methods>*/
+    @GlobalValue(symbol="UIOffsetZero", optional=true)
+    public static native @ByVal UIOffset Zero();
+    
     @Bridge(symbol="NSStringFromUIOffset", optional=true)
     protected static native String toString(@ByVal UIOffset offset);
     @Bridge(symbol="UIOffsetFromString", optional=true)

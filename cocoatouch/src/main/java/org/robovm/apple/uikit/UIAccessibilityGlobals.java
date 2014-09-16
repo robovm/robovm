@@ -31,6 +31,7 @@ import org.robovm.apple.coreanimation.*;
 import org.robovm.apple.coregraphics.*;
 import org.robovm.apple.coredata.*;
 import org.robovm.apple.coreimage.*;
+import org.robovm.apple.coretext.*;
 /*</imports>*/
 
 /*<javadoc>*/
@@ -48,7 +49,51 @@ import org.robovm.apple.coreimage.*;
     /*<constructors>*//*</constructors>*/
     /*<properties>*//*</properties>*/
     /*<members>*//*</members>*/
+    public static void postNotification(UIAccessibilityNotification notification, NSObject argument) {
+        postNotification(notification.value(), argument);
+    }
     /*<methods>*/
+    /**
+     * @since Available in iOS 6.0 and later.
+     */
+    @GlobalValue(symbol="UIAccessibilityAnnouncementDidFinishNotification", optional=true)
+    public static native NSString AnnouncementDidFinishNotification();
+    /**
+     * @since Available in iOS 6.0 and later.
+     */
+    @GlobalValue(symbol="UIAccessibilityAnnouncementKeyStringValue", optional=true)
+    public static native NSString AnnouncementKeyStringValue();
+    /**
+     * @since Available in iOS 6.0 and later.
+     */
+    @GlobalValue(symbol="UIAccessibilityAnnouncementKeyWasSuccessful", optional=true)
+    public static native NSString AnnouncementKeyWasSuccessful();
+    /**
+     * @since Available in iOS 4.0 and later.
+     */
+    @GlobalValue(symbol="UIAccessibilityVoiceOverStatusChanged", optional=true)
+    public static native NSString VoiceOverStatusChangedNotification();
+    /**
+     * @since Available in iOS 5.0 and later.
+     */
+    @GlobalValue(symbol="UIAccessibilityMonoAudioStatusDidChangeNotification", optional=true)
+    public static native NSString MonoAudioStatusDidChangeNotification();
+    /**
+     * @since Available in iOS 5.0 and later.
+     */
+    @GlobalValue(symbol="UIAccessibilityClosedCaptioningStatusDidChangeNotification", optional=true)
+    public static native NSString ClosedCaptioningStatusDidChangeNotification();
+    /**
+     * @since Available in iOS 6.0 and later.
+     */
+    @GlobalValue(symbol="UIAccessibilityInvertColorsStatusDidChangeNotification", optional=true)
+    public static native NSString InvertColorsStatusDidChangeNotification();
+    /**
+     * @since Available in iOS 6.0 and later.
+     */
+    @GlobalValue(symbol="UIAccessibilityGuidedAccessStatusDidChangeNotification", optional=true)
+    public static native NSString GuidedAccessStatusDidChangeNotification();
+    
     /**
      * @since Available in iOS 5.0 and later.
      */
@@ -70,7 +115,7 @@ import org.robovm.apple.coreimage.*;
     @Bridge(symbol="UIAccessibilityConvertPathToScreenCoordinates", optional=true)
     public static native UIBezierPath convertPathToScreenCoordinates(UIBezierPath path, UIView view);
     @Bridge(symbol="UIAccessibilityPostNotification", optional=true)
-    public static native void postNotification(int notification, NSObject argument);
+    protected static native void postNotification(int notification, NSObject argument);
     /**
      * @since Available in iOS 4.0 and later.
      */

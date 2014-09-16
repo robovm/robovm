@@ -31,6 +31,7 @@ import org.robovm.apple.coreanimation.*;
 import org.robovm.apple.coregraphics.*;
 import org.robovm.apple.coredata.*;
 import org.robovm.apple.coreimage.*;
+import org.robovm.apple.coretext.*;
 /*</imports>*/
 
 /*<javadoc>*/
@@ -140,26 +141,26 @@ import org.robovm.apple.coreimage.*;
      * @since Available in iOS 7.0 and later.
      */
     @Method(selector = "sizeWithAttributes:")
-    public static native @ByVal CGSize getSize(NSString thiz, NSDictionary<NSString, ?> attrs);
+    public static native @ByVal CGSize getSize(NSString thiz, NSAttributedStringAttributes attrs);
     /**
      * @since Available in iOS 7.0 and later.
      */
     @Method(selector = "drawAtPoint:withAttributes:")
-    public static native void draw(NSString thiz, @ByVal CGPoint point, NSDictionary<NSString, ?> attrs);
+    public static native void draw(NSString thiz, @ByVal CGPoint point, NSAttributedStringAttributes attrs);
     /**
      * @since Available in iOS 7.0 and later.
      */
     @Method(selector = "drawInRect:withAttributes:")
-    public static native void draw(NSString thiz, @ByVal CGRect rect, NSDictionary<NSString, ?> attrs);
+    public static native void draw(NSString thiz, @ByVal CGRect rect, NSAttributedStringAttributes attrs);
     /**
      * @since Available in iOS 7.0 and later.
      */
     @Method(selector = "drawWithRect:options:attributes:context:")
-    public static native void draw(NSString thiz, @ByVal CGRect rect, NSStringDrawingOptions options, NSDictionary<NSString, ?> attributes, NSStringDrawingContext context);
+    public static native void draw(NSString thiz, @ByVal CGRect rect, NSStringDrawingOptions options, NSAttributedStringAttributes attributes, NSStringDrawingContext context);
     /**
      * @since Available in iOS 7.0 and later.
      */
     @Method(selector = "boundingRectWithSize:options:attributes:context:")
-    public static native @ByVal CGRect getBoundingRect(NSString thiz, @ByVal CGSize size, NSStringDrawingOptions options, NSDictionary<NSString, ?> attributes, NSStringDrawingContext context);
+    public static native @ByVal CGRect getBoundingRect(NSString thiz, @ByVal CGSize size, NSStringDrawingOptions options, NSAttributedStringAttributes attributes, NSStringDrawingContext context);
     /*</methods>*/
 }

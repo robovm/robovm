@@ -31,6 +31,7 @@ import org.robovm.apple.coreanimation.*;
 import org.robovm.apple.coregraphics.*;
 import org.robovm.apple.coredata.*;
 import org.robovm.apple.coreimage.*;
+import org.robovm.apple.coretext.*;
 /*</imports>*/
 
 /*<javadoc>*/
@@ -53,17 +54,17 @@ import org.robovm.apple.coreimage.*;
      * @since Available in iOS 4.0 and later.
      */
     @Method(selector = "accessibilityElementDidBecomeFocused")
-    void accessibilityElementDidBecomeFocused();
+    void didBecomeFocused();
     /**
      * @since Available in iOS 4.0 and later.
      */
     @Method(selector = "accessibilityElementDidLoseFocus")
-    void accessibilityElementDidLoseFocus();
+    void didLoseFocus();
     /**
      * @since Available in iOS 4.0 and later.
      */
     @Method(selector = "accessibilityElementIsFocused")
-    boolean accessibilityElementIsFocused();
+    boolean isFocused();
     /*</methods>*/
     /*<adapter>*/
     /*</adapter>*/

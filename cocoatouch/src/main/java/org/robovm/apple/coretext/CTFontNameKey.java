@@ -19,6 +19,7 @@ package org.robovm.apple.coretext;
 import java.io.*;
 import java.nio.*;
 import java.util.*;
+
 import org.robovm.objc.*;
 import org.robovm.objc.annotation.*;
 import org.robovm.objc.block.*;
@@ -114,7 +115,8 @@ import org.robovm.apple.coregraphics.*;
      * @since Available in iOS 3.2 and later.
      */
     public static final CTFontNameKey PostScriptCID = new CTFontNameKey("PostScriptCIDValue");
-    private static CTFontNameKey[] values = new CTFontNameKey[]{ };
+    private static CTFontNameKey[] values = new CTFontNameKey[]{Copyright, Family, SubFamily, Style, Unique, Full, Version, PostScript, Trademark, Manufacturer, Designer, 
+        Description, VendorURL, DesignerURL, License, LicenseURL, SampleText, PostScriptCID};
     private final LazyGlobalValue<CFString> lazyGlobalValue;
     
     private CTFontNameKey(String getterName) {

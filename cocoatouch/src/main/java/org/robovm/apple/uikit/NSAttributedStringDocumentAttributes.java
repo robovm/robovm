@@ -63,7 +63,7 @@ import org.robovm.apple.uikit.*;
     /*</ptr>*/
     private NSDictionary<NSString, NSObject> data;
     
-    protected NSAttributedStringDocumentAttributes(NSDictionary<NSString, NSObject> data) {
+    public NSAttributedStringDocumentAttributes(NSDictionary<NSString, NSObject> data) {
         this.data = data;
     }
     public NSAttributedStringDocumentAttributes() {

@@ -56,7 +56,7 @@ import org.robovm.apple.coretext.*;
      */
     public static final UIAccessibilityNotification PageScrolled = new UIAccessibilityNotification("PageScrolledNotification");
     
-    private static UIAccessibilityNotification[] values = new UIAccessibilityNotification[] {};
+    private static UIAccessibilityNotification[] values = new UIAccessibilityNotification[] {ScreenChanged, LayoutChanged, Announcement, PageScrolled};
 
     private final LazyGlobalValue<Integer> lazyGlobalValue;
     

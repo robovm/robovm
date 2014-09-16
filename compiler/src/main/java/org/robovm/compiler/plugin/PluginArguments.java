@@ -16,8 +16,10 @@
  */
 package org.robovm.compiler.plugin;
 
+import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
+import java.util.Set;
 
 /**
  * Stores the {@link PluginArgument} along with the prefix to be used
@@ -26,10 +28,15 @@ import java.util.Objects;
 public class PluginArguments {
     private final String prefix;
     private final List<PluginArgument> arguments;
+    private final Set<String> lookup;
 
     public PluginArguments(String prefix, List<PluginArgument> arguments) {
         this.prefix = Objects.requireNonNull(prefix, "Prefix must not be null");
         this.arguments = Objects.requireNonNull(arguments, "arguments must not be null");
+        this.lookup = new HashSet<>();
+        for(PluginArgument arg: arguments) {
+            lookup.add(arg.getName());
+        }
     }
 
     public String getPrefix() {
@@ -38,5 +45,9 @@ public class PluginArguments {
 
     public List<PluginArgument> getArguments() {
         return arguments;
+    }
+    
+    public boolean hasArgument(String argWithPrefix) {
+        return lookup.contains(argWithPrefix);
     }
 }

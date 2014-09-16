@@ -16,9 +16,38 @@
  */
 package org.robovm.compiler.plugin;
 
-public interface Plugin {
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
+
+import org.robovm.compiler.config.Config;
+
+public abstract class Plugin {
     /**
      * Returns the plugin's prefix arguments to be parsed from XML or the command line
      */
-    PluginArguments getArguments();
+    public abstract PluginArguments getArguments();
+    
+    protected Map<String, String> parseArguments(Config config) {
+        if(config.getPluginArguments() == null) {
+            return Collections.<String, String>emptyMap();
+        }
+        
+        PluginArguments declaredArgs = getArguments();
+        Map<String, String> args = new HashMap<>();
+        for(String arg: config.getPluginArguments()) {
+            String[] tokens = arg.split("=");            
+            String[] argNameParts = tokens[0].split(":");
+            String prefix = argNameParts[0];
+            String argName = argNameParts[1];
+            String value = "";
+            if(tokens.length == 2) {
+                value = tokens[1];
+            }
+            if(declaredArgs.getPrefix().equals(prefix) && declaredArgs.hasArgument(argName)) {                                
+                args.put(argName, value);
+            }
+        }
+        return args;
+    }
 }

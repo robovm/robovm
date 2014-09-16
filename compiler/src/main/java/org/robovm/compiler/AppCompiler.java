@@ -53,6 +53,7 @@ import org.robovm.compiler.config.OS;
 import org.robovm.compiler.config.Resource;
 import org.robovm.compiler.log.ConsoleLogger;
 import org.robovm.compiler.plugin.CompilerPlugin;
+import org.robovm.compiler.plugin.LaunchPlugin;
 import org.robovm.compiler.plugin.Plugin;
 import org.robovm.compiler.plugin.PluginArgument;
 import org.robovm.compiler.target.LaunchParameters;
@@ -597,8 +598,7 @@ public class AppCompiler {
                     throw new IllegalArgumentException("Unsupported launch argument for the specified target: " + arg);
                 }
                 launchParameters.setArguments(runArgs);
-                Process process = compiler.config.getTarget().launch(launchParameters);
-                process.waitFor();
+                launch(compiler, launchParameters);
             } else if (createIpa) {
                 ((IOSTarget) compiler.config.getTarget()).createIpa();
             } else {
@@ -610,6 +610,24 @@ public class AppCompiler {
                 t.printStackTrace();
             }
             printUsageAndExit(message, builder.getPlugins());
+        }
+    }
+    
+    private static void launch(AppCompiler compiler, LaunchParameters launchParameters) throws Throwable {
+        for(LaunchPlugin plugin: compiler.config.getLaunchPlugins()) {
+            plugin.beforeLaunch(compiler.config, launchParameters);
+        }
+        try {
+            Process process = compiler.config.getTarget().launch(launchParameters);
+            for(LaunchPlugin plugin: compiler.config.getLaunchPlugins()) {
+                plugin.afterLaunch(compiler.config, launchParameters, process);
+            }
+            process.waitFor();                    
+        } catch(Throwable e) {
+            for(LaunchPlugin plugin: compiler.config.getLaunchPlugins()) {
+                plugin.launchFailed(compiler.config, launchParameters);
+            }
+            throw e;
         }
     }
     

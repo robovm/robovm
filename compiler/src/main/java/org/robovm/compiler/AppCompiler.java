@@ -614,17 +614,17 @@ public class AppCompiler {
     }
     
     private static void launch(AppCompiler compiler, LaunchParameters launchParameters) throws Throwable {
-        for(LaunchPlugin plugin: compiler.config.getLaunchPlugins()) {
+        for (LaunchPlugin plugin : compiler.config.getLaunchPlugins()) {
             plugin.beforeLaunch(compiler.config, launchParameters);
         }
         try {
             Process process = compiler.config.getTarget().launch(launchParameters);
-            for(LaunchPlugin plugin: compiler.config.getLaunchPlugins()) {
+            for (LaunchPlugin plugin : compiler.config.getLaunchPlugins()) {
                 plugin.afterLaunch(compiler.config, launchParameters, process);
             }
-            process.waitFor();                    
-        } catch(Throwable e) {
-            for(LaunchPlugin plugin: compiler.config.getLaunchPlugins()) {
+            process.waitFor();
+        } catch (Throwable e) {
+            for (LaunchPlugin plugin : compiler.config.getLaunchPlugins()) {
                 plugin.launchFailed(compiler.config, launchParameters);
             }
             throw e;

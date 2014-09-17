@@ -78,6 +78,7 @@ int main(int argc, char* argv[]) {
     options.staticLibs = _bcStaticLibs;
     options.listBootClasses = listBootClasses;
     options.listUserClasses = listUserClasses;
+    options.waitForAttach = FALSE;
     if (!rvmInitOptions(argc, argv, &options, FALSE)) {
         fprintf(stderr, "rvmInitOptions(...) failed!\n");
         return 1;

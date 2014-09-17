@@ -259,7 +259,7 @@ Env* rvmStartup(Options* options) {
         int i = 0;
         while(attachFlag == FALSE && (i++) < 15) {
             sleep(1);
-            TRACE("Waiting for debugger to attach");
+            fprintf(stderr, "[DEBUG] %s: Waiting for debugger to attach\n", LOG_TAG);
         }
     }
 

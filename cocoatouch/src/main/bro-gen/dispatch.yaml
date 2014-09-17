@@ -52,6 +52,8 @@ functions:
         exclude: true
     dispatch_queue_(get|set)_specific:
         exclude: true
+    dispatch_get_specific:
+        exclude: true
 
     dispatch_((barrier_)?a?sync.*):
         class: DispatchQueue
@@ -59,6 +61,7 @@ functions:
     dispatch_((apply|after).*):
         class: DispatchQueue
         name: "#{g[0].camelize}"
+        visibility: private
     dispatch_(get.*queue):
         class: DispatchQueue
         name: "#{g[0].camelize}"
@@ -74,6 +77,16 @@ functions:
     dispatch_io_(.*):
         class: DispatchIO
         name: "#{g[0].camelize}"
+    dispatch_queue_(create):
+        class: DispatchQueue
+        name: "#{g[0].camelize}"
+        parameters:
+            label:
+                type: '@org.robovm.rt.bro.annotation.Marshaler(StringMarshalers.AsUtf8ZMarshaler.class) String'
+    dispatch_queue_(get_label):
+        class: DispatchQueue
+        name: "#{g[0].camelize}"
+        return_type: '@org.robovm.rt.bro.annotation.Marshaler(StringMarshalers.AsUtf8ZMarshaler.class) String'
     dispatch_queue_(.*):
         class: DispatchQueue
         name: "#{g[0].camelize}"
@@ -95,6 +108,10 @@ functions:
         parameters:
             object:
                 type: DispatchObject
+    dispatch_(.*time):
+        class: Dispatch
+        name: "#{g[0].camelize}"
+        visibility: protected
     dispatch_(.*):
         class: Dispatch
         name: "#{g[0].camelize}"
@@ -139,6 +156,10 @@ constants:
     DISPATCH_IO_(.*):
         class: DispatchIO
         name: "#{g[0]}"
+    DISPATCH_(TIME.*):
+        class: Dispatch
+        name: "#{g[0]}"
+        visibility: protected
     DISPATCH_(.*):
         class: Dispatch
         name: "#{g[0]}"

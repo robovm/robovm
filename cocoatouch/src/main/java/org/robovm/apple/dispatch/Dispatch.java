@@ -40,8 +40,8 @@ import org.robovm.rt.bro.ptr.*;
     /*<bind>*/static { Bro.bind(Dispatch.class); }/*</bind>*/
     /*<constants>*/
     public static final int API_VERSION = 20130725;
-    public static final long TIME_NOW = 0L;
-    public static final long TIME_FOREVER = ~0L;
+    protected static final long TIME_NOW = 0L;
+    protected static final long TIME_FOREVER = ~0L;
     /*</constants>*/
     /*<constructors>*//*</constructors>*/
     /*<properties>*//*</properties>*/
@@ -51,22 +51,17 @@ import org.robovm.rt.bro.ptr.*;
      * @since Available in iOS 4.0 and later.
      */
     @Bridge(symbol="dispatch_time", optional=true)
-    public static native long time(long when, long delta);
+    protected static native long time(long when, long delta);
     /**
      * @since Available in iOS 4.0 and later.
      */
     @Bridge(symbol="dispatch_walltime", optional=true)
-    public static native long walltime(timespec when, long delta);
+    protected static native long walltime(timespec when, long delta);
     /**
      * @since Available in iOS 4.0 and later.
      */
     @Bridge(symbol="dispatch_main", optional=true)
     public static native void main();
-    /**
-     * @since Available in iOS 5.0 and later.
-     */
-    @Bridge(symbol="dispatch_get_specific", optional=true)
-    public static native VoidPtr getSpecific(VoidPtr key);
     /**
      * @since Available in iOS 4.0 and later.
      */

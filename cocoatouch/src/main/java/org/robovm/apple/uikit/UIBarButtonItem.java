@@ -101,6 +101,14 @@ import org.robovm.apple.coretext.*;
     public UIBarButtonItem(UIBarButtonSystemItem systemItem, NSObject target, Selector action) { super((SkipInit) null); initObject(initWithBarButtonSystemItem$target$action$(systemItem, target, action)); }
     public UIBarButtonItem(UIView customView) { super((SkipInit) null); initObject(initWithCustomView$(customView)); }
     /*</constructors>*/
+    
+    public void setOnClickListener(OnClickListener listener) {
+        ListenerWrapper l = new ListenerWrapper(listener);
+        setAction(handleClick);
+        setTarget(l);
+        this.addStrongRef(l);
+    }
+    
     /*<properties>*/
     @Property(selector = "style")
     public native UIBarButtonItemStyle getStyle();
@@ -118,6 +126,14 @@ import org.robovm.apple.coretext.*;
     public native UIView getCustomView();
     @Property(selector = "setCustomView:")
     public native void setCustomView(UIView v);
+    @Property(selector = "action")
+    protected native Selector getAction();
+    @Property(selector = "setAction:")
+    protected native void setAction(Selector v);
+    @Property(selector = "target")
+    protected native NSObject getTarget();
+    @Property(selector = "setTarget:", strongRef = true)
+    protected native void setTarget(NSObject v);
     /**
      * @since Available in iOS 5.0 and later.
      */

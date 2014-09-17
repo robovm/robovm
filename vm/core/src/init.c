@@ -25,9 +25,10 @@
 #endif
 #include "private.h"
 #include "utlist.h"
+#include <unistd.h>
 
 #define LOG_TAG "core.init"
-
+jboolean attachFlag = FALSE;
 ClassLoader* systemClassLoader = NULL;
 static Class* java_lang_Daemons = NULL;
 static Method* java_lang_Daemons_start = NULL;
@@ -141,6 +142,8 @@ static void parseArg(char* arg, Options* options) {
         }
     } else if (startsWith(arg, "EnableGCHeapStats")) {
         options->enableGCHeapStats = TRUE;
+    } else if (startsWith(arg, "WaitForAttach")) {
+        options->waitForAttach = TRUE;
     } else if (startsWith(arg, "D")) {
         char* s = strdup(&arg[1]);
         // Split the arg string on the '='. 'key' will have the
@@ -241,6 +244,14 @@ Env* rvmStartup(Options* options) {
     fenv.__fpscr &= ~__fpscr_flush_to_zero;
     fesetenv(&fenv);
 #endif
+    // If wait for attaching was requested, we wait for another process
+    // to overwrite the attachFlag
+    if(options->waitForAttach) {
+        while(attachFlag == FALSE) {
+            sleep(1);
+            TRACE("Waiting for debugger to attach");
+        }
+    }
 
     TRACE("Initializing GC");
     if (!initGC(options)) return NULL;

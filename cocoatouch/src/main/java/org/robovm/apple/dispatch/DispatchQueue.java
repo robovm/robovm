@@ -48,6 +48,36 @@ import org.robovm.rt.bro.ptr.*;
     /*</constructors>*/
     /*<properties>*//*</properties>*/
     /*<members>*//*</members>*/
+
+    /**
+     * @since Available in iOS 4.0 and later.
+     */
+    public void apply(long iterations, VoidBlock1<Long> block) {
+        apply(iterations, this, block);
+    }
+
+    /**
+     * @since Available in iOS 4.0 and later.
+     */
+    public void after(long delay, java.util.concurrent.TimeUnit unit, Runnable block) {
+        after(Dispatch.time(Dispatch.TIME_NOW, unit.toNanos(delay)), this, block);
+    }
+
+    /**
+     * Submits the specified {@link Runnable} on this {@link DispatchQueue} at
+     * the specified time.
+     * 
+     * @param when the time when to submit the {@link Runnable}.
+     * @param block the {@link Runnable} to be run.
+     * 
+     * @since Available in iOS 4.0 and later.
+     */
+    public void at(Date when, Runnable block) {
+        long ms = when.getTime();
+        timespec ts = new timespec(ms / 1000, (ms % 1000) * 1000);
+        after(Dispatch.walltime(ts, 0), this, block);
+    }
+
     /*<methods>*/
     /**
      * @since Available in iOS 4.0 and later.
@@ -69,7 +99,7 @@ import org.robovm.rt.bro.ptr.*;
      * @since Available in iOS 4.0 and later.
      */
     @Bridge(symbol="dispatch_apply", optional=true)
-    public static native void apply(@MachineSizedUInt long iterations, DispatchQueue queue, @Block("(@MachineSizedUInt)") VoidBlock1<Long> block);
+    private static native void apply(@MachineSizedUInt long iterations, DispatchQueue queue, @Block("(@MachineSizedUInt)") VoidBlock1<Long> block);
     /**
      * @since Available in iOS 4.0 and later.
      * @deprecated Deprecated in iOS 6.0.
@@ -86,17 +116,17 @@ import org.robovm.rt.bro.ptr.*;
      * @since Available in iOS 4.0 and later.
      */
     @Bridge(symbol="dispatch_queue_create", optional=true)
-    public static native DispatchQueue create(BytePtr label, DispatchQueueAttr attr);
+    public static native DispatchQueue create(@org.robovm.rt.bro.annotation.Marshaler(StringMarshalers.AsUtf8ZMarshaler.class) String label, DispatchQueueAttr attr);
     /**
      * @since Available in iOS 4.0 and later.
      */
     @Bridge(symbol="dispatch_queue_get_label", optional=true)
-    public native BytePtr getLabel();
+    public native @org.robovm.rt.bro.annotation.Marshaler(StringMarshalers.AsUtf8ZMarshaler.class) String getLabel();
     /**
      * @since Available in iOS 4.0 and later.
      */
     @Bridge(symbol="dispatch_after", optional=true)
-    public static native void after(long when, DispatchQueue queue, @Block Runnable block);
+    private static native void after(long when, DispatchQueue queue, @Block Runnable block);
     /**
      * @since Available in iOS 4.3 and later.
      */

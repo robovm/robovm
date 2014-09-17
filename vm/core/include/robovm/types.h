@@ -365,6 +365,7 @@ typedef struct Options {
     jlong initialHeapSize;
     jboolean enableGCHeapStats;
     jboolean waitForAttach;
+    jboolean printPID;
     char basePath[PATH_MAX];
     char executablePath[PATH_MAX];
     char** rawBootclasspath; 

@@ -144,6 +144,8 @@ static void parseArg(char* arg, Options* options) {
         options->enableGCHeapStats = TRUE;
     } else if (startsWith(arg, "WaitForAttach")) {
         options->waitForAttach = TRUE;
+    } else if (startsWith(arg, "PrintPID")) {
+        options->printPID = TRUE;
     } else if (startsWith(arg, "D")) {
         char* s = strdup(&arg[1]);
         // Split the arg string on the '='. 'key' will have the
@@ -244,12 +246,20 @@ Env* rvmStartup(Options* options) {
     fenv.__fpscr &= ~__fpscr_flush_to_zero;
     fesetenv(&fenv);
 #endif
+    // print PID if it was requested
+    if(options->printPID) {
+        pid_t pid = getpid();
+        fprintf(stderr, "[DEBUG] %s: pid=%d\n", LOG_TAG, pid);
+    }
+
     // If wait for attaching was requested, we wait for another process
-    // to overwrite the attachFlag
+    // to overwrite the attachFlag. We wait for 15 seconds tops.
+    // TODO: make the timeout configurable
     if(options->waitForAttach) {
-        while(attachFlag == FALSE) {
+        int i = 0;
+        while(attachFlag == FALSE && (i++) < 15) {
             sleep(1);
-            TRACE("Waiting for debugger to attach");
+            fprintf(stderr, "[DEBUG] %s: Waiting for debugger to attach\n", LOG_TAG);
         }
     }
 

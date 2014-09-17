@@ -143,7 +143,7 @@ static void parseArg(char* arg, Options* options) {
     } else if (startsWith(arg, "EnableGCHeapStats")) {
         options->enableGCHeapStats = TRUE;
     } else if (startsWith(arg, "WaitForAttach")) {
-    	options->waitForAttach = TRUE;
+        options->waitForAttach = TRUE;
     } else if (startsWith(arg, "D")) {
         char* s = strdup(&arg[1]);
         // Split the arg string on the '='. 'key' will have the
@@ -247,10 +247,10 @@ Env* rvmStartup(Options* options) {
     // If wait for attaching was requested, we wait for another process
     // to overwrite the attachFlag
     if(options->waitForAttach) {
-    	while(attachFlag == FALSE) {
-    		sleep(1);
-    		TRACE("Waiting for debugger to attach");
-    	}
+        while(attachFlag == FALSE) {
+            sleep(1);
+            TRACE("Waiting for debugger to attach");
+        }
     }
 
     TRACE("Initializing GC");

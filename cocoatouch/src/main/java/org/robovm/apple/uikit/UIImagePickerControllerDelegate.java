@@ -56,9 +56,9 @@ import org.robovm.apple.coretext.*;
      */
     @Deprecated
     @Method(selector = "imagePickerController:didFinishPickingImage:editingInfo:")
-    void didFinishPickingImage(UIImagePickerController picker, UIImage image, NSDictionary<NSString, ?> editingInfo);
+    void didFinishPickingImage(UIImagePickerController picker, UIImage image, UIImagePickerControllerEditingInfo editingInfo);
     @Method(selector = "imagePickerController:didFinishPickingMediaWithInfo:")
-    void didFinishPickingMedia(UIImagePickerController picker, NSDictionary<NSString, ?> info);
+    void didFinishPickingMedia(UIImagePickerController picker, UIImagePickerControllerEditingInfo info);
     @Method(selector = "imagePickerControllerDidCancel:")
     void didCancel(UIImagePickerController picker);
     /*</methods>*/

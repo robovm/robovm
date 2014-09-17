@@ -481,7 +481,7 @@ classes:
                 name: getDefaultWritingDirection
 
     NSShadow: # DONE
-        property:
+        properties:
             'shadowColor':
                 type: UIColor
     NSStringDrawingContext: {} # DONE
@@ -1541,14 +1541,14 @@ classes:
     UINib: # DONE
         methods:
             '+nibWithData:bundle:':
-                name: createFromData
+                name: create
             '+nibWithNibName:bundle:':
-                name: createFromName
+                name: create
             '-instantiateWithOwner:options:':
                 name: instantiate
                 parameters:
                     optionsOrNil:
-                        type: "NSDictionary<NSString, ?>"
+                        type: UINibLoadingOptions
     UIPageControl: # DONE
         methods:
             '-sizeForNumberOfPages:':
@@ -1694,7 +1694,7 @@ classes:
             '+printInfo':
                 name: getPrintInfo
             '+printInfoWithDictionary:':
-                name: createFromDictionary
+                name: create
             '-dictionaryRepresentation':
                 name: toDictionary
     UIPrintInteractionController: # DONE
@@ -2877,14 +2877,14 @@ protocols:
                 name: didFinishPickingMedia
                 parameters:
                     info:
-                        type: "NSDictionary<NSString, ?>"
+                        type: UIImagePickerControllerEditingInfo
             '-imagePickerControllerDidCancel:':
                 name: didCancel
             '-imagePickerController:didFinishPickingImage:editingInfo:':
                 name: didFinishPickingImage
                 parameters:
                     editingInfo:
-                        type: "NSDictionary<NSString, ?>"
+                        type: UIImagePickerControllerEditingInfo
 
     UIKeyInput:
         methods:
@@ -3565,26 +3565,14 @@ functions:
     UIGraphics(BeginImageContext)WithOptions:
         class: UIGraphics
         name: "#{g[0]}"
-    UIGraphics(BeginPDFContext.*):
-        class: UIGraphics
-        name: "#{g[0]}"
-        parameters:
-            documentInfo:
-                type: CGPDFContextOptions
-    UIGraphics(BeginPDFPage)WithInfo:
-        class: UIGraphics
-        name: "#{g[0]}"
-        parameters:
-            pageInfo:
-                type: CGPDFBoxOptions  
     UIGraphics(.*):
         class: UIGraphics
         name: "#{g[0]}"
         parameters:
             documentInfo:
-                type: "NSDictionary<NSString, ?>"
+                type: CGPDFContextOptions
             pageInfo:
-                type: "NSDictionary<NSString, ?>"
+                type: CGPDFBoxOptions
     UI(Rect.*):
         class: UIGraphics
         name: "#{g[0]}"
@@ -3774,6 +3762,13 @@ values:
         class: UIMenuController
         name: "#{g[0]}"
         type: NSString
+
+    # UIImagePickerController
+    UIImagePickerController(.*):
+        class: UIImagePickerControllerEditingInfo
+        name: "#{g[0]}Key"
+        type: NSString
+        visibility: protected
 
     # UITableView
     UITableView(.*Notification):

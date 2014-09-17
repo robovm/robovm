@@ -80,7 +80,7 @@ import org.robovm.apple.coretext.*;
     @Method(selector = "printInfo")
     public static native UIPrintInfo getPrintInfo();
     @Method(selector = "printInfoWithDictionary:")
-    public static native UIPrintInfo createFromDictionary(NSDictionary<?, ?> dictionary);
+    public static native UIPrintInfo create(NSDictionary<?, ?> dictionary);
     @Method(selector = "encodeWithCoder:")
     public native void encode(NSCoder aCoder);
     /*</methods>*/

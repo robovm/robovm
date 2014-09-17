@@ -101,7 +101,7 @@ import org.robovm.apple.coretext.*;
      * @since Available in iOS 3.2 and later.
      */
     @Bridge(symbol="UIGraphicsBeginPDFPageWithInfo", optional=true)
-    public static native void beginPDFPage(@ByVal CGRect bounds, CGPDFBoxOptions pageInfo);
+    public static native void beginPDFPageWithInfo(@ByVal CGRect bounds, CGPDFBoxOptions pageInfo);
     /**
      * @since Available in iOS 3.2 and later.
      */

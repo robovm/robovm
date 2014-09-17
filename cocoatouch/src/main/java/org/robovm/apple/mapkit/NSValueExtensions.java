@@ -37,7 +37,7 @@ import org.robovm.apple.dispatch.*;
 /*<javadoc>*/
 /*</javadoc>*/
 /*<annotations>*/@Library("MapKit")/*</annotations>*/
-/*<visibility>*/final/*</visibility>*/ class /*<name>*/NSValueExtensions/*</name>*/ 
+/*<visibility>*/public final/*</visibility>*/ class /*<name>*/NSValueExtensions/*</name>*/ 
     extends /*<extends>*/NSExtensions/*</extends>*/ 
     /*<implements>*//*</implements>*/ {
 

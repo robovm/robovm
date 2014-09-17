@@ -34,6 +34,8 @@ import org.robovm.apple.coregraphics.*;
 import org.robovm.apple.coremedia.*;
 import org.robovm.apple.security.*;
 /*</imports>*/
+import org.robovm.apple.corelocation.CLLocationCoordinate2D;
+import org.robovm.apple.mapkit.MKCoordinateSpan;
 
 /*<javadoc>*/
 
@@ -159,6 +161,20 @@ import org.robovm.apple.security.*;
     }
     public static NSValue valueOf(CATransform3D t) {
         return org.robovm.apple.coreanimation.NSValueExtensions.create(t);
+    }
+    
+    /* MapKit extensions */
+    public CLLocationCoordinate2D coordinateValue() {
+        return org.robovm.apple.mapkit.NSValueExtensions.getCoordinateValue(this);
+    }
+    public MKCoordinateSpan getCoordinateSpanValue() {
+        return org.robovm.apple.mapkit.NSValueExtensions.getCoordinateSpanValue(this);
+    }
+    public static NSValue valueOf(CLLocationCoordinate2D coordinate) {
+        return org.robovm.apple.mapkit.NSValueExtensions.create(coordinate);
+    }
+    public static NSValue valueOf(MKCoordinateSpan span) {
+        return org.robovm.apple.mapkit.NSValueExtensions.create(span);
     }
     
     /*<methods>*/

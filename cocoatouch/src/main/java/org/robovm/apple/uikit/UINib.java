@@ -57,10 +57,10 @@ import org.robovm.apple.coretext.*;
     /*<members>*//*</members>*/
     /*<methods>*/
     @Method(selector = "instantiateWithOwner:options:")
-    public native NSArray<?> instantiate(NSObject ownerOrNil, NSDictionary<NSString, ?> optionsOrNil);
+    public native NSArray<?> instantiate(NSObject ownerOrNil, UINibLoadingOptions optionsOrNil);
     @Method(selector = "nibWithNibName:bundle:")
-    public static native UINib createFromName(String name, NSBundle bundleOrNil);
+    public static native UINib create(String name, NSBundle bundleOrNil);
     @Method(selector = "nibWithData:bundle:")
-    public static native UINib createFromData(NSData data, NSBundle bundleOrNil);
+    public static native UINib create(NSData data, NSBundle bundleOrNil);
     /*</methods>*/
 }

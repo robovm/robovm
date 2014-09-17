@@ -61,9 +61,9 @@ import org.robovm.apple.coretext.*;
     @Property(selector = "setShadowBlurRadius:")
     public native void setShadowBlurRadius(@MachineSizedFloat double v);
     @Property(selector = "shadowColor")
-    public native NSObject getShadowColor();
+    public native UIColor getShadowColor();
     @Property(selector = "setShadowColor:")
-    public native void setShadowColor(NSObject v);
+    public native void setShadowColor(UIColor v);
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/

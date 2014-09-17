@@ -135,26 +135,6 @@ import org.robovm.apple.coretext.*;
     public static native String Value__UIDocumentStateChangedNotification();
     @GlobalValue(symbol="UINavigationControllerHideShowBarDuration", optional=true)
     public static native @MachineSizedFloat double Value__UINavigationControllerHideShowBarDuration();
-    @GlobalValue(symbol="UIImagePickerControllerMediaType", optional=true)
-    public static native String Value__UIImagePickerControllerMediaType();
-    @GlobalValue(symbol="UIImagePickerControllerOriginalImage", optional=true)
-    public static native String Value__UIImagePickerControllerOriginalImage();
-    @GlobalValue(symbol="UIImagePickerControllerEditedImage", optional=true)
-    public static native String Value__UIImagePickerControllerEditedImage();
-    @GlobalValue(symbol="UIImagePickerControllerCropRect", optional=true)
-    public static native String Value__UIImagePickerControllerCropRect();
-    @GlobalValue(symbol="UIImagePickerControllerMediaURL", optional=true)
-    public static native String Value__UIImagePickerControllerMediaURL();
-    /**
-     * @since Available in iOS 4.1 and later.
-     */
-    @GlobalValue(symbol="UIImagePickerControllerReferenceURL", optional=true)
-    public static native String Value__UIImagePickerControllerReferenceURL();
-    /**
-     * @since Available in iOS 4.1 and later.
-     */
-    @GlobalValue(symbol="UIImagePickerControllerMediaMetadata", optional=true)
-    public static native String Value__UIImagePickerControllerMediaMetadata();
     /**
      * @since Available in iOS 4.0 and later.
      */

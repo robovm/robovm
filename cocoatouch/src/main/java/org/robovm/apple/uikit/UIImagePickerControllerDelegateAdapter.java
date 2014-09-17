@@ -58,9 +58,9 @@ import org.robovm.apple.coretext.*;
      */
     @Deprecated
     @NotImplemented("imagePickerController:didFinishPickingImage:editingInfo:")
-    public void didFinishPickingImage(UIImagePickerController picker, UIImage image, NSDictionary<NSString, ?> editingInfo) { throw new UnsupportedOperationException(); }
+    public void didFinishPickingImage(UIImagePickerController picker, UIImage image, UIImagePickerControllerEditingInfo editingInfo) { throw new UnsupportedOperationException(); }
     @NotImplemented("imagePickerController:didFinishPickingMediaWithInfo:")
-    public void didFinishPickingMedia(UIImagePickerController picker, NSDictionary<NSString, ?> info) { throw new UnsupportedOperationException(); }
+    public void didFinishPickingMedia(UIImagePickerController picker, UIImagePickerControllerEditingInfo info) { throw new UnsupportedOperationException(); }
     @NotImplemented("imagePickerControllerDidCancel:")
     public void didCancel(UIImagePickerController picker) { throw new UnsupportedOperationException(); }
     /*</methods>*/

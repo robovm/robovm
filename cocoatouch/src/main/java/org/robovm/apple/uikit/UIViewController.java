@@ -33,6 +33,8 @@ import org.robovm.apple.coredata.*;
 import org.robovm.apple.coreimage.*;
 import org.robovm.apple.coretext.*;
 /*</imports>*/
+import org.robovm.apple.iad.ADInterstitialPresentationPolicy;
+import org.robovm.apple.mediaplayer.MPMoviePlayerViewController;
 
 /*<javadoc>*/
 /**
@@ -302,6 +304,77 @@ import org.robovm.apple.coretext.*;
     public native ObjCClass getObjectRestorationClass();
     /*</properties>*/
     /*<members>*//*</members>*/
+    
+    /* iAd extensions */
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
+    public ADInterstitialPresentationPolicy getInterstitialPresentationPolicy() {
+        return org.robovm.apple.iad.UIViewControllerExtensions.getInterstitialPresentationPolicy(this);
+    }
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
+    public void setInterstitialPresentationPolicy(ADInterstitialPresentationPolicy v) {
+        org.robovm.apple.iad.UIViewControllerExtensions.setInterstitialPresentationPolicy(this, v);
+    }
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
+    public boolean isCanDisplayBannerAds() {
+        return org.robovm.apple.iad.UIViewControllerExtensions.isCanDisplayBannerAds(this);
+    }
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
+    public void setCanDisplayBannerAds(boolean v) {
+        org.robovm.apple.iad.UIViewControllerExtensions.setCanDisplayBannerAds(this, v);
+    }
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
+    public UIView getOriginalContentView() {
+        return org.robovm.apple.iad.UIViewControllerExtensions.getOriginalContentView(this);
+    }
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
+    public boolean isPresentingFullScreenAd() {
+        return org.robovm.apple.iad.UIViewControllerExtensions.isPresentingFullScreenAd(this);
+    }
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
+    public boolean isDisplayingBannerAd() {
+        return org.robovm.apple.iad.UIViewControllerExtensions.isDisplayingBannerAd(this);
+    }
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
+    public boolean requestInterstitialAdPresentation() {
+        return org.robovm.apple.iad.UIViewControllerExtensions.requestInterstitialAdPresentation(this);
+    }
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
+    public boolean shouldPresentInterstitialAd() {
+        return org.robovm.apple.iad.UIViewControllerExtensions.shouldPresentInterstitialAd(this);
+    }
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
+    public static void prepareInterstitialAds() {
+        org.robovm.apple.iad.UIViewControllerExtensions.prepareInterstitialAds();
+    }
+    
+    /* MediaPlayer extensions */
+    public void presentMoviePlayerViewController(MPMoviePlayerViewController moviePlayerViewController) {
+        org.robovm.apple.mediaplayer.UIViewControllerExtensions.presentMoviePlayerViewController(this, moviePlayerViewController);
+    }
+    public void dismissMoviePlayerViewController() {
+        org.robovm.apple.mediaplayer.UIViewControllerExtensions.dismissMoviePlayerViewController(this);
+    }
+    
     /*<methods>*/
     @Method(selector = "initWithNibName:bundle:")
     protected native @Pointer long initWithNibName$bundle$(String nibNameOrNil, NSBundle nibBundleOrNil);

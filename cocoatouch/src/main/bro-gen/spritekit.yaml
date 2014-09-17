@@ -27,9 +27,9 @@ categories:
     SKNodeTouches: # DONE
         methods:
             '-locationInNode:':
-                trim_after_first_colon: true
+                name: getLocationInNode
             '-previousLocationInNode:':
-                trim_after_first_colon: true
+                name: getPreviousLocationInNode
 
 classes:
     SpriteKit:
@@ -38,27 +38,27 @@ classes:
     SKAction: # DONE
         methods:
             '+moveBy.*':
-                name: "moveBy"
+                name: moveBy
             '+moveTo.*':
                 trim_after_first_colon: true
             '+rotateBy.*':
-                name: "rotateBy"
+                name: rotateBy
             '+rotateTo.*':
-                name: "rotateTo"
+                name: rotateTo
             '+resizeBy.*':
-                name: "resizeBy"
+                name: resizeBy
             '+resizeToWidth:height:duration:':
-                name: "resizeTo"
+                name: resizeTo
             '+resizeTo.*':
                 trim_after_first_colon: true
             '+scaleBy:duration:':
                 trim_after_first_colon: true
             '+scaleXBy:y:duration:':
-                name: "scaleBy"
+                name: scaleBy
             '+scaleTo:duration:':
                 trim_after_first_colon: true
             '+scaleXTo:y:duration:':
-                name: "scaleTo"
+                name: scaleTo
             '+scaleXTo:duration:':
                 trim_after_first_colon: true
             '+scaleYTo:duration:':
@@ -74,13 +74,13 @@ classes:
                     actions:
                         type: "NSArray<SKAction>"
             '+repeatAction:count:':
-                name: "repeat"
+                name: repeat
             '+repeatActionForever:':
-                name: "repeatForever"
+                name: repeatForever
             '+fadeInWithDuration:':
-                name: "fadeIn"
+                name: fadeIn
             '+fadeOutWithDuration:':
-                name: "fadeOut"
+                name: fadeOut
             '+fadeAlphaBy:duration:':
                 trim_after_first_colon: true
             '+fadeAlphaTo:duration:':
@@ -88,14 +88,14 @@ classes:
             '+setTexture:.*':
                 trim_after_first_colon: true
             '+animateWithTextures:timePerFrame:.*':
-                name: "animate"
+                name: animate
                 parameters:
                     textures:
                         type: "NSArray<SKTexture>"
             '+playSoundFileNamed:waitForCompletion:':
-                name: "playSound"
+                name: playSound
             '+colorizeWithColor.*':
-                name: "colorize"
+                name: colorize
             '+followPath:.*':
                 trim_after_first_colon: true
             '+speedBy:duration:':
@@ -103,7 +103,7 @@ classes:
             '+speedTo:duration:':
                 trim_after_first_colon: true
             '+waitForDuration:.*':
-                name: "wait"
+                name: wait
             '+performSelector:onTarget:':
                 ignore: true
             '+runBlock:':
@@ -112,7 +112,7 @@ classes:
                 trim_after_first_colon: true
                 parameters:
                     queue:
-                        type: "DispatchQueue"
+                        type: DispatchQueue
             '+runAction:onChildWithName:':
                 trim_after_first_colon: true
             '+customActionWithDuration:actionBlock:':
@@ -133,31 +133,31 @@ classes:
                     times:
                         type: "NSArray<NSNumber>"
             '-initWithCapacity:':
-                name: "init"
+                name: init
             '-addKeyframeValue:time:':
-                name: "add"
+                name: add
             '-removeLastKeyframe':
-                name: "removeLast"
+                name: removeLast
             '-removeKeyframeAtIndex:':
-                name: "remove"
+                name: remove
             '-setKeyframeValue:forIndex:':
-                name: "setValue"
+                name: setValue
             '-setKeyframeTime:forIndex:':
-                name: "setTime"
+                name: setTime
             '-setKeyframeValue:time:forIndex:':
-                name: "set"
+                name: set
             '-getKeyframeValueForIndex:':
-                name: "getValue"
+                name: getValue
             '-getKeyframeTimeForIndex:':
-                name: "getTime"
+                name: getTime
             '-sampleAtTime:':
-                name: "getSample"
+                name: getSample
     SKLabelNode: # DONE
         methods:
             '-initWithFontNamed:':
-                name: "init"
+                name: init
             '+labelNodeWithFontNamed:':
-                name: "create"
+                name: create
     SKNode: # DONE
         properties:
             'children':
@@ -170,37 +170,37 @@ classes:
             '-insertChild:atIndex:':
                 trim_after_first_colon: true
             '-removeChildrenInArray:':
-                name: "removeChildren"
+                name: removeChildren
                 parameters:
                     nodes:
                         type: "NSArray<SKNode>"
             '-childNodeWithName:':
-                name: "getChild"
+                name: getChild
             '-enumerateChildNodesWithName:usingBlock:':
-                name: "enumerateChildNodes"
+                name: enumerateChildNodes
             '-inParentHierarchy:':
-                name: "isInParentHierarchy"
+                name: isInParentHierarchy
             '-runAction:.*':
                 trim_after_first_colon: true
             '-actionForKey:':
-                name: "getAction"
+                name: getAction
             '-removeActionForKey:':
-                name: "removeAction"
+                name: removeAction
             '-containsPoint:':
                 trim_after_first_colon: true
             '-nodeAtPoint:':
-                name: "getNodeAtPoint"
+                name: getNodeAtPoint
             '-nodesAtPoint:':
-                name: "getNodesAtPoint"
+                name: getNodesAtPoint
                 return_type: "NSArray<SKNode>"
             '-convertPoint:fromNode:':
-                name: "convertPointFromNode"
+                name: convertPointFromNode
             '-convertPoint:toNode:':
-                name: "convertPointToNode"
+                name: convertPointToNode
             '-intersectsNode:':
                 trim_after_first_colon: true
             '+node':
-                name: "create"
+                name: create
     SKPhysicsBody: # DONE
         properties:
             'joints':
@@ -218,21 +218,21 @@ classes:
                 property: true
                 return_type: "NSArray<SKPhysicsBody>"
             '+bodyWithCircleOfRadius:.*':
-                name: "createCircle"
+                name: createCircle
             '+bodyWithRectangleOfSize:.*':
-                name: "createRectangle"
+                name: createRectangle
             '+bodyWithPolygonFromPath:.*':
-                name: "createPolygon"
+                name: createPolygon
             '+bodyWithEdgeFromPoint:toPoint:':
-                name: "createEdge"
+                name: createEdge
             '+bodyWithEdgeChainFromPath:':
-                name: "createEdgeChain"
+                name: createEdgeChain
             '+bodyWithEdgeLoopFromPath:':
-                name: "createEdgeLoop"
+                name: createEdgeLoop
             '+bodyWithEdgeLoopFromRect:':
-                name: "createEdgeLoop"
+                name: createEdgeLoop
             '+bodyWithBodies:':
-                name: "create"
+                name: create
                 parameters:
                     bodies:
                         type: "NSArray<SKPhysicsBody>"
@@ -241,23 +241,23 @@ classes:
     SKPhysicsJointFixed: # DONE
         methods:
             '+jointWithBodyA:bodyB:anchor:':
-                name: "create"
+                name: create
     SKPhysicsJointLimit: # DONE
         methods:
             '+jointWithBodyA:bodyB:anchorA:anchorB:':
-                name: "create"
+                name: create
     SKPhysicsJointPin: # DONE
         methods:
             '+jointWithBodyA:bodyB:anchor:':
-                name: "create"
+                name: create
     SKPhysicsJointSliding: # DONE
         methods:
             '+jointWithBodyA:bodyB:anchor:axis:':
-                name: "create"
+                name: create
     SKPhysicsJointSpring: # DONE
         methods:
             '+jointWithBodyA:bodyB:anchorA:anchorB:':
-                name: "create"
+                name: create
     SKPhysicsWorld: # DONE
         methods:
             '-addJoint:':
@@ -265,21 +265,21 @@ classes:
             '-removeJoint:':
                 trim_after_first_colon: true
             '-bodyAtPoint:':
-                name: "getBodyAtPoint"
+                name: getBodyAtPoint
             '-bodyInRect:':
-                name: "getBodyInRect"
+                name: getBodyInRect
             '-bodyAlongRayStart:end:':
-                name: "getBodyAlongRay"
+                name: getBodyAlongRay
             '-enumerateBodiesAtPoint:usingBlock:':
                 trim_after_first_colon: true
             '-enumerateBodiesInRect:usingBlock:':
                 trim_after_first_colon: true
             '-enumerateBodiesAlongRayStart:end:usingBlock:':
-                name: "enumerateBodiesAlongRay"
+                name: enumerateBodiesAlongRay
     SKScene: # DONE
         methods:
             '-initWithSize:':
-                name: "init"
+                name: init
             '-convertPointFromView:':
                 trim_after_first_colon: true
             '-convertPointToView:':
@@ -293,24 +293,24 @@ classes:
             '-didChangeSize:':
                 trim_after_first_colon: true
             '+sceneWithSize:':
-                name: "create"
+                name: create
     SKShapeNode: {} # DONE
     SKSpriteNode: # DONE
         methods:
             '-init.*':
-                name: "init"
+                name: init
             '+spriteNodeWith.*':
-                name: "create"
+                name: create
     SKTexture: # DONE
         methods:
             '-textureByApplyingCIFilter:':
-                name: "newTextureByApplyingCIFilter"
+                name: newTextureByApplyingCIFilter
             '-textureRect':
                 property: true
             '-preloadWithCompletionHandler:':
-                name: "preload"
+                name: preload
             '+textureWith.*':
-                name: "create"
+                name: create
             '+preloadTextures:withCompletionHandler:':
                 trim_after_first_colon: true
                 parameters:
@@ -322,11 +322,11 @@ classes:
                 type: "NSArray<NSString>"
         methods:
             '-textureNamed:':
-                name: "getTexture"
+                name: getTexture
             '-preloadWithCompletionHandler:':
-                name: "preload"
+                name: preload
             '+atlasNamed:':
-                name: "create"
+                name: create
             '+preloadTextureAtlases:withCompletionHandler:':
                 trim_after_first_colon: true
                 parameters:
@@ -335,47 +335,47 @@ classes:
     SKTransition: # DONE
         methods:
             '+crossFadeWithDuration:':
-                name: "crossFade"
+                name: crossFade
             '+fadeWith.*':
-                name: "fade"
+                name: fade
             '+flipHorizontalWithDuration:':
-                name: "flipHorizontal"
+                name: flipHorizontal
             '+flipVerticalWithDuration:':
-                name: "flipVertical"
+                name: flipVertical
             '+revealWithDirection:duration:':
-                name: "reveal"
+                name: reveal
             '+moveInWithDirection:duration:':
-                name: "moveIn"
+                name: moveIn
             '+pushWithDirection:duration:':
-                name: "push"
+                name: push
             '+doorsOpenHorizontalWithDuration:':
-                name: "doorsOpenHorizontal"
+                name: doorsOpenHorizontal
             '+doorsOpenVerticalWithDuration:':
-                name: "doorsOpenVertical"
+                name: doorsOpenVertical
             '+doorsCloseHorizontalWithDuration:':
-                name: "doorsCloseHorizontal"
+                name: doorsCloseHorizontal
             '+doorsCloseVerticalWithDuration:':
-                name: "doorsCloseVertical"
+                name: doorsCloseVertical
             '+doorwayWithDuration:':
-                name: "doorway"
+                name: doorway
             '+transitionWithCIFilter:duration:':
-                name: "create"
+                name: create
     SKVideoNode: # DONE
         methods:
             '-initWith.*':
-                name: "init"
+                name: init
             '+videoNodeWith.*':
-                name: "create"    
+                name: create    
     SKView: # DONE
         methods:
             '-presentScene:.*':
                 trim_after_first_colon: true
             '-textureFromNode:':
-                name: "getTextureFromNode"
+                name: getTextureFromNode
             '-convertPoint:toScene:':
-                name: "convertPointToScene"
+                name: convertPointToScene
             '-convertPoint:fromScene:':
-                name: "convertPointFromScene"
+                name: convertPointFromScene
 
 protocols:
     SKPhysicsContactDelegate: # DONE

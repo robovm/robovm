@@ -28,6 +28,7 @@ import org.robovm.rt.bro.annotation.*;
 import org.robovm.rt.bro.ptr.*;
 import org.robovm.apple.corefoundation.*;
 import org.robovm.apple.foundation.*;
+import org.robovm.apple.uikit.*;
 /*</imports>*/
 
 /*<javadoc>*/
@@ -56,6 +57,10 @@ import org.robovm.apple.foundation.*;
     @StructMember(1) public native CGSize height(@MachineSizedFloat double height);
     /*</members>*/
 
+    public static CGSize fromString(String string) {
+        return UIGeometry.stringToCGSize(string);
+    }
+    
     public static CGSize fromDictionary(NSDictionary<NSString, NSNumber> dict) {
         CGSize s = new CGSize();
         if (!fromDictionary(dict, s)) {
@@ -67,6 +72,11 @@ import org.robovm.apple.foundation.*;
     @Override
     public boolean equals(Object obj) {
         return obj instanceof CGSize && equalToSize(this, (CGSize) obj);
+    }
+    
+    @Override
+    public String toString() {
+        return UIGeometry.toString(this);
     }
     
     /*<methods>*/

@@ -29,6 +29,7 @@ import org.robovm.rt.bro.ptr.*;
 import org.robovm.apple.corefoundation.*;
 import org.robovm.apple.uikit.*;
 import org.robovm.apple.coregraphics.*;
+import org.robovm.apple.coremedia.*;
 import org.robovm.apple.security.*;
 /*</imports>*/
 
@@ -61,6 +62,12 @@ import org.robovm.apple.security.*;
     
     /*</properties>*/
     /*<members>*//*</members>*/
+    
+    /* UIKit extensions */
+    public NSArray<?> loadNib(String name, NSObject owner, UINibLoadingOptions options) {
+        return NSBundleExtensions.loadNib(this, name, owner, options);
+    }
+    
     /*<methods>*/
     @Method(selector = "initWithPath:")
     protected native @Pointer long initWithPath$(String path);

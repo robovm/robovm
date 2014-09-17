@@ -19,6 +19,7 @@ package org.robovm.apple.foundation;
 import java.io.*;
 import java.nio.*;
 import java.util.*;
+
 import org.robovm.objc.*;
 import org.robovm.objc.annotation.*;
 import org.robovm.objc.block.*;
@@ -29,8 +30,10 @@ import org.robovm.rt.bro.ptr.*;
 import org.robovm.apple.corefoundation.*;
 import org.robovm.apple.uikit.*;
 import org.robovm.apple.coregraphics.*;
+import org.robovm.apple.coremedia.*;
 import org.robovm.apple.security.*;
 /*</imports>*/
+import org.robovm.apple.newsstandkit.NKAssetDownload;
 
 /*<javadoc>*/
 
@@ -56,6 +59,12 @@ import org.robovm.apple.security.*;
     
     /*</properties>*/
     /*<members>*//*</members>*/
+    
+    /* NewsstandKit extensions */
+    public NKAssetDownload getNewsstandAssetDownload() {
+        return org.robovm.apple.newsstandkit.NSURLConnectionExtensions.getNewsstandAssetDownload(this);
+    }
+    
     /*<methods>*/
     /**
      * @since Available in iOS 2.0 and later.

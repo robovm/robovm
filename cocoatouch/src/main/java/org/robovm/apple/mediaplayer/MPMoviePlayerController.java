@@ -19,6 +19,7 @@ package org.robovm.apple.mediaplayer;
 import java.io.*;
 import java.nio.*;
 import java.util.*;
+
 import org.robovm.objc.*;
 import org.robovm.objc.annotation.*;
 import org.robovm.objc.block.*;
@@ -361,6 +362,21 @@ import org.robovm.apple.coregraphics.*;
     @Property(selector = "setCurrentPlaybackRate:")
     public native void setCurrentPlaybackRate(float v);
     /*</properties>*/
+    
+    /* iAd extensions */
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
+    public void playPrerollAd(@Block VoidBlock1<NSError> completionHandler) {
+        org.robovm.apple.iad.MPMoviePlayerControllerExtensions.playPrerollAd(this, completionHandler);
+    }
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
+    public static void preparePrerollAds() {
+        org.robovm.apple.iad.MPMoviePlayerControllerExtensions.preparePrerollAds();
+    }
+    
     /*<members>*//*</members>*/
     /**
      * @since Available in iOS 3.2 and later.

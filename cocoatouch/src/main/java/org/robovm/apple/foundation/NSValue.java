@@ -19,6 +19,7 @@ package org.robovm.apple.foundation;
 import java.io.*;
 import java.nio.*;
 import java.util.*;
+
 import org.robovm.objc.*;
 import org.robovm.objc.annotation.*;
 import org.robovm.objc.block.*;
@@ -26,9 +27,11 @@ import org.robovm.rt.*;
 import org.robovm.rt.bro.*;
 import org.robovm.rt.bro.annotation.*;
 import org.robovm.rt.bro.ptr.*;
+import org.robovm.apple.coreanimation.*;
 import org.robovm.apple.corefoundation.*;
 import org.robovm.apple.uikit.*;
 import org.robovm.apple.coregraphics.*;
+import org.robovm.apple.coremedia.*;
 import org.robovm.apple.security.*;
 /*</imports>*/
 
@@ -69,47 +72,93 @@ import org.robovm.apple.security.*;
     
     /* UIKit Extensions */
     public CGPoint pointValue() {
-        return NSValueExtensions.getPointValue(this);
+        return org.robovm.apple.uikit.NSValueExtensions.getPointValue(this);
     }
     public CGSize sizeValue() {
-        return NSValueExtensions.getSizeValue(this);
+        return org.robovm.apple.uikit.NSValueExtensions.getSizeValue(this);
     }
     public CGRect rectValue() {
-        return NSValueExtensions.getRectValue(this);
+        return org.robovm.apple.uikit.NSValueExtensions.getRectValue(this);
     }
     public CGAffineTransform affineTransformValue() {
-        return NSValueExtensions.getAffineTransformValue(this);
+        return org.robovm.apple.uikit.NSValueExtensions.getAffineTransformValue(this);
     }
     public UIEdgeInsets edgeInsetsValue() {
-        return NSValueExtensions.getEdgeInsetsValue(this);
+        return org.robovm.apple.uikit.NSValueExtensions.getEdgeInsetsValue(this);
     }
     /**
      * @since Available in iOS 5.0 and later.
      */
     public UIOffset offsetValue() {
-        return NSValueExtensions.getOffsetValue(this);
+        return org.robovm.apple.uikit.NSValueExtensions.getOffsetValue(this);
     }
 
     public static NSValue valueOf(CGPoint point) {
-        return NSValueExtensions.create(point);
+        return org.robovm.apple.uikit.NSValueExtensions.create(point);
     }
     public static NSValue valueOf(CGSize size) {
-        return NSValueExtensions.create(size);
+        return org.robovm.apple.uikit.NSValueExtensions.create(size);
     }
     public static NSValue valueOf(CGRect rect) {
-        return NSValueExtensions.create(rect);
+        return org.robovm.apple.uikit.NSValueExtensions.create(rect);
     }
     public static NSValue valueOf(CGAffineTransform transform) {
-        return NSValueExtensions.create(transform);
+        return org.robovm.apple.uikit.NSValueExtensions.create(transform);
     }
     public static NSValue valueOf(UIEdgeInsets insets) {
-        return NSValueExtensions.create(insets);
+        return org.robovm.apple.uikit.NSValueExtensions.create(insets);
     }
     /**
      * @since Available in iOS 5.0 and later.
      */
     public static NSValue valueOf(UIOffset insets) {
-        return NSValueExtensions.create(insets);
+        return org.robovm.apple.uikit.NSValueExtensions.create(insets);
+    }
+    
+    /* AVFoundation extensions */
+    /**
+     * @since Available in iOS 4.0 and later.
+     */
+    public CMTime timeValue() {
+        return org.robovm.apple.avfoundation.NSValueExtensions.getTimeValue(this);
+    }
+    /**
+     * @since Available in iOS 4.0 and later.
+     */
+    public CMTimeRange timeRangeValue() {
+        return org.robovm.apple.avfoundation.NSValueExtensions.getTimeRangeValue(this);
+    }
+    /**
+     * @since Available in iOS 4.0 and later.
+     */
+    public CMTimeMapping timeMappingValue() {
+        return org.robovm.apple.avfoundation.NSValueExtensions.getTimeMappingValue(this);
+    }
+    /**
+     * @since Available in iOS 4.0 and later.
+     */
+    public static NSValue valueOf(CMTime time) {
+        return org.robovm.apple.avfoundation.NSValueExtensions.create(time);
+    }
+    /**
+     * @since Available in iOS 4.0 and later.
+     */
+    public static NSValue valueOf(CMTimeRange timeRange) {
+        return org.robovm.apple.avfoundation.NSValueExtensions.create(timeRange);
+    }
+    /**
+     * @since Available in iOS 4.0 and later.
+     */
+    public static NSValue valueOf(CMTimeMapping timeMapping) {
+        return org.robovm.apple.avfoundation.NSValueExtensions.create(timeMapping);
+    }
+    
+    /* CoreAnimation extensions */
+    public CATransform3D transform3DValue() {
+        return org.robovm.apple.coreanimation.NSValueExtensions.getTransform3DValue(this);
+    }
+    public static NSValue valueOf(CATransform3D t) {
+        return org.robovm.apple.coreanimation.NSValueExtensions.create(t);
     }
     
     /*<methods>*/

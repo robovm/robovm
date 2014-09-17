@@ -160,18 +160,6 @@ import org.robovm.apple.coretext.*;
      */
     @GlobalValue(symbol="UILocalNotificationDefaultSoundName", optional=true)
     public static native String Value__UILocalNotificationDefaultSoundName();
-    /**
-     * @since Available in iOS 3.0 and later.
-     */
-    @GlobalValue(symbol="UINibExternalObjects", optional=true)
-    public static native String Value__UINibExternalObjects();
-    /**
-     * @since Available in iOS 2.0 and later.
-     * @deprecated Deprecated in iOS 3.0.
-     */
-    @Deprecated
-    @GlobalValue(symbol="UINibProxiedObjectsKey", optional=true)
-    public static native String Value__UINibProxiedObjectsKey();
     @GlobalValue(symbol="UIPasteboardNameGeneral", optional=true)
     public static native String Value__UIPasteboardNameGeneral();
     @GlobalValue(symbol="UIPasteboardNameFind", optional=true)

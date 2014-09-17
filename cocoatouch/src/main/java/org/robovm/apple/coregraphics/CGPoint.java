@@ -28,6 +28,7 @@ import org.robovm.rt.bro.annotation.*;
 import org.robovm.rt.bro.ptr.*;
 import org.robovm.apple.corefoundation.*;
 import org.robovm.apple.foundation.*;
+import org.robovm.apple.uikit.*;
 /*</imports>*/
 
 /*<javadoc>*/
@@ -56,6 +57,10 @@ import org.robovm.apple.foundation.*;
     @StructMember(1) public native CGPoint y(@MachineSizedFloat double y);
     /*</members>*/
     
+    public static CGPoint fromString(String string) {
+        return UIGeometry.stringToCGPoint(string);
+    }
+    
     public static CGPoint fromDictionary(NSDictionary<NSString, NSNumber> dict) {
         CGPoint p = new CGPoint();
         if (!fromDictionary(dict, p)) {
@@ -69,6 +74,10 @@ import org.robovm.apple.foundation.*;
         return obj instanceof CGPoint && equalToPoint(this, (CGPoint) obj);
     }
     
+    @Override
+    public String toString() {
+        return UIGeometry.toString(this);
+    }
     /*<methods>*/
     /**
      * @since Available in iOS 2.0 and later.

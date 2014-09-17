@@ -1,5 +1,5 @@
 package: org.robovm.apple.coregraphics
-include: [corefoundation.yaml, foundation.yaml]
+include: [corefoundation.yaml, foundation.yaml, uikit.yaml]
 library: CoreGraphics
 framework: CoreGraphics
 clang_args: ['-x', 'objective-c']

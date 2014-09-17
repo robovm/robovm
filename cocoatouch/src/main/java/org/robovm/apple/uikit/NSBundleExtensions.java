@@ -54,6 +54,6 @@ import org.robovm.apple.coretext.*;
     /*<members>*//*</members>*/
     /*<methods>*/
     @Method(selector = "loadNibNamed:owner:options:")
-    public static native NSArray<?> loadNib(NSBundle thiz, String name, NSObject owner, NSDictionary<NSString, ?> options);
+    public static native NSArray<?> loadNib(NSBundle thiz, String name, NSObject owner, UINibLoadingOptions options);
     /*</methods>*/
 }

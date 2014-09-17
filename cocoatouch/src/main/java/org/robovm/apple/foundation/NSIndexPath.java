@@ -29,6 +29,7 @@ import org.robovm.rt.bro.ptr.*;
 import org.robovm.apple.corefoundation.*;
 import org.robovm.apple.uikit.*;
 import org.robovm.apple.coregraphics.*;
+import org.robovm.apple.coremedia.*;
 import org.robovm.apple.security.*;
 /*</imports>*/
 
@@ -69,6 +70,29 @@ import org.robovm.apple.security.*;
         MachineSizedUIntPtr p = Struct.allocate(MachineSizedUIntPtr.class, n);
         getIndexes$(p);
         return p.toLongArray(n);
+    }
+    
+    /* UIKit extensions */
+    public long getSection() {
+        return NSIndexPathExtensions.getSection(this);
+    }
+    public long getRow() {
+        return NSIndexPathExtensions.getRow(this);
+    }
+    /**
+     * @since Available in iOS 6.0 and later.
+     */
+    public long getItem() {
+        return NSIndexPathExtensions.getItem(this);
+    }
+    public static NSIndexPath createWithRow(@MachineSizedSInt long row, @MachineSizedSInt long section) {
+        return NSIndexPathExtensions.createIndexPathForRowInSection(row, section);
+    }
+    /**
+     * @since Available in iOS 6.0 and later.
+     */
+    public static NSIndexPath createWithItem(@MachineSizedSInt long item, @MachineSizedSInt long section) {
+        return NSIndexPathExtensions.createIndexPathForItemInSection(item, section);
     }
     
     /*<methods>*/

@@ -29,6 +29,7 @@ import org.robovm.rt.bro.ptr.*;
 import org.robovm.apple.corefoundation.*;
 import org.robovm.apple.uikit.*;
 import org.robovm.apple.coregraphics.*;
+import org.robovm.apple.coremedia.*;
 import org.robovm.apple.security.*;
 /*</imports>*/
 
@@ -76,6 +77,27 @@ import org.robovm.apple.security.*;
     public void removeAttribute(NSAttributedStringAttribute attribute, @ByVal NSRange range) {
         removeAttribute(attribute.value(), range);
     }
+    
+    /* UIKit extensions */
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
+    public boolean read(NSURL url, NSAttributedStringDocumentAttributes opts) {
+        return NSMutableAttributedStringExtensions.readFromFileURL(this, url, opts);
+    }
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
+    public boolean read(NSData data, NSAttributedStringDocumentAttributes opts) {
+        return NSMutableAttributedStringExtensions.readFromData(this, data, opts);
+    }
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
+    public void fixAttributes(NSRange range) {
+        NSMutableAttributedStringExtensions.fixAttributesInRange(this, range);
+    }
+    
     /*<methods>*/
     @Method(selector = "replaceCharactersInRange:withString:")
     public native void replace(@ByVal NSRange range, String str);

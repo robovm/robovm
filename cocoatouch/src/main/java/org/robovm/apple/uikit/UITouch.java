@@ -33,6 +33,7 @@ import org.robovm.apple.coredata.*;
 import org.robovm.apple.coreimage.*;
 import org.robovm.apple.coretext.*;
 /*</imports>*/
+import org.robovm.apple.spritekit.SKNode;
 
 /*<javadoc>*/
 /**
@@ -69,6 +70,15 @@ import org.robovm.apple.coretext.*;
     public native NSArray<UIGestureRecognizer> getGestureRecognizers();
     /*</properties>*/
     /*<members>*//*</members>*/
+    
+    /* SpriteKit extensions */
+    public CGPoint getLocationInNode(SKNode node) {
+        return org.robovm.apple.spritekit.UITouchExtensions.getLocationInNode(this, node);
+    }
+    public CGPoint getPreviousLocationInNode(SKNode node) {
+        return org.robovm.apple.spritekit.UITouchExtensions.getPreviousLocationInNode(this, node);
+    }
+    
     /*<methods>*/
     @Method(selector = "locationInView:")
     public native @ByVal CGPoint getLocation(UIView view);

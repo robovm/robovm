@@ -1,5 +1,5 @@
 package: org.robovm.apple.foundation
-include: [corefoundation.yaml, uikit.yaml, coregraphics.yaml, security.yaml]
+include: [corefoundation.yaml, uikit.yaml, coreanimation.yaml, coregraphics.yaml, coremedia.yaml, security.yaml]
 library: Foundation
 framework: Foundation
 path_match: ^.*/usr/include/objc/.*$

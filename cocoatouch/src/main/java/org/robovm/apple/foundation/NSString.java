@@ -29,6 +29,7 @@ import org.robovm.rt.bro.ptr.*;
 import org.robovm.apple.corefoundation.*;
 import org.robovm.apple.uikit.*;
 import org.robovm.apple.coregraphics.*;
+import org.robovm.apple.coremedia.*;
 import org.robovm.apple.security.*;
 /*</imports>*/
 
@@ -136,6 +137,127 @@ import org.robovm.apple.security.*;
     @Bridge protected static native @MachineSizedUInt long length(@Pointer long handle, Selector sel);
     @Bridge protected static native void getCharacters$range$(@Pointer long handle, Selector sel, @Pointer long buffer, @ByVal NSRange aRange);
 
+    /* UIKit extensions */
+    /**
+     * @since Available in iOS 2.0 and later.
+     * @deprecated Deprecated in iOS 7.0.
+     */
+    @Deprecated
+    public CGSize getSize(UIFont font) {
+        return NSStringExtensions.getSize(this, font);
+    }
+    /**
+     * @since Available in iOS 2.0 and later.
+     * @deprecated Deprecated in iOS 7.0.
+     */
+    @Deprecated
+    public CGSize getSize(UIFont font, @MachineSizedFloat double width, NSLineBreakMode lineBreakMode) {
+        return NSStringExtensions.getSize(this, font, width, lineBreakMode);
+    }
+    /**
+     * @since Available in iOS 2.0 and later.
+     * @deprecated Deprecated in iOS 7.0.
+     */
+    @Deprecated
+    public CGSize draw(CGPoint point, UIFont font) {
+        return NSStringExtensions.draw(this, point, font);
+    }
+    /**
+     * @since Available in iOS 2.0 and later.
+     * @deprecated Deprecated in iOS 7.0.
+     */
+    @Deprecated
+    public CGSize draw(CGPoint point, @MachineSizedFloat double width, UIFont font, NSLineBreakMode lineBreakMode) {
+        return NSStringExtensions.draw(this, point, width, font, lineBreakMode);
+    }
+    /**
+     * @since Available in iOS 2.0 and later.
+     * @deprecated Deprecated in iOS 7.0.
+     */
+    @Deprecated
+    public CGSize getSize(UIFont font, @ByVal CGSize size) {
+        return NSStringExtensions.getSize(this, font, size);
+    }
+    /**
+     * @since Available in iOS 2.0 and later.
+     * @deprecated Deprecated in iOS 7.0.
+     */
+    @Deprecated
+    public CGSize getSize(UIFont font, @ByVal CGSize size, NSLineBreakMode lineBreakMode) {
+        return NSStringExtensions.getSize(this, font, size, lineBreakMode);
+    }
+    /**
+     * @since Available in iOS 2.0 and later.
+     * @deprecated Deprecated in iOS 7.0.
+     */
+    @Deprecated
+    public CGSize draw(@ByVal CGRect rect, UIFont font) {
+        return NSStringExtensions.draw(this, rect, font);
+    }
+    /**
+     * @since Available in iOS 2.0 and later.
+     * @deprecated Deprecated in iOS 7.0.
+     */
+    @Deprecated
+    public CGSize draw(NSString thiz, @ByVal CGRect rect, UIFont font, NSLineBreakMode lineBreakMode) {
+        return NSStringExtensions.draw(this, rect, font, lineBreakMode);
+    }
+    /**
+     * @since Available in iOS 2.0 and later.
+     * @deprecated Deprecated in iOS 7.0.
+     */
+    @Deprecated
+    public CGSize draw(CGRect rect, UIFont font, NSLineBreakMode lineBreakMode, NSTextAlignment alignment) {
+        return NSStringExtensions.draw(this, rect, font, lineBreakMode, alignment);
+    }
+    /**
+     * @since Available in iOS 2.0 and later.
+     * @deprecated Deprecated in iOS 7.0.
+     */
+    @Deprecated
+    public CGSize getSize(UIFont font, @MachineSizedFloat double minFontSize, @MachineSizedFloat double width, NSLineBreakMode lineBreakMode) {
+        return NSStringExtensions.getSize(this, font, minFontSize, null, width, lineBreakMode);
+    }
+    /**
+     * @since Available in iOS 2.0 and later.
+     * @deprecated Deprecated in iOS 7.0.
+     */
+    @Deprecated
+    public CGSize draw(CGPoint point, @MachineSizedFloat double width, UIFont font, @MachineSizedFloat double fontSize, NSLineBreakMode lineBreakMode, UIBaselineAdjustment baselineAdjustment) {
+        return NSStringExtensions.draw(this, point, width, font, fontSize, lineBreakMode, baselineAdjustment);
+    }
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
+    public CGSize getSize(NSAttributedStringAttributes attrs) {
+        return NSStringExtensions.getSize(this, attrs);
+    }
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
+    public void draw(CGPoint point, NSAttributedStringAttributes attrs) {
+        NSStringExtensions.draw(this, point, attrs);
+    }
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
+    public void draw(CGRect rect, NSAttributedStringAttributes attrs) {
+        NSStringExtensions.draw(this, rect, attrs);
+    }
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
+    public void draw(CGRect rect, NSStringDrawingOptions options, NSAttributedStringAttributes attributes, NSStringDrawingContext context) {
+        NSStringExtensions.draw(this, rect, options, attributes, context);
+    }
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
+    public CGRect getBoundingRect(CGSize size, NSStringDrawingOptions options, NSAttributedStringAttributes attributes, NSStringDrawingContext context) {
+        return NSStringExtensions.getBoundingRect(this, size, options, attributes, context);
+    }
+
+    
     /*<methods>*/
     @Method(selector = "length")
     protected native @MachineSizedUInt long length();

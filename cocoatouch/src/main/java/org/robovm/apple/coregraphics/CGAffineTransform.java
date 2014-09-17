@@ -28,6 +28,7 @@ import org.robovm.rt.bro.annotation.*;
 import org.robovm.rt.bro.ptr.*;
 import org.robovm.apple.corefoundation.*;
 import org.robovm.apple.foundation.*;
+import org.robovm.apple.uikit.*;
 /*</imports>*/
 
 /*<javadoc>*/
@@ -68,9 +69,18 @@ import org.robovm.apple.foundation.*;
     @StructMember(5) public native CGAffineTransform ty(@MachineSizedFloat double ty);
     /*</members>*/
     
+    public static CGAffineTransform fromString(String string) {
+        return UIGeometry.stringToCGAffineTransform(string);
+    }
+    
     @Override
     public boolean equals(Object obj) {
         return obj instanceof CGAffineTransform && equalToTransform(this, (CGAffineTransform) obj);
+    }
+    
+    @Override
+    public String toString() {
+        return UIGeometry.toString(this);
     }
     
     /*<methods>*/

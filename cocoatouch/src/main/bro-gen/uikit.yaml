@@ -199,7 +199,7 @@ categories:
                 name: loadNib
                 parameters:
                     options:
-                        type: "NSDictionary<NSString, ?>"
+                        type: UINibLoadingOptions
 
     NSCoder: # DONE
         methods:
@@ -646,7 +646,7 @@ classes:
     UIBarButtonItem: # DONE
         properties:
             '(action|target)':
-                exclude: true
+                visibility: protected
             'possibleTitles':
                 type: "NSArray<NSString>"
         methods:
@@ -3867,6 +3867,14 @@ values:
         class: UIScrollView
         name: "#{g[0]}"
 
+    # UINib
+    UINib(ExternalObjects):
+        class: UINibLoadingOptions
+        name: "#{g[0]}Key"
+        type: NSString
+        visibility: protected
+
+    # UIPasteboard
     UI(PasteboardType.*):
         name: "#{g[0]}"
         readonly: true
@@ -3875,6 +3883,8 @@ values:
     UI(PrintErrorDomain):
         name: "#{g[0]}"
 
+    UINibProxiedObjectsKey:
+        exclude: true
     UIApplicationInvalidInterfaceOrientationException:
         exclude: true
     UIViewControllerHierarchyInconsistencyException:

@@ -28,6 +28,7 @@ import org.robovm.rt.bro.annotation.*;
 import org.robovm.rt.bro.ptr.*;
 import org.robovm.apple.corefoundation.*;
 import org.robovm.apple.foundation.*;
+import org.robovm.apple.uikit.*;
 /*</imports>*/
 
 /*<javadoc>*/
@@ -62,6 +63,10 @@ import org.robovm.apple.foundation.*;
     @StructMember(1) public native CGRect size(@ByVal CGSize size);
     /*</members>*/
     
+    public static CGRect fromString(String string) {
+        return UIGeometry.stringToCGRect(string);
+    }
+    
     public static CGRect fromDictionary(NSDictionary<NSString, NSNumber> dict) {
         CGRect r = new CGRect();
         if (!fromDictionary(dict, r)) {
@@ -73,6 +78,11 @@ import org.robovm.apple.foundation.*;
     @Override
     public boolean equals(Object obj) {
         return obj instanceof CGRect && equalToRect(this, (CGRect) obj);
+    }
+    
+    @Override
+    public String toString() {
+        return UIGeometry.toString(this);
     }
     
     /*<methods>*/

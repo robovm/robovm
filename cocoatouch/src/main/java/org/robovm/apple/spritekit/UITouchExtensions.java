@@ -55,8 +55,8 @@ import org.robovm.apple.avfoundation.*;
     /*<members>*//*</members>*/
     /*<methods>*/
     @Method(selector = "locationInNode:")
-    public static native @ByVal CGPoint locationInNode(UITouch thiz, SKNode node);
+    public static native @ByVal CGPoint getLocationInNode(UITouch thiz, SKNode node);
     @Method(selector = "previousLocationInNode:")
-    public static native @ByVal CGPoint previousLocationInNode(UITouch thiz, SKNode node);
+    public static native @ByVal CGPoint getPreviousLocationInNode(UITouch thiz, SKNode node);
     /*</methods>*/
 }

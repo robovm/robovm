@@ -1,5 +1,5 @@
 package: org.robovm.apple.dispatch
-library: dispatch
+library: System
 default_class: Dispatch
 header: /usr/include/dispatch/dispatch.h
 path_match: ^.*/usr/include/dispatch/.*$

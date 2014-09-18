@@ -44,59 +44,16 @@ import org.robovm.apple.coretext.*;
     /*<ptr>*/
     /*</ptr>*/
     /*<bind>*/static { Bro.bind(UIKit.class); }/*</bind>*/
-    /*<constants>*/
-    public static final int SegmentedControlNoSegment = -1;
-    public static final int AttachmentCharacter = 65532;
-    /*</constants>*/
+    /*<constants>*//*</constants>*/
     /*<constructors>*//*</constructors>*/
     /*<properties>*//*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
     /**
-     * @since Available in iOS 7.0 and later.
-     */
-    @GlobalValue(symbol="UIFontFeatureTypeIdentifierKey", optional=true)
-    public static native String Value__UIFontFeatureTypeIdentifierKey();
-    /**
-     * @since Available in iOS 7.0 and later.
-     */
-    @GlobalValue(symbol="UIFontFeatureSelectorIdentifierKey", optional=true)
-    public static native String Value__UIFontFeatureSelectorIdentifierKey();
-    /**
-     * @since Available in iOS 6.0 and later.
-     */
-    @GlobalValue(symbol="UIViewNoIntrinsicMetric", optional=true)
-    public static native @MachineSizedFloat double Value__UIViewNoIntrinsicMetric();
-    /**
-     * @since Available in iOS 6.0 and later.
-     */
-    @GlobalValue(symbol="UILayoutFittingCompressedSize", optional=true)
-    public static native @ByVal CGSize Value__UILayoutFittingCompressedSize();
-    /**
-     * @since Available in iOS 6.0 and later.
-     */
-    @GlobalValue(symbol="UILayoutFittingExpandedSize", optional=true)
-    public static native @ByVal CGSize Value__UILayoutFittingExpandedSize();
-    /**
-     * @since Available in iOS 3.0 and later.
-     */
-    @GlobalValue(symbol="UITableViewIndexSearch", optional=true)
-    public static native String Value__UITableViewIndexSearch();
-    /**
-     * @since Available in iOS 5.0 and later.
-     */
-    @GlobalValue(symbol="UITableViewAutomaticDimension", optional=true)
-    public static native @MachineSizedFloat double Value__UITableViewAutomaticDimension();
-    /**
      * @since Available in iOS 4.0 and later.
      */
     @GlobalValue(symbol="UIBackgroundTaskInvalid", optional=true)
     public static native @MachineSizedUInt long Value__UIBackgroundTaskInvalid();
-    /**
-     * @since Available in iOS 4.0 and later.
-     */
-    @GlobalValue(symbol="UIMinimumKeepAliveTimeout", optional=true)
-    public static native double Value__UIMinimumKeepAliveTimeout();
     @GlobalValue(symbol="UITrackingRunLoopMode", optional=true)
     public static native String Value__UITrackingRunLoopMode();
     /**
@@ -133,13 +90,6 @@ import org.robovm.apple.coretext.*;
      */
     @GlobalValue(symbol="UIDocumentStateChangedNotification", optional=true)
     public static native String Value__UIDocumentStateChangedNotification();
-    @GlobalValue(symbol="UINavigationControllerHideShowBarDuration", optional=true)
-    public static native @MachineSizedFloat double Value__UINavigationControllerHideShowBarDuration();
-    /**
-     * @since Available in iOS 4.0 and later.
-     */
-    @GlobalValue(symbol="UILocalNotificationDefaultSoundName", optional=true)
-    public static native String Value__UILocalNotificationDefaultSoundName();
     @GlobalValue(symbol="UIPasteboardNameGeneral", optional=true)
     public static native String Value__UIPasteboardNameGeneral();
     @GlobalValue(symbol="UIPasteboardNameFind", optional=true)
@@ -162,16 +112,6 @@ import org.robovm.apple.coretext.*;
     public static native NSArray<NSString> PasteboardTypeListColor();
     @GlobalValue(symbol="UIPrintErrorDomain", optional=true)
     public static native String PrintErrorDomain();
-    /**
-     * @since Available in iOS 7.0 and later.
-     */
-    @GlobalValue(symbol="UITransitionContextFromViewControllerKey", optional=true)
-    public static native String Value__UITransitionContextFromViewControllerKey();
-    /**
-     * @since Available in iOS 7.0 and later.
-     */
-    @GlobalValue(symbol="UITransitionContextToViewControllerKey", optional=true)
-    public static native String Value__UITransitionContextToViewControllerKey();
     
     /**
      * @since Available in iOS 6.0 and later.

@@ -231,6 +231,16 @@ import org.robovm.apple.coretext.*;
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
+    /**
+     * @since Available in iOS 3.0 and later.
+     */
+    @GlobalValue(symbol="UITableViewIndexSearch", optional=true)
+    public static native String IndexSearch();
+    /**
+     * @since Available in iOS 5.0 and later.
+     */
+    @GlobalValue(symbol="UITableViewAutomaticDimension", optional=true)
+    public static native @MachineSizedFloat double AutomaticDimension();
     @GlobalValue(symbol="UITableViewSelectionDidChangeNotification", optional=true)
     public static native NSString SelectionDidChangeNotification();
     

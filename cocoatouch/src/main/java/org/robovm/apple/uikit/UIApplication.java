@@ -349,6 +349,11 @@ import org.robovm.apple.coretext.*;
     
     /*<methods>*/
     /**
+     * @since Available in iOS 4.0 and later.
+     */
+    @GlobalValue(symbol="UIMinimumKeepAliveTimeout", optional=true)
+    public static native double MinimumKeepAliveTimeout();
+    /**
      * @since Available in iOS 7.0 and later.
      */
     @GlobalValue(symbol="UIApplicationBackgroundFetchIntervalMinimum", optional=true)

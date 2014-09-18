@@ -157,8 +157,14 @@ enums:
     UIWebViewNavigationType: {}
 
 categories:
-    CIColor: {exclude: true}
-    CIImage: {exclude: true}
+    CIColor:
+        methods:
+            '-init.*':
+                visibility: protected
+    CIImage:
+        methods:
+            '-init.*':
+                 visibility: protected
 
     NSAttributedString: # DONE
         methods:
@@ -2327,9 +2333,9 @@ classes:
             '-convertRect:toView:':
                 name: convertRectToView
             '-insertSubview:aboveSubview:':
-                name: 'insertSubviewAbove'
+                name: insertSubviewAbove
             '-insertSubview:belowSubview:':
-                name: 'insertSubviewBelow'
+                name: insertSubviewBelow
             '-isDescendantOfView:':
                 name: isDescendantOf
             '-drawRect:':
@@ -2370,6 +2376,9 @@ classes:
                 name: getIntrinsicContentSize
             '-systemLayoutSizeFittingSize:':
                 name: getSystemLayoutSizeFittingSize
+                parameters:
+                    targetSize:
+                        type: UILayoutFittingSize
             '-translatesAutoresizingMaskIntoConstraints':
                 name: translatesAutoresizingMaskIntoConstraints
             '-viewForBaselineLayout':
@@ -3419,6 +3428,9 @@ protocols:
                 name: completeTransition
             '-viewControllerForKey:':
                 name: getViewController
+                parameters:
+                    key:
+                        type: UITransitionContextViewControllerType
             '-initialFrameForViewController:':
                 name: getInitialFrame
             '-finalFrameForViewController:':
@@ -3565,14 +3577,18 @@ functions:
     UIGraphics(BeginImageContext)WithOptions:
         class: UIGraphics
         name: "#{g[0]}"
+    UIGraphics(BeginPDFPage)WithInfo:
+        class: UIGraphics
+        name: "#{g[0]}"
+        parameters:
+            pageInfo:
+                type: CGPDFBoxOptions
     UIGraphics(.*):
         class: UIGraphics
         name: "#{g[0]}"
         parameters:
             documentInfo:
                 type: CGPDFContextOptions
-            pageInfo:
-                type: CGPDFBoxOptions
     UI(Rect.*):
         class: UIGraphics
         name: "#{g[0]}"
@@ -3671,136 +3687,6 @@ values:
         type: NSString
         visibility: protected
 
-    # UIApplication
-    UIApplicationLaunchOptions(.*Key):
-        class: UIApplicationLaunchOptions
-        name: "#{g[0]}"
-        type: NSString
-    UIApplication(.*Notification):
-        class: UIApplication
-        name: "#{g[0]}"
-        type: NSString
-    UIApplication(ProtectedDataDidBecomeAvailable|ProtectedDataWillBecomeUnavailable):
-        class: UIApplication
-        name: "#{g[0]}Notification"
-        type: NSString
-    UI(ContentSizeCategoryDidChangeNotification):
-        class: UIApplication
-        name: "#{g[0]}"
-        type: NSString
-    UIApplication(.*UserInfoKey):
-        class: UIApplication
-        name: "#{g[0]}"
-        type: NSString
-        visibility: protected
-    UI(ContentSizeCategoryNewValueKey):
-        class: UIApplication
-        name: "#{g[0]}"
-        type: NSString
-        visibility: protected
-    UIApplication(BackgroundFetchInterval.*):
-        class: UIApplication
-        name: "#{g[0]}"
-
-    # UIDevice
-    UIDevice(.*Notification):
-        class: UIDevice
-        name: "#{g[0]}"
-        type: NSString
-
-    # UIScreen
-    UIScreen(.*Notification):
-        class: UIScreen
-        name: "#{g[0]}"
-        type: NSString
-
-    # UIWindow
-    UIWindow(.*Notification):
-        class: UIWindow
-        name: "#{g[0]}"
-        type: NSString
-    UI(Keyboard.*Notification):
-        class: UIWindow
-        name: "#{g[0]}"
-        type: NSString
-    UIKeyboard(.*)UserInfoKey:
-        class: UIKeyboardAnimation
-        name: "#{g[0]}Key"
-        type: NSString
-        visibility: protected
-    UIWindow(Level.*):
-        class: UIWindowLevel
-        name: "#{g[0]}"
-        visibility: protected
-    
-    # UIFont
-    UIFontDescriptor(.*)Attribute:
-        class: UIFontDescriptorAttribute
-        name: "#{g[0]}Value"
-        type: NSString
-        visibility: protected
-    UIFontTextStyle(.*):
-        class: UIFontTextStyle
-        name: "#{g[0]}Value"
-        type: NSString
-        visibility: protected
-    UIFont(.*Trait):
-        class: UIFontDescriptorTraits
-        name: "#{g[0]}"
-        type: NSString
-        visibility: protected
-    
-    # UIPageViewController
-    UIPageViewControllerOption(.*Key):
-        class: UIPageViewControllerOptions
-        name: "#{g[0]}"
-        type: NSString
-        visiblity: protected
-
-    # UIMenuController
-    UIMenuController(.*Notification):
-        class: UIMenuController
-        name: "#{g[0]}"
-        type: NSString
-
-    # UIImagePickerController
-    UIImagePickerController(.*):
-        class: UIImagePickerControllerEditingInfo
-        name: "#{g[0]}Key"
-        type: NSString
-        visibility: protected
-
-    # UITableView
-    UITableView(.*Notification):
-        class: UITableView
-        name: "#{g[0]}"
-        type: NSString
-    
-    # UITextInput
-    UITextInputText(.*Key):
-        class: UITextInputTextStyle
-        name: "#{g[0]}"
-        type: NSString
-        visibility: protected
-
-    # UITextInputMode
-    UITextInput(.*)Notification:
-        class: UITextInputMode
-        name: "#{g[0]}"
-        type: NSString
-
-    # UITextField
-    UITextFieldText(.*Notification):
-        class: UITextField
-        name: "#{g[0]}"
-        type: NSString
-
-    # UITextView
-    UITextViewText(.*Notification):
-        class: UITextView
-        name: "#{g[0]}"
-        type: NSString
-
     # UIAccessibility
     UIAccessibility(ScreenChanged|LayoutChanged|Announcement|PageScrolled)Notification:
         class: UIAccessibilityNotification
@@ -3835,31 +3721,105 @@ values:
     UIActivityType(.*):
         class: UIActivityType
         name: "#{g[0]}"
-    
+
+    # UIApplication
+    UIApplicationLaunchOptions(.*Key):
+        class: UIApplicationLaunchOptions
+        name: "#{g[0]}"
+        type: NSString
+    UIApplication(.*Notification):
+        class: UIApplication
+        name: "#{g[0]}"
+        type: NSString
+    UIApplication(ProtectedDataDidBecomeAvailable|ProtectedDataWillBecomeUnavailable):
+        class: UIApplication
+        name: "#{g[0]}Notification"
+        type: NSString
+    UI(ContentSizeCategoryDidChangeNotification):
+        class: UIApplication
+        name: "#{g[0]}"
+        type: NSString
+    UIApplication(.*UserInfoKey):
+        class: UIApplication
+        name: "#{g[0]}"
+        type: NSString
+        visibility: protected
+    UI(ContentSizeCategoryNewValueKey):
+        class: UIApplication
+        name: "#{g[0]}"
+        type: NSString
+        visibility: protected
     UIContentSizeCategory(.*):
         class: UIContentSizeCategory
         name: "#{g[0]}Value"
         visibility: protected
         type: NSString
+    UIApplication(BackgroundFetchInterval.*):
+        class: UIApplication
+        name: "#{g[0]}"
+    UI(MinimumKeepAliveTimeout):
+        class: UIApplication
+        name: "#{g[0]}"
+
+    # UIDevice
+    UIDevice(.*Notification):
+        class: UIDevice
+        name: "#{g[0]}"
+        type: NSString
+    
+    # UIEdgeInsets
+    UIEdgeInsets(Zero):
+        class: UIEdgeInsets
+        name: "#{g[0]}"
+
+    # UIFont
+    UIFontDescriptor(.*)Attribute:
+        class: UIFontDescriptorAttribute
+        name: "#{g[0]}Value"
+        type: NSString
+        visibility: protected
+    UIFontFeature(.*IdentifierKey):
+        class: UIFontDescriptorAttributes
+        name: "#{g[0]}"
+        type: NSString
+        visibility: protected
+    UIFontTextStyle(.*):
+        class: UIFontTextStyle
+        name: "#{g[0]}Value"
+        type: NSString
+        visibility: protected
+    UIFont(.*Trait):
+        class: UIFontDescriptorTraits
+        name: "#{g[0]}"
+        type: NSString
+        visibility: protected
+
+    # UIImagePickerController
+    UIImagePickerController(.*):
+        class: UIImagePickerControllerEditingInfo
+        name: "#{g[0]}Key"
+        type: NSString
+        visibility: protected
 
     # UIKeyCommand
     UIKeyInput(.*):
         class: UIKeyCommand
         name: "#{g[0]}"
 
-    # UIEdgeInsets
-    UIEdgeInsets(Zero):
-        class: UIEdgeInsets
+    # UILocalNotification
+    UILocalNotification(DefaultSoundName):
+        class: UILocalNotification
         name: "#{g[0]}"
 
-    # UIOffset
-    UIOffset(Zero):
-        class: UIOffset
+    # UIMenuController
+    UIMenuController(.*Notification):
+        class: UIMenuController
         name: "#{g[0]}"
+        type: NSString
 
-    # UIScrollView
-    UIScrollView(DecelerationRate.*):
-        class: UIScrollView
+    # UINavigationController
+    UINavigationController(HideShowBarDuration):
+        class: UINavigationController
         name: "#{g[0]}"
 
     # UINib
@@ -3869,11 +3829,106 @@ values:
         type: NSString
         visibility: protected
 
+    # UIOffset
+    UIOffset(Zero):
+        class: UIOffset
+        name: "#{g[0]}"
+
+    # UIPageViewController
+    UIPageViewControllerOption(.*Key):
+        class: UIPageViewControllerOptions
+        name: "#{g[0]}"
+        type: NSString
+        visiblity: protected
+
     # UIPasteboard
     UI(PasteboardType.*):
         name: "#{g[0]}"
         readonly: true
         type: "NSArray<NSString>"
+
+    # UIScreen
+    UIScreen(.*Notification):
+        class: UIScreen
+        name: "#{g[0]}"
+        type: NSString
+
+    # UIScrollView
+    UIScrollView(DecelerationRate.*):
+        class: UIScrollView
+        name: "#{g[0]}"
+
+    # UITableView
+    UITableView(.*Notification):
+        class: UITableView
+        name: "#{g[0]}"
+        type: NSString
+    UITableView(AutomaticDimension):
+        class: UITableView
+        name: "#{g[0]}"
+    UITableView(IndexSearch):
+        class: UITableView
+        name: "#{g[0]}"
+
+    # UITextField
+    UITextFieldText(.*Notification):
+        class: UITextField
+        name: "#{g[0]}"
+        type: NSString
+
+    # UITextInput
+    UITextInputText(.*Key):
+        class: UITextInputTextStyle
+        name: "#{g[0]}"
+        type: NSString
+        visibility: protected
+
+    # UITextInputMode
+    UITextInput(.*)Notification:
+        class: UITextInputMode
+        name: "#{g[0]}"
+        type: NSString
+
+    # UITextView
+    UITextViewText(.*Notification):
+        class: UITextView
+        name: "#{g[0]}"
+        type: NSString
+
+    # UIView
+    UIView(NoIntrinsicMetric):
+        class: UIView
+        name: "#{g[0]}"
+    UILayoutFitting(.*)Size:
+        class: UILayoutFittingSize
+        name: "#{g[0]}Value"
+        visibility: protected
+
+    # UIViewControllerContextTransitioning
+    UITransitionContext(.*ViewControllerKey):
+        class: UITransitionContextViewControllerType
+        name: "#{g[0]}"
+        type: NSString
+        visibility: protected
+
+    # UIWindow
+    UIWindow(.*Notification):
+        class: UIWindow
+        name: "#{g[0]}"
+        type: NSString
+    UI(Keyboard.*Notification):
+        class: UIWindow
+        name: "#{g[0]}"
+        type: NSString
+    UIKeyboard(.*)UserInfoKey:
+        class: UIKeyboardAnimation
+        name: "#{g[0]}Key"
+        type: NSString
+        visibility: protected
+    UIWindow(Level.*):
+        class: UIWindowLevel
+        name: "#{g[0]}"
+        visibility: protected
 
     UI(PrintErrorDomain):
         name: "#{g[0]}"
@@ -3894,15 +3949,13 @@ values:
         name: "Value__#{g[0]}"
 
 constants:
-
     NS(AttachmentCharacter):
+        class: NSTextAttachment
         name: "#{g[0]}"
+        type: char
 
-    UI(LayoutPriority.*):
-        name: "#{g[0]}"
-        type: float
-
-    UI(SegmentedControlNoSegment):
+    UISegmentedControl(NoSegment):
+        class: UISegmentedControl
         name: "#{g[0]}"
 
     # Make sure we don't miss any constants if new ones are introduced in a later UIKit

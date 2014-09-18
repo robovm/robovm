@@ -216,6 +216,12 @@ import org.robovm.apple.coretext.*;
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
+    /**
+     * @since Available in iOS 6.0 and later.
+     */
+    @GlobalValue(symbol="UIViewNoIntrinsicMetric", optional=true)
+    public static native @MachineSizedFloat double NoIntrinsicMetric();
+    
     @Method(selector = "initWithFrame:")
     protected native @Pointer long initWithFrame$(@ByVal CGRect frame);
     @Method(selector = "layerClass")
@@ -504,7 +510,7 @@ import org.robovm.apple.coretext.*;
      * @since Available in iOS 6.0 and later.
      */
     @Method(selector = "systemLayoutSizeFittingSize:")
-    public native @ByVal CGSize getSystemLayoutSizeFittingSize(@ByVal CGSize targetSize);
+    public native @ByVal CGSize getSystemLayoutSizeFittingSize(UILayoutFittingSize targetSize);
     /**
      * @since Available in iOS 6.0 and later.
      */

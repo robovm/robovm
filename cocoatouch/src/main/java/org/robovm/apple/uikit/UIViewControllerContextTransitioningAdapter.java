@@ -71,7 +71,7 @@ import org.robovm.apple.coretext.*;
     @NotImplemented("completeTransition:")
     public void completeTransition(boolean didComplete) { throw new UnsupportedOperationException(); }
     @NotImplemented("viewControllerForKey:")
-    public UIViewController getViewController(String key) { throw new UnsupportedOperationException(); }
+    public UIViewController getViewController(UITransitionContextViewControllerType key) { throw new UnsupportedOperationException(); }
     @NotImplemented("initialFrameForViewController:")
     public @ByVal CGRect getInitialFrame(UIViewController vc) { throw new UnsupportedOperationException(); }
     @NotImplemented("finalFrameForViewController:")

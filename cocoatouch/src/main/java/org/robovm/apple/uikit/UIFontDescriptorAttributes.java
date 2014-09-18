@@ -19,7 +19,6 @@ package org.robovm.apple.uikit;
 import java.io.*;
 import java.nio.*;
 import java.util.*;
-
 import org.robovm.objc.*;
 import org.robovm.objc.annotation.*;
 import org.robovm.objc.block.*;
@@ -27,9 +26,12 @@ import org.robovm.rt.*;
 import org.robovm.rt.bro.*;
 import org.robovm.rt.bro.annotation.*;
 import org.robovm.rt.bro.ptr.*;
-import org.robovm.apple.coregraphics.CGAffineTransform;
 import org.robovm.apple.foundation.*;
-import org.robovm.apple.uikit.*;
+import org.robovm.apple.coreanimation.*;
+import org.robovm.apple.coregraphics.*;
+import org.robovm.apple.coredata.*;
+import org.robovm.apple.coreimage.*;
+import org.robovm.apple.coretext.*;
 /*</imports>*/
 
 /*<javadoc>*/
@@ -281,7 +283,18 @@ import org.robovm.apple.uikit.*;
     public void setTextStyle(UIFontTextStyle textStyle) {
         put(UIFontDescriptorAttribute.TextStyle, textStyle.value());
     }
-    
+    /*<methods>*/
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
+    @GlobalValue(symbol="UIFontFeatureTypeIdentifierKey", optional=true)
+    protected static native NSString TypeIdentifierKey();
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
+    @GlobalValue(symbol="UIFontFeatureSelectorIdentifierKey", optional=true)
+    protected static native NSString SelectorIdentifierKey();
+    /*</methods>*/
     @Override
     public String toString() {
         if (data != null) return data.toString();

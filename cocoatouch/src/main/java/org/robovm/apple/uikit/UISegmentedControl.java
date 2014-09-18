@@ -46,7 +46,9 @@ import org.robovm.apple.coretext.*;
 
     /*<ptr>*/public static class UISegmentedControlPtr extends Ptr<UISegmentedControl, UISegmentedControlPtr> {}/*</ptr>*/
     /*<bind>*/static { ObjCRuntime.bind(UISegmentedControl.class); }/*</bind>*/
-    /*<constants>*//*</constants>*/
+    /*<constants>*/
+    public static final int NoSegment = -1;
+    /*</constants>*/
     /*<constructors>*/
     public UISegmentedControl() {}
     protected UISegmentedControl(SkipInit skipInit) { super(skipInit); }

@@ -69,7 +69,7 @@ import org.robovm.apple.coretext.*;
     @Method(selector = "completeTransition:")
     void completeTransition(boolean didComplete);
     @Method(selector = "viewControllerForKey:")
-    UIViewController getViewController(String key);
+    UIViewController getViewController(UITransitionContextViewControllerType key);
     @Method(selector = "initialFrameForViewController:")
     @ByVal CGRect getInitialFrame(UIViewController vc);
     @Method(selector = "finalFrameForViewController:")

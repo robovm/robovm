@@ -19,6 +19,7 @@ package org.robovm.apple.coreimage;
 import java.io.*;
 import java.nio.*;
 import java.util.*;
+
 import org.robovm.objc.*;
 import org.robovm.objc.annotation.*;
 import org.robovm.objc.block.*;
@@ -30,6 +31,7 @@ import org.robovm.apple.coregraphics.*;
 import org.robovm.apple.foundation.*;
 import org.robovm.apple.opengles.*;
 /*</imports>*/
+import org.robovm.apple.uikit.CIColorExtensions;
 
 /*<javadoc>*/
 
@@ -71,6 +73,10 @@ import org.robovm.apple.opengles.*;
         return components().toFloatArray((int) getNumberOfComponents());
     }
 
+    /* UIKit extensions */
+    public static CIColor fromUIColor(org.robovm.apple.uikit.UIColor color) {
+        return CIColorExtensions.create(color);
+    }
     
     /*<methods>*/
     @Method(selector = "initWithCGColor:")

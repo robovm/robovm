@@ -57,11 +57,11 @@ import org.robovm.apple.coretext.*;
      * @since Available in iOS 5.0 and later.
      */
     @Method(selector = "initWithImage:")
-    protected static native NSObject initWithImage$(CIImage thiz, UIImage image);
+    protected static native @Pointer long initWithImage$(CIImage thiz, UIImage image);
     /**
      * @since Available in iOS 5.0 and later.
      */
     @Method(selector = "initWithImage:options:")
-    protected static native NSObject initWithImage$options$(CIImage thiz, UIImage image, NSDictionary<?, ?> options);
+    protected static native @Pointer long initWithImage$options$(CIImage thiz, UIImage image, NSDictionary<?, ?> options);
     /*</methods>*/
 }

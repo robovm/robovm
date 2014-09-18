@@ -128,7 +128,7 @@ import org.robovm.apple.coretext.*;
     @Method(selector = "generalPasteboard")
     public static native UIPasteboard getGeneral();
     @Method(selector = "pasteboardWithName:create:")
-    public static native UIPasteboard createFromName(String pasteboardName, boolean create);
+    public static native UIPasteboard create(String pasteboardName, boolean create);
     @Method(selector = "pasteboardWithUniqueName")
     public static native UIPasteboard getUnique();
     @Method(selector = "removePasteboardWithName:")

@@ -57,7 +57,7 @@ import org.robovm.apple.coretext.*;
     /*<members>*//*</members>*/
     /*<methods>*/
     @Method(selector = "keyPathsAndRelativeValuesForViewerOffset:")
-    public native NSDictionary<?, ?> getKeyPathsAndRelativeValues(@ByVal UIOffset viewerOffset);
+    public native UIMotionEffectViewerOffsetValues getKeyPathsAndRelativeValues(@ByVal UIOffset viewerOffset);
     @Method(selector = "encodeWithCoder:")
     public native void encode(NSCoder aCoder);
     /*</methods>*/

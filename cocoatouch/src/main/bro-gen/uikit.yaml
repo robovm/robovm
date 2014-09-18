@@ -161,10 +161,12 @@ categories:
         methods:
             '-init.*':
                 visibility: protected
+                return_type: "@Pointer long"
     CIImage:
         methods:
             '-init.*':
                  visibility: protected
+                 return_type: "@Pointer long"
 
     NSAttributedString: # DONE
         methods:
@@ -175,7 +177,7 @@ categories:
                     options:
                         type: NSAttributedStringDocumentAttributes
             '+attributedStringWithAttachment:':
-                name: createWithAttachment
+                name: create
             '-boundingRectWithSize:options:context:':
                 name: getBoundingRect
             '-dataFromRange:documentAttributes:error:':
@@ -325,7 +327,7 @@ classes:
                 name: create
                 return_type: NSLayoutConstraint
             '+constraintsWithVisualFormat:options:metrics:views:':
-                name: createFromVisualFormat
+                name: create
                 return_type: "NSArray<NSLayoutConstraint>"
                 parameters:
                     metrics:
@@ -792,6 +794,9 @@ classes:
             '-dequeueReusableSupplementaryViewOfKind:withReuseIdentifier:forIndexPath:':
                 name: dequeueReusableSupplementaryView
                 return_type: UICollectionReusableView
+                parameters:
+                    elementKind:
+                        type: UICollectionElementKind
             '-deselectItemAtIndexPath:animated:':
                 name: deselectItem
             '-indexPathForCell:':
@@ -813,6 +818,9 @@ classes:
                 name: getLayoutAttributesForItem
             '-layoutAttributesForSupplementaryElementOfKind:atIndexPath:':
                 name: getLayoutAttributesForSupplementaryElement
+                parameters:
+                    kind:
+                        type: UICollectionElementKind
             '-moveItemAtIndexPath:toIndexPath:':
                 name: moveItem
             '-numberOfItemsInSection:':
@@ -823,10 +831,16 @@ classes:
                 name: registerReusableCellClass
             '-registerClass:forSupplementaryViewOfKind:withReuseIdentifier:':
                 name: registerReusableSupplementaryViewClass
+                parameters:
+                    elementKind:
+                        type: UICollectionElementKind
             '-registerNib:forCellWithReuseIdentifier:':
                 name: registerReusableCellNib
             '-registerNib:forSupplementaryViewOfKind:withReuseIdentifier:':
                 name: registerReusableSupplementaryViewNib
+                parameters:
+                    kind:
+                        type: UICollectionElementKind
             '-reloadItemsAtIndexPaths:':
                 name: reloadItems
                 parameters:
@@ -1044,27 +1058,27 @@ classes:
                 name: autoSave
             '-closeWithCompletionHandler:':
                 name: close
-            "-fileAttributesToWriteToURL:forSaveOperation:error:":
+            '-fileAttributesToWriteToURL:forSaveOperation:error:':
                 name: getFileAttributesToWrite
                 return_type: "NSDictionary<NSString, ?>"
-            "-fileNameExtensionForType:saveOperation:":
+            '-fileNameExtensionForType:saveOperation:':
                 name: getFileNameExtension
-            "-openWithCompletionHandler:":
+            '-openWithCompletionHandler:':
                 name: open
-            "-performAsynchronousFileAccessUsingBlock:":
+            '-performAsynchronousFileAccessUsingBlock:':
                 name: performAsynchronousFileAccess
-            "-readFromURL:error:":
+            '-readFromURL:error:':
                 name: read
-            "-revertToContentsOfURL:completionHandler:":
+            '-revertToContentsOfURL:completionHandler:':
                 name: revert
-            "-saveToURL:forSaveOperation:completionHandler:":
+            '-saveToURL:forSaveOperation:completionHandler:':
                 name: save
-            "-updateChangeCountWithToken:forSaveOperation:":
+            '-updateChangeCountWithToken:forSaveOperation:':
                 name: updateChangeCount
             '-loadFromContents:ofType:error:':
                 trim_after_first_colon: true
             '-contentsForType:error:':
-                trim_after_first_colon: true
+                name: getContentsForType
             '-updateChangeCount:':
                 trim_after_first_colon: true
             '-changeCountTokenForSaveOperation:':
@@ -1081,7 +1095,7 @@ classes:
             '-finishedHandlingError:recovered:':
                 trim_after_first_colon: true
             '-userInteractionNoLongerPermittedForError:':
-                trim_after_first_colon: true
+                name: userInteractionNoLongerPermitted
 
     UIDocumentInteractionController: # DONE
         properties:
@@ -1091,7 +1105,7 @@ classes:
                 type: "NSArray<UIGestureRecognizer>"
         methods:
             "+interactionControllerWithURL:":
-                name: createFromURL
+                name: create
             '-dismissMenuAnimated:':
                 name: dismissMenu
             '-dismissPreviewAnimated:':
@@ -1323,21 +1337,22 @@ classes:
             '+animatedResizableImageNamed:capInsets:resizingMode:duration:':
                 name: createAnimatedResizable
             '+imageNamed:':
-                name: createFromBundle
+                name: create
             '+imageWithContentsOfFile:':
                 name: createFromFile
+                visibility: protected
             '+imageWithCGImage:':
-                name: createFromImage
+                name: create
             '+imageWithCGImage:scale:orientation:':
-                name: createFromImage
+                name: create
             '+imageWithCIImage:':
-                name: createFromImage
+                name: create
             '+imageWithData:':
-                name: createFromData
+                name: create
             '+imageWithCIImage:scale:orientation:':
-                name: createFromImage
+                name: create
             '+imageWithData:scale:':
-                name: createFromData
+                name: create
             '-initWithContentsOfFile:':
                 constructor: false
             '-resizableImageWithCapInsets:':
@@ -1461,6 +1476,7 @@ classes:
         methods:
             '-keyPathsAndRelativeValuesForViewerOffset:':
                 name: getKeyPathsAndRelativeValues
+                return_type: UIMotionEffectViewerOffsetValues
     UIMotionEffectGroup: # DONE
         properties:
             'motionEffects':
@@ -1601,7 +1617,7 @@ classes:
             '+pasteboardWithUniqueName':
                 name: getUnique
             '+pasteboardWithName:create:':
-                name: createFromName
+                name: create
             '+removePasteboardWithName:':
                 name: remove
             '-pasteboardTypes':
@@ -3757,16 +3773,32 @@ values:
     UIApplication(BackgroundFetchInterval.*):
         class: UIApplication
         name: "#{g[0]}"
+    UI(BackgroundTaskInvalid):
+        class: UIApplication
+        name: "#{g[0]}"
     UI(MinimumKeepAliveTimeout):
         class: UIApplication
         name: "#{g[0]}"
+
+    # UICollectionView
+    UICollectionElementKind(.*):
+        class: UICollectionElementKind
+        name: "#{g[0]}Value"
+        visibility: protected
+        type: NSString
 
     # UIDevice
     UIDevice(.*Notification):
         class: UIDevice
         name: "#{g[0]}"
         type: NSString
-    
+
+    # UIDocument
+    UIDocument(.*Notification):
+        class: UIDocument
+        name: "#{g[0]}"
+        type: NSString
+
     # UIEdgeInsets
     UIEdgeInsets(Zero):
         class: UIEdgeInsets

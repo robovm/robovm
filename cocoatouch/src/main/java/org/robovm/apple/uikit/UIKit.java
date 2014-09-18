@@ -49,11 +49,6 @@ import org.robovm.apple.coretext.*;
     /*<properties>*//*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
-    /**
-     * @since Available in iOS 4.0 and later.
-     */
-    @GlobalValue(symbol="UIBackgroundTaskInvalid", optional=true)
-    public static native @MachineSizedUInt long Value__UIBackgroundTaskInvalid();
     @GlobalValue(symbol="UITrackingRunLoopMode", optional=true)
     public static native String Value__UITrackingRunLoopMode();
     /**
@@ -81,15 +76,6 @@ import org.robovm.apple.coretext.*;
      */
     @GlobalValue(symbol="UIApplicationStateRestorationSystemVersionKey", optional=true)
     public static native String Value__UIApplicationStateRestorationSystemVersionKey();
-    @GlobalValue(symbol="UICollectionElementKindSectionHeader", optional=true)
-    public static native String Value__UICollectionElementKindSectionHeader();
-    @GlobalValue(symbol="UICollectionElementKindSectionFooter", optional=true)
-    public static native String Value__UICollectionElementKindSectionFooter();
-    /**
-     * @since Available in iOS 5.0 and later.
-     */
-    @GlobalValue(symbol="UIDocumentStateChangedNotification", optional=true)
-    public static native String Value__UIDocumentStateChangedNotification();
     @GlobalValue(symbol="UIPasteboardNameGeneral", optional=true)
     public static native String Value__UIPasteboardNameGeneral();
     @GlobalValue(symbol="UIPasteboardNameFind", optional=true)

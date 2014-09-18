@@ -130,7 +130,7 @@ import org.robovm.apple.coretext.*;
      * @since Available in iOS 7.0 and later.
      */
     @Method(selector = "attributedStringWithAttachment:")
-    protected static native NSAttributedString createWithAttachment(ObjCClass clazz, NSTextAttachment attachment);
-    public static NSAttributedString createWithAttachment(NSTextAttachment attachment) { return createWithAttachment(ObjCClass.getByType(NSAttributedString.class), attachment); }
+    protected static native NSAttributedString create(ObjCClass clazz, NSTextAttachment attachment);
+    public static NSAttributedString create(NSTextAttachment attachment) { return create(ObjCClass.getByType(NSAttributedString.class), attachment); }
     /*</methods>*/
 }

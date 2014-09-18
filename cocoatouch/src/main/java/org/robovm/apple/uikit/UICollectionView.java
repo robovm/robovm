@@ -87,13 +87,13 @@ import org.robovm.apple.coretext.*;
     @Method(selector = "registerNib:forCellWithReuseIdentifier:")
     public native void registerReusableCellNib(UINib nib, String identifier);
     @Method(selector = "registerClass:forSupplementaryViewOfKind:withReuseIdentifier:")
-    public native void registerReusableSupplementaryViewClass(ObjCClass viewClass, String elementKind, String identifier);
+    public native void registerReusableSupplementaryViewClass(ObjCClass viewClass, UICollectionElementKind elementKind, String identifier);
     @Method(selector = "registerNib:forSupplementaryViewOfKind:withReuseIdentifier:")
-    public native void registerReusableSupplementaryViewNib(UINib nib, String kind, String identifier);
+    public native void registerReusableSupplementaryViewNib(UINib nib, UICollectionElementKind kind, String identifier);
     @Method(selector = "dequeueReusableCellWithReuseIdentifier:forIndexPath:")
     public native UICollectionReusableView dequeueReusableCell(String identifier, NSIndexPath indexPath);
     @Method(selector = "dequeueReusableSupplementaryViewOfKind:withReuseIdentifier:forIndexPath:")
-    public native UICollectionReusableView dequeueReusableSupplementaryView(String elementKind, String identifier, NSIndexPath indexPath);
+    public native UICollectionReusableView dequeueReusableSupplementaryView(UICollectionElementKind elementKind, String identifier, NSIndexPath indexPath);
     @Method(selector = "indexPathsForSelectedItems")
     public native NSArray<NSIndexPath> getIndexPathsForSelectedItems();
     @Method(selector = "selectItemAtIndexPath:animated:scrollPosition:")
@@ -131,7 +131,7 @@ import org.robovm.apple.coretext.*;
     @Method(selector = "layoutAttributesForItemAtIndexPath:")
     public native UICollectionViewLayoutAttributes getLayoutAttributesForItem(NSIndexPath indexPath);
     @Method(selector = "layoutAttributesForSupplementaryElementOfKind:atIndexPath:")
-    public native UICollectionViewLayoutAttributes getLayoutAttributesForSupplementaryElement(String kind, NSIndexPath indexPath);
+    public native UICollectionViewLayoutAttributes getLayoutAttributesForSupplementaryElement(UICollectionElementKind kind, NSIndexPath indexPath);
     @Method(selector = "indexPathForItemAtPoint:")
     public native NSIndexPath getIndexPathForItem(@ByVal CGPoint point);
     @Method(selector = "indexPathForCell:")

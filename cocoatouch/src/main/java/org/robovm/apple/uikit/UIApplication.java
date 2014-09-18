@@ -351,6 +351,11 @@ import org.robovm.apple.coretext.*;
     /**
      * @since Available in iOS 4.0 and later.
      */
+    @GlobalValue(symbol="UIBackgroundTaskInvalid", optional=true)
+    public static native @MachineSizedUInt long BackgroundTaskInvalid();
+    /**
+     * @since Available in iOS 4.0 and later.
+     */
     @GlobalValue(symbol="UIMinimumKeepAliveTimeout", optional=true)
     public static native double MinimumKeepAliveTimeout();
     /**

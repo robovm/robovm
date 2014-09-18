@@ -94,7 +94,7 @@ import org.robovm.apple.coretext.*;
     @Method(selector = "dismissMenuAnimated:")
     public native void dismissMenu(boolean animated);
     @Method(selector = "interactionControllerWithURL:")
-    public static native UIDocumentInteractionController createFromURL(NSURL url);
+    public static native UIDocumentInteractionController create(NSURL url);
     @Method(selector = "actionSheet:clickedButtonAtIndex:")
     public native void clicked(UIActionSheet actionSheet, @MachineSizedSInt long buttonIndex);
     @Method(selector = "actionSheetCancel:")

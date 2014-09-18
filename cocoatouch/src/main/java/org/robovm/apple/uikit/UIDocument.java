@@ -44,6 +44,19 @@ import org.robovm.apple.coretext.*;
     extends /*<extends>*/NSObject/*</extends>*/ 
     /*<implements>*/implements NSFilePresenter/*</implements>*/ {
 
+    public static class Notifications {
+        /**
+         * @since Available in iOS 5.0 and later.
+         */
+        public static NSObject observeStateChanged(UIDocument object, final VoidBlock1<UIDocument> block) {
+            return NSNotificationCenter.getDefaultCenter().addObserver(StateChangedNotification(), object, NSOperationQueue.getMainQueue(), new VoidBlock1<NSNotification>() {
+                @Override
+                public void invoke(NSNotification a) {
+                    block.invoke((UIDocument) a.getObject());
+                }
+            });
+        }
+    }
     /*<ptr>*/public static class UIDocumentPtr extends Ptr<UIDocument, UIDocumentPtr> {}/*</ptr>*/
     /*<bind>*/static { ObjCRuntime.bind(UIDocument.class); }/*</bind>*/
     /*<constants>*//*</constants>*/
@@ -76,6 +89,12 @@ import org.robovm.apple.coretext.*;
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
+    /**
+     * @since Available in iOS 5.0 and later.
+     */
+    @GlobalValue(symbol="UIDocumentStateChangedNotification", optional=true)
+    public static native NSString StateChangedNotification();
+    
     @Method(selector = "initWithFileURL:")
     protected native @Pointer long initWithFileURL$(NSURL url);
     @Method(selector = "openWithCompletionHandler:")
@@ -85,7 +104,7 @@ import org.robovm.apple.coretext.*;
     @Method(selector = "loadFromContents:ofType:error:")
     public native boolean loadFromContents(NSObject contents, String typeName, NSError.NSErrorPtr outError);
     @Method(selector = "contentsForType:error:")
-    public native NSObject contentsForType(String typeName, NSError.NSErrorPtr outError);
+    public native NSObject getContentsForType(String typeName, NSError.NSErrorPtr outError);
     @Method(selector = "disableEditing")
     public native void disableEditing();
     @Method(selector = "enableEditing")
@@ -121,7 +140,7 @@ import org.robovm.apple.coretext.*;
     @Method(selector = "finishedHandlingError:recovered:")
     public native void finishedHandlingError(NSError error, boolean recovered);
     @Method(selector = "userInteractionNoLongerPermittedForError:")
-    public native void userInteractionNoLongerPermittedForError(NSError error);
+    public native void userInteractionNoLongerPermitted(NSError error);
     @Method(selector = "revertToContentsOfURL:completionHandler:")
     public native void revert(NSURL url, @Block VoidBooleanBlock completionHandler);
     @Method(selector = "relinquishPresentedItemToReader:")

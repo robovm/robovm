@@ -52,11 +52,19 @@ import org.robovm.apple.coretext.*;
     
     /*</properties>*/
     /*<members>*//*</members>*/
+    /**
+     * @since Available in iOS 5.0 and later.
+     */
+    public static CIColor create(UIColor color) {
+        CIColor thiz = alloc(CIColor.class);
+        initObject(thiz, initWithColor$(thiz, color));
+        return thiz;
+    }
     /*<methods>*/
     /**
      * @since Available in iOS 5.0 and later.
      */
     @Method(selector = "initWithColor:")
-    protected static native NSObject initWithColor$(CIColor thiz, UIColor color);
+    protected static native @Pointer long initWithColor$(CIColor thiz, UIColor color);
     /*</methods>*/
 }

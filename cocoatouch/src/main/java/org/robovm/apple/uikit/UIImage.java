@@ -138,6 +138,9 @@ import org.robovm.apple.coretext.*;
     public native void setAccessibilityIdentifier(String v);
     /*</properties>*/
     /*<members>*//*</members>*/
+    public static UIImage create(File file) {
+        return createFromFile(file.getAbsolutePath());
+    }
     /*<methods>*/
     @Bridge(symbol="UIImagePNGRepresentation", optional=true)
     public native NSData toPNGData();
@@ -203,33 +206,33 @@ import org.robovm.apple.coretext.*;
     @Method(selector = "imageWithRenderingMode:")
     public native UIImage create(UIImageRenderingMode renderingMode);
     @Method(selector = "imageNamed:")
-    public static native UIImage createFromBundle(String name);
+    public static native UIImage create(String name);
     @Method(selector = "imageWithContentsOfFile:")
-    public static native UIImage createFromFile(String path);
+    protected static native UIImage createFromFile(String path);
     @Method(selector = "imageWithData:")
-    public static native UIImage createFromData(NSData data);
+    public static native UIImage create(NSData data);
     /**
      * @since Available in iOS 6.0 and later.
      */
     @Method(selector = "imageWithData:scale:")
-    public static native UIImage createFromData(NSData data, @MachineSizedFloat double scale);
+    public static native UIImage create(NSData data, @MachineSizedFloat double scale);
     @Method(selector = "imageWithCGImage:")
-    public static native UIImage createFromImage(CGImage cgImage);
+    public static native UIImage create(CGImage cgImage);
     /**
      * @since Available in iOS 4.0 and later.
      */
     @Method(selector = "imageWithCGImage:scale:orientation:")
-    public static native UIImage createFromImage(CGImage cgImage, @MachineSizedFloat double scale, UIImageOrientation orientation);
+    public static native UIImage create(CGImage cgImage, @MachineSizedFloat double scale, UIImageOrientation orientation);
     /**
      * @since Available in iOS 5.0 and later.
      */
     @Method(selector = "imageWithCIImage:")
-    public static native UIImage createFromImage(CIImage ciImage);
+    public static native UIImage create(CIImage ciImage);
     /**
      * @since Available in iOS 6.0 and later.
      */
     @Method(selector = "imageWithCIImage:scale:orientation:")
-    public static native UIImage createFromImage(CIImage ciImage, @MachineSizedFloat double scale, UIImageOrientation orientation);
+    public static native UIImage create(CIImage ciImage, @MachineSizedFloat double scale, UIImageOrientation orientation);
     /**
      * @since Available in iOS 5.0 and later.
      */

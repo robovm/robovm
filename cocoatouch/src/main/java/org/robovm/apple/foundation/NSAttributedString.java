@@ -28,6 +28,7 @@ import org.robovm.rt.bro.annotation.*;
 import org.robovm.rt.bro.ptr.*;
 import org.robovm.apple.corefoundation.*;
 import org.robovm.apple.uikit.*;
+import org.robovm.apple.coreanimation.*;
 import org.robovm.apple.coregraphics.*;
 import org.robovm.apple.coremedia.*;
 import org.robovm.apple.security.*;
@@ -171,7 +172,7 @@ import org.robovm.apple.security.*;
      * @since Available in iOS 7.0 and later.
      */
     public static NSAttributedString create(NSTextAttachment attachment) {
-        return NSAttributedStringExtensions.createWithAttachment(attachment);
+        return NSAttributedStringExtensions.create(attachment);
     }
     
     /*<methods>*/

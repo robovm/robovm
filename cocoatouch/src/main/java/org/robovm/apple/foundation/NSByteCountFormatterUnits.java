@@ -28,6 +28,7 @@ import org.robovm.rt.bro.annotation.*;
 import org.robovm.rt.bro.ptr.*;
 import org.robovm.apple.corefoundation.*;
 import org.robovm.apple.uikit.*;
+import org.robovm.apple.coreanimation.*;
 import org.robovm.apple.coregraphics.*;
 import org.robovm.apple.coremedia.*;
 import org.robovm.apple.security.*;
@@ -39,7 +40,6 @@ import org.robovm.apple.security.*;
 /*<annotations>*/@Marshaler(Bits.AsMachineSizedIntMarshaler.class)/*</annotations>*/
 public final class /*<name>*/NSByteCountFormatterUnits/*</name>*/ extends Bits</*<name>*/NSByteCountFormatterUnits/*</name>*/> {
     /*<values>*/
-    public static final NSByteCountFormatterUnits None = new NSByteCountFormatterUnits(0L);
     public static final NSByteCountFormatterUnits Default = new NSByteCountFormatterUnits(0L);
     public static final NSByteCountFormatterUnits Bytes = new NSByteCountFormatterUnits(1L);
     public static final NSByteCountFormatterUnits KB = new NSByteCountFormatterUnits(2L);

@@ -28,6 +28,7 @@ import org.robovm.rt.bro.annotation.*;
 import org.robovm.rt.bro.ptr.*;
 import org.robovm.apple.corefoundation.*;
 import org.robovm.apple.uikit.*;
+import org.robovm.apple.coreanimation.*;
 import org.robovm.apple.coregraphics.*;
 import org.robovm.apple.coremedia.*;
 import org.robovm.apple.security.*;
@@ -47,15 +48,35 @@ import org.robovm.apple.security.*;
     /*<constructors>*/
     public NSCalendar() {}
     protected NSCalendar(SkipInit skipInit) { super(skipInit); }
-    public NSCalendar(String ident) { super((SkipInit) null); initObject(initWithCalendarIdentifier$(ident)); }
+    public NSCalendar(NSCalendarIdentifier ident) { super((SkipInit) null); initObject(initWithCalendarIdentifier$(ident)); }
     /*</constructors>*/
     /*<properties>*/
     
     /*</properties>*/
     /*<members>*//*</members>*/
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
+    public NSDate getStartTime(NSCalendarUnit unit, NSDate date) {
+        NSDate.NSDatePtr ptr = new NSDate.NSDatePtr();
+        if (getRange(unit, ptr, new DoublePtr(), date)) {
+            return ptr.get();
+        }
+        return null;
+    }
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
+    public double getDuration(NSCalendarUnit unit, NSDate date) {
+        DoublePtr ptr = new DoublePtr();
+        if (getRange(unit, new NSDate.NSDatePtr(), ptr, date)) {
+            return ptr.get();
+        }
+        return 0;
+    }
     /*<methods>*/
     @Method(selector = "initWithCalendarIdentifier:")
-    protected native @Pointer long initWithCalendarIdentifier$(String ident);
+    protected native @Pointer long initWithCalendarIdentifier$(NSCalendarIdentifier ident);
     @Method(selector = "setLocale:")
     public native void setLocale(NSLocale locale);
     @Method(selector = "locale")
@@ -84,7 +105,7 @@ import org.robovm.apple.security.*;
      * @since Available in iOS 2.0 and later.
      */
     @Method(selector = "rangeOfUnit:startDate:interval:forDate:")
-    public native boolean getRange(NSCalendarUnit unit, NSDate.NSDatePtr datep, DoublePtr tip, NSDate date);
+    protected native boolean getRange(NSCalendarUnit unit, NSDate.NSDatePtr datep, DoublePtr tip, NSDate date);
     @Method(selector = "dateFromComponents:")
     public native NSDate newDateFromComponents(NSDateComponents comps);
     @Method(selector = "components:fromDate:")
@@ -94,11 +115,11 @@ import org.robovm.apple.security.*;
     @Method(selector = "components:fromDate:toDate:options:")
     public native NSDateComponents getComponents(NSCalendarUnit unitFlags, NSDate startingDate, NSDate resultDate, NSCalendarOptions opts);
     @Method(selector = "currentCalendar")
-    public static native NSObject getCurrentCalendar();
+    public static native NSCalendar getCurrentCalendar();
     /**
      * @since Available in iOS 2.0 and later.
      */
     @Method(selector = "autoupdatingCurrentCalendar")
-    public static native NSObject getAutoupdatingCurrentCalendar();
+    public static native NSCalendar getAutoupdatingCurrentCalendar();
     /*</methods>*/
 }

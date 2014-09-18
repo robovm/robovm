@@ -28,6 +28,7 @@ import org.robovm.rt.bro.annotation.*;
 import org.robovm.rt.bro.ptr.*;
 import org.robovm.apple.corefoundation.*;
 import org.robovm.apple.uikit.*;
+import org.robovm.apple.coreanimation.*;
 import org.robovm.apple.coregraphics.*;
 import org.robovm.apple.coremedia.*;
 import org.robovm.apple.security.*;
@@ -54,6 +55,22 @@ import org.robovm.apple.security.*;
     
     /*</properties>*/
     /*<members>*//*</members>*/
+    public NSObject get(String key) {
+        return get(new NSString(key));
+    }
+    
+    public void put(NSObject key, NSObject obj) {
+        setObject(obj, key);
+    }
+    public void put(String key, NSObject obj) {
+        setObject(obj, new NSString(key));
+    }
+    public void put(NSObject key, NSObject obj, @MachineSizedUInt long g) {
+        setObject(obj, key, g);
+    }
+    public void put(String key, NSObject obj, @MachineSizedUInt long g) {
+        setObject(obj, new NSString(key), g);
+    }
     /*<methods>*/
     @Method(selector = "setName:")
     public native void setName(String n);
@@ -64,15 +81,15 @@ import org.robovm.apple.security.*;
     @Method(selector = "delegate")
     public native NSCacheDelegate getDelegate();
     @Method(selector = "objectForKey:")
-    public native NSObject getObject(NSObject key);
+    public native NSObject get(NSObject key);
     @Method(selector = "setObject:forKey:")
-    public native void setObject(NSObject obj, NSObject key);
+    protected native void setObject(NSObject obj, NSObject key);
     @Method(selector = "setObject:forKey:cost:")
-    public native void setObject(NSObject obj, NSObject key, @MachineSizedUInt long g);
+    protected native void setObject(NSObject obj, NSObject key, @MachineSizedUInt long g);
     @Method(selector = "removeObjectForKey:")
-    public native void removeObject(NSObject key);
+    public native void remove(NSObject key);
     @Method(selector = "removeAllObjects")
-    public native void removeAllObjects();
+    public native void clear();
     @Method(selector = "setTotalCostLimit:")
     public native void setTotalCostLimit(@MachineSizedUInt long lim);
     @Method(selector = "totalCostLimit")

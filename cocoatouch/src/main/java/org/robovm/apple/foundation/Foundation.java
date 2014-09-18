@@ -28,6 +28,7 @@ import org.robovm.rt.bro.annotation.*;
 import org.robovm.rt.bro.ptr.*;
 import org.robovm.apple.corefoundation.*;
 import org.robovm.apple.uikit.*;
+import org.robovm.apple.coreanimation.*;
 import org.robovm.apple.coregraphics.*;
 import org.robovm.apple.coremedia.*;
 import org.robovm.apple.security.*;
@@ -224,76 +225,6 @@ import org.robovm.apple.security.*;
      */
     @GlobalValue(symbol="NSSystemClockDidChangeNotification", optional=true)
     public static native NSString SystemClockDidChangeNotification();
-    /**
-     * @since Available in iOS 4.0 and later.
-     */
-    @GlobalValue(symbol="NSCalendarIdentifierGregorian", optional=true)
-    public static native String CalendarIdentifierGregorian();
-    /**
-     * @since Available in iOS 4.0 and later.
-     */
-    @GlobalValue(symbol="NSCalendarIdentifierBuddhist", optional=true)
-    public static native String CalendarIdentifierBuddhist();
-    /**
-     * @since Available in iOS 4.0 and later.
-     */
-    @GlobalValue(symbol="NSCalendarIdentifierChinese", optional=true)
-    public static native String CalendarIdentifierChinese();
-    /**
-     * @since Available in iOS 4.0 and later.
-     */
-    @GlobalValue(symbol="NSCalendarIdentifierCoptic", optional=true)
-    public static native String CalendarIdentifierCoptic();
-    /**
-     * @since Available in iOS 4.0 and later.
-     */
-    @GlobalValue(symbol="NSCalendarIdentifierEthiopicAmeteMihret", optional=true)
-    public static native String CalendarIdentifierEthiopicAmeteMihret();
-    /**
-     * @since Available in iOS 4.0 and later.
-     */
-    @GlobalValue(symbol="NSCalendarIdentifierEthiopicAmeteAlem", optional=true)
-    public static native String CalendarIdentifierEthiopicAmeteAlem();
-    /**
-     * @since Available in iOS 4.0 and later.
-     */
-    @GlobalValue(symbol="NSCalendarIdentifierHebrew", optional=true)
-    public static native String CalendarIdentifierHebrew();
-    /**
-     * @since Available in iOS 4.0 and later.
-     */
-    @GlobalValue(symbol="NSCalendarIdentifierISO8601", optional=true)
-    public static native String CalendarIdentifierISO8601();
-    /**
-     * @since Available in iOS 4.0 and later.
-     */
-    @GlobalValue(symbol="NSCalendarIdentifierIndian", optional=true)
-    public static native String CalendarIdentifierIndian();
-    /**
-     * @since Available in iOS 4.0 and later.
-     */
-    @GlobalValue(symbol="NSCalendarIdentifierIslamic", optional=true)
-    public static native String CalendarIdentifierIslamic();
-    /**
-     * @since Available in iOS 4.0 and later.
-     */
-    @GlobalValue(symbol="NSCalendarIdentifierIslamicCivil", optional=true)
-    public static native String CalendarIdentifierIslamicCivil();
-    /**
-     * @since Available in iOS 4.0 and later.
-     */
-    @GlobalValue(symbol="NSCalendarIdentifierJapanese", optional=true)
-    public static native String CalendarIdentifierJapanese();
-    /**
-     * @since Available in iOS 4.0 and later.
-     */
-    @GlobalValue(symbol="NSCalendarIdentifierPersian", optional=true)
-    public static native String CalendarIdentifierPersian();
-    /**
-     * @since Available in iOS 4.0 and later.
-     */
-    @GlobalValue(symbol="NSCalendarIdentifierRepublicOfChina", optional=true)
-    public static native String CalendarIdentifierRepublicOfChina();
     /**
      * @since Available in iOS 7.0 and later.
      */

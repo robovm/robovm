@@ -66,7 +66,7 @@ enums:
     NSBinarySearchingOptions: {}
     NSBundleExecutableArchitectureType: { first: NSBundleExecutableArchitectureI386 }
     NSByteCountFormatterCountStyle: {}
-    NSByteCountFormatterUnits: {}
+    NSByteCountFormatterUnits: { skip_none: true }
     NSCalculationError: {}
     NSCalendarOptions: {}
     NSCalendarUnit: { prefix: NSCalendarUnit, ignore: '^.+CalendarUnit$' }
@@ -370,13 +370,17 @@ classes:
             '-(name|totalCostLimit|countLimit|evictsObjectsWithDiscardedContent)':
                 property: true
             '-objectForKey:':
-                name: getObject
+                name: get
             '-removeObjectForKey:':
-                name: removeObject
+                name: remove
             '-setObject:forKey:':
                 trim_after_first_colon: true
+                visibility: protected
             '-setObject:forKey:cost:':
                 trim_after_first_colon: true
+                visibility: protected
+            '-removeAllObjects':
+                name: clear
 
     NSCachedURLResponse: # DONE
         methods:
@@ -393,15 +397,21 @@ classes:
         methods:
             '+currentCalendar':
                 property: true
+                return_type: NSCalendar
             '+autoupdatingCurrentCalendar':
                 property: true
-            '-initWithCalendarIdentifier:': {}
+                return_type: NSCalendar
+            '-initWithCalendarIdentifier:':
+                parameters:
+                    ident:
+                        type: NSCalendarIdentifier
             '-setFirstWeekday:': {}
             '-setLocale:': {}
             '-setMinimumDaysInFirstWeek:': {}
             '-setTimeZone:': {}
             '–calendarIdentifier':
                 property: true
+                return_type: NSCalendarIdentifier
             '-firstWeekday':
                 property: true
             '-locale':
@@ -418,6 +428,7 @@ classes:
                 name: getRange
             '-rangeOfUnit:startDate:interval:forDate:':
                 name: getRange
+                visibility: protected
             '-timeZone':
                 property: true
             '-components:fromDate:':
@@ -441,13 +452,13 @@ classes:
                 visibility: private
                 return_type: NSCharacterSet
             '+characterSetWithBitmapRepresentation:':
-                name: createFromBitmapRepresentation
+                name: create
                 return_type: NSCharacterSet
             '+characterSetWithCharactersInString:':
-                name: createFromCharacters
+                name: create
                 return_type: NSCharacterSet
             '+characterSetWithRange:':
-                name: createFromRange
+                name: create
                 return_type: NSCharacterSet
             '-characterIsMember:':
                 name: isMember
@@ -1925,10 +1936,13 @@ classes:
     NSXMLParser: {}
 
 protocols:
-    NSCacheDelegate: {}
+    NSCacheDelegate: # DONE
+        methods:
+            '-cache:willEvictObject:':
+                name: willEvictObject
     NSCoding:
         methods:
-            "-initWithCoder:":
+            '-initWithCoder:':
                 exclude: true
             '-encodeWithCoder:':
                 name: encode
@@ -2103,6 +2117,19 @@ values:
     NSAssertionHandlerKey:
         exclude: true
 
+    # NSCalendar
+    NSCalendarIdentifier(.*):
+        class: NSCalendarIdentifier
+        name: "#{g[0]}Value"
+        type: NSString
+        visibility: protected
+
+
+    # NSLocale
+    NS(Locale.*):
+        name: "#{g[0]}"
+        type: NSString
+
     NS(.*Notification):
         name: "#{g[0]}"
         type: NSString
@@ -2164,9 +2191,6 @@ values:
         name: "#{g[0]}"
         type: NSString
     NS(LinguisticTag.*):
-        name: "#{g[0]}"
-        type: NSString
-    NS(Locale.*Key):
         name: "#{g[0]}"
         type: NSString
     NS(Locale.*):

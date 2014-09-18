@@ -28,6 +28,7 @@ import org.robovm.rt.bro.annotation.*;
 import org.robovm.rt.bro.ptr.*;
 import org.robovm.apple.corefoundation.*;
 import org.robovm.apple.uikit.*;
+import org.robovm.apple.coreanimation.*;
 import org.robovm.apple.coregraphics.*;
 import org.robovm.apple.coremedia.*;
 import org.robovm.apple.security.*;
@@ -53,7 +54,7 @@ import org.robovm.apple.security.*;
     /*</properties>*/
     /*<members>*//*</members>*/
     
-    public static NSCharacterSet createFromFile(File file) {
+    public static NSCharacterSet create(File file) {
         if (file == null) {
             throw new NullPointerException("file");
         }
@@ -107,11 +108,11 @@ import org.robovm.apple.security.*;
     @Method(selector = "newlineCharacterSet")
     public static native NSCharacterSet getNewlineCharacterSet();
     @Method(selector = "characterSetWithRange:")
-    public static native NSCharacterSet createFromRange(@ByVal NSRange aRange);
+    public static native NSCharacterSet create(@ByVal NSRange aRange);
     @Method(selector = "characterSetWithCharactersInString:")
-    public static native NSCharacterSet createFromCharacters(String aString);
+    public static native NSCharacterSet create(String aString);
     @Method(selector = "characterSetWithBitmapRepresentation:")
-    public static native NSCharacterSet createFromBitmapRepresentation(NSData data);
+    public static native NSCharacterSet create(NSData data);
     @Method(selector = "characterSetWithContentsOfFile:")
     private static native NSCharacterSet characterSetWithContentsOfFile$(String fName);
     /**

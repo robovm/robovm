@@ -30,7 +30,7 @@ import org.robovm.rt.bro.ptr.*;
 
 /*<javadoc>*/
 /*</javadoc>*/
-/*<annotations>*/@Library("dispatch")/*</annotations>*/
+/*<annotations>*/@Library("System")/*</annotations>*/
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/DispatchGroup/*</name>*/ 
     extends /*<extends>*/DispatchObject/*</extends>*/ 
     /*<implements>*//*</implements>*/ {

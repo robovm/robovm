@@ -159,12 +159,12 @@ import org.robovm.apple.coretext.*;
      * @since Available in iOS 3.0 and later.
      */
     @Property(selector = "scopeButtonTitles")
-    public native NSArray<NSString> getScopeButtonTitles();
+    public native @org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String> getScopeButtonTitles();
     /**
      * @since Available in iOS 3.0 and later.
      */
     @Property(selector = "setScopeButtonTitles:")
-    public native void setScopeButtonTitles(NSArray<NSString> v);
+    public native void setScopeButtonTitles(@org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String> v);
     /**
      * @since Available in iOS 3.0 and later.
      */

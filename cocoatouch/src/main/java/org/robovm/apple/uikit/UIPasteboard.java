@@ -71,9 +71,9 @@ import org.robovm.apple.coretext.*;
     @Property(selector = "setString:")
     public native void setString(String v);
     @Property(selector = "strings")
-    public native NSArray<NSString> getStrings();
+    public native @org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String> getStrings();
     @Property(selector = "setStrings:")
-    public native void setStrings(NSArray<NSString> v);
+    public native void setStrings(@org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String> v);
     @Property(selector = "URL")
     public native NSURL getURL();
     @Property(selector = "setURL:")

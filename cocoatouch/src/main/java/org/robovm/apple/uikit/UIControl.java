@@ -285,7 +285,7 @@ import org.robovm.apple.coretext.*;
     @Method(selector = "allControlEvents")
     public native UIControlEvents getAllControlEvents();
     @Method(selector = "actionsForTarget:forControlEvent:")
-    public native NSArray<NSString> getActions(NSObject target, UIControlEvents controlEvent);
+    public native @org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String> getActions(NSObject target, UIControlEvents controlEvent);
     @Method(selector = "sendAction:to:forEvent:")
     public native void sendAction(Selector action, NSObject target, UIEvent event);
     @Method(selector = "sendActionsForControlEvents:")

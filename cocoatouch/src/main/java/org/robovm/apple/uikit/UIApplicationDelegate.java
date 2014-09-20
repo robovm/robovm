@@ -160,7 +160,7 @@ import org.robovm.apple.coretext.*;
      * @since Available in iOS 6.0 and later.
      */
     @Method(selector = "application:viewControllerWithRestorationIdentifierPath:coder:")
-    UIViewController getViewController(UIApplication application, NSArray<NSString> identifierComponents, NSCoder coder);
+    UIViewController getViewController(UIApplication application, @org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String> identifierComponents, NSCoder coder);
     /**
      * @since Available in iOS 6.0 and later.
      */

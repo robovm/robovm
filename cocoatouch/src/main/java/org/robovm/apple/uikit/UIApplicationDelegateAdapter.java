@@ -162,7 +162,7 @@ import org.robovm.apple.coretext.*;
      * @since Available in iOS 6.0 and later.
      */
     @NotImplemented("application:viewControllerWithRestorationIdentifierPath:coder:")
-    public UIViewController getViewController(UIApplication application, NSArray<NSString> identifierComponents, NSCoder coder) { throw new UnsupportedOperationException(); }
+    public UIViewController getViewController(UIApplication application, @org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String> identifierComponents, NSCoder coder) { throw new UnsupportedOperationException(); }
     /**
      * @since Available in iOS 6.0 and later.
      */

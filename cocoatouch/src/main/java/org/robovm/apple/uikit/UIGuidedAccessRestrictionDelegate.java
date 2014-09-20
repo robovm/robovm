@@ -53,7 +53,7 @@ import org.robovm.apple.coretext.*;
     /*</properties>*/
     /*<methods>*/
     @Method(selector = "guidedAccessRestrictionIdentifiers")
-    NSArray<NSString> getIdentifiers();
+    @org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String> getIdentifiers();
     @Method(selector = "guidedAccessRestrictionWithIdentifier:didChangeState:")
     void didChangeState(String restrictionIdentifier, UIGuidedAccessRestrictionState newRestrictionState);
     @Method(selector = "textForGuidedAccessRestrictionWithIdentifier:")

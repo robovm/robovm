@@ -97,9 +97,9 @@ import org.robovm.apple.coretext.*;
     @Method(selector = "fontWithName:size:")
     public static native UIFont getFont(String fontName, @MachineSizedFloat double fontSize);
     @Method(selector = "familyNames")
-    public static native NSArray<NSString> getFamilyNames();
+    public static native @org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String> getFamilyNames();
     @Method(selector = "fontNamesForFamilyName:")
-    public static native NSArray<NSString> getFontNamesForFamilyName(String familyName);
+    public static native @org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String> getFontNamesForFamilyName(String familyName);
     @Method(selector = "systemFontOfSize:")
     public static native UIFont getSystemFont(@MachineSizedFloat double fontSize);
     @Method(selector = "boldSystemFontOfSize:")

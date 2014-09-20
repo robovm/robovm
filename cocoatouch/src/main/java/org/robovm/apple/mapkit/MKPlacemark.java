@@ -19,6 +19,7 @@ package org.robovm.apple.mapkit;
 import java.io.*;
 import java.nio.*;
 import java.util.*;
+
 import org.robovm.objc.*;
 import org.robovm.objc.annotation.*;
 import org.robovm.objc.block.*;
@@ -47,6 +48,9 @@ import org.robovm.apple.dispatch.*;
     /*<ptr>*/public static class MKPlacemarkPtr extends Ptr<MKPlacemark, MKPlacemarkPtr> {}/*</ptr>*/
     /*<bind>*/static { ObjCRuntime.bind(MKPlacemark.class); }/*</bind>*/
     /*<constants>*//*</constants>*/
+    public MKPlacemark(CLPlacemark placemark) {
+        super(placemark);
+    }
     /*<constructors>*/
     public MKPlacemark() {}
     protected MKPlacemark(SkipInit skipInit) { super(skipInit); }

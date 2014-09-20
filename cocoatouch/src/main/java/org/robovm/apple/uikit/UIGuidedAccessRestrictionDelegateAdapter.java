@@ -53,7 +53,7 @@ import org.robovm.apple.coretext.*;
     /*<members>*//*</members>*/
     /*<methods>*/
     @NotImplemented("guidedAccessRestrictionIdentifiers")
-    public NSArray<NSString> getIdentifiers() { throw new UnsupportedOperationException(); }
+    public @org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String> getIdentifiers() { throw new UnsupportedOperationException(); }
     @NotImplemented("guidedAccessRestrictionWithIdentifier:didChangeState:")
     public void didChangeState(String restrictionIdentifier, UIGuidedAccessRestrictionState newRestrictionState) { throw new UnsupportedOperationException(); }
     @NotImplemented("textForGuidedAccessRestrictionWithIdentifier:")

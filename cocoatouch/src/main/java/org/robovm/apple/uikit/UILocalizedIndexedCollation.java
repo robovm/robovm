@@ -53,16 +53,16 @@ import org.robovm.apple.coretext.*;
     /*</constructors>*/
     /*<properties>*/
     @Property(selector = "sectionTitles")
-    public native NSArray<NSString> getSectionTitles();
+    public native @org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String> getSectionTitles();
     @Property(selector = "sectionIndexTitles")
-    public native NSArray<NSString> getSectionIndexTitles();
+    public native @org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String> getSectionIndexTitles();
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
     @Method(selector = "sectionForSectionIndexTitleAtIndex:")
-    public native @MachineSizedSInt long getSectionForSectionIndexTitle(@MachineSizedSInt long indexTitleIndex);
+    public native @MachineSizedSInt long getSection(@MachineSizedSInt long indexTitleIndex);
     @Method(selector = "sectionForObject:collationStringSelector:")
-    public native @MachineSizedSInt long getSectionForObject(NSObject object, Selector selector);
+    public native @MachineSizedSInt long getSection(NSObject object, Selector selector);
     @Method(selector = "sortedArrayFromArray:collationStringSelector:")
     public native NSArray<?> sortArray(NSArray<?> array, Selector selector);
     @Method(selector = "currentCollation")

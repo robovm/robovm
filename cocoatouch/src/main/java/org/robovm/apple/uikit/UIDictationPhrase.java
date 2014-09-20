@@ -55,7 +55,7 @@ import org.robovm.apple.coretext.*;
     @Property(selector = "text")
     public native String getText();
     @Property(selector = "alternativeInterpretations")
-    public native NSArray<NSString> getAlternativeInterpretations();
+    public native @org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String> getAlternativeInterpretations();
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/

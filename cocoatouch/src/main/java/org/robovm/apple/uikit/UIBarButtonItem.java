@@ -103,6 +103,10 @@ import org.robovm.apple.coretext.*;
     /*</constructors>*/
     
     public void setOnClickListener(OnClickListener listener) {
+        NSObject t = getTarget();
+        if (t instanceof ListenerWrapper) {
+            this.removeStrongRef(t);
+        }
         ListenerWrapper l = new ListenerWrapper(listener);
         setAction(handleClick);
         setTarget(l);
@@ -119,9 +123,9 @@ import org.robovm.apple.coretext.*;
     @Property(selector = "setWidth:")
     public native void setWidth(@MachineSizedFloat double v);
     @Property(selector = "possibleTitles")
-    public native NSArray<NSString> getPossibleTitles();
+    public native @org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String> getPossibleTitles();
     @Property(selector = "setPossibleTitles:")
-    public native void setPossibleTitles(NSArray<NSString> v);
+    public native void setPossibleTitles(@org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String> v);
     @Property(selector = "customView")
     public native UIView getCustomView();
     @Property(selector = "setCustomView:")

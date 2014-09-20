@@ -254,7 +254,7 @@ import org.robovm.apple.coretext.*;
     @Method(selector = "tableView:canMoveRowAtIndexPath:")
     public native boolean canMoveRow(UITableView tableView, NSIndexPath indexPath);
     @Method(selector = "sectionIndexTitlesForTableView:")
-    public native NSArray<NSString> getSectionIndexTitles(UITableView tableView);
+    public native @org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String> getSectionIndexTitles(UITableView tableView);
     @Method(selector = "tableView:sectionForSectionIndexTitle:atIndex:")
     public native @MachineSizedSInt long getSectionForSectionIndexTitle(UITableView tableView, String title, @MachineSizedSInt long index);
     @Method(selector = "tableView:commitEditingStyle:forRowAtIndexPath:")

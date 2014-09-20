@@ -67,7 +67,7 @@ import org.robovm.apple.coretext.*;
     @NotImplemented("tableView:canMoveRowAtIndexPath:")
     public boolean canMoveRow(UITableView tableView, NSIndexPath indexPath) { throw new UnsupportedOperationException(); }
     @NotImplemented("sectionIndexTitlesForTableView:")
-    public NSArray<NSString> getSectionIndexTitles(UITableView tableView) { throw new UnsupportedOperationException(); }
+    public @org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String> getSectionIndexTitles(UITableView tableView) { throw new UnsupportedOperationException(); }
     @NotImplemented("tableView:sectionForSectionIndexTitle:atIndex:")
     public @MachineSizedSInt long getSectionForSectionIndexTitle(UITableView tableView, String title, @MachineSizedSInt long index) { throw new UnsupportedOperationException(); }
     @NotImplemented("tableView:commitEditingStyle:forRowAtIndexPath:")

@@ -83,10 +83,10 @@ import org.robovm.apple.coretext.*;
         return data;
     }
     
-    public void put(String attribute, NSObject value) {
+    public void set(String attribute, NSObject value) {
         data.put(new NSString(attribute), value);
     }
-    public void put(UIFontDescriptorAttribute attribute, NSObject value) {
+    public void set(UIFontDescriptorAttribute attribute, NSObject value) {
         data.put(attribute.value(), value);
     }
     public NSObject get(String attribute) {
@@ -116,7 +116,7 @@ import org.robovm.apple.coretext.*;
      * @since Available in iOS 7.0 and later.
      */
     public void setFamily(String family) {
-        put(UIFontDescriptorAttribute.Family, new NSString(family));
+        set(UIFontDescriptorAttribute.Family, new NSString(family));
     }
     /**
      * @since Available in iOS 7.0 and later.
@@ -132,7 +132,7 @@ import org.robovm.apple.coretext.*;
      * @since Available in iOS 7.0 and later.
      */
     public void setName(String name) {
-        put(UIFontDescriptorAttribute.Name, new NSString(name));
+        set(UIFontDescriptorAttribute.Name, new NSString(name));
     }
     /**
      * @since Available in iOS 7.0 and later.
@@ -148,7 +148,7 @@ import org.robovm.apple.coretext.*;
      * @since Available in iOS 7.0 and later.
      */
     public void setFace(String face) {
-        put(UIFontDescriptorAttribute.Face, new NSString(face));
+        set(UIFontDescriptorAttribute.Face, new NSString(face));
     }
     /**
      * @since Available in iOS 7.0 and later.
@@ -164,7 +164,7 @@ import org.robovm.apple.coretext.*;
      * @since Available in iOS 7.0 and later.
      */
     public void setSize(double size) {
-        put(UIFontDescriptorAttribute.Face, NSNumber.valueOf(size));
+        set(UIFontDescriptorAttribute.Face, NSNumber.valueOf(size));
     }
     /**
      * @since Available in iOS 7.0 and later.
@@ -180,7 +180,7 @@ import org.robovm.apple.coretext.*;
      * @since Available in iOS 7.0 and later.
      */
     public void setVisibleName(String name) {
-        put(UIFontDescriptorAttribute.VisibleName, new NSString(name));
+        set(UIFontDescriptorAttribute.VisibleName, new NSString(name));
     }
     /**
      * @since Available in iOS 7.0 and later.
@@ -196,7 +196,7 @@ import org.robovm.apple.coretext.*;
      * @since Available in iOS 7.0 and later.
      */
     public void setMatrix(@ByVal CGAffineTransform matrix) {
-        put(UIFontDescriptorAttribute.Matrix, NSValue.valueOf(matrix));
+        set(UIFontDescriptorAttribute.Matrix, NSValue.valueOf(matrix));
     }
     /**
      * @since Available in iOS 7.0 and later.
@@ -212,7 +212,7 @@ import org.robovm.apple.coretext.*;
      * @since Available in iOS 7.0 and later.
      */
     public void setCharacterSet(NSCharacterSet characterSet) {
-        put(UIFontDescriptorAttribute.CharacterSet, characterSet);
+        set(UIFontDescriptorAttribute.CharacterSet, characterSet);
     }
     /**
      * @since Available in iOS 7.0 and later.
@@ -229,7 +229,7 @@ import org.robovm.apple.coretext.*;
      * @since Available in iOS 7.0 and later.
      */
     public void setCascadeList(NSArray<UIFontDescriptor> cascadeList) {
-        put(UIFontDescriptorAttribute.CascadeList, cascadeList);
+        set(UIFontDescriptorAttribute.CascadeList, cascadeList);
     }
     /**
      * @since Available in iOS 7.0 and later.
@@ -246,7 +246,7 @@ import org.robovm.apple.coretext.*;
      * @since Available in iOS 7.0 and later.
      */
     public void setTraits(UIFontDescriptorTraits traits) {
-        put(UIFontDescriptorAttribute.Traits, traits.getDictionary());
+        set(UIFontDescriptorAttribute.Traits, traits.getDictionary());
     }
     /**
      * @since Available in iOS 7.0 and later.
@@ -262,7 +262,7 @@ import org.robovm.apple.coretext.*;
      * @since Available in iOS 7.0 and later.
      */
     public void setFixedAdvance(double fixedAdvance) {
-        put(UIFontDescriptorAttribute.FixedAdvance, NSNumber.valueOf(fixedAdvance));
+        set(UIFontDescriptorAttribute.FixedAdvance, NSNumber.valueOf(fixedAdvance));
     }
 
     //    public static UIFontDescriptorAttribute FeatureSettings = new UIFontDescriptorAttribute("FeatureSettingsValue"); TODO
@@ -281,7 +281,7 @@ import org.robovm.apple.coretext.*;
      * @since Available in iOS 7.0 and later.
      */
     public void setTextStyle(UIFontTextStyle textStyle) {
-        put(UIFontDescriptorAttribute.TextStyle, textStyle.value());
+        set(UIFontDescriptorAttribute.TextStyle, textStyle.value());
     }
     /*<methods>*/
     /**

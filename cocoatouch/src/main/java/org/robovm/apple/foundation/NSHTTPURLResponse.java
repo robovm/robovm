@@ -64,10 +64,10 @@ import org.robovm.apple.security.*;
     @Method(selector = "initWithURL:statusCode:HTTPVersion:headerFields:")
     protected native @Pointer long initWithURL$statusCode$HTTPVersion$headerFields$(NSURL url, @MachineSizedSInt long statusCode, String HTTPVersion, NSDictionary<?, ?> headerFields);
     @Method(selector = "statusCode")
-    public native @MachineSizedSInt long statusCode();
+    public native @MachineSizedSInt long getStatusCode();
     @Method(selector = "allHeaderFields")
-    public native NSDictionary<?, ?> allHeaderFields();
+    public native NSDictionary<NSString, ?> getAllHeaderFields();
     @Method(selector = "localizedStringForStatusCode:")
-    public static native String localizedStringForStatusCode$(@MachineSizedSInt long statusCode);
+    public static native String getLocalizedStatusCode(@MachineSizedSInt long statusCode);
     /*</methods>*/
 }

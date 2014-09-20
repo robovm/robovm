@@ -96,11 +96,11 @@ import org.robovm.apple.security.*;
     @Method(selector = "one")
     public static native NSDecimalNumber one();
     @Method(selector = "minimumDecimalNumber")
-    public static native NSDecimalNumber getMinimumDecimalNumber();
+    public static native NSDecimalNumber getMin();
     @Method(selector = "maximumDecimalNumber")
-    public static native NSDecimalNumber getMaximumDecimalNumber();
+    public static native NSDecimalNumber getMax();
     @Method(selector = "notANumber")
-    public static native NSDecimalNumber notANumber();
+    public static native NSDecimalNumber getNAN();
     @Method(selector = "setDefaultBehavior:")
     public static native void setDefaultBehavior(NSDecimalNumberBehaviors behavior);
     @Method(selector = "defaultBehavior")

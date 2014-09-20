@@ -691,11 +691,11 @@ classes:
                 name: format
             '-[a-zA-Z0-9]+Symbols':
                 property: true
-                return_type: 'NSArray<NSString>'
+                return_type: "@org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String>"
             '-set[a-zA-Z0-9]+Symbols:':
                 parameters:
                     array:
-                        type: 'NSArray<NSString>'
+                        type: "@org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String>"
             '-(timeZone|timeStyle|twoDigitStartDate|AMSymbol|PMSymbol|calendar|dateFormat|dateStyle|defaultDate|formatterBehavior|locale|gregorianStartDate)':
                 property: true
             '-stringFromDate:':
@@ -710,9 +710,11 @@ classes:
             '+defaultBehavior':
                 property: true
             '+maximumDecimalNumber':
-                property: true
+                name: getMax
             '+minimumDecimalNumber':
-                property: true
+                name: getMin
+            '+notANumber':
+                name: getNAN
             '-compare:': {exclude: true}
             '-doubleValue': {exclude: true}
             '-objCType': {exclude: true}
@@ -743,6 +745,7 @@ classes:
             '+decimalNumberHandlerWithRoundingMode:scale:raiseOnExactness:raiseOnOverflow:raiseOnUnderflow:raiseOnDivideByZero:': {exclude: true}
             '+defaultDecimalNumberHandler':
                 property: true
+                return_type: NSDecimalNumberHandler
 
     NSDictionary: # DONE
         protocols: [NSPropertyList, "Map<K, V>"]
@@ -871,30 +874,123 @@ classes:
             '-ubiquityIdentityToken':
                 return_type: NSObject
     NSFileVersion: {}
-    NSFileWrapper:
+    NSFileWrapper: # DONE
         methods:
+            '-initDirectoryWithFileWrappers:':
+                parameters:
+                    childrenByPreferredName:
+                        type: "NSDictionary<NSString, NSFileWrapper>"
             '-initWithSerializedRepresentation:':
                 constructor: false
             '-serializedRepresentation':
                 name: serialize
-
-    NSFormatter: {}
+            '-(preferredFilename|filename|regularFileContents|symbolicLinkDestinationURL)':
+                property: true
+            '-setFileAttributes:':
+                parameters:
+                    fileAttributes:
+                        type: NSFileAttributes
+            '-fileAttributes':
+                property: true
+                return_type: NSFileAttributes
+            '-matchesContentsOfURL:':
+                trim_after_first_colon: true
+            '-readFromURL:options:error:':
+                trim_after_first_colon: true
+            '-writeToURL:options:originalContentsURL:error:':
+                trim_after_first_colon: true
+            '-addFileWrapper:':
+                trim_after_first_colon: true
+            '-addRegularFileWithContents:preferredFilename:':
+                name: addRegularFile
+            '-removeFileWrapper:':
+                trim_after_first_colon: true
+            '-fileWrappers':
+                return_type: "NSDictionary<NSString, NSFileWrapper>"
+            '-keyForFileWrapper:':
+                name: getKeyForFileWrapper
+    NSFormatter: # DONE
+        methods:
+            '.*':
+                exclude: true
     NSHashTable: {}
-    NSHTTPCookie: {}
-    NSHTTPCookieStorage: {}
-    NSHTTPURLResponse: {}
+    NSHTTPCookie: # DONE
+        methods:
+            '-initWithProperties:':
+                name: init
+                parameters:
+                    properties:
+                        type: NSHTTPCookieAttributes
+            '-properties':
+                property: true
+                return_type: NSHTTPCookieAttributes
+            '-(version|name|value|expiresDate|domain|path|comment|commentURL)':
+                property: true
+            '-portList':
+                property: true
+                return_type: "NSArray<NSNumber>"
+            '+cookieWithProperties:':
+                exclude: true
+            '+requestHeaderFieldsWithCookies:':
+                name: getRequestHeaderFieldsWithCookies
+                return_type: "NSDictionary<NSString, ?>"
+                parameters:
+                    cookies:
+                        type: "NSArray<NSHTTPCookie>"
+            '+cookiesWithResponseHeaderFields:forURL:':
+                name: getCookiesWithResponseHeaderFields
+                return_type: "NSArray<NSHTTPCookie>"
+                parameters:
+                    headerFields:
+                        type: "NSDictionary<NSString, ?>"
+                    URL:
+                        name: url
+    NSHTTPCookieStorage: # DONE
+        methods:
+            '-cookies':
+                property: true
+                return_type: "NSArray<NSHTTPCookie>"
+            '-deleteCookie:':
+                trim_after_first_colon: true
+            '-cookiesForURL:':
+                name: getCookiesForURL
+                return_type: "NSArray<NSHTTPCookie>"
+            '-setCookies:forURL:mainDocumentURL:':
+                name: setCookiesForURL
+                parameters:
+                    cookies:
+                        type: "NSArray<NSHTTPCookie>"
+            '-cookieAcceptPolicy':
+                property: true
+            '-sortedCookiesUsingDescriptors:':
+                name: getSortedCookies
+                return_type: "NSArray<NSHTTPCookie>"
+                parameters:
+                    sortOrder:
+                        type: "NSArray<NSSortDescriptor>"
+            '+sharedHTTPCookieStorage':
+                property: true
+    NSHTTPURLResponse: # DONE
+        methods:
+            '-statusCode':
+                property: true
+            '-allHeaderFields':
+                property: true
+                return_type: "NSDictionary<NSString, ?>"
+            '+localizedStringForStatusCode:':
+                name: getLocalizedStatusCode
     NSIndexPath: # DONE
         methods:
             '+indexPathWithIndex:': {exclude: true}
             '+indexPathWithIndexes:length:': {exclude: true}
-            "-initWithIndex:":
-            "-length":
+            '-initWithIndex:':
+            '-length':
                 name: getLength
-            "-indexAtPosition:":
+            '-indexAtPosition:':
                 name: getIndexAt
-            "-indexPathByAddingIndex:":
+            '-indexPathByAddingIndex:':
                 name: addIndex
-            "-indexPathByRemovingLastIndex":
+            '-indexPathByRemovingLastIndex':
                 name: removeLastIndex
             '-compare:':
                 trim_after_first_colon: true
@@ -905,15 +1001,106 @@ classes:
                 visibility: private
 
             '-init': {exclude: true}
-
-    NSIndexSet:
+    NSIndexSet: # DONE
         methods:
-
             '-init': {exclude: true}
-
+            '-isEqualToIndexSet:':
+                name: equals
+            '-(count|firstIndex|lastIndex)':
+                property: true
+            '-indexGreaterThanIndex:':
+                name: greaterThan
+            '-indexLessThanIndex:':
+                name: lessThan
+            '-indexGreaterThanOrEqualToIndex:':
+                name: greaterThanOrEqual
+            '-indexLessThanOrEqualToIndex:':
+                name: lessThanOrEqual
+            '-getIndexes:maxCount:inIndexRange:':
+                name: getIndexes
+                visibility: protected
+            '-countOfIndexesInRange:':
+                name: getIndexCountInRange
+            '-containsIndex:':
+                trim_after_first_colon: true
+            '-containsIndexesInRange:':
+                trim_after_first_colon: true  
+            '-containsIndexes:':
+                trim_after_first_colon: true 
+            '-intersectsIndexesInRange:':
+                trim_after_first_colon: true 
+            '-enumerateIndexesUsingBlock:':
+                name: enumerateIndexes
+            '-enumerateIndexesWithOptions:usingBlock:':
+                name: enumerateIndexes
+            '-enumerateIndexesInRange:options:usingBlock:':
+                name: enumerateIndexesInRange
+            '-indexPassingTest:':
+                name: getIndexPassingTest
+                parameters:
+                    predicate:
+                        type: '@Block("@MachineSizedUInt,,") Block2<Long, BytePtr, Boolean>'
+            '-indexWithOptions:passingTest:':
+                name: getIndexPassingTest
+                parameters:
+                    predicate:
+                        type: '@Block("@MachineSizedUInt,,") Block2<Long, BytePtr, Boolean>'
+            '-indexInRange:options:passingTest:':
+                name: getIndexInRangePassingTest
+                parameters:
+                    predicate:
+                        type: '@Block("@MachineSizedUInt,,") Block2<Long, BytePtr, Boolean>'
+            '-indexesPassingTest:':
+                name: getIndexesPassingTest
+                parameters:
+                    predicate:
+                        type: '@Block("@MachineSizedUInt,,") Block2<Long, BytePtr, Boolean>'
+            '-indexesWithOptions:passingTest:':
+                name: getIndexesPassingTest
+                parameters:
+                    predicate:
+                        type: '@Block("@MachineSizedUInt,,") Block2<Long, BytePtr, Boolean>'
+            '-indexesInRange:options:passingTest:':
+                name: getIndexesInRangePassingTest
+                parameters:
+                    predicate:
+                        type: '@Block("@MachineSizedUInt,,") Block2<Long, BytePtr, Boolean>'
+            '-enumerateRangesUsingBlock:':
+                name: enumerateRanges
+            '-enumerateRangesWithOptions:usingBlock:':
+                name: enumerateRanges
+            '-enumerateRangesInRange:options:usingBlock:':
+                name: enumerateRangesInRange
+            '+indexSet.*':
+                name: create
     NSInputStream: {}
-    NSInvocation: {}
-    NSInvocationOperation: {}
+    NSInvocation: # DONE
+        methods:
+            '-methodSignature':
+                property: true
+            '-argumentsRetained':
+                property: true
+            '-target':
+                property: true
+            '-selector':
+                property: true
+            '-getReturnValue:':
+                trim_after_first_colon: true
+            '-setReturnValue:': {}
+            '-getArgument:atIndex:':
+                trim_after_first_colon: true
+            '-setArgument:atIndex:':
+                trim_after_first_colon: true
+            '-invokeWithTarget:':
+                name: invoke
+            '+invocationWithMethodSignature:':
+                name: create
+    NSInvocationOperation: # DONE
+        methods:
+            '-invocation':
+                property: true
+            '-result':
+                property: true
     NSJSONSerialization: {}
     NSKeyedArchiver: # DONE
         methods:
@@ -1034,7 +1221,25 @@ classes:
 
     NSMetadataQueryAttributeValueTuple: {}
     NSMetadataQueryResultGroup: {}
-    NSMethodSignature: {}
+    NSMethodSignature: # DONE
+        methods:
+            '-numberOfArguments':
+                property: true
+            '-getArgumentTypeAtIndex:':
+                name: getArgumentType
+                return_type: "@org.robovm.rt.bro.annotation.Marshaler(StringMarshalers.AsDefaultCharsetZMarshaler.class) String"
+            '-frameLength':
+                property: true
+            '-methodReturnType':
+                property: true
+                return_type: "@org.robovm.rt.bro.annotation.Marshaler(StringMarshalers.AsDefaultCharsetZMarshaler.class) String"
+            '-methodReturnLength':
+                property: true
+            '+signatureWithObjCTypes:':
+                name: create
+                parameters:
+                    types:
+                        type: "@org.robovm.rt.bro.annotation.Marshaler(StringMarshalers.AsDefaultCharsetZMarshaler.class) String"
     NSMutableArray: # DONE
         methods:
             '-initWithCapacity:':
@@ -2124,6 +2329,35 @@ values:
         type: NSString
         visibility: protected
 
+    # NSFile
+    NSFile((AppendOnly|Busy|CreationDate|DeviceIdentifier|ExtensionHidden|GroupOwnerAccountID|GroupOwnerAccountName)):
+        class: NSFileAttribute
+        name: "#{g[0]}Attribute"
+        type: NSString
+        visibility: protected
+    NSFile((HFSCreatorCode|HFSTypeCode|Immutable|ModificationDate|OwnerAccountID|OwnerAccountName|PosixPermissions)):
+        class: NSFileAttribute
+        name: "#{g[0]}Attribute"
+        type: NSString
+        visibility: protected
+    NSFile((ReferenceCount|Size|SystemFileNumber|SystemNumber|Type|ProtectionKey)):
+        class: NSFileAttribute
+        name: "#{g[0]}Attribute"
+        type: NSString
+        visibility: protected
+
+    # NSHTTPCookieStorage
+    NSHTTPCookieManager(.*Notification):
+        class: NSHTTPCookieStorage
+        name: "#{g[0]}"
+        type: NSString
+
+    # NSHTTPCookie
+    NSHTTPCookie(.*):
+        class: NSHTTPCookieAttribute
+        name: "#{g[0]}Attribute"
+        type: NSString
+        visibility: protected
 
     # NSLocale
     NS(Locale.*):
@@ -2151,15 +2385,6 @@ values:
     NS(.*ErrorDomain):
         name: "#{g[0]}"
         type: NSString
-    NS(File(AppendOnly|Busy|CreationDate|DeviceIdentifier|ExtensionHidden|GroupOwnerAccountID|GroupOwnerAccountName)):
-        name: "#{g[0]}"
-        type: NSString
-    NS(File(HFSCreatorCode|HFSTypeCode|Immutable|ModificationDate|OwnerAccountID|OwnerAccountName|PosixPermissions)):
-        name: "#{g[0]}"
-        type: NSString
-    NS(File(ReferenceCount|Size|SystemFileNumber|SystemNumber|Type)):
-        name: "#{g[0]}"
-        type: NSString
     NS(File.*Key):
         name: "#{g[0]}"
         type: NSString
@@ -2170,9 +2395,6 @@ values:
         name: "#{g[0]}"
         type: NSString
     NS(FileType.*):
-        name: "#{g[0]}"
-        type: NSString
-    NS(HTTPCookie.*):
         name: "#{g[0]}"
         type: NSString
     NS(KeyedArchiveRootObjectKey):

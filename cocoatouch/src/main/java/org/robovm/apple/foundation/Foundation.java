@@ -282,8 +282,6 @@ import org.robovm.apple.security.*;
      */
     @GlobalValue(symbol="NSUbiquityIdentityDidChangeNotification", optional=true)
     public static native NSString UbiquityIdentityDidChangeNotification();
-    @GlobalValue(symbol="NSFileType", optional=true)
-    public static native NSString FileType();
     @GlobalValue(symbol="NSFileTypeDirectory", optional=true)
     public static native NSString FileTypeDirectory();
     @GlobalValue(symbol="NSFileTypeRegular", optional=true)
@@ -298,47 +296,6 @@ import org.robovm.apple.security.*;
     public static native NSString FileTypeBlockSpecial();
     @GlobalValue(symbol="NSFileTypeUnknown", optional=true)
     public static native NSString FileTypeUnknown();
-    @GlobalValue(symbol="NSFileSize", optional=true)
-    public static native NSString FileSize();
-    @GlobalValue(symbol="NSFileModificationDate", optional=true)
-    public static native NSString FileModificationDate();
-    @GlobalValue(symbol="NSFileReferenceCount", optional=true)
-    public static native NSString FileReferenceCount();
-    @GlobalValue(symbol="NSFileDeviceIdentifier", optional=true)
-    public static native NSString FileDeviceIdentifier();
-    @GlobalValue(symbol="NSFileOwnerAccountName", optional=true)
-    public static native NSString FileOwnerAccountName();
-    @GlobalValue(symbol="NSFileGroupOwnerAccountName", optional=true)
-    public static native NSString FileGroupOwnerAccountName();
-    @GlobalValue(symbol="NSFilePosixPermissions", optional=true)
-    public static native NSString FilePosixPermissions();
-    @GlobalValue(symbol="NSFileSystemNumber", optional=true)
-    public static native NSString FileSystemNumber();
-    @GlobalValue(symbol="NSFileSystemFileNumber", optional=true)
-    public static native NSString FileSystemFileNumber();
-    @GlobalValue(symbol="NSFileExtensionHidden", optional=true)
-    public static native NSString FileExtensionHidden();
-    @GlobalValue(symbol="NSFileHFSCreatorCode", optional=true)
-    public static native NSString FileHFSCreatorCode();
-    @GlobalValue(symbol="NSFileHFSTypeCode", optional=true)
-    public static native NSString FileHFSTypeCode();
-    @GlobalValue(symbol="NSFileImmutable", optional=true)
-    public static native NSString FileImmutable();
-    @GlobalValue(symbol="NSFileAppendOnly", optional=true)
-    public static native NSString FileAppendOnly();
-    @GlobalValue(symbol="NSFileCreationDate", optional=true)
-    public static native NSString FileCreationDate();
-    @GlobalValue(symbol="NSFileOwnerAccountID", optional=true)
-    public static native NSString FileOwnerAccountID();
-    @GlobalValue(symbol="NSFileGroupOwnerAccountID", optional=true)
-    public static native NSString FileGroupOwnerAccountID();
-    @GlobalValue(symbol="NSFileBusy", optional=true)
-    public static native NSString FileBusy();
-    /**
-     * @since Available in iOS 4.0 and later.
-     */
-    @GlobalValue(symbol="NSFileProtectionKey", optional=true)
-    public static native NSString FileProtectionKey();
     /**
      * @since Available in iOS 4.0 and later.
      */
@@ -367,36 +324,6 @@ import org.robovm.apple.security.*;
     public static native NSString FileSystemNodes();
     @GlobalValue(symbol="NSFileSystemFreeNodes", optional=true)
     public static native NSString FileSystemFreeNodes();
-    @GlobalValue(symbol="NSHTTPCookieName", optional=true)
-    public static native NSString HTTPCookieName();
-    @GlobalValue(symbol="NSHTTPCookieValue", optional=true)
-    public static native NSString HTTPCookieValue();
-    @GlobalValue(symbol="NSHTTPCookieOriginURL", optional=true)
-    public static native NSString HTTPCookieOriginURL();
-    @GlobalValue(symbol="NSHTTPCookieVersion", optional=true)
-    public static native NSString HTTPCookieVersion();
-    @GlobalValue(symbol="NSHTTPCookieDomain", optional=true)
-    public static native NSString HTTPCookieDomain();
-    @GlobalValue(symbol="NSHTTPCookiePath", optional=true)
-    public static native NSString HTTPCookiePath();
-    @GlobalValue(symbol="NSHTTPCookieSecure", optional=true)
-    public static native NSString HTTPCookieSecure();
-    @GlobalValue(symbol="NSHTTPCookieExpires", optional=true)
-    public static native NSString HTTPCookieExpires();
-    @GlobalValue(symbol="NSHTTPCookieComment", optional=true)
-    public static native NSString HTTPCookieComment();
-    @GlobalValue(symbol="NSHTTPCookieCommentURL", optional=true)
-    public static native NSString HTTPCookieCommentURL();
-    @GlobalValue(symbol="NSHTTPCookieDiscard", optional=true)
-    public static native NSString HTTPCookieDiscard();
-    @GlobalValue(symbol="NSHTTPCookieMaximumAge", optional=true)
-    public static native NSString HTTPCookieMaximumAge();
-    @GlobalValue(symbol="NSHTTPCookiePort", optional=true)
-    public static native NSString HTTPCookiePort();
-    @GlobalValue(symbol="NSHTTPCookieManagerAcceptPolicyChangedNotification", optional=true)
-    public static native NSString HTTPCookieManagerAcceptPolicyChangedNotification();
-    @GlobalValue(symbol="NSHTTPCookieManagerCookiesChangedNotification", optional=true)
-    public static native NSString HTTPCookieManagerCookiesChangedNotification();
     @GlobalValue(symbol="NSAverageKeyValueOperator", optional=true)
     public static native String AverageKeyValueOperator();
     @GlobalValue(symbol="NSCountKeyValueOperator", optional=true)

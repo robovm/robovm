@@ -42,6 +42,25 @@ import org.robovm.apple.security.*;
     extends /*<extends>*/NSObject/*</extends>*/ 
     /*<implements>*//*</implements>*/ {
 
+    public static class Notifications {
+        public static NSObject observeAcceptPolicyChanged(NSHTTPCookieStorage object, final VoidBlock1<NSHTTPCookieStorage> block) {
+            return NSNotificationCenter.getDefaultCenter().addObserver(AcceptPolicyChangedNotification(), object, NSOperationQueue.getMainQueue(), new VoidBlock1<NSNotification>() {
+                @Override
+                public void invoke(NSNotification a) {
+                    block.invoke((NSHTTPCookieStorage) a.getObject());
+                }
+            });
+        }
+        public static NSObject observeCookiesChanged(NSHTTPCookieStorage object, final VoidBlock1<NSHTTPCookieStorage> block) {
+            return NSNotificationCenter.getDefaultCenter().addObserver(CookiesChangedNotification(), object, NSOperationQueue.getMainQueue(), new VoidBlock1<NSNotification>() {
+                @Override
+                public void invoke(NSNotification a) {
+                    block.invoke((NSHTTPCookieStorage) a.getObject());
+                }
+            });
+        }
+    }
+    
     /*<ptr>*/public static class NSHTTPCookieStoragePtr extends Ptr<NSHTTPCookieStorage, NSHTTPCookieStoragePtr> {}/*</ptr>*/
     /*<bind>*/static { ObjCRuntime.bind(NSHTTPCookieStorage.class); }/*</bind>*/
     /*<constants>*//*</constants>*/
@@ -54,26 +73,31 @@ import org.robovm.apple.security.*;
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
+    @GlobalValue(symbol="NSHTTPCookieManagerAcceptPolicyChangedNotification", optional=true)
+    public static native NSString AcceptPolicyChangedNotification();
+    @GlobalValue(symbol="NSHTTPCookieManagerCookiesChangedNotification", optional=true)
+    public static native NSString CookiesChangedNotification();
+    
     @Method(selector = "cookies")
-    public native NSArray<?> cookies();
+    public native NSArray<NSHTTPCookie> getCookies();
     @Method(selector = "setCookie:")
     public native void setCookie(NSHTTPCookie cookie);
     @Method(selector = "deleteCookie:")
-    public native void deleteCookie$(NSHTTPCookie cookie);
+    public native void deleteCookie(NSHTTPCookie cookie);
     @Method(selector = "cookiesForURL:")
-    public native NSArray<?> cookiesForURL$(NSURL URL);
+    public native NSArray<NSHTTPCookie> getCookiesForURL(NSURL URL);
     @Method(selector = "setCookies:forURL:mainDocumentURL:")
-    public native void setCookies$forURL$mainDocumentURL$(NSArray<?> cookies, NSURL URL, NSURL mainDocumentURL);
+    public native void setCookiesForURL(NSArray<NSHTTPCookie> cookies, NSURL URL, NSURL mainDocumentURL);
     @Method(selector = "cookieAcceptPolicy")
-    public native NSHTTPCookieAcceptPolicy cookieAcceptPolicy();
+    public native NSHTTPCookieAcceptPolicy getCookieAcceptPolicy();
     @Method(selector = "setCookieAcceptPolicy:")
     public native void setCookieAcceptPolicy(NSHTTPCookieAcceptPolicy cookieAcceptPolicy);
     /**
      * @since Available in iOS 5.0 and later.
      */
     @Method(selector = "sortedCookiesUsingDescriptors:")
-    public native NSArray<?> sortedCookiesUsingDescriptors$(NSArray<?> sortOrder);
+    public native NSArray<NSHTTPCookie> getSortedCookies(NSArray<NSSortDescriptor> sortOrder);
     @Method(selector = "sharedHTTPCookieStorage")
-    public static native NSHTTPCookieStorage sharedHTTPCookieStorage();
+    public static native NSHTTPCookieStorage getSharedHTTPCookieStorage();
     /*</methods>*/
 }

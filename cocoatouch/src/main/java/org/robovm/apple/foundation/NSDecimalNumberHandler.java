@@ -57,7 +57,7 @@ import org.robovm.apple.security.*;
     @Method(selector = "initWithRoundingMode:scale:raiseOnExactness:raiseOnOverflow:raiseOnUnderflow:raiseOnDivideByZero:")
     protected native @Pointer long initWithRoundingMode$scale$raiseOnExactness$raiseOnOverflow$raiseOnUnderflow$raiseOnDivideByZero$(NSRoundingMode roundingMode, short scale, boolean exact, boolean overflow, boolean underflow, boolean divideByZero);
     @Method(selector = "defaultDecimalNumberHandler")
-    public static native NSObject getDefaultDecimalNumberHandler();
+    public static native NSDecimalNumberHandler getDefaultDecimalNumberHandler();
     @Method(selector = "roundingMode")
     public native NSRoundingMode getRoundingMode();
     @Method(selector = "scale")

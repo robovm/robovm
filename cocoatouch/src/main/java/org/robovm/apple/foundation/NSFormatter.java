@@ -54,18 +54,6 @@ import org.robovm.apple.security.*;
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
-    @Method(selector = "stringForObjectValue:")
-    public native String stringForObjectValue$(NSObject obj);
-    @Method(selector = "attributedStringForObjectValue:withDefaultAttributes:")
-    public native NSAttributedString attributedStringForObjectValue$withDefaultAttributes$(NSObject obj, NSDictionary<?, ?> attrs);
-    @Method(selector = "editingStringForObjectValue:")
-    public native String editingStringForObjectValue$(NSObject obj);
-    @Method(selector = "getObjectValue:forString:errorDescription:")
-    public native boolean getObjectValue$forString$errorDescription$(NSObject obj, String string, NSString.NSStringPtr error);
-    @Method(selector = "isPartialStringValid:newEditingString:errorDescription:")
-    public native boolean isPartialStringValid$newEditingString$errorDescription$(String partialString, NSString.NSStringPtr newString, NSString.NSStringPtr error);
-    @Method(selector = "isPartialStringValid:proposedSelectedRange:originalString:originalSelectedRange:errorDescription:")
-    public native boolean isPartialStringValid$proposedSelectedRange$originalString$originalSelectedRange$errorDescription$(NSString.NSStringPtr partialStringPtr, NSRange proposedSelRangePtr, String origString, @ByVal NSRange origSelRange, NSString.NSStringPtr error);
     @Method(selector = "encodeWithCoder:")
     public native void encode(NSCoder aCoder);
     /*</methods>*/

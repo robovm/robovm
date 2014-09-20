@@ -55,18 +55,18 @@ import org.robovm.apple.security.*;
     /*<members>*//*</members>*/
     /*<methods>*/
     @Method(selector = "numberOfArguments")
-    public native @MachineSizedUInt long numberOfArguments();
+    public native @MachineSizedUInt long getNumberOfArguments();
     @Method(selector = "getArgumentTypeAtIndex:")
-    public native BytePtr getArgumentTypeAtIndex$(@MachineSizedUInt long idx);
+    public native @org.robovm.rt.bro.annotation.Marshaler(StringMarshalers.AsDefaultCharsetZMarshaler.class) String getArgumentType(@MachineSizedUInt long idx);
     @Method(selector = "frameLength")
-    public native @MachineSizedUInt long frameLength();
+    public native @MachineSizedUInt long getFrameLength();
     @Method(selector = "isOneway")
     public native boolean isOneway();
     @Method(selector = "methodReturnType")
-    public native BytePtr methodReturnType();
+    public native @org.robovm.rt.bro.annotation.Marshaler(StringMarshalers.AsDefaultCharsetZMarshaler.class) String getMethodReturnType();
     @Method(selector = "methodReturnLength")
-    public native @MachineSizedUInt long methodReturnLength();
+    public native @MachineSizedUInt long getMethodReturnLength();
     @Method(selector = "signatureWithObjCTypes:")
-    public static native NSMethodSignature signatureWithObjCTypes$(BytePtr types);
+    public static native NSMethodSignature create(@org.robovm.rt.bro.annotation.Marshaler(StringMarshalers.AsDefaultCharsetZMarshaler.class) String types);
     /*</methods>*/
 }

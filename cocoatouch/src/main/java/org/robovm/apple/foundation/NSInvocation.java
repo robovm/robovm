@@ -55,32 +55,32 @@ import org.robovm.apple.security.*;
     /*<members>*//*</members>*/
     /*<methods>*/
     @Method(selector = "methodSignature")
-    public native NSMethodSignature methodSignature();
+    public native NSMethodSignature getMethodSignature();
     @Method(selector = "retainArguments")
     public native void retainArguments();
     @Method(selector = "argumentsRetained")
-    public native boolean argumentsRetained();
+    public native boolean isArgumentsRetained();
     @Method(selector = "target")
-    public native NSObject target();
+    public native NSObject getTarget();
     @Method(selector = "setTarget:")
     public native void setTarget(NSObject target);
     @Method(selector = "selector")
-    public native Selector selector();
+    public native Selector getSelector();
     @Method(selector = "setSelector:")
     public native void setSelector(Selector selector);
     @Method(selector = "getReturnValue:")
-    public native void getReturnValue$(VoidPtr retLoc);
+    public native void getReturnValue(VoidPtr retLoc);
     @Method(selector = "setReturnValue:")
     public native void setReturnValue(VoidPtr retLoc);
     @Method(selector = "getArgument:atIndex:")
-    public native void getArgument$atIndex$(VoidPtr argumentLocation, @MachineSizedSInt long idx);
+    public native void getArgument(VoidPtr argumentLocation, @MachineSizedSInt long idx);
     @Method(selector = "setArgument:atIndex:")
-    public native void setArgument$atIndex$(VoidPtr argumentLocation, @MachineSizedSInt long idx);
+    public native void setArgument(VoidPtr argumentLocation, @MachineSizedSInt long idx);
     @Method(selector = "invoke")
     public native void invoke();
     @Method(selector = "invokeWithTarget:")
-    public native void invokeWithTarget$(NSObject target);
+    public native void invoke(NSObject target);
     @Method(selector = "invocationWithMethodSignature:")
-    public static native NSInvocation invocationWithMethodSignature$(NSMethodSignature sig);
+    public static native NSInvocation create(NSMethodSignature sig);
     /*</methods>*/
 }

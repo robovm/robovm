@@ -601,7 +601,7 @@ classes:
         methods:
             '-initWithActivityItems:applicationActivities:':
                 parameters:
-                    activityItems:
+                    applicationActivities:
                         type: "NSArray<UIActivity>"
 
     UIAlertView: # DONE

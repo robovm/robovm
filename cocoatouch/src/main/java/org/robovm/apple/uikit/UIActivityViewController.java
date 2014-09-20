@@ -50,7 +50,7 @@ import org.robovm.apple.coretext.*;
     /*<constructors>*/
     public UIActivityViewController() {}
     protected UIActivityViewController(SkipInit skipInit) { super(skipInit); }
-    public UIActivityViewController(NSArray<UIActivity> activityItems, NSArray<?> applicationActivities) { super((SkipInit) null); initObject(initWithActivityItems$applicationActivities$(activityItems, applicationActivities)); }
+    public UIActivityViewController(NSArray<?> activityItems, NSArray<UIActivity> applicationActivities) { super((SkipInit) null); initObject(initWithActivityItems$applicationActivities$(activityItems, applicationActivities)); }
     /*</constructors>*/
     /*<properties>*/
     @Property(selector = "completionHandler")
@@ -65,6 +65,6 @@ import org.robovm.apple.coretext.*;
     /*<members>*//*</members>*/
     /*<methods>*/
     @Method(selector = "initWithActivityItems:applicationActivities:")
-    protected native @Pointer long initWithActivityItems$applicationActivities$(NSArray<UIActivity> activityItems, NSArray<?> applicationActivities);
+    protected native @Pointer long initWithActivityItems$applicationActivities$(NSArray<?> activityItems, NSArray<UIActivity> applicationActivities);
     /*</methods>*/
 }

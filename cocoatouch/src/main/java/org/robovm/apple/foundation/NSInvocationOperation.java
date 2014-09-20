@@ -63,8 +63,8 @@ import org.robovm.apple.security.*;
     @Method(selector = "initWithInvocation:")
     protected native @Pointer long initWithInvocation$(NSInvocation inv);
     @Method(selector = "invocation")
-    public native NSInvocation invocation();
+    public native NSInvocation getInvocation();
     @Method(selector = "result")
-    public native NSObject result();
+    public native NSObject getResult();
     /*</methods>*/
 }

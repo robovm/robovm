@@ -48,7 +48,7 @@ import org.robovm.apple.security.*;
     /*<constructors>*/
     public NSHTTPCookie() {}
     protected NSHTTPCookie(SkipInit skipInit) { super(skipInit); }
-    public NSHTTPCookie(NSDictionary<?, ?> properties) { super((SkipInit) null); initObject(initWithProperties$(properties)); }
+    public NSHTTPCookie(NSHTTPCookieAttributes properties) { super((SkipInit) null); initObject(init(properties)); }
     /*</constructors>*/
     /*<properties>*/
     
@@ -56,38 +56,36 @@ import org.robovm.apple.security.*;
     /*<members>*//*</members>*/
     /*<methods>*/
     @Method(selector = "initWithProperties:")
-    protected native @Pointer long initWithProperties$(NSDictionary<?, ?> properties);
+    protected native @Pointer long init(NSHTTPCookieAttributes properties);
     @Method(selector = "properties")
-    public native NSDictionary<?, ?> properties();
+    public native NSHTTPCookieAttributes getProperties();
     @Method(selector = "version")
-    public native @MachineSizedUInt long version();
+    public native @MachineSizedUInt long getVersion();
     @Method(selector = "name")
-    public native String name();
+    public native String getName();
     @Method(selector = "value")
-    public native String value();
+    public native String getValue();
     @Method(selector = "expiresDate")
-    public native NSDate expiresDate();
+    public native NSDate getExpiresDate();
     @Method(selector = "isSessionOnly")
     public native boolean isSessionOnly();
     @Method(selector = "domain")
-    public native String domain();
+    public native String getDomain();
     @Method(selector = "path")
-    public native String path();
+    public native String getPath();
     @Method(selector = "isSecure")
     public native boolean isSecure();
     @Method(selector = "isHTTPOnly")
     public native boolean isHTTPOnly();
     @Method(selector = "comment")
-    public native String comment();
+    public native String getComment();
     @Method(selector = "commentURL")
-    public native NSURL commentURL();
+    public native NSURL getCommentURL();
     @Method(selector = "portList")
-    public native NSArray<?> portList();
-    @Method(selector = "cookieWithProperties:")
-    public static native NSObject cookieWithProperties$(NSDictionary<?, ?> properties);
+    public native NSArray<NSNumber> getPortList();
     @Method(selector = "requestHeaderFieldsWithCookies:")
-    public static native NSDictionary<?, ?> requestHeaderFieldsWithCookies$(NSArray<?> cookies);
+    public static native NSDictionary<NSString, ?> getRequestHeaderFieldsWithCookies(NSArray<NSHTTPCookie> cookies);
     @Method(selector = "cookiesWithResponseHeaderFields:forURL:")
-    public static native NSArray<?> cookiesWithResponseHeaderFields$forURL$(NSDictionary<?, ?> headerFields, NSURL URL);
+    public static native NSArray<NSHTTPCookie> getCookiesWithResponseHeaderFields(NSDictionary<NSString, ?> headerFields, NSURL url);
     /*</methods>*/
 }

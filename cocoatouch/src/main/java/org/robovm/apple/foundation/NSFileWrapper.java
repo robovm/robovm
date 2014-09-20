@@ -54,7 +54,7 @@ import org.robovm.apple.security.*;
      * @since Available in iOS 4.0 and later.
      */
     public NSFileWrapper(NSURL url, NSFileWrapperReadingOptions options, NSError.NSErrorPtr outError) { super((SkipInit) null); initObject(initWithURL$options$error$(url, options, outError)); }
-    public NSFileWrapper(NSDictionary<?, ?> childrenByPreferredName) { super((SkipInit) null); initObject(initDirectoryWithFileWrappers$(childrenByPreferredName)); }
+    public NSFileWrapper(NSDictionary<NSString, NSFileWrapper> childrenByPreferredName) { super((SkipInit) null); initObject(initDirectoryWithFileWrappers$(childrenByPreferredName)); }
     public NSFileWrapper(NSData contents) { super((SkipInit) null); initObject(initRegularFileWithContents$(contents)); }
     /**
      * @since Available in iOS 4.0 and later.
@@ -83,7 +83,7 @@ import org.robovm.apple.security.*;
     @Method(selector = "initWithURL:options:error:")
     protected native @Pointer long initWithURL$options$error$(NSURL url, NSFileWrapperReadingOptions options, NSError.NSErrorPtr outError);
     @Method(selector = "initDirectoryWithFileWrappers:")
-    protected native @Pointer long initDirectoryWithFileWrappers$(NSDictionary<?, ?> childrenByPreferredName);
+    protected native @Pointer long initDirectoryWithFileWrappers$(NSDictionary<NSString, NSFileWrapper> childrenByPreferredName);
     @Method(selector = "initRegularFileWithContents:")
     protected native @Pointer long initRegularFileWithContents$(NSData contents);
     /**
@@ -102,49 +102,49 @@ import org.robovm.apple.security.*;
     @Method(selector = "setPreferredFilename:")
     public native void setPreferredFilename(String fileName);
     @Method(selector = "preferredFilename")
-    public native String preferredFilename();
+    public native String getPreferredFilename();
     @Method(selector = "setFilename:")
     public native void setFilename(String fileName);
     @Method(selector = "filename")
-    public native String filename();
+    public native String getFilename();
     @Method(selector = "setFileAttributes:")
-    public native void setFileAttributes(NSDictionary<?, ?> fileAttributes);
+    public native void setFileAttributes(NSFileAttributes fileAttributes);
     @Method(selector = "fileAttributes")
-    public native NSDictionary<?, ?> fileAttributes();
+    public native NSFileAttributes getFileAttributes();
     /**
      * @since Available in iOS 4.0 and later.
      */
     @Method(selector = "matchesContentsOfURL:")
-    public native boolean matchesContentsOfURL$(NSURL url);
+    public native boolean matchesContentsOfURL(NSURL url);
     /**
      * @since Available in iOS 4.0 and later.
      */
     @Method(selector = "readFromURL:options:error:")
-    public native boolean readFromURL$options$error$(NSURL url, NSFileWrapperReadingOptions options, NSError.NSErrorPtr outError);
+    public native boolean readFromURL(NSURL url, NSFileWrapperReadingOptions options, NSError.NSErrorPtr outError);
     /**
      * @since Available in iOS 4.0 and later.
      */
     @Method(selector = "writeToURL:options:originalContentsURL:error:")
-    public native boolean writeToURL$options$originalContentsURL$error$(NSURL url, NSFileWrapperWritingOptions options, NSURL originalContentsURL, NSError.NSErrorPtr outError);
+    public native boolean writeToURL(NSURL url, NSFileWrapperWritingOptions options, NSURL originalContentsURL, NSError.NSErrorPtr outError);
     @Method(selector = "serializedRepresentation")
     public native NSData serialize();
     @Method(selector = "addFileWrapper:")
-    public native String addFileWrapper$(NSFileWrapper child);
+    public native String addFileWrapper(NSFileWrapper child);
     @Method(selector = "addRegularFileWithContents:preferredFilename:")
-    public native String addRegularFileWithContents$preferredFilename$(NSData data, String fileName);
+    public native String addRegularFile(NSData data, String fileName);
     @Method(selector = "removeFileWrapper:")
-    public native void removeFileWrapper$(NSFileWrapper child);
+    public native void removeFileWrapper(NSFileWrapper child);
     @Method(selector = "fileWrappers")
-    public native NSDictionary<?, ?> fileWrappers();
+    public native NSDictionary<NSString, NSFileWrapper> fileWrappers();
     @Method(selector = "keyForFileWrapper:")
-    public native String keyForFileWrapper$(NSFileWrapper child);
+    public native String getKeyForFileWrapper(NSFileWrapper child);
     @Method(selector = "regularFileContents")
-    public native NSData regularFileContents();
+    public native NSData getRegularFileContents();
     /**
      * @since Available in iOS 4.0 and later.
      */
     @Method(selector = "symbolicLinkDestinationURL")
-    public native NSURL symbolicLinkDestinationURL();
+    public native NSURL getSymbolicLinkDestinationURL();
     @Method(selector = "encodeWithCoder:")
     public native void encode(NSCoder aCoder);
     /*</methods>*/

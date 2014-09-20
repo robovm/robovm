@@ -65,6 +65,21 @@ import org.robovm.apple.security.*;
         }
     }
     
+    public static class AsStringListMarshaler {
+        @MarshalsPointer
+        public static List<String> toObject(Class<? extends NSObject> cls, long handle, long flags) {
+            NSArray<?> o = (NSArray<?>) NSObject.Marshaler.toObject(cls, handle, flags);
+            return o.asStringList();
+        }
+        @MarshalsPointer
+        public static long toNative(List<String> l, long flags) {
+            if (l == null) {
+                return 0L;
+            }
+            return NSObject.Marshaler.toNative(NSArray.fromStrings(l), flags);
+        }
+    }
+
     static class ListAdapter<U extends NSObject> extends AbstractList<U> {
         protected final NSArray<U> array;
 

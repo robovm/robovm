@@ -24,6 +24,8 @@ import java.io.InterruptedIOException;
 import java.io.OutputStream;
 import java.io.UnsupportedEncodingException;
 import java.lang.ProcessBuilder.Redirect;
+import java.net.ServerSocket;
+import java.net.Socket;
 import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -82,6 +84,7 @@ public class AppLauncher {
     private OutputStream stdout = System.out;
     private boolean closeOutOnExit = false;
     private boolean debug = false;
+    private int localPort = -1;
     private volatile boolean killed = false;
     private StatusCallback installStatusCallback;
     private UploadProgressCallback uploadProgressCallback;
@@ -274,6 +277,16 @@ public class AppLauncher {
     }
     
     /**
+     * Forwards all GDB communication to the local TCP port after the app
+     * has been successfully launched.
+     * @param localPort local port or -1 to disable
+     */
+    public AppLauncher forward(int localPort) {
+        this.localPort = localPort;
+        return this;
+    }
+    
+    /**
      * Sets the path to Xcode where developer images will be searched for. This
      * should be set to the value returned by {@code xcode-select}. If not set
      * {@code /Applications/Xcode.app/Contents/Developer} will be used.
@@ -393,7 +406,7 @@ public class AppLauncher {
                 killed = true;
                 throw new InterruptedIOException();
             }
-            int receivedBytes = conn.receive(buffer, 0, buffer.length, 500);
+            int receivedBytes = conn.receive(buffer, 0, buffer.length, 10);
             if (receivedBytes > 0) {
                 bufferedResponses.append(new String(buffer, 0, receivedBytes, "ASCII"));
                 packetEnd = bufferedResponses.indexOf("#");
@@ -642,88 +655,189 @@ public class AppLauncher {
                 }
             }
             conn = device.connect(debugService.getPort());
+            log("Debug server port: " + debugService.getPort());
         }
 
         log("Launching app...");
         
-        try {
-            // Talk to the debugserver using the GDB remote protocol.
-            // See https://sourceware.org/gdb/onlinedocs/gdb/Remote-Protocol.html.
-            // This process has been determined by observing how Xcode talks to
-            // the debugserver. To enable GDB remote protocol logging in Xcode
-            // write the following to ~/.lldbinit:
-            //   log enable -v -f /tmp/gdb-remote.log gdb-remote all
-
-            // Disable ack mode
-            sendGdbPacket(conn, "+");
-            sendReceivePacket(conn, encode("QStartNoAckMode"), "OK", true);
-            sendGdbPacket(conn, "+");
-
-            // Disable buffered IO. Xcode does it so we do it too.
-            sendReceivePacket(conn, encode("QEnvironment:NSUnbufferedIO=YES"), "OK", false);
-            // Set environment variables
-            for (Entry<String, String> entry : env.entrySet()) {
-                String cmd = String.format("QEnvironment:%s=%s", entry.getKey(), entry.getValue());
-                sendReceivePacket(conn, encode(cmd), "OK", false);
-            }
-            // Tell the debuserver to send threads:xxx,yyy,... in stop replies
-            sendReceivePacket(conn, encode("QListThreadsInStopReply"), "OK", false);
-            // Initialize argv with the app path and args
-            sendReceivePacket(conn, encode("A" + encodeArgs(appPath)), "OK", false);
-            // Make sure the launch was successful
-            sendReceivePacket(conn, encode("qLaunchSuccess"), "OK", false);
-            // Continue
-            sendGdbPacket(conn, encode("c"));
-            
-            boolean wasInterrupted = false;
-            try {
-                while (true) {
-                    try {
-                        String response = receiveGdbPacket(conn);
-                        String payload = decode(response);
-                        if (payload.charAt(0) == 'W') {
-                            // The app exited. The number following W is the exit code.
-                            int exitCode = Integer.parseInt(payload.substring(1), 16);
-                            return exitCode;
-                        } else if (payload.charAt(0) == 'O') {
-                            // Console output encoded as hex.
-                            stdout.write(fromHex(payload.substring(1)));
-                        } else if (payload.charAt(0) == 'T') {
-                            // Signal received. Just continue.
-                            // The Continue packet looks like this (thread 0x2403 was interrupted by signal 0x0b):
-                            //   $vCont;c:2603;c:2703;c:2803;c:2903;c:2a03;c:2b03;c:2c03;c:2d03;C0b:2403#ed
-                            String signal = payload.substring(1, 3);
-                            String data = payload.substring(3);
-                            String threadId = data.replaceAll(".*thread:([0-9a-fA-F]+).*", "$1");
-                            String allThreadIds = data.replaceAll(".*threads:([0-9a-fA-F,]+).*", "$1");
-                            Set<String> ids = new TreeSet<>(Arrays.asList(allThreadIds.split(",")));
-                            ids.remove(threadId);
-                            StringBuilder sb = new StringBuilder("vCont;");
-                            for (String id : ids) {
-                                sb.append("c:").append(id).append(';');
-                            }
-                            sb.append('C').append(signal).append(':').append(threadId);
-                            sendGdbPacket(conn, encode(sb.toString()));
-                        } else {
-                            throw new RuntimeException("Unexpected response " 
-                                    + "from debugserver: " + response);
-                        }
-                    } catch (InterruptedIOException e) {
-                        // Remember whether we were interrupted. kill() clears
-                        // the thread's interrupted state and we want to reset it
-                        // when we exit.
-                        wasInterrupted = Thread.currentThread().isInterrupted();
-                        kill(conn);
-                    }
-                }
-            } finally {
-                if (wasInterrupted) {
-                    Thread.currentThread().interrupt();
-                }
+        try {                        
+            // just pipe stdout if no port forwarding should be done
+            // otherwise perform port forwarding and stdout piping
+            if(localPort == -1) {
+                return pipeStdOut(conn, appPath);
+            } else {
+                return forward(conn, appPath);
             }
             
         } finally {
             conn.dispose();
+        }
+    }
+    
+    private int pipeStdOut(IDeviceConnection conn, String appPath) throws Exception {
+        log("App Path: %s", appPath);
+        
+        // Talk to the debugserver using the GDB remote protocol.
+        // See https://sourceware.org/gdb/onlinedocs/gdb/Remote-Protocol.html.
+        // This process has been determined by observing how Xcode talks to
+        // the debugserver. To enable GDB remote protocol logging in Xcode
+        // write the following to ~/.lldbinit:
+        //   log enable -v -f /tmp/gdb-remote.log gdb-remote all
+        // Disable ack mode
+        sendGdbPacket(conn, "+");
+        sendReceivePacket(conn, encode("QStartNoAckMode"), "OK", true);
+        sendGdbPacket(conn, "+");
+
+        // Disable buffered IO. Xcode does it so we do it too.
+        sendReceivePacket(conn, encode("QEnvironment:NSUnbufferedIO=YES"), "OK", false);
+        // Set environment variables
+        for (Entry<String, String> entry : env.entrySet()) {
+            String cmd = String.format("QEnvironment:%s=%s", entry.getKey(), entry.getValue());
+            sendReceivePacket(conn, encode(cmd), "OK", false);
+        }
+        // Tell the debuserver to send threads:xxx,yyy,... in stop replies
+        sendReceivePacket(conn, encode("QListThreadsInStopReply"), "OK", false);
+        // Initialize argv with the app path and args
+        sendReceivePacket(conn, encode("A" + encodeArgs(appPath)), "OK", false);
+        // Make sure the launch was successful
+        sendReceivePacket(conn, encode("qLaunchSuccess"), "OK", false);
+        // Continue
+        sendGdbPacket(conn, encode("c"));
+        
+        boolean wasInterrupted = false;
+        try {
+            while (true) {
+                try {
+                    String response = receiveGdbPacket(conn);
+                    String payload = decode(response);
+                    if (payload.charAt(0) == 'W') {
+                        // The app exited. The number following W is the exit code.
+                        int exitCode = Integer.parseInt(payload.substring(1), 16);
+                        return exitCode;
+                    } else if (payload.charAt(0) == 'O') {
+                        // Console output encoded as hex.
+                        stdout.write(fromHex(payload.substring(1)));
+                    } else if (payload.charAt(0) == 'T') {
+                        // Signal received. Just continue.
+                        // The Continue packet looks like this (thread 0x2403 was interrupted by signal 0x0b):
+                        //   $vCont;c:2603;c:2703;c:2803;c:2903;c:2a03;c:2b03;c:2c03;c:2d03;C0b:2403#ed
+                        String signal = payload.substring(1, 3);
+                        String data = payload.substring(3);
+                        String threadId = data.replaceAll(".*thread:([0-9a-fA-F]+).*", "$1");
+                        String allThreadIds = data.replaceAll(".*threads:([0-9a-fA-F,]+).*", "$1");
+                        Set<String> ids = new TreeSet<>(Arrays.asList(allThreadIds.split(",")));
+                        ids.remove(threadId);
+                        StringBuilder sb = new StringBuilder("vCont;");
+                        for (String id : ids) {
+                            sb.append("c:").append(id).append(';');
+                        }
+                        sb.append('C').append(signal).append(':').append(threadId);
+                        sendGdbPacket(conn, encode(sb.toString()));
+                    } else {
+                        throw new RuntimeException("Unexpected response " 
+                                + "from debugserver: " + response);
+                    }
+                } catch (InterruptedIOException e) {
+                    // Remember whether we were interrupted. kill() clears
+                    // the thread's interrupted state and we want to reset it
+                    // when we exit.
+                    wasInterrupted = Thread.currentThread().isInterrupted();
+                    kill(conn);
+                }
+            }
+        } finally {
+            if (wasInterrupted) {
+                Thread.currentThread().interrupt();
+            }
+        }
+    }
+    
+    private void readMessage(InputStream in, String message) throws IOException {
+        StringBuilder builder = new StringBuilder();
+        char c = 0;
+        while((c = (char)in.read()) != -1) {
+            builder.append(c);
+            if(message.equals(builder.toString())) {
+                return;
+            }
+            if(!message.startsWith(builder.toString())) {
+                throw new IOException("Expected '" + message + "' got '" + builder.toString() + "'");
+            }
+        }
+        throw new IOException("Expected '" + message + "' got '" + builder.toString() + "'");
+    }
+    
+    private void writeMessage(OutputStream out, String message) throws IOException {
+        for(int i = 0; i < message.length(); i++) {
+            out.write((byte)message.charAt(i));
+        }
+        out.flush();
+    }
+    
+    volatile boolean stop = false;
+    private int forward(IDeviceConnection conn, String appPath) throws Exception {                
+        boolean wasInterrupted = false;
+        Socket clientSocket = null;
+        
+        try(ServerSocket serverSocket = new ServerSocket(localPort)) {         
+            log("App path: " + appPath);
+            log("Waiting for GDB remote connection at http://127.0.0.1:" + localPort);
+            clientSocket = serverSocket.accept();
+            log("GDB remote client connected");
+        }
+        
+        try {
+            final InputStream in = clientSocket.getInputStream();
+            final OutputStream out = clientSocket.getOutputStream();                       
+            
+            while (true) {
+                try {
+                    // check if the client send us something and forward
+                    // it to the debug server. We may not get a full
+                    // command here, but we don't really care
+                    if(in.available() > 0) {
+                        byte[] buffer = new byte[in.available()];
+                        int readBytes = in.read(buffer);
+                        conn.send(buffer, 0, readBytes);
+                        debugGdb("Sending packet (client): " + new String(buffer, "ASCII"));
+                    }
+                    
+                    // check if we got a reply from the debug server, wait 
+                    // for 100 milliseconds
+                    try {
+                        String response = receiveGdbPacket(conn, 10);
+                        writeMessage(out, response);
+                        String payload = decode(response);
+                        if(payload.length() > 0) {
+                            if (payload.charAt(0) == 'W') {
+                                // The app exited. The number following W is the exit code.
+                                int exitCode = Integer.parseInt(payload.substring(1), 16);
+                                return exitCode;
+                            } else if (payload.charAt(0) == 'O') {
+                                // Console output encoded as hex.
+                                stdout.write(fromHex(payload.substring(1)));
+                            }
+                        }
+                    } catch(TimeoutException e) {
+                        // nothing to do here, we simply didn't receive a message
+                        // FIXME must actually react to this if debug server gets 
+                        // killed for some reason                        
+                    }
+                } catch (InterruptedIOException e) {
+                    // Remember whether we were interrupted. kill() clears
+                    // the thread's interrupted state and we want to reset it
+                    // when we exit.
+                    wasInterrupted = Thread.currentThread().isInterrupted();
+                    kill(conn);
+                }
+            }
+        } finally {
+            if(clientSocket != null) {
+                clientSocket.close();
+            }
+            if (wasInterrupted) {
+                Thread.currentThread().interrupt();
+            }
         }
     }
 
@@ -817,7 +931,7 @@ public class AppLauncher {
         } catch (RuntimeException e) {
             throw e;
         } catch (Exception e) {
-            throw new RuntimeException();
+            throw new RuntimeException(e);
         } finally {
             if (closeOutOnExit) {
                 try {
@@ -835,6 +949,7 @@ public class AppLauncher {
         System.err.println("  -b path   to app bundle directory or IPA containing the app to launch.");
         System.err.println("  -udid     id of the device to launch on. If not specified the first device will be used.");
         System.err.println("  -debug    enable debug output.");
+        System.err.println("  -f port   forwards the debug server connection to the local port after the app has launched");
         System.err.println("  -env name=value\n" 
                          + "            adds an environment variable with the specified name and value.");
         System.err.println("  -args ... the rest of the command line will be passed on as args to the app.");
@@ -848,6 +963,7 @@ public class AppLauncher {
         Map<String, String> env = new HashMap<>();
         boolean debug = false;
         String deviceId = null;
+        int forwardPort = -1;
         
         int i = 0;
         loop: while (i < args.length) {
@@ -861,6 +977,9 @@ public class AppLauncher {
                 break;
             case "-b":
                 localAppPath = new File(args[i++]);
+                break;
+            case "-f":
+                forwardPort = Integer.parseInt(args[i++]);
                 break;
             case "-udid":
                 deviceId = args[i++];
@@ -908,6 +1027,7 @@ public class AppLauncher {
                 .args(arguments)
                 .env(env)
                 .debug(debug)
+                .forward(forwardPort)
                 .launch());
     }
 }

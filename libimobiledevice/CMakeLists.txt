@@ -46,7 +46,7 @@ endif()
 set(EXTPREFIX "${CMAKE_BINARY_DIR}/ext")
 set(EXTCFLAGS "${C_CXX_FLAGS} -I${EXTPREFIX}/include -I${EXTPREFIX}/include/libusb-1.0 -I${EXTPREFIX}/include/libxml2")
 ExternalProject_Add(extlibxml
-  URL ftp://xmlsoft.org/libxml2/libxml2-2.9.1.tar.gz
+  URL http://xmlsoft.org/sources/libxml2-2.9.1.tar.gz
   CONFIGURE_COMMAND bash -c "CC=${CMAKE_C_COMPILER} CFLAGS='${EXTCFLAGS}' ./configure --enable-shared=no --prefix=${EXTPREFIX} --with-minimum=on --without-python --without-ftp --without-http --without-html --without-docbook --without-xpath --without-xinclude --without-xptr --without-c14n --without-catalog --without-valid --without-schemas --without-schematron --without-modules --without-lzma --without-zlib"
   BUILD_IN_SOURCE 1
 )

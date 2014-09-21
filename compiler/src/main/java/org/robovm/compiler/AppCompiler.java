@@ -588,7 +588,7 @@ public class AppCompiler {
                     if (arg.equals("-ios-sim-sdk")) {
                         if (launchParameters instanceof IOSSimulatorLaunchParameters) {
                             String value = launchArgs.get(i++);
-                            if (!value.matches("\\d+\\.\\d+(\\.\\d+)")) {
+                            if (!value.matches("\\d+\\.\\d+(\\.\\d+)?")) {
                                 throw new IllegalArgumentException("Illegal -ios-sim-sdk value: " + value);
                             }
                             ((IOSSimulatorLaunchParameters) launchParameters).setSdk(value);

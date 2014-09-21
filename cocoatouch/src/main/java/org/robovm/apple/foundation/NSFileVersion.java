@@ -72,18 +72,18 @@ import org.robovm.apple.security.*;
     /*<members>*//*</members>*/
     /*<methods>*/
     @Method(selector = "replaceItemAtURL:options:error:")
-    public native NSURL replaceItemAtURL$options$error$(NSURL url, NSFileVersionReplacingOptions options, NSError.NSErrorPtr error);
+    public native NSURL replaceItemAtURL(NSURL url, NSFileVersionReplacingOptions options, NSError.NSErrorPtr error);
     @Method(selector = "removeAndReturnError:")
-    public native boolean removeAndReturnError$(NSError.NSErrorPtr outError);
+    public native boolean remove(NSError.NSErrorPtr outError);
     @Method(selector = "currentVersionOfItemAtURL:")
-    public static native NSFileVersion currentVersionOfItemAtURL$(NSURL url);
+    public static native NSFileVersion getCurrentItemVersionAtURL(NSURL url);
     @Method(selector = "otherVersionsOfItemAtURL:")
-    public static native NSArray<?> otherVersionsOfItemAtURL$(NSURL url);
+    public static native NSArray<NSFileVersion> getOtherItemVersionsAtURL(NSURL url);
     @Method(selector = "unresolvedConflictVersionsOfItemAtURL:")
-    public static native NSArray<?> unresolvedConflictVersionsOfItemAtURL$(NSURL url);
+    public static native NSArray<NSFileVersion> getUnresolvedConflictItemVersionsAtURL(NSURL url);
     @Method(selector = "versionOfItemAtURL:forPersistentIdentifier:")
-    public static native NSFileVersion versionOfItemAtURL$forPersistentIdentifier$(NSURL url, NSObject persistentIdentifier);
+    public static native NSFileVersion getItemVersionAtURL(NSURL url, NSObject persistentIdentifier);
     @Method(selector = "removeOtherVersionsOfItemAtURL:error:")
-    public static native boolean removeOtherVersionsOfItemAtURL$error$(NSURL url, NSError.NSErrorPtr outError);
+    public static native boolean removeOtherItemVersionsAtURL(NSURL url, NSError.NSErrorPtr outError);
     /*</methods>*/
 }

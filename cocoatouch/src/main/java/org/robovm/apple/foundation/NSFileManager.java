@@ -58,32 +58,32 @@ import org.robovm.apple.security.*;
      * @since Available in iOS 4.0 and later.
      */
     @Method(selector = "mountedVolumeURLsIncludingResourceValuesForKeys:options:")
-    public native NSArray<?> mountedVolumeURLsIncludingResourceValuesForKeys$options$(NSArray<?> propertyKeys, NSVolumeEnumerationOptions options);
+    protected native NSArray<NSURL> getMountedVolumeURLsIncludingResourceValues(NSArray<NSString> propertyKeys, NSVolumeEnumerationOptions options);
     /**
      * @since Available in iOS 4.0 and later.
      */
     @Method(selector = "contentsOfDirectoryAtURL:includingPropertiesForKeys:options:error:")
-    public native NSArray<?> contentsOfDirectoryAtURL$includingPropertiesForKeys$options$error$(NSURL url, NSArray<?> keys, NSDirectoryEnumerationOptions mask, NSError.NSErrorPtr error);
+    protected native NSArray<NSURL> getContentsOfDirectoryAtURL(NSURL url, NSArray<NSString> keys, NSDirectoryEnumerationOptions mask, NSError.NSErrorPtr error);
     /**
      * @since Available in iOS 4.0 and later.
      */
     @Method(selector = "URLsForDirectory:inDomains:")
-    public native NSArray<?> URLsForDirectory$inDomains$(NSSearchPathDirectory directory, NSSearchPathDomainMask domainMask);
+    public native NSArray<NSURL> getURLsForDirectory(NSSearchPathDirectory directory, NSSearchPathDomainMask domainMask);
     /**
      * @since Available in iOS 4.0 and later.
      */
     @Method(selector = "URLForDirectory:inDomain:appropriateForURL:create:error:")
-    public native NSURL URLForDirectory$inDomain$appropriateForURL$create$error$(NSSearchPathDirectory directory, NSSearchPathDomainMask domain, NSURL url, boolean shouldCreate, NSError.NSErrorPtr error);
+    public native NSURL getURLForDirectory(NSSearchPathDirectory directory, NSSearchPathDomainMask domain, NSURL url, boolean shouldCreate, NSError.NSErrorPtr error);
     /**
      * @since Available in iOS 5.0 and later.
      */
     @Method(selector = "createDirectoryAtURL:withIntermediateDirectories:attributes:error:")
-    public native boolean createDirectoryAtURL$withIntermediateDirectories$attributes$error$(NSURL url, boolean createIntermediates, NSDictionary<?, ?> attributes, NSError.NSErrorPtr error);
+    public native boolean createDirectoryAtURL(NSURL url, boolean createIntermediates, NSFileAttributes attributes, NSError.NSErrorPtr error);
     /**
      * @since Available in iOS 5.0 and later.
      */
     @Method(selector = "createSymbolicLinkAtURL:withDestinationURL:error:")
-    public native boolean createSymbolicLinkAtURL$withDestinationURL$error$(NSURL url, NSURL destURL, NSError.NSErrorPtr error);
+    public native boolean createSymbolicLinkAtURL(NSURL url, NSURL destURL, NSError.NSErrorPtr error);
     /**
      * @since Available in iOS 2.0 and later.
      */
@@ -98,216 +98,167 @@ import org.robovm.apple.security.*;
      * @since Available in iOS 2.0 and later.
      */
     @Method(selector = "setAttributes:ofItemAtPath:error:")
-    public native boolean setAttributes$ofItemAtPath$error$(NSDictionary<?, ?> attributes, String path, NSError.NSErrorPtr error);
+    public native boolean setAttributesForItem(NSFileAttributes attributes, String path, NSError.NSErrorPtr error);
     /**
      * @since Available in iOS 2.0 and later.
      */
     @Method(selector = "createDirectoryAtPath:withIntermediateDirectories:attributes:error:")
-    public native boolean createDirectoryAtPath$withIntermediateDirectories$attributes$error$(String path, boolean createIntermediates, NSDictionary<?, ?> attributes, NSError.NSErrorPtr error);
+    public native boolean createDirectoryAtPath(String path, boolean createIntermediates, NSFileAttributes attributes, NSError.NSErrorPtr error);
     /**
      * @since Available in iOS 2.0 and later.
      */
     @Method(selector = "contentsOfDirectoryAtPath:error:")
-    public native NSArray<?> contentsOfDirectoryAtPath$error$(String path, NSError.NSErrorPtr error);
+    public native NSArray<NSURL> getContentsOfDirectoryAtPath(String path, NSError.NSErrorPtr error);
     /**
      * @since Available in iOS 2.0 and later.
      */
     @Method(selector = "subpathsOfDirectoryAtPath:error:")
-    public native NSArray<?> subpathsOfDirectoryAtPath$error$(String path, NSError.NSErrorPtr error);
+    public native @org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String> getSubpathsOfDirectoryAtPath(String path, NSError.NSErrorPtr error);
     /**
      * @since Available in iOS 2.0 and later.
      */
     @Method(selector = "attributesOfItemAtPath:error:")
-    public native NSDictionary<?, ?> attributesOfItemAtPath$error$(String path, NSError.NSErrorPtr error);
+    public native NSFileAttributes getAttributesOfItemAtPath(String path, NSError.NSErrorPtr error);
     /**
      * @since Available in iOS 2.0 and later.
      */
     @Method(selector = "attributesOfFileSystemForPath:error:")
-    public native NSDictionary<?, ?> attributesOfFileSystemForPath$error$(String path, NSError.NSErrorPtr error);
+    public native NSFileSystemAttributes getAttributesOfFileSystemAtPath(String path, NSError.NSErrorPtr error);
     /**
      * @since Available in iOS 2.0 and later.
      */
     @Method(selector = "createSymbolicLinkAtPath:withDestinationPath:error:")
-    public native boolean createSymbolicLinkAtPath$withDestinationPath$error$(String path, String destPath, NSError.NSErrorPtr error);
+    public native boolean createSymbolicLinkAtPath(String path, String destPath, NSError.NSErrorPtr error);
     /**
      * @since Available in iOS 2.0 and later.
      */
     @Method(selector = "destinationOfSymbolicLinkAtPath:error:")
-    public native String destinationOfSymbolicLinkAtPath$error$(String path, NSError.NSErrorPtr error);
+    public native String getDestinationOfSymbolicLinkAtPath(String path, NSError.NSErrorPtr error);
     /**
      * @since Available in iOS 2.0 and later.
      */
     @Method(selector = "copyItemAtPath:toPath:error:")
-    public native boolean copyItemAtPath$toPath$error$(String srcPath, String dstPath, NSError.NSErrorPtr error);
+    public native boolean copyItemAtPath(String srcPath, String dstPath, NSError.NSErrorPtr error);
     /**
      * @since Available in iOS 2.0 and later.
      */
     @Method(selector = "moveItemAtPath:toPath:error:")
-    public native boolean moveItemAtPath$toPath$error$(String srcPath, String dstPath, NSError.NSErrorPtr error);
+    public native boolean moveItemAtPath(String srcPath, String dstPath, NSError.NSErrorPtr error);
     /**
      * @since Available in iOS 2.0 and later.
      */
     @Method(selector = "linkItemAtPath:toPath:error:")
-    public native boolean linkItemAtPath$toPath$error$(String srcPath, String dstPath, NSError.NSErrorPtr error);
+    public native boolean linkItemAtPath(String srcPath, String dstPath, NSError.NSErrorPtr error);
     /**
      * @since Available in iOS 2.0 and later.
      */
     @Method(selector = "removeItemAtPath:error:")
-    public native boolean removeItemAtPath$error$(String path, NSError.NSErrorPtr error);
+    public native boolean removeItemAtPath(String path, NSError.NSErrorPtr error);
     /**
      * @since Available in iOS 4.0 and later.
      */
     @Method(selector = "copyItemAtURL:toURL:error:")
-    public native boolean copyItemAtURL$toURL$error$(NSURL srcURL, NSURL dstURL, NSError.NSErrorPtr error);
+    public native boolean copyItemAtURL(NSURL srcURL, NSURL dstURL, NSError.NSErrorPtr error);
     /**
      * @since Available in iOS 4.0 and later.
      */
     @Method(selector = "moveItemAtURL:toURL:error:")
-    public native boolean moveItemAtURL$toURL$error$(NSURL srcURL, NSURL dstURL, NSError.NSErrorPtr error);
+    public native boolean moveItemAtURL(NSURL srcURL, NSURL dstURL, NSError.NSErrorPtr error);
     /**
      * @since Available in iOS 4.0 and later.
      */
     @Method(selector = "linkItemAtURL:toURL:error:")
-    public native boolean linkItemAtURL$toURL$error$(NSURL srcURL, NSURL dstURL, NSError.NSErrorPtr error);
+    public native boolean linkItemAtURL(NSURL srcURL, NSURL dstURL, NSError.NSErrorPtr error);
     /**
      * @since Available in iOS 4.0 and later.
      */
     @Method(selector = "removeItemAtURL:error:")
-    public native boolean removeItemAtURL$error$(NSURL URL, NSError.NSErrorPtr error);
-    /**
-     * @since Available in iOS 2.0 and later.
-     * @deprecated Deprecated in iOS 2.0.
-     */
-    @Deprecated
-    @Method(selector = "fileAttributesAtPath:traverseLink:")
-    public native NSDictionary<?, ?> fileAttributesAtPath$traverseLink$(String path, boolean yorn);
-    /**
-     * @since Available in iOS 2.0 and later.
-     * @deprecated Deprecated in iOS 2.0.
-     */
-    @Deprecated
-    @Method(selector = "changeFileAttributes:atPath:")
-    public native boolean changeFileAttributes$atPath$(NSDictionary<?, ?> attributes, String path);
-    /**
-     * @since Available in iOS 2.0 and later.
-     * @deprecated Deprecated in iOS 2.0.
-     */
-    @Deprecated
-    @Method(selector = "directoryContentsAtPath:")
-    public native NSArray<?> directoryContentsAtPath$(String path);
-    /**
-     * @since Available in iOS 2.0 and later.
-     * @deprecated Deprecated in iOS 2.0.
-     */
-    @Deprecated
-    @Method(selector = "fileSystemAttributesAtPath:")
-    public native NSDictionary<?, ?> fileSystemAttributesAtPath$(String path);
-    /**
-     * @since Available in iOS 2.0 and later.
-     * @deprecated Deprecated in iOS 2.0.
-     */
-    @Deprecated
-    @Method(selector = "pathContentOfSymbolicLinkAtPath:")
-    public native String pathContentOfSymbolicLinkAtPath$(String path);
-    /**
-     * @since Available in iOS 2.0 and later.
-     * @deprecated Deprecated in iOS 2.0.
-     */
-    @Deprecated
-    @Method(selector = "createSymbolicLinkAtPath:pathContent:")
-    public native boolean createSymbolicLinkAtPath$pathContent$(String path, String otherpath);
-    /**
-     * @since Available in iOS 2.0 and later.
-     * @deprecated Deprecated in iOS 2.0.
-     */
-    @Deprecated
-    @Method(selector = "createDirectoryAtPath:attributes:")
-    public native boolean createDirectoryAtPath$attributes$(String path, NSDictionary<?, ?> attributes);
+    public native boolean removeItemAtURL(NSURL URL, NSError.NSErrorPtr error);
     @Method(selector = "currentDirectoryPath")
-    public native String currentDirectoryPath();
+    public native String getCurrentDirectoryPath();
     @Method(selector = "changeCurrentDirectoryPath:")
-    public native boolean changeCurrentDirectoryPath$(String path);
+    public native boolean changeCurrentDirectoryPath(String path);
     @Method(selector = "fileExistsAtPath:")
-    public native boolean fileExistsAtPath$(String path);
+    public native boolean fileExists(String path);
     @Method(selector = "fileExistsAtPath:isDirectory:")
-    public native boolean fileExistsAtPath$isDirectory$(String path, BytePtr isDirectory);
+    protected native boolean fileExists(String path, BytePtr isDirectory);
     @Method(selector = "isReadableFileAtPath:")
-    public native boolean isReadableFileAtPath$(String path);
+    public native boolean fileIsReadable(String path);
     @Method(selector = "isWritableFileAtPath:")
-    public native boolean isWritableFileAtPath$(String path);
+    public native boolean fileIsWritable(String path);
     @Method(selector = "isExecutableFileAtPath:")
-    public native boolean isExecutableFileAtPath$(String path);
+    public native boolean fileIsExecutable(String path);
     @Method(selector = "isDeletableFileAtPath:")
-    public native boolean isDeletableFileAtPath$(String path);
+    public native boolean fileIsDeletable(String path);
     @Method(selector = "contentsEqualAtPath:andPath:")
-    public native boolean contentsEqualAtPath$andPath$(String path1, String path2);
+    public native boolean contentsAtPathEqual(String path1, String path2);
     @Method(selector = "displayNameAtPath:")
-    public native String displayNameAtPath$(String path);
+    public native String getDisplayNameAtPath(String path);
     @Method(selector = "componentsToDisplayForPath:")
-    public native NSArray<?> componentsToDisplayForPath$(String path);
+    public native @org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String> getComponentsToDisplayForPath(String path);
     @Method(selector = "enumeratorAtPath:")
-    public native NSDirectoryEnumerator enumeratorAtPath$(String path);
+    public native NSDirectoryEnumerator getEnumeratorAtPath(String path);
     /**
      * @since Available in iOS 4.0 and later.
      */
     @Method(selector = "enumeratorAtURL:includingPropertiesForKeys:options:errorHandler:")
-    public native NSDirectoryEnumerator enumeratorAtURL$includingPropertiesForKeys$options$errorHandler$(NSURL url, NSArray<?> keys, NSDirectoryEnumerationOptions mask, @Block Block2<NSURL, NSError, Boolean> handler);
+    protected native NSDirectoryEnumerator getEnumeratorAtURL(NSURL url, NSArray<NSString> keys, NSDirectoryEnumerationOptions mask, @Block Block2<NSURL, NSError, Boolean> handler);
     @Method(selector = "subpathsAtPath:")
-    public native NSArray<?> subpathsAtPath$(String path);
+    public native @org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String> getSubpathsAtPath(String path);
     @Method(selector = "contentsAtPath:")
-    public native NSData contentsAtPath$(String path);
+    public native NSData getContentsAtPath(String path);
     @Method(selector = "createFileAtPath:contents:attributes:")
-    public native boolean createFileAtPath$contents$attributes$(String path, NSData data, NSDictionary<?, ?> attr);
+    public native boolean createFileAtPath(String path, NSData data, NSFileAttributes attr);
     @Method(selector = "fileSystemRepresentationWithPath:")
-    public native BytePtr fileSystemRepresentationWithPath$(String path);
+    public native @org.robovm.rt.bro.annotation.Marshaler(StringMarshalers.AsDefaultCharsetZMarshaler.class) String getFileSystemRepresentationForPath(String path);
     @Method(selector = "stringWithFileSystemRepresentation:length:")
-    public native String stringWithFileSystemRepresentation$length$(BytePtr str, @MachineSizedUInt long len);
+    public native String getPathForFileSystemRepresentation(BytePtr str, @MachineSizedUInt long len);
     /**
      * @since Available in iOS 4.0 and later.
      */
     @Method(selector = "replaceItemAtURL:withItemAtURL:backupItemName:options:resultingItemURL:error:")
-    public native boolean replaceItemAtURL$withItemAtURL$backupItemName$options$resultingItemURL$error$(NSURL originalItemURL, NSURL newItemURL, String backupItemName, NSFileManagerItemReplacementOptions options, NSURL.NSURLPtr resultingURL, NSError.NSErrorPtr error);
+    public native boolean replaceItemAtURL(NSURL originalItemURL, NSURL newItemURL, String backupItemName, NSFileManagerItemReplacementOptions options, NSURL.NSURLPtr resultingURL, NSError.NSErrorPtr error);
     /**
      * @since Available in iOS 5.0 and later.
      */
     @Method(selector = "setUbiquitous:itemAtURL:destinationURL:error:")
-    public native boolean setUbiquitous$itemAtURL$destinationURL$error$(boolean flag, NSURL url, NSURL destinationURL, NSError.NSErrorPtr error);
+    public native boolean setUbiquitousItemAtURL(boolean flag, NSURL url, NSURL destinationURL, NSError.NSErrorPtr error);
     /**
      * @since Available in iOS 5.0 and later.
      */
     @Method(selector = "isUbiquitousItemAtURL:")
-    public native boolean isUbiquitousItemAtURL$(NSURL url);
+    public native boolean isUbiquitousItemAtURL(NSURL url);
     /**
      * @since Available in iOS 5.0 and later.
      */
     @Method(selector = "startDownloadingUbiquitousItemAtURL:error:")
-    public native boolean startDownloadingUbiquitousItemAtURL$error$(NSURL url, NSError.NSErrorPtr error);
+    public native boolean startDownloadingUbiquitousItemAtURL(NSURL url, NSError.NSErrorPtr error);
     /**
      * @since Available in iOS 5.0 and later.
      */
     @Method(selector = "evictUbiquitousItemAtURL:error:")
-    public native boolean evictUbiquitousItemAtURL$error$(NSURL url, NSError.NSErrorPtr error);
+    public native boolean evictUbiquitousItemAtURL(NSURL url, NSError.NSErrorPtr error);
     /**
      * @since Available in iOS 5.0 and later.
      */
     @Method(selector = "URLForUbiquityContainerIdentifier:")
-    public native NSURL URLForUbiquityContainerIdentifier$(String containerIdentifier);
+    public native NSURL getURLForUbiquityContainerIdentifier(String containerIdentifier);
     /**
      * @since Available in iOS 5.0 and later.
      */
     @Method(selector = "URLForPublishingUbiquitousItemAtURL:expirationDate:error:")
-    public native NSURL URLForPublishingUbiquitousItemAtURL$expirationDate$error$(NSURL url, NSDate.NSDatePtr outDate, NSError.NSErrorPtr error);
+    public native NSURL getURLForPublishingUbiquitousItemAtURL(NSURL url, NSDate.NSDatePtr outDate, NSError.NSErrorPtr error);
     /**
      * @since Available in iOS 6.0 and later.
      */
     @Method(selector = "ubiquityIdentityToken")
-    public native NSObject ubiquityIdentityToken();
+    public native NSObject getUbiquityIdentityToken();
     /**
      * @since Available in iOS 7.0 and later.
      */
     @Method(selector = "containerURLForSecurityApplicationGroupIdentifier:")
-    public native NSURL containerURLForSecurityApplicationGroupIdentifier$(String groupIdentifier);
+    public native NSURL getContainerURLForSecurityApplication(String groupIdentifier);
     @Method(selector = "defaultManager")
-    public static native NSFileManager defaultManager();
+    public static native NSFileManager getDefaultManager();
     /*</methods>*/
 }

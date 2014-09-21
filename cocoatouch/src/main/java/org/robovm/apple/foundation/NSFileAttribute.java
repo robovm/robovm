@@ -19,7 +19,6 @@ package org.robovm.apple.foundation;
 import java.io.*;
 import java.nio.*;
 import java.util.*;
-
 import org.robovm.objc.*;
 import org.robovm.objc.annotation.*;
 import org.robovm.objc.block.*;
@@ -54,7 +53,6 @@ import org.robovm.apple.security.*;
     public static final NSFileAttribute OwnerAccountName = new NSFileAttribute("OwnerAccountNameAttribute");
     public static final NSFileAttribute GroupOwnerAccountName = new NSFileAttribute("GroupOwnerAccountNameAttribute");
     public static final NSFileAttribute PosixPermissions = new NSFileAttribute("PosixPermissionsAttribute");
-    public static final NSFileAttribute SystemNumber = new NSFileAttribute("SystemNumberAttribute");
     public static final NSFileAttribute SystemFileNumber = new NSFileAttribute("SystemFileNumberAttribute");
     public static final NSFileAttribute ExtensionHidden = new NSFileAttribute("ExtensionHiddenAttribute");
     public static final NSFileAttribute HFSCreatorCode = new NSFileAttribute("HFSCreatorCodeAttribute");
@@ -70,7 +68,7 @@ import org.robovm.apple.security.*;
      */
     public static final NSFileAttribute ProtectionKey = new NSFileAttribute("ProtectionKeyAttribute");
     private static NSFileAttribute[] values = new NSFileAttribute[] {Type, Size, ModificationDate, ReferenceCount, DeviceIdentifier, OwnerAccountName, GroupOwnerAccountName, 
-        PosixPermissions, SystemNumber, SystemFileNumber, ExtensionHidden, HFSCreatorCode, HFSTypeCode, Immutable, AppendOnly, CreationDate, OwnerAccountID, GroupOwnerAccountID, 
+        PosixPermissions, SystemFileNumber, ExtensionHidden, HFSCreatorCode, HFSTypeCode, Immutable, AppendOnly, CreationDate, OwnerAccountID, GroupOwnerAccountID, 
         Busy, ProtectionKey};
     
     private final LazyGlobalValue<NSString> lazyGlobalValue;
@@ -111,8 +109,6 @@ import org.robovm.apple.security.*;
     protected static native NSString GroupOwnerAccountNameAttribute();
     @GlobalValue(symbol="NSFilePosixPermissions", optional=true)
     protected static native NSString PosixPermissionsAttribute();
-    @GlobalValue(symbol="NSFileSystemNumber", optional=true)
-    protected static native NSString SystemNumberAttribute();
     @GlobalValue(symbol="NSFileSystemFileNumber", optional=true)
     protected static native NSString SystemFileNumberAttribute();
     @GlobalValue(symbol="NSFileExtensionHidden", optional=true)

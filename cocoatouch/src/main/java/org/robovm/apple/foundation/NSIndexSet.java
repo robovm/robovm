@@ -118,32 +118,32 @@ import org.robovm.apple.security.*;
      * @since Available in iOS 4.0 and later.
      */
     @Method(selector = "indexPassingTest:")
-    public native @MachineSizedUInt long getIndexPassingTest(@Block("(@MachineSizedUInt,)") Block2<Long, BytePtr, Boolean> predicate);
+    public native @MachineSizedUInt long getIndexPassingTest(@Block("(@MachineSizedUInt,,)") Block2<Long, BytePtr, Boolean> predicate);
     /**
      * @since Available in iOS 4.0 and later.
      */
     @Method(selector = "indexWithOptions:passingTest:")
-    public native @MachineSizedUInt long getIndexPassingTest(NSEnumerationOptions opts, @Block("(@MachineSizedUInt,)") Block2<Long, BytePtr, Boolean> predicate);
+    public native @MachineSizedUInt long getIndexPassingTest(NSEnumerationOptions opts, @Block("(@MachineSizedUInt,,)") Block2<Long, BytePtr, Boolean> predicate);
     /**
      * @since Available in iOS 4.0 and later.
      */
     @Method(selector = "indexInRange:options:passingTest:")
-    public native @MachineSizedUInt long getIndexInRangePassingTest(@ByVal NSRange range, NSEnumerationOptions opts, @Block("(@MachineSizedUInt,)") Block2<Long, BytePtr, Boolean> predicate);
+    public native @MachineSizedUInt long getIndexInRangePassingTest(@ByVal NSRange range, NSEnumerationOptions opts, @Block("(@MachineSizedUInt,,)") Block2<Long, BytePtr, Boolean> predicate);
     /**
      * @since Available in iOS 4.0 and later.
      */
     @Method(selector = "indexesPassingTest:")
-    public native NSIndexSet getIndexesPassingTest(@Block("(@MachineSizedUInt,)") Block2<Long, BytePtr, Boolean> predicate);
+    public native NSIndexSet getIndexesPassingTest(@Block("(@MachineSizedUInt,,)") Block2<Long, BytePtr, Boolean> predicate);
     /**
      * @since Available in iOS 4.0 and later.
      */
     @Method(selector = "indexesWithOptions:passingTest:")
-    public native NSIndexSet getIndexesPassingTest(NSEnumerationOptions opts, @Block("(@MachineSizedUInt,)") Block2<Long, BytePtr, Boolean> predicate);
+    public native NSIndexSet getIndexesPassingTest(NSEnumerationOptions opts, @Block("(@MachineSizedUInt,,)") Block2<Long, BytePtr, Boolean> predicate);
     /**
      * @since Available in iOS 4.0 and later.
      */
     @Method(selector = "indexesInRange:options:passingTest:")
-    public native NSIndexSet getIndexesInRangePassingTest(@ByVal NSRange range, NSEnumerationOptions opts, @Block("(@MachineSizedUInt,)") Block2<Long, BytePtr, Boolean> predicate);
+    public native NSIndexSet getIndexesInRangePassingTest(@ByVal NSRange range, NSEnumerationOptions opts, @Block("(@MachineSizedUInt,,)") Block2<Long, BytePtr, Boolean> predicate);
     /**
      * @since Available in iOS 5.0 and later.
      */

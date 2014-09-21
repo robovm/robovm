@@ -869,11 +869,179 @@ classes:
 
     NSFileCoordinator: {}
     NSFileHandle: {}
-    NSFileManager:
+    NSFileManager: # DONE
+        properties:
+            'delegate':
+                type: NSFileManagerDelegate
         methods:
+            '-mountedVolumeURLsIncludingResourceValuesForKeys:options:':
+                name: getMountedVolumeURLsIncludingResourceValues
+                return_type: "NSArray<NSURL>"
+                visibility: protected
+                parameters:
+                    propertyKeys:
+                        type: "NSArray<NSString>"
+            '-contentsOfDirectoryAtURL:includingPropertiesForKeys:options:error:':
+                name: getContentsOfDirectoryAtURL
+                return_type: "NSArray<NSURL>"
+                visibility: protected
+                parameters:
+                    keys:
+                        type: "NSArray<NSString>"
+            '-URLsForDirectory:inDomains:':
+                name: getURLsForDirectory
+                return_type: "NSArray<NSURL>"
+            '-URLForDirectory:inDomain:appropriateForURL:create:error:':
+                name: getURLForDirectory
+            '-createDirectoryAtURL:withIntermediateDirectories:attributes:error:':
+                trim_after_first_colon: true
+                parameters:
+                    attributes:
+                        type: NSFileAttributes
+            '-createSymbolicLinkAtURL:withDestinationURL:error:':
+                trim_after_first_colon: true
+            '-setAttributes:ofItemAtPath:error:':
+                name: setAttributesForItem
+                parameters:
+                    attributes:
+                        type: NSFileAttributes
+            '-createDirectoryAtPath:withIntermediateDirectories:attributes:error:':
+                trim_after_first_colon: true
+                parameters:
+                    attributes:
+                        type: NSFileAttributes
+            '-contentsOfDirectoryAtPath:error:':
+                name: getContentsOfDirectoryAtPath
+                return_type: "NSArray<NSURL>"
+            '-subpathsOfDirectoryAtPath:error:':
+                name: getSubpathsOfDirectoryAtPath
+                return_type: "@org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String>"
+            '-attributesOfItemAtPath:error:':
+                name: getAttributesOfItemAtPath
+                return_type: NSFileAttributes
+            '-attributesOfFileSystemForPath:error:':
+                name: getAttributesOfFileSystemAtPath
+                return_type: NSFileSystemAttributes
+            '-createSymbolicLinkAtPath:withDestinationPath:error:':
+                trim_after_first_colon: true
+            '-destinationOfSymbolicLinkAtPath:error:':
+                name: getDestinationOfSymbolicLinkAtPath
+            '-copyItemAtPath:toPath:error:':
+                trim_after_first_colon: true
+            '-moveItemAtPath:toPath:error:':
+                trim_after_first_colon: true
+            '-linkItemAtPath:toPath:error:':
+                trim_after_first_colon: true
+            '-removeItemAtPath:error:':
+                trim_after_first_colon: true
+            '-copyItemAtURL:toURL:error:':
+                trim_after_first_colon: true
+            '-moveItemAtURL:toURL:error:':
+                trim_after_first_colon: true
+            '-linkItemAtURL:toURL:error:':
+                trim_after_first_colon: true
+            '-removeItemAtURL:error:':
+                trim_after_first_colon: true
+            '-fileAttributesAtPath:traverseLink:':
+                exclude: true
+            '-changeFileAttributes:atPath:':
+                exclude: true
+            '-directoryContentsAtPath:':
+                exclude: true
+            '-fileSystemAttributesAtPath:':
+                exclude: true
+            '-pathContentOfSymbolicLinkAtPath:':
+                exclude: true
+            '-createSymbolicLinkAtPath:pathContent:':
+                exclude: true
+            '-createDirectoryAtPath:attributes:':
+                exclude: true
+            '-currentDirectoryPath':
+                property: true
+            '-changeCurrentDirectoryPath:':
+                trim_after_first_colon: true
+            '-fileExistsAtPath:':
+                name: fileExists
+            '-fileExistsAtPath:isDirectory:':
+                name: fileExists
+                visibility: protected
+            '-isReadableFileAtPath:':
+                name: fileIsReadable
+            '-isWritableFileAtPath:':
+                name: fileIsWritable
+            '-isExecutableFileAtPath:':
+                name: fileIsExecutable
+            '-isDeletableFileAtPath:':
+                name: fileIsDeletable
+            '-contentsEqualAtPath:andPath:':
+                name: contentsAtPathEqual
+            '-displayNameAtPath:':
+                name: getDisplayNameAtPath
+            '-componentsToDisplayForPath:':
+                name: getComponentsToDisplayForPath
+                return_type: "@org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String>"
+            '-enumeratorAtPath:':
+                name: getEnumeratorAtPath
+            '-enumeratorAtURL:includingPropertiesForKeys:options:errorHandler:':
+                name: getEnumeratorAtURL
+                visibility: protected
+                parameters:
+                    keys:
+                        type: "NSArray<NSString>"
+            '-subpathsAtPath:':
+                name: getSubpathsAtPath
+                return_type: "@org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String>"
+            '-contentsAtPath:':
+                name: getContentsAtPath
+            '-createFileAtPath:contents:attributes:':
+                name: createFileAtPath
+                parameters:
+                    attr:
+                        type: NSFileAttributes
+            '-fileSystemRepresentationWithPath:':
+                name: getFileSystemRepresentationForPath
+                return_type: "@org.robovm.rt.bro.annotation.Marshaler(StringMarshalers.AsDefaultCharsetZMarshaler.class) String"
+            '-stringWithFileSystemRepresentation:length:':
+                name: getPathForFileSystemRepresentation
+            '-replaceItemAtURL:withItemAtURL:backupItemName:options:resultingItemURL:error:':
+                name: replaceItemAtURL
+            '-setUbiquitous:itemAtURL:destinationURL:error:':
+                name: setUbiquitousItemAtURL
+            '-isUbiquitousItemAtURL:':
+                trim_after_first_colon: true
+            '-startDownloadingUbiquitousItemAtURL:error:':
+                trim_after_first_colon: true
+            '-evictUbiquitousItemAtURL:error:':
+                trim_after_first_colon: true
+            '-URLForUbiquityContainerIdentifier:':
+                name: getURLForUbiquityContainerIdentifier
+            '-URLForPublishingUbiquitousItemAtURL:expirationDate:error:':
+                name: getURLForPublishingUbiquitousItemAtURL
             '-ubiquityIdentityToken':
+                property: true
                 return_type: NSObject
-    NSFileVersion: {}
+            '-containerURLForSecurityApplicationGroupIdentifier:':
+                name: getContainerURLForSecurityApplication
+            '+defaultManager':
+                property: true
+    NSFileVersion: # DONE
+        methods:
+            '-replaceItemAtURL:options:error:':
+                trim_after_first_colon: true
+            '-removeAndReturnError:':
+                name: remove
+            '+currentVersionOfItemAtURL:':
+                name: getCurrentItemVersionAtURL
+            '+otherVersionsOfItemAtURL:':
+                name: getOtherItemVersionsAtURL
+                return_type: "NSArray<NSFileVersion>"
+            '+unresolvedConflictVersionsOfItemAtURL:':
+                name: getUnresolvedConflictItemVersionsAtURL
+                return_type: "NSArray<NSFileVersion>"
+            '+versionOfItemAtURL:forPersistentIdentifier:':
+                name: getItemVersionAtURL
+            '+removeOtherVersionsOfItemAtURL:error:':
+                name: removeOtherItemVersionsAtURL
     NSFileWrapper: # DONE
         methods:
             '-initDirectoryWithFileWrappers:':
@@ -906,6 +1074,7 @@ classes:
             '-removeFileWrapper:':
                 trim_after_first_colon: true
             '-fileWrappers':
+                property: true
                 return_type: "NSDictionary<NSString, NSFileWrapper>"
             '-keyForFileWrapper:':
                 name: getKeyForFileWrapper
@@ -1039,32 +1208,32 @@ classes:
                 name: getIndexPassingTest
                 parameters:
                     predicate:
-                        type: '@Block("@MachineSizedUInt,,") Block2<Long, BytePtr, Boolean>'
+                        type: '@Block("(@MachineSizedUInt,,)") Block2<Long, BytePtr, Boolean>'
             '-indexWithOptions:passingTest:':
                 name: getIndexPassingTest
                 parameters:
                     predicate:
-                        type: '@Block("@MachineSizedUInt,,") Block2<Long, BytePtr, Boolean>'
+                        type: '@Block("(@MachineSizedUInt,,)") Block2<Long, BytePtr, Boolean>'
             '-indexInRange:options:passingTest:':
                 name: getIndexInRangePassingTest
                 parameters:
                     predicate:
-                        type: '@Block("@MachineSizedUInt,,") Block2<Long, BytePtr, Boolean>'
+                        type: '@Block("(@MachineSizedUInt,,)") Block2<Long, BytePtr, Boolean>'
             '-indexesPassingTest:':
                 name: getIndexesPassingTest
                 parameters:
                     predicate:
-                        type: '@Block("@MachineSizedUInt,,") Block2<Long, BytePtr, Boolean>'
+                        type: '@Block("(@MachineSizedUInt,,)") Block2<Long, BytePtr, Boolean>'
             '-indexesWithOptions:passingTest:':
                 name: getIndexesPassingTest
                 parameters:
                     predicate:
-                        type: '@Block("@MachineSizedUInt,,") Block2<Long, BytePtr, Boolean>'
+                        type: '@Block("(@MachineSizedUInt,,)") Block2<Long, BytePtr, Boolean>'
             '-indexesInRange:options:passingTest:':
                 name: getIndexesInRangePassingTest
                 parameters:
                     predicate:
-                        type: '@Block("@MachineSizedUInt,,") Block2<Long, BytePtr, Boolean>'
+                        type: '@Block("(@MachineSizedUInt,,)") Block2<Long, BytePtr, Boolean>'
             '-enumerateRangesUsingBlock:':
                 name: enumerateRanges
             '-enumerateRangesWithOptions:usingBlock:':
@@ -2163,8 +2332,72 @@ protocols:
 
     NSErrorRecoveryAttempting: {}
 #    NSFastEnumeration: {}
-    NSFileManagerDelegate: {}
-    NSFilePresenter: {}
+    NSFileManagerDelegate: # DONE
+        methods:
+            '-fileManager:shouldCopyItemAtPath:toPath:':
+                name: shouldCopyItemAtPath
+            '-fileManager:shouldCopyItemAtURL:toURL:':
+                name: shouldCopyItemAtURL
+            '-fileManager:shouldProceedAfterError:copyingItemAtPath:toPath:':
+                name: shouldProceedCopyingItemAtPath
+            '-fileManager:shouldProceedAfterError:copyingItemAtURL:toURL:':
+                name: shouldProceedCopyingItemAtURL
+            '-fileManager:shouldMoveItemAtPath:toPath:':
+                name: shouldMoveItemAtPath
+            '-fileManager:shouldMoveItemAtURL:toURL:':
+                name: shouldMoveItemAtURL
+            '-fileManager:shouldProceedAfterError:movingItemAtPath:toPath:':
+                name: shouldProceedMovingItemAtPath
+            '-fileManager:shouldProceedAfterError:movingItemAtURL:toURL:':
+                name: shouldProceedMovingItemAtURL
+            '-fileManager:shouldLinkItemAtPath:toPath:':
+                name: shouldLinkItemAtPath
+            '-fileManager:shouldLinkItemAtURL:toURL:':
+                name: shouldLinkItemAtURL
+            '-fileManager:shouldProceedAfterError:linkingItemAtPath:toPath:':
+                name: shouldProceedLinkingItemAtPath
+            '-fileManager:shouldProceedAfterError:linkingItemAtURL:toURL:':
+                name: shouldProceedLinkingItemAtURL
+            '-fileManager:shouldRemoveItemAtPath:':
+                name: shouldRemoveItemAtPath
+            '-fileManager:shouldRemoveItemAtURL:':
+                name: shouldRemoveItemAtURL
+            '-fileManager:shouldProceedAfterError:removingItemAtPath:':
+                name: shouldProceedRemovingItemAtPath
+            '-fileManager:shouldProceedAfterError:removingItemAtURL:':
+                name: shouldProceedRemovingItemAtURL
+    NSFilePresenter: # DONE
+        methods:
+            '-relinquishPresentedItemToReader:':
+                trim_after_first_colon: true
+            '-relinquishPresentedItemToWriter:':
+                trim_after_first_colon: true
+            '-savePresentedItemChangesWithCompletionHandler:':
+                name: savePresentedItemChanges
+            '-accommodatePresentedItemDeletionWithCompletionHandler:':
+                name: accommodatePresentedItemDeletion
+            '-presentedItemDidMoveToURL:':
+                trim_after_first_colon: true
+            '-presentedItemDidGainVersion:':
+                trim_after_first_colon: true
+            '-presentedItemDidLoseVersion:':
+                trim_after_first_colon: true
+            '-presentedItemDidResolveConflictVersion:':
+                trim_after_first_colon: true
+            '-accommodatePresentedSubitemDeletionAtURL:completionHandler:':
+                trim_after_first_colon: true
+            '-presentedSubitemDidAppearAtURL:':
+                trim_after_first_colon: true
+            '-presentedSubitemAtURL:didMoveToURL:':
+                name: presentedSubitemAtURLDidMoveToURL
+            '-presentedSubitemDidChangeAtURL:':
+                trim_after_first_colon: true
+            '-presentedSubitemAtURL:didGainVersion:':
+                name: presentedSubitemAtURLDidGainVersion
+            '-presentedSubitemAtURL:didLoseVersion:':
+                name: presentedSubitemAtURLDidLoseVersion
+            '-presentedSubitemAtURL:didResolveConflictVersion:':
+                name: presentedSubitemAtURLDidResolveConflictVersion
     NSKeyedArchiverDelegate: {}
     NSKeyedUnarchiverDelegate: {}
     #NSKeyValueCoding: {}
@@ -2340,8 +2573,23 @@ values:
         name: "#{g[0]}Attribute"
         type: NSString
         visibility: protected
-    NSFile((ReferenceCount|Size|SystemFileNumber|SystemNumber|Type|ProtectionKey)):
+    NSFile((ReferenceCount|Size|SystemFileNumber|Type|ProtectionKey)):
         class: NSFileAttribute
+        name: "#{g[0]}Attribute"
+        type: NSString
+        visibility: protected
+    NSFileType(.*):
+        class: NSFileType
+        name: "#{g[0]}Value"
+        type: NSString
+        visibility: protected
+    NSFileProtection(.*):
+        class: NSFileProtection
+        name: "#{g[0]}Value"
+        type: NSString
+        visibility: protected
+    NSFileSystem(.*):
+        class: NSFileSystemAttribute
         name: "#{g[0]}Attribute"
         type: NSString
         visibility: protected
@@ -2361,6 +2609,15 @@ values:
 
     # NSLocale
     NS(Locale.*):
+        name: "#{g[0]}"
+        type: NSString
+    
+    # NSURL
+    NS(URLErrorBackgroundTaskCancelledReasonKey):
+        name: "#{g[0]}"
+        type: NSString
+    NS(URL.*Key):
+      #  class: NSURLFileSystemAttribute
         name: "#{g[0]}"
         type: NSString
 
@@ -2386,15 +2643,6 @@ values:
         name: "#{g[0]}"
         type: NSString
     NS(File.*Key):
-        name: "#{g[0]}"
-        type: NSString
-    NS(FileProtection.*):
-        name: "#{g[0]}"
-        type: NSString
-    NS(FileSystem.*):
-        name: "#{g[0]}"
-        type: NSString
-    NS(FileType.*):
         name: "#{g[0]}"
         type: NSString
     NS(KeyedArchiveRootObjectKey):
@@ -2473,12 +2721,6 @@ values:
         name: "#{g[0]}"
         type: NSString
     NS(URLSessionDownloadTaskResumeData):
-        name: "#{g[0]}"
-        type: NSString
-    NS(URLErrorBackgroundTaskCancelledReasonKey):
-        name: "#{g[0]}"
-        type: NSString
-    NS(URL.*Key):
         name: "#{g[0]}"
         type: NSString
 

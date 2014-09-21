@@ -54,37 +54,37 @@ import org.robovm.apple.security.*;
     /*</properties>*/
     /*<methods>*/
     @Method(selector = "relinquishPresentedItemToReader:")
-    void relinquishPresentedItemToReader$(@Block("(@Block)") VoidBlock1<Runnable> reader);
+    void relinquishPresentedItemToReader(@Block("(@Block)") VoidBlock1<Runnable> reader);
     @Method(selector = "relinquishPresentedItemToWriter:")
-    void relinquishPresentedItemToWriter$(@Block("(@Block)") VoidBlock1<Runnable> writer);
+    void relinquishPresentedItemToWriter(@Block("(@Block)") VoidBlock1<Runnable> writer);
     @Method(selector = "savePresentedItemChangesWithCompletionHandler:")
-    void savePresentedItemChangesWithCompletionHandler$(@Block VoidBlock1<NSError> completionHandler);
+    void savePresentedItemChanges(@Block VoidBlock1<NSError> completionHandler);
     @Method(selector = "accommodatePresentedItemDeletionWithCompletionHandler:")
-    void accommodatePresentedItemDeletionWithCompletionHandler$(@Block VoidBlock1<NSError> completionHandler);
+    void accommodatePresentedItemDeletion(@Block VoidBlock1<NSError> completionHandler);
     @Method(selector = "presentedItemDidMoveToURL:")
-    void presentedItemDidMoveToURL$(NSURL newURL);
+    void presentedItemDidMoveToURL(NSURL newURL);
     @Method(selector = "presentedItemDidChange")
     void presentedItemDidChange();
     @Method(selector = "presentedItemDidGainVersion:")
-    void presentedItemDidGainVersion$(NSFileVersion version);
+    void presentedItemDidGainVersion(NSFileVersion version);
     @Method(selector = "presentedItemDidLoseVersion:")
-    void presentedItemDidLoseVersion$(NSFileVersion version);
+    void presentedItemDidLoseVersion(NSFileVersion version);
     @Method(selector = "presentedItemDidResolveConflictVersion:")
-    void presentedItemDidResolveConflictVersion$(NSFileVersion version);
+    void presentedItemDidResolveConflictVersion(NSFileVersion version);
     @Method(selector = "accommodatePresentedSubitemDeletionAtURL:completionHandler:")
-    void accommodatePresentedSubitemDeletionAtURL$completionHandler$(NSURL url, @Block VoidBlock1<NSError> completionHandler);
+    void accommodatePresentedSubitemDeletionAtURL(NSURL url, @Block VoidBlock1<NSError> completionHandler);
     @Method(selector = "presentedSubitemDidAppearAtURL:")
-    void presentedSubitemDidAppearAtURL$(NSURL url);
+    void presentedSubitemDidAppearAtURL(NSURL url);
     @Method(selector = "presentedSubitemAtURL:didMoveToURL:")
-    void presentedSubitemAtURL$didMoveToURL$(NSURL oldURL, NSURL newURL);
+    void presentedSubitemAtURLDidMoveToURL(NSURL oldURL, NSURL newURL);
     @Method(selector = "presentedSubitemDidChangeAtURL:")
-    void presentedSubitemDidChangeAtURL$(NSURL url);
+    void presentedSubitemDidChangeAtURL(NSURL url);
     @Method(selector = "presentedSubitemAtURL:didGainVersion:")
-    void presentedSubitemAtURL$didGainVersion$(NSURL url, NSFileVersion version);
+    void presentedSubitemAtURLDidGainVersion(NSURL url, NSFileVersion version);
     @Method(selector = "presentedSubitemAtURL:didLoseVersion:")
-    void presentedSubitemAtURL$didLoseVersion$(NSURL url, NSFileVersion version);
+    void presentedSubitemAtURLDidLoseVersion(NSURL url, NSFileVersion version);
     @Method(selector = "presentedSubitemAtURL:didResolveConflictVersion:")
-    void presentedSubitemAtURL$didResolveConflictVersion$(NSURL url, NSFileVersion version);
+    void presentedSubitemAtURLDidResolveConflictVersion(NSURL url, NSFileVersion version);
     /*</methods>*/
     /*<adapter>*/
     /*</adapter>*/

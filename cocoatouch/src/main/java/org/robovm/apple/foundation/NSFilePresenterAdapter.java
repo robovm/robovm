@@ -58,36 +58,36 @@ import org.robovm.apple.security.*;
     /*<members>*//*</members>*/
     /*<methods>*/
     @NotImplemented("relinquishPresentedItemToReader:")
-    public void relinquishPresentedItemToReader$(@Block("(@Block)") VoidBlock1<Runnable> reader) { throw new UnsupportedOperationException(); }
+    public void relinquishPresentedItemToReader(@Block("(@Block)") VoidBlock1<Runnable> reader) { throw new UnsupportedOperationException(); }
     @NotImplemented("relinquishPresentedItemToWriter:")
-    public void relinquishPresentedItemToWriter$(@Block("(@Block)") VoidBlock1<Runnable> writer) { throw new UnsupportedOperationException(); }
+    public void relinquishPresentedItemToWriter(@Block("(@Block)") VoidBlock1<Runnable> writer) { throw new UnsupportedOperationException(); }
     @NotImplemented("savePresentedItemChangesWithCompletionHandler:")
-    public void savePresentedItemChangesWithCompletionHandler$(@Block VoidBlock1<NSError> completionHandler) { throw new UnsupportedOperationException(); }
+    public void savePresentedItemChanges(@Block VoidBlock1<NSError> completionHandler) { throw new UnsupportedOperationException(); }
     @NotImplemented("accommodatePresentedItemDeletionWithCompletionHandler:")
-    public void accommodatePresentedItemDeletionWithCompletionHandler$(@Block VoidBlock1<NSError> completionHandler) { throw new UnsupportedOperationException(); }
+    public void accommodatePresentedItemDeletion(@Block VoidBlock1<NSError> completionHandler) { throw new UnsupportedOperationException(); }
     @NotImplemented("presentedItemDidMoveToURL:")
-    public void presentedItemDidMoveToURL$(NSURL newURL) { throw new UnsupportedOperationException(); }
+    public void presentedItemDidMoveToURL(NSURL newURL) { throw new UnsupportedOperationException(); }
     @NotImplemented("presentedItemDidChange")
     public void presentedItemDidChange() { throw new UnsupportedOperationException(); }
     @NotImplemented("presentedItemDidGainVersion:")
-    public void presentedItemDidGainVersion$(NSFileVersion version) { throw new UnsupportedOperationException(); }
+    public void presentedItemDidGainVersion(NSFileVersion version) { throw new UnsupportedOperationException(); }
     @NotImplemented("presentedItemDidLoseVersion:")
-    public void presentedItemDidLoseVersion$(NSFileVersion version) { throw new UnsupportedOperationException(); }
+    public void presentedItemDidLoseVersion(NSFileVersion version) { throw new UnsupportedOperationException(); }
     @NotImplemented("presentedItemDidResolveConflictVersion:")
-    public void presentedItemDidResolveConflictVersion$(NSFileVersion version) { throw new UnsupportedOperationException(); }
+    public void presentedItemDidResolveConflictVersion(NSFileVersion version) { throw new UnsupportedOperationException(); }
     @NotImplemented("accommodatePresentedSubitemDeletionAtURL:completionHandler:")
-    public void accommodatePresentedSubitemDeletionAtURL$completionHandler$(NSURL url, @Block VoidBlock1<NSError> completionHandler) { throw new UnsupportedOperationException(); }
+    public void accommodatePresentedSubitemDeletionAtURL(NSURL url, @Block VoidBlock1<NSError> completionHandler) { throw new UnsupportedOperationException(); }
     @NotImplemented("presentedSubitemDidAppearAtURL:")
-    public void presentedSubitemDidAppearAtURL$(NSURL url) { throw new UnsupportedOperationException(); }
+    public void presentedSubitemDidAppearAtURL(NSURL url) { throw new UnsupportedOperationException(); }
     @NotImplemented("presentedSubitemAtURL:didMoveToURL:")
-    public void presentedSubitemAtURL$didMoveToURL$(NSURL oldURL, NSURL newURL) { throw new UnsupportedOperationException(); }
+    public void presentedSubitemAtURLDidMoveToURL(NSURL oldURL, NSURL newURL) { throw new UnsupportedOperationException(); }
     @NotImplemented("presentedSubitemDidChangeAtURL:")
-    public void presentedSubitemDidChangeAtURL$(NSURL url) { throw new UnsupportedOperationException(); }
+    public void presentedSubitemDidChangeAtURL(NSURL url) { throw new UnsupportedOperationException(); }
     @NotImplemented("presentedSubitemAtURL:didGainVersion:")
-    public void presentedSubitemAtURL$didGainVersion$(NSURL url, NSFileVersion version) { throw new UnsupportedOperationException(); }
+    public void presentedSubitemAtURLDidGainVersion(NSURL url, NSFileVersion version) { throw new UnsupportedOperationException(); }
     @NotImplemented("presentedSubitemAtURL:didLoseVersion:")
-    public void presentedSubitemAtURL$didLoseVersion$(NSURL url, NSFileVersion version) { throw new UnsupportedOperationException(); }
+    public void presentedSubitemAtURLDidLoseVersion(NSURL url, NSFileVersion version) { throw new UnsupportedOperationException(); }
     @NotImplemented("presentedSubitemAtURL:didResolveConflictVersion:")
-    public void presentedSubitemAtURL$didResolveConflictVersion$(NSURL url, NSFileVersion version) { throw new UnsupportedOperationException(); }
+    public void presentedSubitemAtURLDidResolveConflictVersion(NSURL url, NSFileVersion version) { throw new UnsupportedOperationException(); }
     /*</methods>*/
 }

@@ -144,36 +144,36 @@ import org.robovm.apple.coretext.*;
     @Method(selector = "revertToContentsOfURL:completionHandler:")
     public native void revert(NSURL url, @Block VoidBooleanBlock completionHandler);
     @Method(selector = "relinquishPresentedItemToReader:")
-    public native void relinquishPresentedItemToReader$(@Block("(@Block)") VoidBlock1<Runnable> reader);
+    public native void relinquishPresentedItemToReader(@Block("(@Block)") VoidBlock1<Runnable> reader);
     @Method(selector = "relinquishPresentedItemToWriter:")
-    public native void relinquishPresentedItemToWriter$(@Block("(@Block)") VoidBlock1<Runnable> writer);
+    public native void relinquishPresentedItemToWriter(@Block("(@Block)") VoidBlock1<Runnable> writer);
     @Method(selector = "savePresentedItemChangesWithCompletionHandler:")
-    public native void savePresentedItemChangesWithCompletionHandler$(@Block VoidBlock1<NSError> completionHandler);
+    public native void savePresentedItemChanges(@Block VoidBlock1<NSError> completionHandler);
     @Method(selector = "accommodatePresentedItemDeletionWithCompletionHandler:")
-    public native void accommodatePresentedItemDeletionWithCompletionHandler$(@Block VoidBlock1<NSError> completionHandler);
+    public native void accommodatePresentedItemDeletion(@Block VoidBlock1<NSError> completionHandler);
     @Method(selector = "presentedItemDidMoveToURL:")
-    public native void presentedItemDidMoveToURL$(NSURL newURL);
+    public native void presentedItemDidMoveToURL(NSURL newURL);
     @Method(selector = "presentedItemDidChange")
     public native void presentedItemDidChange();
     @Method(selector = "presentedItemDidGainVersion:")
-    public native void presentedItemDidGainVersion$(NSFileVersion version);
+    public native void presentedItemDidGainVersion(NSFileVersion version);
     @Method(selector = "presentedItemDidLoseVersion:")
-    public native void presentedItemDidLoseVersion$(NSFileVersion version);
+    public native void presentedItemDidLoseVersion(NSFileVersion version);
     @Method(selector = "presentedItemDidResolveConflictVersion:")
-    public native void presentedItemDidResolveConflictVersion$(NSFileVersion version);
+    public native void presentedItemDidResolveConflictVersion(NSFileVersion version);
     @Method(selector = "accommodatePresentedSubitemDeletionAtURL:completionHandler:")
-    public native void accommodatePresentedSubitemDeletionAtURL$completionHandler$(NSURL url, @Block VoidBlock1<NSError> completionHandler);
+    public native void accommodatePresentedSubitemDeletionAtURL(NSURL url, @Block VoidBlock1<NSError> completionHandler);
     @Method(selector = "presentedSubitemDidAppearAtURL:")
-    public native void presentedSubitemDidAppearAtURL$(NSURL url);
+    public native void presentedSubitemDidAppearAtURL(NSURL url);
     @Method(selector = "presentedSubitemAtURL:didMoveToURL:")
-    public native void presentedSubitemAtURL$didMoveToURL$(NSURL oldURL, NSURL newURL);
+    public native void presentedSubitemAtURLDidMoveToURL(NSURL oldURL, NSURL newURL);
     @Method(selector = "presentedSubitemDidChangeAtURL:")
-    public native void presentedSubitemDidChangeAtURL$(NSURL url);
+    public native void presentedSubitemDidChangeAtURL(NSURL url);
     @Method(selector = "presentedSubitemAtURL:didGainVersion:")
-    public native void presentedSubitemAtURL$didGainVersion$(NSURL url, NSFileVersion version);
+    public native void presentedSubitemAtURLDidGainVersion(NSURL url, NSFileVersion version);
     @Method(selector = "presentedSubitemAtURL:didLoseVersion:")
-    public native void presentedSubitemAtURL$didLoseVersion$(NSURL url, NSFileVersion version);
+    public native void presentedSubitemAtURLDidLoseVersion(NSURL url, NSFileVersion version);
     @Method(selector = "presentedSubitemAtURL:didResolveConflictVersion:")
-    public native void presentedSubitemAtURL$didResolveConflictVersion$(NSURL url, NSFileVersion version);
+    public native void presentedSubitemAtURLDidResolveConflictVersion(NSURL url, NSFileVersion version);
     /*</methods>*/
 }

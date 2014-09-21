@@ -135,7 +135,7 @@ import org.robovm.apple.security.*;
     @Method(selector = "removeFileWrapper:")
     public native void removeFileWrapper(NSFileWrapper child);
     @Method(selector = "fileWrappers")
-    public native NSDictionary<NSString, NSFileWrapper> fileWrappers();
+    public native NSDictionary<NSString, NSFileWrapper> getFileWrappers();
     @Method(selector = "keyForFileWrapper:")
     public native String getKeyForFileWrapper(NSFileWrapper child);
     @Method(selector = "regularFileContents")

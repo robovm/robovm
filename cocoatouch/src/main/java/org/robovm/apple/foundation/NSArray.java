@@ -69,6 +69,9 @@ import org.robovm.apple.security.*;
         @MarshalsPointer
         public static List<String> toObject(Class<? extends NSObject> cls, long handle, long flags) {
             NSArray<?> o = (NSArray<?>) NSObject.Marshaler.toObject(cls, handle, flags);
+            if (o == null) {
+                return null;
+            }
             return o.asStringList();
         }
         @MarshalsPointer

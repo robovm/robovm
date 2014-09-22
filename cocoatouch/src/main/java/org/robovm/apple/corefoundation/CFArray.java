@@ -45,6 +45,9 @@ import org.robovm.apple.foundation.NSObject.NSObjectPtr;
         @MarshalsPointer
         public static List<?> toObject(Class<? extends CFType> cls, long handle, long flags) {
             CFArray o = (CFArray) CFType.Marshaler.toObject(cls, handle, flags);
+            if (o == null) {
+                return null;
+            }
             return o.toList(NativeObject.class);
         }
         @SuppressWarnings("unchecked")
@@ -67,6 +70,9 @@ import org.robovm.apple.foundation.NSObject.NSObjectPtr;
         @MarshalsPointer
         public static List<String> toObject(Class<? extends CFType> cls, long handle, long flags) {
             CFArray o = (CFArray) CFType.Marshaler.toObject(cls, handle, flags);
+            if (o == null) {
+                return null;
+            }
             return o.asStringList();
         }
         @MarshalsPointer
@@ -166,16 +172,12 @@ import org.robovm.apple.foundation.NSObject.NSObjectPtr;
     
     /**
      * Use this method to convert a CFArray of CFString items to a List of String items. 
-     * Elements of this CFArray must be of type CFString, otherwise an exception will be thrown.
      * @return
-     * @throws UnsupportedOperationException when the array items are not of type NSString.
      */
     public List<String> asStringList() {
         List<String> list = new ArrayList<>();
         if (size() == 0) 
             return list;
-        if (!(get(0, CFType.class) instanceof CFString)) 
-            throw new UnsupportedOperationException("items must be of type CFString");
         
         for (int i = 0; i < size(); i++) {
             list.add(get(i, CFString.class).toString());

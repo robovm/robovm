@@ -71,6 +71,10 @@ import org.robovm.apple.coregraphics.*;
     /*<constructors>*//*</constructors>*/
     /*<properties>*//*</properties>*/
     /*<members>*//*</members>*/
+    public NSDictionary<NSString, ?> getDictionary() {
+        return data;
+    }
+    
     /**
      * @since Available in iOS 3.2 and later.
      */
@@ -118,4 +122,10 @@ import org.robovm.apple.coregraphics.*;
     @GlobalValue(symbol="MPMoviePlayerThumbnailErrorKey", optional=true)
     protected static native NSString ErrorKey();
     /*</methods>*/
+    
+    @Override
+    public String toString() {
+        if (data != null) return data.toString();
+        return super.toString();
+    }
 }

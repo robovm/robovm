@@ -19,6 +19,7 @@ package org.robovm.apple.uikit;
 import java.io.*;
 import java.nio.*;
 import java.util.*;
+
 import org.robovm.objc.*;
 import org.robovm.objc.annotation.*;
 import org.robovm.objc.block.*;
@@ -161,4 +162,10 @@ import org.robovm.apple.coretext.*;
     @GlobalValue(symbol="UIKeyboardBoundsUserInfoKey", optional=true)
     protected static native NSString BoundsKey();
     /*</methods>*/
+    
+    @Override
+    public String toString() {
+        if (data != null) return data.toString();
+        return super.toString();
+    }
 }

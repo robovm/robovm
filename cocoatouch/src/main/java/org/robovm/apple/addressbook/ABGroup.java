@@ -49,8 +49,9 @@ import org.robovm.apple.corefoundation.*;
         if (val != null) return val.toString();
         return null;
     }
-    public void setName(String name) {
+    public ABGroup setName(String name) {
         setValue(ABGroupProperty.Name, new CFString(name));
+        return this;
     }
     
     public boolean addMember(ABPerson person) {
@@ -72,11 +73,11 @@ import org.robovm.apple.corefoundation.*;
      * @since Available in iOS 4.0 and later.
      */
     @Bridge(symbol="ABGroupCopySource", optional=true)
-    public native ABSource getSource();
+    public native ABSource source();
     @Bridge(symbol="ABGroupCopyArrayOfAllMembers", optional=true)
-    public native NSArray<?> getAllMembers();
+    public native @org.robovm.rt.bro.annotation.Marshaler(CFArray.AsListMarshaler.class) List<ABPerson> getAllMembers();
     @Bridge(symbol="ABGroupCopyArrayOfAllMembersWithSortOrdering", optional=true)
-    public native NSArray<?> getAllMembers(ABPersonSortOrdering sortOrdering);
+    public native @org.robovm.rt.bro.annotation.Marshaler(CFArray.AsListMarshaler.class) List<ABPerson> getAllMembers(ABPersonSortOrdering sortOrdering);
     @Bridge(symbol="ABGroupAddMember", optional=true)
     protected native boolean addMember(ABPerson person, NSError.NSErrorPtr error);
     @Bridge(symbol="ABGroupRemoveMember", optional=true)

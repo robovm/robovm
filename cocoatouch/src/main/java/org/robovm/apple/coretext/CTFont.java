@@ -49,12 +49,6 @@ import org.robovm.apple.coregraphics.*;
     /**
      * @since Available in iOS 3.2 and later.
      */
-    public CTFontTraits getTraits() {
-        return new CTFontTraits(getTraits0());
-    }
-    /**
-     * @since Available in iOS 3.2 and later.
-     */
     public String getName(CTFontNameKey nameKey) {
         return getName(nameKey.value());
     }
@@ -144,7 +138,7 @@ import org.robovm.apple.coregraphics.*;
      * @since Available in iOS 3.2 and later.
      */
     @Bridge(symbol="CTFontCopyTraits", optional=true)
-    protected native CFDictionary getTraits0();
+    public native CTFontTraits getTraits();
     /**
      * @since Available in iOS 3.2 and later.
      */
@@ -189,7 +183,7 @@ import org.robovm.apple.coregraphics.*;
      * @since Available in iOS 3.2 and later.
      */
     @Bridge(symbol="CTFontCopySupportedLanguages", optional=true)
-    public native NSArray<NSString> getSupportedLanguages();
+    public native @org.robovm.rt.bro.annotation.Marshaler(CFArray.AsStringListMarshaler.class) List<String> getSupportedLanguages();
     /**
      * @since Available in iOS 3.2 and later.
      */
@@ -284,7 +278,7 @@ import org.robovm.apple.coregraphics.*;
      * @since Available in iOS 3.2 and later.
      */
     @Bridge(symbol="CTFontCopyVariationAxes", optional=true)
-    public native CFArray getVariationAxes();
+    public native @org.robovm.rt.bro.annotation.Marshaler(CFArray.AsListMarshaler.class) List<CTFontVariationAxes> getVariationAxes();
     /**
      * @since Available in iOS 3.2 and later.
      */
@@ -334,6 +328,6 @@ import org.robovm.apple.coregraphics.*;
      * @since Available in iOS 6.0 and later.
      */
     @Bridge(symbol="CTFontCopyDefaultCascadeListForLanguages", optional=true)
-    public native CFArray getDefaultCascadeListForLanguages(CFArray languagePrefList);
+    public native CFArray getDefaultCascadeList(@org.robovm.rt.bro.annotation.Marshaler(CFArray.AsStringListMarshaler.class) List<String> languagePrefList);
     /*</methods>*/
 }

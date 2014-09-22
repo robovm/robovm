@@ -81,7 +81,7 @@ functions:
         name: "#{g[0]}"
         parameters:
             completion:
-                type: '@Block RequestAccessCompletionHandler'
+                type: "@Block RequestAccessCompletionHandler"
     ABAddressBook(Save|AddRecord|RemoveRecord):
         class: ABAddressBook
         name: "#{g[0]}"
@@ -111,22 +111,22 @@ functions:
     ABAddressBookCopyArrayOf(AllSources):
         class: ABAddressBook
         name: "get#{g[0]}"
-        return_type: "NSArray<?>" # ABSource
+        return_type: "@org.robovm.rt.bro.annotation.Marshaler(CFArray.AsListMarshaler.class) List<ABSource>"
     ABAddressBookCopyArrayOf(AllPeople):
         class: ABAddressBook
         name: "get#{g[0]}"
-        return_type: "NSArray<?>" # ABPerson
+        return_type: "@org.robovm.rt.bro.annotation.Marshaler(CFArray.AsListMarshaler.class) List<ABPerson>"
     ABAddressBookCopyArrayOf(AllPeopleInSource).*:
         class: ABAddressBook
         name: "get#{g[0]}"
-        return_type: "NSArray<?>" # ABPerson
+        return_type: "@org.robovm.rt.bro.annotation.Marshaler(CFArray.AsListMarshaler.class) List<ABPerson>"
         parameters:
             source:
                 type: ABSource
     ABAddressBookCopy(People)WithName:
         class: ABAddressBook
         name: "get#{g[0]}"
-        return_type: "NSArray<?>" # ABPerson
+        return_type: "@org.robovm.rt.bro.annotation.Marshaler(CFArray.AsListMarshaler.class) List<ABPerson>"
     ABAddressBook(GetGroup)WithRecordID:
         class: ABAddressBook
         name: "#{g[0]}"
@@ -134,11 +134,11 @@ functions:
     ABAddressBookCopyArrayOf(AllGroups):
         class: ABAddressBook
         name: "get#{g[0]}"
-        return_type: "NSArray<?>" # ABGroup
+        return_type: "@org.robovm.rt.bro.annotation.Marshaler(CFArray.AsListMarshaler.class) List<ABGroup>"
     ABAddressBookCopyArrayOf(AllGroupsInSource).*:
         class: ABAddressBook
         name: "get#{g[0]}"
-        return_type: "NSArray<?>" # ABGroup
+        return_type: "@org.robovm.rt.bro.annotation.Marshaler(CFArray.AsListMarshaler.class) List<ABGroup>"
         parameters:
             source:
                 type: ABSource
@@ -173,35 +173,35 @@ functions:
         return_type: ABGroup
         parameters:
             source:
-                type: "ABSource"
-    ABGroupCopySource:
+                type: ABSource
+    ABGroupCopy(Source):
         class: ABGroup
-        name: "getSource"
+        name: "#{g[0]}"
         return_type: ABSource
         parameters:
             group:
-                type: "ABGroup"
+                type: ABGroup
     ABGroupCopyArrayOf(AllMembers).*:
         class: ABGroup
         name: "get#{g[0]}"
-        return_type: "NSArray<?>" # ABPerson
+        return_type: "@org.robovm.rt.bro.annotation.Marshaler(CFArray.AsListMarshaler.class) List<ABPerson>"
         parameters:
             group:
-                type: "ABGroup"
+                type: ABGroup
     ABGroup(AddMember|RemoveMember):
         class: ABGroup
         name: "#{g[0]}"
         parameters:
             group:
-                type: "ABGroup"
+                type: ABGroup
         visibility: protected
         parameters:
             group:
-                type: "ABGroup"
+                type: ABGroup
             member:
-                type: "ABPerson"
+                type: ABPerson
             person:
-                type: "ABPerson"
+                type: ABPerson
     ABGroup(.*):
         class: ABGroup
         name: "#{g[0]}"
@@ -209,24 +209,24 @@ functions:
     # ABMultiValue
     ABMultiValueCopyValueAtIndex:
         class: ABMultiValue
-        name: "getValue"
+        name: getValue
     ABMultiValueCopyArrayOfAllValues:
         class: ABMultiValue
-        name: "getAllValues"
-        return_type: "NSArray<?>" # CFType
+        name: getAllValues
+        return_type: "@org.robovm.rt.bro.annotation.Marshaler(CFArray.AsListMarshaler.class) List<CFType>"
     ABMultiValueCopyLabelAtIndex:
         class: ABMultiValue
-        name: "getLabel"
+        name: getLabel
         return_type: CFString
     ABMultiValue(GetIndex)ForIdentifier:
         class: ABMultiValue
-        name: "indexOf"
+        name: indexOf
     ABMultiValue(GetIdentifier)AtIndex:
         class: ABMultiValue
         name: "#{g[0]}"
     ABMultiValueGetFirstIndexOfValue:
         class: ABMultiValue
-        name: "indexOf"
+        name: indexOf
     ABMultiValue(Create)Mutable.*:
         class: ABMutableMultiValue
         name: "#{g[0]}"
@@ -286,7 +286,7 @@ functions:
     ABPersonCopyArrayOf(AllLinkedPeople):
         class: ABPerson
         name: "get#{g[0]}"
-        return_type: "NSArray<?>" # ABPerson
+        return_type: "@org.robovm.rt.bro.annotation.Marshaler(CFArray.AsListMarshaler.class) List<ABPerson>"
         parameters:
             person:
                 type: ABPerson
@@ -318,38 +318,38 @@ functions:
         name: "#{g[0]}"
         parameters:
             person:
-                type: "ABPerson"
+                type: ABPerson
         visibility: protected
     ABPersonCopy(ImageData).*:
         class: ABPerson
         name: "get#{g[0]}"
         parameters:
             person:
-                type: "ABPerson"
+                type: ABPerson
     ABPerson(HasImageData):
         class: ABPerson
         name: "#{g[0]}"
         parameters:
             person:
-                type: "ABPerson"
+                type: ABPerson
     ABPerson(RemoveImageData):
         class: ABPerson
         name: "#{g[0]}"
         parameters:
             person:
-                type: "ABPerson"
+                type: ABPerson
         visibility: protected
     ABPersonComparePeopleByName:
         class: ABPerson
-        name: "compareTo"
+        name: compareTo
         parameters:
             person1:
-                type: "ABPerson"        
+                type: ABPerson       
         
     ABPerson(CreatePeopleInSource)WithVCardRepresentation:
         class: ABPerson
         name: "#{g[0]}"
-        return_type: "NSArray<?>" # ABPerson
+        return_type: "@org.robovm.rt.bro.annotation.Marshaler(CFArray.AsListMarshaler.class) List<ABPerson>"
         parameters:
             source:
                 type: ABSource
@@ -358,7 +358,7 @@ functions:
         name: "#{g[0]}"
         parameters:
             people:
-                type: "NSArray<?>" # ABPerson
+                type: "@org.robovm.rt.bro.annotation.Marshaler(CFArray.AsListMarshaler.class) List<ABPerson>"
     ABPerson(.*):
         class: ABPerson
         name: "#{g[0]}"
@@ -393,33 +393,33 @@ values:
         class: ABPersonAddressPart
         name: "#{g[0]}Value"
         visibility: protected
-        type: NSString
+        type: CFString
     kABPersonInstantMessage(.*Key):
         class: ABPersonInstantMessageAccount
         name: "#{g[0]}"
         visibility: protected
-        type: NSString
+        type: CFString
     kABPersonSocialProfile(.*Key):
         class: ABPersonSocialProfile
         name: "#{g[0]}"
         visibility: protected
-        type: NSString
+        type: CFString
     
     kABPersonKind(.*):
         class: ABPersonKind
         name: "#{g[0]}Value"
         visibility: protected
-        type: NSNumber    
+        type: CFNumber    
     kABPersonInstantMessageService(.*):
         class: ABPersonInstantMessageService
         name: "#{g[0]}Value"
         visibility: protected
-        type: NSString
+        type: CFString
     kABPersonSocialProfileService(.*):
         class: ABPersonSocialProfileService
         name: "#{g[0]}Value"
         visibility: protected
-        type: NSString
+        type: CFString
     
     # Labels
     # Generic labels

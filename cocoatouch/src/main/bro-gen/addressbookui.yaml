@@ -13,9 +13,9 @@ classes:
     ABNewPersonViewController: # DONE
         properties:
             'displayedPerson':
-                type: "ABPerson"
+                type: ABPerson
             'parentGroup':
-                type: "ABGroup"
+                type: ABGroup
     ABPeoplePickerNavigationController: # DONE
         properties:
             'displayedProperties':
@@ -25,61 +25,61 @@ classes:
     ABPersonViewController: # DONE
         properties:
             'displayedPerson':
-                type: "ABPerson"
+                type: ABPerson
             'displayedProperties':
                 name: displayedProperties0
                 type: "NSArray<NSNumber>"
                 visibility: protected
         methods:
             '-setHighlightedItemForProperty:withIdentifier:':
-                name: "setHighlightedItem"
+                name: setHighlightedItem
                 visibility: protected
     ABUnknownPersonViewController: # DONE
         properties:
             'displayedPerson':
-                type: "ABPerson"
+                type: ABPerson
 
 protocols:
     ABNewPersonViewControllerDelegate: # DONE
         methods:
             '-newPersonViewController:didCompleteWithNewPerson:':
-                name: "didComplete"
+                name: didComplete
                 parameters:
                     person:
-                        type: "ABPerson"
+                        type: ABPerson
     ABPeoplePickerNavigationControllerDelegate: # DONE
         methods:
             '-peoplePickerNavigationControllerDidCancel:':
-                name: "didCancel"
+                name: didCancel
             '-peoplePickerNavigationController:shouldContinueAfterSelectingPerson:':
-                name: "shouldContinueAfterSelectingPerson"
+                name: shouldContinueAfterSelectingPerson
                 parameters:
                     person:
-                        type: "ABPerson"
+                        type: ABPerson
             '-peoplePickerNavigationController:shouldContinueAfterSelectingPerson:property:identifier:':
-                name: "shouldContinueAfterSelectingPerson"
+                name: shouldContinueAfterSelectingPerson
                 parameters:
                     person:
-                        type: "ABPerson"
+                        type: ABPerson
     ABPersonViewControllerDelegate: # DONE
         methods:
             '-personViewController:shouldPerformDefaultActionForPerson:property:identifier:':
-                name: "shouldPerformDefaultAction"  
+                name: shouldPerformDefaultAction 
                 parameters:
                     person:
-                        type: "ABPerson"
+                        type: ABPerson
     ABUnknownPersonViewControllerDelegate: # DONE
         methods:
             '-unknownPersonViewController:didResolveToPerson:':
-                name: "didResolveToPerson"
+                name: didResolveToPerson
                 parameters:
                     person:
-                        type: "ABPerson"
+                        type: ABPerson
             '-unknownPersonViewController:shouldPerformDefaultActionForPerson:property:identifier:':
-                name: "shouldPerformDefaultAction"
+                name: shouldPerformDefaultAction
                 parameters:
                     person:
-                        type: "ABPerson"
+                        type: ABPerson
 
 functions:
     AB(CreateString)WithAddressDictionary:
@@ -87,7 +87,7 @@ functions:
         name: "#{g[0]}"
         parameters:
             address:
-                type: "NSDictionary<NSString, ?>"
+                type: CFDictionary
 
     # Make sure we don't miss any functions if new ones are introduced in a later version
     (AB.*):

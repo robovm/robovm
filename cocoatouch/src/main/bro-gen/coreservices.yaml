@@ -13,7 +13,6 @@ private_typedefs:
     "__CFString **": "NSString.NSStringPtr"
     "__CFData *": NSData
     "__CFURL *": NSURL
-    "__CFDictionary *": "NSDictionary<?, ?>"
     "__CFArray *": "NSArray<?>"
     
 enums:
@@ -110,7 +109,7 @@ functions:
         class: CFHost
         name: "#{g[0]}"
         visibility: protected
-        return_type: "NSArray<NSString>"
+        return_type: "@org.robovm.rt.bro.annotation.Marshaler(CFArray.AsStringListMarshaler.class) List<String>"
     CFHost(GetReachability):
         class: CFHost
         name: "#{g[0]}"
@@ -181,12 +180,10 @@ functions:
     CFHTTPMessage(CreateCopy):
         class: CFHTTPMessage
         name: "#{g[0]}"
-        visibility: protected
     CFHTTPMessageCopy(Version):
         class: CFHTTPMessage
-        name: "get#{g[0]}0"
-        visibility: protected
-        return_type: CFString
+        name: "get#{g[0]}"
+        return_type: CFHTTPVersion
     CFHTTPMessageCopy(AllHeaderFields):
         class: CFHTTPMessage
         name: "get#{g[0]}"
@@ -203,11 +200,10 @@ functions:
                 type: "@Pointer long"
     CFHTTPMessage(AddAuthentication):
         class: CFHTTPMessage
-        name: "#{g[0]}0"
-        visibility: protected
+        name: "#{g[0]}"
         parameters:
             authenticationScheme:
-                type: CFString
+                type: CFHTTPAuthenticationScheme
     CFHTTPMessage(ApplyCredentials):
         class: CFHTTPMessage
         name: "#{g[0]}"
@@ -367,17 +363,14 @@ functions:
     # CFProxySupport
     CFNetworkCopy(SystemProxySettings):
         class: CFProxySupport
-        name: "get#{g[0]}0"
-        visibility: protected
+        name: "get#{g[0]}"
+        return_type: CFSystemProxySettings
     CFNetworkCopyProxiesForURL:
         exclude: true # CocoaTouch SystemConfiguration doesn't have the necessary methods.
-        class: CFProxySupport
-        name: getProxies0
-        return_type: "NSArray<NSDictionary<?, ?>>"
     CFNetworkCopyProxiesForAutoConfigurationScript:
         class: CFProxySupport
         name: getProxies0
-        return_type: "NSArray<NSDictionary<?, ?>>"
+        return_type: CFArray
         visibility: protected
     CFNetwork(ExecuteProxyAutoConfigurationScript):
         class: CFProxySupport
@@ -408,28 +401,28 @@ values:
     kCF(HTTPAuthentication.*):
         class: CFHTTPMessage
         name: "#{g[0]}"
-        type: NSString
+        type: CFString
         visibility: protected
         
     kCFNetworkProxies(.*):
         class: CFSystemProxySettings
         name: "#{g[0]}"
-        type: NSString
+        type: CFString
         visibility: protected
     kCFProxy(TypeKey):
         class: CFProxy
         name: "#{g[0]}"
-        type: NSString
+        type: CFString
         visibility: protected
     kCFProxyType(.*):
         class: CFProxyType
         name: "#{g[0]}Value"
-        type: NSString
+        type: CFString
         visibility: protected
     kCFProxy(.*):
         class: CFProxy
         name: "#{g[0]}"
-        type: NSString
+        type: CFString
         visibility: protected
     
     # Make sure we don't miss any values if new ones are introduced in a later version

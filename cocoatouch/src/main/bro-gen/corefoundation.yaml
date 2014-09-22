@@ -263,9 +263,9 @@ functions:
     CF(GetTypeID):
         class: CFType
         name: "#{g[0]}"
-    CF(CopyTypeIDDescription):
+    CFCopy(TypeIDDescription):
         class: CFType
-        name: "#{g[0]}"
+        name: "get#{g[0]}"
     CF(Retain):
         class: CFType
         name: "#{g[0]}"
@@ -287,6 +287,7 @@ functions:
     CF(CopyDescription):
         class: CFType
         name: "#{g[0]}"
+        visibility: protected
     CF(GetAllocator):
         class: CFType
         name: "#{g[0]}"
@@ -296,7 +297,7 @@ functions:
     CF(Show):
         class: CFType
         name: "#{g[0]}"
-
+        
     CF(.*)GetTypeID:
         class: "CF#{g[0]}"
         name: getClassTypeID

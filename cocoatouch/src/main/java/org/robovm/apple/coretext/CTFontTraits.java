@@ -33,20 +33,39 @@ import org.robovm.apple.coregraphics.*;
 
 /*<javadoc>*/
 /*</javadoc>*/
+@Marshaler(CTFontTraits.Marshaler.class)
 /*<annotations>*/@Library("CoreText")/*</annotations>*/
 /*<visibility>*/public/*</visibility>*/ class CTFontTraits 
     extends /*<extends>*/Object/*</extends>*/ 
     /*<implements>*//*</implements>*/ {
 
+    public static class Marshaler {
+        @MarshalsPointer
+        public static CTFontTraits toObject(Class<CTFontTraits> cls, long handle, long flags) {
+            CFDictionary o = (CFDictionary) CFType.Marshaler.toObject(CFDictionary.class, handle, flags);
+            if (o == null) {
+                return null;
+            }
+            return new CTFontTraits(o);
+        }
+        @MarshalsPointer
+        public static long toNative(CTFontTraits o, long flags) {
+            if (o == null) {
+                return 0L;
+            }
+            return CFType.Marshaler.toNative(o.data, flags);
+        }
+    }
+    
     /*<ptr>*/
     /*</ptr>*/
     private CFDictionary data;
     
-    public CTFontTraits() {
-        this.data = CFMutableDictionary.create();
-    }
     protected CTFontTraits(CFDictionary data) {
         this.data = data;
+    }
+    public CTFontTraits() {
+        this.data = CFMutableDictionary.create();
     }
     /*<bind>*/static { Bro.bind(CTFontTraits.class); }/*</bind>*/
     /*<constants>*//*</constants>*/
@@ -70,8 +89,9 @@ import org.robovm.apple.coregraphics.*;
     /**
      * @since Available in iOS 3.2 and later.
      */
-    public void setSymbolicTrait(CTFontSymbolicTraits trait) {
+    public CTFontTraits setSymbolicTrait(CTFontSymbolicTraits trait) {
         data.put(SymbolicTrait(), CFNumber.valueOf((int)trait.value()));
+        return this;
     }
     /**
      * @since Available in iOS 3.2 and later.
@@ -86,8 +106,9 @@ import org.robovm.apple.coregraphics.*;
     /**
      * @since Available in iOS 3.2 and later.
      */
-    public void setWeightTrait(float trait) {
+    public CTFontTraits setWeightTrait(float trait) {
         data.put(WeightTrait(), CFNumber.valueOf(trait));
+        return this;
     }
     /**
      * @since Available in iOS 3.2 and later.
@@ -102,8 +123,9 @@ import org.robovm.apple.coregraphics.*;
     /**
      * @since Available in iOS 3.2 and later.
      */
-    public void setWidthTrait(float trait) {
+    public CTFontTraits setWidthTrait(float trait) {
         data.put(WidthTrait(), CFNumber.valueOf(trait));
+        return this;
     }
     /**
      * @since Available in iOS 3.2 and later.
@@ -118,8 +140,9 @@ import org.robovm.apple.coregraphics.*;
     /**
      * @since Available in iOS 3.2 and later.
      */
-    public void setSlantTrait(float trait) {
+    public CTFontTraits setSlantTrait(float trait) {
         data.put(SlantTrait(), CFNumber.valueOf(trait));
+        return this;
     }
     /*<methods>*/
     /**
@@ -143,4 +166,10 @@ import org.robovm.apple.coregraphics.*;
     @GlobalValue(symbol="kCTFontSlantTrait", optional=true)
     protected static native CFString SlantTrait();
     /*</methods>*/
+    
+    @Override
+    public String toString() {
+        if (data != null) return data.toString();
+        return super.toString();
+    }
 }

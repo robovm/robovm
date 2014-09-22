@@ -44,70 +44,45 @@ import org.robovm.apple.corefoundation.*;
     /**
      * @since Available in iOS 5.0 and later.
      */
-    public static final ABPersonSocialProfileService Twitter = new ABPersonSocialProfileService() {
-        public NSString value() {
-            return TwitterValue();
-        }
-    };
+    public static final ABPersonSocialProfileService Twitter = new ABPersonSocialProfileService("TwitterValue");
     /**
      * @since Available in iOS 6.0 and later.
      */
-    public static final ABPersonSocialProfileService SinaWeibo = new ABPersonSocialProfileService() {
-        public NSString value() {
-            return SinaWeiboValue();
-        }
-    };
+    public static final ABPersonSocialProfileService SinaWeibo = new ABPersonSocialProfileService("SinaWeiboValue");
     /**
      * @since Available in iOS 5.0 and later.
      */
-    public static final ABPersonSocialProfileService GameCenter = new ABPersonSocialProfileService() {
-        public NSString value() {
-            return GameCenterValue();
-        }
-    };
+    public static final ABPersonSocialProfileService GameCenter = new ABPersonSocialProfileService("GameCenterValue");
     /**
      * @since Available in iOS 5.0 and later.
      */
-    public static final ABPersonSocialProfileService Facebook = new ABPersonSocialProfileService() {
-        public NSString value() {
-            return FacebookValue();
-        }
-    };
+    public static final ABPersonSocialProfileService Facebook = new ABPersonSocialProfileService("FacebookValue");
     /**
      * @since Available in iOS 5.0 and later.
      */
-    public static final ABPersonSocialProfileService Myspace = new ABPersonSocialProfileService() {
-        public NSString value() {
-            return MyspaceValue();
-        }
-    };
+    public static final ABPersonSocialProfileService Myspace = new ABPersonSocialProfileService("MyspaceValue");
     /**
      * @since Available in iOS 5.0 and later.
      */
-    public static final ABPersonSocialProfileService LinkedIn = new ABPersonSocialProfileService() {
-        public NSString value() {
-            return LinkedInValue();
-        }
-    };
+    public static final ABPersonSocialProfileService LinkedIn = new ABPersonSocialProfileService("LinkedInValue");
     /**
      * @since Available in iOS 5.0 and later.
      */
-    public static final ABPersonSocialProfileService Flickr = new ABPersonSocialProfileService() {
-        public NSString value() {
-            return FlickrValue();
-        }
-    };
+    public static final ABPersonSocialProfileService Flickr = new ABPersonSocialProfileService("FlickrValue");
     private static ABPersonSocialProfileService[] values = new ABPersonSocialProfileService[] {Twitter, GameCenter, Facebook, Myspace, LinkedIn, Flickr, SinaWeibo};
     
-    private ABPersonSocialProfileService() {
+    private final LazyGlobalValue<CFString> lazyGlobalValue;
+    
+    private ABPersonSocialProfileService(String getterName) {
+        lazyGlobalValue = new LazyGlobalValue<>(getClass(), getterName);
     }
     /*<constructors>*//*</constructors>*/
     /*<properties>*//*</properties>*/
     /*<members>*//*</members>*/
-    public NSString value() {
-        return null;
+    public CFString value() {
+        return lazyGlobalValue.value();
     }
-    public static ABPersonSocialProfileService valueOf(NSString value) {
+    public static ABPersonSocialProfileService valueOf(CFString value) {
         for (ABPersonSocialProfileService v : values) {
             if (v.value().equals(value)) {
                 return v;
@@ -121,36 +96,36 @@ import org.robovm.apple.corefoundation.*;
      * @since Available in iOS 5.0 and later.
      */
     @GlobalValue(symbol="kABPersonSocialProfileServiceTwitter", optional=true)
-    protected static native NSString TwitterValue();
+    protected static native CFString TwitterValue();
     /**
      * @since Available in iOS 6.0 and later.
      */
     @GlobalValue(symbol="kABPersonSocialProfileServiceSinaWeibo", optional=true)
-    protected static native NSString SinaWeiboValue();
+    protected static native CFString SinaWeiboValue();
     /**
      * @since Available in iOS 5.0 and later.
      */
     @GlobalValue(symbol="kABPersonSocialProfileServiceGameCenter", optional=true)
-    protected static native NSString GameCenterValue();
+    protected static native CFString GameCenterValue();
     /**
      * @since Available in iOS 5.0 and later.
      */
     @GlobalValue(symbol="kABPersonSocialProfileServiceFacebook", optional=true)
-    protected static native NSString FacebookValue();
+    protected static native CFString FacebookValue();
     /**
      * @since Available in iOS 5.0 and later.
      */
     @GlobalValue(symbol="kABPersonSocialProfileServiceMyspace", optional=true)
-    protected static native NSString MyspaceValue();
+    protected static native CFString MyspaceValue();
     /**
      * @since Available in iOS 5.0 and later.
      */
     @GlobalValue(symbol="kABPersonSocialProfileServiceLinkedIn", optional=true)
-    protected static native NSString LinkedInValue();
+    protected static native CFString LinkedInValue();
     /**
      * @since Available in iOS 5.0 and later.
      */
     @GlobalValue(symbol="kABPersonSocialProfileServiceFlickr", optional=true)
-    protected static native NSString FlickrValue();
+    protected static native CFString FlickrValue();
     /*</methods>*/
 }

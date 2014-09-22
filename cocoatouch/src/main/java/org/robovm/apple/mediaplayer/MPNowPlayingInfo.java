@@ -19,6 +19,7 @@ package org.robovm.apple.mediaplayer;
 import java.io.*;
 import java.nio.*;
 import java.util.*;
+
 import org.robovm.objc.*;
 import org.robovm.objc.annotation.*;
 import org.robovm.objc.block.*;
@@ -33,11 +34,31 @@ import org.robovm.apple.coregraphics.*;
 
 /*<javadoc>*/
 /*</javadoc>*/
+@Marshaler(MPNowPlayingInfo.Marshaler.class)
 /*<annotations>*/@Library("MediaPlayer")/*</annotations>*/
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/MPNowPlayingInfo/*</name>*/ 
     extends /*<extends>*/Object/*</extends>*/ 
     /*<implements>*//*</implements>*/ {
 
+    public static class Marshaler {
+        @SuppressWarnings("unchecked")
+        @MarshalsPointer
+        public static MPNowPlayingInfo toObject(Class<MPNowPlayingInfo> cls, long handle, long flags) {
+            NSDictionary<NSString, NSObject> o = (NSDictionary<NSString, NSObject>) NSObject.Marshaler.toObject(NSDictionary.class, handle, flags);
+            if (o == null) {
+                return null;
+            }
+            return new MPNowPlayingInfo(o);
+        }
+        @MarshalsPointer
+        public static long toNative(MPNowPlayingInfo o, long flags) {
+            if (o == null) {
+                return 0L;
+            }
+            return NSObject.Marshaler.toNative(o.data, flags);
+        }
+    }
+    
     /*<ptr>*/
     /*</ptr>*/
     private NSDictionary<NSString, NSObject> data;
@@ -63,8 +84,9 @@ import org.robovm.apple.coregraphics.*;
         }
         return 0;
     }
-    public void setPersistentID(long id) {
+    public MPNowPlayingInfo setPersistentID(long id) {
         data.put(MPMediaItemProperty.ItemPersistentIDValue(), NSNumber.valueOf(id));
+        return this;
     }
     public String getTitle() {
         if (data.containsKey(MPMediaItemProperty.TitleValue())) {
@@ -73,8 +95,9 @@ import org.robovm.apple.coregraphics.*;
         }
         return null;
     }
-    public void setTitle(String title) {
+    public MPNowPlayingInfo setTitle(String title) {
         data.put(MPMediaItemProperty.TitleValue(), new NSString(title));
+        return this;
     }
     public String getAlbumTitle() {
         if (data.containsKey(MPMediaItemProperty.AlbumTitleValue())) {
@@ -83,8 +106,9 @@ import org.robovm.apple.coregraphics.*;
         }
         return null;
     }
-    public void setAlbumTitle(String albumTitle) {
+    public MPNowPlayingInfo setAlbumTitle(String albumTitle) {
         data.put(MPMediaItemProperty.AlbumTitleValue(), new NSString(albumTitle));
+        return this;
     }
     public String getArtist() {
         if (data.containsKey(MPMediaItemProperty.ArtistValue())) {
@@ -93,8 +117,9 @@ import org.robovm.apple.coregraphics.*;
         }
         return null;
     }
-    public void setArtist(String artist) {
+    public MPNowPlayingInfo setArtist(String artist) {
         data.put(MPMediaItemProperty.ArtistValue(), new NSString(artist));
+        return this;
     }
     public String getGenre() {
         if (data.containsKey(MPMediaItemProperty.GenreValue())) {
@@ -103,8 +128,9 @@ import org.robovm.apple.coregraphics.*;
         }
         return null;
     }
-    public void setGenre(String genre) {
+    public MPNowPlayingInfo setGenre(String genre) {
         data.put(MPMediaItemProperty.GenreValue(), new NSString(genre));
+        return this;
     }
     public String getComposer() {
         if (data.containsKey(MPMediaItemProperty.ComposerValue())) {
@@ -113,8 +139,9 @@ import org.robovm.apple.coregraphics.*;
         }
         return null;
     }
-    public void setComposer(String composer) {
+    public MPNowPlayingInfo setComposer(String composer) {
         data.put(MPMediaItemProperty.ComposerValue(), new NSString(composer));
+        return this;
     }
     public double getPlaybackDuration() {
         if (data.containsKey(MPMediaItemProperty.PlaybackDurationValue())) {
@@ -123,8 +150,9 @@ import org.robovm.apple.coregraphics.*;
         }
         return 0;
     }
-    public void setPlaybackDuration(double playbackDuration) {
+    public MPNowPlayingInfo setPlaybackDuration(double playbackDuration) {
         data.put(MPMediaItemProperty.PlaybackDurationValue(), NSNumber.valueOf(playbackDuration));
+        return this;
     }
     public int getAlbumTrackNumber() {
         if (data.containsKey(MPMediaItemProperty.AlbumTrackNumberValue())) {
@@ -133,8 +161,9 @@ import org.robovm.apple.coregraphics.*;
         }
         return 0;
     }
-    public void setAlbumTrackNumber(int albumTrackNumber) {
+    public MPNowPlayingInfo setAlbumTrackNumber(int albumTrackNumber) {
         data.put(MPMediaItemProperty.AlbumTrackNumberValue(), NSNumber.valueOf(albumTrackNumber));
+        return this;
     }
     public int getAlbumTrackCount() {
         if (data.containsKey(MPMediaItemProperty.AlbumTrackCountValue())) {
@@ -143,8 +172,9 @@ import org.robovm.apple.coregraphics.*;
         }
         return 0;
     }
-    public void setAlbumTrackCount(int albumTrackCount) {
+    public MPNowPlayingInfo setAlbumTrackCount(int albumTrackCount) {
         data.put(MPMediaItemProperty.AlbumTrackCountValue(), NSNumber.valueOf(albumTrackCount));
+        return this;
     }
     public int getDiscNumber() {
         if (data.containsKey(MPMediaItemProperty.DiscNumberValue())) {
@@ -153,8 +183,9 @@ import org.robovm.apple.coregraphics.*;
         }
         return 0;
     }
-    public void setDiscNumber(int discNumber) {
+    public MPNowPlayingInfo setDiscNumber(int discNumber) {
         data.put(MPMediaItemProperty.DiscNumberValue(), NSNumber.valueOf(discNumber));
+        return this;
     }
     public int getDiscCount() {
         if (data.containsKey(MPMediaItemProperty.DiscCountValue())) {
@@ -163,8 +194,9 @@ import org.robovm.apple.coregraphics.*;
         }
         return 0;
     }
-    public void setDiscCount(int discCount) {
+    public MPNowPlayingInfo setDiscCount(int discCount) {
         data.put(MPMediaItemProperty.DiscCountValue(), NSNumber.valueOf(discCount));
+        return this;
     }
     public MPMediaItemArtwork getArtwork() {
         if (data.containsKey(MPMediaItemProperty.ArtworkValue())) {
@@ -173,8 +205,9 @@ import org.robovm.apple.coregraphics.*;
         }
         return null;
     }
-    public void setArtwork(MPMediaItemArtwork artwork) {
+    public MPNowPlayingInfo setArtwork(MPMediaItemArtwork artwork) {
         data.put(MPMediaItemProperty.ArtworkValue(), artwork);
+        return this;
     }
     
     /**
@@ -190,8 +223,9 @@ import org.robovm.apple.coregraphics.*;
     /**
      * @since Available in iOS 5.0 and later.
      */
-    public void setElapsedPlaybackTime(double elapsedPlaybackTime) {
+    public MPNowPlayingInfo setElapsedPlaybackTime(double elapsedPlaybackTime) {
         data.put(ElapsedPlaybackTime(), NSNumber.valueOf(elapsedPlaybackTime));
+        return this;
     }
     /**
      * @since Available in iOS 5.0 and later.
@@ -206,8 +240,9 @@ import org.robovm.apple.coregraphics.*;
     /**
      * @since Available in iOS 5.0 and later.
      */
-    public void setPlaybackRate(double playbackRate) {
+    public MPNowPlayingInfo setPlaybackRate(double playbackRate) {
         data.put(PlaybackRate(), NSNumber.valueOf(playbackRate));
+        return this;
     }
     /**
      * @since Available in iOS 5.0 and later.
@@ -222,8 +257,9 @@ import org.robovm.apple.coregraphics.*;
     /**
      * @since Available in iOS 5.0 and later.
      */
-    public void setPlaybackQueueIndex(int playbackQueueIndex) {
+    public MPNowPlayingInfo setPlaybackQueueIndex(int playbackQueueIndex) {
         data.put(PlaybackQueueIndex(), NSNumber.valueOf(playbackQueueIndex));
+        return this;
     }
     /**
      * @since Available in iOS 5.0 and later.
@@ -238,8 +274,9 @@ import org.robovm.apple.coregraphics.*;
     /**
      * @since Available in iOS 5.0 and later.
      */
-    public void setPlaybackQueueCount(int playbackQueueCount) {
+    public MPNowPlayingInfo setPlaybackQueueCount(int playbackQueueCount) {
         data.put(PlaybackQueueCount(), NSNumber.valueOf(playbackQueueCount));
+        return this;
     }
     /**
      * @since Available in iOS 5.0 and later.
@@ -254,8 +291,9 @@ import org.robovm.apple.coregraphics.*;
     /**
      * @since Available in iOS 5.0 and later.
      */
-    public void setChapterNumber(int chapterNumber) {
+    public MPNowPlayingInfo setChapterNumber(int chapterNumber) {
         data.put(ChapterNumber(), NSNumber.valueOf(chapterNumber));
+        return this;
     }
     /**
      * @since Available in iOS 5.0 and later.
@@ -270,8 +308,9 @@ import org.robovm.apple.coregraphics.*;
     /**
      * @since Available in iOS 5.0 and later.
      */
-    public void setChapterCount(int chapterCount) {
+    public MPNowPlayingInfo setChapterCount(int chapterCount) {
         data.put(ChapterCount(), NSNumber.valueOf(chapterCount));
+        return this;
     }
     /*<methods>*/
     /**
@@ -305,4 +344,10 @@ import org.robovm.apple.coregraphics.*;
     @GlobalValue(symbol="MPNowPlayingInfoPropertyChapterCount", optional=true)
     protected static native NSString ChapterCount();
     /*</methods>*/
+    
+    @Override
+    public String toString() {
+        if (data != null) return data.toString();
+        return super.toString();
+    }
 }

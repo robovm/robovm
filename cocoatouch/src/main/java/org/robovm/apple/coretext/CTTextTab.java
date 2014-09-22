@@ -46,18 +46,6 @@ import org.robovm.apple.coregraphics.*;
     /*</constructors>*/
     /*<properties>*//*</properties>*/
     /*<members>*//*</members>*/
-    /**
-     * @since Available in iOS 3.2 and later.
-     */
-    public static CTTextTab create(CTTextAlignment alignment, double location, CTTextTabOptions options) {
-        return create(alignment, location, options.getDictionary());
-    }
-    /**
-     * @since Available in iOS 3.2 and later.
-     */
-    public CTTextTabOptions getOptions() {
-        return new CTTextTabOptions(getOptions0());
-    }
     /*<methods>*/
     /**
      * @since Available in iOS 3.2 and later.
@@ -68,7 +56,7 @@ import org.robovm.apple.coregraphics.*;
      * @since Available in iOS 3.2 and later.
      */
     @Bridge(symbol="CTTextTabCreate", optional=true)
-    protected static native CTTextTab create(CTTextAlignment alignment, double location, NSDictionary<NSString, NSObject> options);
+    public static native CTTextTab create(CTTextAlignment alignment, double location, CTTextTabOptions options);
     /**
      * @since Available in iOS 3.2 and later.
      */
@@ -83,6 +71,6 @@ import org.robovm.apple.coregraphics.*;
      * @since Available in iOS 3.2 and later.
      */
     @Bridge(symbol="CTTextTabGetOptions", optional=true)
-    protected native NSDictionary<NSString, NSObject> getOptions0();
+    public native CTTextTabOptions getOptions();
     /*</methods>*/
 }

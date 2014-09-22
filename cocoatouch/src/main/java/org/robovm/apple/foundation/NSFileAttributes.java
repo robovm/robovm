@@ -81,8 +81,9 @@ import org.robovm.apple.security.*;
         return data;
     }
     
-    public void set(NSFileAttribute attribute, NSObject value) {
+    public NSFileAttributes set(NSFileAttribute attribute, NSObject value) {
         data.put(attribute.value(), value);
+        return this;
     }
     public NSObject get(NSFileAttribute attribute) {
         return data.get(attribute.value());
@@ -99,8 +100,9 @@ import org.robovm.apple.security.*;
         }
         return null;
     }
-    public void setType(NSFileType type) {
+    public NSFileAttributes setType(NSFileType type) {
         set(NSFileAttribute.Type, type.value());
+        return this;
     }
     public long getSize() {
         if (contains(NSFileAttribute.Size)) {
@@ -109,8 +111,9 @@ import org.robovm.apple.security.*;
         }
         return 0;
     }
-    public void setSize(long size) {
+    public NSFileAttributes setSize(long size) {
         set(NSFileAttribute.Size, NSNumber.valueOf(size));
+        return this;
     }
     public NSDate getModificationDate() {
         if (contains(NSFileAttribute.ModificationDate)) {
@@ -119,8 +122,9 @@ import org.robovm.apple.security.*;
         }
         return null;
     }
-    public void setModificationDate(NSDate date) {
+    public NSFileAttributes setModificationDate(NSDate date) {
         set(NSFileAttribute.ModificationDate, date);
+        return this;
     }
     public long getReferenceCount() {
         if (contains(NSFileAttribute.ReferenceCount)) {
@@ -129,8 +133,9 @@ import org.robovm.apple.security.*;
         }
         return 0;
     }
-    public void setReferenceCount(long count) {
+    public NSFileAttributes setReferenceCount(long count) {
         set(NSFileAttribute.ReferenceCount, NSNumber.valueOf(count));
+        return this;
     }
     public long getDeviceIdentifier() {
         if (contains(NSFileAttribute.DeviceIdentifier)) {
@@ -139,8 +144,9 @@ import org.robovm.apple.security.*;
         }
         return 0;
     }
-    public void setDeviceIdentifier(long id) {
+    public NSFileAttributes setDeviceIdentifier(long id) {
         set(NSFileAttribute.DeviceIdentifier, NSNumber.valueOf(id));
+        return this;
     }
     public String getOwnerAccountName() {
         if (contains(NSFileAttribute.OwnerAccountName)) {
@@ -149,8 +155,9 @@ import org.robovm.apple.security.*;
         }
         return null;
     }
-    public void setOwnerAccountName(String name) {
+    public NSFileAttributes setOwnerAccountName(String name) {
         set(NSFileAttribute.OwnerAccountName, new NSString(name));
+        return this;
     }
     public String getGroupOwnerAccountName() {
         if (contains(NSFileAttribute.GroupOwnerAccountName)) {
@@ -159,8 +166,9 @@ import org.robovm.apple.security.*;
         }
         return null;
     }
-    public void setGroupOwnerAccountName(String name) {
+    public NSFileAttributes setGroupOwnerAccountName(String name) {
         set(NSFileAttribute.GroupOwnerAccountName, new NSString(name));
+        return this;
     }
     public short getPosixPermissions() {
         if (contains(NSFileAttribute.PosixPermissions)) {
@@ -169,8 +177,9 @@ import org.robovm.apple.security.*;
         }
         return 0;
     }
-    public void setPosixPermissions(short permissions) {
+    public NSFileAttributes setPosixPermissions(short permissions) {
         set(NSFileAttribute.PosixPermissions, NSNumber.valueOf(permissions));
+        return this;
     }
     public long getSystemFileNumber() {
         if (contains(NSFileAttribute.SystemFileNumber)) {
@@ -179,8 +188,9 @@ import org.robovm.apple.security.*;
         }
         return 0;
     }
-    public void setSystemFileNumber(long number) {
+    public NSFileAttributes setSystemFileNumber(long number) {
         set(NSFileAttribute.SystemFileNumber, NSNumber.valueOf(number));
+        return this;
     }
     public boolean isExtensionHidden() {
         if (contains(NSFileAttribute.ExtensionHidden)) {
@@ -189,8 +199,9 @@ import org.robovm.apple.security.*;
         }
         return false;
     }
-    public void setExtensionHidden(boolean hideExtension) {
+    public NSFileAttributes setExtensionHidden(boolean hideExtension) {
         set(NSFileAttribute.ExtensionHidden, NSNumber.valueOf(hideExtension));
+        return this;
     }
     public long getHFSCreatorCode() {
         if (contains(NSFileAttribute.HFSCreatorCode)) {
@@ -199,8 +210,9 @@ import org.robovm.apple.security.*;
         }
         return 0;
     }
-    public void setHFSCreatorCode(long code) {
+    public NSFileAttributes setHFSCreatorCode(long code) {
         set(NSFileAttribute.HFSCreatorCode, NSNumber.valueOf(code));
+        return this;
     }
     public long getHFSTypeCode() {
         if (contains(NSFileAttribute.HFSTypeCode)) {
@@ -209,8 +221,9 @@ import org.robovm.apple.security.*;
         }
         return 0;
     }
-    public void setHFSTypeCode(long code) {
+    public NSFileAttributes setHFSTypeCode(long code) {
         set(NSFileAttribute.HFSTypeCode, NSNumber.valueOf(code));
+        return this;
     }
     public boolean isImmutable() {
         if (contains(NSFileAttribute.Immutable)) {
@@ -219,8 +232,9 @@ import org.robovm.apple.security.*;
         }
         return false;
     }
-    public void setImmutable(boolean immutable) {
+    public NSFileAttributes setImmutable(boolean immutable) {
         set(NSFileAttribute.Immutable, NSNumber.valueOf(immutable));
+        return this;
     }
     public boolean isAppendOnly() {
         if (contains(NSFileAttribute.AppendOnly)) {
@@ -229,8 +243,9 @@ import org.robovm.apple.security.*;
         }
         return false;
     }
-    public void setAppendOnly(boolean appendOnly) {
+    public NSFileAttributes setAppendOnly(boolean appendOnly) {
         set(NSFileAttribute.AppendOnly, NSNumber.valueOf(appendOnly));
+        return this;
     }
     public NSDate getCreationDate() {
         if (contains(NSFileAttribute.CreationDate)) {
@@ -239,8 +254,9 @@ import org.robovm.apple.security.*;
         }
         return null;
     }
-    public void setCreationDate(NSDate date) {
+    public NSFileAttributes setCreationDate(NSDate date) {
         set(NSFileAttribute.CreationDate, date);
+        return this;
     }
     public long getOwnerAccountID() {
         if (contains(NSFileAttribute.OwnerAccountID)) {
@@ -249,8 +265,9 @@ import org.robovm.apple.security.*;
         }
         return 0;
     }
-    public void setOwnerAccountID(long id) {
+    public NSFileAttributes setOwnerAccountID(long id) {
         set(NSFileAttribute.OwnerAccountID, NSNumber.valueOf(id));
+        return this;
     }
     public long getGroupOwnerAccountID() {
         if (contains(NSFileAttribute.GroupOwnerAccountID)) {
@@ -259,8 +276,9 @@ import org.robovm.apple.security.*;
         }
         return 0;
     }
-    public void setGroupOwnerAccountID(long id) {
+    public NSFileAttributes setGroupOwnerAccountID(long id) {
         set(NSFileAttribute.GroupOwnerAccountID, NSNumber.valueOf(id));
+        return this;
     }
     public boolean isBusy() {
         if (contains(NSFileAttribute.Busy)) {
@@ -269,8 +287,9 @@ import org.robovm.apple.security.*;
         }
         return false;
     }
-    public void setBusy(boolean busy) {
+    public NSFileAttributes setBusy(boolean busy) {
         set(NSFileAttribute.Busy, NSNumber.valueOf(busy));
+        return this;
     }
     /**
      * @since Available in iOS 4.0 and later.
@@ -285,8 +304,9 @@ import org.robovm.apple.security.*;
     /**
      * @since Available in iOS 4.0 and later.
      */
-    public void setProtection(NSFileProtection protection) {
+    public NSFileAttributes setProtection(NSFileProtection protection) {
         set(NSFileAttribute.ProtectionKey, protection.value());
+        return this;
     }
     /*<methods>*/
     /*</methods>*/

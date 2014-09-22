@@ -1208,32 +1208,32 @@ classes:
                 name: getIndexPassingTest
                 parameters:
                     predicate:
-                        type: '@Block("(@MachineSizedUInt,,)") Block2<Long, BytePtr, Boolean>'
+                        type: '@Block("(@MachineSizedUInt,)") Block2<Long, BytePtr, Boolean>'
             '-indexWithOptions:passingTest:':
                 name: getIndexPassingTest
                 parameters:
                     predicate:
-                        type: '@Block("(@MachineSizedUInt,,)") Block2<Long, BytePtr, Boolean>'
+                        type: '@Block("(@MachineSizedUInt,)") Block2<Long, BytePtr, Boolean>'
             '-indexInRange:options:passingTest:':
                 name: getIndexInRangePassingTest
                 parameters:
                     predicate:
-                        type: '@Block("(@MachineSizedUInt,,)") Block2<Long, BytePtr, Boolean>'
+                        type: '@Block("(@MachineSizedUInt,)") Block2<Long, BytePtr, Boolean>'
             '-indexesPassingTest:':
                 name: getIndexesPassingTest
                 parameters:
                     predicate:
-                        type: '@Block("(@MachineSizedUInt,,)") Block2<Long, BytePtr, Boolean>'
+                        type: '@Block("(@MachineSizedUInt,)") Block2<Long, BytePtr, Boolean>'
             '-indexesWithOptions:passingTest:':
                 name: getIndexesPassingTest
                 parameters:
                     predicate:
-                        type: '@Block("(@MachineSizedUInt,,)") Block2<Long, BytePtr, Boolean>'
+                        type: '@Block("(@MachineSizedUInt,)") Block2<Long, BytePtr, Boolean>'
             '-indexesInRange:options:passingTest:':
                 name: getIndexesInRangePassingTest
                 parameters:
                     predicate:
-                        type: '@Block("(@MachineSizedUInt,,)") Block2<Long, BytePtr, Boolean>'
+                        type: '@Block("(@MachineSizedUInt,)") Block2<Long, BytePtr, Boolean>'
             '-enumerateRangesUsingBlock:':
                 name: enumerateRanges
             '-enumerateRangesWithOptions:usingBlock:':

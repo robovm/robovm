@@ -49,6 +49,10 @@ import org.robovm.apple.uikit.*;
     /*<constructors>*//*</constructors>*/
     /*<properties>*//*</properties>*/
     /*<members>*//*</members>*/
+    public NSDictionary<NSString, ?> getDictionary() {
+        return data;
+    }
+    
     /**
      * @since Available in iOS 6.0 and later.
      */
@@ -81,4 +85,10 @@ import org.robovm.apple.uikit.*;
     @GlobalValue(symbol="PKPassLibrarySerialNumberUserInfoKey", optional=true)
     protected static native NSString SerialNumberKey();
     /*</methods>*/
+    
+    @Override
+    public String toString() {
+        if (data != null) return data.toString();
+        return super.toString();
+    }
 }

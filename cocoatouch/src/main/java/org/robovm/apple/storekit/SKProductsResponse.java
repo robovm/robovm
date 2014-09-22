@@ -58,7 +58,7 @@ import org.robovm.apple.accounts.*;
      * @since Available in iOS 3.0 and later.
      */
     @Property(selector = "invalidProductIdentifiers")
-    public native NSArray<NSString> getInvalidProductIdentifiers();
+    public native @org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String> getInvalidProductIdentifiers();
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/

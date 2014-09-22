@@ -50,7 +50,7 @@ import org.robovm.apple.corefoundation.*;
     
     static {
         try {
-            cbInvoke = CFProxySupport.class.getDeclaredMethod("cbInvoke", long.class, NSArray.class, CFError.class);
+            cbInvoke = CFProxySupport.class.getDeclaredMethod("cbInvoke", long.class, CFArray.class, CFError.class);
         } catch (Throwable e) {
             throw new Error(e);
         }
@@ -61,32 +61,26 @@ import org.robovm.apple.corefoundation.*;
     /*<properties>*//*</properties>*/
     /*<members>*//*</members>*/
     @Callback
-    private static void cbInvoke(@Pointer long refcon, NSArray<NSDictionary<?, ?>> proxyList0, CFError error) {
+    private static void cbInvoke(@Pointer long refcon, CFArray proxyList0, CFError error) {
         AutoConfigurationClientCallback callback = null;
         synchronized (callbacks) {
             callback = callbacks.get(refcon);
         }
         List<CFProxy> proxyList = new ArrayList<CFProxy>();
-        for (NSDictionary<?, ?> dict : proxyList0) {
-            proxyList.add(new CFProxy(dict));
+        for (int i = 0; i < proxyList0.size(); i++) {
+            proxyList.add(new CFProxy(proxyList0.get(i, CFDictionary.class)));
         }
         callback.invoke(proxyList, error);
     }
     /**
      * @since Available in iOS 2.0 and later.
      */
-    public static CFSystemProxySettings getSystemProxySettings() {
-        return new CFSystemProxySettings(getSystemProxySettings0());
-    }
-    /**
-     * @since Available in iOS 2.0 and later.
-     */
     public static List<CFProxy> getProxies(String proxyAutoConfigurationScript, NSURL targetURL) {
-        NSArray<NSDictionary<?, ?>> proxies0 = getProxies0(proxyAutoConfigurationScript, targetURL, null);
+        CFArray proxies0 = getProxies0(proxyAutoConfigurationScript, targetURL, null);
         if (proxies0 != null) {
             List<CFProxy> proxies = new ArrayList<CFProxy>();
-            for (NSDictionary<?, ?> dict : proxies0) {
-                proxies.add(new CFProxy(dict));
+            for (int i = 0; i < proxies0.size(); i++) {
+                proxies.add(new CFProxy(proxies0.get(i, CFDictionary.class)));
             }
             return proxies;
         }
@@ -129,12 +123,12 @@ import org.robovm.apple.corefoundation.*;
      * @since Available in iOS 2.0 and later.
      */
     @Bridge(symbol="CFNetworkCopySystemProxySettings", optional=true)
-    protected static native NSDictionary<?, ?> getSystemProxySettings0();
+    public static native CFSystemProxySettings getSystemProxySettings();
     /**
      * @since Available in iOS 2.0 and later.
      */
     @Bridge(symbol="CFNetworkCopyProxiesForAutoConfigurationScript", optional=true)
-    protected static native NSArray<NSDictionary<?, ?>> getProxies0(String proxyAutoConfigurationScript, NSURL targetURL, CFError.CFErrorPtr error);
+    protected static native CFArray getProxies0(String proxyAutoConfigurationScript, NSURL targetURL, CFError.CFErrorPtr error);
     /**
      * @since Available in iOS 2.0 and later.
      */

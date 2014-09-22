@@ -44,72 +44,46 @@ import org.robovm.apple.corefoundation.*;
     /**
      * @since Available in iOS 2.0 and later.
      */
-    public static CFProxyType None = new CFProxyType() {
-        public NSString value() {
-            return NoneValue();
-        }
-    };
+    public static CFProxyType None = new CFProxyType("NoneValue");
     /**
      * @since Available in iOS 2.0 and later.
      */
-    public static CFProxyType HTTP = new CFProxyType() {
-        public NSString value() {
-            return HTTPValue();
-        }
-    };
+    public static CFProxyType HTTP = new CFProxyType("HTTPValue");
     /**
      * @since Available in iOS 2.0 and later.
      */
-    public static CFProxyType HTTPS = new CFProxyType() {
-        public NSString value() {
-            return HTTPSValue();
-        }
-    };
+    public static CFProxyType HTTPS = new CFProxyType("HTTPSValue");
     /**
      * @since Available in iOS 2.0 and later.
      */
-    public static CFProxyType SOCKS = new CFProxyType() {
-        public NSString value() {
-            return SOCKSValue();
-        }
-    };
+    public static CFProxyType SOCKS = new CFProxyType("SOCKSValue");
     /**
      * @since Available in iOS 2.0 and later.
      */
-    public static CFProxyType FTP = new CFProxyType() {
-        public NSString value() {
-            return FTPValue();
-        }
-    };
+    public static CFProxyType FTP = new CFProxyType("FTPValue");
     /**
      * @since Available in iOS 2.0 and later.
      */
-    public static CFProxyType AutoConfigurationURL = new CFProxyType() {
-        public NSString value() {
-            return AutoConfigurationURLValue();
-        }
-    };
+    public static CFProxyType AutoConfigurationURL = new CFProxyType("AutoConfigurationURLValue");
     /**
      * @since Available in iOS 3.0 and later.
      */
-    public static CFProxyType AutoConfigurationJavaScript = new CFProxyType() {
-        public NSString value() {
-            return AutoConfigurationJavaScriptValue();
-        }
-    };
+    public static CFProxyType AutoConfigurationJavaScript = new CFProxyType("AutoConfigurationJavaScriptValue");
     private static CFProxyType[] values = new CFProxyType[] {None, HTTP, HTTPS, SOCKS, FTP, AutoConfigurationURL, AutoConfigurationJavaScript};
     
-    private CFProxyType() {
+    private final LazyGlobalValue<CFString> lazyGlobalValue;
+    
+    private CFProxyType(String getterName) {
+        lazyGlobalValue = new LazyGlobalValue<>(getClass(), getterName);
     }
     /*<constructors>*//*</constructors>*/
     /*<properties>*//*</properties>*/
     /*<members>*//*</members>*/
-    public NSString value() {
-        return null;
+    public CFString value() {
+        return lazyGlobalValue.value();
     }
     
-    public static CFProxyType valueOf(NSString value) {
-        if (value == null) throw new NullPointerException("value");
+    public static CFProxyType valueOf(CFString value) {
         for (CFProxyType v : values) {
             if (v.value().equals(value)) {
                 return v;
@@ -123,36 +97,36 @@ import org.robovm.apple.corefoundation.*;
      * @since Available in iOS 2.0 and later.
      */
     @GlobalValue(symbol="kCFProxyTypeNone", optional=true)
-    protected static native NSString NoneValue();
+    protected static native CFString NoneValue();
     /**
      * @since Available in iOS 2.0 and later.
      */
     @GlobalValue(symbol="kCFProxyTypeHTTP", optional=true)
-    protected static native NSString HTTPValue();
+    protected static native CFString HTTPValue();
     /**
      * @since Available in iOS 2.0 and later.
      */
     @GlobalValue(symbol="kCFProxyTypeHTTPS", optional=true)
-    protected static native NSString HTTPSValue();
+    protected static native CFString HTTPSValue();
     /**
      * @since Available in iOS 2.0 and later.
      */
     @GlobalValue(symbol="kCFProxyTypeSOCKS", optional=true)
-    protected static native NSString SOCKSValue();
+    protected static native CFString SOCKSValue();
     /**
      * @since Available in iOS 2.0 and later.
      */
     @GlobalValue(symbol="kCFProxyTypeFTP", optional=true)
-    protected static native NSString FTPValue();
+    protected static native CFString FTPValue();
     /**
      * @since Available in iOS 2.0 and later.
      */
     @GlobalValue(symbol="kCFProxyTypeAutoConfigurationURL", optional=true)
-    protected static native NSString AutoConfigurationURLValue();
+    protected static native CFString AutoConfigurationURLValue();
     /**
      * @since Available in iOS 3.0 and later.
      */
     @GlobalValue(symbol="kCFProxyTypeAutoConfigurationJavaScript", optional=true)
-    protected static native NSString AutoConfigurationJavaScriptValue();
+    protected static native CFString AutoConfigurationJavaScriptValue();
     /*</methods>*/
 }

@@ -33,16 +33,39 @@ import org.robovm.apple.coregraphics.*;
 
 /*<javadoc>*/
 /*</javadoc>*/
+@Marshaler(CTTypesetterOptions.Marshaler.class)
 /*<annotations>*/@Library("CoreText")/*</annotations>*/
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/CTTypesetterOptions/*</name>*/ 
     extends /*<extends>*/Object/*</extends>*/ 
     /*<implements>*//*</implements>*/ {
 
+    public static class Marshaler {
+        @MarshalsPointer
+        public static CTTypesetterOptions toObject(Class<CTTypesetterOptions> cls, long handle, long flags) {
+            CFDictionary o = (CFDictionary) CFType.Marshaler.toObject(CFDictionary.class, handle, flags);
+            if (o == null) {
+                return null;
+            }
+            return new CTTypesetterOptions(o);
+        }
+        @MarshalsPointer
+        public static long toNative(CTTypesetterOptions o, long flags) {
+            if (o == null) {
+                return 0L;
+            }
+            return CFType.Marshaler.toNative(o.data, flags);
+        }
+    }
+    
     /*<ptr>*/
     /*</ptr>*/
-    private CFDictionary data = CFMutableDictionary.create();
+    private CFDictionary data;
     
+    protected CTTypesetterOptions(CFDictionary data) {
+        this.data = data;
+    }
     public CTTypesetterOptions() {
+        data = CFMutableDictionary.create();
     }
     /*<bind>*/static { Bro.bind(CTTypesetterOptions.class); }/*</bind>*/
     /*<constants>*//*</constants>*/
@@ -58,20 +81,21 @@ import org.robovm.apple.coregraphics.*;
      * @deprecated Deprecated in iOS 6.0.
      */
     @Deprecated
-    public void setBidiProcessingDisabled(boolean disable) {
-        data.put(DisableBidiProcessing(), CFBoolean.valueOf(disable));
-    }
-    /**
-     * @since Available in iOS 3.2 and later.
-     * @deprecated Deprecated in iOS 6.0.
-     */
-    @Deprecated
     public boolean isBidiProcessingDisabled() {
         if (data.containsKey(DisableBidiProcessing())) {
             CFBoolean val = data.get(DisableBidiProcessing(), CFBoolean.class);
             return val.booleanValue();
         }
         return false;
+    }
+    /**
+     * @since Available in iOS 3.2 and later.
+     * @deprecated Deprecated in iOS 6.0.
+     */
+    @Deprecated
+    public CTTypesetterOptions setBidiProcessingDisabled(boolean disable) {
+        data.put(DisableBidiProcessing(), CFBoolean.valueOf(disable));
+        return this;
     }
     /**
      * @since Available in iOS 3.2 and later.
@@ -86,8 +110,9 @@ import org.robovm.apple.coregraphics.*;
     /**
      * @since Available in iOS 3.2 and later.
      */
-    public void setEmbeddingLevel(int level) {
+    public CTTypesetterOptions setEmbeddingLevel(int level) {
         data.put(ForcedEmbeddingLevel(), CFNumber.valueOf(level));
+        return this;
     }
     /*<methods>*/
     /**
@@ -103,4 +128,10 @@ import org.robovm.apple.coregraphics.*;
     @GlobalValue(symbol="kCTTypesetterOptionForcedEmbeddingLevel", optional=true)
     protected static native CFString ForcedEmbeddingLevel();
     /*</methods>*/
+    
+    @Override
+    public String toString() {
+        if (data != null) return data.toString();
+        return super.toString();
+    }
 }

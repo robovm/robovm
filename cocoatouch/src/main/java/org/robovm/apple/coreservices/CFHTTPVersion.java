@@ -32,10 +32,29 @@ import org.robovm.apple.corefoundation.*;
 
 /*<javadoc>*/
 /*</javadoc>*/
+@Marshaler(CFHTTPVersion.Marshaler.class)
 /*<annotations>*/@Library("CFNetwork")/*</annotations>*/
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/CFHTTPVersion/*</name>*/ 
     extends /*<extends>*/Object/*</extends>*/ 
     /*<implements>*//*</implements>*/ {
+    
+    public static class Marshaler {
+        @MarshalsPointer
+        public static CFHTTPVersion toObject(Class<CFHTTPVersion> cls, long handle, long flags) {
+            CFString o = (CFString) CFType.Marshaler.toObject(CFString.class, handle, flags);
+            if (o == null) {
+                return null;
+            }
+            return CFHTTPVersion.valueOf(o);
+        }
+        @MarshalsPointer
+        public static long toNative(CFHTTPVersion o, long flags) {
+            if (o == null) {
+                return 0L;
+            }
+            return CFType.Marshaler.toNative(o.value(), flags);
+        }
+    }
 
     /*<ptr>*/
     /*</ptr>*/
@@ -44,28 +63,23 @@ import org.robovm.apple.corefoundation.*;
     /**
      * @since Available in iOS 2.0 and later.
      */
-    public static CFHTTPVersion Version1_0 = new CFHTTPVersion() {
-        public CFString value() {
-            return Version1_0Value();
-        }
-    };
+    public static CFHTTPVersion Version1_0 = new CFHTTPVersion("Version1_0Value");
     /**
      * @since Available in iOS 2.0 and later.
      */
-    public static CFHTTPVersion Version1_1 = new CFHTTPVersion() {
-        public CFString value() {
-            return Version1_1Value();
-        }
-    };
+    public static CFHTTPVersion Version1_1 = new CFHTTPVersion("Version1_1Value");
     private static CFHTTPVersion[] values = new CFHTTPVersion[] {Version1_0, Version1_1};
     
-    private CFHTTPVersion() {
+    private final LazyGlobalValue<CFString> lazyGlobalValue;
+    
+    private CFHTTPVersion(String getterName) {
+        lazyGlobalValue = new LazyGlobalValue<>(getClass(), getterName);
     }
     /*<constructors>*//*</constructors>*/
     /*<properties>*//*</properties>*/
     /*<members>*//*</members>*/
     public CFString value() {
-        return null;
+        return lazyGlobalValue.value();
     }
     
     public static CFHTTPVersion valueOf(CFString value) {

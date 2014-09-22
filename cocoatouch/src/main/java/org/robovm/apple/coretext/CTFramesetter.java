@@ -46,18 +46,6 @@ import org.robovm.apple.coregraphics.*;
     /*</constructors>*/
     /*<properties>*//*</properties>*/
     /*<members>*//*</members>*/
-    /**
-     * @since Available in iOS 3.2 and later.
-     */
-    public CTFrame createFrame(@ByVal CFRange stringRange, CGPath path, CTFrameAttributes frameAttributes) {
-        return createFrame(stringRange, path, frameAttributes.getDictionary());
-    }
-    /**
-     * @since Available in iOS 3.2 and later.
-     */
-    public @ByVal CGSize suggestFrameSize(@ByVal CFRange stringRange, CTFrameAttributes frameAttributes, @ByVal CGSize constraints, CFRange fitRange) {
-        return suggestFrameSize(stringRange, frameAttributes.getDictionary(), constraints, fitRange);
-    }
     /*<methods>*/
     /**
      * @since Available in iOS 3.2 and later.
@@ -73,7 +61,7 @@ import org.robovm.apple.coregraphics.*;
      * @since Available in iOS 3.2 and later.
      */
     @Bridge(symbol="CTFramesetterCreateFrame", optional=true)
-    protected native CTFrame createFrame(@ByVal CFRange stringRange, CGPath path, CFDictionary frameAttributes);
+    public native CTFrame createFrame(@ByVal CFRange stringRange, CGPath path, CTFrameAttributes frameAttributes);
     /**
      * @since Available in iOS 3.2 and later.
      */
@@ -83,6 +71,6 @@ import org.robovm.apple.coregraphics.*;
      * @since Available in iOS 3.2 and later.
      */
     @Bridge(symbol="CTFramesetterSuggestFrameSizeWithConstraints", optional=true)
-    protected native @ByVal CGSize suggestFrameSize(@ByVal CFRange stringRange, CFDictionary frameAttributes, @ByVal CGSize constraints, CFRange fitRange);
+    public native @ByVal CGSize suggestFrameSize(@ByVal CFRange stringRange, CTFrameAttributes frameAttributes, @ByVal CGSize constraints, CFRange fitRange);
     /*</methods>*/
 }

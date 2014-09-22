@@ -19,6 +19,7 @@ package org.robovm.apple.foundation;
 import java.io.*;
 import java.nio.*;
 import java.util.*;
+
 import org.robovm.objc.*;
 import org.robovm.objc.annotation.*;
 import org.robovm.objc.block.*;
@@ -43,6 +44,21 @@ import org.robovm.apple.security.*;
     /*<implements>*//*</implements>*/ implements Set<T> {
 
     public static class NSSetPtr<T extends NSObject> extends Ptr<NSSet<T>, NSSetPtr<T>> {}
+    
+    public static class AsStringSetMarshaler {
+        @MarshalsPointer
+        public static Set<String> toObject(Class<? extends NSObject> cls, long handle, long flags) {
+            NSSet<?> o = (NSSet<?>) NSObject.Marshaler.toObject(cls, handle, flags);
+            return o.asStringSet();
+        }
+        @MarshalsPointer
+        public static long toNative(Set<String> l, long flags) {
+            if (l == null) {
+                return 0L;
+            }
+            return NSObject.Marshaler.toNative(NSSet.fromStrings(l), flags);
+        }
+    }
     
     static class SetAdapter<U extends NSObject> extends AbstractSet<U> {
         protected final NSSet<U> set;

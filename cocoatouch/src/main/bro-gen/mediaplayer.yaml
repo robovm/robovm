@@ -198,9 +198,7 @@ classes:
     MPNowPlayingInfoCenter: # DONE
         properties:
             'nowPlayingInfo':
-                name: nowPlayingInfo0
-                type: 'NSDictionary<NSString, NSObject>'
-                visibility: protected
+                type: MPNowPlayingInfo
         methods:
             '+defaultCenter':
                 property: true

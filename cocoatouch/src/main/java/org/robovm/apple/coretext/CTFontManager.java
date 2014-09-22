@@ -46,12 +46,6 @@ import org.robovm.apple.coregraphics.*;
     /*<properties>*//*</properties>*/
     /*<members>*//*</members>*/
     /**
-     * @since Available in iOS 7.0 and later.
-     */
-    public static CTFontDescriptor[] createFontDescriptors(NSURL fileURL) {
-        return createFontDescriptors0(fileURL).toArray(CTFontDescriptor.class);
-    }
-    /**
      * @since Available in iOS 4.1 and later.
      */
     public static boolean registerFonts(NSURL fontURL, CTFontManagerScope scope) {
@@ -104,7 +98,7 @@ import org.robovm.apple.coregraphics.*;
      * @since Available in iOS 7.0 and later.
      */
     @Bridge(symbol="CTFontManagerCreateFontDescriptorsFromURL", optional=true)
-    protected static native CFArray createFontDescriptors0(NSURL fileURL);
+    public static native @org.robovm.rt.bro.annotation.Marshaler(CFArray.AsListMarshaler.class) List<CTFontDescriptor> createFontDescriptors0(NSURL fileURL);
     /**
      * @since Available in iOS 7.0 and later.
      */

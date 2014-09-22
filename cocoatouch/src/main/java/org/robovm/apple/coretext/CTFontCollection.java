@@ -74,36 +74,12 @@ import org.robovm.apple.coregraphics.*;
     /**
      * @since Available in iOS 3.2 and later.
      */
-    public static CTFontCollection createFromAvailableFonts(CTFontCollectionOptions options) {
-        return createFromAvailableFonts(options.getDictionary());
-    }
-    /**
-     * @since Available in iOS 3.2 and later.
-     */
-    public static CTFontCollection create(List<CTFontDescriptor> queryDescriptors, CTFontCollectionOptions options) {
-        return create(CFArray.create(queryDescriptors), options.getDictionary());
-    }
-    /**
-     * @since Available in iOS 3.2 and later.
-     */
-    public CTFontCollection createCopy(List<CTFontDescriptor> queryDescriptors, CTFontCollectionOptions options) {
-        return createCopy(CFArray.create(queryDescriptors), options.getDictionary());
-    }
-    /**
-     * @since Available in iOS 3.2 and later.
-     */
-    public List<CTFontDescriptor> getMatchingFontDescriptors() {
-        return getMatchingFontDescriptors0().toList(CTFontDescriptor.class);
-    }
-    /**
-     * @since Available in iOS 3.2 and later.
-     */
     public List<CTFontDescriptor> getMatchingFontDescriptorsSorted(SortCallback sortCallback) {
         long refconId = CTFontCollection.refconId.getAndIncrement();
         synchronized (sortCallbacks) {
             sortCallbacks.put(refconId, sortCallback);
         }
-        return getMatchingFontDescriptorsSorted(new FunctionPtr(cbSort), refconId).toList(CTFontDescriptor.class);
+        return getMatchingFontDescriptorsSorted(new FunctionPtr(cbSort), refconId);
     }
     /*<methods>*/
     /**
@@ -115,26 +91,26 @@ import org.robovm.apple.coregraphics.*;
      * @since Available in iOS 3.2 and later.
      */
     @Bridge(symbol="CTFontCollectionCreateFromAvailableFonts", optional=true)
-    protected static native CTFontCollection createFromAvailableFonts(CFDictionary options);
+    public static native CTFontCollection createFromAvailableFonts(CTFontCollectionOptions options);
     /**
      * @since Available in iOS 3.2 and later.
      */
     @Bridge(symbol="CTFontCollectionCreateWithFontDescriptors", optional=true)
-    protected static native CTFontCollection create(CFArray queryDescriptors, CFDictionary options);
+    public static native CTFontCollection create(@org.robovm.rt.bro.annotation.Marshaler(CFArray.AsListMarshaler.class) List<CTFontDescriptor> queryDescriptors, CTFontCollectionOptions options);
     /**
      * @since Available in iOS 3.2 and later.
      */
     @Bridge(symbol="CTFontCollectionCreateCopyWithFontDescriptors", optional=true)
-    protected native CTFontCollection createCopy(CFArray queryDescriptors, CFDictionary options);
+    public native CTFontCollection createCopy(@org.robovm.rt.bro.annotation.Marshaler(CFArray.AsListMarshaler.class) List<CTFontDescriptor> queryDescriptors, CTFontCollectionOptions options);
     /**
      * @since Available in iOS 3.2 and later.
      */
     @Bridge(symbol="CTFontCollectionCreateMatchingFontDescriptors", optional=true)
-    protected native CFArray getMatchingFontDescriptors0();
+    public native @org.robovm.rt.bro.annotation.Marshaler(CFArray.AsListMarshaler.class) List<CTFontDescriptor> getMatchingFontDescriptors();
     /**
      * @since Available in iOS 3.2 and later.
      */
     @Bridge(symbol="CTFontCollectionCreateMatchingFontDescriptorsSortedWithCallback", optional=true)
-    protected native CFArray getMatchingFontDescriptorsSorted(FunctionPtr sortCallback, @Pointer long refCon);
+    protected native @org.robovm.rt.bro.annotation.Marshaler(CFArray.AsListMarshaler.class) List<CTFontDescriptor> getMatchingFontDescriptorsSorted(FunctionPtr sortCallback, @Pointer long refCon);
     /*</methods>*/
 }

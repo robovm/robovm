@@ -33,11 +33,30 @@ import org.robovm.apple.coregraphics.*;
 
 /*<javadoc>*/
 /*</javadoc>*/
+@Marshaler(CTFontAttribute.Marshaler.class)
 /*<annotations>*/@Library("CoreText")/*</annotations>*/
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/CTFontAttribute/*</name>*/ 
     extends /*<extends>*/Object/*</extends>*/ 
     /*<implements>*//*</implements>*/ {
 
+    public static class Marshaler {
+        @MarshalsPointer
+        public static CTFontAttribute toObject(Class<CTFontAttribute> cls, long handle, long flags) {
+            CFString o = (CFString) CFType.Marshaler.toObject(CFString.class, handle, flags);
+            if (o == null) {
+                return null;
+            }
+            return CTFontAttribute.valueOf(o);
+        }
+        @MarshalsPointer
+        public static long toNative(CTFontAttribute o, long flags) {
+            if (o == null) {
+                return 0L;
+            }
+            return CFType.Marshaler.toNative(o.value(), flags);
+        }
+    }
+    
     /*<ptr>*/
     /*</ptr>*/
     /*<bind>*/static { Bro.bind(CTFontAttribute.class); }/*</bind>*/
@@ -153,7 +172,7 @@ import org.robovm.apple.coregraphics.*;
         return lazyGlobalValue.value();
     }
     
-    public static CTFontAttribute valueOf(NSString value) {
+    public static CTFontAttribute valueOf(CFString value) {
         for (CTFontAttribute v : values) {
             if (v.value().equals(value)) {
                 return v;

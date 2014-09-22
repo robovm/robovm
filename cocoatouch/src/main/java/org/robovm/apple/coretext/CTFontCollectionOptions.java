@@ -33,20 +33,39 @@ import org.robovm.apple.coregraphics.*;
 
 /*<javadoc>*/
 /*</javadoc>*/
+@Marshaler(CTFontCollectionOptions.Marshaler.class)
 /*<annotations>*/@Library("CoreText")/*</annotations>*/
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/CTFontCollectionOptions/*</name>*/ 
     extends /*<extends>*/Object/*</extends>*/ 
     /*<implements>*//*</implements>*/ {
 
+    public static class Marshaler {
+        @MarshalsPointer
+        public static CTFontCollectionOptions toObject(Class<CTFontCollectionOptions> cls, long handle, long flags) {
+            CFDictionary o = (CFDictionary) CFType.Marshaler.toObject(CFDictionary.class, handle, flags);
+            if (o == null) {
+                return null;
+            }
+            return new CTFontCollectionOptions(o);
+        }
+        @MarshalsPointer
+        public static long toNative(CTFontCollectionOptions o, long flags) {
+            if (o == null) {
+                return 0L;
+            }
+            return CFType.Marshaler.toNative(o.data, flags);
+        }
+    }
+    
     /*<ptr>*/
     /*</ptr>*/
     private CFDictionary data;
     
-    public CTFontCollectionOptions() {
-        this.data = CFMutableDictionary.create();
-    }
     protected CTFontCollectionOptions(CFDictionary data) {
         this.data = data;
+    }
+    public CTFontCollectionOptions() {
+        this.data = CFMutableDictionary.create();
     }
     /*<bind>*/static { Bro.bind(CTFontCollectionOptions.class); }/*</bind>*/
     /*<constants>*//*</constants>*/
@@ -70,8 +89,9 @@ import org.robovm.apple.coregraphics.*;
     /**
      * @since Available in iOS 3.2 and later.
      */
-    public void setRemoveDuplicates(boolean removeDuplicates) {
+    public CTFontCollectionOptions setRemoveDuplicates(boolean removeDuplicates) {
         data.put(RemoveDuplicates(), CFBoolean.valueOf(removeDuplicates));
+        return this;
     }
     /*<methods>*/
     /**
@@ -80,4 +100,9 @@ import org.robovm.apple.coregraphics.*;
     @GlobalValue(symbol="kCTFontCollectionRemoveDuplicatesOption", optional=true)
     protected static native CFString RemoveDuplicates();
     /*</methods>*/
+    @Override
+    public String toString() {
+        if (data != null) return data.toString();
+        return super.toString();
+    }
 }

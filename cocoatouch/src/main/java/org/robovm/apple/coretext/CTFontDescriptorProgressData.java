@@ -33,11 +33,30 @@ import org.robovm.apple.coregraphics.*;
 
 /*<javadoc>*/
 /*</javadoc>*/
+@Marshaler(CTFontDescriptorProgressData.Marshaler.class)
 /*<annotations>*/@Library("CoreText")/*</annotations>*/
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/CTFontDescriptorProgressData/*</name>*/ 
     extends /*<extends>*/Object/*</extends>*/ 
     /*<implements>*//*</implements>*/ {
 
+    public static class Marshaler {
+        @MarshalsPointer
+        public static CTFontDescriptorProgressData toObject(Class<CTFontDescriptorProgressData> cls, long handle, long flags) {
+            CFDictionary o = (CFDictionary) CFType.Marshaler.toObject(CFDictionary.class, handle, flags);
+            if (o == null) {
+                return null;
+            }
+            return new CTFontDescriptorProgressData(o);
+        }
+        @MarshalsPointer
+        public static long toNative(CTFontDescriptorProgressData o, long flags) {
+            if (o == null) {
+                return 0L;
+            }
+            return CFType.Marshaler.toNative(o.data, flags);
+        }
+    }
+    
     /*<ptr>*/
     /*</ptr>*/
     private CFDictionary data;
@@ -171,4 +190,9 @@ import org.robovm.apple.coregraphics.*;
     @GlobalValue(symbol="kCTFontDescriptorMatchingError", optional=true)
     protected static native CFString Error();
     /*</methods>*/
+    @Override
+    public String toString() {
+        if (data != null) return data.toString();
+        return super.toString();
+    }
 }

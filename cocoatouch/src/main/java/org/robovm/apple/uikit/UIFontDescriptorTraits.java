@@ -93,8 +93,9 @@ import org.robovm.apple.coretext.*;
     /**
      * @since Available in iOS 7.0 and later.
      */
-    public void setSymbolicTraits(UIFontDescriptorSymbolicTraits symbolicTraits) {
+    public UIFontDescriptorTraits setSymbolicTraits(UIFontDescriptorSymbolicTraits symbolicTraits) {
         data.put(SymbolicTrait(), NSNumber.valueOf((int)symbolicTraits.value()));
+        return this;
     }
     /**
      * @since Available in iOS 7.0 and later.
@@ -109,8 +110,9 @@ import org.robovm.apple.coretext.*;
     /**
      * @since Available in iOS 7.0 and later.
      */
-    public void setWeightTrait(double weight) {
+    public UIFontDescriptorTraits setWeightTrait(double weight) {
         data.put(WeightTrait(), NSNumber.valueOf(weight));
+        return this;
     }
     /**
      * @since Available in iOS 7.0 and later.
@@ -125,8 +127,9 @@ import org.robovm.apple.coretext.*;
     /**
      * @since Available in iOS 7.0 and later.
      */
-    public void setWidthTrait(double width) {
+    public UIFontDescriptorTraits setWidthTrait(double width) {
         data.put(WidthTrait(), NSNumber.valueOf(width));
+        return this;
     }
     /**
      * @since Available in iOS 7.0 and later.
@@ -141,8 +144,9 @@ import org.robovm.apple.coretext.*;
     /**
      * @since Available in iOS 7.0 and later.
      */
-    public void setSlantTrait(double slant) {
+    public UIFontDescriptorTraits setSlantTrait(double slant) {
         data.put(SlantTrait(), NSNumber.valueOf(slant));
+        return this;
     }
     /*<methods>*/
     /**

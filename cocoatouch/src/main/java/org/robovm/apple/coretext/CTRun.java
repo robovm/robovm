@@ -138,7 +138,7 @@ import org.robovm.apple.coregraphics.*;
      * @since Available in iOS 3.2 and later.
      */
     @Bridge(symbol="CTRunGetPositions", optional=true)
-    public native void getPositions(@ByVal CFRange range, CGPoint buffer);
+    protected native void getPositions(@ByVal CFRange range, CGPoint buffer);
     /**
      * @since Available in iOS 3.2 and later.
      */

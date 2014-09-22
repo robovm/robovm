@@ -19,6 +19,7 @@ package org.robovm.apple.uikit;
 import java.io.*;
 import java.nio.*;
 import java.util.*;
+
 import org.robovm.objc.*;
 import org.robovm.objc.annotation.*;
 import org.robovm.objc.block.*;
@@ -92,8 +93,9 @@ import org.robovm.apple.coretext.*;
     /**
      * @since Available in iOS 7.0 and later.
      */
-    public void setTabColumnTerminatingCharacters(NSCharacterSet characters) {
+    public NSTextTabOptions setTabColumnTerminatingCharacters(NSCharacterSet characters) {
         data.put(TabColumnTerminatorsAttribute(), characters);
+        return this;
     }
     /*<methods>*/
     /**
@@ -102,4 +104,10 @@ import org.robovm.apple.coretext.*;
     @GlobalValue(symbol="NSTabColumnTerminatorsAttributeName", optional=true)
     protected static native NSString TabColumnTerminatorsAttribute();
     /*</methods>*/
+    
+    @Override
+    public String toString() {
+        if (data != null) return data.toString();
+        return super.toString();
+    }
 }

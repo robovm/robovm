@@ -81,8 +81,9 @@ import org.robovm.apple.security.*;
         return data;
     }
     
-    public void set(NSFileSystemAttribute attribute, NSObject value) {
+    public NSFileSystemAttributes set(NSFileSystemAttribute attribute, NSObject value) {
         data.put(attribute.value(), value);
+        return this;
     }
     public NSObject get(NSFileSystemAttribute attribute) {
         return data.get(attribute.value());
@@ -99,8 +100,9 @@ import org.robovm.apple.security.*;
         }
         return 0;
     }
-    public void setSize(long size) {
+    public NSFileSystemAttributes setSize(long size) {
         set(NSFileSystemAttribute.Size, NSNumber.valueOf(size));
+        return this;
     }
     public long getFreeSize() {
         if (contains(NSFileSystemAttribute.FreeSize)) {
@@ -109,8 +111,9 @@ import org.robovm.apple.security.*;
         }
         return 0;
     }
-    public void setFreeSize(long size) {
+    public NSFileSystemAttributes setFreeSize(long size) {
         set(NSFileSystemAttribute.FreeSize, NSNumber.valueOf(size));
+        return this;
     }
     public long getNodes() {
         if (contains(NSFileSystemAttribute.Nodes)) {
@@ -119,8 +122,9 @@ import org.robovm.apple.security.*;
         }
         return 0;
     }
-    public void setNodes(long nodes) {
+    public NSFileSystemAttributes setNodes(long nodes) {
         set(NSFileSystemAttribute.Nodes, NSNumber.valueOf(nodes));
+        return this;
     }
     public long getFreeNodes() {
         if (contains(NSFileSystemAttribute.FreeNodes)) {
@@ -129,8 +133,9 @@ import org.robovm.apple.security.*;
         }
         return 0;
     }
-    public void setFreeNodes(long nodes) {
+    public NSFileSystemAttributes setFreeNodes(long nodes) {
         set(NSFileSystemAttribute.FreeNodes, NSNumber.valueOf(nodes));
+        return this;
     }
     public long getSystemNumber() {
         if (contains(NSFileSystemAttribute.Number)) {
@@ -139,8 +144,9 @@ import org.robovm.apple.security.*;
         }
         return 0;
     }
-    public void setSystemNumber(long number) {
+    public NSFileSystemAttributes setSystemNumber(long number) {
         set(NSFileSystemAttribute.Number, NSNumber.valueOf(number));
+        return this;
     }
     /*<methods>*/
     /*</methods>*/

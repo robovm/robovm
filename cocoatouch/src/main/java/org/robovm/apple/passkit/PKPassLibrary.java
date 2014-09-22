@@ -72,7 +72,7 @@ import org.robovm.apple.uikit.*;
     @Method(selector = "passes")
     public native NSArray<PKPass> getPasses();
     @Method(selector = "passWithPassTypeIdentifier:serialNumber:")
-    public native PKPass getPass(NSString identifier, String serialNumber);
+    public native PKPass getPass(String identifier, String serialNumber);
     @Method(selector = "removePass:")
     public native void removePass(PKPass pass);
     @Method(selector = "containsPass:")

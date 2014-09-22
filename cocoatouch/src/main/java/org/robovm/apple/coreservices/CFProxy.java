@@ -32,16 +32,35 @@ import org.robovm.apple.corefoundation.*;
 
 /*<javadoc>*/
 /*</javadoc>*/
+@Marshaler(CFProxy.Marshaler.class)
 /*<annotations>*/@Library("CFNetwork")/*</annotations>*/
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/CFProxy/*</name>*/ 
     extends /*<extends>*/Object/*</extends>*/ 
     /*<implements>*//*</implements>*/ {
 
+    public static class Marshaler {
+        @MarshalsPointer
+        public static CFProxy toObject(Class<CFProxy> cls, long handle, long flags) {
+            CFDictionary o = (CFDictionary) CFType.Marshaler.toObject(CFDictionary.class, handle, flags);
+            if (o == null) {
+                return null;
+            }
+            return new CFProxy(o);
+        }
+        @MarshalsPointer
+        public static long toNative(CFProxy o, long flags) {
+            if (o == null) {
+                return 0L;
+            }
+            return CFType.Marshaler.toNative(o.data, flags);
+        }
+    }
+    
     /*<ptr>*/
     /*</ptr>*/
-    private NSDictionary<?, ?> data;
+    private CFDictionary data;
     
-    protected CFProxy(NSDictionary<?, ?> data) {
+    protected CFProxy(CFDictionary data) {
         this.data = data;
     }
     /*<bind>*/static { Bro.bind(CFProxy.class); }/*</bind>*/
@@ -54,7 +73,7 @@ import org.robovm.apple.corefoundation.*;
      */
     public CFProxyType getType() {
         if (data.containsKey(HostNameKey())) {
-            NSString val = (NSString)data.get(HostNameKey());
+            CFString val = data.get(HostNameKey(), CFString.class);
             return CFProxyType.valueOf(val);
         }
         return null;
@@ -64,7 +83,7 @@ import org.robovm.apple.corefoundation.*;
      */
     public String getHost() {
         if (data.containsKey(HostNameKey())) {
-            NSString val = (NSString)data.get(HostNameKey());
+            CFString val = data.get(HostNameKey(), CFString.class);
             return val.toString();
         }
         return null;
@@ -74,7 +93,7 @@ import org.robovm.apple.corefoundation.*;
      */
     public int getPort() {
         if (data.containsKey(PortNumberKey())) {
-            NSNumber val = (NSNumber)data.get(PortNumberKey());
+            CFNumber val = (CFNumber)data.get(PortNumberKey(), CFNumber.class);
             return val.intValue();
         }
         return -1;
@@ -84,7 +103,7 @@ import org.robovm.apple.corefoundation.*;
      */
     public NSURL getAutoConfigurationURL() {
         if (data.containsKey(AutoConfigurationURLKey())) {
-            NSURL val = (NSURL)data.get(AutoConfigurationURLKey());
+            NSURL val = data.get(AutoConfigurationURLKey(), NSURL.class);
             return val;
         }
         return null;
@@ -94,7 +113,7 @@ import org.robovm.apple.corefoundation.*;
      */
     public String getAutoConfigurationJavaScript() {
         if (data.containsKey(AutoConfigurationJavaScriptKey())) {
-            NSString val = (NSString)data.get(AutoConfigurationJavaScriptKey());
+            CFString val = data.get(AutoConfigurationJavaScriptKey(), CFString.class);
             return val.toString();
         }
         return null;
@@ -104,7 +123,7 @@ import org.robovm.apple.corefoundation.*;
      */
     public String getUsername() {
         if (data.containsKey(UsernameKey())) {
-            NSString val = (NSString)data.get(UsernameKey());
+            CFString val = data.get(UsernameKey(), CFString.class);
             return val.toString();
         }
         return null;
@@ -114,7 +133,7 @@ import org.robovm.apple.corefoundation.*;
      */
     public String getPassword() {
         if (data.containsKey(PasswordKey())) {
-            NSString val = (NSString)data.get(PasswordKey());
+            CFString val = data.get(PasswordKey(), CFString.class);
             return val.toString();
         }
         return null;
@@ -122,53 +141,59 @@ import org.robovm.apple.corefoundation.*;
     /**
      * @since Available in iOS 2.0 and later.
      */
-//    public CFHTTPMessage getAutoConfigurationHTTPResponse() {
-//        if (data.containsKey(AutoConfigurationHTTPResponseKey())) {
-//            CFHTTPMessage val = (CFHTTPMessage)data.get(AutoConfigurationHTTPResponseKey()); TODO
-//            return val;
-//        }
-//        return null;
-//    }
+    public CFHTTPMessage getAutoConfigurationHTTPResponse() {
+        if (data.containsKey(AutoConfigurationHTTPResponseKey())) {
+            CFHTTPMessage val = data.get(AutoConfigurationHTTPResponseKey(), CFHTTPMessage.class);
+            return val;
+        }
+        return null;
+    }
     /*<methods>*/
     /**
      * @since Available in iOS 2.0 and later.
      */
     @GlobalValue(symbol="kCFProxyTypeKey", optional=true)
-    protected static native NSString TypeKey();
+    protected static native CFString TypeKey();
     /**
      * @since Available in iOS 2.0 and later.
      */
     @GlobalValue(symbol="kCFProxyHostNameKey", optional=true)
-    protected static native NSString HostNameKey();
+    protected static native CFString HostNameKey();
     /**
      * @since Available in iOS 2.0 and later.
      */
     @GlobalValue(symbol="kCFProxyPortNumberKey", optional=true)
-    protected static native NSString PortNumberKey();
+    protected static native CFString PortNumberKey();
     /**
      * @since Available in iOS 2.0 and later.
      */
     @GlobalValue(symbol="kCFProxyAutoConfigurationURLKey", optional=true)
-    protected static native NSString AutoConfigurationURLKey();
+    protected static native CFString AutoConfigurationURLKey();
     /**
      * @since Available in iOS 3.0 and later.
      */
     @GlobalValue(symbol="kCFProxyAutoConfigurationJavaScriptKey", optional=true)
-    protected static native NSString AutoConfigurationJavaScriptKey();
+    protected static native CFString AutoConfigurationJavaScriptKey();
     /**
      * @since Available in iOS 2.0 and later.
      */
     @GlobalValue(symbol="kCFProxyUsernameKey", optional=true)
-    protected static native NSString UsernameKey();
+    protected static native CFString UsernameKey();
     /**
      * @since Available in iOS 2.0 and later.
      */
     @GlobalValue(symbol="kCFProxyPasswordKey", optional=true)
-    protected static native NSString PasswordKey();
+    protected static native CFString PasswordKey();
     /**
      * @since Available in iOS 2.0 and later.
      */
     @GlobalValue(symbol="kCFProxyAutoConfigurationHTTPResponseKey", optional=true)
-    protected static native NSString AutoConfigurationHTTPResponseKey();
+    protected static native CFString AutoConfigurationHTTPResponseKey();
     /*</methods>*/
+    
+    @Override
+    public String toString() {
+        if (data != null) return data.toString();
+        return super.toString();
+    }
 }

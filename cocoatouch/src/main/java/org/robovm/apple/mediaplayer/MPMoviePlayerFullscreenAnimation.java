@@ -102,4 +102,10 @@ import org.robovm.apple.coregraphics.*;
     @GlobalValue(symbol="MPMoviePlayerFullscreenAnimationCurveUserInfoKey", optional=true)
     protected static native NSString CurveUserInfoKey();
     /*</methods>*/
+    
+    @Override
+    public String toString() {
+        if (data != null) return data.toString();
+        return super.toString();
+    }
 }

@@ -19,6 +19,7 @@ package org.robovm.apple.opengles;
 import java.io.*;
 import java.nio.*;
 import java.util.*;
+
 import org.robovm.objc.*;
 import org.robovm.objc.annotation.*;
 import org.robovm.objc.block.*;
@@ -74,6 +75,7 @@ import org.robovm.apple.foundation.*;
     public NSDictionary<NSString, NSObject> getDictionary() {
         return data;
     }
+    
     public boolean isRetainedBacking() {
         if (data.containsKey(RetainedBacking())) {
             NSNumber val = (NSNumber)data.get(RetainedBacking());
@@ -81,8 +83,9 @@ import org.robovm.apple.foundation.*;
         }
         return false;
     }
-    public void setRetainedBacking(boolean retainedBacking) {
+    public EAGLDrawableProperties setRetainedBacking(boolean retainedBacking) {
         data.put(RetainedBacking(), NSNumber.valueOf(retainedBacking));
+        return this;
     }
     public EAGLColorFormat getColorFormat() {
         if (data.containsKey(ColorFormat())) {
@@ -91,8 +94,9 @@ import org.robovm.apple.foundation.*;
         }
         return EAGLColorFormat.RGBA8;
     }
-    public void setColorFormat(EAGLColorFormat colorFormat) {
+    public EAGLDrawableProperties setColorFormat(EAGLColorFormat colorFormat) {
         data.put(ColorFormat(), colorFormat.value());
+        return this;
     }
     /*<methods>*/
     @GlobalValue(symbol="kEAGLDrawablePropertyRetainedBacking", optional=true)
@@ -100,4 +104,9 @@ import org.robovm.apple.foundation.*;
     @GlobalValue(symbol="kEAGLDrawablePropertyColorFormat", optional=true)
     protected static native NSString ColorFormat();
     /*</methods>*/
+    
+    public String toString() {
+        if (data != null) return data.toString();
+        return super.toString();
+    }
 }

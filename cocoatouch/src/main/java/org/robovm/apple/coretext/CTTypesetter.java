@@ -46,12 +46,6 @@ import org.robovm.apple.coregraphics.*;
     /*</constructors>*/
     /*<properties>*//*</properties>*/
     /*<members>*//*</members>*/
-    /**
-     * @since Available in iOS 3.2 and later.
-     */
-    public static CTTypesetter create(NSAttributedString string, CTTypesetterOptions options) {
-        return create(string, options.getDictionary());
-    }
     /*<methods>*/
     /**
      * @since Available in iOS 3.2 and later.
@@ -67,7 +61,7 @@ import org.robovm.apple.coregraphics.*;
      * @since Available in iOS 3.2 and later.
      */
     @Bridge(symbol="CTTypesetterCreateWithAttributedStringAndOptions", optional=true)
-    protected static native CTTypesetter create(NSAttributedString string, CFDictionary options);
+    public static native CTTypesetter create(NSAttributedString string, CTTypesetterOptions options);
     /**
      * @since Available in iOS 3.2 and later.
      */

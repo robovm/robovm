@@ -19,6 +19,7 @@ package org.robovm.apple.coregraphics;
 import java.io.*;
 import java.nio.*;
 import java.util.*;
+
 import org.robovm.objc.*;
 import org.robovm.objc.annotation.*;
 import org.robovm.objc.block.*;
@@ -85,9 +86,10 @@ import org.robovm.apple.uikit.*;
     /**
      * @since Available in iOS 2.0 and later.
      */
-    public void setMediaBox(@ByVal CGRect box) {
+    public CGPDFBoxOptions setMediaBox(@ByVal CGRect box) {
         NSData val = new NSData(box);
         data.put(MediaBoxKey(), val.as(CFData.class));
+        return this;
     }
     /**
      * @since Available in iOS 2.0 and later.
@@ -102,9 +104,10 @@ import org.robovm.apple.uikit.*;
     /**
      * @since Available in iOS 2.0 and later.
      */
-    public void setCropBox(@ByVal CGRect box) {
+    public CGPDFBoxOptions setCropBox(@ByVal CGRect box) {
         NSData val = new NSData(box);
         data.put(CropBoxKey(), val.as(CFData.class));
+        return this;
     }
     /**
      * @since Available in iOS 2.0 and later.
@@ -119,9 +122,10 @@ import org.robovm.apple.uikit.*;
     /**
      * @since Available in iOS 2.0 and later.
      */
-    public void setBleedBox(@ByVal CGRect box) {
+    public CGPDFBoxOptions setBleedBox(@ByVal CGRect box) {
         NSData val = new NSData(box);
         data.put(BleedBoxKey(), val.as(CFData.class));
+        return this;
     }
     /**
      * @since Available in iOS 2.0 and later.
@@ -136,9 +140,10 @@ import org.robovm.apple.uikit.*;
     /**
      * @since Available in iOS 2.0 and later.
      */
-    public void setTrimBox(@ByVal CGRect box) {
+    public CGPDFBoxOptions setTrimBox(@ByVal CGRect box) {
         NSData val = new NSData(box);
         data.put(TrimBoxKey(), val.as(CFData.class));
+        return this;
     }
     /**
      * @since Available in iOS 2.0 and later.
@@ -153,9 +158,10 @@ import org.robovm.apple.uikit.*;
     /**
      * @since Available in iOS 2.0 and later.
      */
-    public void setArtBox(@ByVal CGRect box) {
+    public CGPDFBoxOptions setArtBox(@ByVal CGRect box) {
         NSData val = new NSData(box);
         data.put(ArtBoxKey(), val.as(CFData.class));
+        return this;
     }
     /*<methods>*/
     /**
@@ -184,4 +190,10 @@ import org.robovm.apple.uikit.*;
     @GlobalValue(symbol="kCGPDFContextArtBox", optional=true)
     protected static native CFString ArtBoxKey();
     /*</methods>*/
+    
+    @Override
+    public String toString() {
+        if (data != null) return data.toString();
+        return super.toString();
+    }
 }

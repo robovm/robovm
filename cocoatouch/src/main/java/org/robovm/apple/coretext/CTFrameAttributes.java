@@ -33,22 +33,40 @@ import org.robovm.apple.coregraphics.*;
 
 /*<javadoc>*/
 /*</javadoc>*/
+@Marshaler(CTFrameAttributes.Marshaler.class)
 /*<annotations>*/@Library("CoreText")/*</annotations>*/
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/CTFrameAttributes/*</name>*/ 
     extends /*<extends>*/Object/*</extends>*/ 
     /*<implements>*//*</implements>*/ {
 
+    public static class Marshaler {
+        @MarshalsPointer
+        public static CTFrameAttributes toObject(Class<CTFrameAttributes> cls, long handle, long flags) {
+            CFDictionary o = (CFDictionary) CFType.Marshaler.toObject(CFDictionary.class, handle, flags);
+            if (o == null) {
+                return null;
+            }
+            return new CTFrameAttributes(o);
+        }
+        @MarshalsPointer
+        public static long toNative(CTFrameAttributes o, long flags) {
+            if (o == null) {
+                return 0L;
+            }
+            return CFType.Marshaler.toNative(o.data, flags);
+        }
+    }
+    
     /*<ptr>*/
     /*</ptr>*/
     private CFDictionary data;
     
-    public CTFrameAttributes() {
-        this.data = CFMutableDictionary.create();
-    }
     protected CTFrameAttributes(CFDictionary data) {
         this.data = data;
     }
-    
+    public CTFrameAttributes() {
+        this.data = CFMutableDictionary.create();
+    }
     /*<bind>*/static { Bro.bind(CTFrameAttributes.class); }/*</bind>*/
     /*<constants>*//*</constants>*/
     /*<constructors>*//*</constructors>*/
@@ -57,6 +75,7 @@ import org.robovm.apple.coregraphics.*;
     protected CFDictionary getDictionary() {
         return data;
     }
+    
     /**
      * @since Available in iOS 3.2 and later.
      */
@@ -70,8 +89,9 @@ import org.robovm.apple.coregraphics.*;
     /**
      * @since Available in iOS 3.2 and later.
      */
-    public void setProgression(CTFrameProgression progression) {
+    public CTFrameAttributes setProgression(CTFrameProgression progression) {
         data.put(Progression(), CFNumber.valueOf((int)progression.value()));
+        return this;
     }
     /**
      * @since Available in iOS 4.2 and later.
@@ -86,8 +106,9 @@ import org.robovm.apple.coregraphics.*;
     /**
      * @since Available in iOS 4.2 and later.
      */
-    public void setPathFillRule(CTFramePathFillRule pathFillRule) {
+    public CTFrameAttributes setPathFillRule(CTFramePathFillRule pathFillRule) {
         data.put(PathFillRule(), CFNumber.valueOf((int)pathFillRule.value()));
+        return this;
     }
     /**
      * @since Available in iOS 4.2 and later.
@@ -102,8 +123,9 @@ import org.robovm.apple.coregraphics.*;
     /**
      * @since Available in iOS 4.2 and later.
      */
-    public void setPathWidth(double width) {
+    public CTFrameAttributes setPathWidth(double width) {
         data.put(PathWidth(), CFNumber.valueOf(width));
+        return this;
     }
     /**
      * @since Available in iOS 4.3 and later.
@@ -122,12 +144,13 @@ import org.robovm.apple.coregraphics.*;
     /**
      * @since Available in iOS 4.3 and later.
      */
-    public void setClippingPaths(List<CTFrameClippingPath> paths) {
+    public CTFrameAttributes setClippingPaths(List<CTFrameClippingPath> paths) {
         CFArray list = CFMutableArray.create();
         for (CTFrameClippingPath path : paths) {
             list.add(path.getDictionary());
         }
         data.put(ClippingPaths(), list);
+        return this;
     }
     /*<methods>*/
     /**
@@ -151,4 +174,10 @@ import org.robovm.apple.coregraphics.*;
     @GlobalValue(symbol="kCTFrameClippingPathsAttributeName", optional=true)
     protected static native CFString ClippingPaths();
     /*</methods>*/
+    
+    @Override
+    public String toString() {
+        if (data != null) return data.toString();
+        return super.toString();
+    }
 }

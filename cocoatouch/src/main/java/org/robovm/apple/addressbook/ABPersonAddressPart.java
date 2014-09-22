@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 Trillian Mobile AB
+w * Copyright (C) 2014 Trillian Mobile AB
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -72,16 +72,16 @@ import org.robovm.apple.corefoundation.*;
     }
     /*<methods>*/
     @GlobalValue(symbol="kABPersonAddressStreetKey", optional=true)
-    protected static native NSString StreetValue();
+    protected static native CFString StreetValue();
     @GlobalValue(symbol="kABPersonAddressCityKey", optional=true)
-    protected static native NSString CityValue();
+    protected static native CFString CityValue();
     @GlobalValue(symbol="kABPersonAddressStateKey", optional=true)
-    protected static native NSString StateValue();
+    protected static native CFString StateValue();
     @GlobalValue(symbol="kABPersonAddressZIPKey", optional=true)
-    protected static native NSString ZIPValue();
+    protected static native CFString ZIPValue();
     @GlobalValue(symbol="kABPersonAddressCountryKey", optional=true)
-    protected static native NSString CountryValue();
+    protected static native CFString CountryValue();
     @GlobalValue(symbol="kABPersonAddressCountryCodeKey", optional=true)
-    protected static native NSString CountryCodeValue();
+    protected static native CFString CountryCodeValue();
     /*</methods>*/
 }

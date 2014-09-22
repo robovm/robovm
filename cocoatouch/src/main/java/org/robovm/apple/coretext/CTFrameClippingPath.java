@@ -33,20 +33,43 @@ import org.robovm.apple.coregraphics.*;
 
 /*<javadoc>*/
 /*</javadoc>*/
+@Marshaler(CTFrameClippingPath.Marshaler.class)
 /*<annotations>*/@Library("CoreText")/*</annotations>*/
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/CTFrameClippingPath/*</name>*/ 
     extends /*<extends>*/Object/*</extends>*/ 
     /*<implements>*//*</implements>*/ {
 
+    public static class Marshaler {
+        @MarshalsPointer
+        public static CTFrameClippingPath toObject(Class<CTFrameClippingPath> cls, long handle, long flags) {
+            CFDictionary o = (CFDictionary) CFType.Marshaler.toObject(CFDictionary.class, handle, flags);
+            if (o == null) {
+                return null;
+            }
+            return new CTFrameClippingPath(o);
+        }
+        @MarshalsPointer
+        public static long toNative(CTFrameClippingPath o, long flags) {
+            if (o == null) {
+                return 0L;
+            }
+            return CFType.Marshaler.toNative(o.data, flags);
+        }
+    }
+    
     /*<ptr>*/
     /*</ptr>*/
-    private CFDictionary data = CFMutableDictionary.create();
+    private CFDictionary data;
     
-    public CTFrameClippingPath(CGPath path) {
-        setPath(path);
-    }
     protected CTFrameClippingPath(CFDictionary data) {
         this.data = data;
+    }
+    public CTFrameClippingPath() {
+        this.data = CFMutableDictionary.create();
+    }
+    public CTFrameClippingPath(CGPath path) {
+        this.data = CFMutableDictionary.create();
+        setPath(path);
     }
     /*<bind>*/static { Bro.bind(CTFrameClippingPath.class); }/*</bind>*/
     /*<constants>*//*</constants>*/
@@ -64,8 +87,9 @@ import org.robovm.apple.coregraphics.*;
         }
         return null;
     }
-    public void setPath(CGPath path) {
+    public CTFrameClippingPath setPath(CGPath path) {
         data.put(Path(), path);
+        return this;
     }
     /*<methods>*/
     /**
@@ -74,4 +98,10 @@ import org.robovm.apple.coregraphics.*;
     @GlobalValue(symbol="kCTFramePathClippingPathAttributeName", optional=true)
     protected static native CFString Path();
     /*</methods>*/
+    
+    @Override
+    public String toString() {
+        if (data != null) return data.toString();
+        return super.toString();
+    }
 }

@@ -41,83 +41,46 @@ import org.robovm.apple.corefoundation.*;
     /*</ptr>*/
     /*<bind>*/static { Bro.bind(ABPersonInstantMessageService.class); }/*</bind>*/
     /*<constants>*//*</constants>*/
-    public static final ABPersonInstantMessageService Yahoo = new ABPersonInstantMessageService() {
-        public NSString value() {
-            return YahooValue();
-        }
-    };
-    public static final ABPersonInstantMessageService Jabber = new ABPersonInstantMessageService() {
-        public NSString value() {
-            return JabberValue();
-        }
-    };
-    public static final ABPersonInstantMessageService MSN = new ABPersonInstantMessageService() {
-        public NSString value() {
-            return MSNValue();
-        }
-    };
-    public static final ABPersonInstantMessageService ICQ = new ABPersonInstantMessageService() {
-        public NSString value() {
-            return ICQValue();
-        }
-    };
-    public static final ABPersonInstantMessageService AIM = new ABPersonInstantMessageService() {
-        public NSString value() {
-            return AIMValue();
-        }
-    };
+    public static final ABPersonInstantMessageService Yahoo = new ABPersonInstantMessageService("YahooValue");
+    public static final ABPersonInstantMessageService Jabber = new ABPersonInstantMessageService("JabberValue");
+    public static final ABPersonInstantMessageService MSN = new ABPersonInstantMessageService("MSNValue");
+    public static final ABPersonInstantMessageService ICQ = new ABPersonInstantMessageService("ICQValue");
+    public static final ABPersonInstantMessageService AIM = new ABPersonInstantMessageService("AIMValue");
     /**
      * @since Available in iOS 5.0 and later.
      */
-    public static final ABPersonInstantMessageService QQ = new ABPersonInstantMessageService() {
-        public NSString value() {
-            return QQValue();
-        }
-    };
+    public static final ABPersonInstantMessageService QQ = new ABPersonInstantMessageService("QQValue");
     /**
      * @since Available in iOS 5.0 and later.
      */
-    public static final ABPersonInstantMessageService GoogleTalk = new ABPersonInstantMessageService() {
-        public NSString value() {
-            return GoogleTalkValue();
-        }
-    };
+    public static final ABPersonInstantMessageService GoogleTalk = new ABPersonInstantMessageService("GoogleTalkValue");
     /**
      * @since Available in iOS 5.0 and later.
      */
-    public static final ABPersonInstantMessageService Skype = new ABPersonInstantMessageService() {
-        public NSString value() {
-            return SkypeValue();
-        }
-    };
+    public static final ABPersonInstantMessageService Skype = new ABPersonInstantMessageService("SkypeValue");
     /**
      * @since Available in iOS 5.0 and later.
      */
-    public static final ABPersonInstantMessageService Facebook = new ABPersonInstantMessageService() {
-        public NSString value() {
-            return FacebookValue();
-        }
-    };
+    public static final ABPersonInstantMessageService Facebook = new ABPersonInstantMessageService("FacebookValue");
     /**
      * @since Available in iOS 5.0 and later.
      */
-    public static final ABPersonInstantMessageService GaduGadu = new ABPersonInstantMessageService() {
-        public NSString value() {
-            return GaduGaduValue();
-        }
-    };
+    public static final ABPersonInstantMessageService GaduGadu = new ABPersonInstantMessageService("GaduGaduValue");
     private static ABPersonInstantMessageService[] values = new ABPersonInstantMessageService[] {Yahoo, Jabber, MSN, ICQ, AIM, QQ, GoogleTalk, Skype, Facebook, GaduGadu};
 
-    private ABPersonInstantMessageService() {
+    private final LazyGlobalValue<CFString> lazyGlobalValue;
+    
+    private ABPersonInstantMessageService(String getterName) {
+        lazyGlobalValue = new LazyGlobalValue<>(getClass(), getterName);
     }
     /*<constructors>*//*</constructors>*/
     /*<properties>*//*</properties>*/
     /*<members>*//*</members>*/
-    public NSString value() {
-        return null;
+    public CFString value() {
+        return lazyGlobalValue.value();
     }
     
-    public static ABPersonInstantMessageService valueOf(NSString value) {
+    public static ABPersonInstantMessageService valueOf(CFString value) {
         for (ABPersonInstantMessageService v : values) {
             if (v.value().equals(value)) {
                 return v;
@@ -128,39 +91,39 @@ import org.robovm.apple.corefoundation.*;
     }
     /*<methods>*/
     @GlobalValue(symbol="kABPersonInstantMessageServiceYahoo", optional=true)
-    protected static native NSString YahooValue();
+    protected static native CFString YahooValue();
     @GlobalValue(symbol="kABPersonInstantMessageServiceJabber", optional=true)
-    protected static native NSString JabberValue();
+    protected static native CFString JabberValue();
     @GlobalValue(symbol="kABPersonInstantMessageServiceMSN", optional=true)
-    protected static native NSString MSNValue();
+    protected static native CFString MSNValue();
     @GlobalValue(symbol="kABPersonInstantMessageServiceICQ", optional=true)
-    protected static native NSString ICQValue();
+    protected static native CFString ICQValue();
     @GlobalValue(symbol="kABPersonInstantMessageServiceAIM", optional=true)
-    protected static native NSString AIMValue();
+    protected static native CFString AIMValue();
     /**
      * @since Available in iOS 5.0 and later.
      */
     @GlobalValue(symbol="kABPersonInstantMessageServiceQQ", optional=true)
-    protected static native NSString QQValue();
+    protected static native CFString QQValue();
     /**
      * @since Available in iOS 5.0 and later.
      */
     @GlobalValue(symbol="kABPersonInstantMessageServiceGoogleTalk", optional=true)
-    protected static native NSString GoogleTalkValue();
+    protected static native CFString GoogleTalkValue();
     /**
      * @since Available in iOS 5.0 and later.
      */
     @GlobalValue(symbol="kABPersonInstantMessageServiceSkype", optional=true)
-    protected static native NSString SkypeValue();
+    protected static native CFString SkypeValue();
     /**
      * @since Available in iOS 5.0 and later.
      */
     @GlobalValue(symbol="kABPersonInstantMessageServiceFacebook", optional=true)
-    protected static native NSString FacebookValue();
+    protected static native CFString FacebookValue();
     /**
      * @since Available in iOS 5.0 and later.
      */
     @GlobalValue(symbol="kABPersonInstantMessageServiceGaduGadu", optional=true)
-    protected static native NSString GaduGaduValue();
+    protected static native CFString GaduGaduValue();
     /*</methods>*/
 }

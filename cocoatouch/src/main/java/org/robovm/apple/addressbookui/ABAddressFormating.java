@@ -19,6 +19,7 @@ package org.robovm.apple.addressbookui;
 import java.io.*;
 import java.nio.*;
 import java.util.*;
+
 import org.robovm.objc.*;
 import org.robovm.objc.annotation.*;
 import org.robovm.objc.block.*;
@@ -30,6 +31,7 @@ import org.robovm.apple.foundation.*;
 import org.robovm.apple.uikit.*;
 import org.robovm.apple.addressbook.*;
 /*</imports>*/
+import org.robovm.apple.corefoundation.CFDictionary;
 
 /*<javadoc>*/
 /*</javadoc>*/
@@ -47,6 +49,6 @@ import org.robovm.apple.addressbook.*;
     /*<members>*//*</members>*/
     /*<methods>*/
     @Bridge(symbol="ABCreateStringWithAddressDictionary", optional=true)
-    public static native String createString(NSDictionary<NSString, ?> address, boolean addCountryName);
+    public static native String createString(CFDictionary address, boolean addCountryName);
     /*</methods>*/
 }

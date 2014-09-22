@@ -39,18 +39,20 @@ import org.robovm.apple.corefoundation.*;
 
     /*<ptr>*/
     /*</ptr>*/
-    private NSDictionary<NSString, NSString> data = new NSMutableDictionary<>();
+    private CFDictionary data;
     private CFString label;
     
     public ABPersonSocialProfile(String label) {
+        this.data = CFMutableDictionary.create();
         this.label = new CFString(label);
     }
     
     public ABPersonSocialProfile(ABPropertyLabel label) {
+        this.data = CFMutableDictionary.create();
         this.label = label.value();
     }
     
-    protected ABPersonSocialProfile(NSDictionary<NSString, NSString> data, CFString label) {
+    protected ABPersonSocialProfile(CFDictionary data, CFString label) {
         this.data = data;
         this.label = label;
     }
@@ -59,93 +61,109 @@ import org.robovm.apple.corefoundation.*;
     /*<constructors>*//*</constructors>*/
     /*<properties>*//*</properties>*/
     /*<members>*//*</members>*/
-    public NSDictionary<NSString, NSString> getDictionary() {
+    public CFDictionary getDictionary() {
         return data;
     }
-    
     public String getLabel() {
         return label.toString();
     }
-    
-    public CFString getLabel0() {
+    protected CFString getLabel0() {
         return label;
     }
+    
     /**
      * @since Available in iOS 5.0 and later.
      */
     public String getURL() {
-        NSString val = data.get(URLKey());
-        if (val != null) return val.toString();
+        if (data.containsKey(URLKey())) {
+            CFString val = data.get(URLKey(), CFString.class);
+            return val.toString();
+        }
         return null;
     }
     /**
      * @since Available in iOS 5.0 and later.
      */
-    public void setURL(String url) {
-        data.put(URLKey(), new NSString(url));
+    public ABPersonSocialProfile setURL(String url) {
+        data.put(URLKey(), new CFString(url));
+        return this;
     }
     /**
      * @since Available in iOS 5.0 and later.
      */
     public ABPersonSocialProfileService getService() {
-        NSString val = data.get(ServiceKey());
-        if (val != null) return ABPersonSocialProfileService.valueOf(val);
+        if (data.containsKey(ServiceKey())) {
+            CFString val = data.get(ServiceKey(), CFString.class);
+            return ABPersonSocialProfileService.valueOf(val);
+        }
         return null;
     }
     /**
      * @since Available in iOS 5.0 and later.
      */
-    public void setService(ABPersonSocialProfileService service) {
+    public ABPersonSocialProfile setService(ABPersonSocialProfileService service) {
         data.put(ServiceKey(), service.value());
+        return this;
     }
     /**
      * @since Available in iOS 5.0 and later.
      */
     public String getUsername() {
-        NSString val = data.get(UsernameKey());
-        if (val != null) return val.toString();
+        if (data.containsKey(UsernameKey())) {
+            CFString val = data.get(UsernameKey(), CFString.class);
+            return val.toString();
+        }
         return null;
     }
     /**
      * @since Available in iOS 5.0 and later.
      */
-    public void setUsername(String username) {
-        data.put(UsernameKey(), new NSString(username));
+    public ABPersonSocialProfile setUsername(String username) {
+        data.put(UsernameKey(), new CFString(username));
+        return this;
     }
     /**
      * @since Available in iOS 5.0 and later.
      */
     public String getUserIdentifier() {
-        NSString val = data.get(UserIdentifierKey());
-        if (val != null) return val.toString();
+        if (data.containsKey(UserIdentifierKey())) {
+            CFString val = data.get(UserIdentifierKey(), CFString.class);
+            return val.toString();
+        }
         return null;
     }
     /**
      * @since Available in iOS 5.0 and later.
      */
-    public void setUserIdentifier(String userIdentifier) {
-        data.put(UserIdentifierKey(), new NSString(userIdentifier));
+    public ABPersonSocialProfile setUserIdentifier(String userIdentifier) {
+        data.put(UserIdentifierKey(), new CFString(userIdentifier));
+        return this;
     }
     /*<methods>*/
     /**
      * @since Available in iOS 5.0 and later.
      */
     @GlobalValue(symbol="kABPersonSocialProfileURLKey", optional=true)
-    protected static native NSString URLKey();
+    protected static native CFString URLKey();
     /**
      * @since Available in iOS 5.0 and later.
      */
     @GlobalValue(symbol="kABPersonSocialProfileServiceKey", optional=true)
-    protected static native NSString ServiceKey();
+    protected static native CFString ServiceKey();
     /**
      * @since Available in iOS 5.0 and later.
      */
     @GlobalValue(symbol="kABPersonSocialProfileUsernameKey", optional=true)
-    protected static native NSString UsernameKey();
+    protected static native CFString UsernameKey();
     /**
      * @since Available in iOS 5.0 and later.
      */
     @GlobalValue(symbol="kABPersonSocialProfileUserIdentifierKey", optional=true)
-    protected static native NSString UserIdentifierKey();
+    protected static native CFString UserIdentifierKey();
     /*</methods>*/
+    @Override
+    public String toString() {
+        if(data != null) return data.toString();
+        return super.toString();
+    }
 }

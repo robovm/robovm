@@ -119,18 +119,6 @@ import org.robovm.apple.corefoundation.*;
     /**
      * @since Available in iOS 2.0 and later.
      */
-    public CFHTTPVersion getVersion() {
-        return CFHTTPVersion.valueOf(getVersion0());
-    }
-    /**
-     * @since Available in iOS 2.0 and later.
-     */
-    public boolean addAuthentication(CFHTTPMessage authenticationFailureResponse, String username, String password, CFHTTPAuthenticationScheme authenticationScheme, boolean forProxy) {
-        return addAuthentication0(authenticationFailureResponse, username, password, authenticationScheme.value(), forProxy);
-    }
-    /**
-     * @since Available in iOS 2.0 and later.
-     */
     public boolean applyCredentials(CFHTTPAuthentication auth, String username, String password) {
         return applyCredentials(auth, username, password, (CFStreamError.CFStreamErrorPtr)null);
     }
@@ -138,10 +126,10 @@ import org.robovm.apple.corefoundation.*;
      * @since Available in iOS 2.0 and later.
      */
     public boolean applyCredentials(CFHTTPAuthentication auth, String username, String password, String accountDomain) {
-        NSMutableDictionary<NSString, NSString> credentials = new NSMutableDictionary<>();
-        if (username != null) credentials.put(HTTPAuthenticationUsername(), new NSString(username));
-        if (password != null) credentials.put(HTTPAuthenticationPassword(), new NSString(password));
-        if (accountDomain != null) credentials.put(HTTPAuthenticationAccountDomain(), new NSString(accountDomain));
+        CFDictionary credentials = CFMutableDictionary.create();
+        if (username != null) credentials.put(HTTPAuthenticationUsername(), new CFString(username));
+        if (password != null) credentials.put(HTTPAuthenticationPassword(), new CFString(password));
+        if (accountDomain != null) credentials.put(HTTPAuthenticationAccountDomain(), new CFString(accountDomain));
         return applyCredentialDictionary(auth, credentials, null);
     }
     /*<methods>*/
@@ -149,17 +137,17 @@ import org.robovm.apple.corefoundation.*;
      * @since Available in iOS 2.0 and later.
      */
     @GlobalValue(symbol="kCFHTTPAuthenticationUsername", optional=true)
-    protected static native NSString HTTPAuthenticationUsername();
+    protected static native CFString HTTPAuthenticationUsername();
     /**
      * @since Available in iOS 2.0 and later.
      */
     @GlobalValue(symbol="kCFHTTPAuthenticationPassword", optional=true)
-    protected static native NSString HTTPAuthenticationPassword();
+    protected static native CFString HTTPAuthenticationPassword();
     /**
      * @since Available in iOS 2.0 and later.
      */
     @GlobalValue(symbol="kCFHTTPAuthenticationAccountDomain", optional=true)
-    protected static native NSString HTTPAuthenticationAccountDomain();
+    protected static native CFString HTTPAuthenticationAccountDomain();
     
     /**
      * @since Available in iOS 2.0 and later.
@@ -185,7 +173,7 @@ import org.robovm.apple.corefoundation.*;
      * @since Available in iOS 2.0 and later.
      */
     @Bridge(symbol="CFHTTPMessageCreateCopy", optional=true)
-    protected static native CFHTTPMessage createCopy(CFAllocator alloc, CFHTTPMessage message);
+    public static native CFHTTPMessage createCopy(CFAllocator alloc, CFHTTPMessage message);
     /**
      * @since Available in iOS 2.0 and later.
      */
@@ -195,7 +183,7 @@ import org.robovm.apple.corefoundation.*;
      * @since Available in iOS 2.0 and later.
      */
     @Bridge(symbol="CFHTTPMessageCopyVersion", optional=true)
-    protected native CFString getVersion0();
+    public native CFHTTPVersion getVersion();
     /**
      * @since Available in iOS 2.0 and later.
      */
@@ -250,7 +238,7 @@ import org.robovm.apple.corefoundation.*;
      * @since Available in iOS 2.0 and later.
      */
     @Bridge(symbol="CFHTTPMessageAddAuthentication", optional=true)
-    protected native boolean addAuthentication0(CFHTTPMessage authenticationFailureResponse, String username, String password, CFString authenticationScheme, boolean forProxy);
+    public native boolean addAuthentication(CFHTTPMessage authenticationFailureResponse, String username, String password, CFHTTPAuthenticationScheme authenticationScheme, boolean forProxy);
     /**
      * @since Available in iOS 2.0 and later.
      */
@@ -270,6 +258,6 @@ import org.robovm.apple.corefoundation.*;
      * @since Available in iOS 2.0 and later.
      */
     @Bridge(symbol="CFHTTPMessageApplyCredentialDictionary", optional=true)
-    protected native boolean applyCredentialDictionary(CFHTTPAuthentication auth, NSDictionary<?, ?> dict, CFStreamError.CFStreamErrorPtr error);
+    protected native boolean applyCredentialDictionary(CFHTTPAuthentication auth, CFDictionary dict, CFStreamError.CFStreamErrorPtr error);
     /*</methods>*/
 }

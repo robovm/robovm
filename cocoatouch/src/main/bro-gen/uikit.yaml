@@ -3871,7 +3871,7 @@ values:
         class: UIPageViewControllerOptions
         name: "#{g[0]}"
         type: NSString
-        visiblity: protected
+        visibility: protected
 
     # UIPasteboard
     UI(PasteboardType.*):

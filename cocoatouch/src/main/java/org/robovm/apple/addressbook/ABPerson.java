@@ -49,96 +49,108 @@ import org.robovm.apple.corefoundation.*;
         if (val != null) return val.toString();
         return null;
     }
-    public void setFirstName(String firstName) {
+    public ABPerson setFirstName(String firstName) {
         setValue(ABPersonProperty.FirstName, new CFString(firstName));
+        return this;
     }
     public String getLastName() {
         CFString val = (CFString)getValue(ABPersonProperty.LastName);
         if (val != null) return val.toString();
         return null;
     }
-    public void setLastName(String lastName) {
+    public ABPerson setLastName(String lastName) {
         setValue(ABPersonProperty.LastName, new CFString(lastName));
+        return this;
     }
     public String getMiddleName() {
         CFString val = (CFString)getValue(ABPersonProperty.MiddleName);
         if (val != null) return val.toString();
         return null;
     }
-    public void setMiddleName(String middleName) {
+    public ABPerson setMiddleName(String middleName) {
         setValue(ABPersonProperty.MiddleName, new CFString(middleName));
+        return this;
     }
     public String getPrefix() {
         CFString val = (CFString)getValue(ABPersonProperty.Prefix);
         if (val != null) return val.toString();
         return null;
     }
-    public void setPrefix(String prefix) {
+    public ABPerson setPrefix(String prefix) {
         setValue(ABPersonProperty.Prefix, new CFString(prefix));
+        return this;
     }
     public String getSuffix() {
         CFString val = (CFString)getValue(ABPersonProperty.Suffix);
         if (val != null) return val.toString();
         return null;
     }
-    public void setSuffix(String suffix) {
+    public ABPerson setSuffix(String suffix) {
         setValue(ABPersonProperty.Suffix, new CFString(suffix));
+        return this;
     }
     public String getNickname() {
         CFString val = (CFString)getValue(ABPersonProperty.Nickname);
         if (val != null) return val.toString();
         return null;
     }
-    public void setNickname(String nickname) {
+    public ABPerson setNickname(String nickname) {
         setValue(ABPersonProperty.Nickname, new CFString(nickname));
+        return this;
     }
     public String getFirstNamePhonetic() {
         CFString val = (CFString)getValue(ABPersonProperty.FirstNamePhonetic);
         if (val != null) return val.toString();
         return null;
     }
-    public void setFirstNamePhonetic(String firstNamePhonetic) {
+    public ABPerson setFirstNamePhonetic(String firstNamePhonetic) {
         setValue(ABPersonProperty.FirstNamePhonetic, new CFString(firstNamePhonetic));
+        return this;
     }
     public String getLastNamePhonetic() {
         CFString val = (CFString)getValue(ABPersonProperty.LastNamePhonetic);
         if (val != null) return val.toString();
         return null;
     }
-    public void setLastNamePhonetic(String lastNamePhonetic) {
+    public ABPerson setLastNamePhonetic(String lastNamePhonetic) {
         setValue(ABPersonProperty.LastNamePhonetic, new CFString(lastNamePhonetic));
+        return this;
     }
     public String getMiddleNamePhonetic() {
         CFString val = (CFString)getValue(ABPersonProperty.MiddleNamePhonetic);
         if (val != null) return val.toString();
         return null;
     }
-    public void setMiddleNamePhonetic(String middleNamePhonetic) {
+    public ABPerson setMiddleNamePhonetic(String middleNamePhonetic) {
         setValue(ABPersonProperty.MiddleNamePhonetic, new CFString(middleNamePhonetic));
+        return this;
     }
     public String getOrganization() {
         CFString val = (CFString)getValue(ABPersonProperty.Organization);
         if (val != null) return val.toString();
         return null;
     }
-    public void setOrganization(String organization) {
+    public ABPerson setOrganization(String organization) {
         setValue(ABPersonProperty.Organization, new CFString(organization));
+        return this;
     }
     public String getJobTitle() {
         CFString val = (CFString)getValue(ABPersonProperty.JobTitle);
         if (val != null) return val.toString();
         return null;
     }
-    public void setJobTitle(String jobTitle) {
+    public ABPerson setJobTitle(String jobTitle) {
         setValue(ABPersonProperty.JobTitle, new CFString(jobTitle));
+        return this;
     }
     public String getDepartment() {
         CFString val = (CFString)getValue(ABPersonProperty.Department);
         if (val != null) return val.toString();
         return null;
     }
-    public void setDepartment(String department) {
+    public ABPerson setDepartment(String department) {
         setValue(ABPersonProperty.Department, new CFString(department));
+        return this;
     }
     public List<ABPersonEmailAddress> getEmailAddresses() {
         ABMultiValue val = (ABMultiValue)getValue(ABPersonProperty.Email);
@@ -152,12 +164,13 @@ import org.robovm.apple.corefoundation.*;
         }
         return list;
     }
-    public void setEmailAddresses(List<ABPersonEmailAddress> emailAddresses) {
+    public ABPerson setEmailAddresses(List<ABPersonEmailAddress> emailAddresses) {
         ABMutableMultiValue val = ABMutableMultiValue.create(ABPropertyType.MultiString);
         for (ABPersonEmailAddress address : emailAddresses) {
             val.addValueAndLabel(address.getAddress0(), address.getLabel0(), null);
         }
         setValue(ABPersonProperty.Email, val);
+        return this;
     }
     public int addEmailAddress(ABPersonEmailAddress emailAddress) {
         ABMutableMultiValue val = (ABMutableMultiValue)getValue(ABPersonProperty.Email);
@@ -172,54 +185,58 @@ import org.robovm.apple.corefoundation.*;
         NSDate val = (NSDate)getNSValue(ABPersonProperty.Birthday);
         return val;
     }
-    public void setBirthday(NSDate birthday) {
+    public ABPerson setBirthday(NSDate birthday) {
         setNSValue(ABPersonProperty.Birthday, birthday);
+        return this;
     }
     public String getNote() {
         CFString val = (CFString)getValue(ABPersonProperty.Note);
         if (val != null) return val.toString();
         return null;
     }
-    public void setNote(String note) {
+    public ABPerson setNote(String note) {
         setValue(ABPersonProperty.Note, new CFString(note));
+        return this;
     }
     public NSDate getCreationDate() {
         NSDate val = (NSDate)getNSValue(ABPersonProperty.CreationDate);
         return val;
     }
-    public void setCreationDate(NSDate creationDate) {
+    public ABPerson setCreationDate(NSDate creationDate) {
         setNSValue(ABPersonProperty.CreationDate, creationDate);
+        return this;
     }
     public NSDate getModificationDate() {
         NSDate val = (NSDate)getNSValue(ABPersonProperty.ModificationDate);
         return val;
     }
-    public void setModificationDate(NSDate modificationDate) {
+    public ABPerson setModificationDate(NSDate modificationDate) {
         setNSValue(ABPersonProperty.ModificationDate, modificationDate);
+        return this;
     }
-    @SuppressWarnings("unchecked")
     public List<ABPersonAddress> getAddresses() {
         ABMultiValue val = (ABMultiValue)getValue(ABPersonProperty.Address);
         List<ABPersonAddress> list = new ArrayList<>();
         if (val == null) return list;
         long size = val.getCount();
         for (int i = 0; i < size; i++) {
-            NSDictionary<NSString, NSString> address = (NSDictionary<NSString, NSString>)val.getNSValue(i);
+            CFDictionary address = (CFDictionary)val.getValue(i);
             CFString label = val.getLabel(i);
             list.add(new ABPersonAddress(address, label));
         }
         return list;
     }
-    public void setAddresses(List<ABPersonAddress> addresses) {
+    public ABPerson setAddresses(List<ABPersonAddress> addresses) {
         ABMutableMultiValue val = ABMutableMultiValue.create(ABPropertyType.MultiDictionary);
         for (ABPersonAddress address : addresses) {
-            val.addNSValueAndLabel(address.getDictionary(), address.getLabel0(), null);
+            val.addValueAndLabel(address.getDictionary(), address.getLabel0(), null);
         }
         setValue(ABPersonProperty.Address, val);
+        return this;
     }
     public int addAddress(ABPersonAddress address) {
         ABMutableMultiValue val = (ABMutableMultiValue)getValue(ABPersonProperty.Address);
-        if (val != null) return val.addNSValueAndLabel(address.getDictionary(), address.getLabel0());
+        if (val != null) return val.addValueAndLabel(address.getDictionary(), address.getLabel0());
         return -1;
     }
     public void removeAddress(int id) {
@@ -232,25 +249,27 @@ import org.robovm.apple.corefoundation.*;
         if (val == null) return list;
         long size = val.getCount();
         for (int i = 0; i < size; i++) {
-            NSDate date = (NSDate)val.getNSValue(i);
+            CFDate date = (CFDate)val.getValue(i);
             CFString label = val.getLabel(i);
             list.add(new ABPersonDate(date, label));
         }
         return list;
     } 
-    public void setDates(List<ABPersonDate> dates) {
+    public ABPerson setDates(List<ABPersonDate> dates) {
         ABMutableMultiValue val = ABMutableMultiValue.create(ABPropertyType.MultiDateTime);
         for (ABPersonDate date : dates) {
-            val.addNSValueAndLabel(date.getDate(), date.getLabel0(), null);
+            val.addValueAndLabel(date.getDate0(), date.getLabel0(), null);
         }
         setValue(ABPersonProperty.Date, val);
+        return this;
     }
     public ABPersonKind getKind() {
-        NSNumber val = (NSNumber)getNSValue(ABPersonProperty.Kind);
+        CFNumber val = (CFNumber)getValue(ABPersonProperty.Kind);
         return ABPersonKind.valueOf(val);
     }
-    public void setKind(ABPersonKind kind) {
-        setNSValue(ABPersonProperty.Kind, kind.value());
+    public ABPerson setKind(ABPersonKind kind) {
+        setValue(ABPersonProperty.Kind, kind.value());
+        return this;
     }
     public List<ABPersonPhoneNumber> getPhoneNumbers() {
         ABMultiValue val = (ABMultiValue)getValue(ABPersonProperty.Phone);
@@ -264,12 +283,13 @@ import org.robovm.apple.corefoundation.*;
         }
         return list;
     }
-    public void setPhoneNumbers(List<ABPersonPhoneNumber> phoneNumbers) {
+    public ABPerson setPhoneNumbers(List<ABPersonPhoneNumber> phoneNumbers) {
         ABMutableMultiValue val = ABMutableMultiValue.create(ABPropertyType.MultiString);
         for (ABPersonPhoneNumber number : phoneNumbers) {
             val.addValueAndLabel(number.getNumber0(), number.getLabel0(), null);
         }
         setValue(ABPersonProperty.Phone, val);
+        return this;
     }
     public int addPhoneNumber(ABPersonPhoneNumber phoneNumber) {
         ABMutableMultiValue val = (ABMutableMultiValue)getValue(ABPersonProperty.Phone);
@@ -280,58 +300,58 @@ import org.robovm.apple.corefoundation.*;
         ABMutableMultiValue val = (ABMutableMultiValue)getValue(ABPersonProperty.Phone);
         if (val != null) val.removeValueAndLabel(val.indexOf(id));
     }
-    @SuppressWarnings("unchecked")
     public List<ABPersonInstantMessageAccount> getInstantMessageAccounts() {
         ABMultiValue val = (ABMultiValue)getValue(ABPersonProperty.InstantMessage);
         List<ABPersonInstantMessageAccount> list = new ArrayList<>();
         if (val == null) return list;
         long size = val.getCount();
         for (int i = 0; i < size; i++) {
-            NSDictionary<NSString, NSString> dict = (NSDictionary<NSString, NSString>)val.getNSValue(i);
+            CFDictionary dict = (CFDictionary)val.getValue(i);
             CFString label = (CFString)val.getLabel(i);
             list.add(new ABPersonInstantMessageAccount(dict, label));
         }
         return list;
     }
-    public void setInstantMessageAccounts(List<ABPersonInstantMessageAccount> instantMessageAccounts) {
+    public ABPerson setInstantMessageAccounts(List<ABPersonInstantMessageAccount> instantMessageAccounts) {
         ABMutableMultiValue val = ABMutableMultiValue.create(ABPropertyType.MultiDictionary);
         for (ABPersonInstantMessageAccount account : instantMessageAccounts) {
-            val.addNSValueAndLabel(account.getDictionary(), account.getLabel0(), null);
+            val.addValueAndLabel(account.getDictionary(), account.getLabel0(), null);
         }
         setValue(ABPersonProperty.InstantMessage, val);
+        return this;
     }
     public int addInstantMessageAccount(ABPersonInstantMessageAccount instantMessageAccount) {
         ABMutableMultiValue val = (ABMutableMultiValue)getValue(ABPersonProperty.InstantMessage);
-        if (val != null) return val.addNSValueAndLabel(instantMessageAccount.getDictionary(), instantMessageAccount.getLabel0());
+        if (val != null) return val.addValueAndLabel(instantMessageAccount.getDictionary(), instantMessageAccount.getLabel0());
         return -1;
     }
     public void removeInstantMessageAccount(int id) {
         ABMutableMultiValue val = (ABMutableMultiValue)getValue(ABPersonProperty.InstantMessage);
         if (val != null) val.removeValueAndLabel(val.indexOf(id));
     }
-    @SuppressWarnings("unchecked")
     public List<ABPersonSocialProfile> getSocialProfiles() {
         ABMultiValue val = (ABMultiValue)getValue(ABPersonProperty.SocialProfile);
         List<ABPersonSocialProfile> list = new ArrayList<>();
         if (val == null) return list;
         long size = val.getCount();
         for (int i = 0; i < size; i++) {
-            NSDictionary<NSString, NSString> dict = (NSDictionary<NSString, NSString>)val.getNSValue(i);
+            CFDictionary dict = (CFDictionary)val.getValue(i);
             CFString label = (CFString)val.getLabel(i);
             list.add(new ABPersonSocialProfile(dict, label));
         }
         return list;
     }
-    public void setSocialProfiles(List<ABPersonSocialProfile> socialProfiles) {
+    public ABPerson setSocialProfiles(List<ABPersonSocialProfile> socialProfiles) {
         ABMutableMultiValue val = ABMutableMultiValue.create(ABPropertyType.MultiDictionary);
         for (ABPersonSocialProfile account : socialProfiles) {
-            val.addNSValueAndLabel(account.getDictionary(), account.getLabel0(), null);
+            val.addValueAndLabel(account.getDictionary(), account.getLabel0(), null);
         }
         setValue(ABPersonProperty.SocialProfile, val);
+        return this;
     }
     public int addSocialProfile(ABPersonSocialProfile socialProfile) {
         ABMutableMultiValue val = (ABMutableMultiValue)getValue(ABPersonProperty.SocialProfile);
-        if (val != null) return val.addNSValueAndLabel(socialProfile.getDictionary(), socialProfile.getLabel0());
+        if (val != null) return val.addValueAndLabel(socialProfile.getDictionary(), socialProfile.getLabel0());
         return -1;
     }
     public void removeSocialProfile(int id) {
@@ -350,12 +370,13 @@ import org.robovm.apple.corefoundation.*;
         }
         return list;
     }
-    public void setURLs(List<ABPersonURL> urls) {
+    public ABPerson setURLs(List<ABPersonURL> urls) {
         ABMutableMultiValue val = ABMutableMultiValue.create(ABPropertyType.MultiString);
         for (ABPersonURL url : urls) {
             val.addValueAndLabel(url.getURL0(), url.getLabel0(), null);
         }
         setValue(ABPersonProperty.URL, val);
+        return this;
     }
     public int addURL(ABPersonURL url) {
         ABMutableMultiValue val = (ABMutableMultiValue)getValue(ABPersonProperty.URL);
@@ -378,12 +399,13 @@ import org.robovm.apple.corefoundation.*;
         }
         return list;
     }
-    public void setRelatedNames(List<ABPersonRelatedName> relatedNames) {
+    public ABPerson setRelatedNames(List<ABPersonRelatedName> relatedNames) {
         ABMutableMultiValue val = ABMutableMultiValue.create(ABPropertyType.MultiString);
         for (ABPersonRelatedName relatedName : relatedNames) {
             val.addValueAndLabel(relatedName.getName0(), relatedName.getLabel0(), null);
         }
         setValue(ABPersonProperty.RelatedNames, val);
+        return this;
     }
     public int addRelatedName(ABPersonRelatedName relatedName) {
         ABMutableMultiValue val = (ABMutableMultiValue)getValue(ABPersonProperty.RelatedNames);
@@ -418,7 +440,7 @@ import org.robovm.apple.corefoundation.*;
      * @since Available in iOS 4.0 and later.
      */
     @Bridge(symbol="ABPersonCopyArrayOfAllLinkedPeople", optional=true)
-    public native NSArray<?> getAllLinkedPeople();
+    public native @org.robovm.rt.bro.annotation.Marshaler(CFArray.AsListMarshaler.class) List<ABPerson> getAllLinkedPeople();
     @Bridge(symbol="ABPersonGetSortOrdering", optional=true)
     public static native ABPersonSortOrdering getSortOrdering();
     /**
@@ -457,11 +479,11 @@ import org.robovm.apple.corefoundation.*;
      * @since Available in iOS 5.0 and later.
      */
     @Bridge(symbol="ABPersonCreatePeopleInSourceWithVCardRepresentation", optional=true)
-    public static native NSArray<?> createPeopleInSource(ABSource source, NSData vCardData);
+    public static native @org.robovm.rt.bro.annotation.Marshaler(CFArray.AsListMarshaler.class) List<ABPerson> createPeopleInSource(ABSource source, NSData vCardData);
     /**
      * @since Available in iOS 5.0 and later.
      */
     @Bridge(symbol="ABPersonCreateVCardRepresentationWithPeople", optional=true)
-    public static native NSData createVCardRepresentation(NSArray<?> people);
+    public static native NSData createVCardRepresentation(@org.robovm.rt.bro.annotation.Marshaler(CFArray.AsListMarshaler.class) List<ABPerson> people);
     /*</methods>*/
 }

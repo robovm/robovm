@@ -19,6 +19,7 @@ package org.robovm.apple.corefoundation;
 import java.io.*;
 import java.nio.*;
 import java.util.*;
+
 import org.robovm.objc.*;
 import org.robovm.objc.annotation.*;
 import org.robovm.objc.block.*;
@@ -27,8 +28,10 @@ import org.robovm.rt.bro.*;
 import org.robovm.rt.bro.annotation.*;
 import org.robovm.rt.bro.ptr.*;
 import org.robovm.apple.dispatch.*;
+import org.robovm.apple.foundation.NSArray;
 /*</imports>*/
 import org.robovm.apple.foundation.NSObject;
+import org.robovm.apple.foundation.NSString;
 import org.robovm.apple.foundation.NSObject.NSObjectPtr;
 
 /*<javadoc>*/
@@ -38,6 +41,43 @@ import org.robovm.apple.foundation.NSObject.NSObjectPtr;
     extends /*<extends>*/CFPropertyList/*</extends>*/ 
     /*<implements>*//*</implements>*/ {
 
+    public static class AsListMarshaler {
+        @MarshalsPointer
+        public static List<?> toObject(Class<? extends CFType> cls, long handle, long flags) {
+            CFArray o = (CFArray) CFType.Marshaler.toObject(cls, handle, flags);
+            return o.toList(NativeObject.class);
+        }
+        @SuppressWarnings("unchecked")
+        @MarshalsPointer
+        public static long toNative(List<?> l, long flags) {
+            if (l == null) {
+                return 0L;
+            }
+            CFArray o = null;
+            if (l instanceof CFArray) {
+                o = (CFArray) l;
+            } else {
+                o = CFArray.create((List<CFType>) l);
+            }
+            return CFType.Marshaler.toNative(o, flags);
+        }
+    }
+    
+    public static class AsStringListMarshaler {
+        @MarshalsPointer
+        public static List<String> toObject(Class<? extends CFType> cls, long handle, long flags) {
+            CFArray o = (CFArray) CFType.Marshaler.toObject(cls, handle, flags);
+            return o.asStringList();
+        }
+        @MarshalsPointer
+        public static long toNative(List<String> l, long flags) {
+            if (l == null) {
+                return 0L;
+            }
+            return CFType.Marshaler.toNative(CFArray.fromStrings(l), flags);
+        }
+    }
+    
     /*<ptr>*/public static class CFArrayPtr extends Ptr<CFArray, CFArrayPtr> {}/*</ptr>*/
     /*<bind>*/static { Bro.bind(CFArray.class); }/*</bind>*/
     /*<constants>*//*</constants>*/
@@ -121,6 +161,47 @@ import org.robovm.apple.foundation.NSObject.NSObjectPtr;
     }
     public void clear() {
         throw new UnsupportedOperationException("CFArray is immutable. Use CFMutableArray instead!");
+    }
+    
+    
+    /**
+     * Use this method to convert a CFArray of CFString items to a List of String items. 
+     * Elements of this CFArray must be of type CFString, otherwise an exception will be thrown.
+     * @return
+     * @throws UnsupportedOperationException when the array items are not of type NSString.
+     */
+    public List<String> asStringList() {
+        List<String> list = new ArrayList<>();
+        if (size() == 0) 
+            return list;
+        if (!(get(0, CFType.class) instanceof CFString)) 
+            throw new UnsupportedOperationException("items must be of type CFString");
+        
+        for (int i = 0; i < size(); i++) {
+            list.add(get(i, CFString.class).toString());
+        }
+        return list;
+    }
+    
+    public static CFArray fromStrings (String... strings) {
+        int length = strings.length;
+        CFString[] cfStrings = new CFString[length];
+
+        for (int i = 0; i < length; i++) {
+            cfStrings[i] = new CFString(strings[i]);
+        }
+        return CFArray.create(cfStrings);
+    }
+
+    public static CFArray fromStrings (Collection<String> strings) {
+        CFString[] cfStrings = new CFString[strings.size()];
+
+        int i = 0;
+        for (String s : strings) {
+            cfStrings[i] = new CFString(s);
+            i++;
+        }
+        return CFArray.create(cfStrings);
     }
     /*<methods>*/
     @Bridge(symbol="CFArrayGetTypeID", optional=true)

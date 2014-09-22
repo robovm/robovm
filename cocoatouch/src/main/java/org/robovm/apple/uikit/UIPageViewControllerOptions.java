@@ -85,8 +85,9 @@ import org.robovm.apple.coretext.*;
         }
         return null;
     }
-    public void setSpineLocation(UIPageViewControllerSpineLocation spineLocation) {
+    public UIPageViewControllerOptions setSpineLocation(UIPageViewControllerSpineLocation spineLocation) {
         data.put(SpineLocationKey(), NSNumber.valueOf((int)spineLocation.value()));
+        return this;
     }
     /**
      * @since Available in iOS 6.0 and later.
@@ -101,8 +102,9 @@ import org.robovm.apple.coretext.*;
     /**
      * @since Available in iOS 6.0 and later.
      */
-    public void setInterPageSpacing(@MachineSizedFloat double interPageSpacing) {
+    public UIPageViewControllerOptions setInterPageSpacing(@MachineSizedFloat double interPageSpacing) {
         data.put(InterPageSpacingKey(), NSNumber.valueOf(interPageSpacing));
+        return this;
     }
     /*<methods>*/
     @GlobalValue(symbol="UIPageViewControllerOptionSpineLocationKey", optional=true)

@@ -90,8 +90,9 @@ import org.robovm.apple.coretext.*;
     /**
      * @since Available in iOS 3.0 and later.
      */
-    public void setExternalObjects(Map<String, NSObject> externalObjects) {
+    public UINibLoadingOptions setExternalObjects(Map<String, NSObject> externalObjects) {
         data.put(ExternalObjectsKey(), NSDictionary.fromStringMap(externalObjects));
+        return this;
     }
     /*<methods>*/
     /**

@@ -105,11 +105,12 @@ functions:
     # CTFontCollection
     CTFontCollectionCreate(MatchingFontDescriptors):
         class: CTFontCollection
-        name: "get#{g[0]}0"
-        visibility: protected
+        name: "get#{g[0]}"
+        return_type: "@org.robovm.rt.bro.annotation.Marshaler(CFArray.AsListMarshaler.class) List<CTFontDescriptor>"
     CTFontCollectionCreate(MatchingFontDescriptors)SortedWithCallback:
         class: CTFontCollection
         name: "get#{g[0]}Sorted"
+        return_type: "@org.robovm.rt.bro.annotation.Marshaler(CFArray.AsListMarshaler.class) List<CTFontDescriptor>"
         visibility: protected
         parameters:
             refCon:
@@ -117,31 +118,52 @@ functions:
     CTFontCollection(CreateFromAvailableFonts):
         class: CTFontCollection
         name: "#{g[0]}"
-        visibility: protected
-    CTFontCollection(CreateCopy).*:
+        parameters:
+            options:
+                type: CTFontCollectionOptions
+    CTFontCollection(Create)WithFontDescriptors:
         class: CTFontCollection
         name: "#{g[0]}"
-        visibility: protected
-    CTFontCollection(Create).*:
+        parameters:
+            queryDescriptors:
+                type: "@org.robovm.rt.bro.annotation.Marshaler(CFArray.AsListMarshaler.class) List<CTFontDescriptor>"
+            options:
+                type: CTFontCollectionOptions
+    CTFontCollection(CreateCopy)WithFontDescriptors:
         class: CTFontCollection
         name: "#{g[0]}"
-        visibility: protected
+        parameters:
+            queryDescriptors:
+                type: "@org.robovm.rt.bro.annotation.Marshaler(CFArray.AsListMarshaler.class) List<CTFontDescriptor>"
+            options:
+                type: CTFontCollectionOptions
     CTFontCollection(.*):
         class: CTFontCollection
         name: "#{g[0]}"
 
     # CTFontDescriptor
-    CTFontDescriptor(CreateCopy)With(Attributes|Variation|Feature):  # TODO wrap
+    CTFontDescriptor(CreateCopy)WithAttributes:
+        class: CTFontDescriptor
+        name: "#{g[0]}"
+        parameters:
+            attributes:
+                type: CTFontAttributes
+    CTFontDescriptor(CreateCopy)WithFeature:  # TODO wrap
         class: CTFontDescriptor
         name: "#{g[0]}"
         visibility: protected
+    CTFontDescriptor(CreateCopy)WithVariation: # TODO wrap
+        class: CTFontDescriptor
+        name: "#{g[0]}"
     CTFontDescriptor(CreateCopy).*:
         class: CTFontDescriptor
         name: "#{g[0]}"
     CTFontDescriptor(Create)WithAttributes:
         class: CTFontDescriptor
         name: "#{g[0]}"
-        visibility: protected
+        parameters:
+            attributes:
+                type: CTFontAttributes
     CTFontDescriptorCreate(MatchingFontDescriptor.*):
         class: CTFontDescriptor
         name: "get#{g[0]}"
@@ -151,15 +173,21 @@ functions:
         name: "#{g[0]}"
     CTFontDescriptorCopy(Attributes):
         class: CTFontDescriptor
-        name: "get#{g[0]}0"
-        visibility: protected
-    CTFontDescriptorCopy(.*):
+        name: "get#{g[0]}"
+        return_type: CTFontAttributes
+    CTFontDescriptorCopy(Attribute):
+        class: CTFontDescriptor
+        name: "get#{g[0]}"
+        parameters:
+            attribute:
+                type: CTFontAttribute
+    CTFontDescriptorCopy(LocalizedAttribute):
         class: CTFontDescriptor
         name: "get#{g[0]}"
         visibility: protected
         parameters:
             attribute:
-                type: CFString
+                type: CTFontAttribute
             language:
                 type: CFString.CFStringPtr
     CTFontDescriptor(MatchFontDescriptors)WithProgressHandler:
@@ -174,7 +202,7 @@ functions:
     CTFontManager(CreateFontDescriptors)FromURL:
         class: CTFontManager
         name: "#{g[0]}0"
-        visibility: protected
+        return_type: "@org.robovm.rt.bro.annotation.Marshaler(CFArray.AsListMarshaler.class) List<CTFontDescriptor>"
     CTFontManager(CreateFontDescriptor)FromData:
         class: CTFontManager
         name: "#{g[0]}"
@@ -215,8 +243,8 @@ functions:
         name: "get#{g[0]}"
     CTFontCopy(Traits):
         class: CTFont
-        name: "get#{g[0]}0"
-        visibility: protected
+        name: "get#{g[0]}"
+        return_type: CTFontTraits
     CTFontCopy(LocalizedName|Name):
         class: CTFont
         name: "get#{g[0]}"
@@ -229,10 +257,7 @@ functions:
     CTFontCopy(SupportedLanguages):
         class: CTFont
         name: "get#{g[0]}"
-        return_type: "NSArray<NSString>"
-    CTFontCopy(.*):
-        class: CTFont
-        name: "get#{g[0]}"
+        return_type: "@org.robovm.rt.bro.annotation.Marshaler(CFArray.AsStringListMarshaler.class) List<String>"
     CTFont(GetGlyphs)ForCharacters:
         class: CTFont
         name: "#{g[0]}"
@@ -262,14 +287,16 @@ functions:
     CTFontCopy(VariationAxes):
         class: CTFont
         name: "get#{g[0]}"
-        return_type: "NSArray<NSDictionary<NSString, ?>>"
-        visibility: protected
+        return_type: "@org.robovm.rt.bro.annotation.Marshaler(CFArray.AsListMarshaler.class) List<CTFontVariationAxes>"
     CTFontCopy(DefaultCascadeList)ForLanguages:
         class: CTFont
         name: "get#{g[0]}"
         parameters:
             languagePrefList:
-                type: "NSArray<NSString>"
+                type: "@org.robovm.rt.bro.annotation.Marshaler(CFArray.AsStringListMarshaler.class) List<String>"
+    CTFontCopy(.*):
+        class: CTFont
+        name: "get#{g[0]}"
     CTFont(.*):
         class: CTFont
         name: "#{g[0]}"
@@ -281,11 +308,15 @@ functions:
     CTFramesetter(CreateFrame):
         class: CTFramesetter
         name: "#{g[0]}"
-        visibility: protected
+        parameters:
+            frameAttributes:
+                type: CTFrameAttributes
     CTFramesetter(SuggestFrameSize)WithConstraints:
         class: CTFramesetter
         name: "#{g[0]}"
-        visibility: protected
+        parameters:
+            frameAttributes:
+                type: CTFrameAttributes
     CTFramesetter(.*):
         class: CTFramesetter
         name: "#{g[0]}"
@@ -293,12 +324,12 @@ functions:
     # CTFrame
     CTFrame(GetFrameAttributes):
         class: CTFrame
-        name: "#{g[0]}0"
-        visibility: protected
+        name: "#{g[0]}"
+        return_type: CTFrameAttributes
     CTFrame(GetLines):
         class: CTFrame
-        name: "#{g[0]}0"
-        visibility: protected
+        name: "#{g[0]}"
+        return_type: "@org.robovm.rt.bro.annotation.Marshaler(CFArray.AsListMarshaler.class) List<CTLine>"
     CTFrame(.*):
         class: CTFrame
         name: "#{g[0]}"
@@ -375,6 +406,7 @@ functions:
     CTRun(GetPositions):
         class: CTRun
         name: "#{g[0]}"
+        visibility: protected
     CTRun(GetAdvances):
         class: CTRun
         name: "#{g[0]}"
@@ -398,15 +430,13 @@ functions:
     CTTextTab(Create):
         class: CTTextTab
         name: "#{g[0]}"
-        visibility: protected
         parameters:
             options:
-                type: "NSDictionary<NSString, NSObject>"
+                type: CTTextTabOptions
     CTTextTab(GetOptions):
         class: CTTextTab
-        name: "#{g[0]}0"
-        visibility: protected
-        return_type: "NSDictionary<NSString, NSObject>"
+        name: "#{g[0]}"
+        return_type: CTTextTabOptions
     CTTextTab(.*):
         class: CTTextTab
         name: "#{g[0]}"
@@ -418,7 +448,9 @@ functions:
     CTTypesetter(Create)WithAttributedStringAndOptions:
         class: CTTypesetter
         name: "#{g[0]}"
-        visibility: protected
+        parameters:
+            options:
+                type: CTTypesetterOptions
     CTTypesetter(Create).*:
         class: CTTypesetter
         name: "#{g[0]}"
@@ -436,7 +468,6 @@ functions:
     (CT.*):
         class: CoreText
         name: "Function__#{g[0]}"
-        
 
 values:
     kCTFont(.*)Attribute:
@@ -492,7 +523,7 @@ values:
     kCTTabColumn(.*):
         class: CTTextTabOptions
         name: "#{g[0]}"
-        type: NSString
+        type: CFString
         visibility: protected
 
     kCTTypesetterOption(.*):

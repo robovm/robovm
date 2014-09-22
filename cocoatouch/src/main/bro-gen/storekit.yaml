@@ -80,36 +80,32 @@ classes:
                 name: init
                 parameters:
                     productIdentifiers:
-                        type: "NSSet<NSString>"
+                        type: "@org.robovm.rt.bro.annotation.Marshaler(NSSet.AsStringSetMarshaler.class) Set<String>"
     SKProductsResponse: # DONE
         properties:
             'products':
                 type: "NSArray<SKProduct>"
             'invalidProductIdentifiers':
-                type: "NSArray<NSString>"
+                type: "@org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String>"
     SKReceiptRefreshRequest: # DONE
         properties:
             'receiptProperties':
-                name: receiptProperties0
-                visibility: protected
-                type: "NSDictionary<NSString, NSObject>"
+                name: receiptProperties
+                type: SKReceiptRefreshRequestOptions
         methods:
             '-initWithReceiptProperties:':
                 name: init
-                exclude: true
-                visibility: protected
                 parameters:
                     properties:
-                        type: "NSDictionary<NSString, ?>"
+                        type: SKReceiptRefreshRequestOptions
     SKRequest: {} # DONE
     SKStoreProductViewController: # DONE
         methods:
             '-loadProductWithParameters:completionBlock:':
                 name: loadProduct
-                visibility: protected
                 parameters:
                     parameters:
-                        type: "NSDictionary<NSString, ?>"
+                        type: SKStoreProductParameters
 
 protocols:
     SKPaymentTransactionObserver: # DONE

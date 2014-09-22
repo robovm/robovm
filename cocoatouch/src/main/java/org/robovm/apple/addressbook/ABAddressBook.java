@@ -164,35 +164,35 @@ import org.robovm.apple.corefoundation.*;
      * @since Available in iOS 4.0 and later.
      */
     @Bridge(symbol="ABAddressBookCopyArrayOfAllSources", optional=true)
-    public native NSArray<?> getAllSources();
+    public native @org.robovm.rt.bro.annotation.Marshaler(CFArray.AsListMarshaler.class) List<ABSource> getAllSources();
     @Bridge(symbol="ABAddressBookGetPersonCount", optional=true)
     public native @MachineSizedSInt long getPersonCount();
     @Bridge(symbol="ABAddressBookGetPersonWithRecordID", optional=true)
     public native ABPerson getPerson(int recordID);
     @Bridge(symbol="ABAddressBookCopyArrayOfAllPeople", optional=true)
-    public native NSArray<?> getAllPeople();
+    public native @org.robovm.rt.bro.annotation.Marshaler(CFArray.AsListMarshaler.class) List<ABPerson> getAllPeople();
     /**
      * @since Available in iOS 4.0 and later.
      */
     @Bridge(symbol="ABAddressBookCopyArrayOfAllPeopleInSource", optional=true)
-    public native NSArray<?> getAllPeopleInSource(ABSource source);
+    public native @org.robovm.rt.bro.annotation.Marshaler(CFArray.AsListMarshaler.class) List<ABPerson> getAllPeopleInSource(ABSource source);
     /**
      * @since Available in iOS 4.0 and later.
      */
     @Bridge(symbol="ABAddressBookCopyArrayOfAllPeopleInSourceWithSortOrdering", optional=true)
-    public native NSArray<?> getAllPeopleInSource(ABSource source, ABPersonSortOrdering sortOrdering);
+    public native @org.robovm.rt.bro.annotation.Marshaler(CFArray.AsListMarshaler.class) List<ABPerson> getAllPeopleInSource(ABSource source, ABPersonSortOrdering sortOrdering);
     @Bridge(symbol="ABAddressBookCopyPeopleWithName", optional=true)
-    public native NSArray<?> getPeople(String name);
+    public native @org.robovm.rt.bro.annotation.Marshaler(CFArray.AsListMarshaler.class) List<ABPerson> getPeople(String name);
     @Bridge(symbol="ABAddressBookGetGroupWithRecordID", optional=true)
     public native ABGroup getGroup(int recordID);
     @Bridge(symbol="ABAddressBookGetGroupCount", optional=true)
     public native @MachineSizedSInt long getGroupCount();
     @Bridge(symbol="ABAddressBookCopyArrayOfAllGroups", optional=true)
-    public native NSArray<?> getAllGroups();
+    public native @org.robovm.rt.bro.annotation.Marshaler(CFArray.AsListMarshaler.class) List<ABGroup> getAllGroups();
     /**
      * @since Available in iOS 4.0 and later.
      */
     @Bridge(symbol="ABAddressBookCopyArrayOfAllGroupsInSource", optional=true)
-    public native NSArray<?> getAllGroupsInSource(ABSource source);
+    public native @org.robovm.rt.bro.annotation.Marshaler(CFArray.AsListMarshaler.class) List<ABGroup> getAllGroupsInSource(ABSource source);
     /*</methods>*/
 }

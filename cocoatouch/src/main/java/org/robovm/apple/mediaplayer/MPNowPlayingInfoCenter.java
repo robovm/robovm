@@ -48,17 +48,11 @@ import org.robovm.apple.coregraphics.*;
     public MPNowPlayingInfoCenter() {}
     protected MPNowPlayingInfoCenter(SkipInit skipInit) { super(skipInit); }
     /*</constructors>*/
-    public MPNowPlayingInfo getNowPlayingInfo() {
-        return new MPNowPlayingInfo(getNowPlayingInfo0());
-    }
-    public void setNowPlayingInfo(MPNowPlayingInfo info) {
-        setNowPlayingInfo0(info.getDictionary());
-    }
     /*<properties>*/
     @Property(selector = "nowPlayingInfo")
-    protected native NSDictionary<NSString, NSObject> getNowPlayingInfo0();
+    public native MPNowPlayingInfo getNowPlayingInfo();
     @Property(selector = "setNowPlayingInfo:")
-    protected native void setNowPlayingInfo0(NSDictionary<NSString, NSObject> v);
+    public native void setNowPlayingInfo(MPNowPlayingInfo v);
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/

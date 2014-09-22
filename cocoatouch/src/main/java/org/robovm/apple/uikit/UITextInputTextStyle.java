@@ -87,8 +87,9 @@ import org.robovm.apple.coretext.*;
         }
         return null;
     }
-    public void setBackgroundColor(UIColor color) {
+    public UITextInputTextStyle setBackgroundColor(UIColor color) {
         data.put(BackgroundColorKey(), color);
+        return this;
     }
     public UIColor getTextColor() {
         if (data.containsKey(ColorKey())) {
@@ -97,8 +98,9 @@ import org.robovm.apple.coretext.*;
         }
         return null;
     }
-    public void setTextColor(UIColor color) {
+    public UITextInputTextStyle setTextColor(UIColor color) {
         data.put(ColorKey(), color);
+        return this;
     }
     public UIFont getFont() {
         if (data.containsKey(FontKey())) {
@@ -107,8 +109,9 @@ import org.robovm.apple.coretext.*;
         }
         return null;
     }
-    public void setFont(UIFont font) {
+    public UITextInputTextStyle setFont(UIFont font) {
         data.put(FontKey(), font);
+        return this;
     }
     /*<methods>*/
     @GlobalValue(symbol="UITextInputTextBackgroundColorKey", optional=true)

@@ -39,22 +39,24 @@ import org.robovm.apple.corefoundation.*;
 
     /*<ptr>*/
     /*</ptr>*/
-    private NSDictionary<NSString, NSString> data = new NSMutableDictionary<>();
+    private CFDictionary data;
     private CFString label;
     
     public ABPersonInstantMessageAccount(String username, ABPersonInstantMessageService service, String label) {
+        this.data = CFMutableDictionary.create();
         setUsername(username);
         setService(service);
         this.label = new CFString(label);
     }
     
     public ABPersonInstantMessageAccount(String username, ABPersonInstantMessageService service, ABPropertyLabel label) {
+        this.data = CFMutableDictionary.create();
         setUsername(username);
         setService(service);
         this.label = label.value();
     }
     
-    protected ABPersonInstantMessageAccount(NSDictionary<NSString, NSString> data, CFString label) {
+    protected ABPersonInstantMessageAccount(CFDictionary data, CFString label) {
         this.data = data;
         this.label = label;
     }
@@ -64,7 +66,7 @@ import org.robovm.apple.corefoundation.*;
     /*<constructors>*//*</constructors>*/
     /*<properties>*//*</properties>*/
     /*<members>*//*</members>*/
-    public NSDictionary<NSString, NSString> getDictionary() {
+    public CFDictionary getDictionary() {
         return data;
     }
     
@@ -76,25 +78,34 @@ import org.robovm.apple.corefoundation.*;
     }
     
     public void setUsername(String username) {
-        data.put(UsernameKey(), new NSString(username));
+        data.put(UsernameKey(), new CFString(username));
     }
     public String getUsername() {
-        NSString username = data.get(UsernameKey());
-        if (username != null) return username.toString();
+        if (data.containsKey(UsernameKey())) {
+            CFString val = data.get(UsernameKey(), CFString.class);
+            return val.toString();
+        }
         return null;
     }
     public void setService(ABPersonInstantMessageService service) {
         data.put(ServiceKey(), service.value());
     }
     public ABPersonInstantMessageService getService() {
-        NSString service = data.get(ServiceKey());
-        if (service != null) return ABPersonInstantMessageService.valueOf(service);
+        if (data.containsKey(ServiceKey())) {
+            CFString val = data.get(ServiceKey(), CFString.class);
+            return ABPersonInstantMessageService.valueOf(val);
+        }
         return null;
     }
     /*<methods>*/
     @GlobalValue(symbol="kABPersonInstantMessageServiceKey", optional=true)
-    protected static native NSString ServiceKey();
+    protected static native CFString ServiceKey();
     @GlobalValue(symbol="kABPersonInstantMessageUsernameKey", optional=true)
-    protected static native NSString UsernameKey();
+    protected static native CFString UsernameKey();
     /*</methods>*/
+    @Override
+    public String toString() {
+        if (data != null) return data.toString();
+        return super.toString();
+    }
 }

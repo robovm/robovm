@@ -87,8 +87,9 @@ import org.robovm.apple.coretext.*;
 //        }
 //        return null;
 //    }
-//    public void setMediaType(UTType mediaType) { TODO
+//    public UIImagePickerControllerEditingInfo setMediaType(UTType mediaType) { TODO
 //        data.put(MediaTypeKey(), mediaType.value());
+//        return this;
 //    }
     public UIImage getOriginalImage() {
         if (data.containsKey(OriginalImageKey())) {
@@ -97,8 +98,9 @@ import org.robovm.apple.coretext.*;
         }
         return null;
     }
-    public void setOriginalImage(UIImage image) {
+    public UIImagePickerControllerEditingInfo setOriginalImage(UIImage image) {
         data.put(OriginalImageKey(), image);
+        return this;
     }
     public UIImage getEditedImage() {
         if (data.containsKey(EditedImageKey())) {
@@ -107,8 +109,9 @@ import org.robovm.apple.coretext.*;
         }
         return null;
     }
-    public void setEditedImage(UIImage image) {
+    public UIImagePickerControllerEditingInfo setEditedImage(UIImage image) {
         data.put(EditedImageKey(), image);
+        return this;
     }
     public @ByVal CGRect getCropRect() {
         if (data.containsKey(CropRectKey())) {
@@ -117,8 +120,9 @@ import org.robovm.apple.coretext.*;
         }
         return null;
     }
-    public void setCropRect(@ByVal CGRect cropRect) {
+    public UIImagePickerControllerEditingInfo setCropRect(@ByVal CGRect cropRect) {
         data.put(CropRectKey(), NSValue.valueOf(cropRect));
+        return this;
     }
     public NSURL getMediaURL() {
         if (data.containsKey(MediaURLKey())) {
@@ -127,8 +131,9 @@ import org.robovm.apple.coretext.*;
         }
         return null;
     }
-    public void setMediaURL(NSURL url) {
+    public UIImagePickerControllerEditingInfo setMediaURL(NSURL url) {
         data.put(MediaURLKey(), url);
+        return this;
     }
     /**
      * @since Available in iOS 4.1 and later.
@@ -143,8 +148,9 @@ import org.robovm.apple.coretext.*;
     /**
      * @since Available in iOS 4.1 and later.
      */
-    public void setReferenceURL(NSURL url) {
+    public UIImagePickerControllerEditingInfo setReferenceURL(NSURL url) {
         data.put(ReferenceURLKey(), url);
+        return this;
     }
     /**
      * @since Available in iOS 4.1 and later.
@@ -160,8 +166,9 @@ import org.robovm.apple.coretext.*;
     /**
      * @since Available in iOS 4.1 and later.
      */
-    public void setMediaMetadata(Map<String, NSObject> metadata) {
+    public UIImagePickerControllerEditingInfo setMediaMetadata(Map<String, NSObject> metadata) {
         data.put(MediaMetadataKey(), NSDictionary.fromStringMap(metadata));
+        return this;
     }
     /*<methods>*/
     @GlobalValue(symbol="UIImagePickerControllerMediaType", optional=true)

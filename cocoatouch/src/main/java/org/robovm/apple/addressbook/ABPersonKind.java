@@ -41,28 +41,23 @@ import org.robovm.apple.corefoundation.*;
     /*</ptr>*/
     /*<bind>*/static { Bro.bind(ABPersonKind.class); }/*</bind>*/
     /*<constants>*//*</constants>*/
-    public static final ABPersonKind Person = new ABPersonKind() {
-        public NSNumber value() {
-            return PersonValue();
-        }
-    };
-    public static final ABPersonKind Organization = new ABPersonKind() {
-        public NSNumber value() {
-            return OrganizationValue();
-        }
-    };
+    public static final ABPersonKind Person = new ABPersonKind("PersonValue");
+    public static final ABPersonKind Organization = new ABPersonKind("OrganizationValue");
     private static ABPersonKind[] values = new ABPersonKind[] {Person, Organization};
     
-    private ABPersonKind() {
+    private final LazyGlobalValue<CFNumber> lazyGlobalValue;
+    
+    private ABPersonKind(String getterName) {
+        lazyGlobalValue = new LazyGlobalValue<>(getClass(), getterName);
     }
     /*<constructors>*//*</constructors>*/
     /*<properties>*//*</properties>*/
     /*<members>*//*</members>*/
-    public NSNumber value() {
-        return null;
+    public CFNumber value() {
+        return lazyGlobalValue.value();
     }
     
-    public static ABPersonKind valueOf(NSNumber value) {
+    public static ABPersonKind valueOf(CFNumber value) {
         for (ABPersonKind v : values) {
             if (v.value().intValue() == value.intValue()) {
                 return v;
@@ -73,8 +68,8 @@ import org.robovm.apple.corefoundation.*;
     }
     /*<methods>*/
     @GlobalValue(symbol="kABPersonKindPerson", optional=true)
-    protected static native NSNumber PersonValue();
+    protected static native CFNumber PersonValue();
     @GlobalValue(symbol="kABPersonKindOrganization", optional=true)
-    protected static native NSNumber OrganizationValue();
+    protected static native CFNumber OrganizationValue();
     /*</methods>*/
 }

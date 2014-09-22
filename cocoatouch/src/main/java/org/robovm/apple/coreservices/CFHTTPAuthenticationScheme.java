@@ -32,10 +32,29 @@ import org.robovm.apple.corefoundation.*;
 
 /*<javadoc>*/
 /*</javadoc>*/
+@Marshaler(CFHTTPAuthenticationScheme.Marshaler.class)
 /*<annotations>*/@Library("CFNetwork")/*</annotations>*/
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/CFHTTPAuthenticationScheme/*</name>*/ 
     extends /*<extends>*/Object/*</extends>*/ 
     /*<implements>*//*</implements>*/ {
+    
+    public static class Marshaler {
+        @MarshalsPointer
+        public static CFHTTPAuthenticationScheme toObject(Class<CFHTTPAuthenticationScheme> cls, long handle, long flags) {
+            CFString o = (CFString) CFType.Marshaler.toObject(CFString.class, handle, flags);
+            if (o == null) {
+                return null;
+            }
+            return CFHTTPAuthenticationScheme.valueOf(o);
+        }
+        @MarshalsPointer
+        public static long toNative(CFHTTPAuthenticationScheme o, long flags) {
+            if (o == null) {
+                return 0L;
+            }
+            return CFType.Marshaler.toNative(o.value(), flags);
+        }
+    }
 
     /*<ptr>*/
     /*</ptr>*/
@@ -44,76 +63,47 @@ import org.robovm.apple.corefoundation.*;
     /**
      * @since Available in iOS 2.0 and later.
      */
-    public static CFHTTPAuthenticationScheme Basic = new CFHTTPAuthenticationScheme() {
-        public CFString value() {
-            return BasicValue();
-        }
-    };
+    public static CFHTTPAuthenticationScheme Basic = new CFHTTPAuthenticationScheme("BasicValue");
     /**
      * @since Available in iOS 2.0 and later.
      */
-    public static CFHTTPAuthenticationScheme Digest = new CFHTTPAuthenticationScheme() {
-        public CFString value() {
-            return DigestValue();
-        }
-    };
+    public static CFHTTPAuthenticationScheme Digest = new CFHTTPAuthenticationScheme("DigestValue");
     /**
      * @since Available in iOS 2.0 and later.
      */
-    public static CFHTTPAuthenticationScheme NTLM = new CFHTTPAuthenticationScheme() {
-        public CFString value() {
-            return NTLMValue();
-        }
-    };
+    public static CFHTTPAuthenticationScheme NTLM = new CFHTTPAuthenticationScheme("NTLMValue");
     /**
      * @since Available in iOS 2.0 and later.
      */
-    public static CFHTTPAuthenticationScheme Negotiate = new CFHTTPAuthenticationScheme() {
-        public CFString value() {
-            return NegotiateValue();
-        }
-    };
+    public static CFHTTPAuthenticationScheme Negotiate = new CFHTTPAuthenticationScheme("NegotiateValue");
     /**
      * @since Available in iOS 3.0 and later.
      */
-    public static CFHTTPAuthenticationScheme Negotiate2 = new CFHTTPAuthenticationScheme() {
-        public CFString value() {
-            return Negotiate2Value();
-        }
-    };
+    public static CFHTTPAuthenticationScheme Negotiate2 = new CFHTTPAuthenticationScheme("Negotiate2Value");
     /**
      * @since Available in iOS 4.3 and later.
      */
-    public static CFHTTPAuthenticationScheme XMobileMeAuthToken = new CFHTTPAuthenticationScheme() {
-        public CFString value() {
-            return XMobileMeAuthTokenValue();
-        }
-    };
+    public static CFHTTPAuthenticationScheme XMobileMeAuthToken = new CFHTTPAuthenticationScheme("XMobileMeAuthTokenValue");
     /**
      * @since Available in iOS 2.0 and later.
      */
-    public static CFHTTPAuthenticationScheme Kerberos = new CFHTTPAuthenticationScheme() {
-        public CFString value() {
-            return KerberosValue();
-        }
-    };
+    public static CFHTTPAuthenticationScheme Kerberos = new CFHTTPAuthenticationScheme("KerberosValue");
     /**
      * @since Available in iOS 7.0 and later.
      */
-    public static CFHTTPAuthenticationScheme OAuth1 = new CFHTTPAuthenticationScheme() {
-        public CFString value() {
-            return OAuth1Value();
-        }
-    };
+    public static CFHTTPAuthenticationScheme OAuth1 = new CFHTTPAuthenticationScheme("OAuth1Value");
     private static CFHTTPAuthenticationScheme[] values = new CFHTTPAuthenticationScheme[] {Basic, Digest, NTLM, Negotiate, Kerberos, Negotiate2, XMobileMeAuthToken, OAuth1};
     
-    private CFHTTPAuthenticationScheme() {
+    private final LazyGlobalValue<CFString> lazyGlobalValue;
+    
+    private CFHTTPAuthenticationScheme(String getterName) {
+        lazyGlobalValue = new LazyGlobalValue<>(getClass(), getterName);
     }
     /*<constructors>*//*</constructors>*/
     /*<properties>*//*</properties>*/
     /*<members>*//*</members>*/
     public CFString value() {
-        return null;
+        return lazyGlobalValue.value();
     }
     
     public static CFHTTPAuthenticationScheme valueOf(CFString value) {

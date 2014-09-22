@@ -50,7 +50,7 @@ import org.robovm.apple.accounts.*;
     /**
      * @since Available in iOS 3.0 and later.
      */
-    public SKProductsRequest(NSSet<NSString> productIdentifiers) { super((SkipInit) null); initObject(init(productIdentifiers)); }
+    public SKProductsRequest(@org.robovm.rt.bro.annotation.Marshaler(NSSet.AsStringSetMarshaler.class) Set<String> productIdentifiers) { super((SkipInit) null); initObject(init(productIdentifiers)); }
     /*</constructors>*/
     /*<properties>*/
     /**
@@ -70,6 +70,6 @@ import org.robovm.apple.accounts.*;
      * @since Available in iOS 3.0 and later.
      */
     @Method(selector = "initWithProductIdentifiers:")
-    protected native @Pointer long init(NSSet<NSString> productIdentifiers);
+    protected native @Pointer long init(@org.robovm.rt.bro.annotation.Marshaler(NSSet.AsStringSetMarshaler.class) Set<String> productIdentifiers);
     /*</methods>*/
 }

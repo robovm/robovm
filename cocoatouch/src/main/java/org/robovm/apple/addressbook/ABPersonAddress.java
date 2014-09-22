@@ -34,38 +34,40 @@ import org.robovm.apple.addressbookui.ABAddressFormating;
 public class ABPersonAddress {
     static { Bro.bind(ABPersonAddress.class); }
     
-    private NSDictionary<NSString, NSString> data;
+    private CFDictionary data;
     private CFString label;
     
     public ABPersonAddress(String label) {
+        this.data = CFMutableDictionary.create();
         this.label = new CFString(label);
     }
-    
     public ABPersonAddress(ABPropertyLabel label) {
+        this.data = CFMutableDictionary.create();
         this.label = label.value();
     }
-    
-    protected ABPersonAddress(NSDictionary<NSString, NSString> data, CFString label) {
+    protected ABPersonAddress(CFDictionary data, CFString label) {
         this.data = data;
         this.label = label;
     }
     
     public String getAddressPart(ABPersonAddressPart part) {
-        NSString str = data.get(part.value());
-        return str.toString();
+        if (data.containsKey(part.value())) {
+            CFString val = data.get(part.value(), CFString.class);
+            return val.toString();
+        }
+        return null;
     }
     public void setAddressPart(ABPersonAddressPart part, String s) {
-        data.put(part.value(), new NSString(s));
+        data.put(part.value(), new CFString(s));
     }
     
     public String getLabel() {
         return label.toString();
     }
-    public CFString getLabel0() {
+    protected CFString getLabel0() {
         return label;
     }
-    
-    public NSDictionary<NSString, NSString> getDictionary() {
+    public CFDictionary getDictionary() {
         return data;
     }
     

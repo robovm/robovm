@@ -46,18 +46,6 @@ import org.robovm.apple.coregraphics.*;
     /*</constructors>*/
     /*<properties>*//*</properties>*/
     /*<members>*//*</members>*/
-    /**
-     * @since Available in iOS 3.2 and later.
-     */
-    public CTFrameAttributes getFrameAttributes() {
-        return new CTFrameAttributes(getFrameAttributes0());
-    }
-    /**
-     * @since Available in iOS 3.2 and later.
-     */
-    public CTLine[] getLines() {
-        return getLines0().toArray(CTLine.class);
-    }
     /*<methods>*/
     /**
      * @since Available in iOS 3.2 and later.
@@ -83,12 +71,12 @@ import org.robovm.apple.coregraphics.*;
      * @since Available in iOS 3.2 and later.
      */
     @Bridge(symbol="CTFrameGetFrameAttributes", optional=true)
-    protected native CFDictionary getFrameAttributes0();
+    public native CTFrameAttributes getFrameAttributes();
     /**
      * @since Available in iOS 3.2 and later.
      */
     @Bridge(symbol="CTFrameGetLines", optional=true)
-    protected native CFArray getLines0();
+    public native @org.robovm.rt.bro.annotation.Marshaler(CFArray.AsListMarshaler.class) List<CTLine> getLines();
     /**
      * @since Available in iOS 3.2 and later.
      */

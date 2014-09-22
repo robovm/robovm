@@ -46,12 +46,6 @@ import org.robovm.apple.corefoundation.*;
     /*<constructors>*//*</constructors>*/
     /*<properties>*//*</properties>*/
     /*<members>*//*</members>*/
-    /**
-     * @param index
-     * @return a toll-free bridged Cocoa Foundation object.
-     */
-    @Bridge(symbol="ABMultiValueCopyValueAtIndex", optional=true)
-    public native NSObject getNSValue(@MachineSizedSInt long index);
     /*<methods>*/
     @Bridge(symbol="ABMultiValueGetPropertyType", optional=true)
     public native ABPropertyType getPropertyType();
@@ -60,7 +54,7 @@ import org.robovm.apple.corefoundation.*;
     @Bridge(symbol="ABMultiValueCopyValueAtIndex", optional=true)
     public native CFType getValue(@MachineSizedSInt long index);
     @Bridge(symbol="ABMultiValueCopyArrayOfAllValues", optional=true)
-    public native NSArray<?> getAllValues();
+    public native @org.robovm.rt.bro.annotation.Marshaler(CFArray.AsListMarshaler.class) List<CFType> getAllValues();
     @Bridge(symbol="ABMultiValueCopyLabelAtIndex", optional=true)
     public native CFString getLabel(@MachineSizedSInt long index);
     @Bridge(symbol="ABMultiValueGetIndexForIdentifier", optional=true)

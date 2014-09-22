@@ -178,7 +178,7 @@ import org.robovm.apple.dispatch.*;
     @Bridge(symbol="CFGetTypeID", optional=true)
     public native @MachineSizedUInt long getTypeID();
     @Bridge(symbol="CFCopyTypeIDDescription", optional=true)
-    public static native CFString copyTypeIDDescription(@MachineSizedUInt long type_id);
+    public static native CFString getTypeIDDescription(@MachineSizedUInt long type_id);
     @Bridge(symbol="CFRetain", optional=true)
     public native CFType retain();
     @Bridge(symbol="CFRelease", optional=true)
@@ -195,7 +195,7 @@ import org.robovm.apple.dispatch.*;
     @Bridge(symbol="CFHash", optional=true)
     public native @MachineSizedUInt long hash();
     @Bridge(symbol="CFCopyDescription", optional=true)
-    public native CFString copyDescription();
+    protected native CFString copyDescription();
     @Bridge(symbol="CFGetAllocator", optional=true)
     public native CFAllocator getAllocator();
     @Bridge(symbol="CFMakeCollectable", optional=true)

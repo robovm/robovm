@@ -116,7 +116,7 @@ import org.robovm.apple.coremedia.CMTime;
     /**
      * @since Available in iOS 2.0 and later.
      */
-    public NSArray<NSString> getNames() {
+    public List<String> getNames() {
         return getNames(null);
     }
     /**
@@ -187,7 +187,7 @@ import org.robovm.apple.coremedia.CMTime;
      * @since Available in iOS 2.0 and later.
      */
     @Bridge(symbol="CFHostGetNames", optional=true)
-    protected native NSArray<NSString> getNames(BytePtr hasBeenResolved);
+    protected native @org.robovm.rt.bro.annotation.Marshaler(CFArray.AsStringListMarshaler.class) List<String> getNames(BytePtr hasBeenResolved);
     /**
      * @since Available in iOS 2.0 and later.
      */

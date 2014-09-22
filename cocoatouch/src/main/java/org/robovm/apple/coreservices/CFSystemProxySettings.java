@@ -32,17 +32,36 @@ import org.robovm.apple.corefoundation.*;
 
 /*<javadoc>*/
 /*</javadoc>*/
+@Marshaler(CFSystemProxySettings.Marshaler.class)
 /*<annotations>*/@Library("CFNetwork")/*</annotations>*/
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/CFSystemProxySettings/*</name>*/ 
     extends /*<extends>*/Object/*</extends>*/ 
     /*<implements>*//*</implements>*/ {
 
+    public static class Marshaler {
+        @MarshalsPointer
+        public static CFSystemProxySettings toObject(Class<CFSystemProxySettings> cls, long handle, long flags) {
+            CFDictionary o = (CFDictionary) CFType.Marshaler.toObject(CFDictionary.class, handle, flags);
+            if (o == null) {
+                return null;
+            }
+            return new CFSystemProxySettings(o);
+        }
+        @MarshalsPointer
+        public static long toNative(CFSystemProxySettings o, long flags) {
+            if (o == null) {
+                return 0L;
+            }
+            return CFType.Marshaler.toNative(o.data, flags);
+        }
+    }
+    
     /*<ptr>*/
     /*</ptr>*/
-    private NSDictionary<?, ?> settings;
+    private CFDictionary data;
     
-    protected CFSystemProxySettings(NSDictionary<?, ?> settings) {
-        this.settings = settings;
+    protected CFSystemProxySettings(CFDictionary data) {
+        this.data = data;
     }
     /*<bind>*/static { Bro.bind(CFSystemProxySettings.class); }/*</bind>*/
     /*<constants>*//*</constants>*/
@@ -53,8 +72,8 @@ import org.robovm.apple.corefoundation.*;
      * @since Available in iOS 2.0 and later.
      */
     public boolean isHTTPProxyEnabled() {
-        if (settings.containsKey(HTTPEnable())) {
-            NSNumber val = (NSNumber)settings.get(HTTPEnable());
+        if (data.containsKey(HTTPEnable())) {
+            CFNumber val = data.get(HTTPEnable(), CFNumber.class);
             if (val.intValue() != 0) {
                 return true;
             }
@@ -65,8 +84,8 @@ import org.robovm.apple.corefoundation.*;
      * @since Available in iOS 2.0 and later.
      */
     public int getHTTPProxyPort() {
-        if (settings.containsKey(HTTPPort())) {
-            NSNumber val = (NSNumber)settings.get(HTTPPort());
+        if (data.containsKey(HTTPPort())) {
+            CFNumber val = data.get(HTTPPort(), CFNumber.class);
             return val.intValue();
         }
         return -1;
@@ -75,8 +94,8 @@ import org.robovm.apple.corefoundation.*;
      * @since Available in iOS 2.0 and later.
      */
     public String getHTTPProxyHost() {
-        if (settings.containsKey(HTTPProxy())) {
-            NSString val = (NSString)settings.get(HTTPProxy());
+        if (data.containsKey(HTTPProxy())) {
+            CFString val = data.get(HTTPProxy(), CFString.class);
             return val.toString();
         }
         return null;
@@ -85,8 +104,8 @@ import org.robovm.apple.corefoundation.*;
      * @since Available in iOS 2.0 and later.
      */
     public boolean isAutoConfigurationEnabled() {
-        if (settings.containsKey(ProxyAutoConfigEnable())) {
-            NSNumber val = (NSNumber)settings.get(ProxyAutoConfigEnable());
+        if (data.containsKey(ProxyAutoConfigEnable())) {
+            CFNumber val = (CFNumber)data.get(ProxyAutoConfigEnable(), CFNumber.class);
             if (val.intValue() != 0) {
                 return true;
             }
@@ -97,8 +116,8 @@ import org.robovm.apple.corefoundation.*;
      * @since Available in iOS 2.0 and later.
      */
     public String getAutoConfigurationURL() {
-        if (settings.containsKey(ProxyAutoConfigURLString())) {
-            NSString val = (NSString)settings.get(ProxyAutoConfigURLString());
+        if (data.containsKey(ProxyAutoConfigURLString())) {
+            CFString val = data.get(ProxyAutoConfigURLString(), CFString.class);
             return val.toString();
         }
         return null;
@@ -107,8 +126,8 @@ import org.robovm.apple.corefoundation.*;
      * @since Available in iOS 3.0 and later.
      */
     public String getAutoConfigurationJavaScript() {
-        if (settings.containsKey(ProxyAutoConfigJavaScript())) {
-            NSString val = (NSString)settings.get(ProxyAutoConfigJavaScript());
+        if (data.containsKey(ProxyAutoConfigJavaScript())) {
+            CFString val = data.get(ProxyAutoConfigJavaScript(), CFString.class);
             return val.toString();
         }
         return null;
@@ -118,31 +137,37 @@ import org.robovm.apple.corefoundation.*;
      * @since Available in iOS 2.0 and later.
      */
     @GlobalValue(symbol="kCFNetworkProxiesHTTPEnable", optional=true)
-    protected static native NSString HTTPEnable();
+    protected static native CFString HTTPEnable();
     /**
      * @since Available in iOS 2.0 and later.
      */
     @GlobalValue(symbol="kCFNetworkProxiesHTTPPort", optional=true)
-    protected static native NSString HTTPPort();
+    protected static native CFString HTTPPort();
     /**
      * @since Available in iOS 2.0 and later.
      */
     @GlobalValue(symbol="kCFNetworkProxiesHTTPProxy", optional=true)
-    protected static native NSString HTTPProxy();
+    protected static native CFString HTTPProxy();
     /**
      * @since Available in iOS 2.0 and later.
      */
     @GlobalValue(symbol="kCFNetworkProxiesProxyAutoConfigEnable", optional=true)
-    protected static native NSString ProxyAutoConfigEnable();
+    protected static native CFString ProxyAutoConfigEnable();
     /**
      * @since Available in iOS 2.0 and later.
      */
     @GlobalValue(symbol="kCFNetworkProxiesProxyAutoConfigURLString", optional=true)
-    protected static native NSString ProxyAutoConfigURLString();
+    protected static native CFString ProxyAutoConfigURLString();
     /**
      * @since Available in iOS 3.0 and later.
      */
     @GlobalValue(symbol="kCFNetworkProxiesProxyAutoConfigJavaScript", optional=true)
-    protected static native NSString ProxyAutoConfigJavaScript();
+    protected static native CFString ProxyAutoConfigJavaScript();
     /*</methods>*/
+    
+    @Override
+    public String toString() {
+        if (data != null) return data.toString();
+        return super.toString();
+    }
 }

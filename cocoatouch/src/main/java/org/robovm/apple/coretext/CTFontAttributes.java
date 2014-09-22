@@ -35,20 +35,39 @@ import org.robovm.apple.coretext.CTFont.CTFontPtr;
 
 /*<javadoc>*/
 /*</javadoc>*/
+@Marshaler(CTFontAttributes.Marshaler.class)
 /*<annotations>*/@Library("CoreText")/*</annotations>*/
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/CTFontAttributes/*</name>*/ 
     extends /*<extends>*/Object/*</extends>*/ 
     /*<implements>*//*</implements>*/ {
 
+    public static class Marshaler {
+        @MarshalsPointer
+        public static CTFontAttributes toObject(Class<CTFontAttributes> cls, long handle, long flags) {
+            CFDictionary o = (CFDictionary) CFType.Marshaler.toObject(CFDictionary.class, handle, flags);
+            if (o == null) {
+                return null;
+            }
+            return new CTFontAttributes(o);
+        }
+        @MarshalsPointer
+        public static long toNative(CTFontAttributes o, long flags) {
+            if (o == null) {
+                return 0L;
+            }
+            return CFType.Marshaler.toNative(o.data, flags);
+        }
+    }
+    
     /*<ptr>*/
     /*</ptr>*/
     private CFDictionary data;
     
-    public CTFontAttributes() {
-        this.data = CFMutableDictionary.create();
-    }
     protected CTFontAttributes(CFDictionary data) {
         this.data = data;
+    }
+    public CTFontAttributes() {
+        this.data = CFMutableDictionary.create();
     }
     /*<bind>*/static { Bro.bind(CTFontAttributes.class); }/*</bind>*/
     /*<constants>*//*</constants>*/
@@ -58,12 +77,24 @@ import org.robovm.apple.coretext.CTFont.CTFontPtr;
     protected CFDictionary getDictionary() {
         return data;
     }
+    
+    public CTFontAttributes set(CTFontAttribute attribute, NativeObject value) {
+        data.put(attribute.value(), value);
+        return this;
+    }
+    public <T extends NativeObject> T get(CTFontAttribute attribute, Class<T> type) {
+        return data.get(attribute.value(), type);
+    }
+    public boolean contains(CTFontAttribute attribute) {
+        return data.containsKey(attribute.value());
+    }
+    
     /**
      * @since Available in iOS 3.2 and later.
      */
     public NSURL getURL() {
-        if (data.containsKey(CTFontAttribute.URLValue())) {
-            NSURL val = data.get(CTFontAttribute.URLValue(), NSURL.class);
+        if (contains(CTFontAttribute.URL)) {
+            NSURL val = get(CTFontAttribute.URL, NSURL.class);
             return val;
         }
         return null;
@@ -71,15 +102,16 @@ import org.robovm.apple.coretext.CTFont.CTFontPtr;
     /**
      * @since Available in iOS 3.2 and later.
      */
-    public void setURL(NSURL url) {
-        data.put(CTFontAttribute.URLValue(), url);
+    public CTFontAttributes setURL(NSURL url) {
+        set(CTFontAttribute.URL, url);
+        return this;
     }
     /**
      * @since Available in iOS 3.2 and later.
      */
     public String getName() {
-        if (data.containsKey(CTFontAttribute.NameValue())) {
-            CFString val = data.get(CTFontAttribute.NameValue(), CFString.class);
+        if (contains(CTFontAttribute.Name)) {
+            CFString val = get(CTFontAttribute.Name, CFString.class);
             return val.toString();
         }
         return null;
@@ -87,15 +119,16 @@ import org.robovm.apple.coretext.CTFont.CTFontPtr;
     /**
      * @since Available in iOS 3.2 and later.
      */
-    public void setName(String name) {
-        data.put(CTFontAttribute.NameValue(), new CFString(name));
+    public CTFontAttributes setName(String name) {
+        set(CTFontAttribute.Name, new CFString(name));
+        return this;
     }
     /**
      * @since Available in iOS 3.2 and later.
      */
     public String getDisplayName() {
-        if (data.containsKey(CTFontAttribute.DisplayNameValue())) {
-            CFString val = data.get(CTFontAttribute.DisplayNameValue(), CFString.class);
+        if (contains(CTFontAttribute.DisplayName)) {
+            CFString val = get(CTFontAttribute.DisplayName, CFString.class);
             return val.toString();
         }
         return null;
@@ -103,15 +136,16 @@ import org.robovm.apple.coretext.CTFont.CTFontPtr;
     /**
      * @since Available in iOS 3.2 and later.
      */
-    public void setDisplayName(String displayName) {
-        data.put(CTFontAttribute.DisplayNameValue(), new CFString(displayName));
+    public CTFontAttributes setDisplayName(String displayName) {
+        set(CTFontAttribute.DisplayName, new CFString(displayName));
+        return this;
     }
     /**
      * @since Available in iOS 3.2 and later.
      */
     public String getStyleName() {
-        if (data.containsKey(CTFontAttribute.StyleNameValue())) {
-            CFString val = data.get(CTFontAttribute.StyleNameValue(), CFString.class);
+        if (contains(CTFontAttribute.StyleName)) {
+            CFString val = get(CTFontAttribute.StyleName, CFString.class);
             return val.toString();
         }
         return null;
@@ -119,15 +153,16 @@ import org.robovm.apple.coretext.CTFont.CTFontPtr;
     /**
      * @since Available in iOS 3.2 and later.
      */
-    public void setStyleName(String styleName) {
-        data.put(CTFontAttribute.StyleNameValue(), new CFString(styleName));
+    public CTFontAttributes setStyleName(String styleName) {
+        set(CTFontAttribute.StyleName, new CFString(styleName));
+        return this;
     }
     /**
      * @since Available in iOS 3.2 and later.
      */
     public CTFontTraits getTraits() {
-        if (data.containsKey(CTFontAttribute.TraitsValue())) {
-            CFDictionary val = data.get(CTFontAttribute.TraitsValue(), CFDictionary.class);
+        if (contains(CTFontAttribute.Traits)) {
+            CFDictionary val = get(CTFontAttribute.Traits, CFDictionary.class);
             return new CTFontTraits(val);
         }
         return null;
@@ -135,15 +170,16 @@ import org.robovm.apple.coretext.CTFont.CTFontPtr;
     /**
      * @since Available in iOS 3.2 and later.
      */
-    public void setTraits(CTFontTraits traits) {
-        data.put(CTFontAttribute.TraitsValue(), traits.getDictionary());
+    public CTFontAttributes setTraits(CTFontTraits traits) {
+        set(CTFontAttribute.Traits, traits.getDictionary());
+        return this;
     }
     /**
      * @since Available in iOS 3.2 and later.
      */
     public CTFontVariationAxes getVariationAxes() {
-        if (data.containsKey(CTFontAttribute.VariationValue())) {
-            CFDictionary val = data.get(CTFontAttribute.VariationValue(), CFDictionary.class);
+        if (contains(CTFontAttribute.Variation)) {
+            CFDictionary val = get(CTFontAttribute.Variation, CFDictionary.class);
             return new CTFontVariationAxes(val);
         }
         return null;
@@ -151,15 +187,16 @@ import org.robovm.apple.coretext.CTFont.CTFontPtr;
     /**
      * @since Available in iOS 3.2 and later.
      */
-    public void setVariationAxes(CTFontVariationAxes variationAxes) {
-        data.put(CTFontAttribute.VariationValue(), variationAxes.getDictionary());
+    public CTFontAttributes setVariationAxes(CTFontVariationAxes variationAxes) {
+        set(CTFontAttribute.Variation, variationAxes.getDictionary());
+        return this;
     }
     /**
      * @since Available in iOS 3.2 and later.
      */
     public float getSize() {
-        if (data.containsKey(CTFontAttribute.SizeValue())) {
-            CFNumber val = data.get(CTFontAttribute.SizeValue(), CFNumber.class);
+        if (contains(CTFontAttribute.Size)) {
+            CFNumber val = get(CTFontAttribute.Size, CFNumber.class);
             return val.floatValue();
         }
         return 12;
@@ -167,15 +204,16 @@ import org.robovm.apple.coretext.CTFont.CTFontPtr;
     /**
      * @since Available in iOS 3.2 and later.
      */
-    public void setSize(float size) {
-        data.put(CTFontAttribute.SizeValue(), CFNumber.valueOf(size));
+    public CTFontAttributes setSize(float size) {
+        set(CTFontAttribute.Size, CFNumber.valueOf(size));
+        return this;
     }
     /**
      * @since Available in iOS 3.2 and later.
      */
     public @ByVal CGAffineTransform getMatrix() {
-        if (data.containsKey(CTFontAttribute.MatrixValue())) {
-            NSData val = data.get(CTFontAttribute.MatrixValue(), NSData.class);
+        if (contains(CTFontAttribute.Matrix)) {
+            NSData val = get(CTFontAttribute.Matrix, NSData.class);
             return val.getStructData(CGAffineTransform.class);
         }
         return null;
@@ -183,15 +221,16 @@ import org.robovm.apple.coretext.CTFont.CTFontPtr;
     /**
      * @since Available in iOS 3.2 and later.
      */
-    public void setMatrix(@ByVal CGAffineTransform matrix) {
-        data.put(CTFontAttribute.MatrixValue(), new NSData(matrix));
+    public CTFontAttributes setMatrix(@ByVal CGAffineTransform matrix) {
+        set(CTFontAttribute.Matrix, new NSData(matrix));
+        return this;
     }
     /**
      * @since Available in iOS 3.2 and later.
      */
     public List<CTFontDescriptor> getCascadeList() {
-        if (data.containsKey(CTFontAttribute.CascadeListValue())) {
-            CFArray val = data.get(CTFontAttribute.CascadeListValue(), CFArray.class);
+        if (contains(CTFontAttribute.CascadeList)) {
+            CFArray val = get(CTFontAttribute.CascadeList, CFArray.class);
             return val.toList(CTFontDescriptor.class);
         }
         return new ArrayList<CTFontDescriptor>();
@@ -199,15 +238,16 @@ import org.robovm.apple.coretext.CTFont.CTFontPtr;
     /**
      * @since Available in iOS 3.2 and later.
      */
-    public void setCascadeList(List<CTFontDescriptor> list) {
-        data.put(CTFontAttribute.CascadeListValue(), CFArray.create(list));
+    public CTFontAttributes setCascadeList(List<CTFontDescriptor> list) {
+        set(CTFontAttribute.CascadeList, CFArray.create(list));
+        return this;
     }
     /**
      * @since Available in iOS 3.2 and later.
      */
     public NSCharacterSet getCharacterSet() {
-        if (data.containsKey(CTFontAttribute.CharacterSetValue())) {
-            NSCharacterSet val = data.get(CTFontAttribute.CharacterSetValue(), NSCharacterSet.class);
+        if (contains(CTFontAttribute.CharacterSet)) {
+            NSCharacterSet val = get(CTFontAttribute.CharacterSet, NSCharacterSet.class);
             return val;
         }
         return null;
@@ -215,16 +255,17 @@ import org.robovm.apple.coretext.CTFont.CTFontPtr;
     /**
      * @since Available in iOS 3.2 and later.
      */
-    public void setCharacterSet(NSCharacterSet characterSet) {
-        data.put(CTFontAttribute.CharacterSetValue(), characterSet);
+    public CTFontAttributes setCharacterSet(NSCharacterSet characterSet) {
+        set(CTFontAttribute.CharacterSet, characterSet);
+        return this;
     }
     /**
      * @since Available in iOS 3.2 and later.
      */
     public List<String> getLanguages() {
         List<String> list = new ArrayList<>();
-        if (data.containsKey(CTFontAttribute.LanguagesValue())) {
-            CFArray val = data.get(CTFontAttribute.LanguagesValue(), CFArray.class);
+        if (contains(CTFontAttribute.Languages)) {
+            CFArray val = get(CTFontAttribute.Languages, CFArray.class);
             CFString[] arr = val.toArray(CFString.class);
             for (int i = 0; i < arr.length; i++) {
                 list.add(arr[i].toString());
@@ -235,15 +276,16 @@ import org.robovm.apple.coretext.CTFont.CTFontPtr;
     /**
      * @since Available in iOS 3.2 and later.
      */
-    public void setLanguages(List<String> languages) {
-        data.put(CTFontAttribute.LanguagesValue(), NSArray.fromStrings(languages));
+    public CTFontAttributes setLanguages(List<String> languages) {
+        set(CTFontAttribute.Languages, NSArray.fromStrings(languages));
+        return this;
     }
     /**
      * @since Available in iOS 3.2 and later.
      */
     public float getBaselineAdjust() {
-        if (data.containsKey(CTFontAttribute.BaselineAdjustValue())) {
-            CFNumber val = data.get(CTFontAttribute.BaselineAdjustValue(), CFNumber.class);
+        if (contains(CTFontAttribute.BaselineAdjust)) {
+            CFNumber val = get(CTFontAttribute.BaselineAdjust, CFNumber.class);
             return val.floatValue();
         }
         return 0;
@@ -251,15 +293,16 @@ import org.robovm.apple.coretext.CTFont.CTFontPtr;
     /**
      * @since Available in iOS 3.2 and later.
      */
-    public void setBaselineAdjust(float baselineAdjust) {
-        data.put(CTFontAttribute.BaselineAdjustValue(), CFNumber.valueOf(baselineAdjust));
+    public CTFontAttributes setBaselineAdjust(float baselineAdjust) {
+        set(CTFontAttribute.BaselineAdjust, CFNumber.valueOf(baselineAdjust));
+        return this;
     }
     /**
      * @since Available in iOS 3.2 and later.
      */
     public long getMacintoshEncodings() {
-        if (data.containsKey(CTFontAttribute.MacintoshEncodingsValue())) {
-            CFNumber val = data.get(CTFontAttribute.MacintoshEncodingsValue(), CFNumber.class);
+        if (contains(CTFontAttribute.MacintoshEncodings)) {
+            CFNumber val = get(CTFontAttribute.MacintoshEncodings, CFNumber.class);
             return val.longValue();
         }
         return 0;
@@ -267,8 +310,9 @@ import org.robovm.apple.coretext.CTFont.CTFontPtr;
     /**
      * @since Available in iOS 3.2 and later.
      */
-    public void setMacintoshEncodings(long encodingBits) {
-        data.put(CTFontAttribute.MacintoshEncodingsValue(), CFNumber.valueOf(encodingBits));
+    public CTFontAttributes setMacintoshEncodings(long encodingBits) {
+        set(CTFontAttribute.MacintoshEncodings, CFNumber.valueOf(encodingBits));
+        return this;
     }
 
 //    const CFStringRef kCTFontFeaturesAttribute;
@@ -278,8 +322,8 @@ import org.robovm.apple.coretext.CTFont.CTFontPtr;
      * @since Available in iOS 3.2 and later.
      */
     public float getFixedAdvance() {
-        if (data.containsKey(CTFontAttribute.FixedAdvanceValue())) {
-            CFNumber val = data.get(CTFontAttribute.FixedAdvanceValue(), CFNumber.class);
+        if (contains(CTFontAttribute.FixedAdvance)) {
+            CFNumber val = get(CTFontAttribute.FixedAdvance, CFNumber.class);
             return val.floatValue();
         }
         return 0;
@@ -287,15 +331,16 @@ import org.robovm.apple.coretext.CTFont.CTFontPtr;
     /**
      * @since Available in iOS 3.2 and later.
      */
-    public void setFixedAdvance(float fixedAdvance) {
-        data.put(CTFontAttribute.FixedAdvanceValue(), CFNumber.valueOf(fixedAdvance));
+    public CTFontAttributes setFixedAdvance(float fixedAdvance) {
+        set(CTFontAttribute.FixedAdvance, CFNumber.valueOf(fixedAdvance));
+        return this;
     }
     /**
      * @since Available in iOS 3.2 and later.
      */
     public CTFontOrientation getOrientation() {
-        if (data.containsKey(CTFontAttribute.OrientationValue())) {
-            CFNumber val = data.get(CTFontAttribute.OrientationValue(), CFNumber.class);
+        if (contains(CTFontAttribute.Orientation)) {
+            CFNumber val = get(CTFontAttribute.Orientation, CFNumber.class);
             return CTFontOrientation.valueOf(val.intValue());
         }
         return CTFontOrientation.DefaultOrientation;
@@ -303,15 +348,16 @@ import org.robovm.apple.coretext.CTFont.CTFontPtr;
     /**
      * @since Available in iOS 3.2 and later.
      */
-    public void setOrientation(CTFontOrientation orientation) {
-        data.put(CTFontAttribute.OrientationValue(), CFNumber.valueOf(orientation.value()));
+    public CTFontAttributes setOrientation(CTFontOrientation orientation) {
+        set(CTFontAttribute.Orientation, CFNumber.valueOf(orientation.value()));
+        return this;
     }
     /**
      * @since Available in iOS 3.2 and later.
      */
     public CTFontFormat getFormat() {
-        if (data.containsKey(CTFontAttribute.FormatValue())) {
-            CFNumber val = data.get(CTFontAttribute.FormatValue(), CFNumber.class);
+        if (contains(CTFontAttribute.Format)) {
+            CFNumber val = get(CTFontAttribute.Format, CFNumber.class);
             return CTFontFormat.valueOf(val.intValue());
         }
         return null;
@@ -319,15 +365,16 @@ import org.robovm.apple.coretext.CTFont.CTFontPtr;
     /**
      * @since Available in iOS 3.2 and later.
      */
-    public void setFormat(CTFontFormat format) {
-        data.put(CTFontAttribute.FormatValue(), CFNumber.valueOf(format.value()));
+    public CTFontAttributes setFormat(CTFontFormat format) {
+        set(CTFontAttribute.Format, CFNumber.valueOf(format.value()));
+        return this;
     }
     /**
      * @since Available in iOS 3.2 and later.
      */
     public CTFontManagerScope getRegistrationScope() {
-        if (data.containsKey(CTFontAttribute.RegistrationScopeValue())) {
-            CFNumber val = data.get(CTFontAttribute.RegistrationScopeValue(), CFNumber.class);
+        if (contains(CTFontAttribute.RegistrationScope)) {
+            CFNumber val = get(CTFontAttribute.RegistrationScope, CFNumber.class);
             return CTFontManagerScope.valueOf(val.intValue());
         }
         return null;
@@ -335,15 +382,16 @@ import org.robovm.apple.coretext.CTFont.CTFontPtr;
     /**
      * @since Available in iOS 3.2 and later.
      */
-    public void setRegistrationScope(CTFontManagerScope scope) {
-        data.put(CTFontAttribute.RegistrationScopeValue(), CFNumber.valueOf(scope.value()));
+    public CTFontAttributes setRegistrationScope(CTFontManagerScope scope) {
+        set(CTFontAttribute.RegistrationScope, CFNumber.valueOf(scope.value()));
+        return this;
     }
     /**
      * @since Available in iOS 3.2 and later.
      */
     public CTFontPriority getPriority() {
-        if (data.containsKey(CTFontAttribute.PriorityValue())) {
-            CFNumber val = data.get(CTFontAttribute.PriorityValue(), CFNumber.class);
+        if (contains(CTFontAttribute.Priority)) {
+            CFNumber val = get(CTFontAttribute.Priority, CFNumber.class);
             return CTFontPriority.valueOf(val.intValue());
         }
         return null;
@@ -351,15 +399,16 @@ import org.robovm.apple.coretext.CTFont.CTFontPtr;
     /**
      * @since Available in iOS 3.2 and later.
      */
-    public void setPriority(CTFontPriority priority) {
-        data.put(CTFontAttribute.PriorityValue(), CFNumber.valueOf(priority.value()));
+    public CTFontAttributes setPriority(CTFontPriority priority) {
+        set(CTFontAttribute.Priority, CFNumber.valueOf(priority.value()));
+        return this;
     }
     /**
      * @since Available in iOS 3.2 and later.
      */
     public boolean isEnabled() {
-        if (data.containsKey(CTFontAttribute.EnabledValue())) {
-            CFNumber val = data.get(CTFontAttribute.EnabledValue(), CFNumber.class);
+        if (contains(CTFontAttribute.Enabled)) {
+            CFNumber val = get(CTFontAttribute.Enabled, CFNumber.class);
             return val.booleanValue();
         }
         return false;
@@ -367,15 +416,16 @@ import org.robovm.apple.coretext.CTFont.CTFontPtr;
     /**
      * @since Available in iOS 3.2 and later.
      */
-    public void setEnabled(boolean enabled) {
-        data.put(CTFontAttribute.EnabledValue(), CFNumber.valueOf(enabled));
+    public CTFontAttributes setEnabled(boolean enabled) {
+        set(CTFontAttribute.Enabled, CFNumber.valueOf(enabled));
+        return this;
     }
     /**
      * @since Available in iOS 6.0 and later.
      */
     public boolean isDownloadable() {
-        if (data.containsKey(CTFontAttribute.DownloadableValue())) {
-            CFBoolean val = data.get(CTFontAttribute.DownloadableValue(), CFBoolean.class);
+        if (contains(CTFontAttribute.Downloadable)) {
+            CFBoolean val = get(CTFontAttribute.Downloadable, CFBoolean.class);
             return val.booleanValue();
         }
         return false;
@@ -383,15 +433,16 @@ import org.robovm.apple.coretext.CTFont.CTFontPtr;
     /**
      * @since Available in iOS 6.0 and later.
      */
-    public void setDownloadable(boolean downloadable) {
-        data.put(CTFontAttribute.DownloadableValue(), CFBoolean.valueOf(downloadable));
+    public CTFontAttributes setDownloadable(boolean downloadable) {
+        set(CTFontAttribute.Downloadable, CFBoolean.valueOf(downloadable));
+        return this;
     }
     /**
      * @since Available in iOS 7.0 and later.
      */
     public boolean isDownloaded() {
-        if (data.containsKey(CTFontAttribute.DownloadedValue())) {
-            CFBoolean val = data.get(CTFontAttribute.DownloadedValue(), CFBoolean.class);
+        if (contains(CTFontAttribute.Downloaded)) {
+            CFBoolean val = get(CTFontAttribute.Downloaded, CFBoolean.class);
             return val.booleanValue();
         }
         return false;
@@ -399,9 +450,15 @@ import org.robovm.apple.coretext.CTFont.CTFontPtr;
     /**
      * @since Available in iOS 7.0 and later.
      */
-    public void setDownloaded(boolean downloaded) {
-        data.put(CTFontAttribute.DownloadedValue(), CFBoolean.valueOf(downloaded));
+    public CTFontAttributes setDownloaded(boolean downloaded) {
+        set(CTFontAttribute.Downloaded, CFBoolean.valueOf(downloaded));
+        return this;
     }
     /*<methods>*/
     /*</methods>*/
+    @Override
+    public String toString() {
+        if (data != null) return data.toString();
+        return super.toString();
+    }
 }

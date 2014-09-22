@@ -19,6 +19,7 @@ package org.robovm.apple.coregraphics;
 import java.io.*;
 import java.nio.*;
 import java.util.*;
+
 import org.robovm.objc.*;
 import org.robovm.objc.annotation.*;
 import org.robovm.objc.block.*;
@@ -84,8 +85,9 @@ import org.robovm.apple.uikit.*;
     /**
      * @since Available in iOS 2.0 and later.
      */
-    public void setTitle(String title) {
+    public CGPDFContextOptions setTitle(String title) {
         data.put(TitleKey(), new CFString(title));
+        return this;
     }
     /**
      * @since Available in iOS 2.0 and later.
@@ -100,8 +102,9 @@ import org.robovm.apple.uikit.*;
     /**
      * @since Available in iOS 2.0 and later.
      */
-    public void setAuthor(String author) {
+    public CGPDFContextOptions setAuthor(String author) {
         data.put(AuthorKey(), new CFString(author));
+        return this;
     }
     /**
      * @since Available in iOS 2.0 and later.
@@ -116,8 +119,9 @@ import org.robovm.apple.uikit.*;
     /**
      * @since Available in iOS 2.0 and later.
      */
-    public void setSubject(String subject) {
+    public CGPDFContextOptions setSubject(String subject) {
         data.put(SubjectKey(), new CFString(subject));
+        return this;
     }
     /**
      * @since Available in iOS 2.0 and later.
@@ -132,18 +136,20 @@ import org.robovm.apple.uikit.*;
     /**
      * @since Available in iOS 2.0 and later.
      */
-    public void setKeywoards(String keywords) {
+    public CGPDFContextOptions setKeywoards(String keywords) {
         data.put(KeywordsKey(), new CFString(keywords));
+        return this;
     }
     /**
      * @since Available in iOS 2.0 and later.
      */
-    public void setKeywords(String...keywords) {
+    public CGPDFContextOptions setKeywords(String...keywords) {
         CFArray list = CFMutableArray.create();
         for (String keyword : keywords) {
             list.add(new CFString(keyword));
         }
         data.put(KeywordsKey(), list);
+        return this;
     }
     /**
      * @since Available in iOS 2.0 and later.
@@ -158,8 +164,9 @@ import org.robovm.apple.uikit.*;
     /**
      * @since Available in iOS 2.0 and later.
      */
-    public void setCreator(String creator) {
+    public CGPDFContextOptions setCreator(String creator) {
         data.put(CreatorKey(), new CFString(creator));
+        return this;
     }
     /**
      * @since Available in iOS 2.0 and later.
@@ -174,8 +181,9 @@ import org.robovm.apple.uikit.*;
     /**
      * @since Available in iOS 2.0 and later.
      */
-    public void setOwnerPassword(String password) {
+    public CGPDFContextOptions setOwnerPassword(String password) {
         data.put(OwnerPasswordKey(), new CFString(password));
+        return this;
     }
     /**
      * @since Available in iOS 2.0 and later.
@@ -190,8 +198,9 @@ import org.robovm.apple.uikit.*;
     /**
      * @since Available in iOS 2.0 and later.
      */
-    public void setUserPassword(String password) {
+    public CGPDFContextOptions setUserPassword(String password) {
         data.put(UserPasswordKey(), new CFString(password));
+        return this;
     }
     /**
      * @since Available in iOS 2.0 and later.
@@ -206,8 +215,9 @@ import org.robovm.apple.uikit.*;
     /**
      * @since Available in iOS 2.0 and later.
      */
-    public void setEncryptionKeyLength(int keyLength) {
+    public CGPDFContextOptions setEncryptionKeyLength(int keyLength) {
         data.put(EncryptionKeyLengthKey(), CFNumber.valueOf(keyLength));
+        return this;
     }
     /**
      * @since Available in iOS 2.0 and later.
@@ -222,8 +232,9 @@ import org.robovm.apple.uikit.*;
     /**
      * @since Available in iOS 2.0 and later.
      */
-    public void setAllowsPrinting(boolean allowsPrinting) {
+    public CGPDFContextOptions setAllowsPrinting(boolean allowsPrinting) {
         data.put(AllowsPrintingKey(), CFBoolean.valueOf(allowsPrinting));
+        return this;
     }
     /**
      * @since Available in iOS 2.0 and later.
@@ -238,8 +249,9 @@ import org.robovm.apple.uikit.*;
     /**
      * @since Available in iOS 2.0 and later.
      */
-    public void setAllowsCopying(boolean allowsCopying) {
+    public CGPDFContextOptions setAllowsCopying(boolean allowsCopying) {
         data.put(AllowsCopyingKey(), CFBoolean.valueOf(allowsCopying));
+        return this;
     }
     /*<methods>*/
     /**
@@ -293,4 +305,10 @@ import org.robovm.apple.uikit.*;
     @GlobalValue(symbol="kCGPDFContextAllowsCopying", optional=true)
     protected static native CFString AllowsCopyingKey();
     /*</methods>*/
+    
+    @Override
+    public String toString() {
+        if (data != null) return data.toString();
+        return super.toString();
+    }
 }

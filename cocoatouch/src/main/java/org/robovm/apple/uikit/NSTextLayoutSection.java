@@ -36,6 +36,7 @@ import org.robovm.apple.coretext.*;
 
 /*<javadoc>*/
 /*</javadoc>*/
+@Marshaler(NSTextLayoutSection.Marshaler.class)
 /*<annotations>*/@Library("UIKit")/*</annotations>*/
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/NSTextLayoutSection/*</name>*/ 
     extends /*<extends>*/Object/*</extends>*/ 
@@ -91,8 +92,9 @@ import org.robovm.apple.coretext.*;
     /**
      * @since Available in iOS 7.0 and later.
      */
-    public void setOrientation(NSTextLayoutOrientation orientation) {
+    public NSTextLayoutSection setOrientation(NSTextLayoutOrientation orientation) {
         data.put(OrientationKey(), NSNumber.valueOf((int)orientation.value()));
+        return this;
     }
     /**
      * @since Available in iOS 7.0 and later.
@@ -107,8 +109,9 @@ import org.robovm.apple.coretext.*;
     /**
      * @since Available in iOS 7.0 and later.
      */
-    public void setRange(NSRange range) {
+    public NSTextLayoutSection setRange(NSRange range) {
         data.put(RangeKey(), NSValue.valueOf(range));
+        return this;
     }
     /*<methods>*/
     /**

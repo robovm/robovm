@@ -33,21 +33,46 @@ import org.robovm.apple.accounts.*;
 
 /*<javadoc>*/
 /*</javadoc>*/
+@Marshaler(SKStoreProductParameters.Marshaler.class)
 /*<annotations>*/@Library("StoreKit")/*</annotations>*/
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/SKStoreProductParameters/*</name>*/ 
     extends /*<extends>*/Object/*</extends>*/ 
     /*<implements>*//*</implements>*/ {
 
+    public static class Marshaler {
+        @SuppressWarnings("unchecked")
+        @MarshalsPointer
+        public static SKStoreProductParameters toObject(Class<SKStoreProductParameters> cls, long handle, long flags) {
+            NSDictionary<NSString, NSObject> o = (NSDictionary<NSString, NSObject>) NSObject.Marshaler.toObject(NSDictionary.class, handle, flags);
+            if (o == null) {
+                return null;
+            }
+            return new SKStoreProductParameters(o);
+        }
+        @MarshalsPointer
+        public static long toNative(SKStoreProductParameters o, long flags) {
+            if (o == null) {
+                return 0L;
+            }
+            return NSObject.Marshaler.toNative(o.data, flags);
+        }
+    }
+    
     /*<ptr>*/
     /*</ptr>*/
-    private NSDictionary<NSString, NSObject> data = new NSMutableDictionary<NSString, NSObject>();
+    private NSDictionary<NSString, NSObject> data;
     
+    protected SKStoreProductParameters(NSDictionary<NSString, NSObject> data) {
+        this.data = data;
+    }
     public SKStoreProductParameters() {
+        data = new NSMutableDictionary<>();
     }
     /**
      * @since Available in iOS 6.0 and later.
      */
     public SKStoreProductParameters(String iTunesItemIdentifier) {
+        data = new NSMutableDictionary<>();
         setITunesItemIdentifier(iTunesItemIdentifier);
     }
     /*<bind>*/static { Bro.bind(SKStoreProductParameters.class); }/*</bind>*/
@@ -69,8 +94,9 @@ import org.robovm.apple.accounts.*;
         }
         return null;
     }
-    public void setITunesItemIdentifier(String identifier) {
+    public SKStoreProductParameters setITunesItemIdentifier(String identifier) {
         data.put(ITunesItemIdentifierKey(), new NSString(identifier));
+        return this;
     }
     /*<methods>*/
     /**
@@ -79,4 +105,10 @@ import org.robovm.apple.accounts.*;
     @GlobalValue(symbol="SKStoreProductParameterITunesItemIdentifier", optional=true)
     protected static native NSString ITunesItemIdentifierKey();
     /*</methods>*/
+    
+    @Override
+    public String toString() {
+        if (data != null) return data.toString();
+        return super.toString();
+    }
 }

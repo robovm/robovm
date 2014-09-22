@@ -33,27 +33,46 @@ import org.robovm.apple.coregraphics.*;
 
 /*<javadoc>*/
 /*</javadoc>*/
+@Marshaler(CTTextTabOptions.Marshaler.class)
 /*<annotations>*/@Library("CoreText")/*</annotations>*/
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/CTTextTabOptions/*</name>*/ 
     extends /*<extends>*/Object/*</extends>*/ 
     /*<implements>*//*</implements>*/ {
 
-    /*<ptr>*/
-    /*</ptr>*/
-    private NSDictionary<NSString, NSObject> data = new NSMutableDictionary<>();
-    
-    public CTTextTabOptions() {
+    public static class Marshaler {
+        @MarshalsPointer
+        public static CTTextTabOptions toObject(Class<CTTextTabOptions> cls, long handle, long flags) {
+            CFDictionary o = (CFDictionary) CFType.Marshaler.toObject(CFDictionary.class, handle, flags);
+            if (o == null) {
+                return null;
+            }
+            return new CTTextTabOptions(o);
+        }
+        @MarshalsPointer
+        public static long toNative(CTTextTabOptions o, long flags) {
+            if (o == null) {
+                return 0L;
+            }
+            return CFType.Marshaler.toNative(o.data, flags);
+        }
     }
     
-    protected CTTextTabOptions(NSDictionary<NSString, NSObject> data) {
+    /*<ptr>*/
+    /*</ptr>*/
+    private CFDictionary data;
+    
+    protected CTTextTabOptions(CFDictionary data) {
         this.data = data;
+    }
+    public CTTextTabOptions() {
+    	this.data = CFMutableDictionary.create();
     }
     /*<bind>*/static { Bro.bind(CTTextTabOptions.class); }/*</bind>*/
     /*<constants>*//*</constants>*/
     /*<constructors>*//*</constructors>*/
     /*<properties>*//*</properties>*/
     /*<members>*//*</members>*/
-    public NSDictionary<NSString, NSObject> getDictionary () {
+    public CFDictionary getDictionary () {
         return data;
     }
     /**
@@ -61,7 +80,7 @@ import org.robovm.apple.coregraphics.*;
      */
     public NSCharacterSet getTerminatingCharacter() {
         if (data.containsKey(TerminatorsAttributeName())) {
-            NSCharacterSet val = (NSCharacterSet)data.get(TerminatorsAttributeName());
+            NSCharacterSet val = data.get(TerminatorsAttributeName(), NSCharacterSet.class);
             return val;
         }
         return null;
@@ -69,14 +88,21 @@ import org.robovm.apple.coregraphics.*;
     /**
      * @since Available in iOS 3.2 and later.
      */
-    public void setTerminatingCharacter(NSCharacterSet character) {
+    public CTTextTabOptions setTerminatingCharacter(NSCharacterSet character) {
         data.put(TerminatorsAttributeName(), character);
+        return this;
     }
     /*<methods>*/
     /**
      * @since Available in iOS 3.2 and later.
      */
     @GlobalValue(symbol="kCTTabColumnTerminatorsAttributeName", optional=true)
-    protected static native NSString TerminatorsAttributeName();
+    protected static native CFString TerminatorsAttributeName();
     /*</methods>*/
+    
+    @Override
+    public String toString() {
+        if (data != null) return data.toString();
+        return super.toString();
+    }
 }

@@ -50,15 +50,17 @@ import org.robovm.apple.corefoundation.*;
         if (val != null) return val.toString();
         return null;
     }
-    public void setName(String name) {
+    public ABSource setName(String name) {
         setValue(ABSourceProperty.Name, new CFString(name));
+        return this;
     }
     public ABSourceType getType() {
         NSNumber val = (NSNumber)getNSValue(ABSourceProperty.Type);
         return ABSourceType.valueOf(val.intValue());
     }
-    public void setType(ABSourceType type) {
+    public ABSource setType(ABSourceType type) {
         setNSValue(ABSourceProperty.Type, NSNumber.valueOf((int)type.value()));
+        return this;
     }
     /*<methods>*/
     /*</methods>*/

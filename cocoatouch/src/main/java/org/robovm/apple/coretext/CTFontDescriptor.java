@@ -63,19 +63,7 @@ import org.robovm.apple.coregraphics.*;
     private static boolean cbProgress(CTFontDescriptorMatchingState state, CFDictionary data) {
         return progressHandler.invoke(state, new CTFontDescriptorProgressData(data));
     }
-    
-    /**
-     * @since Available in iOS 3.2 and later.
-     */
-    public static CTFontDescriptor create(CTFontAttributes attributes) {
-        return create(attributes.getDictionary());
-    }
-    /**
-     * @since Available in iOS 3.2 and later.
-     */
-    public CTFontDescriptor createCopy(CTFontAttributes attributes) {
-        return createCopy(attributes.getDictionary());
-    }
+   
     /**
      * @since Available in iOS 3.2 and later.
      */
@@ -121,20 +109,8 @@ import org.robovm.apple.coregraphics.*;
     /**
      * @since Available in iOS 3.2 and later.
      */
-    public CTFontAttributes getAttributes() {
-        return new CTFontAttributes(getAttributes0());
-    }
-    /**
-     * @since Available in iOS 3.2 and later.
-     */
-    public CFType getAttribute(CTFontAttribute attribute) {
-        return getAttribute(attribute.value());
-    }
-    /**
-     * @since Available in iOS 3.2 and later.
-     */
     public CFType getLocalizedAttribute(CTFontAttribute attribute) {
-        return getLocalizedAttribute(attribute.value(), null);
+        return getLocalizedAttribute(attribute, null);
     }
     /*<methods>*/
     /**
@@ -151,12 +127,12 @@ import org.robovm.apple.coregraphics.*;
      * @since Available in iOS 3.2 and later.
      */
     @Bridge(symbol="CTFontDescriptorCreateWithAttributes", optional=true)
-    protected static native CTFontDescriptor create(CFDictionary attributes);
+    public static native CTFontDescriptor create(CTFontAttributes attributes);
     /**
      * @since Available in iOS 3.2 and later.
      */
     @Bridge(symbol="CTFontDescriptorCreateCopyWithAttributes", optional=true)
-    protected native CTFontDescriptor createCopy(CFDictionary attributes);
+    public native CTFontDescriptor createCopy(CTFontAttributes attributes);
     /**
      * @since Available in iOS 7.0 and later.
      */
@@ -171,7 +147,7 @@ import org.robovm.apple.coregraphics.*;
      * @since Available in iOS 3.2 and later.
      */
     @Bridge(symbol="CTFontDescriptorCreateCopyWithVariation", optional=true)
-    protected native CTFontDescriptor createCopy(CFNumber variationIdentifier, @MachineSizedFloat double variationValue);
+    public native CTFontDescriptor createCopy(CFNumber variationIdentifier, @MachineSizedFloat double variationValue);
     /**
      * @since Available in iOS 3.2 and later.
      */
@@ -196,16 +172,16 @@ import org.robovm.apple.coregraphics.*;
      * @since Available in iOS 3.2 and later.
      */
     @Bridge(symbol="CTFontDescriptorCopyAttributes", optional=true)
-    protected native CFDictionary getAttributes0();
+    public native CTFontAttributes getAttributes();
     /**
      * @since Available in iOS 3.2 and later.
      */
     @Bridge(symbol="CTFontDescriptorCopyAttribute", optional=true)
-    protected native CFType getAttribute(CFString attribute);
+    public native CFType getAttribute(CTFontAttribute attribute);
     /**
      * @since Available in iOS 3.2 and later.
      */
     @Bridge(symbol="CTFontDescriptorCopyLocalizedAttribute", optional=true)
-    protected native CFType getLocalizedAttribute(CFString attribute, CFString.CFStringPtr language);
+    protected native CFType getLocalizedAttribute(CTFontAttribute attribute, CFString.CFStringPtr language);
     /*</methods>*/
 }

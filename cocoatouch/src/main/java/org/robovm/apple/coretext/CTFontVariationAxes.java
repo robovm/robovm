@@ -33,20 +33,39 @@ import org.robovm.apple.coregraphics.*;
 
 /*<javadoc>*/
 /*</javadoc>*/
+@Marshaler(CTFontVariationAxes.Marshaler.class)
 /*<annotations>*/@Library("CoreText")/*</annotations>*/
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/CTFontVariationAxes/*</name>*/ 
     extends /*<extends>*/Object/*</extends>*/ 
     /*<implements>*//*</implements>*/ {
 
+    public static class Marshaler {
+        @MarshalsPointer
+        public static CTFontVariationAxes toObject(Class<CTFontVariationAxes> cls, long handle, long flags) {
+            CFDictionary o = (CFDictionary) CFType.Marshaler.toObject(CFDictionary.class, handle, flags);
+            if (o == null) {
+                return null;
+            }
+            return new CTFontVariationAxes(o);
+        }
+        @MarshalsPointer
+        public static long toNative(CTFontVariationAxes o, long flags) {
+            if (o == null) {
+                return 0L;
+            }
+            return CFType.Marshaler.toNative(o.data, flags);
+        }
+    }
+    
     /*<ptr>*/
     /*</ptr>*/
     private CFDictionary data;
     
-    public CTFontVariationAxes() {
-        this.data = CFMutableDictionary.create();
-    }
     protected CTFontVariationAxes(CFDictionary data) {
         this.data = data;
+    }
+    public CTFontVariationAxes() {
+        this.data = CFMutableDictionary.create();
     }
     /*<bind>*/static { Bro.bind(CTFontVariationAxes.class); }/*</bind>*/
     /*<constants>*//*</constants>*/
@@ -70,8 +89,9 @@ import org.robovm.apple.coregraphics.*;
     /**
      * @since Available in iOS 3.2 and later.
      */
-    public void setIdentifier(long identifier) {
+    public CTFontVariationAxes setIdentifier(long identifier) {
         data.put(IdentifierKey(), CFNumber.valueOf(identifier));
+        return this;
     }
     /**
      * @since Available in iOS 3.2 and later.
@@ -86,8 +106,9 @@ import org.robovm.apple.coregraphics.*;
     /**
      * @since Available in iOS 3.2 and later.
      */
-    public void setMinimumValue(double value) {
+    public CTFontVariationAxes setMinimumValue(double value) {
         data.put(MinimumValueKey(), CFNumber.valueOf(value));
+        return this;
     }
     /**
      * @since Available in iOS 3.2 and later.
@@ -102,8 +123,9 @@ import org.robovm.apple.coregraphics.*;
     /**
      * @since Available in iOS 3.2 and later.
      */
-    public void setMaximumValue(double value) {
+    public CTFontVariationAxes setMaximumValue(double value) {
         data.put(MaximumValueKey(), CFNumber.valueOf(value));
+        return this;
     }
     /**
      * @since Available in iOS 3.2 and later.
@@ -118,8 +140,9 @@ import org.robovm.apple.coregraphics.*;
     /**
      * @since Available in iOS 3.2 and later.
      */
-    public void setDefaultValue(double value) {
+    public CTFontVariationAxes setDefaultValue(double value) {
         data.put(DefaultValueKey(), CFNumber.valueOf(value));
+        return this;
     }
     /**
      * @since Available in iOS 3.2 and later.
@@ -134,8 +157,9 @@ import org.robovm.apple.coregraphics.*;
     /**
      * @since Available in iOS 3.2 and later.
      */
-    public void setLocalizedName(String name) {
+    public CTFontVariationAxes setLocalizedName(String name) {
         data.put(NameKey(), new CFString(name));
+        return this;
     }
     /*<methods>*/
     /**
@@ -164,4 +188,9 @@ import org.robovm.apple.coregraphics.*;
     @GlobalValue(symbol="kCTFontVariationAxisNameKey", optional=true)
     protected static native CFString NameKey();
     /*</methods>*/
+    @Override
+    public String toString() {
+        if (data != null) return data.toString();
+        return super.toString();
+    }
 }

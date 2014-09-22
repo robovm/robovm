@@ -29,29 +29,23 @@ classes:
     PKPass: # DONE
         properties:
             'userInfo':
-                type: "NSDictionary<NSString, ?>"
+                type: "NSDictionary<NSString, NSObject>"
         methods:
             '-localizedValueForFieldKey:':
-                name: "getLocalizedValue"
-                parameters:
-                    key:
-                        type: "NSString"
+                name: getLocalizedValue
     PKPassLibrary: # DONE
         methods:
             '-passes':
                 property: true
                 return_type: "NSArray<PKPass>"
             '-passWithPassTypeIdentifier:serialNumber:':
-                name: "getPass"
-                parameters:
-                    identifier:
-                        type: "NSString"
+                name: getPass
             '-(removePass|containsPass):':
                 trim_after_first_colon: true
             '-replacePassWithPass:':
-                name: "replacePass"
+                name: replacePass
             '-addPasses:withCompletionHandler:':
-                name: "addPasses"
+                name: addPasses
                 parameters:
                     passes:
                         type: "NSArray<PKPass>"
@@ -60,7 +54,7 @@ protocols:
     PKAddPassesViewControllerDelegate: # DONE
         methods:
             '-addPassesViewControllerDidFinish:':
-                name: "didFinish"
+                name: didFinish
 
 functions:
     # Make sure we don't miss any functions if new ones are introduced in a later version

@@ -18,6 +18,7 @@ package org.robovm.apple.addressbook;
 import java.io.*;
 import java.nio.*;
 import java.util.*;
+
 import org.robovm.objc.*;
 import org.robovm.objc.annotation.*;
 import org.robovm.objc.block.*;
@@ -39,19 +40,20 @@ public class ABPersonDate {
         this.date = date;
         this.label = new CFString(label);
     }
-    
     public ABPersonDate(NSDate date, ABPersonDateLabel label) {
         this.date = date;
         this.label = label.value();
     }
-    
-    protected ABPersonDate(NSDate date, CFString label) {
-        this.date = date;
+    protected ABPersonDate(CFDate date, CFString label) {
+        this.date = date.as(NSDate.class);
         this.label = label;
     }
     
     public NSDate getDate() {
         return date;
+    }
+    protected CFDate getDate0() {
+        return date.as(CFDate.class);
     }
     
     public String getLabel() {

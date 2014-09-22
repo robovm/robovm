@@ -71,7 +71,7 @@ import org.robovm.apple.uikit.*;
      * @since Available in iOS 7.0 and later.
      */
     @Property(selector = "userInfo")
-    public native NSDictionary<NSString, ?> getUserInfo();
+    public native NSDictionary<NSString, NSObject> getUserInfo();
     @Property(selector = "passURL")
     public native NSURL getPassURL();
     /*</properties>*/
@@ -80,6 +80,6 @@ import org.robovm.apple.uikit.*;
     @Method(selector = "initWithData:error:")
     protected native @Pointer long initWithData$error$(NSData data, NSError.NSErrorPtr error);
     @Method(selector = "localizedValueForFieldKey:")
-    public native NSObject getLocalizedValue(NSString key);
+    public native NSObject getLocalizedValue(String key);
     /*</methods>*/
 }

@@ -565,7 +565,7 @@ public class StructTest {
         Point p = new Point().x(10).y(20);
         ptr.set(p);
         assertEquals(p, s.pointPtr().get());
-        s.pointPtr().set(null);
+        s.pointPtr().set((Point) null);
         assertNull(ptr.get());
     }
 
@@ -583,9 +583,9 @@ public class StructTest {
         Point p = new Point().x(10).y(20);
         ptrInner.set(p);
         assertEquals(p, s.pointPtrPtr().get().get());
-        s.pointPtrPtr().get().set(null);
+        s.pointPtrPtr().get().set((Point) null);
         assertNull(ptrInner.get());
-        s.pointPtrPtr().set(null);
+        s.pointPtrPtr().set((PointPtr) null);
         assertNull(ptrOuter.get());
     }
     

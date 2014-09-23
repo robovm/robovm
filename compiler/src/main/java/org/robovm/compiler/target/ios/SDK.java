@@ -17,19 +17,10 @@
 package org.robovm.compiler.target.ios;
 
 import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import org.apache.commons.exec.util.StringUtils;
-import org.robovm.compiler.config.Config;
-import org.robovm.compiler.config.Config.Home;
-import org.robovm.compiler.log.Logger;
-import org.robovm.compiler.target.ios.DeviceType.DeviceFamily;
-import org.robovm.compiler.util.Executor;
 import org.robovm.compiler.util.ToolchainUtil;
 
 import com.dd.plist.NSDictionary;
@@ -53,7 +44,7 @@ public class SDK implements Comparable<SDK> {
     private String platformBuild;
     private String platformVersion;
     private String platformName;
-
+    
     public static SDK create(File root) throws Exception {
         File sdkSettingsFile = new File(root, "SDKSettings.plist");
         File sdkSysVersionFile = new File(root, "System/Library/CoreServices/SystemVersion.plist");
@@ -64,21 +55,21 @@ public class SDK implements Comparable<SDK> {
             NSDictionary sdkSysVersionDict = (NSDictionary) PropertyListParser.parse(sdkSysVersionFile);
             NSDictionary platformVersionDict = (NSDictionary) PropertyListParser.parse(platformVersionFile);
             NSDictionary platformInfoDict = (NSDictionary) PropertyListParser.parse(platformInfoFile);
-
+            
             SDK sdk = new SDK();
-
+            
             sdk.root = root;
-
+            
             sdk.displayName = toString(sdkSettingsDict.objectForKey("DisplayName"));
             sdk.minimalDisplayName = toString(sdkSettingsDict.objectForKey("MinimalDisplayName"));
             sdk.canonicalName = toString(sdkSettingsDict.objectForKey("CanonicalName"));
             sdk.version = toString(sdkSettingsDict.objectForKey("Version"));
             sdk.defaultProperties = (NSDictionary) sdkSettingsDict.objectForKey("DefaultProperties");
-
+            
             sdk.build = toString(sdkSysVersionDict.objectForKey("ProductBuildVersion"));
 
             sdk.platformBuild = toString(platformVersionDict.objectForKey("ProductBuildVersion"));
-
+            
             NSDictionary additionalInfo = (NSDictionary) platformInfoDict.objectForKey("AdditionalInfo");
             sdk.platformVersion = toString(additionalInfo.objectForKey("DTPlatformVersion"));
             sdk.platformName = toString(additionalInfo.objectForKey("DTPlatformName"));
@@ -87,21 +78,21 @@ public class SDK implements Comparable<SDK> {
             sdk.major = Integer.parseInt(parts[0]);
             sdk.minor = parts.length >= 2 ? Integer.parseInt(parts[1]) : 0;
             sdk.revision = parts.length >= 3 ? Integer.parseInt(parts[2]) : 0;
-
+            
             return sdk;
         }
         throw new IllegalArgumentException(root.getAbsolutePath() + " is not an SDK root path");
     }
-
+    
     private static String toString(NSObject o) {
         return o != null ? o.toString() : null;
     }
-
+    
     private static List<SDK> listSDKs(String platform) {
         try {
             List<SDK> sdks = new ArrayList<SDK>();
-            File sdksDir = new File(ToolchainUtil.findXcodePath() + "/Platforms/"
-                    + platform + ".platform/Developer/SDKs");
+            File sdksDir = new File(ToolchainUtil.findXcodePath() + "/Platforms/" 
+                                    + platform + ".platform/Developer/SDKs");
             if (sdksDir.exists() && sdksDir.isDirectory()) {
                 for (File root : sdksDir.listFiles()) {
                     try {
@@ -110,7 +101,7 @@ public class SDK implements Comparable<SDK> {
                     }
                 }
             }
-
+            
             return sdks;
         } catch (RuntimeException e) {
             throw e;
@@ -118,15 +109,15 @@ public class SDK implements Comparable<SDK> {
             throw new RuntimeException(t);
         }
     }
-
+    
     public static List<SDK> listDeviceSDKs() {
         return listSDKs("iPhoneOS");
     }
-
+    
     public static List<SDK> listSimulatorSDKs() {
         return listSDKs("iPhoneSimulator");
     }
-
+    
     public String getDisplayName() {
         return displayName;
     }
@@ -134,11 +125,11 @@ public class SDK implements Comparable<SDK> {
     public String getMinimalDisplayName() {
         return minimalDisplayName;
     }
-
+    
     public String getCanonicalName() {
         return canonicalName;
     }
-
+    
     public String getVersion() {
         return version;
     }
@@ -150,11 +141,11 @@ public class SDK implements Comparable<SDK> {
     public NSDictionary getDefaultProperties() {
         return defaultProperties;
     }
-
+    
     public NSObject getDefaultProperty(String key) {
         return defaultProperties.objectForKey(key);
     }
-
+    
     public String getBuild() {
         return build;
     }
@@ -174,27 +165,27 @@ public class SDK implements Comparable<SDK> {
     public int getMajor() {
         return major;
     }
-
+    
     public int getMinor() {
         return minor;
     }
-
+    
     public int getRevision() {
         return revision;
     }
-
+    
     @Override
     public int compareTo(SDK o) {
         int c = major < o.major ? -1 : (major > o.major ? 1 : 0);
         if (c == 0) {
             c = minor < o.minor ? -1 : (minor > o.minor ? 1 : 0);
             if (c == 0) {
-                c = revision < o.revision ? -1 : (revision > o.revision ? 1 : 0);
+                c = revision < o.revision ? -1 : (revision > o.revision ? 1 : 0);                    
             }
         }
         return c;
     }
-
+    
     @Override
     public String toString() {
         return "SDK [displayName=" + displayName + ", minimalDisplayName="
@@ -204,5 +195,5 @@ public class SDK implements Comparable<SDK> {
                 + ", build=" + build + ", platformBuild=" + platformBuild
                 + ", platformVersion=" + platformVersion + ", platformName="
                 + platformName + "]";
-    }        
+    }
 }

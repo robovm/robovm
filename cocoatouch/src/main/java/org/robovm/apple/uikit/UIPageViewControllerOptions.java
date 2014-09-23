@@ -19,6 +19,7 @@ package org.robovm.apple.uikit;
 import java.io.*;
 import java.nio.*;
 import java.util.*;
+
 import org.robovm.objc.*;
 import org.robovm.objc.annotation.*;
 import org.robovm.objc.block.*;
@@ -66,6 +67,9 @@ import org.robovm.apple.coretext.*;
     
     private NSDictionary<NSString, NSObject> data;
     
+    public UIPageViewControllerOptions() {
+        this.data = new NSMutableDictionary<>();
+    }
     protected UIPageViewControllerOptions(NSDictionary<NSString, NSObject> data) {
         this.data = data;
     }

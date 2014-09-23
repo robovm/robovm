@@ -60,11 +60,6 @@ import org.robovm.apple.accounts.*;
     public native SKReceiptRefreshRequestOptions getReceiptProperties();
     /*</properties>*/
     /*<members>*//*</members>*/
-    /**
-     * @since Available in iOS 7.0 and later.
-     */
-    @Method(selector = "initWithReceiptProperties:")
-    protected native @Pointer long init(NSDictionary<NSString, ?> properties);
     /*<methods>*/
     /**
      * @since Available in iOS 7.1 and later.

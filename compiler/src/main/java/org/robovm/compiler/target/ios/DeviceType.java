@@ -16,6 +16,18 @@
  */
 package org.robovm.compiler.target.ios;
 
+import java.io.File;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import org.robovm.compiler.config.Config.Home;
+import org.robovm.compiler.log.Logger;
+import org.robovm.compiler.util.Executor;
+
 /**
  * Simulator device types, consisting of the device type id and SDK version as
  * listed by ios-sim.
@@ -25,7 +37,12 @@ package org.robovm.compiler.target.ios;
  */
 public class DeviceType {
     public static final String PREFIX = "com.apple.CoreSimulator.SimDeviceType.";
-    
+
+    public static enum DeviceFamily {
+        iPad,
+        iPhone
+    }
+
     private final String deviceName;
     private final SDK sdk;
 
@@ -61,11 +78,105 @@ public class DeviceType {
         return deviceName.substring("com.apple.CoreSimulator.SimDeviceType.".length());
     }
 
-    public boolean isPhone() {
-        return deviceName.contains("iPhone");
+    public DeviceFamily getFamily() {
+        if (deviceName.contains("iPhone")) {
+            return DeviceFamily.iPhone;
+        } else {
+            return DeviceFamily.iPad;
+        }
     }
 
-    public boolean isIpad() {
-        return deviceName.contains("iPad");
+    public static List<DeviceType> listDeviceTypes(Home home) {
+        try {
+            String capture = new Executor(Logger.NULL_LOGGER, new File(home.getBinDir(), "ios-sim")).args(
+                    "showdevicetypes").execCapture();
+            List<DeviceType> types = new ArrayList<DeviceType>();
+            String[] deviceTypeIds = capture.split("\n");
+            List<SDK> sdks = SDK.listSimulatorSDKs();
+            Map<String, SDK> sdkMap = new HashMap<>();
+            for (SDK sdk : sdks) {
+                sdkMap.put(sdk.getVersion(), sdk);
+            }
+            for (String deviceTypeId : deviceTypeIds) {
+                String[] tokens = deviceTypeId.split(",");
+                tokens[0] = tokens[0].trim();
+                tokens[1] = tokens[1].trim();
+                SDK sdk = sdkMap.get(tokens[1]);
+                if (sdk != null) {
+                    types.add(new DeviceType(tokens[0], sdk));
+                }
+            }
+            return types;
+        } catch (IOException e) {
+            return Collections.<DeviceType> emptyList();
+        }
+    }
+
+    public static List<String> getSimpleDeviceTypeIds(Home home) {
+        List<String> result = new ArrayList<>();
+        for (DeviceType type : listDeviceTypes(home)) {
+            result.add(type.getSimpleDeviceTypeId());
+        }
+        return result;
+    }
+
+    public static DeviceType getDeviceType(Home home, String deviceTypeId) {
+        List<DeviceType> types = listDeviceTypes(home);
+        if (deviceTypeId == null) {
+            return null;
+        }
+        if (!deviceTypeId.startsWith(DeviceType.PREFIX)) {
+            deviceTypeId = DeviceType.PREFIX + deviceTypeId;
+        }
+        for (DeviceType type : types) {
+            if (deviceTypeId.equals(type.getDeviceTypeId())) {
+                return type;
+            }
+        }
+        return null;
+    }
+
+    /**
+     * @return the iPhone {@link DeviceType} with the highest version number
+     */
+    public static DeviceType getBestDeviceType(Home home) {
+        DeviceType best = null;
+        for (DeviceType type : listDeviceTypes(home)) {
+            if (type.getFamily() != DeviceFamily.iPhone) {
+                continue;
+            }
+            if (best == null) {
+                best = type;
+            } else {
+                int bestVersion = (best.getSdk().getMajor() << 8) | (best.getSdk().getMinor());
+                int typeVersion = (type.getSdk().getMajor() << 8) | (type.getSdk().getMinor());
+                if (bestVersion < typeVersion) {
+                    best = type;
+                }
+            }
+        }
+        return best;
+    }
+
+    /**
+     * @return the iPhone {@link DeviceType} with the highest version number
+     */
+    public static DeviceType getBestDeviceType(Home home, DeviceFamily family) {
+        DeviceType best = null;
+        for (DeviceType type : listDeviceTypes(home)) {
+            if (type.getFamily() != family) {
+                continue;
+            }
+            if (best == null) {
+                best = type;
+            } else {
+                int bestVersion = (best.getSdk().getMajor() << 8) | (best.getSdk().getMinor());
+                int typeVersion = (type.getSdk().getMajor() << 8) | (type.getSdk().getMinor());
+                if (bestVersion < typeVersion) {
+                    best = type;
+                }
+            }
+        }
+        return best;
     }
 }

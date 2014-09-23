@@ -48,6 +48,7 @@ import org.robovm.compiler.clazz.Dependency;
 import org.robovm.compiler.clazz.Path;
 import org.robovm.compiler.config.Arch;
 import org.robovm.compiler.config.Config;
+import org.robovm.compiler.config.Config.Home;
 import org.robovm.compiler.config.Config.TargetType;
 import org.robovm.compiler.config.OS;
 import org.robovm.compiler.config.Resource;
@@ -485,7 +486,7 @@ public class AppCompiler {
                 } else if ("-sdk".equals(args[i])) {
                     builder.iosSdkVersion(args[++i]);
                 } else if ("-printdevicetypes".equals(args[i])) {
-                    printDeviceTypesAndExit();
+                    printDeviceTypesAndExit(Home.find());
                 } else if ("-devicetype".equals(args[i])) {
                     builder.iosDeviceType(args[++i]);           
                 } else if ("-createipa".equals(args[i])) {
@@ -566,9 +567,9 @@ public class AppCompiler {
                 LaunchParameters launchParameters = compiler.config.getTarget().createLaunchParameters();
                 if (launchParameters instanceof IOSSimulatorLaunchParameters) {
                     IOSSimulatorLaunchParameters simParams = (IOSSimulatorLaunchParameters) launchParameters;
-                    DeviceType type = SDK.getDeviceType(compiler.config, compiler.config.getIosDeviceType());
+                    DeviceType type = DeviceType.getDeviceType(compiler.config.getHome(), compiler.config.getIosDeviceType());
                     if (type == null) {
-                        simParams.setDeviceType(SDK.getBestDeviceType(compiler.config));
+                        simParams.setDeviceType(DeviceType.getBestDeviceType(compiler.config.getHome()));
                     } else {
                         simParams.setDeviceType(type);
                     }
@@ -607,11 +608,8 @@ public class AppCompiler {
         }
     }
     
-    private static void printDeviceTypesAndExit() throws IOException {
-        Config.Builder builder = new Config.Builder();
-        builder.addClasspathEntry(new File("./"));
-        builder.mainClass("");
-        List<DeviceType> types = SDK.listDeviceTypes(builder.build());
+    private static void printDeviceTypesAndExit(Home home) throws IOException {
+        List<DeviceType> types = DeviceType.listDeviceTypes(home);
         for (DeviceType type : types) {
             System.out.println(type.getSimpleDeviceTypeId());
         }

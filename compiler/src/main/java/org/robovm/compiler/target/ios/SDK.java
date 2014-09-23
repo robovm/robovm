@@ -26,7 +26,9 @@ import java.util.Map;
 
 import org.apache.commons.exec.util.StringUtils;
 import org.robovm.compiler.config.Config;
+import org.robovm.compiler.config.Config.Home;
 import org.robovm.compiler.log.Logger;
+import org.robovm.compiler.target.ios.DeviceType.DeviceFamily;
 import org.robovm.compiler.util.Executor;
 import org.robovm.compiler.util.ToolchainUtil;
 
@@ -123,70 +125,6 @@ public class SDK implements Comparable<SDK> {
 
     public static List<SDK> listSimulatorSDKs() {
         return listSDKs("iPhoneSimulator");
-    }
-
-    public static List<DeviceType> listDeviceTypes(Config config) {
-        try {
-            String capture = new Executor(Logger.NULL_LOGGER, new File(config.getHome().getBinDir(), "ios-sim")).args(
-                    "showdevicetypes").execCapture();
-            List<DeviceType> types = new ArrayList<DeviceType>();
-            String[] deviceTypeIds = capture.split("\n");
-            List<SDK> sdks = listSimulatorSDKs();
-            Map<String, SDK> sdkMap = new HashMap<>();
-            for (SDK sdk : sdks) {
-                sdkMap.put(sdk.getVersion(), sdk);
-            }
-            for (String deviceTypeId : deviceTypeIds) {
-                String[] tokens = deviceTypeId.split(",");
-                tokens[0] = tokens[0].trim();
-                tokens[1] = tokens[1].trim();
-                SDK sdk = sdkMap.get(tokens[1]);
-                if (sdk != null) {
-                    types.add(new DeviceType(tokens[0], sdk));
-                }
-            }
-            return types;
-        } catch (IOException e) {
-            return Collections.<DeviceType> emptyList();
-        }
-    }
-
-    public static DeviceType getDeviceType(Config config, String deviceTypeId) {
-        List<DeviceType> types = listDeviceTypes(config);
-        if (deviceTypeId == null) {
-            return null;
-        }
-        if (!deviceTypeId.startsWith(DeviceType.PREFIX)) {
-            deviceTypeId = DeviceType.PREFIX + deviceTypeId;
-        }
-        for (DeviceType type : types) {
-            if (deviceTypeId.equals(type.getDeviceTypeId())) {
-                return type;
-            }
-        }
-        return null;
-    }
-
-    /**
-     * @return the iPhone {@link DeviceType} with the highest version number
-     */
-    public static DeviceType getBestDeviceType(Config config) {
-        DeviceType best = null;
-        for (DeviceType type : listDeviceTypes(config)) {
-            if (!type.isPhone()) {
-                continue;
-            }
-            if (best == null) {
-                best = type;
-            } else {
-                int bestVersion = (best.getSdk().getMajor() << 8) | (best.getSdk().getMinor());
-                int typeVersion = (type.getSdk().getMajor() << 8) | (type.getSdk().getMinor());
-                if (bestVersion < typeVersion) {
-                    best = type;
-                }
-            }
-        }
-        return best;
     }
 
     public String getDisplayName() {

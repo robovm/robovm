@@ -136,6 +136,27 @@ class ConstraintCollector extends AbstractStmtSwitch
 	      }
 	  }
       }
+    else if(ie instanceof DynamicInvokeExpr)
+    {  // RoboVM note: Added support for DynamicInvokeExpr
+        DynamicInvokeExpr invoke = (DynamicInvokeExpr) ie;
+      SootMethodRef method = invoke.getMethodRef();
+      int count = invoke.getArgCount();
+      
+      for(int i = 0; i < count; i++)
+        {
+          if(invoke.getArg(i) instanceof Local)
+            {
+              Local local = (Local) invoke.getArg(i);
+              
+              if(local.getType() instanceof IntegerType)
+                {
+                  TypeVariable localType = resolver.typeVariable(local);
+                  
+                  localType.addParent(resolver.typeVariable(method.parameterType(i)));
+                }
+            }
+        }
+    }
     else
       {
 	throw new RuntimeException("Unhandled invoke expression type: " + ie.getClass());

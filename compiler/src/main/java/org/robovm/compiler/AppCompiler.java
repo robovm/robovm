@@ -748,7 +748,7 @@ public class AppCompiler {
                          + "                        specified the latest SDK that can be found will be used.");
         System.err.println("iOS simulator launch options:");
         System.err.println("  -printdevicetypes     The device type ids that can be used to launch a specific\n"
-                         + "                        simulator via the -simdevicetype flag.");
+                         + "                        simulator via the -devicetype flag.");
         System.err.println("  -devicetype <type>    The device type to use to launch the simulator e.g. \"iPhone-6, 8.0\"\n"
                          + "                        (defaults to an iPhone simulator using the latest SDK).");
         

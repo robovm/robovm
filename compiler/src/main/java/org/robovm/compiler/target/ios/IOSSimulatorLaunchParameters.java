@@ -16,10 +16,6 @@
  */
 package org.robovm.compiler.target.ios;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-
 import org.robovm.compiler.target.LaunchParameters;
 
 /**
@@ -27,43 +23,13 @@ import org.robovm.compiler.target.LaunchParameters;
  * launching on the simulator.
  */
 public class IOSSimulatorLaunchParameters extends LaunchParameters {
+    private DeviceType deviceType;
 
-    public static enum Family {
-        iPhoneRetina35Inch("iPhone Retina (3.5-inch)", "--family", "iphone", "--retina"),
-        iPhoneRetina4Inch("iPhone Retina (4-inch)", "--family", "iphone", "--retina", "--tall"), 
-        iPad("iPad", "--family", "ipad"), 
-        iPadRetina("iPad Retina", "--family", "ipad", "--retina");
-
-        private final String displayName;
-        private final List<String> iosSimArgs;
-
-        private Family(String displayName, String ... iosSimArgs) {
-            this.displayName = displayName;
-            this.iosSimArgs = new ArrayList<>(Arrays.asList(iosSimArgs));
-        }
-
-        public String getDisplayName() {
-            return displayName;
-        }
-
-        public List<String> getIosSimArgs() {
-            return iosSimArgs;
-        }
+    public DeviceType getDeviceType() {
+        return deviceType;
     }
-    
-    private Family family = Family.iPhoneRetina4Inch;
-    private String sdk = null;
-    
-    public Family getFamily() {
-        return family;
-    }
-    public void setFamily(Family family) {
-        this.family = family;
-    }
-    public String getSdk() {
-        return sdk;
-    }
-    public void setSdk(String sdk) {
-        this.sdk = sdk;
+
+    public void setDeviceType(DeviceType type) {
+        this.deviceType = type;
     }
 }

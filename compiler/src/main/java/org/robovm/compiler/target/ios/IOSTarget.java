@@ -124,11 +124,11 @@ public class IOSTarget extends AbstractTarget {
         args.add("--timeout");
         args.add("90");
         args.add("--unbuffered");
-        if (((IOSSimulatorLaunchParameters) launchParameters).getSdk() != null) {
-            args.add("--sdk");
-            args.add(((IOSSimulatorLaunchParameters) launchParameters).getSdk());
+        if (((IOSSimulatorLaunchParameters) launchParameters).getDeviceType() != null) {
+            DeviceType deviceType = ((IOSSimulatorLaunchParameters) launchParameters).getDeviceType();
+            args.add("--devicetypeid");
+            args.add(deviceType.getDeviceTypeId());
         }
-        args.addAll(((IOSSimulatorLaunchParameters) launchParameters).getFamily().getIosSimArgs());
         if (launchParameters.getStdoutFifo() != null) {
             args.add("--stdout");
             args.add(launchParameters.getStdoutFifo());

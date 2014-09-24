@@ -142,6 +142,7 @@ public class Config {
 
     private SigningIdentity iosSignIdentity;
     private ProvisioningProfile iosProvisioningProfile;
+    private String iosDeviceType;
 
     private boolean iosSkipSigning = false;
     
@@ -392,6 +393,10 @@ public class Config {
     
     public String getIosSdkVersion() {
         return iosSdkVersion;
+    }
+    
+    public String getIosDeviceType() {
+        return iosDeviceType;
     }
 
     public File getIosInfoPList() {
@@ -1149,6 +1154,11 @@ public class Config {
         
         public Builder iosSdkVersion(String sdkVersion) {
             config.iosSdkVersion = sdkVersion;
+            return this;
+        }
+        
+        public Builder iosDeviceType(String deviceType) {
+            config.iosDeviceType = deviceType;
             return this;
         }
         

@@ -99,6 +99,13 @@ public class Access {
             }
         }
 
+        // TODO: HACK! Allow lambda classes to access private methods of the class
+        // using them.
+        if ((caller.getSootClass().getModifiers() & 0x1000 /*ACC_SYNTHETIC*/) > 0 
+                && caller.getClassName().startsWith(target.getClassName() + "$$Lambda$")) {
+            return true;
+        }
+
         return false;
     }
 

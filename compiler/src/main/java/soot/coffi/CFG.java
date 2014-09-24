@@ -2559,11 +2559,12 @@ public class CFG {
     private Type jimpleReturnTypeOfMethodRef(Scene cm,
         cp_info[] constant_pool, int index)
     {
-        CONSTANT_Methodref_info mr = (CONSTANT_Methodref_info)
+        // RoboVM note: Allow interface method reference to support Java8 default methods
+        ICONSTANT_Methodref_info mr = (ICONSTANT_Methodref_info)
                 (constant_pool[index]);
 
         CONSTANT_NameAndType_info nat = (CONSTANT_NameAndType_info)
-            (constant_pool[mr.name_and_type_index]);
+            (constant_pool[mr.getNameAndTypeIndex()]);
 
         String methodDescriptor = ((CONSTANT_Utf8_info)
             (constant_pool[nat.descriptor_index])).convert();
@@ -4374,7 +4375,8 @@ public class CFG {
 				short[] bootstrapMethodTable = bootstrap_methods_attribute.method_handles;
 				short methodSigIndex = bootstrapMethodTable[iv_info.bootstrap_method_index];
 				CONSTANT_MethodHandle_info mhInfo = (CONSTANT_MethodHandle_info) constant_pool[methodSigIndex];
-				CONSTANT_Methodref_info bsmInfo = (CONSTANT_Methodref_info) constant_pool[mhInfo.target_index];
+				// RoboVM note: Allow interface method reference to support Java8 default methods
+				ICONSTANT_Methodref_info bsmInfo = (ICONSTANT_Methodref_info) constant_pool[mhInfo.target_index];
 				bootstrapMethodRef = createMethodRef(constant_pool, bsmInfo,
 						false);
 
@@ -4452,8 +4454,9 @@ public class CFG {
             Instruction_Invokevirtual iv = (Instruction_Invokevirtual)ins;
             args = cp_info.countParams(constant_pool,iv.arg_i);
 
-    		CONSTANT_Methodref_info methodInfo =
-    		    (CONSTANT_Methodref_info) constant_pool[iv.arg_i];
+            // RoboVM note: Allow interface method reference to support Java8 default methods
+            ICONSTANT_Methodref_info methodInfo =
+               (ICONSTANT_Methodref_info) constant_pool[iv.arg_i];
 
             SootMethodRef methodRef = createMethodRef(constant_pool, methodInfo, false);
 
@@ -4491,8 +4494,9 @@ public class CFG {
             Instruction_Invokenonvirtual iv = (Instruction_Invokenonvirtual)ins;
             args = cp_info.countParams(constant_pool,iv.arg_i);
 
-            CONSTANT_Methodref_info methodInfo =
-            	(CONSTANT_Methodref_info) constant_pool[iv.arg_i];
+            // RoboVM note: Allow interface method reference to support Java8 default methods
+            ICONSTANT_Methodref_info methodInfo =
+               (ICONSTANT_Methodref_info) constant_pool[iv.arg_i];
 
             SootMethodRef methodRef = createMethodRef(constant_pool, methodInfo, false);
 
@@ -4531,8 +4535,9 @@ public class CFG {
             Instruction_Invokestatic is = (Instruction_Invokestatic)ins;
             args = cp_info.countParams(constant_pool,is.arg_i);
 
-            CONSTANT_Methodref_info methodInfo =
-            	(CONSTANT_Methodref_info) constant_pool[is.arg_i];
+            // RoboVM note: Allow interface method reference to support Java8 default methods
+            ICONSTANT_Methodref_info methodInfo =
+               (ICONSTANT_Methodref_info) constant_pool[is.arg_i];
 
             SootMethodRef methodRef = createMethodRef(constant_pool, methodInfo, true);
 

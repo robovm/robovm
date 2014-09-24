@@ -31,6 +31,7 @@ package soot.jimple;
 
 import soot.*;
 import soot.jimple.internal.*;
+
 import java.util.*;
 
 /**
@@ -898,6 +899,20 @@ public class Jimple
     public JimpleBody newBody()
     {
         return new JimpleBody();
+    }
+
+    /*
+     * RoboVM note: Added in RoboVM.
+     */
+    public SootMethodHandle newMethodHandle(int referenceKind, SootMethodRef methodRef) {
+        return new JMethodHandle(referenceKind, methodRef);
+    }
+
+    /*
+     * RoboVM note: Added in RoboVM.
+     */
+    public SootMethodType newMethodType(Type returnType, List<Type> parameterTypes) {
+        return new JMethodType(returnType, parameterTypes);
     }
 
     /*

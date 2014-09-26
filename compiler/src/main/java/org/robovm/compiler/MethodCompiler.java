@@ -221,6 +221,11 @@ public class MethodCompiler extends AbstractMethodCompiler {
             // Object.<init>() calls register_finalizable() in header.ll which checks if the class of 'this' is finalizable.
             // If it is the object will be registered for finalization.
             compileObjectInit();
+            // add the first unit to the instructions
+            Unit firstUnit = method.getActiveBody().getUnits().getFirst();
+            for(Instruction in: function.getBasicBlocks().get(0).getInstructions()) {
+                in.attach(firstUnit);
+            }
             return function;
         }
         

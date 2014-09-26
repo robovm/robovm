@@ -750,22 +750,7 @@ public class AppLauncher {
                 Thread.currentThread().interrupt();
             }
         }
-    }
-    
-    private void readMessage(InputStream in, String message) throws IOException {
-        StringBuilder builder = new StringBuilder();
-        char c = 0;
-        while((c = (char)in.read()) != -1) {
-            builder.append(c);
-            if(message.equals(builder.toString())) {
-                return;
-            }
-            if(!message.startsWith(builder.toString())) {
-                throw new IOException("Expected '" + message + "' got '" + builder.toString() + "'");
-            }
-        }
-        throw new IOException("Expected '" + message + "' got '" + builder.toString() + "'");
-    }
+    } 
     
     private void writeMessage(OutputStream out, String message) throws IOException {
         for(int i = 0; i < message.length(); i++) {
@@ -798,7 +783,10 @@ public class AppLauncher {
                     if(in.available() > 0) {
                         byte[] buffer = new byte[in.available()];
                         int readBytes = in.read(buffer);
-                        conn.send(buffer, 0, readBytes);
+                        int sent = 0;
+                        while(sent != readBytes) {
+                            sent += conn.send(buffer, sent, readBytes - sent);
+                        }
                         debugGdb("Sending packet (client): " + new String(buffer, "ASCII"));
                     }
                     

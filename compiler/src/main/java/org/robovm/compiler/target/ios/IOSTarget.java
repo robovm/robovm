@@ -159,8 +159,10 @@ public class IOSTarget extends AbstractTarget {
     
     private Launcher createIOSDevLauncher(LaunchParameters launchParameters)
             throws IOException {
-        
-        String deviceId = ((IOSDeviceLaunchParameters) launchParameters).getDeviceId();
+                
+        IOSDeviceLaunchParameters deviceLaunchParameters = (IOSDeviceLaunchParameters)launchParameters;
+        String deviceId = deviceLaunchParameters.getDeviceId();
+        int forwardPort = deviceLaunchParameters.getForwardPort();
         if (deviceId == null) {
             String[] udids = IDevice.listUdids();
             if (udids.length == 0) {
@@ -195,6 +197,8 @@ public class IOSTarget extends AbstractTarget {
             .closeOutOnExit(true)
             .args(launchParameters.getArguments().toArray(new String[0]))
             .env(env)
+            .debug(config.isDebug()) // FIXME only used for debugging purposes
+            .forward(forwardPort)
             .xcodePath(ToolchainUtil.findXcodePath())
             .uploadProgressCallback(new UploadProgressCallback() {
                 boolean first = true;

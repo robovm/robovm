@@ -25,6 +25,7 @@ import org.robovm.compiler.target.LaunchParameters;
 public class IOSDeviceLaunchParameters extends LaunchParameters {
 
     private String deviceId;
+    private int forwardPort = -1;    
     
     public String getDeviceId() {
         return deviceId;
@@ -34,4 +35,11 @@ public class IOSDeviceLaunchParameters extends LaunchParameters {
         this.deviceId = deviceId;
     }
 
+    public int getForwardPort() {
+        return forwardPort;
+    }
+
+    public void setForwardPort(int forwardPort) {
+        this.forwardPort = forwardPort;
+    }
 }

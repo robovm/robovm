@@ -18,6 +18,7 @@ package org.robovm.libimobiledevice.util;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InterruptedIOException;
@@ -67,6 +68,7 @@ import com.dd.plist.PropertyListParser;
  * {@code true} in order to be allowed to be launched by the debug server.
  */
 public class AppLauncher {
+    public static final int DEFAULT_FORWARD_PORT = 17777;
     
     private static final String DEBUG_SERVER_SERVICE_NAME = "com.apple.debugserver";
     private static final char[] HEX_CHARS = "0123456789abcdef".toCharArray();
@@ -750,14 +752,7 @@ public class AppLauncher {
                 Thread.currentThread().interrupt();
             }
         }
-    } 
-    
-    private void writeMessage(OutputStream out, String message) throws IOException {
-        for(int i = 0; i < message.length(); i++) {
-            out.write((byte)message.charAt(i));
-        }
-        out.flush();
-    }
+    }   
     
     volatile boolean stop = false;
     private int forward(IDeviceConnection conn, String appPath) throws Exception {                
@@ -771,42 +766,39 @@ public class AppLauncher {
             log("GDB remote client connected");
         }
         
-        try {
+        try (FileOutputStream fileOut = new FileOutputStream("/tmp/dbgout")){
             final InputStream in = clientSocket.getInputStream();
             final OutputStream out = clientSocket.getOutputStream();                       
-            
+            byte[] buffer = new byte[4096];
+            GdbRemoteParser lldbParser = new GdbRemoteParser();
+            GdbRemoteParser debugServerParser = new GdbRemoteParser();
             while (true) {
                 try {
                     // check if the client send us something and forward
                     // it to the debug server. We may not get a full
                     // command here, but we don't really care
                     if(in.available() > 0) {
-                        byte[] buffer = new byte[in.available()];
                         int readBytes = in.read(buffer);
                         int sent = 0;
                         while(sent != readBytes) {
                             sent += conn.send(buffer, sent, readBytes - sent);
                         }
-                        debugGdb("Sending packet (client): " + new String(buffer, "ASCII"));
+                        List<byte[]> messages = lldbParser.parse(buffer, 0, readBytes);
+                        debugForward(fileOut, "lldb->debugserver: ", messages);
                     }
                     
                     // check if we got a reply from the debug server, wait 
-                    // for 100 milliseconds
+                    // for 10 milliseconds
                     try {
-                        String response = receiveGdbPacket(conn, 10);
-                        writeMessage(out, response);
-                        String payload = decode(response);
-                        if(payload.length() > 0) {
-                            if (payload.charAt(0) == 'W') {
-                                // The app exited. The number following W is the exit code.
-                                int exitCode = Integer.parseInt(payload.substring(1), 16);
-                                return exitCode;
-                            } else if (payload.charAt(0) == 'O') {
-                                // Console output encoded as hex.
-                                stdout.write(fromHex(payload.substring(1)));
-                            }
+                        int readBytes = conn.receive(buffer, 0, buffer.length, 1);
+                        if(readBytes > 0) {
+                            out.write(buffer, 0, readBytes);
+                            out.flush();
+                            
+                            List<byte[]> messages = debugServerParser.parse(buffer, 0, readBytes);
+                            debugForward(fileOut, "debugserver->lldb: ", messages);
                         }
-                    } catch(TimeoutException e) {
+                    } catch(Exception e) {
                         // nothing to do here, we simply didn't receive a message
                         // FIXME must actually react to this if debug server gets 
                         // killed for some reason                        
@@ -826,6 +818,24 @@ public class AppLauncher {
             if (wasInterrupted) {
                 Thread.currentThread().interrupt();
             }
+        }
+    }
+    
+    private void debugForward(OutputStream fileOut, String prefix, List<byte[]> messages) throws IOException {
+        if(!debug) {
+            return;
+        }
+        for(byte[] message: messages) {
+            String msgStr = null;
+            if(message.length > 256) {
+                msgStr = "(" + message.length + ") " + new String(message, 0, 256, "ASCII");
+            } else {
+                msgStr = new String(message, "ASCII");
+            }
+            String msg = prefix + msgStr;
+            fileOut.write(msg.getBytes("ASCII"));
+            fileOut.write('\n');
+            System.out.println(msg);
         }
     }
 

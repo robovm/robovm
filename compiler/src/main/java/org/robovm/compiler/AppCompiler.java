@@ -58,12 +58,14 @@ import org.robovm.compiler.plugin.Plugin;
 import org.robovm.compiler.plugin.PluginArgument;
 import org.robovm.compiler.target.LaunchParameters;
 import org.robovm.compiler.target.ios.DeviceType;
+import org.robovm.compiler.target.ios.IOSDeviceLaunchParameters;
 import org.robovm.compiler.target.ios.IOSSimulatorLaunchParameters;
 import org.robovm.compiler.target.ios.IOSTarget;
 import org.robovm.compiler.target.ios.ProvisioningProfile;
 import org.robovm.compiler.target.ios.SDK;
 import org.robovm.compiler.target.ios.SigningIdentity;
 import org.robovm.compiler.util.AntPathMatcher;
+import org.robovm.libimobiledevice.util.AppLauncher;
 
 /**
  *
@@ -573,6 +575,8 @@ public class AppCompiler {
                     } else {
                         simParams.setDeviceType(type);
                     }
+                } else if(launchParameters instanceof IOSDeviceLaunchParameters && compiler.config.isDebug()) {
+                    ((IOSDeviceLaunchParameters)launchParameters).setForwardPort(AppLauncher.DEFAULT_FORWARD_PORT);
                 }
                 launchParameters.setArguments(runArgs);
                 launch(compiler, launchParameters);

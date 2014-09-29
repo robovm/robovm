@@ -569,14 +569,15 @@ public class AppCompiler {
                 LaunchParameters launchParameters = compiler.config.getTarget().createLaunchParameters();
                 if (launchParameters instanceof IOSSimulatorLaunchParameters) {
                     IOSSimulatorLaunchParameters simParams = (IOSSimulatorLaunchParameters) launchParameters;
-                    DeviceType type = DeviceType.getDeviceType(compiler.config.getHome(), compiler.config.getIosDeviceType());
+                    DeviceType type = DeviceType.getDeviceType(compiler.config.getHome(),
+                            compiler.config.getIosDeviceType());
                     if (type == null) {
                         simParams.setDeviceType(DeviceType.getBestDeviceType(compiler.config.getHome()));
                     } else {
                         simParams.setDeviceType(type);
                     }
-                } else if(launchParameters instanceof IOSDeviceLaunchParameters && compiler.config.isDebug()) {
-                    ((IOSDeviceLaunchParameters)launchParameters).setForwardPort(AppLauncher.DEFAULT_FORWARD_PORT);
+                } else if (launchParameters instanceof IOSDeviceLaunchParameters && compiler.config.isDebug()) {
+                    ((IOSDeviceLaunchParameters) launchParameters).setForwardPort(AppLauncher.DEFAULT_FORWARD_PORT);
                 }
                 launchParameters.setArguments(runArgs);
                 launch(compiler, launchParameters);

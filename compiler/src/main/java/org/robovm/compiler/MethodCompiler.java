@@ -223,7 +223,7 @@ public class MethodCompiler extends AbstractMethodCompiler {
             compileObjectInit();
             // add the first unit to the instructions
             Unit firstUnit = method.getActiveBody().getUnits().getFirst();
-            for(Instruction in: function.getBasicBlocks().get(0).getInstructions()) {
+            for (Instruction in : function.getBasicBlocks().get(0).getInstructions()) {
                 in.attach(firstUnit);
             }
             return function;

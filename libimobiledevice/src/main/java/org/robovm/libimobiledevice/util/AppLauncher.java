@@ -87,10 +87,11 @@ public class AppLauncher {
     private boolean closeOutOnExit = false;
     private boolean debug = false;
     private int localPort = -1;
+    private AppPathCallback appPathCallback = null;
     private volatile boolean killed = false;
     private StatusCallback installStatusCallback;
     private UploadProgressCallback uploadProgressCallback;
-    private String xcodePath;
+    private String xcodePath;    
     
     /**
      * Creates a new {@link AppLauncher} which will launch an already installed
@@ -285,6 +286,14 @@ public class AppLauncher {
      */
     public AppLauncher forward(int localPort) {
         this.localPort = localPort;
+        return this;
+    }
+    
+    /**
+     * Sets a callback that is invoked when the remote app path is known.
+     */
+    public AppLauncher appPathCallback(AppPathCallback callback) {
+        this.appPathCallback = callback;
         return this;
     }
     
@@ -651,6 +660,9 @@ public class AppLauncher {
         
         try (LockdowndClient lockdowndClient = new LockdowndClient(device, getClass().getSimpleName(), true)) {
             appPath = getAppPath(lockdowndClient, appId);
+            if(appPathCallback != null) {
+                appPathCallback.setRemoteAppPath(appPath);
+            }
             LockdowndServiceDescriptor debugService = null;
             try {
                 debugService = lockdowndClient.startService(DEBUG_SERVER_SERVICE_NAME);
@@ -669,6 +681,7 @@ public class AppLauncher {
         }
 
         log("Launching app...");
+        
         
         try {                        
             // just pipe stdout if no port forwarding should be done
@@ -765,9 +778,8 @@ public class AppLauncher {
     private int forward(IDeviceConnection conn, String appPath) throws Exception {                
         boolean wasInterrupted = false;
         Socket clientSocket = null;
-        
+                
         try(ServerSocket serverSocket = new ServerSocket(localPort)) {         
-            log("App path: " + appPath);
             log("Waiting for GDB remote connection at http://127.0.0.1:" + localPort);
             clientSocket = serverSocket.accept();
             log("GDB remote client connected");

@@ -49,6 +49,7 @@ import org.robovm.libimobiledevice.AfcClient.UploadProgressCallback;
 import org.robovm.libimobiledevice.IDevice;
 import org.robovm.libimobiledevice.InstallationProxyClient.StatusCallback;
 import org.robovm.libimobiledevice.util.AppLauncher;
+import org.robovm.libimobiledevice.util.AppPathCallback;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
@@ -163,6 +164,7 @@ public class IOSTarget extends AbstractTarget {
         IOSDeviceLaunchParameters deviceLaunchParameters = (IOSDeviceLaunchParameters)launchParameters;
         String deviceId = deviceLaunchParameters.getDeviceId();
         int forwardPort = deviceLaunchParameters.getForwardPort();
+        AppPathCallback callback = deviceLaunchParameters.getAppPathCallback();
         if (deviceId == null) {
             String[] udids = IDevice.listUdids();
             if (udids.length == 0) {
@@ -199,6 +201,7 @@ public class IOSTarget extends AbstractTarget {
             .env(env)
             .debug(config.isDebug()) // FIXME only used for debugging purposes
             .forward(forwardPort)
+            .appPathCallback(callback)
             .xcodePath(ToolchainUtil.findXcodePath())
             .uploadProgressCallback(new UploadProgressCallback() {
                 boolean first = true;

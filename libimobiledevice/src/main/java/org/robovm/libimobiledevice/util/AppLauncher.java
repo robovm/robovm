@@ -345,6 +345,14 @@ public class AppLauncher {
         return data;
     }
     
+    private static byte[] fromHex(byte[] buffer, int offset, int length) {
+        byte[] data = new byte[length / 2];
+        for (int i = 0; i < (length >> 1); i++) {
+            data[i] = fromHex((char)buffer[offset + i * 2], (char)buffer[offset + i * 2 + 1]);
+        }
+        return data;
+    }
+    
     private String encode(String cmd) {
         int checksum = 0;
         for (int i = 0; i < cmd.length(); i++) {
@@ -754,7 +762,6 @@ public class AppLauncher {
         }
     }   
     
-    volatile boolean stop = false;
     private int forward(IDeviceConnection conn, String appPath) throws Exception {                
         boolean wasInterrupted = false;
         Socket clientSocket = null;
@@ -796,6 +803,16 @@ public class AppLauncher {
                             out.flush();
                             
                             List<byte[]> messages = debugServerParser.parse(buffer, 0, readBytes);
+                            for(byte[] message: messages) {
+                                if (message[1] == 'W') {
+                                    // The app exited. The number following W is the exit code.
+                                    int exitCode = Integer.parseInt(new String(message, 2, message.length - 2 - 3, "ASCII"), 16);
+                                    return exitCode;
+                                } else if (message[1] == 'O') {
+                                    // Console output encoded as hex.
+                                    stdout.write(fromHex(message, 2, message.length - 2 - 3));
+                                }
+                            }
                             debugForward(fileOut, "debugserver->lldb: ", messages);
                         }
                     } catch(Exception e) {

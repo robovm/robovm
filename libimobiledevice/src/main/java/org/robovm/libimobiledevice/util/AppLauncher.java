@@ -680,6 +680,7 @@ public class AppLauncher {
             log("Debug server port: " + debugService.getPort());
         }
 
+        log("Remote app path: " + appPath);
         log("Launching app...");
         
         

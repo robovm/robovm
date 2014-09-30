@@ -31,7 +31,6 @@ public class IconvEncoder extends CharsetEncoder{
         this.iconv_tPointer = IconvProvider.initConversion("UTF-16LE", ((IconvCharset) cs).getIconvName());
     }
 
-
     /**
      * Basic encoding loop, it encodes as many chars as possible until either:
      * 
@@ -75,8 +74,6 @@ public class IconvEncoder extends CharsetEncoder{
         return CoderResult.UNDERFLOW;
     }
 	
-    
-    
     @Override
     protected void finalize() throws Throwable {
         super.finalize();

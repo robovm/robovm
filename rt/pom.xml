@@ -1,4 +1,5 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 
   <modelVersion>4.0.0</modelVersion>
 
@@ -20,20 +21,53 @@
     </license>
   </licenses>
 
+  <dependencies>
+    <dependency>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+      <version>4.5</version>
+      <scope>test</scope>
+    </dependency>
+  </dependencies>
+
   <build>
     <resources>
-      <resource><directory>robovm/src/main/resources</directory></resource>
-      <resource><directory>libcore/crypto/src/main/resources</directory></resource>
-      <resource><directory>libcore/dalvik/src/main/resources</directory></resource>
-      <resource><directory>libcore/json/src/main/resources</directory></resource>
-      <resource><directory>libcore/libdvm/src/main/resources</directory></resource>
-      <resource><directory>libcore/luni/src/main/resources</directory></resource>
-      <resource><directory>libcore/xml/src/main/resources</directory></resource>
-      <resource><directory>external/apache-xml/src/main/resources</directory></resource>
-      <resource><directory>external/bouncycastle/bcpkix/src/main/resources</directory></resource>
-      <resource><directory>external/bouncycastle/bcprov/src/main/resources</directory></resource>
-      <resource><directory>external/javasqlite/src/main/resources</directory></resource>
-      <resource><directory>external/okhttp/src/main/resources</directory></resource>
+      <resource>
+        <directory>robovm/src/main/resources</directory>
+      </resource>
+      <resource>
+        <directory>libcore/crypto/src/main/resources</directory>
+      </resource>
+      <resource>
+        <directory>libcore/dalvik/src/main/resources</directory>
+      </resource>
+      <resource>
+        <directory>libcore/json/src/main/resources</directory>
+      </resource>
+      <resource>
+        <directory>libcore/libdvm/src/main/resources</directory>
+      </resource>
+      <resource>
+        <directory>libcore/luni/src/main/resources</directory>
+      </resource>
+      <resource>
+        <directory>libcore/xml/src/main/resources</directory>
+      </resource>
+      <resource>
+        <directory>external/apache-xml/src/main/resources</directory>
+      </resource>
+      <resource>
+        <directory>external/bouncycastle/bcpkix/src/main/resources</directory>
+      </resource>
+      <resource>
+        <directory>external/bouncycastle/bcprov/src/main/resources</directory>
+      </resource>
+      <resource>
+        <directory>external/javasqlite/src/main/resources</directory>
+      </resource>
+      <resource>
+        <directory>external/okhttp/src/main/resources</directory>
+      </resource>
       <resource>
         <directory>libcore/luni/src/main/java</directory>
         <includes>
@@ -55,7 +89,7 @@
         </includes>
       </resource>
     </resources>
-    
+
     <plugins>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
@@ -69,14 +103,18 @@
           </excludes>
         </configuration>
       </plugin>
+
       <plugin>
         <groupId>org.codehaus.mojo</groupId>
         <artifactId>build-helper-maven-plugin</artifactId>
         <version>1.7</version>
         <executions>
           <execution>
+            <id>add-sources</id>
             <phase>generate-sources</phase>
-            <goals><goal>add-source</goal></goals>
+            <goals>
+              <goal>add-source</goal>
+            </goals>
             <configuration>
               <sources>
                 <source>${project.build.directory}/generated-sources/filtered-java</source>
@@ -97,8 +135,21 @@
               </sources>
             </configuration>
           </execution>
+          <execution>
+            <id>add-test-sources</id>
+            <phase>generate-sources</phase>
+            <goals>
+              <goal>add-test-source</goal>
+            </goals>
+            <configuration>
+              <sources>
+                <source>robovm/src/test/java</source>
+              </sources>
+            </configuration>
+          </execution>
         </executions>
       </plugin>
+
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-source-plugin</artifactId>
@@ -110,6 +161,7 @@
           </excludes>
         </configuration>
       </plugin>
+
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-javadoc-plugin</artifactId>
@@ -120,7 +172,16 @@
           <maxmemory>2g</maxmemory>
         </configuration>
       </plugin>
-
+      
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-surefire-plugin</artifactId>
+        <configuration>
+          <forkMode>once</forkMode>
+          <argLine>-Djava.library.path=${project.build.directory}/lib/</argLine>
+        </configuration>
+      </plugin>
+      
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-antrun-plugin</artifactId>
@@ -130,10 +191,27 @@
             <phase>process-classes</phase>
             <configuration>
               <target>
-                <taskdef name="jarjar" classname="com.tonicsystems.jarjar.JarJarTask" classpathref="maven.plugin.classpath" />
 
-                <!-- Use jarjar to change the package name org.bouncycastle to com.android.org.bouncycastle and 
-                     org.conscrypt to com.android.org.conscrypt and save the result to target/jarjar.jar -->
+                  <property environment="env" />
+                  <mkdir dir="${project.build.directory}/lib">
+                  </mkdir>
+                  <exec executable="/usr/bin/gcc">
+                    <arg value="-I${env.JAVA_HOME}/include/" />
+                    <arg value="-I${env.JAVA_HOME}/include/darwin/" />
+                    <arg value="-liconv" />
+                    <arg value="-shared" />
+                    <arg value="-o" />
+                    <arg value="${project.build.directory}/lib/libiconvprovider.dylib" />
+                    <arg value="${basedir}/../vm/rt/robovm/org_robovm_rt_iconv_IconvProvider.c" />
+                  </exec>
+                
+                <taskdef name="jarjar"
+                  classname="com.tonicsystems.jarjar.JarJarTask"
+                  classpathref="maven.plugin.classpath" />
+
+                <!-- Use jarjar to change the package name org.bouncycastle 
+                  to com.android.org.bouncycastle and org.conscrypt to com.android.org.conscrypt 
+                  and save the result to target/jarjar.jar -->
                 <jarjar jarfile="${project.build.directory}/jarjar.jar">
                   <fileset dir="${project.build.outputDirectory}">
                     <include name="org/bouncycastle/**" />
@@ -146,7 +224,8 @@
                 </jarjar>
 
                 <!-- Explode the jarjar jar to target/classes -->
-                <unzip src="${project.build.directory}/jarjar.jar" dest="${project.build.directory}/classes">
+                <unzip src="${project.build.directory}/jarjar.jar"
+                  dest="${project.build.directory}/classes">
                   <patternset>
                     <exclude name="META-INF/**" />
                     <exclude name="org/bouncycastle/**" />
@@ -154,7 +233,6 @@
                     <exclude name="com/squareup/**" />
                   </patternset>
                 </unzip>
-
               </target>
             </configuration>
             <goals>
@@ -176,30 +254,30 @@
     <pluginManagement>
       <plugins>
         <plugin>
-         <groupId>org.eclipse.m2e</groupId>
-         <artifactId>lifecycle-mapping</artifactId>
-         <version>1.0.0</version>
-         <configuration>
-           <lifecycleMappingMetadata>
-             <pluginExecutions>
-               <pluginExecution>
-                 <pluginExecutionFilter>
-                   <groupId>org.apache.maven.plugins</groupId>
-                   <artifactId>maven-antrun-plugin</artifactId>
-                   <versionRange>[1.0.0,)</versionRange>
-                   <goals>
-                     <goal>run</goal>
-                   </goals>
-                 </pluginExecutionFilter>
-                 <action>
-                   <execute>
-                     <runOnIncremental>false</runOnIncremental>
-                   </execute>
-                 </action>
-               </pluginExecution>
-             </pluginExecutions>
-           </lifecycleMappingMetadata>
-         </configuration>
+          <groupId>org.eclipse.m2e</groupId>
+          <artifactId>lifecycle-mapping</artifactId>
+          <version>1.0.0</version>
+          <configuration>
+            <lifecycleMappingMetadata>
+              <pluginExecutions>
+                <pluginExecution>
+                  <pluginExecutionFilter>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-antrun-plugin</artifactId>
+                    <versionRange>[1.0.0,)</versionRange>
+                    <goals>
+                      <goal>run</goal>
+                    </goals>
+                  </pluginExecutionFilter>
+                  <action>
+                    <execute>
+                      <runOnIncremental>false</runOnIncremental>
+                    </execute>
+                  </action>
+                </pluginExecution>
+              </pluginExecutions>
+            </lifecycleMappingMetadata>
+          </configuration>
         </plugin>
       </plugins>
     </pluginManagement>

@@ -23,7 +23,8 @@ set(SRC
   java_net_NetworkInterface.c 
   org_robovm_rt_Signals.c 
   org_robovm_rt_VM.c 
-  org_robovm_rt_bro_Dl.c 
+  org_robovm_rt_bro_Dl.c
+  org_robovm_rt_iconv_IconvProvider.c
   sun_misc_Unsafe.c 
 )
 

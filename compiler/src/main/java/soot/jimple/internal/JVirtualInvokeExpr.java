@@ -41,9 +41,10 @@ public class JVirtualInvokeExpr extends AbstractVirtualInvokeExpr
     {
         super(Jimple.v().newLocalBox(base), methodRef, new ValueBox[args.size()]);
         
-        if(methodRef.declaringClass().isInterface()) {
-        	throw new RuntimeException("Trying to create virtual invoke expression for interface type. Use JInterfaceInvokeExpr instead!");
-        }
+        // RoboVM note: We allow this. AFAICS the JVMS doesn't forbid this.
+//        if(methodRef.declaringClass().isInterface()) {
+//        	throw new RuntimeException("Trying to create virtual invoke expression for interface type. Use JInterfaceInvokeExpr instead!");
+//        }
 
         for(int i = 0; i < args.size(); i++)
             this.argBoxes[i] = Jimple.v().newImmediateBox((Value) args.get(i));

@@ -355,7 +355,8 @@ public class TrampolineCompiler {
             fnName = Symbols.lookupWrapperSymbol(rm);
         } else if (t instanceof Invokevirtual 
                 && !Modifier.isFinal(rm.getDeclaringClass().getModifiers()) 
-                && !Modifier.isFinal(rm.getModifiers())) {
+                && !Modifier.isFinal(rm.getModifiers())
+                && !Modifier.isPrivate(rm.getModifiers())) {
             fnName = Symbols.lookupWrapperSymbol(rm);
         } else if (rm.isSynchronized()) {
             fnName = Symbols.synchronizedWrapperSymbol(rm);
@@ -576,10 +577,6 @@ public class TrampolineCompiler {
         SootClass target = config.getClazzes().load(t.getTarget()).getSootClass();
         String name = t.getMethodName();
         String desc = t.getMethodDesc();
-        if (target.isInterface()) {
-            throwIncompatibleChangeError(f, EXPECTED_CLASS_BUT_FOUND_INTERFACE, target);
-            return null;
-        }
         if ("<init>".equals(name) && t instanceof Invokespecial) {
             SootMethod method = getMethod(target, name, desc);
             if (method != null) {

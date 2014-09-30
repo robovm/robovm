@@ -195,6 +195,36 @@ class ConstraintChecker extends AbstractStmtSwitch
 	      }
 	  }
       }
+    else if(ie instanceof DynamicInvokeExpr)
+    {  // RoboVM note: Added support for DynamicInvokeExpr
+        DynamicInvokeExpr invoke = (DynamicInvokeExpr) ie;
+      SootMethodRef method = invoke.getMethodRef();
+      int count = invoke.getArgCount();
+      
+      for(int i = 0; i < count; i++)
+        {
+          if(invoke.getArg(i) instanceof Local)
+            {
+              Local local = (Local) invoke.getArg(i);
+              
+              if(local.getType() instanceof IntegerType)
+                {
+                  if(!ClassHierarchy.v().typeNode(local.getType()).
+                     hasAncestor_1(ClassHierarchy.v().typeNode(method.parameterType(i))))
+                    {
+                      if(fix)
+                        {
+                          invoke.setArg(i, insertCast(local, method.parameterType(i), invokestmt));
+                        }
+                      else
+                        {
+                          error("Type Error(5)");
+                        }
+                    }
+                }
+            }
+        }
+    }
     else
       {
 	throw new RuntimeException("Unhandled invoke expression type: " + ie.getClass());

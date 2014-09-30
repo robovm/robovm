@@ -45,6 +45,7 @@ import soot.Value;
 import soot.ValueBox;
 import soot.jimple.DynamicInvokeExpr;
 import soot.jimple.ExprSwitch;
+import soot.jimple.InvokeExpr;
 import soot.jimple.Jimple;
 import soot.tagkit.Tag;
 import soot.util.Switch;
@@ -70,7 +71,13 @@ public class JDynamicInvokeExpr extends AbstractInvokeExpr  implements DynamicIn
 
         for(int i = 0; i < bootstrapArgs.size(); i++)
         {
-        	this.bsmArgBoxes[i] = Jimple.v().newImmediateBox((Value) bootstrapArgs.get(i));	
+            // RoboVM note: Changed to handle InvokeExpr values in bootstrap args
+            Value v = bootstrapArgs.get(i);
+            if (v instanceof InvokeExpr) {
+                this.bsmArgBoxes[i] = Jimple.v().newInvokeExprBox(v); 
+            } else {
+                this.bsmArgBoxes[i] = Jimple.v().newImmediateBox(v);
+            }
         }
         for(int i = 0; i < methodArgs.size(); i++)
         {

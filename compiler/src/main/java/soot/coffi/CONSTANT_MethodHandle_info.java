@@ -19,12 +19,19 @@
 package soot.coffi;
 
 import soot.Value;
+import soot.jimple.*;
 
 /** A constant pool entry of type CONSTANT_MethodHandle
  * @see cp_info
  * @author Eric Bodden
  */class CONSTANT_MethodHandle_info extends cp_info {
-	 
+     // RoboVM note: Added possible values for kind
+     public static final int REF_invokeVirtual    = 5;
+     public static final int REF_invokeStatic     = 6;
+     public static final int REF_invokeSpecial    = 7;
+     public static final int REF_newInvokeSpecial = 8;
+     public static final int REF_invokeInterface  = 9;
+
 	 public int kind;
 	 
 	 public int target_index;
@@ -68,7 +75,8 @@ import soot.Value;
 
  
 	   public Value createJimpleConstantValue(cp_info[] constant_pool) {
-		   //FIXME may need to determine static-ness based on "kind" field
-		   return constant_pool[target_index].createJimpleConstantValue(constant_pool);
+	       // RoboVM note: Changed to return a SootMethodHandle
+	       InvokeExpr expr = (InvokeExpr) constant_pool[target_index].createJimpleConstantValue(constant_pool);
+	       return Jimple.v().newMethodHandle(kind, expr.getMethodRef());
 	   }
 }

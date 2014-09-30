@@ -807,6 +807,12 @@ public class AppLauncher {
                         debugForward(fileOut, "lldb->debugserver: ", messages);
                     }
                     
+                    // check if we've been interrupted
+                    if (killed || Thread.currentThread().isInterrupted()) {
+                        killed = true;
+                        throw new InterruptedIOException();
+                    }
+                    
                     // check if we got a reply from the debug server, wait 
                     // for 10 milliseconds
                     try {

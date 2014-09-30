@@ -51,15 +51,15 @@ import org.robovm.apple.security.*;
     /*</properties>*/
     /*<methods>*/
     @Method(selector = "archiver:willEncodeObject:")
-    NSObject archiver$willEncodeObject$(NSKeyedArchiver archiver, NSObject object);
+    NSObject willEncodeObject(NSKeyedArchiver archiver, NSObject object);
     @Method(selector = "archiver:didEncodeObject:")
-    void archiver$didEncodeObject$(NSKeyedArchiver archiver, NSObject object);
+    void didEncodeObject(NSKeyedArchiver archiver, NSObject object);
     @Method(selector = "archiver:willReplaceObject:withObject:")
-    void archiver$willReplaceObject$withObject$(NSKeyedArchiver archiver, NSObject object, NSObject newObject);
+    void willReplaceObject(NSKeyedArchiver archiver, NSObject object, NSObject newObject);
     @Method(selector = "archiverWillFinish:")
-    void archiverWillFinish$(NSKeyedArchiver archiver);
+    void willFinish(NSKeyedArchiver archiver);
     @Method(selector = "archiverDidFinish:")
-    void archiverDidFinish$(NSKeyedArchiver archiver);
+    void didFinish(NSKeyedArchiver archiver);
     /*</methods>*/
     /*<adapter>*/
     /*</adapter>*/

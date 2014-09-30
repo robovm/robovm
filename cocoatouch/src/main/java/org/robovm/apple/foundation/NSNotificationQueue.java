@@ -63,6 +63,6 @@ import org.robovm.apple.security.*;
     @Method(selector = "dequeueNotificationsMatching:coalesceMask:")
     public native void dequeueNotificationsMatching(NSNotification notification, NSNotificationCoalescing coalesceMask);
     @Method(selector = "defaultQueue")
-    public static native NSObject getDefaultQueue();
+    public static native NSNotificationQueue getDefaultQueue();
     /*</methods>*/
 }

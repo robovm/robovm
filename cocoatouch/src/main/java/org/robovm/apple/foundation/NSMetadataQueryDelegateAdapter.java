@@ -53,8 +53,8 @@ import org.robovm.apple.security.*;
     /*<members>*//*</members>*/
     /*<methods>*/
     @NotImplemented("metadataQuery:replacementObjectForResultObject:")
-    public NSObject metadataQuery$replacementObjectForResultObject$(NSMetadataQuery query, NSMetadataItem result) { throw new UnsupportedOperationException(); }
+    public NSObject getReplacementObject(NSMetadataQuery query, NSMetadataItem result) { throw new UnsupportedOperationException(); }
     @NotImplemented("metadataQuery:replacementValueForAttribute:value:")
-    public NSObject metadataQuery$replacementValueForAttribute$value$(NSMetadataQuery query, String attrName, NSObject attrValue) { throw new UnsupportedOperationException(); }
+    public NSObject getReplacementValue(NSMetadataQuery query, NSMetadataItemAttribute attribute, NSObject attrValue) { throw new UnsupportedOperationException(); }
     /*</methods>*/
 }

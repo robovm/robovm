@@ -76,68 +76,68 @@ import org.robovm.apple.security.*;
     /*<members>*//*</members>*/
     /*<methods>*/
     @Method(selector = "availableData")
-    public native NSData availableData();
+    public native NSData getAvailableData();
     @Method(selector = "readDataToEndOfFile")
     public native NSData readDataToEndOfFile();
     @Method(selector = "readDataOfLength:")
-    public native NSData readDataOfLength$(@MachineSizedUInt long length);
+    public native NSData readData(@MachineSizedUInt long length);
     @Method(selector = "writeData:")
-    public native void writeData$(NSData data);
+    public native void writeData(NSData data);
     @Method(selector = "offsetInFile")
-    public native long offsetInFile();
+    public native long getOffsetInFile();
     @Method(selector = "seekToEndOfFile")
     public native long seekToEndOfFile();
     @Method(selector = "seekToFileOffset:")
-    public native void seekToFileOffset$(long offset);
+    public native void seekToFileOffset(long offset);
     @Method(selector = "truncateFileAtOffset:")
-    public native void truncateFileAtOffset$(long offset);
+    public native void truncateFile(long offset);
     @Method(selector = "synchronizeFile")
     public native void synchronizeFile();
     @Method(selector = "closeFile")
     public native void closeFile();
     @Method(selector = "fileHandleWithStandardInput")
-    public static native NSObject fileHandleWithStandardInput();
+    public static native NSFileHandle getStandardInput();
     @Method(selector = "fileHandleWithStandardOutput")
-    public static native NSObject fileHandleWithStandardOutput();
+    public static native NSFileHandle getStandardOutput();
     @Method(selector = "fileHandleWithStandardError")
-    public static native NSObject fileHandleWithStandardError();
+    public static native NSFileHandle getStandardError();
     @Method(selector = "fileHandleWithNullDevice")
-    public static native NSObject fileHandleWithNullDevice();
+    public static native NSFileHandle getNullDevice();
     @Method(selector = "fileHandleForReadingAtPath:")
-    public static native NSObject fileHandleForReadingAtPath$(String path);
+    public static native NSFileHandle createForReading(String path);
     @Method(selector = "fileHandleForWritingAtPath:")
-    public static native NSObject fileHandleForWritingAtPath$(String path);
+    public static native NSFileHandle createForWriting(String path);
     @Method(selector = "fileHandleForUpdatingAtPath:")
-    public static native NSObject fileHandleForUpdatingAtPath$(String path);
+    public static native NSFileHandle createForUpdating(String path);
     /**
      * @since Available in iOS 4.0 and later.
      */
     @Method(selector = "fileHandleForReadingFromURL:error:")
-    public static native NSObject fileHandleForReadingFromURL$error$(NSURL url, NSError.NSErrorPtr error);
+    public static native NSFileHandle createForReading(NSURL url, NSError.NSErrorPtr error);
     /**
      * @since Available in iOS 4.0 and later.
      */
     @Method(selector = "fileHandleForWritingToURL:error:")
-    public static native NSObject fileHandleForWritingToURL$error$(NSURL url, NSError.NSErrorPtr error);
+    public static native NSFileHandle createForWriting(NSURL url, NSError.NSErrorPtr error);
     /**
      * @since Available in iOS 4.0 and later.
      */
     @Method(selector = "fileHandleForUpdatingURL:error:")
-    public static native NSObject fileHandleForUpdatingURL$error$(NSURL url, NSError.NSErrorPtr error);
+    public static native NSFileHandle createForUpdating(NSURL url, NSError.NSErrorPtr error);
     @Method(selector = "readInBackgroundAndNotifyForModes:")
-    public native void readInBackgroundAndNotifyForModes$(NSArray<?> modes);
+    public native void readInBackgroundAndNotify(NSArray<?> modes);
     @Method(selector = "readInBackgroundAndNotify")
     public native void readInBackgroundAndNotify();
     @Method(selector = "readToEndOfFileInBackgroundAndNotifyForModes:")
-    public native void readToEndOfFileInBackgroundAndNotifyForModes$(NSArray<?> modes);
+    public native void readToEndOfFileInBackgroundAndNotify(NSArray<?> modes);
     @Method(selector = "readToEndOfFileInBackgroundAndNotify")
     public native void readToEndOfFileInBackgroundAndNotify();
     @Method(selector = "acceptConnectionInBackgroundAndNotifyForModes:")
-    public native void acceptConnectionInBackgroundAndNotifyForModes$(NSArray<?> modes);
+    public native void acceptConnectionInBackgroundAndNotify(NSArray<?> modes);
     @Method(selector = "acceptConnectionInBackgroundAndNotify")
     public native void acceptConnectionInBackgroundAndNotify();
     @Method(selector = "waitForDataInBackgroundAndNotifyForModes:")
-    public native void waitForDataInBackgroundAndNotifyForModes$(NSArray<?> modes);
+    public native void waitForDataInBackgroundAndNotify(NSArray<?> modes);
     @Method(selector = "waitForDataInBackgroundAndNotify")
     public native void waitForDataInBackgroundAndNotify();
     @Method(selector = "initWithFileDescriptor:closeOnDealloc:")
@@ -145,6 +145,6 @@ import org.robovm.apple.security.*;
     @Method(selector = "initWithFileDescriptor:")
     protected native @Pointer long initWithFileDescriptor$(int fd);
     @Method(selector = "fileDescriptor")
-    public native int fileDescriptor();
+    public native int getFileDescriptor();
     /*</methods>*/
 }

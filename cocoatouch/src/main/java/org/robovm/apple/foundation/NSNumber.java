@@ -52,11 +52,6 @@ import org.robovm.apple.security.*;
     
     /*</properties>*/
     /*<members>*//*</members>*/
-    
-    public String toString(NSLocale locale) {
-        return description(locale);
-    }
-    
     /*<methods>*/
     @Method(selector = "charValue")
     public native byte byteValue();
@@ -81,7 +76,7 @@ import org.robovm.apple.security.*;
     @Method(selector = "isEqualToNumber:")
     public native boolean isEqualTo(NSNumber number);
     @Method(selector = "descriptionWithLocale:")
-    public native String description(NSLocale locale);
+    public native String toString(NSLocale locale);
     @Method(selector = "numberWithChar:")
     public static native NSNumber valueOf(byte value);
     @Method(selector = "numberWithShort:")

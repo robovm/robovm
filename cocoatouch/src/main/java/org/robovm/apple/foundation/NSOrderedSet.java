@@ -269,9 +269,9 @@ import org.robovm.apple.security.*;
     @Method(selector = "objectsAtIndexes:")
     protected native NSArray<T> objectsAtIndexes$(NSIndexSet indexes);
     @Method(selector = "firstObject")
-    public native NSObject getFirst();
+    public native T getFirst();
     @Method(selector = "lastObject")
-    public native NSObject getLast();
+    public native T getLast();
     @Method(selector = "containsObject:")
     protected native boolean containsObject$(NSObject object);
     @Method(selector = "objectEnumerator")

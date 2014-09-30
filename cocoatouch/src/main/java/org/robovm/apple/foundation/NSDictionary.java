@@ -44,6 +44,52 @@ import org.robovm.apple.security.*;
 
     public static class NSDictionaryPtr<K extends NSObject, V extends NSObject> extends Ptr<NSDictionary<K, V>, NSDictionaryPtr<K, V>> {}
     
+    public static class AsStringMapMarshaler {
+        @MarshalsPointer
+        public static Map<String, ? extends NSObject> toObject(Class<? extends NSObject> cls, long handle, long flags) {
+            NSDictionary<?, ?> o = (NSDictionary<?, ?>) NSObject.Marshaler.toObject(cls, handle, flags);
+            if (o == null) {
+                return null;
+            }
+            return o.asStringMap();
+        }
+        @MarshalsPointer
+        public static long toNative(Map<String, ? extends NSObject> l, long flags) {
+            if (l == null) {
+                return 0L;
+            }
+            return NSObject.Marshaler.toNative(NSDictionary.fromStringMap(l), flags);
+        }
+    }
+    
+    public static class AsStringStringMapMarshaler {
+        @MarshalsPointer
+        public static Map<String, String> toObject(Class<? extends NSObject> cls, long handle, long flags) {
+            NSDictionary<?, ?> o = (NSDictionary<?, ?>) NSObject.Marshaler.toObject(cls, handle, flags);
+            if (o == null) {
+                return null;
+            }
+            Map<String, String> map = new HashMap<>();
+            for (Map.Entry<?, ?> e : o.entrySet()) {
+                map.put(e.getKey().toString(), e.getValue().toString());
+            }
+            
+            return map;
+        }
+        @MarshalsPointer
+        public static long toNative(Map<String, String> l, long flags) {
+            if (l == null) {
+                return 0L;
+            }
+            NSDictionary<NSString, NSString> o = new NSMutableDictionary<>();
+            for (Map.Entry<String, String> e : l.entrySet()) {
+                o.put(new NSString(e.getKey()), new NSString(e.getValue()));
+            }
+            
+            return NSObject.Marshaler.toNative(o, flags);
+        }
+    }
+    
     static class KeySet<K extends NSObject> extends AbstractSet<K> {
         private final NSDictionary<K, ? extends NSObject> map;
         

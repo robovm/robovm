@@ -61,19 +61,19 @@ import org.robovm.apple.security.*;
     @Method(selector = "setDelegate:")
     public native void setDelegate(NSPortDelegate anObject);
     @Method(selector = "delegate")
-    public native NSPortDelegate delegate();
+    public native NSPortDelegate getDelegate();
     @Method(selector = "scheduleInRunLoop:forMode:")
-    public native void scheduleInRunLoop$forMode$(NSRunLoop runLoop, String mode);
+    public native void scheduleInRunLoop(NSRunLoop runLoop, String mode);
     @Method(selector = "removeFromRunLoop:forMode:")
-    public native void removeFromRunLoop$forMode$(NSRunLoop runLoop, String mode);
+    public native void removeFromRunLoop(NSRunLoop runLoop, String mode);
     @Method(selector = "reservedSpaceLength")
-    public native @MachineSizedUInt long reservedSpaceLength();
+    public native @MachineSizedUInt long getReservedSpaceLength();
     @Method(selector = "sendBeforeDate:components:from:reserved:")
-    public native boolean sendBeforeDate$components$from$reserved$(NSDate limitDate, NSMutableArray<?> components, NSPort receivePort, @MachineSizedUInt long headerSpaceReserved);
+    public native boolean send(NSDate limitDate, NSMutableArray<?> components, NSPort receivePort, @MachineSizedUInt long headerSpaceReserved);
     @Method(selector = "sendBeforeDate:msgid:components:from:reserved:")
-    public native boolean sendBeforeDate$msgid$components$from$reserved$(NSDate limitDate, @MachineSizedUInt long msgID, NSMutableArray<?> components, NSPort receivePort, @MachineSizedUInt long headerSpaceReserved);
+    public native boolean send(NSDate limitDate, @MachineSizedUInt long msgID, NSMutableArray<?> components, NSPort receivePort, @MachineSizedUInt long headerSpaceReserved);
     @Method(selector = "port")
-    public static native NSPort port();
+    public static native NSPort create();
     @Method(selector = "encodeWithCoder:")
     public native void encode(NSCoder aCoder);
     /*</methods>*/

@@ -55,17 +55,17 @@ import org.robovm.apple.security.*;
     /*<members>*//*</members>*/
     /*<methods>*/
     @Method(selector = "addCharactersInRange:")
-    public native void addCharactersInRange$(@ByVal NSRange aRange);
+    public native void addCharacters(@ByVal NSRange aRange);
     @Method(selector = "removeCharactersInRange:")
-    public native void removeCharactersInRange$(@ByVal NSRange aRange);
+    public native void removeCharacters(@ByVal NSRange aRange);
     @Method(selector = "addCharactersInString:")
-    public native void addCharactersInString$(String aString);
+    public native void addCharacters(String aString);
     @Method(selector = "removeCharactersInString:")
-    public native void removeCharactersInString$(String aString);
+    public native void removeCharacters(String aString);
     @Method(selector = "formUnionWithCharacterSet:")
-    public native void formUnionWithCharacterSet$(NSCharacterSet otherSet);
+    public native void formUnion(NSCharacterSet otherSet);
     @Method(selector = "formIntersectionWithCharacterSet:")
-    public native void formIntersectionWithCharacterSet$(NSCharacterSet otherSet);
+    public native void formIntersection(NSCharacterSet otherSet);
     @Method(selector = "invert")
     public native void invert();
     /*</methods>*/

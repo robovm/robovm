@@ -42,6 +42,20 @@ import org.robovm.apple.security.*;
     extends /*<extends>*/NSObject/*</extends>*/ 
     /*<implements>*//*</implements>*/ {
 
+    public static class Notifications {
+        /**
+         * @since Available in iOS 7.0 and later.
+         */
+        public static NSObject observeDayChanged(final Runnable block) {
+            return NSNotificationCenter.getDefaultCenter().addObserver(DayChangedNotification(), null, NSOperationQueue.getMainQueue(), new VoidBlock1<NSNotification>() {
+                @Override
+                public void invoke(NSNotification a) {
+                    block.run();
+                }
+            });
+        }
+    }
+    
     /*<ptr>*/public static class NSCalendarPtr extends Ptr<NSCalendar, NSCalendarPtr> {}/*</ptr>*/
     /*<bind>*/static { ObjCRuntime.bind(NSCalendar.class); }/*</bind>*/
     /*<constants>*//*</constants>*/
@@ -75,6 +89,12 @@ import org.robovm.apple.security.*;
         return 0;
     }
     /*<methods>*/
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
+    @GlobalValue(symbol="NSCalendarDayChangedNotification", optional=true)
+    public static native NSString DayChangedNotification();
+    
     @Method(selector = "initWithCalendarIdentifier:")
     protected native @Pointer long initWithCalendarIdentifier$(NSCalendarIdentifier ident);
     @Method(selector = "setLocale:")

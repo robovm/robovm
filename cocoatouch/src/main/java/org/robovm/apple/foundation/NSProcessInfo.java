@@ -46,7 +46,6 @@ import org.robovm.apple.security.*;
     /*<bind>*/static { ObjCRuntime.bind(NSProcessInfo.class); }/*</bind>*/
     /*<constants>*//*</constants>*/
     /*<constructors>*/
-    public NSProcessInfo() {}
     protected NSProcessInfo(SkipInit skipInit) { super(skipInit); }
     /*</constructors>*/
     /*<properties>*/
@@ -55,61 +54,61 @@ import org.robovm.apple.security.*;
     /*<members>*//*</members>*/
     /*<methods>*/
     @Method(selector = "environment")
-    public native NSDictionary<?, ?> environment();
+    public native @org.robovm.rt.bro.annotation.Marshaler(NSDictionary.AsStringMapMarshaler.class) Map<String, NSObject> getEnvironment();
     @Method(selector = "arguments")
-    public native NSArray<?> arguments();
+    public native @org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String> getArguments();
     @Method(selector = "hostName")
-    public native String hostName();
+    public native String getHostName();
     @Method(selector = "processName")
-    public native String processName();
+    public native String getProcessName();
     @Method(selector = "processIdentifier")
-    public native int processIdentifier();
+    public native int getProcessIdentifier();
     @Method(selector = "setProcessName:")
     public native void setProcessName(String newName);
     @Method(selector = "globallyUniqueString")
-    public native String globallyUniqueString();
+    public native String getGloballyUniqueString();
     @Method(selector = "operatingSystem")
     public native NSOperatingSystem getOperatingSystem();
     @Method(selector = "operatingSystemName")
-    public native String operatingSystemName();
+    public native String getOperatingSystemName();
     @Method(selector = "operatingSystemVersionString")
-    public native String operatingSystemVersionString();
+    public native String getOperatingSystemVersionString();
     /**
      * @since Available in iOS 2.0 and later.
      */
     @Method(selector = "processorCount")
-    public native @MachineSizedUInt long processorCount();
+    public native @MachineSizedUInt long getProcessorCount();
     /**
      * @since Available in iOS 2.0 and later.
      */
     @Method(selector = "activeProcessorCount")
-    public native @MachineSizedUInt long activeProcessorCount();
+    public native @MachineSizedUInt long getActiveProcessorCount();
     /**
      * @since Available in iOS 2.0 and later.
      */
     @Method(selector = "physicalMemory")
-    public native long physicalMemory();
+    public native long getPhysicalMemory();
     /**
      * @since Available in iOS 4.0 and later.
      */
     @Method(selector = "systemUptime")
-    public native double systemUptime();
+    public native double getSystemUptime();
     @Method(selector = "processInfo")
-    public static native NSProcessInfo processInfo();
+    public static native NSProcessInfo getSharedProcessInfo();
     /**
      * @since Available in iOS 7.0 and later.
      */
     @Method(selector = "beginActivityWithOptions:reason:")
-    public native NSObject beginActivityWithOptions$reason$(NSActivityOptions options, String reason);
+    public native NSObject beginActivity(NSActivityOptions options, String reason);
     /**
      * @since Available in iOS 7.0 and later.
      */
     @Method(selector = "endActivity:")
-    public native void endActivity$(NSObject activity);
+    public native void endActivity(NSObject activity);
     /**
      * @since Available in iOS 7.0 and later.
      */
     @Method(selector = "performActivityWithOptions:reason:usingBlock:")
-    public native void performActivityWithOptions$reason$usingBlock$(NSActivityOptions options, String reason, @Block Runnable block);
+    public native void performActivity(NSActivityOptions options, String reason, @Block Runnable block);
     /*</methods>*/
 }

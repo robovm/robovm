@@ -68,15 +68,15 @@ import org.robovm.apple.security.*;
     /*<members>*//*</members>*/
     /*<methods>*/
     @Method(selector = "scheduleInRunLoop:forMode:")
-    public native void scheduleInRunLoop$forMode$(NSRunLoop aRunLoop, String mode);
+    public native void scheduleInRunLoop(NSRunLoop aRunLoop, String mode);
     @Method(selector = "removeFromRunLoop:forMode:")
-    public native void removeFromRunLoop$forMode$(NSRunLoop aRunLoop, String mode);
+    public native void removeFromRunLoop(NSRunLoop aRunLoop, String mode);
     @Method(selector = "searchForBrowsableDomains")
     public native void searchForBrowsableDomains();
     @Method(selector = "searchForRegistrationDomains")
     public native void searchForRegistrationDomains();
     @Method(selector = "searchForServicesOfType:inDomain:")
-    public native void searchForServicesOfType$inDomain$(String type, String domainString);
+    public native void searchForServices(String type, String domainString);
     @Method(selector = "stop")
     public native void stop();
     /*</methods>*/

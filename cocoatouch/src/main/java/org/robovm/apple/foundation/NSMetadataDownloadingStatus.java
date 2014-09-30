@@ -36,31 +36,33 @@ import org.robovm.apple.security.*;
 
 /*<javadoc>*/
 /*</javadoc>*/
-/*<annotations>*//*</annotations>*/
-/*<visibility>*/public/*</visibility>*/ class /*<name>*/NSKeyedArchiverDelegateAdapter/*</name>*/ 
-    extends /*<extends>*/NSObject/*</extends>*/ 
-    /*<implements>*/implements NSKeyedArchiverDelegate/*</implements>*/ {
+/*<annotations>*/@Library("Foundation")/*</annotations>*/
+/*<visibility>*/public/*</visibility>*/ class /*<name>*/NSMetadataDownloadingStatus/*</name>*/ 
+    extends /*<extends>*/Object/*</extends>*/ 
+    /*<implements>*//*</implements>*/ {
 
     /*<ptr>*/
     /*</ptr>*/
-    /*<bind>*/
-    /*</bind>*/
+    /*<bind>*/static { Bro.bind(NSMetadataDownloadingStatus.class); }/*</bind>*/
     /*<constants>*//*</constants>*/
     /*<constructors>*//*</constructors>*/
-    /*<properties>*/
-    
-    /*</properties>*/
+    /*<properties>*//*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
-    @NotImplemented("archiver:willEncodeObject:")
-    public NSObject willEncodeObject(NSKeyedArchiver archiver, NSObject object) { throw new UnsupportedOperationException(); }
-    @NotImplemented("archiver:didEncodeObject:")
-    public void didEncodeObject(NSKeyedArchiver archiver, NSObject object) { throw new UnsupportedOperationException(); }
-    @NotImplemented("archiver:willReplaceObject:withObject:")
-    public void willReplaceObject(NSKeyedArchiver archiver, NSObject object, NSObject newObject) { throw new UnsupportedOperationException(); }
-    @NotImplemented("archiverWillFinish:")
-    public void willFinish(NSKeyedArchiver archiver) { throw new UnsupportedOperationException(); }
-    @NotImplemented("archiverDidFinish:")
-    public void didFinish(NSKeyedArchiver archiver) { throw new UnsupportedOperationException(); }
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
+    @GlobalValue(symbol="NSMetadataUbiquitousItemDownloadingStatusNotDownloaded", optional=true)
+    protected static native NSString NotDownloadedValue();
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
+    @GlobalValue(symbol="NSMetadataUbiquitousItemDownloadingStatusDownloaded", optional=true)
+    protected static native NSString DownloadedValue();
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
+    @GlobalValue(symbol="NSMetadataUbiquitousItemDownloadingStatusCurrent", optional=true)
+    protected static native NSString CurrentValue();
     /*</methods>*/
 }

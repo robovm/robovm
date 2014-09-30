@@ -53,6 +53,31 @@ import org.robovm.apple.security.*;
     
     /*</properties>*/
     /*<members>*//*</members>*/
+    /**
+     * @since Available in iOS 4.0 and later.
+     */
+    public NSArray<NSURL> getMountedVolumeURLsIncludingResourceValues(List<NSURLFileSystemProperty> propertyKeys, NSVolumeEnumerationOptions options) {
+        NSArray<NSString> list = new NSMutableArray<>();
+        for (NSURLFileSystemProperty property : propertyKeys) {
+            list.add(property.value());
+        }
+        return getMountedVolumeURLsIncludingResourceValues(list, options);
+    }
+    /**
+     * @since Available in iOS 4.0 and later.
+     */
+    public NSArray<NSURL> getContentsOfDirectoryAtURL(NSURL url, List<NSURLFileSystemProperty> keys, NSDirectoryEnumerationOptions mask, NSError.NSErrorPtr error) {
+        NSArray<NSString> list = new NSMutableArray<>();
+        for (NSURLFileSystemProperty property : keys) {
+            list.add(property.value());
+        }
+        return getContentsOfDirectoryAtURL(url, list, mask, error);
+    }
+    public boolean isDirectoryAtPath(String path) {
+        BooleanPtr ptr = new BooleanPtr();
+        fileExists(path, ptr);
+        return ptr.get();
+    }
     /*<methods>*/
     /**
      * @since Available in iOS 4.0 and later.
@@ -93,7 +118,7 @@ import org.robovm.apple.security.*;
      * @since Available in iOS 2.0 and later.
      */
     @Method(selector = "delegate")
-    public native NSObject delegate();
+    public native NSFileManagerDelegate delegate();
     /**
      * @since Available in iOS 2.0 and later.
      */
@@ -181,7 +206,7 @@ import org.robovm.apple.security.*;
     @Method(selector = "fileExistsAtPath:")
     public native boolean fileExists(String path);
     @Method(selector = "fileExistsAtPath:isDirectory:")
-    protected native boolean fileExists(String path, BytePtr isDirectory);
+    protected native boolean fileExists(String path, BooleanPtr isDirectory);
     @Method(selector = "isReadableFileAtPath:")
     public native boolean fileIsReadable(String path);
     @Method(selector = "isWritableFileAtPath:")

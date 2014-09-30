@@ -53,14 +53,14 @@ import org.robovm.apple.security.*;
     /*<members>*//*</members>*/
     /*<methods>*/
     @NotImplemented("unarchiver:cannotDecodeObjectOfClassName:originalClasses:")
-    public ObjCClass unarchiver$cannotDecodeObjectOfClassName$originalClasses$(NSKeyedUnarchiver unarchiver, String name, NSArray<?> classNames) { throw new UnsupportedOperationException(); }
+    public ObjCClass cannotDecodeObjectOfClassName(NSKeyedUnarchiver unarchiver, String name, @org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String> classNames) { throw new UnsupportedOperationException(); }
     @NotImplemented("unarchiver:didDecodeObject:")
-    public NSObject unarchiver$didDecodeObject$(NSKeyedUnarchiver unarchiver, NSObject object) { throw new UnsupportedOperationException(); }
+    public NSObject didDecodeObject(NSKeyedUnarchiver unarchiver, NSObject object) { throw new UnsupportedOperationException(); }
     @NotImplemented("unarchiver:willReplaceObject:withObject:")
-    public void unarchiver$willReplaceObject$withObject$(NSKeyedUnarchiver unarchiver, NSObject object, NSObject newObject) { throw new UnsupportedOperationException(); }
+    public void willReplaceObject(NSKeyedUnarchiver unarchiver, NSObject object, NSObject newObject) { throw new UnsupportedOperationException(); }
     @NotImplemented("unarchiverWillFinish:")
-    public void unarchiverWillFinish$(NSKeyedUnarchiver unarchiver) { throw new UnsupportedOperationException(); }
+    public void willFinish(NSKeyedUnarchiver unarchiver) { throw new UnsupportedOperationException(); }
     @NotImplemented("unarchiverDidFinish:")
-    public void unarchiverDidFinish$(NSKeyedUnarchiver unarchiver) { throw new UnsupportedOperationException(); }
+    public void didFinish(NSKeyedUnarchiver unarchiver) { throw new UnsupportedOperationException(); }
     /*</methods>*/
 }

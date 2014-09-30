@@ -49,7 +49,7 @@ public class AppLauncherProcess extends Process implements Launcher {
     private volatile int exitCode = -1;
     private OutputStream errStream;
 
-    AppLauncherProcess(Logger log, AppLauncher launcher, LaunchParameters launchParameters) {
+    public AppLauncherProcess(Logger log, AppLauncher launcher, LaunchParameters launchParameters) {
         this.log = log;
         this.launcher = launcher;
         if (launchParameters.getStderrFifo() != null) {

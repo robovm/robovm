@@ -610,6 +610,10 @@ public class AppCompiler {
                 plugin.launchFailed(compiler.config, launchParameters);
             }
             throw e;
+        } finally {
+            for (LaunchPlugin plugin : compiler.config.getLaunchPlugins()) {
+                plugin.cleanup();
+            }
         }
     }
     

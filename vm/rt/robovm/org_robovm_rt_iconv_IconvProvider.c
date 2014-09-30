@@ -46,14 +46,14 @@ JNIEXPORT jlong JNICALL Java_org_robovm_rt_iconv_IconvProvider_initIconv
 	
 	if (content_descriptor == (iconv_t) -1) {
 		switch ((int)content_descriptor) {
-			case EMFILE:
-				return MAX_FILE_DESCRIPTORS;
-			case ENFILE:
-				return TOO_MANY_FILES_OPEN;
-			case ENOMEM:
-				return OUT_OF_MEMORY;
-			case EINVAL:
-				return UNSUPPORTED_CONVERSION;
+		case EMFILE:
+			return MAX_FILE_DESCRIPTORS;
+		case ENFILE:
+			return TOO_MANY_FILES_OPEN;
+		case ENOMEM:
+			return OUT_OF_MEMORY;
+		case EINVAL:
+			return UNSUPPORTED_CONVERSION;
 		}
 		return UNKNOWN_ERROR;
 	}

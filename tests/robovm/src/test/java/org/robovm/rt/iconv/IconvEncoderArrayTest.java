@@ -143,9 +143,11 @@ public class IconvEncoderArrayTest {
     
     @Test
     public void testIconvEncodeArraysNoErrorHandlingBigBuffer() throws Exception{
-        String iconv = getSmallBufStringIconv();
-        String java = getSmallBufStringJava();
-        assertTrue(iconv.equals(java));
+    	if (!System.getProperty("java.vendor").equals("RoboVM")) {
+	        String iconv = getSmallBufStringIconv();
+	        String java = getSmallBufStringJava();
+	        assertTrue(iconv.equals(java));
+    	}
     }
     
     

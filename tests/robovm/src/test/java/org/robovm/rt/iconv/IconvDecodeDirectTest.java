@@ -65,9 +65,11 @@ public class IconvDecodeDirectTest {
     
     @Test
     public void testIconvDecodeArraysBigBuffer() {
-        String iconv = getSmallBufStringIconvDecode();
-        String java = getSmallBufStringJavaDecode();
-        assertEquals(iconv, java);
+    	if (!System.getProperty("java.vendor").equals("RoboVM")) {
+	        String iconv = getSmallBufStringIconvDecode();
+	        String java = getSmallBufStringJavaDecode();
+	        assertEquals(iconv, java);
+    	}
     }
     
     private String getSmallBufStringIconvDecode() {

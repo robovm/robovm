@@ -9,8 +9,7 @@ import java.nio.charset.CharsetEncoder;
 import org.junit.Test;
 
 /**
- * 
- * @author David
+ * Simple tests 
  */
 public class IconvCharsetTest {
     

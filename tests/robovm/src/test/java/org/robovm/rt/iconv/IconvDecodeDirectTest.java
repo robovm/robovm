@@ -13,6 +13,10 @@ import java.util.Arrays;
 
 import org.junit.Test;
 
+/**
+ * Tests for decoding direct buffers 
+ * 
+ */
 public class IconvDecodeDirectTest {
     
     @Test

@@ -12,6 +12,10 @@ import java.util.Arrays;
 
 import org.junit.Test;
 
+/**
+ * Tests array backed encoders
+ * 
+ */
 public class IconvEncoderArrayTest {
     
     @Test
@@ -147,6 +151,8 @@ public class IconvEncoderArrayTest {
 	        String iconv = getSmallBufStringIconv();
 	        String java = getSmallBufStringJava();
 	        assertTrue(iconv.equals(java));
+    	} else {
+    		assertTrue(true);
     	}
     }
     

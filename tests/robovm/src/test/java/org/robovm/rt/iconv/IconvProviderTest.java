@@ -7,7 +7,6 @@ import org.junit.Test;
 /**
  * This tests encodes and decodes strings to ascertain wanted functionality
  * 
- * @author David
  */
 public class IconvProviderTest {
 

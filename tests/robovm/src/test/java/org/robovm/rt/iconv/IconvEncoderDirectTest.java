@@ -13,6 +13,10 @@ import java.nio.charset.CoderResult;
 import org.junit.Before;
 import org.junit.Test;
 
+/**
+ *Tests encoding of direct buffers 
+ *
+ */
 public class IconvEncoderDirectTest {
     
     @Before

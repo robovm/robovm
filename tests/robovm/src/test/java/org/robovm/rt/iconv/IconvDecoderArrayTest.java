@@ -10,6 +10,9 @@ import java.nio.charset.Charset;
 
 import org.junit.Test;
 
+/**
+ * Tests array backed decoders
+ */
 public class IconvDecoderArrayTest {
 
     @Test

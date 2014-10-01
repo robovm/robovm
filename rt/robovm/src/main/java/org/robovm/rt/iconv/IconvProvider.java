@@ -1,6 +1,5 @@
 package org.robovm.rt.iconv;
 
-import java.io.UnsupportedEncodingException;
 import java.nio.ByteBuffer;
 import java.nio.CharBuffer;
 import java.nio.charset.Charset;
@@ -345,28 +344,4 @@ public class IconvProvider extends CharsetProvider{
         
         return null;
     }
-	
-    public static void main(String[] args) throws UnsupportedEncodingException {
-
-        String toEncode = "Hhhhöädglpdågplgdäglh";
-        CharBuffer charBuffer = CharBuffer.wrap(toEncode.toCharArray());
-        ByteBuffer byteBuffer = ByteBuffer.wrap(new byte[toEncode.length() * 2]);
-
-        if (!byteBuffer.hasArray()) {
-            System.out.println("how did this happen?");
-        }
-
-        IconvProvider p = new IconvProvider();
-        Charset cs = p.charsetForName("UTF-8");
-        cs.newEncoder().encode(charBuffer, byteBuffer, true);
-        System.out.println(new String(byteBuffer.array(), "UTF-8"));
-        
-        charBuffer.clear();
-        charBuffer = CharBuffer.allocate(toEncode.length());
-        byteBuffer.position(0);
-        cs.newDecoder().decode(byteBuffer, charBuffer, true);
-        
-        System.out.println(charBuffer.toString());
-    }
-
 }

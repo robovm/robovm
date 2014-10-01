@@ -1,10 +1,8 @@
 package org.robovm.rt.iconv;
 
-import java.io.UnsupportedEncodingException;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.nio.CharBuffer;
-import java.nio.charset.CharacterCodingException;
 import java.nio.charset.Charset;
 import java.nio.charset.CharsetEncoder;
 import java.nio.charset.CoderResult;
@@ -78,29 +76,6 @@ public class IconvEncoder extends CharsetEncoder{
     protected void finalize() throws Throwable {
         super.finalize();
         IconvProvider.release(iconv_tPointer);
-    }
-
-
-    public static void main(String[] args) throws UnsupportedEncodingException, CharacterCodingException {
-//        IconvProvider p = IconvProvider.getInstance();
-//
-//        String toEncode = "djfhsdf gogas dja";
-//        CharBuffer charBuffer = CharBuffer.wrap(toEncode.toCharArray());
-//        ByteBuffer byteBuffer = null;// ByteBuffer.wrap(new
-//                                     // byte[(toEncode.length()+1)*2]);
-//
-//        Charset cs = p.charsetForName("SHIFT_JIS");
-//        IconvEncoder se = (IconvEncoder) cs.newEncoder();
-//        byteBuffer = se.encode(charBuffer);// , byteBuffer, true);
-//
-//        for (byte b : byteBuffer.array()) {
-//            System.out.println(String.format("%02x", b));
-//        }
-//
-//        charBuffer = cs.newDecoder().decode(byteBuffer);
-//        String ss = new String(charBuffer.toString().getBytes("SHIFT_JIS"));
-//        System.out.println(ss);
-
     }
 
 }

@@ -1,10 +1,8 @@
 package org.robovm.rt.iconv;
 
-import java.io.UnsupportedEncodingException;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.nio.CharBuffer;
-import java.nio.charset.CharacterCodingException;
 import java.nio.charset.Charset;
 import java.nio.charset.CharsetDecoder;
 import java.nio.charset.CoderResult;
@@ -78,25 +76,6 @@ public class IconvDecoder extends CharsetDecoder{
             break;
         }
         return CoderResult.UNDERFLOW;
-    }
-	
-    public static void main(String[] args) throws UnsupportedEncodingException, CharacterCodingException {
-        String s = "äsödfksöjgsoignduh g rguh irgh";
-        CharBuffer in = ByteBuffer.allocateDirect(s.length()*2).order(ByteOrder.nativeOrder()).asCharBuffer();
-        ByteBuffer out = ByteBuffer.allocateDirect(s.length()*3);
-        in.append(s);
-        in.position(0);
-        out.position(0);
-        
-        IconvProvider p = new IconvProvider();
-        Charset cs = p.charsetForName("UTF-8");
-        cs.newEncoder().encode(in, out, true);
-        
-        out.flip();
-        byte[] bb = new byte[out.remaining()];
-        out.get(bb);
-        String ss = new String(bb,"UTF-8");
-        System.out.println(ss);
     }
 
     @Override

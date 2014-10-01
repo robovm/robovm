@@ -107,7 +107,7 @@ JNIEXPORT void JNICALL Java_org_robovm_rt_iconv_IconvProvider_releaseIconv
   	 return result;
  }
  
- //sets position of buffers
+ //sets positions of buffers
  void set_buffer_positions(JNIEnv* env, int charBufferPosition, int byteBufferPosition, char** pChar, char** pByte ) {
 
  	*pChar += charBufferPosition*2;
@@ -116,7 +116,6 @@ JNIEXPORT void JNICALL Java_org_robovm_rt_iconv_IconvProvider_releaseIconv
  }
  
 //converts from specified encoding to specified encoding
-//error messages are printed to stdout, no error handling implemented yet
  size_t convert(iconv_t content_descriptor, char* inbuffer, size_t* inlength, char* outbuffer, size_t* outlength, int* error) {
 
  	//iconv_t content_descriptor = iconv_open(to, from);
@@ -470,9 +469,6 @@ JNIEXPORT jint JNICALL Java_org_robovm_rt_iconv_IconvProvider_decodeHybridBuffer
 	
   	return error;
 }
-
-	
-
 
 #ifdef __cplusplus
 }

@@ -12,8 +12,8 @@ public class IconvProviderTest {
 
     @Test
     public void testIconvProvider() {
-    	IconvProvider p = new IconvProvider();
-    	assertTrue(p.charsets().hasNext());
+        IconvProvider p = new IconvProvider();
+        assertTrue(p.charsets().hasNext());
     }
 
 }

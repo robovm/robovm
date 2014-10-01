@@ -18,9 +18,9 @@ public class IconvDecoderArrayTest {
     @Test
     public void testIconvDecoderUTF8() throws Exception {
         String toDecode = "\u0078\u0079\u00D6";
-        
+
         ByteBuffer byteBuffer = ByteBuffer.wrap(toDecode.getBytes("UTF-8"));
-        
+
         IconvProvider p = new IconvProvider();
         Charset cs = p.charsetForName("UTF-8");
         CharBuffer charBuffer = null;
@@ -30,16 +30,15 @@ public class IconvDecoderArrayTest {
             assertTrue(false);
             e.printStackTrace();
         }
-        
-        
+
         String output = charBuffer.toString();
         assertTrue("xyÖ".equals(output));
     }
-    
+
     @Test
     public void testIconvDecoderShiftJIS() {
         String s = "\uFF66\uFF73";
-        
+
         ByteBuffer byteBuffer = null;
         try {
             byteBuffer = ByteBuffer.wrap(s.getBytes("Shift_JIS"));
@@ -47,7 +46,7 @@ public class IconvDecoderArrayTest {
             // TODO Auto-generated catch block
             e1.printStackTrace();
         }
-  
+
         IconvProvider p = new IconvProvider();
         Charset cs = p.charsetForName("Shift_JIS");
         CharBuffer charBuffer = null;
@@ -57,8 +56,7 @@ public class IconvDecoderArrayTest {
             assertTrue(false);
             e.printStackTrace();
         }
-        
-        
+
         String output = charBuffer.toString();
         String checkValue = null;
 

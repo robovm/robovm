@@ -21,7 +21,6 @@ public class IconvEncoderDirectTest {
 
     @Before
     public void init() {
-
     }
 
     @Test
@@ -143,7 +142,7 @@ public class IconvEncoderDirectTest {
         // ｦｳ
         String toEncode = "det var en gång en vätte som bodde på en ö som hette Kortedala";
 
-        CharBuffer charBuffer = ByteBuffer.allocateDirect(toEncode.length() * 2).asCharBuffer();// CharBuffer.wrap(toEncode.toCharArray());
+        CharBuffer charBuffer = ByteBuffer.allocateDirect(toEncode.length() * 2).asCharBuffer();
         ByteBuffer byteBuffer = ByteBuffer.allocateDirect(5);
         charBuffer.append(toEncode);
         charBuffer.rewind();
@@ -182,7 +181,7 @@ public class IconvEncoderDirectTest {
         // ｦｳ
         String toEncode = "det var en gång en vätte som bodde på en ö som hette Kortedala";
 
-        CharBuffer charBuffer = ByteBuffer.allocateDirect(toEncode.length() * 2).asCharBuffer();// CharBuffer.wrap(toEncode.toCharArray());
+        CharBuffer charBuffer = ByteBuffer.allocateDirect(toEncode.length() * 2).asCharBuffer();
         ByteBuffer byteBuffer = ByteBuffer.allocateDirect(5);
         charBuffer.append(toEncode);
         charBuffer.rewind();

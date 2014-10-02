@@ -21,15 +21,15 @@
   </dependencies>
   
   <profiles>
-  	<profile>
-  		<id>commercial</id>
-  		<dependencies>
-  			<dependency>
-				<groupId>com.robovm</groupId>
-				<artifactId>robovm-debug-server</artifactId>
-				<version>${project.version}</version>
-  			</dependency>
-  		</dependencies>
+    <profile>
+      <id>commercial</id>
+      <dependencies>
+        <dependency>
+          <groupId>com.robovm</groupId>
+          <artifactId>robovm-debug-server</artifactId>
+          <version>${project.version}</version>
+          </dependency>
+      </dependencies>
   	</profile>
   </profiles>
 

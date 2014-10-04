@@ -34,25 +34,28 @@ import org.robovm.apple.coremedia.*;
 import org.robovm.apple.security.*;
 /*</imports>*/
 
+/**
+ * @since Available in iOS 7.0 and later.
+ */
 /*<javadoc>*/
 /*</javadoc>*/
-@Marshaler(NSURLProtectionSpaceProtocol.Marshaler.class)
+@Marshaler(NSProgressFileOperationKind.Marshaler.class)
 /*<annotations>*/@Library("Foundation")/*</annotations>*/
-/*<visibility>*/public/*</visibility>*/ class /*<name>*/NSURLProtectionSpaceProtocol/*</name>*/ 
+/*<visibility>*/public/*</visibility>*/ class /*<name>*/NSProgressFileOperationKind/*</name>*/ 
     extends /*<extends>*/Object/*</extends>*/ 
     /*<implements>*//*</implements>*/ {
 
     public static class Marshaler {
         @MarshalsPointer
-        public static NSURLProtectionSpaceProtocol toObject(Class<NSURLProtectionSpaceProtocol> cls, long handle, long flags) {
+        public static NSProgressFileOperationKind toObject(Class<NSProgressFileOperationKind> cls, long handle, long flags) {
             NSString o = (NSString) NSObject.Marshaler.toObject(NSString.class, handle, flags);
             if (o == null) {
                 return null;
             }
-            return NSURLProtectionSpaceProtocol.valueOf(o);
+            return NSProgressFileOperationKind.valueOf(o);
         }
         @MarshalsPointer
-        public static long toNative(NSURLProtectionSpaceProtocol o, long flags) {
+        public static long toNative(NSProgressFileOperationKind o, long flags) {
             if (o == null) {
                 return 0L;
             }
@@ -62,25 +65,29 @@ import org.robovm.apple.security.*;
     
     /*<ptr>*/
     /*</ptr>*/
-    /*<bind>*/static { Bro.bind(NSURLProtectionSpaceProtocol.class); }/*</bind>*/
+    /*<bind>*/static { Bro.bind(NSProgressFileOperationKind.class); }/*</bind>*/
     /*<constants>*//*</constants>*/
     /**
-     * @since Available in iOS 2.0 and later.
+     * @since Available in iOS 7.0 and later.
      */
-    public static final NSURLProtectionSpaceProtocol HTTP = new NSURLProtectionSpaceProtocol("HTTPValue");
+    public static final NSProgressFileOperationKind Downloading = new NSProgressFileOperationKind("DownloadingValue");
     /**
-     * @since Available in iOS 2.0 and later.
+     * @since Available in iOS 7.0 and later.
      */
-    public static final NSURLProtectionSpaceProtocol HTTPS = new NSURLProtectionSpaceProtocol("HTTPSValue");
+    public static final NSProgressFileOperationKind DecompressingAfterDownloading = new NSProgressFileOperationKind("DecompressingAfterDownloadingValue");
     /**
-     * @since Available in iOS 2.0 and later.
+     * @since Available in iOS 7.0 and later.
      */
-    public static final NSURLProtectionSpaceProtocol FTP = new NSURLProtectionSpaceProtocol("FTPValue");
+    public static final NSProgressFileOperationKind Receiving = new NSProgressFileOperationKind("ReceivingValue");
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
+    public static final NSProgressFileOperationKind Copying = new NSProgressFileOperationKind("CopyingValue");
     
-    private static NSURLProtectionSpaceProtocol[] values = new NSURLProtectionSpaceProtocol[] {HTTP, HTTPS, FTP};
+    private static NSProgressFileOperationKind[] values = new NSProgressFileOperationKind[] {Downloading, DecompressingAfterDownloading, Receiving, Copying};
     private final LazyGlobalValue<NSString> lazyGlobalValue;
     
-    private NSURLProtectionSpaceProtocol(String getterName) {
+    private NSProgressFileOperationKind(String getterName) {
         lazyGlobalValue = new LazyGlobalValue<>(getClass(), getterName);
     }
     /*<constructors>*//*</constructors>*/
@@ -90,30 +97,35 @@ import org.robovm.apple.security.*;
         return lazyGlobalValue.value();
     }
     
-    public static NSURLProtectionSpaceProtocol valueOf(NSString value) {
-        for (NSURLProtectionSpaceProtocol v : values) {
+    public static NSProgressFileOperationKind valueOf(NSString value) {
+        for (NSProgressFileOperationKind v : values) {
             if (v.value().equals(value)) {
                 return v;
             }
         }
         throw new IllegalArgumentException("No constant with value " + value + " found in " 
-            + /*<name>*/NSURLProtectionSpaceProtocol/*</name>*/.class.getName());
+            + /*<name>*/NSProgressFileOperationKind/*</name>*/.class.getName());
     }
     /*<methods>*/
     /**
-     * @since Available in iOS 2.0 and later.
+     * @since Available in iOS 7.0 and later.
      */
-    @GlobalValue(symbol="NSURLProtectionSpaceHTTP", optional=true)
-    protected static native NSString HTTPValue();
+    @GlobalValue(symbol="NSProgressFileOperationKindDownloading", optional=true)
+    protected static native NSString DownloadingValue();
     /**
-     * @since Available in iOS 2.0 and later.
+     * @since Available in iOS 7.0 and later.
      */
-    @GlobalValue(symbol="NSURLProtectionSpaceHTTPS", optional=true)
-    protected static native NSString HTTPSValue();
+    @GlobalValue(symbol="NSProgressFileOperationKindDecompressingAfterDownloading", optional=true)
+    protected static native NSString DecompressingAfterDownloadingValue();
     /**
-     * @since Available in iOS 2.0 and later.
+     * @since Available in iOS 7.0 and later.
      */
-    @GlobalValue(symbol="NSURLProtectionSpaceFTP", optional=true)
-    protected static native NSString FTPValue();
+    @GlobalValue(symbol="NSProgressFileOperationKindReceiving", optional=true)
+    protected static native NSString ReceivingValue();
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
+    @GlobalValue(symbol="NSProgressFileOperationKindCopying", optional=true)
+    protected static native NSString CopyingValue();
     /*</methods>*/
 }

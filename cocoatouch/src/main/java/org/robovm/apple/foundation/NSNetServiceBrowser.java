@@ -66,6 +66,12 @@ import org.robovm.apple.security.*;
     public native void setIncludesPeerToPeer(boolean v);
     /*</properties>*/
     /*<members>*//*</members>*/
+    public void scheduleInRunLoop(NSRunLoop aRunLoop, NSRunLoopMode mode) {
+        scheduleInRunLoop(aRunLoop, mode.value());
+    }
+    public void removeFromRunLoop(NSRunLoop aRunLoop, NSRunLoopMode mode) {
+        removeFromRunLoop(aRunLoop, mode.value());
+    }
     /*<methods>*/
     @Method(selector = "scheduleInRunLoop:forMode:")
     public native void scheduleInRunLoop(NSRunLoop aRunLoop, String mode);

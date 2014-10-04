@@ -42,6 +42,25 @@ import org.robovm.apple.security.*;
     extends /*<extends>*/NSObject/*</extends>*/ 
     /*<implements>*//*</implements>*/ {
 
+    public static class Notifications {
+        public static NSObject observeDidLoad(NSBundle object, final VoidBlock2<NSBundle, List<String>> block) {
+            return NSNotificationCenter.getDefaultCenter().addObserver(DidLoadNotification(), object, NSOperationQueue.getMainQueue(), new VoidBlock1<NSNotification>() {
+                @SuppressWarnings("unchecked")
+                @Override
+                public void invoke(NSNotification a) {
+                    List<String> classes = null;
+                    NSDictionary<NSString, NSObject> data = a.getUserInfo();
+                    if (data.containsKey(LoadedClassesKey())) {
+                        NSArray<NSString> val = (NSArray<NSString>)data.get(LoadedClassesKey());
+                        classes = val.asStringList();
+                    }
+                    
+                    block.invoke((NSBundle)a.getObject(), classes);
+                }
+            });
+        }
+    }
+    
     /*<ptr>*/public static class NSBundlePtr extends Ptr<NSBundle, NSBundlePtr> {}/*</ptr>*/
     /*<bind>*/static { ObjCRuntime.bind(NSBundle.class); }/*</bind>*/
     /*<constants>*//*</constants>*/
@@ -70,6 +89,11 @@ import org.robovm.apple.security.*;
     }
     
     /*<methods>*/
+    @GlobalValue(symbol="NSBundleDidLoadNotification", optional=true)
+    public static native NSString DidLoadNotification();
+    @GlobalValue(symbol="NSLoadedClasses", optional=true)
+    protected static native NSString LoadedClassesKey();
+    
     @Method(selector = "initWithPath:")
     protected native @Pointer long initWithPath$(String path);
     /**

@@ -65,6 +65,33 @@ import org.robovm.apple.security.*;
         }
     }
     
+    public static class AsIntegerListMarshaler {
+        @SuppressWarnings("unchecked")
+        @MarshalsPointer
+        public static List<Integer> toObject(Class<? extends NSObject> cls, long handle, long flags) {
+            NSArray<NSNumber> o = (NSArray<NSNumber>) NSObject.Marshaler.toObject(cls, handle, flags);
+            if (o == null) {
+                return null;
+            }
+            List<Integer> list = new ArrayList<>();
+            for (NSNumber n : o) {
+                list.add(n.intValue());
+            }
+            return list;
+        }
+        @MarshalsPointer
+        public static long toNative(List<Integer> l, long flags) {
+            if (l == null) {
+                return 0L;
+            }
+            NSArray<NSNumber> array = new NSMutableArray<>();
+            for (Integer i : l) {
+                array.add(NSNumber.valueOf(i));
+            }
+            return NSObject.Marshaler.toNative(array, flags);
+        }
+    }
+    
     public static class AsStringListMarshaler {
         @MarshalsPointer
         public static List<String> toObject(Class<? extends NSObject> cls, long handle, long flags) {

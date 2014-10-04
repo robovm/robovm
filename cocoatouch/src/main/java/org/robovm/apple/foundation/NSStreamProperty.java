@@ -36,23 +36,23 @@ import org.robovm.apple.security.*;
 
 /*<javadoc>*/
 /*</javadoc>*/
-@Marshaler(NSURLProtectionSpaceProtocol.Marshaler.class)
+@Marshaler(NSStreamProperty.Marshaler.class)
 /*<annotations>*/@Library("Foundation")/*</annotations>*/
-/*<visibility>*/public/*</visibility>*/ class /*<name>*/NSURLProtectionSpaceProtocol/*</name>*/ 
+/*<visibility>*/public/*</visibility>*/ class /*<name>*/NSStreamProperty/*</name>*/ 
     extends /*<extends>*/Object/*</extends>*/ 
     /*<implements>*//*</implements>*/ {
 
     public static class Marshaler {
         @MarshalsPointer
-        public static NSURLProtectionSpaceProtocol toObject(Class<NSURLProtectionSpaceProtocol> cls, long handle, long flags) {
+        public static NSStreamProperty toObject(Class<NSStreamProperty> cls, long handle, long flags) {
             NSString o = (NSString) NSObject.Marshaler.toObject(NSString.class, handle, flags);
             if (o == null) {
                 return null;
             }
-            return NSURLProtectionSpaceProtocol.valueOf(o);
+            return NSStreamProperty.valueOf(o);
         }
         @MarshalsPointer
-        public static long toNative(NSURLProtectionSpaceProtocol o, long flags) {
+        public static long toNative(NSStreamProperty o, long flags) {
             if (o == null) {
                 return 0L;
             }
@@ -62,25 +62,34 @@ import org.robovm.apple.security.*;
     
     /*<ptr>*/
     /*</ptr>*/
-    /*<bind>*/static { Bro.bind(NSURLProtectionSpaceProtocol.class); }/*</bind>*/
+    /*<bind>*/static { Bro.bind(NSStreamProperty.class); }/*</bind>*/
     /*<constants>*//*</constants>*/
     /**
      * @since Available in iOS 2.0 and later.
      */
-    public static final NSURLProtectionSpaceProtocol HTTP = new NSURLProtectionSpaceProtocol("HTTPValue");
+    public static final NSStreamProperty SocketSecurityLevel = new NSStreamProperty("SocketSecurityLevelValue");
     /**
      * @since Available in iOS 2.0 and later.
      */
-    public static final NSURLProtectionSpaceProtocol HTTPS = new NSURLProtectionSpaceProtocol("HTTPSValue");
+    public static final NSStreamProperty SOCKSProxyConfiguration = new NSStreamProperty("SOCKSProxyConfigurationValue");
     /**
      * @since Available in iOS 2.0 and later.
      */
-    public static final NSURLProtectionSpaceProtocol FTP = new NSURLProtectionSpaceProtocol("FTPValue");
+    public static final NSStreamProperty DataWrittenToMemoryStream = new NSStreamProperty("DataWrittenToMemoryStreamValue");
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
+    public static final NSStreamProperty FileCurrentOffset = new NSStreamProperty("FileCurrentOffsetValue");
+    /**
+     * @since Available in iOS 4.0 and later.
+     */
+    public static final NSStreamProperty NetworkServiceType = new NSStreamProperty("NetworkServiceTypeValue");
     
-    private static NSURLProtectionSpaceProtocol[] values = new NSURLProtectionSpaceProtocol[] {HTTP, HTTPS, FTP};
+    private static NSStreamProperty[] values = new NSStreamProperty[] {SocketSecurityLevel, SOCKSProxyConfiguration, DataWrittenToMemoryStream, FileCurrentOffset, 
+        NetworkServiceType};
     private final LazyGlobalValue<NSString> lazyGlobalValue;
     
-    private NSURLProtectionSpaceProtocol(String getterName) {
+    private NSStreamProperty(String getterName) {
         lazyGlobalValue = new LazyGlobalValue<>(getClass(), getterName);
     }
     /*<constructors>*//*</constructors>*/
@@ -90,30 +99,40 @@ import org.robovm.apple.security.*;
         return lazyGlobalValue.value();
     }
     
-    public static NSURLProtectionSpaceProtocol valueOf(NSString value) {
-        for (NSURLProtectionSpaceProtocol v : values) {
+    public static NSStreamProperty valueOf(NSString value) {
+        for (NSStreamProperty v : values) {
             if (v.value().equals(value)) {
                 return v;
             }
         }
         throw new IllegalArgumentException("No constant with value " + value + " found in " 
-            + /*<name>*/NSURLProtectionSpaceProtocol/*</name>*/.class.getName());
+            + /*<name>*/NSStreamProperty/*</name>*/.class.getName());
     }
     /*<methods>*/
     /**
      * @since Available in iOS 2.0 and later.
      */
-    @GlobalValue(symbol="NSURLProtectionSpaceHTTP", optional=true)
-    protected static native NSString HTTPValue();
+    @GlobalValue(symbol="NSStreamSocketSecurityLevelKey", optional=true)
+    protected static native NSString SocketSecurityLevelValue();
     /**
      * @since Available in iOS 2.0 and later.
      */
-    @GlobalValue(symbol="NSURLProtectionSpaceHTTPS", optional=true)
-    protected static native NSString HTTPSValue();
+    @GlobalValue(symbol="NSStreamSOCKSProxyConfigurationKey", optional=true)
+    protected static native NSString SOCKSProxyConfigurationValue();
     /**
      * @since Available in iOS 2.0 and later.
      */
-    @GlobalValue(symbol="NSURLProtectionSpaceFTP", optional=true)
-    protected static native NSString FTPValue();
+    @GlobalValue(symbol="NSStreamDataWrittenToMemoryStreamKey", optional=true)
+    protected static native NSString DataWrittenToMemoryStreamValue();
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
+    @GlobalValue(symbol="NSStreamFileCurrentOffsetKey", optional=true)
+    protected static native NSString FileCurrentOffsetValue();
+    /**
+     * @since Available in iOS 4.0 and later.
+     */
+    @GlobalValue(symbol="NSStreamNetworkServiceType", optional=true)
+    protected static native NSString NetworkServiceTypeValue();
     /*</methods>*/
 }

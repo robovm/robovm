@@ -93,6 +93,12 @@ import org.robovm.apple.security.*;
         getInputStream$outputStream$(null, ptr);
         return ptr.get();
     }
+    public void scheduleInRunLoop(NSRunLoop aRunLoop, NSRunLoopMode mode) {
+        scheduleInRunLoop(aRunLoop, mode.value());
+    }
+    public void removeFromRunLoop(NSRunLoop aRunLoop, NSRunLoopMode mode) {
+        removeFromRunLoop(aRunLoop, mode.value());
+    }
     /*<methods>*/
     @Method(selector = "initWithDomain:type:name:port:")
     protected native @Pointer long initWithDomain$type$name$port$(String domain, String type, String name, int port);

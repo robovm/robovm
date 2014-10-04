@@ -58,27 +58,27 @@ import org.robovm.apple.security.*;
     @Method(selector = "initWithMemoryCapacity:diskCapacity:diskPath:")
     protected native @Pointer long initWithMemoryCapacity$diskCapacity$diskPath$(@MachineSizedUInt long memoryCapacity, @MachineSizedUInt long diskCapacity, String path);
     @Method(selector = "cachedResponseForRequest:")
-    public native NSCachedURLResponse cachedResponseForRequest$(NSURLRequest request);
+    public native NSCachedURLResponse getCachedResponse(NSURLRequest request);
     @Method(selector = "storeCachedResponse:forRequest:")
-    public native void storeCachedResponse$forRequest$(NSCachedURLResponse cachedResponse, NSURLRequest request);
+    public native void storeCachedResponse(NSCachedURLResponse cachedResponse, NSURLRequest request);
     @Method(selector = "removeCachedResponseForRequest:")
-    public native void removeCachedResponseForRequest$(NSURLRequest request);
+    public native void removeCachedResponse(NSURLRequest request);
     @Method(selector = "removeAllCachedResponses")
     public native void removeAllCachedResponses();
     @Method(selector = "memoryCapacity")
-    public native @MachineSizedUInt long memoryCapacity();
+    public native @MachineSizedUInt long getMemoryCapacity();
     @Method(selector = "diskCapacity")
-    public native @MachineSizedUInt long diskCapacity();
+    public native @MachineSizedUInt long getDiskCapacity();
     @Method(selector = "setMemoryCapacity:")
     public native void setMemoryCapacity(@MachineSizedUInt long memoryCapacity);
     @Method(selector = "setDiskCapacity:")
     public native void setDiskCapacity(@MachineSizedUInt long diskCapacity);
     @Method(selector = "currentMemoryUsage")
-    public native @MachineSizedUInt long currentMemoryUsage();
+    public native @MachineSizedUInt long getCurrentMemoryUsage();
     @Method(selector = "currentDiskUsage")
-    public native @MachineSizedUInt long currentDiskUsage();
+    public native @MachineSizedUInt long getCurrentDiskUsage();
     @Method(selector = "sharedURLCache")
-    public static native NSURLCache sharedURLCache();
+    public static native NSURLCache getSharedURLCache();
     @Method(selector = "setSharedURLCache:")
     public static native void setSharedURLCache(NSURLCache cache);
     /*</methods>*/

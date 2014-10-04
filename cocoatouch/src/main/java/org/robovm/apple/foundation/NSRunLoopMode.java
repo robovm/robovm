@@ -37,64 +37,49 @@ import org.robovm.apple.security.*;
 /*<javadoc>*/
 /*</javadoc>*/
 /*<annotations>*/@Library("Foundation")/*</annotations>*/
-/*<visibility>*/public/*</visibility>*/ class /*<name>*/NSURLUbiquitousItemDownloadingStatus/*</name>*/ 
+/*<visibility>*/public/*</visibility>*/ class /*<name>*/NSRunLoopMode/*</name>*/ 
     extends /*<extends>*/Object/*</extends>*/ 
     /*<implements>*//*</implements>*/ {
-
+    
     /*<ptr>*/
     /*</ptr>*/
-    /*<bind>*/static { Bro.bind(NSURLUbiquitousItemDownloadingStatus.class); }/*</bind>*/
+    /*<bind>*/static { Bro.bind(NSRunLoopMode.class); }/*</bind>*/
     /*<constants>*//*</constants>*/
+    public static final NSRunLoopMode Default = new NSRunLoopMode("DefaultValue");
     /**
-     * @since Available in iOS 7.0 and later.
+     * @since Available in iOS 2.0 and later.
      */
-    public static final NSURLUbiquitousItemDownloadingStatus NotDownloaded = new NSURLUbiquitousItemDownloadingStatus("NotDownloadedValue");
-    /**
-     * @since Available in iOS 7.0 and later.
-     */
-    public static final NSURLUbiquitousItemDownloadingStatus Downloaded = new NSURLUbiquitousItemDownloadingStatus("DownloadedValue");
-    /**
-     * @since Available in iOS 7.0 and later.
-     */
-    public static final NSURLUbiquitousItemDownloadingStatus Current = new NSURLUbiquitousItemDownloadingStatus("CurrentValue");
+    public static final NSRunLoopMode Common = new NSRunLoopMode("CommonValue");
     
-    private static NSURLUbiquitousItemDownloadingStatus[] values = new NSURLUbiquitousItemDownloadingStatus[] {NotDownloaded, Downloaded, Current};
-    private final LazyGlobalValue<NSString> lazyGlobalValue;
+    private static NSRunLoopMode[] values = new NSRunLoopMode[] {Default, Common};
+    private final LazyGlobalValue<String> lazyGlobalValue;
     
-    private NSURLUbiquitousItemDownloadingStatus(String getterName) {
+    private NSRunLoopMode(String getterName) {
         lazyGlobalValue = new LazyGlobalValue<>(getClass(), getterName);
     }
     /*<constructors>*//*</constructors>*/
     /*<properties>*//*</properties>*/
     /*<members>*//*</members>*/
-    public NSString value() {
+    public String value() {
         return lazyGlobalValue.value();
     }
     
-    public static NSURLUbiquitousItemDownloadingStatus valueOf(NSString value) {
-        for (NSURLUbiquitousItemDownloadingStatus v : values) {
+    public static NSRunLoopMode valueOf(String value) {
+        for (NSRunLoopMode v : values) {
             if (v.value().equals(value)) {
                 return v;
             }
         }
         throw new IllegalArgumentException("No constant with value " + value + " found in " 
-            + /*<name>*/NSURLUbiquitousItemDownloadingStatus/*</name>*/.class.getName());
+            + /*<name>*/NSRunLoopMode/*</name>*/.class.getName());
     }
     /*<methods>*/
+    @GlobalValue(symbol="NSDefaultRunLoopMode", optional=true)
+    protected static native String DefaultValue();
     /**
-     * @since Available in iOS 7.0 and later.
+     * @since Available in iOS 2.0 and later.
      */
-    @GlobalValue(symbol="NSURLUbiquitousItemDownloadingStatusNotDownloaded", optional=true)
-    protected static native NSString NotDownloadedValue();
-    /**
-     * @since Available in iOS 7.0 and later.
-     */
-    @GlobalValue(symbol="NSURLUbiquitousItemDownloadingStatusDownloaded", optional=true)
-    protected static native NSString DownloadedValue();
-    /**
-     * @since Available in iOS 7.0 and later.
-     */
-    @GlobalValue(symbol="NSURLUbiquitousItemDownloadingStatusCurrent", optional=true)
-    protected static native NSString CurrentValue();
+    @GlobalValue(symbol="NSRunLoopCommonModes", optional=true)
+    protected static native String CommonValue();
     /*</methods>*/
 }

@@ -54,34 +54,37 @@ import org.robovm.apple.security.*;
     
     /*</properties>*/
     /*<members>*//*</members>*/
+    public static void setPropertyInRequest(String key, NSObject value, NSMutableURLRequest request) {
+        setPropertyInRequest(value, key, request);
+    }
     /*<methods>*/
     @Method(selector = "initWithRequest:cachedResponse:client:")
     protected native @Pointer long initWithRequest$cachedResponse$client$(NSURLRequest request, NSCachedURLResponse cachedResponse, NSURLProtocolClient client);
     @Method(selector = "client")
-    public native NSURLProtocolClient client();
+    public native NSURLProtocolClient getClient();
     @Method(selector = "request")
-    public native NSURLRequest request();
+    public native NSURLRequest getRequest();
     @Method(selector = "cachedResponse")
-    public native NSCachedURLResponse cachedResponse();
+    public native NSCachedURLResponse getCachedResponse();
     @Method(selector = "startLoading")
     public native void startLoading();
     @Method(selector = "stopLoading")
     public native void stopLoading();
     @Method(selector = "canInitWithRequest:")
-    public static native boolean canInitWithRequest$(NSURLRequest request);
+    public static native boolean canInitWithRequest(NSURLRequest request);
     @Method(selector = "canonicalRequestForRequest:")
-    public static native NSURLRequest canonicalRequestForRequest$(NSURLRequest request);
+    public static native NSURLRequest newCanonicalRequest(NSURLRequest request);
     @Method(selector = "requestIsCacheEquivalent:toRequest:")
-    public static native boolean requestIsCacheEquivalent$toRequest$(NSURLRequest a, NSURLRequest b);
+    public static native boolean requestIsCacheEquivalent(NSURLRequest a, NSURLRequest b);
     @Method(selector = "propertyForKey:inRequest:")
-    public static native NSObject propertyForKey$inRequest$(String key, NSURLRequest request);
+    public static native NSObject getPropertyInRequest(String key, NSURLRequest request);
     @Method(selector = "setProperty:forKey:inRequest:")
-    public static native void setProperty$forKey$inRequest$(NSObject value, String key, NSMutableURLRequest request);
+    protected static native void setPropertyInRequest(NSObject value, String key, NSMutableURLRequest request);
     @Method(selector = "removePropertyForKey:inRequest:")
-    public static native void removePropertyForKey$inRequest$(String key, NSMutableURLRequest request);
+    public static native void removePropertyInRequest(String key, NSMutableURLRequest request);
     @Method(selector = "registerClass:")
-    public static native boolean registerClass$(ObjCClass protocolClass);
+    public static native boolean registerClass(ObjCClass protocolClass);
     @Method(selector = "unregisterClass:")
-    public static native void unregisterClass$(ObjCClass protocolClass);
+    public static native void unregisterClass(ObjCClass protocolClass);
     /*</methods>*/
 }

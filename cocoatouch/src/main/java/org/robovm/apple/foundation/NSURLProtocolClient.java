@@ -51,21 +51,21 @@ import org.robovm.apple.security.*;
     /*</properties>*/
     /*<methods>*/
     @Method(selector = "URLProtocol:wasRedirectedToRequest:redirectResponse:")
-    void URLProtocol$wasRedirectedToRequest$redirectResponse$(NSURLProtocol protocol, NSURLRequest request, NSURLResponse redirectResponse);
+    void wasRedirectedToRequest(NSURLProtocol protocol, NSURLRequest request, NSURLResponse redirectResponse);
     @Method(selector = "URLProtocol:cachedResponseIsValid:")
-    void URLProtocol$cachedResponseIsValid$(NSURLProtocol protocol, NSCachedURLResponse cachedResponse);
+    void cachedResponseIsValid(NSURLProtocol protocol, NSCachedURLResponse cachedResponse);
     @Method(selector = "URLProtocol:didReceiveResponse:cacheStoragePolicy:")
-    void URLProtocol$didReceiveResponse$cacheStoragePolicy$(NSURLProtocol protocol, NSURLResponse response, NSURLCacheStoragePolicy policy);
+    void didReceiveResponse(NSURLProtocol protocol, NSURLResponse response, NSURLCacheStoragePolicy policy);
     @Method(selector = "URLProtocol:didLoadData:")
-    void URLProtocol$didLoadData$(NSURLProtocol protocol, NSData data);
+    void didLoadData(NSURLProtocol protocol, NSData data);
     @Method(selector = "URLProtocolDidFinishLoading:")
-    void URLProtocolDidFinishLoading$(NSURLProtocol protocol);
+    void didFinishLoading(NSURLProtocol protocol);
     @Method(selector = "URLProtocol:didFailWithError:")
-    void URLProtocol$didFailWithError$(NSURLProtocol protocol, NSError error);
+    void didFail(NSURLProtocol protocol, NSError error);
     @Method(selector = "URLProtocol:didReceiveAuthenticationChallenge:")
-    void URLProtocol$didReceiveAuthenticationChallenge$(NSURLProtocol protocol, NSURLAuthenticationChallenge challenge);
+    void didReceiveAuthenticationChallenge(NSURLProtocol protocol, NSURLAuthenticationChallenge challenge);
     @Method(selector = "URLProtocol:didCancelAuthenticationChallenge:")
-    void URLProtocol$didCancelAuthenticationChallenge$(NSURLProtocol protocol, NSURLAuthenticationChallenge challenge);
+    void didCancelAuthenticationChallenge(NSURLProtocol protocol, NSURLAuthenticationChallenge challenge);
     /*</methods>*/
     /*<adapter>*/
     /*</adapter>*/

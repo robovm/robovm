@@ -74,6 +74,35 @@ import org.robovm.apple.security.*;
     public native void setWriteabilityHandler(@Block VoidBlock1<NSFileHandle> v);
     /*</properties>*/
     /*<members>*//*</members>*/
+    
+    public void readInBackgroundAndNotify(NSRunLoopMode...modes) {
+        List<String> list = new ArrayList<>();
+        for (NSRunLoopMode mode : modes) {
+            list.add(mode.value());
+        }
+        readInBackgroundAndNotify(list);
+    }
+    public void readToEndOfFileInBackgroundAndNotify(NSRunLoopMode...modes) {
+        List<String> list = new ArrayList<>();
+        for (NSRunLoopMode mode : modes) {
+            list.add(mode.value());
+        }
+        readToEndOfFileInBackgroundAndNotify(list);
+    }
+    public void acceptConnectionInBackgroundAndNotify(NSRunLoopMode...modes) {
+        List<String> list = new ArrayList<>();
+        for (NSRunLoopMode mode : modes) {
+            list.add(mode.value());
+        }
+        acceptConnectionInBackgroundAndNotify(list);
+    }
+    public void waitForDataInBackgroundAndNotify(NSRunLoopMode...modes) {
+        List<String> list = new ArrayList<>();
+        for (NSRunLoopMode mode : modes) {
+            list.add(mode.value());
+        }
+        waitForDataInBackgroundAndNotify(list);
+    }
     /*<methods>*/
     @Method(selector = "availableData")
     public native NSData getAvailableData();
@@ -125,19 +154,19 @@ import org.robovm.apple.security.*;
     @Method(selector = "fileHandleForUpdatingURL:error:")
     public static native NSFileHandle createForUpdating(NSURL url, NSError.NSErrorPtr error);
     @Method(selector = "readInBackgroundAndNotifyForModes:")
-    public native void readInBackgroundAndNotify(NSArray<?> modes);
+    public native void readInBackgroundAndNotify(@org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String> modes);
     @Method(selector = "readInBackgroundAndNotify")
     public native void readInBackgroundAndNotify();
     @Method(selector = "readToEndOfFileInBackgroundAndNotifyForModes:")
-    public native void readToEndOfFileInBackgroundAndNotify(NSArray<?> modes);
+    public native void readToEndOfFileInBackgroundAndNotify(@org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String> modes);
     @Method(selector = "readToEndOfFileInBackgroundAndNotify")
     public native void readToEndOfFileInBackgroundAndNotify();
     @Method(selector = "acceptConnectionInBackgroundAndNotifyForModes:")
-    public native void acceptConnectionInBackgroundAndNotify(NSArray<?> modes);
+    public native void acceptConnectionInBackgroundAndNotify(@org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String> modes);
     @Method(selector = "acceptConnectionInBackgroundAndNotify")
     public native void acceptConnectionInBackgroundAndNotify();
     @Method(selector = "waitForDataInBackgroundAndNotifyForModes:")
-    public native void waitForDataInBackgroundAndNotify(NSArray<?> modes);
+    public native void waitForDataInBackgroundAndNotify(@org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String> modes);
     @Method(selector = "waitForDataInBackgroundAndNotify")
     public native void waitForDataInBackgroundAndNotify();
     @Method(selector = "initWithFileDescriptor:closeOnDealloc:")

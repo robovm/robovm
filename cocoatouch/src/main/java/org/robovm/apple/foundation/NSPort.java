@@ -53,6 +53,12 @@ import org.robovm.apple.security.*;
     
     /*</properties>*/
     /*<members>*//*</members>*/
+    public void scheduleInRunLoop(NSRunLoop runLoop, NSRunLoopMode mode) {
+        scheduleInRunLoop(runLoop, mode.value());
+    }
+    public void removeFromRunLoop(NSRunLoop runLoop, NSRunLoopMode mode) {
+        removeFromRunLoop(runLoop, mode.value());
+    }
     /*<methods>*/
     @Method(selector = "invalidate")
     public native void invalidate();

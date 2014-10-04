@@ -236,7 +236,7 @@ import org.robovm.apple.security.*;
      * @since Available in iOS 4.0 and later.
      */
     @Method(selector = "writeBookmarkData:toURL:options:error:")
-    public static native boolean writeBookmarkData(NSData bookmarkData, NSURL bookmarkFileURL, @MachineSizedUInt long options, NSError.NSErrorPtr error);
+    public static native boolean writeBookmarkData(NSData bookmarkData, NSURL bookmarkFileURL, NSURLBookmarkCreationOptions options, NSError.NSErrorPtr error);
     /**
      * @since Available in iOS 4.0 and later.
      */

@@ -36,11 +36,30 @@ import org.robovm.apple.security.*;
 
 /*<javadoc>*/
 /*</javadoc>*/
+@Marshaler(NSURLAuthenticationMethod.Marshaler.class)
 /*<annotations>*/@Library("Foundation")/*</annotations>*/
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/NSURLAuthenticationMethod/*</name>*/ 
     extends /*<extends>*/Object/*</extends>*/ 
     /*<implements>*//*</implements>*/ {
 
+    public static class Marshaler {
+        @MarshalsPointer
+        public static NSURLAuthenticationMethod toObject(Class<NSURLAuthenticationMethod> cls, long handle, long flags) {
+            NSString o = (NSString) NSObject.Marshaler.toObject(NSString.class, handle, flags);
+            if (o == null) {
+                return null;
+            }
+            return NSURLAuthenticationMethod.valueOf(o);
+        }
+        @MarshalsPointer
+        public static long toNative(NSURLAuthenticationMethod o, long flags) {
+            if (o == null) {
+                return 0L;
+            }
+            return NSObject.Marshaler.toNative(o.value(), flags);
+        }
+    }
+    
     /*<ptr>*/
     /*</ptr>*/
     /*<bind>*/static { Bro.bind(NSURLAuthenticationMethod.class); }/*</bind>*/

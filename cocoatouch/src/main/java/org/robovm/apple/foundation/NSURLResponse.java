@@ -58,14 +58,14 @@ import org.robovm.apple.security.*;
     @Method(selector = "initWithURL:MIMEType:expectedContentLength:textEncodingName:")
     protected native @Pointer long initWithURL$MIMEType$expectedContentLength$textEncodingName$(NSURL URL, String MIMEType, @MachineSizedSInt long length, String name);
     @Method(selector = "URL")
-    public native NSURL URL();
+    public native NSURL getURL();
     @Method(selector = "MIMEType")
-    public native String MIMEType();
+    public native String getMIMEType();
     @Method(selector = "expectedContentLength")
-    public native long expectedContentLength();
+    public native long getExpectedContentLength();
     @Method(selector = "textEncodingName")
-    public native String textEncodingName();
+    public native String getTextEncodingName();
     @Method(selector = "suggestedFilename")
-    public native String suggestedFilename();
+    public native String getSuggestedFilename();
     /*</methods>*/
 }

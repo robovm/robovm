@@ -42,6 +42,20 @@ import org.robovm.apple.security.*;
     extends /*<extends>*/NSObject/*</extends>*/ 
     /*<implements>*//*</implements>*/ {
 
+    public static class Notifications {
+        /**
+         * @since Available in iOS 6.0 and later.
+         */
+        public static NSObject observeUbiquityIdentityDidChange(final Runnable block) {
+            return NSNotificationCenter.getDefaultCenter().addObserver(UbiquityIdentityDidChangeNotification(), null, NSOperationQueue.getMainQueue(), new VoidBlock1<NSNotification>() {
+                @Override
+                public void invoke(NSNotification a) {
+                    block.run();
+                }
+            });
+        }
+    }
+    
     /*<ptr>*/public static class NSFileManagerPtr extends Ptr<NSFileManager, NSFileManagerPtr> {}/*</ptr>*/
     /*<bind>*/static { ObjCRuntime.bind(NSFileManager.class); }/*</bind>*/
     /*<constants>*//*</constants>*/
@@ -79,6 +93,12 @@ import org.robovm.apple.security.*;
         return ptr.get();
     }
     /*<methods>*/
+    /**
+     * @since Available in iOS 6.0 and later.
+     */
+    @GlobalValue(symbol="NSUbiquityIdentityDidChangeNotification", optional=true)
+    public static native NSString UbiquityIdentityDidChangeNotification();
+    
     /**
      * @since Available in iOS 4.0 and later.
      */

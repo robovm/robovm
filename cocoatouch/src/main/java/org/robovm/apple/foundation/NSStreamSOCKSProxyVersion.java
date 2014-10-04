@@ -19,6 +19,7 @@ package org.robovm.apple.foundation;
 import java.io.*;
 import java.nio.*;
 import java.util.*;
+
 import org.robovm.objc.*;
 import org.robovm.objc.annotation.*;
 import org.robovm.objc.block.*;
@@ -36,23 +37,23 @@ import org.robovm.apple.security.*;
 
 /*<javadoc>*/
 /*</javadoc>*/
-@Marshaler(NSURLProtectionSpaceProtocol.Marshaler.class)
+@Marshaler(NSStreamSOCKSProxyVersion.Marshaler.class)
 /*<annotations>*/@Library("Foundation")/*</annotations>*/
-/*<visibility>*/public/*</visibility>*/ class /*<name>*/NSURLProtectionSpaceProtocol/*</name>*/ 
+/*<visibility>*/public/*</visibility>*/ class /*<name>*/NSStreamSOCKSProxyVersion/*</name>*/ 
     extends /*<extends>*/Object/*</extends>*/ 
     /*<implements>*//*</implements>*/ {
 
     public static class Marshaler {
         @MarshalsPointer
-        public static NSURLProtectionSpaceProtocol toObject(Class<NSURLProtectionSpaceProtocol> cls, long handle, long flags) {
+        public static NSStreamSOCKSProxyVersion toObject(Class<NSStreamSOCKSProxyVersion> cls, long handle, long flags) {
             NSString o = (NSString) NSObject.Marshaler.toObject(NSString.class, handle, flags);
             if (o == null) {
                 return null;
             }
-            return NSURLProtectionSpaceProtocol.valueOf(o);
+            return NSStreamSOCKSProxyVersion.valueOf(o);
         }
         @MarshalsPointer
-        public static long toNative(NSURLProtectionSpaceProtocol o, long flags) {
+        public static long toNative(NSStreamSOCKSProxyVersion o, long flags) {
             if (o == null) {
                 return 0L;
             }
@@ -62,25 +63,21 @@ import org.robovm.apple.security.*;
     
     /*<ptr>*/
     /*</ptr>*/
-    /*<bind>*/static { Bro.bind(NSURLProtectionSpaceProtocol.class); }/*</bind>*/
+    /*<bind>*/static { Bro.bind(NSStreamSOCKSProxyVersion.class); }/*</bind>*/
     /*<constants>*//*</constants>*/
     /**
      * @since Available in iOS 2.0 and later.
      */
-    public static final NSURLProtectionSpaceProtocol HTTP = new NSURLProtectionSpaceProtocol("HTTPValue");
+    public static final NSStreamSOCKSProxyVersion _4 = new NSStreamSOCKSProxyVersion("_4Value");
     /**
      * @since Available in iOS 2.0 and later.
      */
-    public static final NSURLProtectionSpaceProtocol HTTPS = new NSURLProtectionSpaceProtocol("HTTPSValue");
-    /**
-     * @since Available in iOS 2.0 and later.
-     */
-    public static final NSURLProtectionSpaceProtocol FTP = new NSURLProtectionSpaceProtocol("FTPValue");
+    public static final NSStreamSOCKSProxyVersion _5 = new NSStreamSOCKSProxyVersion("_5Value");
     
-    private static NSURLProtectionSpaceProtocol[] values = new NSURLProtectionSpaceProtocol[] {HTTP, HTTPS, FTP};
+    private static NSStreamSOCKSProxyVersion[] values = new NSStreamSOCKSProxyVersion[] {_4, _5};
     private final LazyGlobalValue<NSString> lazyGlobalValue;
     
-    private NSURLProtectionSpaceProtocol(String getterName) {
+    private NSStreamSOCKSProxyVersion(String getterName) {
         lazyGlobalValue = new LazyGlobalValue<>(getClass(), getterName);
     }
     /*<constructors>*//*</constructors>*/
@@ -90,30 +87,25 @@ import org.robovm.apple.security.*;
         return lazyGlobalValue.value();
     }
     
-    public static NSURLProtectionSpaceProtocol valueOf(NSString value) {
-        for (NSURLProtectionSpaceProtocol v : values) {
+    public static NSStreamSOCKSProxyVersion valueOf(NSString value) {
+        for (NSStreamSOCKSProxyVersion v : values) {
             if (v.value().equals(value)) {
                 return v;
             }
         }
         throw new IllegalArgumentException("No constant with value " + value + " found in " 
-            + /*<name>*/NSURLProtectionSpaceProtocol/*</name>*/.class.getName());
+            + /*<name>*/NSStreamSOCKSProxyVersion/*</name>*/.class.getName());
     }
     /*<methods>*/
     /**
      * @since Available in iOS 2.0 and later.
      */
-    @GlobalValue(symbol="NSURLProtectionSpaceHTTP", optional=true)
-    protected static native NSString HTTPValue();
+    @GlobalValue(symbol="NSStreamSOCKSProxyVersion4", optional=true)
+    protected static native NSString _4Value();
     /**
      * @since Available in iOS 2.0 and later.
      */
-    @GlobalValue(symbol="NSURLProtectionSpaceHTTPS", optional=true)
-    protected static native NSString HTTPSValue();
-    /**
-     * @since Available in iOS 2.0 and later.
-     */
-    @GlobalValue(symbol="NSURLProtectionSpaceFTP", optional=true)
-    protected static native NSString FTPValue();
+    @GlobalValue(symbol="NSStreamSOCKSProxyVersion5", optional=true)
+    protected static native NSString _5Value();
     /*</methods>*/
 }

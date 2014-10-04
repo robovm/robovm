@@ -36,23 +36,23 @@ import org.robovm.apple.security.*;
 
 /*<javadoc>*/
 /*</javadoc>*/
-@Marshaler(NSURLProtectionSpaceProtocol.Marshaler.class)
+@Marshaler(NSProgressKind.Marshaler.class)
 /*<annotations>*/@Library("Foundation")/*</annotations>*/
-/*<visibility>*/public/*</visibility>*/ class /*<name>*/NSURLProtectionSpaceProtocol/*</name>*/ 
+/*<visibility>*/public/*</visibility>*/ class /*<name>*/NSProgressKind/*</name>*/ 
     extends /*<extends>*/Object/*</extends>*/ 
     /*<implements>*//*</implements>*/ {
 
     public static class Marshaler {
         @MarshalsPointer
-        public static NSURLProtectionSpaceProtocol toObject(Class<NSURLProtectionSpaceProtocol> cls, long handle, long flags) {
+        public static NSProgressKind toObject(Class<NSProgressKind> cls, long handle, long flags) {
             NSString o = (NSString) NSObject.Marshaler.toObject(NSString.class, handle, flags);
             if (o == null) {
                 return null;
             }
-            return NSURLProtectionSpaceProtocol.valueOf(o);
+            return NSProgressKind.valueOf(o);
         }
         @MarshalsPointer
-        public static long toNative(NSURLProtectionSpaceProtocol o, long flags) {
+        public static long toNative(NSProgressKind o, long flags) {
             if (o == null) {
                 return 0L;
             }
@@ -62,25 +62,17 @@ import org.robovm.apple.security.*;
     
     /*<ptr>*/
     /*</ptr>*/
-    /*<bind>*/static { Bro.bind(NSURLProtectionSpaceProtocol.class); }/*</bind>*/
+    /*<bind>*/static { Bro.bind(NSProgressKind.class); }/*</bind>*/
     /*<constants>*//*</constants>*/
     /**
-     * @since Available in iOS 2.0 and later.
+     * @since Available in iOS 7.0 and later.
      */
-    public static final NSURLProtectionSpaceProtocol HTTP = new NSURLProtectionSpaceProtocol("HTTPValue");
-    /**
-     * @since Available in iOS 2.0 and later.
-     */
-    public static final NSURLProtectionSpaceProtocol HTTPS = new NSURLProtectionSpaceProtocol("HTTPSValue");
-    /**
-     * @since Available in iOS 2.0 and later.
-     */
-    public static final NSURLProtectionSpaceProtocol FTP = new NSURLProtectionSpaceProtocol("FTPValue");
+    public static final NSProgressKind File = new NSProgressKind("FileValue");
     
-    private static NSURLProtectionSpaceProtocol[] values = new NSURLProtectionSpaceProtocol[] {HTTP, HTTPS, FTP};
+    private static NSProgressKind[] values = new NSProgressKind[] {File};
     private final LazyGlobalValue<NSString> lazyGlobalValue;
     
-    private NSURLProtectionSpaceProtocol(String getterName) {
+    private NSProgressKind(String getterName) {
         lazyGlobalValue = new LazyGlobalValue<>(getClass(), getterName);
     }
     /*<constructors>*//*</constructors>*/
@@ -90,30 +82,20 @@ import org.robovm.apple.security.*;
         return lazyGlobalValue.value();
     }
     
-    public static NSURLProtectionSpaceProtocol valueOf(NSString value) {
-        for (NSURLProtectionSpaceProtocol v : values) {
+    public static NSProgressKind valueOf(NSString value) {
+        for (NSProgressKind v : values) {
             if (v.value().equals(value)) {
                 return v;
             }
         }
         throw new IllegalArgumentException("No constant with value " + value + " found in " 
-            + /*<name>*/NSURLProtectionSpaceProtocol/*</name>*/.class.getName());
+            + /*<name>*/NSProgressKind/*</name>*/.class.getName());
     }
     /*<methods>*/
     /**
-     * @since Available in iOS 2.0 and later.
+     * @since Available in iOS 7.0 and later.
      */
-    @GlobalValue(symbol="NSURLProtectionSpaceHTTP", optional=true)
-    protected static native NSString HTTPValue();
-    /**
-     * @since Available in iOS 2.0 and later.
-     */
-    @GlobalValue(symbol="NSURLProtectionSpaceHTTPS", optional=true)
-    protected static native NSString HTTPSValue();
-    /**
-     * @since Available in iOS 2.0 and later.
-     */
-    @GlobalValue(symbol="NSURLProtectionSpaceFTP", optional=true)
-    protected static native NSString FTPValue();
+    @GlobalValue(symbol="NSProgressKindFile", optional=true)
+    protected static native NSString FileValue();
     /*</methods>*/
 }

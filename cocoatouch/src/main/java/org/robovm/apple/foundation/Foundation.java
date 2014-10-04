@@ -216,10 +216,6 @@ import org.robovm.apple.security.*;
     /*<methods>*/
     @GlobalValue(symbol="NSFoundationVersionNumber", optional=true)
     public static native double FoundationVersionNumber();
-    @GlobalValue(symbol="NSBundleDidLoadNotification", optional=true)
-    public static native NSString BundleDidLoadNotification();
-    @GlobalValue(symbol="NSLoadedClasses", optional=true)
-    public static native NSString LoadedClasses();
     @GlobalValue(symbol="NSCocoaErrorDomain", optional=true)
     public static native NSString CocoaErrorDomain();
     @GlobalValue(symbol="NSPOSIXErrorDomain", optional=true)
@@ -249,13 +245,13 @@ import org.robovm.apple.security.*;
     @GlobalValue(symbol="NSFilePathErrorKey", optional=true)
     public static native NSString FilePathErrorKey();
     @GlobalValue(symbol="NSFileHandleReadCompletionNotification", optional=true)
-    public static native NSString FileHandleReadCompletionNotification();
+    public static native String FileHandleReadCompletionNotification();
     @GlobalValue(symbol="NSFileHandleReadToEndOfFileCompletionNotification", optional=true)
-    public static native NSString FileHandleReadToEndOfFileCompletionNotification();
+    public static native String FileHandleReadToEndOfFileCompletionNotification();
     @GlobalValue(symbol="NSFileHandleConnectionAcceptedNotification", optional=true)
-    public static native NSString FileHandleConnectionAcceptedNotification();
+    public static native String FileHandleConnectionAcceptedNotification();
     @GlobalValue(symbol="NSFileHandleDataAvailableNotification", optional=true)
-    public static native NSString FileHandleDataAvailableNotification();
+    public static native String FileHandleDataAvailableNotification();
     @GlobalValue(symbol="NSFileHandleNotificationDataItem", optional=true)
     public static native String FileHandleNotificationDataItem();
     @GlobalValue(symbol="NSFileHandleNotificationFileHandleItem", optional=true)
@@ -267,11 +263,6 @@ import org.robovm.apple.security.*;
     @Deprecated
     @GlobalValue(symbol="NSFileHandleNotificationMonitorModes", optional=true)
     public static native String FileHandleNotificationMonitorModes();
-    /**
-     * @since Available in iOS 6.0 and later.
-     */
-    @GlobalValue(symbol="NSUbiquityIdentityDidChangeNotification", optional=true)
-    public static native NSString UbiquityIdentityDidChangeNotification();
     @GlobalValue(symbol="NSAverageKeyValueOperator", optional=true)
     public static native String AverageKeyValueOperator();
     @GlobalValue(symbol="NSCountKeyValueOperator", optional=true)
@@ -295,25 +286,25 @@ import org.robovm.apple.security.*;
     @GlobalValue(symbol="NSUnionOfSetsKeyValueOperator", optional=true)
     public static native String UnionOfSetsKeyValueOperator();
     @GlobalValue(symbol="NSKeyValueChangeKindKey", optional=true)
-    public static native NSString KeyValueChangeKindKey();
+    public static native String KeyValueChangeKindKey();
     @GlobalValue(symbol="NSKeyValueChangeNewKey", optional=true)
-    public static native NSString KeyValueChangeNewKey();
+    public static native String KeyValueChangeNewKey();
     @GlobalValue(symbol="NSKeyValueChangeOldKey", optional=true)
-    public static native NSString KeyValueChangeOldKey();
+    public static native String KeyValueChangeOldKey();
     @GlobalValue(symbol="NSKeyValueChangeIndexesKey", optional=true)
-    public static native NSString KeyValueChangeIndexesKey();
+    public static native String KeyValueChangeIndexesKey();
     /**
      * @since Available in iOS 2.0 and later.
      */
     @GlobalValue(symbol="NSKeyValueChangeNotificationIsPriorKey", optional=true)
-    public static native NSString KeyValueChangeNotificationIsPriorKey();
+    public static native String KeyValueChangeNotificationIsPriorKey();
     /**
      * @since Available in iOS 7.0 and later.
      */
     @GlobalValue(symbol="NSKeyedArchiveRootObjectKey", optional=true)
-    public static native NSString KeyedArchiveRootObjectKey();
+    public static native String KeyedArchiveRootObjectKey();
     @GlobalValue(symbol="NSPortDidBecomeInvalidNotification", optional=true)
-    public static native NSString PortDidBecomeInvalidNotification();
+    public static native String PortDidBecomeInvalidNotification();
     /**
      * @since Available in iOS 4.0 and later.
      */
@@ -369,93 +360,6 @@ import org.robovm.apple.security.*;
      */
     @GlobalValue(symbol="NSTextCheckingFlightKey", optional=true)
     public static native NSString TextCheckingFlightKey();
-    @GlobalValue(symbol="NSDefaultRunLoopMode", optional=true)
-    public static native String DefaultRunLoopMode();
-    /**
-     * @since Available in iOS 2.0 and later.
-     */
-    @GlobalValue(symbol="NSRunLoopCommonModes", optional=true)
-    public static native String RunLoopCommonModes();
-    /**
-     * @since Available in iOS 2.0 and later.
-     */
-    @GlobalValue(symbol="NSStreamSocketSecurityLevelKey", optional=true)
-    public static native NSString StreamSocketSecurityLevelKey();
-    /**
-     * @since Available in iOS 2.0 and later.
-     */
-    @GlobalValue(symbol="NSStreamSocketSecurityLevelNone", optional=true)
-    public static native NSString StreamSocketSecurityLevelNone();
-    /**
-     * @since Available in iOS 2.0 and later.
-     */
-    @GlobalValue(symbol="NSStreamSocketSecurityLevelSSLv2", optional=true)
-    public static native NSString StreamSocketSecurityLevelSSLv2();
-    /**
-     * @since Available in iOS 2.0 and later.
-     */
-    @GlobalValue(symbol="NSStreamSocketSecurityLevelSSLv3", optional=true)
-    public static native NSString StreamSocketSecurityLevelSSLv3();
-    /**
-     * @since Available in iOS 2.0 and later.
-     */
-    @GlobalValue(symbol="NSStreamSocketSecurityLevelTLSv1", optional=true)
-    public static native NSString StreamSocketSecurityLevelTLSv1();
-    /**
-     * @since Available in iOS 2.0 and later.
-     */
-    @GlobalValue(symbol="NSStreamSocketSecurityLevelNegotiatedSSL", optional=true)
-    public static native NSString StreamSocketSecurityLevelNegotiatedSSL();
-    /**
-     * @since Available in iOS 2.0 and later.
-     */
-    @GlobalValue(symbol="NSStreamSOCKSProxyConfigurationKey", optional=true)
-    public static native NSString StreamSOCKSProxyConfigurationKey();
-    /**
-     * @since Available in iOS 2.0 and later.
-     */
-    @GlobalValue(symbol="NSStreamSOCKSProxyHostKey", optional=true)
-    public static native NSString StreamSOCKSProxyHostKey();
-    /**
-     * @since Available in iOS 2.0 and later.
-     */
-    @GlobalValue(symbol="NSStreamSOCKSProxyPortKey", optional=true)
-    public static native NSString StreamSOCKSProxyPortKey();
-    /**
-     * @since Available in iOS 2.0 and later.
-     */
-    @GlobalValue(symbol="NSStreamSOCKSProxyVersionKey", optional=true)
-    public static native NSString StreamSOCKSProxyVersionKey();
-    /**
-     * @since Available in iOS 2.0 and later.
-     */
-    @GlobalValue(symbol="NSStreamSOCKSProxyUserKey", optional=true)
-    public static native NSString StreamSOCKSProxyUserKey();
-    /**
-     * @since Available in iOS 2.0 and later.
-     */
-    @GlobalValue(symbol="NSStreamSOCKSProxyPasswordKey", optional=true)
-    public static native NSString StreamSOCKSProxyPasswordKey();
-    /**
-     * @since Available in iOS 2.0 and later.
-     */
-    @GlobalValue(symbol="NSStreamSOCKSProxyVersion4", optional=true)
-    public static native NSString StreamSOCKSProxyVersion4();
-    /**
-     * @since Available in iOS 2.0 and later.
-     */
-    @GlobalValue(symbol="NSStreamSOCKSProxyVersion5", optional=true)
-    public static native NSString StreamSOCKSProxyVersion5();
-    /**
-     * @since Available in iOS 2.0 and later.
-     */
-    @GlobalValue(symbol="NSStreamDataWrittenToMemoryStreamKey", optional=true)
-    public static native NSString StreamDataWrittenToMemoryStreamKey();
-    /**
-     * @since Available in iOS 2.0 and later.
-     */
-    @GlobalValue(symbol="NSStreamFileCurrentOffsetKey", optional=true)
-    public static native NSString StreamFileCurrentOffsetKey();
     /**
      * @since Available in iOS 2.0 and later.
      */
@@ -466,42 +370,17 @@ import org.robovm.apple.security.*;
      */
     @GlobalValue(symbol="NSStreamSOCKSErrorDomain", optional=true)
     public static native NSString StreamSOCKSErrorDomain();
-    /**
-     * @since Available in iOS 4.0 and later.
-     */
-    @GlobalValue(symbol="NSStreamNetworkServiceType", optional=true)
-    public static native NSString StreamNetworkServiceType();
-    /**
-     * @since Available in iOS 4.0 and later.
-     */
-    @GlobalValue(symbol="NSStreamNetworkServiceTypeVoIP", optional=true)
-    public static native NSString StreamNetworkServiceTypeVoIP();
-    /**
-     * @since Available in iOS 5.0 and later.
-     */
-    @GlobalValue(symbol="NSStreamNetworkServiceTypeVideo", optional=true)
-    public static native NSString StreamNetworkServiceTypeVideo();
-    /**
-     * @since Available in iOS 5.0 and later.
-     */
-    @GlobalValue(symbol="NSStreamNetworkServiceTypeBackground", optional=true)
-    public static native NSString StreamNetworkServiceTypeBackground();
-    /**
-     * @since Available in iOS 5.0 and later.
-     */
-    @GlobalValue(symbol="NSStreamNetworkServiceTypeVoice", optional=true)
-    public static native NSString StreamNetworkServiceTypeVoice();
     @GlobalValue(symbol="NSWillBecomeMultiThreadedNotification", optional=true)
-    public static native NSString WillBecomeMultiThreadedNotification();
+    public static native String WillBecomeMultiThreadedNotification();
     @GlobalValue(symbol="NSDidBecomeSingleThreadedNotification", optional=true)
-    public static native NSString DidBecomeSingleThreadedNotification();
+    public static native String DidBecomeSingleThreadedNotification();
     @GlobalValue(symbol="NSThreadWillExitNotification", optional=true)
-    public static native NSString ThreadWillExitNotification();
+    public static native String ThreadWillExitNotification();
     /**
      * @since Available in iOS 2.0 and later.
      */
     @GlobalValue(symbol="NSSystemTimeZoneDidChangeNotification", optional=true)
-    public static native NSString SystemTimeZoneDidChangeNotification();
+    public static native String SystemTimeZoneDidChangeNotification();
     @GlobalValue(symbol="NSURLFileScheme", optional=true)
     public static native String URLFileScheme();
     /**
@@ -510,12 +389,7 @@ import org.robovm.apple.security.*;
     @GlobalValue(symbol="NSURLKeysOfUnsetValuesKey", optional=true)
     public static native NSString URLKeysOfUnsetValuesKey();
     @GlobalValue(symbol="NSURLCredentialStorageChangedNotification", optional=true)
-    public static native NSString URLCredentialStorageChangedNotification();
-    /**
-     * @since Available in iOS 7.0 and later.
-     */
-    @GlobalValue(symbol="NSURLCredentialStorageRemoveSynchronizableCredentials", optional=true)
-    public static native NSString URLCredentialStorageRemoveSynchronizableCredentials();
+    public static native String URLCredentialStorageChangedNotification();
     @GlobalValue(symbol="NSURLErrorDomain", optional=true)
     public static native NSString URLErrorDomain();
     /**
@@ -552,7 +426,7 @@ import org.robovm.apple.security.*;
     @GlobalValue(symbol="NSRegistrationDomain", optional=true)
     public static native String RegistrationDomain();
     @GlobalValue(symbol="NSUserDefaultsDidChangeNotification", optional=true)
-    public static native NSString UserDefaultsDidChangeNotification();
+    public static native String UserDefaultsDidChangeNotification();
     /**
      * @since Available in iOS 3.0 and later.
      */
@@ -590,127 +464,7 @@ import org.robovm.apple.security.*;
     /**
      * @since Available in iOS 7.0 and later.
      */
-    @GlobalValue(symbol="NSProgressEstimatedTimeRemainingKey", optional=true)
-    public static native NSString ProgressEstimatedTimeRemainingKey();
-    /**
-     * @since Available in iOS 7.0 and later.
-     */
-    @GlobalValue(symbol="NSProgressThroughputKey", optional=true)
-    public static native NSString ProgressThroughputKey();
-    /**
-     * @since Available in iOS 7.0 and later.
-     */
-    @GlobalValue(symbol="NSProgressKindFile", optional=true)
-    public static native String ProgressKindFile();
-    /**
-     * @since Available in iOS 7.0 and later.
-     */
-    @GlobalValue(symbol="NSProgressFileOperationKindKey", optional=true)
-    public static native NSString ProgressFileOperationKindKey();
-    /**
-     * @since Available in iOS 7.0 and later.
-     */
-    @GlobalValue(symbol="NSProgressFileOperationKindDownloading", optional=true)
-    public static native NSString ProgressFileOperationKindDownloading();
-    /**
-     * @since Available in iOS 7.0 and later.
-     */
-    @GlobalValue(symbol="NSProgressFileOperationKindDecompressingAfterDownloading", optional=true)
-    public static native NSString ProgressFileOperationKindDecompressingAfterDownloading();
-    /**
-     * @since Available in iOS 7.0 and later.
-     */
-    @GlobalValue(symbol="NSProgressFileOperationKindReceiving", optional=true)
-    public static native NSString ProgressFileOperationKindReceiving();
-    /**
-     * @since Available in iOS 7.0 and later.
-     */
-    @GlobalValue(symbol="NSProgressFileOperationKindCopying", optional=true)
-    public static native NSString ProgressFileOperationKindCopying();
-    /**
-     * @since Available in iOS 7.0 and later.
-     */
-    @GlobalValue(symbol="NSProgressFileURLKey", optional=true)
-    public static native NSString ProgressFileURLKey();
-    /**
-     * @since Available in iOS 7.0 and later.
-     */
-    @GlobalValue(symbol="NSProgressFileTotalCountKey", optional=true)
-    public static native NSString ProgressFileTotalCountKey();
-    /**
-     * @since Available in iOS 7.0 and later.
-     */
-    @GlobalValue(symbol="NSProgressFileCompletedCountKey", optional=true)
-    public static native NSString ProgressFileCompletedCountKey();
-    /**
-     * @since Available in iOS 5.0 and later.
-     */
-    @GlobalValue(symbol="NSUbiquitousKeyValueStoreDidChangeExternallyNotification", optional=true)
-    public static native NSString UbiquitousKeyValueStoreDidChangeExternallyNotification();
-    /**
-     * @since Available in iOS 5.0 and later.
-     */
-    @GlobalValue(symbol="NSUbiquitousKeyValueStoreChangeReasonKey", optional=true)
-    public static native NSString UbiquitousKeyValueStoreChangeReasonKey();
-    /**
-     * @since Available in iOS 5.0 and later.
-     */
-    @GlobalValue(symbol="NSUbiquitousKeyValueStoreChangedKeysKey", optional=true)
-    public static native NSString UbiquitousKeyValueStoreChangedKeysKey();
-    /**
-     * @since Available in iOS 5.0 and later.
-     */
-    @GlobalValue(symbol="NSUndoManagerGroupIsDiscardableKey", optional=true)
-    public static native NSString UndoManagerGroupIsDiscardableKey();
-    /**
-     * @since Available in iOS 3.0 and later.
-     */
-    @GlobalValue(symbol="NSUndoManagerCheckpointNotification", optional=true)
-    public static native NSString UndoManagerCheckpointNotification();
-    /**
-     * @since Available in iOS 3.0 and later.
-     */
-    @GlobalValue(symbol="NSUndoManagerWillUndoChangeNotification", optional=true)
-    public static native NSString UndoManagerWillUndoChangeNotification();
-    /**
-     * @since Available in iOS 3.0 and later.
-     */
-    @GlobalValue(symbol="NSUndoManagerWillRedoChangeNotification", optional=true)
-    public static native NSString UndoManagerWillRedoChangeNotification();
-    /**
-     * @since Available in iOS 3.0 and later.
-     */
-    @GlobalValue(symbol="NSUndoManagerDidUndoChangeNotification", optional=true)
-    public static native NSString UndoManagerDidUndoChangeNotification();
-    /**
-     * @since Available in iOS 3.0 and later.
-     */
-    @GlobalValue(symbol="NSUndoManagerDidRedoChangeNotification", optional=true)
-    public static native NSString UndoManagerDidRedoChangeNotification();
-    /**
-     * @since Available in iOS 3.0 and later.
-     */
-    @GlobalValue(symbol="NSUndoManagerDidOpenUndoGroupNotification", optional=true)
-    public static native NSString UndoManagerDidOpenUndoGroupNotification();
-    /**
-     * @since Available in iOS 3.0 and later.
-     */
-    @GlobalValue(symbol="NSUndoManagerWillCloseUndoGroupNotification", optional=true)
-    public static native NSString UndoManagerWillCloseUndoGroupNotification();
-    /**
-     * @since Available in iOS 5.0 and later.
-     */
-    @GlobalValue(symbol="NSUndoManagerDidCloseUndoGroupNotification", optional=true)
-    public static native NSString UndoManagerDidCloseUndoGroupNotification();
-    /**
-     * @since Available in iOS 7.0 and later.
-     */
-    @GlobalValue(symbol="NSURLSessionTransferSizeUnknown", optional=true)
-    public static native long URLSessionTransferSizeUnknown();
-    /**
-     * @since Available in iOS 7.0 and later.
-     */
     @GlobalValue(symbol="NSURLSessionDownloadTaskResumeData", optional=true)
-    public static native NSString URLSessionDownloadTaskResumeData();
+    public static native String URLSessionDownloadTaskResumeData();
     /*</methods>*/
 }

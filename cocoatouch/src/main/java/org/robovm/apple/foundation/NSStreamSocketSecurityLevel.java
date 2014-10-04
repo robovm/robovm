@@ -19,6 +19,7 @@ package org.robovm.apple.foundation;
 import java.io.*;
 import java.nio.*;
 import java.util.*;
+
 import org.robovm.objc.*;
 import org.robovm.objc.annotation.*;
 import org.robovm.objc.block.*;
@@ -36,23 +37,23 @@ import org.robovm.apple.security.*;
 
 /*<javadoc>*/
 /*</javadoc>*/
-@Marshaler(NSURLProtectionSpaceProtocol.Marshaler.class)
+@Marshaler(NSStreamSocketSecurityLevel.Marshaler.class)
 /*<annotations>*/@Library("Foundation")/*</annotations>*/
-/*<visibility>*/public/*</visibility>*/ class /*<name>*/NSURLProtectionSpaceProtocol/*</name>*/ 
+/*<visibility>*/public/*</visibility>*/ class /*<name>*/NSStreamSocketSecurityLevel/*</name>*/ 
     extends /*<extends>*/Object/*</extends>*/ 
     /*<implements>*//*</implements>*/ {
 
     public static class Marshaler {
         @MarshalsPointer
-        public static NSURLProtectionSpaceProtocol toObject(Class<NSURLProtectionSpaceProtocol> cls, long handle, long flags) {
+        public static NSStreamSocketSecurityLevel toObject(Class<NSStreamSocketSecurityLevel> cls, long handle, long flags) {
             NSString o = (NSString) NSObject.Marshaler.toObject(NSString.class, handle, flags);
             if (o == null) {
                 return null;
             }
-            return NSURLProtectionSpaceProtocol.valueOf(o);
+            return NSStreamSocketSecurityLevel.valueOf(o);
         }
         @MarshalsPointer
-        public static long toNative(NSURLProtectionSpaceProtocol o, long flags) {
+        public static long toNative(NSStreamSocketSecurityLevel o, long flags) {
             if (o == null) {
                 return 0L;
             }
@@ -62,25 +63,33 @@ import org.robovm.apple.security.*;
     
     /*<ptr>*/
     /*</ptr>*/
-    /*<bind>*/static { Bro.bind(NSURLProtectionSpaceProtocol.class); }/*</bind>*/
+    /*<bind>*/static { Bro.bind(NSStreamSocketSecurityLevel.class); }/*</bind>*/
     /*<constants>*//*</constants>*/
     /**
      * @since Available in iOS 2.0 and later.
      */
-    public static final NSURLProtectionSpaceProtocol HTTP = new NSURLProtectionSpaceProtocol("HTTPValue");
+    public static final NSStreamSocketSecurityLevel None = new NSStreamSocketSecurityLevel("NoneValue");
     /**
      * @since Available in iOS 2.0 and later.
      */
-    public static final NSURLProtectionSpaceProtocol HTTPS = new NSURLProtectionSpaceProtocol("HTTPSValue");
+    public static final NSStreamSocketSecurityLevel SSLv2 = new NSStreamSocketSecurityLevel("SSLv2Value");
     /**
      * @since Available in iOS 2.0 and later.
      */
-    public static final NSURLProtectionSpaceProtocol FTP = new NSURLProtectionSpaceProtocol("FTPValue");
+    public static final NSStreamSocketSecurityLevel SSLv3 = new NSStreamSocketSecurityLevel("SSLv3Value");
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
+    public static final NSStreamSocketSecurityLevel TLSv1 = new NSStreamSocketSecurityLevel("TLSv1Value");
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
+    public static final NSStreamSocketSecurityLevel NegotiatedSSL = new NSStreamSocketSecurityLevel("NegotiatedSSLValue");
     
-    private static NSURLProtectionSpaceProtocol[] values = new NSURLProtectionSpaceProtocol[] {HTTP, HTTPS, FTP};
+    private static NSStreamSocketSecurityLevel[] values = new NSStreamSocketSecurityLevel[] {None, SSLv2, SSLv3, TLSv1, NegotiatedSSL};
     private final LazyGlobalValue<NSString> lazyGlobalValue;
     
-    private NSURLProtectionSpaceProtocol(String getterName) {
+    private NSStreamSocketSecurityLevel(String getterName) {
         lazyGlobalValue = new LazyGlobalValue<>(getClass(), getterName);
     }
     /*<constructors>*//*</constructors>*/
@@ -90,30 +99,40 @@ import org.robovm.apple.security.*;
         return lazyGlobalValue.value();
     }
     
-    public static NSURLProtectionSpaceProtocol valueOf(NSString value) {
-        for (NSURLProtectionSpaceProtocol v : values) {
+    public static NSStreamSocketSecurityLevel valueOf(NSString value) {
+        for (NSStreamSocketSecurityLevel v : values) {
             if (v.value().equals(value)) {
                 return v;
             }
         }
         throw new IllegalArgumentException("No constant with value " + value + " found in " 
-            + /*<name>*/NSURLProtectionSpaceProtocol/*</name>*/.class.getName());
+            + /*<name>*/NSStreamSocketSecurityLevel/*</name>*/.class.getName());
     }
     /*<methods>*/
     /**
      * @since Available in iOS 2.0 and later.
      */
-    @GlobalValue(symbol="NSURLProtectionSpaceHTTP", optional=true)
-    protected static native NSString HTTPValue();
+    @GlobalValue(symbol="NSStreamSocketSecurityLevelNone", optional=true)
+    protected static native NSString NoneValue();
     /**
      * @since Available in iOS 2.0 and later.
      */
-    @GlobalValue(symbol="NSURLProtectionSpaceHTTPS", optional=true)
-    protected static native NSString HTTPSValue();
+    @GlobalValue(symbol="NSStreamSocketSecurityLevelSSLv2", optional=true)
+    protected static native NSString SSLv2Value();
     /**
      * @since Available in iOS 2.0 and later.
      */
-    @GlobalValue(symbol="NSURLProtectionSpaceFTP", optional=true)
-    protected static native NSString FTPValue();
+    @GlobalValue(symbol="NSStreamSocketSecurityLevelSSLv3", optional=true)
+    protected static native NSString SSLv3Value();
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
+    @GlobalValue(symbol="NSStreamSocketSecurityLevelTLSv1", optional=true)
+    protected static native NSString TLSv1Value();
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
+    @GlobalValue(symbol="NSStreamSocketSecurityLevelNegotiatedSSL", optional=true)
+    protected static native NSString NegotiatedSSLValue();
     /*</methods>*/
 }

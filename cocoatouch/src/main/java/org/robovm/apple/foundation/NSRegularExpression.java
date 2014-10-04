@@ -64,7 +64,7 @@ import org.robovm.apple.security.*;
     @Method(selector = "initWithPattern:options:error:")
     protected native @Pointer long initWithPattern$options$error$(String pattern, NSRegularExpressionOptions options, NSError.NSErrorPtr error);
     @Method(selector = "escapedPatternForString:")
-    public static native String escapedPattern(String string);
+    public static native String getEscapedPattern(String string);
     @Method(selector = "enumerateMatchesInString:options:range:usingBlock:")
     public native void enumerateMatches(String string, NSMatchingOptions options, @ByVal NSRange range, @Block VoidBlock3<NSTextCheckingResult, NSMatchingFlags, BooleanPtr> block);
     @Method(selector = "matchesInString:options:range:")
@@ -82,7 +82,7 @@ import org.robovm.apple.security.*;
     @Method(selector = "replacementStringForResult:inString:offset:template:")
     public native String getReplacementString(NSTextCheckingResult result, String string, @MachineSizedSInt long offset, String templ);
     @Method(selector = "escapedTemplateForString:")
-    public static native String escapedTemplate(String string);
+    public static native String getEscapedTemplate(String string);
     @Method(selector = "encodeWithCoder:")
     public native void encode(NSCoder aCoder);
     /*</methods>*/

@@ -96,7 +96,7 @@ import org.robovm.apple.security.*;
     @Method(selector = "dataForKey:")
     public native NSData getData(String defaultName);
     @Method(selector = "stringArrayForKey:")
-    public native NSArray<?> stringArrayForKey$(String defaultName);
+    public native @org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String> getStringArray(String defaultName);
     @Method(selector = "integerForKey:")
     public native @MachineSizedSInt long getInteger(String defaultName);
     @Method(selector = "floatForKey:")
@@ -132,7 +132,7 @@ import org.robovm.apple.security.*;
     @Method(selector = "dictionaryRepresentation")
     public native NSDictionary<?, ?> asDictionary();
     @Method(selector = "volatileDomainNames")
-    public native NSArray<NSString> getVolatileDomainNames();
+    public native @org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String> getVolatileDomainNames();
     @Method(selector = "volatileDomainForName:")
     public native NSDictionary<?, ?> getVolatileDomain(String domainName);
     @Method(selector = "setVolatileDomain:forName:")
@@ -145,7 +145,7 @@ import org.robovm.apple.security.*;
      */
     @Deprecated
     @Method(selector = "persistentDomainNames")
-    public native NSArray<NSString> getPersistentDomainNames();
+    public native @org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String> getPersistentDomainNames();
     @Method(selector = "persistentDomainForName:")
     public native NSDictionary<?, ?> getPersistentDomain(String domainName);
     @Method(selector = "setPersistentDomain:forName:")

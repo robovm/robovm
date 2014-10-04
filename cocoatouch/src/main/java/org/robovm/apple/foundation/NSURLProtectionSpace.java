@@ -54,7 +54,7 @@ import org.robovm.apple.security.*;
     /*</properties>*/
     /*<members>*//*</members>*/
     
-    public static NSURLProtectionSpace create(String host, long port, String protocol, String realm, String authenticationMethod) {
+    public static NSURLProtectionSpace create(String host, long port, NSURLProtectionSpaceProtocol protocol, String realm, NSURLAuthenticationMethod authenticationMethod) {
         NSURLProtectionSpace o = new NSURLProtectionSpace((SkipInit) null);
         long handle = o.initWithHost$port$protocol$realm$authenticationMethod$(host, port, protocol, realm, authenticationMethod);
         if (handle == 0) {
@@ -64,7 +64,7 @@ import org.robovm.apple.security.*;
         return o;
     }
 
-    public static NSURLProtectionSpace createProxy(String host, long port, String type, String realm, String authenticationMethod) {
+    public static NSURLProtectionSpace createProxy(String host, long port, NSURLProtectionSpaceProxyType type, String realm, NSURLAuthenticationMethod authenticationMethod) {
         NSURLProtectionSpace o = new NSURLProtectionSpace((SkipInit) null);
         long handle = o.initWithProxyHost$port$type$realm$authenticationMethod$(host, port, type, realm, authenticationMethod);
         if (handle == 0) {
@@ -76,9 +76,9 @@ import org.robovm.apple.security.*;
 
     /*<methods>*/
     @Method(selector = "initWithHost:port:protocol:realm:authenticationMethod:")
-    protected native @Pointer long initWithHost$port$protocol$realm$authenticationMethod$(String host, @MachineSizedSInt long port, String protocol, String realm, String authenticationMethod);
+    protected native @Pointer long initWithHost$port$protocol$realm$authenticationMethod$(String host, @MachineSizedSInt long port, NSURLProtectionSpaceProtocol protocol, String realm, NSURLAuthenticationMethod authenticationMethod);
     @Method(selector = "initWithProxyHost:port:type:realm:authenticationMethod:")
-    protected native @Pointer long initWithProxyHost$port$type$realm$authenticationMethod$(String host, @MachineSizedSInt long port, String type, String realm, String authenticationMethod);
+    protected native @Pointer long initWithProxyHost$port$type$realm$authenticationMethod$(String host, @MachineSizedSInt long port, NSURLProtectionSpaceProxyType type, String realm, NSURLAuthenticationMethod authenticationMethod);
     @Method(selector = "realm")
     public native String getRealm();
     @Method(selector = "receivesCredentialSecurely")
@@ -90,16 +90,16 @@ import org.robovm.apple.security.*;
     @Method(selector = "port")
     public native @MachineSizedSInt long getPort();
     @Method(selector = "proxyType")
-    public native String getProxyType();
+    public native NSURLProtectionSpaceProxyType getProxyType();
     @Method(selector = "protocol")
-    public native String getProtocol();
+    public native NSURLProtectionSpaceProtocol getProtocol();
     @Method(selector = "authenticationMethod")
-    public native String getAuthenticationMethod();
+    public native NSURLAuthenticationMethod getAuthenticationMethod();
     /**
      * @since Available in iOS 3.0 and later.
      */
     @Method(selector = "distinguishedNames")
-    public native NSArray<?> getDistinguishedNames();
+    public native @org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String> getDistinguishedNames();
     /**
      * @since Available in iOS 3.0 and later.
      */

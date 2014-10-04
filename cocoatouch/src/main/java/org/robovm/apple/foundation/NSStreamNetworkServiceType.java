@@ -36,23 +36,23 @@ import org.robovm.apple.security.*;
 
 /*<javadoc>*/
 /*</javadoc>*/
-@Marshaler(NSURLProtectionSpaceProtocol.Marshaler.class)
+@Marshaler(NSStreamNetworkServiceType.Marshaler.class)
 /*<annotations>*/@Library("Foundation")/*</annotations>*/
-/*<visibility>*/public/*</visibility>*/ class /*<name>*/NSURLProtectionSpaceProtocol/*</name>*/ 
+/*<visibility>*/public/*</visibility>*/ class /*<name>*/NSStreamNetworkServiceType/*</name>*/ 
     extends /*<extends>*/Object/*</extends>*/ 
     /*<implements>*//*</implements>*/ {
 
     public static class Marshaler {
         @MarshalsPointer
-        public static NSURLProtectionSpaceProtocol toObject(Class<NSURLProtectionSpaceProtocol> cls, long handle, long flags) {
+        public static NSStreamNetworkServiceType toObject(Class<NSStreamNetworkServiceType> cls, long handle, long flags) {
             NSString o = (NSString) NSObject.Marshaler.toObject(NSString.class, handle, flags);
             if (o == null) {
                 return null;
             }
-            return NSURLProtectionSpaceProtocol.valueOf(o);
+            return NSStreamNetworkServiceType.valueOf(o);
         }
         @MarshalsPointer
-        public static long toNative(NSURLProtectionSpaceProtocol o, long flags) {
+        public static long toNative(NSStreamNetworkServiceType o, long flags) {
             if (o == null) {
                 return 0L;
             }
@@ -62,25 +62,29 @@ import org.robovm.apple.security.*;
     
     /*<ptr>*/
     /*</ptr>*/
-    /*<bind>*/static { Bro.bind(NSURLProtectionSpaceProtocol.class); }/*</bind>*/
+    /*<bind>*/static { Bro.bind(NSStreamNetworkServiceType.class); }/*</bind>*/
     /*<constants>*//*</constants>*/
     /**
-     * @since Available in iOS 2.0 and later.
+     * @since Available in iOS 4.0 and later.
      */
-    public static final NSURLProtectionSpaceProtocol HTTP = new NSURLProtectionSpaceProtocol("HTTPValue");
+    public static final NSStreamNetworkServiceType VoIP = new NSStreamNetworkServiceType("VoIPValue");
     /**
-     * @since Available in iOS 2.0 and later.
+     * @since Available in iOS 5.0 and later.
      */
-    public static final NSURLProtectionSpaceProtocol HTTPS = new NSURLProtectionSpaceProtocol("HTTPSValue");
+    public static final NSStreamNetworkServiceType Video = new NSStreamNetworkServiceType("VideoValue");
     /**
-     * @since Available in iOS 2.0 and later.
+     * @since Available in iOS 5.0 and later.
      */
-    public static final NSURLProtectionSpaceProtocol FTP = new NSURLProtectionSpaceProtocol("FTPValue");
+    public static final NSStreamNetworkServiceType Background = new NSStreamNetworkServiceType("BackgroundValue");
+    /**
+     * @since Available in iOS 5.0 and later.
+     */
+    public static final NSStreamNetworkServiceType Voice = new NSStreamNetworkServiceType("VoiceValue");
     
-    private static NSURLProtectionSpaceProtocol[] values = new NSURLProtectionSpaceProtocol[] {HTTP, HTTPS, FTP};
+    private static NSStreamNetworkServiceType[] values = new NSStreamNetworkServiceType[] {VoIP, Video, Background, Voice};
     private final LazyGlobalValue<NSString> lazyGlobalValue;
     
-    private NSURLProtectionSpaceProtocol(String getterName) {
+    private NSStreamNetworkServiceType(String getterName) {
         lazyGlobalValue = new LazyGlobalValue<>(getClass(), getterName);
     }
     /*<constructors>*//*</constructors>*/
@@ -90,30 +94,35 @@ import org.robovm.apple.security.*;
         return lazyGlobalValue.value();
     }
     
-    public static NSURLProtectionSpaceProtocol valueOf(NSString value) {
-        for (NSURLProtectionSpaceProtocol v : values) {
+    public static NSStreamNetworkServiceType valueOf(NSString value) {
+        for (NSStreamNetworkServiceType v : values) {
             if (v.value().equals(value)) {
                 return v;
             }
         }
         throw new IllegalArgumentException("No constant with value " + value + " found in " 
-            + /*<name>*/NSURLProtectionSpaceProtocol/*</name>*/.class.getName());
+            + /*<name>*/NSStreamNetworkServiceType/*</name>*/.class.getName());
     }
     /*<methods>*/
     /**
-     * @since Available in iOS 2.0 and later.
+     * @since Available in iOS 4.0 and later.
      */
-    @GlobalValue(symbol="NSURLProtectionSpaceHTTP", optional=true)
-    protected static native NSString HTTPValue();
+    @GlobalValue(symbol="NSStreamNetworkServiceTypeVoIP", optional=true)
+    protected static native NSString VoIPValue();
     /**
-     * @since Available in iOS 2.0 and later.
+     * @since Available in iOS 5.0 and later.
      */
-    @GlobalValue(symbol="NSURLProtectionSpaceHTTPS", optional=true)
-    protected static native NSString HTTPSValue();
+    @GlobalValue(symbol="NSStreamNetworkServiceTypeVideo", optional=true)
+    protected static native NSString VideoValue();
     /**
-     * @since Available in iOS 2.0 and later.
+     * @since Available in iOS 5.0 and later.
      */
-    @GlobalValue(symbol="NSURLProtectionSpaceFTP", optional=true)
-    protected static native NSString FTPValue();
+    @GlobalValue(symbol="NSStreamNetworkServiceTypeBackground", optional=true)
+    protected static native NSString BackgroundValue();
+    /**
+     * @since Available in iOS 5.0 and later.
+     */
+    @GlobalValue(symbol="NSStreamNetworkServiceTypeVoice", optional=true)
+    protected static native NSString VoiceValue();
     /*</methods>*/
 }

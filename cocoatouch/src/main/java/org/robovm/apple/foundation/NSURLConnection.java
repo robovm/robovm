@@ -65,6 +65,12 @@ import org.robovm.apple.newsstandkit.NKAssetDownload;
         return org.robovm.apple.newsstandkit.NSURLConnectionExtensions.getNewsstandAssetDownload(this);
     }
     
+    public void scheduleInRunLoop(NSRunLoop aRunLoop, NSRunLoopMode mode) {
+        scheduleInRunLoop(aRunLoop, mode.value());
+    }
+    public void unscheduleFromRunLoop(NSRunLoop aRunLoop, NSRunLoopMode mode) {
+        unscheduleFromRunLoop(aRunLoop, mode.value());
+    }
     /*<methods>*/
     /**
      * @since Available in iOS 2.0 and later.

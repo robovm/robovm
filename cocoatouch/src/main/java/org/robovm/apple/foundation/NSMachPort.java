@@ -58,6 +58,12 @@ import org.robovm.apple.security.*;
     
     /*</properties>*/
     /*<members>*//*</members>*/
+    public void scheduleInRunLoop(NSRunLoop aRunLoop, NSRunLoopMode mode) {
+        scheduleInRunLoop(aRunLoop, mode.value());
+    }
+    public void removeFromRunLoop(NSRunLoop aRunLoop, NSRunLoopMode mode) {
+        removeFromRunLoop(aRunLoop, mode.value());
+    }
     /*<methods>*/
     @Method(selector = "initWithMachPort:")
     protected native @Pointer long initWithMachPort$(int machPort);
@@ -73,15 +79,15 @@ import org.robovm.apple.security.*;
     @Method(selector = "machPort")
     public native int getMachPort();
     @Method(selector = "scheduleInRunLoop:forMode:")
-    public native void scheduleInRunLoop$forMode$(NSRunLoop runLoop, String mode);
+    public native void scheduleInRunLoop(NSRunLoop runLoop, String mode);
     @Method(selector = "removeFromRunLoop:forMode:")
-    public native void removeFromRunLoop$forMode$(NSRunLoop runLoop, String mode);
+    public native void removeFromRunLoop(NSRunLoop runLoop, String mode);
     @Method(selector = "portWithMachPort:")
     public static native NSPort create(int machPort);
     /**
      * @since Available in iOS 2.0 and later.
      */
     @Method(selector = "portWithMachPort:options:")
-    public static native NSPort portWithMachPort$options$(int machPort, NSMachPortRights f);
+    public static native NSPort create(int machPort, NSMachPortRights f);
     /*</methods>*/
 }

@@ -51,45 +51,45 @@ import org.robovm.apple.security.*;
     /*</properties>*/
     /*<methods>*/
     @Method(selector = "parserDidStartDocument:")
-    void parserDidStartDocument$(NSXMLParser parser);
+    void didStartDocument(NSXMLParser parser);
     @Method(selector = "parserDidEndDocument:")
-    void parserDidEndDocument$(NSXMLParser parser);
+    void didEndDocument(NSXMLParser parser);
     @Method(selector = "parser:foundNotationDeclarationWithName:publicID:systemID:")
-    void parser$foundNotationDeclarationWithName$publicID$systemID$(NSXMLParser parser, String name, String publicID, String systemID);
+    void foundNotationDeclaration(NSXMLParser parser, String name, String publicID, String systemID);
     @Method(selector = "parser:foundUnparsedEntityDeclarationWithName:publicID:systemID:notationName:")
-    void parser$foundUnparsedEntityDeclarationWithName$publicID$systemID$notationName$(NSXMLParser parser, String name, String publicID, String systemID, String notationName);
+    void foundUnparsedEntityDeclaration(NSXMLParser parser, String name, String publicID, String systemID, String notationName);
     @Method(selector = "parser:foundAttributeDeclarationWithName:forElement:type:defaultValue:")
-    void parser$foundAttributeDeclarationWithName$forElement$type$defaultValue$(NSXMLParser parser, String attributeName, String elementName, String type, String defaultValue);
+    void foundAttributeDeclaration(NSXMLParser parser, String attributeName, String elementName, String type, String defaultValue);
     @Method(selector = "parser:foundElementDeclarationWithName:model:")
-    void parser$foundElementDeclarationWithName$model$(NSXMLParser parser, String elementName, String model);
+    void foundElementDeclaration(NSXMLParser parser, String elementName, String model);
     @Method(selector = "parser:foundInternalEntityDeclarationWithName:value:")
-    void parser$foundInternalEntityDeclarationWithName$value$(NSXMLParser parser, String name, String value);
+    void foundInternalEntityDeclaration(NSXMLParser parser, String name, String value);
     @Method(selector = "parser:foundExternalEntityDeclarationWithName:publicID:systemID:")
-    void parser$foundExternalEntityDeclarationWithName$publicID$systemID$(NSXMLParser parser, String name, String publicID, String systemID);
+    void foundExternalEntityDeclaration(NSXMLParser parser, String name, String publicID, String systemID);
     @Method(selector = "parser:didStartElement:namespaceURI:qualifiedName:attributes:")
-    void parser$didStartElement$namespaceURI$qualifiedName$attributes$(NSXMLParser parser, String elementName, String namespaceURI, String qName, NSDictionary<?, ?> attributeDict);
+    void didStartElement(NSXMLParser parser, String elementName, String namespaceURI, String qName, @org.robovm.rt.bro.annotation.Marshaler(NSDictionary.AsStringMapMarshaler.class) Map<String, NSObject> attributeDict);
     @Method(selector = "parser:didEndElement:namespaceURI:qualifiedName:")
-    void parser$didEndElement$namespaceURI$qualifiedName$(NSXMLParser parser, String elementName, String namespaceURI, String qName);
+    void didEndElement(NSXMLParser parser, String elementName, String namespaceURI, String qName);
     @Method(selector = "parser:didStartMappingPrefix:toURI:")
-    void parser$didStartMappingPrefix$toURI$(NSXMLParser parser, String prefix, String namespaceURI);
+    void didStartMappingPrefix(NSXMLParser parser, String prefix, String namespaceURI);
     @Method(selector = "parser:didEndMappingPrefix:")
-    void parser$didEndMappingPrefix$(NSXMLParser parser, String prefix);
+    void didEndMappingPrefix(NSXMLParser parser, String prefix);
     @Method(selector = "parser:foundCharacters:")
-    void parser$foundCharacters$(NSXMLParser parser, String string);
+    void foundCharacters(NSXMLParser parser, String string);
     @Method(selector = "parser:foundIgnorableWhitespace:")
-    void parser$foundIgnorableWhitespace$(NSXMLParser parser, String whitespaceString);
+    void foundIgnorableWhitespace(NSXMLParser parser, String whitespaceString);
     @Method(selector = "parser:foundProcessingInstructionWithTarget:data:")
-    void parser$foundProcessingInstructionWithTarget$data$(NSXMLParser parser, String target, String data);
+    void foundProcessingInstruction(NSXMLParser parser, String target, String data);
     @Method(selector = "parser:foundComment:")
-    void parser$foundComment$(NSXMLParser parser, String comment);
+    void foundComment(NSXMLParser parser, String comment);
     @Method(selector = "parser:foundCDATA:")
-    void parser$foundCDATA$(NSXMLParser parser, NSData CDATABlock);
+    void foundCDATA(NSXMLParser parser, NSData CDATABlock);
     @Method(selector = "parser:resolveExternalEntityName:systemID:")
-    NSData parser$resolveExternalEntityName$systemID$(NSXMLParser parser, String name, String systemID);
+    NSData resolveExternalEntityName(NSXMLParser parser, String name, String systemID);
     @Method(selector = "parser:parseErrorOccurred:")
-    void parser$parseErrorOccurred$(NSXMLParser parser, NSError parseError);
+    void parseErrorOccurred(NSXMLParser parser, NSError parseError);
     @Method(selector = "parser:validationErrorOccurred:")
-    void parser$validationErrorOccurred$(NSXMLParser parser, NSError validationError);
+    void validationErrorOccurred(NSXMLParser parser, NSError validationError);
     /*</methods>*/
     /*<adapter>*/
     /*</adapter>*/

@@ -55,6 +55,6 @@ import org.robovm.apple.security.*;
     /*<members>*//*</members>*/
     /*<methods>*/
     @Method(selector = "cancelByProducingResumeData:")
-    public native void cancelByProducingResumeData$(@Block VoidBlock1<NSData> completionHandler);
+    public native void cancelByProducingResumeData(@Block VoidBlock1<NSData> completionHandler);
     /*</methods>*/
 }

@@ -82,10 +82,10 @@ import org.robovm.apple.security.*;
     @Method(selector = "commentURL")
     public native NSURL getCommentURL();
     @Method(selector = "portList")
-    public native NSArray<NSNumber> getPortList();
+    public native @org.robovm.rt.bro.annotation.Marshaler(NSArray.AsIntegerListMarshaler.class) List<Integer> getPortList();
     @Method(selector = "requestHeaderFieldsWithCookies:")
-    public static native NSDictionary<NSString, ?> getRequestHeaderFieldsWithCookies(NSArray<NSHTTPCookie> cookies);
+    public static native @org.robovm.rt.bro.annotation.Marshaler(NSDictionary.AsStringStringMapMarshaler.class) Map<String, String> getRequestHeaderFieldsWithCookies(NSArray<NSHTTPCookie> cookies);
     @Method(selector = "cookiesWithResponseHeaderFields:forURL:")
-    public static native NSArray<NSHTTPCookie> getCookiesWithResponseHeaderFields(NSDictionary<NSString, ?> headerFields, NSURL url);
+    public static native NSArray<NSHTTPCookie> getCookiesWithResponseHeaderFields(@org.robovm.rt.bro.annotation.Marshaler(NSDictionary.AsStringStringMapMarshaler.class) Map<String, String> headerFields, NSURL url);
     /*</methods>*/
 }

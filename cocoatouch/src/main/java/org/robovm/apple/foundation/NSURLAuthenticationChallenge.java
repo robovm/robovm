@@ -48,8 +48,8 @@ import org.robovm.apple.security.*;
     /*<constructors>*/
     public NSURLAuthenticationChallenge() {}
     protected NSURLAuthenticationChallenge(SkipInit skipInit) { super(skipInit); }
-    public NSURLAuthenticationChallenge(NSURLProtectionSpace space, NSURLCredential credential, @MachineSizedSInt long previousFailureCount, NSURLResponse response, NSError error, NSURLAuthenticationChallengeSender sender) { super((SkipInit) null); initObject(initWithProtectionSpace$proposedCredential$previousFailureCount$failureResponse$error$sender$(space, credential, previousFailureCount, response, error, sender)); }
-    public NSURLAuthenticationChallenge(NSURLAuthenticationChallenge challenge, NSURLAuthenticationChallengeSender sender) { super((SkipInit) null); initObject(initWithAuthenticationChallenge$sender$(challenge, sender)); }
+    public NSURLAuthenticationChallenge(NSURLProtectionSpace space, NSURLCredential credential, @MachineSizedSInt long previousFailureCount, NSURLResponse response, NSError error, NSURLAuthenticationChallengeSender sender) { super((SkipInit) null); initObject(init(space, credential, previousFailureCount, response, error, sender)); }
+    public NSURLAuthenticationChallenge(NSURLAuthenticationChallenge challenge, NSURLAuthenticationChallengeSender sender) { super((SkipInit) null); initObject(init(challenge, sender)); }
     /*</constructors>*/
     /*<properties>*/
     
@@ -57,20 +57,20 @@ import org.robovm.apple.security.*;
     /*<members>*//*</members>*/
     /*<methods>*/
     @Method(selector = "initWithProtectionSpace:proposedCredential:previousFailureCount:failureResponse:error:sender:")
-    protected native @Pointer long initWithProtectionSpace$proposedCredential$previousFailureCount$failureResponse$error$sender$(NSURLProtectionSpace space, NSURLCredential credential, @MachineSizedSInt long previousFailureCount, NSURLResponse response, NSError error, NSURLAuthenticationChallengeSender sender);
+    protected native @Pointer long init(NSURLProtectionSpace space, NSURLCredential credential, @MachineSizedSInt long previousFailureCount, NSURLResponse response, NSError error, NSURLAuthenticationChallengeSender sender);
     @Method(selector = "initWithAuthenticationChallenge:sender:")
-    protected native @Pointer long initWithAuthenticationChallenge$sender$(NSURLAuthenticationChallenge challenge, NSURLAuthenticationChallengeSender sender);
+    protected native @Pointer long init(NSURLAuthenticationChallenge challenge, NSURLAuthenticationChallengeSender sender);
     @Method(selector = "protectionSpace")
-    public native NSURLProtectionSpace protectionSpace();
+    public native NSURLProtectionSpace getProtectionSpace();
     @Method(selector = "proposedCredential")
-    public native NSURLCredential proposedCredential();
+    public native NSURLCredential getProposedCredential();
     @Method(selector = "previousFailureCount")
-    public native @MachineSizedSInt long previousFailureCount();
+    public native @MachineSizedSInt long getPreviousFailureCount();
     @Method(selector = "failureResponse")
-    public native NSURLResponse failureResponse();
+    public native NSURLResponse getFailureResponse();
     @Method(selector = "error")
-    public native NSError error();
+    public native NSError getError();
     @Method(selector = "sender")
-    public native NSURLAuthenticationChallengeSender sender();
+    public native NSURLAuthenticationChallengeSender getSender();
     /*</methods>*/
 }

@@ -146,7 +146,7 @@ import org.robovm.apple.security.*;
      * @since Available in iOS 4.0 and later.
      */
     @Method(selector = "callStackSymbols")
-    public static native NSArray<NSString> getCallStackSymbols();
+    public static native @org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String> getCallStackSymbols();
     /**
      * @since Available in iOS 2.0 and later.
      */

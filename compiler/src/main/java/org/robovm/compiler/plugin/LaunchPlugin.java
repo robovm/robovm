@@ -20,8 +20,7 @@ import org.robovm.compiler.config.Config;
 import org.robovm.compiler.target.LaunchParameters;
 
 /**
- * Plugin interface which makes it possible to hook into the compilation
- * process and modify classes and methods during the compilation.
+ * Plugin interface which makes it possible to hook into launch process
  */
 public abstract class LaunchPlugin extends Plugin {
     /**
@@ -38,4 +37,9 @@ public abstract class LaunchPlugin extends Plugin {
      * Called when the launch failed
      */
     public abstract void launchFailed(Config config, LaunchParameters parameters);
+    
+    /**
+     * Called when the plugin should terminate
+     */
+    public abstract void cleanup();
 }

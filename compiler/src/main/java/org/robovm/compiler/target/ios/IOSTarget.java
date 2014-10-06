@@ -199,7 +199,6 @@ public class IOSTarget extends AbstractTarget {
             .closeOutOnExit(true)
             .args(launchParameters.getArguments().toArray(new String[0]))
             .env(env)
-            .debug(config.isDebug()) // FIXME only used for debugging purposes
             .forward(forwardPort)
             .appPathCallback(callback)
             .xcodePath(ToolchainUtil.findXcodePath())

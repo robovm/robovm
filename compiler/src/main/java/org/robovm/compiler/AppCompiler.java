@@ -576,8 +576,6 @@ public class AppCompiler {
                     } else {
                         simParams.setDeviceType(type);
                     }
-                } else if (launchParameters instanceof IOSDeviceLaunchParameters && compiler.config.isDebug()) {
-                    ((IOSDeviceLaunchParameters) launchParameters).setForwardPort(AppLauncher.DEFAULT_FORWARD_PORT);
                 }
                 launchParameters.setArguments(runArgs);
                 launch(compiler, launchParameters);
@@ -610,6 +608,10 @@ public class AppCompiler {
                 plugin.launchFailed(compiler.config, launchParameters);
             }
             throw e;
+        } finally {
+            for (LaunchPlugin plugin : compiler.config.getLaunchPlugins()) {
+                plugin.cleanup();
+            }
         }
     }
     

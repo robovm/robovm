@@ -94,7 +94,29 @@ class CONSTANT_InterfaceMethodref_info extends cp_info implements ICONSTANT_Meth
    }
 
    public Value createJimpleConstantValue(cp_info[] constant_pool) {
-	   throw new UnsupportedOperationException("cannot convert to Jimple: "+typeName());
+       // RoboVM note: Copied from CONSTANT_Methodref_info
+       CONSTANT_Class_info cc = (CONSTANT_Class_info) (constant_pool[class_index]);
+       CONSTANT_NameAndType_info cn = (CONSTANT_NameAndType_info) (constant_pool[name_and_type_index]);
+       String className = cc.toString(constant_pool).replace('/', '.'); // RoboVM note: Replace / with .
+       String nameAndType = cn.toString(constant_pool);
+       String name = nameAndType.substring(0, nameAndType.indexOf(":"));
+       String typeName = nameAndType.substring(nameAndType.indexOf(":") + 1);
+
+       List parameterTypes;
+       Type returnType;
+
+       // Generate parameters & returnType & parameterTypes
+       {
+               Type[] types = Util.v().jimpleTypesOfFieldOrMethodDescriptor(
+                               typeName);
+               parameterTypes = new ArrayList();
+               for (int k = 0; k < types.length - 1; k++) {
+                       parameterTypes.add(types[k]);
+               }
+               returnType = types[types.length - 1];
+       }
+
+       return Jimple.v().newStaticInvokeExpr(Scene.v().makeMethodRef(Scene.v().getSootClass(className), name, parameterTypes, returnType, true));
    }
 	public int getClassIndex() {
 		return class_index;

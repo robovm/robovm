@@ -823,7 +823,7 @@ public class ClassCompiler {
                     Global itableStruct = new Global(name, Linkage._private,
                             new StructureConstantBuilder()
                                 .add(mb.getGlobalRef(typeInfoName))
-                                .add(itable.getStruct(sootClass)).build(), true);
+                                .add(itable.getStruct(mb, sootClass)).build(), true);
                     mb.addGlobal(itableStruct);
                     tables.add(new ConstantBitcast(itableStruct.ref(), I8_PTR));
                 }

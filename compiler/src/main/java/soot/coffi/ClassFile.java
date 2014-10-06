@@ -544,6 +544,11 @@ public class ClassFile {
              ((CONSTANT_MethodHandle_info)cp).kind = d.readByte();
              ((CONSTANT_MethodHandle_info)cp).target_index = d.readUnsignedShort();
              break;
+         case cp_info.CONSTANT_MethodType:
+             // RoboVM note: Handle CONSTANT_MethodType_info structures
+             cp = new CONSTANT_MethodType_info();
+             ((CONSTANT_MethodType_info)cp).descriptor_index = d.readUnsignedShort();
+             break;
          case cp_info.CONSTANT_InvokeDynamic:
              cp = new CONSTANT_InvokeDynamic_info();
              ((CONSTANT_InvokeDynamic_info)cp).bootstrap_method_index = d.readUnsignedShort();

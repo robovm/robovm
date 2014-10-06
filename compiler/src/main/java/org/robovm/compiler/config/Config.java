@@ -57,6 +57,7 @@ import org.robovm.compiler.plugin.Plugin;
 import org.robovm.compiler.plugin.PluginArgument;
 import org.robovm.compiler.plugin.LaunchPlugin;
 import org.robovm.compiler.plugin.annotation.AnnotationImplPlugin;
+import org.robovm.compiler.plugin.lambda.LambdaPlugin;
 import org.robovm.compiler.plugin.objc.ObjCBlockPlugin;
 import org.robovm.compiler.plugin.objc.ObjCMemberPlugin;
 import org.robovm.compiler.plugin.objc.ObjCProtocolProxyPlugin;
@@ -178,7 +179,8 @@ public class Config {
                 new ObjCProtocolProxyPlugin(),
                 new ObjCBlockPlugin(),
                 new ObjCMemberPlugin(),
-                new AnnotationImplPlugin()
+                new AnnotationImplPlugin(),
+                new LambdaPlugin()
                 ));
         this.loadPluginsFromClassPath();
     }

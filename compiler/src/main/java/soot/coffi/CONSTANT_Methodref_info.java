@@ -96,7 +96,7 @@ class CONSTANT_Methodref_info extends cp_info implements ICONSTANT_Methodref_inf
 	public Value createJimpleConstantValue(cp_info[] constant_pool) {
 		CONSTANT_Class_info cc = (CONSTANT_Class_info) (constant_pool[class_index]);
 		CONSTANT_NameAndType_info cn = (CONSTANT_NameAndType_info) (constant_pool[name_and_type_index]);
-		String className = cc.toString(constant_pool);
+		String className = cc.toString(constant_pool).replace('/', '.'); // RoboVM note: Replace / with .
 		String nameAndType = cn.toString(constant_pool);
 		String name = nameAndType.substring(0, nameAndType.indexOf(":"));
 		String typeName = nameAndType.substring(nameAndType.indexOf(":") + 1);

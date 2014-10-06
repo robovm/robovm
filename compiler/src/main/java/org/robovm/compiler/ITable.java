@@ -27,6 +27,7 @@ import java.util.Map;
 
 import org.robovm.compiler.llvm.ArrayConstantBuilder;
 import org.robovm.compiler.llvm.ConstantBitcast;
+import org.robovm.compiler.llvm.FunctionDeclaration;
 import org.robovm.compiler.llvm.FunctionRef;
 import org.robovm.compiler.llvm.IntegerConstant;
 import org.robovm.compiler.llvm.StructureConstant;
@@ -44,7 +45,7 @@ public class ITable {
     private ITable(SootClass clazz) {
         ArrayList<Entry> entries = new ArrayList<Entry>();
         for (SootMethod method : clazz.getMethods()) {
-            if (!method.isStatic()) {
+            if (!method.isStatic() && method.isPublic()) {
                 // Interface methods may have a <clinit> method.
                 entries.add(new Entry(entries.size(), method));
             }
@@ -74,8 +75,12 @@ public class ITable {
     
     public StructureConstant getStruct() {
         ArrayConstantBuilder table = new ArrayConstantBuilder(I8_PTR);
-        for (int i = 0; i < entries.length; i++) {
-            table.add(new ConstantBitcast(BC_ABSTRACT_METHOD_CALLED, I8_PTR));
+        for (Entry entry : entries) {
+            if (!Modifier.isAbstract(entry.getModifiers())) {
+                table.add(new ConstantBitcast(entry.getFunctionRef(), I8_PTR));
+            } else {
+                table.add(new ConstantBitcast(BC_ABSTRACT_METHOD_CALLED, I8_PTR));
+            }
         }
         return new StructureConstantBuilder()
                     .add(new IntegerConstant((short) entries.length))
@@ -83,14 +88,24 @@ public class ITable {
                     .build();
     }
     
-    public StructureConstant getStruct(SootClass clazz) {
+    public StructureConstant getStruct(ModuleBuilder mb, SootClass clazz) {
         if (clazz.isInterface()) {
             throw new IllegalArgumentException("Expected a class got an interface: " + clazz.getName());
         }
         ArrayConstantBuilder table = new ArrayConstantBuilder(I8_PTR);
         for (Entry entry : entries) {
             ResolvedEntry resolvedEntry = entry.resolve(clazz);
-            if (resolvedEntry == null || Modifier.isAbstract(resolvedEntry.getModifiers())) {
+            if (resolvedEntry == null) {
+                FunctionRef defaultFunctionRef = entry.getFunctionRef();
+                if (defaultFunctionRef != null) {
+                    if (!mb.hasSymbol(defaultFunctionRef.getName())) {
+                        mb.addFunctionDeclaration(new FunctionDeclaration(defaultFunctionRef));
+                    }
+                    table.add(new ConstantBitcast(defaultFunctionRef, I8_PTR));
+                } else {
+                    table.add(new ConstantBitcast(BC_ABSTRACT_METHOD_CALLED, I8_PTR));
+                }
+            } else if (Modifier.isAbstract(resolvedEntry.getModifiers())) {
                 table.add(new ConstantBitcast(BC_ABSTRACT_METHOD_CALLED, I8_PTR));
             } else if (!Modifier.isPublic(resolvedEntry.getModifiers())) {
                 table.add(new ConstantBitcast(BC_NON_PUBLIC_METHOD_CALLED, I8_PTR));
@@ -122,14 +137,19 @@ public class ITable {
     
     public static class Entry {
         protected int index;
+        protected final int modifiers;
+        protected final String declaringClass;
         protected final String name;
         protected final String desc;
         
         Entry(int index, SootMethod method) {
-            this(index, method.getName(), Types.getDescriptor(method));
+            this(index, method.getModifiers(), method.getDeclaringClass().getName(),
+                    method.getName(), Types.getDescriptor(method));
         }
-        Entry(int index, String name, String desc) {
+        Entry(int index, int modifiers, String declaringClass, String name, String desc) {
             this.index = index;
+            this.modifiers = modifiers;
+            this.declaringClass = declaringClass;
             this.name = name;
             this.desc = desc;
         }
@@ -144,37 +164,6 @@ public class ITable {
                 clazz = clazz.hasSuperclass() ? clazz.getSuperclass() : null;
             }
             return null;
-        }
-        
-        public int getIndex() {
-            return index;
-        }
-        
-        public String getName() {
-            return name;
-        }
-        
-        public String getDesc() {
-            return desc;
-        }
-        @Override
-        public String toString() {
-            StringBuilder builder = new StringBuilder();
-            builder.append("Entry [index=").append(index)
-                    .append(", name=").append(name).append(", desc=")
-                    .append(desc).append("]");
-            return builder.toString();
-        }
-    }
-    
-    public static class ResolvedEntry extends Entry {
-        private final int modifiers;
-        private final String declaringClass;
-        
-        public ResolvedEntry(Entry entry, SootMethod method) {
-            super(entry.index, entry.name, entry.desc);
-            this.modifiers = method.getModifiers();
-            this.declaringClass = method.getDeclaringClass().getName();
         }
         
         public int getModifiers() {
@@ -196,6 +185,33 @@ public class ITable {
             return new FunctionRef(functionName, getFunctionType(desc, Modifier.isStatic(modifiers)));
         }
 
+        public int getIndex() {
+            return index;
+        }
+        
+        public String getName() {
+            return name;
+        }
+        
+        public String getDesc() {
+            return desc;
+        }
+        @Override
+        public String toString() {
+            StringBuilder builder = new StringBuilder();
+            builder.append("Entry [modifiers=").append(modifiers)
+                    .append(", declaringClass=").append(declaringClass)
+                    .append(", index=").append(index).append(", name=")
+                    .append(name).append(", desc=").append(desc).append("]");
+            return builder.toString();
+        }
+    }
+    
+    public static class ResolvedEntry extends Entry {
+        public ResolvedEntry(Entry entry, SootMethod method) {
+            super(entry.index, method);
+        }
+        
         @Override
         public String toString() {
             StringBuilder builder = new StringBuilder();

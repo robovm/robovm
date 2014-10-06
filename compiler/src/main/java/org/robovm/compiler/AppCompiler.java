@@ -58,12 +58,14 @@ import org.robovm.compiler.plugin.Plugin;
 import org.robovm.compiler.plugin.PluginArgument;
 import org.robovm.compiler.target.LaunchParameters;
 import org.robovm.compiler.target.ios.DeviceType;
+import org.robovm.compiler.target.ios.IOSDeviceLaunchParameters;
 import org.robovm.compiler.target.ios.IOSSimulatorLaunchParameters;
 import org.robovm.compiler.target.ios.IOSTarget;
 import org.robovm.compiler.target.ios.ProvisioningProfile;
 import org.robovm.compiler.target.ios.SDK;
 import org.robovm.compiler.target.ios.SigningIdentity;
 import org.robovm.compiler.util.AntPathMatcher;
+import org.robovm.libimobiledevice.util.AppLauncher;
 
 /**
  *
@@ -567,7 +569,8 @@ public class AppCompiler {
                 LaunchParameters launchParameters = compiler.config.getTarget().createLaunchParameters();
                 if (launchParameters instanceof IOSSimulatorLaunchParameters) {
                     IOSSimulatorLaunchParameters simParams = (IOSSimulatorLaunchParameters) launchParameters;
-                    DeviceType type = DeviceType.getDeviceType(compiler.config.getHome(), compiler.config.getIosDeviceType());
+                    DeviceType type = DeviceType.getDeviceType(compiler.config.getHome(),
+                            compiler.config.getIosDeviceType());
                     if (type == null) {
                         simParams.setDeviceType(DeviceType.getBestDeviceType(compiler.config.getHome()));
                     } else {
@@ -605,6 +608,10 @@ public class AppCompiler {
                 plugin.launchFailed(compiler.config, launchParameters);
             }
             throw e;
+        } finally {
+            for (LaunchPlugin plugin : compiler.config.getLaunchPlugins()) {
+                plugin.cleanup();
+            }
         }
     }
     

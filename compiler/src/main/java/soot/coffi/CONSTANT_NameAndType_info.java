@@ -58,8 +58,9 @@ class CONSTANT_NameAndType_info extends cp_info {
     */
    public String toString(cp_info constant_pool[]) {
       CONSTANT_Utf8_info ci = (CONSTANT_Utf8_info)(constant_pool[name_index]);
-      //CONSTANT_Utf8_info di = (CONSTANT_Utf8_info)(constant_pool[descriptor_index]);
-      return ci.convert(); // + "/" + di.convert();
+      // RoboVM note: Also get descriptor and concatenate with ':' as separator
+      CONSTANT_Utf8_info di = (CONSTANT_Utf8_info)(constant_pool[descriptor_index]);
+      return ci.convert() + ":" + di.convert();
    }
    /** Returns a String description of what kind of entry this is.
     * @return the String "nameandtype".

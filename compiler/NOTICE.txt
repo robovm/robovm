@@ -67,3 +67,8 @@ The RoboVM compiler includes the Bouncy Castle Crypto APIs for Java which is
 copyright 2000 - 2013, The Legion of the Bouncy Castle Inc. and released under 
 the MIT license.
 http://www.bouncycastle.org
+
+The RoboVM compiler includes code from the OpenJDK project which is copyright
+2012, 2013, Oracle and/or its affiliates and released under the GNU General
+Public License version 2 with the "Classpath" exception.
+http://openjdk.java.net/

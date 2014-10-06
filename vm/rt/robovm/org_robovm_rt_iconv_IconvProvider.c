@@ -6,7 +6,6 @@
 #include <wchar.h>
 #include <locale.h>
 #include <string.h>
-/* Header for class javaiconv_IconvProvider */
 
 #ifndef _Included_javaiconv_IconvProvider
 #define _Included_javaiconv_IconvProvider
@@ -26,10 +25,6 @@ extern "C" {
 #define TOO_MANY_FILES_OPEN 9
 #define UNSUPPORTED_CONVERSION 10
 #define OUT_OF_MEMORY 11
-
-//typedef struct {
-//   iconv_t pointer;
-//} IconvDescriptor;
 
 /*
  * Class:     javaiconv_IconvProvider
@@ -61,11 +56,9 @@ JNIEXPORT jlong JNICALL Java_org_robovm_rt_iconv_IconvProvider_initIconv
 	
 	int enabled = 1;
 	iconvctl(content_descriptor, ICONV_SET_DISCARD_ILSEQ, &enabled);
-	
-  	////printf("address: \n", &content_descriptor);
+
   	(*env)->ReleaseStringUTFChars(env, toEncoding, to_enc);
   	(*env)->ReleaseStringUTFChars(env, fromEncoding, from_enc);
-  	//printf("descriptor set:\n");
   	
   	return (jlong) content_descriptor;
   	
@@ -78,27 +71,20 @@ JNIEXPORT jlong JNICALL Java_org_robovm_rt_iconv_IconvProvider_initIconv
  */
 JNIEXPORT void JNICALL Java_org_robovm_rt_iconv_IconvProvider_releaseIconv
   (JNIEnv *env, jclass thisObj, jlong pointer) {
-	//IconvDescriptor* p = (IconvDescriptor*) pointer;
-	
+
 	iconv_t cd = (iconv_t) pointer;
-	//printf("deallocated address: %d\n", &cd);
 	iconv_close(cd);
-	//free(p);
-  }
+
+ }
   
  //Checks for errors after conv has been called
  int check_for_error(size_t result, const char* message) {
    	if (result == (size_t)-1 ) {
- 	  	//printf(message);
-  		
   		if (errno == EILSEQ) {
-  			//printf("EILSEQ");
   			return ILLEGAL_SEQUENCE;
   		} else if (errno == E2BIG) {
-  			//printf("E2BIG");
   			return OUTPUT_BUFFER_TOO_SMALL;
   		} else if (errno == EINVAL) {
-  			//printf("EINVAL");
   			return INCOMPLETE_SEQUENCE;
   		} else {
   			return UNKNOWN_ERROR;
@@ -109,36 +95,20 @@ JNIEXPORT void JNICALL Java_org_robovm_rt_iconv_IconvProvider_releaseIconv
  
  //sets positions of buffers
  void set_buffer_positions(JNIEnv* env, int charBufferPosition, int byteBufferPosition, char** pChar, char** pByte ) {
-
  	*pChar += charBufferPosition*2;
  	*pByte += byteBufferPosition;
- 
  }
  
 //converts from specified encoding to specified encoding
  size_t convert(iconv_t content_descriptor, char* inbuffer, size_t* inlength, char* outbuffer, size_t* outlength, int* error) {
 
- 	//iconv_t content_descriptor = iconv_open(to, from);
 	if (content_descriptor == (iconv_t)-1) {
   		//printf("descriptor error\n");
   		return ERROR_DESCRIPTOR;
   	}
- 	
- 	//printf("In buffer mbs: %s\n", inbuffer);
- 	//setlocale(LC_ALL,"");
- 	//w//printf(L"In buffer wcs: %ls", (wchar_t*)inbuffer);
- 	
- 	//printf("inbytes: %lu \n", (*inlength));
- 	//printf("outbytes: %lu \n", (*outlength));
- 	
- 	//size_t result = iconv(content_descriptor, NULL, NULL, &outbuffer, outlength);
+
  	size_t result = iconv(content_descriptor, &inbuffer, inlength, &outbuffer, outlength);
 	(*error) = check_for_error(result, "error converting\n");
-	//iconv_close(content_descriptor);
-	
-	//printf("Error: %d \n", (*error));
-	//printf("in bytes left: %lu\n", (*inlength));
-	//printf("out bytes left: %lu\n", (*outlength));
 	
  	return result;
  }
@@ -187,12 +157,6 @@ JNIEXPORT void JNICALL Java_org_robovm_rt_iconv_IconvProvider_releaseIconv
     
     (*env)->SetIntField(env, iconvresult, fidDestination, position_dst);
 
-  	//jmethodID methodSourceBytes = (*env)->GetMethodID(env, resultClass, "setBytesWrittenFromSource", "(I)V");
-  	//jmethodID methodDestinationBytes = (*env)->GetMethodID(env, resultClass, "setBytesWrittenToDestination", "(I)V");
-  	//(*env)->CallVoidMethod(env, iconvresult, methodSourceBytes, position_src);
-  	//(*env)->CallVoidMethod(env, iconvresult, methodDestinationBytes, position_dst);
-  	
-	//printf("position_dst: %d\n", position_dst);
 	return error;
  }
 
@@ -200,9 +164,7 @@ JNIEXPORT jint JNICALL Java_org_robovm_rt_iconv_IconvProvider_encodeNativeArray
   (JNIEnv *env, jclass thisObj, jlong cd, jcharArray theCharArray, jbyteArray theByteArray,
    jobject iconvResult, jint positionIn, jint limitIn, jint positionOut, jint limitOut) {
 
-   	//printf("Encode arrays\n");
-
-  	iconv_t content_descriptor = (iconv_t) cd;//((IconvDescriptor*) cd)->pointer;
+  	iconv_t content_descriptor = (iconv_t) cd;
 
   	//Get sizes pre/post conversion
   	size_t in_bytes = (size_t) (limitIn - positionIn) * sizeof(jchar) ;
@@ -255,8 +217,8 @@ JNIEXPORT jint JNICALL Java_org_robovm_rt_iconv_IconvProvider_decodeNativeArray
 
 	//printf("Decode\n");
 
-    iconv_t content_descriptor = (iconv_t) cd;//((IconvDescriptor*) cd)->pointer;
-	
+    iconv_t content_descriptor = (iconv_t) cd;
+    
   	//Get sizes pre/post conversion
   	size_t in_bytes = (size_t) (limitIn - positionIn) * sizeof(jbyte) ;
   	size_t out_bytes_left = (size_t) (limitOut - positionOut) * sizeof(jchar); //gahh check this
@@ -288,25 +250,20 @@ JNIEXPORT jint JNICALL Java_org_robovm_rt_iconv_IconvProvider_decodeNativeArray
 JNIEXPORT jint JNICALL Java_org_robovm_rt_iconv_IconvProvider_encodeNativeBuffer
   (JNIEnv *env, jclass thisObj, jlong cd, jobject charbuffer, jobject bytebuffer, jobject iconvResult,
   jint positionIn, jint limitIn, jint positionOut, jint limitOut) {
-  
-    //printf("Encode Native\n");
-	
-	iconv_t content_descriptor = (iconv_t) cd;//((IconvDescriptor*) cd)->pointer;
+
+	iconv_t content_descriptor = (iconv_t) cd;
 
   	//Get sizes pre/post conversion
   	size_t in_bytes = (size_t) (limitIn - positionIn) * sizeof(jchar) ;
   	size_t out_bytes_left = (size_t) (limitOut - positionOut) * sizeof(jbyte);
   	
-  		//fix direct buffer stuff here
+  	//fix direct buffer stuff here
 	jbyte* char_buf_address = (jbyte*) (*env)->GetDirectBufferAddress(env, charbuffer);
 	jbyte* byte_buf_address = (jbyte*) (*env)->GetDirectBufferAddress(env, bytebuffer);
   	
   	char* pSrc = ((char *) char_buf_address);
  	char* pDst = ((char *) byte_buf_address);
-  	
-  	//printf("pSrc: %s\n", pSrc);
-  	//printf("pDst: %s\n", pDst);
-  	
+	
   	set_buffer_positions(env, positionIn, positionOut, &pSrc, &pDst);
 	int error = reposition_and_convert(env, iconvResult, content_descriptor, in_bytes, out_bytes_left, pSrc, pDst);
 	
@@ -327,7 +284,7 @@ JNIEXPORT jint JNICALL Java_org_robovm_rt_iconv_IconvProvider_decodeNativeBuffer
 
   	//Get sizes pre/post conversion
   	size_t in_bytes = (size_t) (limitIn - positionIn) * sizeof(jbyte) ;
-  	size_t out_bytes_left = (size_t) (limitOut - positionOut) * sizeof(jchar); //gahh check this
+  	size_t out_bytes_left = (size_t) (limitOut - positionOut) * sizeof(jchar);
   	
   	//fix direct buffer stuff here
 	char* char_buf_address = (char*) (*env)->GetDirectBufferAddress(env, charbuffer);
@@ -352,7 +309,7 @@ JNIEXPORT jint JNICALL Java_org_robovm_rt_iconv_IconvProvider_encodeHybridArrayB
    jint positionIn, jint limitIn, jint positionOut, jint limitOut) {
    	//printf("Encode Hybrid\n");
 
-	iconv_t content_descriptor = (iconv_t) cd;//((IconvDescriptor*) cd)->pointer;
+	iconv_t content_descriptor = (iconv_t) cd;
 
   	//Get sizes pre/post conversion
   	size_t in_bytes = (size_t) (limitIn - positionIn) * sizeof(jchar) ;
@@ -381,11 +338,11 @@ JNIEXPORT jint JNICALL Java_org_robovm_rt_iconv_IconvProvider_decodeHybridArrayB
    (JNIEnv *env, jclass thisObj, jlong cd, jbyteArray theByteArray, jobject charbuffer, jobject iconvResult,
    jint positionIn, jint limitIn, jint positionOut, jint limitOut) {
    
-   	iconv_t content_descriptor = (iconv_t) cd;//((IconvDescriptor*) cd)->pointer;
+   	iconv_t content_descriptor = (iconv_t) cd;
 
   	//Get sizes pre/post conversion
   	size_t in_bytes = (size_t) (limitIn - positionIn) * sizeof(jbyte) ;
-  	size_t out_bytes_left = (size_t) (limitOut - positionOut) * sizeof(jchar); //gahh check this
+  	size_t out_bytes_left = (size_t) (limitOut - positionOut) * sizeof(jchar);
   	
   	jbyte* pByteArray = (*env)->GetByteArrayElements(env, theByteArray, NULL);
   	
@@ -413,7 +370,7 @@ JNIEXPORT jint JNICALL Java_org_robovm_rt_iconv_IconvProvider_encodeHybridBuffer
    jint positionIn, jint limitIn, jint positionOut, jint limitOut) {
     //printf("Encode Native charbuffer byte[]\n");
 	
-	iconv_t content_descriptor = (iconv_t) cd;//((IconvDescriptor*) cd)->pointer;
+	iconv_t content_descriptor = (iconv_t) cd;
 	
   	//Get sizes pre/post conversion
   	size_t in_bytes = (size_t) (limitIn - positionIn) * sizeof(jchar) ;
@@ -425,10 +382,7 @@ JNIEXPORT jint JNICALL Java_org_robovm_rt_iconv_IconvProvider_encodeHybridBuffer
   	
   	char* pSrc = ((char *) char_buf_address);
  	char* pDst = ((char *) pByteArray);
-  	
-  	//printf("pSrc: %s\n", pSrc);
-  	//printf("pDst: %s\n", pDst);
-  	
+
   	set_buffer_positions(env, positionIn, positionOut, &pSrc, &pDst);
 
 	int error = reposition_and_convert(env, iconvResult, content_descriptor, in_bytes, out_bytes_left, pSrc, pDst);
@@ -447,22 +401,19 @@ JNIEXPORT jint JNICALL Java_org_robovm_rt_iconv_IconvProvider_decodeHybridBuffer
    jint positionIn, jint limitIn, jint positionOut, jint limitOut) { 
     //printf("Decode Native\n");
 	
-	iconv_t content_descriptor = (iconv_t) cd;//((IconvDescriptor*) cd)->pointer;
+	iconv_t content_descriptor = (iconv_t) cd;
 
   	//Get sizes pre/post conversion
   	size_t in_bytes = (size_t) (limitIn - positionIn) * sizeof(jbyte) ;
   	size_t out_bytes_left = (size_t) (limitOut - positionOut) * sizeof(jchar); //gahh check this
   	
-  		//fix direct buffer stuff here
+  	//fix direct buffer stuff here
 	jbyte* byte_buf_address = (jbyte*) (*env)->GetDirectBufferAddress(env, bytebuffer);
 	jchar* pCharArray = (*env)->GetCharArrayElements(env, theCharArray, NULL);
   	
   	char* pSrc = ((char *) byte_buf_address);
  	char* pDst = ((char *) pCharArray);// + positionOut*2);
-  	
-  	//printf("pSrc: %s\n", pSrc);
-  	//printf("pDst: %s\n", pDst);
-  	
+
   	set_buffer_positions(env, positionOut, positionIn, &pDst, &pSrc);
 	int error = reposition_and_convert(env, iconvResult, content_descriptor, in_bytes, out_bytes_left, pSrc, pDst);
 	(*env)->ReleaseCharArrayElements(env, theCharArray, pCharArray, 0);	

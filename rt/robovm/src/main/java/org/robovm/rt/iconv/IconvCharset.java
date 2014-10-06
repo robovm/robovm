@@ -8,9 +8,6 @@ import java.nio.charset.CharsetEncoder;
  * Iconv char set class which encapsulates
  * char set configs to use in conjunction with
  * the iconv library
- * 
- * @author David
- *
  */
 public class IconvCharset extends Charset{
 

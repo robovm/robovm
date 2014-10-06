@@ -19,7 +19,7 @@ public class SurrogatePairTest {
         IconvProvider p = new IconvProvider();
         CharsetDecoder decoder = p.charsetForName("UTF-16LE").newDecoder();
 
-        // Code point: 120120 (mathematical double-struck capital A)
+        // Code point: 120120
         ByteBuffer bytes = ByteBuffer.wrap(new byte[] {
                 (byte) 0x35, (byte) 0xD8, (byte) 0x38, (byte) 0xDD
         });

@@ -14,7 +14,6 @@ import java.nio.charset.CoderResult;
  * The encoding operations are performed via calls to encodeLoop.
  *  
  * encodeLoop calls iconv via JNI to do conversions between encodings.
- *  
  */
 public class IconvEncoder extends CharsetEncoder{
 	

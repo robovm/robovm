@@ -4,7 +4,6 @@ import org.robovm.rt.iconv.IconvProvider.ConversionResult;
 
 /**
  * IconvResult - Result of an encoding and decoding operation 
- * @author David
  */
 public class IconvResult {
 

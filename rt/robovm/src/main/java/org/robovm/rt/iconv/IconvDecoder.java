@@ -14,7 +14,6 @@ import java.nio.charset.CoderResult;
  * The decoding operations are performed via calls to decodeLoop.
  *  
  * decodeLoop calls iconv via JNI to do conversions between encodings 
- * @author David
  */
 public class IconvDecoder extends CharsetDecoder{
 
@@ -84,6 +83,4 @@ public class IconvDecoder extends CharsetDecoder{
         IconvProvider.release(iconv_tPointer);
     }
 
-    
-    
 }

@@ -43,7 +43,6 @@ public class IconvDecoderArrayTest {
         try {
             byteBuffer = ByteBuffer.wrap(s.getBytes("Shift_JIS"));
         } catch (UnsupportedEncodingException e1) {
-            // TODO Auto-generated catch block
             e1.printStackTrace();
         }
 

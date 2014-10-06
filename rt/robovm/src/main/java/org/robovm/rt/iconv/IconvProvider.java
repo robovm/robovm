@@ -20,8 +20,6 @@ public class IconvProvider extends CharsetProvider{
 
     /**
      * Result of an encoding / decoding operation
-     * 
-     * @author David
      */
     public enum ConversionResult {
 
@@ -65,7 +63,6 @@ public class IconvProvider extends CharsetProvider{
     private static Map<String, Charset> charsets = new HashMap<String, Charset>();
 
     static {
-        //System.loadLibrary("iconv");
         if (!System.getProperty("java.vendor").equals("RoboVM")) {
             System.loadLibrary("iconvprovider");
         }
@@ -261,7 +258,6 @@ public class IconvProvider extends CharsetProvider{
         int res = -1;
         IconvResult result = new IconvResult();
 
-        //CharBuffer outBuffer = verifyByteOrder(out);
         if (isInDirect && isOutDirect) {
            res = decodeNativeBuffer(pointer, in, out, result, in.position(), in.limit(), out.position(), out.limit()); 
         } else if (!isInDirect && !isOutDirect) {
@@ -291,7 +287,7 @@ public class IconvProvider extends CharsetProvider{
     public static void release(long pointer) {
         releaseIconv(pointer);
     }
-	
+    
     private static native long initIconv(String fromEncoding, String toEncoding);
     
     private static native void releaseIconv( long pointer);

@@ -42,6 +42,33 @@ import org.robovm.apple.security.*;
     extends /*<extends>*/NSObject/*</extends>*/ 
     /*<implements>*//*</implements>*/ {
 
+    public static class Notifications {
+        public static NSObject observeWillBecomeMultiThreaded(final Runnable block) {
+            return NSNotificationCenter.getDefaultCenter().addObserver(WillBecomeMultiThreadedNotification(), null, NSOperationQueue.getMainQueue(), new VoidBlock1<NSNotification>() {
+                @Override
+                public void invoke(NSNotification a) {
+                    block.run();
+                }
+            });
+        }
+        public static NSObject observeDidBecomeSingleThreaded(final Runnable block) {
+            return NSNotificationCenter.getDefaultCenter().addObserver(DidBecomeSingleThreadedNotification(), null, NSOperationQueue.getMainQueue(), new VoidBlock1<NSNotification>() {
+                @Override
+                public void invoke(NSNotification a) {
+                    block.run();
+                }
+            });
+        }
+        public static NSObject observeWillExit(NSThread object, final VoidBlock1<NSThread> block) {
+            return NSNotificationCenter.getDefaultCenter().addObserver(WillExitNotification(), object, NSOperationQueue.getMainQueue(), new VoidBlock1<NSNotification>() {
+                @Override
+                public void invoke(NSNotification a) {
+                    block.invoke((NSThread) a.getObject());
+                }
+            });
+        }
+    }
+    
     /*<ptr>*/public static class NSThreadPtr extends Ptr<NSThread, NSThreadPtr> {}/*</ptr>*/
     /*<bind>*/static { ObjCRuntime.bind(NSThread.class); }/*</bind>*/
     /*<constants>*//*</constants>*/
@@ -58,6 +85,13 @@ import org.robovm.apple.security.*;
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
+    @GlobalValue(symbol="NSWillBecomeMultiThreadedNotification", optional=true)
+    public static native NSString WillBecomeMultiThreadedNotification();
+    @GlobalValue(symbol="NSDidBecomeSingleThreadedNotification", optional=true)
+    public static native NSString DidBecomeSingleThreadedNotification();
+    @GlobalValue(symbol="NSThreadWillExitNotification", optional=true)
+    public static native NSString WillExitNotification();
+    
     @Method(selector = "threadDictionary")
     public native NSMutableDictionary<?, ?> getThreadDictionary();
     /**

@@ -42,6 +42,20 @@ import org.robovm.apple.security.*;
     extends /*<extends>*/NSObject/*</extends>*/ 
     /*<implements>*//*</implements>*/ {
 
+    public static class Notifications {
+        /**
+         * @since Available in iOS 2.0 and later.
+         */
+        public static NSObject observeDidChange(final Runnable block) {
+            return NSNotificationCenter.getDefaultCenter().addObserver(DidChangeNotification(), null, NSOperationQueue.getMainQueue(), new VoidBlock1<NSNotification>() {
+                @Override
+                public void invoke(NSNotification a) {
+                    block.run();
+                }
+            });
+        }
+    }
+    
     /*<ptr>*/public static class NSTimeZonePtr extends Ptr<NSTimeZone, NSTimeZonePtr> {}/*</ptr>*/
     /*<bind>*/static { ObjCRuntime.bind(NSTimeZone.class); }/*</bind>*/
     /*<constants>*//*</constants>*/
@@ -56,86 +70,92 @@ import org.robovm.apple.security.*;
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
+    @GlobalValue(symbol="NSSystemTimeZoneDidChangeNotification", optional=true)
+    public static native NSString DidChangeNotification();
+    
     @Method(selector = "name")
-    public native String name();
+    public native String getName();
     @Method(selector = "data")
-    public native NSData data();
+    public native NSData getData();
     @Method(selector = "secondsFromGMTForDate:")
-    public native @MachineSizedSInt long secondsFromGMTForDate$(NSDate aDate);
+    public native @MachineSizedSInt long getSecondsFromGMTForDate(NSDate aDate);
     @Method(selector = "abbreviationForDate:")
-    public native String abbreviationForDate$(NSDate aDate);
+    public native String getAbbreviationForDate(NSDate aDate);
     @Method(selector = "isDaylightSavingTimeForDate:")
-    public native boolean isDaylightSavingTimeForDate$(NSDate aDate);
+    public native boolean isDaylightSavingTimeForDate(NSDate aDate);
     /**
      * @since Available in iOS 2.0 and later.
      */
     @Method(selector = "daylightSavingTimeOffsetForDate:")
-    public native double daylightSavingTimeOffsetForDate$(NSDate aDate);
+    public native double getDaylightSavingTimeOffsetForDate(NSDate aDate);
     /**
      * @since Available in iOS 2.0 and later.
      */
     @Method(selector = "nextDaylightSavingTimeTransitionAfterDate:")
-    public native NSDate nextDaylightSavingTimeTransitionAfterDate$(NSDate aDate);
+    public native NSDate getNextDaylightSavingTimeTransitionAfterDate(NSDate aDate);
     @Method(selector = "secondsFromGMT")
-    public native @MachineSizedSInt long secondsFromGMT();
+    public native @MachineSizedSInt long getSecondsFromGMT();
     @Method(selector = "abbreviation")
-    public native String abbreviation();
+    public native String getAbbreviation();
     @Method(selector = "isDaylightSavingTime")
     public native boolean isDaylightSavingTime();
     /**
      * @since Available in iOS 2.0 and later.
      */
     @Method(selector = "daylightSavingTimeOffset")
-    public native double daylightSavingTimeOffset();
+    public native double getDaylightSavingTimeOffset();
     /**
      * @since Available in iOS 2.0 and later.
      */
     @Method(selector = "nextDaylightSavingTimeTransition")
-    public native NSDate nextDaylightSavingTimeTransition();
+    public native NSDate getNextDaylightSavingTimeTransition();
     @Method(selector = "description")
-    public native String description();
+    public native String getDescription();
     @Method(selector = "isEqualToTimeZone:")
-    public native boolean isEqualToTimeZone$(NSTimeZone aTimeZone);
+    public native boolean isEqualTo(NSTimeZone aTimeZone);
     /**
      * @since Available in iOS 2.0 and later.
      */
     @Method(selector = "localizedName:locale:")
-    public native String localizedName$locale$(NSTimeZoneNameStyle style, NSLocale locale);
+    public native String getLocalizedName(NSTimeZoneNameStyle style, NSLocale locale);
     @Method(selector = "systemTimeZone")
-    public static native NSTimeZone systemTimeZone();
+    public static native NSTimeZone getSystemTimeZone();
     @Method(selector = "resetSystemTimeZone")
     public static native void resetSystemTimeZone();
     @Method(selector = "defaultTimeZone")
-    public static native NSTimeZone defaultTimeZone();
+    public static native NSTimeZone getDefaultTimeZone();
     @Method(selector = "setDefaultTimeZone:")
     public static native void setDefaultTimeZone(NSTimeZone aTimeZone);
     @Method(selector = "localTimeZone")
-    public static native NSTimeZone localTimeZone();
+    public static native NSTimeZone getLocalTimeZone();
     @Method(selector = "knownTimeZoneNames")
-    public static native NSArray<?> knownTimeZoneNames();
+    public static native @org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String> getKnownTimeZoneNames();
     @Method(selector = "abbreviationDictionary")
-    public static native NSDictionary<?, ?> abbreviationDictionary();
+    public static native @org.robovm.rt.bro.annotation.Marshaler(NSDictionary.AsStringStringMapMarshaler.class) Map<String, String> getAbbreviationDictionary();
     /**
      * @since Available in iOS 4.0 and later.
      */
     @Method(selector = "setAbbreviationDictionary:")
-    public static native void setAbbreviationDictionary(NSDictionary<?, ?> dict);
+    public static native void setAbbreviationDictionary(@org.robovm.rt.bro.annotation.Marshaler(NSDictionary.AsStringStringMapMarshaler.class) Map<String, String> dict);
     /**
      * @since Available in iOS 4.0 and later.
      */
     @Method(selector = "timeZoneDataVersion")
-    public static native String timeZoneDataVersion();
+    public static native String getTimeZoneDataVersion();
     @Method(selector = "initWithName:")
     protected native @Pointer long initWithName$(String tzName);
     @Method(selector = "initWithName:data:")
     protected native @Pointer long initWithName$data$(String tzName, NSData aData);
     @Method(selector = "timeZoneWithName:")
-    public static native NSObject timeZoneWithName$(String tzName);
+    public static native NSTimeZone fromName(String tzName);
     @Method(selector = "timeZoneWithName:data:")
-    public static native NSObject timeZoneWithName$data$(String tzName, NSData aData);
+    public static native NSTimeZone fromName(String tzName, NSData aData);
     @Method(selector = "timeZoneForSecondsFromGMT:")
-    public static native NSObject timeZoneForSecondsFromGMT$(@MachineSizedSInt long seconds);
+    public static native NSTimeZone fromGMTSecondsOffset(@MachineSizedSInt long seconds);
     @Method(selector = "timeZoneWithAbbreviation:")
-    public static native NSObject timeZoneWithAbbreviation$(String abbreviation);
+    public static native NSTimeZone fromAbbreviation(String abbreviation);
     /*</methods>*/
 }

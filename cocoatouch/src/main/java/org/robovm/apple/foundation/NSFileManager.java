@@ -67,26 +67,6 @@ import org.robovm.apple.security.*;
     
     /*</properties>*/
     /*<members>*//*</members>*/
-    /**
-     * @since Available in iOS 4.0 and later.
-     */
-    public NSArray<NSURL> getMountedVolumeURLsIncludingResourceValues(List<NSURLFileSystemProperty> propertyKeys, NSVolumeEnumerationOptions options) {
-        NSArray<NSString> list = new NSMutableArray<>();
-        for (NSURLFileSystemProperty property : propertyKeys) {
-            list.add(property.value());
-        }
-        return getMountedVolumeURLsIncludingResourceValues(list, options);
-    }
-    /**
-     * @since Available in iOS 4.0 and later.
-     */
-    public NSArray<NSURL> getContentsOfDirectoryAtURL(NSURL url, List<NSURLFileSystemProperty> keys, NSDirectoryEnumerationOptions mask, NSError.NSErrorPtr error) {
-        NSArray<NSString> list = new NSMutableArray<>();
-        for (NSURLFileSystemProperty property : keys) {
-            list.add(property.value());
-        }
-        return getContentsOfDirectoryAtURL(url, list, mask, error);
-    }
     public boolean isDirectoryAtPath(String path) {
         BooleanPtr ptr = new BooleanPtr();
         fileExists(path, ptr);
@@ -103,12 +83,12 @@ import org.robovm.apple.security.*;
      * @since Available in iOS 4.0 and later.
      */
     @Method(selector = "mountedVolumeURLsIncludingResourceValuesForKeys:options:")
-    protected native NSArray<NSURL> getMountedVolumeURLsIncludingResourceValues(NSArray<NSString> propertyKeys, NSVolumeEnumerationOptions options);
+    protected native NSArray<NSURL> getMountedVolumeURLsIncludingResourceValues(@org.robovm.rt.bro.annotation.Marshaler(NSURLFileSystemProperty.AsListMarshaler.class) List<NSURLFileSystemProperty> propertyKeys, NSVolumeEnumerationOptions options);
     /**
      * @since Available in iOS 4.0 and later.
      */
     @Method(selector = "contentsOfDirectoryAtURL:includingPropertiesForKeys:options:error:")
-    protected native NSArray<NSURL> getContentsOfDirectoryAtURL(NSURL url, NSArray<NSString> keys, NSDirectoryEnumerationOptions mask, NSError.NSErrorPtr error);
+    protected native NSArray<NSURL> getContentsOfDirectoryAtURL(NSURL url, @org.robovm.rt.bro.annotation.Marshaler(NSURLFileSystemProperty.AsListMarshaler.class) List<NSURLFileSystemProperty> keys, NSDirectoryEnumerationOptions mask, NSError.NSErrorPtr error);
     /**
      * @since Available in iOS 4.0 and later.
      */
@@ -247,7 +227,7 @@ import org.robovm.apple.security.*;
      * @since Available in iOS 4.0 and later.
      */
     @Method(selector = "enumeratorAtURL:includingPropertiesForKeys:options:errorHandler:")
-    protected native NSDirectoryEnumerator getEnumeratorAtURL(NSURL url, NSArray<NSString> keys, NSDirectoryEnumerationOptions mask, @Block Block2<NSURL, NSError, Boolean> handler);
+    protected native NSDirectoryEnumerator getEnumeratorAtURL(NSURL url, @org.robovm.rt.bro.annotation.Marshaler(NSURLFileSystemProperty.AsListMarshaler.class) List<NSURLFileSystemProperty> keys, NSDirectoryEnumerationOptions mask, @Block Block2<NSURL, NSError, Boolean> handler);
     @Method(selector = "subpathsAtPath:")
     public native @org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String> getSubpathsAtPath(String path);
     @Method(selector = "contentsAtPath:")

@@ -42,6 +42,56 @@ import org.robovm.apple.security.*;
     extends /*<extends>*/NSObject/*</extends>*/ 
     /*<implements>*//*</implements>*/ {
 
+    public static class Notifications {
+        public static NSObject observeReadCompletion(NSFileHandle object, final VoidBlock2<NSFileHandle, NSData> block) {
+            return NSNotificationCenter.getDefaultCenter().addObserver(ReadCompletionNotification(), object, NSOperationQueue.getMainQueue(), new VoidBlock1<NSNotification>() {
+                @Override
+                public void invoke(NSNotification a) {
+                    NSData d = null;
+                    NSDictionary<NSString, NSObject> data = a.getUserInfo();
+                    if (data.containsKey(NotificationDataItem())) {
+                        d = (NSData)data.get(NotificationDataItem());
+                    }
+                    block.invoke((NSFileHandle)a.getObject(), d);
+                }
+            });
+        }
+        public static NSObject observeReadToEndOfFileCompletion(NSFileHandle object, final VoidBlock2<NSFileHandle, NSData> block) {
+            return NSNotificationCenter.getDefaultCenter().addObserver(ReadToEndOfFileCompletionNotification(), object, NSOperationQueue.getMainQueue(), new VoidBlock1<NSNotification>() {
+                @Override
+                public void invoke(NSNotification a) {
+                    NSData d = null;
+                    NSDictionary<NSString, NSObject> data = a.getUserInfo();
+                    if (data.containsKey(NotificationDataItem())) {
+                        d = (NSData)data.get(NotificationDataItem());
+                    }
+                    block.invoke((NSFileHandle)a.getObject(), d);
+                }
+            });
+        }
+        public static NSObject observeConnectionAccepted(NSFileHandle object, final VoidBlock2<NSFileHandle, NSFileHandle> block) {
+            return NSNotificationCenter.getDefaultCenter().addObserver(ConnectionAcceptedNotification(), object, NSOperationQueue.getMainQueue(), new VoidBlock1<NSNotification>() {
+                @Override
+                public void invoke(NSNotification a) {
+                    NSFileHandle f = null;
+                    NSDictionary<NSString, NSObject> data = a.getUserInfo();
+                    if (data.containsKey(NotificationDataItem())) {
+                        f = (NSFileHandle)data.get(NotificationFileHandleItem());
+                    }
+                    block.invoke((NSFileHandle)a.getObject(), f);
+                }
+            });
+        }
+        public static NSObject observeDataAvailable(NSFileHandle object, final VoidBlock1<NSFileHandle> block) {
+            return NSNotificationCenter.getDefaultCenter().addObserver(DataAvailableNotification(), object, NSOperationQueue.getMainQueue(), new VoidBlock1<NSNotification>() {
+                @Override
+                public void invoke(NSNotification a) {
+                    block.invoke((NSFileHandle)a.getObject());
+                }
+            });
+        }
+    }
+    
     /*<ptr>*/public static class NSFileHandlePtr extends Ptr<NSFileHandle, NSFileHandlePtr> {}/*</ptr>*/
     /*<bind>*/static { ObjCRuntime.bind(NSFileHandle.class); }/*</bind>*/
     /*<constants>*//*</constants>*/
@@ -104,6 +154,19 @@ import org.robovm.apple.security.*;
         waitForDataInBackgroundAndNotify(list);
     }
     /*<methods>*/
+    @GlobalValue(symbol="NSFileHandleReadCompletionNotification", optional=true)
+    public static native NSString ReadCompletionNotification();
+    @GlobalValue(symbol="NSFileHandleReadToEndOfFileCompletionNotification", optional=true)
+    public static native NSString ReadToEndOfFileCompletionNotification();
+    @GlobalValue(symbol="NSFileHandleConnectionAcceptedNotification", optional=true)
+    public static native NSString ConnectionAcceptedNotification();
+    @GlobalValue(symbol="NSFileHandleDataAvailableNotification", optional=true)
+    public static native NSString DataAvailableNotification();
+    @GlobalValue(symbol="NSFileHandleNotificationDataItem", optional=true)
+    protected static native NSString NotificationDataItem();
+    @GlobalValue(symbol="NSFileHandleNotificationFileHandleItem", optional=true)
+    protected static native NSString NotificationFileHandleItem();
+    
     @Method(selector = "availableData")
     public native NSData getAvailableData();
     @Method(selector = "readDataToEndOfFile")

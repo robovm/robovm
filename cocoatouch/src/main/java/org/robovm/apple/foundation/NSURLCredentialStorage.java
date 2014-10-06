@@ -42,6 +42,17 @@ import org.robovm.apple.security.*;
     extends /*<extends>*/NSObject/*</extends>*/ 
     /*<implements>*//*</implements>*/ {
 
+    public static class Notifications {
+        public static NSObject observeChanged(NSURLCredentialStorage object, final VoidBlock1<NSURLCredentialStorage> block) {
+            return NSNotificationCenter.getDefaultCenter().addObserver(ChangedNotification(), object, NSOperationQueue.getMainQueue(), new VoidBlock1<NSNotification>() {
+                @Override
+                public void invoke(NSNotification a) {
+                    block.invoke((NSURLCredentialStorage)a.getObject());
+                }
+            });
+        }
+    }
+    
     /*<ptr>*/public static class NSURLCredentialStoragePtr extends Ptr<NSURLCredentialStorage, NSURLCredentialStoragePtr> {}/*</ptr>*/
     /*<bind>*/static { ObjCRuntime.bind(NSURLCredentialStorage.class); }/*</bind>*/
     /*<constants>*//*</constants>*/
@@ -54,6 +65,9 @@ import org.robovm.apple.security.*;
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
+    @GlobalValue(symbol="NSURLCredentialStorageChangedNotification", optional=true)
+    public static native NSString ChangedNotification();
+    
     @Method(selector = "credentialsForProtectionSpace:")
     public native @org.robovm.rt.bro.annotation.Marshaler(NSDictionary.AsStringMapMarshaler.class) Map<String, NSURLCredential> getCredentials(NSURLProtectionSpace space);
     @Method(selector = "allCredentials")

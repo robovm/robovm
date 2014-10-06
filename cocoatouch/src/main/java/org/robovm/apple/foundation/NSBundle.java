@@ -83,6 +83,18 @@ import org.robovm.apple.security.*;
     /*</properties>*/
     /*<members>*//*</members>*/
     
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
+    public List<NSBundleExecutableArchitectureType> getExecutableArchitectures() {
+        NSArray<NSNumber> array = getExecutableArchitectures0();
+        List<NSBundleExecutableArchitectureType> list = new ArrayList<>();
+        for (NSNumber n : array) {
+            list.add(NSBundleExecutableArchitectureType.valueOf(n.longValue()));
+        }
+        return list;
+    }
+    
     /* UIKit extensions */
     public NSArray<?> loadNib(String name, NSObject owner, UINibLoadingOptions options) {
         return NSBundleExtensions.loadNib(this, name, owner, options);
@@ -204,9 +216,9 @@ import org.robovm.apple.security.*;
     @Method(selector = "pathForResource:ofType:inDirectory:forLocalization:")
     public native String findResourcePathInSubPath(String name, String ext, String subpath, String localizationName);
     @Method(selector = "pathsForResourcesOfType:inDirectory:")
-    public native NSArray<NSString> findResourcesPathsInSubPath(String ext, String subpath);
+    public native @org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String> findResourcesPathsInSubPath(String ext, String subpath);
     @Method(selector = "pathsForResourcesOfType:inDirectory:forLocalization:")
-    public native NSArray<NSString> findResourcesPathsInSubPath(String ext, String subpath, String localizationName);
+    public native @org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String> findResourcesPathsInSubPath(String ext, String subpath, String localizationName);
     @Method(selector = "localizedStringForKey:value:table:")
     public native String getLocalizedString(String key, String value, String tableName);
     @Method(selector = "bundleIdentifier")
@@ -222,16 +234,16 @@ import org.robovm.apple.security.*;
     @Method(selector = "principalClass")
     public native ObjCClass getPrincipalClass();
     @Method(selector = "preferredLocalizations")
-    public native NSArray<NSString> getPreferredLocalizations();
+    public native @org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String> getPreferredLocalizations();
     @Method(selector = "localizations")
-    public native NSArray<NSString> getLocalizations();
+    public native @org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String> getLocalizations();
     @Method(selector = "developmentLocalization")
     public native String getDevelopmentLocalization();
     /**
      * @since Available in iOS 2.0 and later.
      */
     @Method(selector = "executableArchitectures")
-    public native NSArray<NSNumber> getExecutableArchitectures();
+    private native NSArray<NSNumber> getExecutableArchitectures0();
     @Method(selector = "mainBundle")
     public static native NSBundle getMainBundle();
     @Method(selector = "bundleForClass:")
@@ -251,14 +263,14 @@ import org.robovm.apple.security.*;
      * @since Available in iOS 4.0 and later.
      */
     @Method(selector = "URLsForResourcesWithExtension:subdirectory:inBundleWithURL:")
-    public static native NSArray<NSString> findResourceURLsInBundleURL(String ext, String subpath, NSURL bundleURL);
+    public static native @org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String> findResourceURLsInBundleURL(String ext, String subpath, NSURL bundleURL);
     @Method(selector = "pathForResource:ofType:inDirectory:")
     public static native String findResourcePathInBundlePath(String name, String ext, String bundlePath);
     @Method(selector = "pathsForResourcesOfType:inDirectory:")
-    public static native NSArray<NSString> findResourcesPathsInBundlePath(String ext, String bundlePath);
+    public static native @org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String> findResourcesPathsInBundlePath(String ext, String bundlePath);
     @Method(selector = "preferredLocalizationsFromArray:")
-    public static native NSArray<NSString> getPreferredLocalizations(NSArray<NSString> localizationsArray);
+    public static native @org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String> getPreferredLocalizations(@org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String> localizationsArray);
     @Method(selector = "preferredLocalizationsFromArray:forPreferences:")
-    public static native NSArray<NSString> getPreferredLocalizations(NSArray<NSString> localizationsArray, NSArray<NSString> preferencesArray);
+    public static native @org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String> getPreferredLocalizations(@org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String> localizationsArray, @org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String> preferencesArray);
     /*</methods>*/
 }

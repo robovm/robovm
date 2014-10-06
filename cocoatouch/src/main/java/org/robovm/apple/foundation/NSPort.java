@@ -42,6 +42,17 @@ import org.robovm.apple.security.*;
     extends /*<extends>*/NSObject/*</extends>*/ 
     /*<implements>*/implements NSCoding/*</implements>*/ {
 
+    public static class Notifications {
+        public static NSObject observeDidBecomeInvalid(NSPort object, final VoidBlock1<NSPort> block) {
+            return NSNotificationCenter.getDefaultCenter().addObserver(DidBecomeInvalidNotification(), object, NSOperationQueue.getMainQueue(), new VoidBlock1<NSNotification>() {
+                @Override
+                public void invoke(NSNotification a) {
+                    block.invoke((NSPort) a.getObject());
+                }
+            });
+        }
+    }
+    
     /*<ptr>*/public static class NSPortPtr extends Ptr<NSPort, NSPortPtr> {}/*</ptr>*/
     /*<bind>*/static { ObjCRuntime.bind(NSPort.class); }/*</bind>*/
     /*<constants>*//*</constants>*/
@@ -60,6 +71,9 @@ import org.robovm.apple.security.*;
         removeFromRunLoop(runLoop, mode.value());
     }
     /*<methods>*/
+    @GlobalValue(symbol="NSPortDidBecomeInvalidNotification", optional=true)
+    public static native NSString DidBecomeInvalidNotification();
+    
     @Method(selector = "invalidate")
     public native void invalidate();
     @Method(selector = "isValid")

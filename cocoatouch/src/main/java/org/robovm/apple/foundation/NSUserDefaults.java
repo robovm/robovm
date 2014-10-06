@@ -42,6 +42,17 @@ import org.robovm.apple.security.*;
     extends /*<extends>*/NSObject/*</extends>*/ 
     /*<implements>*//*</implements>*/ {
 
+    public static class Notifications {
+        public static NSObject observeDidChange(NSUserDefaults object, final VoidBlock1<NSUserDefaults> block) {
+            return NSNotificationCenter.getDefaultCenter().addObserver(DidChangeNotification(), object, NSOperationQueue.getMainQueue(), new VoidBlock1<NSNotification>() {
+                @Override
+                public void invoke(NSNotification a) {
+                    block.invoke((NSUserDefaults)a.getObject());
+                }
+            });
+        }
+    }
+    
     /*<ptr>*/public static class NSUserDefaultsPtr extends Ptr<NSUserDefaults, NSUserDefaultsPtr> {}/*</ptr>*/
     /*<bind>*/static { ObjCRuntime.bind(NSUserDefaults.class); }/*</bind>*/
     /*<constants>*//*</constants>*/
@@ -74,13 +85,39 @@ import org.robovm.apple.security.*;
     public void put(String defaultName, NSURL url) {
         setURL$forKey$(url, defaultName);
     }
+    
     public void setVolatileDomain(String domainName, NSDictionary<?, ?> domain) {
         setVolatileDomain$forName$(domain, domainName);
     }
+    public void setVolatileDomain(NSUserDefaultsDomain domainName, NSDictionary<?, ?> domain) {
+        setVolatileDomain$forName$(domain, domainName.value());
+    } 
     public void setPersistentDomain(String domainName, NSDictionary<?, ?> domain) {
         setPersistentDomain$forName$(domain, domainName);
     }
+    public void setPersistentDomain(NSUserDefaultsDomain domainName, NSDictionary<?, ?> domain) {
+        setPersistentDomain$forName$(domain, domainName.value());
+    }
+    
+    public NSDictionary<?, ?> getVolatileDomain(NSUserDefaultsDomain domainName) {
+        return getVolatileDomain(domainName.value());
+    }
+    public void removeVolatileDomain(NSUserDefaultsDomain domainName) {
+        removeVolatileDomain(domainName.value());
+    }
+    public NSDictionary<?, ?> getPersistentDomain(NSUserDefaultsDomain domainName) {
+        return getPersistentDomain(domainName.value());
+    }
+    public void removePersistentDomain(NSUserDefaultsDomain domainName) {
+        removePersistentDomain(domainName.value());
+    }
+    public boolean isObjectForced(String key, NSUserDefaultsDomain domain) {
+        return isObjectForced(key, domain.value());
+    }
     /*<methods>*/
+    @GlobalValue(symbol="NSUserDefaultsDidChangeNotification", optional=true)
+    public static native NSString DidChangeNotification();
+    
     @Method(selector = "objectForKey:")
     public native NSObject get(String defaultName);
     @Method(selector = "setObject:forKey:")

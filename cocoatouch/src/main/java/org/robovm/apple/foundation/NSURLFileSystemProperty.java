@@ -36,11 +36,57 @@ import org.robovm.apple.security.*;
 
 /*<javadoc>*/
 /*</javadoc>*/
+@Marshaler(NSURLFileSystemProperty.Marshaler.class)
 /*<annotations>*/@Library("Foundation")/*</annotations>*/
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/NSURLFileSystemProperty/*</name>*/ 
-    extends /*<extends>*/Object/*</extends>*/ 
+    extends /*<extends>*/NSURLProperty/*</extends>*/ 
     /*<implements>*//*</implements>*/ {
 
+    public static class Marshaler {
+        @MarshalsPointer
+        public static NSURLFileSystemProperty toObject(Class<NSURLFileSystemProperty> cls, long handle, long flags) {
+            NSString o = (NSString) NSObject.Marshaler.toObject(NSString.class, handle, flags);
+            if (o == null) {
+                return null;
+            }
+            return NSURLFileSystemProperty.valueOf(o);
+        }
+        @MarshalsPointer
+        public static long toNative(NSURLFileSystemProperty o, long flags) {
+            if (o == null) {
+                return 0L;
+            }
+            return NSObject.Marshaler.toNative(o.value(), flags);
+        }
+    }
+    
+    public static class AsListMarshaler {
+        @SuppressWarnings("unchecked")
+        @MarshalsPointer
+        public static List<NSURLFileSystemProperty> toObject(Class<? extends NSObject> cls, long handle, long flags) {
+            NSArray<NSString> o = (NSArray<NSString>) NSObject.Marshaler.toObject(cls, handle, flags);
+            if (o == null) {
+                return null;
+            }
+            List<NSURLFileSystemProperty> list = new ArrayList<>();
+            for (NSString str : o) {
+                list.add(NSURLFileSystemProperty.valueOf(str));
+            }
+            return list;
+        }
+        @MarshalsPointer
+        public static long toNative(List<NSURLFileSystemProperty> l, long flags) {
+            if (l == null) {
+                return 0L;
+            }
+            NSMutableArray<NSString> array = new NSMutableArray<>();
+            for (NSURLFileSystemProperty i : l) {
+                array.add(i.value());
+            }
+            return NSObject.Marshaler.toNative(array, flags);
+        }
+    }
+    
     /*<ptr>*/
     /*</ptr>*/
     /*<bind>*/static { Bro.bind(NSURLFileSystemProperty.class); }/*</bind>*/

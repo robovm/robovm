@@ -45,6 +45,7 @@ import org.robovm.apple.security.*;
     /*<ptr>*/public static class NSURLPtr extends Ptr<NSURL, NSURLPtr> {}/*</ptr>*/
     /*<bind>*/static { ObjCRuntime.bind(NSURL.class); }/*</bind>*/
     /*<constants>*//*</constants>*/
+    public NSURL(NSURLScheme scheme, String host, String path) { super((SkipInit) null); initObject(initWithScheme$host$path$(scheme.value(), host, path)); }
     /*<constructors>*/
     public NSURL() {}
     protected NSURL(SkipInit skipInit) { super(skipInit); }
@@ -87,23 +88,100 @@ import org.robovm.apple.security.*;
     public java.net.URL toURL() throws java.net.MalformedURLException {
         return new java.net.URL(getAbsoluteString());
     }
-
     public java.net.URI toURI() throws java.net.URISyntaxException {
         return new java.net.URI(getAbsoluteString());
     }
 
-    public NSObject getResourceValue(NSString key, NSError.NSErrorPtr error) {
-        NSObjectPtr value = new NSObjectPtr();
-        getResourceValue$forKey$error$(value, key, error);
-        return value.get();
-    }
-    
     public static String encodeURLString(String urlString, NSStringEncoding encoding) {
         return new NSString(urlString).stringByAddingPercentEscapesUsingEncoding$(encoding);
     }
     public static String decodeURLString(String urlString, NSStringEncoding encoding) {
         return new NSString(urlString).stringByReplacingPercentEscapesUsingEncoding$(encoding);
     }
+    
+    public NSObject getResourceValue(NSURLFileSystemProperty property) {
+        return getResourceValue(property.value());
+    }
+    public NSObject getResourceValue(NSURLFileProperty property) {
+        return getResourceValue(property.value());
+    }
+    public NSObject getResourceValue(NSURLVolumeProperty property) {
+        return getResourceValue(property.value());
+    }
+    public NSObject getResourceValue(NSURLUbiquitousItemProperty property) {
+        return getResourceValue(property.value());
+    }
+    private NSObject getResourceValue(NSString key) {
+        NSObjectPtr value = new NSObjectPtr();
+        NSError.NSErrorPtr error = new NSError.NSErrorPtr();
+        
+        getResourceValue$forKey$error$(value, key, error);
+        return value.get();
+    }
+    
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
+    public void removeCachedResourceValue(NSURLFileSystemProperty property) {
+        removeCachedResourceValue(property.value());
+    }
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
+    public void removeCachedResourceValue(NSURLFileProperty property) {
+        removeCachedResourceValue(property.value());
+    }
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
+    public void removeCachedResourceValue(NSURLVolumeProperty property) {
+        removeCachedResourceValue(property.value());
+    }
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
+    public void removeCachedResourceValue(NSURLUbiquitousItemProperty property) {
+        removeCachedResourceValue(property.value());
+    }
+    
+    public void setResourceValue(NSURLFileSystemProperty property, NSObject value) {
+        setResourceValue(value, property.value(), new NSError.NSErrorPtr());
+    }
+    public void setResourceValue(NSURLFileProperty property, NSObject value) {
+        setResourceValue(value, property.value(), new NSError.NSErrorPtr());
+    }
+    public void setResourceValue(NSURLVolumeProperty property, NSObject value) {
+        setResourceValue(value, property.value(), new NSError.NSErrorPtr());
+    }
+    public void setResourceValue(NSURLUbiquitousItemProperty property, NSObject value) {
+        setResourceValue(value, property.value(), new NSError.NSErrorPtr());
+    }
+    
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
+    public void setTemporaryResourceValue(NSURLFileSystemProperty property, NSObject value) {
+        setTemporaryResourceValue(value, property.value());
+    }
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
+    public void setTemporaryResourceValue(NSURLFileProperty property, NSObject value) {
+        setTemporaryResourceValue(value, property.value());
+    }
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
+    public void setTemporaryResourceValue(NSURLVolumeProperty property, NSObject value) {
+        setTemporaryResourceValue(value, property.value());
+    }
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
+    public void setTemporaryResourceValue(NSURLUbiquitousItemProperty property, NSObject value) {
+        setTemporaryResourceValue(value, property.value());
+    }
+    
     /*<methods>*/
     @Method(selector = "initWithScheme:host:path:")
     protected native @Pointer long initWithScheme$host$path$(String scheme, String host, String path);
@@ -191,22 +269,22 @@ import org.robovm.apple.security.*;
      * @since Available in iOS 4.0 and later.
      */
     @Method(selector = "resourceValuesForKeys:error:")
-    public native NSDictionary<NSString, ?> getResourceValues(NSArray<NSString> keys, NSError.NSErrorPtr error);
+    public native NSURLProperties getResourceValues(@org.robovm.rt.bro.annotation.Marshaler(NSURLProperty.AsListMarshaler.class) List<NSURLProperty> keys, NSError.NSErrorPtr error);
     /**
      * @since Available in iOS 4.0 and later.
      */
     @Method(selector = "setResourceValue:forKey:error:")
-    public native boolean setResourceValue(NSObject value, NSString key, NSError.NSErrorPtr error);
+    protected native boolean setResourceValue(NSObject value, NSString key, NSError.NSErrorPtr error);
     /**
      * @since Available in iOS 4.0 and later.
      */
     @Method(selector = "setResourceValues:error:")
-    public native boolean setResourceValues(NSDictionary<NSString, ?> keyedValues, NSError.NSErrorPtr error);
+    public native boolean setResourceValues(NSURLProperties keyedValues, NSError.NSErrorPtr error);
     /**
      * @since Available in iOS 7.0 and later.
      */
     @Method(selector = "removeCachedResourceValueForKey:")
-    public native void removeCachedResourceValue(NSString key);
+    protected native void removeCachedResourceValue(NSString key);
     /**
      * @since Available in iOS 7.0 and later.
      */
@@ -216,12 +294,12 @@ import org.robovm.apple.security.*;
      * @since Available in iOS 7.0 and later.
      */
     @Method(selector = "setTemporaryResourceValue:forKey:")
-    public native void setTemporaryResourceValue(NSObject value, NSString key);
+    protected native void setTemporaryResourceValue(NSObject value, NSString key);
     /**
      * @since Available in iOS 4.0 and later.
      */
     @Method(selector = "bookmarkDataWithOptions:includingResourceValuesForKeys:relativeToURL:error:")
-    public native NSData toBookmarkData(NSURLBookmarkCreationOptions options, NSArray<NSString> keys, NSURL relativeURL, NSError.NSErrorPtr error);
+    public native NSData toBookmarkData(NSURLBookmarkCreationOptions options, @org.robovm.rt.bro.annotation.Marshaler(NSURLProperty.AsListMarshaler.class) List<NSURLProperty> keys, NSURL relativeURL, NSError.NSErrorPtr error);
     /**
      * @since Available in iOS 4.0 and later.
      */
@@ -231,7 +309,7 @@ import org.robovm.apple.security.*;
      * @since Available in iOS 4.0 and later.
      */
     @Method(selector = "resourceValuesForKeys:fromBookmarkData:")
-    public static native NSDictionary<NSString, ?> getResourceValuesFromBookmarkData(NSArray<NSString> keys, NSData bookmarkData);
+    public static native NSURLProperties getResourceValuesFromBookmarkData(@org.robovm.rt.bro.annotation.Marshaler(NSURLProperty.AsListMarshaler.class) List<NSURLProperty> keys, NSData bookmarkData);
     /**
      * @since Available in iOS 4.0 and later.
      */
@@ -246,7 +324,7 @@ import org.robovm.apple.security.*;
      * @since Available in iOS 4.0 and later.
      */
     @Method(selector = "pathComponents")
-    public native NSArray<NSString> getPathComponents();
+    public native @org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String> getPathComponents();
     /**
      * @since Available in iOS 4.0 and later.
      */

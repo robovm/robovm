@@ -244,25 +244,6 @@ import org.robovm.apple.security.*;
     public static native NSString URLErrorKey();
     @GlobalValue(symbol="NSFilePathErrorKey", optional=true)
     public static native NSString FilePathErrorKey();
-    @GlobalValue(symbol="NSFileHandleReadCompletionNotification", optional=true)
-    public static native String FileHandleReadCompletionNotification();
-    @GlobalValue(symbol="NSFileHandleReadToEndOfFileCompletionNotification", optional=true)
-    public static native String FileHandleReadToEndOfFileCompletionNotification();
-    @GlobalValue(symbol="NSFileHandleConnectionAcceptedNotification", optional=true)
-    public static native String FileHandleConnectionAcceptedNotification();
-    @GlobalValue(symbol="NSFileHandleDataAvailableNotification", optional=true)
-    public static native String FileHandleDataAvailableNotification();
-    @GlobalValue(symbol="NSFileHandleNotificationDataItem", optional=true)
-    public static native String FileHandleNotificationDataItem();
-    @GlobalValue(symbol="NSFileHandleNotificationFileHandleItem", optional=true)
-    public static native String FileHandleNotificationFileHandleItem();
-    /**
-     * @since Available in iOS 2.0 and later.
-     * @deprecated Deprecated in iOS 5.0.
-     */
-    @Deprecated
-    @GlobalValue(symbol="NSFileHandleNotificationMonitorModes", optional=true)
-    public static native String FileHandleNotificationMonitorModes();
     @GlobalValue(symbol="NSAverageKeyValueOperator", optional=true)
     public static native String AverageKeyValueOperator();
     @GlobalValue(symbol="NSCountKeyValueOperator", optional=true)
@@ -303,63 +284,6 @@ import org.robovm.apple.security.*;
      */
     @GlobalValue(symbol="NSKeyedArchiveRootObjectKey", optional=true)
     public static native String KeyedArchiveRootObjectKey();
-    @GlobalValue(symbol="NSPortDidBecomeInvalidNotification", optional=true)
-    public static native String PortDidBecomeInvalidNotification();
-    /**
-     * @since Available in iOS 4.0 and later.
-     */
-    @GlobalValue(symbol="NSTextCheckingNameKey", optional=true)
-    public static native NSString TextCheckingNameKey();
-    /**
-     * @since Available in iOS 4.0 and later.
-     */
-    @GlobalValue(symbol="NSTextCheckingJobTitleKey", optional=true)
-    public static native NSString TextCheckingJobTitleKey();
-    /**
-     * @since Available in iOS 4.0 and later.
-     */
-    @GlobalValue(symbol="NSTextCheckingOrganizationKey", optional=true)
-    public static native NSString TextCheckingOrganizationKey();
-    /**
-     * @since Available in iOS 4.0 and later.
-     */
-    @GlobalValue(symbol="NSTextCheckingStreetKey", optional=true)
-    public static native NSString TextCheckingStreetKey();
-    /**
-     * @since Available in iOS 4.0 and later.
-     */
-    @GlobalValue(symbol="NSTextCheckingCityKey", optional=true)
-    public static native NSString TextCheckingCityKey();
-    /**
-     * @since Available in iOS 4.0 and later.
-     */
-    @GlobalValue(symbol="NSTextCheckingStateKey", optional=true)
-    public static native NSString TextCheckingStateKey();
-    /**
-     * @since Available in iOS 4.0 and later.
-     */
-    @GlobalValue(symbol="NSTextCheckingZIPKey", optional=true)
-    public static native NSString TextCheckingZIPKey();
-    /**
-     * @since Available in iOS 4.0 and later.
-     */
-    @GlobalValue(symbol="NSTextCheckingCountryKey", optional=true)
-    public static native NSString TextCheckingCountryKey();
-    /**
-     * @since Available in iOS 4.0 and later.
-     */
-    @GlobalValue(symbol="NSTextCheckingPhoneKey", optional=true)
-    public static native NSString TextCheckingPhoneKey();
-    /**
-     * @since Available in iOS 4.0 and later.
-     */
-    @GlobalValue(symbol="NSTextCheckingAirlineKey", optional=true)
-    public static native NSString TextCheckingAirlineKey();
-    /**
-     * @since Available in iOS 4.0 and later.
-     */
-    @GlobalValue(symbol="NSTextCheckingFlightKey", optional=true)
-    public static native NSString TextCheckingFlightKey();
     /**
      * @since Available in iOS 2.0 and later.
      */
@@ -370,26 +294,11 @@ import org.robovm.apple.security.*;
      */
     @GlobalValue(symbol="NSStreamSOCKSErrorDomain", optional=true)
     public static native NSString StreamSOCKSErrorDomain();
-    @GlobalValue(symbol="NSWillBecomeMultiThreadedNotification", optional=true)
-    public static native String WillBecomeMultiThreadedNotification();
-    @GlobalValue(symbol="NSDidBecomeSingleThreadedNotification", optional=true)
-    public static native String DidBecomeSingleThreadedNotification();
-    @GlobalValue(symbol="NSThreadWillExitNotification", optional=true)
-    public static native String ThreadWillExitNotification();
-    /**
-     * @since Available in iOS 2.0 and later.
-     */
-    @GlobalValue(symbol="NSSystemTimeZoneDidChangeNotification", optional=true)
-    public static native String SystemTimeZoneDidChangeNotification();
-    @GlobalValue(symbol="NSURLFileScheme", optional=true)
-    public static native String URLFileScheme();
     /**
      * @since Available in iOS 5.0 and later.
      */
     @GlobalValue(symbol="NSURLKeysOfUnsetValuesKey", optional=true)
     public static native NSString URLKeysOfUnsetValuesKey();
-    @GlobalValue(symbol="NSURLCredentialStorageChangedNotification", optional=true)
-    public static native String URLCredentialStorageChangedNotification();
     @GlobalValue(symbol="NSURLErrorDomain", optional=true)
     public static native NSString URLErrorDomain();
     /**
@@ -419,39 +328,6 @@ import org.robovm.apple.security.*;
      */
     @GlobalValue(symbol="NSURLErrorBackgroundTaskCancelledReasonKey", optional=true)
     public static native NSString URLErrorBackgroundTaskCancelledReasonKey();
-    @GlobalValue(symbol="NSGlobalDomain", optional=true)
-    public static native String GlobalDomain();
-    @GlobalValue(symbol="NSArgumentDomain", optional=true)
-    public static native String ArgumentDomain();
-    @GlobalValue(symbol="NSRegistrationDomain", optional=true)
-    public static native String RegistrationDomain();
-    @GlobalValue(symbol="NSUserDefaultsDidChangeNotification", optional=true)
-    public static native String UserDefaultsDidChangeNotification();
-    /**
-     * @since Available in iOS 3.0 and later.
-     */
-    @GlobalValue(symbol="NSNegateBooleanTransformerName", optional=true)
-    public static native String NegateBooleanTransformerName();
-    /**
-     * @since Available in iOS 3.0 and later.
-     */
-    @GlobalValue(symbol="NSIsNilTransformerName", optional=true)
-    public static native String IsNilTransformerName();
-    /**
-     * @since Available in iOS 3.0 and later.
-     */
-    @GlobalValue(symbol="NSIsNotNilTransformerName", optional=true)
-    public static native String IsNotNilTransformerName();
-    /**
-     * @since Available in iOS 3.0 and later.
-     */
-    @GlobalValue(symbol="NSUnarchiveFromDataTransformerName", optional=true)
-    public static native String UnarchiveFromDataTransformerName();
-    /**
-     * @since Available in iOS 3.0 and later.
-     */
-    @GlobalValue(symbol="NSKeyedUnarchiveFromDataTransformerName", optional=true)
-    public static native String KeyedUnarchiveFromDataTransformerName();
     /**
      * @since Available in iOS 2.0 and later.
      */

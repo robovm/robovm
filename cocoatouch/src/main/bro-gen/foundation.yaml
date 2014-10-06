@@ -163,6 +163,16 @@ classes:
 
     NS.*Internal: { exclude: true }
 
+    NSURLProperty: {}
+    NSURLFileSystemProperty:
+        extends: NSURLProperty
+    NSURLFileProperty:
+        extends: NSURLProperty
+    NSURLVolumeProperty:
+        extends: NSURLProperty
+    NSURLUbiquitousItemProperty:
+        extends: NSURLProperty
+
     NSArray: # DONE
         protocols: [NSPropertyList, "List<T>"]
         methods:
@@ -268,7 +278,6 @@ classes:
                 trim_after_first_colon: true
             '-executionBlocks': # We cannot marshal NSArray<BlockType>
                 exclude: true
-
     NSBundle: # DONE
         methods:
             '+(mainBundle)':
@@ -286,28 +295,29 @@ classes:
                 property: true
             '-(preferredLocalizations|localizations)':
                 property: true
-                return_type: NSArray<NSString>
+                return_type: "@org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String>"
             '-(executableArchitectures)':
-                property: true
+                name: getExecutableArchitectures0
+                visibility: private
                 return_type: NSArray<NSNumber>
             '+pathForResource:ofType:inDirectory:':
                 name: findResourcePathInBundlePath
             '+pathsForResourcesOfType:inDirectory:':
                 name: findResourcesPathsInBundlePath
-                return_type: NSArray<NSString>
+                return_type: "@org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String>"
             '+URLForResource:withExtension:subdirectory:inBundleWithURL:':
                 name: findResourceURLInBundleURL
             '+URLsForResourcesWithExtension:subdirectory:inBundleWithURL:':
                 name: findResourceURLsInBundleURL
-                return_type: NSArray<NSString>
+                return_type: "@org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String>"
             '+preferredLocalizationsFromArray:.*':
                 name: getPreferredLocalizations
-                return_type: NSArray<NSString>
+                return_type: "@org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String>"
                 parameters:
                     localizationsArray:
-                        type: NSArray<NSString>
+                        type: "@org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String>"
                     preferencesArray:
-                        type: NSArray<NSString>
+                        type: "@org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String>"
             '-pathForAuxiliaryExecutable:':
                 name: findAuxiliaryExecutablePath
             '-pathForResource:ofType:':
@@ -318,10 +328,10 @@ classes:
                 name: findResourcePathInSubPath
             '-pathsForResourcesOfType:inDirectory:':
                 name: findResourcesPathsInSubPath
-                return_type: NSArray<NSString>
+                return_type: "@org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String>"
             '-pathsForResourcesOfType:inDirectory:forLocalization:':
                 name: findResourcesPathsInSubPath
-                return_type: NSArray<NSString>
+                return_type: "@org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String>"
             '-classNamed:':
                 name: getClassNamed
             '-loadAndReturnError:':
@@ -339,7 +349,6 @@ classes:
             '-URLsForResources.*':
                 name: findResourceURLsInSubPath
                 return_type: NSArray<NSURL>
-
             '+bundleForClass:':
                 name: getBundle
             '+bundleWithIdentifier:':
@@ -347,10 +356,8 @@ classes:
             '-initWithPath:':
                 constructor: false
             '-initWithURL:':
-
             '+.*': {exclude: true}
             '-.*': {exclude: true}
-
     NSByteCountFormatter: # DONE
         methods:
             '+stringFromByteCount:countStyle:':
@@ -827,12 +834,11 @@ classes:
                 property: true
             '-localizedRecoveryOptions':
                 property: true
-                return_type: 'NSArray<NSString>'
+                return_type: "@org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String>"
             '-recoveryAttempter':
                 property: true
             '-userInfo':
                 property: true
-
     NSException: # DONE
         skip_def_constructor: true
         methods:
@@ -847,7 +853,6 @@ classes:
                 property: true
             '-userInfo':
                 property: true
-
     NSExpression: # DONE
         methods:
             '+expressionForBlock:arguments:':
@@ -866,7 +871,34 @@ classes:
                 property: true
             '-expressionValueWithObject:context:':
                 name: evaluate
-    NSFileCoordinator: {}
+    NSFileCoordinator: # DONE
+        methods:
+            '-coordinateReadingItemAtURL:options:error:byAccessor:':
+                name: coordinateReadingItem
+            '-coordinateWritingItemAtURL:options:error:byAccessor:':
+                name: coordinateWritingItem
+            '-coordinateReadingItemAtURL:options:writingItemAtURL:options:error:byAccessor:':
+                name: coordinateReadingItem
+            '-coordinateWritingItemAtURL:options:writingItemAtURL:options:error:byAccessor:':
+                name: coordinateWritingItem
+            '-prepareForReadingItemsAtURLs:options:writingItemsAtURLs:options:error:byAccessor:':
+                name: prepareForReadingItems
+                parameters:
+                    readingURLs:
+                        type: NSArray<NSURL>
+                    writingURLs:
+                        type: NSArray<NSURL>
+            '-itemAtURL:willMoveToURL:':
+                name: itemAtURLWillMoveToURL
+            '-itemAtURL:didMoveToURL:':
+                name: itemAtURLDidMoveToURL
+            '+addFilePresenter:':
+                trim_after_first_colon: true
+            '+removeFilePresenter:':
+                trim_after_first_colon: true
+            '+filePresenters':
+                property: true
+                return_type: "@org.robovm.rt.bro.annotation.Marshaler(NSArray.AsListMarshaler.class) List<NSFilePresenter>"
     NSFileHandle: # DONE
         methods:
             '-(availableData|offsetInFile)':
@@ -940,14 +972,14 @@ classes:
                 visibility: protected
                 parameters:
                     propertyKeys:
-                        type: "NSArray<NSString>"
+                        type: "@org.robovm.rt.bro.annotation.Marshaler(NSURLFileSystemProperty.AsListMarshaler.class) List<NSURLFileSystemProperty>"
             '-contentsOfDirectoryAtURL:includingPropertiesForKeys:options:error:':
                 name: getContentsOfDirectoryAtURL
                 return_type: "NSArray<NSURL>"
                 visibility: protected
                 parameters:
                     keys:
-                        type: "NSArray<NSString>"
+                        type: "@org.robovm.rt.bro.annotation.Marshaler(NSURLFileSystemProperty.AsListMarshaler.class) List<NSURLFileSystemProperty>"
             '-URLsForDirectory:inDomains:':
                 name: getURLsForDirectory
                 return_type: "NSArray<NSURL>"
@@ -1047,7 +1079,7 @@ classes:
                 visibility: protected
                 parameters:
                     keys:
-                        type: "NSArray<NSString>"
+                        type: "@org.robovm.rt.bro.annotation.Marshaler(NSURLFileSystemProperty.AsListMarshaler.class) List<NSURLFileSystemProperty>"
             '-subpathsAtPath:':
                 name: getSubpathsAtPath
                 return_type: "@org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String>"
@@ -1307,7 +1339,17 @@ classes:
                 name: enumerateRangesInRange
             '+indexSet.*':
                 name: create
-    NSInputStream: {}
+    NSInputStream: # DONE
+        methods:
+            '-read:maxLength:':
+                visibility: protected
+                parameters:
+                    buffer:
+                        type: "@Pointer long"
+            '-getBuffer:length:':
+                exclude: true
+            '+inputStreamWith.*':
+                exclude: true
     NSInvocation: # DONE
         methods:
             '-methodSignature':
@@ -1920,7 +1962,7 @@ classes:
                     coalesceMask:
                         type: NSNotificationCoalescing
                     modes:
-                        type: 'NSArray<NSString>' # TODO
+                        type: "@org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String>"
     NSNull: # DONE
         skip_def_constructor: true
         methods:
@@ -2309,7 +2351,37 @@ classes:
                 property: true
             '+progressWithTotalUnitCount:':
                 name: create
-    NSPropertyListSerialization: {}
+    NSPropertyListSerialization: # DONE
+        methods:
+            '+propertyList:isValidForFormat:':
+                name: isPropertyListValidForFormat
+                parameters:
+                    plist:
+                        type: NSPropertyList
+            '+dataWithPropertyList:format:options:error:':
+                name: getDataFromPropertyList
+                parameters:
+                    plist:
+                        type: NSPropertyList
+            '+writePropertyList:toStream:format:options:error:':
+                name: writePropertyListToStream
+                parameters:
+                    plist:
+                        type: NSPropertyList
+            '+propertyListWithData:options:format:error:':
+                name: getPropertyListFromData
+                return_type: NSPropertyList
+                visibility: protected
+            '+propertyListWithStream:options:format:error:':
+                name: getPropertyListFromStream
+                return_type: NSPropertyList
+                visibility: protected
+            '+dataFromPropertyList:format:errorDescription:':
+                name: getDataFromPropertyList
+            '+propertyListFromData:mutabilityOption:format:errorDescription:':
+                name: getPropertyListFromData
+                return_type: NSPropertyList
+                visibility: protected
     NSProxy: { exclude: true }
     NSRecursiveLock: # DONE
         methods:
@@ -2378,29 +2450,53 @@ classes:
                 name: getDateLimit
             '-acceptInputForMode:beforeDate:':
                 name: acceptInputUntil
-    NSScanner: {}
+    NSScanner: # DONE
+        methods:
+            '-(string|scanLocation|charactersToBeSkipped|caseSensitive)':
+                property: true
+            '-setLocale:':
+                parameters:
+                    locale:
+                        type: NSLocale
+            '-locale':
+                property: true
+                return_type: NSLocale
+            '+scannerWithString:':
+                name: create
+                return_type: NSScanner
+            '+localizedScannerWithString:':
+                name: createLocalized
+                return_type: NSScanner
+            '-scanDecimal:':
+                trim_after_first_colon: true
+                visibility: private
+                parameters:
+                    dcm:
+                        type: NSDecimal.NSDecimalPtr
+            '-scan.*':
+                trim_after_first_colon: true
+                visibility: private
     NSSet: # DONE
         methods:
-            "-initWithArray:":
+            '-initWithArray:':
                 constructor: false
-            "-initWithSet:":
+            '-initWithSet:':
                 constructor: false
-            "-initWithObjects:count:":
+            '-initWithObjects:count:':
                 constructor: false
                 parameters:
                     objects:
                         type: "@Pointer long"
-            "-count":
+            '-count':
                 visibility: protected
-            "-member:":
+            '-member:':
                 visibility: protected
-            "-objectEnumerator":
+            '-objectEnumerator':
                 visibility: protected
                 return_type: NSEnumerator<T>
             '-anyObject':
                 visibility: protected
                 return_type: T
-
             '+.*': {exclude: true}
             '-.*': {exclude: true}
     NSSortDescriptor: {}
@@ -2452,7 +2548,64 @@ classes:
                 visibility: protected
             '+.*': {exclude: true}
             '-.*': {exclude: true}
-    NSTextCheckingResult: {}
+    NSTextCheckingResult: # DONE
+        properties:
+            'grammarDetails':
+                type: "@org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String>"
+            'components':
+                type: NSTextCheckingTransitComponents
+            'alternativeStrings':
+                type: "@org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String>"
+            'addressComponents':
+                type: NSTextCheckingAddressComponents
+        methods:
+            '-rangeAtIndex:':
+                name: getRangeAt
+            '-resultByAdjustingRangesWithOffset:':
+                name: newResultByAdjustingRanges
+            '+orthographyCheckingResultWithRange:orthography:':
+                name: createOrthographyCheckingResult
+            '+spellCheckingResultWithRange:':
+                name: createSpellCheckingResult
+            '+grammarCheckingResultWithRange:details:':
+                name: createGrammarCheckingResult
+                parameters:
+                    details:
+                        type: "@org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String>"
+            '+dateCheckingResultWithRange:date:':
+                name: createDateCheckingResult
+            '+dateCheckingResultWithRange:date:timeZone:duration:':
+                name: createDateCheckingResult
+            '+addressCheckingResultWithRange:components:':
+                name: createAddressCheckingResult
+                parameters:
+                    components:
+                        type: NSTextCheckingAddressComponents
+            '+linkCheckingResultWithRange:URL:':
+                name: createLinkCheckingResult
+            '+quoteCheckingResultWithRange:replacementString:':
+                name: createQuoteCheckingResult
+            '+dashCheckingResultWithRange:replacementString:':
+                name: createDashCheckingResult
+            '+replacementCheckingResultWithRange:replacementString:':
+                name: createReplacementCheckingResult
+            '+correctionCheckingResultWithRange:replacementString:':
+                name: createCorrectionCheckingResult
+            '+correctionCheckingResultWithRange:replacementString:alternativeStrings:':
+                name: createCorrectionCheckingResult
+                parameters:
+                    alternativeStrings:
+                        type: "@org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String>"
+            '+regularExpressionCheckingResultWithRanges:count:regularExpression:':
+                name: createRegularExpressionCheckingResult
+                visibility: protected
+            '+phoneNumberCheckingResultWithRange:phoneNumber:':
+                name: createPhoneNumberCheckingResult
+            '+transitInformationCheckingResultWithRange:components:':
+                name: createTransitInformationCheckingResult
+                parameters:
+                    components:
+                        type: NSTextCheckingTransitComponents
     NSThread: # DONE
         methods:
             '+callStackReturnAddresses': { exclude: true }
@@ -2487,7 +2640,45 @@ classes:
                 name: create
             '+scheduledTimerWithTimeInterval:target:selector:userInfo:repeats:':
                 name: createScheduled
-    NSTimeZone: {}
+    NSTimeZone: # DONE
+        methods:
+            '-(name|data|secondsFromGMT|abbreviation|daylightSavingTimeOffset|nextDaylightSavingTimeTransition|description)':
+                property: true
+            '-secondsFromGMTForDate:':
+                name: getSecondsFromGMTForDate
+            '-abbreviationForDate:':
+                name: getAbbreviationForDate
+            '-isDaylightSavingTimeForDate:':
+                name: isDaylightSavingTimeForDate
+            '-daylightSavingTimeOffsetForDate:':
+                name: getDaylightSavingTimeOffsetForDate
+            '-nextDaylightSavingTimeTransitionAfterDate:':
+                name: getNextDaylightSavingTimeTransitionAfterDate
+            '-isEqualToTimeZone:':
+                name: isEqualTo
+            '-localizedName:locale:':
+                name: getLocalizedName
+            '+(systemTimeZone|defaultTimeZone|localTimeZone|timeZoneDataVersion)':
+                property: true
+            '+knownTimeZoneNames':
+                property: true
+                return_type: "@org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String>"
+            '+abbreviationDictionary':
+                property: true
+                return_type: "@org.robovm.rt.bro.annotation.Marshaler(NSDictionary.AsStringStringMapMarshaler.class) Map<String, String>"
+            '+setAbbreviationDictionary:':
+                parameters:
+                    dict:
+                        type: "@org.robovm.rt.bro.annotation.Marshaler(NSDictionary.AsStringStringMapMarshaler.class) Map<String, String>"
+            '+timeZoneWithName:.*':
+                name: fromName
+                return_type: NSTimeZone
+            '+timeZoneForSecondsFromGMT:':
+                name: fromGMTSecondsOffset
+                return_type: NSTimeZone
+            '+timeZoneWithAbbreviation:':
+                name: fromAbbreviation
+                return_type: NSTimeZone
     NSUbiquitousKeyValueStore: # DONE
         methods:
             '-objectForKey:':
@@ -2543,10 +2734,10 @@ classes:
                 name: createBookmarkData
             '+resourceValuesForKeys:fromBookmarkData:':
                 name: getResourceValuesFromBookmarkData
-                return_type: 'NSDictionary<NSString, ?>'
+                return_type: NSURLProperties
                 parameters:
                     keys:
-                        type: 'NSArray<NSString>'
+                        type: "@org.robovm.rt.bro.annotation.Marshaler(NSURLProperty.AsListMarshaler.class) List<NSURLProperty>"
             '+writeBookmarkData:toURL:options:error:':
                 trim_after_first_colon: true
                 parameters:
@@ -2560,7 +2751,7 @@ classes:
                 property: true
             '-pathComponents':
                 property: true
-                return_type: 'NSArray<NSString>'
+                return_type: "@org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String>"
             '-getResourceValue:forKey:error:':
                 visibility: private
                 parameters:
@@ -2570,12 +2761,13 @@ classes:
                         type: NSString
             '-resourceValuesForKeys:error:':
                 name: getResourceValues
-                return_type: 'NSDictionary<NSString, ?>'
+                return_type: NSURLProperties
                 parameters:
                     keys:
-                        type: 'NSArray<NSString>'
+                        type: "@org.robovm.rt.bro.annotation.Marshaler(NSURLProperty.AsListMarshaler.class) List<NSURLProperty>"
             '-setResourceValue:forKey:error:':
                 trim_after_first_colon: true
+                visibility: protected
                 parameters:
                     key:
                         type: NSString
@@ -2583,14 +2775,16 @@ classes:
                 trim_after_first_colon: true
                 parameters:
                     keyedValues:
-                        type: 'NSDictionary<NSString, ?>'
+                        type: NSURLProperties
             '-removeCachedResourceValueForKey:':
                 name: removeCachedResourceValue
+                visibility: protected
                 parameters:
                     key:
                         type: NSString
             '-setTemporaryResourceValue:forKey:':
                 trim_after_first_colon: true
+                visibility: protected
                 parameters:
                     key:
                         type: NSString
@@ -2602,7 +2796,7 @@ classes:
                 name: toBookmarkData
                 parameters:
                     keys:
-                        type: 'NSArray<NSString>'
+                        type: "@org.robovm.rt.bro.annotation.Marshaler(NSURLProperty.AsListMarshaler.class) List<NSURLProperty>"
             '-fileSystemRepresentation': {exclude: true}
             '+fileURL.*': {exclude: true}
             '+URL.*': {exclude: true}
@@ -3464,6 +3658,19 @@ values:
         type: NSString
         visibility: protected
 
+    # NSFileHandle
+    NSFileHandle(.*Notification):
+        class: NSFileHandle
+        name: "#{g[0]}"
+        type: NSString
+    NSFileHandle(Notification.*Item):
+        class: NSFileHandle
+        name: "#{g[0]}"
+        type: NSString
+        visibility: protected
+    NSFileHandleNotificationMonitorModes:
+        exclude: true # deprecated
+
     # NSFileManager
     NS(UbiquityIdentityDidChangeNotification):
         class: NSFileManager
@@ -3544,6 +3751,12 @@ values:
         type: NSString
         visibility: protected
 
+    # NSPort
+    NSPort(.*Notification):
+        class: NSPort
+        name: "#{g[0]}"
+        type: NSString
+
     # NSProgress
     NSProgress(.*)Key:
         class: NSProgressUserInfo
@@ -3607,6 +3820,34 @@ values:
         name: "_#{g[0]}Value"
         type: NSString
         visibility: protected
+
+    # NSTextCheckingResult
+    NSTextChecking(Airline|Flight)Key:
+        class: NSTextCheckingTransitComponents
+        name: "#{g[0]}Key"
+        type: NSString
+        visibility: protected
+    NSTextChecking(.*Key):
+        class: NSTextCheckingAddressComponents
+        name: "#{g[0]}"
+        type: NSString
+        visibility: protected
+
+    # NSThread
+    NS(WillBecomeMultiThreadedNotification|DidBecomeSingleThreadedNotification):
+        class: NSThread
+        name: "#{g[0]}"
+        type: NSString
+    NSThread(WillExitNotification):
+        class: NSThread
+        name: "#{g[0]}"
+        type: NSString
+
+    # NSTimeZone
+    NSSystemTimeZone(DidChangeNotification):
+        class: NSTimeZone
+        name: "#{g[0]}"
+        type: NSString
 
     # NSUbiquitousKeyValueStore
     NSUbiquitousKeyValueStore(.*Notification):
@@ -3695,6 +3936,12 @@ values:
         name: "#{g[0]}Value"
         type: NSString
         visibility: protected
+    NSURL(.*)Scheme:
+        class: NSURLScheme
+        name: "#{g[0]}Value"
+        type: NSString
+        readonly: true
+        visibility: protected
 
     # NSURLCredentialStorage
     NSURLCredentialStorage(RemoveSynchronizableCredentials):
@@ -3702,11 +3949,31 @@ values:
         name: "#{g[0]}"
         type: NSString
         visibility: protected
+    NSURLCredentialStorage(ChangedNotification):
+        class: NSURLCredentialStorage
+        name: "#{g[0]}"
+        type: NSString
     
     # NSURLSession
     NSURLSession(TransferSizeUnknown):
         class: NSURLSession
         name: "#{g[0]}"
+    
+    # NSUserDefaults
+    NSUserDefaults(.*Notification):
+        class: NSUserDefaults
+        name: "#{g[0]}"
+        type: NSString
+    NS(Global|Argument|Registration)Domain:
+        class: NSUserDefaultsDomain
+        name: "#{g[0]}Value"
+        visibility: protected
+
+    # NSValueTransformer
+    NS(.*)TransformerName:
+        class: NSValueTransformerName
+        name: "#{g[0]}Value"
+        visibility: protected
 
 
     NS((LocalizedDescription|ErrorFailingURLString|FilePathError|StringEncodingError)Key):
@@ -3725,25 +3992,6 @@ values:
         name: "#{g[0]}"
         type: NSString
     NS(NetServicesErrorCode):
-        name: "#{g[0]}"
-        type: NSString
-        
-    NS(Stream.*Key):
-        name: "#{g[0]}"
-        type: NSString
-    NS(StreamNetworkServiceType):
-        name: "#{g[0]}"
-        type: NSString
-    NS(StreamSocketSecurityLevel.*):
-        name: "#{g[0]}"
-        type: NSString
-    NS(StreamSOCKSProxyVersion.*):
-        name: "#{g[0]}"
-        type: NSString
-    NS(StreamNetworkServiceType.*):
-        name: "#{g[0]}"
-        type: NSString
-    NS(TextChecking.*Key):
         name: "#{g[0]}"
         type: NSString
 

@@ -38,7 +38,7 @@ import org.robovm.apple.security.*;
 /*</javadoc>*/
 /*<annotations>*/@Library("Foundation")/*</annotations>*/
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/NSURLVolumeProperty/*</name>*/ 
-    extends /*<extends>*/Object/*</extends>*/ 
+    extends /*<extends>*/NSURLProperty/*</extends>*/ 
     /*<implements>*//*</implements>*/ {
 
     /*<ptr>*/

@@ -69,7 +69,7 @@ import org.robovm.apple.security.*;
     @Method(selector = "localizedRecoverySuggestion")
     public native String getLocalizedRecoverySuggestion();
     @Method(selector = "localizedRecoveryOptions")
-    public native NSArray<NSString> getLocalizedRecoveryOptions();
+    public native @org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String> getLocalizedRecoveryOptions();
     @Method(selector = "recoveryAttempter")
     public native NSObject getRecoveryAttempter();
     @Method(selector = "helpAnchor")

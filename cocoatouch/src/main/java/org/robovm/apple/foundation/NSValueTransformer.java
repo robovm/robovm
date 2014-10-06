@@ -55,6 +55,9 @@ import org.robovm.apple.security.*;
     
     /*</properties>*/
     /*<members>*//*</members>*/
+    public static NSValueTransformer getValueTransformer(NSValueTransformerName name) {
+        return getValueTransformer(name.value());
+    }
     /*<methods>*/
     @Method(selector = "transformedValue:")
     public native NSObject getTransformedValue(NSObject value);

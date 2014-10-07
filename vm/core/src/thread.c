@@ -235,13 +235,14 @@ static jint detachThread(Env* env, jboolean ignoreAttachCount, jboolean unregist
     // TODO: Release all monitors still held by this thread (should only be monitors acquired from JNI code)
 
     Thread* thread = env->currentThread;
+    JavaThread* threadObj = thread->threadObj;
 
     if (rvmExceptionOccurred(env)) {
         threadExitUncaughtException(env, thread);
     }
 
-    if (thread->threadObj->group) {
-        rvmCallVoidInstanceMethod(env, thread->threadObj->group, removeThreadMethod, thread->threadObj);
+    if (threadObj->group) {
+        rvmCallVoidInstanceMethod(env, threadObj->group, removeThreadMethod, threadObj);
         rvmExceptionClear(env);
     }
 
@@ -249,9 +250,9 @@ static jint detachThread(Env* env, jboolean ignoreAttachCount, jboolean unregist
     rvmAtomicStoreLong(&thread->threadObj->threadPtr, 0);
 
     // Notify anyone waiting on this thread (using Thread.join())
-    rvmLockObject(env, thread->threadObj->lock);
-    rvmObjectNotifyAll(env, thread->threadObj->lock);
-    rvmUnlockObject(env, thread->threadObj->lock);
+    rvmLockObject(env, threadObj->lock);
+    rvmObjectNotifyAll(env, threadObj->lock);
+    rvmUnlockObject(env, threadObj->lock);
 
     rvmLockThreadsList();
     thread->status = THREAD_ZOMBIE;

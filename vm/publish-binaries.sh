@@ -20,6 +20,7 @@ s3cmd sync --add-header=x-amz-storage-class:REDUCED_REDUNDANCY -r -P -rr --delet
     "$BASE/target/upload/" "s3://$BUCKET/$BUILD/"
 
 # Copy the binaries to binaries/ while we're at it. Prevents the need for running fetch-binaries.sh.
+mkdir -p "$BASE/binaries"
 rsync -a --exclude '*-dbg.a' --include '*.a' --include '*/' --exclude '**' "$BASE/target/binaries/" "$BASE/binaries/"
 
 rm -f "$BASE/binaries.idx"

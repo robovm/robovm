@@ -37,7 +37,7 @@ import org.robovm.libimobiledevice.util.AppLauncher;
  * {@link Process} implementation which runs an app on a device using an
  * {@link AppLauncher}.
  */
-class AppLauncherProcess extends Process implements Launcher {
+public class AppLauncherProcess extends Process implements Launcher {
     private final AtomicInteger threadCounter = new AtomicInteger();
     private final Logger log;
     private final AppLauncher launcher;
@@ -49,7 +49,7 @@ class AppLauncherProcess extends Process implements Launcher {
     private volatile int exitCode = -1;
     private OutputStream errStream;
 
-    AppLauncherProcess(Logger log, AppLauncher launcher, LaunchParameters launchParameters) {
+    public AppLauncherProcess(Logger log, AppLauncher launcher, LaunchParameters launchParameters) {
         this.log = log;
         this.launcher = launcher;
         if (launchParameters.getStderrFifo() != null) {

@@ -4,6 +4,7 @@ a.out
 *.class
 .*
 /target/
+/vm/binaries/
 /vm/target/
 /compiler/target/
 /llvm/target/

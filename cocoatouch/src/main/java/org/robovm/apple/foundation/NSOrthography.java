@@ -44,36 +44,64 @@ import org.robovm.apple.security.*;
     extends /*<extends>*/NSObject/*</extends>*/ 
     /*<implements>*/implements NSCoding/*</implements>*/ {
 
+    public static class LanguageMapMarshaler {
+        @SuppressWarnings("unchecked")
+        @MarshalsPointer
+        public static Map<String, List<String>> toObject(Class<? extends NSObject> cls, long handle, long flags) {
+            NSDictionary<NSString, NSArray<NSString>> o = (NSDictionary<NSString, NSArray<NSString>>) NSObject.Marshaler.toObject(cls, handle, flags);
+            if (o == null) {
+                return null;
+            }
+            Map<String, List<String>> map = new HashMap<>();
+            for (Map.Entry<NSString, NSArray<NSString>> e : o.entrySet()) {
+                map.put(e.getKey().toString(), e.getValue().asStringList());
+            }
+            
+            return map;
+        }
+        @MarshalsPointer
+        public static long toNative(Map<String, List<String>> l, long flags) {
+            if (l == null) {
+                return 0L;
+            }
+            
+            NSMutableDictionary<NSString, NSArray<NSString>> dict = new NSMutableDictionary<>();
+            for (Map.Entry<String, List<String>> e : l.entrySet()) {
+                dict.put(new NSString(e.getKey()), NSArray.fromStrings(e.getValue()));
+            }
+            
+            return NSObject.Marshaler.toNative(dict, flags);
+        }
+    }
+    
     /*<ptr>*/public static class NSOrthographyPtr extends Ptr<NSOrthography, NSOrthographyPtr> {}/*</ptr>*/
     /*<bind>*/static { ObjCRuntime.bind(NSOrthography.class); }/*</bind>*/
     /*<constants>*//*</constants>*/
     /*<constructors>*/
     public NSOrthography() {}
     protected NSOrthography(SkipInit skipInit) { super(skipInit); }
-    public NSOrthography(String script, NSDictionary<?, ?> map) { super((SkipInit) null); initObject(initWithDominantScript$languageMap$(script, map)); }
+    public NSOrthography(String script, @org.robovm.rt.bro.annotation.Marshaler(NSOrthography.LanguageMapMarshaler.class) Map<String, List<String>> map) { super((SkipInit) null); initObject(init(script, map)); }
     /*</constructors>*/
     /*<properties>*/
     @Property(selector = "dominantScript")
     public native String getDominantScript();
     @Property(selector = "languageMap")
-    public native NSDictionary<?, ?> getLanguageMap();
+    public native @org.robovm.rt.bro.annotation.Marshaler(NSOrthography.LanguageMapMarshaler.class) Map<String, List<String>> getLanguageMap();
     @Property(selector = "dominantLanguage")
     public native String getDominantLanguage();
     @Property(selector = "allScripts")
-    public native NSArray<?> getAllScripts();
+    public native @org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String> getAllScripts();
     @Property(selector = "allLanguages")
-    public native NSArray<?> getAllLanguages();
+    public native @org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String> getAllLanguages();
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
     @Method(selector = "languagesForScript:")
-    public native NSArray<?> languagesForScript$(String script);
+    public native @org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String> getLanguagesForScript(String script);
     @Method(selector = "dominantLanguageForScript:")
-    public native String dominantLanguageForScript$(String script);
+    public native String getDominantLanguageForScript(String script);
     @Method(selector = "initWithDominantScript:languageMap:")
-    protected native @Pointer long initWithDominantScript$languageMap$(String script, NSDictionary<?, ?> map);
-    @Method(selector = "orthographyWithDominantScript:languageMap:")
-    public static native NSObject orthographyWithDominantScript$languageMap$(String script, NSDictionary<?, ?> map);
+    protected native @Pointer long init(String script, @org.robovm.rt.bro.annotation.Marshaler(NSOrthography.LanguageMapMarshaler.class) Map<String, List<String>> map);
     @Method(selector = "encodeWithCoder:")
     public native void encode(NSCoder aCoder);
     /*</methods>*/

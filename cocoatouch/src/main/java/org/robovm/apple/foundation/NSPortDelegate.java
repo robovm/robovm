@@ -51,7 +51,7 @@ import org.robovm.apple.security.*;
     /*</properties>*/
     /*<methods>*/
     @Method(selector = "handlePortMessage:")
-    void handlePortMessage$(NSPortMessage message);
+    void handlePortMessage(NSPortMessage message);
     /*</methods>*/
     /*<adapter>*/
     /*</adapter>*/

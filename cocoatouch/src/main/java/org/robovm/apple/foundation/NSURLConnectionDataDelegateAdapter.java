@@ -53,18 +53,18 @@ import org.robovm.apple.security.*;
     /*<members>*//*</members>*/
     /*<methods>*/
     @NotImplemented("connection:willSendRequest:redirectResponse:")
-    public NSURLRequest connection$willSendRequest$redirectResponse$(NSURLConnection connection, NSURLRequest request, NSURLResponse response) { throw new UnsupportedOperationException(); }
+    public NSURLRequest willSendRequest(NSURLConnection connection, NSURLRequest request, NSURLResponse response) { throw new UnsupportedOperationException(); }
     @NotImplemented("connection:didReceiveResponse:")
-    public void connection$didReceiveResponse$(NSURLConnection connection, NSURLResponse response) { throw new UnsupportedOperationException(); }
+    public void didReceiveResponse(NSURLConnection connection, NSURLResponse response) { throw new UnsupportedOperationException(); }
     @NotImplemented("connection:didReceiveData:")
-    public void connection$didReceiveData$(NSURLConnection connection, NSData data) { throw new UnsupportedOperationException(); }
+    public void didReceiveData(NSURLConnection connection, NSData data) { throw new UnsupportedOperationException(); }
     @NotImplemented("connection:needNewBodyStream:")
-    public NSInputStream connection$needNewBodyStream$(NSURLConnection connection, NSURLRequest request) { throw new UnsupportedOperationException(); }
+    public NSInputStream needNewBodyStream(NSURLConnection connection, NSURLRequest request) { throw new UnsupportedOperationException(); }
     @NotImplemented("connection:didSendBodyData:totalBytesWritten:totalBytesExpectedToWrite:")
-    public void connection$didSendBodyData$totalBytesWritten$totalBytesExpectedToWrite$(NSURLConnection connection, @MachineSizedSInt long bytesWritten, @MachineSizedSInt long totalBytesWritten, @MachineSizedSInt long totalBytesExpectedToWrite) { throw new UnsupportedOperationException(); }
+    public void didSendBodyData(NSURLConnection connection, @MachineSizedSInt long bytesWritten, @MachineSizedSInt long totalBytesWritten, @MachineSizedSInt long totalBytesExpectedToWrite) { throw new UnsupportedOperationException(); }
     @NotImplemented("connection:willCacheResponse:")
-    public NSCachedURLResponse connection$willCacheResponse$(NSURLConnection connection, NSCachedURLResponse cachedResponse) { throw new UnsupportedOperationException(); }
+    public NSCachedURLResponse willCacheResponse(NSURLConnection connection, NSCachedURLResponse cachedResponse) { throw new UnsupportedOperationException(); }
     @NotImplemented("connectionDidFinishLoading:")
-    public void connectionDidFinishLoading$(NSURLConnection connection) { throw new UnsupportedOperationException(); }
+    public void didFinishLoading(NSURLConnection connection) { throw new UnsupportedOperationException(); }
     /*</methods>*/
 }

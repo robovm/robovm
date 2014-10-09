@@ -53,14 +53,14 @@ import org.robovm.apple.security.*;
     /*<members>*//*</members>*/
     /*<methods>*/
     @NotImplemented("useCredential:forAuthenticationChallenge:")
-    public void useCredential$forAuthenticationChallenge$(NSURLCredential credential, NSURLAuthenticationChallenge challenge) { throw new UnsupportedOperationException(); }
+    public void useCredential(NSURLCredential credential, NSURLAuthenticationChallenge challenge) { throw new UnsupportedOperationException(); }
     @NotImplemented("continueWithoutCredentialForAuthenticationChallenge:")
-    public void continueWithoutCredentialForAuthenticationChallenge$(NSURLAuthenticationChallenge challenge) { throw new UnsupportedOperationException(); }
+    public void continueWithoutCredential(NSURLAuthenticationChallenge challenge) { throw new UnsupportedOperationException(); }
     @NotImplemented("cancelAuthenticationChallenge:")
-    public void cancelAuthenticationChallenge$(NSURLAuthenticationChallenge challenge) { throw new UnsupportedOperationException(); }
+    public void cancel(NSURLAuthenticationChallenge challenge) { throw new UnsupportedOperationException(); }
     @NotImplemented("performDefaultHandlingForAuthenticationChallenge:")
-    public void performDefaultHandlingForAuthenticationChallenge$(NSURLAuthenticationChallenge challenge) { throw new UnsupportedOperationException(); }
+    public void performDefaultHandling(NSURLAuthenticationChallenge challenge) { throw new UnsupportedOperationException(); }
     @NotImplemented("rejectProtectionSpaceAndContinueWithChallenge:")
-    public void rejectProtectionSpaceAndContinueWithChallenge$(NSURLAuthenticationChallenge challenge) { throw new UnsupportedOperationException(); }
+    public void rejectProtectionSpaceAndContinue(NSURLAuthenticationChallenge challenge) { throw new UnsupportedOperationException(); }
     /*</methods>*/
 }

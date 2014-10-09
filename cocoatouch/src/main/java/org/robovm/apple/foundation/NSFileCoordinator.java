@@ -60,29 +60,29 @@ import org.robovm.apple.security.*;
     @Method(selector = "initWithFilePresenter:")
     protected native @Pointer long initWithFilePresenter$(NSFilePresenter filePresenterOrNil);
     @Method(selector = "coordinateReadingItemAtURL:options:error:byAccessor:")
-    public native void coordinateReadingItemAtURL$options$error$byAccessor$(NSURL url, NSFileCoordinatorReadingOptions options, NSError.NSErrorPtr outError, @Block VoidBlock1<NSURL> reader);
+    public native void coordinateReadingItem(NSURL url, NSFileCoordinatorReadingOptions options, NSError.NSErrorPtr outError, @Block VoidBlock1<NSURL> reader);
     @Method(selector = "coordinateWritingItemAtURL:options:error:byAccessor:")
-    public native void coordinateWritingItemAtURL$options$error$byAccessor$(NSURL url, NSFileCoordinatorWritingOptions options, NSError.NSErrorPtr outError, @Block VoidBlock1<NSURL> writer);
+    public native void coordinateWritingItem(NSURL url, NSFileCoordinatorWritingOptions options, NSError.NSErrorPtr outError, @Block VoidBlock1<NSURL> writer);
     @Method(selector = "coordinateReadingItemAtURL:options:writingItemAtURL:options:error:byAccessor:")
-    public native void coordinateReadingItemAtURL$options$writingItemAtURL$options$error$byAccessor$(NSURL readingURL, NSFileCoordinatorReadingOptions readingOptions, NSURL writingURL, NSFileCoordinatorWritingOptions writingOptions, NSError.NSErrorPtr outError, @Block VoidBlock2<NSURL, NSURL> readerWriter);
+    public native void coordinateReadingItem(NSURL readingURL, NSFileCoordinatorReadingOptions readingOptions, NSURL writingURL, NSFileCoordinatorWritingOptions writingOptions, NSError.NSErrorPtr outError, @Block VoidBlock2<NSURL, NSURL> readerWriter);
     @Method(selector = "coordinateWritingItemAtURL:options:writingItemAtURL:options:error:byAccessor:")
-    public native void coordinateWritingItemAtURL$options$writingItemAtURL$options$error$byAccessor$(NSURL url1, NSFileCoordinatorWritingOptions options1, NSURL url2, NSFileCoordinatorWritingOptions options2, NSError.NSErrorPtr outError, @Block VoidBlock2<NSURL, NSURL> writer);
+    public native void coordinateWritingItem(NSURL url1, NSFileCoordinatorWritingOptions options1, NSURL url2, NSFileCoordinatorWritingOptions options2, NSError.NSErrorPtr outError, @Block VoidBlock2<NSURL, NSURL> writer);
     @Method(selector = "prepareForReadingItemsAtURLs:options:writingItemsAtURLs:options:error:byAccessor:")
-    public native void prepareForReadingItemsAtURLs$options$writingItemsAtURLs$options$error$byAccessor$(NSArray<?> readingURLs, NSFileCoordinatorReadingOptions readingOptions, NSArray<?> writingURLs, NSFileCoordinatorWritingOptions writingOptions, NSError.NSErrorPtr outError, @Block("(@Block)") VoidBlock1<Runnable> batchAccessor);
+    public native void prepareForReadingItems(NSArray<NSURL> readingURLs, NSFileCoordinatorReadingOptions readingOptions, NSArray<NSURL> writingURLs, NSFileCoordinatorWritingOptions writingOptions, NSError.NSErrorPtr outError, @Block("(@Block)") VoidBlock1<Runnable> batchAccessor);
     /**
      * @since Available in iOS 6.0 and later.
      */
     @Method(selector = "itemAtURL:willMoveToURL:")
-    public native void itemAtURL$willMoveToURL$(NSURL oldURL, NSURL newURL);
+    public native void itemAtURLWillMoveToURL(NSURL oldURL, NSURL newURL);
     @Method(selector = "itemAtURL:didMoveToURL:")
-    public native void itemAtURL$didMoveToURL$(NSURL oldURL, NSURL newURL);
+    public native void itemAtURLDidMoveToURL(NSURL oldURL, NSURL newURL);
     @Method(selector = "cancel")
     public native void cancel();
     @Method(selector = "addFilePresenter:")
-    public static native void addFilePresenter$(NSFilePresenter filePresenter);
+    public static native void addFilePresenter(NSFilePresenter filePresenter);
     @Method(selector = "removeFilePresenter:")
-    public static native void removeFilePresenter$(NSFilePresenter filePresenter);
+    public static native void removeFilePresenter(NSFilePresenter filePresenter);
     @Method(selector = "filePresenters")
-    public static native NSArray<?> filePresenters();
+    public static native @org.robovm.rt.bro.annotation.Marshaler(NSArray.AsListMarshaler.class) List<NSFilePresenter> getFilePresenters();
     /*</methods>*/
 }

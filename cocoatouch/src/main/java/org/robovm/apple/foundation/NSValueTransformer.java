@@ -55,19 +55,22 @@ import org.robovm.apple.security.*;
     
     /*</properties>*/
     /*<members>*//*</members>*/
+    public static NSValueTransformer getValueTransformer(NSValueTransformerName name) {
+        return getValueTransformer(name.value());
+    }
     /*<methods>*/
     @Method(selector = "transformedValue:")
-    public native NSObject transformedValue$(NSObject value);
+    public native NSObject getTransformedValue(NSObject value);
     @Method(selector = "reverseTransformedValue:")
-    public native NSObject reverseTransformedValue$(NSObject value);
+    public native NSObject reverseTransformedValue(NSObject value);
     @Method(selector = "setValueTransformer:forName:")
-    public static native void setValueTransformer$forName$(NSValueTransformer transformer, String name);
+    public static native void setValueTransformer(NSValueTransformer transformer, String name);
     @Method(selector = "valueTransformerForName:")
-    public static native NSValueTransformer valueTransformerForName$(String name);
+    public static native NSValueTransformer getValueTransformer(String name);
     @Method(selector = "valueTransformerNames")
-    public static native NSArray<?> valueTransformerNames();
+    public static native NSArray<NSValueTransformer> getValueTransformers();
     @Method(selector = "transformedValueClass")
-    public static native ObjCClass transformedValueClass();
+    public static native ObjCClass getTransformedValueClass();
     @Method(selector = "allowsReverseTransformation")
     public static native boolean allowsReverseTransformation();
     /*</methods>*/

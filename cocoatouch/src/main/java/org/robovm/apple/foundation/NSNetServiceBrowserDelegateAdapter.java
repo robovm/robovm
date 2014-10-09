@@ -53,18 +53,18 @@ import org.robovm.apple.security.*;
     /*<members>*//*</members>*/
     /*<methods>*/
     @NotImplemented("netServiceBrowserWillSearch:")
-    public void netServiceBrowserWillSearch$(NSNetServiceBrowser aNetServiceBrowser) { throw new UnsupportedOperationException(); }
+    public void willSearch(NSNetServiceBrowser aNetServiceBrowser) { throw new UnsupportedOperationException(); }
     @NotImplemented("netServiceBrowserDidStopSearch:")
-    public void netServiceBrowserDidStopSearch$(NSNetServiceBrowser aNetServiceBrowser) { throw new UnsupportedOperationException(); }
+    public void didStopSearch(NSNetServiceBrowser aNetServiceBrowser) { throw new UnsupportedOperationException(); }
     @NotImplemented("netServiceBrowser:didNotSearch:")
-    public void netServiceBrowser$didNotSearch$(NSNetServiceBrowser aNetServiceBrowser, NSDictionary<?, ?> errorDict) { throw new UnsupportedOperationException(); }
+    public void didNotSearch(NSNetServiceBrowser aNetServiceBrowser, NSDictionary<?, ?> errorDict) { throw new UnsupportedOperationException(); }
     @NotImplemented("netServiceBrowser:didFindDomain:moreComing:")
-    public void netServiceBrowser$didFindDomain$moreComing$(NSNetServiceBrowser aNetServiceBrowser, String domainString, boolean moreComing) { throw new UnsupportedOperationException(); }
+    public void didFindDomain(NSNetServiceBrowser aNetServiceBrowser, String domainString, boolean moreComing) { throw new UnsupportedOperationException(); }
     @NotImplemented("netServiceBrowser:didFindService:moreComing:")
-    public void netServiceBrowser$didFindService$moreComing$(NSNetServiceBrowser aNetServiceBrowser, NSNetService aNetService, boolean moreComing) { throw new UnsupportedOperationException(); }
+    public void didFindService(NSNetServiceBrowser aNetServiceBrowser, NSNetService aNetService, boolean moreComing) { throw new UnsupportedOperationException(); }
     @NotImplemented("netServiceBrowser:didRemoveDomain:moreComing:")
-    public void netServiceBrowser$didRemoveDomain$moreComing$(NSNetServiceBrowser aNetServiceBrowser, String domainString, boolean moreComing) { throw new UnsupportedOperationException(); }
+    public void didRemoveDomain(NSNetServiceBrowser aNetServiceBrowser, String domainString, boolean moreComing) { throw new UnsupportedOperationException(); }
     @NotImplemented("netServiceBrowser:didRemoveService:moreComing:")
-    public void netServiceBrowser$didRemoveService$moreComing$(NSNetServiceBrowser aNetServiceBrowser, NSNetService aNetService, boolean moreComing) { throw new UnsupportedOperationException(); }
+    public void didRemoveService(NSNetServiceBrowser aNetServiceBrowser, NSNetService aNetService, boolean moreComing) { throw new UnsupportedOperationException(); }
     /*</methods>*/
 }

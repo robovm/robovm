@@ -51,7 +51,7 @@ import org.robovm.apple.security.*;
     /*</properties>*/
     /*<methods>*/
     @Method(selector = "stream:handleEvent:")
-    void stream$handleEvent$(NSStream aStream, NSStreamEvent eventCode);
+    void handleEvent(NSStream aStream, NSStreamEvent eventCode);
     /*</methods>*/
     /*<adapter>*/
     /*</adapter>*/

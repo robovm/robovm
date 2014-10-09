@@ -44,6 +44,53 @@ import org.robovm.apple.security.*;
     extends /*<extends>*/NSObject/*</extends>*/ 
     /*<implements>*//*</implements>*/ {
 
+    public static class Notifications {
+        /**
+         * @since Available in iOS 5.0 and later.
+         */
+        public static NSObject observeDidStartGathering(NSMetadataQuery object, final VoidBlock2<NSMetadataQuery, NSMetadataQueryUpdatedItems> block) {
+            return NSNotificationCenter.getDefaultCenter().addObserver(DidStartGatheringNotification(), object, NSOperationQueue.getMainQueue(), new VoidBlock1<NSNotification>() {
+                @Override
+                public void invoke(NSNotification a) {
+                    block.invoke((NSMetadataQuery)a.getObject(), new NSMetadataQueryUpdatedItems(a.getUserInfo()));
+                }
+            });
+        }
+        /**
+         * @since Available in iOS 5.0 and later.
+         */
+        public static NSObject observeGatheringProgress(NSMetadataQuery object, final VoidBlock2<NSMetadataQuery, NSMetadataQueryUpdatedItems> block) {
+            return NSNotificationCenter.getDefaultCenter().addObserver(GatheringProgressNotification(), object, NSOperationQueue.getMainQueue(), new VoidBlock1<NSNotification>() {
+                @Override
+                public void invoke(NSNotification a) {
+                    block.invoke((NSMetadataQuery)a.getObject(), new NSMetadataQueryUpdatedItems(a.getUserInfo()));
+                }
+            });
+        }
+        /**
+         * @since Available in iOS 5.0 and later.
+         */
+        public static NSObject observeDidFinishGathering(NSMetadataQuery object, final VoidBlock2<NSMetadataQuery, NSMetadataQueryUpdatedItems> block) {
+            return NSNotificationCenter.getDefaultCenter().addObserver(DidFinishGatheringNotification(), object, NSOperationQueue.getMainQueue(), new VoidBlock1<NSNotification>() {
+                @Override
+                public void invoke(NSNotification a) {
+                    block.invoke((NSMetadataQuery)a.getObject(), new NSMetadataQueryUpdatedItems(a.getUserInfo()));
+                }
+            });
+        }
+        /**
+         * @since Available in iOS 5.0 and later.
+         */
+        public static NSObject observeDidUpdate(NSMetadataQuery object, final VoidBlock2<NSMetadataQuery, NSMetadataQueryUpdatedItems> block) {
+            return NSNotificationCenter.getDefaultCenter().addObserver(DidUpdateNotification(), object, NSOperationQueue.getMainQueue(), new VoidBlock1<NSNotification>() {
+                @Override
+                public void invoke(NSNotification a) {
+                    block.invoke((NSMetadataQuery)a.getObject(), new NSMetadataQueryUpdatedItems(a.getUserInfo()));
+                }
+            });
+        }
+    }
+    
     /*<ptr>*/public static class NSMetadataQueryPtr extends Ptr<NSMetadataQuery, NSMetadataQueryPtr> {}/*</ptr>*/
     /*<bind>*/static { ObjCRuntime.bind(NSMetadataQuery.class); }/*</bind>*/
     /*<constants>*//*</constants>*/
@@ -55,50 +102,98 @@ import org.robovm.apple.security.*;
     
     /*</properties>*/
     /*<members>*//*</members>*/
+    public void setSearchScopes(NSArray<NSURL> scopes) {
+        setSearchScopes0(scopes);
+    }
+    public void setSearchScopes(List<String> scopes) {
+        setSearchScopes0(NSArray.fromStrings(scopes));
+    }
+    public void setSearchScopes(NSMetadataQueryScope...scopes) {
+        NSMutableArray<NSString> array = new NSMutableArray<>();
+        for (NSMetadataQueryScope scope : scopes) {
+            array.add(scope.value());
+        }
+        setSearchScopes0(array);
+    }
+    public void setSearchItems(NSArray<NSMetadataItem> items) {
+        setSearchItems0(items);
+    }
+    public void setSearchItemURLs(NSArray<NSURL> urls) {
+        setSearchItems0(urls);
+    }
+    public Map<NSMetadataItemAttribute, NSMetadataQueryAttributeValueTuple> getValueLists() {
+        Map<NSMetadataItemAttribute, NSMetadataQueryAttributeValueTuple> values = new HashMap<>();
+        NSDictionary<NSString, NSMetadataQueryAttributeValueTuple> valueLists = getValueLists0();
+        for (Map.Entry<NSString, NSMetadataQueryAttributeValueTuple> entry : valueLists.entrySet()) {
+            values.put(NSMetadataItemAttribute.valueOf(entry.getKey()), entry.getValue());
+        }
+        return values;
+    }
     /*<methods>*/
+    /**
+     * @since Available in iOS 5.0 and later.
+     */
+    @GlobalValue(symbol="NSMetadataQueryDidStartGatheringNotification", optional=true)
+    public static native NSString DidStartGatheringNotification();
+    /**
+     * @since Available in iOS 5.0 and later.
+     */
+    @GlobalValue(symbol="NSMetadataQueryGatheringProgressNotification", optional=true)
+    public static native NSString GatheringProgressNotification();
+    /**
+     * @since Available in iOS 5.0 and later.
+     */
+    @GlobalValue(symbol="NSMetadataQueryDidFinishGatheringNotification", optional=true)
+    public static native NSString DidFinishGatheringNotification();
+    /**
+     * @since Available in iOS 5.0 and later.
+     */
+    @GlobalValue(symbol="NSMetadataQueryDidUpdateNotification", optional=true)
+    public static native NSString DidUpdateNotification();
+    
     @Method(selector = "delegate")
-    public native NSMetadataQueryDelegate delegate();
+    public native NSMetadataQueryDelegate getDelegate();
     @Method(selector = "setDelegate:")
     public native void setDelegate(NSMetadataQueryDelegate delegate);
     @Method(selector = "predicate")
-    public native NSPredicate predicate();
+    public native NSPredicate getPredicate();
     @Method(selector = "setPredicate:")
     public native void setPredicate(NSPredicate predicate);
     @Method(selector = "sortDescriptors")
-    public native NSArray<?> sortDescriptors();
+    public native NSArray<NSSortDescriptor> getSortDescriptors();
     @Method(selector = "setSortDescriptors:")
-    public native void setSortDescriptors(NSArray<?> descriptors);
+    public native void setSortDescriptors(NSArray<NSSortDescriptor> descriptors);
     @Method(selector = "valueListAttributes")
-    public native NSArray<?> valueListAttributes();
+    public native @org.robovm.rt.bro.annotation.Marshaler(NSMetadataItemAttribute.AsListMarshaler.class) List<NSMetadataItemAttribute> getValueListAttributes();
     @Method(selector = "setValueListAttributes:")
-    public native void setValueListAttributes(NSArray<?> attrs);
+    public native void setValueListAttributes(@org.robovm.rt.bro.annotation.Marshaler(NSMetadataItemAttribute.AsListMarshaler.class) List<NSMetadataItemAttribute> attrs);
     @Method(selector = "groupingAttributes")
-    public native NSArray<?> groupingAttributes();
+    public native @org.robovm.rt.bro.annotation.Marshaler(NSMetadataItemAttribute.AsListMarshaler.class) List<NSMetadataItemAttribute> getGroupingAttributes();
     @Method(selector = "setGroupingAttributes:")
-    public native void setGroupingAttributes(NSArray<?> attrs);
+    public native void setGroupingAttributes(@org.robovm.rt.bro.annotation.Marshaler(NSMetadataItemAttribute.AsListMarshaler.class) List<NSMetadataItemAttribute> attrs);
     @Method(selector = "notificationBatchingInterval")
-    public native double notificationBatchingInterval();
+    public native double getNotificationBatchingInterval();
     @Method(selector = "setNotificationBatchingInterval:")
     public native void setNotificationBatchingInterval(double ti);
     @Method(selector = "searchScopes")
-    public native NSArray<?> searchScopes();
+    public native @org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String> getSearchScopes();
     @Method(selector = "setSearchScopes:")
-    public native void setSearchScopes(NSArray<?> scopes);
+    protected native void setSearchScopes0(NSArray<?> scopes);
     /**
      * @since Available in iOS 7.0 and later.
      */
     @Method(selector = "searchItems")
-    public native NSArray<?> searchItems();
+    public native NSArray<NSObject> getSearchItems();
     /**
      * @since Available in iOS 7.0 and later.
      */
     @Method(selector = "setSearchItems:")
-    public native void setSearchItems(NSArray<?> items);
+    protected native void setSearchItems0(NSArray<?> items);
     /**
      * @since Available in iOS 7.0 and later.
      */
     @Method(selector = "operationQueue")
-    public native NSOperationQueue operationQueue();
+    public native NSOperationQueue getOperationQueue();
     /**
      * @since Available in iOS 7.0 and later.
      */
@@ -119,28 +214,28 @@ import org.robovm.apple.security.*;
     @Method(selector = "enableUpdates")
     public native void enableUpdates();
     @Method(selector = "resultCount")
-    public native @MachineSizedUInt long resultCount();
+    public native @MachineSizedUInt long getResultCount();
     @Method(selector = "resultAtIndex:")
-    public native NSObject resultAtIndex$(@MachineSizedUInt long idx);
+    public native NSMetadataItem getResult(@MachineSizedUInt long idx);
     /**
      * @since Available in iOS 7.0 and later.
      */
     @Method(selector = "enumerateResultsUsingBlock:")
-    public native void enumerateResultsUsingBlock$(@Block("(,@MachineSizedUInt,)") VoidBlock3<NSObject, Long, BytePtr> block);
+    public native void enumerateResults(@Block("(,@MachineSizedUInt,)") VoidBlock3<NSMetadataItem, Long, BooleanPtr> block);
     /**
      * @since Available in iOS 7.0 and later.
      */
     @Method(selector = "enumerateResultsWithOptions:usingBlock:")
-    public native void enumerateResultsWithOptions$usingBlock$(NSEnumerationOptions opts, @Block("(,@MachineSizedUInt,)") VoidBlock3<NSObject, Long, BytePtr> block);
+    public native void enumerateResults(NSEnumerationOptions opts, @Block("(,@MachineSizedUInt,)") VoidBlock3<NSMetadataItem, Long, BooleanPtr> block);
     @Method(selector = "results")
-    public native NSArray<?> results();
+    public native NSArray<NSMetadataItem> getResults();
     @Method(selector = "indexOfResult:")
-    public native @MachineSizedUInt long indexOfResult$(NSObject result);
+    public native @MachineSizedUInt long indexOfResult(NSMetadataItem result);
     @Method(selector = "valueLists")
-    public native NSDictionary<?, ?> valueLists();
+    protected native NSDictionary<NSString, NSMetadataQueryAttributeValueTuple> getValueLists0();
     @Method(selector = "groupedResults")
-    public native NSArray<?> groupedResults();
+    public native NSArray<NSMetadataQueryResultGroup> getGroupedResults();
     @Method(selector = "valueOfAttribute:forResultAtIndex:")
-    public native NSObject valueOfAttribute$forResultAtIndex$(String attrName, @MachineSizedUInt long idx);
+    public native NSObject getValueForResult(NSMetadataItemAttribute attrName, @MachineSizedUInt long idx);
     /*</methods>*/
 }

@@ -42,6 +42,20 @@ import org.robovm.apple.security.*;
     extends /*<extends>*/NSObject/*</extends>*/ 
     /*<implements>*/implements NSPropertyList/*</implements>*/ {
 
+    public static class Notifications {
+        /**
+         * @since Available in iOS 4.0 and later.
+         */
+        public static NSObject observeSystemClockDidChange(final Runnable block) {
+            return NSNotificationCenter.getDefaultCenter().addObserver(SystemClockDidChangeNotification(), null, NSOperationQueue.getMainQueue(), new VoidBlock1<NSNotification>() {
+                @Override
+                public void invoke(NSNotification a) {
+                    block.run();
+                }
+            });
+        }
+    }
+    
     /*<ptr>*/public static class NSDatePtr extends Ptr<NSDate, NSDatePtr> {}/*</ptr>*/
     /*<bind>*/static { ObjCRuntime.bind(NSDate.class); }/*</bind>*/
     /*<constants>*//*</constants>*/
@@ -54,12 +68,10 @@ import org.robovm.apple.security.*;
     public NSDate(Date date) {
         this(date.getTime() / 1000.0);
     }
-    
     /*<properties>*/
     
     /*</properties>*/
     /*<members>*//*</members>*/
-    
     public Date toDate() {
         return new Date((long) (getTimeIntervalSince1970() * 1000.0));
     }
@@ -67,8 +79,13 @@ import org.robovm.apple.security.*;
     public String toString(NSLocale locale) {
         return description(locale);
     }
-    
     /*<methods>*/
+    /**
+     * @since Available in iOS 4.0 and later.
+     */
+    @GlobalValue(symbol="NSSystemClockDidChangeNotification", optional=true)
+    public static native NSString SystemClockDidChangeNotification();
+    
     @Method(selector = "timeIntervalSinceReferenceDate")
     public native double getTimeIntervalSinceReferenceDate();
     @Method(selector = "timeIntervalSinceDate:")

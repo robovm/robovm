@@ -59,11 +59,31 @@ import org.robovm.apple.security.*;
     
     /*</properties>*/
     /*<members>*//*</members>*/
+    
+    public long read(BytePtr buffer, long len) {
+        return read$maxLength$(buffer.getHandle(), len);
+    }
+
+    public long read(ByteBuffer bytes) {
+        long handle = NSData.getEffectiveAddress(bytes) + bytes.position();
+        return read$maxLength$(handle, bytes.remaining());
+    }
+
+    public long read(byte[] bytes) {
+        return read(bytes, 0, bytes.length);
+    }
+    
+    public long read(byte[] bytes, int offset, int length) {
+        NSMutableData.checkOffsetAndCount(bytes.length, offset, length);
+        if (length == 0) {
+            return 0;
+        }
+        return read$maxLength$(VM.getArrayValuesAddress(bytes) + offset, length);
+    }
+    
     /*<methods>*/
     @Method(selector = "read:maxLength:")
-    public native @MachineSizedSInt long read$maxLength$(BytePtr buffer, @MachineSizedUInt long len);
-    @Method(selector = "getBuffer:length:")
-    public native boolean getBuffer$length$(BytePtr.BytePtrPtr buffer, MachineSizedUIntPtr len);
+    protected native @MachineSizedSInt long read$maxLength$(@Pointer long buffer, @MachineSizedUInt long len);
     @Method(selector = "hasBytesAvailable")
     public native boolean hasBytesAvailable();
     @Method(selector = "initWithData:")
@@ -75,14 +95,5 @@ import org.robovm.apple.security.*;
      */
     @Method(selector = "initWithURL:")
     protected native @Pointer long initWithURL$(NSURL url);
-    @Method(selector = "inputStreamWithData:")
-    public static native NSObject inputStreamWithData$(NSData data);
-    @Method(selector = "inputStreamWithFileAtPath:")
-    public static native NSObject inputStreamWithFileAtPath$(String path);
-    /**
-     * @since Available in iOS 4.0 and later.
-     */
-    @Method(selector = "inputStreamWithURL:")
-    public static native NSObject inputStreamWithURL$(NSURL url);
     /*</methods>*/
 }

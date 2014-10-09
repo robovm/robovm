@@ -75,7 +75,7 @@ import org.robovm.apple.security.*;
     @Property(selector = "hostName")
     public native String getHostName();
     @Property(selector = "addresses")
-    public native NSArray<?> getAddresses();
+    public native NSArray<NSData> getAddresses();
     /**
      * @since Available in iOS 2.0 and later.
      */
@@ -83,22 +83,38 @@ import org.robovm.apple.security.*;
     public native @MachineSizedSInt long getPort();
     /*</properties>*/
     /*<members>*//*</members>*/
+    public NSInputStream getInputStream() {
+        NSInputStream.NSInputStreamPtr ptr = new NSInputStream.NSInputStreamPtr();
+        getInputStream$outputStream$(ptr, null);
+        return ptr.get();
+    }
+    public NSOutputStream getOutputStream() {
+        NSOutputStream.NSOutputStreamPtr ptr = new NSOutputStream.NSOutputStreamPtr();
+        getInputStream$outputStream$(null, ptr);
+        return ptr.get();
+    }
+    public void scheduleInRunLoop(NSRunLoop aRunLoop, NSRunLoopMode mode) {
+        scheduleInRunLoop(aRunLoop, mode.value());
+    }
+    public void removeFromRunLoop(NSRunLoop aRunLoop, NSRunLoopMode mode) {
+        removeFromRunLoop(aRunLoop, mode.value());
+    }
     /*<methods>*/
     @Method(selector = "initWithDomain:type:name:port:")
     protected native @Pointer long initWithDomain$type$name$port$(String domain, String type, String name, int port);
     @Method(selector = "initWithDomain:type:name:")
     protected native @Pointer long initWithDomain$type$name$(String domain, String type, String name);
     @Method(selector = "scheduleInRunLoop:forMode:")
-    public native void scheduleInRunLoop$forMode$(NSRunLoop aRunLoop, String mode);
+    public native void scheduleInRunLoop(NSRunLoop aRunLoop, String mode);
     @Method(selector = "removeFromRunLoop:forMode:")
-    public native void removeFromRunLoop$forMode$(NSRunLoop aRunLoop, String mode);
+    public native void removeFromRunLoop(NSRunLoop aRunLoop, String mode);
     @Method(selector = "publish")
     public native void publish();
     /**
      * @since Available in iOS 2.0 and later.
      */
     @Method(selector = "publishWithOptions:")
-    public native void publishWithOptions$(NSNetServiceOptions options);
+    public native void publish(NSNetServiceOptions options);
     /**
      * @since Available in iOS 2.0 and later.
      * @deprecated Deprecated in iOS 2.0.
@@ -109,20 +125,20 @@ import org.robovm.apple.security.*;
     @Method(selector = "stop")
     public native void stop();
     @Method(selector = "resolveWithTimeout:")
-    public native void resolveWithTimeout$(double timeout);
+    public native void resolve(double timeout);
     @Method(selector = "getInputStream:outputStream:")
-    public native boolean getInputStream$outputStream$(NSInputStream.NSInputStreamPtr inputStream, NSOutputStream.NSOutputStreamPtr outputStream);
+    protected native boolean getInputStream$outputStream$(NSInputStream.NSInputStreamPtr inputStream, NSOutputStream.NSOutputStreamPtr outputStream);
     @Method(selector = "setTXTRecordData:")
-    public native boolean setTXTRecordData$(NSData recordData);
+    public native boolean setTXTRecordData(NSData recordData);
     @Method(selector = "TXTRecordData")
-    public native NSData TXTRecordData();
+    public native NSData getTXTRecordData();
     @Method(selector = "startMonitoring")
     public native void startMonitoring();
     @Method(selector = "stopMonitoring")
     public native void stopMonitoring();
     @Method(selector = "dictionaryFromTXTRecordData:")
-    public static native NSDictionary<?, ?> dictionaryFromTXTRecordData$(NSData txtData);
+    public static native NSDictionary<?, ?> getDictionaryFromTXTRecordData(NSData txtData);
     @Method(selector = "dataFromTXTRecordDictionary:")
-    public static native NSData dataFromTXTRecordDictionary$(NSDictionary<?, ?> txtDictionary);
+    public static native NSData getDataFromTXTRecordDictionary(NSDictionary<?, ?> txtDictionary);
     /*</methods>*/
 }

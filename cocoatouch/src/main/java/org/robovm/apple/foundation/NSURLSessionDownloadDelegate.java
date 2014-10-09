@@ -51,11 +51,11 @@ import org.robovm.apple.security.*;
     /*</properties>*/
     /*<methods>*/
     @Method(selector = "URLSession:downloadTask:didFinishDownloadingToURL:")
-    void URLSession$downloadTask$didFinishDownloadingToURL$(NSURLSession session, NSURLSessionDownloadTask downloadTask, NSURL location);
+    void didFinishDownloading(NSURLSession session, NSURLSessionDownloadTask downloadTask, NSURL location);
     @Method(selector = "URLSession:downloadTask:didWriteData:totalBytesWritten:totalBytesExpectedToWrite:")
-    void URLSession$downloadTask$didWriteData$totalBytesWritten$totalBytesExpectedToWrite$(NSURLSession session, NSURLSessionDownloadTask downloadTask, long bytesWritten, long totalBytesWritten, long totalBytesExpectedToWrite);
+    void didWriteData(NSURLSession session, NSURLSessionDownloadTask downloadTask, long bytesWritten, long totalBytesWritten, long totalBytesExpectedToWrite);
     @Method(selector = "URLSession:downloadTask:didResumeAtOffset:expectedTotalBytes:")
-    void URLSession$downloadTask$didResumeAtOffset$expectedTotalBytes$(NSURLSession session, NSURLSessionDownloadTask downloadTask, long fileOffset, long expectedTotalBytes);
+    void didResume(NSURLSession session, NSURLSessionDownloadTask downloadTask, long fileOffset, long expectedTotalBytes);
     /*</methods>*/
     /*<adapter>*/
     /*</adapter>*/

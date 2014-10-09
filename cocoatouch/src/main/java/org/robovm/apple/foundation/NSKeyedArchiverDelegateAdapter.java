@@ -53,14 +53,14 @@ import org.robovm.apple.security.*;
     /*<members>*//*</members>*/
     /*<methods>*/
     @NotImplemented("archiver:willEncodeObject:")
-    public NSObject archiver$willEncodeObject$(NSKeyedArchiver archiver, NSObject object) { throw new UnsupportedOperationException(); }
+    public NSObject willEncodeObject(NSKeyedArchiver archiver, NSObject object) { throw new UnsupportedOperationException(); }
     @NotImplemented("archiver:didEncodeObject:")
-    public void archiver$didEncodeObject$(NSKeyedArchiver archiver, NSObject object) { throw new UnsupportedOperationException(); }
+    public void didEncodeObject(NSKeyedArchiver archiver, NSObject object) { throw new UnsupportedOperationException(); }
     @NotImplemented("archiver:willReplaceObject:withObject:")
-    public void archiver$willReplaceObject$withObject$(NSKeyedArchiver archiver, NSObject object, NSObject newObject) { throw new UnsupportedOperationException(); }
+    public void willReplaceObject(NSKeyedArchiver archiver, NSObject object, NSObject newObject) { throw new UnsupportedOperationException(); }
     @NotImplemented("archiverWillFinish:")
-    public void archiverWillFinish$(NSKeyedArchiver archiver) { throw new UnsupportedOperationException(); }
+    public void willFinish(NSKeyedArchiver archiver) { throw new UnsupportedOperationException(); }
     @NotImplemented("archiverDidFinish:")
-    public void archiverDidFinish$(NSKeyedArchiver archiver) { throw new UnsupportedOperationException(); }
+    public void didFinish(NSKeyedArchiver archiver) { throw new UnsupportedOperationException(); }
     /*</methods>*/
 }

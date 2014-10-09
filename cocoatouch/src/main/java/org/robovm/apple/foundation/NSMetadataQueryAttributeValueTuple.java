@@ -57,10 +57,10 @@ import org.robovm.apple.security.*;
     /*<members>*//*</members>*/
     /*<methods>*/
     @Method(selector = "attribute")
-    public native String attribute();
+    public native NSMetadataItemAttribute getAttribute();
     @Method(selector = "value")
-    public native NSObject value();
+    public native NSObject getValue();
     @Method(selector = "count")
-    public native @MachineSizedUInt long count();
+    public native @MachineSizedUInt long getCount();
     /*</methods>*/
 }

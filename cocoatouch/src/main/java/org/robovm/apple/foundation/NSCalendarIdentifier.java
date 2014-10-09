@@ -120,8 +120,8 @@ import org.robovm.apple.security.*;
      * @since Available in iOS 4.0 and later.
      */
     public static final NSCalendarIdentifier RepublicOfChina = new NSCalendarIdentifier("RepublicOfChinaValue");
-    private static NSCalendarIdentifier[] values = new NSCalendarIdentifier[] {Gregorian, Buddhist, Chinese, Coptic, EthiopicAmeteMihret, EthiopicAmeteAlem, Hebrew, ISO8601, Indian, Islamic, IslamicCivil, Japanese, Persian, RepublicOfChina};
     
+    private static NSCalendarIdentifier[] values = new NSCalendarIdentifier[] {Gregorian, Buddhist, Chinese, Coptic, EthiopicAmeteMihret, EthiopicAmeteAlem, Hebrew, ISO8601, Indian, Islamic, IslamicCivil, Japanese, Persian, RepublicOfChina};
     private final LazyGlobalValue<NSString> lazyGlobalValue;
     
     private NSCalendarIdentifier(String getterName) {

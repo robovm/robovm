@@ -53,14 +53,14 @@ import org.robovm.apple.security.*;
     /*<members>*//*</members>*/
     /*<methods>*/
     @NotImplemented("URLSession:task:willPerformHTTPRedirection:newRequest:completionHandler:")
-    public void URLSession$task$willPerformHTTPRedirection$newRequest$completionHandler$(NSURLSession session, NSURLSessionTask task, NSHTTPURLResponse response, NSURLRequest request, @Block VoidBlock1<NSURLRequest> completionHandler) { throw new UnsupportedOperationException(); }
+    public void willPerformHTTPRedirection(NSURLSession session, NSURLSessionTask task, NSHTTPURLResponse response, NSURLRequest request, @Block VoidBlock1<NSURLRequest> completionHandler) { throw new UnsupportedOperationException(); }
     @NotImplemented("URLSession:task:didReceiveChallenge:completionHandler:")
-    public void URLSession$task$didReceiveChallenge$completionHandler$(NSURLSession session, NSURLSessionTask task, NSURLAuthenticationChallenge challenge, @Block VoidBlock2<NSURLSessionAuthChallengeDisposition, NSURLCredential> completionHandler) { throw new UnsupportedOperationException(); }
+    public void didReceiveChallenge(NSURLSession session, NSURLSessionTask task, NSURLAuthenticationChallenge challenge, @Block VoidBlock2<NSURLSessionAuthChallengeDisposition, NSURLCredential> completionHandler) { throw new UnsupportedOperationException(); }
     @NotImplemented("URLSession:task:needNewBodyStream:")
-    public void URLSession$task$needNewBodyStream$(NSURLSession session, NSURLSessionTask task, @Block VoidBlock1<NSInputStream> completionHandler) { throw new UnsupportedOperationException(); }
+    public void needNewBodyStream(NSURLSession session, NSURLSessionTask task, @Block VoidBlock1<NSInputStream> completionHandler) { throw new UnsupportedOperationException(); }
     @NotImplemented("URLSession:task:didSendBodyData:totalBytesSent:totalBytesExpectedToSend:")
-    public void URLSession$task$didSendBodyData$totalBytesSent$totalBytesExpectedToSend$(NSURLSession session, NSURLSessionTask task, long bytesSent, long totalBytesSent, long totalBytesExpectedToSend) { throw new UnsupportedOperationException(); }
+    public void didSendBodyData(NSURLSession session, NSURLSessionTask task, long bytesSent, long totalBytesSent, long totalBytesExpectedToSend) { throw new UnsupportedOperationException(); }
     @NotImplemented("URLSession:task:didCompleteWithError:")
-    public void URLSession$task$didCompleteWithError$(NSURLSession session, NSURLSessionTask task, NSError error) { throw new UnsupportedOperationException(); }
+    public void didComplete(NSURLSession session, NSURLSessionTask task, NSError error) { throw new UnsupportedOperationException(); }
     /*</methods>*/
 }

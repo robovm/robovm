@@ -55,10 +55,10 @@ import org.robovm.apple.security.*;
     /*<members>*//*</members>*/
     /*<methods>*/
     @Method(selector = "fileHandleForReading")
-    public native NSFileHandle fileHandleForReading();
+    public native NSFileHandle getFileHandleForReading();
     @Method(selector = "fileHandleForWriting")
-    public native NSFileHandle fileHandleForWriting();
+    public native NSFileHandle getFileHandleForWriting();
     @Method(selector = "pipe")
-    public static native NSObject pipe();
+    public static native NSPipe create();
     /*</methods>*/
 }

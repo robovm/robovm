@@ -54,9 +54,9 @@ import org.robovm.apple.security.*;
     /*<members>*//*</members>*/
     /*<methods>*/
     @Method(selector = "fileAttributes")
-    public native NSDictionary<NSString, ?> getFileAttributes();
+    public native NSFileAttributes getFileAttributes();
     @Method(selector = "directoryAttributes")
-    public native NSDictionary<NSString, ?> getDirectoryAttributes();
+    public native NSFileAttributes getDirectoryAttributes();
     @Method(selector = "skipDescendents")
     public native void skipDescendents();
     /**

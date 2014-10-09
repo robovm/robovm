@@ -53,12 +53,12 @@ import org.robovm.apple.security.*;
     /*<members>*//*</members>*/
     /*<methods>*/
     @NotImplemented("URLSession:dataTask:didReceiveResponse:completionHandler:")
-    public void URLSession$dataTask$didReceiveResponse$completionHandler$(NSURLSession session, NSURLSessionDataTask dataTask, NSURLResponse response, @Block VoidBlock1<NSURLSessionResponseDisposition> completionHandler) { throw new UnsupportedOperationException(); }
+    public void didReceiveResponse(NSURLSession session, NSURLSessionDataTask dataTask, NSURLResponse response, @Block VoidBlock1<NSURLSessionResponseDisposition> completionHandler) { throw new UnsupportedOperationException(); }
     @NotImplemented("URLSession:dataTask:didBecomeDownloadTask:")
-    public void URLSession$dataTask$didBecomeDownloadTask$(NSURLSession session, NSURLSessionDataTask dataTask, NSURLSessionDownloadTask downloadTask) { throw new UnsupportedOperationException(); }
+    public void didBecomeDownloadTask(NSURLSession session, NSURLSessionDataTask dataTask, NSURLSessionDownloadTask downloadTask) { throw new UnsupportedOperationException(); }
     @NotImplemented("URLSession:dataTask:didReceiveData:")
-    public void URLSession$dataTask$didReceiveData$(NSURLSession session, NSURLSessionDataTask dataTask, NSData data) { throw new UnsupportedOperationException(); }
+    public void didReceiveData(NSURLSession session, NSURLSessionDataTask dataTask, NSData data) { throw new UnsupportedOperationException(); }
     @NotImplemented("URLSession:dataTask:willCacheResponse:completionHandler:")
-    public void URLSession$dataTask$willCacheResponse$completionHandler$(NSURLSession session, NSURLSessionDataTask dataTask, NSCachedURLResponse proposedResponse, @Block VoidBlock1<NSCachedURLResponse> completionHandler) { throw new UnsupportedOperationException(); }
+    public void willCacheResponse(NSURLSession session, NSURLSessionDataTask dataTask, NSCachedURLResponse proposedResponse, @Block VoidBlock1<NSCachedURLResponse> completionHandler) { throw new UnsupportedOperationException(); }
     /*</methods>*/
 }

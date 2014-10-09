@@ -53,6 +53,12 @@ import org.robovm.apple.security.*;
     
     /*</properties>*/
     /*<members>*//*</members>*/
+    public void setHTTPHeaderField(String field, String value) {
+        setHTTPHeaderField0(value, field);
+    }
+    public void addHTTPHeaderField(String field, String value) {
+        addHTTPHeaderField0(value, field);
+    }
     /*<methods>*/
     @Method(selector = "setURL:")
     public native void setURL(NSURL URL);
@@ -75,11 +81,11 @@ import org.robovm.apple.security.*;
     @Method(selector = "setHTTPMethod:")
     public native void setHTTPMethod(String method);
     @Method(selector = "setAllHTTPHeaderFields:")
-    public native void setAllHTTPHeaderFields(NSDictionary<?, ?> headerFields);
+    public native void setAllHTTPHeaderFields(@org.robovm.rt.bro.annotation.Marshaler(NSDictionary.AsStringStringMapMarshaler.class) Map<String, String> headerFields);
     @Method(selector = "setValue:forHTTPHeaderField:")
-    public native void setValue$forHTTPHeaderField$(String value, String field);
+    protected native void setHTTPHeaderField0(String value, String field);
     @Method(selector = "addValue:forHTTPHeaderField:")
-    public native void addValue$forHTTPHeaderField$(String value, String field);
+    protected native void addHTTPHeaderField0(String value, String field);
     @Method(selector = "setHTTPBody:")
     public native void setHTTPBody(NSData data);
     @Method(selector = "setHTTPBodyStream:")

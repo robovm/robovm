@@ -57,16 +57,16 @@ import org.robovm.apple.security.*;
     /*<members>*//*</members>*/
     /*<methods>*/
     @Method(selector = "attribute")
-    public native String attribute();
+    public native NSMetadataItemAttribute getAttribute();
     @Method(selector = "value")
-    public native NSObject value();
+    public native NSObject getValue();
     @Method(selector = "subgroups")
-    public native NSArray<?> subgroups();
+    public native NSArray<NSMetadataQueryResultGroup> getSubgroups();
     @Method(selector = "resultCount")
-    public native @MachineSizedUInt long resultCount();
+    public native @MachineSizedUInt long getResultCount();
     @Method(selector = "resultAtIndex:")
-    public native NSObject resultAtIndex$(@MachineSizedUInt long idx);
+    public native NSMetadataItem getResult(@MachineSizedUInt long idx);
     @Method(selector = "results")
-    public native NSArray<?> results();
+    public native NSArray<NSMetadataItem> getResults();
     /*</methods>*/
 }

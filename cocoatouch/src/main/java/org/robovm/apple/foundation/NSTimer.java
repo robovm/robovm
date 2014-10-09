@@ -48,7 +48,7 @@ import org.robovm.apple.security.*;
     /*<constructors>*/
     public NSTimer() {}
     protected NSTimer(SkipInit skipInit) { super(skipInit); }
-    public NSTimer(NSDate date, double ti, NSObject t, Selector s, NSObject ui, boolean rep) { super((SkipInit) null); initObject(initWithFireDate$interval$target$selector$userInfo$repeats$(date, ti, t, s, ui, rep)); }
+    public NSTimer(NSDate date, double ti, NSObject t, Selector s, NSObject ui, boolean rep) { super((SkipInit) null); initObject(init(date, ti, t, s, ui, rep)); }
     /*</constructors>*/
     /*<properties>*/
     
@@ -56,20 +56,20 @@ import org.robovm.apple.security.*;
     /*<members>*//*</members>*/
     /*<methods>*/
     @Method(selector = "initWithFireDate:interval:target:selector:userInfo:repeats:")
-    protected native @Pointer long initWithFireDate$interval$target$selector$userInfo$repeats$(NSDate date, double ti, NSObject t, Selector s, NSObject ui, boolean rep);
+    protected native @Pointer long init(NSDate date, double ti, NSObject t, Selector s, NSObject ui, boolean rep);
     @Method(selector = "fire")
     public native void fire();
     @Method(selector = "fireDate")
-    public native NSDate fireDate();
+    public native NSDate getFireDate();
     @Method(selector = "setFireDate:")
     public native void setFireDate(NSDate date);
     @Method(selector = "timeInterval")
-    public native double timeInterval();
+    public native double getTimeInterval();
     /**
      * @since Available in iOS 7.0 and later.
      */
     @Method(selector = "tolerance")
-    public native double tolerance();
+    public native double getTolerance();
     /**
      * @since Available in iOS 7.0 and later.
      */
@@ -80,14 +80,14 @@ import org.robovm.apple.security.*;
     @Method(selector = "isValid")
     public native boolean isValid();
     @Method(selector = "userInfo")
-    public native NSObject userInfo();
+    public native NSObject getUserInfo();
     @Method(selector = "timerWithTimeInterval:invocation:repeats:")
-    public static native NSTimer timerWithTimeInterval$invocation$repeats$(double ti, NSInvocation invocation, boolean yesOrNo);
+    public static native NSTimer create(double ti, NSInvocation invocation, boolean yesOrNo);
     @Method(selector = "scheduledTimerWithTimeInterval:invocation:repeats:")
-    public static native NSTimer scheduledTimerWithTimeInterval$invocation$repeats$(double ti, NSInvocation invocation, boolean yesOrNo);
+    public static native NSTimer createScheduled(double ti, NSInvocation invocation, boolean yesOrNo);
     @Method(selector = "timerWithTimeInterval:target:selector:userInfo:repeats:")
-    public static native NSTimer timerWithTimeInterval$target$selector$userInfo$repeats$(double ti, NSObject aTarget, Selector aSelector, NSObject userInfo, boolean yesOrNo);
+    public static native NSTimer create(double ti, NSObject aTarget, Selector aSelector, NSObject userInfo, boolean yesOrNo);
     @Method(selector = "scheduledTimerWithTimeInterval:target:selector:userInfo:repeats:")
-    public static native NSTimer scheduledTimerWithTimeInterval$target$selector$userInfo$repeats$(double ti, NSObject aTarget, Selector aSelector, NSObject userInfo, boolean yesOrNo);
+    public static native NSTimer createScheduled(double ti, NSObject aTarget, Selector aSelector, NSObject userInfo, boolean yesOrNo);
     /*</methods>*/
 }

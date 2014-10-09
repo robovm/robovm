@@ -53,6 +53,6 @@ import org.robovm.apple.security.*;
     /*<members>*//*</members>*/
     /*<methods>*/
     @NotImplemented("handlePortMessage:")
-    public void handlePortMessage$(NSPortMessage message) { throw new UnsupportedOperationException(); }
+    public void handlePortMessage(NSPortMessage message) { throw new UnsupportedOperationException(); }
     /*</methods>*/
 }

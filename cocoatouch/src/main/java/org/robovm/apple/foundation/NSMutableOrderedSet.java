@@ -52,8 +52,7 @@ import org.robovm.apple.security.*;
             super(set);
         }
 
-        // All updates are donw through the ListAdapter except for remove(Object)
-        
+        // All updates are done through the ListAdapter except for remove(Object)
         @SuppressWarnings("unchecked")
         @Override
         public boolean remove(Object o) {

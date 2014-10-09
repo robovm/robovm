@@ -51,15 +51,15 @@ import org.robovm.apple.security.*;
     /*</properties>*/
     /*<methods>*/
     @Method(selector = "unarchiver:cannotDecodeObjectOfClassName:originalClasses:")
-    ObjCClass unarchiver$cannotDecodeObjectOfClassName$originalClasses$(NSKeyedUnarchiver unarchiver, String name, NSArray<?> classNames);
+    ObjCClass cannotDecodeObjectOfClassName(NSKeyedUnarchiver unarchiver, String name, @org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String> classNames);
     @Method(selector = "unarchiver:didDecodeObject:")
-    NSObject unarchiver$didDecodeObject$(NSKeyedUnarchiver unarchiver, NSObject object);
+    NSObject didDecodeObject(NSKeyedUnarchiver unarchiver, NSObject object);
     @Method(selector = "unarchiver:willReplaceObject:withObject:")
-    void unarchiver$willReplaceObject$withObject$(NSKeyedUnarchiver unarchiver, NSObject object, NSObject newObject);
+    void willReplaceObject(NSKeyedUnarchiver unarchiver, NSObject object, NSObject newObject);
     @Method(selector = "unarchiverWillFinish:")
-    void unarchiverWillFinish$(NSKeyedUnarchiver unarchiver);
+    void willFinish(NSKeyedUnarchiver unarchiver);
     @Method(selector = "unarchiverDidFinish:")
-    void unarchiverDidFinish$(NSKeyedUnarchiver unarchiver);
+    void didFinish(NSKeyedUnarchiver unarchiver);
     /*</methods>*/
     /*<adapter>*/
     /*</adapter>*/

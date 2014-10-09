@@ -70,7 +70,7 @@ import org.robovm.apple.security.*;
     @Method(selector = "initWithStream:")
     protected native @Pointer long initWithStream$(NSInputStream stream);
     @Method(selector = "delegate")
-    public native NSXMLParserDelegate delegate();
+    public native NSXMLParserDelegate getDelegate();
     @Method(selector = "setDelegate:")
     public native void setDelegate(NSXMLParserDelegate delegate);
     @Method(selector = "setShouldProcessNamespaces:")
@@ -90,14 +90,14 @@ import org.robovm.apple.security.*;
     @Method(selector = "abortParsing")
     public native void abortParsing();
     @Method(selector = "parserError")
-    public native NSError parserError();
+    public native NSError getParserError();
     @Method(selector = "publicID")
-    public native String publicID();
+    public native String getPublicID();
     @Method(selector = "systemID")
-    public native String systemID();
+    public native String getSystemID();
     @Method(selector = "lineNumber")
-    public native @MachineSizedSInt long lineNumber();
+    public native @MachineSizedSInt long getLineNumber();
     @Method(selector = "columnNumber")
-    public native @MachineSizedSInt long columnNumber();
+    public native @MachineSizedSInt long getColumnNumber();
     /*</methods>*/
 }

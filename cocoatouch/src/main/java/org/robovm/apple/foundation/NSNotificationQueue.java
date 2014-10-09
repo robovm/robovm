@@ -53,16 +53,23 @@ import org.robovm.apple.security.*;
     
     /*</properties>*/
     /*<members>*//*</members>*/
+    public void enqueueNotification(NSNotification notification, NSPostingStyle postingStyle, NSNotificationCoalescing coalesceMask, NSRunLoopMode...modes) {
+        List<String> list = new ArrayList<>();
+        for (NSRunLoopMode mode : modes) {
+            list.add(mode.value());
+        }
+        enqueueNotification(notification, postingStyle, coalesceMask, list);
+    }
     /*<methods>*/
     @Method(selector = "initWithNotificationCenter:")
     protected native @Pointer long initWithNotificationCenter$(NSNotificationCenter notificationCenter);
     @Method(selector = "enqueueNotification:postingStyle:")
     public native void enqueueNotification(NSNotification notification, NSPostingStyle postingStyle);
     @Method(selector = "enqueueNotification:postingStyle:coalesceMask:forModes:")
-    public native void enqueueNotification(NSNotification notification, NSPostingStyle postingStyle, NSNotificationCoalescing coalesceMask, NSArray<NSString> modes);
+    public native void enqueueNotification(NSNotification notification, NSPostingStyle postingStyle, NSNotificationCoalescing coalesceMask, @org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String> modes);
     @Method(selector = "dequeueNotificationsMatching:coalesceMask:")
     public native void dequeueNotificationsMatching(NSNotification notification, NSNotificationCoalescing coalesceMask);
     @Method(selector = "defaultQueue")
-    public static native NSObject getDefaultQueue();
+    public static native NSNotificationQueue getDefaultQueue();
     /*</methods>*/
 }

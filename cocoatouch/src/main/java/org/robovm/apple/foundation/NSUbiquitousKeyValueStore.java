@@ -44,6 +44,32 @@ import org.robovm.apple.security.*;
     extends /*<extends>*/NSObject/*</extends>*/ 
     /*<implements>*//*</implements>*/ {
 
+    public static class Notifications {
+        /**
+         * @since Available in iOS 5.0 and later.
+         */
+        public static NSObject observeDidChangeExternally(NSUbiquitousKeyValueStore object, final VoidBlock3<NSUbiquitousKeyValueStore, String, List<String>> block) {
+            return NSNotificationCenter.getDefaultCenter().addObserver(DidChangeExternallyNotification(), object, NSOperationQueue.getMainQueue(), new VoidBlock1<NSNotification>() {
+                @Override
+                public void invoke(NSNotification a) {
+                    String reason = null;
+                    List<String> keys = null;
+                    NSDictionary<NSString, NSObject> data = a.getUserInfo();
+                    if (data.containsKey(ChangeReasonKey())) {
+                        NSString val = (NSString)data.get(ChangeReasonKey());
+                        reason = val.toString();
+                    }
+                    if (data.containsKey(ChangedKeysKey())) {
+                        @SuppressWarnings("unchecked")
+                        NSArray<NSString> val = (NSArray<NSString>)data.get(ChangedKeysKey());
+                        keys = val.asStringList();
+                    }
+                    block.invoke((NSUbiquitousKeyValueStore)a.getObject(), reason, keys);
+                }
+            });
+        }
+    }
+    
     /*<ptr>*/public static class NSUbiquitousKeyValueStorePtr extends Ptr<NSUbiquitousKeyValueStore, NSUbiquitousKeyValueStorePtr> {}/*</ptr>*/
     /*<bind>*/static { ObjCRuntime.bind(NSUbiquitousKeyValueStore.class); }/*</bind>*/
     /*<constants>*//*</constants>*/
@@ -55,46 +81,90 @@ import org.robovm.apple.security.*;
     
     /*</properties>*/
     /*<members>*//*</members>*/
+    public void put(String key, NSObject object) {
+        setObject(object, key);
+    }
+    public void put(String key, String string) {
+        setString(string, key);
+    }
+    public void put(String key, NSData data) {
+        setData(data, key);
+    }
+    public void put(String key, NSArray<?> array) {
+        setArray(array, key);
+    }
+    public void put(String key, NSDictionary<?, ?> dictionary) {
+        setDictionary(dictionary, key);
+    }
+    public void put(String key, long value) {
+        setLongLong(value, key);
+    }
+    public void put(String key, double value) {
+        setDouble(value, key);
+    }
+    public void put(String key, boolean value) {
+        setBool(value, key);
+    }
+
+    public Map<String, NSObject> asMap() {
+        return asDictionary().asStringMap();
+    }
     /*<methods>*/
+    /**
+     * @since Available in iOS 5.0 and later.
+     */
+    @GlobalValue(symbol="NSUbiquitousKeyValueStoreDidChangeExternallyNotification", optional=true)
+    public static native NSString DidChangeExternallyNotification();
+    /**
+     * @since Available in iOS 5.0 and later.
+     */
+    @GlobalValue(symbol="NSUbiquitousKeyValueStoreChangeReasonKey", optional=true)
+    protected static native NSString ChangeReasonKey();
+    /**
+     * @since Available in iOS 5.0 and later.
+     */
+    @GlobalValue(symbol="NSUbiquitousKeyValueStoreChangedKeysKey", optional=true)
+    protected static native NSString ChangedKeysKey();
+    
     @Method(selector = "objectForKey:")
-    public native NSObject objectForKey$(String aKey);
+    public native NSObject get(String aKey);
     @Method(selector = "setObject:forKey:")
-    public native void setObject$forKey$(NSObject anObject, String aKey);
+    protected native void setObject(NSObject anObject, String aKey);
     @Method(selector = "removeObjectForKey:")
-    public native void removeObjectForKey$(String aKey);
+    public native void remove(String aKey);
     @Method(selector = "stringForKey:")
-    public native String stringForKey$(String aKey);
+    public native String getString(String aKey);
     @Method(selector = "arrayForKey:")
-    public native NSArray<?> arrayForKey$(String aKey);
+    public native NSArray<?> getArray(String aKey);
     @Method(selector = "dictionaryForKey:")
-    public native NSDictionary<?, ?> dictionaryForKey$(String aKey);
+    public native NSDictionary<?, ?> getDictionary(String aKey);
     @Method(selector = "dataForKey:")
-    public native NSData dataForKey$(String aKey);
+    public native NSData getData(String aKey);
     @Method(selector = "longLongForKey:")
-    public native long longLongForKey$(String aKey);
+    public native long getLong(String aKey);
     @Method(selector = "doubleForKey:")
-    public native double doubleForKey$(String aKey);
+    public native double getDouble(String aKey);
     @Method(selector = "boolForKey:")
-    public native boolean boolForKey$(String aKey);
+    public native boolean getBoolean(String aKey);
     @Method(selector = "setString:forKey:")
-    public native void setString$forKey$(String aString, String aKey);
+    protected native void setString(String aString, String aKey);
     @Method(selector = "setData:forKey:")
-    public native void setData$forKey$(NSData aData, String aKey);
+    protected native void setData(NSData aData, String aKey);
     @Method(selector = "setArray:forKey:")
-    public native void setArray$forKey$(NSArray<?> anArray, String aKey);
+    protected native void setArray(NSArray<?> anArray, String aKey);
     @Method(selector = "setDictionary:forKey:")
-    public native void setDictionary$forKey$(NSDictionary<?, ?> aDictionary, String aKey);
+    protected native void setDictionary(NSDictionary<?, ?> aDictionary, String aKey);
     @Method(selector = "setLongLong:forKey:")
-    public native void setLongLong$forKey$(long value, String aKey);
+    protected native void setLongLong(long value, String aKey);
     @Method(selector = "setDouble:forKey:")
-    public native void setDouble$forKey$(double value, String aKey);
+    protected native void setDouble(double value, String aKey);
     @Method(selector = "setBool:forKey:")
-    public native void setBool$forKey$(boolean value, String aKey);
+    protected native void setBool(boolean value, String aKey);
     @Method(selector = "dictionaryRepresentation")
-    public native NSDictionary<?, ?> dictionaryRepresentation();
+    public native NSDictionary<NSString, NSObject> asDictionary();
     @Method(selector = "synchronize")
     public native boolean synchronize();
     @Method(selector = "defaultStore")
-    public static native NSUbiquitousKeyValueStore defaultStore();
+    public static native NSUbiquitousKeyValueStore getDefaultStore();
     /*</methods>*/
 }

@@ -42,6 +42,17 @@ import org.robovm.apple.security.*;
     extends /*<extends>*/NSObject/*</extends>*/ 
     /*<implements>*/implements NSCoding/*</implements>*/ {
 
+    public static class Notifications {
+        public static NSObject observeDidBecomeInvalid(NSPort object, final VoidBlock1<NSPort> block) {
+            return NSNotificationCenter.getDefaultCenter().addObserver(DidBecomeInvalidNotification(), object, NSOperationQueue.getMainQueue(), new VoidBlock1<NSNotification>() {
+                @Override
+                public void invoke(NSNotification a) {
+                    block.invoke((NSPort) a.getObject());
+                }
+            });
+        }
+    }
+    
     /*<ptr>*/public static class NSPortPtr extends Ptr<NSPort, NSPortPtr> {}/*</ptr>*/
     /*<bind>*/static { ObjCRuntime.bind(NSPort.class); }/*</bind>*/
     /*<constants>*//*</constants>*/
@@ -53,7 +64,16 @@ import org.robovm.apple.security.*;
     
     /*</properties>*/
     /*<members>*//*</members>*/
+    public void scheduleInRunLoop(NSRunLoop runLoop, NSRunLoopMode mode) {
+        scheduleInRunLoop(runLoop, mode.value());
+    }
+    public void removeFromRunLoop(NSRunLoop runLoop, NSRunLoopMode mode) {
+        removeFromRunLoop(runLoop, mode.value());
+    }
     /*<methods>*/
+    @GlobalValue(symbol="NSPortDidBecomeInvalidNotification", optional=true)
+    public static native NSString DidBecomeInvalidNotification();
+    
     @Method(selector = "invalidate")
     public native void invalidate();
     @Method(selector = "isValid")
@@ -61,19 +81,19 @@ import org.robovm.apple.security.*;
     @Method(selector = "setDelegate:")
     public native void setDelegate(NSPortDelegate anObject);
     @Method(selector = "delegate")
-    public native NSPortDelegate delegate();
+    public native NSPortDelegate getDelegate();
     @Method(selector = "scheduleInRunLoop:forMode:")
-    public native void scheduleInRunLoop$forMode$(NSRunLoop runLoop, String mode);
+    public native void scheduleInRunLoop(NSRunLoop runLoop, String mode);
     @Method(selector = "removeFromRunLoop:forMode:")
-    public native void removeFromRunLoop$forMode$(NSRunLoop runLoop, String mode);
+    public native void removeFromRunLoop(NSRunLoop runLoop, String mode);
     @Method(selector = "reservedSpaceLength")
-    public native @MachineSizedUInt long reservedSpaceLength();
+    public native @MachineSizedUInt long getReservedSpaceLength();
     @Method(selector = "sendBeforeDate:components:from:reserved:")
-    public native boolean sendBeforeDate$components$from$reserved$(NSDate limitDate, NSMutableArray<?> components, NSPort receivePort, @MachineSizedUInt long headerSpaceReserved);
+    public native boolean send(NSDate limitDate, NSMutableArray<?> components, NSPort receivePort, @MachineSizedUInt long headerSpaceReserved);
     @Method(selector = "sendBeforeDate:msgid:components:from:reserved:")
-    public native boolean sendBeforeDate$msgid$components$from$reserved$(NSDate limitDate, @MachineSizedUInt long msgID, NSMutableArray<?> components, NSPort receivePort, @MachineSizedUInt long headerSpaceReserved);
+    public native boolean send(NSDate limitDate, @MachineSizedUInt long msgID, NSMutableArray<?> components, NSPort receivePort, @MachineSizedUInt long headerSpaceReserved);
     @Method(selector = "port")
-    public static native NSPort port();
+    public static native NSPort create();
     @Method(selector = "encodeWithCoder:")
     public native void encode(NSCoder aCoder);
     /*</methods>*/

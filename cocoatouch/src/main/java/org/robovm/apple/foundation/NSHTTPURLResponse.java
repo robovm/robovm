@@ -51,7 +51,7 @@ import org.robovm.apple.security.*;
     /**
      * @since Available in iOS 5.0 and later.
      */
-    public NSHTTPURLResponse(NSURL url, @MachineSizedSInt long statusCode, String HTTPVersion, NSDictionary<?, ?> headerFields) { super((SkipInit) null); initObject(initWithURL$statusCode$HTTPVersion$headerFields$(url, statusCode, HTTPVersion, headerFields)); }
+    public NSHTTPURLResponse(NSURL url, @MachineSizedSInt long statusCode, String HTTPVersion, @org.robovm.rt.bro.annotation.Marshaler(NSDictionary.AsStringStringMapMarshaler.class) Map<String, String> headerFields) { super((SkipInit) null); initObject(init(url, statusCode, HTTPVersion, headerFields)); }
     /*</constructors>*/
     /*<properties>*/
     
@@ -62,11 +62,11 @@ import org.robovm.apple.security.*;
      * @since Available in iOS 5.0 and later.
      */
     @Method(selector = "initWithURL:statusCode:HTTPVersion:headerFields:")
-    protected native @Pointer long initWithURL$statusCode$HTTPVersion$headerFields$(NSURL url, @MachineSizedSInt long statusCode, String HTTPVersion, NSDictionary<?, ?> headerFields);
+    protected native @Pointer long init(NSURL url, @MachineSizedSInt long statusCode, String HTTPVersion, @org.robovm.rt.bro.annotation.Marshaler(NSDictionary.AsStringStringMapMarshaler.class) Map<String, String> headerFields);
     @Method(selector = "statusCode")
     public native @MachineSizedSInt long getStatusCode();
     @Method(selector = "allHeaderFields")
-    public native NSDictionary<NSString, ?> getAllHeaderFields();
+    public native @org.robovm.rt.bro.annotation.Marshaler(NSDictionary.AsStringStringMapMarshaler.class) Map<String, String> getAllHeaderFields();
     @Method(selector = "localizedStringForStatusCode:")
     public static native String getLocalizedStatusCode(@MachineSizedSInt long statusCode);
     /*</methods>*/

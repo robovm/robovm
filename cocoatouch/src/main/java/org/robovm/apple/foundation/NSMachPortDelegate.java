@@ -51,7 +51,7 @@ import org.robovm.apple.security.*;
     /*</properties>*/
     /*<methods>*/
     @Method(selector = "handleMachMessage:")
-    void handleMachMessage$(VoidPtr msg);
+    void handleMachMessage(VoidPtr msg);
     /*</methods>*/
     /*<adapter>*/
     /*</adapter>*/

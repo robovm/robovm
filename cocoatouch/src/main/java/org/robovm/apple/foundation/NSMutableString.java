@@ -56,20 +56,18 @@ import org.robovm.apple.security.*;
     /*<members>*//*</members>*/
     /*<methods>*/
     @Method(selector = "replaceCharactersInRange:withString:")
-    public native void replaceCharactersInRange$withString$(@ByVal NSRange range, String aString);
+    public native void replaceCharacters(@ByVal NSRange range, String aString);
     @Method(selector = "insertString:atIndex:")
-    public native void insertString$atIndex$(String aString, @MachineSizedUInt long loc);
+    public native void insert(String aString, @MachineSizedUInt long loc);
     @Method(selector = "deleteCharactersInRange:")
-    public native void deleteCharactersInRange$(@ByVal NSRange range);
+    public native void deleteCharacters(@ByVal NSRange range);
     @Method(selector = "appendString:")
-    public native void appendString$(String aString);
+    public native void append(String aString);
     @Method(selector = "setString:")
     public native void setString(String aString);
     @Method(selector = "initWithCapacity:")
     protected native @Pointer long initWithCapacity$(@MachineSizedUInt long capacity);
     @Method(selector = "replaceOccurrencesOfString:withString:options:range:")
-    public native @MachineSizedUInt long replaceOccurrencesOfString$withString$options$range$(String target, String replacement, NSStringCompareOptions options, @ByVal NSRange searchRange);
-    @Method(selector = "stringWithCapacity:")
-    public static native NSObject stringWithCapacity$(@MachineSizedUInt long capacity);
+    public native @MachineSizedUInt long replaceAll(String target, String replacement, NSStringCompareOptions options, @ByVal NSRange searchRange);
     /*</methods>*/
 }

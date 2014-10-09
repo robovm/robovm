@@ -42,6 +42,20 @@ import org.robovm.apple.security.*;
     extends /*<extends>*/NSObject/*</extends>*/ 
     /*<implements>*//*</implements>*/ {
 
+    public static class Notifications {
+        /**
+         * @since Available in iOS 6.0 and later.
+         */
+        public static NSObject observeUbiquityIdentityDidChange(final Runnable block) {
+            return NSNotificationCenter.getDefaultCenter().addObserver(UbiquityIdentityDidChangeNotification(), null, NSOperationQueue.getMainQueue(), new VoidBlock1<NSNotification>() {
+                @Override
+                public void invoke(NSNotification a) {
+                    block.run();
+                }
+            });
+        }
+    }
+    
     /*<ptr>*/public static class NSFileManagerPtr extends Ptr<NSFileManager, NSFileManagerPtr> {}/*</ptr>*/
     /*<bind>*/static { ObjCRuntime.bind(NSFileManager.class); }/*</bind>*/
     /*<constants>*//*</constants>*/
@@ -53,17 +67,28 @@ import org.robovm.apple.security.*;
     
     /*</properties>*/
     /*<members>*//*</members>*/
+    public boolean isDirectoryAtPath(String path) {
+        BooleanPtr ptr = new BooleanPtr();
+        fileExists(path, ptr);
+        return ptr.get();
+    }
     /*<methods>*/
+    /**
+     * @since Available in iOS 6.0 and later.
+     */
+    @GlobalValue(symbol="NSUbiquityIdentityDidChangeNotification", optional=true)
+    public static native NSString UbiquityIdentityDidChangeNotification();
+    
     /**
      * @since Available in iOS 4.0 and later.
      */
     @Method(selector = "mountedVolumeURLsIncludingResourceValuesForKeys:options:")
-    protected native NSArray<NSURL> getMountedVolumeURLsIncludingResourceValues(NSArray<NSString> propertyKeys, NSVolumeEnumerationOptions options);
+    protected native NSArray<NSURL> getMountedVolumeURLsIncludingResourceValues(@org.robovm.rt.bro.annotation.Marshaler(NSURLFileSystemProperty.AsListMarshaler.class) List<NSURLFileSystemProperty> propertyKeys, NSVolumeEnumerationOptions options);
     /**
      * @since Available in iOS 4.0 and later.
      */
     @Method(selector = "contentsOfDirectoryAtURL:includingPropertiesForKeys:options:error:")
-    protected native NSArray<NSURL> getContentsOfDirectoryAtURL(NSURL url, NSArray<NSString> keys, NSDirectoryEnumerationOptions mask, NSError.NSErrorPtr error);
+    protected native NSArray<NSURL> getContentsOfDirectoryAtURL(NSURL url, @org.robovm.rt.bro.annotation.Marshaler(NSURLFileSystemProperty.AsListMarshaler.class) List<NSURLFileSystemProperty> keys, NSDirectoryEnumerationOptions mask, NSError.NSErrorPtr error);
     /**
      * @since Available in iOS 4.0 and later.
      */
@@ -93,7 +118,7 @@ import org.robovm.apple.security.*;
      * @since Available in iOS 2.0 and later.
      */
     @Method(selector = "delegate")
-    public native NSObject delegate();
+    public native NSFileManagerDelegate delegate();
     /**
      * @since Available in iOS 2.0 and later.
      */
@@ -181,7 +206,7 @@ import org.robovm.apple.security.*;
     @Method(selector = "fileExistsAtPath:")
     public native boolean fileExists(String path);
     @Method(selector = "fileExistsAtPath:isDirectory:")
-    protected native boolean fileExists(String path, BytePtr isDirectory);
+    protected native boolean fileExists(String path, BooleanPtr isDirectory);
     @Method(selector = "isReadableFileAtPath:")
     public native boolean fileIsReadable(String path);
     @Method(selector = "isWritableFileAtPath:")
@@ -202,7 +227,7 @@ import org.robovm.apple.security.*;
      * @since Available in iOS 4.0 and later.
      */
     @Method(selector = "enumeratorAtURL:includingPropertiesForKeys:options:errorHandler:")
-    protected native NSDirectoryEnumerator getEnumeratorAtURL(NSURL url, NSArray<NSString> keys, NSDirectoryEnumerationOptions mask, @Block Block2<NSURL, NSError, Boolean> handler);
+    protected native NSDirectoryEnumerator getEnumeratorAtURL(NSURL url, @org.robovm.rt.bro.annotation.Marshaler(NSURLFileSystemProperty.AsListMarshaler.class) List<NSURLFileSystemProperty> keys, NSDirectoryEnumerationOptions mask, @Block Block2<NSURL, NSError, Boolean> handler);
     @Method(selector = "subpathsAtPath:")
     public native @org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String> getSubpathsAtPath(String path);
     @Method(selector = "contentsAtPath:")

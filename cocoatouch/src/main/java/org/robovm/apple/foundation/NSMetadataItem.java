@@ -57,10 +57,10 @@ import org.robovm.apple.security.*;
     /*<members>*//*</members>*/
     /*<methods>*/
     @Method(selector = "valueForAttribute:")
-    public native NSObject valueForAttribute$(String key);
+    public native NSObject getValue(NSMetadataItemAttribute key);
     @Method(selector = "valuesForAttributes:")
-    public native NSDictionary<?, ?> valuesForAttributes$(NSArray<?> keys);
+    public native NSMetadataItemAttributes getValues(@org.robovm.rt.bro.annotation.Marshaler(NSMetadataItemAttribute.AsListMarshaler.class) List<NSMetadataItemAttribute> keys);
     @Method(selector = "attributes")
-    public native NSArray<?> attributes();
+    public native @org.robovm.rt.bro.annotation.Marshaler(NSMetadataItemAttribute.AsListMarshaler.class) List<NSMetadataItemAttribute> getAttributes();
     /*</methods>*/
 }

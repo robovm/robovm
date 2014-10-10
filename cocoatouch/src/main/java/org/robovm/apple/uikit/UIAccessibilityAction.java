@@ -47,7 +47,16 @@ import org.robovm.apple.coretext.*;
     /*</bind>*/
     /*<constants>*//*</constants>*/
     /*<properties>*/
-    
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @Property(selector = "accessibilityCustomActions")
+    NSArray<?> getAccessibilityCustomActions();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @Property(selector = "setAccessibilityCustomActions:")
+    void setAccessibilityCustomActions(NSArray<?> v);
     /*</properties>*/
     /*<methods>*/
     /**

@@ -195,12 +195,22 @@ import org.robovm.apple.mediaplayer.MPMoviePlayerViewController;
      */
     @Property(selector = "setPreferredContentSize:")
     public native void setPreferredContentSize(@ByVal CGSize v);
+    /**
+     * @since Available in iOS 2.0 and later.
+     * @deprecated Deprecated in iOS 8.0.
+     */
+    @Deprecated
     @Property(selector = "interfaceOrientation")
     public native UIInterfaceOrientation getInterfaceOrientation();
     @Property(selector = "isEditing")
     public native boolean isEditing();
     @Property(selector = "setEditing:")
     public native void setEditing(boolean v);
+    /**
+     * @since Available in iOS 3.0 and later.
+     * @deprecated Deprecated in iOS 8.0.
+     */
+    @Deprecated
     @Property(selector = "searchDisplayController")
     public native UISearchDisplayController getSearchDisplayController();
     /**
@@ -248,6 +258,21 @@ import org.robovm.apple.mediaplayer.MPMoviePlayerViewController;
      */
     @Property(selector = "bottomLayoutGuide")
     public native UILayoutSupport getBottomLayoutGuide();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @Property(selector = "extensionContext")
+    public native NSExtensionContext getExtensionContext();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @Property(selector = "presentationController")
+    public native UIPresentationController getPresentationController();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @Property(selector = "popoverPresentationController")
+    public native UIPopoverPresentationController getPopoverPresentationController();
     @Property(selector = "navigationItem")
     public native UINavigationItem getNavigationItem();
     @Property(selector = "hidesBottomBarWhenPushed")
@@ -521,6 +546,21 @@ import org.robovm.apple.mediaplayer.MPMoviePlayerViewController;
     @Method(selector = "setNeedsStatusBarAppearanceUpdate")
     public native void setNeedsStatusBarAppearanceUpdate();
     /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @Method(selector = "targetViewControllerForAction:sender:")
+    public native UIViewController targetViewControllerForAction$sender$(Selector action, NSObject sender);
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @Method(selector = "showViewController:sender:")
+    public native void showViewController$sender$(UIViewController vc, NSObject sender);
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @Method(selector = "showDetailViewController:sender:")
+    public native void showDetailViewController$sender$(UIViewController vc, NSObject sender);
+    /**
      * @since Available in iOS 2.0 and later.
      * @deprecated Deprecated in iOS 6.0.
      */
@@ -542,17 +582,39 @@ import org.robovm.apple.mediaplayer.MPMoviePlayerViewController;
      */
     @Method(selector = "preferredInterfaceOrientationForPresentation")
     public native UIInterfaceOrientation getPreferredInterfaceOrientation();
+    /**
+     * @since Available in iOS 2.0 and later.
+     * @deprecated Deprecated in iOS 8.0.
+     */
+    @Deprecated
     @Method(selector = "rotatingHeaderView")
     public native UIView getRotatingHeaderView();
+    /**
+     * @since Available in iOS 2.0 and later.
+     * @deprecated Deprecated in iOS 8.0.
+     */
+    @Deprecated
     @Method(selector = "rotatingFooterView")
     public native UIView getRotatingFooterView();
+    /**
+     * @since Available in iOS 2.0 and later.
+     * @deprecated Deprecated in iOS 8.0.
+     */
+    @Deprecated
     @Method(selector = "willRotateToInterfaceOrientation:duration:")
     public native void willRotate(UIInterfaceOrientation toInterfaceOrientation, double duration);
+    /**
+     * @since Available in iOS 2.0 and later.
+     * @deprecated Deprecated in iOS 8.0.
+     */
+    @Deprecated
     @Method(selector = "didRotateFromInterfaceOrientation:")
     public native void didRotate(UIInterfaceOrientation fromInterfaceOrientation);
     /**
      * @since Available in iOS 3.0 and later.
+     * @deprecated Deprecated in iOS 8.0.
      */
+    @Deprecated
     @Method(selector = "willAnimateRotationToInterfaceOrientation:duration:")
     public native void willAnimateRotation(UIInterfaceOrientation toInterfaceOrientation, double duration);
     /**
@@ -621,6 +683,16 @@ import org.robovm.apple.mediaplayer.MPMoviePlayerViewController;
     @Method(selector = "childViewControllerForStatusBarHidden")
     public native UIViewController getChildViewControllerForStatusBarHidden();
     /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @Method(selector = "setOverrideTraitCollection:forChildViewController:")
+    public native void setOverrideTraitCollection$forChildViewController$(UITraitCollection collection, UIViewController childViewController);
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @Method(selector = "overrideTraitCollectionForChildViewController:")
+    public native UITraitCollection overrideTraitCollectionForChildViewController$(UIViewController childViewController);
+    /**
      * @since Available in iOS 5.0 and later.
      * @deprecated Deprecated in iOS 6.0.
      */
@@ -629,7 +701,9 @@ import org.robovm.apple.mediaplayer.MPMoviePlayerViewController;
     public native boolean isAutomaticallyForwardAppearanceAndRotationMethodsToChildViewControllers();
     /**
      * @since Available in iOS 6.0 and later.
+     * @deprecated Deprecated in iOS 8.0.
      */
+    @Deprecated
     @Method(selector = "shouldAutomaticallyForwardRotationMethods")
     public native boolean shouldAutomaticallyForwardRotationMethods();
     /**
@@ -677,6 +751,16 @@ import org.robovm.apple.mediaplayer.MPMoviePlayerViewController;
      */
     @Method(selector = "transitionCoordinator")
     public native UIViewControllerTransitionCoordinator getTransitionCoordinator();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @Method(selector = "collapseSecondaryViewController:forSplitViewController:")
+    public native void collapseSecondaryViewController$forSplitViewController$(UIViewController secondaryViewController, UISplitViewController splitViewController);
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @Method(selector = "separateSecondaryViewControllerForSplitViewController:")
+    public native UIViewController separateSecondaryViewControllerForSplitViewController$(UISplitViewController splitViewController);
     @Method(selector = "encodeWithCoder:")
     public native void encode(NSCoder aCoder);
     /*</methods>*/

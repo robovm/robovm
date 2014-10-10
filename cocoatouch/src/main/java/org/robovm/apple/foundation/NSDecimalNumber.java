@@ -32,6 +32,7 @@ import org.robovm.apple.coreanimation.*;
 import org.robovm.apple.coregraphics.*;
 import org.robovm.apple.coremedia.*;
 import org.robovm.apple.security.*;
+import org.robovm.apple.dispatch.*;
 /*</imports>*/
 
 /*<javadoc>*/
@@ -53,7 +54,12 @@ import org.robovm.apple.security.*;
     public NSDecimalNumber(String numberValue, NSLocale locale) { super((SkipInit) null); initObject(initWithString$locale$(numberValue, locale)); }
     /*</constructors>*/
     /*<properties>*/
-    
+    @Property(selector = "decimalValue")
+    public native @ByVal NSDecimal getDecimalValue();
+    @Property(selector = "objCType")
+    public native BytePtr getObjCType();
+    @Property(selector = "doubleValue")
+    public native double getDoubleValue();
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/

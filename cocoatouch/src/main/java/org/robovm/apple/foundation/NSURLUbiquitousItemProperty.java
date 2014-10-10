@@ -32,6 +32,7 @@ import org.robovm.apple.coreanimation.*;
 import org.robovm.apple.coregraphics.*;
 import org.robovm.apple.coremedia.*;
 import org.robovm.apple.security.*;
+import org.robovm.apple.dispatch.*;
 /*</imports>*/
 
 /*<javadoc>*/
@@ -181,5 +182,15 @@ import org.robovm.apple.security.*;
      */
     @GlobalValue(symbol="NSURLUbiquitousItemUploadingErrorKey", optional=true)
     protected static native NSString UploadingErrorValue();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @GlobalValue(symbol="NSURLUbiquitousItemDownloadRequestedKey", optional=true)
+    protected static native NSString DownloadRequestedValue();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @GlobalValue(symbol="NSURLUbiquitousItemContainerDisplayNameKey", optional=true)
+    protected static native NSString ContainerDisplayNameValue();
     /*</methods>*/
 }

@@ -48,7 +48,16 @@ import org.robovm.apple.coretext.*;
     /*<constants>*//*</constants>*/
     /*<constructors>*//*</constructors>*/
     /*<properties>*/
-    
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @NotImplemented("accessibilityElements")
+    public NSArray<?> getAccessibilityElements() { throw new UnsupportedOperationException(); }
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @NotImplemented("setAccessibilityElements:")
+    public void setAccessibilityElements(NSArray<?> v) { throw new UnsupportedOperationException(); }
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/

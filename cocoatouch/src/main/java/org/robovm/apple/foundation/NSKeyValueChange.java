@@ -32,32 +32,37 @@ import org.robovm.apple.coreanimation.*;
 import org.robovm.apple.coregraphics.*;
 import org.robovm.apple.coremedia.*;
 import org.robovm.apple.security.*;
+import org.robovm.apple.dispatch.*;
 /*</imports>*/
 
 /*<javadoc>*/
 
 /*</javadoc>*/
-/*<annotations>*/@Marshaler(Bits.AsMachineSizedIntMarshaler.class)/*</annotations>*/
-public final class /*<name>*/NSKeyValueChange/*</name>*/ extends Bits</*<name>*/NSKeyValueChange/*</name>*/> {
+/*<annotations>*/@Marshaler(ValuedEnum.AsMachineSizedUIntMarshaler.class)/*</annotations>*/
+public enum /*<name>*/NSKeyValueChange/*</name>*/ implements ValuedEnum {
     /*<values>*/
-    public static final NSKeyValueChange None = new NSKeyValueChange(0L);
-    public static final NSKeyValueChange Setting = new NSKeyValueChange(1L);
-    public static final NSKeyValueChange Insertion = new NSKeyValueChange(2L);
-    public static final NSKeyValueChange Removal = new NSKeyValueChange(3L);
-    public static final NSKeyValueChange Replacement = new NSKeyValueChange(4L);
+    Setting(1L),
+    Insertion(2L),
+    Removal(3L),
+    Replacement(4L);
     /*</values>*/
 
-    private static final /*<name>*/NSKeyValueChange/*</name>*/[] values = _values(/*<name>*/NSKeyValueChange/*</name>*/.class);
+    /*<bind>*/
+    /*</bind>*/
+    /*<constants>*//*</constants>*/
+    /*<methods>*//*</methods>*/
 
-    public /*<name>*/NSKeyValueChange/*</name>*/(long value) { super(value); }
-    private /*<name>*/NSKeyValueChange/*</name>*/(long value, long mask) { super(value, mask); }
-    protected /*<name>*/NSKeyValueChange/*</name>*/ wrap(long value, long mask) {
-        return new /*<name>*/NSKeyValueChange/*</name>*/(value, mask);
-    }
-    protected /*<name>*/NSKeyValueChange/*</name>*/[] _values() {
-        return values;
-    }
-    public static /*<name>*/NSKeyValueChange/*</name>*/[] values() {
-        return values.clone();
+    private final long n;
+
+    private /*<name>*/NSKeyValueChange/*</name>*/(long n) { this.n = n; }
+    public long value() { return n; }
+    public static /*<name>*/NSKeyValueChange/*</name>*/ valueOf(long n) {
+        for (/*<name>*/NSKeyValueChange/*</name>*/ v : values()) {
+            if (v.n == n) {
+                return v;
+            }
+        }
+        throw new IllegalArgumentException("No constant with value " + n + " found in " 
+            + /*<name>*/NSKeyValueChange/*</name>*/.class.getName());
     }
 }

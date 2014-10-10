@@ -154,7 +154,7 @@ import org.robovm.apple.coretext.*;
     @Method(selector = "setGlyphs:properties:characterIndexes:font:forGlyphRange:")
     public native void setGlyphs(ShortPtr glyphs, MachineSizedSIntPtr props, MachineSizedUIntPtr charIndexes, UIFont aFont, @ByVal NSRange glyphRange);
     @Method(selector = "glyphAtIndex:isValidIndex:")
-    public native short getGlyph(@MachineSizedUInt long glyphIndex, BytePtr isValidIndex);
+    public native short getGlyph(@MachineSizedUInt long glyphIndex, BooleanPtr isValidIndex);
     @Method(selector = "glyphAtIndex:")
     public native short getGlyph(@MachineSizedUInt long glyphIndex);
     @Method(selector = "isValidGlyphIndex:")

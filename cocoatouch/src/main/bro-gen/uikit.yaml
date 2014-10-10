@@ -145,6 +145,9 @@ enums:
     UITouchPhase: {}
     UIUserInterfaceIdiom: {prefix: UIUserInterfaceIdiom}
     UIUserInterfaceLayoutDirection: {}
+    UIUserNotificationActionContext: {}
+    UIUserNotificationActivationMode: {}
+    UIUserNotificationType: {}
     UIViewAnimationCurve: {}
     UIViewAnimationOptions: {} #marshaler: Bits.AsMachineSizedIntMarshaler}
     UIViewAnimationTransition: {}
@@ -215,6 +218,8 @@ categories:
                 name: "#{g[0]}"
             '-(encode.*):forKey:':
                 name: "#{g[0]}"
+
+    NSFileProviderExtension: {}
 
     NSIndexPath: # DONE
         methods:
@@ -645,6 +650,10 @@ classes:
                 trim_after_first_colon: true
             '-(setStatusBar(Hidden|Style|Orientation)).*':
                 trim_after_first_colon: true
+            '-registerUserNotificationSettings:':
+                trim_after_first_colon: true
+            '-currentUserNotificationSettings':
+                property: true
 
     UIAttachmentBehavior: # DONE
         properties:
@@ -2282,7 +2291,6 @@ classes:
                 trim_after_first_colon: true
             '-setShadowImage:forToolbarPosition:':
                 trim_after_first_colon: true
-
     UITouch: # DONE
         properties:
             'gestureRecognizers':
@@ -2292,7 +2300,30 @@ classes:
                 name: getLocation
             '-previousLocationInView:':
                 name: getPreviousLocation
-
+    UIMutableUserNotificationAction: {} # DONE
+    UIMutableUserNotificationCategory: # DONE
+        methods:
+            '-setActions:forContext:':
+                trim_after_first_colon: true
+                parameters:
+                    actions:
+                        type: NSArray<UIUserNotificationAction>
+    UIUserNotificationAction: {} # DONE
+    UIUserNotificationCategory: # DONE
+        methods:
+            '-actionsForContext:':
+                name: getActions
+                return_type: NSArray<UIUserNotificationAction>
+    UIUserNotificationSettings: # DONE
+        properties:
+            'categories':
+                type: NSSet<UIUserNotificationCategory>
+        methods:
+            '+settingsForTypes:categories:':
+                name: create
+                parameters:
+                    categories:
+                        type: NSSet<UIUserNotificationCategory>
     UIVideoEditorController: # DONE
         properties:
             'delegate':
@@ -2677,7 +2708,7 @@ protocols:
 #    UIAppearance: {}
     UIAppearanceContainer:
         skip_adapter: true
-    UIApplicationDelegate:
+    UIApplicationDelegate: # DONE
         methods:
             '-application:didChangeStatusBarFrame:':
                 name: didChangStatusBarFrame
@@ -2759,6 +2790,31 @@ protocols:
                 name: performFetch
             '-application:handleEventsForBackgroundURLSession:completionHandler:':
                 name: handleEventsForBackgroundURLSession
+            '-application:didRegisterUserNotificationSettings:':
+                name: didRegisterUserNotificationSettings
+            '-application:handleActionWithIdentifier:forLocalNotification:completionHandler:':
+                name: handleLocalNotificationAction
+            '-application:handleActionWithIdentifier:forRemoteNotification:completionHandler:':
+                name: handleRemoteNotificationAction
+                parameters:
+                    userInfo:
+                        type: UIRemoteNotification
+            '-application:shouldAllowExtensionPointIdentifier:':
+                name: shouldAllowExtensionPointIdentifier
+                parameters:
+                    extensionPointIdentifier:
+                        type: UIApplicationExtensionPointIdentifier
+            '-application:willContinueUserActivityWithType:':
+                name: willContinueUserActivity
+            '-application:continueUserActivity:restorationHandler:':
+                name: continueUserActivity
+                parameters:
+                    restorationHandler:
+                        type: "@Block VoidBlock1<NSArray<UIResponder>>"
+            '-application:didFailToContinueUserActivityWithType:error:':
+                name: didFailToContinueUserActivity
+            '-application:didUpdateUserActivity:':
+                name: didUpdateUserActivity
     UIBarPositioning: {}
     UIBarPositioningDelegate:
         methods:
@@ -3779,6 +3835,11 @@ values:
     UI(MinimumKeepAliveTimeout):
         class: UIApplication
         name: "#{g[0]}"
+    UIApplication(.*)ExtensionPointIdentifier:
+        class: UIApplicationExtensionPointIdentifier
+        name: "#{g[0]}Value"
+        visibility: protected
+        type: NSString
 
     # UICollectionView
     UICollectionElementKind(.*):

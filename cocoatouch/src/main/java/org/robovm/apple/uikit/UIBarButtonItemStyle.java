@@ -41,6 +41,11 @@ import org.robovm.apple.coretext.*;
 public enum /*<name>*/UIBarButtonItemStyle/*</name>*/ implements ValuedEnum {
     /*<values>*/
     Plain(0L),
+    /**
+     * @since Available in iOS 2.0 and later.
+     * @deprecated Deprecated in iOS 8.0.
+     */
+    @Deprecated
     Bordered(1L),
     Done(2L);
     /*</values>*/

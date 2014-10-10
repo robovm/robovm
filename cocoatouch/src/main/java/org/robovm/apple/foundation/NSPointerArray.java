@@ -32,6 +32,7 @@ import org.robovm.apple.coreanimation.*;
 import org.robovm.apple.coregraphics.*;
 import org.robovm.apple.coremedia.*;
 import org.robovm.apple.security.*;
+import org.robovm.apple.dispatch.*;
 /*</imports>*/
 
 /*<javadoc>*/
@@ -54,7 +55,14 @@ import org.robovm.apple.security.*;
     public NSPointerArray(NSPointerFunctions functions) { super((SkipInit) null); initObject(initWithPointerFunctions$(functions)); }
     /*</constructors>*/
     /*<properties>*/
-    
+    @Property(selector = "pointerFunctions")
+    public native NSPointerFunctions getPointerFunctions();
+    @Property(selector = "count")
+    public native @MachineSizedUInt long getCount();
+    @Property(selector = "setCount:")
+    public native void setCount(@MachineSizedUInt long v);
+    @Property(selector = "allObjects")
+    public native NSArray<?> getAllObjects();
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
@@ -62,8 +70,6 @@ import org.robovm.apple.security.*;
     protected native @Pointer long initWithOptions$(NSPointerFunctionsOptions options);
     @Method(selector = "initWithPointerFunctions:")
     protected native @Pointer long initWithPointerFunctions$(NSPointerFunctions functions);
-    @Method(selector = "pointerFunctions")
-    public native NSPointerFunctions pointerFunctions();
     @Method(selector = "pointerAtIndex:")
     public native VoidPtr pointerAtIndex$(@MachineSizedUInt long index);
     @Method(selector = "addPointer:")
@@ -76,26 +82,20 @@ import org.robovm.apple.security.*;
     public native void replacePointerAtIndex$withPointer$(@MachineSizedUInt long index, VoidPtr item);
     @Method(selector = "compact")
     public native void compact();
-    @Method(selector = "count")
-    public native @MachineSizedUInt long count();
-    @Method(selector = "setCount:")
-    public native void setCount(@MachineSizedUInt long count);
     @Method(selector = "pointerArrayWithOptions:")
-    public static native NSObject pointerArrayWithOptions$(NSPointerFunctionsOptions options);
+    public static native NSPointerArray pointerArrayWithOptions$(NSPointerFunctionsOptions options);
     @Method(selector = "pointerArrayWithPointerFunctions:")
-    public static native NSObject pointerArrayWithPointerFunctions$(NSPointerFunctions functions);
-    @Method(selector = "allObjects")
-    public native NSArray<?> allObjects();
+    public static native NSPointerArray pointerArrayWithPointerFunctions$(NSPointerFunctions functions);
     /**
      * @since Available in iOS 6.0 and later.
      */
     @Method(selector = "strongObjectsPointerArray")
-    public static native NSObject strongObjectsPointerArray();
+    public static native NSPointerArray strongObjectsPointerArray();
     /**
      * @since Available in iOS 6.0 and later.
      */
     @Method(selector = "weakObjectsPointerArray")
-    public static native NSObject weakObjectsPointerArray();
+    public static native NSPointerArray weakObjectsPointerArray();
     @Method(selector = "encodeWithCoder:")
     public native void encode(NSCoder aCoder);
     /*</methods>*/

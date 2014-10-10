@@ -126,6 +126,16 @@ import org.robovm.apple.coretext.*;
      */
     @NotImplemented("setShouldGroupAccessibilityChildren:")
     public void setShouldGroupAccessibilityChildren(boolean v) { throw new UnsupportedOperationException(); }
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @NotImplemented("accessibilityNavigationStyle")
+    public UIAccessibilityNavigationStyle getAccessibilityNavigationStyle() { throw new UnsupportedOperationException(); }
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @NotImplemented("setAccessibilityNavigationStyle:")
+    public void setAccessibilityNavigationStyle(UIAccessibilityNavigationStyle v) { throw new UnsupportedOperationException(); }
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/

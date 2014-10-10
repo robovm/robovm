@@ -32,6 +32,7 @@ import org.robovm.apple.coreanimation.*;
 import org.robovm.apple.coregraphics.*;
 import org.robovm.apple.coremedia.*;
 import org.robovm.apple.security.*;
+import org.robovm.apple.dispatch.*;
 /*</imports>*/
 
 /*<javadoc>*/
@@ -55,7 +56,8 @@ import org.robovm.apple.security.*;
     public NSMachPort(int machPort, NSMachPortRights f) { super((SkipInit) null); initObject(initWithMachPort$options$(machPort, f)); }
     /*</constructors>*/
     /*<properties>*/
-    
+    @Property(selector = "machPort")
+    public native int getMachPort();
     /*</properties>*/
     /*<members>*//*</members>*/
     public void scheduleInRunLoop(NSRunLoop aRunLoop, NSRunLoopMode mode) {
@@ -76,8 +78,6 @@ import org.robovm.apple.security.*;
      */
     @Method(selector = "initWithMachPort:options:")
     protected native @Pointer long initWithMachPort$options$(int machPort, NSMachPortRights f);
-    @Method(selector = "machPort")
-    public native int getMachPort();
     @Method(selector = "scheduleInRunLoop:forMode:")
     public native void scheduleInRunLoop(NSRunLoop runLoop, String mode);
     @Method(selector = "removeFromRunLoop:forMode:")

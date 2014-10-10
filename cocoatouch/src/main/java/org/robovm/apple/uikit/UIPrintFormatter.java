@@ -66,6 +66,10 @@ import org.robovm.apple.coretext.*;
     public native @ByVal UIEdgeInsets getContentInsets();
     @Property(selector = "setContentInsets:")
     public native void setContentInsets(@ByVal UIEdgeInsets v);
+    @Property(selector = "perPageContentInsets")
+    public native @ByVal UIEdgeInsets getPerPageContentInsets();
+    @Property(selector = "setPerPageContentInsets:")
+    public native void setPerPageContentInsets(@ByVal UIEdgeInsets v);
     @Property(selector = "startPage")
     public native @MachineSizedSInt long getStartPage();
     @Property(selector = "setStartPage:")

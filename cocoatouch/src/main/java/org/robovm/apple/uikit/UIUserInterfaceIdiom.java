@@ -40,6 +40,7 @@ import org.robovm.apple.coretext.*;
 /*<annotations>*/@Marshaler(ValuedEnum.AsMachineSizedSIntMarshaler.class)/*</annotations>*/
 public enum /*<name>*/UIUserInterfaceIdiom/*</name>*/ implements ValuedEnum {
     /*<values>*/
+    Unspecified(-1L),
     Phone(0L),
     Pad(1L);
     /*</values>*/

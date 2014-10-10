@@ -32,6 +32,7 @@ import org.robovm.apple.coreanimation.*;
 import org.robovm.apple.coregraphics.*;
 import org.robovm.apple.coremedia.*;
 import org.robovm.apple.security.*;
+import org.robovm.apple.dispatch.*;
 /*</imports>*/
 
 /*<javadoc>*/
@@ -65,7 +66,124 @@ import org.robovm.apple.security.*;
     public NSCalendar(NSCalendarIdentifier ident) { super((SkipInit) null); initObject(initWithCalendarIdentifier$(ident)); }
     /*</constructors>*/
     /*<properties>*/
-    
+    @Property(selector = "calendarIdentifier")
+    public native String getCalendarIdentifier();
+    @Property(selector = "locale")
+    public native NSLocale getLocale();
+    @Property(selector = "setLocale:")
+    public native void setLocale(NSLocale v);
+    @Property(selector = "timeZone")
+    public native NSTimeZone getTimeZone();
+    @Property(selector = "setTimeZone:")
+    public native void setTimeZone(NSTimeZone v);
+    @Property(selector = "firstWeekday")
+    public native @MachineSizedUInt long getFirstWeekday();
+    @Property(selector = "setFirstWeekday:")
+    public native void setFirstWeekday(@MachineSizedUInt long v);
+    @Property(selector = "minimumDaysInFirstWeek")
+    public native @MachineSizedUInt long getMinimumDaysInFirstWeek();
+    @Property(selector = "setMinimumDaysInFirstWeek:")
+    public native void setMinimumDaysInFirstWeek(@MachineSizedUInt long v);
+    /**
+     * @since Available in iOS 5.0 and later.
+     */
+    @Property(selector = "eraSymbols")
+    public native NSArray<?> getEraSymbols();
+    /**
+     * @since Available in iOS 5.0 and later.
+     */
+    @Property(selector = "longEraSymbols")
+    public native NSArray<?> getLongEraSymbols();
+    /**
+     * @since Available in iOS 5.0 and later.
+     */
+    @Property(selector = "monthSymbols")
+    public native NSArray<?> getMonthSymbols();
+    /**
+     * @since Available in iOS 5.0 and later.
+     */
+    @Property(selector = "shortMonthSymbols")
+    public native NSArray<?> getShortMonthSymbols();
+    /**
+     * @since Available in iOS 5.0 and later.
+     */
+    @Property(selector = "veryShortMonthSymbols")
+    public native NSArray<?> getVeryShortMonthSymbols();
+    /**
+     * @since Available in iOS 5.0 and later.
+     */
+    @Property(selector = "standaloneMonthSymbols")
+    public native NSArray<?> getStandaloneMonthSymbols();
+    /**
+     * @since Available in iOS 5.0 and later.
+     */
+    @Property(selector = "shortStandaloneMonthSymbols")
+    public native NSArray<?> getShortStandaloneMonthSymbols();
+    /**
+     * @since Available in iOS 5.0 and later.
+     */
+    @Property(selector = "veryShortStandaloneMonthSymbols")
+    public native NSArray<?> getVeryShortStandaloneMonthSymbols();
+    /**
+     * @since Available in iOS 5.0 and later.
+     */
+    @Property(selector = "weekdaySymbols")
+    public native NSArray<?> getWeekdaySymbols();
+    /**
+     * @since Available in iOS 5.0 and later.
+     */
+    @Property(selector = "shortWeekdaySymbols")
+    public native NSArray<?> getShortWeekdaySymbols();
+    /**
+     * @since Available in iOS 5.0 and later.
+     */
+    @Property(selector = "veryShortWeekdaySymbols")
+    public native NSArray<?> getVeryShortWeekdaySymbols();
+    /**
+     * @since Available in iOS 5.0 and later.
+     */
+    @Property(selector = "standaloneWeekdaySymbols")
+    public native NSArray<?> getStandaloneWeekdaySymbols();
+    /**
+     * @since Available in iOS 5.0 and later.
+     */
+    @Property(selector = "shortStandaloneWeekdaySymbols")
+    public native NSArray<?> getShortStandaloneWeekdaySymbols();
+    /**
+     * @since Available in iOS 5.0 and later.
+     */
+    @Property(selector = "veryShortStandaloneWeekdaySymbols")
+    public native NSArray<?> getVeryShortStandaloneWeekdaySymbols();
+    /**
+     * @since Available in iOS 5.0 and later.
+     */
+    @Property(selector = "quarterSymbols")
+    public native NSArray<?> getQuarterSymbols();
+    /**
+     * @since Available in iOS 5.0 and later.
+     */
+    @Property(selector = "shortQuarterSymbols")
+    public native NSArray<?> getShortQuarterSymbols();
+    /**
+     * @since Available in iOS 5.0 and later.
+     */
+    @Property(selector = "standaloneQuarterSymbols")
+    public native NSArray<?> getStandaloneQuarterSymbols();
+    /**
+     * @since Available in iOS 5.0 and later.
+     */
+    @Property(selector = "shortStandaloneQuarterSymbols")
+    public native NSArray<?> getShortStandaloneQuarterSymbols();
+    /**
+     * @since Available in iOS 5.0 and later.
+     */
+    @Property(selector = "AMSymbol")
+    public native String getAMSymbol();
+    /**
+     * @since Available in iOS 5.0 and later.
+     */
+    @Property(selector = "PMSymbol")
+    public native String getPMSymbol();
     /*</properties>*/
     /*<members>*//*</members>*/
     /**
@@ -90,29 +208,13 @@ import org.robovm.apple.security.*;
     }
     /*<methods>*/
     /**
-     * @since Available in iOS 7.0 and later.
+     * @since Available in iOS 8.0 and later.
      */
     @GlobalValue(symbol="NSCalendarDayChangedNotification", optional=true)
     public static native NSString DayChangedNotification();
     
     @Method(selector = "initWithCalendarIdentifier:")
     protected native @Pointer long initWithCalendarIdentifier$(NSCalendarIdentifier ident);
-    @Method(selector = "setLocale:")
-    public native void setLocale(NSLocale locale);
-    @Method(selector = "locale")
-    public native NSLocale getLocale();
-    @Method(selector = "setTimeZone:")
-    public native void setTimeZone(NSTimeZone tz);
-    @Method(selector = "timeZone")
-    public native NSTimeZone getTimeZone();
-    @Method(selector = "setFirstWeekday:")
-    public native void setFirstWeekday(@MachineSizedUInt long weekday);
-    @Method(selector = "firstWeekday")
-    public native @MachineSizedUInt long getFirstWeekday();
-    @Method(selector = "setMinimumDaysInFirstWeek:")
-    public native void setMinimumDaysInFirstWeek(@MachineSizedUInt long mdw);
-    @Method(selector = "minimumDaysInFirstWeek")
-    public native @MachineSizedUInt long getMinimumDaysInFirstWeek();
     @Method(selector = "minimumRangeOfUnit:")
     public native @ByVal NSRange getMinimumRange(NSCalendarUnit unit);
     @Method(selector = "maximumRangeOfUnit:")

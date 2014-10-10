@@ -162,6 +162,26 @@ import org.robovm.apple.coretext.*;
      */
     @Property(selector = "setWantsSoftwareDimming:")
     public native void setWantsSoftwareDimming(boolean v);
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @Property(selector = "coordinateSpace")
+    public native UICoordinateSpace getCoordinateSpace();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @Property(selector = "fixedCoordinateSpace")
+    public native UICoordinateSpace getFixedCoordinateSpace();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @Property(selector = "nativeBounds")
+    public native @ByVal CGRect getNativeBounds();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @Property(selector = "nativeScale")
+    public native @MachineSizedFloat double getNativeScale();
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/

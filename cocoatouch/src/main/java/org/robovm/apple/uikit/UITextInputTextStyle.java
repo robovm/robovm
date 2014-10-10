@@ -114,10 +114,25 @@ import org.robovm.apple.coretext.*;
         return this;
     }
     /*<methods>*/
+    /**
+     * @since Available in iOS 3.2 and later.
+     * @deprecated Deprecated in iOS 8.0.
+     */
+    @Deprecated
     @GlobalValue(symbol="UITextInputTextBackgroundColorKey", optional=true)
     protected static native NSString BackgroundColorKey();
+    /**
+     * @since Available in iOS 3.2 and later.
+     * @deprecated Deprecated in iOS 8.0.
+     */
+    @Deprecated
     @GlobalValue(symbol="UITextInputTextColorKey", optional=true)
     protected static native NSString ColorKey();
+    /**
+     * @since Available in iOS 3.2 and later.
+     * @deprecated Deprecated in iOS 8.0.
+     */
+    @Deprecated
     @GlobalValue(symbol="UITextInputTextFontKey", optional=true)
     protected static native NSString FontKey();
     /*</methods>*/

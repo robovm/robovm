@@ -59,6 +59,16 @@ import org.robovm.apple.spritekit.SKNode;
     public native UITouchPhase getPhase();
     @Property(selector = "tapCount")
     public native @MachineSizedUInt long getTapCount();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @Property(selector = "majorRadius")
+    public native @MachineSizedFloat double getMajorRadius();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @Property(selector = "majorRadiusTolerance")
+    public native @MachineSizedFloat double getMajorRadiusTolerance();
     @Property(selector = "window")
     public native UIWindow getWindow();
     @Property(selector = "view")

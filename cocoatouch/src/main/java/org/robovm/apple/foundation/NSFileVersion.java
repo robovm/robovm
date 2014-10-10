@@ -32,6 +32,7 @@ import org.robovm.apple.coreanimation.*;
 import org.robovm.apple.coregraphics.*;
 import org.robovm.apple.coremedia.*;
 import org.robovm.apple.security.*;
+import org.robovm.apple.dispatch.*;
 /*</imports>*/
 
 /*<javadoc>*/
@@ -68,6 +69,16 @@ import org.robovm.apple.security.*;
     public native boolean isResolved();
     @Property(selector = "setResolved:")
     public native void setResolved(boolean v);
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @Property(selector = "hasLocalContents")
+    public native boolean isHasLocalContents();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @Property(selector = "hasThumbnail")
+    public native boolean isHasThumbnail();
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
@@ -81,6 +92,11 @@ import org.robovm.apple.security.*;
     public static native NSArray<NSFileVersion> getOtherItemVersionsAtURL(NSURL url);
     @Method(selector = "unresolvedConflictVersionsOfItemAtURL:")
     public static native NSArray<NSFileVersion> getUnresolvedConflictItemVersionsAtURL(NSURL url);
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @Method(selector = "getNonlocalVersionsOfItemAtURL:completionHandler:")
+    public static native void getNonlocalVersionsOfItemAtURL$completionHandler$(NSURL url, ObjCBlock completionHandler);
     @Method(selector = "versionOfItemAtURL:forPersistentIdentifier:")
     public static native NSFileVersion getItemVersionAtURL(NSURL url, NSObject persistentIdentifier);
     @Method(selector = "removeOtherVersionsOfItemAtURL:error:")

@@ -72,7 +72,17 @@ import org.robovm.apple.coretext.*;
     public UIViewAnimationCurve getCompletionCurve() { throw new UnsupportedOperationException(); }
     @NotImplemented("viewControllerForKey:")
     public UIViewController getViewController(String key) { throw new UnsupportedOperationException(); }
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @NotImplemented("viewForKey:")
+    public UIView viewForKey$(String key) { throw new UnsupportedOperationException(); }
     @NotImplemented("containerView")
     public UIView getContainerView() { throw new UnsupportedOperationException(); }
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @NotImplemented("targetTransform")
+    public @ByVal CGAffineTransform targetTransform() { throw new UnsupportedOperationException(); }
     /*</methods>*/
 }

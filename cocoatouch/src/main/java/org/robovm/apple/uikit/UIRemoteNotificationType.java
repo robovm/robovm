@@ -37,7 +37,9 @@ import org.robovm.apple.coretext.*;
 /*<javadoc>*/
 /**
  * @since Available in iOS 3.0 and later.
+ * @deprecated Deprecated in iOS 8.0.
  */
+@Deprecated
 /*</javadoc>*/
 /*<annotations>*/@Marshaler(Bits.AsMachineSizedIntMarshaler.class)/*</annotations>*/
 public final class /*<name>*/UIRemoteNotificationType/*</name>*/ extends Bits</*<name>*/UIRemoteNotificationType/*</name>*/> {

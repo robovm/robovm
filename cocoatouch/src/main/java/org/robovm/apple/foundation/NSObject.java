@@ -34,6 +34,7 @@ import org.robovm.apple.coreanimation.*;
 import org.robovm.apple.coregraphics.*;
 import org.robovm.apple.coremedia.*;
 import org.robovm.apple.security.*;
+import org.robovm.apple.dispatch.*;
 /*</imports>*/
 
 /*<javadoc>*/
@@ -101,7 +102,27 @@ import org.robovm.apple.security.*;
     
     /*</constructors>*/
     /*<properties>*/
-    
+    @Property(selector = "classForCoder")
+    public native ObjCClass getClassForCoder();
+    /**
+     * @since Available in iOS 4.0 and later.
+     */
+    @Property(selector = "autoContentAccessingProxy")
+    public native NSObject getAutoContentAccessingProxy();
+    @Property(selector = "observationInfo")
+    public native VoidPtr getObservationInfo();
+    @Property(selector = "setObservationInfo:")
+    public native void setObservationInfo(VoidPtr v);
+    @Property(selector = "classForKeyedArchiver")
+    public native ObjCClass getClassForKeyedArchiver();
+    @Property(selector = "hash")
+    public native @MachineSizedUInt long getHash();
+    @Property(selector = "superclass")
+    public native ObjCClass getSuperclass();
+    @Property(selector = "description")
+    public native String getDescription();
+    @Property(selector = "debugDescription")
+    public native String getDebugDescription();
     /*</properties>*/
     /*<members>*//*</members>*/
     

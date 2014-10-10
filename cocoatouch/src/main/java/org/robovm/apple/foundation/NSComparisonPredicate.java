@@ -32,6 +32,7 @@ import org.robovm.apple.coreanimation.*;
 import org.robovm.apple.coregraphics.*;
 import org.robovm.apple.coremedia.*;
 import org.robovm.apple.security.*;
+import org.robovm.apple.dispatch.*;
 /*</imports>*/
 
 /*<javadoc>*/
@@ -54,7 +55,18 @@ import org.robovm.apple.security.*;
     public NSComparisonPredicate(NSExpression lhs, NSExpression rhs, Selector selector) { super((SkipInit) null); initObject(initWithLeftExpression$rightExpression$customSelector$(lhs, rhs, selector)); }
     /*</constructors>*/
     /*<properties>*/
-    
+    @Property(selector = "predicateOperatorType")
+    public native NSPredicateOperatorType getPredicateOperatorType();
+    @Property(selector = "comparisonPredicateModifier")
+    public native NSComparisonPredicateModifier getComparisonPredicateModifier();
+    @Property(selector = "leftExpression")
+    public native NSExpression getLeftExpression();
+    @Property(selector = "rightExpression")
+    public native NSExpression getRightExpression();
+    @Property(selector = "customSelector")
+    public native Selector getCustomSelector();
+    @Property(selector = "options")
+    public native NSComparisonPredicateOptions getOptions();
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
@@ -62,17 +74,5 @@ import org.robovm.apple.security.*;
     protected native @Pointer long initWithLeftExpression$rightExpression$modifier$type$options$(NSExpression lhs, NSExpression rhs, NSComparisonPredicateModifier modifier, NSPredicateOperatorType type, NSComparisonPredicateOptions options);
     @Method(selector = "initWithLeftExpression:rightExpression:customSelector:")
     protected native @Pointer long initWithLeftExpression$rightExpression$customSelector$(NSExpression lhs, NSExpression rhs, Selector selector);
-    @Method(selector = "predicateOperatorType")
-    public native NSPredicateOperatorType getPredicateOperatorType();
-    @Method(selector = "comparisonPredicateModifier")
-    public native NSComparisonPredicateModifier getComparisonPredicateModifier();
-    @Method(selector = "leftExpression")
-    public native NSExpression getLeftExpression();
-    @Method(selector = "rightExpression")
-    public native NSExpression getRightExpression();
-    @Method(selector = "customSelector")
-    public native Selector getCustomSelector();
-    @Method(selector = "options")
-    public native NSComparisonPredicateOptions getOptions();
     /*</methods>*/
 }

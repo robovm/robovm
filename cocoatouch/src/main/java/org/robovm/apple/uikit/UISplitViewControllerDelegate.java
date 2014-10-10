@@ -50,17 +50,46 @@ import org.robovm.apple.coretext.*;
     
     /*</properties>*/
     /*<methods>*/
-    @Method(selector = "splitViewController:willHideViewController:withBarButtonItem:forPopoverController:")
-    void willHideViewController(UISplitViewController svc, UIViewController aViewController, UIBarButtonItem barButtonItem, UIPopoverController pc);
-    @Method(selector = "splitViewController:willShowViewController:invalidatingBarButtonItem:")
-    void willShowViewController(UISplitViewController svc, UIViewController aViewController, UIBarButtonItem barButtonItem);
-    @Method(selector = "splitViewController:popoverController:willPresentViewController:")
-    void willPresentViewController(UISplitViewController svc, UIPopoverController pc, UIViewController aViewController);
     /**
-     * @since Available in iOS 5.0 and later.
+     * @since Available in iOS 8.0 and later.
      */
-    @Method(selector = "splitViewController:shouldHideViewController:inOrientation:")
-    boolean shouldHideViewController(UISplitViewController svc, UIViewController vc, UIInterfaceOrientation orientation);
+    @Method(selector = "splitViewController:willChangeToDisplayMode:")
+    void splitViewController$willChangeToDisplayMode$(UISplitViewController svc, UISplitViewControllerDisplayMode displayMode);
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @Method(selector = "targetDisplayModeForActionInSplitViewController:")
+    UISplitViewControllerDisplayMode targetDisplayModeForActionInSplitViewController$(UISplitViewController svc);
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @Method(selector = "splitViewController:showViewController:sender:")
+    boolean splitViewController$showViewController$sender$(UISplitViewController splitViewController, UIViewController vc, NSObject sender);
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @Method(selector = "splitViewController:showDetailViewController:sender:")
+    boolean splitViewController$showDetailViewController$sender$(UISplitViewController splitViewController, UIViewController vc, NSObject sender);
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @Method(selector = "primaryViewControllerForCollapsingSplitViewController:")
+    UIViewController primaryViewControllerForCollapsingSplitViewController$(UISplitViewController splitViewController);
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @Method(selector = "primaryViewControllerForExpandingSplitViewController:")
+    UIViewController primaryViewControllerForExpandingSplitViewController$(UISplitViewController splitViewController);
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @Method(selector = "splitViewController:collapseSecondaryViewController:ontoPrimaryViewController:")
+    boolean splitViewController$collapseSecondaryViewController$ontoPrimaryViewController$(UISplitViewController splitViewController, UIViewController secondaryViewController, UIViewController primaryViewController);
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @Method(selector = "splitViewController:separateSecondaryViewControllerFromPrimaryViewController:")
+    UIViewController splitViewController$separateSecondaryViewControllerFromPrimaryViewController$(UISplitViewController splitViewController, UIViewController primaryViewController);
     /**
      * @since Available in iOS 7.0 and later.
      */
@@ -71,6 +100,34 @@ import org.robovm.apple.coretext.*;
      */
     @Method(selector = "splitViewControllerPreferredInterfaceOrientationForPresentation:")
     UIInterfaceOrientation getPreferredInterfaceOrientation(UISplitViewController splitViewController);
+    /**
+     * @since Available in iOS 2.0 and later.
+     * @deprecated Deprecated in iOS 8.0.
+     */
+    @Deprecated
+    @Method(selector = "splitViewController:willHideViewController:withBarButtonItem:forPopoverController:")
+    void willHideViewController(UISplitViewController svc, UIViewController aViewController, UIBarButtonItem barButtonItem, UIPopoverController pc);
+    /**
+     * @since Available in iOS 2.0 and later.
+     * @deprecated Deprecated in iOS 8.0.
+     */
+    @Deprecated
+    @Method(selector = "splitViewController:willShowViewController:invalidatingBarButtonItem:")
+    void willShowViewController(UISplitViewController svc, UIViewController aViewController, UIBarButtonItem barButtonItem);
+    /**
+     * @since Available in iOS 2.0 and later.
+     * @deprecated Deprecated in iOS 8.0.
+     */
+    @Deprecated
+    @Method(selector = "splitViewController:popoverController:willPresentViewController:")
+    void willPresentViewController(UISplitViewController svc, UIPopoverController pc, UIViewController aViewController);
+    /**
+     * @since Available in iOS 5.0 and later.
+     * @deprecated Deprecated in iOS 8.0.
+     */
+    @Deprecated
+    @Method(selector = "splitViewController:shouldHideViewController:inOrientation:")
+    boolean shouldHideViewController(UISplitViewController svc, UIViewController vc, UIInterfaceOrientation orientation);
     /*</methods>*/
     /*<adapter>*/
     /*</adapter>*/

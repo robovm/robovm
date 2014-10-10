@@ -32,6 +32,7 @@ import org.robovm.apple.coreanimation.*;
 import org.robovm.apple.coregraphics.*;
 import org.robovm.apple.coremedia.*;
 import org.robovm.apple.security.*;
+import org.robovm.apple.dispatch.*;
 /*</imports>*/
 
 /*<javadoc>*/
@@ -51,21 +52,20 @@ import org.robovm.apple.security.*;
     public NSURLResponse(NSURL URL, String MIMEType, @MachineSizedSInt long length, String name) { super((SkipInit) null); initObject(initWithURL$MIMEType$expectedContentLength$textEncodingName$(URL, MIMEType, length, name)); }
     /*</constructors>*/
     /*<properties>*/
-    
+    @Property(selector = "URL")
+    public native NSURL getURL();
+    @Property(selector = "MIMEType")
+    public native String getMIMEType();
+    @Property(selector = "expectedContentLength")
+    public native long getExpectedContentLength();
+    @Property(selector = "textEncodingName")
+    public native String getTextEncodingName();
+    @Property(selector = "suggestedFilename")
+    public native String getSuggestedFilename();
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
     @Method(selector = "initWithURL:MIMEType:expectedContentLength:textEncodingName:")
     protected native @Pointer long initWithURL$MIMEType$expectedContentLength$textEncodingName$(NSURL URL, String MIMEType, @MachineSizedSInt long length, String name);
-    @Method(selector = "URL")
-    public native NSURL getURL();
-    @Method(selector = "MIMEType")
-    public native String getMIMEType();
-    @Method(selector = "expectedContentLength")
-    public native long getExpectedContentLength();
-    @Method(selector = "textEncodingName")
-    public native String getTextEncodingName();
-    @Method(selector = "suggestedFilename")
-    public native String getSuggestedFilename();
     /*</methods>*/
 }

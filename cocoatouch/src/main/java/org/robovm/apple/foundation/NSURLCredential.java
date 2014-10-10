@@ -32,6 +32,7 @@ import org.robovm.apple.coreanimation.*;
 import org.robovm.apple.coregraphics.*;
 import org.robovm.apple.coremedia.*;
 import org.robovm.apple.security.*;
+import org.robovm.apple.dispatch.*;
 /*</imports>*/
 
 /*<javadoc>*/
@@ -59,32 +60,31 @@ import org.robovm.apple.security.*;
     public NSURLCredential(SecTrust trust) { super((SkipInit) null); initObject(initWithTrust$(trust)); }
     /*</constructors>*/
     /*<properties>*/
-    
+    @Property(selector = "persistence")
+    public native NSURLCredentialPersistence getPersistence();
+    @Property(selector = "user")
+    public native String getUser();
+    @Property(selector = "password")
+    public native String getPassword();
+    @Property(selector = "hasPassword")
+    public native boolean isHasPassword();
+    @Property(selector = "identity")
+    public native SecIdentity getIdentity();
+    /**
+     * @since Available in iOS 3.0 and later.
+     */
+    @Property(selector = "certificates")
+    public native NSArray<?> getCertificates();
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
-    @Method(selector = "persistence")
-    public native NSURLCredentialPersistence getPersistence();
     @Method(selector = "initWithUser:password:persistence:")
     protected native @Pointer long initWithUser$password$persistence$(String user, String password, NSURLCredentialPersistence persistence);
-    @Method(selector = "user")
-    public native String getUser();
-    @Method(selector = "password")
-    public native String getPassword();
-    @Method(selector = "hasPassword")
-    public native boolean hasPassword();
     /**
      * @since Available in iOS 3.0 and later.
      */
     @Method(selector = "initWithIdentity:certificates:persistence:")
     protected native @Pointer long init(SecIdentity identity, @org.robovm.rt.bro.annotation.Marshaler(NSArray.AsListMarshaler.class) List<SecCertificate> certArray, NSURLCredentialPersistence persistence);
-    @Method(selector = "identity")
-    public native SecIdentity getIdentity();
-    /**
-     * @since Available in iOS 3.0 and later.
-     */
-    @Method(selector = "certificates")
-    public native @org.robovm.rt.bro.annotation.Marshaler(NSArray.AsListMarshaler.class) List<SecCertificate> getCertificates();
     /**
      * @since Available in iOS 3.0 and later.
      */

@@ -195,6 +195,16 @@ import org.robovm.apple.coretext.*;
      */
     @Property(selector = "setShouldGroupAccessibilityChildren:")
     void setShouldGroupAccessibilityChildren(boolean v);
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @Property(selector = "accessibilityNavigationStyle")
+    UIAccessibilityNavigationStyle getAccessibilityNavigationStyle();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @Property(selector = "setAccessibilityNavigationStyle:")
+    void setAccessibilityNavigationStyle(UIAccessibilityNavigationStyle v);
     /*</properties>*/
     /*<methods>*/
     

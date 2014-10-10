@@ -111,6 +111,26 @@ import org.robovm.apple.coretext.*;
     public native NSArray<UIView> getSubviews();
     @Property(selector = "window")
     public native UIWindow getWindow();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @Property(selector = "layoutMargins")
+    public native @ByVal UIEdgeInsets getLayoutMargins();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @Property(selector = "setLayoutMargins:")
+    public native void setLayoutMargins(@ByVal UIEdgeInsets v);
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @Property(selector = "preservesSuperviewLayoutMargins")
+    public native boolean isPreservesSuperviewLayoutMargins();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @Property(selector = "setPreservesSuperviewLayoutMargins:")
+    public native void setPreservesSuperviewLayoutMargins(boolean v);
     @Property(selector = "clipsToBounds")
     public native boolean isClipsToBounds();
     @Property(selector = "setClipsToBounds:")
@@ -153,6 +173,16 @@ import org.robovm.apple.coretext.*;
     @Deprecated
     @Property(selector = "setContentStretch:")
     public native void setContentStretch(@ByVal CGRect v);
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @Property(selector = "maskView")
+    public native UIView getMaskView();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @Property(selector = "setMaskView:")
+    public native void setMaskView(UIView v);
     /**
      * @since Available in iOS 7.0 and later.
      */
@@ -280,6 +310,11 @@ import org.robovm.apple.coretext.*;
     public native void layoutIfNeeded();
     @Method(selector = "layoutSubviews")
     public native void layoutSubviews();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @Method(selector = "layoutMarginsDidChange")
+    public native void layoutMarginsDidChange();
     @Method(selector = "drawRect:")
     public native void draw(@ByVal CGRect rect);
     @Method(selector = "setNeedsDisplay")
@@ -490,27 +525,32 @@ import org.robovm.apple.coretext.*;
      * @since Available in iOS 6.0 and later.
      */
     @Method(selector = "contentHuggingPriorityForAxis:")
-    public native UILayoutPriority getContentHuggingPriority(UILayoutConstraintAxis axis);
+    public native float getContentHuggingPriority(UILayoutConstraintAxis axis);
     /**
      * @since Available in iOS 6.0 and later.
      */
     @Method(selector = "setContentHuggingPriority:forAxis:")
-    public native void setContentHuggingPriority(UILayoutPriority priority, UILayoutConstraintAxis axis);
+    public native void setContentHuggingPriority(float priority, UILayoutConstraintAxis axis);
     /**
      * @since Available in iOS 6.0 and later.
      */
     @Method(selector = "contentCompressionResistancePriorityForAxis:")
-    public native UILayoutPriority getContentCompressionResistancePriority(UILayoutConstraintAxis axis);
+    public native float getContentCompressionResistancePriority(UILayoutConstraintAxis axis);
     /**
      * @since Available in iOS 6.0 and later.
      */
     @Method(selector = "setContentCompressionResistancePriority:forAxis:")
-    public native void setContentCompressionResistancePriority(UILayoutPriority priority, UILayoutConstraintAxis axis);
+    public native void setContentCompressionResistancePriority(float priority, UILayoutConstraintAxis axis);
     /**
      * @since Available in iOS 6.0 and later.
      */
     @Method(selector = "systemLayoutSizeFittingSize:")
     public native @ByVal CGSize getSystemLayoutSizeFittingSize(UILayoutFittingSize targetSize);
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @Method(selector = "systemLayoutSizeFittingSize:withHorizontalFittingPriority:verticalFittingPriority:")
+    public native @ByVal CGSize systemLayoutSizeFittingSize$withHorizontalFittingPriority$verticalFittingPriority$(@ByVal CGSize targetSize, float horizontalFittingPriority, float verticalFittingPriority);
     /**
      * @since Available in iOS 6.0 and later.
      */

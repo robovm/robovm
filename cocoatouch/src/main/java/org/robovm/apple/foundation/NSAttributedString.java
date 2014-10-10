@@ -32,6 +32,7 @@ import org.robovm.apple.coreanimation.*;
 import org.robovm.apple.coregraphics.*;
 import org.robovm.apple.coremedia.*;
 import org.robovm.apple.security.*;
+import org.robovm.apple.dispatch.*;
 /*</imports>*/
 
 /*<javadoc>*/
@@ -42,7 +43,7 @@ import org.robovm.apple.security.*;
 /*<annotations>*/@Library("Foundation") @NativeClass/*</annotations>*/
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/NSAttributedString/*</name>*/ 
     extends /*<extends>*/NSObject/*</extends>*/ 
-    /*<implements>*/implements NSCoding/*</implements>*/ {
+    /*<implements>*//*</implements>*/ {
 
     /*<ptr>*/public static class NSAttributedStringPtr extends Ptr<NSAttributedString, NSAttributedStringPtr> {}/*</ptr>*/
     /*<bind>*/static { ObjCRuntime.bind(NSAttributedString.class); }/*</bind>*/
@@ -55,7 +56,10 @@ import org.robovm.apple.security.*;
     public NSAttributedString(NSAttributedString attrStr) { super((SkipInit) null); initObject(initWithAttributedString$(attrStr)); }
     /*</constructors>*/
     /*<properties>*/
-    
+    @Property(selector = "string")
+    public native String getString();
+    @Property(selector = "length")
+    public native @MachineSizedUInt long getLength();
     /*</properties>*/
     /*<members>*//*</members>*/
     
@@ -176,12 +180,8 @@ import org.robovm.apple.security.*;
     }
     
     /*<methods>*/
-    @Method(selector = "string")
-    public native String getString();
     @Method(selector = "attributesAtIndex:effectiveRange:")
     public native NSAttributedStringAttributes getAttributes(@MachineSizedUInt long location, NSRange range);
-    @Method(selector = "length")
-    public native @MachineSizedUInt long getLength();
     @Method(selector = "attribute:atIndex:effectiveRange:")
     protected native NSObject getAttribute(NSString attrName, @MachineSizedUInt long location, NSRange range);
     @Method(selector = "attributedSubstringFromRange:")
@@ -208,7 +208,5 @@ import org.robovm.apple.security.*;
      */
     @Method(selector = "enumerateAttribute:inRange:options:usingBlock:")
     protected native void enumerateAttribute0(NSString attrName, @ByVal NSRange enumerationRange, NSAttributedStringEnumerationOptions opts, @Block("(,@ByVal,)") VoidBlock3<NSObject, NSRange, BooleanPtr> block);
-    @Method(selector = "encodeWithCoder:")
-    public native void encode(NSCoder aCoder);
     /*</methods>*/
 }

@@ -70,6 +70,16 @@ import org.robovm.apple.coretext.*;
     void completeTransition(boolean didComplete);
     @Method(selector = "viewControllerForKey:")
     UIViewController getViewController(UITransitionContextViewControllerType key);
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @Method(selector = "viewForKey:")
+    UIView viewForKey$(String key);
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @Method(selector = "targetTransform")
+    @ByVal CGAffineTransform targetTransform();
     @Method(selector = "initialFrameForViewController:")
     @ByVal CGRect getInitialFrame(UIViewController vc);
     @Method(selector = "finalFrameForViewController:")

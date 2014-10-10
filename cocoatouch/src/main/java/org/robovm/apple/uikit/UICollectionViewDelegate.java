@@ -64,6 +64,16 @@ import org.robovm.apple.coretext.*;
     void didSelectItem(UICollectionView collectionView, NSIndexPath indexPath);
     @Method(selector = "collectionView:didDeselectItemAtIndexPath:")
     void didDeselectItem(UICollectionView collectionView, NSIndexPath indexPath);
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @Method(selector = "collectionView:willDisplayCell:forItemAtIndexPath:")
+    void collectionView$willDisplayCell$forItemAtIndexPath$(UICollectionView collectionView, UICollectionViewCell cell, NSIndexPath indexPath);
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @Method(selector = "collectionView:willDisplaySupplementaryView:forElementKind:atIndexPath:")
+    void collectionView$willDisplaySupplementaryView$forElementKind$atIndexPath$(UICollectionView collectionView, UICollectionReusableView view, String elementKind, NSIndexPath indexPath);
     @Method(selector = "collectionView:didEndDisplayingCell:forItemAtIndexPath:")
     void didEndDisplayingCell(UICollectionView collectionView, UICollectionViewCell cell, NSIndexPath indexPath);
     @Method(selector = "collectionView:didEndDisplayingSupplementaryView:forElementOfKind:atIndexPath:")

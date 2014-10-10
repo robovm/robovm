@@ -32,6 +32,7 @@ import org.robovm.apple.coreanimation.*;
 import org.robovm.apple.coregraphics.*;
 import org.robovm.apple.coremedia.*;
 import org.robovm.apple.security.*;
+import org.robovm.apple.dispatch.*;
 /*</imports>*/
 
 /*<javadoc>*/
@@ -110,7 +111,80 @@ import org.robovm.apple.security.*;
     protected NSString(SkipInit skipInit) { super(skipInit); }
     /*</constructors>*/
     /*<properties>*/
-    
+    @Property(selector = "length")
+    public native @MachineSizedUInt long getLength();
+    @Property(selector = "doubleValue")
+    public native double getDoubleValue();
+    @Property(selector = "floatValue")
+    public native float getFloatValue();
+    @Property(selector = "intValue")
+    public native int getIntValue();
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
+    @Property(selector = "integerValue")
+    public native @MachineSizedSInt long getIntegerValue();
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
+    @Property(selector = "longLongValue")
+    public native long getLongLongValue();
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
+    @Property(selector = "boolValue")
+    public native boolean isBoolValue();
+    @Property(selector = "uppercaseString")
+    public native String getUppercaseString();
+    @Property(selector = "lowercaseString")
+    public native String getLowercaseString();
+    @Property(selector = "capitalizedString")
+    public native String getCapitalizedString();
+    @Property(selector = "description")
+    public native String getDescription();
+    @Property(selector = "hash")
+    public native @MachineSizedUInt long getHash();
+    @Property(selector = "fastestEncoding")
+    public native NSStringEncoding getFastestEncoding();
+    @Property(selector = "smallestEncoding")
+    public native NSStringEncoding getSmallestEncoding();
+    @Property(selector = "decomposedStringWithCanonicalMapping")
+    public native String getDecomposedStringWithCanonicalMapping();
+    @Property(selector = "precomposedStringWithCanonicalMapping")
+    public native String getPrecomposedStringWithCanonicalMapping();
+    @Property(selector = "decomposedStringWithCompatibilityMapping")
+    public native String getDecomposedStringWithCompatibilityMapping();
+    @Property(selector = "precomposedStringWithCompatibilityMapping")
+    public native String getPrecomposedStringWithCompatibilityMapping();
+    @Property(selector = "UTF8String")
+    public native BytePtr getUTF8String();
+    @Property(selector = "pathComponents")
+    public native NSArray<?> getPathComponents();
+    @Property(selector = "isAbsolutePath")
+    public native boolean isAbsolutePath();
+    @Property(selector = "lastPathComponent")
+    public native String getLastPathComponent();
+    @Property(selector = "stringByDeletingLastPathComponent")
+    public native String getStringByDeletingLastPathComponent();
+    @Property(selector = "pathExtension")
+    public native String getPathExtension();
+    @Property(selector = "stringByDeletingPathExtension")
+    public native String getStringByDeletingPathExtension();
+    @Property(selector = "stringByAbbreviatingWithTildeInPath")
+    public native String getStringByAbbreviatingWithTildeInPath();
+    @Property(selector = "stringByExpandingTildeInPath")
+    public native String getStringByExpandingTildeInPath();
+    @Property(selector = "stringByStandardizingPath")
+    public native String getStringByStandardizingPath();
+    @Property(selector = "stringByResolvingSymlinksInPath")
+    public native String getStringByResolvingSymlinksInPath();
+    @Property(selector = "fileSystemRepresentation")
+    public native BytePtr getFileSystemRepresentation();
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
+    @Property(selector = "stringByRemovingPercentEncoding")
+    public native String getStringByRemovingPercentEncoding();
     /*</properties>*/
     /*<members>*//*</members>*/
 
@@ -260,8 +334,6 @@ import org.robovm.apple.security.*;
 
     
     /*<methods>*/
-    @Method(selector = "length")
-    protected native @MachineSizedUInt long length();
     @Method(selector = "characterAtIndex:")
     protected native short characterAtIndex$(@MachineSizedUInt long index);
     @Method(selector = "getCharacters:range:")

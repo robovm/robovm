@@ -1,5 +1,5 @@
 package: org.robovm.apple.foundation
-include: [corefoundation.yaml, uikit.yaml, coreanimation.yaml, coregraphics.yaml, coremedia.yaml, security.yaml]
+include: [corefoundation.yaml, uikit.yaml, coreanimation.yaml, coregraphics.yaml, coremedia.yaml, security.yaml, dispatch.yaml]
 library: Foundation
 framework: Foundation
 path_match: ^.*/usr/include/objc/.*$
@@ -59,6 +59,7 @@ typedefs:
     'void (^)(NSURLSessionAuthChallengeDisposition, NSURLCredential *)': '@Block VoidBlock2<NSURLSessionAuthChallengeDisposition, NSURLCredential>'
     'void (^)(NSURLSessionResponseDisposition)': '@Block VoidBlock1<NSURLSessionResponseDisposition>'
     'void (^)(void (^)(void))': '@Block("(@Block)") VoidBlock1<Runnable>'
+    'void (^)(NSInputStream *, NSOutputStream *, NSError *)': '@Block VoidBlock3<NSInputStream, NSOutputStream, NSError>'
 
 enums:
     NSActivityOptions: {}
@@ -92,6 +93,8 @@ enums:
     NSFileVersionReplacingOptions: { prefix: NSFileVersionReplacing }
     NSFileWrapperReadingOptions: {}
     NSFileWrapperWritingOptions: {}
+    NSFormattingContext: {}
+    NSFormattingUnitStyle: {}
     NSHTTPCookieAcceptPolicy: {}
     NSJSONReadingOptions: {}
     NSJSONWritingOptions: { prefix: NSJSONWriting }
@@ -117,6 +120,7 @@ enums:
     NSPredicateOperatorType: { suffix: PredicateOperatorType }
     NSPropertyListFormat: { suffix: Format }
     NSPropertyListMutabilityOptions: {}
+    NSQualityOfService: {}
     NSRegularExpressionOptions: {}
     NSRoundingMode: {}
     NSSearchPathDirectory: {}
@@ -139,6 +143,7 @@ enums:
     NSURLCredentialPersistence: {}
     NSURLError: { first: NSURLErrorUnknown }
     NSURLErrorCancelledReason: { first: NSURLErrorCancelledReasonUserForceQuitApplication }
+    NSURLRelationship: {}
     NSURLRequestCachePolicy: { first: NSURLRequestUseProtocolCachePolicy, marshaler: ValuedEnum.AsMachineSizedUIntMarshaler }
     NSURLRequestNetworkServiceType: { first: NSURLNetworkServiceTypeDefault, marshaler: ValuedEnum.AsMachineSizedUIntMarshaler }
     NSURLSessionAuthChallengeDisposition: {}
@@ -155,6 +160,7 @@ classes:
     NSDecimal: {}
     NSZone: {}
     #NSFastEnumerationState: {}
+    NSOperatingSystemVersion: {}
 
     # These classes do not exist in Foundation. We use them to hold global values related to the
     # NSKeyValueCoding and NSKeyValueObserving informal protocols.
@@ -175,26 +181,33 @@ classes:
 
     NSArray: # DONE
         protocols: [NSPropertyList, "List<T>"]
+        properties:
+            'count':
+                visibility: protected
+            'firstObject':
+                name: first
+                type: T
+            'lastObject':
+                name: last
+                type: T
         methods:
-            "-initWithArray:":
+            '-initWithArray:':
                 visibility: protected
                 constructor: false
-            "-initWithObjects:count:":
+            '-initWithObjects:count:':
                 visibility: protected
                 constructor: false
                 parameters:
                     objects:
-                        type: "@Pointer long"
-            "-containsObject:":
+                        type: '@Pointer long'
+            '-containsObject:':
                 visibility: protected
-            "-count":
-                visibility: protected
-            "-objectAtIndex:":
+            '-objectAtIndex:':
                 visibility: protected
                 return_type: T
-            "-indexOfObject:":
+            '-indexOfObject:':
                 visibility: protected
-            "-subarrayWithRange:":
+            '-subarrayWithRange:':
                 visibility: protected
                 return_type: NSArray<T>
             '+arrayWithContentsOfFile:':
@@ -207,10 +220,6 @@ classes:
                 visibility: protected
             '-writeToURL:atomically:':
                 name: write
-            '-firstObject':
-                name: getFirst
-            '-lastObject':
-                name: getLast
             '-addObserver:toObjectsAtIndexes:forKeyPath:options:context:':
                 name: addObserver
             '-removeObserver:fromObjectsAtIndexes:forKeyPath:context:':
@@ -279,27 +288,17 @@ classes:
             '-executionBlocks': # We cannot marshal NSArray<BlockType>
                 exclude: true
     NSBundle: # DONE
+        properties:
+            'executableArchitectures':
+                type: "@org.robovm.rt.bro.annotation.Marshaler(NSBundleExecutableArchitectureType.AsListMarshaler.class) List<NSBundleExecutableArchitectureType>"
+            '(preferredLocalizations|localizations)':
+                type: "@org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String>"
         methods:
-            '+(mainBundle)':
+            '+mainBundle':
                 property: true
             '+(allBundles|allFrameworks)':
                 property: true
                 return_type: NSArray<NSBundle>
-            '-(bundleURL|resourceURL|executableURL|privateFrameworksURL|sharedFrameworksURL|sharedSupportURL)':
-                property: true
-            '-(builtInPlugInsURL|appStoreReceiptURL|bundlePath|resourcePath|executablePath|privateFrameworksPath)':
-                property: true
-            '-(sharedFrameworksPath|sharedSupportPath|builtInPlugInsPath|bundleIdentifier|principalClass|developmentLocalization)':
-                property: true
-            '-(infoDictionary|localizedInfoDictionary)':
-                property: true
-            '-(preferredLocalizations|localizations)':
-                property: true
-                return_type: "@org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String>"
-            '-(executableArchitectures)':
-                name: getExecutableArchitectures0
-                visibility: private
-                return_type: NSArray<NSNumber>
             '+pathForResource:ofType:inDirectory:':
                 name: findResourcePathInBundlePath
             '+pathsForResourcesOfType:inDirectory:':
@@ -575,9 +574,13 @@ classes:
 
             '+.*': {exclude: true}
             '-.*': {exclude: true}
-
     NSData: # DONE
         protocols: [NSPropertyList]
+        properties:
+            'bytes':
+                name: bytes0
+                visibility: protected
+                type: "@Pointer long"
         methods:
             '-initWithData:':
             '-initWithBase64EncodedData:options:':
@@ -594,12 +597,6 @@ classes:
                 parameters:
                     bytes:
                         type: "@Pointer long"
-
-            '-length':
-                name: getLength
-            '-bytes':
-                visibility: protected
-                return_type: "@Pointer long"
             '-getBytes:length:':
                 visibility: protected
                 parameters:
@@ -609,25 +606,20 @@ classes:
                 name: getSubdata
             '-rangeOfData:options:range:':
                 name: find
-
             '-writeToFile.*':
                 visibility: protected
             '-writeToURL.*':
                 name: write
-
             '-base64EncodedDataWithOptions:':
                 name: toBase64EncodedData
             '-base64EncodedStringWithOptions:':
                 name: toBase64EncodedString
-
             '+dataWithContentsOfURL.*':
                 name: read
             '+dataWithContentsOf.*File.*':
                 visibility: protected
-
             '+.*': {exclude: true}
             '-.*': {exclude: true}
-
     NSDataDetector: # DONE
         skip_def_constructor: true
         properties:
@@ -756,32 +748,33 @@ classes:
 
     NSDictionary: # DONE
         protocols: [NSPropertyList, "Map<K, V>"]
+        properties:
+            'count':
+                visibility: protected
+            'allKeys':
+                visibility: protected
+                type: NSArray<K>
+            'allValues':
+                visibility: protected
+                type: NSArray<V>
         methods:
-            "+dictionaryWithContentsOfFile:":
+            '+dictionaryWithContentsOfFile:':
                 visibility: protected
                 return_type:
                     NSDictionary<?, ?>
-            "+dictionaryWithContentsOfURL:":
+            '+dictionaryWithContentsOfURL:':
                 name: read
                 return_type:
                     NSDictionary<?, ?>
-            "-initWithDictionary:":
+            '-initWithDictionary:':
                 visibility: protected
                 constructor: false
-                return_type: "@Pointer long"
-            "-initWithObjects:forKeys:":
+                return_type: '@Pointer long'
+            '-initWithObjects:forKeys:':
                 visibility: protected
                 constructor: false
-                return_type: "@Pointer long"
-            "-allKeys":
-                visibility: protected
-                return_type: NSArray<K>
-            "-allValues":
-                visibility: protected
-                return_type: NSArray<V>
-            "-count":
-                visibility: protected
-            "-objectForKey:":
+                return_type: '@Pointer long'
+            '-objectForKey:':
                 visibility: protected
                 return_type: V
                 parameters:
@@ -801,15 +794,9 @@ classes:
 
     NSDirectoryEnumerator: # DONE
         skip_def_constructor: true
-        methods:
-            '-fileAttributes':
-                property: true
-                return_type: NSFileAttributes
-            '-directoryAttributes':
-                property: true
-                return_type: NSFileAttributes
-            '-level':
-                property: true
+        properties:
+            '(fileAttributes|directoryAttributes)':
+                type: NSFileAttributes
     NSEnumerator: # DONE
         methods:
             '-nextObject':
@@ -841,18 +828,13 @@ classes:
                 property: true
     NSException: # DONE
         skip_def_constructor: true
+        properties:
+            'callStackSymbols':
+                type: 'NSArray<NSString>'
+            'callStackReturnAddresses':
+                type: 'NSArray<NSNumber>'
         methods:
             '+exceptionWithName:reason:userInfo:': {exclude: true}
-            '-callStackSymbols':
-                property: true
-                return_type: 'NSArray<NSString>'
-            '-callStackReturnAddresses':
-                property: true
-                return_type: 'NSArray<NSNumber>'
-            '-(name|reason)':
-                property: true
-            '-userInfo':
-                property: true
     NSExpression: # DONE
         methods:
             '+expressionForBlock:arguments:':
@@ -958,14 +940,9 @@ classes:
         properties:
             'delegate':
                 type: NSFileManagerDelegate
+            'ubiquityIdentityToken':
+                type: NSObject
         methods:
-            'setDelegate:':
-                trim_after_first_colon: true
-                parameters:
-                    delegate:
-                        type: NSFileManagerDelegate
-            '-delegate':
-                return_type: NSFileManagerDelegate
             '-mountedVolumeURLsIncludingResourceValuesForKeys:options:':
                 name: getMountedVolumeURLsIncludingResourceValues
                 return_type: "NSArray<NSURL>"
@@ -1048,8 +1025,6 @@ classes:
                 exclude: true
             '-createDirectoryAtPath:attributes:':
                 exclude: true
-            '-currentDirectoryPath':
-                property: true
             '-changeCurrentDirectoryPath:':
                 trim_after_first_colon: true
             '-fileExistsAtPath:':
@@ -1109,13 +1084,16 @@ classes:
                 name: getURLForUbiquityContainerIdentifier
             '-URLForPublishingUbiquitousItemAtURL:expirationDate:error:':
                 name: getURLForPublishingUbiquitousItemAtURL
-            '-ubiquityIdentityToken':
-                property: true
-                return_type: NSObject
             '-containerURLForSecurityApplicationGroupIdentifier:':
                 name: getContainerURLForSecurityApplication
             '+defaultManager':
                 property: true
+            '-getRelationship:ofDirectoryAtURL:toItemAtURL:error:':
+                name: getRelationshipOfDirectoryToItem
+                visibility: protected
+            '-getRelationship:ofDirectory:inDomain:toItemAtURL:error:':
+                name: getRelationshipOfDirectoryToItem
+                visibility: protected
     NSFileVersion: # DONE
         methods:
             '-replaceItemAtURL:options:error:':
@@ -1735,15 +1713,14 @@ classes:
             '-formIntersectionWithCharacterSet:':
                 name: formIntersection
     NSMutableData: # DONE
+        properties:
+            'mutableBytes':
+                visibility: protected
+                type: '@Pointer long'
         methods:
             '-initWithCapacity:':
             '-increaseLengthBy:':
                 name: increaseLength
-            '-setLength:':
-                name: setLength
-            '-mutableBytes':
-                visibility: protected
-                return_type: "@Pointer long"
             '-appendBytes:length:':
                 visibility: protected
                 parameters:
@@ -1888,6 +1865,11 @@ classes:
                 name: searchForServices
     NSNotification: # DONE
         skip_def_constructor: true
+        properties:
+            'name':
+                type: NSString
+            'userInfo':
+                type: 'NSDictionary<NSString, NSObject>'
         methods:
             '+notificationWithName:object:.*': {exclude: true}
             '-init': {exclude: true}
@@ -1899,14 +1881,6 @@ classes:
                         type: NSObject
                     userInfo:
                         type: 'NSDictionary<NSString, NSObject>'
-            '-name':
-                property: true
-                return_type: NSString
-            '-object':
-                property: true
-            '-userInfo':
-                property: true
-                return_type: 'NSDictionary<NSString, NSObject>'
     NSNotificationCenter: # DONE
         methods:
             '+defaultCenter':
@@ -2167,6 +2141,9 @@ classes:
             '-threadPriority':
                 property: true
     NSOperationQueue: # DONE
+        properties:
+            'operations':
+                type: NSArray<NSOperation>
         methods:
             '+currentQueue':
                 property: true
@@ -2183,12 +2160,22 @@ classes:
                         type: "NSArray<NSOperation>"
             '-addOperationWithBlock:':
                 name: addOperation
-            '-(name|operationCount|maxConcurrentOperationCount)':
-                property: true
-            '-operations':
-                property: true
-                return_type: "NSArray<NSOperation>"
     NSOrderedSet: # DONE
+        properties:
+            'count':
+                visibility: protected
+            'firstObject':
+                name: first
+                type: T
+            'lastObject':
+                name: last
+                type: T
+            'reversedOrderedSet':
+                type: NSOrderedSet<T>
+            'array':
+                type: NSArray<T>
+            'set':
+                type: NSSet<T>
         methods:
             '-initWithArray:':
                 constructor: false
@@ -2199,8 +2186,6 @@ classes:
                 parameters:
                     objects:
                         type: "@Pointer long"
-            '-count':
-                visibility: protected
             '-objectEnumerator':
                 visibility: protected
                 return_type: NSEnumerator<T>
@@ -2217,12 +2202,6 @@ classes:
             '-subarrayWithRange:':
                 visibility: protected
                 return_type: NSOrderedSet<T>
-            '-firstObject':
-                name: getFirst
-                return_type: T
-            '-lastObject':
-                name: getLast
-                return_type: T
             '+.*': {exclude: true}
             '-.*': {exclude: true}
     NSOrthography: # DONE
@@ -2307,19 +2286,16 @@ classes:
                         type: 'NSDictionary<NSString, ?>'
     NSProcessInfo: # DONE
         skip_def_constructor: true
+        properties:
+            'environment':
+                type: "@org.robovm.rt.bro.annotation.Marshaler(NSDictionary.AsStringMapMarshaler.class) Map<String, NSObject>"
+            'arguments':
+                type: "@org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String>"
         methods:
-            '-environment':
-                property: true
-                return_type: "@org.robovm.rt.bro.annotation.Marshaler(NSDictionary.AsStringMapMarshaler.class) Map<String, NSObject>"
-            '-arguments':
-                property: true
-                return_type: "@org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String>"
-            '-(hostName|processName|processIdentifier|globallyUniqueString)':
-                property: true
             '-operatingSystem':
                 property: true
                 return_type: NSOperatingSystem
-            '-(operatingSystemName|operatingSystemVersionString|processorCount|activeProcessorCount|physicalMemory|systemUptime)':
+            '-operatingSystemName':
                 property: true
             '+processInfo':
                 name: getSharedProcessInfo
@@ -2329,6 +2305,8 @@ classes:
                 trim_after_first_colon: true
             '-performActivityWithOptions:reason:usingBlock:':
                 name: performActivity
+            '-isOperatingSystemAtLeastVersion:':
+                trim_after_first_colon: true
     NSProgress: # DONE
         properties:
             'kind':
@@ -2477,6 +2455,12 @@ classes:
                 trim_after_first_colon: true
                 visibility: private
     NSSet: # DONE
+        properties:
+            'count':
+                visibility: protected
+            'allObjects':
+                name: values
+                type: NSArray<T>
         methods:
             '-initWithArray:':
                 constructor: false
@@ -2487,8 +2471,6 @@ classes:
                 parameters:
                     objects:
                         type: "@Pointer long"
-            '-count':
-                visibility: protected
             '-member:':
                 visibility: protected
             '-objectEnumerator':
@@ -2607,8 +2589,11 @@ classes:
                     components:
                         type: NSTextCheckingTransitComponents
     NSThread: # DONE
+        properties:
+            'isMainThread':
+                name: mainThread
         methods:
-            '+callStackReturnAddresses': { exclude: true }
+            '+(callStackReturnAddresses|callStackSymbols)': { exclude: true }
             '+isMainThread': { exclude: true }
             '+threadPriority': {exclude: true}
             '+setThreadPriority:': { exclude: true }
@@ -2620,11 +2605,6 @@ classes:
             '+detachNewThreadSelector:toTarget:withObject:':
                 name: detachNewThread
             '+(currentThread|mainThread)':
-                property: true
-            '+callStackSymbols':
-                property: true
-                return_type: "@org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String>"
-            '-(name|stackSize|threadPriority|threadDictionary)':
                 property: true
     NSTimer: # DONE
         methods:
@@ -3026,6 +3006,14 @@ classes:
                 trim_after_first_colon: true
     NSURLSessionTask: {} # DONE
     NSURLSessionUploadTask: {} # DONE
+    NSUserActivity: # DONE
+        methods:
+            '-init':
+                exclude: true
+            '-addUserInfoEntriesFromDictionary:':
+                name: addUserInfoEntries
+            '-getContinuationStreamsWithCompletionHandler:':
+                name: getContinuationStreams
     NSUserDefaults: # DONE
         methods:
             '-objectForKey:':

@@ -32,6 +32,7 @@ import org.robovm.apple.coreanimation.*;
 import org.robovm.apple.coregraphics.*;
 import org.robovm.apple.coremedia.*;
 import org.robovm.apple.security.*;
+import org.robovm.apple.dispatch.*;
 /*</imports>*/
 
 /*<javadoc>*/
@@ -61,7 +62,10 @@ import org.robovm.apple.security.*;
     protected NSPort(SkipInit skipInit) { super(skipInit); }
     /*</constructors>*/
     /*<properties>*/
-    
+    @Property(selector = "isValid")
+    public native boolean isValid();
+    @Property(selector = "reservedSpaceLength")
+    public native @MachineSizedUInt long getReservedSpaceLength();
     /*</properties>*/
     /*<members>*//*</members>*/
     public void scheduleInRunLoop(NSRunLoop runLoop, NSRunLoopMode mode) {
@@ -76,8 +80,6 @@ import org.robovm.apple.security.*;
     
     @Method(selector = "invalidate")
     public native void invalidate();
-    @Method(selector = "isValid")
-    public native boolean isValid();
     @Method(selector = "setDelegate:")
     public native void setDelegate(NSPortDelegate anObject);
     @Method(selector = "delegate")
@@ -86,8 +88,6 @@ import org.robovm.apple.security.*;
     public native void scheduleInRunLoop(NSRunLoop runLoop, String mode);
     @Method(selector = "removeFromRunLoop:forMode:")
     public native void removeFromRunLoop(NSRunLoop runLoop, String mode);
-    @Method(selector = "reservedSpaceLength")
-    public native @MachineSizedUInt long getReservedSpaceLength();
     @Method(selector = "sendBeforeDate:components:from:reserved:")
     public native boolean send(NSDate limitDate, NSMutableArray<?> components, NSPort receivePort, @MachineSizedUInt long headerSpaceReserved);
     @Method(selector = "sendBeforeDate:msgid:components:from:reserved:")

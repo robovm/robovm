@@ -32,6 +32,7 @@ import org.robovm.apple.coreanimation.*;
 import org.robovm.apple.coregraphics.*;
 import org.robovm.apple.coremedia.*;
 import org.robovm.apple.security.*;
+import org.robovm.apple.dispatch.*;
 /*</imports>*/
 
 /*<javadoc>*/
@@ -51,7 +52,18 @@ import org.robovm.apple.security.*;
     public NSURLCache(@MachineSizedUInt long memoryCapacity, @MachineSizedUInt long diskCapacity, String path) { super((SkipInit) null); initObject(initWithMemoryCapacity$diskCapacity$diskPath$(memoryCapacity, diskCapacity, path)); }
     /*</constructors>*/
     /*<properties>*/
-    
+    @Property(selector = "memoryCapacity")
+    public native @MachineSizedUInt long getMemoryCapacity();
+    @Property(selector = "setMemoryCapacity:")
+    public native void setMemoryCapacity(@MachineSizedUInt long v);
+    @Property(selector = "diskCapacity")
+    public native @MachineSizedUInt long getDiskCapacity();
+    @Property(selector = "setDiskCapacity:")
+    public native void setDiskCapacity(@MachineSizedUInt long v);
+    @Property(selector = "currentMemoryUsage")
+    public native @MachineSizedUInt long getCurrentMemoryUsage();
+    @Property(selector = "currentDiskUsage")
+    public native @MachineSizedUInt long getCurrentDiskUsage();
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
@@ -65,21 +77,29 @@ import org.robovm.apple.security.*;
     public native void removeCachedResponse(NSURLRequest request);
     @Method(selector = "removeAllCachedResponses")
     public native void removeAllCachedResponses();
-    @Method(selector = "memoryCapacity")
-    public native @MachineSizedUInt long getMemoryCapacity();
-    @Method(selector = "diskCapacity")
-    public native @MachineSizedUInt long getDiskCapacity();
-    @Method(selector = "setMemoryCapacity:")
-    public native void setMemoryCapacity(@MachineSizedUInt long memoryCapacity);
-    @Method(selector = "setDiskCapacity:")
-    public native void setDiskCapacity(@MachineSizedUInt long diskCapacity);
-    @Method(selector = "currentMemoryUsage")
-    public native @MachineSizedUInt long getCurrentMemoryUsage();
-    @Method(selector = "currentDiskUsage")
-    public native @MachineSizedUInt long getCurrentDiskUsage();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @Method(selector = "removeCachedResponsesSinceDate:")
+    public native void removeCachedResponsesSinceDate$(NSDate date);
     @Method(selector = "sharedURLCache")
     public static native NSURLCache getSharedURLCache();
     @Method(selector = "setSharedURLCache:")
     public static native void setSharedURLCache(NSURLCache cache);
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @Method(selector = "storeCachedResponse:forDataTask:")
+    public native void storeCachedResponse$forDataTask$(NSCachedURLResponse cachedResponse, NSURLSessionDataTask dataTask);
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @Method(selector = "getCachedResponseForDataTask:completionHandler:")
+    public native void getCachedResponseForDataTask$completionHandler$(NSURLSessionDataTask dataTask, @Block VoidBlock1<NSCachedURLResponse> completionHandler);
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @Method(selector = "removeCachedResponseForDataTask:")
+    public native void removeCachedResponseForDataTask$(NSURLSessionDataTask dataTask);
     /*</methods>*/
 }

@@ -32,6 +32,7 @@ import org.robovm.apple.coreanimation.*;
 import org.robovm.apple.coregraphics.*;
 import org.robovm.apple.coremedia.*;
 import org.robovm.apple.security.*;
+import org.robovm.apple.dispatch.*;
 /*</imports>*/
 
 /*<javadoc>*/
@@ -81,7 +82,85 @@ import org.robovm.apple.security.*;
     }
 
     /*<properties>*/
-    
+    @Property(selector = "absoluteString")
+    public native String getAbsoluteString();
+    @Property(selector = "relativeString")
+    public native String getRelativeString();
+    @Property(selector = "baseURL")
+    public native NSURL getBaseURL();
+    @Property(selector = "absoluteURL")
+    public native NSURL getAbsoluteURL();
+    @Property(selector = "scheme")
+    public native String getScheme();
+    @Property(selector = "resourceSpecifier")
+    public native String getResourceSpecifier();
+    @Property(selector = "host")
+    public native String getHost();
+    @Property(selector = "port")
+    public native NSNumber getPort();
+    @Property(selector = "user")
+    public native String getUser();
+    @Property(selector = "password")
+    public native String getPassword();
+    @Property(selector = "path")
+    public native String getPath();
+    @Property(selector = "fragment")
+    public native String getFragment();
+    @Property(selector = "parameterString")
+    public native String getParameterString();
+    @Property(selector = "query")
+    public native String getQuery();
+    @Property(selector = "relativePath")
+    public native String getRelativePath();
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
+    @Property(selector = "fileSystemRepresentation")
+    public native BytePtr getFileSystemRepresentation();
+    @Property(selector = "isFileURL")
+    public native boolean isFileURL();
+    @Property(selector = "standardizedURL")
+    public native NSURL getStandardizedURL();
+    /**
+     * @since Available in iOS 4.0 and later.
+     */
+    @Property(selector = "filePathURL")
+    public native NSURL getFilePathURL();
+    /**
+     * @since Available in iOS 4.0 and later.
+     */
+    @Property(selector = "pathComponents")
+    public native NSArray<?> getPathComponents();
+    /**
+     * @since Available in iOS 4.0 and later.
+     */
+    @Property(selector = "lastPathComponent")
+    public native String getLastPathComponent();
+    /**
+     * @since Available in iOS 4.0 and later.
+     */
+    @Property(selector = "pathExtension")
+    public native String getPathExtension();
+    /**
+     * @since Available in iOS 4.0 and later.
+     */
+    @Property(selector = "URLByDeletingLastPathComponent")
+    public native NSURL getURLByDeletingLastPathComponent();
+    /**
+     * @since Available in iOS 4.0 and later.
+     */
+    @Property(selector = "URLByDeletingPathExtension")
+    public native NSURL getURLByDeletingPathExtension();
+    /**
+     * @since Available in iOS 4.0 and later.
+     */
+    @Property(selector = "URLByStandardizingPath")
+    public native NSURL getURLByStandardizingPath();
+    /**
+     * @since Available in iOS 4.0 and later.
+     */
+    @Property(selector = "URLByResolvingSymlinksInPath")
+    public native NSURL getURLByResolvingSymlinksInPath();
     /*</properties>*/
     /*<members>*//*</members>*/
     
@@ -201,45 +280,11 @@ import org.robovm.apple.security.*;
     protected native @Pointer long initWithString$(String URLString);
     @Method(selector = "initWithString:relativeToURL:")
     protected native @Pointer long initWithString$relativeToURL$(String URLString, NSURL baseURL);
-    @Method(selector = "absoluteString")
-    public native String getAbsoluteString();
-    @Method(selector = "relativeString")
-    public native String getRelativeString();
-    @Method(selector = "baseURL")
-    public native NSURL getBaseURL();
-    @Method(selector = "absoluteURL")
-    public native NSURL getAbsoluteURL();
-    @Method(selector = "scheme")
-    public native String getScheme();
-    @Method(selector = "resourceSpecifier")
-    public native String getResourceSpecifier();
-    @Method(selector = "host")
-    public native String getHost();
-    @Method(selector = "port")
-    public native NSNumber getPort();
-    @Method(selector = "user")
-    public native String getUser();
-    @Method(selector = "password")
-    public native String getPassword();
-    @Method(selector = "path")
-    public native String getPath();
-    @Method(selector = "fragment")
-    public native String getFragment();
-    @Method(selector = "parameterString")
-    public native String getParameterString();
-    @Method(selector = "query")
-    public native String getQuery();
-    @Method(selector = "relativePath")
-    public native String getRelativePath();
     /**
      * @since Available in iOS 7.0 and later.
      */
     @Method(selector = "getFileSystemRepresentation:maxLength:")
     public native boolean getFileSystemRepresentation(BytePtr buffer, @MachineSizedUInt long maxBufferLength);
-    @Method(selector = "isFileURL")
-    public native boolean isFileURL();
-    @Method(selector = "standardizedURL")
-    public native NSURL getStandardizedURL();
     /**
      * @since Available in iOS 4.0 and later.
      */
@@ -255,11 +300,6 @@ import org.robovm.apple.security.*;
      */
     @Method(selector = "fileReferenceURL")
     public native NSURL getFileReferenceURL();
-    /**
-     * @since Available in iOS 4.0 and later.
-     */
-    @Method(selector = "filePathURL")
-    public native NSURL getFilePathURL();
     /**
      * @since Available in iOS 4.0 and later.
      */
@@ -306,6 +346,16 @@ import org.robovm.apple.security.*;
     @Method(selector = "initByResolvingBookmarkData:options:relativeToURL:bookmarkDataIsStale:error:")
     protected native @Pointer long initByResolvingBookmarkData$options$relativeToURL$bookmarkDataIsStale$error$(NSData bookmarkData, NSURLBookmarkResolutionOptions options, NSURL relativeURL, BooleanPtr isStale, NSError.NSErrorPtr error);
     /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @Method(selector = "startAccessingSecurityScopedResource")
+    public native boolean startAccessingSecurityScopedResource();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @Method(selector = "stopAccessingSecurityScopedResource")
+    public native void stopAccessingSecurityScopedResource();
+    /**
      * @since Available in iOS 4.0 and later.
      */
     @Method(selector = "resourceValuesForKeys:fromBookmarkData:")
@@ -321,20 +371,20 @@ import org.robovm.apple.security.*;
     @Method(selector = "bookmarkDataWithContentsOfURL:error:")
     public static native NSData createBookmarkData(NSURL bookmarkFileURL, NSError.NSErrorPtr error);
     /**
-     * @since Available in iOS 4.0 and later.
+     * @since Available in iOS 8.0 and later.
      */
-    @Method(selector = "pathComponents")
-    public native @org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String> getPathComponents();
+    @Method(selector = "getPromisedItemResourceValue:forKey:error:")
+    public native boolean getPromisedItemResourceValue$forKey$error$(NSObject value, String key, NSError.NSErrorPtr error);
     /**
-     * @since Available in iOS 4.0 and later.
+     * @since Available in iOS 8.0 and later.
      */
-    @Method(selector = "lastPathComponent")
-    public native String getLastPathComponent();
+    @Method(selector = "promisedItemResourceValuesForKeys:error:")
+    public native NSDictionary<?, ?> promisedItemResourceValuesForKeys$error$(NSArray<?> keys, NSError.NSErrorPtr error);
     /**
-     * @since Available in iOS 4.0 and later.
+     * @since Available in iOS 8.0 and later.
      */
-    @Method(selector = "pathExtension")
-    public native String getPathExtension();
+    @Method(selector = "checkPromisedItemIsReachableAndReturnError:")
+    public native boolean checkPromisedItemIsReachableAndReturnError$(NSError.NSErrorPtr error);
     /**
      * @since Available in iOS 4.0 and later.
      */
@@ -348,27 +398,7 @@ import org.robovm.apple.security.*;
     /**
      * @since Available in iOS 4.0 and later.
      */
-    @Method(selector = "URLByDeletingLastPathComponent")
-    public native NSURL newURLByDeletingLastPathComponent();
-    /**
-     * @since Available in iOS 4.0 and later.
-     */
     @Method(selector = "URLByAppendingPathExtension:")
     public native NSURL newURLByAppendingPathExtension(String pathExtension);
-    /**
-     * @since Available in iOS 4.0 and later.
-     */
-    @Method(selector = "URLByDeletingPathExtension")
-    public native NSURL newURLByDeletingPathExtension();
-    /**
-     * @since Available in iOS 4.0 and later.
-     */
-    @Method(selector = "URLByStandardizingPath")
-    public native NSURL newURLByStandardizingPath();
-    /**
-     * @since Available in iOS 4.0 and later.
-     */
-    @Method(selector = "URLByResolvingSymlinksInPath")
-    public native NSURL newURLByResolvingSymlinksInPath();
     /*</methods>*/
 }

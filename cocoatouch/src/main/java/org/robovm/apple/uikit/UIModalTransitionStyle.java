@@ -43,6 +43,9 @@ public enum /*<name>*/UIModalTransitionStyle/*</name>*/ implements ValuedEnum {
     CoverVertical(0L),
     FlipHorizontal(1L),
     CrossDissolve(2L),
+    /**
+     * @since Available in iOS 3.2 and later.
+     */
     PartialCurl(3L);
     /*</values>*/
 

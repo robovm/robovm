@@ -32,6 +32,7 @@ import org.robovm.apple.coreanimation.*;
 import org.robovm.apple.coregraphics.*;
 import org.robovm.apple.coremedia.*;
 import org.robovm.apple.security.*;
+import org.robovm.apple.dispatch.*;
 /*</imports>*/
 
 /*<javadoc>*/
@@ -151,7 +152,48 @@ import org.robovm.apple.security.*;
     protected NSUndoManager(SkipInit skipInit) { super(skipInit); }
     /*</constructors>*/
     /*<properties>*/
-    
+    @Property(selector = "groupingLevel")
+    public native @MachineSizedSInt long getGroupingLevel();
+    @Property(selector = "isUndoRegistrationEnabled")
+    public native boolean isUndoRegistrationEnabled();
+    @Property(selector = "groupsByEvent")
+    public native boolean isGroupsByEvent();
+    @Property(selector = "setGroupsByEvent:")
+    public native void setGroupsByEvent(boolean v);
+    @Property(selector = "levelsOfUndo")
+    public native @MachineSizedUInt long getLevelsOfUndo();
+    @Property(selector = "setLevelsOfUndo:")
+    public native void setLevelsOfUndo(@MachineSizedUInt long v);
+    @Property(selector = "runLoopModes")
+    public native NSArray<?> getRunLoopModes();
+    @Property(selector = "setRunLoopModes:")
+    public native void setRunLoopModes(NSArray<?> v);
+    @Property(selector = "canUndo")
+    public native boolean isCanUndo();
+    @Property(selector = "canRedo")
+    public native boolean isCanRedo();
+    @Property(selector = "isUndoing")
+    public native boolean isUndoing();
+    @Property(selector = "isRedoing")
+    public native boolean isRedoing();
+    /**
+     * @since Available in iOS 5.0 and later.
+     */
+    @Property(selector = "undoActionIsDiscardable")
+    public native boolean isUndoActionIsDiscardable();
+    /**
+     * @since Available in iOS 5.0 and later.
+     */
+    @Property(selector = "redoActionIsDiscardable")
+    public native boolean isRedoActionIsDiscardable();
+    @Property(selector = "undoActionName")
+    public native String getUndoActionName();
+    @Property(selector = "redoActionName")
+    public native String getRedoActionName();
+    @Property(selector = "undoMenuItemTitle")
+    public native String getUndoMenuItemTitle();
+    @Property(selector = "redoMenuItemTitle")
+    public native String getRedoMenuItemTitle();
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
@@ -205,40 +247,16 @@ import org.robovm.apple.security.*;
     public native void beginUndoGrouping();
     @Method(selector = "endUndoGrouping")
     public native void endUndoGrouping();
-    @Method(selector = "groupingLevel")
-    public native @MachineSizedSInt long getGroupingLevel();
     @Method(selector = "disableUndoRegistration")
     public native void disableUndoRegistration();
     @Method(selector = "enableUndoRegistration")
     public native void enableUndoRegistration();
-    @Method(selector = "isUndoRegistrationEnabled")
-    public native boolean isUndoRegistrationEnabled();
-    @Method(selector = "groupsByEvent")
-    public native boolean isGroupsByEvent();
-    @Method(selector = "setGroupsByEvent:")
-    public native void setGroupsByEvent(boolean groupsByEvent);
-    @Method(selector = "setLevelsOfUndo:")
-    public native void setLevelsOfUndo(@MachineSizedUInt long levels);
-    @Method(selector = "levelsOfUndo")
-    public native @MachineSizedUInt long getLevelsOfUndo();
-    @Method(selector = "setRunLoopModes:")
-    public native void setRunLoopModes(@org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String> runLoopModes);
-    @Method(selector = "runLoopModes")
-    public native @org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String> getRunLoopModes();
     @Method(selector = "undo")
     public native void undo();
     @Method(selector = "redo")
     public native void redo();
     @Method(selector = "undoNestedGroup")
     public native void undoNestedGroup();
-    @Method(selector = "canUndo")
-    public native boolean canUndo();
-    @Method(selector = "canRedo")
-    public native boolean canRedo();
-    @Method(selector = "isUndoing")
-    public native boolean isUndoing();
-    @Method(selector = "isRedoing")
-    public native boolean isRedoing();
     @Method(selector = "removeAllActions")
     public native void removeAllActions();
     @Method(selector = "removeAllActionsWithTarget:")
@@ -252,26 +270,8 @@ import org.robovm.apple.security.*;
      */
     @Method(selector = "setActionIsDiscardable:")
     public native void setActionIsDiscardable(boolean discardable);
-    /**
-     * @since Available in iOS 5.0 and later.
-     */
-    @Method(selector = "undoActionIsDiscardable")
-    public native boolean undoActionIsDiscardable();
-    /**
-     * @since Available in iOS 5.0 and later.
-     */
-    @Method(selector = "redoActionIsDiscardable")
-    public native boolean redoActionIsDiscardable();
-    @Method(selector = "undoActionName")
-    public native String getUndoActionName();
-    @Method(selector = "redoActionName")
-    public native String getRedoActionName();
     @Method(selector = "setActionName:")
     public native void setActionName(String actionName);
-    @Method(selector = "undoMenuItemTitle")
-    public native String getUndoMenuItemTitle();
-    @Method(selector = "redoMenuItemTitle")
-    public native String getRedoMenuItemTitle();
     @Method(selector = "undoMenuTitleForUndoActionName:")
     public native String getUndoMenuTitle(String actionName);
     @Method(selector = "redoMenuTitleForUndoActionName:")

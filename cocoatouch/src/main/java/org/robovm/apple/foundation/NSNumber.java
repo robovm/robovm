@@ -32,6 +32,7 @@ import org.robovm.apple.coreanimation.*;
 import org.robovm.apple.coregraphics.*;
 import org.robovm.apple.coremedia.*;
 import org.robovm.apple.security.*;
+import org.robovm.apple.dispatch.*;
 /*</imports>*/
 
 /*<javadoc>*/
@@ -49,28 +50,49 @@ import org.robovm.apple.security.*;
     protected NSNumber(SkipInit skipInit) { super(skipInit); }
     /*</constructors>*/
     /*<properties>*/
-    
+    @Property(selector = "charValue")
+    public native byte getCharValue();
+    @Property(selector = "unsignedCharValue")
+    public native byte getUnsignedCharValue();
+    @Property(selector = "shortValue")
+    public native short getShortValue();
+    @Property(selector = "unsignedShortValue")
+    public native short getUnsignedShortValue();
+    @Property(selector = "intValue")
+    public native int getIntValue();
+    @Property(selector = "unsignedIntValue")
+    public native int getUnsignedIntValue();
+    @Property(selector = "longValue")
+    public native @MachineSizedSInt long getLongValue();
+    @Property(selector = "unsignedLongValue")
+    public native @MachineSizedUInt long getUnsignedLongValue();
+    @Property(selector = "longLongValue")
+    public native long getLongLongValue();
+    @Property(selector = "unsignedLongLongValue")
+    public native long getUnsignedLongLongValue();
+    @Property(selector = "floatValue")
+    public native float getFloatValue();
+    @Property(selector = "doubleValue")
+    public native double getDoubleValue();
+    @Property(selector = "boolValue")
+    public native boolean isBoolValue();
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
+    @Property(selector = "integerValue")
+    public native @MachineSizedSInt long getIntegerValue();
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
+    @Property(selector = "unsignedIntegerValue")
+    public native @MachineSizedUInt long getUnsignedIntegerValue();
+    @Property(selector = "stringValue")
+    public native String getStringValue();
+    @Property(selector = "decimalValue")
+    public native @ByVal NSDecimal getDecimalValue();
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
-    @Method(selector = "charValue")
-    public native byte byteValue();
-    @Method(selector = "shortValue")
-    public native short shortValue();
-    @Method(selector = "unsignedShortValue")
-    public native char charValue();
-    @Method(selector = "intValue")
-    public native int intValue();
-    @Method(selector = "longLongValue")
-    public native long longValue();
-    @Method(selector = "floatValue")
-    public native float floatValue();
-    @Method(selector = "doubleValue")
-    public native double doubleValue();
-    @Method(selector = "boolValue")
-    public native boolean booleanValue();
-    @Method(selector = "stringValue")
-    public native String stringValue();
     @Method(selector = "compare:")
     public native NSComparisonResult compare(NSNumber otherNumber);
     @Method(selector = "isEqualToNumber:")
@@ -93,7 +115,5 @@ import org.robovm.apple.security.*;
     public static native NSNumber valueOf(double value);
     @Method(selector = "numberWithBool:")
     public static native NSNumber valueOf(boolean value);
-    @Method(selector = "decimalValue")
-    public native @ByVal NSDecimal decimalValue();
     /*</methods>*/
 }

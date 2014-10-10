@@ -97,6 +97,11 @@ import org.robovm.apple.coretext.*;
     @Method(selector = "application:didChangeStatusBarFrame:")
     void didChangStatusBarFrame(UIApplication application, @ByVal CGRect oldStatusBarFrame);
     /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @Method(selector = "application:didRegisterUserNotificationSettings:")
+    void didRegisterUserNotificationSettings(UIApplication application, UIUserNotificationSettings notificationSettings);
+    /**
      * @since Available in iOS 3.0 and later.
      */
     @Method(selector = "application:didRegisterForRemoteNotificationsWithDeviceToken:")
@@ -116,6 +121,16 @@ import org.robovm.apple.coretext.*;
      */
     @Method(selector = "application:didReceiveLocalNotification:")
     void didReceiveLocalNotification(UIApplication application, UILocalNotification notification);
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @Method(selector = "application:handleActionWithIdentifier:forLocalNotification:completionHandler:")
+    void handleLocalNotificationAction(UIApplication application, String identifier, UILocalNotification notification, @Block Runnable completionHandler);
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @Method(selector = "application:handleActionWithIdentifier:forRemoteNotification:completionHandler:")
+    void handleRemoteNotificationAction(UIApplication application, String identifier, UIRemoteNotification userInfo, @Block Runnable completionHandler);
     /**
      * @since Available in iOS 7.0 and later.
      */
@@ -157,6 +172,11 @@ import org.robovm.apple.coretext.*;
     @Method(selector = "application:supportedInterfaceOrientationsForWindow:")
     @MachineSizedUInt long getSupportedInterfaceOrientations(UIApplication application, UIWindow window);
     /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @Method(selector = "application:shouldAllowExtensionPointIdentifier:")
+    boolean shouldAllowExtensionPointIdentifier(UIApplication application, UIApplicationExtensionPointIdentifier extensionPointIdentifier);
+    /**
      * @since Available in iOS 6.0 and later.
      */
     @Method(selector = "application:viewControllerWithRestorationIdentifierPath:coder:")
@@ -181,6 +201,26 @@ import org.robovm.apple.coretext.*;
      */
     @Method(selector = "application:didDecodeRestorableStateWithCoder:")
     void didDecodeRestorableState(UIApplication application, NSCoder coder);
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @Method(selector = "application:willContinueUserActivityWithType:")
+    boolean willContinueUserActivity(UIApplication application, String userActivityType);
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @Method(selector = "application:continueUserActivity:restorationHandler:")
+    boolean continueUserActivity(UIApplication application, NSUserActivity userActivity, @Block VoidBlock1<NSArray<UIResponder>> restorationHandler);
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @Method(selector = "application:didFailToContinueUserActivityWithType:error:")
+    void didFailToContinueUserActivity(UIApplication application, String userActivityType, NSError error);
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @Method(selector = "application:didUpdateUserActivity:")
+    void didUpdateUserActivity(UIApplication application, NSUserActivity userActivity);
     /*</methods>*/
     /*<adapter>*/
     /*</adapter>*/

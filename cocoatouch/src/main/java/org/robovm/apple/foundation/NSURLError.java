@@ -32,6 +32,7 @@ import org.robovm.apple.coreanimation.*;
 import org.robovm.apple.coregraphics.*;
 import org.robovm.apple.coremedia.*;
 import org.robovm.apple.security.*;
+import org.robovm.apple.dispatch.*;
 /*</imports>*/
 
 /*<javadoc>*/
@@ -98,7 +99,19 @@ public enum /*<name>*/NSURLError/*</name>*/ implements ValuedEnum {
     /**
      * @since Available in iOS 3.0 and later.
      */
-    RequestBodyStreamExhausted(-1021L);
+    RequestBodyStreamExhausted(-1021L),
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    BackgroundSessionRequiresSharedContainer(-995L),
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    BackgroundSessionInUseByAnotherProcess(-996L),
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    BackgroundSessionWasDisconnected(-997L);
     /*</values>*/
 
     private final long n;

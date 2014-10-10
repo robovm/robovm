@@ -32,6 +32,7 @@ import org.robovm.apple.coreanimation.*;
 import org.robovm.apple.coregraphics.*;
 import org.robovm.apple.coremedia.*;
 import org.robovm.apple.security.*;
+import org.robovm.apple.dispatch.*;
 /*</imports>*/
 
 /*<javadoc>*/
@@ -49,50 +50,69 @@ import org.robovm.apple.security.*;
     protected NSProcessInfo(SkipInit skipInit) { super(skipInit); }
     /*</constructors>*/
     /*<properties>*/
-    
-    /*</properties>*/
-    /*<members>*//*</members>*/
-    /*<methods>*/
-    @Method(selector = "environment")
+    @Property(selector = "environment")
     public native @org.robovm.rt.bro.annotation.Marshaler(NSDictionary.AsStringMapMarshaler.class) Map<String, NSObject> getEnvironment();
-    @Method(selector = "arguments")
+    @Property(selector = "arguments")
     public native @org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String> getArguments();
-    @Method(selector = "hostName")
+    @Property(selector = "hostName")
     public native String getHostName();
-    @Method(selector = "processName")
+    @Property(selector = "processName")
     public native String getProcessName();
-    @Method(selector = "processIdentifier")
+    @Property(selector = "setProcessName:")
+    public native void setProcessName(String v);
+    @Property(selector = "processIdentifier")
     public native int getProcessIdentifier();
-    @Method(selector = "setProcessName:")
-    public native void setProcessName(String newName);
-    @Method(selector = "globallyUniqueString")
+    @Property(selector = "globallyUniqueString")
     public native String getGloballyUniqueString();
-    @Method(selector = "operatingSystem")
-    public native NSOperatingSystem getOperatingSystem();
-    @Method(selector = "operatingSystemName")
-    public native String getOperatingSystemName();
-    @Method(selector = "operatingSystemVersionString")
+    @Property(selector = "operatingSystemVersionString")
     public native String getOperatingSystemVersionString();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @Property(selector = "operatingSystemVersion")
+    public native @ByVal NSOperatingSystemVersion getOperatingSystemVersion();
     /**
      * @since Available in iOS 2.0 and later.
      */
-    @Method(selector = "processorCount")
+    @Property(selector = "processorCount")
     public native @MachineSizedUInt long getProcessorCount();
     /**
      * @since Available in iOS 2.0 and later.
      */
-    @Method(selector = "activeProcessorCount")
+    @Property(selector = "activeProcessorCount")
     public native @MachineSizedUInt long getActiveProcessorCount();
     /**
      * @since Available in iOS 2.0 and later.
      */
-    @Method(selector = "physicalMemory")
+    @Property(selector = "physicalMemory")
     public native long getPhysicalMemory();
     /**
      * @since Available in iOS 4.0 and later.
      */
-    @Method(selector = "systemUptime")
+    @Property(selector = "systemUptime")
     public native double getSystemUptime();
+    /*</properties>*/
+    /*<members>*//*</members>*/
+    /*<methods>*/
+    /**
+     * @since Available in iOS 2.0 and later.
+     * @deprecated Deprecated in iOS 8.0.
+     */
+    @Deprecated
+    @Method(selector = "operatingSystem")
+    public native NSOperatingSystem getOperatingSystem();
+    /**
+     * @since Available in iOS 2.0 and later.
+     * @deprecated Deprecated in iOS 8.0.
+     */
+    @Deprecated
+    @Method(selector = "operatingSystemName")
+    public native String getOperatingSystemName();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @Method(selector = "isOperatingSystemAtLeastVersion:")
+    public native boolean isOperatingSystemAtLeastVersion(@ByVal NSOperatingSystemVersion version);
     @Method(selector = "processInfo")
     public static native NSProcessInfo getSharedProcessInfo();
     /**

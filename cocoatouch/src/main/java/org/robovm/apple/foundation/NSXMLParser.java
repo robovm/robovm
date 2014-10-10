@@ -32,6 +32,7 @@ import org.robovm.apple.coreanimation.*;
 import org.robovm.apple.coregraphics.*;
 import org.robovm.apple.coremedia.*;
 import org.robovm.apple.security.*;
+import org.robovm.apple.dispatch.*;
 /*</imports>*/
 
 /*<javadoc>*/
@@ -56,7 +57,52 @@ import org.robovm.apple.security.*;
     public NSXMLParser(NSInputStream stream) { super((SkipInit) null); initObject(initWithStream$(stream)); }
     /*</constructors>*/
     /*<properties>*/
-    
+    @Property(selector = "delegate")
+    public native NSXMLParserDelegate getDelegate();
+    @Property(selector = "setDelegate:", strongRef = true)
+    public native void setDelegate(NSXMLParserDelegate v);
+    @Property(selector = "shouldProcessNamespaces")
+    public native boolean isShouldProcessNamespaces();
+    @Property(selector = "setShouldProcessNamespaces:")
+    public native void setShouldProcessNamespaces(boolean v);
+    @Property(selector = "shouldReportNamespacePrefixes")
+    public native boolean isShouldReportNamespacePrefixes();
+    @Property(selector = "setShouldReportNamespacePrefixes:")
+    public native void setShouldReportNamespacePrefixes(boolean v);
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @Property(selector = "externalEntityResolvingPolicy")
+    public native NSXMLParserExternalEntityResolvingPolicy getExternalEntityResolvingPolicy();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @Property(selector = "setExternalEntityResolvingPolicy:")
+    public native void setExternalEntityResolvingPolicy(NSXMLParserExternalEntityResolvingPolicy v);
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @Property(selector = "allowedExternalEntityURLs")
+    public native NSSet<?> getAllowedExternalEntityURLs();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @Property(selector = "setAllowedExternalEntityURLs:")
+    public native void setAllowedExternalEntityURLs(NSSet<?> v);
+    @Property(selector = "parserError")
+    public native NSError getParserError();
+    @Property(selector = "shouldResolveExternalEntities")
+    public native boolean isShouldResolveExternalEntities();
+    @Property(selector = "setShouldResolveExternalEntities:")
+    public native void setShouldResolveExternalEntities(boolean v);
+    @Property(selector = "publicID")
+    public native String getPublicID();
+    @Property(selector = "systemID")
+    public native String getSystemID();
+    @Property(selector = "lineNumber")
+    public native @MachineSizedSInt long getLineNumber();
+    @Property(selector = "columnNumber")
+    public native @MachineSizedSInt long getColumnNumber();
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
@@ -69,35 +115,9 @@ import org.robovm.apple.security.*;
      */
     @Method(selector = "initWithStream:")
     protected native @Pointer long initWithStream$(NSInputStream stream);
-    @Method(selector = "delegate")
-    public native NSXMLParserDelegate getDelegate();
-    @Method(selector = "setDelegate:")
-    public native void setDelegate(NSXMLParserDelegate delegate);
-    @Method(selector = "setShouldProcessNamespaces:")
-    public native void setShouldProcessNamespaces(boolean shouldProcessNamespaces);
-    @Method(selector = "setShouldReportNamespacePrefixes:")
-    public native void setShouldReportNamespacePrefixes(boolean shouldReportNamespacePrefixes);
-    @Method(selector = "setShouldResolveExternalEntities:")
-    public native void setShouldResolveExternalEntities(boolean shouldResolveExternalEntities);
-    @Method(selector = "shouldProcessNamespaces")
-    public native boolean shouldProcessNamespaces();
-    @Method(selector = "shouldReportNamespacePrefixes")
-    public native boolean shouldReportNamespacePrefixes();
-    @Method(selector = "shouldResolveExternalEntities")
-    public native boolean shouldResolveExternalEntities();
     @Method(selector = "parse")
     public native boolean parse();
     @Method(selector = "abortParsing")
     public native void abortParsing();
-    @Method(selector = "parserError")
-    public native NSError getParserError();
-    @Method(selector = "publicID")
-    public native String getPublicID();
-    @Method(selector = "systemID")
-    public native String getSystemID();
-    @Method(selector = "lineNumber")
-    public native @MachineSizedSInt long getLineNumber();
-    @Method(selector = "columnNumber")
-    public native @MachineSizedSInt long getColumnNumber();
     /*</methods>*/
 }

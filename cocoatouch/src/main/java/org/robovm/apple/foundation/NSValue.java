@@ -32,6 +32,7 @@ import org.robovm.apple.coreanimation.*;
 import org.robovm.apple.coregraphics.*;
 import org.robovm.apple.coremedia.*;
 import org.robovm.apple.security.*;
+import org.robovm.apple.dispatch.*;
 /*</imports>*/
 import org.robovm.apple.corelocation.CLLocationCoordinate2D;
 import org.robovm.apple.mapkit.MKCoordinateSpan;
@@ -49,9 +50,15 @@ import org.robovm.apple.mapkit.MKCoordinateSpan;
     /*<constants>*//*</constants>*/
     /*<constructors>*/
     protected NSValue(SkipInit skipInit) { super(skipInit); }
+    public NSValue(NSCoder aDecoder) { super((SkipInit) null); initObject(initWithCoder$(aDecoder)); }
     /*</constructors>*/
     /*<properties>*/
-    
+    @Property(selector = "objCType")
+    public native BytePtr getObjCType();
+    @Property(selector = "nonretainedObjectValue")
+    public native NSObject getNonretainedObjectValue();
+    @Property(selector = "rangeValue")
+    public native @ByVal NSRange getRangeValue();
     /*</properties>*/
     /*<members>*//*</members>*/
 
@@ -179,12 +186,10 @@ import org.robovm.apple.mapkit.MKCoordinateSpan;
     /*<methods>*/
     @Method(selector = "getValue:")
     protected native void getValue(VoidPtr value);
-    @Method(selector = "objCType")
-    protected native BytePtr objCType();
+    @Method(selector = "initWithCoder:")
+    protected native @Pointer long initWithCoder$(NSCoder aDecoder);
     @Method(selector = "valueWithBytes:objCType:")
     protected static native NSValue valueWithBytes$objCType$(VoidPtr value, BytePtr type);
-    @Method(selector = "nonretainedObjectValue")
-    public native NSObject objectValue();
     @Method(selector = "pointerValue")
     public native VoidPtr pointerValue();
     @Method(selector = "isEqualToValue:")
@@ -193,8 +198,6 @@ import org.robovm.apple.mapkit.MKCoordinateSpan;
     public static native NSValue valueOf(NSObject anObject);
     @Method(selector = "valueWithPointer:")
     public static native NSValue valueOf(VoidPtr pointer);
-    @Method(selector = "rangeValue")
-    public native @ByVal NSRange rangeValue();
     @Method(selector = "valueWithRange:")
     public static native NSValue valueOf(@ByVal NSRange range);
     /*</methods>*/

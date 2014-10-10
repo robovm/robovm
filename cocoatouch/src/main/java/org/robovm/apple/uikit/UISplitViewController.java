@@ -70,9 +70,78 @@ import org.robovm.apple.coretext.*;
      */
     @Property(selector = "setPresentsWithGesture:")
     public native void setPresentsWithGesture(boolean v);
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @Property(selector = "isCollapsed")
+    public native boolean isCollapsed();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @Property(selector = "preferredDisplayMode")
+    public native UISplitViewControllerDisplayMode getPreferredDisplayMode();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @Property(selector = "setPreferredDisplayMode:")
+    public native void setPreferredDisplayMode(UISplitViewControllerDisplayMode v);
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @Property(selector = "displayMode")
+    public native UISplitViewControllerDisplayMode getDisplayMode();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @Property(selector = "preferredPrimaryColumnWidthFraction")
+    public native @MachineSizedFloat double getPreferredPrimaryColumnWidthFraction();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @Property(selector = "setPreferredPrimaryColumnWidthFraction:")
+    public native void setPreferredPrimaryColumnWidthFraction(@MachineSizedFloat double v);
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @Property(selector = "minimumPrimaryColumnWidth")
+    public native @MachineSizedFloat double getMinimumPrimaryColumnWidth();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @Property(selector = "setMinimumPrimaryColumnWidth:")
+    public native void setMinimumPrimaryColumnWidth(@MachineSizedFloat double v);
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @Property(selector = "maximumPrimaryColumnWidth")
+    public native @MachineSizedFloat double getMaximumPrimaryColumnWidth();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @Property(selector = "setMaximumPrimaryColumnWidth:")
+    public native void setMaximumPrimaryColumnWidth(@MachineSizedFloat double v);
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @Property(selector = "primaryColumnWidth")
+    public native @MachineSizedFloat double getPrimaryColumnWidth();
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
-    
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @Method(selector = "displayModeButtonItem")
+    public native UIBarButtonItem displayModeButtonItem();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @Method(selector = "showViewController:sender:")
+    public native void showViewController$sender$(UIViewController vc, NSObject sender);
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @Method(selector = "showDetailViewController:sender:")
+    public native void showDetailViewController$sender$(UIViewController vc, NSObject sender);
     /*</methods>*/
 }

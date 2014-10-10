@@ -32,6 +32,7 @@ import org.robovm.apple.coreanimation.*;
 import org.robovm.apple.coregraphics.*;
 import org.robovm.apple.coremedia.*;
 import org.robovm.apple.security.*;
+import org.robovm.apple.dispatch.*;
 /*</imports>*/
 
 /*<javadoc>*/
@@ -106,5 +107,10 @@ import org.robovm.apple.security.*;
      */
     @GlobalValue(symbol="NSMetadataQueryUbiquitousDataScope", optional=true)
     protected static native NSString UbiquitousDataValue();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @GlobalValue(symbol="NSMetadataQueryAccessibleUbiquitousExternalDocumentsScope", optional=true)
+    protected static native NSString AccessibleUbiquitousExternalDocumentsValue();
     /*</methods>*/
 }

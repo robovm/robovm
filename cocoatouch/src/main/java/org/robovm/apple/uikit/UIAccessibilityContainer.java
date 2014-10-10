@@ -47,7 +47,16 @@ import org.robovm.apple.coretext.*;
     /*</bind>*/
     /*<constants>*//*</constants>*/
     /*<properties>*/
-    
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @Property(selector = "accessibilityElements")
+    NSArray<?> getAccessibilityElements();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @Property(selector = "setAccessibilityElements:")
+    void setAccessibilityElements(NSArray<?> v);
     /*</properties>*/
     /*<methods>*/
     @Method(selector = "accessibilityElementCount")

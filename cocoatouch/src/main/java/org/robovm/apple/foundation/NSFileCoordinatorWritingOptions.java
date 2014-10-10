@@ -32,6 +32,7 @@ import org.robovm.apple.coreanimation.*;
 import org.robovm.apple.coregraphics.*;
 import org.robovm.apple.coremedia.*;
 import org.robovm.apple.security.*;
+import org.robovm.apple.dispatch.*;
 /*</imports>*/
 
 /*<javadoc>*/
@@ -41,10 +42,14 @@ import org.robovm.apple.security.*;
 public final class /*<name>*/NSFileCoordinatorWritingOptions/*</name>*/ extends Bits</*<name>*/NSFileCoordinatorWritingOptions/*</name>*/> {
     /*<values>*/
     public static final NSFileCoordinatorWritingOptions None = new NSFileCoordinatorWritingOptions(0L);
-    public static final NSFileCoordinatorWritingOptions Deleting = new NSFileCoordinatorWritingOptions(1L);
-    public static final NSFileCoordinatorWritingOptions Moving = new NSFileCoordinatorWritingOptions(2L);
-    public static final NSFileCoordinatorWritingOptions Merging = new NSFileCoordinatorWritingOptions(4L);
-    public static final NSFileCoordinatorWritingOptions Replacing = new NSFileCoordinatorWritingOptions(8L);
+    public static final NSFileCoordinatorWritingOptions ForDeleting = new NSFileCoordinatorWritingOptions(1L);
+    public static final NSFileCoordinatorWritingOptions ForMoving = new NSFileCoordinatorWritingOptions(2L);
+    public static final NSFileCoordinatorWritingOptions ForMerging = new NSFileCoordinatorWritingOptions(4L);
+    public static final NSFileCoordinatorWritingOptions ForReplacing = new NSFileCoordinatorWritingOptions(8L);
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    public static final NSFileCoordinatorWritingOptions ContentIndependentMetadataOnly = new NSFileCoordinatorWritingOptions(16L);
     /*</values>*/
 
     private static final /*<name>*/NSFileCoordinatorWritingOptions/*</name>*/[] values = _values(/*<name>*/NSFileCoordinatorWritingOptions/*</name>*/.class);

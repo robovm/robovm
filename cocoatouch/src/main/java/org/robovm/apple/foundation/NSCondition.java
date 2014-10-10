@@ -32,6 +32,7 @@ import org.robovm.apple.coreanimation.*;
 import org.robovm.apple.coregraphics.*;
 import org.robovm.apple.coremedia.*;
 import org.robovm.apple.security.*;
+import org.robovm.apple.dispatch.*;
 /*</imports>*/
 
 /*<javadoc>*/
@@ -52,7 +53,16 @@ import org.robovm.apple.security.*;
     protected NSCondition(SkipInit skipInit) { super(skipInit); }
     /*</constructors>*/
     /*<properties>*/
-    
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
+    @Property(selector = "name")
+    public native String getName();
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
+    @Property(selector = "setName:")
+    public native void setName(String v);
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
@@ -64,10 +74,6 @@ import org.robovm.apple.security.*;
     public native void signal();
     @Method(selector = "broadcast")
     public native void broadcast();
-    @Method(selector = "setName:")
-    public native void setName(String n);
-    @Method(selector = "name")
-    public native String getName();
     @Method(selector = "lock")
     public native void lock();
     @Method(selector = "unlock")

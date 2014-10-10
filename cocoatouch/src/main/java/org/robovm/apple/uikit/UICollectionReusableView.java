@@ -70,5 +70,10 @@ import org.robovm.apple.coretext.*;
     public native void willTransition(UICollectionViewLayout oldLayout, UICollectionViewLayout newLayout);
     @Method(selector = "didTransitionFromLayout:toLayout:")
     public native void didTransition(UICollectionViewLayout oldLayout, UICollectionViewLayout newLayout);
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @Method(selector = "preferredLayoutAttributesFittingAttributes:")
+    public native UICollectionViewLayoutAttributes preferredLayoutAttributesFittingAttributes$(UICollectionViewLayoutAttributes layoutAttributes);
     /*</methods>*/
 }

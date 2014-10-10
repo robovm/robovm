@@ -91,12 +91,16 @@ import org.robovm.apple.coretext.*;
     public native void setBarTintColor(UIColor v);
     /**
      * @since Available in iOS 5.0 and later.
+     * @deprecated Deprecated in iOS 8.0.
      */
+    @Deprecated
     @Property(selector = "selectedImageTintColor")
     public native UIColor getSelectedImageTintColor();
     /**
      * @since Available in iOS 5.0 and later.
+     * @deprecated Deprecated in iOS 8.0.
      */
+    @Deprecated
     @Property(selector = "setSelectedImageTintColor:")
     public native void setSelectedImageTintColor(UIColor v);
     /**

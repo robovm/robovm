@@ -40,6 +40,7 @@ import org.robovm.apple.coretext.*;
 /*<annotations>*/@Marshaler(ValuedEnum.AsMachineSizedSIntMarshaler.class)/*</annotations>*/
 public enum /*<name>*/UIInterfaceOrientation/*</name>*/ implements ValuedEnum {
     /*<values>*/
+    Unknown(0L),
     Portrait(1L),
     PortraitUpsideDown(2L),
     LandscapeLeft(4L),

@@ -32,6 +32,7 @@ import org.robovm.apple.coreanimation.*;
 import org.robovm.apple.coregraphics.*;
 import org.robovm.apple.coremedia.*;
 import org.robovm.apple.security.*;
+import org.robovm.apple.dispatch.*;
 /*</imports>*/
 
 /*<javadoc>*/
@@ -40,7 +41,7 @@ import org.robovm.apple.security.*;
 /*<annotations>*/@Library("Foundation") @NativeClass/*</annotations>*/
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/NSCachedURLResponse/*</name>*/ 
     extends /*<extends>*/NSObject/*</extends>*/ 
-    /*<implements>*/implements NSCoding/*</implements>*/ {
+    /*<implements>*//*</implements>*/ {
 
     /*<ptr>*/public static class NSCachedURLResponsePtr extends Ptr<NSCachedURLResponse, NSCachedURLResponsePtr> {}/*</ptr>*/
     /*<bind>*/static { ObjCRuntime.bind(NSCachedURLResponse.class); }/*</bind>*/
@@ -52,7 +53,14 @@ import org.robovm.apple.security.*;
     public NSCachedURLResponse(NSURLResponse response, NSData data, NSDictionary<?, ?> userInfo, NSURLCacheStoragePolicy storagePolicy) { super((SkipInit) null); initObject(initWithResponse$data$userInfo$storagePolicy$(response, data, userInfo, storagePolicy)); }
     /*</constructors>*/
     /*<properties>*/
-    
+    @Property(selector = "response")
+    public native NSURLResponse getResponse();
+    @Property(selector = "data")
+    public native NSData getData();
+    @Property(selector = "userInfo")
+    public native NSDictionary<?, ?> getUserInfo();
+    @Property(selector = "storagePolicy")
+    public native NSURLCacheStoragePolicy getStoragePolicy();
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
@@ -60,15 +68,5 @@ import org.robovm.apple.security.*;
     protected native @Pointer long initWithResponse$data$(NSURLResponse response, NSData data);
     @Method(selector = "initWithResponse:data:userInfo:storagePolicy:")
     protected native @Pointer long initWithResponse$data$userInfo$storagePolicy$(NSURLResponse response, NSData data, NSDictionary<?, ?> userInfo, NSURLCacheStoragePolicy storagePolicy);
-    @Method(selector = "response")
-    public native NSURLResponse getResponse();
-    @Method(selector = "data")
-    public native NSData getData();
-    @Method(selector = "userInfo")
-    public native NSDictionary<?, ?> getUserInfo();
-    @Method(selector = "storagePolicy")
-    public native NSURLCacheStoragePolicy getStoragePolicy();
-    @Method(selector = "encodeWithCoder:")
-    public native void encode(NSCoder aCoder);
     /*</methods>*/
 }

@@ -73,6 +73,16 @@ import org.robovm.apple.coretext.*;
     @Property(selector = "inputAccessoryView")
     public native UIView getInputAccessoryView();
     /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @Property(selector = "inputViewController")
+    public native UIInputViewController getInputViewController();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @Property(selector = "inputAccessoryViewController")
+    public native UIInputViewController getInputAccessoryViewController();
+    /**
      * @since Available in iOS 7.0 and later.
      */
     @Property(selector = "textInputMode")
@@ -82,6 +92,16 @@ import org.robovm.apple.coretext.*;
      */
     @Property(selector = "textInputContextIdentifier")
     public native String getTextInputContextIdentifier();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @Property(selector = "userActivity")
+    public native NSUserActivity getUserActivity();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @Property(selector = "setUserActivity:")
+    public native void setUserActivity(NSUserActivity v);
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
@@ -145,5 +165,15 @@ import org.robovm.apple.coretext.*;
      */
     @Method(selector = "clearTextInputContextIdentifier:")
     public static native void clearTextInputContextIdentifier(String identifier);
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @Method(selector = "updateUserActivityState:")
+    public native void updateUserActivityState$(NSUserActivity activity);
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @Method(selector = "restoreUserActivityState:")
+    public native void restoreUserActivityState$(NSUserActivity activity);
     /*</methods>*/
 }

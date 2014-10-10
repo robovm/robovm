@@ -37,7 +37,9 @@ import org.robovm.apple.coretext.*;
 /*<javadoc>*/
 /**
  * @since Available in iOS 3.0 and later.
+ * @deprecated Deprecated in iOS 8.0.
  */
+@Deprecated
 /*</javadoc>*/
 /*<annotations>*/@Library("UIKit") @NativeClass/*</annotations>*/
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/UISearchDisplayController/*</name>*/ 

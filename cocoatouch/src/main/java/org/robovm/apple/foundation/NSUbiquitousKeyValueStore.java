@@ -32,6 +32,7 @@ import org.robovm.apple.coreanimation.*;
 import org.robovm.apple.coregraphics.*;
 import org.robovm.apple.coremedia.*;
 import org.robovm.apple.security.*;
+import org.robovm.apple.dispatch.*;
 /*</imports>*/
 
 /*<javadoc>*/
@@ -78,7 +79,8 @@ import org.robovm.apple.security.*;
     protected NSUbiquitousKeyValueStore(SkipInit skipInit) { super(skipInit); }
     /*</constructors>*/
     /*<properties>*/
-    
+    @Property(selector = "dictionaryRepresentation")
+    public native NSDictionary<?, ?> getDictionaryRepresentation();
     /*</properties>*/
     /*<members>*//*</members>*/
     public void put(String key, NSObject object) {
@@ -160,8 +162,6 @@ import org.robovm.apple.security.*;
     protected native void setDouble(double value, String aKey);
     @Method(selector = "setBool:forKey:")
     protected native void setBool(boolean value, String aKey);
-    @Method(selector = "dictionaryRepresentation")
-    public native NSDictionary<NSString, NSObject> asDictionary();
     @Method(selector = "synchronize")
     public native boolean synchronize();
     @Method(selector = "defaultStore")

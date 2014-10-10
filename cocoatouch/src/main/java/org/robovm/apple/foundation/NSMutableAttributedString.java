@@ -32,6 +32,7 @@ import org.robovm.apple.coreanimation.*;
 import org.robovm.apple.coregraphics.*;
 import org.robovm.apple.coremedia.*;
 import org.robovm.apple.security.*;
+import org.robovm.apple.dispatch.*;
 /*</imports>*/
 
 /*<javadoc>*/
@@ -63,7 +64,8 @@ import org.robovm.apple.security.*;
     }    
     
     /*<properties>*/
-    
+    @Property(selector = "mutableString")
+    public native NSMutableString getMutableString();
     /*</properties>*/
     /*<members>*//*</members>*/
     public void addAttribute(String name, NSObject value, @ByVal NSRange range) {
@@ -104,8 +106,6 @@ import org.robovm.apple.security.*;
     public native void replace(@ByVal NSRange range, String str);
     @Method(selector = "setAttributes:range:")
     public native void setAttributes(NSAttributedStringAttributes attrs, @ByVal NSRange range);
-    @Method(selector = "mutableString")
-    public native NSMutableString getMutableString();
     @Method(selector = "addAttribute:value:range:")
     protected native void addAttribute(NSString name, NSObject value, @ByVal NSRange range);
     @Method(selector = "addAttributes:range:")

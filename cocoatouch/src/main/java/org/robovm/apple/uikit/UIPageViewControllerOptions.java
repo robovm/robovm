@@ -19,7 +19,6 @@ package org.robovm.apple.uikit;
 import java.io.*;
 import java.nio.*;
 import java.util.*;
-
 import org.robovm.objc.*;
 import org.robovm.objc.annotation.*;
 import org.robovm.objc.block.*;
@@ -112,12 +111,12 @@ import org.robovm.apple.coretext.*;
     }
     /*<methods>*/
     @GlobalValue(symbol="UIPageViewControllerOptionSpineLocationKey", optional=true)
-    public static native NSString SpineLocationKey();
+    protected static native NSString SpineLocationKey();
     /**
      * @since Available in iOS 6.0 and later.
      */
     @GlobalValue(symbol="UIPageViewControllerOptionInterPageSpacingKey", optional=true)
-    public static native NSString InterPageSpacingKey();
+    protected static native NSString InterPageSpacingKey();
     /*</methods>*/
     
     @Override

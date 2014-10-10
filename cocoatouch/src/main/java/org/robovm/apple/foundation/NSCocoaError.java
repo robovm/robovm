@@ -32,6 +32,7 @@ import org.robovm.apple.coreanimation.*;
 import org.robovm.apple.coregraphics.*;
 import org.robovm.apple.coremedia.*;
 import org.robovm.apple.security.*;
+import org.robovm.apple.dispatch.*;
 /*</imports>*/
 
 /*<javadoc>*/
@@ -128,6 +129,10 @@ public enum /*<name>*/NSCocoaError/*</name>*/ implements ValuedEnum {
      * @since Available in iOS 4.0 and later.
      */
     PropertyListWriteStreamError(3851L),
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    PropertyListWriteInvalidError(3852L),
     /**
      * @since Available in iOS 4.0 and later.
      */

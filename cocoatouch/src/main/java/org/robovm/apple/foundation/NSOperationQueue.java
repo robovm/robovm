@@ -32,6 +32,7 @@ import org.robovm.apple.coreanimation.*;
 import org.robovm.apple.coregraphics.*;
 import org.robovm.apple.coremedia.*;
 import org.robovm.apple.security.*;
+import org.robovm.apple.dispatch.*;
 /*</imports>*/
 
 /*<javadoc>*/
@@ -52,7 +53,51 @@ import org.robovm.apple.security.*;
     protected NSOperationQueue(SkipInit skipInit) { super(skipInit); }
     /*</constructors>*/
     /*<properties>*/
-    
+    @Property(selector = "operations")
+    public native NSArray<NSOperation> getOperations();
+    /**
+     * @since Available in iOS 4.0 and later.
+     */
+    @Property(selector = "operationCount")
+    public native @MachineSizedUInt long getOperationCount();
+    @Property(selector = "maxConcurrentOperationCount")
+    public native @MachineSizedSInt long getMaxConcurrentOperationCount();
+    @Property(selector = "setMaxConcurrentOperationCount:")
+    public native void setMaxConcurrentOperationCount(@MachineSizedSInt long v);
+    @Property(selector = "isSuspended")
+    public native boolean isSuspended();
+    @Property(selector = "setSuspended:")
+    public native void setSuspended(boolean v);
+    /**
+     * @since Available in iOS 4.0 and later.
+     */
+    @Property(selector = "name")
+    public native String getName();
+    /**
+     * @since Available in iOS 4.0 and later.
+     */
+    @Property(selector = "setName:")
+    public native void setName(String v);
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @Property(selector = "qualityOfService")
+    public native NSQualityOfService getQualityOfService();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @Property(selector = "setQualityOfService:")
+    public native void setQualityOfService(NSQualityOfService v);
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @Property(selector = "underlyingQueue")
+    public native DispatchQueue getUnderlyingQueue();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @Property(selector = "setUnderlyingQueue:")
+    public native void setUnderlyingQueue(DispatchQueue v);
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
@@ -68,31 +113,6 @@ import org.robovm.apple.security.*;
      */
     @Method(selector = "addOperationWithBlock:")
     public native void addOperation(@Block Runnable block);
-    @Method(selector = "operations")
-    public native NSArray<NSOperation> getOperations();
-    /**
-     * @since Available in iOS 4.0 and later.
-     */
-    @Method(selector = "operationCount")
-    public native @MachineSizedUInt long getOperationCount();
-    @Method(selector = "maxConcurrentOperationCount")
-    public native @MachineSizedSInt long getMaxConcurrentOperationCount();
-    @Method(selector = "setMaxConcurrentOperationCount:")
-    public native void setMaxConcurrentOperationCount(@MachineSizedSInt long cnt);
-    @Method(selector = "setSuspended:")
-    public native void setSuspended(boolean b);
-    @Method(selector = "isSuspended")
-    public native boolean isSuspended();
-    /**
-     * @since Available in iOS 4.0 and later.
-     */
-    @Method(selector = "setName:")
-    public native void setName(String n);
-    /**
-     * @since Available in iOS 4.0 and later.
-     */
-    @Method(selector = "name")
-    public native String getName();
     @Method(selector = "cancelAllOperations")
     public native void cancelAllOperations();
     @Method(selector = "waitUntilAllOperationsAreFinished")

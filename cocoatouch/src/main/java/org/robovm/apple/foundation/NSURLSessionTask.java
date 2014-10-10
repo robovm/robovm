@@ -32,6 +32,7 @@ import org.robovm.apple.coreanimation.*;
 import org.robovm.apple.coregraphics.*;
 import org.robovm.apple.coremedia.*;
 import org.robovm.apple.security.*;
+import org.robovm.apple.dispatch.*;
 /*</imports>*/
 
 /*<javadoc>*/
@@ -76,6 +77,16 @@ import org.robovm.apple.security.*;
     public native NSURLSessionTaskState getState();
     @Property(selector = "error")
     public native NSError getError();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @Property(selector = "priority")
+    public native float getPriority();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @Property(selector = "setPriority:")
+    public native void setPriority(float v);
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/

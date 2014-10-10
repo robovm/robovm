@@ -32,6 +32,7 @@ import org.robovm.apple.coreanimation.*;
 import org.robovm.apple.coregraphics.*;
 import org.robovm.apple.coremedia.*;
 import org.robovm.apple.security.*;
+import org.robovm.apple.dispatch.*;
 /*</imports>*/
 
 /*<javadoc>*/
@@ -69,7 +70,14 @@ import org.robovm.apple.security.*;
         this(date.getTime() / 1000.0);
     }
     /*<properties>*/
-    
+    @Property(selector = "timeIntervalSinceReferenceDate")
+    public native double getTimeIntervalSinceReferenceDate();
+    @Property(selector = "timeIntervalSinceNow")
+    public native double getTimeIntervalSinceNow();
+    @Property(selector = "timeIntervalSince1970")
+    public native double getTimeIntervalSince1970();
+    @Property(selector = "description")
+    public native String getDescription();
     /*</properties>*/
     /*<members>*//*</members>*/
     public Date toDate() {
@@ -86,14 +94,8 @@ import org.robovm.apple.security.*;
     @GlobalValue(symbol="NSSystemClockDidChangeNotification", optional=true)
     public static native NSString SystemClockDidChangeNotification();
     
-    @Method(selector = "timeIntervalSinceReferenceDate")
-    public native double getTimeIntervalSinceReferenceDate();
     @Method(selector = "timeIntervalSinceDate:")
     public native double getTimeIntervalSince(NSDate anotherDate);
-    @Method(selector = "timeIntervalSinceNow")
-    public native double getTimeIntervalSinceNow();
-    @Method(selector = "timeIntervalSince1970")
-    public native double getTimeIntervalSince1970();
     /**
      * @since Available in iOS 2.0 and later.
      */

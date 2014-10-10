@@ -32,6 +32,7 @@ import org.robovm.apple.coreanimation.*;
 import org.robovm.apple.coregraphics.*;
 import org.robovm.apple.coremedia.*;
 import org.robovm.apple.security.*;
+import org.robovm.apple.dispatch.*;
 /*</imports>*/
 
 /*<javadoc>*/
@@ -51,7 +52,8 @@ import org.robovm.apple.security.*;
     protected NSBlockOperation(SkipInit skipInit) { super(skipInit); }
     /*</constructors>*/
     /*<properties>*/
-    
+    @Property(selector = "executionBlocks")
+    public native NSArray<?> getExecutionBlocks();
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/

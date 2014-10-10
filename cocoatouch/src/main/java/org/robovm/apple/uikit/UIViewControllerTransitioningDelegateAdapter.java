@@ -60,5 +60,10 @@ import org.robovm.apple.coretext.*;
     public UIViewControllerInteractiveTransitioning getInteractionControllerForPresentation(UIViewControllerAnimatedTransitioning animator) { throw new UnsupportedOperationException(); }
     @NotImplemented("interactionControllerForDismissal:")
     public UIViewControllerInteractiveTransitioning getInteractionControllerForDismissal(UIViewControllerAnimatedTransitioning animator) { throw new UnsupportedOperationException(); }
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @NotImplemented("presentationControllerForPresentedViewController:presentingViewController:sourceViewController:")
+    public UIPresentationController presentationControllerForPresentedViewController$presentingViewController$sourceViewController$(UIViewController presented, UIViewController presenting, UIViewController source) { throw new UnsupportedOperationException(); }
     /*</methods>*/
 }

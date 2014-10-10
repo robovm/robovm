@@ -32,6 +32,7 @@ import org.robovm.apple.coreanimation.*;
 import org.robovm.apple.coregraphics.*;
 import org.robovm.apple.coremedia.*;
 import org.robovm.apple.security.*;
+import org.robovm.apple.dispatch.*;
 /*</imports>*/
 
 /*<javadoc>*/
@@ -49,14 +50,15 @@ import org.robovm.apple.security.*;
     public NSInputStream() {}
     protected NSInputStream(SkipInit skipInit) { super(skipInit); }
     public NSInputStream(NSData data) { super((SkipInit) null); initObject(initWithData$(data)); }
-    public NSInputStream(String path) { super((SkipInit) null); initObject(initWithFileAtPath$(path)); }
     /**
      * @since Available in iOS 4.0 and later.
      */
     public NSInputStream(NSURL url) { super((SkipInit) null); initObject(initWithURL$(url)); }
+    public NSInputStream(String path) { super((SkipInit) null); initObject(initWithFileAtPath$(path)); }
     /*</constructors>*/
     /*<properties>*/
-    
+    @Property(selector = "hasBytesAvailable")
+    public native boolean isHasBytesAvailable();
     /*</properties>*/
     /*<members>*//*</members>*/
     
@@ -84,16 +86,14 @@ import org.robovm.apple.security.*;
     /*<methods>*/
     @Method(selector = "read:maxLength:")
     protected native @MachineSizedSInt long read$maxLength$(@Pointer long buffer, @MachineSizedUInt long len);
-    @Method(selector = "hasBytesAvailable")
-    public native boolean hasBytesAvailable();
     @Method(selector = "initWithData:")
     protected native @Pointer long initWithData$(NSData data);
-    @Method(selector = "initWithFileAtPath:")
-    protected native @Pointer long initWithFileAtPath$(String path);
     /**
      * @since Available in iOS 4.0 and later.
      */
     @Method(selector = "initWithURL:")
     protected native @Pointer long initWithURL$(NSURL url);
+    @Method(selector = "initWithFileAtPath:")
+    protected native @Pointer long initWithFileAtPath$(String path);
     /*</methods>*/
 }

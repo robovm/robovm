@@ -500,18 +500,32 @@ import org.robovm.apple.coretext.*;
     @Method(selector = "sharedApplication")
     public static native UIApplication getSharedApplication();
     /**
-     * @since Available in iOS 3.0 and later.
+     * @since Available in iOS 8.0 and later.
      */
-    @Method(selector = "registerForRemoteNotificationTypes:")
-    public native void registerForRemoteNotificationTypes(UIRemoteNotificationType types);
+    @Method(selector = "registerForRemoteNotifications")
+    public native void registerForRemoteNotifications();
     /**
      * @since Available in iOS 3.0 and later.
      */
     @Method(selector = "unregisterForRemoteNotifications")
     public native void unregisterForRemoteNotifications();
     /**
-     * @since Available in iOS 3.0 and later.
+     * @since Available in iOS 8.0 and later.
      */
+    @Method(selector = "isRegisteredForRemoteNotifications")
+    public native boolean isRegisteredForRemoteNotifications();
+    /**
+     * @since Available in iOS 3.0 and later.
+     * @deprecated Deprecated in iOS 8.0.
+     */
+    @Deprecated
+    @Method(selector = "registerForRemoteNotificationTypes:")
+    public native void registerForRemoteNotificationTypes(UIRemoteNotificationType types);
+    /**
+     * @since Available in iOS 3.0 and later.
+     * @deprecated Deprecated in iOS 8.0.
+     */
+    @Deprecated
     @Method(selector = "enabledRemoteNotificationTypes")
     public native UIRemoteNotificationType getEnabledRemoteNotificationTypes();
     /**
@@ -534,6 +548,16 @@ import org.robovm.apple.coretext.*;
      */
     @Method(selector = "cancelAllLocalNotifications")
     public native void cancelAllLocalNotifications();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @Method(selector = "registerUserNotificationSettings:")
+    public native void registerUserNotificationSettings(UIUserNotificationSettings notificationSettings);
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @Method(selector = "currentUserNotificationSettings")
+    public native UIUserNotificationSettings getCurrentUserNotificationSettings();
     /**
      * @since Available in iOS 4.0 and later.
      */

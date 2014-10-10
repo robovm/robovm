@@ -179,6 +179,11 @@ import org.robovm.apple.coretext.*;
      */
     @Method(selector = "tableView:titleForDeleteConfirmationButtonForRowAtIndexPath:")
     public native String getDeleteConfirmationButtonTitle(UITableView tableView, NSIndexPath indexPath);
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @Method(selector = "tableView:editActionsForRowAtIndexPath:")
+    public native NSArray<?> tableView$editActionsForRowAtIndexPath$(UITableView tableView, NSIndexPath indexPath);
     @Method(selector = "tableView:shouldIndentWhileEditingRowAtIndexPath:")
     public native boolean shouldIndentWhileEditingRow(UITableView tableView, NSIndexPath indexPath);
     @Method(selector = "tableView:willBeginEditingRowAtIndexPath:")

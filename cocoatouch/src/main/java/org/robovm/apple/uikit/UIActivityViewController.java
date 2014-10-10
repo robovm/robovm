@@ -53,10 +53,30 @@ import org.robovm.apple.coretext.*;
     public UIActivityViewController(NSArray<?> activityItems, NSArray<UIActivity> applicationActivities) { super((SkipInit) null); initObject(initWithActivityItems$applicationActivities$(activityItems, applicationActivities)); }
     /*</constructors>*/
     /*<properties>*/
+    /**
+     * @since Available in iOS 6.0 and later.
+     * @deprecated Deprecated in iOS 8.0.
+     */
+    @Deprecated
     @Property(selector = "completionHandler")
     public native @Block VoidBlock2<String, Boolean> getCompletionHandler();
+    /**
+     * @since Available in iOS 6.0 and later.
+     * @deprecated Deprecated in iOS 8.0.
+     */
+    @Deprecated
     @Property(selector = "setCompletionHandler:")
     public native void setCompletionHandler(@Block VoidBlock2<String, Boolean> v);
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @Property(selector = "completionWithItemsHandler")
+    public native FunctionPtr getCompletionWithItemsHandler();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @Property(selector = "setCompletionWithItemsHandler:")
+    public native void setCompletionWithItemsHandler(FunctionPtr v);
     @Property(selector = "excludedActivityTypes")
     public native @org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String> getExcludedActivityTypes();
     @Property(selector = "setExcludedActivityTypes:")

@@ -32,6 +32,7 @@ import org.robovm.apple.coreanimation.*;
 import org.robovm.apple.coregraphics.*;
 import org.robovm.apple.coremedia.*;
 import org.robovm.apple.security.*;
+import org.robovm.apple.dispatch.*;
 /*</imports>*/
 
 /*<javadoc>*/
@@ -111,6 +112,9 @@ import org.robovm.apple.security.*;
     public static final double FoundationVersionNumber10_8_2 = 945.11;
     public static final double FoundationVersionNumber10_8_3 = 945.16;
     public static final double FoundationVersionNumber10_8_4 = 945.18;
+    public static final int FoundationVersionNumber10_9 = 1056;
+    public static final int FoundationVersionNumber10_9_1 = 1056;
+    public static final double FoundationVersionNumber10_9_2 = 1056.13;
     public static final double FoundationVersionNumber_iPhoneOS_2_0 = 678.24;
     public static final double FoundationVersionNumber_iPhoneOS_2_1 = 678.26;
     public static final double FoundationVersionNumber_iPhoneOS_2_2 = 678.29;
@@ -123,8 +127,10 @@ import org.robovm.apple.security.*;
     public static final double FoundationVersionNumber_iOS_4_3 = 751.49;
     public static final double FoundationVersionNumber_iOS_5_0 = 881.00;
     public static final double FoundationVersionNumber_iOS_5_1 = 890.10;
-    public static final double FoundationVersionNumber_iOS_6_0 = 993.00;
+    public static final double FoundationVersionNumber_iOS_6_0 = 992.00;
     public static final double FoundationVersionNumber_iOS_6_1 = 993.00;
+    public static final double FoundationVersionNumber_iOS_7_0 = 1047.20;
+    public static final double FoundationVersionNumber_iOS_7_1 = 1047.25;
     public static final double TimeIntervalSince1970 = 978307200.0;
     public static final int DecimalMaxSize = 8;
     public static final int DecimalNoScale = 32767;
@@ -133,7 +139,48 @@ import org.robovm.apple.security.*;
     public static final int NotFound = 2147483647;
     public static final int DateComponentUndefined = 2147483647;
     public static final int OpenStepUnicodeReservedBase = 62464;
+    public static final long DateIntervalFormatterNoStyle = 0L;
+    public static final long DateIntervalFormatterShortStyle = 1L;
+    public static final long DateIntervalFormatterMediumStyle = 2L;
+    public static final long DateIntervalFormatterLongStyle = 3L;
+    public static final long DateIntervalFormatterFullStyle = 4L;
+    public static final long MassFormatterUnitGram = 11L;
+    public static final long MassFormatterUnitKilogram = 14L;
+    public static final long MassFormatterUnitOunce = 1537L;
+    public static final long MassFormatterUnitPound = 1538L;
+    public static final long MassFormatterUnitStone = 1539L;
+    public static final long LengthFormatterUnitMillimeter = 8L;
+    public static final long LengthFormatterUnitCentimeter = 9L;
+    public static final long LengthFormatterUnitMeter = 11L;
+    public static final long LengthFormatterUnitKilometer = 14L;
+    public static final long LengthFormatterUnitInch = 1281L;
+    public static final long LengthFormatterUnitFoot = 1282L;
+    public static final long LengthFormatterUnitYard = 1283L;
+    public static final long LengthFormatterUnitMile = 1284L;
+    public static final long EnergyFormatterUnitJoule = 11L;
+    public static final long EnergyFormatterUnitKilojoule = 14L;
+    public static final long EnergyFormatterUnitCalorie = 1793L;
+    public static final long EnergyFormatterUnitKilocalorie = 1794L;
     public static final int OperationQueueDefaultMaxConcurrentOperationCount = -1;
+    public static final long XMLParserResolveExternalEntitiesNever = 0L;
+    public static final long XMLParserResolveExternalEntitiesNoNetwork = 1L;
+    public static final long XMLParserResolveExternalEntitiesSameOriginOnly = 2L;
+    public static final long XMLParserResolveExternalEntitiesAlways = 3L;
+    public static final long DateComponentsFormatterUnitsStylePositional = 0L;
+    public static final long DateComponentsFormatterUnitsStyleAbbreviated = 1L;
+    public static final long DateComponentsFormatterUnitsStyleShort = 2L;
+    public static final long DateComponentsFormatterUnitsStyleFull = 3L;
+    public static final long DateComponentsFormatterUnitsStyleSpellOut = 4L;
+    public static final long DateComponentsFormatterZeroFormattingBehaviorNone = 0L;
+    public static final long DateComponentsFormatterZeroFormattingBehaviorDefault = 1L;
+    public static final long DateComponentsFormatterZeroFormattingBehaviorDropLeading = 2L;
+    public static final long DateComponentsFormatterZeroFormattingBehaviorDropMiddle = 4L;
+    public static final long DateComponentsFormatterZeroFormattingBehaviorDropTrailing = 8L;
+    public static final long DateComponentsFormatterZeroFormattingBehaviorDropAll = 14L;
+    public static final long DateComponentsFormatterZeroFormattingBehaviorPad = 65536L;
+    public static final long ItemProviderUnknownError = -1L;
+    public static final long ItemProviderItemUnavailableError = -1000L;
+    public static final long ItemProviderUnexpectedValueClassError = -1100L;
     public static final int UndoCloseGroupingRunLoopOrdering = 350000;
     /*</constants>*/
     /*<constructors>*//*</constructors>*/
@@ -216,6 +263,41 @@ import org.robovm.apple.security.*;
     /*<methods>*/
     @GlobalValue(symbol="NSFoundationVersionNumber", optional=true)
     public static native double FoundationVersionNumber();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @GlobalValue(symbol="NSStringEncodingDetectionSuggestedEncodingsKey", optional=true)
+    public static native String StringEncodingDetectionSuggestedEncodingsKey();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @GlobalValue(symbol="NSStringEncodingDetectionDisallowedEncodingsKey", optional=true)
+    public static native String StringEncodingDetectionDisallowedEncodingsKey();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @GlobalValue(symbol="NSStringEncodingDetectionUseOnlySuggestedEncodingsKey", optional=true)
+    public static native String StringEncodingDetectionUseOnlySuggestedEncodingsKey();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @GlobalValue(symbol="NSStringEncodingDetectionAllowLossyKey", optional=true)
+    public static native String StringEncodingDetectionAllowLossyKey();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @GlobalValue(symbol="NSStringEncodingDetectionFromWindowsKey", optional=true)
+    public static native String StringEncodingDetectionFromWindowsKey();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @GlobalValue(symbol="NSStringEncodingDetectionLossySubstitutionKey", optional=true)
+    public static native String StringEncodingDetectionLossySubstitutionKey();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @GlobalValue(symbol="NSStringEncodingDetectionLikelyLanguageKey", optional=true)
+    public static native String StringEncodingDetectionLikelyLanguageKey();
     @GlobalValue(symbol="NSCocoaErrorDomain", optional=true)
     public static native NSString CocoaErrorDomain();
     @GlobalValue(symbol="NSPOSIXErrorDomain", optional=true)
@@ -299,6 +381,11 @@ import org.robovm.apple.security.*;
      */
     @GlobalValue(symbol="NSURLKeysOfUnsetValuesKey", optional=true)
     public static native NSString URLKeysOfUnsetValuesKey();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @GlobalValue(symbol="NSThumbnail1024x1024SizeKey", optional=true)
+    public static native String Thumbnail1024x1024SizeKey();
     @GlobalValue(symbol="NSURLErrorDomain", optional=true)
     public static native NSString URLErrorDomain();
     /**
@@ -324,7 +411,7 @@ import org.robovm.apple.security.*;
     @GlobalValue(symbol="NSURLErrorFailingURLPeerTrustErrorKey", optional=true)
     public static native NSString URLErrorFailingURLPeerTrustErrorKey();
     /**
-     * @since Available in iOS 7.0 and later.
+     * @since Available in iOS 8.0 and later.
      */
     @GlobalValue(symbol="NSURLErrorBackgroundTaskCancelledReasonKey", optional=true)
     public static native NSString URLErrorBackgroundTaskCancelledReasonKey();
@@ -333,14 +420,74 @@ import org.robovm.apple.security.*;
      */
     @GlobalValue(symbol="NSXMLParserErrorDomain", optional=true)
     public static native NSString XMLParserErrorDomain();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @GlobalValue(symbol="NSExtensionItemsAndErrorsKey", optional=true)
+    public static native String ExtensionItemsAndErrorsKey();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @GlobalValue(symbol="NSItemProviderPreferredImageSizeKey", optional=true)
+    public static native String ItemProviderPreferredImageSizeKey();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @GlobalValue(symbol="NSExtensionJavaScriptPreprocessingResultsKey", optional=true)
+    public static native String ExtensionJavaScriptPreprocessingResultsKey();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @GlobalValue(symbol="NSExtensionJavaScriptFinalizeArgumentKey", optional=true)
+    public static native String ExtensionJavaScriptFinalizeArgumentKey();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @GlobalValue(symbol="NSItemProviderErrorDomain", optional=true)
+    public static native NSString ItemProviderErrorDomain();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @GlobalValue(symbol="NSExtensionItemAttributedTitleKey", optional=true)
+    public static native String ExtensionItemAttributedTitleKey();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @GlobalValue(symbol="NSExtensionItemAttributedContentTextKey", optional=true)
+    public static native String ExtensionItemAttributedContentTextKey();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @GlobalValue(symbol="NSExtensionItemAttachmentsKey", optional=true)
+    public static native String ExtensionItemAttachmentsKey();
     @GlobalValue(symbol="NSNetServicesErrorCode", optional=true)
     public static native NSString NetServicesErrorCode();
     @GlobalValue(symbol="NSNetServicesErrorDomain", optional=true)
     public static native NSString NetServicesErrorDomain();
     /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @GlobalValue(symbol="NSURLSessionTaskPriorityDefault", optional=true)
+    public static native float URLSessionTaskPriorityDefault();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @GlobalValue(symbol="NSURLSessionTaskPriorityLow", optional=true)
+    public static native float URLSessionTaskPriorityLow();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @GlobalValue(symbol="NSURLSessionTaskPriorityHigh", optional=true)
+    public static native float URLSessionTaskPriorityHigh();
+    /**
      * @since Available in iOS 7.0 and later.
      */
     @GlobalValue(symbol="NSURLSessionDownloadTaskResumeData", optional=true)
     public static native String URLSessionDownloadTaskResumeData();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @GlobalValue(symbol="NSUserActivityTypeBrowsingWeb", optional=true)
+    public static native String UserActivityTypeBrowsingWeb();
     /*</methods>*/
 }

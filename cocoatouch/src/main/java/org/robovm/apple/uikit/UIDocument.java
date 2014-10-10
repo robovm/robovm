@@ -82,6 +82,16 @@ import org.robovm.apple.coretext.*;
     public native NSUndoManager getUndoManager();
     @Property(selector = "setUndoManager:")
     public native void setUndoManager(NSUndoManager v);
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @Property(selector = "userActivity")
+    public native NSUserActivity getUserActivity();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @Property(selector = "setUserActivity:")
+    public native void setUserActivity(NSUserActivity v);
     @Property(selector = "presentedItemURL")
     public native NSURL getPresentedItemURL();
     @Property(selector = "presentedItemOperationQueue")
@@ -143,6 +153,16 @@ import org.robovm.apple.coretext.*;
     public native void userInteractionNoLongerPermitted(NSError error);
     @Method(selector = "revertToContentsOfURL:completionHandler:")
     public native void revert(NSURL url, @Block VoidBooleanBlock completionHandler);
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @Method(selector = "updateUserActivityState:")
+    public native void updateUserActivityState$(NSUserActivity userActivity);
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @Method(selector = "restoreUserActivityState:")
+    public native void restoreUserActivityState$(NSUserActivity userActivity);
     @Method(selector = "relinquishPresentedItemToReader:")
     public native void relinquishPresentedItemToReader(@Block("(@Block)") VoidBlock1<Runnable> reader);
     @Method(selector = "relinquishPresentedItemToWriter:")

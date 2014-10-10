@@ -32,6 +32,7 @@ import org.robovm.apple.coreanimation.*;
 import org.robovm.apple.coregraphics.*;
 import org.robovm.apple.coremedia.*;
 import org.robovm.apple.security.*;
+import org.robovm.apple.dispatch.*;
 /*</imports>*/
 
 /*<javadoc>*/
@@ -61,7 +62,8 @@ import org.robovm.apple.security.*;
     protected NSUserDefaults(SkipInit skipInit) { super(skipInit); }
     /*</constructors>*/
     /*<properties>*/
-    
+    @Property(selector = "volatileDomainNames")
+    public native NSArray<?> getVolatileDomainNames();
     /*</properties>*/
     /*<members>*//*</members>*/
     public void put(String defaultName, NSObject value) {
@@ -168,8 +170,6 @@ import org.robovm.apple.security.*;
     public native void removeSuite(String suiteName);
     @Method(selector = "dictionaryRepresentation")
     public native NSDictionary<?, ?> asDictionary();
-    @Method(selector = "volatileDomainNames")
-    public native @org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String> getVolatileDomainNames();
     @Method(selector = "volatileDomainForName:")
     public native NSDictionary<?, ?> getVolatileDomain(String domainName);
     @Method(selector = "setVolatileDomain:forName:")

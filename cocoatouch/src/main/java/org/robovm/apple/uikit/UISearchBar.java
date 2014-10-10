@@ -42,7 +42,7 @@ import org.robovm.apple.coretext.*;
 /*<annotations>*/@Library("UIKit") @NativeClass/*</annotations>*/
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/UISearchBar/*</name>*/ 
     extends /*<extends>*/UIView/*</extends>*/ 
-    /*<implements>*/implements UIBarPositioning/*</implements>*/ {
+    /*<implements>*/implements UIBarPositioning, UITextInputTraits/*</implements>*/ {
 
     /*<ptr>*/public static class UISearchBarPtr extends Ptr<UISearchBar, UISearchBarPtr> {}/*</ptr>*/
     /*<bind>*/static { ObjCRuntime.bind(UISearchBar.class); }/*</bind>*/
@@ -139,22 +139,6 @@ import org.robovm.apple.coretext.*;
      */
     @Property(selector = "setTranslucent:")
     public native void setTranslucent(boolean v);
-    @Property(selector = "autocapitalizationType")
-    public native UITextAutocapitalizationType getAutocapitalizationType();
-    @Property(selector = "setAutocapitalizationType:")
-    public native void setAutocapitalizationType(UITextAutocapitalizationType v);
-    @Property(selector = "autocorrectionType")
-    public native UITextAutocorrectionType getAutocorrectionType();
-    @Property(selector = "setAutocorrectionType:")
-    public native void setAutocorrectionType(UITextAutocorrectionType v);
-    @Property(selector = "spellCheckingType")
-    public native UITextSpellCheckingType getSpellCheckingType();
-    @Property(selector = "setSpellCheckingType:")
-    public native void setSpellCheckingType(UITextSpellCheckingType v);
-    @Property(selector = "keyboardType")
-    public native UIKeyboardType getKeyboardType();
-    @Property(selector = "setKeyboardType:")
-    public native void setKeyboardType(UIKeyboardType v);
     /**
      * @since Available in iOS 3.0 and later.
      */
@@ -231,6 +215,44 @@ import org.robovm.apple.coretext.*;
     public native void setSearchTextPositionAdjustment(@ByVal UIOffset v);
     @Property(selector = "barPosition")
     public native UIBarPosition getBarPosition();
+    @Property(selector = "autocapitalizationType")
+    public native UITextAutocapitalizationType getAutocapitalizationType();
+    @Property(selector = "setAutocapitalizationType:")
+    public native void setAutocapitalizationType(UITextAutocapitalizationType v);
+    @Property(selector = "autocorrectionType")
+    public native UITextAutocorrectionType getAutocorrectionType();
+    @Property(selector = "setAutocorrectionType:")
+    public native void setAutocorrectionType(UITextAutocorrectionType v);
+    /**
+     * @since Available in iOS 5.0 and later.
+     */
+    @Property(selector = "spellCheckingType")
+    public native UITextSpellCheckingType getSpellCheckingType();
+    /**
+     * @since Available in iOS 5.0 and later.
+     */
+    @Property(selector = "setSpellCheckingType:")
+    public native void setSpellCheckingType(UITextSpellCheckingType v);
+    @Property(selector = "keyboardType")
+    public native UIKeyboardType getKeyboardType();
+    @Property(selector = "setKeyboardType:")
+    public native void setKeyboardType(UIKeyboardType v);
+    @Property(selector = "keyboardAppearance")
+    public native UIKeyboardAppearance getKeyboardAppearance();
+    @Property(selector = "setKeyboardAppearance:")
+    public native void setKeyboardAppearance(UIKeyboardAppearance v);
+    @Property(selector = "returnKeyType")
+    public native UIReturnKeyType getReturnKeyType();
+    @Property(selector = "setReturnKeyType:")
+    public native void setReturnKeyType(UIReturnKeyType v);
+    @Property(selector = "enablesReturnKeyAutomatically")
+    public native boolean isEnablesReturnKeyAutomatically();
+    @Property(selector = "setEnablesReturnKeyAutomatically:")
+    public native void setEnablesReturnKeyAutomatically(boolean v);
+    @Property(selector = "isSecureTextEntry")
+    public native boolean isSecureTextEntry();
+    @Property(selector = "setSecureTextEntry:")
+    public native void setSecureTextEntry(boolean v);
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/

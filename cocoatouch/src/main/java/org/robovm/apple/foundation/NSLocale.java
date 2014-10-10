@@ -32,6 +32,7 @@ import org.robovm.apple.coreanimation.*;
 import org.robovm.apple.coregraphics.*;
 import org.robovm.apple.coremedia.*;
 import org.robovm.apple.security.*;
+import org.robovm.apple.dispatch.*;
 /*</imports>*/
 
 /*<javadoc>*/
@@ -70,7 +71,8 @@ import org.robovm.apple.security.*;
     }
     
     /*<properties>*/
-    
+    @Property(selector = "localeIdentifier")
+    public native String getLocaleIdentifier();
     /*</properties>*/
     /*<members>*//*</members>*/
     
@@ -185,8 +187,6 @@ import org.robovm.apple.security.*;
     public native NSObject getComponent(NSLocaleComponent key);
     @Method(selector = "displayNameForKey:value:")
     public native String getDisplayName(NSLocaleComponent key, NSObject value);
-    @Method(selector = "localeIdentifier")
-    public native String getLocaleIdentifier();
     @Method(selector = "initWithLocaleIdentifier:")
     protected native @Pointer long initWithLocaleIdentifier$(String string);
     /**

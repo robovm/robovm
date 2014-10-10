@@ -217,6 +217,16 @@ import org.robovm.apple.coretext.*;
      */
     @GlobalValue(symbol="UIApplicationLaunchOptionsBluetoothPeripheralsKey", optional=true)
     public static native NSString BluetoothPeripheralsKey();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @GlobalValue(symbol="UIApplicationLaunchOptionsUserActivityDictionaryKey", optional=true)
+    public static native NSString UserActivityDictionaryKey();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @GlobalValue(symbol="UIApplicationLaunchOptionsUserActivityTypeKey", optional=true)
+    public static native NSString UserActivityTypeKey();
     /*</methods>*/
     
     @Override

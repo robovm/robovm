@@ -32,6 +32,7 @@ import org.robovm.apple.coreanimation.*;
 import org.robovm.apple.coregraphics.*;
 import org.robovm.apple.coremedia.*;
 import org.robovm.apple.security.*;
+import org.robovm.apple.dispatch.*;
 /*</imports>*/
 
 /*<javadoc>*/
@@ -50,7 +51,32 @@ import org.robovm.apple.security.*;
     protected NSURLProtectionSpace(SkipInit skipInit) { super(skipInit); }
     /*</constructors>*/
     /*<properties>*/
-    
+    @Property(selector = "realm")
+    public native String getRealm();
+    @Property(selector = "receivesCredentialSecurely")
+    public native boolean isReceivesCredentialSecurely();
+    @Property(selector = "isProxy")
+    public native boolean isIsProxy();
+    @Property(selector = "host")
+    public native String getHost();
+    @Property(selector = "port")
+    public native @MachineSizedSInt long getPort();
+    @Property(selector = "proxyType")
+    public native String getProxyType();
+    @Property(selector = "protocol")
+    public native String getProtocol();
+    @Property(selector = "authenticationMethod")
+    public native String getAuthenticationMethod();
+    /**
+     * @since Available in iOS 3.0 and later.
+     */
+    @Property(selector = "distinguishedNames")
+    public native NSArray<?> getDistinguishedNames();
+    /**
+     * @since Available in iOS 3.0 and later.
+     */
+    @Property(selector = "serverTrust")
+    public native SecTrust getServerTrust();
     /*</properties>*/
     /*<members>*//*</members>*/
     
@@ -79,31 +105,5 @@ import org.robovm.apple.security.*;
     protected native @Pointer long initWithHost$port$protocol$realm$authenticationMethod$(String host, @MachineSizedSInt long port, NSURLProtectionSpaceProtocol protocol, String realm, NSURLAuthenticationMethod authenticationMethod);
     @Method(selector = "initWithProxyHost:port:type:realm:authenticationMethod:")
     protected native @Pointer long initWithProxyHost$port$type$realm$authenticationMethod$(String host, @MachineSizedSInt long port, NSURLProtectionSpaceProxyType type, String realm, NSURLAuthenticationMethod authenticationMethod);
-    @Method(selector = "realm")
-    public native String getRealm();
-    @Method(selector = "receivesCredentialSecurely")
-    public native boolean receivesCredentialSecurely();
-    @Method(selector = "isProxy")
-    public native boolean isProxy();
-    @Method(selector = "host")
-    public native String getHost();
-    @Method(selector = "port")
-    public native @MachineSizedSInt long getPort();
-    @Method(selector = "proxyType")
-    public native NSURLProtectionSpaceProxyType getProxyType();
-    @Method(selector = "protocol")
-    public native NSURLProtectionSpaceProtocol getProtocol();
-    @Method(selector = "authenticationMethod")
-    public native NSURLAuthenticationMethod getAuthenticationMethod();
-    /**
-     * @since Available in iOS 3.0 and later.
-     */
-    @Method(selector = "distinguishedNames")
-    public native @org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String> getDistinguishedNames();
-    /**
-     * @since Available in iOS 3.0 and later.
-     */
-    @Method(selector = "serverTrust")
-    public native SecTrust getServerTrust();
     /*</methods>*/
 }

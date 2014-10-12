@@ -32,6 +32,7 @@ import org.robovm.apple.coregraphics.*;
 import org.robovm.apple.coredata.*;
 import org.robovm.apple.coreimage.*;
 import org.robovm.apple.coretext.*;
+import org.robovm.apple.corelocation.*;
 /*</imports>*/
 
 /*<javadoc>*/
@@ -112,7 +113,7 @@ import org.robovm.apple.coretext.*;
     @Method(selector = "presentFromBarButtonItem:animated:completionHandler:")
     public native boolean presentFromBarButtonItem(UIBarButtonItem item, boolean animated, @Block VoidBlock3<UIPrintInteractionController, Boolean, NSError> completion);
     @Method(selector = "printToPrinter:completionHandler:")
-    public native boolean printToPrinter$completionHandler$(UIPrinter printer, FunctionPtr completion);
+    public native boolean print(UIPrinter printer, @Block VoidBlock3<UIPrintInteractionController, Boolean, NSError> completion);
     @Method(selector = "dismissAnimated:")
     public native void dismiss(boolean animated);
     @Method(selector = "isPrintingAvailable")

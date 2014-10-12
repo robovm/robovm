@@ -32,6 +32,7 @@ import org.robovm.apple.coregraphics.*;
 import org.robovm.apple.coredata.*;
 import org.robovm.apple.coreimage.*;
 import org.robovm.apple.coretext.*;
+import org.robovm.apple.corelocation.*;
 /*</imports>*/
 
 /*<javadoc>*/
@@ -42,9 +43,9 @@ import org.robovm.apple.coretext.*;
 /*<annotations>*/@Marshaler(ValuedEnum.AsMachineSizedSIntMarshaler.class)/*</annotations>*/
 public enum /*<name>*/UIImageRenderingMode/*</name>*/ implements ValuedEnum {
     /*<values>*/
-    utomatic(0L),
-    lwaysOriginal(1L),
-    lwaysTemplate(2L);
+    Automatic(0L),
+    AlwaysOriginal(1L),
+    AlwaysTemplate(2L);
     /*</values>*/
 
     private final long n;

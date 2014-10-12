@@ -32,6 +32,7 @@ import org.robovm.apple.coregraphics.*;
 import org.robovm.apple.coredata.*;
 import org.robovm.apple.coreimage.*;
 import org.robovm.apple.coretext.*;
+import org.robovm.apple.corelocation.*;
 /*</imports>*/
 
 /*<javadoc>*/
@@ -44,44 +45,7 @@ import org.robovm.apple.coretext.*;
     /*<ptr>*/
     /*</ptr>*/
     /*<bind>*/static { Bro.bind(UIKit.class); }/*</bind>*/
-    /*<constants>*/
-    public static final long Constant__UIUserInterfaceSizeClassUnspecified = 0L;
-    public static final long Constant__UIUserInterfaceSizeClassCompact = 1L;
-    public static final long Constant__UIUserInterfaceSizeClassRegular = 2L;
-    public static final long Constant__UITableViewRowActionStyleDefault = 0L;
-    public static final long Constant__UITableViewRowActionStyleDestructive = 0L;
-    public static final long Constant__UITableViewRowActionStyleNormal = 1L;
-    public static final long Constant__UIAccessibilityNavigationStyleAutomatic = 0L;
-    public static final long Constant__UIAccessibilityNavigationStyleSeparate = 1L;
-    public static final long Constant__UIAccessibilityNavigationStyleCombined = 2L;
-    public static final long Constant__UIAlertActionStyleDefault = 0L;
-    public static final long Constant__UIAlertActionStyleCancel = 1L;
-    public static final long Constant__UIAlertActionStyleDestructive = 2L;
-    public static final long Constant__UIAlertControllerStyleActionSheet = 0L;
-    public static final long Constant__UIAlertControllerStyleAlert = 1L;
-    public static final long Constant__UIDocumentPickerModeImport = 0L;
-    public static final long Constant__UIDocumentPickerModeOpen = 1L;
-    public static final long Constant__UIDocumentPickerModeExportToService = 2L;
-    public static final long Constant__UIDocumentPickerModeMoveToService = 3L;
-    public static final long Constant__UIDocumentMenuOrderFirst = 0L;
-    public static final long Constant__UIDocumentMenuOrderLast = 1L;
-    public static final long Constant__UIBlurEffectStyleExtraLight = 0L;
-    public static final long Constant__UIBlurEffectStyleLight = 1L;
-    public static final long Constant__UIBlurEffectStyleDark = 2L;
-    public static final long Constant__UIPrinterJobTypeUnknown = 0L;
-    public static final long Constant__UIPrinterJobTypeDocument = 1L;
-    public static final long Constant__UIPrinterJobTypeEnvelope = 2L;
-    public static final long Constant__UIPrinterJobTypeLabel = 4L;
-    public static final long Constant__UIPrinterJobTypePhoto = 8L;
-    public static final long Constant__UIPrinterJobTypeReceipt = 16L;
-    public static final long Constant__UIPrinterJobTypeRoll = 32L;
-    public static final long Constant__UIPrinterJobTypeLargeFormat = 64L;
-    public static final long Constant__UIPrinterJobTypePostcard = 128L;
-    public static final long Constant__UISplitViewControllerDisplayModeAutomatic = 0L;
-    public static final long Constant__UISplitViewControllerDisplayModePrimaryHidden = 1L;
-    public static final long Constant__UISplitViewControllerDisplayModeAllVisible = 2L;
-    public static final long Constant__UISplitViewControllerDisplayModePrimaryOverlay = 3L;
-    /*</constants>*/
+    /*<constants>*//*</constants>*/
     /*<constructors>*//*</constructors>*/
     /*<properties>*//*</properties>*/
     /*<members>*//*</members>*/

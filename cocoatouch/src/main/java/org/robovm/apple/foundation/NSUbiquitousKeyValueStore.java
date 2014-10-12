@@ -80,7 +80,7 @@ import org.robovm.apple.dispatch.*;
     /*</constructors>*/
     /*<properties>*/
     @Property(selector = "dictionaryRepresentation")
-    public native NSDictionary<?, ?> getDictionaryRepresentation();
+    public native NSDictionary<NSString, NSObject> asDictionary();
     /*</properties>*/
     /*<members>*//*</members>*/
     public void put(String key, NSObject object) {

@@ -109,35 +109,35 @@ import org.robovm.apple.dispatch.*;
     @Property(selector = "setPredicate:")
     public native void setPredicate(NSPredicate v);
     @Property(selector = "sortDescriptors")
-    public native NSArray<?> getSortDescriptors();
+    public native NSArray<NSSortDescriptor> getSortDescriptors();
     @Property(selector = "setSortDescriptors:")
-    public native void setSortDescriptors(NSArray<?> v);
+    public native void setSortDescriptors(NSArray<NSSortDescriptor> v);
     @Property(selector = "valueListAttributes")
-    public native NSArray<?> getValueListAttributes();
+    public native @org.robovm.rt.bro.annotation.Marshaler(NSMetadataItemAttribute.AsListMarshaler.class) List<NSMetadataItemAttribute> getValueListAttributes();
     @Property(selector = "setValueListAttributes:")
-    public native void setValueListAttributes(NSArray<?> v);
+    public native void setValueListAttributes(@org.robovm.rt.bro.annotation.Marshaler(NSMetadataItemAttribute.AsListMarshaler.class) List<NSMetadataItemAttribute> v);
     @Property(selector = "groupingAttributes")
-    public native NSArray<?> getGroupingAttributes();
+    public native @org.robovm.rt.bro.annotation.Marshaler(NSMetadataItemAttribute.AsListMarshaler.class) List<NSMetadataItemAttribute> getGroupingAttributes();
     @Property(selector = "setGroupingAttributes:")
-    public native void setGroupingAttributes(NSArray<?> v);
+    public native void setGroupingAttributes(@org.robovm.rt.bro.annotation.Marshaler(NSMetadataItemAttribute.AsListMarshaler.class) List<NSMetadataItemAttribute> v);
     @Property(selector = "notificationBatchingInterval")
     public native double getNotificationBatchingInterval();
     @Property(selector = "setNotificationBatchingInterval:")
     public native void setNotificationBatchingInterval(double v);
     @Property(selector = "searchScopes")
-    public native NSArray<?> getSearchScopes();
+    protected native NSArray<?> getSearchScopes0();
     @Property(selector = "setSearchScopes:")
-    public native void setSearchScopes(NSArray<?> v);
+    protected native void setSearchScopes0(NSArray<?> v);
     /**
      * @since Available in iOS 7.0 and later.
      */
     @Property(selector = "searchItems")
-    public native NSArray<?> getSearchItems();
+    protected native NSArray<?> getSearchItems0();
     /**
      * @since Available in iOS 7.0 and later.
      */
     @Property(selector = "setSearchItems:")
-    public native void setSearchItems(NSArray<?> v);
+    protected native void setSearchItems0(NSArray<?> v);
     /**
      * @since Available in iOS 7.0 and later.
      */
@@ -157,11 +157,11 @@ import org.robovm.apple.dispatch.*;
     @Property(selector = "resultCount")
     public native @MachineSizedUInt long getResultCount();
     @Property(selector = "results")
-    public native NSArray<?> getResults();
+    public native NSArray<NSMetadataItem> getResults();
     @Property(selector = "valueLists")
-    public native NSDictionary<?, ?> getValueLists();
+    protected native NSDictionary<NSString, NSMetadataQueryAttributeValueTuple> getValueLists0();
     @Property(selector = "groupedResults")
-    public native NSArray<?> getGroupedResults();
+    public native NSArray<NSMetadataQueryResultGroup> getGroupedResults();
     /*</properties>*/
     /*<members>*//*</members>*/
     public void setSearchScopes(NSArray<NSURL> scopes) {
@@ -177,11 +177,17 @@ import org.robovm.apple.dispatch.*;
         }
         setSearchScopes0(array);
     }
+    public List<String> getSearchScopes() {
+        return getSearchScopes0().asStringList();
+    }
     public void setSearchItems(NSArray<NSMetadataItem> items) {
         setSearchItems0(items);
     }
     public void setSearchItemURLs(NSArray<NSURL> urls) {
         setSearchItems0(urls);
+    }
+    public NSArray<NSObject> getSearchItems() {
+        return (NSArray<NSObject>) getSearchItems0();
     }
     public Map<NSMetadataItemAttribute, NSMetadataQueryAttributeValueTuple> getValueLists() {
         Map<NSMetadataItemAttribute, NSMetadataQueryAttributeValueTuple> values = new HashMap<>();

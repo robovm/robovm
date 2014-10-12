@@ -54,12 +54,7 @@ import org.robovm.apple.dispatch.*;
     public NSDecimalNumber(String numberValue, NSLocale locale) { super((SkipInit) null); initObject(initWithString$locale$(numberValue, locale)); }
     /*</constructors>*/
     /*<properties>*/
-    @Property(selector = "decimalValue")
-    public native @ByVal NSDecimal getDecimalValue();
-    @Property(selector = "objCType")
-    public native BytePtr getObjCType();
-    @Property(selector = "doubleValue")
-    public native double getDoubleValue();
+    
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
@@ -106,7 +101,7 @@ import org.robovm.apple.dispatch.*;
     @Method(selector = "maximumDecimalNumber")
     public static native NSDecimalNumber getMax();
     @Method(selector = "notANumber")
-    public static native NSDecimalNumber getNAN();
+    public static native NSDecimalNumber getNaN();
     @Method(selector = "setDefaultBehavior:")
     public static native void setDefaultBehavior(NSDecimalNumberBehaviors behavior);
     @Method(selector = "defaultBehavior")

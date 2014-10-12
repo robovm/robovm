@@ -32,6 +32,7 @@ import org.robovm.apple.coregraphics.*;
 import org.robovm.apple.coredata.*;
 import org.robovm.apple.coreimage.*;
 import org.robovm.apple.coretext.*;
+import org.robovm.apple.corelocation.*;
 /*</imports>*/
 
 /*<javadoc>*/
@@ -42,7 +43,7 @@ import org.robovm.apple.coretext.*;
 /*<annotations>*/@Library("UIKit") @NativeClass/*</annotations>*/
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/UIView/*</name>*/ 
     extends /*<extends>*/UIResponder/*</extends>*/ 
-    /*<implements>*/implements NSCoding, UIAppearanceContainer, UIDynamicItem, UIAccessibilityIdentification/*</implements>*/ {
+    /*<implements>*/implements NSCoding, UIAppearanceContainer, UIDynamicItem, UITraitEnvironment, UICoordinateSpace, UIAccessibilityIdentification/*</implements>*/ {
 
     /*<ptr>*/public static class UIViewPtr extends Ptr<UIView, UIViewPtr> {}/*</ptr>*/
     /*<bind>*/static { ObjCRuntime.bind(UIView.class); }/*</bind>*/
@@ -233,6 +234,8 @@ import org.robovm.apple.coretext.*;
      */
     @Property(selector = "setRestorationIdentifier:")
     public native void setRestorationIdentifier(String v);
+    @Property(selector = "traitCollection")
+    public native UITraitCollection getTraitCollection();
     /**
      * @since Available in iOS 5.0 and later.
      */
@@ -599,5 +602,27 @@ import org.robovm.apple.coretext.*;
     public native void draw(@ByVal CGRect rect, UIViewPrintFormatter formatter);
     @Method(selector = "encodeWithCoder:")
     public native void encode(NSCoder aCoder);
+    @Method(selector = "traitCollectionDidChange:")
+    public native void traitCollectionDidChange(UITraitCollection previousTraitCollection);
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @Method(selector = "convertPoint:toCoordinateSpace:")
+    public native @ByVal CGPoint convertPointToCoordinateSpace(@ByVal CGPoint point, UICoordinateSpace coordinateSpace);
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @Method(selector = "convertPoint:fromCoordinateSpace:")
+    public native @ByVal CGPoint convertPointFromCoordinateSpace(@ByVal CGPoint point, UICoordinateSpace coordinateSpace);
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @Method(selector = "convertRect:toCoordinateSpace:")
+    public native @ByVal CGRect convertRectToCoordinateSpace(@ByVal CGRect rect, UICoordinateSpace coordinateSpace);
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @Method(selector = "convertRect:fromCoordinateSpace:")
+    public native @ByVal CGRect convertRectFromCoordinateSpace(@ByVal CGRect rect, UICoordinateSpace coordinateSpace);
     /*</methods>*/
 }

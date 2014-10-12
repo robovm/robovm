@@ -83,12 +83,12 @@ import org.robovm.apple.dispatch.*;
      * @since Available in iOS 8.0 and later.
      */
     @Property(selector = "allowedExternalEntityURLs")
-    public native NSSet<?> getAllowedExternalEntityURLs();
+    public native NSSet<NSURL> getAllowedExternalEntityURLs();
     /**
      * @since Available in iOS 8.0 and later.
      */
     @Property(selector = "setAllowedExternalEntityURLs:")
-    public native void setAllowedExternalEntityURLs(NSSet<?> v);
+    public native void setAllowedExternalEntityURLs(NSSet<NSURL> v);
     @Property(selector = "parserError")
     public native NSError getParserError();
     @Property(selector = "shouldResolveExternalEntities")

@@ -32,6 +32,7 @@ import org.robovm.apple.coregraphics.*;
 import org.robovm.apple.coredata.*;
 import org.robovm.apple.coreimage.*;
 import org.robovm.apple.coretext.*;
+import org.robovm.apple.corelocation.*;
 /*</imports>*/
 
 /*<javadoc>*/
@@ -54,42 +55,42 @@ import org.robovm.apple.coretext.*;
      * @since Available in iOS 8.0 and later.
      */
     @Method(selector = "splitViewController:willChangeToDisplayMode:")
-    void splitViewController$willChangeToDisplayMode$(UISplitViewController svc, UISplitViewControllerDisplayMode displayMode);
+    void willChangeToDisplayMode(UISplitViewController svc, UISplitViewControllerDisplayMode displayMode);
     /**
      * @since Available in iOS 8.0 and later.
      */
     @Method(selector = "targetDisplayModeForActionInSplitViewController:")
-    UISplitViewControllerDisplayMode targetDisplayModeForActionInSplitViewController$(UISplitViewController svc);
+    UISplitViewControllerDisplayMode getTargetDisplayMode(UISplitViewController svc);
     /**
      * @since Available in iOS 8.0 and later.
      */
     @Method(selector = "splitViewController:showViewController:sender:")
-    boolean splitViewController$showViewController$sender$(UISplitViewController splitViewController, UIViewController vc, NSObject sender);
+    boolean showViewController(UISplitViewController splitViewController, UIViewController vc, NSObject sender);
     /**
      * @since Available in iOS 8.0 and later.
      */
     @Method(selector = "splitViewController:showDetailViewController:sender:")
-    boolean splitViewController$showDetailViewController$sender$(UISplitViewController splitViewController, UIViewController vc, NSObject sender);
+    boolean showDetailViewController(UISplitViewController splitViewController, UIViewController vc, NSObject sender);
     /**
      * @since Available in iOS 8.0 and later.
      */
     @Method(selector = "primaryViewControllerForCollapsingSplitViewController:")
-    UIViewController primaryViewControllerForCollapsingSplitViewController$(UISplitViewController splitViewController);
+    UIViewController getPrimaryViewControllerForCollapsing(UISplitViewController splitViewController);
     /**
      * @since Available in iOS 8.0 and later.
      */
     @Method(selector = "primaryViewControllerForExpandingSplitViewController:")
-    UIViewController primaryViewControllerForExpandingSplitViewController$(UISplitViewController splitViewController);
+    UIViewController getPrimaryViewControllerForExpanding(UISplitViewController splitViewController);
     /**
      * @since Available in iOS 8.0 and later.
      */
     @Method(selector = "splitViewController:collapseSecondaryViewController:ontoPrimaryViewController:")
-    boolean splitViewController$collapseSecondaryViewController$ontoPrimaryViewController$(UISplitViewController splitViewController, UIViewController secondaryViewController, UIViewController primaryViewController);
+    boolean collapseSecondaryViewController(UISplitViewController splitViewController, UIViewController secondaryViewController, UIViewController primaryViewController);
     /**
      * @since Available in iOS 8.0 and later.
      */
     @Method(selector = "splitViewController:separateSecondaryViewControllerFromPrimaryViewController:")
-    UIViewController splitViewController$separateSecondaryViewControllerFromPrimaryViewController$(UISplitViewController splitViewController, UIViewController primaryViewController);
+    UIViewController separateSecondaryViewController(UISplitViewController splitViewController, UIViewController primaryViewController);
     /**
      * @since Available in iOS 7.0 and later.
      */

@@ -32,6 +32,7 @@ import org.robovm.apple.coregraphics.*;
 import org.robovm.apple.coredata.*;
 import org.robovm.apple.coreimage.*;
 import org.robovm.apple.coretext.*;
+import org.robovm.apple.corelocation.*;
 /*</imports>*/
 import org.robovm.apple.iad.ADInterstitialPresentationPolicy;
 import org.robovm.apple.mediaplayer.MPMoviePlayerViewController;
@@ -44,7 +45,7 @@ import org.robovm.apple.mediaplayer.MPMoviePlayerViewController;
 /*<annotations>*/@Library("UIKit") @NativeClass/*</annotations>*/
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/UIViewController/*</name>*/ 
     extends /*<extends>*/UIResponder/*</extends>*/ 
-    /*<implements>*/implements NSCoding, UIAppearanceContainer, UIStateRestoring/*</implements>*/ {
+    /*<implements>*/implements NSCoding, UIAppearanceContainer, UITraitEnvironment, UIStateRestoring/*</implements>*/ {
 
     /*<ptr>*/public static class UIViewControllerPtr extends Ptr<UIViewController, UIViewControllerPtr> {}/*</ptr>*/
     /*<bind>*/static { ObjCRuntime.bind(UIViewController.class); }/*</bind>*/
@@ -323,6 +324,8 @@ import org.robovm.apple.mediaplayer.MPMoviePlayerViewController;
     public native void setTabBarItem(UITabBarItem v);
     @Property(selector = "tabBarController")
     public native UITabBarController getTabBarController();
+    @Property(selector = "traitCollection")
+    public native UITraitCollection getTraitCollection();
     @Property(selector = "restorationParent")
     public native UIStateRestoring getRestorationParent();
     @Property(selector = "objectRestorationClass")
@@ -549,17 +552,17 @@ import org.robovm.apple.mediaplayer.MPMoviePlayerViewController;
      * @since Available in iOS 8.0 and later.
      */
     @Method(selector = "targetViewControllerForAction:sender:")
-    public native UIViewController targetViewControllerForAction$sender$(Selector action, NSObject sender);
+    public native UIViewController getTargetViewControllerForAction(Selector action, NSObject sender);
     /**
      * @since Available in iOS 8.0 and later.
      */
     @Method(selector = "showViewController:sender:")
-    public native void showViewController$sender$(UIViewController vc, NSObject sender);
+    public native void showViewController(UIViewController vc, NSObject sender);
     /**
      * @since Available in iOS 8.0 and later.
      */
     @Method(selector = "showDetailViewController:sender:")
-    public native void showDetailViewController$sender$(UIViewController vc, NSObject sender);
+    public native void showDetailViewController(UIViewController vc, NSObject sender);
     /**
      * @since Available in iOS 2.0 and later.
      * @deprecated Deprecated in iOS 6.0.
@@ -686,12 +689,12 @@ import org.robovm.apple.mediaplayer.MPMoviePlayerViewController;
      * @since Available in iOS 8.0 and later.
      */
     @Method(selector = "setOverrideTraitCollection:forChildViewController:")
-    public native void setOverrideTraitCollection$forChildViewController$(UITraitCollection collection, UIViewController childViewController);
+    public native void setOverrideTraitCollection(UITraitCollection collection, UIViewController childViewController);
     /**
      * @since Available in iOS 8.0 and later.
      */
     @Method(selector = "overrideTraitCollectionForChildViewController:")
-    public native UITraitCollection overrideTraitCollectionForChildViewController$(UIViewController childViewController);
+    public native UITraitCollection getOverrideTraitCollection(UIViewController childViewController);
     /**
      * @since Available in iOS 5.0 and later.
      * @deprecated Deprecated in iOS 6.0.
@@ -755,13 +758,15 @@ import org.robovm.apple.mediaplayer.MPMoviePlayerViewController;
      * @since Available in iOS 8.0 and later.
      */
     @Method(selector = "collapseSecondaryViewController:forSplitViewController:")
-    public native void collapseSecondaryViewController$forSplitViewController$(UIViewController secondaryViewController, UISplitViewController splitViewController);
+    public native void collapseSecondaryViewController(UIViewController secondaryViewController, UISplitViewController splitViewController);
     /**
      * @since Available in iOS 8.0 and later.
      */
     @Method(selector = "separateSecondaryViewControllerForSplitViewController:")
-    public native UIViewController separateSecondaryViewControllerForSplitViewController$(UISplitViewController splitViewController);
+    public native UIViewController separateSecondaryViewController(UISplitViewController splitViewController);
     @Method(selector = "encodeWithCoder:")
     public native void encode(NSCoder aCoder);
+    @Method(selector = "traitCollectionDidChange:")
+    public native void traitCollectionDidChange(UITraitCollection previousTraitCollection);
     /*</methods>*/
 }

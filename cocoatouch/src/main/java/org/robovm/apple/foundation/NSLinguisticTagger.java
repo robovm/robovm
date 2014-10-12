@@ -61,7 +61,7 @@ import org.robovm.apple.dispatch.*;
      * @since Available in iOS 5.0 and later.
      */
     @Property(selector = "tagSchemes")
-    public native NSArray<?> getTagSchemes();
+    public native @org.robovm.rt.bro.annotation.Marshaler(NSArray.AsListMarshaler.class) List<NSLinguisticTagScheme> getTagSchemes();
     /**
      * @since Available in iOS 5.0 and later.
      */

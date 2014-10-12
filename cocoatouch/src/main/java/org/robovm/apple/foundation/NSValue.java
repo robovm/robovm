@@ -54,11 +54,11 @@ import org.robovm.apple.mapkit.MKCoordinateSpan;
     /*</constructors>*/
     /*<properties>*/
     @Property(selector = "objCType")
-    public native BytePtr getObjCType();
+    protected native BytePtr objCType();
     @Property(selector = "nonretainedObjectValue")
-    public native NSObject getNonretainedObjectValue();
+    public native NSObject objectValue();
     @Property(selector = "rangeValue")
-    public native @ByVal NSRange getRangeValue();
+    public native @ByVal NSRange rangeValue();
     /*</properties>*/
     /*<members>*//*</members>*/
 

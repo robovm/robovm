@@ -51,45 +51,25 @@ import org.robovm.apple.dispatch.*;
     /*</constructors>*/
     /*<properties>*/
     @Property(selector = "charValue")
-    public native byte getCharValue();
-    @Property(selector = "unsignedCharValue")
-    public native byte getUnsignedCharValue();
+    public native byte byteValue();
     @Property(selector = "shortValue")
-    public native short getShortValue();
+    public native short shortValue();
     @Property(selector = "unsignedShortValue")
-    public native short getUnsignedShortValue();
+    public native char charValue();
     @Property(selector = "intValue")
-    public native int getIntValue();
-    @Property(selector = "unsignedIntValue")
-    public native int getUnsignedIntValue();
-    @Property(selector = "longValue")
-    public native @MachineSizedSInt long getLongValue();
-    @Property(selector = "unsignedLongValue")
-    public native @MachineSizedUInt long getUnsignedLongValue();
+    public native int intValue();
     @Property(selector = "longLongValue")
-    public native long getLongLongValue();
-    @Property(selector = "unsignedLongLongValue")
-    public native long getUnsignedLongLongValue();
+    public native long longValue();
     @Property(selector = "floatValue")
-    public native float getFloatValue();
+    public native float floatValue();
     @Property(selector = "doubleValue")
-    public native double getDoubleValue();
+    public native double doubleValue();
     @Property(selector = "boolValue")
-    public native boolean isBoolValue();
-    /**
-     * @since Available in iOS 2.0 and later.
-     */
-    @Property(selector = "integerValue")
-    public native @MachineSizedSInt long getIntegerValue();
-    /**
-     * @since Available in iOS 2.0 and later.
-     */
-    @Property(selector = "unsignedIntegerValue")
-    public native @MachineSizedUInt long getUnsignedIntegerValue();
+    public native boolean booleanValue();
     @Property(selector = "stringValue")
-    public native String getStringValue();
+    public native String stringValue();
     @Property(selector = "decimalValue")
-    public native @ByVal NSDecimal getDecimalValue();
+    public native @ByVal NSDecimal decimalValue();
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/

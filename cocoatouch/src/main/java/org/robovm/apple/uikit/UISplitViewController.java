@@ -32,6 +32,7 @@ import org.robovm.apple.coregraphics.*;
 import org.robovm.apple.coredata.*;
 import org.robovm.apple.coreimage.*;
 import org.robovm.apple.coretext.*;
+import org.robovm.apple.corelocation.*;
 /*</imports>*/
 
 /*<javadoc>*/
@@ -132,16 +133,16 @@ import org.robovm.apple.coretext.*;
      * @since Available in iOS 8.0 and later.
      */
     @Method(selector = "displayModeButtonItem")
-    public native UIBarButtonItem displayModeButtonItem();
+    public native UIBarButtonItem getDisplayModeButtonItem();
     /**
      * @since Available in iOS 8.0 and later.
      */
     @Method(selector = "showViewController:sender:")
-    public native void showViewController$sender$(UIViewController vc, NSObject sender);
+    public native void showViewController(UIViewController vc, NSObject sender);
     /**
      * @since Available in iOS 8.0 and later.
      */
     @Method(selector = "showDetailViewController:sender:")
-    public native void showDetailViewController$sender$(UIViewController vc, NSObject sender);
+    public native void showDetailViewController(UIViewController vc, NSObject sender);
     /*</methods>*/
 }

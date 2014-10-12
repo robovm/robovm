@@ -1,5 +1,5 @@
 package: org.robovm.apple.uikit
-include: [foundation.yaml, coreanimation.yaml, coregraphics.yaml, coredata.yaml, coreimage.yaml, coretext.yaml]
+include: [foundation.yaml, coreanimation.yaml, coregraphics.yaml, coredata.yaml, coreimage.yaml, coretext.yaml, corelocation.yaml]
 library: UIKit
 framework: UIKit
 clang_args: ['-x', 'objective-c']
@@ -13,6 +13,7 @@ typedefs:
     'void (^)(CGRect, BOOL *)': '@Block("(@ByVal, )") VoidBlock2<CGRect, BytePtr>'
     'void (^)(void (^)(void))': '@Block("(@Block)") VoidBlock1<Runnable>'
     'void (^)(NSError *)': '@Block VoidBlock1<NSError>'
+    'void (^)(UILexicon *)': '@Block VoidBlock1<UILexicon>'
     # UIAccelerationValue: double
     # UIBackgroundTaskIdentifier: int
     # CGPathRef: CGPath
@@ -34,11 +35,14 @@ enums:
     NSTextWritingDirection: {}
     NSUnderlineStyle: {}
     NSWritingDirection: {}
+    UIAccessibilityNavigationStyle: {}
     UIAccessibilityScrollDirection: {}
     UIAccessibilityZoomType: {prefix: UIAccessibilityZoomType}
     UIActionSheetStyle: {}
     UIActivityCategory: {}
     UIActivityIndicatorViewStyle: {}
+    UIAlertActionStyle: {}
+    UIAlertControllerStyle: {}
     UIAlertViewStyle: {}
     UIApplicationState: {}
     UIAttachmentBehaviorType: {}
@@ -50,6 +54,7 @@ enums:
     UIBarPosition: {}
     UIBarStyle: {}
     UIBaselineAdjustment: {}
+    UIBlurEffectStyle: {}
     UIButtonType: {}
     UICollectionElementCategory: {}
     UICollectionUpdateAction: {}
@@ -65,6 +70,8 @@ enums:
     UIDeviceBatteryState: {}
     UIDeviceOrientation: {}
     UIDocumentChangeKind: {}
+    UIDocumentMenuOrder: {}
+    UIDocumentPickerMode: {}
     UIDocumentSaveOperation: {}
     UIDocumentState: {}
     UIEventSubtype: {}
@@ -78,7 +85,7 @@ enums:
     UIImagePickerControllerCameraFlashMode: {}
     UIImagePickerControllerQualityType: {}
     UIImagePickerControllerSourceType: {}
-    UIImageRenderingMode: {}
+    UIImageRenderingMode: { prefix: UIImageRenderingMode }
     UIImageResizingMode: {}
     UIInputViewStyle: {}
     UIInterfaceOrientation: {}
@@ -100,6 +107,7 @@ enums:
     UIPageViewControllerTransitionStyle: {}
     UIPopoverArrowDirection: {}
     UIPrintError: {first: UIPrintingNotAvailableError, suffix: Error, UIPrintingNotAvailableError: PrintingNotAvailableError}
+    UIPrinterJobTypes: {}
     UIPrintInfoDuplex: {}
     UIPrintInfoOrientation: {}
     UIPrintInfoOutputType: {}
@@ -116,6 +124,7 @@ enums:
     UISearchBarStyle: {}
     UISegmentedControlSegment: {}
     UISegmentedControlStyle: {}
+    UISplitViewControllerDisplayMode: {}
     UIStatusBarAnimation: {}
     UIStatusBarStyle: {}
     UISwipeGestureRecognizerDirection: {}
@@ -128,6 +137,7 @@ enums:
     UITableViewCellSeparatorStyle: {}
     UITableViewCellStateMask: {suffix: mask}
     UITableViewCellStyle: {}
+    UITableViewRowActionStyle: {}
     UITableViewRowAnimation: {}
     UITableViewScrollPosition: {}
     UITableViewStyle: {}
@@ -145,6 +155,7 @@ enums:
     UITouchPhase: {}
     UIUserInterfaceIdiom: {prefix: UIUserInterfaceIdiom}
     UIUserInterfaceLayoutDirection: {}
+    UIUserInterfaceSizeClass: {}
     UIUserNotificationActionContext: {}
     UIUserNotificationActivationMode: {}
     UIUserNotificationType: {}
@@ -980,7 +991,6 @@ classes:
                 name: removeBoundary
             '-boundaryWithIdentifier:':
                 name: getBoundary
-
     UIColor: # DONE
         methods:
             '+(black|darkGray|lightGray|white|gray|red|green|blue|cyan|yellow|magenta|orange)Color':
@@ -1326,7 +1336,6 @@ classes:
                 trim_after_first_colon: true
             '-setAngle:magnitude:':
                 trim_after_first_colon: true
-
     UIImage: # DONE
         properties:
             'images':
@@ -1346,6 +1355,8 @@ classes:
             '+animatedResizableImageNamed:capInsets:resizingMode:duration:':
                 name: createAnimatedResizable
             '+imageNamed:':
+                name: create
+            '+imageNamed:inBundle:compatibleWithTraitCollection:':
                 name: create
             '+imageWithContentsOfFile:':
                 name: createFromFile
@@ -1384,13 +1395,20 @@ classes:
                 name: draw
             '-drawAsPatternInRect:':
                 name: drawAsPattern
-
+    UIImageAsset: # DONE
+        methods:
+            '-imageWithTraitCollection:':
+                name: getImage
+            '-registerImage:withTraitCollection:':
+                trim_after_first_colon: true
+            '-unregisterImageWithTraitCollection:':
+                name: unregisterImage
     UIImagePickerController: # DONE
         properties:
             'delegate':
                 type: UIImagePickerControllerDelegate
             'mediaTypes':
-                type: "NSArray<NSString>"
+                type: "NSArray<NSString>" # TODO
         methods:
             '+availableCaptureModesForCameraDevice:':
                 name: getAvailableCaptureModes
@@ -1404,15 +1422,17 @@ classes:
                 trim_after_first_colon: true
             '+isFlashAvailableForCameraDevice:':
                 trim_after_first_colon: true
-
     UIImageView: # DONE
         properties:
             'animationImages':
                 type: "NSArray<UIImage>"
             'highlightedAnimationImages':
                 type: "NSArray<UIImage>"
-
     UIInputView: {} # DONE
+    UIInputViewController: # DONE
+        methods:
+            '-requestSupplementaryLexiconWithCompletion:':
+                name: requestSupplementaryLexicon
     UIInterpolatingMotionEffect: # DONE
         properties:
             'minimumRelativeValue':
@@ -1423,13 +1443,17 @@ classes:
         methods:
             '+keyCommandWithInput:modifierFlags:action:':
                 name: create
-
     UILabel: # DONE
         methods:
             '-drawTextInRect:':
                 name: drawText
             '-textRectForBounds:limitedToNumberOfLines:':
                 name: getTextRect
+    UILexicon: # DONE
+        properties:
+            'entries':
+                type: NSArray<UILexiconEntry>
+    UILexiconEntry: {} # DONE
     UILocalizedIndexedCollation: # DONE
         properties:
             'sectionTitles':
@@ -1714,6 +1738,28 @@ classes:
                 trim_after_first_colon: true
             '-setPopoverContentSize:animated:':
                 trim_after_first_colon: true
+    UIPopoverPresentationController: # DONE
+        properties:
+            'delegate':
+                name: popoverPresentationDelegate
+            'passthroughViews':
+                type: NSArray<UIView>
+    UIPresentationController: # DONE
+        methods:
+            '-(adaptivePresentationStyle|presentedView)':
+                property: true
+            '-frameOfPresentedViewInContainerView':
+                property: true
+            '-presentationTransitionDidEnd:':
+                trim_after_first_colon: true
+            '-dismissalTransitionDidEnd:':
+                trim_after_first_colon: true
+    UIPrinter: # DONE
+        methods:
+            '-contactPrinter:':
+                trim_after_first_colon: true
+            '+printerWithURL:':
+                name: create
     UIPrintFormatter: # DONE
         methods:
             '-drawInRect:forPageAtIndex:':
@@ -1753,6 +1799,11 @@ classes:
                         type: "@Block VoidBlock3<UIPrintInteractionController, Boolean, NSError>"
             '-presentFromBarButtonItem:animated:completionHandler:':
                 name: presentFromBarButtonItem
+                parameters:
+                    completion:
+                        type: "@Block VoidBlock3<UIPrintInteractionController, Boolean, NSError>"
+            '-printToPrinter:completionHandler:':
+                name: print
                 parameters:
                     completion:
                         type: "@Block VoidBlock3<UIPrintInteractionController, Boolean, NSError>"
@@ -1817,7 +1868,6 @@ classes:
         methods:
             '+dictionaryHasDefinitionForTerm:':
                 trim_after_first_colon: true
-
     UIRefreshControl: # DONE
         # protocols: []
         methods:
@@ -1848,7 +1898,10 @@ classes:
                 trim_after_first_colon: true
             '-targetForAction:withSender:':
                 name: getActionTarget
-
+            '-updateUserActivityState:':
+                trim_after_first_colon: true
+            '-restoreUserActivityState:':
+                trim_after_first_colon: true
     UIRotationGestureRecognizer: {} # DONE
     UIScreen: # DONE
         properties:
@@ -2017,7 +2070,13 @@ classes:
         properties:
             'viewControllers':
                 type: "NSArray<UIViewController>"
-
+        methods:
+            '-displayModeButtonItem':
+                property: true
+            '-showViewController:sender:':
+                trim_after_first_colon: true
+            '-showDetailViewController:sender:':
+                trim_after_first_colon: true
     UIStepper: # DONE
         methods:
             '-backgroundImageForState:':
@@ -2095,7 +2154,6 @@ classes:
                 parameters:
                     viewControllers:
                         type: "NSArray<UIViewController>"
-
     UITabBarItem: # DONE
         methods:
             '-finishedSelectedImage':
@@ -2196,7 +2254,6 @@ classes:
                 name: moveSection
             '-setEditing:animated:':
                 name: setEditing
-
     UITableViewCell: # DONE
         methods:
             '-setSelected:animated:':
@@ -2209,13 +2266,9 @@ classes:
                 trim_after_first_colon: true
             '-didTransitionToState:':
                 trim_after_first_colon: true
-
     UITableViewController: {} # DONE
-
     UITableViewHeaderFooterView: {} # DONE
-
     UITapGestureRecognizer: {} # DONE
-
     UITextField: # DONE
         properties:
             'defaultTextAttributes':
@@ -2241,7 +2294,6 @@ classes:
                 name: drawText
             '-drawPlaceholderInRect:':
                 name: drawPlaceholder
-
     UITextInputMode: # DONE
         methods:
             '+activeInputModes':
@@ -2249,14 +2301,12 @@ classes:
                 return_type: "NSArray<UITextInputMode>"
             '+currentInputMode':
                 name: getCurrentInputMode
-
     UITextInputStringTokenizer: # DONE
         methods: 
             '-initWithTextInput:':
                 parameters:
                     textInput:
                         type: UITextInput
-
     UITextPosition: {} # DONE
     UITextRange: {} # DONE
     UITextSelectionRect: # DONE
@@ -2272,7 +2322,6 @@ classes:
         methods:
             '-scrollRangeToVisible:':
                 trim_after_first_colon: true
-
     UIToolbar: # DONE
         properties:
             'items':
@@ -2300,6 +2349,23 @@ classes:
                 name: getLocation
             '-previousLocationInView:':
                 name: getPreviousLocation
+    UITraitCollection: # DONE
+        methods:
+            '-containsTraitsInCollection:':
+                name: containsTraits
+            '+traitCollectionWithTraitsFromCollections:':
+                name: createWithTraits
+                parameters:
+                    traitCollections:
+                        type: NSArray<UITraitCollection>
+            '+traitCollectionWithUserInterfaceIdiom:':
+                name: createWithUserInterfaceIdiom
+            '+traitCollectionWithDisplayScale:':
+                name: createWithDisplayScale
+            '+traitCollectionWithHorizontalSizeClass:':
+                name: createWithHorizontalSizeClass
+            '+traitCollectionWithVerticalSizeClass:':
+                name: createWithVerticalSizeClass
     UIMutableUserNotificationAction: {} # DONE
     UIMutableUserNotificationCategory: # DONE
         methods:
@@ -2493,7 +2559,6 @@ classes:
                 trim_after_first_colon: true
             '-drawRect:forViewPrintFormatter:':
                 name: draw
-
     UIViewController: # DONE
         properties:
             'restorationClass':
@@ -2542,7 +2607,6 @@ classes:
                 return_type: UIInterfaceOrientationMask
             '-viewControllerForUnwindSegueAction:fromViewController:withSender:':
                 name: getViewControllerForUnwind
-
             '-addChildViewController:':
                 trim_after_first_colon: true
             '-beginAppearanceTransition:animated:':
@@ -2590,8 +2654,22 @@ classes:
                 property: true
             '-transitionCoordinator':
                 property: true
-
+            '-targetViewControllerForAction:sender:':
+                name: getTargetViewControllerForAction
+            '-showViewController:sender:':
+                trim_after_first_colon: true
+            '-showDetailViewController:sender:':
+                trim_after_first_colon: true
+            '-setOverrideTraitCollection:forChildViewController:':
+                name: setOverrideTraitCollection
+            '-overrideTraitCollectionForChildViewController:':
+                name: getOverrideTraitCollection
+            '-collapseSecondaryViewController:forSplitViewController:':
+                name: collapseSecondaryViewController
+            '-separateSecondaryViewControllerForSplitViewController:':
+                name: separateSecondaryViewController
     UIViewPrintFormatter: {} # DONE
+    UIVisualEffect: {} # DONE
     UIWebView: # DONE
         methods:
             "-loadHTMLString:baseURL:":
@@ -2687,7 +2765,12 @@ protocols:
                 name: getDataTypeIdentifier
             '-activityViewController:thumbnailImageForActivityType:suggestedSize:':
                 name: getThumbnailImage
-
+    UIAdaptivePresentationControllerDelegate: # DONE
+        methods:
+            '-adaptivePresentationStyleForPresentationController:':
+                name: getAdaptivePresentationStyle
+            '-presentationController:viewControllerForAdaptivePresentationStyle:':
+                name: getViewController
     UIAlertViewDelegate:
         methods:
             '-alertView:clickedButtonAtIndex:':
@@ -2883,7 +2966,16 @@ protocols:
                 name: beganBoundaryContact
             '-collisionBehavior:endedContactForItem:withBoundaryIdentifier:':
                 name: endedBoundaryContact
-
+    UICoordinateSpace: # DONE
+        methods:
+            '-convertPoint:toCoordinateSpace:':
+                name: convertPointToCoordinateSpace
+            '-convertPoint:fromCoordinateSpace:':
+                name: convertPointFromCoordinateSpace
+            '-convertRect:toCoordinateSpace:':
+                name: convertRectToCoordinateSpace
+            '-convertRect:fromCoordinateSpace:':
+                name: convertRectFromCoordinateSpace
     UIDataSourceModelAssociation:
         methods:
             '-indexPathForElementWithModelIdentifier:inView:':
@@ -2999,7 +3091,7 @@ protocols:
             '-navigationController:animationControllerForOperation:fromViewController:toViewController:':
                 name: getAnimationController
 
-# Has a single static mehtdo
+# Has a single static mehtod
 #    UIObjectRestoration: {}
     UIPageViewControllerDataSource:
         methods:
@@ -3064,7 +3156,16 @@ protocols:
                 name: shouldDismiss
             '-popoverController:willRepositionPopoverToRect:inView:':
                 name: willReposition
-
+    UIPopoverPresentationControllerDelegate: # DONE
+        methods:
+            '-prepareForPopoverPresentation:':
+                trim_after_first_colon: true
+            '-popoverPresentationControllerShouldDismissPopover:':
+                name: shouldDismissPopover
+            '-popoverPresentationControllerDidDismissPopover:':
+                name: didDismissPopover
+            '-popoverPresentationController:willRepositionPopoverToRect:inView:':
+                name: willRepositionPopover
     UIPrintInteractionControllerDelegate:
         methods:
             '-printInteractionController:choosePaper:':
@@ -3167,7 +3268,7 @@ protocols:
                 name: willBeginSearch
             '-searchDisplayControllerWillEndSearch:':
                 name: willEndSearch
-    UISplitViewControllerDelegate:
+    UISplitViewControllerDelegate: # DONE
         methods:
             '-splitViewController:popoverController:willPresentViewController:':
                 name: willPresentViewController
@@ -3181,7 +3282,22 @@ protocols:
                 name: getSupportedInterfaceOrientations
             '-splitViewControllerPreferredInterfaceOrientationForPresentation:':
                 name: getPreferredInterfaceOrientation
-
+            '-splitViewController:willChangeToDisplayMode:':
+                name: willChangeToDisplayMode
+            '-targetDisplayModeForActionInSplitViewController:':
+                name: getTargetDisplayMode
+            '-splitViewController:showViewController:sender:':
+                name: showViewController
+            '-splitViewController:showDetailViewController:sender:':
+                name: showDetailViewController
+            '-primaryViewControllerForCollapsingSplitViewController:':
+                name: getPrimaryViewControllerForCollapsing
+            '-primaryViewControllerForExpandingSplitViewController:':
+                name: getPrimaryViewControllerForExpanding
+            '-splitViewController:collapseSecondaryViewController:ontoPrimaryViewController:':
+                name: collapseSecondaryViewController
+            '-splitViewController:separateSecondaryViewControllerFromPrimaryViewController:':
+                name: separateSecondaryViewController
     UIStateRestoring:
         methods:
             '-decodeRestorableStateWithCoder:':
@@ -3218,7 +3334,6 @@ protocols:
                 name: getInteractionController
             '-tabBarController:animationControllerForTransitionFromViewController:toViewController:':
                 name: getAnimationController
-
     UITabBarDelegate:
         methods:
             '-tabBar:didBeginCustomizingItems:':
@@ -3336,7 +3451,10 @@ protocols:
                 name: getEstimatedSectionFooterHeight
             '-tableView:accessoryTypeForRowWithIndexPath:':
                 name: getRowAccessoryType
-
+    UITextDocumentProxy: # DONE
+        methods:
+            '-adjustTextPositionByCharacterOffset:':
+                name: adjustTextPosition
     UITextFieldDelegate:
         methods:
             '-textField:shouldChangeCharactersInRange:replacementString:':
@@ -3415,7 +3533,6 @@ protocols:
                         type: "NSArray<UIDictationPhrase>"
             '-removeDictationResultPlaceholder:willInsertResult:':
                 name: removeDictationResultPlaceholder
-
     UITextInputDelegate:
         methods:
             '-selectionWillChange:':
@@ -3426,7 +3543,6 @@ protocols:
                 name: textWillChange
             '-textDidChange:':
                 name: textDidChange
-
     UITextInputTokenizer:
         methods:
             '-positionFromPosition:toBoundary:inDirection:':
@@ -3470,8 +3586,11 @@ protocols:
                 name: shouldInteractWithURL
             '-textView:shouldInteractWithTextAttachment:inRange:':
                 name: shouldInteractWithTextAttachment
-
     UIToolbarDelegate: {}
+    UITraitEnvironment: # DONE
+        methods:
+            '-traitCollectionDidChange:':
+                trim_after_first_colon: true
     UIVideoEditorControllerDelegate:
         protocols: [UINavigationControllerDelegate]
         methods:
@@ -3532,8 +3651,7 @@ protocols:
                 property: true
             '-viewControllerForKey:':
                 name: getViewController
-
-    UIViewControllerTransitioningDelegate:
+    UIViewControllerTransitioningDelegate: # DONE
         methods:
             '-animationControllerForPresentedController:presentingController:sourceController:':
                 name: getAnimationControllerForPresentedController
@@ -3543,7 +3661,8 @@ protocols:
                 name: getInteractionControllerForPresentation
             '-interactionControllerForDismissal:':
                 name: getInteractionControllerForDismissal
-
+            '-presentationControllerForPresentedViewController:presentingViewController:sourceViewController:':
+                name: getPresentationControllerForPresentedViewController
     UIWebViewDelegate:
         methods:
             '-webView:didFailLoadWithError:':

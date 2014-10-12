@@ -151,6 +151,7 @@ enums:
     NSURLSessionTaskState: {}
     NSVolumeEnumerationOptions: {}
     NSXMLParserError: { suffix: Error }
+    NSXMLParserExternalEntityResolvingPolicy: {}
 
 classes:
     Foundation:
@@ -701,9 +702,15 @@ classes:
                 name: format
             '-dateFromString:':
                 name: parse
-
     NSDecimalNumber: # DONE
         skip_def_constructor: true
+        properties:
+            'decimalValue':
+                exclude: true
+            'objCType':
+                exclude: true
+            'doubleValue':
+                exclude: true
         methods:
             '+decimalNumber.*': {exclude: true}
             '+defaultBehavior':
@@ -713,11 +720,8 @@ classes:
             '+minimumDecimalNumber':
                 name: getMin
             '+notANumber':
-                name: getNAN
+                name: getNaN
             '-compare:': {exclude: true}
-            '-doubleValue': {exclude: true}
-            '-objCType': {exclude: true}
-            '-decimalValue': {exclude: true}
             '-descriptionWithLocale:': {exclude: true}
             '-decimalNumberByAdding:.*':
                 name: add
@@ -737,7 +741,6 @@ classes:
                 parameters:
                     locale:
                         type: NSLocale
-
     NSDecimalNumberHandler: # DONE
         skip_def_constructor: true
         methods:
@@ -853,6 +856,21 @@ classes:
                 property: true
             '-expressionValueWithObject:context:':
                 name: evaluate
+    NSExtensionContext: # DONE
+        properties:
+            'inputItems':
+                type: NSArray<NSExtensionItem>
+        methods:
+            '-completeRequestReturningItems:completionHandler:':
+                name: completeRequest
+                parameters:
+                    items:
+                        type: NSArray<NSExtensionItem>
+            '-cancelRequestWithError:':
+                name: cancelRequest
+            '-openURL:completionHandler:':
+                name: openURL
+    NSExtensionItem: {}
     NSFileCoordinator: # DONE
         methods:
             '-coordinateReadingItemAtURL:options:error:byAccessor:':
@@ -1405,6 +1423,9 @@ classes:
             '-delegate':
                 property: true
     NSLinguisticTagger: # DONE
+        properties:
+            'tagSchemes':
+                type: "@org.robovm.rt.bro.annotation.Marshaler(NSArray.AsListMarshaler.class) List<NSLinguisticTagScheme>"
         methods:
             '-initWithTagSchemes:options:':
                 name: init
@@ -1413,11 +1434,6 @@ classes:
                         type: "@org.robovm.rt.bro.annotation.Marshaler(NSArray.AsListMarshaler.class) List<NSLinguisticTagScheme>"
                     opts:
                         type: NSLinguisticTaggerOptions
-            '-tagSchemes':
-                property: true
-                return_type: "@org.robovm.rt.bro.annotation.Marshaler(NSArray.AsListMarshaler.class) List<NSLinguisticTagScheme>"
-            '-string':
-                property: true
             '-setOrthography:range:':
                 trim_after_first_colon: true
             '-orthographyAtIndex:effectiveRange:':
@@ -1550,36 +1566,27 @@ classes:
                 property: true
                 return_type: "@org.robovm.rt.bro.annotation.Marshaler(NSMetadataItemAttribute.AsListMarshaler.class) List<NSMetadataItemAttribute>"
     NSMetadataQuery: # DONE
+        properties:
+            'sortDescriptors':
+                type: NSArray<NSSortDescriptor>
+            '(valueListAttributes|groupingAttributes)':
+                type: "@org.robovm.rt.bro.annotation.Marshaler(NSMetadataItemAttribute.AsListMarshaler.class) List<NSMetadataItemAttribute>"
+            'searchScopes':
+                name: searchScopes0
+                visibility: protected
+            'searchItems':
+                name: searchItems0
+                visibility: protected
+            'results':
+                type: NSArray<NSMetadataItem>
+            'valueLists':
+                name: valueLists0
+                type: "NSDictionary<NSString, NSMetadataQueryAttributeValueTuple>"
+                visibility: protected
+            'groupedResults':
+                type: NSArray<NSMetadataQueryResultGroup>
         methods:
             '-init': {exclude: true}
-            '-(delegate|predicate|notificationBatchingInterval|operationQueue|resultCount)':
-                property: true
-            '-sortDescriptors':
-                property: true
-                return_type: NSArray<NSSortDescriptor>
-            '-setSortDescriptors:':
-                parameters:
-                    descriptors:
-                        type: NSArray<NSSortDescriptor>
-            '-(valueListAttributes|groupingAttributes)':
-                property: true
-                return_type: "@org.robovm.rt.bro.annotation.Marshaler(NSMetadataItemAttribute.AsListMarshaler.class) List<NSMetadataItemAttribute>"
-            '-(setValueListAttributes:|setGroupingAttributes:)':
-                parameters:
-                    attrs:
-                        type: "@org.robovm.rt.bro.annotation.Marshaler(NSMetadataItemAttribute.AsListMarshaler.class) List<NSMetadataItemAttribute>"
-            '-searchScopes':
-                property: true
-                return_type: "@org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String>"
-            '-setSearchScopes:':
-                name: setSearchScopes0
-                visibility: protected
-            '-searchItems':
-                property: true
-                return_type: NSArray<NSObject>
-            '-setSearchItems:':
-                name: setSearchItems0
-                visibility: protected
             '-resultAtIndex:':
                 name: getResult
                 return_type: NSMetadataItem
@@ -1588,21 +1595,11 @@ classes:
                 parameters:
                     block:
                         type: '@Block("(,@MachineSizedUInt,)") VoidBlock3<NSMetadataItem, Long, BooleanPtr>'
-            '-results':
-                property: true
-                return_type: NSArray<NSMetadataItem>
             '-indexOfResult:':
                 trim_after_first_colon: true
                 parameters:
                     result:
                         type: NSMetadataItem 
-            '-valueLists':
-                name: getValueLists0
-                return_type: NSDictionary<NSString, NSMetadataQueryAttributeValueTuple>
-                visibility: protected
-            '-groupedResults':
-                property: true
-                return_type: NSArray<NSMetadataQueryResultGroup>
             '-valueOfAttribute:forResultAtIndex:':
                 name: getValueForResult
                 parameters:
@@ -1945,6 +1942,28 @@ classes:
     NSNumber: # DONE
         skip_def_constructor: true
         protocols: [NSPropertyList]
+        properties:
+            'boolValue':
+                name: booleanValue
+                omit_prefix: true
+            'charValue':
+                name: byteValue
+                omit_prefix: true
+            '(short|int|float|double|string|decimal)Value':
+                omit_prefix: true
+            'unsignedShortValue':
+                name: charValue
+                type: char
+                omit_prefix: true
+            'longLongValue':
+                name: longValue
+                omit_prefix: true
+            'longValue':
+                exclude: true
+            'integerValue':
+                exclude: true
+            'unsigned.*Value':
+                exclude: true
         methods:
             "+numberWithBool:":
                 name: valueOf
@@ -1966,23 +1985,6 @@ classes:
             "+numberWithLongLong:":
                 name: valueOf
             "+numberWith.*":
-                exclude: true
-            "-boolValue":
-                name: booleanValue
-            "-charValue":
-                name: byteValue
-            "-shortValue":
-                name: shortValue
-            "-unsignedShortValue":
-                name: charValue
-                return_type: char
-            "-longLongValue":
-                name: longValue
-            "-longValue":
-                exclude: true
-            "-integerValue":
-                exclude: true
-            "-unsigned.*Value":
                 exclude: true
             '-compare:':
                 trim_after_first_colon: true
@@ -2503,6 +2505,12 @@ classes:
                 trim_after_first_colon: true
     NSString: # DONE
         protocols: [NSPropertyList]
+        properties:
+            'length':
+                omit_prefix: true
+                visibility: protected
+            '.*':
+                exclude: true
         methods:
             '+stringWithCharacters:length:':
                 visibility: protected
@@ -2517,11 +2525,9 @@ classes:
                     characters:
                         type: "@Pointer long"
             '-init.*': { exclude: true }
-            "-characterAtIndex:":
+            '-characterAtIndex:':
                 visibility: protected
-            "-length":
-                visibility: protected
-            "-getCharacters:range:":
+            '-getCharacters:range:':
                 visibility: protected
                 parameters:
                     buffer:
@@ -2660,6 +2666,11 @@ classes:
                 name: fromAbbreviation
                 return_type: NSTimeZone
     NSUbiquitousKeyValueStore: # DONE
+        properties:
+            'dictionaryRepresentation':
+                name: asDictionary
+                omit_prefix: true
+                type: "NSDictionary<NSString, NSObject>"
         methods:
             '-objectForKey:':
                 name: get
@@ -2682,9 +2693,6 @@ classes:
                 name: getDouble
             '-boolForKey:':
                 name: getBoolean
-            '-dictionaryRepresentation':
-                name: asDictionary
-                return_type: "NSDictionary<NSString, NSObject>"
             '+defaultStore':
                 property: true
     NSUndoManager: # DONE
@@ -3075,6 +3083,10 @@ classes:
                 property: true
             '-init.*': {exclude: true}
     NSUUID: # DONE
+        properties:
+            'UUIDString':
+                name: asString
+                omit_prefix: true
         methods:
             '-initWithUUIDString:':
                 constructor: false
@@ -3088,13 +3100,19 @@ classes:
                 parameters:
                     uuid:
                         type: "@Pointer long"
-            '-UUIDString':
-                name: asString
-
             '+.*': {exclude: true}
             '-.*': {exclude: true}
     NSValue: # DONE
         skip_def_constructor: true
+        properties:
+            'nonretainedObjectValue':
+                name: objectValue
+                omit_prefix: true
+            'rangeValue':
+                omit_prefix: true
+            'objCType':
+                omit_prefix: true
+                visibility: protected
         methods:
             '+value:withObjCType:':
                 exclude: true
@@ -3102,8 +3120,6 @@ classes:
                 visibility: protected
             '+valueWithNonretainedObject:':
                 name: valueOf
-            '-nonretainedObjectValue':
-                name: objectValue
             '+valueWithPointer:':
                 name: valueOf
             '-pointerValue':
@@ -3116,8 +3132,6 @@ classes:
                 name: isEqualTo
             '-getValue:':
                 name: getValue
-                visibility: protected
-            '-objCType':
                 visibility: protected
     NSValueTransformer: # DONE
         methods:
@@ -3136,9 +3150,9 @@ classes:
             '+transformedValueClass':
                 property: true # We should add a setter for this property, because Java doesn't allow static method overriding.
     NSXMLParser: # DONE
-        methods:
-            '-(delegate|parserError|publicID|systemID|lineNumber|columnNumber)':
-                property: true
+        properties:
+            'allowedExternalEntityURLs':
+                type: NSSet<NSURL>
 protocols:
     NSCacheDelegate: # DONE
         methods:
@@ -3430,6 +3444,14 @@ protocols:
                 name: didSendBodyData
             '-URLSession:task:didCompleteWithError:':
                 name: didComplete
+    NSUserActivityDelegate: # DONE
+        methods:
+            '-userActivityWillSave:':
+                name: willSave
+            '-userActivityWasContinued:':
+                name: wasContinued
+            '-userActivity:didReceiveInputStream:outputStream:':
+                name: didReceiveStreams
     NSXMLParserDelegate: # DONE
         methods:
             '-parserDidStartDocument:':

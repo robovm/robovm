@@ -32,6 +32,7 @@ import org.robovm.apple.coregraphics.*;
 import org.robovm.apple.coredata.*;
 import org.robovm.apple.coreimage.*;
 import org.robovm.apple.coretext.*;
+import org.robovm.apple.corelocation.*;
 /*</imports>*/
 
 /*<javadoc>*/
@@ -56,42 +57,42 @@ import org.robovm.apple.coretext.*;
      * @since Available in iOS 8.0 and later.
      */
     @NotImplemented("splitViewController:willChangeToDisplayMode:")
-    public void splitViewController$willChangeToDisplayMode$(UISplitViewController svc, UISplitViewControllerDisplayMode displayMode) { throw new UnsupportedOperationException(); }
+    public void willChangeToDisplayMode(UISplitViewController svc, UISplitViewControllerDisplayMode displayMode) { throw new UnsupportedOperationException(); }
     /**
      * @since Available in iOS 8.0 and later.
      */
     @NotImplemented("targetDisplayModeForActionInSplitViewController:")
-    public UISplitViewControllerDisplayMode targetDisplayModeForActionInSplitViewController$(UISplitViewController svc) { throw new UnsupportedOperationException(); }
+    public UISplitViewControllerDisplayMode getTargetDisplayMode(UISplitViewController svc) { throw new UnsupportedOperationException(); }
     /**
      * @since Available in iOS 8.0 and later.
      */
     @NotImplemented("splitViewController:showViewController:sender:")
-    public boolean splitViewController$showViewController$sender$(UISplitViewController splitViewController, UIViewController vc, NSObject sender) { throw new UnsupportedOperationException(); }
+    public boolean showViewController(UISplitViewController splitViewController, UIViewController vc, NSObject sender) { throw new UnsupportedOperationException(); }
     /**
      * @since Available in iOS 8.0 and later.
      */
     @NotImplemented("splitViewController:showDetailViewController:sender:")
-    public boolean splitViewController$showDetailViewController$sender$(UISplitViewController splitViewController, UIViewController vc, NSObject sender) { throw new UnsupportedOperationException(); }
+    public boolean showDetailViewController(UISplitViewController splitViewController, UIViewController vc, NSObject sender) { throw new UnsupportedOperationException(); }
     /**
      * @since Available in iOS 8.0 and later.
      */
     @NotImplemented("primaryViewControllerForCollapsingSplitViewController:")
-    public UIViewController primaryViewControllerForCollapsingSplitViewController$(UISplitViewController splitViewController) { throw new UnsupportedOperationException(); }
+    public UIViewController getPrimaryViewControllerForCollapsing(UISplitViewController splitViewController) { throw new UnsupportedOperationException(); }
     /**
      * @since Available in iOS 8.0 and later.
      */
     @NotImplemented("primaryViewControllerForExpandingSplitViewController:")
-    public UIViewController primaryViewControllerForExpandingSplitViewController$(UISplitViewController splitViewController) { throw new UnsupportedOperationException(); }
+    public UIViewController getPrimaryViewControllerForExpanding(UISplitViewController splitViewController) { throw new UnsupportedOperationException(); }
     /**
      * @since Available in iOS 8.0 and later.
      */
     @NotImplemented("splitViewController:collapseSecondaryViewController:ontoPrimaryViewController:")
-    public boolean splitViewController$collapseSecondaryViewController$ontoPrimaryViewController$(UISplitViewController splitViewController, UIViewController secondaryViewController, UIViewController primaryViewController) { throw new UnsupportedOperationException(); }
+    public boolean collapseSecondaryViewController(UISplitViewController splitViewController, UIViewController secondaryViewController, UIViewController primaryViewController) { throw new UnsupportedOperationException(); }
     /**
      * @since Available in iOS 8.0 and later.
      */
     @NotImplemented("splitViewController:separateSecondaryViewControllerFromPrimaryViewController:")
-    public UIViewController splitViewController$separateSecondaryViewControllerFromPrimaryViewController$(UISplitViewController splitViewController, UIViewController primaryViewController) { throw new UnsupportedOperationException(); }
+    public UIViewController separateSecondaryViewController(UISplitViewController splitViewController, UIViewController primaryViewController) { throw new UnsupportedOperationException(); }
     /**
      * @since Available in iOS 7.0 and later.
      */

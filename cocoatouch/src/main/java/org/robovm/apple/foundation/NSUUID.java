@@ -75,7 +75,7 @@ import org.robovm.apple.dispatch.*;
 
     /*<properties>*/
     @Property(selector = "UUIDString")
-    public native String getUUIDString();
+    public native String asString();
     /*</properties>*/
     /*<members>*//*</members>*/
     

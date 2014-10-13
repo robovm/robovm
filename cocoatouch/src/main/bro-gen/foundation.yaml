@@ -3326,6 +3326,8 @@ protocols:
         name: NSObjectProtocol
         protocols: [ObjCProtocol]
         skip_adapter: true
+        properties:
+            '.*': { exclude: true }
         methods:
             '\+.*': { exclude: true }
             '-.*': { exclude: true }

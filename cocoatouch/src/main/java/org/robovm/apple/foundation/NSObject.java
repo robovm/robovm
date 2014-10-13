@@ -115,14 +115,6 @@ import org.robovm.apple.dispatch.*;
     public native void setObservationInfo(VoidPtr v);
     @Property(selector = "classForKeyedArchiver")
     public native ObjCClass getClassForKeyedArchiver();
-    @Property(selector = "hash")
-    public native @MachineSizedUInt long getHash();
-    @Property(selector = "superclass")
-    public native ObjCClass getSuperclass();
-    @Property(selector = "description")
-    public native String getDescription();
-    @Property(selector = "debugDescription")
-    public native String getDebugDescription();
     /*</properties>*/
     /*<members>*//*</members>*/
     

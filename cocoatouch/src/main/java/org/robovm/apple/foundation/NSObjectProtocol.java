@@ -53,14 +53,7 @@ import org.robovm.apple.dispatch.*;
     /*</bind>*/
     /*<constants>*//*</constants>*/
     /*<properties>*/
-    @Property(selector = "hash")
-    @MachineSizedUInt long getHash();
-    @Property(selector = "superclass")
-    ObjCClass getSuperclass();
-    @Property(selector = "description")
-    String getDescription();
-    @Property(selector = "debugDescription")
-    String getDebugDescription();
+    
     /*</properties>*/
     /*<methods>*/
     

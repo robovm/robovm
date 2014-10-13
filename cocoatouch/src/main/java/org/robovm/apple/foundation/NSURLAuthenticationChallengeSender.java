@@ -32,6 +32,7 @@ import org.robovm.apple.coreanimation.*;
 import org.robovm.apple.coregraphics.*;
 import org.robovm.apple.coremedia.*;
 import org.robovm.apple.security.*;
+import org.robovm.apple.dispatch.*;
 /*</imports>*/
 
 /*<javadoc>*/
@@ -51,15 +52,15 @@ import org.robovm.apple.security.*;
     /*</properties>*/
     /*<methods>*/
     @Method(selector = "useCredential:forAuthenticationChallenge:")
-    void useCredential$forAuthenticationChallenge$(NSURLCredential credential, NSURLAuthenticationChallenge challenge);
+    void useCredential(NSURLCredential credential, NSURLAuthenticationChallenge challenge);
     @Method(selector = "continueWithoutCredentialForAuthenticationChallenge:")
-    void continueWithoutCredentialForAuthenticationChallenge$(NSURLAuthenticationChallenge challenge);
+    void continueWithoutCredential(NSURLAuthenticationChallenge challenge);
     @Method(selector = "cancelAuthenticationChallenge:")
-    void cancelAuthenticationChallenge$(NSURLAuthenticationChallenge challenge);
+    void cancel(NSURLAuthenticationChallenge challenge);
     @Method(selector = "performDefaultHandlingForAuthenticationChallenge:")
-    void performDefaultHandlingForAuthenticationChallenge$(NSURLAuthenticationChallenge challenge);
+    void performDefaultHandling(NSURLAuthenticationChallenge challenge);
     @Method(selector = "rejectProtectionSpaceAndContinueWithChallenge:")
-    void rejectProtectionSpaceAndContinueWithChallenge$(NSURLAuthenticationChallenge challenge);
+    void rejectProtectionSpaceAndContinue(NSURLAuthenticationChallenge challenge);
     /*</methods>*/
     /*<adapter>*/
     /*</adapter>*/

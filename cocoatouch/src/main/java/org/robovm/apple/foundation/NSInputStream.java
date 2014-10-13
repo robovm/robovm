@@ -32,6 +32,7 @@ import org.robovm.apple.coreanimation.*;
 import org.robovm.apple.coregraphics.*;
 import org.robovm.apple.coremedia.*;
 import org.robovm.apple.security.*;
+import org.robovm.apple.dispatch.*;
 /*</imports>*/
 
 /*<javadoc>*/
@@ -49,40 +50,50 @@ import org.robovm.apple.security.*;
     public NSInputStream() {}
     protected NSInputStream(SkipInit skipInit) { super(skipInit); }
     public NSInputStream(NSData data) { super((SkipInit) null); initObject(initWithData$(data)); }
-    public NSInputStream(String path) { super((SkipInit) null); initObject(initWithFileAtPath$(path)); }
     /**
      * @since Available in iOS 4.0 and later.
      */
     public NSInputStream(NSURL url) { super((SkipInit) null); initObject(initWithURL$(url)); }
+    public NSInputStream(String path) { super((SkipInit) null); initObject(initWithFileAtPath$(path)); }
     /*</constructors>*/
     /*<properties>*/
-    
+    @Property(selector = "hasBytesAvailable")
+    public native boolean isHasBytesAvailable();
     /*</properties>*/
     /*<members>*//*</members>*/
+    
+    public long read(BytePtr buffer, long len) {
+        return read$maxLength$(buffer.getHandle(), len);
+    }
+
+    public long read(ByteBuffer bytes) {
+        long handle = NSData.getEffectiveAddress(bytes) + bytes.position();
+        return read$maxLength$(handle, bytes.remaining());
+    }
+
+    public long read(byte[] bytes) {
+        return read(bytes, 0, bytes.length);
+    }
+    
+    public long read(byte[] bytes, int offset, int length) {
+        NSMutableData.checkOffsetAndCount(bytes.length, offset, length);
+        if (length == 0) {
+            return 0;
+        }
+        return read$maxLength$(VM.getArrayValuesAddress(bytes) + offset, length);
+    }
+    
     /*<methods>*/
     @Method(selector = "read:maxLength:")
-    public native @MachineSizedSInt long read$maxLength$(BytePtr buffer, @MachineSizedUInt long len);
-    @Method(selector = "getBuffer:length:")
-    public native boolean getBuffer$length$(BytePtr.BytePtrPtr buffer, MachineSizedUIntPtr len);
-    @Method(selector = "hasBytesAvailable")
-    public native boolean hasBytesAvailable();
+    protected native @MachineSizedSInt long read$maxLength$(@Pointer long buffer, @MachineSizedUInt long len);
     @Method(selector = "initWithData:")
     protected native @Pointer long initWithData$(NSData data);
-    @Method(selector = "initWithFileAtPath:")
-    protected native @Pointer long initWithFileAtPath$(String path);
     /**
      * @since Available in iOS 4.0 and later.
      */
     @Method(selector = "initWithURL:")
     protected native @Pointer long initWithURL$(NSURL url);
-    @Method(selector = "inputStreamWithData:")
-    public static native NSObject inputStreamWithData$(NSData data);
-    @Method(selector = "inputStreamWithFileAtPath:")
-    public static native NSObject inputStreamWithFileAtPath$(String path);
-    /**
-     * @since Available in iOS 4.0 and later.
-     */
-    @Method(selector = "inputStreamWithURL:")
-    public static native NSObject inputStreamWithURL$(NSURL url);
+    @Method(selector = "initWithFileAtPath:")
+    protected native @Pointer long initWithFileAtPath$(String path);
     /*</methods>*/
 }

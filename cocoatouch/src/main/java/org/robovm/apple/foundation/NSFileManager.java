@@ -32,6 +32,7 @@ import org.robovm.apple.coreanimation.*;
 import org.robovm.apple.coregraphics.*;
 import org.robovm.apple.coremedia.*;
 import org.robovm.apple.security.*;
+import org.robovm.apple.dispatch.*;
 /*</imports>*/
 
 /*<javadoc>*/
@@ -42,6 +43,20 @@ import org.robovm.apple.security.*;
     extends /*<extends>*/NSObject/*</extends>*/ 
     /*<implements>*//*</implements>*/ {
 
+    public static class Notifications {
+        /**
+         * @since Available in iOS 6.0 and later.
+         */
+        public static NSObject observeUbiquityIdentityDidChange(final Runnable block) {
+            return NSNotificationCenter.getDefaultCenter().addObserver(UbiquityIdentityDidChangeNotification(), null, NSOperationQueue.getMainQueue(), new VoidBlock1<NSNotification>() {
+                @Override
+                public void invoke(NSNotification a) {
+                    block.run();
+                }
+            });
+        }
+    }
+    
     /*<ptr>*/public static class NSFileManagerPtr extends Ptr<NSFileManager, NSFileManagerPtr> {}/*</ptr>*/
     /*<bind>*/static { ObjCRuntime.bind(NSFileManager.class); }/*</bind>*/
     /*<constants>*//*</constants>*/
@@ -50,20 +65,70 @@ import org.robovm.apple.security.*;
     protected NSFileManager(SkipInit skipInit) { super(skipInit); }
     /*</constructors>*/
     /*<properties>*/
-    
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
+    @Property(selector = "delegate")
+    public native NSFileManagerDelegate getDelegate();
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
+    @Property(selector = "setDelegate:", strongRef = true)
+    public native void setDelegate(NSFileManagerDelegate v);
+    @Property(selector = "currentDirectoryPath")
+    public native String getCurrentDirectoryPath();
+    /**
+     * @since Available in iOS 6.0 and later.
+     */
+    @Property(selector = "ubiquityIdentityToken")
+    public native NSObject getUbiquityIdentityToken();
     /*</properties>*/
     /*<members>*//*</members>*/
+    public boolean isDirectoryAtPath(String path) {
+        BooleanPtr ptr = new BooleanPtr();
+        fileExists(path, ptr);
+        return ptr.get();
+    }
+    
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    public NSURLRelationship getRelationshipOfDirectoryToItem(NSURL directoryURL, NSURL otherURL) {
+        MachineSizedSIntPtr ptr = new MachineSizedSIntPtr();
+        NSError.NSErrorPtr error = new NSError.NSErrorPtr();
+        if (getRelationshipOfDirectoryToItem(ptr, directoryURL, otherURL, error)) {
+            return NSURLRelationship.valueOf(ptr.get());
+        }
+        return null; // TODO exception
+    }
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    public NSURLRelationship getRelationshipOfDirectoryToItem(NSSearchPathDirectory directory, NSSearchPathDomainMask domainMask, NSURL url) {
+        MachineSizedSIntPtr ptr = new MachineSizedSIntPtr();
+        NSError.NSErrorPtr error = new NSError.NSErrorPtr();
+        if (getRelationshipOfDirectoryToItem(ptr, directory, domainMask, url, error)) {
+            return NSURLRelationship.valueOf(ptr.get());
+        }
+        return null; // TODO exception
+    }
     /*<methods>*/
+    /**
+     * @since Available in iOS 6.0 and later.
+     */
+    @GlobalValue(symbol="NSUbiquityIdentityDidChangeNotification", optional=true)
+    public static native NSString UbiquityIdentityDidChangeNotification();
+    
     /**
      * @since Available in iOS 4.0 and later.
      */
     @Method(selector = "mountedVolumeURLsIncludingResourceValuesForKeys:options:")
-    protected native NSArray<NSURL> getMountedVolumeURLsIncludingResourceValues(NSArray<NSString> propertyKeys, NSVolumeEnumerationOptions options);
+    protected native NSArray<NSURL> getMountedVolumeURLsIncludingResourceValues(@org.robovm.rt.bro.annotation.Marshaler(NSURLFileSystemProperty.AsListMarshaler.class) List<NSURLFileSystemProperty> propertyKeys, NSVolumeEnumerationOptions options);
     /**
      * @since Available in iOS 4.0 and later.
      */
     @Method(selector = "contentsOfDirectoryAtURL:includingPropertiesForKeys:options:error:")
-    protected native NSArray<NSURL> getContentsOfDirectoryAtURL(NSURL url, NSArray<NSString> keys, NSDirectoryEnumerationOptions mask, NSError.NSErrorPtr error);
+    protected native NSArray<NSURL> getContentsOfDirectoryAtURL(NSURL url, @org.robovm.rt.bro.annotation.Marshaler(NSURLFileSystemProperty.AsListMarshaler.class) List<NSURLFileSystemProperty> keys, NSDirectoryEnumerationOptions mask, NSError.NSErrorPtr error);
     /**
      * @since Available in iOS 4.0 and later.
      */
@@ -75,6 +140,16 @@ import org.robovm.apple.security.*;
     @Method(selector = "URLForDirectory:inDomain:appropriateForURL:create:error:")
     public native NSURL getURLForDirectory(NSSearchPathDirectory directory, NSSearchPathDomainMask domain, NSURL url, boolean shouldCreate, NSError.NSErrorPtr error);
     /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @Method(selector = "getRelationship:ofDirectoryAtURL:toItemAtURL:error:")
+    protected native boolean getRelationshipOfDirectoryToItem(MachineSizedSIntPtr outRelationship, NSURL directoryURL, NSURL otherURL, NSError.NSErrorPtr error);
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @Method(selector = "getRelationship:ofDirectory:inDomain:toItemAtURL:error:")
+    protected native boolean getRelationshipOfDirectoryToItem(MachineSizedSIntPtr outRelationship, NSSearchPathDirectory directory, NSSearchPathDomainMask domainMask, NSURL url, NSError.NSErrorPtr error);
+    /**
      * @since Available in iOS 5.0 and later.
      */
     @Method(selector = "createDirectoryAtURL:withIntermediateDirectories:attributes:error:")
@@ -84,16 +159,6 @@ import org.robovm.apple.security.*;
      */
     @Method(selector = "createSymbolicLinkAtURL:withDestinationURL:error:")
     public native boolean createSymbolicLinkAtURL(NSURL url, NSURL destURL, NSError.NSErrorPtr error);
-    /**
-     * @since Available in iOS 2.0 and later.
-     */
-    @Method(selector = "setDelegate:")
-    public native void setDelegate(NSObject delegate);
-    /**
-     * @since Available in iOS 2.0 and later.
-     */
-    @Method(selector = "delegate")
-    public native NSObject delegate();
     /**
      * @since Available in iOS 2.0 and later.
      */
@@ -174,14 +239,12 @@ import org.robovm.apple.security.*;
      */
     @Method(selector = "removeItemAtURL:error:")
     public native boolean removeItemAtURL(NSURL URL, NSError.NSErrorPtr error);
-    @Method(selector = "currentDirectoryPath")
-    public native String getCurrentDirectoryPath();
     @Method(selector = "changeCurrentDirectoryPath:")
     public native boolean changeCurrentDirectoryPath(String path);
     @Method(selector = "fileExistsAtPath:")
     public native boolean fileExists(String path);
     @Method(selector = "fileExistsAtPath:isDirectory:")
-    protected native boolean fileExists(String path, BytePtr isDirectory);
+    protected native boolean fileExists(String path, BooleanPtr isDirectory);
     @Method(selector = "isReadableFileAtPath:")
     public native boolean fileIsReadable(String path);
     @Method(selector = "isWritableFileAtPath:")
@@ -202,7 +265,7 @@ import org.robovm.apple.security.*;
      * @since Available in iOS 4.0 and later.
      */
     @Method(selector = "enumeratorAtURL:includingPropertiesForKeys:options:errorHandler:")
-    protected native NSDirectoryEnumerator getEnumeratorAtURL(NSURL url, NSArray<NSString> keys, NSDirectoryEnumerationOptions mask, @Block Block2<NSURL, NSError, Boolean> handler);
+    protected native NSDirectoryEnumerator getEnumeratorAtURL(NSURL url, @org.robovm.rt.bro.annotation.Marshaler(NSURLFileSystemProperty.AsListMarshaler.class) List<NSURLFileSystemProperty> keys, NSDirectoryEnumerationOptions mask, @Block Block2<NSURL, NSError, Boolean> handler);
     @Method(selector = "subpathsAtPath:")
     public native @org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String> getSubpathsAtPath(String path);
     @Method(selector = "contentsAtPath:")
@@ -248,11 +311,6 @@ import org.robovm.apple.security.*;
      */
     @Method(selector = "URLForPublishingUbiquitousItemAtURL:expirationDate:error:")
     public native NSURL getURLForPublishingUbiquitousItemAtURL(NSURL url, NSDate.NSDatePtr outDate, NSError.NSErrorPtr error);
-    /**
-     * @since Available in iOS 6.0 and later.
-     */
-    @Method(selector = "ubiquityIdentityToken")
-    public native NSObject getUbiquityIdentityToken();
     /**
      * @since Available in iOS 7.0 and later.
      */

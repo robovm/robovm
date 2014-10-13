@@ -32,6 +32,7 @@ import org.robovm.apple.coreanimation.*;
 import org.robovm.apple.coregraphics.*;
 import org.robovm.apple.coremedia.*;
 import org.robovm.apple.security.*;
+import org.robovm.apple.dispatch.*;
 /*</imports>*/
 
 /*<javadoc>*/
@@ -40,7 +41,7 @@ import org.robovm.apple.security.*;
 /*<annotations>*/@Library("Foundation") @NativeClass/*</annotations>*/
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/NSIndexPath/*</name>*/ 
     extends /*<extends>*/NSObject/*</extends>*/ 
-    /*<implements>*/implements NSCoding/*</implements>*/ {
+    /*<implements>*//*</implements>*/ {
 
     /*<ptr>*/public static class NSIndexPathPtr extends Ptr<NSIndexPath, NSIndexPathPtr> {}/*</ptr>*/
     /*<bind>*/static { ObjCRuntime.bind(NSIndexPath.class); }/*</bind>*/
@@ -62,7 +63,8 @@ import org.robovm.apple.security.*;
     }
     
     /*<properties>*/
-    
+    @Property(selector = "length")
+    public native @MachineSizedUInt long getLength();
     /*</properties>*/
     /*<members>*//*</members>*/
     
@@ -107,13 +109,9 @@ import org.robovm.apple.security.*;
     public native NSIndexPath removeLastIndex();
     @Method(selector = "indexAtPosition:")
     public native @MachineSizedUInt long getIndexAt(@MachineSizedUInt long position);
-    @Method(selector = "length")
-    public native @MachineSizedUInt long getLength();
     @Method(selector = "getIndexes:")
     private native void getIndexes$(MachineSizedUIntPtr indexes);
     @Method(selector = "compare:")
     public native NSComparisonResult compare(NSIndexPath otherObject);
-    @Method(selector = "encodeWithCoder:")
-    public native void encode(NSCoder aCoder);
     /*</methods>*/
 }

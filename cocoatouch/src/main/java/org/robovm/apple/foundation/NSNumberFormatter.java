@@ -32,6 +32,7 @@ import org.robovm.apple.coreanimation.*;
 import org.robovm.apple.coregraphics.*;
 import org.robovm.apple.coremedia.*;
 import org.robovm.apple.security.*;
+import org.robovm.apple.dispatch.*;
 /*</imports>*/
 
 /*<javadoc>*/
@@ -50,283 +51,290 @@ import org.robovm.apple.security.*;
     protected NSNumberFormatter(SkipInit skipInit) { super(skipInit); }
     /*</constructors>*/
     /*<properties>*/
-    
-    /*</properties>*/
-    /*<members>*//*</members>*/
-    /*<methods>*/
-    @Method(selector = "getObjectValue:forString:range:error:")
-    public native boolean getObjectValue$forString$range$error$(NSObject obj, String string, NSRange rangep, NSError.NSErrorPtr error);
-    @Method(selector = "stringFromNumber:")
-    public native String stringFromNumber$(NSNumber number);
-    @Method(selector = "numberFromString:")
-    public native NSNumber numberFromString$(String string);
-    @Method(selector = "numberStyle")
-    public native NSNumberFormatterStyle numberStyle();
-    @Method(selector = "setNumberStyle:")
-    public native void setNumberStyle(NSNumberFormatterStyle style);
-    @Method(selector = "locale")
-    public native NSLocale locale();
-    @Method(selector = "setLocale:")
-    public native void setLocale(NSLocale locale);
-    @Method(selector = "generatesDecimalNumbers")
-    public native boolean generatesDecimalNumbers();
-    @Method(selector = "setGeneratesDecimalNumbers:")
-    public native void setGeneratesDecimalNumbers(boolean b);
-    @Method(selector = "formatterBehavior")
-    public native NSNumberFormatterBehavior formatterBehavior();
-    @Method(selector = "setFormatterBehavior:")
-    public native void setFormatterBehavior(NSNumberFormatterBehavior behavior);
-    @Method(selector = "negativeFormat")
-    public native String negativeFormat();
-    @Method(selector = "setNegativeFormat:")
-    public native void setNegativeFormat(String format);
-    @Method(selector = "textAttributesForNegativeValues")
-    public native NSDictionary<?, ?> textAttributesForNegativeValues();
-    @Method(selector = "setTextAttributesForNegativeValues:")
-    public native void setTextAttributesForNegativeValues(NSDictionary<?, ?> newAttributes);
-    @Method(selector = "positiveFormat")
-    public native String positiveFormat();
-    @Method(selector = "setPositiveFormat:")
-    public native void setPositiveFormat(String format);
-    @Method(selector = "textAttributesForPositiveValues")
-    public native NSDictionary<?, ?> textAttributesForPositiveValues();
-    @Method(selector = "setTextAttributesForPositiveValues:")
-    public native void setTextAttributesForPositiveValues(NSDictionary<?, ?> newAttributes);
-    @Method(selector = "allowsFloats")
-    public native boolean allowsFloats();
-    @Method(selector = "setAllowsFloats:")
-    public native void setAllowsFloats(boolean flag);
-    @Method(selector = "decimalSeparator")
-    public native String decimalSeparator();
-    @Method(selector = "setDecimalSeparator:")
-    public native void setDecimalSeparator(String string);
-    @Method(selector = "alwaysShowsDecimalSeparator")
-    public native boolean alwaysShowsDecimalSeparator();
-    @Method(selector = "setAlwaysShowsDecimalSeparator:")
-    public native void setAlwaysShowsDecimalSeparator(boolean b);
-    @Method(selector = "currencyDecimalSeparator")
-    public native String currencyDecimalSeparator();
-    @Method(selector = "setCurrencyDecimalSeparator:")
-    public native void setCurrencyDecimalSeparator(String string);
-    @Method(selector = "usesGroupingSeparator")
-    public native boolean usesGroupingSeparator();
-    @Method(selector = "setUsesGroupingSeparator:")
-    public native void setUsesGroupingSeparator(boolean b);
-    @Method(selector = "groupingSeparator")
-    public native String groupingSeparator();
-    @Method(selector = "setGroupingSeparator:")
-    public native void setGroupingSeparator(String string);
-    @Method(selector = "zeroSymbol")
-    public native String zeroSymbol();
-    @Method(selector = "setZeroSymbol:")
-    public native void setZeroSymbol(String string);
-    @Method(selector = "textAttributesForZero")
-    public native NSDictionary<?, ?> textAttributesForZero();
-    @Method(selector = "setTextAttributesForZero:")
-    public native void setTextAttributesForZero(NSDictionary<?, ?> newAttributes);
-    @Method(selector = "nilSymbol")
-    public native String nilSymbol();
-    @Method(selector = "setNilSymbol:")
-    public native void setNilSymbol(String string);
-    @Method(selector = "textAttributesForNil")
-    public native NSDictionary<?, ?> textAttributesForNil();
-    @Method(selector = "setTextAttributesForNil:")
-    public native void setTextAttributesForNil(NSDictionary<?, ?> newAttributes);
-    @Method(selector = "notANumberSymbol")
-    public native String notANumberSymbol();
-    @Method(selector = "setNotANumberSymbol:")
-    public native void setNotANumberSymbol(String string);
-    @Method(selector = "textAttributesForNotANumber")
-    public native NSDictionary<?, ?> textAttributesForNotANumber();
-    @Method(selector = "setTextAttributesForNotANumber:")
-    public native void setTextAttributesForNotANumber(NSDictionary<?, ?> newAttributes);
-    @Method(selector = "positiveInfinitySymbol")
-    public native String positiveInfinitySymbol();
-    @Method(selector = "setPositiveInfinitySymbol:")
-    public native void setPositiveInfinitySymbol(String string);
-    @Method(selector = "textAttributesForPositiveInfinity")
-    public native NSDictionary<?, ?> textAttributesForPositiveInfinity();
-    @Method(selector = "setTextAttributesForPositiveInfinity:")
-    public native void setTextAttributesForPositiveInfinity(NSDictionary<?, ?> newAttributes);
-    @Method(selector = "negativeInfinitySymbol")
-    public native String negativeInfinitySymbol();
-    @Method(selector = "setNegativeInfinitySymbol:")
-    public native void setNegativeInfinitySymbol(String string);
-    @Method(selector = "textAttributesForNegativeInfinity")
-    public native NSDictionary<?, ?> textAttributesForNegativeInfinity();
-    @Method(selector = "setTextAttributesForNegativeInfinity:")
-    public native void setTextAttributesForNegativeInfinity(NSDictionary<?, ?> newAttributes);
-    @Method(selector = "positivePrefix")
-    public native String positivePrefix();
-    @Method(selector = "setPositivePrefix:")
-    public native void setPositivePrefix(String string);
-    @Method(selector = "positiveSuffix")
-    public native String positiveSuffix();
-    @Method(selector = "setPositiveSuffix:")
-    public native void setPositiveSuffix(String string);
-    @Method(selector = "negativePrefix")
-    public native String negativePrefix();
-    @Method(selector = "setNegativePrefix:")
-    public native void setNegativePrefix(String string);
-    @Method(selector = "negativeSuffix")
-    public native String negativeSuffix();
-    @Method(selector = "setNegativeSuffix:")
-    public native void setNegativeSuffix(String string);
-    @Method(selector = "currencyCode")
-    public native String currencyCode();
-    @Method(selector = "setCurrencyCode:")
-    public native void setCurrencyCode(String string);
-    @Method(selector = "currencySymbol")
-    public native String currencySymbol();
-    @Method(selector = "setCurrencySymbol:")
-    public native void setCurrencySymbol(String string);
-    @Method(selector = "internationalCurrencySymbol")
-    public native String internationalCurrencySymbol();
-    @Method(selector = "setInternationalCurrencySymbol:")
-    public native void setInternationalCurrencySymbol(String string);
-    @Method(selector = "percentSymbol")
-    public native String percentSymbol();
-    @Method(selector = "setPercentSymbol:")
-    public native void setPercentSymbol(String string);
-    @Method(selector = "perMillSymbol")
-    public native String perMillSymbol();
-    @Method(selector = "setPerMillSymbol:")
-    public native void setPerMillSymbol(String string);
-    @Method(selector = "minusSign")
-    public native String minusSign();
-    @Method(selector = "setMinusSign:")
-    public native void setMinusSign(String string);
-    @Method(selector = "plusSign")
-    public native String plusSign();
-    @Method(selector = "setPlusSign:")
-    public native void setPlusSign(String string);
-    @Method(selector = "exponentSymbol")
-    public native String exponentSymbol();
-    @Method(selector = "setExponentSymbol:")
-    public native void setExponentSymbol(String string);
-    @Method(selector = "groupingSize")
-    public native @MachineSizedUInt long groupingSize();
-    @Method(selector = "setGroupingSize:")
-    public native void setGroupingSize(@MachineSizedUInt long number);
-    @Method(selector = "secondaryGroupingSize")
-    public native @MachineSizedUInt long secondaryGroupingSize();
-    @Method(selector = "setSecondaryGroupingSize:")
-    public native void setSecondaryGroupingSize(@MachineSizedUInt long number);
-    @Method(selector = "multiplier")
-    public native NSNumber multiplier();
-    @Method(selector = "setMultiplier:")
-    public native void setMultiplier(NSNumber number);
-    @Method(selector = "formatWidth")
-    public native @MachineSizedUInt long formatWidth();
-    @Method(selector = "setFormatWidth:")
-    public native void setFormatWidth(@MachineSizedUInt long number);
-    @Method(selector = "paddingCharacter")
-    public native String paddingCharacter();
-    @Method(selector = "setPaddingCharacter:")
-    public native void setPaddingCharacter(String string);
-    @Method(selector = "paddingPosition")
-    public native NSNumberFormatterPadPosition paddingPosition();
-    @Method(selector = "setPaddingPosition:")
-    public native void setPaddingPosition(NSNumberFormatterPadPosition position);
-    @Method(selector = "roundingMode")
-    public native NSNumberFormatterRoundingMode roundingMode();
-    @Method(selector = "setRoundingMode:")
-    public native void setRoundingMode(NSNumberFormatterRoundingMode mode);
-    @Method(selector = "roundingIncrement")
-    public native NSNumber roundingIncrement();
-    @Method(selector = "setRoundingIncrement:")
-    public native void setRoundingIncrement(NSNumber number);
-    @Method(selector = "minimumIntegerDigits")
-    public native @MachineSizedUInt long minimumIntegerDigits();
-    @Method(selector = "setMinimumIntegerDigits:")
-    public native void setMinimumIntegerDigits(@MachineSizedUInt long number);
-    @Method(selector = "maximumIntegerDigits")
-    public native @MachineSizedUInt long maximumIntegerDigits();
-    @Method(selector = "setMaximumIntegerDigits:")
-    public native void setMaximumIntegerDigits(@MachineSizedUInt long number);
-    @Method(selector = "minimumFractionDigits")
-    public native @MachineSizedUInt long minimumFractionDigits();
-    @Method(selector = "setMinimumFractionDigits:")
-    public native void setMinimumFractionDigits(@MachineSizedUInt long number);
-    @Method(selector = "maximumFractionDigits")
-    public native @MachineSizedUInt long maximumFractionDigits();
-    @Method(selector = "setMaximumFractionDigits:")
-    public native void setMaximumFractionDigits(@MachineSizedUInt long number);
-    @Method(selector = "minimum")
-    public native NSNumber minimum();
-    @Method(selector = "setMinimum:")
-    public native void setMinimum(NSNumber number);
-    @Method(selector = "maximum")
-    public native NSNumber maximum();
-    @Method(selector = "setMaximum:")
-    public native void setMaximum(NSNumber number);
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @Property(selector = "formattingContext")
+    public native NSFormattingContext getFormattingContext();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @Property(selector = "setFormattingContext:")
+    public native void setFormattingContext(NSFormattingContext v);
+    @Property(selector = "numberStyle")
+    public native NSNumberFormatterStyle getNumberStyle();
+    @Property(selector = "setNumberStyle:")
+    public native void setNumberStyle(NSNumberFormatterStyle v);
+    @Property(selector = "locale")
+    public native NSLocale getLocale();
+    @Property(selector = "setLocale:")
+    public native void setLocale(NSLocale v);
+    @Property(selector = "generatesDecimalNumbers")
+    public native boolean isGeneratesDecimalNumbers();
+    @Property(selector = "setGeneratesDecimalNumbers:")
+    public native void setGeneratesDecimalNumbers(boolean v);
+    @Property(selector = "formatterBehavior")
+    public native NSNumberFormatterBehavior getFormatterBehavior();
+    @Property(selector = "setFormatterBehavior:")
+    public native void setFormatterBehavior(NSNumberFormatterBehavior v);
+    @Property(selector = "negativeFormat")
+    public native String getNegativeFormat();
+    @Property(selector = "setNegativeFormat:")
+    public native void setNegativeFormat(String v);
+    @Property(selector = "textAttributesForNegativeValues")
+    public native NSDictionary<?, ?> getTextAttributesForNegativeValues();
+    @Property(selector = "setTextAttributesForNegativeValues:")
+    public native void setTextAttributesForNegativeValues(NSDictionary<?, ?> v);
+    @Property(selector = "positiveFormat")
+    public native String getPositiveFormat();
+    @Property(selector = "setPositiveFormat:")
+    public native void setPositiveFormat(String v);
+    @Property(selector = "textAttributesForPositiveValues")
+    public native NSDictionary<?, ?> getTextAttributesForPositiveValues();
+    @Property(selector = "setTextAttributesForPositiveValues:")
+    public native void setTextAttributesForPositiveValues(NSDictionary<?, ?> v);
+    @Property(selector = "allowsFloats")
+    public native boolean isAllowsFloats();
+    @Property(selector = "setAllowsFloats:")
+    public native void setAllowsFloats(boolean v);
+    @Property(selector = "decimalSeparator")
+    public native String getDecimalSeparator();
+    @Property(selector = "setDecimalSeparator:")
+    public native void setDecimalSeparator(String v);
+    @Property(selector = "alwaysShowsDecimalSeparator")
+    public native boolean isAlwaysShowsDecimalSeparator();
+    @Property(selector = "setAlwaysShowsDecimalSeparator:")
+    public native void setAlwaysShowsDecimalSeparator(boolean v);
+    @Property(selector = "currencyDecimalSeparator")
+    public native String getCurrencyDecimalSeparator();
+    @Property(selector = "setCurrencyDecimalSeparator:")
+    public native void setCurrencyDecimalSeparator(String v);
+    @Property(selector = "usesGroupingSeparator")
+    public native boolean isUsesGroupingSeparator();
+    @Property(selector = "setUsesGroupingSeparator:")
+    public native void setUsesGroupingSeparator(boolean v);
+    @Property(selector = "groupingSeparator")
+    public native String getGroupingSeparator();
+    @Property(selector = "setGroupingSeparator:")
+    public native void setGroupingSeparator(String v);
+    @Property(selector = "zeroSymbol")
+    public native String getZeroSymbol();
+    @Property(selector = "setZeroSymbol:")
+    public native void setZeroSymbol(String v);
+    @Property(selector = "textAttributesForZero")
+    public native NSDictionary<?, ?> getTextAttributesForZero();
+    @Property(selector = "setTextAttributesForZero:")
+    public native void setTextAttributesForZero(NSDictionary<?, ?> v);
+    @Property(selector = "nilSymbol")
+    public native String getNilSymbol();
+    @Property(selector = "setNilSymbol:")
+    public native void setNilSymbol(String v);
+    @Property(selector = "textAttributesForNil")
+    public native NSDictionary<?, ?> getTextAttributesForNil();
+    @Property(selector = "setTextAttributesForNil:")
+    public native void setTextAttributesForNil(NSDictionary<?, ?> v);
+    @Property(selector = "notANumberSymbol")
+    public native String getNotANumberSymbol();
+    @Property(selector = "setNotANumberSymbol:")
+    public native void setNotANumberSymbol(String v);
+    @Property(selector = "textAttributesForNotANumber")
+    public native NSDictionary<?, ?> getTextAttributesForNotANumber();
+    @Property(selector = "setTextAttributesForNotANumber:")
+    public native void setTextAttributesForNotANumber(NSDictionary<?, ?> v);
+    @Property(selector = "positiveInfinitySymbol")
+    public native String getPositiveInfinitySymbol();
+    @Property(selector = "setPositiveInfinitySymbol:")
+    public native void setPositiveInfinitySymbol(String v);
+    @Property(selector = "textAttributesForPositiveInfinity")
+    public native NSDictionary<?, ?> getTextAttributesForPositiveInfinity();
+    @Property(selector = "setTextAttributesForPositiveInfinity:")
+    public native void setTextAttributesForPositiveInfinity(NSDictionary<?, ?> v);
+    @Property(selector = "negativeInfinitySymbol")
+    public native String getNegativeInfinitySymbol();
+    @Property(selector = "setNegativeInfinitySymbol:")
+    public native void setNegativeInfinitySymbol(String v);
+    @Property(selector = "textAttributesForNegativeInfinity")
+    public native NSDictionary<?, ?> getTextAttributesForNegativeInfinity();
+    @Property(selector = "setTextAttributesForNegativeInfinity:")
+    public native void setTextAttributesForNegativeInfinity(NSDictionary<?, ?> v);
+    @Property(selector = "positivePrefix")
+    public native String getPositivePrefix();
+    @Property(selector = "setPositivePrefix:")
+    public native void setPositivePrefix(String v);
+    @Property(selector = "positiveSuffix")
+    public native String getPositiveSuffix();
+    @Property(selector = "setPositiveSuffix:")
+    public native void setPositiveSuffix(String v);
+    @Property(selector = "negativePrefix")
+    public native String getNegativePrefix();
+    @Property(selector = "setNegativePrefix:")
+    public native void setNegativePrefix(String v);
+    @Property(selector = "negativeSuffix")
+    public native String getNegativeSuffix();
+    @Property(selector = "setNegativeSuffix:")
+    public native void setNegativeSuffix(String v);
+    @Property(selector = "currencyCode")
+    public native String getCurrencyCode();
+    @Property(selector = "setCurrencyCode:")
+    public native void setCurrencyCode(String v);
+    @Property(selector = "currencySymbol")
+    public native String getCurrencySymbol();
+    @Property(selector = "setCurrencySymbol:")
+    public native void setCurrencySymbol(String v);
+    @Property(selector = "internationalCurrencySymbol")
+    public native String getInternationalCurrencySymbol();
+    @Property(selector = "setInternationalCurrencySymbol:")
+    public native void setInternationalCurrencySymbol(String v);
+    @Property(selector = "percentSymbol")
+    public native String getPercentSymbol();
+    @Property(selector = "setPercentSymbol:")
+    public native void setPercentSymbol(String v);
+    @Property(selector = "perMillSymbol")
+    public native String getPerMillSymbol();
+    @Property(selector = "setPerMillSymbol:")
+    public native void setPerMillSymbol(String v);
+    @Property(selector = "minusSign")
+    public native String getMinusSign();
+    @Property(selector = "setMinusSign:")
+    public native void setMinusSign(String v);
+    @Property(selector = "plusSign")
+    public native String getPlusSign();
+    @Property(selector = "setPlusSign:")
+    public native void setPlusSign(String v);
+    @Property(selector = "exponentSymbol")
+    public native String getExponentSymbol();
+    @Property(selector = "setExponentSymbol:")
+    public native void setExponentSymbol(String v);
+    @Property(selector = "groupingSize")
+    public native @MachineSizedUInt long getGroupingSize();
+    @Property(selector = "setGroupingSize:")
+    public native void setGroupingSize(@MachineSizedUInt long v);
+    @Property(selector = "secondaryGroupingSize")
+    public native @MachineSizedUInt long getSecondaryGroupingSize();
+    @Property(selector = "setSecondaryGroupingSize:")
+    public native void setSecondaryGroupingSize(@MachineSizedUInt long v);
+    @Property(selector = "multiplier")
+    public native NSNumber getMultiplier();
+    @Property(selector = "setMultiplier:")
+    public native void setMultiplier(NSNumber v);
+    @Property(selector = "formatWidth")
+    public native @MachineSizedUInt long getFormatWidth();
+    @Property(selector = "setFormatWidth:")
+    public native void setFormatWidth(@MachineSizedUInt long v);
+    @Property(selector = "paddingCharacter")
+    public native String getPaddingCharacter();
+    @Property(selector = "setPaddingCharacter:")
+    public native void setPaddingCharacter(String v);
+    @Property(selector = "paddingPosition")
+    public native NSNumberFormatterPadPosition getPaddingPosition();
+    @Property(selector = "setPaddingPosition:")
+    public native void setPaddingPosition(NSNumberFormatterPadPosition v);
+    @Property(selector = "roundingMode")
+    public native NSNumberFormatterRoundingMode getRoundingMode();
+    @Property(selector = "setRoundingMode:")
+    public native void setRoundingMode(NSNumberFormatterRoundingMode v);
+    @Property(selector = "roundingIncrement")
+    public native NSNumber getRoundingIncrement();
+    @Property(selector = "setRoundingIncrement:")
+    public native void setRoundingIncrement(NSNumber v);
+    @Property(selector = "minimumIntegerDigits")
+    public native @MachineSizedUInt long getMinimumIntegerDigits();
+    @Property(selector = "setMinimumIntegerDigits:")
+    public native void setMinimumIntegerDigits(@MachineSizedUInt long v);
+    @Property(selector = "maximumIntegerDigits")
+    public native @MachineSizedUInt long getMaximumIntegerDigits();
+    @Property(selector = "setMaximumIntegerDigits:")
+    public native void setMaximumIntegerDigits(@MachineSizedUInt long v);
+    @Property(selector = "minimumFractionDigits")
+    public native @MachineSizedUInt long getMinimumFractionDigits();
+    @Property(selector = "setMinimumFractionDigits:")
+    public native void setMinimumFractionDigits(@MachineSizedUInt long v);
+    @Property(selector = "maximumFractionDigits")
+    public native @MachineSizedUInt long getMaximumFractionDigits();
+    @Property(selector = "setMaximumFractionDigits:")
+    public native void setMaximumFractionDigits(@MachineSizedUInt long v);
+    @Property(selector = "minimum")
+    public native NSNumber getMinimum();
+    @Property(selector = "setMinimum:")
+    public native void setMinimum(NSNumber v);
+    @Property(selector = "maximum")
+    public native NSNumber getMaximum();
+    @Property(selector = "setMaximum:")
+    public native void setMaximum(NSNumber v);
     /**
      * @since Available in iOS 2.0 and later.
      */
-    @Method(selector = "currencyGroupingSeparator")
-    public native String currencyGroupingSeparator();
+    @Property(selector = "currencyGroupingSeparator")
+    public native String getCurrencyGroupingSeparator();
     /**
      * @since Available in iOS 2.0 and later.
      */
-    @Method(selector = "setCurrencyGroupingSeparator:")
-    public native void setCurrencyGroupingSeparator(String string);
+    @Property(selector = "setCurrencyGroupingSeparator:")
+    public native void setCurrencyGroupingSeparator(String v);
     /**
      * @since Available in iOS 2.0 and later.
      */
-    @Method(selector = "isLenient")
+    @Property(selector = "isLenient")
     public native boolean isLenient();
     /**
      * @since Available in iOS 2.0 and later.
      */
-    @Method(selector = "setLenient:")
-    public native void setLenient(boolean b);
+    @Property(selector = "setLenient:")
+    public native void setLenient(boolean v);
     /**
      * @since Available in iOS 2.0 and later.
      */
-    @Method(selector = "usesSignificantDigits")
-    public native boolean usesSignificantDigits();
+    @Property(selector = "usesSignificantDigits")
+    public native boolean isUsesSignificantDigits();
     /**
      * @since Available in iOS 2.0 and later.
      */
-    @Method(selector = "setUsesSignificantDigits:")
-    public native void setUsesSignificantDigits(boolean b);
+    @Property(selector = "setUsesSignificantDigits:")
+    public native void setUsesSignificantDigits(boolean v);
     /**
      * @since Available in iOS 2.0 and later.
      */
-    @Method(selector = "minimumSignificantDigits")
-    public native @MachineSizedUInt long minimumSignificantDigits();
+    @Property(selector = "minimumSignificantDigits")
+    public native @MachineSizedUInt long getMinimumSignificantDigits();
     /**
      * @since Available in iOS 2.0 and later.
      */
-    @Method(selector = "setMinimumSignificantDigits:")
-    public native void setMinimumSignificantDigits(@MachineSizedUInt long number);
+    @Property(selector = "setMinimumSignificantDigits:")
+    public native void setMinimumSignificantDigits(@MachineSizedUInt long v);
     /**
      * @since Available in iOS 2.0 and later.
      */
-    @Method(selector = "maximumSignificantDigits")
-    public native @MachineSizedUInt long maximumSignificantDigits();
+    @Property(selector = "maximumSignificantDigits")
+    public native @MachineSizedUInt long getMaximumSignificantDigits();
     /**
      * @since Available in iOS 2.0 and later.
      */
-    @Method(selector = "setMaximumSignificantDigits:")
-    public native void setMaximumSignificantDigits(@MachineSizedUInt long number);
+    @Property(selector = "setMaximumSignificantDigits:")
+    public native void setMaximumSignificantDigits(@MachineSizedUInt long v);
     /**
      * @since Available in iOS 2.0 and later.
      */
-    @Method(selector = "isPartialStringValidationEnabled")
+    @Property(selector = "isPartialStringValidationEnabled")
     public native boolean isPartialStringValidationEnabled();
     /**
      * @since Available in iOS 2.0 and later.
      */
-    @Method(selector = "setPartialStringValidationEnabled:")
-    public native void setPartialStringValidationEnabled(boolean b);
+    @Property(selector = "setPartialStringValidationEnabled:")
+    public native void setPartialStringValidationEnabled(boolean v);
+    /*</properties>*/
+    /*<members>*//*</members>*/
+    /*<methods>*/
+    @Method(selector = "stringFromNumber:")
+    public native String format(NSNumber number);
+    @Method(selector = "numberFromString:")
+    public native NSNumber parse(String string);
     /**
      * @since Available in iOS 4.0 and later.
      */
     @Method(selector = "localizedStringFromNumber:numberStyle:")
-    public static native String localizedStringFromNumber$numberStyle$(NSNumber num, NSNumberFormatterStyle nstyle);
+    public static native String formatLocalized(NSNumber num, NSNumberFormatterStyle nstyle);
     @Method(selector = "defaultFormatterBehavior")
-    public static native NSNumberFormatterBehavior defaultFormatterBehavior();
+    public static native NSNumberFormatterBehavior getDefaultFormatterBehavior();
     @Method(selector = "setDefaultFormatterBehavior:")
     public static native void setDefaultFormatterBehavior(NSNumberFormatterBehavior behavior);
     /*</methods>*/

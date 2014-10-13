@@ -32,6 +32,7 @@ import org.robovm.apple.coregraphics.*;
 import org.robovm.apple.coredata.*;
 import org.robovm.apple.coreimage.*;
 import org.robovm.apple.coretext.*;
+import org.robovm.apple.corelocation.*;
 /*</imports>*/
 
 /*<javadoc>*/
@@ -149,6 +150,11 @@ import org.robovm.apple.coretext.*;
      */
     @NotImplemented("tableView:titleForDeleteConfirmationButtonForRowAtIndexPath:")
     public String getDeleteConfirmationButtonTitle(UITableView tableView, NSIndexPath indexPath) { throw new UnsupportedOperationException(); }
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @NotImplemented("tableView:editActionsForRowAtIndexPath:")
+    public NSArray<?> tableView$editActionsForRowAtIndexPath$(UITableView tableView, NSIndexPath indexPath) { throw new UnsupportedOperationException(); }
     @NotImplemented("tableView:shouldIndentWhileEditingRowAtIndexPath:")
     public boolean shouldIndentWhileEditingRow(UITableView tableView, NSIndexPath indexPath) { throw new UnsupportedOperationException(); }
     @NotImplemented("tableView:willBeginEditingRowAtIndexPath:")

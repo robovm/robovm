@@ -32,6 +32,7 @@ import org.robovm.apple.coregraphics.*;
 import org.robovm.apple.coredata.*;
 import org.robovm.apple.coreimage.*;
 import org.robovm.apple.coretext.*;
+import org.robovm.apple.corelocation.*;
 /*</imports>*/
 
 /*<javadoc>*/
@@ -90,8 +91,14 @@ import org.robovm.apple.coretext.*;
             + /*<name>*/UICollectionElementKind/*</name>*/.class.getName());
     }
     /*<methods>*/
+    /**
+     * @since Available in iOS 6.0 and later.
+     */
     @GlobalValue(symbol="UICollectionElementKindSectionHeader", optional=true)
     protected static native NSString SectionHeaderValue();
+    /**
+     * @since Available in iOS 6.0 and later.
+     */
     @GlobalValue(symbol="UICollectionElementKindSectionFooter", optional=true)
     protected static native NSString SectionFooterValue();
     /*</methods>*/

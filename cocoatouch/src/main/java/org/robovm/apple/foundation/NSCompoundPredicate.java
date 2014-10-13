@@ -32,6 +32,7 @@ import org.robovm.apple.coreanimation.*;
 import org.robovm.apple.coregraphics.*;
 import org.robovm.apple.coremedia.*;
 import org.robovm.apple.security.*;
+import org.robovm.apple.dispatch.*;
 /*</imports>*/
 
 /*<javadoc>*/
@@ -53,21 +54,20 @@ import org.robovm.apple.security.*;
     public NSCompoundPredicate(NSCompoundPredicateType type, NSArray<NSPredicate> subpredicates) { super((SkipInit) null); initObject(initWithType$subpredicates$(type, subpredicates)); }
     /*</constructors>*/
     /*<properties>*/
-    
+    @Property(selector = "compoundPredicateType")
+    public native NSCompoundPredicateType getCompoundPredicateType();
+    @Property(selector = "subpredicates")
+    public native NSArray<?> getSubpredicates();
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
     @Method(selector = "initWithType:subpredicates:")
     protected native @Pointer long initWithType$subpredicates$(NSCompoundPredicateType type, NSArray<NSPredicate> subpredicates);
-    @Method(selector = "compoundPredicateType")
-    public native NSCompoundPredicateType getCompoundPredicateType();
-    @Method(selector = "subpredicates")
-    public native NSArray<NSPredicate> getSubpredicates();
     @Method(selector = "andPredicateWithSubpredicates:")
-    public static native NSPredicate createAndPredicate(NSArray<NSPredicate> subpredicates);
+    public static native NSCompoundPredicate createAndPredicate(NSArray<NSPredicate> subpredicates);
     @Method(selector = "orPredicateWithSubpredicates:")
-    public static native NSPredicate createOrPredicate(NSArray<NSPredicate> subpredicates);
+    public static native NSCompoundPredicate createOrPredicate(NSArray<NSPredicate> subpredicates);
     @Method(selector = "notPredicateWithSubpredicate:")
-    public static native NSPredicate createNotPredicate(NSPredicate predicate);
+    public static native NSCompoundPredicate createNotPredicate(NSPredicate predicate);
     /*</methods>*/
 }

@@ -32,6 +32,7 @@ import org.robovm.apple.coreanimation.*;
 import org.robovm.apple.coregraphics.*;
 import org.robovm.apple.coremedia.*;
 import org.robovm.apple.security.*;
+import org.robovm.apple.dispatch.*;
 /*</imports>*/
 
 /*<javadoc>*/
@@ -73,7 +74,8 @@ import org.robovm.apple.security.*;
     }
 
     /*<properties>*/
-    
+    @Property(selector = "UUIDString")
+    public native String asString();
     /*</properties>*/
     /*<members>*//*</members>*/
     
@@ -94,7 +96,5 @@ import org.robovm.apple.security.*;
     protected native @Pointer long initWithUUIDBytes$(@Pointer long bytes);
     @Method(selector = "getUUIDBytes:")
     protected native void getUUIDBytes$(@Pointer long uuid);
-    @Method(selector = "UUIDString")
-    public native String asString();
     /*</methods>*/
 }

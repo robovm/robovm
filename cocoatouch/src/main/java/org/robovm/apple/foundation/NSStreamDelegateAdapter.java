@@ -32,6 +32,7 @@ import org.robovm.apple.coreanimation.*;
 import org.robovm.apple.coregraphics.*;
 import org.robovm.apple.coremedia.*;
 import org.robovm.apple.security.*;
+import org.robovm.apple.dispatch.*;
 /*</imports>*/
 
 /*<javadoc>*/
@@ -53,6 +54,6 @@ import org.robovm.apple.security.*;
     /*<members>*//*</members>*/
     /*<methods>*/
     @NotImplemented("stream:handleEvent:")
-    public void stream$handleEvent$(NSStream aStream, NSStreamEvent eventCode) { throw new UnsupportedOperationException(); }
+    public void handleEvent(NSStream aStream, NSStreamEvent eventCode) { throw new UnsupportedOperationException(); }
     /*</methods>*/
 }

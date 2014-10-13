@@ -32,6 +32,7 @@ import org.robovm.apple.coreanimation.*;
 import org.robovm.apple.coregraphics.*;
 import org.robovm.apple.coremedia.*;
 import org.robovm.apple.security.*;
+import org.robovm.apple.dispatch.*;
 /*</imports>*/
 
 /*<javadoc>*/
@@ -42,7 +43,7 @@ import org.robovm.apple.security.*;
 /*<annotations>*/@Library("Foundation") @NativeClass/*</annotations>*/
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/NSAttributedString/*</name>*/ 
     extends /*<extends>*/NSObject/*</extends>*/ 
-    /*<implements>*/implements NSCoding/*</implements>*/ {
+    /*<implements>*//*</implements>*/ {
 
     /*<ptr>*/public static class NSAttributedStringPtr extends Ptr<NSAttributedString, NSAttributedStringPtr> {}/*</ptr>*/
     /*<bind>*/static { ObjCRuntime.bind(NSAttributedString.class); }/*</bind>*/
@@ -55,7 +56,10 @@ import org.robovm.apple.security.*;
     public NSAttributedString(NSAttributedString attrStr) { super((SkipInit) null); initObject(initWithAttributedString$(attrStr)); }
     /*</constructors>*/
     /*<properties>*/
-    
+    @Property(selector = "string")
+    public native String getString();
+    @Property(selector = "length")
+    public native @MachineSizedUInt long getLength();
     /*</properties>*/
     /*<members>*//*</members>*/
     
@@ -83,10 +87,10 @@ import org.robovm.apple.security.*;
      * @since Available in iOS 4.0 and later.
      */
     public void enumerateAttributes(@ByVal NSRange enumerationRange, NSAttributedStringEnumerationOptions opts, final VoidBlock3<NSAttributedStringAttributes, NSRange, Boolean> block) {
-        enumerateAttributes0(enumerationRange, opts, new VoidBlock3<NSDictionary<NSString,NSObject>, NSRange, BytePtr>() {
+        enumerateAttributes0(enumerationRange, opts, new VoidBlock3<NSDictionary<NSString,NSObject>, NSRange, BooleanPtr>() {
             @Override
-            public void invoke(NSDictionary<NSString, NSObject> a, NSRange b, BytePtr c) {
-                block.invoke(new NSAttributedStringAttributes(a), b, c.get() != 0);
+            public void invoke(NSDictionary<NSString, NSObject> a, NSRange b, BooleanPtr c) {
+                block.invoke(new NSAttributedStringAttributes(a), b, c.get());
             }
         });
     }
@@ -94,10 +98,10 @@ import org.robovm.apple.security.*;
      * @since Available in iOS 4.0 and later.
      */
     public void enumerateAttribute(String name, @ByVal NSRange enumerationRange, NSAttributedStringEnumerationOptions opts, final VoidBlock3<NSObject, NSRange, Boolean> block) {
-        enumerateAttribute0(new NSString(name), enumerationRange, opts, new VoidBlock3<NSObject, NSRange, BytePtr>() {
+        enumerateAttribute0(new NSString(name), enumerationRange, opts, new VoidBlock3<NSObject, NSRange, BooleanPtr>() {
             @Override
-            public void invoke(NSObject a, NSRange b, BytePtr c) {
-                block.invoke(a, b, c.get() != 0);
+            public void invoke(NSObject a, NSRange b, BooleanPtr c) {
+                block.invoke(a, b, c.get());
             }
         });
     }
@@ -105,10 +109,10 @@ import org.robovm.apple.security.*;
      * @since Available in iOS 4.0 and later.
      */
     public void enumerateAttribute(NSAttributedStringAttribute attribute, @ByVal NSRange enumerationRange, NSAttributedStringEnumerationOptions opts, final VoidBlock3<NSObject, NSRange, Boolean> block) {
-        enumerateAttribute0(attribute.value(), enumerationRange, opts, new VoidBlock3<NSObject, NSRange, BytePtr>() {
+        enumerateAttribute0(attribute.value(), enumerationRange, opts, new VoidBlock3<NSObject, NSRange, BooleanPtr>() {
             @Override
-            public void invoke(NSObject a, NSRange b, BytePtr c) {
-                block.invoke(a, b, c.get() != 0);
+            public void invoke(NSObject a, NSRange b, BooleanPtr c) {
+                block.invoke(a, b, c.get());
             }
         });
     }
@@ -176,12 +180,8 @@ import org.robovm.apple.security.*;
     }
     
     /*<methods>*/
-    @Method(selector = "string")
-    public native String getString();
     @Method(selector = "attributesAtIndex:effectiveRange:")
     public native NSAttributedStringAttributes getAttributes(@MachineSizedUInt long location, NSRange range);
-    @Method(selector = "length")
-    public native @MachineSizedUInt long getLength();
     @Method(selector = "attribute:atIndex:effectiveRange:")
     protected native NSObject getAttribute(NSString attrName, @MachineSizedUInt long location, NSRange range);
     @Method(selector = "attributedSubstringFromRange:")
@@ -202,13 +202,11 @@ import org.robovm.apple.security.*;
      * @since Available in iOS 4.0 and later.
      */
     @Method(selector = "enumerateAttributesInRange:options:usingBlock:")
-    protected native void enumerateAttributes0(@ByVal NSRange enumerationRange, NSAttributedStringEnumerationOptions opts, @Block("(,@ByVal,)") VoidBlock3<NSDictionary<NSString, NSObject>, NSRange, BytePtr> block);
+    protected native void enumerateAttributes0(@ByVal NSRange enumerationRange, NSAttributedStringEnumerationOptions opts, @Block("(,@ByVal,)") VoidBlock3<NSDictionary<NSString, NSObject>, NSRange, BooleanPtr> block);
     /**
      * @since Available in iOS 4.0 and later.
      */
     @Method(selector = "enumerateAttribute:inRange:options:usingBlock:")
-    protected native void enumerateAttribute0(NSString attrName, @ByVal NSRange enumerationRange, NSAttributedStringEnumerationOptions opts, @Block("(,@ByVal,)") VoidBlock3<NSObject, NSRange, BytePtr> block);
-    @Method(selector = "encodeWithCoder:")
-    public native void encode(NSCoder aCoder);
+    protected native void enumerateAttribute0(NSString attrName, @ByVal NSRange enumerationRange, NSAttributedStringEnumerationOptions opts, @Block("(,@ByVal,)") VoidBlock3<NSObject, NSRange, BooleanPtr> block);
     /*</methods>*/
 }

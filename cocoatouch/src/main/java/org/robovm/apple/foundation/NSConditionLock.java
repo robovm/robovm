@@ -32,6 +32,7 @@ import org.robovm.apple.coreanimation.*;
 import org.robovm.apple.coregraphics.*;
 import org.robovm.apple.coremedia.*;
 import org.robovm.apple.security.*;
+import org.robovm.apple.dispatch.*;
 /*</imports>*/
 
 /*<javadoc>*/
@@ -51,14 +52,23 @@ import org.robovm.apple.security.*;
     public NSConditionLock(@MachineSizedSInt long condition) { super((SkipInit) null); initObject(initWithCondition$(condition)); }
     /*</constructors>*/
     /*<properties>*/
-    
+    @Property(selector = "condition")
+    public native @MachineSizedSInt long getCondition();
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
+    @Property(selector = "name")
+    public native String getName();
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
+    @Property(selector = "setName:")
+    public native void setName(String v);
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
     @Method(selector = "initWithCondition:")
     protected native @Pointer long initWithCondition$(@MachineSizedSInt long condition);
-    @Method(selector = "condition")
-    public native @MachineSizedSInt long getCondition();
     @Method(selector = "lockWhenCondition:")
     public native void lock(@MachineSizedSInt long condition);
     @Method(selector = "tryLock")
@@ -71,16 +81,6 @@ import org.robovm.apple.security.*;
     public native boolean lock(NSDate limit);
     @Method(selector = "lockWhenCondition:beforeDate:")
     public native boolean lock(@MachineSizedSInt long condition, NSDate limit);
-    /**
-     * @since Available in iOS 2.0 and later.
-     */
-    @Method(selector = "setName:")
-    public native void setName(String n);
-    /**
-     * @since Available in iOS 2.0 and later.
-     */
-    @Method(selector = "name")
-    public native String getName();
     @Method(selector = "lock")
     public native void lock();
     @Method(selector = "unlock")

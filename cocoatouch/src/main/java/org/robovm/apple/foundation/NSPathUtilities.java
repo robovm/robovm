@@ -32,6 +32,7 @@ import org.robovm.apple.coreanimation.*;
 import org.robovm.apple.coregraphics.*;
 import org.robovm.apple.coremedia.*;
 import org.robovm.apple.security.*;
+import org.robovm.apple.dispatch.*;
 /*</imports>*/
 
 /*<javadoc>*/
@@ -62,6 +63,6 @@ import org.robovm.apple.security.*;
     @Bridge(symbol="NSOpenStepRootDirectory", optional=true)
     public static native String getOpenStepRootDirectory();
     @Bridge(symbol="NSSearchPathForDirectoriesInDomains", optional=true)
-    public static native NSArray<?> getSearchPathForDirectoriesInDomains(NSSearchPathDirectory directory, NSSearchPathDomainMask domainMask, boolean expandTilde);
+    public static native @org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String> getSearchPathForDirectoriesInDomains(NSSearchPathDirectory directory, NSSearchPathDomainMask domainMask, boolean expandTilde);
     /*</methods>*/
 }

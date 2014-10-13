@@ -32,6 +32,7 @@ import org.robovm.apple.coreanimation.*;
 import org.robovm.apple.coregraphics.*;
 import org.robovm.apple.coremedia.*;
 import org.robovm.apple.security.*;
+import org.robovm.apple.dispatch.*;
 /*</imports>*/
 
 /*<javadoc>*/
@@ -50,15 +51,14 @@ import org.robovm.apple.security.*;
     protected NSPipe(SkipInit skipInit) { super(skipInit); }
     /*</constructors>*/
     /*<properties>*/
-    
+    @Property(selector = "fileHandleForReading")
+    public native NSFileHandle getFileHandleForReading();
+    @Property(selector = "fileHandleForWriting")
+    public native NSFileHandle getFileHandleForWriting();
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
-    @Method(selector = "fileHandleForReading")
-    public native NSFileHandle fileHandleForReading();
-    @Method(selector = "fileHandleForWriting")
-    public native NSFileHandle fileHandleForWriting();
     @Method(selector = "pipe")
-    public static native NSObject pipe();
+    public static native NSPipe create();
     /*</methods>*/
 }

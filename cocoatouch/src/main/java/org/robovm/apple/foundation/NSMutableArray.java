@@ -32,6 +32,7 @@ import org.robovm.apple.coreanimation.*;
 import org.robovm.apple.coregraphics.*;
 import org.robovm.apple.coremedia.*;
 import org.robovm.apple.security.*;
+import org.robovm.apple.dispatch.*;
 /*</imports>*/
 
 /*<javadoc>*/
@@ -67,7 +68,7 @@ import org.robovm.apple.security.*;
         @Override
         public void add(int index, U element) {
             checkNull(element);
-            if (index < 0 || index > array.count()) {
+            if (index < 0 || index > array.getCount()) {
                 checkIndex(index);
             }
             ((NSMutableArray<U>) array).insertObject$atIndex$(element, index);
@@ -142,9 +143,9 @@ import org.robovm.apple.security.*;
     protected native void removeObjectAtIndex$(@MachineSizedUInt long index);
     @Method(selector = "replaceObjectAtIndex:withObject:")
     protected native void replaceObjectAtIndex$withObject$(@MachineSizedUInt long index, NSObject anObject);
-    @Method(selector = "removeAllObjects")
-    protected native void removeAllObjects();
     @Method(selector = "initWithCapacity:")
     protected native @Pointer long initWithCapacity$(@MachineSizedUInt long numItems);
+    @Method(selector = "removeAllObjects")
+    protected native void removeAllObjects();
     /*</methods>*/
 }

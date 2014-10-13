@@ -32,6 +32,7 @@ import org.robovm.apple.coreanimation.*;
 import org.robovm.apple.coregraphics.*;
 import org.robovm.apple.coremedia.*;
 import org.robovm.apple.security.*;
+import org.robovm.apple.dispatch.*;
 /*</imports>*/
 
 /*<javadoc>*/
@@ -55,20 +56,20 @@ import org.robovm.apple.security.*;
     /*<members>*//*</members>*/
     /*<methods>*/
     @Method(selector = "addIndexes:")
-    public native void addIndexes$(NSIndexSet indexSet);
+    public native void addIndexes(NSIndexSet indexSet);
     @Method(selector = "removeIndexes:")
-    public native void removeIndexes$(NSIndexSet indexSet);
+    public native void removeIndexes(NSIndexSet indexSet);
     @Method(selector = "removeAllIndexes")
     public native void removeAllIndexes();
     @Method(selector = "addIndex:")
-    public native void addIndex$(@MachineSizedUInt long value);
+    public native void addIndex(@MachineSizedUInt long value);
     @Method(selector = "removeIndex:")
-    public native void removeIndex$(@MachineSizedUInt long value);
+    public native void removeIndex(@MachineSizedUInt long value);
     @Method(selector = "addIndexesInRange:")
-    public native void addIndexesInRange$(@ByVal NSRange range);
+    public native void addIndexes(@ByVal NSRange range);
     @Method(selector = "removeIndexesInRange:")
-    public native void removeIndexesInRange$(@ByVal NSRange range);
+    public native void removeIndexes(@ByVal NSRange range);
     @Method(selector = "shiftIndexesStartingAtIndex:by:")
-    public native void shiftIndexesStartingAtIndex$by$(@MachineSizedUInt long index, @MachineSizedSInt long delta);
+    public native void shiftIndexes(@MachineSizedUInt long index, @MachineSizedSInt long delta);
     /*</methods>*/
 }

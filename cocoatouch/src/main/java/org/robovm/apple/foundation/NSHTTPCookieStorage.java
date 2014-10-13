@@ -32,6 +32,7 @@ import org.robovm.apple.coreanimation.*;
 import org.robovm.apple.coregraphics.*;
 import org.robovm.apple.coremedia.*;
 import org.robovm.apple.security.*;
+import org.robovm.apple.dispatch.*;
 /*</imports>*/
 
 /*<javadoc>*/
@@ -69,7 +70,12 @@ import org.robovm.apple.security.*;
     protected NSHTTPCookieStorage(SkipInit skipInit) { super(skipInit); }
     /*</constructors>*/
     /*<properties>*/
-    
+    @Property(selector = "cookies")
+    public native NSArray<?> getCookies();
+    @Property(selector = "cookieAcceptPolicy")
+    public native NSHTTPCookieAcceptPolicy getCookieAcceptPolicy();
+    @Property(selector = "setCookieAcceptPolicy:")
+    public native void setCookieAcceptPolicy(NSHTTPCookieAcceptPolicy v);
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
@@ -78,20 +84,19 @@ import org.robovm.apple.security.*;
     @GlobalValue(symbol="NSHTTPCookieManagerCookiesChangedNotification", optional=true)
     public static native NSString CookiesChangedNotification();
     
-    @Method(selector = "cookies")
-    public native NSArray<NSHTTPCookie> getCookies();
     @Method(selector = "setCookie:")
     public native void setCookie(NSHTTPCookie cookie);
     @Method(selector = "deleteCookie:")
     public native void deleteCookie(NSHTTPCookie cookie);
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @Method(selector = "removeCookiesSinceDate:")
+    public native void removeCookiesSinceDate$(NSDate date);
     @Method(selector = "cookiesForURL:")
     public native NSArray<NSHTTPCookie> getCookiesForURL(NSURL URL);
     @Method(selector = "setCookies:forURL:mainDocumentURL:")
     public native void setCookiesForURL(NSArray<NSHTTPCookie> cookies, NSURL URL, NSURL mainDocumentURL);
-    @Method(selector = "cookieAcceptPolicy")
-    public native NSHTTPCookieAcceptPolicy getCookieAcceptPolicy();
-    @Method(selector = "setCookieAcceptPolicy:")
-    public native void setCookieAcceptPolicy(NSHTTPCookieAcceptPolicy cookieAcceptPolicy);
     /**
      * @since Available in iOS 5.0 and later.
      */
@@ -99,5 +104,15 @@ import org.robovm.apple.security.*;
     public native NSArray<NSHTTPCookie> getSortedCookies(NSArray<NSSortDescriptor> sortOrder);
     @Method(selector = "sharedHTTPCookieStorage")
     public static native NSHTTPCookieStorage getSharedHTTPCookieStorage();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @Method(selector = "storeCookies:forTask:")
+    public native void storeCookies$forTask$(NSArray<?> cookies, NSURLSessionTask task);
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @Method(selector = "getCookiesForTask:completionHandler:")
+    public native void getCookiesForTask$completionHandler$(NSURLSessionTask task, ObjCBlock completionHandler);
     /*</methods>*/
 }

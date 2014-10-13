@@ -32,6 +32,7 @@ import org.robovm.apple.coregraphics.*;
 import org.robovm.apple.coredata.*;
 import org.robovm.apple.coreimage.*;
 import org.robovm.apple.coretext.*;
+import org.robovm.apple.corelocation.*;
 /*</imports>*/
 
 /*<javadoc>*/
@@ -40,6 +41,7 @@ import org.robovm.apple.coretext.*;
 /*<annotations>*/@Marshaler(ValuedEnum.AsMachineSizedSIntMarshaler.class)/*</annotations>*/
 public enum /*<name>*/UIInterfaceOrientation/*</name>*/ implements ValuedEnum {
     /*<values>*/
+    Unknown(0L),
     Portrait(1L),
     PortraitUpsideDown(2L),
     LandscapeLeft(4L),

@@ -32,6 +32,7 @@ import org.robovm.apple.coreanimation.*;
 import org.robovm.apple.coregraphics.*;
 import org.robovm.apple.coremedia.*;
 import org.robovm.apple.security.*;
+import org.robovm.apple.dispatch.*;
 /*</imports>*/
 
 /*<javadoc>*/
@@ -54,7 +55,16 @@ import org.robovm.apple.security.*;
     public NSHashTable(NSPointerFunctions functions, @MachineSizedUInt long initialCapacity) { super((SkipInit) null); initObject(initWithPointerFunctions$capacity$(functions, initialCapacity)); }
     /*</constructors>*/
     /*<properties>*/
-    
+    @Property(selector = "pointerFunctions")
+    public native NSPointerFunctions getPointerFunctions();
+    @Property(selector = "count")
+    public native @MachineSizedUInt long getCount();
+    @Property(selector = "allObjects")
+    public native NSArray<?> getAllObjects();
+    @Property(selector = "anyObject")
+    public native NSObject getAnyObject();
+    @Property(selector = "setRepresentation")
+    public native NSSet<?> getSetRepresentation();
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
@@ -62,10 +72,6 @@ import org.robovm.apple.security.*;
     protected native @Pointer long initWithOptions$capacity$(NSPointerFunctionsOptions options, @MachineSizedUInt long initialCapacity);
     @Method(selector = "initWithPointerFunctions:capacity:")
     protected native @Pointer long initWithPointerFunctions$capacity$(NSPointerFunctions functions, @MachineSizedUInt long initialCapacity);
-    @Method(selector = "pointerFunctions")
-    public native NSPointerFunctions pointerFunctions();
-    @Method(selector = "count")
-    public native @MachineSizedUInt long count();
     @Method(selector = "member:")
     public native NSObject member$(NSObject object);
     @Method(selector = "objectEnumerator")
@@ -76,10 +82,6 @@ import org.robovm.apple.security.*;
     public native void removeObject$(NSObject object);
     @Method(selector = "removeAllObjects")
     public native void removeAllObjects();
-    @Method(selector = "allObjects")
-    public native NSArray<?> allObjects();
-    @Method(selector = "anyObject")
-    public native NSObject anyObject();
     @Method(selector = "containsObject:")
     public native boolean containsObject$(NSObject anObject);
     @Method(selector = "intersectsHashTable:")
@@ -94,15 +96,13 @@ import org.robovm.apple.security.*;
     public native void unionHashTable$(NSHashTable other);
     @Method(selector = "minusHashTable:")
     public native void minusHashTable$(NSHashTable other);
-    @Method(selector = "setRepresentation")
-    public native NSSet<?> setRepresentation();
     @Method(selector = "hashTableWithOptions:")
-    public static native NSObject hashTableWithOptions$(NSPointerFunctionsOptions options);
+    public static native NSHashTable hashTableWithOptions$(NSPointerFunctionsOptions options);
     /**
      * @since Available in iOS 6.0 and later.
      */
     @Method(selector = "weakObjectsHashTable")
-    public static native NSObject weakObjectsHashTable();
+    public static native NSHashTable weakObjectsHashTable();
     @Method(selector = "encodeWithCoder:")
     public native void encode(NSCoder aCoder);
     /*</methods>*/

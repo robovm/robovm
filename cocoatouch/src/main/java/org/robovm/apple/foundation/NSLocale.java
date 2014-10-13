@@ -32,6 +32,7 @@ import org.robovm.apple.coreanimation.*;
 import org.robovm.apple.coregraphics.*;
 import org.robovm.apple.coremedia.*;
 import org.robovm.apple.security.*;
+import org.robovm.apple.dispatch.*;
 /*</imports>*/
 
 /*<javadoc>*/
@@ -42,6 +43,20 @@ import org.robovm.apple.security.*;
     extends /*<extends>*/NSObject/*</extends>*/ 
     /*<implements>*//*</implements>*/ {
 
+    public static class Notifications {
+        /**
+         * @since Available in iOS 2.0 and later.
+         */
+        public static NSObject observeCurrentLocaleDidChange(final Runnable block) {
+            return NSNotificationCenter.getDefaultCenter().addObserver(CurrentLocaleDidChangeNotification(), null, NSOperationQueue.getMainQueue(), new VoidBlock1<NSNotification>() {
+                @Override
+                public void invoke(NSNotification a) {
+                    block.run();
+                }
+            });
+        }
+    }
+    
     /*<ptr>*/public static class NSLocalePtr extends Ptr<NSLocale, NSLocalePtr> {}/*</ptr>*/
     /*<bind>*/static { ObjCRuntime.bind(NSLocale.class); }/*</bind>*/
     /*<constants>*//*</constants>*/
@@ -56,34 +71,122 @@ import org.robovm.apple.security.*;
     }
     
     /*<properties>*/
-    
+    @Property(selector = "localeIdentifier")
+    public native String getLocaleIdentifier();
     /*</properties>*/
     /*<members>*//*</members>*/
     
     public Locale toLocale() {
-        NSString language = (NSString) getComponent(Foundation.LocaleLanguageCode());
-        NSString country = (NSString) getComponent(Foundation.LocaleCountryCode());
-        NSString variant = (NSString) getComponent(Foundation.LocaleVariantCode());
+        String language = getLanguageCode();
+        String country = getCountryCode();
+        String variant = getVariantCode();
         if (language != null && country != null && variant != null) {
-            return new Locale(language.toString(), country.toString(), variant.toString());
+            return new Locale(language, country, variant);
         }
         if (language != null && country != null) {
-            return new Locale(language.toString(), country.toString());
+            return new Locale(language, country);
         }
         if (language != null) {
-            return new Locale(language.toString());
+            return new Locale(language);
         }
-        throw new IllegalArgumentException("Failed to convert NSLocale " 
-                + toString() + " to Java Locale");
+        throw new IllegalArgumentException("Failed to convert NSLocale " + toString() + " to Java Locale");
     }
     
+    /* Convenience methods */
+    public String getLanguageCode() {
+        NSString val = (NSString)getComponent(NSLocaleComponent.LanguageCode);
+        return val.toString();
+    }
+    public String getCountryCode() {
+        NSString val = (NSString)getComponent(NSLocaleComponent.CountryCode);
+        return val.toString();
+    }
+    public String getScriptCode() {
+        NSString val = (NSString)getComponent(NSLocaleComponent.ScriptCode);
+        return val.toString();
+    }
+    public String getVariantCode() {
+        NSString val = (NSString)getComponent(NSLocaleComponent.VariantCode);
+        return val.toString();
+    }
+    public NSCharacterSet getExemplarCharacterSet() {
+        NSCharacterSet val = (NSCharacterSet)getComponent(NSLocaleComponent.ExemplarCharacterSet);
+        return val;
+    }
+    public String getCollationIdentifier() {
+        NSString val = (NSString)getComponent(NSLocaleComponent.CollationIdentifier);
+        return val.toString();
+    }
+    public boolean isUsingMetricSystem() {
+        NSNumber val = (NSNumber)getComponent(NSLocaleComponent.UsesMetricSystem);
+        return val.booleanValue();
+    }
+    public String getMeasurementSystem() {
+        NSString val = (NSString)getComponent(NSLocaleComponent.MeasurementSystem);
+        return val.toString();
+    }
+    public String getDecimalSeparator() {
+        NSString val = (NSString)getComponent(NSLocaleComponent.DecimalSeparator);
+        return val.toString();
+    }
+    public String getGroupingSeparator() {
+        NSString val = (NSString)getComponent(NSLocaleComponent.GroupingSeparator);
+        return val.toString();
+    }
+    public String getCurrencySymbol() {
+        NSString val = (NSString)getComponent(NSLocaleComponent.CurrencySymbol);
+        return val.toString();
+    }
+    public String getCurrencyCode() {
+        NSString val = (NSString)getComponent(NSLocaleComponent.CurrencyCode);
+        return val.toString();
+    }
+    /**
+     * @since Available in iOS 4.0 and later.
+     */
+    public String getCollatorIdentifier() {
+        NSString val = (NSString)getComponent(NSLocaleComponent.CollatorIdentifier);
+        return val.toString();
+    }
+    /**
+     * @since Available in iOS 4.0 and later.
+     */
+    public String getQuotationBeginDelimiterKey() {
+        NSString val = (NSString)getComponent(NSLocaleComponent.QuotationBeginDelimiterKey);
+        return val.toString();
+    }
+    /**
+     * @since Available in iOS 4.0 and later.
+     */
+    public String getQuotationEndDelimiterKey() {
+        NSString val = (NSString)getComponent(NSLocaleComponent.QuotationEndDelimiterKey);
+        return val.toString();
+    }
+    /**
+     * @since Available in iOS 4.0 and later.
+     */
+    public String getAlternateQuotationBeginDelimiterKey() {
+        NSString val = (NSString)getComponent(NSLocaleComponent.AlternateQuotationBeginDelimiterKey);
+        return val.toString();
+    }
+    /**
+     * @since Available in iOS 4.0 and later.
+     */
+    public String getAlternateQuotationEndDelimiterKey() {
+        NSString val = (NSString)getComponent(NSLocaleComponent.AlternateQuotationEndDelimiterKey);
+        return val.toString();
+    }
     /*<methods>*/
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
+    @GlobalValue(symbol="NSCurrentLocaleDidChangeNotification", optional=true)
+    public static native NSString CurrentLocaleDidChangeNotification();
+    
     @Method(selector = "objectForKey:")
-    public native NSObject getComponent(NSString key);
+    public native NSObject getComponent(NSLocaleComponent key);
     @Method(selector = "displayNameForKey:value:")
-    public native String getDisplayName(NSString key, NSObject value);
-    @Method(selector = "localeIdentifier")
-    public native String getLocaleIdentifier();
+    public native String getDisplayName(NSLocaleComponent key, NSObject value);
     @Method(selector = "initWithLocaleIdentifier:")
     protected native @Pointer long initWithLocaleIdentifier$(String string);
     /**
@@ -96,23 +199,23 @@ import org.robovm.apple.security.*;
     @Method(selector = "systemLocale")
     public static native NSLocale getSystemLocale();
     @Method(selector = "availableLocaleIdentifiers")
-    public static native NSArray<NSString> getAvailableLocaleIdentifiers();
+    public static native @org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String> getAvailableLocaleIdentifiers();
     @Method(selector = "ISOLanguageCodes")
-    public static native NSArray<NSString> getISOLanguageCodes();
+    public static native @org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String> getISOLanguageCodes();
     @Method(selector = "ISOCountryCodes")
-    public static native NSArray<NSString> getISOCountryCodes();
+    public static native @org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String> getISOCountryCodes();
     @Method(selector = "ISOCurrencyCodes")
-    public static native NSArray<NSString> getISOCurrencyCodes();
+    public static native @org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String> getISOCurrencyCodes();
     /**
      * @since Available in iOS 2.0 and later.
      */
     @Method(selector = "commonISOCurrencyCodes")
-    public static native NSArray<NSString> getCommonISOCurrencyCodes();
+    public static native @org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String> getCommonISOCurrencyCodes();
     /**
      * @since Available in iOS 2.0 and later.
      */
     @Method(selector = "preferredLanguages")
-    public static native NSArray<NSString> getPreferredLanguages();
+    public static native @org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String> getPreferredLanguages();
     @Method(selector = "componentsFromLocaleIdentifier:")
     public static native NSDictionary<NSString, ?> getComponentsFromLocaleIdentifier(String string);
     @Method(selector = "localeIdentifierFromComponents:")

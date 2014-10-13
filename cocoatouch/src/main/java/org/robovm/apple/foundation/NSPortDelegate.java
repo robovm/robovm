@@ -32,6 +32,7 @@ import org.robovm.apple.coreanimation.*;
 import org.robovm.apple.coregraphics.*;
 import org.robovm.apple.coremedia.*;
 import org.robovm.apple.security.*;
+import org.robovm.apple.dispatch.*;
 /*</imports>*/
 
 /*<javadoc>*/
@@ -51,7 +52,7 @@ import org.robovm.apple.security.*;
     /*</properties>*/
     /*<methods>*/
     @Method(selector = "handlePortMessage:")
-    void handlePortMessage$(NSPortMessage message);
+    void handlePortMessage(NSPortMessage message);
     /*</methods>*/
     /*<adapter>*/
     /*</adapter>*/

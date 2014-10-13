@@ -32,6 +32,7 @@ import org.robovm.apple.coreanimation.*;
 import org.robovm.apple.coregraphics.*;
 import org.robovm.apple.coremedia.*;
 import org.robovm.apple.security.*;
+import org.robovm.apple.dispatch.*;
 /*</imports>*/
 
 /*<javadoc>*/
@@ -57,14 +58,14 @@ import org.robovm.apple.security.*;
     /*<members>*//*</members>*/
     /*<methods>*/
     @Method(selector = "isValidJSONObject:")
-    public static native boolean isValidJSONObject$(NSObject obj);
+    public static native boolean isValidJSONObject(NSObject obj);
     @Method(selector = "dataWithJSONObject:options:error:")
-    public static native NSData dataWithJSONObject$options$error$(NSObject obj, NSJSONWritingOptions opt, NSError.NSErrorPtr error);
+    public static native NSData createJSONData(NSObject obj, NSJSONWritingOptions opt, NSError.NSErrorPtr error);
     @Method(selector = "JSONObjectWithData:options:error:")
-    public static native NSObject JSONObjectWithData$options$error$(NSData data, NSJSONReadingOptions opt, NSError.NSErrorPtr error);
+    public static native NSObject createJSONObject(NSData data, NSJSONReadingOptions opt, NSError.NSErrorPtr error);
     @Method(selector = "writeJSONObject:toStream:options:error:")
-    public static native @MachineSizedSInt long writeJSONObject$toStream$options$error$(NSObject obj, NSOutputStream stream, NSJSONWritingOptions opt, NSError.NSErrorPtr error);
+    public static native @MachineSizedSInt long writeJSONObject(NSObject obj, NSOutputStream stream, NSJSONWritingOptions opt, NSError.NSErrorPtr error);
     @Method(selector = "JSONObjectWithStream:options:error:")
-    public static native NSObject JSONObjectWithStream$options$error$(NSInputStream stream, NSJSONReadingOptions opt, NSError.NSErrorPtr error);
+    public static native NSObject readJSONObject(NSInputStream stream, NSJSONReadingOptions opt, NSError.NSErrorPtr error);
     /*</methods>*/
 }

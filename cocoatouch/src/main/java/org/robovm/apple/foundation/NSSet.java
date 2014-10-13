@@ -19,7 +19,6 @@ package org.robovm.apple.foundation;
 import java.io.*;
 import java.nio.*;
 import java.util.*;
-
 import org.robovm.objc.*;
 import org.robovm.objc.annotation.*;
 import org.robovm.objc.block.*;
@@ -33,6 +32,7 @@ import org.robovm.apple.coreanimation.*;
 import org.robovm.apple.coregraphics.*;
 import org.robovm.apple.coremedia.*;
 import org.robovm.apple.security.*;
+import org.robovm.apple.dispatch.*;
 /*</imports>*/
 
 /*<javadoc>*/
@@ -82,7 +82,7 @@ import org.robovm.apple.security.*;
 
         @Override
         public int size() {
-            return (int) set.count();
+            return (int) set.getCount();
         }
     }
     
@@ -114,7 +114,12 @@ import org.robovm.apple.security.*;
     }
     
     /*<properties>*/
-    
+    @Property(selector = "count")
+    protected native @MachineSizedUInt long getCount();
+    @Property(selector = "allObjects")
+    public native NSArray<T> getValues();
+    @Property(selector = "description")
+    public native String getDescription();
     /*</properties>*/
     /*<members>*//*</members>*/
     
@@ -231,16 +236,14 @@ import org.robovm.apple.security.*;
     }
     
     /*<methods>*/
-    @Method(selector = "count")
-    protected native @MachineSizedUInt long count();
     @Method(selector = "member:")
     protected native NSObject member$(NSObject object);
     @Method(selector = "objectEnumerator")
     protected native NSEnumerator<T> objectEnumerator();
-    @Method(selector = "anyObject")
-    protected native T anyObject();
     @Method(selector = "initWithObjects:count:")
     protected native @Pointer long initWithObjects$count$(@Pointer long objects, @MachineSizedUInt long cnt);
+    @Method(selector = "anyObject")
+    protected native T anyObject();
     @Method(selector = "initWithSet:")
     protected native @Pointer long initWithSet$(NSSet<?> set);
     @Method(selector = "initWithArray:")

@@ -32,6 +32,7 @@ import org.robovm.apple.coreanimation.*;
 import org.robovm.apple.coregraphics.*;
 import org.robovm.apple.coremedia.*;
 import org.robovm.apple.security.*;
+import org.robovm.apple.dispatch.*;
 /*</imports>*/
 
 /*<javadoc>*/
@@ -55,18 +56,59 @@ import org.robovm.apple.security.*;
     /*<members>*//*</members>*/
     /*<methods>*/
     @Method(selector = "addCharactersInRange:")
-    public native void addCharactersInRange$(@ByVal NSRange aRange);
+    public native void addCharacters(@ByVal NSRange aRange);
     @Method(selector = "removeCharactersInRange:")
-    public native void removeCharactersInRange$(@ByVal NSRange aRange);
+    public native void removeCharacters(@ByVal NSRange aRange);
     @Method(selector = "addCharactersInString:")
-    public native void addCharactersInString$(String aString);
+    public native void addCharacters(String aString);
     @Method(selector = "removeCharactersInString:")
-    public native void removeCharactersInString$(String aString);
+    public native void removeCharacters(String aString);
     @Method(selector = "formUnionWithCharacterSet:")
-    public native void formUnionWithCharacterSet$(NSCharacterSet otherSet);
+    public native void formUnion(NSCharacterSet otherSet);
     @Method(selector = "formIntersectionWithCharacterSet:")
-    public native void formIntersectionWithCharacterSet$(NSCharacterSet otherSet);
+    public native void formIntersection(NSCharacterSet otherSet);
     @Method(selector = "invert")
     public native void invert();
+    @Method(selector = "controlCharacterSet")
+    public static native NSMutableCharacterSet controlCharacterSet();
+    @Method(selector = "whitespaceCharacterSet")
+    public static native NSMutableCharacterSet whitespaceCharacterSet();
+    @Method(selector = "whitespaceAndNewlineCharacterSet")
+    public static native NSMutableCharacterSet whitespaceAndNewlineCharacterSet();
+    @Method(selector = "decimalDigitCharacterSet")
+    public static native NSMutableCharacterSet decimalDigitCharacterSet();
+    @Method(selector = "letterCharacterSet")
+    public static native NSMutableCharacterSet letterCharacterSet();
+    @Method(selector = "lowercaseLetterCharacterSet")
+    public static native NSMutableCharacterSet lowercaseLetterCharacterSet();
+    @Method(selector = "uppercaseLetterCharacterSet")
+    public static native NSMutableCharacterSet uppercaseLetterCharacterSet();
+    @Method(selector = "nonBaseCharacterSet")
+    public static native NSMutableCharacterSet nonBaseCharacterSet();
+    @Method(selector = "alphanumericCharacterSet")
+    public static native NSMutableCharacterSet alphanumericCharacterSet();
+    @Method(selector = "decomposableCharacterSet")
+    public static native NSMutableCharacterSet decomposableCharacterSet();
+    @Method(selector = "illegalCharacterSet")
+    public static native NSMutableCharacterSet illegalCharacterSet();
+    @Method(selector = "punctuationCharacterSet")
+    public static native NSMutableCharacterSet punctuationCharacterSet();
+    @Method(selector = "capitalizedLetterCharacterSet")
+    public static native NSMutableCharacterSet capitalizedLetterCharacterSet();
+    @Method(selector = "symbolCharacterSet")
+    public static native NSMutableCharacterSet symbolCharacterSet();
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
+    @Method(selector = "newlineCharacterSet")
+    public static native NSMutableCharacterSet newlineCharacterSet();
+    @Method(selector = "characterSetWithRange:")
+    public static native NSMutableCharacterSet characterSetWithRange$(@ByVal NSRange aRange);
+    @Method(selector = "characterSetWithCharactersInString:")
+    public static native NSMutableCharacterSet characterSetWithCharactersInString$(String aString);
+    @Method(selector = "characterSetWithBitmapRepresentation:")
+    public static native NSMutableCharacterSet characterSetWithBitmapRepresentation$(NSData data);
+    @Method(selector = "characterSetWithContentsOfFile:")
+    public static native NSMutableCharacterSet characterSetWithContentsOfFile$(String fName);
     /*</methods>*/
 }

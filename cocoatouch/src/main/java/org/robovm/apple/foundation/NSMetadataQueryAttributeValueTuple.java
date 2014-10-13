@@ -32,6 +32,7 @@ import org.robovm.apple.coreanimation.*;
 import org.robovm.apple.coregraphics.*;
 import org.robovm.apple.coremedia.*;
 import org.robovm.apple.security.*;
+import org.robovm.apple.dispatch.*;
 /*</imports>*/
 
 /*<javadoc>*/
@@ -52,15 +53,15 @@ import org.robovm.apple.security.*;
     protected NSMetadataQueryAttributeValueTuple(SkipInit skipInit) { super(skipInit); }
     /*</constructors>*/
     /*<properties>*/
-    
+    @Property(selector = "attribute")
+    public native String getAttribute();
+    @Property(selector = "value")
+    public native NSObject getValue();
+    @Property(selector = "count")
+    public native @MachineSizedUInt long getCount();
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
-    @Method(selector = "attribute")
-    public native String attribute();
-    @Method(selector = "value")
-    public native NSObject value();
-    @Method(selector = "count")
-    public native @MachineSizedUInt long count();
+    
     /*</methods>*/
 }

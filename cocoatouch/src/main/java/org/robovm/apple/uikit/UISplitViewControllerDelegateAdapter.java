@@ -32,6 +32,7 @@ import org.robovm.apple.coregraphics.*;
 import org.robovm.apple.coredata.*;
 import org.robovm.apple.coreimage.*;
 import org.robovm.apple.coretext.*;
+import org.robovm.apple.corelocation.*;
 /*</imports>*/
 
 /*<javadoc>*/
@@ -52,17 +53,46 @@ import org.robovm.apple.coretext.*;
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
-    @NotImplemented("splitViewController:willHideViewController:withBarButtonItem:forPopoverController:")
-    public void willHideViewController(UISplitViewController svc, UIViewController aViewController, UIBarButtonItem barButtonItem, UIPopoverController pc) { throw new UnsupportedOperationException(); }
-    @NotImplemented("splitViewController:willShowViewController:invalidatingBarButtonItem:")
-    public void willShowViewController(UISplitViewController svc, UIViewController aViewController, UIBarButtonItem barButtonItem) { throw new UnsupportedOperationException(); }
-    @NotImplemented("splitViewController:popoverController:willPresentViewController:")
-    public void willPresentViewController(UISplitViewController svc, UIPopoverController pc, UIViewController aViewController) { throw new UnsupportedOperationException(); }
     /**
-     * @since Available in iOS 5.0 and later.
+     * @since Available in iOS 8.0 and later.
      */
-    @NotImplemented("splitViewController:shouldHideViewController:inOrientation:")
-    public boolean shouldHideViewController(UISplitViewController svc, UIViewController vc, UIInterfaceOrientation orientation) { throw new UnsupportedOperationException(); }
+    @NotImplemented("splitViewController:willChangeToDisplayMode:")
+    public void willChangeToDisplayMode(UISplitViewController svc, UISplitViewControllerDisplayMode displayMode) { throw new UnsupportedOperationException(); }
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @NotImplemented("targetDisplayModeForActionInSplitViewController:")
+    public UISplitViewControllerDisplayMode getTargetDisplayMode(UISplitViewController svc) { throw new UnsupportedOperationException(); }
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @NotImplemented("splitViewController:showViewController:sender:")
+    public boolean showViewController(UISplitViewController splitViewController, UIViewController vc, NSObject sender) { throw new UnsupportedOperationException(); }
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @NotImplemented("splitViewController:showDetailViewController:sender:")
+    public boolean showDetailViewController(UISplitViewController splitViewController, UIViewController vc, NSObject sender) { throw new UnsupportedOperationException(); }
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @NotImplemented("primaryViewControllerForCollapsingSplitViewController:")
+    public UIViewController getPrimaryViewControllerForCollapsing(UISplitViewController splitViewController) { throw new UnsupportedOperationException(); }
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @NotImplemented("primaryViewControllerForExpandingSplitViewController:")
+    public UIViewController getPrimaryViewControllerForExpanding(UISplitViewController splitViewController) { throw new UnsupportedOperationException(); }
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @NotImplemented("splitViewController:collapseSecondaryViewController:ontoPrimaryViewController:")
+    public boolean collapseSecondaryViewController(UISplitViewController splitViewController, UIViewController secondaryViewController, UIViewController primaryViewController) { throw new UnsupportedOperationException(); }
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @NotImplemented("splitViewController:separateSecondaryViewControllerFromPrimaryViewController:")
+    public UIViewController separateSecondaryViewController(UISplitViewController splitViewController, UIViewController primaryViewController) { throw new UnsupportedOperationException(); }
     /**
      * @since Available in iOS 7.0 and later.
      */
@@ -73,5 +103,33 @@ import org.robovm.apple.coretext.*;
      */
     @NotImplemented("splitViewControllerPreferredInterfaceOrientationForPresentation:")
     public UIInterfaceOrientation getPreferredInterfaceOrientation(UISplitViewController splitViewController) { throw new UnsupportedOperationException(); }
+    /**
+     * @since Available in iOS 2.0 and later.
+     * @deprecated Deprecated in iOS 8.0.
+     */
+    @Deprecated
+    @NotImplemented("splitViewController:willHideViewController:withBarButtonItem:forPopoverController:")
+    public void willHideViewController(UISplitViewController svc, UIViewController aViewController, UIBarButtonItem barButtonItem, UIPopoverController pc) { throw new UnsupportedOperationException(); }
+    /**
+     * @since Available in iOS 2.0 and later.
+     * @deprecated Deprecated in iOS 8.0.
+     */
+    @Deprecated
+    @NotImplemented("splitViewController:willShowViewController:invalidatingBarButtonItem:")
+    public void willShowViewController(UISplitViewController svc, UIViewController aViewController, UIBarButtonItem barButtonItem) { throw new UnsupportedOperationException(); }
+    /**
+     * @since Available in iOS 2.0 and later.
+     * @deprecated Deprecated in iOS 8.0.
+     */
+    @Deprecated
+    @NotImplemented("splitViewController:popoverController:willPresentViewController:")
+    public void willPresentViewController(UISplitViewController svc, UIPopoverController pc, UIViewController aViewController) { throw new UnsupportedOperationException(); }
+    /**
+     * @since Available in iOS 5.0 and later.
+     * @deprecated Deprecated in iOS 8.0.
+     */
+    @Deprecated
+    @NotImplemented("splitViewController:shouldHideViewController:inOrientation:")
+    public boolean shouldHideViewController(UISplitViewController svc, UIViewController vc, UIInterfaceOrientation orientation) { throw new UnsupportedOperationException(); }
     /*</methods>*/
 }

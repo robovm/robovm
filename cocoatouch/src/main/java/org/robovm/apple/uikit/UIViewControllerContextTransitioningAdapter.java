@@ -32,6 +32,7 @@ import org.robovm.apple.coregraphics.*;
 import org.robovm.apple.coredata.*;
 import org.robovm.apple.coreimage.*;
 import org.robovm.apple.coretext.*;
+import org.robovm.apple.corelocation.*;
 /*</imports>*/
 
 /*<javadoc>*/
@@ -72,6 +73,16 @@ import org.robovm.apple.coretext.*;
     public void completeTransition(boolean didComplete) { throw new UnsupportedOperationException(); }
     @NotImplemented("viewControllerForKey:")
     public UIViewController getViewController(UITransitionContextViewControllerType key) { throw new UnsupportedOperationException(); }
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @NotImplemented("viewForKey:")
+    public UIView viewForKey$(String key) { throw new UnsupportedOperationException(); }
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @NotImplemented("targetTransform")
+    public @ByVal CGAffineTransform targetTransform() { throw new UnsupportedOperationException(); }
     @NotImplemented("initialFrameForViewController:")
     public @ByVal CGRect getInitialFrame(UIViewController vc) { throw new UnsupportedOperationException(); }
     @NotImplemented("finalFrameForViewController:")

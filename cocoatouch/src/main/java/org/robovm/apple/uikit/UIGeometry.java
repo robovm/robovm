@@ -32,6 +32,7 @@ import org.robovm.apple.coregraphics.*;
 import org.robovm.apple.coredata.*;
 import org.robovm.apple.coreimage.*;
 import org.robovm.apple.coretext.*;
+import org.robovm.apple.corelocation.*;
 /*</imports>*/
 
 /*<javadoc>*/
@@ -52,6 +53,8 @@ import org.robovm.apple.coretext.*;
     /*<methods>*/
     @Bridge(symbol="NSStringFromCGPoint", optional=true)
     public static native String toString(@ByVal CGPoint point);
+    @Bridge(symbol="NSStringFromCGVector", optional=true)
+    public static native String toString(@ByVal CGVector vector);
     @Bridge(symbol="NSStringFromCGSize", optional=true)
     public static native String toString(@ByVal CGSize size);
     @Bridge(symbol="NSStringFromCGRect", optional=true)
@@ -60,6 +63,8 @@ import org.robovm.apple.coretext.*;
     public static native String toString(@ByVal CGAffineTransform transform);
     @Bridge(symbol="CGPointFromString", optional=true)
     public static native @ByVal CGPoint stringToCGPoint(String string);
+    @Bridge(symbol="CGVectorFromString", optional=true)
+    public static native @ByVal CGVector stringToCGVector(String string);
     @Bridge(symbol="CGSizeFromString", optional=true)
     public static native @ByVal CGSize stringToCGSize(String string);
     @Bridge(symbol="CGRectFromString", optional=true)

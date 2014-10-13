@@ -32,6 +32,7 @@ import org.robovm.apple.coreanimation.*;
 import org.robovm.apple.coregraphics.*;
 import org.robovm.apple.coremedia.*;
 import org.robovm.apple.security.*;
+import org.robovm.apple.dispatch.*;
 /*</imports>*/
 
 /*<javadoc>*/
@@ -53,20 +54,20 @@ import org.robovm.apple.security.*;
     /*<members>*//*</members>*/
     /*<methods>*/
     @NotImplemented("URLProtocol:wasRedirectedToRequest:redirectResponse:")
-    public void URLProtocol$wasRedirectedToRequest$redirectResponse$(NSURLProtocol protocol, NSURLRequest request, NSURLResponse redirectResponse) { throw new UnsupportedOperationException(); }
+    public void wasRedirectedToRequest(NSURLProtocol protocol, NSURLRequest request, NSURLResponse redirectResponse) { throw new UnsupportedOperationException(); }
     @NotImplemented("URLProtocol:cachedResponseIsValid:")
-    public void URLProtocol$cachedResponseIsValid$(NSURLProtocol protocol, NSCachedURLResponse cachedResponse) { throw new UnsupportedOperationException(); }
+    public void cachedResponseIsValid(NSURLProtocol protocol, NSCachedURLResponse cachedResponse) { throw new UnsupportedOperationException(); }
     @NotImplemented("URLProtocol:didReceiveResponse:cacheStoragePolicy:")
-    public void URLProtocol$didReceiveResponse$cacheStoragePolicy$(NSURLProtocol protocol, NSURLResponse response, NSURLCacheStoragePolicy policy) { throw new UnsupportedOperationException(); }
+    public void didReceiveResponse(NSURLProtocol protocol, NSURLResponse response, NSURLCacheStoragePolicy policy) { throw new UnsupportedOperationException(); }
     @NotImplemented("URLProtocol:didLoadData:")
-    public void URLProtocol$didLoadData$(NSURLProtocol protocol, NSData data) { throw new UnsupportedOperationException(); }
+    public void didLoadData(NSURLProtocol protocol, NSData data) { throw new UnsupportedOperationException(); }
     @NotImplemented("URLProtocolDidFinishLoading:")
-    public void URLProtocolDidFinishLoading$(NSURLProtocol protocol) { throw new UnsupportedOperationException(); }
+    public void didFinishLoading(NSURLProtocol protocol) { throw new UnsupportedOperationException(); }
     @NotImplemented("URLProtocol:didFailWithError:")
-    public void URLProtocol$didFailWithError$(NSURLProtocol protocol, NSError error) { throw new UnsupportedOperationException(); }
+    public void didFail(NSURLProtocol protocol, NSError error) { throw new UnsupportedOperationException(); }
     @NotImplemented("URLProtocol:didReceiveAuthenticationChallenge:")
-    public void URLProtocol$didReceiveAuthenticationChallenge$(NSURLProtocol protocol, NSURLAuthenticationChallenge challenge) { throw new UnsupportedOperationException(); }
+    public void didReceiveAuthenticationChallenge(NSURLProtocol protocol, NSURLAuthenticationChallenge challenge) { throw new UnsupportedOperationException(); }
     @NotImplemented("URLProtocol:didCancelAuthenticationChallenge:")
-    public void URLProtocol$didCancelAuthenticationChallenge$(NSURLProtocol protocol, NSURLAuthenticationChallenge challenge) { throw new UnsupportedOperationException(); }
+    public void didCancelAuthenticationChallenge(NSURLProtocol protocol, NSURLAuthenticationChallenge challenge) { throw new UnsupportedOperationException(); }
     /*</methods>*/
 }

@@ -32,6 +32,7 @@ import org.robovm.apple.coregraphics.*;
 import org.robovm.apple.coredata.*;
 import org.robovm.apple.coreimage.*;
 import org.robovm.apple.coretext.*;
+import org.robovm.apple.corelocation.*;
 /*</imports>*/
 
 /*<javadoc>*/
@@ -54,5 +55,10 @@ import org.robovm.apple.coretext.*;
     /*<methods>*/
     @NotImplemented("awakeFromNib")
     public void awakeFromNib() { throw new UnsupportedOperationException(); }
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @NotImplemented("prepareForInterfaceBuilder")
+    public void prepareForInterfaceBuilder() { throw new UnsupportedOperationException(); }
     /*</methods>*/
 }

@@ -32,6 +32,7 @@ import org.robovm.apple.coregraphics.*;
 import org.robovm.apple.coredata.*;
 import org.robovm.apple.coreimage.*;
 import org.robovm.apple.coretext.*;
+import org.robovm.apple.corelocation.*;
 /*</imports>*/
 
 /*<javadoc>*/
@@ -55,6 +56,8 @@ import org.robovm.apple.coretext.*;
     /*<methods>*/
     @Method(selector = "CGPointValue")
     public static native @ByVal CGPoint getPointValue(NSValue thiz);
+    @Method(selector = "CGVectorValue")
+    public static native @ByVal CGVector getVectorValue(NSValue thiz);
     @Method(selector = "CGSizeValue")
     public static native @ByVal CGSize getSizeValue(NSValue thiz);
     @Method(selector = "CGRectValue")
@@ -71,6 +74,9 @@ import org.robovm.apple.coretext.*;
     @Method(selector = "valueWithCGPoint:")
     protected static native NSValue create(ObjCClass clazz, @ByVal CGPoint point);
     public static NSValue create(@ByVal CGPoint point) { return create(ObjCClass.getByType(NSValue.class), point); }
+    @Method(selector = "valueWithCGVector:")
+    protected static native NSValue create(ObjCClass clazz, @ByVal CGVector vector);
+    public static NSValue create(@ByVal CGVector vector) { return create(ObjCClass.getByType(NSValue.class), vector); }
     @Method(selector = "valueWithCGSize:")
     protected static native NSValue create(ObjCClass clazz, @ByVal CGSize size);
     public static NSValue create(@ByVal CGSize size) { return create(ObjCClass.getByType(NSValue.class), size); }

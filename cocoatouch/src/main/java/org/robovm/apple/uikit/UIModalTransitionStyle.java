@@ -32,6 +32,7 @@ import org.robovm.apple.coregraphics.*;
 import org.robovm.apple.coredata.*;
 import org.robovm.apple.coreimage.*;
 import org.robovm.apple.coretext.*;
+import org.robovm.apple.corelocation.*;
 /*</imports>*/
 
 /*<javadoc>*/
@@ -43,6 +44,9 @@ public enum /*<name>*/UIModalTransitionStyle/*</name>*/ implements ValuedEnum {
     CoverVertical(0L),
     FlipHorizontal(1L),
     CrossDissolve(2L),
+    /**
+     * @since Available in iOS 3.2 and later.
+     */
     PartialCurl(3L);
     /*</values>*/
 

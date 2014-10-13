@@ -32,6 +32,7 @@ import org.robovm.apple.coreanimation.*;
 import org.robovm.apple.coregraphics.*;
 import org.robovm.apple.coremedia.*;
 import org.robovm.apple.security.*;
+import org.robovm.apple.dispatch.*;
 /*</imports>*/
 
 /*<javadoc>*/
@@ -58,10 +59,25 @@ import org.robovm.apple.security.*;
     public boolean shouldUseCredentialStorage(NSURLConnection connection) { throw new UnsupportedOperationException(); }
     @NotImplemented("connection:willSendRequestForAuthenticationChallenge:")
     public void willSendRequestForAuthenticationChallenge(NSURLConnection connection, NSURLAuthenticationChallenge challenge) { throw new UnsupportedOperationException(); }
+    /**
+     * @since Available in iOS 3.0 and later.
+     * @deprecated Deprecated in iOS 8.0.
+     */
+    @Deprecated
     @NotImplemented("connection:canAuthenticateAgainstProtectionSpace:")
     public boolean canAuthenticateAgainstProtectionSpace(NSURLConnection connection, NSURLProtectionSpace protectionSpace) { throw new UnsupportedOperationException(); }
+    /**
+     * @since Available in iOS 2.0 and later.
+     * @deprecated Deprecated in iOS 8.0.
+     */
+    @Deprecated
     @NotImplemented("connection:didReceiveAuthenticationChallenge:")
     public void didReceiveAuthenticationChallenge(NSURLConnection connection, NSURLAuthenticationChallenge challenge) { throw new UnsupportedOperationException(); }
+    /**
+     * @since Available in iOS 2.0 and later.
+     * @deprecated Deprecated in iOS 8.0.
+     */
+    @Deprecated
     @NotImplemented("connection:didCancelAuthenticationChallenge:")
     public void didCancelAuthenticationChallenge(NSURLConnection connection, NSURLAuthenticationChallenge challenge) { throw new UnsupportedOperationException(); }
     /*</methods>*/

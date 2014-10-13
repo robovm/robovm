@@ -780,7 +780,8 @@ public class AppLauncher {
         boolean wasInterrupted = false;
         Socket clientSocket = null;
                 
-        try(ServerSocket serverSocket = new ServerSocket(localPort)) {         
+        try(ServerSocket serverSocket = new ServerSocket(localPort)) {
+            serverSocket.setReuseAddress(true);
             log("Waiting for GDB remote connection at http://127.0.0.1:" + localPort);
             clientSocket = serverSocket.accept();
             log("GDB remote client connected");

@@ -32,6 +32,7 @@ import org.robovm.apple.coreanimation.*;
 import org.robovm.apple.coregraphics.*;
 import org.robovm.apple.coremedia.*;
 import org.robovm.apple.security.*;
+import org.robovm.apple.dispatch.*;
 /*</imports>*/
 
 /*<javadoc>*/
@@ -45,6 +46,33 @@ public enum /*<name>*/NSBundleExecutableArchitectureType/*</name>*/ implements V
     X86_64(16777223L),
     PPC64(16777234L);
     /*</values>*/
+    
+    public static class AsListMarshaler {
+        @SuppressWarnings("unchecked")
+        @MarshalsPointer
+        public static List<NSBundleExecutableArchitectureType> toObject(Class<? extends NSObject> cls, long handle, long flags) {
+            NSArray<NSNumber> o = (NSArray<NSNumber>) NSObject.Marshaler.toObject(cls, handle, flags);
+            if (o == null) {
+                return null;
+            }
+            List<NSBundleExecutableArchitectureType> list = new ArrayList<>();
+            for (NSNumber n : o) {
+                list.add(NSBundleExecutableArchitectureType.valueOf(n.longValue()));
+            }
+            return list;
+        }
+        @MarshalsPointer
+        public static long toNative(List<NSBundleExecutableArchitectureType> l, long flags) {
+            if (l == null) {
+                return 0L;
+            }
+            NSArray<NSNumber> array = new NSMutableArray<>();
+            for (NSBundleExecutableArchitectureType i : l) {
+                array.add(NSNumber.valueOf(i.value()));
+            }
+            return NSObject.Marshaler.toNative(array, flags);
+        }
+    }
 
     private final long n;
 

@@ -32,6 +32,7 @@ import org.robovm.apple.coregraphics.*;
 import org.robovm.apple.coredata.*;
 import org.robovm.apple.coreimage.*;
 import org.robovm.apple.coretext.*;
+import org.robovm.apple.corelocation.*;
 /*</imports>*/
 
 /*<javadoc>*/
@@ -68,12 +69,6 @@ import org.robovm.apple.coretext.*;
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
-    @Method(selector = "arrowHeight")
-    public static native @MachineSizedFloat double getArrowHeight();
-    @Method(selector = "arrowBase")
-    public static native @MachineSizedFloat double getArrowBase();
-    @Method(selector = "contentViewInsets")
-    public static native @ByVal UIEdgeInsets getContentViewInsets();
     /**
      * @since Available in iOS 6.0 and later.
      */

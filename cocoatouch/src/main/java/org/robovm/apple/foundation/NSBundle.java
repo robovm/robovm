@@ -32,6 +32,7 @@ import org.robovm.apple.coreanimation.*;
 import org.robovm.apple.coregraphics.*;
 import org.robovm.apple.coremedia.*;
 import org.robovm.apple.security.*;
+import org.robovm.apple.dispatch.*;
 /*</imports>*/
 
 /*<javadoc>*/
@@ -42,6 +43,25 @@ import org.robovm.apple.security.*;
     extends /*<extends>*/NSObject/*</extends>*/ 
     /*<implements>*//*</implements>*/ {
 
+    public static class Notifications {
+        public static NSObject observeDidLoad(NSBundle object, final VoidBlock2<NSBundle, List<String>> block) {
+            return NSNotificationCenter.getDefaultCenter().addObserver(DidLoadNotification(), object, NSOperationQueue.getMainQueue(), new VoidBlock1<NSNotification>() {
+                @SuppressWarnings("unchecked")
+                @Override
+                public void invoke(NSNotification a) {
+                    List<String> classes = null;
+                    NSDictionary<NSString, NSObject> data = a.getUserInfo();
+                    if (data.containsKey(LoadedClassesKey())) {
+                        NSArray<NSString> val = (NSArray<NSString>)data.get(LoadedClassesKey());
+                        classes = val.asStringList();
+                    }
+                    
+                    block.invoke((NSBundle)a.getObject(), classes);
+                }
+            });
+        }
+    }
+    
     /*<ptr>*/public static class NSBundlePtr extends Ptr<NSBundle, NSBundlePtr> {}/*</ptr>*/
     /*<bind>*/static { ObjCRuntime.bind(NSBundle.class); }/*</bind>*/
     /*<constants>*//*</constants>*/
@@ -60,7 +80,81 @@ import org.robovm.apple.security.*;
     }
     
     /*<properties>*/
-    
+    @Property(selector = "isLoaded")
+    public native boolean isLoaded();
+    /**
+     * @since Available in iOS 4.0 and later.
+     */
+    @Property(selector = "bundleURL")
+    public native NSURL getBundleURL();
+    /**
+     * @since Available in iOS 4.0 and later.
+     */
+    @Property(selector = "resourceURL")
+    public native NSURL getResourceURL();
+    /**
+     * @since Available in iOS 4.0 and later.
+     */
+    @Property(selector = "executableURL")
+    public native NSURL getExecutableURL();
+    /**
+     * @since Available in iOS 4.0 and later.
+     */
+    @Property(selector = "privateFrameworksURL")
+    public native NSURL getPrivateFrameworksURL();
+    /**
+     * @since Available in iOS 4.0 and later.
+     */
+    @Property(selector = "sharedFrameworksURL")
+    public native NSURL getSharedFrameworksURL();
+    /**
+     * @since Available in iOS 4.0 and later.
+     */
+    @Property(selector = "sharedSupportURL")
+    public native NSURL getSharedSupportURL();
+    /**
+     * @since Available in iOS 4.0 and later.
+     */
+    @Property(selector = "builtInPlugInsURL")
+    public native NSURL getBuiltInPlugInsURL();
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
+    @Property(selector = "appStoreReceiptURL")
+    public native NSURL getAppStoreReceiptURL();
+    @Property(selector = "bundlePath")
+    public native String getBundlePath();
+    @Property(selector = "resourcePath")
+    public native String getResourcePath();
+    @Property(selector = "executablePath")
+    public native String getExecutablePath();
+    @Property(selector = "privateFrameworksPath")
+    public native String getPrivateFrameworksPath();
+    @Property(selector = "sharedFrameworksPath")
+    public native String getSharedFrameworksPath();
+    @Property(selector = "sharedSupportPath")
+    public native String getSharedSupportPath();
+    @Property(selector = "builtInPlugInsPath")
+    public native String getBuiltInPlugInsPath();
+    @Property(selector = "bundleIdentifier")
+    public native String getBundleIdentifier();
+    @Property(selector = "infoDictionary")
+    public native NSDictionary<?, ?> getInfoDictionary();
+    @Property(selector = "localizedInfoDictionary")
+    public native NSDictionary<?, ?> getLocalizedInfoDictionary();
+    @Property(selector = "principalClass")
+    public native ObjCClass getPrincipalClass();
+    @Property(selector = "preferredLocalizations")
+    public native @org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String> getPreferredLocalizations();
+    @Property(selector = "localizations")
+    public native @org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String> getLocalizations();
+    @Property(selector = "developmentLocalization")
+    public native String getDevelopmentLocalization();
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
+    @Property(selector = "executableArchitectures")
+    public native @org.robovm.rt.bro.annotation.Marshaler(NSBundleExecutableArchitectureType.AsListMarshaler.class) List<NSBundleExecutableArchitectureType> getExecutableArchitectures();
     /*</properties>*/
     /*<members>*//*</members>*/
     
@@ -70,6 +164,11 @@ import org.robovm.apple.security.*;
     }
     
     /*<methods>*/
+    @GlobalValue(symbol="NSBundleDidLoadNotification", optional=true)
+    public static native NSString DidLoadNotification();
+    @GlobalValue(symbol="NSLoadedClasses", optional=true)
+    protected static native NSString LoadedClassesKey();
+    
     @Method(selector = "initWithPath:")
     protected native @Pointer long initWithPath$(String path);
     /**
@@ -90,64 +189,10 @@ import org.robovm.apple.security.*;
     /**
      * @since Available in iOS 4.0 and later.
      */
-    @Method(selector = "bundleURL")
-    public native NSURL getBundleURL();
-    /**
-     * @since Available in iOS 4.0 and later.
-     */
-    @Method(selector = "resourceURL")
-    public native NSURL getResourceURL();
-    /**
-     * @since Available in iOS 4.0 and later.
-     */
-    @Method(selector = "executableURL")
-    public native NSURL getExecutableURL();
-    /**
-     * @since Available in iOS 4.0 and later.
-     */
     @Method(selector = "URLForAuxiliaryExecutable:")
     public native NSURL findAuxiliaryExecutableURL(String executableName);
-    /**
-     * @since Available in iOS 4.0 and later.
-     */
-    @Method(selector = "privateFrameworksURL")
-    public native NSURL getPrivateFrameworksURL();
-    /**
-     * @since Available in iOS 4.0 and later.
-     */
-    @Method(selector = "sharedFrameworksURL")
-    public native NSURL getSharedFrameworksURL();
-    /**
-     * @since Available in iOS 4.0 and later.
-     */
-    @Method(selector = "sharedSupportURL")
-    public native NSURL getSharedSupportURL();
-    /**
-     * @since Available in iOS 4.0 and later.
-     */
-    @Method(selector = "builtInPlugInsURL")
-    public native NSURL getBuiltInPlugInsURL();
-    /**
-     * @since Available in iOS 7.0 and later.
-     */
-    @Method(selector = "appStoreReceiptURL")
-    public native NSURL getAppStoreReceiptURL();
-    @Method(selector = "bundlePath")
-    public native String getBundlePath();
-    @Method(selector = "resourcePath")
-    public native String getResourcePath();
-    @Method(selector = "executablePath")
-    public native String getExecutablePath();
     @Method(selector = "pathForAuxiliaryExecutable:")
     public native String findAuxiliaryExecutablePath(String executableName);
-    @Method(selector = "privateFrameworksPath")
-    public native String getPrivateFrameworksPath();
-    @Method(selector = "sharedFrameworksPath")
-    public native String getSharedFrameworksPath();
-    @Method(selector = "sharedSupportPath")
-    public native String getSharedSupportPath();
-    @Method(selector = "builtInPlugInsPath")
-    public native String getBuiltInPlugInsPath();
     /**
      * @since Available in iOS 4.0 and later.
      */
@@ -180,34 +225,15 @@ import org.robovm.apple.security.*;
     @Method(selector = "pathForResource:ofType:inDirectory:forLocalization:")
     public native String findResourcePathInSubPath(String name, String ext, String subpath, String localizationName);
     @Method(selector = "pathsForResourcesOfType:inDirectory:")
-    public native NSArray<NSString> findResourcesPathsInSubPath(String ext, String subpath);
+    public native @org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String> findResourcesPathsInSubPath(String ext, String subpath);
     @Method(selector = "pathsForResourcesOfType:inDirectory:forLocalization:")
-    public native NSArray<NSString> findResourcesPathsInSubPath(String ext, String subpath, String localizationName);
+    public native @org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String> findResourcesPathsInSubPath(String ext, String subpath, String localizationName);
     @Method(selector = "localizedStringForKey:value:table:")
     public native String getLocalizedString(String key, String value, String tableName);
-    @Method(selector = "bundleIdentifier")
-    public native String getBundleIdentifier();
-    @Method(selector = "infoDictionary")
-    public native NSDictionary<?, ?> getInfoDictionary();
-    @Method(selector = "localizedInfoDictionary")
-    public native NSDictionary<?, ?> getLocalizedInfoDictionary();
     @Method(selector = "objectForInfoDictionaryKey:")
     public native NSObject getInfoDictionaryObject(String key);
     @Method(selector = "classNamed:")
     public native ObjCClass getClassNamed(String className);
-    @Method(selector = "principalClass")
-    public native ObjCClass getPrincipalClass();
-    @Method(selector = "preferredLocalizations")
-    public native NSArray<NSString> getPreferredLocalizations();
-    @Method(selector = "localizations")
-    public native NSArray<NSString> getLocalizations();
-    @Method(selector = "developmentLocalization")
-    public native String getDevelopmentLocalization();
-    /**
-     * @since Available in iOS 2.0 and later.
-     */
-    @Method(selector = "executableArchitectures")
-    public native NSArray<NSNumber> getExecutableArchitectures();
     @Method(selector = "mainBundle")
     public static native NSBundle getMainBundle();
     @Method(selector = "bundleForClass:")
@@ -227,14 +253,14 @@ import org.robovm.apple.security.*;
      * @since Available in iOS 4.0 and later.
      */
     @Method(selector = "URLsForResourcesWithExtension:subdirectory:inBundleWithURL:")
-    public static native NSArray<NSString> findResourceURLsInBundleURL(String ext, String subpath, NSURL bundleURL);
+    public static native @org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String> findResourceURLsInBundleURL(String ext, String subpath, NSURL bundleURL);
     @Method(selector = "pathForResource:ofType:inDirectory:")
     public static native String findResourcePathInBundlePath(String name, String ext, String bundlePath);
     @Method(selector = "pathsForResourcesOfType:inDirectory:")
-    public static native NSArray<NSString> findResourcesPathsInBundlePath(String ext, String bundlePath);
+    public static native @org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String> findResourcesPathsInBundlePath(String ext, String bundlePath);
     @Method(selector = "preferredLocalizationsFromArray:")
-    public static native NSArray<NSString> getPreferredLocalizations(NSArray<NSString> localizationsArray);
+    public static native @org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String> getPreferredLocalizations(@org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String> localizationsArray);
     @Method(selector = "preferredLocalizationsFromArray:forPreferences:")
-    public static native NSArray<NSString> getPreferredLocalizations(NSArray<NSString> localizationsArray, NSArray<NSString> preferencesArray);
+    public static native @org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String> getPreferredLocalizations(@org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String> localizationsArray, @org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String> preferencesArray);
     /*</methods>*/
 }

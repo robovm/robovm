@@ -32,6 +32,7 @@ import org.robovm.apple.coreanimation.*;
 import org.robovm.apple.coregraphics.*;
 import org.robovm.apple.coremedia.*;
 import org.robovm.apple.security.*;
+import org.robovm.apple.dispatch.*;
 /*</imports>*/
 
 /*<javadoc>*/
@@ -50,7 +51,7 @@ import org.robovm.apple.security.*;
     /*<constructors>*/
     public NSProgress() {}
     protected NSProgress(SkipInit skipInit) { super(skipInit); }
-    public NSProgress(NSProgress parentProgressOrNil, NSDictionary<?, ?> userInfoOrNil) { super((SkipInit) null); initObject(initWithParent$userInfo$(parentProgressOrNil, userInfoOrNil)); }
+    public NSProgress(NSProgress parentProgressOrNil, NSProgressUserInfo userInfoOrNil) { super((SkipInit) null); initObject(init(parentProgressOrNil, userInfoOrNil)); }
     /*</constructors>*/
     /*<properties>*/
     @Property(selector = "totalUnitCount")
@@ -93,30 +94,33 @@ import org.robovm.apple.security.*;
     public native boolean isIndeterminate();
     @Property(selector = "fractionCompleted")
     public native double getFractionCompleted();
+    @Property(selector = "userInfo")
+    public native NSDictionary<?, ?> getUserInfo();
     @Property(selector = "kind")
-    public native String getKind();
+    public native NSProgressKind getKind();
     @Property(selector = "setKind:")
-    public native void setKind(String v);
+    public native void setKind(NSProgressKind v);
     /*</properties>*/
     /*<members>*//*</members>*/
+    public void putUserInfoObject(String key, NSObject value) {
+        setUserInfoObject(value, key);
+    }
     /*<methods>*/
     @Method(selector = "initWithParent:userInfo:")
-    protected native @Pointer long initWithParent$userInfo$(NSProgress parentProgressOrNil, NSDictionary<?, ?> userInfoOrNil);
+    protected native @Pointer long init(NSProgress parentProgressOrNil, NSProgressUserInfo userInfoOrNil);
     @Method(selector = "becomeCurrentWithPendingUnitCount:")
-    public native void becomeCurrentWithPendingUnitCount$(long unitCount);
+    public native void becomeCurrent(long unitCount);
     @Method(selector = "resignCurrent")
     public native void resignCurrent();
     @Method(selector = "setUserInfoObject:forKey:")
-    public native void setUserInfoObject$forKey$(NSObject objectOrNil, String key);
+    protected native void setUserInfoObject(NSObject objectOrNil, String key);
     @Method(selector = "cancel")
     public native void cancel();
     @Method(selector = "pause")
     public native void pause();
-    @Method(selector = "userInfo")
-    public native NSDictionary<?, ?> userInfo();
     @Method(selector = "currentProgress")
-    public static native NSProgress currentProgress();
+    public static native NSProgress getCurrentProgress();
     @Method(selector = "progressWithTotalUnitCount:")
-    public static native NSProgress progressWithTotalUnitCount$(long unitCount);
+    public static native NSProgress create(long unitCount);
     /*</methods>*/
 }

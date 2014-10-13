@@ -32,6 +32,7 @@ import org.robovm.apple.coregraphics.*;
 import org.robovm.apple.coredata.*;
 import org.robovm.apple.coreimage.*;
 import org.robovm.apple.coretext.*;
+import org.robovm.apple.corelocation.*;
 /*</imports>*/
 
 /*<javadoc>*/
@@ -58,6 +59,11 @@ import org.robovm.apple.coretext.*;
     UIViewControllerInteractiveTransitioning getInteractionControllerForPresentation(UIViewControllerAnimatedTransitioning animator);
     @Method(selector = "interactionControllerForDismissal:")
     UIViewControllerInteractiveTransitioning getInteractionControllerForDismissal(UIViewControllerAnimatedTransitioning animator);
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @Method(selector = "presentationControllerForPresentedViewController:presentingViewController:sourceViewController:")
+    UIPresentationController getPresentationControllerForPresentedViewController(UIViewController presented, UIViewController presenting, UIViewController source);
     /*</methods>*/
     /*<adapter>*/
     /*</adapter>*/

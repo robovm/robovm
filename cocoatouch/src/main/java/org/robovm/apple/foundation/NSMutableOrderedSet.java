@@ -32,6 +32,7 @@ import org.robovm.apple.coreanimation.*;
 import org.robovm.apple.coregraphics.*;
 import org.robovm.apple.coremedia.*;
 import org.robovm.apple.security.*;
+import org.robovm.apple.dispatch.*;
 /*</imports>*/
 
 /*<javadoc>*/
@@ -52,8 +53,7 @@ import org.robovm.apple.security.*;
             super(set);
         }
 
-        // All updates are donw through the ListAdapter except for remove(Object)
-        
+        // All updates are done through the ListAdapter except for remove(Object)
         @SuppressWarnings("unchecked")
         @Override
         public boolean remove(Object o) {
@@ -88,7 +88,7 @@ import org.robovm.apple.security.*;
         @Override
         public void add(int index, U element) {
             checkNull(element);
-            if (index != set.count() + 1) {
+            if (index != set.getCount() + 1) {
                 checkIndex(index);
             }
             ((NSMutableOrderedSet<U>) set).insertObject$atIndex$(element, index);
@@ -140,11 +140,11 @@ import org.robovm.apple.security.*;
     protected native void removeObjectAtIndex$(@MachineSizedUInt long idx);
     @Method(selector = "replaceObjectAtIndex:withObject:")
     protected native void replaceObjectAtIndex$withObject$(@MachineSizedUInt long idx, NSObject object);
+    @Method(selector = "initWithCapacity:")
+    protected native @Pointer long initWithCapacity$(@MachineSizedUInt long numItems);
     @Method(selector = "removeAllObjects")
     protected native void removeAllObjects();
     @Method(selector = "removeObject:")
     protected native void removeObject$(NSObject object);
-    @Method(selector = "initWithCapacity:")
-    protected native @Pointer long initWithCapacity$(@MachineSizedUInt long numItems);
     /*</methods>*/
 }

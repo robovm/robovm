@@ -32,6 +32,7 @@ import org.robovm.apple.coreanimation.*;
 import org.robovm.apple.coregraphics.*;
 import org.robovm.apple.coremedia.*;
 import org.robovm.apple.security.*;
+import org.robovm.apple.dispatch.*;
 /*</imports>*/
 
 /*<javadoc>*/
@@ -52,21 +53,20 @@ import org.robovm.apple.security.*;
     protected NSMetadataQueryResultGroup(SkipInit skipInit) { super(skipInit); }
     /*</constructors>*/
     /*<properties>*/
-    
+    @Property(selector = "attribute")
+    public native String getAttribute();
+    @Property(selector = "value")
+    public native NSObject getValue();
+    @Property(selector = "subgroups")
+    public native NSArray<?> getSubgroups();
+    @Property(selector = "resultCount")
+    public native @MachineSizedUInt long getResultCount();
+    @Property(selector = "results")
+    public native NSArray<?> getResults();
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
-    @Method(selector = "attribute")
-    public native String attribute();
-    @Method(selector = "value")
-    public native NSObject value();
-    @Method(selector = "subgroups")
-    public native NSArray<?> subgroups();
-    @Method(selector = "resultCount")
-    public native @MachineSizedUInt long resultCount();
     @Method(selector = "resultAtIndex:")
-    public native NSObject resultAtIndex$(@MachineSizedUInt long idx);
-    @Method(selector = "results")
-    public native NSArray<?> results();
+    public native NSMetadataItem getResult(@MachineSizedUInt long idx);
     /*</methods>*/
 }

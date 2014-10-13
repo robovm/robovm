@@ -32,6 +32,7 @@ import org.robovm.apple.coreanimation.*;
 import org.robovm.apple.coregraphics.*;
 import org.robovm.apple.coremedia.*;
 import org.robovm.apple.security.*;
+import org.robovm.apple.dispatch.*;
 /*</imports>*/
 
 /*<javadoc>*/
@@ -66,17 +67,23 @@ import org.robovm.apple.security.*;
     public native void setIncludesPeerToPeer(boolean v);
     /*</properties>*/
     /*<members>*//*</members>*/
+    public void scheduleInRunLoop(NSRunLoop aRunLoop, NSRunLoopMode mode) {
+        scheduleInRunLoop(aRunLoop, mode.value());
+    }
+    public void removeFromRunLoop(NSRunLoop aRunLoop, NSRunLoopMode mode) {
+        removeFromRunLoop(aRunLoop, mode.value());
+    }
     /*<methods>*/
     @Method(selector = "scheduleInRunLoop:forMode:")
-    public native void scheduleInRunLoop$forMode$(NSRunLoop aRunLoop, String mode);
+    public native void scheduleInRunLoop(NSRunLoop aRunLoop, String mode);
     @Method(selector = "removeFromRunLoop:forMode:")
-    public native void removeFromRunLoop$forMode$(NSRunLoop aRunLoop, String mode);
+    public native void removeFromRunLoop(NSRunLoop aRunLoop, String mode);
     @Method(selector = "searchForBrowsableDomains")
     public native void searchForBrowsableDomains();
     @Method(selector = "searchForRegistrationDomains")
     public native void searchForRegistrationDomains();
     @Method(selector = "searchForServicesOfType:inDomain:")
-    public native void searchForServicesOfType$inDomain$(String type, String domainString);
+    public native void searchForServices(String type, String domainString);
     @Method(selector = "stop")
     public native void stop();
     /*</methods>*/

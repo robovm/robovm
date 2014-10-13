@@ -32,6 +32,7 @@ import org.robovm.apple.coreanimation.*;
 import org.robovm.apple.coregraphics.*;
 import org.robovm.apple.coremedia.*;
 import org.robovm.apple.security.*;
+import org.robovm.apple.dispatch.*;
 /*</imports>*/
 
 /*<javadoc>*/
@@ -44,6 +45,52 @@ import org.robovm.apple.security.*;
 
     public static class NSDictionaryPtr<K extends NSObject, V extends NSObject> extends Ptr<NSDictionary<K, V>, NSDictionaryPtr<K, V>> {}
     
+    public static class AsStringMapMarshaler {
+        @MarshalsPointer
+        public static Map<String, ? extends NSObject> toObject(Class<? extends NSObject> cls, long handle, long flags) {
+            NSDictionary<?, ?> o = (NSDictionary<?, ?>) NSObject.Marshaler.toObject(cls, handle, flags);
+            if (o == null) {
+                return null;
+            }
+            return o.asStringMap();
+        }
+        @MarshalsPointer
+        public static long toNative(Map<String, ? extends NSObject> l, long flags) {
+            if (l == null) {
+                return 0L;
+            }
+            return NSObject.Marshaler.toNative(NSDictionary.fromStringMap(l), flags);
+        }
+    }
+    
+    public static class AsStringStringMapMarshaler {
+        @MarshalsPointer
+        public static Map<String, String> toObject(Class<? extends NSObject> cls, long handle, long flags) {
+            NSDictionary<?, ?> o = (NSDictionary<?, ?>) NSObject.Marshaler.toObject(cls, handle, flags);
+            if (o == null) {
+                return null;
+            }
+            Map<String, String> map = new HashMap<>();
+            for (Map.Entry<?, ?> e : o.entrySet()) {
+                map.put(e.getKey().toString(), e.getValue().toString());
+            }
+            
+            return map;
+        }
+        @MarshalsPointer
+        public static long toNative(Map<String, String> l, long flags) {
+            if (l == null) {
+                return 0L;
+            }
+            NSDictionary<NSString, NSString> o = new NSMutableDictionary<>();
+            for (Map.Entry<String, String> e : l.entrySet()) {
+                o.put(new NSString(e.getKey()), new NSString(e.getValue()));
+            }
+            
+            return NSObject.Marshaler.toNative(o, flags);
+        }
+    }
+    
     static class KeySet<K extends NSObject> extends AbstractSet<K> {
         private final NSDictionary<K, ? extends NSObject> map;
         
@@ -53,7 +100,7 @@ import org.robovm.apple.security.*;
 
         @Override
         public Iterator<K> iterator() {
-            final Iterator<K> it = map.allKeys().iterator();
+            final Iterator<K> it = map.getAllKeys().iterator();
             return new Iterator<K>() {
                 private K last = null;
                 @Override
@@ -81,7 +128,7 @@ import org.robovm.apple.security.*;
 
         @Override
         public int size() {
-            return (int) map.count();
+            return (int) map.getCount();
         }
     }
     
@@ -179,7 +226,7 @@ import org.robovm.apple.security.*;
 
         @Override
         public int size() {
-            return (int) map.count();
+            return (int) map.getCount();
         }
         
     }
@@ -238,7 +285,16 @@ import org.robovm.apple.security.*;
     }
     
     /*<properties>*/
-    
+    @Property(selector = "count")
+    protected native @MachineSizedUInt long getCount();
+    @Property(selector = "allKeys")
+    protected native NSArray<K> getAllKeys();
+    @Property(selector = "allValues")
+    protected native NSArray<V> getAllValues();
+    @Property(selector = "description")
+    public native String getDescription();
+    @Property(selector = "descriptionInStringsFileFormat")
+    public native String getDescriptionInStringsFileFormat();
     /*</properties>*/
     /*<members>*//*</members>*/
     
@@ -256,8 +312,8 @@ import org.robovm.apple.security.*;
         if (!(value instanceof NSObject)) {
             return false;
         }
-        NSArray<V> values = allValues();
-        int count = (int) values.count();
+        NSArray<V> values = getAllValues();
+        int count = (int) values.getCount();
         for (int i = 0; i < count; i++) {
             NSObject o = values.objectAtIndex$(i);
             if (o.equals(value)) {
@@ -277,16 +333,16 @@ import org.robovm.apple.security.*;
         return (V) objectForKey$((K) key);
     }
     public boolean isEmpty() {
-        return count() == 0;
+        return getCount() == 0;
     }
     public Set<K> keySet() {
         return new KeySet<K>(this);
     }
     public int size() {
-        return (int) count();
+        return (int) getCount();
     }
     public Collection<V> values() {
-        return allValues();
+        return getAllValues();
     }
     public void clear() {
         throw new UnsupportedOperationException("NSDictionary is immutable");
@@ -324,7 +380,7 @@ import org.robovm.apple.security.*;
         Map<String, V> map = new HashMap<>();
         if (size() == 0) 
             return map;
-        if (!(allKeys().get(0) instanceof NSString)) 
+        if (!(getAllKeys().get(0) instanceof NSString)) 
             throw new UnsupportedOperationException("keys must be of type NSString");
         
         for (java.util.Map.Entry<K, V> e : entrySet()) {
@@ -342,16 +398,8 @@ import org.robovm.apple.security.*;
     }
     
     /*<methods>*/
-    @Method(selector = "count")
-    protected native @MachineSizedUInt long count();
     @Method(selector = "objectForKey:")
     protected native V objectForKey$(K aKey);
-    @Method(selector = "allKeys")
-    protected native NSArray<K> allKeys();
-    @Method(selector = "allValues")
-    protected native NSArray<V> allValues();
-    @Method(selector = "descriptionInStringsFileFormat")
-    public native String toStringsFileFormat();
     @Method(selector = "isEqualToDictionary:")
     protected native boolean isEqualToDictionary$(NSDictionary<?, ?> otherDictionary);
     @Method(selector = "writeToFile:atomically:")

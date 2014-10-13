@@ -32,6 +32,7 @@ import org.robovm.apple.coreanimation.*;
 import org.robovm.apple.coregraphics.*;
 import org.robovm.apple.coremedia.*;
 import org.robovm.apple.security.*;
+import org.robovm.apple.dispatch.*;
 /*</imports>*/
 
 /*<javadoc>*/
@@ -53,36 +54,50 @@ import org.robovm.apple.security.*;
     public NSFileCoordinator(NSFilePresenter filePresenterOrNil) { super((SkipInit) null); initObject(initWithFilePresenter$(filePresenterOrNil)); }
     /*</constructors>*/
     /*<properties>*/
-    
+    /**
+     * @since Available in iOS 5.0 and later.
+     */
+    @Property(selector = "purposeIdentifier")
+    public native String getPurposeIdentifier();
+    /**
+     * @since Available in iOS 5.0 and later.
+     */
+    @Property(selector = "setPurposeIdentifier:")
+    public native void setPurposeIdentifier(String v);
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
     @Method(selector = "initWithFilePresenter:")
     protected native @Pointer long initWithFilePresenter$(NSFilePresenter filePresenterOrNil);
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @Method(selector = "coordinateAccessWithIntents:queue:byAccessor:")
+    public native void coordinateAccessWithIntents$queue$byAccessor$(NSArray<?> intents, NSOperationQueue queue, @Block VoidBlock1<NSError> accessor);
     @Method(selector = "coordinateReadingItemAtURL:options:error:byAccessor:")
-    public native void coordinateReadingItemAtURL$options$error$byAccessor$(NSURL url, NSFileCoordinatorReadingOptions options, NSError.NSErrorPtr outError, @Block VoidBlock1<NSURL> reader);
+    public native void coordinateReadingItem(NSURL url, NSFileCoordinatorReadingOptions options, NSError.NSErrorPtr outError, @Block VoidBlock1<NSURL> reader);
     @Method(selector = "coordinateWritingItemAtURL:options:error:byAccessor:")
-    public native void coordinateWritingItemAtURL$options$error$byAccessor$(NSURL url, NSFileCoordinatorWritingOptions options, NSError.NSErrorPtr outError, @Block VoidBlock1<NSURL> writer);
+    public native void coordinateWritingItem(NSURL url, NSFileCoordinatorWritingOptions options, NSError.NSErrorPtr outError, @Block VoidBlock1<NSURL> writer);
     @Method(selector = "coordinateReadingItemAtURL:options:writingItemAtURL:options:error:byAccessor:")
-    public native void coordinateReadingItemAtURL$options$writingItemAtURL$options$error$byAccessor$(NSURL readingURL, NSFileCoordinatorReadingOptions readingOptions, NSURL writingURL, NSFileCoordinatorWritingOptions writingOptions, NSError.NSErrorPtr outError, @Block VoidBlock2<NSURL, NSURL> readerWriter);
+    public native void coordinateReadingItem(NSURL readingURL, NSFileCoordinatorReadingOptions readingOptions, NSURL writingURL, NSFileCoordinatorWritingOptions writingOptions, NSError.NSErrorPtr outError, @Block VoidBlock2<NSURL, NSURL> readerWriter);
     @Method(selector = "coordinateWritingItemAtURL:options:writingItemAtURL:options:error:byAccessor:")
-    public native void coordinateWritingItemAtURL$options$writingItemAtURL$options$error$byAccessor$(NSURL url1, NSFileCoordinatorWritingOptions options1, NSURL url2, NSFileCoordinatorWritingOptions options2, NSError.NSErrorPtr outError, @Block VoidBlock2<NSURL, NSURL> writer);
+    public native void coordinateWritingItem(NSURL url1, NSFileCoordinatorWritingOptions options1, NSURL url2, NSFileCoordinatorWritingOptions options2, NSError.NSErrorPtr outError, @Block VoidBlock2<NSURL, NSURL> writer);
     @Method(selector = "prepareForReadingItemsAtURLs:options:writingItemsAtURLs:options:error:byAccessor:")
-    public native void prepareForReadingItemsAtURLs$options$writingItemsAtURLs$options$error$byAccessor$(NSArray<?> readingURLs, NSFileCoordinatorReadingOptions readingOptions, NSArray<?> writingURLs, NSFileCoordinatorWritingOptions writingOptions, NSError.NSErrorPtr outError, @Block("(@Block)") VoidBlock1<Runnable> batchAccessor);
+    public native void prepareForReadingItems(NSArray<NSURL> readingURLs, NSFileCoordinatorReadingOptions readingOptions, NSArray<NSURL> writingURLs, NSFileCoordinatorWritingOptions writingOptions, NSError.NSErrorPtr outError, @Block("(@Block)") VoidBlock1<Runnable> batchAccessor);
     /**
      * @since Available in iOS 6.0 and later.
      */
     @Method(selector = "itemAtURL:willMoveToURL:")
-    public native void itemAtURL$willMoveToURL$(NSURL oldURL, NSURL newURL);
+    public native void itemAtURLWillMoveToURL(NSURL oldURL, NSURL newURL);
     @Method(selector = "itemAtURL:didMoveToURL:")
-    public native void itemAtURL$didMoveToURL$(NSURL oldURL, NSURL newURL);
+    public native void itemAtURLDidMoveToURL(NSURL oldURL, NSURL newURL);
     @Method(selector = "cancel")
     public native void cancel();
     @Method(selector = "addFilePresenter:")
-    public static native void addFilePresenter$(NSFilePresenter filePresenter);
+    public static native void addFilePresenter(NSFilePresenter filePresenter);
     @Method(selector = "removeFilePresenter:")
-    public static native void removeFilePresenter$(NSFilePresenter filePresenter);
+    public static native void removeFilePresenter(NSFilePresenter filePresenter);
     @Method(selector = "filePresenters")
-    public static native NSArray<?> filePresenters();
+    public static native @org.robovm.rt.bro.annotation.Marshaler(NSArray.AsListMarshaler.class) List<NSFilePresenter> getFilePresenters();
     /*</methods>*/
 }

@@ -32,6 +32,7 @@ import org.robovm.apple.coregraphics.*;
 import org.robovm.apple.coredata.*;
 import org.robovm.apple.coreimage.*;
 import org.robovm.apple.coretext.*;
+import org.robovm.apple.corelocation.*;
 /*</imports>*/
 
 /*<javadoc>*/
@@ -147,6 +148,11 @@ import org.robovm.apple.coretext.*;
      */
     @Method(selector = "tableView:titleForDeleteConfirmationButtonForRowAtIndexPath:")
     String getDeleteConfirmationButtonTitle(UITableView tableView, NSIndexPath indexPath);
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @Method(selector = "tableView:editActionsForRowAtIndexPath:")
+    NSArray<?> tableView$editActionsForRowAtIndexPath$(UITableView tableView, NSIndexPath indexPath);
     @Method(selector = "tableView:shouldIndentWhileEditingRowAtIndexPath:")
     boolean shouldIndentWhileEditingRow(UITableView tableView, NSIndexPath indexPath);
     @Method(selector = "tableView:willBeginEditingRowAtIndexPath:")

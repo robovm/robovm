@@ -32,6 +32,7 @@ import org.robovm.apple.coregraphics.*;
 import org.robovm.apple.coredata.*;
 import org.robovm.apple.coreimage.*;
 import org.robovm.apple.coretext.*;
+import org.robovm.apple.corelocation.*;
 /*</imports>*/
 
 /*<javadoc>*/
@@ -47,7 +48,16 @@ import org.robovm.apple.coretext.*;
     /*</bind>*/
     /*<constants>*//*</constants>*/
     /*<properties>*/
-    
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @Property(selector = "accessibilityCustomActions")
+    NSArray<?> getAccessibilityCustomActions();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @Property(selector = "setAccessibilityCustomActions:")
+    void setAccessibilityCustomActions(NSArray<?> v);
     /*</properties>*/
     /*<methods>*/
     /**

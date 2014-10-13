@@ -38,6 +38,7 @@ import org.robovm.compiler.log.DebugOutputStream;
 import org.robovm.compiler.log.ErrorOutputStream;
 import org.robovm.compiler.log.Logger;
 import org.robovm.compiler.target.Launcher;
+import org.robovm.compiler.util.io.NeverCloseOutputStream;
 
 /**
  * Builder style wrapper around <code>commons-exec</code> which also adds support for asynchronous 
@@ -274,6 +275,12 @@ public class Executor implements Launcher {
             }
             if (in != null) {
                 pumpIn = in;
+            }
+            if (pumpOut == System.out) {
+                pumpOut = new NeverCloseOutputStream(pumpOut);
+            }
+            if (pumpErr == System.err) {
+                pumpErr = new NeverCloseOutputStream(pumpErr);
             }
             executor.setStreamHandler(new PumpStreamHandler(pumpOut, pumpErr, pumpIn) {
                 @Override

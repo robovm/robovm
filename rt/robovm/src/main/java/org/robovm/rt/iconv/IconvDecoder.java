@@ -112,10 +112,10 @@ public class IconvDecoder extends CharsetDecoder{
 
     @Override
     protected CoderResult implFlush(CharBuffer out) {
-        if (iconv_tPointer != 0) { 
-            
+        if (iconv_tPointer != 0) {
+
             IconvResult result = IconvProvider.flush(iconv_tPointer, out);
-   
+
             switch (result.getResultCode()) {
             case OUTPUT_BUFFER_TOO_SMALL:
                 return CoderResult.OVERFLOW;
@@ -136,7 +136,6 @@ public class IconvDecoder extends CharsetDecoder{
         if (iconv_tPointer != 0) {
             IconvProvider.release(iconv_tPointer);
             iconv_tPointer = 0;
-            System.err.println("ImplReset called");
         }
     }
 

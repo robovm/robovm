@@ -32,6 +32,7 @@ import org.robovm.apple.coreanimation.*;
 import org.robovm.apple.coregraphics.*;
 import org.robovm.apple.coremedia.*;
 import org.robovm.apple.security.*;
+import org.robovm.apple.dispatch.*;
 /*</imports>*/
 
 /*<javadoc>*/
@@ -51,7 +52,26 @@ import org.robovm.apple.security.*;
     public NSScanner(String string) { super((SkipInit) null); initObject(initWithString$(string)); }
     /*</constructors>*/
     /*<properties>*/
-    
+    @Property(selector = "string")
+    public native String getString();
+    @Property(selector = "scanLocation")
+    public native @MachineSizedUInt long getScanLocation();
+    @Property(selector = "setScanLocation:")
+    public native void setScanLocation(@MachineSizedUInt long v);
+    @Property(selector = "charactersToBeSkipped")
+    public native NSCharacterSet getCharactersToBeSkipped();
+    @Property(selector = "setCharactersToBeSkipped:")
+    public native void setCharactersToBeSkipped(NSCharacterSet v);
+    @Property(selector = "caseSensitive")
+    public native boolean isCaseSensitive();
+    @Property(selector = "setCaseSensitive:")
+    public native void setCaseSensitive(boolean v);
+    @Property(selector = "locale")
+    public native NSObject getLocale();
+    @Property(selector = "setLocale:")
+    public native void setLocale(NSObject v);
+    @Property(selector = "isAtEnd")
+    public native boolean isAtEnd();
     /*</properties>*/
     /*<members>*//*</members>*/
     public int scanInt() {
@@ -175,24 +195,8 @@ import org.robovm.apple.security.*;
         return ptr.get();
     }
     /*<methods>*/
-    @Method(selector = "string")
-    public native String getString();
-    @Method(selector = "scanLocation")
-    public native @MachineSizedUInt long getScanLocation();
-    @Method(selector = "setScanLocation:")
-    public native void setScanLocation(@MachineSizedUInt long pos);
-    @Method(selector = "setCharactersToBeSkipped:")
-    public native void setCharactersToBeSkipped(NSCharacterSet set);
-    @Method(selector = "setCaseSensitive:")
-    public native void setCaseSensitive(boolean flag);
-    @Method(selector = "setLocale:")
-    public native void setLocale(NSLocale locale);
-    @Method(selector = "charactersToBeSkipped")
-    public native NSCharacterSet getCharactersToBeSkipped();
-    @Method(selector = "caseSensitive")
-    public native boolean isCaseSensitive();
-    @Method(selector = "locale")
-    public native NSLocale getLocale();
+    @Method(selector = "initWithString:")
+    protected native @Pointer long initWithString$(String string);
     @Method(selector = "scanInt:")
     private native boolean scanInt(IntPtr result);
     /**
@@ -236,10 +240,6 @@ import org.robovm.apple.security.*;
     private native boolean scanUpToString(String string, NSString.NSStringPtr result);
     @Method(selector = "scanUpToCharactersFromSet:intoString:")
     private native boolean scanUpToCharactersFromSet(NSCharacterSet set, NSString.NSStringPtr result);
-    @Method(selector = "isAtEnd")
-    public native boolean isAtEnd();
-    @Method(selector = "initWithString:")
-    protected native @Pointer long initWithString$(String string);
     @Method(selector = "scannerWithString:")
     public static native NSScanner create(String string);
     @Method(selector = "localizedScannerWithString:")

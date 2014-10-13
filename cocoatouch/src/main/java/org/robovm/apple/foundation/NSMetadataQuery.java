@@ -32,6 +32,7 @@ import org.robovm.apple.coreanimation.*;
 import org.robovm.apple.coregraphics.*;
 import org.robovm.apple.coremedia.*;
 import org.robovm.apple.security.*;
+import org.robovm.apple.dispatch.*;
 /*</imports>*/
 
 /*<javadoc>*/
@@ -99,7 +100,68 @@ import org.robovm.apple.security.*;
     protected NSMetadataQuery(SkipInit skipInit) { super(skipInit); }
     /*</constructors>*/
     /*<properties>*/
-    
+    @Property(selector = "delegate")
+    public native NSMetadataQueryDelegate getDelegate();
+    @Property(selector = "setDelegate:", strongRef = true)
+    public native void setDelegate(NSMetadataQueryDelegate v);
+    @Property(selector = "predicate")
+    public native NSPredicate getPredicate();
+    @Property(selector = "setPredicate:")
+    public native void setPredicate(NSPredicate v);
+    @Property(selector = "sortDescriptors")
+    public native NSArray<NSSortDescriptor> getSortDescriptors();
+    @Property(selector = "setSortDescriptors:")
+    public native void setSortDescriptors(NSArray<NSSortDescriptor> v);
+    @Property(selector = "valueListAttributes")
+    public native @org.robovm.rt.bro.annotation.Marshaler(NSMetadataItemAttribute.AsListMarshaler.class) List<NSMetadataItemAttribute> getValueListAttributes();
+    @Property(selector = "setValueListAttributes:")
+    public native void setValueListAttributes(@org.robovm.rt.bro.annotation.Marshaler(NSMetadataItemAttribute.AsListMarshaler.class) List<NSMetadataItemAttribute> v);
+    @Property(selector = "groupingAttributes")
+    public native @org.robovm.rt.bro.annotation.Marshaler(NSMetadataItemAttribute.AsListMarshaler.class) List<NSMetadataItemAttribute> getGroupingAttributes();
+    @Property(selector = "setGroupingAttributes:")
+    public native void setGroupingAttributes(@org.robovm.rt.bro.annotation.Marshaler(NSMetadataItemAttribute.AsListMarshaler.class) List<NSMetadataItemAttribute> v);
+    @Property(selector = "notificationBatchingInterval")
+    public native double getNotificationBatchingInterval();
+    @Property(selector = "setNotificationBatchingInterval:")
+    public native void setNotificationBatchingInterval(double v);
+    @Property(selector = "searchScopes")
+    protected native NSArray<?> getSearchScopes0();
+    @Property(selector = "setSearchScopes:")
+    protected native void setSearchScopes0(NSArray<?> v);
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
+    @Property(selector = "searchItems")
+    protected native NSArray<?> getSearchItems0();
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
+    @Property(selector = "setSearchItems:")
+    protected native void setSearchItems0(NSArray<?> v);
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
+    @Property(selector = "operationQueue")
+    public native NSOperationQueue getOperationQueue();
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
+    @Property(selector = "setOperationQueue:")
+    public native void setOperationQueue(NSOperationQueue v);
+    @Property(selector = "isStarted")
+    public native boolean isStarted();
+    @Property(selector = "isGathering")
+    public native boolean isGathering();
+    @Property(selector = "isStopped")
+    public native boolean isStopped();
+    @Property(selector = "resultCount")
+    public native @MachineSizedUInt long getResultCount();
+    @Property(selector = "results")
+    public native NSArray<NSMetadataItem> getResults();
+    @Property(selector = "valueLists")
+    protected native NSDictionary<NSString, NSMetadataQueryAttributeValueTuple> getValueLists0();
+    @Property(selector = "groupedResults")
+    public native NSArray<NSMetadataQueryResultGroup> getGroupedResults();
     /*</properties>*/
     /*<members>*//*</members>*/
     public void setSearchScopes(NSArray<NSURL> scopes) {
@@ -115,11 +177,17 @@ import org.robovm.apple.security.*;
         }
         setSearchScopes0(array);
     }
+    public List<String> getSearchScopes() {
+        return getSearchScopes0().asStringList();
+    }
     public void setSearchItems(NSArray<NSMetadataItem> items) {
         setSearchItems0(items);
     }
     public void setSearchItemURLs(NSArray<NSURL> urls) {
         setSearchItems0(urls);
+    }
+    public NSArray<NSObject> getSearchItems() {
+        return (NSArray<NSObject>) getSearchItems0();
     }
     public Map<NSMetadataItemAttribute, NSMetadataQueryAttributeValueTuple> getValueLists() {
         Map<NSMetadataItemAttribute, NSMetadataQueryAttributeValueTuple> values = new HashMap<>();
@@ -151,70 +219,14 @@ import org.robovm.apple.security.*;
     @GlobalValue(symbol="NSMetadataQueryDidUpdateNotification", optional=true)
     public static native NSString DidUpdateNotification();
     
-    @Method(selector = "delegate")
-    public native NSMetadataQueryDelegate getDelegate();
-    @Method(selector = "setDelegate:")
-    public native void setDelegate(NSMetadataQueryDelegate delegate);
-    @Method(selector = "predicate")
-    public native NSPredicate getPredicate();
-    @Method(selector = "setPredicate:")
-    public native void setPredicate(NSPredicate predicate);
-    @Method(selector = "sortDescriptors")
-    public native NSArray<NSSortDescriptor> getSortDescriptors();
-    @Method(selector = "setSortDescriptors:")
-    public native void setSortDescriptors(NSArray<NSSortDescriptor> descriptors);
-    @Method(selector = "valueListAttributes")
-    public native @org.robovm.rt.bro.annotation.Marshaler(NSMetadataItemAttribute.AsListMarshaler.class) List<NSMetadataItemAttribute> getValueListAttributes();
-    @Method(selector = "setValueListAttributes:")
-    public native void setValueListAttributes(@org.robovm.rt.bro.annotation.Marshaler(NSMetadataItemAttribute.AsListMarshaler.class) List<NSMetadataItemAttribute> attrs);
-    @Method(selector = "groupingAttributes")
-    public native @org.robovm.rt.bro.annotation.Marshaler(NSMetadataItemAttribute.AsListMarshaler.class) List<NSMetadataItemAttribute> getGroupingAttributes();
-    @Method(selector = "setGroupingAttributes:")
-    public native void setGroupingAttributes(@org.robovm.rt.bro.annotation.Marshaler(NSMetadataItemAttribute.AsListMarshaler.class) List<NSMetadataItemAttribute> attrs);
-    @Method(selector = "notificationBatchingInterval")
-    public native double getNotificationBatchingInterval();
-    @Method(selector = "setNotificationBatchingInterval:")
-    public native void setNotificationBatchingInterval(double ti);
-    @Method(selector = "searchScopes")
-    public native @org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String> getSearchScopes();
-    @Method(selector = "setSearchScopes:")
-    protected native void setSearchScopes0(NSArray<?> scopes);
-    /**
-     * @since Available in iOS 7.0 and later.
-     */
-    @Method(selector = "searchItems")
-    public native NSArray<NSObject> getSearchItems();
-    /**
-     * @since Available in iOS 7.0 and later.
-     */
-    @Method(selector = "setSearchItems:")
-    protected native void setSearchItems0(NSArray<?> items);
-    /**
-     * @since Available in iOS 7.0 and later.
-     */
-    @Method(selector = "operationQueue")
-    public native NSOperationQueue getOperationQueue();
-    /**
-     * @since Available in iOS 7.0 and later.
-     */
-    @Method(selector = "setOperationQueue:")
-    public native void setOperationQueue(NSOperationQueue operationQueue);
     @Method(selector = "startQuery")
     public native boolean startQuery();
     @Method(selector = "stopQuery")
     public native void stopQuery();
-    @Method(selector = "isStarted")
-    public native boolean isStarted();
-    @Method(selector = "isGathering")
-    public native boolean isGathering();
-    @Method(selector = "isStopped")
-    public native boolean isStopped();
     @Method(selector = "disableUpdates")
     public native void disableUpdates();
     @Method(selector = "enableUpdates")
     public native void enableUpdates();
-    @Method(selector = "resultCount")
-    public native @MachineSizedUInt long getResultCount();
     @Method(selector = "resultAtIndex:")
     public native NSMetadataItem getResult(@MachineSizedUInt long idx);
     /**
@@ -227,14 +239,8 @@ import org.robovm.apple.security.*;
      */
     @Method(selector = "enumerateResultsWithOptions:usingBlock:")
     public native void enumerateResults(NSEnumerationOptions opts, @Block("(,@MachineSizedUInt,)") VoidBlock3<NSMetadataItem, Long, BooleanPtr> block);
-    @Method(selector = "results")
-    public native NSArray<NSMetadataItem> getResults();
     @Method(selector = "indexOfResult:")
     public native @MachineSizedUInt long indexOfResult(NSMetadataItem result);
-    @Method(selector = "valueLists")
-    protected native NSDictionary<NSString, NSMetadataQueryAttributeValueTuple> getValueLists0();
-    @Method(selector = "groupedResults")
-    public native NSArray<NSMetadataQueryResultGroup> getGroupedResults();
     @Method(selector = "valueOfAttribute:forResultAtIndex:")
     public native NSObject getValueForResult(NSMetadataItemAttribute attrName, @MachineSizedUInt long idx);
     /*</methods>*/

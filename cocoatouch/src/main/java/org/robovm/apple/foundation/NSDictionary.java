@@ -32,6 +32,7 @@ import org.robovm.apple.coreanimation.*;
 import org.robovm.apple.coregraphics.*;
 import org.robovm.apple.coremedia.*;
 import org.robovm.apple.security.*;
+import org.robovm.apple.dispatch.*;
 /*</imports>*/
 
 /*<javadoc>*/
@@ -99,7 +100,7 @@ import org.robovm.apple.security.*;
 
         @Override
         public Iterator<K> iterator() {
-            final Iterator<K> it = map.allKeys().iterator();
+            final Iterator<K> it = map.getAllKeys().iterator();
             return new Iterator<K>() {
                 private K last = null;
                 @Override
@@ -127,7 +128,7 @@ import org.robovm.apple.security.*;
 
         @Override
         public int size() {
-            return (int) map.count();
+            return (int) map.getCount();
         }
     }
     
@@ -225,7 +226,7 @@ import org.robovm.apple.security.*;
 
         @Override
         public int size() {
-            return (int) map.count();
+            return (int) map.getCount();
         }
         
     }
@@ -284,7 +285,16 @@ import org.robovm.apple.security.*;
     }
     
     /*<properties>*/
-    
+    @Property(selector = "count")
+    protected native @MachineSizedUInt long getCount();
+    @Property(selector = "allKeys")
+    protected native NSArray<K> getAllKeys();
+    @Property(selector = "allValues")
+    protected native NSArray<V> getAllValues();
+    @Property(selector = "description")
+    public native String getDescription();
+    @Property(selector = "descriptionInStringsFileFormat")
+    public native String getDescriptionInStringsFileFormat();
     /*</properties>*/
     /*<members>*//*</members>*/
     
@@ -302,8 +312,8 @@ import org.robovm.apple.security.*;
         if (!(value instanceof NSObject)) {
             return false;
         }
-        NSArray<V> values = allValues();
-        int count = (int) values.count();
+        NSArray<V> values = getAllValues();
+        int count = (int) values.getCount();
         for (int i = 0; i < count; i++) {
             NSObject o = values.objectAtIndex$(i);
             if (o.equals(value)) {
@@ -323,16 +333,16 @@ import org.robovm.apple.security.*;
         return (V) objectForKey$((K) key);
     }
     public boolean isEmpty() {
-        return count() == 0;
+        return getCount() == 0;
     }
     public Set<K> keySet() {
         return new KeySet<K>(this);
     }
     public int size() {
-        return (int) count();
+        return (int) getCount();
     }
     public Collection<V> values() {
-        return allValues();
+        return getAllValues();
     }
     public void clear() {
         throw new UnsupportedOperationException("NSDictionary is immutable");
@@ -370,7 +380,7 @@ import org.robovm.apple.security.*;
         Map<String, V> map = new HashMap<>();
         if (size() == 0) 
             return map;
-        if (!(allKeys().get(0) instanceof NSString)) 
+        if (!(getAllKeys().get(0) instanceof NSString)) 
             throw new UnsupportedOperationException("keys must be of type NSString");
         
         for (java.util.Map.Entry<K, V> e : entrySet()) {
@@ -388,16 +398,8 @@ import org.robovm.apple.security.*;
     }
     
     /*<methods>*/
-    @Method(selector = "count")
-    protected native @MachineSizedUInt long count();
     @Method(selector = "objectForKey:")
     protected native V objectForKey$(K aKey);
-    @Method(selector = "allKeys")
-    protected native NSArray<K> allKeys();
-    @Method(selector = "allValues")
-    protected native NSArray<V> allValues();
-    @Method(selector = "descriptionInStringsFileFormat")
-    public native String toStringsFileFormat();
     @Method(selector = "isEqualToDictionary:")
     protected native boolean isEqualToDictionary$(NSDictionary<?, ?> otherDictionary);
     @Method(selector = "writeToFile:atomically:")

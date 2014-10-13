@@ -32,6 +32,7 @@ import org.robovm.apple.coreanimation.*;
 import org.robovm.apple.coregraphics.*;
 import org.robovm.apple.coremedia.*;
 import org.robovm.apple.security.*;
+import org.robovm.apple.dispatch.*;
 /*</imports>*/
 
 /*<javadoc>*/
@@ -110,7 +111,8 @@ import org.robovm.apple.security.*;
     protected NSString(SkipInit skipInit) { super(skipInit); }
     /*</constructors>*/
     /*<properties>*/
-    
+    @Property(selector = "length")
+    protected native @MachineSizedUInt long length();
     /*</properties>*/
     /*<members>*//*</members>*/
 
@@ -260,8 +262,6 @@ import org.robovm.apple.security.*;
 
     
     /*<methods>*/
-    @Method(selector = "length")
-    protected native @MachineSizedUInt long length();
     @Method(selector = "characterAtIndex:")
     protected native short characterAtIndex$(@MachineSizedUInt long index);
     @Method(selector = "getCharacters:range:")

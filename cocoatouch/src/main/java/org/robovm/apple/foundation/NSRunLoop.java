@@ -32,6 +32,7 @@ import org.robovm.apple.coreanimation.*;
 import org.robovm.apple.coregraphics.*;
 import org.robovm.apple.coremedia.*;
 import org.robovm.apple.security.*;
+import org.robovm.apple.dispatch.*;
 /*</imports>*/
 
 /*<javadoc>*/
@@ -50,7 +51,8 @@ import org.robovm.apple.security.*;
     protected NSRunLoop(SkipInit skipInit) { super(skipInit); }
     /*</constructors>*/
     /*<properties>*/
-    
+    @Property(selector = "currentMode")
+    public native String getCurrentMode();
     /*</properties>*/
     /*<members>*//*</members>*/
     public void addTimer(String mode, NSTimer timer) {
@@ -88,8 +90,6 @@ import org.robovm.apple.security.*;
         perform(aSelector, target, arg, order, list);
     }
     /*<methods>*/
-    @Method(selector = "currentMode")
-    public native String getCurrentMode();
     @Method(selector = "getCFRunLoop")
     public native CFRunLoop asCFRunLoop();
     @Method(selector = "addTimer:forMode:")

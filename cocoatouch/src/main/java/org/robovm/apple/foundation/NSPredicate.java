@@ -32,6 +32,7 @@ import org.robovm.apple.coreanimation.*;
 import org.robovm.apple.coregraphics.*;
 import org.robovm.apple.coremedia.*;
 import org.robovm.apple.security.*;
+import org.robovm.apple.dispatch.*;
 /*</imports>*/
 
 /*<javadoc>*/
@@ -52,7 +53,8 @@ import org.robovm.apple.security.*;
     protected NSPredicate(SkipInit skipInit) { super(skipInit); }
     /*</constructors>*/
     /*<properties>*/
-    
+    @Property(selector = "predicateFormat")
+    public native String getPredicateFormat();
     /*</properties>*/
     /*<members>*//*</members>*/
     
@@ -61,8 +63,6 @@ import org.robovm.apple.security.*;
     }
     
     /*<methods>*/
-    @Method(selector = "predicateFormat")
-    public native String getPredicateFormat();
     @Method(selector = "predicateWithSubstitutionVariables:")
     public native NSPredicate newPredicateWithSubstitutionVariables(NSDictionary<NSString, ?> variables);
     @Method(selector = "evaluateWithObject:")

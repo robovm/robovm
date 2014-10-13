@@ -32,6 +32,7 @@ import org.robovm.apple.coregraphics.*;
 import org.robovm.apple.coredata.*;
 import org.robovm.apple.coreimage.*;
 import org.robovm.apple.coretext.*;
+import org.robovm.apple.corelocation.*;
 /*</imports>*/
 
 /*<javadoc>*/
@@ -74,6 +75,16 @@ import org.robovm.apple.coretext.*;
      */
     @Property(selector = "setShowsNumberOfCopies:")
     public native void setShowsNumberOfCopies(boolean v);
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @Property(selector = "showsPaperSelectionForLoadedPapers")
+    public native boolean isShowsPaperSelectionForLoadedPapers();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @Property(selector = "setShowsPaperSelectionForLoadedPapers:")
+    public native void setShowsPaperSelectionForLoadedPapers(boolean v);
     @Property(selector = "printPaper")
     public native UIPrintPaper getPrintPaper();
     @Property(selector = "printPageRenderer")
@@ -101,6 +112,8 @@ import org.robovm.apple.coretext.*;
     public native boolean presentFromRectInView(@ByVal CGRect rect, UIView view, boolean animated, @Block VoidBlock3<UIPrintInteractionController, Boolean, NSError> completion);
     @Method(selector = "presentFromBarButtonItem:animated:completionHandler:")
     public native boolean presentFromBarButtonItem(UIBarButtonItem item, boolean animated, @Block VoidBlock3<UIPrintInteractionController, Boolean, NSError> completion);
+    @Method(selector = "printToPrinter:completionHandler:")
+    public native boolean print(UIPrinter printer, @Block VoidBlock3<UIPrintInteractionController, Boolean, NSError> completion);
     @Method(selector = "dismissAnimated:")
     public native void dismiss(boolean animated);
     @Method(selector = "isPrintingAvailable")

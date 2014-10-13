@@ -32,6 +32,7 @@ import org.robovm.apple.coreanimation.*;
 import org.robovm.apple.coregraphics.*;
 import org.robovm.apple.coremedia.*;
 import org.robovm.apple.security.*;
+import org.robovm.apple.dispatch.*;
 /*</imports>*/
 
 /*<javadoc>*/
@@ -214,5 +215,15 @@ import org.robovm.apple.security.*;
      */
     @GlobalValue(symbol="NSCalendarIdentifierRepublicOfChina", optional=true)
     protected static native NSString RepublicOfChinaValue();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @GlobalValue(symbol="NSCalendarIdentifierIslamicTabular", optional=true)
+    protected static native NSString IslamicTabularValue();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @GlobalValue(symbol="NSCalendarIdentifierIslamicUmmAlQura", optional=true)
+    protected static native NSString IslamicUmmAlQuraValue();
     /*</methods>*/
 }

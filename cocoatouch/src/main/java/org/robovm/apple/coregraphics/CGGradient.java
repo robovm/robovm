@@ -47,7 +47,7 @@ import org.robovm.apple.uikit.*;
     /*<properties>*//*</properties>*/
     /*<members>*//*</members>*/
 
-    public static CGGradient create(CGColorSpace space, double[] components, double[] locations, long count) {
+    public static CGGradient create(CGColorSpace space, double[] components, double[] locations) {
         if (space == null) {
             throw new NullPointerException("space");
         }
@@ -56,11 +56,11 @@ import org.robovm.apple.uikit.*;
         }
         return create(space, 
                 VM.getArrayValuesAddress(CoreGraphics.toMachineSizedFloatArray(components)), 
-                locations != null ? VM.getArrayValuesAddress(CoreGraphics.toMachineSizedFloatArray(components)) : 0, 
+                locations != null ? VM.getArrayValuesAddress(CoreGraphics.toMachineSizedFloatArray(locations)) : 0, 
                 locations != null ? locations.length : 0);
     }
     
-    public static CGGradient create(CGColorSpace space, float[] components, float[] locations, long count) {
+    public static CGGradient create(CGColorSpace space, float[] components, float[] locations) {
         if (space == null) {
             throw new NullPointerException("space");
         }

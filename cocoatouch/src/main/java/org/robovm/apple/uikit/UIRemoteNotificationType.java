@@ -32,12 +32,15 @@ import org.robovm.apple.coregraphics.*;
 import org.robovm.apple.coredata.*;
 import org.robovm.apple.coreimage.*;
 import org.robovm.apple.coretext.*;
+import org.robovm.apple.corelocation.*;
 /*</imports>*/
 
 /*<javadoc>*/
 /**
  * @since Available in iOS 3.0 and later.
+ * @deprecated Deprecated in iOS 8.0.
  */
+@Deprecated
 /*</javadoc>*/
 /*<annotations>*/@Marshaler(Bits.AsMachineSizedIntMarshaler.class)/*</annotations>*/
 public final class /*<name>*/UIRemoteNotificationType/*</name>*/ extends Bits</*<name>*/UIRemoteNotificationType/*</name>*/> {

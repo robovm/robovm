@@ -32,6 +32,7 @@ import org.robovm.apple.coreanimation.*;
 import org.robovm.apple.coregraphics.*;
 import org.robovm.apple.coremedia.*;
 import org.robovm.apple.security.*;
+import org.robovm.apple.dispatch.*;
 /*</imports>*/
 
 /*<javadoc>*/
@@ -68,7 +69,7 @@ import org.robovm.apple.security.*;
 
         @Override
         public int size() {
-            return (int) set.count();
+            return (int) set.getCount();
         }
     }
     
@@ -86,7 +87,7 @@ import org.robovm.apple.security.*;
         }
 
         protected void checkIndex(int index) {
-            int size = (int) set.count();
+            int size = (int) set.getCount();
             if (index < 0 || index >= size) {
                 throw new IndexOutOfBoundsException("index = " + index + ", size = " + size);
             }
@@ -94,7 +95,7 @@ import org.robovm.apple.security.*;
 
         @Override
         public int size() {
-            return (int) set.count();
+            return (int) set.getCount();
         }
 
         @Override
@@ -144,7 +145,20 @@ import org.robovm.apple.security.*;
 
     
     /*<properties>*/
-    
+    @Property(selector = "count")
+    protected native @MachineSizedUInt long getCount();
+    @Property(selector = "firstObject")
+    public native T getFirst();
+    @Property(selector = "lastObject")
+    public native T getLast();
+    @Property(selector = "reversedOrderedSet")
+    public native NSOrderedSet<T> getReversedOrderedSet();
+    @Property(selector = "array")
+    public native NSArray<T> getArray();
+    @Property(selector = "set")
+    public native NSSet<T> getSet();
+    @Property(selector = "description")
+    public native String getDescription();
     /*</properties>*/
     /*<members>*//*</members>*/
     
@@ -260,24 +274,18 @@ import org.robovm.apple.security.*;
     }    
     
     /*<methods>*/
-    @Method(selector = "count")
-    protected native @MachineSizedUInt long count();
     @Method(selector = "objectAtIndex:")
     protected native T objectAtIndex$(@MachineSizedUInt long idx);
     @Method(selector = "indexOfObject:")
     protected native @MachineSizedUInt long indexOfObject$(NSObject object);
+    @Method(selector = "initWithObjects:count:")
+    protected native @Pointer long initWithObjects$count$(@Pointer long objects, @MachineSizedUInt long cnt);
     @Method(selector = "objectsAtIndexes:")
     protected native NSArray<T> objectsAtIndexes$(NSIndexSet indexes);
-    @Method(selector = "firstObject")
-    public native T getFirst();
-    @Method(selector = "lastObject")
-    public native T getLast();
     @Method(selector = "containsObject:")
     protected native boolean containsObject$(NSObject object);
     @Method(selector = "objectEnumerator")
     protected native NSEnumerator<T> objectEnumerator();
-    @Method(selector = "initWithObjects:count:")
-    protected native @Pointer long initWithObjects$count$(@Pointer long objects, @MachineSizedUInt long cnt);
     @Method(selector = "initWithOrderedSet:")
     protected native @Pointer long initWithOrderedSet$(NSOrderedSet<?> set);
     @Method(selector = "initWithArray:")

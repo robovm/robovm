@@ -32,6 +32,7 @@ import org.robovm.apple.coreanimation.*;
 import org.robovm.apple.coregraphics.*;
 import org.robovm.apple.coremedia.*;
 import org.robovm.apple.security.*;
+import org.robovm.apple.dispatch.*;
 /*</imports>*/
 
 /*<javadoc>*/
@@ -230,6 +231,16 @@ import org.robovm.apple.security.*;
     @GlobalValue(symbol="NSMetadataItemFSContentChangeDateKey", optional=true)
     protected static native NSString FSContentChangeDateValue();
     /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @GlobalValue(symbol="NSMetadataItemContentTypeKey", optional=true)
+    protected static native NSString ContentTypeValue();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @GlobalValue(symbol="NSMetadataItemContentTypeTreeKey", optional=true)
+    protected static native NSString ContentTypeTreeValue();
+    /**
      * @since Available in iOS 5.0 and later.
      */
     @GlobalValue(symbol="NSMetadataItemIsUbiquitousKey", optional=true)
@@ -286,6 +297,26 @@ import org.robovm.apple.security.*;
      */
     @GlobalValue(symbol="NSMetadataUbiquitousItemUploadingErrorKey", optional=true)
     protected static native NSString UploadingErrorValue();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @GlobalValue(symbol="NSMetadataUbiquitousItemDownloadRequestedKey", optional=true)
+    protected static native NSString DownloadRequestedValue();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @GlobalValue(symbol="NSMetadataUbiquitousItemIsExternalDocumentKey", optional=true)
+    protected static native NSString IsExternalDocumentValue();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @GlobalValue(symbol="NSMetadataUbiquitousItemContainerDisplayNameKey", optional=true)
+    protected static native NSString ContainerDisplayNameValue();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @GlobalValue(symbol="NSMetadataUbiquitousItemURLInLocalContainerKey", optional=true)
+    protected static native NSString URLInLocalContainerValue();
     /**
      * @since Available in iOS 5.0 and later.
      */

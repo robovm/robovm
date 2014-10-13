@@ -32,6 +32,7 @@ import org.robovm.apple.coregraphics.*;
 import org.robovm.apple.coredata.*;
 import org.robovm.apple.coreimage.*;
 import org.robovm.apple.coretext.*;
+import org.robovm.apple.corelocation.*;
 /*</imports>*/
 
 /*<javadoc>*/
@@ -49,8 +50,38 @@ import org.robovm.apple.coretext.*;
     /*<properties>*//*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
+    /**
+     * @since Available in iOS 6.0 and later.
+     */
+    @GlobalValue(symbol="UILayoutPriorityRequired", optional=true)
+    public static native float Value__UILayoutPriorityRequired();
+    /**
+     * @since Available in iOS 6.0 and later.
+     */
+    @GlobalValue(symbol="UILayoutPriorityDefaultHigh", optional=true)
+    public static native float Value__UILayoutPriorityDefaultHigh();
+    /**
+     * @since Available in iOS 6.0 and later.
+     */
+    @GlobalValue(symbol="UILayoutPriorityDefaultLow", optional=true)
+    public static native float Value__UILayoutPriorityDefaultLow();
+    /**
+     * @since Available in iOS 6.0 and later.
+     */
+    @GlobalValue(symbol="UILayoutPriorityFittingSizeLevel", optional=true)
+    public static native float Value__UILayoutPriorityFittingSizeLevel();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @GlobalValue(symbol="UIAccessibilityNotificationSwitchControlIdentifier", optional=true)
+    public static native String Value__UIAccessibilityNotificationSwitchControlIdentifier();
     @GlobalValue(symbol="UITrackingRunLoopMode", optional=true)
     public static native String Value__UITrackingRunLoopMode();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @GlobalValue(symbol="UIApplicationOpenSettingsURLString", optional=true)
+    public static native String Value__UIApplicationOpenSettingsURLString();
     /**
      * @since Available in iOS 6.0 and later.
      */
@@ -76,6 +107,16 @@ import org.robovm.apple.coretext.*;
      */
     @GlobalValue(symbol="UIApplicationStateRestorationSystemVersionKey", optional=true)
     public static native String Value__UIApplicationStateRestorationSystemVersionKey();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @GlobalValue(symbol="UIViewControllerShowDetailTargetDidChangeNotification", optional=true)
+    public static native String Value__UIViewControllerShowDetailTargetDidChangeNotification();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @GlobalValue(symbol="NSUserActivityDocumentURLKey", optional=true)
+    public static native String Value__NSUserActivityDocumentURLKey();
     @GlobalValue(symbol="UIPasteboardNameGeneral", optional=true)
     public static native String Value__UIPasteboardNameGeneral();
     @GlobalValue(symbol="UIPasteboardNameFind", optional=true)
@@ -98,6 +139,21 @@ import org.robovm.apple.coretext.*;
     public static native NSArray<NSString> PasteboardTypeListColor();
     @GlobalValue(symbol="UIPrintErrorDomain", optional=true)
     public static native String PrintErrorDomain();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @GlobalValue(symbol="UITransitionContextFromViewKey", optional=true)
+    public static native String Value__UITransitionContextFromViewKey();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @GlobalValue(symbol="UITransitionContextToViewKey", optional=true)
+    public static native String Value__UITransitionContextToViewKey();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @GlobalValue(symbol="UISplitViewControllerAutomaticDimension", optional=true)
+    public static native @MachineSizedFloat double Value__UISplitViewControllerAutomaticDimension();
     
     /**
      * @since Available in iOS 6.0 and later.

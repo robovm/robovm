@@ -32,6 +32,7 @@ import org.robovm.apple.coreanimation.*;
 import org.robovm.apple.coregraphics.*;
 import org.robovm.apple.coremedia.*;
 import org.robovm.apple.security.*;
+import org.robovm.apple.dispatch.*;
 /*</imports>*/
 
 /*<javadoc>*/
@@ -81,7 +82,68 @@ import org.robovm.apple.security.*;
     public NSThread(NSObject target, Selector selector, NSObject argument) { super((SkipInit) null); initObject(initWithTarget$selector$object$(target, selector, argument)); }
     /*</constructors>*/
     /*<properties>*/
-    
+    @Property(selector = "threadDictionary")
+    public native NSMutableDictionary<?, ?> getThreadDictionary();
+    /**
+     * @since Available in iOS 4.0 and later.
+     */
+    @Property(selector = "threadPriority")
+    public native double getThreadPriority();
+    /**
+     * @since Available in iOS 4.0 and later.
+     */
+    @Property(selector = "setThreadPriority:")
+    public native void setThreadPriority(double v);
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @Property(selector = "qualityOfService")
+    public native NSQualityOfService getQualityOfService();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @Property(selector = "setQualityOfService:")
+    public native void setQualityOfService(NSQualityOfService v);
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
+    @Property(selector = "name")
+    public native String getName();
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
+    @Property(selector = "setName:")
+    public native void setName(String v);
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
+    @Property(selector = "stackSize")
+    public native @MachineSizedUInt long getStackSize();
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
+    @Property(selector = "setStackSize:")
+    public native void setStackSize(@MachineSizedUInt long v);
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
+    @Property(selector = "isMainThread")
+    public native boolean isMainThread();
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
+    @Property(selector = "isExecuting")
+    public native boolean isExecuting();
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
+    @Property(selector = "isFinished")
+    public native boolean isFinished();
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
+    @Property(selector = "isCancelled")
+    public native boolean isCancelled();
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
@@ -92,63 +154,11 @@ import org.robovm.apple.security.*;
     @GlobalValue(symbol="NSThreadWillExitNotification", optional=true)
     public static native NSString WillExitNotification();
     
-    @Method(selector = "threadDictionary")
-    public native NSMutableDictionary<?, ?> getThreadDictionary();
-    /**
-     * @since Available in iOS 4.0 and later.
-     */
-    @Method(selector = "threadPriority")
-    public native double getThreadPriority();
-    /**
-     * @since Available in iOS 4.0 and later.
-     */
-    @Method(selector = "setThreadPriority:")
-    public native void setThreadPriority(double p);
-    /**
-     * @since Available in iOS 2.0 and later.
-     */
-    @Method(selector = "setName:")
-    public native void setName(String n);
-    /**
-     * @since Available in iOS 2.0 and later.
-     */
-    @Method(selector = "name")
-    public native String getName();
-    /**
-     * @since Available in iOS 2.0 and later.
-     */
-    @Method(selector = "stackSize")
-    public native @MachineSizedUInt long getStackSize();
-    /**
-     * @since Available in iOS 2.0 and later.
-     */
-    @Method(selector = "setStackSize:")
-    public native void setStackSize(@MachineSizedUInt long s);
-    /**
-     * @since Available in iOS 2.0 and later.
-     */
-    @Method(selector = "isMainThread")
-    public native boolean isMainThread();
     /**
      * @since Available in iOS 2.0 and later.
      */
     @Method(selector = "initWithTarget:selector:object:")
     protected native @Pointer long initWithTarget$selector$object$(NSObject target, Selector selector, NSObject argument);
-    /**
-     * @since Available in iOS 2.0 and later.
-     */
-    @Method(selector = "isExecuting")
-    public native boolean isExecuting();
-    /**
-     * @since Available in iOS 2.0 and later.
-     */
-    @Method(selector = "isFinished")
-    public native boolean isFinished();
-    /**
-     * @since Available in iOS 2.0 and later.
-     */
-    @Method(selector = "isCancelled")
-    public native boolean isCancelled();
     /**
      * @since Available in iOS 2.0 and later.
      */
@@ -176,11 +186,6 @@ import org.robovm.apple.security.*;
     public static native void sleep(double ti);
     @Method(selector = "exit")
     public static native void exit();
-    /**
-     * @since Available in iOS 4.0 and later.
-     */
-    @Method(selector = "callStackSymbols")
-    public static native @org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String> getCallStackSymbols();
     /**
      * @since Available in iOS 2.0 and later.
      */

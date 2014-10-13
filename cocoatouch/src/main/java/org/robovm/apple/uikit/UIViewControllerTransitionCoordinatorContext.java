@@ -32,6 +32,7 @@ import org.robovm.apple.coregraphics.*;
 import org.robovm.apple.coredata.*;
 import org.robovm.apple.coreimage.*;
 import org.robovm.apple.coretext.*;
+import org.robovm.apple.corelocation.*;
 /*</imports>*/
 
 /*<javadoc>*/
@@ -70,8 +71,18 @@ import org.robovm.apple.coretext.*;
     UIViewAnimationCurve getCompletionCurve();
     @Method(selector = "viewControllerForKey:")
     UIViewController getViewController(String key);
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @Method(selector = "viewForKey:")
+    UIView viewForKey$(String key);
     @Method(selector = "containerView")
     UIView getContainerView();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @Method(selector = "targetTransform")
+    @ByVal CGAffineTransform targetTransform();
     /*</methods>*/
     /*<adapter>*/
     /*</adapter>*/

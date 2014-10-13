@@ -32,6 +32,7 @@ import org.robovm.apple.coreanimation.*;
 import org.robovm.apple.coregraphics.*;
 import org.robovm.apple.coremedia.*;
 import org.robovm.apple.security.*;
+import org.robovm.apple.dispatch.*;
 /*</imports>*/
 
 /*<javadoc>*/
@@ -54,7 +55,10 @@ import org.robovm.apple.security.*;
     public NSHTTPURLResponse(NSURL url, @MachineSizedSInt long statusCode, String HTTPVersion, @org.robovm.rt.bro.annotation.Marshaler(NSDictionary.AsStringStringMapMarshaler.class) Map<String, String> headerFields) { super((SkipInit) null); initObject(init(url, statusCode, HTTPVersion, headerFields)); }
     /*</constructors>*/
     /*<properties>*/
-    
+    @Property(selector = "statusCode")
+    public native @MachineSizedSInt long getStatusCode();
+    @Property(selector = "allHeaderFields")
+    public native NSDictionary<?, ?> getAllHeaderFields();
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
@@ -63,10 +67,6 @@ import org.robovm.apple.security.*;
      */
     @Method(selector = "initWithURL:statusCode:HTTPVersion:headerFields:")
     protected native @Pointer long init(NSURL url, @MachineSizedSInt long statusCode, String HTTPVersion, @org.robovm.rt.bro.annotation.Marshaler(NSDictionary.AsStringStringMapMarshaler.class) Map<String, String> headerFields);
-    @Method(selector = "statusCode")
-    public native @MachineSizedSInt long getStatusCode();
-    @Method(selector = "allHeaderFields")
-    public native @org.robovm.rt.bro.annotation.Marshaler(NSDictionary.AsStringStringMapMarshaler.class) Map<String, String> getAllHeaderFields();
     @Method(selector = "localizedStringForStatusCode:")
     public static native String getLocalizedStatusCode(@MachineSizedSInt long statusCode);
     /*</methods>*/

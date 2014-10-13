@@ -32,6 +32,7 @@ import org.robovm.apple.coreanimation.*;
 import org.robovm.apple.coregraphics.*;
 import org.robovm.apple.coremedia.*;
 import org.robovm.apple.security.*;
+import org.robovm.apple.dispatch.*;
 /*</imports>*/
 
 /*<javadoc>*/
@@ -43,6 +44,14 @@ public final class /*<name>*/NSFileCoordinatorReadingOptions/*</name>*/ extends 
     public static final NSFileCoordinatorReadingOptions None = new NSFileCoordinatorReadingOptions(0L);
     public static final NSFileCoordinatorReadingOptions WithoutChanges = new NSFileCoordinatorReadingOptions(1L);
     public static final NSFileCoordinatorReadingOptions ResolvesSymbolicLink = new NSFileCoordinatorReadingOptions(2L);
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    public static final NSFileCoordinatorReadingOptions ImmediatelyAvailableMetadataOnly = new NSFileCoordinatorReadingOptions(4L);
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    public static final NSFileCoordinatorReadingOptions ForUploading = new NSFileCoordinatorReadingOptions(8L);
     /*</values>*/
 
     private static final /*<name>*/NSFileCoordinatorReadingOptions/*</name>*/[] values = _values(/*<name>*/NSFileCoordinatorReadingOptions/*</name>*/.class);

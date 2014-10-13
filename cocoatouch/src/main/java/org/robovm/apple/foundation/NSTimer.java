@@ -32,6 +32,7 @@ import org.robovm.apple.coreanimation.*;
 import org.robovm.apple.coregraphics.*;
 import org.robovm.apple.coremedia.*;
 import org.robovm.apple.security.*;
+import org.robovm.apple.dispatch.*;
 /*</imports>*/
 
 /*<javadoc>*/
@@ -51,7 +52,26 @@ import org.robovm.apple.security.*;
     public NSTimer(NSDate date, double ti, NSObject t, Selector s, NSObject ui, boolean rep) { super((SkipInit) null); initObject(init(date, ti, t, s, ui, rep)); }
     /*</constructors>*/
     /*<properties>*/
-    
+    @Property(selector = "fireDate")
+    public native NSDate getFireDate();
+    @Property(selector = "setFireDate:")
+    public native void setFireDate(NSDate v);
+    @Property(selector = "timeInterval")
+    public native double getTimeInterval();
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
+    @Property(selector = "tolerance")
+    public native double getTolerance();
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
+    @Property(selector = "setTolerance:")
+    public native void setTolerance(double v);
+    @Property(selector = "isValid")
+    public native boolean isValid();
+    @Property(selector = "userInfo")
+    public native NSObject getUserInfo();
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
@@ -59,28 +79,8 @@ import org.robovm.apple.security.*;
     protected native @Pointer long init(NSDate date, double ti, NSObject t, Selector s, NSObject ui, boolean rep);
     @Method(selector = "fire")
     public native void fire();
-    @Method(selector = "fireDate")
-    public native NSDate getFireDate();
-    @Method(selector = "setFireDate:")
-    public native void setFireDate(NSDate date);
-    @Method(selector = "timeInterval")
-    public native double getTimeInterval();
-    /**
-     * @since Available in iOS 7.0 and later.
-     */
-    @Method(selector = "tolerance")
-    public native double getTolerance();
-    /**
-     * @since Available in iOS 7.0 and later.
-     */
-    @Method(selector = "setTolerance:")
-    public native void setTolerance(double tolerance);
     @Method(selector = "invalidate")
     public native void invalidate();
-    @Method(selector = "isValid")
-    public native boolean isValid();
-    @Method(selector = "userInfo")
-    public native NSObject getUserInfo();
     @Method(selector = "timerWithTimeInterval:invocation:repeats:")
     public static native NSTimer create(double ti, NSInvocation invocation, boolean yesOrNo);
     @Method(selector = "scheduledTimerWithTimeInterval:invocation:repeats:")

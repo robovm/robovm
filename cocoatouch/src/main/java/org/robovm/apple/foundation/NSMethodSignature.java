@@ -32,6 +32,7 @@ import org.robovm.apple.coreanimation.*;
 import org.robovm.apple.coregraphics.*;
 import org.robovm.apple.coremedia.*;
 import org.robovm.apple.security.*;
+import org.robovm.apple.dispatch.*;
 /*</imports>*/
 
 /*<javadoc>*/
@@ -50,22 +51,21 @@ import org.robovm.apple.security.*;
     protected NSMethodSignature(SkipInit skipInit) { super(skipInit); }
     /*</constructors>*/
     /*<properties>*/
-    
+    @Property(selector = "numberOfArguments")
+    public native @MachineSizedUInt long getNumberOfArguments();
+    @Property(selector = "frameLength")
+    public native @MachineSizedUInt long getFrameLength();
+    @Property(selector = "methodReturnType")
+    public native BytePtr getMethodReturnType();
+    @Property(selector = "methodReturnLength")
+    public native @MachineSizedUInt long getMethodReturnLength();
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
-    @Method(selector = "numberOfArguments")
-    public native @MachineSizedUInt long getNumberOfArguments();
     @Method(selector = "getArgumentTypeAtIndex:")
     public native @org.robovm.rt.bro.annotation.Marshaler(StringMarshalers.AsDefaultCharsetZMarshaler.class) String getArgumentType(@MachineSizedUInt long idx);
-    @Method(selector = "frameLength")
-    public native @MachineSizedUInt long getFrameLength();
     @Method(selector = "isOneway")
     public native boolean isOneway();
-    @Method(selector = "methodReturnType")
-    public native @org.robovm.rt.bro.annotation.Marshaler(StringMarshalers.AsDefaultCharsetZMarshaler.class) String getMethodReturnType();
-    @Method(selector = "methodReturnLength")
-    public native @MachineSizedUInt long getMethodReturnLength();
     @Method(selector = "signatureWithObjCTypes:")
     public static native NSMethodSignature create(@org.robovm.rt.bro.annotation.Marshaler(StringMarshalers.AsDefaultCharsetZMarshaler.class) String types);
     /*</methods>*/

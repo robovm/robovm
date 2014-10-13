@@ -32,6 +32,7 @@ import org.robovm.apple.coregraphics.*;
 import org.robovm.apple.coredata.*;
 import org.robovm.apple.coreimage.*;
 import org.robovm.apple.coretext.*;
+import org.robovm.apple.corelocation.*;
 /*</imports>*/
 
 /*<javadoc>*/
@@ -53,9 +54,9 @@ import org.robovm.apple.coretext.*;
     /*</constructors>*/
     /*<properties>*/
     @Property(selector = "priority")
-    public native UILayoutPriority getPriority();
+    public native float getPriority();
     @Property(selector = "setPriority:")
-    public native void setPriority(UILayoutPriority v);
+    public native void setPriority(float v);
     @Property(selector = "shouldBeArchived")
     public native boolean isShouldBeArchived();
     @Property(selector = "setShouldBeArchived:")
@@ -76,6 +77,26 @@ import org.robovm.apple.coretext.*;
     public native @MachineSizedFloat double getConstant();
     @Property(selector = "setConstant:")
     public native void setConstant(@MachineSizedFloat double v);
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @Property(selector = "isActive")
+    public native boolean isActive();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @Property(selector = "setActive:")
+    public native void setActive(boolean v);
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
+    @Property(selector = "identifier")
+    public native String getIdentifier();
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
+    @Property(selector = "setIdentifier:")
+    public native void setIdentifier(String v);
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
@@ -83,5 +104,15 @@ import org.robovm.apple.coretext.*;
     public static native NSArray<NSLayoutConstraint> create(String format, NSLayoutFormatOptions opts, NSDictionary<NSString, NSNumber> metrics, NSDictionary<NSString, UIView> views);
     @Method(selector = "constraintWithItem:attribute:relatedBy:toItem:attribute:multiplier:constant:")
     public static native NSLayoutConstraint create(NSObject view1, NSLayoutAttribute attr1, NSLayoutRelation relation, NSObject view2, NSLayoutAttribute attr2, @MachineSizedFloat double multiplier, @MachineSizedFloat double c);
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @Method(selector = "activateConstraints:")
+    public static native void activateConstraints$(NSArray<?> constraints);
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @Method(selector = "deactivateConstraints:")
+    public static native void deactivateConstraints$(NSArray<?> constraints);
     /*</methods>*/
 }

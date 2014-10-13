@@ -32,6 +32,7 @@ import org.robovm.apple.coregraphics.*;
 import org.robovm.apple.coredata.*;
 import org.robovm.apple.coreimage.*;
 import org.robovm.apple.coretext.*;
+import org.robovm.apple.corelocation.*;
 /*</imports>*/
 
 /*<javadoc>*/
@@ -95,6 +96,16 @@ import org.robovm.apple.coretext.*;
     public native void didSelectItem(UICollectionView collectionView, NSIndexPath indexPath);
     @Method(selector = "collectionView:didDeselectItemAtIndexPath:")
     public native void didDeselectItem(UICollectionView collectionView, NSIndexPath indexPath);
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @Method(selector = "collectionView:willDisplayCell:forItemAtIndexPath:")
+    public native void collectionView$willDisplayCell$forItemAtIndexPath$(UICollectionView collectionView, UICollectionViewCell cell, NSIndexPath indexPath);
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @Method(selector = "collectionView:willDisplaySupplementaryView:forElementKind:atIndexPath:")
+    public native void collectionView$willDisplaySupplementaryView$forElementKind$atIndexPath$(UICollectionView collectionView, UICollectionReusableView view, String elementKind, NSIndexPath indexPath);
     @Method(selector = "collectionView:didEndDisplayingCell:forItemAtIndexPath:")
     public native void didEndDisplayingCell(UICollectionView collectionView, UICollectionViewCell cell, NSIndexPath indexPath);
     @Method(selector = "collectionView:didEndDisplayingSupplementaryView:forElementOfKind:atIndexPath:")

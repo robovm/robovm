@@ -32,6 +32,7 @@ import org.robovm.apple.coregraphics.*;
 import org.robovm.apple.coredata.*;
 import org.robovm.apple.coreimage.*;
 import org.robovm.apple.coretext.*;
+import org.robovm.apple.corelocation.*;
 /*</imports>*/
 
 /*<javadoc>*/
@@ -42,7 +43,7 @@ import org.robovm.apple.coretext.*;
 /*<annotations>*/@Library("UIKit") @NativeClass/*</annotations>*/
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/UIScreen/*</name>*/ 
     extends /*<extends>*/NSObject/*</extends>*/ 
-    /*<implements>*//*</implements>*/ {
+    /*<implements>*/implements UITraitEnvironment/*</implements>*/ {
 
     public static class Notifications {
         /**
@@ -162,6 +163,28 @@ import org.robovm.apple.coretext.*;
      */
     @Property(selector = "setWantsSoftwareDimming:")
     public native void setWantsSoftwareDimming(boolean v);
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @Property(selector = "coordinateSpace")
+    public native UICoordinateSpace getCoordinateSpace();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @Property(selector = "fixedCoordinateSpace")
+    public native UICoordinateSpace getFixedCoordinateSpace();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @Property(selector = "nativeBounds")
+    public native @ByVal CGRect getNativeBounds();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @Property(selector = "nativeScale")
+    public native @MachineSizedFloat double getNativeScale();
+    @Property(selector = "traitCollection")
+    public native UITraitCollection getTraitCollection();
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
@@ -203,5 +226,7 @@ import org.robovm.apple.coretext.*;
      */
     @Method(selector = "snapshotViewAfterScreenUpdates:")
     public native UIView snapshotView(boolean afterUpdates);
+    @Method(selector = "traitCollectionDidChange:")
+    public native void traitCollectionDidChange(UITraitCollection previousTraitCollection);
     /*</methods>*/
 }

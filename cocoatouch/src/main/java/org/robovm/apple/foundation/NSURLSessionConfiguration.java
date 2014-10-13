@@ -32,6 +32,7 @@ import org.robovm.apple.coreanimation.*;
 import org.robovm.apple.coregraphics.*;
 import org.robovm.apple.coremedia.*;
 import org.robovm.apple.security.*;
+import org.robovm.apple.dispatch.*;
 /*</imports>*/
 import org.robovm.apple.coreservices.CFProxy;
 
@@ -85,6 +86,16 @@ import org.robovm.apple.coreservices.CFProxy;
      */
     @Property(selector = "setDiscretionary:")
     public native void setDiscretionary(boolean v);
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @Property(selector = "sharedContainerIdentifier")
+    public native String getSharedContainerIdentifier();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @Property(selector = "setSharedContainerIdentifier:")
+    public native void setSharedContainerIdentifier(String v);
     /**
      * @since Available in iOS 7.0 and later.
      */
@@ -150,6 +161,16 @@ import org.robovm.apple.coreservices.CFProxy;
     public static native NSURLSessionConfiguration getDefaultSessionConfiguration();
     @Method(selector = "ephemeralSessionConfiguration")
     public static native NSURLSessionConfiguration getEphemeralSessionConfiguration();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @Method(selector = "backgroundSessionConfigurationWithIdentifier:")
+    public static native NSURLSessionConfiguration backgroundSessionConfigurationWithIdentifier$(String identifier);
+    /**
+     * @since Available in iOS 7.0 and later.
+     * @deprecated Deprecated in iOS 8.0.
+     */
+    @Deprecated
     @Method(selector = "backgroundSessionConfiguration:")
     public static native NSURLSessionConfiguration getBackgroundSessionConfiguration(String identifier);
     /*</methods>*/

@@ -32,6 +32,7 @@ import org.robovm.apple.coreanimation.*;
 import org.robovm.apple.coregraphics.*;
 import org.robovm.apple.coremedia.*;
 import org.robovm.apple.security.*;
+import org.robovm.apple.dispatch.*;
 /*</imports>*/
 
 /*<javadoc>*/
@@ -438,9 +439,29 @@ import org.robovm.apple.security.*;
     @GlobalValue(symbol="NSURLIsMountTriggerKey", optional=true)
     protected static native NSString IsMountTriggerValue();
     /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @GlobalValue(symbol="NSURLGenerationIdentifierKey", optional=true)
+    protected static native NSString GenerationIdentifierValue();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @GlobalValue(symbol="NSURLDocumentIdentifierKey", optional=true)
+    protected static native NSString DocumentIdentifierValue();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @GlobalValue(symbol="NSURLAddedToDirectoryDateKey", optional=true)
+    protected static native NSString AddedToDirectoryDateValue();
+    /**
      * @since Available in iOS 5.0 and later.
      */
     @GlobalValue(symbol="NSURLFileResourceTypeKey", optional=true)
     protected static native NSString FileResourceTypeValue();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @GlobalValue(symbol="NSURLThumbnailDictionaryKey", optional=true)
+    protected static native NSString ThumbnailDictionaryValue();
     /*</methods>*/
 }

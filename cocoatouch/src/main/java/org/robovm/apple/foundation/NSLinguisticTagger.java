@@ -32,6 +32,7 @@ import org.robovm.apple.coreanimation.*;
 import org.robovm.apple.coregraphics.*;
 import org.robovm.apple.coremedia.*;
 import org.robovm.apple.security.*;
+import org.robovm.apple.dispatch.*;
 /*</imports>*/
 
 /*<javadoc>*/
@@ -56,7 +57,21 @@ import org.robovm.apple.security.*;
     public NSLinguisticTagger(@org.robovm.rt.bro.annotation.Marshaler(NSArray.AsListMarshaler.class) List<NSLinguisticTagScheme> tagSchemes, NSLinguisticTaggerOptions opts) { super((SkipInit) null); initObject(init(tagSchemes, opts)); }
     /*</constructors>*/
     /*<properties>*/
-    
+    /**
+     * @since Available in iOS 5.0 and later.
+     */
+    @Property(selector = "tagSchemes")
+    public native @org.robovm.rt.bro.annotation.Marshaler(NSArray.AsListMarshaler.class) List<NSLinguisticTagScheme> getTagSchemes();
+    /**
+     * @since Available in iOS 5.0 and later.
+     */
+    @Property(selector = "string")
+    public native String getString();
+    /**
+     * @since Available in iOS 5.0 and later.
+     */
+    @Property(selector = "setString:")
+    public native void setString(String v);
     /*</properties>*/
     /*<members>*//*</members>*/
     /**
@@ -101,21 +116,6 @@ import org.robovm.apple.security.*;
      */
     @Method(selector = "initWithTagSchemes:options:")
     protected native @Pointer long init(@org.robovm.rt.bro.annotation.Marshaler(NSArray.AsListMarshaler.class) List<NSLinguisticTagScheme> tagSchemes, NSLinguisticTaggerOptions opts);
-    /**
-     * @since Available in iOS 5.0 and later.
-     */
-    @Method(selector = "tagSchemes")
-    public native @org.robovm.rt.bro.annotation.Marshaler(NSArray.AsListMarshaler.class) List<NSLinguisticTagScheme> getTagSchemes();
-    /**
-     * @since Available in iOS 5.0 and later.
-     */
-    @Method(selector = "setString:")
-    public native void setString(String string);
-    /**
-     * @since Available in iOS 5.0 and later.
-     */
-    @Method(selector = "string")
-    public native String getString();
     /**
      * @since Available in iOS 5.0 and later.
      */

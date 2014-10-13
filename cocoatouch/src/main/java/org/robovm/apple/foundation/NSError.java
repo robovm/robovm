@@ -32,6 +32,7 @@ import org.robovm.apple.coreanimation.*;
 import org.robovm.apple.coregraphics.*;
 import org.robovm.apple.coremedia.*;
 import org.robovm.apple.security.*;
+import org.robovm.apple.dispatch.*;
 /*</imports>*/
 
 /*<javadoc>*/
@@ -50,29 +51,28 @@ import org.robovm.apple.security.*;
     public NSError(String domain, @MachineSizedSInt long code, NSDictionary<NSString, ?> dict) { super((SkipInit) null); initObject(initWithDomain$code$userInfo$(domain, code, dict)); }
     /*</constructors>*/
     /*<properties>*/
-    
+    @Property(selector = "domain")
+    public native String getDomain();
+    @Property(selector = "code")
+    public native @MachineSizedSInt long getCode();
+    @Property(selector = "userInfo")
+    public native NSDictionary<?, ?> getUserInfo();
+    @Property(selector = "localizedDescription")
+    public native String getLocalizedDescription();
+    @Property(selector = "localizedFailureReason")
+    public native String getLocalizedFailureReason();
+    @Property(selector = "localizedRecoverySuggestion")
+    public native String getLocalizedRecoverySuggestion();
+    @Property(selector = "localizedRecoveryOptions")
+    public native NSArray<?> getLocalizedRecoveryOptions();
+    @Property(selector = "recoveryAttempter")
+    public native NSObject getRecoveryAttempter();
+    @Property(selector = "helpAnchor")
+    public native String getHelpAnchor();
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
     @Method(selector = "initWithDomain:code:userInfo:")
     protected native @Pointer long initWithDomain$code$userInfo$(String domain, @MachineSizedSInt long code, NSDictionary<NSString, ?> dict);
-    @Method(selector = "domain")
-    public native NSString getDomain();
-    @Method(selector = "code")
-    public native @MachineSizedSInt long getCode();
-    @Method(selector = "userInfo")
-    public native NSDictionary<?, ?> getUserInfo();
-    @Method(selector = "localizedDescription")
-    public native String getLocalizedDescription();
-    @Method(selector = "localizedFailureReason")
-    public native String getLocalizedFailureReason();
-    @Method(selector = "localizedRecoverySuggestion")
-    public native String getLocalizedRecoverySuggestion();
-    @Method(selector = "localizedRecoveryOptions")
-    public native @org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String> getLocalizedRecoveryOptions();
-    @Method(selector = "recoveryAttempter")
-    public native NSObject getRecoveryAttempter();
-    @Method(selector = "helpAnchor")
-    public native String getHelpAnchor();
     /*</methods>*/
 }

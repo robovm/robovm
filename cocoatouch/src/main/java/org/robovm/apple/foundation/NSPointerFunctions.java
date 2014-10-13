@@ -32,6 +32,7 @@ import org.robovm.apple.coreanimation.*;
 import org.robovm.apple.coregraphics.*;
 import org.robovm.apple.coremedia.*;
 import org.robovm.apple.security.*;
+import org.robovm.apple.dispatch.*;
 /*</imports>*/
 
 /*<javadoc>*/
@@ -91,6 +92,6 @@ import org.robovm.apple.security.*;
     @Method(selector = "initWithOptions:")
     protected native @Pointer long initWithOptions$(NSPointerFunctionsOptions options);
     @Method(selector = "pointerFunctionsWithOptions:")
-    public static native NSObject pointerFunctionsWithOptions$(NSPointerFunctionsOptions options);
+    public static native NSPointerFunctions pointerFunctionsWithOptions$(NSPointerFunctionsOptions options);
     /*</methods>*/
 }

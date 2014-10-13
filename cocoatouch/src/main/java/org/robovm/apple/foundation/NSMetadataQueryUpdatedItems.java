@@ -32,6 +32,7 @@ import org.robovm.apple.coreanimation.*;
 import org.robovm.apple.coregraphics.*;
 import org.robovm.apple.coremedia.*;
 import org.robovm.apple.security.*;
+import org.robovm.apple.dispatch.*;
 /*</imports>*/
 
 /*<javadoc>*/
@@ -88,17 +89,17 @@ import org.robovm.apple.security.*;
     }
     /*<methods>*/
     /**
-     * @since Available in iOS 7.0 and later.
+     * @since Available in iOS 8.0 and later.
      */
     @GlobalValue(symbol="NSMetadataQueryUpdateAddedItemsKey", optional=true)
     protected static native NSString UpdateAddedItemsKey();
     /**
-     * @since Available in iOS 7.0 and later.
+     * @since Available in iOS 8.0 and later.
      */
     @GlobalValue(symbol="NSMetadataQueryUpdateChangedItemsKey", optional=true)
     protected static native NSString UpdateChangedItemsKey();
     /**
-     * @since Available in iOS 7.0 and later.
+     * @since Available in iOS 8.0 and later.
      */
     @GlobalValue(symbol="NSMetadataQueryUpdateRemovedItemsKey", optional=true)
     protected static native NSString UpdateRemovedItemsKey();

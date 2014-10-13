@@ -32,6 +32,7 @@ import org.robovm.apple.coreanimation.*;
 import org.robovm.apple.coregraphics.*;
 import org.robovm.apple.coremedia.*;
 import org.robovm.apple.security.*;
+import org.robovm.apple.dispatch.*;
 /*</imports>*/
 
 /*<javadoc>*/
@@ -94,13 +95,12 @@ import org.robovm.apple.security.*;
     protected NSEnumerator(SkipInit skipInit) { super(skipInit); }
     /*</constructors>*/
     /*<properties>*/
-    
+    @Property(selector = "allObjects")
+    public native NSArray<?> getAllObjects();
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
     @Method(selector = "nextObject")
     public native T nextObject();
-    @Method(selector = "allObjects")
-    public native NSArray<T> allObjects();
     /*</methods>*/
 }

@@ -32,6 +32,7 @@ import org.robovm.apple.coreanimation.*;
 import org.robovm.apple.coregraphics.*;
 import org.robovm.apple.coremedia.*;
 import org.robovm.apple.security.*;
+import org.robovm.apple.dispatch.*;
 /*</imports>*/
 
 /*<javadoc>*/
@@ -49,9 +50,23 @@ import org.robovm.apple.security.*;
     public NSURLProtocol() {}
     protected NSURLProtocol(SkipInit skipInit) { super(skipInit); }
     public NSURLProtocol(NSURLRequest request, NSCachedURLResponse cachedResponse, NSURLProtocolClient client) { super((SkipInit) null); initObject(initWithRequest$cachedResponse$client$(request, cachedResponse, client)); }
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    public NSURLProtocol(NSURLSessionTask task, NSCachedURLResponse cachedResponse, NSURLProtocolClient client) { super((SkipInit) null); initObject(initWithTask$cachedResponse$client$(task, cachedResponse, client)); }
     /*</constructors>*/
     /*<properties>*/
-    
+    @Property(selector = "client")
+    public native NSURLProtocolClient getClient();
+    @Property(selector = "request")
+    public native NSURLRequest getRequest();
+    @Property(selector = "cachedResponse")
+    public native NSCachedURLResponse getCachedResponse();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @Property(selector = "task")
+    public native NSURLSessionTask getTask();
     /*</properties>*/
     /*<members>*//*</members>*/
     public static void setPropertyInRequest(String key, NSObject value, NSMutableURLRequest request) {
@@ -60,12 +75,6 @@ import org.robovm.apple.security.*;
     /*<methods>*/
     @Method(selector = "initWithRequest:cachedResponse:client:")
     protected native @Pointer long initWithRequest$cachedResponse$client$(NSURLRequest request, NSCachedURLResponse cachedResponse, NSURLProtocolClient client);
-    @Method(selector = "client")
-    public native NSURLProtocolClient getClient();
-    @Method(selector = "request")
-    public native NSURLRequest getRequest();
-    @Method(selector = "cachedResponse")
-    public native NSCachedURLResponse getCachedResponse();
     @Method(selector = "startLoading")
     public native void startLoading();
     @Method(selector = "stopLoading")
@@ -86,5 +95,15 @@ import org.robovm.apple.security.*;
     public static native boolean registerClass(ObjCClass protocolClass);
     @Method(selector = "unregisterClass:")
     public static native void unregisterClass(ObjCClass protocolClass);
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @Method(selector = "initWithTask:cachedResponse:client:")
+    protected native @Pointer long initWithTask$cachedResponse$client$(NSURLSessionTask task, NSCachedURLResponse cachedResponse, NSURLProtocolClient client);
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @Method(selector = "canInitWithTask:")
+    public static native boolean canInitWithTask$(NSURLSessionTask task);
     /*</methods>*/
 }

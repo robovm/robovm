@@ -32,6 +32,7 @@ import org.robovm.apple.coreanimation.*;
 import org.robovm.apple.coregraphics.*;
 import org.robovm.apple.coremedia.*;
 import org.robovm.apple.security.*;
+import org.robovm.apple.dispatch.*;
 /*</imports>*/
 
 /*<javadoc>*/
@@ -66,7 +67,28 @@ import org.robovm.apple.security.*;
     public NSTimeZone(String tzName, NSData aData) { super((SkipInit) null); initObject(initWithName$data$(tzName, aData)); }
     /*</constructors>*/
     /*<properties>*/
-    
+    @Property(selector = "name")
+    public native String getName();
+    @Property(selector = "data")
+    public native NSData getData();
+    @Property(selector = "secondsFromGMT")
+    public native @MachineSizedSInt long getSecondsFromGMT();
+    @Property(selector = "abbreviation")
+    public native String getAbbreviation();
+    @Property(selector = "isDaylightSavingTime")
+    public native boolean isDaylightSavingTime();
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
+    @Property(selector = "daylightSavingTimeOffset")
+    public native double getDaylightSavingTimeOffset();
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
+    @Property(selector = "nextDaylightSavingTimeTransition")
+    public native NSDate getNextDaylightSavingTimeTransition();
+    @Property(selector = "description")
+    public native String getDescription();
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
@@ -76,10 +98,6 @@ import org.robovm.apple.security.*;
     @GlobalValue(symbol="NSSystemTimeZoneDidChangeNotification", optional=true)
     public static native NSString DidChangeNotification();
     
-    @Method(selector = "name")
-    public native String getName();
-    @Method(selector = "data")
-    public native NSData getData();
     @Method(selector = "secondsFromGMTForDate:")
     public native @MachineSizedSInt long getSecondsFromGMTForDate(NSDate aDate);
     @Method(selector = "abbreviationForDate:")
@@ -96,24 +114,6 @@ import org.robovm.apple.security.*;
      */
     @Method(selector = "nextDaylightSavingTimeTransitionAfterDate:")
     public native NSDate getNextDaylightSavingTimeTransitionAfterDate(NSDate aDate);
-    @Method(selector = "secondsFromGMT")
-    public native @MachineSizedSInt long getSecondsFromGMT();
-    @Method(selector = "abbreviation")
-    public native String getAbbreviation();
-    @Method(selector = "isDaylightSavingTime")
-    public native boolean isDaylightSavingTime();
-    /**
-     * @since Available in iOS 2.0 and later.
-     */
-    @Method(selector = "daylightSavingTimeOffset")
-    public native double getDaylightSavingTimeOffset();
-    /**
-     * @since Available in iOS 2.0 and later.
-     */
-    @Method(selector = "nextDaylightSavingTimeTransition")
-    public native NSDate getNextDaylightSavingTimeTransition();
-    @Method(selector = "description")
-    public native String getDescription();
     @Method(selector = "isEqualToTimeZone:")
     public native boolean isEqualTo(NSTimeZone aTimeZone);
     /**

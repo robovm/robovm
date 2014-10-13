@@ -32,6 +32,7 @@ import org.robovm.apple.coreanimation.*;
 import org.robovm.apple.coregraphics.*;
 import org.robovm.apple.coremedia.*;
 import org.robovm.apple.security.*;
+import org.robovm.apple.dispatch.*;
 /*</imports>*/
 
 /*<javadoc>*/
@@ -93,6 +94,8 @@ import org.robovm.apple.security.*;
     public native boolean isIndeterminate();
     @Property(selector = "fractionCompleted")
     public native double getFractionCompleted();
+    @Property(selector = "userInfo")
+    public native NSDictionary<?, ?> getUserInfo();
     @Property(selector = "kind")
     public native NSProgressKind getKind();
     @Property(selector = "setKind:")
@@ -115,8 +118,6 @@ import org.robovm.apple.security.*;
     public native void cancel();
     @Method(selector = "pause")
     public native void pause();
-    @Method(selector = "userInfo")
-    public native NSProgressUserInfo getUserInfo();
     @Method(selector = "currentProgress")
     public static native NSProgress getCurrentProgress();
     @Method(selector = "progressWithTotalUnitCount:")

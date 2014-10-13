@@ -32,6 +32,7 @@ import org.robovm.apple.coregraphics.*;
 import org.robovm.apple.coredata.*;
 import org.robovm.apple.coreimage.*;
 import org.robovm.apple.coretext.*;
+import org.robovm.apple.corelocation.*;
 /*</imports>*/
 
 /*<javadoc>*/
@@ -41,8 +42,20 @@ import org.robovm.apple.coretext.*;
 public enum /*<name>*/UIBarMetrics/*</name>*/ implements ValuedEnum {
     /*<values>*/
     Default(0L),
-    LandscapePhone(1L),
+    Compact(1L),
     DefaultPrompt(101L),
+    CompactPrompt(102L),
+    /**
+     * @since Available in iOS 5.0 and later.
+     * @deprecated Deprecated in iOS 8.0.
+     */
+    @Deprecated
+    LandscapePhone(1L),
+    /**
+     * @since Available in iOS 7.0 and later.
+     * @deprecated Deprecated in iOS 8.0.
+     */
+    @Deprecated
     LandscapePhonePrompt(102L);
     /*</values>*/
 

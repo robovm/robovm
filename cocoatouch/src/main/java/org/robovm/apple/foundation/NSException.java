@@ -50,7 +50,22 @@ import org.robovm.apple.security.*;
     public NSException(String aName, String aReason, NSDictionary<?, ?> aUserInfo) { super((SkipInit) null); initObject(initWithName$reason$userInfo$(aName, aReason, aUserInfo)); }
     /*</constructors>*/
     /*<properties>*/
-    
+    @Property(selector = "name")
+    public native String getName();
+    @Property(selector = "reason")
+    public native String getReason();
+    @Property(selector = "userInfo")
+    public native NSDictionary<?, ?> getUserInfo();
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
+    @Property(selector = "callStackReturnAddresses")
+    public native NSArray<NSNumber> getCallStackReturnAddresses();
+    /**
+     * @since Available in iOS 4.0 and later.
+     */
+    @Property(selector = "callStackSymbols")
+    public native NSArray<NSString> getCallStackSymbols();
     /*</properties>*/
     /*<members>*//*</members>*/
     
@@ -109,22 +124,6 @@ import org.robovm.apple.security.*;
     
     @Method(selector = "initWithName:reason:userInfo:")
     protected native @Pointer long initWithName$reason$userInfo$(String aName, String aReason, NSDictionary<?, ?> aUserInfo);
-    @Method(selector = "name")
-    public native String getName();
-    @Method(selector = "reason")
-    public native String getReason();
-    @Method(selector = "userInfo")
-    public native NSDictionary<?, ?> getUserInfo();
-    /**
-     * @since Available in iOS 2.0 and later.
-     */
-    @Method(selector = "callStackReturnAddresses")
-    public native NSArray<NSNumber> getCallStackReturnAddresses();
-    /**
-     * @since Available in iOS 4.0 and later.
-     */
-    @Method(selector = "callStackSymbols")
-    public native NSArray<NSString> getCallStackSymbols();
     @Method(selector = "raise")
     public native void raise();
     @Method(selector = "encodeWithCoder:")

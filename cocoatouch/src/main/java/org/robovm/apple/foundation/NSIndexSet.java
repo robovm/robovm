@@ -32,6 +32,7 @@ import org.robovm.apple.coreanimation.*;
 import org.robovm.apple.coregraphics.*;
 import org.robovm.apple.coremedia.*;
 import org.robovm.apple.security.*;
+import org.robovm.apple.dispatch.*;
 /*</imports>*/
 
 /*<javadoc>*/
@@ -40,7 +41,7 @@ import org.robovm.apple.security.*;
 /*<annotations>*/@Library("Foundation") @NativeClass/*</annotations>*/
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/NSIndexSet/*</name>*/ 
     extends /*<extends>*/NSObject/*</extends>*/ 
-    /*<implements>*/implements NSCoding/*</implements>*/ {
+    /*<implements>*//*</implements>*/ {
 
     /*<ptr>*/public static class NSIndexSetPtr extends Ptr<NSIndexSet, NSIndexSetPtr> {}/*</ptr>*/
     /*<bind>*/static { ObjCRuntime.bind(NSIndexSet.class); }/*</bind>*/
@@ -53,7 +54,12 @@ import org.robovm.apple.security.*;
     public NSIndexSet(@MachineSizedUInt long value) { super((SkipInit) null); initObject(initWithIndex$(value)); }
     /*</constructors>*/
     /*<properties>*/
-    
+    @Property(selector = "count")
+    public native @MachineSizedUInt long getCount();
+    @Property(selector = "firstIndex")
+    public native @MachineSizedUInt long getFirstIndex();
+    @Property(selector = "lastIndex")
+    public native @MachineSizedUInt long getLastIndex();
     /*</properties>*/
     /*<members>*//*</members>*/
     public long[] getIndexesInRange(NSRange range, @MachineSizedUInt long maxIndexes) {
@@ -70,12 +76,6 @@ import org.robovm.apple.security.*;
     protected native @Pointer long initWithIndex$(@MachineSizedUInt long value);
     @Method(selector = "isEqualToIndexSet:")
     public native boolean equals(NSIndexSet indexSet);
-    @Method(selector = "count")
-    public native @MachineSizedUInt long getCount();
-    @Method(selector = "firstIndex")
-    public native @MachineSizedUInt long getFirstIndex();
-    @Method(selector = "lastIndex")
-    public native @MachineSizedUInt long getLastIndex();
     @Method(selector = "indexGreaterThanIndex:")
     public native @MachineSizedUInt long greaterThan(@MachineSizedUInt long value);
     @Method(selector = "indexLessThanIndex:")
@@ -165,7 +165,5 @@ import org.robovm.apple.security.*;
     public static native NSIndexSet create(@MachineSizedUInt long value);
     @Method(selector = "indexSetWithIndexesInRange:")
     public static native NSIndexSet create(@ByVal NSRange range);
-    @Method(selector = "encodeWithCoder:")
-    public native void encode(NSCoder aCoder);
     /*</methods>*/
 }

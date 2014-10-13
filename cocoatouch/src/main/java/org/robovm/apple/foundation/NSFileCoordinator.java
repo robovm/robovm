@@ -32,6 +32,7 @@ import org.robovm.apple.coreanimation.*;
 import org.robovm.apple.coregraphics.*;
 import org.robovm.apple.coremedia.*;
 import org.robovm.apple.security.*;
+import org.robovm.apple.dispatch.*;
 /*</imports>*/
 
 /*<javadoc>*/
@@ -53,12 +54,26 @@ import org.robovm.apple.security.*;
     public NSFileCoordinator(NSFilePresenter filePresenterOrNil) { super((SkipInit) null); initObject(initWithFilePresenter$(filePresenterOrNil)); }
     /*</constructors>*/
     /*<properties>*/
-    
+    /**
+     * @since Available in iOS 5.0 and later.
+     */
+    @Property(selector = "purposeIdentifier")
+    public native String getPurposeIdentifier();
+    /**
+     * @since Available in iOS 5.0 and later.
+     */
+    @Property(selector = "setPurposeIdentifier:")
+    public native void setPurposeIdentifier(String v);
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
     @Method(selector = "initWithFilePresenter:")
     protected native @Pointer long initWithFilePresenter$(NSFilePresenter filePresenterOrNil);
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @Method(selector = "coordinateAccessWithIntents:queue:byAccessor:")
+    public native void coordinateAccessWithIntents$queue$byAccessor$(NSArray<?> intents, NSOperationQueue queue, @Block VoidBlock1<NSError> accessor);
     @Method(selector = "coordinateReadingItemAtURL:options:error:byAccessor:")
     public native void coordinateReadingItem(NSURL url, NSFileCoordinatorReadingOptions options, NSError.NSErrorPtr outError, @Block VoidBlock1<NSURL> reader);
     @Method(selector = "coordinateWritingItemAtURL:options:error:byAccessor:")

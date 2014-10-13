@@ -32,6 +32,7 @@ import org.robovm.apple.coreanimation.*;
 import org.robovm.apple.coregraphics.*;
 import org.robovm.apple.coremedia.*;
 import org.robovm.apple.security.*;
+import org.robovm.apple.dispatch.*;
 /*</imports>*/
 
 /*<javadoc>*/
@@ -51,7 +52,10 @@ import org.robovm.apple.security.*;
     public NSKeyedUnarchiver(NSData data) { super((SkipInit) null); initObject(initForReadingWithData$(data)); }
     /*</constructors>*/
     /*<properties>*/
-    
+    @Property(selector = "delegate")
+    public native NSKeyedUnarchiverDelegate getDelegate();
+    @Property(selector = "setDelegate:", strongRef = true)
+    public native void setDelegate(NSKeyedUnarchiverDelegate v);
     /*</properties>*/
     /*<members>*//*</members>*/
     
@@ -65,10 +69,6 @@ import org.robovm.apple.security.*;
     /*<methods>*/
     @Method(selector = "initForReadingWithData:")
     protected native @Pointer long initForReadingWithData$(NSData data);
-    @Method(selector = "setDelegate:")
-    public native void setDelegate(NSKeyedUnarchiverDelegate delegate);
-    @Method(selector = "delegate")
-    public native NSKeyedUnarchiverDelegate getDelegate();
     @Method(selector = "finishDecoding")
     public native void finishDecoding();
     @Method(selector = "setClass:forClassName:")

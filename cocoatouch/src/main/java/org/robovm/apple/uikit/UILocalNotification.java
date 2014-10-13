@@ -32,6 +32,7 @@ import org.robovm.apple.coregraphics.*;
 import org.robovm.apple.coredata.*;
 import org.robovm.apple.coreimage.*;
 import org.robovm.apple.coretext.*;
+import org.robovm.apple.corelocation.*;
 /*</imports>*/
 
 /*<javadoc>*/
@@ -68,6 +69,26 @@ import org.robovm.apple.coretext.*;
     public native NSCalendar getRepeatCalendar();
     @Property(selector = "setRepeatCalendar:")
     public native void setRepeatCalendar(NSCalendar v);
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @Property(selector = "region")
+    public native CLRegion getRegion();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @Property(selector = "setRegion:")
+    public native void setRegion(CLRegion v);
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @Property(selector = "regionTriggersOnce")
+    public native boolean isRegionTriggersOnce();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @Property(selector = "setRegionTriggersOnce:")
+    public native void setRegionTriggersOnce(boolean v);
     @Property(selector = "alertBody")
     public native String getAlertBody();
     @Property(selector = "setAlertBody:")
@@ -96,6 +117,16 @@ import org.robovm.apple.coretext.*;
     public native NSDictionary<?, ?> getUserInfo();
     @Property(selector = "setUserInfo:")
     public native void setUserInfo(NSDictionary<?, ?> v);
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @Property(selector = "category")
+    public native String getCategory();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @Property(selector = "setCategory:")
+    public native void setCategory(String v);
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/

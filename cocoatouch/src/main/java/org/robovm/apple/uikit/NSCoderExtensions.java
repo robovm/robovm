@@ -32,6 +32,7 @@ import org.robovm.apple.coregraphics.*;
 import org.robovm.apple.coredata.*;
 import org.robovm.apple.coreimage.*;
 import org.robovm.apple.coretext.*;
+import org.robovm.apple.corelocation.*;
 /*</imports>*/
 
 /*<javadoc>*/
@@ -55,6 +56,8 @@ import org.robovm.apple.coretext.*;
     /*<methods>*/
     @Method(selector = "encodeCGPoint:forKey:")
     public static native void encodeCGPoint(NSCoder thiz, @ByVal CGPoint point, String key);
+    @Method(selector = "encodeCGVector:forKey:")
+    public static native void encodeCGVector(NSCoder thiz, @ByVal CGVector vector, String key);
     @Method(selector = "encodeCGSize:forKey:")
     public static native void encodeCGSize(NSCoder thiz, @ByVal CGSize size, String key);
     @Method(selector = "encodeCGRect:forKey:")
@@ -70,6 +73,8 @@ import org.robovm.apple.coretext.*;
     public static native void encodeUIOffset(NSCoder thiz, @ByVal UIOffset offset, String key);
     @Method(selector = "decodeCGPointForKey:")
     public static native @ByVal CGPoint decodeCGPoint(NSCoder thiz, String key);
+    @Method(selector = "decodeCGVectorForKey:")
+    public static native @ByVal CGVector decodeCGVector(NSCoder thiz, String key);
     @Method(selector = "decodeCGSizeForKey:")
     public static native @ByVal CGSize decodeCGSize(NSCoder thiz, String key);
     @Method(selector = "decodeCGRectForKey:")

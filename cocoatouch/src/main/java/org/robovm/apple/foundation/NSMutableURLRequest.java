@@ -32,6 +32,7 @@ import org.robovm.apple.coreanimation.*;
 import org.robovm.apple.coregraphics.*;
 import org.robovm.apple.coremedia.*;
 import org.robovm.apple.security.*;
+import org.robovm.apple.dispatch.*;
 /*</imports>*/
 
 /*<javadoc>*/
@@ -50,7 +51,72 @@ import org.robovm.apple.security.*;
     protected NSMutableURLRequest(SkipInit skipInit) { super(skipInit); }
     /*</constructors>*/
     /*<properties>*/
-    
+    @Property(selector = "URL")
+    public native NSURL getURL();
+    @Property(selector = "setURL:")
+    public native void setURL(NSURL v);
+    @Property(selector = "cachePolicy")
+    public native NSURLRequestCachePolicy getCachePolicy();
+    @Property(selector = "setCachePolicy:")
+    public native void setCachePolicy(NSURLRequestCachePolicy v);
+    @Property(selector = "timeoutInterval")
+    public native double getTimeoutInterval();
+    @Property(selector = "setTimeoutInterval:")
+    public native void setTimeoutInterval(double v);
+    @Property(selector = "mainDocumentURL")
+    public native NSURL getMainDocumentURL();
+    @Property(selector = "setMainDocumentURL:")
+    public native void setMainDocumentURL(NSURL v);
+    /**
+     * @since Available in iOS 4.0 and later.
+     */
+    @Property(selector = "networkServiceType")
+    public native NSURLRequestNetworkServiceType getNetworkServiceType();
+    /**
+     * @since Available in iOS 4.0 and later.
+     */
+    @Property(selector = "setNetworkServiceType:")
+    public native void setNetworkServiceType(NSURLRequestNetworkServiceType v);
+    /**
+     * @since Available in iOS 6.0 and later.
+     */
+    @Property(selector = "allowsCellularAccess")
+    public native boolean isAllowsCellularAccess();
+    /**
+     * @since Available in iOS 6.0 and later.
+     */
+    @Property(selector = "setAllowsCellularAccess:")
+    public native void setAllowsCellularAccess(boolean v);
+    @Property(selector = "HTTPMethod")
+    public native String getHTTPMethod();
+    @Property(selector = "setHTTPMethod:")
+    public native void setHTTPMethod(String v);
+    @Property(selector = "allHTTPHeaderFields")
+    public native NSDictionary<?, ?> getAllHTTPHeaderFields();
+    @Property(selector = "setAllHTTPHeaderFields:")
+    public native void setAllHTTPHeaderFields(NSDictionary<?, ?> v);
+    @Property(selector = "HTTPBody")
+    public native NSData getHTTPBody();
+    @Property(selector = "setHTTPBody:")
+    public native void setHTTPBody(NSData v);
+    @Property(selector = "HTTPBodyStream")
+    public native NSInputStream getHTTPBodyStream();
+    @Property(selector = "setHTTPBodyStream:")
+    public native void setHTTPBodyStream(NSInputStream v);
+    @Property(selector = "HTTPShouldHandleCookies")
+    public native boolean isHTTPShouldHandleCookies();
+    @Property(selector = "setHTTPShouldHandleCookies:")
+    public native void setHTTPShouldHandleCookies(boolean v);
+    /**
+     * @since Available in iOS 4.0 and later.
+     */
+    @Property(selector = "HTTPShouldUsePipelining")
+    public native boolean isHTTPShouldUsePipelining();
+    /**
+     * @since Available in iOS 4.0 and later.
+     */
+    @Property(selector = "setHTTPShouldUsePipelining:")
+    public native void setHTTPShouldUsePipelining(boolean v);
     /*</properties>*/
     /*<members>*//*</members>*/
     public void setHTTPHeaderField(String field, String value) {
@@ -60,42 +126,9 @@ import org.robovm.apple.security.*;
         addHTTPHeaderField0(value, field);
     }
     /*<methods>*/
-    @Method(selector = "setURL:")
-    public native void setURL(NSURL URL);
-    @Method(selector = "setCachePolicy:")
-    public native void setCachePolicy(NSURLRequestCachePolicy policy);
-    @Method(selector = "setTimeoutInterval:")
-    public native void setTimeoutInterval(double seconds);
-    @Method(selector = "setMainDocumentURL:")
-    public native void setMainDocumentURL(NSURL URL);
-    /**
-     * @since Available in iOS 4.0 and later.
-     */
-    @Method(selector = "setNetworkServiceType:")
-    public native void setNetworkServiceType(NSURLRequestNetworkServiceType networkServiceType);
-    /**
-     * @since Available in iOS 6.0 and later.
-     */
-    @Method(selector = "setAllowsCellularAccess:")
-    public native void setAllowsCellularAccess(boolean allow);
-    @Method(selector = "setHTTPMethod:")
-    public native void setHTTPMethod(String method);
-    @Method(selector = "setAllHTTPHeaderFields:")
-    public native void setAllHTTPHeaderFields(@org.robovm.rt.bro.annotation.Marshaler(NSDictionary.AsStringStringMapMarshaler.class) Map<String, String> headerFields);
     @Method(selector = "setValue:forHTTPHeaderField:")
     protected native void setHTTPHeaderField0(String value, String field);
     @Method(selector = "addValue:forHTTPHeaderField:")
     protected native void addHTTPHeaderField0(String value, String field);
-    @Method(selector = "setHTTPBody:")
-    public native void setHTTPBody(NSData data);
-    @Method(selector = "setHTTPBodyStream:")
-    public native void setHTTPBodyStream(NSInputStream inputStream);
-    @Method(selector = "setHTTPShouldHandleCookies:")
-    public native void setHTTPShouldHandleCookies(boolean should);
-    /**
-     * @since Available in iOS 4.0 and later.
-     */
-    @Method(selector = "setHTTPShouldUsePipelining:")
-    public native void setHTTPShouldUsePipelining(boolean shouldUsePipelining);
     /*</methods>*/
 }

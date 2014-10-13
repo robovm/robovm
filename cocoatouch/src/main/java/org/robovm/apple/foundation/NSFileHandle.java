@@ -32,6 +32,7 @@ import org.robovm.apple.coreanimation.*;
 import org.robovm.apple.coregraphics.*;
 import org.robovm.apple.coremedia.*;
 import org.robovm.apple.security.*;
+import org.robovm.apple.dispatch.*;
 /*</imports>*/
 
 /*<javadoc>*/
@@ -99,9 +100,14 @@ import org.robovm.apple.security.*;
     public NSFileHandle() {}
     protected NSFileHandle(SkipInit skipInit) { super(skipInit); }
     public NSFileHandle(int fd, boolean closeopt) { super((SkipInit) null); initObject(initWithFileDescriptor$closeOnDealloc$(fd, closeopt)); }
+    public NSFileHandle(NSCoder coder) { super((SkipInit) null); initObject(initWithCoder$(coder)); }
     public NSFileHandle(int fd) { super((SkipInit) null); initObject(initWithFileDescriptor$(fd)); }
     /*</constructors>*/
     /*<properties>*/
+    @Property(selector = "availableData")
+    public native NSData getAvailableData();
+    @Property(selector = "offsetInFile")
+    public native long getOffsetInFile();
     /**
      * @since Available in iOS 5.0 and later.
      */
@@ -122,6 +128,8 @@ import org.robovm.apple.security.*;
      */
     @Property(selector = "setWriteabilityHandler:")
     public native void setWriteabilityHandler(@Block VoidBlock1<NSFileHandle> v);
+    @Property(selector = "fileDescriptor")
+    public native int getFileDescriptor();
     /*</properties>*/
     /*<members>*//*</members>*/
     
@@ -167,16 +175,12 @@ import org.robovm.apple.security.*;
     @GlobalValue(symbol="NSFileHandleNotificationFileHandleItem", optional=true)
     protected static native NSString NotificationFileHandleItem();
     
-    @Method(selector = "availableData")
-    public native NSData getAvailableData();
     @Method(selector = "readDataToEndOfFile")
     public native NSData readDataToEndOfFile();
     @Method(selector = "readDataOfLength:")
     public native NSData readData(@MachineSizedUInt long length);
     @Method(selector = "writeData:")
     public native void writeData(NSData data);
-    @Method(selector = "offsetInFile")
-    public native long getOffsetInFile();
     @Method(selector = "seekToEndOfFile")
     public native long seekToEndOfFile();
     @Method(selector = "seekToFileOffset:")
@@ -187,6 +191,10 @@ import org.robovm.apple.security.*;
     public native void synchronizeFile();
     @Method(selector = "closeFile")
     public native void closeFile();
+    @Method(selector = "initWithFileDescriptor:closeOnDealloc:")
+    protected native @Pointer long initWithFileDescriptor$closeOnDealloc$(int fd, boolean closeopt);
+    @Method(selector = "initWithCoder:")
+    protected native @Pointer long initWithCoder$(NSCoder coder);
     @Method(selector = "fileHandleWithStandardInput")
     public static native NSFileHandle getStandardInput();
     @Method(selector = "fileHandleWithStandardOutput")
@@ -232,11 +240,7 @@ import org.robovm.apple.security.*;
     public native void waitForDataInBackgroundAndNotify(@org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String> modes);
     @Method(selector = "waitForDataInBackgroundAndNotify")
     public native void waitForDataInBackgroundAndNotify();
-    @Method(selector = "initWithFileDescriptor:closeOnDealloc:")
-    protected native @Pointer long initWithFileDescriptor$closeOnDealloc$(int fd, boolean closeopt);
     @Method(selector = "initWithFileDescriptor:")
     protected native @Pointer long initWithFileDescriptor$(int fd);
-    @Method(selector = "fileDescriptor")
-    public native int getFileDescriptor();
     /*</methods>*/
 }

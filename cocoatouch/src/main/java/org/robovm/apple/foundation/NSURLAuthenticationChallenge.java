@@ -32,6 +32,7 @@ import org.robovm.apple.coreanimation.*;
 import org.robovm.apple.coregraphics.*;
 import org.robovm.apple.coremedia.*;
 import org.robovm.apple.security.*;
+import org.robovm.apple.dispatch.*;
 /*</imports>*/
 
 /*<javadoc>*/
@@ -52,7 +53,18 @@ import org.robovm.apple.security.*;
     public NSURLAuthenticationChallenge(NSURLAuthenticationChallenge challenge, NSURLAuthenticationChallengeSender sender) { super((SkipInit) null); initObject(init(challenge, sender)); }
     /*</constructors>*/
     /*<properties>*/
-    
+    @Property(selector = "protectionSpace")
+    public native NSURLProtectionSpace getProtectionSpace();
+    @Property(selector = "proposedCredential")
+    public native NSURLCredential getProposedCredential();
+    @Property(selector = "previousFailureCount")
+    public native @MachineSizedSInt long getPreviousFailureCount();
+    @Property(selector = "failureResponse")
+    public native NSURLResponse getFailureResponse();
+    @Property(selector = "error")
+    public native NSError getError();
+    @Property(selector = "sender")
+    public native NSURLAuthenticationChallengeSender getSender();
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
@@ -60,17 +72,5 @@ import org.robovm.apple.security.*;
     protected native @Pointer long init(NSURLProtectionSpace space, NSURLCredential credential, @MachineSizedSInt long previousFailureCount, NSURLResponse response, NSError error, NSURLAuthenticationChallengeSender sender);
     @Method(selector = "initWithAuthenticationChallenge:sender:")
     protected native @Pointer long init(NSURLAuthenticationChallenge challenge, NSURLAuthenticationChallengeSender sender);
-    @Method(selector = "protectionSpace")
-    public native NSURLProtectionSpace getProtectionSpace();
-    @Method(selector = "proposedCredential")
-    public native NSURLCredential getProposedCredential();
-    @Method(selector = "previousFailureCount")
-    public native @MachineSizedSInt long getPreviousFailureCount();
-    @Method(selector = "failureResponse")
-    public native NSURLResponse getFailureResponse();
-    @Method(selector = "error")
-    public native NSError getError();
-    @Method(selector = "sender")
-    public native NSURLAuthenticationChallengeSender getSender();
     /*</methods>*/
 }

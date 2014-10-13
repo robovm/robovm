@@ -32,6 +32,7 @@ import org.robovm.apple.coreanimation.*;
 import org.robovm.apple.coregraphics.*;
 import org.robovm.apple.coremedia.*;
 import org.robovm.apple.security.*;
+import org.robovm.apple.dispatch.*;
 /*</imports>*/
 
 /*<javadoc>*/
@@ -54,7 +55,12 @@ import org.robovm.apple.security.*;
     public NSMapTable(NSPointerFunctions keyFunctions, NSPointerFunctions valueFunctions, @MachineSizedUInt long initialCapacity) { super((SkipInit) null); initObject(initWithKeyPointerFunctions$valuePointerFunctions$capacity$(keyFunctions, valueFunctions, initialCapacity)); }
     /*</constructors>*/
     /*<properties>*/
-    
+    @Property(selector = "keyPointerFunctions")
+    public native NSPointerFunctions getKeyPointerFunctions();
+    @Property(selector = "valuePointerFunctions")
+    public native NSPointerFunctions getValuePointerFunctions();
+    @Property(selector = "count")
+    public native @MachineSizedUInt long getCount();
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
@@ -62,18 +68,12 @@ import org.robovm.apple.security.*;
     protected native @Pointer long initWithKeyOptions$valueOptions$capacity$(NSPointerFunctionsOptions keyOptions, NSPointerFunctionsOptions valueOptions, @MachineSizedUInt long initialCapacity);
     @Method(selector = "initWithKeyPointerFunctions:valuePointerFunctions:capacity:")
     protected native @Pointer long initWithKeyPointerFunctions$valuePointerFunctions$capacity$(NSPointerFunctions keyFunctions, NSPointerFunctions valueFunctions, @MachineSizedUInt long initialCapacity);
-    @Method(selector = "keyPointerFunctions")
-    public native NSPointerFunctions keyPointerFunctions();
-    @Method(selector = "valuePointerFunctions")
-    public native NSPointerFunctions valuePointerFunctions();
     @Method(selector = "objectForKey:")
     public native NSObject objectForKey$(NSObject aKey);
     @Method(selector = "removeObjectForKey:")
     public native void removeObjectForKey$(NSObject aKey);
     @Method(selector = "setObject:forKey:")
     public native void setObject$forKey$(NSObject anObject, NSObject aKey);
-    @Method(selector = "count")
-    public native @MachineSizedUInt long count();
     @Method(selector = "keyEnumerator")
     public native NSEnumerator<?> keyEnumerator();
     @Method(selector = "objectEnumerator")
@@ -83,27 +83,27 @@ import org.robovm.apple.security.*;
     @Method(selector = "dictionaryRepresentation")
     public native NSDictionary<?, ?> dictionaryRepresentation();
     @Method(selector = "mapTableWithKeyOptions:valueOptions:")
-    public static native NSObject mapTableWithKeyOptions$valueOptions$(NSPointerFunctionsOptions keyOptions, NSPointerFunctionsOptions valueOptions);
+    public static native NSMapTable mapTableWithKeyOptions$valueOptions$(NSPointerFunctionsOptions keyOptions, NSPointerFunctionsOptions valueOptions);
     /**
      * @since Available in iOS 6.0 and later.
      */
     @Method(selector = "strongToStrongObjectsMapTable")
-    public static native NSObject strongToStrongObjectsMapTable();
+    public static native NSMapTable strongToStrongObjectsMapTable();
     /**
      * @since Available in iOS 6.0 and later.
      */
     @Method(selector = "weakToStrongObjectsMapTable")
-    public static native NSObject weakToStrongObjectsMapTable();
+    public static native NSMapTable weakToStrongObjectsMapTable();
     /**
      * @since Available in iOS 6.0 and later.
      */
     @Method(selector = "strongToWeakObjectsMapTable")
-    public static native NSObject strongToWeakObjectsMapTable();
+    public static native NSMapTable strongToWeakObjectsMapTable();
     /**
      * @since Available in iOS 6.0 and later.
      */
     @Method(selector = "weakToWeakObjectsMapTable")
-    public static native NSObject weakToWeakObjectsMapTable();
+    public static native NSMapTable weakToWeakObjectsMapTable();
     @Method(selector = "encodeWithCoder:")
     public native void encode(NSCoder aCoder);
     /*</methods>*/

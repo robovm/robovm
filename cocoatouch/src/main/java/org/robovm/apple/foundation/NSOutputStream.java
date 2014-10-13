@@ -32,6 +32,7 @@ import org.robovm.apple.coreanimation.*;
 import org.robovm.apple.coregraphics.*;
 import org.robovm.apple.coremedia.*;
 import org.robovm.apple.security.*;
+import org.robovm.apple.dispatch.*;
 /*</imports>*/
 
 /*<javadoc>*/
@@ -49,14 +50,15 @@ import org.robovm.apple.security.*;
     protected NSOutputStream(SkipInit skipInit) { super(skipInit); }
     public NSOutputStream() { super((SkipInit) null); initObject(initToMemory()); }
     public NSOutputStream(BytePtr buffer, @MachineSizedUInt long capacity) { super((SkipInit) null); initObject(initToBuffer$capacity$(buffer, capacity)); }
-    public NSOutputStream(String path, boolean shouldAppend) { super((SkipInit) null); initObject(initToFileAtPath$append$(path, shouldAppend)); }
     /**
      * @since Available in iOS 4.0 and later.
      */
     public NSOutputStream(NSURL url, boolean shouldAppend) { super((SkipInit) null); initObject(initWithURL$append$(url, shouldAppend)); }
+    public NSOutputStream(String path, boolean shouldAppend) { super((SkipInit) null); initObject(initToFileAtPath$append$(path, shouldAppend)); }
     /*</constructors>*/
     /*<properties>*/
-    
+    @Property(selector = "hasSpaceAvailable")
+    public native boolean isHasSpaceAvailable();
     /*</properties>*/
     /*<members>*//*</members>*/
 
@@ -84,18 +86,16 @@ import org.robovm.apple.security.*;
     /*<methods>*/
     @Method(selector = "write:maxLength:")
     protected native @MachineSizedSInt long write$maxLength$(@Pointer long buffer, @MachineSizedUInt long len);
-    @Method(selector = "hasSpaceAvailable")
-    public native boolean hasSpaceAvailable();
     @Method(selector = "initToMemory")
     protected native @Pointer long initToMemory();
     @Method(selector = "initToBuffer:capacity:")
     protected native @Pointer long initToBuffer$capacity$(BytePtr buffer, @MachineSizedUInt long capacity);
-    @Method(selector = "initToFileAtPath:append:")
-    protected native @Pointer long initToFileAtPath$append$(String path, boolean shouldAppend);
     /**
      * @since Available in iOS 4.0 and later.
      */
     @Method(selector = "initWithURL:append:")
     protected native @Pointer long initWithURL$append$(NSURL url, boolean shouldAppend);
+    @Method(selector = "initToFileAtPath:append:")
+    protected native @Pointer long initToFileAtPath$append$(String path, boolean shouldAppend);
     /*</methods>*/
 }

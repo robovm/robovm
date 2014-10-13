@@ -32,6 +32,7 @@ import org.robovm.apple.coreanimation.*;
 import org.robovm.apple.coregraphics.*;
 import org.robovm.apple.coremedia.*;
 import org.robovm.apple.security.*;
+import org.robovm.apple.dispatch.*;
 /*</imports>*/
 
 /*<javadoc>*/
@@ -112,9 +113,9 @@ import org.robovm.apple.security.*;
     protected native void addObject$(NSObject object);
     @Method(selector = "removeObject:")
     protected native void removeObject$(NSObject object);
-    @Method(selector = "removeAllObjects")
-    protected native void removeAllObjects();
     @Method(selector = "initWithCapacity:")
     protected native @Pointer long initWithCapacity$(@MachineSizedUInt long numItems);
+    @Method(selector = "removeAllObjects")
+    protected native void removeAllObjects();
     /*</methods>*/
 }

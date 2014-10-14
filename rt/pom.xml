@@ -175,6 +175,8 @@
                 <echo>${project.build.directory}</echo>
                 <echo>${if.linux}</echo>
                 <echo>${if.mac}</echo>
+                <echo>${project.build.directory}/lib/libiconvprovider.so</echo>
+                <echo>${str.iconv}</echo>
                 
                 <exec executable="${cc}">
                   <arg value="-I${env.JAVA_HOME}/include/" />

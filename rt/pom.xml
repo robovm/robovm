@@ -164,13 +164,11 @@
                 <condition property="libout" value="${project.build.directory}/lib/libiconvprovider.dylib">
                   <os family="mac" />
                 </condition>
-                <echo>${if.linux}</echo>
-                <echo>${if.mac}</echo>
-                <echo>${if.libout}</echo>
                 
                 <exec executable="${cc}">
                   <arg value="-I${env.JAVA_HOME}/include/" />
                   <arg value="-I${env.JAVA_HOME}/include/darwin/" />
+                  <arg value="-I${env.JAVA_HOME}/include/linux/" />
                   <arg value="-liconv" />
                   <arg value="-shared" />
                   <arg value="-o" />

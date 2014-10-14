@@ -168,7 +168,7 @@
                 <condition property="str.iconv" value="">
                   <os family="unix" />
                 </condition>
-                <condition property="str.iconv" value="-liconv">
+                <condition property="str.iconv" value="iconv">
                   <os family="mac" />
                 </condition>
                 

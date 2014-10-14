@@ -165,6 +165,13 @@
                   <os family="mac" />
                 </condition>
                 
+                <condition property="str.iconv" value="">
+                  <os family="unix" />
+                </condition>
+                <condition property="str.iconv" value="-liconv">
+                  <os family="mac" />
+                </condition>
+                
                 <exec executable="${cc}">
                   <arg value="-I${env.JAVA_HOME}/include/" />
                   <arg value="-I${env.JAVA_HOME}/include/darwin/" />
@@ -172,7 +179,7 @@
                   <arg value="-liconv" />
                   <arg value="-shared" />
                   <arg value="-o" />
-                  <arg value="${libout}" />
+                  <arg value="${str.iconv}" />
                   <arg value="${basedir}/../vm/rt/robovm/org_robovm_rt_iconv_IconvProvider.c" />
                 </exec>
 

@@ -176,10 +176,10 @@
                   <arg value="-I${env.JAVA_HOME}/include/" />
                   <arg value="-I${env.JAVA_HOME}/include/darwin/" />
                   <arg value="-I${env.JAVA_HOME}/include/linux/" />
-                  <arg value="-liconv" />
+                  <arg value="-l${iconv}" />
                   <arg value="-shared" />
                   <arg value="-o" />
-                  <arg value="${str.iconv}" />
+                  <arg value="${libout}" />
                   <arg value="${basedir}/../vm/rt/robovm/org_robovm_rt_iconv_IconvProvider.c" />
                 </exec>
 

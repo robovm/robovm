@@ -172,6 +172,10 @@
                   <os family="mac" />
                 </condition>
                 
+                <echo>${project.build.directory}</echo>
+                <echo>${if.linux}</echo>
+                <echo>${if.mac}</echo>
+                
                 <exec executable="${cc}">
                   <arg value="-I${env.JAVA_HOME}/include/" />
                   <arg value="-I${env.JAVA_HOME}/include/darwin/" />

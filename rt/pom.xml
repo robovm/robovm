@@ -180,7 +180,7 @@
                   <arg value="-I${env.JAVA_HOME}/include/" />
                   <arg value="-I${env.JAVA_HOME}/include/darwin/" />
                   <arg value="-I${env.JAVA_HOME}/include/linux/" />
-                  <arg value="-l${iconv}" />
+                  <arg value="-l${str.iconv}" />
                   <arg value="-shared" />
                   <arg value="-o" />
                   <arg value="${libout}" />

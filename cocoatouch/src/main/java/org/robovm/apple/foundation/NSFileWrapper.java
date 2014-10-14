@@ -55,7 +55,7 @@ import org.robovm.apple.dispatch.*;
      * @since Available in iOS 4.0 and later.
      */
     public NSFileWrapper(NSURL url, NSFileWrapperReadingOptions options, NSError.NSErrorPtr outError) { super((SkipInit) null); initObject(initWithURL$options$error$(url, options, outError)); }
-    public NSFileWrapper(NSDictionary<NSString, NSFileWrapper> childrenByPreferredName) { super((SkipInit) null); initObject(initDirectoryWithFileWrappers$(childrenByPreferredName)); }
+    public NSFileWrapper(@org.robovm.rt.bro.annotation.Marshaler(NSDictionary.AsStringMapMarshaler.class) Map<String, NSFileWrapper> childrenByPreferredName) { super((SkipInit) null); initObject(initDirectoryWithFileWrappers$(childrenByPreferredName)); }
     public NSFileWrapper(NSData contents) { super((SkipInit) null); initObject(initRegularFileWithContents$(contents)); }
     /**
      * @since Available in iOS 4.0 and later.
@@ -79,13 +79,13 @@ import org.robovm.apple.dispatch.*;
     @Property(selector = "setFilename:")
     public native void setFilename(String v);
     @Property(selector = "fileAttributes")
-    public native NSDictionary<?, ?> getFileAttributes();
+    public native NSFileAttributes getFileAttributes();
     @Property(selector = "setFileAttributes:")
-    public native void setFileAttributes(NSDictionary<?, ?> v);
+    public native void setFileAttributes(NSFileAttributes v);
     @Property(selector = "serializedRepresentation")
     public native NSData getSerializedRepresentation();
     @Property(selector = "fileWrappers")
-    public native NSDictionary<?, ?> getFileWrappers();
+    public native @org.robovm.rt.bro.annotation.Marshaler(NSDictionary.AsStringMapMarshaler.class) Map<String, NSFileWrapper> getFileWrappers();
     @Property(selector = "regularFileContents")
     public native NSData getRegularFileContents();
     /**
@@ -113,7 +113,7 @@ import org.robovm.apple.dispatch.*;
     @Method(selector = "initWithURL:options:error:")
     protected native @Pointer long initWithURL$options$error$(NSURL url, NSFileWrapperReadingOptions options, NSError.NSErrorPtr outError);
     @Method(selector = "initDirectoryWithFileWrappers:")
-    protected native @Pointer long initDirectoryWithFileWrappers$(NSDictionary<NSString, NSFileWrapper> childrenByPreferredName);
+    protected native @Pointer long initDirectoryWithFileWrappers$(@org.robovm.rt.bro.annotation.Marshaler(NSDictionary.AsStringMapMarshaler.class) Map<String, NSFileWrapper> childrenByPreferredName);
     @Method(selector = "initRegularFileWithContents:")
     protected native @Pointer long initRegularFileWithContents$(NSData contents);
     /**

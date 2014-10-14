@@ -59,7 +59,7 @@ import org.robovm.apple.dispatch.*;
     @Property(selector = "string")
     public native String getString();
     @Property(selector = "length")
-    public native @MachineSizedUInt long getLength();
+    public native @MachineSizedUInt long length();
     /*</properties>*/
     /*<members>*//*</members>*/
     

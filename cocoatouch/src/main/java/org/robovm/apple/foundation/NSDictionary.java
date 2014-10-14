@@ -291,10 +291,8 @@ import org.robovm.apple.dispatch.*;
     protected native NSArray<K> getAllKeys();
     @Property(selector = "allValues")
     protected native NSArray<V> getAllValues();
-    @Property(selector = "description")
-    public native String getDescription();
     @Property(selector = "descriptionInStringsFileFormat")
-    public native String getDescriptionInStringsFileFormat();
+    public native String toFileFormatString();
     /*</properties>*/
     /*<members>*//*</members>*/
     

@@ -45,7 +45,7 @@ import org.robovm.apple.mediaplayer.MPMoviePlayerViewController;
 /*<annotations>*/@Library("UIKit") @NativeClass/*</annotations>*/
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/UIViewController/*</name>*/ 
     extends /*<extends>*/UIResponder/*</extends>*/ 
-    /*<implements>*/implements NSCoding, UIAppearanceContainer, UITraitEnvironment, UIStateRestoring/*</implements>*/ {
+    /*<implements>*/implements NSCoding, UIAppearanceContainer, UITraitEnvironment, UIStateRestoring, NSExtensionRequestHandling/*</implements>*/ {
 
     /*<ptr>*/public static class UIViewControllerPtr extends Ptr<UIViewController, UIViewControllerPtr> {}/*</ptr>*/
     /*<bind>*/static { ObjCRuntime.bind(UIViewController.class); }/*</bind>*/
@@ -768,5 +768,7 @@ import org.robovm.apple.mediaplayer.MPMoviePlayerViewController;
     public native void encode(NSCoder aCoder);
     @Method(selector = "traitCollectionDidChange:")
     public native void traitCollectionDidChange(UITraitCollection previousTraitCollection);
+    @Method(selector = "beginRequestWithExtensionContext:")
+    public native void beginRequest(NSExtensionContext context);
     /*</methods>*/
 }

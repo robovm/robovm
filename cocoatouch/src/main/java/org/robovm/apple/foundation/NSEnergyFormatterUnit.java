@@ -37,28 +37,34 @@ import org.robovm.apple.dispatch.*;
 
 /*<javadoc>*/
 /**
- * @since Available in iOS 4.0 and later.
+ * @since Available in iOS 8.0 and later.
  */
 /*</javadoc>*/
-/*<annotations>*/@Library("Foundation") @NativeClass/*</annotations>*/
-/*<visibility>*/public/*</visibility>*/ class /*<name>*/NSBlockOperation/*</name>*/ 
-    extends /*<extends>*/NSOperation/*</extends>*/ 
-    /*<implements>*//*</implements>*/ {
+/*<annotations>*/@Marshaler(ValuedEnum.AsMachineSizedSIntMarshaler.class)/*</annotations>*/
+public enum /*<name>*/NSEnergyFormatterUnit/*</name>*/ implements ValuedEnum {
+    /*<values>*/
+    Joule(11L),
+    Kilojoule(14L),
+    Calorie(1793L),
+    Kilocalorie(1794L);
+    /*</values>*/
 
-    /*<ptr>*/public static class NSBlockOperationPtr extends Ptr<NSBlockOperation, NSBlockOperationPtr> {}/*</ptr>*/
-    /*<bind>*/static { ObjCRuntime.bind(NSBlockOperation.class); }/*</bind>*/
+    /*<bind>*/
+    /*</bind>*/
     /*<constants>*//*</constants>*/
-    /*<constructors>*/
-    protected NSBlockOperation(SkipInit skipInit) { super(skipInit); }
-    /*</constructors>*/
-    /*<properties>*/
-    
-    /*</properties>*/
-    /*<members>*//*</members>*/
-    /*<methods>*/
-    @Method(selector = "addExecutionBlock:")
-    public native void addExecutionBlock(@Block Runnable block);
-    @Method(selector = "blockOperationWithBlock:")
-    public static native NSBlockOperation create(@Block Runnable block);
-    /*</methods>*/
+    /*<methods>*//*</methods>*/
+
+    private final long n;
+
+    private /*<name>*/NSEnergyFormatterUnit/*</name>*/(long n) { this.n = n; }
+    public long value() { return n; }
+    public static /*<name>*/NSEnergyFormatterUnit/*</name>*/ valueOf(long n) {
+        for (/*<name>*/NSEnergyFormatterUnit/*</name>*/ v : values()) {
+            if (v.n == n) {
+                return v;
+            }
+        }
+        throw new IllegalArgumentException("No constant with value " + n + " found in " 
+            + /*<name>*/NSEnergyFormatterUnit/*</name>*/.class.getName());
+    }
 }

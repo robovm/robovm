@@ -106,7 +106,7 @@ import org.robovm.apple.dispatch.*;
      * @since Available in iOS 8.0 and later.
      */
     @Method(selector = "getDefaultCredentialForProtectionSpace:task:completionHandler:")
-    public native void getDefaultCredentialForProtectionSpace$task$completionHandler$(NSURLProtectionSpace space, NSURLSessionTask task, ObjCBlock completionHandler);
+    public native void getDefaultCredentialForProtectionSpace$task$completionHandler$(NSURLProtectionSpace space, NSURLSessionTask task, @Block VoidBlock1<NSURLCredential> completionHandler);
     /**
      * @since Available in iOS 8.0 and later.
      */

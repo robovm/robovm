@@ -37,37 +37,30 @@ import org.robovm.apple.dispatch.*;
 
 /*<javadoc>*/
 /**
- * @since Available in iOS 3.0 and later.
+ * @since Available in iOS 8.0 and later.
  */
 /*</javadoc>*/
 /*<annotations>*/@Library("Foundation") @NativeClass/*</annotations>*/
-/*<visibility>*/public/*</visibility>*/ class /*<name>*/NSCompoundPredicate/*</name>*/ 
-    extends /*<extends>*/NSPredicate/*</extends>*/ 
+/*<visibility>*/public/*</visibility>*/ class /*<name>*/NSFileAccessIntent/*</name>*/ 
+    extends /*<extends>*/NSObject/*</extends>*/ 
     /*<implements>*//*</implements>*/ {
 
-    /*<ptr>*/public static class NSCompoundPredicatePtr extends Ptr<NSCompoundPredicate, NSCompoundPredicatePtr> {}/*</ptr>*/
-    /*<bind>*/static { ObjCRuntime.bind(NSCompoundPredicate.class); }/*</bind>*/
+    /*<ptr>*/public static class NSFileAccessIntentPtr extends Ptr<NSFileAccessIntent, NSFileAccessIntentPtr> {}/*</ptr>*/
+    /*<bind>*/static { ObjCRuntime.bind(NSFileAccessIntent.class); }/*</bind>*/
     /*<constants>*//*</constants>*/
     /*<constructors>*/
-    public NSCompoundPredicate() {}
-    protected NSCompoundPredicate(SkipInit skipInit) { super(skipInit); }
-    public NSCompoundPredicate(NSCompoundPredicateType type, NSArray<NSPredicate> subpredicates) { super((SkipInit) null); initObject(initWithType$subpredicates$(type, subpredicates)); }
+    public NSFileAccessIntent() {}
+    protected NSFileAccessIntent(SkipInit skipInit) { super(skipInit); }
     /*</constructors>*/
     /*<properties>*/
-    @Property(selector = "compoundPredicateType")
-    public native NSCompoundPredicateType getCompoundPredicateType();
-    @Property(selector = "subpredicates")
-    public native NSArray<NSPredicate> getSubpredicates();
+    @Property(selector = "URL")
+    public native NSURL getURL();
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
-    @Method(selector = "initWithType:subpredicates:")
-    protected native @Pointer long initWithType$subpredicates$(NSCompoundPredicateType type, NSArray<NSPredicate> subpredicates);
-    @Method(selector = "andPredicateWithSubpredicates:")
-    public static native NSCompoundPredicate createAndPredicate(NSArray<NSPredicate> subpredicates);
-    @Method(selector = "orPredicateWithSubpredicates:")
-    public static native NSCompoundPredicate createOrPredicate(NSArray<NSPredicate> subpredicates);
-    @Method(selector = "notPredicateWithSubpredicate:")
-    public static native NSCompoundPredicate createNotPredicate(NSPredicate predicate);
+    @Method(selector = "readingIntentWithURL:options:")
+    public static native NSFileAccessIntent createReadingIntent(NSURL url, NSFileCoordinatorReadingOptions options);
+    @Method(selector = "writingIntentWithURL:options:")
+    public static native NSFileAccessIntent createWritingIntent(NSURL url, NSFileCoordinatorWritingOptions options);
     /*</methods>*/
 }

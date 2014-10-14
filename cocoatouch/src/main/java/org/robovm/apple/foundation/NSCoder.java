@@ -64,7 +64,7 @@ import org.robovm.apple.dispatch.*;
      * @since Available in iOS 6.0 and later.
      */
     @Property(selector = "allowedClasses")
-    public native NSSet<?> getAllowedClasses();
+    public native @org.robovm.rt.bro.annotation.Marshaler(NSArray.AsListMarshaler.class) List<ObjCClass> getAllowedClasses();
     /*</properties>*/
     /*<members>*//*</members>*/
     
@@ -233,7 +233,7 @@ import org.robovm.apple.dispatch.*;
      * @since Available in iOS 6.0 and later.
      */
     @Method(selector = "decodeObjectOfClasses:forKey:")
-    public native NSObject decodeObject(NSSet<?> classes, String key);
+    public native NSObject decodeObject(@org.robovm.rt.bro.annotation.Marshaler(NSArray.AsListMarshaler.class) List<ObjCClass> classes, String key);
     /**
      * @since Available in iOS 6.0 and later.
      */

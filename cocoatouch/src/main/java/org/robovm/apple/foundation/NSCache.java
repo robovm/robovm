@@ -91,6 +91,10 @@ import org.robovm.apple.dispatch.*;
     public void put(String key, NSObject obj, @MachineSizedUInt long g) {
         setObject(obj, new NSString(key), g);
     }
+    
+    public void remove(String key) {
+        remove(new NSString(key));
+    }
     /*<methods>*/
     @Method(selector = "objectForKey:")
     public native NSObject get(NSObject key);

@@ -37,28 +37,38 @@ import org.robovm.apple.dispatch.*;
 
 /*<javadoc>*/
 /**
- * @since Available in iOS 4.0 and later.
+ * @since Available in iOS 8.0 and later.
  */
 /*</javadoc>*/
-/*<annotations>*/@Library("Foundation") @NativeClass/*</annotations>*/
-/*<visibility>*/public/*</visibility>*/ class /*<name>*/NSBlockOperation/*</name>*/ 
-    extends /*<extends>*/NSOperation/*</extends>*/ 
-    /*<implements>*//*</implements>*/ {
+/*<annotations>*/@Marshaler(ValuedEnum.AsMachineSizedSIntMarshaler.class)/*</annotations>*/
+public enum /*<name>*/NSLengthFormatterUnit/*</name>*/ implements ValuedEnum {
+    /*<values>*/
+    Millimeter(8L),
+    Centimeter(9L),
+    Meter(11L),
+    Kilometer(14L),
+    Inch(1281L),
+    Foot(1282L),
+    Yard(1283L),
+    Mile(1284L);
+    /*</values>*/
 
-    /*<ptr>*/public static class NSBlockOperationPtr extends Ptr<NSBlockOperation, NSBlockOperationPtr> {}/*</ptr>*/
-    /*<bind>*/static { ObjCRuntime.bind(NSBlockOperation.class); }/*</bind>*/
+    /*<bind>*/
+    /*</bind>*/
     /*<constants>*//*</constants>*/
-    /*<constructors>*/
-    protected NSBlockOperation(SkipInit skipInit) { super(skipInit); }
-    /*</constructors>*/
-    /*<properties>*/
-    
-    /*</properties>*/
-    /*<members>*//*</members>*/
-    /*<methods>*/
-    @Method(selector = "addExecutionBlock:")
-    public native void addExecutionBlock(@Block Runnable block);
-    @Method(selector = "blockOperationWithBlock:")
-    public static native NSBlockOperation create(@Block Runnable block);
-    /*</methods>*/
+    /*<methods>*//*</methods>*/
+
+    private final long n;
+
+    private /*<name>*/NSLengthFormatterUnit/*</name>*/(long n) { this.n = n; }
+    public long value() { return n; }
+    public static /*<name>*/NSLengthFormatterUnit/*</name>*/ valueOf(long n) {
+        for (/*<name>*/NSLengthFormatterUnit/*</name>*/ v : values()) {
+            if (v.n == n) {
+                return v;
+            }
+        }
+        throw new IllegalArgumentException("No constant with value " + n + " found in " 
+            + /*<name>*/NSLengthFormatterUnit/*</name>*/.class.getName());
+    }
 }

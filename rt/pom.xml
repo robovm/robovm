@@ -177,7 +177,8 @@
                 <echo>${if.mac}</echo>
                 <echo>${project.build.directory}/lib/libiconvprovider.so</echo>
                 <echo>${str.iconv}</echo>
-                <echo>${basedir}/../vm/rt/robovm/org_robovm_rt_iconv_IconvProvider.c<echo>
+                
+                <echo>${basedir}/../vm/rt/robovm/org_robovm_rt_iconv_IconvProvider.c</echo>
                 
                 <exec executable="${cc}">
                   <arg value="-I${env.JAVA_HOME}/include/" />

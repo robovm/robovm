@@ -20,7 +20,6 @@
 #include <iconv.h>
 #include <stdlib.h>
 #include <stdio.h>
-#include <wchar.h>
 #include <locale.h>
 #include <string.h>
 
@@ -94,7 +93,10 @@ JNIEXPORT jlong JNICALL Java_org_robovm_rt_iconv_IconvProvider_initIconv
     }
 
     int enabled = 1;
+
+#ifdef __APPLE__
     iconvctl(content_descriptor, ICONV_SET_DISCARD_ILSEQ, &enabled);
+#endif
 
     (*env)->ReleaseStringUTFChars(env, toEncoding, to_enc);
     (*env)->ReleaseStringUTFChars(env, fromEncoding, from_enc);

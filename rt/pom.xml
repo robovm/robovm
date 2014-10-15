@@ -162,16 +162,25 @@
                 <echo>Preparing build of shared libicov</echo>               
                 <mkdir dir="${project.build.directory}/lib"/>
 
-                <condition property="cc" value="gcc"><os family="unix"/></condition>
-                <condition property="cc" value="xcrun clang"><os family="mac" /></condition>
-                <condition property="so.ext" value="so"><os family="unix" /></condition>
+                <condition property="cc" value="gcc">
+                  <and>
+                    <os name="linux"/>
+                    <os family="unix"/>
+                  </and>
+                </condition>
+                
+                <condition property="cc" value="xcrun"><os family="mac" /></condition>
+                <condition property="clang" value="clang"><os family="mac" /></condition>
+                <condition property="clang" value=""><os name="linux" /></condition>
+                <condition property="so.ext" value="so"><os name="linux" /></condition>
                 <condition property="so.ext" value="dylib"><os family="mac" /></condition>
-                <condition property="extra.args" value="-fPIC"><os family="unix" /></condition>
+                <condition property="extra.args" value="-fPIC"><os name="linux" /></condition>
                 <condition property="extra.args" value="-liconv"><os family="mac" /></condition>
                 
                 <!-- build shared library for linux/mac depending on conditions--> 
                 <echo>Building shared library</echo>
                 <exec executable="${cc}">
+                  <arg line="${clang}"/>
                   <arg value="-I${basedir}/../vm/core/include"/>
                   <arg value="${extra.args}" />
                   <arg value="-shared" />
@@ -179,7 +188,7 @@
                   <arg value="${project.build.directory}/lib/libiconvprovider.${so.ext}" />
                   <arg value="${basedir}/../vm/rt/robovm/org_robovm_rt_iconv_IconvProvider.c" />
                 </exec>
-
+                
                 <taskdef name="jarjar" classname="com.tonicsystems.jarjar.JarJarTask" classpathref="maven.plugin.classpath" />
 
                 <!-- Use jarjar to change the package name org.bouncycastle to com.android.org.bouncycastle and 

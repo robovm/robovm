@@ -20,6 +20,15 @@
     </license>
   </licenses>
 
+  <dependencies>
+    <dependency>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+      <version>4.5</version>
+      <scope>test</scope>
+    </dependency>  
+  </dependencies>
+
   <build>
     <resources>
       <resource><directory>robovm/src/main/resources</directory></resource>
@@ -75,6 +84,7 @@
         <version>1.7</version>
         <executions>
           <execution>
+            <id>add-source</id>
             <phase>generate-sources</phase>
             <goals><goal>add-source</goal></goals>
             <configuration>
@@ -94,6 +104,16 @@
                 <source>external/javasqlite/src/main/java</source>
                 <source>external/okhttp/src/main/java</source>
                 <source>external/okhttp/android/main/java</source>
+              </sources>
+            </configuration>
+          </execution>
+          <execution>
+            <id>add-test-source</id>
+            <phase>generate-sources</phase>
+            <goals><goal>add-test-source</goal></goals>
+            <configuration>
+              <sources>
+                <source>robovm/src/test/java</source>
               </sources>
             </configuration>
           </execution>
@@ -137,57 +157,26 @@
             <phase>process-classes</phase>
             <configuration>
               <target>
-              
-                <property environment="env" />
+
+                <!-- create dir for target iconv shared library and builds it with platform specific settings -->
+                <echo>Preparing build of shared libicov</echo>               
                 <mkdir dir="${project.build.directory}/lib"/>
+
+                <condition property="cc" value="gcc"><os family="unix"/></condition>
+                <condition property="cc" value="xcrun clang"><os family="mac" /></condition>
+                <condition property="so.ext" value="so"><os family="unix" /></condition>
+                <condition property="so.ext" value="dylib"><os family="mac" /></condition>
+                <condition property="extra.args" value="-fPIC"><os family="unix" /></condition>
+                <condition property="extra.args" value="-liconv"><os family="mac" /></condition>
                 
-                <condition property="if.linux" value="true">
-                  <and>
-                    <os name="linux"/>
-                    <os family="unix"/>
-                  </and>
-                </condition>
-                <condition property="if.mac" value="true">
-                  <os family="mac"/>
-                </condition>
-                
-                <condition property="cc" value="gcc">
-                  <os family="unix" />
-                </condition>
-                <condition property="cc" value="xcrun clang">
-                  <os family="mac" />
-                </condition>
-                
-                <condition property="libout" value="${project.build.directory}/lib/libiconvprovider.so">
-                  <os family="unix" />
-                </condition>
-                <condition property="libout" value="${project.build.directory}/lib/libiconvprovider.dylib">
-                  <os family="mac" />
-                </condition>
-                
-                <condition property="str.iconv" value="">
-                  <os family="unix" />
-                </condition>
-                <condition property="str.iconv" value="-liconv">
-                  <os family="mac" />
-                </condition>
-                
-                <echo>${project.build.directory}</echo>
-                <echo>${if.linux}</echo>
-                <echo>${if.mac}</echo>
-                <echo>${project.build.directory}/lib/libiconvprovider.so</echo>
-                <echo>${str.iconv}</echo>
-                
-                <echo>${basedir}/../vm/rt/robovm/org_robovm_rt_iconv_IconvProvider.c</echo>
-                
+                <!-- build shared library for linux/mac depending on conditions--> 
+                <echo>Building shared library</echo>
                 <exec executable="${cc}">
-                  <arg value="-I${env.JAVA_HOME}/include/" />
-                  <arg value="-I${env.JAVA_HOME}/include/darwin/" />
-                  <arg value="-I${env.JAVA_HOME}/include/linux/" />
-                  <arg value="${str.iconv}" />
+                  <arg value="-I${basedir}/../vm/core/include"/>
+                  <arg value="${extra.args}" />
                   <arg value="-shared" />
                   <arg value="-o" />
-                  <arg value="${libout}" />
+                  <arg value="${project.build.directory}/lib/libiconvprovider.${so.ext}" />
                   <arg value="${basedir}/../vm/rt/robovm/org_robovm_rt_iconv_IconvProvider.c" />
                 </exec>
 

@@ -73,7 +73,7 @@ import org.robovm.apple.dispatch.*;
      * @since Available in iOS 8.0 and later.
      */
     @Method(selector = "coordinateAccessWithIntents:queue:byAccessor:")
-    public native void coordinateAccessWithIntents$queue$byAccessor$(NSArray<?> intents, NSOperationQueue queue, @Block VoidBlock1<NSError> accessor);
+    public native void coordinateAccessWithIntents(NSArray<NSFileAccessIntent> intents, NSOperationQueue queue, @Block VoidBlock1<NSError> accessor);
     @Method(selector = "coordinateReadingItemAtURL:options:error:byAccessor:")
     public native void coordinateReadingItem(NSURL url, NSFileCoordinatorReadingOptions options, NSError.NSErrorPtr outError, @Block VoidBlock1<NSURL> reader);
     @Method(selector = "coordinateWritingItemAtURL:options:error:byAccessor:")

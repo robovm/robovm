@@ -121,8 +121,17 @@ import org.robovm.apple.dispatch.*;
      * @since Available in iOS 4.0 and later.
      */
     public static final NSCalendarIdentifier RepublicOfChina = new NSCalendarIdentifier("RepublicOfChinaValue");
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    public static final NSCalendarIdentifier IslamicTabular = new NSCalendarIdentifier("IslamicTabularValue");
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    public static final NSCalendarIdentifier IslamicUmmAlQura = new NSCalendarIdentifier("IslamicUmmAlQuraValue");
     
-    private static NSCalendarIdentifier[] values = new NSCalendarIdentifier[] {Gregorian, Buddhist, Chinese, Coptic, EthiopicAmeteMihret, EthiopicAmeteAlem, Hebrew, ISO8601, Indian, Islamic, IslamicCivil, Japanese, Persian, RepublicOfChina};
+    private static NSCalendarIdentifier[] values = new NSCalendarIdentifier[] {Gregorian, Buddhist, Chinese, Coptic, EthiopicAmeteMihret, EthiopicAmeteAlem, Hebrew, ISO8601, Indian, Islamic, IslamicCivil, 
+        Japanese, Persian, RepublicOfChina, IslamicTabular, IslamicUmmAlQura};
     private final LazyGlobalValue<NSString> lazyGlobalValue;
     
     private NSCalendarIdentifier(String getterName) {

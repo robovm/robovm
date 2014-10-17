@@ -36,29 +36,24 @@ import org.robovm.apple.dispatch.*;
 /*</imports>*/
 
 /*<javadoc>*/
-/**
- * @since Available in iOS 4.0 and later.
- */
-/*</javadoc>*/
-/*<annotations>*/@Library("Foundation") @NativeClass/*</annotations>*/
-/*<visibility>*/public/*</visibility>*/ class /*<name>*/NSBlockOperation/*</name>*/ 
-    extends /*<extends>*/NSOperation/*</extends>*/ 
-    /*<implements>*//*</implements>*/ {
 
-    /*<ptr>*/public static class NSBlockOperationPtr extends Ptr<NSBlockOperation, NSBlockOperationPtr> {}/*</ptr>*/
-    /*<bind>*/static { ObjCRuntime.bind(NSBlockOperation.class); }/*</bind>*/
+/*</javadoc>*/
+/*<annotations>*//*</annotations>*/
+/*<visibility>*/public/*</visibility>*/ interface /*<name>*/NSExtensionRequestHandling/*</name>*/ 
+    /*<implements>*/extends NSObjectProtocol/*</implements>*/ {
+
+    /*<ptr>*/
+    /*</ptr>*/
+    /*<bind>*/
+    /*</bind>*/
     /*<constants>*//*</constants>*/
-    /*<constructors>*/
-    protected NSBlockOperation(SkipInit skipInit) { super(skipInit); }
-    /*</constructors>*/
     /*<properties>*/
     
     /*</properties>*/
-    /*<members>*//*</members>*/
     /*<methods>*/
-    @Method(selector = "addExecutionBlock:")
-    public native void addExecutionBlock(@Block Runnable block);
-    @Method(selector = "blockOperationWithBlock:")
-    public static native NSBlockOperation create(@Block Runnable block);
+    @Method(selector = "beginRequestWithExtensionContext:")
+    void beginRequest(NSExtensionContext context);
     /*</methods>*/
+    /*<adapter>*/
+    /*</adapter>*/
 }

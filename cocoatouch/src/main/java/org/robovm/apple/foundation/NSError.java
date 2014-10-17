@@ -52,7 +52,7 @@ import org.robovm.apple.dispatch.*;
     /*</constructors>*/
     /*<properties>*/
     @Property(selector = "domain")
-    public native String getDomain();
+    public native NSString getDomain();
     @Property(selector = "code")
     public native @MachineSizedSInt long getCode();
     @Property(selector = "userInfo")
@@ -64,7 +64,7 @@ import org.robovm.apple.dispatch.*;
     @Property(selector = "localizedRecoverySuggestion")
     public native String getLocalizedRecoverySuggestion();
     @Property(selector = "localizedRecoveryOptions")
-    public native NSArray<?> getLocalizedRecoveryOptions();
+    public native @org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String> getLocalizedRecoveryOptions();
     @Property(selector = "recoveryAttempter")
     public native NSObject getRecoveryAttempter();
     @Property(selector = "helpAnchor")

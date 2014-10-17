@@ -676,7 +676,7 @@ classes:
             '(action|target)':
                 visibility: protected
             'possibleTitles':
-                type: "@org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String>"
+                type: "@org.robovm.rt.bro.annotation.Marshaler(NSSet.AsStringListMarshaler.class) List<String>"
         methods:
             '-backButtonBackgroundImageForState:barMetrics:':
                 name: getBackButtonBackgroundImage
@@ -2346,9 +2346,9 @@ classes:
                 type: "NSArray<UIGestureRecognizer>"
         methods:
             '-locationInView:':
-                name: getLocation
+                name: getLocationInView
             '-previousLocationInView:':
-                name: getPreviousLocation
+                name: getPreviousLocationInView
     UITraitCollection: # DONE
         methods:
             '-containsTraitsInCollection:':

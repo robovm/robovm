@@ -92,7 +92,7 @@ import org.robovm.apple.dispatch.*;
      * @since Available in iOS 4.0 and later.
      */
     @Property(selector = "expressionBlock")
-    public native ObjCBlock getExpressionBlock();
+    public native @Block Block3<NSObject, NSArray<NSExpression>, NSMutableDictionary<?, ?>, NSObject> getExpressionBlock();
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/

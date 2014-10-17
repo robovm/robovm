@@ -34,6 +34,7 @@ import org.robovm.apple.coremedia.*;
 import org.robovm.apple.security.*;
 import org.robovm.apple.dispatch.*;
 /*</imports>*/
+import org.robovm.apple.foundation.NSError.NSErrorPtr;
 
 /*<javadoc>*/
 
@@ -136,7 +137,7 @@ import org.robovm.apple.dispatch.*;
     public static String getLocalizedString(String key) {
         return NSBundle.getMainBundle().getLocalizedString(key, "", null);
     }
-
+    
     @Bridge protected static native @MachineSizedUInt long length(@Pointer long handle, Selector sel);
     @Bridge protected static native void getCharacters$range$(@Pointer long handle, Selector sel, @Pointer long buffer, @ByVal NSRange aRange);
 
@@ -261,6 +262,22 @@ import org.robovm.apple.dispatch.*;
     }
 
     
+    public static String readURL(NSURL url, NSStringEncoding enc) {
+        NSError.NSErrorPtr error = new NSError.NSErrorPtr();
+        String str = readURL(url, enc, error); 
+        // TODO exception
+        return str;
+    }
+    
+    public static String readFile(File path, NSStringEncoding enc) {
+        return readFile(path.getAbsolutePath(), enc);
+    }
+    public static String readFile(String path, NSStringEncoding enc) {
+        NSError.NSErrorPtr error = new NSError.NSErrorPtr();
+        String str = readFile(path, enc, error); 
+        // TODO exception
+        return str;
+    }
     /*<methods>*/
     @Method(selector = "characterAtIndex:")
     protected native short characterAtIndex$(@MachineSizedUInt long index);
@@ -270,6 +287,10 @@ import org.robovm.apple.dispatch.*;
     protected native @Pointer long initWithCharacters$length$(@Pointer long characters, @MachineSizedUInt long length);
     @Method(selector = "stringWithCharacters:length:")
     protected static native @Pointer long stringWithCharacters$length$(@Pointer long characters, @MachineSizedUInt long length);
+    @Method(selector = "stringWithContentsOfURL:encoding:error:")
+    protected static native String readURL(NSURL url, NSStringEncoding enc, NSError.NSErrorPtr error);
+    @Method(selector = "stringWithContentsOfFile:encoding:error:")
+    protected static native String readFile(String path, NSStringEncoding enc, NSError.NSErrorPtr error);
     @Method(selector = "stringByAddingPercentEscapesUsingEncoding:")
     protected native String stringByAddingPercentEscapesUsingEncoding$(NSStringEncoding enc);
     @Method(selector = "stringByReplacingPercentEscapesUsingEncoding:")

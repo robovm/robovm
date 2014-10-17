@@ -36,29 +36,34 @@ import org.robovm.apple.dispatch.*;
 /*</imports>*/
 
 /*<javadoc>*/
-/**
- * @since Available in iOS 4.0 and later.
- */
-/*</javadoc>*/
-/*<annotations>*/@Library("Foundation") @NativeClass/*</annotations>*/
-/*<visibility>*/public/*</visibility>*/ class /*<name>*/NSBlockOperation/*</name>*/ 
-    extends /*<extends>*/NSOperation/*</extends>*/ 
-    /*<implements>*//*</implements>*/ {
 
-    /*<ptr>*/public static class NSBlockOperationPtr extends Ptr<NSBlockOperation, NSBlockOperationPtr> {}/*</ptr>*/
-    /*<bind>*/static { ObjCRuntime.bind(NSBlockOperation.class); }/*</bind>*/
+/*</javadoc>*/
+/*<annotations>*/@Marshaler(ValuedEnum.AsMachineSizedSIntMarshaler.class)/*</annotations>*/
+public enum /*<name>*/NSDateComponentsFormatterUnitsStyle/*</name>*/ implements ValuedEnum {
+    /*<values>*/
+    Positional(0L),
+    Abbreviated(1L),
+    Short(2L),
+    Full(3L),
+    SpellOut(4L);
+    /*</values>*/
+
+    /*<bind>*/
+    /*</bind>*/
     /*<constants>*//*</constants>*/
-    /*<constructors>*/
-    protected NSBlockOperation(SkipInit skipInit) { super(skipInit); }
-    /*</constructors>*/
-    /*<properties>*/
-    
-    /*</properties>*/
-    /*<members>*//*</members>*/
-    /*<methods>*/
-    @Method(selector = "addExecutionBlock:")
-    public native void addExecutionBlock(@Block Runnable block);
-    @Method(selector = "blockOperationWithBlock:")
-    public static native NSBlockOperation create(@Block Runnable block);
-    /*</methods>*/
+    /*<methods>*//*</methods>*/
+
+    private final long n;
+
+    private /*<name>*/NSDateComponentsFormatterUnitsStyle/*</name>*/(long n) { this.n = n; }
+    public long value() { return n; }
+    public static /*<name>*/NSDateComponentsFormatterUnitsStyle/*</name>*/ valueOf(long n) {
+        for (/*<name>*/NSDateComponentsFormatterUnitsStyle/*</name>*/ v : values()) {
+            if (v.n == n) {
+                return v;
+            }
+        }
+        throw new IllegalArgumentException("No constant with value " + n + " found in " 
+            + /*<name>*/NSDateComponentsFormatterUnitsStyle/*</name>*/.class.getName());
+    }
 }

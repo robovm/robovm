@@ -60,6 +60,21 @@ import org.robovm.apple.dispatch.*;
         }
     }
     
+    public static class AsStringListMarshaler {
+        @MarshalsPointer
+        public static List<String> toObject(Class<? extends NSObject> cls, long handle, long flags) {
+            NSSet<?> o = (NSSet<?>) NSObject.Marshaler.toObject(cls, handle, flags);
+            return o.asStringList();
+        }
+        @MarshalsPointer
+        public static long toNative(List<String> l, long flags) {
+            if (l == null) {
+                return 0L;
+            }
+            return NSObject.Marshaler.toNative(NSSet.fromStrings(l), flags);
+        }
+    }
+    
     static class SetAdapter<U extends NSObject> extends AbstractSet<U> {
         protected final NSSet<U> set;
 
@@ -118,8 +133,6 @@ import org.robovm.apple.dispatch.*;
     protected native @MachineSizedUInt long getCount();
     @Property(selector = "allObjects")
     public native NSArray<T> getValues();
-    @Property(selector = "description")
-    public native String getDescription();
     /*</properties>*/
     /*<members>*//*</members>*/
     
@@ -212,6 +225,19 @@ import org.robovm.apple.dispatch.*;
             set.add(str.toString());
         }
         return set;
+    }
+    
+    public List<String> asStringList() {
+        List<String> list = new ArrayList<>();
+        if (size() == 0)
+            return list;
+        if (!(any() instanceof NSString)) 
+            throw new UnsupportedOperationException("items must be of type NSString");
+        
+        for (T str : this) {
+            list.add(str.toString());
+        }
+        return list;
     }
     
     public static NSSet<NSString> fromStrings (String... strings) {

@@ -96,7 +96,7 @@ import org.robovm.apple.dispatch.*;
      * @since Available in iOS 8.0 and later.
      */
     @Method(selector = "getNonlocalVersionsOfItemAtURL:completionHandler:")
-    public static native void getNonlocalVersionsOfItemAtURL$completionHandler$(NSURL url, ObjCBlock completionHandler);
+    public static native void getNonlocalItemVersionsAtURL(NSURL url, @Block VoidBlock2<NSArray<NSFileVersion>, NSError> completionHandler);
     @Method(selector = "versionOfItemAtURL:forPersistentIdentifier:")
     public static native NSFileVersion getItemVersionAtURL(NSURL url, NSObject persistentIdentifier);
     @Method(selector = "removeOtherVersionsOfItemAtURL:error:")

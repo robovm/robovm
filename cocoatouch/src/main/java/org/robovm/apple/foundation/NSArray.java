@@ -188,8 +188,6 @@ import org.robovm.apple.dispatch.*;
     /*<properties>*/
     @Property(selector = "count")
     protected native @MachineSizedUInt long getCount();
-    @Property(selector = "description")
-    public native String getDescription();
     /**
      * @since Available in iOS 4.0 and later.
      */

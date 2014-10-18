@@ -74,7 +74,7 @@ import org.robovm.apple.dispatch.*;
      * @since Available in iOS 3.0 and later.
      */
     @Property(selector = "certificates")
-    public native NSArray<?> getCertificates();
+    public native @org.robovm.rt.bro.annotation.Marshaler(NSArray.AsListMarshaler.class) List<SecCertificate> getCertificates();
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/

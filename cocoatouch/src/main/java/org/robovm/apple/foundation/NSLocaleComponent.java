@@ -61,6 +61,33 @@ import org.robovm.apple.dispatch.*;
         }
     }
     
+    public static class AsMapMarshaler {
+        @SuppressWarnings("unchecked")
+        @MarshalsPointer
+        public static Map<NSLocaleComponent, NSObject> toObject(Class<? extends NSObject> cls, long handle, long flags) {
+            NSDictionary<NSString, NSObject> o = (NSDictionary<NSString, NSObject>) NSObject.Marshaler.toObject(NSDictionary.class, handle, flags);
+            if (o == null) {
+                return null;
+            }
+            Map<NSLocaleComponent, NSObject> map = new HashMap<>();
+            for (Map.Entry<NSString, NSObject> e : o.entrySet()) {
+                map.put(NSLocaleComponent.valueOf(e.getKey()), e.getValue());
+            }
+            return map;
+        }
+        @MarshalsPointer
+        public static long toNative(Map<NSLocaleComponent, NSObject> o, long flags) {
+            if (o == null) {
+                return 0L;
+            }
+            NSDictionary<NSString, NSObject> dict = new NSMutableDictionary<>();
+            for (Map.Entry<NSLocaleComponent, NSObject> e : o.entrySet()) {
+                dict.put(e.getKey().value(), e.getValue());
+            }
+            return NSObject.Marshaler.toNative(dict, flags);
+        }
+    }
+    
     /*<ptr>*/
     /*</ptr>*/
     /*<bind>*/static { Bro.bind(NSLocaleComponent.class); }/*</bind>*/

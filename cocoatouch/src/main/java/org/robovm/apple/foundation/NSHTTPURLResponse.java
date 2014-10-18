@@ -58,7 +58,7 @@ import org.robovm.apple.dispatch.*;
     @Property(selector = "statusCode")
     public native @MachineSizedSInt long getStatusCode();
     @Property(selector = "allHeaderFields")
-    public native NSDictionary<?, ?> getAllHeaderFields();
+    public native @org.robovm.rt.bro.annotation.Marshaler(NSDictionary.AsStringStringMapMarshaler.class) Map<String, String> getAllHeaderFields();
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/

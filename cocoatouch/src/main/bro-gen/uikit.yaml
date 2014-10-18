@@ -7,13 +7,15 @@ headers:
     - /System/Library/Frameworks/UIKit.framework/Headers/UIKit.h
 typedefs:
     NSCopying: NSObject
-    "void (^)(UIBackgroundFetchResult)": "@Block VoidBlock1<UIBackgroundFetchResult>"
-    "void (^)(id<UIViewControllerTransitionCoordinatorContext>)": "@Block VoidBlock1<UIViewControllerTransitionCoordinatorContext>"
-    "void (^)(CGRect, CGRect, NSTextContainer *, NSRange, BOOL *)": '@Block("(@ByVal, @ByVal, , @ByVal, )") VoidBlock5<CGRect, CGRect, NSTextContainer, NSRange, BytePtr>'
+    'void (^)(UIBackgroundFetchResult)': '@Block VoidBlock1<UIBackgroundFetchResult>'
+    'void (^)(id<UIViewControllerTransitionCoordinatorContext>)': '@Block VoidBlock1<UIViewControllerTransitionCoordinatorContext>'
+    'void (^)(CGRect, CGRect, NSTextContainer *, NSRange, BOOL *)': '@Block("(@ByVal, @ByVal, , @ByVal, )") VoidBlock5<CGRect, CGRect, NSTextContainer, NSRange, BytePtr>'
     'void (^)(CGRect, BOOL *)': '@Block("(@ByVal, )") VoidBlock2<CGRect, BytePtr>'
     'void (^)(void (^)(void))': '@Block("(@Block)") VoidBlock1<Runnable>'
     'void (^)(NSError *)': '@Block VoidBlock1<NSError>'
     'void (^)(UILexicon *)': '@Block VoidBlock1<UILexicon>'
+    'void (^)(UIAlertAction *)': '@Block VoidBlock1<UIAlertAction>'
+    'void (^)(UITextField *)': '@Block VoidBlock1<UITextField>'
     # UIAccelerationValue: double
     # UIBackgroundTaskIdentifier: int
     # CGPathRef: CGPath
@@ -214,7 +216,6 @@ categories:
                         type: NSAttributedStringDocumentAttributes
             '-size':
                 name: getSize
-
     NSBundle: # DONE
         methods:
             '-loadNibNamed:owner:options:':
@@ -222,16 +223,12 @@ categories:
                 parameters:
                     options:
                         type: UINibLoadingOptions
-
     NSCoder: # DONE
         methods:
             '-(decode.*)ForKey:':
                 name: "#{g[0]}"
             '-(encode.*):forKey:':
                 name: "#{g[0]}"
-
-    NSFileProviderExtension: {}
-
     NSIndexPath: # DONE
         methods:
             '+indexPathForRow:inSection:':
@@ -337,6 +334,26 @@ classes:
     UIEdgeInsets: {}
     UIOffset: {}
 
+    NSFileProviderExtension: # DONE
+        methods:
+            '-(providerIdentifier|documentStorageURL)':
+                property: true
+            '-URLForItemWithPersistentIdentifier:':
+                name: getURLForItem
+            '-persistentIdentifierForItemAtURL:':
+                name: getPersistentIdentifierForItem
+            '-providePlaceholderAtURL:completionHandler:':
+                name: providePlaceholder
+            '-startProvidingItemAtURL:completionHandler:':
+                name: startProvidingItem
+            '-itemChangedAtURL:':
+                name: itemChanged
+            '-stopProvidingItemAtURL:':
+                name: stopProvidingItem
+            '+writePlaceholderAtURL:withMetadata:error:':
+                name: writePlaceholder
+            '+placeholderURLForURL:':
+                name: getPlaceholderURL
     NSLayoutConstraint: # DONE
          methods:
             '+constraintWithItem:attribute:relatedBy:toItem:attribute:multiplier:constant:':
@@ -543,12 +560,12 @@ classes:
                 parameters:
                     options:
                         type: NSTextTabOptions
-
     UIAcceleration: {} # DONE
     UIAccelerometer: # DONE
         methods:
             '+sharedAccelerometer':
                 name: getSharedAccelerometer
+    UIAccessibilityCustomAction: {} # DONE
     UIAccessibilityElement: # DONE
         properties:
             'isAccessibilityElement':
@@ -619,7 +636,23 @@ classes:
                 parameters:
                     applicationActivities:
                         type: "NSArray<UIActivity>"
-
+    UIAlertAction: # DONE
+        methods:
+            '+actionWithTitle:style:handler:':
+                name: create
+    UIAlertController: # DONE
+        properties:
+            'actions':
+                type: NSArray<UIAlertAction>
+            'textFields':
+                type: NSArray<UITextField>
+        methods:
+            '-addAction:':
+                trim_after_first_colon: true
+            '-addTextFieldWithConfigurationHandler:':
+                name: addTextField
+            '+alertControllerWithTitle:message:preferredStyle:':
+                name: create
     UIAlertView: # DONE
         methods:
             '-addButtonWithTitle:':
@@ -633,7 +666,6 @@ classes:
         properties:
             'delegate':
                 type: UIAlertViewDelegate
-
     UIApplication: # DONE
         properties:
             windows:
@@ -665,7 +697,6 @@ classes:
                 trim_after_first_colon: true
             '-currentUserNotificationSettings':
                 property: true
-
     UIAttachmentBehavior: # DONE
         properties:
             'items':
@@ -761,7 +792,10 @@ classes:
                 visibility: protected
             '-getLineDash:count:phase:':
                 visibility: protected
-
+    UIBlurEffect: # DONE
+        methods:
+            '+effectWithStyle:':
+                name: create
     UIButton: # DONE
         methods:
             '+buttonWithType:':
@@ -1063,12 +1097,10 @@ classes:
         methods:
             '+currentDevice':
                 property: true
-
     UIDictationPhrase: # DONE
         properties:
             'alternativeInterpretations':
                 type: "@org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String>"
-
     UIDocument: # DONE
         methods:
             '-savingFileType':
@@ -1115,15 +1147,23 @@ classes:
                 trim_after_first_colon: true
             '-userInteractionNoLongerPermittedForError:':
                 name: userInteractionNoLongerPermitted
-
+    UIDocumentMenuViewController: # DONE
+        methods:
+            '-initWithDocumentTypes:inMode:':
+                name: init
+                parameters:
+                    allowedUTIs:
+                        type: '@org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String>'
+            '-addOptionWithTitle:image:order:handler:':
+                name: addOption
     UIDocumentInteractionController: # DONE
         properties:
             'icons':
-                type: "NSArray<UIImage>"
+                type: NSArray<UIImage>
             'gestureRecognizers':
-                type: "NSArray<UIGestureRecognizer>"
+                type: NSArray<UIGestureRecognizer>
         methods:
-            "+interactionControllerWithURL:":
+            '+interactionControllerWithURL:':
                 name: create
             '-dismissMenuAnimated:':
                 name: dismissMenu
@@ -1139,11 +1179,26 @@ classes:
                 name: presentOptionsMenu
             '-presentPreviewAnimated:':
                 name: presentPreview
-
+    UIDocumentPickerExtensionViewController: # DONE
+        properties:
+            'validTypes':
+                type: '@org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String>'
+        methods:
+            '-dismissGrantingAccessToURL:':
+                trim_after_first_colon: true
+            '-prepareForPresentationInMode:':
+                name: prepareForPresentation
+    UIDocumentPickerViewController: # DONE
+        methods:
+            '-initWithDocumentTypes:inMode:':
+                name: init
+                parameters:
+                    allowedUTIs:
+                        type: '@org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String>'
     UIDynamicAnimator: # DONE
         properties:
             'behaviors':
-                type: "NSArray<UIDynamicBehavior>"
+                type: NSArray<UIDynamicBehavior>
         methods:
             '-addBehavior:':
                 trim_after_first_colon: true
@@ -1826,7 +1881,7 @@ classes:
                 name: drawPrintFormatter
             '-printFormattersForPageAtIndex:':
                 name: getPrintFormatters
-                return_type: "NSArray<UIPrintFormatter>"
+                return_type: NSArray<UIPrintFormatter>
             '-addPrintFormatter:startingAtPageAtIndex:':
                 trim_after_first_colon: true
             '-prepareForDrawingPages:':
@@ -1837,9 +1892,30 @@ classes:
                 name: createBestForPageSize
                 parameters:
                     paperList:
-                        type: "NSArray<UIPrintPaper>"
+                        type: NSArray<UIPrintPaper>
             '-printRect':
                 property: true
+    UIPrinterPickerController: # DONE
+        methods:
+            '-presentAnimated:completionHandler:':
+                trim_after_first_colon: true
+                parameters:
+                    completion:
+                        type: '@Block VoidBlock3<UIPrinterPickerController, Boolean, NSError>'
+            '-presentFromRect:inView:animated:completionHandler:':
+                name: presentFromRectInView
+                parameters:
+                    completion:
+                        type: '@Block VoidBlock3<UIPrinterPickerController, Boolean, NSError>'
+            '-presentFromBarButtonItem:animated:completionHandler:':
+                trim_after_first_colon: true
+                parameters:
+                    completion:
+                        type: '@Block VoidBlock3<UIPrinterPickerController, Boolean, NSError>'
+            '-dismissAnimated:':
+                trim_after_first_colon: true
+            '+printerPickerControllerWithInitiallySelectedPrinter:':
+                name: create
     UIProgressView: # DONE
         methods:
             '-setProgress:animated:':
@@ -1977,12 +2053,11 @@ classes:
                 parameters:
                     attributes:
                         type: NSAttributedStringAttributes
-
+    UISearchController: {} # DONE
     UISearchDisplayController: # DONE
         methods:
             '-setActive:animated:':
                 name: setActive
-
     UISegmentedControl: # DONE
         properties:
             'segmentedControlStyle':
@@ -2036,9 +2111,7 @@ classes:
                         type: NSAttributedStringAttributes
             '-setContentPositionAdjustment:forSegmentType:barMetrics:':
                 name: setContentPositionAdjustment
-
     UISimpleTextPrintFormatter: {} # DONE
-
     UISlider: # DONE
         methods:
             '-maximumTrackImageForState:':
@@ -2063,9 +2136,7 @@ classes:
                 trim_after_first_colon: true
             '-setMaximumTrackImage:forState:':
                 trim_after_first_colon: true
-
     UISnapBehavior: {} # DONE
-
     UISplitViewController: # DONE
         properties:
             'viewControllers':
@@ -2397,7 +2468,10 @@ classes:
         methods:
             '+canEditVideoAtPath:':
                 visibility: protected
-
+    UIVibrancyEffect: # DONE
+        methods:
+            '+effectForBlurEffect:':
+                name: create
     UIView: # DONE
         properties:
             'subviews':
@@ -2670,6 +2744,7 @@ classes:
                 name: separateSecondaryViewController
     UIViewPrintFormatter: {} # DONE
     UIVisualEffect: {} # DONE
+    UIVisualEffectView: {} # DONE
     UIWebView: # DONE
         methods:
             "-loadHTMLString:baseURL:":
@@ -3010,13 +3085,24 @@ protocols:
                 name: willPresentOpenInMenu
             '-documentInteractionControllerWillPresentOptionsMenu:':
                 name: willPresentOptionsMenu
+    UIDocumentMenuDelegate: # DONE
+        methods:
+            '-documentMenu:didPickDocumentPicker:':
+                name: didPickDocumentPicker
+            '-documentMenuWasCancelled:':
+                name: wasCancelled
+    UIDocumentPickerDelegate: # DONE
+        methods:
+            '-documentPicker:didPickDocumentAtURL:':
+                name: didPickDocument
+            '-documentPickerWasCancelled:':
+                name: wasCancelled
     UIDynamicAnimatorDelegate:
         methods:
             '-dynamicAnimatorWillResume:':
                 name: willResume
             '-dynamicAnimatorDidPause:':
                 name: didPause
-
     UIDynamicItem: {}
     UIGestureRecognizerDelegate:
         methods:
@@ -3030,7 +3116,6 @@ protocols:
                 name: shouldRequireFailure
             '-gestureRecognizer:shouldBeRequiredToFailByGestureRecognizer:':
                 name: shouldBeRequiredToFail
-
     UIGuidedAccessRestrictionDelegate:
         methods:
             '-guidedAccessRestrictionIdentifiers':
@@ -3042,7 +3127,6 @@ protocols:
                 name: getText
             '-detailTextForGuidedAccessRestrictionWithIdentifier:':
                 name: getDetailText
-
     UIImagePickerControllerDelegate:
         protocols: [UINavigationControllerDelegate]
         methods:
@@ -3058,12 +3142,10 @@ protocols:
                 parameters:
                     editingInfo:
                         type: UIImagePickerControllerEditingInfo
-
     UIKeyInput:
         methods:
             '-insertText:':
                 name: insertText
-
     UILayoutSupport: {}
     UINavigationBarDelegate:
         methods:
@@ -3189,7 +3271,22 @@ protocols:
                 name: willStartJob
             '-printInteractionController:cutLengthForPaper:':
                 name: getCutLength
-
+    UIPrinterPickerControllerDelegate: # DONE
+        methods:
+            '-printerPickerControllerParentViewController:':
+                name: getParentViewController
+            '-printerPickerController:shouldShowPrinter:':
+                name: shouldShowPrinter
+            '-printerPickerControllerWillPresent:':
+                name: willPresent
+            '-printerPickerControllerDidPresent:':
+                name: didPresent
+            '-printerPickerControllerWillDismiss:':
+                name: willDismiss
+            '-printerPickerControllerDidDismiss:':
+                name: didDismiss
+            '-printerPickerControllerDidSelectPrinter:':
+                name: didSelectPrinter
     UIScrollViewDelegate:
         methods:
             '-scrollViewDidEndDecelerating:':
@@ -3242,6 +3339,18 @@ protocols:
                 name: didBeginEditing
             '-searchBarTextDidEndEditing:':
                 name: didEndEditing
+    UISearchControllerDelegate: # DONE
+        methods:
+            '-willPresentSearchController:':
+                name: willPresent
+            '-didPresentSearchController:':
+                name: didPresent
+            '-willDismissSearchController:':
+                name: willDismiss
+            '-didDismissSearchController:':
+                name: didDismiss
+            '-presentSearchController:':
+                name: present
     UISearchDisplayDelegate:
         methods:
             '-searchDisplayController:didHideSearchResultsTableView:':
@@ -3268,6 +3377,7 @@ protocols:
                 name: willBeginSearch
             '-searchDisplayControllerWillEndSearch:':
                 name: willEndSearch
+    UISearchResultsUpdating: {}
     UISplitViewControllerDelegate: # DONE
         methods:
             '-splitViewController:popoverController:willPresentViewController:':

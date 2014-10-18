@@ -53,7 +53,7 @@ import org.robovm.apple.dispatch.*;
     /*</constructors>*/
     /*<properties>*/
     @Property(selector = "properties")
-    public native NSDictionary<?, ?> getProperties();
+    public native NSHTTPCookieAttributes getProperties();
     @Property(selector = "version")
     public native @MachineSizedUInt long getVersion();
     @Property(selector = "name")
@@ -77,7 +77,7 @@ import org.robovm.apple.dispatch.*;
     @Property(selector = "commentURL")
     public native NSURL getCommentURL();
     @Property(selector = "portList")
-    public native NSArray<?> getPortList();
+    public native @org.robovm.rt.bro.annotation.Marshaler(NSArray.AsIntegerListMarshaler.class) List<Integer> getPortList();
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/

@@ -82,17 +82,17 @@ import org.robovm.apple.dispatch.*;
     @Property(selector = "setNegativeFormat:")
     public native void setNegativeFormat(String v);
     @Property(selector = "textAttributesForNegativeValues")
-    public native NSDictionary<?, ?> getTextAttributesForNegativeValues();
+    public native NSAttributedStringAttributes getTextAttributesForNegativeValues();
     @Property(selector = "setTextAttributesForNegativeValues:")
-    public native void setTextAttributesForNegativeValues(NSDictionary<?, ?> v);
+    public native void setTextAttributesForNegativeValues(NSAttributedStringAttributes v);
     @Property(selector = "positiveFormat")
     public native String getPositiveFormat();
     @Property(selector = "setPositiveFormat:")
     public native void setPositiveFormat(String v);
     @Property(selector = "textAttributesForPositiveValues")
-    public native NSDictionary<?, ?> getTextAttributesForPositiveValues();
+    public native NSAttributedStringAttributes getTextAttributesForPositiveValues();
     @Property(selector = "setTextAttributesForPositiveValues:")
-    public native void setTextAttributesForPositiveValues(NSDictionary<?, ?> v);
+    public native void setTextAttributesForPositiveValues(NSAttributedStringAttributes v);
     @Property(selector = "allowsFloats")
     public native boolean isAllowsFloats();
     @Property(selector = "setAllowsFloats:")
@@ -122,41 +122,41 @@ import org.robovm.apple.dispatch.*;
     @Property(selector = "setZeroSymbol:")
     public native void setZeroSymbol(String v);
     @Property(selector = "textAttributesForZero")
-    public native NSDictionary<?, ?> getTextAttributesForZero();
+    public native NSAttributedStringAttributes getTextAttributesForZero();
     @Property(selector = "setTextAttributesForZero:")
-    public native void setTextAttributesForZero(NSDictionary<?, ?> v);
+    public native void setTextAttributesForZero(NSAttributedStringAttributes v);
     @Property(selector = "nilSymbol")
-    public native String getNilSymbol();
+    public native String getNullSymbol();
     @Property(selector = "setNilSymbol:")
-    public native void setNilSymbol(String v);
+    public native void setNullSymbol(String v);
     @Property(selector = "textAttributesForNil")
-    public native NSDictionary<?, ?> getTextAttributesForNil();
+    public native NSAttributedStringAttributes getTextAttributesForNull();
     @Property(selector = "setTextAttributesForNil:")
-    public native void setTextAttributesForNil(NSDictionary<?, ?> v);
+    public native void setTextAttributesForNull(NSAttributedStringAttributes v);
     @Property(selector = "notANumberSymbol")
-    public native String getNotANumberSymbol();
+    public native String getNaNSymbol();
     @Property(selector = "setNotANumberSymbol:")
-    public native void setNotANumberSymbol(String v);
+    public native void setNaNSymbol(String v);
     @Property(selector = "textAttributesForNotANumber")
-    public native NSDictionary<?, ?> getTextAttributesForNotANumber();
+    public native NSAttributedStringAttributes getTextAttributesForNaN();
     @Property(selector = "setTextAttributesForNotANumber:")
-    public native void setTextAttributesForNotANumber(NSDictionary<?, ?> v);
+    public native void setTextAttributesForNaN(NSAttributedStringAttributes v);
     @Property(selector = "positiveInfinitySymbol")
     public native String getPositiveInfinitySymbol();
     @Property(selector = "setPositiveInfinitySymbol:")
     public native void setPositiveInfinitySymbol(String v);
     @Property(selector = "textAttributesForPositiveInfinity")
-    public native NSDictionary<?, ?> getTextAttributesForPositiveInfinity();
+    public native NSAttributedStringAttributes getTextAttributesForPositiveInfinity();
     @Property(selector = "setTextAttributesForPositiveInfinity:")
-    public native void setTextAttributesForPositiveInfinity(NSDictionary<?, ?> v);
+    public native void setTextAttributesForPositiveInfinity(NSAttributedStringAttributes v);
     @Property(selector = "negativeInfinitySymbol")
     public native String getNegativeInfinitySymbol();
     @Property(selector = "setNegativeInfinitySymbol:")
     public native void setNegativeInfinitySymbol(String v);
     @Property(selector = "textAttributesForNegativeInfinity")
-    public native NSDictionary<?, ?> getTextAttributesForNegativeInfinity();
+    public native NSAttributedStringAttributes getTextAttributesForNegativeInfinity();
     @Property(selector = "setTextAttributesForNegativeInfinity:")
-    public native void setTextAttributesForNegativeInfinity(NSDictionary<?, ?> v);
+    public native void setTextAttributesForNegativeInfinity(NSAttributedStringAttributes v);
     @Property(selector = "positivePrefix")
     public native String getPositivePrefix();
     @Property(selector = "setPositivePrefix:")

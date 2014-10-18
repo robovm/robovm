@@ -54,15 +54,15 @@ import org.robovm.apple.dispatch.*;
     /*</constructors>*/
     /*<properties>*/
     @Property(selector = "attribute")
-    public native String getAttribute();
+    public native NSMetadataItemAttribute getAttribute();
     @Property(selector = "value")
     public native NSObject getValue();
     @Property(selector = "subgroups")
-    public native NSArray<?> getSubgroups();
+    public native NSArray<NSMetadataQueryResultGroup> getSubgroups();
     @Property(selector = "resultCount")
     public native @MachineSizedUInt long getResultCount();
     @Property(selector = "results")
-    public native NSArray<?> getResults();
+    public native NSArray<NSMetadataItem> getResults();
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/

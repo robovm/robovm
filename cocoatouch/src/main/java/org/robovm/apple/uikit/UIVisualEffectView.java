@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.robovm.apple.foundation;
+package org.robovm.apple.uikit;
 
 /*<imports>*/
 import java.io.*;
@@ -26,42 +26,42 @@ import org.robovm.rt.*;
 import org.robovm.rt.bro.*;
 import org.robovm.rt.bro.annotation.*;
 import org.robovm.rt.bro.ptr.*;
-import org.robovm.apple.corefoundation.*;
-import org.robovm.apple.uikit.*;
+import org.robovm.apple.foundation.*;
 import org.robovm.apple.coreanimation.*;
 import org.robovm.apple.coregraphics.*;
-import org.robovm.apple.coremedia.*;
-import org.robovm.apple.security.*;
-import org.robovm.apple.dispatch.*;
+import org.robovm.apple.coredata.*;
+import org.robovm.apple.coreimage.*;
+import org.robovm.apple.coretext.*;
+import org.robovm.apple.corelocation.*;
 /*</imports>*/
 
 /*<javadoc>*/
 /**
- * @since Available in iOS 5.0 and later.
+ * @since Available in iOS 8.0 and later.
  */
 /*</javadoc>*/
-/*<annotations>*/@Library("Foundation") @NativeClass/*</annotations>*/
-/*<visibility>*/public/*</visibility>*/ class /*<name>*/NSMetadataQueryAttributeValueTuple/*</name>*/ 
-    extends /*<extends>*/NSObject/*</extends>*/ 
+/*<annotations>*/@Library("UIKit") @NativeClass/*</annotations>*/
+/*<visibility>*/public/*</visibility>*/ class /*<name>*/UIVisualEffectView/*</name>*/ 
+    extends /*<extends>*/UIView/*</extends>*/ 
     /*<implements>*//*</implements>*/ {
 
-    /*<ptr>*/public static class NSMetadataQueryAttributeValueTuplePtr extends Ptr<NSMetadataQueryAttributeValueTuple, NSMetadataQueryAttributeValueTuplePtr> {}/*</ptr>*/
-    /*<bind>*/static { ObjCRuntime.bind(NSMetadataQueryAttributeValueTuple.class); }/*</bind>*/
+    /*<ptr>*/public static class UIVisualEffectViewPtr extends Ptr<UIVisualEffectView, UIVisualEffectViewPtr> {}/*</ptr>*/
+    /*<bind>*/static { ObjCRuntime.bind(UIVisualEffectView.class); }/*</bind>*/
     /*<constants>*//*</constants>*/
     /*<constructors>*/
-    public NSMetadataQueryAttributeValueTuple() {}
-    protected NSMetadataQueryAttributeValueTuple(SkipInit skipInit) { super(skipInit); }
+    public UIVisualEffectView() {}
+    protected UIVisualEffectView(SkipInit skipInit) { super(skipInit); }
+    public UIVisualEffectView(UIVisualEffect effect) { super((SkipInit) null); initObject(initWithEffect$(effect)); }
     /*</constructors>*/
     /*<properties>*/
-    @Property(selector = "attribute")
-    public native NSMetadataItemAttribute getAttribute();
-    @Property(selector = "value")
-    public native NSObject getValue();
-    @Property(selector = "count")
-    public native @MachineSizedUInt long getCount();
+    @Property(selector = "contentView")
+    public native UIView getContentView();
+    @Property(selector = "effect")
+    public native UIVisualEffect getEffect();
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
-    
+    @Method(selector = "initWithEffect:")
+    protected native @Pointer long initWithEffect$(UIVisualEffect effect);
     /*</methods>*/
 }

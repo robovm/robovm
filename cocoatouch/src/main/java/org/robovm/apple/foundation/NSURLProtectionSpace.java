@@ -56,22 +56,22 @@ import org.robovm.apple.dispatch.*;
     @Property(selector = "receivesCredentialSecurely")
     public native boolean isReceivesCredentialSecurely();
     @Property(selector = "isProxy")
-    public native boolean isIsProxy();
+    public native boolean isProxy();
     @Property(selector = "host")
     public native String getHost();
     @Property(selector = "port")
     public native @MachineSizedSInt long getPort();
     @Property(selector = "proxyType")
-    public native String getProxyType();
+    public native NSURLProtectionSpaceProxyType getProxyType();
     @Property(selector = "protocol")
-    public native String getProtocol();
+    public native NSURLProtectionSpaceProtocol getProtocol();
     @Property(selector = "authenticationMethod")
-    public native String getAuthenticationMethod();
+    public native NSURLAuthenticationMethod getAuthenticationMethod();
     /**
      * @since Available in iOS 3.0 and later.
      */
     @Property(selector = "distinguishedNames")
-    public native NSArray<?> getDistinguishedNames();
+    public native @org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String> getDistinguishedNames();
     /**
      * @since Available in iOS 3.0 and later.
      */

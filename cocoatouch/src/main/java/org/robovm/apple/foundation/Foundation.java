@@ -390,11 +390,6 @@ import org.robovm.apple.dispatch.*;
     /**
      * @since Available in iOS 8.0 and later.
      */
-    @GlobalValue(symbol="NSItemProviderPreferredImageSizeKey", optional=true)
-    public static native String ItemProviderPreferredImageSizeKey();
-    /**
-     * @since Available in iOS 8.0 and later.
-     */
     @GlobalValue(symbol="NSExtensionJavaScriptPreprocessingResultsKey", optional=true)
     public static native String ExtensionJavaScriptPreprocessingResultsKey();
     /**

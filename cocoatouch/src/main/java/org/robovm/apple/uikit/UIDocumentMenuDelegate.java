@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.robovm.apple.adsupport;
+package org.robovm.apple.uikit;
 
 /*<imports>*/
 import java.io.*;
@@ -27,34 +27,35 @@ import org.robovm.rt.bro.*;
 import org.robovm.rt.bro.annotation.*;
 import org.robovm.rt.bro.ptr.*;
 import org.robovm.apple.foundation.*;
+import org.robovm.apple.coreanimation.*;
+import org.robovm.apple.coregraphics.*;
+import org.robovm.apple.coredata.*;
+import org.robovm.apple.coreimage.*;
+import org.robovm.apple.coretext.*;
+import org.robovm.apple.corelocation.*;
 /*</imports>*/
 
 /*<javadoc>*/
-/**
- * @since Available in iOS 6.0 and later.
- */
-/*</javadoc>*/
-/*<annotations>*/@Library("AdSupport") @NativeClass/*</annotations>*/
-/*<visibility>*/public/*</visibility>*/ class /*<name>*/ASIdentifierManager/*</name>*/ 
-    extends /*<extends>*/NSObject/*</extends>*/ 
-    /*<implements>*//*</implements>*/ {
 
-    /*<ptr>*/public static class ASIdentifierManagerPtr extends Ptr<ASIdentifierManager, ASIdentifierManagerPtr> {}/*</ptr>*/
-    /*<bind>*/static { ObjCRuntime.bind(ASIdentifierManager.class); }/*</bind>*/
+/*</javadoc>*/
+/*<annotations>*//*</annotations>*/
+/*<visibility>*/public/*</visibility>*/ interface /*<name>*/UIDocumentMenuDelegate/*</name>*/ 
+    /*<implements>*/extends NSObjectProtocol/*</implements>*/ {
+
+    /*<ptr>*/
+    /*</ptr>*/
+    /*<bind>*/
+    /*</bind>*/
     /*<constants>*//*</constants>*/
-    /*<constructors>*/
-    public ASIdentifierManager() {}
-    protected ASIdentifierManager(SkipInit skipInit) { super(skipInit); }
-    /*</constructors>*/
     /*<properties>*/
-    @Property(selector = "advertisingIdentifier")
-    public native NSUUID getAdvertisingIdentifier();
-    @Property(selector = "isAdvertisingTrackingEnabled")
-    public native boolean isAdvertisingTrackingEnabled();
+    
     /*</properties>*/
-    /*<members>*//*</members>*/
     /*<methods>*/
-    @Method(selector = "sharedManager")
-    public static native ASIdentifierManager getSharedManager();
+    @Method(selector = "documentMenu:didPickDocumentPicker:")
+    void didPickDocumentPicker(UIDocumentMenuViewController documentMenu, UIDocumentPickerViewController documentPicker);
+    @Method(selector = "documentMenuWasCancelled:")
+    void wasCancelled(UIDocumentMenuViewController documentMenu);
     /*</methods>*/
+    /*<adapter>*/
+    /*</adapter>*/
 }

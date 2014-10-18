@@ -73,8 +73,12 @@ import org.robovm.apple.dispatch.*;
      * @since Available in iOS 5.0 and later.
      */
     public static final NSMetadataQueryScope UbiquitousData = new NSMetadataQueryScope("UbiquitousDataValue");
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    public static final NSMetadataQueryScope AccessibleUbiquitousExternalDocuments = new NSMetadataQueryScope("AccessibleUbiquitousExternalDocumentsValue");
     
-    private static NSMetadataQueryScope[] values = new NSMetadataQueryScope[] {UbiquitousDocuments, UbiquitousData};
+    private static NSMetadataQueryScope[] values = new NSMetadataQueryScope[] {UbiquitousDocuments, UbiquitousData, AccessibleUbiquitousExternalDocuments};
     private final LazyGlobalValue<NSString> lazyGlobalValue;
     
     private NSMetadataQueryScope(String getterName) {

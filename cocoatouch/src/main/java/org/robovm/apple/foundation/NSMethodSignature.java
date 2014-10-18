@@ -56,7 +56,7 @@ import org.robovm.apple.dispatch.*;
     @Property(selector = "frameLength")
     public native @MachineSizedUInt long getFrameLength();
     @Property(selector = "methodReturnType")
-    public native BytePtr getMethodReturnType();
+    public native @org.robovm.rt.bro.annotation.Marshaler(StringMarshalers.AsDefaultCharsetZMarshaler.class) String getMethodReturnType();
     @Property(selector = "methodReturnLength")
     public native @MachineSizedUInt long getMethodReturnLength();
     /*</properties>*/

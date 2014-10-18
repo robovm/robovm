@@ -69,7 +69,7 @@ import org.robovm.apple.dispatch.*;
     @Property(selector = "isReady")
     public native boolean isReady();
     @Property(selector = "dependencies")
-    public native NSArray<?> getDependencies();
+    public native NSArray<NSOperation> getDependencies();
     @Property(selector = "queuePriority")
     public native NSOperationQueuePriority getQueuePriority();
     @Property(selector = "setQueuePriority:")

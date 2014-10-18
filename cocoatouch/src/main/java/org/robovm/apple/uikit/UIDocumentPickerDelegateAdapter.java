@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.robovm.apple.foundation;
+package org.robovm.apple.uikit;
 
 /*<imports>*/
 import java.io.*;
@@ -26,42 +26,36 @@ import org.robovm.rt.*;
 import org.robovm.rt.bro.*;
 import org.robovm.rt.bro.annotation.*;
 import org.robovm.rt.bro.ptr.*;
-import org.robovm.apple.corefoundation.*;
-import org.robovm.apple.uikit.*;
+import org.robovm.apple.foundation.*;
 import org.robovm.apple.coreanimation.*;
 import org.robovm.apple.coregraphics.*;
-import org.robovm.apple.coremedia.*;
-import org.robovm.apple.security.*;
-import org.robovm.apple.dispatch.*;
+import org.robovm.apple.coredata.*;
+import org.robovm.apple.coreimage.*;
+import org.robovm.apple.coretext.*;
+import org.robovm.apple.corelocation.*;
 /*</imports>*/
 
 /*<javadoc>*/
-/**
- * @since Available in iOS 5.0 and later.
- */
 /*</javadoc>*/
-/*<annotations>*/@Library("Foundation") @NativeClass/*</annotations>*/
-/*<visibility>*/public/*</visibility>*/ class /*<name>*/NSMetadataQueryAttributeValueTuple/*</name>*/ 
+/*<annotations>*//*</annotations>*/
+/*<visibility>*/public/*</visibility>*/ class /*<name>*/UIDocumentPickerDelegateAdapter/*</name>*/ 
     extends /*<extends>*/NSObject/*</extends>*/ 
-    /*<implements>*//*</implements>*/ {
+    /*<implements>*/implements UIDocumentPickerDelegate/*</implements>*/ {
 
-    /*<ptr>*/public static class NSMetadataQueryAttributeValueTuplePtr extends Ptr<NSMetadataQueryAttributeValueTuple, NSMetadataQueryAttributeValueTuplePtr> {}/*</ptr>*/
-    /*<bind>*/static { ObjCRuntime.bind(NSMetadataQueryAttributeValueTuple.class); }/*</bind>*/
+    /*<ptr>*/
+    /*</ptr>*/
+    /*<bind>*/
+    /*</bind>*/
     /*<constants>*//*</constants>*/
-    /*<constructors>*/
-    public NSMetadataQueryAttributeValueTuple() {}
-    protected NSMetadataQueryAttributeValueTuple(SkipInit skipInit) { super(skipInit); }
-    /*</constructors>*/
+    /*<constructors>*//*</constructors>*/
     /*<properties>*/
-    @Property(selector = "attribute")
-    public native NSMetadataItemAttribute getAttribute();
-    @Property(selector = "value")
-    public native NSObject getValue();
-    @Property(selector = "count")
-    public native @MachineSizedUInt long getCount();
+    
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
-    
+    @NotImplemented("documentPicker:didPickDocumentAtURL:")
+    public void didPickDocument(UIDocumentPickerViewController controller, NSURL url) { throw new UnsupportedOperationException(); }
+    @NotImplemented("documentPickerWasCancelled:")
+    public void wasCancelled(UIDocumentPickerViewController controller) { throw new UnsupportedOperationException(); }
     /*</methods>*/
 }

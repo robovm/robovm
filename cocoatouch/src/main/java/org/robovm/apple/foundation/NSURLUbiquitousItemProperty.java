@@ -96,9 +96,18 @@ import org.robovm.apple.dispatch.*;
      * @since Available in iOS 7.0 and later.
      */
     public static final NSURLUbiquitousItemProperty UploadingError = new NSURLUbiquitousItemProperty("UploadingErrorValue");
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    public static final NSURLUbiquitousItemProperty DownloadRequested = new NSURLUbiquitousItemProperty("DownloadRequestedValue");
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    public static final NSURLUbiquitousItemProperty ContainerDisplayName = new NSURLUbiquitousItemProperty("ContainerDisplayNameValue");
+    
     
     private static NSURLUbiquitousItemProperty[] values = new NSURLUbiquitousItemProperty[] {IsUbiquitousItem, HasUnresolvedConflicts, IsDownloading, IsUploaded, IsUploading, PercentDownloaded, 
-        PercentUploaded, IsDownloaded, DownloadingStatus, DownloadingError, UploadingError};
+        PercentUploaded, IsDownloaded, DownloadingStatus, DownloadingError, UploadingError, DownloadRequested, ContainerDisplayName};
     private final LazyGlobalValue<NSString> lazyGlobalValue;
     
     private NSURLUbiquitousItemProperty(String getterName) {

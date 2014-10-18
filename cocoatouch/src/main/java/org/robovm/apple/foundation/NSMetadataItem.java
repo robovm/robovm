@@ -54,7 +54,7 @@ import org.robovm.apple.dispatch.*;
     /*</constructors>*/
     /*<properties>*/
     @Property(selector = "attributes")
-    public native NSArray<?> getAttributes();
+    public native @org.robovm.rt.bro.annotation.Marshaler(NSMetadataItemAttribute.AsListMarshaler.class) List<NSMetadataItemAttribute> getAttributes();
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/

@@ -54,10 +54,6 @@ import org.robovm.apple.dispatch.*;
     /*<properties>*/
     @Property(selector = "mutableBytes")
     protected native @Pointer long getMutableBytes();
-    @Property(selector = "length")
-    public native @MachineSizedUInt long getLength();
-    @Property(selector = "setLength:")
-    public native void setLength(@MachineSizedUInt long v);
     /*</properties>*/
     /*<members>*//*</members>*/
     

@@ -56,16 +56,14 @@ import org.robovm.compiler.log.ConsoleLogger;
 import org.robovm.compiler.plugin.LaunchPlugin;
 import org.robovm.compiler.plugin.Plugin;
 import org.robovm.compiler.plugin.PluginArgument;
+import org.robovm.compiler.plugin.RequiresInputStream;
 import org.robovm.compiler.target.LaunchParameters;
 import org.robovm.compiler.target.ios.DeviceType;
-import org.robovm.compiler.target.ios.IOSDeviceLaunchParameters;
 import org.robovm.compiler.target.ios.IOSSimulatorLaunchParameters;
 import org.robovm.compiler.target.ios.IOSTarget;
 import org.robovm.compiler.target.ios.ProvisioningProfile;
-import org.robovm.compiler.target.ios.SDK;
 import org.robovm.compiler.target.ios.SigningIdentity;
 import org.robovm.compiler.util.AntPathMatcher;
-import org.robovm.libimobiledevice.util.AppLauncher;
 
 /**
  *
@@ -578,7 +576,7 @@ public class AppCompiler {
                     }
                 }
                 launchParameters.setArguments(runArgs);
-                launch(compiler, launchParameters);
+                compiler.launch(launchParameters);
             } else if (createIpa) {
                 ((IOSTarget) compiler.config.getTarget()).createIpa();
             } else {
@@ -593,28 +591,49 @@ public class AppCompiler {
         }
     }
 
-    private static void launch(AppCompiler compiler, LaunchParameters launchParameters) throws Throwable {
-        for (LaunchPlugin plugin : compiler.config.getLaunchPlugins()) {
-            plugin.beforeLaunch(compiler.config, launchParameters);
-        }
+    public int launch(LaunchParameters launchParameters) throws Throwable {
+        return launch(launchParameters, null);
+    }
+
+    public int launch(LaunchParameters launchParameters, InputStream inputStream) throws Throwable {
         try {
-            Process process = compiler.config.getTarget().launch(launchParameters);
-            for (LaunchPlugin plugin : compiler.config.getLaunchPlugins()) {
-                plugin.afterLaunch(compiler.config, launchParameters, process);
-            }
-            process.waitFor();
-        } catch (Throwable e) {
-            for (LaunchPlugin plugin : compiler.config.getLaunchPlugins()) {
-                plugin.launchFailed(compiler.config, launchParameters);
-            }
-            throw e;
+            return launchAsync(launchParameters, inputStream).waitFor();
         } finally {
-            for (LaunchPlugin plugin : compiler.config.getLaunchPlugins()) {
-                plugin.cleanup();
-            }
+            launchAsyncCleanup();
         }
     }
-    
+
+    public Process launchAsync(LaunchParameters launchParameters) throws Throwable {
+        return launchAsync(launchParameters, null);
+    }
+
+    public Process launchAsync(LaunchParameters launchParameters, InputStream inputStream) throws Throwable {
+        for (LaunchPlugin plugin : config.getLaunchPlugins()) {
+            plugin.beforeLaunch(config, launchParameters);
+            if (inputStream != null && plugin instanceof RequiresInputStream) {
+                ((RequiresInputStream) plugin).setInputStream(inputStream);
+            }
+        }
+        try {
+            Process process = config.getTarget().launch(launchParameters);
+            for (LaunchPlugin plugin : config.getLaunchPlugins()) {
+                plugin.afterLaunch(config, launchParameters, process);
+            }
+            return process;
+        } catch (Throwable e) {
+            for (LaunchPlugin plugin : config.getLaunchPlugins()) {
+                plugin.launchFailed(config, launchParameters);
+            }
+            throw e;
+        }
+    }
+
+    public void launchAsyncCleanup() {
+        for (LaunchPlugin plugin : config.getLaunchPlugins()) {
+            plugin.cleanup();
+        }
+    }
+
     private static void printDeviceTypesAndExit(Home home) throws IOException {
         List<DeviceType> types = DeviceType.listDeviceTypes(home);
         for (DeviceType type : types) {

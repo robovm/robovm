@@ -1232,20 +1232,26 @@ public class Config {
          * <p>
          * If none of the files can be found found this method does nothing.
          */
-        public void readProjectProprties(File basedir, boolean isTest) throws IOException {
+        public void readProjectProperties(File basedir, boolean isTest) throws IOException {
             File testPropsFile = new File(basedir, "robovm.test.properties");
             File localPropsFile = new File(basedir, "robovm.local.properties");
             File propsFile = new File(basedir, "robovm.properties");
             if (isTest && testPropsFile.exists()) {
+                config.logger.debug("Loading test RoboVM config properties file: " 
+                        + testPropsFile.getAbsolutePath());
                 addProperties(testPropsFile);
             } else {
                 Properties props = new Properties();
                 if (propsFile.exists()) {
+                    config.logger.debug("Loading default RoboVM config properties file: " 
+                            + propsFile.getAbsolutePath());
                     try (Reader reader = new InputStreamReader(new FileInputStream(propsFile), "utf-8")) {
                         props.load(reader);
                     }
                 }
                 if (localPropsFile.exists()) {
+                    config.logger.debug("Loading local RoboVM config properties file: " 
+                            + localPropsFile.getAbsolutePath());
                     try (Reader reader = new InputStreamReader(new FileInputStream(localPropsFile), "utf-8")) {
                         props.load(reader);
                     }
@@ -1253,13 +1259,15 @@ public class Config {
                 if (isTest) {
                     String appId = props.getProperty("app.id");
                     if (appId != null && !appId.endsWith("Test")) {
-                        appId = appId + "Test";
-                        props.setProperty("app.id", appId);
+                        String newAppId = appId + "Test";
+                        config.logger.debug("Changing app.id property from '%s' to '%s'", appId, newAppId);
+                        props.setProperty("app.id", newAppId);
                     }
                     String appName = props.getProperty("app.name");
                     if (appName != null && !appName.endsWith("Test")) {
-                        appName = appName + "Test";
-                        props.setProperty("app.name", appName);
+                        String newAppName = appName + "Test";
+                        config.logger.debug("Changing app.name property from '%s' to '%s'", appName, newAppName);
+                        props.setProperty("app.name", newAppName);
                     }
                 }
                 addProperties(props);
@@ -1281,8 +1289,12 @@ public class Config {
             File testConfigFile = new File(basedir, "robovm.test.xml");
             File configFile = new File(basedir, "robovm.xml");
             if (isTest && testConfigFile.exists()) {
+                config.logger.debug("Loading test RoboVM config file: " 
+                        + testConfigFile.getAbsolutePath());
                 read(testConfigFile);
             } else if (configFile.exists()) {
+                config.logger.debug("Loading default RoboVM config file: " 
+                        + configFile.getAbsolutePath());
                 read(configFile);
             }
         }

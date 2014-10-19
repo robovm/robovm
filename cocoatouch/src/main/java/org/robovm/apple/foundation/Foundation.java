@@ -222,6 +222,58 @@ import org.robovm.apple.dispatch.*;
     @Bridge(symbol = "NSLog")
     public native static void log(String format, NSObject arg1, NSObject arg2, NSObject arg3, NSObject arg4, NSObject arg5);
     
+    private static String systemVersionString;
+    private static int majorSystemVersion;
+    private static int minorSystemVersion;
+    private static int patchSystemVersion;
+    
+    /**
+     * Cached convenience method for {@link UIDevice#getSystemVersion()}.
+     * @return the OS version that this app is running on.
+     */
+    public static String getSystemVersionString() {
+        return systemVersionString;
+    }
+    /**
+     * @return the major part of the running OS version.
+     */
+    public static int getMajorSystemVersion() {
+        if (majorSystemVersion == 0) fetchSystemVersion(); // Lazily fetch the device's system version.
+        return majorSystemVersion;
+    }
+    /**
+     * @return the minor part of the running OS version.
+     */
+    public static int getMinorSystemVersion() {
+        if (majorSystemVersion == 0) fetchSystemVersion(); // Lazily fetch the device's system version.
+        return minorSystemVersion;
+    }
+    /**
+     * @return the patch part of the running OS version.
+     */
+    public static int getPatchSystemVersion() {
+        if (majorSystemVersion == 0) fetchSystemVersion(); // Lazily fetch the device's system version.
+        return patchSystemVersion;
+    }
+    
+    /**
+     * Retrieve and store the device system version.
+     */
+    private static void fetchSystemVersion() {
+        String version = UIDevice.getCurrentDevice().getSystemVersion();
+        systemVersionString = version;
+        
+        if (version != null) {
+            String[] parts = version.split("\\.");
+            if (parts.length > 0) majorSystemVersion = Integer.valueOf(parts[0]);
+            if (parts.length > 1) minorSystemVersion = Integer.valueOf(parts[1]);
+            if (parts.length > 2) patchSystemVersion = Integer.valueOf(parts[2]);
+        } else {
+            // Default to minimum OS version that RoboVM supports.
+            majorSystemVersion = 6;
+        }
+    }
+    
     /*<methods>*/
     @GlobalValue(symbol="NSFoundationVersionNumber", optional=true)
     public static native double FoundationVersionNumber();

@@ -261,7 +261,7 @@ import org.robovm.apple.dispatch.*;
     public NSObject getPromisedItemResourceValue(NSURLProperty key) {
         NSObject.NSObjectPtr ptr = new NSObject.NSObjectPtr();
         NSError.NSErrorPtr error = new NSError.NSErrorPtr(); // TODO error
-        if (getPromisedItemResourceValue(ptr, key, error)) {
+        if (getPromisedItemResourceValue(ptr, key.value(), error)) {
             return ptr.get();
         }
         return null;
@@ -376,7 +376,7 @@ import org.robovm.apple.dispatch.*;
      * @since Available in iOS 8.0 and later.
      */
     @Method(selector = "getPromisedItemResourceValue:forKey:error:")
-    protected native boolean getPromisedItemResourceValue(NSObject.NSObjectPtr value, NSURLProperty key, NSError.NSErrorPtr error);
+    protected native boolean getPromisedItemResourceValue(NSObject.NSObjectPtr value, NSString key, NSError.NSErrorPtr error);
     /**
      * @since Available in iOS 8.0 and later.
      */

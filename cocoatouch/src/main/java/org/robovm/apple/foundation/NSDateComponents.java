@@ -179,6 +179,12 @@ import org.robovm.apple.dispatch.*;
     public native boolean isValidDate();
     /*</properties>*/
     /*<members>*//*</members>*/
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    public void setValue(NSCalendarUnit unit, @MachineSizedSInt long value) {
+        setValue(value, unit);
+    }
     /*<methods>*/
     /**
      * @since Available in iOS 2.0 and later.
@@ -198,16 +204,16 @@ import org.robovm.apple.dispatch.*;
      * @since Available in iOS 8.0 and later.
      */
     @Method(selector = "setValue:forComponent:")
-    public native void setValue$forComponent$(@MachineSizedSInt long value, NSCalendarUnit unit);
+    protected native void setValue(@MachineSizedSInt long value, NSCalendarUnit unit);
     /**
      * @since Available in iOS 8.0 and later.
      */
     @Method(selector = "valueForComponent:")
-    public native @MachineSizedSInt long valueForComponent$(NSCalendarUnit unit);
+    public native @MachineSizedSInt long getValue(NSCalendarUnit unit);
     /**
      * @since Available in iOS 8.0 and later.
      */
     @Method(selector = "isValidDateInCalendar:")
-    public native boolean isValidDateInCalendar$(NSCalendar calendar);
+    public native boolean isValidDateInCalendar(NSCalendar calendar);
     /*</methods>*/
 }

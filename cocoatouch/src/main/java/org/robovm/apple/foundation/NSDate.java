@@ -76,16 +76,10 @@ import org.robovm.apple.dispatch.*;
     public native double getTimeIntervalSinceNow();
     @Property(selector = "timeIntervalSince1970")
     public native double getTimeIntervalSince1970();
-    @Property(selector = "description")
-    public native String getDescription();
     /*</properties>*/
     /*<members>*//*</members>*/
     public Date toDate() {
         return new Date((long) (getTimeIntervalSince1970() * 1000.0));
-    }
-    
-    public String toString(NSLocale locale) {
-        return description(locale);
     }
     /*<methods>*/
     /**
@@ -110,7 +104,7 @@ import org.robovm.apple.dispatch.*;
     @Method(selector = "isEqualToDate:")
     public native boolean isEqualTo(NSDate otherDate);
     @Method(selector = "descriptionWithLocale:")
-    public native String description(NSLocale locale);
+    public native String toString(NSLocale locale);
     @Method(selector = "initWithTimeIntervalSince1970:")
     protected native @Pointer long initWithTimeIntervalSince1970$(double secs);
     @Method(selector = "date")

@@ -236,11 +236,28 @@ import org.robovm.apple.dispatch.*;
      * @since Available in iOS 5.0 and later.
      */
     public static final NSURLFileSystemProperty FileResourceType = new NSURLFileSystemProperty("FileResourceTypeValue");
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    public static final NSURLFileSystemProperty GenerationIdentifier = new NSURLFileSystemProperty("GenerationIdentifierValue");
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    public static final NSURLFileSystemProperty DocumentIdentifier = new NSURLFileSystemProperty("DocumentIdentifierValue");
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    public static final NSURLFileSystemProperty AddedToDirectoryDate = new NSURLFileSystemProperty("AddedToDirectoryDateValue");
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    public static final NSURLFileSystemProperty ThumbnailDictionary = new NSURLFileSystemProperty("ThumbnailDictionaryValue");
+    
     
     private static NSURLFileSystemProperty[] values = new NSURLFileSystemProperty[] {Name, LocalizedName, IsRegularFile, IsDirectory, IsSymbolicLink, IsVolume, IsPackage, IsSystemImmutable, 
         IsUserImmutable, IsHidden, HasHiddenExtension, CreationDate, ContentAccessDate, ContentModificationDate, AttributeModificationDate, LinkCount, ParentDirectoryURL, VolumeURL, TypeIdentifier, 
         LocalizedTypeDescription, LabelNumber, LabelNumber, LabelColor, LocalizedLabel, EffectiveIcon, CustomIcon, FileResourceIdentifier, VolumeIdentifier, PreferredIOBlockSize, IsReadable, 
-        IsWritable, IsExecutable, FileSecurity, IsMountTrigger, FileResourceType, IsExcludedFromBackup, Path};
+        IsWritable, IsExecutable, FileSecurity, IsMountTrigger, FileResourceType, IsExcludedFromBackup, Path, GenerationIdentifier, DocumentIdentifier, AddedToDirectoryDate, ThumbnailDictionary};
     private final LazyGlobalValue<NSString> lazyGlobalValue;
     
     private NSURLFileSystemProperty(String getterName) {

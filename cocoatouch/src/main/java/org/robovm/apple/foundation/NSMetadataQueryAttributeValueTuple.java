@@ -54,7 +54,7 @@ import org.robovm.apple.dispatch.*;
     /*</constructors>*/
     /*<properties>*/
     @Property(selector = "attribute")
-    public native String getAttribute();
+    public native NSMetadataItemAttribute getAttribute();
     @Property(selector = "value")
     public native NSObject getValue();
     @Property(selector = "count")

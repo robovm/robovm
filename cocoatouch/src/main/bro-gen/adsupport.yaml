@@ -13,7 +13,10 @@ classes:
     AdSupport:
         annotations: ['@Marshaler(NSString.AsStringMarshaler.class)']
 
-    ASIdentifierManager: {}
+    ASIdentifierManager: # DONE
+        methods:
+            '+sharedManager':
+                property: true
 
 protocols: {}
 

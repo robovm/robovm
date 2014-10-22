@@ -137,7 +137,39 @@ import org.robovm.apple.dispatch.*;
         setProperty(NSStreamProperty.NetworkServiceType, serviceType.value());
         return this;
     }
-
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    public static NSInputStream getInputStreamToHost(String hostname, @MachineSizedSInt long port) {
+        NSInputStream.NSInputStreamPtr ptr = new NSInputStream.NSInputStreamPtr();
+        getStreamsToHostWithName$port$inputStream$outputStream$(hostname, port, ptr, new NSOutputStream.NSOutputStreamPtr());
+        return ptr.get();
+    }
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    public static NSOutputStream getOutputStreamToHost(String hostname, @MachineSizedSInt long port) {
+        NSOutputStream.NSOutputStreamPtr ptr = new NSOutputStream.NSOutputStreamPtr();
+        getStreamsToHostWithName$port$inputStream$outputStream$(hostname, port, new NSInputStream.NSInputStreamPtr(), ptr);
+        return ptr.get();
+    }
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    public static NSInputStream getBoundInputStream(@MachineSizedUInt long bufferSize) {
+        NSInputStream.NSInputStreamPtr ptr = new NSInputStream.NSInputStreamPtr();
+        getBoundStreamsWithBufferSize$inputStream$outputStream$(bufferSize, ptr, new NSOutputStream.NSOutputStreamPtr());
+        return ptr.get();
+    }
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    public static NSOutputStream getBoundOutputStream(@MachineSizedUInt long bufferSize) {
+        NSOutputStream.NSOutputStreamPtr ptr = new NSOutputStream.NSOutputStreamPtr();
+        getBoundStreamsWithBufferSize$inputStream$outputStream$(bufferSize, new NSInputStream.NSInputStreamPtr(), ptr);
+        return ptr.get();
+    }
+    
     
     public void scheduleInRunLoop(NSRunLoop aRunLoop, NSRunLoopMode mode) {
         scheduleInRunLoop(aRunLoop, mode.value());
@@ -162,11 +194,11 @@ import org.robovm.apple.dispatch.*;
      * @since Available in iOS 8.0 and later.
      */
     @Method(selector = "getStreamsToHostWithName:port:inputStream:outputStream:")
-    public static native void getStreamsToHostWithName$port$inputStream$outputStream$(String hostname, @MachineSizedSInt long port, NSInputStream.NSInputStreamPtr inputStream, NSOutputStream.NSOutputStreamPtr outputStream);
+    protected static native void getStreamsToHostWithName$port$inputStream$outputStream$(String hostname, @MachineSizedSInt long port, NSInputStream.NSInputStreamPtr inputStream, NSOutputStream.NSOutputStreamPtr outputStream);
     /**
      * @since Available in iOS 8.0 and later.
      */
     @Method(selector = "getBoundStreamsWithBufferSize:inputStream:outputStream:")
-    public static native void getBoundStreamsWithBufferSize$inputStream$outputStream$(@MachineSizedUInt long bufferSize, NSInputStream.NSInputStreamPtr inputStream, NSOutputStream.NSOutputStreamPtr outputStream);
+    protected static native void getBoundStreamsWithBufferSize$inputStream$outputStream$(@MachineSizedUInt long bufferSize, NSInputStream.NSInputStreamPtr inputStream, NSOutputStream.NSOutputStreamPtr outputStream);
     /*</methods>*/
 }

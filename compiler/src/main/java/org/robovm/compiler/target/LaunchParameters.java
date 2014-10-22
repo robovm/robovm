@@ -17,16 +17,14 @@
 package org.robovm.compiler.target;
 
 import java.io.File;
-import java.util.Collections;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
 /**
- * @author niklas
- *
  */
 public class LaunchParameters {
-    private List<String> arguments = Collections.emptyList();
+    private List<String> arguments = new ArrayList<>();
     private Map<String, String> environment = null;
     private File workingDirectory = new File(".");
     private File stdoutFifo = null;

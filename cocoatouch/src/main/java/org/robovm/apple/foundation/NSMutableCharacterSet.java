@@ -54,6 +54,12 @@ import org.robovm.apple.dispatch.*;
     
     /*</properties>*/
     /*<members>*//*</members>*/
+    public static NSMutableCharacterSet create(File file) {
+        if (file == null) {
+            throw new NullPointerException("file");
+        }
+        return characterSetWithContentsOfFile$(file.getAbsolutePath());
+    }
     /*<methods>*/
     @Method(selector = "addCharactersInRange:")
     public native void addCharacters(@ByVal NSRange aRange);
@@ -70,45 +76,45 @@ import org.robovm.apple.dispatch.*;
     @Method(selector = "invert")
     public native void invert();
     @Method(selector = "controlCharacterSet")
-    public static native NSMutableCharacterSet controlCharacterSet();
+    public static native NSMutableCharacterSet getControlCharacterSet();
     @Method(selector = "whitespaceCharacterSet")
-    public static native NSMutableCharacterSet whitespaceCharacterSet();
+    public static native NSMutableCharacterSet getWhitespaceCharacterSet();
     @Method(selector = "whitespaceAndNewlineCharacterSet")
-    public static native NSMutableCharacterSet whitespaceAndNewlineCharacterSet();
+    public static native NSMutableCharacterSet getWhitespaceAndNewlineCharacterSet();
     @Method(selector = "decimalDigitCharacterSet")
-    public static native NSMutableCharacterSet decimalDigitCharacterSet();
+    public static native NSMutableCharacterSet getDecimalDigitCharacterSet();
     @Method(selector = "letterCharacterSet")
-    public static native NSMutableCharacterSet letterCharacterSet();
+    public static native NSMutableCharacterSet getLetterCharacterSet();
     @Method(selector = "lowercaseLetterCharacterSet")
-    public static native NSMutableCharacterSet lowercaseLetterCharacterSet();
+    public static native NSMutableCharacterSet getLowercaseLetterCharacterSet();
     @Method(selector = "uppercaseLetterCharacterSet")
-    public static native NSMutableCharacterSet uppercaseLetterCharacterSet();
+    public static native NSMutableCharacterSet getUppercaseLetterCharacterSet();
     @Method(selector = "nonBaseCharacterSet")
-    public static native NSMutableCharacterSet nonBaseCharacterSet();
+    public static native NSMutableCharacterSet getNonBaseCharacterSet();
     @Method(selector = "alphanumericCharacterSet")
-    public static native NSMutableCharacterSet alphanumericCharacterSet();
+    public static native NSMutableCharacterSet getAlphanumericCharacterSet();
     @Method(selector = "decomposableCharacterSet")
-    public static native NSMutableCharacterSet decomposableCharacterSet();
+    public static native NSMutableCharacterSet getDecomposableCharacterSet();
     @Method(selector = "illegalCharacterSet")
-    public static native NSMutableCharacterSet illegalCharacterSet();
+    public static native NSMutableCharacterSet getIllegalCharacterSet();
     @Method(selector = "punctuationCharacterSet")
-    public static native NSMutableCharacterSet punctuationCharacterSet();
+    public static native NSMutableCharacterSet getPunctuationCharacterSet();
     @Method(selector = "capitalizedLetterCharacterSet")
-    public static native NSMutableCharacterSet capitalizedLetterCharacterSet();
+    public static native NSMutableCharacterSet getCapitalizedLetterCharacterSet();
     @Method(selector = "symbolCharacterSet")
-    public static native NSMutableCharacterSet symbolCharacterSet();
+    public static native NSMutableCharacterSet getSymbolCharacterSet();
     /**
      * @since Available in iOS 2.0 and later.
      */
     @Method(selector = "newlineCharacterSet")
-    public static native NSMutableCharacterSet newlineCharacterSet();
+    public static native NSMutableCharacterSet getNewlineCharacterSet();
     @Method(selector = "characterSetWithRange:")
-    public static native NSMutableCharacterSet characterSetWithRange$(@ByVal NSRange aRange);
+    public static native NSMutableCharacterSet create(@ByVal NSRange aRange);
     @Method(selector = "characterSetWithCharactersInString:")
-    public static native NSMutableCharacterSet characterSetWithCharactersInString$(String aString);
+    public static native NSMutableCharacterSet create(String aString);
     @Method(selector = "characterSetWithBitmapRepresentation:")
-    public static native NSMutableCharacterSet characterSetWithBitmapRepresentation$(NSData data);
+    public static native NSMutableCharacterSet create(NSData data);
     @Method(selector = "characterSetWithContentsOfFile:")
-    public static native NSMutableCharacterSet characterSetWithContentsOfFile$(String fName);
+    private static native NSMutableCharacterSet characterSetWithContentsOfFile$(String fName);
     /*</methods>*/
 }

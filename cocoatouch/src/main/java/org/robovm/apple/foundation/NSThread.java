@@ -85,16 +85,6 @@ import org.robovm.apple.dispatch.*;
     @Property(selector = "threadDictionary")
     public native NSMutableDictionary<?, ?> getThreadDictionary();
     /**
-     * @since Available in iOS 4.0 and later.
-     */
-    @Property(selector = "threadPriority")
-    public native double getThreadPriority();
-    /**
-     * @since Available in iOS 4.0 and later.
-     */
-    @Property(selector = "setThreadPriority:")
-    public native void setThreadPriority(double v);
-    /**
      * @since Available in iOS 8.0 and later.
      */
     @Property(selector = "qualityOfService")
@@ -124,11 +114,6 @@ import org.robovm.apple.dispatch.*;
      */
     @Property(selector = "setStackSize:")
     public native void setStackSize(@MachineSizedUInt long v);
-    /**
-     * @since Available in iOS 2.0 and later.
-     */
-    @Property(selector = "isMainThread")
-    public native boolean isMainThread();
     /**
      * @since Available in iOS 2.0 and later.
      */
@@ -186,6 +171,15 @@ import org.robovm.apple.dispatch.*;
     public static native void sleep(double ti);
     @Method(selector = "exit")
     public static native void exit();
+    @Method(selector = "threadPriority")
+    public static native double threadPriority();
+    @Method(selector = "setThreadPriority:")
+    public static native boolean setThreadPriority$(double p);
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
+    @Method(selector = "isMainThread")
+    public static native boolean isMainThread();
     /**
      * @since Available in iOS 2.0 and later.
      */

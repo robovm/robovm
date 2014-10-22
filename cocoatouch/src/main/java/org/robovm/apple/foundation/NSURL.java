@@ -112,11 +112,6 @@ import org.robovm.apple.dispatch.*;
     public native String getQuery();
     @Property(selector = "relativePath")
     public native String getRelativePath();
-    /**
-     * @since Available in iOS 7.0 and later.
-     */
-    @Property(selector = "fileSystemRepresentation")
-    public native BytePtr getFileSystemRepresentation();
     @Property(selector = "isFileURL")
     public native boolean isFileURL();
     @Property(selector = "standardizedURL")
@@ -130,7 +125,7 @@ import org.robovm.apple.dispatch.*;
      * @since Available in iOS 4.0 and later.
      */
     @Property(selector = "pathComponents")
-    public native NSArray<?> getPathComponents();
+    public native @org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String> getPathComponents();
     /**
      * @since Available in iOS 4.0 and later.
      */
@@ -260,6 +255,18 @@ import org.robovm.apple.dispatch.*;
     public void setTemporaryResourceValue(NSURLUbiquitousItemProperty property, NSObject value) {
         setTemporaryResourceValue(value, property.value());
     }
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    public NSObject getPromisedItemResourceValue(NSURLProperty key) {
+        NSObject.NSObjectPtr ptr = new NSObject.NSObjectPtr();
+        NSError.NSErrorPtr error = new NSError.NSErrorPtr(); // TODO error
+        if (getPromisedItemResourceValue(ptr, key.value(), error)) {
+            return ptr.get();
+        }
+        return null;
+    }
+
     
     /*<methods>*/
     @Method(selector = "initWithScheme:host:path:")
@@ -280,11 +287,6 @@ import org.robovm.apple.dispatch.*;
     protected native @Pointer long initWithString$(String URLString);
     @Method(selector = "initWithString:relativeToURL:")
     protected native @Pointer long initWithString$relativeToURL$(String URLString, NSURL baseURL);
-    /**
-     * @since Available in iOS 7.0 and later.
-     */
-    @Method(selector = "getFileSystemRepresentation:maxLength:")
-    public native boolean getFileSystemRepresentation(BytePtr buffer, @MachineSizedUInt long maxBufferLength);
     /**
      * @since Available in iOS 4.0 and later.
      */
@@ -374,17 +376,17 @@ import org.robovm.apple.dispatch.*;
      * @since Available in iOS 8.0 and later.
      */
     @Method(selector = "getPromisedItemResourceValue:forKey:error:")
-    public native boolean getPromisedItemResourceValue$forKey$error$(NSObject value, String key, NSError.NSErrorPtr error);
+    protected native boolean getPromisedItemResourceValue(NSObject.NSObjectPtr value, NSString key, NSError.NSErrorPtr error);
     /**
      * @since Available in iOS 8.0 and later.
      */
     @Method(selector = "promisedItemResourceValuesForKeys:error:")
-    public native NSDictionary<?, ?> promisedItemResourceValuesForKeys$error$(NSArray<?> keys, NSError.NSErrorPtr error);
+    public native NSURLProperties getPromisedItemResourceValues(@org.robovm.rt.bro.annotation.Marshaler(NSURLProperty.AsListMarshaler.class) List<NSURLProperty> keys, NSError.NSErrorPtr error);
     /**
      * @since Available in iOS 8.0 and later.
      */
     @Method(selector = "checkPromisedItemIsReachableAndReturnError:")
-    public native boolean checkPromisedItemIsReachableAndReturnError$(NSError.NSErrorPtr error);
+    public native boolean isPromisedItemReachable(NSError.NSErrorPtr error);
     /**
      * @since Available in iOS 4.0 and later.
      */

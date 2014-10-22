@@ -81,7 +81,7 @@ import org.robovm.apple.dispatch.*;
      * @since Available in iOS 8.0 and later.
      */
     @Method(selector = "removeCachedResponsesSinceDate:")
-    public native void removeCachedResponsesSinceDate$(NSDate date);
+    public native void removeCachedResponsesSinceDate(NSDate date);
     @Method(selector = "sharedURLCache")
     public static native NSURLCache getSharedURLCache();
     @Method(selector = "setSharedURLCache:")
@@ -90,16 +90,16 @@ import org.robovm.apple.dispatch.*;
      * @since Available in iOS 8.0 and later.
      */
     @Method(selector = "storeCachedResponse:forDataTask:")
-    public native void storeCachedResponse$forDataTask$(NSCachedURLResponse cachedResponse, NSURLSessionDataTask dataTask);
+    public native void storeCachedResponse(NSCachedURLResponse cachedResponse, NSURLSessionDataTask dataTask);
     /**
      * @since Available in iOS 8.0 and later.
      */
     @Method(selector = "getCachedResponseForDataTask:completionHandler:")
-    public native void getCachedResponseForDataTask$completionHandler$(NSURLSessionDataTask dataTask, @Block VoidBlock1<NSCachedURLResponse> completionHandler);
+    public native void getCachedResponse(NSURLSessionDataTask dataTask, @Block VoidBlock1<NSCachedURLResponse> completionHandler);
     /**
      * @since Available in iOS 8.0 and later.
      */
     @Method(selector = "removeCachedResponseForDataTask:")
-    public native void removeCachedResponseForDataTask$(NSURLSessionDataTask dataTask);
+    public native void removeCachedResponse(NSURLSessionDataTask dataTask);
     /*</methods>*/
 }

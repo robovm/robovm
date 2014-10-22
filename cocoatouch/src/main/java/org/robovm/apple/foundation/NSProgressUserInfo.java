@@ -19,6 +19,8 @@ package org.robovm.apple.foundation;
 import java.io.*;
 import java.nio.*;
 import java.util.*;
+
+import org.apache.xpath.functions.FuncNormalizeSpace;
 import org.robovm.objc.*;
 import org.robovm.objc.annotation.*;
 import org.robovm.objc.block.*;
@@ -77,12 +79,33 @@ import org.robovm.apple.dispatch.*;
     /*<constructors>*//*</constructors>*/
     /*<properties>*//*</properties>*/
     /*<members>*//*</members>*/
+    public NSProgressUserInfo set(String key, NSObject value) {
+        data.put(new NSString(key), value);
+        return this;
+    }
+    public NSProgressUserInfo set(NSProgressUserInfoKey key, NSObject value) {
+        data.put(key.value(), value);
+        return this;
+    }
+    public NSObject get(String key) {
+        return data.get(new NSString(key));
+    }
+    public NSObject get(NSProgressUserInfoKey key) {
+        return data.get(key.value());
+    }
+    public boolean contains(String key) {
+        return data.containsKey(new NSString(key));
+    }
+    public boolean contains(NSProgressUserInfoKey key) {
+        return data.containsKey(key.value());
+    }
+    
     /**
      * @since Available in iOS 7.0 and later.
      */
     public double getEstimatedTimeRemaining() {
-        if (data.containsKey(EstimatedTimeRemaining())) {
-            NSNumber val = (NSNumber)data.get(EstimatedTimeRemaining());
+        if (contains(NSProgressUserInfoKey.EstimatedTimeRemaining)) {
+            NSNumber val = (NSNumber)get(NSProgressUserInfoKey.EstimatedTimeRemaining);
             return val.doubleValue();
         }
         return 0;
@@ -91,15 +114,15 @@ import org.robovm.apple.dispatch.*;
      * @since Available in iOS 7.0 and later.
      */
     public NSProgressUserInfo setEstimatedTimeRemaining(double timeRemaining) {
-        data.put(EstimatedTimeRemaining(), NSNumber.valueOf(timeRemaining));
+        set(NSProgressUserInfoKey.EstimatedTimeRemaining, NSNumber.valueOf(timeRemaining));
         return this;
     }
     /**
      * @since Available in iOS 7.0 and later.
      */
     public long getThroughput() {
-        if (data.containsKey(Throughput())) {
-            NSNumber val = (NSNumber)data.get(Throughput());
+        if (contains(NSProgressUserInfoKey.Throughput)) {
+            NSNumber val = (NSNumber)get(NSProgressUserInfoKey.Throughput);
             return val.longValue();
         }
         return 0;
@@ -108,15 +131,15 @@ import org.robovm.apple.dispatch.*;
      * @since Available in iOS 7.0 and later.
      */
     public NSProgressUserInfo setThroughput(long throughput) {
-        data.put(Throughput(), NSNumber.valueOf(throughput));
+        set(NSProgressUserInfoKey.Throughput, NSNumber.valueOf(throughput));
         return this;
     }
     /**
      * @since Available in iOS 7.0 and later.
      */
     public NSProgressFileOperationKind getFileOperationKind() {
-        if (data.containsKey(FileOperationKind())) {
-            NSString val = (NSString)data.get(FileOperationKind());
+        if (contains(NSProgressUserInfoKey.FileOperationKind)) {
+            NSString val = (NSString)get(NSProgressUserInfoKey.FileOperationKind);
             return NSProgressFileOperationKind.valueOf(val);
         }
         return null;
@@ -125,15 +148,15 @@ import org.robovm.apple.dispatch.*;
      * @since Available in iOS 7.0 and later.
      */
     public NSProgressUserInfo setFileOperationKind(NSProgressFileOperationKind kind) {
-        data.put(FileOperationKind(), kind.value());
+        set(NSProgressUserInfoKey.FileOperationKind, kind.value());
         return this;
     }
     /**
      * @since Available in iOS 7.0 and later.
      */
     public NSURL getFileURL() {
-        if (data.containsKey(FileURL())) {
-            NSURL val = (NSURL)data.get(FileURL());
+        if (contains(NSProgressUserInfoKey.FileURL)) {
+            NSURL val = (NSURL)get(NSProgressUserInfoKey.FileURL);
             return val;
         }
         return null;
@@ -142,15 +165,15 @@ import org.robovm.apple.dispatch.*;
      * @since Available in iOS 7.0 and later.
      */
     public NSProgressUserInfo setFileURL(NSURL url) {
-        data.put(FileURL(), url);
+        set(NSProgressUserInfoKey.FileURL, url);
         return this;
     }
     /**
      * @since Available in iOS 7.0 and later.
      */
     public long getTotalFileCount() {
-        if (data.containsKey(FileTotalCount())) {
-            NSNumber val = (NSNumber)data.get(FileTotalCount());
+        if (contains(NSProgressUserInfoKey.FileTotalCount)) {
+            NSNumber val = (NSNumber)get(NSProgressUserInfoKey.FileTotalCount);
             return val.longValue();
         }
         return 0;
@@ -159,15 +182,15 @@ import org.robovm.apple.dispatch.*;
      * @since Available in iOS 7.0 and later.
      */
     public NSProgressUserInfo setTotalFileCount(long fileCount) {
-        data.put(FileTotalCount(), NSNumber.valueOf(fileCount));
+        set(NSProgressUserInfoKey.FileTotalCount, NSNumber.valueOf(fileCount));
         return this;
     }
     /**
      * @since Available in iOS 7.0 and later.
      */
     public long getCompletedFileCount() {
-        if (data.containsKey(FileCompletedCount())) {
-            NSNumber val = (NSNumber)data.get(FileCompletedCount());
+        if (contains(NSProgressUserInfoKey.FileCompletedCount)) {
+            NSNumber val = (NSNumber)get(NSProgressUserInfoKey.FileCompletedCount);
             return val.longValue();
         }
         return 0;
@@ -176,39 +199,9 @@ import org.robovm.apple.dispatch.*;
      * @since Available in iOS 7.0 and later.
      */
     public NSProgressUserInfo setCompletedFileCount(long fileCount) {
-        data.put(FileCompletedCount(), NSNumber.valueOf(fileCount));
+        set(NSProgressUserInfoKey.FileCompletedCount, NSNumber.valueOf(fileCount));
         return this;
     }
     /*<methods>*/
-    /**
-     * @since Available in iOS 7.0 and later.
-     */
-    @GlobalValue(symbol="NSProgressEstimatedTimeRemainingKey", optional=true)
-    protected static native NSString EstimatedTimeRemaining();
-    /**
-     * @since Available in iOS 7.0 and later.
-     */
-    @GlobalValue(symbol="NSProgressThroughputKey", optional=true)
-    protected static native NSString Throughput();
-    /**
-     * @since Available in iOS 7.0 and later.
-     */
-    @GlobalValue(symbol="NSProgressFileOperationKindKey", optional=true)
-    protected static native NSString FileOperationKind();
-    /**
-     * @since Available in iOS 7.0 and later.
-     */
-    @GlobalValue(symbol="NSProgressFileURLKey", optional=true)
-    protected static native NSString FileURL();
-    /**
-     * @since Available in iOS 7.0 and later.
-     */
-    @GlobalValue(symbol="NSProgressFileTotalCountKey", optional=true)
-    protected static native NSString FileTotalCount();
-    /**
-     * @since Available in iOS 7.0 and later.
-     */
-    @GlobalValue(symbol="NSProgressFileCompletedCountKey", optional=true)
-    protected static native NSString FileCompletedCount();
     /*</methods>*/
 }

@@ -95,7 +95,7 @@ import org.robovm.apple.dispatch.*;
     @Property(selector = "fractionCompleted")
     public native double getFractionCompleted();
     @Property(selector = "userInfo")
-    public native NSDictionary<?, ?> getUserInfo();
+    public native NSProgressUserInfo getUserInfo();
     @Property(selector = "kind")
     public native NSProgressKind getKind();
     @Property(selector = "setKind:")
@@ -103,7 +103,10 @@ import org.robovm.apple.dispatch.*;
     /*</properties>*/
     /*<members>*//*</members>*/
     public void putUserInfoObject(String key, NSObject value) {
-        setUserInfoObject(value, key);
+        setUserInfoObject(value, new NSString(key));
+    }
+    public void putUserInfoObject(NSProgressUserInfoKey key, NSObject value) {
+        setUserInfoObject(value, key.value());
     }
     /*<methods>*/
     @Method(selector = "initWithParent:userInfo:")
@@ -113,7 +116,7 @@ import org.robovm.apple.dispatch.*;
     @Method(selector = "resignCurrent")
     public native void resignCurrent();
     @Method(selector = "setUserInfoObject:forKey:")
-    protected native void setUserInfoObject(NSObject objectOrNil, String key);
+    protected native void setUserInfoObject(NSObject objectOrNil, NSString key);
     @Method(selector = "cancel")
     public native void cancel();
     @Method(selector = "pause")

@@ -170,9 +170,34 @@ import org.robovm.apple.dispatch.*;
      * @since Available in iOS 5.0 and later.
      */
     public static final NSMetadataItemAttribute ContentRelevance = new NSMetadataItemAttribute("ContentRelevanceValue");
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    public static final NSMetadataItemAttribute DownloadRequested = new NSMetadataItemAttribute("DownloadRequestedValue");
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    public static final NSMetadataItemAttribute IsExternalDocument = new NSMetadataItemAttribute("IsExternalDocumentValue");
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    public static final NSMetadataItemAttribute ContainerDisplayName = new NSMetadataItemAttribute("ContainerDisplayNameValue");
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    public static final NSMetadataItemAttribute URLInLocalContainer = new NSMetadataItemAttribute("URLInLocalContainerValue");
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    public static final NSMetadataItemAttribute ContentType = new NSMetadataItemAttribute("ContentTypeValue");
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    public static final NSMetadataItemAttribute ContentTypeTree = new NSMetadataItemAttribute("ContentTypeTreeValue");
     
     private static NSMetadataItemAttribute[] values = new NSMetadataItemAttribute[] {FSName, DisplayName, URL, Path, FSSize, FSCreationDate, FSContentChangeDate, IsUbiquitous, 
-        HasUnresolvedConflicts, IsDownloaded, IsDownloading, IsUploaded, IsUploading, PercentDownloaded, PercentUploaded, ContentRelevance, DownloadingStatus, DownloadingError, UploadingError};
+        HasUnresolvedConflicts, IsDownloaded, IsDownloading, IsUploaded, IsUploading, PercentDownloaded, PercentUploaded, ContentRelevance, DownloadingStatus, DownloadingError, 
+        UploadingError, DownloadRequested, IsExternalDocument, ContainerDisplayName, URLInLocalContainer, ContentType, ContentTypeTree};
     private final LazyGlobalValue<NSString> lazyGlobalValue;
     
     private NSMetadataItemAttribute(String getterName) {

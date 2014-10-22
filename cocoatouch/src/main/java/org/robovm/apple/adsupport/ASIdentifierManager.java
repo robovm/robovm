@@ -55,6 +55,6 @@ import org.robovm.apple.foundation.*;
     /*<members>*//*</members>*/
     /*<methods>*/
     @Method(selector = "sharedManager")
-    public static native ASIdentifierManager sharedManager();
+    public static native ASIdentifierManager getSharedManager();
     /*</methods>*/
 }

@@ -52,8 +52,7 @@ import org.robovm.apple.dispatch.*;
     protected NSBlockOperation(SkipInit skipInit) { super(skipInit); }
     /*</constructors>*/
     /*<properties>*/
-    @Property(selector = "executionBlocks")
-    public native NSArray<?> getExecutionBlocks();
+    
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/

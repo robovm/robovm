@@ -67,9 +67,9 @@ import org.robovm.apple.dispatch.*;
     @Property(selector = "setCaseSensitive:")
     public native void setCaseSensitive(boolean v);
     @Property(selector = "locale")
-    public native NSObject getLocale();
+    public native NSLocale getLocale();
     @Property(selector = "setLocale:")
-    public native void setLocale(NSObject v);
+    public native void setLocale(NSLocale v);
     @Property(selector = "isAtEnd")
     public native boolean isAtEnd();
     /*</properties>*/

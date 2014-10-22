@@ -92,9 +92,9 @@ import org.robovm.apple.dispatch.*;
     @Property(selector = "setHTTPMethod:")
     public native void setHTTPMethod(String v);
     @Property(selector = "allHTTPHeaderFields")
-    public native NSDictionary<?, ?> getAllHTTPHeaderFields();
+    public native @org.robovm.rt.bro.annotation.Marshaler(NSDictionary.AsStringStringMapMarshaler.class) Map<String, String> getAllHTTPHeaderFields();
     @Property(selector = "setAllHTTPHeaderFields:")
-    public native void setAllHTTPHeaderFields(NSDictionary<?, ?> v);
+    public native void setAllHTTPHeaderFields(@org.robovm.rt.bro.annotation.Marshaler(NSDictionary.AsStringStringMapMarshaler.class) Map<String, String> v);
     @Property(selector = "HTTPBody")
     public native NSData getHTTPBody();
     @Property(selector = "setHTTPBody:")

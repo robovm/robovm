@@ -74,18 +74,18 @@ import org.robovm.apple.dispatch.*;
     @Property(selector = "HTTPMethod")
     public native String getHTTPMethod();
     @Property(selector = "allHTTPHeaderFields")
-    public native NSDictionary<?, ?> getAllHTTPHeaderFields();
+    public native @org.robovm.rt.bro.annotation.Marshaler(NSDictionary.AsStringStringMapMarshaler.class) Map<String, String> getAllHTTPHeaderFields();
     @Property(selector = "HTTPBody")
     public native NSData getHTTPBody();
     @Property(selector = "HTTPBodyStream")
     public native NSInputStream getHTTPBodyStream();
     @Property(selector = "HTTPShouldHandleCookies")
-    public native boolean isHTTPShouldHandleCookies();
+    public native boolean shouldHandleHTTPCookies();
     /**
      * @since Available in iOS 4.0 and later.
      */
     @Property(selector = "HTTPShouldUsePipelining")
-    public native boolean isHTTPShouldUsePipelining();
+    public native boolean shouldUseHTTPPipelining();
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/

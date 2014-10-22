@@ -113,8 +113,6 @@ import org.robovm.apple.dispatch.*;
     public native @MachineSizedUInt long getLength();
     @Property(selector = "bytes")
     protected native @Pointer long getBytes0();
-    @Property(selector = "description")
-    public native String getDescription();
     /*</properties>*/
     /*<members>*//*</members>*/
     

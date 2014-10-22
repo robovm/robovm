@@ -87,8 +87,6 @@ import org.robovm.apple.dispatch.*;
      */
     @Property(selector = "nextDaylightSavingTimeTransition")
     public native NSDate getNextDaylightSavingTimeTransition();
-    @Property(selector = "description")
-    public native String getDescription();
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/

@@ -55,7 +55,7 @@ import org.robovm.apple.dispatch.*;
     /*<properties>*//*</properties>*/
     /*<members>*//*</members>*/
     /**
-     * @since Available in iOS 7.0 and later.
+     * @since Available in iOS 8.0 and later.
      */
     @SuppressWarnings("unchecked")
     public NSArray<NSMetadataItem> getAddedItems() {
@@ -66,7 +66,7 @@ import org.robovm.apple.dispatch.*;
         return null;
     }
     /**
-     * @since Available in iOS 7.0 and later.
+     * @since Available in iOS 8.0 and later.
      */
     @SuppressWarnings("unchecked")
     public NSArray<NSMetadataItem> getChangedItems() {
@@ -77,7 +77,7 @@ import org.robovm.apple.dispatch.*;
         return null;
     }
     /**
-     * @since Available in iOS 7.0 and later.
+     * @since Available in iOS 8.0 and later.
      */
     @SuppressWarnings("unchecked")
     public NSArray<NSMetadataItem> getRemovedItems() {

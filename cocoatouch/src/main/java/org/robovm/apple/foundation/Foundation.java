@@ -139,41 +139,7 @@ import org.robovm.apple.dispatch.*;
     public static final int NotFound = 2147483647;
     public static final int DateComponentUndefined = 2147483647;
     public static final int OpenStepUnicodeReservedBase = 62464;
-    public static final long DateIntervalFormatterNoStyle = 0L;
-    public static final long DateIntervalFormatterShortStyle = 1L;
-    public static final long DateIntervalFormatterMediumStyle = 2L;
-    public static final long DateIntervalFormatterLongStyle = 3L;
-    public static final long DateIntervalFormatterFullStyle = 4L;
-    public static final long MassFormatterUnitGram = 11L;
-    public static final long MassFormatterUnitKilogram = 14L;
-    public static final long MassFormatterUnitOunce = 1537L;
-    public static final long MassFormatterUnitPound = 1538L;
-    public static final long MassFormatterUnitStone = 1539L;
-    public static final long LengthFormatterUnitMillimeter = 8L;
-    public static final long LengthFormatterUnitCentimeter = 9L;
-    public static final long LengthFormatterUnitMeter = 11L;
-    public static final long LengthFormatterUnitKilometer = 14L;
-    public static final long LengthFormatterUnitInch = 1281L;
-    public static final long LengthFormatterUnitFoot = 1282L;
-    public static final long LengthFormatterUnitYard = 1283L;
-    public static final long LengthFormatterUnitMile = 1284L;
-    public static final long EnergyFormatterUnitJoule = 11L;
-    public static final long EnergyFormatterUnitKilojoule = 14L;
-    public static final long EnergyFormatterUnitCalorie = 1793L;
-    public static final long EnergyFormatterUnitKilocalorie = 1794L;
     public static final int OperationQueueDefaultMaxConcurrentOperationCount = -1;
-    public static final long DateComponentsFormatterUnitsStylePositional = 0L;
-    public static final long DateComponentsFormatterUnitsStyleAbbreviated = 1L;
-    public static final long DateComponentsFormatterUnitsStyleShort = 2L;
-    public static final long DateComponentsFormatterUnitsStyleFull = 3L;
-    public static final long DateComponentsFormatterUnitsStyleSpellOut = 4L;
-    public static final long DateComponentsFormatterZeroFormattingBehaviorNone = 0L;
-    public static final long DateComponentsFormatterZeroFormattingBehaviorDefault = 1L;
-    public static final long DateComponentsFormatterZeroFormattingBehaviorDropLeading = 2L;
-    public static final long DateComponentsFormatterZeroFormattingBehaviorDropMiddle = 4L;
-    public static final long DateComponentsFormatterZeroFormattingBehaviorDropTrailing = 8L;
-    public static final long DateComponentsFormatterZeroFormattingBehaviorDropAll = 14L;
-    public static final long DateComponentsFormatterZeroFormattingBehaviorPad = 65536L;
     public static final long ItemProviderUnknownError = -1L;
     public static final long ItemProviderItemUnavailableError = -1000L;
     public static final long ItemProviderUnexpectedValueClassError = -1100L;
@@ -255,6 +221,58 @@ import org.robovm.apple.dispatch.*;
      */
     @Bridge(symbol = "NSLog")
     public native static void log(String format, NSObject arg1, NSObject arg2, NSObject arg3, NSObject arg4, NSObject arg5);
+    
+    private static String systemVersionString;
+    private static int majorSystemVersion;
+    private static int minorSystemVersion;
+    private static int patchSystemVersion;
+    
+    /**
+     * Cached convenience method for {@link UIDevice#getSystemVersion()}.
+     * @return the OS version that this app is running on.
+     */
+    public static String getSystemVersionString() {
+        return systemVersionString;
+    }
+    /**
+     * @return the major part of the running OS version.
+     */
+    public static int getMajorSystemVersion() {
+        if (majorSystemVersion == 0) fetchSystemVersion(); // Lazily fetch the device's system version.
+        return majorSystemVersion;
+    }
+    /**
+     * @return the minor part of the running OS version.
+     */
+    public static int getMinorSystemVersion() {
+        if (majorSystemVersion == 0) fetchSystemVersion(); // Lazily fetch the device's system version.
+        return minorSystemVersion;
+    }
+    /**
+     * @return the patch part of the running OS version.
+     */
+    public static int getPatchSystemVersion() {
+        if (majorSystemVersion == 0) fetchSystemVersion(); // Lazily fetch the device's system version.
+        return patchSystemVersion;
+    }
+    
+    /**
+     * Retrieve and store the device system version.
+     */
+    private static void fetchSystemVersion() {
+        String version = UIDevice.getCurrentDevice().getSystemVersion();
+        systemVersionString = version;
+        
+        if (version != null) {
+            String[] parts = version.split("\\.");
+            if (parts.length > 0) majorSystemVersion = Integer.valueOf(parts[0]);
+            if (parts.length > 1) minorSystemVersion = Integer.valueOf(parts[1]);
+            if (parts.length > 2) patchSystemVersion = Integer.valueOf(parts[2]);
+        } else {
+            // Default to minimum OS version that RoboVM supports.
+            majorSystemVersion = 6;
+        }
+    }
     
     /*<methods>*/
     @GlobalValue(symbol="NSFoundationVersionNumber", optional=true)
@@ -421,11 +439,6 @@ import org.robovm.apple.dispatch.*;
      */
     @GlobalValue(symbol="NSExtensionItemsAndErrorsKey", optional=true)
     public static native String ExtensionItemsAndErrorsKey();
-    /**
-     * @since Available in iOS 8.0 and later.
-     */
-    @GlobalValue(symbol="NSItemProviderPreferredImageSizeKey", optional=true)
-    public static native String ItemProviderPreferredImageSizeKey();
     /**
      * @since Available in iOS 8.0 and later.
      */

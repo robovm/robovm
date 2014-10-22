@@ -124,9 +124,9 @@ import org.robovm.apple.corelocation.*;
     @Property(selector = "setWidth:")
     public native void setWidth(@MachineSizedFloat double v);
     @Property(selector = "possibleTitles")
-    public native @org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String> getPossibleTitles();
+    public native @org.robovm.rt.bro.annotation.Marshaler(NSSet.AsStringListMarshaler.class) List<String> getPossibleTitles();
     @Property(selector = "setPossibleTitles:")
-    public native void setPossibleTitles(@org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String> v);
+    public native void setPossibleTitles(@org.robovm.rt.bro.annotation.Marshaler(NSSet.AsStringListMarshaler.class) List<String> v);
     @Property(selector = "customView")
     public native UIView getCustomView();
     @Property(selector = "setCustomView:")

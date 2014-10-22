@@ -165,13 +165,13 @@ import org.robovm.apple.coreservices.CFProxy;
      * @since Available in iOS 8.0 and later.
      */
     @Method(selector = "backgroundSessionConfigurationWithIdentifier:")
-    public static native NSURLSessionConfiguration backgroundSessionConfigurationWithIdentifier$(String identifier);
+    public static native NSURLSessionConfiguration getBackgroundSessionConfiguration(String identifier);
     /**
      * @since Available in iOS 7.0 and later.
      * @deprecated Deprecated in iOS 8.0.
      */
     @Deprecated
     @Method(selector = "backgroundSessionConfiguration:")
-    public static native NSURLSessionConfiguration getBackgroundSessionConfiguration(String identifier);
+    public static native NSURLSessionConfiguration getBackgroundSessionConfiguration7(String identifier);
     /*</methods>*/
 }

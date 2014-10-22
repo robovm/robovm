@@ -19,6 +19,7 @@ package org.robovm.apple.foundation;
 import java.io.*;
 import java.nio.*;
 import java.util.*;
+
 import org.robovm.objc.*;
 import org.robovm.objc.annotation.*;
 import org.robovm.objc.block.*;
@@ -288,6 +289,68 @@ import org.robovm.apple.security.*;
             return val.doubleValue();
         }
         return 0;
+    }
+    
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    public boolean isDownloadRequested() {
+        if (contains(NSMetadataItemAttribute.DownloadRequested)) {
+            NSNumber val = (NSNumber)get(NSMetadataItemAttribute.DownloadRequested);
+            return val.booleanValue();
+        }
+        return false;
+    }
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    public boolean isExternalDocument() {
+        if (contains(NSMetadataItemAttribute.IsExternalDocument)) {
+            NSNumber val = (NSNumber)get(NSMetadataItemAttribute.IsExternalDocument);
+            return val.booleanValue();
+        }
+        return false;
+    }
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    public String getContainerDisplayName() {
+        if (contains(NSMetadataItemAttribute.ContainerDisplayName)) {
+            NSString val = (NSString)get(NSMetadataItemAttribute.ContainerDisplayName);
+            return val.toString();
+        }
+        return null;
+    }
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    public NSURL getURLInLocalContainer() {
+        if (contains(NSMetadataItemAttribute.URLInLocalContainer)) {
+            NSURL val = (NSURL)get(NSMetadataItemAttribute.URLInLocalContainer);
+            return val;
+        }
+        return null;
+    }
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    public String getContentType() {
+        if (contains(NSMetadataItemAttribute.ContentType)) {
+            NSString val = (NSString)get(NSMetadataItemAttribute.ContentType);
+            return val.toString();
+        }
+        return null;
+    }
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @SuppressWarnings("unchecked")
+    public List<String> getContentTypeTree() {
+        if (contains(NSMetadataItemAttribute.ContentTypeTree)) {
+            NSArray<NSString> val = (NSArray<NSString>)get(NSMetadataItemAttribute.ContentTypeTree);
+            return val.asStringList();
+        }
+        return null;
     }
     /*<methods>*/
     /*</methods>*/

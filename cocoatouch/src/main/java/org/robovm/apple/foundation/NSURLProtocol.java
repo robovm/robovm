@@ -104,6 +104,6 @@ import org.robovm.apple.dispatch.*;
      * @since Available in iOS 8.0 and later.
      */
     @Method(selector = "canInitWithTask:")
-    public static native boolean canInitWithTask$(NSURLSessionTask task);
+    public static native boolean canInitWithTask(NSURLSessionTask task);
     /*</methods>*/
 }

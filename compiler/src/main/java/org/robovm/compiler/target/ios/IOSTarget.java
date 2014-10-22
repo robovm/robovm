@@ -78,6 +78,7 @@ public class IOSTarget extends AbstractTarget {
     private File entitlementsPList;
     private SigningIdentity signIdentity;
     private ProvisioningProfile provisioningProfile;
+    private IDevice device;
     
     public IOSTarget() {
     }
@@ -101,6 +102,15 @@ public class IOSTarget extends AbstractTarget {
         } else {
             return SDK.listDeviceSDKs();
         }
+    }
+
+    /**
+     * Returns the {@link IDevice} when an app has been launched on a device. 
+     * Returns {@code null} before {@link #launch(LaunchParameters)} has been
+     * called or if the app was launched in the simulator.
+     */
+    public IDevice getDevice() {
+        return device;
     }
 
     @Override
@@ -176,7 +186,7 @@ public class IOSTarget extends AbstractTarget {
             }
             deviceId = udids[0];
         }
-        IDevice device = new IDevice(deviceId);
+        device = new IDevice(deviceId);
         
         OutputStream out = null;
         if (launchParameters.getStdoutFifo() != null) {

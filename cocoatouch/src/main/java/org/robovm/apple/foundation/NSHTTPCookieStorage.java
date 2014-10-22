@@ -71,7 +71,7 @@ import org.robovm.apple.dispatch.*;
     /*</constructors>*/
     /*<properties>*/
     @Property(selector = "cookies")
-    public native NSArray<?> getCookies();
+    public native NSArray<NSHTTPCookie> getCookies();
     @Property(selector = "cookieAcceptPolicy")
     public native NSHTTPCookieAcceptPolicy getCookieAcceptPolicy();
     @Property(selector = "setCookieAcceptPolicy:")
@@ -108,11 +108,11 @@ import org.robovm.apple.dispatch.*;
      * @since Available in iOS 8.0 and later.
      */
     @Method(selector = "storeCookies:forTask:")
-    public native void storeCookies$forTask$(NSArray<?> cookies, NSURLSessionTask task);
+    public native void storeCookiesForTask(NSArray<NSHTTPCookie> cookies, NSURLSessionTask task);
     /**
      * @since Available in iOS 8.0 and later.
      */
     @Method(selector = "getCookiesForTask:completionHandler:")
-    public native void getCookiesForTask$completionHandler$(NSURLSessionTask task, ObjCBlock completionHandler);
+    public native void getCookiesForTask(NSURLSessionTask task, @Block VoidBlock1<NSArray<NSHTTPCookie>> completionHandler);
     /*</methods>*/
 }

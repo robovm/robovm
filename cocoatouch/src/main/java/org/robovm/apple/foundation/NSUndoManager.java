@@ -151,6 +151,14 @@ import org.robovm.apple.dispatch.*;
     public NSUndoManager() {}
     protected NSUndoManager(SkipInit skipInit) { super(skipInit); }
     /*</constructors>*/
+    public void setRunLoopModes(NSRunLoopMode...modes) {
+        List<String> list = new ArrayList<>();
+        for (NSRunLoopMode mode : modes) {
+            list.add(mode.value());
+        }
+        setRunLoopModes(list);
+    }
+    
     /*<properties>*/
     @Property(selector = "groupingLevel")
     public native @MachineSizedSInt long getGroupingLevel();
@@ -165,9 +173,9 @@ import org.robovm.apple.dispatch.*;
     @Property(selector = "setLevelsOfUndo:")
     public native void setLevelsOfUndo(@MachineSizedUInt long v);
     @Property(selector = "runLoopModes")
-    public native NSArray<?> getRunLoopModes();
+    public native @org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String> getRunLoopModes();
     @Property(selector = "setRunLoopModes:")
-    public native void setRunLoopModes(NSArray<?> v);
+    public native void setRunLoopModes(@org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String> v);
     @Property(selector = "canUndo")
     public native boolean isCanUndo();
     @Property(selector = "canRedo")

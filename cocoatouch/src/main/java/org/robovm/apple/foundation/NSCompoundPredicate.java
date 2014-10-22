@@ -57,7 +57,7 @@ import org.robovm.apple.dispatch.*;
     @Property(selector = "compoundPredicateType")
     public native NSCompoundPredicateType getCompoundPredicateType();
     @Property(selector = "subpredicates")
-    public native NSArray<?> getSubpredicates();
+    public native NSArray<NSPredicate> getSubpredicates();
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/

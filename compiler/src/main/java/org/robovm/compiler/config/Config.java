@@ -53,9 +53,9 @@ import org.robovm.compiler.clazz.Path;
 import org.robovm.compiler.llvm.DataLayout;
 import org.robovm.compiler.log.Logger;
 import org.robovm.compiler.plugin.CompilerPlugin;
+import org.robovm.compiler.plugin.LaunchPlugin;
 import org.robovm.compiler.plugin.Plugin;
 import org.robovm.compiler.plugin.PluginArgument;
-import org.robovm.compiler.plugin.LaunchPlugin;
 import org.robovm.compiler.plugin.annotation.AnnotationImplPlugin;
 import org.robovm.compiler.plugin.lambda.LambdaPlugin;
 import org.robovm.compiler.plugin.objc.ObjCBlockPlugin;
@@ -1214,7 +1214,91 @@ public class Config {
         public Config build() throws IOException {
             return config.build();
         }
-        
+
+        /**
+         * Reads properties from a project basedir. If {@code isTest} is
+         * {@code true} this method will first attempt to load a
+         * {@code robovm.test.properties} file in {@code basedir}.
+         * <p>
+         * If no test specific file is found or if {@code isTest} is
+         * {@code false} this method attempts to load a
+         * {@code robovm.properties} and a {@code robovm.local.properties} file
+         * in {@code basedir} and merges them so that properties from the local
+         * file (if it exists) override properties in the non-local file.
+         * <p>
+         * If {@code isTest} is {@code true} and no test specific properties
+         * file was found this method will append {@code Test} to the
+         * {@code app.id} and {@code app.name} properties (if they exist).
+         * <p>
+         * If none of the files can be found found this method does nothing.
+         */
+        public void readProjectProperties(File basedir, boolean isTest) throws IOException {
+            File testPropsFile = new File(basedir, "robovm.test.properties");
+            File localPropsFile = new File(basedir, "robovm.local.properties");
+            File propsFile = new File(basedir, "robovm.properties");
+            if (isTest && testPropsFile.exists()) {
+                config.logger.debug("Loading test RoboVM config properties file: " 
+                        + testPropsFile.getAbsolutePath());
+                addProperties(testPropsFile);
+            } else {
+                Properties props = new Properties();
+                if (propsFile.exists()) {
+                    config.logger.debug("Loading default RoboVM config properties file: " 
+                            + propsFile.getAbsolutePath());
+                    try (Reader reader = new InputStreamReader(new FileInputStream(propsFile), "utf-8")) {
+                        props.load(reader);
+                    }
+                }
+                if (localPropsFile.exists()) {
+                    config.logger.debug("Loading local RoboVM config properties file: " 
+                            + localPropsFile.getAbsolutePath());
+                    try (Reader reader = new InputStreamReader(new FileInputStream(localPropsFile), "utf-8")) {
+                        props.load(reader);
+                    }
+                }
+                if (isTest) {
+                    String appId = props.getProperty("app.id");
+                    if (appId != null && !appId.endsWith("Test")) {
+                        String newAppId = appId + "Test";
+                        config.logger.debug("Changing app.id property from '%s' to '%s'", appId, newAppId);
+                        props.setProperty("app.id", newAppId);
+                    }
+                    String appName = props.getProperty("app.name");
+                    if (appName != null && !appName.endsWith("Test")) {
+                        String newAppName = appName + "Test";
+                        config.logger.debug("Changing app.name property from '%s' to '%s'", appName, newAppName);
+                        props.setProperty("app.name", newAppName);
+                    }
+                }
+                addProperties(props);
+            }
+        }
+
+        /**
+         * Reads a config file from a project basedir. If {@code isTest} is
+         * {@code true} this method will first attempt to load a
+         * {@code robovm.test.xml} file in {@code basedir}.
+         * <p>
+         * If no test-specific file is found or if {@code isTest} is
+         * {@code false} this method attempts to load a {@code robovm.xml} file
+         * in {@code basedir}.
+         * <p>
+         * If none of the files can be found found this method does nothing.
+         */
+        public void readProjectConfig(File basedir, boolean isTest) throws IOException {
+            File testConfigFile = new File(basedir, "robovm.test.xml");
+            File configFile = new File(basedir, "robovm.xml");
+            if (isTest && testConfigFile.exists()) {
+                config.logger.debug("Loading test RoboVM config file: " 
+                        + testConfigFile.getAbsolutePath());
+                read(testConfigFile);
+            } else if (configFile.exists()) {
+                config.logger.debug("Loading default RoboVM config file: " 
+                        + configFile.getAbsolutePath());
+                read(configFile);
+            }
+        }
+
         public void read(File file) throws IOException {
             Reader reader = null;
             try {

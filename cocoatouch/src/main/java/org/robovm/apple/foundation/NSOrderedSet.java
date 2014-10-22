@@ -157,8 +157,6 @@ import org.robovm.apple.dispatch.*;
     public native NSArray<T> getArray();
     @Property(selector = "set")
     public native NSSet<T> getSet();
-    @Property(selector = "description")
-    public native String getDescription();
     /*</properties>*/
     /*<members>*//*</members>*/
     

@@ -96,7 +96,7 @@ import org.robovm.apple.dispatch.*;
     /*</constructors>*/
     /*<properties>*/
     @Property(selector = "allObjects")
-    public native NSArray<?> getAllObjects();
+    public native NSArray<T> getAllObjects();
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/

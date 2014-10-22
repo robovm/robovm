@@ -16,6 +16,10 @@
  */
 package org.robovm.libimobiledevice;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+
 import org.robovm.libimobiledevice.binding.IDeviceConnectionRef;
 import org.robovm.libimobiledevice.binding.IntOut;
 import org.robovm.libimobiledevice.binding.LibIMobileDevice;
@@ -25,6 +29,8 @@ import org.robovm.libimobiledevice.binding.LibIMobileDevice;
  */
 public class IDeviceConnection implements AutoCloseable {
     protected IDeviceConnectionRef ref;
+    private DeviceInputStream deviceInputStream;
+    private DeviceOutputStream deviceOutputStream;
 
     IDeviceConnection(IDeviceConnectionRef ref) {
         this.ref = ref;
@@ -34,7 +40,32 @@ public class IDeviceConnection implements AutoCloseable {
         checkDisposed();
         return ref;
     }
-    
+
+    private void createStreams() {
+        if (deviceInputStream == null) {
+            deviceInputStream = new DeviceInputStream();
+            deviceOutputStream = new DeviceOutputStream();
+        }
+    }
+
+    /**
+     * Returns an {@link InputStream} for reading from this
+     * {@link IDeviceConnection}.
+     */
+    public InputStream getInputStream() {
+        createStreams();
+        return deviceInputStream;
+    }
+
+    /**
+     * Returns and {@link OutputStream} for writing to this
+     * {@link IDeviceConnection}.
+     */
+    public OutputStream getOutputStream() {
+        createStreams();
+        return deviceOutputStream;
+    }
+
     /**
      * Receives data from the device. Waits indefinitely for data on the
      * connection.
@@ -62,10 +93,7 @@ public class IDeviceConnection implements AutoCloseable {
      * @return the number of bytes received.
      */
     public int receive(byte[] buffer, int offset, int count, int timeout) {
-        if ((offset | count) < 0 || offset > buffer.length || buffer.length - offset < count) {
-            throw new ArrayIndexOutOfBoundsException("length=" + buffer.length 
-                    + "; regionStart=" + offset + "; regionLength=" + count);
-        }
+        checkArrayBounds(buffer, offset, count);
         
         if (count == 0) {
             return 0;
@@ -89,6 +117,13 @@ public class IDeviceConnection implements AutoCloseable {
             bytesReceivedOut.delete();
         }
     }
+
+    private void checkArrayBounds(byte[] buffer, int offset, int count) {
+        if ((offset | count) < 0 || offset > buffer.length || buffer.length - offset < count) {
+            throw new ArrayIndexOutOfBoundsException("length=" + buffer.length 
+                    + "; regionStart=" + offset + "; regionLength=" + count);
+        }
+    }
     
     /**
      * Sends data to the device on this connection.
@@ -99,10 +134,7 @@ public class IDeviceConnection implements AutoCloseable {
      * @return the number of bytes actually sent.
      */
     public int send(byte[] buffer, int offset, int count) {
-        if ((offset | count) < 0 || offset > buffer.length || buffer.length - offset < count) {
-            throw new ArrayIndexOutOfBoundsException("length=" + buffer.length 
-                    + "; regionStart=" + offset + "; regionLength=" + count);
-        }
+        checkArrayBounds(buffer, offset, count);
         
         if (count == 0) {
             return 0;
@@ -146,5 +178,54 @@ public class IDeviceConnection implements AutoCloseable {
     @Override
     public void close() {
         dispose();
+    }
+
+    private class DeviceInputStream extends InputStream {
+
+        @Override
+        public int read() throws IOException {
+            byte[] b = new byte[1];
+            int n = read(b);
+            return n <= 0 ? -1 : b[0];
+        }
+
+        @Override
+        public int read(byte[] b) throws IOException {
+            return read(b, 0, b.length);
+        }
+
+        @Override
+        public int read(byte[] b, int off, int len) throws IOException {
+            try {
+                return receive(b, off, len);
+            } catch (LibIMobileDeviceException e) {
+                throw new IOException(e);
+            }
+        }
+    }
+
+    private class DeviceOutputStream extends OutputStream {
+
+        @Override
+        public void write(int b) throws IOException {
+            byte[] buffer = new byte[1];
+            buffer[0] = (byte) b;
+            write(buffer);
+        }
+
+        @Override
+        public void write(byte[] b) throws IOException {
+            write(b, 0, b.length);
+        }
+
+        @Override
+        public void write(byte[] b, int off, int len) throws IOException {
+            checkArrayBounds(b, off, len);
+            try {
+                send(b, off, len);
+            } catch (LibIMobileDeviceException e) {
+                throw new IOException(e);
+            }
+        }
     }
 }

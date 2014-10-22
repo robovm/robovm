@@ -92,8 +92,8 @@ import org.robovm.apple.spritekit.SKNode;
     
     /*<methods>*/
     @Method(selector = "locationInView:")
-    public native @ByVal CGPoint getLocation(UIView view);
+    public native @ByVal CGPoint getLocationInView(UIView view);
     @Method(selector = "previousLocationInView:")
-    public native @ByVal CGPoint getPreviousLocation(UIView view);
+    public native @ByVal CGPoint getPreviousLocationInView(UIView view);
     /*</methods>*/
 }

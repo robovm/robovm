@@ -13,27 +13,27 @@ typedefs:
     _NSZone: NSZone
     id: NSObject
     Class: ObjCClass
-    "Protocol *": ObjCProtocol
-    "NSString *": String
-    "NSString **": "NSString.NSStringPtr"
-    "BOOL *": BooleanPtr
-    "NSArray *": "NSArray<?>"
-    "NSArray **": "NSArray.NSArrayPtr<?>"
-    "NSMutableArray *": "NSMutableArray<?>"
-    "NSMutableArray **": "NSMutableArray.NSMutableArrayPtr<?>"
-    "NSDictionary *": "NSDictionary<?, ?>"
-    "NSDictionary **": "NSDictionary.NSDictionaryPtr<?, ?>"
-    "NSMutableDictionary *": "NSMutableDictionary<?, ?>"
-    "NSMutableDictionary **": "NSMutableDictionary.NSMutableDictionaryPtr<?, ?>"
-    "NSSet *": "NSSet<?>"
-    "NSSet **": "NSSet.NSSetPtr<?>"
-    "NSMutableSet *": "NSMutableSet<?>"
-    "NSMutableSet **": "NSMutableSet.NSMutableSetPtr<?>"
-    "NSOrderedSet *": "NSOrderedSet<?>"
-    "NSOrderedSet **": "NSOrderedSet.NSOrderedSetPtr<?>"
-    "NSMutableOrderedSet *": "NSMutableOrderedSet<?>"
-    "NSMutableOrderedSet **": "NSMutableOrderedSet.NSMutableOrderedSetPtr<?>"
-    "NSEnumerator *": "NSEnumerator<?>"
+    'Protocol *': ObjCProtocol
+    'NSString *': String
+    'NSString **': 'NSString.NSStringPtr'
+    'BOOL *': BooleanPtr
+    'NSArray *': 'NSArray<?>'
+    'NSArray **': 'NSArray.NSArrayPtr<?>'
+    'NSMutableArray *': 'NSMutableArray<?>'
+    'NSMutableArray **': 'NSMutableArray.NSMutableArrayPtr<?>'
+    'NSDictionary *': 'NSDictionary<?, ?>'
+    'NSDictionary **': 'NSDictionary.NSDictionaryPtr<?, ?>'
+    'NSMutableDictionary *': 'NSMutableDictionary<?, ?>'
+    'NSMutableDictionary **': 'NSMutableDictionary.NSMutableDictionaryPtr<?, ?>'
+    'NSSet *': 'NSSet<?>'
+    'NSSet **': 'NSSet.NSSetPtr<?>'
+    'NSMutableSet *': 'NSMutableSet<?>'
+    'NSMutableSet **': 'NSMutableSet.NSMutableSetPtr<?>'
+    'NSOrderedSet *': 'NSOrderedSet<?>'
+    'NSOrderedSet **': 'NSOrderedSet.NSOrderedSetPtr<?>'
+    'NSMutableOrderedSet *': 'NSMutableOrderedSet<?>'
+    'NSMutableOrderedSet **': 'NSMutableOrderedSet.NSMutableOrderedSetPtr<?>'
+    'NSEnumerator *': 'NSEnumerator<?>'
     'BOOL (^)(NSUInteger, BOOL *)': '@Block Block2<NSObject, BooleanPtr, Boolean>'
     'BOOL (^)(NSURL *, NSError *)': '@Block Block2<NSURL, NSError, Boolean>'
     'void (^)(id, NSRange, BOOL *)': '@Block("(,@ByVal,)") VoidBlock3<NSObject, NSRange, BooleanPtr>'
@@ -60,6 +60,7 @@ typedefs:
     'void (^)(NSURLSessionResponseDisposition)': '@Block VoidBlock1<NSURLSessionResponseDisposition>'
     'void (^)(void (^)(void))': '@Block("(@Block)") VoidBlock1<Runnable>'
     'void (^)(NSInputStream *, NSOutputStream *, NSError *)': '@Block VoidBlock3<NSInputStream, NSOutputStream, NSError>'
+    'void (^)(NSURLCredential *)': '@Block VoidBlock1<NSURLCredential>'
 
 enums:
     NSActivityOptions: {}
@@ -81,9 +82,13 @@ enums:
     NSDataReadingOptions: {}
     NSDataSearchOptions: {}
     NSDataWritingOptions: {}
+    NSDateComponentsFormatterUnitsStyle: {}
+    NSDateComponentsFormatterZeroFormattingBehavior: {}
     NSDateFormatterBehavior: {}
     NSDateFormatterStyle: { suffix: Style }
+    NSDateIntervalFormatterStyle: { suffix: Style }
     NSDirectoryEnumerationOptions: {}
+    NSEnergyFormatterUnit: {}
     NSEnumerationOptions: { first: NSEnumerationConcurrent, bits: true, marshaler: Bits.AsMachineSizedIntMarshaler }
     NSExpressionType: { suffix: ExpressionType }
     NSFileCoordinatorReadingOptions: {}
@@ -101,9 +106,11 @@ enums:
     NSKeyValueChange: {}
     NSKeyValueObservingOptions: {}
     NSKeyValueSetMutationKind: { suffix: SetMutation }
+    NSLengthFormatterUnit: {}
     NSLinguisticTaggerOptions: {}
     NSLocaleLanguageDirection: {}
     NSMachPortRights: { first: NSMachPortDeallocateNone, bits: true, marshaler: Bits.AsMachineSizedIntMarshaler }
+    NSMassFormatterUnit: {}
     NSMatchingFlags: {}
     NSMatchingOptions: {}
     NSNetServiceOptions: {}
@@ -191,6 +198,8 @@ classes:
             'lastObject':
                 name: last
                 type: T
+            'description':
+                exclude: true
         methods:
             '-initWithArray:':
                 visibility: protected
@@ -230,8 +239,10 @@ classes:
             '-.*': {exclude: true}
 
     NSAssertionHandler: {exclude : true}
-
     NSAttributedString: # DONE
+        properties:
+            'length':
+                omit_prefix: true
         methods:
             '-attribute:atIndex:effectiveRange:':
                 name: getAttribute
@@ -253,10 +264,6 @@ classes:
                 return_type: NSAttributedStringAttributes
             '-attributedSubstringFromRange:':
                 name: substring
-            '-length':
-                property: true
-            '-string':
-                property: true
             '-initWithString:attributes:':
                 parameters:
                     attrs:
@@ -272,7 +279,6 @@ classes:
                         type: NSString
             '-isEqualToAttributedString:':
                 visibility: protected
-
     NSAutoreleasePool: # DONE
         methods:
             '-drain': {}
@@ -280,14 +286,15 @@ classes:
             '-.*': {exclude: true}
     NSBlockOperation: # DONE
         skip_def_constructor: true
+        properties:
+            'executionBlocks':
+                exclude: true # We cannot marshal NSArray<BlockType>
         methods:
             '+blockOperationWithBlock:':
                 name: create
                 return_type: "NSBlockOperation"
             '-addExecutionBlock:':
                 trim_after_first_colon: true
-            '-executionBlocks': # We cannot marshal NSArray<BlockType>
-                exclude: true
     NSBundle: # DONE
         properties:
             'executableArchitectures':
@@ -366,16 +373,6 @@ classes:
                 name: format
     NSCache: # DONE
         methods:
-            '-setDelegate:':
-                property: true
-                parameters:
-                    d:
-                        type: NSCacheDelegate
-            '-delegate':
-                property: true
-                return_type: NSCacheDelegate
-            '-(name|totalCostLimit|countLimit|evictsObjectsWithDiscardedContent)':
-                property: true
             '-objectForKey:':
                 name: get
             '-removeObjectForKey:':
@@ -388,19 +385,22 @@ classes:
                 visibility: protected
             '-removeAllObjects':
                 name: clear
-
     NSCachedURLResponse: # DONE
         methods:
-            '-(data|response|userInfo)':
-                property: true
-            "-storagePolicy":
+            '-storagePolicy':
                 property: true
                 return_type: NSURLCacheStoragePolicy
-            "-initWithResponse:data:userInfo:storagePolicy:":
+            '-initWithResponse:data:userInfo:storagePolicy:':
                 parameters:
                     storagePolicy:
                         type: NSURLCacheStoragePolicy
     NSCalendar: # DONE
+        properties:
+            'calendarIdentifier':
+                type: NSCalendarIdentifier
+            '.*Symbols':
+                type: "@org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String>"
+
         methods:
             '+currentCalendar':
                 property: true
@@ -412,21 +412,8 @@ classes:
                 parameters:
                     ident:
                         type: NSCalendarIdentifier
-            '-setFirstWeekday:': {}
-            '-setLocale:': {}
-            '-setMinimumDaysInFirstWeek:': {}
-            '-setTimeZone:': {}
-            '–calendarIdentifier':
-                property: true
-                return_type: NSCalendarIdentifier
-            '-firstWeekday':
-                property: true
-            '-locale':
-                property: true
             '-maximumRangeOfUnit:':
                 name: getMaximumRange
-            '-minimumDaysInFirstWeek':
-                property: true
             '-minimumRangeOfUnit:':
                 name: getMinimumRange
             '-ordinalityOfUnit:inUnit:forDate:':
@@ -436,8 +423,6 @@ classes:
             '-rangeOfUnit:startDate:interval:forDate:':
                 name: getRange
                 visibility: protected
-            '-timeZone':
-                property: true
             '-components:fromDate:':
                 name: getComponents
             '-components:fromDate:toDate:options:':
@@ -446,10 +431,8 @@ classes:
                 name: newDateByAddingComponents
             '-dateFromComponents:':
                 name: newDateFromComponents
-
             '+.*': {exclude: true}
             '-.*': {exclude: true}
-
     NSCharacterSet: # DONE
         methods:
             '+.*CharacterSet':
@@ -473,23 +456,18 @@ classes:
                 name: isMember
             '-hasMemberInPlane:':
                 trim_after_first_colon: true
-            '-bitmapRepresentation':
-                name: getBitmapRepresentation
-            '-invertedSet':
-                property: true
             '-isSupersetOfSet:':
                 name: isSuperset
-
     NSCoder: # DONE
+        properties:
+            'allowedClasses':
+                type: "@org.robovm.rt.bro.annotation.Marshaler(NSArray.AsListMarshaler.class) List<ObjCClass>"
         methods:
             '-decodeArrayOfObjCType:count:at:': {exclude: true}
             '-decodeValueOfObjCType:at:': {exclude: true}
             '-encodeArrayOfObjCType:count:at:': {exclude: true}
             '-encodeValueOfObjCType:at:': {exclude: true}
             '-encodeValuesOfObjCTypes:': {exclude: true}
-
-            '-allowedClasses':
-                property: true
             '-containsValueForKey:':
                 name: containsValue
             '-(decode[a-zA-Z0-9]+)ForKey:':
@@ -502,6 +480,9 @@ classes:
                 name: decodeObject
             '-decodeObjectOfClasses:forKey:':
                 name: decodeObject
+                parameters:
+                    classes:
+                        type: "@org.robovm.rt.bro.annotation.Marshaler(NSArray.AsListMarshaler.class) List<ObjCClass>"
             '-(encode[a-zA-Z0-9]+):forKey:':
                 name: '#{g[0]}'
             '-encode[a-zA-Z0-9]+Object:':
@@ -518,50 +499,41 @@ classes:
                 property: true
             '-systemVersion':
                 property: true
-
     NSComparisonPredicate: # DONE
         methods:
             '+predicateWithLeftExpression:rightExpression:modifier:type:options:': {exclude: true}
             '+predicateWithLeftExpression:rightExpression:customSelector:': {exclude: true}
-            '-(comparisonPredicateModifier|leftExpression|rightExpression|options|predicateOperatorType|customSelector)':
-                property: true
-
     NSCompoundPredicate: # DONE
+        properties:
+            'subpredicates':
+                type: NSArray<NSPredicate>
         methods:
             '+andPredicateWithSubpredicates:':
                 name: createAndPredicate
                 parameters:
                     subpredicates:
-                        type: 'NSArray<NSPredicate>'
+                        type: NSArray<NSPredicate>
             '+orPredicateWithSubpredicates:':
                 name: createOrPredicate
                 parameters:
                     subpredicates:
-                        type: 'NSArray<NSPredicate>'
+                        type: NSArray<NSPredicate>
             '+notPredicateWithSubpredicate:':
                 name: createNotPredicate
             '-initWithType:subpredicates:':
                 parameters:
                     subpredicates:
-                        type: 'NSArray<NSPredicate>'
-            '-subpredicates':
-                property: true
-                return_type: 'NSArray<NSPredicate>'
+                        type: NSArray<NSPredicate>
             '-compoundPredicateType':
                 property: true
-
     NSCondition: # DONE
         methods:
-            "-wait":
+            '-wait':
                 name: await
-            "-waitUntilDate:":
+            '-waitUntilDate:':
                 name: await
-            '-name':
-                property: true
     NSConditionLock: # DONE
         methods:
-            '-(condition|name)':
-                property: true
             '-lock.*':
                 name: lock
             '-unlock.*':
@@ -582,6 +554,8 @@ classes:
                 name: bytes0
                 visibility: protected
                 type: "@Pointer long"
+            'description':
+                exclude: true
         methods:
             '-initWithData:':
             '-initWithBase64EncodedData:options:':
@@ -634,6 +608,9 @@ classes:
                         type: NSTextCheckingType
     NSDate: # DONE
         protocols: [NSPropertyList]
+        properties:
+            'description':
+                exclude: true
         methods:
             '+timeIntervalSinceReferenceDate': {exclude: true}
             '+distant.*':
@@ -653,9 +630,6 @@ classes:
             '-init.*': {exclude: true}
             '-timeIntervalSinceDate:':
                 name: getTimeIntervalSince
-            '-timeIntervalSince[a-zA-Z0-9]+':
-                property: true
-            '-description': {exclude: true}
             '-addTimeInterval:': {exclude: true}
             '-compare:':
                 trim_after_first_colon: true
@@ -665,7 +639,7 @@ classes:
             '-isEqualToDate:':
                 name: isEqualTo
             '-descriptionWithLocale:':
-                name: description
+                name: toString
                 parameters:
                     locale:
                         type: NSLocale
@@ -673,14 +647,35 @@ classes:
                 trim_after_first_colon: true
             '-laterDate:':
                 trim_after_first_colon: true
-
-
     NSDateComponents: # DONE
         methods:
-            '-(calendar|timeZone|era|year|month|day|hour|minute|second|nanosecond|week|weekday|weekdayOrdinal|quarter|weekOfMonth|weekOfYear|yearForWeekOfYear|date)':
+            '-(week)':
                 property: true
-
+            '-setValue:forComponent:':
+                trim_after_first_colon: true
+                visibility: protected
+            '-valueForComponent:':
+                name: getValue
+            '-isValidDateInCalendar:':
+                trim_after_first_colon: true
+    NSDateComponentsFormatter: # DONE
+        methods:
+            '-stringForObjectValue:':
+                name: format
+            '-stringFromDateComponents:':
+                name: format
+            '-stringFromDate:toDate:':
+                name: format
+            '-stringFromTimeInterval:':
+                name: format
+            '-.*':
+                exclude: true 
+            '+.*':
+                exclude: true
     NSDateFormatter: # DONE
+        properties:
+            '.*Symbols':
+                type: "@org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String>"
         methods:
             '-getObjectValue:forString:range:error:': {exclude: true}
             '+defaultFormatterBehavior':
@@ -689,19 +684,16 @@ classes:
                 name: getDateFormatFromTemplate
             '+localizedStringFromDate:dateStyle:timeStyle:':
                 name: format
-            '-[a-zA-Z0-9]+Symbols':
-                property: true
-                return_type: "@org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String>"
-            '-set[a-zA-Z0-9]+Symbols:':
-                parameters:
-                    array:
-                        type: "@org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String>"
-            '-(timeZone|timeStyle|twoDigitStartDate|AMSymbol|PMSymbol|calendar|dateFormat|dateStyle|defaultDate|formatterBehavior|locale|gregorianStartDate)':
-                property: true
             '-stringFromDate:':
                 name: format
             '-dateFromString:':
                 name: parse
+            '-setLocalizedDateFormatFromTemplate:':
+                name: setLocalizedDateFormat
+    NSDateIntervalFormatter: # DONE
+        methods:
+            '-stringFromDate:toDate:':
+                name: format
     NSDecimalNumber: # DONE
         skip_def_constructor: true
         properties:
@@ -748,7 +740,6 @@ classes:
             '+defaultDecimalNumberHandler':
                 property: true
                 return_type: NSDecimalNumberHandler
-
     NSDictionary: # DONE
         protocols: [NSPropertyList, "Map<K, V>"]
         properties:
@@ -760,6 +751,11 @@ classes:
             'allValues':
                 visibility: protected
                 type: NSArray<V>
+            'description':
+                exclude: true
+            'descriptionInStringsFileFormat':
+                name: toFileFormatString
+                omit_prefix: true
         methods:
             '+dictionaryWithContentsOfFile:':
                 visibility: protected
@@ -791,23 +787,40 @@ classes:
                 name: write
             '-descriptionInStringsFileFormat':
                 name: toStringsFileFormat
-
             '+.*': {exclude: true}
             '-.*': {exclude: true}
-
     NSDirectoryEnumerator: # DONE
         skip_def_constructor: true
         properties:
             '(fileAttributes|directoryAttributes)':
                 type: NSFileAttributes
+    NSEnergyFormatter: # DONE
+        methods:
+            '-stringFromValue:unit:':
+                name: format
+            '-stringFromJoules:':
+                name: formatJoules
+            '-unitStringFromValue:unit:':
+                name: formatUnit
+            '-unitStringFromJoules:usedUnit:':
+                name: formatUnitJoules
+                visibility: protected
+            '-getObjectValue:forString:errorDescription:':
+                exclude: true
     NSEnumerator: # DONE
+        properties:
+            'allObjects':
+                type: NSArray<T>
         methods:
             '-nextObject':
                 return_type: T
-            '-allObjects':
-                return_type: 'NSArray<T>'
     NSError: # DONE
         skip_def_constructor: true
+        properties:
+            'localizedRecoveryOptions':
+                type: "@org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String>"
+            'domain':
+                type: NSString
         methods:
             '+errorWithDomain:code:userInfo:':
                 exclude: true
@@ -815,20 +828,6 @@ classes:
                 parameters:
                     dict:
                         type: 'NSDictionary<NSString, ?>'
-            '-code':
-                property: true
-            '-domain':
-                property: true
-                return_type: NSString
-            '-(helpAnchor|localizedDescription|localizedFailureReason|localizedRecoverySuggestion)':
-                property: true
-            '-localizedRecoveryOptions':
-                property: true
-                return_type: "@org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String>"
-            '-recoveryAttempter':
-                property: true
-            '-userInfo':
-                property: true
     NSException: # DONE
         skip_def_constructor: true
         properties:
@@ -839,6 +838,9 @@ classes:
         methods:
             '+exceptionWithName:reason:userInfo:': {exclude: true}
     NSExpression: # DONE
+        properties:
+            'expressionBlock':
+                type: '@Block Block3<NSObject, NSArray<NSExpression>, NSMutableDictionary<?, ?>, NSObject>'
         methods:
             '+expressionForBlock:arguments:':
                 name: createForBlock
@@ -849,11 +851,6 @@ classes:
                 name: 'create#{g[0]}'
             '+expressionWithFormat:argumentArray:':
                 name: 'createFromFormat'
-            '-expressionBlock':
-                name: getExpressionBlock
-                return_type: '@Block Block3<NSObject, NSArray<NSExpression>, NSMutableDictionary<?, ?>, NSObject>'
-            '-(arguments|collection|constantValue|expressionType|function|keyPath|leftExpression|operand|predicate|rightExpression|variable)':
-                property: true
             '-expressionValueWithObject:context:':
                 name: evaluate
     NSExtensionContext: # DONE
@@ -870,9 +867,20 @@ classes:
                 name: cancelRequest
             '-openURL:completionHandler:':
                 name: openURL
-    NSExtensionItem: {}
+    NSExtensionItem: {} # DONE
+    NSFileAccessIntent: # DONE
+        methods:
+            '+readingIntentWithURL:options:':
+                name: createReadingIntent
+            '+writingIntentWithURL:options:':
+                name: createWritingIntent
     NSFileCoordinator: # DONE
         methods:
+            '-coordinateAccessWithIntents:queue:byAccessor:':
+                name: coordinateAccessWithIntents
+                parameters:
+                    intents:
+                        type: NSArray<NSFileAccessIntent>
             '-coordinateReadingItemAtURL:options:error:byAccessor:':
                 name: coordinateReadingItem
             '-coordinateWritingItemAtURL:options:error:byAccessor:':
@@ -901,8 +909,6 @@ classes:
                 return_type: "@org.robovm.rt.bro.annotation.Marshaler(NSArray.AsListMarshaler.class) List<NSFilePresenter>"
     NSFileHandle: # DONE
         methods:
-            '-(availableData|offsetInFile)':
-                property: true
             '-readDataOfLength:':
                 name: readData
             '-writeData:':
@@ -952,8 +958,6 @@ classes:
                 parameters:
                     modes:
                         type: "@org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String>"
-            '-fileDescriptor':
-                property: true
     NSFileManager: # DONE
         properties:
             'delegate':
@@ -1128,27 +1132,28 @@ classes:
                 return_type: "NSArray<NSFileVersion>"
             '+versionOfItemAtURL:forPersistentIdentifier:':
                 name: getItemVersionAtURL
+            '+getNonlocalVersionsOfItemAtURL:completionHandler:':
+                name: getNonlocalItemVersionsAtURL
+                parameters:
+                    completionHandler:
+                        type: "@Block VoidBlock2<NSArray<NSFileVersion>, NSError>"
             '+removeOtherVersionsOfItemAtURL:error:':
                 name: removeOtherItemVersionsAtURL
     NSFileWrapper: # DONE
+        properties:
+            'fileAttributes':
+                type: NSFileAttributes
+            'fileWrappers':
+                type: "@org.robovm.rt.bro.annotation.Marshaler(NSDictionary.AsStringMapMarshaler.class) Map<String, NSFileWrapper>"
         methods:
             '-initDirectoryWithFileWrappers:':
                 parameters:
                     childrenByPreferredName:
-                        type: "NSDictionary<NSString, NSFileWrapper>"
+                        type: "@org.robovm.rt.bro.annotation.Marshaler(NSDictionary.AsStringMapMarshaler.class) Map<String, NSFileWrapper>"
             '-initWithSerializedRepresentation:':
                 constructor: false
             '-serializedRepresentation':
                 name: serialize
-            '-(preferredFilename|filename|regularFileContents|symbolicLinkDestinationURL)':
-                property: true
-            '-setFileAttributes:':
-                parameters:
-                    fileAttributes:
-                        type: NSFileAttributes
-            '-fileAttributes':
-                property: true
-                return_type: NSFileAttributes
             '-matchesContentsOfURL:':
                 trim_after_first_colon: true
             '-readFromURL:options:error:':
@@ -1161,9 +1166,6 @@ classes:
                 name: addRegularFile
             '-removeFileWrapper:':
                 trim_after_first_colon: true
-            '-fileWrappers':
-                property: true
-                return_type: "NSDictionary<NSString, NSFileWrapper>"
             '-keyForFileWrapper:':
                 name: getKeyForFileWrapper
     NSFormatter: # DONE
@@ -1172,20 +1174,17 @@ classes:
                 exclude: true
     NSHashTable: {}
     NSHTTPCookie: # DONE
+        properties:
+            'properties':
+                type: NSHTTPCookieAttributes
+            'portList':
+                type: "@org.robovm.rt.bro.annotation.Marshaler(NSArray.AsIntegerListMarshaler.class) List<Integer>"
         methods:
             '-initWithProperties:':
                 name: init
                 parameters:
                     properties:
                         type: NSHTTPCookieAttributes
-            '-properties':
-                property: true
-                return_type: NSHTTPCookieAttributes
-            '-(version|name|value|expiresDate|domain|path|comment|commentURL)':
-                property: true
-            '-portList':
-                property: true
-                return_type: "@org.robovm.rt.bro.annotation.Marshaler(NSArray.AsIntegerListMarshaler.class) List<Integer>"
             '+cookieWithProperties:':
                 exclude: true
             '+requestHeaderFieldsWithCookies:':
@@ -1203,10 +1202,10 @@ classes:
                     URL:
                         name: url
     NSHTTPCookieStorage: # DONE
+        properties:
+            'cookies':
+                type: "NSArray<NSHTTPCookie>"
         methods:
-            '-cookies':
-                property: true
-                return_type: "NSArray<NSHTTPCookie>"
             '-deleteCookie:':
                 trim_after_first_colon: true
             '-cookiesForURL:':
@@ -1217,8 +1216,6 @@ classes:
                 parameters:
                     cookies:
                         type: "NSArray<NSHTTPCookie>"
-            '-cookieAcceptPolicy':
-                property: true
             '-sortedCookiesUsingDescriptors:':
                 name: getSortedCookies
                 return_type: "NSArray<NSHTTPCookie>"
@@ -1227,18 +1224,26 @@ classes:
                         type: "NSArray<NSSortDescriptor>"
             '+sharedHTTPCookieStorage':
                 property: true
+            '-storeCookies:forTask:':
+                name: storeCookiesForTask
+                parameters:
+                    cookies:
+                        type: NSArray<NSHTTPCookie>
+            '-getCookiesForTask:completionHandler:':
+                trim_after_first_colon: true
+                parameters:
+                    completionHandler:
+                        type: "@Block VoidBlock1<NSArray<NSHTTPCookie>>"
     NSHTTPURLResponse: # DONE
+        properties:
+            'allHeaderFields':
+                type: "@org.robovm.rt.bro.annotation.Marshaler(NSDictionary.AsStringStringMapMarshaler.class) Map<String, String>"
         methods:
             '-initWithURL:statusCode:HTTPVersion:headerFields:':
                 name: init
                 parameters:
                     headerFields:
                         type: "@org.robovm.rt.bro.annotation.Marshaler(NSDictionary.AsStringStringMapMarshaler.class) Map<String, String>"
-            '-statusCode':
-                property: true
-            '-allHeaderFields':
-                property: true
-                return_type: "@org.robovm.rt.bro.annotation.Marshaler(NSDictionary.AsStringStringMapMarshaler.class) Map<String, String>"
             '+localizedStringForStatusCode:':
                 name: getLocalizedStatusCode
     NSIndexPath: # DONE
@@ -1246,8 +1251,6 @@ classes:
             '+indexPathWithIndex:': {exclude: true}
             '+indexPathWithIndexes:length:': {exclude: true}
             '-initWithIndex:':
-            '-length':
-                name: getLength
             '-indexAtPosition:':
                 name: getIndexAt
             '-indexPathByAddingIndex:':
@@ -1268,8 +1271,6 @@ classes:
             '-init': {exclude: true}
             '-isEqualToIndexSet:':
                 name: equals
-            '-(count|firstIndex|lastIndex)':
-                property: true
             '-indexGreaterThanIndex:':
                 name: greaterThan
             '-indexLessThanIndex:':
@@ -1348,14 +1349,6 @@ classes:
                 exclude: true
     NSInvocation: # DONE
         methods:
-            '-methodSignature':
-                property: true
-            '-argumentsRetained':
-                property: true
-            '-target':
-                property: true
-            '-selector':
-                property: true
             '-getReturnValue:':
                 trim_after_first_colon: true
             '-setReturnValue:': {}
@@ -1367,12 +1360,40 @@ classes:
                 name: invoke
             '+invocationWithMethodSignature:':
                 name: create
-    NSInvocationOperation: # DONE
+    NSInvocationOperation: {} # DONE
+    NSItemProvider: # DONE
+        properties:
+            'registeredTypeIdentifiers':
+                type: '@org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String>'
+            'previewImageHandler':
+                type: '@Block("(@Block,,)") VoidBlock3<VoidBlock2<NSObject, NSError>, ObjCClass, NSDictionary<NSString, NSObject>>' # todo dictionary marshaling
         methods:
-            '-invocation':
-                property: true
-            '-result':
-                property: true
+            '-initWithItem:typeIdentifier:':
+                name: init
+                parameters:
+                    item:
+                        type: NSObject
+            '-registerItemForTypeIdentifier:loadHandler:':
+                trim_after_first_colon: true
+                parameters:
+                    loadHandler:
+                        type: '@Block("(@Block,,)") VoidBlock3<VoidBlock2<NSObject, NSError>, ObjCClass, NSDictionary<NSString, NSObject>>' # todo dictionary marshaling
+            '-hasItemConformingToTypeIdentifier:':
+                trim_after_first_colon: true
+            '-loadItemForTypeIdentifier:options:completionHandler:':
+                trim_after_first_colon: true
+                parameters:
+                    options:
+                        type: NSItemProviderOptions
+                    completionHandler:
+                        type: '@Block VoidBlock2<NSObject, NSError>'
+            '-loadPreviewImageWithOptions:completionHandler:':
+                name: loadPreviewImage
+                parameters:
+                    options:
+                        type: NSItemProviderOptions
+                    completionHandler:
+                        type: '@Block VoidBlock2<NSObject, NSError>'
     NSJSONSerialization: # DONE
         methods:
             '+isValidJSONObject:':
@@ -1400,10 +1421,6 @@ classes:
                 name: getClassNameForClass
             '-setClassName:forClass:':
                 name: setClassNameForClass
-            '-delegate':
-                property: true
-            '-outputFormat':
-                property: true
     NSKeyedUnarchiver: # DONE
         methods:
             '-decode.*': {exclude: true}
@@ -1420,8 +1437,19 @@ classes:
                 name: getClassForClassName
             '-setClass:forClassName:':
                 name: setClassForClassName
-            '-delegate':
-                property: true
+    NSLengthFormatter: # DONE
+        methods:
+            '-stringFromValue:unit:':
+                name: format
+            '-stringFromMeters:':
+                name: formatMeters
+            '-unitStringFromValue:unit:':
+                name: formatUnit
+            '-unitStringFromMeters:usedUnit:':
+                name: formatUnitMeters
+                visibility: protected
+            '-getObjectValue:forString:errorDescription:':
+                exclude: true
     NSLinguisticTagger: # DONE
         properties:
             'tagSchemes':
@@ -1478,8 +1506,6 @@ classes:
             '+(autoupdatingCurrent|current|system)Locale':
                 property: true
                 return_type: NSLocale
-            '-localeIdentifier':
-                property: true
             '+(ISO.*|availableLocaleIdentifiers|commonISOCurrencyCodes|preferredLanguages)':
                 property: true
                 return_type: "@org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String>"
@@ -1492,12 +1518,12 @@ classes:
                 name: getLineDirection
             '+componentsFromLocaleIdentifier:':
                 name: getComponentsFromLocaleIdentifier
-                return_type: "NSDictionary<NSString, ?>"
+                return_type: "@org.robovm.rt.bro.annotation.Marshaler(NSLocaleComponent.AsMapMarshaler.class) Map<NSLocaleComponent, NSObject>"
             '+localeIdentifierFromComponents:':
                 name: getLocaleIdentifierFromComponents
                 parameters:
                     dict:
-                        type: "NSDictionary<NSString, ?>"
+                        type: "@org.robovm.rt.bro.annotation.Marshaler(NSLocaleComponent.AsMapMarshaler.class) Map<NSLocaleComponent, NSObject>"
             '+localeIdentifierFromWindowsLocaleCode:':
                 name: getLocaleIdentifierFromWindowsLocaleCode
             '+windowsLocaleCodeFromLocaleIdentifier:':
@@ -1512,22 +1538,15 @@ classes:
                 parameters:
                     key:
                         type: NSLocaleComponent
-
             '-initWithLocaleIdentifier:':
-
             '+.*': {exclude: true}
             '-.*': {exclude: true}
-
     NSLock: # DONE
         methods:
             '-lock.*':
                 name: lock
-            '-name':
-                property: true
     NSMachPort: # DONE
         methods:
-            '-machPort':
-                property: true
             '-delegate':
                 name: getMachDelegate
             '-setDelegate:':
@@ -1548,8 +1567,24 @@ classes:
             '+portWithMachPort:':
                 name: create
     NSMapTable: {}
-    NSMessagePort: {}
+    NSMassFormatter: # DONE
+        methods:
+            '-stringFromValue:unit:':
+                name: format
+            '-stringFromKilograms:':
+                name: formatKilograms
+            '-unitStringFromValue:unit:':
+                name: formatUnit
+            '-unitStringFromKilograms:usedUnit:':
+                name: formatUnitKilograms
+                visibility: protected
+            '-getObjectValue:forString:errorDescription:':
+                exclude: true
+    NSMessagePort: {} # DONE
     NSMetadataItem: # DONE
+        properties:
+            'attributes':
+                type: "@org.robovm.rt.bro.annotation.Marshaler(NSMetadataItemAttribute.AsListMarshaler.class) List<NSMetadataItemAttribute>"
         methods:
             '-valueForAttribute:':
                 name: getValue
@@ -1562,9 +1597,6 @@ classes:
                 parameters:
                     keys:
                         type: "@org.robovm.rt.bro.annotation.Marshaler(NSMetadataItemAttribute.AsListMarshaler.class) List<NSMetadataItemAttribute>"
-            '-attributes':
-                property: true
-                return_type: "@org.robovm.rt.bro.annotation.Marshaler(NSMetadataItemAttribute.AsListMarshaler.class) List<NSMetadataItemAttribute>"
     NSMetadataQuery: # DONE
         properties:
             'sortDescriptors':
@@ -1606,42 +1638,29 @@ classes:
                     attrName:
                         type: NSMetadataItemAttribute
     NSMetadataQueryAttributeValueTuple: # DONE
-        methods:
-            '-(value|count)':
-                property: true
-            '-attribute':
-                property: true
-                return_type: NSMetadataItemAttribute
+        properties:
+            'attribute':
+                type: NSMetadataItemAttribute
     NSMetadataQueryResultGroup: # DONE
+        properties:
+            'attribute':
+                type: NSMetadataItemAttribute
+            'subgroups':
+                type: NSArray<NSMetadataQueryResultGroup>
+            'results':
+                type: NSArray<NSMetadataItem>
         methods:
-            '-attribute':
-                property: true
-                return_type: NSMetadataItemAttribute
-            '-(value|resultCount)':
-                property: true
             '-resultAtIndex:':
                 name: getResult
                 return_type: NSMetadataItem
-            '-subgroups':
-                property: true
-                return_type: NSArray<NSMetadataQueryResultGroup>
-            '-results':
-                property: true
-                return_type: NSArray<NSMetadataItem>
     NSMethodSignature: # DONE
+        properties:
+            'methodReturnType':
+                type: "@org.robovm.rt.bro.annotation.Marshaler(StringMarshalers.AsDefaultCharsetZMarshaler.class) String"
         methods:
-            '-numberOfArguments':
-                property: true
             '-getArgumentTypeAtIndex:':
                 name: getArgumentType
                 return_type: "@org.robovm.rt.bro.annotation.Marshaler(StringMarshalers.AsDefaultCharsetZMarshaler.class) String"
-            '-frameLength':
-                property: true
-            '-methodReturnType':
-                property: true
-                return_type: "@org.robovm.rt.bro.annotation.Marshaler(StringMarshalers.AsDefaultCharsetZMarshaler.class) String"
-            '-methodReturnLength':
-                property: true
             '+signatureWithObjCTypes:':
                 name: create
                 parameters:
@@ -1670,8 +1689,6 @@ classes:
                 parameters:
                     attrs:
                         type: NSAttributedStringAttributes
-            '-mutableString':
-                property: true
             '-addAttribute:value:range:':
                 trim_after_first_colon: true
                 visibility: protected
@@ -1709,11 +1726,28 @@ classes:
                 name: formUnion
             '-formIntersectionWithCharacterSet:':
                 name: formIntersection
+            '+.*CharacterSet':
+                property: true
+                return_type: NSMutableCharacterSet
+            '+characterSetWithContentsOfFile:':
+                visibility: private
+                return_type: NSMutableCharacterSet
+            '+characterSetWithBitmapRepresentation:':
+                name: create
+                return_type: NSMutableCharacterSet
+            '+characterSetWithCharactersInString:':
+                name: create
+                return_type: NSMutableCharacterSet
+            '+characterSetWithRange:':
+                name: create
+                return_type: NSMutableCharacterSet
     NSMutableData: # DONE
         properties:
             'mutableBytes':
                 visibility: protected
                 type: '@Pointer long'
+            'length':
+                exclude: true
         methods:
             '-initWithCapacity:':
             '-increaseLengthBy:':
@@ -1739,7 +1773,6 @@ classes:
                 name: reset
             '-setData:':
                 name: setData
-
             '+.*': {exclude: true}
             '-.*': {exclude: true}
     NSMutableDictionary: # DONE
@@ -1817,11 +1850,10 @@ classes:
             '+stringWithCapacity:':
                 exclude: true
     NSMutableURLRequest: # DONE
+        properties:
+            'allHTTPHeaderFields':
+                type: "@org.robovm.rt.bro.annotation.Marshaler(NSDictionary.AsStringStringMapMarshaler.class) Map<String, String>"
         methods:
-            '-setAllHTTPHeaderFields:':
-                parameters:
-                    headerFields:
-                        type: "@org.robovm.rt.bro.annotation.Marshaler(NSDictionary.AsStringStringMapMarshaler.class) Map<String, String>"
             '-setValue:forHTTPHeaderField:':
                 name: setHTTPHeaderField0 # We change the order of arguments as in Java it's natural to specify the key as the first and the value as the second parameter.
                 visibility: protected
@@ -1965,26 +1997,26 @@ classes:
             'unsigned.*Value':
                 exclude: true
         methods:
-            "+numberWithBool:":
+            '+numberWithBool:':
                 name: valueOf
-            "+numberWithChar:":
+            '+numberWithChar:':
                 name: valueOf
-            "+numberWithDouble:":
+            '+numberWithDouble:':
                 name: valueOf
-            "+numberWithFloat:":
+            '+numberWithFloat:':
                 name: valueOf
-            "+numberWithInt:":
+            '+numberWithInt:':
                 name: valueOf
-            "+numberWithShort:":
+            '+numberWithShort:':
                 name: valueOf
-            "+numberWithUnsignedShort:":
+            '+numberWithUnsignedShort:':
                 name: valueOf
                 parameters:
                     value:
                         type: char
-            "+numberWithLongLong:":
+            '+numberWithLongLong:':
                 name: valueOf
-            "+numberWith.*":
+            '+numberWith.*':
                 exclude: true
             '-compare:':
                 trim_after_first_colon: true
@@ -1998,6 +2030,19 @@ classes:
             '-init.*':
                 exclude: true
     NSNumberFormatter: # DONE
+        properties:
+            'textAttributesForNil':
+                name: textAttributesForNull
+                type: NSAttributedStringAttributes
+            'textAttributesForNotANumber':
+                name: textAttributesForNaN
+                type: NSAttributedStringAttributes
+            'textAttributesFor.*':
+                type: NSAttributedStringAttributes
+            'nilSymbol':
+                name: nullSymbol
+            'notANumberSymbol':
+                name: NaNSymbol
         methods:
             '-getObjectValue:forString:range:error:':
                 exclude: true
@@ -2005,47 +2050,6 @@ classes:
                 name: format
             '-numberFromString:':
                 name: parse
-            '-(numberStyle|locale|formatterBehavior|negativeFormat|positiveFormat|decimalSeparator|currencyDecimalSeparator|groupingSeparator|zeroSymbol)':
-                property: true
-            '-(positiveInfinitySymbol|negativeInfinitySymbol|positivePrefix|positiveSuffix|negativePrefix|negativeSuffix|currencyCode|currencySymbol|internationalCurrencySymbol)':
-                property: true
-            '-(percentSymbol|perMillSymbol|minusSign|plusSign|exponentSymbol|groupingSize|secondaryGroupingSize|multiplier|formatWidth|paddingCharacter)':
-                property: true
-            '-(paddingPosition|roundingMode|roundingIncrement|minimumIntegerDigits|maximumIntegerDigits|minimumFractionDigits|maximumFractionDigits)':
-                property: true
-            '-(minimum|maximum|currencyGroupingSeparator|minimumSignificantDigits|maximumSignificantDigits)':
-                property: true
-            '-textAttributesForNil':
-                name: getTextAttributesForNull
-                return_type: NSAttributedStringAttributes
-            '-setTextAttributesForNil:':
-                name: setTextAttributesForNull
-                parameters:
-                    newAttributes:
-                        type: NSAttributedStringAttributes
-            '-textAttributesForNotANumber':
-                name: getTextAttributesForNaN
-                return_type: NSAttributedStringAttributes
-            '-setTextAttributesForNotANumber:':
-                name: setTextAttributesForNaN
-                parameters:
-                    newAttributes:
-                        type: NSAttributedStringAttributes
-            '-textAttributesFor.*':
-                property: true
-                return_type: NSAttributedStringAttributes
-            '-setTextAttributesFor.*':
-                parameters:
-                    newAttributes:
-                        type: NSAttributedStringAttributes
-            '-nilSymbol':
-                name: getNullSymbol
-            '-setNilSymbol:':
-                name: setNullSymbol
-            '-notANumberSymbol':
-                name: getNaNSymbol
-            '-setNotANumberSymbol:':
-                name: setNaNSymbol
             '+localizedStringFromNumber:numberStyle:':
                 name: formatLocalized
             '+defaultFormatterBehavior':
@@ -2127,21 +2131,15 @@ classes:
             '\+.*': { exclude: true }
             '-.*': { exclude: true }
     NSOperation: # DONE
+        properties:
+            'dependencies':
+                type: 'NSArray<NSOperation>'
         methods:
             '-init': {exclude: true}
-            '-completionBlock':
-                property: true
             '-addDependency:':
                 trim_after_first_colon: true
             '-removeDependency:':
                 trim_after_first_colon: true
-            '-dependencies':
-                property: true
-                return_type: 'NSArray<NSOperation>'
-            '-queuePriority':
-                property: true
-            '-threadPriority':
-                property: true
     NSOperationQueue: # DONE
         properties:
             'operations':
@@ -2178,6 +2176,8 @@ classes:
                 type: NSArray<T>
             'set':
                 type: NSSet<T>
+            'description':
+                exclude: true
         methods:
             '-initWithArray:':
                 constructor: false
@@ -2240,8 +2240,6 @@ classes:
     NSPipe: # DONE
         methods:
             '-init': {exclude: true}
-            '-(fileHandleForReading|fileHandleForWriting)':
-                property: true
             '+pipe':
                 name: create
                 return_type: NSPipe
@@ -2249,7 +2247,7 @@ classes:
     NSPointerFunctions: {}
     NSPort: # DONE
         methods:
-            '-(delegate|reservedSpaceLength)':
+            '-delegate':
                 property: true
             '-scheduleInRunLoop:forMode:':
                 trim_after_first_colon: true
@@ -2313,6 +2311,8 @@ classes:
         properties:
             'kind':
                 type: NSProgressKind
+            'userInfo':
+                type: NSProgressUserInfo
         methods:
             '-initWithParent:userInfo:':
                 name: init
@@ -2324,9 +2324,9 @@ classes:
             '-setUserInfoObject:forKey:':
                 name: setUserInfoObject
                 visibility: protected
-            '-userInfo':
-                property: true
-                return_type: NSProgressUserInfo
+                parameters:
+                    key:
+                        type: NSString
             '+currentProgress':
                 property: true
             '+progressWithTotalUnitCount:':
@@ -2367,8 +2367,6 @@ classes:
         methods:
             '-lock.*':
                 name: lock
-            '-name':
-                property: true
     NSRegularExpression: # DONE
         skip_def_constructor: true
         methods:
@@ -2400,8 +2398,6 @@ classes:
                 name: getCurrent
             '+mainRunLoop':
                 name: getMain
-            '-currentMode':
-                name: getCurrentMode
             '-runMode:beforeDate:':
                 name: runUntil
             '-runUntilDate:':
@@ -2431,16 +2427,10 @@ classes:
             '-acceptInputForMode:beforeDate:':
                 name: acceptInputUntil
     NSScanner: # DONE
+        properties:
+            'locale':
+                type: NSLocale
         methods:
-            '-(string|scanLocation|charactersToBeSkipped|caseSensitive)':
-                property: true
-            '-setLocale:':
-                parameters:
-                    locale:
-                        type: NSLocale
-            '-locale':
-                property: true
-                return_type: NSLocale
             '+scannerWithString:':
                 name: create
                 return_type: NSScanner
@@ -2463,6 +2453,8 @@ classes:
             'allObjects':
                 name: values
                 type: NSArray<T>
+            'description':
+                exclude: true
         methods:
             '-initWithArray:':
                 constructor: false
@@ -2486,8 +2478,6 @@ classes:
     NSSortDescriptor: {}
     NSStream: # DONE
         methods:
-            '-(delegate|streamStatus|streamError)':
-                property: true
             '-propertyForKey:':
                 name: getProperty
                 parameters:
@@ -2503,6 +2493,10 @@ classes:
                 trim_after_first_colon: true
             '-scheduleInRunLoop:forMode:':
                 trim_after_first_colon: true
+            '+getStreamsToHostWithName:port:inputStream:outputStream:':
+                visibility: protected
+            '+getBoundStreamsWithBufferSize:inputStream:outputStream:':
+                visibility: protected
     NSString: # DONE
         protocols: [NSPropertyList]
         properties:
@@ -2534,6 +2528,14 @@ classes:
                         type: "@Pointer long"
             '-stringBy.*PercentEscapes.*':
                 visibility: protected
+            '+stringWithContentsOfURL:encoding:error:':
+                name: readURL
+                visibility: protected
+                return_type: String
+            '+stringWithContentsOfFile:encoding:error:':
+                name: readFile
+                visibility: protected
+                return_type: String
             '+.*': {exclude: true}
             '-.*': {exclude: true}
     NSTextCheckingResult: # DONE
@@ -2597,12 +2599,11 @@ classes:
     NSThread: # DONE
         properties:
             'isMainThread':
-                name: mainThread
+                exclude: true
+            'threadPriority':
+                exclude: true
         methods:
             '+(callStackReturnAddresses|callStackSymbols)': { exclude: true }
-            '+isMainThread': { exclude: true }
-            '+threadPriority': {exclude: true}
-            '+setThreadPriority:': { exclude: true }
             '-init': {exclude: true}
             '+sleepForTimeInterval:':
                 name: sleep
@@ -2616,8 +2617,6 @@ classes:
         methods:
             '-initWithFireDate:interval:target:selector:userInfo:repeats:':
                 name: init
-            '-(fireDate|timeInterval|tolerance|userInfo)':
-                property: true
             '+timerWithTimeInterval:invocation:repeats:':
                 name: create
             '+scheduledTimerWithTimeInterval:invocation:repeats:':
@@ -2627,9 +2626,10 @@ classes:
             '+scheduledTimerWithTimeInterval:target:selector:userInfo:repeats:':
                 name: createScheduled
     NSTimeZone: # DONE
+        properties:
+            'description':
+                exclude: true
         methods:
-            '-(name|data|secondsFromGMT|abbreviation|daylightSavingTimeOffset|nextDaylightSavingTimeTransition|description)':
-                property: true
             '-secondsFromGMTForDate:':
                 name: getSecondsFromGMTForDate
             '-abbreviationForDate:':
@@ -2696,16 +2696,10 @@ classes:
             '+defaultStore':
                 property: true
     NSUndoManager: # DONE
+        properties:
+            'runLoopModes':
+                type: "@org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String>"
         methods:
-            '-(groupingLevel|groupsByEvent|levelsOfUndo|undoActionName|redoActionName|undoMenuItemTitle|redoMenuItemTitle)':
-                property: true
-            '-setRunLoopModes:':
-                parameters:
-                    runLoopModes:
-                        type: "@org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String>"
-            '-runLoopModes':
-                property: true
-                return_type: "@org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String>"
             '-removeAllActionsWithTarget:':
                 name: removeAllActions
             '-registerUndoWithTarget:selector:object:':
@@ -2717,6 +2711,11 @@ classes:
             '-redoMenuTitleForUndoActionName:':
                 name: getRedoMenuTitle
     NSURL: # DONE
+        properties:
+            'fileSystemRepresentation':
+                exclude: true
+            'pathComponents':
+                type: "@org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String>"
         methods:
             '+bookmarkDataWithContentsOfURL:error:':
                 name: createBookmarkData
@@ -2731,15 +2730,10 @@ classes:
                 parameters:
                     options:
                         type: NSURLBookmarkCreationOptions
+            '-fileReferenceURL':
+                property: true
             '-initFileURLWithPath:.*':
                 constructor: false
-            '-(absoluteString|relativeString|baseURL|absoluteURL|scheme|resourceSpecifier|host|port|user|password|path|fragment|parameterString|query|relativePath)':
-                property: true
-            '-(fileReferenceURL|filePathURL|standardizedURL|lastPathComponent|pathExtension)':
-                property: true
-            '-pathComponents':
-                property: true
-                return_type: "@org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String>"
             '-getResourceValue:forKey:error:':
                 visibility: private
                 parameters:
@@ -2785,19 +2779,33 @@ classes:
                 parameters:
                     keys:
                         type: "@org.robovm.rt.bro.annotation.Marshaler(NSURLProperty.AsListMarshaler.class) List<NSURLProperty>"
-            '-fileSystemRepresentation': {exclude: true}
             '+fileURL.*': {exclude: true}
             '+URL.*': {exclude: true}
+            '-getFileSystemRepresentation:maxLength:': {exclude: true}
             '-(URLBy.*?)(:.*)?':
                 name: 'new#{g[0]}'
+            '-getPromisedItemResourceValue:forKey:error:':
+                trim_after_first_colon: true
+                visibility: protected
+                parameters:
+                    key:
+                        type: NSString
+                    value:
+                        type: NSObject.NSObjectPtr
+            '-promisedItemResourceValuesForKeys:error:':
+                name: getPromisedItemResourceValues
+                return_type: NSURLProperties
+                parameters:
+                    keys:
+                        type: "@org.robovm.rt.bro.annotation.Marshaler(NSURLProperty.AsListMarshaler.class) List<NSURLProperty>"
+            '-checkPromisedItemIsReachableAndReturnError:':
+                name: isPromisedItemReachable
     NSURLAuthenticationChallenge: # DONE
         methods:
             '-initWithProtectionSpace:proposedCredential:previousFailureCount:failureResponse:error:sender:':
                 name: init
             '-initWithAuthenticationChallenge:sender:':
                 name: init
-            '-(protectionSpace|proposedCredential|previousFailureCount|failureResponse|error|sender)':
-                property: true
     NSURLCache: # DONE
         methods:
             '-cachedResponseForRequest:':
@@ -2806,10 +2814,16 @@ classes:
                 trim_after_first_colon: true
             '-removeCachedResponseForRequest:':
                 name: removeCachedResponse
-            '-(memoryCapacity|diskCapacity|currentMemoryUsage|currentDiskUsage)':
-                property: true
             '+sharedURLCache':
                 property: true
+            '-removeCachedResponsesSinceDate:':
+                trim_after_first_colon: true
+            '-storeCachedResponse:forDataTask:':
+                trim_after_first_colon: true
+            '-getCachedResponseForDataTask:completionHandler:':
+                name: getCachedResponse
+            '-removeCachedResponseForDataTask:':
+                name: removeCachedResponse
     NSURLConnection: # DONE
         methods:
             '+connectionWithRequest:delegate:':
@@ -2827,18 +2841,15 @@ classes:
                 trim_after_first_colon: true
             '-unscheduleFromRunLoop:forMode:':
                 trim_after_first_colon: true
-            '-originalRequest':
-                property: true
-            '-currentRequest':
-                property: true
             '-initWithRequest:delegate:.*':
                 parameters:
                     delegate:
                         type: NSURLConnectionDelegate
     NSURLCredential: # DONE
+        properties:
+            'certificates':
+                type: "@org.robovm.rt.bro.annotation.Marshaler(NSArray.AsListMarshaler.class) List<SecCertificate>"
         methods:
-            '-(persistence|user|password|identity)':
-                property: true
             '+credential.*':
                exclude: true
             '-initWithIdentity:certificates:persistence:':
@@ -2846,16 +2857,13 @@ classes:
                 parameters:
                     certArray:
                         type: "@org.robovm.rt.bro.annotation.Marshaler(NSArray.AsListMarshaler.class) List<SecCertificate>"
-            '-certificates':
-                property: true
-                return_type: "@org.robovm.rt.bro.annotation.Marshaler(NSArray.AsListMarshaler.class) List<SecCertificate>"
     NSURLCredentialStorage: # DONE
+        properties:
+            'allCredentials':
+                type: "@org.robovm.rt.bro.annotation.Marshaler(NSDictionary.AsStringMapMarshaler.class) Map<String, NSURLCredential>"
         methods:
             '-credentialsForProtectionSpace:':
                 name: getCredentials
-                return_type: "@org.robovm.rt.bro.annotation.Marshaler(NSDictionary.AsStringMapMarshaler.class) Map<String, NSURLCredential>"
-            '-allCredentials':
-                name: getAllCredentials
                 return_type: "@org.robovm.rt.bro.annotation.Marshaler(NSDictionary.AsStringMapMarshaler.class) Map<String, NSURLCredential>"
             '-setCredential:forProtectionSpace:':
                 trim_after_first_colon: true
@@ -2869,10 +2877,38 @@ classes:
             '-defaultCredentialForProtectionSpace:':
                 name: getDefaultCredential
             '-setDefaultCredential:forProtectionSpace:':
-                name: setDefaultCredential
+                trim_after_first_colon: true
             '+sharedCredentialStorage':
                 property: true
+            '-getCredentialsForProtectionSpace:task:completionHandler:':
+                name: getCredentials
+                parameters:
+                    completionHandler:
+                        type: '@Block VoidBlock1<NSDictionary<NSString, NSURLCredential>>'
+                      #  type: '@Block("(@org.robovm.rt.bro.annotation.Marshaler(NSDictionary.AsStringMapMarshaler.class))") VoidBlock1<Map<String, NSURLCredential>>' TODO
+            '-setCredential:forProtectionSpace:task:':
+                trim_after_first_colon: true
+            '-removeCredential:forProtectionSpace:options:task:':
+                trim_after_first_colon: true
+                parameters:
+                    options:
+                        type: NSURLCredentialStorageRemovalOptions
+            '-getDefaultCredentialForProtectionSpace:task:completionHandler:':
+                name: getDefaultCredential
+            '-setDefaultCredential:forProtectionSpace:task:':
+                trim_after_first_colon: true
     NSURLProtectionSpace: # DONE
+        properties:
+            'isProxy':
+                name: proxy
+            'authenticationMethod':
+                type: NSURLAuthenticationMethod
+            'distinguishedNames':
+                type: '@org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String>'
+            'protocol':
+                type: NSURLProtectionSpaceProtocol
+            'proxyType':
+                type: NSURLProtectionSpaceProxyType
         methods:
             '-initWithHost:port:protocol:realm:authenticationMethod:':
                 constructor: false
@@ -2888,24 +2924,8 @@ classes:
                         type: NSURLProtectionSpaceProxyType
                     authenticationMethod:
                         type: NSURLAuthenticationMethod
-            '-(host|port|realm|serverTrust)':
-                property: true
-            '-authenticationMethod':
-                property: true
-                return_type: NSURLAuthenticationMethod
-            '-distinguishedNames':
-                property: true
-                return_type: "@org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String>"
-            '-protocol':
-                property: true
-                return_type: NSURLProtectionSpaceProtocol
-            '-proxyType':
-                property: true
-                return_type: NSURLProtectionSpaceProxyType
     NSURLProtocol: # DONE
         methods:
-            '-(client|request|cachedResponse)':
-                property: true
             '+canInitWithRequest:':
                 trim_after_first_colon: true
             '+canonicalRequestForRequest:':
@@ -2923,25 +2943,24 @@ classes:
                 trim_after_first_colon: true
             '+unregisterClass:':
                 trim_after_first_colon: true
+            '+canInitWithTask:':
+                trim_after_first_colon: true
     NSURLRequest: # DONE
+        properties:
+            'allHTTPHeaderFields':
+                type: '@org.robovm.rt.bro.annotation.Marshaler(NSDictionary.AsStringStringMapMarshaler.class) Map<String, String>'
+            'HTTPShouldHandleCookies':
+                name: shouldHandleHTTPCookies
+                omit_prefix: true
+            'HTTPShouldUsePipelining':
+                name: shouldUseHTTPPipelining
+                omit_prefix: true
         methods:
-            '-(URL|cachePolicy|timeoutInterval|mainDocumentURL|networkServiceType|HTTPMethod|HTTPBody|HTTPBodyStream)':
-                property: true
             '-valueForHTTPHeaderField:':
                 name: getHTTPHeaderFieldValue
-            '-HTTPShouldHandleCookies':
-                name: shouldHandleHTTPCookies
-            '-HTTPShouldUsePipelining':
-                name: shouldUseHTTPPipelining
             '+requestWithURL.*':
                 exclude: true
-            '-allHTTPHeaderFields':
-                property: true
-                return_type: "@org.robovm.rt.bro.annotation.Marshaler(NSDictionary.AsStringStringMapMarshaler.class) Map<String, String>"
-    NSURLResponse: # DONE
-        methods:
-            '-(URL|MIMEType|expectedContentLength|textEncodingName|suggestedFilename)':
-                property: true
+    NSURLResponse: {} # DONE
     NSURLSession: # DONE
         methods:
             '-getTasksWithCompletionHandler:':
@@ -3006,6 +3025,8 @@ classes:
             '+(defaultSessionConfiguration|ephemeralSessionConfiguration)':
                 property: true
             '+backgroundSessionConfiguration:':
+                name: getBackgroundSessionConfiguration7 # deprecated
+            '+backgroundSessionConfigurationWithIdentifier:':
                 name: getBackgroundSessionConfiguration
     NSURLSessionDataTask: {} # DONE
     NSURLSessionDownloadTask: # DONE
@@ -3174,6 +3195,10 @@ protocols:
             '-exceptionDuringOperation:error:leftOperand:rightOperand:':
                 trim_after_first_colon: true
     NSErrorRecoveryAttempting: {}
+    NSExtensionRequestHandling: # DONE
+        methods:
+            '-beginRequestWithExtensionContext:':
+                name: beginRequest
 #    NSFastEnumeration: {}
     NSFileManagerDelegate: # DONE
         methods:
@@ -3702,6 +3727,13 @@ values:
         type: NSString
         visibility: protected
 
+    # NSItemProvider
+    NSItemProvider(.*Key):
+        class: NSItemProviderOptions
+        name: "#{g[0]}"
+        type: NSString
+        visibility: protected
+
     # NSLinguisticTagger
     NSLinguisticTagScheme(.*):
         class: NSLinguisticTagScheme
@@ -3771,8 +3803,8 @@ values:
 
     # NSProgress
     NSProgress(.*)Key:
-        class: NSProgressUserInfo
-        name: "#{g[0]}"
+        class: NSProgressUserInfoKey
+        name: "#{g[0]}Value"
         type: NSString
         visibility: protected
     NSProgressFileOperationKind(.*):

@@ -173,7 +173,7 @@ JNIEXPORT void JNICALL Java_org_robovm_rt_iconv_IconvProvider_releaseIconv
     (*error) = check_for_error(result, "error converting\n");
     
     if ((*error) == ILLEGAL_SEQUENCE) {
-		
+    
 #ifdef __APPLE__
         int enabled = 1;
         iconvctl(content_descriptor, ICONV_SET_DISCARD_ILSEQ, &enabled);

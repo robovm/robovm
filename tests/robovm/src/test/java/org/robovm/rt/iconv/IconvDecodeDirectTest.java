@@ -70,8 +70,6 @@ public class IconvDecodeDirectTest {
             assertTrue(false);
             e.printStackTrace();
         }
-        System.err.println("passed encoding");
-        
         
         CharBuffer outBuffer = null;
         try {

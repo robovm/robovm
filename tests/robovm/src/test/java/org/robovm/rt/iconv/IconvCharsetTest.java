@@ -31,20 +31,29 @@ public class IconvCharsetTest {
 
     @Test
     public void testIconvCharset() {
-
+                   
         IconvProvider p = new IconvProvider();
         Charset cs = p.charsetForName("Big5");
 
         assertTrue(cs != null);
         assertTrue(cs instanceof IconvCharset);
-
-        CharsetDecoder cd = cs.newDecoder();
-        CharsetEncoder ce = cs.newEncoder();
-
-        assertTrue(cd instanceof IconvDecoder);
+        
+        CharsetEncoder ce = null;
+        CharsetDecoder cd = null;
+        
+        if (cs.canEncode()) {
+            ce = cs.newEncoder();
+            cd = cs.newDecoder();
+        }
+        
+        ce = cs.newEncoder();
+        cd = cs.newDecoder();
+        
         assertTrue(ce instanceof IconvEncoder);
-
+        assertTrue(cd instanceof IconvDecoder);
+        
         assertTrue(cd != null);
         assertTrue(ce != null);
+
     }
 }

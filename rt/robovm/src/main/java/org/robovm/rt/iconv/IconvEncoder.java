@@ -24,21 +24,18 @@ import java.nio.charset.CharsetEncoder;
 import java.nio.charset.CoderResult;
 
 /**
- * This encoder class is used to wrap encodings of the current 60 encodings supported by
- * RoboVM in conjunction with utilizing iconv.
- * 
- * The encoding operations are performed via calls to encodeLoop.
- *  
- * encodeLoop calls iconv via JNI to do conversions between encodings.
+ * This encoder class is used to wrap encodings of the encodings supported by
+ * RoboVM in conjunction with utilizing iconv. The encoding operations are performed via 
+ * calls to encodeLoop which calls iconv via JNI to do conversions between encodings.
  */
 public class IconvEncoder extends CharsetEncoder{
 	
     private long iconv_tPointer = 0;
-    
-    private ByteOrder currentByteOrder;
+
+    private String currentEncoding;
     
     /**
-     * Constructor for {@link CharsetEncoder} with specified char encoding constants.
+     * Constructor for {@link CharsetEncoder} for specified {@link Charset}.
      */
     public IconvEncoder(Charset cs, float averageBytesPerChar,
             float maxBytesPerChar) {
@@ -53,11 +50,9 @@ public class IconvEncoder extends CharsetEncoder{
      */
     @Override
     protected CoderResult encodeLoop(CharBuffer in, ByteBuffer out) {
-        
-        if(!in.isDirect() && !in.hasArray()) {
-            throw new IllegalArgumentException();
-        }
 
+        int posIn = in.position();
+        int posOut = out.position();
         this.allocateContentDescriptor(in.isDirect(), in.order());
         IconvResult result = IconvProvider.encode(iconv_tPointer, in, out);
 
@@ -65,9 +60,14 @@ public class IconvEncoder extends CharsetEncoder{
         case OUTPUT_BUFFER_TOO_SMALL:
             return CoderResult.OVERFLOW;
         case ILLEGAL_SEQUENCE:
-            return CoderResult.unmappableForLength(result.getBytesWrittenFromSource());
+            IconvProvider.enableDiscardIllegalSequence(iconv_tPointer);
+            in.position(posIn);
+            out.position(posOut);
+            result = IconvProvider.encode(iconv_tPointer, in, out);
+            IconvProvider.disableDiscardIllegalSequence(iconv_tPointer);
+            return CoderResult.unmappableForLength(result.getBytesReadFromSource());
         case INCOMPLETE_SEQUENCE:
-            return CoderResult.malformedForLength(result.getBytesWrittenFromSource());
+            return CoderResult.malformedForLength(result.getBytesReadFromSource());
         default:
             break;
         }
@@ -81,18 +81,16 @@ public class IconvEncoder extends CharsetEncoder{
      */
     private void allocateContentDescriptor(boolean isDirect, ByteOrder byteOrder) {
         
+        String encoding = byteOrder == ByteOrder.BIG_ENDIAN && isDirect ? "UTF-16BE" : "UTF-16LE";
         if(iconv_tPointer == 0) {
-            //Content descriptor needs to be allocated
-            if (byteOrder == ByteOrder.BIG_ENDIAN) {
-                this.iconv_tPointer = IconvProvider.initConversion("UTF-16BE", ((IconvCharset) charset()).getIconvName());
-                this.currentByteOrder = ByteOrder.BIG_ENDIAN;
-            } else {
-                this.iconv_tPointer = IconvProvider.initConversion("UTF-16LE", ((IconvCharset) charset()).getIconvName());
-                this.currentByteOrder = ByteOrder.LITTLE_ENDIAN;
-            }
-        } else if (byteOrder != this.currentByteOrder) {
+            this.iconv_tPointer = IconvProvider.initConversion(encoding, ((IconvCharset) charset()).getIconvName());
+            this.currentEncoding = encoding;
+        }
+
+        if (!encoding.equals(this.currentEncoding)) {
             throw new IllegalStateException("Illegal change of byte order");
         }
+        
     }
     
     @Override
@@ -109,17 +107,18 @@ public class IconvEncoder extends CharsetEncoder{
         if (iconv_tPointer != 0) { 
             
             IconvResult result = IconvProvider.flush(iconv_tPointer, out);
-   
+
             switch (result.getResultCode()) {
             case OUTPUT_BUFFER_TOO_SMALL:
                 return CoderResult.OVERFLOW;
             case ILLEGAL_SEQUENCE:
-                return CoderResult.unmappableForLength(result.getBytesWrittenFromSource());
+                return CoderResult.unmappableForLength(result.getBytesReadFromSource());
             case INCOMPLETE_SEQUENCE:
-                return CoderResult.malformedForLength(result.getBytesWrittenFromSource());
+                return CoderResult.malformedForLength(result.getBytesReadFromSource());
             default:
                 break;
             }
+
         }
         return super.implFlush(out);
     }

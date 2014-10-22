@@ -23,32 +23,50 @@ import org.robovm.rt.iconv.IconvProvider.ConversionResult;
  */
 public class IconvResult {
 
-    private int bytesWrittenFromSource;
+    private int bytesReadFromSource;
 
     private int bytesWrittenToDestination;
 
     private ConversionResult resultCode;
 
-    public int getBytesWrittenFromSource() {
-        return bytesWrittenFromSource;
+    /**
+     * @return number of bytes processed in source
+     */
+    public int getBytesReadFromSource() {
+        return bytesReadFromSource;
     }
 
-    public void setBytesWrittenFromSource(int bytesWrittenFromSource) {
-        this.bytesWrittenFromSource = bytesWrittenFromSource;
+    /**
+     * Sets number of bytes processed in source
+     */
+    public void setBytesReadFromSource(int bytesWrittenFromSource) {
+        this.bytesReadFromSource = bytesWrittenFromSource;
     }
 
+    /**
+     * @return number of bytes processed in destination
+     */
     public int getBytesWrittenToDestination() {
         return bytesWrittenToDestination;
     }
 
+    /**
+     * Sets number of bytes processed in destination
+     */
     public void setBytesWrittenToDestination(int bytesWrittenToDestination) {
         this.bytesWrittenToDestination = bytesWrittenToDestination;
     }
 
+    /**
+     * Gets result code of operation
+     */
     public ConversionResult getResultCode() {
         return resultCode;
     }
 
+    /**
+     * Sets result code  
+     */
     public void setResultCode(ConversionResult resultCode) {
         this.resultCode = resultCode;
     }

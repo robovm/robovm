@@ -62,8 +62,6 @@ public class IconvDecoderArrayTest {
             e1.printStackTrace();
         }
         
-        System.out.println(byteBuffer.isDirect());
-        
         IconvProvider p = new IconvProvider();
         Charset cs = p.charsetForName("Shift_JIS");
         CharBuffer charBuffer = null;
@@ -74,12 +72,22 @@ public class IconvDecoderArrayTest {
             e.printStackTrace();
         }
         
-        String output = charBuffer.toString();
-        String checkValue = null;
-
-        checkValue = new String("\uFF66\uFF73");
-
-        assertTrue(output.equals(checkValue));
+        char[] array = copyCharBufferData(charBuffer);
+        
+        String output = new String(array).trim();
+        assertTrue(output.equals(s));
+    }
+    
+    static private char[] copyCharBufferData(CharBuffer buffer) {
+        char[] bufferdata = null;
+        if(!buffer.isDirect() && !buffer.hasArray()) {
+            int lastPos = buffer.remaining();
+            bufferdata = new char[lastPos];
+            buffer.get(bufferdata, 0, lastPos);
+        } else if(!buffer.isDirect() && buffer.hasArray()) {
+            bufferdata = buffer.array();
+        }
+        return bufferdata;
     }
 
 }

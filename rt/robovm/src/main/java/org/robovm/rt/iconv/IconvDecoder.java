@@ -24,22 +24,18 @@ import java.nio.charset.CharsetDecoder;
 import java.nio.charset.CoderResult;
 
 /**
- * This decoder class is used to wrap decoding of the current 60 encodings supported by
- * RoboVM in conjunction with utilizing iconv.
- * 
- * The decoding operations are performed via calls to decodeLoop.
- *  
- * decodeLoop calls iconv via JNI to do conversions between encodings 
+ * This decoder class is used to wrap decoding of the current encodings supported by
+ * RoboVM in conjunction with utilizing iconv. The decoding operations are performed via
+ * calls to decodeLoop which calls iconv via JNI to do conversions between encodings 
  */
 public class IconvDecoder extends CharsetDecoder{
     
-    private ByteOrder currentByteOrder;
-    
     private long iconv_tPointer = 0;
+
+    private String currentEncoding;
     
     /**
-     * Constructor for {@link CharsetDecoder} of specified char set
-     * 
+     * Constructor for {@link CharsetDecoder} for specified {@link Charset}
      * @param cs charset instance
      * @param averageCharsPerByte
      * @param maxCharsPerByte
@@ -57,23 +53,20 @@ public class IconvDecoder extends CharsetDecoder{
      */
     @Override
     protected CoderResult decodeLoop(ByteBuffer in, CharBuffer out) {
-
-        if(!out.isDirect() && !out.hasArray()) {
-            throw new IllegalArgumentException();
-        }
         
         allocateContentDescriptor(out.isDirect(), out.order());
         IconvResult result = IconvProvider.decode(iconv_tPointer, in, out);
 
+        int bytesFromSource = result.getBytesReadFromSource();
         switch (result.getResultCode()) {
         case CONVERSION_OK:
             return CoderResult.UNDERFLOW;
         case OUTPUT_BUFFER_TOO_SMALL:
             return CoderResult.OVERFLOW;
         case ILLEGAL_SEQUENCE:
-            return CoderResult.unmappableForLength(result.getBytesWrittenFromSource());
+            return CoderResult.unmappableForLength(bytesFromSource);
         case INCOMPLETE_SEQUENCE:
-            return CoderResult.malformedForLength(result.getBytesWrittenFromSource());
+            return CoderResult.UNDERFLOW;
         default:
             throw new IllegalStateException();
         }
@@ -86,19 +79,16 @@ public class IconvDecoder extends CharsetDecoder{
      */
     private void allocateContentDescriptor(boolean isDirect, ByteOrder byteOrder) {
 
-        
+        String encoding = byteOrder == ByteOrder.BIG_ENDIAN && isDirect ? "UTF-16BE" : "UTF-16LE";
         if(iconv_tPointer == 0) {
-            //Content descriptor needs to be allocated
-            if (isDirect && byteOrder == ByteOrder.BIG_ENDIAN) {
-                this.iconv_tPointer = IconvProvider.initConversion(((IconvCharset) charset()).getIconvName(), "UTF-16BE");
-                this.currentByteOrder = ByteOrder.BIG_ENDIAN;
-            } else {
-                this.iconv_tPointer = IconvProvider.initConversion(((IconvCharset) charset()).getIconvName(), "UTF-16LE");
-                this.currentByteOrder = ByteOrder.LITTLE_ENDIAN;
-            }
-        } else if (byteOrder != this.currentByteOrder) {
+            this.iconv_tPointer = IconvProvider.initConversion(((IconvCharset) charset()).getIconvName(), encoding);
+            this.currentEncoding = encoding;
+        }
+
+        if (!encoding.equals(this.currentEncoding)) {
             throw new IllegalStateException("Illegal change of byte order");
         }
+        
     }
     
     @Override
@@ -120,9 +110,9 @@ public class IconvDecoder extends CharsetDecoder{
             case OUTPUT_BUFFER_TOO_SMALL:
                 return CoderResult.OVERFLOW;
             case ILLEGAL_SEQUENCE:
-                return CoderResult.unmappableForLength(result.getBytesWrittenFromSource());
+                return CoderResult.unmappableForLength(result.getBytesReadFromSource());
             case INCOMPLETE_SEQUENCE:
-                return CoderResult.malformedForLength(result.getBytesWrittenFromSource());
+                return CoderResult.malformedForLength(result.getBytesReadFromSource());
             default:
                 break;
             }

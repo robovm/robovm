@@ -22,8 +22,7 @@ import java.nio.charset.CharsetEncoder;
 
 /**
  * Iconv {@link Charset} class which encapsulates
- * char set configs to use in conjunction with
- * the iconv library
+ * {@link Charset} configs to use with the iconv library
  */
 public class IconvCharset extends Charset{
 
@@ -37,15 +36,13 @@ public class IconvCharset extends Charset{
     /**
      * Constructor for {@link IconvCharset} which encapsulates char set configs which
      * are used for buffer allocations during encoding / decoding operations.
-     * 
-     * @param canonicalName the canonical name used to identify this char set
-     * @param iconvName
-     * @param aliases aliases for given char set 1 - *
+     * @param canonicalName the canonical name used to identify this {@link Charset}
+     * @param iconvName canonical name of {@link Charset} in iconv
+     * @param aliases aliases for given char set 
      * @param averageCharsPerByte
      * @param maxCharsPerByte
      * @param averageBytesPerChar
      * @param maxBytesPerChar
-     * 
      */
     public IconvCharset(String canonicalName, String iconvName, String[] aliases, float averageCharsPerByte, float maxCharsPerByte,
             float averageBytesPerChar, float maxBytesPerChar) {
@@ -59,9 +56,8 @@ public class IconvCharset extends Charset{
     }
 
     /**
-     * Checks if this {@link Charset} subsumes the specified charset
-     * 
-     * @return whether this charset subsumes the specified.
+     * Checks if this {@link Charset} subsumes the specified {@link Charset}
+     * @return whether this {@link Charset} subsumes the specified.
      */
     @Override
     public boolean contains(Charset cs) {
@@ -81,7 +77,12 @@ public class IconvCharset extends Charset{
         return new IconvEncoder(this, averageBytesPerChar, maxBytesPerChar);
     }
 
+    /**
+     * returns iconv {@link Charset} name
+     * @return name of {@link Charset}
+     */
     public String getIconvName() {
         return iconvName;
     }
+    
 }

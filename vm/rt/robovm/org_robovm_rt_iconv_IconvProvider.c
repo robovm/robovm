@@ -33,15 +33,29 @@ extern "C" {
 #define ILLEGAL_SEQUENCE 1
 #define OUTPUT_BUFFER_TOO_SMALL 2
 #define INCOMPLETE_SEQUENCE 3
-#define ERROR_METHOD_ID 4
-#define ERROR_ARRAY_FUNCTION_CALL 5
-#define ERROR_DESCRIPTOR 6
-#define UNKNOWN_ERROR 7
-#define MAX_FILE_DESCRIPTORS 8
-#define TOO_MANY_FILES_OPEN 9
-#define UNSUPPORTED_CONVERSION 10
-#define OUT_OF_MEMORY 11
+#define ERROR_DESCRIPTOR 4
+#define UNKNOWN_ERROR 5
+#define MAX_FILE_DESCRIPTORS 6
+#define TOO_MANY_FILES_OPEN 7
+#define UNSUPPORTED_CONVERSION 8
+#define OUT_OF_MEMORY 9
 
+//Sets discard illegal sequence to enabled
+JNIEXPORT void JNICALL Java_org_robovm_rt_iconv_IconvProvider_enableIllSeq(JNIEnv *env,
+ jclass thisObj, jlong pointer) {
+    iconv_t content_descriptor = (iconv_t) pointer;
+    int enabled = 1;
+    iconvctl(content_descriptor, ICONV_SET_DISCARD_ILSEQ, &enabled);
+ }
+
+//Sets discard illegal sequence to disabled
+JNIEXPORT void JNICALL Java_org_robovm_rt_iconv_IconvProvider_disableIllSeq(JNIEnv *env,
+ jclass thisObj, jlong pointer) {
+    iconv_t content_descriptor = (iconv_t) pointer;
+    int enabled = 0;
+    iconvctl(content_descriptor, ICONV_SET_DISCARD_ILSEQ, &enabled);
+ }
+ 
 /**
 * throws IllegalStateException
 */
@@ -92,10 +106,9 @@ JNIEXPORT jlong JNICALL Java_org_robovm_rt_iconv_IconvProvider_initIconv
         return throwIllegalStateException(env, errorMessage);
     }
 
-    int enabled = 1;
-
 #ifdef __APPLE__
-    iconvctl(content_descriptor, ICONV_SET_DISCARD_ILSEQ, &enabled);
+    //int enabled = 1;
+    //iconvctl(content_descriptor, ICONV_SET_DISCARD_ILSEQ, &enabled);
 #endif
 
     (*env)->ReleaseStringUTFChars(env, toEncoding, to_enc);
@@ -130,7 +143,7 @@ JNIEXPORT void JNICALL Java_org_robovm_rt_iconv_IconvProvider_releaseIconv
             return UNKNOWN_ERROR;
         }
     }
-    return result;
+    return CONVERSION_OK;
  }
  
  /**
@@ -154,8 +167,23 @@ JNIEXPORT void JNICALL Java_org_robovm_rt_iconv_IconvProvider_releaseIconv
         return ERROR_DESCRIPTOR;
     }
 
-    size_t result = iconv(content_descriptor, &inbuffer, inlength, &outbuffer, outlength);
+    size_t result = iconv(content_descriptor, &inbuffer, inlength, &outbuffer, outlength);    
     (*error) = check_for_error(result, "error converting\n");
+    
+    if ((*error) == ILLEGAL_SEQUENCE) {
+		
+#ifdef __APPLE__
+        int enabled = 1;
+        iconvctl(content_descriptor, ICONV_SET_DISCARD_ILSEQ, &enabled);
+#endif
+        result = iconv(content_descriptor, &inbuffer, inlength, &outbuffer, outlength);
+
+#ifdef __APPLE__
+        enabled = 0;
+        iconvctl(content_descriptor, ICONV_SET_DISCARD_ILSEQ, &enabled);
+#endif
+
+    }
     
     return result;
  }
@@ -187,7 +215,7 @@ JNIEXPORT void JNICALL Java_org_robovm_rt_iconv_IconvProvider_releaseIconv
     
     static jfieldID fidSource = NULL;
     if (fidSource == NULL) {
-        fidSource = (*env)->GetFieldID(env, resultClass, "bytesWrittenFromSource", "I");
+        fidSource = (*env)->GetFieldID(env, resultClass, "bytesReadFromSource", "I");
         
         if (NULL == fidSource) {
             return -1; //Exception has been raised
@@ -279,9 +307,9 @@ JNIEXPORT void JNICALL Java_org_robovm_rt_iconv_IconvProvider_releaseIconv
     //Get sizes pre/post conversion
     size_t out_bytes_left = (size_t) (limitOut - positionOut) * sizeof(jbyte);
       
-      if (out_bytes_left <= 0) {
-          return 0;
-      }
+    if (out_bytes_left <= 0) {
+        return 0;
+    }
       
       
     jbyte* pByteArray = (*env)->GetByteArrayElements(env, theByteArray, NULL);
@@ -304,7 +332,7 @@ JNIEXPORT void JNICALL Java_org_robovm_rt_iconv_IconvProvider_releaseIconv
   (JNIEnv *env, jclass thisObj, jlong cd, jobject bytebuffer,
    jobject iconvResult, jint positionOut, jint limitOut) {
    
-      iconv_t content_descriptor = (iconv_t) cd;
+    iconv_t content_descriptor = (iconv_t) cd;
 
     //Get sizes pre/post conversion
     size_t in_bytes = 0;

@@ -251,14 +251,14 @@ public class IconvProvider extends CharsetProvider{
      * @return chararray with buffer content
      */
     static private CharBuffer copyCharBufferData(CharBuffer buffer) {
-        if(!buffer.isDirect() && !buffer.hasArray()) {
+        if (!buffer.isDirect() && !buffer.hasArray()) {
             int pos = buffer.position();
             CharBuffer cb = CharBuffer.allocate(buffer.capacity()).put(buffer);
             cb.position(pos);
             cb.limit(buffer.limit());
             buffer.position(pos);
             return cb;
-        } 
+        }
         return buffer;
     }
     
@@ -268,14 +268,14 @@ public class IconvProvider extends CharsetProvider{
      * @return bytearray with {@Buffer} content
      */
     static private ByteBuffer copyByteBufferData(ByteBuffer buffer) {
-        if(!buffer.isDirect() && !buffer.hasArray()) {
+        if (!buffer.isDirect() && !buffer.hasArray()) {
             int pos = buffer.position();
             ByteBuffer bb = ByteBuffer.allocate(buffer.capacity()).put(buffer);
             bb.position(pos);
             bb.limit(buffer.limit());
             buffer.position(pos);
             return bb;
-        } 
+        }
         return buffer;
     }
     
@@ -464,7 +464,7 @@ public class IconvProvider extends CharsetProvider{
         if (charsets.containsKey(name)) {
             return charsets.get(name);
         }
-        
+
         Iterator<Charset> it = charsets.values().iterator();
         while (it.hasNext()) {
             Charset cs = it.next();
@@ -475,7 +475,7 @@ public class IconvProvider extends CharsetProvider{
                 }
             }
         }
-        
+
         return null;
     }
 }

@@ -65,7 +65,7 @@ public class IconvResult {
     }
 
     /**
-     * Sets result code  
+     * Sets result code
      */
     public void setResultCode(ConversionResult resultCode) {
         this.resultCode = resultCode;

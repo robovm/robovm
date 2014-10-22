@@ -54,6 +54,5 @@ public class IconvCharsetTest {
         
         assertTrue(cd != null);
         assertTrue(ce != null);
-
     }
 }

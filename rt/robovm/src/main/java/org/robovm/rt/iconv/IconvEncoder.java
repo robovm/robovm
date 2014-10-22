@@ -51,8 +51,6 @@ public class IconvEncoder extends CharsetEncoder{
     @Override
     protected CoderResult encodeLoop(CharBuffer in, ByteBuffer out) {
 
-        int posIn = in.position();
-        int posOut = out.position();
         this.allocateContentDescriptor(in.isDirect(), in.order());
         IconvResult result = IconvProvider.encode(iconv_tPointer, in, out);
 
@@ -60,14 +58,9 @@ public class IconvEncoder extends CharsetEncoder{
         case OUTPUT_BUFFER_TOO_SMALL:
             return CoderResult.OVERFLOW;
         case ILLEGAL_SEQUENCE:
-            IconvProvider.enableDiscardIllegalSequence(iconv_tPointer);
-            in.position(posIn);
-            out.position(posOut);
-            result = IconvProvider.encode(iconv_tPointer, in, out);
-            IconvProvider.disableDiscardIllegalSequence(iconv_tPointer);
             return CoderResult.unmappableForLength(result.getBytesReadFromSource());
         case INCOMPLETE_SEQUENCE:
-            return CoderResult.malformedForLength(result.getBytesReadFromSource());
+            return CoderResult.UNDERFLOW;
         default:
             break;
         }
@@ -104,8 +97,8 @@ public class IconvEncoder extends CharsetEncoder{
 
     @Override
     protected CoderResult implFlush(ByteBuffer out) {
-        if (iconv_tPointer != 0) { 
-            
+        if (iconv_tPointer != 0) {
+
             IconvResult result = IconvProvider.flush(iconv_tPointer, out);
 
             switch (result.getResultCode()) {
@@ -118,7 +111,6 @@ public class IconvEncoder extends CharsetEncoder{
             default:
                 break;
             }
-
         }
         return super.implFlush(out);
     }

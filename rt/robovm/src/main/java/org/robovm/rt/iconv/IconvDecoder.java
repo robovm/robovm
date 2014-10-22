@@ -53,7 +53,7 @@ public class IconvDecoder extends CharsetDecoder{
      */
     @Override
     protected CoderResult decodeLoop(ByteBuffer in, CharBuffer out) {
-        
+
         allocateContentDescriptor(out.isDirect(), out.order());
         IconvResult result = IconvProvider.decode(iconv_tPointer, in, out);
 
@@ -80,7 +80,7 @@ public class IconvDecoder extends CharsetDecoder{
     private void allocateContentDescriptor(boolean isDirect, ByteOrder byteOrder) {
 
         String encoding = byteOrder == ByteOrder.BIG_ENDIAN && isDirect ? "UTF-16BE" : "UTF-16LE";
-        if(iconv_tPointer == 0) {
+        if (iconv_tPointer == 0) {
             this.iconv_tPointer = IconvProvider.initConversion(((IconvCharset) charset()).getIconvName(), encoding);
             this.currentEncoding = encoding;
         }
@@ -88,7 +88,7 @@ public class IconvDecoder extends CharsetDecoder{
         if (!encoding.equals(this.currentEncoding)) {
             throw new IllegalStateException("Illegal change of byte order");
         }
-        
+
     }
     
     @Override

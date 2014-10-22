@@ -40,6 +40,7 @@ extern "C" {
 #define UNSUPPORTED_CONVERSION 8
 #define OUT_OF_MEMORY 9
 
+#ifdef __APPLE__
 //Sets discard illegal sequence to enabled
 JNIEXPORT void JNICALL Java_org_robovm_rt_iconv_IconvProvider_enableIllSeq(JNIEnv *env,
  jclass thisObj, jlong pointer) {
@@ -55,6 +56,7 @@ JNIEXPORT void JNICALL Java_org_robovm_rt_iconv_IconvProvider_disableIllSeq(JNIE
     int enabled = 0;
     iconvctl(content_descriptor, ICONV_SET_DISCARD_ILSEQ, &enabled);
  }
+#endif 
  
 /**
 * throws IllegalStateException

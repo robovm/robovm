@@ -211,34 +211,6 @@ JNIEXPORT void JNICALL Java_org_robovm_rt_iconv_IconvProvider_releaseIconv
     return error;
  }
     
- /**
- * Flushes char buffer if array backed
- */
- JNIEXPORT jint JNICALL Java_org_robovm_rt_iconv_IconvProvider_flushCharArray
- (JNIEnv *env, jclass thisObj, jlong cd, jcharArray theCharArray,
-    jobject iconvResult, jint positionOut, jint limitOut) {
-        
-    iconv_t content_descriptor = (iconv_t) cd;
-        
-    //Get sizes pre/post conversion
-    size_t out_bytes_left = (size_t) (limitOut - positionOut) * sizeof(jchar);
-        
-    if (out_bytes_left <= 0) {
-        return 0;
-    }
-        
-    jchar* pCharArray = (jchar*) (*env)->GetByteArrayElements(env, theCharArray, NULL);
-        
-    char* pDst = ((char *) pCharArray);
-        
-    set_buffer_positions(env, 0, positionOut, NULL, &pDst);   
-    int error = reposition_and_convert(env, iconvResult, content_descriptor, 0, out_bytes_left, NULL, pDst);
-        
-    (*env)->ReleaseCharArrayElements(env, theCharArray, pCharArray, 0);
-        
-    return error;
- }
-
 /**
 * Handles the case when both buffers are backed by arrays
 */

@@ -347,18 +347,9 @@ public class IconvProvider extends CharsetProvider{
     private static native long initIconv(String fromEncoding, String toEncoding);
     
     private static native void releaseIconv( long pointer);
-    
 
     //Native functions interfacing with shared native lib
 
-    private static native int flushByteArray(long pointer, byte[] out, IconvResult iconvResult, int positionOut, int limitOut);
-    
-    private static native int flushByteDirect(long pointer, ByteBuffer out, IconvResult iconvResult, int positionOut, int limitOut);
-    
-    private static native int flushCharArray(long pointer, char[] out, IconvResult iconvResult, int positionOut, int limitOut);
-    
-    private static native int flushCharDirect(long pointer, CharBuffer out, IconvResult iconvResult, int positionOut, int limitOut);
-    
     private static native int encodeNativeArray( long pointer, char[] in, byte[] out, IconvResult iconvResult, int positionIn,
           int limitIn, int positionOut, int limitOut);
     

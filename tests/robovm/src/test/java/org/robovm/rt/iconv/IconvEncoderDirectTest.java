@@ -22,15 +22,12 @@ import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.nio.CharBuffer;
 import java.nio.charset.Charset;
-import java.nio.charset.CharsetEncoder;
-import java.nio.charset.CoderResult;
 
 import org.junit.Before;
 import org.junit.Test;
 
 /**
  * Tests encoding of direct buffers
- *
  */
 public class IconvEncoderDirectTest {
 
@@ -39,7 +36,7 @@ public class IconvEncoderDirectTest {
     }
 
     @Test
-    public void testIconvEncodeDirect() {
+    public void testIconvEncodeDirect() throws UnsupportedEncodingException {
         String s = "äsödfksöjgsoignduh g rguh irgh";
         CharBuffer in = ByteBuffer.allocateDirect(s.length() * 2).asCharBuffer();
         ByteBuffer out = ByteBuffer.allocateDirect(s.length() * 2);
@@ -55,16 +52,13 @@ public class IconvEncoderDirectTest {
         byte[] bb = new byte[out.remaining()];
         out.get(bb);
         String ss = null;
-        try {
-            ss = new String(bb, "UTF-8");
-        } catch (UnsupportedEncodingException e) {
-            fail(e.getMessage());
-        }
+        ss = new String(bb, "UTF-8");
+
         assertTrue(ss.equals(s));
     }
 
     @Test
-    public void testIconvEncodeDirectSwiftJIS() {
+    public void testIconvEncodeDirectSwiftJIS() throws UnsupportedEncodingException {
         String s = "\uFF66\uFF73";
         CharBuffer in = ByteBuffer.allocateDirect(s.length() * 2).order(ByteOrder.nativeOrder()).asCharBuffer();
         ByteBuffer out = ByteBuffer.allocateDirect(s.length() * 3);
@@ -80,16 +74,13 @@ public class IconvEncoderDirectTest {
         byte[] byteArray = new byte[out.remaining()];
         out.get(byteArray);
         String ss = null;
-        try {
-            ss = new String(byteArray, "Shift_JIS");
-        } catch (UnsupportedEncodingException e) {
-            fail(e.getMessage());
-        }
+        ss = new String(byteArray, "Shift_JIS");
+ 
         assertTrue(ss.equals(s));
     }
 
     @Test
-    public void testIconvEncodeDirectNoErrorHandling() {
+    public void testIconvEncodeDirectNoErrorHandling() throws UnsupportedEncodingException {
         // taken from charset at
         // http://www.kreativekorp.com/charset/encoding.php?name=Shift-JIS
         // ｦｳ
@@ -108,11 +99,8 @@ public class IconvEncoderDirectTest {
         byte[] byteArray = new byte[byteBuffer.remaining()];
         byteBuffer.get(byteArray);
         String ss = null;
-        try {
-            ss = new String(byteArray, "UTF-8");
-        } catch (UnsupportedEncodingException e) {
-           fail(e.getMessage());
-        }
+        ss = new String(byteArray, "UTF-8");
+
         assertTrue(ss.equals(s));
     }
 
@@ -138,51 +126,5 @@ public class IconvEncoderDirectTest {
         byteBuffer.get(byteArray);
 
         assertTrue(s.equals(output));
-    }
-
-    @Test
-    public void testIconvEncodeDirectNoErrorHandlingBigBuffer() throws Exception {
-        if (!System.getProperty("java.vendor").equals("RoboVM")) {
-            Charset csIconv = new IconvProvider().charsetForName("UTF-8");
-            Charset csOracle = Charset.forName("UTF-8");
-            String iconv = getSmallBufString(csIconv);
-            String builtIn = getSmallBufString(csOracle);
-            assertTrue(iconv.equals(builtIn));
-        }
-
-    }
-
-    private String getSmallBufString(Charset cs) throws UnsupportedEncodingException {
-        String toEncode = "det var en gång en vätte som bodde på en ö som hette Kortedala";
-
-        CharBuffer charBuffer = ByteBuffer.allocateDirect(toEncode.length() * 2).asCharBuffer();
-        ByteBuffer byteBuffer = ByteBuffer.allocateDirect(5);
-        charBuffer.append(toEncode);
-        charBuffer.rewind();
-
-        byte[] array = new byte[5];
-
-        String utf8String = null;
-        CharsetEncoder encoder = cs.newEncoder();
-        StringBuilder sb = new StringBuilder();
-        try {
-            CoderResult cr = null;
-            do {
-                cr = encoder.encode(charBuffer, byteBuffer, true);
-                byteBuffer.flip();
-
-                byteBuffer.get(array, 0, byteBuffer.remaining());
-                sb.append(new String(array, "UTF-8"));
-                byteBuffer.flip();
-                byteBuffer.clear();
-
-            } while (cr.isOverflow());
-
-            utf8String = new String(sb.toString().getBytes(), "UTF-8");
-
-        } catch (UnsupportedEncodingException e) {
-            fail(e.getMessage());
-        }
-        return utf8String;
     }
 }

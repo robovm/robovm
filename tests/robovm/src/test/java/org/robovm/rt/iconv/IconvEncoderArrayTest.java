@@ -30,7 +30,7 @@ import org.junit.Test;
 public class IconvEncoderArrayTest {
 
     @Test
-    public void testIconvEncodeArraysUTF8() {
+    public void testIconvEncodeArraysUTF8() throws UnsupportedEncodingException {
 
         String toEncode = "Hhhhöädglpdågplgdäglh";
         CharBuffer charBuffer = CharBuffer.wrap(toEncode.toCharArray());
@@ -40,12 +40,8 @@ public class IconvEncoderArrayTest {
         Charset cs = p.charsetForName("UTF-8");
         cs.newEncoder().encode(charBuffer, byteBuffer, true);
 
-        try {
-            String utf8String = new String(byteBuffer.array(), "UTF-8");
-            assertTrue(utf8String.trim().equals(toEncode));
-        } catch (UnsupportedEncodingException e) {
-            fail(e.getMessage());
-        }
+        String utf8String = new String(byteBuffer.array(), "UTF-8");
+        assertTrue(utf8String.trim().equals(toEncode));
 
         charBuffer = CharBuffer.allocate(toEncode.length());
         byteBuffer.position(0);
@@ -57,7 +53,7 @@ public class IconvEncoderArrayTest {
     }
 
     @Test
-    public void testIconvEncodeEmptyInBuffer() {
+    public void testIconvEncodeEmptyInBuffer() throws UnsupportedEncodingException {
 
         String toEncode = "";
         CharBuffer charBuffer = CharBuffer.wrap(toEncode.toCharArray());
@@ -67,12 +63,8 @@ public class IconvEncoderArrayTest {
         Charset cs = p.charsetForName("UTF-8");
         cs.newEncoder().encode(charBuffer, byteBuffer, true);
 
-        try {
-            String utf8String = new String(byteBuffer.array(), "UTF-8");
-            assertTrue(utf8String.trim().equals(toEncode));
-        } catch (UnsupportedEncodingException e) {
-            fail(e.getMessage());
-        }
+        String utf8String = new String(byteBuffer.array(), "UTF-8");
+        assertTrue(utf8String.trim().equals(toEncode));
 
         charBuffer = CharBuffer.allocate(toEncode.length());
         byteBuffer.position(0);
@@ -84,7 +76,7 @@ public class IconvEncoderArrayTest {
     }
 
     @Test
-    public void testIconvEncodeArraysShiftJIS() {
+    public void testIconvEncodeArraysShiftJIS() throws UnsupportedEncodingException {
         // taken from charset at
         // http://www.kreativekorp.com/charset/encoding.php?name=Shift-JIS
         // ｦｳ
@@ -96,12 +88,8 @@ public class IconvEncoderArrayTest {
         Charset cs = p.charsetForName("Shift_JIS");
         cs.newEncoder().encode(charBuffer, byteBuffer, true);
 
-        try {
-            String utf8String = new String(byteBuffer.array(), "Shift_JIS");
-            assertTrue(utf8String.trim().equals(toEncode));
-        } catch (UnsupportedEncodingException e) {
-            fail(e.getMessage());
-        }
+        String utf8String = new String(byteBuffer.array(), "Shift_JIS");
+        assertTrue(utf8String.trim().equals(toEncode));
 
         charBuffer = CharBuffer.allocate(toEncode.length());
         byteBuffer.position(0);
@@ -113,7 +101,7 @@ public class IconvEncoderArrayTest {
     }
 
     @Test
-    public void testIconvEncodeArraysNoErrorHandling() {
+    public void testIconvEncodeArraysNoErrorHandling() throws UnsupportedEncodingException {
         String toEncode = "lsdflsjfdösfäefk sdf jsfäsdfkäsökdf sdf hsdjfh sdfösädfi södfjs fd";
         CharBuffer charBuffer = CharBuffer.wrap(toEncode.toCharArray());
         ByteBuffer byteBuffer = ByteBuffer.allocate(toEncode.length() * 2);
@@ -121,13 +109,9 @@ public class IconvEncoderArrayTest {
         IconvProvider p = new IconvProvider();
         Charset cs = p.charsetForName("UTF-8");
 
-        try {
-            cs.newEncoder().encode(charBuffer, byteBuffer, true);
-            String utf8String = new String(byteBuffer.array(), "UTF-8");
-            assertTrue(utf8String.trim().equals(toEncode));
-        } catch (UnsupportedEncodingException e) {
-            fail(e.getMessage());
-        }
+        cs.newEncoder().encode(charBuffer, byteBuffer, true);
+        String utf8String = new String(byteBuffer.array(), "UTF-8");
+        assertTrue(utf8String.trim().equals(toEncode));
 
         charBuffer = CharBuffer.allocate(toEncode.length());
         byteBuffer.position(0);

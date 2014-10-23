@@ -41,13 +41,12 @@ public class IconvDecoderArrayTest {
         CharBuffer charBuffer = null;
         charBuffer = cs.newDecoder().decode(byteBuffer);
 
-
         String output = charBuffer.toString();
         assertTrue("xyÖ".equals(output));
     }
 
     @Test
-    public void testIconvDecoderShiftJIS() throws UnsupportedEncodingException {
+    public void testIconvDecoderShiftJIS() throws UnsupportedEncodingException, CharacterCodingException {
         String s = "\uFF66\uFF73";
 
         ByteBuffer byteBuffer = null;
@@ -57,12 +56,8 @@ public class IconvDecoderArrayTest {
         IconvProvider p = new IconvProvider();
         Charset cs = p.charsetForName("Shift_JIS");
         CharBuffer charBuffer = null;
-        try {
-            charBuffer = cs.newDecoder().decode(byteBuffer);
-        } catch (CharacterCodingException e) {
-            fail(e.getMessage());
-        }
-                
+        charBuffer = cs.newDecoder().decode(byteBuffer);
+   
         String output = charBuffer.toString();
         
         assertTrue(output.equals(s));

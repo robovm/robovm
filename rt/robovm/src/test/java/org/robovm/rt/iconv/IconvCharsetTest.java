@@ -30,7 +30,7 @@ public class IconvCharsetTest {
 
     @Test
     public void testIconvCharset() {
-                   
+        
         IconvProvider p = new IconvProvider();
         Charset cs = p.charsetForName("Big5");
 
@@ -54,6 +54,5 @@ public class IconvCharsetTest {
         assertTrue(ce instanceof IconvEncoder);
         assertTrue(cd instanceof IconvDecoder);
         
-
     }
 }

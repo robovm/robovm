@@ -21,7 +21,6 @@ import org.junit.Test;
 
 /**
  * This tests encodes and decodes strings to ascertain wanted functionality
- * 
  */
 public class IconvProviderTest {
 

@@ -22,13 +22,14 @@ import java.nio.ByteBuffer;
 import java.nio.CharBuffer;
 import java.nio.charset.Charset;
 import java.nio.charset.CharsetEncoder;
-import java.nio.charset.CoderResult;
-import java.util.Arrays;
 import java.util.Iterator;
 
 import org.junit.Ignore;
 import org.junit.Test;
 
+/**
+ * Test class which test Oracle Charsets vs IconvCharsets
+ */
 public class IconvVsOracleTest {
 
     @Test
@@ -49,34 +50,11 @@ public class IconvVsOracleTest {
         String toEncode = "det var en gång en vätte";
 
         CharBuffer charBuffer = ByteBuffer.allocateDirect(toEncode.length() * 2).asCharBuffer();
-        ByteBuffer byteBuffer = ByteBuffer.allocateDirect(5);
+        ByteBuffer byteBuffer = ByteBuffer.allocateDirect(EncodingDecodingTestUtils.SMALL_BUFF_SIZE);
         charBuffer.append(toEncode);
         charBuffer.rewind();
-
-        byte[] array = new byte[5];
-
-        String utf8String = null;
-        CharsetEncoder encoder = cs.newEncoder();
-        StringBuilder sb = new StringBuilder();
-        try {
-            CoderResult cr = null;
-            do {
-                cr = encoder.encode(charBuffer, byteBuffer, true);
-                byteBuffer.flip();
-
-                byteBuffer.get(array, 0, byteBuffer.remaining());
-                sb.append(new String(array, "UTF-8"));
-                byteBuffer.flip();
-                byteBuffer.clear();
-                // Arrays.fill(byteBuffer.array(), (byte) 0);
-            } while (cr.isOverflow());
-
-            utf8String = new String(sb.toString().getBytes(), "UTF-8");
-
-        } catch (UnsupportedEncodingException e) {
-            fail(e.getMessage());
-        }
-        return utf8String;
+        
+        return EncodingDecodingTestUtils.encode(cs, charBuffer, byteBuffer);
     }
 
     @Test
@@ -96,33 +74,34 @@ public class IconvVsOracleTest {
         String toEncode = "det var en gång en vätte som bodde på en ö som hette Kortedala";
 
         CharBuffer charBuffer = CharBuffer.wrap(toEncode.toCharArray());
-        ByteBuffer byteBuffer = ByteBuffer.allocate(5);
-        byte[] array = new byte[5];
+        ByteBuffer byteBuffer = ByteBuffer.allocate(EncodingDecodingTestUtils.SMALL_BUFF_SIZE);
 
-        String utf8String = null;
-        CharsetEncoder encoder = cs.newEncoder();
-        StringBuilder sb = new StringBuilder();
-        try {
-            CoderResult cr = null;
-            do {
-                cr = encoder.encode(charBuffer, byteBuffer, true);
-                byteBuffer.flip();
-
-                byteBuffer.get(array, 0, byteBuffer.remaining());
-                sb.append(new String(array, "UTF-8"));
-                byteBuffer.flip();
-                byteBuffer.clear();
-                Arrays.fill(byteBuffer.array(), (byte) 0);
-            } while (cr.isOverflow());
-
-            utf8String = new String(sb.toString().getBytes(), "UTF-8");
-
-        } catch (UnsupportedEncodingException e) {
-            fail(e.getMessage());
-        }
-        return utf8String;
+        return EncodingDecodingTestUtils.decode(cs, byteBuffer, charBuffer);
     }
     
+    @Test
+    public void testCompareIconvVsOracleDecoderWithBigInBufferAndSmallOutBuffer() {
+        if (!System.getProperty("java.vendor").equals("RoboVM")) {
+            Charset csIconv = new IconvProvider().charsetForName("UTF-8");
+            Charset builtIn = Charset.forName("UTF-8");
+            String iconv = getSmallBufStringToDecode(csIconv);
+            String oracle = getSmallBufStringToDecode(builtIn);
+            assertEquals(iconv, oracle);
+        }
+    }
+
+    private String getSmallBufStringToDecode(Charset cs) {
+        byte[] bytes = new byte[] { 100, 101, 116, 32, 118, 97, 114, 32, 101, 110, 32, 103, -61, -91, 110, 103, 32,
+                101, 110, 32, 118, -61, -92, 116, 116, 101, 32, 115, 111, 109, 32, 98, 111, 100, 100, 101, 32, 112,
+                -61, -91, 32, 101, 110, 32, -61, -74, 32, 115, 111, 109, 32, 104, 101, 116, 116, 101, 32, 75, 111, 114,
+                116, 101, 100, 97, 108, 97 };
+
+        ByteBuffer byteBuffer = ByteBuffer.allocateDirect(bytes.length);
+        CharBuffer charBuffer = ByteBuffer.allocateDirect(EncodingDecodingTestUtils.SMALL_BUFF_SIZE).asCharBuffer();
+
+        return EncodingDecodingTestUtils.decode(cs, byteBuffer, charBuffer);        
+    }
+
     @Test
     @Ignore
     public void testCharsetsOracleVsIconv() {
@@ -138,6 +117,7 @@ public class IconvVsOracleTest {
             try {
                 iconvEncoder = iconvCharset.newEncoder();
                 oracleEncoder = oracleCharset.newEncoder();
+                //some obscure encoders may fail during init 
             } catch (IllegalArgumentException e) {
                 continue;
             }

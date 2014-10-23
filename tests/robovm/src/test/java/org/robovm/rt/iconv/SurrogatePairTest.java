@@ -18,7 +18,6 @@ package org.robovm.rt.iconv;
 import static org.junit.Assert.*;
 
 import java.nio.ByteBuffer;
-import java.nio.charset.CharacterCodingException;
 import java.nio.charset.CharsetDecoder;
 
 import org.junit.Test;
@@ -29,7 +28,7 @@ import org.junit.Test;
 public class SurrogatePairTest {
 
     @Test
-    public void surrogatePairTest() {
+    public void surrogatePairTest() throws Exception{
         // little endian encoding
         IconvProvider p = new IconvProvider();
         CharsetDecoder decoder = p.charsetForName("UTF-16LE").newDecoder();
@@ -40,11 +39,7 @@ public class SurrogatePairTest {
         });
 
         String decoded = null;
-        try {
-            decoded = decoder.decode(bytes).toString();
-        } catch (CharacterCodingException e) {
-            throw new RuntimeException(e);
-        }
+        decoded = decoder.decode(bytes).toString();
         String weirdoChar = new String(Character.toChars(120120));
         assertTrue(weirdoChar.equals(decoded));
     }

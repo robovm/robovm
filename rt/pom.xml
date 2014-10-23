@@ -159,7 +159,7 @@
               <target>
 
                 <!-- create dir for target iconv shared library and builds it with platform specific settings -->
-                <echo>Preparing build of shared libicov</echo>               
+                <echo>Preparing build of shared libiconv</echo>               
                 <mkdir dir="${project.build.directory}/lib"/>
 
                 <condition property="cc" value="gcc">

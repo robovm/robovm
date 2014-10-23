@@ -66,8 +66,7 @@ public class IconvDecodeDirectTest {
         try {
             out = cs.newEncoder().encode(in);
         } catch (CharacterCodingException e) {
-            assertTrue(false);
-            e.printStackTrace();
+            fail(e.getMessage());
         }
         
         CharBuffer outBuffer = null;

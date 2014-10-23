@@ -20,7 +20,6 @@ import static org.junit.Assert.*;
 import java.nio.charset.Charset;
 import java.nio.charset.CharsetDecoder;
 import java.nio.charset.CharsetEncoder;
-
 import org.junit.Test;
 
 /**
@@ -30,7 +29,7 @@ public class IconvCharsetTest {
 
     @Test
     public void testIconvCharset() {
-                   
+        
         IconvProvider p = new IconvProvider();
         Charset cs = p.charsetForName("Big5");
 
@@ -54,6 +53,5 @@ public class IconvCharsetTest {
         assertTrue(ce instanceof IconvEncoder);
         assertTrue(cd instanceof IconvDecoder);
         
-
     }
 }

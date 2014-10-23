@@ -74,8 +74,7 @@ public class IconvVsOracleTest {
             utf8String = new String(sb.toString().getBytes(), "UTF-8");
 
         } catch (UnsupportedEncodingException e) {
-            assertTrue(false);
-            e.printStackTrace();
+            fail(e.getMessage());
         }
         return utf8String;
     }

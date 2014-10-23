@@ -1,18 +1,17 @@
 /*
  * Copyright (C) 2014 Trillian Mobile AB
  *
- * This program is free software; you can redistribute it and/or
- * modify it under the terms of the GNU General Public License
- * as published by the Free Software Foundation; either version 2
- * of the License, or (at your option) any later version.
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
  *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
+ *      http://www.apache.org/licenses/LICENSE-2.0
  *
- * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/gpl-2.0.html>.
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 package org.robovm.rt.iconv;
 
@@ -27,7 +26,6 @@ import org.junit.Test;
 
 /**
  * Tests array backed encoders
- * 
  */
 public class IconvEncoderArrayTest {
 
@@ -38,10 +36,6 @@ public class IconvEncoderArrayTest {
         CharBuffer charBuffer = CharBuffer.wrap(toEncode.toCharArray());
         ByteBuffer byteBuffer = ByteBuffer.wrap(new byte[toEncode.length() * 2]);
 
-        if (!byteBuffer.hasArray()) {
-            System.out.println("how did this happen?");
-        }
-
         IconvProvider p = new IconvProvider();
         Charset cs = p.charsetForName("UTF-8");
         cs.newEncoder().encode(charBuffer, byteBuffer, true);
@@ -50,8 +44,7 @@ public class IconvEncoderArrayTest {
             String utf8String = new String(byteBuffer.array(), "UTF-8");
             assertTrue(utf8String.trim().equals(toEncode));
         } catch (UnsupportedEncodingException e) {
-            assertTrue(false);
-            e.printStackTrace();
+            fail(e.getMessage());
         }
 
         charBuffer = CharBuffer.allocate(toEncode.length());
@@ -78,8 +71,7 @@ public class IconvEncoderArrayTest {
             String utf8String = new String(byteBuffer.array(), "UTF-8");
             assertTrue(utf8String.trim().equals(toEncode));
         } catch (UnsupportedEncodingException e) {
-            assertTrue(false);
-            e.printStackTrace();
+            fail(e.getMessage());
         }
 
         charBuffer = CharBuffer.allocate(toEncode.length());
@@ -108,8 +100,7 @@ public class IconvEncoderArrayTest {
             String utf8String = new String(byteBuffer.array(), "Shift_JIS");
             assertTrue(utf8String.trim().equals(toEncode));
         } catch (UnsupportedEncodingException e) {
-            assertTrue(false);
-            e.printStackTrace();
+            fail(e.getMessage());
         }
 
         charBuffer = CharBuffer.allocate(toEncode.length());
@@ -123,9 +114,6 @@ public class IconvEncoderArrayTest {
 
     @Test
     public void testIconvEncodeArraysNoErrorHandling() {
-        // taken from charset at
-        // http://www.kreativekorp.com/charset/encoding.php?name=Shift-JIS
-        // ｦｳ
         String toEncode = "lsdflsjfdösfäefk sdf jsfäsdfkäsökdf sdf hsdjfh sdfösädfi södfjs fd";
         CharBuffer charBuffer = CharBuffer.wrap(toEncode.toCharArray());
         ByteBuffer byteBuffer = ByteBuffer.allocate(toEncode.length() * 2);
@@ -138,8 +126,7 @@ public class IconvEncoderArrayTest {
             String utf8String = new String(byteBuffer.array(), "UTF-8");
             assertTrue(utf8String.trim().equals(toEncode));
         } catch (UnsupportedEncodingException e) {
-            assertTrue(false);
-            e.printStackTrace();
+            fail(e.getMessage());
         }
 
         charBuffer = CharBuffer.allocate(toEncode.length());

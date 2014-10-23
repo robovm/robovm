@@ -23,12 +23,6 @@
 #include <locale.h>
 #include <string.h>
 
-#ifndef _Included_javaiconv_IconvProvider
-#define _Included_javaiconv_IconvProvider
-#ifdef __cplusplus
-extern "C" {
-#endif
-
 #define CONVERSION_OK 0
 #define ILLEGAL_SEQUENCE 1
 #define OUTPUT_BUFFER_TOO_SMALL 2
@@ -39,24 +33,6 @@ extern "C" {
 #define TOO_MANY_FILES_OPEN 7
 #define UNSUPPORTED_CONVERSION 8
 #define OUT_OF_MEMORY 9
-
-#ifdef __APPLE__
-//Sets discard illegal sequence to enabled
-JNIEXPORT void JNICALL Java_org_robovm_rt_iconv_IconvProvider_enableIllSeq(JNIEnv *env,
- jclass thisObj, jlong pointer) {
-    iconv_t content_descriptor = (iconv_t) pointer;
-    int enabled = 1;
-    iconvctl(content_descriptor, ICONV_SET_DISCARD_ILSEQ, &enabled);
- }
-
-//Sets discard illegal sequence to disabled
-JNIEXPORT void JNICALL Java_org_robovm_rt_iconv_IconvProvider_disableIllSeq(JNIEnv *env,
- jclass thisObj, jlong pointer) {
-    iconv_t content_descriptor = (iconv_t) pointer;
-    int enabled = 0;
-    iconvctl(content_descriptor, ICONV_SET_DISCARD_ILSEQ, &enabled);
- }
-#endif 
  
 /**
 * throws IllegalStateException
@@ -107,11 +83,6 @@ JNIEXPORT jlong JNICALL Java_org_robovm_rt_iconv_IconvProvider_initIconv
         (*env)->ReleaseStringUTFChars(env, fromEncoding, from_enc);
         return throwIllegalStateException(env, errorMessage);
     }
-
-#ifdef __APPLE__
-    //int enabled = 1;
-    //iconvctl(content_descriptor, ICONV_SET_DISCARD_ILSEQ, &enabled);
-#endif
 
     (*env)->ReleaseStringUTFChars(env, toEncoding, to_enc);
     (*env)->ReleaseStringUTFChars(env, fromEncoding, from_enc);
@@ -171,21 +142,21 @@ JNIEXPORT void JNICALL Java_org_robovm_rt_iconv_IconvProvider_releaseIconv
 
     size_t result = iconv(content_descriptor, &inbuffer, inlength, &outbuffer, outlength);    
     (*error) = check_for_error(result, "error converting\n");
+
+#ifdef __APPLE__
     
     if ((*error) == ILLEGAL_SEQUENCE) {
     
-#ifdef __APPLE__
         int enabled = 1;
         iconvctl(content_descriptor, ICONV_SET_DISCARD_ILSEQ, &enabled);
-#endif
         result = iconv(content_descriptor, &inbuffer, inlength, &outbuffer, outlength);
 
-#ifdef __APPLE__
         enabled = 0;
         iconvctl(content_descriptor, ICONV_SET_DISCARD_ILSEQ, &enabled);
-#endif
 
     }
+
+#endif
     
     return result;
  }
@@ -267,94 +238,6 @@ JNIEXPORT void JNICALL Java_org_robovm_rt_iconv_IconvProvider_releaseIconv
         
     return error;
  }
-    
- /**
- *Flushes char buffer if direct
- */
- JNIEXPORT jint JNICALL Java_org_robovm_rt_iconv_IconvProvider_flushCharDirect
- (JNIEnv *env, jclass thisObj, jlong cd, jobject charbuffer,
-    jobject iconvResult, jint positionOut, jint limitOut) {
-        
-    iconv_t content_descriptor = (iconv_t) cd;
-        
-    //Get sizes pre/post conversion
-    size_t in_bytes = 0;
-    size_t out_bytes_left = (size_t) (limitOut - positionOut) * sizeof(jchar);
-        
-    if (out_bytes_left <= 0) {
-        return 0;
-    }
-        
-    //fix direct buffer stuff here
-    jchar* char_buf_address = (jchar*) (*env)->GetDirectBufferAddress(env, charbuffer);
-        
-    char* pSrc = NULL;
-    char* pDst = ((char *) char_buf_address);
-        
-    set_buffer_positions(env, 0, positionOut, NULL, &pDst);
-    int error = reposition_and_convert(env, iconvResult, content_descriptor, in_bytes, out_bytes_left, pSrc, pDst);
-        
-    return error;
- }
-
- /**
- * Flushes buffer if array backed
- */
- JNIEXPORT jint JNICALL Java_org_robovm_rt_iconv_IconvProvider_flushByteArray
-  (JNIEnv *env, jclass thisObj, jlong cd, jbyteArray theByteArray,
-   jobject iconvResult, jint positionOut, jint limitOut) {
-
-    iconv_t content_descriptor = (iconv_t) cd;
-
-    //Get sizes pre/post conversion
-    size_t out_bytes_left = (size_t) (limitOut - positionOut) * sizeof(jbyte);
-      
-    if (out_bytes_left <= 0) {
-        return 0;
-    }
-      
-      
-    jbyte* pByteArray = (*env)->GetByteArrayElements(env, theByteArray, NULL);
-
-    char* pDst = ((char *) pByteArray);
-
-    set_buffer_positions(env, 0, positionOut, NULL, &pDst);
-
-    int error = reposition_and_convert(env, iconvResult, content_descriptor, 0, out_bytes_left, NULL, pDst);
-    
-    (*env)->ReleaseByteArrayElements(env, theByteArray, pByteArray, 0);
-
-    return error;
-  }
-  
- /**
- *Flushes buffer if direct
- */
- JNIEXPORT jint JNICALL Java_org_robovm_rt_iconv_IconvProvider_flushByteDirect
-  (JNIEnv *env, jclass thisObj, jlong cd, jobject bytebuffer,
-   jobject iconvResult, jint positionOut, jint limitOut) {
-   
-    iconv_t content_descriptor = (iconv_t) cd;
-
-    //Get sizes pre/post conversion
-    size_t in_bytes = 0;
-    size_t out_bytes_left = (size_t) (limitOut - positionOut) * sizeof(jbyte);
-      
-      if (out_bytes_left <= 0) {
-          return 0;
-      }
-      
-    //fix direct buffer stuff here
-    jbyte* byte_buf_address = (jbyte*) (*env)->GetDirectBufferAddress(env, bytebuffer);
-      
-    char* pSrc = NULL;
-    char* pDst = ((char *) byte_buf_address);
-    
-    set_buffer_positions(env, 0, positionOut, NULL, &pDst);
-    int error = reposition_and_convert(env, iconvResult, content_descriptor, in_bytes, out_bytes_left, pSrc, pDst);
-    
-    return error;
-  }
 
 /**
 * Handles the case when both buffers are backed by arrays
@@ -578,7 +461,3 @@ JNIEXPORT jint JNICALL Java_org_robovm_rt_iconv_IconvProvider_decodeHybridBuffer
     return error;
 }
 
-#ifdef __cplusplus
-}
-#endif
-#endif

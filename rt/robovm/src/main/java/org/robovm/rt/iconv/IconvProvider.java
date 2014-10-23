@@ -1,18 +1,17 @@
 /*
  * Copyright (C) 2014 Trillian Mobile AB
  *
- * This program is free software; you can redistribute it and/or
- * modify it under the terms of the GNU General Public License
- * as published by the Free Software Foundation; either version 2
- * of the License, or (at your option) any later version.
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
  *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
+ *      http://www.apache.org/licenses/LICENSE-2.0
  *
- * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/gpl-2.0.html>.
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 package org.robovm.rt.iconv;
 
@@ -227,20 +226,25 @@ public class IconvProvider extends CharsetProvider{
         if (isInDirect && isOutDirect) {
             res = encodeNativeBuffer(pointer, in, out, result, in.position(), in.limit(), out.position(), out.limit());
         } else if(!isInDirect && !isOutDirect) {
-            res = encodeNativeArray(pointer, bufferInData.array(), bufferOutData.array(), result, in.position(), in.limit(), out.position(), out.limit());
+            res = encodeNativeArray(pointer, bufferInData.array(), bufferOutData.array(), result, bufferInData.position(), bufferInData.limit(), bufferOutData.position(), bufferOutData.limit());
         } else if(isInDirect && !isOutDirect) {
-            res = encodeHybridBufferArray(pointer, in, bufferOutData.array(), result, in.position(), in.limit(), out.position(), out.limit());
+            res = encodeHybridBufferArray(pointer, in, bufferOutData.array(), result, in.position(), in.limit(), bufferOutData.position(), bufferOutData.limit());
         } else {
-            res = encodeHybridArrayBuffer(pointer, bufferInData.array(), out, result, in.position(), in.limit(), out.position(), out.limit());
+            res = encodeHybridArrayBuffer(pointer, bufferInData.array(), out, result, bufferInData.position(), bufferInData.limit(), out.position(), out.limit());
         }
-
+        
         //Set and check result of conversion
         ConversionResult conversionState = ConversionResult.getResult(res);
         result.setResultCode(conversionState);
         
         in.position(in.position() + result.getBytesReadFromSource()/2);
-        out.position(out.position() + result.getBytesWrittenToDestination());
-        out.limit(out.position());
+        //Copy out data to original out buffer
+        if (out != bufferOutData) {
+            bufferOutData.limit(result.getBytesWrittenToDestination());
+            out.put(bufferOutData);
+        } else {
+            out.position(out.position() + result.getBytesWrittenToDestination());
+        }
 
         return result;
     }
@@ -251,14 +255,13 @@ public class IconvProvider extends CharsetProvider{
      * @return chararray with buffer content
      */
     static private CharBuffer copyCharBufferData(CharBuffer buffer) {
-        if (!buffer.isDirect() && !buffer.hasArray()) {
+        if(!buffer.isDirect() && !buffer.hasArray()) {
             int pos = buffer.position();
-            CharBuffer cb = CharBuffer.allocate(buffer.capacity()).put(buffer);
-            cb.position(pos);
-            cb.limit(buffer.limit());
+            CharBuffer cb = CharBuffer.allocate(buffer.remaining()).put(buffer);
+            cb.position(0);
             buffer.position(pos);
             return cb;
-        }
+        } 
         return buffer;
     }
     
@@ -268,14 +271,13 @@ public class IconvProvider extends CharsetProvider{
      * @return bytearray with {@Buffer} content
      */
     static private ByteBuffer copyByteBufferData(ByteBuffer buffer) {
-        if (!buffer.isDirect() && !buffer.hasArray()) {
+        if(!buffer.isDirect() && !buffer.hasArray()) {
             int pos = buffer.position();
-            ByteBuffer bb = ByteBuffer.allocate(buffer.capacity()).put(buffer);
-            bb.position(pos);
-            bb.limit(buffer.limit());
+            ByteBuffer bb = ByteBuffer.allocate(buffer.remaining()).put(buffer);
+            bb.position(0);
             buffer.position(pos);
             return bb;
-        }
+        } 
         return buffer;
     }
     
@@ -300,21 +302,26 @@ public class IconvProvider extends CharsetProvider{
         if (isInDirect && isOutDirect) {
            res = decodeNativeBuffer(pointer, in, out, result, in.position(), in.limit(), out.position(), out.limit()); 
         } else if (!isInDirect && !isOutDirect) {
-           res = decodeNativeArray(pointer, bufferInData.array(), bufferOutData.array(), result, in.position(), in.limit(), out.position(), out.limit());
+           res = decodeNativeArray(pointer, bufferInData.array(), bufferOutData.array(), result, bufferInData.position(), bufferInData.limit(), bufferOutData.position(), bufferOutData.limit());
         } else if(isInDirect && !isOutDirect) {
-           res = decodeHybridBufferArray(pointer, in, bufferOutData.array(), result, in.position(), in.limit(), out.position(), out.limit()); 
+           res = decodeHybridBufferArray(pointer, in, bufferOutData.array(), result, in.position(), in.limit(), bufferOutData.position(), bufferOutData.limit()); 
         } else {
-           res = decodeHybridArrayBuffer(pointer, bufferInData.array(), out, result, in.position(), in.limit(), out.position(), out.limit());   
+           res = decodeHybridArrayBuffer(pointer, bufferInData.array(), out, result, bufferInData.position(), bufferInData.limit(), out.position(), out.limit());   
         }
         
         //set and check result of conversion
         ConversionResult conversionState = ConversionResult.getResult(res);
         result.setResultCode(conversionState);
         
-        //set position according to conversion data returned
         in.position(in.position() + result.getBytesReadFromSource());
-        out.position(out.position() + result.getBytesWrittenToDestination() / 2);
-        out.limit(out.position());
+        //Copy out data to original out buffer
+        if (out != bufferOutData) {
+            bufferOutData.limit(result.getBytesWrittenToDestination()/2);
+            out.put(bufferOutData);
+        } else {
+            //set position according to conversion data returned
+            out.position(out.position() + result.getBytesWrittenToDestination() / 2);
+        }
         
         return result;
     }
@@ -341,86 +348,9 @@ public class IconvProvider extends CharsetProvider{
     
     private static native void releaseIconv( long pointer);
     
-    /**
-     * Flushes pending iconv state to a {@link ByteBuffer}
-     * @param pointer address to iconv pointer on native side
-     * @param out {@link ByteBuffer} to flush to
-     * @return {@link IconvResult} result of operation
-     */
-    public static IconvResult flush(long pointer, ByteBuffer out) {
-        
-        int res = 0;
-        IconvResult result = new IconvResult();
-        
-        ByteBuffer outbuffer = copyByteBufferData(out);
-        if (out.hasArray()) {
-            res = flushByteArray(pointer, outbuffer.array(), result, out.position(), out.limit());
-        } else {
-            res = flushByteDirect(pointer, out, result, out.position(), out.limit());
-        }
-        
-        //set and check result of conversion
-        ConversionResult conversionState = ConversionResult.getResult(res);
-        result.setResultCode(conversionState);
-        
-        //set position according to conversion data returned
-        out.position(out.position() + result.getBytesWrittenToDestination());
-        out.limit(out.position());
-        
-        return result;
-    }
-    
-    /**
-     * Flushes pending iconv state to a {@link CharBuffer}
-     * @param pointer address to iconv pointer on native side
-     * @param out {@link CharBuffer} to flush to
-     * @return {@link IconvResult} result of operation
-     */
-    public static IconvResult flush(long pointer, CharBuffer out) {
-        
-        int res = 0;
-        IconvResult result = new IconvResult();
-        
-        CharBuffer outbuffer = copyCharBufferData(out);
-        if (out.hasArray()) {
-            res = flushCharArray(pointer, outbuffer.array(), result, out.position(), out.limit());
-        } else {
-            res = flushCharDirect(pointer, out, result, out.position(), out.limit());
-        }
-        
-        //set and check result of conversion
-        ConversionResult conversionState = ConversionResult.getResult(res);
-        result.setResultCode(conversionState);
-        
-        //set position according to conversion data returned
-        out.position(out.position() + result.getBytesWrittenToDestination()/2);
-        out.limit(out.position());
-        
-        return result;
-    }
-    
-    /**
-     * Enable skip of illegal sequences
-     * @param pointer pointer to native side content descriptor
-     */
-    public static void enableDiscardIllegalSequence(long pointer) {
-        enableIllSeq(pointer);
-    }
-    
-    /**
-     * Disable skip of illegal sequences
-     * @param pointer pointer to native side content descriptor 
-     */
-    public static void disableDiscardIllegalSequence(long pointer) {
-        disableIllSeq(pointer);
-    }
-    
+
     //Native functions interfacing with shared native lib
-    
-    private static native void enableIllSeq(long pointer);
-    
-    private static native void disableIllSeq(long pointer);
-    
+
     private static native int flushByteArray(long pointer, byte[] out, IconvResult iconvResult, int positionOut, int limitOut);
     
     private static native int flushByteDirect(long pointer, ByteBuffer out, IconvResult iconvResult, int positionOut, int limitOut);
@@ -464,7 +394,7 @@ public class IconvProvider extends CharsetProvider{
         if (charsets.containsKey(name)) {
             return charsets.get(name);
         }
-
+        
         Iterator<Charset> it = charsets.values().iterator();
         while (it.hasNext()) {
             Charset cs = it.next();
@@ -475,7 +405,7 @@ public class IconvProvider extends CharsetProvider{
                 }
             }
         }
-
+        
         return null;
     }
 }

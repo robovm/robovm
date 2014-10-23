@@ -1,18 +1,17 @@
 /*
  * Copyright (C) 2014 Trillian Mobile AB
  *
- * This program is free software; you can redistribute it and/or
- * modify it under the terms of the GNU General Public License
- * as published by the Free Software Foundation; either version 2
- * of the License, or (at your option) any later version.
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
  *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
+ *      http://www.apache.org/licenses/LICENSE-2.0
  *
- * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/gpl-2.0.html>.
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 package org.robovm.rt.iconv;
 
@@ -40,27 +39,20 @@ public class IconvDecoderArrayTest {
         IconvProvider p = new IconvProvider();
         Charset cs = p.charsetForName("UTF-8");
         CharBuffer charBuffer = null;
-        try {
-            charBuffer = cs.newDecoder().decode(byteBuffer);
-        } catch (CharacterCodingException e) {
-            assertTrue(false);
-            e.printStackTrace();
-        }
+        charBuffer = cs.newDecoder().decode(byteBuffer);
+
 
         String output = charBuffer.toString();
         assertTrue("xyÖ".equals(output));
     }
 
     @Test
-    public void testIconvDecoderShiftJIS() {
+    public void testIconvDecoderShiftJIS() throws UnsupportedEncodingException {
         String s = "\uFF66\uFF73";
 
         ByteBuffer byteBuffer = null;
-        try {
-            byteBuffer = ByteBuffer.wrap(s.getBytes("Shift_JIS"));
-        } catch (UnsupportedEncodingException e1) {
-            e1.printStackTrace();
-        }
+        byteBuffer = ByteBuffer.wrap(s.getBytes("Shift_JIS"));
+
         
         IconvProvider p = new IconvProvider();
         Charset cs = p.charsetForName("Shift_JIS");
@@ -68,26 +60,13 @@ public class IconvDecoderArrayTest {
         try {
             charBuffer = cs.newDecoder().decode(byteBuffer);
         } catch (CharacterCodingException e) {
-            assertTrue(false);
-            e.printStackTrace();
+            fail(e.getMessage());
         }
+                
+        String output = charBuffer.toString();
         
-        char[] array = copyCharBufferData(charBuffer);
-        
-        String output = new String(array).trim();
         assertTrue(output.equals(s));
     }
-    
-    static private char[] copyCharBufferData(CharBuffer buffer) {
-        char[] bufferdata = null;
-        if(!buffer.isDirect() && !buffer.hasArray()) {
-            int lastPos = buffer.remaining();
-            bufferdata = new char[lastPos];
-            buffer.get(bufferdata, 0, lastPos);
-        } else if(!buffer.isDirect() && buffer.hasArray()) {
-            bufferdata = buffer.array();
-        }
-        return bufferdata;
-    }
+
 
 }

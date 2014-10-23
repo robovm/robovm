@@ -1,18 +1,17 @@
 /*
  * Copyright (C) 2014 Trillian Mobile AB
  *
- * This program is free software; you can redistribute it and/or
- * modify it under the terms of the GNU General Public License
- * as published by the Free Software Foundation; either version 2
- * of the License, or (at your option) any later version.
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
  *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
+ *      http://www.apache.org/licenses/LICENSE-2.0
  *
- * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/gpl-2.0.html>.
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 package org.robovm.rt.iconv;
 
@@ -75,8 +74,7 @@ public class IconvDecodeDirectTest {
         try {
             outBuffer = cs.newDecoder().decode(out);
         } catch (CharacterCodingException e1) {
-            // TODO Auto-generated catch block
-            e1.printStackTrace();
+            fail(e1.getMessage());
         }
 
         String ss = outBuffer.toString();
@@ -86,13 +84,15 @@ public class IconvDecodeDirectTest {
     @Test
     public void testIconvDecodeArraysBigBuffer() {
         if (!System.getProperty("java.vendor").equals("RoboVM")) {
-            String iconv = getSmallBufStringIconvDecode();
-            String java = getSmallBufStringJavaDecode();
-            assertEquals(iconv, java);
+            Charset csIconv = new IconvProvider().charsetForName("UTF-8");
+            Charset builtIn = Charset.forName("UTF-8");
+            String iconv = getSmallBufStringToDecode(csIconv);
+            String oracle = getSmallBufStringToDecode(builtIn);
+            assertEquals(iconv, oracle);
         }
     }
 
-    private String getSmallBufStringIconvDecode() {
+    private String getSmallBufStringToDecode(Charset cs) {
         byte[] bytes = new byte[] { 100, 101, 116, 32, 118, 97, 114, 32, 101, 110, 32, 103, -61, -91, 110, 103, 32,
                 101, 110, 32, 118, -61, -92, 116, 116, 101, 32, 115, 111, 109, 32, 98, 111, 100, 100, 101, 32, 112,
                 -61, -91, 32, 101, 110, 32, -61, -74, 32, 115, 111, 109, 32, 104, 101, 116, 116, 101, 32, 75, 111, 114,
@@ -103,9 +103,6 @@ public class IconvDecodeDirectTest {
         char[] array = new char[5];
 
         String utf8String = null;
-        IconvProvider p = new IconvProvider();
-        Charset cs = p.charsetForName("UTF-8");
-
         CharsetDecoder decoder = cs.newDecoder();
         StringBuilder sb = new StringBuilder();
         try {
@@ -125,49 +122,10 @@ public class IconvDecodeDirectTest {
             utf8String = new String(sb.toString().getBytes(), "UTF-8");
 
         } catch (UnsupportedEncodingException e) {
-            assertTrue(false);
-            e.printStackTrace();
+            fail(e.getMessage());
         }
         return utf8String;
         
-    }
-
-    private String getSmallBufStringJavaDecode() {
-        byte[] bytes = new byte[] { 100, 101, 116, 32, 118, 97, 114, 32, 101, 110, 32, 103, -61, -91, 110, 103, 32,
-                101, 110, 32, 118, -61, -92, 116, 116, 101, 32, 115, 111, 109, 32, 98, 111, 100, 100, 101, 32, 112,
-                -61, -91, 32, 101, 110, 32, -61, -74, 32, 115, 111, 109, 32, 104, 101, 116, 116, 101, 32, 75, 111, 114,
-                116, 101, 100, 97, 108, 97 };
-
-        ByteBuffer byteBuffer = ByteBuffer.wrap(bytes);
-        CharBuffer charBuffer = CharBuffer.allocate(5);
-        char[] array = new char[5];
-
-        String utf8String = null;
-        Charset cs = Charset.forName("UTF-8");
-
-        CharsetDecoder decoder = cs.newDecoder();
-        StringBuilder sb = new StringBuilder();
-        try {
-            CoderResult cr = null;
-            do {
-                cr = decoder.decode(byteBuffer, charBuffer, true);
-                charBuffer.flip();
-
-                charBuffer.get(array, 0, charBuffer.remaining());
-                sb.append(new String(array));
-                charBuffer.flip();
-                charBuffer.clear();
-
-                Arrays.fill(charBuffer.array(), (char) 0);
-            } while (cr.isOverflow());
-
-            utf8String = new String(sb.toString().getBytes(), "UTF-8");
-
-        } catch (UnsupportedEncodingException e) {
-            assertTrue(false);
-            e.printStackTrace();
-        }
-        return utf8String;
     }
 
 }

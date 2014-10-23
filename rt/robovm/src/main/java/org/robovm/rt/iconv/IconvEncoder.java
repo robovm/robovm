@@ -58,7 +58,7 @@ public class IconvEncoder extends CharsetEncoder{
         case OUTPUT_BUFFER_TOO_SMALL:
             return CoderResult.OVERFLOW;
         case ILLEGAL_SEQUENCE:
-            return CoderResult.unmappableForLength(result.getBytesReadFromSource());
+            return CoderResult.unmappableForLength( result.getBytesReadFromSource());
         case INCOMPLETE_SEQUENCE:
             return CoderResult.UNDERFLOW;
         default:
@@ -97,8 +97,8 @@ public class IconvEncoder extends CharsetEncoder{
 
     @Override
     protected CoderResult implFlush(ByteBuffer out) {
-        if (iconv_tPointer != 0) {
-
+        if (iconv_tPointer != 0) { 
+            
             IconvResult result = IconvProvider.flush(iconv_tPointer, out);
 
             switch (result.getResultCode()) {
@@ -107,7 +107,7 @@ public class IconvEncoder extends CharsetEncoder{
             case ILLEGAL_SEQUENCE:
                 return CoderResult.unmappableForLength(result.getBytesReadFromSource());
             case INCOMPLETE_SEQUENCE:
-                return CoderResult.malformedForLength(result.getBytesReadFromSource());
+                return CoderResult.UNDERFLOW;
             default:
                 break;
             }

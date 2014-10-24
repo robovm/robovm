@@ -169,9 +169,7 @@
                   </and>
                 </condition>
                 
-                <condition property="cc" value="xcrun"><os family="mac" /></condition>
-                <condition property="clang" value="clang"><os family="mac" /></condition>
-                <condition property="clang" value=""><os name="linux" /></condition>
+                <exec command="xcrun -f clang" osfamily="mac" outputproperty="cc"/>
                 <condition property="so.ext" value="so"><os name="linux" /></condition>
                 <condition property="so.ext" value="dylib"><os family="mac" /></condition>
                 <condition property="extra.args" value="-fPIC"><os name="linux" /></condition>
@@ -180,7 +178,6 @@
                 <!-- build shared library for linux/mac depending on conditions--> 
                 <echo>Building shared library</echo>
                 <exec executable="${cc}">
-                  <arg line="${clang}"/>
                   <arg value="-I${basedir}/../vm/core/include"/>
                   <arg value="${extra.args}" />
                   <arg value="-shared" />

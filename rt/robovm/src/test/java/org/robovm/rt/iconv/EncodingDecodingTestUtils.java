@@ -61,19 +61,18 @@ public class EncodingDecodingTestUtils {
      * @return
      * @throws UnsupportedEncodingException
      */
-    public static String encode(Charset cs, CharBuffer charBuffer, ByteBuffer byteBuffer) throws UnsupportedEncodingException {
+    public static String encode(Charset cs, CharBuffer charBuffer, ByteBuffer byteBuffer, int byteBufferCapacity) throws UnsupportedEncodingException {
         CharsetEncoder encoder = cs.newEncoder();
         StringBuilder sb = new StringBuilder();
         
-        byte[] array = new byte[SMALL_BUFF_SIZE];
+        byte[] array = new byte[byteBufferCapacity];
         CoderResult cr = null;
         do {
             cr = encoder.encode(charBuffer, byteBuffer, true);
             byteBuffer.flip();
 
-            byteBuffer.get(array, 0, byteBuffer.remaining());
-            sb.append(new String(array, "UTF-8"));
-            byteBuffer.flip();
+            byteBuffer.get(array, 0, (charBuffer.remaining() > byteBufferCapacity) ? byteBufferCapacity : charBuffer.remaining());
+            sb.append(new String(array, cs));
             byteBuffer.clear();
 
         } while (cr.isOverflow());

@@ -85,22 +85,26 @@ public class IconvEncoder extends CharsetEncoder{
         
     }
     
-    @Override
-    protected void finalize() throws Throwable {
-        super.finalize();
+    /**
+     * releases native side resource
+     */
+    private void release() {
         if (iconv_tPointer != 0) {
             IconvProvider.release(iconv_tPointer);
             iconv_tPointer = 0;
         }
     }
+    
+    @Override
+    protected void finalize() throws Throwable {
+        super.finalize();
+        this.release();
+    }
 
     @Override
     protected void implReset() {
         super.implReset();
-        if (iconv_tPointer != 0) {
-            IconvProvider.release(iconv_tPointer);
-            iconv_tPointer = 0;
-        }
+        this.release();
     }
 
 }

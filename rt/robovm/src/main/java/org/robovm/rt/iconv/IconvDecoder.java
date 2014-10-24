@@ -90,22 +90,23 @@ public class IconvDecoder extends CharsetDecoder{
         
     }
     
-    @Override
-    protected void finalize() throws Throwable {
-        super.finalize();
+    private void release() {
         if (iconv_tPointer == 0) {
             IconvProvider.release(iconv_tPointer);
             iconv_tPointer = 0;
         }
     }
+    
+    @Override
+    protected void finalize() throws Throwable {
+        super.finalize();
+        this.release();
+    }
 
     @Override
     protected void implReset() {
         super.implReset();
-        if (iconv_tPointer != 0) {
-            IconvProvider.release(iconv_tPointer);
-            iconv_tPointer = 0;
-        }
+        this.release();
     }
 
 }

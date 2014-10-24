@@ -54,7 +54,7 @@ public class IconvVsOracleTest {
         charBuffer.append(toEncode);
         charBuffer.rewind();
         
-        return EncodingDecodingTestUtils.encode(cs, charBuffer, byteBuffer);
+        return EncodingDecodingTestUtils.encode(cs, charBuffer, byteBuffer, EncodingDecodingTestUtils.SMALL_BUFF_SIZE);
     }
 
     @Test

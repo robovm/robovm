@@ -167,7 +167,7 @@ public class ToolchainUtil {
             opts.add(config.getArch().getClangName());            
             opts.add("-Wl,-filelist," + objectsFile.getAbsolutePath());
         } else {
-            opts.add("-m32");
+            opts.add(config.getArch().is32Bit() ? "-m32" : "-m64");
             opts.add("@" + objectsFile.getAbsolutePath());
         }
         opts.addAll(args);

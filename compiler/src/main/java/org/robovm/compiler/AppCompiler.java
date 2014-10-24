@@ -686,8 +686,8 @@ public class AppCompiler {
                          + "                        'auto', 'linux', 'macosx' and 'ios'. Default is 'auto' which\n" 
                          + "                        means use the LLVM deafult.");
         System.err.println("  -arch <name>          The name of the LLVM arch to compile for. Allowed values\n" 
-                         + "                        are 'auto', 'x86', 'thumbv7'. Default is 'auto' which means\n" 
-                         + "                        use the LLVM default.");
+                         + "                        are 'auto', 'x86', 'x86_64', 'thumbv7'. Default is 'auto'\n"
+                         + "                        which means use the LLVM default.");
         System.err.println("  -cpu <name>           The name of the LLVM cpu to compile for. The LLVM default\n" 
                          + "                        is used if not specified. Use llc to determine allowed values.");
         System.err.println("  -target <name>        The target to build for. Either 'auto', 'console' or 'ios'.\n" 

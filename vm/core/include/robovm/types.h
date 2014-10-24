@@ -123,7 +123,11 @@ struct Interface {
 
 struct Object {
   Class* clazz;
+#if defined(RVM_X86_64)
+  uint64_t lock;
+#else
   uint32_t lock;
+#endif
 };
 
 struct VITable {
@@ -421,7 +425,18 @@ typedef struct GatewayFrame {
 struct TrycatchContext {
     struct TrycatchContext* prev;
     jint sel;
-#if defined(RVM_X86)
+#if defined(RVM_X86_64)
+    void* fp; // rbp
+    void* pc;
+    void* rbx;
+    void* rsp;
+    void* r12;
+    void* r13;
+    void* r14;
+    void* r15;
+    uint32_t mxcsr;
+    uint16_t fpucw;
+#elif defined(RVM_X86)
     void* fp;
     void* pc;
     void* esp;
@@ -448,6 +463,8 @@ struct TrycatchContext {
     double d13;
     double d14;
     double d15;
+#else
+#error Unsupported arch
 #endif
 };
 

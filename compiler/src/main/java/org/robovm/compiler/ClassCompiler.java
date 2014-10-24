@@ -220,7 +220,7 @@ public class ClassCompiler {
     
     public boolean mustCompile(Clazz clazz) {
         File oFile = config.getOFile(clazz);
-        if (!oFile.exists() || oFile.lastModified() < clazz.lastModified()) {
+        if (!oFile.exists() || oFile.lastModified() < clazz.lastModified() || oFile.length() == 0) {
             return true;
         }
         

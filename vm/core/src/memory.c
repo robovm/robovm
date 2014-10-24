@@ -513,7 +513,7 @@ void gcAddRoot(void* ptr) {
     GC_add_roots(ptr, ptr + sizeof(void*));
 }
 
-uint32_t gcNewDirectBitmapKind(uint32_t bitmap) {
+uint32_t gcNewDirectBitmapKind(size_t bitmap) {
     assert((bitmap & GC_DS_TAGS) == 0);
     return GC_new_kind(GC_new_free_list(), bitmap | GC_DS_BITMAP, 0, 1);
 }
@@ -995,7 +995,7 @@ Array* rvmAllocateMemoryForArray(Env* env, Class* arrayClass, jint length) {
         return NULL;
     }
     jlong size = (jlong) sizeof(Array) + (jlong) length * (jlong) elementSize;
-    if (size > (jlong) (size_t) -1) {
+    if (size > 0xffffffffLL) {
         rvmThrowOutOfMemoryError(env);
         return NULL;
     }

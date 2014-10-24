@@ -670,7 +670,7 @@ public class AppCompiler {
         System.err.println("  -clean                Compile class files even if a compiled version already \n" 
                          + "                        exists in the cache.");
         System.err.println("  -d <dir>              Install the generated executable and other files in <dir>.\n" 
-                         + "                        Default is <wd>/<class>. Ignored if -run is specified.");
+                         + "                        Default is <wd>/<executableName>. Ignored if -run is specified.");
         System.err.println("  -cc <path>            Path to the c compiler binary. gcc and clang are supported.");
         System.err.println("  -home <dir>           Directory where RoboVM runtime has been installed.\n"
                          + "                        Default is $ROBOVM_HOME. If not set the following paths\n" 
@@ -732,9 +732,9 @@ public class AppCompiler {
                          + "                        for custom frameworks.");
         System.err.println("  -resources <list>     : separated list of files and directories that should be\n"
                          + "                        copied to the install dir. Accepts Ant-style patterns.\n" 
-                         + "                        If a pattern is specified the left-most path before the\n" 
-                         + "                        first wildcard will be used as base directory and will not\n" 
-                         + "                        be recreated in the install dir.");
+                         + "                        If a pattern is specified the longest non-pattern path before\n" 
+                         + "                        the first wildcard will be used as base directory and will\n" 
+                         + "                        not be recreated in the install dir.");
         System.err.println("  -cacerts <value>      Use the specified cacerts file. Allowed value are 'none',\n" 
                          + "                        'full'. Default is 'full' but no cacerts will be included\n" 
                          + "                        unless the code actually needs them.");

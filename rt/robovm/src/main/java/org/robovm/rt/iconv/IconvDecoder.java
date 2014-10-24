@@ -90,8 +90,11 @@ public class IconvDecoder extends CharsetDecoder{
         
     }
     
+    /**
+     * releases native side resource
+     */
     private void release() {
-        if (iconv_tPointer == 0) {
+        if (iconv_tPointer != 0) {
             IconvProvider.release(iconv_tPointer);
             iconv_tPointer = 0;
         }

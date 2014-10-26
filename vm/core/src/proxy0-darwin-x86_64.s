@@ -41,7 +41,7 @@ __proxy0:
     push  %rbp
     mov   %rsp, %rbp
 
-    sub   $proxy0_stack_size, %rsp             # Make room for a CallInfo struct on the stack
+    sub   $proxy0_stack_size_aligned, %rsp     # Make room for a CallInfo struct on the stack
 
     mov   %rdi, intArgs_offset+0(%rsp)         # intArgs[0] = %rdi
     mov   %rsi, intArgs_offset+8(%rsp)         # intArgs[1] = %rsi

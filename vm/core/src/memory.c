@@ -990,11 +990,7 @@ Object* rvmAllocateMemoryForObject(Env* env, Class* clazz) {
 }
 
 Array* rvmAllocateMemoryForArray(Env* env, Class* arrayClass, jint length) {
-    jint elementSize = rvmGetArrayElementSize(env, arrayClass);
-    if (elementSize == 0) {
-        return NULL;
-    }
-    jlong size = (jlong) sizeof(Array) + (jlong) length * (jlong) elementSize;
+    jlong size = rvmGetArraySize(env, arrayClass, length);
     if (size > 0xffffffffLL) {
         rvmThrowOutOfMemoryError(env);
         return NULL;

@@ -73,9 +73,6 @@ public class Intrinsics {
         SIMPLE_INTRINSICS.put("java/lang/Math/sin(D)D", 
                 new FunctionRef("intrinsics.java_lang_Math_sin", 
                         new FunctionType(DOUBLE, ENV_PTR, DOUBLE)));
-        SIMPLE_INTRINSICS.put("org/robovm/rt/VM/getArrayValuesAddress(Ljava/lang/Object;)J", 
-                new FunctionRef("intrinsics.org_robovm_rt_VM_getArrayValuesAddress", 
-                        new FunctionType(I64, ENV_PTR, OBJECT_PTR)));
     }
     
     private static final FunctionRef LDC_PRIM_Z = new FunctionRef("intrinsics.ldc_prim_Z", new FunctionType(OBJECT_PTR, ENV_PTR));

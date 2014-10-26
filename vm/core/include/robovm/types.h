@@ -273,14 +273,13 @@ struct Thread {
 
 struct Array {
   Object object;
-  jint length __attribute__ ((aligned (8)));
-  void* values[0];
+  jint length; // Must be 8 byte aligned!
 };
 
 #define MAKE_ARRAY(T, N) \
 typedef struct _ ## N ## Array { \
   Object object; \
-  jint length __attribute__ ((aligned (8))); \
+  jint length; /* Must be 8 byte aligned! */ \
   T values[0]; \
 } N ## Array;
 

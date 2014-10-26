@@ -325,7 +325,31 @@ Object* Java_org_robovm_rt_VM_newStringNoCopy(Env* env, Class* c, CharArray* val
 }
 
 jlong Java_org_robovm_rt_VM_getArrayValuesAddress(Env* env, Class* c, Array* array) {
-    return PTR_TO_LONG(array->values);
+    if (array->object.clazz == array_Z) {
+        return PTR_TO_LONG(((BooleanArray*) array)->values);
+    }
+    if (array->object.clazz == array_B) {
+        return PTR_TO_LONG(((ByteArray*) array)->values);
+    }
+    if (array->object.clazz == array_C) {
+        return PTR_TO_LONG(((CharArray*) array)->values);
+    }
+    if (array->object.clazz == array_S) {
+        return PTR_TO_LONG(((ShortArray*) array)->values);
+    }
+    if (array->object.clazz == array_I) {
+        return PTR_TO_LONG(((IntArray*) array)->values);
+    }
+    if (array->object.clazz == array_J) {
+        return PTR_TO_LONG(((LongArray*) array)->values);
+    }
+    if (array->object.clazz == array_F) {
+        return PTR_TO_LONG(((FloatArray*) array)->values);
+    }
+    if (array->object.clazz == array_D) {
+        return PTR_TO_LONG(((DoubleArray*) array)->values);
+    }
+    return PTR_TO_LONG(((ObjectArray*) array)->values);
 }
 
 BooleanArray* Java_org_robovm_rt_VM_newBooleanArray(Env* env, Class* c, jlong address, jint size) {

@@ -354,13 +354,6 @@ define private void @intrinsics.java_lang_System_arraycopy_C(%Env* %env, %Object
     ret void
 }
 
-define private i64 @intrinsics.org_robovm_rt_VM_getArrayValuesAddress(%Env* %env, %Object* %o) alwaysinline {
-    %array = bitcast %Object* %o to %ObjectArray*
-    %base = getelementptr %ObjectArray* %array, i32 0, i32 2
-    %res = ptrtoint %Object** %base to i64
-    ret i64 %res
-}
-
 define private void @intrinsics.org_robovm_rt_VM_memmove8(%Env* %env, i64 %s1, i64 %s2, i64 %n) alwaysinline {
     %dest = inttoptr i64 %s1 to i8*
     %src = inttoptr i64 %s2 to i8*

@@ -40,10 +40,36 @@ static inline jint getElementSize(Env* env, Class* arrayType) {
         case 'D':
             return sizeof(jdouble);
         }
-    } else {
-        return sizeof(Object*);
     }
-    return 0;
+    return sizeof(Object*);
+}
+
+static inline jint getElementAlignment(Env* env, Class* arrayType) {
+    assert(arrayType != NULL);
+    assert(CLASS_IS_ARRAY(arrayType));
+    assert(arrayType->componentType != NULL);
+    if (CLASS_IS_PRIMITIVE(arrayType->componentType)) {
+        // Array of primitives
+        switch (arrayType->componentType->name[0]) {
+        case 'Z':
+            return __alignof__(jboolean);
+        case 'B':
+            return __alignof__(jbyte);
+        case 'C':
+            return __alignof__(jchar);
+        case 'S':
+            return __alignof__(jshort);
+        case 'I':
+            return __alignof__(jint);
+        case 'J':
+            return __alignof__(jlong);
+        case 'F':
+            return __alignof__(jfloat);
+        case 'D':
+            return __alignof__(jdouble);
+        }
+    }
+    return __alignof__(Object*);
 }
 
 static Array* newArray(Env* env, Class* arrayType, jint dims, jint* lengths) {
@@ -74,6 +100,14 @@ static Array* newArray(Env* env, Class* arrayType, jint dims, jint* lengths) {
 
 jint rvmGetArrayElementSize(Env* env, Class* arrayClass) {
     return getElementSize(env, arrayClass);
+}
+
+jlong rvmGetArraySize(Env* env, Class* arrayClass, jint length) {
+    jint elementSize = getElementSize(env, arrayClass);
+    jint elementAlignment = getElementAlignment(env, arrayClass);
+    jlong baseSize = (sizeof(Array) + elementAlignment - 1) & ~(elementAlignment - 1);
+    jlong size = baseSize + (jlong) length * (jlong) elementSize;
+    return size;
 }
 
 BooleanArray* rvmNewBooleanArray(Env* env, jint length) {
@@ -145,7 +179,7 @@ Array* rvmCloneArray(Env* env, Array* array) {
     jint elementSize = getElementSize(env, array->object.clazz);
     Array* copy = rvmAllocateMemoryForArray(env, array->object.clazz, array->length);
     if (!copy) return NULL;
-    jlong size = (jlong) sizeof(Array) + (jlong) array->length * (jlong) elementSize;
+    jlong size = rvmGetArraySize(env, array->object.clazz, array->length);
     memcpy(copy, array, (size_t) size);
     copy->object.lock = 0;
     return copy;

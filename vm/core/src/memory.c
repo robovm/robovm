@@ -422,7 +422,7 @@ static void logGcHeapStats() {
 
     HeapStat* statsHash = NULL;
     HeapStatsCallbackData data = {loadedClassesHash, &statsHash};
-    GC_apply_to_each_object(heapStatsCallback, &data);
+    GC_rvm_apply_to_each_object(heapStatsCallback, &data);
 
     time_t timestamp;
     struct tm timeinfo;
@@ -452,7 +452,7 @@ static void logGcHeapStats() {
 
 void gcHeapDump(Env* env) {
     fprintf(stderr, "digraph {\n");
-    GC_apply_to_each_live_object(heapDumpCallback, NULL);
+    GC_rvm_apply_to_each_live_object(heapDumpCallback, NULL);
     fprintf(stderr, "}\n");
 }
 

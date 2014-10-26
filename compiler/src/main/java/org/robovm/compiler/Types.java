@@ -488,7 +488,7 @@ public class Types {
             int falign = getFieldAlignment(os, arch, field);
             int padding = (offset & (falign - 1)) != 0 ? (falign - (offset & (falign - 1))) : 0;
             types.add(padType(getType(field.getType()), padding));
-            offset += padding + getFieldSize(field);
+            offset += padding + getFieldSize(arch, field);
         }
         
         int padding = (offset & (subClassAlignment - 1)) != 0 
@@ -510,7 +510,7 @@ public class Types {
             int falign = getFieldAlignment(os, arch, field);
             int padding = (offset & (falign - 1)) != 0 ? (falign - (offset & (falign - 1))) : 0;
             types.add(padType(getType(field.getType()), padding));
-            offset += padding + getFieldSize(field);
+            offset += padding + getFieldSize(arch, field);
         }
         return new StructureType(CLASS, new StructureType(types.toArray(new Type[types.size()])));
     }
@@ -533,12 +533,12 @@ public class Types {
             }
         }
         if (LongType.v().equals(t) || DoubleType.v().equals(t)) {
-            return 4;
+            return arch.is32Bit() ? 4 : 8;
         }
-        return getFieldSize(f);
+        return getFieldSize(arch, f);
     }
     
-    public static int getFieldSize(SootField f) {
+    public static int getFieldSize(Arch arch, SootField f) {
         soot.Type t = f.getType();
         if (LongType.v().equals(t) || DoubleType.v().equals(t)) {
             return 8;
@@ -547,8 +547,7 @@ public class Types {
             return 4;
         }
         if (t instanceof RefLikeType) {
-            // Assume pointers are 32-bit
-            return 4;
+            return arch.is32Bit() ? 4 : 8;
         }
         if (ShortType.v().equals(t) || CharType.v().equals(t)) {
             return 2;
@@ -600,8 +599,8 @@ public class Types {
                 int c = new Integer(align2).compareTo(align1);
                 if (c == 0) {
                     // Compare size. Larger first.
-                    int size1 = getFieldSize(o1);
-                    int size2 = getFieldSize(o2);
+                    int size1 = getFieldSize(arch, o1);
+                    int size2 = getFieldSize(arch, o2);
                     c = new Integer(size2).compareTo(size1);
                     if (c == 0) {
                         // Compare type name.

@@ -21,8 +21,13 @@
 
 /* memory.c */
 #define GC_BITMAP_BITS (sizeof(void*)<<3)
-#define GC_BITMAP_MAX_OFFSET ((GC_BITMAP_BITS - 2) << 2)
-#define MAKE_GC_BITMAP(offset) (offset > GC_BITMAP_MAX_OFFSET ? -1 : (1 << ((GC_BITMAP_BITS - 1) - (offset >> 2))))
+#ifdef _LP64
+# define GC_BITMAP_OFFSET_SHIFT 3
+#else
+# define GC_BITMAP_OFFSET_SHIFT 2
+#endif
+#define GC_BITMAP_MAX_OFFSET ((GC_BITMAP_BITS - 2) << GC_BITMAP_OFFSET_SHIFT)
+#define MAKE_GC_BITMAP(offset) (offset > GC_BITMAP_MAX_OFFSET ? -1 : (((size_t) 1) << ((GC_BITMAP_BITS - 1) - (offset >> GC_BITMAP_OFFSET_SHIFT))))
 
 typedef void (*CleanupHandler)(Env*, Object*);
 
@@ -31,7 +36,7 @@ extern void gcRegisterCurrentThread();
 extern void gcUnregisterCurrentThread();
 extern void gcAddRoot(void* ptr);
 extern void gcAddRoots(void* start, void* end);
-extern uint32_t gcNewDirectBitmapKind(uint32_t bitmap);
+extern uint32_t gcNewDirectBitmapKind(size_t bitmap);
 extern void* gcAllocate(size_t size);
 extern void* allocateMemoryOfKind(Env* env, size_t size, uint32_t kind);
 extern void registerCleanupHandler(Env* env, Object* object, CleanupHandler handler);

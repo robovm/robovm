@@ -3,7 +3,7 @@ set(MACOSX_SDK_VERSION 10.9)
 # The minimum Mac OS X version needed by apps built by RoboVM
 set(MACOSX_MIN_VERSION 10.6)
 # The iOS SDK version required when building the VM libs
-set(IOS_SDK_VERSION 8.0)
+set(IOS_SDK_VERSION 8.1)
 # The minimum iOS version needed by apps built by RoboVM
 set(IOS_MIN_VERSION 6.0)
 
@@ -23,11 +23,11 @@ if(NOT OS)
   message(WARNING "OS not set, trying to determine automatically")
   IF(${CMAKE_SYSTEM_NAME} MATCHES "Darwin")
     SET(OS "macosx")
-    SET(ARCH "x86")
+    SET(ARCH "x86_64")
   ENDIF()
   IF(${CMAKE_SYSTEM_NAME} MATCHES "Linux")
     SET(OS "linux")
-    SET(ARCH "x86")
+    SET(ARCH "x86_64")
   ENDIF()
 endif()
 if(NOT OS MATCHES "^(linux|macosx|ios)$")
@@ -36,7 +36,7 @@ endif()
 if(NOT ARCH)
   message(FATAL_ERROR "ARCH not set")
 endif()
-if(NOT ARCH MATCHES "^(x86|armv6|armv7|thumbv6|thumbv7)$")
+if(NOT ARCH MATCHES "^(x86_64|x86|armv6|armv7|thumbv6|thumbv7)$")
   message(FATAL_ERROR "Unsupported ARCH: ${ARCH}")
 endif()
 
@@ -53,7 +53,11 @@ elseif(OS STREQUAL "ios")
   set(OS_FAMILY darwin)
 endif()
 
-if (ARCH STREQUAL "x86")
+set(64_BIT NO)
+if (ARCH STREQUAL "x86_64")
+  set(X86_64 YES)
+  set(64_BIT YES)
+elseif (ARCH STREQUAL "x86")
   set(X86 YES)
 elseif (ARCH STREQUAL "armv6")
   set(ARM YES)
@@ -73,7 +77,9 @@ endif()
 
 if(DARWIN)
   set(CARCH ${ARCH})
-  if (ARCH STREQUAL "x86")
+  if (ARCH STREQUAL "x86_64")
+    set(CARCH x86_64)
+  elseif (ARCH STREQUAL "x86")
     set(CARCH i386)
   elseif (ARCH STREQUAL "thumbv6")
     set(CARCH armv6)
@@ -91,7 +97,7 @@ if(DARWIN)
         message(FATAL_ERROR "Failed to locate MacOSX SDK ${MACOSX_SDK_VERSION}")
       endif()
     elseif(IOS)
-      if(ARCH STREQUAL "x86")
+      if(ARCH MATCHES "^(x86|x86_64)$")
         set(SYSROOT "${XCODE_PATH}/Platforms/iPhoneSimulator.platform/Developer/SDKs/iPhoneSimulator${IOS_SDK_VERSION}.sdk")
         if(NOT IS_DIRECTORY ${SYSROOT})
           message(FATAL_ERROR "Failed to locate iPhoneSimulator SDK ${IOS_SDK_VERSION}")
@@ -112,6 +118,8 @@ set(CXX_FLAGS "${CXX_FLAGS} -std=gnu++11")
 set(C_CXX_FLAGS "${C_CXX_FLAGS} -Wall -fvisibility=hidden -fdata-sections -ffunction-sections")
 if(CARCH)
   set(C_CXX_FLAGS "${C_CXX_FLAGS} -arch ${CARCH}")
+elseif(64_BIT)
+  set(C_CXX_FLAGS "${C_CXX_FLAGS} -m64")
 else()
   set(C_CXX_FLAGS "${C_CXX_FLAGS} -m32")
 endif()
@@ -131,6 +139,8 @@ endif()
 # Linker flags
 if(CARCH)
   set(LD_FLAGS "${LD_FLAGS} -arch ${CARCH}")
+elseif(64_BIT)
+  set(LD_FLAGS "${LD_FLAGS} -m64")
 else()
   set(LD_FLAGS "${LD_FLAGS} -m32")
 endif()
@@ -158,6 +168,8 @@ set(CMAKE_MODULE_LINKER_FLAGS "${CMAKE_MODULE_LINKER_FLAGS} ${LD_FLAGS}")
 # Assembler flags
 if(CARCH)
   set(ASM_FLAGS "${ASM_FLAGS} -c -arch ${CARCH}")
+elseif(64_BIT)
+  set(ASM_FLAGS "${ASM_FLAGS} -c -m64")
 else()
   set(ASM_FLAGS "${ASM_FLAGS} -c -m32")
 endif()
@@ -178,7 +190,9 @@ elseif(DARWIN)
   add_definitions(-DDARWIN)
 endif()
 
-if (ARCH STREQUAL "x86")
+if (ARCH STREQUAL "x86_64")
+  add_definitions(-DRVM_X86_64)
+elseif (ARCH STREQUAL "x86")
   add_definitions(-DRVM_X86)
 elseif (ARCH STREQUAL "armv6")
   add_definitions(-DRVM_ARMV6)
@@ -215,7 +229,11 @@ message(STATUS "CMAKE_MODULE_LINKER_FLAGS: ${CMAKE_MODULE_LINKER_FLAGS}")
 
 # Ugly hardcoding. This is the offset in bytes of the gcDescriptor member in the Class struct from core/include/robovm/types.h
 # Should be the value of sizeof(void*)*3 for the target platform.
-set(EXTGC_MARK_DESCR_OFFSET 12)
+if(64_BIT)
+  set(EXTGC_MARK_DESCR_OFFSET 24)
+else()
+  set(EXTGC_MARK_DESCR_OFFSET 12)
+endif()
 
 set(EXT_C_FLAGS "${C_CXX_FLAGS}")
 set(EXT_LD_FLAGS "${CMAKE_EXE_LINKER_FLAGS}")
@@ -236,7 +254,7 @@ if (IOS)
 endif()
 ExternalProject_Add(libatomic_ops 
   GIT_REPOSITORY git://github.com/ivmai/libatomic_ops.git
-  GIT_TAG f5f47f7b9c70df2e0d371dd2f303a0dec1a37223
+  GIT_TAG 4e22546e8a161b6bab93e43c115a22151daf45c5
   UPDATE_COMMAND ""
   CONFIGURE_COMMAND "" 
   BUILD_COMMAND ""
@@ -246,7 +264,7 @@ ExternalProject_Add(libatomic_ops
 ExternalProject_Add(extgc 
   DEPENDS libatomic_ops
   GIT_REPOSITORY git://github.com/robovm/bdwgc.git
-  GIT_TAG f684248c30575fc1f25fbce49f9118b5effb6ab7
+  GIT_TAG d42e7cc94400bf287b8fac97c5178e8e336e41e6
   UPDATE_COMMAND ""
   PATCH_COMMAND bash -c "rm -rf libatomic_ops && ln -s ../../../libatomic_ops-prefix/src/libatomic_ops libatomic_ops"
   CONFIGURE_COMMAND bash -c "CC=${CMAKE_C_COMPILER} CFLAGS='${EXTGC_C_FLAGS}' LDFLAGS='${EXTGC_LD_FLAGS}' ./configure ${EXT_HOST} ${EXTGC_PARAMS} --prefix=${CMAKE_BINARY_DIR}/gc"

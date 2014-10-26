@@ -524,6 +524,12 @@ set(SRC
   )
 #endif()
 
+if(X86_64 AND LINUX)
+  set(SRC ${SRC}
+    rc4/asm/rc4-md5-x86_64.S
+  )
+endif()
+
 add_library(android-external-openssl-crypto OBJECT ${SRC})
 set(EXTERNAL_OPENSSL_CRYPTO_OBJECTS $<TARGET_OBJECTS:android-external-openssl-crypto> PARENT_SCOPE)
 

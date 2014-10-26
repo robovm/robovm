@@ -24,15 +24,20 @@ import org.robovm.llvm.Target;
  *
  */
 public enum Arch {
-    x86("i386", "i386"), 
-    thumbv7("thumbv7", "armv7");
+    x86("i386", "i386", true, false),
+    x86_64("x86_64", "x86_64", false, false),
+    thumbv7("thumbv7", "armv7", true, true);
     
     private final String llvmName;
     private final String clangName;
+    private final boolean is32Bit;
+    private final boolean isArm;
     
-    private Arch(String llvmName, String clangName) {
+    private Arch(String llvmName, String clangName, boolean is32Bit, boolean isArm) {
         this.llvmName = llvmName;
         this.clangName = clangName;
+        this.is32Bit = is32Bit;
+        this.isArm = isArm;
     }
     
     public String getLlvmName() {
@@ -44,20 +49,18 @@ public enum Arch {
     }
     
     public boolean isArm() {
-        switch (this) {
-        case thumbv7:
-            return true;
-        default:
-            return false;
-        }
+        return isArm;
     }
     
     public boolean is32Bit() {
-        return true;
+        return is32Bit;
     }
     
     public static Arch getDefaultArch() {
         String hostTriple = Target.getHostTriple();
+        if (hostTriple.matches("^(x86.64|amd64).*")) {
+            return Arch.x86_64;
+        }
         if (hostTriple.matches("^(x86|i\\d86).*")) {
             return Arch.x86;
         }

@@ -2,7 +2,7 @@
 
 BASE=$(cd $(dirname $0); pwd -P)
 
-if which md5sum; then
+if which md5sum > /dev/null; then
   # On Linux we use md5sum
   MD5SUM=md5sum
 else

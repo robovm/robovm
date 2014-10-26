@@ -236,7 +236,7 @@ if (IOS)
 endif()
 ExternalProject_Add(libatomic_ops 
   GIT_REPOSITORY git://github.com/ivmai/libatomic_ops.git
-  GIT_TAG f5f47f7b9c70df2e0d371dd2f303a0dec1a37223
+  GIT_TAG 4e22546e8a161b6bab93e43c115a22151daf45c5
   UPDATE_COMMAND ""
   CONFIGURE_COMMAND "" 
   BUILD_COMMAND ""
@@ -246,7 +246,7 @@ ExternalProject_Add(libatomic_ops
 ExternalProject_Add(extgc 
   DEPENDS libatomic_ops
   GIT_REPOSITORY git://github.com/robovm/bdwgc.git
-  GIT_TAG f684248c30575fc1f25fbce49f9118b5effb6ab7
+  GIT_TAG 0699344a94b3f47355ea6bd1fbb9e5c082a561d4
   UPDATE_COMMAND ""
   PATCH_COMMAND bash -c "rm -rf libatomic_ops && ln -s ../../../libatomic_ops-prefix/src/libatomic_ops libatomic_ops"
   CONFIGURE_COMMAND bash -c "CC=${CMAKE_C_COMPILER} CFLAGS='${EXTGC_C_FLAGS}' LDFLAGS='${EXTGC_LD_FLAGS}' ./configure ${EXT_HOST} ${EXTGC_PARAMS} --prefix=${CMAKE_BINARY_DIR}/gc"

@@ -75,12 +75,12 @@ import org.robovm.apple.corelocation.*;
      * @since Available in iOS 8.0 and later.
      */
     @Method(selector = "viewForKey:")
-    UIView viewForKey$(String key);
+    UIView getView(String key);
     /**
      * @since Available in iOS 8.0 and later.
      */
     @Method(selector = "targetTransform")
-    @ByVal CGAffineTransform targetTransform();
+    @ByVal CGAffineTransform getTargetTransform();
     @Method(selector = "initialFrameForViewController:")
     @ByVal CGRect getInitialFrame(UIViewController vc);
     @Method(selector = "finalFrameForViewController:")

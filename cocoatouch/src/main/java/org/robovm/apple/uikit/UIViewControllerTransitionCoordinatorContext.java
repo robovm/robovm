@@ -75,14 +75,14 @@ import org.robovm.apple.corelocation.*;
      * @since Available in iOS 8.0 and later.
      */
     @Method(selector = "viewForKey:")
-    UIView viewForKey$(String key);
+    UIView getView(String key);
     @Method(selector = "containerView")
     UIView getContainerView();
     /**
      * @since Available in iOS 8.0 and later.
      */
     @Method(selector = "targetTransform")
-    @ByVal CGAffineTransform targetTransform();
+    @ByVal CGAffineTransform getTargetTransform();
     /*</methods>*/
     /*<adapter>*/
     /*</adapter>*/

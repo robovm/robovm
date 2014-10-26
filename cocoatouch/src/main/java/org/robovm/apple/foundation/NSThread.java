@@ -117,6 +117,11 @@ import org.robovm.apple.dispatch.*;
     /**
      * @since Available in iOS 2.0 and later.
      */
+    @Property(selector = "isMainThread")
+    public native boolean isMainThread();
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
     @Property(selector = "isExecuting")
     public native boolean isExecuting();
     /**
@@ -171,15 +176,6 @@ import org.robovm.apple.dispatch.*;
     public static native void sleep(double ti);
     @Method(selector = "exit")
     public static native void exit();
-    @Method(selector = "threadPriority")
-    public static native double threadPriority();
-    @Method(selector = "setThreadPriority:")
-    public static native boolean setThreadPriority$(double p);
-    /**
-     * @since Available in iOS 2.0 and later.
-     */
-    @Method(selector = "isMainThread")
-    public static native boolean isMainThread();
     /**
      * @since Available in iOS 2.0 and later.
      */

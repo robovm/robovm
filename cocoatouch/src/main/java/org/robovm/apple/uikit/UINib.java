@@ -58,7 +58,7 @@ import org.robovm.apple.corelocation.*;
     /*<members>*//*</members>*/
     /*<methods>*/
     @Method(selector = "instantiateWithOwner:options:")
-    public native NSArray<?> instantiate(NSObject ownerOrNil, UINibLoadingOptions optionsOrNil);
+    public native NSArray<NSObject> instantiate(NSObject ownerOrNil, UINibLoadingOptions optionsOrNil);
     @Method(selector = "nibWithNibName:bundle:")
     public static native UINib create(String name, NSBundle bundleOrNil);
     @Method(selector = "nibWithData:bundle:")

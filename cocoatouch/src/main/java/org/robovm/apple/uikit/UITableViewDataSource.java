@@ -54,13 +54,13 @@ import org.robovm.apple.corelocation.*;
     @Method(selector = "tableView:numberOfRowsInSection:")
     @MachineSizedSInt long getNumberOfRowsInSection(UITableView tableView, @MachineSizedSInt long section);
     @Method(selector = "tableView:cellForRowAtIndexPath:")
-    UITableViewCell getRowCell(UITableView tableView, NSIndexPath indexPath);
+    UITableViewCell getCellForRow(UITableView tableView, NSIndexPath indexPath);
     @Method(selector = "numberOfSectionsInTableView:")
     @MachineSizedSInt long getNumberOfSections(UITableView tableView);
     @Method(selector = "tableView:titleForHeaderInSection:")
-    String getSectionHeaderTitle(UITableView tableView, @MachineSizedSInt long section);
+    String getTitleForHeader(UITableView tableView, @MachineSizedSInt long section);
     @Method(selector = "tableView:titleForFooterInSection:")
-    String getSectionFooterTitle(UITableView tableView, @MachineSizedSInt long section);
+    String getTitleForFooter(UITableView tableView, @MachineSizedSInt long section);
     @Method(selector = "tableView:canEditRowAtIndexPath:")
     boolean canEditRow(UITableView tableView, NSIndexPath indexPath);
     @Method(selector = "tableView:canMoveRowAtIndexPath:")
@@ -70,7 +70,7 @@ import org.robovm.apple.corelocation.*;
     @Method(selector = "tableView:sectionForSectionIndexTitle:atIndex:")
     @MachineSizedSInt long getSectionForSectionIndexTitle(UITableView tableView, String title, @MachineSizedSInt long index);
     @Method(selector = "tableView:commitEditingStyle:forRowAtIndexPath:")
-    void commitRowEditingStyle(UITableView tableView, UITableViewCellEditingStyle editingStyle, NSIndexPath indexPath);
+    void commitEditingStyleForRow(UITableView tableView, UITableViewCellEditingStyle editingStyle, NSIndexPath indexPath);
     @Method(selector = "tableView:moveRowAtIndexPath:toIndexPath:")
     void moveRow(UITableView tableView, NSIndexPath sourceIndexPath, NSIndexPath destinationIndexPath);
     /*</methods>*/

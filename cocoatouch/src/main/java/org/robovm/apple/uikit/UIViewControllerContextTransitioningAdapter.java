@@ -77,12 +77,12 @@ import org.robovm.apple.corelocation.*;
      * @since Available in iOS 8.0 and later.
      */
     @NotImplemented("viewForKey:")
-    public UIView viewForKey$(String key) { throw new UnsupportedOperationException(); }
+    public UIView getView(String key) { throw new UnsupportedOperationException(); }
     /**
      * @since Available in iOS 8.0 and later.
      */
     @NotImplemented("targetTransform")
-    public @ByVal CGAffineTransform targetTransform() { throw new UnsupportedOperationException(); }
+    public @ByVal CGAffineTransform getTargetTransform() { throw new UnsupportedOperationException(); }
     @NotImplemented("initialFrameForViewController:")
     public @ByVal CGRect getInitialFrame(UIViewController vc) { throw new UnsupportedOperationException(); }
     @NotImplemented("finalFrameForViewController:")

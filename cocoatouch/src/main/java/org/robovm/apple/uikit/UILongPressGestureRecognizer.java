@@ -53,8 +53,8 @@ import org.robovm.apple.corelocation.*;
     protected UILongPressGestureRecognizer(SkipInit skipInit) { super(skipInit); }
     /*</constructors>*/
     
-    public UILongPressGestureRecognizer(NSObject target, Selector action) {
-        super(target, action);
+    public UILongPressGestureRecognizer(GestureListener listener) {
+        super(listener);
     }    
     
     /*<properties>*/

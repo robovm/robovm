@@ -37,38 +37,40 @@ import org.robovm.apple.corelocation.*;
 
 /*<javadoc>*/
 /**
- * @since Available in iOS 3.2 and later.
+ * @since Available in iOS 8.0 and later.
  */
 /*</javadoc>*/
 /*<annotations>*/@Library("UIKit") @NativeClass/*</annotations>*/
-/*<visibility>*/public/*</visibility>*/ class /*<name>*/UISwipeGestureRecognizer/*</name>*/ 
-    extends /*<extends>*/UIGestureRecognizer/*</extends>*/ 
+/*<visibility>*/public/*</visibility>*/ class /*<name>*/UITableViewRowAction/*</name>*/ 
+    extends /*<extends>*/NSObject/*</extends>*/ 
     /*<implements>*//*</implements>*/ {
 
-    /*<ptr>*/public static class UISwipeGestureRecognizerPtr extends Ptr<UISwipeGestureRecognizer, UISwipeGestureRecognizerPtr> {}/*</ptr>*/
-    /*<bind>*/static { ObjCRuntime.bind(UISwipeGestureRecognizer.class); }/*</bind>*/
+    /*<ptr>*/public static class UITableViewRowActionPtr extends Ptr<UITableViewRowAction, UITableViewRowActionPtr> {}/*</ptr>*/
+    /*<bind>*/static { ObjCRuntime.bind(UITableViewRowAction.class); }/*</bind>*/
     /*<constants>*//*</constants>*/
     /*<constructors>*/
-    public UISwipeGestureRecognizer() {}
-    protected UISwipeGestureRecognizer(SkipInit skipInit) { super(skipInit); }
+    public UITableViewRowAction() {}
+    protected UITableViewRowAction(SkipInit skipInit) { super(skipInit); }
     /*</constructors>*/
-    
-    public UISwipeGestureRecognizer(GestureListener listener) {
-        super(listener);
-    }
-    
     /*<properties>*/
-    @Property(selector = "numberOfTouchesRequired")
-    public native @MachineSizedUInt long getNumberOfTouchesRequired();
-    @Property(selector = "setNumberOfTouchesRequired:")
-    public native void setNumberOfTouchesRequired(@MachineSizedUInt long v);
-    @Property(selector = "direction")
-    public native UISwipeGestureRecognizerDirection getDirection();
-    @Property(selector = "setDirection:")
-    public native void setDirection(UISwipeGestureRecognizerDirection v);
+    @Property(selector = "style")
+    public native UITableViewRowActionStyle getStyle();
+    @Property(selector = "title")
+    public native String getTitle();
+    @Property(selector = "setTitle:")
+    public native void setTitle(String v);
+    @Property(selector = "backgroundColor")
+    public native UIColor getBackgroundColor();
+    @Property(selector = "setBackgroundColor:")
+    public native void setBackgroundColor(UIColor v);
+    @Property(selector = "backgroundEffect")
+    public native UIVisualEffect getBackgroundEffect();
+    @Property(selector = "setBackgroundEffect:")
+    public native void setBackgroundEffect(UIVisualEffect v);
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
-    
+    @Method(selector = "rowActionWithStyle:title:handler:")
+    public static native UITableViewRowAction create(UITableViewRowActionStyle style, String title, @Block VoidBlock2<UITableViewRowAction, NSIndexPath> handler);
     /*</methods>*/
 }

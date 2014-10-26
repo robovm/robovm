@@ -226,7 +226,7 @@ import org.robovm.apple.corelocation.*;
      * @since Available in iOS 8.0 and later.
      */
     @Bridge(symbol="UIAccessibilityDarkerSystemColorsEnabled", optional=true)
-    public static native boolean darkerSystemColorsEnabled();
+    public static native boolean areDarkerSystemColorsEnabled();
     /**
      * @since Available in iOS 8.0 and later.
      */

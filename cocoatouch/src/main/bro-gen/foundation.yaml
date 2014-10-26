@@ -13,6 +13,8 @@ typedefs:
     _NSZone: NSZone
     id: NSObject
     Class: ObjCClass
+ #   Class: '@org.robovm.rt.bro.annotation.Marshaler(ObjCClass.Marshaler.class) Class<?>'
+  #  ObjCClass: '@org.robovm.rt.bro.annotation.Marshaler(ObjCClass.Marshaler.class) Class<?>'
     'Protocol *': ObjCProtocol
     'NSString *': String
     'NSString **': 'NSString.NSStringPtr'
@@ -100,6 +102,7 @@ enums:
     NSFileWrapperWritingOptions: {}
     NSFormattingContext: {}
     NSFormattingUnitStyle: {}
+    NSHashTableOptions: { first: NSHashTableStrongMemory, bits: true, marshaler: Bits.AsMachineSizedIntMarshaler }
     NSHTTPCookieAcceptPolicy: {}
     NSJSONReadingOptions: {}
     NSJSONWritingOptions: { prefix: NSJSONWriting }
@@ -111,6 +114,7 @@ enums:
     NSLocaleLanguageDirection: {}
     NSMachPortRights: { first: NSMachPortDeallocateNone, bits: true, marshaler: Bits.AsMachineSizedIntMarshaler }
     NSMassFormatterUnit: {}
+    NSMapTableOptions: { first: NSMapTableStrongMemory, bits: true, marshaler: Bits.AsMachineSizedIntMarshaler }
     NSMatchingFlags: {}
     NSMatchingOptions: {}
     NSNetServiceOptions: {}
@@ -122,7 +126,7 @@ enums:
     NSNumberFormatterStyle: { suffix: Style }
     NSOperatingSystem: { first: NSWindowsNTOperatingSystem, suffix: OperatingSystem, marshaler: ValuedEnum.AsMachineSizedUIntMarshaler }
     NSOperationQueuePriority: {}
-    NSPointerFunctionsOptions: { first: NSPointerFunctionsStrongMemory, bits: true, marshaler: Bits.AsMachineSizedIntMarshaler }
+    NSPointerFunctionsOptions: { first: NSPointerFunctionsStrongMemory, exclude: true, bits: true, marshaler: Bits.AsMachineSizedIntMarshaler }
     NSPostingStyle: {}
     NSPredicateOperatorType: { suffix: PredicateOperatorType }
     NSPropertyListFormat: { suffix: Format }
@@ -188,15 +192,17 @@ classes:
         extends: NSURLProperty
 
     NSArray: # DONE
-        protocols: [NSPropertyList, "List<T>"]
+        protocols: [NSPropertyList, List<T>]
         properties:
             'count':
                 visibility: protected
             'firstObject':
                 name: first
+                omit_prefix: true
                 type: T
             'lastObject':
                 name: last
+                omit_prefix: true
                 type: T
             'description':
                 exclude: true
@@ -1172,13 +1178,84 @@ classes:
         methods:
             '.*':
                 exclude: true
-    NSHashTable: {}
+    NSHashTable: # DONE
+        properties:
+            'pointerFunctions':
+                exclude: true
+            'count':
+                visibility: protected
+            'allObjects':
+                name: values
+                type: NSArray<T>
+            'anyObject':
+                name: any
+                omit_prefix: true
+                type: T
+            'setRepresentation':
+                name: asSet
+                omit_prefix: true
+                type: NSSet<T>
+        methods:
+            '-initWithPointerFunctions:capacity:':
+                exclude: true
+            '-initWithOptions:capacity:':
+                name: init
+                parameters:
+                    options:
+                        type: NSHashTableOptions
+            '-member:':
+                visibility: protected
+            '-objectEnumerator':
+                visibility: protected
+                return_type: NSEnumerator<T>
+            '-addObject:':
+                visibility: protected
+            '-removeObject:':
+                visibility: protected
+            '-removeAllObjects':
+                visibility: protected
+            '-containsObject:':
+                visibility: protected
+            '-intersectsHashTable:':
+                name: intersects
+                parameters:
+                    other:
+                        type: NSHashTable<T>
+            '-isEqualToHashTable:':
+                name: isEqualTo
+                parameters:
+                    other:
+                        type: NSHashTable<T>
+            '-isSubsetOfHashTable:':
+                name: isSubsetOf
+                parameters:
+                    other:
+                        type: NSHashTable<T>
+            '-intersectHashTable:':
+                name: intersect
+                parameters:
+                    other:
+                        type: NSHashTable<T>
+            '-unionHashTable:':
+                name: union
+                parameters:
+                    other:
+                        type: NSHashTable<T>
+            '-minusHashTable:':
+                name: minus
+                parameters:
+                    other:
+                        type: NSHashTable<T>
+            '+hashTableWithOptions:':
+                exclude: true
+            '+weakObjectsHashTable':
+                exclude: true
     NSHTTPCookie: # DONE
         properties:
             'properties':
                 type: NSHTTPCookieAttributes
             'portList':
-                type: "@org.robovm.rt.bro.annotation.Marshaler(NSArray.AsIntegerListMarshaler.class) List<Integer>"
+                type: '@org.robovm.rt.bro.annotation.Marshaler(NSArray.AsIntegerListMarshaler.class) List<Integer>'
         methods:
             '-initWithProperties:':
                 name: init
@@ -1189,39 +1266,39 @@ classes:
                 exclude: true
             '+requestHeaderFieldsWithCookies:':
                 name: getRequestHeaderFieldsWithCookies
-                return_type: "@org.robovm.rt.bro.annotation.Marshaler(NSDictionary.AsStringStringMapMarshaler.class) Map<String, String>"
+                return_type: '@org.robovm.rt.bro.annotation.Marshaler(NSDictionary.AsStringStringMapMarshaler.class) Map<String, String>'
                 parameters:
                     cookies:
-                        type: "NSArray<NSHTTPCookie>"
+                        type: NSArray<NSHTTPCookie>
             '+cookiesWithResponseHeaderFields:forURL:':
                 name: getCookiesWithResponseHeaderFields
-                return_type: "NSArray<NSHTTPCookie>"
+                return_type: NSArray<NSHTTPCookie>
                 parameters:
                     headerFields:
-                        type: "@org.robovm.rt.bro.annotation.Marshaler(NSDictionary.AsStringStringMapMarshaler.class) Map<String, String>"
+                        type: '@org.robovm.rt.bro.annotation.Marshaler(NSDictionary.AsStringStringMapMarshaler.class) Map<String, String>'
                     URL:
                         name: url
     NSHTTPCookieStorage: # DONE
         properties:
             'cookies':
-                type: "NSArray<NSHTTPCookie>"
+                type: NSArray<NSHTTPCookie>
         methods:
             '-deleteCookie:':
                 trim_after_first_colon: true
             '-cookiesForURL:':
                 name: getCookiesForURL
-                return_type: "NSArray<NSHTTPCookie>"
+                return_type: NSArray<NSHTTPCookie>
             '-setCookies:forURL:mainDocumentURL:':
                 name: setCookiesForURL
                 parameters:
                     cookies:
-                        type: "NSArray<NSHTTPCookie>"
+                        type: NSArray<NSHTTPCookie>
             '-sortedCookiesUsingDescriptors:':
                 name: getSortedCookies
-                return_type: "NSArray<NSHTTPCookie>"
+                return_type: NSArray<NSHTTPCookie>
                 parameters:
                     sortOrder:
-                        type: "NSArray<NSSortDescriptor>"
+                        type: NSArray<NSSortDescriptor>
             '+sharedHTTPCookieStorage':
                 property: true
             '-storeCookies:forTask:':
@@ -1233,17 +1310,17 @@ classes:
                 trim_after_first_colon: true
                 parameters:
                     completionHandler:
-                        type: "@Block VoidBlock1<NSArray<NSHTTPCookie>>"
+                        type: '@Block VoidBlock1<NSArray<NSHTTPCookie>>'
     NSHTTPURLResponse: # DONE
         properties:
             'allHeaderFields':
-                type: "@org.robovm.rt.bro.annotation.Marshaler(NSDictionary.AsStringStringMapMarshaler.class) Map<String, String>"
+                type: '@org.robovm.rt.bro.annotation.Marshaler(NSDictionary.AsStringStringMapMarshaler.class) Map<String, String>'
         methods:
             '-initWithURL:statusCode:HTTPVersion:headerFields:':
                 name: init
                 parameters:
                     headerFields:
-                        type: "@org.robovm.rt.bro.annotation.Marshaler(NSDictionary.AsStringStringMapMarshaler.class) Map<String, String>"
+                        type: '@org.robovm.rt.bro.annotation.Marshaler(NSDictionary.AsStringStringMapMarshaler.class) Map<String, String>'
             '+localizedStringForStatusCode:':
                 name: getLocalizedStatusCode
     NSIndexPath: # DONE
@@ -1566,7 +1643,43 @@ classes:
                         type: NSMachPortRights
             '+portWithMachPort:':
                 name: create
-    NSMapTable: {}
+    NSMapTable: # DONE
+        properties:
+            '(keyPointerFunctions|valuePointerFunctions)':
+                exclude: true
+            'count':
+                visibility: protected
+        methods:
+            '-initWithKeyOptions:valueOptions:capacity:':
+                name: init
+                parameters:
+                    keyOptions:
+                        type: NSMapTableOptions
+                    valueOptions:
+                        type: NSMapTableOptions
+            '-initWithKeyPointerFunctions:valuePointerFunctions:capacity:':
+                exclude: true
+            '-objectForKey:':
+                visibility: protected
+            '-removeObjectForKey:':
+                visibility: protected
+            '-setObject:forKey:':
+                visibility: protected
+            '-keyEnumerator':
+                visibility: protected
+                return_type: NSEnumerator<K>
+            '-objectEnumerator':
+                visibility: protected
+                return_type: NSEnumerator<V>
+            '-removeAllObjects':
+                visibility: protected
+            '-dictionaryRepresentation':
+                name: asDictionary
+                return_type: 'NSDictionary<K, V>'
+            '+mapTableWithKeyOptions:valueOptions:':
+                exclude: true
+            '+.*':
+                exclude: true
     NSMassFormatter: # DONE
         methods:
             '-stringFromValue:unit:':
@@ -2243,8 +2356,8 @@ classes:
             '+pipe':
                 name: create
                 return_type: NSPipe
-    NSPointerArray: {}
-    NSPointerFunctions: {}
+    NSPointerArray: { exclude: true }
+    NSPointerFunctions: { exclude: true }
     NSPort: # DONE
         methods:
             '-delegate':
@@ -2471,7 +2584,7 @@ classes:
                 visibility: protected
                 return_type: NSEnumerator<T>
             '-anyObject':
-                visibility: protected
+                name: any
                 return_type: T
             '+.*': {exclude: true}
             '-.*': {exclude: true}
@@ -2598,8 +2711,6 @@ classes:
                         type: NSTextCheckingTransitComponents
     NSThread: # DONE
         properties:
-            'isMainThread':
-                exclude: true
             'threadPriority':
                 exclude: true
         methods:
@@ -2611,7 +2722,15 @@ classes:
                 name: sleep
             '+detachNewThreadSelector:toTarget:withObject:':
                 name: detachNewThread
-            '+(currentThread|mainThread)':
+            '+isMainThread':
+                exclude: true
+            '+threadPriority':
+                exclude: true
+            '+setThreadPriority:':
+                exclude: true
+            '+currentThread':
+                property: true
+            '+mainThread':
                 property: true
     NSTimer: # DONE
         methods:
@@ -4055,10 +4174,6 @@ constants:
     NS_UnknownByteOrder|NS_LittleEndian|NS_BigEndian:
         exclude: true
 
-    NSHashTable.*:
-        exclude: true
-    NSMapTable.*:
-        exclude: true
     NSTextCheckingAll.*Types:
         exclude: true
 

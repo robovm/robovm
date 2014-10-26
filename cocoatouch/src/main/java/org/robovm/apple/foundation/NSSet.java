@@ -204,9 +204,6 @@ import org.robovm.apple.dispatch.*;
     public <U> U[] toArray(U[] a) {
         return adapter.toArray(a);
     }
-    public T any() {
-        return anyObject();
-    }
     
     /**
      * Use this method to convert a NSSet of NSString items to a Set of String items. 
@@ -269,7 +266,7 @@ import org.robovm.apple.dispatch.*;
     @Method(selector = "initWithObjects:count:")
     protected native @Pointer long initWithObjects$count$(@Pointer long objects, @MachineSizedUInt long cnt);
     @Method(selector = "anyObject")
-    protected native T anyObject();
+    public native T any();
     @Method(selector = "initWithSet:")
     protected native @Pointer long initWithSet$(NSSet<?> set);
     @Method(selector = "initWithArray:")

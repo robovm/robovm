@@ -52,12 +52,12 @@ import org.robovm.apple.corelocation.*;
      * @since Available in iOS 8.0 and later.
      */
     @Property(selector = "accessibilityCustomActions")
-    NSArray<?> getAccessibilityCustomActions();
+    NSArray<UIAccessibilityCustomAction> getAccessibilityCustomActions();
     /**
      * @since Available in iOS 8.0 and later.
      */
     @Property(selector = "setAccessibilityCustomActions:")
-    void setAccessibilityCustomActions(NSArray<?> v);
+    void setAccessibilityCustomActions(NSArray<UIAccessibilityCustomAction> v);
     /*</properties>*/
     /*<methods>*/
     /**

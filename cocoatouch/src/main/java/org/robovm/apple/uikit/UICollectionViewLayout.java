@@ -90,12 +90,12 @@ import org.robovm.apple.corelocation.*;
      * @since Available in iOS 8.0 and later.
      */
     @Method(selector = "shouldInvalidateLayoutForPreferredLayoutAttributes:withOriginalAttributes:")
-    public native boolean shouldInvalidateLayoutForPreferredLayoutAttributes$withOriginalAttributes$(UICollectionViewLayoutAttributes preferredAttributes, UICollectionViewLayoutAttributes originalAttributes);
+    public native boolean shouldInvalidateLayoutForPreferredLayoutAttributes(UICollectionViewLayoutAttributes preferredAttributes, UICollectionViewLayoutAttributes originalAttributes);
     /**
      * @since Available in iOS 8.0 and later.
      */
     @Method(selector = "invalidationContextForPreferredLayoutAttributes:withOriginalAttributes:")
-    public native UICollectionViewLayoutInvalidationContext invalidationContextForPreferredLayoutAttributes$withOriginalAttributes$(UICollectionViewLayoutAttributes preferredAttributes, UICollectionViewLayoutAttributes originalAttributes);
+    public native UICollectionViewLayoutInvalidationContext getInvalidationContextForPreferredLayoutAttributes(UICollectionViewLayoutAttributes preferredAttributes, UICollectionViewLayoutAttributes originalAttributes);
     @Method(selector = "targetContentOffsetForProposedContentOffset:withScrollingVelocity:")
     public native @ByVal CGPoint getTargetContentOffset(@ByVal CGPoint proposedContentOffset, @ByVal CGPoint velocity);
     /**

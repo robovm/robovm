@@ -52,12 +52,12 @@ import org.robovm.apple.corelocation.*;
      * @since Available in iOS 8.0 and later.
      */
     @Property(selector = "accessibilityElements")
-    NSArray<?> getAccessibilityElements();
+    NSArray<UIAccessibilityElement> getAccessibilityElements();
     /**
      * @since Available in iOS 8.0 and later.
      */
     @Property(selector = "setAccessibilityElements:")
-    void setAccessibilityElements(NSArray<?> v);
+    void setAccessibilityElements(NSArray<UIAccessibilityElement> v);
     /*</properties>*/
     /*<methods>*/
     @Method(selector = "accessibilityElementCount")

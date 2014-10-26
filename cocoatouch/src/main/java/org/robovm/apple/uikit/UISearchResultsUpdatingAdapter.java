@@ -54,6 +54,6 @@ import org.robovm.apple.corelocation.*;
     /*<members>*//*</members>*/
     /*<methods>*/
     @NotImplemented("updateSearchResultsForSearchController:")
-    public void updateSearchResultsForSearchController$(UISearchController searchController) { throw new UnsupportedOperationException(); }
+    public void updateSearchResults(UISearchController searchController) { throw new UnsupportedOperationException(); }
     /*</methods>*/
 }

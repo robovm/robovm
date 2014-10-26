@@ -61,17 +61,17 @@ import org.robovm.apple.corelocation.*;
      * @since Available in iOS 8.0 and later.
      */
     @Property(selector = "invalidatedItemIndexPaths")
-    public native NSArray<?> getInvalidatedItemIndexPaths();
+    public native NSArray<NSIndexPath> getInvalidatedItemIndexPaths();
     /**
      * @since Available in iOS 8.0 and later.
      */
     @Property(selector = "invalidatedSupplementaryIndexPaths")
-    public native NSDictionary<?, ?> getInvalidatedSupplementaryIndexPaths();
+    public native NSArray<NSIndexPath> getInvalidatedSupplementaryIndexPaths();
     /**
      * @since Available in iOS 8.0 and later.
      */
     @Property(selector = "invalidatedDecorationIndexPaths")
-    public native NSDictionary<?, ?> getInvalidatedDecorationIndexPaths();
+    public native NSArray<NSIndexPath> getInvalidatedDecorationIndexPaths();
     /**
      * @since Available in iOS 8.0 and later.
      */
@@ -99,16 +99,16 @@ import org.robovm.apple.corelocation.*;
      * @since Available in iOS 8.0 and later.
      */
     @Method(selector = "invalidateItemsAtIndexPaths:")
-    public native void invalidateItemsAtIndexPaths$(NSArray<?> indexPaths);
+    public native void invalidateItems(NSArray<NSIndexPath> indexPaths);
     /**
      * @since Available in iOS 8.0 and later.
      */
     @Method(selector = "invalidateSupplementaryElementsOfKind:atIndexPaths:")
-    public native void invalidateSupplementaryElementsOfKind$atIndexPaths$(String elementKind, NSArray<?> indexPaths);
+    public native void invalidateSupplementaryElementsOfKind(String elementKind, NSArray<NSIndexPath> indexPaths);
     /**
      * @since Available in iOS 8.0 and later.
      */
     @Method(selector = "invalidateDecorationElementsOfKind:atIndexPaths:")
-    public native void invalidateDecorationElementsOfKind$atIndexPaths$(String elementKind, NSArray<?> indexPaths);
+    public native void invalidateDecorationElementsOfKind(String elementKind, NSArray<NSIndexPath> indexPaths);
     /*</methods>*/
 }

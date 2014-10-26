@@ -58,6 +58,6 @@ import org.robovm.apple.corelocation.*;
     /*<members>*//*</members>*/
     /*<methods>*/
     @Method(selector = "effectForBlurEffect:")
-    public static native UIVibrancyEffect effectForBlurEffect$(UIBlurEffect blurEffect);
+    public static native UIVibrancyEffect create(UIBlurEffect blurEffect);
     /*</methods>*/
 }

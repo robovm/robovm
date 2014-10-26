@@ -72,12 +72,12 @@ import org.robovm.apple.corelocation.*;
      * @since Available in iOS 8.0 and later.
      */
     @Property(selector = "completionWithItemsHandler")
-    public native FunctionPtr getCompletionWithItemsHandler();
+    public native @Block VoidBlock4<String, Boolean, NSArray<NSObject>, NSError> getCompletionWithItemsHandler();
     /**
      * @since Available in iOS 8.0 and later.
      */
     @Property(selector = "setCompletionWithItemsHandler:")
-    public native void setCompletionWithItemsHandler(FunctionPtr v);
+    public native void setCompletionWithItemsHandler(@Block VoidBlock4<String, Boolean, NSArray<NSObject>, NSError> v);
     @Property(selector = "excludedActivityTypes")
     public native @org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String> getExcludedActivityTypes();
     @Property(selector = "setExcludedActivityTypes:")

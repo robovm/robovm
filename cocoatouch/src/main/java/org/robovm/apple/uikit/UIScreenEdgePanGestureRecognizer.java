@@ -53,8 +53,8 @@ import org.robovm.apple.corelocation.*;
     protected UIScreenEdgePanGestureRecognizer(SkipInit skipInit) { super(skipInit); }
     /*</constructors>*/
     
-    public UIScreenEdgePanGestureRecognizer(NSObject target, Selector action) {
-        super(target, action);
+    public UIScreenEdgePanGestureRecognizer(GestureListener listener) {
+        super(listener);
     }
     
     /*<properties>*/

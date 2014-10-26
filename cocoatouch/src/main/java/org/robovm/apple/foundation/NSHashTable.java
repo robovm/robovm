@@ -34,6 +34,8 @@ import org.robovm.apple.coremedia.*;
 import org.robovm.apple.security.*;
 import org.robovm.apple.dispatch.*;
 /*</imports>*/
+import org.robovm.apple.foundation.NSSet.NSSetPtr;
+import org.robovm.apple.foundation.NSSet.SetAdapter;
 
 /*<javadoc>*/
 /**
@@ -41,68 +43,194 @@ import org.robovm.apple.dispatch.*;
  */
 /*</javadoc>*/
 /*<annotations>*/@Library("Foundation") @NativeClass/*</annotations>*/
-/*<visibility>*/public/*</visibility>*/ class /*<name>*/NSHashTable/*</name>*/ 
+/*<visibility>*/public/*</visibility>*/ class /*<name>*/NSHashTable/*</name>*/ <T extends NSObject>
     extends /*<extends>*/NSObject/*</extends>*/ 
-    /*<implements>*/implements NSCoding/*</implements>*/ {
+    /*<implements>*/implements NSCoding/*</implements>*/, Set<T> {
+    
+    public static class NSHashTablePtr<T extends NSObject> extends Ptr<NSHashTable<T>, NSHashTablePtr<T>> {}
 
-    /*<ptr>*/public static class NSHashTablePtr extends Ptr<NSHashTable, NSHashTablePtr> {}/*</ptr>*/
+    static class SetAdapter<U extends NSObject> extends AbstractSet<U> {
+        protected final NSHashTable<U> set;
+
+        SetAdapter(NSHashTable<U> set) {
+            this.set = set;
+        }
+
+        @Override
+        public boolean contains(Object o) {
+            if (o instanceof NSObject) {
+                return set.member$((NSObject) o) != null;
+            }
+            return false;
+        }
+
+        @Override
+        public Iterator<U> iterator() {
+            return new NSEnumerator.Iterator<U>(set.objectEnumerator()) {
+                void remove(int index, U o) {
+                    set.removeObject$(o);
+                }
+            };
+        }
+
+        @Override
+        public int size() {
+            return (int) set.getCount();
+        }
+        
+        @Override
+        public boolean add(U e) {
+            checkNull(e);
+            boolean replaced = contains(e);
+            set.addObject$(e);
+            return replaced;
+        }
+        
+        @SuppressWarnings("unchecked")
+        @Override
+        public boolean remove(Object o) {
+            if (contains(o)) {
+                set.removeObject$((U) o);
+                return true;
+            }
+            return false;
+        }
+        
+        @Override
+        public void clear() {
+            set.removeAllObjects();
+        }
+    }
+    
     /*<bind>*/static { ObjCRuntime.bind(NSHashTable.class); }/*</bind>*/
     /*<constants>*//*</constants>*/
+    
+    private AbstractSet<T> adapter = createAdapter();
+    
     /*<constructors>*/
     public NSHashTable() {}
     protected NSHashTable(SkipInit skipInit) { super(skipInit); }
-    public NSHashTable(NSPointerFunctionsOptions options, @MachineSizedUInt long initialCapacity) { super((SkipInit) null); initObject(initWithOptions$capacity$(options, initialCapacity)); }
-    public NSHashTable(NSPointerFunctions functions, @MachineSizedUInt long initialCapacity) { super((SkipInit) null); initObject(initWithPointerFunctions$capacity$(functions, initialCapacity)); }
+    public NSHashTable(NSHashTableOptions options, @MachineSizedUInt long initialCapacity) { super((SkipInit) null); initObject(init(options, initialCapacity)); }
     /*</constructors>*/
+    
+    private static void checkNull(Object o) {
+        if (o == null) {
+            throw new NullPointerException("null values are not allowed in NSHashTable. Use NSNull instead.");
+        }
+    }
+    
+    public NSHashTable(Collection<T> c) {
+        addAll(c);
+    }
+    
+    public NSHashTable(T ... objects) {
+        for (T obj : objects) {
+            add(obj);
+        }
+    }
+
+    public NSHashTable(Collection<T> c, NSHashTableOptions options, @MachineSizedUInt long initialCapacity) {
+        super((SkipInit) null);
+        initObject(init(options, initialCapacity));
+        addAll(c);
+    }
+    
     /*<properties>*/
-    @Property(selector = "pointerFunctions")
-    public native NSPointerFunctions getPointerFunctions();
     @Property(selector = "count")
-    public native @MachineSizedUInt long getCount();
+    protected native @MachineSizedUInt long getCount();
     @Property(selector = "allObjects")
-    public native NSArray<?> getAllObjects();
+    public native NSArray<T> getValues();
     @Property(selector = "anyObject")
-    public native NSObject getAnyObject();
+    public native T any();
     @Property(selector = "setRepresentation")
-    public native NSSet<?> getSetRepresentation();
+    public native NSSet<T> asSet();
     /*</properties>*/
     /*<members>*//*</members>*/
+    
+    protected AbstractSet<T> createAdapter() {
+        return new SetAdapter<T>(this);
+    }
+    
+    @Override
+    protected void afterMarshaled() {
+        if (adapter == null) {
+            adapter = createAdapter();
+        }
+        super.afterMarshaled();
+    }
+    
+    public boolean add(T e) {
+        return adapter.add(e);
+    }
+    public boolean addAll(Collection<? extends T> c) {
+        return adapter.addAll(c);
+    }
+    public void clear() {
+        adapter.clear();
+    }
+    public boolean contains(Object o) {
+        return adapter.contains(o);
+    }
+    public boolean containsAll(Collection<?> c) {
+        return adapter.containsAll(c);
+    }
+    public boolean isEmpty() {
+        return adapter.isEmpty();
+    }
+    public Iterator<T> iterator() {
+        return adapter.iterator();
+    }
+    public boolean remove(Object o) {
+        return adapter.remove(o);
+    }
+    public boolean removeAll(Collection<?> c) {
+        return adapter.removeAll(c);
+    }
+    public boolean retainAll(Collection<?> c) {
+        return adapter.retainAll(c);
+    }
+    public int size() {
+        return adapter.size();
+    }
+    public Object[] toArray() {
+        return adapter.toArray();
+    }
+    public <U> U[] toArray(U[] a) {
+        return adapter.toArray(a);
+    }
+    
     /*<methods>*/
     @Method(selector = "initWithOptions:capacity:")
-    protected native @Pointer long initWithOptions$capacity$(NSPointerFunctionsOptions options, @MachineSizedUInt long initialCapacity);
-    @Method(selector = "initWithPointerFunctions:capacity:")
-    protected native @Pointer long initWithPointerFunctions$capacity$(NSPointerFunctions functions, @MachineSizedUInt long initialCapacity);
+    protected native @Pointer long init(NSHashTableOptions options, @MachineSizedUInt long initialCapacity);
     @Method(selector = "member:")
-    public native NSObject member$(NSObject object);
+    protected native NSObject member$(NSObject object);
     @Method(selector = "objectEnumerator")
-    public native NSEnumerator<?> objectEnumerator();
+    protected native NSEnumerator<T> objectEnumerator();
     @Method(selector = "addObject:")
-    public native void addObject$(NSObject object);
+    protected native void addObject$(NSObject object);
     @Method(selector = "removeObject:")
-    public native void removeObject$(NSObject object);
+    protected native void removeObject$(NSObject object);
     @Method(selector = "removeAllObjects")
-    public native void removeAllObjects();
+    protected native void removeAllObjects();
     @Method(selector = "containsObject:")
-    public native boolean containsObject$(NSObject anObject);
+    protected native boolean containsObject$(NSObject anObject);
     @Method(selector = "intersectsHashTable:")
-    public native boolean intersectsHashTable$(NSHashTable other);
+    public native boolean intersects(NSHashTable<T> other);
     @Method(selector = "isEqualToHashTable:")
-    public native boolean isEqualToHashTable$(NSHashTable other);
+    public native boolean isEqualTo(NSHashTable<T> other);
     @Method(selector = "isSubsetOfHashTable:")
-    public native boolean isSubsetOfHashTable$(NSHashTable other);
+    public native boolean isSubsetOf(NSHashTable<T> other);
     @Method(selector = "intersectHashTable:")
-    public native void intersectHashTable$(NSHashTable other);
+    public native void intersect(NSHashTable<T> other);
     @Method(selector = "unionHashTable:")
-    public native void unionHashTable$(NSHashTable other);
+    public native void union(NSHashTable<T> other);
     @Method(selector = "minusHashTable:")
-    public native void minusHashTable$(NSHashTable other);
-    @Method(selector = "hashTableWithOptions:")
-    public static native NSHashTable hashTableWithOptions$(NSPointerFunctionsOptions options);
+    public native void minus(NSHashTable<T> other);
     /**
      * @since Available in iOS 6.0 and later.
      */
     @Method(selector = "weakObjectsHashTable")
-    public static native NSHashTable weakObjectsHashTable();
+    protected static native NSHashTable<?> createWithWeakObjects();
     @Method(selector = "encodeWithCoder:")
     public native void encode(NSCoder aCoder);
     /*</methods>*/

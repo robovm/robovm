@@ -135,7 +135,7 @@ import org.robovm.apple.corelocation.*;
             }
         }
     }
-    public interface Listener {}
+    protected interface Listener {}
     public interface OnTouchDownListener extends Listener {
         void onTouchDown(UIControl control, UIEvent event);
     }
@@ -278,18 +278,18 @@ import org.robovm.apple.corelocation.*;
     @Method(selector = "cancelTrackingWithEvent:")
     public native void cancelTracking(UIEvent event);
     @Method(selector = "addTarget:action:forControlEvents:")
-    public native void addTarget(NSObject target, Selector action, UIControlEvents controlEvents);
+    protected native void addTarget(NSObject target, Selector action, UIControlEvents controlEvents);
     @Method(selector = "removeTarget:action:forControlEvents:")
-    public native void removeTarget(NSObject target, Selector action, UIControlEvents controlEvents);
+    protected native void removeTarget(NSObject target, Selector action, UIControlEvents controlEvents);
     @Method(selector = "allTargets")
-    public native NSSet<?> getAllTargets();
+    protected native NSSet<?> getAllTargets();
     @Method(selector = "allControlEvents")
-    public native UIControlEvents getAllControlEvents();
+    protected native UIControlEvents getAllControlEvents();
     @Method(selector = "actionsForTarget:forControlEvent:")
-    public native @org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String> getActions(NSObject target, UIControlEvents controlEvent);
+    protected native @org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String> getActions(NSObject target, UIControlEvents controlEvent);
     @Method(selector = "sendAction:to:forEvent:")
-    public native void sendAction(Selector action, NSObject target, UIEvent event);
+    protected native void sendAction(Selector action, NSObject target, UIEvent event);
     @Method(selector = "sendActionsForControlEvents:")
-    public native void sendControlEventsActions(UIControlEvents controlEvents);
+    protected native void sendControlEventsActions(UIControlEvents controlEvents);
     /*</methods>*/
 }

@@ -172,62 +172,68 @@ import org.robovm.apple.corelocation.*;
         }
         return null;
     }
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @SuppressWarnings("unchecked")
+    public UIApplicationLaunchOptionsUserActivityInfo getUserActivityInfo() {
+        if (data.containsKey(UserActivityDictionaryKey())) {
+            NSDictionary<NSString, NSObject> val = (NSDictionary<NSString, NSObject>) data.get(UserActivityDictionaryKey());
+            return new UIApplicationLaunchOptionsUserActivityInfo(val);
+        }
+        return null;
+    }
     /*<methods>*/
     /**
      * @since Available in iOS 3.0 and later.
      */
     @GlobalValue(symbol="UIApplicationLaunchOptionsURLKey", optional=true)
-    public static native NSString URLKey();
+    protected static native NSString URLKey();
     /**
      * @since Available in iOS 3.0 and later.
      */
     @GlobalValue(symbol="UIApplicationLaunchOptionsSourceApplicationKey", optional=true)
-    public static native NSString SourceApplicationKey();
+    protected static native NSString SourceApplicationKey();
     /**
      * @since Available in iOS 3.0 and later.
      */
     @GlobalValue(symbol="UIApplicationLaunchOptionsRemoteNotificationKey", optional=true)
-    public static native NSString RemoteNotificationKey();
+    protected static native NSString RemoteNotificationKey();
     /**
      * @since Available in iOS 4.0 and later.
      */
     @GlobalValue(symbol="UIApplicationLaunchOptionsLocalNotificationKey", optional=true)
-    public static native NSString LocalNotificationKey();
+    protected static native NSString LocalNotificationKey();
     /**
      * @since Available in iOS 3.2 and later.
      */
     @GlobalValue(symbol="UIApplicationLaunchOptionsAnnotationKey", optional=true)
-    public static native NSString AnnotationKey();
+    protected static native NSString AnnotationKey();
     /**
      * @since Available in iOS 4.0 and later.
      */
     @GlobalValue(symbol="UIApplicationLaunchOptionsLocationKey", optional=true)
-    public static native NSString LocationKey();
+    protected static native NSString LocationKey();
     /**
      * @since Available in iOS 5.0 and later.
      */
     @GlobalValue(symbol="UIApplicationLaunchOptionsNewsstandDownloadsKey", optional=true)
-    public static native NSString NewsstandDownloadsKey();
+    protected static native NSString NewsstandDownloadsKey();
     /**
      * @since Available in iOS 7.0 and later.
      */
     @GlobalValue(symbol="UIApplicationLaunchOptionsBluetoothCentralsKey", optional=true)
-    public static native NSString BluetoothCentralsKey();
+    protected static native NSString BluetoothCentralsKey();
     /**
      * @since Available in iOS 7.0 and later.
      */
     @GlobalValue(symbol="UIApplicationLaunchOptionsBluetoothPeripheralsKey", optional=true)
-    public static native NSString BluetoothPeripheralsKey();
+    protected static native NSString BluetoothPeripheralsKey();
     /**
      * @since Available in iOS 8.0 and later.
      */
     @GlobalValue(symbol="UIApplicationLaunchOptionsUserActivityDictionaryKey", optional=true)
-    public static native NSString UserActivityDictionaryKey();
-    /**
-     * @since Available in iOS 8.0 and later.
-     */
-    @GlobalValue(symbol="UIApplicationLaunchOptionsUserActivityTypeKey", optional=true)
-    public static native NSString UserActivityTypeKey();
+    protected static native NSString UserActivityDictionaryKey();
     /*</methods>*/
     
     @Override

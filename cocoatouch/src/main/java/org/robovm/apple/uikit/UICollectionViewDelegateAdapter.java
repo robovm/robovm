@@ -71,12 +71,12 @@ import org.robovm.apple.corelocation.*;
      * @since Available in iOS 8.0 and later.
      */
     @NotImplemented("collectionView:willDisplayCell:forItemAtIndexPath:")
-    public void collectionView$willDisplayCell$forItemAtIndexPath$(UICollectionView collectionView, UICollectionViewCell cell, NSIndexPath indexPath) { throw new UnsupportedOperationException(); }
+    public void willDisplayCell(UICollectionView collectionView, UICollectionViewCell cell, NSIndexPath indexPath) { throw new UnsupportedOperationException(); }
     /**
      * @since Available in iOS 8.0 and later.
      */
     @NotImplemented("collectionView:willDisplaySupplementaryView:forElementKind:atIndexPath:")
-    public void collectionView$willDisplaySupplementaryView$forElementKind$atIndexPath$(UICollectionView collectionView, UICollectionReusableView view, String elementKind, NSIndexPath indexPath) { throw new UnsupportedOperationException(); }
+    public void willDisplaySupplementaryView(UICollectionView collectionView, UICollectionReusableView view, String elementKind, NSIndexPath indexPath) { throw new UnsupportedOperationException(); }
     @NotImplemented("collectionView:didEndDisplayingCell:forItemAtIndexPath:")
     public void didEndDisplayingCell(UICollectionView collectionView, UICollectionViewCell cell, NSIndexPath indexPath) { throw new UnsupportedOperationException(); }
     @NotImplemented("collectionView:didEndDisplayingSupplementaryView:forElementOfKind:atIndexPath:")

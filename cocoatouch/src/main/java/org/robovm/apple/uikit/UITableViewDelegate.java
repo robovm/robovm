@@ -79,37 +79,37 @@ import org.robovm.apple.corelocation.*;
     @Method(selector = "tableView:didEndDisplayingFooterView:forSection:")
     void didEndDisplayingFooterView(UITableView tableView, UIView view, @MachineSizedSInt long section);
     @Method(selector = "tableView:heightForRowAtIndexPath:")
-    @MachineSizedFloat double getRowHeight(UITableView tableView, NSIndexPath indexPath);
+    @MachineSizedFloat double getHeightForRow(UITableView tableView, NSIndexPath indexPath);
     @Method(selector = "tableView:heightForHeaderInSection:")
-    @MachineSizedFloat double getSectionHeaderHeight(UITableView tableView, @MachineSizedSInt long section);
+    @MachineSizedFloat double getHeightForHeader(UITableView tableView, @MachineSizedSInt long section);
     @Method(selector = "tableView:heightForFooterInSection:")
-    @MachineSizedFloat double getSectionFooterHeight(UITableView tableView, @MachineSizedSInt long section);
+    @MachineSizedFloat double getHeightForFooter(UITableView tableView, @MachineSizedSInt long section);
     /**
      * @since Available in iOS 7.0 and later.
      */
     @Method(selector = "tableView:estimatedHeightForRowAtIndexPath:")
-    @MachineSizedFloat double getEstimatedRowHeight(UITableView tableView, NSIndexPath indexPath);
+    @MachineSizedFloat double getEstimatedHeightForRow(UITableView tableView, NSIndexPath indexPath);
     /**
      * @since Available in iOS 7.0 and later.
      */
     @Method(selector = "tableView:estimatedHeightForHeaderInSection:")
-    @MachineSizedFloat double getEstimatedSectionHeaderHeight(UITableView tableView, @MachineSizedSInt long section);
+    @MachineSizedFloat double getEstimatedHeightForHeader(UITableView tableView, @MachineSizedSInt long section);
     /**
      * @since Available in iOS 7.0 and later.
      */
     @Method(selector = "tableView:estimatedHeightForFooterInSection:")
-    @MachineSizedFloat double getEstimatedSectionFooterHeight(UITableView tableView, @MachineSizedSInt long section);
+    @MachineSizedFloat double getEstimatedHeightForFooter(UITableView tableView, @MachineSizedSInt long section);
     @Method(selector = "tableView:viewForHeaderInSection:")
-    UIView getSectionHeaderView(UITableView tableView, @MachineSizedSInt long section);
+    UIView getViewForHeader(UITableView tableView, @MachineSizedSInt long section);
     @Method(selector = "tableView:viewForFooterInSection:")
-    UIView getSectionFooterView(UITableView tableView, @MachineSizedSInt long section);
+    UIView getViewForFooter(UITableView tableView, @MachineSizedSInt long section);
     /**
      * @since Available in iOS 2.0 and later.
      * @deprecated Deprecated in iOS 3.0.
      */
     @Deprecated
     @Method(selector = "tableView:accessoryTypeForRowWithIndexPath:")
-    UITableViewCellAccessoryType getRowAccessoryType(UITableView tableView, NSIndexPath indexPath);
+    UITableViewCellAccessoryType getAccessoryTypeForRow(UITableView tableView, NSIndexPath indexPath);
     @Method(selector = "tableView:accessoryButtonTappedForRowWithIndexPath:")
     void accessoryButtonTapped(UITableView tableView, NSIndexPath indexPath);
     /**
@@ -142,17 +142,17 @@ import org.robovm.apple.corelocation.*;
     @Method(selector = "tableView:didDeselectRowAtIndexPath:")
     void didDeselectRow(UITableView tableView, NSIndexPath indexPath);
     @Method(selector = "tableView:editingStyleForRowAtIndexPath:")
-    UITableViewCellEditingStyle getRowEditingStyle(UITableView tableView, NSIndexPath indexPath);
+    UITableViewCellEditingStyle getEditingStyleForRow(UITableView tableView, NSIndexPath indexPath);
     /**
      * @since Available in iOS 3.0 and later.
      */
     @Method(selector = "tableView:titleForDeleteConfirmationButtonForRowAtIndexPath:")
-    String getDeleteConfirmationButtonTitle(UITableView tableView, NSIndexPath indexPath);
+    String getTitleForDeleteConfirmationButton(UITableView tableView, NSIndexPath indexPath);
     /**
      * @since Available in iOS 8.0 and later.
      */
     @Method(selector = "tableView:editActionsForRowAtIndexPath:")
-    NSArray<?> tableView$editActionsForRowAtIndexPath$(UITableView tableView, NSIndexPath indexPath);
+    NSArray<UITableViewRowAction> getEditActionsForRow(UITableView tableView, NSIndexPath indexPath);
     @Method(selector = "tableView:shouldIndentWhileEditingRowAtIndexPath:")
     boolean shouldIndentWhileEditingRow(UITableView tableView, NSIndexPath indexPath);
     @Method(selector = "tableView:willBeginEditingRowAtIndexPath:")
@@ -162,7 +162,7 @@ import org.robovm.apple.corelocation.*;
     @Method(selector = "tableView:targetIndexPathForMoveFromRowAtIndexPath:toProposedIndexPath:")
     NSIndexPath getTargetForMove(UITableView tableView, NSIndexPath sourceIndexPath, NSIndexPath proposedDestinationIndexPath);
     @Method(selector = "tableView:indentationLevelForRowAtIndexPath:")
-    @MachineSizedSInt long getRowIndentationLevel(UITableView tableView, NSIndexPath indexPath);
+    @MachineSizedSInt long getIndentationLevelForRow(UITableView tableView, NSIndexPath indexPath);
     /**
      * @since Available in iOS 5.0 and later.
      */
@@ -177,7 +177,7 @@ import org.robovm.apple.corelocation.*;
      * @since Available in iOS 5.0 and later.
      */
     @Method(selector = "tableView:performAction:forRowAtIndexPath:withSender:")
-    void performAction(UITableView tableView, Selector action, NSIndexPath indexPath, NSObject sender);
+    void performActionForRow(UITableView tableView, Selector action, NSIndexPath indexPath, NSObject sender);
     /*</methods>*/
     /*<adapter>*/
     /*</adapter>*/

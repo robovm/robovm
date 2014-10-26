@@ -192,9 +192,9 @@ import org.robovm.apple.dispatch.*;
      * @since Available in iOS 4.0 and later.
      */
     @Property(selector = "firstObject")
-    public native T getFirst();
+    public native T first();
     @Property(selector = "lastObject")
-    public native T getLast();
+    public native T last();
     @Property(selector = "sortedArrayHint")
     public native NSData getSortedArrayHint();
     /*</properties>*/

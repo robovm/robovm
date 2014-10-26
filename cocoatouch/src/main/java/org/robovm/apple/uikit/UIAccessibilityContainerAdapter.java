@@ -53,12 +53,12 @@ import org.robovm.apple.corelocation.*;
      * @since Available in iOS 8.0 and later.
      */
     @NotImplemented("accessibilityElements")
-    public NSArray<?> getAccessibilityElements() { throw new UnsupportedOperationException(); }
+    public NSArray<UIAccessibilityElement> getAccessibilityElements() { throw new UnsupportedOperationException(); }
     /**
      * @since Available in iOS 8.0 and later.
      */
     @NotImplemented("setAccessibilityElements:")
-    public void setAccessibilityElements(NSArray<?> v) { throw new UnsupportedOperationException(); }
+    public void setAccessibilityElements(NSArray<UIAccessibilityElement> v) { throw new UnsupportedOperationException(); }
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/

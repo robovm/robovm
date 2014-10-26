@@ -274,7 +274,7 @@ import org.robovm.apple.corelocation.*;
     @Method(selector = "sizeThatFits:")
     public native @ByVal CGSize getSizeThatFits(@ByVal CGSize size);
     @Method(selector = "sizeToFit")
-    public native void resizeToFit();
+    public native void sizeToFit();
     @Method(selector = "removeFromSuperview")
     public native void removeFromSuperview();
     @Method(selector = "insertSubview:atIndex:")
@@ -340,7 +340,7 @@ import org.robovm.apple.corelocation.*;
     @Method(selector = "setAnimationDidStopSelector:")
     public static native void setAnimationDidStopSelector(Selector selector);
     @Method(selector = "setAnimationDuration:")
-    public static native void setDurationForAnimation(double duration);
+    public static native void setAnimationDurationInSeconds(double duration);
     @Method(selector = "setAnimationDelay:")
     public static native void setAnimationDelay(double delay);
     @Method(selector = "setAnimationStartDate:")

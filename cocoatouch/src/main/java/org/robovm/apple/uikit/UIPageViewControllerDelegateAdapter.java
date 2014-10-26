@@ -66,7 +66,7 @@ import org.robovm.apple.corelocation.*;
      * @since Available in iOS 7.0 and later.
      */
     @NotImplemented("pageViewControllerSupportedInterfaceOrientations:")
-    public @MachineSizedUInt long getSupportedInterfaceOrientations(UIPageViewController pageViewController) { throw new UnsupportedOperationException(); }
+    public UIInterfaceOrientationMask getSupportedInterfaceOrientations(UIPageViewController pageViewController) { throw new UnsupportedOperationException(); }
     /**
      * @since Available in iOS 7.0 and later.
      */

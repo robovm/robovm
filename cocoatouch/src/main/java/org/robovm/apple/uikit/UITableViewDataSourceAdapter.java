@@ -56,13 +56,13 @@ import org.robovm.apple.corelocation.*;
     @NotImplemented("tableView:numberOfRowsInSection:")
     public @MachineSizedSInt long getNumberOfRowsInSection(UITableView tableView, @MachineSizedSInt long section) { throw new UnsupportedOperationException(); }
     @NotImplemented("tableView:cellForRowAtIndexPath:")
-    public UITableViewCell getRowCell(UITableView tableView, NSIndexPath indexPath) { throw new UnsupportedOperationException(); }
+    public UITableViewCell getCellForRow(UITableView tableView, NSIndexPath indexPath) { throw new UnsupportedOperationException(); }
     @NotImplemented("numberOfSectionsInTableView:")
     public @MachineSizedSInt long getNumberOfSections(UITableView tableView) { throw new UnsupportedOperationException(); }
     @NotImplemented("tableView:titleForHeaderInSection:")
-    public String getSectionHeaderTitle(UITableView tableView, @MachineSizedSInt long section) { throw new UnsupportedOperationException(); }
+    public String getTitleForHeader(UITableView tableView, @MachineSizedSInt long section) { throw new UnsupportedOperationException(); }
     @NotImplemented("tableView:titleForFooterInSection:")
-    public String getSectionFooterTitle(UITableView tableView, @MachineSizedSInt long section) { throw new UnsupportedOperationException(); }
+    public String getTitleForFooter(UITableView tableView, @MachineSizedSInt long section) { throw new UnsupportedOperationException(); }
     @NotImplemented("tableView:canEditRowAtIndexPath:")
     public boolean canEditRow(UITableView tableView, NSIndexPath indexPath) { throw new UnsupportedOperationException(); }
     @NotImplemented("tableView:canMoveRowAtIndexPath:")
@@ -72,7 +72,7 @@ import org.robovm.apple.corelocation.*;
     @NotImplemented("tableView:sectionForSectionIndexTitle:atIndex:")
     public @MachineSizedSInt long getSectionForSectionIndexTitle(UITableView tableView, String title, @MachineSizedSInt long index) { throw new UnsupportedOperationException(); }
     @NotImplemented("tableView:commitEditingStyle:forRowAtIndexPath:")
-    public void commitRowEditingStyle(UITableView tableView, UITableViewCellEditingStyle editingStyle, NSIndexPath indexPath) { throw new UnsupportedOperationException(); }
+    public void commitEditingStyleForRow(UITableView tableView, UITableViewCellEditingStyle editingStyle, NSIndexPath indexPath) { throw new UnsupportedOperationException(); }
     @NotImplemented("tableView:moveRowAtIndexPath:toIndexPath:")
     public void moveRow(UITableView tableView, NSIndexPath sourceIndexPath, NSIndexPath destinationIndexPath) { throw new UnsupportedOperationException(); }
     /*</methods>*/

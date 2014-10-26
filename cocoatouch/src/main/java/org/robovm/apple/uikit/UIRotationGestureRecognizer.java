@@ -53,8 +53,8 @@ import org.robovm.apple.corelocation.*;
     protected UIRotationGestureRecognizer(SkipInit skipInit) { super(skipInit); }
     /*</constructors>*/
     
-    public UIRotationGestureRecognizer(NSObject target, Selector action) {
-        super(target, action);
+    public UIRotationGestureRecognizer(GestureListener listener) {
+        super(listener);
     }
     
     /*<properties>*/

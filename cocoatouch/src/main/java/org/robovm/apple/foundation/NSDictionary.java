@@ -91,6 +91,54 @@ import org.robovm.apple.dispatch.*;
         }
     }
     
+    public static class AsStringNumberMapMarshaler {
+        @SuppressWarnings("unchecked")
+        @MarshalsPointer
+        public static Map<String, Number> toObject(Class<? extends NSObject> cls, long handle, long flags) {
+            NSDictionary<NSString, NSNumber> o = (NSDictionary<NSString, NSNumber>) NSObject.Marshaler.toObject(cls, handle, flags);
+            if (o == null) {
+                return null;
+            }
+            Map<String, Number> map = new HashMap<>();
+            for (Map.Entry<NSString, NSNumber> e : o.entrySet()) {
+                map.put(e.getKey().toString(), e.getValue().doubleValue());
+            }
+            
+            return map;
+        }
+        @MarshalsPointer
+        public static long toNative(Map<String, Number> l, long flags) {
+            if (l == null) {
+                return 0L;
+            }
+            NSDictionary<NSString, NSNumber> o = new NSMutableDictionary<>();
+            for (Map.Entry<String, Number> e : l.entrySet()) {
+                Number value = e.getValue();
+                NSNumber number = null;
+                
+                if (value instanceof Byte) {
+                   number = NSNumber.valueOf((byte) value);
+                } else if (value instanceof Short) {
+                    number = NSNumber.valueOf((short) value);
+                } else if (value instanceof Integer) {
+                    number = NSNumber.valueOf((int) value);
+                } else if (value instanceof Long) {
+                    number = NSNumber.valueOf((long) value);
+                } else if (value instanceof Float) {
+                    number = NSNumber.valueOf((float) value);
+                } else if (value instanceof Double) {
+                    number = NSNumber.valueOf((double) value);
+                } else {
+                    throw new UnsupportedOperationException("Only values of type Number (byte, short, int, long, float, double) are allowed!");
+                }
+                
+                o.put(new NSString(e.getKey()), number);
+            }
+            
+            return NSObject.Marshaler.toNative(o, flags);
+        }
+    }
+    
     static class KeySet<K extends NSObject> extends AbstractSet<K> {
         private final NSDictionary<K, ? extends NSObject> map;
         

@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.robovm.apple.foundation;
+package org.robovm.apple.uikit;
 
 /*<imports>*/
 import java.io.*;
@@ -26,35 +26,35 @@ import org.robovm.rt.*;
 import org.robovm.rt.bro.*;
 import org.robovm.rt.bro.annotation.*;
 import org.robovm.rt.bro.ptr.*;
-import org.robovm.apple.corefoundation.*;
-import org.robovm.apple.uikit.*;
+import org.robovm.apple.foundation.*;
 import org.robovm.apple.coreanimation.*;
 import org.robovm.apple.coregraphics.*;
-import org.robovm.apple.coremedia.*;
-import org.robovm.apple.security.*;
-import org.robovm.apple.dispatch.*;
+import org.robovm.apple.coredata.*;
+import org.robovm.apple.coreimage.*;
+import org.robovm.apple.coretext.*;
+import org.robovm.apple.corelocation.*;
 /*</imports>*/
 
 /*<javadoc>*/
 /*</javadoc>*/
-@Marshaler(NSItemProviderOptions.Marshaler.class)
-/*<annotations>*/@Library("Foundation")/*</annotations>*/
-/*<visibility>*/public/*</visibility>*/ class /*<name>*/NSItemProviderOptions/*</name>*/ 
+@Marshaler(UIApplicationLaunchOptionsUserActivityInfo.Marshaler.class)
+/*<annotations>*/@Library("UIKit")/*</annotations>*/
+/*<visibility>*/public/*</visibility>*/ class /*<name>*/UIApplicationLaunchOptionsUserActivityInfo/*</name>*/ 
     extends /*<extends>*/Object/*</extends>*/ 
     /*<implements>*//*</implements>*/ {
 
     public static class Marshaler {
         @SuppressWarnings("unchecked")
         @MarshalsPointer
-        public static NSItemProviderOptions toObject(Class<NSItemProviderOptions> cls, long handle, long flags) {
+        public static UIApplicationLaunchOptionsUserActivityInfo toObject(Class<UIApplicationLaunchOptionsUserActivityInfo> cls, long handle, long flags) {
             NSDictionary<NSString, NSObject> o = (NSDictionary<NSString, NSObject>) NSObject.Marshaler.toObject(NSDictionary.class, handle, flags);
             if (o == null) {
                 return null;
             }
-            return new NSItemProviderOptions(o);
+            return new UIApplicationLaunchOptionsUserActivityInfo(o);
         }
         @MarshalsPointer
-        public static long toNative(NSItemProviderOptions o, long flags) {
+        public static long toNative(UIApplicationLaunchOptionsUserActivityInfo o, long flags) {
             if (o == null) {
                 return 0L;
             }
@@ -66,10 +66,10 @@ import org.robovm.apple.dispatch.*;
     /*</ptr>*/
     private NSDictionary<NSString, NSObject> data;
     
-    protected NSItemProviderOptions(NSDictionary<NSString, NSObject> data) {
+    protected UIApplicationLaunchOptionsUserActivityInfo(NSDictionary<NSString, NSObject> data) {
         this.data = data;
     }
-    /*<bind>*/static { Bro.bind(NSItemProviderOptions.class); }/*</bind>*/
+    /*<bind>*/static { Bro.bind(UIApplicationLaunchOptionsUserActivityInfo.class); }/*</bind>*/
     /*<constants>*//*</constants>*/
     /*<constructors>*//*</constructors>*/
     /*<properties>*//*</properties>*/
@@ -78,45 +78,25 @@ import org.robovm.apple.dispatch.*;
         return data;
     }
     
-    public NSObject get(String key) {
-        if (contains(key)) {
-            return data.get(new NSString(key));
-        }
-        return null;
-    }
-    public NSItemProviderOptions put(String key, NSObject value) {
-        data.put(new NSString(key), value);
-        return this;
-    }
-    public boolean contains(String key) {
-        return data.containsKey(new NSString(key));
-    }
-    
     
     /**
      * @since Available in iOS 8.0 and later.
      */
-    public CGSize getPreferredImageSize() {
-        if (data.containsKey(PreferredImageSizeKey())) {
-            NSValue val = (NSValue)data.get(PreferredImageSizeKey());
-            return val.sizeValue();
+    public String getType() {
+        if (data.containsKey(TypeKey())) {
+            NSString val = (NSString)data.get(TypeKey());
+            return val.toString();
         }
         return null;
-    }
-    /**
-     * @since Available in iOS 8.0 and later.
-     */
-    public NSItemProviderOptions setPreferredImageSize(CGSize size) {
-        data.put(PreferredImageSizeKey(), NSValue.valueOf(size));
-        return this;
     }
     /*<methods>*/
     /**
      * @since Available in iOS 8.0 and later.
      */
-    @GlobalValue(symbol="NSItemProviderPreferredImageSizeKey", optional=true)
-    protected static native NSString PreferredImageSizeKey();
+    @GlobalValue(symbol="UIApplicationLaunchOptionsUserActivityTypeKey", optional=true)
+    protected static native NSString TypeKey();
     /*</methods>*/
+    
     @Override
     public String toString() {
         if (data != null) return data.toString();

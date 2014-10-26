@@ -101,18 +101,18 @@ import org.robovm.apple.corelocation.*;
     /*<members>*//*</members>*/
     /*<methods>*/
     @Method(selector = "constraintsWithVisualFormat:options:metrics:views:")
-    public static native NSArray<NSLayoutConstraint> create(String format, NSLayoutFormatOptions opts, NSDictionary<NSString, NSNumber> metrics, NSDictionary<NSString, UIView> views);
+    public static native NSArray<NSLayoutConstraint> create(String format, NSLayoutFormatOptions opts, @org.robovm.rt.bro.annotation.Marshaler(NSDictionary.AsStringNumberMapMarshaler.class) Map<String, Number> metrics, @org.robovm.rt.bro.annotation.Marshaler(NSDictionary.AsStringMapMarshaler.class) Map<String, NSObjectProtocol> views);
     @Method(selector = "constraintWithItem:attribute:relatedBy:toItem:attribute:multiplier:constant:")
     public static native NSLayoutConstraint create(NSObject view1, NSLayoutAttribute attr1, NSLayoutRelation relation, NSObject view2, NSLayoutAttribute attr2, @MachineSizedFloat double multiplier, @MachineSizedFloat double c);
     /**
      * @since Available in iOS 8.0 and later.
      */
     @Method(selector = "activateConstraints:")
-    public static native void activateConstraints$(NSArray<?> constraints);
+    public static native void activateConstraints(NSArray<NSLayoutConstraint> constraints);
     /**
      * @since Available in iOS 8.0 and later.
      */
     @Method(selector = "deactivateConstraints:")
-    public static native void deactivateConstraints$(NSArray<?> constraints);
+    public static native void deactivateConstraints(NSArray<NSLayoutConstraint> constraints);
     /*</methods>*/
 }

@@ -64,7 +64,7 @@ import org.robovm.apple.corelocation.*;
      * @since Available in iOS 7.0 and later.
      */
     @Method(selector = "pageViewControllerSupportedInterfaceOrientations:")
-    @MachineSizedUInt long getSupportedInterfaceOrientations(UIPageViewController pageViewController);
+    UIInterfaceOrientationMask getSupportedInterfaceOrientations(UIPageViewController pageViewController);
     /**
      * @since Available in iOS 7.0 and later.
      */

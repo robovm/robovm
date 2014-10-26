@@ -52,7 +52,7 @@ import org.robovm.apple.corelocation.*;
     /*</properties>*/
     /*<methods>*/
     @Method(selector = "updateSearchResultsForSearchController:")
-    void updateSearchResultsForSearchController$(UISearchController searchController);
+    void updateSearchResults(UISearchController searchController);
     /*</methods>*/
     /*<adapter>*/
     /*</adapter>*/

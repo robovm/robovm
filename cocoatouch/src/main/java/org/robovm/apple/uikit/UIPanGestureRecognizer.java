@@ -53,8 +53,8 @@ import org.robovm.apple.corelocation.*;
     protected UIPanGestureRecognizer(SkipInit skipInit) { super(skipInit); }
     /*</constructors>*/
     
-    public UIPanGestureRecognizer(NSObject target, Selector action) {
-        super(target, action);
+    public UIPanGestureRecognizer(GestureListener listener) {
+        super(listener);
     }
     
     /*<properties>*/

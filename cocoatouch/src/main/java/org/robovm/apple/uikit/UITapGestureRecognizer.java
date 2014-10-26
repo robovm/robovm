@@ -53,8 +53,8 @@ import org.robovm.apple.corelocation.*;
     protected UITapGestureRecognizer(SkipInit skipInit) { super(skipInit); }
     /*</constructors>*/
     
-    public UITapGestureRecognizer(NSObject target, Selector action) {
-        super(target, action);
+    public UITapGestureRecognizer(GestureListener listener) {
+        super(listener);
     }
     
     /*<properties>*/

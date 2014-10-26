@@ -137,11 +137,11 @@ import org.robovm.apple.corelocation.*;
     @Method(selector = "fileNameExtensionForType:saveOperation:")
     public native String getFileNameExtension(String typeName, UIDocumentSaveOperation saveOperation);
     @Method(selector = "writeContents:andAttributes:safelyToURL:forSaveOperation:error:")
-    public native boolean writeContents(NSObject contents, NSDictionary<NSString, ?> additionalFileAttributes, NSURL url, UIDocumentSaveOperation saveOperation, NSError.NSErrorPtr outError);
+    public native boolean writeContents(NSObject contents, NSFileAttributes additionalFileAttributes, NSURL url, UIDocumentSaveOperation saveOperation, NSError.NSErrorPtr outError);
     @Method(selector = "writeContents:toURL:forSaveOperation:originalContentsURL:error:")
     public native boolean writeContents(NSObject contents, NSURL url, UIDocumentSaveOperation saveOperation, NSURL originalContentsURL, NSError.NSErrorPtr outError);
     @Method(selector = "fileAttributesToWriteToURL:forSaveOperation:error:")
-    public native NSDictionary<NSString, ?> getFileAttributesToWrite(NSURL url, UIDocumentSaveOperation saveOperation, NSError.NSErrorPtr outError);
+    public native NSFileAttributes getFileAttributesToWrite(NSURL url, UIDocumentSaveOperation saveOperation, NSError.NSErrorPtr outError);
     @Method(selector = "readFromURL:error:")
     public native boolean read(NSURL url, NSError.NSErrorPtr outError);
     @Method(selector = "performAsynchronousFileAccessUsingBlock:")
@@ -158,12 +158,12 @@ import org.robovm.apple.corelocation.*;
      * @since Available in iOS 8.0 and later.
      */
     @Method(selector = "updateUserActivityState:")
-    public native void updateUserActivityState$(NSUserActivity userActivity);
+    public native void updateUserActivityState(NSUserActivity userActivity);
     /**
      * @since Available in iOS 8.0 and later.
      */
     @Method(selector = "restoreUserActivityState:")
-    public native void restoreUserActivityState$(NSUserActivity userActivity);
+    public native void restoreUserActivityState(NSUserActivity userActivity);
     @Method(selector = "relinquishPresentedItemToReader:")
     public native void relinquishPresentedItemToReader(@Block("(@Block)") VoidBlock1<Runnable> reader);
     @Method(selector = "relinquishPresentedItemToWriter:")

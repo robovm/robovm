@@ -180,7 +180,31 @@ public enum /*<name>*/NSCocoaError/*</name>*/ implements ValuedEnum {
     /**
      * @since Available in iOS 7.0 and later.
      */
-    UbiquitousFileErrorMaximum(4607L);
+    UbiquitousFileErrorMaximum(4607L),
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    UserActivityHandoffFailedError(4608L),
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    UserActivityConnectionUnavailableError(4609L),
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    UserActivityRemoteApplicationTimedOutError(4610L),
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    UserActivityHandoffUserInfoTooLargeError(4611L),
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    UserActivityErrorMinimum(4608L),
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    UserActivityErrorMaximum(4863L);
     /*</values>*/
 
     private final long n;

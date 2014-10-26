@@ -75,6 +75,6 @@ import org.robovm.apple.corelocation.*;
      * @since Available in iOS 8.0 and later.
      */
     @Method(selector = "preferredLayoutAttributesFittingAttributes:")
-    public native UICollectionViewLayoutAttributes preferredLayoutAttributesFittingAttributes$(UICollectionViewLayoutAttributes layoutAttributes);
+    public native UICollectionViewLayoutAttributes getPreferredLayoutAttributesFittingAttributes(UICollectionViewLayoutAttributes layoutAttributes);
     /*</methods>*/
 }

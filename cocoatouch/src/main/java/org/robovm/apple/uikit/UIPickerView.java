@@ -92,13 +92,13 @@ import org.robovm.apple.corelocation.*;
     @Method(selector = "tableView:numberOfRowsInSection:")
     public native @MachineSizedSInt long getNumberOfRowsInSection(UITableView tableView, @MachineSizedSInt long section);
     @Method(selector = "tableView:cellForRowAtIndexPath:")
-    public native UITableViewCell getRowCell(UITableView tableView, NSIndexPath indexPath);
+    public native UITableViewCell getCellForRow(UITableView tableView, NSIndexPath indexPath);
     @Method(selector = "numberOfSectionsInTableView:")
     public native @MachineSizedSInt long getNumberOfSections(UITableView tableView);
     @Method(selector = "tableView:titleForHeaderInSection:")
-    public native String getSectionHeaderTitle(UITableView tableView, @MachineSizedSInt long section);
+    public native String getTitleForHeader(UITableView tableView, @MachineSizedSInt long section);
     @Method(selector = "tableView:titleForFooterInSection:")
-    public native String getSectionFooterTitle(UITableView tableView, @MachineSizedSInt long section);
+    public native String getTitleForFooter(UITableView tableView, @MachineSizedSInt long section);
     @Method(selector = "tableView:canEditRowAtIndexPath:")
     public native boolean canEditRow(UITableView tableView, NSIndexPath indexPath);
     @Method(selector = "tableView:canMoveRowAtIndexPath:")
@@ -108,7 +108,7 @@ import org.robovm.apple.corelocation.*;
     @Method(selector = "tableView:sectionForSectionIndexTitle:atIndex:")
     public native @MachineSizedSInt long getSectionForSectionIndexTitle(UITableView tableView, String title, @MachineSizedSInt long index);
     @Method(selector = "tableView:commitEditingStyle:forRowAtIndexPath:")
-    public native void commitRowEditingStyle(UITableView tableView, UITableViewCellEditingStyle editingStyle, NSIndexPath indexPath);
+    public native void commitEditingStyleForRow(UITableView tableView, UITableViewCellEditingStyle editingStyle, NSIndexPath indexPath);
     @Method(selector = "tableView:moveRowAtIndexPath:toIndexPath:")
     public native void moveRow(UITableView tableView, NSIndexPath sourceIndexPath, NSIndexPath destinationIndexPath);
     /*</methods>*/

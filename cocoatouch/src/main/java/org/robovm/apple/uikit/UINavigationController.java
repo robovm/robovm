@@ -183,6 +183,6 @@ import org.robovm.apple.corelocation.*;
      * @since Available in iOS 8.0 and later.
      */
     @Method(selector = "showViewController:sender:")
-    public native void showViewController$sender$(UIViewController vc, NSObject sender);
+    public native void showViewController(UIViewController vc, NSObject sender);
     /*</methods>*/
 }

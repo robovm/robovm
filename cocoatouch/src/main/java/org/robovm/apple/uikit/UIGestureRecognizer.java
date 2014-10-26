@@ -48,10 +48,69 @@ import org.robovm.apple.corelocation.*;
     /*<ptr>*/public static class UIGestureRecognizerPtr extends Ptr<UIGestureRecognizer, UIGestureRecognizerPtr> {}/*</ptr>*/
     /*<bind>*/static { ObjCRuntime.bind(UIGestureRecognizer.class); }/*</bind>*/
     /*<constants>*//*</constants>*/
+    
+    public interface GestureListener {
+        void handleGesture(UIGestureRecognizer gestureRecognizer);
+    }
+    
+    private static final Selector handleGesture = Selector.register("handleGesture:");
+    private static class ListenerWrapper extends NSObject {
+        private final GestureListener listener;
+        private ListenerWrapper(GestureListener listener) {
+            this.listener = listener;
+        }
+        @Method(selector = "handleGesture:")
+        private void handleGesture(UIGestureRecognizer gestureRecognizer) {
+            listener.handleGesture(gestureRecognizer);
+        }
+    }
+    
+    
+    @SuppressWarnings("unchecked")
+    private List<ListenerWrapper> getListeners(boolean create) {
+        synchronized (UIGestureRecognizer.class) {
+            List<ListenerWrapper> listeners = 
+                    (List<ListenerWrapper>) getAssociatedObject(UIGestureRecognizer.class.getName() + ".listeners");
+            if (listeners == null && create) {
+                listeners = new LinkedList<ListenerWrapper>();
+                setAssociatedObject(UIGestureRecognizer.class.getName() + ".listeners", listeners);
+            }
+            return listeners;
+        }
+    }
+    public void addListener(GestureListener listener) {
+        ListenerWrapper wrapper = new ListenerWrapper(listener);
+        List<ListenerWrapper> listeners = getListeners(true);
+        synchronized (listeners) {
+            listeners.add(wrapper);
+        }
+        addTarget(wrapper, handleGesture);
+    }
+    
+    public void removeListener(GestureListener listener) {
+        List<ListenerWrapper> listeners = getListeners(false);
+        if (listeners == null) {
+            return;
+        }
+        synchronized (listeners) {
+            for (Iterator<ListenerWrapper> it = listeners.iterator(); it.hasNext();) {
+                ListenerWrapper wrapper = it.next();
+                if (wrapper.listener == listener) {
+                    removeTarget(wrapper, handleGesture);
+                    it.remove();
+                    break;
+                }
+            }
+        }        
+    }
+    
+    public UIGestureRecognizer(GestureListener listener) { 
+        if (listener != null) addListener(listener);
+    }
     /*<constructors>*/
     public UIGestureRecognizer() {}
     protected UIGestureRecognizer(SkipInit skipInit) { super(skipInit); }
-    public UIGestureRecognizer(NSObject target, Selector action) { super((SkipInit) null); initObject(initWithTarget$action$(target, action)); }
+    protected UIGestureRecognizer(NSObject target, Selector action) { super((SkipInit) null); initObject(init(target, action)); }
     /*</constructors>*/
     /*<properties>*/
     @Property(selector = "state")
@@ -82,11 +141,11 @@ import org.robovm.apple.corelocation.*;
     /*<members>*//*</members>*/
     /*<methods>*/
     @Method(selector = "initWithTarget:action:")
-    protected native @Pointer long initWithTarget$action$(NSObject target, Selector action);
+    protected native @Pointer long init(NSObject target, Selector action);
     @Method(selector = "addTarget:action:")
-    public native void addTarget(NSObject target, Selector action);
+    protected native void addTarget(NSObject target, Selector action);
     @Method(selector = "removeTarget:action:")
-    public native void removeTarget(NSObject target, Selector action);
+    protected native void removeTarget(NSObject target, Selector action);
     @Method(selector = "requireGestureRecognizerToFail:")
     public native void requireGestureRecognizerToFail(UIGestureRecognizer otherGestureRecognizer);
     @Method(selector = "locationInView:")

@@ -69,6 +69,9 @@ import org.robovm.apple.dispatch.*;
     public void put(String defaultName, NSObject value) {
         setObject$forKey$(value, defaultName);
     }
+    public void put(String defaultName, String value) {
+        setObject$forKey$(new NSString(value), defaultName);
+    }
     public void put(String defaultName, @MachineSizedSInt long value) {
         setInteger$forKey$(value, defaultName);
     }

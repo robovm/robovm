@@ -19,13 +19,13 @@ rsync -a --exclude '*-dbg.a' --include '*.a' --include '*/' --exclude '**' "$BAS
 s3cmd sync --add-header=x-amz-storage-class:REDUCED_REDUNDANCY -r -P -rr --delete-removed --no-preserve \
     "$BASE/target/upload/" "s3://$BUCKET/$BUILD/"
 
-# Copy the binaries to binaries/ while we're at it. Prevents the need for running fetch-binaries.sh.
+# Copy the binaries to binaries/.
 mkdir -p "$BASE/binaries"
 rsync -a --exclude '*-dbg.a' --include '*.a' --include '*/' --exclude '**' "$BASE/target/binaries/" "$BASE/binaries/"
 
 rm -f "$BASE/binaries.idx"
-find "$BASE/target/upload" -type f | while read F; do
+find "$BASE/binaries" -type f | while read F; do
   MD5=$($MD5SUM $F | awk '{print $1}')
-  F=${F#$BASE/target/upload/vm/}
+  F=${F#$BASE/binaries/}
   echo $F $ENDPOINT/$BUILD/vm/$F $MD5 >> "$BASE/binaries.idx"
 done

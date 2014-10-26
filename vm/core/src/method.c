@@ -480,10 +480,6 @@ static void setArgs(Env* env, Object* obj, Method* method, CallInfo* callInfo, j
     }
 }
 
-static inline jboolean isFpType(char type) {
-    return type == 'F' || type == 'D';
-}
-
 #define /* CallInfo* */ INIT_CALL_INFO(/* Env* */ _env, /* Object* */ _obj, /* Method* */ _method, /* jboolean */ _virtual, /* jvalue* */ _args) ({ \
     CallInfo* _callInfo = NULL; \
     if (_virtual && !(_method->access & ACC_PRIVATE)) { \

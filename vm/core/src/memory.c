@@ -103,7 +103,7 @@ static Mutex gcRootsLock;
 static uint32_t objectArrayGCKind;
 
 // The GC descriptor used for object instances which have no references to other objects.
-#define REF_FREE_GC_DESCRIPTOR ((0 << GC_DS_TAGS) | GC_DS_LENGTH)
+#define REF_FREE_GC_DESCRIPTOR ((void*) ((0 << GC_DS_TAGS) | GC_DS_LENGTH))
 // The GC descriptor used for objects which have to be marked using the markObject() mark procedure.
 static void* markObjectGcDescriptor = NULL;
 // A fake Class used as clazz pointer before java_lang_Class has been loaded.
@@ -472,7 +472,7 @@ jboolean initGC(Options* options) {
 
     objectArrayGCKind = GC_new_kind(GC_new_free_list(), GC_DS_LENGTH, 1, 1);
     referentEntryGCKind = gcNewDirectBitmapKind(REFERENT_ENTRY_GC_BITMAP);
-    markObjectGcDescriptor = (void*) GC_MAKE_PROC(GC_new_proc(markObject), 0);
+    markObjectGcDescriptor = (void*) (size_t) GC_MAKE_PROC(GC_new_proc(markObject), 0);
 
     // Set up the fakeClass Class pointer so that it has a proper gcDescriptor
     memset(&fakeClass, 0, sizeof(Class));

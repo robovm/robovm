@@ -52,6 +52,12 @@ public enum OS {
             case linux:
                 return false;
             }
+        case x86_64:
+            // Both Darwin and Linux follow the "System V Application Binary 
+            // Interface AMD64 Architecture Processor Supplement" which states
+            // that structs of two eightbytes (i.e. 16 bytes) or less are passed 
+            // in registers.
+            return size <= 16;
         }
         throw new IllegalArgumentException("Unknown arch: " + arch);
     }

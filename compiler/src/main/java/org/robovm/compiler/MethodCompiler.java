@@ -732,7 +732,7 @@ public class MethodCompiler extends AbstractMethodCompiler {
             i++;
         }
         Value result = null;
-        FunctionRef functionRef = Intrinsics.getIntrinsic(sootMethod, stmt, expr);
+        FunctionRef functionRef = config.isDebug() ? null : Intrinsics.getIntrinsic(sootMethod, stmt, expr);
         if (functionRef == null) {
             if (canCallDirectly(expr)) {
                 SootMethod method = this.sootMethod.getDeclaringClass().getMethod(methodRef.name(), 
@@ -871,7 +871,7 @@ public class MethodCompiler extends AbstractMethodCompiler {
             result = widenToI32Value(stmt, result, isUnsigned(ref.getType()));
         } else if (rightOp instanceof StaticFieldRef) {
             StaticFieldRef ref = (StaticFieldRef) rightOp;
-            FunctionRef fn = Intrinsics.getIntrinsic(sootMethod, stmt);
+            FunctionRef fn = config.isDebug() ? null : Intrinsics.getIntrinsic(sootMethod, stmt);
             if (fn == null) {
                 if (canAccessDirectly(ref)) {
                     fn = new FunctionRef(Symbols.getterSymbol(ref.getFieldRef()), 

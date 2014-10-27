@@ -31,7 +31,28 @@ import org.robovm.apple.corefoundation.*;
 import org.robovm.apple.addressbookui.ABAddressFormating;
 
 @Library("AddressBook")
+@Marshaler(ABPersonAddress.Marshaler.class)
 public class ABPersonAddress {
+    
+    public static class Marshaler {
+        @SuppressWarnings("unchecked")
+        @MarshalsPointer
+        public static ABPersonAddress toObject(Class<ABPersonAddress> cls, long handle, long flags) {
+            CFDictionary o = (CFDictionary) CFType.Marshaler.toObject(CFDictionary.class, handle, flags);
+            if (o == null) {
+                return null;
+            }
+            return new ABPersonAddress(o, ABPropertyLabel.HomeLabel());
+        }
+        @MarshalsPointer
+        public static long toNative(ABPersonAddress o, long flags) {
+            if (o == null) {
+                return 0L;
+            }
+            return CFType.Marshaler.toNative(o.data, flags);
+        }
+    }
+    
     static { Bro.bind(ABPersonAddress.class); }
     
     private CFDictionary data;

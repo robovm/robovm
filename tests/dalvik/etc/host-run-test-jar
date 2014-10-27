@@ -77,7 +77,7 @@ while true; do
     fi
 done
 
-if [ "x$ROBOVM_DEV_ROOT" == 'x' ]; then
+if [ "x$ROBOVM_DEV_ROOT" = 'x' ]; then
     echo "ROBOVM_DEV_ROOT not set"
     exit 1
 fi

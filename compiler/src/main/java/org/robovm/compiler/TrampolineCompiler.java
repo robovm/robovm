@@ -37,6 +37,7 @@ import org.robovm.compiler.llvm.Br;
 import org.robovm.compiler.llvm.FloatingPointConstant;
 import org.robovm.compiler.llvm.FloatingPointType;
 import org.robovm.compiler.llvm.Function;
+import org.robovm.compiler.llvm.FunctionAttribute;
 import org.robovm.compiler.llvm.FunctionDeclaration;
 import org.robovm.compiler.llvm.FunctionRef;
 import org.robovm.compiler.llvm.FunctionType;
@@ -102,6 +103,10 @@ public class TrampolineCompiler {
     
     public Set<String> getDependencies() {
         return dependencies;
+    }
+
+    private FunctionAttribute shouldInline() {
+        return config.isDebug() ? noinline : alwaysinline;
     }
 
     public void compile(ModuleBuilder mb, Trampoline t) {
@@ -217,7 +222,7 @@ public class TrampolineCompiler {
 //                    mb.addFunctionDeclaration(new FunctionDeclaration(fnShort.ref()));
                     targetFn = fnShort.ref();
                 }
-                Function fn = new FunctionBuilder(nc).linkage(_private).attribs(alwaysinline, optsize).build();
+                Function fn = new FunctionBuilder(nc).linkage(_private).attribs(shouldInline(), optsize).build();
                 Value result = call(fn, targetFn, fn.getParameterRefs());
                 fn.add(new Ret(result));
                 mb.addFunction(fn);
@@ -225,7 +230,7 @@ public class TrampolineCompiler {
                 Global g = new Global(Symbols.nativeMethodPtrSymbol(nc), 
                         new NullConstant(I8_PTR));
                 mb.addGlobal(g);
-                Function fn = new FunctionBuilder(nc).linkage(_private).attribs(alwaysinline, optsize).build();
+                Function fn = new FunctionBuilder(nc).linkage(_private).attribs(shouldInline(), optsize).build();
                 FunctionRef ldcFn = FunctionBuilder.ldcInternal(nc.getTarget()).ref();
                 Value theClass = call(fn, ldcFn, fn.getParameterRef(0));
                 Value implI8Ptr = call(fn, BC_RESOLVE_NATIVE, fn.getParameterRef(0), 
@@ -319,7 +324,7 @@ public class TrampolineCompiler {
         if (!mb.hasSymbol(fnName)) {
             mb.addFunctionDeclaration(new FunctionDeclaration(aliasee));
         }
-        Function fn = new FunctionBuilder(t).linkage(_private).attribs(alwaysinline, optsize).build();
+        Function fn = new FunctionBuilder(t).linkage(_private).attribs(shouldInline(), optsize).build();
         Value result = call(fn, aliasee, fn.getParameterRefs());
         fn.add(new Ret(result));
         mb.addFunction(fn);
@@ -334,7 +339,7 @@ public class TrampolineCompiler {
     }
 
     private void createInlinedAccessorForInstanceField(FieldAccessor t, SootField field) {
-        Function fn = new FunctionBuilder(t).linkage(_private).attribs(alwaysinline, optsize).build();
+        Function fn = new FunctionBuilder(t).linkage(_private).attribs(shouldInline(), optsize).build();
 
         List<SootField> classFields = Collections.emptyList();
         StructureType classType = new StructureType();

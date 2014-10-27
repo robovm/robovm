@@ -272,7 +272,7 @@ public final class NativeCrypto {
 
     public static native void EVP_DigestSignInit(long evp_md_ctx, long evp_md, long evp_pkey);
 
-    public static native void EVP_DigestSignUpdate(long evp_md_ctx, byte[] in);
+    public static native void EVP_DigestSignUpdate(long evp_md_ctx, byte[] in, int offset, int length);
 
     public static native byte[] EVP_DigestSignFinal(long evp_md_ctx);
 

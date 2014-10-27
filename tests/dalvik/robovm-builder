@@ -6,8 +6,8 @@ BASE=$(cd $(dirname $0)/../..; pwd -P)
 ARCH=auto
 OS=auto
 
-if [ -f "$BASE/tests/dalvik/robovm.env" ]; then
-  . $BASE/tests/dalvik/robovm.env
+if [ -f "$BASE/tests/dalvik/$SELF.env" ]; then
+  . $BASE/tests/dalvik/$SELF.env
 fi
 
 EXTRA_ARGS=

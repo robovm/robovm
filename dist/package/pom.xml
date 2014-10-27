@@ -74,6 +74,7 @@
             </goals>
             <configuration>
               <executable>${basedir}/../../vm/fetch-binaries.sh</executable>
+              <skip>${skipFetchBinaries}</skip>
             </configuration>
           </execution>
         </executions>

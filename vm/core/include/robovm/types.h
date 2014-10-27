@@ -407,6 +407,12 @@ typedef struct GatewayFrame {
     ProxyMethod* proxyMethod; // Whenever we call a dynamic proxy we push the ProxyMethod* here. This is used when generating stack traces.
 } GatewayFrame;
 
+/*
+ * Macros to push/pop GatewayFrames.
+ * IMPORTANT: rvmPushGatewayFrame() uses a local GatewayFrame which will be allocated on the stack.
+ *            The corresponding rvmPopGatewayFrame() call must be made in the same or a child scope 
+ *            of the scope of the push.
+ */
 #define rvmPushGatewayFrame0(env, f, address, pm)  \
     (f)->prev = env->gatewayFrames;                    \
     (f)->frameAddress = address;                       \

@@ -27,6 +27,7 @@ import org.robovm.rt.bro.*;
 import org.robovm.rt.bro.annotation.*;
 import org.robovm.rt.bro.ptr.*;
 import org.robovm.apple.foundation.*;
+import org.robovm.apple.addressbook.*;
 /*</imports>*/
 
 /*<javadoc>*/
@@ -73,6 +74,11 @@ import org.robovm.apple.foundation.*;
     public native double getSpeed();
     @Property(selector = "timestamp")
     public native NSDate getTimestamp();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @Property(selector = "floor")
+    public native CLFloor getFloor();
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/

@@ -51,6 +51,9 @@ import org.robovm.apple.dispatch.*;
     public MKMapView() {}
     protected MKMapView(SkipInit skipInit) { super(skipInit); }
     /*</constructors>*/
+    public MKMapView(CGRect frame) {
+    	super(frame);
+    }
     /*<properties>*/
     @Property(selector = "delegate")
     public native MKMapViewDelegate getDelegate();

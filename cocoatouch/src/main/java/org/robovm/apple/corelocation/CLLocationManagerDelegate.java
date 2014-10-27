@@ -27,6 +27,7 @@ import org.robovm.rt.bro.*;
 import org.robovm.rt.bro.annotation.*;
 import org.robovm.rt.bro.ptr.*;
 import org.robovm.apple.foundation.*;
+import org.robovm.apple.addressbook.*;
 /*</imports>*/
 
 /*<javadoc>*/
@@ -124,6 +125,8 @@ import org.robovm.apple.foundation.*;
      */
     @Method(selector = "locationManager:didFinishDeferredUpdatesWithError:")
     void didFinishDeferredUpdates(CLLocationManager manager, NSError error);
+    @Method(selector = "locationManager:didVisit:")
+    void didVisit(CLLocationManager manager, CLVisit visit);
     /*</methods>*/
     /*<adapter>*/
     /*</adapter>*/

@@ -27,6 +27,7 @@ import org.robovm.rt.bro.*;
 import org.robovm.rt.bro.annotation.*;
 import org.robovm.rt.bro.ptr.*;
 import org.robovm.apple.foundation.*;
+import org.robovm.apple.addressbook.*;
 /*</imports>*/
 
 /*<javadoc>*/
@@ -53,7 +54,7 @@ import org.robovm.apple.foundation.*;
     @Property(selector = "region")
     public native CLRegion getRegion();
     @Property(selector = "addressDictionary")
-    public native NSDictionary<NSString, NSString> getAddressDictionary();
+    public native ABPersonAddress getAddress();
     @Property(selector = "name")
     public native String getName();
     @Property(selector = "thoroughfare")
@@ -79,7 +80,7 @@ import org.robovm.apple.foundation.*;
     @Property(selector = "ocean")
     public native String getOcean();
     @Property(selector = "areasOfInterest")
-    public native NSArray<NSString> getAreasOfInterest();
+    public native @org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String> getAreasOfInterest();
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/

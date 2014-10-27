@@ -27,6 +27,7 @@ import org.robovm.rt.bro.*;
 import org.robovm.rt.bro.annotation.*;
 import org.robovm.rt.bro.ptr.*;
 import org.robovm.apple.foundation.*;
+import org.robovm.apple.addressbook.*;
 /*</imports>*/
 
 /*<javadoc>*/
@@ -113,7 +114,7 @@ import org.robovm.apple.foundation.*;
     /**
      * @since Available in iOS 4.0 and later.
      */
-    @Property(selector = "setHeadingOrientation:", strongRef = true)
+    @Property(selector = "setHeadingOrientation:")
     public native void setHeadingOrientation(CLDeviceOrientation v);
     /**
      * @since Available in iOS 4.0 and later.
@@ -148,6 +149,16 @@ import org.robovm.apple.foundation.*;
     @GlobalValue(symbol="kCLHeadingFilterNone", optional=true)
     public static native double HeadingFilterNone();
     
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @Method(selector = "requestWhenInUseAuthorization")
+    public native void requestWhenInUseAuthorization();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @Method(selector = "requestAlwaysAuthorization")
+    public native void requestAlwaysAuthorization();
     @Method(selector = "startUpdatingLocation")
     public native void startUpdatingLocation();
     @Method(selector = "stopUpdatingLocation")
@@ -261,5 +272,15 @@ import org.robovm.apple.foundation.*;
      */
     @Method(selector = "deferredLocationUpdatesAvailable")
     public static native boolean isDeferredLocationUpdatesAvailable();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @Method(selector = "startMonitoringVisits")
+    public native void startMonitoringVisits();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @Method(selector = "stopMonitoringVisits")
+    public native void stopMonitoringVisits();
     /*</methods>*/
 }

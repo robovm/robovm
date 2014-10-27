@@ -31,26 +31,34 @@ import org.robovm.apple.addressbook.*;
 /*</imports>*/
 
 /*<javadoc>*/
+/**
+ * @since Available in iOS 8.0 and later.
+ */
 /*</javadoc>*/
-/*<annotations>*/@Library("CoreLocation") @Marshaler(NSString.AsStringMarshaler.class)/*</annotations>*/
-/*<visibility>*/public/*</visibility>*/ class /*<name>*/CoreLocation/*</name>*/ 
-    extends /*<extends>*/Object/*</extends>*/ 
+/*<annotations>*/@Library("CoreLocation") @NativeClass/*</annotations>*/
+/*<visibility>*/public/*</visibility>*/ class /*<name>*/CLVisit/*</name>*/ 
+    extends /*<extends>*/NSObject/*</extends>*/ 
     /*<implements>*//*</implements>*/ {
 
-    /*<ptr>*/
-    /*</ptr>*/
-    /*<bind>*/static { Bro.bind(CoreLocation.class); }/*</bind>*/
+    /*<ptr>*/public static class CLVisitPtr extends Ptr<CLVisit, CLVisitPtr> {}/*</ptr>*/
+    /*<bind>*/static { ObjCRuntime.bind(CLVisit.class); }/*</bind>*/
     /*<constants>*//*</constants>*/
-    /*<constructors>*//*</constructors>*/
-    /*<properties>*//*</properties>*/
+    /*<constructors>*/
+    public CLVisit() {}
+    protected CLVisit(SkipInit skipInit) { super(skipInit); }
+    /*</constructors>*/
+    /*<properties>*/
+    @Property(selector = "arrivalDate")
+    public native NSDate getArrivalDate();
+    @Property(selector = "departureDate")
+    public native NSDate getDepartureDate();
+    @Property(selector = "coordinate")
+    public native @ByVal CLLocationCoordinate2D getCoordinate();
+    @Property(selector = "horizontalAccuracy")
+    public native double getHorizontalAccuracy();
+    /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
-    @GlobalValue(symbol="kCLErrorDomain", optional=true)
-    public static native NSString ErrorDomain();
-    /**
-     * @since Available in iOS 5.0 and later.
-     */
-    @GlobalValue(symbol="kCLErrorUserInfoAlternateRegionKey", optional=true)
-    public static native NSString ErrorUserInfoAlternateRegionKey();
+    
     /*</methods>*/
 }

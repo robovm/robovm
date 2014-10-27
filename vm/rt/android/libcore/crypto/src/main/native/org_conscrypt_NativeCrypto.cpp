@@ -3039,7 +3039,7 @@ extern "C" jlong Java_com_android_org_conscrypt_NativeCrypto_EVP_1get_1digestbyn
 /*
  * public static native int EVP_MD_size(int)
  */
-extern "C" jint Java_com_android_org_conscrypt_NativeCrypto_EVP_1MD_1size(JNIEnv* env, jclass, jint evpMdRef) {
+extern "C" jint Java_com_android_org_conscrypt_NativeCrypto_EVP_1MD_1size(JNIEnv* env, jclass, jlong evpMdRef) {
     EVP_MD* evp_md = reinterpret_cast<EVP_MD*>(evpMdRef);
     JNI_TRACE("NativeCrypto_EVP_MD_size(%p)", evp_md);
 
@@ -3131,7 +3131,7 @@ extern "C" void Java_com_android_org_conscrypt_NativeCrypto_EVP_1DigestSignInit(
     JNI_TRACE("EVP_DigestSignInit(%p, %p, %p) => success", mdCtx, md, pkey);
 }
 
-extern "C" void Java_com_android_org_conscrypt_NativeCrypto_EVP_1DigestSignUpdate(JNIEnv* env, jclass, jint evpMdCtxRef,
+extern "C" void Java_com_android_org_conscrypt_NativeCrypto_EVP_1DigestSignUpdate(JNIEnv* env, jclass, jlong evpMdCtxRef,
         jbyteArray inJavaBytes, jint inOffset, jint inLength)
 {
     EVP_MD_CTX* mdCtx = reinterpret_cast<EVP_MD_CTX*>(evpMdCtxRef);

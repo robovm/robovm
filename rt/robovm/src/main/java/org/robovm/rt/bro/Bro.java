@@ -21,6 +21,7 @@ import org.robovm.rt.VM;
 import org.robovm.rt.bro.annotation.Bridge;
 import org.robovm.rt.bro.annotation.GlobalValue;
 import org.robovm.rt.bro.annotation.Library;
+import org.robovm.rt.bro.ptr.VoidPtr;
 
 /**
  *
@@ -31,6 +32,8 @@ public class Bro {
     public static final boolean IS_LINUX;
     public static final boolean IS_X86;
     public static final boolean IS_ARM;
+    public static final boolean IS_32BIT;
+    public static final boolean IS_64BIT;
 
     static {
         String os = System.getProperty("os.name", "").toLowerCase();
@@ -39,6 +42,8 @@ public class Bro {
         IS_LINUX = !IS_DARWIN && os.contains("linux");
         IS_X86 = arch.contains("x86");
         IS_ARM = !IS_X86 && arch.contains("arm");
+        IS_64BIT = VoidPtr.sizeOf() == 8;
+        IS_32BIT = !IS_64BIT;
     }
     
     public static void bind() {

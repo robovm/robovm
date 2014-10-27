@@ -30,39 +30,37 @@ import org.robovm.apple.foundation.*;
 /*</imports>*/
 
 /*<javadoc>*/
-
+/**
+ * @since Available in iOS 8.0 and later.
+ */
 /*</javadoc>*/
 /*<annotations>*/@Library("GameController") @NativeClass/*</annotations>*/
-/*<visibility>*/public/*</visibility>*/ class /*<name>*/GCControllerButtonInput/*</name>*/ 
-    extends /*<extends>*/GCControllerElement/*</extends>*/ 
+/*<visibility>*/public/*</visibility>*/ class /*<name>*/GCMotion/*</name>*/ 
+    extends /*<extends>*/NSObject/*</extends>*/ 
     /*<implements>*//*</implements>*/ {
 
-    /*<ptr>*/public static class GCControllerButtonInputPtr extends Ptr<GCControllerButtonInput, GCControllerButtonInputPtr> {}/*</ptr>*/
-    /*<bind>*/static { ObjCRuntime.bind(GCControllerButtonInput.class); }/*</bind>*/
+    /*<ptr>*/public static class GCMotionPtr extends Ptr<GCMotion, GCMotionPtr> {}/*</ptr>*/
+    /*<bind>*/static { ObjCRuntime.bind(GCMotion.class); }/*</bind>*/
     /*<constants>*//*</constants>*/
     /*<constructors>*/
-    public GCControllerButtonInput() {}
-    protected GCControllerButtonInput(SkipInit skipInit) { super(skipInit); }
+    public GCMotion() {}
+    protected GCMotion(SkipInit skipInit) { super(skipInit); }
     /*</constructors>*/
     /*<properties>*/
+    @Property(selector = "controller")
+    public native GCController getController();
     @Property(selector = "valueChangedHandler")
-    public native @Block VoidBlock3<GCControllerButtonInput, Float, Boolean> getValueChangedHandler();
+    public native @Block VoidBlock2<GCGamepad, GCControllerElement> getValueChangedHandler();
     @Property(selector = "setValueChangedHandler:")
-    public native void setValueChangedHandler(@Block VoidBlock3<GCControllerButtonInput, Float, Boolean> v);
-    /**
-     * @since Available in iOS 8.0 and later.
-     */
-    @Property(selector = "pressedChangedHandler")
-    public native @Block VoidBlock3<GCControllerButtonInput, Float, Boolean> getPressedChangedHandler();
-    /**
-     * @since Available in iOS 8.0 and later.
-     */
-    @Property(selector = "setPressedChangedHandler:")
-    public native void setPressedChangedHandler(@Block VoidBlock3<GCControllerButtonInput, Float, Boolean> v);
-    @Property(selector = "value")
-    public native float getValue();
-    @Property(selector = "isPressed")
-    public native boolean isPressed();
+    public native void setValueChangedHandler(@Block VoidBlock2<GCGamepad, GCControllerElement> v);
+    @Property(selector = "gravity")
+    public native @ByVal GCAcceleration getGravity();
+    @Property(selector = "userAcceleration")
+    public native @ByVal GCAcceleration getUserAcceleration();
+    @Property(selector = "attitude")
+    public native @ByVal GCQuaternion getAttitude();
+    @Property(selector = "rotationRate")
+    public native @ByVal GCRotationRate getRotationRate();
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/

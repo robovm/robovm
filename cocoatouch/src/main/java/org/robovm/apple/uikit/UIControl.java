@@ -290,6 +290,6 @@ import org.robovm.apple.corelocation.*;
     @Method(selector = "sendAction:to:forEvent:")
     protected native void sendAction(Selector action, NSObject target, UIEvent event);
     @Method(selector = "sendActionsForControlEvents:")
-    protected native void sendControlEventsActions(UIControlEvents controlEvents);
+    public native void sendControlEventsActions(UIControlEvents controlEvents);
     /*</methods>*/
 }

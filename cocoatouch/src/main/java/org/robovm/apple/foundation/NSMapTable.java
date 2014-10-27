@@ -19,7 +19,6 @@ package org.robovm.apple.foundation;
 import java.io.*;
 import java.nio.*;
 import java.util.*;
-
 import org.robovm.objc.*;
 import org.robovm.objc.annotation.*;
 import org.robovm.objc.block.*;
@@ -34,9 +33,6 @@ import org.robovm.apple.coregraphics.*;
 import org.robovm.apple.coremedia.*;
 import org.robovm.apple.security.*;
 import org.robovm.apple.dispatch.*;
-import org.robovm.apple.foundation.NSDictionary.Entry;
-import org.robovm.apple.foundation.NSDictionary.EntrySet;
-import org.robovm.apple.foundation.NSDictionary.KeySet;
 /*</imports>*/
 import org.robovm.apple.foundation.NSDictionary.NSDictionaryPtr;
 import org.robovm.apple.foundation.NSObject.SkipInit;

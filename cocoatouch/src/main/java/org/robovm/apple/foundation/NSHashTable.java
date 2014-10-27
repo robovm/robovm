@@ -226,11 +226,6 @@ import org.robovm.apple.foundation.NSSet.SetAdapter;
     public native void union(NSHashTable<T> other);
     @Method(selector = "minusHashTable:")
     public native void minus(NSHashTable<T> other);
-    /**
-     * @since Available in iOS 6.0 and later.
-     */
-    @Method(selector = "weakObjectsHashTable")
-    protected static native NSHashTable<?> createWithWeakObjects();
     @Method(selector = "encodeWithCoder:")
     public native void encode(NSCoder aCoder);
     /*</methods>*/

@@ -550,15 +550,27 @@ static void waitMonitor(Env* env, Thread* self, Monitor* mon, jlong msec, jint n
      */
     rvmUnlockMutex(&mon->lock);
 
+    /*
+     * NOTE: According to POSIX pthread_cond_wait() and
+     * pthread_cond_timedwait() must never return EINTR. The OS X man page
+     * doesn't mention EINTR at all and some old Linux man pages specifically
+     * say that EINTR *can* be returned. So we do the safe thing and allow
+     * EINTR.
+     */
+
     if (!timed) {
-        ret = pthread_cond_wait(&self->waitCond, &self->waitMutex);
+        do {
+            ret = pthread_cond_wait(&self->waitCond, &self->waitMutex);
+        } while (!self->interrupted && self->waitMonitor != NULL && (ret == 0 || ret == EINTR));
         assert(ret == 0);
     } else {
+        do {
 #ifdef HAVE_TIMEDWAIT_MONOTONIC
-        ret = pthread_cond_timedwait_monotonic(&self->waitCond, &self->waitMutex, &ts);
+            ret = pthread_cond_timedwait_monotonic(&self->waitCond, &self->waitMutex, &ts);
 #else
-        ret = pthread_cond_timedwait(&self->waitCond, &self->waitMutex, &ts);
+            ret = pthread_cond_timedwait(&self->waitCond, &self->waitMutex, &ts);
 #endif
+        } while (!self->interrupted && self->waitMonitor != NULL && ret != ETIMEDOUT && (ret == 0 || ret == EINTR));
         assert(ret == 0 || ret == ETIMEDOUT);
     }
     if (self->interrupted) {
@@ -625,6 +637,7 @@ static void notifyMonitor(Env* env, Thread* self, Monitor* mon) {
         rvmLockMutex(&thread->waitMutex);
         /* Check to see if the thread is still waiting. */
         if (thread->waitMonitor != NULL) {
+            thread->waitMonitor = NULL; /* Makes the thread exit its wait loop */
             pthread_cond_signal(&thread->waitCond);
             rvmUnlockMutex(&thread->waitMutex);
             return;
@@ -656,6 +669,7 @@ static void notifyAllMonitor(Env* env, Thread* self, Monitor* mon) {
         rvmLockMutex(&thread->waitMutex);
         /* Check to see if the thread is still waiting. */
         if (thread->waitMonitor != NULL) {
+            thread->waitMonitor = NULL; /* Makes the thread exit its wait loop */
             pthread_cond_signal(&thread->waitCond);
         }
         rvmUnlockMutex(&thread->waitMutex);
@@ -1046,6 +1060,7 @@ void rvmThreadInterrupt(Env* env, Thread* thread) {
      * which implies that the monitor has already been fattened.
      */
     if (thread->waitMonitor != NULL) {
+        thread->waitMonitor = NULL; /* Makes the thread exit its wait loop */
         pthread_cond_signal(&thread->waitCond);
     }
 

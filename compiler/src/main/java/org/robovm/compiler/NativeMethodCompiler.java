@@ -89,10 +89,6 @@ public class NativeMethodCompiler extends AbstractMethodCompiler {
     }
     
     private boolean isLongNativeFunctionNameRequired(SootMethod method) {
-        if (method.getParameterCount() == 0) {
-            // If the method takes no parameters the long and short names are the same
-            return true;
-        }
         int nativeCount = 0;
         for (SootMethod m : this.sootClass.getMethods()) {
             if (m.isNative() && m.getName().equals(method.getName())) {

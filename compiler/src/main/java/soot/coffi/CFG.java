@@ -689,6 +689,81 @@ public class CFG {
 		ca.exception_table = newtable;
 	    }
 	}
+
+	// RoboVM note: Copy local variable tables in the same way as exception 
+	// tables are copied above.
+        {
+            Code_attribute ca = method.locate_code_attribute();
+            LocalVariableTable_attribute la = ca.findLocalVariableTable();
+            if (la != null) {
+    
+                LinkedList<local_variable_table_entry> newentries = new LinkedList<local_variable_table_entry>();
+    
+                int orig_start_of_subr = astore.next.originalIndex; // inclusive
+                int orig_end_of_subr = ret.originalIndex; // again, inclusive
+    
+                for (int i=0; i<la.local_variable_table_length; i++) 
+                {
+                    local_variable_table_entry lat_entry =
+                        la.local_variable_table[i];
+    
+                    int orig_start = lat_entry.start_pc; // inclusive
+                    int orig_end = lat_entry.start_pc + lat_entry.length; // exclusive
+                    if ( orig_start < orig_end_of_subr &&
+                         orig_end > orig_start_of_subr) {
+                        // At least a portion of the cloned subroutine is within the range of the local_variable_table_entry.
+                        local_variable_table_entry newone = 
+                            new local_variable_table_entry();
+                        newone.index = lat_entry.index;
+                        newone.name_index = lat_entry.name_index;
+                        newone.descriptor_index = lat_entry.descriptor_index;
+                        if (orig_start <= orig_start_of_subr) {
+                            newone.start_inst = headbefore.next;
+                        } else {
+                            Instruction ins = insnmap.get(lat_entry.start_inst);
+                            if(ins!=null)
+                                    newone.start_inst = insnmap.get(lat_entry.start_inst);
+                            else 
+                                    newone.start_inst = lat_entry.start_inst;
+                        }
+                        if (orig_end > orig_end_of_subr) {
+                            newone.end_inst = null; // Representing the insn after
+                                                    // the last instruction in the
+                                                    // subr; we need to fix it if
+                                                    // we inline another subr.
+                        } else {
+                            newone.end_inst = insnmap.get(lat_entry.end_inst);
+                        }
+    
+                        // We can leave newone.start_pc == 0 and newone.end_pc == 0.
+                        // since that cannot overlap the range of any other
+                        // subroutines that get inlined later.
+    
+                        newentries.add(newone);
+                    }
+                    // Finally, fix up the old entry if its protected area
+                    // ran to the end of the method we have just lengthened:
+                    // patch its end marker to be the first
+                    // instruction in the subroutine we've just inlined.
+                    if (lat_entry.end_inst == null) {
+                        lat_entry.end_inst = headbefore.next;
+                    }
+                }
+    
+                if (newentries.size() > 0)
+                {
+                    la.local_variable_table_length += newentries.size();
+                    local_variable_table_entry[] newtable = new local_variable_table_entry[la.local_variable_table_length];
+                    System.arraycopy(la.local_variable_table, 0, newtable, 0, la.local_variable_table.length);
+                    for (int i=0, j=la.local_variable_table.length; i<newentries.size(); i++, j++)
+                    {
+                        newtable[j] = newentries.get(i);
+                    }
+                    
+                    la.local_variable_table = newtable;
+                }
+            }
+        }
 	
 	return headbefore.next;
     }

@@ -416,6 +416,34 @@ public class Printer {
 
             }
         }
+        // RoboVM note: This block added in RoboVM
+        // Print out local variables
+        {
+            Iterator lvsIt = body.getLocalVariables().iterator();
+
+            if (lvsIt.hasNext()) {
+                out.println();
+                incJimpleLnNum();
+            }
+
+            while (lvsIt.hasNext()) {
+                LocalVariable lv = (LocalVariable) lvsIt.next();
+
+                out.println(
+                    "        localvar index=" + lv.getIndex()
+                        + " name=" + Scene.v().quotedNameOf(lv.getName())
+                        + " type="
+                        + Scene.v().quotedNameOf(lv.getDescriptor())
+                        + " start="
+                        + up.labels().get(lv.getStartUnit())
+                        + " end="
+                        + (lv.getEndUnit() != null ? up.labels().get(lv.getEndUnit()) : "<end_of_method>")
+                        + ";");
+
+                incJimpleLnNum();
+
+            }
+        }
 
     }
 

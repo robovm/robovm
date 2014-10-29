@@ -312,14 +312,6 @@ import org.robovm.apple.dispatch.*;
      */
     @GlobalValue(symbol="NSStringEncodingDetectionLikelyLanguageKey", optional=true)
     public static native String StringEncodingDetectionLikelyLanguageKey();
-    @GlobalValue(symbol="NSCocoaErrorDomain", optional=true)
-    public static native NSString CocoaErrorDomain();
-    @GlobalValue(symbol="NSPOSIXErrorDomain", optional=true)
-    public static native NSString POSIXErrorDomain();
-    @GlobalValue(symbol="NSOSStatusErrorDomain", optional=true)
-    public static native NSString OSStatusErrorDomain();
-    @GlobalValue(symbol="NSMachErrorDomain", optional=true)
-    public static native NSString MachErrorDomain();
     @GlobalValue(symbol="NSUnderlyingErrorKey", optional=true)
     public static native NSString UnderlyingErrorKey();
     @GlobalValue(symbol="NSLocalizedDescriptionKey", optional=true)
@@ -384,12 +376,12 @@ import org.robovm.apple.dispatch.*;
      * @since Available in iOS 2.0 and later.
      */
     @GlobalValue(symbol="NSStreamSocketSSLErrorDomain", optional=true)
-    public static native NSString StreamSocketSSLErrorDomain();
+    public static native String StreamSocketSSLErrorDomain();
     /**
      * @since Available in iOS 2.0 and later.
      */
     @GlobalValue(symbol="NSStreamSOCKSErrorDomain", optional=true)
-    public static native NSString StreamSOCKSErrorDomain();
+    public static native String StreamSOCKSErrorDomain();
     /**
      * @since Available in iOS 5.0 and later.
      */
@@ -401,7 +393,7 @@ import org.robovm.apple.dispatch.*;
     @GlobalValue(symbol="NSThumbnail1024x1024SizeKey", optional=true)
     public static native String Thumbnail1024x1024SizeKey();
     @GlobalValue(symbol="NSURLErrorDomain", optional=true)
-    public static native NSString URLErrorDomain();
+    public static native String URLErrorDomain();
     /**
      * @since Available in iOS 4.0 and later.
      */
@@ -433,7 +425,7 @@ import org.robovm.apple.dispatch.*;
      * @since Available in iOS 2.0 and later.
      */
     @GlobalValue(symbol="NSXMLParserErrorDomain", optional=true)
-    public static native NSString XMLParserErrorDomain();
+    public static native String XMLParserErrorDomain();
     /**
      * @since Available in iOS 8.0 and later.
      */
@@ -453,7 +445,7 @@ import org.robovm.apple.dispatch.*;
      * @since Available in iOS 8.0 and later.
      */
     @GlobalValue(symbol="NSItemProviderErrorDomain", optional=true)
-    public static native NSString ItemProviderErrorDomain();
+    public static native String ItemProviderErrorDomain();
     /**
      * @since Available in iOS 8.0 and later.
      */
@@ -472,7 +464,7 @@ import org.robovm.apple.dispatch.*;
     @GlobalValue(symbol="NSNetServicesErrorCode", optional=true)
     public static native NSString NetServicesErrorCode();
     @GlobalValue(symbol="NSNetServicesErrorDomain", optional=true)
-    public static native NSString NetServicesErrorDomain();
+    public static native String NetServicesErrorDomain();
     /**
      * @since Available in iOS 8.0 and later.
      */

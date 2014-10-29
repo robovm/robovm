@@ -34,7 +34,6 @@ import org.robovm.apple.coremedia.*;
 import org.robovm.apple.security.*;
 import org.robovm.apple.dispatch.*;
 /*</imports>*/
-import org.robovm.apple.foundation.NSError.NSErrorPtr;
 
 /*<javadoc>*/
 
@@ -275,7 +274,10 @@ import org.robovm.apple.foundation.NSError.NSErrorPtr;
     public static String readFile(String path, NSStringEncoding enc) {
         NSError.NSErrorPtr error = new NSError.NSErrorPtr();
         String str = readFile(path, enc, error); 
-        // TODO exception
+        NSError e = error.get();
+        NSCocoaError x = (NSCocoaError) e;
+        System.out.println(x.getCode());
+        System.out.println(x.getErrorCode());
         return str;
     }
     /*<methods>*/

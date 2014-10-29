@@ -370,7 +370,8 @@ public class Config {
     }
     
     public List<String> getPluginArguments() {
-        return pluginArguments;
+        return pluginArguments == null ? Collections.<String>emptyList()
+                : Collections.unmodifiableList(pluginArguments);
     }        
     
     public List<File> getBootclasspath() {

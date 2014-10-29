@@ -18,11 +18,9 @@ package org.robovm.compiler;
 
 import static org.robovm.compiler.Access.*;
 import static org.robovm.compiler.Functions.*;
-import static org.robovm.compiler.Mangler.*;
 import static org.robovm.compiler.Types.*;
 import static org.robovm.compiler.llvm.FunctionAttribute.*;
 import static org.robovm.compiler.llvm.Linkage.*;
-import static org.robovm.compiler.llvm.Type.*;
 
 import java.util.Collections;
 import java.util.HashSet;
@@ -31,29 +29,17 @@ import java.util.Set;
 
 import org.robovm.compiler.clazz.Clazz;
 import org.robovm.compiler.config.Config;
-import org.robovm.compiler.config.OS;
-import org.robovm.compiler.llvm.Bitcast;
-import org.robovm.compiler.llvm.Br;
-import org.robovm.compiler.llvm.FloatingPointConstant;
-import org.robovm.compiler.llvm.FloatingPointType;
 import org.robovm.compiler.llvm.Function;
 import org.robovm.compiler.llvm.FunctionAttribute;
 import org.robovm.compiler.llvm.FunctionDeclaration;
 import org.robovm.compiler.llvm.FunctionRef;
 import org.robovm.compiler.llvm.FunctionType;
 import org.robovm.compiler.llvm.Global;
-import org.robovm.compiler.llvm.Icmp;
-import org.robovm.compiler.llvm.Icmp.Condition;
-import org.robovm.compiler.llvm.IntegerConstant;
-import org.robovm.compiler.llvm.IntegerType;
-import org.robovm.compiler.llvm.Label;
 import org.robovm.compiler.llvm.NullConstant;
-import org.robovm.compiler.llvm.PointerType;
 import org.robovm.compiler.llvm.Ret;
 import org.robovm.compiler.llvm.StructureType;
 import org.robovm.compiler.llvm.Unreachable;
 import org.robovm.compiler.llvm.Value;
-import org.robovm.compiler.llvm.Variable;
 import org.robovm.compiler.trampoline.Anewarray;
 import org.robovm.compiler.trampoline.Checkcast;
 import org.robovm.compiler.trampoline.FieldAccessor;
@@ -65,7 +51,6 @@ import org.robovm.compiler.trampoline.Invokespecial;
 import org.robovm.compiler.trampoline.Invokevirtual;
 import org.robovm.compiler.trampoline.LdcClass;
 import org.robovm.compiler.trampoline.Multianewarray;
-import org.robovm.compiler.trampoline.NativeCall;
 import org.robovm.compiler.trampoline.New;
 import org.robovm.compiler.trampoline.PutField;
 import org.robovm.compiler.trampoline.Trampoline;
@@ -91,7 +76,6 @@ public class TrampolineCompiler {
     public static final String EXPECTED_STATIC_FIELD = "Expected static field %s.%s";
     public static final String NO_SUCH_FIELD_ERROR = "%s.%s";
     public static final String NO_SUCH_METHOD_ERROR = "%s.%s%s";
-    public static final String UNSATISFIED_LINK_ERROR = "%s.%s%s";
     
     private final Config config;
     private ModuleBuilder mb;
@@ -197,71 +181,6 @@ public class TrampolineCompiler {
                 mb.addFunction(fn);
             }
             alias(t, fnName);
-        } else if (t instanceof NativeCall) {
-            Clazz target = config.getClazzes().load(t.getTarget());
-            NativeCall nc = (NativeCall) t;
-            String shortName = mangleNativeMethod(target.getInternalName(), nc.getMethodName());
-            String longName = mangleNativeMethod(target.getInternalName(), nc.getMethodName(), nc.getMethodDesc());
-            if (target.isInBootClasspath() || !config.isUseDynamicJni() || config.getOs() == OS.ios) {
-                Function fnLong = new FunctionBuilder(longName, nc.getFunctionType()).linkage(weak).build();
-                // The NativeCall caller pushed a GatewayFrame and will only pop it 
-                // if the native method exists. So we need to pop it here.
-                popNativeFrame(fnLong);
-                call(fnLong, BC_THROW_UNSATISIFED_LINK_ERROR, fnLong.getParameterRef(0), 
-                        mb.getString(String.format(UNSATISFIED_LINK_ERROR, target.getClassName(),
-                                nc.getMethodName(), nc.getMethodDesc())));
-                fnLong.add(new Unreachable());
-                mb.addFunction(fnLong);
-//                mb.addFunctionDeclaration(new FunctionDeclaration(fnLong.ref()));
-                FunctionRef targetFn = fnLong.ref();
-                if (!isLongNativeFunctionNameRequired(nc)) {
-                    Function fnShort = new FunctionBuilder(shortName, nc.getFunctionType()).linkage(weak).build();
-                    Value resultInner = call(fnShort, fnLong.ref(), fnShort.getParameterRefs());
-                    fnShort.add(new Ret(resultInner));
-                    mb.addFunction(fnShort);
-//                    mb.addFunctionDeclaration(new FunctionDeclaration(fnShort.ref()));
-                    targetFn = fnShort.ref();
-                }
-                Function fn = new FunctionBuilder(nc).linkage(_private).attribs(shouldInline(), optsize).build();
-                Value result = call(fn, targetFn, fn.getParameterRefs());
-                fn.add(new Ret(result));
-                mb.addFunction(fn);
-            } else {
-                Global g = new Global(Symbols.nativeMethodPtrSymbol(nc), 
-                        new NullConstant(I8_PTR));
-                mb.addGlobal(g);
-                Function fn = new FunctionBuilder(nc).linkage(_private).attribs(shouldInline(), optsize).build();
-                FunctionRef ldcFn = FunctionBuilder.ldcInternal(nc.getTarget()).ref();
-                Value theClass = call(fn, ldcFn, fn.getParameterRef(0));
-                Value implI8Ptr = call(fn, BC_RESOLVE_NATIVE, fn.getParameterRef(0), 
-                      theClass,
-                      mb.getString(nc.getMethodName()), 
-                      mb.getString(nc.getMethodDesc()),
-                      mb.getString(mangleNativeMethod(nc.getTarget(), nc.getMethodName())),
-                      mb.getString(mangleNativeMethod(nc.getTarget(), nc.getMethodName(), nc.getMethodDesc())),
-                      g.ref());
-                Variable nullTest = fn.newVariable(I1);
-                fn.add(new Icmp(nullTest, Condition.ne, implI8Ptr, new NullConstant(I8_PTR)));
-                Label trueLabel = new Label();
-                Label falseLabel = new Label();
-                fn.add(new Br(nullTest.ref(), fn.newBasicBlockRef(trueLabel), fn.newBasicBlockRef(falseLabel)));
-                fn.newBasicBlock(falseLabel);
-                if (fn.getType().getReturnType() instanceof IntegerType) {
-                    fn.add(new Ret(new IntegerConstant(0, (IntegerType) fn.getType().getReturnType())));
-                } else if (fn.getType().getReturnType() instanceof FloatingPointType) {
-                    fn.add(new Ret(new FloatingPointConstant(0.0, (FloatingPointType) fn.getType().getReturnType())));
-                } else if (fn.getType().getReturnType() instanceof PointerType) {
-                    fn.add(new Ret(new NullConstant((PointerType) fn.getType().getReturnType())));
-                } else {
-                    fn.add(new Ret());
-                }
-                fn.newBasicBlock(trueLabel);
-                Variable impl = fn.newVariable(nc.getFunctionType());
-                fn.add(new Bitcast(impl, implI8Ptr, impl.getType()));
-                Value result = call(fn, impl.ref(), fn.getParameterRefs());
-                fn.add(new Ret(result));
-                mb.addFunction(fn);
-            }
         } else if (t instanceof FieldAccessor) {
             SootField field = resolveField(f, (FieldAccessor) t);
             if (field != null) {
@@ -372,21 +291,6 @@ public class TrampolineCompiler {
             fnName = Symbols.clinitWrapperSymbol(fnName);
         }
         alias(t, fnName);
-    }
-    
-    private boolean isLongNativeFunctionNameRequired(NativeCall nc) {
-        if (nc.getMethodDesc().startsWith("()")) {
-            // If the method takes no parameters the long and short names are the same
-            return true;
-        }
-        Clazz target = config.getClazzes().load(nc.getTarget());
-        int nativeCount = 0;
-        for (SootMethod m : target.getSootClass().getMethods()) {
-            if (m.isNative() && m.getName().equals(nc.getMethodName())) {
-                nativeCount++;
-            }
-        }
-        return nativeCount > 1;
     }
     
     private Value callLdcArray(Function function, String targetClass) {

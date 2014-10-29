@@ -20,7 +20,6 @@ import static org.robovm.compiler.Types.*;
 
 import java.util.List;
 
-import org.robovm.compiler.trampoline.NativeCall;
 import org.robovm.compiler.trampoline.Trampoline;
 
 import soot.SootClass;
@@ -77,8 +76,8 @@ public class Symbols {
         return methodSymbol(method, "globalvalueptr");
     }
 
-    public static String nativeMethodPtrSymbol(NativeCall nc) {
-        return methodSymbol(nc.getTarget(), nc.getMethodName(), nc.getMethodDesc(), "nativeptr");
+    public static String nativeMethodPtrSymbol(String targetInternalName, String methodName, String methodDesc) {
+        return methodSymbol(targetInternalName, methodName, methodDesc, "nativeptr");
     }
     
     private static String methodSymbol(SootMethod method, String type) {
@@ -276,6 +275,10 @@ public class Symbols {
         return INTERNAL_SYMBOL_PREFIX + descriptor + "[" + type + "]"; 
     }
     
+    public static String nativeCallMethodSymbol(String owner, String name, String desc) {
+        return methodSymbol(owner, name, desc, "NativeCall");
+    }
+
     public static String trampolineMethodSymbol(Trampoline t, String caller, String owner, String name, String desc) {
         return methodSymbol(owner, name, desc, t.getClass().getSimpleName() + "(" + caller + ")");
     }

@@ -13,8 +13,8 @@ typedefs:
     _NSZone: NSZone
     id: NSObject
     Class: ObjCClass
- #   Class: '@org.robovm.rt.bro.annotation.Marshaler(ObjCClass.Marshaler.class) Class<?>'
-  #  ObjCClass: '@org.robovm.rt.bro.annotation.Marshaler(ObjCClass.Marshaler.class) Class<?>'
+    #Class: '@org.robovm.rt.bro.annotation.Marshaler(ObjCClass.Marshaler.class) Class<?>'
+    #ObjCClass: '@org.robovm.rt.bro.annotation.Marshaler(ObjCClass.Marshaler.class) Class<?>'
     'Protocol *': ObjCProtocol
     'NSString *': String
     'NSString **': 'NSString.NSStringPtr'
@@ -74,7 +74,7 @@ enums:
     NSCalculationError: {}
     NSCalendarOptions: {}
     NSCalendarUnit: { prefix: NSCalendarUnit, ignore: '^.+CalendarUnit$' }
-    NSCocoaError: { first: NSFileNoSuchFileError }
+    NSCocoaErrorCode: { first: NSFileNoSuchFileError }
     NSComparisonPredicateModifier: { suffix: PredicateModifier }
     NSComparisonPredicateOptions: { suffix: PredicateOption }
     NSComparisonResult: {}
@@ -190,6 +190,15 @@ classes:
         extends: NSURLProperty
     NSURLUbiquitousItemProperty:
         extends: NSURLProperty
+        
+    NSCocoaError:
+        extends: NSError
+    NSPOSIXError:
+        extends: NSError
+    NSMachError:
+        extends: NSError
+    NSCarbonError:
+        extends: NSError
 
     NSArray: # DONE
         protocols: [NSPropertyList, List<T>]
@@ -822,8 +831,6 @@ classes:
         properties:
             'localizedRecoveryOptions':
                 type: '@org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String>'
-            'domain':
-                type: NSString
         methods:
             '+errorWithDomain:code:userInfo:':
                 exclude: true
@@ -4124,6 +4131,20 @@ values:
         name: "#{g[0]}Value"
         visibility: protected
 
+    # NSError
+    NSCocoaErrorDomain:
+        class: NSCocoaError
+        name: getClassDomain
+    NSPOSIXErrorDomain:
+        class: NSPOSIXError
+        name: getClassDomain
+    NSOSStatusErrorDomain:
+        class: NSCarbonError
+        name: getClassDomain
+    NSMachErrorDomain:
+        class: NSMachError
+        name: getClassDomain
+
 
     NS((LocalizedDescription|ErrorFailingURLString|FilePathError|StringEncodingError)Key):
         name: "#{g[0]}"
@@ -4135,9 +4156,6 @@ values:
         name: "#{g[0]}"
         type: NSString
     NS((URLErrorFailingURLStringError|URLErrorFailingURLPeerTrustError)Key):
-        name: "#{g[0]}"
-        type: NSString
-    NS(.*ErrorDomain):
         name: "#{g[0]}"
         type: NSString
     NS(NetServicesErrorCode):

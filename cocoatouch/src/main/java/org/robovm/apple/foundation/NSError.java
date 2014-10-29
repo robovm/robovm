@@ -39,10 +39,59 @@ import org.robovm.apple.dispatch.*;
 
 /*</javadoc>*/
 /*<annotations>*/@Library("Foundation") @NativeClass/*</annotations>*/
+@Marshaler(NSError.Marshaler.class)
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/NSError/*</name>*/ 
     extends /*<extends>*/NSObject/*</extends>*/ 
     /*<implements>*//*</implements>*/ {
 
+    public static class Marshaler {
+        @MarshalsPointer
+        public static NSError toObject(Class<? extends NSError> cls, long handle, long flags) {
+            if (handle == 0) {
+                return null;
+            }
+            String domain = domain(handle);
+            Class<? extends NSError> nsErrorClass = allNSErrorClasses.get(domain);
+            if (nsErrorClass != null) {
+                cls = nsErrorClass;
+            }
+            NSError o = (NSError) NativeObject.Marshaler.toObject(cls, handle, flags);
+            return o;
+        }
+        @MarshalsPointer
+        public static long toNative(NSError o, long flags) {
+            if (o == null) {
+                return 0L;
+            }
+            return o.getHandle();
+        }
+    }
+    
+    private static final Map<String, Class<? extends NSError>> allNSErrorClasses = new HashMap<>();
+    private static final int ABSTRACT = 0x00000400;
+    
+    static {
+        @SuppressWarnings("unchecked")
+        Class<? extends NSError>[] classes = (Class<? extends NSError>[]) 
+                VM.listClasses(NSError.class, ClassLoader.getSystemClassLoader());
+        Class<?>[] emptyArgs = new Class<?>[0];
+        final Class<?> nsErrorClass = NSError.class;
+        for (Class<? extends NSError> cls : classes) {
+            if (cls != nsErrorClass && (cls.getModifiers() & ABSTRACT) == 0) {
+                try {
+                    Bro.bind(cls); // Global values need to be bound.
+                    java.lang.reflect.Method m = cls.getMethod("getClassDomain", emptyArgs);
+                    String domain = (String) m.invoke(null);
+                    allNSErrorClasses.put(domain, cls);
+                } catch (Throwable e) {
+                    System.err.println("WARN: Failed to call getClassDomain() for " 
+                            + "the NSError subclass " + cls.getName());
+                }
+            }
+        }
+    }
+    
+    
     /*<ptr>*/public static class NSErrorPtr extends Ptr<NSError, NSErrorPtr> {}/*</ptr>*/
     /*<bind>*/static { ObjCRuntime.bind(NSError.class); }/*</bind>*/
     /*<constants>*//*</constants>*/
@@ -50,9 +99,17 @@ import org.robovm.apple.dispatch.*;
     protected NSError(SkipInit skipInit) { super(skipInit); }
     public NSError(String domain, @MachineSizedSInt long code, NSDictionary<NSString, ?> dict) { super((SkipInit) null); initObject(initWithDomain$code$userInfo$(domain, code, dict)); }
     /*</constructors>*/
+    
+    private static final Selector domain = Selector.register("domain");
+    protected static String domain(long handle) {
+        long h = ObjCRuntime.ptr_objc_msgSend(handle, domain.getHandle());
+        NSString s = ObjCObject.toObjCObject(NSString.class, h);
+        return s.toString();
+    }
+    
     /*<properties>*/
     @Property(selector = "domain")
-    public native NSString getDomain();
+    public native String getDomain();
     @Property(selector = "code")
     public native @MachineSizedSInt long getCode();
     @Property(selector = "userInfo")

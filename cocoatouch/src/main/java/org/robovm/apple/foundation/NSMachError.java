@@ -38,26 +38,25 @@ import org.robovm.apple.dispatch.*;
 /*<javadoc>*/
 /*</javadoc>*/
 /*<annotations>*/@Library("Foundation")/*</annotations>*/
-/*<visibility>*/public/*</visibility>*/ class /*<name>*/NSCocoaError/*</name>*/ 
+/*<visibility>*/public/*</visibility>*/ class /*<name>*/NSMachError/*</name>*/ 
     extends /*<extends>*/NSError/*</extends>*/ 
     /*<implements>*//*</implements>*/ {
 
-    protected NSCocoaError(SkipInit skipInit) {
+    protected NSMachError(SkipInit skipInit) {
         super(skipInit);
     }
-    
     /*<ptr>*/
     /*</ptr>*/
-    /*<bind>*/static { Bro.bind(NSCocoaError.class); }/*</bind>*/
+    /*<bind>*/static { Bro.bind(NSMachError.class); }/*</bind>*/
     /*<constants>*//*</constants>*/
     /*<constructors>*//*</constructors>*/
     /*<properties>*//*</properties>*/
     /*<members>*//*</members>*/
-    public NSCocoaErrorCode getErrorCode() {
-        return NSCocoaErrorCode.valueOf(getCode());
+    public NSMachErrorCode getErrorCode() {
+        return NSMachErrorCode.valueOf(getCode());
     }
     /*<methods>*/
-    @GlobalValue(symbol="NSCocoaErrorDomain", optional=true)
+    @GlobalValue(symbol="NSMachErrorDomain", optional=true)
     public static native String getClassDomain();
     /*</methods>*/
 }

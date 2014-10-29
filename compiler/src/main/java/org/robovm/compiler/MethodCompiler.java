@@ -419,7 +419,7 @@ public class MethodCompiler extends AbstractMethodCompiler {
             } else if (unit instanceof ExitMonitorStmt) {
                 exitMonitor((ExitMonitorStmt) unit);
             } else if (unit instanceof NopStmt) {
-                // Ignore
+                nop((NopStmt) unit);
             } else {
                 throw new IllegalArgumentException("Unknown Unit type: " + unit.getClass());
             }
@@ -1275,5 +1275,16 @@ public class MethodCompiler extends AbstractMethodCompiler {
         Value op = immediate(stmt, (Immediate) stmt.getOp());
         checkNull(stmt, op);
         call(stmt, MONITOREXIT, env, op);
+    }
+
+    private void nop(NopStmt stmt) {
+        /*
+         * We need to preserve NOPs as they may be needed by compiler plugins to
+         * work properly. There's no NOP bitcode instruction. Instead we use an
+         * ADD instruction which has no side-effects. LLVM should be able to
+         * optimize it out later on.
+         */
+        Variable v = function.newVariable(I32);
+        function.add(new Add(v, new IntegerConstant(0), new IntegerConstant(0))).attach(stmt);
     }
 }

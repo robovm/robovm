@@ -50,6 +50,19 @@ __call0:
     movsd fpArgs_offset+48(%rax), %xmm6        # %xmm6 = fpArgs[6]
     movsd fpArgs_offset+56(%rax), %xmm7        # %xmm7 = fpArgs[7]
 
+    # Make sure the stack is 16-byte aligned after we have pushed all stack args
+    xor   %r10, %r10            # %r10 = 0
+    movl  stackArgsSize_offset(%rax), %r10d    # %r10 = stackArgsSize
+    shl   $3, %r10              # %r10 <<= 3   // %r10 equals the number of bytes needed by the stack args
+    # Now %r10 is n in (-(n & 15) + 16) & 15)
+    and   $15, %r10             # n &= 15
+    neg   %r10                  # n = -n
+    add   $16, %r10             # n += 16
+    and   $15, %r10             # n &= 15
+    sub   %r10, %rsp            # %rsp -= %r10  // Adjust %rsp
+
+    # Now copy stack args    
+    xor   %r10, %r10            # %r10 = 0
     movl  stackArgsSize_offset(%rax), %r10d    # %r10 = stackArgsSize
 LsetStackArgsNext:
     test  %r10, %r10

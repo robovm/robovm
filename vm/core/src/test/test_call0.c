@@ -225,6 +225,99 @@ static void testCall0ManyArgsOfEach(CuTest* tc) {
 }
 
 
+#if defined(RVM_X86_64)
+/*
+ * On x86_64 Darwin and Linux the stack must be 16-byte aligned before a function call. 
+ * This means that (%rsp & 0xf) == 8 must be true when that function is entered as CALL 
+ * pushes the return address.
+ */
+asm("_stackPointer:    \n\
+        mov %rsp,%rax  \n\
+        ret            \n\
+");
+void* stackPointer(void);
+static void testCall0StackAlignment1(CuTest* tc) {
+    // The first 6 ptr/int values are passed in registers. We need to push
+    // at least 7 ptrs to start using the stack. 
+    CallInfo* ci = CALL0_ALLOCATE_CALL_INFO(NULL, stackPointer, 7, 0, 0, 0, 0);
+    CuAssertPtrNotNull(tc, ci);
+    call0AddPtr(ci, (void*) 1);
+    call0AddPtr(ci, (void*) 2);
+    call0AddPtr(ci, (void*) 3);
+    call0AddPtr(ci, (void*) 4);
+    call0AddPtr(ci, (void*) 5);
+    call0AddPtr(ci, (void*) 6);
+    call0AddPtr(ci, (void*) 7);
+
+    void* (*f)(CallInfo*) = (void* (*)(CallInfo*)) _call0;
+    void* result = f(ci);
+    CuAssertTrue(tc, (((ptrdiff_t) result) & 0xf) == 8);
+}
+static void testCall0StackAlignment2(CuTest* tc) {
+    // The first 6 ptr/int values are passed in registers. We need to push
+    // at least 7 ptrs to start using the stack. 
+    CallInfo* ci = CALL0_ALLOCATE_CALL_INFO(NULL, stackPointer, 8, 0, 0, 0, 0);
+    CuAssertPtrNotNull(tc, ci);
+    call0AddPtr(ci, (void*) 1);
+    call0AddPtr(ci, (void*) 2);
+    call0AddPtr(ci, (void*) 3);
+    call0AddPtr(ci, (void*) 4);
+    call0AddPtr(ci, (void*) 5);
+    call0AddPtr(ci, (void*) 6);
+    call0AddPtr(ci, (void*) 7);
+    call0AddPtr(ci, (void*) 8);
+
+    void* (*f)(CallInfo*) = (void* (*)(CallInfo*)) _call0;
+    void* result = f(ci);
+    CuAssertTrue(tc, (((ptrdiff_t) result) & 0xf) == 8);
+}
+#elif defined(RVM_X86)
+/*
+ * On x86 Darwin and on Linux when using GCC 4.5+ the stack must be 16-byte aligned before 
+ * a function call. This means that (%esp & 0xf) == 0xc must be true when that function is 
+ * entered as CALL pushes the return address.
+ */
+asm("_stackPointer:    \n\
+        mov %esp,%eax  \n\
+        ret            \n\
+");
+void* stackPointer(void);
+static void testCall0StackAlignment1(CuTest* tc) {
+    // x86 only uses the stack to pass args so we just need a single ptr.
+    CallInfo* ci = CALL0_ALLOCATE_CALL_INFO(NULL, stackPointer, 1, 0, 0, 0, 0);
+    CuAssertPtrNotNull(tc, ci);
+    call0AddPtr(ci, (void*) 1);
+
+    void* (*f)(CallInfo*) = (void* (*)(CallInfo*)) _call0;
+    void* result = f(ci);
+    CuAssertTrue(tc, (((ptrdiff_t) result) & 0xf) == 0xc);
+}
+static void testCall0StackAlignment2(CuTest* tc) {
+    // The first 6 pt/int values are passed in registers. We need to push
+    // at least 7 ptrs to start using the stack. 
+    CallInfo* ci = CALL0_ALLOCATE_CALL_INFO(NULL, stackPointer, 2, 0, 0, 0, 0);
+    CuAssertPtrNotNull(tc, ci);
+    call0AddPtr(ci, (void*) 1);
+    call0AddPtr(ci, (void*) 2);
+
+    void* (*f)(CallInfo*) = (void* (*)(CallInfo*)) _call0;
+    void* result = f(ci);
+    CuAssertTrue(tc, (((ptrdiff_t) result) & 0xf) == 0xc);
+}
+#elif defined(RVM_THUMBV7) && defined(DARWIN)
+/*
+ * On iOS ARM 32-bit the stack must be 4-byte aligned which
+ * it's already known to be at all times.
+ */
+static void testCall0StackAlignment1(CuTest* tc) {
+}
+static void testCall0StackAlignment2(CuTest* tc) {
+}
+#else
+#error No stack alignment tests for this platform!
+#endif
+
+
 int main(int argc, char* argv[]);
 void* findFunctionAt(void* pc);
 static jboolean unwindCallStack(UnwindContext* ctx, void* d) {
@@ -293,6 +386,8 @@ int main(int argc, char* argv[]) {
     if (argc < 2 || !strcmp(argv[1], "testCall0OneArgOfEach")) SUITE_ADD_TEST(suite, testCall0OneArgOfEach);
     if (argc < 2 || !strcmp(argv[1], "testCall0ManyArgsOfEach")) SUITE_ADD_TEST(suite, testCall0ManyArgsOfEach);
     if (argc < 2 || !strcmp(argv[1], "testCall0Unwind")) SUITE_ADD_TEST(suite, testCall0Unwind);
+    if (argc < 2 || !strcmp(argv[1], "testCall0StackAlignment1")) SUITE_ADD_TEST(suite, testCall0StackAlignment1);
+    if (argc < 2 || !strcmp(argv[1], "testCall0StackAlignment2")) SUITE_ADD_TEST(suite, testCall0StackAlignment2);
 
     CuSuiteRun(suite);
 

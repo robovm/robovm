@@ -26,6 +26,11 @@ proxy0_stack_size     = (4+CallInfo_size)
 # Offset of CallInfo struct on the stack
 CallInfo_offset       = 4
 
+# On Linux x86 with GCC 4.5+ the stack should always be 16 byte aligned when calling a function.
+# On function entry the return address has been pushed and we push %ebp. These 8 bytes 
+# need to be taken into account when calculating proxy0_stack_size_aligned.
+proxy0_stack_size_aligned = ((((proxy0_stack_size + 8) + 16 - 1) & ~(16 - 1)) - 8)
+
 RETURN_TYPE_INT    = 0
 RETURN_TYPE_LONG   = 1
 RETURN_TYPE_FLOAT  = 2
@@ -42,7 +47,7 @@ _proxy0:
     pushl %ebp
     mov   %esp, %ebp
 
-    sub   $proxy0_stack_size, %esp       # Make room for local variables on the stack
+    sub   $proxy0_stack_size_aligned, %esp       # Make room for local variables on the stack
 
     movl  $0, CallInfo_offset+stackArgsIndex_offset(%esp)      # stackArgsIndex = 0
 

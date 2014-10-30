@@ -22,11 +22,17 @@ import static org.robovm.compiler.plugin.objc.ObjCBlockPlugin.*;
 
 import java.io.IOException;
 import java.math.BigDecimal;
+import java.util.Arrays;
 
+import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.robovm.compiler.CompilerException;
+import org.robovm.compiler.Types;
+import org.robovm.compiler.util.generic.SootClassType;
 import org.robovm.compiler.util.generic.SootMethodType;
+import org.robovm.compiler.util.generic.SootTypeType;
+import org.robovm.compiler.util.generic.Type;
 
 import soot.BooleanType;
 import soot.Scene;
@@ -35,12 +41,15 @@ import soot.SootMethod;
 import soot.SootResolver;
 import soot.VoidType;
 import soot.options.Options;
+import soot.tagkit.SignatureTag;
 
 /**
  * Tests {@link ObjCBlockPlugin}.
  */
 public class ObjCBlockPluginTest {
 
+    private Type BOOLEAN, VOID;
+    
     @BeforeClass
     public static void initializeSoot() throws IOException {
         soot.G.reset();
@@ -53,6 +62,12 @@ public class ObjCBlockPluginTest {
         Scene.v().loadNecessaryClasses();
     }
     
+    @Before
+    public void setup() {
+        BOOLEAN = new SootTypeType(BooleanType.v());
+        VOID = new SootTypeType(VoidType.v());
+    }
+
     public static interface F<R, A extends Number, B extends Number> {
         R run(A a, B b, boolean c);
     }
@@ -89,11 +104,23 @@ public class ObjCBlockPluginTest {
         return SootResolver.v().resolveClass(cls.getName(), SootClass.SIGNATURES);
     }
 
-    private soot.Type toSootType(String name) {
-        if (name.endsWith("[]")) {
-            return toSootType(name.substring(0, name.length() - 2)).makeArrayType();
+    private Type signatureToType(String desc) {
+        String rawDesc = desc.replaceAll("<.*>", "");
+        String internalName = rawDesc.replaceAll("^\\[*", "");
+        int dims = rawDesc.length() - internalName.length();
+        internalName = Types.getInternalNameFromDescriptor(internalName);
+        soot.Type sootType = SootResolver.v().makeClassRef(internalName.replace('/', '.')).getType();
+        for (int i = 0; i < dims; i++) {
+            sootType = sootType.makeArrayType();
         }
-        return SootResolver.v().makeClassRef(name).getType();
+        SootMethod  m = new SootMethod("foo", Arrays.asList(sootType), VoidType.v());
+        m.addTag(new SignatureTag("(" + desc + ")V"));
+        SootMethodType mType = new SootMethodType(m);
+        return mType.getGenericParameterTypes()[0];
+    }
+    
+    private Type classNameToType(String name) {
+        return new SootClassType(SootResolver.v().makeClassRef(name));
     }
 
     @Test
@@ -128,12 +155,12 @@ public class ObjCBlockPluginTest {
     }
 
     private void testResolveTargetMethodSignature(String runnerMethodName, 
-            soot.Type expectedReturnType, soot.Type ... expectedParamTypes) {
+            Type expectedReturnType, Type ... expectedParamTypes) {
         
         SootMethod m = toSootClass(Runners.class).getMethodByName(runnerMethodName);
         SootMethodType mType = new SootMethodType(m);
         SootMethod target = ObjCBlockPlugin.getBlockTargetMethod(m, 0);
-        soot.Type[] types = ObjCBlockPlugin.resolveTargetMethodSignature(m, target, mType.getGenericParameterTypes()[0]);
+        Type[] types = ObjCBlockPlugin.resolveTargetMethodSignature(m, target, mType.getGenericParameterTypes()[0]);
         assertEquals(target.getParameterCount() + 1, types.length);
         assertEquals(expectedReturnType, types[0]);
         for (int i = 0; i < types.length - 1; i++) {
@@ -143,44 +170,44 @@ public class ObjCBlockPluginTest {
     
     @Test
     public void testResolveTargetMethodSignatureDirectGeneric() throws Exception {
-        testResolveTargetMethodSignature("runner1", toSootType("java.lang.String"), 
-                toSootType("java.lang.Integer"), toSootType("java.lang.Integer"), 
-                BooleanType.v());
+        testResolveTargetMethodSignature("runner1", classNameToType("java.lang.String"), 
+                classNameToType("java.lang.Integer"), classNameToType("java.lang.Integer"), 
+                BOOLEAN);
     }
     
     @Test
     public void testResolveTargetMethodSignatureIndirectGeneric() throws Exception {
-        testResolveTargetMethodSignature("runner2", toSootType("java.math.BigDecimal"), 
-                toSootType("java.lang.Double"), toSootType("java.lang.Double"),
-                BooleanType.v());
+        testResolveTargetMethodSignature("runner2", classNameToType("java.math.BigDecimal"), 
+                classNameToType("java.lang.Double"), classNameToType("java.lang.Double"),
+                BOOLEAN);
     }
 
     @Test
     public void testResolveTargetMethodSignatureGenericWithWildcards() throws Exception {
-        testResolveTargetMethodSignature("runner3", toSootType("java.lang.Object"), 
-                toSootType("java.lang.Number"), toSootType("java.lang.Double"),
-                BooleanType.v());
+        testResolveTargetMethodSignature("runner3", classNameToType("java.lang.Object"), 
+                classNameToType("java.lang.Number"), classNameToType("java.lang.Double"),
+                BOOLEAN);
     }
 
     @Test
     public void testResolveTargetMethodSignatureGenericWithDirectParameterizedType() throws Exception {
-        testResolveTargetMethodSignature("runner4", toSootType("java.lang.Comparable"), 
-                toSootType("java.lang.Number"), toSootType("java.lang.Number"),
-                BooleanType.v());
+        testResolveTargetMethodSignature("runner4", signatureToType("Ljava/lang/Comparable<Ljava/lang/String;>;"), 
+                classNameToType("java.lang.Number"), classNameToType("java.lang.Number"),
+                BOOLEAN);
     }
 
     @Test
     public void testResolveTargetMethodSignatureGenericWithIndirectParameterizedType() throws Exception {
-        testResolveTargetMethodSignature("runner5", toSootType("java.lang.Comparable"), 
-                toSootType("java.lang.Integer"), toSootType("java.lang.Integer"),
-                BooleanType.v());
+        testResolveTargetMethodSignature("runner5", signatureToType("Ljava/lang/Comparable<Ljava/lang/String;>;"), 
+                classNameToType("java.lang.Integer"), classNameToType("java.lang.Integer"),
+                BOOLEAN);
     }
 
     @Test
     public void testResolveTargetMethodSignatureGenericWithGenericArrayType() throws Exception {
-        testResolveTargetMethodSignature("runner6", toSootType("java.lang.Comparable[][]"), 
-                toSootType("java.lang.Number"), toSootType("java.lang.Number"),
-                BooleanType.v());
+        testResolveTargetMethodSignature("runner6", signatureToType("[[Ljava/lang/Comparable<Ljava/lang/String;>;"), 
+                classNameToType("java.lang.Number"), classNameToType("java.lang.Number"),
+                BOOLEAN);
     }
 
     @Test(expected = CompilerException.class)
@@ -201,14 +228,14 @@ public class ObjCBlockPluginTest {
 
     @Test
     public void testResolveTargetMethodSignatureNonGeneric() throws Exception {
-        testResolveTargetMethodSignature("runner9", VoidType.v());
+        testResolveTargetMethodSignature("runner9", VOID);
     }
 
     @Test
     public void testResolveTargetMethodSignatureRawType() throws Exception {
-        testResolveTargetMethodSignature("runner10", toSootType("java.lang.Object"), 
-                toSootType("java.lang.Number"), toSootType("java.lang.Number"),
-                BooleanType.v());
+        testResolveTargetMethodSignature("runner10", classNameToType("java.lang.Object"), 
+                classNameToType("java.lang.Number"), classNameToType("java.lang.Number"),
+                BOOLEAN);
     }
     
     @Test

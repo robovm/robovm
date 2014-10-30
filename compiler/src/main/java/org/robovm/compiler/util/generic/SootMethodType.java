@@ -72,6 +72,17 @@ public class SootMethodType extends SootBaseType implements GenericDeclaration {
     }
     
     @Override
+    public String toGenericSignature() {
+        StringBuilder sb = new StringBuilder("(");
+        for (Type t : getGenericParameterTypes()) {
+            sb.append(t.toGenericSignature());
+        }
+        sb.append(")");
+        sb.append(getGenericReturnType().toGenericSignature());
+        return sb.toString();
+    }
+    
+    @Override
     public int hashCode() {
         final int prime = 31;
         int result = 1;

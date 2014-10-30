@@ -16,6 +16,7 @@
 
 package org.robovm.compiler.util.generic;
 
+
 public final class ImplForArray implements GenericArrayType {
     private final Type componentType;
 
@@ -33,5 +34,19 @@ public final class ImplForArray implements GenericArrayType {
 
     public String toString() {
         return componentType.toString() + "[]";
+    }
+    
+    @Override
+    public String toGenericSignature() {
+        return "[" + componentType.toGenericSignature();
+    }
+    
+    @Override
+    public boolean equals(Object obj) {
+        if (!(obj instanceof ImplForArray)) {
+            return false;
+        }
+        ImplForArray that = (ImplForArray) obj;
+        return this.componentType.equals(that.componentType);
     }
 }

@@ -16,12 +16,22 @@
  */
 package org.robovm.compiler.util.generic;
 
+import org.robovm.compiler.Types;
+
+import soot.RefType;
+import soot.SootClass;
+import soot.SootResolver;
+
 
 /**
  * {@link Type} implementation which wraps a {@link soot.Type}.
  */
 public class SootTypeType implements Type {
     private final soot.Type type;
+
+    public SootTypeType(String name) {
+        this(SootResolver.v().makeClassRef(name).getType());
+    }
 
     public SootTypeType(soot.Type type) {
         this.type = type;
@@ -30,12 +40,16 @@ public class SootTypeType implements Type {
     public soot.Type getSootType() {
         return type;
     }
-    
+
+    public SootClass getSootClass() {
+        return ((RefType) type).getSootClass();
+    }
+
     @Override
     public String toString() {
         return type.toString();
     }
-    
+
     @Override
     public int hashCode() {
         final int prime = 31;
@@ -64,5 +78,10 @@ public class SootTypeType implements Type {
             return false;
         }
         return true;
+    }
+
+    @Override
+    public String toGenericSignature() {
+        return Types.getDescriptor(type);
     }
 }

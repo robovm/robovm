@@ -62,4 +62,15 @@ public final class ImplForWildcard implements WildcardType {
         }
         return sb.toString();
     }
+
+    @Override
+    public String toGenericSignature() {
+        if ((extendsBound.length() == 1 && !extendsBound.getResolvedTypes()[0].equals(new SootClassType("java.lang.Object")))
+                || extendsBound.length() > 1) {
+            return "+" + extendsBound.getResolvedTypes()[0].toGenericSignature();
+        } else if (superBound.length() > 0) {
+            return "+" + superBound.getResolvedTypes()[0].toGenericSignature();
+        }
+        return "*";
+    }
 }

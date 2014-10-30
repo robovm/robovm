@@ -109,7 +109,7 @@ public class CallbackMethodCompiler extends BroMethodCompiler {
         }
         moduleBuilder.addFunction(callbackFn);
         moduleBuilder.addAlias(new Alias(Symbols.callbackPtrSymbol(originalMethod), 
-                Linkage._private, new ConstantBitcast(callbackFn.ref(), I8_PTR_PTR)));
+                Linkage.linker_private, new ConstantBitcast(callbackFn.ref(), I8_PTR_PTR)));
 
         String targetName = originalMethod.isSynchronized() 
                 ? Symbols.synchronizedWrapperSymbol(originalMethod) 

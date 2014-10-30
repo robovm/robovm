@@ -90,14 +90,22 @@ public class IOSTarget extends AbstractTarget {
     
     @Override
     public LaunchParameters createLaunchParameters() {
-        if (arch == Arch.x86) {
+        if (isSimulatorArch(arch)) {
             return new IOSSimulatorLaunchParameters();
         }
         return new IOSDeviceLaunchParameters();
     }
-    
+
+    private static boolean isSimulatorArch(Arch arch) {
+        return arch == Arch.x86 || arch == Arch.x86_64;
+    }
+
+    private static boolean isDeviceArch(Arch arch) {
+        return arch == Arch.thumbv7;
+    }
+
     public List<SDK> getSDKs() {
-        if (arch == Arch.x86) {
+        if (isSimulatorArch(arch)) {
             return SDK.listSimulatorSDKs();
         } else {
             return SDK.listDeviceSDKs();
@@ -115,7 +123,7 @@ public class IOSTarget extends AbstractTarget {
 
     @Override
     protected Launcher createLauncher(LaunchParameters launchParameters) throws IOException {
-        if (arch == Arch.x86) {
+        if (isSimulatorArch(arch)) {
             return createIOSSimLauncher(launchParameters);
         } else {
             return createIOSDevLauncher(launchParameters);
@@ -258,7 +266,7 @@ public class IOSTarget extends AbstractTarget {
             libArgs.add("UIKit");
         }
 
-        if (arch == Arch.thumbv7) {
+        if (isDeviceArch(arch)) {
             ccArgs.add("-miphoneos-version-min=5.0");
         } else {
             ccArgs.add("-mios-simulator-version-min=5.0");
@@ -271,7 +279,7 @@ public class IOSTarget extends AbstractTarget {
     protected void prepareInstall(File installDir) throws IOException {
         createInfoPList(installDir);
         generateDsym(installDir, getExecutable());
-        if (arch == Arch.thumbv7) {
+        if (isDeviceArch(arch)) {
             strip(installDir, getExecutable());
             copyResourcesPList(installDir);
             if (config.isIosSkipSigning()) {
@@ -304,7 +312,7 @@ public class IOSTarget extends AbstractTarget {
         super.doInstall(appDir, getExecutable());
         createInfoPList(appDir);
         generateDsym(appDir, getExecutable());
-        if (arch == Arch.thumbv7) {
+        if (isDeviceArch(arch)) {
             copyResourcesPList(appDir);
             if (config.isIosSkipSigning()) {
                 config.getLogger().warn("Skiping code signing. The resulting app will "
@@ -429,7 +437,7 @@ public class IOSTarget extends AbstractTarget {
     protected void copyFile(Resource resource, File file, File destDir)
             throws IOException {
         
-        if (arch == Arch.thumbv7 && !resource.isSkipPngCrush() 
+        if (isDeviceArch(arch) && !resource.isSkipPngCrush() 
                 && file.getName().toLowerCase().endsWith(".png")) {
             
             destDir.mkdirs();
@@ -482,7 +490,7 @@ public class IOSTarget extends AbstractTarget {
     }
 
     protected void customizeInfoPList(NSDictionary dict) {
-        if (arch == Arch.x86) {
+        if (isSimulatorArch(arch)) {
             dict.put("CFBundleSupportedPlatforms", new NSArray(new NSString("iPhoneSimulator")));
         } else {
             dict.put("CFBundleResourceSpecification", "ResourceRules.plist");
@@ -568,14 +576,14 @@ public class IOSTarget extends AbstractTarget {
         if (config.getArch() == null) {
             arch = Arch.thumbv7;
         } else {
-            if (config.getArch() != Arch.x86 && config.getArch() != Arch.thumbv7) {
+            if (!isSimulatorArch(config.getArch()) && !isDeviceArch(arch)) {
                 throw new IllegalArgumentException("Arch '" + config.getArch() 
                         + "' is unsupported for iOS target");
             }
             arch = config.getArch();
         }
 
-        if (arch == Arch.thumbv7) {
+        if (isDeviceArch(arch)) {
             if (!config.isIosSkipSigning()) {
                 signIdentity = config.getIosSignIdentity();
                 if (signIdentity == null) {
@@ -593,7 +601,7 @@ public class IOSTarget extends AbstractTarget {
             }
         }
 
-        if (arch == Arch.thumbv7) {
+        if (isDeviceArch(arch)) {
             if (!config.isIosSkipSigning()) {
                 provisioningProfile = config.getIosProvisioningProfile();
                 if (provisioningProfile == null) {
@@ -610,7 +618,7 @@ public class IOSTarget extends AbstractTarget {
         List<SDK> sdks = getSDKs();
         if (sdkVersion == null) {
             if (sdks.isEmpty()) {
-                throw new IllegalArgumentException("No " + (arch == Arch.thumbv7 ? "device" : "simulator") + " SDKs installed");
+                throw new IllegalArgumentException("No " + (isDeviceArch(arch) ? "device" : "simulator") + " SDKs installed");
             }
             Collections.sort(sdks);
             this.sdk = sdks.get(sdks.size() - 1);

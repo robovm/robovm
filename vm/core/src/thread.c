@@ -40,6 +40,12 @@ static Method* uncaughtExceptionMethod;
 static Method* removeThreadMethod;
 static uint32_t threadGCKind;
 
+// FIXME make these forward declarations weak
+// implementations
+extern void debugHookThreadAttach(JavaThread*, Thread*);
+extern void debugHookThreadStart(JavaThread*, Thread*);
+extern void debugHookThreadDetach(JavaThread*, Thread*);
+
 
 inline void rvmLockThreadsList() {
     rvmLockMutex(&threadsLock);
@@ -190,6 +196,7 @@ static jint attachThread(VM* vm, Env** envPtr, char* name, Object* group, jboole
     if (rvmExceptionOccurred(env)) goto error_remove;
 
     *envPtr = env;
+    debugHookThreadAttach(threadObj, thread);
 
     return JNI_OK;
 
@@ -236,6 +243,8 @@ static jint detachThread(Env* env, jboolean ignoreAttachCount, jboolean unregist
 
     Thread* thread = env->currentThread;
     JavaThread* threadObj = thread->threadObj;
+
+    debugHookThreadDetach(threadObj, thread);
 
     if (rvmExceptionOccurred(env)) {
         threadExitUncaughtException(env, thread);
@@ -343,6 +352,7 @@ static void* startThreadEntryPoint(void* _args) {
     rvmUnlockThreadsList();
 
     if (!failure) {
+        debugHookThreadStart(threadObj, thread);
         rvmChangeThreadStatus(env, thread, THREAD_RUNNING);
 
         rvmChangeThreadPriority(env, thread, thread->threadObj->priority);

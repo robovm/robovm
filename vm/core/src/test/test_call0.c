@@ -225,16 +225,23 @@ static void testCall0ManyArgsOfEach(CuTest* tc) {
 }
 
 
-#if defined(RVM_X86_64)
+#if defined(RVM_X86_64) && (defined(DARWIN) || defined(LINUX))
 /*
  * On x86_64 Darwin and Linux the stack must be 16-byte aligned before a function call. 
  * This means that (%rsp & 0xf) == 8 must be true when that function is entered as CALL 
  * pushes the return address.
  */
+#ifdef LINUX
+asm("stackPointer:     \n\
+        mov %rsp,%rax  \n\
+        ret            \n\
+");
+#else
 asm("_stackPointer:    \n\
         mov %rsp,%rax  \n\
         ret            \n\
 ");
+#endif
 void* stackPointer(void);
 static void testCall0StackAlignment1(CuTest* tc) {
     // The first 6 ptr/int values are passed in registers. We need to push
@@ -271,16 +278,23 @@ static void testCall0StackAlignment2(CuTest* tc) {
     void* result = f(ci);
     CuAssertTrue(tc, (((ptrdiff_t) result) & 0xf) == 8);
 }
-#elif defined(RVM_X86)
+#elif defined(RVM_X86) && (defined(DARWIN) || defined(LINUX))
 /*
  * On x86 Darwin and on Linux when using GCC 4.5+ the stack must be 16-byte aligned before 
  * a function call. This means that (%esp & 0xf) == 0xc must be true when that function is 
  * entered as CALL pushes the return address.
  */
+#ifdef LINUX
+asm("stackPointer:     \n\
+        mov %esp,%eax  \n\
+        ret            \n\
+");
+#else
 asm("_stackPointer:    \n\
         mov %esp,%eax  \n\
         ret            \n\
 ");
+#endif
 void* stackPointer(void);
 static void testCall0StackAlignment1(CuTest* tc) {
     // x86 only uses the stack to pass args so we just need a single ptr.

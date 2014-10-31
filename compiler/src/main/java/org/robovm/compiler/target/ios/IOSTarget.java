@@ -576,7 +576,7 @@ public class IOSTarget extends AbstractTarget {
         if (config.getArch() == null) {
             arch = Arch.thumbv7;
         } else {
-            if (!isSimulatorArch(config.getArch()) && !isDeviceArch(arch)) {
+            if (!isSimulatorArch(config.getArch()) && !isDeviceArch(config.getArch())) {
                 throw new IllegalArgumentException("Arch '" + config.getArch() 
                         + "' is unsupported for iOS target");
             }

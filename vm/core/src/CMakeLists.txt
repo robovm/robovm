@@ -22,6 +22,7 @@ set(SRC
   proxy0-${OS_FAMILY}-${ARCH}.s
   trycatch-${OS_FAMILY}-${ARCH}.s
   unwind.c
+  debug_hooks.c
 )
 
 # The code in unwind.c doesn't work properly if compiled with tail call optimizations

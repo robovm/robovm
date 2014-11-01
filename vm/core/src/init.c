@@ -28,12 +28,17 @@
 #include <unistd.h>
 
 #define LOG_TAG "core.init"
-jboolean attachFlag = FALSE;
 ClassLoader* systemClassLoader = NULL;
 static Class* java_lang_Daemons = NULL;
 static Method* java_lang_Daemons_start = NULL;
 
 extern int registerCoreLibrariesJni(JNIEnv* env);
+
+// FIXME make these forward declarations weak
+// implementations
+extern void debugHookWaitForAttach(void);
+extern void debugHookBeforeThreads(void);
+extern void debugHookMain(void);
 
 static inline jint startsWith(char* s, char* prefix) {
     return s && strncasecmp(s, prefix, strlen(prefix)) == 0;
@@ -256,11 +261,7 @@ Env* rvmStartup(Options* options) {
     // to overwrite the attachFlag. We wait for 15 seconds tops.
     // TODO: make the timeout configurable
     if(options->waitForAttach) {
-        int i = 0;
-        while(attachFlag == FALSE && (i++) < 15) {
-            sleep(1);
-            fprintf(stderr, "[DEBUG] %s: Waiting for debugger to attach\n", LOG_TAG);
-        }
+        debugHookWaitForAttach();
     }
 
     TRACE("Initializing GC");
@@ -300,6 +301,7 @@ Env* rvmStartup(Options* options) {
     TRACE("Initializing proxy");
     if (!rvmInitProxy(env)) return NULL;
     TRACE("Initializing threads");
+    debugHookBeforeThreads();
     if (!rvmInitThreads(env)) return NULL;
     TRACE("Initializing attributes");
     if (!rvmInitAttributes(env)) return NULL;
@@ -411,7 +413,10 @@ jboolean rvmRun(Env* env) {
                             break;
                         }
                     }
-                    if (args) rvmCallVoidClassMethod(env, clazz, method, args);
+                    if (args) {
+                        debugHookMain();
+                        rvmCallVoidClassMethod(env, clazz, method, args);
+                    }
                 }
             }
         }

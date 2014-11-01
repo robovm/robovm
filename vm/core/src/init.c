@@ -34,12 +34,6 @@ static Method* java_lang_Daemons_start = NULL;
 
 extern int registerCoreLibrariesJni(JNIEnv* env);
 
-// FIXME make these forward declarations weak
-// implementations
-extern void debugHookWaitForAttach(void);
-extern void debugHookBeforeThreads(void);
-extern void debugHookMain(void);
-
 static inline jint startsWith(char* s, char* prefix) {
     return s && strncasecmp(s, prefix, strlen(prefix)) == 0;
 }
@@ -147,8 +141,11 @@ static void parseArg(char* arg, Options* options) {
         }
     } else if (startsWith(arg, "EnableGCHeapStats")) {
         options->enableGCHeapStats = TRUE;
+    } else if (startsWith(arg, "EnableHooks")) {
+        options->enableHooks = TRUE;
     } else if (startsWith(arg, "WaitForAttach")) {
         options->waitForAttach = TRUE;
+        options->enableHooks = TRUE; // WaitForAttach also enables hooks
     } else if (startsWith(arg, "PrintPID")) {
         options->printPID = TRUE;
     } else if (startsWith(arg, "D")) {
@@ -242,6 +239,9 @@ Env* rvmCreateEnv(VM* vm) {
 Env* rvmStartup(Options* options) {
     // TODO: Error handling
 
+    TRACE("Initializing logging");
+    if (!rvmInitLog(options)) return NULL;
+
 #if defined(IOS) && (defined(RVM_ARMV7) || defined(RVM_THUMBV7))
     // Enable IEEE-754 denormal support.
     // Without this the VFP treats numbers that are close to zero as zero itself.
@@ -257,11 +257,8 @@ Env* rvmStartup(Options* options) {
         fprintf(stderr, "[DEBUG] %s: pid=%d\n", LOG_TAG, pid);
     }
 
-    // If wait for attaching was requested, we wait for another process
-    // to overwrite the attachFlag. We wait for 15 seconds tops.
-    // TODO: make the timeout configurable
     if(options->waitForAttach) {
-        debugHookWaitForAttach();
+        rvmHookWaitForAttach(options);
     }
 
     TRACE("Initializing GC");
@@ -286,8 +283,6 @@ Env* rvmStartup(Options* options) {
     if (!initClasspathEntries(env, options->basePath, options->rawClasspath, &options->classpath)) return NULL;
 
     // Call init on modules
-    TRACE("Initializing logging");
-    if (!rvmInitLog(env)) return NULL;
     TRACE("Initializing classes");
     if (!rvmInitClasses(env)) return NULL;
     TRACE("Initializing memory");
@@ -301,7 +296,6 @@ Env* rvmStartup(Options* options) {
     TRACE("Initializing proxy");
     if (!rvmInitProxy(env)) return NULL;
     TRACE("Initializing threads");
-    debugHookBeforeThreads();
     if (!rvmInitThreads(env)) return NULL;
     TRACE("Initializing attributes");
     if (!rvmInitAttributes(env)) return NULL;
@@ -414,7 +408,7 @@ jboolean rvmRun(Env* env) {
                         }
                     }
                     if (args) {
-                        debugHookMain();
+                        rvmHookBeforeAppEntryPoint(env, clazz, method, args);
                         rvmCallVoidClassMethod(env, clazz, method, args);
                     }
                 }

@@ -39,8 +39,8 @@ static inline int logwrite(int level, const char* tag, const char* text) {
     return fprintf(stderr, "[%s] %s: %s\n", level2String(level), tag, text); \
 }
 
-jboolean rvmInitLog(Env* env) {
-    _logLevel = env->vm->options->logLevel == 0 ? LOG_LEVEL_ERROR : env->vm->options->logLevel;
+jboolean rvmInitLog(Options* options) {
+    _logLevel = options->logLevel == 0 ? LOG_LEVEL_ERROR : options->logLevel;
     return TRUE;
 }
 

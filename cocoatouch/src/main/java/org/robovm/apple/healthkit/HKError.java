@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.robovm.apple.foundation;
+package org.robovm.apple.healthkit;
 
 /*<imports>*/
 import java.io.*;
@@ -26,38 +26,34 @@ import org.robovm.rt.*;
 import org.robovm.rt.bro.*;
 import org.robovm.rt.bro.annotation.*;
 import org.robovm.rt.bro.ptr.*;
-import org.robovm.apple.corefoundation.*;
-import org.robovm.apple.uikit.*;
-import org.robovm.apple.coreanimation.*;
-import org.robovm.apple.coregraphics.*;
-import org.robovm.apple.coremedia.*;
-import org.robovm.apple.security.*;
-import org.robovm.apple.dispatch.*;
+import org.robovm.apple.foundation.*;
 /*</imports>*/
 
 /*<javadoc>*/
 /*</javadoc>*/
-/*<annotations>*/@Library("Foundation")/*</annotations>*/
-/*<visibility>*/public/*</visibility>*/ class /*<name>*/NSURLError/*</name>*/ 
+/*<annotations>*/@Library("HealthKit")/*</annotations>*/
+/*<visibility>*/public/*</visibility>*/ class /*<name>*/HKError/*</name>*/ 
     extends /*<extends>*/NSError/*</extends>*/ 
     /*<implements>*//*</implements>*/ {
 
-    protected NSURLError(SkipInit skipInit) {
+    protected HKError(SkipInit skipInit) {
         super(skipInit);
     }
-    
     /*<ptr>*/
     /*</ptr>*/
-    /*<bind>*/static { Bro.bind(NSURLError.class); }/*</bind>*/
+    /*<bind>*/static { Bro.bind(HKError.class); }/*</bind>*/
     /*<constants>*//*</constants>*/
     /*<constructors>*//*</constructors>*/
     /*<properties>*//*</properties>*/
     /*<members>*//*</members>*/
-    public NSURLErrorCode getErrorCode() {
-        return NSURLErrorCode.valueOf(getCode());
+    public HKErrorCode getErrorCode() {
+        return HKErrorCode.valueOf(getCode());
     }
     /*<methods>*/
-    @GlobalValue(symbol="NSURLErrorDomain", optional=true)
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @GlobalValue(symbol="HKErrorDomain", optional=true)
     public static native String getClassDomain();
     /*</methods>*/
 }

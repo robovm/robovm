@@ -72,6 +72,27 @@ import org.robovm.apple.dispatch.*;
     public native @ByVal NSDecimal decimalValue();
     /*</properties>*/
     /*<members>*//*</members>*/
+    public static NSNumber valueOf(Number value) {
+        if (value instanceof Byte) {
+            return valueOf((byte)value);
+        }
+        if (value instanceof Short) {
+            return valueOf((short)value);
+        }
+        if (value instanceof Integer) {
+            return valueOf((int)value);
+        }
+        if (value instanceof Long) {
+            return valueOf((long)value);
+        }
+        if (value instanceof Float) {
+            return valueOf((float)value);
+        }
+        if (value instanceof Double) {
+            return valueOf((double)value);
+        }
+        throw new IllegalArgumentException("value is not a supported number type: " + value.getClass());
+    }
     /*<methods>*/
     @Method(selector = "compare:")
     public native NSComparisonResult compare(NSNumber otherNumber);

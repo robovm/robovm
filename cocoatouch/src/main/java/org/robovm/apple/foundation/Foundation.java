@@ -232,6 +232,7 @@ import org.robovm.apple.dispatch.*;
      * @return the OS version that this app is running on.
      */
     public static String getSystemVersionString() {
+    	if (majorSystemVersion == 0) fetchSystemVersion(); // Lazily fetch the device's system version.
         return systemVersionString;
     }
     /**
@@ -312,26 +313,6 @@ import org.robovm.apple.dispatch.*;
      */
     @GlobalValue(symbol="NSStringEncodingDetectionLikelyLanguageKey", optional=true)
     public static native String StringEncodingDetectionLikelyLanguageKey();
-    @GlobalValue(symbol="NSUnderlyingErrorKey", optional=true)
-    public static native NSString UnderlyingErrorKey();
-    @GlobalValue(symbol="NSLocalizedDescriptionKey", optional=true)
-    public static native NSString LocalizedDescriptionKey();
-    @GlobalValue(symbol="NSLocalizedFailureReasonErrorKey", optional=true)
-    public static native NSString LocalizedFailureReasonErrorKey();
-    @GlobalValue(symbol="NSLocalizedRecoverySuggestionErrorKey", optional=true)
-    public static native NSString LocalizedRecoverySuggestionErrorKey();
-    @GlobalValue(symbol="NSLocalizedRecoveryOptionsErrorKey", optional=true)
-    public static native NSString LocalizedRecoveryOptionsErrorKey();
-    @GlobalValue(symbol="NSRecoveryAttempterErrorKey", optional=true)
-    public static native NSString RecoveryAttempterErrorKey();
-    @GlobalValue(symbol="NSHelpAnchorErrorKey", optional=true)
-    public static native NSString HelpAnchorErrorKey();
-    @GlobalValue(symbol="NSStringEncodingErrorKey", optional=true)
-    public static native NSString StringEncodingErrorKey();
-    @GlobalValue(symbol="NSURLErrorKey", optional=true)
-    public static native NSString URLErrorKey();
-    @GlobalValue(symbol="NSFilePathErrorKey", optional=true)
-    public static native NSString FilePathErrorKey();
     @GlobalValue(symbol="NSAverageKeyValueOperator", optional=true)
     public static native String AverageKeyValueOperator();
     @GlobalValue(symbol="NSCountKeyValueOperator", optional=true)
@@ -392,30 +373,6 @@ import org.robovm.apple.dispatch.*;
      */
     @GlobalValue(symbol="NSThumbnail1024x1024SizeKey", optional=true)
     public static native String Thumbnail1024x1024SizeKey();
-    @GlobalValue(symbol="NSURLErrorDomain", optional=true)
-    public static native String URLErrorDomain();
-    /**
-     * @since Available in iOS 4.0 and later.
-     */
-    @GlobalValue(symbol="NSURLErrorFailingURLErrorKey", optional=true)
-    public static native NSString URLErrorFailingURLErrorKey();
-    /**
-     * @since Available in iOS 4.0 and later.
-     */
-    @GlobalValue(symbol="NSURLErrorFailingURLStringErrorKey", optional=true)
-    public static native NSString URLErrorFailingURLStringErrorKey();
-    /**
-     * @since Available in iOS 2.0 and later.
-     * @deprecated Deprecated in iOS 4.0.
-     */
-    @Deprecated
-    @GlobalValue(symbol="NSErrorFailingURLStringKey", optional=true)
-    public static native NSString ErrorFailingURLStringKey();
-    /**
-     * @since Available in iOS 4.0 and later.
-     */
-    @GlobalValue(symbol="NSURLErrorFailingURLPeerTrustErrorKey", optional=true)
-    public static native NSString URLErrorFailingURLPeerTrustErrorKey();
     /**
      * @since Available in iOS 8.0 and later.
      */
@@ -462,7 +419,7 @@ import org.robovm.apple.dispatch.*;
     @GlobalValue(symbol="NSExtensionItemAttachmentsKey", optional=true)
     public static native String ExtensionItemAttachmentsKey();
     @GlobalValue(symbol="NSNetServicesErrorCode", optional=true)
-    public static native NSString NetServicesErrorCode();
+    public static native String NetServicesErrorCode();
     @GlobalValue(symbol="NSNetServicesErrorDomain", optional=true)
     public static native String NetServicesErrorDomain();
     /**

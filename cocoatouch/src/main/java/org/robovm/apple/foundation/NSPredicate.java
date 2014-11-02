@@ -19,6 +19,7 @@ package org.robovm.apple.foundation;
 import java.io.*;
 import java.nio.*;
 import java.util.*;
+
 import org.robovm.objc.*;
 import org.robovm.objc.annotation.*;
 import org.robovm.objc.block.*;
@@ -57,6 +58,41 @@ import org.robovm.apple.dispatch.*;
     public native String getPredicateFormat();
     /*</properties>*/
     /*<members>*//*</members>*/
+    
+    public static NSPredicate create(String predicateFormat, Object ... arguments) {
+        NSArray<NSObject> args = new NSMutableArray<>();
+        int i = 0;
+        for (Object o : arguments) {
+            if (o instanceof Number) {
+                args.add(NSNumber.valueOf((Number)o));
+            } else if (o instanceof String) {
+                args.add(new NSString((String)o));
+            } else if (o instanceof NSPredicateKeyPath) {
+                args.add(((NSPredicateKeyPath) o).value());
+            } else if (o instanceof Collection) {
+                Collection<?> c = (Collection<?>) o;
+                NSArray<NSString> a = new NSMutableArray<>();
+                for (Object e : c) {
+                    a.add(new NSString(e.toString()));
+                }
+                args.add(a);
+            } else if (o instanceof Map) {
+                Map<?, ?> m = (Map<?, ?>) o;
+                NSDictionary<NSString, NSString> d = new NSMutableDictionary<>();
+                for (Map.Entry<?, ?> e : m.entrySet()) {
+                    d.put(new NSString(e.getKey().toString()), new NSString(e.getValue().toString()));
+                }
+                args.add(d);
+            } else if (o == null) {
+                throw new IllegalArgumentException("argument " + i + " cannot be null!");
+            } else {
+                throw new IllegalArgumentException("type of argument " + i + " not supported: " + o.getClass());
+            }
+            i++;
+        }
+        
+        return create(predicateFormat, args);
+    }
     
     public static NSPredicate create(String predicateFormat, NSObject ... arguments) {
         return create(predicateFormat, new NSArray<NSObject>(arguments));

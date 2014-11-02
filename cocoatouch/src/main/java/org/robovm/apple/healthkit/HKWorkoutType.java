@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.robovm.apple.foundation;
+package org.robovm.apple.healthkit;
 
 /*<imports>*/
 import java.io.*;
@@ -26,38 +26,31 @@ import org.robovm.rt.*;
 import org.robovm.rt.bro.*;
 import org.robovm.rt.bro.annotation.*;
 import org.robovm.rt.bro.ptr.*;
-import org.robovm.apple.corefoundation.*;
-import org.robovm.apple.uikit.*;
-import org.robovm.apple.coreanimation.*;
-import org.robovm.apple.coregraphics.*;
-import org.robovm.apple.coremedia.*;
-import org.robovm.apple.security.*;
-import org.robovm.apple.dispatch.*;
+import org.robovm.apple.foundation.*;
 /*</imports>*/
 
 /*<javadoc>*/
+/**
+ * @since Available in iOS 8.0 and later.
+ */
 /*</javadoc>*/
-/*<annotations>*/@Library("Foundation")/*</annotations>*/
-/*<visibility>*/public/*</visibility>*/ class /*<name>*/NSURLError/*</name>*/ 
-    extends /*<extends>*/NSError/*</extends>*/ 
+/*<annotations>*/@Library("HealthKit") @NativeClass/*</annotations>*/
+/*<visibility>*/public/*</visibility>*/ class /*<name>*/HKWorkoutType/*</name>*/ 
+    extends /*<extends>*/HKSampleType/*</extends>*/ 
     /*<implements>*//*</implements>*/ {
 
-    protected NSURLError(SkipInit skipInit) {
-        super(skipInit);
-    }
-    
-    /*<ptr>*/
-    /*</ptr>*/
-    /*<bind>*/static { Bro.bind(NSURLError.class); }/*</bind>*/
+    /*<ptr>*/public static class HKWorkoutTypePtr extends Ptr<HKWorkoutType, HKWorkoutTypePtr> {}/*</ptr>*/
+    /*<bind>*/static { ObjCRuntime.bind(HKWorkoutType.class); }/*</bind>*/
     /*<constants>*//*</constants>*/
-    /*<constructors>*//*</constructors>*/
-    /*<properties>*//*</properties>*/
+    /*<constructors>*/
+    public HKWorkoutType() {}
+    protected HKWorkoutType(SkipInit skipInit) { super(skipInit); }
+    /*</constructors>*/
+    /*<properties>*/
+    
+    /*</properties>*/
     /*<members>*//*</members>*/
-    public NSURLErrorCode getErrorCode() {
-        return NSURLErrorCode.valueOf(getCode());
-    }
     /*<methods>*/
-    @GlobalValue(symbol="NSURLErrorDomain", optional=true)
-    public static native String getClassDomain();
+    
     /*</methods>*/
 }

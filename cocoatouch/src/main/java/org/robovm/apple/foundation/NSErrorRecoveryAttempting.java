@@ -36,28 +36,26 @@ import org.robovm.apple.dispatch.*;
 /*</imports>*/
 
 /*<javadoc>*/
-/*</javadoc>*/
-/*<annotations>*/@Library("Foundation")/*</annotations>*/
-/*<visibility>*/public/*</visibility>*/ class /*<name>*/NSURLError/*</name>*/ 
-    extends /*<extends>*/NSError/*</extends>*/ 
-    /*<implements>*//*</implements>*/ {
 
-    protected NSURLError(SkipInit skipInit) {
-        super(skipInit);
-    }
-    
+/*</javadoc>*/
+/*<annotations>*//*</annotations>*/
+/*<visibility>*/public/*</visibility>*/ interface /*<name>*/NSErrorRecoveryAttempting/*</name>*/ 
+    /*<implements>*/extends NSObjectProtocol/*</implements>*/ {
+
     /*<ptr>*/
     /*</ptr>*/
-    /*<bind>*/static { Bro.bind(NSURLError.class); }/*</bind>*/
+    /*<bind>*/
+    /*</bind>*/
     /*<constants>*//*</constants>*/
-    /*<constructors>*//*</constructors>*/
-    /*<properties>*//*</properties>*/
-    /*<members>*//*</members>*/
-    public NSURLErrorCode getErrorCode() {
-        return NSURLErrorCode.valueOf(getCode());
-    }
+    /*<properties>*/
+    
+    /*</properties>*/
     /*<methods>*/
-    @GlobalValue(symbol="NSURLErrorDomain", optional=true)
-    public static native String getClassDomain();
+    @Method(selector = "attemptRecoveryFromError:optionIndex:delegate:didRecoverSelector:contextInfo:")
+    void attemptRecoveryFromError(NSError error, @MachineSizedUInt long recoveryOptionIndex, NSObject delegate, Selector didRecoverSelector, VoidPtr contextInfo);
+    @Method(selector = "attemptRecoveryFromError:optionIndex:")
+    boolean attemptRecoveryFromError(NSError error, @MachineSizedUInt long recoveryOptionIndex);
     /*</methods>*/
+    /*<adapter>*/
+    /*</adapter>*/
 }

@@ -105,3 +105,7 @@ ObjectArray* Java_java_lang_Thread_internalGetStackTrace(Env* env, Class* cls, J
     }
     return rvmCallStackToStackTraceElements(env, callStack, 0);
 }
+
+void Java_java_lang_Thread_hookThreadCreated(Env* env, Class* cls, JavaThread* threadObj) {
+    rvmHookThreadCreated(env, threadObj);
+}

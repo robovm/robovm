@@ -22,10 +22,13 @@ set(SRC
   proxy0-${OS_FAMILY}-${ARCH}.s
   trycatch-${OS_FAMILY}-${ARCH}.s
   unwind.c
+  hooks.c
 )
 
 # The code in unwind.c doesn't work properly if compiled with tail call optimizations
 set_property(SOURCE unwind.c PROPERTY COMPILE_FLAGS "-fno-optimize-sibling-calls")
+# Disable optimizations for hooks.c and enable debug info even in release builds
+set_property(SOURCE hooks.c PROPERTY COMPILE_FLAGS "-O0 -g") # Disable optimizations
 
 add_library(robovm-core STATIC ${SRC})
 add_dependencies(robovm-core extgc)

@@ -411,7 +411,12 @@ public class Thread implements Runnable {
 
         // add ourselves to our ThreadGroup of choice
         this.group.addThread(this);
+
+        // Signal to the VM that a new Thread instance was created
+        hookThreadCreated(this);
     }
+
+    private static native void hookThreadCreated(Thread thread);
 
     /**
      * Returns the number of active {@code Thread}s in the running {@code

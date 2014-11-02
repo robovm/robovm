@@ -71,16 +71,14 @@ public abstract class AbstractPath implements Path {
         // First check the cache
         Clazz clazz = generatedClasses.get(internalName);
         if (clazz == null) {
-            // We use null values for negative lookups
-            if (generatedClasses.containsKey(internalName)) {
-                return null;
-            }
             File classFile = getGeneratedClassFile(internalName);
             if (classFile.exists() && classFile.isFile()) {
                 clazz = new DirectoryPath.DirectoryPathClazz(clazzes, this, generatedClassDir, classFile);
             }
-            // Put the clazz (or null if not found) in the cache
-            generatedClasses.put(internalName, clazz);
+            if (clazz != null) {
+                // Put the clazz in the cache
+                generatedClasses.put(internalName, clazz);
+            }
         }
         return clazz;
     }

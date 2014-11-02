@@ -51,6 +51,9 @@ import org.robovm.compiler.config.Config;
 import org.robovm.compiler.plugin.AbstractCompilerPlugin;
 import org.robovm.compiler.plugin.CompilerPlugin;
 import org.robovm.compiler.util.generic.GenericArrayType;
+import org.robovm.compiler.util.generic.ImplForArray;
+import org.robovm.compiler.util.generic.ImplForType;
+import org.robovm.compiler.util.generic.ListOfTypes;
 import org.robovm.compiler.util.generic.ParameterizedType;
 import org.robovm.compiler.util.generic.SootClassType;
 import org.robovm.compiler.util.generic.SootMethodType;
@@ -179,9 +182,10 @@ public class ObjCBlockPlugin extends AbstractCompilerPlugin {
                 }
                 
                 SootMethod targetMethod = getBlockTargetMethod(blockMethod, idx);
-                soot.Type[] actualTypes = resolveTargetMethodSignature(
+                Type[] actualGenericTypes = resolveTargetMethodSignature(
                         blockMethod, targetMethod, genericParameterTypes[idx]);
-                soot.Type[] unboxedTypes = unboxTypes(actualTypes);
+                soot.Type[] actualRawTypes = toRawTypes(actualGenericTypes);
+                soot.Type[] unboxedTypes = unboxTypes(actualRawTypes);
                 String[][] targetMethodAnnotations = 
                     parseTargetMethodAnnotations(targetMethod, 
                         readStringElem(
@@ -189,22 +193,23 @@ public class ObjCBlockPlugin extends AbstractCompilerPlugin {
                 
                 // Create the marshaler class associated with this block type
                 String marshaler = createBlockMarshaler(config, clazz, 
-                        targetMethod, actualTypes, unboxedTypes, blockTypeIds, 
+                        targetMethod, actualGenericTypes, actualRawTypes, unboxedTypes, blockTypeIds, 
                         targetMethodAnnotations);
                 addMarshalerAnnotation(blockMethod, idx, marshaler);
             }
         }
         if (hasAnnotation(blockMethod, BLOCK)) {
             SootMethod targetMethod = getBlockTargetMethod(blockMethod);
-            soot.Type[] actualTypes = resolveTargetMethodSignature(
+            Type[] actualGenericTypes = resolveTargetMethodSignature(
                     blockMethod, targetMethod, blockMethodType.getGenericReturnType());
-            soot.Type[] unboxedTypes = unboxTypes(actualTypes);
+            soot.Type[] actualRawTypes = toRawTypes(actualGenericTypes);
+            soot.Type[] unboxedTypes = unboxTypes(actualRawTypes);
             String[][] targetMethodAnnotations = 
                     parseTargetMethodAnnotations(targetMethod, 
                         readStringElem(
                             getAnnotation(blockMethod, BLOCK), "value", ""));
             String marshaler = createBlockMarshaler(config, clazz, targetMethod, 
-                    actualTypes, unboxedTypes, blockTypeIds, targetMethodAnnotations);
+                    actualGenericTypes, actualRawTypes, unboxedTypes, blockTypeIds, targetMethodAnnotations);
             addMarshalerAnnotation(blockMethod, marshaler);
         }
     }
@@ -309,7 +314,8 @@ public class ObjCBlockPlugin extends AbstractCompilerPlugin {
     }
 
     private String createBlockMarshaler(Config config, Clazz clazz,
-            final SootMethod targetMethod, soot.Type[] actualTypes, soot.Type[] unboxedTypes,
+            final SootMethod targetMethod, Type[] actualGenericTypes,
+            soot.Type[] actualRawTypes, soot.Type[] unboxedTypes,
             Map<String, Integer> blockTypeIds, String[][] targetMethodAnnotations) throws IOException {
         
         if (targetMethod.getDeclaringClass().getName().equals("java.lang.Runnable") 
@@ -317,7 +323,7 @@ public class ObjCBlockPlugin extends AbstractCompilerPlugin {
             return RUNNABLE_AS_OBJC_BLOCK_MARSHALER;
         }
         
-        String targetMethodKey = getTargetMethodKey(targetMethod, actualTypes, 
+        String targetMethodKey = getTargetMethodKey(targetMethod, actualRawTypes, 
                 targetMethodAnnotations);
         Integer id = blockTypeIds.get(targetMethodKey);
         if (id != null) {
@@ -338,10 +344,10 @@ public class ObjCBlockPlugin extends AbstractCompilerPlugin {
         final Set<String> usedUnboxMethods = new HashSet<>();
         
         ClassWriter cw = new ClassWriter(ClassWriter.COMPUTE_MAXS);
-        generateTargetMethod(blockMarshalerName, targetMethod, actualTypes, 
+        generateTargetMethod(blockMarshalerName, targetMethod, actualGenericTypes, actualRawTypes, 
                 unboxedTypes, usedBoxMethods, usedUnboxMethods, cw);
-        generateBridgeMethod(unboxedTypes, targetMethodAnnotations, cw);
-        generateCallbackMethod(blockMarshalerName, targetMethod, actualTypes, 
+        generateBridgeMethod(actualGenericTypes, unboxedTypes, targetMethodAnnotations, cw);
+        generateCallbackMethod(blockMarshalerName, targetMethod, actualGenericTypes, actualRawTypes, 
                 unboxedTypes, usedBoxMethods, usedUnboxMethods, targetMethodAnnotations, cw);
         ClassReader classReader = new ClassReader(templateMarshaler.getBytes());
         classReader.accept(new ClassVisitor(ASM4, cw) {
@@ -458,18 +464,30 @@ public class ObjCBlockPlugin extends AbstractCompilerPlugin {
         return blockMarshalerName;
     }
 
-    private void generateBridgeMethod(soot.Type[] unboxedTypes, 
+    private void generateBridgeMethod(Type[] actualGenericTypes, soot.Type[] unboxedTypes, 
             String[][] targetMethodAnnotations, ClassWriter cw) {
-        
-        List<soot.Type> paramTypes = new ArrayList<>();
-        paramTypes.add(LongType.v());
-        paramTypes.add(org_robovm_objc_ObjCBlock.getType());
-        paramTypes.addAll(Arrays.asList(unboxedTypes).subList(1, unboxedTypes.length));
+
+        List<Type> genericParamTypes = new ArrayList<>();
+        genericParamTypes.add(new SootTypeType(LongType.v()));
+        genericParamTypes.add(new SootTypeType(org_robovm_objc_ObjCBlock.getType()));
+        for (int i = 1; i < unboxedTypes.length; i++) {
+            Type t = unboxedTypes[i] instanceof PrimType 
+                    ? new SootTypeType(unboxedTypes[i]) : actualGenericTypes[i];
+            genericParamTypes.add(t);
+        }
+        Type genericReturnType = unboxedTypes[0] instanceof PrimType 
+                ? new SootTypeType(unboxedTypes[0]) : actualGenericTypes[0];
+
+        List<soot.Type> rawParamTypes = new ArrayList<>();
+        rawParamTypes.add(LongType.v());
+        rawParamTypes.add(org_robovm_objc_ObjCBlock.getType());
+        rawParamTypes.addAll(Arrays.asList(unboxedTypes).subList(1, unboxedTypes.length));
 
         String name = "invoke";
-        String desc = getDescriptor(paramTypes, unboxedTypes[0]);
+        String signature = getGenericSignature(genericParamTypes, genericReturnType);
+        String desc = getDescriptor(rawParamTypes, unboxedTypes[0]);
         
-        MethodVisitor mv = cw.visitMethod(ACC_PRIVATE | ACC_STATIC | ACC_NATIVE, name, desc, null, null);
+        MethodVisitor mv = cw.visitMethod(ACC_PRIVATE | ACC_STATIC | ACC_NATIVE, name, desc, signature, null);
         AnnotationVisitor av = mv.visitAnnotation(BRIDGE, true);
         av.visit("dynamic", true);
         av.visitEnd();
@@ -489,20 +507,31 @@ public class ObjCBlockPlugin extends AbstractCompilerPlugin {
     }
     
     private void generateCallbackMethod(String owner, SootMethod targetMethod, 
-            soot.Type[] actualTypes, soot.Type[] unboxedTypes, 
+            Type[] actualGenericTypes, soot.Type[] actualRawTypes, soot.Type[] unboxedTypes, 
             Set<String> usedBoxMethods, Set<String> usedUnboxMethods,
             String[][] targetMethodAnnotations, ClassWriter cw) {
         
         String targetInterfaceName = Types.getInternalName(targetMethod.getDeclaringClass());
 
-        List<soot.Type> paramTypes = new ArrayList<>();
-        paramTypes.add(org_robovm_objc_ObjCBlock.getType());
-        paramTypes.addAll(Arrays.asList(unboxedTypes).subList(1, unboxedTypes.length));
+        List<Type> genericParamTypes = new ArrayList<>();
+        genericParamTypes.add(new SootTypeType(org_robovm_objc_ObjCBlock.getType()));
+        for (int i = 1; i < unboxedTypes.length; i++) {
+            Type t = unboxedTypes[i] instanceof PrimType 
+                    ? new SootTypeType(unboxedTypes[i]) : actualGenericTypes[i];
+            genericParamTypes.add(t);
+        }
+        Type genericReturnType = unboxedTypes[0] instanceof PrimType 
+                ? new SootTypeType(unboxedTypes[0]) : actualGenericTypes[0];
+
+        List<soot.Type> rawParamTypes = new ArrayList<>();
+        rawParamTypes.add(org_robovm_objc_ObjCBlock.getType());
+        rawParamTypes.addAll(Arrays.asList(unboxedTypes).subList(1, unboxedTypes.length));
         
         String name = "invoked";
-        String desc = getDescriptor(paramTypes, unboxedTypes[0]);
+        String signature = getGenericSignature(genericParamTypes, genericReturnType);
+        String desc = getDescriptor(rawParamTypes, unboxedTypes[0]);
         
-        MethodVisitor mv = cw.visitMethod(ACC_PRIVATE | ACC_STATIC, name, desc, null, null);
+        MethodVisitor mv = cw.visitMethod(ACC_PRIVATE | ACC_STATIC, name, desc, signature, null);
         mv.visitAnnotation(CALLBACK, true).visitEnd();
 
         for (String s : targetMethodAnnotations[0]) {
@@ -522,7 +551,7 @@ public class ObjCBlockPlugin extends AbstractCompilerPlugin {
         mv.visitMethodInsn(INVOKEVIRTUAL, "org/robovm/objc/ObjCBlock", "object", "()Ljava/lang/Object;");
         mv.visitTypeInsn(CHECKCAST, targetInterfaceName);
         
-        for (int i = 1, var = 1; i < actualTypes.length; i++, var++) {
+        for (int i = 1, var = 1; i < actualRawTypes.length; i++, var++) {
             soot.Type from = unboxedTypes[i];
             if (from == LongType.v()) {
                 mv.visitVarInsn(LLOAD, var);
@@ -540,7 +569,7 @@ public class ObjCBlockPlugin extends AbstractCompilerPlugin {
                 mv.visitVarInsn(ALOAD, var);
             }
             
-            soot.Type to = actualTypes[i];
+            soot.Type to = actualRawTypes[i];
             if (from != to) {
                 // Box the value on the top of the stack.
                 String boxDesc = getDescriptor(Collections.singletonList(from), to);
@@ -555,10 +584,10 @@ public class ObjCBlockPlugin extends AbstractCompilerPlugin {
         mv.visitMethodInsn(INVOKEINTERFACE, targetInterfaceName, 
                 targetMethod.getName(), getDescriptor(targetMethod));
 
-        if (unboxedTypes[0] != actualTypes[0]) {
-            mv.visitTypeInsn(CHECKCAST, getInternalName(actualTypes[0]));
+        if (unboxedTypes[0] != actualRawTypes[0]) {
+            mv.visitTypeInsn(CHECKCAST, getInternalName(actualRawTypes[0]));
             // Unbox the value on the top of the stack.
-            String unboxDesc = getDescriptor(Collections.singletonList(actualTypes[0]), unboxedTypes[0]);
+            String unboxDesc = getDescriptor(Collections.singletonList(actualRawTypes[0]), unboxedTypes[0]);
             usedUnboxMethods.add(unboxDesc);
             mv.visitMethodInsn(INVOKESTATIC, owner, "unbox", unboxDesc);
         }
@@ -581,14 +610,32 @@ public class ObjCBlockPlugin extends AbstractCompilerPlugin {
         mv.visitEnd();
     }
     
+    private String getGenericSignature(List<Type> genericParamTypes, Type genericReturnType) {
+        StringBuilder sb = new StringBuilder();
+        sb.append("(");
+        for (Type t : genericParamTypes) {
+            sb.append(t.toGenericSignature());
+        }
+        sb.append(")");
+        sb.append(genericReturnType.toGenericSignature());
+        String s = sb.toString();
+        if (s.contains("<")) {
+            return s;
+        }
+        // Not a generic signature.
+        return null;
+    }
+
     private void generateTargetMethod(String owner, SootMethod targetMethod, 
-            soot.Type[] actualTypes, soot.Type[] unboxedTypes, 
+            Type[] actualGenericTypes, soot.Type[] actualRawTypes, soot.Type[] unboxedTypes, 
             Set<String> usedBoxMethods, Set<String> usedUnboxMethods, ClassWriter cw) {
 
         String name = targetMethod.getName();
+        String signature = getGenericSignature(
+                Arrays.asList(actualGenericTypes).subList(1, actualGenericTypes.length), actualGenericTypes[0]);
         String desc = getDescriptor(targetMethod);
         
-        MethodVisitor mv = cw.visitMethod(ACC_PUBLIC, name, desc, null, null);
+        MethodVisitor mv = cw.visitMethod(ACC_PUBLIC, name, desc, signature, null);
         mv.visitCode();
         
         mv.visitVarInsn(ALOAD, 0);
@@ -597,8 +644,8 @@ public class ObjCBlockPlugin extends AbstractCompilerPlugin {
         mv.visitVarInsn(ALOAD, 0);
         mv.visitFieldInsn(GETFIELD, owner, "objCBlock", "L" + getInternalName(org_robovm_objc_ObjCBlock) + ";");
         
-        for (int i = 1, var = 1; i < actualTypes.length; i++, var++) {
-            soot.Type from = actualTypes[i];
+        for (int i = 1, var = 1; i < actualRawTypes.length; i++, var++) {
+            soot.Type from = actualRawTypes[i];
             if (from == LongType.v()) {
                 mv.visitVarInsn(LLOAD, var);
                 var++; // longs need 2 slots
@@ -636,22 +683,22 @@ public class ObjCBlockPlugin extends AbstractCompilerPlugin {
         mv.visitMethodInsn(INVOKESTATIC, owner, 
                 "invoke", getDescriptor(paramTypes, unboxedTypes[0]));
         
-        if (unboxedTypes[0] != actualTypes[0]) {
+        if (unboxedTypes[0] != actualRawTypes[0]) {
             // Box the value on the top of the stack.
-            String boxDesc = getDescriptor(Collections.singletonList(unboxedTypes[0]), actualTypes[0]);
+            String boxDesc = getDescriptor(Collections.singletonList(unboxedTypes[0]), actualRawTypes[0]);
             usedBoxMethods.add(boxDesc);
             mv.visitMethodInsn(INVOKESTATIC, owner, "box", boxDesc);
         }
         
-        if (actualTypes[0] == VoidType.v()) {
+        if (actualRawTypes[0] == VoidType.v()) {
             mv.visitInsn(RETURN);
-        } else if (actualTypes[0] == LongType.v()) {
+        } else if (actualRawTypes[0] == LongType.v()) {
             mv.visitInsn(LRETURN);
-        } else if (actualTypes[0] == FloatType.v()) {
+        } else if (actualRawTypes[0] == FloatType.v()) {
             mv.visitInsn(FRETURN);
-        } else if (actualTypes[0] == DoubleType.v()) {
+        } else if (actualRawTypes[0] == DoubleType.v()) {
             mv.visitInsn(DRETURN);
-        } else if (actualTypes[0] instanceof PrimType) {
+        } else if (actualRawTypes[0] instanceof PrimType) {
             mv.visitInsn(IRETURN);
         } else {
             mv.visitInsn(ARETURN);
@@ -789,21 +836,21 @@ public class ObjCBlockPlugin extends AbstractCompilerPlugin {
     }
    
     
-    protected static soot.Type[] resolveTargetMethodSignature(SootMethod blockMethod, 
+    protected static Type[] resolveTargetMethodSignature(SootMethod blockMethod, 
             SootMethod targetMethod, Type blockParamType) {
         
         if (targetMethod.getTag("SignatureTag") == null) {
             // Not a generic method.
-            soot.Type[] result = new soot.Type[targetMethod.getParameterCount() + 1];
-            result[0] = targetMethod.getReturnType();
+            Type[] result = new Type[targetMethod.getParameterCount() + 1];
+            result[0] = new SootTypeType(targetMethod.getReturnType());
             for (int i = 1; i < result.length; i++) {
-                result[i] = targetMethod.getParameterType(i - 1);
+                result[i] = new SootTypeType(targetMethod.getParameterType(i - 1));
             }
             return result;
         }
         
         SootClassType base = new SootClassType(targetMethod.getDeclaringClass());
-        TypeVariable<SootClassType>[] typeParameters = base.getTypeParameters();
+        TypeVariable<?>[] typeParameters = base.getTypeParameters();
         SootClassType offspring = null;
         Type[] actualArgs = null;
         if (blockParamType instanceof SootClassType) {
@@ -816,7 +863,7 @@ public class ObjCBlockPlugin extends AbstractCompilerPlugin {
         
         Type[] resolvedArgs = resolveActualTypeArgs(offspring, base, actualArgs);
         
-        soot.Type[] result = new soot.Type[targetMethod.getParameterCount() + 1];
+        Type[] result = new Type[targetMethod.getParameterCount() + 1];
         SootMethodType targetMethodType = new SootMethodType(targetMethod);
         result[0] = resolveMethodType(blockMethod, -1, targetMethodType.getGenericReturnType(), 
                 resolvedArgs, typeParameters);
@@ -830,15 +877,18 @@ public class ObjCBlockPlugin extends AbstractCompilerPlugin {
         return result;
     }
     
-    private static soot.Type resolveMethodType(SootMethod blockMethod, int paramIndex,
+    /**
+     * 
+     */
+    private static Type resolveMethodType(SootMethod blockMethod, int paramIndex,
             Type t, Type[] resolvedArgs, 
-            TypeVariable<SootClassType>[] typeParameters) {
+            TypeVariable<?>[] typeParameters) {
         
         if (t instanceof SootClassType) {
-            return ((SootClassType) t).getSootClass().getType();
+            return t;
         }
         if (t instanceof SootTypeType) {
-            return ((SootTypeType) t).getSootType();
+            return t;
         }
         if (t instanceof TypeVariable) {
             int idx = indexOf(((TypeVariable<?>) t).getName(), typeParameters);
@@ -865,15 +915,19 @@ public class ObjCBlockPlugin extends AbstractCompilerPlugin {
                     resolvedArgs, typeParameters);
         }
         if (t instanceof ParameterizedType) {
-            return resolveMethodType(blockMethod, paramIndex, 
-                    ((ParameterizedType) t).getRawType(), 
-                    resolvedArgs, typeParameters);
+            ImplForType pType = (ImplForType) t;
+            ListOfTypes types = new ListOfTypes(pType.getActualTypeArguments().length);
+            for (Type arg : pType.getActualTypeArguments()) {
+                types.add(resolveMethodType(blockMethod, paramIndex, arg, resolvedArgs, typeParameters));
+            }
+            return new ImplForType((ImplForType) pType.getOwnerType(), 
+                    pType.getRawType().getSootClass().getName(), types);
         }
         if (t instanceof GenericArrayType) {
-            soot.Type componentType = resolveMethodType(blockMethod, paramIndex,
+            Type componentType = resolveMethodType(blockMethod, paramIndex,
                     ((GenericArrayType) t).getGenericComponentType(), 
                     resolvedArgs, typeParameters);
-            return componentType.makeArrayType();
+            return new ImplForArray(componentType);
         }
         
         throw new CompilerException("Unresolved type " + t 
@@ -881,8 +935,39 @@ public class ObjCBlockPlugin extends AbstractCompilerPlugin {
                 + (paramIndex == -1 ? "return type" : "parameter " + (paramIndex + 1)) 
                 + " of @Block method " + blockMethod);
     }
+
+    private static soot.Type[] toRawTypes(Type[] t) {
+        soot.Type[] result = new soot.Type[t.length];
+        for (int i = 0; i < t.length; i++) {
+            result[i] = toRawType(t[i]);
+        }
+        return result;
+    }
+
+    private static soot.Type toRawType(Type t) {
+        if (t instanceof SootClassType) {
+            return ((SootClassType) t).getSootClass().getType();
+        }
+        if (t instanceof SootTypeType) {
+            return ((SootTypeType) t).getSootType();
+        }
+        if (t instanceof WildcardType) {
+            Type[] upperBounds = ((WildcardType) t).getUpperBounds();
+            return toRawType(upperBounds[0]);
+        }
+        if (t instanceof ParameterizedType) {
+            return toRawType(((ParameterizedType) t).getRawType());
+        }
+        if (t instanceof GenericArrayType) {
+            soot.Type componentType = toRawType(((GenericArrayType) t).getGenericComponentType());
+            return componentType.makeArrayType();
+        }
+        // Should never end up here
+        throw new CompilerException("Failed to get the raw type from a " 
+                + t.getClass().getName() + " (" +t + ")");
+    }
     
-    private static int indexOf(String name, TypeVariable<SootClassType>[] typeParameters) {
+    private static int indexOf(String name, TypeVariable<?>[] typeParameters) {
         for (int i = 0; i < typeParameters.length; i++) {
             if (name.equals(typeParameters[i].getName())) {
                 return i;
@@ -907,7 +992,7 @@ public class ObjCBlockPlugin extends AbstractCompilerPlugin {
     protected static Type[] resolveActualTypeArgs(SootClassType offspring, SootClassType base, 
             Type... actualArgs) {
 
-        TypeVariable<SootClassType>[] typeParameters = offspring.getTypeParameters();
+        TypeVariable<?>[] typeParameters = offspring.getTypeParameters();
         //  If actual types are omitted, the type parameters will be used instead.
         if (actualArgs.length == 0) {
             actualArgs = typeParameters;
@@ -958,20 +1043,9 @@ public class ObjCBlockPlugin extends AbstractCompilerPlugin {
                 if (rawType instanceof SootClassType) {
                     SootClassType rawTypeClass = (SootClassType) rawType;
                     if (base.isAssignableFrom(rawTypeClass)) {
-
-                        // loop through all type arguments and replace type variables with the actually known types
-                        List<Type> resolvedTypes = new LinkedList<Type>();
-                        for (Type t : parameterizedType.getActualTypeArguments()) {
-                            if (t instanceof TypeVariable<?>) {
-                                Type resolvedType = typeVariables.get(((TypeVariable<?>) t).getName());
-                                resolvedTypes.add(resolvedType != null ? resolvedType : t);
-                            } else {
-                                resolvedTypes.add(t);
-                            }
-                        }
-
+                        parameterizedType = resolveParameterizedType(parameterizedType, typeVariables);
                         Type[] result = resolveActualTypeArgs(rawTypeClass, base, 
-                                resolvedTypes.toArray(new Type[] {}));
+                                parameterizedType.getActualTypeArguments());
                         if (result != null) {
                             return result;
                         }
@@ -982,5 +1056,30 @@ public class ObjCBlockPlugin extends AbstractCompilerPlugin {
 
         // we have a result if we reached the base class.
         return offspring.equals(base) ? actualArgs : null;
+    }
+    
+    /**
+     * Loops through all type arguments and replaces type variables with the
+     * actually known types.
+     */
+    private static ParameterizedType resolveParameterizedType(ParameterizedType parameterizedType, Map<String, Type> typeVariables) {
+        List<Type> resolvedTypes = new LinkedList<Type>();
+        for (Type t : parameterizedType.getActualTypeArguments()) {
+            if (t instanceof TypeVariable<?>) {
+                Type resolvedType = typeVariables.get(((TypeVariable<?>) t).getName());
+                if (resolvedType instanceof ParameterizedType) {
+                    resolvedType = resolveParameterizedType((ParameterizedType) resolvedType, typeVariables);
+                }
+                resolvedTypes.add(resolvedType != null ? resolvedType : t);
+            } else if (t instanceof ParameterizedType) {
+                ParameterizedType pType = (ParameterizedType) t;
+                resolvedTypes.add(resolveParameterizedType(pType, typeVariables));
+            } else {
+                resolvedTypes.add(t);
+            }
+        }
+        ListOfTypes types = new ListOfTypes(resolvedTypes.toArray(new Type[resolvedTypes.size()]));
+        return new ImplForType(null, 
+                parameterizedType.getRawType().toString(), types);
     }
 }

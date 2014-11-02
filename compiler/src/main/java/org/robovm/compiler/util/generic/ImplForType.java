@@ -16,7 +16,6 @@
 
 package org.robovm.compiler.util.generic;
 
-import soot.SootResolver;
 
 public final class ImplForType implements ParameterizedType {
     private final ListOfTypes args;
@@ -52,7 +51,7 @@ public final class ImplForType implements ParameterizedType {
 
     public SootClassType getRawType() {
         if (rawType == null) {
-            rawType = new SootClassType(SootResolver.v().makeClassRef(rawTypeName));
+            rawType = new SootClassType(rawTypeName);
         }
         return rawType;
     }
@@ -74,5 +73,42 @@ public final class ImplForType implements ParameterizedType {
             sb.append("<").append(args).append(">");
         }
         return sb.toString();
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (!(obj instanceof ImplForType)) {
+            return false;
+        }
+        ImplForType that = (ImplForType) obj;
+        return this.args.equals(that.args) && this.getRawType().equals(that.getRawType());
+    }
+    
+    private String getSignature() {
+        StringBuilder sb = new StringBuilder();
+        Type declaringClass = getOwnerType();
+        if (declaringClass instanceof ImplForType) {
+            ImplForType owner = (ImplForType) declaringClass;
+            sb.append(owner.getSignature());
+            sb.append('.');
+            String innerName = rawTypeName.substring(owner.rawTypeName.length() + 1);
+            sb.append(innerName);
+        } else {
+            sb.append(rawTypeName.replace('.', '/'));
+        }
+        Type[] typeArgs = getActualTypeArguments();
+        if (typeArgs.length > 0) {
+            sb.append("<");
+            for (Type ta : typeArgs) {
+                sb.append(ta.toGenericSignature());
+            }
+            sb.append(">");
+        }
+        return sb.toString();
+    }
+    
+    @Override
+    public String toGenericSignature() {
+        return "L" + getSignature() + ";";
     }
 }

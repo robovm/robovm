@@ -16,6 +16,7 @@
  */
 package org.robovm.compiler.util.generic;
 
+
 /**
  * Replaces {@link java.lang.reflect.GenericArrayType}.
  */

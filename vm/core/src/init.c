@@ -28,7 +28,6 @@
 #include <unistd.h>
 
 #define LOG_TAG "core.init"
-jboolean attachFlag = FALSE;
 ClassLoader* systemClassLoader = NULL;
 static Class* java_lang_Daemons = NULL;
 static Method* java_lang_Daemons_start = NULL;
@@ -142,8 +141,11 @@ static void parseArg(char* arg, Options* options) {
         }
     } else if (startsWith(arg, "EnableGCHeapStats")) {
         options->enableGCHeapStats = TRUE;
+    } else if (startsWith(arg, "EnableHooks")) {
+        options->enableHooks = TRUE;
     } else if (startsWith(arg, "WaitForAttach")) {
         options->waitForAttach = TRUE;
+        options->enableHooks = TRUE; // WaitForAttach also enables hooks
     } else if (startsWith(arg, "PrintPID")) {
         options->printPID = TRUE;
     } else if (startsWith(arg, "D")) {
@@ -237,6 +239,9 @@ Env* rvmCreateEnv(VM* vm) {
 Env* rvmStartup(Options* options) {
     // TODO: Error handling
 
+    TRACE("Initializing logging");
+    if (!rvmInitLog(options)) return NULL;
+
 #if defined(IOS) && (defined(RVM_ARMV7) || defined(RVM_THUMBV7))
     // Enable IEEE-754 denormal support.
     // Without this the VFP treats numbers that are close to zero as zero itself.
@@ -252,15 +257,8 @@ Env* rvmStartup(Options* options) {
         fprintf(stderr, "[DEBUG] %s: pid=%d\n", LOG_TAG, pid);
     }
 
-    // If wait for attaching was requested, we wait for another process
-    // to overwrite the attachFlag. We wait for 15 seconds tops.
-    // TODO: make the timeout configurable
     if(options->waitForAttach) {
-        int i = 0;
-        while(attachFlag == FALSE && (i++) < 15) {
-            sleep(1);
-            fprintf(stderr, "[DEBUG] %s: Waiting for debugger to attach\n", LOG_TAG);
-        }
+        rvmHookWaitForAttach(options);
     }
 
     TRACE("Initializing GC");
@@ -285,8 +283,6 @@ Env* rvmStartup(Options* options) {
     if (!initClasspathEntries(env, options->basePath, options->rawClasspath, &options->classpath)) return NULL;
 
     // Call init on modules
-    TRACE("Initializing logging");
-    if (!rvmInitLog(env)) return NULL;
     TRACE("Initializing classes");
     if (!rvmInitClasses(env)) return NULL;
     TRACE("Initializing memory");
@@ -411,7 +407,10 @@ jboolean rvmRun(Env* env) {
                             break;
                         }
                     }
-                    if (args) rvmCallVoidClassMethod(env, clazz, method, args);
+                    if (args) {
+                        rvmHookBeforeAppEntryPoint(env, clazz, method, args);
+                        rvmCallVoidClassMethod(env, clazz, method, args);
+                    }
                 }
             }
         }

@@ -19,6 +19,7 @@ package org.robovm.apple.foundation;
 import java.io.*;
 import java.nio.*;
 import java.util.*;
+
 import org.robovm.objc.*;
 import org.robovm.objc.annotation.*;
 import org.robovm.objc.block.*;
@@ -67,7 +68,7 @@ import org.robovm.apple.dispatch.*;
             } else if (o instanceof String) {
                 args.add(new NSString((String)o));
             } else if (o instanceof NSPredicateKeyPath) {
-                args.add(new NSString(((NSPredicateKeyPath) o).value()));
+                args.add(((NSPredicateKeyPath) o).value());
             } else if (o instanceof Collection) {
                 Collection<?> c = (Collection<?>) o;
                 NSArray<NSString> a = new NSMutableArray<>();

@@ -17,6 +17,6 @@ package org.robovm.apple.foundation;
 
 public abstract class NSPredicateKeyPath {
 
-    public abstract String value();
+    public abstract NSString value();
     
 }

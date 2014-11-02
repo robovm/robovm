@@ -94,7 +94,7 @@ import org.robovm.apple.foundation.*;
     public static final HKPredicateKeyPath Quantity = new HKPredicateKeyPath("QuantityValue");
     
     
-    private final LazyGlobalValue<String> lazyGlobalValue;
+    private final LazyGlobalValue<NSString> lazyGlobalValue;
     
     private HKPredicateKeyPath(String getterName) {
         lazyGlobalValue = new LazyGlobalValue<>(getClass(), getterName);
@@ -103,7 +103,7 @@ import org.robovm.apple.foundation.*;
     /*<properties>*//*</properties>*/
     /*<members>*//*</members>*/
     @Override
-    public String value() {
+    public NSString value() {
         return lazyGlobalValue.value();
     }
     /*<methods>*/
@@ -111,66 +111,66 @@ import org.robovm.apple.foundation.*;
      * @since Available in iOS 8.0 and later.
      */
     @GlobalValue(symbol="HKPredicateKeyPathUUID", optional=true)
-    protected static native String UUIDValue();
+    protected static native NSString UUIDValue();
     /**
      * @since Available in iOS 8.0 and later.
      */
     @GlobalValue(symbol="HKPredicateKeyPathSource", optional=true)
-    protected static native String SourceValue();
+    protected static native NSString SourceValue();
     /**
      * @since Available in iOS 8.0 and later.
      */
     @GlobalValue(symbol="HKPredicateKeyPathMetadata", optional=true)
-    protected static native String MetadataValue();
+    protected static native NSString MetadataValue();
     /**
      * @since Available in iOS 8.0 and later.
      */
     @GlobalValue(symbol="HKPredicateKeyPathCorrelation", optional=true)
-    protected static native String CorrelationValue();
+    protected static native NSString CorrelationValue();
     /**
      * @since Available in iOS 8.0 and later.
      */
     @GlobalValue(symbol="HKPredicateKeyPathWorkout", optional=true)
-    protected static native String WorkoutValue();
+    protected static native NSString WorkoutValue();
     /**
      * @since Available in iOS 8.0 and later.
      */
     @GlobalValue(symbol="HKPredicateKeyPathStartDate", optional=true)
-    protected static native String StartDateValue();
+    protected static native NSString StartDateValue();
     /**
      * @since Available in iOS 8.0 and later.
      */
     @GlobalValue(symbol="HKPredicateKeyPathEndDate", optional=true)
-    protected static native String EndDateValue();
+    protected static native NSString EndDateValue();
     /**
      * @since Available in iOS 8.0 and later.
      */
     @GlobalValue(symbol="HKPredicateKeyPathWorkoutDuration", optional=true)
-    protected static native String WorkoutDurationValue();
+    protected static native NSString WorkoutDurationValue();
     /**
      * @since Available in iOS 8.0 and later.
      */
     @GlobalValue(symbol="HKPredicateKeyPathWorkoutTotalDistance", optional=true)
-    protected static native String WorkoutTotalDistanceValue();
+    protected static native NSString WorkoutTotalDistanceValue();
     /**
      * @since Available in iOS 8.0 and later.
      */
     @GlobalValue(symbol="HKPredicateKeyPathWorkoutTotalEnergyBurned", optional=true)
-    protected static native String WorkoutTotalEnergyBurnedValue();
+    protected static native NSString WorkoutTotalEnergyBurnedValue();
     /**
      * @since Available in iOS 8.0 and later.
      */
     @GlobalValue(symbol="HKPredicateKeyPathWorkoutType", optional=true)
-    protected static native String WorkoutTypeValue();
+    protected static native NSString WorkoutTypeValue();
     /**
      * @since Available in iOS 8.0 and later.
      */
     @GlobalValue(symbol="HKPredicateKeyPathCategoryValue", optional=true)
-    protected static native String CategoryValueValue();
+    protected static native NSString CategoryValueValue();
     /**
      * @since Available in iOS 8.0 and later.
      */
     @GlobalValue(symbol="HKPredicateKeyPathQuantity", optional=true)
-    protected static native String QuantityValue();
+    protected static native NSString QuantityValue();
     /*</methods>*/
 }

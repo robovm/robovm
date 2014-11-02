@@ -455,7 +455,7 @@ values:
     HKPredicateKeyPath(.*):
         class: HKPredicateKeyPath
         name: "#{g[0]}Value"
-        type: String
+        type: NSString
         visibility: protected
 
     HKSampleSortIdentifier(.*):

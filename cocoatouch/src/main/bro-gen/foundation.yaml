@@ -152,7 +152,7 @@ enums:
     NSURLBookmarkResolutionOptions: {}
     NSURLCacheStoragePolicy: { first: NSURLCacheStorageAllowed, marshaler: ValuedEnum.AsMachineSizedUIntMarshaler }
     NSURLCredentialPersistence: {}
-    NSURLError: { first: NSURLErrorUnknown }
+    NSURLErrorCode: { first: NSURLErrorUnknown }
     NSURLErrorCancelledReason: { first: NSURLErrorCancelledReasonUserForceQuitApplication }
     NSURLRelationship: {}
     NSURLRequestCachePolicy: { first: NSURLRequestUseProtocolCachePolicy, marshaler: ValuedEnum.AsMachineSizedUIntMarshaler }
@@ -163,6 +163,9 @@ enums:
     NSVolumeEnumerationOptions: {}
     NSXMLParserError: { suffix: Error }
     NSXMLParserExternalEntityResolvingPolicy: {}
+
+categories:
+    NSErrorRecoveryAttempting@NSObject: {protocol: true}
 
 classes:
     Foundation:
@@ -199,6 +202,13 @@ classes:
         extends: NSError
     NSCarbonError:
         extends: NSError
+    NSURLError:
+        extends: NSError
+    
+    NSCocoaErrorUserInfoKey:
+        extends: NSErrorUserInfoKey
+    NSURLErrorUserInfoKey:
+        extends: NSErrorUserInfoKey
 
     NSArray: # DONE
         protocols: [NSPropertyList, List<T>]
@@ -831,13 +841,19 @@ classes:
         properties:
             'localizedRecoveryOptions':
                 type: '@org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String>'
+            'userInfo':
+                type: NSErrorUserInfo
+            'recoveryAttempter':
+                type: NSErrorRecoveryAttempting
         methods:
             '+errorWithDomain:code:userInfo:':
                 exclude: true
             '-initWithDomain:code:userInfo:':
                 parameters:
+                    domain:
+                        type: NSString
                     dict:
-                        type: 'NSDictionary<NSString, ?>'
+                        type: NSErrorUserInfo
     NSException: # DONE
         skip_def_constructor: true
         properties:
@@ -3306,7 +3322,12 @@ protocols:
                 property: true
             '-exceptionDuringOperation:error:leftOperand:rightOperand:':
                 trim_after_first_colon: true
-    NSErrorRecoveryAttempting: {} # DONE
+    NSErrorRecoveryAttempting: # DONE
+        methods:
+            '-attemptRecoveryFromError:optionIndex:delegate:didRecoverSelector:contextInfo:':
+                name: attemptRecoveryFromError
+            '-attemptRecoveryFromError:optionIndex:':
+                name: attemptRecoveryFromError
     NSExtensionRequestHandling: # DONE
         methods:
             '-beginRequestWithExtensionContext:':
@@ -3692,7 +3713,7 @@ functions:
     NS(SearchPathForDirectoriesInDomains):
         class: NSPathUtilities
         name: "get#{g[0]}"
-        return_type: "@org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String>"
+        return_type: '@org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String>'
 
     NS(Intersection|Union)Range:
         class: NSRange
@@ -3700,19 +3721,19 @@ functions:
         name: "#{g[0]}"
     NSRangeFromString:
         class: NSRange
-        name: "fromString"
+        name: fromString
     NSStringFromRange:
         class: NSRange
         static: true
         visibility: protected
-        name: "toString"
+        name: toString
 
     NSZoneName:
         class: NSZone
-        name: "getName"
+        name: getName
     NSSetZoneName:
         class: NSZone
-        name: "setName"
+        name: setName
     NS(Create|Recycle)Zone:
         class: NSZone
         name: "#{g[0]}"
@@ -3744,6 +3765,46 @@ values:
         exclude: true
     NSAssertionHandlerKey:
         exclude: true
+    NSErrorFailingURLStringKey:
+        exclude: true
+
+    # NSError
+    NSCocoaErrorDomain:
+        class: NSCocoaError
+        name: getClassDomain
+    NSPOSIXErrorDomain:
+        class: NSPOSIXError
+        name: getClassDomain
+    NSOSStatusErrorDomain:
+        class: NSCarbonError
+        name: getClassDomain
+    NSMachErrorDomain:
+        class: NSMachError
+        name: getClassDomain
+    NSURLErrorDomain:
+        class: NSURLError
+        name: getClassDomain
+    
+    NS((LocalizedDescription|FilePathError|StringEncodingError)Key):
+        class: NSCocoaErrorUserInfoKey
+        name: "#{g[0]}"
+        type: NSString
+        visibility: protected
+    NS((UnderlyingError|URLError|LocalizedFailureReasonError|LocalizedRecoverySuggestionError)Key):
+        class: NSCocoaErrorUserInfoKey
+        name: "#{g[0]}"
+        type: NSString
+        visibility: protected
+    NS((LocalizedRecoveryOptionsError|RecoveryAttempterError|HelpAnchorError)Key):
+        class: NSCocoaErrorUserInfoKey
+        name: "#{g[0]}"
+        type: NSString
+        visibility: protected
+    NSURLError((FailingURLError|FailingURLStringError|FailingURLPeerTrustError)Key):
+        class: NSURLErrorUserInfoKey
+        name: "#{g[0]}"
+        type: NSString
+        visibility: protected
 
     # NSBundle
     NSBundle(DidLoadNotification):
@@ -4130,37 +4191,6 @@ values:
         class: NSValueTransformerName
         name: "#{g[0]}Value"
         visibility: protected
-
-    # NSError
-    NSCocoaErrorDomain:
-        class: NSCocoaError
-        name: getClassDomain
-    NSPOSIXErrorDomain:
-        class: NSPOSIXError
-        name: getClassDomain
-    NSOSStatusErrorDomain:
-        class: NSCarbonError
-        name: getClassDomain
-    NSMachErrorDomain:
-        class: NSMachError
-        name: getClassDomain
-
-
-    NS((LocalizedDescription|ErrorFailingURLString|FilePathError|StringEncodingError)Key):
-        name: "#{g[0]}"
-        type: NSString
-    NS((UnderlyingError|URLError|LocalizedFailureReasonError|LocalizedRecoverySuggestionError)Key):
-        name: "#{g[0]}"
-        type: NSString
-    NS((LocalizedRecoveryOptionsError|RecoveryAttempterError|HelpAnchorError|URLErrorFailingURLError)Key):
-        name: "#{g[0]}"
-        type: NSString
-    NS((URLErrorFailingURLStringError|URLErrorFailingURLPeerTrustError)Key):
-        name: "#{g[0]}"
-        type: NSString
-    NS(NetServicesErrorCode):
-        name: "#{g[0]}"
-        type: NSString
 
     NS(.*):
         class: Foundation

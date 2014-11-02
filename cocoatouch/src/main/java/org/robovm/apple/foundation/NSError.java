@@ -55,7 +55,7 @@ import org.robovm.apple.dispatch.*;
             if (nsErrorClass != null) {
                 cls = nsErrorClass;
             }
-            NSError o = (NSError) NativeObject.Marshaler.toObject(cls, handle, flags);
+            NSError o = (NSError) ObjCObject.toObjCObject(cls, handle, true);
             return o;
         }
         @MarshalsPointer
@@ -95,9 +95,12 @@ import org.robovm.apple.dispatch.*;
     /*<ptr>*/public static class NSErrorPtr extends Ptr<NSError, NSErrorPtr> {}/*</ptr>*/
     /*<bind>*/static { ObjCRuntime.bind(NSError.class); }/*</bind>*/
     /*<constants>*//*</constants>*/
+    public NSError(String domain, @MachineSizedSInt long code, NSErrorUserInfo dict) {
+        this(new NSString(domain), code, dict);
+    }
     /*<constructors>*/
     protected NSError(SkipInit skipInit) { super(skipInit); }
-    public NSError(String domain, @MachineSizedSInt long code, NSDictionary<NSString, ?> dict) { super((SkipInit) null); initObject(initWithDomain$code$userInfo$(domain, code, dict)); }
+    public NSError(NSString domain, @MachineSizedSInt long code, NSErrorUserInfo dict) { super((SkipInit) null); initObject(initWithDomain$code$userInfo$(domain, code, dict)); }
     /*</constructors>*/
     
     private static final Selector domain = Selector.register("domain");
@@ -113,7 +116,7 @@ import org.robovm.apple.dispatch.*;
     @Property(selector = "code")
     public native @MachineSizedSInt long getCode();
     @Property(selector = "userInfo")
-    public native NSDictionary<?, ?> getUserInfo();
+    public native NSErrorUserInfo getUserInfo();
     @Property(selector = "localizedDescription")
     public native String getLocalizedDescription();
     @Property(selector = "localizedFailureReason")
@@ -123,13 +126,18 @@ import org.robovm.apple.dispatch.*;
     @Property(selector = "localizedRecoveryOptions")
     public native @org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String> getLocalizedRecoveryOptions();
     @Property(selector = "recoveryAttempter")
-    public native NSObject getRecoveryAttempter();
+    public native NSErrorRecoveryAttempting getRecoveryAttempter();
     @Property(selector = "helpAnchor")
     public native String getHelpAnchor();
     /*</properties>*/
     /*<members>*//*</members>*/
+    public NSURL getURL() {
+        NSErrorUserInfo info = getUserInfo();
+        if (info == null) return null;
+        return info.getURL();
+    }
     /*<methods>*/
     @Method(selector = "initWithDomain:code:userInfo:")
-    protected native @Pointer long initWithDomain$code$userInfo$(String domain, @MachineSizedSInt long code, NSDictionary<NSString, ?> dict);
+    protected native @Pointer long initWithDomain$code$userInfo$(NSString domain, @MachineSizedSInt long code, NSErrorUserInfo dict);
     /*</methods>*/
 }

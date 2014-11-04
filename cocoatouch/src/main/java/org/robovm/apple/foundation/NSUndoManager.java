@@ -146,7 +146,9 @@ import org.robovm.apple.dispatch.*;
     
     /*<ptr>*/public static class NSUndoManagerPtr extends Ptr<NSUndoManager, NSUndoManagerPtr> {}/*</ptr>*/
     /*<bind>*/static { ObjCRuntime.bind(NSUndoManager.class); }/*</bind>*/
-    /*<constants>*//*</constants>*/
+    /*<constants>*/
+    public static final int CloseGroupingRunLoopOrdering = 350000;
+    /*</constants>*/
     /*<constructors>*/
     public NSUndoManager() {}
     protected NSUndoManager(SkipInit skipInit) { super(skipInit); }

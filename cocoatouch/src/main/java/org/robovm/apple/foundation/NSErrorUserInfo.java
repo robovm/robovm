@@ -45,10 +45,9 @@ import org.robovm.apple.dispatch.*;
     /*<implements>*//*</implements>*/ {
 
     public static class Marshaler {
-        @SuppressWarnings("unchecked")
         @MarshalsPointer
         public static NSErrorUserInfo toObject(Class<NSErrorUserInfo> cls, long handle, long flags) {
-            NSDictionary<NSString, NSObject> o = (NSDictionary<NSString, NSObject>) NSObject.Marshaler.toObject(NSDictionary.class, handle, flags);
+            CFDictionary o = (CFDictionary) CFType.Marshaler.toObject(CFDictionary.class, handle, flags);
             if (o == null) {
                 return null;
             }
@@ -59,26 +58,26 @@ import org.robovm.apple.dispatch.*;
             if (o == null) {
                 return 0L;
             }
-            return NSObject.Marshaler.toNative(o.data, flags);
+            return CFType.Marshaler.toNative(o.data, flags);
         }
     }
     
     /*<ptr>*/
     /*</ptr>*/
-    private NSDictionary<NSString, NSObject> data;
+    private CFDictionary data;
     
-    protected NSErrorUserInfo(NSDictionary<NSString, NSObject> data) {
+    protected NSErrorUserInfo(CFDictionary data) {
         this.data = data;
     }
     public NSErrorUserInfo() {
-        this.data = new NSMutableDictionary<>();
+        this.data = CFMutableDictionary.create();
     }
     /*<bind>*/static { Bro.bind(NSErrorUserInfo.class); }/*</bind>*/
     /*<constants>*//*</constants>*/
     /*<constructors>*//*</constructors>*/
     /*<properties>*//*</properties>*/
     /*<members>*//*</members>*/
-    public NSDictionary<NSString, NSObject> getDictionary() {
+    public CFDictionary getDictionary() {
         return data;
     }
     
@@ -91,10 +90,16 @@ import org.robovm.apple.dispatch.*;
         return this;
     }
     public NSObject get(String attribute) {
-        return data.get(new NSString(attribute));
+        return data.get(new NSString(attribute), NSObject.class);
+    }
+    public <T extends NativeObject> T get(String attribute, Class<T> type) {
+        return data.get(new NSString(attribute), type);
     }
     public NSObject get(NSErrorUserInfoKey attribute) {
-        return data.get(attribute.value());
+        return data.get(attribute.value(), NSObject.class);
+    }
+    public <T extends NativeObject> T get(NSErrorUserInfoKey attribute, Class<T> type) {
+        return data.get(attribute.value(), type);
     }
     public boolean contains(String attribute) {
         return data.containsKey(new NSString(attribute));

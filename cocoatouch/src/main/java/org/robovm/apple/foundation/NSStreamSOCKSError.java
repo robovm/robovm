@@ -36,32 +36,28 @@ import org.robovm.apple.dispatch.*;
 /*</imports>*/
 
 /*<javadoc>*/
-
 /*</javadoc>*/
-/*<annotations>*/@Marshaler(ValuedEnum.AsMachineSizedSIntMarshaler.class)/*</annotations>*/
-public enum /*<name>*/NSNetServicesError/*</name>*/ implements ValuedEnum {
-    /*<values>*/
-    UnknownError(-72000L),
-    CollisionError(-72001L),
-    NotFoundError(-72002L),
-    ActivityInProgress(-72003L),
-    BadArgumentError(-72004L),
-    CancelledError(-72005L),
-    InvalidError(-72006L),
-    TimeoutError(-72007L);
-    /*</values>*/
+/*<annotations>*/@Library("Foundation")/*</annotations>*/
+/*<visibility>*/public/*</visibility>*/ class /*<name>*/NSStreamSOCKSError/*</name>*/ 
+    extends /*<extends>*/NSError/*</extends>*/ 
+    /*<implements>*//*</implements>*/ {
 
-    private final long n;
-
-    private /*<name>*/NSNetServicesError/*</name>*/(long n) { this.n = n; }
-    public long value() { return n; }
-    public static /*<name>*/NSNetServicesError/*</name>*/ valueOf(long n) {
-        for (/*<name>*/NSNetServicesError/*</name>*/ v : values()) {
-            if (v.n == n) {
-                return v;
-            }
-        }
-        throw new IllegalArgumentException("No constant with value " + n + " found in " 
-            + /*<name>*/NSNetServicesError/*</name>*/.class.getName());
+    protected NSStreamSOCKSError(SkipInit skipInit) {
+        super(skipInit);
     }
+    
+    /*<ptr>*/
+    /*</ptr>*/
+    /*<bind>*/static { Bro.bind(NSStreamSOCKSError.class); }/*</bind>*/
+    /*<constants>*//*</constants>*/
+    /*<constructors>*//*</constructors>*/
+    /*<properties>*//*</properties>*/
+    /*<members>*//*</members>*/
+    /*<methods>*/
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
+    @GlobalValue(symbol="NSStreamSOCKSErrorDomain", optional=true)
+    public static native String getClassDomain();
+    /*</methods>*/
 }

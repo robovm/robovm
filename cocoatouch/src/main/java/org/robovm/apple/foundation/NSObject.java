@@ -241,12 +241,12 @@ import org.robovm.apple.dispatch.*;
         }
     }
     
-    protected void observeValue(String keyPath, NSObject object, NSDictionary<?, ?> change) {
+    protected void observeValue(String keyPath, NSObject object, NSKeyValueChangeInfo change) {
         
     }
     
     @Method(selector = "observeValueForKeyPath:ofObject:change:context:")
-    private void observeValueForKeyPath$ofObject$change$context$(String keyPath, NSObject object, NSDictionary<?, ?> change, VoidPtr context) {
+    private void observeValueForKeyPath$ofObject$change$context$(String keyPath, NSObject object, NSKeyValueChangeInfo change, VoidPtr context) {
         observeValue(keyPath, object, change);
     }
 
@@ -292,7 +292,7 @@ import org.robovm.apple.dispatch.*;
     @Method(selector = "setValue:forUndefinedKey:")
     public native void setValueForUndefinedKey(NSObject value, String key);
     @Method(selector = "setNilValueForKey:")
-    public native void setNilValueForKey(String key);
+    public native void setNullValueForKey(String key);
     @Method(selector = "dictionaryWithValuesForKeys:")
     public native NSDictionary<?, ?> getDictionaryWithValuesForKeys(NSArray<?> keys);
     @Method(selector = "setValuesForKeysWithDictionary:")

@@ -59,7 +59,9 @@ import org.robovm.apple.dispatch.*;
     
     /*<ptr>*/public static class NSDatePtr extends Ptr<NSDate, NSDatePtr> {}/*</ptr>*/
     /*<bind>*/static { ObjCRuntime.bind(NSDate.class); }/*</bind>*/
-    /*<constants>*//*</constants>*/
+    /*<constants>*/
+    public static final double TimeIntervalSince1970 = 978307200.0;
+    /*</constants>*/
     /*<constructors>*/
     public NSDate() {}
     protected NSDate(SkipInit skipInit) { super(skipInit); }

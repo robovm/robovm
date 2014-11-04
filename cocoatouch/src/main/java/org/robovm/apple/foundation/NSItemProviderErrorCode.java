@@ -36,29 +36,34 @@ import org.robovm.apple.dispatch.*;
 /*</imports>*/
 
 /*<javadoc>*/
+/**
+ * @since Available in iOS 8.0 and later.
+ */
 /*</javadoc>*/
-/*<annotations>*/@Library("Foundation")/*</annotations>*/
-/*<visibility>*/public/*</visibility>*/ class /*<name>*/NSXMLParserError/*</name>*/ 
-    extends /*<extends>*/NSError/*</extends>*/ 
-    /*<implements>*//*</implements>*/ {
+/*<annotations>*/@Marshaler(ValuedEnum.AsMachineSizedSIntMarshaler.class)/*</annotations>*/
+public enum /*<name>*/NSItemProviderErrorCode/*</name>*/ implements ValuedEnum {
+    /*<values>*/
+    Unknown(-1L),
+    ItemUnavailable(-1000L),
+    UnexpectedValueClass(-1100L);
+    /*</values>*/
 
-    protected NSXMLParserError(SkipInit skipInit) {
-        super(skipInit);
-    }
-    
-    /*<ptr>*/public static class NSXMLParserErrorPtr extends Ptr<NSXMLParserError, NSXMLParserErrorPtr> {}/*</ptr>*/
-    /*<bind>*/static { Bro.bind(NSXMLParserError.class); }/*</bind>*/
+    /*<bind>*/
+    /*</bind>*/
     /*<constants>*//*</constants>*/
-    /*<properties>*//*</properties>*/
-    /*<members>*//*</members>*/
-    public NSXMLParserErrorCode getErrorCode() {
-        return NSXMLParserErrorCode.valueOf(getCode());
+    /*<methods>*//*</methods>*/
+
+    private final long n;
+
+    private /*<name>*/NSItemProviderErrorCode/*</name>*/(long n) { this.n = n; }
+    public long value() { return n; }
+    public static /*<name>*/NSItemProviderErrorCode/*</name>*/ valueOf(long n) {
+        for (/*<name>*/NSItemProviderErrorCode/*</name>*/ v : values()) {
+            if (v.n == n) {
+                return v;
+            }
+        }
+        throw new IllegalArgumentException("No constant with value " + n + " found in " 
+            + /*<name>*/NSItemProviderErrorCode/*</name>*/.class.getName());
     }
-    /*<methods>*/
-    /**
-     * @since Available in iOS 2.0 and later.
-     */
-    @GlobalValue(symbol="NSXMLParserErrorDomain", optional=true)
-    public static native String getClassDomain();
-    /*</methods>*/
 }

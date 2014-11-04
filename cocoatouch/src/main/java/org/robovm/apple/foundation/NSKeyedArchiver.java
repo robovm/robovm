@@ -74,6 +74,12 @@ import org.robovm.apple.dispatch.*;
     }
     
     /*<methods>*/
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
+    @GlobalValue(symbol="NSKeyedArchiveRootObjectKey", optional=true)
+    public static native String ArchiveRootObjectKey();
+    
     @Method(selector = "initForWritingWithMutableData:")
     protected native @Pointer long initForWritingWithMutableData$(NSMutableData data);
     @Method(selector = "finishEncoding")

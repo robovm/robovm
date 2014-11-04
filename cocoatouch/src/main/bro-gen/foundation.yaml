@@ -104,6 +104,7 @@ enums:
     NSFormattingUnitStyle: {}
     NSHashTableOptions: { first: NSHashTableStrongMemory, bits: true, marshaler: Bits.AsMachineSizedIntMarshaler }
     NSHTTPCookieAcceptPolicy: {}
+    NSItemProviderErrorCode: { suffix: Error }
     NSJSONReadingOptions: {}
     NSJSONWritingOptions: { prefix: NSJSONWriting }
     NSKeyValueChange: {}
@@ -118,7 +119,7 @@ enums:
     NSMatchingFlags: {}
     NSMatchingOptions: {}
     NSNetServiceOptions: {}
-    NSNetServicesError: {}
+    NSNetServiceErrorCode: { first: NSNetServicesUnknownError, suffix: Error }
     NSNotificationCoalescing: { bits: true }
     NSNumberFormatterBehavior: {}
     NSNumberFormatterPadPosition: {}
@@ -161,7 +162,7 @@ enums:
     NSURLSessionResponseDisposition: {}
     NSURLSessionTaskState: {}
     NSVolumeEnumerationOptions: {}
-    NSXMLParserError: { suffix: Error }
+    NSXMLParserErrorCode: { first: NSXMLParserInternalError, suffix: Error }
     NSXMLParserExternalEntityResolvingPolicy: {}
 
 categories:
@@ -202,12 +203,24 @@ classes:
         extends: NSError
     NSCarbonError:
         extends: NSError
+    NSItemProviderError:
+        extends: NSError
+    NSStreamSocketSSLError:
+        extends: NSError
+    NSStreamSOCKSError:
+        extends: NSError
     NSURLError:
+        extends: NSError
+    NSXMLParserError:
         extends: NSError
     
     NSCocoaErrorUserInfoKey:
         extends: NSErrorUserInfoKey
     NSURLErrorUserInfoKey:
+        extends: NSErrorUserInfoKey
+    NSExtensionContextErrorUserInfoKey:
+        extends: NSErrorUserInfoKey
+    NSURLSessionErrorUserInfoKey:
         extends: NSErrorUserInfoKey
 
     NSArray: # DONE
@@ -2217,9 +2230,9 @@ classes:
             '-setValuesForKeysWithDictionary:':
                 name: setValuesForKeys
             '-setNilValueForKey:':
-                name: setNilValueForKey
+                name: setNullValueForKey
             '-setValue:forUndefinedKey:':
-                name: 'setValueForUndefinedKey'
+                name: setValueForUndefinedKey
             '-valueForKey(.*):':
                 name: 'getValueForKey#{g[0]}'
             '-dictionaryWithValuesForKeys:':
@@ -3468,12 +3481,18 @@ protocols:
                 name: didPublish
             '-netService:didNotPublish:':
                 name: didNotPublish
+                parameters:
+                    errorDict:
+                        type: NSNetServiceErrorInfo
             '-netServiceWillResolve:':
                 name: willResolve
             '-netServiceDidResolveAddress:':
                 name: didResolve
             '-netService:didNotResolve:':
                 name: didNotResolve
+                parameters:
+                    errorDict:
+                        type: NSNetServiceErrorInfo
             '-netServiceDidStop:':
                 name: didStop
             '-netService:didUpdateTXTRecordData:':
@@ -3684,7 +3703,7 @@ functions:
         exclude: true
     NSDecimal(.*):
         class: NSDecimal
-        name: "#{g[0]}"
+        name: '#{g[0]}'
         static: true
 
     # NSException
@@ -3692,33 +3711,27 @@ functions:
         exclude: true
     NS(.*UncaughtExceptionHandler):
         class: NSException
-        name: "#{g[0]}"
+        name: '#{g[0]}'
         visibility: private
 
     NS(.*ExtraRefCount.*):
         exclude: true
-#        class: NSObject
-#        name: "#{g[0]}"
-#        visibility: protected
     NS(ShouldRetainWithZone):
         exclude: true
-#        class: NSObject
-#        name: "#{g[0]}"
-#        visibility: protected
 
     # NSPathUtilities
     NS(UserName|FullUserName|HomeDirectoryForUser|HomeDirectory|TemporaryDirectory|OpenStepRootDirectory):
         class: NSPathUtilities
-        name: "get#{g[0]}"
+        name: 'get#{g[0]}'
     NS(SearchPathForDirectoriesInDomains):
         class: NSPathUtilities
-        name: "get#{g[0]}"
+        name: 'get#{g[0]}'
         return_type: '@org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String>'
 
     NS(Intersection|Union)Range:
         class: NSRange
         static: true
-        name: "#{g[0]}"
+        name: '#{g[0]}'
     NSRangeFromString:
         class: NSRange
         name: fromString
@@ -3736,29 +3749,29 @@ functions:
         name: setName
     NS(Create|Recycle)Zone:
         class: NSZone
-        name: "#{g[0]}"
+        name: '#{g[0]}'
     NS(DefaultMallocZone):
         class: NSZone
-        name: "get#{g[0]}"
+        name: 'get#{g[0]}'
     NSZone(.*):
         class: NSZone
-        name: "#{g[0]}"
+        name: '#{g[0]}'
     NS((Allocate|Deallocate|Copy)MemoryPages):
         class: NSZone
-        name: "#{g[0]}"
+        name: '#{g[0]}'
     NS((Log)?PageSize):
         class: NSZone
-        name: "get#{g[0]}"
+        name: 'get#{g[0]}'
     NS(.*PageSize):
         class: NSZone
-        name: "#{g[0]}"
+        name: '#{g[0]}'
     NS(RealMemoryAvailable):
         class: NSZone
-        name: "get#{g[0]}"
+        name: 'get#{g[0]}'
 
     # Make sure we don't miss any functions if new ones are introduced in a later Foundation
     (NS.*):
-        name: "Function__#{g[0]}"
+        name: 'Function__#{g[0]}'
 
 values: 
     NS.*Exception:
@@ -3781,381 +3794,454 @@ values:
     NSMachErrorDomain:
         class: NSMachError
         name: getClassDomain
+    NSItemProviderErrorDomain:
+        class: NSItemProviderError
+        name: getClassDomain
+    NSStreamSocketSSLErrorDomain:
+        class: NSStreamSocketSSLError
+        name: getClassDomain
+    NSStreamSOCKSErrorDomain:
+        class: NSStreamSOCKSError
+        name: getClassDomain
     NSURLErrorDomain:
         class: NSURLError
+        name: getClassDomain
+    NSXMLParserErrorDomain:
+        class: NSXMLParserError
         name: getClassDomain
     
     NS((LocalizedDescription|FilePathError|StringEncodingError)Key):
         class: NSCocoaErrorUserInfoKey
-        name: "#{g[0]}"
+        name: '#{g[0]}'
         type: NSString
         visibility: protected
     NS((UnderlyingError|URLError|LocalizedFailureReasonError|LocalizedRecoverySuggestionError)Key):
         class: NSCocoaErrorUserInfoKey
-        name: "#{g[0]}"
+        name: '#{g[0]}'
         type: NSString
         visibility: protected
     NS((LocalizedRecoveryOptionsError|RecoveryAttempterError|HelpAnchorError)Key):
         class: NSCocoaErrorUserInfoKey
-        name: "#{g[0]}"
+        name: '#{g[0]}'
         type: NSString
         visibility: protected
     NSURLError((FailingURLError|FailingURLStringError|FailingURLPeerTrustError)Key):
         class: NSURLErrorUserInfoKey
-        name: "#{g[0]}"
+        name: '#{g[0]}'
+        type: NSString
+        visibility: protected
+    NSURL(KeysOfUnsetValuesKey):
+        class: NSURLErrorUserInfoKey
+        name: '#{g[0]}'
+        type: NSString
+        visibility: protected
+
+    NSURLError(BackgroundTaskCancelledReasonKey):
+        class: NSURLSessionErrorUserInfoKey
+        name: '#{g[0]}'
+        type: NSString
+        visibility: protected
+    NSURLSession(DownloadTaskResumeData):
+        class: NSURLSessionErrorUserInfoKey
+        name: '#{g[0]}Key'
         type: NSString
         visibility: protected
 
     # NSBundle
     NSBundle(DidLoadNotification):
         class: NSBundle
-        name: "#{g[0]}"
+        name: '#{g[0]}'
         type: NSString
     NS(LoadedClasses):
         class: NSBundle
-        name: "#{g[0]}Key"
+        name: '#{g[0]}Key'
         type: NSString
         visibility: protected
 
     # NSCalendar
     NSCalendarIdentifier(.*):
         class: NSCalendarIdentifier
-        name: "#{g[0]}Value"
+        name: '#{g[0]}Value'
         type: NSString
         visibility: protected
     NS.*Calendar: # NSCalendarIdentifier values should be used instead
         exclude: true 
     NSCalendar(DayChangedNotification):
         class: NSCalendar
-        name: "#{g[0]}"
+        name: '#{g[0]}'
         type: NSString
 
     # NSDate
     NS(SystemClockDidChangeNotification):
         class: NSDate
-        name: "#{g[0]}"
+        name: '#{g[0]}'
         type: NSString
+
+    # NSExtensionContext
+    NS(ExtensionItemsAndErrorsKey):
+        class: NSExtensionContextErrorUserInfoKey
+        name: '#{g[0]}'
+        type: NSString
+        visibility: protected
+
+    # NSExtensionItem
+    NSExtensionItem(.*Key):
+        class: NSExtensionItem
+        name: '#{g[0]}'
 
     # NSFile
     NSFile((AppendOnly|Busy|CreationDate|DeviceIdentifier|ExtensionHidden|GroupOwnerAccountID|GroupOwnerAccountName)):
         class: NSFileAttribute
-        name: "#{g[0]}Attribute"
+        name: '#{g[0]}Attribute'
         type: NSString
         visibility: protected
     NSFile((HFSCreatorCode|HFSTypeCode|Immutable|ModificationDate|OwnerAccountID|OwnerAccountName|PosixPermissions)):
         class: NSFileAttribute
-        name: "#{g[0]}Attribute"
+        name: '#{g[0]}Attribute'
         type: NSString
         visibility: protected
     NSFile((ReferenceCount|Size|SystemFileNumber|Type|ProtectionKey)):
         class: NSFileAttribute
-        name: "#{g[0]}Attribute"
+        name: '#{g[0]}Attribute'
         type: NSString
         visibility: protected
     NSFileType(.*):
         class: NSFileType
-        name: "#{g[0]}Value"
+        name: '#{g[0]}Value'
         type: NSString
         visibility: protected
     NSFileProtection(.*):
         class: NSFileProtection
-        name: "#{g[0]}Value"
+        name: '#{g[0]}Value'
         type: NSString
         visibility: protected
     NSFileSystem(.*):
         class: NSFileSystemAttribute
-        name: "#{g[0]}Attribute"
+        name: '#{g[0]}Attribute'
         type: NSString
         visibility: protected
 
     # NSFileHandle
     NSFileHandle(.*Notification):
         class: NSFileHandle
-        name: "#{g[0]}"
+        name: '#{g[0]}'
         type: NSString
     NSFileHandle(Notification.*Item):
         class: NSFileHandle
-        name: "#{g[0]}"
+        name: '#{g[0]}'
         type: NSString
         visibility: protected
-    NSFileHandleNotificationMonitorModes:
-        exclude: true # deprecated
+    NSFileHandleNotificationMonitorModes: # deprecated
+        exclude: true
 
     # NSFileManager
     NS(UbiquityIdentityDidChangeNotification):
         class: NSFileManager
-        name: "#{g[0]}"
+        name: '#{g[0]}'
         type: NSString
 
     # NSHTTPCookieStorage
     NSHTTPCookieManager(.*Notification):
         class: NSHTTPCookieStorage
-        name: "#{g[0]}"
+        name: '#{g[0]}'
         type: NSString
 
     # NSHTTPCookie
     NSHTTPCookie(.*):
         class: NSHTTPCookieAttribute
-        name: "#{g[0]}Attribute"
+        name: '#{g[0]}Attribute'
         type: NSString
         visibility: protected
 
     # NSItemProvider
     NSItemProvider(.*Key):
         class: NSItemProviderOptions
-        name: "#{g[0]}"
+        name: '#{g[0]}'
+        type: NSString
+        visibility: protected
+    NSExtension(JavaScript.*Key):
+        class: NSItemProvider
+        name: '#{g[0]}'
+
+    # NSKeyedArchiver
+    NSKeyed(ArchiveRootObjectKey):
+        class: NSKeyedArchiver
+        name: '#{g[0]}'
+
+    # NSKeyValueCoding
+    NS(.*)KeyValueOperator:
+        class: NSKeyValueOperator
+        name: '#{g[0]}Value'
+        type: NSString
+        visibility: protected
+
+    # NSKeyValueObserving
+    NSKeyValueChange(.*Key):
+        class: NSKeyValueChangeInfo
+        name: '#{g[0]}'
         type: NSString
         visibility: protected
 
     # NSLinguisticTagger
     NSLinguisticTagScheme(.*):
         class: NSLinguisticTagScheme
-        name: "#{g[0]}Value"
+        name: '#{g[0]}Value'
         type: NSString
         visibility: protected
     NSLinguisticTag(.*):
         class: NSLinguisticTag
-        name: "#{g[0]}Value"
+        name: '#{g[0]}Value'
         type: NSString
         visibility: protected
 
     # NSLocale
     NSLocale(.*):
         class: NSLocaleComponent
-        name: "#{g[0]}Value"
+        name: '#{g[0]}Value'
         type: NSString
         visibility: protected
     NS(CurrentLocaleDidChangeNotification):
         class: NSLocale
-        name: "#{g[0]}"
+        name: '#{g[0]}'
         type: NSString
 
     # NSMetadataItem
     NSMetadataItem(.*)Key:
         class: NSMetadataItemAttribute
-        name: "#{g[0]}Value"
+        name: '#{g[0]}Value'
         type: NSString
         visibility: protected
     NSMetadataUbiquitousItem(.*)Key:
         class: NSMetadataItemAttribute
-        name: "#{g[0]}Value"
+        name: '#{g[0]}Value'
         type: NSString
         visibility: protected
     NSMetadataUbiquitousItemDownloadingStatus(.*):
         class: NSMetadataItemDownloadingStatus
-        name: "#{g[0]}Value"
+        name: '#{g[0]}Value'
+        type: NSString
+        visibility: protected
+
+    # NSNetService
+    NSNetServices(Error.*):
+        class: NSNetServiceErrorInfo
+        name: '#{g[0]}Key'
         type: NSString
         visibility: protected
 
     # NSMetadataQuery
     NSMetadataQuery(.*)Scope:
         class: NSMetadataQueryScope
-        name: "#{g[0]}Value"
+        name: '#{g[0]}Value'
         type: NSString
         visibility: protected
     NSMetadataQuery(.*Notification):
         class: NSMetadataQuery
-        name: "#{g[0]}"
+        name: '#{g[0]}'
         type: NSString
     NSMetadataQuery(.*Key):
         class: NSMetadataQueryUpdatedItems
-        name: "#{g[0]}"
+        name: '#{g[0]}'
         type: NSString
         visibility: protected
     NSMetadataQueryResult(ContentRelevance)Attribute:
         class: NSMetadataItemAttribute
-        name: "#{g[0]}Value"
+        name: '#{g[0]}Value'
         type: NSString
         visibility: protected
 
     # NSPort
     NSPort(.*Notification):
         class: NSPort
-        name: "#{g[0]}"
+        name: '#{g[0]}'
         type: NSString
 
     # NSProgress
     NSProgress(.*)Key:
         class: NSProgressUserInfoKey
-        name: "#{g[0]}Value"
+        name: '#{g[0]}Value'
         type: NSString
         visibility: protected
     NSProgressFileOperationKind(.*):
         class: NSProgressFileOperationKind
-        name: "#{g[0]}Value"
+        name: '#{g[0]}Value'
         type: NSString
         visibility: protected
     NSProgressKind(.*):
         class: NSProgressKind
-        name: "#{g[0]}Value"
+        name: '#{g[0]}Value'
         type: NSString
         visibility: protected
 
     # NSRunLoop
     NS(Default)RunLoopMode:
         class: NSRunLoopMode
-        name: "#{g[0]}Value"
+        name: '#{g[0]}Value'
         visibility: protected
     NSRunLoop(Common)Modes:
         class: NSRunLoopMode
-        name: "#{g[0]}Value"
+        name: '#{g[0]}Value'
         visibility: protected
 
     # NSStream
     NSStream(SOCKSProxyConfiguration)Key:
         class: NSStreamProperty
-        name: "#{g[0]}Value"
+        name: '#{g[0]}Value'
         type: NSString
         visibility: protected
     NSStreamSOCKSProxy(.*Key):
         class: NSStreamSOCKSProxyConfiguration
-        name: "#{g[0]}"
+        name: '#{g[0]}'
         type: NSString
         visibility: protected
     NSStream(.*)Key:
         class: NSStreamProperty
-        name: "#{g[0]}Value"
+        name: '#{g[0]}Value'
         type: NSString
         visibility: protected
     NSStream(NetworkServiceType):
         class: NSStreamProperty
-        name: "#{g[0]}Value"
+        name: '#{g[0]}Value'
         type: NSString
         visibility: protected
     NSStreamNetworkServiceType(.*):
         class: NSStreamNetworkServiceType
-        name: "#{g[0]}Value"
+        name: '#{g[0]}Value'
         type: NSString
         visibility: protected
     NSStreamSocketSecurityLevel(.*):
         class: NSStreamSocketSecurityLevel
-        name: "#{g[0]}Value"
+        name: '#{g[0]}Value'
         type: NSString
         visibility: protected
     NSStreamSOCKSProxyVersion(.*):
         class: NSStreamSOCKSProxyVersion
-        name: "_#{g[0]}Value"
+        name: '_#{g[0]}Value'
         type: NSString
         visibility: protected
+
+    # NSString
+    NSStringEncodingDetection(.*Key*):
+        exclude: true
 
     # NSTextCheckingResult
     NSTextChecking(Airline|Flight)Key:
         class: NSTextCheckingTransitComponents
-        name: "#{g[0]}Key"
+        name: '#{g[0]}Key'
         type: NSString
         visibility: protected
     NSTextChecking(.*Key):
         class: NSTextCheckingAddressComponents
-        name: "#{g[0]}"
+        name: '#{g[0]}'
         type: NSString
         visibility: protected
 
     # NSThread
     NS(WillBecomeMultiThreadedNotification|DidBecomeSingleThreadedNotification):
         class: NSThread
-        name: "#{g[0]}"
+        name: '#{g[0]}'
         type: NSString
     NSThread(WillExitNotification):
         class: NSThread
-        name: "#{g[0]}"
+        name: '#{g[0]}'
         type: NSString
 
     # NSTimeZone
     NSSystemTimeZone(DidChangeNotification):
         class: NSTimeZone
-        name: "#{g[0]}"
+        name: '#{g[0]}'
         type: NSString
 
     # NSUbiquitousKeyValueStore
     NSUbiquitousKeyValueStore(.*Notification):
         class: NSUbiquitousKeyValueStore
-        name: "#{g[0]}"
+        name: '#{g[0]}'
         type: NSString
     NSUbiquitousKeyValueStore(Change.*Key):
         class: NSUbiquitousKeyValueStore
-        name: "#{g[0]}"
+        name: '#{g[0]}'
         type: NSString
         visibility: protected
 
     # NSUndoManager
     NSUndoManager(.*Notification):
         class: NSUndoManager
-        name: "#{g[0]}"
+        name: '#{g[0]}'
         type: NSString
     NSUndoManager(GroupIsDiscardableKey):
         class: NSUndoManager
-        name: "#{g[0]}"
+        name: '#{g[0]}'
         type: NSString
         visibility: protected
 
     # NSURL
     NS(URLErrorBackgroundTaskCancelledReasonKey):
-        name: "#{g[0]}"
+        name: '#{g[0]}'
         type: NSString
     NS(URLKeysOfUnsetValuesKey):
-        name: "#{g[0]}"
+        name: '#{g[0]}'
         type: NSString
     NS(URLError.*Key):
-        name: "#{g[0]}"
+        name: '#{g[0]}'
         type: NSString
     NSURL(FileResourceType|VolumeIdentifier|VolumeURL)Key:
         class: NSURLFileSystemProperty
-        name: "#{g[0]}Value"
+        name: '#{g[0]}Value'
         type: NSString
         visibility: protected
     NSURLFileResourceType(.*):
         class: NSURLFileResourceType
-        name: "#{g[0]}Value"
+        name: '#{g[0]}Value'
         type: NSString
         visibility: protected
     NSURL(FileSize|FileAllocatedSize|IsAliasFile|TotalFileAllocatedSize|TotalFileSize)Key:
         class: NSURLFileProperty
-        name: "#{g[0]}Value"
+        name: '#{g[0]}Value'
         type: NSString
         visibility: protected
     NSURLVolume(.*)Key:
         class: NSURLVolumeProperty
-        name: "#{g[0]}Value"
+        name: '#{g[0]}Value'
         type: NSString
         visibility: protected
     NSURL(IsUbiquitousItem)Key:
         class: NSURLUbiquitousItemProperty
-        name: "#{g[0]}Value"
+        name: '#{g[0]}Value'
         type: NSString
         visibility: protected
     NSURLUbiquitousItem(.*)Key:
         class: NSURLUbiquitousItemProperty
-        name: "#{g[0]}Value"
+        name: '#{g[0]}Value'
         type: NSString
         visibility: protected
     NSURLUbiquitousItemDownloadingStatus(.*):
         class: NSURLUbiquitousItemDownloadingStatus
-        name: "#{g[0]}Value"
+        name: '#{g[0]}Value'
         type: NSString
         visibility: protected
     NSURL(.*)Key:
         class: NSURLFileSystemProperty
-        name: "#{g[0]}Value"
+        name: '#{g[0]}Value'
         type: NSString
         visibility: protected
     NSURLAuthenticationMethod(.*):
         class: NSURLAuthenticationMethod
-        name: "#{g[0]}Value"
+        name: '#{g[0]}Value'
         type: NSString
         visibility: protected
     NSURLProtectionSpace(.*)Proxy:
         class: NSURLProtectionSpaceProxyType
-        name: "#{g[0]}Value"
+        name: '#{g[0]}Value'
         type: NSString
         visibility: protected
     NSURLProtectionSpace(.*):
         class: NSURLProtectionSpaceProtocol
-        name: "#{g[0]}Value"
+        name: '#{g[0]}Value'
         type: NSString
         visibility: protected
     NSURL(.*)Scheme:
         class: NSURLScheme
-        name: "#{g[0]}Value"
+        name: '#{g[0]}Value'
         type: NSString
         readonly: true
         visibility: protected
@@ -4163,39 +4249,53 @@ values:
     # NSURLCredentialStorage
     NSURLCredentialStorage(RemoveSynchronizableCredentials):
         class: NSURLCredentialStorageRemovalOptions
-        name: "#{g[0]}"
+        name: '#{g[0]}'
         type: NSString
         visibility: protected
     NSURLCredentialStorage(ChangedNotification):
         class: NSURLCredentialStorage
-        name: "#{g[0]}"
+        name: '#{g[0]}'
         type: NSString
     
     # NSURLSession
     NSURLSession(TransferSizeUnknown):
         class: NSURLSession
-        name: "#{g[0]}"
-    
+        name: '#{g[0]}'
+    NSURLSessionTaskPriority(.*):
+        class: NSURLSessionTaskPriority
+        name: '#{g[0]}'
+
+    # NSUserActivity
+    NSUserActivityType(.*):
+        class: NSUserActivityType
+        name: '#{g[0]}Value'
+        visibility: protected
+
     # NSUserDefaults
     NSUserDefaults(.*Notification):
         class: NSUserDefaults
-        name: "#{g[0]}"
+        name: '#{g[0]}'
         type: NSString
     NS(Global|Argument|Registration)Domain:
         class: NSUserDefaultsDomain
-        name: "#{g[0]}Value"
+        name: '#{g[0]}Value'
         visibility: protected
 
     # NSValueTransformer
     NS(.*)TransformerName:
         class: NSValueTransformerName
-        name: "#{g[0]}Value"
+        name: '#{g[0]}Value'
         visibility: protected
+
+    # Foundation
+    NS(FoundationVersionNumber):
+        name: 'get#{g[0]}'
+        readonly: true
 
     NS(.*):
         class: Foundation
         readonly: true
-        name: "#{g[0]}"
+        name: '#{g[0]}'
 
 constants:
     # Garbage
@@ -4210,13 +4310,45 @@ constants:
 
     NSTextCheckingAll.*Types:
         exclude: true
-
     # Deprecated
-    NSUndefinedDateComponent:
-        exclude: true
-
+    NSUndefinedDateComponent: { exclude: true }
     NSWrapCalendarComponents: { exclude: true }
+
+    # Unused
+    NSNotFound: { exclude: true } 
+    NSDecimal.*: { exclude: true }
+    
+    NSFoundationVersionNumber(.*):
+        class: FoundationVersionNumber
+        name: 'Version#{g[0]}'
+    NSFoundationVersion(WithFileManagerResourceForkSupport):
+        class: FoundationVersionNumber
+        name: 'Version#{g[0]}'
+        
+    NS(OpenStepUnicodeReservedBase):
+        class: NSCharacterSet
+        name: '#{g[0]}'
+
+    NS(TimeIntervalSince1970):
+        class: NSDate
+        name: '#{g[0]}'
+        
+    NSDateComponentUndefined:
+        class: NSDateComponents
+        name: 'UndefinedComponent'
+        
+    NSOperationQueue(DefaultMaxConcurrentOperationCount):
+        class: NSOperationQueue
+        name: '#{g[0]}'
+        
+    NSUndo(CloseGroupingRunLoopOrdering):
+        class: NSUndoManager
+        name: '#{g[0]}'
+        
+    NSURLResponse(UnknownLength):
+        class: NSURLResponse
+        name: '#{g[0]}'
 
     NS(.*):
         class: Foundation
-        name: "#{g[0]}"
+        name: '#{g[0]}'

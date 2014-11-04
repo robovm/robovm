@@ -58,13 +58,13 @@ import org.robovm.apple.dispatch.*;
     @NotImplemented("netServiceDidPublish:")
     public void didPublish(NSNetService sender) { throw new UnsupportedOperationException(); }
     @NotImplemented("netService:didNotPublish:")
-    public void didNotPublish(NSNetService sender, NSDictionary<?, ?> errorDict) { throw new UnsupportedOperationException(); }
+    public void didNotPublish(NSNetService sender, NSNetServiceErrorInfo errorDict) { throw new UnsupportedOperationException(); }
     @NotImplemented("netServiceWillResolve:")
     public void willResolve(NSNetService sender) { throw new UnsupportedOperationException(); }
     @NotImplemented("netServiceDidResolveAddress:")
     public void didResolve(NSNetService sender) { throw new UnsupportedOperationException(); }
     @NotImplemented("netService:didNotResolve:")
-    public void didNotResolve(NSNetService sender, NSDictionary<?, ?> errorDict) { throw new UnsupportedOperationException(); }
+    public void didNotResolve(NSNetService sender, NSNetServiceErrorInfo errorDict) { throw new UnsupportedOperationException(); }
     @NotImplemented("netServiceDidStop:")
     public void didStop(NSNetService sender) { throw new UnsupportedOperationException(); }
     @NotImplemented("netService:didUpdateTXTRecordData:")

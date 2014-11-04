@@ -1,0 +1,16 @@
+diff -ru a/lib/DebugInfo/DWARFContext.cpp b/lib/DebugInfo/DWARFContext.cpp
+--- a/lib/DebugInfo/DWARFContext.cpp	2013-11-01 18:53:30.000000000 +0100
++++ b/lib/DebugInfo/DWARFContext.cpp	2014-11-04 13:04:01.000000000 +0100
+@@ -686,8 +686,10 @@
+           if (ec) {
+             errs() << "Aaaaaa! Nameless relocation! Aaaaaa!\n";
+           }
+-          errs() << "error: failed to compute relocation: "
+-                 << Name << "\n";
++          // RoboVM note: This happens for RoboVM compiled code and also with code compiled with clang.
++          //              Prevent this from being written to stderr.
++          //errs() << "error: failed to compute relocation: "
++          //       << Name << "\n";
+           continue;
+         }
+

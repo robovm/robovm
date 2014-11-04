@@ -2345,6 +2345,131 @@ public class LLVM implements LLVMConstants {
     return LLVMJNI.WriteBitcodeToFD(ModuleRef.getCPtr(M), FD, ShouldClose, Unbuffered);
   }
 
+  public static ObjectFileRef CreateObjectFile(MemoryBufferRef MemBuf) {
+    long cPtr = LLVMJNI.CreateObjectFile(MemoryBufferRef.getCPtr(MemBuf));
+    return (cPtr == 0) ? null : new ObjectFileRef(cPtr, false);
+  }
+
+  public static void DisposeObjectFile(ObjectFileRef ObjectFile) {
+    LLVMJNI.DisposeObjectFile(ObjectFileRef.getCPtr(ObjectFile));
+  }
+
+  public static SectionIteratorRef GetSections(ObjectFileRef ObjectFile) {
+    long cPtr = LLVMJNI.GetSections(ObjectFileRef.getCPtr(ObjectFile));
+    return (cPtr == 0) ? null : new SectionIteratorRef(cPtr, false);
+  }
+
+  public static void DisposeSectionIterator(SectionIteratorRef SI) {
+    LLVMJNI.DisposeSectionIterator(SectionIteratorRef.getCPtr(SI));
+  }
+
+  public static boolean IsSectionIteratorAtEnd(ObjectFileRef ObjectFile, SectionIteratorRef SI) {
+    return LLVMJNI.IsSectionIteratorAtEnd(ObjectFileRef.getCPtr(ObjectFile), SectionIteratorRef.getCPtr(SI));
+  }
+
+  public static void MoveToNextSection(SectionIteratorRef SI) {
+    LLVMJNI.MoveToNextSection(SectionIteratorRef.getCPtr(SI));
+  }
+
+  public static void MoveToContainingSection(SectionIteratorRef Sect, SymbolIteratorRef Sym) {
+    LLVMJNI.MoveToContainingSection(SectionIteratorRef.getCPtr(Sect), SymbolIteratorRef.getCPtr(Sym));
+  }
+
+  public static SymbolIteratorRef GetSymbols(ObjectFileRef ObjectFile) {
+    long cPtr = LLVMJNI.GetSymbols(ObjectFileRef.getCPtr(ObjectFile));
+    return (cPtr == 0) ? null : new SymbolIteratorRef(cPtr, false);
+  }
+
+  public static void DisposeSymbolIterator(SymbolIteratorRef SI) {
+    LLVMJNI.DisposeSymbolIterator(SymbolIteratorRef.getCPtr(SI));
+  }
+
+  public static boolean IsSymbolIteratorAtEnd(ObjectFileRef ObjectFile, SymbolIteratorRef SI) {
+    return LLVMJNI.IsSymbolIteratorAtEnd(ObjectFileRef.getCPtr(ObjectFile), SymbolIteratorRef.getCPtr(SI));
+  }
+
+  public static void MoveToNextSymbol(SymbolIteratorRef SI) {
+    LLVMJNI.MoveToNextSymbol(SymbolIteratorRef.getCPtr(SI));
+  }
+
+  public static String GetSectionName(SectionIteratorRef SI) {
+    return LLVMJNI.GetSectionName(SectionIteratorRef.getCPtr(SI));
+  }
+
+  public static long GetSectionSize(SectionIteratorRef SI) {
+    return LLVMJNI.GetSectionSize(SectionIteratorRef.getCPtr(SI));
+  }
+
+  public static String GetSectionContents(SectionIteratorRef SI) {
+    return LLVMJNI.GetSectionContents(SectionIteratorRef.getCPtr(SI));
+  }
+
+  public static long GetSectionAddress(SectionIteratorRef SI) {
+    return LLVMJNI.GetSectionAddress(SectionIteratorRef.getCPtr(SI));
+  }
+
+  public static boolean GetSectionContainsSymbol(SectionIteratorRef SI, SymbolIteratorRef Sym) {
+    return LLVMJNI.GetSectionContainsSymbol(SectionIteratorRef.getCPtr(SI), SymbolIteratorRef.getCPtr(Sym));
+  }
+
+  public static RelocationIteratorRef GetRelocations(SectionIteratorRef Section) {
+    long cPtr = LLVMJNI.GetRelocations(SectionIteratorRef.getCPtr(Section));
+    return (cPtr == 0) ? null : new RelocationIteratorRef(cPtr, false);
+  }
+
+  public static void DisposeRelocationIterator(RelocationIteratorRef RI) {
+    LLVMJNI.DisposeRelocationIterator(RelocationIteratorRef.getCPtr(RI));
+  }
+
+  public static boolean IsRelocationIteratorAtEnd(SectionIteratorRef Section, RelocationIteratorRef RI) {
+    return LLVMJNI.IsRelocationIteratorAtEnd(SectionIteratorRef.getCPtr(Section), RelocationIteratorRef.getCPtr(RI));
+  }
+
+  public static void MoveToNextRelocation(RelocationIteratorRef RI) {
+    LLVMJNI.MoveToNextRelocation(RelocationIteratorRef.getCPtr(RI));
+  }
+
+  public static String GetSymbolName(SymbolIteratorRef SI) {
+    return LLVMJNI.GetSymbolName(SymbolIteratorRef.getCPtr(SI));
+  }
+
+  public static long GetSymbolAddress(SymbolIteratorRef SI) {
+    return LLVMJNI.GetSymbolAddress(SymbolIteratorRef.getCPtr(SI));
+  }
+
+  public static long GetSymbolFileOffset(SymbolIteratorRef SI) {
+    return LLVMJNI.GetSymbolFileOffset(SymbolIteratorRef.getCPtr(SI));
+  }
+
+  public static long GetSymbolSize(SymbolIteratorRef SI) {
+    return LLVMJNI.GetSymbolSize(SymbolIteratorRef.getCPtr(SI));
+  }
+
+  public static long GetRelocationAddress(RelocationIteratorRef RI) {
+    return LLVMJNI.GetRelocationAddress(RelocationIteratorRef.getCPtr(RI));
+  }
+
+  public static long GetRelocationOffset(RelocationIteratorRef RI) {
+    return LLVMJNI.GetRelocationOffset(RelocationIteratorRef.getCPtr(RI));
+  }
+
+  public static SymbolIteratorRef GetRelocationSymbol(RelocationIteratorRef RI) {
+    long cPtr = LLVMJNI.GetRelocationSymbol(RelocationIteratorRef.getCPtr(RI));
+    return (cPtr == 0) ? null : new SymbolIteratorRef(cPtr, false);
+  }
+
+  public static long GetRelocationType(RelocationIteratorRef RI) {
+    return LLVMJNI.GetRelocationType(RelocationIteratorRef.getCPtr(RI));
+  }
+
+  public static String GetRelocationTypeName(RelocationIteratorRef RI) {
+    return LLVMJNI.GetRelocationTypeName(RelocationIteratorRef.getCPtr(RI));
+  }
+
+  public static String GetRelocationValueString(RelocationIteratorRef RI) {
+    return LLVMJNI.GetRelocationValueString(RelocationIteratorRef.getCPtr(RI));
+  }
+
   public static void AddArgumentPromotionPass(PassManagerRef PM) {
     LLVMJNI.AddArgumentPromotionPass(PassManagerRef.getCPtr(PM));
   }
@@ -3089,6 +3214,10 @@ public class LLVM implements LLVMConstants {
 
   public static boolean TargetMachineEmitToOutputStream(TargetMachineRef T, ModuleRef M, java.io.OutputStream OutputStream, CodeGenFileType codegen, StringOut ErrorMessage) {
     return LLVMJNI.TargetMachineEmitToOutputStream(TargetMachineRef.getCPtr(T), ModuleRef.getCPtr(M), OutputStream, codegen.swigValue(), StringOut.getCPtr(ErrorMessage), ErrorMessage);
+  }
+
+  public static boolean GetLineInfoForAddressRange(ObjectFileRef O, long Address, long Size) {
+    return LLVMJNI.GetLineInfoForAddressRange(ObjectFileRef.getCPtr(O), Address, Size);
   }
 
 }

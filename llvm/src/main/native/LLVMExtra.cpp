@@ -1,5 +1,7 @@
 #include <llvm-c/Core.h>
+#include <llvm-c/Object.h>
 #include <llvm-c/TargetMachine.h>
+#include <llvm/DebugInfo/DIContext.h>
 #include <llvm/IRReader/IRReader.h>
 #include <llvm/IR/LLVMContext.h>
 #include <llvm/IR/Module.h>
@@ -16,6 +18,7 @@
 #include <llvm/MC/MCStreamer.h>
 #include <llvm/MC/MCSubtargetInfo.h>
 #include <llvm/MC/MCTargetAsmParser.h>
+#include <llvm/Object/ObjectFile.h>
 #include <llvm/PassManager.h>
 #include <llvm/Target/TargetMachine.h>
 #include <llvm/Target/TargetOptions.h>
@@ -38,10 +41,12 @@
 #include "LLVMExtra.h"
 
 using namespace llvm;
+using namespace llvm::object;
 
 DEFINE_SIMPLE_CONVERSION_FUNCTIONS(Target, LLVMTargetRef)
 DEFINE_SIMPLE_CONVERSION_FUNCTIONS(TargetMachine, LLVMTargetMachineRef)
 DEFINE_SIMPLE_CONVERSION_FUNCTIONS(TargetOptions, LLVMTargetOptionsRef)
+DEFINE_SIMPLE_CONVERSION_FUNCTIONS(ObjectFile, LLVMObjectFileRef)
 
 const char *llvmHostTriple = LLVM_HOST_TRIPLE;
 
@@ -391,4 +396,16 @@ LLVMBool LLVMTargetMachineEmitToOutputStream(LLVMTargetMachineRef T, LLVMModuleR
 #endif
 
   return Result;
+}
+
+LLVMBool LLVMGetLineInfoForAddressRange(LLVMObjectFileRef O, uint64_t Address, uint64_t Size) {
+  ObjectFile* OF = unwrap(O);
+  DIContext* ctx = DIContext::getDWARFContext(OF);
+  DILineInfoTable lineTable = ctx->getLineInfoForAddressRange(Address, Size);
+  for (int i = 0; i < lineTable.size(); i++) {
+    std::pair<uint64_t, DILineInfo> p = lineTable[i];
+    fprintf(stdout, "%llx: %d\n", p.first, p.second.getLine());
+    fflush(stdout);
+  }
+  return false;
 }

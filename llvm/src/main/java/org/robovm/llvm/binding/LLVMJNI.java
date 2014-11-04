@@ -553,6 +553,36 @@ public class LLVMJNI {
   public final static native boolean GetBitcodeModule(long jarg1, long jarg2, ModuleRefOut jarg2_, long jarg3, StringOut jarg3_);
   public final static native int WriteBitcodeToFile(long jarg1, String jarg2);
   public final static native int WriteBitcodeToFD(long jarg1, int jarg2, int jarg3, int jarg4);
+  public final static native long CreateObjectFile(long jarg1);
+  public final static native void DisposeObjectFile(long jarg1);
+  public final static native long GetSections(long jarg1);
+  public final static native void DisposeSectionIterator(long jarg1);
+  public final static native boolean IsSectionIteratorAtEnd(long jarg1, long jarg2);
+  public final static native void MoveToNextSection(long jarg1);
+  public final static native void MoveToContainingSection(long jarg1, long jarg2);
+  public final static native long GetSymbols(long jarg1);
+  public final static native void DisposeSymbolIterator(long jarg1);
+  public final static native boolean IsSymbolIteratorAtEnd(long jarg1, long jarg2);
+  public final static native void MoveToNextSymbol(long jarg1);
+  public final static native String GetSectionName(long jarg1);
+  public final static native long GetSectionSize(long jarg1);
+  public final static native String GetSectionContents(long jarg1);
+  public final static native long GetSectionAddress(long jarg1);
+  public final static native boolean GetSectionContainsSymbol(long jarg1, long jarg2);
+  public final static native long GetRelocations(long jarg1);
+  public final static native void DisposeRelocationIterator(long jarg1);
+  public final static native boolean IsRelocationIteratorAtEnd(long jarg1, long jarg2);
+  public final static native void MoveToNextRelocation(long jarg1);
+  public final static native String GetSymbolName(long jarg1);
+  public final static native long GetSymbolAddress(long jarg1);
+  public final static native long GetSymbolFileOffset(long jarg1);
+  public final static native long GetSymbolSize(long jarg1);
+  public final static native long GetRelocationAddress(long jarg1);
+  public final static native long GetRelocationOffset(long jarg1);
+  public final static native long GetRelocationSymbol(long jarg1);
+  public final static native long GetRelocationType(long jarg1);
+  public final static native String GetRelocationTypeName(long jarg1);
+  public final static native String GetRelocationValueString(long jarg1);
   public final static native void AddArgumentPromotionPass(long jarg1);
   public final static native void AddConstantMergePass(long jarg1);
   public final static native void AddDeadArgEliminationPass(long jarg1);
@@ -736,6 +766,7 @@ public class LLVMJNI {
   public final static native void TargetOptionsSetAllowFPOpFusion(long jarg1, int jarg2);
   public final static native int TargetMachineAssembleToOutputStream(long jarg1, long jarg2, java.io.OutputStream jarg3, boolean jarg4, boolean jarg5, long jarg6, StringOut jarg6_);
   public final static native boolean TargetMachineEmitToOutputStream(long jarg1, long jarg2, java.io.OutputStream jarg3, int jarg4, long jarg5, StringOut jarg5_);
+  public final static native boolean GetLineInfoForAddressRange(long jarg1, long jarg2, long jarg3);
 
   static {
     org.robovm.llvm.NativeLibrary.load();

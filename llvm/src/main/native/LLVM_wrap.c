@@ -191,6 +191,7 @@ static void SWIGUNUSED SWIG_JavaThrowException(JNIEnv *jenv, SWIG_JavaExceptionC
 #include <llvm-c/Core.h>
 #include <llvm-c/BitReader.h>
 #include <llvm-c/BitWriter.h>
+#include <llvm-c/Object.h>
 #include <llvm-c/Transforms/IPO.h>
 #include <llvm-c/Transforms/PassManagerBuilder.h>
 #include <llvm-c/Transforms/Scalar.h>
@@ -9330,6 +9331,404 @@ SWIGEXPORT jint JNICALL Java_org_robovm_llvm_binding_LLVMJNI_WriteBitcodeToFD(JN
 }
 
 
+SWIGEXPORT jlong JNICALL Java_org_robovm_llvm_binding_LLVMJNI_CreateObjectFile(JNIEnv *jenv, jclass jcls, jlong jarg1) {
+  jlong jresult = 0 ;
+  LLVMMemoryBufferRef arg1 = (LLVMMemoryBufferRef) 0 ;
+  LLVMObjectFileRef result;
+  
+  (void)jenv;
+  (void)jcls;
+  arg1 = *(LLVMMemoryBufferRef *)&jarg1; 
+  result = (LLVMObjectFileRef)LLVMCreateObjectFile(arg1);
+  *(LLVMObjectFileRef *)&jresult = result; 
+  return jresult;
+}
+
+
+SWIGEXPORT void JNICALL Java_org_robovm_llvm_binding_LLVMJNI_DisposeObjectFile(JNIEnv *jenv, jclass jcls, jlong jarg1) {
+  LLVMObjectFileRef arg1 = (LLVMObjectFileRef) 0 ;
+  
+  (void)jenv;
+  (void)jcls;
+  arg1 = *(LLVMObjectFileRef *)&jarg1; 
+  LLVMDisposeObjectFile(arg1);
+}
+
+
+SWIGEXPORT jlong JNICALL Java_org_robovm_llvm_binding_LLVMJNI_GetSections(JNIEnv *jenv, jclass jcls, jlong jarg1) {
+  jlong jresult = 0 ;
+  LLVMObjectFileRef arg1 = (LLVMObjectFileRef) 0 ;
+  LLVMSectionIteratorRef result;
+  
+  (void)jenv;
+  (void)jcls;
+  arg1 = *(LLVMObjectFileRef *)&jarg1; 
+  result = (LLVMSectionIteratorRef)LLVMGetSections(arg1);
+  *(LLVMSectionIteratorRef *)&jresult = result; 
+  return jresult;
+}
+
+
+SWIGEXPORT void JNICALL Java_org_robovm_llvm_binding_LLVMJNI_DisposeSectionIterator(JNIEnv *jenv, jclass jcls, jlong jarg1) {
+  LLVMSectionIteratorRef arg1 = (LLVMSectionIteratorRef) 0 ;
+  
+  (void)jenv;
+  (void)jcls;
+  arg1 = *(LLVMSectionIteratorRef *)&jarg1; 
+  LLVMDisposeSectionIterator(arg1);
+}
+
+
+SWIGEXPORT jboolean JNICALL Java_org_robovm_llvm_binding_LLVMJNI_IsSectionIteratorAtEnd(JNIEnv *jenv, jclass jcls, jlong jarg1, jlong jarg2) {
+  jboolean jresult = 0 ;
+  LLVMObjectFileRef arg1 = (LLVMObjectFileRef) 0 ;
+  LLVMSectionIteratorRef arg2 = (LLVMSectionIteratorRef) 0 ;
+  LLVMBool result;
+  
+  (void)jenv;
+  (void)jcls;
+  arg1 = *(LLVMObjectFileRef *)&jarg1; 
+  arg2 = *(LLVMSectionIteratorRef *)&jarg2; 
+  result = LLVMIsSectionIteratorAtEnd(arg1,arg2);
+  jresult = result; 
+  return jresult;
+}
+
+
+SWIGEXPORT void JNICALL Java_org_robovm_llvm_binding_LLVMJNI_MoveToNextSection(JNIEnv *jenv, jclass jcls, jlong jarg1) {
+  LLVMSectionIteratorRef arg1 = (LLVMSectionIteratorRef) 0 ;
+  
+  (void)jenv;
+  (void)jcls;
+  arg1 = *(LLVMSectionIteratorRef *)&jarg1; 
+  LLVMMoveToNextSection(arg1);
+}
+
+
+SWIGEXPORT void JNICALL Java_org_robovm_llvm_binding_LLVMJNI_MoveToContainingSection(JNIEnv *jenv, jclass jcls, jlong jarg1, jlong jarg2) {
+  LLVMSectionIteratorRef arg1 = (LLVMSectionIteratorRef) 0 ;
+  LLVMSymbolIteratorRef arg2 = (LLVMSymbolIteratorRef) 0 ;
+  
+  (void)jenv;
+  (void)jcls;
+  arg1 = *(LLVMSectionIteratorRef *)&jarg1; 
+  arg2 = *(LLVMSymbolIteratorRef *)&jarg2; 
+  LLVMMoveToContainingSection(arg1,arg2);
+}
+
+
+SWIGEXPORT jlong JNICALL Java_org_robovm_llvm_binding_LLVMJNI_GetSymbols(JNIEnv *jenv, jclass jcls, jlong jarg1) {
+  jlong jresult = 0 ;
+  LLVMObjectFileRef arg1 = (LLVMObjectFileRef) 0 ;
+  LLVMSymbolIteratorRef result;
+  
+  (void)jenv;
+  (void)jcls;
+  arg1 = *(LLVMObjectFileRef *)&jarg1; 
+  result = (LLVMSymbolIteratorRef)LLVMGetSymbols(arg1);
+  *(LLVMSymbolIteratorRef *)&jresult = result; 
+  return jresult;
+}
+
+
+SWIGEXPORT void JNICALL Java_org_robovm_llvm_binding_LLVMJNI_DisposeSymbolIterator(JNIEnv *jenv, jclass jcls, jlong jarg1) {
+  LLVMSymbolIteratorRef arg1 = (LLVMSymbolIteratorRef) 0 ;
+  
+  (void)jenv;
+  (void)jcls;
+  arg1 = *(LLVMSymbolIteratorRef *)&jarg1; 
+  LLVMDisposeSymbolIterator(arg1);
+}
+
+
+SWIGEXPORT jboolean JNICALL Java_org_robovm_llvm_binding_LLVMJNI_IsSymbolIteratorAtEnd(JNIEnv *jenv, jclass jcls, jlong jarg1, jlong jarg2) {
+  jboolean jresult = 0 ;
+  LLVMObjectFileRef arg1 = (LLVMObjectFileRef) 0 ;
+  LLVMSymbolIteratorRef arg2 = (LLVMSymbolIteratorRef) 0 ;
+  LLVMBool result;
+  
+  (void)jenv;
+  (void)jcls;
+  arg1 = *(LLVMObjectFileRef *)&jarg1; 
+  arg2 = *(LLVMSymbolIteratorRef *)&jarg2; 
+  result = LLVMIsSymbolIteratorAtEnd(arg1,arg2);
+  jresult = result; 
+  return jresult;
+}
+
+
+SWIGEXPORT void JNICALL Java_org_robovm_llvm_binding_LLVMJNI_MoveToNextSymbol(JNIEnv *jenv, jclass jcls, jlong jarg1) {
+  LLVMSymbolIteratorRef arg1 = (LLVMSymbolIteratorRef) 0 ;
+  
+  (void)jenv;
+  (void)jcls;
+  arg1 = *(LLVMSymbolIteratorRef *)&jarg1; 
+  LLVMMoveToNextSymbol(arg1);
+}
+
+
+SWIGEXPORT jstring JNICALL Java_org_robovm_llvm_binding_LLVMJNI_GetSectionName(JNIEnv *jenv, jclass jcls, jlong jarg1) {
+  jstring jresult = 0 ;
+  LLVMSectionIteratorRef arg1 = (LLVMSectionIteratorRef) 0 ;
+  char *result = 0 ;
+  
+  (void)jenv;
+  (void)jcls;
+  arg1 = *(LLVMSectionIteratorRef *)&jarg1; 
+  result = (char *)LLVMGetSectionName(arg1);
+  if (result) jresult = (*jenv)->NewStringUTF(jenv, (const char *)result);
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_org_robovm_llvm_binding_LLVMJNI_GetSectionSize(JNIEnv *jenv, jclass jcls, jlong jarg1) {
+  jlong jresult = 0 ;
+  LLVMSectionIteratorRef arg1 = (LLVMSectionIteratorRef) 0 ;
+  uint64_t result;
+  
+  (void)jenv;
+  (void)jcls;
+  arg1 = *(LLVMSectionIteratorRef *)&jarg1; 
+  result = LLVMGetSectionSize(arg1);
+  jresult = result; 
+  return jresult;
+}
+
+
+SWIGEXPORT jstring JNICALL Java_org_robovm_llvm_binding_LLVMJNI_GetSectionContents(JNIEnv *jenv, jclass jcls, jlong jarg1) {
+  jstring jresult = 0 ;
+  LLVMSectionIteratorRef arg1 = (LLVMSectionIteratorRef) 0 ;
+  char *result = 0 ;
+  
+  (void)jenv;
+  (void)jcls;
+  arg1 = *(LLVMSectionIteratorRef *)&jarg1; 
+  result = (char *)LLVMGetSectionContents(arg1);
+  if (result) jresult = (*jenv)->NewStringUTF(jenv, (const char *)result);
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_org_robovm_llvm_binding_LLVMJNI_GetSectionAddress(JNIEnv *jenv, jclass jcls, jlong jarg1) {
+  jlong jresult = 0 ;
+  LLVMSectionIteratorRef arg1 = (LLVMSectionIteratorRef) 0 ;
+  uint64_t result;
+  
+  (void)jenv;
+  (void)jcls;
+  arg1 = *(LLVMSectionIteratorRef *)&jarg1; 
+  result = LLVMGetSectionAddress(arg1);
+  jresult = result; 
+  return jresult;
+}
+
+
+SWIGEXPORT jboolean JNICALL Java_org_robovm_llvm_binding_LLVMJNI_GetSectionContainsSymbol(JNIEnv *jenv, jclass jcls, jlong jarg1, jlong jarg2) {
+  jboolean jresult = 0 ;
+  LLVMSectionIteratorRef arg1 = (LLVMSectionIteratorRef) 0 ;
+  LLVMSymbolIteratorRef arg2 = (LLVMSymbolIteratorRef) 0 ;
+  LLVMBool result;
+  
+  (void)jenv;
+  (void)jcls;
+  arg1 = *(LLVMSectionIteratorRef *)&jarg1; 
+  arg2 = *(LLVMSymbolIteratorRef *)&jarg2; 
+  result = LLVMGetSectionContainsSymbol(arg1,arg2);
+  jresult = result; 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_org_robovm_llvm_binding_LLVMJNI_GetRelocations(JNIEnv *jenv, jclass jcls, jlong jarg1) {
+  jlong jresult = 0 ;
+  LLVMSectionIteratorRef arg1 = (LLVMSectionIteratorRef) 0 ;
+  LLVMRelocationIteratorRef result;
+  
+  (void)jenv;
+  (void)jcls;
+  arg1 = *(LLVMSectionIteratorRef *)&jarg1; 
+  result = (LLVMRelocationIteratorRef)LLVMGetRelocations(arg1);
+  *(LLVMRelocationIteratorRef *)&jresult = result; 
+  return jresult;
+}
+
+
+SWIGEXPORT void JNICALL Java_org_robovm_llvm_binding_LLVMJNI_DisposeRelocationIterator(JNIEnv *jenv, jclass jcls, jlong jarg1) {
+  LLVMRelocationIteratorRef arg1 = (LLVMRelocationIteratorRef) 0 ;
+  
+  (void)jenv;
+  (void)jcls;
+  arg1 = *(LLVMRelocationIteratorRef *)&jarg1; 
+  LLVMDisposeRelocationIterator(arg1);
+}
+
+
+SWIGEXPORT jboolean JNICALL Java_org_robovm_llvm_binding_LLVMJNI_IsRelocationIteratorAtEnd(JNIEnv *jenv, jclass jcls, jlong jarg1, jlong jarg2) {
+  jboolean jresult = 0 ;
+  LLVMSectionIteratorRef arg1 = (LLVMSectionIteratorRef) 0 ;
+  LLVMRelocationIteratorRef arg2 = (LLVMRelocationIteratorRef) 0 ;
+  LLVMBool result;
+  
+  (void)jenv;
+  (void)jcls;
+  arg1 = *(LLVMSectionIteratorRef *)&jarg1; 
+  arg2 = *(LLVMRelocationIteratorRef *)&jarg2; 
+  result = LLVMIsRelocationIteratorAtEnd(arg1,arg2);
+  jresult = result; 
+  return jresult;
+}
+
+
+SWIGEXPORT void JNICALL Java_org_robovm_llvm_binding_LLVMJNI_MoveToNextRelocation(JNIEnv *jenv, jclass jcls, jlong jarg1) {
+  LLVMRelocationIteratorRef arg1 = (LLVMRelocationIteratorRef) 0 ;
+  
+  (void)jenv;
+  (void)jcls;
+  arg1 = *(LLVMRelocationIteratorRef *)&jarg1; 
+  LLVMMoveToNextRelocation(arg1);
+}
+
+
+SWIGEXPORT jstring JNICALL Java_org_robovm_llvm_binding_LLVMJNI_GetSymbolName(JNIEnv *jenv, jclass jcls, jlong jarg1) {
+  jstring jresult = 0 ;
+  LLVMSymbolIteratorRef arg1 = (LLVMSymbolIteratorRef) 0 ;
+  char *result = 0 ;
+  
+  (void)jenv;
+  (void)jcls;
+  arg1 = *(LLVMSymbolIteratorRef *)&jarg1; 
+  result = (char *)LLVMGetSymbolName(arg1);
+  if (result) jresult = (*jenv)->NewStringUTF(jenv, (const char *)result);
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_org_robovm_llvm_binding_LLVMJNI_GetSymbolAddress(JNIEnv *jenv, jclass jcls, jlong jarg1) {
+  jlong jresult = 0 ;
+  LLVMSymbolIteratorRef arg1 = (LLVMSymbolIteratorRef) 0 ;
+  uint64_t result;
+  
+  (void)jenv;
+  (void)jcls;
+  arg1 = *(LLVMSymbolIteratorRef *)&jarg1; 
+  result = LLVMGetSymbolAddress(arg1);
+  jresult = result; 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_org_robovm_llvm_binding_LLVMJNI_GetSymbolFileOffset(JNIEnv *jenv, jclass jcls, jlong jarg1) {
+  jlong jresult = 0 ;
+  LLVMSymbolIteratorRef arg1 = (LLVMSymbolIteratorRef) 0 ;
+  uint64_t result;
+  
+  (void)jenv;
+  (void)jcls;
+  arg1 = *(LLVMSymbolIteratorRef *)&jarg1; 
+  result = LLVMGetSymbolFileOffset(arg1);
+  jresult = result; 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_org_robovm_llvm_binding_LLVMJNI_GetSymbolSize(JNIEnv *jenv, jclass jcls, jlong jarg1) {
+  jlong jresult = 0 ;
+  LLVMSymbolIteratorRef arg1 = (LLVMSymbolIteratorRef) 0 ;
+  uint64_t result;
+  
+  (void)jenv;
+  (void)jcls;
+  arg1 = *(LLVMSymbolIteratorRef *)&jarg1; 
+  result = LLVMGetSymbolSize(arg1);
+  jresult = result; 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_org_robovm_llvm_binding_LLVMJNI_GetRelocationAddress(JNIEnv *jenv, jclass jcls, jlong jarg1) {
+  jlong jresult = 0 ;
+  LLVMRelocationIteratorRef arg1 = (LLVMRelocationIteratorRef) 0 ;
+  uint64_t result;
+  
+  (void)jenv;
+  (void)jcls;
+  arg1 = *(LLVMRelocationIteratorRef *)&jarg1; 
+  result = LLVMGetRelocationAddress(arg1);
+  jresult = result; 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_org_robovm_llvm_binding_LLVMJNI_GetRelocationOffset(JNIEnv *jenv, jclass jcls, jlong jarg1) {
+  jlong jresult = 0 ;
+  LLVMRelocationIteratorRef arg1 = (LLVMRelocationIteratorRef) 0 ;
+  uint64_t result;
+  
+  (void)jenv;
+  (void)jcls;
+  arg1 = *(LLVMRelocationIteratorRef *)&jarg1; 
+  result = LLVMGetRelocationOffset(arg1);
+  jresult = result; 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_org_robovm_llvm_binding_LLVMJNI_GetRelocationSymbol(JNIEnv *jenv, jclass jcls, jlong jarg1) {
+  jlong jresult = 0 ;
+  LLVMRelocationIteratorRef arg1 = (LLVMRelocationIteratorRef) 0 ;
+  LLVMSymbolIteratorRef result;
+  
+  (void)jenv;
+  (void)jcls;
+  arg1 = *(LLVMRelocationIteratorRef *)&jarg1; 
+  result = (LLVMSymbolIteratorRef)LLVMGetRelocationSymbol(arg1);
+  *(LLVMSymbolIteratorRef *)&jresult = result; 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_org_robovm_llvm_binding_LLVMJNI_GetRelocationType(JNIEnv *jenv, jclass jcls, jlong jarg1) {
+  jlong jresult = 0 ;
+  LLVMRelocationIteratorRef arg1 = (LLVMRelocationIteratorRef) 0 ;
+  uint64_t result;
+  
+  (void)jenv;
+  (void)jcls;
+  arg1 = *(LLVMRelocationIteratorRef *)&jarg1; 
+  result = LLVMGetRelocationType(arg1);
+  jresult = result; 
+  return jresult;
+}
+
+
+SWIGEXPORT jstring JNICALL Java_org_robovm_llvm_binding_LLVMJNI_GetRelocationTypeName(JNIEnv *jenv, jclass jcls, jlong jarg1) {
+  jstring jresult = 0 ;
+  LLVMRelocationIteratorRef arg1 = (LLVMRelocationIteratorRef) 0 ;
+  char *result = 0 ;
+  
+  (void)jenv;
+  (void)jcls;
+  arg1 = *(LLVMRelocationIteratorRef *)&jarg1; 
+  result = (char *)LLVMGetRelocationTypeName(arg1);
+  if (result) jresult = (*jenv)->NewStringUTF(jenv, (const char *)result);
+  return jresult;
+}
+
+
+SWIGEXPORT jstring JNICALL Java_org_robovm_llvm_binding_LLVMJNI_GetRelocationValueString(JNIEnv *jenv, jclass jcls, jlong jarg1) {
+  jstring jresult = 0 ;
+  LLVMRelocationIteratorRef arg1 = (LLVMRelocationIteratorRef) 0 ;
+  char *result = 0 ;
+  
+  (void)jenv;
+  (void)jcls;
+  arg1 = *(LLVMRelocationIteratorRef *)&jarg1; 
+  result = (char *)LLVMGetRelocationValueString(arg1);
+  if (result) jresult = (*jenv)->NewStringUTF(jenv, (const char *)result);
+  return jresult;
+}
+
+
 SWIGEXPORT void JNICALL Java_org_robovm_llvm_binding_LLVMJNI_AddArgumentPromotionPass(JNIEnv *jenv, jclass jcls, jlong jarg1) {
   LLVMPassManagerRef arg1 = (LLVMPassManagerRef) 0 ;
   
@@ -11750,6 +12149,24 @@ SWIGEXPORT jboolean JNICALL Java_org_robovm_llvm_binding_LLVMJNI_TargetMachineEm
   {
     FreeOutputStreamWrapper(arg3);
   }
+  return jresult;
+}
+
+
+SWIGEXPORT jboolean JNICALL Java_org_robovm_llvm_binding_LLVMJNI_GetLineInfoForAddressRange(JNIEnv *jenv, jclass jcls, jlong jarg1, jlong jarg2, jlong jarg3) {
+  jboolean jresult = 0 ;
+  LLVMObjectFileRef arg1 = (LLVMObjectFileRef) 0 ;
+  uint64_t arg2 ;
+  uint64_t arg3 ;
+  LLVMBool result;
+  
+  (void)jenv;
+  (void)jcls;
+  arg1 = *(LLVMObjectFileRef *)&jarg1; 
+  arg2 = jarg2; 
+  arg3 = jarg3; 
+  result = LLVMGetLineInfoForAddressRange(arg1,arg2,arg3);
+  jresult = result; 
   return jresult;
 }
 

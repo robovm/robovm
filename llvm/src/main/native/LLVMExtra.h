@@ -101,6 +101,8 @@ int LLVMTargetMachineAssembleToOutputStream(LLVMTargetMachineRef TM, LLVMMemoryB
     LLVMBool RelaxAll, LLVMBool NoExecStack, char **ErrorMessage);
 LLVMBool LLVMTargetMachineEmitToOutputStream(LLVMTargetMachineRef T, LLVMModuleRef M,
     void *OutputStream, LLVMCodeGenFileType codegen, char** ErrorMessage);
+
+LLVMBool LLVMGetLineInfoForAddressRange(LLVMObjectFileRef O, uint64_t Address, uint64_t Size);
 #ifdef __cplusplus
 }
 #endif

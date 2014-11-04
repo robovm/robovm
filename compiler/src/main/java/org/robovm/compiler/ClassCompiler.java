@@ -51,6 +51,7 @@ import org.robovm.compiler.clazz.Dependency;
 import org.robovm.compiler.config.Arch;
 import org.robovm.compiler.config.Config;
 import org.robovm.compiler.config.OS;
+import org.robovm.compiler.llvm.Alias;
 import org.robovm.compiler.llvm.AliasRef;
 import org.robovm.compiler.llvm.And;
 import org.robovm.compiler.llvm.ArrayConstantBuilder;
@@ -661,10 +662,9 @@ public class ClassCompiler {
         }
         mb.addGlobal(classInfoStruct);
         
-        Function infoFn = FunctionBuilder.infoStruct(sootClass);
-        infoFn.add(new Ret(new ConstantBitcast(classInfoStruct.ref(), I8_PTR_PTR)));
-        mb.addFunction(infoFn);
-        
+        Alias infoStructI8Ptr = new Alias(Symbols.infoStructI8PtrSymbol(getInternalName(sootClass)), new ConstantBitcast(classInfoStruct.ref(), I8_PTR_PTR));
+        mb.addAlias(infoStructI8Ptr);
+
         for (CompilerPlugin compilerPlugin : config.getCompilerPlugins()) {
             compilerPlugin.afterClass(config, clazz, mb);
         }
@@ -1336,7 +1336,7 @@ public class ClassCompiler {
     }
 
     static Value getInfoStruct(Function f, SootClass sootClass) {
-        return call(f, FunctionBuilder.infoStruct(sootClass).ref());
+        return new AliasRef(Symbols.infoStructI8PtrSymbol(getInternalName(sootClass)), I8_PTR_PTR);
     }
     
     static Value getInstanceFieldPtr(Function f, Value base, SootField field, 

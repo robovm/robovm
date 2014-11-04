@@ -22,7 +22,7 @@ import org.robovm.llvm.binding.TargetDataRef;
 /**
  * 
  */
-public class DataLayout {
+public class DataLayout implements AutoCloseable {
     protected TargetDataRef ref;
 
     DataLayout(TargetDataRef ref) {
@@ -39,6 +39,11 @@ public class DataLayout {
         checkDisposed();
         LLVM.DisposeTargetData(ref);
         ref = null;
+    }
+
+    @Override
+    public void close() {
+        dispose();
     }
 
     public long getTypeAllocSize(Type type) {

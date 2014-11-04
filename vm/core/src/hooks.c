@@ -20,19 +20,22 @@
 
 #define LOG_TAG "hooks"
 jboolean attachFlag = FALSE;
+static jint waitForAttachTime = 0;
 
 void rvmHookDebuggerAttached(Options* options) {
     fprintf(stderr, "[DEBUG] %s: Debugger attached\n", LOG_TAG);
 }
 
 void rvmHookWaitForAttach(Options* options) {
-    int i = 0;
-    while (attachFlag == FALSE && (i++) < 15) {
+    if (attachFlag == FALSE && waitForAttachTime < 15) {
+        waitForAttachTime++;
         sleep(1);
         fprintf(stderr, "[DEBUG] %s: Waiting for debugger to attach\n", LOG_TAG);
-    }
-    if (attachFlag) {
-        rvmHookDebuggerAttached(options);
+        rvmHookWaitForAttach(options);
+    } else {
+        if (attachFlag) {
+            rvmHookDebuggerAttached(options);
+        }
     }
 }
 

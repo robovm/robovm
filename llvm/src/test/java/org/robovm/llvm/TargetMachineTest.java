@@ -30,42 +30,30 @@ public class TargetMachineTest {
 
     @Test
     public void testEmitToFile() throws Exception {
-        TargetMachine tm = null;
-        Context context = new Context();
-        try {
-            tm = Target.getTarget("thumb").createTargetMachine("thumbv7-unknown-ios");
-            Module module = Module.parseIR(context, "define private i32 @foo() {\n ret i32 5\n }\n", "foo.c");
-            ByteArrayOutputStream out = new ByteArrayOutputStream();
-            tm.emit(module, out, CodeGenFileType.AssemblyFile);
-            String asm = new String(out.toByteArray(), "utf-8");
-            assertTrue(asm.contains("L_foo"));
-        } finally {
-            if (tm != null) {
-                tm.dispose();
+        try (Context context = new Context()) {
+            try (TargetMachine tm = Target.getTarget("thumb").createTargetMachine("thumbv7-unknown-ios")) {
+                Module module = Module.parseIR(context, "define private i32 @foo() {\n ret i32 5\n }\n", "foo.c");
+                ByteArrayOutputStream out = new ByteArrayOutputStream();
+                tm.emit(module, out, CodeGenFileType.AssemblyFile);
+                String asm = new String(out.toByteArray(), "utf-8");
+                assertTrue(asm.contains("L_foo"));
             }
-            context.dispose();
         }
     }
 
     @Test
     public void testAssemble() throws Exception {
-        TargetMachine tm = null;
-        Context context = new Context();
-        try {
-            tm = Target.getTarget("thumb").createTargetMachine("thumbv7-unknown-ios");
-            Module module = Module.parseIR(context, "define private i32 @foo() {\n ret i32 5\n }\n", "foo.c");
-            ByteArrayOutputStream out = new ByteArrayOutputStream();
-            tm.emit(module, out, CodeGenFileType.AssemblyFile);
-            String asm = new String(out.toByteArray(), "utf-8");
-            out = new ByteArrayOutputStream();
-            tm.assemble(asm.getBytes(), "foo.s", out);
-            byte[] data = out.toByteArray();
-            assertTrue(data.length > 0);
-        } finally {
-            if (tm != null) {
-                tm.dispose();
+        try (Context context = new Context()) {
+            try (TargetMachine tm = Target.getTarget("thumb").createTargetMachine("thumbv7-unknown-ios")) {
+                Module module = Module.parseIR(context, "define private i32 @foo() {\n ret i32 5\n }\n", "foo.c");
+                ByteArrayOutputStream out = new ByteArrayOutputStream();
+                tm.emit(module, out, CodeGenFileType.AssemblyFile);
+                String asm = new String(out.toByteArray(), "utf-8");
+                out = new ByteArrayOutputStream();
+                tm.assemble(asm.getBytes(), "foo.s", out);
+                byte[] data = out.toByteArray();
+                assertTrue(data.length > 0);
             }
-            context.dispose();
         }
     }
     

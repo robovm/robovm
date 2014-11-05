@@ -315,51 +315,50 @@ public class ClassCompiler {
             llFile.getParentFile().mkdirs();
             FileUtils.writeByteArrayToFile(llFile, llData);
         }
-        
-        Context context = new Context();
-        Module module = Module.parseIR(context, llData, clazz.getClassName());
-        PassManager passManager = createPassManager(config);
-        passManager.run(module);
-        passManager.dispose();
 
-        if (config.isDumpIntermediates()) {
-            File bcFile = config.getBcFile(clazz);
-            bcFile.getParentFile().mkdirs();
-            module.writeBitcode(bcFile);
+        try (Context context = new Context()) {
+            try (Module module = Module.parseIR(context, llData, clazz.getClassName())) {
+                try (PassManager passManager = createPassManager(config)) {
+                    passManager.run(module);
+                }
+
+                if (config.isDumpIntermediates()) {
+                    File bcFile = config.getBcFile(clazz);
+                    bcFile.getParentFile().mkdirs();
+                    module.writeBitcode(bcFile);
+                }
+
+                String triple = config.getTriple();
+                Target target = Target.lookupTarget(triple);
+                try (TargetMachine targetMachine = target.createTargetMachine(triple,
+                        "generic", null, null, null, null)) {
+                    targetMachine.setAsmVerbosityDefault(true);
+                    targetMachine.setFunctionSections(true);
+                    targetMachine.setDataSections(true);
+                    targetMachine.getOptions().setNoFramePointerElim(true);
+
+                    ByteArrayOutputStream output = new ByteArrayOutputStream(256 * 1024);
+                    targetMachine.emit(module, output, CodeGenFileType.AssemblyFile);
+
+                    byte[] asm = output.toByteArray();
+                    output.reset();
+                    patchAsmWithFunctionSizes(config, clazz, new ByteArrayInputStream(asm), output);
+                    asm = output.toByteArray();
+
+                    if (config.isDumpIntermediates()) {
+                        File sFile = config.getSFile(clazz);
+                        sFile.getParentFile().mkdirs();
+                        FileUtils.writeByteArrayToFile(sFile, asm);
+                    }
+
+                    File oFile = config.getOFile(clazz);
+                    oFile.getParentFile().mkdirs();
+                    try (BufferedOutputStream oOut = new BufferedOutputStream(new FileOutputStream(oFile))) {
+                        targetMachine.assemble(asm, clazz.getClassName(), oOut);
+                    }
+                }
+            }
         }
-        
-        String triple = config.getTriple();
-        Target target = Target.lookupTarget(triple);
-        TargetMachine targetMachine = target.createTargetMachine(triple, "generic", null, null, null, null);
-        targetMachine.setAsmVerbosityDefault(true);
-        targetMachine.setFunctionSections(true);
-        targetMachine.setDataSections(true);
-        targetMachine.getOptions().setNoFramePointerElim(true);
-
-        ByteArrayOutputStream output = new ByteArrayOutputStream(256 * 1024);
-        targetMachine.emit(module, output, CodeGenFileType.AssemblyFile);
-        
-        module.dispose();
-        context.dispose();
-        
-        byte[] asm = output.toByteArray();
-        output.reset();
-        patchAsmWithFunctionSizes(config, clazz, new ByteArrayInputStream(asm), output);
-        asm = output.toByteArray();
-
-        if (config.isDumpIntermediates()) {
-            File sFile = config.getSFile(clazz);
-            sFile.getParentFile().mkdirs();
-            FileUtils.writeByteArrayToFile(sFile, asm);
-        }
-        
-        File oFile = config.getOFile(clazz);
-        oFile.getParentFile().mkdirs();
-        BufferedOutputStream oOut = new BufferedOutputStream(new FileOutputStream(oFile));
-        targetMachine.assemble(asm, clazz.getClassName(), oOut);
-        oOut.close();
-        
-        targetMachine.dispose();
     }
 
     private static PassManager createPassManager(Config config) {

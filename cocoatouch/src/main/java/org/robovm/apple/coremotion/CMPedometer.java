@@ -31,35 +31,37 @@ import org.robovm.apple.foundation.*;
 
 /*<javadoc>*/
 /**
- * @since Available in iOS 7.0 and later.
- * @deprecated Deprecated in iOS 8.0.
+ * @since Available in iOS 8.0 and later.
  */
-@Deprecated
 /*</javadoc>*/
 /*<annotations>*/@Library("CoreMotion") @NativeClass/*</annotations>*/
-/*<visibility>*/public/*</visibility>*/ class /*<name>*/CMStepCounter/*</name>*/ 
+/*<visibility>*/public/*</visibility>*/ class /*<name>*/CMPedometer/*</name>*/ 
     extends /*<extends>*/NSObject/*</extends>*/ 
     /*<implements>*//*</implements>*/ {
 
-    /*<ptr>*/public static class CMStepCounterPtr extends Ptr<CMStepCounter, CMStepCounterPtr> {}/*</ptr>*/
-    /*<bind>*/static { ObjCRuntime.bind(CMStepCounter.class); }/*</bind>*/
+    /*<ptr>*/public static class CMPedometerPtr extends Ptr<CMPedometer, CMPedometerPtr> {}/*</ptr>*/
+    /*<bind>*/static { ObjCRuntime.bind(CMPedometer.class); }/*</bind>*/
     /*<constants>*//*</constants>*/
     /*<constructors>*/
-    public CMStepCounter() {}
-    protected CMStepCounter(SkipInit skipInit) { super(skipInit); }
+    public CMPedometer() {}
+    protected CMPedometer(SkipInit skipInit) { super(skipInit); }
     /*</constructors>*/
     /*<properties>*/
     
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
-    @Method(selector = "queryStepCountStartingFrom:to:toQueue:withHandler:")
-    public native void queryStepCount(NSDate start, NSDate end, NSOperationQueue queue, @Block("(@MachineSizedSInt,)") VoidBlock2<Long, CMError> handler);
-    @Method(selector = "startStepCountingUpdatesToQueue:updateOn:withHandler:")
-    public native void startStepCountingUpdates(NSOperationQueue queue, @MachineSizedSInt long stepCounts, @Block("(@MachineSizedSInt,,)") VoidBlock3<Long, NSDate, CMError> handler);
-    @Method(selector = "stopStepCountingUpdates")
-    public native void stopStepCountingUpdates();
+    @Method(selector = "queryPedometerDataFromDate:toDate:withHandler:")
+    public native void queryPedometerData(NSDate start, NSDate end, @Block VoidBlock2<CMPedometerData, CMError> handler);
+    @Method(selector = "startPedometerUpdatesFromDate:withHandler:")
+    public native void startPedometerUpdates(NSDate start, @Block VoidBlock2<CMPedometerData, CMError> handler);
+    @Method(selector = "stopPedometerUpdates")
+    public native void stopPedometerUpdates();
     @Method(selector = "isStepCountingAvailable")
     public static native boolean isStepCountingAvailable();
+    @Method(selector = "isDistanceAvailable")
+    public static native boolean isDistanceAvailable();
+    @Method(selector = "isFloorCountingAvailable")
+    public static native boolean isFloorCountingAvailable();
     /*</methods>*/
 }

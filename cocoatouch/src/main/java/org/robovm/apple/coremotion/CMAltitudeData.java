@@ -30,29 +30,30 @@ import org.robovm.apple.foundation.*;
 /*</imports>*/
 
 /*<javadoc>*/
+/**
+ * @since Available in iOS 8.0 and later.
+ */
 /*</javadoc>*/
-/*<annotations>*/@Library("CoreMotion")/*</annotations>*/
-/*<visibility>*/public/*</visibility>*/ class /*<name>*/CMError/*</name>*/ 
-    extends /*<extends>*/NSError/*</extends>*/ 
+/*<annotations>*/@Library("CoreMotion") @NativeClass/*</annotations>*/
+/*<visibility>*/public/*</visibility>*/ class /*<name>*/CMAltitudeData/*</name>*/ 
+    extends /*<extends>*/CMLogItem/*</extends>*/ 
     /*<implements>*//*</implements>*/ {
 
-    protected CMError(SkipInit skipInit) {
-        super(skipInit);
-    }
-    
-    /*<ptr>*/public static class CMErrorPtr extends Ptr<CMError, CMErrorPtr> {}/*</ptr>*/
-    /*<bind>*/static { Bro.bind(CMError.class); }/*</bind>*/
+    /*<ptr>*/public static class CMAltitudeDataPtr extends Ptr<CMAltitudeData, CMAltitudeDataPtr> {}/*</ptr>*/
+    /*<bind>*/static { ObjCRuntime.bind(CMAltitudeData.class); }/*</bind>*/
     /*<constants>*//*</constants>*/
-    /*<properties>*//*</properties>*/
+    /*<constructors>*/
+    public CMAltitudeData() {}
+    protected CMAltitudeData(SkipInit skipInit) { super(skipInit); }
+    /*</constructors>*/
+    /*<properties>*/
+    @Property(selector = "relativeAltitude")
+    public native NSNumber getRelativeAltitude();
+    @Property(selector = "pressure")
+    public native NSNumber getPressure();
+    /*</properties>*/
     /*<members>*//*</members>*/
-    public CMErrorCode getErrorCode() {
-        return CMErrorCode.valueOf(getCode());
-    }
     /*<methods>*/
-    /**
-     * @since Available in iOS 4.0 and later.
-     */
-    @GlobalValue(symbol="CMErrorDomain", optional=true)
-    public static native String getClassDomain();
+    
     /*</methods>*/
 }

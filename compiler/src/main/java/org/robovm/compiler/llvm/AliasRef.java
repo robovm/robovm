@@ -38,8 +38,8 @@ public class AliasRef extends Constant {
         return name;
     }
     
-    public PointerType getType() {
-        return new PointerType(type);
+    public Type getType() {
+        return type;
     }
 
     @Override

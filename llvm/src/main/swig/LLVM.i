@@ -4,6 +4,7 @@
 #include <llvm-c/Core.h>
 #include <llvm-c/BitReader.h>
 #include <llvm-c/BitWriter.h>
+#include <llvm-c/Object.h>
 #include <llvm-c/Transforms/IPO.h>
 #include <llvm-c/Transforms/PassManagerBuilder.h>
 #include <llvm-c/Transforms/Scalar.h>
@@ -12,7 +13,9 @@
 #include <llvm-c/TargetMachine.h>
 #include "../native/LLVMExtra.h"
 
+struct LongArray;
 typedef char* charp;
+typedef struct LongArray* LongArrayPtr;
 %}
 
 %include "carrays.i"
@@ -86,6 +89,7 @@ SWIG_JAVABODY_METHODS(protected, protected, SWIGTYPE)
 %enddef
 
 typedef char* charp;
+typedef LongArray* LongArrayPtr;
 
 OUT_CLASS(LLVMMemoryBufferRef, MemoryBufferRefOut)
 OUT_CLASS(LLVMModuleRef, ModuleRefOut)
@@ -93,6 +97,7 @@ OUT_CLASS(LLVMModuleProviderRef, ModuleProviderRefOut)
 OUT_CLASS(LLVMTargetRef, TargetRefOut)
 OUT_CLASS(charp, StringOut, if (self->value) free(self->value))
 OUT_CLASS(jint, IntOut)
+OUT_CLASS(LongArrayPtr, LongArrayOut, if (self->value) free(self->value))
 OUT_ARG(MemoryBufferRefOut, LLVMMemoryBufferRef *OutMemBuf)
 OUT_ARG(ModuleRefOut, LLVMModuleRef *OutM)
 OUT_ARG(ModuleRefOut, LLVMModuleRef *OutModule)
@@ -101,6 +106,8 @@ OUT_ARG(TargetRefOut, LLVMTargetRef *T)
 OUT_ARG(StringOut, char **OutMessage)
 OUT_ARG(StringOut, char **ErrorMessage)
 OUT_ARG(IntOut, unsigned *Len)
+OUT_ARG(IntOut, int* OutSize)
+OUT_ARG(LongArrayOut, uint64_t **Out)
 
 ARRAY_CLASS(LLVMTypeRef, TypeRefArray)
 ARRAY_CLASS(LLVMBasicBlockRef, BasicBlockRefArray)
@@ -234,6 +241,7 @@ typedef jlong uint64_t;
 %include "llvm-c/Core.h"
 %include "llvm-c/BitReader.h"
 %include "llvm-c/BitWriter.h"
+%include "llvm-c/Object.h"
 %include "llvm-c/Transforms/IPO.h"
 %include "llvm-c/Transforms/PassManagerBuilder.h"
 %include "llvm-c/Transforms/Scalar.h"

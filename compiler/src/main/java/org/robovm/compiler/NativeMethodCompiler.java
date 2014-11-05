@@ -34,7 +34,6 @@ import org.robovm.compiler.llvm.Br;
 import org.robovm.compiler.llvm.FloatingPointConstant;
 import org.robovm.compiler.llvm.FloatingPointType;
 import org.robovm.compiler.llvm.Function;
-import org.robovm.compiler.llvm.FunctionAttribute;
 import org.robovm.compiler.llvm.FunctionRef;
 import org.robovm.compiler.llvm.FunctionType;
 import org.robovm.compiler.llvm.Global;
@@ -43,7 +42,6 @@ import org.robovm.compiler.llvm.Icmp.Condition;
 import org.robovm.compiler.llvm.IntegerConstant;
 import org.robovm.compiler.llvm.IntegerType;
 import org.robovm.compiler.llvm.Label;
-import org.robovm.compiler.llvm.Linkage;
 import org.robovm.compiler.llvm.NullConstant;
 import org.robovm.compiler.llvm.PointerType;
 import org.robovm.compiler.llvm.Ret;
@@ -96,14 +94,6 @@ public class NativeMethodCompiler extends AbstractMethodCompiler {
             }
         }
         return nativeCount > 1;
-    }
-
-    private Linkage dynamicResolverLinkage() {
-        return config.isDebug() ? external : _private;
-    }
-
-    private FunctionAttribute shouldInlineDynamicResolver() {
-        return config.isDebug() ? noinline : alwaysinline;
     }
 
     private FunctionRef createNative(ModuleBuilder mb, SootMethod method) {
@@ -159,8 +149,8 @@ public class NativeMethodCompiler extends AbstractMethodCompiler {
             mb.addGlobal(g);
             String fnName = Symbols.nativeCallMethodSymbol(targetInternalName, methodName, methodDesc);
             Function fn = new FunctionBuilder(fnName, nativeFunctionType)
-                .linkage(dynamicResolverLinkage())
-                .attribs(shouldInlineDynamicResolver(), optsize).build();
+                .linkage(external)
+                .attribs(alwaysinline, optsize).build();
             FunctionRef ldcFn = FunctionBuilder.ldcInternal(targetInternalName).ref();
             Value theClass = call(fn, ldcFn, fn.getParameterRef(0));
             Value implI8Ptr = call(fn, BC_RESOLVE_NATIVE, fn.getParameterRef(0), 

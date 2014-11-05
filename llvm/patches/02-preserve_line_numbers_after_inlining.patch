@@ -1,0 +1,13 @@
+diff -ru a/lib/Transforms/Utils/InlineFunction.cpp b/lib/Transforms/Utils/InlineFunction.cpp
+--- alib/Transforms/Utils/InlineFunction.cpp  2013-11-03 13:22:13.000000000 +0100
++++ b/lib/Transforms/Utils/InlineFunction.cpp   2014-11-04 15:00:56.000000000 +0100
+@@ -483,6 +483,9 @@
+           DVI->setOperand(2, createInlinedVariable(DVI->getVariable(),
+                                                    InlinedAt, Ctx));
+         }
++      } else {
++        // RoboVM note: Use the location of the original call
++        BI->setDebugLoc(TheCallDL);
+       }
+     }
+   }

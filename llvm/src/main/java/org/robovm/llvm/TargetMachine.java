@@ -27,7 +27,7 @@ import org.robovm.llvm.binding.TargetMachineRef;
 /**
  * 
  */
-public class TargetMachine {
+public class TargetMachine implements AutoCloseable {
     protected TargetMachineRef ref;
 
     TargetMachine(TargetMachineRef ref) {
@@ -44,6 +44,11 @@ public class TargetMachine {
         checkDisposed();
         LLVM.DisposeTargetMachine(ref);
         ref = null;
+    }
+
+    @Override
+    public void close() {
+        dispose();
     }
 
     public Target getTarget() {

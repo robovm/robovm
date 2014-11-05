@@ -22,7 +22,7 @@ import org.robovm.llvm.binding.LLVM;
 /**
  * 
  */
-public class Context {
+public class Context implements AutoCloseable {
     protected ContextRef ref;
 
     public Context() {
@@ -48,6 +48,10 @@ public class Context {
         ref = null;
     }
 
+    @Override
+    public void close() {
+        dispose();
+    }
     
     public static Context getGlobalContext() {
         return new Context(LLVM.GetGlobalContext());

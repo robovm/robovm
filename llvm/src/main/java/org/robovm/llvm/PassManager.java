@@ -22,7 +22,7 @@ import org.robovm.llvm.binding.PassManagerRef;
 /**
  * 
  */
-public class PassManager {
+public class PassManager implements AutoCloseable {
     protected PassManagerRef ref;
 
     public PassManager() {
@@ -42,6 +42,11 @@ public class PassManager {
         checkDisposed();
         LLVM.DisposePassManager(ref);
         ref = null;
+    }
+
+    @Override
+    public void close() {
+        dispose();
     }
 
     public void addAggressiveDCEPass() {

@@ -81,6 +81,9 @@ import org.robovm.apple.uikit.*;
      */
     @Bridge(symbol="CGPathCreateMutableCopyByTransformingPath", optional=true)
     public static native @org.robovm.rt.bro.annotation.Marshaler(CFType.NoRetainMarshaler.class) CGMutablePath createMutableCopyByTransformingPath(CGPath path, CGAffineTransform transform);
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
     @Bridge(symbol="CGPathAddRoundedRect", optional=true)
     public native void addRoundedRect(CGAffineTransform transform, @ByVal CGRect rect, @MachineSizedFloat double cornerWidth, @MachineSizedFloat double cornerHeight);
     /**

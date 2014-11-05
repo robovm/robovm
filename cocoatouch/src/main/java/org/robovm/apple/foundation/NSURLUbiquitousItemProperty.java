@@ -126,8 +126,7 @@ import org.robovm.apple.dispatch.*;
                 return v;
             }
         }
-        throw new IllegalArgumentException("No constant with value " + value + " found in " 
-            + /*<name>*/NSURLUbiquitousItemProperty/*</name>*/.class.getName());
+        return null;
     }
     /*<methods>*/
     /**

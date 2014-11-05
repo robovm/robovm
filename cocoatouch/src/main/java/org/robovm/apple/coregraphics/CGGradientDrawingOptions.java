@@ -34,24 +34,30 @@ import org.robovm.apple.uikit.*;
 /*<javadoc>*/
 
 /*</javadoc>*/
-/*<annotations>*//*</annotations>*/
-public enum /*<name>*/CGGradientDrawingOptions/*</name>*/ implements ValuedEnum {
+/*<annotations>*/@Marshaler(Bits.AsMachineSizedIntMarshaler.class)/*</annotations>*/
+public final class /*<name>*/CGGradientDrawingOptions/*</name>*/ extends Bits</*<name>*/CGGradientDrawingOptions/*</name>*/> {
     /*<values>*/
-    BeforeStartLocation(1L),
-    AfterEndLocation(2L);
+    public static final CGGradientDrawingOptions None = new CGGradientDrawingOptions(0L);
+    public static final CGGradientDrawingOptions BeforeStartLocation = new CGGradientDrawingOptions(1L);
+    public static final CGGradientDrawingOptions AfterEndLocation = new CGGradientDrawingOptions(2L);
     /*</values>*/
 
-    private final long n;
+    /*<bind>*/
+    /*</bind>*/
+    /*<constants>*//*</constants>*/
+    /*<methods>*//*</methods>*/
 
-    private /*<name>*/CGGradientDrawingOptions/*</name>*/(long n) { this.n = n; }
-    public long value() { return n; }
-    public static /*<name>*/CGGradientDrawingOptions/*</name>*/ valueOf(long n) {
-        for (/*<name>*/CGGradientDrawingOptions/*</name>*/ v : values()) {
-            if (v.n == n) {
-                return v;
-            }
-        }
-        throw new IllegalArgumentException("No constant with value " + n + " found in " 
-            + /*<name>*/CGGradientDrawingOptions/*</name>*/.class.getName());
+    private static final /*<name>*/CGGradientDrawingOptions/*</name>*/[] values = _values(/*<name>*/CGGradientDrawingOptions/*</name>*/.class);
+
+    public /*<name>*/CGGradientDrawingOptions/*</name>*/(long value) { super(value); }
+    private /*<name>*/CGGradientDrawingOptions/*</name>*/(long value, long mask) { super(value, mask); }
+    protected /*<name>*/CGGradientDrawingOptions/*</name>*/ wrap(long value, long mask) {
+        return new /*<name>*/CGGradientDrawingOptions/*</name>*/(value, mask);
+    }
+    protected /*<name>*/CGGradientDrawingOptions/*</name>*/[] _values() {
+        return values;
+    }
+    public static /*<name>*/CGGradientDrawingOptions/*</name>*/[] values() {
+        return values.clone();
     }
 }

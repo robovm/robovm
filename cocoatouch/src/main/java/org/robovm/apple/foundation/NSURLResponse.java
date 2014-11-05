@@ -45,7 +45,9 @@ import org.robovm.apple.dispatch.*;
 
     /*<ptr>*/public static class NSURLResponsePtr extends Ptr<NSURLResponse, NSURLResponsePtr> {}/*</ptr>*/
     /*<bind>*/static { ObjCRuntime.bind(NSURLResponse.class); }/*</bind>*/
-    /*<constants>*//*</constants>*/
+    /*<constants>*/
+    public static final int UnknownLength = -1;
+    /*</constants>*/
     /*<constructors>*/
     public NSURLResponse() {}
     protected NSURLResponse(SkipInit skipInit) { super(skipInit); }

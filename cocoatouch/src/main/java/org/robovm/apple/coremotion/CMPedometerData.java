@@ -30,24 +30,38 @@ import org.robovm.apple.foundation.*;
 /*</imports>*/
 
 /*<javadoc>*/
+/**
+ * @since Available in iOS 8.0 and later.
+ */
 /*</javadoc>*/
-/*<annotations>*/@Library("CoreMotion") @Marshaler(NSString.AsStringMarshaler.class)/*</annotations>*/
-/*<visibility>*/public/*</visibility>*/ class /*<name>*/CoreMotion/*</name>*/ 
-    extends /*<extends>*/Object/*</extends>*/ 
+/*<annotations>*/@Library("CoreMotion") @NativeClass/*</annotations>*/
+/*<visibility>*/public/*</visibility>*/ class /*<name>*/CMPedometerData/*</name>*/ 
+    extends /*<extends>*/NSObject/*</extends>*/ 
     /*<implements>*//*</implements>*/ {
 
-    /*<ptr>*/
-    /*</ptr>*/
-    /*<bind>*/static { Bro.bind(CoreMotion.class); }/*</bind>*/
+    /*<ptr>*/public static class CMPedometerDataPtr extends Ptr<CMPedometerData, CMPedometerDataPtr> {}/*</ptr>*/
+    /*<bind>*/static { ObjCRuntime.bind(CMPedometerData.class); }/*</bind>*/
     /*<constants>*//*</constants>*/
-    /*<constructors>*//*</constructors>*/
-    /*<properties>*//*</properties>*/
+    /*<constructors>*/
+    public CMPedometerData() {}
+    protected CMPedometerData(SkipInit skipInit) { super(skipInit); }
+    /*</constructors>*/
+    /*<properties>*/
+    @Property(selector = "startDate")
+    public native NSDate getStartDate();
+    @Property(selector = "endDate")
+    public native NSDate getEndDate();
+    @Property(selector = "numberOfSteps")
+    public native NSNumber getNumberOfSteps();
+    @Property(selector = "distance")
+    public native NSNumber getDistance();
+    @Property(selector = "floorsAscended")
+    public native NSNumber getFloorsAscended();
+    @Property(selector = "floorsDescended")
+    public native NSNumber getFloorsDescended();
+    /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
-    /**
-     * @since Available in iOS 4.0 and later.
-     */
-    @GlobalValue(symbol="CMErrorDomain", optional=true)
-    public static native String ErrorDomain();
+    
     /*</methods>*/
 }

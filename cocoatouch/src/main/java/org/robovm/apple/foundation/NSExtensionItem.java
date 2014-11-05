@@ -72,6 +72,22 @@ import org.robovm.apple.dispatch.*;
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @GlobalValue(symbol="NSExtensionItemAttributedTitleKey", optional=true)
+    public static native String AttributedTitleKey();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @GlobalValue(symbol="NSExtensionItemAttributedContentTextKey", optional=true)
+    public static native String AttributedContentTextKey();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @GlobalValue(symbol="NSExtensionItemAttachmentsKey", optional=true)
+    public static native String AttachmentsKey();
+    
     
     /*</methods>*/
 }

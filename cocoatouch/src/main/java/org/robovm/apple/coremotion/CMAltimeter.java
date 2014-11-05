@@ -30,29 +30,32 @@ import org.robovm.apple.foundation.*;
 /*</imports>*/
 
 /*<javadoc>*/
+/**
+ * @since Available in iOS 8.0 and later.
+ */
 /*</javadoc>*/
-/*<annotations>*/@Library("CoreMotion")/*</annotations>*/
-/*<visibility>*/public/*</visibility>*/ class /*<name>*/CMError/*</name>*/ 
-    extends /*<extends>*/NSError/*</extends>*/ 
+/*<annotations>*/@Library("CoreMotion") @NativeClass/*</annotations>*/
+/*<visibility>*/public/*</visibility>*/ class /*<name>*/CMAltimeter/*</name>*/ 
+    extends /*<extends>*/NSObject/*</extends>*/ 
     /*<implements>*//*</implements>*/ {
 
-    protected CMError(SkipInit skipInit) {
-        super(skipInit);
-    }
-    
-    /*<ptr>*/public static class CMErrorPtr extends Ptr<CMError, CMErrorPtr> {}/*</ptr>*/
-    /*<bind>*/static { Bro.bind(CMError.class); }/*</bind>*/
+    /*<ptr>*/public static class CMAltimeterPtr extends Ptr<CMAltimeter, CMAltimeterPtr> {}/*</ptr>*/
+    /*<bind>*/static { ObjCRuntime.bind(CMAltimeter.class); }/*</bind>*/
     /*<constants>*//*</constants>*/
-    /*<properties>*//*</properties>*/
+    /*<constructors>*/
+    public CMAltimeter() {}
+    protected CMAltimeter(SkipInit skipInit) { super(skipInit); }
+    /*</constructors>*/
+    /*<properties>*/
+    
+    /*</properties>*/
     /*<members>*//*</members>*/
-    public CMErrorCode getErrorCode() {
-        return CMErrorCode.valueOf(getCode());
-    }
     /*<methods>*/
-    /**
-     * @since Available in iOS 4.0 and later.
-     */
-    @GlobalValue(symbol="CMErrorDomain", optional=true)
-    public static native String getClassDomain();
+    @Method(selector = "startRelativeAltitudeUpdatesToQueue:withHandler:")
+    public native void startRelativeAltitudeUpdates(NSOperationQueue queue, @Block VoidBlock2<CMAltitudeData, CMError> handler);
+    @Method(selector = "stopRelativeAltitudeUpdates")
+    public native void stopRelativeAltitudeUpdates();
+    @Method(selector = "isRelativeAltitudeAvailable")
+    public static native boolean isRelativeAltitudeAvailable();
     /*</methods>*/
 }

@@ -19,7 +19,6 @@ package org.robovm.apple.foundation;
 import java.io.*;
 import java.nio.*;
 import java.util.*;
-
 import org.robovm.objc.*;
 import org.robovm.objc.annotation.*;
 import org.robovm.objc.block.*;
@@ -33,53 +32,38 @@ import org.robovm.apple.coreanimation.*;
 import org.robovm.apple.coregraphics.*;
 import org.robovm.apple.coremedia.*;
 import org.robovm.apple.security.*;
+import org.robovm.apple.dispatch.*;
 /*</imports>*/
 
 /*<javadoc>*/
 /*</javadoc>*/
 /*<annotations>*/@Library("Foundation")/*</annotations>*/
-/*<visibility>*/public/*</visibility>*/ abstract class /*<name>*/NSURLProperty/*</name>*/ 
+/*<visibility>*/public/*</visibility>*/ class /*<name>*/NSURLSessionTaskPriority/*</name>*/ 
     extends /*<extends>*/Object/*</extends>*/ 
     /*<implements>*//*</implements>*/ {
 
-    public static class AsListMarshaler {
-        @MarshalsPointer
-        public static List<NSURLProperty> toObject(Class<? extends NSObject> cls, long handle, long flags) {
-            // Not needed.
-            return null;
-        }
-        @MarshalsPointer
-        public static long toNative(List<NSURLProperty> l, long flags) {
-            if (l == null) {
-                return 0L;
-            }
-            NSMutableArray<NSString> array = new NSMutableArray<>();
-            for (NSURLProperty i : l) {
-                array.add(i.value());
-            }
-            return NSObject.Marshaler.toNative(array, flags);
-        }
-    }
-    
     /*<ptr>*/
     /*</ptr>*/
-    /*<bind>*/static { Bro.bind(NSURLProperty.class); }/*</bind>*/
+    /*<bind>*/static { Bro.bind(NSURLSessionTaskPriority.class); }/*</bind>*/
     /*<constants>*//*</constants>*/
     /*<constructors>*//*</constructors>*/
     /*<properties>*//*</properties>*/
     /*<members>*//*</members>*/
-    public abstract NSString value();
     /*<methods>*/
-    public static NSURLProperty valueOf(NSString value) {
-        NSURLProperty property = null;
-        property = NSURLFileProperty.valueOf(value);
-        if (property != null) return property;
-        property = NSURLFileSystemProperty.valueOf(value);
-        if (property != null) return property;
-        property = NSURLVolumeProperty.valueOf(value);
-        if (property != null) return property;
-        property = NSURLUbiquitousItemProperty.valueOf(value);
-        return property;
-    }
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @GlobalValue(symbol="NSURLSessionTaskPriorityDefault", optional=true)
+    public static native float Default();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @GlobalValue(symbol="NSURLSessionTaskPriorityLow", optional=true)
+    public static native float Low();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @GlobalValue(symbol="NSURLSessionTaskPriorityHigh", optional=true)
+    public static native float High();
     /*</methods>*/
 }

@@ -38,35 +38,27 @@ import org.robovm.apple.dispatch.*;
 /*<javadoc>*/
 /*</javadoc>*/
 /*<annotations>*/@Library("Foundation")/*</annotations>*/
-/*<visibility>*/public/*</visibility>*/ class /*<name>*/NSURLErrorUserInfoKey/*</name>*/ 
+/*<visibility>*/public/*</visibility>*/ class /*<name>*/NSURLSessionErrorUserInfoKey/*</name>*/ 
     extends /*<extends>*/NSErrorUserInfoKey/*</extends>*/ 
     /*<implements>*//*</implements>*/ {
 
     /*<ptr>*/
     /*</ptr>*/
-    /*<bind>*/static { Bro.bind(NSURLErrorUserInfoKey.class); }/*</bind>*/
+    /*<bind>*/static { Bro.bind(NSURLSessionErrorUserInfoKey.class); }/*</bind>*/
     /*<constants>*//*</constants>*/
     /**
-     * @since Available in iOS 5.0 and later.
+     * @since Available in iOS 8.0 and later.
      */
-    public static final NSURLErrorUserInfoKey KeysOfUnsetValues = new NSURLErrorUserInfoKey("KeysOfUnsetValuesKey");
+    public static final NSURLSessionErrorUserInfoKey BackgroundTaskCancelledReason = new NSURLSessionErrorUserInfoKey("BackgroundTaskCancelledReasonKey");
     /**
-     * @since Available in iOS 4.0 and later.
+     * @since Available in iOS 7.0 and later.
      */
-    public static final NSURLErrorUserInfoKey FailingURL = new NSURLErrorUserInfoKey("FailingURLErrorKey");
-    /**
-     * @since Available in iOS 4.0 and later.
-     */
-    public static final NSURLErrorUserInfoKey FailingURLString = new NSURLErrorUserInfoKey("FailingURLStringErrorKey");
-    /**
-     * @since Available in iOS 4.0 and later.
-     */
-    public static final NSURLErrorUserInfoKey FailingURLPeerTrust = new NSURLErrorUserInfoKey("FailingURLPeerTrustErrorKey");
+    public static final NSURLSessionErrorUserInfoKey DownloadTaskResumeData = new NSURLSessionErrorUserInfoKey("DownloadTaskResumeDataKey");
     
-    private static NSURLErrorUserInfoKey[] values = new NSURLErrorUserInfoKey[] {FailingURL, FailingURLString, FailingURLPeerTrust, KeysOfUnsetValues};
+    private static NSURLSessionErrorUserInfoKey[] values = new NSURLSessionErrorUserInfoKey[] {BackgroundTaskCancelledReason, DownloadTaskResumeData};
     private final LazyGlobalValue<NSString> lazyGlobalValue;
     
-    private NSURLErrorUserInfoKey(String getterName) {
+    private NSURLSessionErrorUserInfoKey(String getterName) {
         lazyGlobalValue = new LazyGlobalValue<>(getClass(), getterName);
     }
     /*<constructors>*//*</constructors>*/
@@ -76,35 +68,25 @@ import org.robovm.apple.dispatch.*;
         return lazyGlobalValue.value();
     }
     
-    public static NSURLErrorUserInfoKey valueOf(NSString value) {
-        for (NSURLErrorUserInfoKey v : values) {
+    public static NSURLSessionErrorUserInfoKey valueOf(NSString value) {
+        for (NSURLSessionErrorUserInfoKey v : values) {
             if (v.value().equals(value)) {
                 return v;
             }
         }
         throw new IllegalArgumentException("No constant with value " + value + " found in " 
-                + /*<name>*/NSURLErrorUserInfoKey/*</name>*/.class.getName());
+                + /*<name>*/NSURLSessionErrorUserInfoKey/*</name>*/.class.getName());
     }
     /*<methods>*/
     /**
-     * @since Available in iOS 5.0 and later.
+     * @since Available in iOS 8.0 and later.
      */
-    @GlobalValue(symbol="NSURLKeysOfUnsetValuesKey", optional=true)
-    protected static native NSString KeysOfUnsetValuesKey();
+    @GlobalValue(symbol="NSURLErrorBackgroundTaskCancelledReasonKey", optional=true)
+    protected static native NSString BackgroundTaskCancelledReasonKey();
     /**
-     * @since Available in iOS 4.0 and later.
+     * @since Available in iOS 7.0 and later.
      */
-    @GlobalValue(symbol="NSURLErrorFailingURLErrorKey", optional=true)
-    protected static native NSString FailingURLErrorKey();
-    /**
-     * @since Available in iOS 4.0 and later.
-     */
-    @GlobalValue(symbol="NSURLErrorFailingURLStringErrorKey", optional=true)
-    protected static native NSString FailingURLStringErrorKey();
-    /**
-     * @since Available in iOS 4.0 and later.
-     */
-    @GlobalValue(symbol="NSURLErrorFailingURLPeerTrustErrorKey", optional=true)
-    protected static native NSString FailingURLPeerTrustErrorKey();
+    @GlobalValue(symbol="NSURLSessionDownloadTaskResumeData", optional=true)
+    protected static native NSString DownloadTaskResumeDataKey();
     /*</methods>*/
 }

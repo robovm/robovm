@@ -134,6 +134,9 @@ import org.robovm.apple.uikit.*;
      */
     @Bridge(symbol="CGPathCreateWithEllipseInRect", optional=true)
     public static native @org.robovm.rt.bro.annotation.Marshaler(CFType.NoRetainMarshaler.class) CGPath createWithEllipseInRect(@ByVal CGRect rect, CGAffineTransform transform);
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
     @Bridge(symbol="CGPathCreateWithRoundedRect", optional=true)
     public static native @org.robovm.rt.bro.annotation.Marshaler(CFType.NoRetainMarshaler.class) CGPath createWithRoundedRect(@ByVal CGRect rect, @MachineSizedFloat double cornerWidth, @MachineSizedFloat double cornerHeight, CGAffineTransform transform);
     /**

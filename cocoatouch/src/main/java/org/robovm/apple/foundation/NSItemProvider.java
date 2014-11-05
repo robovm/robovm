@@ -70,6 +70,17 @@ import org.robovm.apple.dispatch.*;
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @GlobalValue(symbol="NSExtensionJavaScriptPreprocessingResultsKey", optional=true)
+    public static native String JavaScriptPreprocessingResultsKey();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @GlobalValue(symbol="NSExtensionJavaScriptFinalizeArgumentKey", optional=true)
+    public static native String JavaScriptFinalizeArgumentKey();
+    
     @Method(selector = "initWithItem:typeIdentifier:")
     protected native @Pointer long init(NSObject item, String typeIdentifier);
     @Method(selector = "initWithContentsOfURL:")

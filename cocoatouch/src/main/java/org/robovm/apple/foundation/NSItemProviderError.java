@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.robovm.apple.coremotion;
+package org.robovm.apple.foundation;
 
 /*<imports>*/
 import java.io.*;
@@ -26,33 +26,41 @@ import org.robovm.rt.*;
 import org.robovm.rt.bro.*;
 import org.robovm.rt.bro.annotation.*;
 import org.robovm.rt.bro.ptr.*;
-import org.robovm.apple.foundation.*;
+import org.robovm.apple.corefoundation.*;
+import org.robovm.apple.uikit.*;
+import org.robovm.apple.coreanimation.*;
+import org.robovm.apple.coregraphics.*;
+import org.robovm.apple.coremedia.*;
+import org.robovm.apple.security.*;
+import org.robovm.apple.dispatch.*;
 /*</imports>*/
 
 /*<javadoc>*/
 /*</javadoc>*/
-/*<annotations>*/@Library("CoreMotion")/*</annotations>*/
-/*<visibility>*/public/*</visibility>*/ class /*<name>*/CMError/*</name>*/ 
+/*<annotations>*/@Library("Foundation")/*</annotations>*/
+/*<visibility>*/public/*</visibility>*/ class /*<name>*/NSItemProviderError/*</name>*/ 
     extends /*<extends>*/NSError/*</extends>*/ 
     /*<implements>*//*</implements>*/ {
 
-    protected CMError(SkipInit skipInit) {
+    protected NSItemProviderError(SkipInit skipInit) {
         super(skipInit);
     }
     
-    /*<ptr>*/public static class CMErrorPtr extends Ptr<CMError, CMErrorPtr> {}/*</ptr>*/
-    /*<bind>*/static { Bro.bind(CMError.class); }/*</bind>*/
+    /*<ptr>*/
+    /*</ptr>*/
+    /*<bind>*/static { Bro.bind(NSItemProviderError.class); }/*</bind>*/
     /*<constants>*//*</constants>*/
+    /*<constructors>*//*</constructors>*/
     /*<properties>*//*</properties>*/
     /*<members>*//*</members>*/
-    public CMErrorCode getErrorCode() {
-        return CMErrorCode.valueOf(getCode());
+    public NSItemProviderErrorCode getErrorCode() {
+        return NSItemProviderErrorCode.valueOf(getCode());
     }
     /*<methods>*/
     /**
-     * @since Available in iOS 4.0 and later.
+     * @since Available in iOS 8.0 and later.
      */
-    @GlobalValue(symbol="CMErrorDomain", optional=true)
+    @GlobalValue(symbol="NSItemProviderErrorDomain", optional=true)
     public static native String getClassDomain();
     /*</methods>*/
 }

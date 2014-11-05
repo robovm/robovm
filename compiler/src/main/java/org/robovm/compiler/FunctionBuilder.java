@@ -215,7 +215,16 @@ public class FunctionBuilder {
         return new FunctionBuilder(methodSymbol(method), getFunctionType(method)).linkage(external)
                 .attribs(noinline, optsize).build();
     }
-
+    
+    public static Function info(String internalName) {
+        return new FunctionBuilder(infoSymbol(internalName), new FunctionType(I8_PTR_PTR))
+                .linkage(external).attribs(alwaysinline, optsize).build();
+    }
+    
+    public static Function infoStruct(SootClass sootClass) {
+        return info(getInternalName(sootClass));
+    }
+    
     public static Function callback(SootMethod method, FunctionType functionType) {
         return new FunctionBuilder(callbackSymbol(method), functionType)
                 .linkage(external).attribs(noinline, optsize).build();

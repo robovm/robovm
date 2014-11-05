@@ -211,8 +211,8 @@ public class Symbols {
         return classSymbol(classInternalName, "ldcext");
     }
 
-    public static String infoStructI8PtrSymbol(String classInternalName) {
-        return classSymbol(classInternalName, "infostruct_i8ptr");
+    public static String infoSymbol(String classInternalName) {
+        return classSymbol(classInternalName, "info");
     }
 
     public static String infoStructSymbol(String classInternalName) {

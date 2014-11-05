@@ -661,9 +661,10 @@ public class ClassCompiler {
         }
         mb.addGlobal(classInfoStruct);
         
-        Alias infoStructI8Ptr = new Alias(Symbols.infoStructI8PtrSymbol(getInternalName(sootClass)), new ConstantBitcast(classInfoStruct.ref(), I8_PTR_PTR));
-        mb.addAlias(infoStructI8Ptr);
-
+        Function infoFn = FunctionBuilder.infoStruct(sootClass);
+        infoFn.add(new Ret(new ConstantBitcast(classInfoStruct.ref(), I8_PTR_PTR)));
+        mb.addFunction(infoFn);
+        
         for (CompilerPlugin compilerPlugin : config.getCompilerPlugins()) {
             compilerPlugin.afterClass(config, clazz, mb);
         }
@@ -1335,7 +1336,7 @@ public class ClassCompiler {
     }
 
     static Value getInfoStruct(Function f, SootClass sootClass) {
-        return new AliasRef(Symbols.infoStructI8PtrSymbol(getInternalName(sootClass)), I8_PTR_PTR);
+        return call(f, FunctionBuilder.infoStruct(sootClass).ref());
     }
     
     static Value getInstanceFieldPtr(Function f, Value base, SootField field, 

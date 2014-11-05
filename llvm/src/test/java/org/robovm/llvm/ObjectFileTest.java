@@ -113,13 +113,16 @@ public class ObjectFileTest {
         }
         
         assertNotNull(mainLineInfos);
-        // Assert that the info for main() contains lines 1 and 2
+        // Assert that the info for main() contains lines 1 and 2 and possibly 3
         Set<Integer> lineNumbers = new HashSet<>();
         for (LineInfo lineInfo : mainLineInfos) {
             lineNumbers.add(lineInfo.getLineNumber());
         }
-        assertEquals(2,  lineNumbers.size());
+        assertTrue(lineNumbers.size() >= 2 && lineNumbers.size() <= 3);
         assertTrue(lineNumbers.contains(1));
         assertTrue(lineNumbers.contains(2));
+        if (lineNumbers.size() == 3) {
+            assertTrue(lineNumbers.contains(3));
+        }
     }
 }

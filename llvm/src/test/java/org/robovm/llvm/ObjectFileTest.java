@@ -20,8 +20,14 @@ import static org.junit.Assert.*;
 
 import java.io.File;
 import java.io.FileOutputStream;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
+import org.apache.commons.exec.CommandLine;
+import org.apache.commons.exec.DefaultExecutor;
+import org.apache.commons.io.FileUtils;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.robovm.llvm.binding.CodeGenFileType;
 
@@ -54,10 +60,66 @@ public class ObjectFileTest {
                     assertTrue(symbols.get(2).getAddress() > 0);
                     assertTrue(symbols.get(2).getSize() > 0);
                     assertTrue(symbols.get(2).getFileOffset() > 0);
-                    System.out.println(symbols);
                 }
             }
         }
     }
-    
+
+    @Test
+    @Ignore
+    public void testMemoryLeaks() throws Exception {
+        // Enable this test, set -Xmx64M and watch the memory usage while it's running.
+        for (int i = 0; i < 100000; i++) {
+            testLoadFromFile();
+            if (i % 100 == 0) {
+                System.out.println(i);
+            }
+        }
+    }
+
+    @Test
+    public void testLineNumberInfo() throws Exception {
+        String cc = "gcc";
+        String symbolPrefix = "";
+        if (System.getProperty("os.name").toLowerCase().contains("mac")) {
+            cc = "clang";
+            symbolPrefix = "_";
+        }
+        
+        File cFile = File.createTempFile(getClass().getSimpleName(), ".c");
+        FileUtils.writeStringToFile(cFile, 
+                "int main() {\n" 
+              + "  return 0;\n"
+              + "}\n");
+        DefaultExecutor executor = new DefaultExecutor();
+        executor.setWorkingDirectory(cFile.getParentFile());
+        executor.execute(new CommandLine(cc)
+            .addArgument("-g")
+            .addArgument("-c")
+            .addArgument(cFile.getAbsolutePath()));
+        
+        List<LineInfo> mainLineInfos = null;
+        File oFile = new File(cFile.getParentFile(), cFile.getName().substring(0, cFile.getName().lastIndexOf('.')) + ".o");
+        try (ObjectFile objectFile = ObjectFile.load(oFile)) {
+            for (Symbol symbol : objectFile.getSymbols()) {
+                if (symbol.getSize() > 0) {
+                    List<LineInfo> lineInfos = objectFile.getLineInfos(symbol);
+                    if (!lineInfos.isEmpty() && symbol.getName().equals(symbolPrefix + "main")) {
+                        mainLineInfos = lineInfos;
+                        break;
+                    }
+                }
+            }
+        }
+        
+        assertNotNull(mainLineInfos);
+        // Assert that the info for main() contains lines 1 and 2
+        Set<Integer> lineNumbers = new HashSet<>();
+        for (LineInfo lineInfo : mainLineInfos) {
+            lineNumbers.add(lineInfo.getLineNumber());
+        }
+        assertEquals(2,  lineNumbers.size());
+        assertTrue(lineNumbers.contains(1));
+        assertTrue(lineNumbers.contains(2));
+    }
 }

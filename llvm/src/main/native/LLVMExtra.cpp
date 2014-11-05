@@ -398,14 +398,18 @@ LLVMBool LLVMTargetMachineEmitToOutputStream(LLVMTargetMachineRef T, LLVMModuleR
   return Result;
 }
 
-LLVMBool LLVMGetLineInfoForAddressRange(LLVMObjectFileRef O, uint64_t Address, uint64_t Size) {
+void LLVMGetLineInfoForAddressRange(LLVMObjectFileRef O, uint64_t Address, uint64_t Size, int* OutSize, uint64_t** Out) {
   ObjectFile* OF = unwrap(O);
   DIContext* ctx = DIContext::getDWARFContext(OF);
   DILineInfoTable lineTable = ctx->getLineInfoForAddressRange(Address, Size);
-  for (int i = 0; i < lineTable.size(); i++) {
-    std::pair<uint64_t, DILineInfo> p = lineTable[i];
-    fprintf(stdout, "%llx: %d\n", p.first, p.second.getLine());
-    fflush(stdout);
+  *OutSize = lineTable.size();
+  *Out = NULL;
+  if (lineTable.size() > 0) {
+    *Out = (uint64_t*) calloc(lineTable.size() * 2, sizeof(uint64_t));
+    for (int i = 0; i < lineTable.size(); i++) {
+      std::pair<uint64_t, DILineInfo> p = lineTable[i];
+      (*Out)[i * 2] = p.first;
+      (*Out)[i * 2 + 1] = p.second.getLine();
+    }
   }
-  return false;
 }

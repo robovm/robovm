@@ -20,7 +20,10 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.robovm.llvm.binding.IntOut;
 import org.robovm.llvm.binding.LLVM;
+import org.robovm.llvm.binding.LongArray;
+import org.robovm.llvm.binding.LongArrayOut;
 import org.robovm.llvm.binding.MemoryBufferRefOut;
 import org.robovm.llvm.binding.ObjectFileRef;
 import org.robovm.llvm.binding.StringOut;
@@ -54,6 +57,25 @@ public class ObjectFile implements AutoCloseable {
             LLVM.MoveToNextSymbol(it);
         }
         LLVM.DisposeSymbolIterator(it);
+        return result;
+    }
+    
+    public List<LineInfo> getLineInfos(Symbol symbol) {
+        List<LineInfo> result = new ArrayList<>();
+        IntOut sizeOut = new IntOut();
+        LongArrayOut out = new LongArrayOut();
+        LLVM.GetLineInfoForAddressRange(ref, symbol.getAddress(), symbol.getSize(), sizeOut, out);
+        int size = sizeOut.getValue();
+        if (size > 0) {
+            LongArray values = out.getValue();
+            for (int i = 0; i < size; i++) {
+                long address = values.get(i * 2);
+                long lineNumber = values.get(i * 2 + 1);
+                result.add(new LineInfo(address, (int) lineNumber));
+            }
+            values.delete();
+        }
+        out.delete();
         return result;
     }
     

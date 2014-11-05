@@ -3216,8 +3216,8 @@ public class LLVM implements LLVMConstants {
     return LLVMJNI.TargetMachineEmitToOutputStream(TargetMachineRef.getCPtr(T), ModuleRef.getCPtr(M), OutputStream, codegen.swigValue(), StringOut.getCPtr(ErrorMessage), ErrorMessage);
   }
 
-  public static boolean GetLineInfoForAddressRange(ObjectFileRef O, long Address, long Size) {
-    return LLVMJNI.GetLineInfoForAddressRange(ObjectFileRef.getCPtr(O), Address, Size);
+  public static void GetLineInfoForAddressRange(ObjectFileRef O, long Address, long Size, IntOut OutSize, LongArrayOut Out) {
+    LLVMJNI.GetLineInfoForAddressRange(ObjectFileRef.getCPtr(O), Address, Size, IntOut.getCPtr(OutSize), OutSize, LongArrayOut.getCPtr(Out), Out);
   }
 
 }

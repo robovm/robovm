@@ -200,7 +200,9 @@ static void SWIGUNUSED SWIG_JavaThrowException(JNIEnv *jenv, SWIG_JavaExceptionC
 #include <llvm-c/TargetMachine.h>
 #include "../native/LLVMExtra.h"
 
+struct LongArray;
 typedef char* charp;
+typedef struct LongArray* LongArrayPtr;
 
 
         typedef struct MemoryBufferRefOut {
@@ -272,6 +274,18 @@ SWIGINTERN struct IntOut *new_IntOut(void){
         }
 SWIGINTERN void delete_IntOut(struct IntOut *self){
           ;
+          free(self);
+        }
+
+        typedef struct LongArrayOut {
+            LongArrayPtr value;
+        } LongArrayOut;
+    
+SWIGINTERN struct LongArrayOut *new_LongArrayOut(void){
+          return (LongArrayOut *) calloc(1,sizeof(LongArrayPtr));
+        }
+SWIGINTERN void delete_LongArrayOut(struct LongArrayOut *self){
+          if (self->value) free(self->value);
           free(self);
         }
 
@@ -583,6 +597,43 @@ SWIGEXPORT void JNICALL Java_org_robovm_llvm_binding_LLVMJNI_delete_1IntOut(JNIE
   (void)jcls;
   arg1 = *(struct IntOut **)&jarg1; 
   delete_IntOut(arg1);
+}
+
+
+SWIGEXPORT jlong JNICALL Java_org_robovm_llvm_binding_LLVMJNI_LongArrayOut_1value_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  jlong jresult = 0 ;
+  struct LongArrayOut *arg1 = (struct LongArrayOut *) 0 ;
+  LongArrayPtr result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(struct LongArrayOut **)&jarg1; 
+  result = (LongArrayPtr) ((arg1)->value);
+  *(LongArrayPtr *)&jresult = result; 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_org_robovm_llvm_binding_LLVMJNI_new_1LongArrayOut(JNIEnv *jenv, jclass jcls) {
+  jlong jresult = 0 ;
+  struct LongArrayOut *result = 0 ;
+  
+  (void)jenv;
+  (void)jcls;
+  result = (struct LongArrayOut *)new_LongArrayOut();
+  *(struct LongArrayOut **)&jresult = result; 
+  return jresult;
+}
+
+
+SWIGEXPORT void JNICALL Java_org_robovm_llvm_binding_LLVMJNI_delete_1LongArrayOut(JNIEnv *jenv, jclass jcls, jlong jarg1) {
+  struct LongArrayOut *arg1 = (struct LongArrayOut *) 0 ;
+  
+  (void)jenv;
+  (void)jcls;
+  arg1 = *(struct LongArrayOut **)&jarg1; 
+  delete_LongArrayOut(arg1);
 }
 
 
@@ -12153,21 +12204,23 @@ SWIGEXPORT jboolean JNICALL Java_org_robovm_llvm_binding_LLVMJNI_TargetMachineEm
 }
 
 
-SWIGEXPORT jboolean JNICALL Java_org_robovm_llvm_binding_LLVMJNI_GetLineInfoForAddressRange(JNIEnv *jenv, jclass jcls, jlong jarg1, jlong jarg2, jlong jarg3) {
-  jboolean jresult = 0 ;
+SWIGEXPORT void JNICALL Java_org_robovm_llvm_binding_LLVMJNI_GetLineInfoForAddressRange(JNIEnv *jenv, jclass jcls, jlong jarg1, jlong jarg2, jlong jarg3, jlong jarg4, jobject jarg4_, jlong jarg5, jobject jarg5_) {
   LLVMObjectFileRef arg1 = (LLVMObjectFileRef) 0 ;
   uint64_t arg2 ;
   uint64_t arg3 ;
-  LLVMBool result;
+  int *arg4 = (int *) 0 ;
+  uint64_t **arg5 = (uint64_t **) 0 ;
   
   (void)jenv;
   (void)jcls;
+  (void)jarg4_;
+  (void)jarg5_;
   arg1 = *(LLVMObjectFileRef *)&jarg1; 
   arg2 = jarg2; 
   arg3 = jarg3; 
-  result = LLVMGetLineInfoForAddressRange(arg1,arg2,arg3);
-  jresult = result; 
-  return jresult;
+  arg4 = *(int **)&jarg4; 
+  arg5 = *(uint64_t ***)&jarg5; 
+  LLVMGetLineInfoForAddressRange(arg1,arg2,arg3,arg4,arg5);
 }
 
 

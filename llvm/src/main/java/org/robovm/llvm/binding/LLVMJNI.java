@@ -27,6 +27,9 @@ public class LLVMJNI {
   public final static native int IntOut_value_get(long jarg1, IntOut jarg1_);
   public final static native long new_IntOut();
   public final static native void delete_IntOut(long jarg1);
+  public final static native long LongArrayOut_value_get(long jarg1, LongArrayOut jarg1_);
+  public final static native long new_LongArrayOut();
+  public final static native void delete_LongArrayOut(long jarg1);
   public final static native void TypeRefArray_value_set(long jarg1, TypeRefArray jarg1_, long jarg2);
   public final static native long TypeRefArray_value_get(long jarg1, TypeRefArray jarg1_);
   public final static native long new_TypeRefArray(int jarg1);
@@ -766,7 +769,7 @@ public class LLVMJNI {
   public final static native void TargetOptionsSetAllowFPOpFusion(long jarg1, int jarg2);
   public final static native int TargetMachineAssembleToOutputStream(long jarg1, long jarg2, java.io.OutputStream jarg3, boolean jarg4, boolean jarg5, long jarg6, StringOut jarg6_);
   public final static native boolean TargetMachineEmitToOutputStream(long jarg1, long jarg2, java.io.OutputStream jarg3, int jarg4, long jarg5, StringOut jarg5_);
-  public final static native boolean GetLineInfoForAddressRange(long jarg1, long jarg2, long jarg3);
+  public final static native void GetLineInfoForAddressRange(long jarg1, long jarg2, long jarg3, long jarg4, IntOut jarg4_, long jarg5, LongArrayOut jarg5_);
 
   static {
     org.robovm.llvm.NativeLibrary.load();

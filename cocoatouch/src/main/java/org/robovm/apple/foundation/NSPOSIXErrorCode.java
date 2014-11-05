@@ -2,7 +2,7 @@ package org.robovm.apple.foundation;
 
 import org.robovm.rt.bro.ValuedEnum;
 
-public enum NSPOSIXErrorCode implements ValuedEnum {
+public enum NSPOSIXErrorCode implements NSErrorCode {
     /** Operation not permitted. */
     EPERM(1),
     /** No such file or directory. */

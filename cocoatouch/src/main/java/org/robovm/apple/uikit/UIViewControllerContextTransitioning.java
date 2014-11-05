@@ -75,7 +75,7 @@ import org.robovm.apple.corelocation.*;
      * @since Available in iOS 8.0 and later.
      */
     @Method(selector = "viewForKey:")
-    UIView getView(String key);
+    UIView getView(UITransitionContextViewType key);
     /**
      * @since Available in iOS 8.0 and later.
      */

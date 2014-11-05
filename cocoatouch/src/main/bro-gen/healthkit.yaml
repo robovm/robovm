@@ -6,11 +6,11 @@ clang_args: ['-x', 'objective-c']
 headers:
     - /System/Library/Frameworks/HealthKit.framework/Headers/HealthKit.h
 typedefs:
-    'void (^)(BOOL, NSError *)': '@Block VoidBlock2<Boolean, HKError>'
+    'void (^)(BOOL, NSError *)': '@Block VoidBlock2<Boolean, NSError>'
     'void (^)(HKStatistics *, BOOL *)': '@Block VoidBlock2<HKStatistics, Boolean>'
-    'void (^)(HKStatisticsQuery *, HKStatistics *, NSError *)': '@Block VoidBlock3<HKStatisticsQuery, HKStatistics, HKError>'
-    'void (^)(HKStatisticsCollectionQuery *, HKStatisticsCollection *, NSError *)': '@Block VoidBlock3<HKStatisticsCollectionQuery, HKStatisticsCollection, HKError>'
-    'void (^)(HKStatisticsCollectionQuery *, HKStatistics *, HKStatisticsCollection *, NSError *)': '@Block VoidBlock4<HKStatisticsCollectionQuery, HKStatistics, HKStatisticsCollection, HKError>'
+    'void (^)(HKStatisticsQuery *, HKStatistics *, NSError *)': '@Block VoidBlock3<HKStatisticsQuery, HKStatistics, NSError>'
+    'void (^)(HKStatisticsCollectionQuery *, HKStatisticsCollection *, NSError *)': '@Block VoidBlock3<HKStatisticsCollectionQuery, HKStatisticsCollection, NSError>'
+    'void (^)(HKStatisticsCollectionQuery *, HKStatistics *, HKStatisticsCollection *, NSError *)': '@Block VoidBlock4<HKStatisticsCollectionQuery, HKStatistics, HKStatisticsCollection, NSError>'
     
 enums:
     HKErrorCode: {}
@@ -271,7 +271,7 @@ classes:
                 name: init
                 parameters:
                     handler:
-                        type: '@Block("(,,@MachineSizedUInt,)") VoidBlock4<HKAnchoredObjectQuery, NSArray<HKSample>, Long, HKError>'
+                        type: '@Block("(,,@MachineSizedUInt,)") VoidBlock4<HKAnchoredObjectQuery, NSArray<HKSample>, Long, NSError>'
     HKCorrelationQuery: # DONE
         properties:
             'samplePredicates':
@@ -283,14 +283,14 @@ classes:
                     samplePredicates:
                         type: 'NSDictionary<HKSampleType, NSPredicate>'
                     completion: 
-                        type: '@Block VoidBlock3<HKCorrelationQuery, NSArray<HKCorrelation>, HKError>'
+                        type: '@Block VoidBlock3<HKCorrelationQuery, NSArray<HKCorrelation>, NSError>'
     HKObserverQuery: # DONE
         methods:
             '-initWithSampleType:predicate:updateHandler:':
                 name: init
                 parameters:
                     updateHandler:
-                        type: '@Block("(,@Block,)") VoidBlock3<HKObserverQuery, Runnable, HKError>'
+                        type: '@Block("(,@Block,)") VoidBlock3<HKObserverQuery, Runnable, NSError>'
     HKSampleQuery: # DONE
         properties:
             'sortDescriptors':
@@ -302,14 +302,14 @@ classes:
                     sortDescriptors:
                         type: NSArray<NSSortDescriptor>
                     resultsHandler:
-                        type: '@Block VoidBlock3<HKSampleQuery, NSArray<HKSample>, HKError>'
+                        type: '@Block VoidBlock3<HKSampleQuery, NSArray<HKSample>, NSError>'
     HKSourceQuery: # DONE
         methods:
             '-initWithSampleType:samplePredicate:completionHandler:':
                 name: init
                 parameters:
                     completionHandler:
-                        type: '@Block VoidBlock3<HKSourceQuery, NSSet<HKSource>, HKError>'
+                        type: '@Block VoidBlock3<HKSourceQuery, NSSet<HKSource>, NSError>'
     HKStatisticsCollectionQuery: {} # DONE
     HKStatisticsQuery: {} # DONE
     HKSource: # DONE

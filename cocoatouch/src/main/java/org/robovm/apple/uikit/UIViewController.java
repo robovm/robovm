@@ -47,6 +47,20 @@ import org.robovm.apple.mediaplayer.MPMoviePlayerViewController;
     extends /*<extends>*/UIResponder/*</extends>*/ 
     /*<implements>*/implements NSCoding, UIAppearanceContainer, UITraitEnvironment, UIStateRestoring, NSExtensionRequestHandling/*</implements>*/ {
 
+    public static class Notifications {
+        /**
+         * @since Available in iOS 8.0 and later.
+         */
+        public static NSObject observeDidEnterBackground(UIViewController object, final VoidBlock1<UIViewController> block) {
+            return NSNotificationCenter.getDefaultCenter().addObserver(ShowDetailTargetDidChangeNotification(), null, NSOperationQueue.getMainQueue(), new VoidBlock1<NSNotification>() {
+                @Override
+                public void invoke(NSNotification a) {
+                    block.invoke((UIViewController)a.getObject());
+                }
+            });
+        }
+    }
+    
     /*<ptr>*/public static class UIViewControllerPtr extends Ptr<UIViewController, UIViewControllerPtr> {}/*</ptr>*/
     /*<bind>*/static { ObjCRuntime.bind(UIViewController.class); }/*</bind>*/
     /*<constants>*//*</constants>*/
@@ -404,6 +418,12 @@ import org.robovm.apple.mediaplayer.MPMoviePlayerViewController;
     }
     
     /*<methods>*/
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @GlobalValue(symbol="UIViewControllerShowDetailTargetDidChangeNotification", optional=true)
+    public static native NSString ShowDetailTargetDidChangeNotification();
+    
     @Method(selector = "initWithNibName:bundle:")
     protected native @Pointer long initWithNibName$bundle$(String nibNameOrNil, NSBundle nibBundleOrNil);
     @Method(selector = "loadView")

@@ -52,9 +52,9 @@ import org.robovm.apple.foundation.*;
     /*<members>*//*</members>*/
     /*<methods>*/
     @Method(selector = "queryPedometerDataFromDate:toDate:withHandler:")
-    public native void queryPedometerData(NSDate start, NSDate end, @Block VoidBlock2<CMPedometerData, CMError> handler);
+    public native void queryPedometerData(NSDate start, NSDate end, @Block VoidBlock2<CMPedometerData, NSError> handler);
     @Method(selector = "startPedometerUpdatesFromDate:withHandler:")
-    public native void startPedometerUpdates(NSDate start, @Block VoidBlock2<CMPedometerData, CMError> handler);
+    public native void startPedometerUpdates(NSDate start, @Block VoidBlock2<CMPedometerData, NSError> handler);
     @Method(selector = "stopPedometerUpdates")
     public native void stopPedometerUpdates();
     @Method(selector = "isStepCountingAvailable")

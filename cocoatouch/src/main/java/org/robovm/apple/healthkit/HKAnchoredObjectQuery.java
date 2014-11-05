@@ -47,7 +47,7 @@ import org.robovm.apple.foundation.*;
     /*<constructors>*/
     public HKAnchoredObjectQuery() {}
     protected HKAnchoredObjectQuery(SkipInit skipInit) { super(skipInit); }
-    public HKAnchoredObjectQuery(HKSampleType type, NSPredicate predicate, @MachineSizedUInt long anchor, @MachineSizedUInt long limit, @Block("(,,@MachineSizedUInt,)") VoidBlock4<HKAnchoredObjectQuery, NSArray<HKSample>, Long, HKError> handler) { super((SkipInit) null); initObject(init(type, predicate, anchor, limit, handler)); }
+    public HKAnchoredObjectQuery(HKSampleType type, NSPredicate predicate, @MachineSizedUInt long anchor, @MachineSizedUInt long limit, @Block("(,,@MachineSizedUInt,)") VoidBlock4<HKAnchoredObjectQuery, NSArray<HKSample>, Long, NSError> handler) { super((SkipInit) null); initObject(init(type, predicate, anchor, limit, handler)); }
     /*</constructors>*/
     /*<properties>*/
     
@@ -55,6 +55,6 @@ import org.robovm.apple.foundation.*;
     /*<members>*//*</members>*/
     /*<methods>*/
     @Method(selector = "initWithType:predicate:anchor:limit:completionHandler:")
-    protected native @Pointer long init(HKSampleType type, NSPredicate predicate, @MachineSizedUInt long anchor, @MachineSizedUInt long limit, @Block("(,,@MachineSizedUInt,)") VoidBlock4<HKAnchoredObjectQuery, NSArray<HKSample>, Long, HKError> handler);
+    protected native @Pointer long init(HKSampleType type, NSPredicate predicate, @MachineSizedUInt long anchor, @MachineSizedUInt long limit, @Block("(,,@MachineSizedUInt,)") VoidBlock4<HKAnchoredObjectQuery, NSArray<HKSample>, Long, NSError> handler);
     /*</methods>*/
 }

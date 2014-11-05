@@ -32,36 +32,43 @@ import org.robovm.apple.coregraphics.*;
 import org.robovm.apple.coredata.*;
 import org.robovm.apple.coreimage.*;
 import org.robovm.apple.coretext.*;
+import org.robovm.apple.corelocation.*;
 /*</imports>*/
 
 /*<javadoc>*/
-
 /*</javadoc>*/
-/*<annotations>*//*</annotations>*/
-public enum /*<name>*/UILayoutPriority/*</name>*/ implements ValuedEnum {
-    /*<values>*/
-    Required(1000L),
-    DefaultHigh(750L),
-    DefaultLow(250L),
-    FittingSizeLevel(50L);
-    /*</values>*/
+/*<annotations>*/@Library("UIKit")/*</annotations>*/
+/*<visibility>*/public/*</visibility>*/ class /*<name>*/UILayoutPriority/*</name>*/ 
+    extends /*<extends>*/Object/*</extends>*/ 
+    /*<implements>*//*</implements>*/ {
 
-    /*<bind>*/
-    /*</bind>*/
+    /*<ptr>*/
+    /*</ptr>*/
+    /*<bind>*/static { Bro.bind(UILayoutPriority.class); }/*</bind>*/
     /*<constants>*//*</constants>*/
-    /*<methods>*//*</methods>*/
-
-    private final long n;
-
-    private /*<name>*/UILayoutPriority/*</name>*/(long n) { this.n = n; }
-    public long value() { return n; }
-    public static /*<name>*/UILayoutPriority/*</name>*/ valueOf(long n) {
-        for (/*<name>*/UILayoutPriority/*</name>*/ v : values()) {
-            if (v.n == n) {
-                return v;
-            }
-        }
-        throw new IllegalArgumentException("No constant with value " + n + " found in " 
-            + /*<name>*/UILayoutPriority/*</name>*/.class.getName());
-    }
+    /*<constructors>*//*</constructors>*/
+    /*<properties>*//*</properties>*/
+    /*<members>*//*</members>*/
+    /*<methods>*/
+    /**
+     * @since Available in iOS 6.0 and later.
+     */
+    @GlobalValue(symbol="UILayoutPriorityRequired", optional=true)
+    public static native float Required();
+    /**
+     * @since Available in iOS 6.0 and later.
+     */
+    @GlobalValue(symbol="UILayoutPriorityDefaultHigh", optional=true)
+    public static native float DefaultHigh();
+    /**
+     * @since Available in iOS 6.0 and later.
+     */
+    @GlobalValue(symbol="UILayoutPriorityDefaultLow", optional=true)
+    public static native float DefaultLow();
+    /**
+     * @since Available in iOS 6.0 and later.
+     */
+    @GlobalValue(symbol="UILayoutPriorityFittingSizeLevel", optional=true)
+    public static native float FittingSizeLevel();
+    /*</methods>*/
 }

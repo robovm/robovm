@@ -55,13 +55,13 @@ import org.robovm.apple.foundation.*;
     @Property(selector = "intervalComponents")
     public native NSDateComponents getIntervalComponents();
     @Property(selector = "initialResultsHandler")
-    public native @Block VoidBlock3<HKStatisticsCollectionQuery, HKStatisticsCollection, HKError> getInitialResultsHandler();
+    public native @Block VoidBlock3<HKStatisticsCollectionQuery, HKStatisticsCollection, NSError> getInitialResultsHandler();
     @Property(selector = "setInitialResultsHandler:")
-    public native void setInitialResultsHandler(@Block VoidBlock3<HKStatisticsCollectionQuery, HKStatisticsCollection, HKError> v);
+    public native void setInitialResultsHandler(@Block VoidBlock3<HKStatisticsCollectionQuery, HKStatisticsCollection, NSError> v);
     @Property(selector = "statisticsUpdateHandler")
-    public native @Block VoidBlock4<HKStatisticsCollectionQuery, HKStatistics, HKStatisticsCollection, HKError> getStatisticsUpdateHandler();
+    public native @Block VoidBlock4<HKStatisticsCollectionQuery, HKStatistics, HKStatisticsCollection, NSError> getStatisticsUpdateHandler();
     @Property(selector = "setStatisticsUpdateHandler:")
-    public native void setStatisticsUpdateHandler(@Block VoidBlock4<HKStatisticsCollectionQuery, HKStatistics, HKStatisticsCollection, HKError> v);
+    public native void setStatisticsUpdateHandler(@Block VoidBlock4<HKStatisticsCollectionQuery, HKStatistics, HKStatisticsCollection, NSError> v);
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/

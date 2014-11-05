@@ -41,7 +41,7 @@ import org.robovm.apple.dispatch.*;
  */
 /*</javadoc>*/
 /*<annotations>*/@Marshaler(ValuedEnum.AsMachineSizedSIntMarshaler.class)/*</annotations>*/
-public enum /*<name>*/NSItemProviderErrorCode/*</name>*/ implements ValuedEnum {
+public enum /*<name>*/NSItemProviderErrorCode/*</name>*/ implements NSErrorCode {
     /*<values>*/
     Unknown(-1L),
     ItemUnavailable(-1000L),

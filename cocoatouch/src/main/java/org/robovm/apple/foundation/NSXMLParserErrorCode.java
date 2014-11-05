@@ -39,7 +39,7 @@ import org.robovm.apple.dispatch.*;
 
 /*</javadoc>*/
 /*<annotations>*/@Marshaler(ValuedEnum.AsMachineSizedSIntMarshaler.class)/*</annotations>*/
-public enum /*<name>*/NSXMLParserErrorCode/*</name>*/ implements ValuedEnum {
+public enum /*<name>*/NSXMLParserErrorCode/*</name>*/ implements NSErrorCode {
     /*<values>*/
     Internal(1L),
     OutOfMemory(2L),

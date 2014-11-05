@@ -52,7 +52,7 @@ import org.robovm.apple.foundation.*;
     /*<members>*//*</members>*/
     /*<methods>*/
     @Method(selector = "startRelativeAltitudeUpdatesToQueue:withHandler:")
-    public native void startRelativeAltitudeUpdates(NSOperationQueue queue, @Block VoidBlock2<CMAltitudeData, CMError> handler);
+    public native void startRelativeAltitudeUpdates(NSOperationQueue queue, @Block VoidBlock2<CMAltitudeData, NSError> handler);
     @Method(selector = "stopRelativeAltitudeUpdates")
     public native void stopRelativeAltitudeUpdates();
     @Method(selector = "isRelativeAltitudeAvailable")

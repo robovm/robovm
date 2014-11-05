@@ -136,6 +136,10 @@ import org.robovm.apple.dispatch.*;
         if (info == null) return null;
         return info.getURL();
     }
+    
+    public NSErrorCode getErrorCode() {
+        return NSCocoaErrorCode.valueOf(getCode());
+    }
     /*<methods>*/
     @Method(selector = "initWithDomain:code:userInfo:")
     protected native @Pointer long initWithDomain$code$userInfo$(NSString domain, @MachineSizedSInt long code, NSErrorUserInfo dict);

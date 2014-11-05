@@ -52,6 +52,7 @@ import org.robovm.apple.dispatch.*;
     /*<constructors>*//*</constructors>*/
     /*<properties>*//*</properties>*/
     /*<members>*//*</members>*/
+    @Override
     public NSMachErrorCode getErrorCode() {
         return NSMachErrorCode.valueOf(getCode());
     }

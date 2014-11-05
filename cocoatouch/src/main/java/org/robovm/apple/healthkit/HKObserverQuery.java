@@ -45,7 +45,7 @@ import org.robovm.apple.foundation.*;
     /*<constructors>*/
     public HKObserverQuery() {}
     protected HKObserverQuery(SkipInit skipInit) { super(skipInit); }
-    public HKObserverQuery(HKSampleType sampleType, NSPredicate predicate, @Block("(,@Block,)") VoidBlock3<HKObserverQuery, Runnable, HKError> updateHandler) { super((SkipInit) null); initObject(init(sampleType, predicate, updateHandler)); }
+    public HKObserverQuery(HKSampleType sampleType, NSPredicate predicate, @Block("(,@Block,)") VoidBlock3<HKObserverQuery, Runnable, NSError> updateHandler) { super((SkipInit) null); initObject(init(sampleType, predicate, updateHandler)); }
     /*</constructors>*/
     /*<properties>*/
     
@@ -53,6 +53,6 @@ import org.robovm.apple.foundation.*;
     /*<members>*//*</members>*/
     /*<methods>*/
     @Method(selector = "initWithSampleType:predicate:updateHandler:")
-    protected native @Pointer long init(HKSampleType sampleType, NSPredicate predicate, @Block("(,@Block,)") VoidBlock3<HKObserverQuery, Runnable, HKError> updateHandler);
+    protected native @Pointer long init(HKSampleType sampleType, NSPredicate predicate, @Block("(,@Block,)") VoidBlock3<HKObserverQuery, Runnable, NSError> updateHandler);
     /*</methods>*/
 }

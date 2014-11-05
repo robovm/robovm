@@ -51,6 +51,7 @@ import org.robovm.apple.dispatch.*;
     /*<constants>*//*</constants>*/
     /*<properties>*//*</properties>*/
     /*<members>*//*</members>*/
+    @Override
     public NSXMLParserErrorCode getErrorCode() {
         return NSXMLParserErrorCode.valueOf(getCode());
     }

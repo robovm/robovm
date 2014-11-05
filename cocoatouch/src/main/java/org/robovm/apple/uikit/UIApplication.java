@@ -419,6 +419,11 @@ import org.robovm.apple.corelocation.*;
     @GlobalValue(symbol="UIApplicationProtectedDataDidBecomeAvailable", optional=true)
     public static native NSString ProtectedDataDidBecomeAvailableNotification();
     /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @GlobalValue(symbol="UIApplicationOpenSettingsURLString", optional=true)
+    public static native String getOpenSettingsURLString();
+    /**
      * @since Available in iOS 7.0 and later.
      */
     @GlobalValue(symbol="UIContentSizeCategoryDidChangeNotification", optional=true)

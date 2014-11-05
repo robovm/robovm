@@ -39,7 +39,7 @@ import org.robovm.apple.dispatch.*;
 
 /*</javadoc>*/
 /*<annotations>*//*</annotations>*/
-public enum /*<name>*/NSCocoaErrorCode/*</name>*/ implements ValuedEnum {
+public enum /*<name>*/NSCocoaErrorCode/*</name>*/ implements NSErrorCode {
     /*<values>*/
     FileNoSuchFileError(4L),
     FileLockingError(255L),

@@ -19,6 +19,7 @@ package org.robovm.apple.foundation;
 import java.io.*;
 import java.nio.*;
 import java.util.*;
+
 import org.robovm.objc.*;
 import org.robovm.objc.annotation.*;
 import org.robovm.objc.block.*;
@@ -53,6 +54,10 @@ import org.robovm.apple.dispatch.*;
     /*<constructors>*//*</constructors>*/
     /*<properties>*//*</properties>*/
     /*<members>*//*</members>*/
+    @Override
+    public NSErrorCode getErrorCode() {
+        return super.getErrorCode(); // TODO
+    }
     /*<methods>*/
     @GlobalValue(symbol="NSOSStatusErrorDomain", optional=true)
     public static native String getClassDomain();

@@ -36,29 +36,33 @@ import org.robovm.apple.corelocation.*;
 /*</imports>*/
 
 /*<javadoc>*/
-/*</javadoc>*/
-/*<annotations>*/@Library("UIKit")/*</annotations>*/
-/*<visibility>*/public/*</visibility>*/ class /*<name>*/UIPrintError/*</name>*/ 
-    extends /*<extends>*/NSError/*</extends>*/ 
-    /*<implements>*//*</implements>*/ {
 
-    protected UIPrintError(SkipInit skipInit) {
-        super(skipInit);
-    }
-    
-    /*<ptr>*/
-    /*</ptr>*/
-    /*<bind>*/static { Bro.bind(UIPrintError.class); }/*</bind>*/
+/*</javadoc>*/
+/*<annotations>*//*</annotations>*/
+public enum /*<name>*/UIPrintErrorCode/*</name>*/ implements NSErrorCode {
+    /*<values>*/
+    PrintingNotAvailable(1L),
+    NoContent(2L),
+    UnknownImageFormat(3L),
+    JobFailed(4L);
+    /*</values>*/
+
+    /*<bind>*/
+    /*</bind>*/
     /*<constants>*//*</constants>*/
-    /*<constructors>*//*</constructors>*/
-    /*<properties>*//*</properties>*/
-    /*<members>*//*</members>*/
-    @Override
-    public UIPrintErrorCode getErrorCode() {
-        return UIPrintErrorCode.valueOf(getCode());
+    /*<methods>*//*</methods>*/
+
+    private final long n;
+
+    private /*<name>*/UIPrintErrorCode/*</name>*/(long n) { this.n = n; }
+    public long value() { return n; }
+    public static /*<name>*/UIPrintErrorCode/*</name>*/ valueOf(long n) {
+        for (/*<name>*/UIPrintErrorCode/*</name>*/ v : values()) {
+            if (v.n == n) {
+                return v;
+            }
+        }
+        throw new IllegalArgumentException("No constant with value " + n + " found in " 
+            + /*<name>*/UIPrintErrorCode/*</name>*/.class.getName());
     }
-    /*<methods>*/
-    @GlobalValue(symbol="UIPrintErrorDomain", optional=true)
-    public static native String getClassDomain();
-    /*</methods>*/
 }

@@ -45,7 +45,7 @@ import org.robovm.apple.foundation.*;
     /*<constructors>*/
     public HKCorrelationQuery() {}
     protected HKCorrelationQuery(SkipInit skipInit) { super(skipInit); }
-    public HKCorrelationQuery(HKCorrelationType correlationType, NSPredicate predicate, NSDictionary<HKSampleType, NSPredicate> samplePredicates, @Block VoidBlock3<HKCorrelationQuery, NSArray<HKCorrelation>, HKError> completion) { super((SkipInit) null); initObject(init(correlationType, predicate, samplePredicates, completion)); }
+    public HKCorrelationQuery(HKCorrelationType correlationType, NSPredicate predicate, NSDictionary<HKSampleType, NSPredicate> samplePredicates, @Block VoidBlock3<HKCorrelationQuery, NSArray<HKCorrelation>, NSError> completion) { super((SkipInit) null); initObject(init(correlationType, predicate, samplePredicates, completion)); }
     /*</constructors>*/
     /*<properties>*/
     @Property(selector = "correlationType")
@@ -56,6 +56,6 @@ import org.robovm.apple.foundation.*;
     /*<members>*//*</members>*/
     /*<methods>*/
     @Method(selector = "initWithType:predicate:samplePredicates:completion:")
-    protected native @Pointer long init(HKCorrelationType correlationType, NSPredicate predicate, NSDictionary<HKSampleType, NSPredicate> samplePredicates, @Block VoidBlock3<HKCorrelationQuery, NSArray<HKCorrelation>, HKError> completion);
+    protected native @Pointer long init(HKCorrelationType correlationType, NSPredicate predicate, NSDictionary<HKSampleType, NSPredicate> samplePredicates, @Block VoidBlock3<HKCorrelationQuery, NSArray<HKCorrelation>, NSError> completion);
     /*</methods>*/
 }

@@ -18,7 +18,6 @@ package org.robovm.compiler;
 
 import static org.robovm.compiler.Access.*;
 import static org.robovm.compiler.Functions.*;
-import static org.robovm.compiler.Mangler.*;
 import static org.robovm.compiler.llvm.Linkage.*;
 import static org.robovm.compiler.llvm.Type.*;
 
@@ -35,7 +34,6 @@ import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
 
-import org.apache.commons.io.IOUtils;
 import org.robovm.compiler.clazz.Clazz;
 import org.robovm.compiler.clazz.ClazzInfo;
 import org.robovm.compiler.clazz.ClazzInfo.MethodInfo;
@@ -125,11 +123,15 @@ public class Linker {
     }
     
     public void link(Set<Clazz> classes) throws IOException {
+        Arch arch = config.getArch();
+        OS os = config.getOs();
+
         Set<Clazz> linkClasses = new TreeSet<Clazz>(classes);
-        config.getLogger().info("Linking %d classes", linkClasses.size());
+        config.getLogger().info("Linking %d classes (%s %s %s)", linkClasses.size(), 
+                os, arch, config.isDebug() ? "debug" : "release");
 
         ModuleBuilder mb = new ModuleBuilder();
-        mb.addInclude(getClass().getClassLoader().getResource(String.format("header-%s-%s.ll", config.getOs().getFamily(), config.getArch())));
+        mb.addInclude(getClass().getClassLoader().getResource(String.format("header-%s-%s.ll", os.getFamily(), arch)));
         mb.addInclude(getClass().getClassLoader().getResource("header.ll"));
 
         mb.addGlobal(new Global("_bcDynamicJNI", new IntegerConstant(config.isUseDynamicJni() ? (byte) 1 : (byte) 0)));
@@ -259,36 +261,30 @@ public class Linker {
             mb.addFunction(createInstanceof(mb, clazz, typeInfo));
         }
         
-        Arch arch = config.getArch();
-        OS os = config.getOs();
-        
-        Context context = new Context();
-        Module module = Module.parseIR(context, mb.build().toString(), "linker.ll");
-        PassManager passManager = new PassManager();
-        passManager.addAlwaysInlinerPass();
-        passManager.addPromoteMemoryToRegisterPass();
-        passManager.run(module);
-        passManager.dispose();
-
-        String triple = arch.getLlvmName() + "-unknown-" + os;
-        Target target = Target.lookupTarget(triple);
-        TargetMachine targetMachine = target.createTargetMachine(triple);
-        targetMachine.setAsmVerbosityDefault(true);
-        targetMachine.setFunctionSections(true);
-        targetMachine.setDataSections(true);
-        targetMachine.getOptions().setNoFramePointerElim(true);
         File linkerO = new File(config.getTmpDir(), "linker.o");
         linkerO.getParentFile().mkdirs();
-        OutputStream outO = null;
-        try {
-            outO = new BufferedOutputStream(new FileOutputStream(linkerO));
-            targetMachine.emit(module, outO, CodeGenFileType.ObjectFile);
-        } finally {
-            IOUtils.closeQuietly(outO);
-        }
+
+        try (Context context = new Context()) {
+            try (Module module = Module.parseIR(context, mb.build().toString(), "linker.ll")) {
+                try (PassManager passManager = new PassManager()) {
+                    passManager.addAlwaysInlinerPass();
+                    passManager.addPromoteMemoryToRegisterPass();
+                    passManager.run(module);
+                }
         
-        module.dispose();
-        context.dispose();
+                String triple = arch.getLlvmName() + "-unknown-" + os;
+                Target target = Target.lookupTarget(triple);
+                try (TargetMachine targetMachine = target.createTargetMachine(triple)) {
+                    targetMachine.setAsmVerbosityDefault(true);
+                    targetMachine.setFunctionSections(true);
+                    targetMachine.setDataSections(true);
+                    targetMachine.getOptions().setNoFramePointerElim(true);
+                    try (OutputStream outO = new BufferedOutputStream(new FileOutputStream(linkerO))) {
+                        targetMachine.emit(module, outO, CodeGenFileType.ObjectFile);
+                    }
+                }
+            }
+        }
         
         List<File> objectFiles = new ArrayList<File>();
         objectFiles.add(linkerO);

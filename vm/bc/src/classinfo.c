@@ -165,10 +165,14 @@ void readMethodInfo(void** p, MethodInfo* result) {
     void* impl = NULL;
     jint size = 0;
     void* synchronizedImpl = NULL;
+    void* linetable = NULL;
     if (!IS_ABSTRACT(access)) {
         impl = readPtr(p);
         size = readInt(p);
         if (IS_SYNCHRONIZED(access)) synchronizedImpl = readPtr(p);
+        if (!IS_NATIVE(access)) {
+            linetable = readPtr(p);
+        }
     }
     void** targetFnPtr = NULL;
     if (flags & MI_BRO_BRIDGE) targetFnPtr = readPtr(p);
@@ -185,6 +189,7 @@ void readMethodInfo(void** p, MethodInfo* result) {
         result->size = size;
         result->impl = impl;
         result->synchronizedImpl = synchronizedImpl;
+        result->linetable = linetable;
         result->targetFnPtr = targetFnPtr;
         result->callbackImpl = callbackImpl;
     }

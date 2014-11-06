@@ -260,7 +260,7 @@ public class Linker {
             mb.addFunction(createCheckcast(mb, clazz, typeInfo));
             mb.addFunction(createInstanceof(mb, clazz, typeInfo));
         }
-        
+                
         File linkerO = new File(config.getTmpDir(), "linker.o");
         linkerO.getParentFile().mkdirs();
 
@@ -292,6 +292,17 @@ public class Linker {
         for (Clazz clazz : linkClasses) {
             objectFiles.add(config.getOFile(clazz));
         }
+
+        /*
+         * Assemble the lines files for all linked classes into the module.
+         */
+        for (Clazz clazz : linkClasses) {
+            File f = config.getLinesOFile(clazz);
+            if (f.exists() && f.length() > 0) {
+                objectFiles.add(f);
+            }
+        }
+
         config.getTarget().build(objectFiles);
     }
 

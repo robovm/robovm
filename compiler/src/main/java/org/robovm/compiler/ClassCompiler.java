@@ -35,6 +35,7 @@ import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -51,7 +52,6 @@ import org.robovm.compiler.clazz.Dependency;
 import org.robovm.compiler.config.Arch;
 import org.robovm.compiler.config.Config;
 import org.robovm.compiler.config.OS;
-import org.robovm.compiler.llvm.Alias;
 import org.robovm.compiler.llvm.AliasRef;
 import org.robovm.compiler.llvm.And;
 import org.robovm.compiler.llvm.ArrayConstantBuilder;
@@ -88,8 +88,11 @@ import org.robovm.compiler.trampoline.FieldAccessor;
 import org.robovm.compiler.trampoline.Invoke;
 import org.robovm.compiler.trampoline.Trampoline;
 import org.robovm.llvm.Context;
+import org.robovm.llvm.LineInfo;
 import org.robovm.llvm.Module;
+import org.robovm.llvm.ObjectFile;
 import org.robovm.llvm.PassManager;
+import org.robovm.llvm.Symbol;
 import org.robovm.llvm.Target;
 import org.robovm.llvm.TargetMachine;
 import org.robovm.llvm.binding.CodeGenFileType;
@@ -355,6 +358,120 @@ public class ClassCompiler {
                     oFile.getParentFile().mkdirs();
                     try (BufferedOutputStream oOut = new BufferedOutputStream(new FileOutputStream(oFile))) {
                         targetMachine.assemble(asm, clazz.getClassName(), oOut);
+                    }
+
+                    /*
+                     * Read out line number info from the .o file if any and
+                     * assemble into a separate .o file.
+                     */
+                    String symbolPrefix = config.getOs().getFamily() == OS.Family.darwin ? "_" : "";
+                    symbolPrefix += Symbols.EXTERNAL_SYMBOL_PREFIX;
+                    ModuleBuilder linesMb = null;
+                    try (ObjectFile objectFile = ObjectFile.load(oFile)) {
+                        for (Symbol symbol : objectFile.getSymbols()) {
+                            if (symbol.getSize() > 0 && symbol.getName().startsWith(symbolPrefix)) {
+                                List<LineInfo> lineInfos = objectFile.getLineInfos(symbol);
+                                if (!lineInfos.isEmpty()) {
+                                    Collections.sort(lineInfos, new Comparator<LineInfo>() {
+                                        public int compare(LineInfo o1, LineInfo o2) {
+                                            return Long.compare(o1.getAddress(), o2.getAddress());
+                                        }
+                                    });
+                                    
+                                    // The base address of the method which will be used to calculate offsets into the method
+                                    long baseAddress = symbol.getAddress();
+                                    // The first line number in the method. All other line numbers in the table will be deltas against this.
+                                    int firstLineNumber = lineInfos.get(0).getLineNumber();
+                                    // Calculate the max address and line number offsets
+                                    long maxAddressOffset = 0;
+                                    long maxLineOffset = 0;
+                                    for (LineInfo lineInfo : lineInfos) {
+                                        maxAddressOffset = Math.max(maxAddressOffset, lineInfo.getAddress() - baseAddress);
+                                        maxLineOffset = Math.max(maxLineOffset, lineInfo.getLineNumber() - firstLineNumber);
+                                    }
+
+                                    // Calculate the number of bytes needed to represent the highest offsets.
+                                    // Either 1, 2 or 4 bytes will be used.
+                                    int addressOffsetSize = (maxAddressOffset & ~0xff) == 0 ? 1 : ((maxAddressOffset & ~0xffff) == 0 ? 2 : 4);
+                                    int lineOffsetSize = (maxLineOffset & ~0xff) == 0 ? 1 : ((maxLineOffset & ~0xffff) == 0 ? 2 : 4);
+                                    
+                                    // The size of the address offsets table. We skip the first LineInfo as its offset is always 0.
+                                    int addressOffsetTableSize = addressOffsetSize * (lineInfos.size() - 1);
+                                    // Pad size of address offset table to make sure line offsets are aligned properly 
+                                    int addressOffsetPadding = (lineOffsetSize - (addressOffsetTableSize & (lineOffsetSize - 1))) & (lineOffsetSize - 1);
+                                    addressOffsetTableSize += addressOffsetPadding;
+                                    
+                                    // The first 32 bits of the line number info contains the number of line numbers
+                                    // minus the first. The 4 most significant bits are used to store the number of
+                                    // bytes needed by each entry in each table.
+                                    int flags = 0;
+                                    flags = addressOffsetSize - 1;
+                                    flags <<= 2;
+                                    flags |= lineOffsetSize - 1;
+                                    flags <<= 28;
+                                    flags |= (lineInfos.size() - 1) & 0x0fffffff;
+
+                                    StructureConstantBuilder builder = new StructureConstantBuilder();
+                                    builder
+                                        .add(new IntegerConstant(flags))
+                                        .add(new IntegerConstant(firstLineNumber));
+                                    
+                                    for (LineInfo lineInfo : lineInfos.subList(1, lineInfos.size())) {
+                                        if (addressOffsetSize == 1) {
+                                            builder.add(new IntegerConstant((byte) (lineInfo.getAddress() - baseAddress)));
+                                        } else if (addressOffsetSize == 2) {
+                                            builder.add(new IntegerConstant((short) (lineInfo.getAddress() - baseAddress)));
+                                        } else {
+                                            builder.add(new IntegerConstant((int) (lineInfo.getAddress() - baseAddress)));
+                                        }
+                                    }
+
+                                    // Padding
+                                    for (int i = 0; i < addressOffsetPadding; i++) {
+                                        builder.add(new IntegerConstant((byte) 0));
+                                    }
+
+                                    for (LineInfo lineInfo : lineInfos.subList(1, lineInfos.size())) {
+                                        if (lineOffsetSize == 1) {
+                                            builder.add(new IntegerConstant((byte) (lineInfo.getLineNumber() - firstLineNumber)));
+                                        } else if (lineOffsetSize == 2) {
+                                            builder.add(new IntegerConstant((short) (lineInfo.getLineNumber() - firstLineNumber)));
+                                        } else {
+                                            builder.add(new IntegerConstant((int) (lineInfo.getLineNumber() - firstLineNumber)));
+                                        }
+                                    }
+
+                                    // Extract the method's name and descriptor from the symbol and
+                                    // build the linetable symbol name.
+                                    String methodName = symbol.getName().substring(symbol.getName().lastIndexOf('.') + 1);
+                                    methodName = methodName.substring(0, methodName.indexOf('('));
+                                    String methodDesc = symbol.getName().substring(symbol.getName().lastIndexOf('('));
+                                    String linetableSymbol = Symbols.linetableSymbol(clazz.getInternalName(), methodName, methodDesc);
+                                    if (linesMb == null) {
+                                        linesMb = new ModuleBuilder();
+                                    }
+                                    linesMb.addGlobal(new Global(linetableSymbol, builder.build(), true));
+                                }
+                            }
+                        }
+                    }
+                    if (linesMb != null) {
+                        byte[] linesData = linesMb.build().toString().getBytes("UTF-8");
+                        if (config.isDumpIntermediates()) {
+                            File linesLlFile = config.getLinesLlFile(clazz);
+                            linesLlFile.getParentFile().mkdirs();
+                            FileUtils.writeByteArrayToFile(linesLlFile, linesData);
+                        }
+                        try (Module linesModule = Module.parseIR(context, linesData, clazz.getClassName() + ".lines")) {
+                            File linesOFile = config.getLinesOFile(clazz);
+                            targetMachine.emit(linesModule, linesOFile, CodeGenFileType.ObjectFile);
+                        }
+                    } else {
+                        // Make sure there's no stale lines.o file lingering
+                        File linesOFile = config.getLinesOFile(clazz);
+                        if (linesOFile.exists()) {
+                            linesOFile.delete();
+                        }
                     }
                 }
             }
@@ -1099,6 +1216,17 @@ public class ClassCompiler {
                 body.add(new IntegerConstant(DUMMY_METHOD_SIZE)); // Size of function. This value will be modified later by patching the .s file.
                 if (m.isSynchronized()) {
                     body.add(new ConstantBitcast(new FunctionRef(Symbols.synchronizedWrapperSymbol(m), getFunctionType(m)), I8_PTR));
+                }
+                if ((flags & MI_NATIVE) == 0) {
+                    // Cannot use m.isNative() in the condition above since methods which are native in the
+                    // Java class file may have been changed to non-native by the RoboVM compiler 
+                    // (e.g. @StructMember methods). The native code which parses the info structs will see 
+                    // the method as non-native.
+
+                    // Add a weak linetable pointer which points to a -1 value which will be interpreted as 0 linenumbers in the table
+                    Global linetableGlobal = new Global(Symbols.linetableSymbol(m), Linkage.weak, new IntegerConstant(-1));
+                    mb.addGlobal(linetableGlobal);
+                    body.add(linetableGlobal.ref());
                 }
             }
             if (hasBridgeAnnotation(m)) {

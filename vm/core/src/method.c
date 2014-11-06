@@ -21,6 +21,10 @@
 
 #define LOG_TAG "core.method"
 
+// Line numbers greater or equal to this value is used
+// for methods which have no line number info.
+#define FIRST_NO_LINE_NUMBERS_LINE 0x00100000
+
 DynamicLib* bootNativeLibs = NULL;
 DynamicLib* mainNativeLibs = NULL;
 
@@ -288,7 +292,7 @@ CallStack* rvmCaptureCallStackForThread(Env* env, Thread* thread) {
     return copy;
 }
 
-Method* rvmResolveCallStackFrame(Env* env, CallStackFrame* frame) {
+CallStackFrame* rvmResolveCallStackFrame(Env* env, CallStackFrame* frame) {
     if (frame->pc == NULL && frame->method == NULL) {
         // We've already tried to resolve this frame but 
         // it doesn't correspond to any method
@@ -298,14 +302,75 @@ Method* rvmResolveCallStackFrame(Env* env, CallStackFrame* frame) {
         // We've already resolved this frame successfully or
         // the method is a ProxyMethod so no call to rvmFindMethodAtAddress()
         // is required
-        return frame->method;
+        return frame;
     }
     frame->method = rvmFindMethodAtAddress(env, frame->pc);
     if (!frame->method) {
         frame->pc = NULL;
         return NULL;
     }
-    return frame->method;
+    return frame;
+}
+
+static inline jint getLineTableEntryB(uint8_t* table, jint index) {
+    return table[index];
+}
+static inline jint getLineTableEntryS(uint16_t* table, jint index) {
+    return table[index];
+}
+static inline jint getLineTableEntryI(jint* table, jint index) {
+    return table[index];
+}
+static inline jint getLineTableEntry(void* table, jint entrySize, jint index) {
+    if (entrySize == 1) {
+        return getLineTableEntryB((uint8_t*) table, index);
+    } else if (entrySize == 2) {
+        return getLineTableEntryS((uint16_t*) table, index);
+    }
+    return getLineTableEntryI((jint*) table, index);
+}
+
+static jint getLinesIndex(void* addressOffsets, jint addressOffsetSize, jint size, jint frameOffset) {
+    for (jint i = 0; i < size; i++) {
+        jint entry = getLineTableEntry(addressOffsets, addressOffsetSize, i);
+        if (frameOffset < entry) {
+            return i - 1;
+        }
+    }
+    return size - 1;
+}
+
+static jint getLineNumber(CallStackFrame* frame) {
+    if (!frame->method || !frame->method->linetable) {
+        return -1;
+    }
+    uint32_t* linetable = (uint32_t*) frame->method->linetable;
+    if (*linetable == 0xffffffff) {
+        return -1;
+    }
+    jint size = *linetable & 0xfffffff;
+    if (size == 0) {
+        return -1;
+    }
+    jint frameOffset = frame->pc - frame->method->impl;
+    jint addressOffsetSize = ((*linetable >> 30) & 0x3) + 1;
+    jint lineOffsetSize = ((*linetable >> 28) & 0x3) + 1;
+    linetable++;
+    jint firstLineNumber = *linetable;
+    if (firstLineNumber >= FIRST_NO_LINE_NUMBERS_LINE) {
+        return -1;
+    }
+    linetable++;
+
+    jint index = getLinesIndex(linetable, addressOffsetSize, size, frameOffset);
+    if (index == -1) {
+        return firstLineNumber;
+    }
+
+    uint8_t* lineOffsets = ((uint8_t*) linetable) + size * addressOffsetSize;
+    // Adjust lineOffsets for proper alignment
+    lineOffsets += (lineOffsetSize - ((ptrdiff_t) lineOffsets & (lineOffsetSize - 1))) & (lineOffsetSize - 1);
+    return firstLineNumber + getLineTableEntry(lineOffsets, lineOffsetSize, index);
 }
 
 ObjectArray* rvmCallStackToStackTraceElements(Env* env, CallStack* callStack, jint first) {
@@ -332,7 +397,8 @@ ObjectArray* rvmCallStackToStackTraceElements(Env* env, CallStack* callStack, ji
         index = first;
         jint i;
         for (i = 0; i < length; i++) {
-            Method* m = rvmGetNextCallStackMethod(env, callStack, &index);
+            CallStackFrame* frame = rvmGetNextCallStackMethod(env, callStack, &index);
+            Method* m = frame->method;
             args[0].l = (jobject) m->clazz;
             args[1].l = (jobject) rvmNewStringUTF(env, m->name, -1);
             if (!args[1].l) return NULL;
@@ -340,7 +406,7 @@ ObjectArray* rvmCallStackToStackTraceElements(Env* env, CallStack* callStack, ji
             if (rvmExceptionOccurred(env)) {
                 return NULL;
             }
-            args[3].i = METHOD_IS_NATIVE(m) ? -2 : -1; // TODO: Line numbers
+            args[3].i = METHOD_IS_NATIVE(m) ? -2 : getLineNumber(frame);
             array->values[i] = rvmNewObjectA(env, java_lang_StackTraceElement, 
                 java_lang_StackTraceElement_constructor, args);
             if (!array->values[i]) return NULL;

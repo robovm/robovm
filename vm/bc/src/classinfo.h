@@ -87,6 +87,7 @@ typedef struct {
     jint size;
     void* impl;
     void* synchronizedImpl;
+    void* linetable;
     void** targetFnPtr;
     void* callbackImpl;
 } MethodInfo;

@@ -16,6 +16,7 @@
  */
 package org.robovm.llvm;
 
+import java.io.File;
 import java.io.OutputStream;
 
 import org.robovm.llvm.binding.CodeGenFileType;
@@ -161,7 +162,17 @@ public class TargetMachine implements AutoCloseable {
             throw new LlvmException(ErrorMessage.getValue().trim());
         }
     }
-    
+
+    public void emit(Module module, File outFile, CodeGenFileType fileType) {
+        checkDisposed();
+        module.checkDisposed();
+        StringOut ErrorMessage = new StringOut();
+        if (LLVM.TargetMachineEmitToFile(ref, module.ref, outFile.getAbsolutePath(), fileType, ErrorMessage)) {
+            // Returns true on failure!
+            throw new LlvmException(ErrorMessage.getValue().trim());
+        }
+    }
+
     public void assemble(byte[] asm, String filename, OutputStream out) {
         MemoryBufferRef memoryBufferRef = LLVM.CreateMemoryBufferWithMemoryRangeCopy(asm, filename);
         if (memoryBufferRef == null) {

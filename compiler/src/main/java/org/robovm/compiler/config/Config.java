@@ -461,6 +461,16 @@ public class Config {
         return new File(getCacheDir(clazz.getPath()), baseName + ".class.o");
     }
     
+    public File getLinesOFile(Clazz clazz) {
+        String baseName = clazz.getInternalName().replace('/', File.separatorChar);
+        return new File(getCacheDir(clazz.getPath()), baseName + ".class.lines.o");
+    }
+
+    public File getLinesLlFile(Clazz clazz) {
+        String baseName = clazz.getInternalName().replace('/', File.separatorChar);
+        return new File(getCacheDir(clazz.getPath()), baseName + ".class.lines.ll");
+    }
+
     public File getDepsFile(Clazz clazz) {
         String baseName = clazz.getInternalName().replace('/', File.separatorChar);
         return new File(getCacheDir(clazz.getPath()), baseName + ".class.deps");

@@ -152,18 +152,18 @@ extern Class* rvmAllocateClass(Env* env, const char* className, Class* superclas
         void* attributes, void* initializer);
 extern Interface* rvmAllocateInterface(Env* env, Class* interf);
 extern Field* rvmAllocateField(Env* env, Class* clazz, const char* name, const char* desc, jint access, jint offset, void* attributes);
-extern Method* rvmAllocateMethod(Env* env, Class* clazz, const char* name, const char* desc, jint vitableIndex, jint access, jint size, void* impl, void* synchronizedImpl, void* attributes);
+extern Method* rvmAllocateMethod(Env* env, Class* clazz, const char* name, const char* desc, jint vitableIndex, jint access, jint size, void* impl, void* synchronizedImpl, void* linetable, void* attributes);
 extern BridgeMethod* rvmAllocateBridgeMethod(Env* env, Class* clazz, const char* name, const char* desc, jint vitableIndex, jint access, jint size, void* impl, 
         void* synchronizedImpl, void** targetFnPtr, void* attributes);
 extern CallbackMethod* rvmAllocateCallbackMethod(Env* env, Class* clazz, const char* name, const char* desc, jint vitableIndex, jint access, jint size, void* impl, 
-		void* synchronizedImpl, void* callbackImpl, void* attributes);
+		void* synchronizedImpl, void* linetable, void* callbackImpl, void* attributes);
 extern jboolean rvmAddInterface(Env* env, Class* clazz, Class* interfaze);
 extern Field* rvmAddField(Env* env, Class* clazz, const char* name, const char* desc, jint access, jint offset, void* attributes);
-extern Method* rvmAddMethod(Env* env, Class* clazz, const char* name, const char* desc, jint vitableIndex, jint access, jint size, void* impl, void* synchronizedImpl, void* attributes);
+extern Method* rvmAddMethod(Env* env, Class* clazz, const char* name, const char* desc, jint vitableIndex, jint access, jint size, void* impl, void* synchronizedImpl, void* linetable, void* attributes);
 extern BridgeMethod* rvmAddBridgeMethod(Env* env, Class* clazz, const char* name, const char* desc, jint vitableIndex, jint access, jint size, void* impl, 
         void* synchronizedImpl, void** targetFnPtr, void* attributes);
 extern CallbackMethod* rvmAddCallbackMethod(Env* env, Class* clazz, const char* name, const char* desc, jint vitableIndex, jint access, jint size, void* impl, 
-		void* synchronizedImpl, void* callbackImpl, void* attributes);
+		void* synchronizedImpl, void* linetable, void* callbackImpl, void* attributes);
 extern jboolean rvmRegisterClass(Env* env, Class* clazz);
 
 extern Class* rvmFindClass(Env* env, const char* className);

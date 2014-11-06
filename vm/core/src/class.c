@@ -879,7 +879,7 @@ jboolean rvmAddInterface(Env* env, Class* clazz, Class* interf) {
 }
 
 Method* rvmAllocateMethod(Env* env, Class* clazz, const char* name, const char* desc, 
-        jint vitableIndex, jint access, jint size, void* impl, void* synchronizedImpl, void* attributes) {
+        jint vitableIndex, jint access, jint size, void* impl, void* synchronizedImpl, void* linetable, void* attributes) {
 
     Method* method = rvmAllocateMemoryAtomicUncollectable(env, IS_NATIVE(access) ? sizeof(NativeMethod) : sizeof(Method));
     if (!method) return NULL;
@@ -891,15 +891,16 @@ Method* rvmAllocateMethod(Env* env, Class* clazz, const char* name, const char* 
     method->size = size;
     method->impl = impl;
     method->synchronizedImpl = synchronizedImpl;
+    method->linetable = linetable;
     method->attributes = attributes;
     return method;
 }
 
 Method* rvmAddMethod(Env* env, Class* clazz, const char* name, const char* desc, 
-        jint vitableIndex, jint access, jint size, void* impl, void* synchronizedImpl, void* attributes) {
+        jint vitableIndex, jint access, jint size, void* impl, void* synchronizedImpl, void* linetable, void* attributes) {
 
     assert(CLASS_IS_STATE_ALLOCATED(clazz));
-    Method* method = rvmAllocateMethod(env, clazz, name, desc, vitableIndex, access, size, impl, synchronizedImpl, attributes);
+    Method* method = rvmAllocateMethod(env, clazz, name, desc, vitableIndex, access, size, impl, synchronizedImpl, linetable, attributes);
     if (!method) return NULL;
 
     if (clazz->_methods == &METHODS_NOT_LOADED) {
@@ -976,7 +977,7 @@ BridgeMethod* rvmAddBridgeMethod(Env* env, Class* clazz, const char* name, const
 
 CallbackMethod* rvmAllocateCallbackMethod(Env* env, Class* clazz, const char* name, const char* desc, 
         jint vitableIndex, jint access, jint size, void* impl, 
-        void* synchronizedImpl, void* callbackImpl, void* attributes) {
+        void* synchronizedImpl, void* linetable, void* callbackImpl, void* attributes) {
 
     CallbackMethod* method = rvmAllocateMemoryAtomicUncollectable(env, sizeof(CallbackMethod));
     if (!method) return NULL;
@@ -988,6 +989,7 @@ CallbackMethod* rvmAllocateCallbackMethod(Env* env, Class* clazz, const char* na
     method->method.size = size;
     method->method.impl = impl;
     method->method.synchronizedImpl = synchronizedImpl;
+    method->method.linetable = linetable;
     method->method.attributes = attributes;
     method->callbackImpl = callbackImpl;
     return method;
@@ -995,12 +997,12 @@ CallbackMethod* rvmAllocateCallbackMethod(Env* env, Class* clazz, const char* na
 
 CallbackMethod* rvmAddCallbackMethod(Env* env, Class* clazz, const char* name, const char* desc, 
         jint vitableIndex, jint access, jint size, void* impl, 
-        void* synchronizedImpl, void* callbackImpl, void* attributes) {
+        void* synchronizedImpl, void* linetable, void* callbackImpl, void* attributes) {
     
     assert(CLASS_IS_STATE_ALLOCATED(clazz));
     CallbackMethod* method = rvmAllocateCallbackMethod(env, clazz, name, desc, access, 
                                         vitableIndex, size, impl, synchronizedImpl, 
-                                        callbackImpl, attributes);
+                                        linetable, callbackImpl, attributes);
     if (!method) return NULL;
 
     if (clazz->_methods == &METHODS_NOT_LOADED) {

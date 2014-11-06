@@ -53,7 +53,7 @@ extern Method* rvmFindMethodAtAddress(Env* env, void* address);
 extern Method* rvmGetCallingMethod(Env* env);
 extern CallStack* rvmCaptureCallStack(Env* env);
 extern CallStack* rvmCaptureCallStackForThread(Env* env, Thread* thread);
-extern Method* rvmResolveCallStackFrame(Env* env, CallStackFrame* frame);
+extern CallStackFrame* rvmResolveCallStackFrame(Env* env, CallStackFrame* frame);
 extern ObjectArray* rvmCallStackToStackTraceElements(Env* env, CallStack* callStack, jint first);
 extern void rvmCallVoidInstanceMethod(Env* env, Object* obj, Method* method, ...);
 extern void rvmCallVoidInstanceMethodA(Env* env, Object* obj, Method* method, jvalue* args);
@@ -147,12 +147,12 @@ extern jdouble rvmCallDoubleClassMethodA(Env* env, Class* clazz, Method* method,
 extern jdouble rvmCallDoubleClassMethodV(Env* env, Class* clazz, Method* method, va_list args);
 
 
-static inline Method* rvmGetNextCallStackMethod(Env* env, CallStack* callStack, jint* index) {
+static inline CallStackFrame* rvmGetNextCallStackMethod(Env* env, CallStack* callStack, jint* index) {
     while (*index < callStack->length) {
-        Method* method = rvmResolveCallStackFrame(env, &callStack->frames[*index]);
+        CallStackFrame* frame = rvmResolveCallStackFrame(env, &callStack->frames[*index]);
         *index += 1;
-        if (method) {
-            return method;
+        if (frame && frame->method) {
+            return frame;
         }
     }
     return NULL;

@@ -7,7 +7,7 @@ headers:
     - /System/Library/Frameworks/StoreKit.framework/Headers/StoreKit.h
     - /System/Library/Frameworks/StoreKit.framework/Headers/StoreKitDefines.h
 typedefs:
-    "void (^)(BOOL, NSError *)": "@Block VoidBlock2<Boolean, NSError>"
+    'void (^)(BOOL, NSError *)': '@Block VoidBlock2<Boolean, NSError>'
     
 enums:
     SKDownloadState: {first: SKDownloadStateWaiting, marshaler: ValuedEnum.AsMachineSizedSIntMarshaler}
@@ -17,6 +17,9 @@ enums:
 classes:
     StoreKit:
         annotations: ['@Marshaler(NSString.AsStringMarshaler.class)']
+
+    SKError:
+        extends: NSError
 
     SKDownload: {} # DONE
     SKMutablePayment: {} # DONE
@@ -31,7 +34,7 @@ classes:
     SKPaymentQueue: # DONE
         properties:
             'transactions':
-                type: "NSArray<SKPaymentTransaction>"
+                type: NSArray<SKPaymentTransaction>
         methods:
             '-addPayment:':
                 trim_after_first_colon: true
@@ -43,22 +46,22 @@ classes:
                 trim_after_first_colon: true
                 parameters:
                     downloads:
-                        type: "NSArray<SKDownload>"
+                        type: NSArray<SKDownload>
             '-pauseDownloads:':
                 trim_after_first_colon: true
                 parameters:
                     downloads:
-                        type: "NSArray<SKDownload>"
+                        type: NSArray<SKDownload>
             '-resumeDownloads:':
                 trim_after_first_colon: true
                 parameters:
                     downloads:
-                        type: "NSArray<SKDownload>"
+                        type: NSArray<SKDownload>
             '-cancelDownloads:':
                 trim_after_first_colon: true
                 parameters:
                     downloads:
-                        type: "NSArray<SKDownload>"
+                        type: NSArray<SKDownload>
             '-addTransactionObserver:':
                 trim_after_first_colon: true
             '-removeTransactionObserver:':
@@ -68,25 +71,24 @@ classes:
     SKPaymentTransaction: # DONE
         properties:
             'downloads':
-                type: "NSArray<SKDownload>"
+                type: NSArray<SKDownload>
     SKProduct: # DONE
         properties:
             'downloadContentLengths':
-                type: "NSArray<NSNumber>"
-                
+                type: NSArray<NSNumber>
     SKProductsRequest: # DONE
         methods:
             '-initWithProductIdentifiers:':
                 name: init
                 parameters:
                     productIdentifiers:
-                        type: "@org.robovm.rt.bro.annotation.Marshaler(NSSet.AsStringSetMarshaler.class) Set<String>"
+                        type: '@org.robovm.rt.bro.annotation.Marshaler(NSSet.AsStringSetMarshaler.class) Set<String>'
     SKProductsResponse: # DONE
         properties:
             'products':
-                type: "NSArray<SKProduct>"
+                type: NSArray<SKProduct>
             'invalidProductIdentifiers':
-                type: "@org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String>"
+                type: '@org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String>'
     SKReceiptRefreshRequest: # DONE
         properties:
             'receiptProperties':
@@ -115,13 +117,13 @@ protocols:
                 parameters:
                     queue: {}
                     transactions:
-                        type: "NSArray<SKPaymentTransaction>"
+                        type: NSArray<SKPaymentTransaction>
             '-paymentQueue:removedTransactions:':
                 name: removedTransactions
                 parameters:
                     queue: {}
                     transactions:
-                        type: "NSArray<SKPaymentTransaction>"
+                        type: NSArray<SKPaymentTransaction>
             '-paymentQueue:restoreCompletedTransactionsFailedWithError:':
                 name: restoreCompletedTransactionsFailed
             '-paymentQueueRestoreCompletedTransactionsFinished:':
@@ -131,7 +133,7 @@ protocols:
                 parameters:
                     queue: {}
                     downloads:
-                        type: "NSArray<SKDownload>"
+                        type: NSArray<SKDownload>
     SKProductsRequestDelegate: # DONE
         methods:
             '-productsRequest:didReceiveResponse:':
@@ -150,42 +152,42 @@ protocols:
 functions:
     SK(TerminateForInvalidReceipt):
         class: SKReceiptRefreshRequest
-        name: "#{g[0]}"
+        name: '#{g[0]}'
 
     # Make sure we don't miss any functions if new ones are introduced in a later version
     (SK.*):
         class: StoreKit
-        name: "Function__#{g[0]}"
+        name: 'Function__#{g[0]}'
 
 values: 
-    SK(ErrorDomain):
-        name: "#{g[0]}"
-        type: NSString
+    SKErrorDomain:
+        class: SKError
+        name: getClassDomain
         
     SKDownload(TimeRemainingUnknown):
-        name: "#{g[0]}"
+        name: '#{g[0]}'
         class: SKDownload
         readonly: true
         
     SKReceiptProperty(.*):
         class: SKReceiptRefreshRequestOptions
-        name: "#{g[0]}Key"
+        name: '#{g[0]}Key'
         type: NSString
         visibility: protected
         
     SKStoreProductParameter(.*):
         class: SKStoreProductParameters
-        name: "#{g[0]}Key"
+        name: '#{g[0]}Key'
         type: NSString
         visibility: protected
 
     # Make sure we don't miss any values if new ones are introduced in a later version
     (SK.*):
         class: StoreKit
-        name: "Value__#{g[0]}"
+        name: 'Value__#{g[0]}'
 
 constants:
     # Make sure we don't miss any constants if new ones are introduced in a later version
     (SK.*):
         class: StoreKit
-        name: "Constant__#{g[0]}"
+        name: 'Constant__#{g[0]}'

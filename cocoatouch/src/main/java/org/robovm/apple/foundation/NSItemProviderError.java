@@ -53,6 +53,7 @@ import org.robovm.apple.dispatch.*;
     /*<constructors>*//*</constructors>*/
     /*<properties>*//*</properties>*/
     /*<members>*//*</members>*/
+    @Override
     public NSItemProviderErrorCode getErrorCode() {
         return NSItemProviderErrorCode.valueOf(getCode());
     }

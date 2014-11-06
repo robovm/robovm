@@ -105,6 +105,11 @@ import org.robovm.apple.corelocation.*;
      */
     @GlobalValue(symbol="UIDocumentStateChangedNotification", optional=true)
     public static native NSString StateChangedNotification();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @GlobalValue(symbol="NSUserActivityDocumentURLKey", optional=true)
+    public static native String UserActivityDocumentURLKey();
     
     @Method(selector = "initWithFileURL:")
     protected native @Pointer long initWithFileURL$(NSURL url);

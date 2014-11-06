@@ -54,9 +54,9 @@ import org.robovm.apple.foundation.*;
     /*<members>*//*</members>*/
     /*<methods>*/
     @Method(selector = "queryStepCountStartingFrom:to:toQueue:withHandler:")
-    public native void queryStepCount(NSDate start, NSDate end, NSOperationQueue queue, @Block("(@MachineSizedSInt,)") VoidBlock2<Long, CMError> handler);
+    public native void queryStepCount(NSDate start, NSDate end, NSOperationQueue queue, @Block("(@MachineSizedSInt,)") VoidBlock2<Long, NSError> handler);
     @Method(selector = "startStepCountingUpdatesToQueue:updateOn:withHandler:")
-    public native void startStepCountingUpdates(NSOperationQueue queue, @MachineSizedSInt long stepCounts, @Block("(@MachineSizedSInt,,)") VoidBlock3<Long, NSDate, CMError> handler);
+    public native void startStepCountingUpdates(NSOperationQueue queue, @MachineSizedSInt long stepCounts, @Block("(@MachineSizedSInt,,)") VoidBlock3<Long, NSDate, NSError> handler);
     @Method(selector = "stopStepCountingUpdates")
     public native void stopStepCountingUpdates();
     @Method(selector = "isStepCountingAvailable")

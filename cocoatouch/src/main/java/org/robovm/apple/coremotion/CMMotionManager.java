@@ -123,13 +123,13 @@ import org.robovm.apple.foundation.*;
     @Method(selector = "startAccelerometerUpdates")
     public native void startAccelerometerUpdates();
     @Method(selector = "startAccelerometerUpdatesToQueue:withHandler:")
-    public native void startAccelerometerUpdates(NSOperationQueue queue, @Block VoidBlock2<CMAccelerometerData, CMError> handler);
+    public native void startAccelerometerUpdates(NSOperationQueue queue, @Block VoidBlock2<CMAccelerometerData, NSError> handler);
     @Method(selector = "stopAccelerometerUpdates")
     public native void stopAccelerometerUpdates();
     @Method(selector = "startGyroUpdates")
     public native void startGyroUpdates();
     @Method(selector = "startGyroUpdatesToQueue:withHandler:")
-    public native void startGyroUpdates(NSOperationQueue queue, @Block VoidBlock2<CMGyroData, CMError> handler);
+    public native void startGyroUpdates(NSOperationQueue queue, @Block VoidBlock2<CMGyroData, NSError> handler);
     @Method(selector = "stopGyroUpdates")
     public native void stopGyroUpdates();
     /**
@@ -141,7 +141,7 @@ import org.robovm.apple.foundation.*;
      * @since Available in iOS 5.0 and later.
      */
     @Method(selector = "startMagnetometerUpdatesToQueue:withHandler:")
-    public native void startMagnetometerUpdates(NSOperationQueue queue, @Block VoidBlock2<CMMagnetometerData, CMError> handler);
+    public native void startMagnetometerUpdates(NSOperationQueue queue, @Block VoidBlock2<CMMagnetometerData, NSError> handler);
     /**
      * @since Available in iOS 5.0 and later.
      */
@@ -150,7 +150,7 @@ import org.robovm.apple.foundation.*;
     @Method(selector = "startDeviceMotionUpdates")
     public native void startDeviceMotionUpdates();
     @Method(selector = "startDeviceMotionUpdatesToQueue:withHandler:")
-    public native void startDeviceMotionUpdates(NSOperationQueue queue, @Block VoidBlock2<CMDeviceMotion, CMError> handler);
+    public native void startDeviceMotionUpdates(NSOperationQueue queue, @Block VoidBlock2<CMDeviceMotion, NSError> handler);
     /**
      * @since Available in iOS 5.0 and later.
      */
@@ -160,7 +160,7 @@ import org.robovm.apple.foundation.*;
      * @since Available in iOS 5.0 and later.
      */
     @Method(selector = "startDeviceMotionUpdatesUsingReferenceFrame:toQueue:withHandler:")
-    public native void startDeviceMotionUpdates(CMAttitudeReferenceFrame referenceFrame, NSOperationQueue queue, @Block VoidBlock2<CMDeviceMotion, CMError> handler);
+    public native void startDeviceMotionUpdates(CMAttitudeReferenceFrame referenceFrame, NSOperationQueue queue, @Block VoidBlock2<CMDeviceMotion, NSError> handler);
     @Method(selector = "stopDeviceMotionUpdates")
     public native void stopDeviceMotionUpdates();
     /**

@@ -132,6 +132,12 @@ import org.robovm.apple.corelocation.*;
     /**
      * @since Available in iOS 8.0 and later.
      */
+    @GlobalValue(symbol="UISplitViewControllerAutomaticDimension", optional=true)
+    public static native @MachineSizedFloat double AutomaticDimension();
+    
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
     @Method(selector = "displayModeButtonItem")
     public native UIBarButtonItem getDisplayModeButtonItem();
     /**

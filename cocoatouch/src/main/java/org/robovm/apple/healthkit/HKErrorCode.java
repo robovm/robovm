@@ -35,7 +35,7 @@ import org.robovm.apple.foundation.*;
  */
 /*</javadoc>*/
 /*<annotations>*/@Marshaler(ValuedEnum.AsMachineSizedSIntMarshaler.class)/*</annotations>*/
-public enum /*<name>*/HKErrorCode/*</name>*/ implements ValuedEnum {
+public enum /*<name>*/HKErrorCode/*</name>*/ implements NSErrorCode {
     /*<values>*/
     NoError(0L),
     ErrorHealthDataUnavailable(1L),

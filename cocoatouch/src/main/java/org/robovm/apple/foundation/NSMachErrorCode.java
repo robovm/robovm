@@ -2,7 +2,7 @@ package org.robovm.apple.foundation;
 
 import org.robovm.rt.bro.ValuedEnum;
 
-public enum NSMachErrorCode implements ValuedEnum {
+public enum NSMachErrorCode implements NSErrorCode {
     SUCCESS(0),
     /**
      * Specified address is not currently valid.

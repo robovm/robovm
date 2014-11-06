@@ -72,23 +72,8 @@ import org.robovm.apple.corelocation.*;
     /**
      * @since Available in iOS 8.0 and later.
      */
-    @GlobalValue(symbol="UIAccessibilityPauseAssistiveTechnologyNotification", optional=true)
-    public static native NSString PauseAssistiveTechnologyNotification();
-    /**
-     * @since Available in iOS 8.0 and later.
-     */
-    @GlobalValue(symbol="UIAccessibilityPauseAssistiveTechnologyNotification", optional=true)
-    public static native void PauseAssistiveTechnologyNotification(NSString v);
-    /**
-     * @since Available in iOS 8.0 and later.
-     */
-    @GlobalValue(symbol="UIAccessibilityResumeAssistiveTechnologyNotification", optional=true)
-    public static native NSString ResumeAssistiveTechnologyNotification();
-    /**
-     * @since Available in iOS 8.0 and later.
-     */
-    @GlobalValue(symbol="UIAccessibilityResumeAssistiveTechnologyNotification", optional=true)
-    public static native void ResumeAssistiveTechnologyNotification(NSString v);
+    @GlobalValue(symbol="UIAccessibilityNotificationSwitchControlIdentifier", optional=true)
+    public static native String SwitchControlIdentifier();
     /**
      * @since Available in iOS 4.0 and later.
      */

@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.robovm.apple.uikit;
+package org.robovm.apple.storekit;
 
 /*<imports>*/
 import java.io.*;
@@ -27,38 +27,37 @@ import org.robovm.rt.bro.*;
 import org.robovm.rt.bro.annotation.*;
 import org.robovm.rt.bro.ptr.*;
 import org.robovm.apple.foundation.*;
-import org.robovm.apple.coreanimation.*;
-import org.robovm.apple.coregraphics.*;
-import org.robovm.apple.coredata.*;
-import org.robovm.apple.coreimage.*;
-import org.robovm.apple.coretext.*;
-import org.robovm.apple.corelocation.*;
+import org.robovm.apple.uikit.*;
+import org.robovm.apple.accounts.*;
 /*</imports>*/
 
 /*<javadoc>*/
 /*</javadoc>*/
-/*<annotations>*/@Library("UIKit")/*</annotations>*/
-/*<visibility>*/public/*</visibility>*/ class /*<name>*/UIPrintError/*</name>*/ 
+/*<annotations>*/@Library("StoreKit")/*</annotations>*/
+/*<visibility>*/public/*</visibility>*/ class /*<name>*/SKError/*</name>*/ 
     extends /*<extends>*/NSError/*</extends>*/ 
     /*<implements>*//*</implements>*/ {
 
-    protected UIPrintError(SkipInit skipInit) {
+    protected SKError(SkipInit skipInit) {
         super(skipInit);
     }
     
     /*<ptr>*/
     /*</ptr>*/
-    /*<bind>*/static { Bro.bind(UIPrintError.class); }/*</bind>*/
+    /*<bind>*/static { Bro.bind(SKError.class); }/*</bind>*/
     /*<constants>*//*</constants>*/
     /*<constructors>*//*</constructors>*/
     /*<properties>*//*</properties>*/
     /*<members>*//*</members>*/
     @Override
-    public UIPrintErrorCode getErrorCode() {
-        return UIPrintErrorCode.valueOf(getCode());
+    public SKErrorCode getErrorCode() {
+        return SKErrorCode.valueOf(getCode());
     }
     /*<methods>*/
-    @GlobalValue(symbol="UIPrintErrorDomain", optional=true)
+    /**
+     * @since Available in iOS 3.0 and later.
+     */
+    @GlobalValue(symbol="SKErrorDomain", optional=true)
     public static native String getClassDomain();
     /*</methods>*/
 }

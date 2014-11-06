@@ -33,7 +33,7 @@ import org.robovm.apple.foundation.*;
 
 /*</javadoc>*/
 /*<annotations>*//*</annotations>*/
-public enum /*<name>*/CMErrorCode/*</name>*/ implements ValuedEnum {
+public enum /*<name>*/CMErrorCode/*</name>*/ implements ValuedEnum, NSErrorCode {
     /*<values>*/
     NULL(100L),
     DeviceRequiresMovement(101L),

@@ -35,7 +35,7 @@ import org.robovm.apple.accounts.*;
 
 /*</javadoc>*/
 /*<annotations>*//*</annotations>*/
-public enum /*<name>*/SKErrorCode/*</name>*/ implements ValuedEnum {
+public enum /*<name>*/SKErrorCode/*</name>*/ implements NSErrorCode {
     /*<values>*/
     Unknown(0L),
     ClientInvalid(1L),

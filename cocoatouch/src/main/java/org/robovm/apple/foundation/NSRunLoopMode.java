@@ -53,7 +53,9 @@ import org.robovm.apple.dispatch.*;
     public static final NSRunLoopMode Common = new NSRunLoopMode("CommonValue");
     
     private static NSRunLoopMode[] values = new NSRunLoopMode[] {Default, Common};
-    private final LazyGlobalValue<String> lazyGlobalValue;
+    private LazyGlobalValue<String> lazyGlobalValue;
+    
+    public NSRunLoopMode() {}
     
     private NSRunLoopMode(String getterName) {
         lazyGlobalValue = new LazyGlobalValue<>(getClass(), getterName);

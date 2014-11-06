@@ -45,6 +45,7 @@ import org.robovm.apple.foundation.*;
     /*<constants>*//*</constants>*/
     /*<properties>*//*</properties>*/
     /*<members>*//*</members>*/
+    @Override
     public CMErrorCode getErrorCode() {
         return CMErrorCode.valueOf(getCode());
     }

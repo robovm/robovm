@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.robovm.apple.storekit;
+package org.robovm.apple.uikit;
 
 /*<imports>*/
 import java.io.*;
@@ -27,29 +27,38 @@ import org.robovm.rt.bro.*;
 import org.robovm.rt.bro.annotation.*;
 import org.robovm.rt.bro.ptr.*;
 import org.robovm.apple.foundation.*;
-import org.robovm.apple.uikit.*;
-import org.robovm.apple.accounts.*;
+import org.robovm.apple.coreanimation.*;
+import org.robovm.apple.coregraphics.*;
+import org.robovm.apple.coredata.*;
+import org.robovm.apple.coreimage.*;
+import org.robovm.apple.coretext.*;
+import org.robovm.apple.corelocation.*;
 /*</imports>*/
 
 /*<javadoc>*/
 /*</javadoc>*/
-/*<annotations>*/@Library("StoreKit") @Marshaler(NSString.AsStringMarshaler.class)/*</annotations>*/
-/*<visibility>*/public/*</visibility>*/ class /*<name>*/StoreKit/*</name>*/ 
-    extends /*<extends>*/Object/*</extends>*/ 
+/*<annotations>*/@Library("UIKit")/*</annotations>*/
+/*<visibility>*/public/*</visibility>*/ class /*<name>*/UIRunLoopMode/*</name>*/ 
+    extends /*<extends>*/NSRunLoopMode/*</extends>*/ 
     /*<implements>*//*</implements>*/ {
 
     /*<ptr>*/
     /*</ptr>*/
-    /*<bind>*/static { Bro.bind(StoreKit.class); }/*</bind>*/
+    /*<bind>*/static { Bro.bind(UIRunLoopMode.class); }/*</bind>*/
     /*<constants>*//*</constants>*/
+    public static final UIRunLoopMode Tracking = new UIRunLoopMode("TrackingValue");
+    
+    private static UIRunLoopMode[] values = new UIRunLoopMode[] {Tracking};
+    private final LazyGlobalValue<String> lazyGlobalValue;
+    
+    private UIRunLoopMode(String getterName) {
+        lazyGlobalValue = new LazyGlobalValue<>(getClass(), getterName);
+    }
     /*<constructors>*//*</constructors>*/
     /*<properties>*//*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
-    /**
-     * @since Available in iOS 3.0 and later.
-     */
-    @GlobalValue(symbol="SKErrorDomain", optional=true)
-    public static native NSString ErrorDomain();
+    @GlobalValue(symbol="UITrackingRunLoopMode", optional=true)
+    protected static native String TrackingValue();
     /*</methods>*/
 }

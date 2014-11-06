@@ -46,6 +46,7 @@ import org.robovm.apple.foundation.*;
     /*<constructors>*//*</constructors>*/
     /*<properties>*//*</properties>*/
     /*<members>*//*</members>*/
+    @Override
     public HKErrorCode getErrorCode() {
         return HKErrorCode.valueOf(getCode());
     }

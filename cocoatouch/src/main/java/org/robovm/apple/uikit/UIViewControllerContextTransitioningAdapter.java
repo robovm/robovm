@@ -77,7 +77,7 @@ import org.robovm.apple.corelocation.*;
      * @since Available in iOS 8.0 and later.
      */
     @NotImplemented("viewForKey:")
-    public UIView getView(String key) { throw new UnsupportedOperationException(); }
+    public UIView getView(UITransitionContextViewType key) { throw new UnsupportedOperationException(); }
     /**
      * @since Available in iOS 8.0 and later.
      */

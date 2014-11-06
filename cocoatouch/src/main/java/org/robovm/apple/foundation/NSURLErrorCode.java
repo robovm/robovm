@@ -39,7 +39,7 @@ import org.robovm.apple.dispatch.*;
 
 /*</javadoc>*/
 /*<annotations>*//*</annotations>*/
-public enum /*<name>*/NSURLErrorCode/*</name>*/ implements ValuedEnum {
+public enum /*<name>*/NSURLErrorCode/*</name>*/ implements NSErrorCode {
     /*<values>*/
     Unknown(-1L),
     Cancelled(-999L),

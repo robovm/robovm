@@ -52,7 +52,7 @@ import org.robovm.apple.foundation.*;
     /*<members>*//*</members>*/
     /*<methods>*/
     @Method(selector = "queryActivityStartingFromDate:toDate:toQueue:withHandler:")
-    public native void queryActivity(NSDate start, NSDate end, NSOperationQueue queue, @Block VoidBlock2<NSArray<CMMotionActivity>, CMError> handler);
+    public native void queryActivity(NSDate start, NSDate end, NSOperationQueue queue, @Block VoidBlock2<NSArray<CMMotionActivity>, NSError> handler);
     @Method(selector = "startActivityUpdatesToQueue:withHandler:")
     public native void startActivityUpdates(NSOperationQueue queue, @Block VoidBlock1<CMMotionActivity> handler);
     @Method(selector = "stopActivityUpdates")

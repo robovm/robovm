@@ -45,7 +45,7 @@ import org.robovm.apple.foundation.*;
     /*<constructors>*/
     public HKStatisticsQuery() {}
     protected HKStatisticsQuery(SkipInit skipInit) { super(skipInit); }
-    public HKStatisticsQuery(HKQuantityType quantityType, NSPredicate quantitySamplePredicate, HKStatisticsOptions options, @Block VoidBlock3<HKStatisticsQuery, HKStatistics, HKError> handler) { super((SkipInit) null); initObject(initWithQuantityType$quantitySamplePredicate$options$completionHandler$(quantityType, quantitySamplePredicate, options, handler)); }
+    public HKStatisticsQuery(HKQuantityType quantityType, NSPredicate quantitySamplePredicate, HKStatisticsOptions options, @Block VoidBlock3<HKStatisticsQuery, HKStatistics, NSError> handler) { super((SkipInit) null); initObject(initWithQuantityType$quantitySamplePredicate$options$completionHandler$(quantityType, quantitySamplePredicate, options, handler)); }
     /*</constructors>*/
     /*<properties>*/
     
@@ -53,6 +53,6 @@ import org.robovm.apple.foundation.*;
     /*<members>*//*</members>*/
     /*<methods>*/
     @Method(selector = "initWithQuantityType:quantitySamplePredicate:options:completionHandler:")
-    protected native @Pointer long initWithQuantityType$quantitySamplePredicate$options$completionHandler$(HKQuantityType quantityType, NSPredicate quantitySamplePredicate, HKStatisticsOptions options, @Block VoidBlock3<HKStatisticsQuery, HKStatistics, HKError> handler);
+    protected native @Pointer long initWithQuantityType$quantitySamplePredicate$options$completionHandler$(HKQuantityType quantityType, NSPredicate quantitySamplePredicate, HKStatisticsOptions options, @Block VoidBlock3<HKStatisticsQuery, HKStatistics, NSError> handler);
     /*</methods>*/
 }

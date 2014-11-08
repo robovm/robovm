@@ -34,31 +34,31 @@ ObjectArray* Java_java_lang_Throwable_nativeGetStackTrace(Env* env, Object* thiz
 
     jint index = 0;
     jint first = 0;
-    Method* m = rvmGetNextCallStackMethod(env, callStack, &index);
-    if (m && m->clazz == java_lang_Throwable && !strcmp(m->name, "nativeFillInStackTrace")) {
+    CallStackFrame* frame = rvmGetNextCallStackMethod(env, callStack, &index);
+    if (frame && frame->method->clazz == java_lang_Throwable && !strcmp(frame->method->name, "nativeFillInStackTrace")) {
         // Skip Throwable.nativeFillInStackTrace()
         rvmGetNextCallStackMethod(env, callStack, &index); // Skip Throwable.fillInStackTrace()
-        m = rvmGetNextCallStackMethod(env, callStack, &index);
+        frame = rvmGetNextCallStackMethod(env, callStack, &index);
         first = index;
-        if (m) {
-            Class* clazz = m->clazz;
-            if (clazz == java_lang_Throwable && METHOD_IS_CONSTRUCTOR(m)) {
+        if (frame) {
+            Class* clazz = frame->method->clazz;
+            if (clazz == java_lang_Throwable && METHOD_IS_CONSTRUCTOR(frame->method)) {
                 // fillInStackTrace() was called from the constructor of Throwable
                 // Skip all constructors until the constructor of thiz->clazz
                 Class* superclass = java_lang_Object;
-                while (m && METHOD_IS_CONSTRUCTOR(m) && clazz != thiz->clazz && clazz->superclass == superclass) {
-                    m = rvmGetNextCallStackMethod(env, callStack, &index);
-                    if (m && m->clazz != clazz) {
+                while (frame && METHOD_IS_CONSTRUCTOR(frame->method) && clazz != thiz->clazz && clazz->superclass == superclass) {
+                    frame = rvmGetNextCallStackMethod(env, callStack, &index);
+                    if (frame && frame->method->clazz != clazz) {
                         superclass = clazz;
-                        clazz = m->clazz;
+                        clazz = frame->method->clazz;
                     }
                     first = index - 1;
                 }
                 // We're now at the constructor of thiz->clazz which called super(). 
                 // Skip all constructors belonging to thiz->clazz to get to the method which created the throwable
-                while (m && METHOD_IS_CONSTRUCTOR(m) && clazz == thiz->clazz) {
-                    m = rvmGetNextCallStackMethod(env, callStack, &index);
-                    if (m) clazz = m->clazz;
+                while (frame && METHOD_IS_CONSTRUCTOR(frame->method) && clazz == thiz->clazz) {
+                    frame = rvmGetNextCallStackMethod(env, callStack, &index);
+                    if (frame) clazz = frame->method->clazz;
                     first = index - 1;
                 }
             }

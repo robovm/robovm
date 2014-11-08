@@ -92,8 +92,8 @@ ObjectArray* Java_org_robovm_rt_VM_getStackClasses(Env* env, Class* c, jint skip
     rvmGetNextCallStackMethod(env, callStack, &index); // Skip caller of VM.getStackClasses()
 
     while (skipNum > 0) {
-        Method* m = rvmGetNextCallStackMethod(env, callStack, &index);
-        if (!m) return NULL;
+        CallStackFrame* frame = rvmGetNextCallStackMethod(env, callStack, &index);
+        if (!frame) return NULL;
         skipNum--;
     }
 
@@ -112,8 +112,8 @@ ObjectArray* Java_org_robovm_rt_VM_getStackClasses(Env* env, Class* c, jint skip
     jint i;
     index = first;
     for (i = 0; i < depth; i++) {
-        Method* m = rvmGetNextCallStackMethod(env, callStack, &index);
-        result->values[i] = (Object*) m->clazz;
+        CallStackFrame* frame = rvmGetNextCallStackMethod(env, callStack, &index);
+        result->values[i] = (Object*) frame->method->clazz;
     }
     return result;
 }

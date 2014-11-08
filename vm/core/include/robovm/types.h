@@ -88,6 +88,7 @@ struct Method {
   void* attributes;
   void* impl;
   void* synchronizedImpl;
+  void* linetable;
 };
 
 struct NativeMethod {

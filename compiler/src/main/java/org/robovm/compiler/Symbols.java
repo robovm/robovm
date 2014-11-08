@@ -108,6 +108,14 @@ public class Symbols {
         return sb.toString();
     }
 
+    public static String linetableSymbol(String owner, String name, String desc) {
+        return methodSymbol(owner, name, desc, "linetable");
+    }
+
+    public static String linetableSymbol(SootMethod method) {
+        return methodSymbol(method, "linetable");
+    }
+    
     public static String methodSymbolPrefix(String owner) {
         StringBuilder sb = new StringBuilder(EXTERNAL_SYMBOL_PREFIX);
         sb.append(owner.replace('/', '.'));

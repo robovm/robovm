@@ -39,6 +39,20 @@ import org.robovm.apple.foundation.*;
     extends /*<extends>*/NSObject/*</extends>*/ 
     /*<implements>*//*</implements>*/ {
 
+    public static class Notifications {
+        /**
+         * @since Available in iOS 5.0 and later.
+         */
+        public NSObject observeDidChange(final Runnable block) {
+            return NSNotificationCenter.getDefaultCenter().addObserver(DidChangeNotification(), null, NSOperationQueue.getMainQueue(), new VoidBlock1<NSNotification>() {
+                @Override
+                public void invoke(NSNotification a) {
+                    block.run();
+                }
+            });
+        }
+    }
+    
     /*<ptr>*/public static class ACAccountStorePtr extends Ptr<ACAccountStore, ACAccountStorePtr> {}/*</ptr>*/
     /*<bind>*/static { ObjCRuntime.bind(ACAccountStore.class); }/*</bind>*/
     /*<constants>*//*</constants>*/
@@ -51,9 +65,6 @@ import org.robovm.apple.foundation.*;
     public native NSArray<ACAccount> getAccounts();
     /*</properties>*/
     /*<members>*//*</members>*/
-    public ACAccountType getAccountType(ACAccountTypeIdentifier typeIdentifier) {
-        return getAccountType(typeIdentifier.value());
-    }
     public void requestAccessToAccounts(ACAccountType accountType, ACAccountOptions options, @Block VoidBlock2<Boolean, NSError> completion) {
         requestAccessToAccounts(accountType, options == null ? null : options.data, completion);
     }
@@ -67,7 +78,7 @@ import org.robovm.apple.foundation.*;
     @Method(selector = "accountWithIdentifier:")
     public native ACAccount getAccount(String identifier);
     @Method(selector = "accountTypeWithAccountTypeIdentifier:")
-    protected native ACAccountType getAccountType(NSString typeIdentifier);
+    public native ACAccountType getAccountType(ACAccountTypeIdentifier typeIdentifier);
     @Method(selector = "accountsWithAccountType:")
     public native NSArray<ACAccount> getAccounts(ACAccountType accountType);
     @Method(selector = "saveAccount:withCompletionHandler:")

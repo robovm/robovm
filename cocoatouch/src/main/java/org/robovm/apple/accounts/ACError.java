@@ -31,23 +31,31 @@ import org.robovm.apple.foundation.*;
 
 /*<javadoc>*/
 /*</javadoc>*/
-/*<annotations>*/@Library("Accounts") @Marshaler(NSString.AsStringMarshaler.class)/*</annotations>*/
-/*<visibility>*/public/*</visibility>*/ class /*<name>*/Accounts/*</name>*/ 
-    extends /*<extends>*/Object/*</extends>*/ 
+/*<annotations>*/@Library("Accounts")/*</annotations>*/
+/*<visibility>*/public/*</visibility>*/ class /*<name>*/ACError/*</name>*/ 
+    extends /*<extends>*/NSError/*</extends>*/ 
     /*<implements>*//*</implements>*/ {
 
+    protected ACError(SkipInit skipInit) {
+        super(skipInit);
+    }
+    
     /*<ptr>*/
     /*</ptr>*/
-    /*<bind>*/static { Bro.bind(Accounts.class); }/*</bind>*/
+    /*<bind>*/static { Bro.bind(ACError.class); }/*</bind>*/
     /*<constants>*//*</constants>*/
     /*<constructors>*//*</constructors>*/
     /*<properties>*//*</properties>*/
     /*<members>*//*</members>*/
+    @Override
+    public ACErrorCode getErrorCode() {
+        return ACErrorCode.valueOf(getCode());
+    }
     /*<methods>*/
     /**
      * @since Available in iOS 5.0 and later.
      */
     @GlobalValue(symbol="ACErrorDomain", optional=true)
-    public static native NSString ErrorDomain();
+    public static native String getClassDomain();
     /*</methods>*/
 }

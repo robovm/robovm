@@ -33,7 +33,7 @@ import org.robovm.apple.foundation.*;
 
 /*</javadoc>*/
 /*<annotations>*//*</annotations>*/
-public enum /*<name>*/ACErrorCode/*</name>*/ implements ValuedEnum {
+public enum /*<name>*/ACErrorCode/*</name>*/ implements NSErrorCode {
     /*<values>*/
     Unknown(1L),
     AccountMissingRequiredProperty(2L),
@@ -50,7 +50,12 @@ public enum /*<name>*/ACErrorCode/*</name>*/ implements ValuedEnum {
     StoreCredentialFailed(13L),
     RemoveCredentialFailed(14L),
     UpdatingNonexistentAccount(15L),
-    InvalidClientBundleID(16L);
+    InvalidClientBundleID(16L),
+    DeniedByPlugin(17L),
+    CoreDataSaveFailed(18L),
+    FailedSerializingAccountInfo(19L),
+    InvalidCommand(20L),
+    MissingMessageID(21L);
     /*</values>*/
 
     /*<bind>*/

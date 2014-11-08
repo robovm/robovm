@@ -91,10 +91,13 @@ classes:
                 trim_after_first_colon: true
             '-dateOfBirthWithError:':
                 name: getDateOfBirth
+                visibility: protected # throws NSErrorException
             '-biologicalSexWithError:':
                 name: getBiologicalSex
+                visibility: protected # throws NSErrorException
             '-bloodTypeWithError:':
                 name: getBloodType
+                visibility: protected # throws NSErrorException
             '-addSamples:toWorkout:completion:':
                 name: addSamplesToWorkout
                 parameters:

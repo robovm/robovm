@@ -81,11 +81,53 @@ import org.robovm.apple.dispatch.*;
     public native boolean isHasThumbnail();
     /*</properties>*/
     /*<members>*//*</members>*/
+    /**
+     * 
+     * @param url
+     * @param options
+     * @return
+     * @throws NSErrorException
+     */
+    public NSURL replaceItemAtURL(NSURL url, NSFileVersionReplacingOptions options) {
+        NSError.NSErrorPtr err = new NSError.NSErrorPtr();
+        NSURL result = replaceItemAtURL(url, options, err);
+        if (err.get() != null) {
+            throw new NSErrorException(err.get());
+        }
+        return result;
+    }
+    /**
+     * 
+     * @return
+     * @throws NSErrorException
+     */
+    public boolean remove() {
+        NSError.NSErrorPtr err = new NSError.NSErrorPtr();
+        boolean result = remove(err);
+        if (err.get() != null) {
+            throw new NSErrorException(err.get());
+        }
+        return result;
+    }
+    /**
+     * 
+     * @param url
+     * @return
+     * @throws NSErrorException
+     */
+    public static boolean removeOtherItemVersionsAtURL(NSURL url) {
+        NSError.NSErrorPtr err = new NSError.NSErrorPtr();
+        boolean result = removeOtherItemVersionsAtURL(url, err);
+        if (err.get() != null) {
+            throw new NSErrorException(err.get());
+        }
+        return result;
+    }
     /*<methods>*/
     @Method(selector = "replaceItemAtURL:options:error:")
-    public native NSURL replaceItemAtURL(NSURL url, NSFileVersionReplacingOptions options, NSError.NSErrorPtr error);
+    protected native NSURL replaceItemAtURL(NSURL url, NSFileVersionReplacingOptions options, NSError.NSErrorPtr error);
     @Method(selector = "removeAndReturnError:")
-    public native boolean remove(NSError.NSErrorPtr outError);
+    protected native boolean remove(NSError.NSErrorPtr outError);
     @Method(selector = "currentVersionOfItemAtURL:")
     public static native NSFileVersion getCurrentItemVersionAtURL(NSURL url);
     @Method(selector = "otherVersionsOfItemAtURL:")
@@ -100,6 +142,6 @@ import org.robovm.apple.dispatch.*;
     @Method(selector = "versionOfItemAtURL:forPersistentIdentifier:")
     public static native NSFileVersion getItemVersionAtURL(NSURL url, NSObject persistentIdentifier);
     @Method(selector = "removeOtherVersionsOfItemAtURL:error:")
-    public static native boolean removeOtherItemVersionsAtURL(NSURL url, NSError.NSErrorPtr outError);
+    protected static native boolean removeOtherItemVersionsAtURL(NSURL url, NSError.NSErrorPtr outError);
     /*</methods>*/
 }

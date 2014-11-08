@@ -66,6 +66,85 @@ import org.robovm.apple.dispatch.*;
     public native void setPurposeIdentifier(String v);
     /*</properties>*/
     /*<members>*//*</members>*/
+    
+    /**
+     * 
+     * @param url
+     * @param options
+     * @param reader
+     * @throws NSErrorException
+     */
+    public void coordinateReadingItem(NSURL url, NSFileCoordinatorReadingOptions options, @Block VoidBlock1<NSURL> reader) {
+        NSError.NSErrorPtr err = new NSError.NSErrorPtr();
+        coordinateReadingItem(url, options, err, reader);
+        if (err.get() != null) {
+            throw new NSErrorException(err.get());
+        }
+    }
+    /**
+     * 
+     * @param url
+     * @param options
+     * @param writer
+     * @throws NSErrorException
+     */
+    public void coordinateWritingItem(NSURL url, NSFileCoordinatorWritingOptions options, @Block VoidBlock1<NSURL> writer) {
+        NSError.NSErrorPtr err = new NSError.NSErrorPtr();
+        coordinateWritingItem(url, options, err, writer);
+        if (err.get() != null) {
+            throw new NSErrorException(err.get());
+        }
+    }
+    /**
+     * 
+     * @param readingURL
+     * @param readingOptions
+     * @param writingURL
+     * @param writingOptions
+     * @param readerWriter
+     * @throws NSErrorException
+     */
+    public void coordinateReadingItem(NSURL readingURL, NSFileCoordinatorReadingOptions readingOptions, NSURL writingURL, NSFileCoordinatorWritingOptions writingOptions, @Block VoidBlock2<NSURL, NSURL> readerWriter) {
+        NSError.NSErrorPtr err = new NSError.NSErrorPtr();
+        coordinateReadingItem(readingURL, readingOptions, writingURL, writingOptions, err, readerWriter);
+        if (err.get() != null) {
+            throw new NSErrorException(err.get());
+        }
+    }
+    /**
+     * 
+     * @param url1
+     * @param options1
+     * @param url2
+     * @param options2
+     * @param writer
+     * @throws NSErrorException
+     */
+    public void coordinateWritingItem(NSURL url1, NSFileCoordinatorWritingOptions options1, NSURL url2, NSFileCoordinatorWritingOptions options2, @Block VoidBlock2<NSURL, NSURL> writer) {
+        NSError.NSErrorPtr err = new NSError.NSErrorPtr();
+        coordinateWritingItem(url1, options1, url2, options2, err, writer);
+        if (err.get() != null) {
+            throw new NSErrorException(err.get());
+        }
+    }
+    /**
+     * 
+     * @param readingURLs
+     * @param readingOptions
+     * @param writingURLs
+     * @param writingOptions
+     * @param batchAccessor
+     * @throws NSErrorException
+     */
+    public void prepareForReadingItems(NSArray<NSURL> readingURLs, NSFileCoordinatorReadingOptions readingOptions, NSArray<NSURL> writingURLs, NSFileCoordinatorWritingOptions writingOptions, @Block("(@Block)") VoidBlock1<Runnable> batchAccessor) {
+        NSError.NSErrorPtr err = new NSError.NSErrorPtr();
+        prepareForReadingItems(readingURLs, readingOptions, writingURLs, writingOptions, err, batchAccessor);
+        if (err.get() != null) {
+            throw new NSErrorException(err.get());
+        }
+    }
+
+    
     /*<methods>*/
     @Method(selector = "initWithFilePresenter:")
     protected native @Pointer long initWithFilePresenter$(NSFilePresenter filePresenterOrNil);
@@ -75,15 +154,15 @@ import org.robovm.apple.dispatch.*;
     @Method(selector = "coordinateAccessWithIntents:queue:byAccessor:")
     public native void coordinateAccessWithIntents(NSArray<NSFileAccessIntent> intents, NSOperationQueue queue, @Block VoidBlock1<NSError> accessor);
     @Method(selector = "coordinateReadingItemAtURL:options:error:byAccessor:")
-    public native void coordinateReadingItem(NSURL url, NSFileCoordinatorReadingOptions options, NSError.NSErrorPtr outError, @Block VoidBlock1<NSURL> reader);
+    protected native void coordinateReadingItem(NSURL url, NSFileCoordinatorReadingOptions options, NSError.NSErrorPtr outError, @Block VoidBlock1<NSURL> reader);
     @Method(selector = "coordinateWritingItemAtURL:options:error:byAccessor:")
-    public native void coordinateWritingItem(NSURL url, NSFileCoordinatorWritingOptions options, NSError.NSErrorPtr outError, @Block VoidBlock1<NSURL> writer);
+    protected native void coordinateWritingItem(NSURL url, NSFileCoordinatorWritingOptions options, NSError.NSErrorPtr outError, @Block VoidBlock1<NSURL> writer);
     @Method(selector = "coordinateReadingItemAtURL:options:writingItemAtURL:options:error:byAccessor:")
-    public native void coordinateReadingItem(NSURL readingURL, NSFileCoordinatorReadingOptions readingOptions, NSURL writingURL, NSFileCoordinatorWritingOptions writingOptions, NSError.NSErrorPtr outError, @Block VoidBlock2<NSURL, NSURL> readerWriter);
+    protected native void coordinateReadingItem(NSURL readingURL, NSFileCoordinatorReadingOptions readingOptions, NSURL writingURL, NSFileCoordinatorWritingOptions writingOptions, NSError.NSErrorPtr outError, @Block VoidBlock2<NSURL, NSURL> readerWriter);
     @Method(selector = "coordinateWritingItemAtURL:options:writingItemAtURL:options:error:byAccessor:")
-    public native void coordinateWritingItem(NSURL url1, NSFileCoordinatorWritingOptions options1, NSURL url2, NSFileCoordinatorWritingOptions options2, NSError.NSErrorPtr outError, @Block VoidBlock2<NSURL, NSURL> writer);
+    protected native void coordinateWritingItem(NSURL url1, NSFileCoordinatorWritingOptions options1, NSURL url2, NSFileCoordinatorWritingOptions options2, NSError.NSErrorPtr outError, @Block VoidBlock2<NSURL, NSURL> writer);
     @Method(selector = "prepareForReadingItemsAtURLs:options:writingItemsAtURLs:options:error:byAccessor:")
-    public native void prepareForReadingItems(NSArray<NSURL> readingURLs, NSFileCoordinatorReadingOptions readingOptions, NSArray<NSURL> writingURLs, NSFileCoordinatorWritingOptions writingOptions, NSError.NSErrorPtr outError, @Block("(@Block)") VoidBlock1<Runnable> batchAccessor);
+    protected native void prepareForReadingItems(NSArray<NSURL> readingURLs, NSFileCoordinatorReadingOptions readingOptions, NSArray<NSURL> writingURLs, NSFileCoordinatorWritingOptions writingOptions, NSError.NSErrorPtr outError, @Block("(@Block)") VoidBlock1<Runnable> batchAccessor);
     /**
      * @since Available in iOS 6.0 and later.
      */

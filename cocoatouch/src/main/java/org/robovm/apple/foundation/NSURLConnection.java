@@ -69,10 +69,20 @@ import org.robovm.apple.newsstandkit.NKAssetDownload;
     public native NSURLRequest getCurrentRequest();
     /*</properties>*/
     /*<members>*//*</members>*/
-    
-    /* NewsstandKit extensions */
-    public NKAssetDownload getNewsstandAssetDownload() {
-        return org.robovm.apple.newsstandkit.NSURLConnectionExtensions.getNewsstandAssetDownload(this);
+    /**
+     * 
+     * @param request
+     * @param response
+     * @return
+     * @throws NSErrorException
+     */
+    public static NSData sendSynchronousRequest(NSURLRequest request, NSURLResponse.NSURLResponsePtr response) {
+        NSError.NSErrorPtr err = new NSError.NSErrorPtr();
+        NSData result = sendSynchronousRequest(request, response, err);
+        if (err.get() != null) {
+            throw new NSErrorException(err.get());
+        }
+        return result;
     }
     
     public void scheduleInRunLoop(NSRunLoop aRunLoop, NSRunLoopMode mode) {
@@ -80,6 +90,11 @@ import org.robovm.apple.newsstandkit.NKAssetDownload;
     }
     public void unscheduleFromRunLoop(NSRunLoop aRunLoop, NSRunLoopMode mode) {
         unscheduleFromRunLoop(aRunLoop, mode.value());
+    }
+
+    /* NewsstandKit extensions */
+    public NKAssetDownload getNewsstandAssetDownload() {
+        return org.robovm.apple.newsstandkit.NSURLConnectionExtensions.getNewsstandAssetDownload(this);
     }
     /*<methods>*/
     /**
@@ -116,7 +131,7 @@ import org.robovm.apple.newsstandkit.NKAssetDownload;
     @Method(selector = "canHandleRequest:")
     public static native boolean canHandleRequest(NSURLRequest request);
     @Method(selector = "sendSynchronousRequest:returningResponse:error:")
-    public static native NSData sendSynchronousRequest(NSURLRequest request, NSURLResponse.NSURLResponsePtr response, NSError.NSErrorPtr error);
+    protected static native NSData sendSynchronousRequest(NSURLRequest request, NSURLResponse.NSURLResponsePtr response, NSError.NSErrorPtr error);
     /**
      * @since Available in iOS 5.0 and later.
      */

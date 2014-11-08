@@ -158,6 +158,33 @@ import org.robovm.apple.dispatch.*;
     /*</properties>*/
     /*<members>*//*</members>*/
     
+    /* NSErrorException */
+    /**
+     * @since Available in iOS 2.0 and later.
+     * @throws NSErrorException
+     */
+    public boolean preflight() {
+        NSError.NSErrorPtr err = new NSError.NSErrorPtr();
+        boolean result = preflight(err);
+        if (err.get() != null) {
+            throw new NSErrorException(err.get());
+        }
+        return result;
+    }
+    /**
+     * @since Available in iOS 2.0 and later.
+     * @throws NSErrorException
+     */
+    public boolean load() {
+        NSError.NSErrorPtr err = new NSError.NSErrorPtr();
+        boolean result = load(err);
+        if (err.get() != null) {
+            throw new NSErrorException(err.get());
+        }
+        return result;
+    }
+    
+    
     /* UIKit extensions */
     public NSArray<?> loadNib(String name, NSObject owner, UINibLoadingOptions options) {
         return NSBundleExtensions.loadNib(this, name, owner, options);
@@ -180,12 +207,12 @@ import org.robovm.apple.dispatch.*;
      * @since Available in iOS 2.0 and later.
      */
     @Method(selector = "preflightAndReturnError:")
-    public native boolean preflight(NSError.NSErrorPtr error);
+    protected native boolean preflight(NSError.NSErrorPtr error);
     /**
      * @since Available in iOS 2.0 and later.
      */
     @Method(selector = "loadAndReturnError:")
-    public native boolean load(NSError.NSErrorPtr error);
+    protected native boolean load(NSError.NSErrorPtr error);
     /**
      * @since Available in iOS 4.0 and later.
      */

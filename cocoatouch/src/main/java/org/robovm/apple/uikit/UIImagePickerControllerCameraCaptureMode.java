@@ -44,6 +44,33 @@ public enum /*<name>*/UIImagePickerControllerCameraCaptureMode/*</name>*/ implem
     Photo(0L),
     Video(1L);
     /*</values>*/
+    
+    public static class AsListMarshaler {
+        @SuppressWarnings("unchecked")
+        @MarshalsPointer
+        public static List<UIImagePickerControllerCameraCaptureMode> toObject(Class<? extends NSObject> cls, long handle, long flags) {
+            NSArray<NSNumber> o = (NSArray<NSNumber>) NSObject.Marshaler.toObject(cls, handle, flags);
+            if (o == null) {
+                return null;
+            }
+            List<UIImagePickerControllerCameraCaptureMode> list = new ArrayList<>();
+            for (NSNumber n : o) {
+                list.add(UIImagePickerControllerCameraCaptureMode.valueOf(n.intValue()));
+            }
+            return list;
+        }
+        @MarshalsPointer
+        public static long toNative(List<UIImagePickerControllerCameraCaptureMode> l, long flags) {
+            if (l == null) {
+                return 0L;
+            }
+            NSArray<NSNumber> array = new NSMutableArray<>();
+            for (UIImagePickerControllerCameraCaptureMode i : l) {
+                array.add(NSNumber.valueOf(i.value()));
+            }
+            return NSObject.Marshaler.toNative(array, flags);
+        }
+    }
 
     private final long n;
 

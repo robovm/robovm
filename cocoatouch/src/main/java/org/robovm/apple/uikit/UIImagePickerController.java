@@ -62,9 +62,9 @@ import org.robovm.apple.corelocation.*;
     @Property(selector = "setSourceType:")
     public native void setSourceType(UIImagePickerControllerSourceType v);
     @Property(selector = "mediaTypes")
-    public native NSArray<NSString> getMediaTypes();
+    public native @org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String> getMediaTypes();
     @Property(selector = "setMediaTypes:")
-    public native void setMediaTypes(NSArray<NSString> v);
+    public native void setMediaTypes(@org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String> v);
     /**
      * @since Available in iOS 3.1 and later.
      */
@@ -190,7 +190,7 @@ import org.robovm.apple.corelocation.*;
     @Method(selector = "isSourceTypeAvailable:")
     public static native boolean isSourceTypeAvailable(UIImagePickerControllerSourceType sourceType);
     @Method(selector = "availableMediaTypesForSourceType:")
-    public static native NSArray<NSString> getAvailableMediaTypes(UIImagePickerControllerSourceType sourceType);
+    public static native @org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String> getAvailableMediaTypes(UIImagePickerControllerSourceType sourceType);
     /**
      * @since Available in iOS 4.0 and later.
      */
@@ -205,6 +205,6 @@ import org.robovm.apple.corelocation.*;
      * @since Available in iOS 4.0 and later.
      */
     @Method(selector = "availableCaptureModesForCameraDevice:")
-    public static native NSArray<NSNumber> getAvailableCaptureModes(UIImagePickerControllerCameraDevice cameraDevice);
+    public static native @org.robovm.rt.bro.annotation.Marshaler(UIImagePickerControllerCameraCaptureMode.AsListMarshaler.class) List<UIImagePickerControllerCameraCaptureMode> getAvailableCaptureModes(UIImagePickerControllerCameraDevice cameraDevice);
     /*</methods>*/
 }

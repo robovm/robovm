@@ -48,9 +48,22 @@ import org.robovm.apple.dispatch.*;
     /*<ptr>*/public static class NSRegularExpressionPtr extends Ptr<NSRegularExpression, NSRegularExpressionPtr> {}/*</ptr>*/
     /*<bind>*/static { ObjCRuntime.bind(NSRegularExpression.class); }/*</bind>*/
     /*<constants>*//*</constants>*/
+    /**
+     * 
+     * @param pattern
+     * @param options
+     * @throws NSErrorException
+     */
+    public NSRegularExpression(String pattern, NSRegularExpressionOptions options) {
+        super((SkipInit) null);
+        NSError.NSErrorPtr err = new NSError.NSErrorPtr();
+        initObject(init(pattern, options, err));
+        if (err.get() != null) {
+            throw new NSErrorException(err.get());
+        }
+    }
     /*<constructors>*/
     protected NSRegularExpression(SkipInit skipInit) { super(skipInit); }
-    public NSRegularExpression(String pattern, NSRegularExpressionOptions options, NSError.NSErrorPtr error) { super((SkipInit) null); initObject(initWithPattern$options$error$(pattern, options, error)); }
     /*</constructors>*/
     /*<properties>*/
     @Property(selector = "pattern")
@@ -63,7 +76,7 @@ import org.robovm.apple.dispatch.*;
     /*<members>*//*</members>*/
     /*<methods>*/
     @Method(selector = "initWithPattern:options:error:")
-    protected native @Pointer long initWithPattern$options$error$(String pattern, NSRegularExpressionOptions options, NSError.NSErrorPtr error);
+    protected native @Pointer long init(String pattern, NSRegularExpressionOptions options, NSError.NSErrorPtr error);
     @Method(selector = "escapedPatternForString:")
     public static native String getEscapedPattern(String string);
     @Method(selector = "enumerateMatchesInString:options:range:usingBlock:")

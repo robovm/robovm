@@ -4245,6 +4245,11 @@ values:
         type: NSString
         readonly: true
         visibility: protected
+    NSThumbnail(1024x1024SizeKey):
+        class: NSURLThumbnail
+        name: '_#{g[0]}'
+        type: NSString
+        visibility: protected
 
     # NSURLCredentialStorage
     NSURLCredentialStorage(RemoveSynchronizableCredentials):

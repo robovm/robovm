@@ -56,7 +56,6 @@ import org.robovm.compiler.log.ConsoleLogger;
 import org.robovm.compiler.plugin.LaunchPlugin;
 import org.robovm.compiler.plugin.Plugin;
 import org.robovm.compiler.plugin.PluginArgument;
-import org.robovm.compiler.plugin.RequiresInputStream;
 import org.robovm.compiler.target.LaunchParameters;
 import org.robovm.compiler.target.ios.DeviceType;
 import org.robovm.compiler.target.ios.IOSSimulatorLaunchParameters;
@@ -610,9 +609,6 @@ public class AppCompiler {
     public Process launchAsync(LaunchParameters launchParameters, InputStream inputStream) throws Throwable {
         for (LaunchPlugin plugin : config.getLaunchPlugins()) {
             plugin.beforeLaunch(config, launchParameters);
-            if (inputStream != null && plugin instanceof RequiresInputStream) {
-                ((RequiresInputStream) plugin).setInputStream(inputStream);
-            }
         }
         try {
             Process process = config.getTarget().launch(launchParameters);

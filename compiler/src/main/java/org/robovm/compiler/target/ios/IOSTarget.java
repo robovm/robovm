@@ -96,11 +96,11 @@ public class IOSTarget extends AbstractTarget {
         return new IOSDeviceLaunchParameters();
     }
 
-    private static boolean isSimulatorArch(Arch arch) {
+    public static boolean isSimulatorArch(Arch arch) {
         return arch == Arch.x86 || arch == Arch.x86_64;
     }
 
-    private static boolean isDeviceArch(Arch arch) {
+    public static boolean isDeviceArch(Arch arch) {
         return arch == Arch.thumbv7;
     }
 

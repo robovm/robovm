@@ -13,12 +13,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.robovm.apple.accounts;
+package org.robovm.apple.localauthentication;
 
 /*<imports>*/
 import java.io.*;
 import java.nio.*;
 import java.util.*;
+
 import org.robovm.objc.*;
 import org.robovm.objc.annotation.*;
 import org.robovm.objc.block.*;
@@ -30,32 +31,30 @@ import org.robovm.apple.foundation.*;
 /*</imports>*/
 
 /*<javadoc>*/
-/**
- * @since Available in iOS 5.0 and later.
- */
 /*</javadoc>*/
-/*<annotations>*/@Library("Accounts") @NativeClass/*</annotations>*/
-/*<visibility>*/public/*</visibility>*/ class /*<name>*/ACAccountType/*</name>*/ 
-    extends /*<extends>*/NSObject/*</extends>*/ 
+/*<annotations>*/@Library("LocalAuthentication")/*</annotations>*/
+/*<visibility>*/public/*</visibility>*/ class /*<name>*/LAError/*</name>*/ 
+    extends /*<extends>*/NSError/*</extends>*/ 
     /*<implements>*//*</implements>*/ {
 
-    /*<ptr>*/public static class ACAccountTypePtr extends Ptr<ACAccountType, ACAccountTypePtr> {}/*</ptr>*/
-    /*<bind>*/static { ObjCRuntime.bind(ACAccountType.class); }/*</bind>*/
-    /*<constants>*//*</constants>*/
-    /*<constructors>*/
-    public ACAccountType() {}
-    protected ACAccountType(SkipInit skipInit) { super(skipInit); }
-    /*</constructors>*/
-    /*<properties>*/
-    @Property(selector = "accountTypeDescription")
-    public native String getAccountTypeDescription();
-    @Property(selector = "identifier")
-    public native ACAccountTypeIdentifier getIdentifier();
-    @Property(selector = "accessGranted")
-    public native boolean isAccessGranted();
-    /*</properties>*/
-    /*<members>*//*</members>*/
-    /*<methods>*/
+    protected LAError(SkipInit skipInit) {
+        super(skipInit);
+    }
     
+    /*<ptr>*/public static class LAErrorPtr extends Ptr<LAError, LAErrorPtr> {}/*</ptr>*/
+    /*<bind>*/static { Bro.bind(LAError.class); }/*</bind>*/
+    /*<constants>*//*</constants>*/
+    /*<properties>*//*</properties>*/
+    /*<members>*//*</members>*/
+    @Override
+    public LAErrorCode getErrorCode() {
+        return LAErrorCode.valueOf(getCode());
+    }
+    /*<methods>*/
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @GlobalValue(symbol="LAErrorDomain", optional=true)
+    public static native String getClassDomain();
     /*</methods>*/
 }

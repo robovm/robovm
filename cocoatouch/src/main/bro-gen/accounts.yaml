@@ -16,6 +16,9 @@ classes:
     Accounts:
         annotations: ['@Marshaler(NSString.AsStringMarshaler.class)']
 
+    ACError:
+        extends: NSError
+
     ACAccount:
         methods:
             '-initWithAccountType:':
@@ -27,53 +30,50 @@ classes:
     ACAccountStore:
         properties:
             'accounts':
-                type: "NSArray<ACAccount>"
+                type: NSArray<ACAccount>
         methods:
             '-accountWithIdentifier:':
                 name: getAccount
             '-accountTypeWithAccountTypeIdentifier:':
                 name: getAccountType
-                visibility: protected
                 parameters:
                     typeIdentifier:
-                        type: NSString
+                        type: ACAccountTypeIdentifier
             '-accountsWithAccountType:':
                 name: getAccounts
-                return_type: "NSArray<ACAccount>" 
+                return_type: NSArray<ACAccount>
             '-saveAccount:withCompletionHandler:':
                 name: saveAccount
                 parameters:
                     completionHandler:
-                        type: "@Block VoidBlock2<Boolean, NSError>"
+                        type: '@Block VoidBlock2<Boolean, NSError>'
             '-requestAccessToAccountsWithType:withCompletionHandler:':
                 name: requestAccessToAccounts
                 parameters:
                     handler:
-                        type: "@Block VoidBlock2<Boolean, NSError>"                   
+                        type: '@Block VoidBlock2<Boolean, NSError>'                   
             '-requestAccessToAccountsWithType:options:completion:':
                 name: requestAccessToAccounts
                 visibility: protected
                 parameters:
                    options:
-                        type: "NSDictionary<NSString, ?>"
+                        type: 'NSDictionary<NSString, ?>'
                    completion:
-                        type: "@Block VoidBlock2<Boolean, NSError>"              
+                        type: '@Block VoidBlock2<Boolean, NSError>'              
             '-renewCredentialsForAccount:completion:':
                 name: renewCredentials
                 parameters:
                     completionHandler:
-                        type: "@Block VoidBlock2<ACAccountCredentialRenewResult, NSError>" 
+                        type: '@Block VoidBlock2<ACAccountCredentialRenewResult, NSError>' 
             '-removeAccount:withCompletionHandler:':
                 name: removeAccount
                 parameters:
                     completionHandler:
-                        type: "@Block VoidBlock2<Boolean, NSError>"
+                        type: '@Block VoidBlock2<Boolean, NSError>'
     ACAccountType: # DONE
         properties:
             'identifier':
-                name: identifier0
-                type: NSString
-                visibility: protected
+                type: ACAccountTypeIdentifier
                 
     ACAccountOptions: {}
     ACFacebookOptions:
@@ -87,47 +87,48 @@ functions:
     # Make sure we don't miss any functions if new ones are introduced in a later version
     (AC.*):
         class: Accounts
-        name: "Function__#{g[0]}"
+        name: 'Function__#{g[0]}'
 
 values:
     ACAccountTypeIdentifier(.*):
         class: ACAccountTypeIdentifier
-        name: "#{g[0]}Value"
+        name: '#{g[0]}Value'
         type: NSString
         visibility: protected
         
     ACFacebook(.*Key):
         class: ACFacebookOptions
-        name: "#{g[0]}"
+        name: '#{g[0]}'
         type: NSString
         visibility: protected
     ACFacebookAudience(.*):
         class: ACFacebookAudience
-        name: "#{g[0]}Value"
+        name: '#{g[0]}Value'
         type: NSString
         visibility: protected
         
     ACTencentWeibo(.*Key):
         class: ACTencentWeiboOptions
-        name: "#{g[0]}"
+        name: '#{g[0]}'
         type: NSString
         visibility: protected
         
     ACAccountStore(DidChangeNotification):
         class: ACAccountStore
         type: NSString
-        name: "#{g[0]}"
-    AC(ErrorDomain):
-        type: NSString
-        name: "#{g[0]}"
+        name: '#{g[0]}'
+        
+    ACErrorDomain:
+        class: ACError
+        name: getClassDomain
    
     # Make sure we don't miss any values if new ones are introduced in a later version
     (AC.*):
         class: Accounts
-        name: "Value__#{g[0]}"
+        name: 'Value__#{g[0]}'
 
 constants:
     # Make sure we don't miss any constants if new ones are introduced in a later version
     (AC.*):
         class: Accounts
-        name: "Constant__#{g[0]}"
+        name: 'Constant__#{g[0]}'

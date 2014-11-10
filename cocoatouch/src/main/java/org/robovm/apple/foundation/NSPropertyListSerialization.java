@@ -34,6 +34,7 @@ import org.robovm.apple.coremedia.*;
 import org.robovm.apple.security.*;
 import org.robovm.apple.dispatch.*;
 /*</imports>*/
+import org.robovm.apple.foundation.NSError.NSErrorPtr;
 
 /*<javadoc>*/
 
@@ -56,18 +57,58 @@ import org.robovm.apple.dispatch.*;
     /*<members>*//*</members>*/
     /**
      * @since Available in iOS 4.0 and later.
+     * @throws NSErrorException
      */
     public static NSPropertyList getPropertyListFromData(NSData data, @MachineSizedUInt long opt) {
-        return getPropertyListFromData(data, opt, null, null);
+        NSError.NSErrorPtr err = new NSError.NSErrorPtr();
+        NSPropertyList result = getPropertyListFromData(data, opt, null, err);
+        if (err.get() != null) {
+            throw new NSErrorException(err.get());
+        }
+        return result;
+    }
+    /**
+     * @since Available in iOS 4.0 and later.
+     * @throws NSErrorException
+     */
+    public static NSPropertyList getPropertyListFromStream(NSInputStream stream, @MachineSizedUInt long opt) {
+        NSError.NSErrorPtr err = new NSError.NSErrorPtr();
+        NSPropertyList result = getPropertyListFromStream(stream, opt, null, err);
+        if (err.get() != null) {
+            throw new NSErrorException(err.get());
+        }
+        return result;
     }
     /**
      * @since Available in iOS 4.0 and later.
      */
-    public static NSPropertyList getPropertyListFromStream(NSInputStream stream, @MachineSizedUInt long opt) {
-        return getPropertyListFromStream(stream, opt, null, null);
-    }
     public static NSPropertyList getPropertyListFromData(NSData data, NSPropertyListMutabilityOptions opt) {
-        return getPropertyListFromData(data, opt, null, null);
+        NSPropertyList result = getPropertyListFromData(data, opt, null, null);
+        return result;
+    }
+    /**
+     * @since Available in iOS 4.0 and later.
+     * @throws NSErrorException
+     */
+    public static NSData getDataFromPropertyList(NSPropertyList plist, NSPropertyListFormat format, @MachineSizedUInt long opt) {
+        NSError.NSErrorPtr err = new NSError.NSErrorPtr();
+        NSData result = getDataFromPropertyList(plist, format, opt, err);
+        if (err.get() != null) {
+            throw new NSErrorException(err.get());
+        }
+        return result;
+    }
+    /**
+     * @since Available in iOS 4.0 and later.
+     * @throws NSErrorException
+     */
+    public static @MachineSizedSInt long writePropertyListToStream(NSPropertyList plist, NSOutputStream stream, NSPropertyListFormat format, @MachineSizedUInt long opt) {
+        NSError.NSErrorPtr err = new NSError.NSErrorPtr();
+        long result = writePropertyListToStream(plist, stream, format, opt, err);
+        if (err.get() != null) {
+            throw new NSErrorException(err.get());
+        }
+        return result;
     }
     /*<methods>*/
     @Method(selector = "propertyList:isValidForFormat:")
@@ -76,12 +117,12 @@ import org.robovm.apple.dispatch.*;
      * @since Available in iOS 4.0 and later.
      */
     @Method(selector = "dataWithPropertyList:format:options:error:")
-    public static native NSData getDataFromPropertyList(NSPropertyList plist, NSPropertyListFormat format, @MachineSizedUInt long opt, NSError.NSErrorPtr error);
+    protected static native NSData getDataFromPropertyList(NSPropertyList plist, NSPropertyListFormat format, @MachineSizedUInt long opt, NSError.NSErrorPtr error);
     /**
      * @since Available in iOS 4.0 and later.
      */
     @Method(selector = "writePropertyList:toStream:format:options:error:")
-    public static native @MachineSizedSInt long writePropertyListToStream(NSPropertyList plist, NSOutputStream stream, NSPropertyListFormat format, @MachineSizedUInt long opt, NSError.NSErrorPtr error);
+    protected static native @MachineSizedSInt long writePropertyListToStream(NSPropertyList plist, NSOutputStream stream, NSPropertyListFormat format, @MachineSizedUInt long opt, NSError.NSErrorPtr error);
     /**
      * @since Available in iOS 4.0 and later.
      */

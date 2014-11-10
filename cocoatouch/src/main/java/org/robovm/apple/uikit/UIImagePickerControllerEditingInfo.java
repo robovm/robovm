@@ -81,17 +81,18 @@ import org.robovm.apple.corelocation.*;
         return data;
     }
     
-//    public UTType getMediaType() { TODO
-//        if (data.containsKey(MediaTypeKey())) {
-//            NSString val = (NSString)data.get(MediaTypeKey());
-//            return UTType.valueOf(val);
-//        }
-//        return null;
-//    }
-//    public UIImagePickerControllerEditingInfo setMediaType(UTType mediaType) { TODO
-//        data.put(MediaTypeKey(), mediaType.value());
-//        return this;
-//    }
+    
+    public String getMediaType() {
+        if (data.containsKey(MediaTypeKey())) {
+            NSString val = (NSString)data.get(MediaTypeKey());
+            return val.toString();
+        }
+        return null;
+    }
+    public UIImagePickerControllerEditingInfo setMediaType(String mediaType) {
+        data.put(MediaTypeKey(), new NSString(mediaType));
+        return this;
+    }
     public UIImage getOriginalImage() {
         if (data.containsKey(OriginalImageKey())) {
             UIImage val = (UIImage)data.get(OriginalImageKey());

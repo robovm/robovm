@@ -1513,14 +1513,14 @@ classes:
             'delegate':
                 type: UIImagePickerControllerDelegate
             'mediaTypes':
-                type: "NSArray<NSString>" # TODO
+                type: '@org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String>'
         methods:
             '+availableCaptureModesForCameraDevice:':
                 name: getAvailableCaptureModes
-                return_type: "NSArray<NSNumber>"
+                return_type: '@org.robovm.rt.bro.annotation.Marshaler(UIImagePickerControllerCameraCaptureMode.AsListMarshaler.class) List<UIImagePickerControllerCameraCaptureMode>'
             '+availableMediaTypesForSourceType:':
                 name: getAvailableMediaTypes
-                return_type: "NSArray<NSString>"
+                return_type: '@org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String>'
             '+isSourceTypeAvailable:':
                 trim_after_first_colon: true
             '+isCameraDeviceAvailable:':

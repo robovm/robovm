@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.robovm.apple.accounts;
+package org.robovm.apple.localauthentication;
 
 /*<imports>*/
 import java.io.*;
@@ -30,32 +30,20 @@ import org.robovm.apple.foundation.*;
 /*</imports>*/
 
 /*<javadoc>*/
-
+/**
+ * @since Available in iOS 8.0 and later.
+ */
 /*</javadoc>*/
-/*<annotations>*//*</annotations>*/
-public enum /*<name>*/ACErrorCode/*</name>*/ implements NSErrorCode {
+/*<annotations>*/@Marshaler(ValuedEnum.AsMachineSizedSIntMarshaler.class)/*</annotations>*/
+public enum /*<name>*/LAErrorCode/*</name>*/ implements NSErrorCode {
     /*<values>*/
-    Unknown(1L),
-    AccountMissingRequiredProperty(2L),
-    AccountAuthenticationFailed(3L),
-    AccountTypeInvalid(4L),
-    AccountAlreadyExists(5L),
-    AccountNotFound(6L),
-    PermissionDenied(7L),
-    AccessInfoInvalid(8L),
-    ClientPermissionDenied(9L),
-    AccessDeniedByProtectionPolicy(10L),
-    CredentialNotFound(11L),
-    FetchCredentialFailed(12L),
-    StoreCredentialFailed(13L),
-    RemoveCredentialFailed(14L),
-    UpdatingNonexistentAccount(15L),
-    InvalidClientBundleID(16L),
-    DeniedByPlugin(17L),
-    CoreDataSaveFailed(18L),
-    FailedSerializingAccountInfo(19L),
-    InvalidCommand(20L),
-    MissingMessageID(21L);
+    AuthenticationFailed(-1L),
+    UserCancel(-2L),
+    UserFallback(-3L),
+    SystemCancel(-4L),
+    PasscodeNotSet(-5L),
+    TouchIDNotAvailable(-6L),
+    TouchIDNotEnrolled(-7L);
     /*</values>*/
 
     /*<bind>*/
@@ -65,15 +53,15 @@ public enum /*<name>*/ACErrorCode/*</name>*/ implements NSErrorCode {
 
     private final long n;
 
-    private /*<name>*/ACErrorCode/*</name>*/(long n) { this.n = n; }
+    private /*<name>*/LAErrorCode/*</name>*/(long n) { this.n = n; }
     public long value() { return n; }
-    public static /*<name>*/ACErrorCode/*</name>*/ valueOf(long n) {
-        for (/*<name>*/ACErrorCode/*</name>*/ v : values()) {
+    public static /*<name>*/LAErrorCode/*</name>*/ valueOf(long n) {
+        for (/*<name>*/LAErrorCode/*</name>*/ v : values()) {
             if (v.n == n) {
                 return v;
             }
         }
         throw new IllegalArgumentException("No constant with value " + n + " found in " 
-            + /*<name>*/ACErrorCode/*</name>*/.class.getName());
+            + /*<name>*/LAErrorCode/*</name>*/.class.getName());
     }
 }

@@ -379,12 +379,14 @@ classes:
                 name: getClassNamed
             '-loadAndReturnError:':
                 name: load
+                visibility: protected # throws NSErrorException
             '-localizedStringForKey:value:table:':
                 name: getLocalizedString
             '-objectForInfoDictionaryKey:':
                 name: getInfoDictionaryObject
             '-preflightAndReturnError:':
                 name: preflight
+                visibility: protected # throws NSErrorException
             '-URLForAuxiliaryExecutable:':
                 name: findAuxiliaryExecutableURL
             '-URLForResource.*':
@@ -620,12 +622,16 @@ classes:
                 visibility: protected
             '-writeToURL.*':
                 name: write
+                visibility: protected
             '-base64EncodedDataWithOptions:':
                 name: toBase64EncodedData
             '-base64EncodedStringWithOptions:':
                 name: toBase64EncodedString
-            '+dataWithContentsOfURL.*':
+            '+dataWithContentsOfURL:':
                 name: read
+            '+dataWithContentsOfURL:options:error:':
+                name: read
+                visibility: protected
             '+dataWithContentsOf.*File.*':
                 visibility: protected
             '+.*': {exclude: true}
@@ -638,6 +644,7 @@ classes:
         methods:
             '+dataDetectorWithTypes:error:': {exclude: true}
             '-initWithTypes:error:':
+                constructor: false
                 parameters:
                     checkingTypes:
                         type: NSTextCheckingType
@@ -922,14 +929,19 @@ classes:
                         type: NSArray<NSFileAccessIntent>
             '-coordinateReadingItemAtURL:options:error:byAccessor:':
                 name: coordinateReadingItem
+                visibility: protected # throws NSErrorException
             '-coordinateWritingItemAtURL:options:error:byAccessor:':
                 name: coordinateWritingItem
+                visibility: protected # throws NSErrorException
             '-coordinateReadingItemAtURL:options:writingItemAtURL:options:error:byAccessor:':
                 name: coordinateReadingItem
+                visibility: protected # throws NSErrorException
             '-coordinateWritingItemAtURL:options:writingItemAtURL:options:error:byAccessor:':
                 name: coordinateWritingItem
+                visibility: protected # throws NSErrorException
             '-prepareForReadingItemsAtURLs:options:writingItemsAtURLs:options:error:byAccessor:':
                 name: prepareForReadingItems
+                visibility: protected # throws NSErrorException
                 parameters:
                     readingURLs:
                         type: NSArray<NSURL>
@@ -970,12 +982,15 @@ classes:
                 return_type: NSFileHandle
             '+fileHandleForReadingFromURL:error:':
                 name: createForReading
+                visibility: protected # throws NSErrorException
                 return_type: NSFileHandle
             '+fileHandleForWritingToURL:error:':
                 name: createForWriting
+                visibility: protected # throws NSErrorException
                 return_type: NSFileHandle
             '+fileHandleForUpdatingURL:error:':
                 name: createForUpdating
+                visibility: protected # throws NSErrorException
                 return_type: NSFileHandle
             '-readInBackgroundAndNotifyForModes:':
                 name: readInBackgroundAndNotify
@@ -1013,8 +1028,8 @@ classes:
                         type: '@org.robovm.rt.bro.annotation.Marshaler(NSURLFileSystemProperty.AsListMarshaler.class) List<NSURLFileSystemProperty>'
             '-contentsOfDirectoryAtURL:includingPropertiesForKeys:options:error:':
                 name: getContentsOfDirectoryAtURL
-                return_type: "NSArray<NSURL>"
-                visibility: protected
+                return_type: NSArray<NSURL>
+                visibility: protected # throws NSErrorException
                 parameters:
                     keys:
                         type: '@org.robovm.rt.bro.annotation.Marshaler(NSURLFileSystemProperty.AsListMarshaler.class) List<NSURLFileSystemProperty>'
@@ -1023,55 +1038,74 @@ classes:
                 return_type: NSArray<NSURL>
             '-URLForDirectory:inDomain:appropriateForURL:create:error:':
                 name: getURLForDirectory
+                visibility: protected # throws NSErrorException
             '-createDirectoryAtURL:withIntermediateDirectories:attributes:error:':
                 trim_after_first_colon: true
+                visibility: protected # throws NSErrorException
                 parameters:
                     attributes:
                         type: NSFileAttributes
             '-createSymbolicLinkAtURL:withDestinationURL:error:':
                 trim_after_first_colon: true
+                visibility: protected # throws NSErrorException
             '-setAttributes:ofItemAtPath:error:':
                 name: setAttributesForItem
+                visibility: protected # throws NSErrorException
                 parameters:
                     attributes:
                         type: NSFileAttributes
             '-createDirectoryAtPath:withIntermediateDirectories:attributes:error:':
                 trim_after_first_colon: true
+                visibility: protected # throws NSErrorException
                 parameters:
                     attributes:
                         type: NSFileAttributes
             '-contentsOfDirectoryAtPath:error:':
                 name: getContentsOfDirectoryAtPath
                 return_type: NSArray<NSURL>
+                visibility: protected # throws NSErrorException
             '-subpathsOfDirectoryAtPath:error:':
                 name: getSubpathsOfDirectoryAtPath
                 return_type: '@org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String>'
+                visibility: protected # throws NSErrorException
             '-attributesOfItemAtPath:error:':
                 name: getAttributesOfItemAtPath
                 return_type: NSFileAttributes
+                visibility: protected # throws NSErrorException
             '-attributesOfFileSystemForPath:error:':
                 name: getAttributesOfFileSystemAtPath
                 return_type: NSFileSystemAttributes
+                visibility: protected # throws NSErrorException
             '-createSymbolicLinkAtPath:withDestinationPath:error:':
                 trim_after_first_colon: true
+                visibility: protected # throws NSErrorException
             '-destinationOfSymbolicLinkAtPath:error:':
                 name: getDestinationOfSymbolicLinkAtPath
+                visibility: protected # throws NSErrorException
             '-copyItemAtPath:toPath:error:':
                 trim_after_first_colon: true
+                visibility: protected # throws NSErrorException
             '-moveItemAtPath:toPath:error:':
                 trim_after_first_colon: true
+                visibility: protected # throws NSErrorException
             '-linkItemAtPath:toPath:error:':
                 trim_after_first_colon: true
+                visibility: protected # throws NSErrorException
             '-removeItemAtPath:error:':
                 trim_after_first_colon: true
+                visibility: protected # throws NSErrorException
             '-copyItemAtURL:toURL:error:':
                 trim_after_first_colon: true
+                visibility: protected # throws NSErrorException
             '-moveItemAtURL:toURL:error:':
                 trim_after_first_colon: true
+                visibility: protected # throws NSErrorException
             '-linkItemAtURL:toURL:error:':
                 trim_after_first_colon: true
+                visibility: protected # throws NSErrorException
             '-removeItemAtURL:error:':
                 trim_after_first_colon: true
+                visibility: protected # throws NSErrorException
             '-fileAttributesAtPath:traverseLink:':
                 exclude: true
             '-changeFileAttributes:atPath:':
@@ -1133,34 +1167,41 @@ classes:
                 name: getPathForFileSystemRepresentation
             '-replaceItemAtURL:withItemAtURL:backupItemName:options:resultingItemURL:error:':
                 name: replaceItemAtURL
+                visibility: protected # throws NSErrorException
             '-setUbiquitous:itemAtURL:destinationURL:error:':
                 name: setUbiquitousItemAtURL
+                visibility: protected # throws NSErrorException
             '-isUbiquitousItemAtURL:':
                 trim_after_first_colon: true
             '-startDownloadingUbiquitousItemAtURL:error:':
                 trim_after_first_colon: true
+                visibility: protected # throws NSErrorException
             '-evictUbiquitousItemAtURL:error:':
                 trim_after_first_colon: true
+                visibility: protected # throws NSErrorException
             '-URLForUbiquityContainerIdentifier:':
                 name: getURLForUbiquityContainerIdentifier
             '-URLForPublishingUbiquitousItemAtURL:expirationDate:error:':
                 name: getURLForPublishingUbiquitousItemAtURL
+                visibility: protected # throws NSErrorException
             '-containerURLForSecurityApplicationGroupIdentifier:':
                 name: getContainerURLForSecurityApplication
             '+defaultManager':
                 property: true
             '-getRelationship:ofDirectoryAtURL:toItemAtURL:error:':
                 name: getRelationshipOfDirectoryToItem
-                visibility: protected
+                visibility: protected # throws NSErrorException
             '-getRelationship:ofDirectory:inDomain:toItemAtURL:error:':
                 name: getRelationshipOfDirectoryToItem
-                visibility: protected
+                visibility: protected # throws NSErrorException
     NSFileVersion: # DONE
         methods:
             '-replaceItemAtURL:options:error:':
                 trim_after_first_colon: true
+                visibility: protected # throws NSErrorException
             '-removeAndReturnError:':
                 name: remove
+                visibility: protected # throws NSErrorException
             '+currentVersionOfItemAtURL:':
                 name: getCurrentItemVersionAtURL
             '+otherVersionsOfItemAtURL:':
@@ -1178,6 +1219,7 @@ classes:
                         type: '@Block VoidBlock2<NSArray<NSFileVersion>, NSError>'
             '+removeOtherVersionsOfItemAtURL:error:':
                 name: removeOtherItemVersionsAtURL
+                visibility: protected # throws NSErrorException
     NSFileWrapper: # DONE
         properties:
             'fileAttributes':
@@ -1185,7 +1227,11 @@ classes:
             'fileWrappers':
                 type: '@org.robovm.rt.bro.annotation.Marshaler(NSDictionary.AsStringMapMarshaler.class) Map<String, NSFileWrapper>'
         methods:
+            '-initWithURL:options:error:':
+                name: init
+                constructor: false # throws NSErrorException
             '-initDirectoryWithFileWrappers:':
+                name: init
                 parameters:
                     childrenByPreferredName:
                         type: '@org.robovm.rt.bro.annotation.Marshaler(NSDictionary.AsStringMapMarshaler.class) Map<String, NSFileWrapper>'
@@ -1197,8 +1243,10 @@ classes:
                 trim_after_first_colon: true
             '-readFromURL:options:error:':
                 trim_after_first_colon: true
+                visibility: protected # throws NSErrorException
             '-writeToURL:options:originalContentsURL:error:':
                 trim_after_first_colon: true
+                visibility: protected # throws NSErrorException
             '-addFileWrapper:':
                 trim_after_first_colon: true
             '-addRegularFileWithContents:preferredFilename:':
@@ -1510,12 +1558,16 @@ classes:
                 trim_after_first_colon: true
             '+dataWithJSONObject:options:error:':
                 name: createJSONData
+                visibility: protected # throws NSErrorException
             '+JSONObjectWithData:options:error:':
                 name: createJSONObject
+                visibility: protected # throws NSErrorException
             '+writeJSONObject:toStream:options:error:':
                 name: writeJSONObject
+                visibility: protected # throws NSErrorException
             '+JSONObjectWithStream:options:error:':
                 name: readJSONObject
+                visibility: protected # throws NSErrorException
     NSKeyedArchiver: # DONE
         methods:
             '-encode.*': {exclude: true}
@@ -2475,22 +2527,24 @@ classes:
                         type: NSPropertyList
             '+dataWithPropertyList:format:options:error:':
                 name: getDataFromPropertyList
+                visibility: protected # throws NSErrorException
                 parameters:
                     plist:
                         type: NSPropertyList
             '+writePropertyList:toStream:format:options:error:':
                 name: writePropertyListToStream
+                visibility: protected # throws NSErrorException
                 parameters:
                     plist:
                         type: NSPropertyList
             '+propertyListWithData:options:format:error:':
                 name: getPropertyListFromData
                 return_type: NSPropertyList
-                visibility: protected
+                visibility: protected # throws NSErrorException
             '+propertyListWithStream:options:format:error:':
                 name: getPropertyListFromStream
                 return_type: NSPropertyList
-                visibility: protected
+                visibility: protected # throws NSErrorException
             '+dataFromPropertyList:format:errorDescription:':
                 name: getDataFromPropertyList
             '+propertyListFromData:mutabilityOption:format:errorDescription:':
@@ -2505,6 +2559,9 @@ classes:
     NSRegularExpression: # DONE
         skip_def_constructor: true
         methods:
+            '-initWithPattern:options:error:':
+                name: init
+                constructor: false
             '+regularExpressionWithPattern:options:error:': {exclude: true}
             '+escapedPatternForString:':
                 name: getEscapedPattern
@@ -2610,7 +2667,26 @@ classes:
                 return_type: T
             '+.*': {exclude: true}
             '-.*': {exclude: true}
-    NSSortDescriptor: {}
+    NSSortDescriptor: # DONE
+        properties:
+            'comparator':
+                type: '@Block Block2<NSObject, NSObject, NSComparisonResult>'
+            'reversedSortDescriptor':
+                type: NSSortDescriptor
+        methods:
+            '-initWithKey:ascending:':
+                name: init
+            '-initWithKey:ascending:selector:':
+                name: init
+            '-initWithKey:ascending:comparator:':
+                name: init
+                parameters:
+                    cmptr:
+                        type: '@Block Block2<NSObject, NSObject, NSComparisonResult>'
+            '-compareObject:toObject:':
+                name: compare
+            '+.*':
+                exclude: true
     NSStream: # DONE
         methods:
             '-propertyForKey:':
@@ -2860,6 +2936,7 @@ classes:
         methods:
             '+bookmarkDataWithContentsOfURL:error:':
                 name: createBookmarkData
+                visibility: protected # throws NSErrorException
             '+resourceValuesForKeys:fromBookmarkData:':
                 name: getResourceValuesFromBookmarkData
                 return_type: NSURLProperties
@@ -2868,6 +2945,7 @@ classes:
                         type: '@org.robovm.rt.bro.annotation.Marshaler(NSURLProperty.AsListMarshaler.class) List<NSURLProperty>'
             '+writeBookmarkData:toURL:options:error:':
                 trim_after_first_colon: true
+                visibility: protected # throws NSErrorException
                 parameters:
                     options:
                         type: NSURLBookmarkCreationOptions
@@ -2884,18 +2962,20 @@ classes:
                         type: NSString
             '-resourceValuesForKeys:error:':
                 name: getResourceValues
+                visibility: protected # throws NSErrorException
                 return_type: NSURLProperties
                 parameters:
                     keys:
                         type: '@org.robovm.rt.bro.annotation.Marshaler(NSURLProperty.AsListMarshaler.class) List<NSURLProperty>'
             '-setResourceValue:forKey:error:':
                 trim_after_first_colon: true
-                visibility: protected
+                visibility: protected # throws NSErrorException
                 parameters:
                     key:
                         type: NSString
             '-setResourceValues:error:':
                 trim_after_first_colon: true
+                visibility: protected # throws NSErrorException
                 parameters:
                     keyedValues:
                         type: NSURLProperties
@@ -2915,8 +2995,13 @@ classes:
                 trim_after_first_colon: true
             '-checkResourceIsReachableAndReturnError:':
                 name: checkResourceIsReachable
+                visibility: protected # throws NSErrorException
+            '-initByResolvingBookmarkData:options:relativeToURL:bookmarkDataIsStale:error:':
+                name: init
+                constructor: false # throws NSErrorException
             '-bookmarkDataWithOptions:includingResourceValuesForKeys:relativeToURL:error:':
                 name: toBookmarkData
+                visibility: protected # throws NSErrorException
                 parameters:
                     keys:
                         type: '@org.robovm.rt.bro.annotation.Marshaler(NSURLProperty.AsListMarshaler.class) List<NSURLProperty>'
@@ -2927,7 +3012,7 @@ classes:
                 name: 'new#{g[0]}'
             '-getPromisedItemResourceValue:forKey:error:':
                 trim_after_first_colon: true
-                visibility: protected
+                visibility: protected # throws NSErrorException
                 parameters:
                     key:
                         type: NSString
@@ -2936,11 +3021,15 @@ classes:
             '-promisedItemResourceValuesForKeys:error:':
                 name: getPromisedItemResourceValues
                 return_type: NSURLProperties
+                visibility: protected # throws NSErrorException
                 parameters:
                     keys:
                         type: '@org.robovm.rt.bro.annotation.Marshaler(NSURLProperty.AsListMarshaler.class) List<NSURLProperty>'
             '-checkPromisedItemIsReachableAndReturnError:':
                 name: isPromisedItemReachable
+                visibility: protected # throws NSErrorException
+            '-initFileURLWithFileSystemRepresentation:isDirectory:relativeToURL:':
+                exclude: true
     NSURLAuthenticationChallenge: # DONE
         methods:
             '-initWithProtectionSpace:proposedCredential:previousFailureCount:failureResponse:error:sender:':
@@ -2976,6 +3065,7 @@ classes:
                 trim_after_first_colon: true
             '+sendSynchronousRequest:returningResponse:error:':
                 trim_after_first_colon: true
+                visibility: protected # throws NSErrorException
             '+canHandleRequest:':
                 trim_after_first_colon: true
             '-scheduleInRunLoop:forMode:':
@@ -4244,6 +4334,11 @@ values:
         name: '#{g[0]}Value'
         type: NSString
         readonly: true
+        visibility: protected
+    NSThumbnail(1024x1024SizeKey):
+        class: NSURLThumbnail
+        name: '_#{g[0]}'
+        type: NSString
         visibility: protected
 
     # NSURLCredentialStorage

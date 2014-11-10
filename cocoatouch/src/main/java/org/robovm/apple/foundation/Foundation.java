@@ -179,10 +179,5 @@ import org.robovm.apple.dispatch.*;
     /*<methods>*/
     @GlobalValue(symbol="NSFoundationVersionNumber", optional=true)
     public static native double getFoundationVersionNumber();
-    /**
-     * @since Available in iOS 8.0 and later.
-     */
-    @GlobalValue(symbol="NSThumbnail1024x1024SizeKey", optional=true)
-    public static native String Thumbnail1024x1024SizeKey();
     /*</methods>*/
 }

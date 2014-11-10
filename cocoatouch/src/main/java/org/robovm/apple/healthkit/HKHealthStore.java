@@ -50,6 +50,45 @@ import org.robovm.apple.foundation.*;
     
     /*</properties>*/
     /*<members>*//*</members>*/
+    /**
+     * 
+     * @return
+     * @throws NSErrorException
+     */
+    public NSDate getDateOfBirth() {
+        NSError.NSErrorPtr err = new NSError.NSErrorPtr();
+        NSDate result = getDateOfBirth(err);
+        if (err.get() != null) {
+            throw new NSErrorException(err.get());
+        }
+        return result;
+    }
+    /**
+     * 
+     * @return
+     * @throws NSErrorException
+     */
+    public HKBiologicalSexObject getBiologicalSex() {
+        NSError.NSErrorPtr err = new NSError.NSErrorPtr();
+        HKBiologicalSexObject result = getBiologicalSex(err);
+        if (err.get() != null) {
+            throw new NSErrorException(err.get());
+        }
+        return result;
+    }
+    /**
+     * 
+     * @return
+     * @throws NSErrorException
+     */
+    public HKBloodTypeObject getBloodType() {
+        NSError.NSErrorPtr err = new NSError.NSErrorPtr();
+        HKBloodTypeObject result = getBloodType(err);
+        if (err.get() != null) {
+            throw new NSErrorException(err.get());
+        }
+        return result;
+    }
     /*<methods>*/
     @Method(selector = "authorizationStatusForType:")
     public native HKAuthorizationStatus getAuthorizationStatusForType(HKObjectType type);
@@ -66,11 +105,11 @@ import org.robovm.apple.foundation.*;
     @Method(selector = "stopQuery:")
     public native void stopQuery(HKQuery query);
     @Method(selector = "dateOfBirthWithError:")
-    public native NSDate getDateOfBirth(NSError.NSErrorPtr error);
+    protected native NSDate getDateOfBirth(NSError.NSErrorPtr error);
     @Method(selector = "biologicalSexWithError:")
-    public native HKBiologicalSexObject getBiologicalSex(NSError.NSErrorPtr error);
+    protected native HKBiologicalSexObject getBiologicalSex(NSError.NSErrorPtr error);
     @Method(selector = "bloodTypeWithError:")
-    public native HKBloodTypeObject getBloodType(NSError.NSErrorPtr error);
+    protected native HKBloodTypeObject getBloodType(NSError.NSErrorPtr error);
     @Method(selector = "isHealthDataAvailable")
     public static native boolean isHealthDataAvailable();
     @Method(selector = "addSamples:toWorkout:completion:")

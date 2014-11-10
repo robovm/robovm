@@ -161,6 +161,50 @@ import org.robovm.apple.dispatch.*;
         }
         waitForDataInBackgroundAndNotify(list);
     }
+    
+    /**
+     * 
+     * @param url
+     * @throws NSErrorException
+     * @since Available in iOS 4.0 and later.
+     */
+    public static NSFileHandle createForReading(NSURL url) {
+        NSError.NSErrorPtr err = new NSError.NSErrorPtr();
+        NSFileHandle result = createForReading(url, err);
+        if (err.get() != null) {
+            throw new NSErrorException(err.get());
+        }
+        return result;
+    }
+    /**
+     * 
+     * @param url
+     * @throws NSErrorException
+     * @since Available in iOS 4.0 and later.
+     */
+    public static NSFileHandle createForWriting(NSURL url) {
+        NSError.NSErrorPtr err = new NSError.NSErrorPtr();
+        NSFileHandle result = createForWriting(url, err);
+        if (err.get() != null) {
+            throw new NSErrorException(err.get());
+        }
+        return result;
+    }
+    /**
+     * 
+     * @param url
+     * @throws NSErrorException
+     * @since Available in iOS 4.0 and later.
+     */
+    public static NSFileHandle createForUpdating(NSURL url) {
+        NSError.NSErrorPtr err = new NSError.NSErrorPtr();
+        NSFileHandle result = createForUpdating(url, err);
+        if (err.get() != null) {
+            throw new NSErrorException(err.get());
+        }
+        return result;
+    }
+    
     /*<methods>*/
     @GlobalValue(symbol="NSFileHandleReadCompletionNotification", optional=true)
     public static native NSString ReadCompletionNotification();
@@ -213,17 +257,17 @@ import org.robovm.apple.dispatch.*;
      * @since Available in iOS 4.0 and later.
      */
     @Method(selector = "fileHandleForReadingFromURL:error:")
-    public static native NSFileHandle createForReading(NSURL url, NSError.NSErrorPtr error);
+    protected static native NSFileHandle createForReading(NSURL url, NSError.NSErrorPtr error);
     /**
      * @since Available in iOS 4.0 and later.
      */
     @Method(selector = "fileHandleForWritingToURL:error:")
-    public static native NSFileHandle createForWriting(NSURL url, NSError.NSErrorPtr error);
+    protected static native NSFileHandle createForWriting(NSURL url, NSError.NSErrorPtr error);
     /**
      * @since Available in iOS 4.0 and later.
      */
     @Method(selector = "fileHandleForUpdatingURL:error:")
-    public static native NSFileHandle createForUpdating(NSURL url, NSError.NSErrorPtr error);
+    protected static native NSFileHandle createForUpdating(NSURL url, NSError.NSErrorPtr error);
     @Method(selector = "readInBackgroundAndNotifyForModes:")
     public native void readInBackgroundAndNotify(@org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String> modes);
     @Method(selector = "readInBackgroundAndNotify")

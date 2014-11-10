@@ -260,25 +260,46 @@ import org.robovm.apple.dispatch.*;
         return NSStringExtensions.getBoundingRect(this, size, options, attributes, context);
     }
 
-    
+    /**
+     * 
+     * @param url
+     * @param enc
+     * @return
+     * @throws NSErrorException
+     */
     public static String readURL(NSURL url, NSStringEncoding enc) {
-        NSError.NSErrorPtr error = new NSError.NSErrorPtr();
-        String str = readURL(url, enc, error); 
-        // TODO exception
-        return str;
+        NSError.NSErrorPtr err = new NSError.NSErrorPtr();
+        String result = readURL(url, enc, err); 
+        if (err.get() != null) {
+            throw new NSErrorException(err.get());
+        }
+        return result;
     }
     
+    /**
+     * 
+     * @param path
+     * @param enc
+     * @return
+     * @throws NSErrorException
+     */
     public static String readFile(File path, NSStringEncoding enc) {
         return readFile(path.getAbsolutePath(), enc);
     }
+    /**
+     * 
+     * @param path
+     * @param enc
+     * @return
+     * @throws NSErrorException
+     */
     public static String readFile(String path, NSStringEncoding enc) {
-        NSError.NSErrorPtr error = new NSError.NSErrorPtr();
-        String str = readFile(path, enc, error); 
-        NSError e = error.get();
-        NSCocoaError x = (NSCocoaError) e;
-        System.out.println(x.getCode());
-        System.out.println(x.getErrorCode());
-        return str;
+        NSError.NSErrorPtr err = new NSError.NSErrorPtr();
+        String result = readFile(path, enc, err);
+        if (err.get() != null) {
+            throw new NSErrorException(err.get());
+        }
+        return result;
     }
     /*<methods>*/
     @Method(selector = "characterAtIndex:")

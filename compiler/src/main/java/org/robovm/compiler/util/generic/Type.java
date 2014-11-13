@@ -20,5 +20,8 @@ package org.robovm.compiler.util.generic;
  * Replaces {@link java.lang.reflect.Type}.
  */
 public interface Type {
-
+    /**
+     * Returns the generic signature of this type.
+     */
+    String toGenericSignature();
 }

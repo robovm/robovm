@@ -32,32 +32,37 @@ import org.robovm.apple.coreanimation.*;
 import org.robovm.apple.coregraphics.*;
 import org.robovm.apple.coremedia.*;
 import org.robovm.apple.security.*;
+import org.robovm.apple.dispatch.*;
 /*</imports>*/
 
 /*<javadoc>*/
 
 /*</javadoc>*/
-/*<annotations>*/@Marshaler(Bits.AsMachineSizedIntMarshaler.class)/*</annotations>*/
-public final class /*<name>*/NSKeyValueSetMutationKind/*</name>*/ extends Bits</*<name>*/NSKeyValueSetMutationKind/*</name>*/> {
+/*<annotations>*/@Marshaler(ValuedEnum.AsMachineSizedUIntMarshaler.class)/*</annotations>*/
+public enum /*<name>*/NSKeyValueSetMutationKind/*</name>*/ implements ValuedEnum {
     /*<values>*/
-    public static final NSKeyValueSetMutationKind None = new NSKeyValueSetMutationKind(0L);
-    public static final NSKeyValueSetMutationKind Union = new NSKeyValueSetMutationKind(1L);
-    public static final NSKeyValueSetMutationKind Minus = new NSKeyValueSetMutationKind(2L);
-    public static final NSKeyValueSetMutationKind Intersect = new NSKeyValueSetMutationKind(3L);
-    public static final NSKeyValueSetMutationKind Set = new NSKeyValueSetMutationKind(4L);
+    Union(1L),
+    Minus(2L),
+    Intersect(3L),
+    Set(4L);
     /*</values>*/
 
-    private static final /*<name>*/NSKeyValueSetMutationKind/*</name>*/[] values = _values(/*<name>*/NSKeyValueSetMutationKind/*</name>*/.class);
+    /*<bind>*/
+    /*</bind>*/
+    /*<constants>*//*</constants>*/
+    /*<methods>*//*</methods>*/
 
-    public /*<name>*/NSKeyValueSetMutationKind/*</name>*/(long value) { super(value); }
-    private /*<name>*/NSKeyValueSetMutationKind/*</name>*/(long value, long mask) { super(value, mask); }
-    protected /*<name>*/NSKeyValueSetMutationKind/*</name>*/ wrap(long value, long mask) {
-        return new /*<name>*/NSKeyValueSetMutationKind/*</name>*/(value, mask);
-    }
-    protected /*<name>*/NSKeyValueSetMutationKind/*</name>*/[] _values() {
-        return values;
-    }
-    public static /*<name>*/NSKeyValueSetMutationKind/*</name>*/[] values() {
-        return values.clone();
+    private final long n;
+
+    private /*<name>*/NSKeyValueSetMutationKind/*</name>*/(long n) { this.n = n; }
+    public long value() { return n; }
+    public static /*<name>*/NSKeyValueSetMutationKind/*</name>*/ valueOf(long n) {
+        for (/*<name>*/NSKeyValueSetMutationKind/*</name>*/ v : values()) {
+            if (v.n == n) {
+                return v;
+            }
+        }
+        throw new IllegalArgumentException("No constant with value " + n + " found in " 
+            + /*<name>*/NSKeyValueSetMutationKind/*</name>*/.class.getName());
     }
 }

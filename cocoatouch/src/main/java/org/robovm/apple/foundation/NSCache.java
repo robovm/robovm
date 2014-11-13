@@ -32,6 +32,7 @@ import org.robovm.apple.coreanimation.*;
 import org.robovm.apple.coregraphics.*;
 import org.robovm.apple.coremedia.*;
 import org.robovm.apple.security.*;
+import org.robovm.apple.dispatch.*;
 /*</imports>*/
 
 /*<javadoc>*/
@@ -52,7 +53,26 @@ import org.robovm.apple.security.*;
     protected NSCache(SkipInit skipInit) { super(skipInit); }
     /*</constructors>*/
     /*<properties>*/
-    
+    @Property(selector = "name")
+    public native String getName();
+    @Property(selector = "setName:")
+    public native void setName(String v);
+    @Property(selector = "delegate")
+    public native NSCacheDelegate getDelegate();
+    @Property(selector = "setDelegate:", strongRef = true)
+    public native void setDelegate(NSCacheDelegate v);
+    @Property(selector = "totalCostLimit")
+    public native @MachineSizedUInt long getTotalCostLimit();
+    @Property(selector = "setTotalCostLimit:")
+    public native void setTotalCostLimit(@MachineSizedUInt long v);
+    @Property(selector = "countLimit")
+    public native @MachineSizedUInt long getCountLimit();
+    @Property(selector = "setCountLimit:")
+    public native void setCountLimit(@MachineSizedUInt long v);
+    @Property(selector = "evictsObjectsWithDiscardedContent")
+    public native boolean isEvictsObjectsWithDiscardedContent();
+    @Property(selector = "setEvictsObjectsWithDiscardedContent:")
+    public native void setEvictsObjectsWithDiscardedContent(boolean v);
     /*</properties>*/
     /*<members>*//*</members>*/
     public NSObject get(String key) {
@@ -71,15 +91,11 @@ import org.robovm.apple.security.*;
     public void put(String key, NSObject obj, @MachineSizedUInt long g) {
         setObject(obj, new NSString(key), g);
     }
+    
+    public void remove(String key) {
+        remove(new NSString(key));
+    }
     /*<methods>*/
-    @Method(selector = "setName:")
-    public native void setName(String n);
-    @Method(selector = "name")
-    public native String getName();
-    @Method(selector = "setDelegate:")
-    public native void setDelegate(NSCacheDelegate d);
-    @Method(selector = "delegate")
-    public native NSCacheDelegate getDelegate();
     @Method(selector = "objectForKey:")
     public native NSObject get(NSObject key);
     @Method(selector = "setObject:forKey:")
@@ -90,17 +106,5 @@ import org.robovm.apple.security.*;
     public native void remove(NSObject key);
     @Method(selector = "removeAllObjects")
     public native void clear();
-    @Method(selector = "setTotalCostLimit:")
-    public native void setTotalCostLimit(@MachineSizedUInt long lim);
-    @Method(selector = "totalCostLimit")
-    public native @MachineSizedUInt long getTotalCostLimit();
-    @Method(selector = "setCountLimit:")
-    public native void setCountLimit(@MachineSizedUInt long lim);
-    @Method(selector = "countLimit")
-    public native @MachineSizedUInt long getCountLimit();
-    @Method(selector = "evictsObjectsWithDiscardedContent")
-    public native boolean isEvictsObjectsWithDiscardedContent();
-    @Method(selector = "setEvictsObjectsWithDiscardedContent:")
-    public native void setEvictsObjectsWithDiscardedContent(boolean b);
     /*</methods>*/
 }

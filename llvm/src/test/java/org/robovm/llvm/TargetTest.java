@@ -97,10 +97,11 @@ public class TargetTest {
     @Test
     public void testCreateTargetMachine() throws Exception {
         Target t = Target.getTarget("thumb");
-        TargetMachine tm = t.createTargetMachine("thumbv7-unknown-ios");
-        assertNotNull(tm);
-        assertEquals("thumbv7-unknown-ios", tm.getTriple());
-        assertEquals(t, tm.getTarget());
+        try (TargetMachine tm = t.createTargetMachine("thumbv7-unknown-ios")) {
+            assertNotNull(tm);
+            assertEquals("thumbv7-unknown-ios", tm.getTriple());
+            assertEquals(t, tm.getTarget());
+        }
     }
     
 }

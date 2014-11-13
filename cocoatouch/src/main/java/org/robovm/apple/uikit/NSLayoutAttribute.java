@@ -32,6 +32,7 @@ import org.robovm.apple.coregraphics.*;
 import org.robovm.apple.coredata.*;
 import org.robovm.apple.coreimage.*;
 import org.robovm.apple.coretext.*;
+import org.robovm.apple.corelocation.*;
 /*</imports>*/
 
 /*<javadoc>*/
@@ -51,6 +52,43 @@ public enum /*<name>*/NSLayoutAttribute/*</name>*/ implements ValuedEnum {
     CenterX(9L),
     CenterY(10L),
     Baseline(11L),
+    LastBaseline(11L),
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    FirstBaseline(12L),
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    LeftMargin(13L),
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    RightMargin(14L),
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    TopMargin(15L),
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    BottomMargin(16L),
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    LeadingMargin(17L),
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    TrailingMargin(18L),
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    CenterXWithinMargins(19L),
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    CenterYWithinMargins(20L),
     NotAnAttribute(0L);
     /*</values>*/
 

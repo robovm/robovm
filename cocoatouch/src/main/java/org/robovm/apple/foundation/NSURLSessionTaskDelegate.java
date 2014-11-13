@@ -32,6 +32,7 @@ import org.robovm.apple.coreanimation.*;
 import org.robovm.apple.coregraphics.*;
 import org.robovm.apple.coremedia.*;
 import org.robovm.apple.security.*;
+import org.robovm.apple.dispatch.*;
 /*</imports>*/
 
 /*<javadoc>*/
@@ -51,15 +52,15 @@ import org.robovm.apple.security.*;
     /*</properties>*/
     /*<methods>*/
     @Method(selector = "URLSession:task:willPerformHTTPRedirection:newRequest:completionHandler:")
-    void URLSession$task$willPerformHTTPRedirection$newRequest$completionHandler$(NSURLSession session, NSURLSessionTask task, NSHTTPURLResponse response, NSURLRequest request, @Block VoidBlock1<NSURLRequest> completionHandler);
+    void willPerformHTTPRedirection(NSURLSession session, NSURLSessionTask task, NSHTTPURLResponse response, NSURLRequest request, @Block VoidBlock1<NSURLRequest> completionHandler);
     @Method(selector = "URLSession:task:didReceiveChallenge:completionHandler:")
-    void URLSession$task$didReceiveChallenge$completionHandler$(NSURLSession session, NSURLSessionTask task, NSURLAuthenticationChallenge challenge, @Block VoidBlock2<NSURLSessionAuthChallengeDisposition, NSURLCredential> completionHandler);
+    void didReceiveChallenge(NSURLSession session, NSURLSessionTask task, NSURLAuthenticationChallenge challenge, @Block VoidBlock2<NSURLSessionAuthChallengeDisposition, NSURLCredential> completionHandler);
     @Method(selector = "URLSession:task:needNewBodyStream:")
-    void URLSession$task$needNewBodyStream$(NSURLSession session, NSURLSessionTask task, @Block VoidBlock1<NSInputStream> completionHandler);
+    void needNewBodyStream(NSURLSession session, NSURLSessionTask task, @Block VoidBlock1<NSInputStream> completionHandler);
     @Method(selector = "URLSession:task:didSendBodyData:totalBytesSent:totalBytesExpectedToSend:")
-    void URLSession$task$didSendBodyData$totalBytesSent$totalBytesExpectedToSend$(NSURLSession session, NSURLSessionTask task, long bytesSent, long totalBytesSent, long totalBytesExpectedToSend);
+    void didSendBodyData(NSURLSession session, NSURLSessionTask task, long bytesSent, long totalBytesSent, long totalBytesExpectedToSend);
     @Method(selector = "URLSession:task:didCompleteWithError:")
-    void URLSession$task$didCompleteWithError$(NSURLSession session, NSURLSessionTask task, NSError error);
+    void didComplete(NSURLSession session, NSURLSessionTask task, NSError error);
     /*</methods>*/
     /*<adapter>*/
     /*</adapter>*/

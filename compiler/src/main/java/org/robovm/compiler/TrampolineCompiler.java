@@ -18,11 +18,9 @@ package org.robovm.compiler;
 
 import static org.robovm.compiler.Access.*;
 import static org.robovm.compiler.Functions.*;
-import static org.robovm.compiler.Mangler.*;
 import static org.robovm.compiler.Types.*;
 import static org.robovm.compiler.llvm.FunctionAttribute.*;
 import static org.robovm.compiler.llvm.Linkage.*;
-import static org.robovm.compiler.llvm.Type.*;
 
 import java.util.Collections;
 import java.util.HashSet;
@@ -31,28 +29,18 @@ import java.util.Set;
 
 import org.robovm.compiler.clazz.Clazz;
 import org.robovm.compiler.config.Config;
-import org.robovm.compiler.config.OS;
-import org.robovm.compiler.llvm.Bitcast;
-import org.robovm.compiler.llvm.Br;
-import org.robovm.compiler.llvm.FloatingPointConstant;
-import org.robovm.compiler.llvm.FloatingPointType;
 import org.robovm.compiler.llvm.Function;
+import org.robovm.compiler.llvm.FunctionAttribute;
 import org.robovm.compiler.llvm.FunctionDeclaration;
 import org.robovm.compiler.llvm.FunctionRef;
 import org.robovm.compiler.llvm.FunctionType;
 import org.robovm.compiler.llvm.Global;
-import org.robovm.compiler.llvm.Icmp;
-import org.robovm.compiler.llvm.Icmp.Condition;
-import org.robovm.compiler.llvm.IntegerConstant;
-import org.robovm.compiler.llvm.IntegerType;
-import org.robovm.compiler.llvm.Label;
+import org.robovm.compiler.llvm.Linkage;
 import org.robovm.compiler.llvm.NullConstant;
-import org.robovm.compiler.llvm.PointerType;
 import org.robovm.compiler.llvm.Ret;
 import org.robovm.compiler.llvm.StructureType;
 import org.robovm.compiler.llvm.Unreachable;
 import org.robovm.compiler.llvm.Value;
-import org.robovm.compiler.llvm.Variable;
 import org.robovm.compiler.trampoline.Anewarray;
 import org.robovm.compiler.trampoline.Checkcast;
 import org.robovm.compiler.trampoline.FieldAccessor;
@@ -64,7 +52,6 @@ import org.robovm.compiler.trampoline.Invokespecial;
 import org.robovm.compiler.trampoline.Invokevirtual;
 import org.robovm.compiler.trampoline.LdcClass;
 import org.robovm.compiler.trampoline.Multianewarray;
-import org.robovm.compiler.trampoline.NativeCall;
 import org.robovm.compiler.trampoline.New;
 import org.robovm.compiler.trampoline.PutField;
 import org.robovm.compiler.trampoline.Trampoline;
@@ -90,7 +77,6 @@ public class TrampolineCompiler {
     public static final String EXPECTED_STATIC_FIELD = "Expected static field %s.%s";
     public static final String NO_SUCH_FIELD_ERROR = "%s.%s";
     public static final String NO_SUCH_METHOD_ERROR = "%s.%s%s";
-    public static final String UNSATISFIED_LINK_ERROR = "%s.%s%s";
     
     private final Config config;
     private ModuleBuilder mb;
@@ -102,6 +88,26 @@ public class TrampolineCompiler {
     
     public Set<String> getDependencies() {
         return dependencies;
+    }
+
+    private Linkage aliasLinkage() {
+        /*
+         * The {@link Linkage} used for alias functions used to be _private but
+         * for some reason LLVM's assembler doesn't resolve private symbols
+         * correctly when there is debug info in the module which causes weird
+         * crashes. See #559.
+         */
+        return config.isDebug() ? external : _private;
+    }
+
+    private FunctionAttribute shouldInline() {
+        /*
+         * Alias function used to be inlined always before we had debug builds.
+         * The problem with debug builds is that when the function is inlined we
+         * lose line number information for that line which. So now we don't
+         * inline alias functions in debug builds. See #559.
+         */
+        return config.isDebug() ? noinline : alwaysinline;
     }
 
     public void compile(ModuleBuilder mb, Trampoline t) {
@@ -116,154 +122,59 @@ public class TrampolineCompiler {
          * ClassCompiler will be overridden with a function which throws an
          * appropriate exception.
          */
-        Function f = new FunctionBuilder(t).linkage(external).build();
-        if (!checkClassExists(f, t) || !checkClassAccessible(f, t)) {
-            mb.addFunction(f);
+        Function errorFn = new FunctionBuilder(t).linkage(external).build();
+        if (!checkClassExists(errorFn, t) || !checkClassAccessible(errorFn, t)) {
+            mb.addFunction(errorFn);
             return;
         }
 
         if (t instanceof New) {
             SootClass target = config.getClazzes().load(t.getTarget()).getSootClass();
             if (target.isAbstract() || target.isInterface()) {
-                call(f, BC_THROW_INSTANTIATION_ERROR, f.getParameterRef(0), mb.getString(t.getTarget().replace('/', '.')));
-                f.add(new Unreachable());
-                mb.addFunction(f);
+                call(errorFn, BC_THROW_INSTANTIATION_ERROR, errorFn.getParameterRef(0), mb.getString(t.getTarget().replace('/', '.')));
+                errorFn.add(new Unreachable());
+                mb.addFunction(errorFn);
                 return;
             }
             String fnName = Symbols.clinitWrapperSymbol(Symbols.allocatorSymbol(t.getTarget()));
             alias(t, fnName);
         } else if (t instanceof Instanceof) {
             if (isArray(t.getTarget())) {
-                String fnName = Symbols.arrayinstanceofSymbol(t.getTarget());
-                if (!mb.hasSymbol(fnName)) {
-                    Function fn = new FunctionBuilder(t).name(fnName).linkage(weak).build();
-                    Value arrayClass = callLdcArray(fn, t.getTarget());
-                    Value result = call(fn, BC_INSTANCEOF_ARRAY, fn.getParameterRef(0), arrayClass, fn.getParameterRef(1));
-                    fn.add(new Ret(result));
-                    mb.addFunction(fn);
-                }
-                alias(t, fnName);
+                FunctionRef fnRef = createInstanceofArray((Instanceof) t);
+                alias(t, fnRef.getName());
             } else {
                 String fnName = Symbols.instanceofSymbol(t.getTarget());
                 alias(t, fnName);
             }
         } else if (t instanceof Checkcast) {
             if (isArray(t.getTarget())) {
-                String fnName = Symbols.arraycheckcastSymbol(t.getTarget());
-                if (!mb.hasSymbol(fnName)) {
-                    Function fn = new FunctionBuilder(t).name(fnName).linkage(weak).build();
-                    Value arrayClass = callLdcArray(fn, t.getTarget());
-                    Value result = call(fn, BC_CHECKCAST_ARRAY, fn.getParameterRef(0), arrayClass, fn.getParameterRef(1));
-                    fn.add(new Ret(result));
-                    mb.addFunction(fn);
-                }
-                alias(t, fnName);
+                FunctionRef fnRef = createCheckcastArray((Checkcast) t);
+                alias(t, fnRef.getName());
             } else {
                 String fnName = Symbols.checkcastSymbol(t.getTarget());
                 alias(t, fnName);
             }
         } else if (t instanceof LdcClass) {
             if (isArray(t.getTarget())) {
-                FunctionRef fn = createLdcArray(t.getTarget());
-                alias(t, fn.getName());
+                FunctionRef fnRef = createLdcArray((LdcClass) t);
+                alias(t, fnRef.getName());
             } else {
                 String fnName = Symbols.ldcExternalSymbol(t.getTarget());
                 alias(t, fnName);
             }
         } else if (t instanceof Anewarray) {
-            String fnName = Symbols.anewarraySymbol(t.getTarget());
-            if (!mb.hasSymbol(fnName)) {
-                Function fn = new FunctionBuilder(t).name(fnName).linkage(weak).build();
-                Value arrayClass = callLdcArray(fn, t.getTarget());
-                Value result = call(fn, BC_NEW_OBJECT_ARRAY, fn.getParameterRef(0), 
-                      fn.getParameterRef(1), arrayClass);
-                fn.add(new Ret(result));
-                mb.addFunction(fn);
-            }
-            alias(t, fnName);
+            FunctionRef fnRef = createAnewarray((Anewarray) t);
+            alias(t, fnRef.getName());
         } else if (t instanceof Multianewarray) {
-            String fnName = Symbols.multianewarraySymbol(t.getTarget());
-            if (!mb.hasSymbol(fnName)) {
-                Function fn = new FunctionBuilder(t).name(fnName).linkage(weak).build();
-                Value arrayClass = callLdcArray(fn, t.getTarget());
-                Value result = call(fn, BC_NEW_MULTI_ARRAY, fn.getParameterRef(0), 
-                      fn.getParameterRef(1), fn.getParameterRef(2), arrayClass);
-                fn.add(new Ret(result));
-                mb.addFunction(fn);
-            }
-            alias(t, fnName);
-        } else if (t instanceof NativeCall) {
-            Clazz target = config.getClazzes().load(t.getTarget());
-            NativeCall nc = (NativeCall) t;
-            String shortName = mangleNativeMethod(target.getInternalName(), nc.getMethodName());
-            String longName = mangleNativeMethod(target.getInternalName(), nc.getMethodName(), nc.getMethodDesc());
-            if (target.isInBootClasspath() || !config.isUseDynamicJni() || config.getOs() == OS.ios) {
-                Function fnLong = new FunctionBuilder(longName, nc.getFunctionType()).linkage(weak).build();
-                // The NativeCall caller pushed a GatewayFrame and will only pop it 
-                // if the native method exists. So we need to pop it here.
-                popNativeFrame(fnLong);
-                call(fnLong, BC_THROW_UNSATISIFED_LINK_ERROR, fnLong.getParameterRef(0), 
-                        mb.getString(String.format(UNSATISFIED_LINK_ERROR, target.getClassName(),
-                                nc.getMethodName(), nc.getMethodDesc())));
-                fnLong.add(new Unreachable());
-                mb.addFunction(fnLong);
-//                mb.addFunctionDeclaration(new FunctionDeclaration(fnLong.ref()));
-                FunctionRef targetFn = fnLong.ref();
-                if (!isLongNativeFunctionNameRequired(nc)) {
-                    Function fnShort = new FunctionBuilder(shortName, nc.getFunctionType()).linkage(weak).build();
-                    Value resultInner = call(fnShort, fnLong.ref(), fnShort.getParameterRefs());
-                    fnShort.add(new Ret(resultInner));
-                    mb.addFunction(fnShort);
-//                    mb.addFunctionDeclaration(new FunctionDeclaration(fnShort.ref()));
-                    targetFn = fnShort.ref();
-                }
-                Function fn = new FunctionBuilder(nc).linkage(_private).attribs(alwaysinline, optsize).build();
-                Value result = call(fn, targetFn, fn.getParameterRefs());
-                fn.add(new Ret(result));
-                mb.addFunction(fn);
-            } else {
-                Global g = new Global(Symbols.nativeMethodPtrSymbol(nc), 
-                        new NullConstant(I8_PTR));
-                mb.addGlobal(g);
-                Function fn = new FunctionBuilder(nc).linkage(_private).attribs(alwaysinline, optsize).build();
-                FunctionRef ldcFn = FunctionBuilder.ldcInternal(nc.getTarget()).ref();
-                Value theClass = call(fn, ldcFn, fn.getParameterRef(0));
-                Value implI8Ptr = call(fn, BC_RESOLVE_NATIVE, fn.getParameterRef(0), 
-                      theClass,
-                      mb.getString(nc.getMethodName()), 
-                      mb.getString(nc.getMethodDesc()),
-                      mb.getString(mangleNativeMethod(nc.getTarget(), nc.getMethodName())),
-                      mb.getString(mangleNativeMethod(nc.getTarget(), nc.getMethodName(), nc.getMethodDesc())),
-                      g.ref());
-                Variable nullTest = fn.newVariable(I1);
-                fn.add(new Icmp(nullTest, Condition.ne, implI8Ptr, new NullConstant(I8_PTR)));
-                Label trueLabel = new Label();
-                Label falseLabel = new Label();
-                fn.add(new Br(nullTest.ref(), fn.newBasicBlockRef(trueLabel), fn.newBasicBlockRef(falseLabel)));
-                fn.newBasicBlock(falseLabel);
-                if (fn.getType().getReturnType() instanceof IntegerType) {
-                    fn.add(new Ret(new IntegerConstant(0, (IntegerType) fn.getType().getReturnType())));
-                } else if (fn.getType().getReturnType() instanceof FloatingPointType) {
-                    fn.add(new Ret(new FloatingPointConstant(0.0, (FloatingPointType) fn.getType().getReturnType())));
-                } else if (fn.getType().getReturnType() instanceof PointerType) {
-                    fn.add(new Ret(new NullConstant((PointerType) fn.getType().getReturnType())));
-                } else {
-                    fn.add(new Ret());
-                }
-                fn.newBasicBlock(trueLabel);
-                Variable impl = fn.newVariable(nc.getFunctionType());
-                fn.add(new Bitcast(impl, implI8Ptr, impl.getType()));
-                Value result = call(fn, impl.ref(), fn.getParameterRefs());
-                fn.add(new Ret(result));
-                mb.addFunction(fn);
-            }
+            FunctionRef fnRef = createMultianewarray((Multianewarray) t);
+            alias(t, fnRef.getName());
         } else if (t instanceof FieldAccessor) {
-            SootField field = resolveField(f, (FieldAccessor) t);
+            SootField field = resolveField(errorFn, (FieldAccessor) t);
             if (field != null) {
                 dependencies.add(getInternalName(field.getDeclaringClass()));
             }
-            if (field == null || !checkMemberAccessible(f, t, field)) {
-                mb.addFunction(f);
+            if (field == null || !checkMemberAccessible(errorFn, t, field)) {
+                mb.addFunction(errorFn);
                 return;
             }
             Clazz caller = config.getClazzes().load(t.getCallingClass());
@@ -272,9 +183,9 @@ public class TrampolineCompiler {
                 // Only the class declaring a final field may write to it.
                 // (Actually only <init>/<clinit> methods may write to it but we 
                 // don't know which method is accessing the field at this point)
-                throwIllegalAccessError(f, ATTEMPT_TO_WRITE_TO_FINAL_FIELD, 
+                throwIllegalAccessError(errorFn, ATTEMPT_TO_WRITE_TO_FINAL_FIELD, 
                         target, field.getName(), caller);
-                mb.addFunction(f);
+                mb.addFunction(errorFn);
                 return;
             }
             if (!field.isStatic()) {
@@ -283,43 +194,43 @@ public class TrampolineCompiler {
                 createTrampolineAliasForField((FieldAccessor) t, field);
             }
         } else if (t instanceof Invokeinterface) {
-            SootMethod rm = resolveInterfaceMethod(f, (Invokeinterface) t);
+            SootMethod rm = resolveInterfaceMethod(errorFn, (Invokeinterface) t);
             if (rm != null) {
                 dependencies.add(getInternalName(rm.getDeclaringClass()));
             }
-            if (rm == null || !checkMemberAccessible(f, t, rm)) {
-                mb.addFunction(f);
+            if (rm == null || !checkMemberAccessible(errorFn, t, rm)) {
+                mb.addFunction(errorFn);
                 return;
             }
             createTrampolineAliasForMethod((Invoke) t, rm);
         } else if (t instanceof Invoke) {
-            SootMethod method = resolveMethod(f, (Invoke) t);
+            SootMethod method = resolveMethod(errorFn, (Invoke) t);
             if (method != null) {
                 dependencies.add(getInternalName(method.getDeclaringClass()));
             }
-            if (method == null || !checkMemberAccessible(f, t, method)) {
-                mb.addFunction(f);
+            if (method == null || !checkMemberAccessible(errorFn, t, method)) {
+                mb.addFunction(errorFn);
                 return;
             }
             if (t instanceof Invokespecial && method.isAbstract()) {
-                call(f, BC_THROW_ABSTRACT_METHOD_ERROR, f.getParameterRef(0), 
+                call(errorFn, BC_THROW_ABSTRACT_METHOD_ERROR, errorFn.getParameterRef(0), 
                         mb.getString(String.format(NO_SUCH_METHOD_ERROR, 
                                 method.getDeclaringClass(), method.getName(), 
                                 getDescriptor(method))));
-                f.add(new Unreachable());
-                mb.addFunction(f);
+                errorFn.add(new Unreachable());
+                mb.addFunction(errorFn);
                 return;
             }
             createTrampolineAliasForMethod((Invoke) t, method);
         }
     }
-    
+
     private void alias(Trampoline t, String fnName) {
         FunctionRef aliasee = new FunctionRef(fnName, t.getFunctionType());
         if (!mb.hasSymbol(fnName)) {
             mb.addFunctionDeclaration(new FunctionDeclaration(aliasee));
         }
-        Function fn = new FunctionBuilder(t).linkage(_private).attribs(alwaysinline, optsize).build();
+        Function fn = new FunctionBuilder(t).linkage(aliasLinkage()).attribs(shouldInline(), optsize).build();
         Value result = call(fn, aliasee, fn.getParameterRefs());
         fn.add(new Ret(result));
         mb.addFunction(fn);
@@ -334,7 +245,7 @@ public class TrampolineCompiler {
     }
 
     private void createInlinedAccessorForInstanceField(FieldAccessor t, SootField field) {
-        Function fn = new FunctionBuilder(t).linkage(_private).attribs(alwaysinline, optsize).build();
+        Function fn = new FunctionBuilder(t).linkage(aliasLinkage()).attribs(shouldInline(), optsize).build();
 
         List<SootField> classFields = Collections.emptyList();
         StructureType classType = new StructureType();
@@ -369,26 +280,15 @@ public class TrampolineCompiler {
         alias(t, fnName);
     }
     
-    private boolean isLongNativeFunctionNameRequired(NativeCall nc) {
-        if (nc.getMethodDesc().startsWith("()")) {
-            // If the method takes no parameters the long and short names are the same
-            return true;
-        }
-        Clazz target = config.getClazzes().load(nc.getTarget());
-        int nativeCount = 0;
-        for (SootMethod m : target.getSootClass().getMethods()) {
-            if (m.isNative() && m.getName().equals(nc.getMethodName())) {
-                nativeCount++;
-            }
-        }
-        return nativeCount > 1;
-    }
-    
     private Value callLdcArray(Function function, String targetClass) {
         FunctionRef fnRef = createLdcArray(targetClass);
         return call(function, fnRef, function.getParameterRef(0));
     }
     
+    private FunctionRef createLdcArray(LdcClass t) {
+        return createLdcArray(t.getTarget());
+    }
+
     private FunctionRef createLdcArray(String targetClass) {
         if (isPrimitiveComponentType(targetClass)) {
             throw new IllegalArgumentException();
@@ -414,7 +314,56 @@ public class TrampolineCompiler {
         }
         return fnRef;
     }
-    
+
+    private FunctionRef createInstanceofArray(Instanceof t) {
+        String fnName = Symbols.arrayinstanceofSymbol(t.getTarget());
+        if (!mb.hasSymbol(fnName)) {
+            Function fn = new FunctionBuilder(t).name(fnName).linkage(weak).build();
+            Value arrayClass = callLdcArray(fn, t.getTarget());
+            Value result = call(fn, BC_INSTANCEOF_ARRAY, fn.getParameterRef(0), arrayClass, fn.getParameterRef(1));
+            fn.add(new Ret(result));
+            mb.addFunction(fn);
+        }
+        return new FunctionRef(fnName, t.getFunctionType());
+    }
+
+    private FunctionRef createCheckcastArray(Checkcast t) {
+        String fnName = Symbols.arraycheckcastSymbol(t.getTarget());
+        if (!mb.hasSymbol(fnName)) {
+            Function fn = new FunctionBuilder(t).name(fnName).linkage(weak).build();
+            Value arrayClass = callLdcArray(fn, t.getTarget());
+            Value result = call(fn, BC_CHECKCAST_ARRAY, fn.getParameterRef(0), arrayClass, fn.getParameterRef(1));
+            fn.add(new Ret(result));
+            mb.addFunction(fn);
+        }
+        return new FunctionRef(fnName, t.getFunctionType());
+    }
+
+    private FunctionRef createAnewarray(Anewarray t) {
+        String fnName = Symbols.anewarraySymbol(t.getTarget());
+        if (!mb.hasSymbol(fnName)) {
+            Function fn = new FunctionBuilder(t).name(fnName).linkage(weak).build();
+            Value arrayClass = callLdcArray(fn, t.getTarget());
+            Value result = call(fn, BC_NEW_OBJECT_ARRAY, fn.getParameterRef(0), 
+                  fn.getParameterRef(1), arrayClass);
+            fn.add(new Ret(result));
+            mb.addFunction(fn);
+        }
+        return new FunctionRef(fnName, t.getFunctionType());
+    }
+
+    private FunctionRef createMultianewarray(Multianewarray t) {
+        String fnName = Symbols.multianewarraySymbol(t.getTarget());
+        if (!mb.hasSymbol(fnName)) {
+            Function fn = new FunctionBuilder(t).name(fnName).linkage(weak).build();
+            Value arrayClass = callLdcArray(fn, t.getTarget());
+            Value result = call(fn, BC_NEW_MULTI_ARRAY, fn.getParameterRef(0), 
+                  fn.getParameterRef(1), fn.getParameterRef(2), arrayClass);
+            fn.add(new Ret(result));
+            mb.addFunction(fn);
+        }
+        return new FunctionRef(fnName, t.getFunctionType());
+    }
 
     private boolean checkClassExists(Function f, Trampoline t) {
         String targetClassName = t.getTarget();

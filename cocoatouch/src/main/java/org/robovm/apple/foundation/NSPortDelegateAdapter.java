@@ -32,6 +32,7 @@ import org.robovm.apple.coreanimation.*;
 import org.robovm.apple.coregraphics.*;
 import org.robovm.apple.coremedia.*;
 import org.robovm.apple.security.*;
+import org.robovm.apple.dispatch.*;
 /*</imports>*/
 
 /*<javadoc>*/
@@ -53,6 +54,6 @@ import org.robovm.apple.security.*;
     /*<members>*//*</members>*/
     /*<methods>*/
     @NotImplemented("handlePortMessage:")
-    public void handlePortMessage$(NSPortMessage message) { throw new UnsupportedOperationException(); }
+    public void handlePortMessage(NSPortMessage message) { throw new UnsupportedOperationException(); }
     /*</methods>*/
 }

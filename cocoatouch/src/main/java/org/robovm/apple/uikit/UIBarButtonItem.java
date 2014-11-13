@@ -32,6 +32,7 @@ import org.robovm.apple.coregraphics.*;
 import org.robovm.apple.coredata.*;
 import org.robovm.apple.coreimage.*;
 import org.robovm.apple.coretext.*;
+import org.robovm.apple.corelocation.*;
 /*</imports>*/
 
 /*<javadoc>*/
@@ -66,39 +67,55 @@ import org.robovm.apple.coretext.*;
     
     public UIBarButtonItem(UIImage image, UIBarButtonItemStyle style, OnClickListener listener) { 
         super((SkipInit) null);
-        ListenerWrapper l = new ListenerWrapper(listener);
-        initObject(initWithImage$style$target$action$(image, style, l, handleClick));
-        this.addStrongRef(l);
+        if (listener != null) {
+            ListenerWrapper l = new ListenerWrapper(listener);
+            initObject(init(image, style, l, handleClick));
+            this.addStrongRef(l);
+        } else {
+            initObject(init(image, style, null, null));
+        }
     }
     public UIBarButtonItem(UIImage image, UIImage landscapeImagePhone, UIBarButtonItemStyle style, OnClickListener listener) {
         super((SkipInit) null);
-        ListenerWrapper l = new ListenerWrapper(listener);
-        initObject(initWithImage$landscapeImagePhone$style$target$action$(image, landscapeImagePhone, style, l, handleClick));
-        this.addStrongRef(l);
+        if (listener != null) {
+            ListenerWrapper l = new ListenerWrapper(listener);
+            initObject(init(image, landscapeImagePhone, style, l, handleClick));
+            this.addStrongRef(l);
+        } else {
+            initObject(init(image, landscapeImagePhone, style, null, null));
+        }
     }
     public UIBarButtonItem(String title, UIBarButtonItemStyle style, OnClickListener listener) {
         super((SkipInit) null);
-        ListenerWrapper l = new ListenerWrapper(listener);
-        initObject(initWithTitle$style$target$action$(title, style, l, handleClick));
-        this.addStrongRef(l);
+        if (listener != null) {
+            ListenerWrapper l = new ListenerWrapper(listener);
+            initObject(init(title, style, l, handleClick));
+            this.addStrongRef(l);
+        } else {
+            initObject(init(title, style, null, null));
+        }
     }
     public UIBarButtonItem(UIBarButtonSystemItem systemItem, OnClickListener listener) {
         super((SkipInit) null);
-        ListenerWrapper l = new ListenerWrapper(listener);
-        initObject(initWithBarButtonSystemItem$target$action$(systemItem, l, handleClick));
-        this.addStrongRef(l);
+        if (listener != null) {
+            ListenerWrapper l = new ListenerWrapper(listener);
+            initObject(init(systemItem, l, handleClick));
+            this.addStrongRef(l);
+        } else {
+            initObject(init(systemItem, null, null));
+        }
     }
     
     /*<constructors>*/
     public UIBarButtonItem() {}
     protected UIBarButtonItem(SkipInit skipInit) { super(skipInit); }
-    public UIBarButtonItem(UIImage image, UIBarButtonItemStyle style, NSObject target, Selector action) { super((SkipInit) null); initObject(initWithImage$style$target$action$(image, style, target, action)); }
+    protected UIBarButtonItem(UIImage image, UIBarButtonItemStyle style, NSObject target, Selector action) { super((SkipInit) null); initObject(init(image, style, target, action)); }
     /**
      * @since Available in iOS 5.0 and later.
      */
-    public UIBarButtonItem(UIImage image, UIImage landscapeImagePhone, UIBarButtonItemStyle style, NSObject target, Selector action) { super((SkipInit) null); initObject(initWithImage$landscapeImagePhone$style$target$action$(image, landscapeImagePhone, style, target, action)); }
-    public UIBarButtonItem(String title, UIBarButtonItemStyle style, NSObject target, Selector action) { super((SkipInit) null); initObject(initWithTitle$style$target$action$(title, style, target, action)); }
-    public UIBarButtonItem(UIBarButtonSystemItem systemItem, NSObject target, Selector action) { super((SkipInit) null); initObject(initWithBarButtonSystemItem$target$action$(systemItem, target, action)); }
+    protected UIBarButtonItem(UIImage image, UIImage landscapeImagePhone, UIBarButtonItemStyle style, NSObject target, Selector action) { super((SkipInit) null); initObject(init(image, landscapeImagePhone, style, target, action)); }
+    protected UIBarButtonItem(String title, UIBarButtonItemStyle style, NSObject target, Selector action) { super((SkipInit) null); initObject(init(title, style, target, action)); }
+    protected UIBarButtonItem(UIBarButtonSystemItem systemItem, NSObject target, Selector action) { super((SkipInit) null); initObject(init(systemItem, target, action)); }
     public UIBarButtonItem(UIView customView) { super((SkipInit) null); initObject(initWithCustomView$(customView)); }
     /*</constructors>*/
     
@@ -123,9 +140,9 @@ import org.robovm.apple.coretext.*;
     @Property(selector = "setWidth:")
     public native void setWidth(@MachineSizedFloat double v);
     @Property(selector = "possibleTitles")
-    public native @org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String> getPossibleTitles();
+    public native @org.robovm.rt.bro.annotation.Marshaler(NSSet.AsStringListMarshaler.class) List<String> getPossibleTitles();
     @Property(selector = "setPossibleTitles:")
-    public native void setPossibleTitles(@org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String> v);
+    public native void setPossibleTitles(@org.robovm.rt.bro.annotation.Marshaler(NSSet.AsStringListMarshaler.class) List<String> v);
     @Property(selector = "customView")
     public native UIView getCustomView();
     @Property(selector = "setCustomView:")
@@ -152,16 +169,16 @@ import org.robovm.apple.coretext.*;
     /*<members>*//*</members>*/
     /*<methods>*/
     @Method(selector = "initWithImage:style:target:action:")
-    protected native @Pointer long initWithImage$style$target$action$(UIImage image, UIBarButtonItemStyle style, NSObject target, Selector action);
+    protected native @Pointer long init(UIImage image, UIBarButtonItemStyle style, NSObject target, Selector action);
     /**
      * @since Available in iOS 5.0 and later.
      */
     @Method(selector = "initWithImage:landscapeImagePhone:style:target:action:")
-    protected native @Pointer long initWithImage$landscapeImagePhone$style$target$action$(UIImage image, UIImage landscapeImagePhone, UIBarButtonItemStyle style, NSObject target, Selector action);
+    protected native @Pointer long init(UIImage image, UIImage landscapeImagePhone, UIBarButtonItemStyle style, NSObject target, Selector action);
     @Method(selector = "initWithTitle:style:target:action:")
-    protected native @Pointer long initWithTitle$style$target$action$(String title, UIBarButtonItemStyle style, NSObject target, Selector action);
+    protected native @Pointer long init(String title, UIBarButtonItemStyle style, NSObject target, Selector action);
     @Method(selector = "initWithBarButtonSystemItem:target:action:")
-    protected native @Pointer long initWithBarButtonSystemItem$target$action$(UIBarButtonSystemItem systemItem, NSObject target, Selector action);
+    protected native @Pointer long init(UIBarButtonSystemItem systemItem, NSObject target, Selector action);
     @Method(selector = "initWithCustomView:")
     protected native @Pointer long initWithCustomView$(UIView customView);
     /**

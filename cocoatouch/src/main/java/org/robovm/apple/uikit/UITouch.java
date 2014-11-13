@@ -32,6 +32,7 @@ import org.robovm.apple.coregraphics.*;
 import org.robovm.apple.coredata.*;
 import org.robovm.apple.coreimage.*;
 import org.robovm.apple.coretext.*;
+import org.robovm.apple.corelocation.*;
 /*</imports>*/
 import org.robovm.apple.spritekit.SKNode;
 
@@ -59,6 +60,16 @@ import org.robovm.apple.spritekit.SKNode;
     public native UITouchPhase getPhase();
     @Property(selector = "tapCount")
     public native @MachineSizedUInt long getTapCount();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @Property(selector = "majorRadius")
+    public native @MachineSizedFloat double getMajorRadius();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @Property(selector = "majorRadiusTolerance")
+    public native @MachineSizedFloat double getMajorRadiusTolerance();
     @Property(selector = "window")
     public native UIWindow getWindow();
     @Property(selector = "view")
@@ -81,8 +92,8 @@ import org.robovm.apple.spritekit.SKNode;
     
     /*<methods>*/
     @Method(selector = "locationInView:")
-    public native @ByVal CGPoint getLocation(UIView view);
+    public native @ByVal CGPoint getLocationInView(UIView view);
     @Method(selector = "previousLocationInView:")
-    public native @ByVal CGPoint getPreviousLocation(UIView view);
+    public native @ByVal CGPoint getPreviousLocationInView(UIView view);
     /*</methods>*/
 }

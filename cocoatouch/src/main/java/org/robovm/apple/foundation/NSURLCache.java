@@ -32,6 +32,7 @@ import org.robovm.apple.coreanimation.*;
 import org.robovm.apple.coregraphics.*;
 import org.robovm.apple.coremedia.*;
 import org.robovm.apple.security.*;
+import org.robovm.apple.dispatch.*;
 /*</imports>*/
 
 /*<javadoc>*/
@@ -51,35 +52,54 @@ import org.robovm.apple.security.*;
     public NSURLCache(@MachineSizedUInt long memoryCapacity, @MachineSizedUInt long diskCapacity, String path) { super((SkipInit) null); initObject(initWithMemoryCapacity$diskCapacity$diskPath$(memoryCapacity, diskCapacity, path)); }
     /*</constructors>*/
     /*<properties>*/
-    
+    @Property(selector = "memoryCapacity")
+    public native @MachineSizedUInt long getMemoryCapacity();
+    @Property(selector = "setMemoryCapacity:")
+    public native void setMemoryCapacity(@MachineSizedUInt long v);
+    @Property(selector = "diskCapacity")
+    public native @MachineSizedUInt long getDiskCapacity();
+    @Property(selector = "setDiskCapacity:")
+    public native void setDiskCapacity(@MachineSizedUInt long v);
+    @Property(selector = "currentMemoryUsage")
+    public native @MachineSizedUInt long getCurrentMemoryUsage();
+    @Property(selector = "currentDiskUsage")
+    public native @MachineSizedUInt long getCurrentDiskUsage();
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
     @Method(selector = "initWithMemoryCapacity:diskCapacity:diskPath:")
     protected native @Pointer long initWithMemoryCapacity$diskCapacity$diskPath$(@MachineSizedUInt long memoryCapacity, @MachineSizedUInt long diskCapacity, String path);
     @Method(selector = "cachedResponseForRequest:")
-    public native NSCachedURLResponse cachedResponseForRequest$(NSURLRequest request);
+    public native NSCachedURLResponse getCachedResponse(NSURLRequest request);
     @Method(selector = "storeCachedResponse:forRequest:")
-    public native void storeCachedResponse$forRequest$(NSCachedURLResponse cachedResponse, NSURLRequest request);
+    public native void storeCachedResponse(NSCachedURLResponse cachedResponse, NSURLRequest request);
     @Method(selector = "removeCachedResponseForRequest:")
-    public native void removeCachedResponseForRequest$(NSURLRequest request);
+    public native void removeCachedResponse(NSURLRequest request);
     @Method(selector = "removeAllCachedResponses")
     public native void removeAllCachedResponses();
-    @Method(selector = "memoryCapacity")
-    public native @MachineSizedUInt long memoryCapacity();
-    @Method(selector = "diskCapacity")
-    public native @MachineSizedUInt long diskCapacity();
-    @Method(selector = "setMemoryCapacity:")
-    public native void setMemoryCapacity(@MachineSizedUInt long memoryCapacity);
-    @Method(selector = "setDiskCapacity:")
-    public native void setDiskCapacity(@MachineSizedUInt long diskCapacity);
-    @Method(selector = "currentMemoryUsage")
-    public native @MachineSizedUInt long currentMemoryUsage();
-    @Method(selector = "currentDiskUsage")
-    public native @MachineSizedUInt long currentDiskUsage();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @Method(selector = "removeCachedResponsesSinceDate:")
+    public native void removeCachedResponsesSinceDate(NSDate date);
     @Method(selector = "sharedURLCache")
-    public static native NSURLCache sharedURLCache();
+    public static native NSURLCache getSharedURLCache();
     @Method(selector = "setSharedURLCache:")
     public static native void setSharedURLCache(NSURLCache cache);
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @Method(selector = "storeCachedResponse:forDataTask:")
+    public native void storeCachedResponse(NSCachedURLResponse cachedResponse, NSURLSessionDataTask dataTask);
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @Method(selector = "getCachedResponseForDataTask:completionHandler:")
+    public native void getCachedResponse(NSURLSessionDataTask dataTask, @Block VoidBlock1<NSCachedURLResponse> completionHandler);
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @Method(selector = "removeCachedResponseForDataTask:")
+    public native void removeCachedResponse(NSURLSessionDataTask dataTask);
     /*</methods>*/
 }

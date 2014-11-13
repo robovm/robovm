@@ -97,18 +97,24 @@ public class ObjCRuntime {
                 && (method.getAnnotation(ByVal.class) != null 
                 || returnType.getAnnotation(ByVal.class) != null)) {
             int structSize = getStructSize(returnType);
-            if (Bro.IS_X86) {
+            if (Bro.IS_X86 && Bro.IS_32BIT) {
                 if (structSize > 2 && structSize != 4 && structSize != 8) {
                     // On x86 stret has to be used for all structs except
                     // of size 1, 2, 4 and 8 bytes.
                     return true;
                 }
-            } else {
+            } else if (Bro.IS_X86 && Bro.IS_64BIT) {
+                if (structSize > 16) {
+                    return true;
+                }
+            } else if (Bro.IS_ARM && Bro.IS_32BIT) {
                 if (structSize > 4) {
                     // On ARM stret has to be used for structs
                     // larger than 4 bytes
                     return true;
                 }
+            } else {
+                throw new Error("Unsupported architecture");
             }
         }
         return false;

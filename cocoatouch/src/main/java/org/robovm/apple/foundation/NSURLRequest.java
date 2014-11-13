@@ -32,6 +32,7 @@ import org.robovm.apple.coreanimation.*;
 import org.robovm.apple.coregraphics.*;
 import org.robovm.apple.coremedia.*;
 import org.robovm.apple.security.*;
+import org.robovm.apple.dispatch.*;
 /*</imports>*/
 
 /*<javadoc>*/
@@ -52,7 +53,39 @@ import org.robovm.apple.security.*;
     public NSURLRequest(NSURL URL, NSURLRequestCachePolicy cachePolicy, double timeoutInterval) { super((SkipInit) null); initObject(initWithURL$cachePolicy$timeoutInterval$(URL, cachePolicy, timeoutInterval)); }
     /*</constructors>*/
     /*<properties>*/
-    
+    @Property(selector = "URL")
+    public native NSURL getURL();
+    @Property(selector = "cachePolicy")
+    public native NSURLRequestCachePolicy getCachePolicy();
+    @Property(selector = "timeoutInterval")
+    public native double getTimeoutInterval();
+    @Property(selector = "mainDocumentURL")
+    public native NSURL getMainDocumentURL();
+    /**
+     * @since Available in iOS 4.0 and later.
+     */
+    @Property(selector = "networkServiceType")
+    public native NSURLRequestNetworkServiceType getNetworkServiceType();
+    /**
+     * @since Available in iOS 6.0 and later.
+     */
+    @Property(selector = "allowsCellularAccess")
+    public native boolean isAllowsCellularAccess();
+    @Property(selector = "HTTPMethod")
+    public native String getHTTPMethod();
+    @Property(selector = "allHTTPHeaderFields")
+    public native @org.robovm.rt.bro.annotation.Marshaler(NSDictionary.AsStringStringMapMarshaler.class) Map<String, String> getAllHTTPHeaderFields();
+    @Property(selector = "HTTPBody")
+    public native NSData getHTTPBody();
+    @Property(selector = "HTTPBodyStream")
+    public native NSInputStream getHTTPBodyStream();
+    @Property(selector = "HTTPShouldHandleCookies")
+    public native boolean shouldHandleHTTPCookies();
+    /**
+     * @since Available in iOS 4.0 and later.
+     */
+    @Property(selector = "HTTPShouldUsePipelining")
+    public native boolean shouldUseHTTPPipelining();
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
@@ -60,46 +93,9 @@ import org.robovm.apple.security.*;
     protected native @Pointer long initWithURL$(NSURL URL);
     @Method(selector = "initWithURL:cachePolicy:timeoutInterval:")
     protected native @Pointer long initWithURL$cachePolicy$timeoutInterval$(NSURL URL, NSURLRequestCachePolicy cachePolicy, double timeoutInterval);
-    @Method(selector = "URL")
-    public native NSURL URL();
-    @Method(selector = "cachePolicy")
-    public native NSURLRequestCachePolicy cachePolicy();
-    @Method(selector = "timeoutInterval")
-    public native double timeoutInterval();
-    @Method(selector = "mainDocumentURL")
-    public native NSURL mainDocumentURL();
-    /**
-     * @since Available in iOS 4.0 and later.
-     */
-    @Method(selector = "networkServiceType")
-    public native NSURLRequestNetworkServiceType networkServiceType();
-    /**
-     * @since Available in iOS 6.0 and later.
-     */
-    @Method(selector = "allowsCellularAccess")
-    public native boolean allowsCellularAccess();
-    @Method(selector = "requestWithURL:")
-    public static native NSObject requestWithURL$(NSURL URL);
     @Method(selector = "supportsSecureCoding")
     public static native boolean supportsSecureCoding();
-    @Method(selector = "requestWithURL:cachePolicy:timeoutInterval:")
-    public static native NSObject requestWithURL$cachePolicy$timeoutInterval$(NSURL URL, NSURLRequestCachePolicy cachePolicy, double timeoutInterval);
-    @Method(selector = "HTTPMethod")
-    public native String HTTPMethod();
-    @Method(selector = "allHTTPHeaderFields")
-    public native NSDictionary<?, ?> allHTTPHeaderFields();
     @Method(selector = "valueForHTTPHeaderField:")
-    public native String valueForHTTPHeaderField$(String field);
-    @Method(selector = "HTTPBody")
-    public native NSData HTTPBody();
-    @Method(selector = "HTTPBodyStream")
-    public native NSInputStream HTTPBodyStream();
-    @Method(selector = "HTTPShouldHandleCookies")
-    public native boolean HTTPShouldHandleCookies();
-    /**
-     * @since Available in iOS 4.0 and later.
-     */
-    @Method(selector = "HTTPShouldUsePipelining")
-    public native boolean HTTPShouldUsePipelining();
+    public native String getHTTPHeaderFieldValue(String field);
     /*</methods>*/
 }

@@ -32,6 +32,7 @@ import org.robovm.apple.coreanimation.*;
 import org.robovm.apple.coregraphics.*;
 import org.robovm.apple.coremedia.*;
 import org.robovm.apple.security.*;
+import org.robovm.apple.dispatch.*;
 /*</imports>*/
 
 /*<javadoc>*/
@@ -120,8 +121,17 @@ import org.robovm.apple.security.*;
      * @since Available in iOS 4.0 and later.
      */
     public static final NSCalendarIdentifier RepublicOfChina = new NSCalendarIdentifier("RepublicOfChinaValue");
-    private static NSCalendarIdentifier[] values = new NSCalendarIdentifier[] {Gregorian, Buddhist, Chinese, Coptic, EthiopicAmeteMihret, EthiopicAmeteAlem, Hebrew, ISO8601, Indian, Islamic, IslamicCivil, Japanese, Persian, RepublicOfChina};
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    public static final NSCalendarIdentifier IslamicTabular = new NSCalendarIdentifier("IslamicTabularValue");
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    public static final NSCalendarIdentifier IslamicUmmAlQura = new NSCalendarIdentifier("IslamicUmmAlQuraValue");
     
+    private static NSCalendarIdentifier[] values = new NSCalendarIdentifier[] {Gregorian, Buddhist, Chinese, Coptic, EthiopicAmeteMihret, EthiopicAmeteAlem, Hebrew, ISO8601, Indian, Islamic, IslamicCivil, 
+        Japanese, Persian, RepublicOfChina, IslamicTabular, IslamicUmmAlQura};
     private final LazyGlobalValue<NSString> lazyGlobalValue;
     
     private NSCalendarIdentifier(String getterName) {
@@ -214,5 +224,15 @@ import org.robovm.apple.security.*;
      */
     @GlobalValue(symbol="NSCalendarIdentifierRepublicOfChina", optional=true)
     protected static native NSString RepublicOfChinaValue();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @GlobalValue(symbol="NSCalendarIdentifierIslamicTabular", optional=true)
+    protected static native NSString IslamicTabularValue();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @GlobalValue(symbol="NSCalendarIdentifierIslamicUmmAlQura", optional=true)
+    protected static native NSString IslamicUmmAlQuraValue();
     /*</methods>*/
 }

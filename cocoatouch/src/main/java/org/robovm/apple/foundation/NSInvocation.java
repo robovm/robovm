@@ -32,6 +32,7 @@ import org.robovm.apple.coreanimation.*;
 import org.robovm.apple.coregraphics.*;
 import org.robovm.apple.coremedia.*;
 import org.robovm.apple.security.*;
+import org.robovm.apple.dispatch.*;
 /*</imports>*/
 
 /*<javadoc>*/
@@ -50,24 +51,23 @@ import org.robovm.apple.security.*;
     protected NSInvocation(SkipInit skipInit) { super(skipInit); }
     /*</constructors>*/
     /*<properties>*/
-    
+    @Property(selector = "methodSignature")
+    public native NSMethodSignature getMethodSignature();
+    @Property(selector = "argumentsRetained")
+    public native boolean isArgumentsRetained();
+    @Property(selector = "target")
+    public native NSObject getTarget();
+    @Property(selector = "setTarget:", strongRef = true)
+    public native void setTarget(NSObject v);
+    @Property(selector = "selector")
+    public native Selector getSelector();
+    @Property(selector = "setSelector:")
+    public native void setSelector(Selector v);
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
-    @Method(selector = "methodSignature")
-    public native NSMethodSignature getMethodSignature();
     @Method(selector = "retainArguments")
     public native void retainArguments();
-    @Method(selector = "argumentsRetained")
-    public native boolean isArgumentsRetained();
-    @Method(selector = "target")
-    public native NSObject getTarget();
-    @Method(selector = "setTarget:")
-    public native void setTarget(NSObject target);
-    @Method(selector = "selector")
-    public native Selector getSelector();
-    @Method(selector = "setSelector:")
-    public native void setSelector(Selector selector);
     @Method(selector = "getReturnValue:")
     public native void getReturnValue(VoidPtr retLoc);
     @Method(selector = "setReturnValue:")

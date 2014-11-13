@@ -27,16 +27,23 @@ public class ModuleTest {
 
     @Test
     public void testParseIRString() {
-        Context context = new Context();
-        Module m = Module.parseIR(context, "define private i32 @foo() alwaysinline {\n ret i32 5\n }\n define private i32 @bar() optsize noinline nounwind {\n %a = call i32 @foo()\n ret i32 %a\n }\n", "Foo");
-        PassManager passManager = new PassManager();
-        passManager.addAlwaysInlinerPass();
-        passManager.addPromoteMemoryToRegisterPass();
-        passManager.run(m);
-        m.writeBitcode(new File("/tmp/test.bc"));
-        passManager.dispose();
-        m.dispose();
-        context.dispose();
+        try (Context context = new Context()) {
+            try (Module m = Module.parseIR(context, 
+                      "define private i32 @foo() alwaysinline {\n"
+                    + "  ret i32 5\n"
+                    + "}\n"
+                    + "define private i32 @bar() optsize noinline nounwind {\n"
+                    + "  %a = call i32 @foo()\n"
+                    + "  ret i32 %a\n"
+                    + "}\n", "Foo")) {
+                try (PassManager passManager = new PassManager()) {
+                    passManager.addAlwaysInlinerPass();
+                    passManager.addPromoteMemoryToRegisterPass();
+                    passManager.run(m);
+                    m.writeBitcode(new File("/tmp/test.bc"));
+                }
+            }
+        }
     }
 
 }

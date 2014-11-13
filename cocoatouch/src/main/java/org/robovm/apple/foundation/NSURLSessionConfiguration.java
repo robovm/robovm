@@ -32,7 +32,9 @@ import org.robovm.apple.coreanimation.*;
 import org.robovm.apple.coregraphics.*;
 import org.robovm.apple.coremedia.*;
 import org.robovm.apple.security.*;
+import org.robovm.apple.dispatch.*;
 /*</imports>*/
+import org.robovm.apple.coreservices.CFProxy;
 
 /*<javadoc>*/
 /**
@@ -85,6 +87,16 @@ import org.robovm.apple.security.*;
     @Property(selector = "setDiscretionary:")
     public native void setDiscretionary(boolean v);
     /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @Property(selector = "sharedContainerIdentifier")
+    public native String getSharedContainerIdentifier();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @Property(selector = "setSharedContainerIdentifier:")
+    public native void setSharedContainerIdentifier(String v);
+    /**
      * @since Available in iOS 7.0 and later.
      */
     @Property(selector = "sessionSendsLaunchEvents")
@@ -95,9 +107,9 @@ import org.robovm.apple.security.*;
     @Property(selector = "setSessionSendsLaunchEvents:")
     public native void setSessionSendsLaunchEvents(boolean v);
     @Property(selector = "connectionProxyDictionary")
-    public native NSDictionary<?, ?> getConnectionProxyDictionary();
+    public native CFProxy getConnectionProxy();
     @Property(selector = "setConnectionProxyDictionary:")
-    public native void setConnectionProxyDictionary(NSDictionary<?, ?> v);
+    public native void setConnectionProxy(CFProxy v);
     @Property(selector = "TLSMinimumSupportedProtocol")
     public native SSLProtocol getTLSMinimumSupportedProtocol();
     @Property(selector = "setTLSMinimumSupportedProtocol:")
@@ -119,9 +131,9 @@ import org.robovm.apple.security.*;
     @Property(selector = "setHTTPCookieAcceptPolicy:")
     public native void setHTTPCookieAcceptPolicy(NSHTTPCookieAcceptPolicy v);
     @Property(selector = "HTTPAdditionalHeaders")
-    public native NSDictionary<?, ?> getHTTPAdditionalHeaders();
+    public native @org.robovm.rt.bro.annotation.Marshaler(NSDictionary.AsStringStringMapMarshaler.class) Map<String, String> getHTTPAdditionalHeaders();
     @Property(selector = "setHTTPAdditionalHeaders:")
-    public native void setHTTPAdditionalHeaders(NSDictionary<?, ?> v);
+    public native void setHTTPAdditionalHeaders(@org.robovm.rt.bro.annotation.Marshaler(NSDictionary.AsStringStringMapMarshaler.class) Map<String, String> v);
     @Property(selector = "HTTPMaximumConnectionsPerHost")
     public native @MachineSizedSInt long getHTTPMaximumConnectionsPerHost();
     @Property(selector = "setHTTPMaximumConnectionsPerHost:")
@@ -139,17 +151,27 @@ import org.robovm.apple.security.*;
     @Property(selector = "setURLCache:")
     public native void setURLCache(NSURLCache v);
     @Property(selector = "protocolClasses")
-    public native NSArray<?> getProtocolClasses();
+    public native @org.robovm.rt.bro.annotation.Marshaler(NSArray.AsListMarshaler.class) List<ObjCClass> getProtocolClasses();
     @Property(selector = "setProtocolClasses:")
-    public native void setProtocolClasses(NSArray<?> v);
+    public native void setProtocolClasses(@org.robovm.rt.bro.annotation.Marshaler(NSArray.AsListMarshaler.class) List<ObjCClass> v);
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
     @Method(selector = "defaultSessionConfiguration")
-    public static native NSURLSessionConfiguration defaultSessionConfiguration();
+    public static native NSURLSessionConfiguration getDefaultSessionConfiguration();
     @Method(selector = "ephemeralSessionConfiguration")
-    public static native NSURLSessionConfiguration ephemeralSessionConfiguration();
+    public static native NSURLSessionConfiguration getEphemeralSessionConfiguration();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @Method(selector = "backgroundSessionConfigurationWithIdentifier:")
+    public static native NSURLSessionConfiguration getBackgroundSessionConfiguration(String identifier);
+    /**
+     * @since Available in iOS 7.0 and later.
+     * @deprecated Deprecated in iOS 8.0.
+     */
+    @Deprecated
     @Method(selector = "backgroundSessionConfiguration:")
-    public static native NSURLSessionConfiguration backgroundSessionConfiguration$(String identifier);
+    public static native NSURLSessionConfiguration getBackgroundSessionConfiguration7(String identifier);
     /*</methods>*/
 }

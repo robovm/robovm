@@ -32,6 +32,7 @@ import org.robovm.apple.coregraphics.*;
 import org.robovm.apple.coredata.*;
 import org.robovm.apple.coreimage.*;
 import org.robovm.apple.coretext.*;
+import org.robovm.apple.corelocation.*;
 /*</imports>*/
 
 /*<javadoc>*/
@@ -52,8 +53,8 @@ import org.robovm.apple.coretext.*;
     protected UITapGestureRecognizer(SkipInit skipInit) { super(skipInit); }
     /*</constructors>*/
     
-    public UITapGestureRecognizer(NSObject target, Selector action) {
-        super(target, action);
+    public UITapGestureRecognizer(GestureListener listener) {
+        super(listener);
     }
     
     /*<properties>*/

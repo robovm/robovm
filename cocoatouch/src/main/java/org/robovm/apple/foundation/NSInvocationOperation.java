@@ -32,6 +32,7 @@ import org.robovm.apple.coreanimation.*;
 import org.robovm.apple.coregraphics.*;
 import org.robovm.apple.coremedia.*;
 import org.robovm.apple.security.*;
+import org.robovm.apple.dispatch.*;
 /*</imports>*/
 
 /*<javadoc>*/
@@ -54,7 +55,10 @@ import org.robovm.apple.security.*;
     public NSInvocationOperation(NSInvocation inv) { super((SkipInit) null); initObject(initWithInvocation$(inv)); }
     /*</constructors>*/
     /*<properties>*/
-    
+    @Property(selector = "invocation")
+    public native NSInvocation getInvocation();
+    @Property(selector = "result")
+    public native NSObject getResult();
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
@@ -62,9 +66,5 @@ import org.robovm.apple.security.*;
     protected native @Pointer long initWithTarget$selector$object$(NSObject target, Selector sel, NSObject arg);
     @Method(selector = "initWithInvocation:")
     protected native @Pointer long initWithInvocation$(NSInvocation inv);
-    @Method(selector = "invocation")
-    public native NSInvocation getInvocation();
-    @Method(selector = "result")
-    public native NSObject getResult();
     /*</methods>*/
 }

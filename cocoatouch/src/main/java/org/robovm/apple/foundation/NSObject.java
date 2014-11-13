@@ -34,6 +34,7 @@ import org.robovm.apple.coreanimation.*;
 import org.robovm.apple.coregraphics.*;
 import org.robovm.apple.coremedia.*;
 import org.robovm.apple.security.*;
+import org.robovm.apple.dispatch.*;
 /*</imports>*/
 
 /*<javadoc>*/
@@ -101,7 +102,19 @@ import org.robovm.apple.security.*;
     
     /*</constructors>*/
     /*<properties>*/
-    
+    @Property(selector = "classForCoder")
+    public native ObjCClass getClassForCoder();
+    /**
+     * @since Available in iOS 4.0 and later.
+     */
+    @Property(selector = "autoContentAccessingProxy")
+    public native NSObject getAutoContentAccessingProxy();
+    @Property(selector = "observationInfo")
+    public native VoidPtr getObservationInfo();
+    @Property(selector = "setObservationInfo:")
+    public native void setObservationInfo(VoidPtr v);
+    @Property(selector = "classForKeyedArchiver")
+    public native ObjCClass getClassForKeyedArchiver();
     /*</properties>*/
     /*<members>*//*</members>*/
     
@@ -228,12 +241,12 @@ import org.robovm.apple.security.*;
         }
     }
     
-    protected void observeValue(String keyPath, NSObject object, NSDictionary<?, ?> change) {
+    protected void observeValue(String keyPath, NSObject object, NSKeyValueChangeInfo change) {
         
     }
     
     @Method(selector = "observeValueForKeyPath:ofObject:change:context:")
-    private void observeValueForKeyPath$ofObject$change$context$(String keyPath, NSObject object, NSDictionary<?, ?> change, VoidPtr context) {
+    private void observeValueForKeyPath$ofObject$change$context$(String keyPath, NSObject object, NSKeyValueChangeInfo change, VoidPtr context) {
         observeValue(keyPath, object, change);
     }
 
@@ -279,7 +292,7 @@ import org.robovm.apple.security.*;
     @Method(selector = "setValue:forUndefinedKey:")
     public native void setValueForUndefinedKey(NSObject value, String key);
     @Method(selector = "setNilValueForKey:")
-    public native void setNilValueForKey(String key);
+    public native void setNullValueForKey(String key);
     @Method(selector = "dictionaryWithValuesForKeys:")
     public native NSDictionary<?, ?> getDictionaryWithValuesForKeys(NSArray<?> keys);
     @Method(selector = "setValuesForKeysWithDictionary:")

@@ -32,6 +32,7 @@ import org.robovm.apple.coreanimation.*;
 import org.robovm.apple.coregraphics.*;
 import org.robovm.apple.coremedia.*;
 import org.robovm.apple.security.*;
+import org.robovm.apple.dispatch.*;
 /*</imports>*/
 
 /*<javadoc>*/
@@ -51,80 +52,199 @@ import org.robovm.apple.security.*;
     public NSScanner(String string) { super((SkipInit) null); initObject(initWithString$(string)); }
     /*</constructors>*/
     /*<properties>*/
-    
+    @Property(selector = "string")
+    public native String getString();
+    @Property(selector = "scanLocation")
+    public native @MachineSizedUInt long getScanLocation();
+    @Property(selector = "setScanLocation:")
+    public native void setScanLocation(@MachineSizedUInt long v);
+    @Property(selector = "charactersToBeSkipped")
+    public native NSCharacterSet getCharactersToBeSkipped();
+    @Property(selector = "setCharactersToBeSkipped:")
+    public native void setCharactersToBeSkipped(NSCharacterSet v);
+    @Property(selector = "caseSensitive")
+    public native boolean isCaseSensitive();
+    @Property(selector = "setCaseSensitive:")
+    public native void setCaseSensitive(boolean v);
+    @Property(selector = "locale")
+    public native NSLocale getLocale();
+    @Property(selector = "setLocale:")
+    public native void setLocale(NSLocale v);
+    @Property(selector = "isAtEnd")
+    public native boolean isAtEnd();
     /*</properties>*/
     /*<members>*//*</members>*/
+    public int scanInt() {
+        IntPtr ptr = new IntPtr();
+        if (!scanInt(ptr)) {
+            return 0;
+        }
+        return ptr.get();
+    }
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
+    public @MachineSizedSInt double scanInteger() {
+        MachineSizedSIntPtr ptr = new MachineSizedSIntPtr();
+        if (!scanInteger(ptr)) {
+            return 0;
+        }
+        return ptr.get();
+    }
+    public long scanLong() {
+        LongPtr ptr = new LongPtr();
+        if (!scanLongLong(ptr)) {
+            return 0;
+        }
+        return ptr.get();
+    }
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
+    public long scanUnsignedLong() {
+        LongPtr ptr = new LongPtr();
+        if (!scanUnsignedLongLong(ptr)) {
+            return 0;
+        }
+        return ptr.get();
+    }
+    public float scanFloat() {
+        FloatPtr ptr = new FloatPtr();
+        if (!scanFloat(ptr)) {
+            return 0;
+        }
+        return ptr.get();
+    }
+    public double scanDouble() {
+        DoublePtr ptr = new DoublePtr();
+        if (!scanDouble(ptr)) {
+            return 0;
+        }
+        return ptr.get();
+    }
+    public int scanHexInt() {
+        IntPtr ptr = new IntPtr();
+        if (!scanHexInt(ptr)) {
+            return 0;
+        }
+        return ptr.get();
+    }
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
+    public long scanHexLong() {
+        LongPtr ptr = new LongPtr();
+        if (!scanHexLongLong(ptr)) {
+            return 0;
+        }
+        return ptr.get();
+    }
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
+    public float scanHexFloat() {
+        FloatPtr ptr = new FloatPtr();
+        if (!scanHexFloat(ptr)) {
+            return 0;
+        }
+        return ptr.get();
+    }
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
+    public double scanHexDouble() {
+        DoublePtr ptr = new DoublePtr();
+        if (!scanHexDouble(ptr)) {
+            return 0;
+        }
+        return ptr.get();
+    }
+    public String scanString(String string) {
+        NSString.NSStringPtr ptr = new NSString.NSStringPtr();
+        if (!scanString(string, ptr)) {
+            return null;
+        }
+        return ptr.get().toString();
+    }
+    public String scanCharacters(NSCharacterSet set) {
+        NSString.NSStringPtr ptr = new NSString.NSStringPtr();
+        if (!scanCharactersFromSet(set, ptr)) {
+            return null;
+        }
+        return ptr.get().toString();
+    }
+    public String scanUpToString(String string) {
+        NSString.NSStringPtr ptr = new NSString.NSStringPtr();
+        if (!scanUpToString(string, ptr)) {
+            return null;
+        }
+        return ptr.get().toString();
+    }
+    public String scanUpToCharacters(NSCharacterSet set) {
+        NSString.NSStringPtr ptr = new NSString.NSStringPtr();
+        if (!scanUpToCharactersFromSet(set, ptr)) {
+            return null;
+        }
+        return ptr.get().toString();
+    }
+    public NSDecimal scanDecimal() {
+        NSDecimal.NSDecimalPtr ptr = new NSDecimal.NSDecimalPtr();
+        if (!scanDecimal(ptr)) {
+            return null;
+        }
+        return ptr.get();
+    }
     /*<methods>*/
-    @Method(selector = "string")
-    public native String string();
-    @Method(selector = "scanLocation")
-    public native @MachineSizedUInt long scanLocation();
-    @Method(selector = "setScanLocation:")
-    public native void setScanLocation(@MachineSizedUInt long pos);
-    @Method(selector = "setCharactersToBeSkipped:")
-    public native void setCharactersToBeSkipped(NSCharacterSet set);
-    @Method(selector = "setCaseSensitive:")
-    public native void setCaseSensitive(boolean flag);
-    @Method(selector = "setLocale:")
-    public native void setLocale(NSObject locale);
-    @Method(selector = "charactersToBeSkipped")
-    public native NSCharacterSet charactersToBeSkipped();
-    @Method(selector = "caseSensitive")
-    public native boolean caseSensitive();
-    @Method(selector = "locale")
-    public native NSObject locale();
+    @Method(selector = "initWithString:")
+    protected native @Pointer long initWithString$(String string);
     @Method(selector = "scanInt:")
-    public native boolean scanInt$(IntPtr result);
+    private native boolean scanInt(IntPtr result);
     /**
      * @since Available in iOS 2.0 and later.
      */
     @Method(selector = "scanInteger:")
-    public native boolean scanInteger$(MachineSizedSIntPtr result);
+    private native boolean scanInteger(MachineSizedSIntPtr result);
     @Method(selector = "scanLongLong:")
-    public native boolean scanLongLong$(LongPtr result);
+    private native boolean scanLongLong(LongPtr result);
     /**
      * @since Available in iOS 7.0 and later.
      */
     @Method(selector = "scanUnsignedLongLong:")
-    public native boolean scanUnsignedLongLong$(LongPtr result);
+    private native boolean scanUnsignedLongLong(LongPtr result);
     @Method(selector = "scanFloat:")
-    public native boolean scanFloat$(FloatPtr result);
+    private native boolean scanFloat(FloatPtr result);
     @Method(selector = "scanDouble:")
-    public native boolean scanDouble$(DoublePtr result);
+    private native boolean scanDouble(DoublePtr result);
     @Method(selector = "scanHexInt:")
-    public native boolean scanHexInt$(IntPtr result);
+    private native boolean scanHexInt(IntPtr result);
     /**
      * @since Available in iOS 2.0 and later.
      */
     @Method(selector = "scanHexLongLong:")
-    public native boolean scanHexLongLong$(LongPtr result);
+    private native boolean scanHexLongLong(LongPtr result);
     /**
      * @since Available in iOS 2.0 and later.
      */
     @Method(selector = "scanHexFloat:")
-    public native boolean scanHexFloat$(FloatPtr result);
+    private native boolean scanHexFloat(FloatPtr result);
     /**
      * @since Available in iOS 2.0 and later.
      */
     @Method(selector = "scanHexDouble:")
-    public native boolean scanHexDouble$(DoublePtr result);
+    private native boolean scanHexDouble(DoublePtr result);
     @Method(selector = "scanString:intoString:")
-    public native boolean scanString$intoString$(String string, NSString.NSStringPtr result);
+    private native boolean scanString(String string, NSString.NSStringPtr result);
     @Method(selector = "scanCharactersFromSet:intoString:")
-    public native boolean scanCharactersFromSet$intoString$(NSCharacterSet set, NSString.NSStringPtr result);
+    private native boolean scanCharactersFromSet(NSCharacterSet set, NSString.NSStringPtr result);
     @Method(selector = "scanUpToString:intoString:")
-    public native boolean scanUpToString$intoString$(String string, NSString.NSStringPtr result);
+    private native boolean scanUpToString(String string, NSString.NSStringPtr result);
     @Method(selector = "scanUpToCharactersFromSet:intoString:")
-    public native boolean scanUpToCharactersFromSet$intoString$(NSCharacterSet set, NSString.NSStringPtr result);
-    @Method(selector = "isAtEnd")
-    public native boolean isAtEnd();
-    @Method(selector = "initWithString:")
-    protected native @Pointer long initWithString$(String string);
+    private native boolean scanUpToCharactersFromSet(NSCharacterSet set, NSString.NSStringPtr result);
     @Method(selector = "scannerWithString:")
-    public static native NSObject scannerWithString$(String string);
+    public static native NSScanner create(String string);
     @Method(selector = "localizedScannerWithString:")
-    public static native NSObject localizedScannerWithString$(String string);
+    public static native NSScanner createLocalized(String string);
     @Method(selector = "scanDecimal:")
-    public native boolean scanDecimal$(NSDecimal dcm);
+    private native boolean scanDecimal(NSDecimal.NSDecimalPtr dcm);
     /*</methods>*/
 }

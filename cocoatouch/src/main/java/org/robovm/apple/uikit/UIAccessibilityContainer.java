@@ -32,6 +32,7 @@ import org.robovm.apple.coregraphics.*;
 import org.robovm.apple.coredata.*;
 import org.robovm.apple.coreimage.*;
 import org.robovm.apple.coretext.*;
+import org.robovm.apple.corelocation.*;
 /*</imports>*/
 
 /*<javadoc>*/
@@ -47,7 +48,16 @@ import org.robovm.apple.coretext.*;
     /*</bind>*/
     /*<constants>*//*</constants>*/
     /*<properties>*/
-    
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @Property(selector = "accessibilityElements")
+    NSArray<UIAccessibilityElement> getAccessibilityElements();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @Property(selector = "setAccessibilityElements:")
+    void setAccessibilityElements(NSArray<UIAccessibilityElement> v);
     /*</properties>*/
     /*<methods>*/
     @Method(selector = "accessibilityElementCount")

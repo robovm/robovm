@@ -32,6 +32,7 @@ import org.robovm.apple.coregraphics.*;
 import org.robovm.apple.coredata.*;
 import org.robovm.apple.coreimage.*;
 import org.robovm.apple.coretext.*;
+import org.robovm.apple.corelocation.*;
 /*</imports>*/
 
 /*<javadoc>*/
@@ -63,7 +64,7 @@ import org.robovm.apple.coretext.*;
      * @since Available in iOS 7.0 and later.
      */
     @Method(selector = "pageViewControllerSupportedInterfaceOrientations:")
-    @MachineSizedUInt long getSupportedInterfaceOrientations(UIPageViewController pageViewController);
+    UIInterfaceOrientationMask getSupportedInterfaceOrientations(UIPageViewController pageViewController);
     /**
      * @since Available in iOS 7.0 and later.
      */

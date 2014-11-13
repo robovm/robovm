@@ -31,10 +31,29 @@ import org.robovm.apple.foundation.*;
 
 /*<javadoc>*/
 /*</javadoc>*/
+@Marshaler(ACAccountTypeIdentifier.Marshaler.class)
 /*<annotations>*/@Library("Accounts")/*</annotations>*/
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/ACAccountTypeIdentifier/*</name>*/ 
     extends /*<extends>*/Object/*</extends>*/ 
     /*<implements>*//*</implements>*/ {
+    
+    public static class Marshaler {
+        @MarshalsPointer
+        public static ACAccountTypeIdentifier toObject(Class<ACAccountTypeIdentifier> cls, long handle, long flags) {
+            NSString o = (NSString) NSObject.Marshaler.toObject(NSString.class, handle, flags);
+            if (o == null) {
+                return null;
+            }
+            return ACAccountTypeIdentifier.valueOf(o);
+        }
+        @MarshalsPointer
+        public static long toNative(ACAccountTypeIdentifier o, long flags) {
+            if (o == null) {
+                return 0L;
+            }
+            return NSObject.Marshaler.toNative(o.value(), flags);
+        }
+    }
 
     /*<ptr>*/
     /*</ptr>*/
@@ -56,8 +75,8 @@ import org.robovm.apple.foundation.*;
      * @since Available in iOS 7.0 and later.
      */
     public static final ACAccountTypeIdentifier TencentWeibo = new ACAccountTypeIdentifier("TencentWeiboValue");
-    private static ACAccountTypeIdentifier[] values = new ACAccountTypeIdentifier[] {Twitter, Facebook, SinaWeibo, TencentWeibo};
     
+    private static ACAccountTypeIdentifier[] values = new ACAccountTypeIdentifier[] {Twitter, Facebook, SinaWeibo, TencentWeibo}; 
     private final LazyGlobalValue<NSString> lazyGlobalValue;
     
     private ACAccountTypeIdentifier(String getterName) {

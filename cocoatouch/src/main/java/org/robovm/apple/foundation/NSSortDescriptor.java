@@ -32,6 +32,7 @@ import org.robovm.apple.coreanimation.*;
 import org.robovm.apple.coregraphics.*;
 import org.robovm.apple.coremedia.*;
 import org.robovm.apple.security.*;
+import org.robovm.apple.dispatch.*;
 /*</imports>*/
 
 /*<javadoc>*/
@@ -45,31 +46,46 @@ import org.robovm.apple.security.*;
     /*<ptr>*/public static class NSSortDescriptorPtr extends Ptr<NSSortDescriptor, NSSortDescriptorPtr> {}/*</ptr>*/
     /*<bind>*/static { ObjCRuntime.bind(NSSortDescriptor.class); }/*</bind>*/
     /*<constants>*//*</constants>*/
+    public NSSortDescriptor(NSSortIdentifier key, boolean ascending) {
+        this(key.value(), ascending);
+    }
+    public NSSortDescriptor(NSSortIdentifier key, boolean ascending, Selector selector) {
+        this(key.value(), ascending, selector);
+    }
+    public NSSortDescriptor(NSSortIdentifier key, boolean ascending, @Block Block2<NSObject, NSObject, NSComparisonResult> cmptr) {
+        this(key.value(), ascending, cmptr);
+    }
     /*<constructors>*/
     public NSSortDescriptor() {}
     protected NSSortDescriptor(SkipInit skipInit) { super(skipInit); }
-    public NSSortDescriptor(String key, boolean ascending) { super((SkipInit) null); initObject(initWithKey$ascending$(key, ascending)); }
-    public NSSortDescriptor(String key, boolean ascending, Selector selector) { super((SkipInit) null); initObject(initWithKey$ascending$selector$(key, ascending, selector)); }
+    public NSSortDescriptor(String key, boolean ascending) { super((SkipInit) null); initObject(init(key, ascending)); }
+    public NSSortDescriptor(String key, boolean ascending, Selector selector) { super((SkipInit) null); initObject(init(key, ascending, selector)); }
     /**
      * @since Available in iOS 4.0 and later.
      */
-    public NSSortDescriptor(String key, boolean ascending, FunctionPtr cmptr) { super((SkipInit) null); initObject(initWithKey$ascending$comparator$(key, ascending, cmptr)); }
+    public NSSortDescriptor(String key, boolean ascending, @Block Block2<NSObject, NSObject, NSComparisonResult> cmptr) { super((SkipInit) null); initObject(init(key, ascending, cmptr)); }
     /*</constructors>*/
     /*<properties>*/
-    
+    @Property(selector = "key")
+    public native String getKey();
+    @Property(selector = "ascending")
+    public native boolean isAscending();
+    @Property(selector = "selector")
+    public native Selector getSelector();
+    /**
+     * @since Available in iOS 4.0 and later.
+     */
+    @Property(selector = "comparator")
+    public native @Block Block2<NSObject, NSObject, NSComparisonResult> getComparator();
+    @Property(selector = "reversedSortDescriptor")
+    public native NSSortDescriptor getReversedSortDescriptor();
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
     @Method(selector = "initWithKey:ascending:")
-    protected native @Pointer long initWithKey$ascending$(String key, boolean ascending);
+    protected native @Pointer long init(String key, boolean ascending);
     @Method(selector = "initWithKey:ascending:selector:")
-    protected native @Pointer long initWithKey$ascending$selector$(String key, boolean ascending, Selector selector);
-    @Method(selector = "key")
-    public native String key();
-    @Method(selector = "ascending")
-    public native boolean ascending();
-    @Method(selector = "selector")
-    public native Selector selector();
+    protected native @Pointer long init(String key, boolean ascending, Selector selector);
     /**
      * @since Available in iOS 7.0 and later.
      */
@@ -79,30 +95,8 @@ import org.robovm.apple.security.*;
      * @since Available in iOS 4.0 and later.
      */
     @Method(selector = "initWithKey:ascending:comparator:")
-    protected native @Pointer long initWithKey$ascending$comparator$(String key, boolean ascending, FunctionPtr cmptr);
-    /**
-     * @since Available in iOS 4.0 and later.
-     */
-    @Method(selector = "comparator")
-    public native FunctionPtr comparator();
+    protected native @Pointer long init(String key, boolean ascending, @Block Block2<NSObject, NSObject, NSComparisonResult> cmptr);
     @Method(selector = "compareObject:toObject:")
-    public native NSComparisonResult compareObject$toObject$(NSObject object1, NSObject object2);
-    @Method(selector = "reversedSortDescriptor")
-    public native NSObject reversedSortDescriptor();
-    /**
-     * @since Available in iOS 4.0 and later.
-     */
-    @Method(selector = "sortDescriptorWithKey:ascending:")
-    public static native NSObject sortDescriptorWithKey$ascending$(String key, boolean ascending);
-    /**
-     * @since Available in iOS 4.0 and later.
-     */
-    @Method(selector = "sortDescriptorWithKey:ascending:selector:")
-    public static native NSObject sortDescriptorWithKey$ascending$selector$(String key, boolean ascending, Selector selector);
-    /**
-     * @since Available in iOS 4.0 and later.
-     */
-    @Method(selector = "sortDescriptorWithKey:ascending:comparator:")
-    public static native NSObject sortDescriptorWithKey$ascending$comparator$(String key, boolean ascending, FunctionPtr cmptr);
+    public native NSComparisonResult compare(NSObject object1, NSObject object2);
     /*</methods>*/
 }

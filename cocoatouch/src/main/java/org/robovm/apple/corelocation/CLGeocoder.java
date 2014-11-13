@@ -27,6 +27,7 @@ import org.robovm.rt.bro.*;
 import org.robovm.rt.bro.annotation.*;
 import org.robovm.rt.bro.ptr.*;
 import org.robovm.apple.foundation.*;
+import org.robovm.apple.addressbook.*;
 /*</imports>*/
 
 /*<javadoc>*/
@@ -55,7 +56,7 @@ import org.robovm.apple.foundation.*;
     @Method(selector = "reverseGeocodeLocation:completionHandler:")
     public native void reverseGeocodeLocation(CLLocation location, @Block VoidBlock2<NSArray<CLPlacemark>, NSError> completionHandler);
     @Method(selector = "geocodeAddressDictionary:completionHandler:")
-    public native void geocodeAddress(NSDictionary<?, ?> addressDictionary, @Block VoidBlock2<NSArray<CLPlacemark>, NSError> completionHandler);
+    public native void geocodeAddress(ABPersonAddress addressDictionary, @Block VoidBlock2<NSArray<CLPlacemark>, NSError> completionHandler);
     @Method(selector = "geocodeAddressString:completionHandler:")
     public native void geocodeAddress(String addressString, @Block VoidBlock2<NSArray<CLPlacemark>, NSError> completionHandler);
     @Method(selector = "geocodeAddressString:inRegion:completionHandler:")

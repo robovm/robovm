@@ -46,14 +46,11 @@ import org.robovm.apple.foundation.*;
     public ACAccountType() {}
     protected ACAccountType(SkipInit skipInit) { super(skipInit); }
     /*</constructors>*/
-    public ACAccountTypeIdentifier getIdentifier() {
-        return ACAccountTypeIdentifier.valueOf(getIdentifier0());
-    }
     /*<properties>*/
     @Property(selector = "accountTypeDescription")
     public native String getAccountTypeDescription();
     @Property(selector = "identifier")
-    protected native NSString getIdentifier0();
+    public native ACAccountTypeIdentifier getIdentifier();
     @Property(selector = "accessGranted")
     public native boolean isAccessGranted();
     /*</properties>*/

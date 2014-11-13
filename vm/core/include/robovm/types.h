@@ -88,6 +88,7 @@ struct Method {
   void* attributes;
   void* impl;
   void* synchronizedImpl;
+  void* linetable;
 };
 
 struct NativeMethod {
@@ -123,7 +124,11 @@ struct Interface {
 
 struct Object {
   Class* clazz;
+#if defined(RVM_X86_64)
+  uint64_t lock;
+#else
   uint32_t lock;
+#endif
 };
 
 struct VITable {
@@ -269,14 +274,13 @@ struct Thread {
 
 struct Array {
   Object object;
-  jint length __attribute__ ((aligned (8)));
-  void* values[0];
+  jint length; // Must be 8 byte aligned!
 };
 
 #define MAKE_ARRAY(T, N) \
 typedef struct _ ## N ## Array { \
   Object object; \
-  jint length __attribute__ ((aligned (8))); \
+  jint length; /* Must be 8 byte aligned! */ \
   T values[0]; \
 } N ## Array;
 
@@ -364,6 +368,7 @@ typedef struct Options {
     jlong maxHeapSize;
     jlong initialHeapSize;
     jboolean enableGCHeapStats;
+    jboolean enableHooks;
     jboolean waitForAttach;
     jboolean printPID;
     char basePath[PATH_MAX];
@@ -404,6 +409,12 @@ typedef struct GatewayFrame {
     ProxyMethod* proxyMethod; // Whenever we call a dynamic proxy we push the ProxyMethod* here. This is used when generating stack traces.
 } GatewayFrame;
 
+/*
+ * Macros to push/pop GatewayFrames.
+ * IMPORTANT: rvmPushGatewayFrame() uses a local GatewayFrame which will be allocated on the stack.
+ *            The corresponding rvmPopGatewayFrame() call must be made in the same or a child scope 
+ *            of the scope of the push.
+ */
 #define rvmPushGatewayFrame0(env, f, address, pm)  \
     (f)->prev = env->gatewayFrames;                    \
     (f)->frameAddress = address;                       \
@@ -421,7 +432,18 @@ typedef struct GatewayFrame {
 struct TrycatchContext {
     struct TrycatchContext* prev;
     jint sel;
-#if defined(RVM_X86)
+#if defined(RVM_X86_64)
+    void* fp; // rbp
+    void* pc;
+    void* rbx;
+    void* rsp;
+    void* r12;
+    void* r13;
+    void* r14;
+    void* r15;
+    uint32_t mxcsr;
+    uint16_t fpucw;
+#elif defined(RVM_X86)
     void* fp;
     void* pc;
     void* esp;
@@ -448,6 +470,8 @@ struct TrycatchContext {
     double d13;
     double d14;
     double d15;
+#else
+#error Unsupported arch
 #endif
 };
 

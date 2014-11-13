@@ -32,6 +32,7 @@ import org.robovm.apple.coreanimation.*;
 import org.robovm.apple.coregraphics.*;
 import org.robovm.apple.coremedia.*;
 import org.robovm.apple.security.*;
+import org.robovm.apple.dispatch.*;
 /*</imports>*/
 
 /*<javadoc>*/
@@ -51,9 +52,9 @@ import org.robovm.apple.security.*;
     /*</properties>*/
     /*<methods>*/
     @Method(selector = "metadataQuery:replacementObjectForResultObject:")
-    NSObject metadataQuery$replacementObjectForResultObject$(NSMetadataQuery query, NSMetadataItem result);
+    NSObject getReplacementObject(NSMetadataQuery query, NSMetadataItem result);
     @Method(selector = "metadataQuery:replacementValueForAttribute:value:")
-    NSObject metadataQuery$replacementValueForAttribute$value$(NSMetadataQuery query, String attrName, NSObject attrValue);
+    NSObject getReplacementValue(NSMetadataQuery query, NSMetadataItemAttribute attribute, NSObject attrValue);
     /*</methods>*/
     /*<adapter>*/
     /*</adapter>*/

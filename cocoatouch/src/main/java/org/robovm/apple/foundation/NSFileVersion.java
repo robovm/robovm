@@ -32,6 +32,7 @@ import org.robovm.apple.coreanimation.*;
 import org.robovm.apple.coregraphics.*;
 import org.robovm.apple.coremedia.*;
 import org.robovm.apple.security.*;
+import org.robovm.apple.dispatch.*;
 /*</imports>*/
 
 /*<javadoc>*/
@@ -68,22 +69,79 @@ import org.robovm.apple.security.*;
     public native boolean isResolved();
     @Property(selector = "setResolved:")
     public native void setResolved(boolean v);
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @Property(selector = "hasLocalContents")
+    public native boolean isHasLocalContents();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @Property(selector = "hasThumbnail")
+    public native boolean isHasThumbnail();
     /*</properties>*/
     /*<members>*//*</members>*/
+    /**
+     * 
+     * @param url
+     * @param options
+     * @return
+     * @throws NSErrorException
+     */
+    public NSURL replaceItemAtURL(NSURL url, NSFileVersionReplacingOptions options) {
+        NSError.NSErrorPtr err = new NSError.NSErrorPtr();
+        NSURL result = replaceItemAtURL(url, options, err);
+        if (err.get() != null) {
+            throw new NSErrorException(err.get());
+        }
+        return result;
+    }
+    /**
+     * 
+     * @return
+     * @throws NSErrorException
+     */
+    public boolean remove() {
+        NSError.NSErrorPtr err = new NSError.NSErrorPtr();
+        boolean result = remove(err);
+        if (err.get() != null) {
+            throw new NSErrorException(err.get());
+        }
+        return result;
+    }
+    /**
+     * 
+     * @param url
+     * @return
+     * @throws NSErrorException
+     */
+    public static boolean removeOtherItemVersionsAtURL(NSURL url) {
+        NSError.NSErrorPtr err = new NSError.NSErrorPtr();
+        boolean result = removeOtherItemVersionsAtURL(url, err);
+        if (err.get() != null) {
+            throw new NSErrorException(err.get());
+        }
+        return result;
+    }
     /*<methods>*/
     @Method(selector = "replaceItemAtURL:options:error:")
-    public native NSURL replaceItemAtURL(NSURL url, NSFileVersionReplacingOptions options, NSError.NSErrorPtr error);
+    protected native NSURL replaceItemAtURL(NSURL url, NSFileVersionReplacingOptions options, NSError.NSErrorPtr error);
     @Method(selector = "removeAndReturnError:")
-    public native boolean remove(NSError.NSErrorPtr outError);
+    protected native boolean remove(NSError.NSErrorPtr outError);
     @Method(selector = "currentVersionOfItemAtURL:")
     public static native NSFileVersion getCurrentItemVersionAtURL(NSURL url);
     @Method(selector = "otherVersionsOfItemAtURL:")
     public static native NSArray<NSFileVersion> getOtherItemVersionsAtURL(NSURL url);
     @Method(selector = "unresolvedConflictVersionsOfItemAtURL:")
     public static native NSArray<NSFileVersion> getUnresolvedConflictItemVersionsAtURL(NSURL url);
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @Method(selector = "getNonlocalVersionsOfItemAtURL:completionHandler:")
+    public static native void getNonlocalItemVersionsAtURL(NSURL url, @Block VoidBlock2<NSArray<NSFileVersion>, NSError> completionHandler);
     @Method(selector = "versionOfItemAtURL:forPersistentIdentifier:")
     public static native NSFileVersion getItemVersionAtURL(NSURL url, NSObject persistentIdentifier);
     @Method(selector = "removeOtherVersionsOfItemAtURL:error:")
-    public static native boolean removeOtherItemVersionsAtURL(NSURL url, NSError.NSErrorPtr outError);
+    protected static native boolean removeOtherItemVersionsAtURL(NSURL url, NSError.NSErrorPtr outError);
     /*</methods>*/
 }

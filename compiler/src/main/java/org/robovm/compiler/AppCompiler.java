@@ -58,14 +58,11 @@ import org.robovm.compiler.plugin.Plugin;
 import org.robovm.compiler.plugin.PluginArgument;
 import org.robovm.compiler.target.LaunchParameters;
 import org.robovm.compiler.target.ios.DeviceType;
-import org.robovm.compiler.target.ios.IOSDeviceLaunchParameters;
 import org.robovm.compiler.target.ios.IOSSimulatorLaunchParameters;
 import org.robovm.compiler.target.ios.IOSTarget;
 import org.robovm.compiler.target.ios.ProvisioningProfile;
-import org.robovm.compiler.target.ios.SDK;
 import org.robovm.compiler.target.ios.SigningIdentity;
 import org.robovm.compiler.util.AntPathMatcher;
-import org.robovm.libimobiledevice.util.AppLauncher;
 
 /**
  *
@@ -576,11 +573,9 @@ public class AppCompiler {
                     } else {
                         simParams.setDeviceType(type);
                     }
-                } else if (launchParameters instanceof IOSDeviceLaunchParameters && compiler.config.isDebug()) {
-                    ((IOSDeviceLaunchParameters) launchParameters).setForwardPort(AppLauncher.DEFAULT_FORWARD_PORT);
                 }
                 launchParameters.setArguments(runArgs);
-                launch(compiler, launchParameters);
+                compiler.launch(launchParameters);
             } else if (createIpa) {
                 ((IOSTarget) compiler.config.getTarget()).createIpa();
             } else {
@@ -595,24 +590,46 @@ public class AppCompiler {
         }
     }
 
-    private static void launch(AppCompiler compiler, LaunchParameters launchParameters) throws Throwable {
-        for (LaunchPlugin plugin : compiler.config.getLaunchPlugins()) {
-            plugin.beforeLaunch(compiler.config, launchParameters);
+    public int launch(LaunchParameters launchParameters) throws Throwable {
+        return launch(launchParameters, null);
+    }
+
+    public int launch(LaunchParameters launchParameters, InputStream inputStream) throws Throwable {
+        try {
+            return launchAsync(launchParameters, inputStream).waitFor();
+        } finally {
+            launchAsyncCleanup();
+        }
+    }
+
+    public Process launchAsync(LaunchParameters launchParameters) throws Throwable {
+        return launchAsync(launchParameters, null);
+    }
+
+    public Process launchAsync(LaunchParameters launchParameters, InputStream inputStream) throws Throwable {
+        for (LaunchPlugin plugin : config.getLaunchPlugins()) {
+            plugin.beforeLaunch(config, launchParameters);
         }
         try {
-            Process process = compiler.config.getTarget().launch(launchParameters);
-            for (LaunchPlugin plugin : compiler.config.getLaunchPlugins()) {
-                plugin.afterLaunch(compiler.config, launchParameters, process);
+            Process process = config.getTarget().launch(launchParameters);
+            for (LaunchPlugin plugin : config.getLaunchPlugins()) {
+                plugin.afterLaunch(config, launchParameters, process);
             }
-            process.waitFor();
+            return process;
         } catch (Throwable e) {
-            for (LaunchPlugin plugin : compiler.config.getLaunchPlugins()) {
-                plugin.launchFailed(compiler.config, launchParameters);
+            for (LaunchPlugin plugin : config.getLaunchPlugins()) {
+                plugin.launchFailed(config, launchParameters);
             }
             throw e;
         }
     }
-    
+
+    public void launchAsyncCleanup() {
+        for (LaunchPlugin plugin : config.getLaunchPlugins()) {
+            plugin.cleanup();
+        }
+    }
+
     private static void printDeviceTypesAndExit(Home home) throws IOException {
         List<DeviceType> types = DeviceType.listDeviceTypes(home);
         for (DeviceType type : types) {
@@ -649,7 +666,7 @@ public class AppCompiler {
         System.err.println("  -clean                Compile class files even if a compiled version already \n" 
                          + "                        exists in the cache.");
         System.err.println("  -d <dir>              Install the generated executable and other files in <dir>.\n" 
-                         + "                        Default is <wd>/<class>. Ignored if -run is specified.");
+                         + "                        Default is <wd>/<executableName>. Ignored if -run is specified.");
         System.err.println("  -cc <path>            Path to the c compiler binary. gcc and clang are supported.");
         System.err.println("  -home <dir>           Directory where RoboVM runtime has been installed.\n"
                          + "                        Default is $ROBOVM_HOME. If not set the following paths\n" 
@@ -665,8 +682,8 @@ public class AppCompiler {
                          + "                        'auto', 'linux', 'macosx' and 'ios'. Default is 'auto' which\n" 
                          + "                        means use the LLVM deafult.");
         System.err.println("  -arch <name>          The name of the LLVM arch to compile for. Allowed values\n" 
-                         + "                        are 'auto', 'x86', 'thumbv7'. Default is 'auto' which means\n" 
-                         + "                        use the LLVM default.");
+                         + "                        are 'auto', 'x86', 'x86_64', 'thumbv7'. Default is 'auto'\n"
+                         + "                        which means use the LLVM default.");
         System.err.println("  -cpu <name>           The name of the LLVM cpu to compile for. The LLVM default\n" 
                          + "                        is used if not specified. Use llc to determine allowed values.");
         System.err.println("  -target <name>        The target to build for. Either 'auto', 'console' or 'ios'.\n" 
@@ -711,9 +728,9 @@ public class AppCompiler {
                          + "                        for custom frameworks.");
         System.err.println("  -resources <list>     : separated list of files and directories that should be\n"
                          + "                        copied to the install dir. Accepts Ant-style patterns.\n" 
-                         + "                        If a pattern is specified the left-most path before the\n" 
-                         + "                        first wildcard will be used as base directory and will not\n" 
-                         + "                        be recreated in the install dir.");
+                         + "                        If a pattern is specified the longest non-pattern path before\n" 
+                         + "                        the first wildcard will be used as base directory and will\n" 
+                         + "                        not be recreated in the install dir.");
         System.err.println("  -cacerts <value>      Use the specified cacerts file. Allowed value are 'none',\n" 
                          + "                        'full'. Default is 'full' but no cacerts will be included\n" 
                          + "                        unless the code actually needs them.");

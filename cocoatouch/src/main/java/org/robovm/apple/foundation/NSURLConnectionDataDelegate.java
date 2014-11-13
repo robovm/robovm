@@ -32,6 +32,7 @@ import org.robovm.apple.coreanimation.*;
 import org.robovm.apple.coregraphics.*;
 import org.robovm.apple.coremedia.*;
 import org.robovm.apple.security.*;
+import org.robovm.apple.dispatch.*;
 /*</imports>*/
 
 /*<javadoc>*/
@@ -51,19 +52,19 @@ import org.robovm.apple.security.*;
     /*</properties>*/
     /*<methods>*/
     @Method(selector = "connection:willSendRequest:redirectResponse:")
-    NSURLRequest connection$willSendRequest$redirectResponse$(NSURLConnection connection, NSURLRequest request, NSURLResponse response);
+    NSURLRequest willSendRequest(NSURLConnection connection, NSURLRequest request, NSURLResponse response);
     @Method(selector = "connection:didReceiveResponse:")
-    void connection$didReceiveResponse$(NSURLConnection connection, NSURLResponse response);
+    void didReceiveResponse(NSURLConnection connection, NSURLResponse response);
     @Method(selector = "connection:didReceiveData:")
-    void connection$didReceiveData$(NSURLConnection connection, NSData data);
+    void didReceiveData(NSURLConnection connection, NSData data);
     @Method(selector = "connection:needNewBodyStream:")
-    NSInputStream connection$needNewBodyStream$(NSURLConnection connection, NSURLRequest request);
+    NSInputStream needNewBodyStream(NSURLConnection connection, NSURLRequest request);
     @Method(selector = "connection:didSendBodyData:totalBytesWritten:totalBytesExpectedToWrite:")
-    void connection$didSendBodyData$totalBytesWritten$totalBytesExpectedToWrite$(NSURLConnection connection, @MachineSizedSInt long bytesWritten, @MachineSizedSInt long totalBytesWritten, @MachineSizedSInt long totalBytesExpectedToWrite);
+    void didSendBodyData(NSURLConnection connection, @MachineSizedSInt long bytesWritten, @MachineSizedSInt long totalBytesWritten, @MachineSizedSInt long totalBytesExpectedToWrite);
     @Method(selector = "connection:willCacheResponse:")
-    NSCachedURLResponse connection$willCacheResponse$(NSURLConnection connection, NSCachedURLResponse cachedResponse);
+    NSCachedURLResponse willCacheResponse(NSURLConnection connection, NSCachedURLResponse cachedResponse);
     @Method(selector = "connectionDidFinishLoading:")
-    void connectionDidFinishLoading$(NSURLConnection connection);
+    void didFinishLoading(NSURLConnection connection);
     /*</methods>*/
     /*<adapter>*/
     /*</adapter>*/

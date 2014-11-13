@@ -190,6 +190,7 @@ static jint attachThread(VM* vm, Env** envPtr, char* name, Object* group, jboole
     if (rvmExceptionOccurred(env)) goto error_remove;
 
     *envPtr = env;
+    rvmHookThreadAttached(env, threadObj, thread);
 
     return JNI_OK;
 
@@ -222,7 +223,7 @@ static void threadExitUncaughtException(Env* env, Thread* thread) {
 }
 
 
-static jint detachThread(Env* env, jboolean ignoreAttachCount, jboolean unregisterGC) {
+static jint detachThread(Env* env, jboolean ignoreAttachCount, jboolean unregisterGC, jboolean wasAttached) {
     env->attachCount--;
     if (!ignoreAttachCount && env->attachCount > 0) {
         return JNI_OK;
@@ -235,13 +236,18 @@ static jint detachThread(Env* env, jboolean ignoreAttachCount, jboolean unregist
     // TODO: Release all monitors still held by this thread (should only be monitors acquired from JNI code)
 
     Thread* thread = env->currentThread;
+    JavaThread* threadObj = thread->threadObj;
+
+    if (wasAttached) {
+        rvmHookThreadDetaching(env, threadObj, thread, env->throwable);
+    }
 
     if (rvmExceptionOccurred(env)) {
         threadExitUncaughtException(env, thread);
     }
 
-    if (thread->threadObj->group) {
-        rvmCallVoidInstanceMethod(env, thread->threadObj->group, removeThreadMethod, thread->threadObj);
+    if (threadObj->group) {
+        rvmCallVoidInstanceMethod(env, threadObj->group, removeThreadMethod, threadObj);
         rvmExceptionClear(env);
     }
 
@@ -249,9 +255,9 @@ static jint detachThread(Env* env, jboolean ignoreAttachCount, jboolean unregist
     rvmAtomicStoreLong(&thread->threadObj->threadPtr, 0);
 
     // Notify anyone waiting on this thread (using Thread.join())
-    rvmLockObject(env, thread->threadObj->lock);
-    rvmObjectNotifyAll(env, thread->threadObj->lock);
-    rvmUnlockObject(env, thread->threadObj->lock);
+    rvmLockObject(env, threadObj->lock);
+    rvmObjectNotifyAll(env, threadObj->lock);
+    rvmUnlockObject(env, threadObj->lock);
 
     rvmLockThreadsList();
     thread->status = THREAD_ZOMBIE;
@@ -285,6 +291,7 @@ jboolean rvmInitThreads(Env* env) {
     if (!uncaughtExceptionMethod) return FALSE;
     removeThreadMethod = rvmGetInstanceMethod(env, java_lang_ThreadGroup, "removeThread", "(Ljava/lang/Thread;)V");
     if (!removeThreadMethod) return FALSE;
+    rvmHookBeforeMainThreadAttached(env);
     return attachThread(env->vm, &env, "main", NULL, FALSE) == JNI_OK;
 }
 
@@ -306,7 +313,7 @@ Env* rvmGetEnv(void) {
 jint rvmDetachCurrentThread(VM* vm, jboolean ignoreAttachCount, jboolean unregisterGC) {
     Env* env = rvmGetEnv();
     if (!env) return JNI_EDETACHED;
-    return detachThread(env, ignoreAttachCount, unregisterGC);
+    return detachThread(env, ignoreAttachCount, unregisterGC, TRUE);
 }
 
 typedef struct ThreadEntryPointArgs {
@@ -346,6 +353,7 @@ static void* startThreadEntryPoint(void* _args) {
 
         rvmChangeThreadPriority(env, thread, thread->threadObj->priority);
 
+        rvmHookThreadStarting(env, threadObj, thread);
         Method* run = rvmGetInstanceMethod(env, java_lang_Thread, "run", "()V");
         if (run) {
             jvalue emptyArgs[0];
@@ -353,7 +361,7 @@ static void* startThreadEntryPoint(void* _args) {
         }
     }
 
-    detachThread(env, TRUE, FALSE);
+    detachThread(env, TRUE, FALSE, !failure);
 
     return NULL;
 }

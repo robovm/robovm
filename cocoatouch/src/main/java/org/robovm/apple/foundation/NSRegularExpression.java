@@ -32,6 +32,7 @@ import org.robovm.apple.coreanimation.*;
 import org.robovm.apple.coregraphics.*;
 import org.robovm.apple.coremedia.*;
 import org.robovm.apple.security.*;
+import org.robovm.apple.dispatch.*;
 /*</imports>*/
 
 /*<javadoc>*/
@@ -47,9 +48,22 @@ import org.robovm.apple.security.*;
     /*<ptr>*/public static class NSRegularExpressionPtr extends Ptr<NSRegularExpression, NSRegularExpressionPtr> {}/*</ptr>*/
     /*<bind>*/static { ObjCRuntime.bind(NSRegularExpression.class); }/*</bind>*/
     /*<constants>*//*</constants>*/
+    /**
+     * 
+     * @param pattern
+     * @param options
+     * @throws NSErrorException
+     */
+    public NSRegularExpression(String pattern, NSRegularExpressionOptions options) {
+        super((SkipInit) null);
+        NSError.NSErrorPtr err = new NSError.NSErrorPtr();
+        initObject(init(pattern, options, err));
+        if (err.get() != null) {
+            throw new NSErrorException(err.get());
+        }
+    }
     /*<constructors>*/
     protected NSRegularExpression(SkipInit skipInit) { super(skipInit); }
-    public NSRegularExpression(String pattern, NSRegularExpressionOptions options, NSError.NSErrorPtr error) { super((SkipInit) null); initObject(initWithPattern$options$error$(pattern, options, error)); }
     /*</constructors>*/
     /*<properties>*/
     @Property(selector = "pattern")
@@ -62,11 +76,11 @@ import org.robovm.apple.security.*;
     /*<members>*//*</members>*/
     /*<methods>*/
     @Method(selector = "initWithPattern:options:error:")
-    protected native @Pointer long initWithPattern$options$error$(String pattern, NSRegularExpressionOptions options, NSError.NSErrorPtr error);
+    protected native @Pointer long init(String pattern, NSRegularExpressionOptions options, NSError.NSErrorPtr error);
     @Method(selector = "escapedPatternForString:")
-    public static native String escapedPattern(String string);
+    public static native String getEscapedPattern(String string);
     @Method(selector = "enumerateMatchesInString:options:range:usingBlock:")
-    public native void enumerateMatches(String string, NSMatchingOptions options, @ByVal NSRange range, @Block VoidBlock3<NSTextCheckingResult, NSMatchingFlags, BytePtr> block);
+    public native void enumerateMatches(String string, NSMatchingOptions options, @ByVal NSRange range, @Block VoidBlock3<NSTextCheckingResult, NSMatchingFlags, BooleanPtr> block);
     @Method(selector = "matchesInString:options:range:")
     public native NSArray<NSTextCheckingResult> getMatches(String string, NSMatchingOptions options, @ByVal NSRange range);
     @Method(selector = "numberOfMatchesInString:options:range:")
@@ -82,7 +96,7 @@ import org.robovm.apple.security.*;
     @Method(selector = "replacementStringForResult:inString:offset:template:")
     public native String getReplacementString(NSTextCheckingResult result, String string, @MachineSizedSInt long offset, String templ);
     @Method(selector = "escapedTemplateForString:")
-    public static native String escapedTemplate(String string);
+    public static native String getEscapedTemplate(String string);
     @Method(selector = "encodeWithCoder:")
     public native void encode(NSCoder aCoder);
     /*</methods>*/

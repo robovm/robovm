@@ -32,6 +32,7 @@ import org.robovm.apple.coregraphics.*;
 import org.robovm.apple.coredata.*;
 import org.robovm.apple.coreimage.*;
 import org.robovm.apple.coretext.*;
+import org.robovm.apple.corelocation.*;
 /*</imports>*/
 
 /*<javadoc>*/
@@ -42,7 +43,7 @@ import org.robovm.apple.coretext.*;
 /*<annotations>*/@Library("UIKit") @NativeClass/*</annotations>*/
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/UIImage/*</name>*/ 
     extends /*<extends>*/NSObject/*</extends>*/ 
-    /*<implements>*/implements NSCoding, UIAccessibilityIdentification/*</implements>*/ {
+    /*<implements>*/implements UIAccessibilityIdentification/*</implements>*/ {
 
     /*<ptr>*/public static class UIImagePtr extends Ptr<UIImage, UIImagePtr> {}/*</ptr>*/
     /*<bind>*/static { ObjCRuntime.bind(UIImage.class); }/*</bind>*/
@@ -122,6 +123,16 @@ import org.robovm.apple.coretext.*;
      */
     @Property(selector = "renderingMode")
     public native UIImageRenderingMode getRenderingMode();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @Property(selector = "traitCollection")
+    public native UITraitCollection getTraitCollection();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @Property(selector = "imageAsset")
+    public native UIImageAsset getImageAsset();
     @Property(selector = "leftCapWidth")
     public native @MachineSizedSInt long getLeftCapWidth();
     @Property(selector = "topCapHeight")
@@ -207,6 +218,8 @@ import org.robovm.apple.coretext.*;
     public native UIImage create(UIImageRenderingMode renderingMode);
     @Method(selector = "imageNamed:")
     public static native UIImage create(String name);
+    @Method(selector = "imageNamed:inBundle:compatibleWithTraitCollection:")
+    public static native UIImage create(String name, NSBundle bundle, UITraitCollection traitCollection);
     @Method(selector = "imageWithContentsOfFile:")
     protected static native UIImage createFromFile(String path);
     @Method(selector = "imageWithData:")
@@ -255,7 +268,5 @@ import org.robovm.apple.coretext.*;
     public static native UIImage createAnimated(NSArray<UIImage> images, double duration);
     @Method(selector = "stretchableImageWithLeftCapWidth:topCapHeight:")
     public native UIImage createStretchable(@MachineSizedSInt long leftCapWidth, @MachineSizedSInt long topCapHeight);
-    @Method(selector = "encodeWithCoder:")
-    public native void encode(NSCoder aCoder);
     /*</methods>*/
 }

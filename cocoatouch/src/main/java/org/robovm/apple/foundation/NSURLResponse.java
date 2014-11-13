@@ -32,6 +32,7 @@ import org.robovm.apple.coreanimation.*;
 import org.robovm.apple.coregraphics.*;
 import org.robovm.apple.coremedia.*;
 import org.robovm.apple.security.*;
+import org.robovm.apple.dispatch.*;
 /*</imports>*/
 
 /*<javadoc>*/
@@ -44,28 +45,29 @@ import org.robovm.apple.security.*;
 
     /*<ptr>*/public static class NSURLResponsePtr extends Ptr<NSURLResponse, NSURLResponsePtr> {}/*</ptr>*/
     /*<bind>*/static { ObjCRuntime.bind(NSURLResponse.class); }/*</bind>*/
-    /*<constants>*//*</constants>*/
+    /*<constants>*/
+    public static final int UnknownLength = -1;
+    /*</constants>*/
     /*<constructors>*/
     public NSURLResponse() {}
     protected NSURLResponse(SkipInit skipInit) { super(skipInit); }
     public NSURLResponse(NSURL URL, String MIMEType, @MachineSizedSInt long length, String name) { super((SkipInit) null); initObject(initWithURL$MIMEType$expectedContentLength$textEncodingName$(URL, MIMEType, length, name)); }
     /*</constructors>*/
     /*<properties>*/
-    
+    @Property(selector = "URL")
+    public native NSURL getURL();
+    @Property(selector = "MIMEType")
+    public native String getMIMEType();
+    @Property(selector = "expectedContentLength")
+    public native long getExpectedContentLength();
+    @Property(selector = "textEncodingName")
+    public native String getTextEncodingName();
+    @Property(selector = "suggestedFilename")
+    public native String getSuggestedFilename();
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
     @Method(selector = "initWithURL:MIMEType:expectedContentLength:textEncodingName:")
     protected native @Pointer long initWithURL$MIMEType$expectedContentLength$textEncodingName$(NSURL URL, String MIMEType, @MachineSizedSInt long length, String name);
-    @Method(selector = "URL")
-    public native NSURL URL();
-    @Method(selector = "MIMEType")
-    public native String MIMEType();
-    @Method(selector = "expectedContentLength")
-    public native long expectedContentLength();
-    @Method(selector = "textEncodingName")
-    public native String textEncodingName();
-    @Method(selector = "suggestedFilename")
-    public native String suggestedFilename();
     /*</methods>*/
 }

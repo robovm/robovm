@@ -32,6 +32,7 @@ import org.robovm.apple.coreanimation.*;
 import org.robovm.apple.coregraphics.*;
 import org.robovm.apple.coremedia.*;
 import org.robovm.apple.security.*;
+import org.robovm.apple.dispatch.*;
 /*</imports>*/
 
 /*<javadoc>*/
@@ -53,25 +54,25 @@ import org.robovm.apple.security.*;
     /*<members>*//*</members>*/
     /*<methods>*/
     @NotImplemented("netServiceWillPublish:")
-    public void netServiceWillPublish$(NSNetService sender) { throw new UnsupportedOperationException(); }
+    public void willPublish(NSNetService sender) { throw new UnsupportedOperationException(); }
     @NotImplemented("netServiceDidPublish:")
-    public void netServiceDidPublish$(NSNetService sender) { throw new UnsupportedOperationException(); }
+    public void didPublish(NSNetService sender) { throw new UnsupportedOperationException(); }
     @NotImplemented("netService:didNotPublish:")
-    public void netService$didNotPublish$(NSNetService sender, NSDictionary<?, ?> errorDict) { throw new UnsupportedOperationException(); }
+    public void didNotPublish(NSNetService sender, NSNetServiceErrorInfo errorDict) { throw new UnsupportedOperationException(); }
     @NotImplemented("netServiceWillResolve:")
-    public void netServiceWillResolve$(NSNetService sender) { throw new UnsupportedOperationException(); }
+    public void willResolve(NSNetService sender) { throw new UnsupportedOperationException(); }
     @NotImplemented("netServiceDidResolveAddress:")
-    public void netServiceDidResolveAddress$(NSNetService sender) { throw new UnsupportedOperationException(); }
+    public void didResolve(NSNetService sender) { throw new UnsupportedOperationException(); }
     @NotImplemented("netService:didNotResolve:")
-    public void netService$didNotResolve$(NSNetService sender, NSDictionary<?, ?> errorDict) { throw new UnsupportedOperationException(); }
+    public void didNotResolve(NSNetService sender, NSNetServiceErrorInfo errorDict) { throw new UnsupportedOperationException(); }
     @NotImplemented("netServiceDidStop:")
-    public void netServiceDidStop$(NSNetService sender) { throw new UnsupportedOperationException(); }
+    public void didStop(NSNetService sender) { throw new UnsupportedOperationException(); }
     @NotImplemented("netService:didUpdateTXTRecordData:")
-    public void netService$didUpdateTXTRecordData$(NSNetService sender, NSData data) { throw new UnsupportedOperationException(); }
+    public void didUpdateTXTRecordData(NSNetService sender, NSData data) { throw new UnsupportedOperationException(); }
     /**
      * @since Available in iOS 7.0 and later.
      */
     @NotImplemented("netService:didAcceptConnectionWithInputStream:outputStream:")
-    public void netService$didAcceptConnectionWithInputStream$outputStream$(NSNetService sender, NSInputStream inputStream, NSOutputStream outputStream) { throw new UnsupportedOperationException(); }
+    public void didAcceptConnection(NSNetService sender, NSInputStream inputStream, NSOutputStream outputStream) { throw new UnsupportedOperationException(); }
     /*</methods>*/
 }

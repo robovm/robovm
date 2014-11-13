@@ -32,6 +32,7 @@ import org.robovm.apple.coregraphics.*;
 import org.robovm.apple.coredata.*;
 import org.robovm.apple.coreimage.*;
 import org.robovm.apple.coretext.*;
+import org.robovm.apple.corelocation.*;
 /*</imports>*/
 
 /*<javadoc>*/
@@ -64,6 +65,16 @@ import org.robovm.apple.coretext.*;
     public native @ByVal CGSize getItemSize();
     @Property(selector = "setItemSize:")
     public native void setItemSize(@ByVal CGSize v);
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @Property(selector = "estimatedItemSize")
+    public native @ByVal CGSize getEstimatedItemSize();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @Property(selector = "setEstimatedItemSize:")
+    public native void setEstimatedItemSize(@ByVal CGSize v);
     @Property(selector = "scrollDirection")
     public native UICollectionViewScrollDirection getScrollDirection();
     @Property(selector = "setScrollDirection:")

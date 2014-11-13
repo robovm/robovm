@@ -458,6 +458,14 @@ public abstract class Body extends AbstractHost implements Serializable
             }
         }
 
+        // RoboVM note: Added
+        {
+            Iterator<LocalVariable> it = localVariables.iterator();
+            while(it.hasNext()) {
+                LocalVariable item = it.next();
+                unitBoxList.addAll(item.getUnitBoxes());
+            }
+        }
 
         return unitBoxList;
     }

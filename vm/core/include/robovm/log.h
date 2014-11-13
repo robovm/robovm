@@ -52,7 +52,7 @@ typedef enum LogLevel {
     LOG_LEVEL_SILENT,
 } LogLevel;
 
-extern jboolean rvmInitLog(Env* env);
+extern jboolean rvmInitLog(Options* options);
 extern jboolean rvmLogIsTraceEnabled();
 extern jboolean rvmLogIsDebugEnabled();
 extern jboolean rvmLogIsInfoEnabled();

@@ -30,37 +30,30 @@ import org.robovm.apple.foundation.*;
 /*</imports>*/
 
 /*<javadoc>*/
-
 /*</javadoc>*/
-/*<annotations>*//*</annotations>*/
-public enum /*<name>*/CMError/*</name>*/ implements ValuedEnum {
-    /*<values>*/
-    NULL(100L),
-    DeviceRequiresMovement(101L),
-    TrueNorthNotAvailable(102L),
-    Unknown(103L),
-    MotionActivityNotAvailable(104L),
-    MotionActivityNotAuthorized(105L),
-    MotionActivityNotEntitled(106L),
-    InvalidParameter(107L);
-    /*</values>*/
+/*<annotations>*/@Library("CoreMotion")/*</annotations>*/
+/*<visibility>*/public/*</visibility>*/ class /*<name>*/CMError/*</name>*/ 
+    extends /*<extends>*/NSError/*</extends>*/ 
+    /*<implements>*//*</implements>*/ {
 
-    /*<bind>*/
-    /*</bind>*/
-    /*<constants>*//*</constants>*/
-    /*<methods>*//*</methods>*/
-
-    private final long n;
-
-    private /*<name>*/CMError/*</name>*/(long n) { this.n = n; }
-    public long value() { return n; }
-    public static /*<name>*/CMError/*</name>*/ valueOf(long n) {
-        for (/*<name>*/CMError/*</name>*/ v : values()) {
-            if (v.n == n) {
-                return v;
-            }
-        }
-        throw new IllegalArgumentException("No constant with value " + n + " found in " 
-            + /*<name>*/CMError/*</name>*/.class.getName());
+    protected CMError(SkipInit skipInit) {
+        super(skipInit);
     }
+    
+    /*<ptr>*/public static class CMErrorPtr extends Ptr<CMError, CMErrorPtr> {}/*</ptr>*/
+    /*<bind>*/static { Bro.bind(CMError.class); }/*</bind>*/
+    /*<constants>*//*</constants>*/
+    /*<properties>*//*</properties>*/
+    /*<members>*//*</members>*/
+    @Override
+    public CMErrorCode getErrorCode() {
+        return CMErrorCode.valueOf(getCode());
+    }
+    /*<methods>*/
+    /**
+     * @since Available in iOS 4.0 and later.
+     */
+    @GlobalValue(symbol="CMErrorDomain", optional=true)
+    public static native String getClassDomain();
+    /*</methods>*/
 }

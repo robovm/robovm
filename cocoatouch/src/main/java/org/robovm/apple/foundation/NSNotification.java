@@ -32,6 +32,7 @@ import org.robovm.apple.coreanimation.*;
 import org.robovm.apple.coregraphics.*;
 import org.robovm.apple.coremedia.*;
 import org.robovm.apple.security.*;
+import org.robovm.apple.dispatch.*;
 /*</imports>*/
 
 /*<javadoc>*/
@@ -51,23 +52,25 @@ import org.robovm.apple.security.*;
      * @since Available in iOS 4.0 and later.
      */
     public NSNotification(NSString name, NSObject object, NSDictionary<NSString, NSObject> userInfo) { super((SkipInit) null); initObject(initWithName$object$userInfo$(name, object, userInfo)); }
+    public NSNotification(NSCoder aDecoder) { super((SkipInit) null); initObject(initWithCoder$(aDecoder)); }
     /*</constructors>*/
     /*<properties>*/
-    
+    @Property(selector = "name")
+    public native NSString getName();
+    @Property(selector = "object")
+    public native NSObject getObject();
+    @Property(selector = "userInfo")
+    public native NSDictionary<NSString, NSObject> getUserInfo();
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
-    @Method(selector = "name")
-    public native NSString getName();
-    @Method(selector = "object")
-    public native NSObject getObject();
-    @Method(selector = "userInfo")
-    public native NSDictionary<NSString, NSObject> getUserInfo();
     /**
      * @since Available in iOS 4.0 and later.
      */
     @Method(selector = "initWithName:object:userInfo:")
     protected native @Pointer long initWithName$object$userInfo$(NSString name, NSObject object, NSDictionary<NSString, NSObject> userInfo);
+    @Method(selector = "initWithCoder:")
+    protected native @Pointer long initWithCoder$(NSCoder aDecoder);
     @Method(selector = "encodeWithCoder:")
     public native void encode(NSCoder aCoder);
     /*</methods>*/

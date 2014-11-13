@@ -32,6 +32,7 @@ import org.robovm.apple.coregraphics.*;
 import org.robovm.apple.coredata.*;
 import org.robovm.apple.coreimage.*;
 import org.robovm.apple.coretext.*;
+import org.robovm.apple.corelocation.*;
 /*</imports>*/
 
 /*<javadoc>*/
@@ -55,9 +56,17 @@ import org.robovm.apple.coretext.*;
      * @since Available in iOS 4.2 and later.
      */
     public static final UIAccessibilityNotification PageScrolled = new UIAccessibilityNotification("PageScrolledNotification");
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    public static final UIAccessibilityNotification PauseAssistiveTechnology = new UIAccessibilityNotification("PauseAssistiveTechnologyNotification");
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    public static final UIAccessibilityNotification ResumeAssistiveTechnology = new UIAccessibilityNotification("ResumeAssistiveTechnologyNotification");
     
-    private static UIAccessibilityNotification[] values = new UIAccessibilityNotification[] {ScreenChanged, LayoutChanged, Announcement, PageScrolled};
-
+    private static UIAccessibilityNotification[] values = new UIAccessibilityNotification[] {ScreenChanged, LayoutChanged, Announcement, PageScrolled, 
+        PauseAssistiveTechnology, ResumeAssistiveTechnology};
     private final LazyGlobalValue<Integer> lazyGlobalValue;
     
     private UIAccessibilityNotification(String getterName) {
@@ -94,5 +103,15 @@ import org.robovm.apple.coretext.*;
      */
     @GlobalValue(symbol="UIAccessibilityPageScrolledNotification", optional=true)
     protected static native int PageScrolledNotification();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @GlobalValue(symbol="UIAccessibilityPauseAssistiveTechnologyNotification", optional=true)
+    protected static native int PauseAssistiveTechnologyNotification();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @GlobalValue(symbol="UIAccessibilityResumeAssistiveTechnologyNotification", optional=true)
+    protected static native int ResumeAssistiveTechnologyNotification();
     /*</methods>*/
 }

@@ -32,6 +32,7 @@ import org.robovm.apple.coreanimation.*;
 import org.robovm.apple.coregraphics.*;
 import org.robovm.apple.coremedia.*;
 import org.robovm.apple.security.*;
+import org.robovm.apple.dispatch.*;
 /*</imports>*/
 
 /*<javadoc>*/
@@ -44,13 +45,19 @@ import org.robovm.apple.security.*;
 
     /*<ptr>*/public static class NSCharacterSetPtr extends Ptr<NSCharacterSet, NSCharacterSetPtr> {}/*</ptr>*/
     /*<bind>*/static { ObjCRuntime.bind(NSCharacterSet.class); }/*</bind>*/
-    /*<constants>*//*</constants>*/
+    /*<constants>*/
+    public static final int OpenStepUnicodeReservedBase = 62464;
+    /*</constants>*/
     /*<constructors>*/
     public NSCharacterSet() {}
     protected NSCharacterSet(SkipInit skipInit) { super(skipInit); }
+    public NSCharacterSet(NSCoder aDecoder) { super((SkipInit) null); initObject(initWithCoder$(aDecoder)); }
     /*</constructors>*/
     /*<properties>*/
-    
+    @Property(selector = "bitmapRepresentation")
+    public native NSData getBitmapRepresentation();
+    @Property(selector = "invertedSet")
+    public native NSCharacterSet getInvertedSet();
     /*</properties>*/
     /*<members>*//*</members>*/
     
@@ -62,12 +69,10 @@ import org.robovm.apple.security.*;
     }
     
     /*<methods>*/
+    @Method(selector = "initWithCoder:")
+    protected native @Pointer long initWithCoder$(NSCoder aDecoder);
     @Method(selector = "characterIsMember:")
     public native boolean isMember(short aCharacter);
-    @Method(selector = "bitmapRepresentation")
-    public native NSData getBitmapRepresentation();
-    @Method(selector = "invertedSet")
-    public native NSCharacterSet getInvertedSet();
     @Method(selector = "longCharacterIsMember:")
     public native boolean isMember(int theLongChar);
     @Method(selector = "isSupersetOfSet:")

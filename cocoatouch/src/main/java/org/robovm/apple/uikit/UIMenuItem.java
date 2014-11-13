@@ -32,6 +32,7 @@ import org.robovm.apple.coregraphics.*;
 import org.robovm.apple.coredata.*;
 import org.robovm.apple.coreimage.*;
 import org.robovm.apple.coretext.*;
+import org.robovm.apple.corelocation.*;
 /*</imports>*/
 
 /*<javadoc>*/
@@ -47,10 +48,42 @@ import org.robovm.apple.coretext.*;
     /*<ptr>*/public static class UIMenuItemPtr extends Ptr<UIMenuItem, UIMenuItemPtr> {}/*</ptr>*/
     /*<bind>*/static { ObjCRuntime.bind(UIMenuItem.class); }/*</bind>*/
     /*<constants>*//*</constants>*/
+    
+    public interface OnActionListener {
+        void onAction(UIMenuController menuController, UIMenuItem item);
+    }
+    
+    private OnActionListener listener;
+    private static final Selector handleAction = Selector.register("action:");
+    
+    @Method(selector = "action:")
+    private void handleAction(UIMenuController menuController) {
+        listener.onAction(menuController, this);
+    }
+    
+    public UIMenuItem(OnActionListener listener) {
+        if (listener != null) {
+            this.listener = listener;
+            setAction(handleAction);
+            addStrongRef(this.listener);
+        }
+    }
+    
+    public UIMenuItem(String title, OnActionListener listener) {
+        super((SkipInit) null); 
+        if (listener != null) {
+            initObject(init(title, handleAction));
+            this.listener = listener;
+            addStrongRef(this.listener);
+        } else {
+            initObject(init(title, null));
+        }
+    }
+    
     /*<constructors>*/
     public UIMenuItem() {}
     protected UIMenuItem(SkipInit skipInit) { super(skipInit); }
-    public UIMenuItem(String title, Selector action) { super((SkipInit) null); initObject(initWithTitle$action$(title, action)); }
+    protected UIMenuItem(String title, Selector action) { super((SkipInit) null); initObject(init(title, action)); }
     /*</constructors>*/
     /*<properties>*/
     @Property(selector = "title")
@@ -58,13 +91,25 @@ import org.robovm.apple.coretext.*;
     @Property(selector = "setTitle:")
     public native void setTitle(String v);
     @Property(selector = "action")
-    public native Selector getAction();
+    protected native Selector getAction();
     @Property(selector = "setAction:")
-    public native void setAction(Selector v);
+    protected native void setAction(Selector v);
     /*</properties>*/
     /*<members>*//*</members>*/
+    
+    public void setOnActionListener(OnActionListener listener) {
+        if (listener == null && getAction() != null) {
+            removeStrongRef(this.listener);
+            this.listener = null;
+        } else {
+            this.listener = listener;
+            setAction(handleAction);
+            addStrongRef(this.listener);
+        }
+    }
+    
     /*<methods>*/
     @Method(selector = "initWithTitle:action:")
-    protected native @Pointer long initWithTitle$action$(String title, Selector action);
+    protected native @Pointer long init(String title, Selector action);
     /*</methods>*/
 }

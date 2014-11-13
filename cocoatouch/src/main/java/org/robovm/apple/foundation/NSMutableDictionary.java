@@ -32,6 +32,7 @@ import org.robovm.apple.coreanimation.*;
 import org.robovm.apple.coregraphics.*;
 import org.robovm.apple.coremedia.*;
 import org.robovm.apple.security.*;
+import org.robovm.apple.dispatch.*;
 /*</imports>*/
 
 /*<javadoc>*/
@@ -113,10 +114,10 @@ import org.robovm.apple.security.*;
         }
     }
     
-    public static NSMutableDictionary<NSString, NSString> toNSMutableDictionary (Map<String, String> map) {
-        NSMutableDictionary<NSString, NSString> dictionary = new NSMutableDictionary<NSString, NSString>();
-        for (Map.Entry<String, String> entry : map.entrySet()) {
-            dictionary.put(new NSString(entry.getKey()), new NSString(entry.getValue()));
+    public static <V extends NSObject> NSMutableDictionary<NSString, V> fromStringMap (Map<String, V> map) {
+        NSMutableDictionary<NSString, V> dictionary = new NSMutableDictionary<>();
+        for (Map.Entry<String, V> entry : map.entrySet()) {
+            dictionary.put(new NSString(entry.getKey()), entry.getValue());
         }
         return dictionary;
     }
@@ -134,9 +135,9 @@ import org.robovm.apple.security.*;
     protected native void removeObjectForKey$(NSObject aKey);
     @Method(selector = "setObject:forKey:")
     protected native void setObject$forKey$(NSObject anObject, NSObject aKey);
-    @Method(selector = "removeAllObjects")
-    protected native void removeAllObjects();
     @Method(selector = "initWithCapacity:")
     protected native @Pointer long initWithCapacity$(@MachineSizedUInt long numItems);
+    @Method(selector = "removeAllObjects")
+    protected native void removeAllObjects();
     /*</methods>*/
 }

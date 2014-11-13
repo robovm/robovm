@@ -44,6 +44,9 @@ import org.robovm.apple.foundation.*;
     private NSURLConnectionExtensions() {}
     /*</constructors>*/
     /*<properties>*/
+    /**
+     * @since Available in iOS 5.0 and later.
+     */
     @Property(selector = "newsstandAssetDownload")
     public static native NKAssetDownload getNewsstandAssetDownload(NSURLConnection thiz);
     /*</properties>*/

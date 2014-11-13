@@ -462,17 +462,17 @@ public class StructTest {
         
         assertEquals(0, s.l());
         s.l(0x9012345612345678L);
-        assertEquals(0x9012345612345678L, VM.getLong(s.getHandle() + 4));
+        assertEquals(0x9012345612345678L, VM.getLong(s.getHandle() + (Bro.IS_64BIT ? 8 : 4)));
         assertEquals(0x9012345612345678L, s.l());
         
         assertEquals(0, s.c());
         s.c((char) 9876);
-        assertEquals(9876, VM.getChar(s.getHandle() + 12));
+        assertEquals(9876, VM.getChar(s.getHandle() + (Bro.IS_64BIT ? 16 : 12)));
         assertEquals(9876, s.c());
 
         assertEquals(0, s.i());
         s.i(0x12345678);
-        assertEquals(0x12345678, VM.getInt(s.getHandle() + 16));
+        assertEquals(0x12345678, VM.getInt(s.getHandle() + (Bro.IS_64BIT ? 20 : 16)));
         assertEquals(0x12345678, s.i());
         
         assertEquals(123, s.b());
@@ -680,7 +680,7 @@ public class StructTest {
     
     @Test
     public void testMixedStructUnion() {
-        assertEquals(16, MixedStructUnion.sizeOf());
+        assertEquals(Bro.IS_64BIT ? 24 : 16, MixedStructUnion.sizeOf());
         MixedStructUnion s = new MixedStructUnion();
 
         assertEquals(0, s.b1());
@@ -692,18 +692,18 @@ public class StructTest {
         s.l(0x1234567890abcdefl);
         assertEquals(0x34, s.b1());
         assertEquals(0x1234567890abcdefl, s.l());
-        assertEquals(0x1234567890abcdefl, VM.getLong(s.getHandle() + 4));
+        assertEquals(0x1234567890abcdefl, VM.getLong(s.getHandle() + (Bro.IS_64BIT ? 8 : 4)));
 
         assertEquals(Double.longBitsToDouble(0x1234567890abcdefl), s.d(), 0.00001);
         s.d(Math.PI);
         assertEquals(0x34, s.b1());
         assertEquals(Double.doubleToLongBits(Math.PI), s.l());
-        assertEquals(Math.PI, VM.getDouble(s.getHandle() + 4), 0.00001);
+        assertEquals(Math.PI, VM.getDouble(s.getHandle() + (Bro.IS_64BIT ? 8 : 4)), 0.00001);
 
         assertEquals(0, s.b2());
         s.b2((byte) 0x43);
         assertEquals(0x43, s.b2());
-        assertEquals(0x43, VM.getByte(s.getHandle() + 12));
+        assertEquals(0x43, VM.getByte(s.getHandle() + (Bro.IS_64BIT ? 16 : 12)));
     }
     
     @Test
@@ -2807,53 +2807,78 @@ public class StructTest {
     
     float fpi = (float) Math.PI;
     @Test
-    public void testMarshalMachineSizedFloatD() {
-        // NOTE: 32-bit specific
-        assertEquals(4, MachineSizedStruct.sizeOf());
+    public void testMarshalMachineSizedFloat() {
+        assertEquals(Bro.IS_64BIT ? 8 : 4, MachineSizedStruct.sizeOf());
 
         long ldpi = Double.doubleToLongBits(Math.PI);
         long lfpi = Double.doubleToLongBits(fpi);
         assertNotEquals(ldpi, lfpi);
+        int ifpi = Float.floatToIntBits(fpi);
         
         MachineSizedStruct s = new MachineSizedStruct();
         assertEquals(0.0, s.machineSizedFloatD(), 0);
         s.machineSizedFloatD(Math.PI);
-        assertEquals(fpi, VM.getFloat(s.getHandle()), 0f);
-        assertEquals(fpi, s.machineSizedFloatF(), 0f);
-        assertEquals(lfpi, Double.doubleToLongBits(s.machineSizedFloatD()));
+        if (Bro.IS_32BIT) {
+            assertEquals("ifpi == VM.getInt(s.getHandle())", ifpi, VM.getInt(s.getHandle()));
+            assertEquals("fpi == s.machineSizedFloatF()", fpi, s.machineSizedFloatF(), 0f);
+            assertEquals("lfpi == Double.doubleToLongBits(s.machineSizedFloatD())", 
+                    lfpi, Double.doubleToLongBits(s.machineSizedFloatD()));
+        } else { // 64-bit
+            assertEquals("ldpi == VM.getLong(s.getHandle())", ldpi, VM.getLong(s.getHandle()));
+            assertEquals("Math.PI == s.machineSizedFloatD()", Math.PI, s.machineSizedFloatD(), 0);
+            assertEquals("ifpi == Float.floatToIntBits(s.machineSizedFloatF())", 
+                    ifpi, Float.floatToIntBits(s.machineSizedFloatF()));
+        }
     }
     
     @Test
     public void testMachineSizedSInt() throws Exception {
-        // NOTE: 32-bit specific
-        assertEquals(4, MachineSizedStruct.sizeOf());
+        assertEquals(Bro.IS_64BIT ? 8 : 4, MachineSizedStruct.sizeOf());
         
         MachineSizedStruct s = new MachineSizedStruct();
         assertEquals(0, s.machineSizedSInt());
         s.machineSizedSInt(-1);
         assertEquals(-1, s.machineSizedSInt());
-        s.machineSizedSInt(0x80000000);
-        assertEquals(0x80000000, VM.getInt(s.getHandle()));
-        assertEquals(0xffffffff80000000L, s.machineSizedSInt());
-        s.machineSizedSInt(0x1234567880000000L);
-        assertEquals(0x80000000, VM.getInt(s.getHandle()));
-        assertEquals(0xffffffff80000000L, s.machineSizedSInt());
+        if (Bro.IS_32BIT) {
+            s.machineSizedSInt(0x80000000L);
+            assertEquals(0xffffffff80000000L, VM.getInt(s.getHandle()));
+            assertEquals(0xffffffff80000000L, s.machineSizedSInt());
+            s.machineSizedSInt(0x1234567880000000L);
+            assertEquals(0xffffffff80000000L, VM.getInt(s.getHandle()));
+            assertEquals(0xffffffff80000000L, s.machineSizedSInt());
+        } else { // 64-bit
+            s.machineSizedSInt(0x80000000L);
+            assertEquals(0x80000000L, VM.getLong(s.getHandle()));
+            assertEquals(0x80000000L, s.machineSizedSInt());
+            s.machineSizedSInt(0x1234567880000000L);
+            assertEquals(0x1234567880000000L, VM.getLong(s.getHandle()));
+            assertEquals(0x1234567880000000L, s.machineSizedSInt());
+        }
     }
     
     @Test
     public void testMachineSizedUInt() throws Exception {
-        // NOTE: 32-bit specific
-        assertEquals(4, MachineSizedStruct.sizeOf());
+        assertEquals(Bro.IS_64BIT ? 8 : 4, MachineSizedStruct.sizeOf());
         
         MachineSizedStruct s = new MachineSizedStruct();
         assertEquals(0, s.machineSizedUInt());
         s.machineSizedUInt(-1);
-        assertEquals(0xffffffffL, s.machineSizedUInt());
-        s.machineSizedUInt(0x80000000);
-        assertEquals(0x80000000, VM.getInt(s.getHandle()));
-        assertEquals(0x80000000L, s.machineSizedUInt());
-        s.machineSizedUInt(0x1234567880000000L);
-        assertEquals(0x80000000, VM.getInt(s.getHandle()));
-        assertEquals(0x80000000L, s.machineSizedUInt());
+        if (Bro.IS_32BIT) {
+            assertEquals(0xffffffffL, s.machineSizedUInt());
+            s.machineSizedUInt(0x80000000L);
+            assertEquals(0xffffffff80000000L, VM.getInt(s.getHandle()));
+            assertEquals(0x80000000L, s.machineSizedUInt());
+            s.machineSizedUInt(0x1234567880000000L);
+            assertEquals(0xffffffff80000000L, VM.getInt(s.getHandle()));
+            assertEquals(0x80000000L, s.machineSizedUInt());
+        } else { // 64-bit
+            assertEquals(0xffffffffffffffffL, s.machineSizedUInt());
+            s.machineSizedUInt(0x80000000L);
+            assertEquals(0x80000000L, VM.getLong(s.getHandle()));
+            assertEquals(0x80000000L, s.machineSizedUInt());
+            s.machineSizedUInt(0x1234567880000000L);
+            assertEquals(0x1234567880000000L, VM.getLong(s.getHandle()));
+            assertEquals(0x1234567880000000L, s.machineSizedUInt());
+        }
     }
 }

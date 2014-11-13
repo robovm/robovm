@@ -32,6 +32,7 @@ import org.robovm.apple.coreanimation.*;
 import org.robovm.apple.coregraphics.*;
 import org.robovm.apple.coremedia.*;
 import org.robovm.apple.security.*;
+import org.robovm.apple.dispatch.*;
 /*</imports>*/
 
 /*<javadoc>*/
@@ -42,6 +43,33 @@ import org.robovm.apple.security.*;
     extends /*<extends>*/NSObject/*</extends>*/ 
     /*<implements>*//*</implements>*/ {
 
+    public static class Notifications {
+        public static NSObject observeWillBecomeMultiThreaded(final Runnable block) {
+            return NSNotificationCenter.getDefaultCenter().addObserver(WillBecomeMultiThreadedNotification(), null, NSOperationQueue.getMainQueue(), new VoidBlock1<NSNotification>() {
+                @Override
+                public void invoke(NSNotification a) {
+                    block.run();
+                }
+            });
+        }
+        public static NSObject observeDidBecomeSingleThreaded(final Runnable block) {
+            return NSNotificationCenter.getDefaultCenter().addObserver(DidBecomeSingleThreadedNotification(), null, NSOperationQueue.getMainQueue(), new VoidBlock1<NSNotification>() {
+                @Override
+                public void invoke(NSNotification a) {
+                    block.run();
+                }
+            });
+        }
+        public static NSObject observeWillExit(NSThread object, final VoidBlock1<NSThread> block) {
+            return NSNotificationCenter.getDefaultCenter().addObserver(WillExitNotification(), object, NSOperationQueue.getMainQueue(), new VoidBlock1<NSNotification>() {
+                @Override
+                public void invoke(NSNotification a) {
+                    block.invoke((NSThread) a.getObject());
+                }
+            });
+        }
+    }
+    
     /*<ptr>*/public static class NSThreadPtr extends Ptr<NSThread, NSThreadPtr> {}/*</ptr>*/
     /*<bind>*/static { ObjCRuntime.bind(NSThread.class); }/*</bind>*/
     /*<constants>*//*</constants>*/
@@ -54,67 +82,73 @@ import org.robovm.apple.security.*;
     public NSThread(NSObject target, Selector selector, NSObject argument) { super((SkipInit) null); initObject(initWithTarget$selector$object$(target, selector, argument)); }
     /*</constructors>*/
     /*<properties>*/
-    
-    /*</properties>*/
-    /*<members>*//*</members>*/
-    /*<methods>*/
-    @Method(selector = "threadDictionary")
+    @Property(selector = "threadDictionary")
     public native NSMutableDictionary<?, ?> getThreadDictionary();
     /**
-     * @since Available in iOS 4.0 and later.
+     * @since Available in iOS 8.0 and later.
      */
-    @Method(selector = "threadPriority")
-    public native double getThreadPriority();
+    @Property(selector = "qualityOfService")
+    public native NSQualityOfService getQualityOfService();
     /**
-     * @since Available in iOS 4.0 and later.
+     * @since Available in iOS 8.0 and later.
      */
-    @Method(selector = "setThreadPriority:")
-    public native void setThreadPriority(double p);
-    /**
-     * @since Available in iOS 2.0 and later.
-     */
-    @Method(selector = "setName:")
-    public native void setName(String n);
+    @Property(selector = "setQualityOfService:")
+    public native void setQualityOfService(NSQualityOfService v);
     /**
      * @since Available in iOS 2.0 and later.
      */
-    @Method(selector = "name")
+    @Property(selector = "name")
     public native String getName();
     /**
      * @since Available in iOS 2.0 and later.
      */
-    @Method(selector = "stackSize")
+    @Property(selector = "setName:")
+    public native void setName(String v);
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
+    @Property(selector = "stackSize")
     public native @MachineSizedUInt long getStackSize();
     /**
      * @since Available in iOS 2.0 and later.
      */
-    @Method(selector = "setStackSize:")
-    public native void setStackSize(@MachineSizedUInt long s);
+    @Property(selector = "setStackSize:")
+    public native void setStackSize(@MachineSizedUInt long v);
     /**
      * @since Available in iOS 2.0 and later.
      */
-    @Method(selector = "isMainThread")
+    @Property(selector = "isMainThread")
     public native boolean isMainThread();
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
+    @Property(selector = "isExecuting")
+    public native boolean isExecuting();
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
+    @Property(selector = "isFinished")
+    public native boolean isFinished();
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
+    @Property(selector = "isCancelled")
+    public native boolean isCancelled();
+    /*</properties>*/
+    /*<members>*//*</members>*/
+    /*<methods>*/
+    @GlobalValue(symbol="NSWillBecomeMultiThreadedNotification", optional=true)
+    public static native NSString WillBecomeMultiThreadedNotification();
+    @GlobalValue(symbol="NSDidBecomeSingleThreadedNotification", optional=true)
+    public static native NSString DidBecomeSingleThreadedNotification();
+    @GlobalValue(symbol="NSThreadWillExitNotification", optional=true)
+    public static native NSString WillExitNotification();
+    
     /**
      * @since Available in iOS 2.0 and later.
      */
     @Method(selector = "initWithTarget:selector:object:")
     protected native @Pointer long initWithTarget$selector$object$(NSObject target, Selector selector, NSObject argument);
-    /**
-     * @since Available in iOS 2.0 and later.
-     */
-    @Method(selector = "isExecuting")
-    public native boolean isExecuting();
-    /**
-     * @since Available in iOS 2.0 and later.
-     */
-    @Method(selector = "isFinished")
-    public native boolean isFinished();
-    /**
-     * @since Available in iOS 2.0 and later.
-     */
-    @Method(selector = "isCancelled")
-    public native boolean isCancelled();
     /**
      * @since Available in iOS 2.0 and later.
      */
@@ -142,11 +176,6 @@ import org.robovm.apple.security.*;
     public static native void sleep(double ti);
     @Method(selector = "exit")
     public static native void exit();
-    /**
-     * @since Available in iOS 4.0 and later.
-     */
-    @Method(selector = "callStackSymbols")
-    public static native NSArray<NSString> getCallStackSymbols();
     /**
      * @since Available in iOS 2.0 and later.
      */

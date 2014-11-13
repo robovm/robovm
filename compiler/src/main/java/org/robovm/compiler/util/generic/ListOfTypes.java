@@ -17,6 +17,7 @@
 package org.robovm.compiler.util.generic;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public final class ListOfTypes {
@@ -25,25 +26,25 @@ public final class ListOfTypes {
     private final ArrayList<Type> types;
     private Type[] resolvedTypes;
 
-    ListOfTypes(int capacity) {
+    public ListOfTypes(int capacity) {
         types = new ArrayList<Type>(capacity);
     }
 
-    ListOfTypes(Type[] types) {
+    public ListOfTypes(Type[] types) {
         this.types = new ArrayList<Type>(types.length);
         for (Type type : types) {
             this.types.add(type);
         }
     }
 
-    void add(Type type) {
+    public void add(Type type) {
         if (type == null) {
             throw new NullPointerException("type == null");
         }
         types.add(type);
     }
 
-    int length() {
+    public int length() {
         return types.size();
     }
 
@@ -65,6 +66,15 @@ public final class ListOfTypes {
         return result;
     }
 
+    @Override
+    public boolean equals(Object obj) {
+        if (!(obj instanceof ListOfTypes)) {
+            return false;
+        }
+        ListOfTypes that = (ListOfTypes) obj;
+        return Arrays.equals(this.getResolvedTypes(), that.getResolvedTypes());
+    }
+    
     @Override public String toString() {
         StringBuilder result = new StringBuilder();
         for (int i = 0; i < types.size(); i++) {

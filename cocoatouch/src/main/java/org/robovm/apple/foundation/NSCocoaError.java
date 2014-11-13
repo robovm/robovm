@@ -32,163 +32,33 @@ import org.robovm.apple.coreanimation.*;
 import org.robovm.apple.coregraphics.*;
 import org.robovm.apple.coremedia.*;
 import org.robovm.apple.security.*;
+import org.robovm.apple.dispatch.*;
 /*</imports>*/
 
 /*<javadoc>*/
-
 /*</javadoc>*/
-/*<annotations>*//*</annotations>*/
-public enum /*<name>*/NSCocoaError/*</name>*/ implements ValuedEnum {
-    /*<values>*/
-    FileNoSuchFileError(4L),
-    FileLockingError(255L),
-    FileReadUnknownError(256L),
-    FileReadNoPermissionError(257L),
-    FileReadInvalidFileNameError(258L),
-    FileReadCorruptFileError(259L),
-    FileReadNoSuchFileError(260L),
-    FileReadInapplicableStringEncodingError(261L),
-    FileReadUnsupportedSchemeError(262L),
-    /**
-     * @since Available in iOS 2.0 and later.
-     */
-    FileReadTooLargeError(263L),
-    /**
-     * @since Available in iOS 2.0 and later.
-     */
-    FileReadUnknownStringEncodingError(264L),
-    FileWriteUnknownError(512L),
-    FileWriteNoPermissionError(513L),
-    FileWriteInvalidFileNameError(514L),
-    /**
-     * @since Available in iOS 5.0 and later.
-     */
-    FileWriteFileExistsError(516L),
-    FileWriteInapplicableStringEncodingError(517L),
-    FileWriteUnsupportedSchemeError(518L),
-    FileWriteOutOfSpaceError(640L),
-    /**
-     * @since Available in iOS 4.0 and later.
-     */
-    FileWriteVolumeReadOnlyError(642L),
-    KeyValueValidationError(1024L),
-    FormattingError(2048L),
-    UserCancelledError(3072L),
-    /**
-     * @since Available in iOS 6.0 and later.
-     */
-    FeatureUnsupportedError(3328L),
-    /**
-     * @since Available in iOS 2.0 and later.
-     */
-    ExecutableNotLoadableError(3584L),
-    /**
-     * @since Available in iOS 2.0 and later.
-     */
-    ExecutableArchitectureMismatchError(3585L),
-    /**
-     * @since Available in iOS 2.0 and later.
-     */
-    ExecutableRuntimeMismatchError(3586L),
-    /**
-     * @since Available in iOS 2.0 and later.
-     */
-    ExecutableLoadError(3587L),
-    /**
-     * @since Available in iOS 2.0 and later.
-     */
-    ExecutableLinkError(3588L),
-    FileErrorMinimum(0L),
-    FileErrorMaximum(1023L),
-    ValidationErrorMinimum(1024L),
-    ValidationErrorMaximum(2047L),
-    /**
-     * @since Available in iOS 2.0 and later.
-     */
-    ExecutableErrorMinimum(3584L),
-    /**
-     * @since Available in iOS 2.0 and later.
-     */
-    ExecutableErrorMaximum(3839L),
-    FormattingErrorMinimum(2048L),
-    FormattingErrorMaximum(2559L),
-    /**
-     * @since Available in iOS 4.0 and later.
-     */
-    PropertyListReadCorruptError(3840L),
-    /**
-     * @since Available in iOS 4.0 and later.
-     */
-    PropertyListReadUnknownVersionError(3841L),
-    /**
-     * @since Available in iOS 4.0 and later.
-     */
-    PropertyListReadStreamError(3842L),
-    /**
-     * @since Available in iOS 4.0 and later.
-     */
-    PropertyListWriteStreamError(3851L),
-    /**
-     * @since Available in iOS 4.0 and later.
-     */
-    PropertyListErrorMinimum(3840L),
-    /**
-     * @since Available in iOS 4.0 and later.
-     */
-    PropertyListErrorMaximum(4095L),
-    /**
-     * @since Available in iOS 6.0 and later.
-     */
-    XPCConnectionInterrupted(4097L),
-    /**
-     * @since Available in iOS 6.0 and later.
-     */
-    XPCConnectionInvalid(4099L),
-    /**
-     * @since Available in iOS 6.0 and later.
-     */
-    XPCConnectionReplyInvalid(4101L),
-    /**
-     * @since Available in iOS 6.0 and later.
-     */
-    XPCConnectionErrorMinimum(4096L),
-    /**
-     * @since Available in iOS 6.0 and later.
-     */
-    XPCConnectionErrorMaximum(4224L),
-    /**
-     * @since Available in iOS 7.0 and later.
-     */
-    UbiquitousFileUnavailableError(4353L),
-    /**
-     * @since Available in iOS 7.0 and later.
-     */
-    UbiquitousFileNotUploadedDueToQuotaError(4354L),
-    /**
-     * @since Available in iOS 7.0 and later.
-     */
-    UbiquitousFileUbiquityServerNotAvailable(4355L),
-    /**
-     * @since Available in iOS 7.0 and later.
-     */
-    UbiquitousFileErrorMinimum(4352L),
-    /**
-     * @since Available in iOS 7.0 and later.
-     */
-    UbiquitousFileErrorMaximum(4607L);
-    /*</values>*/
+/*<annotations>*/@Library("Foundation")/*</annotations>*/
+/*<visibility>*/public/*</visibility>*/ class /*<name>*/NSCocoaError/*</name>*/ 
+    extends /*<extends>*/NSError/*</extends>*/ 
+    /*<implements>*//*</implements>*/ {
 
-    private final long n;
-
-    private /*<name>*/NSCocoaError/*</name>*/(long n) { this.n = n; }
-    public long value() { return n; }
-    public static /*<name>*/NSCocoaError/*</name>*/ valueOf(long n) {
-        for (/*<name>*/NSCocoaError/*</name>*/ v : values()) {
-            if (v.n == n) {
-                return v;
-            }
-        }
-        throw new IllegalArgumentException("No constant with value " + n + " found in " 
-            + /*<name>*/NSCocoaError/*</name>*/.class.getName());
+    protected NSCocoaError(SkipInit skipInit) {
+        super(skipInit);
     }
+    
+    /*<ptr>*/
+    /*</ptr>*/
+    /*<bind>*/static { Bro.bind(NSCocoaError.class); }/*</bind>*/
+    /*<constants>*//*</constants>*/
+    /*<constructors>*//*</constructors>*/
+    /*<properties>*//*</properties>*/
+    /*<members>*//*</members>*/
+    @Override
+    public NSCocoaErrorCode getErrorCode() {
+        return NSCocoaErrorCode.valueOf(getCode());
+    }
+    /*<methods>*/
+    @GlobalValue(symbol="NSCocoaErrorDomain", optional=true)
+    public static native String getClassDomain();
+    /*</methods>*/
 }

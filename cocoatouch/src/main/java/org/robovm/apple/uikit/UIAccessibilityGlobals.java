@@ -32,6 +32,7 @@ import org.robovm.apple.coregraphics.*;
 import org.robovm.apple.coredata.*;
 import org.robovm.apple.coreimage.*;
 import org.robovm.apple.coretext.*;
+import org.robovm.apple.corelocation.*;
 /*</imports>*/
 
 /*<javadoc>*/
@@ -69,6 +70,11 @@ import org.robovm.apple.coretext.*;
     @GlobalValue(symbol="UIAccessibilityAnnouncementKeyWasSuccessful", optional=true)
     public static native NSString AnnouncementKeyWasSuccessful();
     /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @GlobalValue(symbol="UIAccessibilityNotificationSwitchControlIdentifier", optional=true)
+    public static native String SwitchControlIdentifier();
+    /**
      * @since Available in iOS 4.0 and later.
      */
     @GlobalValue(symbol="UIAccessibilityVoiceOverStatusChanged", optional=true)
@@ -93,6 +99,46 @@ import org.robovm.apple.coretext.*;
      */
     @GlobalValue(symbol="UIAccessibilityGuidedAccessStatusDidChangeNotification", optional=true)
     public static native NSString GuidedAccessStatusDidChangeNotification();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @GlobalValue(symbol="UIAccessibilityBoldTextStatusDidChangeNotification", optional=true)
+    public static native NSString BoldTextStatusDidChangeNotification();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @GlobalValue(symbol="UIAccessibilityGrayscaleStatusDidChangeNotification", optional=true)
+    public static native NSString GrayscaleStatusDidChangeNotification();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @GlobalValue(symbol="UIAccessibilityReduceTransparencyStatusDidChangeNotification", optional=true)
+    public static native NSString ReduceTransparencyStatusDidChangeNotification();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @GlobalValue(symbol="UIAccessibilityReduceMotionStatusDidChangeNotification", optional=true)
+    public static native NSString ReduceMotionStatusDidChangeNotification();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @GlobalValue(symbol="UIAccessibilityDarkerSystemColorsStatusDidChangeNotification", optional=true)
+    public static native NSString DarkerSystemColorsStatusDidChangeNotification();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @GlobalValue(symbol="UIAccessibilitySwitchControlStatusDidChangeNotification", optional=true)
+    public static native NSString SwitchControlStatusDidChangeNotification();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @GlobalValue(symbol="UIAccessibilitySpeakSelectionStatusDidChangeNotification", optional=true)
+    public static native NSString SpeakSelectionStatusDidChangeNotification();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @GlobalValue(symbol="UIAccessibilitySpeakScreenStatusDidChangeNotification", optional=true)
+    public static native NSString SpeakScreenStatusDidChangeNotification();
     
     /**
      * @since Available in iOS 5.0 and later.
@@ -141,6 +187,46 @@ import org.robovm.apple.coretext.*;
      */
     @Bridge(symbol="UIAccessibilityIsGuidedAccessEnabled", optional=true)
     public static native boolean isGuidedAccessEnabled();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @Bridge(symbol="UIAccessibilityIsBoldTextEnabled", optional=true)
+    public static native boolean isBoldTextEnabled();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @Bridge(symbol="UIAccessibilityIsGrayscaleEnabled", optional=true)
+    public static native boolean isGrayscaleEnabled();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @Bridge(symbol="UIAccessibilityIsReduceTransparencyEnabled", optional=true)
+    public static native boolean isReduceTransparencyEnabled();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @Bridge(symbol="UIAccessibilityIsReduceMotionEnabled", optional=true)
+    public static native boolean isReduceMotionEnabled();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @Bridge(symbol="UIAccessibilityDarkerSystemColorsEnabled", optional=true)
+    public static native boolean areDarkerSystemColorsEnabled();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @Bridge(symbol="UIAccessibilityIsSwitchControlRunning", optional=true)
+    public static native boolean isSwitchControlRunning();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @Bridge(symbol="UIAccessibilityIsSpeakSelectionEnabled", optional=true)
+    public static native boolean isSpeakSelectionEnabled();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @Bridge(symbol="UIAccessibilityIsSpeakScreenEnabled", optional=true)
+    public static native boolean isSpeakScreenEnabled();
     /**
      * @since Available in iOS 7.0 and later.
      */

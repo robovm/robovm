@@ -32,6 +32,7 @@ import org.robovm.apple.coreanimation.*;
 import org.robovm.apple.coregraphics.*;
 import org.robovm.apple.coremedia.*;
 import org.robovm.apple.security.*;
+import org.robovm.apple.dispatch.*;
 /*</imports>*/
 
 /*<javadoc>*/
@@ -100,7 +101,7 @@ import org.robovm.apple.security.*;
     @Method(selector = "maximumDecimalNumber")
     public static native NSDecimalNumber getMax();
     @Method(selector = "notANumber")
-    public static native NSDecimalNumber getNAN();
+    public static native NSDecimalNumber getNaN();
     @Method(selector = "setDefaultBehavior:")
     public static native void setDefaultBehavior(NSDecimalNumberBehaviors behavior);
     @Method(selector = "defaultBehavior")

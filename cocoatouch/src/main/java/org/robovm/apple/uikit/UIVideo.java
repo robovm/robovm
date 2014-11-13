@@ -32,6 +32,7 @@ import org.robovm.apple.coregraphics.*;
 import org.robovm.apple.coredata.*;
 import org.robovm.apple.coreimage.*;
 import org.robovm.apple.coretext.*;
+import org.robovm.apple.corelocation.*;
 /*</imports>*/
 
 /*<javadoc>*/
@@ -44,18 +45,51 @@ import org.robovm.apple.coretext.*;
 
     /*<ptr>*/
     /*</ptr>*/
+    
+    public interface VideoSaveListener {
+        void didFinishSaving (String videoPath, NSError error);
+    }
+    
+    private static java.util.concurrent.atomic.AtomicLong id = new java.util.concurrent.atomic.AtomicLong();
+    private static final Selector video$didFinishSavingWithError$contextInfo$ = Selector.register("video:didFinishSavingWithError:contextInfo:");
+    private static Map<Long, ListenerWrapper> listeners = new HashMap<>();
+    private static class ListenerWrapper extends NSObject {
+        private final VideoSaveListener listener;
+        private ListenerWrapper(VideoSaveListener listener, long contextInfo) {
+            this.listener = listener;
+            
+            synchronized (listeners) {
+                listeners.put(contextInfo, this);
+            }
+        }
+        @Method(selector = "video:didFinishSavingWithError:contextInfo:")
+        private void didFinishSaving(String videoPath, NSError error, @Pointer long contextInfo) {
+            listener.didFinishSaving(videoPath, error);
+            
+            synchronized (listeners) {
+                listeners.remove(contextInfo);
+            }
+        }
+    }
+    
     /*<bind>*/static { Bro.bind(UIVideo.class); }/*</bind>*/
     /*<constants>*//*</constants>*/
     /*<constructors>*//*</constructors>*/
     /*<properties>*//*</properties>*/
     /*<members>*//*</members>*/
-    
+
     public static boolean isCompatibleWithSavedPhotosAlbum(File videoPath) {
         return isCompatibleWithSavedPhotosAlbum(videoPath.getAbsolutePath());
     }
     
-    public static void saveToPhotosAlbum(File videoPath, NSObject completionTarget, Selector completionSelector, VoidPtr contextInfo) {
-        saveToPhotosAlbum(videoPath.getAbsolutePath(), completionTarget, completionSelector, contextInfo);
+    public static void saveToPhotosAlbum(File videoPath, VideoSaveListener listener) {
+        if (listener != null) {
+            long context = id.getAndIncrement();
+            ListenerWrapper l = new ListenerWrapper(listener, context);
+            saveToPhotosAlbum(videoPath.getAbsolutePath(), l, video$didFinishSavingWithError$contextInfo$, context);
+        } else {
+            saveToPhotosAlbum(videoPath.getAbsolutePath(), null, null, 0);
+        }
     }
     
     /*<methods>*/
@@ -68,6 +102,6 @@ import org.robovm.apple.coretext.*;
      * @since Available in iOS 3.1 and later.
      */
     @Bridge(symbol="UISaveVideoAtPathToSavedPhotosAlbum", optional=true)
-    protected static native void saveToPhotosAlbum(String videoPath, NSObject completionTarget, Selector completionSelector, VoidPtr contextInfo);
+    protected static native void saveToPhotosAlbum(String videoPath, NSObject completionTarget, Selector completionSelector, @Pointer long contextInfo);
     /*</methods>*/
 }

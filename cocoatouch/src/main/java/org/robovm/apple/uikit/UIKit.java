@@ -32,6 +32,7 @@ import org.robovm.apple.coregraphics.*;
 import org.robovm.apple.coredata.*;
 import org.robovm.apple.coreimage.*;
 import org.robovm.apple.coretext.*;
+import org.robovm.apple.corelocation.*;
 /*</imports>*/
 
 /*<javadoc>*/
@@ -49,33 +50,6 @@ import org.robovm.apple.coretext.*;
     /*<properties>*//*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
-    @GlobalValue(symbol="UITrackingRunLoopMode", optional=true)
-    public static native String Value__UITrackingRunLoopMode();
-    /**
-     * @since Available in iOS 6.0 and later.
-     */
-    @GlobalValue(symbol="UIStateRestorationViewControllerStoryboardKey", optional=true)
-    public static native String Value__UIStateRestorationViewControllerStoryboardKey();
-    /**
-     * @since Available in iOS 6.0 and later.
-     */
-    @GlobalValue(symbol="UIApplicationStateRestorationBundleVersionKey", optional=true)
-    public static native String Value__UIApplicationStateRestorationBundleVersionKey();
-    /**
-     * @since Available in iOS 6.0 and later.
-     */
-    @GlobalValue(symbol="UIApplicationStateRestorationUserInterfaceIdiomKey", optional=true)
-    public static native String Value__UIApplicationStateRestorationUserInterfaceIdiomKey();
-    /**
-     * @since Available in iOS 7.0 and later.
-     */
-    @GlobalValue(symbol="UIApplicationStateRestorationTimestampKey", optional=true)
-    public static native String Value__UIApplicationStateRestorationTimestampKey();
-    /**
-     * @since Available in iOS 7.0 and later.
-     */
-    @GlobalValue(symbol="UIApplicationStateRestorationSystemVersionKey", optional=true)
-    public static native String Value__UIApplicationStateRestorationSystemVersionKey();
     @GlobalValue(symbol="UIPasteboardNameGeneral", optional=true)
     public static native String Value__UIPasteboardNameGeneral();
     @GlobalValue(symbol="UIPasteboardNameFind", optional=true)
@@ -96,8 +70,6 @@ import org.robovm.apple.coretext.*;
     public static native NSArray<NSString> PasteboardTypeListImage();
     @GlobalValue(symbol="UIPasteboardTypeListColor", optional=true)
     public static native NSArray<NSString> PasteboardTypeListColor();
-    @GlobalValue(symbol="UIPrintErrorDomain", optional=true)
-    public static native String PrintErrorDomain();
     
     /**
      * @since Available in iOS 6.0 and later.

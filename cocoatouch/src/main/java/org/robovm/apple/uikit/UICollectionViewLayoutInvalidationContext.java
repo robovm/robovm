@@ -32,6 +32,7 @@ import org.robovm.apple.coregraphics.*;
 import org.robovm.apple.coredata.*;
 import org.robovm.apple.coreimage.*;
 import org.robovm.apple.coretext.*;
+import org.robovm.apple.corelocation.*;
 /*</imports>*/
 
 /*<javadoc>*/
@@ -56,9 +57,58 @@ import org.robovm.apple.coretext.*;
     public native boolean isInvalidateEverything();
     @Property(selector = "invalidateDataSourceCounts")
     public native boolean isInvalidateDataSourceCounts();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @Property(selector = "invalidatedItemIndexPaths")
+    public native NSArray<NSIndexPath> getInvalidatedItemIndexPaths();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @Property(selector = "invalidatedSupplementaryIndexPaths")
+    public native NSArray<NSIndexPath> getInvalidatedSupplementaryIndexPaths();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @Property(selector = "invalidatedDecorationIndexPaths")
+    public native NSArray<NSIndexPath> getInvalidatedDecorationIndexPaths();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @Property(selector = "contentOffsetAdjustment")
+    public native @ByVal CGPoint getContentOffsetAdjustment();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @Property(selector = "setContentOffsetAdjustment:")
+    public native void setContentOffsetAdjustment(@ByVal CGPoint v);
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @Property(selector = "contentSizeAdjustment")
+    public native @ByVal CGSize getContentSizeAdjustment();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @Property(selector = "setContentSizeAdjustment:")
+    public native void setContentSizeAdjustment(@ByVal CGSize v);
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
-    
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @Method(selector = "invalidateItemsAtIndexPaths:")
+    public native void invalidateItems(NSArray<NSIndexPath> indexPaths);
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @Method(selector = "invalidateSupplementaryElementsOfKind:atIndexPaths:")
+    public native void invalidateSupplementaryElementsOfKind(String elementKind, NSArray<NSIndexPath> indexPaths);
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @Method(selector = "invalidateDecorationElementsOfKind:atIndexPaths:")
+    public native void invalidateDecorationElementsOfKind(String elementKind, NSArray<NSIndexPath> indexPaths);
     /*</methods>*/
 }

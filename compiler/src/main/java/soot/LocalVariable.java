@@ -16,6 +16,10 @@
  */
 package soot;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
 import soot.jimple.Jimple;
 
 /**
@@ -27,13 +31,21 @@ public class LocalVariable {
     private UnitBox startUnit;
     private UnitBox endUnit;
     private String descriptor;
+    private List<UnitBox> unitBoxes;
 
     public LocalVariable(String name, int index, Unit startUnit, Unit endUnit, String descriptor) {
         this.index = index;
         this.name = name;
         this.startUnit = Jimple.v().newStmtBox(startUnit);
-        this.endUnit = Jimple.v().newStmtBox(endUnit);
+        this.endUnit = endUnit != null ? Jimple.v().newStmtBox(endUnit) : null;
         this.descriptor = descriptor;
+        
+        List<UnitBox> boxes = new ArrayList<>();
+        boxes.add(this.startUnit);
+        if (this.endUnit != null) {
+            boxes.add(this.endUnit);
+        }
+        unitBoxes = Collections.unmodifiableList(boxes);
     }
 
     public String getName() {
@@ -46,16 +58,18 @@ public class LocalVariable {
         return startUnit.getUnit();
     }
     public Unit getEndUnit() {
-        return endUnit.getUnit();
+        return endUnit != null ? endUnit.getUnit() : null;
     }
-
+    public List<UnitBox> getUnitBoxes() {
+        return unitBoxes;
+    }
     public String getDescriptor() {
         return descriptor;
     }
 
     @Override
     public String toString() {
-        return "LocalVariable [name=" + name + ", index=" + index + ", startUnit=" + startUnit + ", endUnit=" + (endUnit == null ? null : endUnit.getUnit())
+        return "LocalVariable [name=" + name + ", index=" + index + ", startUnit=" + getStartUnit() + ", endUnit=" + getEndUnit()
                 + ", descriptor=" + descriptor + "]";
     }
 }

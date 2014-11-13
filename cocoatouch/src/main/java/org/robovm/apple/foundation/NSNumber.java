@@ -32,6 +32,7 @@ import org.robovm.apple.coreanimation.*;
 import org.robovm.apple.coregraphics.*;
 import org.robovm.apple.coremedia.*;
 import org.robovm.apple.security.*;
+import org.robovm.apple.dispatch.*;
 /*</imports>*/
 
 /*<javadoc>*/
@@ -49,39 +50,56 @@ import org.robovm.apple.security.*;
     protected NSNumber(SkipInit skipInit) { super(skipInit); }
     /*</constructors>*/
     /*<properties>*/
-    
+    @Property(selector = "charValue")
+    public native byte byteValue();
+    @Property(selector = "shortValue")
+    public native short shortValue();
+    @Property(selector = "unsignedShortValue")
+    public native char charValue();
+    @Property(selector = "intValue")
+    public native int intValue();
+    @Property(selector = "longLongValue")
+    public native long longValue();
+    @Property(selector = "floatValue")
+    public native float floatValue();
+    @Property(selector = "doubleValue")
+    public native double doubleValue();
+    @Property(selector = "boolValue")
+    public native boolean booleanValue();
+    @Property(selector = "stringValue")
+    public native String stringValue();
+    @Property(selector = "decimalValue")
+    public native @ByVal NSDecimal decimalValue();
     /*</properties>*/
     /*<members>*//*</members>*/
-    
-    public String toString(NSLocale locale) {
-        return description(locale);
+    public static NSNumber valueOf(Number value) {
+        if (value instanceof Byte) {
+            return valueOf((byte)value);
+        }
+        if (value instanceof Short) {
+            return valueOf((short)value);
+        }
+        if (value instanceof Integer) {
+            return valueOf((int)value);
+        }
+        if (value instanceof Long) {
+            return valueOf((long)value);
+        }
+        if (value instanceof Float) {
+            return valueOf((float)value);
+        }
+        if (value instanceof Double) {
+            return valueOf((double)value);
+        }
+        throw new IllegalArgumentException("value is not a supported number type: " + value.getClass());
     }
-    
     /*<methods>*/
-    @Method(selector = "charValue")
-    public native byte byteValue();
-    @Method(selector = "shortValue")
-    public native short shortValue();
-    @Method(selector = "unsignedShortValue")
-    public native char charValue();
-    @Method(selector = "intValue")
-    public native int intValue();
-    @Method(selector = "longLongValue")
-    public native long longValue();
-    @Method(selector = "floatValue")
-    public native float floatValue();
-    @Method(selector = "doubleValue")
-    public native double doubleValue();
-    @Method(selector = "boolValue")
-    public native boolean booleanValue();
-    @Method(selector = "stringValue")
-    public native String stringValue();
     @Method(selector = "compare:")
     public native NSComparisonResult compare(NSNumber otherNumber);
     @Method(selector = "isEqualToNumber:")
     public native boolean isEqualTo(NSNumber number);
     @Method(selector = "descriptionWithLocale:")
-    public native String description(NSLocale locale);
+    public native String toString(NSLocale locale);
     @Method(selector = "numberWithChar:")
     public static native NSNumber valueOf(byte value);
     @Method(selector = "numberWithShort:")
@@ -98,7 +116,5 @@ import org.robovm.apple.security.*;
     public static native NSNumber valueOf(double value);
     @Method(selector = "numberWithBool:")
     public static native NSNumber valueOf(boolean value);
-    @Method(selector = "decimalValue")
-    public native @ByVal NSDecimal decimalValue();
     /*</methods>*/
 }

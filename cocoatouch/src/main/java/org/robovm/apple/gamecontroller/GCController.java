@@ -79,6 +79,11 @@ import org.robovm.apple.foundation.*;
     public native GCGamepad getGamepad();
     @Property(selector = "extendedGamepad")
     public native GCExtendedGamepad getExtendedGamepad();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @Property(selector = "motion")
+    public native GCMotion getMotion();
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/

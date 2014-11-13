@@ -32,6 +32,7 @@ import org.robovm.apple.coreanimation.*;
 import org.robovm.apple.coregraphics.*;
 import org.robovm.apple.coremedia.*;
 import org.robovm.apple.security.*;
+import org.robovm.apple.dispatch.*;
 /*</imports>*/
 
 /*<javadoc>*/
@@ -50,7 +51,238 @@ import org.robovm.apple.security.*;
     protected NSDateFormatter(SkipInit skipInit) { super(skipInit); }
     /*</constructors>*/
     /*<properties>*/
-    
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @Property(selector = "formattingContext")
+    public native NSFormattingContext getFormattingContext();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @Property(selector = "setFormattingContext:")
+    public native void setFormattingContext(NSFormattingContext v);
+    @Property(selector = "dateFormat")
+    public native String getDateFormat();
+    @Property(selector = "setDateFormat:")
+    public native void setDateFormat(String v);
+    @Property(selector = "dateStyle")
+    public native NSDateFormatterStyle getDateStyle();
+    @Property(selector = "setDateStyle:")
+    public native void setDateStyle(NSDateFormatterStyle v);
+    @Property(selector = "timeStyle")
+    public native NSDateFormatterStyle getTimeStyle();
+    @Property(selector = "setTimeStyle:")
+    public native void setTimeStyle(NSDateFormatterStyle v);
+    @Property(selector = "locale")
+    public native NSLocale getLocale();
+    @Property(selector = "setLocale:")
+    public native void setLocale(NSLocale v);
+    @Property(selector = "generatesCalendarDates")
+    public native boolean isGeneratesCalendarDates();
+    @Property(selector = "setGeneratesCalendarDates:")
+    public native void setGeneratesCalendarDates(boolean v);
+    @Property(selector = "formatterBehavior")
+    public native NSDateFormatterBehavior getFormatterBehavior();
+    @Property(selector = "setFormatterBehavior:")
+    public native void setFormatterBehavior(NSDateFormatterBehavior v);
+    @Property(selector = "timeZone")
+    public native NSTimeZone getTimeZone();
+    @Property(selector = "setTimeZone:")
+    public native void setTimeZone(NSTimeZone v);
+    @Property(selector = "calendar")
+    public native NSCalendar getCalendar();
+    @Property(selector = "setCalendar:")
+    public native void setCalendar(NSCalendar v);
+    @Property(selector = "isLenient")
+    public native boolean isLenient();
+    @Property(selector = "setLenient:")
+    public native void setLenient(boolean v);
+    @Property(selector = "twoDigitStartDate")
+    public native NSDate getTwoDigitStartDate();
+    @Property(selector = "setTwoDigitStartDate:")
+    public native void setTwoDigitStartDate(NSDate v);
+    @Property(selector = "defaultDate")
+    public native NSDate getDefaultDate();
+    @Property(selector = "setDefaultDate:")
+    public native void setDefaultDate(NSDate v);
+    @Property(selector = "eraSymbols")
+    public native @org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String> getEraSymbols();
+    @Property(selector = "setEraSymbols:")
+    public native void setEraSymbols(@org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String> v);
+    @Property(selector = "monthSymbols")
+    public native @org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String> getMonthSymbols();
+    @Property(selector = "setMonthSymbols:")
+    public native void setMonthSymbols(@org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String> v);
+    @Property(selector = "shortMonthSymbols")
+    public native @org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String> getShortMonthSymbols();
+    @Property(selector = "setShortMonthSymbols:")
+    public native void setShortMonthSymbols(@org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String> v);
+    @Property(selector = "weekdaySymbols")
+    public native @org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String> getWeekdaySymbols();
+    @Property(selector = "setWeekdaySymbols:")
+    public native void setWeekdaySymbols(@org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String> v);
+    @Property(selector = "shortWeekdaySymbols")
+    public native @org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String> getShortWeekdaySymbols();
+    @Property(selector = "setShortWeekdaySymbols:")
+    public native void setShortWeekdaySymbols(@org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String> v);
+    @Property(selector = "AMSymbol")
+    public native String getAMSymbol();
+    @Property(selector = "setAMSymbol:")
+    public native void setAMSymbol(String v);
+    @Property(selector = "PMSymbol")
+    public native String getPMSymbol();
+    @Property(selector = "setPMSymbol:")
+    public native void setPMSymbol(String v);
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
+    @Property(selector = "longEraSymbols")
+    public native @org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String> getLongEraSymbols();
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
+    @Property(selector = "setLongEraSymbols:")
+    public native void setLongEraSymbols(@org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String> v);
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
+    @Property(selector = "veryShortMonthSymbols")
+    public native @org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String> getVeryShortMonthSymbols();
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
+    @Property(selector = "setVeryShortMonthSymbols:")
+    public native void setVeryShortMonthSymbols(@org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String> v);
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
+    @Property(selector = "standaloneMonthSymbols")
+    public native @org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String> getStandaloneMonthSymbols();
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
+    @Property(selector = "setStandaloneMonthSymbols:")
+    public native void setStandaloneMonthSymbols(@org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String> v);
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
+    @Property(selector = "shortStandaloneMonthSymbols")
+    public native @org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String> getShortStandaloneMonthSymbols();
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
+    @Property(selector = "setShortStandaloneMonthSymbols:")
+    public native void setShortStandaloneMonthSymbols(@org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String> v);
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
+    @Property(selector = "veryShortStandaloneMonthSymbols")
+    public native @org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String> getVeryShortStandaloneMonthSymbols();
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
+    @Property(selector = "setVeryShortStandaloneMonthSymbols:")
+    public native void setVeryShortStandaloneMonthSymbols(@org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String> v);
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
+    @Property(selector = "veryShortWeekdaySymbols")
+    public native @org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String> getVeryShortWeekdaySymbols();
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
+    @Property(selector = "setVeryShortWeekdaySymbols:")
+    public native void setVeryShortWeekdaySymbols(@org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String> v);
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
+    @Property(selector = "standaloneWeekdaySymbols")
+    public native @org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String> getStandaloneWeekdaySymbols();
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
+    @Property(selector = "setStandaloneWeekdaySymbols:")
+    public native void setStandaloneWeekdaySymbols(@org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String> v);
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
+    @Property(selector = "shortStandaloneWeekdaySymbols")
+    public native @org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String> getShortStandaloneWeekdaySymbols();
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
+    @Property(selector = "setShortStandaloneWeekdaySymbols:")
+    public native void setShortStandaloneWeekdaySymbols(@org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String> v);
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
+    @Property(selector = "veryShortStandaloneWeekdaySymbols")
+    public native @org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String> getVeryShortStandaloneWeekdaySymbols();
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
+    @Property(selector = "setVeryShortStandaloneWeekdaySymbols:")
+    public native void setVeryShortStandaloneWeekdaySymbols(@org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String> v);
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
+    @Property(selector = "quarterSymbols")
+    public native @org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String> getQuarterSymbols();
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
+    @Property(selector = "setQuarterSymbols:")
+    public native void setQuarterSymbols(@org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String> v);
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
+    @Property(selector = "shortQuarterSymbols")
+    public native @org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String> getShortQuarterSymbols();
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
+    @Property(selector = "setShortQuarterSymbols:")
+    public native void setShortQuarterSymbols(@org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String> v);
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
+    @Property(selector = "standaloneQuarterSymbols")
+    public native @org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String> getStandaloneQuarterSymbols();
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
+    @Property(selector = "setStandaloneQuarterSymbols:")
+    public native void setStandaloneQuarterSymbols(@org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String> v);
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
+    @Property(selector = "shortStandaloneQuarterSymbols")
+    public native @org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String> getShortStandaloneQuarterSymbols();
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
+    @Property(selector = "setShortStandaloneQuarterSymbols:")
+    public native void setShortStandaloneQuarterSymbols(@org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String> v);
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
+    @Property(selector = "gregorianStartDate")
+    public native NSDate getGregorianStartDate();
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
+    @Property(selector = "setGregorianStartDate:")
+    public native void setGregorianStartDate(NSDate v);
+    /**
+     * @since Available in iOS 4.0 and later.
+     */
+    @Property(selector = "doesRelativeDateFormatting")
+    public native boolean isDoesRelativeDateFormatting();
+    /**
+     * @since Available in iOS 4.0 and later.
+     */
+    @Property(selector = "setDoesRelativeDateFormatting:")
+    public native void setDoesRelativeDateFormatting(boolean v);
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
@@ -58,228 +290,11 @@ import org.robovm.apple.security.*;
     public native String format(NSDate date);
     @Method(selector = "dateFromString:")
     public native NSDate parse(String string);
-    @Method(selector = "dateFormat")
-    public native String getDateFormat();
-    @Method(selector = "dateStyle")
-    public native NSDateFormatterStyle getDateStyle();
-    @Method(selector = "setDateStyle:")
-    public native void setDateStyle(NSDateFormatterStyle style);
-    @Method(selector = "timeStyle")
-    public native NSDateFormatterStyle getTimeStyle();
-    @Method(selector = "setTimeStyle:")
-    public native void setTimeStyle(NSDateFormatterStyle style);
-    @Method(selector = "locale")
-    public native NSLocale getLocale();
-    @Method(selector = "setLocale:")
-    public native void setLocale(NSLocale locale);
-    @Method(selector = "generatesCalendarDates")
-    public native boolean generatesCalendarDates();
-    @Method(selector = "setGeneratesCalendarDates:")
-    public native void setGeneratesCalendarDates(boolean b);
-    @Method(selector = "formatterBehavior")
-    public native NSDateFormatterBehavior getFormatterBehavior();
-    @Method(selector = "setFormatterBehavior:")
-    public native void setFormatterBehavior(NSDateFormatterBehavior behavior);
-    @Method(selector = "setDateFormat:")
-    public native void setDateFormat(String string);
-    @Method(selector = "timeZone")
-    public native NSTimeZone getTimeZone();
-    @Method(selector = "setTimeZone:")
-    public native void setTimeZone(NSTimeZone tz);
-    @Method(selector = "calendar")
-    public native NSCalendar getCalendar();
-    @Method(selector = "setCalendar:")
-    public native void setCalendar(NSCalendar calendar);
-    @Method(selector = "isLenient")
-    public native boolean isLenient();
-    @Method(selector = "setLenient:")
-    public native void setLenient(boolean b);
-    @Method(selector = "twoDigitStartDate")
-    public native NSDate getTwoDigitStartDate();
-    @Method(selector = "setTwoDigitStartDate:")
-    public native void setTwoDigitStartDate(NSDate date);
-    @Method(selector = "defaultDate")
-    public native NSDate getDefaultDate();
-    @Method(selector = "setDefaultDate:")
-    public native void setDefaultDate(NSDate date);
-    @Method(selector = "eraSymbols")
-    public native @org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String> getEraSymbols();
-    @Method(selector = "setEraSymbols:")
-    public native void setEraSymbols(@org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String> array);
-    @Method(selector = "monthSymbols")
-    public native @org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String> getMonthSymbols();
-    @Method(selector = "setMonthSymbols:")
-    public native void setMonthSymbols(@org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String> array);
-    @Method(selector = "shortMonthSymbols")
-    public native @org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String> getShortMonthSymbols();
-    @Method(selector = "setShortMonthSymbols:")
-    public native void setShortMonthSymbols(@org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String> array);
-    @Method(selector = "weekdaySymbols")
-    public native @org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String> getWeekdaySymbols();
-    @Method(selector = "setWeekdaySymbols:")
-    public native void setWeekdaySymbols(@org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String> array);
-    @Method(selector = "shortWeekdaySymbols")
-    public native @org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String> getShortWeekdaySymbols();
-    @Method(selector = "setShortWeekdaySymbols:")
-    public native void setShortWeekdaySymbols(@org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String> array);
-    @Method(selector = "AMSymbol")
-    public native String getAMSymbol();
-    @Method(selector = "setAMSymbol:")
-    public native void setAMSymbol(String string);
-    @Method(selector = "PMSymbol")
-    public native String getPMSymbol();
-    @Method(selector = "setPMSymbol:")
-    public native void setPMSymbol(String string);
     /**
-     * @since Available in iOS 2.0 and later.
+     * @since Available in iOS 8.0 and later.
      */
-    @Method(selector = "longEraSymbols")
-    public native @org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String> getLongEraSymbols();
-    /**
-     * @since Available in iOS 2.0 and later.
-     */
-    @Method(selector = "setLongEraSymbols:")
-    public native void setLongEraSymbols(@org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String> array);
-    /**
-     * @since Available in iOS 2.0 and later.
-     */
-    @Method(selector = "veryShortMonthSymbols")
-    public native @org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String> getVeryShortMonthSymbols();
-    /**
-     * @since Available in iOS 2.0 and later.
-     */
-    @Method(selector = "setVeryShortMonthSymbols:")
-    public native void setVeryShortMonthSymbols(@org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String> array);
-    /**
-     * @since Available in iOS 2.0 and later.
-     */
-    @Method(selector = "standaloneMonthSymbols")
-    public native @org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String> getStandaloneMonthSymbols();
-    /**
-     * @since Available in iOS 2.0 and later.
-     */
-    @Method(selector = "setStandaloneMonthSymbols:")
-    public native void setStandaloneMonthSymbols(@org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String> array);
-    /**
-     * @since Available in iOS 2.0 and later.
-     */
-    @Method(selector = "shortStandaloneMonthSymbols")
-    public native @org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String> getShortStandaloneMonthSymbols();
-    /**
-     * @since Available in iOS 2.0 and later.
-     */
-    @Method(selector = "setShortStandaloneMonthSymbols:")
-    public native void setShortStandaloneMonthSymbols(@org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String> array);
-    /**
-     * @since Available in iOS 2.0 and later.
-     */
-    @Method(selector = "veryShortStandaloneMonthSymbols")
-    public native @org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String> getVeryShortStandaloneMonthSymbols();
-    /**
-     * @since Available in iOS 2.0 and later.
-     */
-    @Method(selector = "setVeryShortStandaloneMonthSymbols:")
-    public native void setVeryShortStandaloneMonthSymbols(@org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String> array);
-    /**
-     * @since Available in iOS 2.0 and later.
-     */
-    @Method(selector = "veryShortWeekdaySymbols")
-    public native @org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String> getVeryShortWeekdaySymbols();
-    /**
-     * @since Available in iOS 2.0 and later.
-     */
-    @Method(selector = "setVeryShortWeekdaySymbols:")
-    public native void setVeryShortWeekdaySymbols(@org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String> array);
-    /**
-     * @since Available in iOS 2.0 and later.
-     */
-    @Method(selector = "standaloneWeekdaySymbols")
-    public native @org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String> getStandaloneWeekdaySymbols();
-    /**
-     * @since Available in iOS 2.0 and later.
-     */
-    @Method(selector = "setStandaloneWeekdaySymbols:")
-    public native void setStandaloneWeekdaySymbols(@org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String> array);
-    /**
-     * @since Available in iOS 2.0 and later.
-     */
-    @Method(selector = "shortStandaloneWeekdaySymbols")
-    public native @org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String> getShortStandaloneWeekdaySymbols();
-    /**
-     * @since Available in iOS 2.0 and later.
-     */
-    @Method(selector = "setShortStandaloneWeekdaySymbols:")
-    public native void setShortStandaloneWeekdaySymbols(@org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String> array);
-    /**
-     * @since Available in iOS 2.0 and later.
-     */
-    @Method(selector = "veryShortStandaloneWeekdaySymbols")
-    public native @org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String> getVeryShortStandaloneWeekdaySymbols();
-    /**
-     * @since Available in iOS 2.0 and later.
-     */
-    @Method(selector = "setVeryShortStandaloneWeekdaySymbols:")
-    public native void setVeryShortStandaloneWeekdaySymbols(@org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String> array);
-    /**
-     * @since Available in iOS 2.0 and later.
-     */
-    @Method(selector = "quarterSymbols")
-    public native @org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String> getQuarterSymbols();
-    /**
-     * @since Available in iOS 2.0 and later.
-     */
-    @Method(selector = "setQuarterSymbols:")
-    public native void setQuarterSymbols(@org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String> array);
-    /**
-     * @since Available in iOS 2.0 and later.
-     */
-    @Method(selector = "shortQuarterSymbols")
-    public native @org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String> getShortQuarterSymbols();
-    /**
-     * @since Available in iOS 2.0 and later.
-     */
-    @Method(selector = "setShortQuarterSymbols:")
-    public native void setShortQuarterSymbols(@org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String> array);
-    /**
-     * @since Available in iOS 2.0 and later.
-     */
-    @Method(selector = "standaloneQuarterSymbols")
-    public native @org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String> getStandaloneQuarterSymbols();
-    /**
-     * @since Available in iOS 2.0 and later.
-     */
-    @Method(selector = "setStandaloneQuarterSymbols:")
-    public native void setStandaloneQuarterSymbols(@org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String> array);
-    /**
-     * @since Available in iOS 2.0 and later.
-     */
-    @Method(selector = "shortStandaloneQuarterSymbols")
-    public native @org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String> getShortStandaloneQuarterSymbols();
-    /**
-     * @since Available in iOS 2.0 and later.
-     */
-    @Method(selector = "setShortStandaloneQuarterSymbols:")
-    public native void setShortStandaloneQuarterSymbols(@org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String> array);
-    /**
-     * @since Available in iOS 2.0 and later.
-     */
-    @Method(selector = "gregorianStartDate")
-    public native NSDate getGregorianStartDate();
-    /**
-     * @since Available in iOS 2.0 and later.
-     */
-    @Method(selector = "setGregorianStartDate:")
-    public native void setGregorianStartDate(NSDate date);
-    /**
-     * @since Available in iOS 4.0 and later.
-     */
-    @Method(selector = "doesRelativeDateFormatting")
-    public native boolean doesRelativeDateFormatting();
-    /**
-     * @since Available in iOS 4.0 and later.
-     */
-    @Method(selector = "setDoesRelativeDateFormatting:")
-    public native void setDoesRelativeDateFormatting(boolean b);
+    @Method(selector = "setLocalizedDateFormatFromTemplate:")
+    public native void setLocalizedDateFormat(String dateFormatTemplate);
     /**
      * @since Available in iOS 4.0 and later.
      */

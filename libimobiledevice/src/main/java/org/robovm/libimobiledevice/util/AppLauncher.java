@@ -680,6 +680,7 @@ public class AppLauncher {
             log("Debug server port: " + debugService.getPort());
         }
 
+        log("Remote app path: " + appPath);
         log("Launching app...");
         
         
@@ -779,7 +780,8 @@ public class AppLauncher {
         boolean wasInterrupted = false;
         Socket clientSocket = null;
                 
-        try(ServerSocket serverSocket = new ServerSocket(localPort)) {         
+        try(ServerSocket serverSocket = new ServerSocket(localPort)) {
+            serverSocket.setReuseAddress(true);
             log("Waiting for GDB remote connection at http://127.0.0.1:" + localPort);
             clientSocket = serverSocket.accept();
             log("GDB remote client connected");
@@ -806,6 +808,12 @@ public class AppLauncher {
                         debugForward(fileOut, "lldb->debugserver: ", messages);
                     }
                     
+                    // check if we've been interrupted
+                    if (killed || Thread.currentThread().isInterrupted()) {
+                        killed = true;
+                        throw new InterruptedIOException();
+                    }
+                    
                     // check if we got a reply from the debug server, wait 
                     // for 10 milliseconds
                     try {
@@ -829,8 +837,11 @@ public class AppLauncher {
                         }
                     } catch(Exception e) {
                         // nothing to do here, we simply didn't receive a message
-                        // FIXME must actually react to this if debug server gets 
-                        // killed for some reason                        
+                        // unless we get an exception from libIMobileDevice which
+                        // means the device might be locked or crashed.
+                        if(e instanceof LibIMobileDeviceException) {
+                            throw new InterruptedIOException(e.getMessage());
+                        }
                     }
                 } catch (InterruptedIOException e) {
                     // Remember whether we were interrupted. kill() clears

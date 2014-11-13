@@ -32,6 +32,7 @@ import org.robovm.apple.coregraphics.*;
 import org.robovm.apple.coredata.*;
 import org.robovm.apple.coreimage.*;
 import org.robovm.apple.coretext.*;
+import org.robovm.apple.corelocation.*;
 /*</imports>*/
 
 /*<javadoc>*/
@@ -80,37 +81,37 @@ import org.robovm.apple.coretext.*;
     @NotImplemented("tableView:didEndDisplayingFooterView:forSection:")
     public void didEndDisplayingFooterView(UITableView tableView, UIView view, @MachineSizedSInt long section) { throw new UnsupportedOperationException(); }
     @NotImplemented("tableView:heightForRowAtIndexPath:")
-    public @MachineSizedFloat double getRowHeight(UITableView tableView, NSIndexPath indexPath) { throw new UnsupportedOperationException(); }
+    public @MachineSizedFloat double getHeightForRow(UITableView tableView, NSIndexPath indexPath) { throw new UnsupportedOperationException(); }
     @NotImplemented("tableView:heightForHeaderInSection:")
-    public @MachineSizedFloat double getSectionHeaderHeight(UITableView tableView, @MachineSizedSInt long section) { throw new UnsupportedOperationException(); }
+    public @MachineSizedFloat double getHeightForHeader(UITableView tableView, @MachineSizedSInt long section) { throw new UnsupportedOperationException(); }
     @NotImplemented("tableView:heightForFooterInSection:")
-    public @MachineSizedFloat double getSectionFooterHeight(UITableView tableView, @MachineSizedSInt long section) { throw new UnsupportedOperationException(); }
+    public @MachineSizedFloat double getHeightForFooter(UITableView tableView, @MachineSizedSInt long section) { throw new UnsupportedOperationException(); }
     /**
      * @since Available in iOS 7.0 and later.
      */
     @NotImplemented("tableView:estimatedHeightForRowAtIndexPath:")
-    public @MachineSizedFloat double getEstimatedRowHeight(UITableView tableView, NSIndexPath indexPath) { throw new UnsupportedOperationException(); }
+    public @MachineSizedFloat double getEstimatedHeightForRow(UITableView tableView, NSIndexPath indexPath) { throw new UnsupportedOperationException(); }
     /**
      * @since Available in iOS 7.0 and later.
      */
     @NotImplemented("tableView:estimatedHeightForHeaderInSection:")
-    public @MachineSizedFloat double getEstimatedSectionHeaderHeight(UITableView tableView, @MachineSizedSInt long section) { throw new UnsupportedOperationException(); }
+    public @MachineSizedFloat double getEstimatedHeightForHeader(UITableView tableView, @MachineSizedSInt long section) { throw new UnsupportedOperationException(); }
     /**
      * @since Available in iOS 7.0 and later.
      */
     @NotImplemented("tableView:estimatedHeightForFooterInSection:")
-    public @MachineSizedFloat double getEstimatedSectionFooterHeight(UITableView tableView, @MachineSizedSInt long section) { throw new UnsupportedOperationException(); }
+    public @MachineSizedFloat double getEstimatedHeightForFooter(UITableView tableView, @MachineSizedSInt long section) { throw new UnsupportedOperationException(); }
     @NotImplemented("tableView:viewForHeaderInSection:")
-    public UIView getSectionHeaderView(UITableView tableView, @MachineSizedSInt long section) { throw new UnsupportedOperationException(); }
+    public UIView getViewForHeader(UITableView tableView, @MachineSizedSInt long section) { throw new UnsupportedOperationException(); }
     @NotImplemented("tableView:viewForFooterInSection:")
-    public UIView getSectionFooterView(UITableView tableView, @MachineSizedSInt long section) { throw new UnsupportedOperationException(); }
+    public UIView getViewForFooter(UITableView tableView, @MachineSizedSInt long section) { throw new UnsupportedOperationException(); }
     /**
      * @since Available in iOS 2.0 and later.
      * @deprecated Deprecated in iOS 3.0.
      */
     @Deprecated
     @NotImplemented("tableView:accessoryTypeForRowWithIndexPath:")
-    public UITableViewCellAccessoryType getRowAccessoryType(UITableView tableView, NSIndexPath indexPath) { throw new UnsupportedOperationException(); }
+    public UITableViewCellAccessoryType getAccessoryTypeForRow(UITableView tableView, NSIndexPath indexPath) { throw new UnsupportedOperationException(); }
     @NotImplemented("tableView:accessoryButtonTappedForRowWithIndexPath:")
     public void accessoryButtonTapped(UITableView tableView, NSIndexPath indexPath) { throw new UnsupportedOperationException(); }
     /**
@@ -143,12 +144,17 @@ import org.robovm.apple.coretext.*;
     @NotImplemented("tableView:didDeselectRowAtIndexPath:")
     public void didDeselectRow(UITableView tableView, NSIndexPath indexPath) { throw new UnsupportedOperationException(); }
     @NotImplemented("tableView:editingStyleForRowAtIndexPath:")
-    public UITableViewCellEditingStyle getRowEditingStyle(UITableView tableView, NSIndexPath indexPath) { throw new UnsupportedOperationException(); }
+    public UITableViewCellEditingStyle getEditingStyleForRow(UITableView tableView, NSIndexPath indexPath) { throw new UnsupportedOperationException(); }
     /**
      * @since Available in iOS 3.0 and later.
      */
     @NotImplemented("tableView:titleForDeleteConfirmationButtonForRowAtIndexPath:")
-    public String getDeleteConfirmationButtonTitle(UITableView tableView, NSIndexPath indexPath) { throw new UnsupportedOperationException(); }
+    public String getTitleForDeleteConfirmationButton(UITableView tableView, NSIndexPath indexPath) { throw new UnsupportedOperationException(); }
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @NotImplemented("tableView:editActionsForRowAtIndexPath:")
+    public NSArray<UITableViewRowAction> getEditActionsForRow(UITableView tableView, NSIndexPath indexPath) { throw new UnsupportedOperationException(); }
     @NotImplemented("tableView:shouldIndentWhileEditingRowAtIndexPath:")
     public boolean shouldIndentWhileEditingRow(UITableView tableView, NSIndexPath indexPath) { throw new UnsupportedOperationException(); }
     @NotImplemented("tableView:willBeginEditingRowAtIndexPath:")
@@ -158,7 +164,7 @@ import org.robovm.apple.coretext.*;
     @NotImplemented("tableView:targetIndexPathForMoveFromRowAtIndexPath:toProposedIndexPath:")
     public NSIndexPath getTargetForMove(UITableView tableView, NSIndexPath sourceIndexPath, NSIndexPath proposedDestinationIndexPath) { throw new UnsupportedOperationException(); }
     @NotImplemented("tableView:indentationLevelForRowAtIndexPath:")
-    public @MachineSizedSInt long getRowIndentationLevel(UITableView tableView, NSIndexPath indexPath) { throw new UnsupportedOperationException(); }
+    public @MachineSizedSInt long getIndentationLevelForRow(UITableView tableView, NSIndexPath indexPath) { throw new UnsupportedOperationException(); }
     /**
      * @since Available in iOS 5.0 and later.
      */
@@ -173,6 +179,6 @@ import org.robovm.apple.coretext.*;
      * @since Available in iOS 5.0 and later.
      */
     @NotImplemented("tableView:performAction:forRowAtIndexPath:withSender:")
-    public void performAction(UITableView tableView, Selector action, NSIndexPath indexPath, NSObject sender) { throw new UnsupportedOperationException(); }
+    public void performActionForRow(UITableView tableView, Selector action, NSIndexPath indexPath, NSObject sender) { throw new UnsupportedOperationException(); }
     /*</methods>*/
 }

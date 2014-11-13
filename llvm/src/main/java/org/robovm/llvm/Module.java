@@ -28,7 +28,7 @@ import org.robovm.llvm.binding.StringOut;
 /**
  * 
  */
-public class Module {
+public class Module implements AutoCloseable {
     protected ModuleRef ref;
 
     private Module(ModuleRef moduleRef) {
@@ -46,7 +46,12 @@ public class Module {
         LLVM.DisposeModule(ref);
         ref = null;
     }
-    
+
+    @Override
+    public void close() {
+        dispose();
+    }
+
     public Type getTypeByName(String name) {
         checkDisposed();
         return new Type(LLVM.GetTypeByName(ref, name));

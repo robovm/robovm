@@ -32,6 +32,7 @@ import org.robovm.apple.coregraphics.*;
 import org.robovm.apple.coredata.*;
 import org.robovm.apple.coreimage.*;
 import org.robovm.apple.coretext.*;
+import org.robovm.apple.corelocation.*;
 /*</imports>*/
 
 /*<javadoc>*/
@@ -95,6 +96,56 @@ import org.robovm.apple.coretext.*;
      */
     @Property(selector = "interactivePopGestureRecognizer")
     public native UIGestureRecognizer getInteractivePopGestureRecognizer();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @Property(selector = "hidesBarsWhenKeyboardAppears")
+    public native boolean isHidesBarsWhenKeyboardAppears();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @Property(selector = "setHidesBarsWhenKeyboardAppears:")
+    public native void setHidesBarsWhenKeyboardAppears(boolean v);
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @Property(selector = "hidesBarsOnSwipe")
+    public native boolean isHidesBarsOnSwipe();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @Property(selector = "setHidesBarsOnSwipe:")
+    public native void setHidesBarsOnSwipe(boolean v);
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @Property(selector = "barHideOnSwipeGestureRecognizer")
+    public native UIPanGestureRecognizer getBarHideOnSwipeGestureRecognizer();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @Property(selector = "hidesBarsWhenVerticallyCompact")
+    public native boolean isHidesBarsWhenVerticallyCompact();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @Property(selector = "setHidesBarsWhenVerticallyCompact:")
+    public native void setHidesBarsWhenVerticallyCompact(boolean v);
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @Property(selector = "hidesBarsOnTap")
+    public native boolean isHidesBarsOnTap();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @Property(selector = "setHidesBarsOnTap:")
+    public native void setHidesBarsOnTap(boolean v);
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @Property(selector = "barHideOnTapGestureRecognizer")
+    public native UITapGestureRecognizer getBarHideOnTapGestureRecognizer();
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
@@ -128,5 +179,10 @@ import org.robovm.apple.coretext.*;
      */
     @Method(selector = "setToolbarHidden:animated:")
     public native void setToolbarHidden(boolean hidden, boolean animated);
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @Method(selector = "showViewController:sender:")
+    public native void showViewController(UIViewController vc, NSObject sender);
     /*</methods>*/
 }

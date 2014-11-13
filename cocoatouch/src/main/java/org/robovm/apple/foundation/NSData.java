@@ -32,6 +32,7 @@ import org.robovm.apple.coreanimation.*;
 import org.robovm.apple.coregraphics.*;
 import org.robovm.apple.coremedia.*;
 import org.robovm.apple.security.*;
+import org.robovm.apple.dispatch.*;
 /*</imports>*/
 
 /*<javadoc>*/
@@ -108,12 +109,15 @@ import org.robovm.apple.security.*;
     }
     
     /*<properties>*/
-    
+    @Property(selector = "length")
+    public native @MachineSizedUInt long getLength();
+    @Property(selector = "bytes")
+    protected native @Pointer long getBytes0();
     /*</properties>*/
     /*<members>*//*</members>*/
     
     public ByteBuffer asByteBuffer() {
-        return VM.newDirectByteBuffer(bytes(), getLength());
+        return VM.newDirectByteBuffer(getBytes0(), getLength());
     }
 
     public byte[] getBytes() {
@@ -150,29 +154,73 @@ import org.robovm.apple.security.*;
         return data;
     }
 
-    public static NSData read(java.io.File file, NSDataReadingOptions readOptionsMask, NSError.NSErrorPtr errorPtr) {
-        return (NSData) dataWithContentsOfFile$options$error$(file.getAbsolutePath(), readOptionsMask, errorPtr);
+    /**
+     * 
+     * @param file
+     * @param readOptionsMask
+     * @return
+     * @throws NSErrorException
+     */
+    public static NSData read(java.io.File file, NSDataReadingOptions readOptionsMask) {
+        NSError.NSErrorPtr err = new NSError.NSErrorPtr();
+        NSData result = (NSData) dataWithContentsOfFile$options$error$(file.getAbsolutePath(), readOptionsMask, err);
+        if (err.get() != null) {
+            throw new NSErrorException(err.get());
+        }
+        return result;
     }
     public static NSData read(java.io.File file) {
         return (NSData) dataWithContentsOfFile$(file.getAbsolutePath());
     }
+    /**
+     * @since Available in iOS 2.0 and later.
+     * @deprecated Deprecated in iOS 8.0.
+     */
+    @Deprecated
     public static NSData readMapped(java.io.File file) {
         return (NSData) dataWithContentsOfMappedFile$(file.getAbsolutePath());
+    }
+    /**
+     * 
+     * @param url
+     * @param readOptionsMask
+     * @return
+     * @throws NSErrorException
+     */
+    public NSData read(NSURL url, NSDataReadingOptions readOptionsMask) {
+        NSError.NSErrorPtr err = new NSError.NSErrorPtr();
+        NSData result = read(url, readOptionsMask, err);
+        if (err.get() != null) {
+            throw new NSErrorException(err.get());
+        }
+        return result;
     }
     
     public void write(java.io.File file, boolean useAuxiliaryFile) {
         writeToFile$atomically$(file.getAbsolutePath(), useAuxiliaryFile);
     }
-
-    public void write(java.io.File file, NSDataWritingOptions writeOptionsMask, NSError.NSErrorPtr errorPtr) {
-        writeToFile$options$error$(file.getAbsolutePath(), writeOptionsMask, errorPtr);
+    /**
+     * 
+     * @param file
+     * @param writeOptionsMask
+     * @throws NSErrorException
+     */
+    public void write(java.io.File file, NSDataWritingOptions writeOptionsMask) {
+        NSError.NSErrorPtr err = new NSError.NSErrorPtr();
+        writeToFile$options$error$(file.getAbsolutePath(), writeOptionsMask, err);
+        if (err.get() != null) {
+            throw new NSErrorException(err.get());
+        }
     }
-
+    public boolean write(NSURL url, NSDataWritingOptions writeOptionsMask) {
+        NSError.NSErrorPtr err = new NSError.NSErrorPtr();
+        boolean result = write(url, writeOptionsMask, err);
+        if (err.get() != null) {
+            throw new NSErrorException(err.get());
+        }
+        return result;
+    }
     /*<methods>*/
-    @Method(selector = "length")
-    public native @MachineSizedUInt long getLength();
-    @Method(selector = "bytes")
-    protected native @Pointer long bytes();
     @Method(selector = "getBytes:length:")
     protected native void getBytes$length$(@Pointer long buffer, @MachineSizedUInt long length);
     @Method(selector = "subdataWithRange:")
@@ -180,11 +228,11 @@ import org.robovm.apple.security.*;
     @Method(selector = "writeToFile:atomically:")
     protected native boolean writeToFile$atomically$(String path, boolean useAuxiliaryFile);
     @Method(selector = "writeToURL:atomically:")
-    public native boolean write(NSURL url, boolean atomically);
+    protected native boolean write(NSURL url, boolean atomically);
     @Method(selector = "writeToFile:options:error:")
     protected native boolean writeToFile$options$error$(String path, NSDataWritingOptions writeOptionsMask, NSError.NSErrorPtr errorPtr);
     @Method(selector = "writeToURL:options:error:")
-    public native boolean write(NSURL url, NSDataWritingOptions writeOptionsMask, NSError.NSErrorPtr errorPtr);
+    protected native boolean write(NSURL url, NSDataWritingOptions writeOptionsMask, NSError.NSErrorPtr errorPtr);
     /**
      * @since Available in iOS 4.0 and later.
      */
@@ -197,13 +245,13 @@ import org.robovm.apple.security.*;
     @Method(selector = "initWithData:")
     protected native @Pointer long initWithData$(NSData data);
     @Method(selector = "dataWithContentsOfFile:options:error:")
-    protected static native NSObject dataWithContentsOfFile$options$error$(String path, NSDataReadingOptions readOptionsMask, NSError.NSErrorPtr errorPtr);
+    protected static native NSData dataWithContentsOfFile$options$error$(String path, NSDataReadingOptions readOptionsMask, NSError.NSErrorPtr errorPtr);
     @Method(selector = "dataWithContentsOfURL:options:error:")
-    public static native NSObject read(NSURL url, NSDataReadingOptions readOptionsMask, NSError.NSErrorPtr errorPtr);
+    protected static native NSData read(NSURL url, NSDataReadingOptions readOptionsMask, NSError.NSErrorPtr errorPtr);
     @Method(selector = "dataWithContentsOfFile:")
-    protected static native NSObject dataWithContentsOfFile$(String path);
+    protected static native NSData dataWithContentsOfFile$(String path);
     @Method(selector = "dataWithContentsOfURL:")
-    public static native NSObject read(NSURL url);
+    public static native NSData read(NSURL url);
     /**
      * @since Available in iOS 7.0 and later.
      */
@@ -224,6 +272,11 @@ import org.robovm.apple.security.*;
      */
     @Method(selector = "base64EncodedDataWithOptions:")
     public native NSData toBase64EncodedData(NSDataBase64EncodingOptions options);
+    /**
+     * @since Available in iOS 2.0 and later.
+     * @deprecated Deprecated in iOS 8.0.
+     */
+    @Deprecated
     @Method(selector = "dataWithContentsOfMappedFile:")
     protected static native NSObject dataWithContentsOfMappedFile$(String path);
     /*</methods>*/

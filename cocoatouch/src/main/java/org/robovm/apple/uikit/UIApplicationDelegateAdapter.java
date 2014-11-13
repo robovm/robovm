@@ -32,6 +32,7 @@ import org.robovm.apple.coregraphics.*;
 import org.robovm.apple.coredata.*;
 import org.robovm.apple.coreimage.*;
 import org.robovm.apple.coretext.*;
+import org.robovm.apple.corelocation.*;
 /*</imports>*/
 
 /*<javadoc>*/
@@ -99,6 +100,11 @@ import org.robovm.apple.coretext.*;
     @NotImplemented("application:didChangeStatusBarFrame:")
     public void didChangStatusBarFrame(UIApplication application, @ByVal CGRect oldStatusBarFrame) { throw new UnsupportedOperationException(); }
     /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @NotImplemented("application:didRegisterUserNotificationSettings:")
+    public void didRegisterUserNotificationSettings(UIApplication application, UIUserNotificationSettings notificationSettings) { throw new UnsupportedOperationException(); }
+    /**
      * @since Available in iOS 3.0 and later.
      */
     @NotImplemented("application:didRegisterForRemoteNotificationsWithDeviceToken:")
@@ -118,6 +124,16 @@ import org.robovm.apple.coretext.*;
      */
     @NotImplemented("application:didReceiveLocalNotification:")
     public void didReceiveLocalNotification(UIApplication application, UILocalNotification notification) { throw new UnsupportedOperationException(); }
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @NotImplemented("application:handleActionWithIdentifier:forLocalNotification:completionHandler:")
+    public void handleLocalNotificationAction(UIApplication application, String identifier, UILocalNotification notification, @Block Runnable completionHandler) { throw new UnsupportedOperationException(); }
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @NotImplemented("application:handleActionWithIdentifier:forRemoteNotification:completionHandler:")
+    public void handleRemoteNotificationAction(UIApplication application, String identifier, UIRemoteNotification userInfo, @Block Runnable completionHandler) { throw new UnsupportedOperationException(); }
     /**
      * @since Available in iOS 7.0 and later.
      */
@@ -159,6 +175,11 @@ import org.robovm.apple.coretext.*;
     @NotImplemented("application:supportedInterfaceOrientationsForWindow:")
     public @MachineSizedUInt long getSupportedInterfaceOrientations(UIApplication application, UIWindow window) { throw new UnsupportedOperationException(); }
     /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @NotImplemented("application:shouldAllowExtensionPointIdentifier:")
+    public boolean shouldAllowExtensionPointIdentifier(UIApplication application, UIApplicationExtensionPointIdentifier extensionPointIdentifier) { throw new UnsupportedOperationException(); }
+    /**
      * @since Available in iOS 6.0 and later.
      */
     @NotImplemented("application:viewControllerWithRestorationIdentifierPath:coder:")
@@ -183,5 +204,25 @@ import org.robovm.apple.coretext.*;
      */
     @NotImplemented("application:didDecodeRestorableStateWithCoder:")
     public void didDecodeRestorableState(UIApplication application, NSCoder coder) { throw new UnsupportedOperationException(); }
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @NotImplemented("application:willContinueUserActivityWithType:")
+    public boolean willContinueUserActivity(UIApplication application, String userActivityType) { throw new UnsupportedOperationException(); }
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @NotImplemented("application:continueUserActivity:restorationHandler:")
+    public boolean continueUserActivity(UIApplication application, NSUserActivity userActivity, @Block VoidBlock1<NSArray<UIResponder>> restorationHandler) { throw new UnsupportedOperationException(); }
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @NotImplemented("application:didFailToContinueUserActivityWithType:error:")
+    public void didFailToContinueUserActivity(UIApplication application, String userActivityType, NSError error) { throw new UnsupportedOperationException(); }
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @NotImplemented("application:didUpdateUserActivity:")
+    public void didUpdateUserActivity(UIApplication application, NSUserActivity userActivity) { throw new UnsupportedOperationException(); }
     /*</methods>*/
 }

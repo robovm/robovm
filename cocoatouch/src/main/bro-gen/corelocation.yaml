@@ -1,5 +1,5 @@
 package: org.robovm.apple.corelocation
-include: [foundation.yaml]
+include: [foundation.yaml, addressbook.yaml]
 library: CoreLocation
 framework: CoreLocation
 clang_args: ['-x', 'objective-c']
@@ -33,25 +33,29 @@ classes:
         methods:
             '-containsCoordinate:': # Overrides a method in CLRegion
                 exclude: true
+    CLFloor: {} # DONE
     CLGeocoder: # DONE
         methods:
             '-reverseGeocodeLocation:completionHandler:':
                 trim_after_first_colon: true
             '-geocodeAddressDictionary:completionHandler:':
                 name: geocodeAddress
+                parameters:
+                    addressDictionary:
+                        type: ABPersonAddress
             '-geocodeAddressString:completionHandler:':
                 name: geocodeAddress
             '-geocodeAddressString:inRegion:completionHandler:':
                 name: geocodeAddress
-
     CLHeading: # DONE
-        methods:
-            '-description':
+        properties:
+            'description':
                 exclude: true
     CLLocation: # DONE
-        methods:
-            '-description':
+        properties:
+            'description':
                 exclude: true
+        methods:
             '-getDistanceFrom:':
                 exclude: true
             '-distanceFromLocation:':
@@ -63,9 +67,9 @@ classes:
             'locationServicesEnabled': # Deprecated in iOS 4. Conflicts with the class method with the same name.
                 exclude: true
             'monitoredRegions':
-                type: 'NSSet<CLRegion>'
+                type: NSSet<CLRegion>
             'rangedRegions':
-                type: 'NSSet<CLBeaconRegion>'
+                type: NSSet<CLBeaconRegion>
         methods:
             '+locationServicesEnabled':
                 name: isLocationServicesEnabled
@@ -100,16 +104,17 @@ classes:
     CLPlacemark: # DONE
         properties:
             'areasOfInterest':
-                type: 'NSArray<NSString>'
+                type: '@org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String>'
             'addressDictionary':
-                type: 'NSDictionary<NSString, NSString>'
+                name: address
+                type: ABPersonAddress
     CLRegion: # DONE
         methods:
             '-containsCoordinate:':
                 trim_after_first_colon: true
+    CLVisit: {} # DONE
 
 protocols:
-
     CLLocationManagerDelegate: # DONE
         methods:
             '-locationManager:didUpdateToLocation:fromLocation:':
@@ -118,7 +123,7 @@ protocols:
                 name: didUpdateLocations
                 parameters:
                     locations:
-                        type: "NSArray<CLLocation>"
+                        type: NSArray<CLLocation>
             '-locationManager:didUpdateHeading:':
                 name: didUpdateHeading
             '-locationManagerShouldDisplayHeadingCalibration:':
@@ -147,9 +152,10 @@ protocols:
                 name: didResumeLocationUpdates
             '-locationManager:didFinishDeferredUpdatesWithError:':
                 name: didFinishDeferredUpdates
+            '-locationManager:didVisit:':
+                name: didVisit
 
 functions:
-
     CLLocationCoordinate2DMake:
         exclude: true
 

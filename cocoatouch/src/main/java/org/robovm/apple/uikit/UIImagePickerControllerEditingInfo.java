@@ -32,6 +32,7 @@ import org.robovm.apple.coregraphics.*;
 import org.robovm.apple.coredata.*;
 import org.robovm.apple.coreimage.*;
 import org.robovm.apple.coretext.*;
+import org.robovm.apple.corelocation.*;
 /*</imports>*/
 
 /*<javadoc>*/
@@ -80,17 +81,18 @@ import org.robovm.apple.coretext.*;
         return data;
     }
     
-//    public UTType getMediaType() { TODO
-//        if (data.containsKey(MediaTypeKey())) {
-//            NSString val = (NSString)data.get(MediaTypeKey());
-//            return UTType.valueOf(val);
-//        }
-//        return null;
-//    }
-//    public UIImagePickerControllerEditingInfo setMediaType(UTType mediaType) { TODO
-//        data.put(MediaTypeKey(), mediaType.value());
-//        return this;
-//    }
+    
+    public String getMediaType() {
+        if (data.containsKey(MediaTypeKey())) {
+            NSString val = (NSString)data.get(MediaTypeKey());
+            return val.toString();
+        }
+        return null;
+    }
+    public UIImagePickerControllerEditingInfo setMediaType(String mediaType) {
+        data.put(MediaTypeKey(), new NSString(mediaType));
+        return this;
+    }
     public UIImage getOriginalImage() {
         if (data.containsKey(OriginalImageKey())) {
             UIImage val = (UIImage)data.get(OriginalImageKey());

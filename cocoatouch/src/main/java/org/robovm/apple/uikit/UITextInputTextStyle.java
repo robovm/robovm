@@ -32,6 +32,7 @@ import org.robovm.apple.coregraphics.*;
 import org.robovm.apple.coredata.*;
 import org.robovm.apple.coreimage.*;
 import org.robovm.apple.coretext.*;
+import org.robovm.apple.corelocation.*;
 /*</imports>*/
 
 /*<javadoc>*/
@@ -114,10 +115,25 @@ import org.robovm.apple.coretext.*;
         return this;
     }
     /*<methods>*/
+    /**
+     * @since Available in iOS 3.2 and later.
+     * @deprecated Deprecated in iOS 8.0.
+     */
+    @Deprecated
     @GlobalValue(symbol="UITextInputTextBackgroundColorKey", optional=true)
     protected static native NSString BackgroundColorKey();
+    /**
+     * @since Available in iOS 3.2 and later.
+     * @deprecated Deprecated in iOS 8.0.
+     */
+    @Deprecated
     @GlobalValue(symbol="UITextInputTextColorKey", optional=true)
     protected static native NSString ColorKey();
+    /**
+     * @since Available in iOS 3.2 and later.
+     * @deprecated Deprecated in iOS 8.0.
+     */
+    @Deprecated
     @GlobalValue(symbol="UITextInputTextFontKey", optional=true)
     protected static native NSString FontKey();
     /*</methods>*/

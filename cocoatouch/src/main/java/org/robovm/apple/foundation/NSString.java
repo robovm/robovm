@@ -32,6 +32,7 @@ import org.robovm.apple.coreanimation.*;
 import org.robovm.apple.coregraphics.*;
 import org.robovm.apple.coremedia.*;
 import org.robovm.apple.security.*;
+import org.robovm.apple.dispatch.*;
 /*</imports>*/
 
 /*<javadoc>*/
@@ -110,7 +111,8 @@ import org.robovm.apple.security.*;
     protected NSString(SkipInit skipInit) { super(skipInit); }
     /*</constructors>*/
     /*<properties>*/
-    
+    @Property(selector = "length")
+    protected native @MachineSizedUInt long length();
     /*</properties>*/
     /*<members>*//*</members>*/
 
@@ -134,7 +136,7 @@ import org.robovm.apple.security.*;
     public static String getLocalizedString(String key) {
         return NSBundle.getMainBundle().getLocalizedString(key, "", null);
     }
-
+    
     @Bridge protected static native @MachineSizedUInt long length(@Pointer long handle, Selector sel);
     @Bridge protected static native void getCharacters$range$(@Pointer long handle, Selector sel, @Pointer long buffer, @ByVal NSRange aRange);
 
@@ -258,10 +260,48 @@ import org.robovm.apple.security.*;
         return NSStringExtensions.getBoundingRect(this, size, options, attributes, context);
     }
 
+    /**
+     * 
+     * @param url
+     * @param enc
+     * @return
+     * @throws NSErrorException
+     */
+    public static String readURL(NSURL url, NSStringEncoding enc) {
+        NSError.NSErrorPtr err = new NSError.NSErrorPtr();
+        String result = readURL(url, enc, err); 
+        if (err.get() != null) {
+            throw new NSErrorException(err.get());
+        }
+        return result;
+    }
     
+    /**
+     * 
+     * @param path
+     * @param enc
+     * @return
+     * @throws NSErrorException
+     */
+    public static String readFile(File path, NSStringEncoding enc) {
+        return readFile(path.getAbsolutePath(), enc);
+    }
+    /**
+     * 
+     * @param path
+     * @param enc
+     * @return
+     * @throws NSErrorException
+     */
+    public static String readFile(String path, NSStringEncoding enc) {
+        NSError.NSErrorPtr err = new NSError.NSErrorPtr();
+        String result = readFile(path, enc, err);
+        if (err.get() != null) {
+            throw new NSErrorException(err.get());
+        }
+        return result;
+    }
     /*<methods>*/
-    @Method(selector = "length")
-    protected native @MachineSizedUInt long length();
     @Method(selector = "characterAtIndex:")
     protected native short characterAtIndex$(@MachineSizedUInt long index);
     @Method(selector = "getCharacters:range:")
@@ -270,6 +310,10 @@ import org.robovm.apple.security.*;
     protected native @Pointer long initWithCharacters$length$(@Pointer long characters, @MachineSizedUInt long length);
     @Method(selector = "stringWithCharacters:length:")
     protected static native @Pointer long stringWithCharacters$length$(@Pointer long characters, @MachineSizedUInt long length);
+    @Method(selector = "stringWithContentsOfURL:encoding:error:")
+    protected static native String readURL(NSURL url, NSStringEncoding enc, NSError.NSErrorPtr error);
+    @Method(selector = "stringWithContentsOfFile:encoding:error:")
+    protected static native String readFile(String path, NSStringEncoding enc, NSError.NSErrorPtr error);
     @Method(selector = "stringByAddingPercentEscapesUsingEncoding:")
     protected native String stringByAddingPercentEscapesUsingEncoding$(NSStringEncoding enc);
     @Method(selector = "stringByReplacingPercentEscapesUsingEncoding:")

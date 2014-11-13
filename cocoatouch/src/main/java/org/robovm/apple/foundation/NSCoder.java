@@ -32,6 +32,7 @@ import org.robovm.apple.coreanimation.*;
 import org.robovm.apple.coregraphics.*;
 import org.robovm.apple.coremedia.*;
 import org.robovm.apple.security.*;
+import org.robovm.apple.dispatch.*;
 /*</imports>*/
 
 /*<javadoc>*/
@@ -50,7 +51,20 @@ import org.robovm.apple.security.*;
     protected NSCoder(SkipInit skipInit) { super(skipInit); }
     /*</constructors>*/
     /*<properties>*/
-    
+    @Property(selector = "systemVersion")
+    public native int getSystemVersion();
+    @Property(selector = "allowsKeyedCoding")
+    public native boolean isAllowsKeyedCoding();
+    /**
+     * @since Available in iOS 6.0 and later.
+     */
+    @Property(selector = "requiresSecureCoding")
+    public native boolean isRequiresSecureCoding();
+    /**
+     * @since Available in iOS 6.0 and later.
+     */
+    @Property(selector = "allowedClasses")
+    public native @org.robovm.rt.bro.annotation.Marshaler(NSArray.AsListMarshaler.class) List<ObjCClass> getAllowedClasses();
     /*</properties>*/
     /*<members>*//*</members>*/
     
@@ -164,10 +178,6 @@ import org.robovm.apple.security.*;
     public native void setObjectZone(NSZone zone);
     @Method(selector = "objectZone")
     public native NSZone getObjectZone();
-    @Method(selector = "systemVersion")
-    public native int getSystemVersion();
-    @Method(selector = "allowsKeyedCoding")
-    public native boolean allowsKeyedCoding();
     @Method(selector = "encodeObject:forKey:")
     public native void encodeObject(NSObject objv, String key);
     @Method(selector = "encodeConditionalObject:forKey:")
@@ -217,27 +227,17 @@ import org.robovm.apple.security.*;
     /**
      * @since Available in iOS 6.0 and later.
      */
-    @Method(selector = "requiresSecureCoding")
-    public native boolean requiresSecureCoding();
-    /**
-     * @since Available in iOS 6.0 and later.
-     */
     @Method(selector = "decodeObjectOfClass:forKey:")
     public native NSObject decodeObject(ObjCClass aClass, String key);
     /**
      * @since Available in iOS 6.0 and later.
      */
     @Method(selector = "decodeObjectOfClasses:forKey:")
-    public native NSObject decodeObject(NSSet<?> classes, String key);
+    public native NSObject decodeObject(@org.robovm.rt.bro.annotation.Marshaler(NSArray.AsListMarshaler.class) List<ObjCClass> classes, String key);
     /**
      * @since Available in iOS 6.0 and later.
      */
     @Method(selector = "decodePropertyListForKey:")
     public native NSObject decodePropertyList(String key);
-    /**
-     * @since Available in iOS 6.0 and later.
-     */
-    @Method(selector = "allowedClasses")
-    public native NSSet<?> getAllowedClasses();
     /*</methods>*/
 }

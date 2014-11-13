@@ -32,6 +32,7 @@ import org.robovm.apple.coreanimation.*;
 import org.robovm.apple.coregraphics.*;
 import org.robovm.apple.coremedia.*;
 import org.robovm.apple.security.*;
+import org.robovm.apple.dispatch.*;
 /*</imports>*/
 
 /*<javadoc>*/
@@ -51,19 +52,19 @@ import org.robovm.apple.security.*;
     /*</properties>*/
     /*<methods>*/
     @Method(selector = "netServiceBrowserWillSearch:")
-    void netServiceBrowserWillSearch$(NSNetServiceBrowser aNetServiceBrowser);
+    void willSearch(NSNetServiceBrowser aNetServiceBrowser);
     @Method(selector = "netServiceBrowserDidStopSearch:")
-    void netServiceBrowserDidStopSearch$(NSNetServiceBrowser aNetServiceBrowser);
+    void didStopSearch(NSNetServiceBrowser aNetServiceBrowser);
     @Method(selector = "netServiceBrowser:didNotSearch:")
-    void netServiceBrowser$didNotSearch$(NSNetServiceBrowser aNetServiceBrowser, NSDictionary<?, ?> errorDict);
+    void didNotSearch(NSNetServiceBrowser aNetServiceBrowser, NSDictionary<?, ?> errorDict);
     @Method(selector = "netServiceBrowser:didFindDomain:moreComing:")
-    void netServiceBrowser$didFindDomain$moreComing$(NSNetServiceBrowser aNetServiceBrowser, String domainString, boolean moreComing);
+    void didFindDomain(NSNetServiceBrowser aNetServiceBrowser, String domainString, boolean moreComing);
     @Method(selector = "netServiceBrowser:didFindService:moreComing:")
-    void netServiceBrowser$didFindService$moreComing$(NSNetServiceBrowser aNetServiceBrowser, NSNetService aNetService, boolean moreComing);
+    void didFindService(NSNetServiceBrowser aNetServiceBrowser, NSNetService aNetService, boolean moreComing);
     @Method(selector = "netServiceBrowser:didRemoveDomain:moreComing:")
-    void netServiceBrowser$didRemoveDomain$moreComing$(NSNetServiceBrowser aNetServiceBrowser, String domainString, boolean moreComing);
+    void didRemoveDomain(NSNetServiceBrowser aNetServiceBrowser, String domainString, boolean moreComing);
     @Method(selector = "netServiceBrowser:didRemoveService:moreComing:")
-    void netServiceBrowser$didRemoveService$moreComing$(NSNetServiceBrowser aNetServiceBrowser, NSNetService aNetService, boolean moreComing);
+    void didRemoveService(NSNetServiceBrowser aNetServiceBrowser, NSNetService aNetService, boolean moreComing);
     /*</methods>*/
     /*<adapter>*/
     /*</adapter>*/

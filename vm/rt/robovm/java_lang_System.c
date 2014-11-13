@@ -36,13 +36,15 @@ ObjectArray* Java_java_lang_System_robovmSpecialProperties(Env* env, Class* c) {
     char* osArch = NULL;
 #if defined(RVM_X86)
     osArch = "os.arch=x86";
+#elif defined(RVM_X86_64)
+    osArch = "os.arch=x86_64";
 #elif defined(RVM_ARMV6) || defined(RVM_ARMV7) || defined(RVM_THUMBV6) || defined(RVM_THUMBV7)
     osArch = "os.arch=arm";
 #endif
 
 #if defined(DARWIN)
     char* osName = NULL;
-#   if defined(IOS) && defined(RVM_X86)
+#   if defined(IOS) && (defined(RVM_X86) || defined(RVM_X86_64))
     osName = "os.name=iOS Simulator";
 #   elif defined(IOS)
     osName = "os.name=iOS";

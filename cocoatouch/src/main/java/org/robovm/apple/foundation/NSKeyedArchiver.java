@@ -32,6 +32,7 @@ import org.robovm.apple.coreanimation.*;
 import org.robovm.apple.coregraphics.*;
 import org.robovm.apple.coremedia.*;
 import org.robovm.apple.security.*;
+import org.robovm.apple.dispatch.*;
 /*</imports>*/
 
 /*<javadoc>*/
@@ -51,7 +52,14 @@ import org.robovm.apple.security.*;
     public NSKeyedArchiver(NSMutableData data) { super((SkipInit) null); initObject(initForWritingWithMutableData$(data)); }
     /*</constructors>*/
     /*<properties>*/
-    
+    @Property(selector = "delegate")
+    public native NSKeyedArchiverDelegate getDelegate();
+    @Property(selector = "setDelegate:", strongRef = true)
+    public native void setDelegate(NSKeyedArchiverDelegate v);
+    @Property(selector = "outputFormat")
+    public native NSPropertyListFormat getOutputFormat();
+    @Property(selector = "setOutputFormat:")
+    public native void setOutputFormat(NSPropertyListFormat v);
     /*</properties>*/
     /*<members>*//*</members>*/
     
@@ -66,16 +74,14 @@ import org.robovm.apple.security.*;
     }
     
     /*<methods>*/
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
+    @GlobalValue(symbol="NSKeyedArchiveRootObjectKey", optional=true)
+    public static native String ArchiveRootObjectKey();
+    
     @Method(selector = "initForWritingWithMutableData:")
     protected native @Pointer long initForWritingWithMutableData$(NSMutableData data);
-    @Method(selector = "setDelegate:")
-    public native void setDelegate(NSKeyedArchiverDelegate delegate);
-    @Method(selector = "delegate")
-    public native NSKeyedArchiverDelegate getDelegate();
-    @Method(selector = "setOutputFormat:")
-    public native void setOutputFormat(NSPropertyListFormat format);
-    @Method(selector = "outputFormat")
-    public native NSPropertyListFormat getOutputFormat();
     @Method(selector = "finishEncoding")
     public native void finishEncoding();
     @Method(selector = "setClassName:forClass:")

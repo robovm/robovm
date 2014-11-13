@@ -29,6 +29,7 @@ import soot.tagkit.Tag;
  * subset of the methods implemented by {@link Class}.
  */
 public class SootClassType extends SootBaseType implements GenericDeclaration {
+
     private final SootClass sootClass;
 
     public SootClassType(String name) {
@@ -68,7 +69,7 @@ public class SootClassType extends SootBaseType implements GenericDeclaration {
     }
     
     @SuppressWarnings("unchecked")
-    public TypeVariable<SootClassType>[] getTypeParameters() {
+    public TypeVariable<?>[] getTypeParameters() {
         GenericSignatureParser parser = new GenericSignatureParser();
         parser.parseForClass(this, (SignatureTag) sootClass.getTag("SignatureTag"));
         return parser.formalTypeParameters.clone();
@@ -159,7 +160,7 @@ public class SootClassType extends SootBaseType implements GenericDeclaration {
     public String toString() {
         return sootClass.getName();
     }
-    
+  
     @Override
     public int hashCode() {
         final int prime = 31;
@@ -188,5 +189,32 @@ public class SootClassType extends SootBaseType implements GenericDeclaration {
             return false;
         }
         return true;
+    }
+
+    private String toSimpleClassTypeSignature() {
+        StringBuilder sb = new StringBuilder();
+        SootClassType declaringClass = getDeclaringClass();
+        if (declaringClass != null && declaringClass.sootClass.hasTag("SignatureTag")) {
+            sb.append(declaringClass.toSimpleClassTypeSignature());
+            sb.append('.');
+            String innerName = sootClass.getName().substring(declaringClass.sootClass.getName().length() + 1);
+            sb.append(innerName);
+        } else {
+            sb.append(sootClass.getName().replace('.', '/'));
+        }
+        TypeVariable<?>[] typeArgs = getTypeParameters();
+        if (typeArgs.length > 0) {
+            sb.append("<");
+            for (TypeVariable<?> ta : typeArgs) {
+                sb.append(ta.toGenericSignature());
+            }
+            sb.append(">");
+        }
+        return sb.toString();
+    }
+    
+    @Override
+    public String toGenericSignature() {
+        return "L" + toSimpleClassTypeSignature() + ";";
     }
 }

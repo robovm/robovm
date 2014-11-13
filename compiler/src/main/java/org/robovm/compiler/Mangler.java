@@ -47,7 +47,7 @@ public class Mangler {
         sb.append(mangleNativeString(owner));
         sb.append("_");
         sb.append(mangleNativeString(name));
-        if (desc != null && !desc.startsWith("()")) {
+        if (desc != null) {
             sb.append("__");
             sb.append(mangleNativeString(desc.substring(1, desc.lastIndexOf(')'))));
         }

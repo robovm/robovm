@@ -32,6 +32,7 @@ import org.robovm.apple.coreanimation.*;
 import org.robovm.apple.coregraphics.*;
 import org.robovm.apple.coremedia.*;
 import org.robovm.apple.security.*;
+import org.robovm.apple.dispatch.*;
 /*</imports>*/
 
 /*<javadoc>*/
@@ -51,7 +52,8 @@ import org.robovm.apple.security.*;
     public NSMutableData(@MachineSizedUInt long capacity) { super((SkipInit) null); initObject(initWithCapacity$(capacity)); }
     /*</constructors>*/
     /*<properties>*/
-    
+    @Property(selector = "mutableBytes")
+    protected native @Pointer long getMutableBytes();
     /*</properties>*/
     /*<members>*//*</members>*/
     
@@ -63,7 +65,7 @@ import org.robovm.apple.security.*;
     }
     
     public ByteBuffer asByteBuffer() {
-        return VM.newDirectByteBuffer(mutableBytes(), getLength());
+        return VM.newDirectByteBuffer(getMutableBytes(), getLength());
     }
     
     public NSMutableData append(ByteBuffer bytes) {
@@ -119,10 +121,6 @@ import org.robovm.apple.security.*;
     }
     
     /*<methods>*/
-    @Method(selector = "mutableBytes")
-    protected native @Pointer long mutableBytes();
-    @Method(selector = "setLength:")
-    public native void setLength(@MachineSizedUInt long length);
     @Method(selector = "appendBytes:length:")
     protected native void appendBytes$length$(@Pointer long bytes, @MachineSizedUInt long length);
     @Method(selector = "appendData:")

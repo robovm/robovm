@@ -32,6 +32,7 @@ import org.robovm.apple.coreanimation.*;
 import org.robovm.apple.coregraphics.*;
 import org.robovm.apple.coremedia.*;
 import org.robovm.apple.security.*;
+import org.robovm.apple.dispatch.*;
 /*</imports>*/
 
 /*<javadoc>*/
@@ -42,6 +43,20 @@ import org.robovm.apple.security.*;
     extends /*<extends>*/NSObject/*</extends>*/ 
     /*<implements>*//*</implements>*/ {
 
+    public static class Notifications {
+        /**
+         * @since Available in iOS 7.0 and later.
+         */
+        public static NSObject observeDayChanged(final Runnable block) {
+            return NSNotificationCenter.getDefaultCenter().addObserver(DayChangedNotification(), null, NSOperationQueue.getMainQueue(), new VoidBlock1<NSNotification>() {
+                @Override
+                public void invoke(NSNotification a) {
+                    block.run();
+                }
+            });
+        }
+    }
+    
     /*<ptr>*/public static class NSCalendarPtr extends Ptr<NSCalendar, NSCalendarPtr> {}/*</ptr>*/
     /*<bind>*/static { ObjCRuntime.bind(NSCalendar.class); }/*</bind>*/
     /*<constants>*//*</constants>*/
@@ -51,7 +66,124 @@ import org.robovm.apple.security.*;
     public NSCalendar(NSCalendarIdentifier ident) { super((SkipInit) null); initObject(initWithCalendarIdentifier$(ident)); }
     /*</constructors>*/
     /*<properties>*/
-    
+    @Property(selector = "calendarIdentifier")
+    public native NSCalendarIdentifier getCalendarIdentifier();
+    @Property(selector = "locale")
+    public native NSLocale getLocale();
+    @Property(selector = "setLocale:")
+    public native void setLocale(NSLocale v);
+    @Property(selector = "timeZone")
+    public native NSTimeZone getTimeZone();
+    @Property(selector = "setTimeZone:")
+    public native void setTimeZone(NSTimeZone v);
+    @Property(selector = "firstWeekday")
+    public native @MachineSizedUInt long getFirstWeekday();
+    @Property(selector = "setFirstWeekday:")
+    public native void setFirstWeekday(@MachineSizedUInt long v);
+    @Property(selector = "minimumDaysInFirstWeek")
+    public native @MachineSizedUInt long getMinimumDaysInFirstWeek();
+    @Property(selector = "setMinimumDaysInFirstWeek:")
+    public native void setMinimumDaysInFirstWeek(@MachineSizedUInt long v);
+    /**
+     * @since Available in iOS 5.0 and later.
+     */
+    @Property(selector = "eraSymbols")
+    public native @org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String> getEraSymbols();
+    /**
+     * @since Available in iOS 5.0 and later.
+     */
+    @Property(selector = "longEraSymbols")
+    public native @org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String> getLongEraSymbols();
+    /**
+     * @since Available in iOS 5.0 and later.
+     */
+    @Property(selector = "monthSymbols")
+    public native @org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String> getMonthSymbols();
+    /**
+     * @since Available in iOS 5.0 and later.
+     */
+    @Property(selector = "shortMonthSymbols")
+    public native @org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String> getShortMonthSymbols();
+    /**
+     * @since Available in iOS 5.0 and later.
+     */
+    @Property(selector = "veryShortMonthSymbols")
+    public native @org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String> getVeryShortMonthSymbols();
+    /**
+     * @since Available in iOS 5.0 and later.
+     */
+    @Property(selector = "standaloneMonthSymbols")
+    public native @org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String> getStandaloneMonthSymbols();
+    /**
+     * @since Available in iOS 5.0 and later.
+     */
+    @Property(selector = "shortStandaloneMonthSymbols")
+    public native @org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String> getShortStandaloneMonthSymbols();
+    /**
+     * @since Available in iOS 5.0 and later.
+     */
+    @Property(selector = "veryShortStandaloneMonthSymbols")
+    public native @org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String> getVeryShortStandaloneMonthSymbols();
+    /**
+     * @since Available in iOS 5.0 and later.
+     */
+    @Property(selector = "weekdaySymbols")
+    public native @org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String> getWeekdaySymbols();
+    /**
+     * @since Available in iOS 5.0 and later.
+     */
+    @Property(selector = "shortWeekdaySymbols")
+    public native @org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String> getShortWeekdaySymbols();
+    /**
+     * @since Available in iOS 5.0 and later.
+     */
+    @Property(selector = "veryShortWeekdaySymbols")
+    public native @org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String> getVeryShortWeekdaySymbols();
+    /**
+     * @since Available in iOS 5.0 and later.
+     */
+    @Property(selector = "standaloneWeekdaySymbols")
+    public native @org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String> getStandaloneWeekdaySymbols();
+    /**
+     * @since Available in iOS 5.0 and later.
+     */
+    @Property(selector = "shortStandaloneWeekdaySymbols")
+    public native @org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String> getShortStandaloneWeekdaySymbols();
+    /**
+     * @since Available in iOS 5.0 and later.
+     */
+    @Property(selector = "veryShortStandaloneWeekdaySymbols")
+    public native @org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String> getVeryShortStandaloneWeekdaySymbols();
+    /**
+     * @since Available in iOS 5.0 and later.
+     */
+    @Property(selector = "quarterSymbols")
+    public native @org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String> getQuarterSymbols();
+    /**
+     * @since Available in iOS 5.0 and later.
+     */
+    @Property(selector = "shortQuarterSymbols")
+    public native @org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String> getShortQuarterSymbols();
+    /**
+     * @since Available in iOS 5.0 and later.
+     */
+    @Property(selector = "standaloneQuarterSymbols")
+    public native @org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String> getStandaloneQuarterSymbols();
+    /**
+     * @since Available in iOS 5.0 and later.
+     */
+    @Property(selector = "shortStandaloneQuarterSymbols")
+    public native @org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String> getShortStandaloneQuarterSymbols();
+    /**
+     * @since Available in iOS 5.0 and later.
+     */
+    @Property(selector = "AMSymbol")
+    public native String getAMSymbol();
+    /**
+     * @since Available in iOS 5.0 and later.
+     */
+    @Property(selector = "PMSymbol")
+    public native String getPMSymbol();
     /*</properties>*/
     /*<members>*//*</members>*/
     /**
@@ -75,24 +207,14 @@ import org.robovm.apple.security.*;
         return 0;
     }
     /*<methods>*/
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @GlobalValue(symbol="NSCalendarDayChangedNotification", optional=true)
+    public static native NSString DayChangedNotification();
+    
     @Method(selector = "initWithCalendarIdentifier:")
     protected native @Pointer long initWithCalendarIdentifier$(NSCalendarIdentifier ident);
-    @Method(selector = "setLocale:")
-    public native void setLocale(NSLocale locale);
-    @Method(selector = "locale")
-    public native NSLocale getLocale();
-    @Method(selector = "setTimeZone:")
-    public native void setTimeZone(NSTimeZone tz);
-    @Method(selector = "timeZone")
-    public native NSTimeZone getTimeZone();
-    @Method(selector = "setFirstWeekday:")
-    public native void setFirstWeekday(@MachineSizedUInt long weekday);
-    @Method(selector = "firstWeekday")
-    public native @MachineSizedUInt long getFirstWeekday();
-    @Method(selector = "setMinimumDaysInFirstWeek:")
-    public native void setMinimumDaysInFirstWeek(@MachineSizedUInt long mdw);
-    @Method(selector = "minimumDaysInFirstWeek")
-    public native @MachineSizedUInt long getMinimumDaysInFirstWeek();
     @Method(selector = "minimumRangeOfUnit:")
     public native @ByVal NSRange getMinimumRange(NSCalendarUnit unit);
     @Method(selector = "maximumRangeOfUnit:")

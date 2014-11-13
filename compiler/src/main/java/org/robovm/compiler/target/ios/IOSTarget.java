@@ -78,6 +78,7 @@ public class IOSTarget extends AbstractTarget {
     private File entitlementsPList;
     private SigningIdentity signIdentity;
     private ProvisioningProfile provisioningProfile;
+    private IDevice device;
     
     public IOSTarget() {
     }
@@ -89,23 +90,40 @@ public class IOSTarget extends AbstractTarget {
     
     @Override
     public LaunchParameters createLaunchParameters() {
-        if (arch == Arch.x86) {
+        if (isSimulatorArch(arch)) {
             return new IOSSimulatorLaunchParameters();
         }
         return new IOSDeviceLaunchParameters();
     }
-    
+
+    public static boolean isSimulatorArch(Arch arch) {
+        return arch == Arch.x86 || arch == Arch.x86_64;
+    }
+
+    public static boolean isDeviceArch(Arch arch) {
+        return arch == Arch.thumbv7;
+    }
+
     public List<SDK> getSDKs() {
-        if (arch == Arch.x86) {
+        if (isSimulatorArch(arch)) {
             return SDK.listSimulatorSDKs();
         } else {
             return SDK.listDeviceSDKs();
         }
     }
 
+    /**
+     * Returns the {@link IDevice} when an app has been launched on a device. 
+     * Returns {@code null} before {@link #launch(LaunchParameters)} has been
+     * called or if the app was launched in the simulator.
+     */
+    public IDevice getDevice() {
+        return device;
+    }
+
     @Override
     protected Launcher createLauncher(LaunchParameters launchParameters) throws IOException {
-        if (arch == Arch.x86) {
+        if (isSimulatorArch(arch)) {
             return createIOSSimLauncher(launchParameters);
         } else {
             return createIOSDevLauncher(launchParameters);
@@ -176,7 +194,7 @@ public class IOSTarget extends AbstractTarget {
             }
             deviceId = udids[0];
         }
-        IDevice device = new IDevice(deviceId);
+        device = new IDevice(deviceId);
         
         OutputStream out = null;
         if (launchParameters.getStdoutFifo() != null) {
@@ -199,7 +217,6 @@ public class IOSTarget extends AbstractTarget {
             .closeOutOnExit(true)
             .args(launchParameters.getArguments().toArray(new String[0]))
             .env(env)
-            .debug(config.isDebug()) // FIXME only used for debugging purposes
             .forward(forwardPort)
             .appPathCallback(callback)
             .xcodePath(ToolchainUtil.findXcodePath())
@@ -249,7 +266,7 @@ public class IOSTarget extends AbstractTarget {
             libArgs.add("UIKit");
         }
 
-        if (arch == Arch.thumbv7) {
+        if (isDeviceArch(arch)) {
             ccArgs.add("-miphoneos-version-min=5.0");
         } else {
             ccArgs.add("-mios-simulator-version-min=5.0");
@@ -262,7 +279,7 @@ public class IOSTarget extends AbstractTarget {
     protected void prepareInstall(File installDir) throws IOException {
         createInfoPList(installDir);
         generateDsym(installDir, getExecutable());
-        if (arch == Arch.thumbv7) {
+        if (isDeviceArch(arch)) {
             strip(installDir, getExecutable());
             copyResourcesPList(installDir);
             if (config.isIosSkipSigning()) {
@@ -295,7 +312,7 @@ public class IOSTarget extends AbstractTarget {
         super.doInstall(appDir, getExecutable());
         createInfoPList(appDir);
         generateDsym(appDir, getExecutable());
-        if (arch == Arch.thumbv7) {
+        if (isDeviceArch(arch)) {
             copyResourcesPList(appDir);
             if (config.isIosSkipSigning()) {
                 config.getLogger().warn("Skiping code signing. The resulting app will "
@@ -388,8 +405,35 @@ public class IOSTarget extends AbstractTarget {
 
     private void strip(File dir, String executable) throws IOException {
         File exportedSymbolsFile = new File(config.getTmpDir(), "exported_symbols");
+        
+        // FIXME #584 quick fix for *lookup?
+        String symbolList = new Executor(config.getLogger(), "nm").args("-j", new File(dir, executable)).execCapture();
+        String[] symbols = symbolList.split("\n");
+        Pattern pattern = Pattern.compile(".*lookup.");
+        List<String> lookupSymbols = new ArrayList<>();
+        for(String symbol: symbols) {
+            if(pattern.matcher(symbol).matches()) {
+                lookupSymbols.add(symbol);
+            }
+        }
+        
+        // create a temporary, "fixed" symbol file
+        File fixedExportedSymbolsFile = new File(config.getTmpDir(), "exported_symbols_fixed");
+        StringBuilder builder = new StringBuilder();        
+        for(String entry: FileUtils.readFileToString(exportedSymbolsFile).split("\n")) {
+            if(!"_*lookup?".equals(entry)) {
+                builder.append(entry);
+                builder.append("\n");
+            }
+        }
+        for(String symbol: lookupSymbols) {
+            builder.append(symbol);
+            builder.append("\n");
+        }
+        FileUtils.writeStringToFile(fixedExportedSymbolsFile, builder.toString());
+        
         new Executor(config.getLogger(), "xcrun")
-            .args("strip", "-s", exportedSymbolsFile, new File(dir, executable))
+            .args("strip", "-s", fixedExportedSymbolsFile, new File(dir, executable))
             .exec();
     }
     
@@ -420,7 +464,7 @@ public class IOSTarget extends AbstractTarget {
     protected void copyFile(Resource resource, File file, File destDir)
             throws IOException {
         
-        if (arch == Arch.thumbv7 && !resource.isSkipPngCrush() 
+        if (isDeviceArch(arch) && !resource.isSkipPngCrush() 
                 && file.getName().toLowerCase().endsWith(".png")) {
             
             destDir.mkdirs();
@@ -473,7 +517,7 @@ public class IOSTarget extends AbstractTarget {
     }
 
     protected void customizeInfoPList(NSDictionary dict) {
-        if (arch == Arch.x86) {
+        if (isSimulatorArch(arch)) {
             dict.put("CFBundleSupportedPlatforms", new NSArray(new NSString("iPhoneSimulator")));
         } else {
             dict.put("CFBundleResourceSpecification", "ResourceRules.plist");
@@ -559,14 +603,14 @@ public class IOSTarget extends AbstractTarget {
         if (config.getArch() == null) {
             arch = Arch.thumbv7;
         } else {
-            if (config.getArch() != Arch.x86 && config.getArch() != Arch.thumbv7) {
+            if (!isSimulatorArch(config.getArch()) && !isDeviceArch(config.getArch())) {
                 throw new IllegalArgumentException("Arch '" + config.getArch() 
                         + "' is unsupported for iOS target");
             }
             arch = config.getArch();
         }
 
-        if (arch == Arch.thumbv7) {
+        if (isDeviceArch(arch)) {
             if (!config.isIosSkipSigning()) {
                 signIdentity = config.getIosSignIdentity();
                 if (signIdentity == null) {
@@ -584,7 +628,7 @@ public class IOSTarget extends AbstractTarget {
             }
         }
 
-        if (arch == Arch.thumbv7) {
+        if (isDeviceArch(arch)) {
             if (!config.isIosSkipSigning()) {
                 provisioningProfile = config.getIosProvisioningProfile();
                 if (provisioningProfile == null) {
@@ -601,7 +645,7 @@ public class IOSTarget extends AbstractTarget {
         List<SDK> sdks = getSDKs();
         if (sdkVersion == null) {
             if (sdks.isEmpty()) {
-                throw new IllegalArgumentException("No " + (arch == Arch.thumbv7 ? "device" : "simulator") + " SDKs installed");
+                throw new IllegalArgumentException("No " + (isDeviceArch(arch) ? "device" : "simulator") + " SDKs installed");
             }
             Collections.sort(sdks);
             this.sdk = sdks.get(sdks.size() - 1);

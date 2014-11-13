@@ -103,7 +103,7 @@ static Mutex gcRootsLock;
 static uint32_t objectArrayGCKind;
 
 // The GC descriptor used for object instances which have no references to other objects.
-#define REF_FREE_GC_DESCRIPTOR ((0 << GC_DS_TAGS) | GC_DS_LENGTH)
+#define REF_FREE_GC_DESCRIPTOR ((void*) ((0 << GC_DS_TAGS) | GC_DS_LENGTH))
 // The GC descriptor used for objects which have to be marked using the markObject() mark procedure.
 static void* markObjectGcDescriptor = NULL;
 // A fake Class used as clazz pointer before java_lang_Class has been loaded.
@@ -422,7 +422,7 @@ static void logGcHeapStats() {
 
     HeapStat* statsHash = NULL;
     HeapStatsCallbackData data = {loadedClassesHash, &statsHash};
-    GC_apply_to_each_object(heapStatsCallback, &data);
+    GC_rvm_apply_to_each_object(heapStatsCallback, &data);
 
     time_t timestamp;
     struct tm timeinfo;
@@ -452,7 +452,7 @@ static void logGcHeapStats() {
 
 void gcHeapDump(Env* env) {
     fprintf(stderr, "digraph {\n");
-    GC_apply_to_each_live_object(heapDumpCallback, NULL);
+    GC_rvm_apply_to_each_live_object(heapDumpCallback, NULL);
     fprintf(stderr, "}\n");
 }
 
@@ -472,7 +472,7 @@ jboolean initGC(Options* options) {
 
     objectArrayGCKind = GC_new_kind(GC_new_free_list(), GC_DS_LENGTH, 1, 1);
     referentEntryGCKind = gcNewDirectBitmapKind(REFERENT_ENTRY_GC_BITMAP);
-    markObjectGcDescriptor = (void*) GC_MAKE_PROC(GC_new_proc(markObject), 0);
+    markObjectGcDescriptor = (void*) (size_t) GC_MAKE_PROC(GC_new_proc(markObject), 0);
 
     // Set up the fakeClass Class pointer so that it has a proper gcDescriptor
     memset(&fakeClass, 0, sizeof(Class));
@@ -513,7 +513,7 @@ void gcAddRoot(void* ptr) {
     GC_add_roots(ptr, ptr + sizeof(void*));
 }
 
-uint32_t gcNewDirectBitmapKind(uint32_t bitmap) {
+uint32_t gcNewDirectBitmapKind(size_t bitmap) {
     assert((bitmap & GC_DS_TAGS) == 0);
     return GC_new_kind(GC_new_free_list(), bitmap | GC_DS_BITMAP, 0, 1);
 }
@@ -990,12 +990,8 @@ Object* rvmAllocateMemoryForObject(Env* env, Class* clazz) {
 }
 
 Array* rvmAllocateMemoryForArray(Env* env, Class* arrayClass, jint length) {
-    jint elementSize = rvmGetArrayElementSize(env, arrayClass);
-    if (elementSize == 0) {
-        return NULL;
-    }
-    jlong size = (jlong) sizeof(Array) + (jlong) length * (jlong) elementSize;
-    if (size > (jlong) (size_t) -1) {
+    jlong size = rvmGetArraySize(env, arrayClass, length);
+    if (size > 0xffffffffLL) {
         rvmThrowOutOfMemoryError(env);
         return NULL;
     }

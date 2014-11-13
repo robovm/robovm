@@ -32,6 +32,7 @@ import org.robovm.apple.coreanimation.*;
 import org.robovm.apple.coregraphics.*;
 import org.robovm.apple.coremedia.*;
 import org.robovm.apple.security.*;
+import org.robovm.apple.dispatch.*;
 /*</imports>*/
 
 /*<javadoc>*/
@@ -42,6 +43,17 @@ import org.robovm.apple.security.*;
     extends /*<extends>*/NSObject/*</extends>*/ 
     /*<implements>*//*</implements>*/ {
 
+    public static class Notifications {
+        public static NSObject observeChanged(NSURLCredentialStorage object, final VoidBlock1<NSURLCredentialStorage> block) {
+            return NSNotificationCenter.getDefaultCenter().addObserver(ChangedNotification(), object, NSOperationQueue.getMainQueue(), new VoidBlock1<NSNotification>() {
+                @Override
+                public void invoke(NSNotification a) {
+                    block.invoke((NSURLCredentialStorage)a.getObject());
+                }
+            });
+        }
+    }
+    
     /*<ptr>*/public static class NSURLCredentialStoragePtr extends Ptr<NSURLCredentialStorage, NSURLCredentialStoragePtr> {}/*</ptr>*/
     /*<bind>*/static { ObjCRuntime.bind(NSURLCredentialStorage.class); }/*</bind>*/
     /*<constants>*//*</constants>*/
@@ -50,28 +62,55 @@ import org.robovm.apple.security.*;
     protected NSURLCredentialStorage(SkipInit skipInit) { super(skipInit); }
     /*</constructors>*/
     /*<properties>*/
-    
+    @Property(selector = "allCredentials")
+    public native @org.robovm.rt.bro.annotation.Marshaler(NSDictionary.AsStringMapMarshaler.class) Map<String, NSURLCredential> getAllCredentials();
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
+    @GlobalValue(symbol="NSURLCredentialStorageChangedNotification", optional=true)
+    public static native NSString ChangedNotification();
+    
     @Method(selector = "credentialsForProtectionSpace:")
-    public native NSDictionary<?, ?> credentialsForProtectionSpace$(NSURLProtectionSpace space);
-    @Method(selector = "allCredentials")
-    public native NSDictionary<?, ?> allCredentials();
+    public native @org.robovm.rt.bro.annotation.Marshaler(NSDictionary.AsStringMapMarshaler.class) Map<String, NSURLCredential> getCredentials(NSURLProtectionSpace space);
     @Method(selector = "setCredential:forProtectionSpace:")
-    public native void setCredential$forProtectionSpace$(NSURLCredential credential, NSURLProtectionSpace space);
+    public native void setCredential(NSURLCredential credential, NSURLProtectionSpace space);
     @Method(selector = "removeCredential:forProtectionSpace:")
-    public native void removeCredential$forProtectionSpace$(NSURLCredential credential, NSURLProtectionSpace space);
+    public native void removeCredential(NSURLCredential credential, NSURLProtectionSpace space);
     /**
      * @since Available in iOS 7.0 and later.
      */
     @Method(selector = "removeCredential:forProtectionSpace:options:")
-    public native void removeCredential$forProtectionSpace$options$(NSURLCredential credential, NSURLProtectionSpace space, NSDictionary<?, ?> options);
+    public native void removeCredential(NSURLCredential credential, NSURLProtectionSpace space, NSURLCredentialStorageRemovalOptions options);
     @Method(selector = "defaultCredentialForProtectionSpace:")
-    public native NSURLCredential defaultCredentialForProtectionSpace$(NSURLProtectionSpace space);
+    public native NSURLCredential getDefaultCredential(NSURLProtectionSpace space);
     @Method(selector = "setDefaultCredential:forProtectionSpace:")
-    public native void setDefaultCredential$forProtectionSpace$(NSURLCredential credential, NSURLProtectionSpace space);
+    public native void setDefaultCredential(NSURLCredential credential, NSURLProtectionSpace space);
     @Method(selector = "sharedCredentialStorage")
-    public static native NSURLCredentialStorage sharedCredentialStorage();
+    public static native NSURLCredentialStorage getSharedCredentialStorage();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @Method(selector = "getCredentialsForProtectionSpace:task:completionHandler:")
+    public native void getCredentials(NSURLProtectionSpace protectionSpace, NSURLSessionTask task, @Block VoidBlock1<NSDictionary<NSString, NSURLCredential>> completionHandler);
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @Method(selector = "setCredential:forProtectionSpace:task:")
+    public native void setCredential(NSURLCredential credential, NSURLProtectionSpace protectionSpace, NSURLSessionTask task);
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @Method(selector = "removeCredential:forProtectionSpace:options:task:")
+    public native void removeCredential(NSURLCredential credential, NSURLProtectionSpace protectionSpace, NSURLCredentialStorageRemovalOptions options, NSURLSessionTask task);
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @Method(selector = "getDefaultCredentialForProtectionSpace:task:completionHandler:")
+    public native void getDefaultCredential(NSURLProtectionSpace space, NSURLSessionTask task, @Block VoidBlock1<NSURLCredential> completionHandler);
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @Method(selector = "setDefaultCredential:forProtectionSpace:task:")
+    public native void setDefaultCredential(NSURLCredential credential, NSURLProtectionSpace protectionSpace, NSURLSessionTask task);
     /*</methods>*/
 }

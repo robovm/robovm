@@ -129,4 +129,9 @@ public final class ImplForVariable<D extends GenericDeclaration> implements Type
     public String toString() {
         return name;
     }
+    
+    @Override
+    public String toGenericSignature() {
+        return "T" + name + ";";
+    }
 }

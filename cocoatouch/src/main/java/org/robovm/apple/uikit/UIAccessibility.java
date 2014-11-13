@@ -32,6 +32,7 @@ import org.robovm.apple.coregraphics.*;
 import org.robovm.apple.coredata.*;
 import org.robovm.apple.coreimage.*;
 import org.robovm.apple.coretext.*;
+import org.robovm.apple.corelocation.*;
 /*</imports>*/
 
 /*<javadoc>*/
@@ -105,6 +106,94 @@ import org.robovm.apple.coretext.*;
          */
         public static NSObject observeVoiceOverStatusChanged(final Runnable block) {
             return NSNotificationCenter.getDefaultCenter().addObserver(UIAccessibilityGlobals.VoiceOverStatusChangedNotification(), null, NSOperationQueue.getMainQueue(), new VoidBlock1<NSNotification>() {
+                @Override
+                public void invoke(NSNotification a) {
+                    block.run();
+                }
+            });
+        }
+        /**
+         * @since Available in iOS 8.0 and later.
+         */
+        public static NSObject observeBoldTextStatusDidChange(final Runnable block) {
+            return NSNotificationCenter.getDefaultCenter().addObserver(UIAccessibilityGlobals.BoldTextStatusDidChangeNotification(), null, NSOperationQueue.getMainQueue(), new VoidBlock1<NSNotification>() {
+                @Override
+                public void invoke(NSNotification a) {
+                    block.run();
+                }
+            });
+        }
+        /**
+         * @since Available in iOS 8.0 and later.
+         */
+        public static NSObject observeGrayscaleStatusDidChange(final Runnable block) {
+            return NSNotificationCenter.getDefaultCenter().addObserver(UIAccessibilityGlobals.GrayscaleStatusDidChangeNotification(), null, NSOperationQueue.getMainQueue(), new VoidBlock1<NSNotification>() {
+                @Override
+                public void invoke(NSNotification a) {
+                    block.run();
+                }
+            });
+        }
+        /**
+         * @since Available in iOS 8.0 and later.
+         */
+        public static NSObject observeReduceTransparencyStatusDidChange(final Runnable block) {
+            return NSNotificationCenter.getDefaultCenter().addObserver(UIAccessibilityGlobals.ReduceTransparencyStatusDidChangeNotification(), null, NSOperationQueue.getMainQueue(), new VoidBlock1<NSNotification>() {
+                @Override
+                public void invoke(NSNotification a) {
+                    block.run();
+                }
+            });
+        }
+        /**
+         * @since Available in iOS 8.0 and later.
+         */
+        public static NSObject observeReduceMotionStatusDidChange(final Runnable block) {
+            return NSNotificationCenter.getDefaultCenter().addObserver(UIAccessibilityGlobals.ReduceMotionStatusDidChangeNotification(), null, NSOperationQueue.getMainQueue(), new VoidBlock1<NSNotification>() {
+                @Override
+                public void invoke(NSNotification a) {
+                    block.run();
+                }
+            });
+        }
+        /**
+         * @since Available in iOS 8.0 and later.
+         */
+        public static NSObject observeDarkerSystemColorsStatusDidChange(final Runnable block) {
+            return NSNotificationCenter.getDefaultCenter().addObserver(UIAccessibilityGlobals.DarkerSystemColorsStatusDidChangeNotification(), null, NSOperationQueue.getMainQueue(), new VoidBlock1<NSNotification>() {
+                @Override
+                public void invoke(NSNotification a) {
+                    block.run();
+                }
+            });
+        }
+        /**
+         * @since Available in iOS 8.0 and later.
+         */
+        public static NSObject observeSwitchControlStatusDidChange(final Runnable block) {
+            return NSNotificationCenter.getDefaultCenter().addObserver(UIAccessibilityGlobals.SwitchControlStatusDidChangeNotification(), null, NSOperationQueue.getMainQueue(), new VoidBlock1<NSNotification>() {
+                @Override
+                public void invoke(NSNotification a) {
+                    block.run();
+                }
+            });
+        }
+        /**
+         * @since Available in iOS 8.0 and later.
+         */
+        public static NSObject observeSpeakSelectionStatusDidChange(final Runnable block) {
+            return NSNotificationCenter.getDefaultCenter().addObserver(UIAccessibilityGlobals.SpeakSelectionStatusDidChangeNotification(), null, NSOperationQueue.getMainQueue(), new VoidBlock1<NSNotification>() {
+                @Override
+                public void invoke(NSNotification a) {
+                    block.run();
+                }
+            });
+        }
+        /**
+         * @since Available in iOS 8.0 and later.
+         */
+        public static NSObject observeSpeakScreenStatusDidChange(final Runnable block) {
+            return NSNotificationCenter.getDefaultCenter().addObserver(UIAccessibilityGlobals.SpeakScreenStatusDidChangeNotification(), null, NSOperationQueue.getMainQueue(), new VoidBlock1<NSNotification>() {
                 @Override
                 public void invoke(NSNotification a) {
                     block.run();
@@ -195,6 +284,16 @@ import org.robovm.apple.coretext.*;
      */
     @Property(selector = "setShouldGroupAccessibilityChildren:")
     void setShouldGroupAccessibilityChildren(boolean v);
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @Property(selector = "accessibilityNavigationStyle")
+    UIAccessibilityNavigationStyle getAccessibilityNavigationStyle();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @Property(selector = "setAccessibilityNavigationStyle:")
+    void setAccessibilityNavigationStyle(UIAccessibilityNavigationStyle v);
     /*</properties>*/
     /*<methods>*/
     

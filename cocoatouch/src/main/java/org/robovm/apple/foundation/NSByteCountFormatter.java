@@ -32,6 +32,7 @@ import org.robovm.apple.coreanimation.*;
 import org.robovm.apple.coregraphics.*;
 import org.robovm.apple.coremedia.*;
 import org.robovm.apple.security.*;
+import org.robovm.apple.dispatch.*;
 /*</imports>*/
 
 /*<javadoc>*/
@@ -84,6 +85,16 @@ import org.robovm.apple.security.*;
     public native boolean isZeroPadsFractionDigits();
     @Property(selector = "setZeroPadsFractionDigits:")
     public native void setZeroPadsFractionDigits(boolean v);
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @Property(selector = "formattingContext")
+    public native NSFormattingContext getFormattingContext();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @Property(selector = "setFormattingContext:")
+    public native void setFormattingContext(NSFormattingContext v);
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/

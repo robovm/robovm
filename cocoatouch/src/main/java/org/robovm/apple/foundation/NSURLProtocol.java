@@ -32,6 +32,7 @@ import org.robovm.apple.coreanimation.*;
 import org.robovm.apple.coregraphics.*;
 import org.robovm.apple.coremedia.*;
 import org.robovm.apple.security.*;
+import org.robovm.apple.dispatch.*;
 /*</imports>*/
 
 /*<javadoc>*/
@@ -49,39 +50,60 @@ import org.robovm.apple.security.*;
     public NSURLProtocol() {}
     protected NSURLProtocol(SkipInit skipInit) { super(skipInit); }
     public NSURLProtocol(NSURLRequest request, NSCachedURLResponse cachedResponse, NSURLProtocolClient client) { super((SkipInit) null); initObject(initWithRequest$cachedResponse$client$(request, cachedResponse, client)); }
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    public NSURLProtocol(NSURLSessionTask task, NSCachedURLResponse cachedResponse, NSURLProtocolClient client) { super((SkipInit) null); initObject(initWithTask$cachedResponse$client$(task, cachedResponse, client)); }
     /*</constructors>*/
     /*<properties>*/
-    
+    @Property(selector = "client")
+    public native NSURLProtocolClient getClient();
+    @Property(selector = "request")
+    public native NSURLRequest getRequest();
+    @Property(selector = "cachedResponse")
+    public native NSCachedURLResponse getCachedResponse();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @Property(selector = "task")
+    public native NSURLSessionTask getTask();
     /*</properties>*/
     /*<members>*//*</members>*/
+    public static void setPropertyInRequest(String key, NSObject value, NSMutableURLRequest request) {
+        setPropertyInRequest(value, key, request);
+    }
     /*<methods>*/
     @Method(selector = "initWithRequest:cachedResponse:client:")
     protected native @Pointer long initWithRequest$cachedResponse$client$(NSURLRequest request, NSCachedURLResponse cachedResponse, NSURLProtocolClient client);
-    @Method(selector = "client")
-    public native NSURLProtocolClient client();
-    @Method(selector = "request")
-    public native NSURLRequest request();
-    @Method(selector = "cachedResponse")
-    public native NSCachedURLResponse cachedResponse();
     @Method(selector = "startLoading")
     public native void startLoading();
     @Method(selector = "stopLoading")
     public native void stopLoading();
     @Method(selector = "canInitWithRequest:")
-    public static native boolean canInitWithRequest$(NSURLRequest request);
+    public static native boolean canInitWithRequest(NSURLRequest request);
     @Method(selector = "canonicalRequestForRequest:")
-    public static native NSURLRequest canonicalRequestForRequest$(NSURLRequest request);
+    public static native NSURLRequest newCanonicalRequest(NSURLRequest request);
     @Method(selector = "requestIsCacheEquivalent:toRequest:")
-    public static native boolean requestIsCacheEquivalent$toRequest$(NSURLRequest a, NSURLRequest b);
+    public static native boolean requestIsCacheEquivalent(NSURLRequest a, NSURLRequest b);
     @Method(selector = "propertyForKey:inRequest:")
-    public static native NSObject propertyForKey$inRequest$(String key, NSURLRequest request);
+    public static native NSObject getPropertyInRequest(String key, NSURLRequest request);
     @Method(selector = "setProperty:forKey:inRequest:")
-    public static native void setProperty$forKey$inRequest$(NSObject value, String key, NSMutableURLRequest request);
+    protected static native void setPropertyInRequest(NSObject value, String key, NSMutableURLRequest request);
     @Method(selector = "removePropertyForKey:inRequest:")
-    public static native void removePropertyForKey$inRequest$(String key, NSMutableURLRequest request);
+    public static native void removePropertyInRequest(String key, NSMutableURLRequest request);
     @Method(selector = "registerClass:")
-    public static native boolean registerClass$(ObjCClass protocolClass);
+    public static native boolean registerClass(ObjCClass protocolClass);
     @Method(selector = "unregisterClass:")
-    public static native void unregisterClass$(ObjCClass protocolClass);
+    public static native void unregisterClass(ObjCClass protocolClass);
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @Method(selector = "initWithTask:cachedResponse:client:")
+    protected native @Pointer long initWithTask$cachedResponse$client$(NSURLSessionTask task, NSCachedURLResponse cachedResponse, NSURLProtocolClient client);
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @Method(selector = "canInitWithTask:")
+    public static native boolean canInitWithTask(NSURLSessionTask task);
     /*</methods>*/
 }

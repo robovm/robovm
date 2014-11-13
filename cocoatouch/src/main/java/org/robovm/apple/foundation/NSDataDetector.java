@@ -32,6 +32,7 @@ import org.robovm.apple.coreanimation.*;
 import org.robovm.apple.coregraphics.*;
 import org.robovm.apple.coremedia.*;
 import org.robovm.apple.security.*;
+import org.robovm.apple.dispatch.*;
 /*</imports>*/
 
 /*<javadoc>*/
@@ -47,9 +48,23 @@ import org.robovm.apple.security.*;
     /*<ptr>*/public static class NSDataDetectorPtr extends Ptr<NSDataDetector, NSDataDetectorPtr> {}/*</ptr>*/
     /*<bind>*/static { ObjCRuntime.bind(NSDataDetector.class); }/*</bind>*/
     /*<constants>*//*</constants>*/
+    
+    /**
+     * 
+     * @param checkingTypes
+     * @throws NSErrorException
+     */
+    public NSDataDetector(NSTextCheckingType checkingTypes) { 
+        super((SkipInit) null);
+        NSError.NSErrorPtr err = new NSError.NSErrorPtr();
+        initObject(initWithTypes$error$(checkingTypes, err));
+        if (err.get() != null) {
+            throw new NSErrorException(err.get());
+        }
+    }
+
     /*<constructors>*/
     protected NSDataDetector(SkipInit skipInit) { super(skipInit); }
-    public NSDataDetector(NSTextCheckingType checkingTypes, NSError.NSErrorPtr error) { super((SkipInit) null); initObject(initWithTypes$error$(checkingTypes, error)); }
     /*</constructors>*/
     /*<properties>*/
     @Property(selector = "checkingTypes")

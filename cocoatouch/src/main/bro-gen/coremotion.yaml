@@ -11,14 +11,25 @@ typedefs: {}
 enums:
     CMAttitudeReferenceFrame: { first: CMAttitudeReferenceFrameXArbitraryZVertical, bits: true, marshaler: Bits.AsMachineSizedIntMarshaler }
     CMMagneticFieldCalibrationAccuracy: { first: CMMagneticFieldCalibrationAccuracyUncalibrated }
-    CMError: { first: CMErrorNULL }
+    CMErrorCode: { first: CMErrorNULL }
     CMMotionActivityConfidence: {}
         
 classes:
     CoreMotion:
         annotations: ['@Marshaler(NSString.AsStringMarshaler.class)']
 
+    CMError:
+        extends: NSError
+
     CMAccelerometerData: {} # DONE
+    CMAltimeter: # DONE
+        methods:
+            '-startRelativeAltitudeUpdatesToQueue:withHandler:':
+                name: startRelativeAltitudeUpdates
+                parameters:
+                    handler:
+                        type: '@Block VoidBlock2<CMAltitudeData, NSError>'
+    CMAltitudeData: {} # DONE
     CMAttitude: # DONE
         methods:
             '-multiplyByInverseOfAttitude:':
@@ -31,55 +42,68 @@ classes:
     CMMotionActivityManager: # DONE
         methods:
             '-queryActivityStartingFromDate:toDate:toQueue:withHandler:':
-                name: "queryActivity"
+                name: queryActivity
                 parameters:
                     handler:
-                        type: "@Block VoidBlock2<NSArray<CMMotionActivity>, NSError>"
+                        type: '@Block VoidBlock2<NSArray<CMMotionActivity>, NSError>'
             '-startActivityUpdatesToQueue:withHandler:':
-                name: "startActivityUpdates"
+                name: startActivityUpdates
                 parameters:
                     handler:
-                        type: "@Block VoidBlock1<CMMotionActivity>"
+                        type: '@Block VoidBlock1<CMMotionActivity>'
     CMMotionManager: # DONE
         methods:
             '-startAccelerometerUpdatesToQueue:withHandler:':
-                name: "startAccelerometerUpdates"
+                name: startAccelerometerUpdates
                 parameters:
                     handler:
-                        type: "@Block VoidBlock2<CMAccelerometerData, NSError>"
+                        type: '@Block VoidBlock2<CMAccelerometerData, NSError>'
             '-startGyroUpdatesToQueue:withHandler:':
-                name: "startGyroUpdates"
+                name: startGyroUpdates
                 parameters:
                     handler:
-                        type: "@Block VoidBlock2<CMGyroData, NSError>"
+                        type: '@Block VoidBlock2<CMGyroData, NSError>'
             '-startMagnetometerUpdatesToQueue:withHandler:':
-                name: "startMagnetometerUpdates"
+                name: startMagnetometerUpdates
                 parameters:
                     handler:
-                        type: "@Block VoidBlock2<CMMagnetometerData, NSError>"
+                        type: '@Block VoidBlock2<CMMagnetometerData, NSError>'
             '-startDeviceMotionUpdatesToQueue:withHandler:':
-                name: "startDeviceMotionUpdates"
+                name: startDeviceMotionUpdates
                 parameters:
                     handler:
-                        type: "@Block VoidBlock2<CMDeviceMotion, NSError>"
+                        type: '@Block VoidBlock2<CMDeviceMotion, NSError>'
             '-startDeviceMotionUpdatesUsingReferenceFrame:':
-                name: "startDeviceMotionUpdates"
+                name: startDeviceMotionUpdates
             '-startDeviceMotionUpdatesUsingReferenceFrame:toQueue:withHandler:':
-                name: "startDeviceMotionUpdates"
+                name: startDeviceMotionUpdates
                 parameters:
                     handler:
-                        type: "@Block VoidBlock2<CMDeviceMotion, NSError>"
+                        type: '@Block VoidBlock2<CMDeviceMotion, NSError>'
             '+availableAttitudeReferenceFrames':
                 property: true
+    CMPedometer: # DONE
+        methods:
+            '-queryPedometerDataFromDate:toDate:withHandler:':
+                name: queryPedometerData
+                parameters:
+                    handler:
+                        type: '@Block VoidBlock2<CMPedometerData, NSError>'
+            '-startPedometerUpdatesFromDate:withHandler:':
+                name: startPedometerUpdates
+                parameters:
+                    handler:
+                        type: '@Block VoidBlock2<CMPedometerData, NSError>'
+    CMPedometerData: {}
     CMStepCounter: # DONE
         methods:
             '-queryStepCountStartingFrom:to:toQueue:withHandler:':
-                name: "queryStepCount"
+                name: queryStepCount
                 parameters:
                     handler:
                         type: '@Block("(@MachineSizedSInt,)") VoidBlock2<Long, NSError>'
             '-startStepCountingUpdatesToQueue:updateOn:withHandler:':
-                name: "startStepCountingUpdates"
+                name: startStepCountingUpdates
                 parameters:
                     handler:
                         type: '@Block("(@MachineSizedSInt,,)") VoidBlock3<Long, NSDate, NSError>'
@@ -99,20 +123,20 @@ functions:
     # Make sure we don't miss any functions if new ones are introduced in a later version
     (CM.*):
         class: CoreMotion
-        name: "Function__#{g[0]}"
+        name: 'Function__#{g[0]}'
 
 values:
     CMErrorDomain:
-        class: CoreMotion
-        name: "ErrorDomain"
+        class: CMError
+        name: getClassDomain
    
     # Make sure we don't miss any values if new ones are introduced in a later version
     (CM.*):
         class: CoreMotion
-        name: "Value__#{g[0]}"
+        name: 'Value__#{g[0]}'
 
 constants:
     # Make sure we don't miss any constants if new ones are introduced in a later version
     (CM.*):
         class: CoreMotion
-        name: "Constant__#{g[0]}"
+        name: 'Constant__#{g[0]}'

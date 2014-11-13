@@ -32,6 +32,7 @@ import org.robovm.apple.coreanimation.*;
 import org.robovm.apple.coregraphics.*;
 import org.robovm.apple.coremedia.*;
 import org.robovm.apple.security.*;
+import org.robovm.apple.dispatch.*;
 /*</imports>*/
 import org.robovm.apple.newsstandkit.NKAssetDownload;
 
@@ -56,15 +57,45 @@ import org.robovm.apple.newsstandkit.NKAssetDownload;
     public NSURLConnection(NSURLRequest request, NSURLConnectionDelegate delegate) { super((SkipInit) null); initObject(initWithRequest$delegate$(request, delegate)); }
     /*</constructors>*/
     /*<properties>*/
-    
+    /**
+     * @since Available in iOS 5.0 and later.
+     */
+    @Property(selector = "originalRequest")
+    public native NSURLRequest getOriginalRequest();
+    /**
+     * @since Available in iOS 5.0 and later.
+     */
+    @Property(selector = "currentRequest")
+    public native NSURLRequest getCurrentRequest();
     /*</properties>*/
     /*<members>*//*</members>*/
+    /**
+     * 
+     * @param request
+     * @param response
+     * @return
+     * @throws NSErrorException
+     */
+    public static NSData sendSynchronousRequest(NSURLRequest request, NSURLResponse.NSURLResponsePtr response) {
+        NSError.NSErrorPtr err = new NSError.NSErrorPtr();
+        NSData result = sendSynchronousRequest(request, response, err);
+        if (err.get() != null) {
+            throw new NSErrorException(err.get());
+        }
+        return result;
+    }
     
+    public void scheduleInRunLoop(NSRunLoop aRunLoop, NSRunLoopMode mode) {
+        scheduleInRunLoop(aRunLoop, mode.value());
+    }
+    public void unscheduleFromRunLoop(NSRunLoop aRunLoop, NSRunLoopMode mode) {
+        unscheduleFromRunLoop(aRunLoop, mode.value());
+    }
+
     /* NewsstandKit extensions */
     public NKAssetDownload getNewsstandAssetDownload() {
         return org.robovm.apple.newsstandkit.NSURLConnectionExtensions.getNewsstandAssetDownload(this);
     }
-    
     /*<methods>*/
     /**
      * @since Available in iOS 2.0 and later.
@@ -73,16 +104,6 @@ import org.robovm.apple.newsstandkit.NKAssetDownload;
     protected native @Pointer long initWithRequest$delegate$startImmediately$(NSURLRequest request, NSURLConnectionDelegate delegate, boolean startImmediately);
     @Method(selector = "initWithRequest:delegate:")
     protected native @Pointer long initWithRequest$delegate$(NSURLRequest request, NSURLConnectionDelegate delegate);
-    /**
-     * @since Available in iOS 5.0 and later.
-     */
-    @Method(selector = "originalRequest")
-    public native NSURLRequest getOriginalRequest();
-    /**
-     * @since Available in iOS 5.0 and later.
-     */
-    @Method(selector = "currentRequest")
-    public native NSURLRequest getCurrentRequest();
     /**
      * @since Available in iOS 2.0 and later.
      */
@@ -110,7 +131,7 @@ import org.robovm.apple.newsstandkit.NKAssetDownload;
     @Method(selector = "canHandleRequest:")
     public static native boolean canHandleRequest(NSURLRequest request);
     @Method(selector = "sendSynchronousRequest:returningResponse:error:")
-    public static native NSData sendSynchronousRequest(NSURLRequest request, NSURLResponse.NSURLResponsePtr response, NSError.NSErrorPtr error);
+    protected static native NSData sendSynchronousRequest(NSURLRequest request, NSURLResponse.NSURLResponsePtr response, NSError.NSErrorPtr error);
     /**
      * @since Available in iOS 5.0 and later.
      */

@@ -32,6 +32,7 @@ import org.robovm.apple.coregraphics.*;
 import org.robovm.apple.coredata.*;
 import org.robovm.apple.coreimage.*;
 import org.robovm.apple.coretext.*;
+import org.robovm.apple.corelocation.*;
 /*</imports>*/
 
 /*<javadoc>*/
@@ -52,8 +53,8 @@ import org.robovm.apple.coretext.*;
     protected UIPanGestureRecognizer(SkipInit skipInit) { super(skipInit); }
     /*</constructors>*/
     
-    public UIPanGestureRecognizer(NSObject target, Selector action) {
-        super(target, action);
+    public UIPanGestureRecognizer(GestureListener listener) {
+        super(listener);
     }
     
     /*<properties>*/

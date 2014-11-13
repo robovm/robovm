@@ -73,9 +73,10 @@ void rvmThrow(Env* env, Object* e) {
             TRACEF("Throwing a %s with empty call stack", e->clazz->name);
         } else {
             TRACEF("Throwing a %s. Call stack:", e->clazz->name);
-            Method* m;
+            CallStackFrame* frame;
             jint index = 0;
-            while ((m = rvmGetNextCallStackMethod(env, callStack, &index)) != NULL) {
+            while ((frame = rvmGetNextCallStackMethod(env, callStack, &index)) != NULL) {
+                Method* m = frame->method;
                 TRACEF("    %s.%s%s", m->clazz->name, m->name, m->desc);
             }
         }

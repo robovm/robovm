@@ -32,31 +32,33 @@ import org.robovm.apple.coregraphics.*;
 import org.robovm.apple.coredata.*;
 import org.robovm.apple.coreimage.*;
 import org.robovm.apple.coretext.*;
+import org.robovm.apple.corelocation.*;
 /*</imports>*/
 
 /*<javadoc>*/
-
 /*</javadoc>*/
-/*<annotations>*//*</annotations>*/
-public enum /*<name>*/UIPrintError/*</name>*/ implements ValuedEnum {
-    /*<values>*/
-    PrintingNotAvailable(1L),
-    NoContent(2L),
-    UnknownImageFormat(3L),
-    JobFailed(4L);
-    /*</values>*/
+/*<annotations>*/@Library("UIKit")/*</annotations>*/
+/*<visibility>*/public/*</visibility>*/ class /*<name>*/UIPrintError/*</name>*/ 
+    extends /*<extends>*/NSError/*</extends>*/ 
+    /*<implements>*//*</implements>*/ {
 
-    private final long n;
-
-    private /*<name>*/UIPrintError/*</name>*/(long n) { this.n = n; }
-    public long value() { return n; }
-    public static /*<name>*/UIPrintError/*</name>*/ valueOf(long n) {
-        for (/*<name>*/UIPrintError/*</name>*/ v : values()) {
-            if (v.n == n) {
-                return v;
-            }
-        }
-        throw new IllegalArgumentException("No constant with value " + n + " found in " 
-            + /*<name>*/UIPrintError/*</name>*/.class.getName());
+    protected UIPrintError(SkipInit skipInit) {
+        super(skipInit);
     }
+    
+    /*<ptr>*/
+    /*</ptr>*/
+    /*<bind>*/static { Bro.bind(UIPrintError.class); }/*</bind>*/
+    /*<constants>*//*</constants>*/
+    /*<constructors>*//*</constructors>*/
+    /*<properties>*//*</properties>*/
+    /*<members>*//*</members>*/
+    @Override
+    public UIPrintErrorCode getErrorCode() {
+        return UIPrintErrorCode.valueOf(getCode());
+    }
+    /*<methods>*/
+    @GlobalValue(symbol="UIPrintErrorDomain", optional=true)
+    public static native String getClassDomain();
+    /*</methods>*/
 }

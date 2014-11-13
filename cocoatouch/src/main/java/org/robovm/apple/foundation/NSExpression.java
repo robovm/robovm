@@ -32,6 +32,7 @@ import org.robovm.apple.coreanimation.*;
 import org.robovm.apple.coregraphics.*;
 import org.robovm.apple.coremedia.*;
 import org.robovm.apple.security.*;
+import org.robovm.apple.dispatch.*;
 /*</imports>*/
 
 /*<javadoc>*/
@@ -53,51 +54,50 @@ import org.robovm.apple.security.*;
     public NSExpression(NSExpressionType type) { super((SkipInit) null); initObject(initWithExpressionType$(type)); }
     /*</constructors>*/
     /*<properties>*/
-    
+    @Property(selector = "expressionType")
+    public native NSExpressionType getExpressionType();
+    @Property(selector = "constantValue")
+    public native NSObject getConstantValue();
+    @Property(selector = "keyPath")
+    public native String getKeyPath();
+    @Property(selector = "function")
+    public native String getFunction();
+    @Property(selector = "variable")
+    public native String getVariable();
+    @Property(selector = "operand")
+    public native NSExpression getOperand();
+    @Property(selector = "arguments")
+    public native NSArray<?> getArguments();
+    /**
+     * @since Available in iOS 3.0 and later.
+     */
+    @Property(selector = "collection")
+    public native NSObject getCollection();
+    /**
+     * @since Available in iOS 3.0 and later.
+     */
+    @Property(selector = "predicate")
+    public native NSPredicate getPredicate();
+    /**
+     * @since Available in iOS 3.0 and later.
+     */
+    @Property(selector = "leftExpression")
+    public native NSExpression getLeftExpression();
+    /**
+     * @since Available in iOS 3.0 and later.
+     */
+    @Property(selector = "rightExpression")
+    public native NSExpression getRightExpression();
+    /**
+     * @since Available in iOS 4.0 and later.
+     */
+    @Property(selector = "expressionBlock")
+    public native @Block Block3<NSObject, NSArray<NSExpression>, NSMutableDictionary<?, ?>, NSObject> getExpressionBlock();
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
     @Method(selector = "initWithExpressionType:")
     protected native @Pointer long initWithExpressionType$(NSExpressionType type);
-    @Method(selector = "expressionType")
-    public native NSExpressionType getExpressionType();
-    @Method(selector = "constantValue")
-    public native NSObject getConstantValue();
-    @Method(selector = "keyPath")
-    public native String getKeyPath();
-    @Method(selector = "function")
-    public native String getFunction();
-    @Method(selector = "variable")
-    public native String getVariable();
-    @Method(selector = "operand")
-    public native NSExpression getOperand();
-    @Method(selector = "arguments")
-    public native NSArray<?> getArguments();
-    /**
-     * @since Available in iOS 3.0 and later.
-     */
-    @Method(selector = "collection")
-    public native NSObject getCollection();
-    /**
-     * @since Available in iOS 3.0 and later.
-     */
-    @Method(selector = "predicate")
-    public native NSPredicate getPredicate();
-    /**
-     * @since Available in iOS 3.0 and later.
-     */
-    @Method(selector = "leftExpression")
-    public native NSExpression getLeftExpression();
-    /**
-     * @since Available in iOS 3.0 and later.
-     */
-    @Method(selector = "rightExpression")
-    public native NSExpression getRightExpression();
-    /**
-     * @since Available in iOS 4.0 and later.
-     */
-    @Method(selector = "expressionBlock")
-    public native @Block Block3<NSObject, NSArray<NSExpression>, NSMutableDictionary<?, ?>, NSObject> getExpressionBlock(NSObject p0, NSArray<?> p1, NSMutableDictionary<?, ?> p2);
     @Method(selector = "expressionValueWithObject:context:")
     public native NSObject evaluate(NSObject object, NSMutableDictionary<?, ?> context);
     /**

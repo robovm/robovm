@@ -94,8 +94,45 @@ import org.robovm.apple.accounts.*;
         }
         return null;
     }
+    /**
+     * @since Available in iOS 6.0 and later.
+     */
     public SKStoreProductParameters setITunesItemIdentifier(String identifier) {
         data.put(ITunesItemIdentifierKey(), new NSString(identifier));
+        return this;
+    }
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    public String getAffiliateToken() {
+        if (data.containsKey(AffiliateTokenKey())) {
+            NSString val = (NSString)data.get(AffiliateTokenKey());
+            return val.toString();
+        }
+        return null;
+    }
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    public SKStoreProductParameters setAffiliateToken(String token) {
+        data.put(AffiliateTokenKey(), new NSString(token));
+        return this;
+    }
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    public String getCampaignToken() {
+        if (data.containsKey(CampaignTokenKey())) {
+            NSString val = (NSString)data.get(CampaignTokenKey());
+            return val.toString();
+        }
+        return null;
+    }
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    public SKStoreProductParameters setCampaignToken(String token) {
+        data.put(CampaignTokenKey(), new NSString(token));
         return this;
     }
     /*<methods>*/
@@ -104,8 +141,17 @@ import org.robovm.apple.accounts.*;
      */
     @GlobalValue(symbol="SKStoreProductParameterITunesItemIdentifier", optional=true)
     protected static native NSString ITunesItemIdentifierKey();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @GlobalValue(symbol="SKStoreProductParameterAffiliateToken", optional=true)
+    protected static native NSString AffiliateTokenKey();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @GlobalValue(symbol="SKStoreProductParameterCampaignToken", optional=true)
+    protected static native NSString CampaignTokenKey();
     /*</methods>*/
-    
     @Override
     public String toString() {
         if (data != null) return data.toString();

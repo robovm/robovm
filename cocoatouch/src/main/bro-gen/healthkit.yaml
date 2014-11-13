@@ -1,0 +1,494 @@
+package: org.robovm.apple.healthkit
+include: [foundation.yaml]
+library: HealthKit
+framework: HealthKit
+clang_args: ['-x', 'objective-c']
+headers:
+    - /System/Library/Frameworks/HealthKit.framework/Headers/HealthKit.h
+typedefs:
+    'void (^)(BOOL, NSError *)': '@Block VoidBlock2<Boolean, NSError>'
+    'void (^)(HKStatistics *, BOOL *)': '@Block VoidBlock2<HKStatistics, Boolean>'
+    'void (^)(HKStatisticsQuery *, HKStatistics *, NSError *)': '@Block VoidBlock3<HKStatisticsQuery, HKStatistics, NSError>'
+    'void (^)(HKStatisticsCollectionQuery *, HKStatisticsCollection *, NSError *)': '@Block VoidBlock3<HKStatisticsCollectionQuery, HKStatisticsCollection, NSError>'
+    'void (^)(HKStatisticsCollectionQuery *, HKStatistics *, HKStatisticsCollection *, NSError *)': '@Block VoidBlock4<HKStatisticsCollectionQuery, HKStatistics, HKStatisticsCollection, NSError>'
+    
+enums:
+    HKErrorCode: {}
+    HKUpdateFrequency: {}
+    HKAuthorizationStatus: {}
+    HKBiologicalSex: {}
+    HKBloodType: {}
+    HKCategoryValueSleepAnalysis: {}
+    HKWorkoutActivityType: {}
+    HKWorkoutEventType: {}
+    HKQueryOptions: {}
+    HKBodyTemperatureSensorLocation: {}
+    HKHeartRateSensorLocation: {}
+    HKQuantityAggregationStyle: {}
+    HKStatisticsOptions: {}
+    HKMetricPrefix: {}
+        
+classes:
+    HealthKit:
+        annotations: ['@Marshaler(NSString.AsStringMarshaler.class)']
+
+    HKBodyQuantityTypeIdentifier:
+        extends: HKQuantityTypeIdentifier
+    HKFitnessQuantityTypeIdentifier:
+        extends: HKQuantityTypeIdentifier
+    HKVitalSignsQuantityTypeIdentifier:
+        extends: HKQuantityTypeIdentifier
+    HKResultsQuantityTypeIdentifier:
+        extends: HKQuantityTypeIdentifier
+    HKDietaryQuantityTypeIdentifier:
+        extends: HKQuantityTypeIdentifier
+    HKCategoryTypeIdentifier:
+        extends: HKTypeIdentifier
+    HKCharacteristicTypeIdentifier:
+        extends: HKTypeIdentifier
+    HKCorrelationTypeIdentifier:
+        extends: HKTypeIdentifier
+    HKWorkoutTypeIdentifier:
+        extends: HKTypeIdentifier
+        
+    HKError:
+        extends: NSError
+        
+    HKPredicateKeyPath:
+        extends: NSPredicateKeyPath
+        
+    HKSampleSortIdentifier:
+        extends: NSSortIdentifier
+    HKWorkoutSortIdentifier:
+        extends: NSSortIdentifier
+
+        
+    HKBiologicalSexObject: {} # DONE
+    HKBloodTypeObject: {} # DONE
+    HKHealthStore: # DONE
+        methods:
+            '-authorizationStatusForType:':
+                name: getAuthorizationStatusForType
+            '-requestAuthorizationToShareTypes:readTypes:completion:':
+                name: requestAuthorizationToTypes
+                parameters:
+                    typesToShare:
+                        type: NSSet<HKSampleType>
+                    typesToRead:
+                        type: NSSet<HKObjectType>
+            '-saveObject:withCompletion:':
+                trim_after_first_colon: true
+            '-saveObjects:withCompletion:':
+                trim_after_first_colon: true
+                parameters:
+                    objects:
+                        type: NSArray<HKObject>
+            '-deleteObject:withCompletion:':
+                trim_after_first_colon: true
+            '-executeQuery:':
+                trim_after_first_colon: true
+            '-stopQuery:':
+                trim_after_first_colon: true
+            '-dateOfBirthWithError:':
+                name: getDateOfBirth
+                visibility: protected # throws NSErrorException
+            '-biologicalSexWithError:':
+                name: getBiologicalSex
+                visibility: protected # throws NSErrorException
+            '-bloodTypeWithError:':
+                name: getBloodType
+                visibility: protected # throws NSErrorException
+            '-addSamples:toWorkout:completion:':
+                name: addSamplesToWorkout
+                parameters:
+                    samples:
+                        type: NSArray<HKSample>
+            '-enableBackgroundDeliveryForType:frequency:withCompletion:':
+                trim_after_first_colon: true
+            '-disableBackgroundDeliveryForType:withCompletion:':
+                trim_after_first_colon: true
+            '-disableAllBackgroundDeliveryWithCompletion:':
+                name: disableAllBackgroundDelivery
+    HKObject: # DONE
+        properties:
+            'metadata':
+                type: HKMetadata
+        methods:
+            '-init':
+                exclude: true
+    HKSample: {} # DONE
+    HKCategorySample: # DONE
+        methods:
+            '-init':
+                exclude: true 
+            '+categorySampleWithType:value:startDate:endDate:metadata:':
+                name: create
+                parameters:
+                    metadata:
+                        type: HKMetadata
+            '+categorySampleWithType:value:startDate:endDate:':
+                name: create
+    HKCorrelation: # DONE
+        properties:
+            'objects':
+                type: NSSet<HKSample>
+        methods:
+            '-objectsForType:':
+                name: getObjectsForType
+                return_type: NSSet<HKSample>
+            '+correlationWithType:startDate:endDate:objects:':
+                name: create
+                parameters:
+                    objects:
+                        type: NSSet<HKSample>
+            '+correlationWithType:startDate:endDate:objects:metadata:':
+                name: create
+                parameters:
+                    objects:
+                        type: NSSet<HKSample>
+                    metadata:
+                        type: HKMetadata
+    HKQuantitySample: # DONE
+        methods:
+            '+quantitySampleWithType:quantity:startDate:endDate:':
+                name: create
+            '+quantitySampleWithType:quantity:startDate:endDate:metadata:':
+                name: create
+                parameters:
+                    metadata:
+                        type: HKMetadata
+    HKWorkout: # DONE
+        properties:
+            'workoutEvents':
+                type: NSArray<HKWorkoutEvent>
+        methods:
+            '+workoutWithActivityType:startDate:endDate:':
+                name: create
+            '+workoutWithActivityType:startDate:endDate:workoutEvents:totalEnergyBurned:totalDistance:metadata:':
+                name: create
+                parameters:
+                    workoutEvents:
+                        type: NSArray<HKWorkoutEvent>
+                    metadata:
+                        type: HKMetadata
+            '+workoutWithActivityType:startDate:endDate:duration:totalEnergyBurned:totalDistance:metadata:':
+                name: create
+                parameters:
+                    metadata:
+                        type: HKMetadata
+    HKObjectType: # DONE
+        properties:
+            'identifier':
+                type: HKTypeIdentifier
+        methods:
+            '-init':
+                exclude: true
+            '+quantityTypeForIdentifier:':
+                name: getQuantityType
+                parameters:
+                    identifier:
+                        type: HKQuantityTypeIdentifier
+            '+categoryTypeForIdentifier:':
+                name: getCategoryType
+                parameters:
+                    identifier:
+                        type: HKCategoryTypeIdentifier
+            '+characteristicTypeForIdentifier:':
+                name: getCharacteristicType
+                parameters:
+                    identifier:
+                        type: HKCharacteristicTypeIdentifier
+            '+correlationTypeForIdentifier:':
+                name: getCorrelationType
+                parameters:
+                    identifier:
+                        type: HKCorrelationTypeIdentifier
+            '+workoutType':
+                property: true
+    HKCharacteristicType: {} # DONE
+    HKSampleType: {} # DONE
+    HKCategoryType: {} # DONE
+    HKCorrelationType: {} # DONE
+    HKQuantityType: # DONE
+        methods:
+            '-isCompatibleWithUnit:':
+                trim_after_first_colon: true
+    HKWorkoutType: {} # DONE
+    HKQuantity: # DONE
+        methods:
+            '-init':    
+                exclude: true
+            '-isCompatibleWithUnit:':
+                trim_after_first_colon: true
+            '-doubleValueForUnit:':
+                name: getDoubleValueForUnit
+            '-compare:':
+                trim_after_first_colon: true
+            '+quantityWithUnit:doubleValue:':
+                name: create
+    HKQuery: # DONE
+        methods:
+            '-init':
+                exclude: true
+            '+predicateForObjectsWithMetadataKey:.*':
+                name: createPredicateForObjectsWithMetadata
+            '+predicateForObjectsFromSource:':
+                name: createPredicateForObjectsFromSource
+            '+predicateForObjectsFromSources:':
+                name: createPredicateForObjectsFromSources
+                parameters:
+                    sources:
+                        type: NSSet<HKSource>
+            '+predicateForObjectWithUUID:':
+                name: createPredicateForObjectsWithUUID
+                parameters:
+                    UUID:
+                        name: uuid
+            '+predicateForObjectsWithUUIDs:':
+                name: createPredicateForObjectsWithUUIDs
+                parameters:
+                    UUIDs:
+                        name: uuids
+                        type: NSSet<NSUUID>
+            '+predicateForObjectsWithNoCorrelation':
+                name: createPredicateForObjectsWithNoCorrelation
+            '+predicateForObjectsFromWorkout:':
+                name: createPredicateForObjectsFromWorkout
+            '+predicateForSamplesWithStartDate:endDate:options:':
+                name: createPredicateForSamplesWithDate
+            '+predicateForQuantitySamplesWithOperatorType:quantity:':
+                name: createPredicateForQuantitySamplesWithQuantity
+            '+predicateForCategorySamplesWithOperatorType:value:':
+                name: createPredicateForCategorySamplesWithValue
+            '+predicateForWorkoutsWithWorkoutActivityType:':
+                name: createPredicateForWorkoutsWithActivityType
+            '+predicateForWorkoutsWithOperatorType:duration:':
+                name: createPredicateForWorkoutsWithDuration
+            '+predicateForWorkoutsWithOperatorType:totalEnergyBurned:':
+                name: createPredicateForWorkoutsWithTotalEnergyBurned
+            '+predicateForWorkoutsWithOperatorType:totalDistance:':
+                name: createPredicateForWorkoutsWithTotalDistance
+    HKAnchoredObjectQuery: # DONE
+        methods:
+            '-initWithType:predicate:anchor:limit:completionHandler:':
+                name: init
+                parameters:
+                    handler:
+                        type: '@Block("(,,@MachineSizedUInt,)") VoidBlock4<HKAnchoredObjectQuery, NSArray<HKSample>, Long, NSError>'
+    HKCorrelationQuery: # DONE
+        properties:
+            'samplePredicates':
+                type: 'NSDictionary<HKSampleType, NSPredicate>'
+        methods:
+            '-initWithType:predicate:samplePredicates:completion:':
+                name: init
+                parameters:
+                    samplePredicates:
+                        type: 'NSDictionary<HKSampleType, NSPredicate>'
+                    completion: 
+                        type: '@Block VoidBlock3<HKCorrelationQuery, NSArray<HKCorrelation>, NSError>'
+    HKObserverQuery: # DONE
+        methods:
+            '-initWithSampleType:predicate:updateHandler:':
+                name: init
+                parameters:
+                    updateHandler:
+                        type: '@Block("(,@Block,)") VoidBlock3<HKObserverQuery, Runnable, NSError>'
+    HKSampleQuery: # DONE
+        properties:
+            'sortDescriptors':
+                type: NSArray<NSSortDescriptor>
+        methods:
+            '-initWithSampleType:predicate:limit:sortDescriptors:resultsHandler:':
+                name: init
+                parameters:
+                    sortDescriptors:
+                        type: NSArray<NSSortDescriptor>
+                    resultsHandler:
+                        type: '@Block VoidBlock3<HKSampleQuery, NSArray<HKSample>, NSError>'
+    HKSourceQuery: # DONE
+        methods:
+            '-initWithSampleType:samplePredicate:completionHandler:':
+                name: init
+                parameters:
+                    completionHandler:
+                        type: '@Block VoidBlock3<HKSourceQuery, NSSet<HKSource>, NSError>'
+    HKStatisticsCollectionQuery: {} # DONE
+    HKStatisticsQuery: {} # DONE
+    HKSource: # DONE
+        methods:
+            '-init':
+                exclude: true
+            '+defaultSource':
+                property: true
+    HKStatistics: # DONE
+        properties:
+            'sources':
+                type: NSArray<HKSource>
+        methods:
+            '-init':
+                exclude: true
+            '-(averageQuantity|minimumQuantity|maximumQuantity|sumQuantity)':
+                property: true
+            '-averageQuantityForSource:':
+                name: getAverageQuantityForSource
+            '-minimumQuantityForSource:':
+                name: getMinimumQuantityForSource
+            '-maximumQuantityForSource:':
+                name: getMaximumQuantityForSource
+            '-sumQuantityForSource:':
+                name: getSumQuantityForSource
+    HKStatisticsCollection: # DONE
+        methods:
+            '-init':
+                exclude: true 
+            '-statisticsForDate:':
+                name: getStatisticsForDate
+            '-enumerateStatisticsFromDate:toDate:withBlock:':
+                name: enumerateStatistics
+            '-statistics':
+                property: true
+                return_type: NSArray<HKStatistics>
+            '-sources':
+                property: true
+                return_type: NSSet<HKSource>
+    HKUnit: # DONE
+        methods:
+            '-init':
+                exclude: true
+            '+unitFromString:':
+                name: fromString
+            '+unitFromMassFormatterUnit:':
+                name: fromMassFormatterUnit
+            '+massFormatterUnitFromUnit:':
+                name: createMassFormatterUnit
+            '+unitFromLengthFormatterUnit:':
+                name: fromLengthFormatterUnit
+            '+lengthFormatterUnitFromUnit:':
+                name: createLengthFormatterUnit
+            '+unitFromEnergyFormatterUnit:':
+                name: fromEnergyFormatterUnit
+            '+energyFormatterUnitFromUnit:':
+                name: createEnergyFormatterUnit
+            '+(.*)Unit.*':
+                name: '#{g[0]}'
+            '-unitMultipliedByUnit:':
+                name: multiplyBy
+            '-unitDividedByUnit:':
+                name: divideBy
+            '-unitRaisedToPower:':
+                name: raiseToPower
+    HKWorkoutEvent: # DONE
+        methods:
+            '-init':
+                exclude: true
+            '+workoutEventWithType:date:':
+                name: create
+
+protocols: {}
+
+functions:
+    # Make sure we don't miss any functions if new ones are introduced in a later version
+    (HK.*):
+        class: HealthKit
+        name: "Function__#{g[0]}"
+
+values:
+    HKErrorDomain:
+        class: HKError
+        name: getClassDomain
+
+    HKQuantityTypeIdentifier(BodyMassIndex|BodyFatPercentage|Height|BodyMass|LeanBodyMass):
+        class: HKBodyQuantityTypeIdentifier
+        name: "#{g[0]}Value"
+        type: NSString
+        visibility: protected
+    HKQuantityTypeIdentifier(StepCount|DistanceWalkingRunning|DistanceCycling|BasalEnergyBurned|ActiveEnergyBurned|FlightsClimbed|NikeFuel):
+        class: HKFitnessQuantityTypeIdentifier
+        name: "#{g[0]}Value"
+        type: NSString
+        visibility: protected
+    HKQuantityTypeIdentifier(HeartRate|BodyTemperature|BloodPressureSystolic|BloodPressureDiastolic|RespiratoryRate):
+        class: HKVitalSignsQuantityTypeIdentifier
+        name: "#{g[0]}Value"
+        type: NSString
+        visibility: protected
+    HKQuantityTypeIdentifier(OxygenSaturation|PeripheralPerfusionIndex|BloodGlucose|NumberOfTimesFallen|ElectrodermalActivity|InhalerUsage):
+        class: HKResultsQuantityTypeIdentifier
+        name: "#{g[0]}Value"
+        type: NSString
+        visibility: protected
+    HKQuantityTypeIdentifier(BloodAlcoholContent|ForcedVitalCapacity|ForcedExpiratoryVolume1|PeakExpiratoryFlowRate):
+        class: HKResultsQuantityTypeIdentifier
+        name: "#{g[0]}Value"
+        type: NSString
+        visibility: protected
+    HKQuantityTypeIdentifierDietary(.*):
+        class: HKDietaryQuantityTypeIdentifier
+        name: "#{g[0]}Value"
+        type: NSString
+        visibility: protected
+    HKCategoryTypeIdentifier(.*):
+        class: HKCategoryTypeIdentifier
+        name: "#{g[0]}Value"
+        type: NSString
+        visibility: protected
+    HKCharacteristicTypeIdentifier(.*):
+        class: HKCharacteristicTypeIdentifier
+        name: "#{g[0]}Value"
+        type: NSString
+        visibility: protected
+    HKCorrelationTypeIdentifier(.*):
+        class: HKCorrelationTypeIdentifier
+        name: "#{g[0]}Value"
+        type: NSString
+        visibility: protected
+    HKWorkoutTypeIdentifier:
+        class: HKWorkoutTypeIdentifier
+        name: WorkoutValue
+        type: NSString
+        visibility: protected
+        
+    HKMetadataKey(.*):
+        class: HKMetadataKey
+        name: "#{g[0]}Key"
+        type: NSString
+        visibility: protected
+        
+    HKPredicateKeyPath(.*):
+        class: HKPredicateKeyPath
+        name: "#{g[0]}Value"
+        type: NSString
+        visibility: protected
+
+    HKSampleSortIdentifier(.*):
+        class: HKSampleSortIdentifier
+        name: "#{g[0]}Value"
+        type: String
+        visibility: protected
+    HKWorkoutSortIdentifier(.*):
+        class: HKWorkoutSortIdentifier
+        name: "#{g[0]}Value"
+        type: String
+        visibility: protected
+
+    # Make sure we don't miss any values if new ones are introduced in a later version
+    (HK.*):
+        class: HealthKit
+        name: "Value__#{g[0]}"
+
+constants:
+    HKAnchoredObjectQuery(NoAnchor):
+        class: HKAnchoredObjectQuery
+        name: "#{g[0]}"
+    HKObjectQuery(NoLimit):
+        class: HKSampleQuery
+        name: "#{g[0]}"
+    HKUnit(MolarMassBloodGlucose):
+        class: HKUnit
+        name: "#{g[0]}"
+
+    # Make sure we don't miss any constants if new ones are introduced in a later version
+    (HK.*):
+        class: HealthKit
+        name: "Constant__#{g[0]}"

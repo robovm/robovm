@@ -15,38 +15,49 @@ classes:
     GameController:
         annotations: ['@Marshaler(NSString.AsStringMarshaler.class)']
 
+    # Structs
+    GCAcceleration: {}
+    GCRotationRate: {}
+    GCQuaternion: {}
+
     GCController: # DONE
         methods:
             '+controllers':
                 property: true
-                return_type: "NSArray<GCController>"
+                return_type: NSArray<GCController>
             '+startWirelessControllerDiscoveryWithCompletionHandler:':
-                name: "startWirelessControllerDiscovery"
+                name: startWirelessControllerDiscovery
     GCControllerAxisInput: # DONE
         properties:
             'valueChangedHandler':
-                type: "@Block VoidBlock2<GCControllerAxisInput, Float>"
+                type: '@Block VoidBlock2<GCControllerAxisInput, Float>'
     GCControllerButtonInput: # DONE
         properties:
             'valueChangedHandler':
-                type: "@Block VoidBlock3<GCControllerButtonInput, Float, Boolean>"
+                type: '@Block VoidBlock3<GCControllerButtonInput, Float, Boolean>'
+            'pressedChangedHandler':
+                type: '@Block VoidBlock3<GCControllerButtonInput, Float, Boolean>'
     GCControllerDirectionPad: # DONE
         properties:
             'valueChangedHandler':
-                type: "@Block VoidBlock3<GCControllerDirectionPad, Float, Float>"
+                type: '@Block VoidBlock3<GCControllerDirectionPad, Float, Float>'
     GCControllerElement: {} # DONE
     GCExtendedGamepad: # DONE
         properties:
             'valueChangedHandler':
-                type: "@Block VoidBlock2<GCExtendedGamepad, GCControllerElement>"
+                type: '@Block VoidBlock2<GCExtendedGamepad, GCControllerElement>'
     GCExtendedGamepadSnapshot: {} # DONE
     GCExtendedGamepadSnapShotDataV100: {} # DONE
     GCGamepad: # DONE
         properties:
             'valueChangedHandler':
-                type: "@Block VoidBlock2<GCGamepad, GCControllerElement>"
+                type: '@Block VoidBlock2<GCGamepad, GCControllerElement>'
     GCGamepadSnapshot: {} # DONE
     GCGamepadSnapShotDataV100: {} # DONE
+    GCMotion: # DONE
+        properties:
+            'valueChangedHandler':
+                type: '@Block VoidBlock2<GCGamepad, GCControllerElement>'
 
 protocols: {}
 

@@ -32,6 +32,7 @@ import org.robovm.apple.coreanimation.*;
 import org.robovm.apple.coregraphics.*;
 import org.robovm.apple.coremedia.*;
 import org.robovm.apple.security.*;
+import org.robovm.apple.dispatch.*;
 /*</imports>*/
 
 /*<javadoc>*/
@@ -52,7 +53,71 @@ import org.robovm.apple.security.*;
     protected NSOperation(SkipInit skipInit) { super(skipInit); }
     /*</constructors>*/
     /*<properties>*/
-    
+    @Property(selector = "isCancelled")
+    public native boolean isCancelled();
+    @Property(selector = "isExecuting")
+    public native boolean isExecuting();
+    @Property(selector = "isFinished")
+    public native boolean isFinished();
+    @Property(selector = "isConcurrent")
+    public native boolean isConcurrent();
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
+    @Property(selector = "isAsynchronous")
+    public native boolean isAsynchronous();
+    @Property(selector = "isReady")
+    public native boolean isReady();
+    @Property(selector = "dependencies")
+    public native NSArray<NSOperation> getDependencies();
+    @Property(selector = "queuePriority")
+    public native NSOperationQueuePriority getQueuePriority();
+    @Property(selector = "setQueuePriority:")
+    public native void setQueuePriority(NSOperationQueuePriority v);
+    /**
+     * @since Available in iOS 4.0 and later.
+     */
+    @Property(selector = "completionBlock")
+    public native @Block Runnable getCompletionBlock();
+    /**
+     * @since Available in iOS 4.0 and later.
+     */
+    @Property(selector = "setCompletionBlock:")
+    public native void setCompletionBlock(@Block Runnable v);
+    /**
+     * @since Available in iOS 4.0 and later.
+     * @deprecated Deprecated in iOS 8.0.
+     */
+    @Deprecated
+    @Property(selector = "threadPriority")
+    public native double getThreadPriority();
+    /**
+     * @since Available in iOS 4.0 and later.
+     * @deprecated Deprecated in iOS 8.0.
+     */
+    @Deprecated
+    @Property(selector = "setThreadPriority:")
+    public native void setThreadPriority(double v);
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @Property(selector = "qualityOfService")
+    public native NSQualityOfService getQualityOfService();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @Property(selector = "setQualityOfService:")
+    public native void setQualityOfService(NSQualityOfService v);
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @Property(selector = "name")
+    public native String getName();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @Property(selector = "setName:")
+    public native void setName(String v);
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
@@ -60,52 +125,16 @@ import org.robovm.apple.security.*;
     public native void start();
     @Method(selector = "main")
     public native void main();
-    @Method(selector = "isCancelled")
-    public native boolean isCancelled();
     @Method(selector = "cancel")
     public native void cancel();
-    @Method(selector = "isExecuting")
-    public native boolean isExecuting();
-    @Method(selector = "isFinished")
-    public native boolean isFinished();
-    @Method(selector = "isConcurrent")
-    public native boolean isConcurrent();
-    @Method(selector = "isReady")
-    public native boolean isReady();
     @Method(selector = "addDependency:")
     public native void addDependency(NSOperation op);
     @Method(selector = "removeDependency:")
     public native void removeDependency(NSOperation op);
-    @Method(selector = "dependencies")
-    public native NSArray<NSOperation> getDependencies();
-    @Method(selector = "queuePriority")
-    public native NSOperationQueuePriority getQueuePriority();
-    @Method(selector = "setQueuePriority:")
-    public native void setQueuePriority(NSOperationQueuePriority p);
-    /**
-     * @since Available in iOS 4.0 and later.
-     */
-    @Method(selector = "completionBlock")
-    public native @Block Runnable getCompletionBlock();
-    /**
-     * @since Available in iOS 4.0 and later.
-     */
-    @Method(selector = "setCompletionBlock:")
-    public native void setCompletionBlock(@Block Runnable block);
     /**
      * @since Available in iOS 4.0 and later.
      */
     @Method(selector = "waitUntilFinished")
     public native void waitUntilFinished();
-    /**
-     * @since Available in iOS 4.0 and later.
-     */
-    @Method(selector = "threadPriority")
-    public native double getThreadPriority();
-    /**
-     * @since Available in iOS 4.0 and later.
-     */
-    @Method(selector = "setThreadPriority:")
-    public native void setThreadPriority(double p);
     /*</methods>*/
 }

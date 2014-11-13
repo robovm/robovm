@@ -37,7 +37,31 @@ jlong Java_sun_misc_Unsafe_objectFieldOffset0(Env* env, Object* unsafe, Object* 
 }
 
 jint Java_sun_misc_Unsafe_arrayBaseOffset0(Env* env, Object* unsafe, Class* clazz) {
-    return offsetof(Array, values);
+    if (clazz == array_Z) {
+        return offsetof(BooleanArray, values);
+    }
+    if (clazz == array_B) {
+        return offsetof(ByteArray, values);
+    }
+    if (clazz == array_C) {
+        return offsetof(CharArray, values);
+    }
+    if (clazz == array_S) {
+        return offsetof(ShortArray, values);
+    }
+    if (clazz == array_I) {
+        return offsetof(IntArray, values);
+    }
+    if (clazz == array_J) {
+        return offsetof(LongArray, values);
+    }
+    if (clazz == array_F) {
+        return offsetof(FloatArray, values);
+    }
+    if (clazz == array_D) {
+        return offsetof(DoubleArray, values);
+    }
+    return offsetof(ObjectArray, values);
 }
 
 jint Java_sun_misc_Unsafe_arrayIndexScale0(Env* env, Object* unsafe, Class* clazz) {

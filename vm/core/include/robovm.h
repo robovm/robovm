@@ -59,6 +59,7 @@ extern "C" {
 #include "robovm/mutex.h"
 #include "robovm/monitor.h"
 #include "robovm/signal.h"
+#include "robovm/hooks.h"
 
 #ifdef __cplusplus
 }

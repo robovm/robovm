@@ -32,6 +32,7 @@ import org.robovm.apple.coreanimation.*;
 import org.robovm.apple.coregraphics.*;
 import org.robovm.apple.coremedia.*;
 import org.robovm.apple.security.*;
+import org.robovm.apple.dispatch.*;
 /*</imports>*/
 
 /*<javadoc>*/
@@ -52,15 +53,14 @@ import org.robovm.apple.security.*;
     protected NSMetadataItem(SkipInit skipInit) { super(skipInit); }
     /*</constructors>*/
     /*<properties>*/
-    
+    @Property(selector = "attributes")
+    public native @org.robovm.rt.bro.annotation.Marshaler(NSMetadataItemAttribute.AsListMarshaler.class) List<NSMetadataItemAttribute> getAttributes();
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
     @Method(selector = "valueForAttribute:")
-    public native NSObject valueForAttribute$(String key);
+    public native NSObject getValue(NSMetadataItemAttribute key);
     @Method(selector = "valuesForAttributes:")
-    public native NSDictionary<?, ?> valuesForAttributes$(NSArray<?> keys);
-    @Method(selector = "attributes")
-    public native NSArray<?> attributes();
+    public native NSMetadataItemAttributes getValues(@org.robovm.rt.bro.annotation.Marshaler(NSMetadataItemAttribute.AsListMarshaler.class) List<NSMetadataItemAttribute> keys);
     /*</methods>*/
 }

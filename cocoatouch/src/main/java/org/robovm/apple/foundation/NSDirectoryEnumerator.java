@@ -32,6 +32,7 @@ import org.robovm.apple.coreanimation.*;
 import org.robovm.apple.coregraphics.*;
 import org.robovm.apple.coremedia.*;
 import org.robovm.apple.security.*;
+import org.robovm.apple.dispatch.*;
 /*</imports>*/
 
 /*<javadoc>*/
@@ -49,21 +50,20 @@ import org.robovm.apple.security.*;
     protected NSDirectoryEnumerator(SkipInit skipInit) { super(skipInit); }
     /*</constructors>*/
     /*<properties>*/
-    
-    /*</properties>*/
-    /*<members>*//*</members>*/
-    /*<methods>*/
-    @Method(selector = "fileAttributes")
-    public native NSDictionary<NSString, ?> getFileAttributes();
-    @Method(selector = "directoryAttributes")
-    public native NSDictionary<NSString, ?> getDirectoryAttributes();
-    @Method(selector = "skipDescendents")
-    public native void skipDescendents();
+    @Property(selector = "fileAttributes")
+    public native NSFileAttributes getFileAttributes();
+    @Property(selector = "directoryAttributes")
+    public native NSFileAttributes getDirectoryAttributes();
     /**
      * @since Available in iOS 4.0 and later.
      */
-    @Method(selector = "level")
+    @Property(selector = "level")
     public native @MachineSizedUInt long getLevel();
+    /*</properties>*/
+    /*<members>*//*</members>*/
+    /*<methods>*/
+    @Method(selector = "skipDescendents")
+    public native void skipDescendents();
     /**
      * @since Available in iOS 4.0 and later.
      */

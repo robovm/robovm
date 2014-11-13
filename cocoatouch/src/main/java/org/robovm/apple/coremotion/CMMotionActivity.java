@@ -61,6 +61,11 @@ import org.robovm.apple.foundation.*;
     public native boolean isRunning();
     @Property(selector = "automotive")
     public native boolean isAutomotive();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @Property(selector = "cycling")
+    public native boolean isCycling();
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/

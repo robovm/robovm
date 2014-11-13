@@ -32,6 +32,7 @@ import org.robovm.apple.coreanimation.*;
 import org.robovm.apple.coregraphics.*;
 import org.robovm.apple.coremedia.*;
 import org.robovm.apple.security.*;
+import org.robovm.apple.dispatch.*;
 /*</imports>*/
 
 /*<javadoc>*/
@@ -51,26 +52,26 @@ import org.robovm.apple.security.*;
     /*</properties>*/
     /*<methods>*/
     @Method(selector = "netServiceWillPublish:")
-    void netServiceWillPublish$(NSNetService sender);
+    void willPublish(NSNetService sender);
     @Method(selector = "netServiceDidPublish:")
-    void netServiceDidPublish$(NSNetService sender);
+    void didPublish(NSNetService sender);
     @Method(selector = "netService:didNotPublish:")
-    void netService$didNotPublish$(NSNetService sender, NSDictionary<?, ?> errorDict);
+    void didNotPublish(NSNetService sender, NSNetServiceErrorInfo errorDict);
     @Method(selector = "netServiceWillResolve:")
-    void netServiceWillResolve$(NSNetService sender);
+    void willResolve(NSNetService sender);
     @Method(selector = "netServiceDidResolveAddress:")
-    void netServiceDidResolveAddress$(NSNetService sender);
+    void didResolve(NSNetService sender);
     @Method(selector = "netService:didNotResolve:")
-    void netService$didNotResolve$(NSNetService sender, NSDictionary<?, ?> errorDict);
+    void didNotResolve(NSNetService sender, NSNetServiceErrorInfo errorDict);
     @Method(selector = "netServiceDidStop:")
-    void netServiceDidStop$(NSNetService sender);
+    void didStop(NSNetService sender);
     @Method(selector = "netService:didUpdateTXTRecordData:")
-    void netService$didUpdateTXTRecordData$(NSNetService sender, NSData data);
+    void didUpdateTXTRecordData(NSNetService sender, NSData data);
     /**
      * @since Available in iOS 7.0 and later.
      */
     @Method(selector = "netService:didAcceptConnectionWithInputStream:outputStream:")
-    void netService$didAcceptConnectionWithInputStream$outputStream$(NSNetService sender, NSInputStream inputStream, NSOutputStream outputStream);
+    void didAcceptConnection(NSNetService sender, NSInputStream inputStream, NSOutputStream outputStream);
     /*</methods>*/
     /*<adapter>*/
     /*</adapter>*/

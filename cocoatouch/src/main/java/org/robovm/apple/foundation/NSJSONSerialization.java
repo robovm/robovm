@@ -32,6 +32,7 @@ import org.robovm.apple.coreanimation.*;
 import org.robovm.apple.coregraphics.*;
 import org.robovm.apple.coremedia.*;
 import org.robovm.apple.security.*;
+import org.robovm.apple.dispatch.*;
 /*</imports>*/
 
 /*<javadoc>*/
@@ -55,16 +56,78 @@ import org.robovm.apple.security.*;
     
     /*</properties>*/
     /*<members>*//*</members>*/
+    /**
+     * 
+     * @param obj
+     * @param opt
+     * @return
+     * @throws NSErrorException
+     */
+    public static NSData createJSONData(NSObject obj, NSJSONWritingOptions opt) {
+        NSError.NSErrorPtr err = new NSError.NSErrorPtr();
+        NSData result = createJSONData(obj, opt, err);
+        if (err.get() != null) {
+            throw new NSErrorException(err.get());
+        }
+        return result;
+    }
+    /**
+     * 
+     * @param data
+     * @param opt
+     * @return
+     * @throws NSErrorException
+     */
+    public static NSObject createJSONObject(NSData data, NSJSONReadingOptions opt) {
+        NSError.NSErrorPtr err = new NSError.NSErrorPtr();
+        NSObject result = createJSONObject(data, opt, err);
+        if (err.get() != null) {
+            throw new NSErrorException(err.get());
+        }
+        return result;
+    }
+    /**
+     * 
+     * @param obj
+     * @param stream
+     * @param opt
+     * @return
+     * @throws NSErrorException
+     */
+    public static @MachineSizedSInt long writeJSONObject(NSObject obj, NSOutputStream stream, NSJSONWritingOptions opt) {
+        NSError.NSErrorPtr err = new NSError.NSErrorPtr();
+        long result = writeJSONObject(obj, stream, opt, err);
+        if (err.get() != null) {
+            throw new NSErrorException(err.get());
+        }
+        return result;
+    }
+    /**
+     * 
+     * @param stream
+     * @param opt
+     * @return
+     * @throws NSErrorException
+     */
+    public static NSObject readJSONObject(NSInputStream stream, NSJSONReadingOptions opt) {
+        NSError.NSErrorPtr err = new NSError.NSErrorPtr();
+        NSObject result = readJSONObject(stream, opt, err);
+        if (err.get() != null) {
+            throw new NSErrorException(err.get());
+        }
+        return result;
+    }
+
     /*<methods>*/
     @Method(selector = "isValidJSONObject:")
-    public static native boolean isValidJSONObject$(NSObject obj);
+    public static native boolean isValidJSONObject(NSObject obj);
     @Method(selector = "dataWithJSONObject:options:error:")
-    public static native NSData dataWithJSONObject$options$error$(NSObject obj, NSJSONWritingOptions opt, NSError.NSErrorPtr error);
+    protected static native NSData createJSONData(NSObject obj, NSJSONWritingOptions opt, NSError.NSErrorPtr error);
     @Method(selector = "JSONObjectWithData:options:error:")
-    public static native NSObject JSONObjectWithData$options$error$(NSData data, NSJSONReadingOptions opt, NSError.NSErrorPtr error);
+    protected static native NSObject createJSONObject(NSData data, NSJSONReadingOptions opt, NSError.NSErrorPtr error);
     @Method(selector = "writeJSONObject:toStream:options:error:")
-    public static native @MachineSizedSInt long writeJSONObject$toStream$options$error$(NSObject obj, NSOutputStream stream, NSJSONWritingOptions opt, NSError.NSErrorPtr error);
+    protected static native @MachineSizedSInt long writeJSONObject(NSObject obj, NSOutputStream stream, NSJSONWritingOptions opt, NSError.NSErrorPtr error);
     @Method(selector = "JSONObjectWithStream:options:error:")
-    public static native NSObject JSONObjectWithStream$options$error$(NSInputStream stream, NSJSONReadingOptions opt, NSError.NSErrorPtr error);
+    protected static native NSObject readJSONObject(NSInputStream stream, NSJSONReadingOptions opt, NSError.NSErrorPtr error);
     /*</methods>*/
 }

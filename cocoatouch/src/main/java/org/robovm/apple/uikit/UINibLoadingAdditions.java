@@ -32,6 +32,7 @@ import org.robovm.apple.coregraphics.*;
 import org.robovm.apple.coredata.*;
 import org.robovm.apple.coreimage.*;
 import org.robovm.apple.coretext.*;
+import org.robovm.apple.corelocation.*;
 /*</imports>*/
 
 /*<javadoc>*/
@@ -52,6 +53,11 @@ import org.robovm.apple.coretext.*;
     /*<methods>*/
     @Method(selector = "awakeFromNib")
     void awakeFromNib();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @Method(selector = "prepareForInterfaceBuilder")
+    void prepareForInterfaceBuilder();
     /*</methods>*/
     /*<adapter>*/
     /*</adapter>*/

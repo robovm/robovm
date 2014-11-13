@@ -32,6 +32,7 @@ import org.robovm.apple.coreanimation.*;
 import org.robovm.apple.coregraphics.*;
 import org.robovm.apple.coremedia.*;
 import org.robovm.apple.security.*;
+import org.robovm.apple.dispatch.*;
 /*</imports>*/
 
 /*<javadoc>*/
@@ -62,6 +63,33 @@ import org.robovm.apple.security.*;
                 o = new NSArray<NSObject>((List<NSObject>) l);
             }
             return NSObject.Marshaler.toNative(o, flags);
+        }
+    }
+    
+    public static class AsIntegerListMarshaler {
+        @SuppressWarnings("unchecked")
+        @MarshalsPointer
+        public static List<Integer> toObject(Class<? extends NSObject> cls, long handle, long flags) {
+            NSArray<NSNumber> o = (NSArray<NSNumber>) NSObject.Marshaler.toObject(cls, handle, flags);
+            if (o == null) {
+                return null;
+            }
+            List<Integer> list = new ArrayList<>();
+            for (NSNumber n : o) {
+                list.add(n.intValue());
+            }
+            return list;
+        }
+        @MarshalsPointer
+        public static long toNative(List<Integer> l, long flags) {
+            if (l == null) {
+                return 0L;
+            }
+            NSArray<NSNumber> array = new NSMutableArray<>();
+            for (Integer i : l) {
+                array.add(NSNumber.valueOf(i));
+            }
+            return NSObject.Marshaler.toNative(array, flags);
         }
     }
     
@@ -97,7 +125,7 @@ import org.robovm.apple.security.*;
         }
 
         protected void checkIndex(int index) {
-            int size = (int) array.count();
+            int size = (int) array.getCount();
             if (index < 0 || index >= size) {
                 throw new IndexOutOfBoundsException("index = " + index + ", size = " + size);
             }
@@ -105,7 +133,7 @@ import org.robovm.apple.security.*;
 
         @Override
         public int size() {
-            return (int) array.count();
+            return (int) array.getCount();
         }
 
         @Override
@@ -158,7 +186,17 @@ import org.robovm.apple.security.*;
     }
     
     /*<properties>*/
-    
+    @Property(selector = "count")
+    protected native @MachineSizedUInt long getCount();
+    /**
+     * @since Available in iOS 4.0 and later.
+     */
+    @Property(selector = "firstObject")
+    public native T first();
+    @Property(selector = "lastObject")
+    public native T last();
+    @Property(selector = "sortedArrayHint")
+    public native NSData getSortedArrayHint();
     /*</properties>*/
     /*<members>*//*</members>*/
     
@@ -319,29 +357,20 @@ import org.robovm.apple.security.*;
     }
 
     /*<methods>*/
-    @Method(selector = "count")
-    protected native @MachineSizedUInt long count();
     @Method(selector = "objectAtIndex:")
     protected native T objectAtIndex$(@MachineSizedUInt long index);
+    @Method(selector = "initWithObjects:count:")
+    protected native @Pointer long initWithObjects$count$(@Pointer long objects, @MachineSizedUInt long cnt);
     @Method(selector = "containsObject:")
     protected native boolean containsObject$(NSObject anObject);
     @Method(selector = "indexOfObject:")
     protected native @MachineSizedUInt long indexOfObject$(NSObject anObject);
-    /**
-     * @since Available in iOS 4.0 and later.
-     */
-    @Method(selector = "firstObject")
-    public native NSObject getFirst();
-    @Method(selector = "lastObject")
-    public native NSObject getLast();
     @Method(selector = "subarrayWithRange:")
     protected native NSArray<T> subarrayWithRange$(@ByVal NSRange range);
     @Method(selector = "writeToFile:atomically:")
     protected native boolean writeToFile$atomically$(String path, boolean useAuxiliaryFile);
     @Method(selector = "writeToURL:atomically:")
     public native boolean write(NSURL url, boolean atomically);
-    @Method(selector = "initWithObjects:count:")
-    protected native @Pointer long initWithObjects$count$(@Pointer long objects, @MachineSizedUInt long cnt);
     @Method(selector = "initWithArray:")
     protected native @Pointer long initWithArray$(NSArray<?> array);
     @Method(selector = "arrayWithContentsOfFile:")

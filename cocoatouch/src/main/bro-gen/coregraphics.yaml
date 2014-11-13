@@ -22,7 +22,7 @@ enums:
     CGColorSpaceModel: {}
     CGError: {first: kCGErrorSuccess}
     CGFontPostScriptFormat: {}
-    CGGradientDrawingOptions: {first: kCGGradientDrawsBeforeStartLocation}
+    CGGradientDrawingOptions: {first: kCGGradientDrawsBeforeStartLocation, bits: true, marshaler: Bits.AsMachineSizedIntMarshaler}
     CGImageAlphaInfo: {}
     CGInterpolationQuality: {}
     CGLineCap: {}

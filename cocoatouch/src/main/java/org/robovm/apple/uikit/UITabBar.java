@@ -32,6 +32,7 @@ import org.robovm.apple.coregraphics.*;
 import org.robovm.apple.coredata.*;
 import org.robovm.apple.coreimage.*;
 import org.robovm.apple.coretext.*;
+import org.robovm.apple.corelocation.*;
 /*</imports>*/
 
 /*<javadoc>*/
@@ -91,12 +92,16 @@ import org.robovm.apple.coretext.*;
     public native void setBarTintColor(UIColor v);
     /**
      * @since Available in iOS 5.0 and later.
+     * @deprecated Deprecated in iOS 8.0.
      */
+    @Deprecated
     @Property(selector = "selectedImageTintColor")
     public native UIColor getSelectedImageTintColor();
     /**
      * @since Available in iOS 5.0 and later.
+     * @deprecated Deprecated in iOS 8.0.
      */
+    @Deprecated
     @Property(selector = "setSelectedImageTintColor:")
     public native void setSelectedImageTintColor(UIColor v);
     /**

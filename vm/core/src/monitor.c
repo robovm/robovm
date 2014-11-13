@@ -52,44 +52,42 @@ typedef int32_t s4;
 typedef uint64_t u8;
 typedef int64_t s8;
 
-#if defined(RVM_X86)
-static inline void android_atomic_release_store(int32_t value, volatile int32_t *ptr)
+#if defined(RVM_X86_64)
+# define LW_TYPE uint64_t
+#else
+# define LW_TYPE uint32_t
+#endif
+
+#if defined(RVM_X86) || defined(RVM_X86_64)
+static inline void android_atomic_release_store(LW_TYPE value, volatile LW_TYPE *ptr)
 {
     __asm__ __volatile__ ("mfence" : : : "memory");
     *ptr = value;
 }
-static inline int android_atomic_cas(int32_t old_value, int32_t new_value, volatile int32_t *ptr) {
+static inline int android_atomic_cas(LW_TYPE old_value, LW_TYPE new_value, volatile LW_TYPE *ptr) {
     return __sync_val_compare_and_swap(ptr, old_value, new_value) != old_value;
 }
-static inline int android_atomic_acquire_cas(int32_t old_value, int32_t new_value, volatile int32_t *ptr)
+static inline int android_atomic_acquire_cas(LW_TYPE old_value, LW_TYPE new_value, volatile LW_TYPE *ptr)
 {
     /* Loads are not reordered with other loads. */
-    return android_atomic_cas(old_value, new_value, ptr);
-}
-static inline int android_atomic_release_cas(int32_t old_value, int32_t new_value, volatile int32_t *ptr) {
-    /* Stores are not reordered with other stores. */
     return android_atomic_cas(old_value, new_value, ptr);
 }
 #elif defined(RVM_THUMBV7)
 static inline void android_memory_barrier(void) {
     __asm__ __volatile__ ("dmb" : : : "memory");
 }
-static inline void android_atomic_release_store(int32_t value, volatile int32_t *ptr)
+static inline void android_atomic_release_store(LW_TYPE value, volatile LW_TYPE *ptr)
 {
     android_memory_barrier();
     *ptr = value;
 }
-static inline int android_atomic_cas(int32_t old_value, int32_t new_value, volatile int32_t *ptr) {
+static inline int android_atomic_cas(LW_TYPE old_value, LW_TYPE new_value, volatile LW_TYPE *ptr) {
     return __sync_val_compare_and_swap(ptr, old_value, new_value) != old_value;
 }
-static inline int android_atomic_acquire_cas(int32_t old_value, int32_t new_value, volatile int32_t *ptr) {
+static inline int android_atomic_acquire_cas(LW_TYPE old_value, LW_TYPE new_value, volatile LW_TYPE *ptr) {
     int status = android_atomic_cas(old_value, new_value, ptr);
     android_memory_barrier();
     return status;
-}
-static inline int android_atomic_release_cas(int32_t old_value, int32_t new_value, volatile int32_t *ptr) {
-    android_memory_barrier();
-    return android_atomic_cas(old_value, new_value, ptr);
 }
 #endif
 
@@ -210,7 +208,7 @@ Monitor* rvmCreateMonitor(Env* env, Object* obj) {
     if (mon == NULL) {
         rvmAbort("Unable to allocate monitor");
     }
-    if (((u4)mon & 7) != 0) {
+    if (((LW_TYPE)mon & 7) != 0) {
         rvmAbort("Misaligned monitor: %p", mon);
     }
     mon->obj = obj;
@@ -238,7 +236,7 @@ Object* rvmGetMonitorObject(Monitor* mon) {
  */
 static u4 lockOwner(Object* obj) {
     Thread *owner;
-    u4 lock;
+    LW_TYPE lock;
 
     assert(obj != NULL);
     /*
@@ -552,15 +550,27 @@ static void waitMonitor(Env* env, Thread* self, Monitor* mon, jlong msec, jint n
      */
     rvmUnlockMutex(&mon->lock);
 
+    /*
+     * NOTE: According to POSIX pthread_cond_wait() and
+     * pthread_cond_timedwait() must never return EINTR. The OS X man page
+     * doesn't mention EINTR at all and some old Linux man pages specifically
+     * say that EINTR *can* be returned. So we do the safe thing and allow
+     * EINTR.
+     */
+
     if (!timed) {
-        ret = pthread_cond_wait(&self->waitCond, &self->waitMutex);
+        do {
+            ret = pthread_cond_wait(&self->waitCond, &self->waitMutex);
+        } while (!self->interrupted && self->waitMonitor != NULL && (ret == 0 || ret == EINTR));
         assert(ret == 0);
     } else {
+        do {
 #ifdef HAVE_TIMEDWAIT_MONOTONIC
-        ret = pthread_cond_timedwait_monotonic(&self->waitCond, &self->waitMutex, &ts);
+            ret = pthread_cond_timedwait_monotonic(&self->waitCond, &self->waitMutex, &ts);
 #else
-        ret = pthread_cond_timedwait(&self->waitCond, &self->waitMutex, &ts);
+            ret = pthread_cond_timedwait(&self->waitCond, &self->waitMutex, &ts);
 #endif
+        } while (!self->interrupted && self->waitMonitor != NULL && ret != ETIMEDOUT && (ret == 0 || ret == EINTR));
         assert(ret == 0 || ret == ETIMEDOUT);
     }
     if (self->interrupted) {
@@ -627,6 +637,7 @@ static void notifyMonitor(Env* env, Thread* self, Monitor* mon) {
         rvmLockMutex(&thread->waitMutex);
         /* Check to see if the thread is still waiting. */
         if (thread->waitMonitor != NULL) {
+            thread->waitMonitor = NULL; /* Makes the thread exit its wait loop */
             pthread_cond_signal(&thread->waitCond);
             rvmUnlockMutex(&thread->waitMutex);
             return;
@@ -658,6 +669,7 @@ static void notifyAllMonitor(Env* env, Thread* self, Monitor* mon) {
         rvmLockMutex(&thread->waitMutex);
         /* Check to see if the thread is still waiting. */
         if (thread->waitMonitor != NULL) {
+            thread->waitMonitor = NULL; /* Makes the thread exit its wait loop */
             pthread_cond_signal(&thread->waitCond);
         }
         rvmUnlockMutex(&thread->waitMutex);
@@ -670,7 +682,7 @@ static void notifyAllMonitor(Env* env, Thread* self, Monitor* mon) {
  */
 static void inflateMonitor(Env* env, Thread *self, Object* obj) {
     Monitor *mon;
-    u4 thin;
+    LW_TYPE thin;
 
     assert(self != NULL);
     assert(obj != NULL);
@@ -683,9 +695,9 @@ static void inflateMonitor(Env* env, Thread *self, Object* obj) {
     thin = obj->lock;
     mon->lockCount = LW_LOCK_COUNT(thin);
     thin &= LW_HASH_STATE_MASK << LW_HASH_STATE_SHIFT;
-    thin |= (u4)mon | LW_SHAPE_FAT;
+    thin |= (LW_TYPE)mon | LW_SHAPE_FAT;
     /* Publish the updated lock word. */
-    android_atomic_release_store(thin, (int32_t *)&obj->lock);
+    android_atomic_release_store(thin, (LW_TYPE *)&obj->lock);
 }
 
 /*
@@ -696,13 +708,14 @@ static void inflateMonitor(Env* env, Thread *self, Object* obj) {
  */
 void rvmLockObject(Env* env, Object* obj) {
     Thread* self = env->currentThread;
-    volatile u4 *thinp;
+    volatile LW_TYPE *thinp;
     jint oldStatus;
     struct timespec tm;
     long sleepDelayNs;
     long minSleepDelayNs = 1000000;  /* 1 millisecond */
     long maxSleepDelayNs = 1000000000;  /* 1 second */
-    u4 thin, newThin, threadId;
+    LW_TYPE thin, newThin;
+    u4 threadId;
 
     assert(self != NULL);
     assert(obj != NULL);
@@ -738,7 +751,7 @@ retry:
              */
             newThin = thin | (threadId << LW_LOCK_OWNER_SHIFT);
             if (android_atomic_acquire_cas(thin, newThin,
-                    (int32_t*)thinp) != 0) {
+                    (LW_TYPE*)thinp) != 0) {
                 /*
                  * The acquire failed.  Try again.
                  */
@@ -771,7 +784,7 @@ retry:
                          */
                         newThin = thin | (threadId << LW_LOCK_OWNER_SHIFT);
                         if (android_atomic_acquire_cas(thin, newThin,
-                                (int32_t *)thinp) == 0) {
+                                (LW_TYPE *)thinp) == 0) {
                             /*
                              * The acquire succeed.  Break out of the
                              * loop and proceed to inflate the lock.
@@ -842,7 +855,7 @@ retry:
  */
 jboolean rvmUnlockObject(Env* env, Object* obj) {
     Thread* self = env->currentThread;
-    u4 thin;
+    LW_TYPE thin;
 
     assert(self != NULL);
     assert(self->status == THREAD_RUNNING);
@@ -851,7 +864,7 @@ jboolean rvmUnlockObject(Env* env, Object* obj) {
      * Cache the lock word as its value can change while we are
      * examining its state.
      */
-    thin = *(volatile u4 *)&obj->lock;
+    thin = *(volatile LW_TYPE *)&obj->lock;
     if (LW_SHAPE(thin) == LW_SHAPE_THIN) {
         /*
          * The lock is thin.  We must ensure that the lock is owned
@@ -869,7 +882,7 @@ jboolean rvmUnlockObject(Env* env, Object* obj) {
                  * hash state.
                  */
                 thin &= (LW_HASH_STATE_MASK << LW_HASH_STATE_SHIFT);
-                android_atomic_release_store(thin, (int32_t*)&obj->lock);
+                android_atomic_release_store(thin, (LW_TYPE*)&obj->lock);
             } else {
                 /*
                  * The object was recursively acquired.  Decrement the
@@ -907,7 +920,7 @@ jboolean rvmUnlockObject(Env* env, Object* obj) {
 void rvmObjectWait(Env* env, Object* obj, jlong msec, jint nsec, jboolean interruptShouldThrow) {
     Thread* self = env->currentThread;
     Monitor* mon;
-    u4 thin = *(volatile u4 *)&obj->lock;
+    LW_TYPE thin = *(volatile LW_TYPE *)&obj->lock;
 
     /* If the lock is still thin, we need to fatten it.
      */
@@ -937,7 +950,7 @@ void rvmObjectWait(Env* env, Object* obj, jlong msec, jint nsec, jboolean interr
  */
 void rvmObjectNotify(Env* env, Object* obj) {
     Thread* self = env->currentThread;
-    u4 thin = *(volatile u4 *)&obj->lock;
+    LW_TYPE thin = *(volatile LW_TYPE *)&obj->lock;
 
     /* If the lock is still thin, there aren't any waiters;
      * waiting on an object forces lock fattening.
@@ -965,7 +978,7 @@ void rvmObjectNotify(Env* env, Object* obj) {
  */
 void rvmObjectNotifyAll(Env* env, Object* obj) {
     Thread* self = env->currentThread;
-    u4 thin = *(volatile u4 *)&obj->lock;
+    LW_TYPE thin = *(volatile LW_TYPE *)&obj->lock;
 
     /* If the lock is still thin, there aren't any waiters;
      * waiting on an object forces lock fattening.
@@ -1047,6 +1060,7 @@ void rvmThreadInterrupt(Env* env, Thread* thread) {
      * which implies that the monitor has already been fattened.
      */
     if (thread->waitMonitor != NULL) {
+        thread->waitMonitor = NULL; /* Makes the thread exit its wait loop */
         pthread_cond_signal(&thread->waitCond);
     }
 

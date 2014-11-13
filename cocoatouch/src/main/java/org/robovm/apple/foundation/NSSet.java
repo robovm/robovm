@@ -19,7 +19,6 @@ package org.robovm.apple.foundation;
 import java.io.*;
 import java.nio.*;
 import java.util.*;
-
 import org.robovm.objc.*;
 import org.robovm.objc.annotation.*;
 import org.robovm.objc.block.*;
@@ -33,6 +32,7 @@ import org.robovm.apple.coreanimation.*;
 import org.robovm.apple.coregraphics.*;
 import org.robovm.apple.coremedia.*;
 import org.robovm.apple.security.*;
+import org.robovm.apple.dispatch.*;
 /*</imports>*/
 
 /*<javadoc>*/
@@ -53,6 +53,21 @@ import org.robovm.apple.security.*;
         }
         @MarshalsPointer
         public static long toNative(Set<String> l, long flags) {
+            if (l == null) {
+                return 0L;
+            }
+            return NSObject.Marshaler.toNative(NSSet.fromStrings(l), flags);
+        }
+    }
+    
+    public static class AsStringListMarshaler {
+        @MarshalsPointer
+        public static List<String> toObject(Class<? extends NSObject> cls, long handle, long flags) {
+            NSSet<?> o = (NSSet<?>) NSObject.Marshaler.toObject(cls, handle, flags);
+            return o.asStringList();
+        }
+        @MarshalsPointer
+        public static long toNative(List<String> l, long flags) {
             if (l == null) {
                 return 0L;
             }
@@ -82,7 +97,7 @@ import org.robovm.apple.security.*;
 
         @Override
         public int size() {
-            return (int) set.count();
+            return (int) set.getCount();
         }
     }
     
@@ -114,7 +129,10 @@ import org.robovm.apple.security.*;
     }
     
     /*<properties>*/
-    
+    @Property(selector = "count")
+    protected native @MachineSizedUInt long getCount();
+    @Property(selector = "allObjects")
+    public native NSArray<T> getValues();
     /*</properties>*/
     /*<members>*//*</members>*/
     
@@ -186,9 +204,6 @@ import org.robovm.apple.security.*;
     public <U> U[] toArray(U[] a) {
         return adapter.toArray(a);
     }
-    public T any() {
-        return anyObject();
-    }
     
     /**
      * Use this method to convert a NSSet of NSString items to a Set of String items. 
@@ -207,6 +222,19 @@ import org.robovm.apple.security.*;
             set.add(str.toString());
         }
         return set;
+    }
+    
+    public List<String> asStringList() {
+        List<String> list = new ArrayList<>();
+        if (size() == 0)
+            return list;
+        if (!(any() instanceof NSString)) 
+            throw new UnsupportedOperationException("items must be of type NSString");
+        
+        for (T str : this) {
+            list.add(str.toString());
+        }
+        return list;
     }
     
     public static NSSet<NSString> fromStrings (String... strings) {
@@ -231,16 +259,14 @@ import org.robovm.apple.security.*;
     }
     
     /*<methods>*/
-    @Method(selector = "count")
-    protected native @MachineSizedUInt long count();
     @Method(selector = "member:")
     protected native NSObject member$(NSObject object);
     @Method(selector = "objectEnumerator")
     protected native NSEnumerator<T> objectEnumerator();
-    @Method(selector = "anyObject")
-    protected native T anyObject();
     @Method(selector = "initWithObjects:count:")
     protected native @Pointer long initWithObjects$count$(@Pointer long objects, @MachineSizedUInt long cnt);
+    @Method(selector = "anyObject")
+    public native T any();
     @Method(selector = "initWithSet:")
     protected native @Pointer long initWithSet$(NSSet<?> set);
     @Method(selector = "initWithArray:")

@@ -32,86 +32,83 @@ import org.robovm.apple.coreanimation.*;
 import org.robovm.apple.coregraphics.*;
 import org.robovm.apple.coremedia.*;
 import org.robovm.apple.security.*;
+import org.robovm.apple.dispatch.*;
 /*</imports>*/
 
 /*<javadoc>*/
-
 /*</javadoc>*/
-/*<annotations>*//*</annotations>*/
-public enum /*<name>*/NSURLError/*</name>*/ implements ValuedEnum {
-    /*<values>*/
-    Unknown(-1L),
-    Cancelled(-999L),
-    BadURL(-1000L),
-    TimedOut(-1001L),
-    UnsupportedURL(-1002L),
-    CannotFindHost(-1003L),
-    CannotConnectToHost(-1004L),
-    NetworkConnectionLost(-1005L),
-    DNSLookupFailed(-1006L),
-    HTTPTooManyRedirects(-1007L),
-    ResourceUnavailable(-1008L),
-    NotConnectedToInternet(-1009L),
-    RedirectToNonExistentLocation(-1010L),
-    BadServerResponse(-1011L),
-    UserCancelledAuthentication(-1012L),
-    UserAuthenticationRequired(-1013L),
-    ZeroByteResource(-1014L),
-    CannotDecodeRawData(-1015L),
-    CannotDecodeContentData(-1016L),
-    CannotParseResponse(-1017L),
-    FileDoesNotExist(-1100L),
-    FileIsDirectory(-1101L),
-    NoPermissionsToReadFile(-1102L),
-    /**
-     * @since Available in iOS 2.0 and later.
-     */
-    DataLengthExceedsMaximum(-1103L),
-    SecureConnectionFailed(-1200L),
-    ServerCertificateHasBadDate(-1201L),
-    ServerCertificateUntrusted(-1202L),
-    ServerCertificateHasUnknownRoot(-1203L),
-    ServerCertificateNotYetValid(-1204L),
-    ClientCertificateRejected(-1205L),
-    ClientCertificateRequired(-1206L),
-    CannotLoadFromNetwork(-2000L),
-    CannotCreateFile(-3000L),
-    CannotOpenFile(-3001L),
-    CannotCloseFile(-3002L),
-    CannotWriteToFile(-3003L),
-    CannotRemoveFile(-3004L),
-    CannotMoveFile(-3005L),
-    DownloadDecodingFailedMidStream(-3006L),
-    DownloadDecodingFailedToComplete(-3007L),
-    /**
-     * @since Available in iOS 3.0 and later.
-     */
-    InternationalRoamingOff(-1018L),
-    /**
-     * @since Available in iOS 3.0 and later.
-     */
-    CallIsActive(-1019L),
-    /**
-     * @since Available in iOS 3.0 and later.
-     */
-    DataNotAllowed(-1020L),
-    /**
-     * @since Available in iOS 3.0 and later.
-     */
-    RequestBodyStreamExhausted(-1021L);
-    /*</values>*/
+/*<annotations>*/@Library("Foundation")/*</annotations>*/
+/*<visibility>*/public/*</visibility>*/ class /*<name>*/NSURLError/*</name>*/ 
+    extends /*<extends>*/NSError/*</extends>*/ 
+    /*<implements>*//*</implements>*/ {
 
-    private final long n;
-
-    private /*<name>*/NSURLError/*</name>*/(long n) { this.n = n; }
-    public long value() { return n; }
-    public static /*<name>*/NSURLError/*</name>*/ valueOf(long n) {
-        for (/*<name>*/NSURLError/*</name>*/ v : values()) {
-            if (v.n == n) {
-                return v;
+    protected NSURLError(SkipInit skipInit) {
+        super(skipInit);
+    }
+    
+    /*<ptr>*/
+    /*</ptr>*/
+    /*<bind>*/static { Bro.bind(NSURLError.class); }/*</bind>*/
+    /*<constants>*//*</constants>*/
+    /*<constructors>*//*</constructors>*/
+    /*<properties>*//*</properties>*/
+    /*<members>*//*</members>*/
+    @Override
+    public NSURLErrorCode getErrorCode() {
+        return NSURLErrorCode.valueOf(getCode());
+    }
+    
+    /**
+     * @since Available in iOS 4.0 and later.
+     */
+    public NSURL getFailingURL() {
+        NSErrorUserInfo userInfo = getUserInfo();
+        if (userInfo.contains(NSURLErrorUserInfoKey.FailingURL)) {
+            NSURL val = (NSURL)userInfo.get(NSURLErrorUserInfoKey.FailingURL);
+            return val;
+        }
+        return null;
+    }
+    /**
+     * @since Available in iOS 4.0 and later.
+     */
+    public String getFailingURLString() {
+        NSErrorUserInfo userInfo = getUserInfo();
+        if (userInfo.contains(NSURLErrorUserInfoKey.FailingURLString)) {
+            NSString val = (NSString)userInfo.get(NSURLErrorUserInfoKey.FailingURLString);
+            return val.toString();
+        }
+        return null;
+    }
+    /**
+     * @since Available in iOS 4.0 and later.
+     */
+    public SecTrust getFailingURLPeerTrust() {
+        NSErrorUserInfo userInfo = getUserInfo();
+        if (userInfo.contains(NSURLErrorUserInfoKey.FailingURLPeerTrust)) {
+            SecTrust val = userInfo.get(NSURLErrorUserInfoKey.FailingURLPeerTrust, SecTrust.class);
+            return val;
+        }
+        return null;
+    }
+    /**
+     * @since Available in iOS 5.0 and later.
+     */
+    @SuppressWarnings("unchecked")
+    public List<NSURLProperty> getUnsetProperties() {
+        List<NSURLProperty> properties = new ArrayList<>();
+        NSErrorUserInfo userInfo = getUserInfo();
+        if (userInfo.contains(NSURLErrorUserInfoKey.KeysOfUnsetValues)) {
+            NSArray<NSString> val = (NSArray<NSString>)userInfo.get(NSURLErrorUserInfoKey.KeysOfUnsetValues);
+            for (NSString s : val) {
+                NSURLProperty p = NSURLProperty.valueOf(s);
+                if (p != null) properties.add(p);
             }
         }
-        throw new IllegalArgumentException("No constant with value " + n + " found in " 
-            + /*<name>*/NSURLError/*</name>*/.class.getName());
+        return properties;
     }
+    /*<methods>*/
+    @GlobalValue(symbol="NSURLErrorDomain", optional=true)
+    public static native String getClassDomain();
+    /*</methods>*/
 }

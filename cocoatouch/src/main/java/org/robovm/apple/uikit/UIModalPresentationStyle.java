@@ -32,6 +32,7 @@ import org.robovm.apple.coregraphics.*;
 import org.robovm.apple.coredata.*;
 import org.robovm.apple.coreimage.*;
 import org.robovm.apple.coretext.*;
+import org.robovm.apple.corelocation.*;
 /*</imports>*/
 
 /*<javadoc>*/
@@ -41,10 +42,37 @@ import org.robovm.apple.coretext.*;
 public enum /*<name>*/UIModalPresentationStyle/*</name>*/ implements ValuedEnum {
     /*<values>*/
     FullScreen(0L),
+    /**
+     * @since Available in iOS 3.2 and later.
+     */
     PageSheet(1L),
+    /**
+     * @since Available in iOS 3.2 and later.
+     */
     FormSheet(2L),
+    /**
+     * @since Available in iOS 3.2 and later.
+     */
     CurrentContext(3L),
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
     Custom(4L),
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    OverFullScreen(5L),
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    OverCurrentContext(6L),
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    Popover(7L),
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
     None(-1L);
     /*</values>*/
 

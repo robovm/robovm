@@ -857,40 +857,63 @@ public class BridgeCallbackTest {
 
     @Test
     public void testMarshalMachinedSizeFloatAsDouble() {
-        // NOTE: 32-bit specific
         long ldpi = Double.doubleToLongBits(Math.PI);
         long lfpi = Double.doubleToLongBits(fpi);
         assertNotEquals(ldpi, lfpi);
-        assertEquals(lfpi, Double.doubleToLongBits(marshalMachinedSizeFloatAsDouble(Math.PI)));
+        if (Bro.IS_32BIT) {
+            assertEquals(lfpi, Double.doubleToLongBits(marshalMachinedSizeFloatAsDouble(Math.PI)));
+        } else {
+            assertEquals(Math.PI, marshalMachinedSizeFloatAsDouble(Math.PI), 0);
+        }
     }
     @Test
     public void testMarshalMachinedSizeSInt() {
-        // NOTE: 32-bit specific
-        assertEquals(-1L, marshalMachinedSizeSInt(-1L));
-        assertEquals(0xffffffff80000000L, marshalMachinedSizeSInt(0x80000000L));
-        assertEquals(0xffffffff80000000L, marshalMachinedSizeSInt(0x1234567880000000L));
+        if (Bro.IS_32BIT) {
+            assertEquals(-1L, marshalMachinedSizeSInt(-1L));
+            assertEquals(0xffffffff80000000L, marshalMachinedSizeSInt(0x80000000L));
+            assertEquals(0xffffffff80000000L, marshalMachinedSizeSInt(0x1234567880000000L));
+        } else { // 64-bit
+            assertEquals(-1L, marshalMachinedSizeSInt(-1L));
+            assertEquals(0x80000000L, marshalMachinedSizeSInt(0x80000000L));
+            assertEquals(0x1234567880000000L, marshalMachinedSizeSInt(0x1234567880000000L));
+        }
     }
     @Test
     public void testMarshalMachinedSizeUInt() {
-        // NOTE: 32-bit specific
-        assertEquals(0xffffffffL, marshalMachinedSizeUInt(-1L));
-        assertEquals(0x80000000L, marshalMachinedSizeUInt(0x80000000L));
-        assertEquals(0x80000000L, marshalMachinedSizeUInt(0x1234567880000000L));
+        if (Bro.IS_32BIT) {
+            assertEquals(0xffffffffL, marshalMachinedSizeUInt(-1L));
+            assertEquals(0x80000000L, marshalMachinedSizeUInt(0x80000000L));
+            assertEquals(0x80000000L, marshalMachinedSizeUInt(0x1234567880000000L));
+        } else { // 64-bit
+            assertEquals(-1L, marshalMachinedSizeUInt(-1L));
+            assertEquals(0x80000000L, marshalMachinedSizeUInt(0x80000000L));
+            assertEquals(0x1234567880000000L, marshalMachinedSizeUInt(0x1234567880000000L));
+        }
     }
 
     @Test
     public void testMarshalBitsAsMachineSizedIntToNative() {
-        // NOTE: 32-bit specific
-        assertEquals(0xffffffffL, marshalBitsAsMachineSizedInt1(MoreTestBits.V1));
-        assertEquals(0x80000000L, marshalBitsAsMachineSizedInt1(MoreTestBits.V2));
-        assertEquals(0x80000000L, marshalBitsAsMachineSizedInt1(MoreTestBits.V3));
+        if (Bro.IS_32BIT) {
+            assertEquals(0xffffffffL, marshalBitsAsMachineSizedInt1(MoreTestBits.V1));
+            assertEquals(0x80000000L, marshalBitsAsMachineSizedInt1(MoreTestBits.V2));
+            assertEquals(0x80000000L, marshalBitsAsMachineSizedInt1(MoreTestBits.V3));
+        } else { // 64-bit
+            assertEquals(-1, marshalBitsAsMachineSizedInt1(MoreTestBits.V1));
+            assertEquals(0x80000000L, marshalBitsAsMachineSizedInt1(MoreTestBits.V2));
+            assertEquals(0x1234567880000000L, marshalBitsAsMachineSizedInt1(MoreTestBits.V3));
+        }
     }
     @Test
     public void testMarshalBitsAsMachineSizedIntFromNative() {
-        // NOTE: 32-bit specific
-        assertEquals(new MoreTestBits(0xffffffffL), marshalBitsAsMachineSizedInt2(-1));
-        assertEquals(MoreTestBits.V2, marshalBitsAsMachineSizedInt2(0xffffffff80000000L));
-        assertEquals(MoreTestBits.V2, marshalBitsAsMachineSizedInt2(0x1234567880000000L));
+        if (Bro.IS_32BIT) {
+            assertEquals(new MoreTestBits(0xffffffffL), marshalBitsAsMachineSizedInt2(-1));
+            assertEquals(MoreTestBits.V2, marshalBitsAsMachineSizedInt2(0xffffffff80000000L));
+            assertEquals(MoreTestBits.V2, marshalBitsAsMachineSizedInt2(0x1234567880000000L));
+        } else { // 64-bit
+            assertEquals(MoreTestBits.V1, marshalBitsAsMachineSizedInt2(-1));
+            assertEquals(new MoreTestBits(0xffffffff80000000L), marshalBitsAsMachineSizedInt2(0xffffffff80000000L));
+            assertEquals(MoreTestBits.V3, marshalBitsAsMachineSizedInt2(0x1234567880000000L));
+        }
     }
     
     @Test

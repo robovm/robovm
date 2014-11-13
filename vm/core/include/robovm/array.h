@@ -29,6 +29,7 @@ extern Array* rvmNewMultiArray(Env* env, jint dims, jint* lengths, Class* type);
 extern Array* rvmCloneArray(Env* env, Array* array);
 extern jint rvmGetArrayDimensions(Env* env, Array* array);
 extern jint rvmGetArrayElementSize(Env* env, Class* arrayClass);
+extern jlong rvmGetArraySize(Env* env, Class* arrayClass, jint length);
 
 #endif
 

@@ -32,6 +32,7 @@ import org.robovm.apple.coregraphics.*;
 import org.robovm.apple.coredata.*;
 import org.robovm.apple.coreimage.*;
 import org.robovm.apple.coretext.*;
+import org.robovm.apple.corelocation.*;
 /*</imports>*/
 
 /*<javadoc>*/
@@ -70,5 +71,10 @@ import org.robovm.apple.coretext.*;
     public native void willTransition(UICollectionViewLayout oldLayout, UICollectionViewLayout newLayout);
     @Method(selector = "didTransitionFromLayout:toLayout:")
     public native void didTransition(UICollectionViewLayout oldLayout, UICollectionViewLayout newLayout);
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @Method(selector = "preferredLayoutAttributesFittingAttributes:")
+    public native UICollectionViewLayoutAttributes getPreferredLayoutAttributesFittingAttributes(UICollectionViewLayoutAttributes layoutAttributes);
     /*</methods>*/
 }

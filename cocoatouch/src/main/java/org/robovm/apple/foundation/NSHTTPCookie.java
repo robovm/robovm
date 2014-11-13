@@ -32,6 +32,7 @@ import org.robovm.apple.coreanimation.*;
 import org.robovm.apple.coregraphics.*;
 import org.robovm.apple.coremedia.*;
 import org.robovm.apple.security.*;
+import org.robovm.apple.dispatch.*;
 /*</imports>*/
 
 /*<javadoc>*/
@@ -51,41 +52,40 @@ import org.robovm.apple.security.*;
     public NSHTTPCookie(NSHTTPCookieAttributes properties) { super((SkipInit) null); initObject(init(properties)); }
     /*</constructors>*/
     /*<properties>*/
-    
+    @Property(selector = "properties")
+    public native NSHTTPCookieAttributes getProperties();
+    @Property(selector = "version")
+    public native @MachineSizedUInt long getVersion();
+    @Property(selector = "name")
+    public native String getName();
+    @Property(selector = "value")
+    public native String getValue();
+    @Property(selector = "expiresDate")
+    public native NSDate getExpiresDate();
+    @Property(selector = "isSessionOnly")
+    public native boolean isSessionOnly();
+    @Property(selector = "domain")
+    public native String getDomain();
+    @Property(selector = "path")
+    public native String getPath();
+    @Property(selector = "isSecure")
+    public native boolean isSecure();
+    @Property(selector = "isHTTPOnly")
+    public native boolean isHTTPOnly();
+    @Property(selector = "comment")
+    public native String getComment();
+    @Property(selector = "commentURL")
+    public native NSURL getCommentURL();
+    @Property(selector = "portList")
+    public native @org.robovm.rt.bro.annotation.Marshaler(NSArray.AsIntegerListMarshaler.class) List<Integer> getPortList();
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
     @Method(selector = "initWithProperties:")
     protected native @Pointer long init(NSHTTPCookieAttributes properties);
-    @Method(selector = "properties")
-    public native NSHTTPCookieAttributes getProperties();
-    @Method(selector = "version")
-    public native @MachineSizedUInt long getVersion();
-    @Method(selector = "name")
-    public native String getName();
-    @Method(selector = "value")
-    public native String getValue();
-    @Method(selector = "expiresDate")
-    public native NSDate getExpiresDate();
-    @Method(selector = "isSessionOnly")
-    public native boolean isSessionOnly();
-    @Method(selector = "domain")
-    public native String getDomain();
-    @Method(selector = "path")
-    public native String getPath();
-    @Method(selector = "isSecure")
-    public native boolean isSecure();
-    @Method(selector = "isHTTPOnly")
-    public native boolean isHTTPOnly();
-    @Method(selector = "comment")
-    public native String getComment();
-    @Method(selector = "commentURL")
-    public native NSURL getCommentURL();
-    @Method(selector = "portList")
-    public native NSArray<NSNumber> getPortList();
     @Method(selector = "requestHeaderFieldsWithCookies:")
-    public static native NSDictionary<NSString, ?> getRequestHeaderFieldsWithCookies(NSArray<NSHTTPCookie> cookies);
+    public static native @org.robovm.rt.bro.annotation.Marshaler(NSDictionary.AsStringStringMapMarshaler.class) Map<String, String> getRequestHeaderFieldsWithCookies(NSArray<NSHTTPCookie> cookies);
     @Method(selector = "cookiesWithResponseHeaderFields:forURL:")
-    public static native NSArray<NSHTTPCookie> getCookiesWithResponseHeaderFields(NSDictionary<NSString, ?> headerFields, NSURL url);
+    public static native NSArray<NSHTTPCookie> getCookiesWithResponseHeaderFields(@org.robovm.rt.bro.annotation.Marshaler(NSDictionary.AsStringStringMapMarshaler.class) Map<String, String> headerFields, NSURL url);
     /*</methods>*/
 }

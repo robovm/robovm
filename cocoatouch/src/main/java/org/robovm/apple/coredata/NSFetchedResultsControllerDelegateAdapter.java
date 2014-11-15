@@ -48,17 +48,17 @@ import org.robovm.apple.foundation.*;
     /*<members>*//*</members>*/
     /*<methods>*/
     @NotImplemented("controller:didChangeObject:atIndexPath:forChangeType:newIndexPath:")
-    public void controller$didChangeObject$atIndexPath$forChangeType$newIndexPath$(NSFetchedResultsController controller, NSObject anObject, NSIndexPath indexPath, NSFetchedResultsChangeType type, NSIndexPath newIndexPath) { throw new UnsupportedOperationException(); }
+    public void didChangeObject(NSFetchedResultsController controller, NSObject anObject, NSIndexPath indexPath, NSFetchedResultsChangeType type, NSIndexPath newIndexPath) { throw new UnsupportedOperationException(); }
     @NotImplemented("controller:didChangeSection:atIndex:forChangeType:")
-    public void controller$didChangeSection$atIndex$forChangeType$(NSFetchedResultsController controller, NSFetchedResultsSectionInfo sectionInfo, @MachineSizedUInt long sectionIndex, NSFetchedResultsChangeType type) { throw new UnsupportedOperationException(); }
+    public void didChangeSection(NSFetchedResultsController controller, NSFetchedResultsSectionInfo sectionInfo, @MachineSizedUInt long sectionIndex, NSFetchedResultsChangeType type) { throw new UnsupportedOperationException(); }
     @NotImplemented("controllerWillChangeContent:")
-    public void controllerWillChangeContent$(NSFetchedResultsController controller) { throw new UnsupportedOperationException(); }
+    public void willChangeContent(NSFetchedResultsController controller) { throw new UnsupportedOperationException(); }
     @NotImplemented("controllerDidChangeContent:")
-    public void controllerDidChangeContent$(NSFetchedResultsController controller) { throw new UnsupportedOperationException(); }
+    public void didChangeContent(NSFetchedResultsController controller) { throw new UnsupportedOperationException(); }
     /**
      * @since Available in iOS 4.0 and later.
      */
     @NotImplemented("controller:sectionIndexTitleForSectionName:")
-    public String controller$sectionIndexTitleForSectionName$(NSFetchedResultsController controller, String sectionName) { throw new UnsupportedOperationException(); }
+    public String getSectionIndexTitle(NSFetchedResultsController controller, String sectionName) { throw new UnsupportedOperationException(); }
     /*</methods>*/
 }

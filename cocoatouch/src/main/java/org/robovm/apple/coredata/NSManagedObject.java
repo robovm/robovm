@@ -45,60 +45,115 @@ import org.robovm.apple.foundation.*;
     /*<constructors>*/
     public NSManagedObject() {}
     protected NSManagedObject(SkipInit skipInit) { super(skipInit); }
-    public NSManagedObject(NSEntityDescription entity, NSManagedObjectContext context) { super((SkipInit) null); initObject(initWithEntity$insertIntoManagedObjectContext$(entity, context)); }
+    public NSManagedObject(NSEntityDescription entity, NSManagedObjectContext context) { super((SkipInit) null); initObject(init(entity, context)); }
     /*</constructors>*/
     /*<properties>*/
-    
-    /*</properties>*/
-    /*<members>*//*</members>*/
-    /*<methods>*/
-    @Method(selector = "initWithEntity:insertIntoManagedObjectContext:")
-    protected native @Pointer long initWithEntity$insertIntoManagedObjectContext$(NSEntityDescription entity, NSManagedObjectContext context);
-    @Method(selector = "managedObjectContext")
-    public native NSManagedObjectContext managedObjectContext();
-    @Method(selector = "entity")
-    public native NSEntityDescription entity();
-    @Method(selector = "objectID")
-    public native NSManagedObjectID objectID();
-    @Method(selector = "isInserted")
+    @Property(selector = "managedObjectContext")
+    public native NSManagedObjectContext getManagedObjectContext();
+    @Property(selector = "entity")
+    public native NSEntityDescription getEntity();
+    @Property(selector = "objectID")
+    public native NSManagedObjectID getObjectID();
+    @Property(selector = "isInserted")
     public native boolean isInserted();
-    @Method(selector = "isUpdated")
+    @Property(selector = "isUpdated")
     public native boolean isUpdated();
-    @Method(selector = "isDeleted")
+    @Property(selector = "isDeleted")
     public native boolean isDeleted();
     /**
      * @since Available in iOS 5.0 and later.
      */
-    @Method(selector = "hasChanges")
-    public native boolean hasChanges();
-    @Method(selector = "isFault")
+    @Property(selector = "hasChanges")
+    public native boolean isHasChanges();
+    @Property(selector = "isFault")
     public native boolean isFault();
     /**
      * @since Available in iOS 3.0 and later.
      */
-    @Method(selector = "hasFaultForRelationshipNamed:")
-    public native boolean hasFaultForRelationshipNamed$(String key);
+    @Property(selector = "faultingState")
+    public native @MachineSizedUInt long getFaultingState();
+    /*</properties>*/
+    /*<members>*//*</members>*/
+    public void setValue(String key, NSObject value) {
+        setValue(value, key);
+    }
+    public void setPrimitiveValue(String key, NSObject value) {
+        setPrimitiveValue(value, key);
+    }
+    /**
+     * 
+     * @param key
+     * @param value
+     * @return
+     * @throws NSErrorException
+     */
+    public boolean validateValue(String key, NSObject value) {
+        NSError.NSErrorPtr err = new NSError.NSErrorPtr();
+        boolean result = validateValue(value, key, err);
+        if (err.get() != null) {
+            throw new NSErrorException(err.get());
+        }
+        return result;
+    }
+    /**
+     * 
+     * @return
+     * @throws NSErrorException
+     */
+    public boolean validateForDelete() {
+        NSError.NSErrorPtr err = new NSError.NSErrorPtr();
+        boolean result = validateForDelete(err);
+        if (err.get() != null) {
+            throw new NSErrorException(err.get());
+        }
+        return result;
+    }
+    /**
+     * 
+     * @return
+     * @throws NSErrorException
+     */
+    public boolean validateForInsert() {
+        NSError.NSErrorPtr err = new NSError.NSErrorPtr();
+        boolean result = validateForInsert(err);
+        if (err.get() != null) {
+            throw new NSErrorException(err.get());
+        }
+        return result;
+    }
+    /**
+     * 
+     * @return
+     * @throws NSErrorException
+     */
+    public boolean validateForUpdate() {
+        NSError.NSErrorPtr err = new NSError.NSErrorPtr();
+        boolean result = validateForUpdate(err);
+        if (err.get() != null) {
+            throw new NSErrorException(err.get());
+        }
+        return result;
+    }
+    /*<methods>*/
+    @Method(selector = "initWithEntity:insertIntoManagedObjectContext:")
+    protected native @Pointer long init(NSEntityDescription entity, NSManagedObjectContext context);
     /**
      * @since Available in iOS 3.0 and later.
      */
-    @Method(selector = "faultingState")
-    public native @MachineSizedUInt long faultingState();
+    @Method(selector = "hasFaultForRelationshipNamed:")
+    public native boolean hasFaultForRelationship(String key);
     @Method(selector = "willAccessValueForKey:")
-    public native void willAccessValueForKey$(String key);
+    public native void willAccessValue(String key);
     @Method(selector = "didAccessValueForKey:")
-    public native void didAccessValueForKey$(String key);
+    public native void didAccessValue(String key);
     @Method(selector = "willChangeValueForKey:")
-    public native void willChangeValueForKey$(String key);
+    public native void willChangeValue(String key);
     @Method(selector = "didChangeValueForKey:")
-    public native void didChangeValueForKey$(String key);
+    public native void didChangeValue(String key);
     @Method(selector = "willChangeValueForKey:withSetMutation:usingObjects:")
-    public native void willChangeValueForKey$withSetMutation$usingObjects$(String inKey, NSKeyValueSetMutationKind inMutationKind, NSSet<?> inObjects);
+    public native void willChangeValue(String inKey, NSKeyValueSetMutationKind inMutationKind, NSSet<?> inObjects);
     @Method(selector = "didChangeValueForKey:withSetMutation:usingObjects:")
-    public native void didChangeValueForKey$withSetMutation$usingObjects$(String inKey, NSKeyValueSetMutationKind inMutationKind, NSSet<?> inObjects);
-    @Method(selector = "setObservationInfo:")
-    public native void setObservationInfo(NSObject inObservationInfo);
-    @Method(selector = "observationInfo")
-    public native NSObject observationInfo();
+    public native void didChangeValue(String inKey, NSKeyValueSetMutationKind inMutationKind, NSSet<?> inObjects);
     @Method(selector = "awakeFromFetch")
     public native void awakeFromFetch();
     @Method(selector = "awakeFromInsert")
@@ -107,7 +162,7 @@ import org.robovm.apple.foundation.*;
      * @since Available in iOS 3.0 and later.
      */
     @Method(selector = "awakeFromSnapshotEvents:")
-    public native void awakeFromSnapshotEvents$(NSSnapshotEventType flags);
+    public native void awakeFromSnapshotEvents(NSSnapshotEventType flags);
     /**
      * @since Available in iOS 3.0 and later.
      */
@@ -125,34 +180,34 @@ import org.robovm.apple.foundation.*;
     @Method(selector = "didTurnIntoFault")
     public native void didTurnIntoFault();
     @Method(selector = "valueForKey:")
-    public native NSObject valueForKey$(String key);
+    public native NSObject getValue(String key);
     @Method(selector = "setValue:forKey:")
-    public native void setValue$forKey$(NSObject value, String key);
+    private native void setValue(NSObject value, String key);
     @Method(selector = "primitiveValueForKey:")
-    public native NSObject primitiveValueForKey$(String key);
+    public native NSObject getPrimitiveValue(String key);
     @Method(selector = "setPrimitiveValue:forKey:")
-    public native void setPrimitiveValue$forKey$(NSObject value, String key);
+    private native void setPrimitiveValue(NSObject value, String key);
     @Method(selector = "committedValuesForKeys:")
-    public native NSDictionary<?, ?> committedValuesForKeys$(NSArray<?> keys);
+    public native @org.robovm.rt.bro.annotation.Marshaler(NSDictionary.AsStringMapMarshaler.class) Map<String, NSObject> getCommittedValues(NSArray<?> keys);
     @Method(selector = "changedValues")
-    public native NSDictionary<?, ?> changedValues();
+    public native @org.robovm.rt.bro.annotation.Marshaler(NSDictionary.AsStringMapMarshaler.class) Map<String, NSObject> getChangedValues();
     /**
      * @since Available in iOS 5.0 and later.
      */
     @Method(selector = "changedValuesForCurrentEvent")
-    public native NSDictionary<?, ?> changedValuesForCurrentEvent();
+    public native @org.robovm.rt.bro.annotation.Marshaler(NSDictionary.AsStringMapMarshaler.class) Map<String, NSObject> getChangedValuesForCurrentEvent();
     @Method(selector = "validateValue:forKey:error:")
-    public native boolean validateValue$forKey$error$(NSObject value, String key, NSError.NSErrorPtr error);
+    protected native boolean validateValue(NSObject value, String key, NSError.NSErrorPtr error);
     @Method(selector = "validateForDelete:")
-    public native boolean validateForDelete$(NSError.NSErrorPtr error);
+    protected native boolean validateForDelete(NSError.NSErrorPtr error);
     @Method(selector = "validateForInsert:")
-    public native boolean validateForInsert$(NSError.NSErrorPtr error);
+    protected native boolean validateForInsert(NSError.NSErrorPtr error);
     @Method(selector = "validateForUpdate:")
-    public native boolean validateForUpdate$(NSError.NSErrorPtr error);
+    protected native boolean validateForUpdate(NSError.NSErrorPtr error);
     /**
      * @since Available in iOS 3.0 and later.
      */
     @Method(selector = "contextShouldIgnoreUnmodeledPropertyChanges")
-    public static native boolean contextShouldIgnoreUnmodeledPropertyChanges();
+    public static native boolean shouldContextIgnoreUnmodeledPropertyChanges();
     /*</methods>*/
 }

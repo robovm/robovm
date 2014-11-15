@@ -45,58 +45,92 @@ import org.robovm.apple.foundation.*;
     /*<constructors>*/
     public NSMigrationManager() {}
     protected NSMigrationManager(SkipInit skipInit) { super(skipInit); }
-    public NSMigrationManager(NSManagedObjectModel sourceModel, NSManagedObjectModel destinationModel) { super((SkipInit) null); initObject(initWithSourceModel$destinationModel$(sourceModel, destinationModel)); }
+    public NSMigrationManager(NSManagedObjectModel sourceModel, NSManagedObjectModel destinationModel) { super((SkipInit) null); initObject(init(sourceModel, destinationModel)); }
     /*</constructors>*/
     /*<properties>*/
-    
+    /**
+     * @since Available in iOS 5.0 and later.
+     */
+    @Property(selector = "usesStoreSpecificMigrationManager")
+    public native boolean isUsesStoreSpecificMigrationManager();
+    /**
+     * @since Available in iOS 5.0 and later.
+     */
+    @Property(selector = "setUsesStoreSpecificMigrationManager:")
+    public native void setUsesStoreSpecificMigrationManager(boolean v);
+    @Property(selector = "mappingModel")
+    public native NSMappingModel getMappingModel();
+    @Property(selector = "sourceModel")
+    public native NSManagedObjectModel getSourceModel();
+    @Property(selector = "destinationModel")
+    public native NSManagedObjectModel getDestinationModel();
+    @Property(selector = "sourceContext")
+    public native NSManagedObjectContext getSourceContext();
+    @Property(selector = "destinationContext")
+    public native NSManagedObjectContext getDestinationContext();
+    @Property(selector = "currentEntityMapping")
+    public native NSEntityMapping getCurrentEntityMapping();
+    @Property(selector = "migrationProgress")
+    public native float getMigrationProgress();
+    @Property(selector = "userInfo")
+    public native NSDictionary<?, ?> getUserInfo();
+    @Property(selector = "setUserInfo:")
+    public native void setUserInfo(NSDictionary<?, ?> v);
     /*</properties>*/
     /*<members>*//*</members>*/
+    /**
+     * 
+     * @param sourceURL
+     * @param sStoreType
+     * @param sOptions
+     * @param mappings
+     * @param dURL
+     * @param dStoreType
+     * @param dOptions
+     * @return
+     * @throws NSErrorException
+     */
+    public boolean migrateStore(NSURL sourceURL, NSPersistentStoreType sStoreType, NSPersistentStoreOptions sOptions, NSMappingModel mappings, NSURL dURL, NSPersistentStoreType dStoreType, NSPersistentStoreOptions dOptions) {
+        return migrateStore(sourceURL, sStoreType.value(), sOptions, mappings, dURL, dStoreType.value(), dOptions);
+    }
+    /**
+     * 
+     * @param sourceURL
+     * @param sStoreType
+     * @param sOptions
+     * @param mappings
+     * @param dURL
+     * @param dStoreType
+     * @param dOptions
+     * @return
+     * @throws NSErrorException
+     */
+    public boolean migrateStore(NSURL sourceURL, String sStoreType, NSPersistentStoreOptions sOptions, NSMappingModel mappings, NSURL dURL, String dStoreType, NSPersistentStoreOptions dOptions) {
+        NSError.NSErrorPtr err = new NSError.NSErrorPtr();
+        boolean result = migrateStore(sourceURL, sStoreType, sOptions, mappings, dURL, dStoreType, dOptions, err);
+        if (err.get() != null) {
+            throw new NSErrorException(err.get());
+        }
+        return result;
+    }
     /*<methods>*/
     @Method(selector = "initWithSourceModel:destinationModel:")
-    protected native @Pointer long initWithSourceModel$destinationModel$(NSManagedObjectModel sourceModel, NSManagedObjectModel destinationModel);
+    protected native @Pointer long init(NSManagedObjectModel sourceModel, NSManagedObjectModel destinationModel);
     @Method(selector = "migrateStoreFromURL:type:options:withMappingModel:toDestinationURL:destinationType:destinationOptions:error:")
-    public native boolean migrateStoreFromURL$type$options$withMappingModel$toDestinationURL$destinationType$destinationOptions$error$(NSURL sourceURL, String sStoreType, NSDictionary<?, ?> sOptions, NSMappingModel mappings, NSURL dURL, String dStoreType, NSDictionary<?, ?> dOptions, NSError.NSErrorPtr error);
-    /**
-     * @since Available in iOS 5.0 and later.
-     */
-    @Method(selector = "setUsesStoreSpecificMigrationManager:")
-    public native void setUsesStoreSpecificMigrationManager(boolean flag);
-    /**
-     * @since Available in iOS 5.0 and later.
-     */
-    @Method(selector = "usesStoreSpecificMigrationManager")
-    public native boolean usesStoreSpecificMigrationManager();
+    protected native boolean migrateStore(NSURL sourceURL, String sStoreType, NSPersistentStoreOptions sOptions, NSMappingModel mappings, NSURL dURL, String dStoreType, NSPersistentStoreOptions dOptions, NSError.NSErrorPtr error);
     @Method(selector = "reset")
     public native void reset();
-    @Method(selector = "mappingModel")
-    public native NSMappingModel mappingModel();
-    @Method(selector = "sourceModel")
-    public native NSManagedObjectModel sourceModel();
-    @Method(selector = "destinationModel")
-    public native NSManagedObjectModel destinationModel();
-    @Method(selector = "sourceContext")
-    public native NSManagedObjectContext sourceContext();
-    @Method(selector = "destinationContext")
-    public native NSManagedObjectContext destinationContext();
     @Method(selector = "sourceEntityForEntityMapping:")
-    public native NSEntityDescription sourceEntityForEntityMapping$(NSEntityMapping mEntity);
+    public native NSEntityDescription getSourceEntity(NSEntityMapping mEntity);
     @Method(selector = "destinationEntityForEntityMapping:")
-    public native NSEntityDescription destinationEntityForEntityMapping$(NSEntityMapping mEntity);
+    public native NSEntityDescription getDestinationEntity(NSEntityMapping mEntity);
     @Method(selector = "associateSourceInstance:withDestinationInstance:forEntityMapping:")
-    public native void associateSourceInstance$withDestinationInstance$forEntityMapping$(NSManagedObject sourceInstance, NSManagedObject destinationInstance, NSEntityMapping entityMapping);
+    public native void associateInstances(NSManagedObject sourceInstance, NSManagedObject destinationInstance, NSEntityMapping entityMapping);
     @Method(selector = "destinationInstancesForEntityMappingNamed:sourceInstances:")
-    public native NSArray<?> destinationInstancesForEntityMappingNamed$sourceInstances$(String mappingName, NSArray<?> sourceInstances);
+    public native NSArray<NSEntityMapping> getDestinationInstances(String mappingName, NSArray<NSEntityMapping> sourceInstances);
     @Method(selector = "sourceInstancesForEntityMappingNamed:destinationInstances:")
-    public native NSArray<?> sourceInstancesForEntityMappingNamed$destinationInstances$(String mappingName, NSArray<?> destinationInstances);
-    @Method(selector = "currentEntityMapping")
-    public native NSEntityMapping currentEntityMapping();
-    @Method(selector = "migrationProgress")
-    public native float migrationProgress();
-    @Method(selector = "userInfo")
-    public native NSDictionary<?, ?> userInfo();
-    @Method(selector = "setUserInfo:")
-    public native void setUserInfo(NSDictionary<?, ?> dict);
+    public native NSArray<NSEntityMapping> getSourceInstances(String mappingName, NSArray<NSEntityMapping> destinationInstances);
     @Method(selector = "cancelMigrationWithError:")
-    public native void cancelMigrationWithError$(NSError error);
+    public native void cancelMigration(NSError error);
     /*</methods>*/
 }

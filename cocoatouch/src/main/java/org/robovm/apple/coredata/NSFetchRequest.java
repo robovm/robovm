@@ -48,10 +48,164 @@ import org.robovm.apple.foundation.*;
     /**
      * @since Available in iOS 4.0 and later.
      */
-    public NSFetchRequest(String entityName) { super((SkipInit) null); initObject(initWithEntityName$(entityName)); }
+    public NSFetchRequest(String entityName) { super((SkipInit) null); initObject(init(entityName)); }
     /*</constructors>*/
     /*<properties>*/
-    
+    @Property(selector = "entity")
+    public native NSEntityDescription getEntity();
+    @Property(selector = "setEntity:")
+    public native void setEntity(NSEntityDescription v);
+    /**
+     * @since Available in iOS 4.0 and later.
+     */
+    @Property(selector = "entityName")
+    public native String getEntityName();
+    @Property(selector = "predicate")
+    public native NSPredicate getPredicate();
+    @Property(selector = "setPredicate:")
+    public native void setPredicate(NSPredicate v);
+    @Property(selector = "sortDescriptors")
+    public native NSArray<NSSortDescriptor> getSortDescriptors();
+    @Property(selector = "setSortDescriptors:")
+    public native void setSortDescriptors(NSArray<NSSortDescriptor> v);
+    @Property(selector = "fetchLimit")
+    public native @MachineSizedUInt long getFetchLimit();
+    @Property(selector = "setFetchLimit:")
+    public native void setFetchLimit(@MachineSizedUInt long v);
+    @Property(selector = "affectedStores")
+    public native @org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String> getAffectedStores();
+    @Property(selector = "setAffectedStores:")
+    public native void setAffectedStores(@org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String> v);
+    /**
+     * @since Available in iOS 3.0 and later.
+     */
+    @Property(selector = "resultType")
+    public native NSFetchRequestResultType getResultType();
+    /**
+     * @since Available in iOS 3.0 and later.
+     */
+    @Property(selector = "setResultType:")
+    public native void setResultType(NSFetchRequestResultType v);
+    /**
+     * @since Available in iOS 3.0 and later.
+     */
+    @Property(selector = "includesSubentities")
+    public native boolean isIncludesSubentities();
+    /**
+     * @since Available in iOS 3.0 and later.
+     */
+    @Property(selector = "setIncludesSubentities:")
+    public native void setIncludesSubentities(boolean v);
+    /**
+     * @since Available in iOS 3.0 and later.
+     */
+    @Property(selector = "includesPropertyValues")
+    public native boolean isIncludesPropertyValues();
+    /**
+     * @since Available in iOS 3.0 and later.
+     */
+    @Property(selector = "setIncludesPropertyValues:")
+    public native void setIncludesPropertyValues(boolean v);
+    /**
+     * @since Available in iOS 3.0 and later.
+     */
+    @Property(selector = "returnsObjectsAsFaults")
+    public native boolean isReturnsObjectsAsFaults();
+    /**
+     * @since Available in iOS 3.0 and later.
+     */
+    @Property(selector = "setReturnsObjectsAsFaults:")
+    public native void setReturnsObjectsAsFaults(boolean v);
+    /**
+     * @since Available in iOS 3.0 and later.
+     */
+    @Property(selector = "relationshipKeyPathsForPrefetching")
+    public native @org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String> getRelationshipKeyPathsForPrefetching();
+    /**
+     * @since Available in iOS 3.0 and later.
+     */
+    @Property(selector = "setRelationshipKeyPathsForPrefetching:")
+    public native void setRelationshipKeyPathsForPrefetching(@org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String> v);
+    /**
+     * @since Available in iOS 3.0 and later.
+     */
+    @Property(selector = "includesPendingChanges")
+    public native boolean isIncludesPendingChanges();
+    /**
+     * @since Available in iOS 3.0 and later.
+     */
+    @Property(selector = "setIncludesPendingChanges:")
+    public native void setIncludesPendingChanges(boolean v);
+    /**
+     * @since Available in iOS 3.0 and later.
+     */
+    @Property(selector = "returnsDistinctResults")
+    public native boolean isReturnsDistinctResults();
+    /**
+     * @since Available in iOS 3.0 and later.
+     */
+    @Property(selector = "setReturnsDistinctResults:")
+    public native void setReturnsDistinctResults(boolean v);
+    /**
+     * @since Available in iOS 3.0 and later.
+     */
+    @Property(selector = "propertiesToFetch")
+    public native NSArray<NSPropertyDescription> getPropertiesToFetch();
+    /**
+     * @since Available in iOS 3.0 and later.
+     */
+    @Property(selector = "setPropertiesToFetch:")
+    public native void setPropertiesToFetch(NSArray<NSPropertyDescription> v);
+    /**
+     * @since Available in iOS 3.0 and later.
+     */
+    @Property(selector = "fetchOffset")
+    public native @MachineSizedUInt long getFetchOffset();
+    /**
+     * @since Available in iOS 3.0 and later.
+     */
+    @Property(selector = "setFetchOffset:")
+    public native void setFetchOffset(@MachineSizedUInt long v);
+    /**
+     * @since Available in iOS 3.0 and later.
+     */
+    @Property(selector = "fetchBatchSize")
+    public native @MachineSizedUInt long getFetchBatchSize();
+    /**
+     * @since Available in iOS 3.0 and later.
+     */
+    @Property(selector = "setFetchBatchSize:")
+    public native void setFetchBatchSize(@MachineSizedUInt long v);
+    /**
+     * @since Available in iOS 5.0 and later.
+     */
+    @Property(selector = "shouldRefreshRefetchedObjects")
+    public native boolean isShouldRefreshRefetchedObjects();
+    /**
+     * @since Available in iOS 5.0 and later.
+     */
+    @Property(selector = "setShouldRefreshRefetchedObjects:")
+    public native void setShouldRefreshRefetchedObjects(boolean v);
+    /**
+     * @since Available in iOS 5.0 and later.
+     */
+    @Property(selector = "propertiesToGroupBy")
+    public native NSArray<NSPropertyDescription> getPropertiesToGroupBy();
+    /**
+     * @since Available in iOS 5.0 and later.
+     */
+    @Property(selector = "setPropertiesToGroupBy:")
+    public native void setPropertiesToGroupBy(NSArray<NSPropertyDescription> v);
+    /**
+     * @since Available in iOS 5.0 and later.
+     */
+    @Property(selector = "havingPredicate")
+    public native NSPredicate getHavingPredicate();
+    /**
+     * @since Available in iOS 5.0 and later.
+     */
+    @Property(selector = "setHavingPredicate:")
+    public native void setHavingPredicate(NSPredicate v);
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
@@ -59,167 +213,12 @@ import org.robovm.apple.foundation.*;
      * @since Available in iOS 4.0 and later.
      */
     @Method(selector = "initWithEntityName:")
-    protected native @Pointer long initWithEntityName$(String entityName);
-    @Method(selector = "entity")
-    public native NSEntityDescription entity();
-    @Method(selector = "setEntity:")
-    public native void setEntity(NSEntityDescription entity);
-    /**
-     * @since Available in iOS 4.0 and later.
-     */
-    @Method(selector = "entityName")
-    public native String entityName();
-    @Method(selector = "predicate")
-    public native NSPredicate predicate();
-    @Method(selector = "setPredicate:")
-    public native void setPredicate(NSPredicate predicate);
-    @Method(selector = "sortDescriptors")
-    public native NSArray<?> sortDescriptors();
-    @Method(selector = "setSortDescriptors:")
-    public native void setSortDescriptors(NSArray<?> sortDescriptors);
-    @Method(selector = "fetchLimit")
-    public native @MachineSizedUInt long fetchLimit();
-    @Method(selector = "setFetchLimit:")
-    public native void setFetchLimit(@MachineSizedUInt long limit);
-    @Method(selector = "affectedStores")
-    public native NSArray<?> affectedStores();
-    @Method(selector = "setAffectedStores:")
-    public native void setAffectedStores(NSArray<?> stores);
-    /**
-     * @since Available in iOS 3.0 and later.
-     */
-    @Method(selector = "resultType")
-    public native NSFetchRequestResultType resultType();
-    /**
-     * @since Available in iOS 3.0 and later.
-     */
-    @Method(selector = "setResultType:")
-    public native void setResultType(NSFetchRequestResultType type);
-    /**
-     * @since Available in iOS 3.0 and later.
-     */
-    @Method(selector = "includesSubentities")
-    public native boolean includesSubentities();
-    /**
-     * @since Available in iOS 3.0 and later.
-     */
-    @Method(selector = "setIncludesSubentities:")
-    public native void setIncludesSubentities(boolean yesNo);
-    /**
-     * @since Available in iOS 3.0 and later.
-     */
-    @Method(selector = "includesPropertyValues")
-    public native boolean includesPropertyValues();
-    /**
-     * @since Available in iOS 3.0 and later.
-     */
-    @Method(selector = "setIncludesPropertyValues:")
-    public native void setIncludesPropertyValues(boolean yesNo);
-    /**
-     * @since Available in iOS 3.0 and later.
-     */
-    @Method(selector = "returnsObjectsAsFaults")
-    public native boolean returnsObjectsAsFaults();
-    /**
-     * @since Available in iOS 3.0 and later.
-     */
-    @Method(selector = "setReturnsObjectsAsFaults:")
-    public native void setReturnsObjectsAsFaults(boolean yesNo);
-    /**
-     * @since Available in iOS 3.0 and later.
-     */
-    @Method(selector = "relationshipKeyPathsForPrefetching")
-    public native NSArray<?> relationshipKeyPathsForPrefetching();
-    /**
-     * @since Available in iOS 3.0 and later.
-     */
-    @Method(selector = "setRelationshipKeyPathsForPrefetching:")
-    public native void setRelationshipKeyPathsForPrefetching(NSArray<?> keys);
-    /**
-     * @since Available in iOS 3.0 and later.
-     */
-    @Method(selector = "includesPendingChanges")
-    public native boolean includesPendingChanges();
-    /**
-     * @since Available in iOS 3.0 and later.
-     */
-    @Method(selector = "setIncludesPendingChanges:")
-    public native void setIncludesPendingChanges(boolean flag);
-    /**
-     * @since Available in iOS 3.0 and later.
-     */
-    @Method(selector = "returnsDistinctResults")
-    public native boolean returnsDistinctResults();
-    /**
-     * @since Available in iOS 3.0 and later.
-     */
-    @Method(selector = "setReturnsDistinctResults:")
-    public native void setReturnsDistinctResults(boolean flag);
-    /**
-     * @since Available in iOS 3.0 and later.
-     */
-    @Method(selector = "propertiesToFetch")
-    public native NSArray<?> propertiesToFetch();
-    /**
-     * @since Available in iOS 3.0 and later.
-     */
-    @Method(selector = "setPropertiesToFetch:")
-    public native void setPropertiesToFetch(NSArray<?> values);
-    /**
-     * @since Available in iOS 3.0 and later.
-     */
-    @Method(selector = "fetchOffset")
-    public native @MachineSizedUInt long fetchOffset();
-    /**
-     * @since Available in iOS 3.0 and later.
-     */
-    @Method(selector = "setFetchOffset:")
-    public native void setFetchOffset(@MachineSizedUInt long offset);
-    /**
-     * @since Available in iOS 3.0 and later.
-     */
-    @Method(selector = "fetchBatchSize")
-    public native @MachineSizedUInt long fetchBatchSize();
-    /**
-     * @since Available in iOS 3.0 and later.
-     */
-    @Method(selector = "setFetchBatchSize:")
-    public native void setFetchBatchSize(@MachineSizedUInt long bsize);
-    /**
-     * @since Available in iOS 5.0 and later.
-     */
-    @Method(selector = "shouldRefreshRefetchedObjects")
-    public native boolean shouldRefreshRefetchedObjects();
-    /**
-     * @since Available in iOS 5.0 and later.
-     */
-    @Method(selector = "setShouldRefreshRefetchedObjects:")
-    public native void setShouldRefreshRefetchedObjects(boolean flag);
-    /**
-     * @since Available in iOS 5.0 and later.
-     */
-    @Method(selector = "propertiesToGroupBy")
-    public native NSArray<?> propertiesToGroupBy();
-    /**
-     * @since Available in iOS 5.0 and later.
-     */
-    @Method(selector = "setPropertiesToGroupBy:")
-    public native void setPropertiesToGroupBy(NSArray<?> array);
-    /**
-     * @since Available in iOS 5.0 and later.
-     */
-    @Method(selector = "havingPredicate")
-    public native NSPredicate havingPredicate();
-    /**
-     * @since Available in iOS 5.0 and later.
-     */
-    @Method(selector = "setHavingPredicate:")
-    public native void setHavingPredicate(NSPredicate predicate);
+    protected native @Pointer long init(String entityName);
     /**
      * @since Available in iOS 4.0 and later.
      */
     @Method(selector = "fetchRequestWithEntityName:")
-    public static native NSFetchRequest fetchRequestWithEntityName$(String entityName);
+    public static native NSFetchRequest create(String entityName);
     @Method(selector = "encodeWithCoder:")
     public native void encode(NSCoder aCoder);
     /*</methods>*/

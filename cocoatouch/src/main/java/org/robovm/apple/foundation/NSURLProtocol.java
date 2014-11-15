@@ -29,6 +29,7 @@ import org.robovm.rt.bro.ptr.*;
 import org.robovm.apple.corefoundation.*;
 import org.robovm.apple.uikit.*;
 import org.robovm.apple.coreanimation.*;
+import org.robovm.apple.coredata.*;
 import org.robovm.apple.coregraphics.*;
 import org.robovm.apple.coremedia.*;
 import org.robovm.apple.security.*;
@@ -92,9 +93,9 @@ import org.robovm.apple.dispatch.*;
     @Method(selector = "removePropertyForKey:inRequest:")
     public static native void removePropertyInRequest(String key, NSMutableURLRequest request);
     @Method(selector = "registerClass:")
-    public static native boolean registerClass(ObjCClass protocolClass);
+    public static native boolean registerClass(Class<?> protocolClass);
     @Method(selector = "unregisterClass:")
-    public static native void unregisterClass(ObjCClass protocolClass);
+    public static native void unregisterClass(Class<?> protocolClass);
     /**
      * @since Available in iOS 8.0 and later.
      */

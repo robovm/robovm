@@ -45,24 +45,26 @@ import org.robovm.apple.foundation.*;
     /*<constructors>*/
     public NSAtomicStoreCacheNode() {}
     protected NSAtomicStoreCacheNode(SkipInit skipInit) { super(skipInit); }
-    public NSAtomicStoreCacheNode(NSManagedObjectID moid) { super((SkipInit) null); initObject(initWithObjectID$(moid)); }
+    public NSAtomicStoreCacheNode(NSManagedObjectID moid) { super((SkipInit) null); initObject(init(moid)); }
     /*</constructors>*/
     /*<properties>*/
-    
+    @Property(selector = "objectID")
+    public native NSManagedObjectID getObjectID();
+    @Property(selector = "propertyCache")
+    public native @org.robovm.rt.bro.annotation.Marshaler(NSDictionary.AsStringMapMarshaler.class) Map<String, NSObject> getPropertyCache();
+    @Property(selector = "setPropertyCache:")
+    public native void setPropertyCache(@org.robovm.rt.bro.annotation.Marshaler(NSDictionary.AsStringMapMarshaler.class) Map<String, NSObject> v);
     /*</properties>*/
     /*<members>*//*</members>*/
+    public void setValue(String key, NSObject value) {
+        setValue(value, key);
+    }
     /*<methods>*/
     @Method(selector = "initWithObjectID:")
-    protected native @Pointer long initWithObjectID$(NSManagedObjectID moid);
-    @Method(selector = "objectID")
-    public native NSManagedObjectID objectID();
-    @Method(selector = "propertyCache")
-    public native NSMutableDictionary<?, ?> propertyCache();
-    @Method(selector = "setPropertyCache:")
-    public native void setPropertyCache(NSMutableDictionary<?, ?> propertyCache);
+    protected native @Pointer long init(NSManagedObjectID moid);
     @Method(selector = "valueForKey:")
-    public native NSObject valueForKey$(String key);
+    public native NSObject getValue(String key);
     @Method(selector = "setValue:forKey:")
-    public native void setValue$forKey$(NSObject value, String key);
+    private native void setValue(NSObject value, String key);
     /*</methods>*/
 }

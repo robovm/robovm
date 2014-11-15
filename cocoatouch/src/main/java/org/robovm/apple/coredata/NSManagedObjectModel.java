@@ -45,76 +45,75 @@ import org.robovm.apple.foundation.*;
     /*<constructors>*/
     public NSManagedObjectModel() {}
     protected NSManagedObjectModel(SkipInit skipInit) { super(skipInit); }
-    public NSManagedObjectModel(NSURL url) { super((SkipInit) null); initObject(initWithContentsOfURL$(url)); }
+    public NSManagedObjectModel(NSURL url) { super((SkipInit) null); initObject(init(url)); }
     /*</constructors>*/
     /*<properties>*/
-    
+    @Property(selector = "entitiesByName")
+    public native @org.robovm.rt.bro.annotation.Marshaler(NSDictionary.AsStringMapMarshaler.class) Map<String, NSEntityDescription> getEntitiesByName();
+    @Property(selector = "entities")
+    public native NSArray<NSEntityDescription> getEntities();
+    @Property(selector = "setEntities:")
+    public native void setEntities(NSArray<NSEntityDescription> v);
+    @Property(selector = "configurations")
+    public native @org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String> getConfigurations();
+    @Property(selector = "localizationDictionary")
+    public native @org.robovm.rt.bro.annotation.Marshaler(NSDictionary.AsStringStringMapMarshaler.class) Map<String, String> getLocalizationDictionary();
+    @Property(selector = "setLocalizationDictionary:")
+    public native void setLocalizationDictionary(@org.robovm.rt.bro.annotation.Marshaler(NSDictionary.AsStringStringMapMarshaler.class) Map<String, String> v);
+    /**
+     * @since Available in iOS 3.0 and later.
+     */
+    @Property(selector = "fetchRequestTemplatesByName")
+    public native @org.robovm.rt.bro.annotation.Marshaler(NSDictionary.AsStringMapMarshaler.class) Map<String, NSFetchRequest> getFetchRequestTemplatesByName();
+    /**
+     * @since Available in iOS 3.0 and later.
+     */
+    @Property(selector = "versionIdentifiers")
+    public native NSSet<?> getVersionIdentifiers();
+    /**
+     * @since Available in iOS 3.0 and later.
+     */
+    @Property(selector = "setVersionIdentifiers:")
+    public native void setVersionIdentifiers(NSSet<?> v);
+    /**
+     * @since Available in iOS 3.0 and later.
+     */
+    @Property(selector = "entityVersionHashesByName")
+    public native NSDictionary<?, ?> getEntityVersionHashesByName();
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
     @Method(selector = "initWithContentsOfURL:")
-    protected native @Pointer long initWithContentsOfURL$(NSURL url);
-    @Method(selector = "entitiesByName")
-    public native NSDictionary<?, ?> entitiesByName();
-    @Method(selector = "entities")
-    public native NSArray<?> entities();
-    @Method(selector = "setEntities:")
-    public native void setEntities(NSArray<?> entities);
-    @Method(selector = "configurations")
-    public native NSArray<?> configurations();
+    protected native @Pointer long init(NSURL url);
     @Method(selector = "entitiesForConfiguration:")
-    public native NSArray<?> entitiesForConfiguration$(String configuration);
+    public native NSArray<NSEntityDescription> getEntitiesForConfiguration(String configuration);
     @Method(selector = "setEntities:forConfiguration:")
-    public native void setEntities$forConfiguration$(NSArray<?> entities, String configuration);
+    public native void setEntitiesForConfiguration(NSArray<NSEntityDescription> entities, String configuration);
     @Method(selector = "setFetchRequestTemplate:forName:")
-    public native void setFetchRequestTemplate$forName$(NSFetchRequest fetchRequestTemplate, String name);
+    public native void setFetchRequestTemplate(NSFetchRequest fetchRequestTemplate, String name);
     @Method(selector = "fetchRequestTemplateForName:")
-    public native NSFetchRequest fetchRequestTemplateForName$(String name);
+    public native NSFetchRequest getFetchRequestTemplate(String name);
     @Method(selector = "fetchRequestFromTemplateWithName:substitutionVariables:")
-    public native NSFetchRequest fetchRequestFromTemplateWithName$substitutionVariables$(String name, NSDictionary<?, ?> variables);
-    @Method(selector = "localizationDictionary")
-    public native NSDictionary<?, ?> localizationDictionary();
-    @Method(selector = "setLocalizationDictionary:")
-    public native void setLocalizationDictionary(NSDictionary<?, ?> localizationDictionary);
-    /**
-     * @since Available in iOS 3.0 and later.
-     */
-    @Method(selector = "fetchRequestTemplatesByName")
-    public native NSDictionary<?, ?> fetchRequestTemplatesByName();
-    /**
-     * @since Available in iOS 3.0 and later.
-     */
-    @Method(selector = "versionIdentifiers")
-    public native NSSet<?> versionIdentifiers();
-    /**
-     * @since Available in iOS 3.0 and later.
-     */
-    @Method(selector = "setVersionIdentifiers:")
-    public native void setVersionIdentifiers(NSSet<?> identifiers);
+    public native NSFetchRequest getFetchRequestTemplate(String name, @org.robovm.rt.bro.annotation.Marshaler(NSDictionary.AsStringMapMarshaler.class) Map<String, NSObject> variables);
     /**
      * @since Available in iOS 3.0 and later.
      */
     @Method(selector = "isConfiguration:compatibleWithStoreMetadata:")
-    public native boolean isConfiguration$compatibleWithStoreMetadata$(String configuration, NSDictionary<?, ?> metadata);
-    /**
-     * @since Available in iOS 3.0 and later.
-     */
-    @Method(selector = "entityVersionHashesByName")
-    public native NSDictionary<?, ?> entityVersionHashesByName();
+    public native boolean isConfigurationCompatibleWithStoreMetadata(String configuration, NSPersistentStoreMetadata metadata);
     @Method(selector = "mergedModelFromBundles:")
-    public static native NSManagedObjectModel mergedModelFromBundles$(NSArray<?> bundles);
+    public static native NSManagedObjectModel createFromBundles(NSArray<NSBundle> bundles);
     @Method(selector = "modelByMergingModels:")
-    public static native NSManagedObjectModel modelByMergingModels$(NSArray<?> models);
+    public static native NSManagedObjectModel createByMergingModels(NSArray<NSManagedObjectModel> models);
     /**
      * @since Available in iOS 3.0 and later.
      */
     @Method(selector = "mergedModelFromBundles:forStoreMetadata:")
-    public static native NSManagedObjectModel mergedModelFromBundles$forStoreMetadata$(NSArray<?> bundles, NSDictionary<?, ?> metadata);
+    public static native NSManagedObjectModel createFromBundles(NSArray<NSBundle> bundles, NSPersistentStoreMetadata metadata);
     /**
      * @since Available in iOS 3.0 and later.
      */
     @Method(selector = "modelByMergingModels:forStoreMetadata:")
-    public static native NSManagedObjectModel modelByMergingModels$forStoreMetadata$(NSArray<?> models, NSDictionary<?, ?> metadata);
+    public static native NSManagedObjectModel createByMergingModels(NSArray<NSManagedObjectModel> models, NSPersistentStoreMetadata metadata);
     @Method(selector = "encodeWithCoder:")
     public native void encode(NSCoder aCoder);
     /*</methods>*/

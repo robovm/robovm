@@ -46,7 +46,13 @@ public enum /*<name>*/NSAttributeType/*</name>*/ implements ValuedEnum {
     Boolean(800L),
     Date(900L),
     BinaryData(1000L),
+    /**
+     * @since Available in iOS 3.0 and later.
+     */
     Transformable(1800L),
+    /**
+     * @since Available in iOS 3.0 and later.
+     */
     ObjectID(2000L);
     /*</values>*/
 

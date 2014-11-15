@@ -39,6 +39,43 @@ import org.robovm.apple.foundation.*;
     extends /*<extends>*/NSObject/*</extends>*/ 
     /*<implements>*/implements NSCoding, NSLocking/*</implements>*/ {
 
+    public static class Notifications {
+        /**
+         * @since Available in iOS 3.0 and later.
+         */
+        public static NSObject observeWillSave(NSManagedObject object, final VoidBlock1<NSManagedObject> block) {
+            return NSNotificationCenter.getDefaultCenter().addObserver(WillSaveNotification(), object, NSOperationQueue.getMainQueue(), new VoidBlock1<NSNotification>() {
+                @Override
+                public void invoke(NSNotification a) {
+                    block.invoke((NSManagedObject)a.getObject());
+                }
+            });
+        }
+        /**
+         * @since Available in iOS 3.0 and later.
+         */
+        public static NSObject observeDidSave(NSManagedObject object, final VoidBlock2<NSManagedObject, NSManagedObjectContextNotificationInfo> block) {
+            return NSNotificationCenter.getDefaultCenter().addObserver(DidSaveNotification(), object, NSOperationQueue.getMainQueue(), new VoidBlock1<NSNotification>() {
+                @Override
+                public void invoke(NSNotification a) {
+                    block.invoke((NSManagedObject)a.getObject(), new NSManagedObjectContextNotificationInfo(a.getUserInfo()));
+                }
+            });
+        }
+        /**
+         * @since Available in iOS 3.0 and later.
+         */
+        public static NSObject observeObjectsDidChange(NSManagedObject object, final VoidBlock3<NSManagedObject, NSManagedObjectContextNotificationInfo, NSNotification> block) {
+            return NSNotificationCenter.getDefaultCenter().addObserver(ObjectsDidChangeNotification(), object, NSOperationQueue.getMainQueue(), new VoidBlock1<NSNotification>() {
+                @Override
+                public void invoke(NSNotification a) {
+                    block.invoke((NSManagedObject)a.getObject(), new NSManagedObjectContextNotificationInfo(a.getUserInfo()), a);
+                }
+            });
+        }
+        
+    }
+    
     /*<ptr>*/public static class NSManagedObjectContextPtr extends Ptr<NSManagedObjectContext, NSManagedObjectContextPtr> {}/*</ptr>*/
     /*<bind>*/static { ObjCRuntime.bind(NSManagedObjectContext.class); }/*</bind>*/
     /*<constants>*//*</constants>*/
@@ -48,96 +85,234 @@ import org.robovm.apple.foundation.*;
     /**
      * @since Available in iOS 5.0 and later.
      */
-    public NSManagedObjectContext(NSManagedObjectContextConcurrencyType ct) { super((SkipInit) null); initObject(initWithConcurrencyType$(ct)); }
+    public NSManagedObjectContext(NSManagedObjectContextConcurrencyType ct) { super((SkipInit) null); initObject(init(ct)); }
     /*</constructors>*/
     /*<properties>*/
-    
+    @Property(selector = "persistentStoreCoordinator")
+    public native NSPersistentStoreCoordinator getPersistentStoreCoordinator();
+    @Property(selector = "setPersistentStoreCoordinator:")
+    public native void setPersistentStoreCoordinator(NSPersistentStoreCoordinator v);
+    /**
+     * @since Available in iOS 5.0 and later.
+     */
+    @Property(selector = "parentContext")
+    public native NSManagedObjectContext getParentContext();
+    /**
+     * @since Available in iOS 5.0 and later.
+     */
+    @Property(selector = "setParentContext:")
+    public native void setParentContext(NSManagedObjectContext v);
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @Property(selector = "name")
+    public native String getName();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @Property(selector = "setName:")
+    public native void setName(String v);
+    @Property(selector = "undoManager")
+    public native NSUndoManager getUndoManager();
+    @Property(selector = "setUndoManager:")
+    public native void setUndoManager(NSUndoManager v);
+    @Property(selector = "hasChanges")
+    public native boolean isHasChanges();
+    /**
+     * @since Available in iOS 5.0 and later.
+     */
+    @Property(selector = "userInfo")
+    public native NSMutableDictionary<?, ?> getUserInfo();
+    /**
+     * @since Available in iOS 5.0 and later.
+     */
+    @Property(selector = "concurrencyType")
+    public native NSManagedObjectContextConcurrencyType getConcurrencyType();
+    @Property(selector = "insertedObjects")
+    public native NSSet<NSManagedObject> getInsertedObjects();
+    @Property(selector = "updatedObjects")
+    public native NSSet<NSManagedObject> getUpdatedObjects();
+    @Property(selector = "deletedObjects")
+    public native NSSet<NSManagedObject> getDeletedObjects();
+    @Property(selector = "registeredObjects")
+    public native NSSet<NSManagedObject> getRegisteredObjects();
+    @Property(selector = "propagatesDeletesAtEndOfEvent")
+    public native boolean isPropagatesDeletesAtEndOfEvent();
+    @Property(selector = "setPropagatesDeletesAtEndOfEvent:")
+    public native void setPropagatesDeletesAtEndOfEvent(boolean v);
+    @Property(selector = "retainsRegisteredObjects")
+    public native NSSet<NSManagedObject> getRetainsRegisteredObjects();
+    @Property(selector = "setRetainsRegisteredObjects:")
+    public native void setRetainsRegisteredObjects(NSSet<NSManagedObject> v);
+    @Property(selector = "stalenessInterval")
+    public native double getStalenessInterval();
+    @Property(selector = "setStalenessInterval:")
+    public native void setStalenessInterval(double v);
+    @Property(selector = "mergePolicy")
+    public native NSObject getMergePolicy();
+    @Property(selector = "setMergePolicy:")
+    public native void setMergePolicy(NSObject v);
     /*</properties>*/
     /*<members>*//*</members>*/
+    public void observeValue(String keyPath, NSObject object, NSKeyValueChangeInfo change) {}
+    
+    @Method(selector = "observeValueForKeyPath:ofObject:change:context:")
+    private void observeValueForKeyPath$ofObject$change$context$(String keyPath, NSObject object, NSKeyValueChangeInfo change, VoidPtr context) {
+        observeValue(keyPath, object, change);
+    }
+    
+    /**
+     * 
+     * @param objectID
+     * @return
+     * @since Available in iOS 3.0 and later.
+     * @throws NSErrorException
+     */
+    public NSManagedObject getExistingObjectWithID(NSManagedObjectID objectID) {
+        NSError.NSErrorPtr err = new NSError.NSErrorPtr();
+        NSManagedObject result = getExistingObjectWithID(objectID, err);
+        if (err.get() != null) {
+            throw new NSErrorException(err.get());
+        }
+        return result;
+    }
+    /**
+     * 
+     * @param request
+     * @return
+     * @throws NSErrorException
+     */
+    public NSArray<NSManagedObject> executeFetchRequest(NSFetchRequest request) {
+        NSError.NSErrorPtr err = new NSError.NSErrorPtr();
+        NSArray<NSManagedObject> result = executeFetchRequest(request, err);
+        if (err.get() != null) {
+            throw new NSErrorException(err.get());
+        }
+        return result;
+    }
+    /**
+     * 
+     * @param request
+     * @return
+     * @since Available in iOS 3.0 and later.
+     * @throws NSErrorException
+     */
+    public @MachineSizedUInt long getCountForFetchRequest(NSFetchRequest request) {
+        NSError.NSErrorPtr err = new NSError.NSErrorPtr();
+        long result = getCountForFetchRequest(request, err);
+        if (err.get() != null) {
+            throw new NSErrorException(err.get());
+        }
+        return result;
+    }
+    /**
+     * 
+     * @param request
+     * @return
+     * @since Available in iOS 8.0 and later.
+     * @throws NSErrorException
+     */
+    public NSPersistentStoreResult executeRequest(NSPersistentStoreRequest request) {
+        NSError.NSErrorPtr err = new NSError.NSErrorPtr();
+        NSPersistentStoreResult result = executeRequest(request, err);
+        if (err.get() != null) {
+            throw new NSErrorException(err.get());
+        }
+        return result;
+    }
+    /**
+     * 
+     * @return
+     * @throws NSErrorException
+     */
+    public boolean save() {
+        NSError.NSErrorPtr err = new NSError.NSErrorPtr();
+        boolean result = save(err);
+        if (err.get() != null) {
+            throw new NSErrorException(err.get());
+        }
+        return result;
+    }
+    /**
+     * 
+     * @param objects
+     * @return
+     * @since Available in iOS 3.0 and later.
+     * @throws NSErrorException
+     */
+    public boolean obtainPermanentIDsForObjects(NSArray<NSManagedObject> objects) {
+        NSError.NSErrorPtr err = new NSError.NSErrorPtr();
+        boolean result = obtainPermanentIDsForObjects(objects, err);
+        if (err.get() != null) {
+            throw new NSErrorException(err.get());
+        }
+        return result;
+    }
     /*<methods>*/
+    /**
+     * @since Available in iOS 3.0 and later.
+     */
+    @GlobalValue(symbol="NSManagedObjectContextWillSaveNotification", optional=true)
+    public static native NSString WillSaveNotification();
+    /**
+     * @since Available in iOS 3.0 and later.
+     */
+    @GlobalValue(symbol="NSManagedObjectContextDidSaveNotification", optional=true)
+    public static native NSString DidSaveNotification();
+    /**
+     * @since Available in iOS 3.0 and later.
+     */
+    @GlobalValue(symbol="NSManagedObjectContextObjectsDidChangeNotification", optional=true)
+    public static native NSString ObjectsDidChangeNotification();
+    
     /**
      * @since Available in iOS 5.0 and later.
      */
     @Method(selector = "initWithConcurrencyType:")
-    protected native @Pointer long initWithConcurrencyType$(NSManagedObjectContextConcurrencyType ct);
+    protected native @Pointer long init(NSManagedObjectContextConcurrencyType ct);
     /**
      * @since Available in iOS 5.0 and later.
      */
     @Method(selector = "performBlock:")
-    public native void performBlock$(@Block Runnable block);
+    public native void performBlock(@Block Runnable block);
     /**
      * @since Available in iOS 5.0 and later.
      */
     @Method(selector = "performBlockAndWait:")
-    public native void performBlockAndWait$(@Block Runnable block);
-    @Method(selector = "setPersistentStoreCoordinator:")
-    public native void setPersistentStoreCoordinator(NSPersistentStoreCoordinator coordinator);
-    @Method(selector = "persistentStoreCoordinator")
-    public native NSPersistentStoreCoordinator persistentStoreCoordinator();
-    /**
-     * @since Available in iOS 5.0 and later.
-     */
-    @Method(selector = "setParentContext:")
-    public native void setParentContext(NSManagedObjectContext parent);
-    /**
-     * @since Available in iOS 5.0 and later.
-     */
-    @Method(selector = "parentContext")
-    public native NSManagedObjectContext parentContext();
-    @Method(selector = "setUndoManager:")
-    public native void setUndoManager(NSUndoManager undoManager);
-    @Method(selector = "undoManager")
-    public native NSUndoManager undoManager();
-    @Method(selector = "hasChanges")
-    public native boolean hasChanges();
-    /**
-     * @since Available in iOS 5.0 and later.
-     */
-    @Method(selector = "userInfo")
-    public native NSMutableDictionary<?, ?> userInfo();
-    /**
-     * @since Available in iOS 5.0 and later.
-     */
-    @Method(selector = "concurrencyType")
-    public native NSManagedObjectContextConcurrencyType concurrencyType();
+    public native void performBlockAndWait(@Block Runnable block);
     @Method(selector = "objectRegisteredForID:")
-    public native NSManagedObject objectRegisteredForID$(NSManagedObjectID objectID);
+    public native NSManagedObject getObjectRegisteredForID(NSManagedObjectID objectID);
     @Method(selector = "objectWithID:")
-    public native NSManagedObject objectWithID$(NSManagedObjectID objectID);
+    public native NSManagedObject getObjectWithId(NSManagedObjectID objectID);
     /**
      * @since Available in iOS 3.0 and later.
      */
     @Method(selector = "existingObjectWithID:error:")
-    public native NSManagedObject existingObjectWithID$error$(NSManagedObjectID objectID, NSError.NSErrorPtr error);
+    protected native NSManagedObject getExistingObjectWithID(NSManagedObjectID objectID, NSError.NSErrorPtr error);
     @Method(selector = "executeFetchRequest:error:")
-    public native NSArray<?> executeFetchRequest$error$(NSFetchRequest request, NSError.NSErrorPtr error);
+    protected native NSArray<NSManagedObject> executeFetchRequest(NSFetchRequest request, NSError.NSErrorPtr error);
     /**
      * @since Available in iOS 3.0 and later.
      */
     @Method(selector = "countForFetchRequest:error:")
-    public native @MachineSizedUInt long countForFetchRequest$error$(NSFetchRequest request, NSError.NSErrorPtr error);
+    protected native @MachineSizedUInt long getCountForFetchRequest(NSFetchRequest request, NSError.NSErrorPtr error);
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @Method(selector = "executeRequest:error:")
+    protected native NSPersistentStoreResult executeRequest(NSPersistentStoreRequest request, NSError.NSErrorPtr error);
     @Method(selector = "insertObject:")
-    public native void insertObject$(NSManagedObject object);
+    public native void insertObject(NSManagedObject object);
     @Method(selector = "deleteObject:")
-    public native void deleteObject$(NSManagedObject object);
+    public native void deleteObject(NSManagedObject object);
     @Method(selector = "refreshObject:mergeChanges:")
-    public native void refreshObject$mergeChanges$(NSManagedObject object, boolean flag);
+    public native void refreshObject(NSManagedObject object, boolean flag);
     @Method(selector = "detectConflictsForObject:")
-    public native void detectConflictsForObject$(NSManagedObject object);
-    @Method(selector = "observeValueForKeyPath:ofObject:change:context:")
-    public native void observeValueForKeyPath$ofObject$change$context$(String keyPath, NSObject object, NSDictionary<?, ?> change, VoidPtr context);
+    public native void detectConflicts(NSManagedObject object);
     @Method(selector = "processPendingChanges")
     public native void processPendingChanges();
     @Method(selector = "assignObject:toPersistentStore:")
-    public native void assignObject$toPersistentStore$(NSObject object, NSPersistentStore store);
-    @Method(selector = "insertedObjects")
-    public native NSSet<?> insertedObjects();
-    @Method(selector = "updatedObjects")
-    public native NSSet<?> updatedObjects();
-    @Method(selector = "deletedObjects")
-    public native NSSet<?> deletedObjects();
-    @Method(selector = "registeredObjects")
-    public native NSSet<?> registeredObjects();
+    public native void assignObjectToPersistentStore(NSObject object, NSPersistentStore store);
     @Method(selector = "undo")
     public native void undo();
     @Method(selector = "redo")
@@ -147,39 +322,38 @@ import org.robovm.apple.foundation.*;
     @Method(selector = "rollback")
     public native void rollback();
     @Method(selector = "save:")
-    public native boolean save$(NSError.NSErrorPtr error);
+    protected native boolean save(NSError.NSErrorPtr error);
+    /**
+     * @since Available in iOS 3.0 and later.
+     * @deprecated Deprecated in iOS 8.0.
+     */
+    @Deprecated
     @Method(selector = "lock")
     public native void lock();
+    /**
+     * @since Available in iOS 3.0 and later.
+     * @deprecated Deprecated in iOS 8.0.
+     */
+    @Deprecated
     @Method(selector = "unlock")
     public native void unlock();
+    /**
+     * @since Available in iOS 3.0 and later.
+     * @deprecated Deprecated in iOS 8.0.
+     */
+    @Deprecated
     @Method(selector = "tryLock")
     public native boolean tryLock();
-    @Method(selector = "propagatesDeletesAtEndOfEvent")
-    public native boolean propagatesDeletesAtEndOfEvent();
-    @Method(selector = "setPropagatesDeletesAtEndOfEvent:")
-    public native void setPropagatesDeletesAtEndOfEvent(boolean flag);
-    @Method(selector = "retainsRegisteredObjects")
-    public native boolean retainsRegisteredObjects();
-    @Method(selector = "setRetainsRegisteredObjects:")
-    public native void setRetainsRegisteredObjects(boolean flag);
-    @Method(selector = "stalenessInterval")
-    public native double stalenessInterval();
-    @Method(selector = "setStalenessInterval:")
-    public native void setStalenessInterval(double expiration);
-    @Method(selector = "setMergePolicy:")
-    public native void setMergePolicy(NSObject mergePolicy);
-    @Method(selector = "mergePolicy")
-    public native NSObject mergePolicy();
     /**
      * @since Available in iOS 3.0 and later.
      */
     @Method(selector = "obtainPermanentIDsForObjects:error:")
-    public native boolean obtainPermanentIDsForObjects$error$(NSArray<?> objects, NSError.NSErrorPtr error);
+    protected native boolean obtainPermanentIDsForObjects(NSArray<NSManagedObject> objects, NSError.NSErrorPtr error);
     /**
      * @since Available in iOS 3.0 and later.
      */
     @Method(selector = "mergeChangesFromContextDidSaveNotification:")
-    public native void mergeChangesFromContextDidSaveNotification$(NSNotification notification);
+    public native void mergeChangesFromContextDidSaveNotification(NSNotification notification);
     @Method(selector = "encodeWithCoder:")
     public native void encode(NSCoder aCoder);
     /*</methods>*/

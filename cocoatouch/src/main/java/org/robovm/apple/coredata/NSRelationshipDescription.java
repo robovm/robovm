@@ -47,46 +47,46 @@ import org.robovm.apple.foundation.*;
     protected NSRelationshipDescription(SkipInit skipInit) { super(skipInit); }
     /*</constructors>*/
     /*<properties>*/
-    
-    /*</properties>*/
-    /*<members>*//*</members>*/
-    /*<methods>*/
-    @Method(selector = "destinationEntity")
-    public native NSEntityDescription destinationEntity();
-    @Method(selector = "setDestinationEntity:")
-    public native void setDestinationEntity(NSEntityDescription entity);
-    @Method(selector = "inverseRelationship")
-    public native NSRelationshipDescription inverseRelationship();
-    @Method(selector = "setInverseRelationship:")
-    public native void setInverseRelationship(NSRelationshipDescription relationship);
-    @Method(selector = "maxCount")
-    public native @MachineSizedUInt long maxCount();
-    @Method(selector = "setMaxCount:")
-    public native void setMaxCount(@MachineSizedUInt long maxCount);
-    @Method(selector = "minCount")
-    public native @MachineSizedUInt long minCount();
-    @Method(selector = "setMinCount:")
-    public native void setMinCount(@MachineSizedUInt long minCount);
-    @Method(selector = "deleteRule")
-    public native NSDeleteRule deleteRule();
-    @Method(selector = "setDeleteRule:")
-    public native void setDeleteRule(NSDeleteRule rule);
-    @Method(selector = "isToMany")
+    @Property(selector = "destinationEntity")
+    public native NSEntityDescription getDestinationEntity();
+    @Property(selector = "setDestinationEntity:", strongRef = true)
+    public native void setDestinationEntity(NSEntityDescription v);
+    @Property(selector = "inverseRelationship")
+    public native NSRelationshipDescription getInverseRelationship();
+    @Property(selector = "setInverseRelationship:", strongRef = true)
+    public native void setInverseRelationship(NSRelationshipDescription v);
+    @Property(selector = "maxCount")
+    public native @MachineSizedUInt long getMaxCount();
+    @Property(selector = "setMaxCount:")
+    public native void setMaxCount(@MachineSizedUInt long v);
+    @Property(selector = "minCount")
+    public native @MachineSizedUInt long getMinCount();
+    @Property(selector = "setMinCount:")
+    public native void setMinCount(@MachineSizedUInt long v);
+    @Property(selector = "deleteRule")
+    public native NSDeleteRule getDeleteRule();
+    @Property(selector = "setDeleteRule:")
+    public native void setDeleteRule(NSDeleteRule v);
+    @Property(selector = "isToMany")
     public native boolean isToMany();
     /**
      * @since Available in iOS 3.0 and later.
      */
-    @Method(selector = "versionHash")
-    public native NSData versionHash();
+    @Property(selector = "versionHash")
+    public native NSData getVersionHash();
     /**
      * @since Available in iOS 5.0 and later.
      */
-    @Method(selector = "setOrdered:")
-    public native void setOrdered(boolean flag);
-    /**
-     * @since Available in iOS 5.0 and later.
-     */
-    @Method(selector = "isOrdered")
+    @Property(selector = "isOrdered")
     public native boolean isOrdered();
+    /**
+     * @since Available in iOS 5.0 and later.
+     */
+    @Property(selector = "setOrdered:")
+    public native void setOrdered(boolean v);
+    /*</properties>*/
+    /*<members>*//*</members>*/
+    /*<methods>*/
+    
     /*</methods>*/
 }

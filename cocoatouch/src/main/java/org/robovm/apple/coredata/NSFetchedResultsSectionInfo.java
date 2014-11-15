@@ -49,7 +49,7 @@ import org.robovm.apple.foundation.*;
     @Property(selector = "numberOfObjects")
     @MachineSizedUInt long getNumberOfObjects();
     @Property(selector = "objects")
-    NSArray<?> getObjects();
+    NSArray<NSManagedObject> getObjects();
     /*</properties>*/
     /*<methods>*/
     

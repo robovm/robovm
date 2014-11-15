@@ -32,26 +32,38 @@ import org.robovm.apple.foundation.*;
 /*<javadoc>*/
 
 /*</javadoc>*/
-/*<annotations>*/@Marshaler(ValuedEnum.AsMachineSizedUIntMarshaler.class)/*</annotations>*/
-public enum /*<name>*/NSFetchRequestResultType/*</name>*/ implements ValuedEnum {
+/*<annotations>*/@Marshaler(Bits.AsMachineSizedIntMarshaler.class)/*</annotations>*/
+public final class /*<name>*/NSFetchRequestResultType/*</name>*/ extends Bits</*<name>*/NSFetchRequestResultType/*</name>*/> {
     /*<values>*/
-    ManagedObject(0L),
-    ManagedObjectID(1L),
-    Dictionary(2L),
-    Count(4L);
+    public static final NSFetchRequestResultType None = new NSFetchRequestResultType(0L);
+    public static final NSFetchRequestResultType ManagedObject = new NSFetchRequestResultType(0L);
+    public static final NSFetchRequestResultType ManagedObjectID = new NSFetchRequestResultType(1L);
+    /**
+     * @since Available in iOS 3.0 and later.
+     */
+    public static final NSFetchRequestResultType Dictionary = new NSFetchRequestResultType(2L);
+    /**
+     * @since Available in iOS 3.0 and later.
+     */
+    public static final NSFetchRequestResultType Count = new NSFetchRequestResultType(4L);
     /*</values>*/
 
-    private final long n;
+    /*<bind>*/
+    /*</bind>*/
+    /*<constants>*//*</constants>*/
+    /*<methods>*//*</methods>*/
 
-    private /*<name>*/NSFetchRequestResultType/*</name>*/(long n) { this.n = n; }
-    public long value() { return n; }
-    public static /*<name>*/NSFetchRequestResultType/*</name>*/ valueOf(long n) {
-        for (/*<name>*/NSFetchRequestResultType/*</name>*/ v : values()) {
-            if (v.n == n) {
-                return v;
-            }
-        }
-        throw new IllegalArgumentException("No constant with value " + n + " found in " 
-            + /*<name>*/NSFetchRequestResultType/*</name>*/.class.getName());
+    private static final /*<name>*/NSFetchRequestResultType/*</name>*/[] values = _values(/*<name>*/NSFetchRequestResultType/*</name>*/.class);
+
+    public /*<name>*/NSFetchRequestResultType/*</name>*/(long value) { super(value); }
+    private /*<name>*/NSFetchRequestResultType/*</name>*/(long value, long mask) { super(value, mask); }
+    protected /*<name>*/NSFetchRequestResultType/*</name>*/ wrap(long value, long mask) {
+        return new /*<name>*/NSFetchRequestResultType/*</name>*/(value, mask);
+    }
+    protected /*<name>*/NSFetchRequestResultType/*</name>*/[] _values() {
+        return values;
+    }
+    public static /*<name>*/NSFetchRequestResultType/*</name>*/[] values() {
+        return values.clone();
     }
 }

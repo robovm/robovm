@@ -45,7 +45,7 @@ import org.robovm.apple.foundation.*;
     /*<constructors>*/
     public NSFetchedResultsController() {}
     protected NSFetchedResultsController(SkipInit skipInit) { super(skipInit); }
-    public NSFetchedResultsController(NSFetchRequest fetchRequest, NSManagedObjectContext context, String sectionNameKeyPath, String name) { super((SkipInit) null); initObject(initWithFetchRequest$managedObjectContext$sectionNameKeyPath$cacheName$(fetchRequest, context, sectionNameKeyPath, name)); }
+    public NSFetchedResultsController(NSFetchRequest fetchRequest, NSManagedObjectContext context, String sectionNameKeyPath, String name) { super((SkipInit) null); initObject(init(fetchRequest, context, sectionNameKeyPath, name)); }
     /*</constructors>*/
     /*<properties>*/
     @Property(selector = "fetchRequest")
@@ -61,27 +61,40 @@ import org.robovm.apple.foundation.*;
     @Property(selector = "setDelegate:", strongRef = true)
     public native void setDelegate(NSFetchedResultsControllerDelegate v);
     @Property(selector = "fetchedObjects")
-    public native NSArray<?> getFetchedObjects();
+    public native NSArray<NSManagedObject> getFetchedObjects();
     @Property(selector = "sectionIndexTitles")
-    public native NSArray<?> getSectionIndexTitles();
+    public native @org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String> getSectionIndexTitles();
     @Property(selector = "sections")
-    public native NSArray<?> getSections();
+    public native @org.robovm.rt.bro.annotation.Marshaler(NSArray.AsListMarshaler.class) List<NSFetchedResultsSectionInfo> getSections();
     /*</properties>*/
     /*<members>*//*</members>*/
+    /**
+     * 
+     * @return
+     * @throws NSErrorException
+     */
+    public boolean performFetch() {
+        NSError.NSErrorPtr err = new NSError.NSErrorPtr();
+        boolean result = performFetch(err);
+        if (err.get() != null) {
+            throw new NSErrorException(err.get());
+        }
+        return result;
+    }
     /*<methods>*/
     @Method(selector = "initWithFetchRequest:managedObjectContext:sectionNameKeyPath:cacheName:")
-    protected native @Pointer long initWithFetchRequest$managedObjectContext$sectionNameKeyPath$cacheName$(NSFetchRequest fetchRequest, NSManagedObjectContext context, String sectionNameKeyPath, String name);
+    protected native @Pointer long init(NSFetchRequest fetchRequest, NSManagedObjectContext context, String sectionNameKeyPath, String name);
     @Method(selector = "performFetch:")
-    public native boolean performFetch$(NSError.NSErrorPtr error);
+    protected native boolean performFetch(NSError.NSErrorPtr error);
     @Method(selector = "objectAtIndexPath:")
-    public native NSObject objectAtIndexPath$(NSIndexPath indexPath);
+    public native NSObject getObjectAtIndexPath(NSIndexPath indexPath);
     @Method(selector = "indexPathForObject:")
-    public native NSIndexPath indexPathForObject$(NSObject object);
+    public native NSIndexPath getIndexPathForObject(NSObject object);
     @Method(selector = "sectionIndexTitleForSectionName:")
-    public native String sectionIndexTitleForSectionName$(String sectionName);
+    public native String getSectionIndexTitleForSectionName(String sectionName);
     @Method(selector = "sectionForSectionIndexTitle:atIndex:")
-    public native @MachineSizedSInt long sectionForSectionIndexTitle$atIndex$(String title, @MachineSizedSInt long sectionIndex);
+    public native @MachineSizedSInt long getSectionForIndexTitle(String title, @MachineSizedSInt long sectionIndex);
     @Method(selector = "deleteCacheWithName:")
-    public static native void deleteCacheWithName$(String name);
+    public static native void deleteCache(String name);
     /*</methods>*/
 }

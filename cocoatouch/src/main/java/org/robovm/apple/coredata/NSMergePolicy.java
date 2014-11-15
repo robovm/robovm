@@ -28,6 +28,7 @@ import org.robovm.rt.bro.annotation.*;
 import org.robovm.rt.bro.ptr.*;
 import org.robovm.apple.foundation.*;
 /*</imports>*/
+import org.robovm.apple.foundation.NSError.NSErrorPtr;
 
 /*<javadoc>*/
 /**
@@ -52,10 +53,50 @@ import org.robovm.apple.foundation.*;
     public native NSMergePolicyType getMergeType();
     /*</properties>*/
     /*<members>*//*</members>*/
+    /**
+     * 
+     * @param list
+     * @return
+     * @throws NSErrorException
+     */
+    public boolean resolveConflicts(NSArray<NSMergeConflict> list) {
+        NSError.NSErrorPtr err = new NSError.NSErrorPtr();
+        boolean result = resolveConflicts(list, err);
+        if (err.get() != null) {
+            throw new NSErrorException(err.get());
+        }
+        return result;
+    }
     /*<methods>*/
+    /**
+     * @since Available in iOS 3.0 and later.
+     */
+    @GlobalValue(symbol="NSErrorMergePolicy", optional=true)
+    public static native NSMergePolicy getErrorMergePolicy();
+    /**
+     * @since Available in iOS 3.0 and later.
+     */
+    @GlobalValue(symbol="NSMergeByPropertyStoreTrumpMergePolicy", optional=true)
+    public static native NSMergePolicy getMergeByPropertyStoreTrumpMergePolicy();
+    /**
+     * @since Available in iOS 3.0 and later.
+     */
+    @GlobalValue(symbol="NSMergeByPropertyObjectTrumpMergePolicy", optional=true)
+    public static native NSMergePolicy getMergeByPropertyObjectTrumpMergePolicy();
+    /**
+     * @since Available in iOS 3.0 and later.
+     */
+    @GlobalValue(symbol="NSOverwriteMergePolicy", optional=true)
+    public static native NSMergePolicy getOverwriteMergePolicy();
+    /**
+     * @since Available in iOS 3.0 and later.
+     */
+    @GlobalValue(symbol="NSRollbackMergePolicy", optional=true)
+    public static native NSMergePolicy getRollbackMergePolicy();
+    
     @Method(selector = "initWithMergeType:")
     protected native @Pointer long initWithMergeType$(NSMergePolicyType ty);
     @Method(selector = "resolveConflicts:error:")
-    public native boolean resolveConflicts$error$(NSArray<?> list, NSError.NSErrorPtr error);
+    protected native boolean resolveConflicts(NSArray<NSMergeConflict> list, NSError.NSErrorPtr error);
     /*</methods>*/
 }

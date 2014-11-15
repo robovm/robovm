@@ -28,6 +28,7 @@ import org.robovm.rt.bro.annotation.*;
 import org.robovm.rt.bro.ptr.*;
 import org.robovm.apple.foundation.*;
 /*</imports>*/
+import org.robovm.apple.foundation.NSError.NSErrorPtr;
 
 /*<javadoc>*/
 /**
@@ -45,36 +46,63 @@ import org.robovm.apple.foundation.*;
     /*<constructors>*/
     public NSAtomicStore() {}
     protected NSAtomicStore(SkipInit skipInit) { super(skipInit); }
-    public NSAtomicStore(NSPersistentStoreCoordinator coordinator, String configurationName, NSURL url, NSDictionary<?, ?> options) { super((SkipInit) null); initObject(initWithPersistentStoreCoordinator$configurationName$URL$options$(coordinator, configurationName, url, options)); }
+    public NSAtomicStore(NSPersistentStoreCoordinator coordinator, String configurationName, NSURL url, NSPersistentStoreOptions options) { super((SkipInit) null); initObject(init(coordinator, configurationName, url, options)); }
     /*</constructors>*/
     /*<properties>*/
     
     /*</properties>*/
     /*<members>*//*</members>*/
+    
+    /**
+     * 
+     * @return
+     * @throws NSErrorException
+     */
+    public boolean load() {
+        NSError.NSErrorPtr err = new NSError.NSErrorPtr();
+        boolean result = load(err);
+        if (err.get() != null) {
+            throw new NSErrorException(err.get());
+        }
+        return result;
+    }
+    /**
+     * 
+     * @return
+     * @throws NSErrorException
+     */
+    public boolean save() {
+        NSError.NSErrorPtr err = new NSError.NSErrorPtr();
+        boolean result = save(err);
+        if (err.get() != null) {
+            throw new NSErrorException(err.get());
+        }
+        return result;
+    }
     /*<methods>*/
     @Method(selector = "initWithPersistentStoreCoordinator:configurationName:URL:options:")
-    protected native @Pointer long initWithPersistentStoreCoordinator$configurationName$URL$options$(NSPersistentStoreCoordinator coordinator, String configurationName, NSURL url, NSDictionary<?, ?> options);
+    protected native @Pointer long init(NSPersistentStoreCoordinator coordinator, String configurationName, NSURL url, NSPersistentStoreOptions options);
     @Method(selector = "load:")
-    public native boolean load$(NSError.NSErrorPtr error);
+    protected native boolean load(NSError.NSErrorPtr error);
     @Method(selector = "save:")
-    public native boolean save$(NSError.NSErrorPtr error);
+    protected native boolean save(NSError.NSErrorPtr error);
     @Method(selector = "newCacheNodeForManagedObject:")
-    public native NSAtomicStoreCacheNode newCacheNodeForManagedObject$(NSManagedObject managedObject);
+    public native NSAtomicStoreCacheNode newCacheNode(NSManagedObject managedObject);
     @Method(selector = "updateCacheNode:fromManagedObject:")
-    public native void updateCacheNode$fromManagedObject$(NSAtomicStoreCacheNode node, NSManagedObject managedObject);
+    public native void updateCacheNode(NSAtomicStoreCacheNode node, NSManagedObject managedObject);
     @Method(selector = "cacheNodes")
-    public native NSSet<?> cacheNodes();
+    public native NSSet<NSAtomicStoreCacheNode> getCacheNodes();
     @Method(selector = "addCacheNodes:")
-    public native void addCacheNodes$(NSSet<?> cacheNodes);
+    public native void addCacheNodes(NSSet<NSAtomicStoreCacheNode> cacheNodes);
     @Method(selector = "willRemoveCacheNodes:")
-    public native void willRemoveCacheNodes$(NSSet<?> cacheNodes);
+    public native void willRemoveCacheNodes(NSSet<NSAtomicStoreCacheNode> cacheNodes);
     @Method(selector = "cacheNodeForObjectID:")
-    public native NSAtomicStoreCacheNode cacheNodeForObjectID$(NSManagedObjectID objectID);
+    public native NSAtomicStoreCacheNode getCacheNode(NSManagedObjectID objectID);
     @Method(selector = "objectIDForEntity:referenceObject:")
-    public native NSManagedObjectID objectIDForEntity$referenceObject$(NSEntityDescription entity, NSObject data);
+    public native NSManagedObjectID getObjectID(NSEntityDescription entity, NSObject data);
     @Method(selector = "newReferenceObjectForManagedObject:")
-    public native NSObject newReferenceObjectForManagedObject$(NSManagedObject managedObject);
+    public native NSObject newReferenceObject(NSManagedObject managedObject);
     @Method(selector = "referenceObjectForObjectID:")
-    public native NSObject referenceObjectForObjectID$(NSManagedObjectID objectID);
+    public native NSObject getReferenceObject(NSManagedObjectID objectID);
     /*</methods>*/
 }

@@ -29,6 +29,7 @@ import org.robovm.rt.bro.ptr.*;
 import org.robovm.apple.corefoundation.*;
 import org.robovm.apple.uikit.*;
 import org.robovm.apple.coreanimation.*;
+import org.robovm.apple.coredata.*;
 import org.robovm.apple.coregraphics.*;
 import org.robovm.apple.coremedia.*;
 import org.robovm.apple.security.*;
@@ -83,13 +84,23 @@ import org.robovm.apple.dispatch.*;
     
     /* UIKit extensions */
     /**
+     * 
+     * @param url
+     * @param opts
+     * @return
      * @since Available in iOS 7.0 and later.
+     * @throws NSErrorException
      */
     public boolean read(NSURL url, NSAttributedStringDocumentAttributes opts) {
         return NSMutableAttributedStringExtensions.readFromFileURL(this, url, opts);
     }
     /**
+     * 
+     * @param data
+     * @param opts
+     * @return
      * @since Available in iOS 7.0 and later.
+     * @throws NSErrorException
      */
     public boolean read(NSData data, NSAttributedStringDocumentAttributes opts) {
         return NSMutableAttributedStringExtensions.readFromData(this, data, opts);

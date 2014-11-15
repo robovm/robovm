@@ -47,13 +47,13 @@ import org.robovm.apple.foundation.*;
     protected NSFetchedPropertyDescription(SkipInit skipInit) { super(skipInit); }
     /*</constructors>*/
     /*<properties>*/
-    
+    @Property(selector = "fetchRequest")
+    public native NSFetchRequest getFetchRequest();
+    @Property(selector = "setFetchRequest:")
+    public native void setFetchRequest(NSFetchRequest v);
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
-    @Method(selector = "fetchRequest")
-    public native NSFetchRequest fetchRequest();
-    @Method(selector = "setFetchRequest:")
-    public native void setFetchRequest(NSFetchRequest fetchRequest);
+    
     /*</methods>*/
 }

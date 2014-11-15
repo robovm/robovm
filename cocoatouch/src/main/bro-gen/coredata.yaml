@@ -8,7 +8,7 @@ headers:
 typedefs: {}
 enums:
     NSAttributeType: {first: NSUndefinedAttributeType, suffix: AttributeType, type: MachineUInt}
-    NSCoreDataError: {first: NSManagedObjectValidationError, suffix: Error}
+    NSCoreDataErrorCode: {first: NSManagedObjectValidationError, suffix: Error}
     NSDeleteRule: {first: NSNoActionDeleteRule, suffix: DeleteRule, type: MachineUInt}
     NSEntityMappingType: {first: NSUndefinedEntityMappingType, suffix: EntityMappingType, type: MachineUInt}
     NSFetchedResultsChangeType: {first: NSFetchedResultsChangeInsert, type: MachineUInt}
@@ -18,102 +18,743 @@ enums:
     NSPersistentStoreRequestType: {first: NSFetchRequestType, suffix: RequestType, type: MachineUInt}
     NSPersistentStoreUbiquitousTransitionType: {}
     NSSnapshotEventType: {first: NSSnapshotEventUndoInsertion, type: MachineUInt, bits: true}
+    NSBatchUpdateRequestResultType: {}
+    NSBatchUpdateRequestType: {}
+    NSStatusOnlyResultType: {}
+    NSUpdatedObjectIDsResultType: {}
+    NSUpdatedObjectsCountResultType: {}
+    
     # Don't know what to do with this one
     Ignored: {first: NSFetchRequestExpressionType, exclude: true}
 classes:
     CoreData:
         annotations: ['@Marshaler(NSString.AsStringMarshaler.class)']
 
-    NSAtomicStore: {}
-    NSAtomicStoreCacheNode: {}
-    NSAttributeDescription: {}
-    NSEntityDescription: {}
-    NSEntityMapping: {}
-    NSEntityMigrationPolicy: {}
-    NSExpressionDescription: {}
-    NSFetchedPropertyDescription: {}
-    NSFetchedResultsController: {}
-    NSFetchRequest:
+    NSSQLiteError:
+        extends: NSError
+
+    NSAsynchronousFetchRequest: # DONE
+        properties:
+            'completionBlock':
+                type: '@Block VoidBlock1<NSAsynchronousFetchResult>'
         methods:
-            '-init': {exclude: true}
-    NSFetchRequestExpression: {}
-    NSIncrementalStore: {}
-    NSIncrementalStoreNode: {}
-    NSManagedObject: {}
-    NSManagedObjectContext: {}
-    NSManagedObjectID: {}
-    NSManagedObjectModel:
+            '-initWithFetchRequest:completionBlock:':
+                name: init
+                parameters:
+                    blk:
+                        type: '@Block VoidBlock1<NSAsynchronousFetchResult>'
+    NSAsynchronousFetchResult: {} # DONE
+    NSAtomicStore: # DONE
         methods:
-            '-init': {exclude: true}
-    NSMappingModel: {}
-    NSMergeConflict: {}
-    NSMergePolicy: {}
-    NSMigrationManager: {}
-    NSPersistentStore: {}
-    NSPersistentStoreCoordinator: {}
-    NSPersistentStoreRequest: {}
-    NSPropertyDescription: {}
-    NSPropertyMapping: {}
-    NSRelationshipDescription: {}
-    NSSaveChangesRequest: {}
+            '-initWithPersistentStoreCoordinator:configurationName:URL:options:':
+                name: init
+                parameters:
+                    options:
+                        type: NSPersistentStoreOptions
+            '-load:':
+                trim_after_first_colon: true
+                visibility: protected # throws NSErrorException
+            '-save:':
+                trim_after_first_colon: true
+                visibility: protected # throws NSErrorException 
+            '-newCacheNodeForManagedObject:':
+                name: newCacheNode
+            '-updateCacheNode:fromManagedObject:':
+                name: updateCacheNode
+            '-cacheNodes':
+                property: true
+                return_type: NSSet<NSAtomicStoreCacheNode>
+            '-addCacheNodes:':
+                trim_after_first_colon: true
+                parameters:
+                    cacheNodes:
+                        type: NSSet<NSAtomicStoreCacheNode>
+            '-willRemoveCacheNodes:':
+                trim_after_first_colon: true
+                parameters:
+                    cacheNodes:
+                        type: NSSet<NSAtomicStoreCacheNode>
+            '-cacheNodeForObjectID:':
+                name: getCacheNode
+            '-objectIDForEntity:referenceObject:':
+                name: getObjectID
+            '-newReferenceObjectForManagedObject:':
+                name:  newReferenceObject
+            '-referenceObjectForObjectID:':
+                name: getReferenceObject
+    NSAtomicStoreCacheNode: # DONE
+        properties:
+            'propertyCache':
+                type: '@org.robovm.rt.bro.annotation.Marshaler(NSDictionary.AsStringMapMarshaler.class) Map<String, NSObject>'
+        methods:
+            '-initWithObjectID:':
+                name: init
+            '-valueForKey:':
+                name: getValue
+            '-setValue:forKey:':
+                name: setValue
+                visibility: private # arguments switched
+    NSAttributeDescription: {} # DONE
+    NSBatchUpdateRequest: # DONE
+        properties:
+            'propertiesToUpdate':
+                type: '@org.robovm.rt.bro.annotation.Marshaler(NSDictionary.AsStringMapMarshaler.class) Map<String, NSExpression>'
+        methods:
+            '+batchUpdateRequestWithEntityName:':
+                name: create
+    NSBatchUpdateResult: {} # DONE
+    NSEntityDescription: # DONE
+        properties:
+            'subentitiesByName':
+                type: '@org.robovm.rt.bro.annotation.Marshaler(NSDictionary.AsStringMapMarshaler.class) Map<String, NSEntityDescription>'
+            'subentities':
+                type: NSArray<NSEntityDescription>
+            'propertiesByName':
+                type: '@org.robovm.rt.bro.annotation.Marshaler(NSDictionary.AsStringMapMarshaler.class) Map<String, NSPropertyDescription>'
+            'properties':
+                type: NSArray<NSPropertyDescription>
+            'attributesByName':
+                type: '@org.robovm.rt.bro.annotation.Marshaler(NSDictionary.AsStringMapMarshaler.class) Map<String, NSAttributeDescription>'
+            'relationshipsByName':
+                type: '@org.robovm.rt.bro.annotation.Marshaler(NSDictionary.AsStringMapMarshaler.class) Map<String, NSRelationshipDescription>'
+        methods:
+            '-relationshipsWithDestinationEntity:':
+                name: getRelationshipsWith
+                return_type: NSArray<NSRelationshipDescription>
+            '-isKindOfEntity:':
+                trim_after_first_colon: true
+            '+entityForName:inManagedObjectContext:':
+                name: getEntityByNameInContext
+            '+insertNewObjectForEntityForName:inManagedObjectContext:':
+                name: insertNewEntityInContext
+                return_type: NSEntityDescription
+    NSEntityMapping: # DONE
+        properties:
+            'attributeMappings':
+                type: NSArray<NSPropertyMapping>
+            'relationshipMappings':
+                type: NSArray<NSPropertyMapping>
+    NSEntityMigrationPolicy: # DONE
+        methods:
+            '-beginEntityMapping:manager:error:':
+                trim_after_first_colon: true
+                visibility: protected # throws NSErrorException 
+            '-createDestinationInstancesForSourceInstance:entityMapping:manager:error:':
+                name: createDestinationInstances
+                visibility: protected # throws NSErrorException 
+            '-endInstanceCreationForEntityMapping:manager:error:':
+                name: endInstanceCreation
+                visibility: protected # throws NSErrorException 
+            '-createRelationshipsForDestinationInstance:entityMapping:manager:error:':
+                name: createRelationships
+                visibility: protected # throws NSErrorException 
+            '-endRelationshipCreationForEntityMapping:manager:error:':
+                name: endRelationshipCreation
+                visibility: protected # throws NSErrorException 
+            '-performCustomValidationForEntityMapping:manager:error:':
+                name: performCustomValidation
+                visibility: protected # throws NSErrorException 
+            '-endEntityMapping:manager:error:':
+                trim_after_first_colon: true
+                visibility: protected # throws NSErrorException 
+    NSExpressionDescription: {} # DONE
+    NSFetchedPropertyDescription: {} # DONE
+    NSFetchedResultsController: # DONE
+        properties:
+            'sectionIndexTitles':
+                type: '@org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String>'
+            'sections':
+                type: '@org.robovm.rt.bro.annotation.Marshaler(NSArray.AsListMarshaler.class) List<NSFetchedResultsSectionInfo>'
+            'fetchedObjects':
+                type: NSArray<NSManagedObject>
+        methods:
+            '-initWithFetchRequest:managedObjectContext:sectionNameKeyPath:cacheName:':
+                name: init
+            '-performFetch:':
+                trim_after_first_colon: true
+                visibility: protected # throws NSErrorException 
+            '-objectAtIndexPath:':
+                name: getObjectAtIndexPath
+            '-indexPathForObject:':
+                name: getIndexPathForObject
+            '-sectionIndexTitleForSectionName:':
+                name: getSectionIndexTitleForSectionName
+            '-sectionForSectionIndexTitle:atIndex:':
+                name: getSectionForIndexTitle
+            '+deleteCacheWithName:':
+                name: deleteCache
+    NSFetchRequest: # DONE
+        properties:
+            'sortDescriptors':
+                type: NSArray<NSSortDescriptor>
+            'affectedStores':
+                type: '@org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String>'
+            'relationshipKeyPathsForPrefetching':
+                type: '@org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String>'
+            'propertiesToFetch':
+                type: NSArray<NSPropertyDescription>
+            'propertiesToGroupBy':
+                type: NSArray<NSPropertyDescription>
+        methods:
+            '-init':
+                exclude: true
+            '-initWithEntityName:':
+                name: init
+            '+fetchRequestWithEntityName:':
+                name: create
+    NSFetchRequestExpression: # DONE
+        methods:
+            '+expressionForFetch:context:countOnly:':
+                name: create
+    NSIncrementalStore: # DONE
+        methods:
+            '-loadMetadata:':
+                trim_after_first_colon: true
+                visibility: protected # throws NSErrorException
+            '-executeRequest:withContext:error:':
+                trim_after_first_colon: true
+                visibility: protected # throws NSErrorException
+            '-newValuesForObjectWithID:withContext:error:':
+                name: newValuesForObjectID
+                visibility: protected # throws NSErrorException
+            '-newValueForRelationship:forObjectWithID:withContext:error:':
+                trim_after_first_colon: true
+                visibility: protected # throws NSErrorException
+            '-obtainPermanentIDsForObjects:error:':
+                trim_after_first_colon: true
+                return_type: NSArray<NSManagedObjectID>
+                visibility: protected # throws NSErrorException
+                parameters:
+                    array:
+                        type: NSArray<NSManagedObject>
+            '-managedObjectContextDidRegisterObjectsWithIDs:':
+                name: didRegisterObjects
+                parameters:
+                    objectIDs:
+                        type: NSArray<NSManagedObjectID>
+            '-managedObjectContextDidUnregisterObjectsWithIDs:':
+                name: didUnregisterObjects
+                parameters:
+                    objectIDs:
+                        type: NSArray<NSManagedObjectID>
+            '-newObjectIDForEntity:referenceObject:':
+                trim_after_first_colon: true
+            '-referenceObjectForObjectID:':
+                name: getReferenceObjectForID
+            '+identifierForNewStoreAtURL:':
+                name: getIdentifierForNewStore
+    NSIncrementalStoreNode: # DONE
+        methods:
+            '-initWithObjectID:withValues:version:':
+                name: init
+                parameters:
+                    values:
+                        type: '@org.robovm.rt.bro.annotation.Marshaler(NSDictionary.AsStringMapMarshaler.class) Map<String, NSObject>'
+            '-updateWithValues:version:':
+                name: update
+                parameters:
+                    values:
+                        type: '@org.robovm.rt.bro.annotation.Marshaler(NSDictionary.AsStringMapMarshaler.class) Map<String, NSObject>'
+            '-valueForPropertyDescription:':
+                name: getValue
+    NSManagedObject: # DONE
+        methods:
+            '-initWithEntity:insertIntoManagedObjectContext:':
+                name: init
+            '-hasFaultForRelationshipNamed:':
+                name: hasFaultForRelationship
+            '-willAccessValueForKey:':
+                name: willAccessValue
+            '-didAccessValueForKey:':
+                name: didAccessValue
+            '-willChangeValueForKey:':
+                name: willChangeValue
+            '-didChangeValueForKey:':
+                name: didChangeValue
+            '-willChangeValueForKey:withSetMutation:usingObjects:':
+                name: willChangeValue
+            '-didChangeValueForKey:withSetMutation:usingObjects:':
+                name: didChangeValue
+            '-awakeFromSnapshotEvents:':
+                trim_after_first_colon: true
+            '-valueForKey:':
+                name: getValue
+            '-setValue:forKey:':
+                trim_after_first_colon: true
+                visibility: private # switched arguments
+            '-primitiveValueForKey:':
+                name: getPrimitiveValue
+            '-setPrimitiveValue:forKey:':
+                name: setPrimitiveValue
+                visibility: private # switched arguments
+            '-committedValuesForKeys:':
+                name: getCommittedValues
+                return_type: '@org.robovm.rt.bro.annotation.Marshaler(NSDictionary.AsStringMapMarshaler.class) Map<String, NSObject>'
+            '-changedValues':
+                property: true
+                return_type: '@org.robovm.rt.bro.annotation.Marshaler(NSDictionary.AsStringMapMarshaler.class) Map<String, NSObject>'
+            '-changedValuesForCurrentEvent':
+                property: true
+                return_type: '@org.robovm.rt.bro.annotation.Marshaler(NSDictionary.AsStringMapMarshaler.class) Map<String, NSObject>'
+            '-validateValue:forKey:error:':
+                name: validateValue
+                visibility: protected # throws NSErrorException
+            '-validateFor.*':
+                trim_after_first_colon: true
+                visibility: protected # throws NSErrorException
+            '+contextShouldIgnoreUnmodeledPropertyChanges':
+                name: shouldContextIgnoreUnmodeledPropertyChanges
+    NSManagedObjectContext: # DONE
+        properties:
+            '.*Objects':
+                type: NSSet<NSManagedObject>
+        methods:
+            '-init':
+                exclude: true
+            '-initWithConcurrencyType:':
+                name: init
+            '-performBlock:':
+                trim_after_first_colon: true
+            '-performBlockAndWait:':
+                trim_after_first_colon: true
+            '-objectRegisteredForID:':
+                name: getObjectRegisteredForID
+            '-objectWithID:':
+                name: getObjectWithId
+            '-existingObjectWithID:error:':
+                name: getExistingObjectWithID
+                visibility: protected # throws NSErrorException
+            '-executeFetchRequest:error:':
+                trim_after_first_colon: true
+                visibility: protected # throws NSErrorException
+                return_type: NSArray<NSManagedObject>
+            '-countForFetchRequest:error:':
+                name: getCountForFetchRequest
+                visibility: protected # throws NSErrorException
+            '-executeRequest:error:':
+                trim_after_first_colon: true
+                visibility: protected # throws NSErrorException
+            '-insertObject:':
+                trim_after_first_colon: true
+            '-deleteObject:':
+                trim_after_first_colon: true
+            '-refreshObject:mergeChanges:':
+                trim_after_first_colon: true
+            '-detectConflictsForObject:':
+                name: detectConflicts
+            '-observeValueForKeyPath:ofObject:change:context:':
+                exclude: true # we have our own native version
+            '-assignObject:toPersistentStore:':
+                name: assignObjectToPersistentStore
+            '-save:':
+                trim_after_first_colon: true
+                visibility: protected # throws NSErrorException
+            '-obtainPermanentIDsForObjects:error:':
+                name: obtainPermanentIDsForObjects
+                visibility: protected # throws NSErrorException
+                parameters:
+                    objects:
+                        type: NSArray<NSManagedObject>
+            '-mergeChangesFromContextDidSaveNotification:':
+                trim_after_first_colon: true
+    NSManagedObjectID: # DONE
+        methods:
+            '-URIRepresentation':
+                property: true
+    NSManagedObjectModel: # DONE
+        properties:
+            'entitiesByName':    
+                type: '@org.robovm.rt.bro.annotation.Marshaler(NSDictionary.AsStringMapMarshaler.class) Map<String, NSEntityDescription>'
+            'entities':
+                type: NSArray<NSEntityDescription>
+            'configurations':
+                type: '@org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String>'
+            'localizationDictionary':
+                type: '@org.robovm.rt.bro.annotation.Marshaler(NSDictionary.AsStringStringMapMarshaler.class) Map<String, String>'
+            'fetchRequestTemplatesByName':
+                type: '@org.robovm.rt.bro.annotation.Marshaler(NSDictionary.AsStringMapMarshaler.class) Map<String, NSFetchRequest>'
+        methods:
+            '-init':
+                exclude: true
+            '-initWithContentsOfURL:':
+                name: init
+            '-entitiesForConfiguration:':
+                name: getEntitiesForConfiguration
+                return_type: NSArray<NSEntityDescription>
+            '-setEntities:forConfiguration:':
+                name: setEntitiesForConfiguration
+                parameters:
+                    entities:
+                        type: NSArray<NSEntityDescription>
+            '-setFetchRequestTemplate:forName:':
+                trim_after_first_colon: true
+            '-fetchRequestTemplateForName:':
+                name: getFetchRequestTemplate
+            '-fetchRequestFromTemplateWithName:substitutionVariables:':
+                name: getFetchRequestTemplate
+                parameters:
+                    variables:
+                        type: '@org.robovm.rt.bro.annotation.Marshaler(NSDictionary.AsStringMapMarshaler.class) Map<String, NSObject>'
+            '-isConfiguration:compatibleWithStoreMetadata:':
+                name: isConfigurationCompatibleWithStoreMetadata
+                parameters:
+                    metadata:
+                        type: NSPersistentStoreMetadata
+            '+mergedModelFromBundles:':
+                name: createFromBundles
+                parameters:
+                    bundles:
+                        type: NSArray<NSBundle>
+            '+modelByMergingModels:':
+                name: createByMergingModels
+                parameters:
+                    models:
+                        type: NSArray<NSManagedObjectModel>
+            '+mergedModelFromBundles:forStoreMetadata:':
+                name: createFromBundles
+                parameters:
+                    bundles:
+                        type: NSArray<NSBundle>
+                    metadata:
+                        type: NSPersistentStoreMetadata
+            '+modelByMergingModels:forStoreMetadata:':
+                name: createByMergingModels
+                parameters:
+                    models:
+                        type: NSArray<NSManagedObjectModel>
+                    metadata:
+                        type: NSPersistentStoreMetadata
+    NSMappingModel: # DONE
+        properties:
+            'entityMappings':
+                type: NSArray<NSEntityMapping>
+            'entityMappingsByName':
+                type: '@org.robovm.rt.bro.annotation.Marshaler(NSDictionary.AsStringMapMarshaler.class) Map<String, NSEntityMapping>'
+        methods:
+            '-initWithContentsOfURL:':
+                name: init
+            '+mappingModelFromBundles:forSourceModel:destinationModel:':
+                name: create
+                parameters:
+                    bundles:
+                        type: NSArray<NSBundle>
+            '+inferredMappingModelForSourceModel:destinationModel:error:':
+                name: createInferred
+                visibility: protected # throws NSErrorException
+    NSMergeConflict: # DONE
+        properties:
+            '.*Snapshot':
+                type: '@org.robovm.rt.bro.annotation.Marshaler(NSDictionary.AsStringMapMarshaler.class) Map<String, NSObject>'
+        methods:
+            '-initWithSource:newVersion:oldVersion:cachedSnapshot:persistedSnapshot:':
+                name: init
+                parameters:
+                    cachesnap:
+                        type: '@org.robovm.rt.bro.annotation.Marshaler(NSDictionary.AsStringMapMarshaler.class) Map<String, NSObject>'
+                    persnap:
+                        type: '@org.robovm.rt.bro.annotation.Marshaler(NSDictionary.AsStringMapMarshaler.class) Map<String, NSObject>'
+    NSMergePolicy: # DONE
+        methods:
+            '-resolveConflicts:error:':
+                trim_after_first_colon: true
+                visibility: protected # throws NSErrorException 
+                parameters:
+                    list:
+                        type: NSArray<NSMergeConflict>
+    NSMigrationManager: # DONE
+        methods:
+            '-initWithSourceModel:destinationModel:':
+                name: init
+            '-migrateStoreFromURL:type:options:withMappingModel:toDestinationURL:destinationType:destinationOptions:error:':
+                name: migrateStore
+                visibility: protected # throws NSErrorException
+                parameters:
+                    sOptions:
+                        type: NSPersistentStoreOptions
+                    dOptions:
+                        type: NSPersistentStoreOptions
+            '-sourceEntityForEntityMapping:':
+                name: getSourceEntity
+            '-destinationEntityForEntityMapping:':
+                name: getDestinationEntity
+            '-associateSourceInstance:withDestinationInstance:forEntityMapping:':
+                name: associateInstances
+            '-destinationInstancesForEntityMappingNamed:sourceInstances:':
+                name: getDestinationInstances
+                return_type: NSArray<NSEntityMapping>
+                parameters:
+                    sourceInstances:
+                        type: NSArray<NSEntityMapping>
+            '-sourceInstancesForEntityMappingNamed:destinationInstances:':
+                name: getSourceInstances
+                return_type: NSArray<NSEntityMapping>
+                parameters:
+                    destinationInstances:
+                        type: NSArray<NSEntityMapping>
+            '-cancelMigrationWithError:':
+                name: cancelMigration
+    NSPersistentStore: # DONE
+        properties:
+            'options':
+                type: NSPersistentStoreOptions
+            'metadata':
+                type: NSPersistentStoreMetadata
+        methods:
+            '-initWithPersistentStoreCoordinator:configurationName:URL:options:':
+                name: init
+                parameters:
+                    options:
+                        type: NSPersistentStoreOptions
+            '-loadMetadata:':
+                trim_after_first_colon: true
+                visibility: protected # throws NSErrorException
+            '-didAddToPersistentStoreCoordinator:':
+                trim_after_first_colon: true
+            '-willRemoveFromPersistentStoreCoordinator:':
+                trim_after_first_colon: true
+            '+metadataForPersistentStoreWithURL:error:':
+                name: getMetadataForPersistentStore
+                return_type: NSPersistentStoreMetadata
+                visibility: protected # throws NSErrorException
+            '+setMetadata:forPersistentStoreWithURL:error:':
+                name: setMetadataForPersistentStore
+                visibility: protected # throws NSErrorException
+                parameters:
+                    metadata:
+                        type: NSPersistentStoreMetadata
+            '+migrationManagerClass':
+                property: true
+                return_type: 'Class<? extends NSMigrationManager>'
+    NSPersistentStoreAsynchronousResult: {} # DONE
+    NSPersistentStoreCoordinator: # DONE
+        properties:
+            'persistentStores':
+                type: NSArray<NSPersistentStore>
+        methods:
+            '-initWithManagedObjectModel:':
+                name: init
+            '-persistentStoreForURL:':
+                name: getPersistentStoreForURL
+            '-URLForPersistentStore:':
+                name: getURLForPersistentStore
+            '-setURL:forPersistentStore:':
+                name: setURLForPersistentStore
+            '-addPersistentStoreWithType:configuration:URL:options:error:':
+                name: addPersistentStore
+                visibility: protected # throws NSErrorException
+                parameters:
+                    options:
+                        type: NSPersistentStoreOptions
+            '-removePersistentStore:error:':
+                trim_after_first_colon: true
+                visibility: protected # throws NSErrorException
+            '-setMetadata:forPersistentStore:':
+                name: setMetadataForPersistentStore
+                parameters:
+                    metadata:
+                        type: NSPersistentStoreMetadata
+            '-metadataForPersistentStore:':
+                name: getMetadataForPersistentStore
+            '-managedObjectIDForURIRepresentation:':
+                name: getManagedObjectIDForURIRepresentation
+            '-executeRequest:withContext:error:':
+                trim_after_first_colon: true
+                visibility: protected # throws NSErrorException
+            '-migratePersistentStore:toURL:options:withType:error:':
+                trim_after_first_colon: true
+                visibility: protected # throws NSErrorException
+                parameters:
+                    options:
+                        type: NSPersistentStoreOptions
+            '-performBlock:':
+                trim_after_first_colon: true
+            '-performBlockAndWait:':
+                trim_after_first_colon: true
+            '+registeredStoreTypes':
+                property: true
+                return_type: '@org.robovm.rt.bro.annotation.Marshaler(NSDictionary.AsStringMapMarshaler.class) Map<String, NSPersistentStore>'
+            '+registerStoreClass:forStoreType:':
+                name: registerStoreClassForType
+                parameters:
+                    storeClass:
+                        type: 'Class<? extends NSPersistentStore>'
+            '+metadataForPersistentStoreOfType:URL:error:':
+                name: getMetadataForPersistentStoreType
+                visibility: protected # throws NSErrorException
+                return_type: NSPersistentStoreMetadata
+            '+setMetadata:forPersistentStoreOfType:URL:error:':
+                name: setMetadataForPersistentStoreType
+                visibility: protected # throws NSErrorException
+                parameters:
+                    metadata:
+                        type: NSPersistentStoreMetadata
+            '+removeUbiquitousContentAndPersistentStoreAtURL:options:error:':
+                name: removeUbiquitousContentAndPersistentStore
+                visibility: protected # throws NSErrorException
+                parameters:
+                    options:
+                        type: NSPersistentStoreOptions
+    NSPersistentStoreRequest: # DONE
+        properties:
+            'affectedStores':
+                type: '@org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String>'
+    NSPersistentStoreResult: {} # DONE
+    NSPropertyDescription: # DONE
+        properties:
+            'validationPredicates':
+                type: NSArray<NSPredicate>
+            'validationWarnings':
+                type: '@org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String>'
+        methods:
+            '-setValidationPredicates:withValidationWarnings:':
+                name: setValidationPredicatesAndWarnings
+                parameters:
+                    validationPredicates:
+                        type: NSArray<NSPredicate>
+                    validationWarnings:
+                        type: '@org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String>'
+    NSPropertyMapping: {} # DONE
+    NSRelationshipDescription: {} # DONE
+    NSSaveChangesRequest: # DONE
+        properties:
+            '.*Objects':
+                type: NSSet<NSManagedObject>
+        methods:
+            '-initWithInsertedObjects:updatedObjects:deletedObjects:lockedObjects:':
+                name: init
+                parameters:
+                    insertedObjects:
+                        type: NSSet<NSManagedObject>
+                    updatedObjects:
+                        type: NSSet<NSManagedObject>
+                    deletedObjects:
+                        type: NSSet<NSManagedObject>
+                    lockedObjects:
+                        type: NSSet<NSManagedObject>
 
 protocols:
-
-    NSFetchedResultsControllerDelegate: {}
-    NSFetchedResultsSectionInfo: {}
+    NSFetchedResultsControllerDelegate: # DONE
+        methods:
+            '-controller:didChangeObject:atIndexPath:forChangeType:newIndexPath:':
+                name: didChangeObject
+            '-controller:didChangeSection:atIndex:forChangeType:':
+                name: didChangeSection
+            '-controllerWillChangeContent:':
+                name: willChangeContent
+            '-controllerDidChangeContent:':
+                name: didChangeContent
+            '-controller:sectionIndexTitleForSectionName:':
+                name: getSectionIndexTitle
+    NSFetchedResultsSectionInfo: # DONE
+        properties:
+            'objects':
+                type: NSArray<NSManagedObject>
 
 functions:
 
     # Make sure we don't miss any functions if new ones are introduced in a later version
     (NS.*):
         class: CoreData
-        name: "Function__#{g[0]}"
+        name: 'Function__#{g[0]}'
 
 values:
+    # CoreData
+    NSCoreDataVersionNumber:
+        class: CoreDataVersionNumber
+        name: 'getVersion'
+        readonly: true
+    
+    NSSQLiteErrorDomain:
+        class: NSSQLiteError
+        name: getClassDomain
 
-    NS(.*Key):
+    # NSManagedObjectContext
+    NSManagedObjectContext(.*Notification):
+        class: NSManagedObjectContext
+        name: '#{g[0]}'
         type: NSString
-        name: "#{g[0]}"
-
-    NS(.*Notification):
-        name: "#{g[0]}"
+    NS(.*ObjectsKey):
+        class: NSManagedObjectContextNotificationInfo
+        name: '#{g[0]}'
         type: NSString
+        visibility: protected
 
+    # NSMergePolicy
     NS(.*MergePolicy):
-        name: "#{g[0]}"
+        class: NSMergePolicy
+        name: 'get#{g[0]}'
         readonly: true
+        type: NSMergePolicy
 
-    NS(.*StoreType):
-        name: "#{g[0]}"
-
-    NS(.*Option):
-        name: "#{g[0]}"
+    # NSPersistentStoreCoordinator
+    NS(ReadOnly)PersistentStoreOption:
+        class: NSPersistentStoreOptions
+        name: '#{g[0]}Option'
         type: NSString
-
-    NS(PersistentStoreOSCompatibility):
-        name: "#{g[0]}"
+        visibility: protected
+    NSPersistentStore(Timeout)Option:
+        class: NSPersistentStoreOptions
+        name: '#{g[0]}Option'
         type: NSString
-
-    NS(.*ErrorDomain):
+        visibility: protected
+    NS(SQLite.*)Option:
+        class: NSPersistentStoreOptions
+        name: '#{g[0]}Option'
         type: NSString
-        name: "#{g[0]}"
-
-    NS(CoreDataVersionNumber):
-        name: "#{g[0]}"
-        readonly: true
+        visibility: protected
+    NSPersistentStore(.*)Key:
+        class: NSPersistentStoreOptions
+        name: '#{g[0]}Option'
+        type: NSString
+        visibility: protected
+    NSPersistentStore(.*Ubiquitous.*)Option:
+        class: NSPersistentStoreOptions
+        name: '#{g[0]}Option'
+        type: NSString
+        visibility: protected
+    NS(IgnorePersistentStoreVersioning)Option:
+        class: NSPersistentStoreOptions
+        name: '#{g[0]}Option'
+        type: NSString
+        visibility: protected
+    NS(MigratePersistentStoresAutomatically)Option:
+        class: NSPersistentStoreOptions
+        name: '#{g[0]}Option'
+        type: NSString
+        visibility: protected
+    NS(InferMappingModelAutomatically)Option:
+        class: NSPersistentStoreOptions
+        name: '#{g[0]}Option'
+        type: NSString
+        visibility: protected
+        
+    NSStore(.*)Key:
+        class: NSPersistentStoreMetadata
+        name: '#{g[0]}Value'
+        type: NSString
+        visibility: protected
+    NSPersistentStore(OSCompatibility):
+        class: NSPersistentStoreMetadata
+        name: '#{g[0]}Value'
+        type: NSString
+        visibility: protected
+    
+    NS(.*)StoreType:
+        class: NSPersistentStoreType
+        name: '#{g[0]}Value'
+        visibility: protected
 
     # Make sure we don't miss any values if new ones are introduced in a later version
     (k?NS.*):
         class: CoreData
-        name: "Value__#{g[0]}"
+        name: 'Value__#{g[0]}'
 
 constants:
-
-    NS(CoreDataVersionNumber.*):
-        class: CoreData
-        name: "#{g[0]}"
+    NSCoreDataVersionNumber(.*):
+        class: CoreDataVersionNumber
+        name: 'Version#{g[0]}'
 
     # Make sure we don't miss any constants if new ones are introduced in a later version
     (k?NS.*):
         class: CoreData
-        name: "Constant__#{g[0]}"
+        name: 'Constant__#{g[0]}'

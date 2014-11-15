@@ -47,17 +47,16 @@ import org.robovm.apple.foundation.*;
     protected NSFetchRequestExpression(SkipInit skipInit) { super(skipInit); }
     /*</constructors>*/
     /*<properties>*/
-    
+    @Property(selector = "requestExpression")
+    public native NSExpression getRequestExpression();
+    @Property(selector = "contextExpression")
+    public native NSExpression getContextExpression();
+    @Property(selector = "isCountOnlyRequest")
+    public native boolean isCountOnlyRequest();
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
-    @Method(selector = "requestExpression")
-    public native NSExpression requestExpression();
-    @Method(selector = "contextExpression")
-    public native NSExpression contextExpression();
-    @Method(selector = "isCountOnlyRequest")
-    public native boolean isCountOnlyRequest();
     @Method(selector = "expressionForFetch:context:countOnly:")
-    public static native NSExpression expressionForFetch$context$countOnly$(NSExpression fetch, NSExpression context, boolean countFlag);
+    public static native NSExpression create(NSExpression fetch, NSExpression context, boolean countFlag);
     /*</methods>*/
 }

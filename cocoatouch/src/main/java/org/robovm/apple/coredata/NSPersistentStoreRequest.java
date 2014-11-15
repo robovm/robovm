@@ -47,15 +47,15 @@ import org.robovm.apple.foundation.*;
     protected NSPersistentStoreRequest(SkipInit skipInit) { super(skipInit); }
     /*</constructors>*/
     /*<properties>*/
-    
+    @Property(selector = "affectedStores")
+    public native @org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String> getAffectedStores();
+    @Property(selector = "setAffectedStores:")
+    public native void setAffectedStores(@org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String> v);
+    @Property(selector = "requestType")
+    public native NSPersistentStoreRequestType getRequestType();
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
-    @Method(selector = "affectedStores")
-    public native NSArray<?> affectedStores();
-    @Method(selector = "setAffectedStores:")
-    public native void setAffectedStores(NSArray<?> stores);
-    @Method(selector = "requestType")
-    public native NSPersistentStoreRequestType requestType();
+    
     /*</methods>*/
 }

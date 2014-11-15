@@ -32,8 +32,8 @@ import org.robovm.apple.foundation.*;
 /*<javadoc>*/
 
 /*</javadoc>*/
-/*<annotations>*//*</annotations>*/
-public enum /*<name>*/NSCoreDataError/*</name>*/ implements ValuedEnum {
+/*<annotations>*/@Marshaler(ValuedEnum.AsMachineSizedSIntMarshaler.class)/*</annotations>*/
+public enum /*<name>*/NSCoreDataErrorCode/*</name>*/ implements NSErrorCode {
     /*<values>*/
     ManagedObjectValidation(1550L),
     ValidationMultipleErrors(1560L),
@@ -78,17 +78,22 @@ public enum /*<name>*/NSCoreDataError/*</name>*/ implements ValuedEnum {
     ExternalRecordImport(134200L);
     /*</values>*/
 
+    /*<bind>*/
+    /*</bind>*/
+    /*<constants>*//*</constants>*/
+    /*<methods>*//*</methods>*/
+
     private final long n;
 
-    private /*<name>*/NSCoreDataError/*</name>*/(long n) { this.n = n; }
+    private /*<name>*/NSCoreDataErrorCode/*</name>*/(long n) { this.n = n; }
     public long value() { return n; }
-    public static /*<name>*/NSCoreDataError/*</name>*/ valueOf(long n) {
-        for (/*<name>*/NSCoreDataError/*</name>*/ v : values()) {
+    public static /*<name>*/NSCoreDataErrorCode/*</name>*/ valueOf(long n) {
+        for (/*<name>*/NSCoreDataErrorCode/*</name>*/ v : values()) {
             if (v.n == n) {
                 return v;
             }
         }
         throw new IllegalArgumentException("No constant with value " + n + " found in " 
-            + /*<name>*/NSCoreDataError/*</name>*/.class.getName());
+            + /*<name>*/NSCoreDataErrorCode/*</name>*/.class.getName());
     }
 }

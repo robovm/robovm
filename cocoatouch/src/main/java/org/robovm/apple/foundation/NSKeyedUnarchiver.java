@@ -29,6 +29,7 @@ import org.robovm.rt.bro.ptr.*;
 import org.robovm.apple.corefoundation.*;
 import org.robovm.apple.uikit.*;
 import org.robovm.apple.coreanimation.*;
+import org.robovm.apple.coredata.*;
 import org.robovm.apple.coregraphics.*;
 import org.robovm.apple.coremedia.*;
 import org.robovm.apple.security.*;
@@ -72,9 +73,9 @@ import org.robovm.apple.dispatch.*;
     @Method(selector = "finishDecoding")
     public native void finishDecoding();
     @Method(selector = "setClass:forClassName:")
-    public native void setClassForClassName(ObjCClass cls, String codedName);
+    public native void setClassForClassName(Class<?> cls, String codedName);
     @Method(selector = "classForClassName:")
-    public native ObjCClass getClassForClassName(String codedName);
+    public native Class<?> getClassForClassName(String codedName);
     /**
      * @since Available in iOS 6.0 and later.
      */
@@ -85,8 +86,8 @@ import org.robovm.apple.dispatch.*;
     @Method(selector = "unarchiveObjectWithFile:")
     private static native NSObject unarchiveObjectWithFile$(String path);
     @Method(selector = "setClass:forClassName:")
-    public static native void setDefaultClassForClassName(ObjCClass cls, String codedName);
+    public static native void setDefaultClassForClassName(Class<?> cls, String codedName);
     @Method(selector = "classForClassName:")
-    public static native ObjCClass getDefaultClassForClassName(String codedName);
+    public static native Class<?> getDefaultClassForClassName(String codedName);
     /*</methods>*/
 }

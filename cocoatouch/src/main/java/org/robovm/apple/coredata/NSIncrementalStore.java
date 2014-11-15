@@ -50,26 +50,99 @@ import org.robovm.apple.foundation.*;
     
     /*</properties>*/
     /*<members>*//*</members>*/
+    /**
+     * 
+     * @return
+     * @throws NSErrorException
+     */
+    public boolean loadMetadata() {
+        NSError.NSErrorPtr err = new NSError.NSErrorPtr();
+        boolean result = loadMetadata(err);
+        if (err.get() != null) {
+            throw new NSErrorException(err.get());
+        }
+        return result;
+    }
+    /**
+     * 
+     * @param request
+     * @param context
+     * @return
+     * @throws NSErrorException
+     */
+    public NSObject executeRequest(NSPersistentStoreRequest request, NSManagedObjectContext context) {
+        NSError.NSErrorPtr err = new NSError.NSErrorPtr();
+        NSObject result = executeRequest(request, context, err);
+        if (err.get() != null) {
+            throw new NSErrorException(err.get());
+        }
+        return result;
+    }
+    /**
+     * 
+     * @param objectID
+     * @param context
+     * @return
+     * @throws NSErrorException
+     */
+    public NSIncrementalStoreNode newValuesForObjectID(NSManagedObjectID objectID, NSManagedObjectContext context) {
+        NSError.NSErrorPtr err = new NSError.NSErrorPtr();
+        NSIncrementalStoreNode result = newValuesForObjectID(objectID, context, err);
+        if (err.get() != null) {
+            throw new NSErrorException(err.get());
+        }
+        return result;
+    }
+    /**
+     * 
+     * @param relationship
+     * @param objectID
+     * @param context
+     * @return
+     * @throws NSErrorException
+     */
+    public NSObject newValueForRelationship(NSRelationshipDescription relationship, NSManagedObjectID objectID, NSManagedObjectContext context) {
+        NSError.NSErrorPtr err = new NSError.NSErrorPtr();
+        NSObject result = newValueForRelationship(relationship, objectID, context, err);
+        if (err.get() != null) {
+            throw new NSErrorException(err.get());
+        }
+        return result;
+    }
+    /**
+     * 
+     * @param array
+     * @return
+     * @throws NSErrorException
+     */
+    public NSArray<NSManagedObjectID> obtainPermanentIDsForObjects(NSArray<NSManagedObject> array) {
+        NSError.NSErrorPtr err = new NSError.NSErrorPtr();
+        NSArray<NSManagedObjectID> result = obtainPermanentIDsForObjects(array, err);
+        if (err.get() != null) {
+            throw new NSErrorException(err.get());
+        }
+        return result;
+    }
     /*<methods>*/
     @Method(selector = "loadMetadata:")
-    public native boolean loadMetadata$(NSError.NSErrorPtr error);
+    protected native boolean loadMetadata(NSError.NSErrorPtr error);
     @Method(selector = "executeRequest:withContext:error:")
-    public native NSObject executeRequest$withContext$error$(NSPersistentStoreRequest request, NSManagedObjectContext context, NSError.NSErrorPtr error);
+    protected native NSObject executeRequest(NSPersistentStoreRequest request, NSManagedObjectContext context, NSError.NSErrorPtr error);
     @Method(selector = "newValuesForObjectWithID:withContext:error:")
-    public native NSIncrementalStoreNode newValuesForObjectWithID$withContext$error$(NSManagedObjectID objectID, NSManagedObjectContext context, NSError.NSErrorPtr error);
+    protected native NSIncrementalStoreNode newValuesForObjectID(NSManagedObjectID objectID, NSManagedObjectContext context, NSError.NSErrorPtr error);
     @Method(selector = "newValueForRelationship:forObjectWithID:withContext:error:")
-    public native NSObject newValueForRelationship$forObjectWithID$withContext$error$(NSRelationshipDescription relationship, NSManagedObjectID objectID, NSManagedObjectContext context, NSError.NSErrorPtr error);
+    protected native NSObject newValueForRelationship(NSRelationshipDescription relationship, NSManagedObjectID objectID, NSManagedObjectContext context, NSError.NSErrorPtr error);
     @Method(selector = "obtainPermanentIDsForObjects:error:")
-    public native NSArray<?> obtainPermanentIDsForObjects$error$(NSArray<?> array, NSError.NSErrorPtr error);
+    protected native NSArray<NSManagedObjectID> obtainPermanentIDsForObjects(NSArray<NSManagedObject> array, NSError.NSErrorPtr error);
     @Method(selector = "managedObjectContextDidRegisterObjectsWithIDs:")
-    public native void managedObjectContextDidRegisterObjectsWithIDs$(NSArray<?> objectIDs);
+    public native void didRegisterObjects(NSArray<NSManagedObjectID> objectIDs);
     @Method(selector = "managedObjectContextDidUnregisterObjectsWithIDs:")
-    public native void managedObjectContextDidUnregisterObjectsWithIDs$(NSArray<?> objectIDs);
+    public native void didUnregisterObjects(NSArray<NSManagedObjectID> objectIDs);
     @Method(selector = "newObjectIDForEntity:referenceObject:")
-    public native NSManagedObjectID newObjectIDForEntity$referenceObject$(NSEntityDescription entity, NSObject data);
+    public native NSManagedObjectID newObjectIDForEntity(NSEntityDescription entity, NSObject data);
     @Method(selector = "referenceObjectForObjectID:")
-    public native NSObject referenceObjectForObjectID$(NSManagedObjectID objectID);
+    public native NSObject getReferenceObjectForID(NSManagedObjectID objectID);
     @Method(selector = "identifierForNewStoreAtURL:")
-    public static native NSObject identifierForNewStoreAtURL$(NSURL storeURL);
+    public static native NSObject getIdentifierForNewStore(NSURL storeURL);
     /*</methods>*/
 }

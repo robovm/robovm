@@ -29,6 +29,7 @@ import org.robovm.rt.bro.ptr.*;
 import org.robovm.apple.corefoundation.*;
 import org.robovm.apple.uikit.*;
 import org.robovm.apple.coreanimation.*;
+import org.robovm.apple.coredata.*;
 import org.robovm.apple.coregraphics.*;
 import org.robovm.apple.coremedia.*;
 import org.robovm.apple.security.*;
@@ -143,7 +144,7 @@ import org.robovm.apple.dispatch.*;
     @Property(selector = "localizedInfoDictionary")
     public native NSDictionary<?, ?> getLocalizedInfoDictionary();
     @Property(selector = "principalClass")
-    public native ObjCClass getPrincipalClass();
+    public native Class<?> getPrincipalClass();
     @Property(selector = "preferredLocalizations")
     public native @org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String> getPreferredLocalizations();
     @Property(selector = "localizations")
@@ -260,11 +261,11 @@ import org.robovm.apple.dispatch.*;
     @Method(selector = "objectForInfoDictionaryKey:")
     public native NSObject getInfoDictionaryObject(String key);
     @Method(selector = "classNamed:")
-    public native ObjCClass getClassNamed(String className);
+    public native Class<?> getClassNamed(String className);
     @Method(selector = "mainBundle")
     public static native NSBundle getMainBundle();
     @Method(selector = "bundleForClass:")
-    public static native NSBundle getBundle(ObjCClass aClass);
+    public static native NSBundle getBundle(Class<?> aClass);
     @Method(selector = "bundleWithIdentifier:")
     public static native NSBundle getBundle(String identifier);
     @Method(selector = "allBundles")

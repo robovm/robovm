@@ -47,92 +47,91 @@ import org.robovm.apple.foundation.*;
     protected NSEntityDescription(SkipInit skipInit) { super(skipInit); }
     /*</constructors>*/
     /*<properties>*/
-    
+    @Property(selector = "managedObjectModel")
+    public native NSManagedObjectModel getManagedObjectModel();
+    @Property(selector = "managedObjectClassName")
+    public native String getManagedObjectClassName();
+    @Property(selector = "setManagedObjectClassName:")
+    public native void setManagedObjectClassName(String v);
+    @Property(selector = "name")
+    public native String getName();
+    @Property(selector = "setName:")
+    public native void setName(String v);
+    @Property(selector = "isAbstract")
+    public native boolean isAbstract();
+    @Property(selector = "setAbstract:")
+    public native void setAbstract(boolean v);
+    @Property(selector = "subentitiesByName")
+    public native @org.robovm.rt.bro.annotation.Marshaler(NSDictionary.AsStringMapMarshaler.class) Map<String, NSEntityDescription> getSubentitiesByName();
+    @Property(selector = "subentities")
+    public native NSArray<NSEntityDescription> getSubentities();
+    @Property(selector = "setSubentities:")
+    public native void setSubentities(NSArray<NSEntityDescription> v);
+    @Property(selector = "superentity")
+    public native NSEntityDescription getSuperentity();
+    @Property(selector = "propertiesByName")
+    public native @org.robovm.rt.bro.annotation.Marshaler(NSDictionary.AsStringMapMarshaler.class) Map<String, NSPropertyDescription> getPropertiesByName();
+    @Property(selector = "properties")
+    public native NSArray<NSPropertyDescription> getProperties();
+    @Property(selector = "setProperties:")
+    public native void setProperties(NSArray<NSPropertyDescription> v);
+    @Property(selector = "userInfo")
+    public native NSDictionary<?, ?> getUserInfo();
+    @Property(selector = "setUserInfo:")
+    public native void setUserInfo(NSDictionary<?, ?> v);
+    @Property(selector = "attributesByName")
+    public native @org.robovm.rt.bro.annotation.Marshaler(NSDictionary.AsStringMapMarshaler.class) Map<String, NSAttributeDescription> getAttributesByName();
+    @Property(selector = "relationshipsByName")
+    public native @org.robovm.rt.bro.annotation.Marshaler(NSDictionary.AsStringMapMarshaler.class) Map<String, NSRelationshipDescription> getRelationshipsByName();
+    /**
+     * @since Available in iOS 3.0 and later.
+     */
+    @Property(selector = "versionHash")
+    public native NSData getVersionHash();
+    /**
+     * @since Available in iOS 3.0 and later.
+     */
+    @Property(selector = "versionHashModifier")
+    public native String getVersionHashModifier();
+    /**
+     * @since Available in iOS 3.0 and later.
+     */
+    @Property(selector = "setVersionHashModifier:")
+    public native void setVersionHashModifier(String v);
+    /**
+     * @since Available in iOS 3.0 and later.
+     */
+    @Property(selector = "renamingIdentifier")
+    public native String getRenamingIdentifier();
+    /**
+     * @since Available in iOS 3.0 and later.
+     */
+    @Property(selector = "setRenamingIdentifier:")
+    public native void setRenamingIdentifier(String v);
+    /**
+     * @since Available in iOS 5.0 and later.
+     */
+    @Property(selector = "compoundIndexes")
+    public native NSArray<?> getCompoundIndexes();
+    /**
+     * @since Available in iOS 5.0 and later.
+     */
+    @Property(selector = "setCompoundIndexes:")
+    public native void setCompoundIndexes(NSArray<?> v);
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
-    @Method(selector = "managedObjectModel")
-    public native NSManagedObjectModel managedObjectModel();
-    @Method(selector = "managedObjectClassName")
-    public native String managedObjectClassName();
-    @Method(selector = "setManagedObjectClassName:")
-    public native void setManagedObjectClassName(String name);
-    @Method(selector = "name")
-    public native String name();
-    @Method(selector = "setName:")
-    public native void setName(String name);
-    @Method(selector = "isAbstract")
-    public native boolean isAbstract();
-    @Method(selector = "setAbstract:")
-    public native void setAbstract(boolean flag);
-    @Method(selector = "subentitiesByName")
-    public native NSDictionary<?, ?> subentitiesByName();
-    @Method(selector = "subentities")
-    public native NSArray<?> subentities();
-    @Method(selector = "setSubentities:")
-    public native void setSubentities(NSArray<?> array);
-    @Method(selector = "superentity")
-    public native NSEntityDescription superentity();
-    @Method(selector = "propertiesByName")
-    public native NSDictionary<?, ?> propertiesByName();
-    @Method(selector = "properties")
-    public native NSArray<?> properties();
-    @Method(selector = "setProperties:")
-    public native void setProperties(NSArray<?> properties);
-    @Method(selector = "userInfo")
-    public native NSDictionary<?, ?> userInfo();
-    @Method(selector = "setUserInfo:")
-    public native void setUserInfo(NSDictionary<?, ?> dictionary);
-    @Method(selector = "attributesByName")
-    public native NSDictionary<?, ?> attributesByName();
-    @Method(selector = "relationshipsByName")
-    public native NSDictionary<?, ?> relationshipsByName();
     @Method(selector = "relationshipsWithDestinationEntity:")
-    public native NSArray<?> relationshipsWithDestinationEntity$(NSEntityDescription entity);
+    public native NSArray<NSRelationshipDescription> getRelationshipsWith(NSEntityDescription entity);
     /**
      * @since Available in iOS 3.0 and later.
      */
     @Method(selector = "isKindOfEntity:")
-    public native boolean isKindOfEntity$(NSEntityDescription entity);
-    /**
-     * @since Available in iOS 3.0 and later.
-     */
-    @Method(selector = "versionHash")
-    public native NSData versionHash();
-    /**
-     * @since Available in iOS 3.0 and later.
-     */
-    @Method(selector = "versionHashModifier")
-    public native String versionHashModifier();
-    /**
-     * @since Available in iOS 3.0 and later.
-     */
-    @Method(selector = "setVersionHashModifier:")
-    public native void setVersionHashModifier(String modifierString);
-    /**
-     * @since Available in iOS 3.0 and later.
-     */
-    @Method(selector = "renamingIdentifier")
-    public native String renamingIdentifier();
-    /**
-     * @since Available in iOS 3.0 and later.
-     */
-    @Method(selector = "setRenamingIdentifier:")
-    public native void setRenamingIdentifier(String value);
-    /**
-     * @since Available in iOS 5.0 and later.
-     */
-    @Method(selector = "compoundIndexes")
-    public native NSArray<?> compoundIndexes();
-    /**
-     * @since Available in iOS 5.0 and later.
-     */
-    @Method(selector = "setCompoundIndexes:")
-    public native void setCompoundIndexes(NSArray<?> value);
+    public native boolean isKindOfEntity(NSEntityDescription entity);
     @Method(selector = "entityForName:inManagedObjectContext:")
-    public static native NSEntityDescription entityForName$inManagedObjectContext$(String entityName, NSManagedObjectContext context);
+    public static native NSEntityDescription getEntityByNameInContext(String entityName, NSManagedObjectContext context);
     @Method(selector = "insertNewObjectForEntityForName:inManagedObjectContext:")
-    public static native NSObject insertNewObjectForEntityForName$inManagedObjectContext$(String entityName, NSManagedObjectContext context);
+    public static native NSEntityDescription insertNewEntityInContext(String entityName, NSManagedObjectContext context);
     @Method(selector = "encodeWithCoder:")
     public native void encode(NSCoder aCoder);
     /*</methods>*/

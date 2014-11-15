@@ -47,17 +47,17 @@ import org.robovm.apple.foundation.*;
     protected NSExpressionDescription(SkipInit skipInit) { super(skipInit); }
     /*</constructors>*/
     /*<properties>*/
-    
+    @Property(selector = "expression")
+    public native NSExpression getExpression();
+    @Property(selector = "setExpression:")
+    public native void setExpression(NSExpression v);
+    @Property(selector = "expressionResultType")
+    public native NSAttributeType getExpressionResultType();
+    @Property(selector = "setExpressionResultType:")
+    public native void setExpressionResultType(NSAttributeType v);
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
-    @Method(selector = "expression")
-    public native NSExpression expression();
-    @Method(selector = "setExpression:")
-    public native void setExpression(NSExpression expression);
-    @Method(selector = "expressionResultType")
-    public native NSAttributeType expressionResultType();
-    @Method(selector = "setExpressionResultType:")
-    public native void setExpressionResultType(NSAttributeType type);
+    
     /*</methods>*/
 }

@@ -29,6 +29,7 @@ import org.robovm.rt.bro.ptr.*;
 import org.robovm.apple.corefoundation.*;
 import org.robovm.apple.uikit.*;
 import org.robovm.apple.coreanimation.*;
+import org.robovm.apple.coredata.*;
 import org.robovm.apple.coregraphics.*;
 import org.robovm.apple.coremedia.*;
 import org.robovm.apple.security.*;
@@ -119,25 +120,45 @@ import org.robovm.apple.dispatch.*;
     
     /* UIKit extensions */
     /**
+     * 
+     * @param url
+     * @param options
+     * @return
      * @since Available in iOS 7.0 and later.
+     * @throws NSErrorException
      */
     public static NSAttributedString create(NSURL url, NSAttributedStringDocumentAttributes options) {
         return NSAttributedStringExtensions.createFromURL(url, options);
     }
     /**
+     * 
+     * @param data
+     * @param options
+     * @return
      * @since Available in iOS 7.0 and later.
+     * @throws NSErrorException
      */
     public static NSAttributedString create(NSData data, NSAttributedStringDocumentAttributes options) {
         return NSAttributedStringExtensions.createFromData(data, options);
     }
     /**
+     * 
+     * @param range
+     * @param dict
+     * @return
      * @since Available in iOS 7.0 and later.
+     * @throws NSErrorException
      */
     public NSData getData(NSRange range, NSAttributedStringDocumentAttributes dict) {
         return NSAttributedStringExtensions.getData(this, range, dict);
     }
     /**
+     * 
+     * @param range
+     * @param dict
+     * @return
      * @since Available in iOS 7.0 and later.
+     * @throws NSErrorException
      */
     public NSFileWrapper getFileWrapper(NSRange range, NSAttributedStringDocumentAttributes dict) {
         return NSAttributedStringExtensions.getFileWrapper(this, range, dict);

@@ -29,6 +29,7 @@ import org.robovm.rt.bro.ptr.*;
 import org.robovm.apple.corefoundation.*;
 import org.robovm.apple.uikit.*;
 import org.robovm.apple.coreanimation.*;
+import org.robovm.apple.coredata.*;
 import org.robovm.apple.coregraphics.*;
 import org.robovm.apple.coremedia.*;
 import org.robovm.apple.security.*;
@@ -228,7 +229,7 @@ import org.robovm.apple.dispatch.*;
      * @since Available in iOS 6.0 and later.
      */
     @Method(selector = "decodeObjectOfClass:forKey:")
-    public native NSObject decodeObject(ObjCClass aClass, String key);
+    public native NSObject decodeObject(Class<?> aClass, String key);
     /**
      * @since Available in iOS 6.0 and later.
      */

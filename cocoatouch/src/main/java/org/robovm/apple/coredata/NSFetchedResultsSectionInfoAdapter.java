@@ -50,7 +50,7 @@ import org.robovm.apple.foundation.*;
     @NotImplemented("numberOfObjects")
     public @MachineSizedUInt long getNumberOfObjects() { throw new UnsupportedOperationException(); }
     @NotImplemented("objects")
-    public NSArray<?> getObjects() { throw new UnsupportedOperationException(); }
+    public NSArray<NSManagedObject> getObjects() { throw new UnsupportedOperationException(); }
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/

@@ -45,22 +45,21 @@ import org.robovm.apple.foundation.*;
     /*<constructors>*/
     public NSSaveChangesRequest() {}
     protected NSSaveChangesRequest(SkipInit skipInit) { super(skipInit); }
-    public NSSaveChangesRequest(NSSet<?> insertedObjects, NSSet<?> updatedObjects, NSSet<?> deletedObjects, NSSet<?> lockedObjects) { super((SkipInit) null); initObject(initWithInsertedObjects$updatedObjects$deletedObjects$lockedObjects$(insertedObjects, updatedObjects, deletedObjects, lockedObjects)); }
+    public NSSaveChangesRequest(NSSet<NSManagedObject> insertedObjects, NSSet<NSManagedObject> updatedObjects, NSSet<NSManagedObject> deletedObjects, NSSet<NSManagedObject> lockedObjects) { super((SkipInit) null); initObject(init(insertedObjects, updatedObjects, deletedObjects, lockedObjects)); }
     /*</constructors>*/
     /*<properties>*/
-    
+    @Property(selector = "insertedObjects")
+    public native NSSet<NSManagedObject> getInsertedObjects();
+    @Property(selector = "updatedObjects")
+    public native NSSet<NSManagedObject> getUpdatedObjects();
+    @Property(selector = "deletedObjects")
+    public native NSSet<NSManagedObject> getDeletedObjects();
+    @Property(selector = "lockedObjects")
+    public native NSSet<NSManagedObject> getLockedObjects();
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
     @Method(selector = "initWithInsertedObjects:updatedObjects:deletedObjects:lockedObjects:")
-    protected native @Pointer long initWithInsertedObjects$updatedObjects$deletedObjects$lockedObjects$(NSSet<?> insertedObjects, NSSet<?> updatedObjects, NSSet<?> deletedObjects, NSSet<?> lockedObjects);
-    @Method(selector = "insertedObjects")
-    public native NSSet<?> insertedObjects();
-    @Method(selector = "updatedObjects")
-    public native NSSet<?> updatedObjects();
-    @Method(selector = "deletedObjects")
-    public native NSSet<?> deletedObjects();
-    @Method(selector = "lockedObjects")
-    public native NSSet<?> lockedObjects();
+    protected native @Pointer long init(NSSet<NSManagedObject> insertedObjects, NSSet<NSManagedObject> updatedObjects, NSSet<NSManagedObject> deletedObjects, NSSet<NSManagedObject> lockedObjects);
     /*</methods>*/
 }

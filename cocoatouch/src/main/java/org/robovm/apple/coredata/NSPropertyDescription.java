@@ -47,89 +47,88 @@ import org.robovm.apple.foundation.*;
     protected NSPropertyDescription(SkipInit skipInit) { super(skipInit); }
     /*</constructors>*/
     /*<properties>*/
-    
-    /*</properties>*/
-    /*<members>*//*</members>*/
-    /*<methods>*/
-    @Method(selector = "entity")
-    public native NSEntityDescription entity();
-    @Method(selector = "name")
-    public native String name();
-    @Method(selector = "setName:")
-    public native void setName(String name);
-    @Method(selector = "isOptional")
+    @Property(selector = "entity")
+    public native NSEntityDescription getEntity();
+    @Property(selector = "name")
+    public native String getName();
+    @Property(selector = "setName:")
+    public native void setName(String v);
+    @Property(selector = "isOptional")
     public native boolean isOptional();
-    @Method(selector = "setOptional:")
-    public native void setOptional(boolean flag);
-    @Method(selector = "isTransient")
+    @Property(selector = "setOptional:")
+    public native void setOptional(boolean v);
+    @Property(selector = "isTransient")
     public native boolean isTransient();
-    @Method(selector = "setTransient:")
-    public native void setTransient(boolean flag);
-    @Method(selector = "validationPredicates")
-    public native NSArray<?> validationPredicates();
-    @Method(selector = "validationWarnings")
-    public native NSArray<?> validationWarnings();
-    @Method(selector = "setValidationPredicates:withValidationWarnings:")
-    public native void setValidationPredicates$withValidationWarnings$(NSArray<?> validationPredicates, NSArray<?> validationWarnings);
-    @Method(selector = "userInfo")
-    public native NSDictionary<?, ?> userInfo();
-    @Method(selector = "setUserInfo:")
-    public native void setUserInfo(NSDictionary<?, ?> dictionary);
+    @Property(selector = "setTransient:")
+    public native void setTransient(boolean v);
+    @Property(selector = "validationPredicates")
+    public native NSArray<NSPredicate> getValidationPredicates();
+    @Property(selector = "validationWarnings")
+    public native @org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String> getValidationWarnings();
+    @Property(selector = "userInfo")
+    public native NSDictionary<?, ?> getUserInfo();
+    @Property(selector = "setUserInfo:")
+    public native void setUserInfo(NSDictionary<?, ?> v);
     /**
      * @since Available in iOS 3.0 and later.
      */
-    @Method(selector = "isIndexed")
+    @Property(selector = "isIndexed")
     public native boolean isIndexed();
     /**
      * @since Available in iOS 3.0 and later.
      */
-    @Method(selector = "setIndexed:")
-    public native void setIndexed(boolean flag);
+    @Property(selector = "setIndexed:")
+    public native void setIndexed(boolean v);
     /**
      * @since Available in iOS 3.0 and later.
      */
-    @Method(selector = "versionHash")
-    public native NSData versionHash();
+    @Property(selector = "versionHash")
+    public native NSData getVersionHash();
     /**
      * @since Available in iOS 3.0 and later.
      */
-    @Method(selector = "versionHashModifier")
-    public native String versionHashModifier();
+    @Property(selector = "versionHashModifier")
+    public native String getVersionHashModifier();
     /**
      * @since Available in iOS 3.0 and later.
      */
-    @Method(selector = "setVersionHashModifier:")
-    public native void setVersionHashModifier(String modifierString);
+    @Property(selector = "setVersionHashModifier:")
+    public native void setVersionHashModifier(String v);
     /**
      * @since Available in iOS 3.0 and later.
      */
-    @Method(selector = "isIndexedBySpotlight")
+    @Property(selector = "isIndexedBySpotlight")
     public native boolean isIndexedBySpotlight();
     /**
      * @since Available in iOS 3.0 and later.
      */
-    @Method(selector = "setIndexedBySpotlight:")
-    public native void setIndexedBySpotlight(boolean flag);
+    @Property(selector = "setIndexedBySpotlight:")
+    public native void setIndexedBySpotlight(boolean v);
     /**
      * @since Available in iOS 3.0 and later.
      */
-    @Method(selector = "isStoredInExternalRecord")
+    @Property(selector = "isStoredInExternalRecord")
     public native boolean isStoredInExternalRecord();
     /**
      * @since Available in iOS 3.0 and later.
      */
-    @Method(selector = "setStoredInExternalRecord:")
-    public native void setStoredInExternalRecord(boolean flag);
+    @Property(selector = "setStoredInExternalRecord:")
+    public native void setStoredInExternalRecord(boolean v);
     /**
      * @since Available in iOS 3.0 and later.
      */
-    @Method(selector = "renamingIdentifier")
-    public native String renamingIdentifier();
+    @Property(selector = "renamingIdentifier")
+    public native String getRenamingIdentifier();
     /**
      * @since Available in iOS 3.0 and later.
      */
-    @Method(selector = "setRenamingIdentifier:")
-    public native void setRenamingIdentifier(String value);
+    @Property(selector = "setRenamingIdentifier:")
+    public native void setRenamingIdentifier(String v);
+    /*</properties>*/
+    /*<members>*//*</members>*/
+    /*<methods>*/
+    @Method(selector = "setValidationPredicates:withValidationWarnings:")
+    public native void setValidationPredicatesAndWarnings(NSArray<NSPredicate> validationPredicates, @org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String> validationWarnings);
     @Method(selector = "encodeWithCoder:")
     public native void encode(NSCoder aCoder);
     /*</methods>*/

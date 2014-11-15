@@ -46,18 +46,18 @@ import org.robovm.apple.foundation.*;
     /*</properties>*/
     /*<methods>*/
     @Method(selector = "controller:didChangeObject:atIndexPath:forChangeType:newIndexPath:")
-    void controller$didChangeObject$atIndexPath$forChangeType$newIndexPath$(NSFetchedResultsController controller, NSObject anObject, NSIndexPath indexPath, NSFetchedResultsChangeType type, NSIndexPath newIndexPath);
+    void didChangeObject(NSFetchedResultsController controller, NSObject anObject, NSIndexPath indexPath, NSFetchedResultsChangeType type, NSIndexPath newIndexPath);
     @Method(selector = "controller:didChangeSection:atIndex:forChangeType:")
-    void controller$didChangeSection$atIndex$forChangeType$(NSFetchedResultsController controller, NSFetchedResultsSectionInfo sectionInfo, @MachineSizedUInt long sectionIndex, NSFetchedResultsChangeType type);
+    void didChangeSection(NSFetchedResultsController controller, NSFetchedResultsSectionInfo sectionInfo, @MachineSizedUInt long sectionIndex, NSFetchedResultsChangeType type);
     @Method(selector = "controllerWillChangeContent:")
-    void controllerWillChangeContent$(NSFetchedResultsController controller);
+    void willChangeContent(NSFetchedResultsController controller);
     @Method(selector = "controllerDidChangeContent:")
-    void controllerDidChangeContent$(NSFetchedResultsController controller);
+    void didChangeContent(NSFetchedResultsController controller);
     /**
      * @since Available in iOS 4.0 and later.
      */
     @Method(selector = "controller:sectionIndexTitleForSectionName:")
-    String controller$sectionIndexTitleForSectionName$(NSFetchedResultsController controller, String sectionName);
+    String getSectionIndexTitle(NSFetchedResultsController controller, String sectionName);
     /*</methods>*/
     /*<adapter>*/
     /*</adapter>*/

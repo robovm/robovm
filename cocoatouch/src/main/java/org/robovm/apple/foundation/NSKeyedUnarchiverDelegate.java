@@ -29,6 +29,7 @@ import org.robovm.rt.bro.ptr.*;
 import org.robovm.apple.corefoundation.*;
 import org.robovm.apple.uikit.*;
 import org.robovm.apple.coreanimation.*;
+import org.robovm.apple.coredata.*;
 import org.robovm.apple.coregraphics.*;
 import org.robovm.apple.coremedia.*;
 import org.robovm.apple.security.*;
@@ -52,7 +53,7 @@ import org.robovm.apple.dispatch.*;
     /*</properties>*/
     /*<methods>*/
     @Method(selector = "unarchiver:cannotDecodeObjectOfClassName:originalClasses:")
-    ObjCClass cannotDecodeObjectOfClassName(NSKeyedUnarchiver unarchiver, String name, @org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String> classNames);
+    Class<?> cannotDecodeObjectOfClassName(NSKeyedUnarchiver unarchiver, String name, @org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String> classNames);
     @Method(selector = "unarchiver:didDecodeObject:")
     NSObject didDecodeObject(NSKeyedUnarchiver unarchiver, NSObject object);
     @Method(selector = "unarchiver:willReplaceObject:withObject:")

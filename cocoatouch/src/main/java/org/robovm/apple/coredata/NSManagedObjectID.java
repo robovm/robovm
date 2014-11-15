@@ -47,17 +47,16 @@ import org.robovm.apple.foundation.*;
     protected NSManagedObjectID(SkipInit skipInit) { super(skipInit); }
     /*</constructors>*/
     /*<properties>*/
-    
+    @Property(selector = "entity")
+    public native NSEntityDescription getEntity();
+    @Property(selector = "persistentStore")
+    public native NSPersistentStore getPersistentStore();
+    @Property(selector = "isTemporaryID")
+    public native boolean isTemporaryID();
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
-    @Method(selector = "entity")
-    public native NSEntityDescription entity();
-    @Method(selector = "persistentStore")
-    public native NSPersistentStore persistentStore();
-    @Method(selector = "isTemporaryID")
-    public native boolean isTemporaryID();
     @Method(selector = "URIRepresentation")
-    public native NSURL URIRepresentation();
+    public native NSURL getURIRepresentation();
     /*</methods>*/
 }

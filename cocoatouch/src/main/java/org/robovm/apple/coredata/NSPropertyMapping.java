@@ -47,21 +47,21 @@ import org.robovm.apple.foundation.*;
     protected NSPropertyMapping(SkipInit skipInit) { super(skipInit); }
     /*</constructors>*/
     /*<properties>*/
-    
+    @Property(selector = "name")
+    public native String getName();
+    @Property(selector = "setName:")
+    public native void setName(String v);
+    @Property(selector = "valueExpression")
+    public native NSExpression getValueExpression();
+    @Property(selector = "setValueExpression:")
+    public native void setValueExpression(NSExpression v);
+    @Property(selector = "userInfo")
+    public native NSDictionary<?, ?> getUserInfo();
+    @Property(selector = "setUserInfo:")
+    public native void setUserInfo(NSDictionary<?, ?> v);
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
-    @Method(selector = "name")
-    public native String name();
-    @Method(selector = "setName:")
-    public native void setName(String name);
-    @Method(selector = "valueExpression")
-    public native NSExpression valueExpression();
-    @Method(selector = "setValueExpression:")
-    public native void setValueExpression(NSExpression expression);
-    @Method(selector = "userInfo")
-    public native NSDictionary<?, ?> userInfo();
-    @Method(selector = "setUserInfo:")
-    public native void setUserInfo(NSDictionary<?, ?> userInfo);
+    
     /*</methods>*/
 }

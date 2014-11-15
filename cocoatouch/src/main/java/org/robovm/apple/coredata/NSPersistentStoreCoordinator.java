@@ -45,75 +45,278 @@ import org.robovm.apple.foundation.*;
     /*<constructors>*/
     public NSPersistentStoreCoordinator() {}
     protected NSPersistentStoreCoordinator(SkipInit skipInit) { super(skipInit); }
-    public NSPersistentStoreCoordinator(NSManagedObjectModel model) { super((SkipInit) null); initObject(initWithManagedObjectModel$(model)); }
+    public NSPersistentStoreCoordinator(NSManagedObjectModel model) { super((SkipInit) null); initObject(init(model)); }
     /*</constructors>*/
     /*<properties>*/
-    
+    @Property(selector = "managedObjectModel")
+    public native NSManagedObjectModel getManagedObjectModel();
+    @Property(selector = "persistentStores")
+    public native NSArray<NSPersistentStore> getPersistentStores();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @Property(selector = "name")
+    public native String getName();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @Property(selector = "setName:")
+    public native void setName(String v);
     /*</properties>*/
     /*<members>*//*</members>*/
+    /**
+     * 
+     * @param storeType
+     * @param configuration
+     * @param storeURL
+     * @param options
+     * @return
+     * @throws NSErrorException
+     */
+    public NSPersistentStore addPersistentStore(NSPersistentStoreType storeType, String configuration, NSURL storeURL, NSPersistentStoreOptions options) {
+        return addPersistentStore(storeType.value(), configuration, storeURL, options);
+    }
+    /**
+     * 
+     * @param storeType
+     * @param configuration
+     * @param storeURL
+     * @param options
+     * @return
+     * @throws NSErrorException
+     */
+    public NSPersistentStore addPersistentStore(String storeType, String configuration, NSURL storeURL, NSPersistentStoreOptions options) {
+        NSError.NSErrorPtr err = new NSError.NSErrorPtr();
+        NSPersistentStore result = addPersistentStore(storeType, configuration, storeURL, options, err);
+        if (err.get() != null) {
+            throw new NSErrorException(err.get());
+        }
+        return result;
+    }
+    /**
+     * 
+     * @param store
+     * @return
+     * @throws NSErrorException
+     */
+    public boolean removePersistentStore(NSPersistentStore store) {
+        NSError.NSErrorPtr err = new NSError.NSErrorPtr();
+        boolean result = removePersistentStore(store, err);
+        if (err.get() != null) {
+            throw new NSErrorException(err.get());
+        }
+        return result;
+    }
+    /**
+     * 
+     * @param request
+     * @param context
+     * @return
+     * @since Available in iOS 5.0 and later.
+     * @throws NSErrorException
+     */
+    public NSObject executeRequest(NSPersistentStoreRequest request, NSManagedObjectContext context) {
+        NSError.NSErrorPtr err = new NSError.NSErrorPtr();
+        NSObject result = executeRequest(request, context, err);
+        if (err.get() != null) {
+            throw new NSErrorException(err.get());
+        }
+        return result;
+    }
+    /**
+     * 
+     * @param store
+     * @param URL
+     * @param options
+     * @param storeType
+     * @return
+     * @throws NSErrorException
+     */
+    public NSPersistentStore migratePersistentStore(NSPersistentStore store, NSURL URL, NSPersistentStoreOptions options, NSPersistentStoreType storeType) {
+        return migratePersistentStore(store, URL, options, storeType.value());
+    }
+    /**
+     * 
+     * @param store
+     * @param URL
+     * @param options
+     * @param storeType
+     * @return
+     * @throws NSErrorException
+     */
+    public NSPersistentStore migratePersistentStore(NSPersistentStore store, NSURL URL, NSPersistentStoreOptions options, String storeType) {
+        NSError.NSErrorPtr err = new NSError.NSErrorPtr();
+        NSPersistentStore result = migratePersistentStore(store, URL, options, storeType, err);
+        if (err.get() != null) {
+            throw new NSErrorException(err.get());
+        }
+        return result;
+    }
+    /**
+     * 
+     * @param storeClass
+     * @param storeType
+     * @since Available in iOS 3.0 and later.
+     */
+    public static void registerStoreClassForType(Class<? extends NSPersistentStore> storeClass, NSPersistentStoreType storeType) {
+        registerStoreClassForType(storeClass, storeType.value());
+    }
+    /**
+     * 
+     * @param storeType
+     * @param url
+     * @return
+     * @since Available in iOS 3.0 and later.
+     * @throws NSErrorException
+     */
+    public static NSPersistentStoreMetadata getMetadataForPersistentStoreType(NSPersistentStoreType storeType, NSURL url) {
+        return getMetadataForPersistentStoreType(storeType.value(), url);
+    }
+    /**
+     * 
+     * @param storeType
+     * @param url
+     * @return
+     * @since Available in iOS 3.0 and later.
+     * @throws NSErrorException
+     */
+    public static NSPersistentStoreMetadata getMetadataForPersistentStoreType(String storeType, NSURL url) {
+        NSError.NSErrorPtr err = new NSError.NSErrorPtr();
+        NSPersistentStoreMetadata result = getMetadataForPersistentStoreType(storeType, url, err);
+        if (err.get() != null) {
+            throw new NSErrorException(err.get());
+        }
+        return result;
+    }
+    /**
+     * 
+     * @param metadata
+     * @param storeType
+     * @param url
+     * @return
+     * @since Available in iOS 3.0 and later.
+     * @throws NSErrorException
+     */
+    public static boolean setMetadataForPersistentStoreType(NSPersistentStoreMetadata metadata, NSPersistentStoreType storeType, NSURL url) {
+        return setMetadataForPersistentStoreType(metadata, storeType.value(), url);
+    }
+    /**
+     * 
+     * @param metadata
+     * @param storeType
+     * @param url
+     * @return
+     * @since Available in iOS 3.0 and later.
+     * @throws NSErrorException
+     */
+    public static boolean setMetadataForPersistentStoreType(NSPersistentStoreMetadata metadata, String storeType, NSURL url) {
+        NSError.NSErrorPtr err = new NSError.NSErrorPtr();
+        boolean result = setMetadataForPersistentStoreType(metadata, storeType, url, err);
+        if (err.get() != null) {
+            throw new NSErrorException(err.get());
+        }
+        return result;
+    }
+    /**
+     * 
+     * @param storeURL
+     * @param options
+     * @return
+     * @since Available in iOS 7.0 and later.
+     * @throws NSErrorException
+     */
+    public static boolean removeUbiquitousContentAndPersistentStore(NSURL storeURL, NSPersistentStoreOptions options) {
+        NSError.NSErrorPtr err = new NSError.NSErrorPtr();
+        boolean result = removeUbiquitousContentAndPersistentStore(storeURL, options, err);
+        if (err.get() != null) {
+            throw new NSErrorException(err.get());
+        }
+        return result;
+    }
     /*<methods>*/
-    @Method(selector = "setMetadata:forPersistentStore:")
-    public native void setMetadata$forPersistentStore$(NSDictionary<?, ?> metadata, NSPersistentStore store);
-    @Method(selector = "metadataForPersistentStore:")
-    public native NSDictionary<?, ?> metadataForPersistentStore$(NSPersistentStore store);
     @Method(selector = "initWithManagedObjectModel:")
-    protected native @Pointer long initWithManagedObjectModel$(NSManagedObjectModel model);
-    @Method(selector = "managedObjectModel")
-    public native NSManagedObjectModel managedObjectModel();
-    @Method(selector = "persistentStores")
-    public native NSArray<?> persistentStores();
+    protected native @Pointer long init(NSManagedObjectModel model);
     @Method(selector = "persistentStoreForURL:")
-    public native NSPersistentStore persistentStoreForURL$(NSURL URL);
+    public native NSPersistentStore getPersistentStoreForURL(NSURL URL);
     @Method(selector = "URLForPersistentStore:")
-    public native NSURL URLForPersistentStore$(NSPersistentStore store);
+    public native NSURL getURLForPersistentStore(NSPersistentStore store);
     /**
      * @since Available in iOS 3.0 and later.
      */
     @Method(selector = "setURL:forPersistentStore:")
-    public native boolean setURL$forPersistentStore$(NSURL url, NSPersistentStore store);
+    public native boolean setURLForPersistentStore(NSURL url, NSPersistentStore store);
     @Method(selector = "addPersistentStoreWithType:configuration:URL:options:error:")
-    public native NSPersistentStore addPersistentStoreWithType$configuration$URL$options$error$(String storeType, String configuration, NSURL storeURL, NSDictionary<?, ?> options, NSError.NSErrorPtr error);
+    protected native NSPersistentStore addPersistentStore(String storeType, String configuration, NSURL storeURL, NSPersistentStoreOptions options, NSError.NSErrorPtr error);
     @Method(selector = "removePersistentStore:error:")
-    public native boolean removePersistentStore$error$(NSPersistentStore store, NSError.NSErrorPtr error);
-    @Method(selector = "migratePersistentStore:toURL:options:withType:error:")
-    public native NSPersistentStore migratePersistentStore$toURL$options$withType$error$(NSPersistentStore store, NSURL URL, NSDictionary<?, ?> options, String storeType, NSError.NSErrorPtr error);
+    protected native boolean removePersistentStore(NSPersistentStore store, NSError.NSErrorPtr error);
+    @Method(selector = "setMetadata:forPersistentStore:")
+    public native void setMetadataForPersistentStore(NSPersistentStoreMetadata metadata, NSPersistentStore store);
+    @Method(selector = "metadataForPersistentStore:")
+    public native NSDictionary<?, ?> getMetadataForPersistentStore(NSPersistentStore store);
     @Method(selector = "managedObjectIDForURIRepresentation:")
-    public native NSManagedObjectID managedObjectIDForURIRepresentation$(NSURL url);
+    public native NSManagedObjectID getManagedObjectIDForURIRepresentation(NSURL url);
     /**
      * @since Available in iOS 5.0 and later.
      */
     @Method(selector = "executeRequest:withContext:error:")
-    public native NSObject executeRequest$withContext$error$(NSPersistentStoreRequest request, NSManagedObjectContext context, NSError.NSErrorPtr error);
+    protected native NSObject executeRequest(NSPersistentStoreRequest request, NSManagedObjectContext context, NSError.NSErrorPtr error);
+    @Method(selector = "migratePersistentStore:toURL:options:withType:error:")
+    protected native NSPersistentStore migratePersistentStore(NSPersistentStore store, NSURL URL, NSPersistentStoreOptions options, String storeType, NSError.NSErrorPtr error);
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @Method(selector = "performBlock:")
+    public native void performBlock(@Block Runnable block);
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @Method(selector = "performBlockAndWait:")
+    public native void performBlockAndWait(@Block Runnable block);
+    /**
+     * @since Available in iOS 3.0 and later.
+     * @deprecated Deprecated in iOS 8.0.
+     */
+    @Deprecated
     @Method(selector = "lock")
     public native void lock();
+    /**
+     * @since Available in iOS 3.0 and later.
+     * @deprecated Deprecated in iOS 8.0.
+     */
+    @Deprecated
     @Method(selector = "unlock")
     public native void unlock();
+    /**
+     * @since Available in iOS 3.0 and later.
+     * @deprecated Deprecated in iOS 8.0.
+     */
+    @Deprecated
     @Method(selector = "tryLock")
     public native boolean tryLock();
     /**
      * @since Available in iOS 3.0 and later.
      */
     @Method(selector = "registeredStoreTypes")
-    public static native NSDictionary<?, ?> registeredStoreTypes();
+    public static native @org.robovm.rt.bro.annotation.Marshaler(NSDictionary.AsStringMapMarshaler.class) Map<String, NSPersistentStore> getRegisteredStoreTypes();
     /**
      * @since Available in iOS 3.0 and later.
      */
     @Method(selector = "registerStoreClass:forStoreType:")
-    public static native void registerStoreClass$forStoreType$(ObjCClass storeClass, String storeType);
+    public static native void registerStoreClassForType(Class<? extends NSPersistentStore> storeClass, String storeType);
     /**
      * @since Available in iOS 3.0 and later.
      */
     @Method(selector = "metadataForPersistentStoreOfType:URL:error:")
-    public static native NSDictionary<?, ?> metadataForPersistentStoreOfType$URL$error$(String storeType, NSURL url, NSError.NSErrorPtr error);
+    protected static native NSPersistentStoreMetadata getMetadataForPersistentStoreType(String storeType, NSURL url, NSError.NSErrorPtr error);
     /**
      * @since Available in iOS 3.0 and later.
      */
     @Method(selector = "setMetadata:forPersistentStoreOfType:URL:error:")
-    public static native boolean setMetadata$forPersistentStoreOfType$URL$error$(NSDictionary<?, ?> metadata, String storeType, NSURL url, NSError.NSErrorPtr error);
+    protected static native boolean setMetadataForPersistentStoreType(NSPersistentStoreMetadata metadata, String storeType, NSURL url, NSError.NSErrorPtr error);
     /**
      * @since Available in iOS 7.0 and later.
      */
     @Method(selector = "removeUbiquitousContentAndPersistentStoreAtURL:options:error:")
-    public static native boolean removeUbiquitousContentAndPersistentStoreAtURL$options$error$(NSURL storeURL, NSDictionary<?, ?> options, NSError.NSErrorPtr error);
+    protected static native boolean removeUbiquitousContentAndPersistentStore(NSURL storeURL, NSPersistentStoreOptions options, NSError.NSErrorPtr error);
     /*</methods>*/
 }

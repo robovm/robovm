@@ -47,49 +47,46 @@ import org.robovm.apple.foundation.*;
     protected NSAttributeDescription(SkipInit skipInit) { super(skipInit); }
     /*</constructors>*/
     /*<properties>*/
-    
+    @Property(selector = "attributeType")
+    public native NSAttributeType getAttributeType();
+    @Property(selector = "setAttributeType:")
+    public native void setAttributeType(NSAttributeType v);
+    @Property(selector = "attributeValueClassName")
+    public native String getAttributeValueClassName();
+    @Property(selector = "setAttributeValueClassName:")
+    public native void setAttributeValueClassName(String v);
+    @Property(selector = "defaultValue")
+    public native NSObject getDefaultValue();
+    @Property(selector = "setDefaultValue:")
+    public native void setDefaultValue(NSObject v);
+    /**
+     * @since Available in iOS 3.0 and later.
+     */
+    @Property(selector = "versionHash")
+    public native NSData getVersionHash();
+    /**
+     * @since Available in iOS 3.0 and later.
+     */
+    @Property(selector = "valueTransformerName")
+    public native String getValueTransformerName();
+    /**
+     * @since Available in iOS 3.0 and later.
+     */
+    @Property(selector = "setValueTransformerName:")
+    public native void setValueTransformerName(String v);
+    /**
+     * @since Available in iOS 5.0 and later.
+     */
+    @Property(selector = "allowsExternalBinaryDataStorage")
+    public native boolean isAllowsExternalBinaryDataStorage();
+    /**
+     * @since Available in iOS 5.0 and later.
+     */
+    @Property(selector = "setAllowsExternalBinaryDataStorage:")
+    public native void setAllowsExternalBinaryDataStorage(boolean v);
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
-    @Method(selector = "attributeType")
-    public native NSAttributeType attributeType();
-    @Method(selector = "setAttributeType:")
-    public native void setAttributeType(NSAttributeType type);
-    @Method(selector = "attributeValueClassName")
-    public native String attributeValueClassName();
-    @Method(selector = "defaultValue")
-    public native NSObject defaultValue();
-    @Method(selector = "setDefaultValue:")
-    public native void setDefaultValue(NSObject value);
-    /**
-     * @since Available in iOS 3.0 and later.
-     */
-    @Method(selector = "setAttributeValueClassName:")
-    public native void setAttributeValueClassName(String className);
-    /**
-     * @since Available in iOS 3.0 and later.
-     */
-    @Method(selector = "versionHash")
-    public native NSData versionHash();
-    /**
-     * @since Available in iOS 3.0 and later.
-     */
-    @Method(selector = "valueTransformerName")
-    public native String valueTransformerName();
-    /**
-     * @since Available in iOS 3.0 and later.
-     */
-    @Method(selector = "setValueTransformerName:")
-    public native void setValueTransformerName(String string);
-    /**
-     * @since Available in iOS 5.0 and later.
-     */
-    @Method(selector = "allowsExternalBinaryDataStorage")
-    public native boolean allowsExternalBinaryDataStorage();
-    /**
-     * @since Available in iOS 5.0 and later.
-     */
-    @Method(selector = "setAllowsExternalBinaryDataStorage:")
-    public native void setAllowsExternalBinaryDataStorage(boolean flag);
+    
     /*</methods>*/
 }

@@ -36,7 +36,8 @@ import org.robovm.apple.foundation.*;
 public enum /*<name>*/NSPersistentStoreRequestType/*</name>*/ implements ValuedEnum {
     /*<values>*/
     Fetch(1L),
-    Save(2L);
+    Save(2L),
+    BatchUpdate(6L);
     /*</values>*/
 
     private final long n;

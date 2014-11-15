@@ -31,6 +31,7 @@ import org.robovm.rt.bro.ptr.*;
 import org.robovm.apple.corefoundation.*;
 import org.robovm.apple.uikit.*;
 import org.robovm.apple.coreanimation.*;
+import org.robovm.apple.coredata.*;
 import org.robovm.apple.coregraphics.*;
 import org.robovm.apple.coremedia.*;
 import org.robovm.apple.security.*;
@@ -86,6 +87,8 @@ import org.robovm.apple.dispatch.*;
     
     /*<bind>*/static { ObjCRuntime.bind(NSObject.class); }/*</bind>*/
     /*<constants>*//*</constants>*/
+    private NSKeyValueCoder keyValueCoder;
+    
     
     public NSObject() {
         initObject(init());
@@ -103,7 +106,7 @@ import org.robovm.apple.dispatch.*;
     /*</constructors>*/
     /*<properties>*/
     @Property(selector = "classForCoder")
-    public native ObjCClass getClassForCoder();
+    public native Class<?> getClassForCoder();
     /**
      * @since Available in iOS 4.0 and later.
      */
@@ -114,7 +117,7 @@ import org.robovm.apple.dispatch.*;
     @Property(selector = "setObservationInfo:")
     public native void setObservationInfo(VoidPtr v);
     @Property(selector = "classForKeyedArchiver")
-    public native ObjCClass getClassForKeyedArchiver();
+    public native Class<?> getClassForKeyedArchiver();
     /*</properties>*/
     /*<members>*//*</members>*/
     
@@ -227,29 +230,37 @@ import org.robovm.apple.dispatch.*;
     @Method(selector = "performSelector:withObject:withObject:")
     public native final void performSelectorV(Selector aSelector, NSObject object1, NSObject object2);
     
-    public void addObserver(NSObject observer, String keyPath, NSKeyValueObservingOptions options) {
+    public void addKeyValueObserver(String keyPath, NSKeyValueObserver observer) {
+        addKeyValueObserver(keyPath, observer, NSKeyValueObservingOptions.None);
+    }
+    
+    public void addKeyValueObserver(String keyPath, NSKeyValueObserver observer, NSKeyValueObservingOptions options) {
         if (observer.customClass) {
             updateStrongRef(null, observer);
         }
         addObserver$forKeyPath$options$context$(observer, keyPath, options, null);
     }
     
-    public void removeObserver(NSObject observer, String keyPath) {
+    public void removeKeyValueObserver(String keyPath, NSKeyValueObserver observer) {
         removeObserver$forKeyPath$context$(observer, keyPath, null);
         if (observer.customClass) {
             updateStrongRef(observer, null);
         }
     }
     
-    protected void observeValue(String keyPath, NSObject object, NSKeyValueChangeInfo change) {
-        
-    }
-    
-    @Method(selector = "observeValueForKeyPath:ofObject:change:context:")
-    private void observeValueForKeyPath$ofObject$change$context$(String keyPath, NSObject object, NSKeyValueChangeInfo change, VoidPtr context) {
-        observeValue(keyPath, object, change);
+    public NSKeyValueCoder getKeyValueCoder() {
+        if (keyValueCoder == null) {
+            keyValueCoder = new NSKeyValueCoder(this);
+        }
+        return keyValueCoder;
     }
 
+    public void willChangeValues(String key, NSKeyValueChange changeKind, NSIndexSet indexes) {
+        willChangeValues(changeKind, indexes, key);
+    }
+    public void didChangeValues(String key, NSKeyValueChange changeKind, NSIndexSet indexes) {
+        didChangeValues(changeKind, indexes, key);
+    }
     /*<methods>*/
     @Method(selector = "init")
     private native @Pointer long init();
@@ -257,46 +268,6 @@ import org.robovm.apple.dispatch.*;
     public native NSObject copy();
     @Method(selector = "mutableCopy")
     public native NSObject mutableCopy();
-    @Method(selector = "valueForKey:")
-    public native NSObject getValueForKey(String key);
-    @Method(selector = "setValue:forKey:")
-    public native void setValueForKey(NSObject value, String key);
-    @Method(selector = "validateValue:forKey:error:")
-    public native boolean validateValueForKey(NSObject ioValue, String inKey, NSError.NSErrorPtr outError);
-    @Method(selector = "mutableArrayValueForKey:")
-    public native NSMutableArray<?> getMutableArrayValueForKey(String key);
-    /**
-     * @since Available in iOS 5.0 and later.
-     */
-    @Method(selector = "mutableOrderedSetValueForKey:")
-    public native NSMutableOrderedSet<?> getMutableOrderedSetValueForKey(String key);
-    @Method(selector = "mutableSetValueForKey:")
-    public native NSMutableSet<?> getMutableSetValueForKey(String key);
-    @Method(selector = "valueForKeyPath:")
-    public native NSObject getValueForKeyPath(String keyPath);
-    @Method(selector = "setValue:forKeyPath:")
-    public native void setValueForKeyPath(NSObject value, String keyPath);
-    @Method(selector = "validateValue:forKeyPath:error:")
-    public native boolean validateValueForKeyPath(NSObject ioValue, String inKeyPath, NSError.NSErrorPtr outError);
-    @Method(selector = "mutableArrayValueForKeyPath:")
-    public native NSMutableArray<?> getMutableArrayValueForKeyPath(String keyPath);
-    /**
-     * @since Available in iOS 5.0 and later.
-     */
-    @Method(selector = "mutableOrderedSetValueForKeyPath:")
-    public native NSMutableOrderedSet<?> getMutableOrderedSetValueForKeyPath(String keyPath);
-    @Method(selector = "mutableSetValueForKeyPath:")
-    public native NSMutableSet<?> getMutableSetValueForKeyPath(String keyPath);
-    @Method(selector = "valueForUndefinedKey:")
-    public native NSObject getValueForUndefinedKey(String key);
-    @Method(selector = "setValue:forUndefinedKey:")
-    public native void setValueForUndefinedKey(NSObject value, String key);
-    @Method(selector = "setNilValueForKey:")
-    public native void setNullValueForKey(String key);
-    @Method(selector = "dictionaryWithValuesForKeys:")
-    public native NSDictionary<?, ?> getDictionaryWithValuesForKeys(NSArray<?> keys);
-    @Method(selector = "setValuesForKeysWithDictionary:")
-    public native void setValuesForKeys(NSDictionary<?, ?> keyedValues);
     @Method(selector = "addObserver:forKeyPath:options:context:")
     private native void addObserver$forKeyPath$options$context$(NSObject observer, String keyPath, NSKeyValueObservingOptions options, VoidPtr context);
     /**
@@ -309,9 +280,9 @@ import org.robovm.apple.dispatch.*;
     @Method(selector = "didChangeValueForKey:")
     public native void didChangeValue(String key);
     @Method(selector = "willChange:valuesAtIndexes:forKey:")
-    public native void willChangeValues(NSKeyValueChange changeKind, NSIndexSet indexes, String key);
+    private native void willChangeValues(NSKeyValueChange changeKind, NSIndexSet indexes, String key);
     @Method(selector = "didChange:valuesAtIndexes:forKey:")
-    public native void didChangeValues(NSKeyValueChange changeKind, NSIndexSet indexes, String key);
+    private native void didChangeValues(NSKeyValueChange changeKind, NSIndexSet indexes, String key);
     @Method(selector = "willChangeValueForKey:withSetMutation:usingObjects:")
     public native void willChangeValue(String key, NSKeyValueSetMutationKind mutationKind, NSSet<?> objects);
     @Method(selector = "didChangeValueForKey:withSetMutation:usingObjects:")

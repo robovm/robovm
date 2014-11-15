@@ -45,17 +45,17 @@ import org.robovm.apple.foundation.*;
     /*<constructors>*/
     public NSMergeConflict() {}
     protected NSMergeConflict(SkipInit skipInit) { super(skipInit); }
-    public NSMergeConflict(NSManagedObject srcObject, @MachineSizedUInt long newvers, @MachineSizedUInt long oldvers, NSDictionary<?, ?> cachesnap, NSDictionary<?, ?> persnap) { super((SkipInit) null); initObject(initWithSource$newVersion$oldVersion$cachedSnapshot$persistedSnapshot$(srcObject, newvers, oldvers, cachesnap, persnap)); }
+    public NSMergeConflict(NSManagedObject srcObject, @MachineSizedUInt long newvers, @MachineSizedUInt long oldvers, @org.robovm.rt.bro.annotation.Marshaler(NSDictionary.AsStringMapMarshaler.class) Map<String, NSObject> cachesnap, @org.robovm.rt.bro.annotation.Marshaler(NSDictionary.AsStringMapMarshaler.class) Map<String, NSObject> persnap) { super((SkipInit) null); initObject(init(srcObject, newvers, oldvers, cachesnap, persnap)); }
     /*</constructors>*/
     /*<properties>*/
     @Property(selector = "sourceObject")
     public native NSManagedObject getSourceObject();
     @Property(selector = "objectSnapshot")
-    public native NSDictionary<?, ?> getObjectSnapshot();
+    public native @org.robovm.rt.bro.annotation.Marshaler(NSDictionary.AsStringMapMarshaler.class) Map<String, NSObject> getObjectSnapshot();
     @Property(selector = "cachedSnapshot")
-    public native NSDictionary<?, ?> getCachedSnapshot();
+    public native @org.robovm.rt.bro.annotation.Marshaler(NSDictionary.AsStringMapMarshaler.class) Map<String, NSObject> getCachedSnapshot();
     @Property(selector = "persistedSnapshot")
-    public native NSDictionary<?, ?> getPersistedSnapshot();
+    public native @org.robovm.rt.bro.annotation.Marshaler(NSDictionary.AsStringMapMarshaler.class) Map<String, NSObject> getPersistedSnapshot();
     @Property(selector = "newVersionNumber")
     public native @MachineSizedUInt long getNewVersionNumber();
     @Property(selector = "oldVersionNumber")
@@ -64,6 +64,6 @@ import org.robovm.apple.foundation.*;
     /*<members>*//*</members>*/
     /*<methods>*/
     @Method(selector = "initWithSource:newVersion:oldVersion:cachedSnapshot:persistedSnapshot:")
-    protected native @Pointer long initWithSource$newVersion$oldVersion$cachedSnapshot$persistedSnapshot$(NSManagedObject srcObject, @MachineSizedUInt long newvers, @MachineSizedUInt long oldvers, NSDictionary<?, ?> cachesnap, NSDictionary<?, ?> persnap);
+    protected native @Pointer long init(NSManagedObject srcObject, @MachineSizedUInt long newvers, @MachineSizedUInt long oldvers, @org.robovm.rt.bro.annotation.Marshaler(NSDictionary.AsStringMapMarshaler.class) Map<String, NSObject> cachesnap, @org.robovm.rt.bro.annotation.Marshaler(NSDictionary.AsStringMapMarshaler.class) Map<String, NSObject> persnap);
     /*</methods>*/
 }

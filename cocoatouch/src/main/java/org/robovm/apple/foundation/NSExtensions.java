@@ -24,7 +24,7 @@ import org.robovm.rt.bro.annotation.Marshaler;
  * Base class for all Objective-C extension classes (categories) in the 
  * Cocoa/CocoaTouch bindings. This class adds a {@link Marshaler} for 
  * {@link String}s to/from {@link NSString}. Note that it is not possible to 
- * create new  categories in Java which adds methods to Objective-C classes. 
+ * create new categories in Java which adds methods to Objective-C classes. 
  */
 @Marshaler(NSString.AsStringMarshaler.class)
 public abstract class NSExtensions extends ObjCExtensions {

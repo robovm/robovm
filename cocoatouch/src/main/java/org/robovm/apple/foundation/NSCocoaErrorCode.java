@@ -29,6 +29,7 @@ import org.robovm.rt.bro.ptr.*;
 import org.robovm.apple.corefoundation.*;
 import org.robovm.apple.uikit.*;
 import org.robovm.apple.coreanimation.*;
+import org.robovm.apple.coredata.*;
 import org.robovm.apple.coregraphics.*;
 import org.robovm.apple.coremedia.*;
 import org.robovm.apple.security.*;
@@ -216,9 +217,15 @@ public enum /*<name>*/NSCocoaErrorCode/*</name>*/ implements NSErrorCode {
 
     private /*<name>*/NSCocoaErrorCode/*</name>*/(long n) { this.n = n; }
     public long value() { return n; }
-    public static /*<name>*/NSCocoaErrorCode/*</name>*/ valueOf(long n) {
+    public static NSErrorCode valueOf(long n) {
         for (/*<name>*/NSCocoaErrorCode/*</name>*/ v : values()) {
             if (v.n == n) {
+                return v;
+            }
+        }
+        // NSCoreDataError codes don't have their own domain. They are added to Cocoa error codes.
+        for (NSCoreDataErrorCode v : NSCoreDataErrorCode.values()) {
+            if (v.value() == n) {
                 return v;
             }
         }

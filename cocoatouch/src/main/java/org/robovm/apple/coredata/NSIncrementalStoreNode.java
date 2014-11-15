@@ -45,22 +45,21 @@ import org.robovm.apple.foundation.*;
     /*<constructors>*/
     public NSIncrementalStoreNode() {}
     protected NSIncrementalStoreNode(SkipInit skipInit) { super(skipInit); }
-    public NSIncrementalStoreNode(NSManagedObjectID objectID, NSDictionary<?, ?> values, long version) { super((SkipInit) null); initObject(initWithObjectID$withValues$version$(objectID, values, version)); }
+    public NSIncrementalStoreNode(NSManagedObjectID objectID, @org.robovm.rt.bro.annotation.Marshaler(NSDictionary.AsStringMapMarshaler.class) Map<String, NSObject> values, long version) { super((SkipInit) null); initObject(init(objectID, values, version)); }
     /*</constructors>*/
     /*<properties>*/
-    
+    @Property(selector = "objectID")
+    public native NSManagedObjectID getObjectID();
+    @Property(selector = "version")
+    public native long getVersion();
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
     @Method(selector = "initWithObjectID:withValues:version:")
-    protected native @Pointer long initWithObjectID$withValues$version$(NSManagedObjectID objectID, NSDictionary<?, ?> values, long version);
+    protected native @Pointer long init(NSManagedObjectID objectID, @org.robovm.rt.bro.annotation.Marshaler(NSDictionary.AsStringMapMarshaler.class) Map<String, NSObject> values, long version);
     @Method(selector = "updateWithValues:version:")
-    public native void updateWithValues$version$(NSDictionary<?, ?> values, long version);
-    @Method(selector = "objectID")
-    public native NSManagedObjectID objectID();
-    @Method(selector = "version")
-    public native long version();
+    public native void update(@org.robovm.rt.bro.annotation.Marshaler(NSDictionary.AsStringMapMarshaler.class) Map<String, NSObject> values, long version);
     @Method(selector = "valueForPropertyDescription:")
-    public native NSObject valueForPropertyDescription$(NSPropertyDescription prop);
+    public native NSObject getValue(NSPropertyDescription prop);
     /*</methods>*/
 }

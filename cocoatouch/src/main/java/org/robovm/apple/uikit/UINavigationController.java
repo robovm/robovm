@@ -54,7 +54,7 @@ import org.robovm.apple.corelocation.*;
     /**
      * @since Available in iOS 5.0 and later.
      */
-    public UINavigationController(ObjCClass navigationBarClass, ObjCClass toolbarClass) { super((SkipInit) null); initObject(initWithNavigationBarClass$toolbarClass$(navigationBarClass, toolbarClass)); }
+    public UINavigationController(Class<?> navigationBarClass, Class<?> toolbarClass) { super((SkipInit) null); initObject(initWithNavigationBarClass$toolbarClass$(navigationBarClass, toolbarClass)); }
     public UINavigationController(UIViewController rootViewController) { super((SkipInit) null); initObject(initWithRootViewController$(rootViewController)); }
     /*</constructors>*/
     /*<properties>*/
@@ -156,7 +156,7 @@ import org.robovm.apple.corelocation.*;
      * @since Available in iOS 5.0 and later.
      */
     @Method(selector = "initWithNavigationBarClass:toolbarClass:")
-    protected native @Pointer long initWithNavigationBarClass$toolbarClass$(ObjCClass navigationBarClass, ObjCClass toolbarClass);
+    protected native @Pointer long initWithNavigationBarClass$toolbarClass$(Class<?> navigationBarClass, Class<?> toolbarClass);
     @Method(selector = "initWithRootViewController:")
     protected native @Pointer long initWithRootViewController$(UIViewController rootViewController);
     @Method(selector = "pushViewController:animated:")

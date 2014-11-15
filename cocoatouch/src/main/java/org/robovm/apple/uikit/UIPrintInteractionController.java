@@ -119,7 +119,7 @@ import org.robovm.apple.corelocation.*;
     @Method(selector = "isPrintingAvailable")
     public static native boolean isPrintingAvailable();
     @Method(selector = "printableUTIs")
-    public static native NSArray<NSString> getPrintableUTIs();
+    public static native @org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String> getPrintableUTIs();
     @Method(selector = "canPrintURL:")
     public static native boolean canPrint(NSURL url);
     @Method(selector = "canPrintData:")

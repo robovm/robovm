@@ -88,9 +88,9 @@ import org.robovm.apple.corelocation.*;
     @Property(selector = "setPopoverLayoutMargins:")
     public native void setPopoverLayoutMargins(@ByVal UIEdgeInsets v);
     @Property(selector = "popoverBackgroundViewClass")
-    public native ObjCClass getPopoverBackgroundViewClass();
+    public native Class<?> getPopoverBackgroundViewClass();
     @Property(selector = "setPopoverBackgroundViewClass:")
-    public native void setPopoverBackgroundViewClass(ObjCClass v);
+    public native void setPopoverBackgroundViewClass(Class<?> v);
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/

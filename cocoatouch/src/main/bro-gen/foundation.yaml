@@ -1,5 +1,5 @@
 package: org.robovm.apple.foundation
-include: [corefoundation.yaml, uikit.yaml, coreanimation.yaml, coregraphics.yaml, coremedia.yaml, security.yaml, dispatch.yaml]
+include: [corefoundation.yaml, uikit.yaml, coreanimation.yaml, coredata.yaml, coregraphics.yaml, coremedia.yaml, security.yaml, dispatch.yaml]
 library: Foundation
 framework: Foundation
 path_match: ^.*/usr/include/objc/.*$
@@ -12,9 +12,8 @@ typedefs:
     NSUInteger: MachineUInt
     _NSZone: NSZone
     id: NSObject
-    Class: ObjCClass
-    #Class: '@org.robovm.rt.bro.annotation.Marshaler(ObjCClass.Marshaler.class) Class<?>'
-    #ObjCClass: '@org.robovm.rt.bro.annotation.Marshaler(ObjCClass.Marshaler.class) Class<?>'
+    Class: 'Class<?>'
+    ObjCClass: 'Class<?>'
     'Protocol *': ObjCProtocol
     'NSString *': String
     'NSString **': 'NSString.NSStringPtr'
@@ -2268,35 +2267,17 @@ classes:
                 visibility: private
             '-didChange:values.*':
                 name: didChangeValues
+                visibility: private # argument order changed
             '-didChangeValue.*':
                 name: didChangeValue
             '-willChange:values.*':
                 name: willChangeValues
+                visibility: private # argument order changed
             '-willChangeValue.*':
                 name: willChangeValue
             '-observeValueForKeyPath:ofObject:change:context:':
                 # We have a non-native version of this
                 exclude: true
-            '-setValue:forKey(.*):':
-                name: 'setValueForKey#{g[0]}'
-            '-setValuesForKeysWithDictionary:':
-                name: setValuesForKeys
-            '-setNilValueForKey:':
-                name: setNullValueForKey
-            '-setValue:forUndefinedKey:':
-                name: setValueForUndefinedKey
-            '-valueForKey(.*):':
-                name: 'getValueForKey#{g[0]}'
-            '-dictionaryWithValuesForKeys:':
-                name: getDictionaryWithValuesForKeys
-            '-valueForUndefinedKey:':
-                name: getValueForUndefinedKey
-            '-mutable(.*ValueForKey.*):':
-                name: 'getMutable#{g[0]}'
-            '-validateValue:forKey:error:':
-                name: validateValueForKey
-            '-validateValue:forKeyPath:error:':
-                name: validateValueForKeyPath
             '-performSelector:withObject:afterDelay:inModes:':
                 trim_after_first_colon: true
                 visibility: 'public final'
@@ -3529,8 +3510,6 @@ protocols:
                 name: willFinish
             '-unarchiverDidFinish:':
                 name: didFinish
-    #NSKeyValueCoding: {}
-    NSKeyValueObserving: {}
     NSLocking: {} # DONE
     NSMachPortDelegate: # DONE
         methods:
@@ -4383,8 +4362,9 @@ values:
         visibility: protected
 
     # Foundation
-    NS(FoundationVersionNumber):
-        name: 'get#{g[0]}'
+    NSFoundationVersionNumber:
+        class: FoundationVersionNumber
+        name: 'getVersion'
         readonly: true
 
     NS(.*):

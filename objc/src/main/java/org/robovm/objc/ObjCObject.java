@@ -31,6 +31,7 @@ import org.robovm.rt.bro.Struct;
 import org.robovm.rt.bro.annotation.Callback;
 import org.robovm.rt.bro.annotation.Library;
 import org.robovm.rt.bro.annotation.Marshaler;
+import org.robovm.rt.bro.annotation.Marshalers;
 import org.robovm.rt.bro.annotation.MarshalsPointer;
 import org.robovm.rt.bro.annotation.Pointer;
 import org.robovm.rt.bro.annotation.StructMember;
@@ -42,7 +43,10 @@ import org.robovm.rt.bro.ptr.VoidPtr;
  */
 @Library("Foundation")
 @NativeClass("Object")
-@Marshaler(ObjCObject.Marshaler.class)
+@Marshalers({
+  @Marshaler(ObjCObject.Marshaler.class),
+  @Marshaler(ObjCClass.Marshaler.class)
+})
 public abstract class ObjCObject extends NativeObject {
 
     public static class ObjCObjectPtr extends Ptr<ObjCObject, ObjCObjectPtr> {}

@@ -98,12 +98,12 @@ import org.robovm.apple.corelocation.*;
      * @since Available in iOS 5.0 and later.
      */
     @Property(selector = "popoverBackgroundViewClass")
-    public native ObjCClass getPopoverBackgroundViewClass();
+    public native Class<?> getPopoverBackgroundViewClass();
     /**
      * @since Available in iOS 5.0 and later.
      */
     @Property(selector = "setPopoverBackgroundViewClass:")
-    public native void setPopoverBackgroundViewClass(ObjCClass v);
+    public native void setPopoverBackgroundViewClass(Class<?> v);
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/

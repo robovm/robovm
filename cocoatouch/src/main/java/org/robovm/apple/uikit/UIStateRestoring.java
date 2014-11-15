@@ -51,7 +51,7 @@ import org.robovm.apple.corelocation.*;
     @Property(selector = "restorationParent")
     UIStateRestoring getRestorationParent();
     @Property(selector = "objectRestorationClass")
-    ObjCClass getObjectRestorationClass();
+    Class<?> getObjectRestorationClass();
     /*</properties>*/
     /*<methods>*/
     @Method(selector = "encodeRestorableStateWithCoder:")

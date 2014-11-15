@@ -368,7 +368,7 @@ import org.robovm.apple.corelocation.*;
      * @since Available in iOS 6.0 and later.
      */
     @Method(selector = "registerClass:forCellReuseIdentifier:")
-    public native void registerReusableCellClass(ObjCClass cellClass, String identifier);
+    public native void registerReusableCellClass(Class<?> cellClass, String identifier);
     /**
      * @since Available in iOS 6.0 and later.
      */
@@ -378,6 +378,6 @@ import org.robovm.apple.corelocation.*;
      * @since Available in iOS 6.0 and later.
      */
     @Method(selector = "registerClass:forHeaderFooterViewReuseIdentifier:")
-    public native void registerReusableHeaderFooterViewClass(ObjCClass aClass, String identifier);
+    public native void registerReusableHeaderFooterViewClass(Class<?> aClass, String identifier);
     /*</methods>*/
 }

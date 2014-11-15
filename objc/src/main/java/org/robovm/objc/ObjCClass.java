@@ -31,6 +31,7 @@ import org.robovm.objc.annotation.TypeEncoding;
 import org.robovm.rt.VM;
 import org.robovm.rt.bro.annotation.Callback;
 import org.robovm.rt.bro.annotation.Library;
+import org.robovm.rt.bro.annotation.MarshalsPointer;
 
 @Library("objc")
 public final class ObjCClass extends ObjCObject {
@@ -81,6 +82,25 @@ public final class ObjCClass extends ObjCObject {
 
     static boolean isObjCProxy(Class<?> cls) {
         return (cls.getModifiers() & ACC_SYNTHETIC) > 0 && cls.getName().endsWith("$ObjCProxy");
+    }
+    
+    public static class Marshaler {
+        @MarshalsPointer
+        public static Class<? extends ObjCObject> toObject(Class<ObjCClass> cls, long handle, long flags) {
+            ObjCClass o = ObjCClass.toObjCClass(handle);
+            if (o == null) {
+                return null;
+            }
+            return o.getType();
+        }
+        @MarshalsPointer
+        public static long toNative(Class<? extends ObjCObject> o, long flags) {
+            if (o == null) {
+                return 0L;
+            }
+            ObjCClass c = ObjCClass.getByType(o);
+            return c.getHandle();
+        }
     }
     
     private final Class<? extends ObjCObject> type;

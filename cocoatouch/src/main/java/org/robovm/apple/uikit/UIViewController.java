@@ -343,7 +343,7 @@ import org.robovm.apple.mediaplayer.MPMoviePlayerViewController;
     @Property(selector = "restorationParent")
     public native UIStateRestoring getRestorationParent();
     @Property(selector = "objectRestorationClass")
-    public native ObjCClass getObjectRestorationClass();
+    public native Class<?> getObjectRestorationClass();
     /*</properties>*/
     /*<members>*//*</members>*/
     

@@ -66,7 +66,7 @@ import org.robovm.apple.corelocation.*;
     @Method(selector = "invalidateLayoutWithContext:")
     public native void invalidateLayout(UICollectionViewLayoutInvalidationContext context);
     @Method(selector = "registerClass:forDecorationViewOfKind:")
-    public native void registerDecorationViewClass(ObjCClass viewClass, String elementKind);
+    public native void registerDecorationViewClass(Class<?> viewClass, String elementKind);
     @Method(selector = "registerNib:forDecorationViewOfKind:")
     public native void registerDecorationViewNib(UINib nib, String elementKind);
     @Method(selector = "prepareLayout")
@@ -106,12 +106,12 @@ import org.robovm.apple.corelocation.*;
     @Method(selector = "collectionViewContentSize")
     public native @ByVal CGSize getCollectionViewContentSize();
     @Method(selector = "layoutAttributesClass")
-    public static native ObjCClass getLayoutAttributesClass();
+    public static native Class<?> getLayoutAttributesClass();
     /**
      * @since Available in iOS 7.0 and later.
      */
     @Method(selector = "invalidationContextClass")
-    public static native ObjCClass getInvalidationContextClass();
+    public static native Class<?> getInvalidationContextClass();
     @Method(selector = "prepareForCollectionViewUpdates:")
     public native void prepareForCollectionViewUpdates(NSArray<UICollectionViewUpdateItem> updateItems);
     @Method(selector = "finalizeCollectionViewUpdates")

@@ -52,7 +52,7 @@ import org.robovm.apple.corelocation.*;
     @NotImplemented("restorationParent")
     public UIStateRestoring getRestorationParent() { throw new UnsupportedOperationException(); }
     @NotImplemented("objectRestorationClass")
-    public ObjCClass getObjectRestorationClass() { throw new UnsupportedOperationException(); }
+    public Class<?> getObjectRestorationClass() { throw new UnsupportedOperationException(); }
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/

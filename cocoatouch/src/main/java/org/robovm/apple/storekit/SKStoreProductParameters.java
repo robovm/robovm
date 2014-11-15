@@ -71,7 +71,7 @@ import org.robovm.apple.accounts.*;
     /**
      * @since Available in iOS 6.0 and later.
      */
-    public SKStoreProductParameters(String iTunesItemIdentifier) {
+    public SKStoreProductParameters(long iTunesItemIdentifier) {
         data = new NSMutableDictionary<>();
         setITunesItemIdentifier(iTunesItemIdentifier);
     }
@@ -87,18 +87,18 @@ import org.robovm.apple.accounts.*;
     /**
      * @since Available in iOS 6.0 and later.
      */
-    public String getITunesItemIdentifier() {
+    public long getITunesItemIdentifier() {
         if (data.containsKey(ITunesItemIdentifierKey())) {
-            NSString val = (NSString)data.get(ITunesItemIdentifierKey());
-            return val.toString();
+            NSNumber val = (NSNumber)data.get(ITunesItemIdentifierKey());
+            return val.longValue();
         }
-        return null;
+        return 0;
     }
     /**
      * @since Available in iOS 6.0 and later.
      */
-    public SKStoreProductParameters setITunesItemIdentifier(String identifier) {
-        data.put(ITunesItemIdentifierKey(), new NSString(identifier));
+    public SKStoreProductParameters setITunesItemIdentifier(long identifier) {
+        data.put(ITunesItemIdentifierKey(), NSNumber.valueOf(identifier));
         return this;
     }
     /**

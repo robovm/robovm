@@ -1,0 +1,56 @@
+package: org.robovm.apple.notificationcenter
+include: [foundation.yaml, uikit.yaml]
+library: NotificationCenter
+framework: NotificationCenter
+clang_args: ['-x', 'objective-c']
+headers:
+    - /System/Library/Frameworks/NotificationCenter.framework/Headers/NotificationCenter.h
+typedefs:
+    'void (^)(NCUpdateResult)': '@Block VoidBlock1<NCUpdateResult>'
+    
+enums:
+    NCUpdateResult: {}
+
+categories:
+    NotificationCenter: # DONE
+        methods:
+            '+notificationCenterVibrancyEffect':
+                name: createNotificationCenterEffect
+
+classes:
+    NotificationCenter:
+        annotations: ['@Marshaler(NSString.AsStringMarshaler.class)']
+
+    NCWidgetController: # DONE
+        methods:
+            '-setHasContent:forWidgetWithBundleIdentifier:':
+                name: setHasContentForWidgetWithBundleID
+            '+widgetController':
+                name: create
+
+protocols:
+    NCWidgetProviding: # DONE
+        methods:
+            '-widgetPerformUpdateWithCompletionHandler:':
+                name: performUpdate
+            '-widgetMarginInsetsForProposedMarginInsets:':
+                name: getMarginInsetsForProposedInsets
+
+functions:
+    # Make sure we don't miss any functions if new ones are introduced in a later version
+    (NC.*):
+        class: NotificationCenter
+        name: 'Function__#{g[0]}'
+
+values:
+   
+    # Make sure we don't miss any values if new ones are introduced in a later version
+    (NC.*):
+        class: NotificationCenter
+        name: 'Value__#{g[0]}'
+
+constants:
+    # Make sure we don't miss any constants if new ones are introduced in a later version
+    (NC.*):
+        class: NotificationCenter
+        name: 'Constant__#{g[0]}'

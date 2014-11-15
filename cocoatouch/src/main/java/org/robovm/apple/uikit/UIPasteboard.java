@@ -45,6 +45,25 @@ import org.robovm.apple.corelocation.*;
     extends /*<extends>*/NSObject/*</extends>*/ 
     /*<implements>*//*</implements>*/ {
 
+    public static class Notifications {
+        public static NSObject observeChanged(UIPasteboard object, final VoidBlock2<UIPasteboard, UIPasteboardChangedNotificationInfo> block) {
+            return NSNotificationCenter.getDefaultCenter().addObserver(ChangedNotification(), object, NSOperationQueue.getMainQueue(), new VoidBlock1<NSNotification>() {
+                @Override
+                public void invoke(NSNotification a) {
+                    block.invoke((UIPasteboard)a.getObject(), new UIPasteboardChangedNotificationInfo(a.getUserInfo()));
+                }
+            });
+        }
+        
+        public static NSObject observeRemoved(UIPasteboard object, final VoidBlock1<UIPasteboard> block) {
+            return NSNotificationCenter.getDefaultCenter().addObserver(RemovedNotification(), object, NSOperationQueue.getMainQueue(), new VoidBlock1<NSNotification>() {
+                @Override
+                public void invoke(NSNotification a) {
+                    block.invoke((UIPasteboard)a.getObject());
+                }
+            });
+        }
+    }
     /*<ptr>*/public static class UIPasteboardPtr extends Ptr<UIPasteboard, UIPasteboardPtr> {}/*</ptr>*/
     /*<bind>*/static { ObjCRuntime.bind(UIPasteboard.class); }/*</bind>*/
     /*<constants>*//*</constants>*/
@@ -52,6 +71,21 @@ import org.robovm.apple.corelocation.*;
     public UIPasteboard() {}
     protected UIPasteboard(SkipInit skipInit) { super(skipInit); }
     /*</constructors>*/
+    public List<Map<String, NSObject>> getItems() {
+        NSArray<NSDictionary<NSString, NSObject>> items = getItems0();
+        List<Map<String, NSObject>> itemList = new ArrayList<>();
+        for (NSDictionary<NSString, NSObject> item : items) {
+            itemList.add(item.asStringMap());
+        }
+        return itemList;
+    }
+    public void setItems(List<Map<String, NSObject>> items) {
+        NSArray<NSDictionary<NSString, NSObject>> itemArray = new NSMutableArray<>();
+        for (Map<String, NSObject> item : items) {
+            itemArray.add(NSDictionary.fromStringMap(item));
+        }
+        setItems0(itemArray);
+    }
     /*<properties>*/
     @Property(selector = "name")
     public native String getName();
@@ -64,9 +98,9 @@ import org.robovm.apple.corelocation.*;
     @Property(selector = "numberOfItems")
     public native @MachineSizedSInt long getNumberOfItems();
     @Property(selector = "items")
-    public native NSArray<NSDictionary<NSString, ?>> getItems();
+    private native NSArray<NSDictionary<NSString, NSObject>> getItems0();
     @Property(selector = "setItems:")
-    public native void setItems(NSArray<NSDictionary<NSString, ?>> v);
+    private native void setItems0(NSArray<NSDictionary<NSString, NSObject>> v);
     @Property(selector = "string")
     public native String getString();
     @Property(selector = "setString:")
@@ -101,11 +135,45 @@ import org.robovm.apple.corelocation.*;
     public native void setColors(NSArray<UIColor> v);
     /*</properties>*/
     /*<members>*//*</members>*/
+    public static UIPasteboard getFindPasteboard() {
+        return getPasteboard(PasteboardNameFind(), true);
+    }
+    
+    public List<List<String>> getTypes(NSIndexSet itemSet) {
+        NSArray<NSArray<NSString>> types = getTypes0(itemSet);
+        List<List<String>> typeList = new ArrayList<>();
+        for (NSArray<NSString> type : types) {
+            typeList.add(type.asStringList());
+        }
+        return typeList;
+    }
+    public void addItems(List<Map<String, NSObject>> items) {
+        NSArray<NSDictionary<NSString, NSObject>> itemArray = new NSMutableArray<>();
+        for (Map<String, NSObject> item :items) {
+            itemArray.add(NSDictionary.fromStringMap(item));
+        }
+        addItems(itemArray);
+    }
     /*<methods>*/
+    @GlobalValue(symbol="UIPasteboardNameFind", optional=true)
+    private static native String PasteboardNameFind();
+    @GlobalValue(symbol="UIPasteboardChangedNotification", optional=true)
+    public static native NSString ChangedNotification();
+    @GlobalValue(symbol="UIPasteboardRemovedNotification", optional=true)
+    public static native NSString RemovedNotification();
+    @GlobalValue(symbol="UIPasteboardTypeListString", optional=true)
+    public static native @org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String> getStringTypeList();
+    @GlobalValue(symbol="UIPasteboardTypeListURL", optional=true)
+    public static native @org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String> getURLTypeList();
+    @GlobalValue(symbol="UIPasteboardTypeListImage", optional=true)
+    public static native @org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String> getImageTypeList();
+    @GlobalValue(symbol="UIPasteboardTypeListColor", optional=true)
+    public static native @org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String> getColorTypeList();
+    
     @Method(selector = "pasteboardTypes")
-    public native NSArray<NSString> getTypes();
+    public native @org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String> getTypes();
     @Method(selector = "containsPasteboardTypes:")
-    public native boolean contains(NSArray<NSString> pasteboardTypes);
+    public native boolean contains(@org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String> pasteboardTypes);
     @Method(selector = "dataForPasteboardType:")
     public native NSData getData(String pasteboardType);
     @Method(selector = "valueForPasteboardType:")
@@ -115,24 +183,24 @@ import org.robovm.apple.corelocation.*;
     @Method(selector = "setData:forPasteboardType:")
     public native void setData(NSData data, String pasteboardType);
     @Method(selector = "pasteboardTypesForItemSet:")
-    public native NSArray<NSArray<NSString>> getTypes(NSIndexSet itemSet);
+    private native NSArray<NSArray<NSString>> getTypes0(NSIndexSet itemSet);
     @Method(selector = "containsPasteboardTypes:inItemSet:")
-    public native boolean contains(NSArray<NSString> pasteboardTypes, NSIndexSet itemSet);
+    public native boolean contains(@org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String> pasteboardTypes, NSIndexSet itemSet);
     @Method(selector = "itemSetWithPasteboardTypes:")
-    public native NSIndexSet getItemsWithTypes(NSArray<NSString> pasteboardTypes);
+    public native NSIndexSet getItemsWithTypes(@org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String> pasteboardTypes);
     @Method(selector = "valuesForPasteboardType:inItemSet:")
     public native NSArray<?> getValues(String pasteboardType, NSIndexSet itemSet);
     @Method(selector = "dataForPasteboardType:inItemSet:")
     public native NSArray<NSData> getData(String pasteboardType, NSIndexSet itemSet);
     @Method(selector = "addItems:")
-    public native void addItems(NSArray<NSDictionary<NSString, ?>> items);
+    private native void addItems(NSArray<NSDictionary<NSString, NSObject>> items);
     @Method(selector = "generalPasteboard")
-    public static native UIPasteboard getGeneral();
+    public static native UIPasteboard getGeneralPasteboard();
     @Method(selector = "pasteboardWithName:create:")
-    public static native UIPasteboard create(String pasteboardName, boolean create);
+    public static native UIPasteboard getPasteboard(String pasteboardName, boolean create);
     @Method(selector = "pasteboardWithUniqueName")
-    public static native UIPasteboard getUnique();
+    public static native UIPasteboard getUniquePasteboard();
     @Method(selector = "removePasteboardWithName:")
-    public static native void remove(String pasteboardName);
+    public static native void removePasteboard(String pasteboardName);
     /*</methods>*/
 }

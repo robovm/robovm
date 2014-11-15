@@ -304,9 +304,9 @@ categories:
     NSValue: # DONE
         methods:
             '-CG(.*Value)':
-                name: "get#{g[0]}"
+                name: 'get#{g[0]}'
             '-UI(.*Value)':
-                name: "get#{g[0]}"
+                name: 'get#{g[0]}'
             '+valueWith.*':
                 name: create
     UIAccessibility@NSObject: {protocol: true}
@@ -355,6 +355,10 @@ classes:
                 name: stopProvidingItem
             '+writePlaceholderAtURL:withMetadata:error:':
                 name: writePlaceholder
+                visibility: protected # throws NSErrorException
+                parameters:
+                    metadata:
+                        type: NSURLProperties
             '+placeholderURLForURL:':
                 name: getPlaceholderURL
     NSLayoutConstraint: # DONE
@@ -1159,6 +1163,7 @@ classes:
             '-fileAttributesToWriteToURL:forSaveOperation:error:':
                 name: getFileAttributesToWrite
                 return_type: NSFileAttributes
+                visibility: protected # throws NSErrorException
             '-fileNameExtensionForType:saveOperation:':
                 name: getFileNameExtension
             '-openWithCompletionHandler:':
@@ -1167,6 +1172,7 @@ classes:
                 name: performAsynchronousFileAccess
             '-readFromURL:error:':
                 name: read
+                visibility: protected # throws NSErrorException
             '-revertToContentsOfURL:completionHandler:':
                 name: revert
             '-saveToURL:forSaveOperation:completionHandler:':
@@ -1175,19 +1181,23 @@ classes:
                 name: updateChangeCount
             '-loadFromContents:ofType:error:':
                 trim_after_first_colon: true
+                visibility: protected # throws NSErrorException
             '-contentsForType:error:':
                 name: getContentsForType
+                visibility: protected # throws NSErrorException
             '-updateChangeCount:':
                 trim_after_first_colon: true
             '-changeCountTokenForSaveOperation:':
                 name: getChangeCountToken
             '-writeContents:andAttributes:safelyToURL:forSaveOperation:error:':
                 trim_after_first_colon: true
+                visibility: protected # throws NSErrorException
                 parameters:
                     additionalFileAttributes:
                         type: NSFileAttributes
             '-writeContents:toURL:forSaveOperation:originalContentsURL:error:':
                 trim_after_first_colon: true
+                visibility: protected # throws NSErrorException
             '-handleError:userInteractionPermitted:':
                 trim_after_first_colon: true
             '-finishedHandlingError:recovered:':
@@ -1580,23 +1590,27 @@ classes:
     UIManagedDocument: # DONE
         properties: 
             'persistentStoreOptions':
-                type: "NSDictionary<NSString, ?>"
+                type: NSPersistentStoreOptions
         methods:
-            "+persistentStoreName":
+            '+persistentStoreName':
                 name: getPersistentStoreName
-            "-additionalContentForURL:error:":
+            '-additionalContentForURL:error:':
                 name: getAdditionalContent
-            "-configurePersistentStoreCoordinatorForURL:ofType:modelConfiguration:storeOptions:error:":
+                visibility: protected # throw NSErrorException
+            '-configurePersistentStoreCoordinatorForURL:ofType:modelConfiguration:storeOptions:error:':
                 name: configurePersistentStoreCoordinator
+                visibility: protected # throw NSErrorException
                 parameters:
                     storeOptions:
-                        type: "NSDictionary<NSString, ?>"
-            "-persistentStoreTypeForFileType:":
+                        type: NSPersistentStoreOptions
+            '-persistentStoreTypeForFileType:':
                 name: getPersistentStoreType
-            "-readAdditionalContentFromURL:error:":
+            '-readAdditionalContentFromURL:error:':
                 name: readAdditionalContent
+                visibility: protected # throw NSErrorException
             '-writeAdditionalContent:toURL:originalContentsURL:error:':
                 name: writeAdditionalContent
+                visibility: protected # throw NSErrorException
     UIMarkupTextPrintFormatter: {} # DONE
     UIMenuController: # DONE
         properties:
@@ -1748,50 +1762,53 @@ classes:
     UIPasteboard: # DONE
         properties:
             'items':
-                type: "NSArray<NSDictionary<NSString, ?>>"
+                name: items0
+                type: 'NSArray<NSDictionary<NSString, NSObject>>'
+                visibility: private
             'images':
-                type: "NSArray<UIImage>"
+                type: NSArray<UIImage>
             'URLs':
-                type: "NSArray<NSURL>"
+                type: NSArray<NSURL>
             'colors':
-                type: "NSArray<UIColor>"
+                type: NSArray<UIColor>
             'strings':
-                type: "@org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String>"
+                type: '@org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String>'
         methods:
             '+generalPasteboard':
-                name: getGeneral
+                name: getGeneralPasteboard
             '+pasteboardWithUniqueName':
-                name: getUnique
+                name: getUniquePasteboard
             '+pasteboardWithName:create:':
-                name: create
+                name: getPasteboard
             '+removePasteboardWithName:':
-                name: remove
+                name: removePasteboard
             '-pasteboardTypes':
                 name: getTypes
-                return_type: "NSArray<NSString>"
+                return_type: '@org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String>'
             '-containsPasteboardTypes:':
                 name: contains
                 parameters:
                     pasteboardTypes:
-                        type: "NSArray<NSString>"
+                        type: '@org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String>'
             '-containsPasteboardTypes:inItemSet:':
                 name: contains
                 parameters:
                     pasteboardTypes:
-                        type: "NSArray<NSString>"
+                        type: '@org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String>'
             '-dataForPasteboardType:':
                 name: getData
             '-dataForPasteboardType:inItemSet:':
                 name: getData
-                return_type: "NSArray<NSData>"
+                return_type: NSArray<NSData>
             '-itemSetWithPasteboardTypes:':
                 name: getItemsWithTypes
                 parameters:
                     pasteboardTypes:
-                        type: "NSArray<NSString>"
+                        type: '@org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String>'
             '-pasteboardTypesForItemSet:':
-                name: getTypes
-                return_type: "NSArray<NSArray<NSString>>"
+                name: getTypes0
+                visibility: private
+                return_type: NSArray<NSArray<NSString>>
             '-valueForPasteboardType:':
                 name: getValue
             '-valuesForPasteboardType:inItemSet:':
@@ -1802,9 +1819,10 @@ classes:
                 trim_after_first_colon: true
             '-addItems:':
                 trim_after_first_colon: true
+                visibility: private
                 parameters:
                     items:
-                        type: "NSArray<NSDictionary<NSString, ?>>"
+                        type: 'NSArray<NSDictionary<NSString, NSObject>>'
     UIPercentDrivenInteractiveTransition: # DONE
         methods:
             '-updateInteractiveTransition:':
@@ -1889,11 +1907,11 @@ classes:
         methods:
             '+canPrintData:':
                 name: canPrint
-            "+canPrintURL:":
+            '+canPrintURL:':
                 name: canPrint
             '+printableUTIs':
                 name: getPrintableUTIs
-                return_type: "NSArray<NSString>"
+                return_type: '@org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String>'
             '+sharedPrintController':
                 name: getSharedPrintController
             '-dismissAnimated:':
@@ -2014,12 +2032,12 @@ classes:
             '-remoteControlReceivedWithEvent:':
                 name: remoteControlReceived
             '-(touches.*):withEvent:':
-                name: "#{g[0]}"
+                name: '#{g[0]}'
                 parameters:
                     touches:
                         type: NSSet<UITouch>
             '-(motion.*):withEvent:':
-                name: "#{g[0]}"
+                name: '#{g[0]}'
                 parameters:
                     touches:
                         type: NSSet<UITouch>
@@ -2829,7 +2847,7 @@ classes:
     UIVisualEffectView: {} # DONE
     UIWebView: # DONE
         methods:
-            "-loadHTMLString:baseURL:":
+            '-loadHTMLString:baseURL:':
                 name: loadHTML
             '-stringByEvaluatingJavaScriptFromString:':
                 name: evaluateJavaScript
@@ -2969,9 +2987,9 @@ protocols:
                         type: UIRemoteNotification
             '-application:didRegisterForRemoteNotificationsWithDeviceToken:':
                 name: didRegisterForRemoteNotifications
-            "-application:handleOpenURL:":
+            '-application:handleOpenURL:':
                 name: handleOpenURL
-            "-application:openURL:sourceApplication:annotation:":
+            '-application:openURL:sourceApplication:annotation:':
                 name: openURL
                 parameters:
                     annotation:
@@ -3202,7 +3220,7 @@ protocols:
         methods:
             '-guidedAccessRestrictionIdentifiers':
                 name: getIdentifiers
-                return_type: "@org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String>"
+                return_type: '@org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String>'
             '-guidedAccessRestrictionWithIdentifier:didChangeState:':
                 name: didChangeState
             '-textForGuidedAccessRestrictionWithIdentifier:':
@@ -3272,14 +3290,14 @@ protocols:
                 name: didFinishAnimating
                 parameters:
                     previousViewControllers:
-                        type: "NSArray<UIViewController>"
+                        type: NSArray<UIViewController>
             '-pageViewController:spineLocationForInterfaceOrientation:':
                 name: getSpineLocation
             '-pageViewController:willTransitionToViewControllers:':
                 name: willTransition
                 parameters:
                     pendingViewControllers:
-                        type: "NSArray<UIViewController>"
+                        type: NSArray<UIViewController>
             '-pageViewControllerSupportedInterfaceOrientations:':
                 name: getSupportedInterfaceOrientations
                 return_type: UIInterfaceOrientationMask
@@ -3943,10 +3961,10 @@ protocols:
 
 functions:
     # NSTextAlignment
-    (NSTextAlignmentToCTTextAlignment):
-        name: 'convert#{g[0]}'
-    (NSTextAlignment)From(CTTextAlignment):
-        name: 'convert#{g[1]}To#{g[0]}'
+    NSTextAlignmentToCTTextAlignment:
+        exclude: true # We use them directly in NSTextAlignment
+    NSTextAlignmentFromCTTextAlignment:
+        exclude: true # We use them directly in NSTextAlignment
 
     # UIAccessibility
     UIAccessibility(PostNotification):
@@ -4297,10 +4315,26 @@ values:
         visibility: protected
 
     # UIPasteboard
-    UI(PasteboardType.*):
+    UIPasteboard(.*Notification):
+        class: UIPasteboard
         name: '#{g[0]}'
+        type: NSString
+    UIPasteboardChanged(.*Key):
+        class: UIPasteboardChangedNotificationInfo
+        name: '#{g[0]}'
+        type: NSString
+        visibility: protected
+    UIPasteboardNameGeneral:
+        exclude: true # use UIPasteboard.getGeneralPasteboard() instead
+    UI(PasteboardNameFind):
+        class: UIPasteboard
+        name: '#{g[0]}'
+        visibility: private # use Pasteboard.getFindPasteboard() instead
+    UIPasteboardTypeList(.*):
+        class: UIPasteboard
+        name: 'get#{g[0]}TypeList'
         readonly: true
-        type: NSArray<NSString>
+        type: '@org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String>'
 
     # UIScreen
     UIScreen(.*Notification):

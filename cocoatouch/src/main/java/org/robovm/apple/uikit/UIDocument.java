@@ -99,6 +99,98 @@ import org.robovm.apple.corelocation.*;
     public native NSOperationQueue getPresentedItemOperationQueue();
     /*</properties>*/
     /*<members>*//*</members>*/
+    /**
+     * 
+     * @param contents
+     * @param typeName
+     * @return
+     * @throws NSErrorException
+     */
+    public boolean loadFromContents(NSObject contents, String typeName) {
+        NSError.NSErrorPtr err = new NSError.NSErrorPtr();
+        boolean result = loadFromContents(contents, typeName, err);
+        if (err.get() != null) {
+            throw new NSErrorException(err.get());
+        }
+        return result;
+    }
+    /**
+     * 
+     * @param typeName
+     * @return
+     * @throws NSErrorException
+     */
+    public NSObject getContentsForType(String typeName) {
+        NSError.NSErrorPtr err = new NSError.NSErrorPtr();
+        NSObject result = getContentsForType(typeName, err);
+        if (err.get() != null) {
+            throw new NSErrorException(err.get());
+        }
+        return result;
+    }
+    /**
+     * 
+     * @param contents
+     * @param additionalFileAttributes
+     * @param url
+     * @param saveOperation
+     * @return
+     * @throws NSErrorException
+     */
+    public boolean writeContents(NSObject contents, NSFileAttributes additionalFileAttributes, NSURL url, UIDocumentSaveOperation saveOperation) {
+        NSError.NSErrorPtr err = new NSError.NSErrorPtr();
+        boolean result = writeContents(contents, additionalFileAttributes, url, saveOperation, err);
+        if (err.get() != null) {
+            throw new NSErrorException(err.get());
+        }
+        return result;
+    }
+    /**
+     * 
+     * @param contents
+     * @param url
+     * @param saveOperation
+     * @param originalContentsURL
+     * @return
+     * @throws NSErrorException
+     */
+    public boolean writeContents(NSObject contents, NSURL url, UIDocumentSaveOperation saveOperation, NSURL originalContentsURL) {
+        NSError.NSErrorPtr err = new NSError.NSErrorPtr();
+        boolean result = writeContents(contents, url, saveOperation, originalContentsURL, err);
+        if (err.get() != null) {
+            throw new NSErrorException(err.get());
+        }
+        return result;
+    }
+    /**
+     * 
+     * @param url
+     * @param saveOperation
+     * @return
+     * @throws NSErrorException
+     */
+    public NSFileAttributes getFileAttributesToWrite(NSURL url, UIDocumentSaveOperation saveOperation) {
+        NSError.NSErrorPtr err = new NSError.NSErrorPtr();
+        NSFileAttributes result = getFileAttributesToWrite(url, saveOperation, err);
+        if (err.get() != null) {
+            throw new NSErrorException(err.get());
+        }
+        return result;
+    }
+    /**
+     * 
+     * @param url
+     * @return
+     * @throws NSErrorException
+     */
+    public boolean read(NSURL url) {
+        NSError.NSErrorPtr err = new NSError.NSErrorPtr();
+        boolean result = read(url, err);
+        if (err.get() != null) {
+            throw new NSErrorException(err.get());
+        }
+        return result;
+    }
     /*<methods>*/
     /**
      * @since Available in iOS 5.0 and later.
@@ -118,9 +210,9 @@ import org.robovm.apple.corelocation.*;
     @Method(selector = "closeWithCompletionHandler:")
     public native void close(@Block VoidBooleanBlock completionHandler);
     @Method(selector = "loadFromContents:ofType:error:")
-    public native boolean loadFromContents(NSObject contents, String typeName, NSError.NSErrorPtr outError);
+    protected native boolean loadFromContents(NSObject contents, String typeName, NSError.NSErrorPtr outError);
     @Method(selector = "contentsForType:error:")
-    public native NSObject getContentsForType(String typeName, NSError.NSErrorPtr outError);
+    protected native NSObject getContentsForType(String typeName, NSError.NSErrorPtr outError);
     @Method(selector = "disableEditing")
     public native void disableEditing();
     @Method(selector = "enableEditing")
@@ -142,13 +234,13 @@ import org.robovm.apple.corelocation.*;
     @Method(selector = "fileNameExtensionForType:saveOperation:")
     public native String getFileNameExtension(String typeName, UIDocumentSaveOperation saveOperation);
     @Method(selector = "writeContents:andAttributes:safelyToURL:forSaveOperation:error:")
-    public native boolean writeContents(NSObject contents, NSFileAttributes additionalFileAttributes, NSURL url, UIDocumentSaveOperation saveOperation, NSError.NSErrorPtr outError);
+    protected native boolean writeContents(NSObject contents, NSFileAttributes additionalFileAttributes, NSURL url, UIDocumentSaveOperation saveOperation, NSError.NSErrorPtr outError);
     @Method(selector = "writeContents:toURL:forSaveOperation:originalContentsURL:error:")
-    public native boolean writeContents(NSObject contents, NSURL url, UIDocumentSaveOperation saveOperation, NSURL originalContentsURL, NSError.NSErrorPtr outError);
+    protected native boolean writeContents(NSObject contents, NSURL url, UIDocumentSaveOperation saveOperation, NSURL originalContentsURL, NSError.NSErrorPtr outError);
     @Method(selector = "fileAttributesToWriteToURL:forSaveOperation:error:")
-    public native NSFileAttributes getFileAttributesToWrite(NSURL url, UIDocumentSaveOperation saveOperation, NSError.NSErrorPtr outError);
+    protected native NSFileAttributes getFileAttributesToWrite(NSURL url, UIDocumentSaveOperation saveOperation, NSError.NSErrorPtr outError);
     @Method(selector = "readFromURL:error:")
-    public native boolean read(NSURL url, NSError.NSErrorPtr outError);
+    protected native boolean read(NSURL url, NSError.NSErrorPtr outError);
     @Method(selector = "performAsynchronousFileAccessUsingBlock:")
     public native void performAsynchronousFileAccess(@Block Runnable block);
     @Method(selector = "handleError:userInteractionPermitted:")

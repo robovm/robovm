@@ -41,6 +41,7 @@ import org.robovm.apple.corelocation.*;
  */
 /*</javadoc>*/
 /*<annotations>*/@Marshaler(ValuedEnum.AsMachineSizedSIntMarshaler.class)/*</annotations>*/
+@Library("UIKit")
 public enum /*<name>*/NSTextAlignment/*</name>*/ implements ValuedEnum {
     /*<values>*/
     Left(0L),
@@ -50,8 +51,24 @@ public enum /*<name>*/NSTextAlignment/*</name>*/ implements ValuedEnum {
     Natural(4L);
     /*</values>*/
 
+    static { Bro.bind(NSTextAlignment.class); }
+    
+    /**
+     * @since Available in iOS 6.0 and later.
+     */
+    public CTTextAlignment toCTTextAlignment() {
+        return toCTTextAlignment(this);
+    }
+    @Bridge(symbol="NSTextAlignmentToCTTextAlignment", optional=true)
+    private static native CTTextAlignment toCTTextAlignment(NSTextAlignment nsTextAlignment);
+    /**
+     * @since Available in iOS 6.0 and later.
+     */
+    @Bridge(symbol="NSTextAlignmentFromCTTextAlignment", optional=true)
+    public static native NSTextAlignment fromCTTextAlignment(CTTextAlignment ctTextAlignment);
+    
     private final long n;
-
+    
     private /*<name>*/NSTextAlignment/*</name>*/(long n) { this.n = n; }
     public long value() { return n; }
     public static /*<name>*/NSTextAlignment/*</name>*/ valueOf(long n) {

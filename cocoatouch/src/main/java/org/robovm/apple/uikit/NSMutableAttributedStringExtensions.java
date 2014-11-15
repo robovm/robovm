@@ -54,16 +54,38 @@ import org.robovm.apple.corelocation.*;
     /*</properties>*/
     /*<members>*//*</members>*/
     /**
+     * 
+     * @param thiz
+     * @param url
+     * @param opts
+     * @return
      * @since Available in iOS 7.0 and later.
+     * @throws NSErrorException
      */
     public static boolean readFromFileURL(NSMutableAttributedString thiz, NSURL url, NSAttributedStringDocumentAttributes opts) {
-        return readFromFileURL(thiz, url, opts, null, null);
+        NSError.NSErrorPtr err = new NSError.NSErrorPtr();
+        boolean result = readFromFileURL(thiz, url, opts, null, err);
+        if (err.get() != null) {
+            throw new NSErrorException(err.get());
+        }
+        return result;
     }
     /**
+     * 
+     * @param thiz
+     * @param data
+     * @param opts
+     * @return
      * @since Available in iOS 7.0 and later.
+     * @throws NSErrorException
      */
     public static boolean readFromData(NSMutableAttributedString thiz, NSData data, NSAttributedStringDocumentAttributes opts) {
-        return readFromData(thiz, data, opts, null, null);
+        NSError.NSErrorPtr err = new NSError.NSErrorPtr();
+        boolean result = readFromData(thiz, data, opts, null, null);
+        if (err.get() != null) {
+            throw new NSErrorException(err.get());
+        }
+        return result;
     }
     /*<methods>*/
     /**

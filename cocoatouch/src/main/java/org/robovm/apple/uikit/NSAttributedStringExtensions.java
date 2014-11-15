@@ -54,32 +54,71 @@ import org.robovm.apple.corelocation.*;
     /*</properties>*/
     /*<members>*//*</members>*/
     /**
+     * 
+     * @param url
+     * @param options
+     * @return
      * @since Available in iOS 7.0 and later.
+     * @throws NSErrorException
      */
     public static NSAttributedString createFromURL(NSURL url, NSAttributedStringDocumentAttributes options) {
         NSAttributedString thiz = alloc(NSAttributedString.class);
-        initObject(thiz, initWithFileURL$options$documentAttributes$error$(thiz, url, options, null, null));
+        NSError.NSErrorPtr err = new NSError.NSErrorPtr();
+        initObject(thiz, initWithFileURL$options$documentAttributes$error$(thiz, url, options, null, err));
+        if (err.get() != null) {
+            throw new NSErrorException(err.get());
+        }
         return thiz;
     }
     /**
+     * 
+     * @param data
+     * @param options
+     * @return
      * @since Available in iOS 7.0 and later.
+     * @throws NSErrorException
      */
     public static NSAttributedString createFromData(NSData data, NSAttributedStringDocumentAttributes options) {
         NSAttributedString thiz = alloc(NSAttributedString.class);
-        initObject(thiz, initWithData$options$documentAttributes$error$(thiz, data, options, null, null));
+        NSError.NSErrorPtr err = new NSError.NSErrorPtr();
+        initObject(thiz, initWithData$options$documentAttributes$error$(thiz, data, options, null, err));
+        if (err.get() != null) {
+            throw new NSErrorException(err.get());
+        }
         return thiz;
     }
     /**
+     * 
+     * @param thiz
+     * @param range
+     * @param dict
+     * @return
      * @since Available in iOS 7.0 and later.
+     * @throws NSErrorException
      */
     public static NSData getData(NSAttributedString thiz, @ByVal NSRange range, NSAttributedStringDocumentAttributes dict) {
-        return getData(thiz, range, dict, null);
+        NSError.NSErrorPtr err = new NSError.NSErrorPtr();
+        NSData result = getData(thiz, range, dict, err);
+        if (err.get() != null) {
+            throw new NSErrorException(err.get());
+        }
+        return result;
     }
     /**
+     * @param thiz
+     * @param range
+     * @param dict
+     * @return
      * @since Available in iOS 7.0 and later.
+     * @throws NSErrorException
      */
     public static NSFileWrapper getFileWrapper(NSAttributedString thiz, @ByVal NSRange range, NSAttributedStringDocumentAttributes dict) {
-        return getFileWrapper(thiz, range, dict, null);
+        NSError.NSErrorPtr err = new NSError.NSErrorPtr();
+        NSFileWrapper result = getFileWrapper(thiz, range, dict, null);
+        if (err.get() != null) {
+            throw new NSErrorException(err.get());
+        }
+        return result;
     }
     /*<methods>*/
     /**

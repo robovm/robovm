@@ -1,0 +1,60 @@
+package: org.robovm.apple.pushkit
+include: [foundation.yaml, dispatch.yaml]
+library: PushKit
+framework: PushKit
+clang_args: ['-x', 'objective-c']
+headers:
+    - /System/Library/Frameworks/PushKit.framework/Headers/PushKit.h
+    - /System/Library/Frameworks/PushKit.framework/Headers/PKDefines.h
+typedefs: {}
+    
+enums: {}
+        
+classes:
+    PushKit:
+        annotations: ['@Marshaler(NSString.AsStringMarshaler.class)']
+
+    PKPushCredentials: {} # DONE
+    PKPushPayload: {} # DONE
+    PKPushRegistry: # DONE
+        properties:
+            'desiredPushTypes':
+                type: '@org.robovm.rt.bro.annotation.Marshaler(NSSet.AsStringSetMarshaler.class) Set<String>'
+        methods:
+            '-pushTokenForType:':
+                name: getPushTokenForType
+            '-initWithQueue:':
+                name: init      
+    
+protocols:
+    PKPushRegistryDelegate: # DONE
+        methods:
+            '-pushRegistry:didUpdatePushCredentials:forType:':
+                name: didUpdatePushCredentials
+            '-pushRegistry:didReceiveIncomingPushWithPayload:forType:':
+                name: didReceiveIncomingPush
+            '-pushRegistry:didInvalidatePushTokenForType:':
+                name: didInvalidatePushToken
+
+functions:
+    # Make sure we don't miss any functions if new ones are introduced in a later version
+    (PK.*):
+        class: PushKit
+        name: 'Function__#{g[0]}'
+
+values:
+    # PKPushType
+    PKPushType(.*):
+        class: PKPushType
+        name: '#{g[0]}'
+        
+    # Make sure we don't miss any values if new ones are introduced in a later version
+    (PK.*):
+        class: PushKit
+        name: 'Value__#{g[0]}'
+
+constants:
+    # Make sure we don't miss any constants if new ones are introduced in a later version
+    (PK.*):
+        class: PushKit
+        name: 'Constant__#{g[0]}'

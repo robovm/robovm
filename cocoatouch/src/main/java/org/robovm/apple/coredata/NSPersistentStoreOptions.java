@@ -279,11 +279,6 @@ import org.robovm.apple.foundation.*;
     }
     /*<methods>*/
     /**
-     * @since Available in iOS 5.0 and later.
-     */
-    @GlobalValue(symbol="NSPersistentStoreSaveConflictsErrorKey", optional=true)
-    protected static native NSString SaveConflictsErrorOption();
-    /**
      * @since Available in iOS 3.0 and later.
      */
     @GlobalValue(symbol="NSReadOnlyPersistentStoreOption", optional=true)
@@ -333,11 +328,6 @@ import org.robovm.apple.foundation.*;
      */
     @GlobalValue(symbol="NSPersistentStoreUbiquitousContentURLKey", optional=true)
     protected static native NSString UbiquitousContentURLOption();
-    /**
-     * @since Available in iOS 7.0 and later.
-     */
-    @GlobalValue(symbol="NSPersistentStoreUbiquitousTransitionTypeKey", optional=true)
-    protected static native NSString UbiquitousTransitionTypeOption();
     /**
      * @since Available in iOS 7.0 and later.
      */

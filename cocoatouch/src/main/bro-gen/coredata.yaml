@@ -32,6 +32,8 @@ classes:
 
     NSSQLiteError:
         extends: NSError
+    NSCoreDataErrorUserInfoKey:
+        extends: NSErrorUserInfoKey
 
     NSAsynchronousFetchRequest: # DONE
         properties:
@@ -651,7 +653,6 @@ protocols:
                 type: NSArray<NSManagedObject>
 
 functions:
-
     # Make sure we don't miss any functions if new ones are introduced in a later version
     (NS.*):
         class: CoreData
@@ -664,15 +665,44 @@ values:
         name: 'getVersion'
         readonly: true
     
+    # Error
     NSSQLiteErrorDomain:
         class: NSSQLiteError
         name: getClassDomain
+    NS(.*Error.?Key):
+        class: NSCoreDataErrorUserInfoKey
+        name: '#{g[0]}'
+        type: NSString
+        visibility: protected
+
+    # NSPersistentStoreCoordinator
+    NSPersistentStoreCoordinator(.*Notification):
+        class: NSPersistentStoreCoordinator
+        name: '#{g[0]}'
+        type: NSString
+        visibility: protected
+    NSPersistentStore(DidImportUbiquitousContentChangesNotification):
+        class: NSPersistentStoreCoordinator
+        name: '#{g[0]}'
+        type: NSString
+        visibility: protected
+    NS(.*)PersistentStoresKey:
+        class: NSPersistentStoreCoordinatorChangeNotificationInfo
+        name: '#{g[0]}Key'
+        type: NSString
+        visibility: protected
+    NSPersistentStore(UbiquitousTransitionType)Key:
+        class: NSPersistentStoreCoordinatorChangeNotificationInfo
+        name: '#{g[0]}Key'
+        type: NSString
+        visibility: protected
 
     # NSManagedObjectContext
     NSManagedObjectContext(.*Notification):
         class: NSManagedObjectContext
         name: '#{g[0]}'
         type: NSString
+        visibility: protected
     NS(.*ObjectsKey):
         class: NSManagedObjectContextNotificationInfo
         name: '#{g[0]}'
@@ -741,6 +771,12 @@ values:
     
     NS(.*)StoreType:
         class: NSPersistentStoreType
+        name: '#{g[0]}Value'
+        visibility: protected
+
+    # NSExpression
+    NSMigration(.*):
+        class: NSExpressionMigrationKey
         name: '#{g[0]}Value'
         visibility: protected
 

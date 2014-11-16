@@ -39,6 +39,53 @@ import org.robovm.apple.foundation.*;
     extends /*<extends>*/NSObject/*</extends>*/ 
     /*<implements>*/implements NSLocking/*</implements>*/ {
 
+    public static class Notifications {
+        /**
+         * @since Available in iOS 7.0 and later.
+         */
+        public static NSObject observeStoresWillChange(NSPersistentStoreCoordinator object, final VoidBlock2<NSPersistentStoreCoordinator, NSPersistentStoreCoordinatorChangeNotificationInfo> block) {
+            return NSNotificationCenter.getDefaultCenter().addObserver(StoresWillChangeNotification(), object, NSOperationQueue.getMainQueue(), new VoidBlock1<NSNotification>() {
+                @Override
+                public void invoke(NSNotification a) {
+                    block.invoke((NSPersistentStoreCoordinator)a.getObject(), new NSPersistentStoreCoordinatorChangeNotificationInfo(a.getUserInfo()));
+                }
+            });
+        }
+        /**
+         * @since Available in iOS 3.0 and later.
+         */
+        public static NSObject observeStoresDidChange(NSPersistentStoreCoordinator object, final VoidBlock2<NSPersistentStoreCoordinator, NSPersistentStoreCoordinatorChangeNotificationInfo> block) {
+            return NSNotificationCenter.getDefaultCenter().addObserver(StoresDidChangeNotification(), object, NSOperationQueue.getMainQueue(), new VoidBlock1<NSNotification>() {
+                @Override
+                public void invoke(NSNotification a) {
+                    block.invoke((NSPersistentStoreCoordinator)a.getObject(), new NSPersistentStoreCoordinatorChangeNotificationInfo(a.getUserInfo()));
+                }
+            });
+        }
+        /**
+         * @since Available in iOS 3.0 and later.
+         */
+        public static NSObject observeWillRemoveStore(NSPersistentStoreCoordinator object, final VoidBlock1<NSPersistentStoreCoordinator> block) {
+            return NSNotificationCenter.getDefaultCenter().addObserver(WillRemoveStoreNotification(), object, NSOperationQueue.getMainQueue(), new VoidBlock1<NSNotification>() {
+                @Override
+                public void invoke(NSNotification a) {
+                    block.invoke((NSPersistentStoreCoordinator)a.getObject());
+                }
+            });
+        }
+        /**
+         * @since Available in iOS 5.0 and later.
+         */
+        public static NSObject observeDidImportUbiquitousContentChanges(NSPersistentStoreCoordinator object, final VoidBlock2<NSPersistentStoreCoordinator, NSNotification> block) {
+            return NSNotificationCenter.getDefaultCenter().addObserver(WillRemoveStoreNotification(), object, NSOperationQueue.getMainQueue(), new VoidBlock1<NSNotification>() {
+                @Override
+                public void invoke(NSNotification a) {
+                    block.invoke((NSPersistentStoreCoordinator)a.getObject(), a);
+                }
+            });
+        }
+    }
+    
     /*<ptr>*/public static class NSPersistentStoreCoordinatorPtr extends Ptr<NSPersistentStoreCoordinator, NSPersistentStoreCoordinatorPtr> {}/*</ptr>*/
     /*<bind>*/static { ObjCRuntime.bind(NSPersistentStoreCoordinator.class); }/*</bind>*/
     /*<constants>*//*</constants>*/
@@ -234,6 +281,27 @@ import org.robovm.apple.foundation.*;
         return result;
     }
     /*<methods>*/
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
+    @GlobalValue(symbol="NSPersistentStoreCoordinatorStoresWillChangeNotification", optional=true)
+    protected static native NSString StoresWillChangeNotification();
+    /**
+     * @since Available in iOS 3.0 and later.
+     */
+    @GlobalValue(symbol="NSPersistentStoreCoordinatorStoresDidChangeNotification", optional=true)
+    protected static native NSString StoresDidChangeNotification();
+    /**
+     * @since Available in iOS 3.0 and later.
+     */
+    @GlobalValue(symbol="NSPersistentStoreCoordinatorWillRemoveStoreNotification", optional=true)
+    protected static native NSString WillRemoveStoreNotification();
+    /**
+     * @since Available in iOS 5.0 and later.
+     */
+    @GlobalValue(symbol="NSPersistentStoreDidImportUbiquitousContentChangesNotification", optional=true)
+    protected static native NSString DidImportUbiquitousContentChangesNotification();
+    
     @Method(selector = "initWithManagedObjectModel:")
     protected native @Pointer long init(NSManagedObjectModel model);
     @Method(selector = "persistentStoreForURL:")

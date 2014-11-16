@@ -253,17 +253,17 @@ import org.robovm.apple.foundation.*;
      * @since Available in iOS 3.0 and later.
      */
     @GlobalValue(symbol="NSManagedObjectContextWillSaveNotification", optional=true)
-    public static native NSString WillSaveNotification();
+    protected static native NSString WillSaveNotification();
     /**
      * @since Available in iOS 3.0 and later.
      */
     @GlobalValue(symbol="NSManagedObjectContextDidSaveNotification", optional=true)
-    public static native NSString DidSaveNotification();
+    protected static native NSString DidSaveNotification();
     /**
      * @since Available in iOS 3.0 and later.
      */
     @GlobalValue(symbol="NSManagedObjectContextObjectsDidChangeNotification", optional=true)
-    public static native NSString ObjectsDidChangeNotification();
+    protected static native NSString ObjectsDidChangeNotification();
     
     /**
      * @since Available in iOS 5.0 and later.

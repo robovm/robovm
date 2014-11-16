@@ -32,25 +32,47 @@ import org.robovm.apple.addressbook.*;
 
 /*<javadoc>*/
 /*</javadoc>*/
-/*<annotations>*/@Library("CoreLocation") @Marshaler(NSString.AsStringMarshaler.class)/*</annotations>*/
-/*<visibility>*/public/*</visibility>*/ class /*<name>*/CoreLocation/*</name>*/ 
-    extends /*<extends>*/Object/*</extends>*/ 
+/*<annotations>*/@Library("CoreLocation")/*</annotations>*/
+/*<visibility>*/public/*</visibility>*/ class /*<name>*/CLErrorUserInfoKey/*</name>*/ 
+    extends /*<extends>*/NSErrorUserInfoKey/*</extends>*/ 
     /*<implements>*//*</implements>*/ {
 
     /*<ptr>*/
     /*</ptr>*/
-    /*<bind>*/static { Bro.bind(CoreLocation.class); }/*</bind>*/
+    /*<bind>*/static { Bro.bind(CLErrorUserInfoKey.class); }/*</bind>*/
     /*<constants>*//*</constants>*/
     /*<constructors>*//*</constructors>*/
+    /**
+     * @since Available in iOS 5.0 and later.
+     */
+    public static final CLErrorUserInfoKey AlternateRegion = new CLErrorUserInfoKey("AlternateRegionKeyValue");
+    
+    private static CLErrorUserInfoKey[] values = new CLErrorUserInfoKey[] {AlternateRegion};
+    private final LazyGlobalValue<NSString> lazyGlobalValue;
+    
+    private CLErrorUserInfoKey(String getterName) {
+        lazyGlobalValue = new LazyGlobalValue<>(getClass(), getterName);
+    }
     /*<properties>*//*</properties>*/
     /*<members>*//*</members>*/
+    public NSString value() {
+        return lazyGlobalValue.value();
+    }
+    
+    public static CLErrorUserInfoKey valueOf(NSString value) {
+        for (CLErrorUserInfoKey v : values) {
+            if (v.value().equals(value)) {
+                return v;
+            }
+        }
+        throw new IllegalArgumentException("No constant with value " + value + " found in " 
+            + /*<name>*/CLErrorUserInfoKey/*</name>*/.class.getName());
+    }
     /*<methods>*/
-    @GlobalValue(symbol="kCLErrorDomain", optional=true)
-    public static native NSString ErrorDomain();
     /**
      * @since Available in iOS 5.0 and later.
      */
     @GlobalValue(symbol="kCLErrorUserInfoAlternateRegionKey", optional=true)
-    public static native NSString ErrorUserInfoAlternateRegionKey();
+    protected static native NSString AlternateRegionKeyValue();
     /*</methods>*/
 }

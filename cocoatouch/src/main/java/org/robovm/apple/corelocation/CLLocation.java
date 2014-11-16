@@ -101,6 +101,6 @@ import org.robovm.apple.addressbook.*;
      * @since Available in iOS 3.2 and later.
      */
     @Method(selector = "distanceFromLocation:")
-    public native double calculateDistanceFrom(CLLocation location);
+    public native double getDistanceTo(CLLocation location);
     /*</methods>*/
 }

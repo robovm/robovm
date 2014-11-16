@@ -11,13 +11,18 @@ enums:
     CLActivityType: {first: CLActivityTypeOther, marshaler: ValuedEnum.AsMachineSizedSIntMarshaler}
     CLAuthorizationStatus: {first: kCLAuthorizationStatusNotDetermined}
     CLDeviceOrientation: {first: CLDeviceOrientationUnknown}
-    CLError: {first: kCLErrorLocationUnknown}
+    CLErrorCode: {first: kCLErrorLocationUnknown}
     CLProximity: {}
     CLRegionState: {}
 
 classes:
     CoreLocation:
         annotations: ['@Marshaler(NSString.AsStringMarshaler.class)']
+
+    CLError:
+        extends: NSError
+    CLErrorUserInfoKey:
+        extends: NSErrorUserInfoKey
 
     # Structs
     CLLocationCoordinate2D: {}
@@ -28,7 +33,7 @@ classes:
         methods:
             '-peripheralDataWithMeasuredPower:':
                 name: getPeripheralData
-                return_type: 'NSDictionary<NSString, ?>'
+                return_type: 'NSDictionary<NSString, ?>' # TODO Use CoreBluetooth type
     CLCircularRegion: # DONE
         methods:
             '-containsCoordinate:': # Overrides a method in CLRegion
@@ -59,7 +64,7 @@ classes:
             '-getDistanceFrom:':
                 exclude: true
             '-distanceFromLocation:':
-                name: calculateDistanceFrom
+                name: getDistanceTo
     CLLocationManager: # DONE
         properties:
             'headingAvailable': # Deprecated in iOS 4. Conflicts with the class method with the same name.
@@ -79,6 +84,9 @@ classes:
                 name: isSignificantLocationChangeMonitoringAvailable
             '+isMonitoringAvailableForClass:':
                 name: isMonitoringAvailable
+                parameters:
+                    regionClass:
+                        type: 'Class<? extends CLRegion>'
             '+regionMonitoringAvailable':
                 name: isRegionMonitoringAvailable
             '+regionMonitoringEnabled': # Deprecated in iOS 6, replaced by regionMonitoringAvailable
@@ -163,52 +171,53 @@ functions:
         class: CLLocationCoordinate2D
         static: true
         visibility: private
-        name: "#{g[0]}"
+        name: '#{g[0]}'
 
     # Make sure we don't miss any functions if new ones are introduced in a later version
     (CL.*):
         class: CoreLocation
-        name: "Function__#{g[0]}"
+        name: 'Function__#{g[0]}'
 
 values:
-
-    kCL(ErrorDomain):
-        name: "#{g[0]}"
+    kCLErrorDomain:
+        class: CLError
+        name: getClassDomain
+    kCLErrorUserInfo(.*):
+        class: CLErrorUserInfoKey
+        name: '#{g[0]}Value'
         type: NSString
-    kCL(ErrorUserInfoAlternateRegionKey):
-        name: "#{g[0]}"
-        type: NSString
+        visibility: protected
 
     kCLLocationAccuracy(.*):
         class: CLLocationAccuracy
-        name: "#{g[0]}Value"
+        name: '#{g[0]}Value'
         visibility: protected
 
     CL(LocationDistanceMax):
         class: CLLocation
-        name: "#{g[0]}"
+        name: '#{g[0]}'
     CL(TimeIntervalMax):
         class: CLLocationManager
-        name: "#{g[0]}"
+        name: '#{g[0]}'
     kCL(DistanceFilterNone):
         class: CLLocationManager
-        name: "#{g[0]}"
+        name: '#{g[0]}'
     kCL(HeadingFilterNone):
         class: CLLocationManager
-        name: "#{g[0]}"
+        name: '#{g[0]}'
 
     kCLLocationCoordinate2D(Invalid):
         class: CLLocationCoordinate2D
-        name: "#{g[0]}"
+        name: '#{g[0]}'
 
     # Make sure we don't miss any values if new ones are introduced in a later version
     (k?CL.*):
         class: CoreLocation
-        name: "Value__#{g[0]}"
+        name: 'Value__#{g[0]}'
 
 constants:
 
     # Make sure we don't miss any constants if new ones are introduced in a later version
     (k?CL.*):
         class: CoreLocation
-        name: "Constant__#{g[0]}"
+        name: 'Constant__#{g[0]}'

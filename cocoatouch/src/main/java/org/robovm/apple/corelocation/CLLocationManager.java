@@ -249,7 +249,7 @@ import org.robovm.apple.addressbook.*;
      * @since Available in iOS 7.0 and later.
      */
     @Method(selector = "isMonitoringAvailableForClass:")
-    public static native boolean isMonitoringAvailable(ObjCClass regionClass);
+    public static native boolean isMonitoringAvailable(Class<? extends CLRegion> regionClass);
     /**
      * @since Available in iOS 4.0 and later.
      * @deprecated Deprecated in iOS 7.0.

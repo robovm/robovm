@@ -25,13 +25,14 @@ classes:
         annotations: ['@Marshaler(NSString.AsStringMarshaler.class)']
 
     CBATTRequest: {} # DONE
+    CBAttribute: {} # DONE
     CBCentral: {} # DONE
     CBCentralManager: # DONE
         methods:
             '-initWithDelegate:queue:':
-                name: "init"
+                name: init
             '-initWithDelegate:queue:options:':
-                name: "init"
+                name: init
                 parameters:
                     options:
                         type: "NSDictionary<NSString, ?>"
@@ -39,24 +40,24 @@ classes:
                 trim_after_first_colon: true
                 parameters:
                     peripheralUUIDs:
-                        type: "NSArray<?>" # CFUUID
+                        type: '@org.robovm.rt.bro.annotation.Marshaler(NSArray.AsListMarshaler.class) List<CFUUID>'
             '-retrievePeripheralsWithIdentifiers:':
-                name: "retrievePeripheralsWithId"
-                return_type: "NSArray<CBPeripheral>"
+                name: retrievePeripheralsWithId
+                return_type: NSArray<CBPeripheral>
                 parameters:
                     identifiers:
-                        type: "NSArray<NSUUID>"
+                        type: NSArray<NSUUID>
             '-retrieveConnectedPeripheralsWithServices:':
-                name: "retrieveConnectedPeripherals"
-                return_type: "NSArray<CBPeripheral>"
+                name: retrieveConnectedPeripherals
+                return_type: NSArray<CBPeripheral>
                 parameters:
                     serviceUUIDs:
-                        type: "NSArray<CBUUID>"
+                        type: NSArray<CBUUID>
             '-scanForPeripheralsWithServices:options:':
-                name: "scanForPeripherals"
+                name: scanForPeripherals
                 parameters:
                     serviceUUIDs:
-                        type: "NSArray<CBUUID>"
+                        type: NSArray<CBUUID>
                     options:
                         type: "NSDictionary<NSString, ?>"
             '-connectPeripheral:options:':
@@ -69,79 +70,80 @@ classes:
     CBCharacteristic: # DONE
         properties:
             'descriptors':
-                type: "NSArray<CBDescriptor>"
+                type: NSArray<CBDescriptor>
             'isBroadcasted':
-                name: "broadcasted"
+                name: broadcasted
             'isNotifying':
-                name: "notifying"
+                name: notifying
     CBDescriptor: {} # DONE
     CBMutableCharacteristic: # DONE
         properties:
             'subscribedCentrals':
-                type: "NSArray<CBCentral>"
+                type: NSArray<CBCentral>
             'descriptors':
-                type: "NSArray<CBDescriptor>"
+                type: NSArray<CBDescriptor>
         methods:
             '-initWithType:properties:value:permissions:':
-                name: "init"
+                name: init
     CBMutableDescriptor: # DONE
         methods:
             '-initWithType:value:':
-                name: "init"
+                name: init
     CBMutableService: # DONE
         properties:
             'isPrimary':
-                name: "primary"
+                name: primary
             'includedServices':
-                type: "NSArray<CBService>"
+                type: NSArray<CBService>
             'characteristics':
-                type: "NSArray<CBCharacteristic>"
+                type: NSArray<CBCharacteristic>
         methods:
             '-initWithType:primary:':
-                name: "init"
+                name: init
+    CBPeer: {} # DONE
     CBPeripheral: # DONE
         properties:
             'isConnected':
-                name: "connected"
+                name: connected
             'services':
-                type: "NSArray<CBService>"
+                type: NSArray<CBService>
         methods:
             '-discoverServices:':
                 trim_after_first_colon: true
                 parameters:
                     serviceUUIDs:
-                        type: "NSArray<CBUUID>"
+                        type: NSArray<CBUUID>
             '-discoverIncludedServices:forService:':
                 trim_after_first_colon: true
                 parameters:
                     includedServiceUUIDs:
-                        type: "NSArray<CBUUID>"
+                        type: NSArray<CBUUID>
             '-discoverCharacteristics:forService:':
                 trim_after_first_colon: true
                 parameters:
                     characteristicUUIDs:
-                        type: "NSArray<CBUUID>"
+                        type: NSArray<CBUUID>
             '-readValueForCharacteristic:':
-                name: "readValue"
+                name: readValue
             '-writeValue:forCharacteristic:type:':
                 trim_after_first_colon: true
             '-setNotifyValue:forCharacteristic:':
                 trim_after_first_colon: true
             '-discoverDescriptorsForCharacteristic:':
-                name: "discoverDescriptors"
+                name: discoverDescriptors
             '-readValueForDescriptor:':
-                name: "readValue"
+                name: readValue
             '-writeValue:forDescriptor:':
                 trim_after_first_colon: true
     CBPeripheralManager: # DONE
         properties:
             'isAdvertising':
-                name: "advertising"
+                name: advertising
         methods:
             '-initWithDelegate:queue:':
-                name: "init"
+                name: init
             '-initWithDelegate:queue:options:':
-                name: "init"
+                name: init
                 parameters:
                     options:
                         type: "NSDictionary<NSString, ?>"
@@ -162,116 +164,116 @@ classes:
                 trim_after_first_colon: true
                 parameters:
                     centrals:
-                        type: "NSArray<CBCentral>" 
+                        type: NSArray<CBCentral> 
     CBService: # DONE
         properties:
             'isPrimary':
-                name: "primary"
+                name: primary
             'includedServices':
-                type: "NSArray<CBService>"
+                type: NSArray<CBService>
             'characteristics':
-                type: "NSArray<CBCharacteristic>"
+                type: NSArray<CBCharacteristic>
     CBUUID: # DONE
         methods:
             '+UUIDWithString:':
-                name: "create"
+                name: create
             '+UUIDWithData:':
-                name: "create"
+                name: create
             '+UUIDWithCFUUID:':
-                name: "create"
+                name: create
             '+UUIDWithNSUUID:':
-                name: "create"
+                name: create
 
 protocols:
     CBCentralManagerDelegate: # DONE
         methods:
             '-centralManagerDidUpdateState:':
-                name: "didUpdateState"
+                name: didUpdateState
             '-centralManager:willRestoreState:':
-                name: "willRestoreState"
+                name: willRestoreState
                 parameters:
                     dict:
                         type: "NSDictionary<NSString, ?>"
             '-centralManager:didRetrievePeripherals:':
-                name: "didRetrievePeripherals"
+                name: didRetrievePeripherals
                 parameters:
                     peripherals:
                         type: "NSArray<CBPeripheral>"
             '-centralManager:didRetrieveConnectedPeripherals:':
-                name: "didRetrieveConnectedPeripherals"
+                name: didRetrieveConnectedPeripherals
                 parameters:
                     peripherals:
-                        type: "NSArray<CBPeripheral>"
+                        type: NSArray<CBPeripheral>
             '-centralManager:didDiscoverPeripheral:advertisementData:RSSI:':
-                name: "didDiscoverPeripheral"
+                name: didDiscoverPeripheral
                 parameters:
                     advertisementData:
                         type: "NSDictionary<NSString, ?>"
                     RSSI:
-                        name: "rssi"
+                        name: rssi
             '-centralManager:didConnectPeripheral:':
-                name: "didConnectPeripheral"
+                name: didConnectPeripheral
             '-centralManager:didFailToConnectPeripheral:error:':
-                name: "didFailToConnectPeripheral"
+                name: didFailToConnectPeripheral
             '-centralManager:didDisconnectPeripheral:error:':
-                name: "didDisconnectPeripheral"
+                name: didDisconnectPeripheral
     CBPeripheralDelegate: # DONE
         methods:
             '-peripheralDidUpdateName:':
-                name: "didUpdateName"
+                name: didUpdateName
             '-peripheralDidInvalidateServices:':
-                name: "didInvalidateServices"
+                name: didInvalidateServices
             '-peripheral:didModifyServices:':
-                name: "didModifyServices"
+                name: didModifyServices
                 parameters:
                     invalidatedServices:
-                        type: "NSArray<CBService>"
+                        type: NSArray<CBService>
             '-peripheralDidUpdateRSSI:error:':
-                name: "didUpdateRSSI"
+                name: didUpdateRSSI
             '-peripheral:didDiscoverServices:':
-                name: "didDiscoverServices"
+                name: didDiscoverServices
             '-peripheral:didDiscoverIncludedServicesForService:error:':
-                name: "didDiscoverIncludedServices"
+                name: didDiscoverIncludedServices
             '-peripheral:didDiscoverCharacteristicsForService:error:':
-                name: "didDiscoverCharacteristics"
+                name: didDiscoverCharacteristics
             '-peripheral:didUpdateValueForCharacteristic:error:':
-                name: "didUpdateValue"
+                name: didUpdateValue
             '-peripheral:didWriteValueForCharacteristic:error:':
-                name: "didWriteValue"
+                name: didWriteValue
             '-peripheral:didUpdateNotificationStateForCharacteristic:error:':
-                name: "didUpdateNotificationState"
+                name: didUpdateNotificationState
             '-peripheral:didDiscoverDescriptorsForCharacteristic:error:':
-                name: "didDiscoverDescriptors"
+                name: didDiscoverDescriptors
             '-peripheral:didUpdateValueForDescriptor:error:':
-                name: "didUpdateValue"
+                name: didUpdateValue
             '-peripheral:didWriteValueForDescriptor:error:':
-                name: "didWriteValue"
+                name: didWriteValue
     CBPeripheralManagerDelegate: # DONE
         methods:
             '-peripheralManagerDidUpdateState:':
-                name: "didUpdateState"
+                name: didUpdateState
             '-peripheralManager:willRestoreState:':
-                name: "willRestoreState"
+                name: willRestoreState
                 parameters:
                     dict:
                         type: "NSDictionary<NSString, ?>"
             '-peripheralManagerDidStartAdvertising:error:':
-                name: "didStartAdvertising"
+                name: didStartAdvertising
             '-peripheralManager:didAddService:error:':
-                name: "didAddService"
+                name: didAddService
             '-peripheralManager:central:didSubscribeToCharacteristic:':
-                name: "didSubscribeToCharacteristic"
+                name: didSubscribeToCharacteristic
             '-peripheralManager:central:didUnsubscribeFromCharacteristic:':
-                name: "didUnsubscribeFromCharacteristic"
+                name: didUnsubscribeFromCharacteristic
             '-peripheralManager:didReceiveReadRequest:':
-                name: "didReceiveReadRequest"
+                name: didReceiveReadRequest
             '-peripheralManager:didReceiveWriteRequests:':
-                name: "didReceiveWriteRequests"
+                name: didReceiveWriteRequests
                 parameters:
                     requests:
-                        type: "NSArray<CBATTRequest>"
+                        type: NSArray<CBATTRequest>
             '-peripheralManagerIsReadyToUpdateSubscribers:':
-                name: "readyToUpdateSubscribers"
+                name: readyToUpdateSubscribers
 
 functions:
     # Make sure we don't miss any functions if new ones are introduced in a later version

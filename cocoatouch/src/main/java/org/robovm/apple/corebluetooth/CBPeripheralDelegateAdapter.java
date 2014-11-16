@@ -66,8 +66,18 @@ import org.robovm.apple.dispatch.*;
      */
     @NotImplemented("peripheral:didModifyServices:")
     public void didModifyServices(CBPeripheral peripheral, NSArray<CBService> invalidatedServices) { throw new UnsupportedOperationException(); }
+    /**
+     * @since Available in iOS 5.0 and later.
+     * @deprecated Deprecated in iOS 8.0.
+     */
+    @Deprecated
     @NotImplemented("peripheralDidUpdateRSSI:error:")
     public void didUpdateRSSI(CBPeripheral peripheral, NSError error) { throw new UnsupportedOperationException(); }
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @NotImplemented("peripheral:didReadRSSI:error:")
+    public void peripheral$didReadRSSI$error$(CBPeripheral peripheral, NSNumber RSSI, NSError error) { throw new UnsupportedOperationException(); }
     @NotImplemented("peripheral:didDiscoverServices:")
     public void didDiscoverServices(CBPeripheral peripheral, NSError error) { throw new UnsupportedOperationException(); }
     @NotImplemented("peripheral:didDiscoverIncludedServicesForService:error:")

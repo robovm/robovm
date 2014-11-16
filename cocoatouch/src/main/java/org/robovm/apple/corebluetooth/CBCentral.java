@@ -38,7 +38,7 @@ import org.robovm.apple.dispatch.*;
 /*</javadoc>*/
 /*<annotations>*/@Library("CoreBluetooth") @NativeClass/*</annotations>*/
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/CBCentral/*</name>*/ 
-    extends /*<extends>*/NSObject/*</extends>*/ 
+    extends /*<extends>*/CBPeer/*</extends>*/ 
     /*<implements>*//*</implements>*/ {
 
     /*<ptr>*/public static class CBCentralPtr extends Ptr<CBCentral, CBCentralPtr> {}/*</ptr>*/
@@ -49,18 +49,6 @@ import org.robovm.apple.dispatch.*;
     protected CBCentral(SkipInit skipInit) { super(skipInit); }
     /*</constructors>*/
     /*<properties>*/
-    /**
-     * @since Available in iOS 5.0 and later.
-     * @deprecated Deprecated in iOS 7.0.
-     */
-    @Deprecated
-    @Property(selector = "UUID")
-    public native CFUUID getUUID();
-    /**
-     * @since Available in iOS 7.0 and later.
-     */
-    @Property(selector = "identifier")
-    public native NSUUID getIdentifier();
     @Property(selector = "maximumUpdateValueLength")
     public native @MachineSizedUInt long getMaximumUpdateValueLength();
     /*</properties>*/

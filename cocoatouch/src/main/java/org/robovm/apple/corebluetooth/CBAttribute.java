@@ -33,26 +33,24 @@ import org.robovm.apple.dispatch.*;
 
 /*<javadoc>*/
 /**
- * @since Available in iOS 5.0 and later.
+ * @since Available in iOS 8.0 and later.
  */
 /*</javadoc>*/
 /*<annotations>*/@Library("CoreBluetooth") @NativeClass/*</annotations>*/
-/*<visibility>*/public/*</visibility>*/ class /*<name>*/CBDescriptor/*</name>*/ 
-    extends /*<extends>*/CBAttribute/*</extends>*/ 
+/*<visibility>*/public/*</visibility>*/ class /*<name>*/CBAttribute/*</name>*/ 
+    extends /*<extends>*/NSObject/*</extends>*/ 
     /*<implements>*//*</implements>*/ {
 
-    /*<ptr>*/public static class CBDescriptorPtr extends Ptr<CBDescriptor, CBDescriptorPtr> {}/*</ptr>*/
-    /*<bind>*/static { ObjCRuntime.bind(CBDescriptor.class); }/*</bind>*/
+    /*<ptr>*/public static class CBAttributePtr extends Ptr<CBAttribute, CBAttributePtr> {}/*</ptr>*/
+    /*<bind>*/static { ObjCRuntime.bind(CBAttribute.class); }/*</bind>*/
     /*<constants>*//*</constants>*/
     /*<constructors>*/
-    public CBDescriptor() {}
-    protected CBDescriptor(SkipInit skipInit) { super(skipInit); }
+    public CBAttribute() {}
+    protected CBAttribute(SkipInit skipInit) { super(skipInit); }
     /*</constructors>*/
     /*<properties>*/
-    @Property(selector = "characteristic")
-    public native CBCharacteristic getCharacteristic();
-    @Property(selector = "value")
-    public native NSObject getValue();
+    @Property(selector = "UUID")
+    public native CBUUID getUUID();
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/

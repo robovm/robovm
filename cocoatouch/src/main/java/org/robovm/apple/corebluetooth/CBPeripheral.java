@@ -38,7 +38,7 @@ import org.robovm.apple.dispatch.*;
 /*</javadoc>*/
 /*<annotations>*/@Library("CoreBluetooth") @NativeClass/*</annotations>*/
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/CBPeripheral/*</name>*/ 
-    extends /*<extends>*/NSObject/*</extends>*/ 
+    extends /*<extends>*/CBPeer/*</extends>*/ 
     /*<implements>*//*</implements>*/ {
 
     /*<ptr>*/public static class CBPeripheralPtr extends Ptr<CBPeripheral, CBPeripheralPtr> {}/*</ptr>*/
@@ -53,20 +53,13 @@ import org.robovm.apple.dispatch.*;
     public native CBPeripheralDelegate getDelegate();
     @Property(selector = "setDelegate:", strongRef = true)
     public native void setDelegate(CBPeripheralDelegate v);
-    /**
-     * @since Available in iOS 5.0 and later.
-     * @deprecated Deprecated in iOS 7.0.
-     */
-    @Deprecated
-    @Property(selector = "UUID")
-    public native CFUUID getUUID();
-    /**
-     * @since Available in iOS 7.0 and later.
-     */
-    @Property(selector = "identifier")
-    public native NSUUID getIdentifier();
     @Property(selector = "name")
     public native String getName();
+    /**
+     * @since Available in iOS 5.0 and later.
+     * @deprecated Deprecated in iOS 8.0.
+     */
+    @Deprecated
     @Property(selector = "RSSI")
     public native NSNumber getRSSI();
     /**

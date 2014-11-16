@@ -33,26 +33,34 @@ import org.robovm.apple.dispatch.*;
 
 /*<javadoc>*/
 /**
- * @since Available in iOS 5.0 and later.
+ * @since Available in iOS 8.0 and later.
  */
 /*</javadoc>*/
 /*<annotations>*/@Library("CoreBluetooth") @NativeClass/*</annotations>*/
-/*<visibility>*/public/*</visibility>*/ class /*<name>*/CBDescriptor/*</name>*/ 
-    extends /*<extends>*/CBAttribute/*</extends>*/ 
+/*<visibility>*/public/*</visibility>*/ class /*<name>*/CBPeer/*</name>*/ 
+    extends /*<extends>*/NSObject/*</extends>*/ 
     /*<implements>*//*</implements>*/ {
 
-    /*<ptr>*/public static class CBDescriptorPtr extends Ptr<CBDescriptor, CBDescriptorPtr> {}/*</ptr>*/
-    /*<bind>*/static { ObjCRuntime.bind(CBDescriptor.class); }/*</bind>*/
+    /*<ptr>*/public static class CBPeerPtr extends Ptr<CBPeer, CBPeerPtr> {}/*</ptr>*/
+    /*<bind>*/static { ObjCRuntime.bind(CBPeer.class); }/*</bind>*/
     /*<constants>*//*</constants>*/
     /*<constructors>*/
-    public CBDescriptor() {}
-    protected CBDescriptor(SkipInit skipInit) { super(skipInit); }
+    public CBPeer() {}
+    protected CBPeer(SkipInit skipInit) { super(skipInit); }
     /*</constructors>*/
     /*<properties>*/
-    @Property(selector = "characteristic")
-    public native CBCharacteristic getCharacteristic();
-    @Property(selector = "value")
-    public native NSObject getValue();
+    /**
+     * @since Available in iOS 5.0 and later.
+     * @deprecated Deprecated in iOS 7.0.
+     */
+    @Deprecated
+    @Property(selector = "UUID")
+    public native CFUUID getUUID();
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
+    @Property(selector = "identifier")
+    public native NSUUID getIdentifier();
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/

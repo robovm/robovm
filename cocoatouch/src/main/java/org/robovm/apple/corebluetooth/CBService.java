@@ -38,7 +38,7 @@ import org.robovm.apple.dispatch.*;
 /*</javadoc>*/
 /*<annotations>*/@Library("CoreBluetooth") @NativeClass/*</annotations>*/
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/CBService/*</name>*/ 
-    extends /*<extends>*/NSObject/*</extends>*/ 
+    extends /*<extends>*/CBAttribute/*</extends>*/ 
     /*<implements>*//*</implements>*/ {
 
     /*<ptr>*/public static class CBServicePtr extends Ptr<CBService, CBServicePtr> {}/*</ptr>*/
@@ -51,8 +51,6 @@ import org.robovm.apple.dispatch.*;
     /*<properties>*/
     @Property(selector = "peripheral")
     public native CBPeripheral getPeripheral();
-    @Property(selector = "UUID")
-    public native CBUUID getUUID();
     @Property(selector = "isPrimary")
     public native boolean isPrimary();
     @Property(selector = "includedServices")

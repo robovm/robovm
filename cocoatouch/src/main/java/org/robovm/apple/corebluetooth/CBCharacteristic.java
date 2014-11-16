@@ -38,7 +38,7 @@ import org.robovm.apple.dispatch.*;
 /*</javadoc>*/
 /*<annotations>*/@Library("CoreBluetooth") @NativeClass/*</annotations>*/
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/CBCharacteristic/*</name>*/ 
-    extends /*<extends>*/NSObject/*</extends>*/ 
+    extends /*<extends>*/CBAttribute/*</extends>*/ 
     /*<implements>*//*</implements>*/ {
 
     /*<ptr>*/public static class CBCharacteristicPtr extends Ptr<CBCharacteristic, CBCharacteristicPtr> {}/*</ptr>*/
@@ -51,14 +51,17 @@ import org.robovm.apple.dispatch.*;
     /*<properties>*/
     @Property(selector = "service")
     public native CBService getService();
-    @Property(selector = "UUID")
-    public native CBUUID getUUID();
     @Property(selector = "properties")
     public native CBCharacteristicProperties getProperties();
     @Property(selector = "value")
     public native NSData getValue();
     @Property(selector = "descriptors")
     public native NSArray<CBDescriptor> getDescriptors();
+    /**
+     * @since Available in iOS 5.0 and later.
+     * @deprecated Deprecated in iOS 8.0.
+     */
+    @Deprecated
     @Property(selector = "isBroadcasted")
     public native boolean isBroadcasted();
     @Property(selector = "isNotifying")

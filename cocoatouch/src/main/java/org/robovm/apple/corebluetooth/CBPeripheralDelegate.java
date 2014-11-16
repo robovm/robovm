@@ -64,8 +64,18 @@ import org.robovm.apple.dispatch.*;
      */
     @Method(selector = "peripheral:didModifyServices:")
     void didModifyServices(CBPeripheral peripheral, NSArray<CBService> invalidatedServices);
+    /**
+     * @since Available in iOS 5.0 and later.
+     * @deprecated Deprecated in iOS 8.0.
+     */
+    @Deprecated
     @Method(selector = "peripheralDidUpdateRSSI:error:")
     void didUpdateRSSI(CBPeripheral peripheral, NSError error);
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @Method(selector = "peripheral:didReadRSSI:error:")
+    void peripheral$didReadRSSI$error$(CBPeripheral peripheral, NSNumber RSSI, NSError error);
     @Method(selector = "peripheral:didDiscoverServices:")
     void didDiscoverServices(CBPeripheral peripheral, NSError error);
     @Method(selector = "peripheral:didDiscoverIncludedServicesForService:error:")

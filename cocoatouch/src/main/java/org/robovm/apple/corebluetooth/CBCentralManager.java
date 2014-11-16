@@ -76,7 +76,7 @@ import org.robovm.apple.dispatch.*;
      */
     @Deprecated
     @Method(selector = "retrievePeripherals:")
-    public native void retrievePeripherals(NSArray<?> peripheralUUIDs);
+    public native void retrievePeripherals(@org.robovm.rt.bro.annotation.Marshaler(NSArray.AsListMarshaler.class) List<CFUUID> peripheralUUIDs);
     /**
      * @since Available in iOS 7.0 and later.
      */

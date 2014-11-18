@@ -58,6 +58,9 @@ import org.robovm.apple.dispatch.*;
     public native String getUUIDString();
     /*</properties>*/
     /*<members>*//*</members>*/
+    public static CBUUID create(CBUUIDIdentifier identifier) {
+        return create(identifier.value());
+    }
     /*<methods>*/
     @Method(selector = "UUIDWithString:")
     public static native CBUUID create(String theString);

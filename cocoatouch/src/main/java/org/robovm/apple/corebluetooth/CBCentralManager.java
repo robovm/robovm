@@ -51,7 +51,7 @@ import org.robovm.apple.dispatch.*;
     /**
      * @since Available in iOS 7.0 and later.
      */
-    public CBCentralManager(CBCentralManagerDelegate delegate, DispatchQueue queue, NSDictionary<NSString, ?> options) { super((SkipInit) null); initObject(init(delegate, queue, options)); }
+    public CBCentralManager(CBCentralManagerDelegate delegate, DispatchQueue queue, CBCentralManagerOptions options) { super((SkipInit) null); initObject(init(delegate, queue, options)); }
     /*</constructors>*/
     /*<properties>*/
     @Property(selector = "delegate")
@@ -69,7 +69,7 @@ import org.robovm.apple.dispatch.*;
      * @since Available in iOS 7.0 and later.
      */
     @Method(selector = "initWithDelegate:queue:options:")
-    protected native @Pointer long init(CBCentralManagerDelegate delegate, DispatchQueue queue, NSDictionary<NSString, ?> options);
+    protected native @Pointer long init(CBCentralManagerDelegate delegate, DispatchQueue queue, CBCentralManagerOptions options);
     /**
      * @since Available in iOS 5.0 and later.
      * @deprecated Deprecated in iOS 7.0.
@@ -95,11 +95,11 @@ import org.robovm.apple.dispatch.*;
     @Method(selector = "retrieveConnectedPeripheralsWithServices:")
     public native NSArray<CBPeripheral> retrieveConnectedPeripherals(NSArray<CBUUID> serviceUUIDs);
     @Method(selector = "scanForPeripheralsWithServices:options:")
-    public native void scanForPeripherals(NSArray<CBUUID> serviceUUIDs, NSDictionary<NSString, ?> options);
+    public native void scanForPeripherals(NSArray<CBUUID> serviceUUIDs, CBCentralManagerScanOptions options);
     @Method(selector = "stopScan")
     public native void stopScan();
     @Method(selector = "connectPeripheral:options:")
-    public native void connectPeripheral(CBPeripheral peripheral, NSDictionary<NSString, ?> options);
+    public native void connectPeripheral(CBPeripheral peripheral, CBConnectPeripheralOptions options);
     @Method(selector = "cancelPeripheralConnection:")
     public native void cancelPeripheralConnection(CBPeripheral peripheral);
     /*</methods>*/

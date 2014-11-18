@@ -77,7 +77,7 @@ import org.robovm.apple.dispatch.*;
      * @since Available in iOS 8.0 and later.
      */
     @NotImplemented("peripheral:didReadRSSI:error:")
-    public void peripheral$didReadRSSI$error$(CBPeripheral peripheral, NSNumber RSSI, NSError error) { throw new UnsupportedOperationException(); }
+    public void didReadRSSI(CBPeripheral peripheral, NSNumber RSSI, NSError error) { throw new UnsupportedOperationException(); }
     @NotImplemented("peripheral:didDiscoverServices:")
     public void didDiscoverServices(CBPeripheral peripheral, NSError error) { throw new UnsupportedOperationException(); }
     @NotImplemented("peripheral:didDiscoverIncludedServicesForService:error:")

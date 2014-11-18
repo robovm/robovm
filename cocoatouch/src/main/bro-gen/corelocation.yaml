@@ -1,5 +1,5 @@
 package: org.robovm.apple.corelocation
-include: [foundation.yaml, addressbook.yaml]
+include: [foundation.yaml, addressbook.yaml, corebluetooth.yaml]
 library: CoreLocation
 framework: CoreLocation
 clang_args: ['-x', 'objective-c']
@@ -33,7 +33,7 @@ classes:
         methods:
             '-peripheralDataWithMeasuredPower:':
                 name: getPeripheralData
-                return_type: 'NSDictionary<NSString, ?>' # TODO Use CoreBluetooth type
+                return_type: CBAdvertisementData
     CLCircularRegion: # DONE
         methods:
             '-containsCoordinate:': # Overrides a method in CLRegion

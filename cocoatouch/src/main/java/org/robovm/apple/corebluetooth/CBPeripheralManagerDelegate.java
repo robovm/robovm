@@ -50,7 +50,7 @@ import org.robovm.apple.dispatch.*;
     @Method(selector = "peripheralManagerDidUpdateState:")
     void didUpdateState(CBPeripheralManager peripheral);
     @Method(selector = "peripheralManager:willRestoreState:")
-    void willRestoreState(CBPeripheralManager peripheral, NSDictionary<NSString, ?> dict);
+    void willRestoreState(CBPeripheralManager peripheral, CBPeripheralManagerRestoredState dict);
     @Method(selector = "peripheralManagerDidStartAdvertising:error:")
     void didStartAdvertising(CBPeripheralManager peripheral, NSError error);
     @Method(selector = "peripheralManager:didAddService:error:")

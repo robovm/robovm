@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.robovm.apple.corelocation;
+package org.robovm.apple.corebluetooth;
 
 /*<imports>*/
 import java.io.*;
@@ -27,33 +27,57 @@ import org.robovm.rt.bro.*;
 import org.robovm.rt.bro.annotation.*;
 import org.robovm.rt.bro.ptr.*;
 import org.robovm.apple.foundation.*;
-import org.robovm.apple.addressbook.*;
-import org.robovm.apple.corebluetooth.*;
+import org.robovm.apple.corefoundation.*;
+import org.robovm.apple.dispatch.*;
 /*</imports>*/
 
 /*<javadoc>*/
 
 /*</javadoc>*/
-/*<annotations>*//*</annotations>*/
-public enum /*<name>*/CLAuthorizationStatus/*</name>*/ implements ValuedEnum {
+/*<annotations>*/@Marshaler(ValuedEnum.AsMachineSizedSIntMarshaler.class)/*</annotations>*/
+public enum /*<name>*/CBErrorCode/*</name>*/ implements NSErrorCode {
     /*<values>*/
-    NotDetermined(0L),
-    Restricted(1L),
-    Denied(2L),
+    Unknown(0L),
     /**
-     * @since Available in iOS 2.0 and later.
-     * @deprecated Deprecated in iOS 8.0.
+     * @since Available in iOS 6.0 and later.
      */
-    @Deprecated
-    Authorized(3L),
+    InvalidParameters(1L),
     /**
-     * @since Available in iOS 8.0 and later.
+     * @since Available in iOS 6.0 and later.
      */
-    AuthorizedAlways(3L),
+    InvalidHandle(2L),
     /**
-     * @since Available in iOS 8.0 and later.
+     * @since Available in iOS 6.0 and later.
      */
-    AuthorizedWhenInUse(4L);
+    NotConnected(3L),
+    /**
+     * @since Available in iOS 6.0 and later.
+     */
+    OutOfSpace(4L),
+    /**
+     * @since Available in iOS 6.0 and later.
+     */
+    OperationCancelled(5L),
+    /**
+     * @since Available in iOS 6.0 and later.
+     */
+    ConnectionTimeout(6L),
+    /**
+     * @since Available in iOS 6.0 and later.
+     */
+    PeripheralDisconnected(7L),
+    /**
+     * @since Available in iOS 6.0 and later.
+     */
+    UUIDNotAllowed(8L),
+    /**
+     * @since Available in iOS 6.0 and later.
+     */
+    AlreadyAdvertising(9L),
+    /**
+     * @since Available in iOS 7.1 and later.
+     */
+    ConnectionFailed(10L);
     /*</values>*/
 
     /*<bind>*/
@@ -63,15 +87,15 @@ public enum /*<name>*/CLAuthorizationStatus/*</name>*/ implements ValuedEnum {
 
     private final long n;
 
-    private /*<name>*/CLAuthorizationStatus/*</name>*/(long n) { this.n = n; }
+    private /*<name>*/CBErrorCode/*</name>*/(long n) { this.n = n; }
     public long value() { return n; }
-    public static /*<name>*/CLAuthorizationStatus/*</name>*/ valueOf(long n) {
-        for (/*<name>*/CLAuthorizationStatus/*</name>*/ v : values()) {
+    public static /*<name>*/CBErrorCode/*</name>*/ valueOf(long n) {
+        for (/*<name>*/CBErrorCode/*</name>*/ v : values()) {
             if (v.n == n) {
                 return v;
             }
         }
         throw new IllegalArgumentException("No constant with value " + n + " found in " 
-            + /*<name>*/CLAuthorizationStatus/*</name>*/.class.getName());
+            + /*<name>*/CBErrorCode/*</name>*/.class.getName());
     }
 }

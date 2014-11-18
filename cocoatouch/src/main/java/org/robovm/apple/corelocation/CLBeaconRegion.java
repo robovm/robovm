@@ -28,6 +28,7 @@ import org.robovm.rt.bro.annotation.*;
 import org.robovm.rt.bro.ptr.*;
 import org.robovm.apple.foundation.*;
 import org.robovm.apple.addressbook.*;
+import org.robovm.apple.corebluetooth.*;
 /*</imports>*/
 
 /*<javadoc>*/
@@ -71,6 +72,6 @@ import org.robovm.apple.addressbook.*;
     @Method(selector = "initWithProximityUUID:major:minor:identifier:")
     protected native @Pointer long initWithProximityUUID$major$minor$identifier$(NSUUID proximityUUID, short major, short minor, String identifier);
     @Method(selector = "peripheralDataWithMeasuredPower:")
-    public native NSDictionary<NSString, ?> getPeripheralData(NSNumber measuredPower);
+    public native CBAdvertisementData getPeripheralData(NSNumber measuredPower);
     /*</methods>*/
 }

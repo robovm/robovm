@@ -11,8 +11,8 @@ typedefs: {}
 enums:
     CBCentralManagerState: {}
     CBCharacteristicProperties: { bits: true, marshaler: Bits.AsMachineSizedIntMarshaler }
-    CBError: {}
-    CBATTError: {}
+    CBErrorCode: { first: CBErrorUnknown }
+    CBATTErrorCode: { first: CBATTErrorSuccess }
     CBPeripheralState: {}
     CBCharacteristicWriteType: {}
     CBAttributePermissions: { bits: true, marshaler: Bits.AsMachineSizedIntMarshaler }
@@ -23,6 +23,11 @@ enums:
 classes:
     CoreBluetooth:
         annotations: ['@Marshaler(NSString.AsStringMarshaler.class)']
+
+    CBError:
+        extends: NSError
+    CBATTError:
+        extends: NSError
 
     CBATTRequest: {} # DONE
     CBAttribute: {} # DONE
@@ -35,7 +40,7 @@ classes:
                 name: init
                 parameters:
                     options:
-                        type: "NSDictionary<NSString, ?>"
+                        type: CBCentralManagerOptions
             '-retrievePeripherals:':
                 trim_after_first_colon: true
                 parameters:
@@ -59,12 +64,12 @@ classes:
                     serviceUUIDs:
                         type: NSArray<CBUUID>
                     options:
-                        type: "NSDictionary<NSString, ?>"
+                        type: CBCentralManagerScanOptions
             '-connectPeripheral:options:':
                 trim_after_first_colon: true
                 parameters:
                     options:
-                        type: "NSDictionary<NSString, ?>"
+                        type: CBConnectPeripheralOptions
             '-cancelPeripheralConnection:':
                 trim_after_first_colon: true
     CBCharacteristic: # DONE
@@ -146,12 +151,12 @@ classes:
                 name: init
                 parameters:
                     options:
-                        type: "NSDictionary<NSString, ?>"
+                        type: CBPeripheralManagerOptions
             '-startAdvertising:':
                 trim_after_first_colon: true
                 parameters:
                     advertisementData:
-                        type: "NSDictionary<NSString, ?>"
+                        type: CBAdvertisementData
             '-setDesiredConnectionLatency:forCentral:':
                 trim_after_first_colon: true
             '-addService:':
@@ -193,12 +198,12 @@ protocols:
                 name: willRestoreState
                 parameters:
                     dict:
-                        type: "NSDictionary<NSString, ?>"
+                        type: CBCentralManagerRestoredState
             '-centralManager:didRetrievePeripherals:':
                 name: didRetrievePeripherals
                 parameters:
                     peripherals:
-                        type: "NSArray<CBPeripheral>"
+                        type: NSArray<CBPeripheral>
             '-centralManager:didRetrieveConnectedPeripherals:':
                 name: didRetrieveConnectedPeripherals
                 parameters:
@@ -208,7 +213,7 @@ protocols:
                 name: didDiscoverPeripheral
                 parameters:
                     advertisementData:
-                        type: "NSDictionary<NSString, ?>"
+                        type: CBAdvertisementData
                     RSSI:
                         name: rssi
             '-centralManager:didConnectPeripheral:':
@@ -248,6 +253,8 @@ protocols:
                 name: didUpdateValue
             '-peripheral:didWriteValueForDescriptor:error:':
                 name: didWriteValue
+            '-peripheral:didReadRSSI:error:':
+                name: didReadRSSI
     CBPeripheralManagerDelegate: # DONE
         methods:
             '-peripheralManagerDidUpdateState:':
@@ -256,7 +263,7 @@ protocols:
                 name: willRestoreState
                 parameters:
                     dict:
-                        type: "NSDictionary<NSString, ?>"
+                        type: CBPeripheralManagerRestoredState
             '-peripheralManagerDidStartAdvertising:error:':
                 name: didStartAdvertising
             '-peripheralManager:didAddService:error:':
@@ -279,54 +286,70 @@ functions:
     # Make sure we don't miss any functions if new ones are introduced in a later version
     (CB.*):
         class: CoreBluetooth
-        name: "Function__#{g[0]}"
+        name: 'Function__#{g[0]}'
 
 values:
-    CBAdvertisement(.*)Key:
-        class: CoreBluetooth
-        name: "CBAdvertisement#{g[0]}Key"
-        type: NSString
-    CBAdvertisement(DataIsConnectable):
-        class: CoreBluetooth
-        name: "CBAdvertisement#{g[0]}"
-        type: NSString
-        
-    CBCentralManager(.*)Key:
-        class: CoreBluetooth
-        name: "CBCentralManager#{g[0]}Key"
-        type: NSString
-        
-    CBConnectPeripheral(.*)Key:
-        class: CoreBluetooth
-        name: "CBConnectPeripheral#{g[0]}Key"
-        type: NSString
-   
     CBErrorDomain:
-        class: CoreBluetooth
-        name: "ErrorDomain"
-        type: NSString
+        class: CBError
+        name: getClassDomain
     CBATTErrorDomain:
-        class: CoreBluetooth
-        name: "ATTErrorDomain"
+        class: CBATTError
+        name: getClassDomain
+
+    # CBCentralManager
+    CBCentralManagerScanOption(.*):
+        class: CBCentralManagerScanOptions
+        name: '#{g[0]}'
         type: NSString
-        
-    CBPeripheralManager(.*)Key:
-        class: CoreBluetooth
-        name: "CBPeripheralManager#{g[0]}Key"
+        visibility: protected
+    CBConnectPeripheralOption(.*):
+        class: CBConnectPeripheralOptions
+        name: '#{g[0]}'
         type: NSString
-        
+        visibility: protected
+    CBCentralManagerOption(.*Key):
+        class: CBCentralManagerOptions
+        name: '#{g[0]}'
+        type: NSString
+        visibility: protected
+    
+    # CBCentralManagerDelegate
+    CBAdvertisementData(.*):
+        class: CBAdvertisementData
+        name: '#{g[0]}'
+        type: NSString
+        visibility: protected
+    CBCentralManagerRestoredState(.*Key):
+        class: CBCentralManagerRestoredState
+        name: '#{g[0]}'
+        type: NSString
+        visibility: protected
+
+    # CBPeripheralManager
+    CBPeripheralManagerOption(.*Key):
+        class: CBPeripheralManagerOptions
+        name: '#{g[0]}'
+        type: NSString
+        visibility: protected
+    CBPeripheralManagerRestoredState(.*Key):
+        class: CBPeripheralManagerRestoredState
+        name: '#{g[0]}'
+        type: NSString
+        visibility: protected
+
+    # CBUUID
     CBUUID(.*)String:
-        class: CoreBluetooth
-        name: "CBUUID#{g[0]}String"
-        type: NSString
-   
+        class: CBUUIDIdentifier
+        name: '#{g[0]}Value'
+        visibility: protected
+
     # Make sure we don't miss any values if new ones are introduced in a later version
     (CB.*):
         class: CoreBluetooth
-        name: "Value__#{g[0]}"
+        name: 'Value__#{g[0]}'
 
 constants:
     # Make sure we don't miss any constants if new ones are introduced in a later version
     (CB.*):
         class: CoreBluetooth
-        name: "Constant__#{g[0]}"
+        name: 'Constant__#{g[0]}'

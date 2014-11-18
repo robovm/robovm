@@ -52,7 +52,7 @@ import org.robovm.apple.dispatch.*;
     @NotImplemented("peripheralManagerDidUpdateState:")
     public void didUpdateState(CBPeripheralManager peripheral) { throw new UnsupportedOperationException(); }
     @NotImplemented("peripheralManager:willRestoreState:")
-    public void willRestoreState(CBPeripheralManager peripheral, NSDictionary<NSString, ?> dict) { throw new UnsupportedOperationException(); }
+    public void willRestoreState(CBPeripheralManager peripheral, CBPeripheralManagerRestoredState dict) { throw new UnsupportedOperationException(); }
     @NotImplemented("peripheralManagerDidStartAdvertising:error:")
     public void didStartAdvertising(CBPeripheralManager peripheral, NSError error) { throw new UnsupportedOperationException(); }
     @NotImplemented("peripheralManager:didAddService:error:")

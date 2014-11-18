@@ -28,6 +28,7 @@ import org.robovm.rt.bro.annotation.*;
 import org.robovm.rt.bro.ptr.*;
 import org.robovm.apple.foundation.*;
 import org.robovm.apple.addressbook.*;
+import org.robovm.apple.corebluetooth.*;
 /*</imports>*/
 
 /*<javadoc>*/

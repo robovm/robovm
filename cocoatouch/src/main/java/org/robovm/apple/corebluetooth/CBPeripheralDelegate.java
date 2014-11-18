@@ -75,7 +75,7 @@ import org.robovm.apple.dispatch.*;
      * @since Available in iOS 8.0 and later.
      */
     @Method(selector = "peripheral:didReadRSSI:error:")
-    void peripheral$didReadRSSI$error$(CBPeripheral peripheral, NSNumber RSSI, NSError error);
+    void didReadRSSI(CBPeripheral peripheral, NSNumber RSSI, NSError error);
     @Method(selector = "peripheral:didDiscoverServices:")
     void didDiscoverServices(CBPeripheral peripheral, NSError error);
     @Method(selector = "peripheral:didDiscoverIncludedServicesForService:error:")

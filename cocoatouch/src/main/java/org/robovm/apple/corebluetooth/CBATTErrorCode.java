@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.robovm.apple.corelocation;
+package org.robovm.apple.corebluetooth;
 
 /*<imports>*/
 import java.io.*;
@@ -27,33 +27,37 @@ import org.robovm.rt.bro.*;
 import org.robovm.rt.bro.annotation.*;
 import org.robovm.rt.bro.ptr.*;
 import org.robovm.apple.foundation.*;
-import org.robovm.apple.addressbook.*;
-import org.robovm.apple.corebluetooth.*;
+import org.robovm.apple.corefoundation.*;
+import org.robovm.apple.dispatch.*;
 /*</imports>*/
 
 /*<javadoc>*/
 
 /*</javadoc>*/
-/*<annotations>*//*</annotations>*/
-public enum /*<name>*/CLAuthorizationStatus/*</name>*/ implements ValuedEnum {
+/*<annotations>*/@Marshaler(ValuedEnum.AsMachineSizedSIntMarshaler.class)/*</annotations>*/
+public enum /*<name>*/CBATTErrorCode/*</name>*/ implements NSErrorCode {
     /*<values>*/
-    NotDetermined(0L),
-    Restricted(1L),
-    Denied(2L),
     /**
-     * @since Available in iOS 2.0 and later.
-     * @deprecated Deprecated in iOS 8.0.
+     * @since Available in iOS 6.0 and later.
      */
-    @Deprecated
-    Authorized(3L),
-    /**
-     * @since Available in iOS 8.0 and later.
-     */
-    AuthorizedAlways(3L),
-    /**
-     * @since Available in iOS 8.0 and later.
-     */
-    AuthorizedWhenInUse(4L);
+    Success(0L),
+    InvalidHandle(1L),
+    ReadNotPermitted(2L),
+    WriteNotPermitted(3L),
+    InvalidPdu(4L),
+    InsufficientAuthentication(5L),
+    RequestNotSupported(6L),
+    InvalidOffset(7L),
+    InsufficientAuthorization(8L),
+    PrepareQueueFull(9L),
+    AttributeNotFound(10L),
+    AttributeNotLong(11L),
+    InsufficientEncryptionKeySize(12L),
+    InvalidAttributeValueLength(13L),
+    UnlikelyError(14L),
+    InsufficientEncryption(15L),
+    UnsupportedGroupType(16L),
+    InsufficientResources(17L);
     /*</values>*/
 
     /*<bind>*/
@@ -63,15 +67,15 @@ public enum /*<name>*/CLAuthorizationStatus/*</name>*/ implements ValuedEnum {
 
     private final long n;
 
-    private /*<name>*/CLAuthorizationStatus/*</name>*/(long n) { this.n = n; }
+    private /*<name>*/CBATTErrorCode/*</name>*/(long n) { this.n = n; }
     public long value() { return n; }
-    public static /*<name>*/CLAuthorizationStatus/*</name>*/ valueOf(long n) {
-        for (/*<name>*/CLAuthorizationStatus/*</name>*/ v : values()) {
+    public static /*<name>*/CBATTErrorCode/*</name>*/ valueOf(long n) {
+        for (/*<name>*/CBATTErrorCode/*</name>*/ v : values()) {
             if (v.n == n) {
                 return v;
             }
         }
         throw new IllegalArgumentException("No constant with value " + n + " found in " 
-            + /*<name>*/CLAuthorizationStatus/*</name>*/.class.getName());
+            + /*<name>*/CBATTErrorCode/*</name>*/.class.getName());
     }
 }

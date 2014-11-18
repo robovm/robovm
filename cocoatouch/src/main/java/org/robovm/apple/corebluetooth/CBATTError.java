@@ -32,50 +32,27 @@ import org.robovm.apple.dispatch.*;
 /*</imports>*/
 
 /*<javadoc>*/
-
 /*</javadoc>*/
-/*<annotations>*/@Marshaler(ValuedEnum.AsMachineSizedSIntMarshaler.class)/*</annotations>*/
-public enum /*<name>*/CBATTError/*</name>*/ implements ValuedEnum {
-    /*<values>*/
-    /**
-     * @since Available in iOS 6.0 and later.
-     */
-    Success(0L),
-    InvalidHandle(1L),
-    ReadNotPermitted(2L),
-    WriteNotPermitted(3L),
-    InvalidPdu(4L),
-    InsufficientAuthentication(5L),
-    RequestNotSupported(6L),
-    InvalidOffset(7L),
-    InsufficientAuthorization(8L),
-    PrepareQueueFull(9L),
-    AttributeNotFound(10L),
-    AttributeNotLong(11L),
-    InsufficientEncryptionKeySize(12L),
-    InvalidAttributeValueLength(13L),
-    UnlikelyError(14L),
-    InsufficientEncryption(15L),
-    UnsupportedGroupType(16L),
-    InsufficientResources(17L);
-    /*</values>*/
+/*<annotations>*/@Library("CoreBluetooth")/*</annotations>*/
+/*<visibility>*/public/*</visibility>*/ class /*<name>*/CBATTError/*</name>*/ 
+    extends /*<extends>*/NSError/*</extends>*/ 
+    /*<implements>*//*</implements>*/ {
 
-    /*<bind>*/
-    /*</bind>*/
-    /*<constants>*//*</constants>*/
-    /*<methods>*//*</methods>*/
-
-    private final long n;
-
-    private /*<name>*/CBATTError/*</name>*/(long n) { this.n = n; }
-    public long value() { return n; }
-    public static /*<name>*/CBATTError/*</name>*/ valueOf(long n) {
-        for (/*<name>*/CBATTError/*</name>*/ v : values()) {
-            if (v.n == n) {
-                return v;
-            }
-        }
-        throw new IllegalArgumentException("No constant with value " + n + " found in " 
-            + /*<name>*/CBATTError/*</name>*/.class.getName());
+    protected CBATTError(SkipInit skipInit) {
+        super(skipInit);
     }
+    
+    /*<ptr>*/public static class CBATTErrorPtr extends Ptr<CBATTError, CBATTErrorPtr> {}/*</ptr>*/
+    /*<bind>*/static { Bro.bind(CBATTError.class); }/*</bind>*/
+    /*<constants>*//*</constants>*/
+    /*<properties>*//*</properties>*/
+    /*<members>*//*</members>*/
+    @Override
+    public CBATTErrorCode getErrorCode() {
+        return CBATTErrorCode.valueOf(getCode());
+    }
+    /*<methods>*/
+    @GlobalValue(symbol="CBATTErrorDomain", optional=true)
+    public static native String getClassDomain();
+    /*</methods>*/
 }

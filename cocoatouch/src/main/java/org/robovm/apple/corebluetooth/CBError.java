@@ -32,70 +32,27 @@ import org.robovm.apple.dispatch.*;
 /*</imports>*/
 
 /*<javadoc>*/
-
 /*</javadoc>*/
-/*<annotations>*/@Marshaler(ValuedEnum.AsMachineSizedSIntMarshaler.class)/*</annotations>*/
-public enum /*<name>*/CBError/*</name>*/ implements ValuedEnum {
-    /*<values>*/
-    Unknown(0L),
-    /**
-     * @since Available in iOS 6.0 and later.
-     */
-    InvalidParameters(1L),
-    /**
-     * @since Available in iOS 6.0 and later.
-     */
-    InvalidHandle(2L),
-    /**
-     * @since Available in iOS 6.0 and later.
-     */
-    NotConnected(3L),
-    /**
-     * @since Available in iOS 6.0 and later.
-     */
-    OutOfSpace(4L),
-    /**
-     * @since Available in iOS 6.0 and later.
-     */
-    OperationCancelled(5L),
-    /**
-     * @since Available in iOS 6.0 and later.
-     */
-    ConnectionTimeout(6L),
-    /**
-     * @since Available in iOS 6.0 and later.
-     */
-    PeripheralDisconnected(7L),
-    /**
-     * @since Available in iOS 6.0 and later.
-     */
-    UUIDNotAllowed(8L),
-    /**
-     * @since Available in iOS 6.0 and later.
-     */
-    AlreadyAdvertising(9L),
-    /**
-     * @since Available in iOS 7.1 and later.
-     */
-    ConnectionFailed(10L);
-    /*</values>*/
+/*<annotations>*/@Library("CoreBluetooth")/*</annotations>*/
+/*<visibility>*/public/*</visibility>*/ class /*<name>*/CBError/*</name>*/ 
+    extends /*<extends>*/NSError/*</extends>*/ 
+    /*<implements>*//*</implements>*/ {
 
-    /*<bind>*/
-    /*</bind>*/
-    /*<constants>*//*</constants>*/
-    /*<methods>*//*</methods>*/
-
-    private final long n;
-
-    private /*<name>*/CBError/*</name>*/(long n) { this.n = n; }
-    public long value() { return n; }
-    public static /*<name>*/CBError/*</name>*/ valueOf(long n) {
-        for (/*<name>*/CBError/*</name>*/ v : values()) {
-            if (v.n == n) {
-                return v;
-            }
-        }
-        throw new IllegalArgumentException("No constant with value " + n + " found in " 
-            + /*<name>*/CBError/*</name>*/.class.getName());
+    protected CBError(SkipInit skipInit) {
+        super(skipInit);
     }
+    
+    /*<ptr>*/public static class CBErrorPtr extends Ptr<CBError, CBErrorPtr> {}/*</ptr>*/
+    /*<bind>*/static { Bro.bind(CBError.class); }/*</bind>*/
+    /*<constants>*//*</constants>*/
+    /*<properties>*//*</properties>*/
+    /*<members>*//*</members>*/
+    @Override
+    public CBErrorCode getErrorCode() {
+        return CBErrorCode.valueOf(getCode());
+    }
+    /*<methods>*/
+    @GlobalValue(symbol="CBErrorDomain", optional=true)
+    public static native String getClassDomain();
+    /*</methods>*/
 }

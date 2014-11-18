@@ -50,13 +50,13 @@ import org.robovm.apple.dispatch.*;
     @Method(selector = "centralManagerDidUpdateState:")
     void didUpdateState(CBCentralManager central);
     @Method(selector = "centralManager:willRestoreState:")
-    void willRestoreState(CBCentralManager central, NSDictionary<NSString, ?> dict);
+    void willRestoreState(CBCentralManager central, CBCentralManagerRestoredState dict);
     @Method(selector = "centralManager:didRetrievePeripherals:")
     void didRetrievePeripherals(CBCentralManager central, NSArray<CBPeripheral> peripherals);
     @Method(selector = "centralManager:didRetrieveConnectedPeripherals:")
     void didRetrieveConnectedPeripherals(CBCentralManager central, NSArray<CBPeripheral> peripherals);
     @Method(selector = "centralManager:didDiscoverPeripheral:advertisementData:RSSI:")
-    void didDiscoverPeripheral(CBCentralManager central, CBPeripheral peripheral, NSDictionary<NSString, ?> advertisementData, NSNumber rssi);
+    void didDiscoverPeripheral(CBCentralManager central, CBPeripheral peripheral, CBAdvertisementData advertisementData, NSNumber rssi);
     @Method(selector = "centralManager:didConnectPeripheral:")
     void didConnectPeripheral(CBCentralManager central, CBPeripheral peripheral);
     @Method(selector = "centralManager:didFailToConnectPeripheral:error:")

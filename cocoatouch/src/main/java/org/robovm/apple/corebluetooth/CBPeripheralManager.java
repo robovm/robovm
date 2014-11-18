@@ -51,7 +51,7 @@ import org.robovm.apple.dispatch.*;
     /**
      * @since Available in iOS 7.0 and later.
      */
-    public CBPeripheralManager(CBPeripheralManagerDelegate delegate, DispatchQueue queue, NSDictionary<NSString, ?> options) { super((SkipInit) null); initObject(init(delegate, queue, options)); }
+    public CBPeripheralManager(CBPeripheralManagerDelegate delegate, DispatchQueue queue, CBPeripheralManagerOptions options) { super((SkipInit) null); initObject(init(delegate, queue, options)); }
     /*</constructors>*/
     /*<properties>*/
     @Property(selector = "delegate")
@@ -71,9 +71,9 @@ import org.robovm.apple.dispatch.*;
      * @since Available in iOS 7.0 and later.
      */
     @Method(selector = "initWithDelegate:queue:options:")
-    protected native @Pointer long init(CBPeripheralManagerDelegate delegate, DispatchQueue queue, NSDictionary<NSString, ?> options);
+    protected native @Pointer long init(CBPeripheralManagerDelegate delegate, DispatchQueue queue, CBPeripheralManagerOptions options);
     @Method(selector = "startAdvertising:")
-    public native void startAdvertising(NSDictionary<NSString, ?> advertisementData);
+    public native void startAdvertising(CBAdvertisementData advertisementData);
     @Method(selector = "stopAdvertising")
     public native void stopAdvertising();
     @Method(selector = "setDesiredConnectionLatency:forCentral:")

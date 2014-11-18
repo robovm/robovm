@@ -52,13 +52,13 @@ import org.robovm.apple.dispatch.*;
     @NotImplemented("centralManagerDidUpdateState:")
     public void didUpdateState(CBCentralManager central) { throw new UnsupportedOperationException(); }
     @NotImplemented("centralManager:willRestoreState:")
-    public void willRestoreState(CBCentralManager central, NSDictionary<NSString, ?> dict) { throw new UnsupportedOperationException(); }
+    public void willRestoreState(CBCentralManager central, CBCentralManagerRestoredState dict) { throw new UnsupportedOperationException(); }
     @NotImplemented("centralManager:didRetrievePeripherals:")
     public void didRetrievePeripherals(CBCentralManager central, NSArray<CBPeripheral> peripherals) { throw new UnsupportedOperationException(); }
     @NotImplemented("centralManager:didRetrieveConnectedPeripherals:")
     public void didRetrieveConnectedPeripherals(CBCentralManager central, NSArray<CBPeripheral> peripherals) { throw new UnsupportedOperationException(); }
     @NotImplemented("centralManager:didDiscoverPeripheral:advertisementData:RSSI:")
-    public void didDiscoverPeripheral(CBCentralManager central, CBPeripheral peripheral, NSDictionary<NSString, ?> advertisementData, NSNumber rssi) { throw new UnsupportedOperationException(); }
+    public void didDiscoverPeripheral(CBCentralManager central, CBPeripheral peripheral, CBAdvertisementData advertisementData, NSNumber rssi) { throw new UnsupportedOperationException(); }
     @NotImplemented("centralManager:didConnectPeripheral:")
     public void didConnectPeripheral(CBCentralManager central, CBPeripheral peripheral) { throw new UnsupportedOperationException(); }
     @NotImplemented("centralManager:didFailToConnectPeripheral:error:")

@@ -29,15 +29,35 @@ import org.robovm.rt.bro.ptr.*;
 import org.robovm.apple.foundation.*;
 import org.robovm.apple.uikit.*;
 import org.robovm.apple.accounts.*;
+import org.robovm.apple.coregraphics.*;
 /*</imports>*/
 
 /*<javadoc>*/
 /*</javadoc>*/
+@Marshaler(SLServiceType.Marshaler.class)
 /*<annotations>*/@Library("Social")/*</annotations>*/
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/SLServiceType/*</name>*/ 
     extends /*<extends>*/Object/*</extends>*/ 
     /*<implements>*//*</implements>*/ {
 
+    public static class Marshaler {
+        @MarshalsPointer
+        public static SLServiceType toObject(Class<SLServiceType> cls, long handle, long flags) {
+            NSString o = (NSString) NSObject.Marshaler.toObject(NSString.class, handle, flags);
+            if (o == null) {
+                return null;
+            }
+            return SLServiceType.valueOf(o);
+        }
+        @MarshalsPointer
+        public static long toNative(SLServiceType o, long flags) {
+            if (o == null) {
+                return 0L;
+            }
+            return NSObject.Marshaler.toNative(o.value(), flags);
+        }
+    }
+    
     /*<ptr>*/
     /*</ptr>*/
     /*<bind>*/static { Bro.bind(SLServiceType.class); }/*</bind>*/

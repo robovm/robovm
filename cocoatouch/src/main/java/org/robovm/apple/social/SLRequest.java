@@ -29,6 +29,7 @@ import org.robovm.rt.bro.ptr.*;
 import org.robovm.apple.foundation.*;
 import org.robovm.apple.uikit.*;
 import org.robovm.apple.accounts.*;
+import org.robovm.apple.coregraphics.*;
 /*</imports>*/
 
 /*<javadoc>*/
@@ -58,12 +59,9 @@ import org.robovm.apple.accounts.*;
     @Property(selector = "URL")
     public native NSURL getURL();
     @Property(selector = "parameters")
-    public native NSDictionary<NSString, NSObject> getParameters();
+    public native @org.robovm.rt.bro.annotation.Marshaler(NSDictionary.AsStringMapMarshaler.class) Map<String, NSObject> getParameters();
     /*</properties>*/
     /*<members>*//*</members>*/
-    public static SLRequest create(SLServiceType serviceType, SLRequestMethod requestMethod, NSURL url, NSDictionary<NSString, NSObject> parameters) {
-        return create(serviceType.value(), requestMethod, url, parameters);
-    }
     /*<methods>*/
     @Method(selector = "addMultipartData:withName:type:filename:")
     public native void addMultipartData(NSData data, String name, String type, String filename);
@@ -72,6 +70,6 @@ import org.robovm.apple.accounts.*;
     @Method(selector = "performRequestWithHandler:")
     public native void performRequest(@Block VoidBlock3<NSData, NSHTTPURLResponse, NSError> handler);
     @Method(selector = "requestForServiceType:requestMethod:URL:parameters:")
-    protected static native SLRequest create(NSString serviceType, SLRequestMethod requestMethod, NSURL url, NSDictionary<NSString, NSObject> parameters);
+    public static native SLRequest create(SLServiceType serviceType, SLRequestMethod requestMethod, NSURL url, @org.robovm.rt.bro.annotation.Marshaler(NSDictionary.AsStringMapMarshaler.class) Map<String, NSObject> parameters);
     /*</methods>*/
 }

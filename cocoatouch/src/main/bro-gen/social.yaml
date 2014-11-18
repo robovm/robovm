@@ -1,5 +1,5 @@
 package: org.robovm.apple.social
-include: [foundation.yaml, uikit.yaml, accounts.yaml]
+include: [foundation.yaml, uikit.yaml, accounts.yaml, coregraphics.yaml]
 library: Social
 framework: Social
 clang_args: ['-x', 'objective-c']
@@ -16,12 +16,23 @@ classes:
     Social:
         annotations: ['@Marshaler(NSString.AsStringMarshaler.class)']
 
+    SLComposeServiceViewController: # DONE
+        methods:
+            '-configurationItems':
+                property: true
+                return_type: NSArray<SLComposeSheetConfigurationItem>
+            '-pushConfigurationViewController:':
+                trim_after_first_colon: true
+    SLComposeSheetConfigurationItem: # DONE
+        methods:
+            '-init':
+                exclude: true
     SLComposeViewController: # DONE
         properties:
             'completionHandler':
-                type: "@Block VoidBlock3<String, SLRequestMethod, NSURL>"
+                type: '@Block VoidBlock3<String, SLRequestMethod, NSURL>'
             'serviceType':
-                type: NSString
+                type: SLServiceType
         methods:
             '-setInitialText:':
                 trim_after_first_colon: true
@@ -33,17 +44,16 @@ classes:
                 name: isAvailable
                 parameters:
                     serviceType:
-                        type: NSString
+                        type: SLServiceType
             '+composeViewControllerForServiceType:':
                 name: create
                 parameters:
                     serviceType:
-                        type: NSString
-            
+                        type: SLServiceType
     SLRequest: # DONE
         properties:
             'parameters':
-                type: "NSDictionary<NSString, NSObject>"
+                type: '@org.robovm.rt.bro.annotation.Marshaler(NSDictionary.AsStringMapMarshaler.class) Map<String, NSObject>'
         methods:
             '-addMultipartData:withName:type:filename:':
                 trim_after_first_colon: true
@@ -53,40 +63,37 @@ classes:
                 name: performRequest
                 parameters:
                     handler:
-                        type: "@Block VoidBlock3<NSData, NSHTTPURLResponse, NSError>"
+                        type: '@Block VoidBlock3<NSData, NSHTTPURLResponse, NSError>'
             '+requestForServiceType:requestMethod:URL:parameters:':
                 name: create
-                visibility: protected
                 parameters:
                     serviceType:
-                        type: NSString
+                        type: SLServiceType
                     parameters:
-                        type: "NSDictionary<NSString, NSObject>"
+                        type: '@org.robovm.rt.bro.annotation.Marshaler(NSDictionary.AsStringMapMarshaler.class) Map<String, NSObject>'
 
 protocols: {}
 
 functions:
-
     # Make sure we don't miss any functions if new ones are introduced in a later version
     (SL.*):
         class: Social
-        name: "Function__#{g[0]}"
+        name: 'Function__#{g[0]}'
 
 values:
     SLServiceType(.*):
         class: SLServiceType
-        name: "#{g[0]}Value"
+        name: '#{g[0]}Value'
         type: NSString
         visibility: protected
 
     # Make sure we don't miss any values if new ones are introduced in a later version
     (SL.*):
         class: Social
-        name: "Value__#{g[0]}"
+        name: 'Value__#{g[0]}'
 
 constants:
-
     # Make sure we don't miss any constants if new ones are introduced in a later version
     (SL.*):
         class: Social
-        name: "Constant__#{g[0]}"
+        name: 'Constant__#{g[0]}'

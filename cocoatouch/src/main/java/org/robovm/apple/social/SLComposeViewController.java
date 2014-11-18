@@ -29,6 +29,7 @@ import org.robovm.rt.bro.ptr.*;
 import org.robovm.apple.foundation.*;
 import org.robovm.apple.uikit.*;
 import org.robovm.apple.accounts.*;
+import org.robovm.apple.coregraphics.*;
 /*</imports>*/
 
 /*<javadoc>*/
@@ -50,7 +51,7 @@ import org.robovm.apple.accounts.*;
     /*</constructors>*/
     /*<properties>*/
     @Property(selector = "serviceType")
-    public native NSString getServiceType();
+    public native SLServiceType getServiceType();
     @Property(selector = "completionHandler")
     public native @Block VoidBlock3<String, SLRequestMethod, NSURL> getCompletionHandler();
     @Property(selector = "setCompletionHandler:")
@@ -69,8 +70,8 @@ import org.robovm.apple.accounts.*;
     @Method(selector = "removeAllURLs")
     public native boolean removeAllURLs();
     @Method(selector = "isAvailableForServiceType:")
-    public static native boolean isAvailable(NSString serviceType);
+    public static native boolean isAvailable(SLServiceType serviceType);
     @Method(selector = "composeViewControllerForServiceType:")
-    public static native SLComposeViewController create(NSString serviceType);
+    public static native SLComposeViewController create(SLServiceType serviceType);
     /*</methods>*/
 }

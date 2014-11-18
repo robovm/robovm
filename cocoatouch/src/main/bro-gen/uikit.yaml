@@ -45,7 +45,7 @@ enums:
     UIActivityCategory: {}
     UIActivityIndicatorViewStyle: {}
     UIAlertActionStyle: {}
-    UIAlertControllerStyle: {}
+    UIAlertControllerStyle: {prefix: UIAlertControllerStyle}
     UIAlertViewStyle: {}
     UIApplicationState: {}
     UIAttachmentBehaviorType: {}

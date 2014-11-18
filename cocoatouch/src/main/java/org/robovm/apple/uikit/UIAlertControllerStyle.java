@@ -43,8 +43,8 @@ import org.robovm.apple.corelocation.*;
 /*<annotations>*/@Marshaler(ValuedEnum.AsMachineSizedSIntMarshaler.class)/*</annotations>*/
 public enum /*<name>*/UIAlertControllerStyle/*</name>*/ implements ValuedEnum {
     /*<values>*/
-    ctionSheet(0L),
-    lert(1L);
+    ActionSheet(0L),
+    Alert(1L);
     /*</values>*/
 
     /*<bind>*/

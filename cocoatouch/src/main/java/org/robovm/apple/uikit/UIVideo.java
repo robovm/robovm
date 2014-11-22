@@ -62,6 +62,7 @@ import org.robovm.apple.corelocation.*;
                 listeners.put(contextInfo, this);
             }
         }
+        @TypeEncoding("v@:@:^v")
         @Method(selector = "video:didFinishSavingWithError:contextInfo:")
         private void didFinishSaving(String videoPath, NSError error, @Pointer long contextInfo) {
             listener.didFinishSaving(videoPath, error);

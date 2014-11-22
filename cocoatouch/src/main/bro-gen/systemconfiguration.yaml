@@ -8,15 +8,15 @@ headers:
 typedefs:
     SCNetworkReachabilityRef: SCNetworkReachability
 private_typedefs:
-    "__CFString *": String
-    "__CFString **": "NSString.NSStringPtr"
-    "__CFData *": NSData
-    "__CFURL *": NSURL
-    "__CFDictionary *": "NSDictionary<?, ?>"
-    "__CFArray *": "NSArray<?>"
+    '__CFString *': String
+    '__CFString **': 'NSString.NSStringPtr'
+    '__CFData *': NSData
+    '__CFURL *': NSURL
+    '__CFDictionary *': 'NSDictionary<?, ?>'
+    '__CFArray *': 'NSArray<?>'
     
 enums:
-    SCStatus: { first: kSCStatusOK }
+    SCStatusCode: { first: kSCStatusOK }
     SCNetworkReachabilityFlags: { first: kSCNetworkReachabilityFlagsTransientConnection, bits: true, marshaler: Bits.AsMachineSizedIntMarshaler }
         
 classes:
@@ -26,93 +26,92 @@ classes:
     __SCNetworkReachability:
         name: SCNetworkReachability
         extends: CFType
-        
     SCNetworkReachabilityContext:
         visibility: ''
         info:
-            type: "@Pointer long"
+            type: '@Pointer long'
 
 protocols: {}
 
 functions:
     (SC.*)GetTypeID:
-        class: "#{g[0]}"
+        class: '#{g[0]}'
         name: getClassTypeID
  
     # SCNetworkReachability
     SCNetworkReachability(Create).*:
         class: SCNetworkReachability
-        name: "#{g[0]}"
+        name: '#{g[0]}'
         visibility: protected
         parameters:
             address:
-                type: "Struct<?>"
+                type: 'Struct<?>'
             localAddress:
-                type: "Struct<?>"
+                type: 'Struct<?>'
             remoteAddress:
-                type: "Struct<?>"
+                type: 'Struct<?>'
     SCNetworkReachability(GetFlags):
         class: SCNetworkReachability
-        name: "#{g[0]}"
+        name: '#{g[0]}'
         visibility: protected
     SCNetworkReachability(SetCallback):
         class: SCNetworkReachability
-        name: "#{g[0]}"
+        name: '#{g[0]}'
         visibility: protected
     SCNetworkReachability(Schedule)WithRunLoop:
         class: SCNetworkReachability
-        name: "#{g[0]}"
+        name: '#{g[0]}'
         parameters:
             runLoopMode:
                 type: CFString
     SCNetworkReachability(Unschedule)FromRunLoop:
         class: SCNetworkReachability
-        name: "#{g[0]}"
+        name: '#{g[0]}'
         parameters:
             runLoopMode:
                 type: CFString
     SCNetworkReachability(.*):
         class: SCNetworkReachability
-        name: "#{g[0]}"
+        name: '#{g[0]}'
 
-    # SystemConfiguration
+    # SCStatus
     SCCopyLastError:
-        class: SystemConfiguration
+        class: SCStatus
         name: getLastError
     SCError:
-        class: SystemConfiguration
+        class: SCStatus
         name: getLastStatus
-        return_type: SCStatus
+        return_type: SCStatusCode
     SCErrorString:
-        class: SystemConfiguration
+        class: SCStatus
         name: getStatusDescription0
         visibility: protected
         parameters:
             status:
-                type: SCStatus
+                type: SCStatusCode
 
     # Make sure we don't miss any functions if new ones are introduced in a later version
     (kSC.*):
         class: SystemConfiguration
-        name: "Function__#{g[0]}"
+        name: 'Function__#{g[0]}'
     (SC.*):
         class: SystemConfiguration
-        name: "Function__#{g[0]}"
+        name: 'Function__#{g[0]}'
 
 values:
     # Make sure we don't miss any values if new ones are introduced in a later version
     #(kSC.*):
     #    class: SystemConfiguration
-    #    name: "Value__#{g[0]}"
+    #    name: 'Value__#{g[0]}'
     #(SC.*):
     #    class: SystemConfiguration
-    #    name: "Value__#{g[0]}"
+    #    name: 'Value__#{g[0]}'
 
 constants:
     # Make sure we don't miss any constants if new ones are introduced in a later version
     #(kSC.*):
     #    class: SystemConfiguration
-    #    name: "Constant__#{g[0]}"
+    #    name: 'Constant__#{g[0]}'
     #(SC.*):
     #    class: SystemConfiguration
-    #    name: "Constant__#{g[0]}"
+    #    name: 'Constant__#{g[0]}'

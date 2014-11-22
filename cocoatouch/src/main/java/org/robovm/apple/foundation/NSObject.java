@@ -21,6 +21,7 @@ import static org.robovm.rt.bro.MarshalerFlags.*;
 import java.io.*;
 import java.nio.*;
 import java.util.*;
+
 import org.robovm.objc.*;
 import org.robovm.objc.annotation.*;
 import org.robovm.objc.block.*;
@@ -230,21 +231,126 @@ import org.robovm.apple.dispatch.*;
     @Method(selector = "performSelector:withObject:withObject:")
     public native final void performSelectorV(Selector aSelector, NSObject object1, NSObject object2);
     
+    public interface NSKeyValueObserver {
+        void observeValue(String keyPath, NSObject object, NSKeyValueChangeInfo change);
+    }
+    
+    private Set<KeyValueObserverWrapper> keyValueObservers;
+
+    private class KeyValueObserverWrapper extends NSObject {
+        private NSKeyValueObserver observer;
+        private Set<String> keyPaths = new HashSet<>();
+        private KeyValueObserverWrapper(NSKeyValueObserver observer, String keyPath) {
+            this.observer = observer;
+            this.keyPaths.add(keyPath);
+        }
+        
+        @Method(selector = "observeValueForKeyPath:ofObject:change:context:")
+        private void observeValueForKeyPath$ofObject$change$context$(String keyPath, NSObject object, NSKeyValueChangeInfo change, VoidPtr context) {
+            observer.observeValue(keyPath, object, change);
+        }
+    }
+    
+    /**
+     * Add a new observer to listen for value changes of the specified key path.
+     * @param keyPath
+     * @param observer
+     */
     public void addKeyValueObserver(String keyPath, NSKeyValueObserver observer) {
         addKeyValueObserver(keyPath, observer, NSKeyValueObservingOptions.None);
     }
-    
+    /**
+     * Add a new observer to listen for value changes of the specified key path. Use options to listen only for specific value changes.
+     * @param keyPath
+     * @param observer
+     * @param options
+     */
     public void addKeyValueObserver(String keyPath, NSKeyValueObserver observer, NSKeyValueObservingOptions options) {
-        if (observer.customClass) {
-            updateStrongRef(null, observer);
+        if (keyPath == null) {
+            throw new NullPointerException("keyPath");
         }
-        addObserver$forKeyPath$options$context$(observer, keyPath, options, null);
+        if (observer == null) {
+            throw new NullPointerException("observer");
+        }
+        
+        if (keyValueObservers == null) {
+            keyValueObservers = new HashSet<>();
+        }
+        KeyValueObserverWrapper wrapper = null;
+        synchronized (keyValueObservers) {
+            for (KeyValueObserverWrapper w : keyValueObservers) {
+                if (w.observer == observer) {
+                    wrapper = w;
+                    break;
+                }
+            }
+            // If a wrapper with this observer exists, reuse that one, otherwise create a new one.
+            if (wrapper != null) {
+                wrapper.keyPaths.add(keyPath);
+            } else {
+                wrapper = new KeyValueObserverWrapper(observer, keyPath);
+                addStrongRef(wrapper);
+                keyValueObservers.add(wrapper);
+            }
+        }
+        addObserver$forKeyPath$options$context$(wrapper, keyPath, options, null);
     }
-    
+    /**
+     * Removes all key value observers that listen for value changes to keyPath.
+     * @param keyPath
+     */
+    public void removeKeyValueObservers(String keyPath) {
+        if (keyPath == null) {
+            throw new NullPointerException("keyPath");
+        }
+        if (keyValueObservers == null) {
+            return;
+        }
+        synchronized (keyValueObservers) {
+            for (Iterator<KeyValueObserverWrapper> i = keyValueObservers.iterator(); i.hasNext();) {
+                KeyValueObserverWrapper wrapper = i.next();
+                if (wrapper.keyPaths.remove(keyPath)) {
+                    removeObserver$forKeyPath$context$(wrapper, keyPath, null);
+                    if (wrapper.keyPaths.size() == 0) {
+                        i.remove();
+                        removeStrongRef(wrapper);
+                    }
+                }
+            }
+        }
+    }
+    /**
+     * Remove the key value observer from observing value changes to keyPath.
+     * @param keyPath
+     * @param observer
+     */
     public void removeKeyValueObserver(String keyPath, NSKeyValueObserver observer) {
-        removeObserver$forKeyPath$context$(observer, keyPath, null);
-        if (observer.customClass) {
-            updateStrongRef(observer, null);
+        if (keyPath == null) {
+            throw new NullPointerException("keyPath");
+        }
+        if (observer == null) {
+            throw new NullPointerException("observer");
+        }
+        if (keyValueObservers == null) {
+            return;
+        }
+        KeyValueObserverWrapper wrapper = null;
+        synchronized (keyValueObservers) {
+            for (KeyValueObserverWrapper w : keyValueObservers) {
+                if (w.observer == observer) {
+                    wrapper = w;
+                    break;
+                }
+            }
+            if (wrapper != null) {
+                if (wrapper.keyPaths.remove(keyPath)) {
+                    removeObserver$forKeyPath$context$(wrapper, keyPath, null);
+                    if (wrapper.keyPaths.size() == 0) {
+                        keyValueObservers.remove(wrapper);
+                        removeStrongRef(wrapper);
+                    }
+                }
+            }
         }
     }
     

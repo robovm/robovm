@@ -32,49 +32,41 @@ import org.robovm.apple.dispatch.*;
 /*</imports>*/
 
 /*<javadoc>*/
-
 /*</javadoc>*/
-/*<annotations>*//*</annotations>*/
-public enum /*<name>*/SCStatus/*</name>*/ implements ValuedEnum {
-    /*<values>*/
-    OK(0L),
-    Failed(1001L),
-    InvalidArgument(1002L),
-    AccessError(1003L),
-    NoKey(1004L),
-    KeyExists(1005L),
-    Locked(1006L),
-    NeedLock(1007L),
-    NoStoreSession(2001L),
-    NoStoreServer(2002L),
-    NotifierActive(2003L),
-    NoPrefsSession(3001L),
-    PrefsBusy(3002L),
-    NoConfigFile(3003L),
-    NoLink(3004L),
-    Stale(3005L),
-    MaxLink(3006L),
-    ReachabilityUnknown(4001L),
-    ConnectionNoService(5001L),
-    ConnectionIgnore(5002L);
-    /*</values>*/
+/*<annotations>*/@Library("SystemConfiguration")/*</annotations>*/
+/*<visibility>*/public/*</visibility>*/ class /*<name>*/SCStatus/*</name>*/ 
+    extends /*<extends>*/Object/*</extends>*/ 
+    /*<implements>*//*</implements>*/ {
 
-    /*<bind>*/
-    /*</bind>*/
+    /*<ptr>*/
+    /*</ptr>*/
+    /*<bind>*/static { Bro.bind(SCStatus.class); }/*</bind>*/
     /*<constants>*//*</constants>*/
-    /*<methods>*//*</methods>*/
-
-    private final long n;
-
-    private /*<name>*/SCStatus/*</name>*/(long n) { this.n = n; }
-    public long value() { return n; }
-    public static /*<name>*/SCStatus/*</name>*/ valueOf(long n) {
-        for (/*<name>*/SCStatus/*</name>*/ v : values()) {
-            if (v.n == n) {
-                return v;
-            }
-        }
-        throw new IllegalArgumentException("No constant with value " + n + " found in " 
-            + /*<name>*/SCStatus/*</name>*/.class.getName());
+    /*<constructors>*//*</constructors>*/
+    /*<properties>*//*</properties>*/
+    /*<members>*//*</members>*/
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
+    public static String getStatusDescription(SCStatusCode status) {
+        BytePtr ptr = getStatusDescription0(status);
+        return ptr.toStringZ();
     }
+    /*<methods>*/
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
+    @Bridge(symbol="SCCopyLastError", optional=true)
+    public static native CFError getLastError();
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
+    @Bridge(symbol="SCError", optional=true)
+    public static native SCStatusCode getLastStatus();
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
+    @Bridge(symbol="SCErrorString", optional=true)
+    protected static native BytePtr getStatusDescription0(SCStatusCode status);
+    /*</methods>*/
 }

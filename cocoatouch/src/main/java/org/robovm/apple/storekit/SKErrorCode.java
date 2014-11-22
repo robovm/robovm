@@ -34,6 +34,7 @@ import org.robovm.apple.accounts.*;
 /*<javadoc>*/
 
 /*</javadoc>*/
+@ForceLinkClass(SKError.class)
 /*<annotations>*//*</annotations>*/
 public enum /*<name>*/SKErrorCode/*</name>*/ implements NSErrorCode {
     /*<values>*/

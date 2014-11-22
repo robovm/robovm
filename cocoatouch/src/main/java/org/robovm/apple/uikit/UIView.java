@@ -553,7 +553,7 @@ import org.robovm.apple.corelocation.*;
      * @since Available in iOS 8.0 and later.
      */
     @Method(selector = "systemLayoutSizeFittingSize:withHorizontalFittingPriority:verticalFittingPriority:")
-    public native @ByVal CGSize systemLayoutSizeFittingSize$withHorizontalFittingPriority$verticalFittingPriority$(@ByVal CGSize targetSize, float horizontalFittingPriority, float verticalFittingPriority);
+    public native @ByVal CGSize getSystemLayoutSizeFittingSize(@ByVal CGSize targetSize, float horizontalFittingPriority, float verticalFittingPriority);
     /**
      * @since Available in iOS 6.0 and later.
      */

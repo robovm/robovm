@@ -41,6 +41,7 @@ import org.robovm.apple.dispatch.*;
  * @since Available in iOS 8.0 and later.
  */
 /*</javadoc>*/
+@ForceLinkClass(NSItemProviderError.class)
 /*<annotations>*/@Marshaler(ValuedEnum.AsMachineSizedSIntMarshaler.class)/*</annotations>*/
 public enum /*<name>*/NSItemProviderErrorCode/*</name>*/ implements NSErrorCode {
     /*<values>*/

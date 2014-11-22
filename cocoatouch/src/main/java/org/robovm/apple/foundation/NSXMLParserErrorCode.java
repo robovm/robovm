@@ -39,6 +39,7 @@ import org.robovm.apple.dispatch.*;
 /*<javadoc>*/
 
 /*</javadoc>*/
+@ForceLinkClass(NSXMLParserError.class)
 /*<annotations>*/@Marshaler(ValuedEnum.AsMachineSizedSIntMarshaler.class)/*</annotations>*/
 public enum /*<name>*/NSXMLParserErrorCode/*</name>*/ implements NSErrorCode {
     /*<values>*/

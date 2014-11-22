@@ -34,6 +34,7 @@ import org.robovm.apple.foundation.*;
  * @since Available in iOS 8.0 and later.
  */
 /*</javadoc>*/
+@ForceLinkClass(LAError.class)
 /*<annotations>*/@Marshaler(ValuedEnum.AsMachineSizedSIntMarshaler.class)/*</annotations>*/
 public enum /*<name>*/LAErrorCode/*</name>*/ implements NSErrorCode {
     /*<values>*/

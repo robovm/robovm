@@ -34,6 +34,7 @@ import org.robovm.apple.dispatch.*;
 /*<javadoc>*/
 
 /*</javadoc>*/
+@ForceLinkClass(CBATTError.class)
 /*<annotations>*/@Marshaler(ValuedEnum.AsMachineSizedSIntMarshaler.class)/*</annotations>*/
 public enum /*<name>*/CBATTErrorCode/*</name>*/ implements NSErrorCode {
     /*<values>*/

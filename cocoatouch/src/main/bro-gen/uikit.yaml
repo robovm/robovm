@@ -2733,6 +2733,8 @@ classes:
                 trim_after_first_colon: true
             '-drawRect:forViewPrintFormatter:':
                 name: draw
+            '-systemLayoutSizeFittingSize:withHorizontalFittingPriority:verticalFittingPriority:':
+                name: getSystemLayoutSizeFittingSize
     UIViewController: # DONE
         properties:
             'restorationClass':

@@ -32,8 +32,9 @@ import org.robovm.apple.foundation.*;
 /*<javadoc>*/
 
 /*</javadoc>*/
+@ForceLinkClass(CMError.class)
 /*<annotations>*//*</annotations>*/
-public enum /*<name>*/CMErrorCode/*</name>*/ implements ValuedEnum, NSErrorCode {
+public enum /*<name>*/CMErrorCode/*</name>*/ implements NSErrorCode {
     /*<values>*/
     NULL(100L),
     DeviceRequiresMovement(101L),

@@ -32,6 +32,7 @@ import org.robovm.apple.foundation.*;
 /*<javadoc>*/
 
 /*</javadoc>*/
+@ForceLinkClass(ACError.class)
 /*<annotations>*//*</annotations>*/
 public enum /*<name>*/ACErrorCode/*</name>*/ implements NSErrorCode {
     /*<values>*/

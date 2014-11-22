@@ -34,6 +34,7 @@ import org.robovm.apple.foundation.*;
  * @since Available in iOS 8.0 and later.
  */
 /*</javadoc>*/
+@ForceLinkClass(HKError.class)
 /*<annotations>*/@Marshaler(ValuedEnum.AsMachineSizedSIntMarshaler.class)/*</annotations>*/
 public enum /*<name>*/HKErrorCode/*</name>*/ implements NSErrorCode {
     /*<values>*/

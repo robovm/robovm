@@ -38,6 +38,7 @@ import org.robovm.apple.corelocation.*;
 /*<javadoc>*/
 
 /*</javadoc>*/
+@ForceLinkClass(UIPrintError.class)
 /*<annotations>*//*</annotations>*/
 public enum /*<name>*/UIPrintErrorCode/*</name>*/ implements NSErrorCode {
     /*<values>*/

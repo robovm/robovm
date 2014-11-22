@@ -44,17 +44,17 @@ import org.robovm.apple.corefoundation.*;
     /*<constants>*//*</constants>*/
     /*<constructors>*/
     public CTError() {}
-    public CTError(int domain, int error) {
+    public CTError(CTErrorDomain domain, NSErrorCode errorCode) {
         this.domain(domain);
-        this.error(error);
+        this.errorCode(errorCode);
     }
     /*</constructors>*/
     /*<properties>*//*</properties>*/
     /*<members>*/
-    @StructMember(0) public native int domain();
-    @StructMember(0) public native CTError domain(int domain);
-    @StructMember(1) public native int error();
-    @StructMember(1) public native CTError error(int error);
+    @StructMember(0) public native CTErrorDomain domain();
+    @StructMember(0) public native CTError domain(CTErrorDomain domain);
+    @StructMember(1) public native NSErrorCode errorCode();
+    @StructMember(1) public native CTError errorCode(NSErrorCode errorCode);
     /*</members>*/
     /*<methods>*//*</methods>*/
 }

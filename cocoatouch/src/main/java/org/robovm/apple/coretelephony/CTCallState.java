@@ -32,11 +32,30 @@ import org.robovm.apple.corefoundation.*;
 
 /*<javadoc>*/
 /*</javadoc>*/
+@Marshaler(CTCallState.Marshaler.class)
 /*<annotations>*/@Library("CoreTelephony")/*</annotations>*/
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/CTCallState/*</name>*/ 
     extends /*<extends>*/Object/*</extends>*/ 
     /*<implements>*//*</implements>*/ {
 
+    public static class Marshaler {
+        @MarshalsPointer
+        public static CTCallState toObject(Class<CTCallState> cls, long handle, long flags) {
+            NSString o = (NSString) NSObject.Marshaler.toObject(NSString.class, handle, flags);
+            if (o == null) {
+                return null;
+            }
+            return CTCallState.valueOf(o);
+        }
+        @MarshalsPointer
+        public static long toNative(CTCallState o, long flags) {
+            if (o == null) {
+                return 0L;
+            }
+            return NSObject.Marshaler.toNative(o.value(), flags);
+        }
+    }
+    
     /*<ptr>*/
     /*</ptr>*/
     /*<bind>*/static { Bro.bind(CTCallState.class); }/*</bind>*/
@@ -45,8 +64,8 @@ import org.robovm.apple.corefoundation.*;
     public static final CTCallState Incoming = new CTCallState("IncomingValue");
     public static final CTCallState Connected = new CTCallState("ConnectedValue");
     public static final CTCallState Disconnected = new CTCallState("DisconnectedValue");
-    private static CTCallState[] values = new CTCallState[] {Dialing, Incoming, Connected, Disconnected};
     
+    private static CTCallState[] values = new CTCallState[] {Dialing, Incoming, Connected, Disconnected};
     private final LazyGlobalValue<NSString> lazyGlobalValue;
     
     private CTCallState(String getterName) {

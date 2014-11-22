@@ -57,12 +57,6 @@ import org.robovm.apple.corefoundation.*;
     public CTTelephonyNetworkInfo() {}
     protected CTTelephonyNetworkInfo(SkipInit skipInit) { super(skipInit); }
     /*</constructors>*/
-    /**
-     * @since Available in iOS 7.0 and later.
-     */
-    public CTRadioAccessTechnology getCurrentRadioAccessTechnology() {
-        return CTRadioAccessTechnology.valueOf(getCurrentRadioAccessTechnology0()); 
-     } 
     /*<properties>*/
     /**
      * @since Available in iOS 4.0 and later.
@@ -83,7 +77,7 @@ import org.robovm.apple.corefoundation.*;
      * @since Available in iOS 7.0 and later.
      */
     @Property(selector = "currentRadioAccessTechnology")
-    protected native NSString getCurrentRadioAccessTechnology0();
+    public native CTRadioAccessTechnology getCurrentRadioAccessTechnology();
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/

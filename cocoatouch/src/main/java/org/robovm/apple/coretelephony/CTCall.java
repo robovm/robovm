@@ -47,18 +47,12 @@ import org.robovm.apple.corefoundation.*;
     public CTCall() {}
     protected CTCall(SkipInit skipInit) { super(skipInit); }
     /*</constructors>*/
-    /**
-     * @since Available in iOS 4.0 and later.
-     */
-    public CTCallState getCallState() {
-       return CTCallState.valueOf(getCallState0()); 
-    } 
     /*<properties>*/
     /**
      * @since Available in iOS 4.0 and later.
      */
     @Property(selector = "callState")
-    protected native NSString getCallState0();
+    public native CTCallState getCallState();
     /**
      * @since Available in iOS 4.0 and later.
      */

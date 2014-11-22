@@ -22,15 +22,14 @@ classes:
     CTCall: # DONE
         properties:
             'callState':
-                name: callState0
-                visibility: protected
-                type: NSString
+                name: callState
+                type: CTCallState
     CTCallCenter: # DONE
         properties:
             'currentCalls':
-                type: "NSSet<CTCall>"
+                type: NSSet<CTCall>
             'callEventHandler':
-                type: "@Block VoidBlock1<CTCall>"
+                type: '@Block VoidBlock1<CTCall>'
     CTCarrier: {} # DONE
     CTSubscriber: {} # DONE
     CTSubscriberInfo: # DONE
@@ -40,14 +39,18 @@ classes:
     CTTelephonyNetworkInfo: # DONE
         properties:
             'subscriberCellularProviderDidUpdateNotifier':
-                type: "@Block VoidBlock1<CTCarrier>"
+                type: '@Block VoidBlock1<CTCarrier>'
             'currentRadioAccessTechnology':
-                name: currentRadioAccessTechnology0
-                visibility: protected
-                type: NSString
+                name: currentRadioAccessTechnology
+                type: CTRadioAccessTechnology
 
     # Structs
-    CTError: {}
+    CTError:
+        domain:
+            type: CTErrorDomain
+        error:
+            name: errorCode
+            type: NSErrorCode
 
 protocols: {}
 
@@ -55,37 +58,37 @@ functions:
     # Make sure we don't miss any functions if new ones are introduced in a later version
     (k?CT.*):
         class: CoreTelephony
-        name: "Function__#{g[0]}"
+        name: 'Function__#{g[0]}'
 
 values:
     CTSubscriber(TokenRefreshed):
         class: CTSubscriber
-        name: "#{g[0]}Notification"
+        name: '#{g[0]}Notification'
         type: NSString
     CT(RadioAccessTechnologyDidChangeNotification):
         class: CTTelephonyNetworkInfo
-        name: "#{g[0]}"
+        name: '#{g[0]}'
         type: NSString
         
     CTRadioAccessTechnology(.*):
         class: CTRadioAccessTechnology
-        name: "#{g[0]}Value"
+        name: '#{g[0]}Value'
         type: NSString
         visibility: protected
         
     CTCallState(.*):
         class: CTCallState
-        name: "#{g[0]}Value"
+        name: '#{g[0]}Value'
         type: NSString
         visibility: protected
    
     # Make sure we don't miss any values if new ones are introduced in a later version
     (k?CT.*):
         class: CoreTelephony
-        name: "Value__#{g[0]}"
+        name: 'Value__#{g[0]}'
 
 constants:
     # Make sure we don't miss any constants if new ones are introduced in a later version
     (k?CT.*):
         class: CoreTelephony
-        name: "Constant__#{g[0]}"
+        name: 'Constant__#{g[0]}'

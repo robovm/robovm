@@ -32,10 +32,29 @@ import org.robovm.apple.corefoundation.*;
 
 /*<javadoc>*/
 /*</javadoc>*/
+@Marshaler(CTRadioAccessTechnology.Marshaler.class)
 /*<annotations>*/@Library("CoreTelephony")/*</annotations>*/
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/CTRadioAccessTechnology/*</name>*/ 
     extends /*<extends>*/Object/*</extends>*/ 
     /*<implements>*//*</implements>*/ {
+    
+    public static class Marshaler {
+        @MarshalsPointer
+        public static CTRadioAccessTechnology toObject(Class<CTRadioAccessTechnology> cls, long handle, long flags) {
+            NSString o = (NSString) NSObject.Marshaler.toObject(NSString.class, handle, flags);
+            if (o == null) {
+                return null;
+            }
+            return CTRadioAccessTechnology.valueOf(o);
+        }
+        @MarshalsPointer
+        public static long toNative(CTRadioAccessTechnology o, long flags) {
+            if (o == null) {
+                return 0L;
+            }
+            return NSObject.Marshaler.toNative(o.value(), flags);
+        }
+    }
 
     /*<ptr>*/
     /*</ptr>*/
@@ -85,8 +104,8 @@ import org.robovm.apple.corefoundation.*;
      * @since Available in iOS 7.0 and later.
      */
     public static final CTRadioAccessTechnology LTE = new CTRadioAccessTechnology("LTEValue");
+
     private static CTRadioAccessTechnology[] values = new CTRadioAccessTechnology[] {GPRS, Edge, WCDMA, HSDPA, HSUPA, CDMA1x, CDMAEVDORev0, CDMAEVDORevA, CDMAEVDORevB, eHRPD, LTE};
-    
     private final LazyGlobalValue<NSString> lazyGlobalValue;
     
     private CTRadioAccessTechnology(String getterName) {

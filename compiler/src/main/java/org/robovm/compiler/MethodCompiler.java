@@ -215,37 +215,31 @@ public class MethodCompiler extends AbstractMethodCompiler {
         
         env = function.getParameterRef(0);
 
-        if (this.className.equals("java/lang/Object") && "<init>".equals(method.getName())) {
-            // Compile Object.<init>(). JLS 12.6.1: "An object o is not finalizable until its constructor has invoked 
-            // the constructor for Object on o and that invocation has completed successfully".
-            // Object.<init>() calls register_finalizable() in header.ll which checks if the class of 'this' is finalizable.
-            // If it is the object will be registered for finalization.
-            compileObjectInit();
-            // add the first unit to the instructions
-            Unit firstUnit = method.getActiveBody().getUnits().getFirst();
-            for (Instruction in : function.getBasicBlocks().get(0).getInstructions()) {
-                in.attach(firstUnit);
-            }
-            return function;
-        }
-        
         trapsAt = new HashMap<Unit, List<Trap>>();
         
         Body body = method.retrieveActiveBody();
         
+        NopStmt prependedNop = null;
         if (method.isStatic() && !body.getUnits().getFirst().getBoxesPointingToThis().isEmpty()) {
             // Fix for issue #1. This prevents an NPE in Soot's ArrayBoundsCheckerAnalysis. The NPE
             // occurs for static methods which start with a unit that is the target of some other
             // unit. We work around this by inserting a nop statement as the first unit in such 
             // methods. See http://www.sable.mcgill.ca/listarchives/soot-list/msg01397.html.
-            Unit inserPoint = body.getUnits().getFirst();
-            body.getUnits().getNonPatchingChain().insertBefore(Jimple.v().newNopStmt(), inserPoint);
+            Unit insertionPoint = body.getUnits().getFirst();
+            prependedNop = Jimple.v().newNopStmt();
+            body.getUnits().getNonPatchingChain().insertBefore(prependedNop, insertionPoint);
         }
         
         PackManager.v().getPack("jtp").apply(body);
         PackManager.v().getPack("jop").apply(body);
         PackManager.v().getPack("jap").apply(body);
 
+        if (body.getUnits().getFirst() == prependedNop && prependedNop.getBoxesPointingToThis().isEmpty()) {
+            // Remove the nop we inserted above to work around the bug in Soot's 
+            // ArrayBoundsCheckerAnalysis which has now been run.
+            body.getUnits().getNonPatchingChain().removeFirst();
+        }
+        
         PatchingChain<Unit> units = body.getUnits();
         Map<Unit, List<Unit>> branchTargets = getBranchTargets(body);
         Map<Unit, Integer> trapHandlers = getTrapHandlers(body);
@@ -425,12 +419,22 @@ public class MethodCompiler extends AbstractMethodCompiler {
             }
         }
         
-        return function;
-    }
+        if (this.className.equals("java/lang/Object") && "<init>".equals(method.getName())) {
+            // Compile Object.<init>(). JLS 12.6.1: "An object o is not finalizable until its constructor has invoked 
+            // the constructor for Object on o and that invocation has completed successfully".
+            // Object.<init>() calls register_finalizable() in header.ll which checks if the class of 'this' is finalizable.
+            // If it is the object will be registered for finalization.
+            for (BasicBlock bb : function.getBasicBlocks()) {
+                if (bb.last() instanceof Ret) {
+                    // Insert a call to register_finalizable() before this ret
+                    Call call = new Call(REGISTER_FINALIZABLE, env, function.getParameterRef(1));
+                    call.attach(bb.last().getAttachment(Unit.class));
+                    bb.insertBefore(bb.last(), call);
+                }
+            }
+        }
 
-    private void compileObjectInit() {
-        call(REGISTER_FINALIZABLE, env, function.getParameterRef(1));
-        function.add(new Ret());
+        return function;
     }
     
     /**

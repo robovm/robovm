@@ -280,7 +280,11 @@ public class IOSTarget extends AbstractTarget {
         createInfoPList(installDir);
         generateDsym(installDir, getExecutable());
         if (isDeviceArch(arch)) {
-            strip(installDir, getExecutable());
+            // only strip if this is not a debug build, otherwise
+            // LLDB can't resolve the DWARF info
+            if(!config.isDebug()) {
+                strip(installDir, getExecutable());
+            }
             copyResourcesPList(installDir);
             if (config.isIosSkipSigning()) {
                 config.getLogger().warn("Skiping code signing. The resulting app will "

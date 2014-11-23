@@ -122,9 +122,9 @@ public class AppCompiler {
 
     /**
      * An {@link Executor} which runs tasks immediately without creating a
-     * seperate thread.
+     * separate thread.
      */
-    private static final Executor SAME_THREAD_EXECUTOR = new Executor() {
+    static final Executor SAME_THREAD_EXECUTOR = new Executor() {
         public void execute(Runnable r) {
             r.run();
         }

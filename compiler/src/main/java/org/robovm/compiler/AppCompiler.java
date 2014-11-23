@@ -557,7 +557,7 @@ public class AppCompiler {
             if (verbose && !(t instanceof StringIndexOutOfBoundsException) && !(t instanceof IllegalArgumentException)) {
                 t.printStackTrace();
             }
-            printUsageAndExit(message, builder.getPlugins());
+            printUsageAndExit(message, builder != null ? builder.getPlugins() : null);
         }
         
         try {

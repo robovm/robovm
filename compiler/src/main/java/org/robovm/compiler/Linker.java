@@ -67,6 +67,7 @@ import org.robovm.compiler.llvm.Type;
 import org.robovm.compiler.llvm.Value;
 import org.robovm.llvm.Context;
 import org.robovm.llvm.Module;
+import org.robovm.llvm.PassManager;
 import org.robovm.llvm.Target;
 import org.robovm.llvm.TargetMachine;
 import org.robovm.llvm.binding.CodeGenFileType;
@@ -359,11 +360,11 @@ public class Linker {
                 FileUtils.writeStringToFile(linkerLl, ir, "utf-8");
             }
             try (Module module = Module.parseIR(context, ir, "linker" + num + ".ll")) {
-//                try (PassManager passManager = new PassManager()) {
-//                    passManager.addAlwaysInlinerPass();
-//                    passManager.addPromoteMemoryToRegisterPass();
-//                    passManager.run(module);
-//                }
+                try (PassManager passManager = new PassManager()) {
+                    passManager.addAlwaysInlinerPass();
+                    passManager.addPromoteMemoryToRegisterPass();
+                    passManager.run(module);
+                }
         
                 String triple = arch.getLlvmName() + "-unknown-" + os;
                 Target target = Target.lookupTarget(triple);

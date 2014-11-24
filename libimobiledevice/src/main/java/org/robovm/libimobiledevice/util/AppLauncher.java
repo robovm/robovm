@@ -19,6 +19,7 @@ package org.robovm.libimobiledevice.util;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InterruptedIOException;
@@ -790,9 +791,10 @@ public class AppLauncher {
         try (FileOutputStream fileOut = new FileOutputStream("/tmp/dbgout")){
             final InputStream in = clientSocket.getInputStream();
             final OutputStream out = clientSocket.getOutputStream();                       
-            byte[] buffer = new byte[4096];
+            byte[] buffer = new byte[10 * 4096];
             GdbRemoteParser lldbParser = new GdbRemoteParser();
             GdbRemoteParser debugServerParser = new GdbRemoteParser();
+            boolean nextPacketIsData = false;
             while (true) {
                 try {
                     // check if the client send us something and forward
@@ -806,6 +808,12 @@ public class AppLauncher {
                         }
                         List<byte[]> messages = lldbParser.parse(buffer, 0, readBytes);
                         debugForward(fileOut, "lldb->debugserver: ", messages);
+                        for(byte[] m: messages) {
+                            if(m[1] == 'x') {
+                                nextPacketIsData = true;
+                                break;
+                            }
+                        }
                     }
                     
                     // check if we've been interrupted
@@ -830,7 +838,11 @@ public class AppLauncher {
                                     return exitCode;
                                 } else if (message[1] == 'O') {
                                     // Console output encoded as hex.
-                                    stdout.write(fromHex(message, 2, message.length - 2 - 3));
+                                    if(!nextPacketIsData) {
+                                        stdout.write(fromHex(message, 2, message.length - 2 - 3));
+                                    } else {
+                                        nextPacketIsData = false;
+                                    }
                                 }
                             }
                             debugForward(fileOut, "debugserver->lldb: ", messages);

@@ -61,11 +61,11 @@ import org.robovm.apple.foundation.*;
     /*</ptr>*/
     private NSDictionary<NSString, NSObject> data;
     
-    public EAGLDrawableProperties() {
-        this.data = new NSMutableDictionary<NSString, NSObject>();
-    }
     protected EAGLDrawableProperties(NSDictionary<NSString, NSObject> data) {
         this.data = data;
+    }
+    public EAGLDrawableProperties() {
+        this.data = new NSMutableDictionary<>();
     }
     /*<bind>*/static { Bro.bind(EAGLDrawableProperties.class); }/*</bind>*/
     /*<constants>*//*</constants>*/

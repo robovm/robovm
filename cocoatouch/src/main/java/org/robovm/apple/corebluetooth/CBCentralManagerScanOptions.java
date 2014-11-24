@@ -65,6 +65,9 @@ import org.robovm.apple.dispatch.*;
     protected CBCentralManagerScanOptions(NSDictionary<NSString, NSObject> data) {
         this.data = data;
     }
+    public CBCentralManagerScanOptions() {
+    	this.data = new NSMutableDictionary<>();
+    }
     /*<bind>*/static { Bro.bind(CBCentralManagerScanOptions.class); }/*</bind>*/
     /*<constants>*//*</constants>*/
     /*<constructors>*//*</constructors>*/

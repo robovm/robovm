@@ -70,6 +70,9 @@ import org.robovm.apple.dispatch.*;
     protected NSItemProviderOptions(NSDictionary<NSString, NSObject> data) {
         this.data = data;
     }
+    public NSItemProviderOptions() {
+    	this.data = new NSMutableDictionary<>();
+    }
     /*<bind>*/static { Bro.bind(NSItemProviderOptions.class); }/*</bind>*/
     /*<constants>*//*</constants>*/
     /*<constructors>*//*</constructors>*/

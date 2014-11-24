@@ -64,7 +64,10 @@ import org.robovm.apple.dispatch.*;
     
     protected CBConnectPeripheralOptions(NSDictionary<NSString, NSObject> data) {
         this.data = data;
-    }    
+    }
+    public CBConnectPeripheralOptions() {
+    	this.data = new NSMutableDictionary<>();
+    }
     /*<bind>*/static { Bro.bind(CBConnectPeripheralOptions.class); }/*</bind>*/
     /*<constants>*//*</constants>*/
     /*<constructors>*//*</constructors>*/

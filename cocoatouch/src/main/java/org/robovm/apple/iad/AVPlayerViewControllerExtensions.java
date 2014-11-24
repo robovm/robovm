@@ -35,37 +35,39 @@ import org.robovm.apple.avkit.*;
 /*</imports>*/
 
 /*<javadoc>*/
-/**
- * @since Available in iOS 4.3 and later.
- */
 /*</javadoc>*/
-/*<annotations>*/@Library("iAd") @NativeClass/*</annotations>*/
-/*<visibility>*/public final/*</visibility>*/ class /*<name>*/ADInterstitialAd/*</name>*/ 
-    extends /*<extends>*/NSObject/*</extends>*/ 
+/*<annotations>*/@Library("iAd")/*</annotations>*/
+/*<visibility>*/public final/*</visibility>*/ class /*<name>*/AVPlayerViewControllerExtensions/*</name>*/ 
+    extends /*<extends>*/NSExtensions/*</extends>*/ 
     /*<implements>*//*</implements>*/ {
 
-    /*<ptr>*/public static class ADInterstitialAdPtr extends Ptr<ADInterstitialAd, ADInterstitialAdPtr> {}/*</ptr>*/
-    /*<bind>*/static { ObjCRuntime.bind(ADInterstitialAd.class); }/*</bind>*/
+    /*<ptr>*/
+    /*</ptr>*/
+    /*<bind>*/static { ObjCRuntime.bind(AVPlayerViewControllerExtensions.class); }/*</bind>*/
     /*<constants>*//*</constants>*/
     /*<constructors>*/
-    public ADInterstitialAd() {}
-    protected ADInterstitialAd(SkipInit skipInit) { super(skipInit); }
+    private AVPlayerViewControllerExtensions() {}
     /*</constructors>*/
     /*<properties>*/
-    @Property(selector = "delegate")
-    public native ADInterstitialAdDelegate getDelegate();
-    @Property(selector = "setDelegate:", strongRef = true)
-    public native void setDelegate(ADInterstitialAdDelegate v);
-    @Property(selector = "isLoaded")
-    public native boolean isLoaded();
-    @Property(selector = "isActionInProgress")
-    public native boolean isActionInProgress();
+    
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
-    @Method(selector = "cancelAction")
-    public native void cancelAction();
-    @Method(selector = "presentInView:")
-    public native boolean present(UIView containerView);
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @Method(selector = "playPrerollAdWithCompletionHandler:")
+    public static native void playPrerollAd(AVPlayerViewController thiz, @Block VoidBlock1<NSError> completionHandler);
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @Method(selector = "cancelPreroll")
+    public static native void cancelPreroll(AVPlayerViewController thiz);
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @Method(selector = "preparePrerollAds")
+    protected static native void preparePrerollAds(ObjCClass clazz);
+    public static void preparePrerollAds() { preparePrerollAds(ObjCClass.getByType(AVPlayerViewController.class)); }
     /*</methods>*/
 }

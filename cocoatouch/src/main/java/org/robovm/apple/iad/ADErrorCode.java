@@ -31,24 +31,43 @@ import org.robovm.apple.uikit.*;
 import org.robovm.apple.addressbook.*;
 import org.robovm.apple.mediaplayer.*;
 import org.robovm.apple.coregraphics.*;
+import org.robovm.apple.avkit.*;
 /*</imports>*/
 
 /*<javadoc>*/
+/**
+ * @since Available in iOS 4.0 and later.
+ */
 /*</javadoc>*/
-/*<annotations>*/@Library("iAd")/*</annotations>*/
-/*<visibility>*/public/*</visibility>*/ class /*<name>*/IAd/*</name>*/ 
-    extends /*<extends>*/Object/*</extends>*/ 
-    /*<implements>*//*</implements>*/ {
+/*<annotations>*/@Marshaler(ValuedEnum.AsMachineSizedSIntMarshaler.class)/*</annotations>*/
+public enum /*<name>*/ADErrorCode/*</name>*/ implements NSErrorCode {
+    /*<values>*/
+    Unknown(0L),
+    ServerFailure(1L),
+    LoadingThrottled(2L),
+    InventoryUnavailable(3L),
+    ConfigurationError(4L),
+    BannerVisibleWithoutContent(5L),
+    ApplicationInactive(6L),
+    AdUnloaded(7L);
+    /*</values>*/
 
-    /*<ptr>*/
-    /*</ptr>*/
-    /*<bind>*/static { Bro.bind(IAd.class); }/*</bind>*/
+    /*<bind>*/
+    /*</bind>*/
     /*<constants>*//*</constants>*/
-    /*<constructors>*//*</constructors>*/
-    /*<properties>*//*</properties>*/
-    /*<members>*//*</members>*/
-    /*<methods>*/
-    @GlobalValue(symbol="ADErrorDomain", optional=true)
-    public static native String ErrorDomain();
-    /*</methods>*/
+    /*<methods>*//*</methods>*/
+
+    private final long n;
+
+    private /*<name>*/ADErrorCode/*</name>*/(long n) { this.n = n; }
+    public long value() { return n; }
+    public static /*<name>*/ADErrorCode/*</name>*/ valueOf(long n) {
+        for (/*<name>*/ADErrorCode/*</name>*/ v : values()) {
+            if (v.n == n) {
+                return v;
+            }
+        }
+        throw new IllegalArgumentException("No constant with value " + n + " found in " 
+            + /*<name>*/ADErrorCode/*</name>*/.class.getName());
+    }
 }

@@ -31,6 +31,7 @@ import org.robovm.apple.uikit.*;
 import org.robovm.apple.addressbook.*;
 import org.robovm.apple.mediaplayer.*;
 import org.robovm.apple.coregraphics.*;
+import org.robovm.apple.avkit.*;
 /*</imports>*/
 
 /*<javadoc>*/
@@ -59,6 +60,16 @@ import org.robovm.apple.coregraphics.*;
      */
     @Method(selector = "determineAppInstallationAttributionWithCompletionHandler:")
     public native void determineAppInstallationAttribution(@Block VoidBooleanBlock completionHandler);
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @Method(selector = "lookupAdConversionDetails:")
+    public native void lookupAdConversionDetails(@Block VoidBlock2<NSDate, NSDate> completionHandler);
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @Method(selector = "addClientToSegments:replaceExisting:")
+    public native void addClientToSegments(@org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String> segmentIdentifiers, boolean replaceExisting);
     /**
      * @since Available in iOS 7.1 and later.
      */

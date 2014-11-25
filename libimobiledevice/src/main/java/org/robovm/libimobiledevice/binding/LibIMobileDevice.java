@@ -53,8 +53,8 @@ public class LibIMobileDevice implements LibIMobileDeviceConstants {
     return LibIMobileDeviceJNI.get_global_idevice_event_cb();
   }
 
-  public static MobileImageMounterError upload_image(MobileImageMounterClientRef client, String image_path, String image_type) {
-    return MobileImageMounterError.swigToEnum(LibIMobileDeviceJNI.upload_image(MobileImageMounterClientRef.getCPtr(client), image_path, image_type));
+  public static MobileImageMounterError upload_image(MobileImageMounterClientRef client, String image_path, String image_type, byte[] sig, long sig_size) {
+    return MobileImageMounterError.swigToEnum(LibIMobileDeviceJNI.upload_image(MobileImageMounterClientRef.getCPtr(client), image_path, image_type, sig, sig_size));
   }
 
   public static void idevice_set_debug_level(int level) {
@@ -389,7 +389,7 @@ public class LibIMobileDevice implements LibIMobileDeviceConstants {
     return MobileImageMounterError.swigToEnum(LibIMobileDeviceJNI.mobile_image_mounter_lookup_image(MobileImageMounterClientRef.getCPtr(client), image_type, PlistRefOut.getCPtr(result), result));
   }
 
-  public static MobileImageMounterError mobile_image_mounter_mount_image(MobileImageMounterClientRef client, String image_path, String signature, short signature_size, String image_type, PlistRefOut result) {
+  public static MobileImageMounterError mobile_image_mounter_mount_image(MobileImageMounterClientRef client, String image_path, byte[] signature, short signature_size, String image_type, PlistRefOut result) {
     return MobileImageMounterError.swigToEnum(LibIMobileDeviceJNI.mobile_image_mounter_mount_image(MobileImageMounterClientRef.getCPtr(client), image_path, signature, signature_size, image_type, PlistRefOut.getCPtr(result), result));
   }
 

@@ -71,7 +71,7 @@ public class LibIMobileDeviceJNI {
   public final static native void delete_StringArray_values_z(long jarg1, StringArray jarg1_);
   public final static native long get_global_instproxy_status_cb();
   public final static native long get_global_idevice_event_cb();
-  public final static native int upload_image(long jarg1, String jarg2, String jarg3);
+  public final static native int upload_image(long jarg1, String jarg2, String jarg3, byte[] jarg4, long jarg5);
   public final static native void idevice_set_debug_level(int jarg1);
   public final static native void IDeviceEvent_event_set(long jarg1, IDeviceEvent jarg1_, int jarg2);
   public final static native int IDeviceEvent_event_get(long jarg1, IDeviceEvent jarg1_);
@@ -181,7 +181,7 @@ public class LibIMobileDeviceJNI {
   public final static native int mobile_image_mounter_start_service(long jarg1, long jarg2, MobileImageMounterClientRefOut jarg2_, String jarg3);
   public final static native int mobile_image_mounter_free(long jarg1);
   public final static native int mobile_image_mounter_lookup_image(long jarg1, String jarg2, long jarg3, PlistRefOut jarg3_);
-  public final static native int mobile_image_mounter_mount_image(long jarg1, String jarg2, String jarg3, short jarg4, String jarg5, long jarg6, PlistRefOut jarg6_);
+  public final static native int mobile_image_mounter_mount_image(long jarg1, String jarg2, byte[] jarg3, short jarg4, String jarg5, long jarg6, PlistRefOut jarg6_);
   public final static native int mobile_image_mounter_hangup(long jarg1);
 
   private static native void initNative();

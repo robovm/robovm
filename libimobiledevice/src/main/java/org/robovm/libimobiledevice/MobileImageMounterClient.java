@@ -111,7 +111,7 @@ public class MobileImageMounterClient implements AutoCloseable {
         PlistRefOut plistOut = new PlistRefOut();
         try {
             checkResult(LibIMobileDevice.mobile_image_mounter_mount_image(getRef(), 
-                    imagePath, new String(imageSignature, "ASCII"), (short) imageSignature.length, imageType, plistOut));
+                    imagePath, imageSignature, (short) imageSignature.length, imageType, plistOut));
             PlistRef plist = plistOut.getValue();
             return (NSDictionary) PlistUtil.toJavaPlist(plist);
         } finally {
@@ -161,7 +161,7 @@ public class MobileImageMounterClient implements AutoCloseable {
         }
     }
     
-    public void uploadImage(File localImageFile, String imageType) throws IOException {
+    public void uploadImage(File localImageFile, String imageType, byte[] signature) throws IOException {
         if (localImageFile == null) {
             throw new NullPointerException("localImageFile");
         }
@@ -175,7 +175,7 @@ public class MobileImageMounterClient implements AutoCloseable {
             imageType = "Developer";
         }
 
-        checkResult(LibIMobileDevice.upload_image(getRef(), localImageFile.getAbsolutePath(), imageType));
+        checkResult(LibIMobileDevice.upload_image(getRef(), localImageFile.getAbsolutePath(), imageType, signature, signature.length));
     }
     
     protected MobileImageMounterClientRef getRef() {

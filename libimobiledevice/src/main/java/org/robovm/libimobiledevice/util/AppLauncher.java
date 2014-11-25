@@ -43,6 +43,7 @@ import java.util.concurrent.TimeoutException;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 
+import org.apache.commons.io.FileUtils;
 import org.robovm.libimobiledevice.AfcClient;
 import org.robovm.libimobiledevice.AfcClient.UploadProgressCallback;
 import org.robovm.libimobiledevice.IDevice;
@@ -625,6 +626,8 @@ public class AppLauncher {
         File deviceSupport = new File(getXcodePath(), "Platforms/iPhoneOS.platform/DeviceSupport");
         log("Looking up developer disk image for iOS version %s (%s) in %s", productVersion, buildVersion, deviceSupport);
         File devImage = findDeveloperImage(deviceSupport, productVersion, buildVersion);
+        File devImageSig = new File(devImage.getParentFile(), devImage.getName() + ".signature");
+        byte[] devImageSigBytes = Files.readAllBytes(devImageSig.toPath());
         
         LockdowndServiceDescriptor mimService = lockdowndClient.startService(MobileImageMounterClient.SERVICE_NAME);
         try (MobileImageMounterClient mimClient = new MobileImageMounterClient(device, mimService)) {
@@ -634,7 +637,7 @@ public class AppLauncher {
             int majorVersion = Integer.parseInt(getProductVersionParts(productVersion)[0]);
             if (majorVersion >= 7) {
                 // Use new upload method
-                mimClient.uploadImage(devImage, null);
+                mimClient.uploadImage(devImage, null, devImageSigBytes);
             } else {
                 LockdowndServiceDescriptor afcService = lockdowndClient.startService(AfcClient.SERVICE_NAME);
                 try (AfcClient afcClient = new AfcClient(device, afcService)) {
@@ -643,9 +646,7 @@ public class AppLauncher {
                 }
             }
             
-            log("Mounting developer disk image");
-            File devImageSig = new File(devImage.getParentFile(), devImage.getName() + ".signature");
-            byte[] devImageSigBytes = Files.readAllBytes(devImageSig.toPath());
+            log("Mounting developer disk image");                        
             NSDictionary result = mimClient.mountImage("/PublicStaging/staging.dimage", devImageSigBytes, null);
             NSString status = (NSString) result.objectForKey("Status");
             if (status == null || !"Complete".equals(status.toString())) {

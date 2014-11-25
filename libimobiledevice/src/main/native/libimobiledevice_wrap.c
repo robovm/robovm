@@ -867,7 +867,7 @@ jlong get_global_idevice_event_cb(void) {
 static ssize_t upload_cb(void* buf, size_t size, void* userdata) {
     return fread(buf, 1, size, (FILE*) userdata);
 }
-mobile_image_mounter_error_t upload_image(mobile_image_mounter_client_t client, const char *image_path, const char *image_type) {
+mobile_image_mounter_error_t upload_image(mobile_image_mounter_client_t client, const char *image_path, const char *image_type, const char* sig, size_t sig_size) {
     FILE* f = fopen(image_path, "rb");
     if (!f) {
         return MOBILE_IMAGE_MOUNTER_E_UNKNOWN_ERROR;
@@ -878,7 +878,7 @@ mobile_image_mounter_error_t upload_image(mobile_image_mounter_client_t client, 
         return MOBILE_IMAGE_MOUNTER_E_UNKNOWN_ERROR;
     }
     size_t image_size = fst.st_size;
-    mobile_image_mounter_error_t err = mobile_image_mounter_upload_image(client, image_type, image_size, 0, 0, upload_cb, f);
+    mobile_image_mounter_error_t err = mobile_image_mounter_upload_image(client, image_type, image_size, sig, sig_size, upload_cb, f);
     fclose(f);
     return err;
 }
@@ -1723,11 +1723,14 @@ SWIGEXPORT jlong JNICALL Java_org_robovm_libimobiledevice_binding_LibIMobileDevi
 }
 
 
-SWIGEXPORT jint JNICALL Java_org_robovm_libimobiledevice_binding_LibIMobileDeviceJNI_upload_1image(JNIEnv *jenv, jclass jcls, jlong jarg1, jstring jarg2, jstring jarg3) {
+SWIGEXPORT jint JNICALL Java_org_robovm_libimobiledevice_binding_LibIMobileDeviceJNI_upload_1image(JNIEnv *jenv, jclass jcls, jlong jarg1, jstring jarg2, jstring jarg3, jbyteArray jarg4, jlong jarg5) {
   jint jresult = 0 ;
   mobile_image_mounter_client_t arg1 = (mobile_image_mounter_client_t) 0 ;
   char *arg2 = (char *) 0 ;
   char *arg3 = (char *) 0 ;
+  char *arg4 = (char *) 0 ;
+  size_t arg5 ;
+  jbyte *jarr4 ;
   mobile_image_mounter_error_t result;
   
   (void)jenv;
@@ -1743,10 +1746,14 @@ SWIGEXPORT jint JNICALL Java_org_robovm_libimobiledevice_binding_LibIMobileDevic
     arg3 = (char *)(*jenv)->GetStringUTFChars(jenv, jarg3, 0);
     if (!arg3) return 0;
   }
-  result = (mobile_image_mounter_error_t)upload_image(arg1,(char const *)arg2,(char const *)arg3);
+  if (!SWIG_JavaArrayInSchar(jenv, &jarr4, (signed char **)&arg4, jarg4)) return 0; 
+  arg5 = (size_t)jarg5; 
+  result = (mobile_image_mounter_error_t)upload_image(arg1,(char const *)arg2,(char const *)arg3,(char const *)arg4,arg5);
   jresult = (jint)result; 
+  SWIG_JavaArrayArgoutSchar(jenv, jarr4, (signed char *)arg4, jarg4); 
   if (arg2) (*jenv)->ReleaseStringUTFChars(jenv, jarg2, (const char *)arg2);
   if (arg3) (*jenv)->ReleaseStringUTFChars(jenv, jarg3, (const char *)arg3);
+  
   return jresult;
 }
 
@@ -3917,7 +3924,7 @@ SWIGEXPORT jint JNICALL Java_org_robovm_libimobiledevice_binding_LibIMobileDevic
 }
 
 
-SWIGEXPORT jint JNICALL Java_org_robovm_libimobiledevice_binding_LibIMobileDeviceJNI_mobile_1image_1mounter_1mount_1image(JNIEnv *jenv, jclass jcls, jlong jarg1, jstring jarg2, jstring jarg3, jshort jarg4, jstring jarg5, jlong jarg6, jobject jarg6_) {
+SWIGEXPORT jint JNICALL Java_org_robovm_libimobiledevice_binding_LibIMobileDeviceJNI_mobile_1image_1mounter_1mount_1image(JNIEnv *jenv, jclass jcls, jlong jarg1, jstring jarg2, jbyteArray jarg3, jshort jarg4, jstring jarg5, jlong jarg6, jobject jarg6_) {
   jint jresult = 0 ;
   mobile_image_mounter_client_t arg1 = (mobile_image_mounter_client_t) 0 ;
   char *arg2 = (char *) 0 ;
@@ -3925,6 +3932,7 @@ SWIGEXPORT jint JNICALL Java_org_robovm_libimobiledevice_binding_LibIMobileDevic
   uint16_t arg4 ;
   char *arg5 = (char *) 0 ;
   plist_t *arg6 = (plist_t *) 0 ;
+  jbyte *jarr3 ;
   mobile_image_mounter_error_t result;
   
   (void)jenv;
@@ -3936,11 +3944,7 @@ SWIGEXPORT jint JNICALL Java_org_robovm_libimobiledevice_binding_LibIMobileDevic
     arg2 = (char *)(*jenv)->GetStringUTFChars(jenv, jarg2, 0);
     if (!arg2) return 0;
   }
-  arg3 = 0;
-  if (jarg3) {
-    arg3 = (char *)(*jenv)->GetStringUTFChars(jenv, jarg3, 0);
-    if (!arg3) return 0;
-  }
+  if (!SWIG_JavaArrayInSchar(jenv, &jarr3, (signed char **)&arg3, jarg3)) return 0; 
   arg4 = (uint16_t)jarg4; 
   arg5 = 0;
   if (jarg5) {
@@ -3950,8 +3954,9 @@ SWIGEXPORT jint JNICALL Java_org_robovm_libimobiledevice_binding_LibIMobileDevic
   arg6 = *(plist_t **)&jarg6; 
   result = (mobile_image_mounter_error_t)mobile_image_mounter_mount_image(arg1,(char const *)arg2,(char const *)arg3,arg4,(char const *)arg5,arg6);
   jresult = (jint)result; 
+  SWIG_JavaArrayArgoutSchar(jenv, jarr3, (signed char *)arg3, jarg3); 
   if (arg2) (*jenv)->ReleaseStringUTFChars(jenv, jarg2, (const char *)arg2);
-  if (arg3) (*jenv)->ReleaseStringUTFChars(jenv, jarg3, (const char *)arg3);
+  
   if (arg5) (*jenv)->ReleaseStringUTFChars(jenv, jarg5, (const char *)arg5);
   return jresult;
 }

@@ -111,9 +111,9 @@ OUT_ARG(StringArrayOut, char ***devices)
 OUT_ARG(StringArray, char **devices)
 OUT_ARG(StringArrayOut, char ***classes)
 OUT_ARG(StringArray, char **classes)
-OUT_ARG(StringArrayOut, char ***infos)
-OUT_ARG(StringArrayOut, char ***list)
-OUT_ARG(StringArrayOut, char ***infolist)
+OUT_ARG(StringArrayOut, char ***device_information)
+OUT_ARG(StringArrayOut, char ***directory_information)
+OUT_ARG(StringArrayOut, char ***file_information)
 OUT_ARG(StringOut, char **udid)
 OUT_ARG(StringOut, char **device_name)
 OUT_ARG(StringOut, char **type)
@@ -260,7 +260,7 @@ mobile_image_mounter_error_t upload_image(mobile_image_mounter_client_t client, 
         return MOBILE_IMAGE_MOUNTER_E_UNKNOWN_ERROR;
     }
     size_t image_size = fst.st_size;
-    mobile_image_mounter_error_t err = mobile_image_mounter_upload_image(client, image_type, image_size, upload_cb, f);
+    mobile_image_mounter_error_t err = mobile_image_mounter_upload_image(client, image_type, image_size, 0, 0, upload_cb, f);
     fclose(f);
     return err;
 }

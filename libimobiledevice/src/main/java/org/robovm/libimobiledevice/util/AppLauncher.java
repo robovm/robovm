@@ -56,6 +56,7 @@ import org.robovm.libimobiledevice.LockdowndClient;
 import org.robovm.libimobiledevice.LockdowndServiceDescriptor;
 import org.robovm.libimobiledevice.MobileImageMounterClient;
 import org.robovm.libimobiledevice.binding.LibIMobileDeviceConstants;
+import org.robovm.libimobiledevice.binding.LockdowndError;
 
 import com.dd.plist.NSArray;
 import com.dd.plist.NSDictionary;
@@ -668,7 +669,7 @@ public class AppLauncher {
             try {
                 debugService = lockdowndClient.startService(DEBUG_SERVER_SERVICE_NAME);
             } catch (LibIMobileDeviceException e) {
-                if (e.getErrorCode() == LibIMobileDeviceConstants.LOCKDOWN_E_INVALID_SERVICE) {
+                if (e.getErrorCode() == LockdowndError.LOCKDOWN_E_INVALID_SERVICE.swigValue()) {
                     // This happens when the developer image hasn't been mounted.
                     // Mount and try again.
                     mountDeveloperImage(lockdowndClient);

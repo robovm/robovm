@@ -35,6 +35,7 @@ import org.junit.Assume;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
+import org.robovm.libimobiledevice.binding.AfcError;
 import org.robovm.libimobiledevice.binding.AfcFileMode;
 import org.robovm.libimobiledevice.binding.AfcLinkType;
 import org.robovm.libimobiledevice.binding.LibIMobileDeviceConstants;
@@ -175,7 +176,7 @@ public class AfcClientTest {
             client.getFileInfo("/FOO.TXT");
             fail("LibIMobileDeviceException expected");
         } catch (LibIMobileDeviceException e) {
-            assertEquals(LibIMobileDeviceConstants.AFC_E_OBJECT_NOT_FOUND, e.getErrorCode());
+            assertEquals(AfcError.AFC_E_OBJECT_NOT_FOUND.swigValue(), e.getErrorCode());
         }
     }
     
@@ -207,14 +208,14 @@ public class AfcClientTest {
             client.removePath("/FOO");
             fail("LibIMobileDeviceException expected");
         } catch (LibIMobileDeviceException e) {
-            assertEquals(LibIMobileDeviceConstants.AFC_E_DIR_NOT_EMPTY, e.getErrorCode());
+            assertEquals(AfcError.AFC_E_DIR_NOT_EMPTY.swigValue(), e.getErrorCode());
         }
         client.removePath("/FOO", true);
         try {
             client.getFileInfo("/FOO");
             fail("LibIMobileDeviceException expected");
         } catch (LibIMobileDeviceException e) {
-            assertEquals(LibIMobileDeviceConstants.AFC_E_OBJECT_NOT_FOUND, e.getErrorCode());
+            assertEquals(AfcError.AFC_E_OBJECT_NOT_FOUND.swigValue(), e.getErrorCode());
         }
     }
     

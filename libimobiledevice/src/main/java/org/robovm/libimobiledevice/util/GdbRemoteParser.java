@@ -37,13 +37,20 @@ public class GdbRemoteParser {
         List<byte[]> result = new ArrayList<>();
         
         for(int i = offset; i < offset + length; i++) {
-            byte b = bytes[i];
+            // enlarge buffer
             if(buffer.length == position) {
                 byte[] tmp = new byte[buffer.length * 2];
                 System.arraycopy(buffer, 0, tmp, 0, buffer.length);
                 buffer = tmp;
             }
+            
+            // read the next byte to the buffer 
+            byte b = bytes[i];
             buffer[position++] = b;
+            
+            // if we are inside a message, and we've read the hash
+            // symbol plus the 2 byte checksum after the hash symbol
+            // we've found a new message. Add it to the results
             if(waitingForChecksum && (position - hashPosition) == 2) {
                 waitingForChecksum = false;
                 byte[] tmp = new byte[position];
@@ -53,6 +60,7 @@ public class GdbRemoteParser {
             } else if(b == '#') {
                 waitingForChecksum = true;
                 hashPosition = position;
+                
             }
         }
         return result;

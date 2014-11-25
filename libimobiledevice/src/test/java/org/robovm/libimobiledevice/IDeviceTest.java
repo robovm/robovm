@@ -36,7 +36,7 @@ public class IDeviceTest {
 
     @Before
     public void setUp() {
-        Assume.assumeTrue(IDevice.listUdids().length > 0);
+        Assume.assumeTrue(NativeLibrary.supportedPlatform && IDevice.listUdids().length > 0);
     }
     
     @Test

@@ -51,13 +51,15 @@ public class AfcClientTest {
     
     @BeforeClass
     public static void beforeClass() {
-        String[] udids = IDevice.listUdids();
-        if (udids.length > 0) {
-            String udid = udids[0];
-            device = new IDevice(udid);
-            lockdowndClient = new LockdowndClient(device, null, true);
-            LockdowndServiceDescriptor service = lockdowndClient.startService(AfcClient.SERVICE_NAME);
-            client = new AfcClient(device, service);
+        if (NativeLibrary.supportedPlatform) {
+            String[] udids = IDevice.listUdids();
+            if (udids.length > 0) {
+                String udid = udids[0];
+                device = new IDevice(udid);
+                lockdowndClient = new LockdowndClient(device, null, true);
+                LockdowndServiceDescriptor service = lockdowndClient.startService(AfcClient.SERVICE_NAME);
+                client = new AfcClient(device, service);
+            }
         }
     }
     

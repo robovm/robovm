@@ -53,15 +53,17 @@ public class InstallationProxyClientTest {
     
     @BeforeClass
     public static void beforeClass() {
-        String[] udids = IDevice.listUdids();
-        if (udids.length > 0) {
-            String udid = udids[0];
-            IDevice device = new IDevice(udid);
-            LockdowndClient lockdowndClient = new LockdowndClient(device, null, true);
-            LockdowndServiceDescriptor instproxyService = lockdowndClient.startService(InstallationProxyClient.SERVICE_NAME);
-            client = new InstallationProxyClient(device, instproxyService);
-            LockdowndServiceDescriptor afcService = lockdowndClient.startService(AfcClient.SERVICE_NAME);
-            afcClient = new AfcClient(device, afcService);
+        if (NativeLibrary.supportedPlatform) {
+            String[] udids = IDevice.listUdids();
+            if (udids.length > 0) {
+                String udid = udids[0];
+                IDevice device = new IDevice(udid);
+                LockdowndClient lockdowndClient = new LockdowndClient(device, null, true);
+                LockdowndServiceDescriptor instproxyService = lockdowndClient.startService(InstallationProxyClient.SERVICE_NAME);
+                client = new InstallationProxyClient(device, instproxyService);
+                LockdowndServiceDescriptor afcService = lockdowndClient.startService(AfcClient.SERVICE_NAME);
+                afcClient = new AfcClient(device, afcService);
+            }
         }
     }
     

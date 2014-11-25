@@ -29,6 +29,7 @@ import java.io.OutputStream;
  */
 public class NativeLibrary {
     private static boolean loaded = false;
+    public static final boolean supportedPlatform;
     private static final String os;
     private static final String arch;
     private static final String libName;
@@ -36,26 +37,32 @@ public class NativeLibrary {
     static {
         String osProp = System.getProperty("os.name").toLowerCase();
         String archProp = System.getProperty("os.arch").toLowerCase();
+        String ext = null;
         if (osProp.startsWith("mac") || osProp.startsWith("darwin")) {
             os = "macosx";
-        } else if (osProp.startsWith("linux")) {
-            os = "linux";
+            ext = ".dylib";
         } else {
-            throw new Error("Unsupported OS: " + System.getProperty("os.name"));
+            os = null;
         }
         if (archProp.matches("amd64|x86[-_]64")) {
             arch = "x86_64";
-        } else if (archProp.matches("i386|x86")) {
-            arch = "x86";
         } else {
-            throw new Error("Unsupported arch: " + System.getProperty("os.arch"));
+            arch = null;
         }
         
-        libName = "librobovm-libimobiledevice" + (os.equals("macosx") ? ".dylib" : ".so");
+        supportedPlatform = os != null && arch != null;
+        if (supportedPlatform) {
+            libName = "librobovm-libimobiledevice" + ext;
+        } else {
+            libName = null;
+        }
     }
     
     public static synchronized void load() {
         if (loaded) {
+            return;
+        }
+        if (!supportedPlatform) {
             return;
         }
         

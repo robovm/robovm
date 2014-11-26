@@ -19,7 +19,6 @@ package org.robovm.libimobiledevice.util;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InterruptedIOException;
@@ -43,7 +42,6 @@ import java.util.concurrent.TimeoutException;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 
-import org.apache.commons.io.FileUtils;
 import org.robovm.libimobiledevice.AfcClient;
 import org.robovm.libimobiledevice.AfcClient.UploadProgressCallback;
 import org.robovm.libimobiledevice.IDevice;
@@ -56,7 +54,6 @@ import org.robovm.libimobiledevice.LibIMobileDeviceException;
 import org.robovm.libimobiledevice.LockdowndClient;
 import org.robovm.libimobiledevice.LockdowndServiceDescriptor;
 import org.robovm.libimobiledevice.MobileImageMounterClient;
-import org.robovm.libimobiledevice.binding.LibIMobileDeviceConstants;
 import org.robovm.libimobiledevice.binding.LockdowndError;
 
 import com.dd.plist.NSArray;

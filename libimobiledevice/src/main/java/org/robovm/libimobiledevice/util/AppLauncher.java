@@ -92,6 +92,8 @@ public class AppLauncher {
     private StatusCallback installStatusCallback;
     private UploadProgressCallback uploadProgressCallback;
     private String xcodePath;    
+    private int launchOnLockedRetries = 5;
+    private int secondsBetweenLaunchOnLockedRetries = 5;
     
     /**
      * Creates a new {@link AppLauncher} which will launch an already installed
@@ -306,6 +308,24 @@ public class AppLauncher {
      */
     public AppLauncher xcodePath(String xcodePath) {
         this.xcodePath = xcodePath;
+        return this;
+    }
+    
+    /**
+     * Sets the number of times to retry a launch if the device is locked.
+     * Default is 5.
+     */
+    public AppLauncher launchOnLockedRetries(int launchOnLockedRetries) {
+        this.launchOnLockedRetries = launchOnLockedRetries;
+        return this;
+    }
+    
+    /**
+     * Sets the number of seconds to wait between launch retries when the device
+     * is locked. The default is 5.
+     */
+    public AppLauncher secondsBetweenLaunchOnLockedRetries(int secondsBetweenLaunchOnLockedRetries) {
+        this.secondsBetweenLaunchOnLockedRetries = secondsBetweenLaunchOnLockedRetries;
         return this;
     }
     
@@ -655,46 +675,61 @@ public class AppLauncher {
     private int launchInternal() throws Exception {
         install();
         
-        IDeviceConnection conn = null;
-        String appPath = null;
-        
-        try (LockdowndClient lockdowndClient = new LockdowndClient(device, getClass().getSimpleName(), true)) {
-            appPath = getAppPath(lockdowndClient, appId);
-            if(appPathCallback != null) {
-                appPathCallback.setRemoteAppPath(appPath);
-            }
-            LockdowndServiceDescriptor debugService = null;
-            try {
-                debugService = lockdowndClient.startService(DEBUG_SERVER_SERVICE_NAME);
-            } catch (LibIMobileDeviceException e) {
-                if (e.getErrorCode() == LockdowndError.LOCKDOWN_E_INVALID_SERVICE.swigValue()) {
-                    // This happens when the developer image hasn't been mounted.
-                    // Mount and try again.
-                    mountDeveloperImage(lockdowndClient);
-                    debugService = lockdowndClient.startService(DEBUG_SERVER_SERVICE_NAME);
-                } else {
-                    throw e;
+        int lockedRetriesLeft = launchOnLockedRetries;
+        while (true) {
+            IDeviceConnection conn = null;
+            String appPath = null;
+            
+            try (LockdowndClient lockdowndClient = new LockdowndClient(device, getClass().getSimpleName(), true)) {
+                appPath = getAppPath(lockdowndClient, appId);
+                if(appPathCallback != null) {
+                    appPathCallback.setRemoteAppPath(appPath);
                 }
+                LockdowndServiceDescriptor debugService = null;
+                try {
+                    debugService = lockdowndClient.startService(DEBUG_SERVER_SERVICE_NAME);
+                } catch (LibIMobileDeviceException e) {
+                    if (e.getErrorCode() == LockdowndError.LOCKDOWN_E_INVALID_SERVICE.swigValue()) {
+                        // This happens when the developer image hasn't been mounted.
+                        // Mount and try again.
+                        mountDeveloperImage(lockdowndClient);
+                        debugService = lockdowndClient.startService(DEBUG_SERVER_SERVICE_NAME);
+                    } else {
+                        throw e;
+                    }
+                }
+                conn = device.connect(debugService.getPort());
+                log("Debug server port: " + debugService.getPort());
             }
-            conn = device.connect(debugService.getPort());
-            log("Debug server port: " + debugService.getPort());
-        }
-
-        log("Remote app path: " + appPath);
-        log("Launching app...");
-        
-        
-        try {                        
-            // just pipe stdout if no port forwarding should be done
-            // otherwise perform port forwarding and stdout piping
-            if(localPort == -1) {
-                return pipeStdOut(conn, appPath);
+    
+            if (lockedRetriesLeft == launchOnLockedRetries) {
+                // First try
+                log("Remote app path: " + appPath);
+                log("Launching app...");
             } else {
-                return forward(conn, appPath);
+                log("Launching app (retry %d of %d)...", 
+                        (launchOnLockedRetries - lockedRetriesLeft), launchOnLockedRetries);
             }
             
-        } finally {
-            conn.dispose();
+            try {                        
+                // just pipe stdout if no port forwarding should be done
+                // otherwise perform port forwarding and stdout piping
+                if(localPort == -1) {
+                    return pipeStdOut(conn, appPath);
+                } else {
+                    return forward(conn, appPath);
+                }
+            } catch (RuntimeException e) {
+                if (!e.getMessage().contains("Locked") || lockedRetriesLeft == 0) {
+                    throw e;
+                }
+                lockedRetriesLeft--;
+                log("Device locked. Retrying launch in %d seconds...", 
+                        secondsBetweenLaunchOnLockedRetries);
+                Thread.sleep(secondsBetweenLaunchOnLockedRetries * 1000);
+            } finally {
+                conn.dispose();
+            }
         }
     }
     

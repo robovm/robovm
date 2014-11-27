@@ -17,14 +17,14 @@
 package org.robovm.compiler.target.ios;
 
 import org.robovm.compiler.target.LaunchParameters;
-import org.robovm.libimobiledevice.util.AppPathCallback;
+import org.robovm.libimobiledevice.util.AppLauncherCallback;
 
 /**
  * {@link LaunchParameters} implementation used by {@link IOSTarget} when
  * launching on device. Also used to receive the remote app path from a device.
  */
 public class IOSDeviceLaunchParameters extends LaunchParameters {
-    private AppPathCallback appPathCallback;
+    private AppLauncherCallback appPathCallback;
     private String deviceId;
     private int forwardPort = -1;
 
@@ -44,11 +44,11 @@ public class IOSDeviceLaunchParameters extends LaunchParameters {
         this.forwardPort = forwardPort;
     }
 
-    public AppPathCallback getAppPathCallback() {
+    public AppLauncherCallback getAppPathCallback() {
         return appPathCallback;
     }
 
-    public void setAppPathCallback(AppPathCallback appPathCallback) {
+    public void setAppLauncherCallback(AppLauncherCallback appPathCallback) {
         this.appPathCallback = appPathCallback;
     }
 }

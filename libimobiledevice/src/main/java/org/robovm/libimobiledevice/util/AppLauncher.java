@@ -55,6 +55,7 @@ import org.robovm.libimobiledevice.LockdowndClient;
 import org.robovm.libimobiledevice.LockdowndServiceDescriptor;
 import org.robovm.libimobiledevice.MobileImageMounterClient;
 import org.robovm.libimobiledevice.binding.LockdowndError;
+import org.robovm.libimobiledevice.util.AppLauncherCallback.AppLauncherInfo;
 
 import com.dd.plist.NSArray;
 import com.dd.plist.NSDictionary;
@@ -87,7 +88,7 @@ public class AppLauncher {
     private boolean closeOutOnExit = false;
     private boolean debug = false;
     private int localPort = -1;
-    private AppPathCallback appPathCallback = null;
+    private AppLauncherCallback appLauncherCallback = null;
     private volatile boolean killed = false;
     private StatusCallback installStatusCallback;
     private UploadProgressCallback uploadProgressCallback;
@@ -292,10 +293,10 @@ public class AppLauncher {
     }
     
     /**
-     * Sets a callback that is invoked when the remote app path is known.
+     * Sets a callback that is invoked when the remote app info is known.
      */
-    public AppLauncher appPathCallback(AppPathCallback callback) {
-        this.appPathCallback = callback;
+    public AppLauncher appLauncherCallback(AppLauncherCallback callback) {
+        this.appLauncherCallback = callback;
         return this;
     }
     
@@ -682,8 +683,10 @@ public class AppLauncher {
             
             try (LockdowndClient lockdowndClient = new LockdowndClient(device, getClass().getSimpleName(), true)) {
                 appPath = getAppPath(lockdowndClient, appId);
-                if(appPathCallback != null) {
-                    appPathCallback.setRemoteAppPath(appPath);
+                String productVersion = lockdowndClient.getValue(null, "ProductVersion").toString(); // E.g. 7.0.2
+                String buildVersion = lockdowndClient.getValue(null, "BuildVersion").toString(); // E.g. 11B508
+                if(appLauncherCallback != null) {
+                    appLauncherCallback.setAppLaunchInfo(new AppLauncherInfo(appPath, productVersion, buildVersion));
                 }
                 LockdowndServiceDescriptor debugService = null;
                 try {

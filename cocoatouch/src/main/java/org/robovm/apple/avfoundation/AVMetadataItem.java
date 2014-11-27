@@ -56,12 +56,16 @@ import org.robovm.apple.mediatoolbox.*;
     protected AVMetadataItem(SkipInit skipInit) { super(skipInit); }
     /*</constructors>*/
     /*<properties>*/
-    @Property(selector = "key")
-    public native NSString getKey();
-    @Property(selector = "commonKey")
-    public native String getCommonKey();
-    @Property(selector = "keySpace")
-    public native String getKeySpace();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @Property(selector = "identifier")
+    public native String getIdentifier();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @Property(selector = "extendedLanguageTag")
+    public native String getExtendedLanguageTag();
     @Property(selector = "locale")
     public native NSLocale getLocale();
     @Property(selector = "time")
@@ -71,6 +75,11 @@ import org.robovm.apple.mediatoolbox.*;
      */
     @Property(selector = "duration")
     public native @ByVal CMTime getDuration();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @Property(selector = "dataType")
+    public native String getDataType();
     @Property(selector = "value")
     public native NSObject getValue();
     @Property(selector = "extraAttributes")
@@ -83,6 +92,12 @@ import org.robovm.apple.mediatoolbox.*;
     public native NSDate getDateValue();
     @Property(selector = "dataValue")
     public native NSData getDataValue();
+    @Property(selector = "key")
+    public native NSString getKey();
+    @Property(selector = "commonKey")
+    public native String getCommonKey();
+    @Property(selector = "keySpace")
+    public native String getKeySpace();
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
@@ -101,14 +116,34 @@ import org.robovm.apple.mediatoolbox.*;
      */
     @Method(selector = "metadataItemsFromArray:filteredAndSortedAccordingToPreferredLanguages:")
     public static native NSArray<AVMetadataItem> getMetadataItems(NSArray<AVMetadataItem> metadataItems, NSArray<AVMetadataItem> preferredLanguages);
-    @Method(selector = "metadataItemsFromArray:withLocale:")
-    public static native NSArray<AVMetadataItem> getMetadataItems(NSArray<AVMetadataItem> metadataItems, NSLocale locale);
-    @Method(selector = "metadataItemsFromArray:withKey:keySpace:")
-    public static native NSArray<AVMetadataItem> getMetadataItems(NSArray<AVMetadataItem> metadataItems, NSObject key, String keySpace);
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @Method(selector = "metadataItemsFromArray:filteredByIdentifier:")
+    public static native NSArray<?> metadataItemsFromArray$filteredByIdentifier$(NSArray<?> metadataItems, String identifier);
     /**
      * @since Available in iOS 7.0 and later.
      */
     @Method(selector = "metadataItemsFromArray:filteredByMetadataItemFilter:")
     public static native NSArray<AVMetadataItem> getMetadataItems(NSArray<AVMetadataItem> metadataItems, AVMetadataItemFilter metadataItemFilter);
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @Method(selector = "identifierForKey:keySpace:")
+    public static native String identifierForKey$keySpace$(NSObject key, String keySpace);
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @Method(selector = "keySpaceForIdentifier:")
+    public static native String keySpaceForIdentifier$(String identifier);
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @Method(selector = "keyForIdentifier:")
+    public static native NSObject keyForIdentifier$(String identifier);
+    @Method(selector = "metadataItemsFromArray:withLocale:")
+    public static native NSArray<AVMetadataItem> getMetadataItems(NSArray<AVMetadataItem> metadataItems, NSLocale locale);
+    @Method(selector = "metadataItemsFromArray:withKey:keySpace:")
+    public static native NSArray<AVMetadataItem> getMetadataItems(NSArray<AVMetadataItem> metadataItems, NSObject key, String keySpace);
     /*</methods>*/
 }

@@ -39,14 +39,18 @@ import org.robovm.apple.mediatoolbox.*;
 /*</imports>*/
 
 /*<javadoc>*/
-
+/**
+ * @since Available in iOS 8.0 and later.
+ */
 /*</javadoc>*/
 /*<annotations>*/@Marshaler(ValuedEnum.AsMachineSizedSIntMarshaler.class)/*</annotations>*/
-public enum /*<name>*/AVPlayerItemStatus/*</name>*/ implements ValuedEnum {
+public enum /*<name>*/AVAudio3DMixingRenderingAlgorithm/*</name>*/ implements ValuedEnum {
     /*<values>*/
-    Unknown(0L),
-    ReadyToPlay(1L),
-    Failed(2L);
+    EqualPowerPanning(0L),
+    SphericalHead(1L),
+    HRTF(2L),
+    SoundField(3L),
+    StereoPassThrough(5L);
     /*</values>*/
 
     /*<bind>*/
@@ -56,15 +60,15 @@ public enum /*<name>*/AVPlayerItemStatus/*</name>*/ implements ValuedEnum {
 
     private final long n;
 
-    private /*<name>*/AVPlayerItemStatus/*</name>*/(long n) { this.n = n; }
+    private /*<name>*/AVAudio3DMixingRenderingAlgorithm/*</name>*/(long n) { this.n = n; }
     public long value() { return n; }
-    public static /*<name>*/AVPlayerItemStatus/*</name>*/ valueOf(long n) {
-        for (/*<name>*/AVPlayerItemStatus/*</name>*/ v : values()) {
+    public static /*<name>*/AVAudio3DMixingRenderingAlgorithm/*</name>*/ valueOf(long n) {
+        for (/*<name>*/AVAudio3DMixingRenderingAlgorithm/*</name>*/ v : values()) {
             if (v.n == n) {
                 return v;
             }
         }
         throw new IllegalArgumentException("No constant with value " + n + " found in " 
-            + /*<name>*/AVPlayerItemStatus/*</name>*/.class.getName());
+            + /*<name>*/AVAudio3DMixingRenderingAlgorithm/*</name>*/.class.getName());
     }
 }

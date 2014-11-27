@@ -180,6 +180,11 @@ import org.robovm.apple.mediatoolbox.*;
      */
     @Property(selector = "setSmoothAutoFocusEnabled:")
     public native void setSmoothAutoFocusEnabled(boolean v);
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @Property(selector = "lensPosition")
+    public native float getLensPosition();
     @Property(selector = "exposureMode")
     public native AVCaptureExposureMode getExposureMode();
     @Property(selector = "setExposureMode:")
@@ -192,12 +197,62 @@ import org.robovm.apple.mediatoolbox.*;
     public native void setExposurePointOfInterest(@ByVal CGPoint v);
     @Property(selector = "isAdjustingExposure")
     public native boolean isAdjustingExposure();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @Property(selector = "lensAperture")
+    public native float getLensAperture();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @Property(selector = "exposureDuration")
+    public native @ByVal CMTime getExposureDuration();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @Property(selector = "ISO")
+    public native float getISO();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @Property(selector = "exposureTargetOffset")
+    public native float getExposureTargetOffset();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @Property(selector = "exposureTargetBias")
+    public native float getExposureTargetBias();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @Property(selector = "minExposureTargetBias")
+    public native float getMinExposureTargetBias();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @Property(selector = "maxExposureTargetBias")
+    public native float getMaxExposureTargetBias();
     @Property(selector = "whiteBalanceMode")
     public native AVCaptureWhiteBalanceMode getWhiteBalanceMode();
     @Property(selector = "setWhiteBalanceMode:")
     public native void setWhiteBalanceMode(AVCaptureWhiteBalanceMode v);
     @Property(selector = "isAdjustingWhiteBalance")
     public native boolean isAdjustingWhiteBalance();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @Property(selector = "deviceWhiteBalanceGains")
+    public native @ByVal AVCaptureWhiteBalanceGains getDeviceWhiteBalanceGains();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @Property(selector = "grayWorldDeviceWhiteBalanceGains")
+    public native @ByVal AVCaptureWhiteBalanceGains getGrayWorldDeviceWhiteBalanceGains();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @Property(selector = "maxWhiteBalanceGain")
+    public native float getMaxWhiteBalanceGain();
     /**
      * @since Available in iOS 5.0 and later.
      */
@@ -243,6 +298,26 @@ import org.robovm.apple.mediatoolbox.*;
      */
     @Property(selector = "isRampingVideoZoom")
     public native boolean isRampingVideoZoom();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @Property(selector = "automaticallyAdjustsVideoHDREnabled")
+    public native boolean isAutomaticallyAdjustsVideoHDREnabled();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @Property(selector = "setAutomaticallyAdjustsVideoHDREnabled:")
+    public native void setAutomaticallyAdjustsVideoHDREnabled(boolean v);
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @Property(selector = "isVideoHDREnabled")
+    public native boolean isVideoHDREnabled();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @Property(selector = "setVideoHDREnabled:")
+    public native void setVideoHDREnabled(boolean v);
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
@@ -273,10 +348,50 @@ import org.robovm.apple.mediatoolbox.*;
     public native boolean setTorchModeOn(float torchLevel, NSError.NSErrorPtr outError);
     @Method(selector = "isFocusModeSupported:")
     public native boolean isFocusModeSupported(AVCaptureFocusMode focusMode);
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @Method(selector = "setFocusModeLockedWithLensPosition:completionHandler:")
+    public native void setFocusModeLockedWithLensPosition$completionHandler$(float lensPosition, @Block VoidBlock1<CMTime> handler);
     @Method(selector = "isExposureModeSupported:")
     public native boolean isExposureModeSupported(AVCaptureExposureMode exposureMode);
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @Method(selector = "setExposureModeCustomWithDuration:ISO:completionHandler:")
+    public native void setExposureModeCustomWithDuration$ISO$completionHandler$(@ByVal CMTime duration, float ISO, @Block VoidBlock1<CMTime> handler);
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @Method(selector = "setExposureTargetBias:completionHandler:")
+    public native void setExposureTargetBias$completionHandler$(float bias, @Block VoidBlock1<CMTime> handler);
     @Method(selector = "isWhiteBalanceModeSupported:")
     public native boolean isWhiteBalanceModeSupported(AVCaptureWhiteBalanceMode whiteBalanceMode);
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @Method(selector = "setWhiteBalanceModeLockedWithDeviceWhiteBalanceGains:completionHandler:")
+    public native void setWhiteBalanceModeLockedWithDeviceWhiteBalanceGains$completionHandler$(@ByVal AVCaptureWhiteBalanceGains whiteBalanceGains, @Block VoidBlock1<CMTime> handler);
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @Method(selector = "chromaticityValuesForDeviceWhiteBalanceGains:")
+    public native @ByVal AVCaptureWhiteBalanceChromaticityValues chromaticityValuesForDeviceWhiteBalanceGains$(@ByVal AVCaptureWhiteBalanceGains whiteBalanceGains);
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @Method(selector = "deviceWhiteBalanceGainsForChromaticityValues:")
+    public native @ByVal AVCaptureWhiteBalanceGains deviceWhiteBalanceGainsForChromaticityValues$(@ByVal AVCaptureWhiteBalanceChromaticityValues chromaticityValues);
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @Method(selector = "temperatureAndTintValuesForDeviceWhiteBalanceGains:")
+    public native @ByVal AVCaptureWhiteBalanceTemperatureAndTintValues temperatureAndTintValuesForDeviceWhiteBalanceGains$(@ByVal AVCaptureWhiteBalanceGains whiteBalanceGains);
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @Method(selector = "deviceWhiteBalanceGainsForTemperatureAndTintValues:")
+    public native @ByVal AVCaptureWhiteBalanceGains deviceWhiteBalanceGainsForTemperatureAndTintValues$(@ByVal AVCaptureWhiteBalanceTemperatureAndTintValues tempAndTintValues);
     /**
      * @since Available in iOS 7.0 and later.
      */

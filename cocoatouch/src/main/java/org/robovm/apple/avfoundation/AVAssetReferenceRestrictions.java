@@ -42,14 +42,14 @@ import org.robovm.apple.mediatoolbox.*;
 
 /*</javadoc>*/
 /*<annotations>*/@Marshaler(ValuedEnum.AsMachineSizedUIntMarshaler.class)/*</annotations>*/
-public enum /*<name>*/AVAssetReferenceRestrictions/*</name>*/ implements ValuedEnum {
+public final class /*<name>*/AVAssetReferenceRestrictions/*</name>*/ extends Bits</*<name>*/AVAssetReferenceRestrictions/*</name>*/> {
     /*<values>*/
-    None(0L),
-    RemoteReferenceToLocal(1L),
-    LocalReferenceToRemote(2L),
-    CrossSiteReference(4L),
-    LocalReferenceToLocal(8L),
-    All(65535L);
+    public static final AVAssetReferenceRestrictions None = new AVAssetReferenceRestrictions(0L);
+    public static final AVAssetReferenceRestrictions RemoteReferenceToLocal = new AVAssetReferenceRestrictions(1L);
+    public static final AVAssetReferenceRestrictions LocalReferenceToRemote = new AVAssetReferenceRestrictions(2L);
+    public static final AVAssetReferenceRestrictions CrossSiteReference = new AVAssetReferenceRestrictions(4L);
+    public static final AVAssetReferenceRestrictions LocalReferenceToLocal = new AVAssetReferenceRestrictions(8L);
+    public static final AVAssetReferenceRestrictions All = new AVAssetReferenceRestrictions(65535L);
     /*</values>*/
 
     /*<bind>*/
@@ -57,17 +57,17 @@ public enum /*<name>*/AVAssetReferenceRestrictions/*</name>*/ implements ValuedE
     /*<constants>*//*</constants>*/
     /*<methods>*//*</methods>*/
 
-    private final long n;
+    private static final /*<name>*/AVAssetReferenceRestrictions/*</name>*/[] values = _values(/*<name>*/AVAssetReferenceRestrictions/*</name>*/.class);
 
-    private /*<name>*/AVAssetReferenceRestrictions/*</name>*/(long n) { this.n = n; }
-    public long value() { return n; }
-    public static /*<name>*/AVAssetReferenceRestrictions/*</name>*/ valueOf(long n) {
-        for (/*<name>*/AVAssetReferenceRestrictions/*</name>*/ v : values()) {
-            if (v.n == n) {
-                return v;
-            }
-        }
-        throw new IllegalArgumentException("No constant with value " + n + " found in " 
-            + /*<name>*/AVAssetReferenceRestrictions/*</name>*/.class.getName());
+    public /*<name>*/AVAssetReferenceRestrictions/*</name>*/(long value) { super(value); }
+    private /*<name>*/AVAssetReferenceRestrictions/*</name>*/(long value, long mask) { super(value, mask); }
+    protected /*<name>*/AVAssetReferenceRestrictions/*</name>*/ wrap(long value, long mask) {
+        return new /*<name>*/AVAssetReferenceRestrictions/*</name>*/(value, mask);
+    }
+    protected /*<name>*/AVAssetReferenceRestrictions/*</name>*/[] _values() {
+        return values;
+    }
+    public static /*<name>*/AVAssetReferenceRestrictions/*</name>*/[] values() {
+        return values.clone();
     }
 }

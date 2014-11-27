@@ -39,14 +39,35 @@ import org.robovm.apple.mediatoolbox.*;
 /*</imports>*/
 
 /*<javadoc>*/
-
+/**
+ * @since Available in iOS 8.0 and later.
+ */
 /*</javadoc>*/
 /*<annotations>*/@Marshaler(ValuedEnum.AsMachineSizedSIntMarshaler.class)/*</annotations>*/
-public enum /*<name>*/AVPlayerItemStatus/*</name>*/ implements ValuedEnum {
+public enum /*<name>*/AVAudioUnitDistortionPreset/*</name>*/ implements ValuedEnum {
     /*<values>*/
-    Unknown(0L),
-    ReadyToPlay(1L),
-    Failed(2L);
+    DrumsBitBrush(0L),
+    DrumsBufferBeats(1L),
+    DrumsLoFi(2L),
+    MultiBrokenSpeaker(3L),
+    MultiCellphoneConcert(4L),
+    MultiDecimated1(5L),
+    MultiDecimated2(6L),
+    MultiDecimated3(7L),
+    MultiDecimated4(8L),
+    MultiDistortedFunk(9L),
+    MultiDistortedCubed(10L),
+    MultiDistortedSquared(11L),
+    MultiEcho1(12L),
+    MultiEcho2(13L),
+    MultiEchoTight1(14L),
+    MultiEchoTight2(15L),
+    MultiEverythingIsBroken(16L),
+    SpeechAlienChatter(17L),
+    SpeechCosmicInterference(18L),
+    SpeechGoldenPi(19L),
+    SpeechRadioTower(20L),
+    SpeechWaves(21L);
     /*</values>*/
 
     /*<bind>*/
@@ -56,15 +77,15 @@ public enum /*<name>*/AVPlayerItemStatus/*</name>*/ implements ValuedEnum {
 
     private final long n;
 
-    private /*<name>*/AVPlayerItemStatus/*</name>*/(long n) { this.n = n; }
+    private /*<name>*/AVAudioUnitDistortionPreset/*</name>*/(long n) { this.n = n; }
     public long value() { return n; }
-    public static /*<name>*/AVPlayerItemStatus/*</name>*/ valueOf(long n) {
-        for (/*<name>*/AVPlayerItemStatus/*</name>*/ v : values()) {
+    public static /*<name>*/AVAudioUnitDistortionPreset/*</name>*/ valueOf(long n) {
+        for (/*<name>*/AVAudioUnitDistortionPreset/*</name>*/ v : values()) {
             if (v.n == n) {
                 return v;
             }
         }
         throw new IllegalArgumentException("No constant with value " + n + " found in " 
-            + /*<name>*/AVPlayerItemStatus/*</name>*/.class.getName());
+            + /*<name>*/AVAudioUnitDistortionPreset/*</name>*/.class.getName());
     }
 }

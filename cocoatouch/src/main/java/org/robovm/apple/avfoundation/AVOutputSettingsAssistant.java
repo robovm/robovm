@@ -74,8 +74,14 @@ import org.robovm.apple.mediatoolbox.*;
     public native @ByVal CMTime getSourceVideoAverageFrameDuration();
     @Property(selector = "setSourceVideoAverageFrameDuration:")
     public native void setSourceVideoAverageFrameDuration(@ByVal CMTime v);
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
     @Property(selector = "sourceVideoMinFrameDuration")
     public native @ByVal CMTime getSourceVideoMinFrameDuration();
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
     @Property(selector = "setSourceVideoMinFrameDuration:")
     public native void setSourceVideoMinFrameDuration(@ByVal CMTime v);
     /*</properties>*/

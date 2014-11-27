@@ -94,6 +94,11 @@ import org.robovm.apple.mediatoolbox.*;
     public native String getLyrics();
     @Property(selector = "commonMetadata")
     public native NSArray<AVMetadataItem> getCommonMetadata();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @Property(selector = "metadata")
+    public native NSArray<?> getMetadata();
     @Property(selector = "availableMetadataFormats")
     public native NSArray<NSString> getAvailableMetadataFormats();
     /**

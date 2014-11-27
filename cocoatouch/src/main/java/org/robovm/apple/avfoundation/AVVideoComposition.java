@@ -60,7 +60,7 @@ import org.robovm.apple.mediatoolbox.*;
      * @since Available in iOS 7.0 and later.
      */
     @Property(selector = "customVideoCompositorClass")
-    public native ObjCClass getCustomVideoCompositorClass();
+    public native Class<?> getCustomVideoCompositorClass();
     @Property(selector = "frameDuration")
     public native @ByVal CMTime getFrameDuration();
     @Property(selector = "renderSize")

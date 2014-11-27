@@ -39,14 +39,17 @@ import org.robovm.apple.mediatoolbox.*;
 /*</imports>*/
 
 /*<javadoc>*/
-
+/**
+ * @since Available in iOS 8.0 and later.
+ */
 /*</javadoc>*/
-/*<annotations>*/@Marshaler(ValuedEnum.AsMachineSizedSIntMarshaler.class)/*</annotations>*/
-public enum /*<name>*/AVPlayerItemStatus/*</name>*/ implements ValuedEnum {
+/*<annotations>*/@Marshaler(Bits.AsMachineSizedIntMarshaler.class)/*</annotations>*/
+public final class /*<name>*/AVAudioSessionRecordPermission/*</name>*/ extends Bits</*<name>*/AVAudioSessionRecordPermission/*</name>*/> {
     /*<values>*/
-    Unknown(0L),
-    ReadyToPlay(1L),
-    Failed(2L);
+    public static final AVAudioSessionRecordPermission None = new AVAudioSessionRecordPermission(0L);
+    public static final AVAudioSessionRecordPermission Undetermined = new AVAudioSessionRecordPermission(1970168948L);
+    public static final AVAudioSessionRecordPermission Denied = new AVAudioSessionRecordPermission(1684369017L);
+    public static final AVAudioSessionRecordPermission Granted = new AVAudioSessionRecordPermission(1735552628L);
     /*</values>*/
 
     /*<bind>*/
@@ -54,17 +57,17 @@ public enum /*<name>*/AVPlayerItemStatus/*</name>*/ implements ValuedEnum {
     /*<constants>*//*</constants>*/
     /*<methods>*//*</methods>*/
 
-    private final long n;
+    private static final /*<name>*/AVAudioSessionRecordPermission/*</name>*/[] values = _values(/*<name>*/AVAudioSessionRecordPermission/*</name>*/.class);
 
-    private /*<name>*/AVPlayerItemStatus/*</name>*/(long n) { this.n = n; }
-    public long value() { return n; }
-    public static /*<name>*/AVPlayerItemStatus/*</name>*/ valueOf(long n) {
-        for (/*<name>*/AVPlayerItemStatus/*</name>*/ v : values()) {
-            if (v.n == n) {
-                return v;
-            }
-        }
-        throw new IllegalArgumentException("No constant with value " + n + " found in " 
-            + /*<name>*/AVPlayerItemStatus/*</name>*/.class.getName());
+    public /*<name>*/AVAudioSessionRecordPermission/*</name>*/(long value) { super(value); }
+    private /*<name>*/AVAudioSessionRecordPermission/*</name>*/(long value, long mask) { super(value, mask); }
+    protected /*<name>*/AVAudioSessionRecordPermission/*</name>*/ wrap(long value, long mask) {
+        return new /*<name>*/AVAudioSessionRecordPermission/*</name>*/(value, mask);
+    }
+    protected /*<name>*/AVAudioSessionRecordPermission/*</name>*/[] _values() {
+        return values;
+    }
+    public static /*<name>*/AVAudioSessionRecordPermission/*</name>*/[] values() {
+        return values.clone();
     }
 }

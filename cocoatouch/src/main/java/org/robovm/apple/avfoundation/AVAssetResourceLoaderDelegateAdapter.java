@@ -62,9 +62,24 @@ import org.robovm.apple.mediatoolbox.*;
     @NotImplemented("resourceLoader:shouldWaitForLoadingOfRequestedResource:")
     public boolean shouldWait(AVAssetResourceLoader resourceLoader, AVAssetResourceLoadingRequest loadingRequest) { throw new UnsupportedOperationException(); }
     /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @NotImplemented("resourceLoader:shouldWaitForRenewalOfRequestedResource:")
+    public boolean resourceLoader$shouldWaitForRenewalOfRequestedResource$(AVAssetResourceLoader resourceLoader, AVAssetResourceRenewalRequest renewalRequest) { throw new UnsupportedOperationException(); }
+    /**
      * @since Available in iOS 7.0 and later.
      */
     @NotImplemented("resourceLoader:didCancelLoadingRequest:")
     public void didCancel(AVAssetResourceLoader resourceLoader, AVAssetResourceLoadingRequest loadingRequest) { throw new UnsupportedOperationException(); }
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @NotImplemented("resourceLoader:shouldWaitForResponseToAuthenticationChallenge:")
+    public boolean resourceLoader$shouldWaitForResponseToAuthenticationChallenge$(AVAssetResourceLoader resourceLoader, NSURLAuthenticationChallenge authenticationChallenge) { throw new UnsupportedOperationException(); }
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @NotImplemented("resourceLoader:didCancelAuthenticationChallenge:")
+    public void resourceLoader$didCancelAuthenticationChallenge$(AVAssetResourceLoader resourceLoader, NSURLAuthenticationChallenge authenticationChallenge) { throw new UnsupportedOperationException(); }
     /*</methods>*/
 }

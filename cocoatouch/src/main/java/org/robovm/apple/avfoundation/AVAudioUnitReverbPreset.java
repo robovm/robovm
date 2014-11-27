@@ -39,14 +39,26 @@ import org.robovm.apple.mediatoolbox.*;
 /*</imports>*/
 
 /*<javadoc>*/
-
+/**
+ * @since Available in iOS 8.0 and later.
+ */
 /*</javadoc>*/
 /*<annotations>*/@Marshaler(ValuedEnum.AsMachineSizedSIntMarshaler.class)/*</annotations>*/
-public enum /*<name>*/AVPlayerItemStatus/*</name>*/ implements ValuedEnum {
+public enum /*<name>*/AVAudioUnitReverbPreset/*</name>*/ implements ValuedEnum {
     /*<values>*/
-    Unknown(0L),
-    ReadyToPlay(1L),
-    Failed(2L);
+    SmallRoom(0L),
+    MediumRoom(1L),
+    LargeRoom(2L),
+    MediumHall(3L),
+    LargeHall(4L),
+    Plate(5L),
+    MediumChamber(6L),
+    LargeChamber(7L),
+    Cathedral(8L),
+    LargeRoom2(9L),
+    MediumHall2(10L),
+    MediumHall3(11L),
+    LargeHall2(12L);
     /*</values>*/
 
     /*<bind>*/
@@ -56,15 +68,15 @@ public enum /*<name>*/AVPlayerItemStatus/*</name>*/ implements ValuedEnum {
 
     private final long n;
 
-    private /*<name>*/AVPlayerItemStatus/*</name>*/(long n) { this.n = n; }
+    private /*<name>*/AVAudioUnitReverbPreset/*</name>*/(long n) { this.n = n; }
     public long value() { return n; }
-    public static /*<name>*/AVPlayerItemStatus/*</name>*/ valueOf(long n) {
-        for (/*<name>*/AVPlayerItemStatus/*</name>*/ v : values()) {
+    public static /*<name>*/AVAudioUnitReverbPreset/*</name>*/ valueOf(long n) {
+        for (/*<name>*/AVAudioUnitReverbPreset/*</name>*/ v : values()) {
             if (v.n == n) {
                 return v;
             }
         }
         throw new IllegalArgumentException("No constant with value " + n + " found in " 
-            + /*<name>*/AVPlayerItemStatus/*</name>*/.class.getName());
+            + /*<name>*/AVAudioUnitReverbPreset/*</name>*/.class.getName());
     }
 }

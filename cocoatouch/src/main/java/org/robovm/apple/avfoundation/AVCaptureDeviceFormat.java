@@ -74,7 +74,9 @@ import org.robovm.apple.mediatoolbox.*;
     public native boolean isVideoBinned();
     /**
      * @since Available in iOS 7.0 and later.
+     * @deprecated Deprecated in iOS 8.0.
      */
+    @Deprecated
     @Property(selector = "isVideoStabilizationSupported")
     public native boolean isVideoStabilizationSupported();
     /**
@@ -87,9 +89,48 @@ import org.robovm.apple.mediatoolbox.*;
      */
     @Property(selector = "videoZoomFactorUpscaleThreshold")
     public native @MachineSizedFloat double getVideoZoomFactorUpscaleThreshold();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @Property(selector = "minExposureDuration")
+    public native @ByVal CMTime getMinExposureDuration();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @Property(selector = "maxExposureDuration")
+    public native @ByVal CMTime getMaxExposureDuration();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @Property(selector = "minISO")
+    public native float getMinISO();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @Property(selector = "maxISO")
+    public native float getMaxISO();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @Property(selector = "isVideoHDRSupported")
+    public native boolean isVideoHDRSupported();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @Property(selector = "highResolutionStillImageDimensions")
+    public native @ByVal CMVideoDimensions getHighResolutionStillImageDimensions();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @Property(selector = "autoFocusSystem")
+    public native AVCaptureAutoFocusSystem getAutoFocusSystem();
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
-    
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @Method(selector = "isVideoStabilizationModeSupported:")
+    public native boolean isVideoStabilizationModeSupported$(AVCaptureVideoStabilizationMode videoStabilizationMode);
     /*</methods>*/
 }

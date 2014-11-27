@@ -39,14 +39,15 @@ import org.robovm.apple.mediatoolbox.*;
 /*</imports>*/
 
 /*<javadoc>*/
-
+/**
+ * @since Available in iOS 8.0 and later.
+ */
 /*</javadoc>*/
-/*<annotations>*/@Marshaler(ValuedEnum.AsMachineSizedSIntMarshaler.class)/*</annotations>*/
-public enum /*<name>*/AVPlayerItemStatus/*</name>*/ implements ValuedEnum {
+/*<annotations>*/@Marshaler(ValuedEnum.AsMachineSizedUIntMarshaler.class)/*</annotations>*/
+public enum /*<name>*/AVAudioSessionSilenceSecondaryAudioHintType/*</name>*/ implements ValuedEnum {
     /*<values>*/
-    Unknown(0L),
-    ReadyToPlay(1L),
-    Failed(2L);
+    Begin(1L),
+    End(0L);
     /*</values>*/
 
     /*<bind>*/
@@ -56,15 +57,15 @@ public enum /*<name>*/AVPlayerItemStatus/*</name>*/ implements ValuedEnum {
 
     private final long n;
 
-    private /*<name>*/AVPlayerItemStatus/*</name>*/(long n) { this.n = n; }
+    private /*<name>*/AVAudioSessionSilenceSecondaryAudioHintType/*</name>*/(long n) { this.n = n; }
     public long value() { return n; }
-    public static /*<name>*/AVPlayerItemStatus/*</name>*/ valueOf(long n) {
-        for (/*<name>*/AVPlayerItemStatus/*</name>*/ v : values()) {
+    public static /*<name>*/AVAudioSessionSilenceSecondaryAudioHintType/*</name>*/ valueOf(long n) {
+        for (/*<name>*/AVAudioSessionSilenceSecondaryAudioHintType/*</name>*/ v : values()) {
             if (v.n == n) {
                 return v;
             }
         }
         throw new IllegalArgumentException("No constant with value " + n + " found in " 
-            + /*<name>*/AVPlayerItemStatus/*</name>*/.class.getName());
+            + /*<name>*/AVAudioSessionSilenceSecondaryAudioHintType/*</name>*/.class.getName());
     }
 }

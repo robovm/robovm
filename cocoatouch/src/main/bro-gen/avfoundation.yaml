@@ -16,7 +16,14 @@ enums:
     AVAssetImageGeneratorResult: { first: AVAssetImageGeneratorSucceeded }
     AVAssetReaderStatus: { first: AVAssetReaderStatusUnknown }
     AVAssetWriterStatus: { first: AVAssetWriterStatusUnknown }
+    AVAudioUnitReverbPreset: {}
+    AVAudioUnitEQFilterType: {}
+    AVAudioUnitDistortionPreset: {}
+    AVAudio3DMixingRenderingAlgorithm: {}
+    AVAudioEnvironmentDistanceAttenuationModel: {}
+    AVAudioCommonFormat: {}
     AVKeyValueStatus: { first: AVKeyValueStatusUnknown }
+    AVAudioPlayerNodeBufferOptions: {}
     AVAudioSessionInterruptionOptions: { prefix: AVAudioSessionInterruptionOption, marshaler: ValuedEnum.AsMachineSizedUIntMarshaler }
     AVAudioSessionSetActiveOptions: { prefix: AVAudioSessionSetActiveOption, marshaler: ValuedEnum.AsMachineSizedUIntMarshaler }
     AVAudioSessionPortOverride: { marshaler: ValuedEnum.AsMachineSizedUIntMarshaler }
@@ -25,50 +32,50 @@ enums:
     AVAudioSessionInterruptionType: { marshaler: ValuedEnum.AsMachineSizedUIntMarshaler }
     AVAudioSessionErrorCode: {}
     AVAudioSessionInterruptionFlag: { first: AVAudioSessionInterruptionFlags_ShouldResume, prefix: AVAudioSessionInterruptionFlags_, bits: true, marshaler: Bits.AsMachineSizedIntMarshaler }
+    AVAudioSessionRecordPermission: {}
     AVAudioSessionSetActiveFlag: { first: AVAudioSessionSetActiveFlags_NotifyOthersOnDeactivation, prefix: AVAudioSessionSetActiveFlags_, bits: true, marshaler: Bits.AsMachineSizedIntMarshaler }
+    AVAudioSessionSilenceSecondaryAudioHintType: {}
     AVAudioQuality: { first: AVAudioQualityMin }
     AVCaptureDevicePosition: {}
     AVCaptureFlashMode: {}
     AVCaptureTorchMode: {}
     AVCaptureFocusMode: {}
     AVCaptureAutoFocusRangeRestriction: {}
+    AVCaptureAutoFocusSystem: {}
     AVCaptureExposureMode: {}
     AVCaptureWhiteBalanceMode: {}
     AVAuthorizationStatus: {}
     AVCaptureDeviceTransportControlsPlaybackMode: {}
     AVCaptureVideoOrientation: {}
+    AVCaptureVideoStabilizationMode: {}
     AVVideoFieldMode: {}
     AVErrorCode: { first: AVErrorUnknown, prefix: AVError, marshaler: ValuedEnum.AsMachineSizedSIntMarshaler }
     AVPlayerStatus: { first: AVPlayerStatusUnknown }
     AVPlayerActionAtItemEnd: { first: AVPlayerActionAtItemEndAdvance }
     AVPlayerItemStatus: { first: AVPlayerItemStatusUnknown }
+    AVQueuedSampleBufferRenderingStatus: {}
+    AVSampleBufferDisplayLayerQueueManagement: {}
     AVSpeechBoundary: {}
     
 categories:
     NSValueAVFoundationExtensions: # DONE
         methods:
-            '-CMTimeValue':
-                name: "getTimeValue"
-            '-CMTimeRangeValue':
-                name: "getTimeRangeValue"
-            '-CMTimeMappingValue':
-                name: "getTimeMappingValue"
             '+valueWith.*':
-                name: "create"
+                name: create
     AVTimeCoding: # DONE
         methods:
             '-encodeCMTime:forKey:':
                 trim_after_first_colon: true
             '-decodeCMTimeForKey:':
-                name: "decodeCMTime"
+                name: decodeCMTime
             '-encodeCMTimeRange:forKey:':
                 trim_after_first_colon: true
             '-decodeCMTimeRangeForKey:':
-                name: "decodeCMTimeRange"
+                name: decodeCMTimeRange
             '-encodeCMTimeMapping:forKey:':
                 trim_after_first_colon: true
             '-decodeCMTimeMappingForKey:':
-                name: "decodeCMTimeMapping"
+                name: decodeCMTimeMapping
 classes:
     AVFoundation:
         annotations: ['@Marshaler(NSString.AsStringMarshaler.class)']
@@ -255,6 +262,7 @@ classes:
                         type: "NSDictionary<NSString, ?>"
             '-finishLoadingWithResponse:data:redirect:':
                 name: "finishLoading" 
+    AVAssetResourceRenewalRequest: {}
     AVAssetTrack: # DONE
         properties:
             'formatDescriptions':
@@ -368,7 +376,8 @@ classes:
                 name: "create"
                 parameters:
                     inputs:
-                        type: "NSArray<AVAssetWriterInput>"  
+                        type: "NSArray<AVAssetWriterInput>"
+    AVAssetWriterInputPassDescription: {}
     AVAssetWriterInputPixelBufferAdaptor: # DONE
         properties:
             'sourcePixelBufferAttributes':
@@ -654,22 +663,27 @@ classes:
                 name: "getRecommendedVideoSettings"
                 return_type: "NSDictionary<NSString, ?>"
     AVCaptureVideoPreviewLayer: # DONE
+        properties:
+            'videoGravity':
+                type: AVLayerVideoGravity
         methods:
+            '-initWithSessionWithNoConnection:':
+                exclude: true
             '-initWithSession:':
-                name: "init"
+                name: init
             '-captureDevicePointOfInterestForPoint:':
-                name: "captureDevicePointOfInterest"
+                name: captureDevicePointOfInterest
             '-pointForCaptureDevicePointOfInterest:':
-                name: "getDevicePointOfInterest"
+                name: getDevicePointOfInterest
             '-metadataOutputRectOfInterestForRect:':
-                name: "getRectOfInterestInLayerCoordinates"
+                name: getRectOfInterestInLayerCoordinates
             '-rectForMetadataOutputRectOfInterest:':
-                name: "getRectOfInterestInMetadataOutputCoordinates"
+                name: getRectOfInterestInMetadataOutputCoordinates
             '-transformedMetadataObjectForMetadataObject:':
-                name: "getTransformedMetadataObject"
+                name: getTransformedMetadataObject
             '+layerWithSession:':
-                name: "create"
-                return_type: "AVCaptureVideoPreviewLayer"
+                name: create
+                return_type: AVCaptureVideoPreviewLayer
     AVComposition: # DONE
         properties:
             'tracks':
@@ -1079,9 +1093,12 @@ classes:
             '-requestNotificationOfMediaDataChangeWithAdvanceInterval:':
                 name: "requestNotificationOfMediaDataChange"
     AVPlayerLayer: # DONE
+        properties:
+            'videoGravity':
+                type: AVLayerVideoGravity
         methods:
             '+playerLayerWithPlayer:':
-                name: "create"
+                name: create
     AVPlayerMediaSelectionCriteria: # DONE
         properties:
             'preferredLanguages':
@@ -1090,7 +1107,7 @@ classes:
                 type: "NSArray<NSString>"
         methods:
             '-initWithPreferredLanguages:preferredMediaCharacteristics:':
-                name: "init"
+                name: init
                 parameters:
                     preferredLanguages:
                         type: "NSArray<NSString>"
@@ -1238,10 +1255,13 @@ classes:
             '-getCropRectangleRampForTime:startCropRectangle:endCropRectangle:timeRange:':
                 name: "getCropRectangleRamp" 
     AVVideoCompositionRenderContext: {} # DONE
-
+    
     # Structs
     AVPixelAspectRatio: {}
     AVEdgeWidths: {}
+    AVCaptureWhiteBalanceGains: {}
+    AVCaptureWhiteBalanceChromaticityValues: {}
+    AVCaptureWhiteBalanceTemperatureAndTintValues: {}
 
 protocols:
     AVAssetResourceLoaderDelegate: # DONE
@@ -1387,6 +1407,13 @@ functions:
         name: "Function__#{g[0]}"
 
 values:
+    # AVLayer
+    AVLayerVideoGravity(.*):
+        class: AVLayerVideoGravity
+        name: '#{g[0]}Value'
+        type: NSString
+        visibility: protected
+
     AVFormat(.*)Key:
         class: AVFoundation
         name: "AVFormat#{g[0]}Key"
@@ -1453,10 +1480,6 @@ values:
     AVCoreAnimation(BeginTimeAtZero):
         class: AVFoundation
         name: "AVCoreAnimation#{g[0]}"
-        
-    AVLayerVideoGravityResize(.*):
-        class: AVFoundation
-        name: "AVLayerVideoGravityResize#{g[0]}"
         
     AVURLAsset(.*)Key:
         class: AVFoundation

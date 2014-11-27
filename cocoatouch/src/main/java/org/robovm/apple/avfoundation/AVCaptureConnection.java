@@ -54,6 +54,14 @@ import org.robovm.apple.mediatoolbox.*;
     /*<constructors>*/
     public AVCaptureConnection() {}
     protected AVCaptureConnection(SkipInit skipInit) { super(skipInit); }
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    public AVCaptureConnection(NSArray<?> ports, AVCaptureOutput output) { super((SkipInit) null); initObject(initWithInputPorts$output$(ports, output)); }
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    public AVCaptureConnection(AVCaptureInputPort port, AVCaptureVideoPreviewLayer layer) { super((SkipInit) null); initObject(initWithInputPort$videoPreviewLayer$(port, layer)); }
     /*</constructors>*/
     /*<properties>*/
     @Property(selector = "inputPorts")
@@ -153,28 +161,68 @@ import org.robovm.apple.mediatoolbox.*;
     @Property(selector = "setVideoScaleAndCropFactor:")
     public native void setVideoScaleAndCropFactor(@MachineSizedFloat double v);
     /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @Property(selector = "preferredVideoStabilizationMode")
+    public native AVCaptureVideoStabilizationMode getPreferredVideoStabilizationMode();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @Property(selector = "setPreferredVideoStabilizationMode:")
+    public native void setPreferredVideoStabilizationMode(AVCaptureVideoStabilizationMode v);
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @Property(selector = "activeVideoStabilizationMode")
+    public native AVCaptureVideoStabilizationMode getActiveVideoStabilizationMode();
+    /**
      * @since Available in iOS 6.0 and later.
      */
     @Property(selector = "isVideoStabilizationSupported")
     public native boolean isSupportsVideoStabilization();
     /**
      * @since Available in iOS 6.0 and later.
+     * @deprecated Deprecated in iOS 8.0.
      */
+    @Deprecated
     @Property(selector = "isVideoStabilizationEnabled")
     public native boolean isVideoStabilizationEnabled();
     /**
      * @since Available in iOS 6.0 and later.
+     * @deprecated Deprecated in iOS 8.0.
      */
+    @Deprecated
     @Property(selector = "enablesVideoStabilizationWhenAvailable")
     public native boolean isEnablesVideoStabilizationWhenAvailable();
     /**
      * @since Available in iOS 6.0 and later.
+     * @deprecated Deprecated in iOS 8.0.
      */
+    @Deprecated
     @Property(selector = "setEnablesVideoStabilizationWhenAvailable:")
     public native void setEnablesVideoStabilizationWhenAvailable(boolean v);
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
-    
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @Method(selector = "initWithInputPorts:output:")
+    protected native @Pointer long initWithInputPorts$output$(NSArray<?> ports, AVCaptureOutput output);
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @Method(selector = "initWithInputPort:videoPreviewLayer:")
+    protected native @Pointer long initWithInputPort$videoPreviewLayer$(AVCaptureInputPort port, AVCaptureVideoPreviewLayer layer);
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @Method(selector = "connectionWithInputPorts:output:")
+    public static native AVCaptureConnection connectionWithInputPorts$output$(NSArray<?> ports, AVCaptureOutput output);
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @Method(selector = "connectionWithInputPort:videoPreviewLayer:")
+    public static native AVCaptureConnection connectionWithInputPort$videoPreviewLayer$(AVCaptureInputPort port, AVCaptureVideoPreviewLayer layer);
     /*</methods>*/
 }

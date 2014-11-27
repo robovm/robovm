@@ -41,30 +41,31 @@ import org.robovm.apple.mediatoolbox.*;
 /*<javadoc>*/
 
 /*</javadoc>*/
-/*<annotations>*/@Marshaler(ValuedEnum.AsMachineSizedSIntMarshaler.class)/*</annotations>*/
-public enum /*<name>*/AVPlayerItemStatus/*</name>*/ implements ValuedEnum {
-    /*<values>*/
-    Unknown(0L),
-    ReadyToPlay(1L),
-    Failed(2L);
-    /*</values>*/
+/*<annotations>*//*</annotations>*/
+/*<visibility>*/public/*</visibility>*/ class /*<name>*/AVCaptureWhiteBalanceGains/*</name>*/ 
+    extends /*<extends>*/Struct<AVCaptureWhiteBalanceGains>/*</extends>*/ 
+    /*<implements>*//*</implements>*/ {
 
+    /*<ptr>*/public static class AVCaptureWhiteBalanceGainsPtr extends Ptr<AVCaptureWhiteBalanceGains, AVCaptureWhiteBalanceGainsPtr> {}/*</ptr>*/
     /*<bind>*/
     /*</bind>*/
     /*<constants>*//*</constants>*/
-    /*<methods>*//*</methods>*/
-
-    private final long n;
-
-    private /*<name>*/AVPlayerItemStatus/*</name>*/(long n) { this.n = n; }
-    public long value() { return n; }
-    public static /*<name>*/AVPlayerItemStatus/*</name>*/ valueOf(long n) {
-        for (/*<name>*/AVPlayerItemStatus/*</name>*/ v : values()) {
-            if (v.n == n) {
-                return v;
-            }
-        }
-        throw new IllegalArgumentException("No constant with value " + n + " found in " 
-            + /*<name>*/AVPlayerItemStatus/*</name>*/.class.getName());
+    /*<constructors>*/
+    public AVCaptureWhiteBalanceGains() {}
+    public AVCaptureWhiteBalanceGains(float redGain, float greenGain, float blueGain) {
+        this.redGain(redGain);
+        this.greenGain(greenGain);
+        this.blueGain(blueGain);
     }
+    /*</constructors>*/
+    /*<properties>*//*</properties>*/
+    /*<members>*/
+    @StructMember(0) public native float redGain();
+    @StructMember(0) public native AVCaptureWhiteBalanceGains redGain(float redGain);
+    @StructMember(1) public native float greenGain();
+    @StructMember(1) public native AVCaptureWhiteBalanceGains greenGain(float greenGain);
+    @StructMember(2) public native float blueGain();
+    @StructMember(2) public native AVCaptureWhiteBalanceGains blueGain(float blueGain);
+    /*</members>*/
+    /*<methods>*//*</methods>*/
 }

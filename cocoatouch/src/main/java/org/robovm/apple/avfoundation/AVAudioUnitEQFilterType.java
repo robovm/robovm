@@ -39,14 +39,24 @@ import org.robovm.apple.mediatoolbox.*;
 /*</imports>*/
 
 /*<javadoc>*/
-
+/**
+ * @since Available in iOS 8.0 and later.
+ */
 /*</javadoc>*/
 /*<annotations>*/@Marshaler(ValuedEnum.AsMachineSizedSIntMarshaler.class)/*</annotations>*/
-public enum /*<name>*/AVPlayerItemStatus/*</name>*/ implements ValuedEnum {
+public enum /*<name>*/AVAudioUnitEQFilterType/*</name>*/ implements ValuedEnum {
     /*<values>*/
-    Unknown(0L),
-    ReadyToPlay(1L),
-    Failed(2L);
+    Parametric(0L),
+    LowPass(1L),
+    HighPass(2L),
+    ResonantLowPass(3L),
+    ResonantHighPass(4L),
+    BandPass(5L),
+    BandStop(6L),
+    LowShelf(7L),
+    HighShelf(8L),
+    ResonantLowShelf(9L),
+    ResonantHighShelf(10L);
     /*</values>*/
 
     /*<bind>*/
@@ -56,15 +66,15 @@ public enum /*<name>*/AVPlayerItemStatus/*</name>*/ implements ValuedEnum {
 
     private final long n;
 
-    private /*<name>*/AVPlayerItemStatus/*</name>*/(long n) { this.n = n; }
+    private /*<name>*/AVAudioUnitEQFilterType/*</name>*/(long n) { this.n = n; }
     public long value() { return n; }
-    public static /*<name>*/AVPlayerItemStatus/*</name>*/ valueOf(long n) {
-        for (/*<name>*/AVPlayerItemStatus/*</name>*/ v : values()) {
+    public static /*<name>*/AVAudioUnitEQFilterType/*</name>*/ valueOf(long n) {
+        for (/*<name>*/AVAudioUnitEQFilterType/*</name>*/ v : values()) {
             if (v.n == n) {
                 return v;
             }
         }
         throw new IllegalArgumentException("No constant with value " + n + " found in " 
-            + /*<name>*/AVPlayerItemStatus/*</name>*/.class.getName());
+            + /*<name>*/AVAudioUnitEQFilterType/*</name>*/.class.getName());
     }
 }

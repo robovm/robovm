@@ -39,14 +39,17 @@ import org.robovm.apple.mediatoolbox.*;
 /*</imports>*/
 
 /*<javadoc>*/
-
+/**
+ * @since Available in iOS 8.0 and later.
+ */
 /*</javadoc>*/
-/*<annotations>*/@Marshaler(ValuedEnum.AsMachineSizedSIntMarshaler.class)/*</annotations>*/
-public enum /*<name>*/AVPlayerItemStatus/*</name>*/ implements ValuedEnum {
+/*<annotations>*/@Marshaler(Bits.AsMachineSizedIntMarshaler.class)/*</annotations>*/
+public final class /*<name>*/AVAudioPlayerNodeBufferOptions/*</name>*/ extends Bits</*<name>*/AVAudioPlayerNodeBufferOptions/*</name>*/> {
     /*<values>*/
-    Unknown(0L),
-    ReadyToPlay(1L),
-    Failed(2L);
+    public static final AVAudioPlayerNodeBufferOptions None = new AVAudioPlayerNodeBufferOptions(0L);
+    public static final AVAudioPlayerNodeBufferOptions Loops = new AVAudioPlayerNodeBufferOptions(1L);
+    public static final AVAudioPlayerNodeBufferOptions Interrupts = new AVAudioPlayerNodeBufferOptions(2L);
+    public static final AVAudioPlayerNodeBufferOptions InterruptsAtLoop = new AVAudioPlayerNodeBufferOptions(4L);
     /*</values>*/
 
     /*<bind>*/
@@ -54,17 +57,17 @@ public enum /*<name>*/AVPlayerItemStatus/*</name>*/ implements ValuedEnum {
     /*<constants>*//*</constants>*/
     /*<methods>*//*</methods>*/
 
-    private final long n;
+    private static final /*<name>*/AVAudioPlayerNodeBufferOptions/*</name>*/[] values = _values(/*<name>*/AVAudioPlayerNodeBufferOptions/*</name>*/.class);
 
-    private /*<name>*/AVPlayerItemStatus/*</name>*/(long n) { this.n = n; }
-    public long value() { return n; }
-    public static /*<name>*/AVPlayerItemStatus/*</name>*/ valueOf(long n) {
-        for (/*<name>*/AVPlayerItemStatus/*</name>*/ v : values()) {
-            if (v.n == n) {
-                return v;
-            }
-        }
-        throw new IllegalArgumentException("No constant with value " + n + " found in " 
-            + /*<name>*/AVPlayerItemStatus/*</name>*/.class.getName());
+    public /*<name>*/AVAudioPlayerNodeBufferOptions/*</name>*/(long value) { super(value); }
+    private /*<name>*/AVAudioPlayerNodeBufferOptions/*</name>*/(long value, long mask) { super(value, mask); }
+    protected /*<name>*/AVAudioPlayerNodeBufferOptions/*</name>*/ wrap(long value, long mask) {
+        return new /*<name>*/AVAudioPlayerNodeBufferOptions/*</name>*/(value, mask);
+    }
+    protected /*<name>*/AVAudioPlayerNodeBufferOptions/*</name>*/[] _values() {
+        return values;
+    }
+    public static /*<name>*/AVAudioPlayerNodeBufferOptions/*</name>*/[] values() {
+        return values.clone();
     }
 }

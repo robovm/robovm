@@ -58,11 +58,18 @@ import org.robovm.apple.mediatoolbox.*;
     void didFinishRecording(AVAudioRecorder recorder, boolean flag);
     @Method(selector = "audioRecorderEncodeErrorDidOccur:error:")
     void encodeErrorDidOccur(AVAudioRecorder recorder, NSError error);
+    /**
+     * @since Available in iOS 2.2 and later.
+     * @deprecated Deprecated in iOS 8.0.
+     */
+    @Deprecated
     @Method(selector = "audioRecorderBeginInterruption:")
     void beginInterruption(AVAudioRecorder recorder);
     /**
      * @since Available in iOS 6.0 and later.
+     * @deprecated Deprecated in iOS 8.0.
      */
+    @Deprecated
     @Method(selector = "audioRecorderEndInterruption:withOptions:")
     void endInterruptionWithOptions(AVAudioRecorder recorder, @MachineSizedUInt long flags);
     /**

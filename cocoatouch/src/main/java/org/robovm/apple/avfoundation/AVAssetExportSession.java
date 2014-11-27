@@ -136,6 +136,26 @@ import org.robovm.apple.mediatoolbox.*;
     public native boolean isShouldOptimizeForNetworkUse();
     @Property(selector = "setShouldOptimizeForNetworkUse:")
     public native void setShouldOptimizeForNetworkUse(boolean v);
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @Property(selector = "canPerformMultiplePassesOverSourceMediaData")
+    public native boolean isCanPerformMultiplePassesOverSourceMediaData();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @Property(selector = "setCanPerformMultiplePassesOverSourceMediaData:")
+    public native void setCanPerformMultiplePassesOverSourceMediaData(boolean v);
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @Property(selector = "directoryForTemporaryFiles")
+    public native NSURL getDirectoryForTemporaryFiles();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @Property(selector = "setDirectoryForTemporaryFiles:")
+    public native void setDirectoryForTemporaryFiles(NSURL v);
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/

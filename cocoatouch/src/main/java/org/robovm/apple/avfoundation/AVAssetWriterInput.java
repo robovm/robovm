@@ -144,6 +144,56 @@ import org.robovm.apple.mediatoolbox.*;
      */
     @Property(selector = "setMediaTimeScale:")
     public native void setMediaTimeScale(int v);
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @Property(selector = "preferredMediaChunkDuration")
+    public native @ByVal CMTime getPreferredMediaChunkDuration();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @Property(selector = "setPreferredMediaChunkDuration:")
+    public native void setPreferredMediaChunkDuration(@ByVal CMTime v);
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @Property(selector = "preferredMediaChunkAlignment")
+    public native @MachineSizedSInt long getPreferredMediaChunkAlignment();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @Property(selector = "setPreferredMediaChunkAlignment:")
+    public native void setPreferredMediaChunkAlignment(@MachineSizedSInt long v);
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @Property(selector = "sampleReferenceBaseURL")
+    public native NSURL getSampleReferenceBaseURL();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @Property(selector = "setSampleReferenceBaseURL:")
+    public native void setSampleReferenceBaseURL(NSURL v);
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @Property(selector = "performsMultiPassEncodingIfSupported")
+    public native boolean isPerformsMultiPassEncodingIfSupported();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @Property(selector = "setPerformsMultiPassEncodingIfSupported:")
+    public native void setPerformsMultiPassEncodingIfSupported(boolean v);
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @Property(selector = "canPerformMultiplePasses")
+    public native boolean isCanPerformMultiplePasses();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @Property(selector = "currentPassDescription")
+    public native AVAssetWriterInputPassDescription getCurrentPassDescription();
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
@@ -177,5 +227,15 @@ import org.robovm.apple.mediatoolbox.*;
      */
     @Method(selector = "addTrackAssociationWithTrackOfInput:type:")
     public native void addTrackAssociation(AVAssetWriterInput input, String trackAssociationType);
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @Method(selector = "respondToEachPassDescriptionOnQueue:usingBlock:")
+    public native void respondToEachPassDescriptionOnQueue$usingBlock$(DispatchQueue queue, @Block Runnable block);
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @Method(selector = "markCurrentPassAsFinished")
+    public native void markCurrentPassAsFinished();
     /*</methods>*/
 }

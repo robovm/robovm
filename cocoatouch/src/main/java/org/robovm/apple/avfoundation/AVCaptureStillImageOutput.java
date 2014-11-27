@@ -85,10 +85,25 @@ import org.robovm.apple.mediatoolbox.*;
     @Property(selector = "isStillImageStabilizationActive")
     public native boolean isStillImageStabilizationActive();
     /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @Property(selector = "isHighResolutionStillImageOutputEnabled")
+    public native boolean isHighResolutionStillImageOutputEnabled();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @Property(selector = "setHighResolutionStillImageOutputEnabled:")
+    public native void setHighResolutionStillImageOutputEnabled(boolean v);
+    /**
      * @since Available in iOS 5.0 and later.
      */
     @Property(selector = "isCapturingStillImage")
     public native boolean isCapturingStillImage();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @Property(selector = "maxBracketedCaptureStillImageCount")
+    public native @MachineSizedUInt long getMaxBracketedCaptureStillImageCount();
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
@@ -96,5 +111,15 @@ import org.robovm.apple.mediatoolbox.*;
     public native void captureStillImageAsynchronously(AVCaptureConnection connection, @Block VoidBlock2<CMSampleBuffer, NSError> handler);
     @Method(selector = "jpegStillImageNSDataRepresentation:")
     public static native NSData getJPEGStillImageNSDataRepresentation(CMSampleBuffer jpegSampleBuffer);
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @Method(selector = "prepareToCaptureStillImageBracketFromConnection:withSettingsArray:completionHandler:")
+    public native void prepareToCaptureStillImageBracketFromConnection$withSettingsArray$completionHandler$(AVCaptureConnection connection, NSArray<?> settings, ObjCBlock handler);
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @Method(selector = "captureStillImageBracketAsynchronouslyFromConnection:withSettingsArray:completionHandler:")
+    public native void captureStillImageBracketAsynchronouslyFromConnection$withSettingsArray$completionHandler$(AVCaptureConnection connection, NSArray<?> settings, ObjCBlock handler);
     /*</methods>*/
 }

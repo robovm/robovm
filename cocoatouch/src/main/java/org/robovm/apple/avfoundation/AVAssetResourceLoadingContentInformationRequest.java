@@ -68,6 +68,16 @@ import org.robovm.apple.mediatoolbox.*;
     public native boolean isByteRangeAccessSupported();
     @Property(selector = "setByteRangeAccessSupported:")
     public native void setByteRangeAccessSupported(boolean v);
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @Property(selector = "renewalDate")
+    public native NSDate getRenewalDate();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @Property(selector = "setRenewalDate:")
+    public native void setRenewalDate(NSDate v);
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/

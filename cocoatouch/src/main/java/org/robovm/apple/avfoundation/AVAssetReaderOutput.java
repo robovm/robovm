@@ -68,10 +68,30 @@ import org.robovm.apple.mediatoolbox.*;
      */
     @Property(selector = "setAlwaysCopiesSampleData:")
     public native void setAlwaysCopiesSampleData(boolean v);
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @Property(selector = "supportsRandomAccess")
+    public native boolean isSupportsRandomAccess();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @Property(selector = "setSupportsRandomAccess:")
+    public native void setSupportsRandomAccess(boolean v);
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
     @Method(selector = "copyNextSampleBuffer")
     public native CMSampleBuffer copyNextSampleBuffer();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @Method(selector = "resetForReadingTimeRanges:")
+    public native void resetForReadingTimeRanges$(NSArray<?> timeRanges);
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @Method(selector = "markConfigurationAsFinal")
+    public native void markConfigurationAsFinal();
     /*</methods>*/
 }

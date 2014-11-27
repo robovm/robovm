@@ -98,10 +98,20 @@ import org.robovm.apple.mediatoolbox.*;
      */
     @Property(selector = "minFrameDuration")
     public native @ByVal CMTime getMinFrameDuration();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @Property(selector = "requiresFrameReordering")
+    public native boolean isRequiresFrameReordering();
     @Property(selector = "segments")
     public native NSArray<AVAssetTrackSegment> getSegments();
     @Property(selector = "commonMetadata")
     public native NSArray<AVMetadataItem> getCommonMetadata();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @Property(selector = "metadata")
+    public native NSArray<?> getMetadata();
     @Property(selector = "availableMetadataFormats")
     public native NSArray<NSString> getAvailableMetadataFormats();
     /**

@@ -55,6 +55,10 @@ import org.robovm.apple.mediatoolbox.*;
     public AVTimedMetadataGroup() {}
     protected AVTimedMetadataGroup(SkipInit skipInit) { super(skipInit); }
     public AVTimedMetadataGroup(NSArray<AVMetadataItem> items, @ByVal CMTimeRange timeRange) { super((SkipInit) null); initObject(init(items, timeRange)); }
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    public AVTimedMetadataGroup(CMSampleBuffer sampleBuffer) { super((SkipInit) null); initObject(initWithSampleBuffer$(sampleBuffer)); }
     /*</constructors>*/
     /*<properties>*/
     @Property(selector = "timeRange")
@@ -66,5 +70,15 @@ import org.robovm.apple.mediatoolbox.*;
     /*<methods>*/
     @Method(selector = "initWithItems:timeRange:")
     protected native @Pointer long init(NSArray<AVMetadataItem> items, @ByVal CMTimeRange timeRange);
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @Method(selector = "initWithSampleBuffer:")
+    protected native @Pointer long initWithSampleBuffer$(CMSampleBuffer sampleBuffer);
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @Method(selector = "copyFormatDescription")
+    public native CMFormatDescription copyFormatDescription();
     /*</methods>*/
 }

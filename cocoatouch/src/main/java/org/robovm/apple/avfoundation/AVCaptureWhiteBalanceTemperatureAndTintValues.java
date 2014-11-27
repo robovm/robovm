@@ -41,30 +41,28 @@ import org.robovm.apple.mediatoolbox.*;
 /*<javadoc>*/
 
 /*</javadoc>*/
-/*<annotations>*/@Marshaler(ValuedEnum.AsMachineSizedSIntMarshaler.class)/*</annotations>*/
-public enum /*<name>*/AVPlayerItemStatus/*</name>*/ implements ValuedEnum {
-    /*<values>*/
-    Unknown(0L),
-    ReadyToPlay(1L),
-    Failed(2L);
-    /*</values>*/
+/*<annotations>*//*</annotations>*/
+/*<visibility>*/public/*</visibility>*/ class /*<name>*/AVCaptureWhiteBalanceTemperatureAndTintValues/*</name>*/ 
+    extends /*<extends>*/Struct<AVCaptureWhiteBalanceTemperatureAndTintValues>/*</extends>*/ 
+    /*<implements>*//*</implements>*/ {
 
+    /*<ptr>*/public static class AVCaptureWhiteBalanceTemperatureAndTintValuesPtr extends Ptr<AVCaptureWhiteBalanceTemperatureAndTintValues, AVCaptureWhiteBalanceTemperatureAndTintValuesPtr> {}/*</ptr>*/
     /*<bind>*/
     /*</bind>*/
     /*<constants>*//*</constants>*/
-    /*<methods>*//*</methods>*/
-
-    private final long n;
-
-    private /*<name>*/AVPlayerItemStatus/*</name>*/(long n) { this.n = n; }
-    public long value() { return n; }
-    public static /*<name>*/AVPlayerItemStatus/*</name>*/ valueOf(long n) {
-        for (/*<name>*/AVPlayerItemStatus/*</name>*/ v : values()) {
-            if (v.n == n) {
-                return v;
-            }
-        }
-        throw new IllegalArgumentException("No constant with value " + n + " found in " 
-            + /*<name>*/AVPlayerItemStatus/*</name>*/.class.getName());
+    /*<constructors>*/
+    public AVCaptureWhiteBalanceTemperatureAndTintValues() {}
+    public AVCaptureWhiteBalanceTemperatureAndTintValues(float temperature, float tint) {
+        this.temperature(temperature);
+        this.tint(tint);
     }
+    /*</constructors>*/
+    /*<properties>*//*</properties>*/
+    /*<members>*/
+    @StructMember(0) public native float temperature();
+    @StructMember(0) public native AVCaptureWhiteBalanceTemperatureAndTintValues temperature(float temperature);
+    @StructMember(1) public native float tint();
+    @StructMember(1) public native AVCaptureWhiteBalanceTemperatureAndTintValues tint(float tint);
+    /*</members>*/
+    /*<methods>*//*</methods>*/
 }

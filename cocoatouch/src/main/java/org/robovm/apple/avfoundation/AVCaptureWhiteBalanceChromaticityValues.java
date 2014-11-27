@@ -41,30 +41,28 @@ import org.robovm.apple.mediatoolbox.*;
 /*<javadoc>*/
 
 /*</javadoc>*/
-/*<annotations>*/@Marshaler(ValuedEnum.AsMachineSizedSIntMarshaler.class)/*</annotations>*/
-public enum /*<name>*/AVPlayerItemStatus/*</name>*/ implements ValuedEnum {
-    /*<values>*/
-    Unknown(0L),
-    ReadyToPlay(1L),
-    Failed(2L);
-    /*</values>*/
+/*<annotations>*//*</annotations>*/
+/*<visibility>*/public/*</visibility>*/ class /*<name>*/AVCaptureWhiteBalanceChromaticityValues/*</name>*/ 
+    extends /*<extends>*/Struct<AVCaptureWhiteBalanceChromaticityValues>/*</extends>*/ 
+    /*<implements>*//*</implements>*/ {
 
+    /*<ptr>*/public static class AVCaptureWhiteBalanceChromaticityValuesPtr extends Ptr<AVCaptureWhiteBalanceChromaticityValues, AVCaptureWhiteBalanceChromaticityValuesPtr> {}/*</ptr>*/
     /*<bind>*/
     /*</bind>*/
     /*<constants>*//*</constants>*/
-    /*<methods>*//*</methods>*/
-
-    private final long n;
-
-    private /*<name>*/AVPlayerItemStatus/*</name>*/(long n) { this.n = n; }
-    public long value() { return n; }
-    public static /*<name>*/AVPlayerItemStatus/*</name>*/ valueOf(long n) {
-        for (/*<name>*/AVPlayerItemStatus/*</name>*/ v : values()) {
-            if (v.n == n) {
-                return v;
-            }
-        }
-        throw new IllegalArgumentException("No constant with value " + n + " found in " 
-            + /*<name>*/AVPlayerItemStatus/*</name>*/.class.getName());
+    /*<constructors>*/
+    public AVCaptureWhiteBalanceChromaticityValues() {}
+    public AVCaptureWhiteBalanceChromaticityValues(float x, float y) {
+        this.x(x);
+        this.y(y);
     }
+    /*</constructors>*/
+    /*<properties>*//*</properties>*/
+    /*<members>*/
+    @StructMember(0) public native float x();
+    @StructMember(0) public native AVCaptureWhiteBalanceChromaticityValues x(float x);
+    @StructMember(1) public native float y();
+    @StructMember(1) public native AVCaptureWhiteBalanceChromaticityValues y(float y);
+    /*</members>*/
+    /*<methods>*//*</methods>*/
 }

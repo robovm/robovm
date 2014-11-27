@@ -53,6 +53,11 @@ import org.robovm.apple.mediatoolbox.*;
     /*<properties>*//*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @GlobalValue(symbol="AVAudioEngineConfigurationChangeNotification", optional=true)
+    public static native String Value__AVAudioEngineConfigurationChangeNotification();
     @GlobalValue(symbol="AVFormatIDKey", optional=true)
     public static native String AVFormatIDKey();
     @GlobalValue(symbol="AVSampleRateKey", optional=true)
@@ -154,6 +159,11 @@ import org.robovm.apple.mediatoolbox.*;
     @GlobalValue(symbol="AVAudioSessionMediaServicesWereResetNotification", optional=true)
     public static native String AVAudioSessionMediaServicesWereResetNotification();
     /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @GlobalValue(symbol="AVAudioSessionSilenceSecondaryAudioHintNotification", optional=true)
+    public static native String AVAudioSessionSilenceSecondaryAudioHintNotification();
+    /**
      * @since Available in iOS 6.0 and later.
      */
     @GlobalValue(symbol="AVAudioSessionInterruptionTypeKey", optional=true)
@@ -173,6 +183,11 @@ import org.robovm.apple.mediatoolbox.*;
      */
     @GlobalValue(symbol="AVAudioSessionRouteChangePreviousRouteKey", optional=true)
     public static native String AVAudioSessionRouteChangePreviousRouteKey();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @GlobalValue(symbol="AVAudioSessionSilenceSecondaryAudioHintTypeKey", optional=true)
+    public static native String AVAudioSessionSilenceSecondaryAudioHintTypeKey();
     @GlobalValue(symbol="AVAudioSessionCategoryAmbient", optional=true)
     public static native String AVAudioSessionCategoryAmbient();
     @GlobalValue(symbol="AVAudioSessionCategorySoloAmbient", optional=true)
@@ -326,6 +341,16 @@ import org.robovm.apple.mediatoolbox.*;
     @GlobalValue(symbol="AVAudioSessionOrientationBack", optional=true)
     public static native String AVAudioSessionOrientationBack();
     /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @GlobalValue(symbol="AVAudioSessionOrientationLeft", optional=true)
+    public static native String AVAudioSessionOrientationLeft();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @GlobalValue(symbol="AVAudioSessionOrientationRight", optional=true)
+    public static native String AVAudioSessionOrientationRight();
+    /**
      * @since Available in iOS 7.0 and later.
      */
     @GlobalValue(symbol="AVAudioSessionPolarPatternOmnidirectional", optional=true)
@@ -348,21 +373,6 @@ import org.robovm.apple.mediatoolbox.*;
     /**
      * @since Available in iOS 4.0 and later.
      */
-    @GlobalValue(symbol="AVLayerVideoGravityResizeAspect", optional=true)
-    public static native String AVLayerVideoGravityResizeAspect();
-    /**
-     * @since Available in iOS 4.0 and later.
-     */
-    @GlobalValue(symbol="AVLayerVideoGravityResizeAspectFill", optional=true)
-    public static native String AVLayerVideoGravityResizeAspectFill();
-    /**
-     * @since Available in iOS 4.0 and later.
-     */
-    @GlobalValue(symbol="AVLayerVideoGravityResize", optional=true)
-    public static native String AVLayerVideoGravityResize();
-    /**
-     * @since Available in iOS 4.0 and later.
-     */
     @GlobalValue(symbol="AVURLAssetPreferPreciseDurationAndTimingKey", optional=true)
     public static native String AVURLAssetPreferPreciseDurationAndTimingKey();
     /**
@@ -370,6 +380,11 @@ import org.robovm.apple.mediatoolbox.*;
      */
     @GlobalValue(symbol="AVURLAssetReferenceRestrictionsKey", optional=true)
     public static native String AVURLAssetReferenceRestrictionsKey();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @GlobalValue(symbol="AVURLAssetHTTPCookiesKey", optional=true)
+    public static native String AVURLAssetHTTPCookiesKey();
     /**
      * @since Available in iOS 4.0 and later.
      */
@@ -456,6 +471,11 @@ import org.robovm.apple.mediatoolbox.*;
     @GlobalValue(symbol="AVTrackAssociationTypeTimecode", optional=true)
     public static native String AVTrackAssociationTypeTimecode();
     /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @GlobalValue(symbol="AVTrackAssociationTypeMetadataReferent", optional=true)
+    public static native String AVTrackAssociationTypeMetadataReferent();
+    /**
      * @since Available in iOS 7.0 and later.
      */
     @GlobalValue(symbol="AVAudioTimePitchAlgorithmLowQualityZeroLatency", optional=true)
@@ -492,6 +512,31 @@ import org.robovm.apple.mediatoolbox.*;
     public static native String AVCaptureDeviceSubjectAreaDidChangeNotification();
     @GlobalValue(symbol="AVCaptureMaxAvailableTorchLevel", optional=true)
     public static native float AVCaptureMaxAvailableTorchLevel();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @GlobalValue(symbol="AVCaptureLensPositionCurrent", optional=true)
+    public static native float Value__AVCaptureLensPositionCurrent();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @GlobalValue(symbol="AVCaptureExposureDurationCurrent", optional=true)
+    public static native @ByVal CMTime Value__AVCaptureExposureDurationCurrent();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @GlobalValue(symbol="AVCaptureISOCurrent", optional=true)
+    public static native float Value__AVCaptureISOCurrent();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @GlobalValue(symbol="AVCaptureExposureTargetBiasCurrent", optional=true)
+    public static native float Value__AVCaptureExposureTargetBiasCurrent();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @GlobalValue(symbol="AVCaptureWhiteBalanceGainsCurrent", optional=true)
+    public static native @ByVal AVCaptureWhiteBalanceGains Value__AVCaptureWhiteBalanceGainsCurrent();
     /**
      * @since Available in iOS 4.0 and later.
      */
@@ -622,6 +667,21 @@ import org.robovm.apple.mediatoolbox.*;
      */
     @GlobalValue(symbol="AVErrorMediaSubTypeKey", optional=true)
     public static native String AVErrorMediaSubTypeKey();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @GlobalValue(symbol="AVErrorPresentationTimeStampKey", optional=true)
+    public static native String AVErrorPresentationTimeStampKey();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @GlobalValue(symbol="AVErrorPersistentTrackIDKey", optional=true)
+    public static native String AVErrorPersistentTrackIDKey();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @GlobalValue(symbol="AVErrorFileTypeKey", optional=true)
+    public static native String AVErrorFileTypeKey();
     /**
      * @since Available in iOS 4.0 and later.
      */
@@ -1122,6 +1182,11 @@ import org.robovm.apple.mediatoolbox.*;
      */
     @GlobalValue(symbol="AVMetadataISOUserDataKeyCopyright", optional=true)
     public static native String AVMetadataISOUserDataKeyCopyright();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @GlobalValue(symbol="AVMetadataISOUserDataKeyTaggedCharacteristic", optional=true)
+    public static native String AVMetadataISOUserDataKeyTaggedCharacteristic();
     /**
      * @since Available in iOS 4.0 and later.
      */
@@ -2127,6 +2192,1344 @@ import org.robovm.apple.mediatoolbox.*;
      */
     @GlobalValue(symbol="AVMetadataID3MetadataKeyUserURL", optional=true)
     public static native String AVMetadataID3MetadataKeyUserURL();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @GlobalValue(symbol="AVMetadataKeySpaceIcy", optional=true)
+    public static native String AVMetadataKeySpaceIcy();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @GlobalValue(symbol="AVMetadataIcyMetadataKeyStreamTitle", optional=true)
+    public static native String AVMetadataIcyMetadataKeyStreamTitle();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @GlobalValue(symbol="AVMetadataIcyMetadataKeyStreamURL", optional=true)
+    public static native String AVMetadataIcyMetadataKeyStreamURL();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @GlobalValue(symbol="AVMetadataFormatHLSMetadata", optional=true)
+    public static native String AVMetadataFormatHLSMetadata();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @GlobalValue(symbol="AVMetadataExtraAttributeValueURIKey", optional=true)
+    public static native String AVMetadataExtraAttributeValueURIKey();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @GlobalValue(symbol="AVMetadataExtraAttributeBaseURIKey", optional=true)
+    public static native String AVMetadataExtraAttributeBaseURIKey();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @GlobalValue(symbol="AVMetadataCommonIdentifierTitle", optional=true)
+    public static native String AVMetadataCommonIdentifierTitle();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @GlobalValue(symbol="AVMetadataCommonIdentifierCreator", optional=true)
+    public static native String AVMetadataCommonIdentifierCreator();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @GlobalValue(symbol="AVMetadataCommonIdentifierSubject", optional=true)
+    public static native String AVMetadataCommonIdentifierSubject();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @GlobalValue(symbol="AVMetadataCommonIdentifierDescription", optional=true)
+    public static native String AVMetadataCommonIdentifierDescription();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @GlobalValue(symbol="AVMetadataCommonIdentifierPublisher", optional=true)
+    public static native String AVMetadataCommonIdentifierPublisher();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @GlobalValue(symbol="AVMetadataCommonIdentifierContributor", optional=true)
+    public static native String AVMetadataCommonIdentifierContributor();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @GlobalValue(symbol="AVMetadataCommonIdentifierCreationDate", optional=true)
+    public static native String AVMetadataCommonIdentifierCreationDate();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @GlobalValue(symbol="AVMetadataCommonIdentifierLastModifiedDate", optional=true)
+    public static native String AVMetadataCommonIdentifierLastModifiedDate();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @GlobalValue(symbol="AVMetadataCommonIdentifierType", optional=true)
+    public static native String AVMetadataCommonIdentifierType();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @GlobalValue(symbol="AVMetadataCommonIdentifierFormat", optional=true)
+    public static native String AVMetadataCommonIdentifierFormat();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @GlobalValue(symbol="AVMetadataCommonIdentifierAssetIdentifier", optional=true)
+    public static native String AVMetadataCommonIdentifierAssetIdentifier();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @GlobalValue(symbol="AVMetadataCommonIdentifierSource", optional=true)
+    public static native String AVMetadataCommonIdentifierSource();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @GlobalValue(symbol="AVMetadataCommonIdentifierLanguage", optional=true)
+    public static native String AVMetadataCommonIdentifierLanguage();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @GlobalValue(symbol="AVMetadataCommonIdentifierRelation", optional=true)
+    public static native String AVMetadataCommonIdentifierRelation();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @GlobalValue(symbol="AVMetadataCommonIdentifierLocation", optional=true)
+    public static native String AVMetadataCommonIdentifierLocation();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @GlobalValue(symbol="AVMetadataCommonIdentifierCopyrights", optional=true)
+    public static native String AVMetadataCommonIdentifierCopyrights();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @GlobalValue(symbol="AVMetadataCommonIdentifierAlbumName", optional=true)
+    public static native String AVMetadataCommonIdentifierAlbumName();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @GlobalValue(symbol="AVMetadataCommonIdentifierAuthor", optional=true)
+    public static native String AVMetadataCommonIdentifierAuthor();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @GlobalValue(symbol="AVMetadataCommonIdentifierArtist", optional=true)
+    public static native String AVMetadataCommonIdentifierArtist();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @GlobalValue(symbol="AVMetadataCommonIdentifierArtwork", optional=true)
+    public static native String AVMetadataCommonIdentifierArtwork();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @GlobalValue(symbol="AVMetadataCommonIdentifierMake", optional=true)
+    public static native String AVMetadataCommonIdentifierMake();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @GlobalValue(symbol="AVMetadataCommonIdentifierModel", optional=true)
+    public static native String AVMetadataCommonIdentifierModel();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @GlobalValue(symbol="AVMetadataCommonIdentifierSoftware", optional=true)
+    public static native String AVMetadataCommonIdentifierSoftware();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @GlobalValue(symbol="AVMetadataIdentifierQuickTimeUserDataAlbum", optional=true)
+    public static native String AVMetadataIdentifierQuickTimeUserDataAlbum();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @GlobalValue(symbol="AVMetadataIdentifierQuickTimeUserDataArranger", optional=true)
+    public static native String AVMetadataIdentifierQuickTimeUserDataArranger();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @GlobalValue(symbol="AVMetadataIdentifierQuickTimeUserDataArtist", optional=true)
+    public static native String AVMetadataIdentifierQuickTimeUserDataArtist();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @GlobalValue(symbol="AVMetadataIdentifierQuickTimeUserDataAuthor", optional=true)
+    public static native String AVMetadataIdentifierQuickTimeUserDataAuthor();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @GlobalValue(symbol="AVMetadataIdentifierQuickTimeUserDataChapter", optional=true)
+    public static native String AVMetadataIdentifierQuickTimeUserDataChapter();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @GlobalValue(symbol="AVMetadataIdentifierQuickTimeUserDataComment", optional=true)
+    public static native String AVMetadataIdentifierQuickTimeUserDataComment();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @GlobalValue(symbol="AVMetadataIdentifierQuickTimeUserDataComposer", optional=true)
+    public static native String AVMetadataIdentifierQuickTimeUserDataComposer();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @GlobalValue(symbol="AVMetadataIdentifierQuickTimeUserDataCopyright", optional=true)
+    public static native String AVMetadataIdentifierQuickTimeUserDataCopyright();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @GlobalValue(symbol="AVMetadataIdentifierQuickTimeUserDataCreationDate", optional=true)
+    public static native String AVMetadataIdentifierQuickTimeUserDataCreationDate();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @GlobalValue(symbol="AVMetadataIdentifierQuickTimeUserDataDescription", optional=true)
+    public static native String AVMetadataIdentifierQuickTimeUserDataDescription();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @GlobalValue(symbol="AVMetadataIdentifierQuickTimeUserDataDirector", optional=true)
+    public static native String AVMetadataIdentifierQuickTimeUserDataDirector();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @GlobalValue(symbol="AVMetadataIdentifierQuickTimeUserDataDisclaimer", optional=true)
+    public static native String AVMetadataIdentifierQuickTimeUserDataDisclaimer();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @GlobalValue(symbol="AVMetadataIdentifierQuickTimeUserDataEncodedBy", optional=true)
+    public static native String AVMetadataIdentifierQuickTimeUserDataEncodedBy();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @GlobalValue(symbol="AVMetadataIdentifierQuickTimeUserDataFullName", optional=true)
+    public static native String AVMetadataIdentifierQuickTimeUserDataFullName();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @GlobalValue(symbol="AVMetadataIdentifierQuickTimeUserDataGenre", optional=true)
+    public static native String AVMetadataIdentifierQuickTimeUserDataGenre();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @GlobalValue(symbol="AVMetadataIdentifierQuickTimeUserDataHostComputer", optional=true)
+    public static native String AVMetadataIdentifierQuickTimeUserDataHostComputer();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @GlobalValue(symbol="AVMetadataIdentifierQuickTimeUserDataInformation", optional=true)
+    public static native String AVMetadataIdentifierQuickTimeUserDataInformation();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @GlobalValue(symbol="AVMetadataIdentifierQuickTimeUserDataKeywords", optional=true)
+    public static native String AVMetadataIdentifierQuickTimeUserDataKeywords();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @GlobalValue(symbol="AVMetadataIdentifierQuickTimeUserDataMake", optional=true)
+    public static native String AVMetadataIdentifierQuickTimeUserDataMake();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @GlobalValue(symbol="AVMetadataIdentifierQuickTimeUserDataModel", optional=true)
+    public static native String AVMetadataIdentifierQuickTimeUserDataModel();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @GlobalValue(symbol="AVMetadataIdentifierQuickTimeUserDataOriginalArtist", optional=true)
+    public static native String AVMetadataIdentifierQuickTimeUserDataOriginalArtist();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @GlobalValue(symbol="AVMetadataIdentifierQuickTimeUserDataOriginalFormat", optional=true)
+    public static native String AVMetadataIdentifierQuickTimeUserDataOriginalFormat();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @GlobalValue(symbol="AVMetadataIdentifierQuickTimeUserDataOriginalSource", optional=true)
+    public static native String AVMetadataIdentifierQuickTimeUserDataOriginalSource();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @GlobalValue(symbol="AVMetadataIdentifierQuickTimeUserDataPerformers", optional=true)
+    public static native String AVMetadataIdentifierQuickTimeUserDataPerformers();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @GlobalValue(symbol="AVMetadataIdentifierQuickTimeUserDataProducer", optional=true)
+    public static native String AVMetadataIdentifierQuickTimeUserDataProducer();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @GlobalValue(symbol="AVMetadataIdentifierQuickTimeUserDataPublisher", optional=true)
+    public static native String AVMetadataIdentifierQuickTimeUserDataPublisher();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @GlobalValue(symbol="AVMetadataIdentifierQuickTimeUserDataProduct", optional=true)
+    public static native String AVMetadataIdentifierQuickTimeUserDataProduct();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @GlobalValue(symbol="AVMetadataIdentifierQuickTimeUserDataSoftware", optional=true)
+    public static native String AVMetadataIdentifierQuickTimeUserDataSoftware();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @GlobalValue(symbol="AVMetadataIdentifierQuickTimeUserDataSpecialPlaybackRequirements", optional=true)
+    public static native String AVMetadataIdentifierQuickTimeUserDataSpecialPlaybackRequirements();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @GlobalValue(symbol="AVMetadataIdentifierQuickTimeUserDataTrack", optional=true)
+    public static native String AVMetadataIdentifierQuickTimeUserDataTrack();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @GlobalValue(symbol="AVMetadataIdentifierQuickTimeUserDataWarning", optional=true)
+    public static native String AVMetadataIdentifierQuickTimeUserDataWarning();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @GlobalValue(symbol="AVMetadataIdentifierQuickTimeUserDataWriter", optional=true)
+    public static native String AVMetadataIdentifierQuickTimeUserDataWriter();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @GlobalValue(symbol="AVMetadataIdentifierQuickTimeUserDataURLLink", optional=true)
+    public static native String AVMetadataIdentifierQuickTimeUserDataURLLink();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @GlobalValue(symbol="AVMetadataIdentifierQuickTimeUserDataLocationISO6709", optional=true)
+    public static native String AVMetadataIdentifierQuickTimeUserDataLocationISO6709();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @GlobalValue(symbol="AVMetadataIdentifierQuickTimeUserDataTrackName", optional=true)
+    public static native String AVMetadataIdentifierQuickTimeUserDataTrackName();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @GlobalValue(symbol="AVMetadataIdentifierQuickTimeUserDataCredits", optional=true)
+    public static native String AVMetadataIdentifierQuickTimeUserDataCredits();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @GlobalValue(symbol="AVMetadataIdentifierQuickTimeUserDataPhonogramRights", optional=true)
+    public static native String AVMetadataIdentifierQuickTimeUserDataPhonogramRights();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @GlobalValue(symbol="AVMetadataIdentifierQuickTimeUserDataTaggedCharacteristic", optional=true)
+    public static native String AVMetadataIdentifierQuickTimeUserDataTaggedCharacteristic();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @GlobalValue(symbol="AVMetadataIdentifierISOUserDataCopyright", optional=true)
+    public static native String AVMetadataIdentifierISOUserDataCopyright();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @GlobalValue(symbol="AVMetadataIdentifierISOUserDataTaggedCharacteristic", optional=true)
+    public static native String AVMetadataIdentifierISOUserDataTaggedCharacteristic();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @GlobalValue(symbol="AVMetadataIdentifier3GPUserDataCopyright", optional=true)
+    public static native String AVMetadataIdentifier3GPUserDataCopyright();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @GlobalValue(symbol="AVMetadataIdentifier3GPUserDataAuthor", optional=true)
+    public static native String AVMetadataIdentifier3GPUserDataAuthor();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @GlobalValue(symbol="AVMetadataIdentifier3GPUserDataPerformer", optional=true)
+    public static native String AVMetadataIdentifier3GPUserDataPerformer();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @GlobalValue(symbol="AVMetadataIdentifier3GPUserDataGenre", optional=true)
+    public static native String AVMetadataIdentifier3GPUserDataGenre();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @GlobalValue(symbol="AVMetadataIdentifier3GPUserDataRecordingYear", optional=true)
+    public static native String AVMetadataIdentifier3GPUserDataRecordingYear();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @GlobalValue(symbol="AVMetadataIdentifier3GPUserDataLocation", optional=true)
+    public static native String AVMetadataIdentifier3GPUserDataLocation();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @GlobalValue(symbol="AVMetadataIdentifier3GPUserDataTitle", optional=true)
+    public static native String AVMetadataIdentifier3GPUserDataTitle();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @GlobalValue(symbol="AVMetadataIdentifier3GPUserDataDescription", optional=true)
+    public static native String AVMetadataIdentifier3GPUserDataDescription();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @GlobalValue(symbol="AVMetadataIdentifier3GPUserDataCollection", optional=true)
+    public static native String AVMetadataIdentifier3GPUserDataCollection();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @GlobalValue(symbol="AVMetadataIdentifier3GPUserDataUserRating", optional=true)
+    public static native String AVMetadataIdentifier3GPUserDataUserRating();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @GlobalValue(symbol="AVMetadataIdentifier3GPUserDataThumbnail", optional=true)
+    public static native String AVMetadataIdentifier3GPUserDataThumbnail();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @GlobalValue(symbol="AVMetadataIdentifier3GPUserDataAlbumAndTrack", optional=true)
+    public static native String AVMetadataIdentifier3GPUserDataAlbumAndTrack();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @GlobalValue(symbol="AVMetadataIdentifier3GPUserDataKeywordList", optional=true)
+    public static native String AVMetadataIdentifier3GPUserDataKeywordList();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @GlobalValue(symbol="AVMetadataIdentifier3GPUserDataMediaClassification", optional=true)
+    public static native String AVMetadataIdentifier3GPUserDataMediaClassification();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @GlobalValue(symbol="AVMetadataIdentifier3GPUserDataMediaRating", optional=true)
+    public static native String AVMetadataIdentifier3GPUserDataMediaRating();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @GlobalValue(symbol="AVMetadataIdentifierQuickTimeMetadataAuthor", optional=true)
+    public static native String AVMetadataIdentifierQuickTimeMetadataAuthor();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @GlobalValue(symbol="AVMetadataIdentifierQuickTimeMetadataComment", optional=true)
+    public static native String AVMetadataIdentifierQuickTimeMetadataComment();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @GlobalValue(symbol="AVMetadataIdentifierQuickTimeMetadataCopyright", optional=true)
+    public static native String AVMetadataIdentifierQuickTimeMetadataCopyright();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @GlobalValue(symbol="AVMetadataIdentifierQuickTimeMetadataCreationDate", optional=true)
+    public static native String AVMetadataIdentifierQuickTimeMetadataCreationDate();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @GlobalValue(symbol="AVMetadataIdentifierQuickTimeMetadataDirector", optional=true)
+    public static native String AVMetadataIdentifierQuickTimeMetadataDirector();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @GlobalValue(symbol="AVMetadataIdentifierQuickTimeMetadataDisplayName", optional=true)
+    public static native String AVMetadataIdentifierQuickTimeMetadataDisplayName();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @GlobalValue(symbol="AVMetadataIdentifierQuickTimeMetadataInformation", optional=true)
+    public static native String AVMetadataIdentifierQuickTimeMetadataInformation();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @GlobalValue(symbol="AVMetadataIdentifierQuickTimeMetadataKeywords", optional=true)
+    public static native String AVMetadataIdentifierQuickTimeMetadataKeywords();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @GlobalValue(symbol="AVMetadataIdentifierQuickTimeMetadataProducer", optional=true)
+    public static native String AVMetadataIdentifierQuickTimeMetadataProducer();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @GlobalValue(symbol="AVMetadataIdentifierQuickTimeMetadataPublisher", optional=true)
+    public static native String AVMetadataIdentifierQuickTimeMetadataPublisher();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @GlobalValue(symbol="AVMetadataIdentifierQuickTimeMetadataAlbum", optional=true)
+    public static native String AVMetadataIdentifierQuickTimeMetadataAlbum();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @GlobalValue(symbol="AVMetadataIdentifierQuickTimeMetadataArtist", optional=true)
+    public static native String AVMetadataIdentifierQuickTimeMetadataArtist();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @GlobalValue(symbol="AVMetadataIdentifierQuickTimeMetadataArtwork", optional=true)
+    public static native String AVMetadataIdentifierQuickTimeMetadataArtwork();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @GlobalValue(symbol="AVMetadataIdentifierQuickTimeMetadataDescription", optional=true)
+    public static native String AVMetadataIdentifierQuickTimeMetadataDescription();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @GlobalValue(symbol="AVMetadataIdentifierQuickTimeMetadataSoftware", optional=true)
+    public static native String AVMetadataIdentifierQuickTimeMetadataSoftware();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @GlobalValue(symbol="AVMetadataIdentifierQuickTimeMetadataYear", optional=true)
+    public static native String AVMetadataIdentifierQuickTimeMetadataYear();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @GlobalValue(symbol="AVMetadataIdentifierQuickTimeMetadataGenre", optional=true)
+    public static native String AVMetadataIdentifierQuickTimeMetadataGenre();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @GlobalValue(symbol="AVMetadataIdentifierQuickTimeMetadataiXML", optional=true)
+    public static native String AVMetadataIdentifierQuickTimeMetadataiXML();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @GlobalValue(symbol="AVMetadataIdentifierQuickTimeMetadataLocationISO6709", optional=true)
+    public static native String AVMetadataIdentifierQuickTimeMetadataLocationISO6709();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @GlobalValue(symbol="AVMetadataIdentifierQuickTimeMetadataMake", optional=true)
+    public static native String AVMetadataIdentifierQuickTimeMetadataMake();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @GlobalValue(symbol="AVMetadataIdentifierQuickTimeMetadataModel", optional=true)
+    public static native String AVMetadataIdentifierQuickTimeMetadataModel();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @GlobalValue(symbol="AVMetadataIdentifierQuickTimeMetadataArranger", optional=true)
+    public static native String AVMetadataIdentifierQuickTimeMetadataArranger();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @GlobalValue(symbol="AVMetadataIdentifierQuickTimeMetadataEncodedBy", optional=true)
+    public static native String AVMetadataIdentifierQuickTimeMetadataEncodedBy();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @GlobalValue(symbol="AVMetadataIdentifierQuickTimeMetadataOriginalArtist", optional=true)
+    public static native String AVMetadataIdentifierQuickTimeMetadataOriginalArtist();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @GlobalValue(symbol="AVMetadataIdentifierQuickTimeMetadataPerformer", optional=true)
+    public static native String AVMetadataIdentifierQuickTimeMetadataPerformer();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @GlobalValue(symbol="AVMetadataIdentifierQuickTimeMetadataComposer", optional=true)
+    public static native String AVMetadataIdentifierQuickTimeMetadataComposer();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @GlobalValue(symbol="AVMetadataIdentifierQuickTimeMetadataCredits", optional=true)
+    public static native String AVMetadataIdentifierQuickTimeMetadataCredits();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @GlobalValue(symbol="AVMetadataIdentifierQuickTimeMetadataPhonogramRights", optional=true)
+    public static native String AVMetadataIdentifierQuickTimeMetadataPhonogramRights();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @GlobalValue(symbol="AVMetadataIdentifierQuickTimeMetadataCameraIdentifier", optional=true)
+    public static native String AVMetadataIdentifierQuickTimeMetadataCameraIdentifier();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @GlobalValue(symbol="AVMetadataIdentifierQuickTimeMetadataCameraFrameReadoutTime", optional=true)
+    public static native String AVMetadataIdentifierQuickTimeMetadataCameraFrameReadoutTime();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @GlobalValue(symbol="AVMetadataIdentifierQuickTimeMetadataTitle", optional=true)
+    public static native String AVMetadataIdentifierQuickTimeMetadataTitle();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @GlobalValue(symbol="AVMetadataIdentifierQuickTimeMetadataCollectionUser", optional=true)
+    public static native String AVMetadataIdentifierQuickTimeMetadataCollectionUser();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @GlobalValue(symbol="AVMetadataIdentifierQuickTimeMetadataRatingUser", optional=true)
+    public static native String AVMetadataIdentifierQuickTimeMetadataRatingUser();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @GlobalValue(symbol="AVMetadataIdentifierQuickTimeMetadataLocationName", optional=true)
+    public static native String AVMetadataIdentifierQuickTimeMetadataLocationName();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @GlobalValue(symbol="AVMetadataIdentifierQuickTimeMetadataLocationBody", optional=true)
+    public static native String AVMetadataIdentifierQuickTimeMetadataLocationBody();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @GlobalValue(symbol="AVMetadataIdentifierQuickTimeMetadataLocationNote", optional=true)
+    public static native String AVMetadataIdentifierQuickTimeMetadataLocationNote();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @GlobalValue(symbol="AVMetadataIdentifierQuickTimeMetadataLocationRole", optional=true)
+    public static native String AVMetadataIdentifierQuickTimeMetadataLocationRole();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @GlobalValue(symbol="AVMetadataIdentifierQuickTimeMetadataLocationDate", optional=true)
+    public static native String AVMetadataIdentifierQuickTimeMetadataLocationDate();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @GlobalValue(symbol="AVMetadataIdentifierQuickTimeMetadataDirectionFacing", optional=true)
+    public static native String AVMetadataIdentifierQuickTimeMetadataDirectionFacing();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @GlobalValue(symbol="AVMetadataIdentifierQuickTimeMetadataDirectionMotion", optional=true)
+    public static native String AVMetadataIdentifierQuickTimeMetadataDirectionMotion();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @GlobalValue(symbol="AVMetadataIdentifierQuickTimeMetadataPreferredAffineTransform", optional=true)
+    public static native String AVMetadataIdentifierQuickTimeMetadataPreferredAffineTransform();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @GlobalValue(symbol="AVMetadataIdentifieriTunesMetadataAlbum", optional=true)
+    public static native String AVMetadataIdentifieriTunesMetadataAlbum();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @GlobalValue(symbol="AVMetadataIdentifieriTunesMetadataArtist", optional=true)
+    public static native String AVMetadataIdentifieriTunesMetadataArtist();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @GlobalValue(symbol="AVMetadataIdentifieriTunesMetadataUserComment", optional=true)
+    public static native String AVMetadataIdentifieriTunesMetadataUserComment();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @GlobalValue(symbol="AVMetadataIdentifieriTunesMetadataCoverArt", optional=true)
+    public static native String AVMetadataIdentifieriTunesMetadataCoverArt();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @GlobalValue(symbol="AVMetadataIdentifieriTunesMetadataCopyright", optional=true)
+    public static native String AVMetadataIdentifieriTunesMetadataCopyright();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @GlobalValue(symbol="AVMetadataIdentifieriTunesMetadataReleaseDate", optional=true)
+    public static native String AVMetadataIdentifieriTunesMetadataReleaseDate();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @GlobalValue(symbol="AVMetadataIdentifieriTunesMetadataEncodedBy", optional=true)
+    public static native String AVMetadataIdentifieriTunesMetadataEncodedBy();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @GlobalValue(symbol="AVMetadataIdentifieriTunesMetadataPredefinedGenre", optional=true)
+    public static native String AVMetadataIdentifieriTunesMetadataPredefinedGenre();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @GlobalValue(symbol="AVMetadataIdentifieriTunesMetadataUserGenre", optional=true)
+    public static native String AVMetadataIdentifieriTunesMetadataUserGenre();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @GlobalValue(symbol="AVMetadataIdentifieriTunesMetadataSongName", optional=true)
+    public static native String AVMetadataIdentifieriTunesMetadataSongName();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @GlobalValue(symbol="AVMetadataIdentifieriTunesMetadataTrackSubTitle", optional=true)
+    public static native String AVMetadataIdentifieriTunesMetadataTrackSubTitle();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @GlobalValue(symbol="AVMetadataIdentifieriTunesMetadataEncodingTool", optional=true)
+    public static native String AVMetadataIdentifieriTunesMetadataEncodingTool();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @GlobalValue(symbol="AVMetadataIdentifieriTunesMetadataComposer", optional=true)
+    public static native String AVMetadataIdentifieriTunesMetadataComposer();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @GlobalValue(symbol="AVMetadataIdentifieriTunesMetadataAlbumArtist", optional=true)
+    public static native String AVMetadataIdentifieriTunesMetadataAlbumArtist();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @GlobalValue(symbol="AVMetadataIdentifieriTunesMetadataAccountKind", optional=true)
+    public static native String AVMetadataIdentifieriTunesMetadataAccountKind();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @GlobalValue(symbol="AVMetadataIdentifieriTunesMetadataAppleID", optional=true)
+    public static native String AVMetadataIdentifieriTunesMetadataAppleID();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @GlobalValue(symbol="AVMetadataIdentifieriTunesMetadataArtistID", optional=true)
+    public static native String AVMetadataIdentifieriTunesMetadataArtistID();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @GlobalValue(symbol="AVMetadataIdentifieriTunesMetadataSongID", optional=true)
+    public static native String AVMetadataIdentifieriTunesMetadataSongID();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @GlobalValue(symbol="AVMetadataIdentifieriTunesMetadataDiscCompilation", optional=true)
+    public static native String AVMetadataIdentifieriTunesMetadataDiscCompilation();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @GlobalValue(symbol="AVMetadataIdentifieriTunesMetadataDiscNumber", optional=true)
+    public static native String AVMetadataIdentifieriTunesMetadataDiscNumber();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @GlobalValue(symbol="AVMetadataIdentifieriTunesMetadataGenreID", optional=true)
+    public static native String AVMetadataIdentifieriTunesMetadataGenreID();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @GlobalValue(symbol="AVMetadataIdentifieriTunesMetadataGrouping", optional=true)
+    public static native String AVMetadataIdentifieriTunesMetadataGrouping();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @GlobalValue(symbol="AVMetadataIdentifieriTunesMetadataPlaylistID", optional=true)
+    public static native String AVMetadataIdentifieriTunesMetadataPlaylistID();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @GlobalValue(symbol="AVMetadataIdentifieriTunesMetadataContentRating", optional=true)
+    public static native String AVMetadataIdentifieriTunesMetadataContentRating();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @GlobalValue(symbol="AVMetadataIdentifieriTunesMetadataBeatsPerMin", optional=true)
+    public static native String AVMetadataIdentifieriTunesMetadataBeatsPerMin();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @GlobalValue(symbol="AVMetadataIdentifieriTunesMetadataTrackNumber", optional=true)
+    public static native String AVMetadataIdentifieriTunesMetadataTrackNumber();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @GlobalValue(symbol="AVMetadataIdentifieriTunesMetadataArtDirector", optional=true)
+    public static native String AVMetadataIdentifieriTunesMetadataArtDirector();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @GlobalValue(symbol="AVMetadataIdentifieriTunesMetadataArranger", optional=true)
+    public static native String AVMetadataIdentifieriTunesMetadataArranger();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @GlobalValue(symbol="AVMetadataIdentifieriTunesMetadataAuthor", optional=true)
+    public static native String AVMetadataIdentifieriTunesMetadataAuthor();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @GlobalValue(symbol="AVMetadataIdentifieriTunesMetadataLyrics", optional=true)
+    public static native String AVMetadataIdentifieriTunesMetadataLyrics();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @GlobalValue(symbol="AVMetadataIdentifieriTunesMetadataAcknowledgement", optional=true)
+    public static native String AVMetadataIdentifieriTunesMetadataAcknowledgement();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @GlobalValue(symbol="AVMetadataIdentifieriTunesMetadataConductor", optional=true)
+    public static native String AVMetadataIdentifieriTunesMetadataConductor();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @GlobalValue(symbol="AVMetadataIdentifieriTunesMetadataDescription", optional=true)
+    public static native String AVMetadataIdentifieriTunesMetadataDescription();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @GlobalValue(symbol="AVMetadataIdentifieriTunesMetadataDirector", optional=true)
+    public static native String AVMetadataIdentifieriTunesMetadataDirector();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @GlobalValue(symbol="AVMetadataIdentifieriTunesMetadataEQ", optional=true)
+    public static native String AVMetadataIdentifieriTunesMetadataEQ();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @GlobalValue(symbol="AVMetadataIdentifieriTunesMetadataLinerNotes", optional=true)
+    public static native String AVMetadataIdentifieriTunesMetadataLinerNotes();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @GlobalValue(symbol="AVMetadataIdentifieriTunesMetadataRecordCompany", optional=true)
+    public static native String AVMetadataIdentifieriTunesMetadataRecordCompany();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @GlobalValue(symbol="AVMetadataIdentifieriTunesMetadataOriginalArtist", optional=true)
+    public static native String AVMetadataIdentifieriTunesMetadataOriginalArtist();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @GlobalValue(symbol="AVMetadataIdentifieriTunesMetadataPhonogramRights", optional=true)
+    public static native String AVMetadataIdentifieriTunesMetadataPhonogramRights();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @GlobalValue(symbol="AVMetadataIdentifieriTunesMetadataProducer", optional=true)
+    public static native String AVMetadataIdentifieriTunesMetadataProducer();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @GlobalValue(symbol="AVMetadataIdentifieriTunesMetadataPerformer", optional=true)
+    public static native String AVMetadataIdentifieriTunesMetadataPerformer();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @GlobalValue(symbol="AVMetadataIdentifieriTunesMetadataPublisher", optional=true)
+    public static native String AVMetadataIdentifieriTunesMetadataPublisher();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @GlobalValue(symbol="AVMetadataIdentifieriTunesMetadataSoundEngineer", optional=true)
+    public static native String AVMetadataIdentifieriTunesMetadataSoundEngineer();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @GlobalValue(symbol="AVMetadataIdentifieriTunesMetadataSoloist", optional=true)
+    public static native String AVMetadataIdentifieriTunesMetadataSoloist();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @GlobalValue(symbol="AVMetadataIdentifieriTunesMetadataCredits", optional=true)
+    public static native String AVMetadataIdentifieriTunesMetadataCredits();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @GlobalValue(symbol="AVMetadataIdentifieriTunesMetadataThanks", optional=true)
+    public static native String AVMetadataIdentifieriTunesMetadataThanks();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @GlobalValue(symbol="AVMetadataIdentifieriTunesMetadataOnlineExtras", optional=true)
+    public static native String AVMetadataIdentifieriTunesMetadataOnlineExtras();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @GlobalValue(symbol="AVMetadataIdentifieriTunesMetadataExecProducer", optional=true)
+    public static native String AVMetadataIdentifieriTunesMetadataExecProducer();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @GlobalValue(symbol="AVMetadataIdentifierID3MetadataAudioEncryption", optional=true)
+    public static native String AVMetadataIdentifierID3MetadataAudioEncryption();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @GlobalValue(symbol="AVMetadataIdentifierID3MetadataAttachedPicture", optional=true)
+    public static native String AVMetadataIdentifierID3MetadataAttachedPicture();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @GlobalValue(symbol="AVMetadataIdentifierID3MetadataAudioSeekPointIndex", optional=true)
+    public static native String AVMetadataIdentifierID3MetadataAudioSeekPointIndex();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @GlobalValue(symbol="AVMetadataIdentifierID3MetadataComments", optional=true)
+    public static native String AVMetadataIdentifierID3MetadataComments();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @GlobalValue(symbol="AVMetadataIdentifierID3MetadataCommerical", optional=true)
+    public static native String AVMetadataIdentifierID3MetadataCommerical();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @GlobalValue(symbol="AVMetadataIdentifierID3MetadataEncryption", optional=true)
+    public static native String AVMetadataIdentifierID3MetadataEncryption();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @GlobalValue(symbol="AVMetadataIdentifierID3MetadataEqualization", optional=true)
+    public static native String AVMetadataIdentifierID3MetadataEqualization();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @GlobalValue(symbol="AVMetadataIdentifierID3MetadataEqualization2", optional=true)
+    public static native String AVMetadataIdentifierID3MetadataEqualization2();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @GlobalValue(symbol="AVMetadataIdentifierID3MetadataEventTimingCodes", optional=true)
+    public static native String AVMetadataIdentifierID3MetadataEventTimingCodes();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @GlobalValue(symbol="AVMetadataIdentifierID3MetadataGeneralEncapsulatedObject", optional=true)
+    public static native String AVMetadataIdentifierID3MetadataGeneralEncapsulatedObject();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @GlobalValue(symbol="AVMetadataIdentifierID3MetadataGroupIdentifier", optional=true)
+    public static native String AVMetadataIdentifierID3MetadataGroupIdentifier();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @GlobalValue(symbol="AVMetadataIdentifierID3MetadataInvolvedPeopleList_v23", optional=true)
+    public static native String AVMetadataIdentifierID3MetadataInvolvedPeopleList_v23();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @GlobalValue(symbol="AVMetadataIdentifierID3MetadataLink", optional=true)
+    public static native String AVMetadataIdentifierID3MetadataLink();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @GlobalValue(symbol="AVMetadataIdentifierID3MetadataMusicCDIdentifier", optional=true)
+    public static native String AVMetadataIdentifierID3MetadataMusicCDIdentifier();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @GlobalValue(symbol="AVMetadataIdentifierID3MetadataMPEGLocationLookupTable", optional=true)
+    public static native String AVMetadataIdentifierID3MetadataMPEGLocationLookupTable();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @GlobalValue(symbol="AVMetadataIdentifierID3MetadataOwnership", optional=true)
+    public static native String AVMetadataIdentifierID3MetadataOwnership();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @GlobalValue(symbol="AVMetadataIdentifierID3MetadataPrivate", optional=true)
+    public static native String AVMetadataIdentifierID3MetadataPrivate();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @GlobalValue(symbol="AVMetadataIdentifierID3MetadataPlayCounter", optional=true)
+    public static native String AVMetadataIdentifierID3MetadataPlayCounter();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @GlobalValue(symbol="AVMetadataIdentifierID3MetadataPopularimeter", optional=true)
+    public static native String AVMetadataIdentifierID3MetadataPopularimeter();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @GlobalValue(symbol="AVMetadataIdentifierID3MetadataPositionSynchronization", optional=true)
+    public static native String AVMetadataIdentifierID3MetadataPositionSynchronization();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @GlobalValue(symbol="AVMetadataIdentifierID3MetadataRecommendedBufferSize", optional=true)
+    public static native String AVMetadataIdentifierID3MetadataRecommendedBufferSize();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @GlobalValue(symbol="AVMetadataIdentifierID3MetadataRelativeVolumeAdjustment", optional=true)
+    public static native String AVMetadataIdentifierID3MetadataRelativeVolumeAdjustment();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @GlobalValue(symbol="AVMetadataIdentifierID3MetadataRelativeVolumeAdjustment2", optional=true)
+    public static native String AVMetadataIdentifierID3MetadataRelativeVolumeAdjustment2();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @GlobalValue(symbol="AVMetadataIdentifierID3MetadataReverb", optional=true)
+    public static native String AVMetadataIdentifierID3MetadataReverb();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @GlobalValue(symbol="AVMetadataIdentifierID3MetadataSeek", optional=true)
+    public static native String AVMetadataIdentifierID3MetadataSeek();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @GlobalValue(symbol="AVMetadataIdentifierID3MetadataSignature", optional=true)
+    public static native String AVMetadataIdentifierID3MetadataSignature();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @GlobalValue(symbol="AVMetadataIdentifierID3MetadataSynchronizedLyric", optional=true)
+    public static native String AVMetadataIdentifierID3MetadataSynchronizedLyric();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @GlobalValue(symbol="AVMetadataIdentifierID3MetadataSynchronizedTempoCodes", optional=true)
+    public static native String AVMetadataIdentifierID3MetadataSynchronizedTempoCodes();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @GlobalValue(symbol="AVMetadataIdentifierID3MetadataAlbumTitle", optional=true)
+    public static native String AVMetadataIdentifierID3MetadataAlbumTitle();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @GlobalValue(symbol="AVMetadataIdentifierID3MetadataBeatsPerMinute", optional=true)
+    public static native String AVMetadataIdentifierID3MetadataBeatsPerMinute();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @GlobalValue(symbol="AVMetadataIdentifierID3MetadataComposer", optional=true)
+    public static native String AVMetadataIdentifierID3MetadataComposer();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @GlobalValue(symbol="AVMetadataIdentifierID3MetadataContentType", optional=true)
+    public static native String AVMetadataIdentifierID3MetadataContentType();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @GlobalValue(symbol="AVMetadataIdentifierID3MetadataCopyright", optional=true)
+    public static native String AVMetadataIdentifierID3MetadataCopyright();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @GlobalValue(symbol="AVMetadataIdentifierID3MetadataDate", optional=true)
+    public static native String AVMetadataIdentifierID3MetadataDate();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @GlobalValue(symbol="AVMetadataIdentifierID3MetadataEncodingTime", optional=true)
+    public static native String AVMetadataIdentifierID3MetadataEncodingTime();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @GlobalValue(symbol="AVMetadataIdentifierID3MetadataPlaylistDelay", optional=true)
+    public static native String AVMetadataIdentifierID3MetadataPlaylistDelay();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @GlobalValue(symbol="AVMetadataIdentifierID3MetadataOriginalReleaseTime", optional=true)
+    public static native String AVMetadataIdentifierID3MetadataOriginalReleaseTime();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @GlobalValue(symbol="AVMetadataIdentifierID3MetadataRecordingTime", optional=true)
+    public static native String AVMetadataIdentifierID3MetadataRecordingTime();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @GlobalValue(symbol="AVMetadataIdentifierID3MetadataReleaseTime", optional=true)
+    public static native String AVMetadataIdentifierID3MetadataReleaseTime();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @GlobalValue(symbol="AVMetadataIdentifierID3MetadataTaggingTime", optional=true)
+    public static native String AVMetadataIdentifierID3MetadataTaggingTime();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @GlobalValue(symbol="AVMetadataIdentifierID3MetadataEncodedBy", optional=true)
+    public static native String AVMetadataIdentifierID3MetadataEncodedBy();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @GlobalValue(symbol="AVMetadataIdentifierID3MetadataLyricist", optional=true)
+    public static native String AVMetadataIdentifierID3MetadataLyricist();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @GlobalValue(symbol="AVMetadataIdentifierID3MetadataFileType", optional=true)
+    public static native String AVMetadataIdentifierID3MetadataFileType();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @GlobalValue(symbol="AVMetadataIdentifierID3MetadataTime", optional=true)
+    public static native String AVMetadataIdentifierID3MetadataTime();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @GlobalValue(symbol="AVMetadataIdentifierID3MetadataInvolvedPeopleList_v24", optional=true)
+    public static native String AVMetadataIdentifierID3MetadataInvolvedPeopleList_v24();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @GlobalValue(symbol="AVMetadataIdentifierID3MetadataContentGroupDescription", optional=true)
+    public static native String AVMetadataIdentifierID3MetadataContentGroupDescription();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @GlobalValue(symbol="AVMetadataIdentifierID3MetadataTitleDescription", optional=true)
+    public static native String AVMetadataIdentifierID3MetadataTitleDescription();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @GlobalValue(symbol="AVMetadataIdentifierID3MetadataSubTitle", optional=true)
+    public static native String AVMetadataIdentifierID3MetadataSubTitle();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @GlobalValue(symbol="AVMetadataIdentifierID3MetadataInitialKey", optional=true)
+    public static native String AVMetadataIdentifierID3MetadataInitialKey();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @GlobalValue(symbol="AVMetadataIdentifierID3MetadataLanguage", optional=true)
+    public static native String AVMetadataIdentifierID3MetadataLanguage();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @GlobalValue(symbol="AVMetadataIdentifierID3MetadataLength", optional=true)
+    public static native String AVMetadataIdentifierID3MetadataLength();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @GlobalValue(symbol="AVMetadataIdentifierID3MetadataMusicianCreditsList", optional=true)
+    public static native String AVMetadataIdentifierID3MetadataMusicianCreditsList();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @GlobalValue(symbol="AVMetadataIdentifierID3MetadataMediaType", optional=true)
+    public static native String AVMetadataIdentifierID3MetadataMediaType();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @GlobalValue(symbol="AVMetadataIdentifierID3MetadataMood", optional=true)
+    public static native String AVMetadataIdentifierID3MetadataMood();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @GlobalValue(symbol="AVMetadataIdentifierID3MetadataOriginalAlbumTitle", optional=true)
+    public static native String AVMetadataIdentifierID3MetadataOriginalAlbumTitle();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @GlobalValue(symbol="AVMetadataIdentifierID3MetadataOriginalFilename", optional=true)
+    public static native String AVMetadataIdentifierID3MetadataOriginalFilename();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @GlobalValue(symbol="AVMetadataIdentifierID3MetadataOriginalLyricist", optional=true)
+    public static native String AVMetadataIdentifierID3MetadataOriginalLyricist();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @GlobalValue(symbol="AVMetadataIdentifierID3MetadataOriginalArtist", optional=true)
+    public static native String AVMetadataIdentifierID3MetadataOriginalArtist();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @GlobalValue(symbol="AVMetadataIdentifierID3MetadataOriginalReleaseYear", optional=true)
+    public static native String AVMetadataIdentifierID3MetadataOriginalReleaseYear();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @GlobalValue(symbol="AVMetadataIdentifierID3MetadataFileOwner", optional=true)
+    public static native String AVMetadataIdentifierID3MetadataFileOwner();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @GlobalValue(symbol="AVMetadataIdentifierID3MetadataLeadPerformer", optional=true)
+    public static native String AVMetadataIdentifierID3MetadataLeadPerformer();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @GlobalValue(symbol="AVMetadataIdentifierID3MetadataBand", optional=true)
+    public static native String AVMetadataIdentifierID3MetadataBand();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @GlobalValue(symbol="AVMetadataIdentifierID3MetadataConductor", optional=true)
+    public static native String AVMetadataIdentifierID3MetadataConductor();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @GlobalValue(symbol="AVMetadataIdentifierID3MetadataModifiedBy", optional=true)
+    public static native String AVMetadataIdentifierID3MetadataModifiedBy();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @GlobalValue(symbol="AVMetadataIdentifierID3MetadataPartOfASet", optional=true)
+    public static native String AVMetadataIdentifierID3MetadataPartOfASet();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @GlobalValue(symbol="AVMetadataIdentifierID3MetadataProducedNotice", optional=true)
+    public static native String AVMetadataIdentifierID3MetadataProducedNotice();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @GlobalValue(symbol="AVMetadataIdentifierID3MetadataPublisher", optional=true)
+    public static native String AVMetadataIdentifierID3MetadataPublisher();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @GlobalValue(symbol="AVMetadataIdentifierID3MetadataTrackNumber", optional=true)
+    public static native String AVMetadataIdentifierID3MetadataTrackNumber();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @GlobalValue(symbol="AVMetadataIdentifierID3MetadataRecordingDates", optional=true)
+    public static native String AVMetadataIdentifierID3MetadataRecordingDates();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @GlobalValue(symbol="AVMetadataIdentifierID3MetadataInternetRadioStationName", optional=true)
+    public static native String AVMetadataIdentifierID3MetadataInternetRadioStationName();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @GlobalValue(symbol="AVMetadataIdentifierID3MetadataInternetRadioStationOwner", optional=true)
+    public static native String AVMetadataIdentifierID3MetadataInternetRadioStationOwner();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @GlobalValue(symbol="AVMetadataIdentifierID3MetadataSize", optional=true)
+    public static native String AVMetadataIdentifierID3MetadataSize();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @GlobalValue(symbol="AVMetadataIdentifierID3MetadataAlbumSortOrder", optional=true)
+    public static native String AVMetadataIdentifierID3MetadataAlbumSortOrder();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @GlobalValue(symbol="AVMetadataIdentifierID3MetadataPerformerSortOrder", optional=true)
+    public static native String AVMetadataIdentifierID3MetadataPerformerSortOrder();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @GlobalValue(symbol="AVMetadataIdentifierID3MetadataTitleSortOrder", optional=true)
+    public static native String AVMetadataIdentifierID3MetadataTitleSortOrder();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @GlobalValue(symbol="AVMetadataIdentifierID3MetadataInternationalStandardRecordingCode", optional=true)
+    public static native String AVMetadataIdentifierID3MetadataInternationalStandardRecordingCode();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @GlobalValue(symbol="AVMetadataIdentifierID3MetadataEncodedWith", optional=true)
+    public static native String AVMetadataIdentifierID3MetadataEncodedWith();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @GlobalValue(symbol="AVMetadataIdentifierID3MetadataSetSubtitle", optional=true)
+    public static native String AVMetadataIdentifierID3MetadataSetSubtitle();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @GlobalValue(symbol="AVMetadataIdentifierID3MetadataYear", optional=true)
+    public static native String AVMetadataIdentifierID3MetadataYear();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @GlobalValue(symbol="AVMetadataIdentifierID3MetadataUserText", optional=true)
+    public static native String AVMetadataIdentifierID3MetadataUserText();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @GlobalValue(symbol="AVMetadataIdentifierID3MetadataUniqueFileIdentifier", optional=true)
+    public static native String AVMetadataIdentifierID3MetadataUniqueFileIdentifier();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @GlobalValue(symbol="AVMetadataIdentifierID3MetadataTermsOfUse", optional=true)
+    public static native String AVMetadataIdentifierID3MetadataTermsOfUse();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @GlobalValue(symbol="AVMetadataIdentifierID3MetadataUnsynchronizedLyric", optional=true)
+    public static native String AVMetadataIdentifierID3MetadataUnsynchronizedLyric();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @GlobalValue(symbol="AVMetadataIdentifierID3MetadataCommercialInformation", optional=true)
+    public static native String AVMetadataIdentifierID3MetadataCommercialInformation();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @GlobalValue(symbol="AVMetadataIdentifierID3MetadataCopyrightInformation", optional=true)
+    public static native String AVMetadataIdentifierID3MetadataCopyrightInformation();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @GlobalValue(symbol="AVMetadataIdentifierID3MetadataOfficialAudioFileWebpage", optional=true)
+    public static native String AVMetadataIdentifierID3MetadataOfficialAudioFileWebpage();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @GlobalValue(symbol="AVMetadataIdentifierID3MetadataOfficialArtistWebpage", optional=true)
+    public static native String AVMetadataIdentifierID3MetadataOfficialArtistWebpage();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @GlobalValue(symbol="AVMetadataIdentifierID3MetadataOfficialAudioSourceWebpage", optional=true)
+    public static native String AVMetadataIdentifierID3MetadataOfficialAudioSourceWebpage();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @GlobalValue(symbol="AVMetadataIdentifierID3MetadataOfficialInternetRadioStationHomepage", optional=true)
+    public static native String AVMetadataIdentifierID3MetadataOfficialInternetRadioStationHomepage();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @GlobalValue(symbol="AVMetadataIdentifierID3MetadataPayment", optional=true)
+    public static native String AVMetadataIdentifierID3MetadataPayment();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @GlobalValue(symbol="AVMetadataIdentifierID3MetadataOfficialPublisherWebpage", optional=true)
+    public static native String AVMetadataIdentifierID3MetadataOfficialPublisherWebpage();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @GlobalValue(symbol="AVMetadataIdentifierID3MetadataUserURL", optional=true)
+    public static native String AVMetadataIdentifierID3MetadataUserURL();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @GlobalValue(symbol="AVMetadataIdentifierIcyMetadataStreamTitle", optional=true)
+    public static native String AVMetadataIdentifierIcyMetadataStreamTitle();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @GlobalValue(symbol="AVMetadataIdentifierIcyMetadataStreamURL", optional=true)
+    public static native String AVMetadataIdentifierIcyMetadataStreamURL();
+    /**
+     * @since Available in iOS 6.0 and later.
+     */
     @GlobalValue(symbol="AVMetadataObjectTypeFace", optional=true)
     public static native String AVMetadataObjectTypeFace();
     /**
@@ -2179,6 +3582,21 @@ import org.robovm.apple.mediatoolbox.*;
      */
     @GlobalValue(symbol="AVMetadataObjectTypeAztecCode", optional=true)
     public static native String AVMetadataObjectTypeAztecCode();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @GlobalValue(symbol="AVMetadataObjectTypeInterleaved2of5Code", optional=true)
+    public static native String AVMetadataObjectTypeInterleaved2of5Code();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @GlobalValue(symbol="AVMetadataObjectTypeITF14Code", optional=true)
+    public static native String AVMetadataObjectTypeITF14Code();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @GlobalValue(symbol="AVMetadataObjectTypeDataMatrixCode", optional=true)
+    public static native String AVMetadataObjectTypeDataMatrixCode();
     /**
      * @since Available in iOS 7.0 and later.
      */
@@ -2244,6 +3662,16 @@ import org.robovm.apple.mediatoolbox.*;
      */
     @GlobalValue(symbol="AVPlayerItemLegibleOutputTextStylingResolutionSourceAndRulesOnly", optional=true)
     public static native String AVPlayerItemLegibleOutputTextStylingResolutionSourceAndRulesOnly();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @GlobalValue(symbol="AVSampleBufferDisplayLayerFailedToDecodeNotification", optional=true)
+    public static native String Value__AVSampleBufferDisplayLayerFailedToDecodeNotification();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @GlobalValue(symbol="AVSampleBufferDisplayLayerFailedToDecodeNotificationErrorKey", optional=true)
+    public static native String Value__AVSampleBufferDisplayLayerFailedToDecodeNotificationErrorKey();
     @GlobalValue(symbol="AVSpeechUtteranceMinimumSpeechRate", optional=true)
     public static native float AVSpeechUtteranceMinimumSpeechRate();
     @GlobalValue(symbol="AVSpeechUtteranceMaximumSpeechRate", optional=true)

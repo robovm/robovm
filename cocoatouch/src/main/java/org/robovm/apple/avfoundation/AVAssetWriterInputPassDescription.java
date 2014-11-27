@@ -39,32 +39,28 @@ import org.robovm.apple.mediatoolbox.*;
 /*</imports>*/
 
 /*<javadoc>*/
-
+/**
+ * @since Available in iOS 8.0 and later.
+ */
 /*</javadoc>*/
-/*<annotations>*/@Marshaler(ValuedEnum.AsMachineSizedSIntMarshaler.class)/*</annotations>*/
-public enum /*<name>*/AVPlayerItemStatus/*</name>*/ implements ValuedEnum {
-    /*<values>*/
-    Unknown(0L),
-    ReadyToPlay(1L),
-    Failed(2L);
-    /*</values>*/
+/*<annotations>*/@Library("AVFoundation") @NativeClass/*</annotations>*/
+/*<visibility>*/public/*</visibility>*/ class /*<name>*/AVAssetWriterInputPassDescription/*</name>*/ 
+    extends /*<extends>*/NSObject/*</extends>*/ 
+    /*<implements>*//*</implements>*/ {
 
-    /*<bind>*/
-    /*</bind>*/
+    /*<ptr>*/public static class AVAssetWriterInputPassDescriptionPtr extends Ptr<AVAssetWriterInputPassDescription, AVAssetWriterInputPassDescriptionPtr> {}/*</ptr>*/
+    /*<bind>*/static { ObjCRuntime.bind(AVAssetWriterInputPassDescription.class); }/*</bind>*/
     /*<constants>*//*</constants>*/
-    /*<methods>*//*</methods>*/
-
-    private final long n;
-
-    private /*<name>*/AVPlayerItemStatus/*</name>*/(long n) { this.n = n; }
-    public long value() { return n; }
-    public static /*<name>*/AVPlayerItemStatus/*</name>*/ valueOf(long n) {
-        for (/*<name>*/AVPlayerItemStatus/*</name>*/ v : values()) {
-            if (v.n == n) {
-                return v;
-            }
-        }
-        throw new IllegalArgumentException("No constant with value " + n + " found in " 
-            + /*<name>*/AVPlayerItemStatus/*</name>*/.class.getName());
-    }
+    /*<constructors>*/
+    public AVAssetWriterInputPassDescription() {}
+    protected AVAssetWriterInputPassDescription(SkipInit skipInit) { super(skipInit); }
+    /*</constructors>*/
+    /*<properties>*/
+    @Property(selector = "sourceTimeRanges")
+    public native NSArray<?> getSourceTimeRanges();
+    /*</properties>*/
+    /*<members>*//*</members>*/
+    /*<methods>*/
+    
+    /*</methods>*/
 }

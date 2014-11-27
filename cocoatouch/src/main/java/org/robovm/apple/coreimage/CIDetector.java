@@ -28,7 +28,10 @@ import org.robovm.rt.bro.annotation.*;
 import org.robovm.rt.bro.ptr.*;
 import org.robovm.apple.coregraphics.*;
 import org.robovm.apple.foundation.*;
+import org.robovm.apple.corefoundation.*;
 import org.robovm.apple.opengles.*;
+import org.robovm.apple.corevideo.*;
+import org.robovm.apple.imageio.*;
 /*</imports>*/
 
 /*<javadoc>*/
@@ -47,8 +50,8 @@ import org.robovm.apple.opengles.*;
     protected CIDetector(SkipInit skipInit) { super(skipInit); }
     /*</constructors>*/
     
-    public CIDetector(String type, CIContext context, NSDictionary<?, ?> options) {
-        super(detectorOfType$context$options$(type, context, options));
+    public CIDetector(CIDetectorType type, CIContext context, CIDetectorOptions options) {
+        super(init(type, context, options));
     }
     
     /*<properties>*/
@@ -65,11 +68,11 @@ import org.robovm.apple.opengles.*;
      * @since Available in iOS 5.0 and later.
      */
     @Method(selector = "featuresInImage:options:")
-    public native NSArray<CIFeature> findFeatures(CIImage image, NSDictionary<?, ?> options);
+    public native NSArray<CIFeature> findFeatures(CIImage image, CIDetectorFeatureOptions options);
     /**
      * @since Available in iOS 5.0 and later.
      */
     @Method(selector = "detectorOfType:context:options:")
-    protected static native @Pointer long detectorOfType$context$options$(String type, CIContext context, NSDictionary<?, ?> options);
+    protected static native @Pointer long init(CIDetectorType type, CIContext context, CIDetectorOptions options);
     /*</methods>*/
 }

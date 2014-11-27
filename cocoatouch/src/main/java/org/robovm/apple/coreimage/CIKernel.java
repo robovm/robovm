@@ -38,25 +38,35 @@ import org.robovm.apple.imageio.*;
 
 /*</javadoc>*/
 /*<annotations>*/@Library("CoreImage") @NativeClass/*</annotations>*/
-/*<visibility>*/public/*</visibility>*/ class /*<name>*/CIFeature/*</name>*/ 
+/*<visibility>*/public/*</visibility>*/ class /*<name>*/CIKernel/*</name>*/ 
     extends /*<extends>*/NSObject/*</extends>*/ 
     /*<implements>*//*</implements>*/ {
 
-    /*<ptr>*/public static class CIFeaturePtr extends Ptr<CIFeature, CIFeaturePtr> {}/*</ptr>*/
-    /*<bind>*/static { ObjCRuntime.bind(CIFeature.class); }/*</bind>*/
+    /*<ptr>*/public static class CIKernelPtr extends Ptr<CIKernel, CIKernelPtr> {}/*</ptr>*/
+    /*<bind>*/static { ObjCRuntime.bind(CIKernel.class); }/*</bind>*/
     /*<constants>*//*</constants>*/
     /*<constructors>*/
-    public CIFeature() {}
-    protected CIFeature(SkipInit skipInit) { super(skipInit); }
+    public CIKernel() {}
+    protected CIKernel(SkipInit skipInit) { super(skipInit); }
     /*</constructors>*/
     /*<properties>*/
-    @Property(selector = "type")
-    public native String getType();
-    @Property(selector = "bounds")
-    public native @ByVal CGRect getBounds();
+    
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
-    
+    @Method(selector = "name")
+    public native String getName();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @Method(selector = "applyWithExtent:roiCallback:arguments:")
+    public native CIImage apply(@ByVal CGRect extent, @Block("@ByVal (,@ByVal)") Block2<Integer, CGRect, CGRect> callback, NSArray<?> args);
+    @Method(selector = "kernelsWithString:")
+    public static native NSArray<CIKernel> createKernels(String s);
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @Method(selector = "kernelWithString:")
+    public static native CIKernel create(String string);
     /*</methods>*/
 }

@@ -38,22 +38,30 @@ import org.robovm.apple.imageio.*;
 
 /*</javadoc>*/
 /*<annotations>*/@Library("CoreImage") @NativeClass/*</annotations>*/
-/*<visibility>*/public/*</visibility>*/ class /*<name>*/CIFeature/*</name>*/ 
-    extends /*<extends>*/NSObject/*</extends>*/ 
+/*<visibility>*/public/*</visibility>*/ class /*<name>*/CIQRCodeFeature/*</name>*/ 
+    extends /*<extends>*/CIFeature/*</extends>*/ 
     /*<implements>*//*</implements>*/ {
 
-    /*<ptr>*/public static class CIFeaturePtr extends Ptr<CIFeature, CIFeaturePtr> {}/*</ptr>*/
-    /*<bind>*/static { ObjCRuntime.bind(CIFeature.class); }/*</bind>*/
+    /*<ptr>*/public static class CIQRCodeFeaturePtr extends Ptr<CIQRCodeFeature, CIQRCodeFeaturePtr> {}/*</ptr>*/
+    /*<bind>*/static { ObjCRuntime.bind(CIQRCodeFeature.class); }/*</bind>*/
     /*<constants>*//*</constants>*/
     /*<constructors>*/
-    public CIFeature() {}
-    protected CIFeature(SkipInit skipInit) { super(skipInit); }
+    public CIQRCodeFeature() {}
+    protected CIQRCodeFeature(SkipInit skipInit) { super(skipInit); }
     /*</constructors>*/
     /*<properties>*/
-    @Property(selector = "type")
-    public native String getType();
     @Property(selector = "bounds")
     public native @ByVal CGRect getBounds();
+    @Property(selector = "topLeft")
+    public native @ByVal CGPoint getTopLeft();
+    @Property(selector = "topRight")
+    public native @ByVal CGPoint getTopRight();
+    @Property(selector = "bottomLeft")
+    public native @ByVal CGPoint getBottomLeft();
+    @Property(selector = "bottomRight")
+    public native @ByVal CGPoint getBottomRight();
+    @Property(selector = "messageString")
+    public native String getMessageString();
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/

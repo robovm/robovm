@@ -38,25 +38,26 @@ import org.robovm.apple.imageio.*;
 
 /*</javadoc>*/
 /*<annotations>*/@Library("CoreImage") @NativeClass/*</annotations>*/
-/*<visibility>*/public/*</visibility>*/ class /*<name>*/CIFeature/*</name>*/ 
-    extends /*<extends>*/NSObject/*</extends>*/ 
+/*<visibility>*/public/*</visibility>*/ class /*<name>*/CIColorKernel/*</name>*/ 
+    extends /*<extends>*/CIKernel/*</extends>*/ 
     /*<implements>*//*</implements>*/ {
 
-    /*<ptr>*/public static class CIFeaturePtr extends Ptr<CIFeature, CIFeaturePtr> {}/*</ptr>*/
-    /*<bind>*/static { ObjCRuntime.bind(CIFeature.class); }/*</bind>*/
+    /*<ptr>*/public static class CIColorKernelPtr extends Ptr<CIColorKernel, CIColorKernelPtr> {}/*</ptr>*/
+    /*<bind>*/static { ObjCRuntime.bind(CIColorKernel.class); }/*</bind>*/
     /*<constants>*//*</constants>*/
     /*<constructors>*/
-    public CIFeature() {}
-    protected CIFeature(SkipInit skipInit) { super(skipInit); }
+    public CIColorKernel() {}
+    protected CIColorKernel(SkipInit skipInit) { super(skipInit); }
     /*</constructors>*/
     /*<properties>*/
-    @Property(selector = "type")
-    public native String getType();
-    @Property(selector = "bounds")
-    public native @ByVal CGRect getBounds();
+    
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
-    
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @Method(selector = "applyWithExtent:arguments:")
+    public native CIImage apply(@ByVal CGRect extent, NSArray<?> args);
     /*</methods>*/
 }

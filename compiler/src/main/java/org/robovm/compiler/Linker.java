@@ -28,12 +28,19 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
 import java.util.Set;
 import java.util.TreeSet;
+import java.util.concurrent.Executor;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
 
+import org.apache.commons.io.FileUtils;
 import org.robovm.compiler.clazz.Clazz;
 import org.robovm.compiler.clazz.ClazzInfo;
 import org.robovm.compiler.clazz.ClazzInfo.MethodInfo;
@@ -207,9 +214,19 @@ public class Linker {
             mb.addGlobal(new Global("_bcMainClass", mb.getString(config.getMainClass())));
         }        
         
+        ModuleBuilder[] mbs = new ModuleBuilder[config.getThreads() + 1];
+        mbs[0] = mb;
+        for (int i = 1; i < mbs.length; i++) {
+            mbs[i] = new ModuleBuilder();
+            mbs[i].addInclude(getClass().getClassLoader().getResource(String.format("header-%s-%s.ll", os.getFamily(), arch)));
+            mbs[i].addInclude(getClass().getClassLoader().getResource("header.ll"));
+        }
+        Random rnd = new Random();
+        
         buildTypeInfos(typeInfos);
         
         for (Clazz clazz : linkClasses) {
+            int mbIdx = rnd.nextInt(mbs.length - 1) + 1;
             ClazzInfo ci = clazz.getClazzInfo();
             TypeInfo typeInfo = typeInfos.get(ci);
             if (typeInfo.error) {
@@ -250,22 +267,99 @@ public class Linker {
                         if (!name.equals("<clinit>") && !name.equals("<init>") 
                                 && !mi.isPrivate() && !mi.isStatic() && !mi.isFinal() && !mi.isAbstract()) {
 
-                            mb.addFunction(createLookup(mb, ci, mi));
+                            mbs[mbIdx].addFunction(createLookup(mbs[mbIdx], ci, mi));
                         }
 
                     }
                 }
             }
             
-            mb.addFunction(createCheckcast(mb, clazz, typeInfo));
-            mb.addFunction(createInstanceof(mb, clazz, typeInfo));
+            mbs[mbIdx].addFunction(createCheckcast(mbs[mbIdx], clazz, typeInfo));
+            mbs[mbIdx].addFunction(createInstanceof(mbs[mbIdx], clazz, typeInfo));
         }
                 
-        File linkerO = new File(config.getTmpDir(), "linker.o");
+        List<File> objectFiles = new ArrayList<File>();
+
+        generateMachineCode(config, mbs, objectFiles);
+        
+        for (Clazz clazz : linkClasses) {
+            objectFiles.add(config.getOFile(clazz));
+        }
+
+        /*
+         * Assemble the lines files for all linked classes into the module.
+         */
+        for (Clazz clazz : linkClasses) {
+            File f = config.getLinesOFile(clazz);
+            if (f.exists() && f.length() > 0) {
+                objectFiles.add(f);
+            }
+        }
+
+        config.getTarget().build(objectFiles);
+    }
+
+    private void generateMachineCode(final Config config, ModuleBuilder[] mbs, 
+            final List<File> objectFiles) throws IOException {
+
+        Executor executor = config.getThreads() <= 1 ? AppCompiler.SAME_THREAD_EXECUTOR 
+                : Executors.newFixedThreadPool(config.getThreads());
+
+        final List<Throwable> errors = Collections.synchronizedList(new ArrayList<Throwable>());
+        for (int i = 0; i < mbs.length; i++) {
+            final ModuleBuilder mb = mbs[i];
+            final int num = i;
+            executor.execute(new Runnable() {
+                public void run() {
+                    try {
+                        File linkerO = generateMachineCode(config, mb, num);
+                        synchronized (objectFiles) {
+                            objectFiles.add(linkerO);
+                        }
+                    } catch (Throwable t) {
+                        errors.add(t);
+                    }
+                }
+            });
+        }
+        
+        // Shutdown the executor and wait for running tasks to complete.
+        if (executor instanceof ExecutorService) {
+            ExecutorService executorService = (ExecutorService) executor;
+            executorService.shutdown();
+            try {
+                executorService.awaitTermination(Long.MAX_VALUE, TimeUnit.DAYS);
+            } catch (InterruptedException e) {}
+        }
+        
+        if (!errors.isEmpty()) {
+            Throwable t = errors.get(0);
+            if (t instanceof IOException) {
+                throw (IOException) t;
+            }
+            if (t instanceof RuntimeException) {
+                throw (RuntimeException) t;
+            }
+            throw new CompilerException(t);
+        }
+    }
+
+    private File generateMachineCode(final Config config, final ModuleBuilder mb,
+            final int num) throws IOException {
+
+        final Arch arch = config.getArch();
+        final OS os = config.getOs();
+
+        File linkerO = new File(config.getTmpDir(), "linker" + num + ".o");
         linkerO.getParentFile().mkdirs();
 
         try (Context context = new Context()) {
-            try (Module module = Module.parseIR(context, mb.build().toString(), "linker.ll")) {
+            String ir = mb.build().toString();
+            if (config.isDumpIntermediates()) {
+                File linkerLl= new File(config.getTmpDir(), "linker" + num + ".ll");
+                FileUtils.writeStringToFile(linkerLl, ir, "utf-8");
+            }
+            try (Module module = Module.parseIR(context, ir, "linker" + num + ".ll")) {
                 try (PassManager passManager = new PassManager()) {
                     passManager.addAlwaysInlinerPass();
                     passManager.addPromoteMemoryToRegisterPass();
@@ -285,25 +379,7 @@ public class Linker {
                 }
             }
         }
-        
-        List<File> objectFiles = new ArrayList<File>();
-        objectFiles.add(linkerO);
-        
-        for (Clazz clazz : linkClasses) {
-            objectFiles.add(config.getOFile(clazz));
-        }
-
-        /*
-         * Assemble the lines files for all linked classes into the module.
-         */
-        for (Clazz clazz : linkClasses) {
-            File f = config.getLinesOFile(clazz);
-            if (f.exists() && f.length() > 0) {
-                objectFiles.add(f);
-            }
-        }
-
-        config.getTarget().build(objectFiles);
+        return linkerO;
     }
 
     private TypeInfo buildTypeInfo(TypeInfo typeInfo, Map<ClazzInfo, TypeInfo> typeInfos) {
@@ -504,7 +580,13 @@ public class Linker {
     }
    
     private Value getInfoStruct(ModuleBuilder mb, Function f, Clazz clazz) {
-        return new ConstantBitcast(mb.getGlobalRef(Symbols.infoStructSymbol(clazz.getInternalName())), I8_PTR_PTR);
+        String symbol = Symbols.infoStructSymbol(clazz.getInternalName());
+        if (!mb.hasSymbol(symbol)) {
+            Global info = new Global(symbol, external, I8_PTR, false);
+            mb.addGlobal(info);
+            return info.ref();
+        } else {
+            return new ConstantBitcast(mb.getGlobalRef(symbol), I8_PTR_PTR);
+        }
     }
-
 }

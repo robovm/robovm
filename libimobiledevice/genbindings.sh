@@ -30,3 +30,8 @@ rename SWIGTYPE_p_plist_t PlistRef
 rename SWIGTYPE_p_afc_client_private AfcClientRef
 rename SWIGTYPE_p_instproxy_client_private InstproxyClientRef
 rename SWIGTYPE_p_mobile_image_mounter_client_private MobileImageMounterClientRef
+rename afc_error_t AfcError
+rename idevice_error_t IDeviceError
+rename instproxy_error_t InstProxyError
+rename lockdownd_error_t LockdowndError
+rename mobile_image_mounter_error_t MobileImageMounterError

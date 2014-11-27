@@ -1601,10 +1601,18 @@ public class CFG {
                     throw new RuntimeException( "What? A local variable table name_index isn't a UTF8 entry?");
                 }
                 String name = ((CONSTANT_Utf8_info) (constant_pool[entry.name_index])).convert();
-                Stmt startStmt = instructionToFirstStmt.get(entry.start_inst);
+                Stmt startStmt = null;
                 Stmt endStmt = null;
-                if (entry.end_inst != null) {
-                    endStmt = instructionToFirstStmt.get(entry.end_inst);
+                if (entry.start_inst == firstInstruction && entry.end_inst == null) {
+                    // Parameter. Make sure the LocalVariable extends from the
+                    // start of the method before the parameters are assigned to
+                    // locals in the IdentityStmts inserted in jimplify(...).
+                    startStmt = (Stmt) units.getFirst();
+                } else {
+                    startStmt = instructionToFirstStmt.get(entry.start_inst);
+                    if (entry.end_inst != null) {
+                        endStmt = instructionToFirstStmt.get(entry.end_inst);
+                    }
                 }
                 soot.LocalVariable lv = new LocalVariable(name, entry.index, startStmt, endStmt,
                         ((CONSTANT_Utf8_info) constant_pool[entry.descriptor_index]).convert());

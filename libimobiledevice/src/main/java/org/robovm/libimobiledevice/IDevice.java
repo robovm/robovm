@@ -22,6 +22,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.robovm.libimobiledevice.binding.IDeviceConnectionRefOut;
+import org.robovm.libimobiledevice.binding.IDeviceError;
 import org.robovm.libimobiledevice.binding.IDeviceRef;
 import org.robovm.libimobiledevice.binding.IDeviceRefOut;
 import org.robovm.libimobiledevice.binding.IntOut;
@@ -146,7 +147,7 @@ public class IDevice implements AutoCloseable {
             }
             return udids;
         } catch (LibIMobileDeviceException e) {
-        	if (e.getErrorCode() == IDEVICE_E_NO_DEVICE) {
+        	if (e.getErrorCode() == IDeviceError.IDEVICE_E_NO_DEVICE.swigValue()) {
         		// This happens when usbmuxd isn't running
         		return new String[0];
         	}
@@ -193,16 +194,16 @@ public class IDevice implements AutoCloseable {
         }
     }
 
-    static void checkResult(int result) {
+    static void checkResult(IDeviceError result) {
         switch (result) {
         case IDEVICE_E_SUCCESS: return;
-        case IDEVICE_E_BAD_HEADER: throw new LibIMobileDeviceException(result, "IDEVICE_E_BAD_HEADER");
-        case IDEVICE_E_INVALID_ARG: throw new LibIMobileDeviceException(result, "IDEVICE_E_INVALID_ARG");
-        case IDEVICE_E_NO_DEVICE: throw new LibIMobileDeviceException(result, "IDEVICE_E_NO_DEVICE");
-        case IDEVICE_E_NOT_ENOUGH_DATA: throw new LibIMobileDeviceException(result, "IDEVICE_E_NOT_ENOUGH_DATA");
-        case IDEVICE_E_SSL_ERROR: throw new LibIMobileDeviceException(result, "IDEVICE_E_SSL_ERROR");
-        case IDEVICE_E_UNKNOWN_ERROR: throw new LibIMobileDeviceException(result, "IDEVICE_E_UNKNOWN_ERROR");
-        default: throw new LibIMobileDeviceException(result);
+        case IDEVICE_E_BAD_HEADER: throw new LibIMobileDeviceException(result.swigValue(), "IDEVICE_E_BAD_HEADER");
+        case IDEVICE_E_INVALID_ARG: throw new LibIMobileDeviceException(result.swigValue(), "IDEVICE_E_INVALID_ARG");
+        case IDEVICE_E_NO_DEVICE: throw new LibIMobileDeviceException(result.swigValue(), "IDEVICE_E_NO_DEVICE");
+        case IDEVICE_E_NOT_ENOUGH_DATA: throw new LibIMobileDeviceException(result.swigValue(), "IDEVICE_E_NOT_ENOUGH_DATA");
+        case IDEVICE_E_SSL_ERROR: throw new LibIMobileDeviceException(result.swigValue(), "IDEVICE_E_SSL_ERROR");
+        case IDEVICE_E_UNKNOWN_ERROR: throw new LibIMobileDeviceException(result.swigValue(), "IDEVICE_E_UNKNOWN_ERROR");
+        default: throw new LibIMobileDeviceException(result.swigValue());
         }
     }
     

@@ -111,9 +111,9 @@ OUT_ARG(StringArrayOut, char ***devices)
 OUT_ARG(StringArray, char **devices)
 OUT_ARG(StringArrayOut, char ***classes)
 OUT_ARG(StringArray, char **classes)
-OUT_ARG(StringArrayOut, char ***infos)
-OUT_ARG(StringArrayOut, char ***list)
-OUT_ARG(StringArrayOut, char ***infolist)
+OUT_ARG(StringArrayOut, char ***device_information)
+OUT_ARG(StringArrayOut, char ***directory_information)
+OUT_ARG(StringArrayOut, char ***file_information)
 OUT_ARG(StringOut, char **udid)
 OUT_ARG(StringOut, char **device_name)
 OUT_ARG(StringOut, char **type)
@@ -135,7 +135,8 @@ OUT_ARG(MobileImageMounterClientRefOut, mobile_image_mounter_client_t *client)
 %apply signed char[] {char *data};
 %apply signed char[] {char *plist_bin};
 %apply signed char[] {char *plist_xml};
-%apply signed char[] {char *image_signature};
+%apply signed char[] {char *sig};
+%apply signed char[] {char *signature};
 %apply jboolean {uint8_t ssl_enabled};
 
 %rename (IDeviceEvent) idevice_event_t;
@@ -171,7 +172,7 @@ extern void delete_StringArray_values(StringArray* s, int length);
 extern void delete_StringArray_values_z(StringArray* s);
 extern jlong get_global_instproxy_status_cb(void);
 extern jlong get_global_idevice_event_cb(void);
-extern mobile_image_mounter_error_t upload_image(mobile_image_mounter_client_t client, const char *image_path, const char *image_type);
+extern mobile_image_mounter_error_t upload_image(mobile_image_mounter_client_t client, const char *image_path, const char *image_type, const char* sig, size_t sig_size);
 %{
 static JavaVM *vm = NULL;
 static jclass class_Callbacks = NULL;
@@ -249,7 +250,7 @@ jlong get_global_idevice_event_cb(void) {
 static ssize_t upload_cb(void* buf, size_t size, void* userdata) {
     return fread(buf, 1, size, (FILE*) userdata);
 }
-mobile_image_mounter_error_t upload_image(mobile_image_mounter_client_t client, const char *image_path, const char *image_type) {
+mobile_image_mounter_error_t upload_image(mobile_image_mounter_client_t client, const char *image_path, const char *image_type, const char* sig, size_t sig_size) {
     FILE* f = fopen(image_path, "rb");
     if (!f) {
         return MOBILE_IMAGE_MOUNTER_E_UNKNOWN_ERROR;
@@ -260,7 +261,7 @@ mobile_image_mounter_error_t upload_image(mobile_image_mounter_client_t client, 
         return MOBILE_IMAGE_MOUNTER_E_UNKNOWN_ERROR;
     }
     size_t image_size = fst.st_size;
-    mobile_image_mounter_error_t err = mobile_image_mounter_upload_image(client, image_type, image_size, upload_cb, f);
+    mobile_image_mounter_error_t err = mobile_image_mounter_upload_image(client, image_type, image_size, sig, sig_size, upload_cb, f);
     fclose(f);
     return err;
 }

@@ -29,6 +29,7 @@ import org.robovm.libimobiledevice.binding.LibIMobileDeviceConstants;
 import org.robovm.libimobiledevice.binding.LockdowndServiceDescriptorStruct;
 import org.robovm.libimobiledevice.binding.MobileImageMounterClientRef;
 import org.robovm.libimobiledevice.binding.MobileImageMounterClientRefOut;
+import org.robovm.libimobiledevice.binding.MobileImageMounterError;
 import org.robovm.libimobiledevice.binding.PlistRef;
 import org.robovm.libimobiledevice.binding.PlistRefOut;
 
@@ -160,7 +161,7 @@ public class MobileImageMounterClient implements AutoCloseable {
         }
     }
     
-    public void uploadImage(File localImageFile, String imageType) throws IOException {
+    public void uploadImage(File localImageFile, String imageType, byte[] signature) throws IOException {
         if (localImageFile == null) {
             throw new NullPointerException("localImageFile");
         }
@@ -174,7 +175,7 @@ public class MobileImageMounterClient implements AutoCloseable {
             imageType = "Developer";
         }
 
-        checkResult(LibIMobileDevice.upload_image(getRef(), localImageFile.getAbsolutePath(), imageType));
+        checkResult(LibIMobileDevice.upload_image(getRef(), localImageFile.getAbsolutePath(), imageType, signature, signature.length));
     }
     
     protected MobileImageMounterClientRef getRef() {
@@ -200,15 +201,15 @@ public class MobileImageMounterClient implements AutoCloseable {
         dispose();
     }
 
-    private static void checkResult(int result) {
+    private static void checkResult(MobileImageMounterError result) {
         switch (result) {
         case MOBILE_IMAGE_MOUNTER_E_SUCCESS: return;
-        case MOBILE_IMAGE_MOUNTER_E_CONN_FAILED: throw new LibIMobileDeviceException(result, "MOBILE_IMAGE_MOUNTER_E_CONN_FAILED");
-        case MOBILE_IMAGE_MOUNTER_E_INVALID_ARG: throw new LibIMobileDeviceException(result, "MOBILE_IMAGE_MOUNTER_E_INVALID_ARG");
-        case MOBILE_IMAGE_MOUNTER_E_PLIST_ERROR: throw new LibIMobileDeviceException(result, "MOBILE_IMAGE_MOUNTER_E_PLIST_ERROR");
-        case MOBILE_IMAGE_MOUNTER_E_COMMAND_FAILED: throw new LibIMobileDeviceException(result, "MOBILE_IMAGE_MOUNTER_E_COMMAND_FAILED");
-        case MOBILE_IMAGE_MOUNTER_E_UNKNOWN_ERROR: throw new LibIMobileDeviceException(result, "MOBILE_IMAGE_MOUNTER_E_UNKNOWN_ERROR");
-        default: throw new LibIMobileDeviceException(result);
+        case MOBILE_IMAGE_MOUNTER_E_CONN_FAILED: throw new LibIMobileDeviceException(result.swigValue(), "MOBILE_IMAGE_MOUNTER_E_CONN_FAILED");
+        case MOBILE_IMAGE_MOUNTER_E_INVALID_ARG: throw new LibIMobileDeviceException(result.swigValue(), "MOBILE_IMAGE_MOUNTER_E_INVALID_ARG");
+        case MOBILE_IMAGE_MOUNTER_E_PLIST_ERROR: throw new LibIMobileDeviceException(result.swigValue(), "MOBILE_IMAGE_MOUNTER_E_PLIST_ERROR");
+        case MOBILE_IMAGE_MOUNTER_E_COMMAND_FAILED: throw new LibIMobileDeviceException(result.swigValue(), "MOBILE_IMAGE_MOUNTER_E_COMMAND_FAILED");
+        case MOBILE_IMAGE_MOUNTER_E_UNKNOWN_ERROR: throw new LibIMobileDeviceException(result.swigValue(), "MOBILE_IMAGE_MOUNTER_E_UNKNOWN_ERROR");
+        default: throw new LibIMobileDeviceException(result.swigValue());
         }
     }
     

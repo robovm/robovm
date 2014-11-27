@@ -54,7 +54,8 @@ import org.robovm.libimobiledevice.LibIMobileDeviceException;
 import org.robovm.libimobiledevice.LockdowndClient;
 import org.robovm.libimobiledevice.LockdowndServiceDescriptor;
 import org.robovm.libimobiledevice.MobileImageMounterClient;
-import org.robovm.libimobiledevice.binding.LibIMobileDeviceConstants;
+import org.robovm.libimobiledevice.binding.LockdowndError;
+import org.robovm.libimobiledevice.util.AppLauncherCallback.AppLauncherInfo;
 
 import com.dd.plist.NSArray;
 import com.dd.plist.NSDictionary;
@@ -87,11 +88,13 @@ public class AppLauncher {
     private boolean closeOutOnExit = false;
     private boolean debug = false;
     private int localPort = -1;
-    private AppPathCallback appPathCallback = null;
+    private AppLauncherCallback appLauncherCallback = null;
     private volatile boolean killed = false;
     private StatusCallback installStatusCallback;
     private UploadProgressCallback uploadProgressCallback;
     private String xcodePath;    
+    private int launchOnLockedRetries = 5;
+    private int secondsBetweenLaunchOnLockedRetries = 5;
     
     /**
      * Creates a new {@link AppLauncher} which will launch an already installed
@@ -290,10 +293,10 @@ public class AppLauncher {
     }
     
     /**
-     * Sets a callback that is invoked when the remote app path is known.
+     * Sets a callback that is invoked when the remote app info is known.
      */
-    public AppLauncher appPathCallback(AppPathCallback callback) {
-        this.appPathCallback = callback;
+    public AppLauncher appLauncherCallback(AppLauncherCallback callback) {
+        this.appLauncherCallback = callback;
         return this;
     }
     
@@ -306,6 +309,24 @@ public class AppLauncher {
      */
     public AppLauncher xcodePath(String xcodePath) {
         this.xcodePath = xcodePath;
+        return this;
+    }
+    
+    /**
+     * Sets the number of times to retry a launch if the device is locked.
+     * Default is 5.
+     */
+    public AppLauncher launchOnLockedRetries(int launchOnLockedRetries) {
+        this.launchOnLockedRetries = launchOnLockedRetries;
+        return this;
+    }
+    
+    /**
+     * Sets the number of seconds to wait between launch retries when the device
+     * is locked. The default is 5.
+     */
+    public AppLauncher secondsBetweenLaunchOnLockedRetries(int secondsBetweenLaunchOnLockedRetries) {
+        this.secondsBetweenLaunchOnLockedRetries = secondsBetweenLaunchOnLockedRetries;
         return this;
     }
     
@@ -623,6 +644,8 @@ public class AppLauncher {
         File deviceSupport = new File(getXcodePath(), "Platforms/iPhoneOS.platform/DeviceSupport");
         log("Looking up developer disk image for iOS version %s (%s) in %s", productVersion, buildVersion, deviceSupport);
         File devImage = findDeveloperImage(deviceSupport, productVersion, buildVersion);
+        File devImageSig = new File(devImage.getParentFile(), devImage.getName() + ".signature");
+        byte[] devImageSigBytes = Files.readAllBytes(devImageSig.toPath());
         
         LockdowndServiceDescriptor mimService = lockdowndClient.startService(MobileImageMounterClient.SERVICE_NAME);
         try (MobileImageMounterClient mimClient = new MobileImageMounterClient(device, mimService)) {
@@ -632,7 +655,7 @@ public class AppLauncher {
             int majorVersion = Integer.parseInt(getProductVersionParts(productVersion)[0]);
             if (majorVersion >= 7) {
                 // Use new upload method
-                mimClient.uploadImage(devImage, null);
+                mimClient.uploadImage(devImage, null, devImageSigBytes);
             } else {
                 LockdowndServiceDescriptor afcService = lockdowndClient.startService(AfcClient.SERVICE_NAME);
                 try (AfcClient afcClient = new AfcClient(device, afcService)) {
@@ -641,9 +664,7 @@ public class AppLauncher {
                 }
             }
             
-            log("Mounting developer disk image");
-            File devImageSig = new File(devImage.getParentFile(), devImage.getName() + ".signature");
-            byte[] devImageSigBytes = Files.readAllBytes(devImageSig.toPath());
+            log("Mounting developer disk image");                        
             NSDictionary result = mimClient.mountImage("/PublicStaging/staging.dimage", devImageSigBytes, null);
             NSString status = (NSString) result.objectForKey("Status");
             if (status == null || !"Complete".equals(status.toString())) {
@@ -655,46 +676,63 @@ public class AppLauncher {
     private int launchInternal() throws Exception {
         install();
         
-        IDeviceConnection conn = null;
-        String appPath = null;
-        
-        try (LockdowndClient lockdowndClient = new LockdowndClient(device, getClass().getSimpleName(), true)) {
-            appPath = getAppPath(lockdowndClient, appId);
-            if(appPathCallback != null) {
-                appPathCallback.setRemoteAppPath(appPath);
-            }
-            LockdowndServiceDescriptor debugService = null;
-            try {
-                debugService = lockdowndClient.startService(DEBUG_SERVER_SERVICE_NAME);
-            } catch (LibIMobileDeviceException e) {
-                if (e.getErrorCode() == LibIMobileDeviceConstants.LOCKDOWN_E_INVALID_SERVICE) {
-                    // This happens when the developer image hasn't been mounted.
-                    // Mount and try again.
-                    mountDeveloperImage(lockdowndClient);
-                    debugService = lockdowndClient.startService(DEBUG_SERVER_SERVICE_NAME);
-                } else {
-                    throw e;
+        int lockedRetriesLeft = launchOnLockedRetries;
+        while (true) {
+            IDeviceConnection conn = null;
+            String appPath = null;
+            
+            try (LockdowndClient lockdowndClient = new LockdowndClient(device, getClass().getSimpleName(), true)) {
+                appPath = getAppPath(lockdowndClient, appId);
+                String productVersion = lockdowndClient.getValue(null, "ProductVersion").toString(); // E.g. 7.0.2
+                String buildVersion = lockdowndClient.getValue(null, "BuildVersion").toString(); // E.g. 11B508
+                if(appLauncherCallback != null) {
+                    appLauncherCallback.setAppLaunchInfo(new AppLauncherInfo(appPath, productVersion, buildVersion));
                 }
+                LockdowndServiceDescriptor debugService = null;
+                try {
+                    debugService = lockdowndClient.startService(DEBUG_SERVER_SERVICE_NAME);
+                } catch (LibIMobileDeviceException e) {
+                    if (e.getErrorCode() == LockdowndError.LOCKDOWN_E_INVALID_SERVICE.swigValue()) {
+                        // This happens when the developer image hasn't been mounted.
+                        // Mount and try again.
+                        mountDeveloperImage(lockdowndClient);
+                        debugService = lockdowndClient.startService(DEBUG_SERVER_SERVICE_NAME);
+                    } else {
+                        throw e;
+                    }
+                }
+                conn = device.connect(debugService.getPort());
+                log("Debug server port: " + debugService.getPort());
             }
-            conn = device.connect(debugService.getPort());
-            log("Debug server port: " + debugService.getPort());
-        }
-
-        log("Remote app path: " + appPath);
-        log("Launching app...");
-        
-        
-        try {                        
-            // just pipe stdout if no port forwarding should be done
-            // otherwise perform port forwarding and stdout piping
-            if(localPort == -1) {
-                return pipeStdOut(conn, appPath);
+    
+            if (lockedRetriesLeft == launchOnLockedRetries) {
+                // First try
+                log("Remote app path: " + appPath);
+                log("Launching app...");
             } else {
-                return forward(conn, appPath);
+                log("Launching app (retry %d of %d)...", 
+                        (launchOnLockedRetries - lockedRetriesLeft), launchOnLockedRetries);
             }
             
-        } finally {
-            conn.dispose();
+            try {                        
+                // just pipe stdout if no port forwarding should be done
+                // otherwise perform port forwarding and stdout piping
+                if(localPort == -1) {
+                    return pipeStdOut(conn, appPath);
+                } else {
+                    return forward(conn, appPath);
+                }
+            } catch (RuntimeException e) {
+                if (!e.getMessage().contains("Locked") || lockedRetriesLeft == 0) {
+                    throw e;
+                }
+                lockedRetriesLeft--;
+                log("Device locked. Retrying launch in %d seconds...", 
+                        secondsBetweenLaunchOnLockedRetries);
+                Thread.sleep(secondsBetweenLaunchOnLockedRetries * 1000);
+            } finally {
+                conn.dispose();
+            }
         }
     }
     
@@ -790,9 +828,10 @@ public class AppLauncher {
         try (FileOutputStream fileOut = new FileOutputStream("/tmp/dbgout")){
             final InputStream in = clientSocket.getInputStream();
             final OutputStream out = clientSocket.getOutputStream();                       
-            byte[] buffer = new byte[4096];
+            byte[] buffer = new byte[10 * 4096];
             GdbRemoteParser lldbParser = new GdbRemoteParser();
             GdbRemoteParser debugServerParser = new GdbRemoteParser();
+            boolean nextPacketIsData = false;
             while (true) {
                 try {
                     // check if the client send us something and forward
@@ -806,6 +845,12 @@ public class AppLauncher {
                         }
                         List<byte[]> messages = lldbParser.parse(buffer, 0, readBytes);
                         debugForward(fileOut, "lldb->debugserver: ", messages);
+                        for(byte[] m: messages) {
+                            if(m[1] == 'x') {
+                                nextPacketIsData = true;
+                                break;
+                            }
+                        }
                     }
                     
                     // check if we've been interrupted
@@ -830,7 +875,11 @@ public class AppLauncher {
                                     return exitCode;
                                 } else if (message[1] == 'O') {
                                     // Console output encoded as hex.
-                                    stdout.write(fromHex(message, 2, message.length - 2 - 3));
+                                    if(!nextPacketIsData) {
+                                        stdout.write(fromHex(message, 2, message.length - 2 - 3));
+                                    } else {
+                                        nextPacketIsData = false;
+                                    }
                                 }
                             }
                             debugForward(fileOut, "debugserver->lldb: ", messages);

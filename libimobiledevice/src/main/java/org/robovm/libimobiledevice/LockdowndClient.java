@@ -23,6 +23,7 @@ import java.io.IOException;
 import org.robovm.libimobiledevice.binding.LibIMobileDevice;
 import org.robovm.libimobiledevice.binding.LockdowndClientRef;
 import org.robovm.libimobiledevice.binding.LockdowndClientRefOut;
+import org.robovm.libimobiledevice.binding.LockdowndError;
 import org.robovm.libimobiledevice.binding.LockdowndServiceDescriptorStruct;
 import org.robovm.libimobiledevice.binding.LockdowndServiceDescriptorStructOut;
 import org.robovm.libimobiledevice.binding.PlistRef;
@@ -129,31 +130,31 @@ public class LockdowndClient implements AutoCloseable {
         dispose();
     }
 
-    private static void checkResult(int result) {
+    private static void checkResult(LockdowndError result) {
         switch (result) {
         case LOCKDOWN_E_SUCCESS: return;
-        case LOCKDOWN_E_INVALID_ARG: throw new LibIMobileDeviceException(result, "LOCKDOWN_E_INVALID_ARG");
-        case LOCKDOWN_E_INVALID_CONF: throw new LibIMobileDeviceException(result, "LOCKDOWN_E_INVALID_CONF");
-        case LOCKDOWN_E_PLIST_ERROR: throw new LibIMobileDeviceException(result, "LOCKDOWN_E_PLIST_ERROR");
-        case LOCKDOWN_E_PAIRING_FAILED: throw new LibIMobileDeviceException(result, "LOCKDOWN_E_PAIRING_FAILED");
-        case LOCKDOWN_E_SSL_ERROR: throw new LibIMobileDeviceException(result, "LOCKDOWN_E_SSL_ERROR");
-        case LOCKDOWN_E_DICT_ERROR: throw new LibIMobileDeviceException(result, "LOCKDOWN_E_DICT_ERROR");
-        case LOCKDOWN_E_START_SERVICE_FAILED: throw new LibIMobileDeviceException(result, "LOCKDOWN_E_START_SERVICE_FAILED");
-        case LOCKDOWN_E_NOT_ENOUGH_DATA: throw new LibIMobileDeviceException(result, "LOCKDOWN_E_NOT_ENOUGH_DATA");
-        case LOCKDOWN_E_SET_VALUE_PROHIBITED: throw new LibIMobileDeviceException(result, "LOCKDOWN_E_SET_VALUE_PROHIBITED");
-        case LOCKDOWN_E_GET_VALUE_PROHIBITED: throw new LibIMobileDeviceException(result, "LOCKDOWN_E_GET_VALUE_PROHIBITED");
-        case LOCKDOWN_E_REMOVE_VALUE_PROHIBITED: throw new LibIMobileDeviceException(result, "LOCKDOWN_E_REMOVE_VALUE_PROHIBITED");
-        case LOCKDOWN_E_MUX_ERROR: throw new LibIMobileDeviceException(result, "LOCKDOWN_E_MUX_ERROR");
-        case LOCKDOWN_E_ACTIVATION_FAILED: throw new LibIMobileDeviceException(result, "LOCKDOWN_E_ACTIVATION_FAILED");
-        case LOCKDOWN_E_PASSWORD_PROTECTED: throw new LibIMobileDeviceException(result, "LOCKDOWN_E_PASSWORD_PROTECTED");
-        case LOCKDOWN_E_NO_RUNNING_SESSION: throw new LibIMobileDeviceException(result, "LOCKDOWN_E_NO_RUNNING_SESSION");
-        case LOCKDOWN_E_INVALID_HOST_ID: throw new LibIMobileDeviceException(result, "LOCKDOWN_E_INVALID_HOST_ID");
-        case LOCKDOWN_E_INVALID_SERVICE: throw new LibIMobileDeviceException(result, "LOCKDOWN_E_INVALID_SERVICE");
-        case LOCKDOWN_E_INVALID_ACTIVATION_RECORD: throw new LibIMobileDeviceException(result, "LOCKDOWN_E_INVALID_ACTIVATION_RECORD");
-        case LOCKDOWN_E_PAIRING_DIALOG_PENDING: throw new LibIMobileDeviceException(result, "LOCKDOWN_E_PAIRING_DIALOG_PENDING");
-        case LOCKDOWN_E_USER_DENIED_PAIRING: throw new LibIMobileDeviceException(result, "LOCKDOWN_E_USER_DENIED_PAIRING");
-        case LOCKDOWN_E_UNKNOWN_ERROR: throw new LibIMobileDeviceException(result, "LOCKDOWN_E_UNKNOWN_ERROR");
-        default: throw new LibIMobileDeviceException(result);
+        case LOCKDOWN_E_INVALID_ARG: throw new LibIMobileDeviceException(result.swigValue(), "LOCKDOWN_E_INVALID_ARG");
+        case LOCKDOWN_E_INVALID_CONF: throw new LibIMobileDeviceException(result.swigValue(), "LOCKDOWN_E_INVALID_CONF");
+        case LOCKDOWN_E_PLIST_ERROR: throw new LibIMobileDeviceException(result.swigValue(), "LOCKDOWN_E_PLIST_ERROR");
+        case LOCKDOWN_E_PAIRING_FAILED: throw new LibIMobileDeviceException(result.swigValue(), "LOCKDOWN_E_PAIRING_FAILED");
+        case LOCKDOWN_E_SSL_ERROR: throw new LibIMobileDeviceException(result.swigValue(), "LOCKDOWN_E_SSL_ERROR");
+        case LOCKDOWN_E_DICT_ERROR: throw new LibIMobileDeviceException(result.swigValue(), "LOCKDOWN_E_DICT_ERROR");
+        case LOCKDOWN_E_START_SERVICE_FAILED: throw new LibIMobileDeviceException(result.swigValue(), "LOCKDOWN_E_START_SERVICE_FAILED");
+        case LOCKDOWN_E_NOT_ENOUGH_DATA: throw new LibIMobileDeviceException(result.swigValue(), "LOCKDOWN_E_NOT_ENOUGH_DATA");
+        case LOCKDOWN_E_SET_VALUE_PROHIBITED: throw new LibIMobileDeviceException(result.swigValue(), "LOCKDOWN_E_SET_VALUE_PROHIBITED");
+        case LOCKDOWN_E_GET_VALUE_PROHIBITED: throw new LibIMobileDeviceException(result.swigValue(), "LOCKDOWN_E_GET_VALUE_PROHIBITED");
+        case LOCKDOWN_E_REMOVE_VALUE_PROHIBITED: throw new LibIMobileDeviceException(result.swigValue(), "LOCKDOWN_E_REMOVE_VALUE_PROHIBITED");
+        case LOCKDOWN_E_MUX_ERROR: throw new LibIMobileDeviceException(result.swigValue(), "LOCKDOWN_E_MUX_ERROR");
+        case LOCKDOWN_E_ACTIVATION_FAILED: throw new LibIMobileDeviceException(result.swigValue(), "LOCKDOWN_E_ACTIVATION_FAILED");
+        case LOCKDOWN_E_PASSWORD_PROTECTED: throw new LibIMobileDeviceException(result.swigValue(), "LOCKDOWN_E_PASSWORD_PROTECTED");
+        case LOCKDOWN_E_NO_RUNNING_SESSION: throw new LibIMobileDeviceException(result.swigValue(), "LOCKDOWN_E_NO_RUNNING_SESSION");
+        case LOCKDOWN_E_INVALID_HOST_ID: throw new LibIMobileDeviceException(result.swigValue(), "LOCKDOWN_E_INVALID_HOST_ID");
+        case LOCKDOWN_E_INVALID_SERVICE: throw new LibIMobileDeviceException(result.swigValue(), "LOCKDOWN_E_INVALID_SERVICE");
+        case LOCKDOWN_E_INVALID_ACTIVATION_RECORD: throw new LibIMobileDeviceException(result.swigValue(), "LOCKDOWN_E_INVALID_ACTIVATION_RECORD");
+        case LOCKDOWN_E_PAIRING_DIALOG_PENDING: throw new LibIMobileDeviceException(result.swigValue(), "LOCKDOWN_E_PAIRING_DIALOG_PENDING");
+        case LOCKDOWN_E_USER_DENIED_PAIRING: throw new LibIMobileDeviceException(result.swigValue(), "LOCKDOWN_E_USER_DENIED_PAIRING");
+        case LOCKDOWN_E_UNKNOWN_ERROR: throw new LibIMobileDeviceException(result.swigValue(), "LOCKDOWN_E_UNKNOWN_ERROR");
+        default: throw new LibIMobileDeviceException(result.swigValue());
         }
     }
 }

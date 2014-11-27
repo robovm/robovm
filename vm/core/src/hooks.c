@@ -23,14 +23,14 @@ jboolean attachFlag = FALSE;
 static jint waitForAttachTime = 0;
 
 void rvmHookDebuggerAttached(Options* options) {
-    fprintf(stderr, "[DEBUG] %s: Debugger attached\n", LOG_TAG);
+    DEBUG("Debugger attached");
 }
 
 void rvmHookWaitForAttach(Options* options) {
     if (attachFlag == FALSE && waitForAttachTime < 15) {
         waitForAttachTime++;
         sleep(1);
-        fprintf(stderr, "[DEBUG] %s: Waiting for debugger to attach\n", LOG_TAG);
+        DEBUG("Waiting for debugger to attach");
         rvmHookWaitForAttach(options);
     } else {
         if (attachFlag) {
@@ -40,25 +40,25 @@ void rvmHookWaitForAttach(Options* options) {
 }
 
 void _rvmHookBeforeMainThreadAttached(Env* env) {
-    fprintf(stderr, "[DEBUG] %s: Before main thread attached\n", LOG_TAG);
+    DEBUG("Before main thread attached");
 }
 
 void _rvmHookBeforeAppEntryPoint(Env* env, Class* clazz, Method* method, ObjectArray* args) {
-    fprintf(stderr, "[DEBUG] %s: Before app entry point %s.%s%s\n", LOG_TAG, clazz->name, method->name, method->desc);
+    DEBUGF("Before app entry point %s.%s%s", clazz->name, method->name, method->desc);
 }
 
 void _rvmHookThreadCreated(Env* env, JavaThread* threadObj) {
-    fprintf(stderr, "[DEBUG] %s: Thread %lld created\n", LOG_TAG, threadObj->id);
+    DEBUGF("Thread %lld created", threadObj->id);
 }
 
 void _rvmHookThreadAttached(Env* env, JavaThread* threadObj, Thread* thread) {
-    fprintf(stderr, "[DEBUG] %s: Thread %lld attached\n", LOG_TAG, threadObj->id);
+    DEBUGF("Thread %lld attached", threadObj->id);
 }
 
 void _rvmHookThreadStarting(Env* env, JavaThread* threadObj, Thread* thread) {
-    fprintf(stderr, "[DEBUG] %s: Thread %lld starting\n", LOG_TAG, threadObj->id);
+    DEBUGF("Thread %lld starting", threadObj->id);
 }
 
 void _rvmHookThreadDetaching(Env* env, JavaThread* threadObj, Thread* thread, Object* throwable) {
-    fprintf(stderr, "[DEBUG] %s: Thread %lld detaching\n", LOG_TAG, threadObj->id);
+    DEBUGF("Thread %lld detaching", threadObj->id);
 }

@@ -35,6 +35,7 @@ import org.junit.Assume;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
+import org.robovm.libimobiledevice.binding.AfcError;
 import org.robovm.libimobiledevice.binding.AfcFileMode;
 import org.robovm.libimobiledevice.binding.AfcLinkType;
 import org.robovm.libimobiledevice.binding.LibIMobileDeviceConstants;
@@ -50,13 +51,15 @@ public class AfcClientTest {
     
     @BeforeClass
     public static void beforeClass() {
-        String[] udids = IDevice.listUdids();
-        if (udids.length > 0) {
-            String udid = udids[0];
-            device = new IDevice(udid);
-            lockdowndClient = new LockdowndClient(device, null, true);
-            LockdowndServiceDescriptor service = lockdowndClient.startService(AfcClient.SERVICE_NAME);
-            client = new AfcClient(device, service);
+        if (NativeLibrary.supportedPlatform) {
+            String[] udids = IDevice.listUdids();
+            if (udids.length > 0) {
+                String udid = udids[0];
+                device = new IDevice(udid);
+                lockdowndClient = new LockdowndClient(device, null, true);
+                LockdowndServiceDescriptor service = lockdowndClient.startService(AfcClient.SERVICE_NAME);
+                client = new AfcClient(device, service);
+            }
         }
     }
     
@@ -175,7 +178,7 @@ public class AfcClientTest {
             client.getFileInfo("/FOO.TXT");
             fail("LibIMobileDeviceException expected");
         } catch (LibIMobileDeviceException e) {
-            assertEquals(LibIMobileDeviceConstants.AFC_E_OBJECT_NOT_FOUND, e.getErrorCode());
+            assertEquals(AfcError.AFC_E_OBJECT_NOT_FOUND.swigValue(), e.getErrorCode());
         }
     }
     
@@ -207,14 +210,14 @@ public class AfcClientTest {
             client.removePath("/FOO");
             fail("LibIMobileDeviceException expected");
         } catch (LibIMobileDeviceException e) {
-            assertEquals(LibIMobileDeviceConstants.AFC_E_DIR_NOT_EMPTY, e.getErrorCode());
+            assertEquals(AfcError.AFC_E_DIR_NOT_EMPTY.swigValue(), e.getErrorCode());
         }
         client.removePath("/FOO", true);
         try {
             client.getFileInfo("/FOO");
             fail("LibIMobileDeviceException expected");
         } catch (LibIMobileDeviceException e) {
-            assertEquals(LibIMobileDeviceConstants.AFC_E_OBJECT_NOT_FOUND, e.getErrorCode());
+            assertEquals(AfcError.AFC_E_OBJECT_NOT_FOUND.swigValue(), e.getErrorCode());
         }
     }
     

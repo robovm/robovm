@@ -67,7 +67,17 @@ public class BasicBlock {
         instructions.add(instruction);
         instruction.basicBlock = this;
     }
-    
+
+    public void insertBefore(Instruction before, Instruction instruction) {
+        instructions.add(instructions.indexOf(before), instruction);
+        instruction.basicBlock = this;
+    }
+
+    public void insertAfter(Instruction after, Instruction instruction) {
+        instructions.add(instructions.indexOf(after) + 1, instruction);
+        instruction.basicBlock = this;
+    }
+
     public List<Instruction> getInstructions() {
         return instructions;
     }

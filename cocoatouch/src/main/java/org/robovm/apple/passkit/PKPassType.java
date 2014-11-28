@@ -28,18 +28,20 @@ import org.robovm.rt.bro.annotation.*;
 import org.robovm.rt.bro.ptr.*;
 import org.robovm.apple.foundation.*;
 import org.robovm.apple.uikit.*;
+import org.robovm.apple.addressbook.*;
 /*</imports>*/
 
 /*<javadoc>*/
-
+/**
+ * @since Available in iOS 8.0 and later.
+ */
 /*</javadoc>*/
-/*<annotations>*//*</annotations>*/
-public enum /*<name>*/PKErrorCode/*</name>*/ implements ValuedEnum {
+/*<annotations>*/@Marshaler(ValuedEnum.AsMachineSizedUIntMarshaler.class)/*</annotations>*/
+public enum /*<name>*/PKPassType/*</name>*/ implements ValuedEnum {
     /*<values>*/
-    Unknown(1L),
-    PassSignatureInvalid(2L),
-    NotEntitled(3L),
-    PermissionDenied(4L);
+    Barcode(0L),
+    Payment(1L),
+    Any(-1L);
     /*</values>*/
 
     /*<bind>*/
@@ -49,15 +51,15 @@ public enum /*<name>*/PKErrorCode/*</name>*/ implements ValuedEnum {
 
     private final long n;
 
-    private /*<name>*/PKErrorCode/*</name>*/(long n) { this.n = n; }
+    private /*<name>*/PKPassType/*</name>*/(long n) { this.n = n; }
     public long value() { return n; }
-    public static /*<name>*/PKErrorCode/*</name>*/ valueOf(long n) {
-        for (/*<name>*/PKErrorCode/*</name>*/ v : values()) {
+    public static /*<name>*/PKPassType/*</name>*/ valueOf(long n) {
+        for (/*<name>*/PKPassType/*</name>*/ v : values()) {
             if (v.n == n) {
                 return v;
             }
         }
         throw new IllegalArgumentException("No constant with value " + n + " found in " 
-            + /*<name>*/PKErrorCode/*</name>*/.class.getName());
+            + /*<name>*/PKPassType/*</name>*/.class.getName());
     }
 }

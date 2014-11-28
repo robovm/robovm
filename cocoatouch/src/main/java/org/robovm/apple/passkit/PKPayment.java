@@ -32,24 +32,34 @@ import org.robovm.apple.addressbook.*;
 /*</imports>*/
 
 /*<javadoc>*/
+/**
+ * @since Available in iOS 8.0 and later.
+ */
 /*</javadoc>*/
-/*<annotations>*//*</annotations>*/
-/*<visibility>*/public/*</visibility>*/ class /*<name>*/PKAddPassesViewControllerDelegateAdapter/*</name>*/ 
+/*<annotations>*/@Library("PassKit") @NativeClass/*</annotations>*/
+/*<visibility>*/public/*</visibility>*/ class /*<name>*/PKPayment/*</name>*/ 
     extends /*<extends>*/NSObject/*</extends>*/ 
-    /*<implements>*/implements PKAddPassesViewControllerDelegate/*</implements>*/ {
+    /*<implements>*//*</implements>*/ {
 
-    /*<ptr>*/
-    /*</ptr>*/
-    /*<bind>*/
-    /*</bind>*/
+    /*<ptr>*/public static class PKPaymentPtr extends Ptr<PKPayment, PKPaymentPtr> {}/*</ptr>*/
+    /*<bind>*/static { ObjCRuntime.bind(PKPayment.class); }/*</bind>*/
     /*<constants>*//*</constants>*/
-    /*<constructors>*//*</constructors>*/
+    /*<constructors>*/
+    public PKPayment() {}
+    protected PKPayment(SkipInit skipInit) { super(skipInit); }
+    /*</constructors>*/
     /*<properties>*/
-    
+    @Property(selector = "token")
+    public native PKPaymentToken getToken();
+    @Property(selector = "billingAddress")
+    public native ABPerson getBillingAddress();
+    @Property(selector = "shippingAddress")
+    public native ABPerson getShippingAddress();
+    @Property(selector = "shippingMethod")
+    public native PKShippingMethod getShippingMethod();
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
-    @NotImplemented("addPassesViewControllerDidFinish:")
-    public void didFinish(PKAddPassesViewController controller) { throw new UnsupportedOperationException(); }
+    
     /*</methods>*/
 }

@@ -32,24 +32,25 @@ import org.robovm.apple.addressbook.*;
 /*</imports>*/
 
 /*<javadoc>*/
-/*</javadoc>*/
-/*<annotations>*//*</annotations>*/
-/*<visibility>*/public/*</visibility>*/ class /*<name>*/PKAddPassesViewControllerDelegateAdapter/*</name>*/ 
-    extends /*<extends>*/NSObject/*</extends>*/ 
-    /*<implements>*/implements PKAddPassesViewControllerDelegate/*</implements>*/ {
 
-    /*<ptr>*/
-    /*</ptr>*/
-    /*<bind>*/
-    /*</bind>*/
+/*</javadoc>*/
+/*<annotations>*/@Library("PassKit") @NativeClass/*</annotations>*/
+/*<visibility>*/public/*</visibility>*/ class /*<name>*/PKObject/*</name>*/ 
+    extends /*<extends>*/NSObject/*</extends>*/ 
+    /*<implements>*//*</implements>*/ {
+
+    /*<ptr>*/public static class PKObjectPtr extends Ptr<PKObject, PKObjectPtr> {}/*</ptr>*/
+    /*<bind>*/static { ObjCRuntime.bind(PKObject.class); }/*</bind>*/
     /*<constants>*//*</constants>*/
-    /*<constructors>*//*</constructors>*/
+    /*<constructors>*/
+    public PKObject() {}
+    protected PKObject(SkipInit skipInit) { super(skipInit); }
+    /*</constructors>*/
     /*<properties>*/
     
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
-    @NotImplemented("addPassesViewControllerDidFinish:")
-    public void didFinish(PKAddPassesViewController controller) { throw new UnsupportedOperationException(); }
+    
     /*</methods>*/
 }

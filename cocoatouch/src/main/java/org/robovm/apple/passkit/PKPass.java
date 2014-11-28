@@ -28,16 +28,15 @@ import org.robovm.rt.bro.annotation.*;
 import org.robovm.rt.bro.ptr.*;
 import org.robovm.apple.foundation.*;
 import org.robovm.apple.uikit.*;
+import org.robovm.apple.addressbook.*;
 /*</imports>*/
 
 /*<javadoc>*/
-/**
- * @since Available in iOS 6.0 and later.
- */
+
 /*</javadoc>*/
 /*<annotations>*/@Library("PassKit") @NativeClass/*</annotations>*/
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/PKPass/*</name>*/ 
-    extends /*<extends>*/NSObject/*</extends>*/ 
+    extends /*<extends>*/PKObject/*</extends>*/ 
     /*<implements>*//*</implements>*/ {
 
     /*<ptr>*/public static class PKPassPtr extends Ptr<PKPass, PKPassPtr> {}/*</ptr>*/
@@ -46,9 +45,31 @@ import org.robovm.apple.uikit.*;
     /*<constructors>*/
     public PKPass() {}
     protected PKPass(SkipInit skipInit) { super(skipInit); }
-    public PKPass(NSData data, NSError.NSErrorPtr error) { super((SkipInit) null); initObject(initWithData$error$(data, error)); }
     /*</constructors>*/
+    /**
+     * 
+     * @param data
+     * @throws NSErrorException
+     */
+    public PKPass(NSData data) { 
+        super((SkipInit) null);
+        NSError.NSErrorPtr err = new NSError.NSErrorPtr();
+        initObject(init(data, err));
+        if (err.get() != null) {
+            throw new NSErrorException(err.get());
+        }
+    }
     /*<properties>*/
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @Property(selector = "passType")
+    public native PKPassType getPassType();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @Property(selector = "paymentPass")
+    public native PKPaymentPass getPaymentPass();
     @Property(selector = "serialNumber")
     public native String getSerialNumber();
     @Property(selector = "passTypeIdentifier")
@@ -71,14 +92,14 @@ import org.robovm.apple.uikit.*;
      * @since Available in iOS 7.0 and later.
      */
     @Property(selector = "userInfo")
-    public native NSDictionary<NSString, NSObject> getUserInfo();
+    public native NSDictionary<?, ?> getUserInfo();
     @Property(selector = "passURL")
     public native NSURL getPassURL();
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
     @Method(selector = "initWithData:error:")
-    protected native @Pointer long initWithData$error$(NSData data, NSError.NSErrorPtr error);
+    protected native @Pointer long init(NSData data, NSError.NSErrorPtr error);
     @Method(selector = "localizedValueForFieldKey:")
     public native NSObject getLocalizedValue(String key);
     /*</methods>*/

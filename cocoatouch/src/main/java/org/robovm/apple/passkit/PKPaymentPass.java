@@ -32,24 +32,36 @@ import org.robovm.apple.addressbook.*;
 /*</imports>*/
 
 /*<javadoc>*/
+/**
+ * @since Available in iOS 8.0 and later.
+ */
 /*</javadoc>*/
-/*<annotations>*//*</annotations>*/
-/*<visibility>*/public/*</visibility>*/ class /*<name>*/PKAddPassesViewControllerDelegateAdapter/*</name>*/ 
-    extends /*<extends>*/NSObject/*</extends>*/ 
-    /*<implements>*/implements PKAddPassesViewControllerDelegate/*</implements>*/ {
+/*<annotations>*/@Library("PassKit") @NativeClass/*</annotations>*/
+/*<visibility>*/public/*</visibility>*/ class /*<name>*/PKPaymentPass/*</name>*/ 
+    extends /*<extends>*/PKPass/*</extends>*/ 
+    /*<implements>*//*</implements>*/ {
 
-    /*<ptr>*/
-    /*</ptr>*/
-    /*<bind>*/
-    /*</bind>*/
+    /*<ptr>*/public static class PKPaymentPassPtr extends Ptr<PKPaymentPass, PKPaymentPassPtr> {}/*</ptr>*/
+    /*<bind>*/static { ObjCRuntime.bind(PKPaymentPass.class); }/*</bind>*/
     /*<constants>*//*</constants>*/
-    /*<constructors>*//*</constructors>*/
+    /*<constructors>*/
+    public PKPaymentPass() {}
+    protected PKPaymentPass(SkipInit skipInit) { super(skipInit); }
+    /*</constructors>*/
     /*<properties>*/
-    
+    @Property(selector = "primaryAccountIdentifier")
+    public native String getPrimaryAccountIdentifier();
+    @Property(selector = "primaryAccountNumberSuffix")
+    public native String getPrimaryAccountNumberSuffix();
+    @Property(selector = "deviceAccountIdentifier")
+    public native String getDeviceAccountIdentifier();
+    @Property(selector = "deviceAccountNumberSuffix")
+    public native String getDeviceAccountNumberSuffix();
+    @Property(selector = "activationState")
+    public native PKPaymentPassActivationState getActivationState();
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
-    @NotImplemented("addPassesViewControllerDidFinish:")
-    public void didFinish(PKAddPassesViewController controller) { throw new UnsupportedOperationException(); }
+    
     /*</methods>*/
 }

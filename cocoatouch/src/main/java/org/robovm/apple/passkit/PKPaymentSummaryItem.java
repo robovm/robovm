@@ -32,24 +32,35 @@ import org.robovm.apple.addressbook.*;
 /*</imports>*/
 
 /*<javadoc>*/
+/**
+ * @since Available in iOS 8.0 and later.
+ */
 /*</javadoc>*/
-/*<annotations>*//*</annotations>*/
-/*<visibility>*/public/*</visibility>*/ class /*<name>*/PKAddPassesViewControllerDelegateAdapter/*</name>*/ 
+/*<annotations>*/@Library("PassKit") @NativeClass/*</annotations>*/
+/*<visibility>*/public/*</visibility>*/ class /*<name>*/PKPaymentSummaryItem/*</name>*/ 
     extends /*<extends>*/NSObject/*</extends>*/ 
-    /*<implements>*/implements PKAddPassesViewControllerDelegate/*</implements>*/ {
+    /*<implements>*//*</implements>*/ {
 
-    /*<ptr>*/
-    /*</ptr>*/
-    /*<bind>*/
-    /*</bind>*/
+    /*<ptr>*/public static class PKPaymentSummaryItemPtr extends Ptr<PKPaymentSummaryItem, PKPaymentSummaryItemPtr> {}/*</ptr>*/
+    /*<bind>*/static { ObjCRuntime.bind(PKPaymentSummaryItem.class); }/*</bind>*/
     /*<constants>*//*</constants>*/
-    /*<constructors>*//*</constructors>*/
+    /*<constructors>*/
+    public PKPaymentSummaryItem() {}
+    protected PKPaymentSummaryItem(SkipInit skipInit) { super(skipInit); }
+    /*</constructors>*/
     /*<properties>*/
-    
+    @Property(selector = "label")
+    public native String getLabel();
+    @Property(selector = "setLabel:")
+    public native void setLabel(String v);
+    @Property(selector = "amount")
+    public native NSDecimalNumber getAmount();
+    @Property(selector = "setAmount:")
+    public native void setAmount(NSDecimalNumber v);
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
-    @NotImplemented("addPassesViewControllerDidFinish:")
-    public void didFinish(PKAddPassesViewController controller) { throw new UnsupportedOperationException(); }
+    @Method(selector = "summaryItemWithLabel:amount:")
+    public static native PKPaymentSummaryItem create(String label, NSDecimalNumber amount);
     /*</methods>*/
 }

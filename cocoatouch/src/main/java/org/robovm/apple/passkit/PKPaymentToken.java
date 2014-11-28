@@ -32,24 +32,34 @@ import org.robovm.apple.addressbook.*;
 /*</imports>*/
 
 /*<javadoc>*/
+/**
+ * @since Available in iOS 8.0 and later.
+ */
 /*</javadoc>*/
-/*<annotations>*//*</annotations>*/
-/*<visibility>*/public/*</visibility>*/ class /*<name>*/PKAddPassesViewControllerDelegateAdapter/*</name>*/ 
+/*<annotations>*/@Library("PassKit") @NativeClass/*</annotations>*/
+/*<visibility>*/public/*</visibility>*/ class /*<name>*/PKPaymentToken/*</name>*/ 
     extends /*<extends>*/NSObject/*</extends>*/ 
-    /*<implements>*/implements PKAddPassesViewControllerDelegate/*</implements>*/ {
+    /*<implements>*//*</implements>*/ {
 
-    /*<ptr>*/
-    /*</ptr>*/
-    /*<bind>*/
-    /*</bind>*/
+    /*<ptr>*/public static class PKPaymentTokenPtr extends Ptr<PKPaymentToken, PKPaymentTokenPtr> {}/*</ptr>*/
+    /*<bind>*/static { ObjCRuntime.bind(PKPaymentToken.class); }/*</bind>*/
     /*<constants>*//*</constants>*/
-    /*<constructors>*//*</constructors>*/
+    /*<constructors>*/
+    public PKPaymentToken() {}
+    protected PKPaymentToken(SkipInit skipInit) { super(skipInit); }
+    /*</constructors>*/
     /*<properties>*/
-    
+    @Property(selector = "paymentInstrumentName")
+    public native String getPaymentInstrumentName();
+    @Property(selector = "paymentNetwork")
+    public native PKPaymentNetwork getPaymentNetwork();
+    @Property(selector = "transactionIdentifier")
+    public native String getTransactionIdentifier();
+    @Property(selector = "paymentData")
+    public native NSData getPaymentData();
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
-    @NotImplemented("addPassesViewControllerDidFinish:")
-    public void didFinish(PKAddPassesViewController controller) { throw new UnsupportedOperationException(); }
+    
     /*</methods>*/
 }

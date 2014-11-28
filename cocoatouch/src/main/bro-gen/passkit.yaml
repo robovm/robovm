@@ -1,5 +1,5 @@
 package: org.robovm.apple.passkit
-include: [foundation.yaml, uikit.yaml]
+include: [foundation.yaml, uikit.yaml, addressbook.yaml]
 library: PassKit
 framework: PassKit
 clang_args: ['-x', 'objective-c']
@@ -7,37 +7,49 @@ headers:
     - /System/Library/Frameworks/PassKit.framework/Headers/PassKit.h
 typedefs:
     'void (^)(PKPassLibraryAddPassesStatus)': '@Block VoidBlock1<PKPassLibraryAddPassesStatus>'
+    'void (^)(PKPaymentAuthorizationStatus)': '@Block VoidBlock1<PKPaymentAuthorizationStatus>'
+    'void (^)(BOOL, NSError *)': '@Block VoidBlock2<Boolean, NSError>'
+    
 enums:
-    PKErrorCode: {}
     PKPassKitErrorCode: {first: PKUnknownError, marshaler: ValuedEnum.AsMachineSizedSIntMarshaler}
     PKPassLibraryAddPassesStatus: {first: PKPassLibraryDidAddPasses, marshaler: ValuedEnum.AsMachineSizedSIntMarshaler}
+    PKPassType: {}
+    PKPaymentAuthorizationStatus: {}
+    PKPaymentPassActivationState: {}
+    PKAddressField: {}
+    PKMerchantCapability: {}
 
 classes:
-    PassKit:
-        annotations: ['@Marshaler(NSString.AsStringMarshaler.class)']
+    PKPassKitError:
+        extends: NSError
 
     PKAddPassesViewController: # DONE
         methods:
             '-initWithPass:':
+                name: init
                 parameters:
                     pass:
                         type: PKPass
             '-initWithPasses:':
+                name: init
                 parameters:
                     passes:
-                        type: "NSArray<PKPass>"
+                        type: NSArray<PKPass>
+    PKObject: {} # DONE
     PKPass: # DONE
         properties:
-            'userInfo':
-                type: "NSDictionary<NSString, NSObject>"
+            'userInfo': {}
         methods:
+            '-initWithData:error:':
+                name: init
+                constructor: false
             '-localizedValueForFieldKey:':
                 name: getLocalizedValue
     PKPassLibrary: # DONE
         methods:
             '-passes':
                 property: true
-                return_type: "NSArray<PKPass>"
+                return_type: NSArray<PKPass>
             '-passWithPassTypeIdentifier:serialNumber:':
                 name: getPass
             '-(removePass|containsPass):':
@@ -48,48 +60,108 @@ classes:
                 name: addPasses
                 parameters:
                     passes:
-                        type: "NSArray<PKPass>"
+                        type: NSArray<PKPass>
+            '-passesOfType:':
+                name: getPassesOfType
+                return_type: NSArray<PKPass>
+            '-activatePaymentPass.*':
+                trim_after_first_colon: true
+    PKPayment: # DONE
+        properties:
+            'billingAddress':
+                type: ABPerson
+            'shippingAddress':
+                type: ABPerson
+    PKPaymentAuthorizationViewController: # DONE
+        methods:
+            '-initWithPaymentRequest:':
+                name: init
+            '+canMakePaymentsUsingNetworks:':
+                trim_after_first_colon: true
+                parameters:
+                    supportedNetworks:
+                        type: '@org.robovm.rt.bro.annotation.Marshaler(PKPaymentNetwork.AsListMarshaler.class) List<PKPaymentNetwork>'
+    PKPaymentPass: {} # DONE
+    PKPaymentRequest: # DONE
+        properties:
+            'supportedNetworks':
+                type: '@org.robovm.rt.bro.annotation.Marshaler(PKPaymentNetwork.AsListMarshaler.class) List<PKPaymentNetwork>'
+            'paymentSummaryItems':
+                type: NSArray<PKPaymentSummaryItem>
+            'shippingMethods':
+                type: NSArray<PKShippingMethod>
+    PKPaymentSummaryItem: # DONE
+        methods:
+            '+summaryItemWithLabel:amount:':
+                name: create
+    PKPaymentToken: # DONE
+        properties:
+            'paymentNetwork':
+                type: PKPaymentNetwork
+    PKShippingMethod: {} # DONE
 
 protocols: 
     PKAddPassesViewControllerDelegate: # DONE
         methods:
             '-addPassesViewControllerDidFinish:':
                 name: didFinish
+    PKPaymentAuthorizationViewControllerDelegate: # DONE
+        methods:
+            '-paymentAuthorizationViewController:didAuthorizePayment:completion:':
+                name: didAuthorizePayment
+            '-paymentAuthorizationViewControllerDidFinish:':
+                name: didFinish
+            '-paymentAuthorizationViewController:didSelectShippingMethod:completion:':
+                name: didSelectShippingMethod
+                parameters:
+                    completion:
+                        type: '@Block VoidBlock2<PKPaymentAuthorizationStatus, NSArray<PKPaymentSummaryItem>>'
+            '-paymentAuthorizationViewController:didSelectShippingAddress:completion:':
+                name: didSelectShippingAddress
+                parameters:
+                    completion:
+                        type: '@Block VoidBlock3<PKPaymentAuthorizationStatus, NSArray<PKShippingMethod>, NSArray<PKPaymentSummaryItem>>'
 
 functions:
     # Make sure we don't miss any functions if new ones are introduced in a later version
     (PK.*):
         class: PassKit
-        name: "Function__#{g[0]}"
+        name: 'Function__#{g[0]}'
 
 values:
+    PKPassKitErrorDomain:
+        class: PKPassKitError
+
+    # PKPassLibrary
     PKPassLibrary(DidChangeNotification):
         class: PKPassLibrary
-        name: "#{g[0]}"
+        name: '#{g[0]}'
         type: NSString
-
     PKPassLibrary(PassTypeIdentifier|SerialNumber)UserInfoKey:
         class: PKRemovedPassInfo
-        name: "#{g[0]}Key"
+        name: '#{g[0]}Key'
         type: NSString
         visibility: protected
     PKPassLibrary(.*)UserInfoKey:
         class: PKPassLibraryNotificationArgs
-        name: "#{g[0]}Key"
+        name: '#{g[0]}Key'
         type: NSString
         visibility: protected
-        
-    PK(.*ErrorDomain):
-        name: "#{g[0]}"
+
+    # PKPayment
+    PKPaymentNetwork(.*):
+        class: PKPaymentNetwork
+        name: '#{g[0]}Value'
         type: NSString
+        visibility: protected
 
     # Make sure we don't miss any values if new ones are introduced in a later version
     (PK.*):
         class: PassKit
-        name: "Value__#{g[0]}"
+        name: 'Value__#{g[0]}'
 
 constants:
     # Make sure we don't miss any constants if new ones are introduced in a later version
     (PK.*):
         class: PassKit
-        name: "Constant__#{g[0]}"
+        name: 'Constant__#{g[0]}'

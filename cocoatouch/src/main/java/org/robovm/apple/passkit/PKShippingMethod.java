@@ -32,24 +32,34 @@ import org.robovm.apple.addressbook.*;
 /*</imports>*/
 
 /*<javadoc>*/
+/**
+ * @since Available in iOS 8.0 and later.
+ */
 /*</javadoc>*/
-/*<annotations>*//*</annotations>*/
-/*<visibility>*/public/*</visibility>*/ class /*<name>*/PKAddPassesViewControllerDelegateAdapter/*</name>*/ 
-    extends /*<extends>*/NSObject/*</extends>*/ 
-    /*<implements>*/implements PKAddPassesViewControllerDelegate/*</implements>*/ {
+/*<annotations>*/@Library("PassKit") @NativeClass/*</annotations>*/
+/*<visibility>*/public/*</visibility>*/ class /*<name>*/PKShippingMethod/*</name>*/ 
+    extends /*<extends>*/PKPaymentSummaryItem/*</extends>*/ 
+    /*<implements>*//*</implements>*/ {
 
-    /*<ptr>*/
-    /*</ptr>*/
-    /*<bind>*/
-    /*</bind>*/
+    /*<ptr>*/public static class PKShippingMethodPtr extends Ptr<PKShippingMethod, PKShippingMethodPtr> {}/*</ptr>*/
+    /*<bind>*/static { ObjCRuntime.bind(PKShippingMethod.class); }/*</bind>*/
     /*<constants>*//*</constants>*/
-    /*<constructors>*//*</constructors>*/
+    /*<constructors>*/
+    public PKShippingMethod() {}
+    protected PKShippingMethod(SkipInit skipInit) { super(skipInit); }
+    /*</constructors>*/
     /*<properties>*/
-    
+    @Property(selector = "identifier")
+    public native String getIdentifier();
+    @Property(selector = "setIdentifier:")
+    public native void setIdentifier(String v);
+    @Property(selector = "detail")
+    public native String getDetail();
+    @Property(selector = "setDetail:")
+    public native void setDetail(String v);
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
-    @NotImplemented("addPassesViewControllerDidFinish:")
-    public void didFinish(PKAddPassesViewController controller) { throw new UnsupportedOperationException(); }
+    
     /*</methods>*/
 }

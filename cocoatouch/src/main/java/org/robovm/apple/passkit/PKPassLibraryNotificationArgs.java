@@ -28,6 +28,7 @@ import org.robovm.rt.bro.annotation.*;
 import org.robovm.rt.bro.ptr.*;
 import org.robovm.apple.foundation.*;
 import org.robovm.apple.uikit.*;
+import org.robovm.apple.addressbook.*;
 /*</imports>*/
 
 /*<javadoc>*/
@@ -41,7 +42,7 @@ import org.robovm.apple.uikit.*;
     /*</ptr>*/
     /*<bind>*/static { Bro.bind(PKPassLibraryNotificationArgs.class); }/*</bind>*/
     /*<constants>*//*</constants>*/
-    private NSDictionary<NSString, ?> data;
+    private NSDictionary<NSString, NSObject> data;
     
     protected PKPassLibraryNotificationArgs (NSNotification notification) {
         this.data = notification.getUserInfo();
@@ -49,7 +50,7 @@ import org.robovm.apple.uikit.*;
     /*<constructors>*//*</constructors>*/
     /*<properties>*//*</properties>*/
     /*<members>*//*</members>*/
-    public NSDictionary<NSString, ?> getDictionary() {
+    public NSDictionary<NSString, NSObject> getDictionary() {
         return data;
     }
     
@@ -81,9 +82,9 @@ import org.robovm.apple.uikit.*;
     @SuppressWarnings("unchecked")
     public List<PKRemovedPassInfo> getRemovedPassInfos() {
         if (data.containsKey(RemovedPassInfosKey())) {
-            NSArray<NSDictionary<NSString, ?>> val = (NSArray<NSDictionary<NSString, ?>>)data.get(RemovedPassInfosKey());
+            NSArray<NSDictionary<NSString, NSObject>> val = (NSArray<NSDictionary<NSString, NSObject>>)data.get(RemovedPassInfosKey());
             List<PKRemovedPassInfo> list = new ArrayList<>();
-            for (NSDictionary<NSString, ?> v : val) {
+            for (NSDictionary<NSString, NSObject> v : val) {
                 list.add(new PKRemovedPassInfo(v));
             }
             return list;

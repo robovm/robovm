@@ -33,45 +33,35 @@ import org.robovm.apple.addressbook.*;
 
 /*<javadoc>*/
 /**
- * @since Available in iOS 6.0 and later.
+ * @since Available in iOS 8.0 and later.
  */
 /*</javadoc>*/
 /*<annotations>*/@Library("PassKit") @NativeClass/*</annotations>*/
-/*<visibility>*/public/*</visibility>*/ class /*<name>*/PKAddPassesViewController/*</name>*/ 
+/*<visibility>*/public/*</visibility>*/ class /*<name>*/PKPaymentAuthorizationViewController/*</name>*/ 
     extends /*<extends>*/UIViewController/*</extends>*/ 
     /*<implements>*//*</implements>*/ {
 
-    /*<ptr>*/public static class PKAddPassesViewControllerPtr extends Ptr<PKAddPassesViewController, PKAddPassesViewControllerPtr> {}/*</ptr>*/
-    /*<bind>*/static { ObjCRuntime.bind(PKAddPassesViewController.class); }/*</bind>*/
+    /*<ptr>*/public static class PKPaymentAuthorizationViewControllerPtr extends Ptr<PKPaymentAuthorizationViewController, PKPaymentAuthorizationViewControllerPtr> {}/*</ptr>*/
+    /*<bind>*/static { ObjCRuntime.bind(PKPaymentAuthorizationViewController.class); }/*</bind>*/
     /*<constants>*//*</constants>*/
     /*<constructors>*/
-    public PKAddPassesViewController() {}
-    protected PKAddPassesViewController(SkipInit skipInit) { super(skipInit); }
-    public PKAddPassesViewController(PKPass pass) { super((SkipInit) null); initObject(init(pass)); }
-    /**
-     * @since Available in iOS 7.0 and later.
-     */
-    public PKAddPassesViewController(NSArray<PKPass> passes) { super((SkipInit) null); initObject(init(passes)); }
+    public PKPaymentAuthorizationViewController() {}
+    protected PKPaymentAuthorizationViewController(SkipInit skipInit) { super(skipInit); }
+    public PKPaymentAuthorizationViewController(PKPaymentRequest request) { super((SkipInit) null); initObject(init(request)); }
     /*</constructors>*/
     /*<properties>*/
     @Property(selector = "delegate")
-    public native PKAddPassesViewControllerDelegate getDelegate();
+    public native PKPaymentAuthorizationViewControllerDelegate getDelegate();
     @Property(selector = "setDelegate:", strongRef = true)
-    public native void setDelegate(PKAddPassesViewControllerDelegate v);
+    public native void setDelegate(PKPaymentAuthorizationViewControllerDelegate v);
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
-    @Method(selector = "initWithPass:")
-    protected native @Pointer long init(PKPass pass);
-    /**
-     * @since Available in iOS 7.0 and later.
-     */
-    @Method(selector = "initWithPasses:")
-    protected native @Pointer long init(NSArray<PKPass> passes);
-    /**
-     * @since Available in iOS 8.0 and later.
-     */
-    @Method(selector = "canAddPasses")
-    public static native boolean canAddPasses();
+    @Method(selector = "initWithPaymentRequest:")
+    protected native @Pointer long init(PKPaymentRequest request);
+    @Method(selector = "canMakePayments")
+    public static native boolean canMakePayments();
+    @Method(selector = "canMakePaymentsUsingNetworks:")
+    public static native boolean canMakePaymentsUsingNetworks(@org.robovm.rt.bro.annotation.Marshaler(PKPaymentNetwork.AsListMarshaler.class) List<PKPaymentNetwork> supportedNetworks);
     /*</methods>*/
 }

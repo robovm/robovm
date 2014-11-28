@@ -33,18 +33,17 @@ import org.robovm.apple.addressbook.*;
 
 /*<javadoc>*/
 /**
- * @since Available in iOS 6.0 and later.
+ * @since Available in iOS 8.0 and later.
  */
 /*</javadoc>*/
-@ForceLinkClass(PKPassKitError.class)
-/*<annotations>*/@Marshaler(ValuedEnum.AsMachineSizedSIntMarshaler.class)/*</annotations>*/
-public enum /*<name>*/PKPassKitErrorCode/*</name>*/ implements NSErrorCode {
+/*<annotations>*/@Marshaler(Bits.AsMachineSizedIntMarshaler.class)/*</annotations>*/
+public final class /*<name>*/PKAddressField/*</name>*/ extends Bits</*<name>*/PKAddressField/*</name>*/> {
     /*<values>*/
-    UnknownError(-1L),
-    InvalidDataError(1L),
-    UnsupportedVersionError(2L),
-    InvalidSignature(3L),
-    NotEntitledError(4L);
+    public static final PKAddressField None = new PKAddressField(0L);
+    public static final PKAddressField PostalAddress = new PKAddressField(1L);
+    public static final PKAddressField Phone = new PKAddressField(2L);
+    public static final PKAddressField Email = new PKAddressField(4L);
+    public static final PKAddressField All = new PKAddressField(7L);
     /*</values>*/
 
     /*<bind>*/
@@ -52,17 +51,17 @@ public enum /*<name>*/PKPassKitErrorCode/*</name>*/ implements NSErrorCode {
     /*<constants>*//*</constants>*/
     /*<methods>*//*</methods>*/
 
-    private final long n;
+    private static final /*<name>*/PKAddressField/*</name>*/[] values = _values(/*<name>*/PKAddressField/*</name>*/.class);
 
-    private /*<name>*/PKPassKitErrorCode/*</name>*/(long n) { this.n = n; }
-    public long value() { return n; }
-    public static /*<name>*/PKPassKitErrorCode/*</name>*/ valueOf(long n) {
-        for (/*<name>*/PKPassKitErrorCode/*</name>*/ v : values()) {
-            if (v.n == n) {
-                return v;
-            }
-        }
-        throw new IllegalArgumentException("No constant with value " + n + " found in " 
-            + /*<name>*/PKPassKitErrorCode/*</name>*/.class.getName());
+    public /*<name>*/PKAddressField/*</name>*/(long value) { super(value); }
+    private /*<name>*/PKAddressField/*</name>*/(long value, long mask) { super(value, mask); }
+    protected /*<name>*/PKAddressField/*</name>*/ wrap(long value, long mask) {
+        return new /*<name>*/PKAddressField/*</name>*/(value, mask);
+    }
+    protected /*<name>*/PKAddressField/*</name>*/[] _values() {
+        return values;
+    }
+    public static /*<name>*/PKAddressField/*</name>*/[] values() {
+        return values.clone();
     }
 }

@@ -34,9 +34,9 @@ import org.robovm.apple.addressbook.*;
 /*<javadoc>*/
 /*</javadoc>*/
 /*<annotations>*//*</annotations>*/
-/*<visibility>*/public/*</visibility>*/ class /*<name>*/PKAddPassesViewControllerDelegateAdapter/*</name>*/ 
+/*<visibility>*/public/*</visibility>*/ class /*<name>*/PKPaymentAuthorizationViewControllerDelegateAdapter/*</name>*/ 
     extends /*<extends>*/NSObject/*</extends>*/ 
-    /*<implements>*/implements PKAddPassesViewControllerDelegate/*</implements>*/ {
+    /*<implements>*/implements PKPaymentAuthorizationViewControllerDelegate/*</implements>*/ {
 
     /*<ptr>*/
     /*</ptr>*/
@@ -49,7 +49,13 @@ import org.robovm.apple.addressbook.*;
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
-    @NotImplemented("addPassesViewControllerDidFinish:")
-    public void didFinish(PKAddPassesViewController controller) { throw new UnsupportedOperationException(); }
+    @NotImplemented("paymentAuthorizationViewController:didAuthorizePayment:completion:")
+    public void didAuthorizePayment(PKPaymentAuthorizationViewController controller, PKPayment payment, @Block VoidBlock1<PKPaymentAuthorizationStatus> completion) { throw new UnsupportedOperationException(); }
+    @NotImplemented("paymentAuthorizationViewControllerDidFinish:")
+    public void didFinish(PKPaymentAuthorizationViewController controller) { throw new UnsupportedOperationException(); }
+    @NotImplemented("paymentAuthorizationViewController:didSelectShippingMethod:completion:")
+    public void didSelectShippingMethod(PKPaymentAuthorizationViewController controller, PKShippingMethod shippingMethod, @Block VoidBlock2<PKPaymentAuthorizationStatus, NSArray<PKPaymentSummaryItem>> completion) { throw new UnsupportedOperationException(); }
+    @NotImplemented("paymentAuthorizationViewController:didSelectShippingAddress:completion:")
+    public void didSelectShippingAddress(PKPaymentAuthorizationViewController controller, ABRecord address, @Block VoidBlock3<PKPaymentAuthorizationStatus, NSArray<PKShippingMethod>, NSArray<PKPaymentSummaryItem>> completion) { throw new UnsupportedOperationException(); }
     /*</methods>*/
 }

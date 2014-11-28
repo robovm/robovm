@@ -33,18 +33,15 @@ import org.robovm.apple.addressbook.*;
 
 /*<javadoc>*/
 /**
- * @since Available in iOS 6.0 and later.
+ * @since Available in iOS 8.0 and later.
  */
 /*</javadoc>*/
-@ForceLinkClass(PKPassKitError.class)
-/*<annotations>*/@Marshaler(ValuedEnum.AsMachineSizedSIntMarshaler.class)/*</annotations>*/
-public enum /*<name>*/PKPassKitErrorCode/*</name>*/ implements NSErrorCode {
+/*<annotations>*/@Marshaler(Bits.AsMachineSizedIntMarshaler.class)/*</annotations>*/
+public final class /*<name>*/PKMerchantCapability/*</name>*/ extends Bits</*<name>*/PKMerchantCapability/*</name>*/> {
     /*<values>*/
-    UnknownError(-1L),
-    InvalidDataError(1L),
-    UnsupportedVersionError(2L),
-    InvalidSignature(3L),
-    NotEntitledError(4L);
+    public static final PKMerchantCapability None = new PKMerchantCapability(0L);
+    public static final PKMerchantCapability _3DS = new PKMerchantCapability(1L);
+    public static final PKMerchantCapability EMV = new PKMerchantCapability(2L);
     /*</values>*/
 
     /*<bind>*/
@@ -52,17 +49,17 @@ public enum /*<name>*/PKPassKitErrorCode/*</name>*/ implements NSErrorCode {
     /*<constants>*//*</constants>*/
     /*<methods>*//*</methods>*/
 
-    private final long n;
+    private static final /*<name>*/PKMerchantCapability/*</name>*/[] values = _values(/*<name>*/PKMerchantCapability/*</name>*/.class);
 
-    private /*<name>*/PKPassKitErrorCode/*</name>*/(long n) { this.n = n; }
-    public long value() { return n; }
-    public static /*<name>*/PKPassKitErrorCode/*</name>*/ valueOf(long n) {
-        for (/*<name>*/PKPassKitErrorCode/*</name>*/ v : values()) {
-            if (v.n == n) {
-                return v;
-            }
-        }
-        throw new IllegalArgumentException("No constant with value " + n + " found in " 
-            + /*<name>*/PKPassKitErrorCode/*</name>*/.class.getName());
+    public /*<name>*/PKMerchantCapability/*</name>*/(long value) { super(value); }
+    private /*<name>*/PKMerchantCapability/*</name>*/(long value, long mask) { super(value, mask); }
+    protected /*<name>*/PKMerchantCapability/*</name>*/ wrap(long value, long mask) {
+        return new /*<name>*/PKMerchantCapability/*</name>*/(value, mask);
+    }
+    protected /*<name>*/PKMerchantCapability/*</name>*/[] _values() {
+        return values;
+    }
+    public static /*<name>*/PKMerchantCapability/*</name>*/[] values() {
+        return values.clone();
     }
 }

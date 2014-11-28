@@ -32,27 +32,30 @@ import org.robovm.apple.uikit.*;
 
 /*<javadoc>*/
 /*</javadoc>*/
-/*<annotations>*/@Library("MessageUI") @Marshaler(NSString.AsStringMarshaler.class)/*</annotations>*/
-/*<visibility>*/public/*</visibility>*/ class /*<name>*/MessageUI/*</name>*/ 
-    extends /*<extends>*/Object/*</extends>*/ 
+/*<annotations>*/@Library("MessageUI")/*</annotations>*/
+/*<visibility>*/public/*</visibility>*/ class /*<name>*/MFMailComposeError/*</name>*/ 
+    extends /*<extends>*/NSError/*</extends>*/ 
     /*<implements>*//*</implements>*/ {
 
+    protected MFMailComposeError(SkipInit skipInit) {
+        super(skipInit);
+    }
+    
     /*<ptr>*/
     /*</ptr>*/
-    /*<bind>*/static { Bro.bind(MessageUI.class); }/*</bind>*/
+    /*<bind>*/static { Bro.bind(MFMailComposeError.class); }/*</bind>*/
     /*<constants>*//*</constants>*/
-    /*<constructors>*//*</constructors>*/
     /*<properties>*//*</properties>*/
     /*<members>*//*</members>*/
+    @Override
+    public MFMailComposeErrorCode getErrorCode() {
+        return MFMailComposeErrorCode.valueOf(getCode());
+    }
     /*<methods>*/
     /**
      * @since Available in iOS 3.0 and later.
      */
     @GlobalValue(symbol="MFMailComposeErrorDomain", optional=true)
-    public static native NSString MailComposeErrorDomain();
-    @GlobalValue(symbol="MFMessageComposeViewControllerAttachmentURL", optional=true)
-    public static native NSString MessageComposeViewControllerAttachmentURL();
-    @GlobalValue(symbol="MFMessageComposeViewControllerAttachmentAlternateFilename", optional=true)
-    public static native NSString MessageComposeViewControllerAttachmentAlternateFilename();
+    public static native String getClassDomain();
     /*</methods>*/
 }

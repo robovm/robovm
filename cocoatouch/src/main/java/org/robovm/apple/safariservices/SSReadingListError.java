@@ -19,6 +19,7 @@ package org.robovm.apple.safariservices;
 import java.io.*;
 import java.nio.*;
 import java.util.*;
+
 import org.robovm.objc.*;
 import org.robovm.objc.annotation.*;
 import org.robovm.objc.block.*;
@@ -31,23 +32,31 @@ import org.robovm.apple.foundation.*;
 
 /*<javadoc>*/
 /*</javadoc>*/
-/*<annotations>*/@Library("SafariServices") @Marshaler(NSString.AsStringMarshaler.class)/*</annotations>*/
-/*<visibility>*/public/*</visibility>*/ class /*<name>*/SafariServices/*</name>*/ 
-    extends /*<extends>*/Object/*</extends>*/ 
+/*<annotations>*/@Library("SafariServices")/*</annotations>*/
+/*<visibility>*/public/*</visibility>*/ class /*<name>*/SSReadingListError/*</name>*/ 
+    extends /*<extends>*/NSError/*</extends>*/ 
     /*<implements>*//*</implements>*/ {
 
+    protected SSReadingListError(SkipInit skipInit) {
+        super(skipInit);
+    }
+    
     /*<ptr>*/
     /*</ptr>*/
-    /*<bind>*/static { Bro.bind(SafariServices.class); }/*</bind>*/
+    /*<bind>*/static { Bro.bind(SSReadingListError.class); }/*</bind>*/
     /*<constants>*//*</constants>*/
     /*<constructors>*//*</constructors>*/
     /*<properties>*//*</properties>*/
     /*<members>*//*</members>*/
+    @Override
+    public SSReadingListErrorCode getErrorCode() {
+        return SSReadingListErrorCode.valueOf(getCode());
+    }
     /*<methods>*/
     /**
      * @since Available in iOS 7.0 and later.
      */
     @GlobalValue(symbol="SSReadingListErrorDomain", optional=true)
-    public static native NSString ReadingListErrorDomain();
+    public static native String getClassDomain();
     /*</methods>*/
 }

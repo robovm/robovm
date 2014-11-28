@@ -8,16 +8,19 @@ headers:
 typedefs: {}
     
 enums:
-    SSReadingListErrorCode: {first: SSReadingListErrorURLSchemeNotAllowed, prefix: "SSReadingListError", marshaler: ValuedEnum.AsMachineSizedSIntMarshaler}
+    SSReadingListErrorCode: {first: SSReadingListErrorURLSchemeNotAllowed, prefix: SSReadingListError, marshaler: ValuedEnum.AsMachineSizedSIntMarshaler}
         
 classes:
-    SafariServices:
-        annotations: ['@Marshaler(NSString.AsStringMarshaler.class)']
+    SSReadingListError:
+        extends: NSError
 
     SSReadingList: # DONE
         methods:
+            '-init':
+                exclude: true
             '-addReadingListItemWithURL:title:previewText:error:':
-                name: "addReadingListItem"
+                name: addReadingListItem
+                visibility: protected # throws NSErrorException
             '+defaultReadingList':
                 property: true
             '+supportsURL:':
@@ -29,21 +32,20 @@ functions:
     # Make sure we don't miss any functions if new ones are introduced in a later version
     (SS.*):
         class: SafariServices
-        name: "Function__#{g[0]}"
+        name: 'Function__#{g[0]}'
 
 values:
-    SS(ReadingListErrorDomain):
-        class: SafariServices
-        name: "#{g[0]}"
-        type: NSString
+    SSReadingListErrorDomain:
+        class: SSReadingListError
+        name: getClassDomain
 
     # Make sure we don't miss any values if new ones are introduced in a later version
     (SS.*):
         class: SafariServices
-        name: "Value__#{g[0]}"
+        name: 'Value__#{g[0]}'
 
 constants:
     # Make sure we don't miss any constants if new ones are introduced in a later version
     (SS.*):
         class: SafariServices
-        name: "Constant__#{g[0]}"
+        name: 'Constant__#{g[0]}'

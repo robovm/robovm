@@ -34,8 +34,9 @@ import org.robovm.apple.foundation.*;
  * @since Available in iOS 7.0 and later.
  */
 /*</javadoc>*/
+@ForceLinkClass(SSReadingListError.class)
 /*<annotations>*/@Marshaler(ValuedEnum.AsMachineSizedSIntMarshaler.class)/*</annotations>*/
-public enum /*<name>*/SSReadingListErrorCode/*</name>*/ implements ValuedEnum {
+public enum /*<name>*/SSReadingListErrorCode/*</name>*/ implements NSErrorCode {
     /*<values>*/
     URLSchemeNotAllowed(1L);
     /*</values>*/

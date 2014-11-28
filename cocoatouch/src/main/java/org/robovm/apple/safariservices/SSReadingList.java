@@ -19,6 +19,7 @@ package org.robovm.apple.safariservices;
 import java.io.*;
 import java.nio.*;
 import java.util.*;
+
 import org.robovm.objc.*;
 import org.robovm.objc.annotation.*;
 import org.robovm.objc.block.*;
@@ -50,12 +51,29 @@ import org.robovm.apple.foundation.*;
     
     /*</properties>*/
     /*<members>*//*</members>*/
+    /**
+     * 
+     * @param URL
+     * @param title
+     * @param previewText
+     * @return
+     * @since Available in iOS 7.0 and later.
+     * @throws NSErrorException
+     */
+    public boolean addReadingListItem(NSURL URL, String title, String previewText) {
+        NSError.NSErrorPtr err = new NSError.NSErrorPtr();
+        boolean result = addReadingListItem(URL, title, previewText, err);
+        if (err.get() != null) {
+            throw new NSErrorException(err.get());
+        }
+        return result;
+    }
     /*<methods>*/
     /**
      * @since Available in iOS 7.0 and later.
      */
     @Method(selector = "addReadingListItemWithURL:title:previewText:error:")
-    public native boolean addReadingListItem(NSURL URL, String title, String previewText, NSError.NSErrorPtr error);
+    protected native boolean addReadingListItem(NSURL URL, String title, String previewText, NSError.NSErrorPtr error);
     @Method(selector = "defaultReadingList")
     public static native SSReadingList getDefaultReadingList();
     @Method(selector = "supportsURL:")

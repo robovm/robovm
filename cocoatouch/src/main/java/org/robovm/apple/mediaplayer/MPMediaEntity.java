@@ -49,13 +49,17 @@ import org.robovm.apple.coregraphics.*;
     protected MPMediaEntity(SkipInit skipInit) { super(skipInit); }
     /*</constructors>*/
     /*<properties>*/
-    
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
+    @Property(selector = "persistentID")
+    public native long getPersistentID();
     /*</properties>*/
     /*<members>*//*</members>*/
     /**
      * @since Available in iOS 4.2 and later.
      */
-    public long getPersistentID() {
+    public long getPersistentIDLegacy() {
         NSNumber val = (NSNumber) getValue(MPMediaEntityProperty.EntityPersistentID);
         if (val != null) {
             return val.longValue();
@@ -63,31 +67,30 @@ import org.robovm.apple.coregraphics.*;
         return 0;
     }
     
-    public NSObject getValue(MPMediaEntityProperty property) {
-        return getValue(property.value());
-    }
     /**
      * @since Available in iOS 4.0 and later.
      */
-    public void enumerateValues(List<MPMediaEntityProperty> properties, @Block VoidBlock3<NSString, NSObject, BytePtr> block) {
+    public void enumerateValues(List<MPMediaEntityProperty> properties, final VoidBlock3<MPMediaEntityProperty, NSObject, Boolean> block) {
         NSSet<NSString> set = new NSMutableSet<>();
         for (MPMediaEntityProperty property : properties) {
             set.add(property.value());
         }
-        enumerateValues(set, block);
-    }
-    public static boolean canFilterByProperty(MPMediaEntityProperty property) {
-        return canFilterByProperty(property.value());
+        enumerateValues(set, new VoidBlock3<NSString, NSObject, BooleanPtr>() {
+            @Override
+            public void invoke(NSString a, NSObject b, BooleanPtr c) {
+                block.invoke(MPMediaEntityProperty.valueOf(a), b, c.get());
+            }
+        });
     }
     /*<methods>*/
-    @Method(selector = "valueForProperty:")
-    protected native NSObject getValue(NSString property);
     /**
      * @since Available in iOS 4.0 and later.
      */
     @Method(selector = "enumerateValuesForProperties:usingBlock:")
-    protected native void enumerateValues(NSSet<NSString> properties, @Block VoidBlock3<NSString, NSObject, BytePtr> block);
+    protected native void enumerateValues(NSSet<NSString> properties, @Block VoidBlock3<NSString, NSObject, BooleanPtr> block);
+    @Method(selector = "valueForProperty:")
+    public native NSObject getValue(MPMediaEntityProperty property);
     @Method(selector = "canFilterByProperty:")
-    protected static native boolean canFilterByProperty(NSString property);
+    public static native boolean canFilterByProperty(MPMediaEntityProperty property);
     /*</methods>*/
 }

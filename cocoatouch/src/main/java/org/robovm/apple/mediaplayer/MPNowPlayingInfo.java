@@ -19,7 +19,6 @@ package org.robovm.apple.mediaplayer;
 import java.io.*;
 import java.nio.*;
 import java.util.*;
-
 import org.robovm.objc.*;
 import org.robovm.objc.annotation.*;
 import org.robovm.objc.block.*;
@@ -77,6 +76,8 @@ import org.robovm.apple.coregraphics.*;
     public NSDictionary<NSString, NSObject> getDictionary() {
         return data;
     }
+    
+    
     public long getPersistentID() {
         if (data.containsKey(MPMediaItemProperty.ItemPersistentIDValue())) {
             NSNumber val = (NSNumber) data.get(MPMediaItemProperty.ItemPersistentIDValue());
@@ -312,6 +313,23 @@ import org.robovm.apple.coregraphics.*;
         data.put(ChapterCount(), NSNumber.valueOf(chapterCount));
         return this;
     }
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    public double getDefaultPlaybackRate() {
+        if (data.containsKey(DefaultPlaybackRate())) {
+            NSNumber val = (NSNumber) data.get(DefaultPlaybackRate());
+            return val.doubleValue();
+        }
+        return 0;
+    }
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    public MPNowPlayingInfo setDefaultPlaybackRate(double playbackRate) {
+        data.put(DefaultPlaybackRate(), NSNumber.valueOf(playbackRate));
+        return this;
+    }
     /*<methods>*/
     /**
      * @since Available in iOS 5.0 and later.
@@ -323,6 +341,11 @@ import org.robovm.apple.coregraphics.*;
      */
     @GlobalValue(symbol="MPNowPlayingInfoPropertyPlaybackRate", optional=true)
     protected static native NSString PlaybackRate();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @GlobalValue(symbol="MPNowPlayingInfoPropertyDefaultPlaybackRate", optional=true)
+    protected static native NSString DefaultPlaybackRate();
     /**
      * @since Available in iOS 5.0 and later.
      */

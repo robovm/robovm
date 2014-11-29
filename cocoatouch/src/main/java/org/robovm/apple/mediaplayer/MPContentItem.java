@@ -47,7 +47,7 @@ import org.robovm.apple.coregraphics.*;
     /*<constructors>*/
     public MPContentItem() {}
     protected MPContentItem(SkipInit skipInit) { super(skipInit); }
-    public MPContentItem(String identifier) { super((SkipInit) null); initObject(initWithIdentifier$(identifier)); }
+    public MPContentItem(String identifier) { super((SkipInit) null); initObject(init(identifier)); }
     /*</constructors>*/
     /*<properties>*/
     @Property(selector = "identifier")
@@ -80,6 +80,6 @@ import org.robovm.apple.coregraphics.*;
     /*<members>*//*</members>*/
     /*<methods>*/
     @Method(selector = "initWithIdentifier:")
-    protected native @Pointer long initWithIdentifier$(String identifier);
+    protected native @Pointer long init(String identifier);
     /*</methods>*/
 }

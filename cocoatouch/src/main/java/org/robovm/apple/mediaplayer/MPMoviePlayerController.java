@@ -19,7 +19,6 @@ package org.robovm.apple.mediaplayer;
 import java.io.*;
 import java.nio.*;
 import java.util.*;
-
 import org.robovm.objc.*;
 import org.robovm.objc.annotation.*;
 import org.robovm.objc.block.*;
@@ -146,7 +145,7 @@ import org.robovm.apple.coregraphics.*;
             return NSNotificationCenter.getDefaultCenter().addObserver(PlaybackDidFinishNotification(), object, NSOperationQueue.getMainQueue(), new VoidBlock1<NSNotification>() {
                 @Override
                 public void invoke (NSNotification a) {
-                    NSDictionary<NSString, ?> data = a.getUserInfo();
+                    NSDictionary<NSString, NSObject> data = a.getUserInfo();
                     NSNumber val = (NSNumber) data.get(PlaybackDidFinishReasonUserInfoKey());
                     NSError error = (NSError) data.get(new NSString("error"));
                     block.invoke((MPMoviePlayerController) a.getObject(), MPMovieFinishReason.valueOf(val.intValue()), error);
@@ -238,7 +237,7 @@ import org.robovm.apple.coregraphics.*;
                 @SuppressWarnings("unchecked")
                 @Override
                 public void invoke (NSNotification a) {
-                    NSDictionary<NSString, ?> userInfo = a.getUserInfo();
+                    NSDictionary<NSString, NSObject> userInfo = a.getUserInfo();
                     NSArray<MPTimedMetadata> arr = (NSArray<MPTimedMetadata>) userInfo.get(TimedMetadataUserInfoKey());
                     block.invoke((MPMoviePlayerController) a.getObject(), arr);
                 }
@@ -252,7 +251,7 @@ import org.robovm.apple.coregraphics.*;
     /*<constructors>*/
     public MPMoviePlayerController() {}
     protected MPMoviePlayerController(SkipInit skipInit) { super(skipInit); }
-    public MPMoviePlayerController(NSURL url) { super((SkipInit) null); initObject(initWithContentURL$(url)); }
+    public MPMoviePlayerController(NSURL url) { super((SkipInit) null); initObject(init(url)); }
     /*</constructors>*/
     /*<properties>*/
     @Property(selector = "contentURL")
@@ -328,6 +327,11 @@ import org.robovm.apple.coregraphics.*;
     @Property(selector = "isAirPlayVideoActive")
     public native boolean isAirPlayVideoActive();
     /**
+     * @since Available in iOS 4.0 and later.
+     */
+    @Property(selector = "timedMetadata")
+    public native NSArray<MPTimedMetadata> getTimedMetadata();
+    /**
      * @since Available in iOS 4.3 and later.
      */
     @Property(selector = "accessLog")
@@ -352,7 +356,7 @@ import org.robovm.apple.coregraphics.*;
     @Property(selector = "setUseApplicationAudioSession:")
     public native void setUseApplicationAudioSession(boolean v);
     @Property(selector = "isPreparedToPlay")
-    public native boolean isIsPreparedToPlay();
+    public native boolean isPreparedToPlay();
     @Property(selector = "currentPlaybackTime")
     public native double getCurrentPlaybackTime();
     @Property(selector = "setCurrentPlaybackTime:")
@@ -481,7 +485,7 @@ import org.robovm.apple.coregraphics.*;
     protected static native NSString TimedMetadataUserInfoKey();
     
     @Method(selector = "initWithContentURL:")
-    protected native @Pointer long initWithContentURL$(NSURL url);
+    protected native @Pointer long init(NSURL url);
     @Method(selector = "setFullscreen:animated:")
     public native void setFullscreen(boolean fullscreen, boolean animated);
     /**
@@ -501,39 +505,6 @@ import org.robovm.apple.coregraphics.*;
      */
     @Method(selector = "cancelAllThumbnailImageRequests")
     public native void cancelAllThumbnailImageRequests();
-    /**
-     * @since Available in iOS 4.0 and later.
-     */
-    @Method(selector = "timedMetadata")
-    public native NSArray<MPTimedMetadata> getTimedMetadata();
-    /**
-     * @since Available in iOS 2.0 and later.
-     * @deprecated Deprecated in iOS 3.2.
-     */
-    @Deprecated
-    @Method(selector = "setBackgroundColor:")
-    public native void setBackgroundColor(UIColor backgroundColor);
-    /**
-     * @since Available in iOS 2.0 and later.
-     * @deprecated Deprecated in iOS 3.2.
-     */
-    @Deprecated
-    @Method(selector = "backgroundColor")
-    public native UIColor getBackgroundColor();
-    /**
-     * @since Available in iOS 2.0 and later.
-     * @deprecated Deprecated in iOS 3.2.
-     */
-    @Deprecated
-    @Method(selector = "setMovieControlMode:")
-    public native void setMovieControlMode(MPMovieControlMode movieControlMode);
-    /**
-     * @since Available in iOS 2.0 and later.
-     * @deprecated Deprecated in iOS 3.2.
-     */
-    @Deprecated
-    @Method(selector = "movieControlMode")
-    public native MPMovieControlMode getMovieControlMode();
     @Method(selector = "prepareToPlay")
     public native void prepareToPlay();
     @Method(selector = "play")

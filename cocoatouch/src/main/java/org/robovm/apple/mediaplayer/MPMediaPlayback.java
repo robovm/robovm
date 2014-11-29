@@ -43,7 +43,7 @@ import org.robovm.apple.coregraphics.*;
     /*<constants>*//*</constants>*/
     /*<properties>*/
     @Property(selector = "isPreparedToPlay")
-    boolean isIsPreparedToPlay();
+    boolean isPreparedToPlay();
     @Property(selector = "currentPlaybackTime")
     double getCurrentPlaybackTime();
     @Property(selector = "setCurrentPlaybackTime:")

@@ -33,10 +33,29 @@ import org.robovm.apple.coregraphics.*;
 
 /*<javadoc>*/
 /*</javadoc>*/
+@Marshaler(MPMediaEntityProperty.Marshaler.class)
 /*<annotations>*/@Library("MediaPlayer")/*</annotations>*/
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/MPMediaEntityProperty/*</name>*/ 
     extends /*<extends>*/Object/*</extends>*/ 
     /*<implements>*//*</implements>*/ {
+    
+    public static class Marshaler {
+        @MarshalsPointer
+        public static MPMediaEntityProperty toObject(Class<MPMediaEntityProperty> cls, long handle, long flags) {
+            NSString o = (NSString) NSObject.Marshaler.toObject(NSString.class, handle, flags);
+            if (o == null) {
+                return null;
+            }
+            return MPMediaEntityProperty.valueOf(o);
+        }
+        @MarshalsPointer
+        public static long toNative(MPMediaEntityProperty o, long flags) {
+            if (o == null) {
+                return 0L;
+            }
+            return NSObject.Marshaler.toNative(o.value(), flags);
+        }
+    }
 
     /*<ptr>*/
     /*</ptr>*/

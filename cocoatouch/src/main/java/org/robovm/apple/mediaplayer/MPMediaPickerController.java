@@ -46,8 +46,7 @@ import org.robovm.apple.coregraphics.*;
     /*<constants>*//*</constants>*/
     /*<constructors>*/
     protected MPMediaPickerController(SkipInit skipInit) { super(skipInit); }
-    public MPMediaPickerController() { super((SkipInit) null); initObject(init()); }
-    public MPMediaPickerController(MPMediaType mediaTypes) { super((SkipInit) null); initObject(initWithMediaTypes$(mediaTypes)); }
+    public MPMediaPickerController(MPMediaType mediaTypes) { super((SkipInit) null); initObject(init(mediaTypes)); }
     /*</constructors>*/
     /*<properties>*/
     @Property(selector = "mediaTypes")
@@ -77,9 +76,7 @@ import org.robovm.apple.coregraphics.*;
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
-    @Method(selector = "init")
-    protected native @Pointer long init();
     @Method(selector = "initWithMediaTypes:")
-    protected native @Pointer long initWithMediaTypes$(MPMediaType mediaTypes);
+    protected native @Pointer long init(MPMediaType mediaTypes);
     /*</methods>*/
 }

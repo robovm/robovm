@@ -19,6 +19,7 @@ package org.robovm.apple.mediaplayer;
 import java.io.*;
 import java.nio.*;
 import java.util.*;
+
 import org.robovm.objc.*;
 import org.robovm.objc.annotation.*;
 import org.robovm.objc.block.*;
@@ -44,6 +45,25 @@ import org.robovm.apple.coregraphics.*;
     /*<ptr>*/public static class MPRemoteCommandPtr extends Ptr<MPRemoteCommand, MPRemoteCommandPtr> {}/*</ptr>*/
     /*<bind>*/static { ObjCRuntime.bind(MPRemoteCommand.class); }/*</bind>*/
     /*<constants>*//*</constants>*/
+    
+    public interface OnCommandListener {
+        void onCommand(MPRemoteCommandEvent event);
+    }
+    
+    private Set<ListenerWrapper> listeners = new HashSet<>();
+    
+    private static final Selector handleCommand = Selector.register("handleCommand");
+    private static class ListenerWrapper extends NSObject {
+        private final OnCommandListener listener;
+        private ListenerWrapper(OnCommandListener listener) {
+            this.listener = listener;
+        }
+        @Method(selector = "handleCommand")
+        private void handleCommand(MPRemoteCommandEvent event) {
+            listener.onCommand(event);
+        }
+    }
+    
     /*<constructors>*/
     public MPRemoteCommand() {}
     protected MPRemoteCommand(SkipInit skipInit) { super(skipInit); }
@@ -55,14 +75,44 @@ import org.robovm.apple.coregraphics.*;
     public native void setEnabled(boolean v);
     /*</properties>*/
     /*<members>*//*</members>*/
+    public void addListener(OnCommandListener listener) {
+        if (listener == null) {
+            throw new NullPointerException("listener");
+        }
+        ListenerWrapper wrapper = new ListenerWrapper(listener);
+        addTarget(wrapper, handleCommand);
+        addStrongRef(wrapper);
+        synchronized (listeners) {
+            listeners.add(wrapper);
+        }
+    }
+    public void removeListener(OnCommandListener listener) {
+        if (listener == null) {
+            throw new NullPointerException("listener");
+        }
+        synchronized (listeners) {
+            ListenerWrapper l = null;
+            for (ListenerWrapper wrapper : listeners) {
+                if (wrapper.listener == listener) {
+                    removeTarget(wrapper, handleCommand);
+                    l = wrapper;
+                    break;
+                }
+            }
+            if (l != null) {
+                listeners.remove(l);
+                removeStrongRef(l);
+            }
+        }
+    }
     /*<methods>*/
     @Method(selector = "addTarget:action:")
-    public native void addTarget(NSObject target, Selector action);
+    protected native void addTarget(NSObject target, Selector action);
     @Method(selector = "removeTarget:action:")
-    public native void removeTarget(NSObject target, Selector action);
+    protected native void removeTarget(NSObject target, Selector action);
     @Method(selector = "removeTarget:")
-    public native void removeTarget(NSObject target);
+    protected native void removeTarget(NSObject target);
     @Method(selector = "addTargetWithHandler:")
-    public native NSObject addTarget(@Block Block1<MPRemoteCommandEvent, MPRemoteCommandHandlerStatus> handler);
+    protected native NSObject addTarget(@Block Block1<MPRemoteCommandEvent, MPRemoteCommandHandlerStatus> handler);
     /*</methods>*/
 }

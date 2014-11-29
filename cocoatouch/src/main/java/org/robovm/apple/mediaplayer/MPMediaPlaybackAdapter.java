@@ -46,7 +46,7 @@ import org.robovm.apple.coregraphics.*;
     /*<constructors>*//*</constructors>*/
     /*<properties>*/
     @NotImplemented("isPreparedToPlay")
-    public boolean isIsPreparedToPlay() { throw new UnsupportedOperationException(); }
+    public boolean isPreparedToPlay() { throw new UnsupportedOperationException(); }
     @NotImplemented("currentPlaybackTime")
     public double getCurrentPlaybackTime() { throw new UnsupportedOperationException(); }
     @NotImplemented("setCurrentPlaybackTime:")

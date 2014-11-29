@@ -43,7 +43,7 @@ import org.robovm.apple.coregraphics.*;
         @SuppressWarnings("unchecked")
         @MarshalsPointer
         public static MPMoviePlayerFullscreenAnimation toObject(Class<MPMoviePlayerFullscreenAnimation> cls, long handle, long flags) {
-            NSDictionary<NSString, ?> o = (NSDictionary<NSString, ?>) NSObject.Marshaler.toObject(NSDictionary.class, handle, flags);
+            NSDictionary<NSString, NSObject> o = (NSDictionary<NSString, NSObject>) NSObject.Marshaler.toObject(NSDictionary.class, handle, flags);
             if (o == null) {
                 return null;
             }
@@ -60,9 +60,9 @@ import org.robovm.apple.coregraphics.*;
     
     /*<ptr>*/
     /*</ptr>*/
-    private NSDictionary<NSString, ?> data;
+    private NSDictionary<NSString, NSObject> data;
     
-    protected MPMoviePlayerFullscreenAnimation(NSDictionary<NSString, ?> data) {
+    protected MPMoviePlayerFullscreenAnimation(NSDictionary<NSString, NSObject> data) {
         this.data = data;
     }
     /*<bind>*/static { Bro.bind(MPMoviePlayerFullscreenAnimation.class); }/*</bind>*/
@@ -70,6 +70,10 @@ import org.robovm.apple.coregraphics.*;
     /*<constructors>*//*</constructors>*/
     /*<properties>*//*</properties>*/
     /*<members>*//*</members>*/
+    public NSDictionary<NSString, NSObject> getDictionary() {
+    	return data;
+	}
+    
     /**
      * @since Available in iOS 3.2 and later.
      */

@@ -50,7 +50,7 @@ import org.robovm.apple.coregraphics.*;
     /**
      * @since Available in iOS 5.0 and later.
      */
-    public MPMediaItemArtwork(UIImage image) { super((SkipInit) null); initObject(initWithImage$(image)); }
+    public MPMediaItemArtwork(UIImage image) { super((SkipInit) null); initObject(init(image)); }
     /*</constructors>*/
     /*<properties>*/
     @Property(selector = "bounds")
@@ -64,7 +64,7 @@ import org.robovm.apple.coregraphics.*;
      * @since Available in iOS 5.0 and later.
      */
     @Method(selector = "initWithImage:")
-    protected native @Pointer long initWithImage$(UIImage image);
+    protected native @Pointer long init(UIImage image);
     @Method(selector = "imageWithSize:")
     public native UIImage getImage(@ByVal CGSize size);
     /*</methods>*/

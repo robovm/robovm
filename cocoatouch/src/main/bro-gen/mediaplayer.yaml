@@ -6,15 +6,14 @@ clang_args: ['-x', 'objective-c']
 headers:
     - /System/Library/Frameworks/MediaPlayer.framework/Headers/MediaPlayer.h
 typedefs:
-    'void (^)(NSString *, id, BOOL *)': '@Block VoidBlock3<NSString, NSObject, BytePtr>'
+    'void (^)(NSString *, id, BOOL *)': '@Block VoidBlock3<NSString, NSObject, BooleanPtr>'
     'MPRemoteCommandHandlerStatus (^)(MPRemoteCommandEvent *)': '@Block Block1<MPRemoteCommandEvent, MPRemoteCommandHandlerStatus>'
 
 enums:
     MPMediaGrouping: {first: MPMediaGroupingTitle, marshaler: ValuedEnum.AsMachineSizedSIntMarshaler}
-    MPMediaPlaylistAttributes: {first: MPMediaPlaylistAttributeNone, bits: true, marshaler: Bits.AsMachineSizedIntMarshaler}
+    MPMediaPlaylistAttribute: {first: MPMediaPlaylistAttributeNone, bits: true, marshaler: Bits.AsMachineSizedIntMarshaler}
     MPMediaPredicateComparison: {first: MPMediaPredicateComparisonEqualTo, marshaler: ValuedEnum.AsMachineSizedSIntMarshaler}
     MPMediaType: {}
-    MPMovieControlMode: {first: MPMovieControlModeDefault, marshaler: ValuedEnum.AsMachineSizedSIntMarshaler}
     MPMovieControlStyle: {first: MPMovieControlStyleNone, marshaler: ValuedEnum.AsMachineSizedSIntMarshaler}
     MPMovieFinishReason: {first: MPMovieFinishReasonPlaybackEnded, marshaler: ValuedEnum.AsMachineSizedSIntMarshaler}
     MPMovieLoadState: {first: MPMovieLoadStateUnknown, bits: true, marshaler: Bits.AsMachineSizedIntMarshaler}
@@ -39,54 +38,57 @@ categories:
                 name: dismissMoviePlayerViewController
 
 classes:
-    MediaPlayer:
-        annotations: ['@Marshaler(NSString.AsStringMarshaler.class)']
+    MPMediaEntityProperty: {}
+    MPMediaItemProperty:
+        extends: MPMediaEntityProperty
+    MPMediaPlaylistProperty:
+        extends: MPMediaEntityProperty
 
     MPChangePlaybackRateCommand: # DONE
         properties:
             supportedPlaybackRates:
-                type: NSArray<NSNumber>
-
+                type: '@org.robovm.rt.bro.annotation.Marshaler(NSArray.AsDoubleListMarshaler.class) List<Double>'
     MPChangePlaybackRateCommandEvent: {} # DONE
-    MPContentItem: {} # DONE
+    MPContentItem: # DONE
+        methods:
+            '-init.*':
+                name: init
     MPFeedbackCommand: {} # DONE
     MPFeedbackCommandEvent: {} # DONE
     MPMediaEntity: # DONE
         methods:
             '-valueForProperty:':
                 name: getValue
-                visibility: protected
                 parameters:
                     property:
-                        type: NSString
+                        type: MPMediaEntityProperty
             '-enumerateValuesForProperties:usingBlock:':
                 name: enumerateValues
                 visibility: protected
                 parameters:
                     properties:
                         type: NSSet<NSString>
+            '-objectForKeyedSubscript:':
+                exclude: true
             '+canFilterByProperty:':
                 trim_after_first_colon: true
-                visibility: protected
                 parameters:
                     property:
-                        type: NSString
-
+                        type: MPMediaEntityProperty
     MPMediaItem: # DONE
         methods:
             '+persistentIDPropertyForGroupingType:':
-                name: getPersistentIDProperty0
-                visibility: protected
-                return_type: NSString
+                name: getPersistentIDProperty
+                return_type: MPMediaEntityProperty
             '+titlePropertyForGroupingType:':
-                name: getTitleProperty0
-                visibility: protected
-                return_type: NSString
+                name: getTitleProperty
+                return_type: MPMediaEntityProperty
     MPMediaItemArtwork: # DONE
         methods:
+            '-init.*':
+                name: init
             '-imageWithSize:':
                 name: getImage
-
     MPMediaItemCollection: # DONE
         properties:
             'items':
@@ -104,7 +106,13 @@ classes:
                 name: getDefaultMediaLibrary
     MPMediaPickerController: # DONE
         skip_def_constructor: true
-    MPMediaPlaylist: {} # DONE
+        methods:
+            '-init.*':
+                name: init
+    MPMediaPlaylist: # DONE
+        properties:
+            'seedItems':
+                type: NSArray<MPMediaItem>
     MPMediaPredicate: {} # DONE
     MPMediaPropertyPredicate: # DONE
         properties:
@@ -141,6 +149,7 @@ classes:
             '+(albums|artists|songs|playlists|podcasts|audiobooks|compilations|composers|genres)Query':
                 name: 'create#{g[0][0].upcase}#{g[0][1..-1]}Query'
             '-initWithFilterPredicates:':
+                name: init
                 parameters:
                     filterPredicates:
                         type: NSSet<MPMediaPredicate>
@@ -161,7 +170,12 @@ classes:
                 type: NSArray<MPMovieErrorLogEvent>
     MPMovieErrorLogEvent: {} # DONE
     MPMoviePlayerController: # DONE
+        properties:
+            'timedMetadata':
+                type: NSArray<MPTimedMetadata>
         methods:
+            '-init.*':
+                name: init
             '-setFullscreen:animated:':
                 trim_after_first_colon: true
             '-thumbnailImageAtTime:timeOption:':
@@ -171,22 +185,15 @@ classes:
                 parameters:
                     playbackTimes:
                         type: NSArray<NSNumber>
-            '-backgroundColor':
-                property: true
-            '-movieControlMode':
-                property: true
-            '-timedMetadata':
-                property: true
-                return_type: NSArray<MPTimedMetadata>
     MPMoviePlayerViewController: # DONE
         methods:
-            '-shouldAutorotate':
-                exclude: true
-            '-supportedInterfaceOrientations':
-                exclude: true
+            '-init.*':
+                name: init
     MPMusicPlayerController: # DONE
         methods:
             '+applicationMusicPlayer':
+                property: true
+            '+systemMusicPlayer':
                 property: true
             '+iPodMusicPlayer':
                 property: true
@@ -194,7 +201,6 @@ classes:
                 name: setQueue
             '-setQueueWithItemCollection:':
                 name: setQueue
-
     MPNowPlayingInfoCenter: # DONE
         properties:
             'nowPlayingInfo':
@@ -212,12 +218,16 @@ classes:
         methods:
             '-addTarget:action:':
                 trim_after_first_colon: true
+                visibility: protected
             '-removeTarget:action:':
                 trim_after_first_colon: true
+                visibility: protected
             '-removeTarget:':
                 trim_after_first_colon: true
+                visibility: protected
             '-addTargetWithHandler:':
                 name: addTarget
+                visibility: protected
     MPRemoteCommandCenter: # DONE
         methods:
             '+sharedCommandCenter':
@@ -227,13 +237,12 @@ classes:
     MPSkipIntervalCommand: # DONE
         properties:
             'preferredIntervals':
-                type: NSArray<NSNumber>
+                type: '@org.robovm.rt.bro.annotation.Marshaler(NSArray.AsDoubleListMarshaler.class) List<Double>'
     MPSkipIntervalCommandEvent: {} # DONE
     MPTimedMetadata: # DONE
         properties:
             'allMetadata':
-                type: NSDictionary<NSString, ?>
-                visibility: protected
+                type: NSDictionary<NSString, NSObject>
     MPVolumeView: # DONE
         methods:
             '-maximumVolumeSliderImageForState:':
@@ -256,16 +265,8 @@ classes:
                 trim_after_first_colon: true
             '-setVolumeThumbImage:forState:':
                 trim_after_first_colon: true
-            '-sizeThatFits:':
-                name: calculateSizeThatFits
             '-volumeThumbRectForBounds:volumeSliderRect:value:':
                 name: getVolumeThumbRect
-
-    MPMediaEntityProperty: {}
-    MPMediaItemProperty:
-        extends: MPMediaEntityProperty
-    MPMediaPlaylistProperty:
-        extends: MPMediaEntityProperty
 
 protocols:
     MPMediaPickerControllerDelegate: # DONE
@@ -293,15 +294,17 @@ protocols:
                 name: initiatePlayback
 
 functions:
-
-    MPVolumeSettings(.*):
+    MPVolumeSettingsAlert(Show|Hide):
         class: MPVolumeSettings
-        name: "#{g[0]}"
+        name: '#{g[0]}Alert'
+    MPVolumeSettingsAlertIsVisible:
+        class: MPVolumeSettings
+        name: isAlertVisible
 
     # Make sure we don't miss any functions if new ones are introduced in a later version
     (MP.*):
         class: MediaPlayer
-        name: "Function__#{g[0]}"
+        name: 'Function__#{g[0]}'
 
 values:
     MPMediaEntityPropertyPersistentID:

@@ -43,7 +43,7 @@ import org.robovm.apple.coregraphics.*;
         @SuppressWarnings("unchecked")
         @MarshalsPointer
         public static MPMoviePlayerThumbnailRequest toObject(Class<MPMoviePlayerThumbnailRequest> cls, long handle, long flags) {
-            NSDictionary<NSString, ?> o = (NSDictionary<NSString, ?>) NSObject.Marshaler.toObject(NSDictionary.class, handle, flags);
+            NSDictionary<NSString, NSObject> o = (NSDictionary<NSString, NSObject>) NSObject.Marshaler.toObject(NSDictionary.class, handle, flags);
             if (o == null) {
                 return null;
             }
@@ -60,9 +60,9 @@ import org.robovm.apple.coregraphics.*;
     
     /*<ptr>*/
     /*</ptr>*/
-    private NSDictionary<NSString, ?> data;
+    private NSDictionary<NSString, NSObject> data;
     
-    protected MPMoviePlayerThumbnailRequest(NSDictionary<NSString, ?> data) {
+    protected MPMoviePlayerThumbnailRequest(NSDictionary<NSString, NSObject> data) {
         this.data = data;
     }
     
@@ -71,7 +71,7 @@ import org.robovm.apple.coregraphics.*;
     /*<constructors>*//*</constructors>*/
     /*<properties>*//*</properties>*/
     /*<members>*//*</members>*/
-    public NSDictionary<NSString, ?> getDictionary() {
+    public NSDictionary<NSString, NSObject> getDictionary() {
         return data;
     }
     

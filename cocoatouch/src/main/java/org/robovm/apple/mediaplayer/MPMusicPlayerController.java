@@ -121,7 +121,7 @@ import org.robovm.apple.coregraphics.*;
     @Property(selector = "indexOfNowPlayingItem")
     public native @MachineSizedUInt long getIndexOfNowPlayingItem();
     @Property(selector = "isPreparedToPlay")
-    public native boolean isIsPreparedToPlay();
+    public native boolean isPreparedToPlay();
     @Property(selector = "currentPlaybackTime")
     public native double getCurrentPlaybackTime();
     @Property(selector = "setCurrentPlaybackTime:")
@@ -147,6 +147,13 @@ import org.robovm.apple.coregraphics.*;
     
     @Method(selector = "applicationMusicPlayer")
     public static native MPMusicPlayerController getApplicationMusicPlayer();
+    @Method(selector = "systemMusicPlayer")
+    public static native MPMusicPlayerController getSystemMusicPlayer();
+    /**
+     * @since Available in iOS 3.0 and later.
+     * @deprecated Deprecated in iOS 8.0.
+     */
+    @Deprecated
     @Method(selector = "iPodMusicPlayer")
     public static native MPMusicPlayerController getIPodMusicPlayer();
     @Method(selector = "setQueueWithQuery:")

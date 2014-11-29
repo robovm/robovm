@@ -134,6 +134,9 @@ import org.robovm.apple.coregraphics.*;
         return null;
     }
     /*<methods>*/
+    /**
+     * @since Available in iOS 4.2 and later.
+     */
     @GlobalValue(symbol="MPMediaItemPropertyPersistentID", optional=true)
     protected static native NSString ItemPersistentIDValue();
     @GlobalValue(symbol="MPMediaItemPropertyMediaType", optional=true)

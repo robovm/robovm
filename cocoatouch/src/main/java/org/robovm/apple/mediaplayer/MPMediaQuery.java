@@ -46,8 +46,7 @@ import org.robovm.apple.coregraphics.*;
     /*<constants>*//*</constants>*/
     /*<constructors>*/
     protected MPMediaQuery(SkipInit skipInit) { super(skipInit); }
-    public MPMediaQuery() { super((SkipInit) null); initObject(init()); }
-    public MPMediaQuery(NSSet<MPMediaPredicate> filterPredicates) { super((SkipInit) null); initObject(initWithFilterPredicates$(filterPredicates)); }
+    public MPMediaQuery(NSSet<MPMediaPredicate> filterPredicates) { super((SkipInit) null); initObject(init(filterPredicates)); }
     /*</constructors>*/
     /*<properties>*/
     @Property(selector = "filterPredicates")
@@ -75,10 +74,8 @@ import org.robovm.apple.coregraphics.*;
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
-    @Method(selector = "init")
-    protected native @Pointer long init();
     @Method(selector = "initWithFilterPredicates:")
-    protected native @Pointer long initWithFilterPredicates$(NSSet<MPMediaPredicate> filterPredicates);
+    protected native @Pointer long init(NSSet<MPMediaPredicate> filterPredicates);
     @Method(selector = "addFilterPredicate:")
     public native void addFilterPredicate(MPMediaPredicate predicate);
     @Method(selector = "removeFilterPredicate:")

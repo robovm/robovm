@@ -50,9 +50,9 @@ import org.robovm.apple.coregraphics.*;
     /*</constructors>*/
     /*<properties>*/
     @Property(selector = "preferredIntervals")
-    public native NSArray<NSNumber> getPreferredIntervals();
+    public native @org.robovm.rt.bro.annotation.Marshaler(NSArray.AsDoubleListMarshaler.class) List<Double> getPreferredIntervals();
     @Property(selector = "setPreferredIntervals:")
-    public native void setPreferredIntervals(NSArray<NSNumber> v);
+    public native void setPreferredIntervals(@org.robovm.rt.bro.annotation.Marshaler(NSArray.AsDoubleListMarshaler.class) List<Double> v);
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/

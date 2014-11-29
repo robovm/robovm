@@ -50,9 +50,9 @@ import org.robovm.apple.coregraphics.*;
     /*</constructors>*/
     /*<properties>*/
     @Property(selector = "supportedPlaybackRates")
-    public native NSArray<NSNumber> getSupportedPlaybackRates();
+    public native @org.robovm.rt.bro.annotation.Marshaler(NSArray.AsDoubleListMarshaler.class) List<Double> getSupportedPlaybackRates();
     @Property(selector = "setSupportedPlaybackRates:")
-    public native void setSupportedPlaybackRates(NSArray<NSNumber> v);
+    public native void setSupportedPlaybackRates(@org.robovm.rt.bro.annotation.Marshaler(NSArray.AsDoubleListMarshaler.class) List<Double> v);
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/

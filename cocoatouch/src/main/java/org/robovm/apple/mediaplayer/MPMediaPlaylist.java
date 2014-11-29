@@ -49,34 +49,52 @@ import org.robovm.apple.coregraphics.*;
     protected MPMediaPlaylist(SkipInit skipInit) { super(skipInit); }
     /*</constructors>*/
     /*<properties>*/
-    
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
+    @Property(selector = "persistentID")
+    public native long getPersistentID();
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
+    @Property(selector = "name")
+    public native String getName();
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
+    @Property(selector = "playlistAttributes")
+    public native MPMediaPlaylistAttribute getPlaylistAttributes();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @Property(selector = "seedItems")
+    public native NSArray<MPMediaItem> getSeedItems();
     /*</properties>*/
     /*<members>*//*</members>*/
-    @Override
-    public long getPersistentID() {
-        NSNumber val = (NSNumber) getValue(MPMediaPlaylistProperty.PlaylistPersistendIDValue());
+    public long getPersistentIDLegacy() {
+        NSNumber val = (NSNumber) getValue(MPMediaPlaylistProperty.PlaylistPersistendID);
         if (val != null) {
             return val.longValue();
         }
         return 0;
     }
-    public String getName() {
-        NSString val = (NSString) getValue(MPMediaPlaylistProperty.NameValue());
+    public String getNameLegacy() {
+        NSString val = (NSString) getValue(MPMediaPlaylistProperty.Name);
         if (val != null) {
             return val.toString();
         }
         return null;
     }
-    public MPMediaPlaylistAttributes getPlaylistAttributes() {
-        NSNumber val = (NSNumber) getValue(MPMediaPlaylistProperty.PlaylistAttributesValue());
+    public MPMediaPlaylistAttributes getPlaylistAttributesLegacy() {
+        NSNumber val = (NSNumber) getValue(MPMediaPlaylistProperty.PlaylistAttributes);
         if (val != null) {
             return new MPMediaPlaylistAttributes(val.intValue());
         }
         return null;
     }
     @SuppressWarnings("unchecked")
-    public NSArray<MPMediaItem> getSeedItems() {
-        NSArray<MPMediaItem> val = (NSArray<MPMediaItem>) getValue(MPMediaPlaylistProperty.SeedItemsValue());
+    public NSArray<MPMediaItem> getSeedItemsLegacy() {
+        NSArray<MPMediaItem> val = (NSArray<MPMediaItem>) getValue(MPMediaPlaylistProperty.SeedItems);
         if (val != null) {
             return val;
         }

@@ -47,10 +47,10 @@ import org.robovm.apple.coregraphics.*;
     /*<members>*//*</members>*/
     /*<methods>*/
     @Bridge(symbol="MPVolumeSettingsAlertShow", optional=true)
-    public static native void alertShow();
+    public static native void showAlert();
     @Bridge(symbol="MPVolumeSettingsAlertHide", optional=true)
-    public static native void alertHide();
+    public static native void hideAlert();
     @Bridge(symbol="MPVolumeSettingsAlertIsVisible", optional=true)
-    public static native boolean alertIsVisible();
+    public static native boolean isAlertVisible();
     /*</methods>*/
 }

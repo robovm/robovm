@@ -47,7 +47,7 @@ import org.robovm.apple.coregraphics.*;
     public static final MPMediaPlaylistProperty PlaylistAttributes = new MPMediaPlaylistProperty("PlaylistAttributesValue", true);
     public static final MPMediaPlaylistProperty SeedItems = new MPMediaPlaylistProperty("SeedItemsValue", false);
 
-    private static MPMediaPlaylistProperty[] values = new MPMediaPlaylistProperty[] {};
+    private static MPMediaPlaylistProperty[] values = new MPMediaPlaylistProperty[] {PlaylistPersistendID, Name, PlaylistAttributes, SeedItems};
     
     private MPMediaPlaylistProperty(String getterName, boolean filterable) {
         super(getterName, filterable);

@@ -128,8 +128,6 @@ import org.robovm.apple.coregraphics.*;
     @GlobalValue(symbol="MPVolumeViewWirelessRouteActiveDidChangeNotification", optional=true)
     public static native NSString WirelessRouteActiveDidChangeNotification();
     
-    @Method(selector = "sizeThatFits:")
-    public native @ByVal CGSize calculateSizeThatFits(@ByVal CGSize size);
     /**
      * @since Available in iOS 6.0 and later.
      */

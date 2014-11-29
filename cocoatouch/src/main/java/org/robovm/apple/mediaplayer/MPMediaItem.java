@@ -49,11 +49,180 @@ import org.robovm.apple.coregraphics.*;
     protected MPMediaItem(SkipInit skipInit) { super(skipInit); }
     /*</constructors>*/
     /*<properties>*/
-    
+    /**
+     * @since Available in iOS 5.0 and later.
+     */
+    @Property(selector = "persistentID")
+    public native long getPersistentID();
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
+    @Property(selector = "mediaType")
+    public native MPMediaType getMediaType();
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
+    @Property(selector = "title")
+    public native String getTitle();
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
+    @Property(selector = "albumTitle")
+    public native String getAlbumTitle();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @Property(selector = "albumPersistentID")
+    public native long getAlbumPersistentID();
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
+    @Property(selector = "artist")
+    public native String getArtist();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @Property(selector = "artistPersistentID")
+    public native long getArtistPersistentID();
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
+    @Property(selector = "albumArtist")
+    public native String getAlbumArtist();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @Property(selector = "albumArtistPersistentID")
+    public native long getAlbumArtistPersistentID();
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
+    @Property(selector = "genre")
+    public native String getGenre();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @Property(selector = "genrePersistentID")
+    public native long getGenrePersistentID();
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
+    @Property(selector = "composer")
+    public native String getComposer();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @Property(selector = "composerPersistentID")
+    public native long getComposerPersistentID();
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
+    @Property(selector = "playbackDuration")
+    public native double getPlaybackDuration();
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
+    @Property(selector = "albumTrackNumber")
+    public native @MachineSizedUInt long getAlbumTrackNumber();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @Property(selector = "albumTrackCount")
+    public native @MachineSizedUInt long getAlbumTrackCount();
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
+    @Property(selector = "discNumber")
+    public native @MachineSizedUInt long getDiscNumber();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @Property(selector = "discCount")
+    public native @MachineSizedUInt long getDiscCount();
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
+    @Property(selector = "artwork")
+    public native MPMediaItemArtwork getArtwork();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @Property(selector = "lyrics")
+    public native String getLyrics();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @Property(selector = "isCompilation")
+    public native boolean isCompilation();
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
+    @Property(selector = "releaseDate")
+    public native NSDate getReleaseDate();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @Property(selector = "beatsPerMinute")
+    public native @MachineSizedUInt long getBeatsPerMinute();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @Property(selector = "comments")
+    public native String getComments();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @Property(selector = "assetURL")
+    public native NSURL getAssetURL();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @Property(selector = "isCloudItem")
+    public native boolean isCloudItem();
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
+    @Property(selector = "podcastTitle")
+    public native String getPodcastTitle();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @Property(selector = "podcastPersistentID")
+    public native long getPodcastPersistentID();
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
+    @Property(selector = "playCount")
+    public native @MachineSizedUInt long getPlayCount();
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
+    @Property(selector = "skipCount")
+    public native @MachineSizedUInt long getSkipCount();
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
+    @Property(selector = "rating")
+    public native @MachineSizedUInt long getRating();
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
+    @Property(selector = "lastPlayedDate")
+    public native NSDate getLastPlayedDate();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @Property(selector = "userGrouping")
+    public native String getUserGrouping();
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
+    @Property(selector = "bookmarkTime")
+    public native double getBookmarkTime();
     /*</properties>*/
     /*<members>*//*</members>*/
     @Override
-    public long getPersistentID() {
+    public long getPersistentIDLegacy() {
         NSNumber val = (NSNumber) getValue(MPMediaItemProperty.ItemPersistentID);
         if (val != null) {
             return val.longValue();
@@ -63,7 +232,7 @@ import org.robovm.apple.coregraphics.*;
     /**
      * @since Available in iOS 4.2 and later.
      */
-    public long getAlbumPersistentID() {
+    public long getAlbumPersistentIDLegacy() {
         NSNumber val = (NSNumber) getValue(MPMediaItemProperty.AlbumPersistentID);
         if (val != null) {
             return val.longValue();
@@ -73,7 +242,7 @@ import org.robovm.apple.coregraphics.*;
     /**
      * @since Available in iOS 4.2 and later.
      */
-    public long getArtistPersistentID() {
+    public long getArtistPersistentIDLegacy() {
         NSNumber val = (NSNumber) getValue(MPMediaItemProperty.ArtistPersistentID);
         if (val != null) {
             return val.longValue();
@@ -83,7 +252,7 @@ import org.robovm.apple.coregraphics.*;
     /**
      * @since Available in iOS 4.2 and later.
      */
-    public long getAlbumArtistPersistentID() {
+    public long getAlbumArtistPersistentIDLegacy() {
         NSNumber val = (NSNumber) getValue(MPMediaItemProperty.AlbumArtistPersistentID);
         if (val != null) {
             return val.longValue();
@@ -93,7 +262,7 @@ import org.robovm.apple.coregraphics.*;
     /**
      * @since Available in iOS 4.2 and later.
      */
-    public long getGenrePersistentID() {
+    public long getGenrePersistentIDLegacy() {
         NSNumber val = (NSNumber) getValue(MPMediaItemProperty.GenrePersistentID);
         if (val != null) {
             return val.longValue();
@@ -103,7 +272,7 @@ import org.robovm.apple.coregraphics.*;
     /**
      * @since Available in iOS 4.2 and later.
      */
-    public long getComposerPersistentID() {
+    public long getComposerPersistentIDLegacy() {
         NSNumber val = (NSNumber) getValue(MPMediaItemProperty.ComposerPersistentID);
         if (val != null) {
             return val.longValue();
@@ -113,112 +282,112 @@ import org.robovm.apple.coregraphics.*;
     /**
      * @since Available in iOS 4.2 and later.
      */
-    public long getPodcastPersistentID() {
+    public long getPodcastPersistentIDLegacy() {
         NSNumber val = (NSNumber) getValue(MPMediaItemProperty.PodcastPersistentID);
         if (val != null) {
             return val.longValue();
         }
         return 0;
     }
-    public MPMediaType getMediaType() {
+    public MPMediaType getMediaTypeLegacy() {
         NSNumber val = (NSNumber) getValue(MPMediaItemProperty.MediaType);
         if (val != null) {
             return new MPMediaType(val.intValue());
         }
         return null;
     }
-    public String getTitle() {
+    public String getTitleLegacy() {
         NSString val = (NSString) getValue(MPMediaItemProperty.Title);
         if (val != null) {
             return val.toString();
         }
         return null;
     }
-    public String getAlbumTitle() {
+    public String getAlbumTitleLegacy() {
         NSString val = (NSString) getValue(MPMediaItemProperty.AlbumTitle);
         if (val != null) {
             return val.toString();
         }
         return null;
     }
-    public String getArtist() {
+    public String getArtistLegacy() {
         NSString val = (NSString) getValue(MPMediaItemProperty.Artist);
         if (val != null) {
             return val.toString();
         }
         return null;
     }
-    public String getAlbumArtist() {
+    public String getAlbumArtistLegacy() {
         NSString val = (NSString) getValue(MPMediaItemProperty.AlbumArtist);
         if (val != null) {
             return val.toString();
         }
         return null;
     }
-    public String getGenre() {
+    public String getGenreLegacy() {
         NSString val = (NSString) getValue(MPMediaItemProperty.Genre);
         if (val != null) {
             return val.toString();
         }
         return null;
     }
-    public String getComposer() {
+    public String getComposerLegacy() {
         NSString val = (NSString) getValue(MPMediaItemProperty.Composer);
         if (val != null) {
             return val.toString();
         }
         return null;
     }
-    public double getPlaybackDuration() {
+    public double getPlaybackDurationLegacy() {
         NSNumber val = (NSNumber) getValue(MPMediaItemProperty.PlaybackDuration);
         if (val != null) {
             return val.doubleValue();
         }
         return 0;
     }
-    public int getAlbumTrackNumber() {
+    public int getAlbumTrackNumberLegacy() {
         NSNumber val = (NSNumber) getValue(MPMediaItemProperty.AlbumTrackNumber);
         if (val != null) {
             return val.intValue();
         }
         return 0;
     }
-    public int getAlbumTrackCount() {
+    public int getAlbumTrackCountLegacy() {
         NSNumber val = (NSNumber) getValue(MPMediaItemProperty.AlbumTrackCount);
         if (val != null) {
             return val.intValue();
         }
         return 0;
     }
-    public int getDiscNumber() {
+    public int getDiscNumberLegacy() {
         NSNumber val = (NSNumber) getValue(MPMediaItemProperty.DiscNumber);
         if (val != null) {
             return val.intValue();
         }
         return 0;
     }
-    public int getDiscCount() {
+    public int getDiscCountLegacy() {
         NSNumber val = (NSNumber) getValue(MPMediaItemProperty.DiscCount);
         if (val != null) {
             return val.intValue();
         }
         return 0;
     }
-    public MPMediaItemArtwork getArtwork() {
+    public MPMediaItemArtwork getArtworkLegacy() {
         MPMediaItemArtwork val = (MPMediaItemArtwork) getValue(MPMediaItemProperty.Artwork);
         if (val != null) {
             return val;
         }
         return null;
     }
-    public String getLyrics() {
+    public String getLyricsLegacy() {
         NSString val = (NSString) getValue(MPMediaItemProperty.Lyrics);
         if (val != null) {
             return val.toString();
         }
         return null;
     }
-    public boolean isCompilation() {
+    public boolean isCompilationLegacy() {
         NSNumber val = (NSNumber) getValue(MPMediaItemProperty.IsCompilation);
         if (val != null) {
             return val.booleanValue();
@@ -228,7 +397,7 @@ import org.robovm.apple.coregraphics.*;
     /**
      * @since Available in iOS 4.0 and later.
      */
-    public NSDate getReleaseDate() {
+    public NSDate getReleaseDateLegacy() {
         NSDate val = (NSDate) getValue(MPMediaItemProperty.ReleaseDate);
         if (val != null) {
             return val;
@@ -238,7 +407,7 @@ import org.robovm.apple.coregraphics.*;
     /**
      * @since Available in iOS 4.0 and later.
      */
-    public int getBeatsPerMinute() {
+    public int getBeatsPerMinuteLegacy() {
         NSNumber val = (NSNumber) getValue(MPMediaItemProperty.BeatsPerMinute);
         if (val != null) {
             return val.intValue();
@@ -248,7 +417,7 @@ import org.robovm.apple.coregraphics.*;
     /**
      * @since Available in iOS 4.0 and later.
      */
-    public String getComments() {
+    public String getCommentsLegacy() {
         NSString val = (NSString) getValue(MPMediaItemProperty.Comments);
         if (val != null) {
             return val.toString();
@@ -258,7 +427,7 @@ import org.robovm.apple.coregraphics.*;
     /**
      * @since Available in iOS 4.0 and later.
      */
-    public NSURL getAssetURL() {
+    public NSURL getAssetURLLegacy() {
         NSURL val = (NSURL) getValue(MPMediaItemProperty.AssetURL);
         if (val != null) {
             return val;
@@ -268,42 +437,42 @@ import org.robovm.apple.coregraphics.*;
     /**
      * @since Available in iOS 6.0 and later.
      */
-    public boolean isCloudItem() {
+    public boolean isCloudItemLegacy() {
         NSNumber val = (NSNumber) getValue(MPMediaItemProperty.IsCloudItem);
         if (val != null) {
             return val.booleanValue();
         }
         return false;
     }
-    public String getPodcastTitle() {
+    public String getPodcastTitleLegacy() {
         NSString val = (NSString) getValue(MPMediaItemProperty.PodcastTitle);
         if (val != null) {
             return val.toString();
         }
         return null;
     }
-    public int getPlayCount() {
+    public int getPlayCountLegacy() {
         NSNumber val = (NSNumber) getValue(MPMediaItemProperty.PlayCount);
         if (val != null) {
             return val.intValue();
         }
         return 0;
     }
-    public int getSkipCount() {
+    public int getSkipCountLegacy() {
         NSNumber val = (NSNumber) getValue(MPMediaItemProperty.SkipCount);
         if (val != null) {
             return val.intValue();
         }
         return 0;
     }
-    public int getRating() {
+    public int getRatingLegacy() {
         NSNumber val = (NSNumber) getValue(MPMediaItemProperty.Rating);
         if (val != null) {
             return val.intValue();
         }
         return 0;
     }
-    public NSDate getLastPlayedDate() {
+    public NSDate getLastPlayedDateLegacy() {
         NSDate val = (NSDate) getValue(MPMediaItemProperty.LastPlayedDate);
         if (val != null) {
             return val;
@@ -313,7 +482,7 @@ import org.robovm.apple.coregraphics.*;
     /**
      * @since Available in iOS 4.0 and later.
      */
-    public String getUserGrouping() {
+    public String getUserGroupingLegacy() {
         NSString val = (NSString) getValue(MPMediaItemProperty.UserGrouping);
         if (val != null) {
             return val.toString();
@@ -323,36 +492,23 @@ import org.robovm.apple.coregraphics.*;
     /**
      * @since Available in iOS 6.0 and later.
      */
-    public double getBookmarkTime() {
+    public double getBookmarkTimeLegacy() {
         NSNumber val = (NSNumber) getValue(MPMediaItemProperty.BookmarkTime);
         if (val != null) {
             return val.doubleValue();
         }
         return 0;
     }
-    
-    /**
-     * @since Available in iOS 4.2 and later.
-     */
-    public static MPMediaEntityProperty getPersistentIDProperty(MPMediaGrouping groupingType) {
-        return MPMediaEntityProperty.valueOf(getPersistentIDProperty0(groupingType));
-    }
-    /**
-     * @since Available in iOS 4.2 and later.
-     */
-    public static MPMediaEntityProperty getTitleProperty(MPMediaGrouping groupingType) {
-        return MPMediaEntityProperty.valueOf(getTitleProperty0(groupingType));
-    }
     /*<methods>*/
     /**
      * @since Available in iOS 4.2 and later.
      */
     @Method(selector = "persistentIDPropertyForGroupingType:")
-    protected static native NSString getPersistentIDProperty0(MPMediaGrouping groupingType);
+    public static native MPMediaEntityProperty getPersistentIDProperty(MPMediaGrouping groupingType);
     /**
      * @since Available in iOS 4.2 and later.
      */
     @Method(selector = "titlePropertyForGroupingType:")
-    protected static native NSString getTitleProperty0(MPMediaGrouping groupingType);
+    public static native MPMediaEntityProperty getTitleProperty(MPMediaGrouping groupingType);
     /*</methods>*/
 }

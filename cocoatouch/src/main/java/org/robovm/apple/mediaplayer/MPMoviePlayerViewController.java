@@ -47,7 +47,7 @@ import org.robovm.apple.coregraphics.*;
     /*<constructors>*/
     public MPMoviePlayerViewController() {}
     protected MPMoviePlayerViewController(SkipInit skipInit) { super(skipInit); }
-    public MPMoviePlayerViewController(NSURL contentURL) { super((SkipInit) null); initObject(initWithContentURL$(contentURL)); }
+    public MPMoviePlayerViewController(NSURL contentURL) { super((SkipInit) null); initObject(init(contentURL)); }
     /*</constructors>*/
     /*<properties>*/
     @Property(selector = "moviePlayer")
@@ -56,6 +56,6 @@ import org.robovm.apple.coregraphics.*;
     /*<members>*//*</members>*/
     /*<methods>*/
     @Method(selector = "initWithContentURL:")
-    protected native @Pointer long initWithContentURL$(NSURL contentURL);
+    protected native @Pointer long init(NSURL contentURL);
     /*</methods>*/
 }

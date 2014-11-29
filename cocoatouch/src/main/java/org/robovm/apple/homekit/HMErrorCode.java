@@ -32,6 +32,7 @@ import org.robovm.apple.foundation.*;
 /*<javadoc>*/
 
 /*</javadoc>*/
+@ForceLinkClass(HMError.class)
 /*<annotations>*/@Marshaler(ValuedEnum.AsMachineSizedSIntMarshaler.class)/*</annotations>*/
 public enum /*<name>*/HMErrorCode/*</name>*/ implements NSErrorCode {
     /*<values>*/

@@ -28,24 +28,33 @@ import org.robovm.rt.bro.annotation.*;
 import org.robovm.rt.bro.ptr.*;
 import org.robovm.apple.foundation.*;
 import org.robovm.apple.uikit.*;
+import org.robovm.apple.security.*;
 /*</imports>*/
 
 /*<javadoc>*/
 /*</javadoc>*/
-/*<annotations>*/@Library("MultipeerConnectivity") @Marshaler(NSString.AsStringMarshaler.class)/*</annotations>*/
-/*<visibility>*/public/*</visibility>*/ class /*<name>*/MultipeerConnectivity/*</name>*/ 
-    extends /*<extends>*/Object/*</extends>*/ 
+/*<annotations>*/@Library("MultipeerConnectivity")/*</annotations>*/
+/*<visibility>*/public/*</visibility>*/ class /*<name>*/MCError/*</name>*/ 
+    extends /*<extends>*/NSError/*</extends>*/ 
     /*<implements>*//*</implements>*/ {
 
+    protected MCError(SkipInit skipInit) {
+        super(skipInit);
+    }
+    
     /*<ptr>*/
     /*</ptr>*/
-    /*<bind>*/static { Bro.bind(MultipeerConnectivity.class); }/*</bind>*/
+    /*<bind>*/static { Bro.bind(MCError.class); }/*</bind>*/
     /*<constants>*//*</constants>*/
     /*<constructors>*//*</constructors>*/
     /*<properties>*//*</properties>*/
     /*<members>*//*</members>*/
+    @Override
+    public MCErrorCode getErrorCode() {
+        return MCErrorCode.valueOf(getCode());
+    }
     /*<methods>*/
     @GlobalValue(symbol="MCErrorDomain", optional=true)
-    public static native NSString ErrorDomain();
+    public static native String getClassDomain();
     /*</methods>*/
 }

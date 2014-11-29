@@ -28,6 +28,7 @@ import org.robovm.rt.bro.annotation.*;
 import org.robovm.rt.bro.ptr.*;
 import org.robovm.apple.foundation.*;
 import org.robovm.apple.uikit.*;
+import org.robovm.apple.security.*;
 /*</imports>*/
 
 /*<javadoc>*/
@@ -46,7 +47,7 @@ import org.robovm.apple.uikit.*;
     /*<constructors>*/
     public MCNearbyServiceBrowser() {}
     protected MCNearbyServiceBrowser(SkipInit skipInit) { super(skipInit); }
-    public MCNearbyServiceBrowser(MCPeerID myPeerID, String serviceType) { super((SkipInit) null); initObject(initWithPeer$serviceType$(myPeerID, serviceType)); }
+    public MCNearbyServiceBrowser(MCPeerID myPeerID, String serviceType) { super((SkipInit) null); initObject(init(myPeerID, serviceType)); }
     /*</constructors>*/
     /*<properties>*/
     @Property(selector = "delegate")
@@ -61,7 +62,7 @@ import org.robovm.apple.uikit.*;
     /*<members>*//*</members>*/
     /*<methods>*/
     @Method(selector = "initWithPeer:serviceType:")
-    protected native @Pointer long initWithPeer$serviceType$(MCPeerID myPeerID, String serviceType);
+    protected native @Pointer long init(MCPeerID myPeerID, String serviceType);
     @Method(selector = "startBrowsingForPeers")
     public native void startBrowsing();
     @Method(selector = "stopBrowsingForPeers")

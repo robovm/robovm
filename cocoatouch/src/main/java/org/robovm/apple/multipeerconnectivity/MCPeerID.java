@@ -28,6 +28,7 @@ import org.robovm.rt.bro.annotation.*;
 import org.robovm.rt.bro.ptr.*;
 import org.robovm.apple.foundation.*;
 import org.robovm.apple.uikit.*;
+import org.robovm.apple.security.*;
 /*</imports>*/
 
 /*<javadoc>*/
@@ -46,7 +47,7 @@ import org.robovm.apple.uikit.*;
     /*<constructors>*/
     public MCPeerID() {}
     protected MCPeerID(SkipInit skipInit) { super(skipInit); }
-    public MCPeerID(String myDisplayName) { super((SkipInit) null); initObject(initWithDisplayName$(myDisplayName)); }
+    public MCPeerID(String myDisplayName) { super((SkipInit) null); initObject(init(myDisplayName)); }
     /*</constructors>*/
     /*<properties>*/
     @Property(selector = "displayName")
@@ -55,6 +56,6 @@ import org.robovm.apple.uikit.*;
     /*<members>*//*</members>*/
     /*<methods>*/
     @Method(selector = "initWithDisplayName:")
-    protected native @Pointer long initWithDisplayName$(String myDisplayName);
+    protected native @Pointer long init(String myDisplayName);
     /*</methods>*/
 }

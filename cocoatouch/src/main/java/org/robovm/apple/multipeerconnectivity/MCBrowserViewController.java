@@ -28,6 +28,7 @@ import org.robovm.rt.bro.annotation.*;
 import org.robovm.rt.bro.ptr.*;
 import org.robovm.apple.foundation.*;
 import org.robovm.apple.uikit.*;
+import org.robovm.apple.security.*;
 /*</imports>*/
 
 /*<javadoc>*/
@@ -46,8 +47,8 @@ import org.robovm.apple.uikit.*;
     /*<constructors>*/
     public MCBrowserViewController() {}
     protected MCBrowserViewController(SkipInit skipInit) { super(skipInit); }
-    public MCBrowserViewController(String serviceType, MCSession session) { super((SkipInit) null); initObject(initWithServiceType$session$(serviceType, session)); }
-    public MCBrowserViewController(MCNearbyServiceBrowser browser, MCSession session) { super((SkipInit) null); initObject(initWithBrowser$session$(browser, session)); }
+    public MCBrowserViewController(String serviceType, MCSession session) { super((SkipInit) null); initObject(init(serviceType, session)); }
+    public MCBrowserViewController(MCNearbyServiceBrowser browser, MCSession session) { super((SkipInit) null); initObject(init(browser, session)); }
     /*</constructors>*/
     /*<properties>*/
     @Property(selector = "delegate")
@@ -70,11 +71,11 @@ import org.robovm.apple.uikit.*;
     /*<members>*//*</members>*/
     /*<methods>*/
     @Method(selector = "initWithServiceType:session:")
-    protected native @Pointer long initWithServiceType$session$(String serviceType, MCSession session);
+    protected native @Pointer long init(String serviceType, MCSession session);
     @Method(selector = "initWithBrowser:session:")
-    protected native @Pointer long initWithBrowser$session$(MCNearbyServiceBrowser browser, MCSession session);
+    protected native @Pointer long init(MCNearbyServiceBrowser browser, MCSession session);
     @Method(selector = "browser:foundPeer:withDiscoveryInfo:")
-    public native void foundPeer(MCNearbyServiceBrowser browser, MCPeerID peerID, NSDictionary<NSString, NSString> info);
+    public native void foundPeer(MCNearbyServiceBrowser browser, MCPeerID peerID, @org.robovm.rt.bro.annotation.Marshaler(NSDictionary.AsStringStringMapMarshaler.class) Map<String, String> info);
     @Method(selector = "browser:lostPeer:")
     public native void lostPeer(MCNearbyServiceBrowser browser, MCPeerID peerID);
     @Method(selector = "browser:didNotStartBrowsingForPeers:")

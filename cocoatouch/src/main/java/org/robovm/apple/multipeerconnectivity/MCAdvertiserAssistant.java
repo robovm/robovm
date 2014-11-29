@@ -28,6 +28,7 @@ import org.robovm.rt.bro.annotation.*;
 import org.robovm.rt.bro.ptr.*;
 import org.robovm.apple.foundation.*;
 import org.robovm.apple.uikit.*;
+import org.robovm.apple.security.*;
 /*</imports>*/
 
 /*<javadoc>*/
@@ -46,7 +47,7 @@ import org.robovm.apple.uikit.*;
     /*<constructors>*/
     public MCAdvertiserAssistant() {}
     protected MCAdvertiserAssistant(SkipInit skipInit) { super(skipInit); }
-    public MCAdvertiserAssistant(String serviceType, NSDictionary<NSString, NSString> info, MCSession session) { super((SkipInit) null); initObject(init(serviceType, info, session)); }
+    public MCAdvertiserAssistant(String serviceType, @org.robovm.rt.bro.annotation.Marshaler(NSDictionary.AsStringStringMapMarshaler.class) Map<String, String> info, MCSession session) { super((SkipInit) null); initObject(init(serviceType, info, session)); }
     /*</constructors>*/
     /*<properties>*/
     @Property(selector = "delegate")
@@ -56,14 +57,14 @@ import org.robovm.apple.uikit.*;
     @Property(selector = "session")
     public native MCSession getSession();
     @Property(selector = "discoveryInfo")
-    public native NSDictionary<NSString, NSString> getDiscoveryInfo();
+    public native @org.robovm.rt.bro.annotation.Marshaler(NSDictionary.AsStringStringMapMarshaler.class) Map<String, String> getDiscoveryInfo();
     @Property(selector = "serviceType")
     public native String getServiceType();
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
     @Method(selector = "initWithServiceType:discoveryInfo:session:")
-    protected native @Pointer long init(String serviceType, NSDictionary<NSString, NSString> info, MCSession session);
+    protected native @Pointer long init(String serviceType, @org.robovm.rt.bro.annotation.Marshaler(NSDictionary.AsStringStringMapMarshaler.class) Map<String, String> info, MCSession session);
     @Method(selector = "start")
     public native void start();
     @Method(selector = "stop")

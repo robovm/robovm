@@ -28,6 +28,7 @@ import org.robovm.rt.bro.annotation.*;
 import org.robovm.rt.bro.ptr.*;
 import org.robovm.apple.foundation.*;
 import org.robovm.apple.uikit.*;
+import org.robovm.apple.security.*;
 /*</imports>*/
 
 /*<javadoc>*/
@@ -57,7 +58,7 @@ import org.robovm.apple.uikit.*;
     @Method(selector = "session:didFinishReceivingResourceWithName:fromPeer:atURL:withError:")
     void didFinishReceivingResource(MCSession session, String resourceName, MCPeerID peerID, NSURL localURL, NSError error);
     @Method(selector = "session:didReceiveCertificate:fromPeer:certificateHandler:")
-    void didReceiveCertificate(MCSession session, NSArray<?> certificate, MCPeerID peerID, @Block VoidBooleanBlock certificateHandler);
+    void didReceiveCertificate(MCSession session, @org.robovm.rt.bro.annotation.Marshaler(NSArray.AsListMarshaler.class) List<SecIdentity> certificate, MCPeerID peerID, @Block VoidBooleanBlock certificateHandler);
     /*</methods>*/
     /*<adapter>*/
     /*</adapter>*/

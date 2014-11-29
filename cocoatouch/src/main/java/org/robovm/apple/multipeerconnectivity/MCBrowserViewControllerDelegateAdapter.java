@@ -28,6 +28,7 @@ import org.robovm.rt.bro.annotation.*;
 import org.robovm.rt.bro.ptr.*;
 import org.robovm.apple.foundation.*;
 import org.robovm.apple.uikit.*;
+import org.robovm.apple.security.*;
 /*</imports>*/
 
 /*<javadoc>*/
@@ -53,6 +54,6 @@ import org.robovm.apple.uikit.*;
     @NotImplemented("browserViewControllerWasCancelled:")
     public void wasCancelled(MCBrowserViewController browserViewController) { throw new UnsupportedOperationException(); }
     @NotImplemented("browserViewController:shouldPresentNearbyPeer:withDiscoveryInfo:")
-    public boolean shouldPresentNearbyPeer(MCBrowserViewController browserViewController, MCPeerID peerID, NSDictionary<NSString, NSString> info) { throw new UnsupportedOperationException(); }
+    public boolean shouldPresentNearbyPeer(MCBrowserViewController browserViewController, MCPeerID peerID, @org.robovm.rt.bro.annotation.Marshaler(NSDictionary.AsStringStringMapMarshaler.class) Map<String, String> info) { throw new UnsupportedOperationException(); }
     /*</methods>*/
 }

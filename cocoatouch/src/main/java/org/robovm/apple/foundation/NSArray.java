@@ -94,6 +94,33 @@ import org.robovm.apple.dispatch.*;
         }
     }
     
+    public static class AsDoubleListMarshaler {
+        @SuppressWarnings("unchecked")
+        @MarshalsPointer
+        public static List<Double> toObject(Class<? extends NSObject> cls, long handle, long flags) {
+            NSArray<NSNumber> o = (NSArray<NSNumber>) NSObject.Marshaler.toObject(cls, handle, flags);
+            if (o == null) {
+                return null;
+            }
+            List<Double> list = new ArrayList<>();
+            for (NSNumber n : o) {
+                list.add(n.doubleValue());
+            }
+            return list;
+        }
+        @MarshalsPointer
+        public static long toNative(List<Double> l, long flags) {
+            if (l == null) {
+                return 0L;
+            }
+            NSArray<NSNumber> array = new NSMutableArray<>();
+            for (Double i : l) {
+                array.add(NSNumber.valueOf(i));
+            }
+            return NSObject.Marshaler.toNative(array, flags);
+        }
+    }
+    
     public static class AsStringListMarshaler {
         @MarshalsPointer
         public static List<String> toObject(Class<? extends NSObject> cls, long handle, long flags) {

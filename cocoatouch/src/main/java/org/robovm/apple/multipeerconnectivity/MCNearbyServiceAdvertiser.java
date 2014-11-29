@@ -28,6 +28,7 @@ import org.robovm.rt.bro.annotation.*;
 import org.robovm.rt.bro.ptr.*;
 import org.robovm.apple.foundation.*;
 import org.robovm.apple.uikit.*;
+import org.robovm.apple.security.*;
 /*</imports>*/
 
 /*<javadoc>*/
@@ -46,7 +47,7 @@ import org.robovm.apple.uikit.*;
     /*<constructors>*/
     public MCNearbyServiceAdvertiser() {}
     protected MCNearbyServiceAdvertiser(SkipInit skipInit) { super(skipInit); }
-    public MCNearbyServiceAdvertiser(MCPeerID myPeerID, NSDictionary<NSString, NSString> info, String serviceType) { super((SkipInit) null); initObject(init(myPeerID, info, serviceType)); }
+    public MCNearbyServiceAdvertiser(MCPeerID myPeerID, @org.robovm.rt.bro.annotation.Marshaler(NSDictionary.AsStringStringMapMarshaler.class) Map<String, String> info, String serviceType) { super((SkipInit) null); initObject(init(myPeerID, info, serviceType)); }
     /*</constructors>*/
     /*<properties>*/
     @Property(selector = "delegate")
@@ -56,14 +57,14 @@ import org.robovm.apple.uikit.*;
     @Property(selector = "myPeerID")
     public native MCPeerID getMyPeerID();
     @Property(selector = "discoveryInfo")
-    public native NSDictionary<NSString, NSString> getDiscoveryInfo();
+    public native @org.robovm.rt.bro.annotation.Marshaler(NSDictionary.AsStringStringMapMarshaler.class) Map<String, String> getDiscoveryInfo();
     @Property(selector = "serviceType")
     public native String getServiceType();
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
     @Method(selector = "initWithPeer:discoveryInfo:serviceType:")
-    protected native @Pointer long init(MCPeerID myPeerID, NSDictionary<NSString, NSString> info, String serviceType);
+    protected native @Pointer long init(MCPeerID myPeerID, @org.robovm.rt.bro.annotation.Marshaler(NSDictionary.AsStringStringMapMarshaler.class) Map<String, String> info, String serviceType);
     @Method(selector = "startAdvertisingPeer")
     public native void startAdvertisingPeer();
     @Method(selector = "stopAdvertisingPeer")

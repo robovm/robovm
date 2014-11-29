@@ -28,6 +28,7 @@ import org.robovm.rt.bro.annotation.*;
 import org.robovm.rt.bro.ptr.*;
 import org.robovm.apple.foundation.*;
 import org.robovm.apple.uikit.*;
+import org.robovm.apple.security.*;
 /*</imports>*/
 
 /*<javadoc>*/
@@ -46,7 +47,7 @@ import org.robovm.apple.uikit.*;
     
     /*</properties>*/
     /*<methods>*/
-    @Method(selector = "advertiserAssitantWillPresentInvitation:")
+    @Method(selector = "advertiserAssistantWillPresentInvitation:")
     void willPresentInvitation(MCAdvertiserAssistant advertiserAssistant);
     @Method(selector = "advertiserAssistantDidDismissInvitation:")
     void didDismissInvitation(MCAdvertiserAssistant advertiserAssistant);

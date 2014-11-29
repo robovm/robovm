@@ -28,6 +28,7 @@ import org.robovm.rt.bro.annotation.*;
 import org.robovm.rt.bro.ptr.*;
 import org.robovm.apple.foundation.*;
 import org.robovm.apple.uikit.*;
+import org.robovm.apple.security.*;
 /*</imports>*/
 
 /*<javadoc>*/
@@ -59,6 +60,6 @@ import org.robovm.apple.uikit.*;
     @NotImplemented("session:didFinishReceivingResourceWithName:fromPeer:atURL:withError:")
     public void didFinishReceivingResource(MCSession session, String resourceName, MCPeerID peerID, NSURL localURL, NSError error) { throw new UnsupportedOperationException(); }
     @NotImplemented("session:didReceiveCertificate:fromPeer:certificateHandler:")
-    public void didReceiveCertificate(MCSession session, NSArray<?> certificate, MCPeerID peerID, @Block VoidBooleanBlock certificateHandler) { throw new UnsupportedOperationException(); }
+    public void didReceiveCertificate(MCSession session, @org.robovm.rt.bro.annotation.Marshaler(NSArray.AsListMarshaler.class) List<SecIdentity> certificate, MCPeerID peerID, @Block VoidBooleanBlock certificateHandler) { throw new UnsupportedOperationException(); }
     /*</methods>*/
 }

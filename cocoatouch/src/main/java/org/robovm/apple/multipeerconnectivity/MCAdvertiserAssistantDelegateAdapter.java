@@ -28,6 +28,7 @@ import org.robovm.rt.bro.annotation.*;
 import org.robovm.rt.bro.ptr.*;
 import org.robovm.apple.foundation.*;
 import org.robovm.apple.uikit.*;
+import org.robovm.apple.security.*;
 /*</imports>*/
 
 /*<javadoc>*/
@@ -48,7 +49,7 @@ import org.robovm.apple.uikit.*;
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
-    @NotImplemented("advertiserAssitantWillPresentInvitation:")
+    @NotImplemented("advertiserAssistantWillPresentInvitation:")
     public void willPresentInvitation(MCAdvertiserAssistant advertiserAssistant) { throw new UnsupportedOperationException(); }
     @NotImplemented("advertiserAssistantDidDismissInvitation:")
     public void didDismissInvitation(MCAdvertiserAssistant advertiserAssistant) { throw new UnsupportedOperationException(); }

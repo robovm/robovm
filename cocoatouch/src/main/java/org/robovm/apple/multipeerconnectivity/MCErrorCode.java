@@ -28,6 +28,7 @@ import org.robovm.rt.bro.annotation.*;
 import org.robovm.rt.bro.ptr.*;
 import org.robovm.apple.foundation.*;
 import org.robovm.apple.uikit.*;
+import org.robovm.apple.security.*;
 /*</imports>*/
 
 /*<javadoc>*/
@@ -35,8 +36,9 @@ import org.robovm.apple.uikit.*;
  * @since Available in iOS 7.0 and later.
  */
 /*</javadoc>*/
+@ForceLinkClass(MCError.class)
 /*<annotations>*/@Marshaler(ValuedEnum.AsMachineSizedSIntMarshaler.class)/*</annotations>*/
-public enum /*<name>*/MCErrorCode/*</name>*/ implements ValuedEnum {
+public enum /*<name>*/MCErrorCode/*</name>*/ implements NSErrorCode {
     /*<values>*/
     Unknown(0L),
     NotConnected(1L),

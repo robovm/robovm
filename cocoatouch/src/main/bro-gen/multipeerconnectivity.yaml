@@ -1,5 +1,5 @@
 package: org.robovm.apple.multipeerconnectivity
-include: [foundation.yaml, uikit.yaml]
+include: [foundation.yaml, uikit.yaml, security.yaml]
 library: MultipeerConnectivity
 framework: MultipeerConnectivity
 clang_args: ['-x', 'objective-c']
@@ -16,74 +16,83 @@ enums:
     MCEncryptionPreference: {}
         
 classes:
-    MultipeerConnectivity:
-        annotations: ['@Marshaler(NSString.AsStringMarshaler.class)']
+    MCError:
+        extends: NSError
 
     MCAdvertiserAssistant: # DONE
         properties:
             'discoveryInfo':
-                type: "NSDictionary<NSString, NSString>"
+                type: '@org.robovm.rt.bro.annotation.Marshaler(NSDictionary.AsStringStringMapMarshaler.class) Map<String, String>'
         methods:
             '-initWithServiceType:discoveryInfo:session:':
-                name: "init"
+                name: init
                 parameters:
                     info:
-                        type: "NSDictionary<NSString, NSString>"
+                        type: '@org.robovm.rt.bro.annotation.Marshaler(NSDictionary.AsStringStringMapMarshaler.class) Map<String, String>'
     MCBrowserViewController: # DONE
         methods:
+            '-init.*':
+                name: init
             '-browser:foundPeer:withDiscoveryInfo:':
-                name: "foundPeer"
+                name: foundPeer
                 parameters:
                     info:
-                        type: "NSDictionary<NSString, NSString>"
+                        type: '@org.robovm.rt.bro.annotation.Marshaler(NSDictionary.AsStringStringMapMarshaler.class) Map<String, String>'
             '-browser:lostPeer:':
-                name: "lostPeer"
+                name: lostPeer
             '-browser:didNotStartBrowsingForPeers:':
-                name: "didNotStartBrowsing"
+                name: didNotStartBrowsing
     MCNearbyServiceAdvertiser: # DONE
         properties:
             'discoveryInfo':
-                type: "NSDictionary<NSString, NSString>"
+                type: '@org.robovm.rt.bro.annotation.Marshaler(NSDictionary.AsStringStringMapMarshaler.class) Map<String, String>'
         methods:
             '-initWithPeer:discoveryInfo:serviceType:':
-                name: "init"
+                name: init
                 parameters:
                     info:
-                        type: "NSDictionary<NSString, NSString>"
+                        type: '@org.robovm.rt.bro.annotation.Marshaler(NSDictionary.AsStringStringMapMarshaler.class) Map<String, String>'
     MCNearbyServiceBrowser: # DONE
         methods:
+            '-init.*':
+                name: init
             '-startBrowsingForPeers':
-                name: "startBrowsing"
+                name: startBrowsing
             '-stopBrowsingForPeers':
-                name: "stopBrowsing"
+                name: stopBrowsing
             '-invitePeer:toSession:withContext:timeout:':
-                name: "invitePeer"
-    MCPeerID: {} # DONE
+                name: invitePeer
+    MCPeerID: # DONE
+        methods:
+            '-init.*':
+                name: init
     MCSession: # DONE
         properties:
             'securityIdentity':
-                type: "NSArray<?>" # SecIdentityRef?
+                type: '@org.robovm.rt.bro.annotation.Marshaler(NSArray.AsListMarshaler.class) List<SecIdentity>'
             'connectedPeers':
-                type: "NSArray<MCPeerID>"
+                type: NSArray<MCPeerID>
         methods:
             '-initWithPeer:':
-                name: "init"
+                name: init
             '-initWithPeer:securityIdentity:encryptionPreference:':
-                name: "init"
+                name: init
                 parameters:
                     identity:
-                        type: "NSArray<?>"
+                        type: '@org.robovm.rt.bro.annotation.Marshaler(NSArray.AsListMarshaler.class) List<SecIdentity>'
             '-sendData:toPeers:withMode:error:':
                 trim_after_first_colon: true
+                visibility: protected # throws NSErrorException
                 parameters:
                     peerIDs:
-                        type: "NSArray<MCPeerID>"
+                        type: NSArray<MCPeerID>
             '-sendResourceAtURL:withName:toPeer:withCompletionHandler:':
-                name: "sendResource"
+                name: sendResource
             '-startStreamWithName:toPeer:error:':
-                name: "startStream"
+                name: startStream
+                visibility: protected # throws NSErrorException
             '-nearbyConnectionDataForPeer:withCompletionHandler:':
-                name: "requestNearbyConnectionData"
+                name: requestNearbyConnectionData
             '-connectPeer:withNearbyConnectionData:':
                 trim_after_first_colon: true
             '-cancelConnectPeer:':
@@ -92,74 +101,80 @@ classes:
 protocols:
     MCAdvertiserAssistantDelegate: # DONE
         methods:
-            '-advertiserAssitantWillPresentInvitation:':
-                name: "willPresentInvitation"
+            '-advertiserAssistantWillPresentInvitation:':
+                name: willPresentInvitation
             '-advertiserAssistantDidDismissInvitation:':
-                name: "didDismissInvitation"
+                name: didDismissInvitation
     MCBrowserViewControllerDelegate: # DONE
         methods:
             '-browserViewControllerDidFinish:':
-                name: "didFinish"
+                name: didFinish
             '-browserViewControllerWasCancelled:':
-                name: "wasCancelled"
+                name: wasCancelled
             '-browserViewController:shouldPresentNearbyPeer:withDiscoveryInfo:':
-                name: "shouldPresentNearbyPeer"
+                name: shouldPresentNearbyPeer
                 parameters:
                     info:
-                        type: "NSDictionary<NSString, NSString>"
+                        type: '@org.robovm.rt.bro.annotation.Marshaler(NSDictionary.AsStringStringMapMarshaler.class) Map<String, String>'
     MCNearbyServiceAdvertiserDelegate: # DONE
         methods:
             '-advertiser:didReceiveInvitationFromPeer:withContext:invitationHandler:':
-                name: "didReceiveInvitation"
+                name: didReceiveInvitation
             '-advertiser:didNotStartAdvertisingPeer:':
-                name: "didNotStart"
+                name: didNotStart
     MCNearbyServiceBrowserDelegate: # DONE
         methods:
             '-browser:foundPeer:withDiscoveryInfo:':
-                name: "foundPeer"
+                name: foundPeer
                 parameters:
                     info:
-                        type: "NSDictionary<NSString, NSString>"
+                        type: '@org.robovm.rt.bro.annotation.Marshaler(NSDictionary.AsStringStringMapMarshaler.class) Map<String, String>'
             '-browser:lostPeer:':
-                name: "lostPeer"
+                name: lostPeer
             '-browser:didNotStartBrowsingForPeers:':
-                name: "didNotStartBrowsing"  
+                name: didNotStartBrowsing 
     MCSessionDelegate: # DONE
         methods:
             '-session:peer:didChangeState:':
-                name: "didChangeState"
+                name: didChangeState
             '-session:didReceiveData:fromPeer:':
-                name: "didReceiveData"
+                name: didReceiveData
             '-session:didReceiveStream:withName:fromPeer:':
-                name: "didReceiveStream"
+                name: didReceiveStream
             '-session:didStartReceivingResourceWithName:fromPeer:withProgress:':
-                name: "didStartReceivingResource"
+                name: didStartReceivingResource
             '-session:didFinishReceivingResourceWithName:fromPeer:atURL:withError:':
-                name: "didFinishReceivingResource"
+                name: didFinishReceivingResource
             '-session:didReceiveCertificate:fromPeer:certificateHandler:':
-                name: "didReceiveCertificate"
+                name: didReceiveCertificate
                 parameters:
                     certificate:
-                        type: "NSArray<?>" # TODO SecIdentityRef?
+                        type: '@org.robovm.rt.bro.annotation.Marshaler(NSArray.AsListMarshaler.class) List<SecIdentity>'
 
 functions:
     # Make sure we don't miss any functions if new ones are introduced in a later version
-    (MC.*):
+    (k?MC.*):
         class: MultipeerConnectivity
-        name: "Function__#{g[0]}"
+        name: 'Function__#{g[0]}'
 
 values:
-    MC(.*ErrorDomain):
-        name: "#{g[0]}"
-        type: NSString
+    MCErrorDomain:
+        class: MCError
+        name: getClassDomain
+
+    # MCSession
+    kMCSession(.*):
+        class: MCSession
+        name: 'get#{g[0]}'
 
     # Make sure we don't miss any values if new ones are introduced in a later version
-    (MC.*):
+    (k?MC.*):
         class: MultipeerConnectivity
-        name: "Value__#{g[0]}"
+        name: 'Value__#{g[0]}'
 
 constants:
+
     # Make sure we don't miss any constants if new ones are introduced in a later version
-    (MC.*):
+    (k?MC.*):
         class: MultipeerConnectivity
-        name: "Constant__#{g[0]}"
+        name: 'Constant__#{g[0]}'

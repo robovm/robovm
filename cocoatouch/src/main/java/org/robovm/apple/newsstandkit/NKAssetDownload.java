@@ -52,9 +52,9 @@ import org.robovm.apple.foundation.*;
     @Property(selector = "identifier")
     public native String getIdentifier();
     @Property(selector = "userInfo")
-    public native NSDictionary<NSString, ?> getUserInfo();
+    public native NSDictionary<?, ?> getUserInfo();
     @Property(selector = "setUserInfo:")
-    public native void setUserInfo(NSDictionary<NSString, ?> v);
+    public native void setUserInfo(NSDictionary<?, ?> v);
     @Property(selector = "URLRequest")
     public native NSURLRequest getURLRequest();
     /*</properties>*/

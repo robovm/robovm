@@ -8,7 +8,7 @@ headers:
 typedefs: {}
     
 enums:
-    NKIssueContentStatus: {first: "NKIssueContentStatusNone"}
+    NKIssueContentStatus: {first: NKIssueContentStatusNone}
     
 categories:
     NSURLConnection: {} # DONE
@@ -17,25 +17,22 @@ classes:
         annotations: ['@Marshaler(NSString.AsStringMarshaler.class)']
 
     NKAssetDownload: # DONE
-        properties:
-            'userInfo':
-                type: "NSDictionary<NSString, ?>"
         methods:
             '-downloadWithDelegate:':
                 name: download
     NKIssue: # DONE
         properties:
             'downloadingAssets':
-                type: "NSArray<NKAssetDownload>"
+                type: NSArray<NKAssetDownload>
         methods:
             '-addAssetWithRequest:':
                 name: addAsset
     NKLibrary: # DONE
         properties:
             'issues':
-                type: "NSArray<NKIssue>"
+                type: NSArray<NKIssue>
             'downloadingAssets':
-                type: "NSArray<NKAssetDownload>"
+                type: NSArray<NKAssetDownload>
         methods:
             '-issueWithName:':
                 name: getIssue
@@ -50,23 +47,23 @@ protocols: {}
 
 functions:
     # Make sure we don't miss any functions if new ones are introduced in a later version
-    (NK.*):
+    (k?NK.*):
         class: NewsstandKit
-        name: "Function__#{g[0]}"
+        name: 'Function__#{g[0]}'
 
 values:
     NKIssue(DownloadCompletedNotification):
         class: NKIssue
-        name: "#{g[0]}"
+        name: '#{g[0]}'
         type: NSString
     
     # Make sure we don't miss any values if new ones are introduced in a later version
-    (NK.*):
+    (k?NK.*):
         class: NewsstandKit
-        name: "Value__#{g[0]}"
+        name: 'Value__#{g[0]}'
 
 constants:
     # Make sure we don't miss any constants if new ones are introduced in a later version
-    (NK.*):
+    (k?NK.*):
         class: NewsstandKit
-        name: "Constant__#{g[0]}"
+        name: 'Constant__#{g[0]}'

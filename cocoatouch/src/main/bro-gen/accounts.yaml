@@ -13,9 +13,6 @@ enums:
     ACAccountCredentialRenewResult: {}
         
 classes:
-    Accounts:
-        annotations: ['@Marshaler(NSString.AsStringMarshaler.class)']
-
     ACError:
         extends: NSError
 

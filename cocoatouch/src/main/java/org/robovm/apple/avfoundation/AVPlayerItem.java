@@ -186,6 +186,16 @@ import org.robovm.apple.mediatoolbox.*;
     @Property(selector = "isPlaybackBufferEmpty")
     public native boolean isPlaybackBufferEmpty();
     /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @Property(selector = "preferredPeakBitRate")
+    public native double getPreferredPeakBitRate();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @Property(selector = "setPreferredPeakBitRate:")
+    public native void setPreferredPeakBitRate(double v);
+    /**
      * @since Available in iOS 6.0 and later.
      */
     @Property(selector = "outputs")

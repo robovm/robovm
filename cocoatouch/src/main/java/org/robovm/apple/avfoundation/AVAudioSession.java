@@ -74,6 +74,11 @@ import org.robovm.apple.mediatoolbox.*;
     @Property(selector = "isOtherAudioPlaying")
     public native boolean isOtherAudioPlaying();
     /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @Property(selector = "secondaryAudioShouldBeSilencedHint")
+    public native boolean isSecondaryAudioShouldBeSilencedHint();
+    /**
      * @since Available in iOS 6.0 and later.
      */
     @Property(selector = "currentRoute")
@@ -251,6 +256,8 @@ import org.robovm.apple.mediatoolbox.*;
      */
     @Method(selector = "setCategory:withOptions:error:")
     public native boolean setCategory(String category, AVAudioSessionCategoryOptions options, NSError.NSErrorPtr outError);
+    @Method(selector = "recordPermission")
+    public native AVAudioSessionRecordPermission recordPermission();
     /**
      * @since Available in iOS 7.0 and later.
      */

@@ -93,7 +93,19 @@ public enum /*<name>*/AVErrorCode/*</name>*/ implements ValuedEnum {
     IncompatibleAsset(-11848L),
     FailedToLoadMediaData(-11849L),
     ServerIncorrectlyConfigured(-11850L),
-    ApplicationIsNotAuthorizedToUseDevice(-11852L);
+    ApplicationIsNotAuthorizedToUseDevice(-11852L),
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    FailedToParse(-11853L),
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    FileTypeDoesNotSupportSampleReferences(-11854L),
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    UndecodableMediaData(-11855L);
     /*</values>*/
 
     /*<bind>*/

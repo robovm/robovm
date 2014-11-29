@@ -28,7 +28,10 @@ import org.robovm.rt.bro.annotation.*;
 import org.robovm.rt.bro.ptr.*;
 import org.robovm.apple.coregraphics.*;
 import org.robovm.apple.foundation.*;
+import org.robovm.apple.corefoundation.*;
 import org.robovm.apple.opengles.*;
+import org.robovm.apple.corevideo.*;
+import org.robovm.apple.imageio.*;
 /*</imports>*/
 
 /*<javadoc>*/
@@ -47,14 +50,14 @@ import org.robovm.apple.opengles.*;
     protected CIContext(SkipInit skipInit) { super(skipInit); }
     /*</constructors>*/
     
-    public CIContext(NSDictionary<?, ?> options) {
-        super(contextWithOptions$(options));
+    public CIContext(CIContextOptions options) {
+        super(init(options));
     }
     public CIContext(EAGLContext eaglContext) {
-        super(contextWithEAGLContext$(eaglContext));
+        super(init(eaglContext));
     }
-    public CIContext(EAGLContext eaglContext, NSDictionary<?, ?> options) {
-        super(contextWithEAGLContext$options$(eaglContext, options));
+    public CIContext(EAGLContext eaglContext, CIContextOptions options) {
+        super(init(eaglContext, options));
     }
     
     /*<properties>*/
@@ -80,6 +83,16 @@ import org.robovm.apple.opengles.*;
     /**
      * @since Available in iOS 5.0 and later.
      */
+    @Method(selector = "render:toCVPixelBuffer:")
+    public native void render(CIImage image, CVPixelBuffer buffer);
+    /**
+     * @since Available in iOS 5.0 and later.
+     */
+    @Method(selector = "render:toCVPixelBuffer:bounds:colorSpace:")
+    public native void render(CIImage image, CVPixelBuffer buffer, @ByVal CGRect r, CGColorSpace cs);
+    /**
+     * @since Available in iOS 5.0 and later.
+     */
     @Method(selector = "inputImageMaximumSize")
     public native @ByVal CGSize getInputImageMaximumSize();
     /**
@@ -91,16 +104,16 @@ import org.robovm.apple.opengles.*;
      * @since Available in iOS 5.0 and later.
      */
     @Method(selector = "contextWithOptions:")
-    protected static native @Pointer long contextWithOptions$(NSDictionary<?, ?> dict);
+    protected static native @Pointer long init(CIContextOptions options);
     /**
      * @since Available in iOS 5.0 and later.
      */
     @Method(selector = "contextWithEAGLContext:")
-    protected static native @Pointer long contextWithEAGLContext$(EAGLContext eaglContext);
+    protected static native @Pointer long init(EAGLContext eaglContext);
     /**
      * @since Available in iOS 5.0 and later.
      */
     @Method(selector = "contextWithEAGLContext:options:")
-    protected static native @Pointer long contextWithEAGLContext$options$(EAGLContext eaglContext, NSDictionary<?, ?> dict);
+    protected static native @Pointer long init(EAGLContext eaglContext, CIContextOptions options);
     /*</methods>*/
 }

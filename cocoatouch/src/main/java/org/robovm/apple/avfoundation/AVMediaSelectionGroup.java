@@ -58,6 +58,11 @@ import org.robovm.apple.mediatoolbox.*;
     /*<properties>*/
     @Property(selector = "options")
     public native NSArray<AVMediaSelectionOption> getOptions();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @Property(selector = "defaultOption")
+    public native AVMediaSelectionOption getDefaultOption();
     @Property(selector = "allowsEmptySelection")
     public native boolean isAllowsEmptySelection();
     /*</properties>*/

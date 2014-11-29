@@ -61,9 +61,9 @@ import org.robovm.apple.mediatoolbox.*;
     @Property(selector = "setPlayer:")
     public native void setPlayer(AVPlayer v);
     @Property(selector = "videoGravity")
-    public native String getVideoGravity();
+    public native AVLayerVideoGravity getVideoGravity();
     @Property(selector = "setVideoGravity:")
-    public native void setVideoGravity(String v);
+    public native void setVideoGravity(AVLayerVideoGravity v);
     @Property(selector = "isReadyForDisplay")
     public native boolean isReadyForDisplay();
     /**

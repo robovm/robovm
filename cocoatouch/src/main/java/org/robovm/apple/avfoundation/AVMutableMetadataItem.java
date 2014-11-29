@@ -56,14 +56,26 @@ import org.robovm.apple.mediatoolbox.*;
     protected AVMutableMetadataItem(SkipInit skipInit) { super(skipInit); }
     /*</constructors>*/
     /*<properties>*/
-    @Property(selector = "key")
-    public native NSString getKey();
-    @Property(selector = "setKey:")
-    public native void setKey(NSString v);
-    @Property(selector = "keySpace")
-    public native String getKeySpace();
-    @Property(selector = "setKeySpace:")
-    public native void setKeySpace(String v);
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @Property(selector = "identifier")
+    public native String getIdentifier();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @Property(selector = "setIdentifier:")
+    public native void setIdentifier(String v);
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @Property(selector = "extendedLanguageTag")
+    public native String getExtendedLanguageTag();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @Property(selector = "setExtendedLanguageTag:")
+    public native void setExtendedLanguageTag(String v);
     @Property(selector = "locale")
     public native NSLocale getLocale();
     @Property(selector = "setLocale:")
@@ -82,6 +94,16 @@ import org.robovm.apple.mediatoolbox.*;
      */
     @Property(selector = "setDuration:")
     public native void setDuration(@ByVal CMTime v);
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @Property(selector = "dataType")
+    public native String getDataType();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @Property(selector = "setDataType:")
+    public native void setDataType(String v);
     @Property(selector = "value")
     public native NSObject getValue();
     @Property(selector = "setValue:")
@@ -90,6 +112,14 @@ import org.robovm.apple.mediatoolbox.*;
     public native NSDictionary<NSString, ?> getExtraAttributes();
     @Property(selector = "setExtraAttributes:")
     public native void setExtraAttributes(NSDictionary<NSString, ?> v);
+    @Property(selector = "keySpace")
+    public native String getKeySpace();
+    @Property(selector = "setKeySpace:")
+    public native void setKeySpace(String v);
+    @Property(selector = "key")
+    public native NSString getKey();
+    @Property(selector = "setKey:")
+    public native void setKey(NSString v);
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/

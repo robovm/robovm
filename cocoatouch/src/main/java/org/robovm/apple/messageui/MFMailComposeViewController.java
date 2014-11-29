@@ -62,17 +62,17 @@ import org.robovm.apple.uikit.*;
      * @since Available in iOS 3.0 and later.
      */
     @Method(selector = "setToRecipients:")
-    public native void setToRecipients(NSArray<NSString> toRecipients);
+    public native void setToRecipients(@org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String> toRecipients);
     /**
      * @since Available in iOS 3.0 and later.
      */
     @Method(selector = "setCcRecipients:")
-    public native void setCcRecipients(NSArray<NSString> ccRecipients);
+    public native void setCcRecipients(@org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String> ccRecipients);
     /**
      * @since Available in iOS 3.0 and later.
      */
     @Method(selector = "setBccRecipients:")
-    public native void setBccRecipients(NSArray<NSString> bccRecipients);
+    public native void setBccRecipients(@org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String> bccRecipients);
     /**
      * @since Available in iOS 3.0 and later.
      */

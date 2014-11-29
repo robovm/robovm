@@ -63,6 +63,9 @@ import org.robovm.apple.foundation.*;
     protected NSPersistentStoreMetadata(NSDictionary<NSString, NSObject> data) {
         this.data = data;
     }
+    public NSPersistentStoreMetadata() {
+    	this.data = new NSMutableDictionary<>();
+    }
     /*<bind>*/static { Bro.bind(NSPersistentStoreMetadata.class); }/*</bind>*/
     /*<constants>*//*</constants>*/
     /*<constructors>*//*</constructors>*/

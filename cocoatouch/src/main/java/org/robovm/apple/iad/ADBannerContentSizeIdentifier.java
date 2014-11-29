@@ -31,15 +31,62 @@ import org.robovm.apple.uikit.*;
 import org.robovm.apple.addressbook.*;
 import org.robovm.apple.mediaplayer.*;
 import org.robovm.apple.coregraphics.*;
+import org.robovm.apple.avkit.*;
 /*</imports>*/
 
 /*<javadoc>*/
 /*</javadoc>*/
+@Marshaler(ADBannerContentSizeIdentifier.Marshaler.class)
 /*<annotations>*/@Library("iAd")/*</annotations>*/
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/ADBannerContentSizeIdentifier/*</name>*/ 
     extends /*<extends>*/Object/*</extends>*/ 
     /*<implements>*//*</implements>*/ {
 
+    public static class Marshaler {
+        @MarshalsPointer
+        public static ADBannerContentSizeIdentifier toObject(Class<ADBannerContentSizeIdentifier> cls, long handle, long flags) {
+            NSString o = (NSString) NSObject.Marshaler.toObject(NSString.class, handle, flags);
+            if (o == null) {
+                return null;
+            }
+            return ADBannerContentSizeIdentifier.valueOf(o);
+        }
+        @MarshalsPointer
+        public static long toNative(ADBannerContentSizeIdentifier o, long flags) {
+            if (o == null) {
+                return 0L;
+            }
+            return NSObject.Marshaler.toNative(o.value(), flags);
+        }
+    }
+    
+    public static class AsListMarshaler {
+        @SuppressWarnings("unchecked")
+        @MarshalsPointer
+        public static List<ADBannerContentSizeIdentifier> toObject(Class<? extends NSObject> cls, long handle, long flags) {
+            NSArray<NSString> o = (NSArray<NSString>) NSObject.Marshaler.toObject(cls, handle, flags);
+            if (o == null) {
+                return null;
+            }
+            List<ADBannerContentSizeIdentifier> list = new ArrayList<>();
+            for (NSString str : o) {
+                list.add(ADBannerContentSizeIdentifier.valueOf(str));
+            }
+            return list;
+        }
+        @MarshalsPointer
+        public static long toNative(List<ADBannerContentSizeIdentifier> l, long flags) {
+            if (l == null) {
+                return 0L;
+            }
+            NSMutableArray<NSString> array = new NSMutableArray<>();
+            for (ADBannerContentSizeIdentifier i : l) {
+                array.add(i.value());
+            }
+            return NSObject.Marshaler.toNative(array, flags);
+        }
+    }
+    
     /*<ptr>*/
     /*</ptr>*/
     /*<bind>*/static { Bro.bind(ADBannerContentSizeIdentifier.class); }/*</bind>*/
@@ -68,8 +115,8 @@ import org.robovm.apple.coregraphics.*;
      */
     @Deprecated
     public static final ADBannerContentSizeIdentifier SizeLandscape = new ADBannerContentSizeIdentifier("SizeLandscapeValue");
-    private static ADBannerContentSizeIdentifier[] values = new ADBannerContentSizeIdentifier[] {Size320x50, Size480x32, SizePortrait, SizeLandscape};
     
+    private static ADBannerContentSizeIdentifier[] values = new ADBannerContentSizeIdentifier[] {Size320x50, Size480x32, SizePortrait, SizeLandscape};
     private final LazyGlobalValue<NSString> lazyGlobalValue;
     
     private ADBannerContentSizeIdentifier (String getterName) {

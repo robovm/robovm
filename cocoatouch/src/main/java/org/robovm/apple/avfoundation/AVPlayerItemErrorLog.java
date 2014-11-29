@@ -56,6 +56,8 @@ import org.robovm.apple.mediatoolbox.*;
     protected AVPlayerItemErrorLog(SkipInit skipInit) { super(skipInit); }
     /*</constructors>*/
     /*<properties>*/
+    @Property(selector = "extendedLogDataStringEncoding")
+    public native NSStringEncoding getExtendedLogDataStringEncoding();
     @Property(selector = "events")
     public native NSArray<AVPlayerItemErrorLogEvent> getEvents();
     /*</properties>*/
@@ -63,7 +65,5 @@ import org.robovm.apple.mediatoolbox.*;
     /*<methods>*/
     @Method(selector = "extendedLogData")
     public native NSData getExtendedLogData();
-    @Method(selector = "extendedLogDataStringEncoding")
-    public native @MachineSizedUInt long getExtendedLogDataStringEncoding();
     /*</methods>*/
 }

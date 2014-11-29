@@ -58,11 +58,18 @@ import org.robovm.apple.mediatoolbox.*;
     void didFinishPlaying(AVAudioPlayer player, boolean flag);
     @Method(selector = "audioPlayerDecodeErrorDidOccur:error:")
     void decodeErrorDidOccur(AVAudioPlayer player, NSError error);
+    /**
+     * @since Available in iOS 2.2 and later.
+     * @deprecated Deprecated in iOS 8.0.
+     */
+    @Deprecated
     @Method(selector = "audioPlayerBeginInterruption:")
     void beginInterruption(AVAudioPlayer player);
     /**
      * @since Available in iOS 6.0 and later.
+     * @deprecated Deprecated in iOS 8.0.
      */
+    @Deprecated
     @Method(selector = "audioPlayerEndInterruption:withOptions:")
     void endInterruptionWithOptions(AVAudioPlayer player, @MachineSizedUInt long flags);
     /**

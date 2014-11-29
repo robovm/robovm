@@ -63,6 +63,9 @@ import org.robovm.apple.foundation.*;
     protected NSPersistentStoreOptions(NSDictionary<NSString, NSObject> data) {
         this.data = data;
     }
+    public NSPersistentStoreOptions() {
+    	this.data = new NSMutableDictionary<>();
+    }
     /*<bind>*/static { Bro.bind(NSPersistentStoreOptions.class); }/*</bind>*/
     /*<constants>*//*</constants>*/
     /*<constructors>*//*</constructors>*/

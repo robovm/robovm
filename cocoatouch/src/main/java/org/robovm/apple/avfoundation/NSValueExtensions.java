@@ -53,25 +53,24 @@ import org.robovm.apple.mediatoolbox.*;
     private NSValueExtensions() {}
     /*</constructors>*/
     /*<properties>*/
-    
+    /**
+     * @since Available in iOS 4.0 and later.
+     */
+    @Property(selector = "CMTimeValue")
+    public static native @ByVal CMTime getCMTimeValue(NSValue thiz);
+    /**
+     * @since Available in iOS 4.0 and later.
+     */
+    @Property(selector = "CMTimeRangeValue")
+    public static native @ByVal CMTimeRange getCMTimeRangeValue(NSValue thiz);
+    /**
+     * @since Available in iOS 4.0 and later.
+     */
+    @Property(selector = "CMTimeMappingValue")
+    public static native @ByVal CMTimeMapping getCMTimeMappingValue(NSValue thiz);
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
-    /**
-     * @since Available in iOS 4.0 and later.
-     */
-    @Method(selector = "CMTimeValue")
-    public static native @ByVal CMTime getTimeValue(NSValue thiz);
-    /**
-     * @since Available in iOS 4.0 and later.
-     */
-    @Method(selector = "CMTimeRangeValue")
-    public static native @ByVal CMTimeRange getTimeRangeValue(NSValue thiz);
-    /**
-     * @since Available in iOS 4.0 and later.
-     */
-    @Method(selector = "CMTimeMappingValue")
-    public static native @ByVal CMTimeMapping getTimeMappingValue(NSValue thiz);
     /**
      * @since Available in iOS 4.0 and later.
      */

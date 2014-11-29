@@ -28,6 +28,7 @@ import org.robovm.rt.bro.annotation.*;
 import org.robovm.rt.bro.ptr.*;
 import org.robovm.apple.foundation.*;
 import org.robovm.apple.uikit.*;
+import org.robovm.apple.addressbook.*;
 /*</imports>*/
 
 /*<javadoc>*/
@@ -41,15 +42,15 @@ import org.robovm.apple.uikit.*;
     /*</ptr>*/
     /*<bind>*/static { Bro.bind(PKRemovedPassInfo.class); }/*</bind>*/
     /*<constants>*//*</constants>*/
-    private NSDictionary<NSString, ?> data;
+    private NSDictionary<NSString, NSObject> data;
     
-    protected PKRemovedPassInfo (NSDictionary<NSString, ?> data) {
+    protected PKRemovedPassInfo (NSDictionary<NSString, NSObject> data) {
         this.data = data;
     }
     /*<constructors>*//*</constructors>*/
     /*<properties>*//*</properties>*/
     /*<members>*//*</members>*/
-    public NSDictionary<NSString, ?> getDictionary() {
+    public NSDictionary<NSString, NSObject> getDictionary() {
         return data;
     }
     

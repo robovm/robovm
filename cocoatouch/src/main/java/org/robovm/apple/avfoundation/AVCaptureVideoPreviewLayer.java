@@ -67,9 +67,9 @@ import org.robovm.apple.mediatoolbox.*;
     @Property(selector = "connection")
     public native AVCaptureConnection getConnection();
     @Property(selector = "videoGravity")
-    public native String getVideoGravity();
+    public native AVLayerVideoGravity getVideoGravity();
     @Property(selector = "setVideoGravity:")
-    public native void setVideoGravity(String v);
+    public native void setVideoGravity(AVLayerVideoGravity v);
     /**
      * @since Available in iOS 4.0 and later.
      * @deprecated Deprecated in iOS 6.0.
@@ -132,6 +132,11 @@ import org.robovm.apple.mediatoolbox.*;
     @Method(selector = "initWithSession:")
     protected native @Pointer long init(AVCaptureSession session);
     /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @Method(selector = "setSessionWithNoConnection:")
+    public native void setSessionWithNoConnection(AVCaptureSession session);
+    /**
      * @since Available in iOS 6.0 and later.
      */
     @Method(selector = "captureDevicePointOfInterestForPoint:")
@@ -158,5 +163,10 @@ import org.robovm.apple.mediatoolbox.*;
     public native AVMetadataObject getTransformedMetadataObject(AVMetadataObject metadataObject);
     @Method(selector = "layerWithSession:")
     public static native AVCaptureVideoPreviewLayer create(AVCaptureSession session);
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @Method(selector = "layerWithSessionWithNoConnection:")
+    public static native NSObject layerWithSessionWithNoConnection$(AVCaptureSession session);
     /*</methods>*/
 }

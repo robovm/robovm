@@ -28,6 +28,7 @@ import org.robovm.rt.bro.annotation.*;
 import org.robovm.rt.bro.ptr.*;
 import org.robovm.apple.foundation.*;
 import org.robovm.apple.uikit.*;
+import org.robovm.apple.addressbook.*;
 /*</imports>*/
 
 /*<javadoc>*/
@@ -73,6 +74,11 @@ import org.robovm.apple.uikit.*;
     public native NSArray<PKPass> getPasses();
     @Method(selector = "passWithPassTypeIdentifier:serialNumber:")
     public native PKPass getPass(String identifier, String serialNumber);
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @Method(selector = "passesOfType:")
+    public native NSArray<PKPass> getPassesOfType(PKPassType passType);
     @Method(selector = "removePass:")
     public native void removePass(PKPass pass);
     @Method(selector = "containsPass:")
@@ -84,7 +90,22 @@ import org.robovm.apple.uikit.*;
      */
     @Method(selector = "addPasses:withCompletionHandler:")
     public native void addPasses(NSArray<PKPass> passes, @Block VoidBlock1<PKPassLibraryAddPassesStatus> completion);
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @Method(selector = "activatePaymentPass:withActivationData:completion:")
+    public native void activatePaymentPass(PKPaymentPass paymentPass, NSData activationData, @Block VoidBlock2<Boolean, NSError> completion);
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @Method(selector = "activatePaymentPass:withActivationCode:completion:")
+    public native void activatePaymentPass(PKPaymentPass paymentPass, String activationCode, @Block VoidBlock2<Boolean, NSError> completion);
     @Method(selector = "isPassLibraryAvailable")
     public static native boolean isPassLibraryAvailable();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @Method(selector = "isPaymentPassActivationAvailable")
+    public static native boolean isPaymentPassActivationAvailable();
     /*</methods>*/
 }

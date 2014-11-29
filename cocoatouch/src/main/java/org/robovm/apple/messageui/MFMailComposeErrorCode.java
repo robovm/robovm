@@ -34,7 +34,8 @@ import org.robovm.apple.uikit.*;
 
 /*</javadoc>*/
 /*<annotations>*//*</annotations>*/
-public enum /*<name>*/MFMailComposeErrorCode/*</name>*/ implements ValuedEnum {
+@ForceLinkClass(MFMailComposeError.class)
+public enum /*<name>*/MFMailComposeErrorCode/*</name>*/ implements NSErrorCode {
     /*<values>*/
     SaveFailed(0L),
     SendFailed(1L);

@@ -48,7 +48,11 @@ public enum /*<name>*/AVCaptureExposureMode/*</name>*/ implements ValuedEnum {
     /*<values>*/
     Locked(0L),
     AutoExpose(1L),
-    ContinuousAutoExposure(2L);
+    ContinuousAutoExposure(2L),
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    Custom(3L);
     /*</values>*/
 
     /*<bind>*/

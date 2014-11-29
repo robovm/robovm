@@ -72,6 +72,9 @@ import org.robovm.apple.security.*;
     protected NSURLProperties(NSDictionary<NSString, NSObject> data) {
         this.data = data;
     }
+    public NSURLProperties() {
+    	data = new NSMutableDictionary<>();
+    }
     /*<bind>*/static { Bro.bind(NSURLProperties.class); }/*</bind>*/
     /*<constants>*//*</constants>*/
     /*<constructors>*//*</constructors>*/

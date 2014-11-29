@@ -60,11 +60,18 @@ import org.robovm.apple.mediatoolbox.*;
     public void didFinishPlaying(AVAudioPlayer player, boolean flag) { throw new UnsupportedOperationException(); }
     @NotImplemented("audioPlayerDecodeErrorDidOccur:error:")
     public void decodeErrorDidOccur(AVAudioPlayer player, NSError error) { throw new UnsupportedOperationException(); }
+    /**
+     * @since Available in iOS 2.2 and later.
+     * @deprecated Deprecated in iOS 8.0.
+     */
+    @Deprecated
     @NotImplemented("audioPlayerBeginInterruption:")
     public void beginInterruption(AVAudioPlayer player) { throw new UnsupportedOperationException(); }
     /**
      * @since Available in iOS 6.0 and later.
+     * @deprecated Deprecated in iOS 8.0.
      */
+    @Deprecated
     @NotImplemented("audioPlayerEndInterruption:withOptions:")
     public void endInterruptionWithOptions(AVAudioPlayer player, @MachineSizedUInt long flags) { throw new UnsupportedOperationException(); }
     /**

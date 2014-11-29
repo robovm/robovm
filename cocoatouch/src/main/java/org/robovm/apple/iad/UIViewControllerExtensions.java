@@ -31,6 +31,7 @@ import org.robovm.apple.uikit.*;
 import org.robovm.apple.addressbook.*;
 import org.robovm.apple.mediaplayer.*;
 import org.robovm.apple.coregraphics.*;
+import org.robovm.apple.avkit.*;
 /*</imports>*/
 
 /*<javadoc>*/
@@ -83,6 +84,11 @@ import org.robovm.apple.coregraphics.*;
      */
     @Property(selector = "isDisplayingBannerAd")
     public static native boolean isDisplayingBannerAd(UIViewController thiz);
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
+    @Property(selector = "shouldPresentInterstitialAd")
+    public static native boolean shouldPresentInterstitialAd(UIViewController thiz);
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
@@ -91,11 +97,6 @@ import org.robovm.apple.coregraphics.*;
      */
     @Method(selector = "requestInterstitialAdPresentation")
     public static native boolean requestInterstitialAdPresentation(UIViewController thiz);
-    /**
-     * @since Available in iOS 7.0 and later.
-     */
-    @Method(selector = "shouldPresentInterstitialAd")
-    public static native boolean shouldPresentInterstitialAd(UIViewController thiz);
     /**
      * @since Available in iOS 7.0 and later.
      */

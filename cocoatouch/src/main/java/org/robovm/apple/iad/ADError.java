@@ -31,42 +31,31 @@ import org.robovm.apple.uikit.*;
 import org.robovm.apple.addressbook.*;
 import org.robovm.apple.mediaplayer.*;
 import org.robovm.apple.coregraphics.*;
+import org.robovm.apple.avkit.*;
 /*</imports>*/
 
 /*<javadoc>*/
-/**
- * @since Available in iOS 4.0 and later.
- */
 /*</javadoc>*/
-/*<annotations>*/@Marshaler(ValuedEnum.AsMachineSizedSIntMarshaler.class)/*</annotations>*/
-public enum /*<name>*/ADError/*</name>*/ implements ValuedEnum {
-    /*<values>*/
-    Unknown(0L),
-    ServerFailure(1L),
-    LoadingThrottled(2L),
-    InventoryUnavailable(3L),
-    ConfigurationError(4L),
-    BannerVisibleWithoutContent(5L),
-    ApplicationInactive(6L),
-    AdUnloaded(7L);
-    /*</values>*/
+/*<annotations>*/@Library("iAd")/*</annotations>*/
+/*<visibility>*/public/*</visibility>*/ class /*<name>*/ADError/*</name>*/ 
+    extends /*<extends>*/NSError/*</extends>*/ 
+    /*<implements>*//*</implements>*/ {
 
-    /*<bind>*/
-    /*</bind>*/
-    /*<constants>*//*</constants>*/
-    /*<methods>*//*</methods>*/
-
-    private final long n;
-
-    private /*<name>*/ADError/*</name>*/(long n) { this.n = n; }
-    public long value() { return n; }
-    public static /*<name>*/ADError/*</name>*/ valueOf(long n) {
-        for (/*<name>*/ADError/*</name>*/ v : values()) {
-            if (v.n == n) {
-                return v;
-            }
-        }
-        throw new IllegalArgumentException("No constant with value " + n + " found in " 
-            + /*<name>*/ADError/*</name>*/.class.getName());
+    protected ADError(SkipInit skipInit) {
+        super(skipInit);
     }
+    
+    /*<ptr>*/public static class ADErrorPtr extends Ptr<ADError, ADErrorPtr> {}/*</ptr>*/
+    /*<bind>*/static { Bro.bind(ADError.class); }/*</bind>*/
+    /*<constants>*//*</constants>*/
+    /*<properties>*//*</properties>*/
+    /*<members>*//*</members>*/
+    @Override
+    public ADErrorCode getErrorCode() {
+        return ADErrorCode.valueOf(getCode());
+    }
+    /*<methods>*/
+    @GlobalValue(symbol="ADErrorDomain", optional=true)
+    public static native String getClassDomain();
+    /*</methods>*/
 }

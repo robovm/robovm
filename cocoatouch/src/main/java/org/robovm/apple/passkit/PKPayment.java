@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.robovm.apple.safariservices;
+package org.robovm.apple.passkit;
 
 /*<imports>*/
 import java.io.*;
@@ -27,27 +27,39 @@ import org.robovm.rt.bro.*;
 import org.robovm.rt.bro.annotation.*;
 import org.robovm.rt.bro.ptr.*;
 import org.robovm.apple.foundation.*;
+import org.robovm.apple.uikit.*;
+import org.robovm.apple.addressbook.*;
 /*</imports>*/
 
 /*<javadoc>*/
+/**
+ * @since Available in iOS 8.0 and later.
+ */
 /*</javadoc>*/
-/*<annotations>*/@Library("SafariServices") @Marshaler(NSString.AsStringMarshaler.class)/*</annotations>*/
-/*<visibility>*/public/*</visibility>*/ class /*<name>*/SafariServices/*</name>*/ 
-    extends /*<extends>*/Object/*</extends>*/ 
+/*<annotations>*/@Library("PassKit") @NativeClass/*</annotations>*/
+/*<visibility>*/public/*</visibility>*/ class /*<name>*/PKPayment/*</name>*/ 
+    extends /*<extends>*/NSObject/*</extends>*/ 
     /*<implements>*//*</implements>*/ {
 
-    /*<ptr>*/
-    /*</ptr>*/
-    /*<bind>*/static { Bro.bind(SafariServices.class); }/*</bind>*/
+    /*<ptr>*/public static class PKPaymentPtr extends Ptr<PKPayment, PKPaymentPtr> {}/*</ptr>*/
+    /*<bind>*/static { ObjCRuntime.bind(PKPayment.class); }/*</bind>*/
     /*<constants>*//*</constants>*/
-    /*<constructors>*//*</constructors>*/
-    /*<properties>*//*</properties>*/
+    /*<constructors>*/
+    public PKPayment() {}
+    protected PKPayment(SkipInit skipInit) { super(skipInit); }
+    /*</constructors>*/
+    /*<properties>*/
+    @Property(selector = "token")
+    public native PKPaymentToken getToken();
+    @Property(selector = "billingAddress")
+    public native ABPerson getBillingAddress();
+    @Property(selector = "shippingAddress")
+    public native ABPerson getShippingAddress();
+    @Property(selector = "shippingMethod")
+    public native PKShippingMethod getShippingMethod();
+    /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
-    /**
-     * @since Available in iOS 7.0 and later.
-     */
-    @GlobalValue(symbol="SSReadingListErrorDomain", optional=true)
-    public static native NSString ReadingListErrorDomain();
+    
     /*</methods>*/
 }

@@ -66,6 +66,9 @@ import org.robovm.apple.foundation.*;
     protected HKMetadata(NSDictionary<NSString, NSObject> data) {
         this.data = data;
     }
+    public HKMetadata() {
+    	this.data = new NSMutableDictionary<>();
+    }
     /*<bind>*/static { Bro.bind(HKMetadata.class); }/*</bind>*/
     /*<constants>*//*</constants>*/
     /*<constructors>*//*</constructors>*/

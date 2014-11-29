@@ -28,6 +28,7 @@ import org.robovm.rt.bro.annotation.*;
 import org.robovm.rt.bro.ptr.*;
 import org.robovm.apple.foundation.*;
 import org.robovm.apple.uikit.*;
+import org.robovm.apple.addressbook.*;
 /*</imports>*/
 
 /*<javadoc>*/
@@ -35,13 +36,15 @@ import org.robovm.apple.uikit.*;
  * @since Available in iOS 6.0 and later.
  */
 /*</javadoc>*/
+@ForceLinkClass(PKPassKitError.class)
 /*<annotations>*/@Marshaler(ValuedEnum.AsMachineSizedSIntMarshaler.class)/*</annotations>*/
-public enum /*<name>*/PKPassKitErrorCode/*</name>*/ implements ValuedEnum {
+public enum /*<name>*/PKPassKitErrorCode/*</name>*/ implements NSErrorCode {
     /*<values>*/
     UnknownError(-1L),
     InvalidDataError(1L),
     UnsupportedVersionError(2L),
-    InvalidSignature(3L);
+    InvalidSignature(3L),
+    NotEntitledError(4L);
     /*</values>*/
 
     /*<bind>*/

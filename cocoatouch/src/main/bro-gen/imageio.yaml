@@ -1,0 +1,332 @@
+package: org.robovm.apple.imageio
+include: [foundation.yaml, corefoundation.yaml, coregraphics.yaml]
+library: ImageIO
+framework: ImageIO
+clang_args: ['-x', 'objective-c']
+headers:
+    - /System/Library/Frameworks/ImageIO.framework/Headers/ImageIO.h
+typedefs: {}
+private_typedefs:
+    '__CFString *': String
+    '__CFString **': 'NSString.NSStringPtr'
+    '__CFData *': NSData
+    '__CFURL *': NSURL
+    '__CFDictionary *': 'NSDictionary<?, ?>'
+    '__CFArray *': 'NSArray<?>'
+    
+enums:
+    CGImageMetadataType: {}
+    CGImageMetadataErrors: {}
+    CGImagePropertyOrientation: {}
+    CGImageSourceStatus: {}
+        
+classes:
+    ImageIO:
+        annotations: ['@Marshaler(NSString.AsStringMarshaler.class)']
+
+    CGImageDestinationProperties:
+        extends: CGImageProperties
+
+    # Opaque types
+    CGImageDestination:
+        extends: CFType
+    CGImageMetadataTag:
+        extends: CFType
+    CGImageMetadata:
+        extends: CFType
+    CGImageSource:
+        extends: CFType
+    
+protocols: {}
+
+functions:
+    (CG.*)GetTypeID:
+        class: '#{g[0]}'
+        name: getClassTypeID
+
+    # CGImageDestination
+    CGImageDestinationCopy(TypeIdentifiers):
+        class: CGImageDestination
+        name: 'get#{g[0]}'
+        return_type: '@org.robovm.rt.bro.annotation.Marshaler(CFArray.AsStringListMarshaler.class) List<String>'
+    CGImageDestinationCreate.*:
+        class: CGImageDestination
+        name: create
+    CGImageDestination(CopyImageSource):
+        class: CGImageDestination
+        name: '#{g[0]}'
+        visibility: protected
+        parameters:
+            options:
+                type: CGImageDestinationCopySourceOptions
+    CGImageDestination(SetProperties|AddImage|AddImageFromSource):
+        class: CGImageDestination
+        name: '#{g[0]}'
+        parameters:
+            properties:
+                type: CGImageDestinationProperties
+    CGImageDestinationFinalize:
+        exclude: true
+    CGImageDestination(.*):
+        class: CGImageDestination
+        name: '#{g[0]}'
+    
+    # CGImageMetadataTag
+    CGImageMetadataTagCopy(Qualifiers):
+        class: CGImageMetadataTag
+        name: 'get#{g[0]}'
+        return_type: '@org.robovm.rt.bro.annotation.Marshaler(CFArray.AsStringListMarshaler.class) List<String>'
+    CGImageMetadataTagCopy(.*):
+        class: CGImageMetadataTag
+        name: 'get#{g[0]}'
+    CGImageMetadataTag(.*):
+        class: CGImageMetadataTag
+        name: '#{g[0]}'
+    
+    # CGImageMetadata
+    CGImageMetadataCreateMutableCopy:
+        class: CGImageMetadata
+        name: createCopy
+        static: true
+    CGImageMetadataCreateMutable:
+        class: CGImageMetadata
+        name: create
+        static: true
+    CGImageMetadataCopy(Tags):
+        class: CGImageMetadata
+        name: 'get#{g[0]}'
+        return_type: '@org.robovm.rt.bro.annotation.Marshaler(CFArray.AsListMarshaler.class) List<CGImageMetadataTag>'
+    CGImageMetadataCopy(.*)WithPath:
+        class: CGImageMetadata
+        name: 'get#{g[0]}AtPath'
+    CGImageMetadataSet(.*)WithPath:
+        class: CGImageMetadata
+        name: 'set#{g[0]}AtPath'
+    CGImageMetadataRemove(.*)WithPath:
+        class: CGImageMetadata
+        name: 'remove#{g[0]}AtPath'
+    CGImageMetadata(RegisterNamespaceForPrefix):
+        class: CGImageMetadata
+        name: '#{g[0]}'
+        visibility: protected # throws NSErrorException
+    CGImageMetadata(EnumerateTags)UsingBlock:
+        class: CGImageMetadata
+        name: '#{g[0]}'
+        parameters:
+            options:
+                type: CGImageMetadataEnumerationOptions
+            block:
+                type: '@Block VoidBlock2<String, CGImageMetadataTag>'
+    CGImageMetadataCopyTagMatchingImageProperty:
+        exclude: true
+    CGImageMetadataSetValueMatchingImageProperty:
+        exclude: true
+    CGImageMetadata(.*):
+        class: CGImageMetadata
+        name: '#{g[0]}'
+    
+    # CGImageSource
+    CGImageSourceCopy(TypeIdentifiers):
+        class: CGImageSource
+        name: 'get#{g[0]}'
+        return_type: '@org.robovm.rt.bro.annotation.Marshaler(CFArray.AsStringListMarshaler.class) List<String>'
+    CGImageSourceCopy(Properties).*:
+        class: CGImageSource
+        name: 'get#{g[0]}'
+        return_type: CGImageProperties
+        parameters:
+            options:
+                type: CGImageSourceOptions
+    CGImageSourceCopy(Metadata)AtIndex:
+        class: CGImageSource
+        name: 'get#{g[0]}'
+        parameters:
+            options:
+                type: CGImageSourceOptions
+    CGImageSource(.*)AtIndex:
+        class: CGImageSource
+        name: '#{g[0]}'
+        parameters:
+            options:
+                type: CGImageSourceOptions
+    CGImageSource(CreateIncremental):
+        class: CGImageSource
+        name: '#{g[0]}'
+        parameters:
+            options:
+                type: CGImageSourceOptions
+    CGImageSource(UpdateData.*):
+        class: CGImageSource
+        name: '#{g[0]}'
+        parameters:
+            final:
+                name: isFinal
+    CGImageSourceCreate.*:
+        class: CGImageSource
+        name: create
+        parameters:
+            options:
+                type: CGImageSourceOptions
+    CGImageSource(.*):
+        class: CGImageSource
+        name: '#{g[0]}'
+
+    # Make sure we don't miss any functions if new ones are introduced in a later version
+    (k?CG.*):
+        class: ImageIO
+        name: 'Function__#{g[0]}'
+
+values:
+    # CGImageDestination
+    kCGImage(DestinationMetadata|DestinationMergeMetadata|MetadataShouldExcludeXMP|MetadataShouldExcludeGPS|DestinationDateTime|DestinationOrientation):
+        class: CGImageDestinationCopySourceOptions
+        name: '#{g[0]}Key'
+        type: CFString
+        visibility: protected
+    kCGImageDestination(.*):
+        class: CGImageDestinationProperties
+        name: '#{g[0]}Key'
+        type: CFString
+        visibility: protected
+
+    # CGImageMetadata
+    kCGImageMetadata(EnumerateRecursively):
+        class: CGImageMetadataEnumerationOptions
+        name: '#{g[0]}Key'
+        type: CFString
+        visibility: protected
+    kCGImageMetadataNamespace(.*):
+        class: CGImageMetadataNamespace
+        name: '#{g[0]}Value'
+        type: CFString
+        visibility: protected
+    kCGImageMetadataPrefix(.*):
+        class: CGImageMetadataPrefix
+        name: '#{g[0]}Value'
+        type: CFString
+        visibility: protected
+
+    # CGImageSource
+    kCGImageSource(.*):
+        class: CGImageSourceOptions
+        name: '#{g[0]}Key'
+        type: CFString
+        visibility: protected
+
+    # CGImageProperty
+    kCGImageProperty(8BIMDictionary):
+        class: CGImageProperties
+        name: '_#{g[0]}Key'
+        type: CFString
+        visibility: protected
+    kCGImageProperty(.*Dictionary):
+        class: CGImageProperties
+        name: '#{g[0]}Key'
+        type: CFString
+        visibility: protected
+    kCGImageProperty(ColorModel):
+        class: CGImageProperties
+        name: '#{g[0]}Key'
+        type: CFString
+        visibility: protected
+    kCGImagePropertyColorModel(.*):
+        class: CGImagePropertyColorModel
+        name: '#{g[0]}Value'
+        type: CFString
+        visibility: protected
+    kCGImagePropertyTIFF(.*):
+        class: CGImagePropertyTIFF
+        name: '#{g[0]}Key'
+        type: CFString
+        visibility: protected
+    kCGImagePropertyJFIF(.*):
+        class: CGImagePropertyJFIF
+        name: '#{g[0]}Key'
+        type: CFString
+        visibility: protected
+    kCGImagePropertyExifAux(.*):
+        class: CGImagePropertyExifAux
+        name: '#{g[0]}Key'
+        type: CFString
+        visibility: protected
+    kCGImagePropertyExif(.*):
+        class: CGImagePropertyExif
+        name: '#{g[0]}Key'
+        type: CFString
+        visibility: protected
+    kCGImagePropertyGIF(.*):
+        class: CGImagePropertyGIF
+        name: '#{g[0]}Key'
+        type: CFString
+        visibility: protected
+    kCGImagePropertyAPNG(.*):
+        class: CGImagePropertyPNG
+        name: '#{g[0]}Key'
+        type: CFString
+        visibility: protected
+    kCGImagePropertyPNG(.*):
+        class: CGImagePropertyPNG
+        name: '#{g[0]}Key'
+        type: CFString
+        visibility: protected  
+    kCGImagePropertyIPTCContactInfo(.*):
+        class: CGImagePropertyIPTCContactInfo
+        name: '#{g[0]}Key'
+        type: CFString
+        visibility: protected
+    kCGImagePropertyIPTC(.*):
+        class: CGImagePropertyIPTC
+        name: '#{g[0]}Key'
+        type: CFString
+        visibility: protected
+    kCGImageProperty8BIM(.*):
+        class: CGImageProperty8BIM
+        name: '#{g[0]}Key'
+        type: CFString
+        visibility: protected
+    kCGImagePropertyGPS(.*):
+        class: CGImagePropertyGPS
+        name: '#{g[0]}Key'
+        type: CFString
+        visibility: protected
+    kCGImagePropertyDNG(.*):
+        class: CGImagePropertyDNG
+        name: '#{g[0]}Key'
+        type: CFString
+        visibility: protected
+    kCGImagePropertyCIFF(.*):
+        class: CGImagePropertyCIFF
+        name: '#{g[0]}Key'
+        type: CFString
+        visibility: protected
+    kCGImagePropertyMakerNikon(.*):
+        class: CGImagePropertyNikon
+        name: '#{g[0]}Key'
+        type: CFString
+        visibility: protected
+    kCGImagePropertyMakerCanon(.*):
+        class: CGImagePropertyCanon
+        name: '#{g[0]}Key'
+        type: CFString
+        visibility: protected
+    kCGImagePropertyOpenEXR(.*):
+        class: CGImagePropertyOpenEXR
+        name: '#{g[0]}Key'
+        type: CFString
+        visibility: protected
+    kCGImageProperty(.*):
+        class: CGImageProperties
+        name: '#{g[0]}Key'
+        type: CFString
+        visibility: protected
+   
+    # Make sure we don't miss any values if new ones are introduced in a later version
+    (k?CG.*):
+        class: ImageIO
+        name: 'Value__#{g[0]}'
+
+constants:
+    # Make sure we don't miss any constants if new ones are introduced in a later version
+    (k?CG.*):
+        class: ImageIO
+        name: 'Constant__#{g[0]}'

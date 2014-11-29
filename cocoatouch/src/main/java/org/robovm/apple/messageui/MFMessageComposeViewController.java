@@ -72,9 +72,9 @@ import org.robovm.apple.uikit.*;
     @Property(selector = "setMessageComposeDelegate:", strongRef = true)
     public native void setMessageComposeDelegate(MFMessageComposeViewControllerDelegate v);
     @Property(selector = "recipients")
-    public native NSArray<NSString> getRecipients();
+    public native @org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String> getRecipients();
     @Property(selector = "setRecipients:")
-    public native void setRecipients(NSArray<NSString> v);
+    public native void setRecipients(@org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String> v);
     @Property(selector = "body")
     public native String getBody();
     @Property(selector = "setBody:")
@@ -84,7 +84,7 @@ import org.robovm.apple.uikit.*;
     @Property(selector = "setSubject:")
     public native void setSubject(String v);
     @Property(selector = "attachments")
-    public native NSArray<NSDictionary<NSString, ?>> getAttachments();
+    public native @org.robovm.rt.bro.annotation.Marshaler(MFMessageComposeViewControllerAttachment.AsListMarshaler.class) List<MFMessageComposeViewControllerAttachment> getAttachments();
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/

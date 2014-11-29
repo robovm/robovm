@@ -40,6 +40,7 @@ import org.robovm.apple.dispatch.*;
 
 /*</javadoc>*/
 /*<annotations>*/@Library("Foundation") @NativeClass/*</annotations>*/
+@ForceLinkClass(NSErrorUserInfo.class)
 @Marshaler(NSError.Marshaler.class)
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/NSError/*</name>*/ 
     extends /*<extends>*/NSObject/*</extends>*/ 

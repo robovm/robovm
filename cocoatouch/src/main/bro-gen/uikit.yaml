@@ -173,16 +173,19 @@ enums:
     UIWebViewNavigationType: {}
 
 categories:
-    CIColor:
+    CIColor: # DONE
         methods:
             '-init.*':
                 visibility: protected
                 return_type: '@Pointer long'
-    CIImage:
+    CIImage: # DONE
         methods:
             '-init.*':
                  visibility: protected
                  return_type: '@Pointer long'
+                 parameters:
+                    options:
+                        type: CIImageOptions
     NSAttributedString: # DONE
         methods:
             '-init.*':

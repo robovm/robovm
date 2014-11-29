@@ -31,6 +31,7 @@ import org.robovm.apple.uikit.*;
 import org.robovm.apple.addressbook.*;
 import org.robovm.apple.mediaplayer.*;
 import org.robovm.apple.coregraphics.*;
+import org.robovm.apple.avkit.*;
 /*</imports>*/
 
 /*<javadoc>*/
@@ -57,6 +58,11 @@ import org.robovm.apple.coregraphics.*;
      */
     @Method(selector = "playPrerollAdWithCompletionHandler:")
     public static native void playPrerollAd(MPMoviePlayerController thiz, @Block VoidBlock1<NSError> completionHandler);
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @Method(selector = "cancelPreroll")
+    public static native void cancelPreroll(MPMoviePlayerController thiz);
     /**
      * @since Available in iOS 7.0 and later.
      */

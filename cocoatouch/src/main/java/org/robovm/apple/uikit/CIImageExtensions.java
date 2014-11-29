@@ -53,6 +53,22 @@ import org.robovm.apple.corelocation.*;
     
     /*</properties>*/
     /*<members>*//*</members>*/
+    /**
+     * @since Available in iOS 5.0 and later.
+     */
+    public static CIImage create(UIImage image) {
+        CIImage thiz = alloc(CIImage.class);
+        initObject(thiz, initWithImage$(thiz, image));
+        return thiz;
+    }
+    /**
+     * @since Available in iOS 5.0 and later.
+     */
+    public static CIImage create(UIImage image, CIImageOptions options) {
+        CIImage thiz = alloc(CIImage.class);
+        initObject(thiz, initWithImage$options$(thiz, image, options));
+        return thiz;
+    }
     /*<methods>*/
     /**
      * @since Available in iOS 5.0 and later.
@@ -63,6 +79,6 @@ import org.robovm.apple.corelocation.*;
      * @since Available in iOS 5.0 and later.
      */
     @Method(selector = "initWithImage:options:")
-    protected static native @Pointer long initWithImage$options$(CIImage thiz, UIImage image, NSDictionary<?, ?> options);
+    protected static native @Pointer long initWithImage$options$(CIImage thiz, UIImage image, CIImageOptions options);
     /*</methods>*/
 }

@@ -41,7 +41,7 @@ import org.robovm.apple.mediatoolbox.*;
 /*<javadoc>*/
 
 /*</javadoc>*/
-/*<annotations>*//*</annotations>*/
+/*<annotations>*/@Marshaler(ValuedEnum.AsMachineSizedSIntMarshaler.class)/*</annotations>*/
 public enum /*<name>*/AVPlayerItemStatus/*</name>*/ implements ValuedEnum {
     /*<values>*/
     Unknown(0L),

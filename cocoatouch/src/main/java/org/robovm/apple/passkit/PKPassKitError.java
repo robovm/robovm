@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.robovm.apple.iad;
+package org.robovm.apple.passkit;
 
 /*<imports>*/
 import java.io.*;
@@ -29,26 +29,35 @@ import org.robovm.rt.bro.ptr.*;
 import org.robovm.apple.foundation.*;
 import org.robovm.apple.uikit.*;
 import org.robovm.apple.addressbook.*;
-import org.robovm.apple.mediaplayer.*;
-import org.robovm.apple.coregraphics.*;
 /*</imports>*/
 
 /*<javadoc>*/
 /*</javadoc>*/
-/*<annotations>*/@Library("iAd")/*</annotations>*/
-/*<visibility>*/public/*</visibility>*/ class /*<name>*/IAd/*</name>*/ 
-    extends /*<extends>*/Object/*</extends>*/ 
+/*<annotations>*/@Library("PassKit")/*</annotations>*/
+/*<visibility>*/public/*</visibility>*/ class /*<name>*/PKPassKitError/*</name>*/ 
+    extends /*<extends>*/NSError/*</extends>*/ 
     /*<implements>*//*</implements>*/ {
 
+    protected PKPassKitError(SkipInit skipInit) {
+        super(skipInit);
+    }
+    
     /*<ptr>*/
     /*</ptr>*/
-    /*<bind>*/static { Bro.bind(IAd.class); }/*</bind>*/
+    /*<bind>*/static { Bro.bind(PKPassKitError.class); }/*</bind>*/
     /*<constants>*//*</constants>*/
     /*<constructors>*//*</constructors>*/
     /*<properties>*//*</properties>*/
     /*<members>*//*</members>*/
+    @Override
+    public PKPassKitErrorCode getErrorCode() {
+        return PKPassKitErrorCode.valueOf(getCode());
+    }
     /*<methods>*/
-    @GlobalValue(symbol="ADErrorDomain", optional=true)
-    public static native String ErrorDomain();
+    /**
+     * @since Available in iOS 6.0 and later.
+     */
+    @GlobalValue(symbol="PKPassKitErrorDomain", optional=true)
+    public static native String PKPassKitErrorDomain();
     /*</methods>*/
 }

@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.robovm.apple.messageui;
+package org.robovm.apple.passkit;
 
 /*<imports>*/
 import java.io.*;
@@ -28,31 +28,29 @@ import org.robovm.rt.bro.annotation.*;
 import org.robovm.rt.bro.ptr.*;
 import org.robovm.apple.foundation.*;
 import org.robovm.apple.uikit.*;
+import org.robovm.apple.addressbook.*;
 /*</imports>*/
 
 /*<javadoc>*/
+
 /*</javadoc>*/
-/*<annotations>*/@Library("MessageUI") @Marshaler(NSString.AsStringMarshaler.class)/*</annotations>*/
-/*<visibility>*/public/*</visibility>*/ class /*<name>*/MessageUI/*</name>*/ 
-    extends /*<extends>*/Object/*</extends>*/ 
+/*<annotations>*/@Library("PassKit") @NativeClass/*</annotations>*/
+/*<visibility>*/public/*</visibility>*/ class /*<name>*/PKObject/*</name>*/ 
+    extends /*<extends>*/NSObject/*</extends>*/ 
     /*<implements>*//*</implements>*/ {
 
-    /*<ptr>*/
-    /*</ptr>*/
-    /*<bind>*/static { Bro.bind(MessageUI.class); }/*</bind>*/
+    /*<ptr>*/public static class PKObjectPtr extends Ptr<PKObject, PKObjectPtr> {}/*</ptr>*/
+    /*<bind>*/static { ObjCRuntime.bind(PKObject.class); }/*</bind>*/
     /*<constants>*//*</constants>*/
-    /*<constructors>*//*</constructors>*/
-    /*<properties>*//*</properties>*/
+    /*<constructors>*/
+    public PKObject() {}
+    protected PKObject(SkipInit skipInit) { super(skipInit); }
+    /*</constructors>*/
+    /*<properties>*/
+    
+    /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
-    /**
-     * @since Available in iOS 3.0 and later.
-     */
-    @GlobalValue(symbol="MFMailComposeErrorDomain", optional=true)
-    public static native NSString MailComposeErrorDomain();
-    @GlobalValue(symbol="MFMessageComposeViewControllerAttachmentURL", optional=true)
-    public static native NSString MessageComposeViewControllerAttachmentURL();
-    @GlobalValue(symbol="MFMessageComposeViewControllerAttachmentAlternateFilename", optional=true)
-    public static native NSString MessageComposeViewControllerAttachmentAlternateFilename();
+    
     /*</methods>*/
 }

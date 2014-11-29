@@ -129,19 +129,19 @@ import org.robovm.apple.mapkit.MKCoordinateSpan;
      * @since Available in iOS 4.0 and later.
      */
     public CMTime timeValue() {
-        return org.robovm.apple.avfoundation.NSValueExtensions.getTimeValue(this);
+        return org.robovm.apple.avfoundation.NSValueExtensions.getCMTimeValue(this);
     }
     /**
      * @since Available in iOS 4.0 and later.
      */
     public CMTimeRange timeRangeValue() {
-        return org.robovm.apple.avfoundation.NSValueExtensions.getTimeRangeValue(this);
+        return org.robovm.apple.avfoundation.NSValueExtensions.getCMTimeRangeValue(this);
     }
     /**
      * @since Available in iOS 4.0 and later.
      */
     public CMTimeMapping timeMappingValue() {
-        return org.robovm.apple.avfoundation.NSValueExtensions.getTimeMappingValue(this);
+        return org.robovm.apple.avfoundation.NSValueExtensions.getCMTimeMappingValue(this);
     }
     /**
      * @since Available in iOS 4.0 and later.

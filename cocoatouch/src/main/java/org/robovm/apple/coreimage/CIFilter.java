@@ -28,7 +28,10 @@ import org.robovm.rt.bro.annotation.*;
 import org.robovm.rt.bro.ptr.*;
 import org.robovm.apple.coregraphics.*;
 import org.robovm.apple.foundation.*;
+import org.robovm.apple.corefoundation.*;
 import org.robovm.apple.opengles.*;
+import org.robovm.apple.corevideo.*;
+import org.robovm.apple.imageio.*;
 /*</imports>*/
 
 /*<javadoc>*/
@@ -50,6 +53,23 @@ import org.robovm.apple.opengles.*;
     public native CIImage getOutputImage();
     /*</properties>*/
     /*<members>*//*</members>*/
+    /**
+     * 
+     * @param xmpData
+     * @param extent
+     * @return
+     * @since Available in iOS 6.0 and later.
+     * @throws NSErrorException
+     */
+    public static NSArray<CIFilter> deserializeFromXMP(NSData xmpData, @ByVal CGRect extent) {
+        NSError.NSErrorPtr err = new NSError.NSErrorPtr();
+        NSArray<CIFilter> result = deserializeFromXMP(xmpData, extent, err);
+        if (err.get() != null) {
+            throw new NSErrorException(err.get());
+        }
+        return result;
+    }
+
     /*<methods>*/
     /**
      * @since Available in iOS 5.0 and later.
@@ -57,19 +77,24 @@ import org.robovm.apple.opengles.*;
     @Method(selector = "name")
     public native String getName();
     @Method(selector = "inputKeys")
-    public native NSArray<?> getInputKeys();
+    public native @org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String> getInputKeys();
     @Method(selector = "outputKeys")
-    public native NSArray<?> getOutputKeys();
+    public native @org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String> getOutputKeys();
     @Method(selector = "setDefaults")
     public native void setDefaults();
     @Method(selector = "attributes")
-    public native NSDictionary<?, ?> getAttributes();
+    public native CIFilterAttributes getAttributes();
     @Method(selector = "filterWithName:")
-    public static native CIFilter getFilter(String name);
+    public static native CIFilter create(String name);
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @Method(selector = "filterWithName:withInputParameters:")
+    public static native CIFilter create(String name, CIFilterInputParameters params);
     @Method(selector = "filterNamesInCategory:")
-    public static native NSArray<NSString> getFilterNames(String category);
+    public static native @org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String> getFilterNames(CIFilterCategory category);
     @Method(selector = "filterNamesInCategories:")
-    public static native NSArray<NSString> getFilterNames(NSArray<NSString> categories);
+    public static native @org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String> getFilterNames(@org.robovm.rt.bro.annotation.Marshaler(CIFilterCategory.AsListMarshaler.class) List<CIFilterCategory> categories);
     /**
      * @since Available in iOS 6.0 and later.
      */
@@ -79,7 +104,7 @@ import org.robovm.apple.opengles.*;
      * @since Available in iOS 6.0 and later.
      */
     @Method(selector = "filterArrayFromSerializedXMP:inputImageExtent:error:")
-    public static native NSArray<CIFilter> deserializeFromXMP(NSData xmpData, @ByVal CGRect extent, NSError.NSErrorPtr outError);
+    protected static native NSArray<CIFilter> deserializeFromXMP(NSData xmpData, @ByVal CGRect extent, NSError.NSErrorPtr outError);
     @Method(selector = "encodeWithCoder:")
     public native void encode(NSCoder aCoder);
     /*</methods>*/

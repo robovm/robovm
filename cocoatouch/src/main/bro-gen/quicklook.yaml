@@ -11,12 +11,9 @@ enums: {}
 
 categories:
     NSURL: # DONE
-        exclude: true
+        exclude: true # class is empty
         
 classes:
-    QuickLook:
-        annotations: ['@Marshaler(NSString.AsStringMarshaler.class)']
-
     QLPreviewController: # DONE
         methods:
             '+canPreviewItem:':
@@ -26,9 +23,9 @@ protocols:
     QLPreviewItem: # DONE
         properties:
             'previewItemURL':
-                name: "URL"
+                name: URL
             'previewItemTitle':
-                name: "Title"
+                name: Title
     QLPreviewControllerDataSource: # DONE
         methods:
             '-numberOfPreviewItemsInPreviewController:':
@@ -39,30 +36,30 @@ protocols:
     QLPreviewControllerDelegate: # DONE
         methods:
             '-previewControllerWillDismiss:':
-                name: "willDismiss"
+                name: willDismiss
             '-previewControllerDidDismiss:':
-                name: "didDismiss"
+                name: didDismiss
             '-previewController:shouldOpenURL:forPreviewItem:':
-                name: "shouldOpenURL"
+                name: shouldOpenURL
             '-previewController:frameForPreviewItem:inSourceView:':
-                name: "getFrame"
+                name: getFrame
             '-previewController:transitionImageForPreviewItem:contentRect:':
-                name: "getTransitionImage"
+                name: getTransitionImage
 
 functions:
     # Make sure we don't miss any functions if new ones are introduced in a later version
     (QL.*):
         class: QuickLook
-        name: "Function__#{g[0]}"
+        name: 'Function__#{g[0]}'
 
 values:
     # Make sure we don't miss any values if new ones are introduced in a later version
     (QL.*):
         class: QuickLook
-        name: "Value__#{g[0]}"
+        name: 'Value__#{g[0]}'
 
 constants:
     # Make sure we don't miss any constants if new ones are introduced in a later version
     (QL.*):
         class: QuickLook
-        name: "Constant__#{g[0]}"
+        name: 'Constant__#{g[0]}'

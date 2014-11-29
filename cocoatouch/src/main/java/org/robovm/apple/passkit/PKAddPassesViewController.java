@@ -28,6 +28,7 @@ import org.robovm.rt.bro.annotation.*;
 import org.robovm.rt.bro.ptr.*;
 import org.robovm.apple.foundation.*;
 import org.robovm.apple.uikit.*;
+import org.robovm.apple.addressbook.*;
 /*</imports>*/
 
 /*<javadoc>*/
@@ -46,11 +47,11 @@ import org.robovm.apple.uikit.*;
     /*<constructors>*/
     public PKAddPassesViewController() {}
     protected PKAddPassesViewController(SkipInit skipInit) { super(skipInit); }
-    public PKAddPassesViewController(PKPass pass) { super((SkipInit) null); initObject(initWithPass$(pass)); }
+    public PKAddPassesViewController(PKPass pass) { super((SkipInit) null); initObject(init(pass)); }
     /**
      * @since Available in iOS 7.0 and later.
      */
-    public PKAddPassesViewController(NSArray<PKPass> passes) { super((SkipInit) null); initObject(initWithPasses$(passes)); }
+    public PKAddPassesViewController(NSArray<PKPass> passes) { super((SkipInit) null); initObject(init(passes)); }
     /*</constructors>*/
     /*<properties>*/
     @Property(selector = "delegate")
@@ -61,11 +62,16 @@ import org.robovm.apple.uikit.*;
     /*<members>*//*</members>*/
     /*<methods>*/
     @Method(selector = "initWithPass:")
-    protected native @Pointer long initWithPass$(PKPass pass);
+    protected native @Pointer long init(PKPass pass);
     /**
      * @since Available in iOS 7.0 and later.
      */
     @Method(selector = "initWithPasses:")
-    protected native @Pointer long initWithPasses$(NSArray<PKPass> passes);
+    protected native @Pointer long init(NSArray<PKPass> passes);
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @Method(selector = "canAddPasses")
+    public static native boolean canAddPasses();
     /*</methods>*/
 }

@@ -28,29 +28,38 @@ import org.robovm.rt.bro.annotation.*;
 import org.robovm.rt.bro.ptr.*;
 import org.robovm.apple.foundation.*;
 import org.robovm.apple.uikit.*;
+import org.robovm.apple.addressbook.*;
 /*</imports>*/
 
 /*<javadoc>*/
+/**
+ * @since Available in iOS 8.0 and later.
+ */
 /*</javadoc>*/
-/*<annotations>*/@Library("PassKit") @Marshaler(NSString.AsStringMarshaler.class)/*</annotations>*/
-/*<visibility>*/public/*</visibility>*/ class /*<name>*/PassKit/*</name>*/ 
-    extends /*<extends>*/Object/*</extends>*/ 
-    /*<implements>*//*</implements>*/ {
+/*<annotations>*/@Marshaler(ValuedEnum.AsMachineSizedUIntMarshaler.class)/*</annotations>*/
+public enum /*<name>*/PKPassType/*</name>*/ implements ValuedEnum {
+    /*<values>*/
+    Barcode(0L),
+    Payment(1L),
+    Any(-1L);
+    /*</values>*/
 
-    /*<ptr>*/
-    /*</ptr>*/
-    /*<bind>*/static { Bro.bind(PassKit.class); }/*</bind>*/
+    /*<bind>*/
+    /*</bind>*/
     /*<constants>*//*</constants>*/
-    /*<constructors>*//*</constructors>*/
-    /*<properties>*//*</properties>*/
-    /*<members>*//*</members>*/
-    /*<methods>*/
-    /**
-     * @since Available in iOS 6.0 and later.
-     */
-    @GlobalValue(symbol="PKPassKitErrorDomain", optional=true)
-    public static native NSString PassKitErrorDomain();
-    @GlobalValue(symbol="PKErrorDomain", optional=true)
-    public static native NSString ErrorDomain();
-    /*</methods>*/
+    /*<methods>*//*</methods>*/
+
+    private final long n;
+
+    private /*<name>*/PKPassType/*</name>*/(long n) { this.n = n; }
+    public long value() { return n; }
+    public static /*<name>*/PKPassType/*</name>*/ valueOf(long n) {
+        for (/*<name>*/PKPassType/*</name>*/ v : values()) {
+            if (v.n == n) {
+                return v;
+            }
+        }
+        throw new IllegalArgumentException("No constant with value " + n + " found in " 
+            + /*<name>*/PKPassType/*</name>*/.class.getName());
+    }
 }

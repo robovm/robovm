@@ -19,6 +19,7 @@ package org.robovm.apple.mediaplayer;
 import java.io.*;
 import java.nio.*;
 import java.util.*;
+
 import org.robovm.objc.*;
 import org.robovm.objc.annotation.*;
 import org.robovm.objc.block.*;
@@ -374,6 +375,12 @@ import org.robovm.apple.coregraphics.*;
      */
     public static void preparePrerollAds() {
         org.robovm.apple.iad.MPMoviePlayerControllerExtensions.preparePrerollAds();
+    }
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    public void cancelPreroll() {
+        org.robovm.apple.iad.MPMoviePlayerControllerExtensions.cancelPreroll(this);
     }
     
     /*<members>*//*</members>*/

@@ -60,11 +60,18 @@ import org.robovm.apple.mediatoolbox.*;
     public void didFinishRecording(AVAudioRecorder recorder, boolean flag) { throw new UnsupportedOperationException(); }
     @NotImplemented("audioRecorderEncodeErrorDidOccur:error:")
     public void encodeErrorDidOccur(AVAudioRecorder recorder, NSError error) { throw new UnsupportedOperationException(); }
+    /**
+     * @since Available in iOS 2.2 and later.
+     * @deprecated Deprecated in iOS 8.0.
+     */
+    @Deprecated
     @NotImplemented("audioRecorderBeginInterruption:")
     public void beginInterruption(AVAudioRecorder recorder) { throw new UnsupportedOperationException(); }
     /**
      * @since Available in iOS 6.0 and later.
+     * @deprecated Deprecated in iOS 8.0.
      */
+    @Deprecated
     @NotImplemented("audioRecorderEndInterruption:withOptions:")
     public void endInterruptionWithOptions(AVAudioRecorder recorder, @MachineSizedUInt long flags) { throw new UnsupportedOperationException(); }
     /**

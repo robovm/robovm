@@ -1,35 +1,42 @@
 package: org.robovm.apple.iad
-include: [foundation.yaml, uikit.yaml, addressbook.yaml, mediaplayer.yaml, coregraphics.yaml]
+include: [foundation.yaml, uikit.yaml, addressbook.yaml, mediaplayer.yaml, coregraphics.yaml, avkit.yaml]
 library: iAd
 framework: iAd
 clang_args: ['-x', 'objective-c']
 headers:
     - /System/Library/Frameworks/iAd.framework/Headers/iAd.h
-typedefs: {}
+typedefs:
+    'void (^)(NSDate *, NSDate *)': '@Block VoidBlock2<NSDate, NSDate>'
 
 enums:
-    ADError: {}
+    ADErrorCode: { first: ADErrorUnknown }
     ADAdType: {}
     ADInterstitialPresentationPolicy: {}
 
 categories:
-    iAdPreroll: # DONE
+    iAdPreroll@AVPlayerViewController: # DONE
         methods:
             '-playPrerollAdWithCompletionHandler:':
                 name: playPrerollAd
-    iAdAdditions: {} # DONE
+    iAdPreroll@MPMoviePlayerController: # DONE
+        methods:
+            '-playPrerollAdWithCompletionHandler:':
+                name: playPrerollAd
+    iAdAdditions: # DONE
+        properties:
+            'shouldPresentInterstitialAd':
+                omit_prefix: true
     
 classes:
+    ADError:
+        extends: NSError
+
     ADBannerView: # DONE
         properties:
             'requiredContentSizeIdentifiers':
-                name: requiredContentSizeIdentifiers0
-                type: "NSSet<NSString>"
-                visibility: protected
+                type: '@org.robovm.rt.bro.annotation.Marshaler(ADBannerContentSizeIdentifier.AsListMarshaler.class) List<ADBannerContentSizeIdentifier>'
             'currentContentSizeIdentifier':
-                name: currentContentSizeIdentifier0
-                type: NSString
-                visibility: protected
+                type: ADBannerContentSizeIdentifier
         methods:
             '-initWithAdType:':
                 name: init
@@ -45,7 +52,14 @@ classes:
             '+sharedClient':
                 name: getSharedClient
             '-determineAppInstallationAttributionWithCompletionHandler:':
-                name: determineAppInstallationAttribution 
+                name: determineAppInstallationAttribution
+            '-lookupAdConversionDetails:':
+                trim_after_first_colon: true
+            '-addClientToSegments:replaceExisting:':
+                trim_after_first_colon: true
+                parameters:
+                    segmentIdentifiers:
+                        type: '@org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String>'
     ADInterstitialAd: # DONE
         visibility: 'public final'
         methods:
@@ -84,26 +98,26 @@ functions:
     # Make sure we don't miss any functions if new ones are introduced in a later version
     (AD.*):
         class: IAd
-        name: "Function__#{g[0]}"
+        name: 'Function__#{g[0]}'
 
 values:
-    AD(ErrorDomain):
-        class: IAd
-        name: "#{g[0]}"
+    ADErrorDomain:
+        class: ADError
+        name: getClassDomain
 
     ADBannerContentSizeIdentifier(.*):
         class: ADBannerContentSizeIdentifier
-        name: "Size#{g[0]}Value"
+        name: 'Size#{g[0]}Value'
         type: NSString
         visibility: protected
 
     # Make sure we don't miss any values if new ones are introduced in a later version
     (AD.*):
         class: IAd
-        name: "Value__#{g[0]}"   
+        name: 'Value__#{g[0]}'   
 
 constants:
     # Make sure we don't miss any constants if new ones are introduced in a later version
     (AD.*):
         class: IAd
-        name: "Constant__#{g[0]}"
+        name: 'Constant__#{g[0]}'

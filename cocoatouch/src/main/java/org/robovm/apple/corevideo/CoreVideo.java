@@ -60,481 +60,506 @@ import org.robovm.apple.coremedia.*;
      * @since Available in iOS 4.0 and later.
      */
     @GlobalValue(symbol="kCVBufferPropagatedAttachmentsKey", optional=true)
-    public static native String CVBufferPropagatedAttachmentsKey();
+    public static native CFString CVBufferPropagatedAttachmentsKey();
     /**
      * @since Available in iOS 4.0 and later.
      */
     @GlobalValue(symbol="kCVBufferNonPropagatedAttachmentsKey", optional=true)
-    public static native String CVBufferNonPropagatedAttachmentsKey();
+    public static native CFString CVBufferNonPropagatedAttachmentsKey();
     /**
      * @since Available in iOS 4.0 and later.
      */
     @GlobalValue(symbol="kCVBufferMovieTimeKey", optional=true)
-    public static native String CVBufferMovieTimeKey();
+    public static native CFString CVBufferMovieTimeKey();
     /**
      * @since Available in iOS 4.0 and later.
      */
     @GlobalValue(symbol="kCVBufferTimeValueKey", optional=true)
-    public static native String CVBufferTimeValueKey();
+    public static native CFString CVBufferTimeValueKey();
     /**
      * @since Available in iOS 4.0 and later.
      */
     @GlobalValue(symbol="kCVBufferTimeScaleKey", optional=true)
-    public static native String CVBufferTimeScaleKey();
+    public static native CFString CVBufferTimeScaleKey();
     /**
      * @since Available in iOS 4.0 and later.
      */
     @GlobalValue(symbol="kCVImageBufferCGColorSpaceKey", optional=true)
-    public static native String CVImageBufferCGColorSpaceKey();
+    public static native CFString CVImageBufferCGColorSpaceKey();
     /**
      * @since Available in iOS 4.0 and later.
      */
     @GlobalValue(symbol="kCVImageBufferCleanApertureKey", optional=true)
-    public static native String CVImageBufferCleanApertureKey();
+    public static native CFString CVImageBufferCleanApertureKey();
     /**
      * @since Available in iOS 4.0 and later.
      */
     @GlobalValue(symbol="kCVImageBufferCleanApertureWidthKey", optional=true)
-    public static native String CVImageBufferCleanApertureWidthKey();
+    public static native CFString CVImageBufferCleanApertureWidthKey();
     /**
      * @since Available in iOS 4.0 and later.
      */
     @GlobalValue(symbol="kCVImageBufferCleanApertureHeightKey", optional=true)
-    public static native String CVImageBufferCleanApertureHeightKey();
+    public static native CFString CVImageBufferCleanApertureHeightKey();
     /**
      * @since Available in iOS 4.0 and later.
      */
     @GlobalValue(symbol="kCVImageBufferCleanApertureHorizontalOffsetKey", optional=true)
-    public static native String CVImageBufferCleanApertureHorizontalOffsetKey();
+    public static native CFString CVImageBufferCleanApertureHorizontalOffsetKey();
     /**
      * @since Available in iOS 4.0 and later.
      */
     @GlobalValue(symbol="kCVImageBufferCleanApertureVerticalOffsetKey", optional=true)
-    public static native String CVImageBufferCleanApertureVerticalOffsetKey();
+    public static native CFString CVImageBufferCleanApertureVerticalOffsetKey();
     /**
      * @since Available in iOS 4.0 and later.
      */
     @GlobalValue(symbol="kCVImageBufferPreferredCleanApertureKey", optional=true)
-    public static native String CVImageBufferPreferredCleanApertureKey();
+    public static native CFString CVImageBufferPreferredCleanApertureKey();
     /**
      * @since Available in iOS 4.0 and later.
      */
     @GlobalValue(symbol="kCVImageBufferFieldCountKey", optional=true)
-    public static native String CVImageBufferFieldCountKey();
+    public static native CFString CVImageBufferFieldCountKey();
     /**
      * @since Available in iOS 4.0 and later.
      */
     @GlobalValue(symbol="kCVImageBufferFieldDetailKey", optional=true)
-    public static native String CVImageBufferFieldDetailKey();
+    public static native CFString CVImageBufferFieldDetailKey();
     /**
      * @since Available in iOS 4.0 and later.
      */
     @GlobalValue(symbol="kCVImageBufferFieldDetailTemporalTopFirst", optional=true)
-    public static native String CVImageBufferFieldDetailTemporalTopFirst();
+    public static native CFString CVImageBufferFieldDetailTemporalTopFirst();
     /**
      * @since Available in iOS 4.0 and later.
      */
     @GlobalValue(symbol="kCVImageBufferFieldDetailTemporalBottomFirst", optional=true)
-    public static native String CVImageBufferFieldDetailTemporalBottomFirst();
+    public static native CFString CVImageBufferFieldDetailTemporalBottomFirst();
     /**
      * @since Available in iOS 4.0 and later.
      */
     @GlobalValue(symbol="kCVImageBufferFieldDetailSpatialFirstLineEarly", optional=true)
-    public static native String CVImageBufferFieldDetailSpatialFirstLineEarly();
+    public static native CFString CVImageBufferFieldDetailSpatialFirstLineEarly();
     /**
      * @since Available in iOS 4.0 and later.
      */
     @GlobalValue(symbol="kCVImageBufferFieldDetailSpatialFirstLineLate", optional=true)
-    public static native String CVImageBufferFieldDetailSpatialFirstLineLate();
+    public static native CFString CVImageBufferFieldDetailSpatialFirstLineLate();
     /**
      * @since Available in iOS 4.0 and later.
      */
     @GlobalValue(symbol="kCVImageBufferPixelAspectRatioKey", optional=true)
-    public static native String CVImageBufferPixelAspectRatioKey();
+    public static native CFString CVImageBufferPixelAspectRatioKey();
     /**
      * @since Available in iOS 4.0 and later.
      */
     @GlobalValue(symbol="kCVImageBufferPixelAspectRatioHorizontalSpacingKey", optional=true)
-    public static native String CVImageBufferPixelAspectRatioHorizontalSpacingKey();
+    public static native CFString CVImageBufferPixelAspectRatioHorizontalSpacingKey();
     /**
      * @since Available in iOS 4.0 and later.
      */
     @GlobalValue(symbol="kCVImageBufferPixelAspectRatioVerticalSpacingKey", optional=true)
-    public static native String CVImageBufferPixelAspectRatioVerticalSpacingKey();
+    public static native CFString CVImageBufferPixelAspectRatioVerticalSpacingKey();
     /**
      * @since Available in iOS 4.0 and later.
      */
     @GlobalValue(symbol="kCVImageBufferDisplayDimensionsKey", optional=true)
-    public static native String CVImageBufferDisplayDimensionsKey();
+    public static native CFString CVImageBufferDisplayDimensionsKey();
     /**
      * @since Available in iOS 4.0 and later.
      */
     @GlobalValue(symbol="kCVImageBufferDisplayWidthKey", optional=true)
-    public static native String CVImageBufferDisplayWidthKey();
+    public static native CFString CVImageBufferDisplayWidthKey();
     /**
      * @since Available in iOS 4.0 and later.
      */
     @GlobalValue(symbol="kCVImageBufferDisplayHeightKey", optional=true)
-    public static native String CVImageBufferDisplayHeightKey();
+    public static native CFString CVImageBufferDisplayHeightKey();
     /**
      * @since Available in iOS 4.0 and later.
      */
     @GlobalValue(symbol="kCVImageBufferGammaLevelKey", optional=true)
-    public static native String CVImageBufferGammaLevelKey();
+    public static native CFString CVImageBufferGammaLevelKey();
     /**
      * @since Available in iOS 4.0 and later.
      */
     @GlobalValue(symbol="kCVImageBufferICCProfileKey", optional=true)
-    public static native String CVImageBufferICCProfileKey();
+    public static native CFString CVImageBufferICCProfileKey();
     /**
      * @since Available in iOS 4.0 and later.
      */
     @GlobalValue(symbol="kCVImageBufferYCbCrMatrixKey", optional=true)
-    public static native String CVImageBufferYCbCrMatrixKey();
+    public static native CFString CVImageBufferYCbCrMatrixKey();
     /**
      * @since Available in iOS 4.0 and later.
      */
     @GlobalValue(symbol="kCVImageBufferYCbCrMatrix_ITU_R_709_2", optional=true)
-    public static native String CVImageBufferYCbCrMatrixITU_R_709_2();
+    public static native CFString CVImageBufferYCbCrMatrixITU_R_709_2();
     /**
      * @since Available in iOS 4.0 and later.
      */
     @GlobalValue(symbol="kCVImageBufferYCbCrMatrix_ITU_R_601_4", optional=true)
-    public static native String CVImageBufferYCbCrMatrixITU_R_601_4();
+    public static native CFString CVImageBufferYCbCrMatrixITU_R_601_4();
     /**
      * @since Available in iOS 4.0 and later.
      */
     @GlobalValue(symbol="kCVImageBufferYCbCrMatrix_SMPTE_240M_1995", optional=true)
-    public static native String CVImageBufferYCbCrMatrixSMPTE_240M_1995();
+    public static native CFString CVImageBufferYCbCrMatrixSMPTE_240M_1995();
     /**
      * @since Available in iOS 4.0 and later.
      */
     @GlobalValue(symbol="kCVImageBufferColorPrimariesKey", optional=true)
-    public static native String CVImageBufferColorPrimariesKey();
+    public static native CFString CVImageBufferColorPrimariesKey();
     /**
      * @since Available in iOS 4.0 and later.
      */
     @GlobalValue(symbol="kCVImageBufferColorPrimaries_ITU_R_709_2", optional=true)
-    public static native String CVImageBufferColorPrimariesITU_R_709_2();
+    public static native CFString CVImageBufferColorPrimariesITU_R_709_2();
     /**
      * @since Available in iOS 4.0 and later.
      */
     @GlobalValue(symbol="kCVImageBufferColorPrimaries_EBU_3213", optional=true)
-    public static native String CVImageBufferColorPrimariesEBU_3213();
+    public static native CFString CVImageBufferColorPrimariesEBU_3213();
     /**
      * @since Available in iOS 4.0 and later.
      */
     @GlobalValue(symbol="kCVImageBufferColorPrimaries_SMPTE_C", optional=true)
-    public static native String CVImageBufferColorPrimariesSMPTE_C();
+    public static native CFString CVImageBufferColorPrimariesSMPTE_C();
     /**
      * @since Available in iOS 6.0 and later.
      */
     @GlobalValue(symbol="kCVImageBufferColorPrimaries_P22", optional=true)
-    public static native String CVImageBufferColorPrimariesP22();
+    public static native CFString CVImageBufferColorPrimariesP22();
     /**
      * @since Available in iOS 4.0 and later.
      */
     @GlobalValue(symbol="kCVImageBufferTransferFunctionKey", optional=true)
-    public static native String CVImageBufferTransferFunctionKey();
+    public static native CFString CVImageBufferTransferFunctionKey();
     /**
      * @since Available in iOS 4.0 and later.
      */
     @GlobalValue(symbol="kCVImageBufferTransferFunction_ITU_R_709_2", optional=true)
-    public static native String CVImageBufferTransferFunctionITU_R_709_2();
+    public static native CFString CVImageBufferTransferFunctionITU_R_709_2();
     /**
      * @since Available in iOS 4.0 and later.
      */
     @GlobalValue(symbol="kCVImageBufferTransferFunction_SMPTE_240M_1995", optional=true)
-    public static native String CVImageBufferTransferFunctionSMPTE_240M_1995();
+    public static native CFString CVImageBufferTransferFunctionSMPTE_240M_1995();
     /**
      * @since Available in iOS 4.0 and later.
      */
     @GlobalValue(symbol="kCVImageBufferTransferFunction_UseGamma", optional=true)
-    public static native String CVImageBufferTransferFunctionUseGamma();
+    public static native CFString CVImageBufferTransferFunctionUseGamma();
     /**
      * @since Available in iOS 4.0 and later.
      */
     @GlobalValue(symbol="kCVImageBufferChromaLocationTopFieldKey", optional=true)
-    public static native String CVImageBufferChromaLocationTopFieldKey();
+    public static native CFString CVImageBufferChromaLocationTopFieldKey();
     /**
      * @since Available in iOS 4.0 and later.
      */
     @GlobalValue(symbol="kCVImageBufferChromaLocationBottomFieldKey", optional=true)
-    public static native String CVImageBufferChromaLocationBottomFieldKey();
+    public static native CFString CVImageBufferChromaLocationBottomFieldKey();
     /**
      * @since Available in iOS 4.0 and later.
      */
     @GlobalValue(symbol="kCVImageBufferChromaLocation_Left", optional=true)
-    public static native String CVImageBufferChromaLocationLeft();
+    public static native CFString CVImageBufferChromaLocationLeft();
     /**
      * @since Available in iOS 4.0 and later.
      */
     @GlobalValue(symbol="kCVImageBufferChromaLocation_Center", optional=true)
-    public static native String CVImageBufferChromaLocationCenter();
+    public static native CFString CVImageBufferChromaLocationCenter();
     /**
      * @since Available in iOS 4.0 and later.
      */
     @GlobalValue(symbol="kCVImageBufferChromaLocation_TopLeft", optional=true)
-    public static native String CVImageBufferChromaLocationTopLeft();
+    public static native CFString CVImageBufferChromaLocationTopLeft();
     /**
      * @since Available in iOS 4.0 and later.
      */
     @GlobalValue(symbol="kCVImageBufferChromaLocation_Top", optional=true)
-    public static native String CVImageBufferChromaLocationTop();
+    public static native CFString CVImageBufferChromaLocationTop();
     /**
      * @since Available in iOS 4.0 and later.
      */
     @GlobalValue(symbol="kCVImageBufferChromaLocation_BottomLeft", optional=true)
-    public static native String CVImageBufferChromaLocationBottomLeft();
+    public static native CFString CVImageBufferChromaLocationBottomLeft();
     /**
      * @since Available in iOS 4.0 and later.
      */
     @GlobalValue(symbol="kCVImageBufferChromaLocation_Bottom", optional=true)
-    public static native String CVImageBufferChromaLocationBottom();
+    public static native CFString CVImageBufferChromaLocationBottom();
     /**
      * @since Available in iOS 4.0 and later.
      */
     @GlobalValue(symbol="kCVImageBufferChromaLocation_DV420", optional=true)
-    public static native String CVImageBufferChromaLocationDV420();
+    public static native CFString CVImageBufferChromaLocationDV420();
     /**
      * @since Available in iOS 4.0 and later.
      */
     @GlobalValue(symbol="kCVImageBufferChromaSubsamplingKey", optional=true)
-    public static native String CVImageBufferChromaSubsamplingKey();
+    public static native CFString CVImageBufferChromaSubsamplingKey();
     /**
      * @since Available in iOS 4.0 and later.
      */
     @GlobalValue(symbol="kCVImageBufferChromaSubsampling_420", optional=true)
-    public static native String CVImageBufferChromaSubsampling_420();
+    public static native CFString CVImageBufferChromaSubsampling_420();
     /**
      * @since Available in iOS 4.0 and later.
      */
     @GlobalValue(symbol="kCVImageBufferChromaSubsampling_422", optional=true)
-    public static native String CVImageBufferChromaSubsampling_422();
+    public static native CFString CVImageBufferChromaSubsampling_422();
     /**
      * @since Available in iOS 4.0 and later.
      */
     @GlobalValue(symbol="kCVImageBufferChromaSubsampling_411", optional=true)
-    public static native String CVImageBufferChromaSubsampling_411();
+    public static native CFString CVImageBufferChromaSubsampling_411();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @GlobalValue(symbol="kCVImageBufferAlphaChannelIsOpaque", optional=true)
+    public static native CFString Value__kCVImageBufferAlphaChannelIsOpaque();
     /**
      * @since Available in iOS 4.0 and later.
      */
     @GlobalValue(symbol="kCVPixelBufferPixelFormatTypeKey", optional=true)
-    public static native String CVPixelBufferPixelFormatTypeKey();
+    public static native CFString CVPixelBufferPixelFormatTypeKey();
     /**
      * @since Available in iOS 4.0 and later.
      */
     @GlobalValue(symbol="kCVPixelBufferMemoryAllocatorKey", optional=true)
-    public static native String CVPixelBufferMemoryAllocatorKey();
+    public static native CFString CVPixelBufferMemoryAllocatorKey();
     /**
      * @since Available in iOS 4.0 and later.
      */
     @GlobalValue(symbol="kCVPixelBufferWidthKey", optional=true)
-    public static native String CVPixelBufferWidthKey();
+    public static native CFString CVPixelBufferWidthKey();
     /**
      * @since Available in iOS 4.0 and later.
      */
     @GlobalValue(symbol="kCVPixelBufferHeightKey", optional=true)
-    public static native String CVPixelBufferHeightKey();
+    public static native CFString CVPixelBufferHeightKey();
     /**
      * @since Available in iOS 4.0 and later.
      */
     @GlobalValue(symbol="kCVPixelBufferExtendedPixelsLeftKey", optional=true)
-    public static native String CVPixelBufferExtendedPixelsLeftKey();
+    public static native CFString CVPixelBufferExtendedPixelsLeftKey();
     /**
      * @since Available in iOS 4.0 and later.
      */
     @GlobalValue(symbol="kCVPixelBufferExtendedPixelsTopKey", optional=true)
-    public static native String CVPixelBufferExtendedPixelsTopKey();
+    public static native CFString CVPixelBufferExtendedPixelsTopKey();
     /**
      * @since Available in iOS 4.0 and later.
      */
     @GlobalValue(symbol="kCVPixelBufferExtendedPixelsRightKey", optional=true)
-    public static native String CVPixelBufferExtendedPixelsRightKey();
+    public static native CFString CVPixelBufferExtendedPixelsRightKey();
     /**
      * @since Available in iOS 4.0 and later.
      */
     @GlobalValue(symbol="kCVPixelBufferExtendedPixelsBottomKey", optional=true)
-    public static native String CVPixelBufferExtendedPixelsBottomKey();
+    public static native CFString CVPixelBufferExtendedPixelsBottomKey();
     /**
      * @since Available in iOS 4.0 and later.
      */
     @GlobalValue(symbol="kCVPixelBufferBytesPerRowAlignmentKey", optional=true)
-    public static native String CVPixelBufferBytesPerRowAlignmentKey();
+    public static native CFString CVPixelBufferBytesPerRowAlignmentKey();
     /**
      * @since Available in iOS 4.0 and later.
      */
     @GlobalValue(symbol="kCVPixelBufferCGBitmapContextCompatibilityKey", optional=true)
-    public static native String CVPixelBufferCGBitmapContextCompatibilityKey();
+    public static native CFString CVPixelBufferCGBitmapContextCompatibilityKey();
     /**
      * @since Available in iOS 4.0 and later.
      */
     @GlobalValue(symbol="kCVPixelBufferCGImageCompatibilityKey", optional=true)
-    public static native String CVPixelBufferCGImageCompatibilityKey();
+    public static native CFString CVPixelBufferCGImageCompatibilityKey();
     /**
      * @since Available in iOS 4.0 and later.
      */
     @GlobalValue(symbol="kCVPixelBufferOpenGLCompatibilityKey", optional=true)
-    public static native String CVPixelBufferOpenGLCompatibilityKey();
+    public static native CFString CVPixelBufferOpenGLCompatibilityKey();
     /**
      * @since Available in iOS 4.0 and later.
      */
     @GlobalValue(symbol="kCVPixelBufferPlaneAlignmentKey", optional=true)
-    public static native String CVPixelBufferPlaneAlignmentKey();
+    public static native CFString CVPixelBufferPlaneAlignmentKey();
     /**
      * @since Available in iOS 4.0 and later.
      */
     @GlobalValue(symbol="kCVPixelBufferIOSurfacePropertiesKey", optional=true)
-    public static native String CVPixelBufferIOSurfacePropertiesKey();
+    public static native CFString CVPixelBufferIOSurfacePropertiesKey();
     /**
      * @since Available in iOS 6.0 and later.
      */
     @GlobalValue(symbol="kCVPixelBufferOpenGLESCompatibilityKey", optional=true)
-    public static native String CVPixelBufferOpenGLESCompatibilityKey();
+    public static native CFString CVPixelBufferOpenGLESCompatibilityKey();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @GlobalValue(symbol="kCVPixelBufferMetalCompatibilityKey", optional=true)
+    public static native CFString CVPixelBufferMetalCompatibilityKey();
     /**
      * @since Available in iOS 4.0 and later.
      */
     @GlobalValue(symbol="kCVPixelBufferPoolMinimumBufferCountKey", optional=true)
-    public static native String CVPixelBufferPoolMinimumBufferCountKey();
+    public static native CFString CVPixelBufferPoolMinimumBufferCountKey();
     /**
      * @since Available in iOS 4.0 and later.
      */
     @GlobalValue(symbol="kCVPixelBufferPoolMaximumBufferAgeKey", optional=true)
-    public static native String CVPixelBufferPoolMaximumBufferAgeKey();
+    public static native CFString CVPixelBufferPoolMaximumBufferAgeKey();
     /**
      * @since Available in iOS 4.0 and later.
      */
     @GlobalValue(symbol="kCVPixelBufferPoolAllocationThresholdKey", optional=true)
-    public static native String CVPixelBufferPoolAllocationThresholdKey();
+    public static native CFString CVPixelBufferPoolAllocationThresholdKey();
     /**
      * @since Available in iOS 4.0 and later.
      */
     @GlobalValue(symbol="kCVPixelBufferPoolFreeBufferNotification", optional=true)
-    public static native String CVPixelBufferPoolFreeBufferNotification();
+    public static native CFString CVPixelBufferPoolFreeBufferNotification();
     /**
      * @since Available in iOS 5.0 and later.
      */
     @GlobalValue(symbol="kCVOpenGLESTextureCacheMaximumTextureAgeKey", optional=true)
-    public static native String CVOpenGLESTextureCacheMaximumTextureAgeKey();
+    public static native CFString CVOpenGLESTextureCacheMaximumTextureAgeKey();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @GlobalValue(symbol="kCVMetalTextureCacheMaximumTextureAgeKey", optional=true)
+    public static native CFString Value__kCVMetalTextureCacheMaximumTextureAgeKey();
     /**
      * @since Available in iOS 4.0 and later.
      */
     @GlobalValue(symbol="kCVPixelFormatName", optional=true)
-    public static native String CVPixelFormatName();
+    public static native CFString CVPixelFormatName();
     /**
      * @since Available in iOS 4.0 and later.
      */
     @GlobalValue(symbol="kCVPixelFormatConstant", optional=true)
-    public static native String CVPixelFormatConstant();
+    public static native CFString CVPixelFormatConstant();
     /**
      * @since Available in iOS 4.0 and later.
      */
     @GlobalValue(symbol="kCVPixelFormatCodecType", optional=true)
-    public static native String CVPixelFormatCodecType();
+    public static native CFString CVPixelFormatCodecType();
     /**
      * @since Available in iOS 4.0 and later.
      */
     @GlobalValue(symbol="kCVPixelFormatFourCC", optional=true)
-    public static native String CVPixelFormatFourCC();
+    public static native CFString CVPixelFormatFourCC();
     /**
      * @since Available in iOS 4.3 and later.
      */
     @GlobalValue(symbol="kCVPixelFormatContainsAlpha", optional=true)
-    public static native String CVPixelFormatContainsAlpha();
+    public static native CFString CVPixelFormatContainsAlpha();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @GlobalValue(symbol="kCVPixelFormatContainsYCbCr", optional=true)
+    public static native CFString CVPixelFormatContainsYCbCr();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @GlobalValue(symbol="kCVPixelFormatContainsRGB", optional=true)
+    public static native CFString CVPixelFormatContainsRGB();
     /**
      * @since Available in iOS 4.0 and later.
      */
     @GlobalValue(symbol="kCVPixelFormatPlanes", optional=true)
-    public static native String CVPixelFormatPlanes();
+    public static native CFString CVPixelFormatPlanes();
     /**
      * @since Available in iOS 4.0 and later.
      */
     @GlobalValue(symbol="kCVPixelFormatBlockWidth", optional=true)
-    public static native String CVPixelFormatBlockWidth();
+    public static native CFString CVPixelFormatBlockWidth();
     /**
      * @since Available in iOS 4.0 and later.
      */
     @GlobalValue(symbol="kCVPixelFormatBlockHeight", optional=true)
-    public static native String CVPixelFormatBlockHeight();
+    public static native CFString CVPixelFormatBlockHeight();
     /**
      * @since Available in iOS 4.0 and later.
      */
     @GlobalValue(symbol="kCVPixelFormatBitsPerBlock", optional=true)
-    public static native String CVPixelFormatBitsPerBlock();
+    public static native CFString CVPixelFormatBitsPerBlock();
     /**
      * @since Available in iOS 4.0 and later.
      */
     @GlobalValue(symbol="kCVPixelFormatBlockHorizontalAlignment", optional=true)
-    public static native String CVPixelFormatBlockHorizontalAlignment();
+    public static native CFString CVPixelFormatBlockHorizontalAlignment();
     /**
      * @since Available in iOS 4.0 and later.
      */
     @GlobalValue(symbol="kCVPixelFormatBlockVerticalAlignment", optional=true)
-    public static native String CVPixelFormatBlockVerticalAlignment();
+    public static native CFString CVPixelFormatBlockVerticalAlignment();
     /**
      * @since Available in iOS 4.0 and later.
      */
     @GlobalValue(symbol="kCVPixelFormatBlackBlock", optional=true)
-    public static native String CVPixelFormatBlackBlock();
+    public static native CFString CVPixelFormatBlackBlock();
     /**
      * @since Available in iOS 4.0 and later.
      */
     @GlobalValue(symbol="kCVPixelFormatHorizontalSubsampling", optional=true)
-    public static native String CVPixelFormatHorizontalSubsampling();
+    public static native CFString CVPixelFormatHorizontalSubsampling();
     /**
      * @since Available in iOS 4.0 and later.
      */
     @GlobalValue(symbol="kCVPixelFormatVerticalSubsampling", optional=true)
-    public static native String CVPixelFormatVerticalSubsampling();
+    public static native CFString CVPixelFormatVerticalSubsampling();
     /**
      * @since Available in iOS 4.0 and later.
      */
     @GlobalValue(symbol="kCVPixelFormatOpenGLFormat", optional=true)
-    public static native String CVPixelFormatOpenGLFormat();
+    public static native CFString CVPixelFormatOpenGLFormat();
     /**
      * @since Available in iOS 4.0 and later.
      */
     @GlobalValue(symbol="kCVPixelFormatOpenGLType", optional=true)
-    public static native String CVPixelFormatOpenGLType();
+    public static native CFString CVPixelFormatOpenGLType();
     /**
      * @since Available in iOS 4.0 and later.
      */
     @GlobalValue(symbol="kCVPixelFormatOpenGLInternalFormat", optional=true)
-    public static native String CVPixelFormatOpenGLInternalFormat();
+    public static native CFString CVPixelFormatOpenGLInternalFormat();
     /**
      * @since Available in iOS 4.0 and later.
      */
     @GlobalValue(symbol="kCVPixelFormatCGBitmapInfo", optional=true)
-    public static native String CVPixelFormatCGBitmapInfo();
+    public static native CFString CVPixelFormatCGBitmapInfo();
     /**
      * @since Available in iOS 4.0 and later.
      */
     @GlobalValue(symbol="kCVPixelFormatQDCompatibility", optional=true)
-    public static native String CVPixelFormatQDCompatibility();
+    public static native CFString CVPixelFormatQDCompatibility();
     /**
      * @since Available in iOS 4.0 and later.
      */
     @GlobalValue(symbol="kCVPixelFormatCGBitmapContextCompatibility", optional=true)
-    public static native String CVPixelFormatCGBitmapContextCompatibility();
+    public static native CFString CVPixelFormatCGBitmapContextCompatibility();
     /**
      * @since Available in iOS 4.0 and later.
      */
     @GlobalValue(symbol="kCVPixelFormatCGImageCompatibility", optional=true)
-    public static native String CVPixelFormatCGImageCompatibility();
+    public static native CFString CVPixelFormatCGImageCompatibility();
     /**
      * @since Available in iOS 4.0 and later.
      */
     @GlobalValue(symbol="kCVPixelFormatOpenGLCompatibility", optional=true)
-    public static native String CVPixelFormatOpenGLCompatibility();
+    public static native CFString CVPixelFormatOpenGLCompatibility();
     /**
      * @since Available in iOS 5.0 and later.
      */
     @GlobalValue(symbol="kCVPixelFormatOpenGLESCompatibility", optional=true)
-    public static native String CVPixelFormatOpenGLESCompatibility();
+    public static native CFString CVPixelFormatOpenGLESCompatibility();
     /**
      * @since Available in iOS 4.0 and later.
      */
     @GlobalValue(symbol="kCVPixelFormatFillExtendedPixelsCallback", optional=true)
-    public static native String CVPixelFormatFillExtendedPixelsCallback();
+    public static native CFString CVPixelFormatFillExtendedPixelsCallback();
     /*</methods>*/
 }

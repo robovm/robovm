@@ -52,6 +52,7 @@ public enum /*<name>*/CVReturn/*</name>*/ implements ValuedEnum {
     InvalidSize(-6681L),
     InvalidPixelBufferAttributes(-6682L),
     PixelBufferNotOpenGLCompatible(-6683L),
+    PixelBufferNotMetalCompatible(-6684L),
     WouldExceedAllocationThreshold(-6689L),
     PoolAllocationFailed(-6690L),
     InvalidPoolAttributes(-6691L),

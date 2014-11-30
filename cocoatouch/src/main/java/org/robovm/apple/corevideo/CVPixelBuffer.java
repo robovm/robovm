@@ -135,16 +135,6 @@ import org.robovm.apple.coremedia.*;
     /**
      * @since Available in iOS 4.0 and later.
      */
-    @Bridge(symbol="CVPixelBufferRetain", optional=true)
-    public native CVPixelBuffer retain();
-    /**
-     * @since Available in iOS 4.0 and later.
-     */
-    @Bridge(symbol="CVPixelBufferRelease", optional=true)
-    public native void release();
-    /**
-     * @since Available in iOS 4.0 and later.
-     */
     @Bridge(symbol="CVPixelBufferCreateResolvedAttributesDictionary", optional=true)
     protected static native CVReturn createResolvedAttributesDictionary(CFAllocator allocator, NSArray<NSDictionary<NSString, ?>> attributes, NSDictionary.NSDictionaryPtr resolvedDictionaryOut);
     /**

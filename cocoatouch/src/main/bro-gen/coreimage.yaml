@@ -9,9 +9,6 @@ typedefs: {}
 enums:
 
 classes:
-    CoreImage:
-        annotations: ['@Marshaler(NSString.AsStringMarshaler.class)']
-
     CIColor: # DONE
         methods:
             '+colorWithCGColor:':

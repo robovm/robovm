@@ -72,16 +72,6 @@ import org.robovm.apple.coremedia.*;
     /**
      * @since Available in iOS 4.0 and later.
      */
-    @Bridge(symbol="CVPixelBufferPoolRetain", optional=true)
-    public native CVPixelBufferPool retain();
-    /**
-     * @since Available in iOS 4.0 and later.
-     */
-    @Bridge(symbol="CVPixelBufferPoolRelease", optional=true)
-    public native void release();
-    /**
-     * @since Available in iOS 4.0 and later.
-     */
     @Bridge(symbol="CVPixelBufferPoolCreate", optional=true)
     protected static native CVReturn create(CFAllocator allocator, NSDictionary<NSString, ?> poolAttributes, NSDictionary<NSString, ?> pixelBufferAttributes, CVPixelBufferPool.CVPixelBufferPoolPtr poolOut);
     /**

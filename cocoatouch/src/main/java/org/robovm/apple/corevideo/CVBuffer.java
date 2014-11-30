@@ -60,16 +60,6 @@ import org.robovm.apple.coremedia.*;
     /**
      * @since Available in iOS 4.0 and later.
      */
-    @Bridge(symbol="CVBufferRetain", optional=true)
-    public native CVBuffer retain();
-    /**
-     * @since Available in iOS 4.0 and later.
-     */
-    @Bridge(symbol="CVBufferRelease", optional=true)
-    public native void release();
-    /**
-     * @since Available in iOS 4.0 and later.
-     */
     @Bridge(symbol="CVBufferSetAttachment", optional=true)
     public native void setAttachment(String key, CFType value, CVAttachmentMode attachmentMode);
     /**
@@ -81,7 +71,7 @@ import org.robovm.apple.coremedia.*;
      * @since Available in iOS 4.0 and later.
      */
     @Bridge(symbol="CVBufferRemoveAttachment", optional=true)
-    public native void removeAttachment(String key);
+    public native void removeAttachment(CFString key);
     /**
      * @since Available in iOS 4.0 and later.
      */

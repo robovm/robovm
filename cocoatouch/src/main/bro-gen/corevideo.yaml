@@ -83,6 +83,8 @@ functions:
         parameters:
             theAttachments:
                 type: "NSDictionary<NSString, ?>"
+    CVBuffer(Retain|Release):
+        exclude: true
     CVBuffer(.*):
         class: CVBuffer
         name: "#{g[0]}"
@@ -154,6 +156,8 @@ functions:
         class: CVPixelBufferPool
         name: "#{g[0]}"
         return_type: "NSDictionary<NSString, ?>"
+    CVPixelBufferPool(Retain|Release):
+        exclude: true
     CVPixelBufferPool(.*):
         class: CVPixelBufferPool
         name: "#{g[0]}"
@@ -210,6 +214,8 @@ functions:
                 type: CVPixelBufferLockFlags
             unlockFlags:
                 type: CVPixelBufferLockFlags
+    CVPixelBuffer(Retain|Release):
+        exclude: true
     CVPixelBuffer(.*):
         class: CVPixelBuffer
         name: "#{g[0]}"

@@ -32,27 +32,32 @@ import org.robovm.apple.dispatch.*;
 /*</imports>*/
 
 /*<javadoc>*/
-/*</javadoc>*/
-/*<annotations>*//*</annotations>*/
-/*<visibility>*/public/*</visibility>*/ class /*<name>*/EAAccessoryDelegateAdapter/*</name>*/ 
-    extends /*<extends>*/NSObject/*</extends>*/ 
-    /*<implements>*/implements EAAccessoryDelegate/*</implements>*/ {
 
-    /*<ptr>*/
-    /*</ptr>*/
+/*</javadoc>*/
+/*<annotations>*/@Marshaler(ValuedEnum.AsMachineSizedSIntMarshaler.class)/*</annotations>*/
+public enum /*<name>*/EAWiFiUnconfiguredAccessoryConfigurationStatus/*</name>*/ implements ValuedEnum {
+    /*<values>*/
+    Success(0L),
+    UserCancelledConfiguration(1L),
+    Failed(2L);
+    /*</values>*/
+
     /*<bind>*/
     /*</bind>*/
     /*<constants>*//*</constants>*/
-    /*<constructors>*//*</constructors>*/
-    /*<properties>*/
-    
-    /*</properties>*/
-    /*<members>*//*</members>*/
-    /*<methods>*/
-    /**
-     * @since Available in iOS 3.0 and later.
-     */
-    @NotImplemented("accessoryDidDisconnect:")
-    public void didDisconnect(EAAccessory accessory) { throw new UnsupportedOperationException(); }
-    /*</methods>*/
+    /*<methods>*//*</methods>*/
+
+    private final long n;
+
+    private /*<name>*/EAWiFiUnconfiguredAccessoryConfigurationStatus/*</name>*/(long n) { this.n = n; }
+    public long value() { return n; }
+    public static /*<name>*/EAWiFiUnconfiguredAccessoryConfigurationStatus/*</name>*/ valueOf(long n) {
+        for (/*<name>*/EAWiFiUnconfiguredAccessoryConfigurationStatus/*</name>*/ v : values()) {
+            if (v.n == n) {
+                return v;
+            }
+        }
+        throw new IllegalArgumentException("No constant with value " + n + " found in " 
+            + /*<name>*/EAWiFiUnconfiguredAccessoryConfigurationStatus/*</name>*/.class.getName());
+    }
 }

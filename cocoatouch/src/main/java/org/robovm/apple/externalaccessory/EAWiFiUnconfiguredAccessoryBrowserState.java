@@ -32,27 +32,33 @@ import org.robovm.apple.dispatch.*;
 /*</imports>*/
 
 /*<javadoc>*/
-/*</javadoc>*/
-/*<annotations>*//*</annotations>*/
-/*<visibility>*/public/*</visibility>*/ class /*<name>*/EAAccessoryDelegateAdapter/*</name>*/ 
-    extends /*<extends>*/NSObject/*</extends>*/ 
-    /*<implements>*/implements EAAccessoryDelegate/*</implements>*/ {
 
-    /*<ptr>*/
-    /*</ptr>*/
+/*</javadoc>*/
+/*<annotations>*/@Marshaler(ValuedEnum.AsMachineSizedSIntMarshaler.class)/*</annotations>*/
+public enum /*<name>*/EAWiFiUnconfiguredAccessoryBrowserState/*</name>*/ implements ValuedEnum {
+    /*<values>*/
+    WiFiUnavailable(0L),
+    Stopped(1L),
+    Searching(2L),
+    Configuring(3L);
+    /*</values>*/
+
     /*<bind>*/
     /*</bind>*/
     /*<constants>*//*</constants>*/
-    /*<constructors>*//*</constructors>*/
-    /*<properties>*/
-    
-    /*</properties>*/
-    /*<members>*//*</members>*/
-    /*<methods>*/
-    /**
-     * @since Available in iOS 3.0 and later.
-     */
-    @NotImplemented("accessoryDidDisconnect:")
-    public void didDisconnect(EAAccessory accessory) { throw new UnsupportedOperationException(); }
-    /*</methods>*/
+    /*<methods>*//*</methods>*/
+
+    private final long n;
+
+    private /*<name>*/EAWiFiUnconfiguredAccessoryBrowserState/*</name>*/(long n) { this.n = n; }
+    public long value() { return n; }
+    public static /*<name>*/EAWiFiUnconfiguredAccessoryBrowserState/*</name>*/ valueOf(long n) {
+        for (/*<name>*/EAWiFiUnconfiguredAccessoryBrowserState/*</name>*/ v : values()) {
+            if (v.n == n) {
+                return v;
+            }
+        }
+        throw new IllegalArgumentException("No constant with value " + n + " found in " 
+            + /*<name>*/EAWiFiUnconfiguredAccessoryBrowserState/*</name>*/.class.getName());
+    }
 }

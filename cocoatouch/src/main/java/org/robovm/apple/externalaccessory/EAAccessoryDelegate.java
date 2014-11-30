@@ -27,6 +27,8 @@ import org.robovm.rt.bro.*;
 import org.robovm.rt.bro.annotation.*;
 import org.robovm.rt.bro.ptr.*;
 import org.robovm.apple.foundation.*;
+import org.robovm.apple.uikit.*;
+import org.robovm.apple.dispatch.*;
 /*</imports>*/
 
 /*<javadoc>*/

@@ -32,27 +32,42 @@ import org.robovm.apple.dispatch.*;
 /*</imports>*/
 
 /*<javadoc>*/
+
 /*</javadoc>*/
 /*<annotations>*//*</annotations>*/
-/*<visibility>*/public/*</visibility>*/ class /*<name>*/EAAccessoryDelegateAdapter/*</name>*/ 
-    extends /*<extends>*/NSObject/*</extends>*/ 
-    /*<implements>*/implements EAAccessoryDelegate/*</implements>*/ {
+/*<visibility>*/public/*</visibility>*/ interface /*<name>*/EAWiFiUnconfiguredAccessoryBrowserDelegate/*</name>*/ 
+    /*<implements>*/extends NSObjectProtocol/*</implements>*/ {
 
     /*<ptr>*/
     /*</ptr>*/
     /*<bind>*/
     /*</bind>*/
     /*<constants>*//*</constants>*/
-    /*<constructors>*//*</constructors>*/
     /*<properties>*/
     
     /*</properties>*/
-    /*<members>*//*</members>*/
     /*<methods>*/
     /**
-     * @since Available in iOS 3.0 and later.
+     * @since Available in iOS 8.0 and later.
      */
-    @NotImplemented("accessoryDidDisconnect:")
-    public void didDisconnect(EAAccessory accessory) { throw new UnsupportedOperationException(); }
+    @Method(selector = "accessoryBrowser:didUpdateState:")
+    void didUpdateState(EAWiFiUnconfiguredAccessoryBrowser browser, EAWiFiUnconfiguredAccessoryBrowserState state);
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @Method(selector = "accessoryBrowser:didFindUnconfiguredAccessories:")
+    void didFindUnconfiguredAccessories(EAWiFiUnconfiguredAccessoryBrowser browser, NSSet<EAWiFiUnconfiguredAccessory> accessories);
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @Method(selector = "accessoryBrowser:didRemoveUnconfiguredAccessories:")
+    void didRemoveUnconfiguredAccessories(EAWiFiUnconfiguredAccessoryBrowser browser, NSSet<EAWiFiUnconfiguredAccessory> accessories);
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @Method(selector = "accessoryBrowser:didFinishConfiguringAccessory:withStatus:")
+    void didFinishConfiguringAccessory(EAWiFiUnconfiguredAccessoryBrowser browser, EAWiFiUnconfiguredAccessory accessory, EAWiFiUnconfiguredAccessoryConfigurationStatus status);
     /*</methods>*/
+    /*<adapter>*/
+    /*</adapter>*/
 }

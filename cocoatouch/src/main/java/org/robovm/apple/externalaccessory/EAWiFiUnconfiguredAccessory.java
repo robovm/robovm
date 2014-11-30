@@ -32,27 +32,38 @@ import org.robovm.apple.dispatch.*;
 /*</imports>*/
 
 /*<javadoc>*/
+/**
+ * @since Available in iOS 8.0 and later.
+ */
 /*</javadoc>*/
-/*<annotations>*//*</annotations>*/
-/*<visibility>*/public/*</visibility>*/ class /*<name>*/EAAccessoryDelegateAdapter/*</name>*/ 
+/*<annotations>*/@Library("ExternalAccessory") @NativeClass/*</annotations>*/
+/*<visibility>*/public/*</visibility>*/ class /*<name>*/EAWiFiUnconfiguredAccessory/*</name>*/ 
     extends /*<extends>*/NSObject/*</extends>*/ 
-    /*<implements>*/implements EAAccessoryDelegate/*</implements>*/ {
+    /*<implements>*//*</implements>*/ {
 
-    /*<ptr>*/
-    /*</ptr>*/
-    /*<bind>*/
-    /*</bind>*/
+    /*<ptr>*/public static class EAWiFiUnconfiguredAccessoryPtr extends Ptr<EAWiFiUnconfiguredAccessory, EAWiFiUnconfiguredAccessoryPtr> {}/*</ptr>*/
+    /*<bind>*/static { ObjCRuntime.bind(EAWiFiUnconfiguredAccessory.class); }/*</bind>*/
     /*<constants>*//*</constants>*/
-    /*<constructors>*//*</constructors>*/
+    /*<constructors>*/
+    public EAWiFiUnconfiguredAccessory() {}
+    protected EAWiFiUnconfiguredAccessory(SkipInit skipInit) { super(skipInit); }
+    /*</constructors>*/
     /*<properties>*/
-    
+    @Property(selector = "name")
+    public native String getName();
+    @Property(selector = "manufacturer")
+    public native String getManufacturer();
+    @Property(selector = "model")
+    public native String getModel();
+    @Property(selector = "ssid")
+    public native String getSsid();
+    @Property(selector = "macAddress")
+    public native String getMacAddress();
+    @Property(selector = "properties")
+    public native EAWiFiUnconfiguredAccessoryProperties getProperties();
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
-    /**
-     * @since Available in iOS 3.0 and later.
-     */
-    @NotImplemented("accessoryDidDisconnect:")
-    public void didDisconnect(EAAccessory accessory) { throw new UnsupportedOperationException(); }
+    
     /*</methods>*/
 }

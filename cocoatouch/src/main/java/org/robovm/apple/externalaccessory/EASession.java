@@ -27,6 +27,8 @@ import org.robovm.rt.bro.*;
 import org.robovm.rt.bro.annotation.*;
 import org.robovm.rt.bro.ptr.*;
 import org.robovm.apple.foundation.*;
+import org.robovm.apple.uikit.*;
+import org.robovm.apple.dispatch.*;
 /*</imports>*/
 
 /*<javadoc>*/
@@ -48,7 +50,7 @@ import org.robovm.apple.foundation.*;
     /**
      * @since Available in iOS 3.0 and later.
      */
-    public EASession(EAAccessory accessory, String protocolString) { super((SkipInit) null); initObject(initWithAccessory$forProtocol$(accessory, protocolString)); }
+    public EASession(EAAccessory accessory, String protocolString) { super((SkipInit) null); initObject(init(accessory, protocolString)); }
     /*</constructors>*/
     /*<properties>*/
     /**
@@ -78,6 +80,6 @@ import org.robovm.apple.foundation.*;
      * @since Available in iOS 3.0 and later.
      */
     @Method(selector = "initWithAccessory:forProtocol:")
-    protected native @Pointer long initWithAccessory$forProtocol$(EAAccessory accessory, String protocolString);
+    protected native @Pointer long init(EAAccessory accessory, String protocolString);
     /*</methods>*/
 }

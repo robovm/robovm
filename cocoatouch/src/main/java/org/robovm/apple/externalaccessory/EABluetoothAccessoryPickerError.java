@@ -27,46 +27,34 @@ import org.robovm.rt.bro.*;
 import org.robovm.rt.bro.annotation.*;
 import org.robovm.rt.bro.ptr.*;
 import org.robovm.apple.foundation.*;
+import org.robovm.apple.uikit.*;
+import org.robovm.apple.dispatch.*;
 /*</imports>*/
 
 /*<javadoc>*/
 /*</javadoc>*/
-/*<annotations>*/@Library("ExternalAccessory") @Marshaler(NSString.AsStringMarshaler.class)/*</annotations>*/
-/*<visibility>*/public/*</visibility>*/ class /*<name>*/ExternalAccessory/*</name>*/ 
-    extends /*<extends>*/Object/*</extends>*/ 
+/*<annotations>*/@Library("ExternalAccessory")/*</annotations>*/
+/*<visibility>*/public/*</visibility>*/ class /*<name>*/EABluetoothAccessoryPickerError/*</name>*/ 
+    extends /*<extends>*/NSError/*</extends>*/ 
     /*<implements>*//*</implements>*/ {
 
+    protected EABluetoothAccessoryPickerError(SkipInit skipInit) {
+        super(skipInit);
+    }
+    
     /*<ptr>*/
     /*</ptr>*/
-    /*<bind>*/static { Bro.bind(ExternalAccessory.class); }/*</bind>*/
-    /*<constants>*/
-    public static final int ConnectionIDNone = 0;
-    /*</constants>*/
+    /*<bind>*/static { Bro.bind(EABluetoothAccessoryPickerError.class); }/*</bind>*/
+    /*<constants>*//*</constants>*/
     /*<constructors>*//*</constructors>*/
     /*<properties>*//*</properties>*/
     /*<members>*//*</members>*/
+    @Override
+    public EABluetoothAccessoryPickerErrorCode getErrorCode() {
+        return EABluetoothAccessoryPickerErrorCode.valueOf(getCode());
+    }
     /*<methods>*/
     @GlobalValue(symbol="EABluetoothAccessoryPickerErrorDomain", optional=true)
-    public static native NSString BluetoothAccessoryPickerErrorDomain();
-    /**
-     * @since Available in iOS 3.0 and later.
-     */
-    @GlobalValue(symbol="EAAccessoryDidConnectNotification", optional=true)
-    public static native NSString AccessoryDidConnectNotification();
-    /**
-     * @since Available in iOS 3.0 and later.
-     */
-    @GlobalValue(symbol="EAAccessoryDidDisconnectNotification", optional=true)
-    public static native NSString AccessoryDidDisconnectNotification();
-    /**
-     * @since Available in iOS 3.0 and later.
-     */
-    @GlobalValue(symbol="EAAccessoryKey", optional=true)
-    public static native NSString AccessoryKey();
-    /**
-     * @since Available in iOS 6.0 and later.
-     */
-    @GlobalValue(symbol="EAAccessorySelectedKey", optional=true)
-    public static native NSString AccessorySelectedKey();
+    public static native String getClassDomain();
     /*</methods>*/
 }

@@ -27,6 +27,8 @@ import org.robovm.rt.bro.*;
 import org.robovm.rt.bro.annotation.*;
 import org.robovm.rt.bro.ptr.*;
 import org.robovm.apple.foundation.*;
+import org.robovm.apple.uikit.*;
+import org.robovm.apple.dispatch.*;
 /*</imports>*/
 
 /*<javadoc>*/
@@ -41,7 +43,9 @@ import org.robovm.apple.foundation.*;
 
     /*<ptr>*/public static class EAAccessoryPtr extends Ptr<EAAccessory, EAAccessoryPtr> {}/*</ptr>*/
     /*<bind>*/static { ObjCRuntime.bind(EAAccessory.class); }/*</bind>*/
-    /*<constants>*//*</constants>*/
+    /*<constants>*/
+    public static final int ConnectionIDNone = 0;
+    /*</constants>*/
     /*<constructors>*/
     public EAAccessory() {}
     protected EAAccessory(SkipInit skipInit) { super(skipInit); }
@@ -91,7 +95,7 @@ import org.robovm.apple.foundation.*;
      * @since Available in iOS 3.0 and later.
      */
     @Property(selector = "protocolStrings")
-    public native NSArray<NSString> getProtocolStrings();
+    public native @org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String> getProtocolStrings();
     /**
      * @since Available in iOS 3.0 and later.
      */

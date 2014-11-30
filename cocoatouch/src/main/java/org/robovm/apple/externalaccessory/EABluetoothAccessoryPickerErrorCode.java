@@ -27,13 +27,16 @@ import org.robovm.rt.bro.*;
 import org.robovm.rt.bro.annotation.*;
 import org.robovm.rt.bro.ptr.*;
 import org.robovm.apple.foundation.*;
+import org.robovm.apple.uikit.*;
+import org.robovm.apple.dispatch.*;
 /*</imports>*/
 
 /*<javadoc>*/
 
 /*</javadoc>*/
+@ForceLinkClass(EABluetoothAccessoryPickerError.class)
 /*<annotations>*/@Marshaler(ValuedEnum.AsMachineSizedSIntMarshaler.class)/*</annotations>*/
-public enum /*<name>*/EABluetoothAccessoryPickerErrorCode/*</name>*/ implements ValuedEnum {
+public enum /*<name>*/EABluetoothAccessoryPickerErrorCode/*</name>*/ implements NSErrorCode {
     /*<values>*/
     AlreadyConnected(0L),
     ResultNotFound(1L),

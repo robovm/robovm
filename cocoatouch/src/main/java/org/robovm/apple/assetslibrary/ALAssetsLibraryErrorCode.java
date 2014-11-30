@@ -32,17 +32,22 @@ import org.robovm.apple.imageio.*;
 /*</imports>*/
 
 /*<javadoc>*/
-/**
- * @since Available in iOS 6.0 and later.
- */
+
 /*</javadoc>*/
+@ForceLinkClass(ALAssetsLibraryError.class)
 /*<annotations>*/@Marshaler(ValuedEnum.AsMachineSizedSIntMarshaler.class)/*</annotations>*/
-public enum /*<name>*/ALAuthorizationStatus/*</name>*/ implements ValuedEnum {
+public enum /*<name>*/ALAssetsLibraryErrorCode/*</name>*/ implements NSErrorCode {
     /*<values>*/
-    NotDetermined(0L),
-    Restricted(1L),
-    Denied(2L),
-    Authorized(3L);
+    Unknown(-1L),
+    WriteFailed(-3300L),
+    WriteBusy(-3301L),
+    WriteInvalidData(-3302L),
+    WriteIncompatibleData(-3303L),
+    WriteDataEncoding(-3304L),
+    WriteDiskSpace(-3305L),
+    DataUnavailable(-3310L),
+    AccessUserDenied(-3311L),
+    AccessGloballyDenied(-3312L);
     /*</values>*/
 
     /*<bind>*/
@@ -52,15 +57,15 @@ public enum /*<name>*/ALAuthorizationStatus/*</name>*/ implements ValuedEnum {
 
     private final long n;
 
-    private /*<name>*/ALAuthorizationStatus/*</name>*/(long n) { this.n = n; }
+    private /*<name>*/ALAssetsLibraryErrorCode/*</name>*/(long n) { this.n = n; }
     public long value() { return n; }
-    public static /*<name>*/ALAuthorizationStatus/*</name>*/ valueOf(long n) {
-        for (/*<name>*/ALAuthorizationStatus/*</name>*/ v : values()) {
+    public static /*<name>*/ALAssetsLibraryErrorCode/*</name>*/ valueOf(long n) {
+        for (/*<name>*/ALAssetsLibraryErrorCode/*</name>*/ v : values()) {
             if (v.n == n) {
                 return v;
             }
         }
         throw new IllegalArgumentException("No constant with value " + n + " found in " 
-            + /*<name>*/ALAuthorizationStatus/*</name>*/.class.getName());
+            + /*<name>*/ALAssetsLibraryErrorCode/*</name>*/.class.getName());
     }
 }

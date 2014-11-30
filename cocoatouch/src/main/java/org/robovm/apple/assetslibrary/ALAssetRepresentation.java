@@ -28,6 +28,7 @@ import org.robovm.rt.bro.annotation.*;
 import org.robovm.rt.bro.ptr.*;
 import org.robovm.apple.foundation.*;
 import org.robovm.apple.coregraphics.*;
+import org.robovm.apple.imageio.*;
 /*</imports>*/
 
 /*<javadoc>*/
@@ -51,6 +52,22 @@ import org.robovm.apple.coregraphics.*;
     
     /*</properties>*/
     /*<members>*//*</members>*/
+    /**
+     * 
+     * @param offset
+     * @param length
+     * @return
+     * @throws NSErrorException
+     */
+    public byte[] getBytes(int offset, int length) {
+        byte[] bytes = new byte[length];
+        NSError.NSErrorPtr err = new NSError.NSErrorPtr();
+        getBytes(VM.getArrayValuesAddress(bytes), offset, length, err);
+        if (err.get() != null) {
+            throw new NSErrorException(err.get());
+        }
+        return bytes;
+    }
     /*<methods>*/
     @Method(selector = "UTI")
     public native String getUTI();
@@ -59,17 +76,17 @@ import org.robovm.apple.coregraphics.*;
     @Method(selector = "size")
     public native long getSize();
     @Method(selector = "getBytes:fromOffset:length:error:")
-    public native @MachineSizedUInt long getBytes(BytePtr buffer, long offset, @MachineSizedUInt long length, NSError.NSErrorPtr error);
+    protected native @MachineSizedUInt long getBytes(@Pointer long buffer, long offset, @MachineSizedUInt long length, NSError.NSErrorPtr error);
     @Method(selector = "fullResolutionImage")
     public native CGImage getFullResolutionImage();
     @Method(selector = "CGImageWithOptions:")
-    public native CGImage getCGImage(NSDictionary<NSString, ?> options);
+    public native CGImage getCGImage(CGImageSourceOptions options);
     @Method(selector = "fullScreenImage")
     public native CGImage getFullScreenImage();
     @Method(selector = "url")
     public native NSURL getUrl();
     @Method(selector = "metadata")
-    public native NSDictionary<NSString, ?> getMetadata();
+    public native CGImageProperties getMetadata();
     @Method(selector = "orientation")
     public native ALAssetOrientation getOrientation();
     @Method(selector = "scale")

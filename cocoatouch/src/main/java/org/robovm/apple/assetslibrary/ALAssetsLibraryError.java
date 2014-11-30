@@ -28,42 +28,36 @@ import org.robovm.rt.bro.annotation.*;
 import org.robovm.rt.bro.ptr.*;
 import org.robovm.apple.foundation.*;
 import org.robovm.apple.coregraphics.*;
+import org.robovm.apple.imageio.*;
 /*</imports>*/
 
 /*<javadoc>*/
-
 /*</javadoc>*/
-/*<annotations>*/@Marshaler(ValuedEnum.AsMachineSizedSIntMarshaler.class)/*</annotations>*/
-public enum /*<name>*/ALAssetsLibraryError/*</name>*/ implements ValuedEnum {
-    /*<values>*/
-    Unknown(-1L),
-    WriteFailed(-3300L),
-    WriteBusy(-3301L),
-    WriteInvalidData(-3302L),
-    WriteIncompatibleData(-3303L),
-    WriteDataEncoding(-3304L),
-    WriteDiskSpace(-3305L),
-    DataUnavailable(-3310L),
-    AccessUserDenied(-3311L),
-    AccessGloballyDenied(-3312L);
-    /*</values>*/
+/*<annotations>*/@Library("AssetsLibrary")/*</annotations>*/
+/*<visibility>*/public/*</visibility>*/ class /*<name>*/ALAssetsLibraryError/*</name>*/ 
+    extends /*<extends>*/NSError/*</extends>*/ 
+    /*<implements>*//*</implements>*/ {
 
-    /*<bind>*/
-    /*</bind>*/
-    /*<constants>*//*</constants>*/
-    /*<methods>*//*</methods>*/
-
-    private final long n;
-
-    private /*<name>*/ALAssetsLibraryError/*</name>*/(long n) { this.n = n; }
-    public long value() { return n; }
-    public static /*<name>*/ALAssetsLibraryError/*</name>*/ valueOf(long n) {
-        for (/*<name>*/ALAssetsLibraryError/*</name>*/ v : values()) {
-            if (v.n == n) {
-                return v;
-            }
-        }
-        throw new IllegalArgumentException("No constant with value " + n + " found in " 
-            + /*<name>*/ALAssetsLibraryError/*</name>*/.class.getName());
+    protected ALAssetsLibraryError(SkipInit skipInit) {
+        super(skipInit);
     }
+    
+    /*<ptr>*/
+    /*</ptr>*/
+    /*<bind>*/static { Bro.bind(ALAssetsLibraryError.class); }/*</bind>*/
+    /*<constants>*//*</constants>*/
+    /*<constructors>*//*</constructors>*/
+    /*<properties>*//*</properties>*/
+    /*<members>*//*</members>*/
+    @Override
+    public ALAssetsLibraryErrorCode getErrorCode() {
+        return ALAssetsLibraryErrorCode.valueOf(getCode());
+    }
+    /*<methods>*/
+    /**
+     * @since Available in iOS 4.0 and later.
+     */
+    @GlobalValue(symbol="ALAssetsLibraryErrorDomain", optional=true)
+    public static native String getClassDomain();
+    /*</methods>*/
 }

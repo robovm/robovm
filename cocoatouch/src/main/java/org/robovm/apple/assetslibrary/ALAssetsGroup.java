@@ -28,6 +28,7 @@ import org.robovm.rt.bro.annotation.*;
 import org.robovm.rt.bro.ptr.*;
 import org.robovm.apple.foundation.*;
 import org.robovm.apple.coregraphics.*;
+import org.robovm.apple.imageio.*;
 /*</imports>*/
 
 /*<javadoc>*/
@@ -55,9 +56,39 @@ import org.robovm.apple.coregraphics.*;
     public native boolean isEditable();
     /*</properties>*/
     /*<members>*//*</members>*/
+    
+    /* Convenience methods */
+    public String getName() {
+        NSString val = (NSString)getValue(ALAssetsGroupProperty.Name);
+        if (val != null) {
+            return val.toString();
+        }
+        return null;
+    }
+    public ALAssetsGroupType getType() {
+        NSNumber val = (NSNumber)getValue(ALAssetsGroupProperty.Type);
+        if (val != null) {
+            return ALAssetsGroupType.valueOf(val.longValue());
+        }
+        return null;
+    }
+    public String getPersistentID() {
+        NSString val = (NSString)getValue(ALAssetsGroupProperty.PersistentID);
+        if (val != null) {
+            return val.toString();
+        }
+        return null;
+    }
+    public NSURL getURL() {
+        NSURL val = (NSURL)getValue(ALAssetsGroupProperty.URL);
+        if (val != null) {
+            return val;
+        }
+        return null;
+    }
     /*<methods>*/
     @Method(selector = "valueForProperty:")
-    public native NSObject getValue(NSString property);
+    public native NSObject getValue(ALAssetsGroupProperty property);
     @Method(selector = "posterImage")
     public native CGImage getPosterImage();
     @Method(selector = "setAssetsFilter:")
@@ -65,11 +96,11 @@ import org.robovm.apple.coregraphics.*;
     @Method(selector = "numberOfAssets")
     public native @MachineSizedSInt long getNumberOfAssets();
     @Method(selector = "enumerateAssetsUsingBlock:")
-    public native void enumerateAssets(@Block("(,@MachineSizedUInt,)") VoidBlock3<ALAsset, Long, BytePtr> enumerationBlock);
+    public native void enumerateAssets(@Block("(,@MachineSizedUInt,)") VoidBlock3<ALAsset, Long, BooleanPtr> enumerationBlock);
     @Method(selector = "enumerateAssetsWithOptions:usingBlock:")
-    public native void enumerateAssets(NSEnumerationOptions options, @Block("(,@MachineSizedUInt,)") VoidBlock3<ALAsset, Long, BytePtr> enumerationBlock);
+    public native void enumerateAssets(NSEnumerationOptions options, @Block("(,@MachineSizedUInt,)") VoidBlock3<ALAsset, Long, BooleanPtr> enumerationBlock);
     @Method(selector = "enumerateAssetsAtIndexes:options:usingBlock:")
-    public native void enumerateAssets(NSIndexSet indexSet, NSEnumerationOptions options, @Block("(,@MachineSizedUInt,)") VoidBlock3<ALAsset, Long, BytePtr> enumerationBlock);
+    public native void enumerateAssets(NSIndexSet indexSet, NSEnumerationOptions options, @Block("(,@MachineSizedUInt,)") VoidBlock3<ALAsset, Long, BooleanPtr> enumerationBlock);
     /**
      * @since Available in iOS 5.0 and later.
      */

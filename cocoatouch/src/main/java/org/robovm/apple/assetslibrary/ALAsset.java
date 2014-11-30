@@ -28,6 +28,7 @@ import org.robovm.rt.bro.annotation.*;
 import org.robovm.rt.bro.ptr.*;
 import org.robovm.apple.foundation.*;
 import org.robovm.apple.coregraphics.*;
+import org.robovm.apple.imageio.*;
 /*</imports>*/
 
 /*<javadoc>*/
@@ -60,9 +61,85 @@ import org.robovm.apple.coregraphics.*;
     public native boolean isEditable();
     /*</properties>*/
     /*<members>*//*</members>*/
+    
+    /* Convenience methods */
+    public ALAssetType getType() {
+        NSString val = getPropertyValue(ALAssetProperty.Type, NSString.class);
+        if (val != null) {
+            return ALAssetType.valueOf(val);
+        }
+        return null;
+    }
+    public org.robovm.apple.corelocation.CLLocation getLocation() {
+        org.robovm.apple.corelocation.CLLocation val = getPropertyValue(ALAssetProperty.Location, org.robovm.apple.corelocation.CLLocation.class);
+        if (val != null) {
+            return val;
+        }
+        return null;
+    }
+    public double getDuration() {
+        NSNumber val = getPropertyValue(ALAssetProperty.Duration, NSNumber.class);
+        if (val != null) {
+            return val.doubleValue();
+        }
+        return 0;
+    }
+    public CGImagePropertyOrientation getOrientation() {
+        NSNumber val = getPropertyValue(ALAssetProperty.Orientation, NSNumber.class);
+        if (val != null) {
+            return CGImagePropertyOrientation.valueOf(val.longValue());
+        }
+        return null;
+    }
+    public NSDate getDate() {
+        NSDate val = getPropertyValue(ALAssetProperty.Date, NSDate.class);
+        if (val != null) {
+            return val;
+        }
+        return null;
+    }
+    @SuppressWarnings("unchecked")
+    public List<String> getRepresentations() {
+        NSArray<NSString> val = getPropertyValue(ALAssetProperty.Representations, NSArray.class);
+        if (val != null) {
+            return val.asStringList();
+        }
+        return null;
+    }
+    @SuppressWarnings("unchecked")
+    public Map<String, NSURL> getURLs() {
+        NSDictionary<NSString, NSURL> val = getPropertyValue(ALAssetProperty.URLs, NSDictionary.class);
+        if (val != null) {
+            return val.asStringMap();
+        }
+        return null;
+    }
+    public NSURL getAssetURL() {
+        NSURL val = getPropertyValue(ALAssetProperty.AssetURL, NSURL.class);
+        if (val != null) {
+            return val;
+        }
+        return null;
+    }
+    
+    @SuppressWarnings("unchecked")
+    private <T> T getPropertyValue(ALAssetProperty property, Class<T> type) {
+        NSObject val = getValue(property);
+        if (val != null && val.equals(InvalidProperty())) {
+            return null;
+        }
+        return (T) val;
+    }
+    
     /*<methods>*/
+    /**
+     * @since Available in iOS 4.0 and later.
+     */
+    @GlobalValue(symbol="ALErrorInvalidProperty", optional=true)
+    public static native NSString InvalidProperty();
+    
     @Method(selector = "valueForProperty:")
-    public native NSObject getValue(NSString property);
+    public native NSObject getValue(ALAssetProperty property);
     @Method(selector = "defaultRepresentation")
     public native ALAssetRepresentation getDefaultRepresentation();
     @Method(selector = "representationForUTI:")
@@ -78,7 +155,7 @@ import org.robovm.apple.coregraphics.*;
      * @since Available in iOS 5.0 and later.
      */
     @Method(selector = "writeModifiedImageDataToSavedPhotosAlbum:metadata:completionBlock:")
-    public native void writeModifiedImageData(NSData imageData, NSDictionary<NSString, ?> metadata, @Block VoidBlock2<NSURL, NSError> completionBlock);
+    public native void writeModifiedImageData(NSData imageData, CGImageProperties metadata, @Block VoidBlock2<NSURL, NSError> completionBlock);
     /**
      * @since Available in iOS 5.0 and later.
      */
@@ -88,7 +165,7 @@ import org.robovm.apple.coregraphics.*;
      * @since Available in iOS 5.0 and later.
      */
     @Method(selector = "setImageData:metadata:completionBlock:")
-    public native void setImageData(NSData imageData, NSDictionary<NSString, ?> metadata, @Block VoidBlock2<NSURL, NSError> completionBlock);
+    public native void setImageData(NSData imageData, CGImageProperties metadata, @Block VoidBlock2<NSURL, NSError> completionBlock);
     /**
      * @since Available in iOS 5.0 and later.
      */

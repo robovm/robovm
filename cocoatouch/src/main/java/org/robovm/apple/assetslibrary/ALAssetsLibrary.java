@@ -19,6 +19,7 @@ package org.robovm.apple.assetslibrary;
 import java.io.*;
 import java.nio.*;
 import java.util.*;
+
 import org.robovm.objc.*;
 import org.robovm.objc.annotation.*;
 import org.robovm.objc.block.*;
@@ -28,6 +29,7 @@ import org.robovm.rt.bro.annotation.*;
 import org.robovm.rt.bro.ptr.*;
 import org.robovm.apple.foundation.*;
 import org.robovm.apple.coregraphics.*;
+import org.robovm.apple.imageio.*;
 /*</imports>*/
 
 /*<javadoc>*/
@@ -40,6 +42,22 @@ import org.robovm.apple.coregraphics.*;
     extends /*<extends>*/NSObject/*</extends>*/ 
     /*<implements>*//*</implements>*/ {
 
+    public static class Notifications {
+        public static NSObject observeChanged(ALAssetsLibrary object, final VoidBlock2<ALAssetsLibrary, ALAssetsLibraryChangedNotificationUserInfo> block) {
+            return NSNotificationCenter.getDefaultCenter().addObserver(ChangedNotification(), object, NSOperationQueue.getMainQueue(), new VoidBlock1<NSNotification>() {
+                @Override
+                public void invoke(NSNotification a) {
+                    ALAssetsLibraryChangedNotificationUserInfo userInfo = null;
+                    NSDictionary<NSString, NSObject> dict = a.getUserInfo();
+                    if (dict != null) {
+                        userInfo = new ALAssetsLibraryChangedNotificationUserInfo(dict);
+                    }
+                    block.invoke((ALAssetsLibrary)a.getObject(), userInfo);
+                }
+            });
+        }
+    }
+    
     /*<ptr>*/public static class ALAssetsLibraryPtr extends Ptr<ALAssetsLibrary, ALAssetsLibraryPtr> {}/*</ptr>*/
     /*<bind>*/static { ObjCRuntime.bind(ALAssetsLibrary.class); }/*</bind>*/
     /*<constants>*//*</constants>*/
@@ -52,8 +70,14 @@ import org.robovm.apple.coregraphics.*;
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
+    /**
+     * @since Available in iOS 4.0 and later.
+     */
+    @GlobalValue(symbol="ALAssetsLibraryChangedNotification", optional=true)
+    public static native NSString ChangedNotification();
+    
     @Method(selector = "enumerateGroupsWithTypes:usingBlock:failureBlock:")
-    public native void enumerateGroups(ALAssetsGroupType types, @Block VoidBlock2<ALAssetsGroup, BytePtr> enumerationBlock, @Block VoidBlock1<NSError> failureBlock);
+    public native void enumerateGroups(ALAssetsGroupType types, @Block VoidBlock2<ALAssetsGroup, BooleanPtr> enumerationBlock, @Block VoidBlock1<NSError> failureBlock);
     @Method(selector = "assetForURL:resultBlock:failureBlock:")
     public native void getAsset(NSURL assetURL, @Block VoidBlock1<ALAsset> resultBlock, @Block VoidBlock1<NSError> failureBlock);
     /**
@@ -72,12 +96,12 @@ import org.robovm.apple.coregraphics.*;
      * @since Available in iOS 4.1 and later.
      */
     @Method(selector = "writeImageToSavedPhotosAlbum:metadata:completionBlock:")
-    public native void writeImageToSavedPhotosAlbum(CGImage imageRef, NSDictionary<NSString, ?> metadata, @Block VoidBlock2<NSURL, NSError> completionBlock);
+    public native void writeImageToSavedPhotosAlbum(CGImage imageRef, CGImageProperties metadata, @Block VoidBlock2<NSURL, NSError> completionBlock);
     /**
      * @since Available in iOS 4.1 and later.
      */
     @Method(selector = "writeImageDataToSavedPhotosAlbum:metadata:completionBlock:")
-    public native void writeImageDataToSavedPhotosAlbum(NSData imageData, NSDictionary<NSString, ?> metadata, @Block VoidBlock2<NSURL, NSError> completionBlock);
+    public native void writeImageDataToSavedPhotosAlbum(NSData imageData, CGImageProperties metadata, @Block VoidBlock2<NSURL, NSError> completionBlock);
     @Method(selector = "writeVideoAtPathToSavedPhotosAlbum:completionBlock:")
     public native void writeVideoToSavedPhotosAlbum(NSURL videoPathURL, @Block VoidBlock2<NSURL, NSError> completionBlock);
     @Method(selector = "videoAtPathIsCompatibleWithSavedPhotosAlbum:")

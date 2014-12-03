@@ -105,13 +105,6 @@ import org.robovm.apple.corelocation.*;
     public UIView getViewForHeader(UITableView tableView, @MachineSizedSInt long section) { throw new UnsupportedOperationException(); }
     @NotImplemented("tableView:viewForFooterInSection:")
     public UIView getViewForFooter(UITableView tableView, @MachineSizedSInt long section) { throw new UnsupportedOperationException(); }
-    /**
-     * @since Available in iOS 2.0 and later.
-     * @deprecated Deprecated in iOS 3.0.
-     */
-    @Deprecated
-    @NotImplemented("tableView:accessoryTypeForRowWithIndexPath:")
-    public UITableViewCellAccessoryType getAccessoryTypeForRow(UITableView tableView, NSIndexPath indexPath) { throw new UnsupportedOperationException(); }
     @NotImplemented("tableView:accessoryButtonTappedForRowWithIndexPath:")
     public void accessoryButtonTapped(UITableView tableView, NSIndexPath indexPath) { throw new UnsupportedOperationException(); }
     /**

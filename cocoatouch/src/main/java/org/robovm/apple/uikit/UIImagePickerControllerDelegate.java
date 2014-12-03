@@ -51,13 +51,6 @@ import org.robovm.apple.corelocation.*;
     
     /*</properties>*/
     /*<methods>*/
-    /**
-     * @since Available in iOS 2.0 and later.
-     * @deprecated Deprecated in iOS 3.0.
-     */
-    @Deprecated
-    @Method(selector = "imagePickerController:didFinishPickingImage:editingInfo:")
-    void didFinishPickingImage(UIImagePickerController picker, UIImage image, UIImagePickerControllerEditingInfo editingInfo);
     @Method(selector = "imagePickerController:didFinishPickingMediaWithInfo:")
     void didFinishPickingMedia(UIImagePickerController picker, UIImagePickerControllerEditingInfo info);
     @Method(selector = "imagePickerControllerDidCancel:")

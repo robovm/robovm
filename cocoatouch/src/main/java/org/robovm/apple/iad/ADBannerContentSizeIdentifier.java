@@ -92,18 +92,6 @@ import org.robovm.apple.avkit.*;
     /*<bind>*/static { Bro.bind(ADBannerContentSizeIdentifier.class); }/*</bind>*/
     /*<constants>*//*</constants>*/
     /**
-     * @since Available in iOS 4.0 and later.
-     * @deprecated Deprecated in iOS 4.2.
-     */
-    @Deprecated
-    public static final ADBannerContentSizeIdentifier Size320x50 = new ADBannerContentSizeIdentifier("Size320x50Value");
-    /**
-     * @since Available in iOS 4.0 and later.
-     * @deprecated Deprecated in iOS 4.2.
-     */
-    @Deprecated
-    public static final ADBannerContentSizeIdentifier Size480x32 = new ADBannerContentSizeIdentifier("Size480x32Value");
-    /**
      * @since Available in iOS 4.2 and later.
      * @deprecated Deprecated in iOS 6.0.
      */
@@ -116,7 +104,7 @@ import org.robovm.apple.avkit.*;
     @Deprecated
     public static final ADBannerContentSizeIdentifier SizeLandscape = new ADBannerContentSizeIdentifier("SizeLandscapeValue");
     
-    private static ADBannerContentSizeIdentifier[] values = new ADBannerContentSizeIdentifier[] {Size320x50, Size480x32, SizePortrait, SizeLandscape};
+    private static ADBannerContentSizeIdentifier[] values = new ADBannerContentSizeIdentifier[] {SizePortrait, SizeLandscape};
     private final LazyGlobalValue<NSString> lazyGlobalValue;
     
     private ADBannerContentSizeIdentifier (String getterName) {
@@ -147,20 +135,6 @@ import org.robovm.apple.avkit.*;
             + /*<name>*/ADBannerContentSizeIdentifier/*</name>*/.class.getName());
     }
     /*<methods>*/
-    /**
-     * @since Available in iOS 4.0 and later.
-     * @deprecated Deprecated in iOS 4.2.
-     */
-    @Deprecated
-    @GlobalValue(symbol="ADBannerContentSizeIdentifier320x50", optional=true)
-    protected static native NSString Size320x50Value();
-    /**
-     * @since Available in iOS 4.0 and later.
-     * @deprecated Deprecated in iOS 4.2.
-     */
-    @Deprecated
-    @GlobalValue(symbol="ADBannerContentSizeIdentifier480x32", optional=true)
-    protected static native NSString Size480x32Value();
     /**
      * @since Available in iOS 4.2 and later.
      * @deprecated Deprecated in iOS 6.0.

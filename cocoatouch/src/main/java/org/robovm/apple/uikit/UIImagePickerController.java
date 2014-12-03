@@ -76,20 +76,6 @@ import org.robovm.apple.corelocation.*;
     @Property(selector = "setAllowsEditing:")
     public native void setAllowsEditing(boolean v);
     /**
-     * @since Available in iOS 2.0 and later.
-     * @deprecated Deprecated in iOS 3.1.
-     */
-    @Deprecated
-    @Property(selector = "allowsImageEditing")
-    public native boolean isAllowsImageEditing();
-    /**
-     * @since Available in iOS 2.0 and later.
-     * @deprecated Deprecated in iOS 3.1.
-     */
-    @Deprecated
-    @Property(selector = "setAllowsImageEditing:")
-    public native void setAllowsImageEditing(boolean v);
-    /**
      * @since Available in iOS 3.1 and later.
      */
     @Property(selector = "videoMaximumDuration")

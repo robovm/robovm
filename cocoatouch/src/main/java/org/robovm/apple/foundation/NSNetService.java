@@ -117,13 +117,6 @@ import org.robovm.apple.dispatch.*;
      */
     @Method(selector = "publishWithOptions:")
     public native void publish(NSNetServiceOptions options);
-    /**
-     * @since Available in iOS 2.0 and later.
-     * @deprecated Deprecated in iOS 2.0.
-     */
-    @Deprecated
-    @Method(selector = "resolve")
-    public native void resolve();
     @Method(selector = "stop")
     public native void stop();
     @Method(selector = "resolveWithTimeout:")

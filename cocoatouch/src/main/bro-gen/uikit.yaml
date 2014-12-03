@@ -578,11 +578,6 @@ classes:
                 parameters:
                     options:
                         type: NSTextTabOptions
-    UIAcceleration: {} # DONE
-    UIAccelerometer: # DONE
-        methods:
-            '+sharedAccelerometer':
-                name: getSharedAccelerometer
     UIAccessibilityCustomAction: {} # DONE
     UIAccessibilityElement: # DONE
         properties:
@@ -2911,10 +2906,6 @@ protocols:
                 name: willProcessEditing
             '-textStorage:didProcessEditing:range:changeInLength:':
                 name: didProcessEditing
-    UIAccelerometerDelegate: # DONE
-        methods:
-            '-accelerometer:didAccelerate:':
-                name: didAccelerate
     UIAccessibilityIdentification: {} # DONE
     UIActionSheetDelegate: # DONE
         methods:

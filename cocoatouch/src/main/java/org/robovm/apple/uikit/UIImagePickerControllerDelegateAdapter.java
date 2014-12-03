@@ -53,13 +53,6 @@ import org.robovm.apple.corelocation.*;
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
-    /**
-     * @since Available in iOS 2.0 and later.
-     * @deprecated Deprecated in iOS 3.0.
-     */
-    @Deprecated
-    @NotImplemented("imagePickerController:didFinishPickingImage:editingInfo:")
-    public void didFinishPickingImage(UIImagePickerController picker, UIImage image, UIImagePickerControllerEditingInfo editingInfo) { throw new UnsupportedOperationException(); }
     @NotImplemented("imagePickerController:didFinishPickingMediaWithInfo:")
     public void didFinishPickingMedia(UIImagePickerController picker, UIImagePickerControllerEditingInfo info) { throw new UnsupportedOperationException(); }
     @NotImplemented("imagePickerControllerDidCancel:")

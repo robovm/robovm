@@ -307,20 +307,6 @@ import org.robovm.apple.corelocation.*;
      */
     @Property(selector = "setScheduledLocalNotifications:")
     public native void setScheduledLocalNotifications(NSArray<UILocalNotification> v);
-    /**
-     * @since Available in iOS 2.0 and later.
-     * @deprecated Deprecated in iOS 3.0.
-     */
-    @Deprecated
-    @Property(selector = "isProximitySensingEnabled")
-    public native boolean isProximitySensingEnabled();
-    /**
-     * @since Available in iOS 2.0 and later.
-     * @deprecated Deprecated in iOS 3.0.
-     */
-    @Deprecated
-    @Property(selector = "setProximitySensingEnabled:")
-    public native void setProximitySensingEnabled(boolean v);
     /*</properties>*/
     /*<members>*//*</members>*/
     
@@ -596,13 +582,6 @@ import org.robovm.apple.corelocation.*;
      */
     @Method(selector = "registerObjectForStateRestoration:restorationIdentifier:")
     public static native void registerObjectForStateRestoration(UIStateRestoring object, String restorationIdentifier);
-    /**
-     * @since Available in iOS 2.0 and later.
-     * @deprecated Deprecated in iOS 3.2.
-     */
-    @Deprecated
-    @Method(selector = "setStatusBarHidden:animated:")
-    public native void setStatusBarHidden(boolean hidden, boolean animated);
     @Method(selector = "actionSheet:clickedButtonAtIndex:")
     public native void clicked(UIActionSheet actionSheet, @MachineSizedSInt long buttonIndex);
     @Method(selector = "actionSheetCancel:")

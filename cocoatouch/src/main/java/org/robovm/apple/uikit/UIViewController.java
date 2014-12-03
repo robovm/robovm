@@ -641,27 +641,6 @@ import org.robovm.apple.mediaplayer.MPMoviePlayerViewController;
     @Method(selector = "willAnimateRotationToInterfaceOrientation:duration:")
     public native void willAnimateRotation(UIInterfaceOrientation toInterfaceOrientation, double duration);
     /**
-     * @since Available in iOS 2.0 and later.
-     * @deprecated Deprecated in iOS 5.0.
-     */
-    @Deprecated
-    @Method(selector = "willAnimateFirstHalfOfRotationToInterfaceOrientation:duration:")
-    public native void willAnimateFirstHalfOfRotation(UIInterfaceOrientation toInterfaceOrientation, double duration);
-    /**
-     * @since Available in iOS 2.0 and later.
-     * @deprecated Deprecated in iOS 5.0.
-     */
-    @Deprecated
-    @Method(selector = "didAnimateFirstHalfOfRotationToInterfaceOrientation:")
-    public native void didAnimateFirstHalfOfRotation(UIInterfaceOrientation toInterfaceOrientation);
-    /**
-     * @since Available in iOS 2.0 and later.
-     * @deprecated Deprecated in iOS 5.0.
-     */
-    @Deprecated
-    @Method(selector = "willAnimateSecondHalfOfRotationFromInterfaceOrientation:duration:")
-    public native void willAnimateSecondHalfOfRotation(UIInterfaceOrientation fromInterfaceOrientation, double duration);
-    /**
      * @since Available in iOS 5.0 and later.
      */
     @Method(selector = "attemptRotationToDeviceOrientation")

@@ -123,48 +123,6 @@ import org.robovm.apple.corelocation.*;
      */
     @Property(selector = "imageView")
     public native UIImageView getImageView();
-    /**
-     * @since Available in iOS 2.0 and later.
-     * @deprecated Deprecated in iOS 3.0.
-     */
-    @Deprecated
-    @Property(selector = "font")
-    public native UIFont getFont();
-    /**
-     * @since Available in iOS 2.0 and later.
-     * @deprecated Deprecated in iOS 3.0.
-     */
-    @Deprecated
-    @Property(selector = "setFont:")
-    public native void setFont(UIFont v);
-    /**
-     * @since Available in iOS 2.0 and later.
-     * @deprecated Deprecated in iOS 3.0.
-     */
-    @Deprecated
-    @Property(selector = "lineBreakMode")
-    public native NSLineBreakMode getLineBreakMode();
-    /**
-     * @since Available in iOS 2.0 and later.
-     * @deprecated Deprecated in iOS 3.0.
-     */
-    @Deprecated
-    @Property(selector = "setLineBreakMode:")
-    public native void setLineBreakMode(NSLineBreakMode v);
-    /**
-     * @since Available in iOS 2.0 and later.
-     * @deprecated Deprecated in iOS 3.0.
-     */
-    @Deprecated
-    @Property(selector = "titleShadowOffset")
-    public native @ByVal CGSize getTitleShadowOffset();
-    /**
-     * @since Available in iOS 2.0 and later.
-     * @deprecated Deprecated in iOS 3.0.
-     */
-    @Deprecated
-    @Property(selector = "setTitleShadowOffset:")
-    public native void setTitleShadowOffset(@ByVal CGSize v);
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/

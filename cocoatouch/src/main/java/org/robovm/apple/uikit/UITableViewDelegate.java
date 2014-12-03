@@ -103,13 +103,6 @@ import org.robovm.apple.corelocation.*;
     UIView getViewForHeader(UITableView tableView, @MachineSizedSInt long section);
     @Method(selector = "tableView:viewForFooterInSection:")
     UIView getViewForFooter(UITableView tableView, @MachineSizedSInt long section);
-    /**
-     * @since Available in iOS 2.0 and later.
-     * @deprecated Deprecated in iOS 3.0.
-     */
-    @Deprecated
-    @Method(selector = "tableView:accessoryTypeForRowWithIndexPath:")
-    UITableViewCellAccessoryType getAccessoryTypeForRow(UITableView tableView, NSIndexPath indexPath);
     @Method(selector = "tableView:accessoryButtonTappedForRowWithIndexPath:")
     void accessoryButtonTapped(UITableView tableView, NSIndexPath indexPath);
     /**

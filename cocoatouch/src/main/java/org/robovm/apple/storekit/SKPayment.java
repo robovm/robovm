@@ -77,12 +77,5 @@ import org.robovm.apple.accounts.*;
      */
     @Method(selector = "paymentWithProduct:")
     public static native SKPayment createFromProduct(SKProduct product);
-    /**
-     * @since Available in iOS 3.0 and later.
-     * @deprecated Deprecated in iOS 5.0.
-     */
-    @Deprecated
-    @Method(selector = "paymentWithProductIdentifier:")
-    public static native SKPayment createFromProductIdentifier(String identifier);
     /*</methods>*/
 }

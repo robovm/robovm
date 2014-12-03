@@ -140,27 +140,6 @@ import org.robovm.apple.corelocation.*;
      */
     @GlobalValue(symbol="UIKeyboardAnimationCurveUserInfoKey", optional=true)
     protected static native NSString AnimationCurveKey();
-    /**
-     * @since Available in iOS 2.0 and later.
-     * @deprecated Deprecated in iOS 3.2.
-     */
-    @Deprecated
-    @GlobalValue(symbol="UIKeyboardCenterBeginUserInfoKey", optional=true)
-    protected static native NSString CenterBeginKey();
-    /**
-     * @since Available in iOS 2.0 and later.
-     * @deprecated Deprecated in iOS 3.2.
-     */
-    @Deprecated
-    @GlobalValue(symbol="UIKeyboardCenterEndUserInfoKey", optional=true)
-    protected static native NSString CenterEndKey();
-    /**
-     * @since Available in iOS 2.0 and later.
-     * @deprecated Deprecated in iOS 3.2.
-     */
-    @Deprecated
-    @GlobalValue(symbol="UIKeyboardBoundsUserInfoKey", optional=true)
-    protected static native NSString BoundsKey();
     /*</methods>*/
     
     @Override

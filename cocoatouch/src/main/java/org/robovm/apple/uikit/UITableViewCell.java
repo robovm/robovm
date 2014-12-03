@@ -55,12 +55,6 @@ import org.robovm.apple.corelocation.*;
      * @since Available in iOS 3.0 and later.
      */
     public UITableViewCell(UITableViewCellStyle style, String reuseIdentifier) { super((SkipInit) null); initObject(initWithStyle$reuseIdentifier$(style, reuseIdentifier)); }
-    /**
-     * @since Available in iOS 2.0 and later.
-     * @deprecated Deprecated in iOS 3.0.
-     */
-    @Deprecated
-    public UITableViewCell(@ByVal CGRect frame, String reuseIdentifier) { super((SkipInit) null); initObject(initWithFrame$reuseIdentifier$(frame, reuseIdentifier)); }
     /*</constructors>*/
     
     public UITableViewCell(CGRect frame) {
@@ -167,174 +161,6 @@ import org.robovm.apple.corelocation.*;
     public native void setEditing(boolean v);
     @Property(selector = "showingDeleteConfirmation")
     public native boolean isShowingDeleteConfirmation();
-    /**
-     * @since Available in iOS 2.0 and later.
-     * @deprecated Deprecated in iOS 3.0.
-     */
-    @Deprecated
-    @Property(selector = "text")
-    public native String getText();
-    /**
-     * @since Available in iOS 2.0 and later.
-     * @deprecated Deprecated in iOS 3.0.
-     */
-    @Deprecated
-    @Property(selector = "setText:")
-    public native void setText(String v);
-    /**
-     * @since Available in iOS 2.0 and later.
-     * @deprecated Deprecated in iOS 3.0.
-     */
-    @Deprecated
-    @Property(selector = "font")
-    public native UIFont getFont();
-    /**
-     * @since Available in iOS 2.0 and later.
-     * @deprecated Deprecated in iOS 3.0.
-     */
-    @Deprecated
-    @Property(selector = "setFont:")
-    public native void setFont(UIFont v);
-    /**
-     * @since Available in iOS 2.0 and later.
-     * @deprecated Deprecated in iOS 3.0.
-     */
-    @Deprecated
-    @Property(selector = "textAlignment")
-    public native NSTextAlignment getTextAlignment();
-    /**
-     * @since Available in iOS 2.0 and later.
-     * @deprecated Deprecated in iOS 3.0.
-     */
-    @Deprecated
-    @Property(selector = "setTextAlignment:")
-    public native void setTextAlignment(NSTextAlignment v);
-    /**
-     * @since Available in iOS 2.0 and later.
-     * @deprecated Deprecated in iOS 3.0.
-     */
-    @Deprecated
-    @Property(selector = "lineBreakMode")
-    public native NSLineBreakMode getLineBreakMode();
-    /**
-     * @since Available in iOS 2.0 and later.
-     * @deprecated Deprecated in iOS 3.0.
-     */
-    @Deprecated
-    @Property(selector = "setLineBreakMode:")
-    public native void setLineBreakMode(NSLineBreakMode v);
-    /**
-     * @since Available in iOS 2.0 and later.
-     * @deprecated Deprecated in iOS 3.0.
-     */
-    @Deprecated
-    @Property(selector = "textColor")
-    public native UIColor getTextColor();
-    /**
-     * @since Available in iOS 2.0 and later.
-     * @deprecated Deprecated in iOS 3.0.
-     */
-    @Deprecated
-    @Property(selector = "setTextColor:")
-    public native void setTextColor(UIColor v);
-    /**
-     * @since Available in iOS 2.0 and later.
-     * @deprecated Deprecated in iOS 3.0.
-     */
-    @Deprecated
-    @Property(selector = "selectedTextColor")
-    public native UIColor getSelectedTextColor();
-    /**
-     * @since Available in iOS 2.0 and later.
-     * @deprecated Deprecated in iOS 3.0.
-     */
-    @Deprecated
-    @Property(selector = "setSelectedTextColor:")
-    public native void setSelectedTextColor(UIColor v);
-    /**
-     * @since Available in iOS 2.0 and later.
-     * @deprecated Deprecated in iOS 3.0.
-     */
-    @Deprecated
-    @Property(selector = "image")
-    public native UIImage getImage();
-    /**
-     * @since Available in iOS 2.0 and later.
-     * @deprecated Deprecated in iOS 3.0.
-     */
-    @Deprecated
-    @Property(selector = "setImage:")
-    public native void setImage(UIImage v);
-    /**
-     * @since Available in iOS 2.0 and later.
-     * @deprecated Deprecated in iOS 3.0.
-     */
-    @Deprecated
-    @Property(selector = "selectedImage")
-    public native UIImage getSelectedImage();
-    /**
-     * @since Available in iOS 2.0 and later.
-     * @deprecated Deprecated in iOS 3.0.
-     */
-    @Deprecated
-    @Property(selector = "setSelectedImage:")
-    public native void setSelectedImage(UIImage v);
-    /**
-     * @since Available in iOS 2.0 and later.
-     * @deprecated Deprecated in iOS 3.0.
-     */
-    @Deprecated
-    @Property(selector = "hidesAccessoryWhenEditing")
-    public native boolean isHidesAccessoryWhenEditing();
-    /**
-     * @since Available in iOS 2.0 and later.
-     * @deprecated Deprecated in iOS 3.0.
-     */
-    @Deprecated
-    @Property(selector = "setHidesAccessoryWhenEditing:")
-    public native void setHidesAccessoryWhenEditing(boolean v);
-    /**
-     * @since Available in iOS 2.0 and later.
-     * @deprecated Deprecated in iOS 3.0.
-     */
-    @Deprecated
-    @Property(selector = "target")
-    public native NSObject getTarget();
-    /**
-     * @since Available in iOS 2.0 and later.
-     * @deprecated Deprecated in iOS 3.0.
-     */
-    @Deprecated
-    @Property(selector = "setTarget:", strongRef = true)
-    public native void setTarget(NSObject v);
-    /**
-     * @since Available in iOS 2.0 and later.
-     * @deprecated Deprecated in iOS 3.0.
-     */
-    @Deprecated
-    @Property(selector = "editAction")
-    public native Selector getEditAction();
-    /**
-     * @since Available in iOS 2.0 and later.
-     * @deprecated Deprecated in iOS 3.0.
-     */
-    @Deprecated
-    @Property(selector = "setEditAction:")
-    public native void setEditAction(Selector v);
-    /**
-     * @since Available in iOS 2.0 and later.
-     * @deprecated Deprecated in iOS 3.0.
-     */
-    @Deprecated
-    @Property(selector = "accessoryAction")
-    public native Selector getAccessoryAction();
-    /**
-     * @since Available in iOS 2.0 and later.
-     * @deprecated Deprecated in iOS 3.0.
-     */
-    @Deprecated
-    @Property(selector = "setAccessoryAction:")
-    public native void setAccessoryAction(Selector v);
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
@@ -361,13 +187,6 @@ import org.robovm.apple.corelocation.*;
      */
     @Method(selector = "didTransitionToState:")
     public native void didTransitionToState(UITableViewCellStateMask state);
-    /**
-     * @since Available in iOS 2.0 and later.
-     * @deprecated Deprecated in iOS 3.0.
-     */
-    @Deprecated
-    @Method(selector = "initWithFrame:reuseIdentifier:")
-    protected native @Pointer long initWithFrame$reuseIdentifier$(@ByVal CGRect frame, String reuseIdentifier);
     @Method(selector = "gestureRecognizerShouldBegin:")
     public native boolean shouldBegin(UIGestureRecognizer gestureRecognizer);
     @Method(selector = "gestureRecognizer:shouldRecognizeSimultaneouslyWithGestureRecognizer:")

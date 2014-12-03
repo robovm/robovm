@@ -80,20 +80,6 @@ import org.robovm.apple.corelocation.*;
     @Property(selector = "setScalesPageToFit:")
     public native void setScalesPageToFit(boolean v);
     /**
-     * @since Available in iOS 2.0 and later.
-     * @deprecated Deprecated in iOS 3.0.
-     */
-    @Deprecated
-    @Property(selector = "detectsPhoneNumbers")
-    public native boolean isDetectsPhoneNumbers();
-    /**
-     * @since Available in iOS 2.0 and later.
-     * @deprecated Deprecated in iOS 3.0.
-     */
-    @Deprecated
-    @Property(selector = "setDetectsPhoneNumbers:")
-    public native void setDetectsPhoneNumbers(boolean v);
-    /**
      * @since Available in iOS 3.0 and later.
      */
     @Property(selector = "dataDetectorTypes")

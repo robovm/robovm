@@ -16,10 +16,10 @@ This fork changes the library structure ob robovm and adds an additional bclib l
 - libc++.dylib
 
 ## Main class
-You need to add an empty class org.robovm.staticlibrary.RoboVmMain to your java project/classpath and use that dummy for the robovm compiler as main class
+You need to add an empty class org.robovm.staticlibrary.RoboVmMain to your java project/classpath and use that dummy for the robovm compiler as main class.
 
 ## Starting the RoboVM runtime
-Add the rvmlibhelper sources to the xcode project and start the RVM with [RoboVMFramework startRVM:@"<App_Path>"]
+Add the rvmlibhelper sources to the xcode project and start the RVM with [RoboVMFramework startRVM:@"-App_Path-"]
 
 
 

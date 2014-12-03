@@ -1268,20 +1268,20 @@ public class Config {
                     }
                 }
                 if (isTest) {
-                    String appId = props.getProperty("app.id");
-                    if (appId != null && !appId.endsWith("Test")) {
-                        String newAppId = appId + "Test";
-                        config.logger.debug("Changing app.id property from '%s' to '%s'", appId, newAppId);
-                        props.setProperty("app.id", newAppId);
-                    }
-                    String appName = props.getProperty("app.name");
-                    if (appName != null && !appName.endsWith("Test")) {
-                        String newAppName = appName + "Test";
-                        config.logger.debug("Changing app.name property from '%s' to '%s'", appName, newAppName);
-                        props.setProperty("app.name", newAppName);
-                    }
+                    modifyPropertyForTest(props, "app.id");
+                    modifyPropertyForTest(props, "app.name");
+                    modifyPropertyForTest(props, "app.executable");
                 }
                 addProperties(props);
+            }
+        }
+
+        private void modifyPropertyForTest(Properties props, String propName) {
+            String propValue = props.getProperty(propName);
+            if (propValue != null && !propValue.endsWith("Test")) {
+                String newPropValue = propValue + "Test";
+                config.logger.debug("Changing %s property from '%s' to '%s'", propName, propValue, newPropValue);
+                props.setProperty(propName, newPropValue);
             }
         }
 

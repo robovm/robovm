@@ -327,7 +327,7 @@ classes:
         methods:
             '+blockOperationWithBlock:':
                 name: create
-                return_type: "NSBlockOperation"
+                return_type: NSBlockOperation
             '-addExecutionBlock:':
                 trim_after_first_colon: true
     NSBundle: # DONE
@@ -1672,7 +1672,7 @@ classes:
                 return_type: '@org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String>'
             '+canonical(.*Identifier)FromString:':
                 property: true
-                name: "getCanonical#{g[0]}"
+                name: 'getCanonical#{g[0]}'
             '+characterDirectionForLanguage:':
                 name: getCharacterDirection
             '+lineDirectionForLanguage:':
@@ -2162,7 +2162,7 @@ classes:
     NSNull: # DONE
         skip_def_constructor: true
         methods:
-            "+null":
+            '+null':
                 name: getNull
     NSNumber: # DONE
         skip_def_constructor: true
@@ -2402,7 +2402,7 @@ classes:
                 visibility: protected
                 parameters:
                     buffer:
-                        type: "@Pointer long"
+                        type: '@Pointer long'
             '-init': {exclude: true}
             '+outputStream.*': {exclude: true}
     NSPipe: # DONE
@@ -2873,7 +2873,7 @@ classes:
             '-objectForKey:':
                 name: get
             '-set(.*):forKey:':
-                name: "set#{g[0]}"
+                name: 'set#{g[0]}'
                 visibility: protected
             '-removeObjectForKey:':
                 name: remove

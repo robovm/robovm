@@ -1,6 +1,6 @@
 project(core)
 
-include_directories(../include ${CMAKE_BINARY_DIR}/gc/include)
+include_directories(../include ${CMAKE_BINARY_DIR}/gc/include ../../bclib/src)
 
 set(SRC
   array.c 

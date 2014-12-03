@@ -139,7 +139,11 @@ public class AppCompiler {
         this.classCompiler = new ClassCompiler(config);
         this.linker = new Linker(config);
     }
-    
+
+    public Config getConfig() {
+        return config;
+    }
+
     /**
      * Returns all {@link Clazz}es in all {@link Path}s matching the specified ANT-style pattern.
      */

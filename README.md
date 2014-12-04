@@ -21,5 +21,58 @@ You need to add an empty class org.robovm.staticlibrary.RoboVmMain to your java 
 ## Starting the RoboVM runtime
 Add the rvmlibhelper sources to the xcode project and start the RVM with [RoboVMFramework startRVM:@"-App_Path-"]
 
+## Calling Java objects from Objc/C++
+
+```cpp
+// C++ Header
+
+class ClientCpp
+{
+public:
+	ClientCpp(); // wrapper class for JavaClient
+	~ClientCpp();
+    
+    void* getHandle(); // Will be casted to real objc object
+
+	// Wrapper for method implemented in Java
+    const char * clientMethod(const char * url, const char * payload, unsigned long timeout);
+    
+    
+private:
+    struct ClientCppImpl;
+    ClientCppImpl *impl;
+};
 
 
+
+// C++ Implementation
+
+
+struct ClientCpp::ClientCppImpl
+{
+    Env* rvmEnv_;
+    Object *javaClient_; // The reference to the "java" object
+    jlong handle_; // If robovm creates a bound objc object we can get the handle
+};
+
+
+static Class *clientClass = NULL;
+
+ClientCpp::ClientCpp() : impl(new ClientCppImpl())
+{
+    printf(">> ClientCpp()");
+    
+    initRvmEnv(&impl->rvmEnv_);
+
+    if (clientClass == NULL) {
+        clientClass = findRvmClazz(&impl->rvmEnv_, "com/my/package/JavaClient");
+    }
+    
+    Method *constructor = rvmGetMethod(impl->rvmEnv_, clientClass, "<init>", "()V");
+
+    impl->javaClient_ = rvmNewObject(impl->rvmEnv_, clientClass, constructor);
+    impl->handle_ = getRvmHandle(&impl->rvmEnv_, impl->javaClient_, clientClass);
+
+    printf("<< ClientCpp()");
+}
+```

@@ -24,6 +24,7 @@ Add the rvmlibhelper sources to the xcode project and start the RVM with [RoboVM
 ## Calling Java objects from Objc/C++
 
 ```cpp
+
 // C++ Header
 
 class ClientCpp
@@ -75,4 +76,36 @@ ClientCpp::ClientCpp() : impl(new ClientCppImpl())
 
     printf("<< ClientCpp()");
 }
+
+ClientCpp::~ClientCpp()
+{
+    std::cout << ">> ~ClientCpp()";
+    impl->handle_ = NULL;
+    impl->javaClient_ = NULL;
+    impl->rvmEnv_ = NULL;
+    delete impl;
+    impl = NULL;
+    clientClass = NULL;
+}
+
+void* ClientCpp::getHandle()
+{
+    return (void *)impl->handle_;
+}
+
+const char * ClientCpp::clientMethod(const char * url, const char * payload, unsigned long timeout)
+{
+    printf("ClientCpp(): clientMethod: (%s), (%s), (%ld)", url, payload, timeout);
+    
+    Method *clientMethod = rvmGetMethod(impl->rvmEnv_, clientClass, "clientMethod", "(Ljava/lang/String;Ljava/lang/String;J)Ljava/lang/String;");
+    Object *urlJava = rvmNewStringUTF(impl->rvmEnv_, url, -1);
+    Object * payloadJava = rvmNewStringUTF(impl->rvmEnv_, payload, -1);
+    jlong timeoutJava = timeout;
+    Object * result = rvmCallObjectInstanceMethod(impl->rvmEnv_, impl->javaClient_, clientMethod, urlJava, payloadJava, timeoutJava);
+    
+    printf("ClientCpp() :  clientMethod called\n");
+    
+    return rvmGetStringUTFChars(impl->rvmEnv_, result);
+}
+
 ```

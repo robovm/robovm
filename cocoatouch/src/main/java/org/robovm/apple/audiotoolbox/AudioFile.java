@@ -38,7 +38,7 @@ import org.robovm.apple.coremedia.*;
 /*</javadoc>*/
 /*<annotations>*/@Library("AudioToolbox")/*</annotations>*/
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/AudioFile/*</name>*/ 
-    extends /*<extends>*/CFType/*</extends>*/ 
+    extends /*<extends>*/NativeObject/*</extends>*/ 
     /*<implements>*//*</implements>*/ {
 
     /*<ptr>*/public static class AudioFilePtr extends Ptr<AudioFile, AudioFilePtr> {}/*</ptr>*/
@@ -54,12 +54,12 @@ import org.robovm.apple.coremedia.*;
      * @since Available in iOS 2.0 and later.
      */
     @Bridge(symbol="AudioFileCreateWithURL", optional=true)
-    public static native AudioFileError createWithURL(NSURL inFileRef, int inFileType, AudioStreamBasicDescription inFormat, int inFlags, AudioFile.AudioFilePtr outAudioFile);
+    public static native AudioFileError createWithURL(CFURL inFileRef, int inFileType, AudioStreamBasicDescription inFormat, int inFlags, AudioFile.AudioFilePtr outAudioFile);
     /**
      * @since Available in iOS 2.0 and later.
      */
     @Bridge(symbol="AudioFileOpenURL", optional=true)
-    public static native AudioFileError openURL(NSURL inFileRef, byte inPermissions, int inFileTypeHint, AudioFile.AudioFilePtr outAudioFile);
+    public static native AudioFileError openURL(CFURL inFileRef, byte inPermissions, int inFileTypeHint, AudioFile.AudioFilePtr outAudioFile);
     /**
      * @since Available in iOS 2.0 and later.
      */
@@ -97,7 +97,9 @@ import org.robovm.apple.coremedia.*;
     public native AudioFileError readPacketData(boolean inUseCache, IntPtr ioNumBytes, AudioStreamPacketDescription outPacketDescriptions, long inStartingPacket, IntPtr ioNumPackets, VoidPtr outBuffer);
     /**
      * @since Available in iOS 2.0 and later.
+     * @deprecated Deprecated in iOS 8.0.
      */
+    @Deprecated
     @Bridge(symbol="AudioFileReadPackets", optional=true)
     public native AudioFileError readPackets(boolean inUseCache, IntPtr outNumBytes, AudioStreamPacketDescription outPacketDescriptions, long inStartingPacket, IntPtr ioNumPackets, VoidPtr outBuffer);
     /**

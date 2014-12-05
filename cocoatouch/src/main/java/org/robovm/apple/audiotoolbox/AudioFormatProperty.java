@@ -64,6 +64,7 @@ public enum /*<name>*/AudioFormatProperty/*</name>*/ implements ValuedEnum {
     ChannelMap(1667788144L),
     NumberOfChannelsForLayout(1852008557L),
     AreChannelLayoutsEquivalent(1667786097L),
+    ChannelLayoutHash(1667786849L),
     ValidateChannelLayout(1986093932L),
     ChannelLayoutForTag(1668116588L),
     TagForChannelLayout(1668116596L),

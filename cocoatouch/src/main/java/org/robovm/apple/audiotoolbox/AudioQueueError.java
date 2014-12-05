@@ -62,6 +62,7 @@ public enum /*<name>*/AudioQueueError/*</name>*/ implements ValuedEnum {
     InvalidTapContext(-66669L),
     RecordUnderrun(-66668L),
     InvalidTapType(-66667L),
+    BufferEnqueuedTwice(-66666L),
     EnqueueDuringReset(-66632L),
     InvalidOfflineMode(-66626L);
     /*</values>*/

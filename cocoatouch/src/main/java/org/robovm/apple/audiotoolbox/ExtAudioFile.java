@@ -38,7 +38,7 @@ import org.robovm.apple.coremedia.*;
 /*</javadoc>*/
 /*<annotations>*/@Library("AudioToolbox")/*</annotations>*/
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/ExtAudioFile/*</name>*/ 
-    extends /*<extends>*/CFType/*</extends>*/ 
+    extends /*<extends>*/NativeObject/*</extends>*/ 
     /*<implements>*//*</implements>*/ {
 
     /*<ptr>*/public static class ExtAudioFilePtr extends Ptr<ExtAudioFile, ExtAudioFilePtr> {}/*</ptr>*/
@@ -54,7 +54,7 @@ import org.robovm.apple.coremedia.*;
      * @since Available in iOS 2.1 and later.
      */
     @Bridge(symbol="ExtAudioFileOpenURL", optional=true)
-    public static native int openURL(NSURL inURL, ExtAudioFile.ExtAudioFilePtr outExtAudioFile);
+    public static native int openURL(CFURL inURL, ExtAudioFile.ExtAudioFilePtr outExtAudioFile);
     /**
      * @since Available in iOS 2.1 and later.
      */
@@ -64,7 +64,7 @@ import org.robovm.apple.coremedia.*;
      * @since Available in iOS 2.1 and later.
      */
     @Bridge(symbol="ExtAudioFileCreateWithURL", optional=true)
-    public static native int createWithURL(NSURL inURL, int inFileType, AudioStreamBasicDescription inStreamDesc, AudioChannelLayout inChannelLayout, int inFlags, ExtAudioFile.ExtAudioFilePtr outExtAudioFile);
+    public static native int createWithURL(CFURL inURL, int inFileType, AudioStreamBasicDescription inStreamDesc, AudioChannelLayout inChannelLayout, int inFlags, ExtAudioFile.ExtAudioFilePtr outExtAudioFile);
     /**
      * @since Available in iOS 2.1 and later.
      */

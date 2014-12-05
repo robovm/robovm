@@ -42,7 +42,6 @@
     <url>https://github.com/robovm/robovm</url>
     <connection>scm:git:git://github.com/robovm/robovm.git</connection>
     <developerConnection>scm:git:git@github.com:robovm/robovm.git</developerConnection>
-    <tag>robovm-1.0.0-beta-01</tag>
   </scm>
 
   <issueManagement>

@@ -62,7 +62,7 @@ import org.robovm.apple.corelocation.*;
      * @since Available in iOS 7.0 and later.
      * @throws NSErrorException
      */
-    public static boolean readFromFileURL(NSMutableAttributedString thiz, NSURL url, NSAttributedStringDocumentAttributes opts) {
+    public static boolean readFromFileURL(NSMutableAttributedString thiz, NSURL url, NSAttributedStringDocumentAttributes opts) throws NSErrorException {
         NSError.NSErrorPtr err = new NSError.NSErrorPtr();
         boolean result = readFromFileURL(thiz, url, opts, null, err);
         if (err.get() != null) {
@@ -79,7 +79,7 @@ import org.robovm.apple.corelocation.*;
      * @since Available in iOS 7.0 and later.
      * @throws NSErrorException
      */
-    public static boolean readFromData(NSMutableAttributedString thiz, NSData data, NSAttributedStringDocumentAttributes opts) {
+    public static boolean readFromData(NSMutableAttributedString thiz, NSData data, NSAttributedStringDocumentAttributes opts) throws NSErrorException {
         NSError.NSErrorPtr err = new NSError.NSErrorPtr();
         boolean result = readFromData(thiz, data, opts, null, null);
         if (err.get() != null) {

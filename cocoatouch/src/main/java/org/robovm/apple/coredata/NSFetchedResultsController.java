@@ -73,7 +73,7 @@ import org.robovm.apple.foundation.*;
      * @return
      * @throws NSErrorException
      */
-    public boolean performFetch() {
+    public boolean performFetch() throws NSErrorException {
         NSError.NSErrorPtr err = new NSError.NSErrorPtr();
         boolean result = performFetch(err);
         if (err.get() != null) {

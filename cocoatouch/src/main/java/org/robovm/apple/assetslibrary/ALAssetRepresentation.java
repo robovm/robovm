@@ -59,7 +59,7 @@ import org.robovm.apple.imageio.*;
      * @return
      * @throws NSErrorException
      */
-    public byte[] getBytes(int offset, int length) {
+    public byte[] getBytes(int offset, int length) throws NSErrorException {
         byte[] bytes = new byte[length];
         NSError.NSErrorPtr err = new NSError.NSErrorPtr();
         getBytes(VM.getArrayValuesAddress(bytes), offset, length, err);

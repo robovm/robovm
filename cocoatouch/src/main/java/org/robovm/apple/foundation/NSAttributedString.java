@@ -127,7 +127,7 @@ import org.robovm.apple.dispatch.*;
      * @since Available in iOS 7.0 and later.
      * @throws NSErrorException
      */
-    public static NSAttributedString create(NSURL url, NSAttributedStringDocumentAttributes options) {
+    public static NSAttributedString create(NSURL url, NSAttributedStringDocumentAttributes options) throws NSErrorException {
         return NSAttributedStringExtensions.createFromURL(url, options);
     }
     /**
@@ -138,7 +138,7 @@ import org.robovm.apple.dispatch.*;
      * @since Available in iOS 7.0 and later.
      * @throws NSErrorException
      */
-    public static NSAttributedString create(NSData data, NSAttributedStringDocumentAttributes options) {
+    public static NSAttributedString create(NSData data, NSAttributedStringDocumentAttributes options) throws NSErrorException {
         return NSAttributedStringExtensions.createFromData(data, options);
     }
     /**
@@ -149,7 +149,7 @@ import org.robovm.apple.dispatch.*;
      * @since Available in iOS 7.0 and later.
      * @throws NSErrorException
      */
-    public NSData getData(NSRange range, NSAttributedStringDocumentAttributes dict) {
+    public NSData getData(NSRange range, NSAttributedStringDocumentAttributes dict) throws NSErrorException {
         return NSAttributedStringExtensions.getData(this, range, dict);
     }
     /**
@@ -160,7 +160,7 @@ import org.robovm.apple.dispatch.*;
      * @since Available in iOS 7.0 and later.
      * @throws NSErrorException
      */
-    public NSFileWrapper getFileWrapper(NSRange range, NSAttributedStringDocumentAttributes dict) {
+    public NSFileWrapper getFileWrapper(NSRange range, NSAttributedStringDocumentAttributes dict) throws NSErrorException {
         return NSAttributedStringExtensions.getFileWrapper(this, range, dict);
     }
     /**

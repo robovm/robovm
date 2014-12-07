@@ -55,7 +55,7 @@ import org.robovm.apple.foundation.*;
      * @return
      * @throws NSErrorException
      */
-    public boolean loadMetadata() {
+    public boolean loadMetadata() throws NSErrorException {
         NSError.NSErrorPtr err = new NSError.NSErrorPtr();
         boolean result = loadMetadata(err);
         if (err.get() != null) {
@@ -70,7 +70,7 @@ import org.robovm.apple.foundation.*;
      * @return
      * @throws NSErrorException
      */
-    public NSObject executeRequest(NSPersistentStoreRequest request, NSManagedObjectContext context) {
+    public NSObject executeRequest(NSPersistentStoreRequest request, NSManagedObjectContext context) throws NSErrorException {
         NSError.NSErrorPtr err = new NSError.NSErrorPtr();
         NSObject result = executeRequest(request, context, err);
         if (err.get() != null) {
@@ -85,7 +85,7 @@ import org.robovm.apple.foundation.*;
      * @return
      * @throws NSErrorException
      */
-    public NSIncrementalStoreNode newValuesForObjectID(NSManagedObjectID objectID, NSManagedObjectContext context) {
+    public NSIncrementalStoreNode newValuesForObjectID(NSManagedObjectID objectID, NSManagedObjectContext context) throws NSErrorException {
         NSError.NSErrorPtr err = new NSError.NSErrorPtr();
         NSIncrementalStoreNode result = newValuesForObjectID(objectID, context, err);
         if (err.get() != null) {
@@ -101,7 +101,7 @@ import org.robovm.apple.foundation.*;
      * @return
      * @throws NSErrorException
      */
-    public NSObject newValueForRelationship(NSRelationshipDescription relationship, NSManagedObjectID objectID, NSManagedObjectContext context) {
+    public NSObject newValueForRelationship(NSRelationshipDescription relationship, NSManagedObjectID objectID, NSManagedObjectContext context) throws NSErrorException {
         NSError.NSErrorPtr err = new NSError.NSErrorPtr();
         NSObject result = newValueForRelationship(relationship, objectID, context, err);
         if (err.get() != null) {
@@ -115,7 +115,7 @@ import org.robovm.apple.foundation.*;
      * @return
      * @throws NSErrorException
      */
-    public NSArray<NSManagedObjectID> obtainPermanentIDsForObjects(NSArray<NSManagedObject> array) {
+    public NSArray<NSManagedObjectID> obtainPermanentIDsForObjects(NSArray<NSManagedObject> array) throws NSErrorException {
         NSError.NSErrorPtr err = new NSError.NSErrorPtr();
         NSArray<NSManagedObjectID> result = obtainPermanentIDsForObjects(array, err);
         if (err.get() != null) {

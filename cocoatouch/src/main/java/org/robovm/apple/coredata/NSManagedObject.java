@@ -87,7 +87,7 @@ import org.robovm.apple.foundation.*;
      * @return
      * @throws NSErrorException
      */
-    public boolean validateValue(String key, NSObject value) {
+    public boolean validateValue(String key, NSObject value) throws NSErrorException {
         NSError.NSErrorPtr err = new NSError.NSErrorPtr();
         boolean result = validateValue(value, key, err);
         if (err.get() != null) {
@@ -100,7 +100,7 @@ import org.robovm.apple.foundation.*;
      * @return
      * @throws NSErrorException
      */
-    public boolean validateForDelete() {
+    public boolean validateForDelete() throws NSErrorException {
         NSError.NSErrorPtr err = new NSError.NSErrorPtr();
         boolean result = validateForDelete(err);
         if (err.get() != null) {
@@ -113,7 +113,7 @@ import org.robovm.apple.foundation.*;
      * @return
      * @throws NSErrorException
      */
-    public boolean validateForInsert() {
+    public boolean validateForInsert() throws NSErrorException {
         NSError.NSErrorPtr err = new NSError.NSErrorPtr();
         boolean result = validateForInsert(err);
         if (err.get() != null) {
@@ -126,7 +126,7 @@ import org.robovm.apple.foundation.*;
      * @return
      * @throws NSErrorException
      */
-    public boolean validateForUpdate() {
+    public boolean validateForUpdate() throws NSErrorException {
         NSError.NSErrorPtr err = new NSError.NSErrorPtr();
         boolean result = validateForUpdate(err);
         if (err.get() != null) {

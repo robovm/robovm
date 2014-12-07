@@ -169,7 +169,7 @@ import org.robovm.apple.dispatch.*;
      * @throws NSErrorException
      * @since Available in iOS 4.0 and later.
      */
-    public static NSFileHandle createForReading(NSURL url) {
+    public static NSFileHandle createForReading(NSURL url) throws NSErrorException {
         NSError.NSErrorPtr err = new NSError.NSErrorPtr();
         NSFileHandle result = createForReading(url, err);
         if (err.get() != null) {
@@ -183,7 +183,7 @@ import org.robovm.apple.dispatch.*;
      * @throws NSErrorException
      * @since Available in iOS 4.0 and later.
      */
-    public static NSFileHandle createForWriting(NSURL url) {
+    public static NSFileHandle createForWriting(NSURL url) throws NSErrorException {
         NSError.NSErrorPtr err = new NSError.NSErrorPtr();
         NSFileHandle result = createForWriting(url, err);
         if (err.get() != null) {
@@ -197,7 +197,7 @@ import org.robovm.apple.dispatch.*;
      * @throws NSErrorException
      * @since Available in iOS 4.0 and later.
      */
-    public static NSFileHandle createForUpdating(NSURL url) {
+    public static NSFileHandle createForUpdating(NSURL url) throws NSErrorException {
         NSError.NSErrorPtr err = new NSError.NSErrorPtr();
         NSFileHandle result = createForUpdating(url, err);
         if (err.get() != null) {

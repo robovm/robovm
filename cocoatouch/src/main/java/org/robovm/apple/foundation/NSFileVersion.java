@@ -89,7 +89,7 @@ import org.robovm.apple.dispatch.*;
      * @return
      * @throws NSErrorException
      */
-    public NSURL replaceItemAtURL(NSURL url, NSFileVersionReplacingOptions options) {
+    public NSURL replaceItemAtURL(NSURL url, NSFileVersionReplacingOptions options) throws NSErrorException {
         NSError.NSErrorPtr err = new NSError.NSErrorPtr();
         NSURL result = replaceItemAtURL(url, options, err);
         if (err.get() != null) {
@@ -102,7 +102,7 @@ import org.robovm.apple.dispatch.*;
      * @return
      * @throws NSErrorException
      */
-    public boolean remove() {
+    public boolean remove() throws NSErrorException {
         NSError.NSErrorPtr err = new NSError.NSErrorPtr();
         boolean result = remove(err);
         if (err.get() != null) {
@@ -116,7 +116,7 @@ import org.robovm.apple.dispatch.*;
      * @return
      * @throws NSErrorException
      */
-    public static boolean removeOtherItemVersionsAtURL(NSURL url) {
+    public static boolean removeOtherItemVersionsAtURL(NSURL url) throws NSErrorException {
         NSError.NSErrorPtr err = new NSError.NSErrorPtr();
         boolean result = removeOtherItemVersionsAtURL(url, err);
         if (err.get() != null) {

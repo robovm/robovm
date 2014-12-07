@@ -55,7 +55,7 @@ import org.robovm.apple.foundation.*;
      * @return
      * @throws NSErrorException
      */
-    public NSDate getDateOfBirth() {
+    public NSDate getDateOfBirth() throws NSErrorException {
         NSError.NSErrorPtr err = new NSError.NSErrorPtr();
         NSDate result = getDateOfBirth(err);
         if (err.get() != null) {
@@ -68,7 +68,7 @@ import org.robovm.apple.foundation.*;
      * @return
      * @throws NSErrorException
      */
-    public HKBiologicalSexObject getBiologicalSex() {
+    public HKBiologicalSexObject getBiologicalSex() throws NSErrorException {
         NSError.NSErrorPtr err = new NSError.NSErrorPtr();
         HKBiologicalSexObject result = getBiologicalSex(err);
         if (err.get() != null) {
@@ -81,7 +81,7 @@ import org.robovm.apple.foundation.*;
      * @return
      * @throws NSErrorException
      */
-    public HKBloodTypeObject getBloodType() {
+    public HKBloodTypeObject getBloodType() throws NSErrorException {
         NSError.NSErrorPtr err = new NSError.NSErrorPtr();
         HKBloodTypeObject result = getBloodType(err);
         if (err.get() != null) {

@@ -59,7 +59,7 @@ import org.robovm.apple.foundation.*;
      * @since Available in iOS 7.0 and later.
      * @throws NSErrorException
      */
-    public boolean addReadingListItem(NSURL URL, String title, String previewText) {
+    public boolean addReadingListItem(NSURL URL, String title, String previewText) throws NSErrorException {
         NSError.NSErrorPtr err = new NSError.NSErrorPtr();
         boolean result = addReadingListItem(URL, title, previewText, err);
         if (err.get() != null) {

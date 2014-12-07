@@ -73,7 +73,7 @@ import org.robovm.apple.security.*;
      * @return
      * @throws NSErrorException
      */
-    public boolean sendData(NSData data, NSArray<MCPeerID> peerIDs, MCSessionSendDataMode mode) {
+    public boolean sendData(NSData data, NSArray<MCPeerID> peerIDs, MCSessionSendDataMode mode) throws NSErrorException {
         NSError.NSErrorPtr err = new NSError.NSErrorPtr();
         boolean result = sendData(data, peerIDs, mode, err);
         if (err.get() != null) {
@@ -89,7 +89,7 @@ import org.robovm.apple.security.*;
      * @return
      * @throws NSErrorException
      */
-    public NSOutputStream startStream(String streamName, MCPeerID peerID) {
+    public NSOutputStream startStream(String streamName, MCPeerID peerID) throws NSErrorException {
         NSError.NSErrorPtr err = new NSError.NSErrorPtr();
         NSOutputStream result = startStream(streamName, peerID, err);
         if (err.get() != null) {

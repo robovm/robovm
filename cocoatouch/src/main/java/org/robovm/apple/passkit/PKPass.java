@@ -51,7 +51,7 @@ import org.robovm.apple.addressbook.*;
      * @param data
      * @throws NSErrorException
      */
-    public PKPass(NSData data) { 
+    public PKPass(NSData data) throws NSErrorException { 
         super((SkipInit) null);
         NSError.NSErrorPtr err = new NSError.NSErrorPtr();
         initObject(init(data, err));

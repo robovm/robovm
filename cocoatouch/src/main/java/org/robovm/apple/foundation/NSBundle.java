@@ -164,7 +164,7 @@ import org.robovm.apple.dispatch.*;
      * @since Available in iOS 2.0 and later.
      * @throws NSErrorException
      */
-    public boolean preflight() {
+    public boolean preflight() throws NSErrorException {
         NSError.NSErrorPtr err = new NSError.NSErrorPtr();
         boolean result = preflight(err);
         if (err.get() != null) {
@@ -176,7 +176,7 @@ import org.robovm.apple.dispatch.*;
      * @since Available in iOS 2.0 and later.
      * @throws NSErrorException
      */
-    public boolean load() {
+    public boolean load() throws NSErrorException {
         NSError.NSErrorPtr err = new NSError.NSErrorPtr();
         boolean result = load(err);
         if (err.get() != null) {

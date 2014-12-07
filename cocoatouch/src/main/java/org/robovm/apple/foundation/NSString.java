@@ -268,7 +268,7 @@ import org.robovm.apple.dispatch.*;
      * @return
      * @throws NSErrorException
      */
-    public static String readURL(NSURL url, NSStringEncoding enc) {
+    public static String readURL(NSURL url, NSStringEncoding enc) throws NSErrorException {
         NSError.NSErrorPtr err = new NSError.NSErrorPtr();
         String result = readURL(url, enc, err); 
         if (err.get() != null) {
@@ -284,7 +284,7 @@ import org.robovm.apple.dispatch.*;
      * @return
      * @throws NSErrorException
      */
-    public static String readFile(File path, NSStringEncoding enc) {
+    public static String readFile(File path, NSStringEncoding enc) throws NSErrorException {
         return readFile(path.getAbsolutePath(), enc);
     }
     /**
@@ -294,7 +294,7 @@ import org.robovm.apple.dispatch.*;
      * @return
      * @throws NSErrorException
      */
-    public static String readFile(String path, NSStringEncoding enc) {
+    public static String readFile(String path, NSStringEncoding enc) throws NSErrorException {
         NSError.NSErrorPtr err = new NSError.NSErrorPtr();
         String result = readFile(path, enc, err);
         if (err.get() != null) {

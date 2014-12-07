@@ -59,7 +59,7 @@ import org.robovm.apple.foundation.NSError.NSErrorPtr;
      * @return
      * @throws NSErrorException
      */
-    public boolean resolveConflicts(NSArray<NSMergeConflict> list) {
+    public boolean resolveConflicts(NSArray<NSMergeConflict> list) throws NSErrorException {
         NSError.NSErrorPtr err = new NSError.NSErrorPtr();
         boolean result = resolveConflicts(list, err);
         if (err.get() != null) {

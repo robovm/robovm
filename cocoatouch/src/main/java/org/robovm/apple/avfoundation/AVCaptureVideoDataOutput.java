@@ -74,20 +74,6 @@ import org.robovm.apple.mediatoolbox.*;
      */
     @Property(selector = "availableVideoCodecTypes")
     public native NSArray<NSString> getAvailableVideoCodecTypes();
-    /**
-     * @since Available in iOS 4.0 and later.
-     * @deprecated Deprecated in iOS 5.0.
-     */
-    @Deprecated
-    @Property(selector = "minFrameDuration")
-    public native @ByVal CMTime getMinFrameDuration();
-    /**
-     * @since Available in iOS 4.0 and later.
-     * @deprecated Deprecated in iOS 5.0.
-     */
-    @Deprecated
-    @Property(selector = "setMinFrameDuration:")
-    public native void setMinFrameDuration(@ByVal CMTime v);
     @Property(selector = "alwaysDiscardsLateVideoFrames")
     public native boolean isAlwaysDiscardsLateVideoFrames();
     @Property(selector = "setAlwaysDiscardsLateVideoFrames:")

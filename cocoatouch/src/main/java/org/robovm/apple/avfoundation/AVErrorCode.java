@@ -42,7 +42,7 @@ import org.robovm.apple.mediatoolbox.*;
 
 /*</javadoc>*/
 /*<annotations>*/@Marshaler(ValuedEnum.AsMachineSizedSIntMarshaler.class)/*</annotations>*/
-public enum /*<name>*/AVErrorCode/*</name>*/ implements ValuedEnum {
+public enum /*<name>*/AVErrorCode/*</name>*/ implements NSErrorCode {
     /*<values>*/
     Unknown(-11800L),
     OutOfMemory(-11801L),

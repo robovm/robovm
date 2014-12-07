@@ -60,7 +60,7 @@ import org.robovm.apple.mediatoolbox.*;
      * @since Available in iOS 8.0 and later.
      */
     @Property(selector = "identifier")
-    public native String getIdentifier();
+    public native AVMetadataIdentifier getIdentifier();
     /**
      * @since Available in iOS 8.0 and later.
      */

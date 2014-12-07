@@ -46,11 +46,11 @@ import org.robovm.apple.mediatoolbox.*;
 /*<annotations>*/@Marshaler(ValuedEnum.AsMachineSizedUIntMarshaler.class)/*</annotations>*/
 public enum /*<name>*/AVAudioCommonFormat/*</name>*/ implements ValuedEnum {
     /*<values>*/
-    OtherFormat(0L),
-    PCMFormatFloat32(1L),
-    PCMFormatFloat64(2L),
-    PCMFormatInt16(3L),
-    PCMFormatInt32(4L);
+    AVAudioOtherFormat(0L),
+    AVAudioPCMFormatFloat32(1L),
+    AVAudioPCMFormatFloat64(2L),
+    AVAudioPCMFormatInt16(3L),
+    AVAudioPCMFormatInt32(4L);
     /*</values>*/
 
     /*<bind>*/

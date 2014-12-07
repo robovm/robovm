@@ -44,7 +44,7 @@ import org.robovm.apple.mediatoolbox.*;
  */
 /*</javadoc>*/
 /*<annotations>*/@Marshaler(ValuedEnum.AsMachineSizedSIntMarshaler.class)/*</annotations>*/
-public enum /*<name>*/AVAudioSessionErrorCode/*</name>*/ implements ValuedEnum {
+public enum /*<name>*/AVAudioSessionErrorCode/*</name>*/ implements NSErrorCode {
     /*<values>*/
     CodeNone(0L),
     CodeMediaServicesFailed(1836282486L),
@@ -75,7 +75,8 @@ public enum /*<name>*/AVAudioSessionErrorCode/*</name>*/ implements ValuedEnum {
                 return v;
             }
         }
-        throw new IllegalArgumentException("No constant with value " + n + " found in " 
-            + /*<name>*/AVAudioSessionErrorCode/*</name>*/.class.getName());
+        return null;
+//        throw new IllegalArgumentException("No constant with value " + n + " found in " 
+//            + /*<name>*/AVAudioSessionErrorCode/*</name>*/.class.getName());
     }
 }

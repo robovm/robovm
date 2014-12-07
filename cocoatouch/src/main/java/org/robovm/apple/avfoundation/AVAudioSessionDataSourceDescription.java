@@ -64,34 +64,49 @@ import org.robovm.apple.mediatoolbox.*;
      * @since Available in iOS 7.0 and later.
      */
     @Property(selector = "location")
-    public native String getLocation();
+    public native AVAudioSessionLocation getLocation();
     /**
      * @since Available in iOS 7.0 and later.
      */
     @Property(selector = "orientation")
-    public native String getOrientation();
+    public native AVAudioSessionOrientation getOrientation();
     /**
      * @since Available in iOS 7.0 and later.
      */
     @Property(selector = "supportedPolarPatterns")
-    public native NSArray<NSString> getSupportedPolarPatterns();
+    public native @org.robovm.rt.bro.annotation.Marshaler(AVAudioSessionPolarPattern.AsListMarshaler.class) List<AVAudioSessionPolarPattern> getSupportedPolarPatterns();
     /**
      * @since Available in iOS 7.0 and later.
      */
     @Property(selector = "selectedPolarPattern")
-    public native String getSelectedPolarPattern();
+    public native AVAudioSessionPolarPattern getSelectedPolarPattern();
     /**
      * @since Available in iOS 7.0 and later.
      */
     @Property(selector = "preferredPolarPattern")
-    public native String getPreferredPolarPattern();
+    public native AVAudioSessionPolarPattern getPreferredPolarPattern();
     /*</properties>*/
     /*<members>*//*</members>*/
+    /**
+     * 
+     * @param pattern
+     * @return
+     * @since Available in iOS 7.0 and later.
+     * @throws NSErrorException
+     */
+    public boolean setPreferredPolarPattern(AVAudioSessionPolarPattern pattern) throws NSErrorException {
+        NSError.NSErrorPtr err = new NSError.NSErrorPtr();
+        boolean result = setPreferredPolarPattern(pattern, err);
+        if (err.get() != null) {
+            throw new NSErrorException(err.get());
+        }
+        return result;
+    }
     /*<methods>*/
     /**
      * @since Available in iOS 7.0 and later.
      */
     @Method(selector = "setPreferredPolarPattern:error:")
-    public native boolean setPreferredPolarPattern(String pattern, NSError.NSErrorPtr outError);
+    protected native boolean setPreferredPolarPattern(AVAudioSessionPolarPattern pattern, NSError.NSErrorPtr outError);
     /*</methods>*/
 }

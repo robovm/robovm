@@ -57,9 +57,9 @@ import org.robovm.apple.mediatoolbox.*;
     /*</constructors>*/
     /*<properties>*/
     @Property(selector = "audioSettings")
-    public native NSDictionary<NSString, ?> getAudioSettings();
+    public native AVAudioSettings getAudioSettings();
     @Property(selector = "videoSettings")
-    public native NSDictionary<NSString, ?> getVideoSettings();
+    public native AVVideoSettings getVideoSettings();
     @Property(selector = "outputFileType")
     public native String getOutputFileType();
     @Property(selector = "sourceAudioFormat")
@@ -91,8 +91,8 @@ import org.robovm.apple.mediatoolbox.*;
      * @since Available in iOS 7.0 and later.
      */
     @Method(selector = "availableOutputSettingsPresets")
-    public static native NSArray<NSString> getAvailableOutputSettingsPresets();
+    public static native @org.robovm.rt.bro.annotation.Marshaler(AVOutputSettingsPreset.AsListMarshaler.class) List<AVOutputSettingsPreset> getAvailableOutputSettingsPresets();
     @Method(selector = "outputSettingsAssistantWithPreset:")
-    public static native AVOutputSettingsAssistant create(String presetIdentifier);
+    public static native AVOutputSettingsAssistant create(AVOutputSettingsPreset presetIdentifier);
     /*</methods>*/
 }

@@ -70,7 +70,7 @@ import org.robovm.apple.mediatoolbox.*;
      * @since Available in iOS 7.0 and later.
      */
     @Property(selector = "requiredSourceTrackIDs")
-    public native NSArray<NSString> getRequiredSourceTrackIDs();
+    public native @org.robovm.rt.bro.annotation.Marshaler(NSArray.AsIntegerListMarshaler.class) List<Integer> getRequiredSourceTrackIDs();
     /**
      * @since Available in iOS 7.0 and later.
      */

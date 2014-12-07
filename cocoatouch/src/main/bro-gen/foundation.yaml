@@ -2528,6 +2528,7 @@ classes:
                 visibility: protected # throws NSErrorException
             '+dataFromPropertyList:format:errorDescription:':
                 name: getDataFromPropertyList
+                visibility: protected
             '+propertyListFromData:mutabilityOption:format:errorDescription:':
                 name: getPropertyListFromData
                 return_type: NSPropertyList

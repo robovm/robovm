@@ -19,7 +19,7 @@ enums:
     AVAssetReaderStatus: { first: AVAssetReaderStatusUnknown }
     AVAssetWriterStatus: { first: AVAssetWriterStatusUnknown }
     AVAudio3DMixingRenderingAlgorithm: {}
-    AVAudioCommonFormat: { prefix: Format }
+    AVAudioCommonFormat: { suffix: Format }
     AVAudioEnvironmentDistanceAttenuationModel: {}
     AVAudioPlayerNodeBufferOptions: {}
     AVAudioSessionInterruptionOptions: { prefix: AVAudioSessionInterruptionOption, marshaler: ValuedEnum.AsMachineSizedUIntMarshaler }
@@ -87,6 +87,11 @@ classes:
     AVAudio3DPoint: {}
     AVAudio3DVector: {}
     AVAudio3DVectorOrientation: {}
+    AVCaptureWhiteBalanceGains: {}
+    AVCaptureWhiteBalanceChromaticityValues: {}
+    AVCaptureWhiteBalanceTemperatureAndTintValues: {}
+    AVEdgeWidths: {}
+    AVPixelAspectRatio: {}
     
     AVError:
         extends: NSError
@@ -105,7 +110,24 @@ classes:
     AVMetadataIdentifieriTunesMetadata:
         extends: AVMetadataIdentifier
     AVMetadataIdentifierQuickTimeMetadata:
-        extends: AVMetadataIdentifier 
+        extends: AVMetadataIdentifier
+
+    AVMetadataKeyCommon:
+        extends: AVMetadataKey
+    AVMetadataKey3GPUserData:
+        extends: AVMetadataKey
+    AVMetadataKeyIcyMetadata:
+        extends: AVMetadataKey
+    AVMetadataKeyID3Metadata:
+        extends: AVMetadataKey
+    AVMetadataKeyISOUserData:
+        extends: AVMetadataKey
+    AVMetadataKeyiTunesMetadata:
+        extends: AVMetadataKey
+    AVMetadataKeyQuickTimeMetadata:
+        extends: AVMetadataKey
+    AVMetadataKeyQuickTimeUserData:
+        extends: AVMetadataKey
 
     AVAsset: # DONE
         properties:
@@ -454,11 +476,18 @@ classes:
     AVAudioMix: # DONE
         properties:
             'inputParameters':
-                type: "NSArray<AVAudioMixInputParameters>"
+                type: NSArray<AVAudioMixInputParameters>
     AVAudioMixInputParameters: # DONE
+        properties:
+            'audioTimePitchAlgorithm':
+                type: AVAudioTimePitchAlgorithm
         methods:
             '-getVolumeRampForTime:startVolume:endVolume:timeRange:':
-                name: "getVolumeRamp" 
+                name: getVolumeRamp
+                visibility: protected
+                parameters:
+                    timeRange:
+                        type: CMTimeRange.CMTimeRangePtr
     AVAudioNode: {}
     AVAudioPCMBuffer: {}  
     AVAudioPlayer: # DONE
@@ -757,17 +786,20 @@ classes:
     AVCaptureVideoDataOutput: # DONE
         properties:
             'videoSettings':
-                type: "NSDictionary<NSString, ?>"
+                type: AVVideoSettings
             'availableVideoCVPixelFormatTypes':
-                type: "NSArray<NSNumber>"
+                type: '@org.robovm.rt.bro.annotation.Marshaler(CVPixelFormatType.AsListMarshaler.class) List<CVPixelFormatType>'
             'availableVideoCodecTypes':
-                type: "NSArray<NSString>"
+                type: '@org.robovm.rt.bro.annotation.Marshaler(CMVideoCodecType.AsListMarshaler.class) List<CMVideoCodecType>'
         methods:
             '-setSampleBufferDelegate:queue:':
                 trim_after_first_colon: true
             '-recommendedVideoSettingsForAssetWriterWithOutputFileType:':
-                name: "getRecommendedVideoSettings"
-                return_type: "NSDictionary<NSString, ?>"
+                name: getRecommendedVideoSettings
+                return_type: AVVideoSettings
+                parameters:
+                    outputFileType:
+                        type: AVFileType
     AVCaptureVideoPreviewLayer: # DONE
         properties:
             'videoGravity':
@@ -790,172 +822,239 @@ classes:
             '+layerWithSession:':
                 name: create
                 return_type: AVCaptureVideoPreviewLayer
+            '+layerWithSessionWithNoConnection:':
+                name: createWithNoConnection
+                return_type: AVCaptureVideoPreviewLayer
     AVComposition: # DONE
         properties:
             'tracks':
-                type: "NSArray<AVAssetTrack>" # AVCompositionTrack
+                type: NSArray<AVAssetTrack>
     AVCompositionTrack: # DONE
         properties:
             'segments':
-                type: "NSArray<AVAssetTrackSegment>" # AVCompositionTrackSegment
+                type: NSArray<AVAssetTrackSegment>
     AVCompositionTrackSegment: # DONE
         methods:
             '-initWithURL:trackID:sourceTimeRange:targetTimeRange:':
-                name: "init"
+                name: init
             '-initWithTimeRange:':
-                name: "init"
+                name: init
             '+compositionTrackSegmentWithURL:trackID:sourceTimeRange:targetTimeRange:':
-                name: "create"
+                name: create
             '+compositionTrackSegmentWithTimeRange:':
-                name: "create"
+                name: create
     AVFrameRateRange: {} # DONE
     AVMediaSelectionGroup: # DONE
         properties:
             'options':
-                type: "NSArray<AVMediaSelectionOption>"
+                type: NSArray<AVMediaSelectionOption>
         methods:
             '-mediaSelectionOptionWithPropertyList:':
-                name: "getMediaSelectionOption"
+                name: getMediaSelectionOption
+                parameters:
+                    plist:
+                        type: NSPropertyList
             '+playableMediaSelectionOptionsFromArray:':
-                name: "getPlayableMediaSelectionOptions"
-                return_type: "NSArray<AVMediaSelectionOption>"
+                name: filterPlayableMediaSelectionOptions
+                return_type: NSArray<AVMediaSelectionOption>
                 parameters:
                     mediaSelectionOptions:
-                        type: "NSArray<AVMediaSelectionOption>"
+                        type: NSArray<AVMediaSelectionOption>
             '+mediaSelectionOptionsFromArray:filteredAndSortedAccordingToPreferredLanguages:':
-                name: "getMediaSelectionOptions"
-                return_type: "NSArray<AVMediaSelectionOption>"
+                name: filterMediaSelectionOptionsByPreferredLanguages
+                return_type: NSArray<AVMediaSelectionOption>
                 parameters:
                     mediaSelectionOptions:
-                        type: "NSArray<AVMediaSelectionOption>"
+                        type: NSArray<AVMediaSelectionOption>
                     preferredLanguages:
-                        type: "NSArray<NSString>"
+                        type: '@org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String>'
             '+mediaSelectionOptionsFromArray:withLocale:':
-                name: "getMediaSelectionOption"
-                return_type: "NSArray<AVMediaSelectionOption>"
+                name: filterMediaSelectionOptionsByLocale
+                return_type: NSArray<AVMediaSelectionOption>
                 parameters:
                     mediaSelectionOptions:
-                        type: "NSArray<AVMediaSelectionOption>"
+                        type: NSArray<AVMediaSelectionOption>
             '+mediaSelectionOptionsFromArray:withMediaCharacteristics:':
-                name: "getMediaSelectionOptionsWithMediaCharacteristics"
-                return_type: "NSArray<AVMediaSelectionOption>"
+                name: filterMediaSelectionOptionsWithMediaCharacteristics
+                return_type: NSArray<AVMediaSelectionOption>
                 parameters:
                     mediaSelectionOptions:
-                        type: "NSArray<AVMediaSelectionOption>"
+                        type: NSArray<AVMediaSelectionOption>
                     mediaCharacteristics:
-                        type: "NSArray<NSString>"
+                        type: '@org.robovm.rt.bro.annotation.Marshaler(AVMediaCharacteristic.AsListMarshaler.class) List<AVMediaCharacteristic>'
             '+mediaSelectionOptionsFromArray:withoutMediaCharacteristics:':
-                name: "getMediaSelectionOptionsWithoutMediaCharacteristics"
-                return_type: "NSArray<AVMediaSelectionOption>"
+                name: filterMediaSelectionOptionsWithoutMediaCharacteristics
+                return_type: NSArray<AVMediaSelectionOption>
                 parameters:
                     mediaSelectionOptions:
-                        type: "NSArray<AVMediaSelectionOption>"
+                        type: NSArray<AVMediaSelectionOption>
                     mediaCharacteristics:
-                        type: "NSArray<NSString>"
+                        type: '@org.robovm.rt.bro.annotation.Marshaler(AVMediaCharacteristic.AsListMarshaler.class) List<AVMediaCharacteristic>'
     AVMediaSelectionOption: # DONE
         properties:
+            'mediaType':
+                type: AVMediaType
             'mediaSubTypes':
                 type: "NSArray<NSNumber>"
             'commonMetadata':
-                type: "NSArray<AVMetadataItem>"
+                type: NSArray<AVMetadataItem>
             'availableMetadataFormats':
-                type: "NSArray<NSString>"
+                type: '@org.robovm.rt.bro.annotation.Marshaler(AVMetadataFormat.AsListMarshaler.class) List<AVMetadataFormat>'
         methods:
             '-hasMediaCharacteristic:':
                 trim_after_first_colon: true
+                parameters:
+                    mediaCharacteristic:
+                        type: AVMediaCharacteristic
             '-metadataForFormat:':
-                name: "getMetadata"
+                name: getMetadata
                 parameters:
                     format:
-                        type: "NSString"
-                return_type: "NSArray<AVMetadataItem>"
+                        type: AVMetadataFormat
+                return_type: NSArray<AVMetadataItem>
             '-associatedMediaSelectionOptionInMediaSelectionGroup:':
-                name: "getAssociatedMediaSelectionOption"
+                name: getAssociatedMediaSelectionOption
             '-propertyList':
                 property: true
+                return_type: NSPropertyList
             '-displayNameWithLocale:':
-                name: "getDisplayName"
+                name: getDisplayName
     AVMetadataFaceObject: {} # DONE
     AVMetadataItem: # DONE
         properties:
             'identifier':
                 type: AVMetadataIdentifier
             'key':
-                type: "NSString"
+                type: AVMetadataKey
+            'commonKey':
+                type: AVMetadataKeyCommon
+            'keySpace':
+                type: AVMetadataKeySpace
+            'dataType':
+                type: String # TODO   types defined in CMMetadata.h
             'value':
-                type: "NSObject"
+                type: NSObject
             'extraAttributes':
-                type: "NSDictionary<NSString, ?>"
+                type: AVMetadataExtraAttributes
         methods:
             '-statusOfValueForKey:error:':
-                name: "getStatusOfValue"
+                name: getStatusOfValue
+                visibility: protected # throws NSErrorException
+                parameters:
+                    key:
+                        type: AVMetadataKey
             '-loadValuesAsynchronouslyForKeys:completionHandler:':
-                name: "loadValuesAsynchronously"
+                name: loadValuesAsynchronously
                 parameters:
                     keys:
-                        type: "NSArray<NSString>"
+                        type: '@org.robovm.rt.bro.annotation.Marshaler(AVMetadataKey.AsListMarshaler.class) List<AVMetadataKey>'
             '+metadataItemsFromArray:filteredAndSortedAccordingToPreferredLanguages:':
-                name: "getMetadataItems"
-                return_type: "NSArray<AVMetadataItem>"
+                name: filterMetadataItemsByPreferredLanguages
+                return_type: NSArray<AVMetadataItem>
                 parameters:
                     metadataItems:
-                        type: "NSArray<AVMetadataItem>"
+                        type: NSArray<AVMetadataItem>
                     preferredLanguages:
-                        type: "NSArray<AVMetadataItem>"
+                        type: '@org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String>'
             '+metadataItemsFromArray:withLocale:':
-                name: "getMetadataItems"
-                return_type: "NSArray<AVMetadataItem>"
+                name: filterMetadataItemsByLocale
+                return_type: NSArray<AVMetadataItem>
                 parameters:
                     metadataItems:
-                        type: "NSArray<AVMetadataItem>"
+                        type: NSArray<AVMetadataItem>
             '+metadataItemsFromArray:withKey:keySpace:':
-                name: "getMetadataItems"
-                return_type: "NSArray<AVMetadataItem>"
+                name: filterMetadataItemsByKey
+                return_type: NSArray<AVMetadataItem>
                 parameters:
                     metadataItems:
-                        type: "NSArray<AVMetadataItem>"
+                        type: NSArray<AVMetadataItem>
+                    key:
+                        type: AVMetadataKey
+                    keySpace:
+                        type: AVMetadataKeySpace
             '+metadataItemsFromArray:filteredByMetadataItemFilter:':
-                name: "getMetadataItems"
-                return_type: "NSArray<AVMetadataItem>"
+                name: filterMetadataItems
+                return_type: NSArray<AVMetadataItem>
                 parameters:
                     metadataItems:
-                        type: "NSArray<AVMetadataItem>"
+                        type: NSArray<AVMetadataItem>
+            '+metadataItemsFromArray:filteredByIdentifier:':
+                name: filterMetadataItemsByIdentifier
+                return_type: NSArray<AVMetadataItem>
+                parameters:
+                    metadataItems:
+                        type: NSArray<AVMetadataItem>
+                    identifier:
+                        type: AVMetadataIdentifier
+            '+identifierForKey:keySpace:':
+                name: getIdentifierForKey
+                return_type: AVMetadataIdentifier
+                parameters:
+                    key:
+                        type: AVMetadataKey
+                    keySpace:
+                        type: AVMetadataKeySpace
+            '+keySpaceForIdentifier:':
+                name: getKeySpaceForIdentifier
+                return_type: AVMetadataKeySpace
+                parameters:
+                    identifier:
+                        type: AVMetadataIdentifier
+            '+keyForIdentifier:':
+                name: getKeyForIdentifier
+                return_type: AVMetadataKey
+                parameters:
+                    identifier:
+                        type: AVMetadataIdentifier
     AVMetadataItemFilter: # DONE
         methods:
             '+metadataItemFilterForSharing':
-                name: "sharedInstance"
+                name: createForSharing
     AVMetadataMachineReadableCodeObject: # DONE
         properties:
             'corners':
-                type: "NSArray<NSDictionary<NSString, ?>>"
-    AVMetadataObject: {} # DONE
-    AVMIDIPlayer: {}
+                type: 'NSArray<NSDictionary<?, ?>>'
+    AVMetadataObject: # DONE
+        properties:
+            'type':
+                type: AVMetadataObjectType
+    AVMIDIPlayer: # DONE
+        methods:
+            '-init.*':
+                name: init
+                constructor: false
+            '-play:':
+                trim_after_first_colon: true
     AVMutableAudioMix: # DONE
         properties:
             'inputParameters':
-                type: "NSArray<AVAudioMixInputParameters>"
+                type: NSArray<AVAudioMixInputParameters>
         methods:
             '+audioMix':
-                name: "create"
+                name: create
     AVMutableAudioMixInputParameters: # DONE
+        properties:
+            'audioTimePitchAlgorithm':
+                type: AVAudioTimePitchAlgorithm
         methods:
             '-setVolumeRampFromStartVolume:toEndVolume:timeRange:':
-                name: "setVolumeRamp"
+                name: setVolumeRamp
             '-setVolume:atTime:':
                 trim_after_first_colon: true
             '+audioMixInputParametersWithTrack:':
-                name: "create"
+                name: create
             '+audioMixInputParameters':
-                name: "create"
+                name: create
     AVMutableComposition: # DONE
         properties:
             'tracks':
-                type: "NSArray<AVAssetTrack>" # AVMutableCompositionTrack
+                type: NSArray<AVAssetTrack>
         methods:
             '+composition':
-                name: "create"
+                name: create
             '-insertTimeRange:ofAsset:atTime:error:':
                 trim_after_first_colon: true
+                visibility: protected # throws NSErrorException
             '-insertEmptyTimeRange:':
                 trim_after_first_colon: true
             '-removeTimeRange:':
@@ -963,23 +1062,30 @@ classes:
             '-scaleTimeRange:toDuration:':
                 trim_after_first_colon: true
             '-addMutableTrackWithMediaType:preferredTrackID:':
-                name: "addMutableTrack"
+                name: addMutableTrack
+                parameters:
+                    mediaType:
+                        type: AVMediaType
             '-removeTrack:':
                 trim_after_first_colon: true
             '-mutableTrackCompatibleWithTrack:':
-                name: "getCompatibleMutableTrack"
+                name: getCompatibleMutableTrack
     AVMutableCompositionTrack: # DONE
         properties:
             'segments':
-                type: "NSArray<AVAssetTrackSegment>" # AVCompositionTrackSegment
+                type: NSArray<AVAssetTrackSegment>
         methods:
             '-insertTimeRange:ofTrack:atTime:error:':
                 trim_after_first_colon: true
+                visibility: protected # throws NSErrorException
             '-insertTimeRanges:ofTracks:atTime:error:':
                 trim_after_first_colon: true
+                visibility: protected # throws NSErrorException
                 parameters:
                     timeRanges:
-                        type: "NSArray<?>" # CMTimeRange
+                        type: '@org.robovm.rt.bro.annotation.Marshaler(CMTimeRange.AsValuedListMarshaler.class) List<CMTimeRange>'
+                    tracks:
+                        type: NSArray<AVAssetTrack>
             '-insertEmptyTimeRange:':
                 trim_after_first_colon: true
             '-removeTimeRange:':
@@ -988,21 +1094,24 @@ classes:
                 trim_after_first_colon: true
             '-validateTrackSegments:error:':
                 trim_after_first_colon: true
+                visibility: protected # throws NSErrorException
                 parameters:
                     trackSegments:
-                        type: "NSArray<AVCompositionTrackSegment>"
+                        type: NSArray<AVCompositionTrackSegment>
     AVMutableMetadataItem: # DONE
         properties:
             'identifier':
                 type: AVMetadataIdentifier
             'dataType':
-                type: String # TODO
+                type: String # TODO   types defined in CMMetadata.h
             'key':
-                type: "NSString"
+                type: AVMetadataKey
+            'keySpace':
+                type: AVMetadataKeySpace
             'value':
-                type: "NSObject"
+                type: NSObject
             'extraAttributes':
-                type: "NSDictionary<NSString, ?>"
+                type: AVMetadataExtraAttributes
         methods:
             '+metadataItem':
                 name: create
@@ -1419,13 +1528,6 @@ classes:
                         type: CMTimeRange.CMTimeRangePtr
     AVVideoCompositionRenderContext: {} # DONE
 
-    # Structs
-    AVPixelAspectRatio: {}
-    AVEdgeWidths: {}
-    AVCaptureWhiteBalanceGains: {}
-    AVCaptureWhiteBalanceChromaticityValues: {}
-    AVCaptureWhiteBalanceTemperatureAndTintValues: {}
-
 protocols:
     AVAssetResourceLoaderDelegate: # DONE
         methods:
@@ -1439,9 +1541,12 @@ protocols:
                 name: loadValuesAsynchronously
                 parameters:
                     keys:
-                        type: "NSArray<NSString>"
+                        type: '@org.robovm.rt.bro.annotation.Marshaler(AVMetadataKey.AsListMarshaler.class) List<AVMetadataKey>'
             '-statusOfValueForKey:error:':
                 name: getStatusOfValue
+                parameters:
+                    key:
+                        type: AVMetadataKey
     AVAudio3DMixing: {}
     AVAudioMixing: {}
     AVAudioStereoMixing: {}
@@ -1649,7 +1754,7 @@ values:
         type: NSString
         visibility: protected
 
-    # AVMetadata
+    # AVMetadataItem
     AVMetadataCommonIdentifier(.*):
         class: AVMetadataIdentifierCommon
         name: '#{g[0]}Value'
@@ -1668,6 +1773,36 @@ values:
     AVMetadataObjectType(.*):
         class: AVMetadataObjectType
         name: '#{g[0]}Value'
+        type: NSString
+        visibility: protected
+    AVMetadataKeySpace(.*):
+        class: AVMetadataKeySpace
+        name: '#{g[0]}Value'
+        type: NSString
+        visibility: protected
+    AVMetadataFormat(.*):
+        class: AVMetadataFormat
+        name: '#{g[0]}Value'
+        type: NSString
+        visibility: protected
+    AVMetadataCommonKey(.*):
+        class: AVMetadataKeyCommon
+        name: '#{g[0]}Value'
+        type: NSString
+        visibility: protected
+    AVMetadata(.*)MetadataKey(.*):
+        class: 'AVMetadataKey#{g[0]}Metadata'
+        name: '#{g[1]}Value'
+        type: NSString
+        visibility: protected
+    AVMetadata(.*)UserDataKey(.*):
+        class: 'AVMetadataKey#{g[0]}UserData'
+        name: '#{g[1]}Value'
+        type: NSString
+        visibility: protected
+    AVMetadataExtraAttribute(.*):
+        class: AVMetadataExtraAttributes
+        name: '#{g[0]}'
         type: NSString
         visibility: protected
 
@@ -1769,10 +1904,7 @@ values:
         type: NSString
         visibility: protected        
     AVVideoCodec(.*):
-        class: AVVideoCodec
-        name: '#{g[0]}Value'
-        type: NSString
-        visibility: protected
+        exclude: true
     AVVideoScalingMode(.*):
         class: AVVideoScalingMode
         name: '#{g[0]}Value'

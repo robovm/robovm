@@ -40,23 +40,23 @@ import org.robovm.apple.mediatoolbox.*;
 
 /*<javadoc>*/
 /*</javadoc>*/
-@Marshaler(AVVideoCodec.Marshaler.class)
+@Marshaler(AVMetadataKeyIcyMetadata.Marshaler.class)
 /*<annotations>*/@Library("AVFoundation")/*</annotations>*/
-/*<visibility>*/public/*</visibility>*/ class /*<name>*/AVVideoCodec/*</name>*/ 
-    extends /*<extends>*/Object/*</extends>*/ 
+/*<visibility>*/public/*</visibility>*/ class /*<name>*/AVMetadataKeyIcyMetadata/*</name>*/ 
+    extends /*<extends>*/AVMetadataKey/*</extends>*/ 
     /*<implements>*//*</implements>*/ {
 
     public static class Marshaler {
         @MarshalsPointer
-        public static AVVideoCodec toObject(Class<AVVideoCodec> cls, long handle, long flags) {
+        public static AVMetadataKeyIcyMetadata toObject(Class<AVMetadataKeyIcyMetadata> cls, long handle, long flags) {
             NSString o = (NSString) NSObject.Marshaler.toObject(NSString.class, handle, flags);
             if (o == null) {
                 return null;
             }
-            return AVVideoCodec.valueOf(o);
+            return AVMetadataKeyIcyMetadata.valueOf(o);
         }
         @MarshalsPointer
-        public static long toNative(AVVideoCodec o, long flags) {
+        public static long toNative(AVMetadataKeyIcyMetadata o, long flags) {
             if (o == null) {
                 return 0L;
             }
@@ -66,21 +66,21 @@ import org.robovm.apple.mediatoolbox.*;
     
     /*<ptr>*/
     /*</ptr>*/
-    /*<bind>*/static { Bro.bind(AVVideoCodec.class); }/*</bind>*/
+    /*<bind>*/static { Bro.bind(AVMetadataKeyIcyMetadata.class); }/*</bind>*/
     /*<constants>*//*</constants>*/
     /**
-     * @since Available in iOS 4.0 and later.
+     * @since Available in iOS 8.0 and later.
      */
-    public static final AVVideoCodec H264 = new AVVideoCodec("H264Value");
+    public static final AVMetadataKeyIcyMetadata StreamTitle = new AVMetadataKeyIcyMetadata("StreamTitleValue");
     /**
-     * @since Available in iOS 4.0 and later.
+     * @since Available in iOS 8.0 and later.
      */
-    public static final AVVideoCodec JPEG = new AVVideoCodec("JPEGValue");
+    public static final AVMetadataKeyIcyMetadata StreamURL = new AVMetadataKeyIcyMetadata("StreamURLValue");
     
-    private static AVVideoCodec[] values = new AVVideoCodec[] {H264, JPEG};
+    private static AVMetadataKeyIcyMetadata[] values = new AVMetadataKeyIcyMetadata[] {StreamTitle, StreamURL};
     private final LazyGlobalValue<NSString> lazyGlobalValue;
     
-    private AVVideoCodec(String getterName) {
+    private AVMetadataKeyIcyMetadata(String getterName) {
         lazyGlobalValue = new LazyGlobalValue<>(getClass(), getterName);
     }
     /*<constructors>*//*</constructors>*/
@@ -90,25 +90,26 @@ import org.robovm.apple.mediatoolbox.*;
         return lazyGlobalValue.value();
     }
     
-    public static AVVideoCodec valueOf(NSString value) {
-        for (AVVideoCodec v : values) {
+    public static AVMetadataKeyIcyMetadata valueOf(NSString value) {
+        for (AVMetadataKeyIcyMetadata v : values) {
             if (v.value().equals(value)) {
                 return v;
             }
         }
-        throw new IllegalArgumentException("No constant with value " + value + " found in " 
-            + /*<name>*/AVVideoCodec/*</name>*/.class.getName());
+        return null;
+//        throw new IllegalArgumentException("No constant with value " + value + " found in " 
+//            + /*<name>*/AVMetadataKeyIcyMetadata/*</name>*/.class.getName());
     }
     /*<methods>*/
     /**
-     * @since Available in iOS 4.0 and later.
+     * @since Available in iOS 8.0 and later.
      */
-    @GlobalValue(symbol="AVVideoCodecH264", optional=true)
-    protected static native NSString H264Value();
+    @GlobalValue(symbol="AVMetadataIcyMetadataKeyStreamTitle", optional=true)
+    protected static native NSString StreamTitleValue();
     /**
-     * @since Available in iOS 4.0 and later.
+     * @since Available in iOS 8.0 and later.
      */
-    @GlobalValue(symbol="AVVideoCodecJPEG", optional=true)
-    protected static native NSString JPEGValue();
+    @GlobalValue(symbol="AVMetadataIcyMetadataKeyStreamURL", optional=true)
+    protected static native NSString StreamURLValue();
     /*</methods>*/
 }

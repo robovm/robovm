@@ -64,12 +64,12 @@ import org.robovm.apple.mediatoolbox.*;
      * @since Available in iOS 7.0 and later.
      */
     @Property(selector = "audioTimePitchAlgorithm")
-    public native String getAudioTimePitchAlgorithm();
+    public native AVAudioTimePitchAlgorithm getAudioTimePitchAlgorithm();
     /**
      * @since Available in iOS 7.0 and later.
      */
     @Property(selector = "setAudioTimePitchAlgorithm:")
-    public native void setAudioTimePitchAlgorithm(String v);
+    public native void setAudioTimePitchAlgorithm(AVAudioTimePitchAlgorithm v);
     /**
      * @since Available in iOS 6.0 and later.
      */
@@ -82,6 +82,9 @@ import org.robovm.apple.mediatoolbox.*;
     public native void setAudioTapProcessor(MTAudioProcessingTap v);
     /*</properties>*/
     /*<members>*//*</members>*/
+    public void setVolumeRamp(AVTimeRamp<Float> ramp) {
+        setVolumeRamp(ramp.getStart(), ramp.getEnd(), ramp.getTimeRange());
+    }
     /*<methods>*/
     @Method(selector = "setVolumeRampFromStartVolume:toEndVolume:timeRange:")
     public native void setVolumeRamp(float startVolume, float endVolume, @ByVal CMTimeRange timeRange);

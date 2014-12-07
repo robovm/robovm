@@ -54,9 +54,35 @@ import org.robovm.apple.mediatoolbox.*;
     /*<constructors>*/
     public AVMIDIPlayer() {}
     protected AVMIDIPlayer(SkipInit skipInit) { super(skipInit); }
-    public AVMIDIPlayer(NSURL inURL, NSURL bankURL, NSError.NSErrorPtr outError) { super((SkipInit) null); initObject(initWithContentsOfURL$soundBankURL$error$(inURL, bankURL, outError)); }
-    public AVMIDIPlayer(NSData data, NSURL bankURL, NSError.NSErrorPtr outError) { super((SkipInit) null); initObject(initWithData$soundBankURL$error$(data, bankURL, outError)); }
     /*</constructors>*/
+    /**
+     * 
+     * @param contentsURL
+     * @param soundBankURL
+     * @throws NSErrorException
+     */
+    public AVMIDIPlayer(NSURL contentsURL, NSURL soundBankURL) throws NSErrorException {
+        super((SkipInit)null);
+        NSError.NSErrorPtr err = new NSError.NSErrorPtr();
+        initObject(init(contentsURL, soundBankURL, err));
+        if (err.get() != null) {
+            throw new NSErrorException(err.get());
+        }
+    }
+    /**
+     * 
+     * @param data
+     * @param soundBankURL
+     * @throws NSErrorException
+     */
+    public AVMIDIPlayer(NSData data, NSURL soundBankURL) throws NSErrorException {
+        super((SkipInit)null);
+        NSError.NSErrorPtr err = new NSError.NSErrorPtr();
+        initObject(init(data, soundBankURL, err));
+        if (err.get() != null) {
+            throw new NSErrorException(err.get());
+        }
+    }
     /*<properties>*/
     @Property(selector = "duration")
     public native double getDuration();
@@ -74,13 +100,13 @@ import org.robovm.apple.mediatoolbox.*;
     /*<members>*//*</members>*/
     /*<methods>*/
     @Method(selector = "initWithContentsOfURL:soundBankURL:error:")
-    protected native @Pointer long initWithContentsOfURL$soundBankURL$error$(NSURL inURL, NSURL bankURL, NSError.NSErrorPtr outError);
+    protected native @Pointer long init(NSURL inURL, NSURL bankURL, NSError.NSErrorPtr outError);
     @Method(selector = "initWithData:soundBankURL:error:")
-    protected native @Pointer long initWithData$soundBankURL$error$(NSData data, NSURL bankURL, NSError.NSErrorPtr outError);
+    protected native @Pointer long init(NSData data, NSURL bankURL, NSError.NSErrorPtr outError);
     @Method(selector = "prepareToPlay")
     public native void prepareToPlay();
     @Method(selector = "play:")
-    public native void play$(@Block Runnable completionHandler);
+    public native void play(@Block Runnable completionHandler);
     @Method(selector = "stop")
     public native void stop();
     /*</methods>*/

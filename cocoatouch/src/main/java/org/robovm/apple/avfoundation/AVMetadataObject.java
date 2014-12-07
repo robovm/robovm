@@ -63,7 +63,7 @@ import org.robovm.apple.mediatoolbox.*;
     @Property(selector = "bounds")
     public native @ByVal CGRect getBounds();
     @Property(selector = "type")
-    public native String getType();
+    public native AVMetadataObjectType getType();
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/

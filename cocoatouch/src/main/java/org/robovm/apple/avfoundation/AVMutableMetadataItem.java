@@ -109,17 +109,17 @@ import org.robovm.apple.mediatoolbox.*;
     @Property(selector = "setValue:")
     public native void setValue(NSObject v);
     @Property(selector = "extraAttributes")
-    public native NSDictionary<NSString, ?> getExtraAttributes();
+    public native AVMetadataExtraAttributes getExtraAttributes();
     @Property(selector = "setExtraAttributes:")
-    public native void setExtraAttributes(NSDictionary<NSString, ?> v);
+    public native void setExtraAttributes(AVMetadataExtraAttributes v);
     @Property(selector = "keySpace")
-    public native String getKeySpace();
+    public native AVMetadataKeySpace getKeySpace();
     @Property(selector = "setKeySpace:")
-    public native void setKeySpace(String v);
+    public native void setKeySpace(AVMetadataKeySpace v);
     @Property(selector = "key")
-    public native NSString getKey();
+    public native AVMetadataKey getKey();
     @Property(selector = "setKey:")
-    public native void setKey(NSString v);
+    public native void setKey(AVMetadataKey v);
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/

@@ -167,6 +167,6 @@ import org.robovm.apple.mediatoolbox.*;
      * @since Available in iOS 8.0 and later.
      */
     @Method(selector = "layerWithSessionWithNoConnection:")
-    public static native NSObject layerWithSessionWithNoConnection$(AVCaptureSession session);
+    public static native AVCaptureVideoPreviewLayer createWithNoConnection(AVCaptureSession session);
     /*</methods>*/
 }

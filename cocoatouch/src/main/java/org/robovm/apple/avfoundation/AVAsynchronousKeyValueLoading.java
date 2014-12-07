@@ -55,9 +55,9 @@ import org.robovm.apple.mediatoolbox.*;
     /*</properties>*/
     /*<methods>*/
     @Method(selector = "statusOfValueForKey:error:")
-    AVKeyValueStatus getStatusOfValue(String key, NSError.NSErrorPtr outError);
+    AVKeyValueStatus getStatusOfValue(AVMetadataKey key, NSError.NSErrorPtr outError);
     @Method(selector = "loadValuesAsynchronouslyForKeys:completionHandler:")
-    void loadValuesAsynchronously(NSArray<NSString> keys, @Block Runnable handler);
+    void loadValuesAsynchronously(@org.robovm.rt.bro.annotation.Marshaler(AVMetadataKey.AsListMarshaler.class) List<AVMetadataKey> keys, @Block Runnable handler);
     /*</methods>*/
     /*<adapter>*/
     /*</adapter>*/

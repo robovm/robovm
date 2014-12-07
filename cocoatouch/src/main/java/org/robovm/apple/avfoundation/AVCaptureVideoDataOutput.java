@@ -61,19 +61,19 @@ import org.robovm.apple.mediatoolbox.*;
     @Property(selector = "sampleBufferCallbackQueue")
     public native DispatchQueue getSampleBufferCallbackQueue();
     @Property(selector = "videoSettings")
-    public native NSDictionary<NSString, ?> getVideoSettings();
+    public native AVVideoSettings getVideoSettings();
     @Property(selector = "setVideoSettings:")
-    public native void setVideoSettings(NSDictionary<NSString, ?> v);
+    public native void setVideoSettings(AVVideoSettings v);
     /**
      * @since Available in iOS 5.0 and later.
      */
     @Property(selector = "availableVideoCVPixelFormatTypes")
-    public native NSArray<NSNumber> getAvailableVideoCVPixelFormatTypes();
+    public native @org.robovm.rt.bro.annotation.Marshaler(CVPixelFormatType.AsListMarshaler.class) List<CVPixelFormatType> getAvailableVideoCVPixelFormatTypes();
     /**
      * @since Available in iOS 5.0 and later.
      */
     @Property(selector = "availableVideoCodecTypes")
-    public native NSArray<NSString> getAvailableVideoCodecTypes();
+    public native @org.robovm.rt.bro.annotation.Marshaler(CMVideoCodecType.AsListMarshaler.class) List<CMVideoCodecType> getAvailableVideoCodecTypes();
     @Property(selector = "alwaysDiscardsLateVideoFrames")
     public native boolean isAlwaysDiscardsLateVideoFrames();
     @Property(selector = "setAlwaysDiscardsLateVideoFrames:")
@@ -87,6 +87,6 @@ import org.robovm.apple.mediatoolbox.*;
      * @since Available in iOS 7.0 and later.
      */
     @Method(selector = "recommendedVideoSettingsForAssetWriterWithOutputFileType:")
-    public native NSDictionary<NSString, ?> getRecommendedVideoSettings(String outputFileType);
+    public native AVVideoSettings getRecommendedVideoSettings(AVFileType outputFileType);
     /*</methods>*/
 }

@@ -82,14 +82,61 @@ import org.robovm.apple.mediatoolbox.*;
     public native void setSegments(NSArray<AVAssetTrackSegment> v);
     /*</properties>*/
     /*<members>*//*</members>*/
+    /**
+     * 
+     * @param timeRange
+     * @param track
+     * @param startTime
+     * @return
+     * @throws NSErrorException
+     */
+    public boolean insertTimeRange(@ByVal CMTimeRange timeRange, AVAssetTrack track, @ByVal CMTime startTime) throws NSErrorException {
+        NSError.NSErrorPtr err = new NSError.NSErrorPtr();
+        boolean result = insertTimeRange(timeRange, track, startTime, err);
+        if (err.get() != null) {
+            throw new NSErrorException(err.get());
+        }
+        return result;
+    }
+    /**
+     * 
+     * @param timeRanges
+     * @param tracks
+     * @param startTime
+     * @return
+     * @throws NSErrorException
+     * @since Available in iOS 5.0 and later.
+     */
+    public boolean insertTimeRanges(@org.robovm.rt.bro.annotation.Marshaler(CMTimeRange.AsValuedListMarshaler.class) List<CMTimeRange> timeRanges, NSArray<AVAssetTrack> tracks, @ByVal CMTime startTime) throws NSErrorException {
+        NSError.NSErrorPtr err = new NSError.NSErrorPtr();
+        boolean result = insertTimeRanges(timeRanges, tracks, startTime, err);
+        if (err.get() != null) {
+            throw new NSErrorException(err.get());
+        }
+        return result;
+    }
+    /**
+     * 
+     * @param trackSegments
+     * @return
+     * @throws NSErrorException
+     */
+    public boolean validateTrackSegments(NSArray<AVCompositionTrackSegment> trackSegments) throws NSErrorException {
+        NSError.NSErrorPtr err = new NSError.NSErrorPtr();
+        boolean result = validateTrackSegments(trackSegments, err);
+        if (err.get() != null) {
+            throw new NSErrorException(err.get());
+        }
+        return result;
+    }
     /*<methods>*/
     @Method(selector = "insertTimeRange:ofTrack:atTime:error:")
-    public native boolean insertTimeRange(@ByVal CMTimeRange timeRange, AVAssetTrack track, @ByVal CMTime startTime, NSError.NSErrorPtr error);
+    protected native boolean insertTimeRange(@ByVal CMTimeRange timeRange, AVAssetTrack track, @ByVal CMTime startTime, NSError.NSErrorPtr error);
     /**
      * @since Available in iOS 5.0 and later.
      */
     @Method(selector = "insertTimeRanges:ofTracks:atTime:error:")
-    public native boolean insertTimeRanges(NSArray<?> timeRanges, NSArray<?> tracks, @ByVal CMTime startTime, NSError.NSErrorPtr error);
+    protected native boolean insertTimeRanges(@org.robovm.rt.bro.annotation.Marshaler(CMTimeRange.AsValuedListMarshaler.class) List<CMTimeRange> timeRanges, NSArray<AVAssetTrack> tracks, @ByVal CMTime startTime, NSError.NSErrorPtr error);
     @Method(selector = "insertEmptyTimeRange:")
     public native void insertEmptyTimeRange(@ByVal CMTimeRange timeRange);
     @Method(selector = "removeTimeRange:")
@@ -97,6 +144,6 @@ import org.robovm.apple.mediatoolbox.*;
     @Method(selector = "scaleTimeRange:toDuration:")
     public native void scaleTimeRange(@ByVal CMTimeRange timeRange, @ByVal CMTime duration);
     @Method(selector = "validateTrackSegments:error:")
-    public native boolean validateTrackSegments(NSArray<AVCompositionTrackSegment> trackSegments, NSError.NSErrorPtr error);
+    protected native boolean validateTrackSegments(NSArray<AVCompositionTrackSegment> trackSegments, NSError.NSErrorPtr error);
     /*</methods>*/
 }

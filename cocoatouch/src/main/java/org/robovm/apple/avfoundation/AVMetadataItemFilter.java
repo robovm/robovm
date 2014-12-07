@@ -61,6 +61,6 @@ import org.robovm.apple.mediatoolbox.*;
     /*<members>*//*</members>*/
     /*<methods>*/
     @Method(selector = "metadataItemFilterForSharing")
-    public static native AVMetadataItemFilter sharedInstance();
+    public static native AVMetadataItemFilter createForSharing();
     /*</methods>*/
 }

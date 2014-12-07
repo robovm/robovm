@@ -42,46 +42,46 @@ import org.robovm.apple.mediatoolbox.*;
 /*<javadoc>*/
 /*</javadoc>*/
 /*<annotations>*/@Library("AVFoundation")/*</annotations>*/
-/*<visibility>*/public/*</visibility>*/abstract class /*<name>*/AVMetadataIdentifier/*</name>*/ 
+/*<visibility>*/public/*</visibility>*/ abstract class /*<name>*/AVMetadataKey/*</name>*/ 
     extends /*<extends>*/Object/*</extends>*/ 
     /*<implements>*//*</implements>*/ {
 
     public static class AsListMarshaler {
         @SuppressWarnings("unchecked")
         @MarshalsPointer
-        public static List<AVMetadataIdentifier> toObject(Class<? extends NSObject> cls, long handle, long flags) {
+        public static List<AVMetadataKey> toObject(Class<? extends NSObject> cls, long handle, long flags) {
             NSArray<NSString> o = (NSArray<NSString>) NSObject.Marshaler.toObject(cls, handle, flags);
             if (o == null) {
                 return null;
             }
-            List<AVMetadataIdentifier> list = new ArrayList<>();
+            List<AVMetadataKey> list = new ArrayList<>();
             for (NSString str : o) {
-                list.add(AVMetadataIdentifier.valueOf(str));
+                list.add(AVMetadataKey.valueOf(str));
             }
             return list;
         }
         @MarshalsPointer
-        public static long toNative(List<AVMetadataIdentifier> l, long flags) {
+        public static long toNative(List<AVMetadataKey> l, long flags) {
             if (l == null) {
                 return 0L;
             }
             NSMutableArray<NSString> array = new NSMutableArray<>();
-            for (AVMetadataIdentifier i : l) {
+            for (AVMetadataKey i : l) {
                 array.add(i.value());
             }
             return NSObject.Marshaler.toNative(array, flags);
         }
     }
     
-    private static final List<Class<? extends AVMetadataIdentifier>> allSubClasses = new ArrayList<>();
+    private static final List<Class<? extends AVMetadataKey>> allSubClasses = new ArrayList<>();
     private static final int ABSTRACT = 0x00000400;
     
     static {
         @SuppressWarnings("unchecked")
-        Class<? extends AVMetadataIdentifier>[] classes = (Class<? extends AVMetadataIdentifier>[]) 
-                VM.listClasses(AVMetadataIdentifier.class, ClassLoader.getSystemClassLoader());
-        final Class<?> baseClass = AVMetadataIdentifier.class;
-        for (Class<? extends AVMetadataIdentifier> cls : classes) {
+        Class<? extends AVMetadataKey>[] classes = (Class<? extends AVMetadataKey>[]) 
+                VM.listClasses(AVMetadataKey.class, ClassLoader.getSystemClassLoader());
+        final Class<?> baseClass = AVMetadataKey.class;
+        for (Class<? extends AVMetadataKey> cls : classes) {
             if (cls != baseClass && (cls.getModifiers() & ABSTRACT) == 0) {
                 allSubClasses.add(cls);
             }
@@ -90,27 +90,27 @@ import org.robovm.apple.mediatoolbox.*;
     
     /*<ptr>*/
     /*</ptr>*/
-    /*<bind>*/static { Bro.bind(AVMetadataIdentifier.class); }/*</bind>*/
+    /*<bind>*/static { Bro.bind(AVMetadataKey.class); }/*</bind>*/
     /*<constants>*//*</constants>*/
     /*<constructors>*//*</constructors>*/
     /*<properties>*//*</properties>*/
     public abstract NSString value();
     
-    public static AVMetadataIdentifier valueOf(NSString value) {
+    public static AVMetadataKey valueOf(NSString value) {
         Class<?>[] args = new Class<?>[] {NSString.class};
-        for (Class<? extends AVMetadataIdentifier> cls : allSubClasses) {
+        for (Class<? extends AVMetadataKey> cls : allSubClasses) {
             try {
                 Bro.bind(cls); // Global values need to be bound.
                 java.lang.reflect.Method m = cls.getMethod("valueOf", args);
-                AVMetadataIdentifier key = (AVMetadataIdentifier) m.invoke(null);
+                AVMetadataKey key = (AVMetadataKey) m.invoke(null);
                 if (key != null) return key;
             } catch (Throwable e) {
                 System.err.println("WARN: Failed to call valueOf() for " 
-                        + "the AVMetadataIdentifier subclass " + cls.getName());
+                        + "the AVMetadataKey subclass " + cls.getName());
             }
         }
         throw new IllegalArgumentException("No constant with value " + value + " found in " 
-                + /*<name>*/AVMetadataIdentifier/*</name>*/.class.getName());
+                + /*<name>*/AVMetadataKey/*</name>*/.class.getName());
     }
     /*<members>*//*</members>*/
     /*<methods>*/

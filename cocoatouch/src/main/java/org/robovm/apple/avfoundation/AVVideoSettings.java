@@ -88,18 +88,18 @@ import org.robovm.apple.mediatoolbox.*;
     /**
      * @since Available in iOS 4.0 and later.
      */
-    public AVVideoCodec getCodec() {
+    public CMVideoCodecType getCodec() {
         if (data.containsKey(CodecKey())) {
             NSString val = (NSString) data.get(CodecKey());
-            return AVVideoCodec.valueOf(val);
+            return CMVideoCodecType.valueOf(val);
         }
         return null;
     }
     /**
      * @since Available in iOS 4.0 and later.
      */
-    public AVVideoSettings setCodec(AVVideoCodec codec) {
-        data.put(CodecKey(), codec.value());
+    public AVVideoSettings setCodec(CMVideoCodecType codec) {
+        data.put(CodecKey(), new NSString(codec.asFourCharCode()));
         return this;
     }
     /**

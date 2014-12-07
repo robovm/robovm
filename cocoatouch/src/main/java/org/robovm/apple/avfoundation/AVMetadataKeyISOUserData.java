@@ -40,22 +40,23 @@ import org.robovm.apple.mediatoolbox.*;
 
 /*<javadoc>*/
 /*</javadoc>*/
+@Marshaler(AVMetadataKeyISOUserData.Marshaler.class)
 /*<annotations>*/@Library("AVFoundation")/*</annotations>*/
-/*<visibility>*/public/*</visibility>*/ class AVMetadataIdentifierISOUserData 
-    extends /*<extends>*/AVMetadataIdentifier/*</extends>*/ 
+/*<visibility>*/public/*</visibility>*/ class /*<name>*/AVMetadataKeyISOUserData/*</name>*/ 
+    extends /*<extends>*/AVMetadataKey/*</extends>*/ 
     /*<implements>*//*</implements>*/ {
 
     public static class Marshaler {
         @MarshalsPointer
-        public static AVMetadataIdentifierISOUserData toObject(Class<AVMetadataIdentifierISOUserData> cls, long handle, long flags) {
+        public static AVMetadataKeyISOUserData toObject(Class<AVMetadataKeyISOUserData> cls, long handle, long flags) {
             NSString o = (NSString) NSObject.Marshaler.toObject(NSString.class, handle, flags);
             if (o == null) {
                 return null;
             }
-            return AVMetadataIdentifierISOUserData.valueOf(o);
+            return AVMetadataKeyISOUserData.valueOf(o);
         }
         @MarshalsPointer
-        public static long toNative(AVMetadataIdentifierISOUserData o, long flags) {
+        public static long toNative(AVMetadataKeyISOUserData o, long flags) {
             if (o == null) {
                 return 0L;
             }
@@ -65,21 +66,21 @@ import org.robovm.apple.mediatoolbox.*;
     
     /*<ptr>*/
     /*</ptr>*/
-    /*<bind>*/static { Bro.bind(AVMetadataIdentifierISOUserData.class); }/*</bind>*/
+    /*<bind>*/static { Bro.bind(AVMetadataKeyISOUserData.class); }/*</bind>*/
     /*<constants>*//*</constants>*/
     /**
-     * @since Available in iOS 8.0 and later.
+     * @since Available in iOS 4.0 and later.
      */
-    public static final AVMetadataIdentifierISOUserData Copyright = new AVMetadataIdentifierISOUserData("CopyrightValue");
+    public static final AVMetadataKeyISOUserData Copyright = new AVMetadataKeyISOUserData("CopyrightValue");
     /**
      * @since Available in iOS 8.0 and later.
      */
-    public static final AVMetadataIdentifierISOUserData TaggedCharacteristic = new AVMetadataIdentifierISOUserData("TaggedCharacteristicValue");
+    public static final AVMetadataKeyISOUserData TaggedCharacteristic = new AVMetadataKeyISOUserData("TaggedCharacteristicValue");
     
-    private static AVMetadataIdentifierISOUserData[] values = new AVMetadataIdentifierISOUserData[] {Copyright, TaggedCharacteristic};
+    private static AVMetadataKeyISOUserData[] values = new AVMetadataKeyISOUserData[] {Copyright, TaggedCharacteristic};
     private final LazyGlobalValue<NSString> lazyGlobalValue;
     
-    private AVMetadataIdentifierISOUserData(String getterName) {
+    private AVMetadataKeyISOUserData(String getterName) {
         lazyGlobalValue = new LazyGlobalValue<>(getClass(), getterName);
     }
     /*<constructors>*//*</constructors>*/
@@ -89,26 +90,26 @@ import org.robovm.apple.mediatoolbox.*;
         return lazyGlobalValue.value();
     }
     
-    public static AVMetadataIdentifierISOUserData valueOf(NSString value) {
-        for (AVMetadataIdentifierISOUserData v : values) {
+    public static AVMetadataKeyISOUserData valueOf(NSString value) {
+        for (AVMetadataKeyISOUserData v : values) {
             if (v.value().equals(value)) {
                 return v;
             }
         }
         return null;
 //        throw new IllegalArgumentException("No constant with value " + value + " found in " 
-//            + /*<name>*/AVMetadataIdentifierISOUserData/*</name>*/.class.getName());
+//            + /*<name>*/AVMetadataKeyISOUserData/*</name>*/.class.getName());
     }
     /*<methods>*/
     /**
-     * @since Available in iOS 8.0 and later.
+     * @since Available in iOS 4.0 and later.
      */
-    @GlobalValue(symbol="AVMetadataIdentifierISOUserDataCopyright", optional=true)
+    @GlobalValue(symbol="AVMetadataISOUserDataKeyCopyright", optional=true)
     protected static native NSString CopyrightValue();
     /**
      * @since Available in iOS 8.0 and later.
      */
-    @GlobalValue(symbol="AVMetadataIdentifierISOUserDataTaggedCharacteristic", optional=true)
+    @GlobalValue(symbol="AVMetadataISOUserDataKeyTaggedCharacteristic", optional=true)
     protected static native NSString TaggedCharacteristicValue();
     /*</methods>*/
 }

@@ -19,6 +19,7 @@ package org.robovm.apple.corevideo;
 import java.io.*;
 import java.nio.*;
 import java.util.*;
+
 import org.robovm.objc.*;
 import org.robovm.objc.annotation.*;
 import org.robovm.objc.block.*;
@@ -89,6 +90,33 @@ public enum /*<name>*/CVPixelFormatType/*</name>*/ implements ValuedEnum {
     _128RGBAFloat(1380410945L);
     /*</values>*/
 
+    public static class AsListMarshaler {
+        @SuppressWarnings("unchecked")
+        @MarshalsPointer
+        public static List<CVPixelFormatType> toObject(Class<? extends NSObject> cls, long handle, long flags) {
+            NSArray<NSNumber> o = (NSArray<NSNumber>) NSObject.Marshaler.toObject(cls, handle, flags);
+            if (o == null) {
+                return null;
+            }
+            List<CVPixelFormatType> list = new ArrayList<>();
+            for (NSNumber n : o) {
+                list.add(CVPixelFormatType.valueOf(n.longValue()));
+            }
+            return list;
+        }
+        @MarshalsPointer
+        public static long toNative(List<CVPixelFormatType> l, long flags) {
+            if (l == null) {
+                return 0L;
+            }
+            NSMutableArray<NSNumber> array = new NSMutableArray<>();
+            for (CVPixelFormatType i : l) {
+                array.add(NSNumber.valueOf(i.value()));
+            }
+            return NSObject.Marshaler.toNative(array, flags);
+        }
+    }
+    
     /*<bind>*/
     /*</bind>*/
     /*<constants>*//*</constants>*/

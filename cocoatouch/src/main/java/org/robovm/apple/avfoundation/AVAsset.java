@@ -167,8 +167,8 @@ import org.robovm.apple.mediatoolbox.*;
     @Method(selector = "unusedTrackID")
     public native int getUnusedTrackID();
     @Method(selector = "statusOfValueForKey:error:")
-    public native AVKeyValueStatus getStatusOfValue(String key, NSError.NSErrorPtr outError);
+    public native AVKeyValueStatus getStatusOfValue(AVMetadataKey key, NSError.NSErrorPtr outError);
     @Method(selector = "loadValuesAsynchronouslyForKeys:completionHandler:")
-    public native void loadValuesAsynchronously(NSArray<NSString> keys, @Block Runnable handler);
+    public native void loadValuesAsynchronously(@org.robovm.rt.bro.annotation.Marshaler(AVMetadataKey.AsListMarshaler.class) List<AVMetadataKey> keys, @Block Runnable handler);
     /*</methods>*/
 }

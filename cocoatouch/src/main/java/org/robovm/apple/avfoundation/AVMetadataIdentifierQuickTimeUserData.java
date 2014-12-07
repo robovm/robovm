@@ -244,8 +244,9 @@ import org.robovm.apple.mediatoolbox.*;
                 return v;
             }
         }
-        throw new IllegalArgumentException("No constant with value " + value + " found in " 
-            + /*<name>*/AVMetadataIdentifierQuickTimeUserData/*</name>*/.class.getName());
+        return null;
+//        throw new IllegalArgumentException("No constant with value " + value + " found in " 
+//            + /*<name>*/AVMetadataIdentifierQuickTimeUserData/*</name>*/.class.getName());
     }
     /*<methods>*/
     /**

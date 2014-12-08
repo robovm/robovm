@@ -168,7 +168,7 @@ import org.robovm.apple.foundation.*;
      * @since Available in iOS 3.0 and later.
      * @throws NSErrorException
      */
-    public NSManagedObject getExistingObjectWithID(NSManagedObjectID objectID) {
+    public NSManagedObject getExistingObjectWithID(NSManagedObjectID objectID) throws NSErrorException {
         NSError.NSErrorPtr err = new NSError.NSErrorPtr();
         NSManagedObject result = getExistingObjectWithID(objectID, err);
         if (err.get() != null) {
@@ -182,7 +182,7 @@ import org.robovm.apple.foundation.*;
      * @return
      * @throws NSErrorException
      */
-    public NSArray<NSManagedObject> executeFetchRequest(NSFetchRequest request) {
+    public NSArray<NSManagedObject> executeFetchRequest(NSFetchRequest request) throws NSErrorException {
         NSError.NSErrorPtr err = new NSError.NSErrorPtr();
         NSArray<NSManagedObject> result = executeFetchRequest(request, err);
         if (err.get() != null) {
@@ -197,7 +197,7 @@ import org.robovm.apple.foundation.*;
      * @since Available in iOS 3.0 and later.
      * @throws NSErrorException
      */
-    public @MachineSizedUInt long getCountForFetchRequest(NSFetchRequest request) {
+    public @MachineSizedUInt long getCountForFetchRequest(NSFetchRequest request) throws NSErrorException {
         NSError.NSErrorPtr err = new NSError.NSErrorPtr();
         long result = getCountForFetchRequest(request, err);
         if (err.get() != null) {
@@ -212,7 +212,7 @@ import org.robovm.apple.foundation.*;
      * @since Available in iOS 8.0 and later.
      * @throws NSErrorException
      */
-    public NSPersistentStoreResult executeRequest(NSPersistentStoreRequest request) {
+    public NSPersistentStoreResult executeRequest(NSPersistentStoreRequest request) throws NSErrorException {
         NSError.NSErrorPtr err = new NSError.NSErrorPtr();
         NSPersistentStoreResult result = executeRequest(request, err);
         if (err.get() != null) {
@@ -225,7 +225,7 @@ import org.robovm.apple.foundation.*;
      * @return
      * @throws NSErrorException
      */
-    public boolean save() {
+    public boolean save() throws NSErrorException {
         NSError.NSErrorPtr err = new NSError.NSErrorPtr();
         boolean result = save(err);
         if (err.get() != null) {
@@ -240,7 +240,7 @@ import org.robovm.apple.foundation.*;
      * @since Available in iOS 3.0 and later.
      * @throws NSErrorException
      */
-    public boolean obtainPermanentIDsForObjects(NSArray<NSManagedObject> objects) {
+    public boolean obtainPermanentIDsForObjects(NSArray<NSManagedObject> objects) throws NSErrorException {
         NSError.NSErrorPtr err = new NSError.NSErrorPtr();
         boolean result = obtainPermanentIDsForObjects(objects, err);
         if (err.get() != null) {

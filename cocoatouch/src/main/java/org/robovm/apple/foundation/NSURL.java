@@ -84,7 +84,7 @@ import org.robovm.apple.foundation.NSError.NSErrorPtr;
      * @since Available in iOS 4.0 and later.
      * @throws NSErrorException
      */
-    public NSURL(NSData bookmarkData, NSURLBookmarkResolutionOptions options, NSURL relativeURL, BooleanPtr isStale) {
+    public NSURL(NSData bookmarkData, NSURLBookmarkResolutionOptions options, NSURL relativeURL, BooleanPtr isStale) throws NSErrorException {
         super((SkipInit) null);
         NSError.NSErrorPtr err = new NSError.NSErrorPtr();
         initObject(init(bookmarkData, options, relativeURL, isStale, err));
@@ -189,28 +189,28 @@ import org.robovm.apple.foundation.NSError.NSErrorPtr;
      * @since Available in iOS 4.0 and later.
      * @throws NSErrorException
      */
-    public NSObject getResourceValue(NSURLFileSystemProperty property) {
+    public NSObject getResourceValue(NSURLFileSystemProperty property) throws NSErrorException {
         return getResourceValue(property.value());
     }
     /**
      * @since Available in iOS 4.0 and later.
      * @throws NSErrorException
      */
-    public NSObject getResourceValue(NSURLFileProperty property) {
+    public NSObject getResourceValue(NSURLFileProperty property) throws NSErrorException {
         return getResourceValue(property.value());
     }
     /**
      * @since Available in iOS 4.0 and later.
      * @throws NSErrorException
      */
-    public NSObject getResourceValue(NSURLVolumeProperty property) {
+    public NSObject getResourceValue(NSURLVolumeProperty property) throws NSErrorException {
         return getResourceValue(property.value());
     }
     /**
      * @since Available in iOS 4.0 and later.
      * @throws NSErrorException
      */
-    public NSObject getResourceValue(NSURLUbiquitousItemProperty property) {
+    public NSObject getResourceValue(NSURLUbiquitousItemProperty property) throws NSErrorException {
         return getResourceValue(property.value());
     }
     private NSObject getResourceValue(NSString key) {
@@ -254,7 +254,7 @@ import org.robovm.apple.foundation.NSError.NSErrorPtr;
      * @since Available in iOS 4.0 and later.
      * @throws NSErrorException
      */
-    public void setResourceValue(NSURLFileSystemProperty property, NSObject value) {
+    public void setResourceValue(NSURLFileSystemProperty property, NSObject value) throws NSErrorException {
         NSError.NSErrorPtr err = new NSError.NSErrorPtr();
         setResourceValue(value, property.value(), err);
         if (err.get() != null) {
@@ -265,7 +265,7 @@ import org.robovm.apple.foundation.NSError.NSErrorPtr;
      * @since Available in iOS 4.0 and later.
      * @throws NSErrorException
      */
-    public void setResourceValue(NSURLFileProperty property, NSObject value) {
+    public void setResourceValue(NSURLFileProperty property, NSObject value) throws NSErrorException {
         NSError.NSErrorPtr err = new NSError.NSErrorPtr();
         setResourceValue(value, property.value(), err);
         if (err.get() != null) {
@@ -276,7 +276,7 @@ import org.robovm.apple.foundation.NSError.NSErrorPtr;
      * @since Available in iOS 4.0 and later.
      * @throws NSErrorException
      */
-    public void setResourceValue(NSURLVolumeProperty property, NSObject value) {
+    public void setResourceValue(NSURLVolumeProperty property, NSObject value) throws NSErrorException {
         NSError.NSErrorPtr err = new NSError.NSErrorPtr();
         setResourceValue(value, property.value(), err);
         if (err.get() != null) {
@@ -287,7 +287,7 @@ import org.robovm.apple.foundation.NSError.NSErrorPtr;
      * @since Available in iOS 4.0 and later.
      * @throws NSErrorException
      */
-    public void setResourceValue(NSURLUbiquitousItemProperty property, NSObject value) {
+    public void setResourceValue(NSURLUbiquitousItemProperty property, NSObject value) throws NSErrorException {
         NSError.NSErrorPtr err = new NSError.NSErrorPtr();
         setResourceValue(value, property.value(), err);
         if (err.get() != null) {
@@ -323,7 +323,7 @@ import org.robovm.apple.foundation.NSError.NSErrorPtr;
      * @since Available in iOS 8.0 and later.
      * @throws NSErrorException
      */
-    public NSObject getPromisedItemResourceValue(NSURLProperty key) {
+    public NSObject getPromisedItemResourceValue(NSURLProperty key) throws NSErrorException {
         NSObject.NSObjectPtr ptr = new NSObject.NSObjectPtr();
         NSError.NSErrorPtr err = new NSError.NSErrorPtr();
         if (getPromisedItemResourceValue(ptr, key.value(), err)) {
@@ -339,7 +339,7 @@ import org.robovm.apple.foundation.NSError.NSErrorPtr;
      * @since Available in iOS 4.0 and later.
      * @throws NSErrorException
      */
-    public boolean checkResourceIsReachable() {
+    public boolean checkResourceIsReachable() throws NSErrorException {
         NSError.NSErrorPtr err = new NSError.NSErrorPtr();
         boolean result = checkResourceIsReachable(err);
         if (err.get() != null) {
@@ -351,7 +351,7 @@ import org.robovm.apple.foundation.NSError.NSErrorPtr;
      * @since Available in iOS 4.0 and later.
      * @throws NSErrorException
      */
-    public NSURLProperties getResourceValues(@org.robovm.rt.bro.annotation.Marshaler(NSURLProperty.AsListMarshaler.class) List<NSURLProperty> keys) {
+    public NSURLProperties getResourceValues(@org.robovm.rt.bro.annotation.Marshaler(NSURLProperty.AsListMarshaler.class) List<NSURLProperty> keys) throws NSErrorException {
         NSError.NSErrorPtr err = new NSError.NSErrorPtr();
         NSURLProperties result = getResourceValues(keys, err);
         if (err.get() != null) {
@@ -363,7 +363,7 @@ import org.robovm.apple.foundation.NSError.NSErrorPtr;
      * @since Available in iOS 4.0 and later.
      * @throws NSErrorException
      */
-    public boolean setResourceValues(NSURLProperties keyedValues) {
+    public boolean setResourceValues(NSURLProperties keyedValues) throws NSErrorException {
         NSError.NSErrorPtr err = new NSError.NSErrorPtr();
         boolean result = setResourceValues(keyedValues, err);
         if (err.get() != null) {
@@ -375,7 +375,7 @@ import org.robovm.apple.foundation.NSError.NSErrorPtr;
      * @since Available in iOS 4.0 and later.
      * @throws NSErrorException
      */
-    public NSData toBookmarkData(NSURLBookmarkCreationOptions options, @org.robovm.rt.bro.annotation.Marshaler(NSURLProperty.AsListMarshaler.class) List<NSURLProperty> keys, NSURL relativeURL) {
+    public NSData toBookmarkData(NSURLBookmarkCreationOptions options, @org.robovm.rt.bro.annotation.Marshaler(NSURLProperty.AsListMarshaler.class) List<NSURLProperty> keys, NSURL relativeURL) throws NSErrorException {
         NSError.NSErrorPtr err = new NSError.NSErrorPtr();
         NSData result = toBookmarkData(options, keys, relativeURL, err);
         if (err.get() != null) {
@@ -387,7 +387,7 @@ import org.robovm.apple.foundation.NSError.NSErrorPtr;
      * @since Available in iOS 4.0 and later.
      * @throws NSErrorException
      */
-    public static boolean writeBookmarkData(NSData bookmarkData, NSURL bookmarkFileURL, NSURLBookmarkCreationOptions options) {
+    public static boolean writeBookmarkData(NSData bookmarkData, NSURL bookmarkFileURL, NSURLBookmarkCreationOptions options) throws NSErrorException {
         NSError.NSErrorPtr err = new NSError.NSErrorPtr();
         boolean result = writeBookmarkData(bookmarkData, bookmarkFileURL, options, err);
         if (err.get() != null) {
@@ -399,7 +399,7 @@ import org.robovm.apple.foundation.NSError.NSErrorPtr;
      * @since Available in iOS 4.0 and later.
      * @throws NSErrorException
      */
-    public static NSData createBookmarkData(NSURL bookmarkFileURL) {
+    public static NSData createBookmarkData(NSURL bookmarkFileURL) throws NSErrorException {
         NSError.NSErrorPtr err = new NSError.NSErrorPtr();
         NSData result = createBookmarkData(bookmarkFileURL, err);
         if (err.get() != null) {
@@ -411,7 +411,7 @@ import org.robovm.apple.foundation.NSError.NSErrorPtr;
      * @since Available in iOS 8.0 and later.
      * @throws NSErrorException
      */
-    public NSURLProperties getPromisedItemResourceValues(@org.robovm.rt.bro.annotation.Marshaler(NSURLProperty.AsListMarshaler.class) List<NSURLProperty> keys) {
+    public NSURLProperties getPromisedItemResourceValues(@org.robovm.rt.bro.annotation.Marshaler(NSURLProperty.AsListMarshaler.class) List<NSURLProperty> keys) throws NSErrorException {
         NSError.NSErrorPtr err = new NSError.NSErrorPtr();
         NSURLProperties result = getPromisedItemResourceValues(keys, err);
         if (err.get() != null) {
@@ -423,7 +423,7 @@ import org.robovm.apple.foundation.NSError.NSErrorPtr;
      * @since Available in iOS 8.0 and later.
      * @throws NSErrorException
      */
-    public boolean isPromisedItemReachable() {
+    public boolean isPromisedItemReachable() throws NSErrorException {
         NSError.NSErrorPtr err = new NSError.NSErrorPtr();
         boolean result = isPromisedItemReachable(err);
         if (err.get() != null) {

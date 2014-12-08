@@ -68,6 +68,6 @@ import org.robovm.apple.mediatoolbox.*;
      * @since Available in iOS 7.0 and later.
      */
     @Method(selector = "videoCompositionCoreAnimationToolWithPostProcessingAsVideoLayers:inLayer:")
-    public static native AVVideoCompositionCoreAnimationTool create(NSArray<?> videoLayers, CALayer animationLayer);
+    public static native AVVideoCompositionCoreAnimationTool create(NSArray<CALayer> videoLayers, CALayer animationLayer);
     /*</methods>*/
 }

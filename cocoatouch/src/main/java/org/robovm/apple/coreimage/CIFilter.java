@@ -61,7 +61,7 @@ import org.robovm.apple.imageio.*;
      * @since Available in iOS 6.0 and later.
      * @throws NSErrorException
      */
-    public static NSArray<CIFilter> deserializeFromXMP(NSData xmpData, @ByVal CGRect extent) {
+    public static NSArray<CIFilter> deserializeFromXMP(NSData xmpData, @ByVal CGRect extent) throws NSErrorException {
         NSError.NSErrorPtr err = new NSError.NSErrorPtr();
         NSArray<CIFilter> result = deserializeFromXMP(xmpData, extent, err);
         if (err.get() != null) {

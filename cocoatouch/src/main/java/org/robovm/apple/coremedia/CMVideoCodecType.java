@@ -19,6 +19,7 @@ package org.robovm.apple.coremedia;
 import java.io.*;
 import java.nio.*;
 import java.util.*;
+
 import org.robovm.objc.*;
 import org.robovm.objc.annotation.*;
 import org.robovm.objc.block.*;
@@ -72,6 +73,33 @@ public enum /*<name>*/CMVideoCodecType/*</name>*/ implements ValuedEnum {
     AppleProRes422Proxy(1634755439L);
     /*</values>*/
 
+    public static class AsListMarshaler {
+        @SuppressWarnings("unchecked")
+        @MarshalsPointer
+        public static List<CMVideoCodecType> toObject(Class<? extends NSObject> cls, long handle, long flags) {
+            NSArray<NSString> o = (NSArray<NSString>) NSObject.Marshaler.toObject(cls, handle, flags);
+            if (o == null) {
+                return null;
+            }
+            List<CMVideoCodecType> list = new ArrayList<>();
+            for (NSString str : o) {
+                list.add(CMVideoCodecType.valueOf(str));
+            }
+            return list;
+        }
+        @MarshalsPointer
+        public static long toNative(List<CMVideoCodecType> l, long flags) {
+            if (l == null) {
+                return 0L;
+            }
+            NSMutableArray<NSString> array = new NSMutableArray<>();
+            for (CMVideoCodecType i : l) {
+                array.add(new NSString(i.asFourCharCode()));
+            }
+            return NSObject.Marshaler.toNative(array, flags);
+        }
+    }
+    
     /*<bind>*/
     /*</bind>*/
     /*<constants>*//*</constants>*/
@@ -81,9 +109,35 @@ public enum /*<name>*/CMVideoCodecType/*</name>*/ implements ValuedEnum {
 
     private /*<name>*/CMVideoCodecType/*</name>*/(long n) { this.n = n; }
     public long value() { return n; }
+    
+    public String asFourCharCode() {
+        byte[] b = new byte[8];
+        long value = value();
+        for (int i = 0; i < 8; ++i) {
+            b[i] = (byte)(value >> (8 - i - 1 << 3));
+        }
+        return new String(b);
+    }
+    
     public static /*<name>*/CMVideoCodecType/*</name>*/ valueOf(long n) {
         for (/*<name>*/CMVideoCodecType/*</name>*/ v : values()) {
             if (v.n == n) {
+                return v;
+            }
+        }
+        throw new IllegalArgumentException("No constant with value " + n + " found in " 
+            + /*<name>*/CMVideoCodecType/*</name>*/.class.getName());
+    }
+    
+    public static /*<name>*/CMVideoCodecType/*</name>*/ valueOf(NSString n) {
+        byte[] by = n.toString().getBytes();
+        long value = 0;
+        for (int i = 0; i < by.length; i++) {
+            value = (value << 8) + (by[i] & 0xff);
+        }
+        
+        for (/*<name>*/CMVideoCodecType/*</name>*/ v : values()) {
+            if (v.n == value) {
                 return v;
             }
         }

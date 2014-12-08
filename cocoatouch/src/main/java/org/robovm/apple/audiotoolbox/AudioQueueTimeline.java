@@ -38,7 +38,7 @@ import org.robovm.apple.coremedia.*;
 /*</javadoc>*/
 /*<annotations>*//*</annotations>*/
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/AudioQueueTimeline/*</name>*/ 
-    extends /*<extends>*/CFType/*</extends>*/ 
+    extends /*<extends>*/NativeObject/*</extends>*/ 
     /*<implements>*//*</implements>*/ {
 
     /*<ptr>*/public static class AudioQueueTimelinePtr extends Ptr<AudioQueueTimeline, AudioQueueTimelinePtr> {}/*</ptr>*/

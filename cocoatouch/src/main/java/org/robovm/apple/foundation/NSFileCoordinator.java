@@ -75,7 +75,7 @@ import org.robovm.apple.dispatch.*;
      * @param reader
      * @throws NSErrorException
      */
-    public void coordinateReadingItem(NSURL url, NSFileCoordinatorReadingOptions options, @Block VoidBlock1<NSURL> reader) {
+    public void coordinateReadingItem(NSURL url, NSFileCoordinatorReadingOptions options, @Block VoidBlock1<NSURL> reader) throws NSErrorException {
         NSError.NSErrorPtr err = new NSError.NSErrorPtr();
         coordinateReadingItem(url, options, err, reader);
         if (err.get() != null) {
@@ -89,7 +89,7 @@ import org.robovm.apple.dispatch.*;
      * @param writer
      * @throws NSErrorException
      */
-    public void coordinateWritingItem(NSURL url, NSFileCoordinatorWritingOptions options, @Block VoidBlock1<NSURL> writer) {
+    public void coordinateWritingItem(NSURL url, NSFileCoordinatorWritingOptions options, @Block VoidBlock1<NSURL> writer) throws NSErrorException {
         NSError.NSErrorPtr err = new NSError.NSErrorPtr();
         coordinateWritingItem(url, options, err, writer);
         if (err.get() != null) {
@@ -105,7 +105,7 @@ import org.robovm.apple.dispatch.*;
      * @param readerWriter
      * @throws NSErrorException
      */
-    public void coordinateReadingItem(NSURL readingURL, NSFileCoordinatorReadingOptions readingOptions, NSURL writingURL, NSFileCoordinatorWritingOptions writingOptions, @Block VoidBlock2<NSURL, NSURL> readerWriter) {
+    public void coordinateReadingItem(NSURL readingURL, NSFileCoordinatorReadingOptions readingOptions, NSURL writingURL, NSFileCoordinatorWritingOptions writingOptions, @Block VoidBlock2<NSURL, NSURL> readerWriter) throws NSErrorException {
         NSError.NSErrorPtr err = new NSError.NSErrorPtr();
         coordinateReadingItem(readingURL, readingOptions, writingURL, writingOptions, err, readerWriter);
         if (err.get() != null) {
@@ -121,7 +121,7 @@ import org.robovm.apple.dispatch.*;
      * @param writer
      * @throws NSErrorException
      */
-    public void coordinateWritingItem(NSURL url1, NSFileCoordinatorWritingOptions options1, NSURL url2, NSFileCoordinatorWritingOptions options2, @Block VoidBlock2<NSURL, NSURL> writer) {
+    public void coordinateWritingItem(NSURL url1, NSFileCoordinatorWritingOptions options1, NSURL url2, NSFileCoordinatorWritingOptions options2, @Block VoidBlock2<NSURL, NSURL> writer) throws NSErrorException {
         NSError.NSErrorPtr err = new NSError.NSErrorPtr();
         coordinateWritingItem(url1, options1, url2, options2, err, writer);
         if (err.get() != null) {
@@ -137,7 +137,7 @@ import org.robovm.apple.dispatch.*;
      * @param batchAccessor
      * @throws NSErrorException
      */
-    public void prepareForReadingItems(NSArray<NSURL> readingURLs, NSFileCoordinatorReadingOptions readingOptions, NSArray<NSURL> writingURLs, NSFileCoordinatorWritingOptions writingOptions, @Block("(@Block)") VoidBlock1<Runnable> batchAccessor) {
+    public void prepareForReadingItems(NSArray<NSURL> readingURLs, NSFileCoordinatorReadingOptions readingOptions, NSArray<NSURL> writingURLs, NSFileCoordinatorWritingOptions writingOptions, @Block("(@Block)") VoidBlock1<Runnable> batchAccessor) throws NSErrorException {
         NSError.NSErrorPtr err = new NSError.NSErrorPtr();
         prepareForReadingItems(readingURLs, readingOptions, writingURLs, writingOptions, err, batchAccessor);
         if (err.get() != null) {

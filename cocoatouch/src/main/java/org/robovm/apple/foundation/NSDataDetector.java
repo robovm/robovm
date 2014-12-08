@@ -55,7 +55,7 @@ import org.robovm.apple.dispatch.*;
      * @param checkingTypes
      * @throws NSErrorException
      */
-    public NSDataDetector(NSTextCheckingType checkingTypes) { 
+    public NSDataDetector(NSTextCheckingType checkingTypes) throws NSErrorException { 
         super((SkipInit) null);
         NSError.NSErrorPtr err = new NSError.NSErrorPtr();
         initObject(initWithTypes$error$(checkingTypes, err));

@@ -66,9 +66,9 @@ import org.robovm.apple.mediatoolbox.*;
     @Property(selector = "setAdvanceIntervalForDelegateInvocation:")
     public native void setAdvanceIntervalForDelegateInvocation(double v);
     @Property(selector = "textStylingResolution")
-    public native String getTextStylingResolution();
+    public native AVPlayerItemLegibleOutputTextStylingResolution getTextStylingResolution();
     @Property(selector = "setTextStylingResolution:")
-    public native void setTextStylingResolution(String v);
+    public native void setTextStylingResolution(AVPlayerItemLegibleOutputTextStylingResolution v);
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/

@@ -55,7 +55,7 @@ import org.robovm.apple.coremedia.*;
      */
     @Deprecated
     @Bridge(symbol="AudioSessionInitialize", optional=true)
-    public static native int initialize(CFRunLoop inRunLoop, String inRunLoopMode, FunctionPtr inInterruptionListener, VoidPtr inClientData);
+    public static native int initialize(CFRunLoop inRunLoop, CFString inRunLoopMode, FunctionPtr inInterruptionListener, VoidPtr inClientData);
     /**
      * @since Available in iOS 2.0 and later.
      * @deprecated Deprecated in iOS 7.0.
@@ -98,13 +98,6 @@ import org.robovm.apple.coremedia.*;
     @Deprecated
     @Bridge(symbol="AudioSessionAddPropertyListener", optional=true)
     public static native int addPropertyListener(int inID, FunctionPtr inProc, VoidPtr inClientData);
-    /**
-     * @since Available in iOS 2.0 and later.
-     * @deprecated Deprecated in iOS 2.0.
-     */
-    @Deprecated
-    @Bridge(symbol="AudioSessionRemovePropertyListener", optional=true)
-    public static native int removePropertyListener(int inID);
     /**
      * @since Available in iOS 2.1 and later.
      * @deprecated Deprecated in iOS 7.0.

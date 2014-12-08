@@ -57,7 +57,7 @@ import org.robovm.apple.mediatoolbox.*;
     /*</constructors>*/
     /*<properties>*/
     @Property(selector = "mediaType")
-    public native String getMediaType();
+    public native AVMediaType getMediaType();
     @Property(selector = "mediaSubTypes")
     public native NSArray<NSNumber> getMediaSubTypes();
     @Property(selector = "isPlayable")
@@ -72,7 +72,7 @@ import org.robovm.apple.mediatoolbox.*;
     @Property(selector = "commonMetadata")
     public native NSArray<AVMetadataItem> getCommonMetadata();
     @Property(selector = "availableMetadataFormats")
-    public native NSArray<NSString> getAvailableMetadataFormats();
+    public native @org.robovm.rt.bro.annotation.Marshaler(AVMetadataFormat.AsListMarshaler.class) List<AVMetadataFormat> getAvailableMetadataFormats();
     /**
      * @since Available in iOS 7.0 and later.
      */
@@ -82,13 +82,13 @@ import org.robovm.apple.mediatoolbox.*;
     /*<members>*//*</members>*/
     /*<methods>*/
     @Method(selector = "hasMediaCharacteristic:")
-    public native boolean hasMediaCharacteristic(String mediaCharacteristic);
+    public native boolean hasMediaCharacteristic(AVMediaCharacteristic mediaCharacteristic);
     @Method(selector = "metadataForFormat:")
-    public native NSArray<AVMetadataItem> getMetadata(NSString format);
+    public native NSArray<AVMetadataItem> getMetadata(AVMetadataFormat format);
     @Method(selector = "associatedMediaSelectionOptionInMediaSelectionGroup:")
     public native AVMediaSelectionOption getAssociatedMediaSelectionOption(AVMediaSelectionGroup mediaSelectionGroup);
     @Method(selector = "propertyList")
-    public native NSObject getPropertyList();
+    public native NSPropertyList getPropertyList();
     /**
      * @since Available in iOS 7.0 and later.
      */

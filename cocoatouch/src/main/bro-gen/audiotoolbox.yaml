@@ -6,7 +6,6 @@ clang_args: ['-x', 'objective-c']
 headers:
     - /System/Library/Frameworks/AudioToolbox.framework/Headers/AudioToolbox.h
 typedefs:
-    'AudioConverterRef': 'AudioConverter'
 
 enums:
     AudioConverterProperty: { first: kAudioConverterPropertyMinimumInputBufferSize, marshaler: ValuedEnum.AsMachineSizedUIntMarshaler }
@@ -67,42 +66,26 @@ classes:
     AudioToolbox:
         annotations: ['@Marshaler(NSString.AsStringMarshaler.class)']
 
-    # Opaque Types
-    AudioConverter:
-        extends: CFType
-        add_ptr: true
+    OpaqueAudioConverter:
+        name: AudioConverter
+    AudioConverterRef:
+        name: AudioConverter
     OpaqueAudioFileID:
         name: "AudioFile"
-        extends: CFType
     AudioFileID:
         name: "AudioFile"
-        extends: CFType
     OpaqueAudioFileStreamID:
         name: "AudioFileStream"
-        extends: CFType
     AudioFileStreamID:
         name: "AudioFileStream"
-        extends: CFType
-    AudioQueue:
-        extends: CFType
     OpaqueAudioQueue:
         name: "AudioQueue"
-        extends: CFType
     OpaqueAUGraph:
         name: "AUGraph"
-        extends: CFType
-    AUGraph:
-        extends: CFType
     OpaqueExtAudioFile:
         name: "ExtAudioFile"
-        extends: CFType
-    ExtAudioFile:
-        extends: CFType
     OpaqueAudioQueueTimeline:
         name: "AudioQueueTimeline"
-        extends: CFType
-    AudioQueueTimeline:
-        extends: CFType
     OpaqueAudioQueueProcessingTap:
         name: "AudioQueueProcessingTap"
     AudioQueueProcessingTap:

@@ -55,7 +55,7 @@ import org.robovm.apple.dispatch.*;
      * @param options
      * @throws NSErrorException
      */
-    public NSRegularExpression(String pattern, NSRegularExpressionOptions options) {
+    public NSRegularExpression(String pattern, NSRegularExpressionOptions options) throws NSErrorException {
         super((SkipInit) null);
         NSError.NSErrorPtr err = new NSError.NSErrorPtr();
         initObject(init(pattern, options, err));

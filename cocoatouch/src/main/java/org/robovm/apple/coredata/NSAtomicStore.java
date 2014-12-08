@@ -58,7 +58,7 @@ import org.robovm.apple.foundation.NSError.NSErrorPtr;
      * @return
      * @throws NSErrorException
      */
-    public boolean load() {
+    public boolean load() throws NSErrorException {
         NSError.NSErrorPtr err = new NSError.NSErrorPtr();
         boolean result = load(err);
         if (err.get() != null) {
@@ -71,7 +71,7 @@ import org.robovm.apple.foundation.NSError.NSErrorPtr;
      * @return
      * @throws NSErrorException
      */
-    public boolean save() {
+    public boolean save() throws NSErrorException {
         NSError.NSErrorPtr err = new NSError.NSErrorPtr();
         boolean result = save(err);
         if (err.get() != null) {

@@ -79,7 +79,7 @@ import org.robovm.apple.foundation.*;
      * @return
      * @throws NSErrorException
      */
-    public boolean loadMetadata() {
+    public boolean loadMetadata() throws NSErrorException {
         NSError.NSErrorPtr err = new NSError.NSErrorPtr();
         boolean result = loadMetadata(err);
         if (err.get() != null) {
@@ -93,7 +93,7 @@ import org.robovm.apple.foundation.*;
      * @return
      * @throws NSErrorException
      */
-    public static NSPersistentStoreMetadata getMetadataForPersistentStore(NSURL url) {
+    public static NSPersistentStoreMetadata getMetadataForPersistentStore(NSURL url) throws NSErrorException {
         NSError.NSErrorPtr err = new NSError.NSErrorPtr();
         NSPersistentStoreMetadata result = getMetadataForPersistentStore(url, err);
         if (err.get() != null) {
@@ -108,7 +108,7 @@ import org.robovm.apple.foundation.*;
      * @return
      * @throws NSErrorException
      */
-    public static boolean setMetadataForPersistentStore(NSURL url, NSPersistentStoreMetadata metadata) {
+    public static boolean setMetadataForPersistentStore(NSURL url, NSPersistentStoreMetadata metadata) throws NSErrorException {
         NSError.NSErrorPtr err = new NSError.NSErrorPtr();
         boolean result = setMetadataForPersistentStore(metadata, url, err);
         if (err.get() != null) {

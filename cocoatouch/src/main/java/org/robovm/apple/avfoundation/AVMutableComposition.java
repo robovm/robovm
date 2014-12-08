@@ -64,11 +64,27 @@ import org.robovm.apple.mediatoolbox.*;
     public native void setNaturalSize(@ByVal CGSize v);
     /*</properties>*/
     /*<members>*//*</members>*/
+    /**
+     * 
+     * @param timeRange
+     * @param asset
+     * @param startTime
+     * @return
+     * @throws NSErrorException
+     */
+    public boolean insertTimeRange(@ByVal CMTimeRange timeRange, AVAsset asset, @ByVal CMTime startTime) throws NSErrorException {
+        NSError.NSErrorPtr err = new NSError.NSErrorPtr();
+        boolean result = insertTimeRange(timeRange, asset, startTime, err);
+        if (err.get() != null) {
+            throw new NSErrorException(err.get());
+        }
+        return result;
+    }
     /*<methods>*/
     @Method(selector = "composition")
     public static native AVMutableComposition create();
     @Method(selector = "insertTimeRange:ofAsset:atTime:error:")
-    public native boolean insertTimeRange(@ByVal CMTimeRange timeRange, AVAsset asset, @ByVal CMTime startTime, NSError.NSErrorPtr outError);
+    protected native boolean insertTimeRange(@ByVal CMTimeRange timeRange, AVAsset asset, @ByVal CMTime startTime, NSError.NSErrorPtr outError);
     @Method(selector = "insertEmptyTimeRange:")
     public native void insertEmptyTimeRange(@ByVal CMTimeRange timeRange);
     @Method(selector = "removeTimeRange:")
@@ -76,7 +92,7 @@ import org.robovm.apple.mediatoolbox.*;
     @Method(selector = "scaleTimeRange:toDuration:")
     public native void scaleTimeRange(@ByVal CMTimeRange timeRange, @ByVal CMTime duration);
     @Method(selector = "addMutableTrackWithMediaType:preferredTrackID:")
-    public native AVMutableCompositionTrack addMutableTrack(String mediaType, int preferredTrackID);
+    public native AVMutableCompositionTrack addMutableTrack(AVMediaType mediaType, int preferredTrackID);
     @Method(selector = "removeTrack:")
     public native void removeTrack(AVCompositionTrack track);
     @Method(selector = "mutableTrackCompatibleWithTrack:")

@@ -47,7 +47,6 @@ import org.robovm.apple.mediatoolbox.*;
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/AVVideoCompositionLayerInstruction/*</name>*/ 
     extends /*<extends>*/NSObject/*</extends>*/ 
     /*<implements>*//*</implements>*/ {
-
     /*<ptr>*/public static class AVVideoCompositionLayerInstructionPtr extends Ptr<AVVideoCompositionLayerInstruction, AVVideoCompositionLayerInstructionPtr> {}/*</ptr>*/
     /*<bind>*/static { ObjCRuntime.bind(AVVideoCompositionLayerInstruction.class); }/*</bind>*/
     /*<constants>*//*</constants>*/
@@ -60,15 +59,45 @@ import org.robovm.apple.mediatoolbox.*;
     public native int getTrackID();
     /*</properties>*/
     /*<members>*//*</members>*/
+    public AVTimeRamp<CGAffineTransform> getTransformRamp(CMTime time) {
+        CGAffineTransform.CGAffineTransformPtr start = new CGAffineTransform.CGAffineTransformPtr();
+        CGAffineTransform.CGAffineTransformPtr end = new CGAffineTransform.CGAffineTransformPtr();
+        CMTimeRange.CMTimeRangePtr timeRange = new CMTimeRange.CMTimeRangePtr();
+        boolean valid = getTransformRamp(time, start, end, timeRange);
+        if (valid) {
+            return new AVTimeRamp<CGAffineTransform>(start.get(), end.get(), timeRange.get());
+        }
+        return null;
+    }
+    public AVTimeRamp<Float> getOpacityRamp(CMTime time) {
+        FloatPtr start = new FloatPtr();
+        FloatPtr end = new FloatPtr();
+        CMTimeRange.CMTimeRangePtr timeRange = new CMTimeRange.CMTimeRangePtr();
+        boolean valid = getOpacityRamp(time, start, end, timeRange);
+        if (valid) {
+            return new AVTimeRamp<Float>(start.get(), end.get(), timeRange.get());
+        }
+        return null;
+    }
+    public AVTimeRamp<CGRect> getCropRectangleRamp(CMTime time) {
+        CGRect.CGRectPtr start = new CGRect.CGRectPtr();
+        CGRect.CGRectPtr end = new CGRect.CGRectPtr();
+        CMTimeRange.CMTimeRangePtr timeRange = new CMTimeRange.CMTimeRangePtr();
+        boolean valid = getCropRectangleRamp(time, start, end, timeRange);
+        if (valid) {
+            return new AVTimeRamp<CGRect>(start.get(), end.get(), timeRange.get());
+        }
+        return null;
+    }
     /*<methods>*/
     @Method(selector = "getTransformRampForTime:startTransform:endTransform:timeRange:")
-    public native boolean getTransformRamp(@ByVal CMTime time, CGAffineTransform startTransform, CGAffineTransform endTransform, CMTimeRange timeRange);
+    protected native boolean getTransformRamp(@ByVal CMTime time, CGAffineTransform.CGAffineTransformPtr startTransform, CGAffineTransform.CGAffineTransformPtr endTransform, CMTimeRange.CMTimeRangePtr timeRange);
     @Method(selector = "getOpacityRampForTime:startOpacity:endOpacity:timeRange:")
-    public native boolean getOpacityRamp(@ByVal CMTime time, FloatPtr startOpacity, FloatPtr endOpacity, CMTimeRange timeRange);
+    protected native boolean getOpacityRamp(@ByVal CMTime time, FloatPtr startOpacity, FloatPtr endOpacity, CMTimeRange.CMTimeRangePtr timeRange);
     /**
      * @since Available in iOS 7.0 and later.
      */
     @Method(selector = "getCropRectangleRampForTime:startCropRectangle:endCropRectangle:timeRange:")
-    public native boolean getCropRectangleRamp(@ByVal CMTime time, CGRect startCropRectangle, CGRect endCropRectangle, CMTimeRange timeRange);
+    protected native boolean getCropRectangleRamp(@ByVal CMTime time, CGRect.CGRectPtr startCropRectangle, CGRect.CGRectPtr endCropRectangle, CMTimeRange.CMTimeRangePtr timeRange);
     /*</methods>*/
 }

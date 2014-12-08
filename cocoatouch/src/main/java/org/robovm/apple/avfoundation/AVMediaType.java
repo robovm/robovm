@@ -1,0 +1,179 @@
+/*
+ * Copyright (C) 2014 Trillian Mobile AB
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+package org.robovm.apple.avfoundation;
+
+/*<imports>*/
+import java.io.*;
+import java.nio.*;
+import java.util.*;
+import org.robovm.objc.*;
+import org.robovm.objc.annotation.*;
+import org.robovm.objc.block.*;
+import org.robovm.rt.*;
+import org.robovm.rt.bro.*;
+import org.robovm.rt.bro.annotation.*;
+import org.robovm.rt.bro.ptr.*;
+import org.robovm.apple.foundation.*;
+import org.robovm.apple.dispatch.*;
+import org.robovm.apple.coreanimation.*;
+import org.robovm.apple.corefoundation.*;
+import org.robovm.apple.coregraphics.*;
+import org.robovm.apple.coreaudio.*;
+import org.robovm.apple.coremedia.*;
+import org.robovm.apple.corevideo.*;
+import org.robovm.apple.audiotoolbox.*;
+import org.robovm.apple.mediatoolbox.*;
+/*</imports>*/
+
+/*<javadoc>*/
+/*</javadoc>*/
+@Marshaler(AVMediaType.Marshaler.class)
+/*<annotations>*/@Library("AVFoundation")/*</annotations>*/
+/*<visibility>*/public/*</visibility>*/ class /*<name>*/AVMediaType/*</name>*/ 
+    extends /*<extends>*/Object/*</extends>*/ 
+    /*<implements>*//*</implements>*/ {
+
+    public static class Marshaler {
+        @MarshalsPointer
+        public static AVMediaType toObject(Class<AVMediaType> cls, long handle, long flags) {
+            NSString o = (NSString) NSObject.Marshaler.toObject(NSString.class, handle, flags);
+            if (o == null) {
+                return null;
+            }
+            return AVMediaType.valueOf(o);
+        }
+        @MarshalsPointer
+        public static long toNative(AVMediaType o, long flags) {
+            if (o == null) {
+                return 0L;
+            }
+            return NSObject.Marshaler.toNative(o.value(), flags);
+        }
+    }
+    
+    /*<ptr>*/
+    /*</ptr>*/
+    /*<bind>*/static { Bro.bind(AVMediaType.class); }/*</bind>*/
+    /*<constants>*//*</constants>*/
+    /**
+     * @since Available in iOS 4.0 and later.
+     */
+    public static final AVMediaType Video = new AVMediaType("VideoValue");
+    /**
+     * @since Available in iOS 4.0 and later.
+     */
+    public static final AVMediaType Audio = new AVMediaType("AudioValue");
+    /**
+     * @since Available in iOS 4.0 and later.
+     */
+    public static final AVMediaType Text = new AVMediaType("TextValue");
+    /**
+     * @since Available in iOS 4.0 and later.
+     */
+    public static final AVMediaType ClosedCaption = new AVMediaType("ClosedCaptionValue");
+    /**
+     * @since Available in iOS 4.0 and later.
+     */
+    public static final AVMediaType Subtitle = new AVMediaType("SubtitleValue");
+    /**
+     * @since Available in iOS 4.0 and later.
+     */
+    public static final AVMediaType Timecode = new AVMediaType("TimecodeValue");
+    /**
+     * @since Available in iOS 4.0 and later.
+     */
+    public static final AVMediaType Muxed = new AVMediaType("MuxedValue");
+    /**
+     * @since Available in iOS 6.0 and later.
+     */
+    public static final AVMediaType Metadata = new AVMediaType("MetadataValue");
+    
+    private static AVMediaType[] values = new AVMediaType[] {Video, Audio, Text, ClosedCaption, Subtitle, Timecode, 
+        Muxed, Metadata};
+    private final LazyGlobalValue<NSString> lazyGlobalValue;
+    
+    private AVMediaType(String getterName) {
+        lazyGlobalValue = new LazyGlobalValue<>(getClass(), getterName);
+    }
+    /*<constructors>*//*</constructors>*/
+    /*<properties>*//*</properties>*/
+    /*<members>*//*</members>*/
+    public NSString value() {
+        return lazyGlobalValue.value();
+    }
+    
+    public static AVMediaType valueOf(NSString value) {
+        for (AVMediaType v : values) {
+            if (v.value().equals(value)) {
+                return v;
+            }
+        }
+        throw new IllegalArgumentException("No constant with value " + value + " found in " 
+            + /*<name>*/AVMediaType/*</name>*/.class.getName());
+    }
+    /*<methods>*/
+    /**
+     * @since Available in iOS 4.0 and later.
+     */
+    @GlobalValue(symbol="AVMediaTypeVideo", optional=true)
+    protected static native NSString VideoValue();
+    /**
+     * @since Available in iOS 4.0 and later.
+     */
+    @GlobalValue(symbol="AVMediaTypeAudio", optional=true)
+    protected static native NSString AudioValue();
+    /**
+     * @since Available in iOS 4.0 and later.
+     */
+    @GlobalValue(symbol="AVMediaTypeText", optional=true)
+    protected static native NSString TextValue();
+    /**
+     * @since Available in iOS 4.0 and later.
+     */
+    @GlobalValue(symbol="AVMediaTypeClosedCaption", optional=true)
+    protected static native NSString ClosedCaptionValue();
+    /**
+     * @since Available in iOS 4.0 and later.
+     */
+    @GlobalValue(symbol="AVMediaTypeSubtitle", optional=true)
+    protected static native NSString SubtitleValue();
+    /**
+     * @since Available in iOS 4.0 and later.
+     */
+    @GlobalValue(symbol="AVMediaTypeTimecode", optional=true)
+    protected static native NSString TimecodeValue();
+    /**
+     * @since Available in iOS 6.0 and later.
+     */
+    @GlobalValue(symbol="AVMediaTypeMetadata", optional=true)
+    protected static native NSString MetadataValue();
+    /**
+     * @since Available in iOS 4.0 and later.
+     */
+    @GlobalValue(symbol="AVMediaTypeMuxed", optional=true)
+    protected static native NSString MuxedValue();
+    /**
+     * @since Available in iOS 4.0 and later.
+     */
+    @GlobalValue(symbol="AVFileType3GPP", optional=true)
+    protected static native NSString _3GPPValue();
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
+    @GlobalValue(symbol="AVFileType3GPP2", optional=true)
+    protected static native NSString _3GPP2Value();
+    /*</methods>*/
+}

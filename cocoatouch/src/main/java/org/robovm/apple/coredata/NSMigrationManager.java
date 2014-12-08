@@ -90,7 +90,7 @@ import org.robovm.apple.foundation.*;
      * @return
      * @throws NSErrorException
      */
-    public boolean migrateStore(NSURL sourceURL, NSPersistentStoreType sStoreType, NSPersistentStoreOptions sOptions, NSMappingModel mappings, NSURL dURL, NSPersistentStoreType dStoreType, NSPersistentStoreOptions dOptions) {
+    public boolean migrateStore(NSURL sourceURL, NSPersistentStoreType sStoreType, NSPersistentStoreOptions sOptions, NSMappingModel mappings, NSURL dURL, NSPersistentStoreType dStoreType, NSPersistentStoreOptions dOptions) throws NSErrorException {
         return migrateStore(sourceURL, sStoreType.value(), sOptions, mappings, dURL, dStoreType.value(), dOptions);
     }
     /**
@@ -105,7 +105,7 @@ import org.robovm.apple.foundation.*;
      * @return
      * @throws NSErrorException
      */
-    public boolean migrateStore(NSURL sourceURL, String sStoreType, NSPersistentStoreOptions sOptions, NSMappingModel mappings, NSURL dURL, String dStoreType, NSPersistentStoreOptions dOptions) {
+    public boolean migrateStore(NSURL sourceURL, String sStoreType, NSPersistentStoreOptions sOptions, NSMappingModel mappings, NSURL dURL, String dStoreType, NSPersistentStoreOptions dOptions) throws NSErrorException {
         NSError.NSErrorPtr err = new NSError.NSErrorPtr();
         boolean result = migrateStore(sourceURL, sStoreType, sOptions, mappings, dURL, dStoreType, dOptions, err);
         if (err.get() != null) {

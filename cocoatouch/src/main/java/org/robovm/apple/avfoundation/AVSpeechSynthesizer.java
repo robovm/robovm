@@ -68,7 +68,7 @@ import org.robovm.apple.mediatoolbox.*;
     /*<members>*//*</members>*/
     /*<methods>*/
     @Method(selector = "speakUtterance:")
-    public native void addSpeakUtterance(AVSpeechUtterance utterance);
+    public native void enqueueSpeakUtterance(AVSpeechUtterance utterance);
     @Method(selector = "stopSpeakingAtBoundary:")
     public native boolean stopSpeaking(AVSpeechBoundary boundary);
     @Method(selector = "pauseSpeakingAtBoundary:")

@@ -38,13 +38,15 @@ import org.robovm.apple.coremedia.*;
 /*</javadoc>*/
 /*<annotations>*/@Library("AudioToolbox")/*</annotations>*/
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/AudioConverter/*</name>*/ 
-    extends /*<extends>*/CFType/*</extends>*/ 
+    extends /*<extends>*/NativeObject/*</extends>*/ 
     /*<implements>*//*</implements>*/ {
 
     /*<ptr>*/public static class AudioConverterPtr extends Ptr<AudioConverter, AudioConverterPtr> {}/*</ptr>*/
     /*<bind>*/static { Bro.bind(AudioConverter.class); }/*</bind>*/
     /*<constants>*//*</constants>*/
-    /*<constructors>*//*</constructors>*/
+    /*<constructors>*/
+    protected AudioConverter() {}
+    /*</constructors>*/
     /*<properties>*//*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/

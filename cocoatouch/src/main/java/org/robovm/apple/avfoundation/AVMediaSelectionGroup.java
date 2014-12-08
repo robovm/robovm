@@ -69,19 +69,19 @@ import org.robovm.apple.mediatoolbox.*;
     /*<members>*//*</members>*/
     /*<methods>*/
     @Method(selector = "mediaSelectionOptionWithPropertyList:")
-    public native AVMediaSelectionOption getMediaSelectionOption(NSObject plist);
+    public native AVMediaSelectionOption getMediaSelectionOption(NSPropertyList plist);
     @Method(selector = "playableMediaSelectionOptionsFromArray:")
-    public static native NSArray<AVMediaSelectionOption> getPlayableMediaSelectionOptions(NSArray<AVMediaSelectionOption> mediaSelectionOptions);
+    public static native NSArray<AVMediaSelectionOption> filterPlayableMediaSelectionOptions(NSArray<AVMediaSelectionOption> mediaSelectionOptions);
     /**
      * @since Available in iOS 6.0 and later.
      */
     @Method(selector = "mediaSelectionOptionsFromArray:filteredAndSortedAccordingToPreferredLanguages:")
-    public static native NSArray<AVMediaSelectionOption> getMediaSelectionOptions(NSArray<AVMediaSelectionOption> mediaSelectionOptions, NSArray<NSString> preferredLanguages);
+    public static native NSArray<AVMediaSelectionOption> filterMediaSelectionOptionsByPreferredLanguages(NSArray<AVMediaSelectionOption> mediaSelectionOptions, @org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String> preferredLanguages);
     @Method(selector = "mediaSelectionOptionsFromArray:withLocale:")
-    public static native NSArray<AVMediaSelectionOption> getMediaSelectionOption(NSArray<AVMediaSelectionOption> mediaSelectionOptions, NSLocale locale);
+    public static native NSArray<AVMediaSelectionOption> filterMediaSelectionOptionsByLocale(NSArray<AVMediaSelectionOption> mediaSelectionOptions, NSLocale locale);
     @Method(selector = "mediaSelectionOptionsFromArray:withMediaCharacteristics:")
-    public static native NSArray<AVMediaSelectionOption> getMediaSelectionOptionsWithMediaCharacteristics(NSArray<AVMediaSelectionOption> mediaSelectionOptions, NSArray<NSString> mediaCharacteristics);
+    public static native NSArray<AVMediaSelectionOption> filterMediaSelectionOptionsWithMediaCharacteristics(NSArray<AVMediaSelectionOption> mediaSelectionOptions, @org.robovm.rt.bro.annotation.Marshaler(AVMediaCharacteristic.AsListMarshaler.class) List<AVMediaCharacteristic> mediaCharacteristics);
     @Method(selector = "mediaSelectionOptionsFromArray:withoutMediaCharacteristics:")
-    public static native NSArray<AVMediaSelectionOption> getMediaSelectionOptionsWithoutMediaCharacteristics(NSArray<AVMediaSelectionOption> mediaSelectionOptions, NSArray<NSString> mediaCharacteristics);
+    public static native NSArray<AVMediaSelectionOption> filterMediaSelectionOptionsWithoutMediaCharacteristics(NSArray<AVMediaSelectionOption> mediaSelectionOptions, @org.robovm.rt.bro.annotation.Marshaler(AVMediaCharacteristic.AsListMarshaler.class) List<AVMediaCharacteristic> mediaCharacteristics);
     /*</methods>*/
 }

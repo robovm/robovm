@@ -54,7 +54,7 @@ import org.robovm.apple.coregraphics.*;
      * @since Available in iOS 7.0 and later.
      * @throws NSErrorException
      */
-    public boolean copyImageSource(CGImageSource isrc, CGImageDestinationCopySourceOptions options) {
+    public boolean copyImageSource(CGImageSource isrc, CGImageDestinationCopySourceOptions options) throws NSErrorException {
         CFError.CFErrorPtr err = new CFError.CFErrorPtr();
         boolean result = copyImageSource(isrc, options, err);
         if (err.get() != null) {

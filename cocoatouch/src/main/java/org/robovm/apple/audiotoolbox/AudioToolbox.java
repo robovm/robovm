@@ -69,168 +69,168 @@ import org.robovm.apple.coremedia.*;
      */
     @Deprecated
     @GlobalValue(symbol="kAudioSession_RouteChangeKey_Reason", optional=true)
-    public static native String Value__kAudioSession_RouteChangeKey_Reason();
+    public static native CFString Value__kAudioSession_RouteChangeKey_Reason();
     /**
      * @since Available in iOS 5.0 and later.
      * @deprecated Deprecated in iOS 7.0.
      */
     @Deprecated
     @GlobalValue(symbol="kAudioSession_AudioRouteChangeKey_PreviousRouteDescription", optional=true)
-    public static native String Value__kAudioSession_AudioRouteChangeKey_PreviousRouteDescription();
+    public static native CFString Value__kAudioSession_AudioRouteChangeKey_PreviousRouteDescription();
     /**
      * @since Available in iOS 5.0 and later.
      * @deprecated Deprecated in iOS 7.0.
      */
     @Deprecated
     @GlobalValue(symbol="kAudioSession_AudioRouteChangeKey_CurrentRouteDescription", optional=true)
-    public static native String Value__kAudioSession_AudioRouteChangeKey_CurrentRouteDescription();
+    public static native CFString Value__kAudioSession_AudioRouteChangeKey_CurrentRouteDescription();
     /**
      * @since Available in iOS 5.0 and later.
      * @deprecated Deprecated in iOS 7.0.
      */
     @Deprecated
     @GlobalValue(symbol="kAudioSession_AudioRouteKey_Inputs", optional=true)
-    public static native String Value__kAudioSession_AudioRouteKey_Inputs();
+    public static native CFString Value__kAudioSession_AudioRouteKey_Inputs();
     /**
      * @since Available in iOS 5.0 and later.
      * @deprecated Deprecated in iOS 7.0.
      */
     @Deprecated
     @GlobalValue(symbol="kAudioSession_AudioRouteKey_Outputs", optional=true)
-    public static native String Value__kAudioSession_AudioRouteKey_Outputs();
+    public static native CFString Value__kAudioSession_AudioRouteKey_Outputs();
     /**
      * @since Available in iOS 5.0 and later.
      * @deprecated Deprecated in iOS 7.0.
      */
     @Deprecated
     @GlobalValue(symbol="kAudioSession_AudioRouteKey_Type", optional=true)
-    public static native String Value__kAudioSession_AudioRouteKey_Type();
+    public static native CFString Value__kAudioSession_AudioRouteKey_Type();
     /**
      * @since Available in iOS 5.0 and later.
      * @deprecated Deprecated in iOS 7.0.
      */
     @Deprecated
     @GlobalValue(symbol="kAudioSessionInputRoute_LineIn", optional=true)
-    public static native String Value__kAudioSessionInputRoute_LineIn();
+    public static native CFString Value__kAudioSessionInputRoute_LineIn();
     /**
      * @since Available in iOS 5.0 and later.
      * @deprecated Deprecated in iOS 7.0.
      */
     @Deprecated
     @GlobalValue(symbol="kAudioSessionInputRoute_BuiltInMic", optional=true)
-    public static native String Value__kAudioSessionInputRoute_BuiltInMic();
+    public static native CFString Value__kAudioSessionInputRoute_BuiltInMic();
     /**
      * @since Available in iOS 5.0 and later.
      * @deprecated Deprecated in iOS 7.0.
      */
     @Deprecated
     @GlobalValue(symbol="kAudioSessionInputRoute_HeadsetMic", optional=true)
-    public static native String Value__kAudioSessionInputRoute_HeadsetMic();
+    public static native CFString Value__kAudioSessionInputRoute_HeadsetMic();
     /**
      * @since Available in iOS 5.0 and later.
      * @deprecated Deprecated in iOS 7.0.
      */
     @Deprecated
     @GlobalValue(symbol="kAudioSessionInputRoute_BluetoothHFP", optional=true)
-    public static native String Value__kAudioSessionInputRoute_BluetoothHFP();
+    public static native CFString Value__kAudioSessionInputRoute_BluetoothHFP();
     /**
      * @since Available in iOS 5.0 and later.
      * @deprecated Deprecated in iOS 7.0.
      */
     @Deprecated
     @GlobalValue(symbol="kAudioSessionInputRoute_USBAudio", optional=true)
-    public static native String Value__kAudioSessionInputRoute_USBAudio();
+    public static native CFString Value__kAudioSessionInputRoute_USBAudio();
     /**
      * @since Available in iOS 5.0 and later.
      * @deprecated Deprecated in iOS 7.0.
      */
     @Deprecated
     @GlobalValue(symbol="kAudioSessionOutputRoute_LineOut", optional=true)
-    public static native String Value__kAudioSessionOutputRoute_LineOut();
+    public static native CFString Value__kAudioSessionOutputRoute_LineOut();
     /**
      * @since Available in iOS 5.0 and later.
      * @deprecated Deprecated in iOS 7.0.
      */
     @Deprecated
     @GlobalValue(symbol="kAudioSessionOutputRoute_Headphones", optional=true)
-    public static native String Value__kAudioSessionOutputRoute_Headphones();
+    public static native CFString Value__kAudioSessionOutputRoute_Headphones();
     /**
      * @since Available in iOS 5.0 and later.
      * @deprecated Deprecated in iOS 7.0.
      */
     @Deprecated
     @GlobalValue(symbol="kAudioSessionOutputRoute_BluetoothHFP", optional=true)
-    public static native String Value__kAudioSessionOutputRoute_BluetoothHFP();
+    public static native CFString Value__kAudioSessionOutputRoute_BluetoothHFP();
     /**
      * @since Available in iOS 5.0 and later.
      * @deprecated Deprecated in iOS 7.0.
      */
     @Deprecated
     @GlobalValue(symbol="kAudioSessionOutputRoute_BluetoothA2DP", optional=true)
-    public static native String Value__kAudioSessionOutputRoute_BluetoothA2DP();
+    public static native CFString Value__kAudioSessionOutputRoute_BluetoothA2DP();
     /**
      * @since Available in iOS 5.0 and later.
      * @deprecated Deprecated in iOS 7.0.
      */
     @Deprecated
     @GlobalValue(symbol="kAudioSessionOutputRoute_BuiltInReceiver", optional=true)
-    public static native String Value__kAudioSessionOutputRoute_BuiltInReceiver();
+    public static native CFString Value__kAudioSessionOutputRoute_BuiltInReceiver();
     /**
      * @since Available in iOS 5.0 and later.
      * @deprecated Deprecated in iOS 7.0.
      */
     @Deprecated
     @GlobalValue(symbol="kAudioSessionOutputRoute_BuiltInSpeaker", optional=true)
-    public static native String Value__kAudioSessionOutputRoute_BuiltInSpeaker();
+    public static native CFString Value__kAudioSessionOutputRoute_BuiltInSpeaker();
     /**
      * @since Available in iOS 5.0 and later.
      * @deprecated Deprecated in iOS 7.0.
      */
     @Deprecated
     @GlobalValue(symbol="kAudioSessionOutputRoute_USBAudio", optional=true)
-    public static native String Value__kAudioSessionOutputRoute_USBAudio();
+    public static native CFString Value__kAudioSessionOutputRoute_USBAudio();
     /**
      * @since Available in iOS 5.0 and later.
      * @deprecated Deprecated in iOS 7.0.
      */
     @Deprecated
     @GlobalValue(symbol="kAudioSessionOutputRoute_HDMI", optional=true)
-    public static native String Value__kAudioSessionOutputRoute_HDMI();
+    public static native CFString Value__kAudioSessionOutputRoute_HDMI();
     /**
      * @since Available in iOS 5.0 and later.
      * @deprecated Deprecated in iOS 7.0.
      */
     @Deprecated
     @GlobalValue(symbol="kAudioSessionOutputRoute_AirPlay", optional=true)
-    public static native String Value__kAudioSessionOutputRoute_AirPlay();
+    public static native CFString Value__kAudioSessionOutputRoute_AirPlay();
     /**
      * @since Available in iOS 5.0 and later.
      * @deprecated Deprecated in iOS 7.0.
      */
     @Deprecated
     @GlobalValue(symbol="kAudioSession_InputSourceKey_ID", optional=true)
-    public static native String Value__kAudioSession_InputSourceKey_ID();
+    public static native CFString Value__kAudioSession_InputSourceKey_ID();
     /**
      * @since Available in iOS 5.0 and later.
      * @deprecated Deprecated in iOS 7.0.
      */
     @Deprecated
     @GlobalValue(symbol="kAudioSession_InputSourceKey_Description", optional=true)
-    public static native String Value__kAudioSession_InputSourceKey_Description();
+    public static native CFString Value__kAudioSession_InputSourceKey_Description();
     /**
      * @since Available in iOS 5.0 and later.
      * @deprecated Deprecated in iOS 7.0.
      */
     @Deprecated
     @GlobalValue(symbol="kAudioSession_OutputDestinationKey_ID", optional=true)
-    public static native String Value__kAudioSession_OutputDestinationKey_ID();
+    public static native CFString Value__kAudioSession_OutputDestinationKey_ID();
     /**
      * @since Available in iOS 5.0 and later.
      * @deprecated Deprecated in iOS 7.0.
      */
     @Deprecated
     @GlobalValue(symbol="kAudioSession_OutputDestinationKey_Description", optional=true)
-    public static native String Value__kAudioSession_OutputDestinationKey_Description();
+    public static native CFString Value__kAudioSession_OutputDestinationKey_Description();
     
     /**
      * @since Available in iOS 2.0 and later.

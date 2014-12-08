@@ -57,7 +57,7 @@ import org.robovm.apple.mediatoolbox.*;
     /*</constructors>*/
     /*<properties>*/
     @Property(selector = "corners")
-    public native NSArray<NSDictionary<NSString, ?>> getCorners();
+    public native NSArray<NSDictionary<?, ?>> getCorners();
     @Property(selector = "stringValue")
     public native String getStringValue();
     /*</properties>*/

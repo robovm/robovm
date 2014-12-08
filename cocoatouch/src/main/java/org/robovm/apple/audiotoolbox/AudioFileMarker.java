@@ -48,7 +48,7 @@ import org.robovm.apple.coremedia.*;
     /*<constants>*//*</constants>*/
     /*<constructors>*/
     public AudioFileMarker() {}
-    public AudioFileMarker(double mFramePosition, String mName, int mMarkerID, AudioFileSMPTETime mSMPTETime, int mType, short mReserved, short mChannel) {
+    public AudioFileMarker(double mFramePosition, CFString mName, int mMarkerID, AudioFileSMPTETime mSMPTETime, int mType, short mReserved, short mChannel) {
         this.mFramePosition(mFramePosition);
         this.mName(mName);
         this.mMarkerID(mMarkerID);
@@ -62,8 +62,8 @@ import org.robovm.apple.coremedia.*;
     /*<members>*/
     @StructMember(0) public native double mFramePosition();
     @StructMember(0) public native AudioFileMarker mFramePosition(double mFramePosition);
-    @StructMember(1) public native String mName();
-    @StructMember(1) public native AudioFileMarker mName(String mName);
+    @StructMember(1) public native CFString mName();
+    @StructMember(1) public native AudioFileMarker mName(CFString mName);
     @StructMember(2) public native int mMarkerID();
     @StructMember(2) public native AudioFileMarker mMarkerID(int mMarkerID);
     @StructMember(3) public native @ByVal AudioFileSMPTETime mSMPTETime();

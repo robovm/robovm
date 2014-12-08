@@ -47,7 +47,7 @@ public class NSKeyValueCoder extends NSExtensions {
      * @return
      * @throws NSErrorException
      */
-    public boolean validateValue(String keyPath, NSObject value) {
+    public boolean validateValue(String keyPath, NSObject value) throws NSErrorException {
         NSError.NSErrorPtr err = new NSError.NSErrorPtr();
         boolean result = validateValueForKeyPath(object, value, keyPath, err);
         if (err.get() != null) {
@@ -111,7 +111,7 @@ public class NSKeyValueCoder extends NSExtensions {
 
     
     // ROBOVM NOTE: For simplicity we only expose the key-path methods 
-    // as they already have the same functionality from the key-only methods.
+    // as they already have the same functionality as the key-only methods.
     @Method(selector = "valueForKey:")
     private static native NSObject getValueForKey(NSObject thiz, String key);
     @Method(selector = "setValue:forKey:")

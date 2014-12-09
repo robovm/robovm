@@ -48,16 +48,28 @@ import org.robovm.apple.dispatch.*;
     /*<constructors>*/
     public MKMapPoint() {}
     public MKMapPoint(double x, double y) {
-        this.x(x);
-        this.y(y);
+        this.setX(x);
+        this.setY(y);
     }
     /*</constructors>*/
     /*<properties>*//*</properties>*/
     /*<members>*/
+    @StructMember(0) public native double getX();
+    @StructMember(0) public native MKMapPoint setX(double x);
+    
+    @Deprecated
     @StructMember(0) public native double x();
+    @Deprecated
     @StructMember(0) public native MKMapPoint x(double x);
+    
+    @StructMember(1) public native double getY();
+    @StructMember(1) public native MKMapPoint setY(double y);
+    
+    @Deprecated
     @StructMember(1) public native double y();
+    @Deprecated
     @StructMember(1) public native MKMapPoint y(double y);
+    
     /*</members>*/
     /*<methods>*/
     /**

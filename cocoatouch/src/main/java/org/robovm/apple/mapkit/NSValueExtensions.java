@@ -49,14 +49,13 @@ import org.robovm.apple.dispatch.*;
     private NSValueExtensions() {}
     /*</constructors>*/
     /*<properties>*/
-    
+    @Property(selector = "MKCoordinateValue")
+    public static native @ByVal CLLocationCoordinate2D getMKCoordinateValue(NSValue thiz);
+    @Property(selector = "MKCoordinateSpanValue")
+    public static native @ByVal MKCoordinateSpan getMKCoordinateSpanValue(NSValue thiz);
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
-    @Method(selector = "MKCoordinateValue")
-    public static native @ByVal CLLocationCoordinate2D getCoordinateValue(NSValue thiz);
-    @Method(selector = "MKCoordinateSpanValue")
-    public static native @ByVal MKCoordinateSpan getCoordinateSpanValue(NSValue thiz);
     @Method(selector = "valueWithMKCoordinate:")
     protected static native NSValue create(ObjCClass clazz, @ByVal CLLocationCoordinate2D coordinate);
     public static NSValue create(@ByVal CLLocationCoordinate2D coordinate) { return create(ObjCClass.getByType(NSValue.class), coordinate); }

@@ -53,16 +53,28 @@ import org.robovm.apple.mediatoolbox.*;
     /*<constructors>*/
     public AVAudio3DVectorOrientation() {}
     public AVAudio3DVectorOrientation(AVAudio3DVector forward, AVAudio3DVector up) {
-        this.forward(forward);
-        this.up(up);
+        this.setForward(forward);
+        this.setUp(up);
     }
     /*</constructors>*/
     /*<properties>*//*</properties>*/
     /*<members>*/
+    @StructMember(0) public native @ByVal AVAudio3DVector getForward();
+    @StructMember(0) public native AVAudio3DVectorOrientation setForward(@ByVal AVAudio3DVector forward);
+    
+    @Deprecated
     @StructMember(0) public native @ByVal AVAudio3DVector forward();
+    @Deprecated
     @StructMember(0) public native AVAudio3DVectorOrientation forward(@ByVal AVAudio3DVector forward);
+    
+    @StructMember(1) public native @ByVal AVAudio3DVector getUp();
+    @StructMember(1) public native AVAudio3DVectorOrientation setUp(@ByVal AVAudio3DVector up);
+    
+    @Deprecated
     @StructMember(1) public native @ByVal AVAudio3DVector up();
+    @Deprecated
     @StructMember(1) public native AVAudio3DVectorOrientation up(@ByVal AVAudio3DVector up);
+    
     /*</members>*/
     /*<methods>*//*</methods>*/
 }

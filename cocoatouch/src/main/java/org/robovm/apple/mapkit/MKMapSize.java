@@ -48,16 +48,28 @@ import org.robovm.apple.dispatch.*;
     /*<constructors>*/
     public MKMapSize() {}
     public MKMapSize(double width, double height) {
-        this.width(width);
-        this.height(height);
+        this.setWidth(width);
+        this.setHeight(height);
     }
     /*</constructors>*/
     /*<properties>*//*</properties>*/
     /*<members>*/
+    @StructMember(0) public native double getWidth();
+    @StructMember(0) public native MKMapSize setWidth(double width);
+    
+    @Deprecated
     @StructMember(0) public native double width();
+    @Deprecated
     @StructMember(0) public native MKMapSize width(double width);
+    
+    @StructMember(1) public native double getHeight();
+    @StructMember(1) public native MKMapSize setHeight(double height);
+    
+    @Deprecated
     @StructMember(1) public native double height();
+    @Deprecated
     @StructMember(1) public native MKMapSize height(double height);
+    
     /*</members>*/
     /*<methods>*/
     /**

@@ -44,28 +44,64 @@ import org.robovm.apple.dispatch.*;
     /*<constructors>*/
     public CFDictionaryKeyCallBacks() {}
     public CFDictionaryKeyCallBacks(@MachineSizedSInt long version, FunctionPtr retain, FunctionPtr release, FunctionPtr copyDescription, FunctionPtr equal, FunctionPtr hash) {
-        this.version(version);
-        this.retain(retain);
-        this.release(release);
-        this.copyDescription(copyDescription);
-        this.equal(equal);
-        this.hash(hash);
+        this.setVersion(version);
+        this.setRetain(retain);
+        this.setRelease(release);
+        this.setCopydescription(copyDescription);
+        this.setEqual(equal);
+        this.setHash(hash);
     }
     /*</constructors>*/
     /*<properties>*//*</properties>*/
     /*<members>*/
+    @StructMember(0) public native @MachineSizedSInt long getVersion();
+    @StructMember(0) public native CFDictionaryKeyCallBacks setVersion(@MachineSizedSInt long version);
+    
+    @Deprecated
     @StructMember(0) public native @MachineSizedSInt long version();
+    @Deprecated
     @StructMember(0) public native CFDictionaryKeyCallBacks version(@MachineSizedSInt long version);
+    
+    @StructMember(1) public native FunctionPtr getRetain();
+    @StructMember(1) public native CFDictionaryKeyCallBacks setRetain(FunctionPtr retain);
+    
+    @Deprecated
     @StructMember(1) public native FunctionPtr retain();
+    @Deprecated
     @StructMember(1) public native CFDictionaryKeyCallBacks retain(FunctionPtr retain);
+    
+    @StructMember(2) public native FunctionPtr getRelease();
+    @StructMember(2) public native CFDictionaryKeyCallBacks setRelease(FunctionPtr release);
+    
+    @Deprecated
     @StructMember(2) public native FunctionPtr release();
+    @Deprecated
     @StructMember(2) public native CFDictionaryKeyCallBacks release(FunctionPtr release);
+    
+    @StructMember(3) public native FunctionPtr getCopydescription();
+    @StructMember(3) public native CFDictionaryKeyCallBacks setCopydescription(FunctionPtr copyDescription);
+    
+    @Deprecated
     @StructMember(3) public native FunctionPtr copyDescription();
+    @Deprecated
     @StructMember(3) public native CFDictionaryKeyCallBacks copyDescription(FunctionPtr copyDescription);
+    
+    @StructMember(4) public native FunctionPtr getEqual();
+    @StructMember(4) public native CFDictionaryKeyCallBacks setEqual(FunctionPtr equal);
+    
+    @Deprecated
     @StructMember(4) public native FunctionPtr equal();
+    @Deprecated
     @StructMember(4) public native CFDictionaryKeyCallBacks equal(FunctionPtr equal);
+    
+    @StructMember(5) public native FunctionPtr getHash();
+    @StructMember(5) public native CFDictionaryKeyCallBacks setHash(FunctionPtr hash);
+    
+    @Deprecated
     @StructMember(5) public native FunctionPtr hash();
+    @Deprecated
     @StructMember(5) public native CFDictionaryKeyCallBacks hash(FunctionPtr hash);
+    
     /*</members>*/
     /*<methods>*//*</methods>*/
 }

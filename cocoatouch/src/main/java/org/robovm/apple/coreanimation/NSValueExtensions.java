@@ -48,12 +48,11 @@ import org.robovm.apple.opengles.*;
     private NSValueExtensions() {}
     /*</constructors>*/
     /*<properties>*/
-    
+    @Property(selector = "CATransform3DValue")
+    public static native @ByVal CATransform3D getCATransform3DValue(NSValue thiz);
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
-    @Method(selector = "CATransform3DValue")
-    public static native @ByVal CATransform3D getTransform3DValue(NSValue thiz);
     @Method(selector = "valueWithCATransform3D:")
     protected static native NSValue create(ObjCClass clazz, @ByVal CATransform3D t);
     public static NSValue create(@ByVal CATransform3D t) { return create(ObjCClass.getByType(NSValue.class), t); }

@@ -62,6 +62,8 @@ public enum /*<name>*/CFNetworkErrors/*</name>*/ implements ValuedEnum {
     ErrorPACFileAuth(309L),
     ErrorHTTPSProxyConnectionFailure(310L),
     StreamErrorHTTPSProxyFailureUnexpectedResponseToCONNECTMethod(311L),
+    URLErrorBackgroundSessionInUseByAnotherProcess(-996L),
+    URLErrorBackgroundSessionWasDisconnected(-997L),
     URLErrorUnknown(-998L),
     URLErrorCancelled(-999L),
     URLErrorBadURL(-1000L),

@@ -71,7 +71,7 @@ import org.robovm.apple.coremedia.*;
      * @since Available in iOS 4.0 and later.
      */
     @Bridge(symbol="CVBufferRemoveAttachment", optional=true)
-    public native void removeAttachment(CFString key);
+    public native void removeAttachment(String key);
     /**
      * @since Available in iOS 4.0 and later.
      */

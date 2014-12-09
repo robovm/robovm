@@ -40,7 +40,6 @@ public final class /*<name>*/CFNetServiceBrowserFlags/*</name>*/ extends Bits</*
     public static final CFNetServiceBrowserFlags MoreComing = new CFNetServiceBrowserFlags(1L);
     public static final CFNetServiceBrowserFlags IsDomain = new CFNetServiceBrowserFlags(2L);
     public static final CFNetServiceBrowserFlags IsDefault = new CFNetServiceBrowserFlags(4L);
-    public static final CFNetServiceBrowserFlags IsRegistrationDomain = new CFNetServiceBrowserFlags(4L);
     public static final CFNetServiceBrowserFlags Remove = new CFNetServiceBrowserFlags(8L);
     /*</values>*/
 

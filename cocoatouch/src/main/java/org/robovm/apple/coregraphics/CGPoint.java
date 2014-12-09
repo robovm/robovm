@@ -45,16 +45,28 @@ import org.robovm.apple.uikit.*;
     /*<constructors>*/
     public CGPoint() {}
     public CGPoint(@MachineSizedFloat double x, @MachineSizedFloat double y) {
-        this.x(x);
-        this.y(y);
+        this.setX(x);
+        this.setY(y);
     }
     /*</constructors>*/
     /*<properties>*//*</properties>*/
     /*<members>*/
+    @StructMember(0) public native @MachineSizedFloat double getX();
+    @StructMember(0) public native CGPoint setX(@MachineSizedFloat double x);
+    
+    @Deprecated
     @StructMember(0) public native @MachineSizedFloat double x();
+    @Deprecated
     @StructMember(0) public native CGPoint x(@MachineSizedFloat double x);
+    
+    @StructMember(1) public native @MachineSizedFloat double getY();
+    @StructMember(1) public native CGPoint setY(@MachineSizedFloat double y);
+    
+    @Deprecated
     @StructMember(1) public native @MachineSizedFloat double y();
+    @Deprecated
     @StructMember(1) public native CGPoint y(@MachineSizedFloat double y);
+    
     /*</members>*/
     
     public static CGPoint fromString(String string) {

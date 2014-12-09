@@ -43,16 +43,36 @@ import org.robovm.apple.dispatch.*;
     /*<properties>*//*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
+    /**
+     * @since Available in iOS 2.0 and later.
+     * @deprecated Deprecated in iOS 8.0.
+     */
+    @Deprecated
     @Bridge(symbol="CFPropertyListCreateFromXMLData", optional=true)
     public static native CFType createFromXMLData(CFAllocator allocator, CFData xmlData, CFPropertyListMutabilityOptions mutabilityOption, CFString.CFStringPtr errorString);
+    /**
+     * @since Available in iOS 2.0 and later.
+     * @deprecated Deprecated in iOS 8.0.
+     */
+    @Deprecated
     @Bridge(symbol="CFPropertyListCreateXMLData", optional=true)
     public static native CFData createXMLData(CFAllocator allocator, CFType propertyList);
     @Bridge(symbol="CFPropertyListCreateDeepCopy", optional=true)
     public static native CFType createDeepCopy(CFAllocator allocator, CFType propertyList, CFPropertyListMutabilityOptions mutabilityOption);
     @Bridge(symbol="CFPropertyListIsValid", optional=true)
     public static native boolean isValid(CFType plist, CFPropertyListFormat format);
+    /**
+     * @since Available in iOS 2.0 and later.
+     * @deprecated Deprecated in iOS 8.0.
+     */
+    @Deprecated
     @Bridge(symbol="CFPropertyListWriteToStream", optional=true)
     public static native @MachineSizedSInt long writeToStream(CFType propertyList, CFWriteStream stream, CFPropertyListFormat format, CFString.CFStringPtr errorString);
+    /**
+     * @since Available in iOS 2.0 and later.
+     * @deprecated Deprecated in iOS 8.0.
+     */
+    @Deprecated
     @Bridge(symbol="CFPropertyListCreateFromStream", optional=true)
     public static native CFType createFromStream(CFAllocator allocator, CFReadStream stream, @MachineSizedSInt long streamLength, CFPropertyListMutabilityOptions mutabilityOption, MachineSizedSIntPtr format, CFString.CFStringPtr errorString);
     /**

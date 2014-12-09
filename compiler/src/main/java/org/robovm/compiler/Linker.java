@@ -302,6 +302,12 @@ public class Linker {
     private void generateMachineCode(final Config config, ModuleBuilder[] mbs, 
             final List<File> objectFiles) throws IOException {
 
+        /*
+         * Make sure the tmpDir exists before we launch the worker threads. This
+         * is to prevent a race between threads to create this folder. See #631.
+         */
+        config.getTmpDir().mkdirs();
+
         Executor executor = config.getThreads() <= 1 ? AppCompiler.SAME_THREAD_EXECUTOR 
                 : Executors.newFixedThreadPool(config.getThreads());
 

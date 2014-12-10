@@ -44,58 +44,154 @@ import org.robovm.apple.dispatch.*;
     /*<constructors>*/
     public CFUUIDBytes() {}
     public CFUUIDBytes(byte byte0, byte byte1, byte byte2, byte byte3, byte byte4, byte byte5, byte byte6, byte byte7, byte byte8, byte byte9, byte byte10, byte byte11, byte byte12, byte byte13, byte byte14, byte byte15) {
-        this.byte0(byte0);
-        this.byte1(byte1);
-        this.byte2(byte2);
-        this.byte3(byte3);
-        this.byte4(byte4);
-        this.byte5(byte5);
-        this.byte6(byte6);
-        this.byte7(byte7);
-        this.byte8(byte8);
-        this.byte9(byte9);
-        this.byte10(byte10);
-        this.byte11(byte11);
-        this.byte12(byte12);
-        this.byte13(byte13);
-        this.byte14(byte14);
-        this.byte15(byte15);
+        this.setByte0(byte0);
+        this.setByte1(byte1);
+        this.setByte2(byte2);
+        this.setByte3(byte3);
+        this.setByte4(byte4);
+        this.setByte5(byte5);
+        this.setByte6(byte6);
+        this.setByte7(byte7);
+        this.setByte8(byte8);
+        this.setByte9(byte9);
+        this.setByte10(byte10);
+        this.setByte11(byte11);
+        this.setByte12(byte12);
+        this.setByte13(byte13);
+        this.setByte14(byte14);
+        this.setByte15(byte15);
     }
     /*</constructors>*/
     /*<properties>*//*</properties>*/
     /*<members>*/
+    @StructMember(0) public native byte getByte0();
+    @StructMember(0) public native CFUUIDBytes setByte0(byte byte0);
+    
+    @Deprecated
     @StructMember(0) public native byte byte0();
+    @Deprecated
     @StructMember(0) public native CFUUIDBytes byte0(byte byte0);
+    
+    @StructMember(1) public native byte getByte1();
+    @StructMember(1) public native CFUUIDBytes setByte1(byte byte1);
+    
+    @Deprecated
     @StructMember(1) public native byte byte1();
+    @Deprecated
     @StructMember(1) public native CFUUIDBytes byte1(byte byte1);
+    
+    @StructMember(2) public native byte getByte2();
+    @StructMember(2) public native CFUUIDBytes setByte2(byte byte2);
+    
+    @Deprecated
     @StructMember(2) public native byte byte2();
+    @Deprecated
     @StructMember(2) public native CFUUIDBytes byte2(byte byte2);
+    
+    @StructMember(3) public native byte getByte3();
+    @StructMember(3) public native CFUUIDBytes setByte3(byte byte3);
+    
+    @Deprecated
     @StructMember(3) public native byte byte3();
+    @Deprecated
     @StructMember(3) public native CFUUIDBytes byte3(byte byte3);
+    
+    @StructMember(4) public native byte getByte4();
+    @StructMember(4) public native CFUUIDBytes setByte4(byte byte4);
+    
+    @Deprecated
     @StructMember(4) public native byte byte4();
+    @Deprecated
     @StructMember(4) public native CFUUIDBytes byte4(byte byte4);
+    
+    @StructMember(5) public native byte getByte5();
+    @StructMember(5) public native CFUUIDBytes setByte5(byte byte5);
+    
+    @Deprecated
     @StructMember(5) public native byte byte5();
+    @Deprecated
     @StructMember(5) public native CFUUIDBytes byte5(byte byte5);
+    
+    @StructMember(6) public native byte getByte6();
+    @StructMember(6) public native CFUUIDBytes setByte6(byte byte6);
+    
+    @Deprecated
     @StructMember(6) public native byte byte6();
+    @Deprecated
     @StructMember(6) public native CFUUIDBytes byte6(byte byte6);
+    
+    @StructMember(7) public native byte getByte7();
+    @StructMember(7) public native CFUUIDBytes setByte7(byte byte7);
+    
+    @Deprecated
     @StructMember(7) public native byte byte7();
+    @Deprecated
     @StructMember(7) public native CFUUIDBytes byte7(byte byte7);
+    
+    @StructMember(8) public native byte getByte8();
+    @StructMember(8) public native CFUUIDBytes setByte8(byte byte8);
+    
+    @Deprecated
     @StructMember(8) public native byte byte8();
+    @Deprecated
     @StructMember(8) public native CFUUIDBytes byte8(byte byte8);
+    
+    @StructMember(9) public native byte getByte9();
+    @StructMember(9) public native CFUUIDBytes setByte9(byte byte9);
+    
+    @Deprecated
     @StructMember(9) public native byte byte9();
+    @Deprecated
     @StructMember(9) public native CFUUIDBytes byte9(byte byte9);
+    
+    @StructMember(10) public native byte getByte10();
+    @StructMember(10) public native CFUUIDBytes setByte10(byte byte10);
+    
+    @Deprecated
     @StructMember(10) public native byte byte10();
+    @Deprecated
     @StructMember(10) public native CFUUIDBytes byte10(byte byte10);
+    
+    @StructMember(11) public native byte getByte11();
+    @StructMember(11) public native CFUUIDBytes setByte11(byte byte11);
+    
+    @Deprecated
     @StructMember(11) public native byte byte11();
+    @Deprecated
     @StructMember(11) public native CFUUIDBytes byte11(byte byte11);
+    
+    @StructMember(12) public native byte getByte12();
+    @StructMember(12) public native CFUUIDBytes setByte12(byte byte12);
+    
+    @Deprecated
     @StructMember(12) public native byte byte12();
+    @Deprecated
     @StructMember(12) public native CFUUIDBytes byte12(byte byte12);
+    
+    @StructMember(13) public native byte getByte13();
+    @StructMember(13) public native CFUUIDBytes setByte13(byte byte13);
+    
+    @Deprecated
     @StructMember(13) public native byte byte13();
+    @Deprecated
     @StructMember(13) public native CFUUIDBytes byte13(byte byte13);
+    
+    @StructMember(14) public native byte getByte14();
+    @StructMember(14) public native CFUUIDBytes setByte14(byte byte14);
+    
+    @Deprecated
     @StructMember(14) public native byte byte14();
+    @Deprecated
     @StructMember(14) public native CFUUIDBytes byte14(byte byte14);
+    
+    @StructMember(15) public native byte getByte15();
+    @StructMember(15) public native CFUUIDBytes setByte15(byte byte15);
+    
+    @Deprecated
     @StructMember(15) public native byte byte15();
+    @Deprecated
     @StructMember(15) public native CFUUIDBytes byte15(byte byte15);
+    
     /*</members>*/
     /*<methods>*//*</methods>*/
 }

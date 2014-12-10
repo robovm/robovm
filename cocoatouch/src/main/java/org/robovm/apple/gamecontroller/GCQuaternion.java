@@ -44,22 +44,46 @@ import org.robovm.apple.foundation.*;
     /*<constructors>*/
     public GCQuaternion() {}
     public GCQuaternion(double x, double y, double z, double w) {
-        this.x(x);
-        this.y(y);
-        this.z(z);
-        this.w(w);
+        this.setX(x);
+        this.setY(y);
+        this.setZ(z);
+        this.setW(w);
     }
     /*</constructors>*/
     /*<properties>*//*</properties>*/
     /*<members>*/
+    @StructMember(0) public native double getX();
+    @StructMember(0) public native GCQuaternion setX(double x);
+    
+    @Deprecated
     @StructMember(0) public native double x();
+    @Deprecated
     @StructMember(0) public native GCQuaternion x(double x);
+    
+    @StructMember(1) public native double getY();
+    @StructMember(1) public native GCQuaternion setY(double y);
+    
+    @Deprecated
     @StructMember(1) public native double y();
+    @Deprecated
     @StructMember(1) public native GCQuaternion y(double y);
+    
+    @StructMember(2) public native double getZ();
+    @StructMember(2) public native GCQuaternion setZ(double z);
+    
+    @Deprecated
     @StructMember(2) public native double z();
+    @Deprecated
     @StructMember(2) public native GCQuaternion z(double z);
+    
+    @StructMember(3) public native double getW();
+    @StructMember(3) public native GCQuaternion setW(double w);
+    
+    @Deprecated
     @StructMember(3) public native double w();
+    @Deprecated
     @StructMember(3) public native GCQuaternion w(double w);
+    
     /*</members>*/
     /*<methods>*//*</methods>*/
 }

@@ -44,25 +44,55 @@ import org.robovm.apple.dispatch.*;
     /*<constructors>*/
     public CFFileDescriptorContext() {}
     public CFFileDescriptorContext(@MachineSizedSInt long version, VoidPtr info, FunctionPtr retain, FunctionPtr release, FunctionPtr copyDescription) {
-        this.version(version);
-        this.info(info);
-        this.retain(retain);
-        this.release(release);
-        this.copyDescription(copyDescription);
+        this.setVersion(version);
+        this.setInfo(info);
+        this.setRetain(retain);
+        this.setRelease(release);
+        this.setCopydescription(copyDescription);
     }
     /*</constructors>*/
     /*<properties>*//*</properties>*/
     /*<members>*/
+    @StructMember(0) public native @MachineSizedSInt long getVersion();
+    @StructMember(0) public native CFFileDescriptorContext setVersion(@MachineSizedSInt long version);
+    
+    @Deprecated
     @StructMember(0) public native @MachineSizedSInt long version();
+    @Deprecated
     @StructMember(0) public native CFFileDescriptorContext version(@MachineSizedSInt long version);
+    
+    @StructMember(1) public native VoidPtr getInfo();
+    @StructMember(1) public native CFFileDescriptorContext setInfo(VoidPtr info);
+    
+    @Deprecated
     @StructMember(1) public native VoidPtr info();
+    @Deprecated
     @StructMember(1) public native CFFileDescriptorContext info(VoidPtr info);
+    
+    @StructMember(2) public native FunctionPtr getRetain();
+    @StructMember(2) public native CFFileDescriptorContext setRetain(FunctionPtr retain);
+    
+    @Deprecated
     @StructMember(2) public native FunctionPtr retain();
+    @Deprecated
     @StructMember(2) public native CFFileDescriptorContext retain(FunctionPtr retain);
+    
+    @StructMember(3) public native FunctionPtr getRelease();
+    @StructMember(3) public native CFFileDescriptorContext setRelease(FunctionPtr release);
+    
+    @Deprecated
     @StructMember(3) public native FunctionPtr release();
+    @Deprecated
     @StructMember(3) public native CFFileDescriptorContext release(FunctionPtr release);
+    
+    @StructMember(4) public native FunctionPtr getCopydescription();
+    @StructMember(4) public native CFFileDescriptorContext setCopydescription(FunctionPtr copyDescription);
+    
+    @Deprecated
     @StructMember(4) public native FunctionPtr copyDescription();
+    @Deprecated
     @StructMember(4) public native CFFileDescriptorContext copyDescription(FunctionPtr copyDescription);
+    
     /*</members>*/
     /*<methods>*//*</methods>*/
 }

@@ -45,37 +45,91 @@ import org.robovm.apple.corefoundation.*;
     /*<constructors>*/
     public AudioStreamBasicDescription() {}
     public AudioStreamBasicDescription(double mSampleRate, AudioFormat mFormatID, int mFormatFlags, int mBytesPerPacket, int mFramesPerPacket, int mBytesPerFrame, int mChannelsPerFrame, int mBitsPerChannel, int mReserved) {
-        this.mSampleRate(mSampleRate);
-        this.mFormatID(mFormatID);
-        this.mFormatFlags(mFormatFlags);
-        this.mBytesPerPacket(mBytesPerPacket);
-        this.mFramesPerPacket(mFramesPerPacket);
-        this.mBytesPerFrame(mBytesPerFrame);
-        this.mChannelsPerFrame(mChannelsPerFrame);
-        this.mBitsPerChannel(mBitsPerChannel);
-        this.mReserved(mReserved);
+        this.setMsamplerate(mSampleRate);
+        this.setMformatid(mFormatID);
+        this.setMformatflags(mFormatFlags);
+        this.setMbytesperpacket(mBytesPerPacket);
+        this.setMframesperpacket(mFramesPerPacket);
+        this.setMbytesperframe(mBytesPerFrame);
+        this.setMchannelsperframe(mChannelsPerFrame);
+        this.setMbitsperchannel(mBitsPerChannel);
+        this.setMreserved(mReserved);
     }
     /*</constructors>*/
     /*<properties>*//*</properties>*/
     /*<members>*/
+    @StructMember(0) public native double getMsamplerate();
+    @StructMember(0) public native AudioStreamBasicDescription setMsamplerate(double mSampleRate);
+    
+    @Deprecated
     @StructMember(0) public native double mSampleRate();
+    @Deprecated
     @StructMember(0) public native AudioStreamBasicDescription mSampleRate(double mSampleRate);
+    
+    @StructMember(1) public native AudioFormat getMformatid();
+    @StructMember(1) public native AudioStreamBasicDescription setMformatid(AudioFormat mFormatID);
+    
+    @Deprecated
     @StructMember(1) public native AudioFormat mFormatID();
+    @Deprecated
     @StructMember(1) public native AudioStreamBasicDescription mFormatID(AudioFormat mFormatID);
+    
+    @StructMember(2) public native int getMformatflags();
+    @StructMember(2) public native AudioStreamBasicDescription setMformatflags(int mFormatFlags);
+    
+    @Deprecated
     @StructMember(2) public native int mFormatFlags();
+    @Deprecated
     @StructMember(2) public native AudioStreamBasicDescription mFormatFlags(int mFormatFlags);
+    
+    @StructMember(3) public native int getMbytesperpacket();
+    @StructMember(3) public native AudioStreamBasicDescription setMbytesperpacket(int mBytesPerPacket);
+    
+    @Deprecated
     @StructMember(3) public native int mBytesPerPacket();
+    @Deprecated
     @StructMember(3) public native AudioStreamBasicDescription mBytesPerPacket(int mBytesPerPacket);
+    
+    @StructMember(4) public native int getMframesperpacket();
+    @StructMember(4) public native AudioStreamBasicDescription setMframesperpacket(int mFramesPerPacket);
+    
+    @Deprecated
     @StructMember(4) public native int mFramesPerPacket();
+    @Deprecated
     @StructMember(4) public native AudioStreamBasicDescription mFramesPerPacket(int mFramesPerPacket);
+    
+    @StructMember(5) public native int getMbytesperframe();
+    @StructMember(5) public native AudioStreamBasicDescription setMbytesperframe(int mBytesPerFrame);
+    
+    @Deprecated
     @StructMember(5) public native int mBytesPerFrame();
+    @Deprecated
     @StructMember(5) public native AudioStreamBasicDescription mBytesPerFrame(int mBytesPerFrame);
+    
+    @StructMember(6) public native int getMchannelsperframe();
+    @StructMember(6) public native AudioStreamBasicDescription setMchannelsperframe(int mChannelsPerFrame);
+    
+    @Deprecated
     @StructMember(6) public native int mChannelsPerFrame();
+    @Deprecated
     @StructMember(6) public native AudioStreamBasicDescription mChannelsPerFrame(int mChannelsPerFrame);
+    
+    @StructMember(7) public native int getMbitsperchannel();
+    @StructMember(7) public native AudioStreamBasicDescription setMbitsperchannel(int mBitsPerChannel);
+    
+    @Deprecated
     @StructMember(7) public native int mBitsPerChannel();
+    @Deprecated
     @StructMember(7) public native AudioStreamBasicDescription mBitsPerChannel(int mBitsPerChannel);
+    
+    @StructMember(8) public native int getMreserved();
+    @StructMember(8) public native AudioStreamBasicDescription setMreserved(int mReserved);
+    
+    @Deprecated
     @StructMember(8) public native int mReserved();
+    @Deprecated
     @StructMember(8) public native AudioStreamBasicDescription mReserved(int mReserved);
+    
     /*</members>*/
     /*<methods>*//*</methods>*/
 }

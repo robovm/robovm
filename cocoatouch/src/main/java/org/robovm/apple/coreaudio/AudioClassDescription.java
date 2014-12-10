@@ -45,19 +45,37 @@ import org.robovm.apple.corefoundation.*;
     /*<constructors>*/
     public AudioClassDescription() {}
     public AudioClassDescription(int mType, int mSubType, int mManufacturer) {
-        this.mType(mType);
-        this.mSubType(mSubType);
-        this.mManufacturer(mManufacturer);
+        this.setMtype(mType);
+        this.setMsubtype(mSubType);
+        this.setMmanufacturer(mManufacturer);
     }
     /*</constructors>*/
     /*<properties>*//*</properties>*/
     /*<members>*/
+    @StructMember(0) public native int getMtype();
+    @StructMember(0) public native AudioClassDescription setMtype(int mType);
+    
+    @Deprecated
     @StructMember(0) public native int mType();
+    @Deprecated
     @StructMember(0) public native AudioClassDescription mType(int mType);
+    
+    @StructMember(1) public native int getMsubtype();
+    @StructMember(1) public native AudioClassDescription setMsubtype(int mSubType);
+    
+    @Deprecated
     @StructMember(1) public native int mSubType();
+    @Deprecated
     @StructMember(1) public native AudioClassDescription mSubType(int mSubType);
+    
+    @StructMember(2) public native int getMmanufacturer();
+    @StructMember(2) public native AudioClassDescription setMmanufacturer(int mManufacturer);
+    
+    @Deprecated
     @StructMember(2) public native int mManufacturer();
+    @Deprecated
     @StructMember(2) public native AudioClassDescription mManufacturer(int mManufacturer);
+    
     /*</members>*/
     /*<methods>*//*</methods>*/
 }

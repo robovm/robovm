@@ -45,19 +45,37 @@ import org.robovm.apple.corefoundation.*;
     /*<constructors>*/
     public AudioBuffer() {}
     public AudioBuffer(int mNumberChannels, int mDataByteSize, VoidPtr mData) {
-        this.mNumberChannels(mNumberChannels);
-        this.mDataByteSize(mDataByteSize);
-        this.mData(mData);
+        this.setMnumberchannels(mNumberChannels);
+        this.setMdatabytesize(mDataByteSize);
+        this.setMdata(mData);
     }
     /*</constructors>*/
     /*<properties>*//*</properties>*/
     /*<members>*/
+    @StructMember(0) public native int getMnumberchannels();
+    @StructMember(0) public native AudioBuffer setMnumberchannels(int mNumberChannels);
+    
+    @Deprecated
     @StructMember(0) public native int mNumberChannels();
+    @Deprecated
     @StructMember(0) public native AudioBuffer mNumberChannels(int mNumberChannels);
+    
+    @StructMember(1) public native int getMdatabytesize();
+    @StructMember(1) public native AudioBuffer setMdatabytesize(int mDataByteSize);
+    
+    @Deprecated
     @StructMember(1) public native int mDataByteSize();
+    @Deprecated
     @StructMember(1) public native AudioBuffer mDataByteSize(int mDataByteSize);
+    
+    @StructMember(2) public native VoidPtr getMdata();
+    @StructMember(2) public native AudioBuffer setMdata(VoidPtr mData);
+    
+    @Deprecated
     @StructMember(2) public native VoidPtr mData();
+    @Deprecated
     @StructMember(2) public native AudioBuffer mData(VoidPtr mData);
+    
     /*</members>*/
     /*<methods>*//*</methods>*/
 }

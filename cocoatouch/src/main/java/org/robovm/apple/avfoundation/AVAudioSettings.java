@@ -40,6 +40,7 @@ import org.robovm.apple.mediatoolbox.*;
 
 /*<javadoc>*/
 /*</javadoc>*/
+@Marshaler(AVAudioSettings.Marshaler.class)
 /*<annotations>*/@Library("AVFoundation")/*</annotations>*/
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/AVAudioSettings/*</name>*/ 
     extends /*<extends>*/Object/*</extends>*/ 

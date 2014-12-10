@@ -53,19 +53,37 @@ import org.robovm.apple.mediatoolbox.*;
     /*<constructors>*/
     public AVAudio3DVector() {}
     public AVAudio3DVector(float x, float y, float z) {
-        this.x(x);
-        this.y(y);
-        this.z(z);
+        this.setX(x);
+        this.setY(y);
+        this.setZ(z);
     }
     /*</constructors>*/
     /*<properties>*//*</properties>*/
     /*<members>*/
+    @StructMember(0) public native float getX();
+    @StructMember(0) public native AVAudio3DVector setX(float x);
+    
+    @Deprecated
     @StructMember(0) public native float x();
+    @Deprecated
     @StructMember(0) public native AVAudio3DVector x(float x);
+    
+    @StructMember(1) public native float getY();
+    @StructMember(1) public native AVAudio3DVector setY(float y);
+    
+    @Deprecated
     @StructMember(1) public native float y();
+    @Deprecated
     @StructMember(1) public native AVAudio3DVector y(float y);
+    
+    @StructMember(2) public native float getZ();
+    @StructMember(2) public native AVAudio3DVector setZ(float z);
+    
+    @Deprecated
     @StructMember(2) public native float z();
+    @Deprecated
     @StructMember(2) public native AVAudio3DVector z(float z);
+    
     /*</members>*/
     /*<methods>*//*</methods>*/
 }

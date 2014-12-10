@@ -44,37 +44,91 @@ import org.robovm.apple.foundation.*;
     /*<constructors>*/
     public CMRotationMatrix() {}
     public CMRotationMatrix(double m11, double m12, double m13, double m21, double m22, double m23, double m31, double m32, double m33) {
-        this.m11(m11);
-        this.m12(m12);
-        this.m13(m13);
-        this.m21(m21);
-        this.m22(m22);
-        this.m23(m23);
-        this.m31(m31);
-        this.m32(m32);
-        this.m33(m33);
+        this.setM11(m11);
+        this.setM12(m12);
+        this.setM13(m13);
+        this.setM21(m21);
+        this.setM22(m22);
+        this.setM23(m23);
+        this.setM31(m31);
+        this.setM32(m32);
+        this.setM33(m33);
     }
     /*</constructors>*/
     /*<properties>*//*</properties>*/
     /*<members>*/
+    @StructMember(0) public native double getM11();
+    @StructMember(0) public native CMRotationMatrix setM11(double m11);
+    
+    @Deprecated
     @StructMember(0) public native double m11();
+    @Deprecated
     @StructMember(0) public native CMRotationMatrix m11(double m11);
+    
+    @StructMember(1) public native double getM12();
+    @StructMember(1) public native CMRotationMatrix setM12(double m12);
+    
+    @Deprecated
     @StructMember(1) public native double m12();
+    @Deprecated
     @StructMember(1) public native CMRotationMatrix m12(double m12);
+    
+    @StructMember(2) public native double getM13();
+    @StructMember(2) public native CMRotationMatrix setM13(double m13);
+    
+    @Deprecated
     @StructMember(2) public native double m13();
+    @Deprecated
     @StructMember(2) public native CMRotationMatrix m13(double m13);
+    
+    @StructMember(3) public native double getM21();
+    @StructMember(3) public native CMRotationMatrix setM21(double m21);
+    
+    @Deprecated
     @StructMember(3) public native double m21();
+    @Deprecated
     @StructMember(3) public native CMRotationMatrix m21(double m21);
+    
+    @StructMember(4) public native double getM22();
+    @StructMember(4) public native CMRotationMatrix setM22(double m22);
+    
+    @Deprecated
     @StructMember(4) public native double m22();
+    @Deprecated
     @StructMember(4) public native CMRotationMatrix m22(double m22);
+    
+    @StructMember(5) public native double getM23();
+    @StructMember(5) public native CMRotationMatrix setM23(double m23);
+    
+    @Deprecated
     @StructMember(5) public native double m23();
+    @Deprecated
     @StructMember(5) public native CMRotationMatrix m23(double m23);
+    
+    @StructMember(6) public native double getM31();
+    @StructMember(6) public native CMRotationMatrix setM31(double m31);
+    
+    @Deprecated
     @StructMember(6) public native double m31();
+    @Deprecated
     @StructMember(6) public native CMRotationMatrix m31(double m31);
+    
+    @StructMember(7) public native double getM32();
+    @StructMember(7) public native CMRotationMatrix setM32(double m32);
+    
+    @Deprecated
     @StructMember(7) public native double m32();
+    @Deprecated
     @StructMember(7) public native CMRotationMatrix m32(double m32);
+    
+    @StructMember(8) public native double getM33();
+    @StructMember(8) public native CMRotationMatrix setM33(double m33);
+    
+    @Deprecated
     @StructMember(8) public native double m33();
+    @Deprecated
     @StructMember(8) public native CMRotationMatrix m33(double m33);
+    
     /*</members>*/
     /*<methods>*//*</methods>*/
 }

@@ -96,6 +96,7 @@ import org.robovm.llvm.Symbol;
 import org.robovm.llvm.Target;
 import org.robovm.llvm.TargetMachine;
 import org.robovm.llvm.binding.CodeGenFileType;
+import org.robovm.llvm.binding.CodeGenOptLevel;
 
 import soot.BooleanType;
 import soot.ByteType;
@@ -334,11 +335,11 @@ public class ClassCompiler {
                 String triple = config.getTriple();
                 Target target = Target.lookupTarget(triple);
                 try (TargetMachine targetMachine = target.createTargetMachine(triple,
-                        "generic", null, null, null, null)) {
+                        "generic", null, config.isDebug()? CodeGenOptLevel.CodeGenLevelNone: null, null, null)) {
                     targetMachine.setAsmVerbosityDefault(true);
                     targetMachine.setFunctionSections(true);
                     targetMachine.setDataSections(true);
-                    targetMachine.getOptions().setNoFramePointerElim(true);
+                    targetMachine.getOptions().setNoFramePointerElim(true);                    
 
                     ByteArrayOutputStream output = new ByteArrayOutputStream(256 * 1024);
                     targetMachine.emit(module, output, CodeGenFileType.AssemblyFile);

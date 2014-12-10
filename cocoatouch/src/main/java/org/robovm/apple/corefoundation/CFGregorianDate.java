@@ -44,28 +44,64 @@ import org.robovm.apple.dispatch.*;
     /*<constructors>*/
     public CFGregorianDate() {}
     public CFGregorianDate(int year, byte month, byte day, byte hour, byte minute, double second) {
-        this.year(year);
-        this.month(month);
-        this.day(day);
-        this.hour(hour);
-        this.minute(minute);
-        this.second(second);
+        this.setYear(year);
+        this.setMonth(month);
+        this.setDay(day);
+        this.setHour(hour);
+        this.setMinute(minute);
+        this.setSecond(second);
     }
     /*</constructors>*/
     /*<properties>*//*</properties>*/
     /*<members>*/
+    @StructMember(0) public native int getYear();
+    @StructMember(0) public native CFGregorianDate setYear(int year);
+    
+    @Deprecated
     @StructMember(0) public native int year();
+    @Deprecated
     @StructMember(0) public native CFGregorianDate year(int year);
+    
+    @StructMember(1) public native byte getMonth();
+    @StructMember(1) public native CFGregorianDate setMonth(byte month);
+    
+    @Deprecated
     @StructMember(1) public native byte month();
+    @Deprecated
     @StructMember(1) public native CFGregorianDate month(byte month);
+    
+    @StructMember(2) public native byte getDay();
+    @StructMember(2) public native CFGregorianDate setDay(byte day);
+    
+    @Deprecated
     @StructMember(2) public native byte day();
+    @Deprecated
     @StructMember(2) public native CFGregorianDate day(byte day);
+    
+    @StructMember(3) public native byte getHour();
+    @StructMember(3) public native CFGregorianDate setHour(byte hour);
+    
+    @Deprecated
     @StructMember(3) public native byte hour();
+    @Deprecated
     @StructMember(3) public native CFGregorianDate hour(byte hour);
+    
+    @StructMember(4) public native byte getMinute();
+    @StructMember(4) public native CFGregorianDate setMinute(byte minute);
+    
+    @Deprecated
     @StructMember(4) public native byte minute();
+    @Deprecated
     @StructMember(4) public native CFGregorianDate minute(byte minute);
+    
+    @StructMember(5) public native double getSecond();
+    @StructMember(5) public native CFGregorianDate setSecond(double second);
+    
+    @Deprecated
     @StructMember(5) public native double second();
+    @Deprecated
     @StructMember(5) public native CFGregorianDate second(double second);
+    
     /*</members>*/
     /*<methods>*//*</methods>*/
 }

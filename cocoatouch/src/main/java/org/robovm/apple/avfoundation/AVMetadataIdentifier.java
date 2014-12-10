@@ -41,11 +41,30 @@ import org.robovm.apple.mediatoolbox.*;
 
 /*<javadoc>*/
 /*</javadoc>*/
+@Marshaler(AVMetadataIdentifier.Marshaler.class)
 /*<annotations>*/@Library("AVFoundation")/*</annotations>*/
 /*<visibility>*/public/*</visibility>*/abstract class /*<name>*/AVMetadataIdentifier/*</name>*/ 
     extends /*<extends>*/Object/*</extends>*/ 
     /*<implements>*//*</implements>*/ {
 
+    public static class Marshaler {
+        @MarshalsPointer
+        public static AVMetadataIdentifier toObject(Class<AVMetadataIdentifier> cls, long handle, long flags) {
+            NSString o = (NSString) NSObject.Marshaler.toObject(NSString.class, handle, flags);
+            if (o == null) {
+                return null;
+            }
+            return AVMetadataIdentifier.valueOf(o);
+        }
+        @MarshalsPointer
+        public static long toNative(AVMetadataIdentifier o, long flags) {
+            if (o == null) {
+                return 0L;
+            }
+            return NSObject.Marshaler.toNative(o.value(), flags);
+        }
+    }
+    
     public static class AsListMarshaler {
         @SuppressWarnings("unchecked")
         @MarshalsPointer

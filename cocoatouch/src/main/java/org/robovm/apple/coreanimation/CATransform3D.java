@@ -47,58 +47,154 @@ import org.robovm.apple.opengles.*;
     /*<constructors>*/
     public CATransform3D() {}
     public CATransform3D(@MachineSizedFloat double m11, @MachineSizedFloat double m12, @MachineSizedFloat double m13, @MachineSizedFloat double m14, @MachineSizedFloat double m21, @MachineSizedFloat double m22, @MachineSizedFloat double m23, @MachineSizedFloat double m24, @MachineSizedFloat double m31, @MachineSizedFloat double m32, @MachineSizedFloat double m33, @MachineSizedFloat double m34, @MachineSizedFloat double m41, @MachineSizedFloat double m42, @MachineSizedFloat double m43, @MachineSizedFloat double m44) {
-        this.m11(m11);
-        this.m12(m12);
-        this.m13(m13);
-        this.m14(m14);
-        this.m21(m21);
-        this.m22(m22);
-        this.m23(m23);
-        this.m24(m24);
-        this.m31(m31);
-        this.m32(m32);
-        this.m33(m33);
-        this.m34(m34);
-        this.m41(m41);
-        this.m42(m42);
-        this.m43(m43);
-        this.m44(m44);
+        this.setM11(m11);
+        this.setM12(m12);
+        this.setM13(m13);
+        this.setM14(m14);
+        this.setM21(m21);
+        this.setM22(m22);
+        this.setM23(m23);
+        this.setM24(m24);
+        this.setM31(m31);
+        this.setM32(m32);
+        this.setM33(m33);
+        this.setM34(m34);
+        this.setM41(m41);
+        this.setM42(m42);
+        this.setM43(m43);
+        this.setM44(m44);
     }
     /*</constructors>*/
     /*<properties>*//*</properties>*/
     /*<members>*/
+    @StructMember(0) public native @MachineSizedFloat double getM11();
+    @StructMember(0) public native CATransform3D setM11(@MachineSizedFloat double m11);
+    
+    @Deprecated
     @StructMember(0) public native @MachineSizedFloat double m11();
+    @Deprecated
     @StructMember(0) public native CATransform3D m11(@MachineSizedFloat double m11);
+    
+    @StructMember(1) public native @MachineSizedFloat double getM12();
+    @StructMember(1) public native CATransform3D setM12(@MachineSizedFloat double m12);
+    
+    @Deprecated
     @StructMember(1) public native @MachineSizedFloat double m12();
+    @Deprecated
     @StructMember(1) public native CATransform3D m12(@MachineSizedFloat double m12);
+    
+    @StructMember(2) public native @MachineSizedFloat double getM13();
+    @StructMember(2) public native CATransform3D setM13(@MachineSizedFloat double m13);
+    
+    @Deprecated
     @StructMember(2) public native @MachineSizedFloat double m13();
+    @Deprecated
     @StructMember(2) public native CATransform3D m13(@MachineSizedFloat double m13);
+    
+    @StructMember(3) public native @MachineSizedFloat double getM14();
+    @StructMember(3) public native CATransform3D setM14(@MachineSizedFloat double m14);
+    
+    @Deprecated
     @StructMember(3) public native @MachineSizedFloat double m14();
+    @Deprecated
     @StructMember(3) public native CATransform3D m14(@MachineSizedFloat double m14);
+    
+    @StructMember(4) public native @MachineSizedFloat double getM21();
+    @StructMember(4) public native CATransform3D setM21(@MachineSizedFloat double m21);
+    
+    @Deprecated
     @StructMember(4) public native @MachineSizedFloat double m21();
+    @Deprecated
     @StructMember(4) public native CATransform3D m21(@MachineSizedFloat double m21);
+    
+    @StructMember(5) public native @MachineSizedFloat double getM22();
+    @StructMember(5) public native CATransform3D setM22(@MachineSizedFloat double m22);
+    
+    @Deprecated
     @StructMember(5) public native @MachineSizedFloat double m22();
+    @Deprecated
     @StructMember(5) public native CATransform3D m22(@MachineSizedFloat double m22);
+    
+    @StructMember(6) public native @MachineSizedFloat double getM23();
+    @StructMember(6) public native CATransform3D setM23(@MachineSizedFloat double m23);
+    
+    @Deprecated
     @StructMember(6) public native @MachineSizedFloat double m23();
+    @Deprecated
     @StructMember(6) public native CATransform3D m23(@MachineSizedFloat double m23);
+    
+    @StructMember(7) public native @MachineSizedFloat double getM24();
+    @StructMember(7) public native CATransform3D setM24(@MachineSizedFloat double m24);
+    
+    @Deprecated
     @StructMember(7) public native @MachineSizedFloat double m24();
+    @Deprecated
     @StructMember(7) public native CATransform3D m24(@MachineSizedFloat double m24);
+    
+    @StructMember(8) public native @MachineSizedFloat double getM31();
+    @StructMember(8) public native CATransform3D setM31(@MachineSizedFloat double m31);
+    
+    @Deprecated
     @StructMember(8) public native @MachineSizedFloat double m31();
+    @Deprecated
     @StructMember(8) public native CATransform3D m31(@MachineSizedFloat double m31);
+    
+    @StructMember(9) public native @MachineSizedFloat double getM32();
+    @StructMember(9) public native CATransform3D setM32(@MachineSizedFloat double m32);
+    
+    @Deprecated
     @StructMember(9) public native @MachineSizedFloat double m32();
+    @Deprecated
     @StructMember(9) public native CATransform3D m32(@MachineSizedFloat double m32);
+    
+    @StructMember(10) public native @MachineSizedFloat double getM33();
+    @StructMember(10) public native CATransform3D setM33(@MachineSizedFloat double m33);
+    
+    @Deprecated
     @StructMember(10) public native @MachineSizedFloat double m33();
+    @Deprecated
     @StructMember(10) public native CATransform3D m33(@MachineSizedFloat double m33);
+    
+    @StructMember(11) public native @MachineSizedFloat double getM34();
+    @StructMember(11) public native CATransform3D setM34(@MachineSizedFloat double m34);
+    
+    @Deprecated
     @StructMember(11) public native @MachineSizedFloat double m34();
+    @Deprecated
     @StructMember(11) public native CATransform3D m34(@MachineSizedFloat double m34);
+    
+    @StructMember(12) public native @MachineSizedFloat double getM41();
+    @StructMember(12) public native CATransform3D setM41(@MachineSizedFloat double m41);
+    
+    @Deprecated
     @StructMember(12) public native @MachineSizedFloat double m41();
+    @Deprecated
     @StructMember(12) public native CATransform3D m41(@MachineSizedFloat double m41);
+    
+    @StructMember(13) public native @MachineSizedFloat double getM42();
+    @StructMember(13) public native CATransform3D setM42(@MachineSizedFloat double m42);
+    
+    @Deprecated
     @StructMember(13) public native @MachineSizedFloat double m42();
+    @Deprecated
     @StructMember(13) public native CATransform3D m42(@MachineSizedFloat double m42);
+    
+    @StructMember(14) public native @MachineSizedFloat double getM43();
+    @StructMember(14) public native CATransform3D setM43(@MachineSizedFloat double m43);
+    
+    @Deprecated
     @StructMember(14) public native @MachineSizedFloat double m43();
+    @Deprecated
     @StructMember(14) public native CATransform3D m43(@MachineSizedFloat double m43);
+    
+    @StructMember(15) public native @MachineSizedFloat double getM44();
+    @StructMember(15) public native CATransform3D setM44(@MachineSizedFloat double m44);
+    
+    @Deprecated
     @StructMember(15) public native @MachineSizedFloat double m44();
+    @Deprecated
     @StructMember(15) public native CATransform3D m44(@MachineSizedFloat double m44);
+    
     /*</members>*/
     
     @Override

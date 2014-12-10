@@ -44,22 +44,46 @@ import org.robovm.apple.dispatch.*;
     /*<constructors>*/
     public CFSocketSignature() {}
     public CFSocketSignature(int protocolFamily, int socketType, int protocol, CFData address) {
-        this.protocolFamily(protocolFamily);
-        this.socketType(socketType);
-        this.protocol(protocol);
-        this.address(address);
+        this.setProtocolfamily(protocolFamily);
+        this.setSockettype(socketType);
+        this.setProtocol(protocol);
+        this.setAddress(address);
     }
     /*</constructors>*/
     /*<properties>*//*</properties>*/
     /*<members>*/
+    @StructMember(0) public native int getProtocolfamily();
+    @StructMember(0) public native CFSocketSignature setProtocolfamily(int protocolFamily);
+    
+    @Deprecated
     @StructMember(0) public native int protocolFamily();
+    @Deprecated
     @StructMember(0) public native CFSocketSignature protocolFamily(int protocolFamily);
+    
+    @StructMember(1) public native int getSockettype();
+    @StructMember(1) public native CFSocketSignature setSockettype(int socketType);
+    
+    @Deprecated
     @StructMember(1) public native int socketType();
+    @Deprecated
     @StructMember(1) public native CFSocketSignature socketType(int socketType);
+    
+    @StructMember(2) public native int getProtocol();
+    @StructMember(2) public native CFSocketSignature setProtocol(int protocol);
+    
+    @Deprecated
     @StructMember(2) public native int protocol();
+    @Deprecated
     @StructMember(2) public native CFSocketSignature protocol(int protocol);
+    
+    @StructMember(3) public native CFData getAddress();
+    @StructMember(3) public native CFSocketSignature setAddress(CFData address);
+    
+    @Deprecated
     @StructMember(3) public native CFData address();
+    @Deprecated
     @StructMember(3) public native CFSocketSignature address(CFData address);
+    
     /*</members>*/
     /*<methods>*//*</methods>*/
 }

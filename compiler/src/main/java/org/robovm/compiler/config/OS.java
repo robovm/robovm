@@ -63,6 +63,33 @@ public enum OS {
     }
 
     /**
+     * Returns whether aggregate types of the specified size should be converted
+     * to an integer before being returned from a method.
+     * 
+     * @param arch the {@link Arch}.
+     * @param size the size of the aggregate type.
+     * @return <code>true</code> or <code>false</code>.
+     */
+    public boolean returnSmallAggregateAsInteger(Arch arch, int size) {
+        /*
+         * On x86_64 LLVm seems to do the right thing when we just use the
+         * struct as is when returning it. On x86 LLVM will return floating
+         * point members (e.g. CGPoint) on the x87 stack which isn't correct
+         * according to the ABI. On thumbv7 we also return as integer though it
+         * could be the case that LLVM actually does the right thing there.
+         */
+        switch (arch) {
+        case x86_64:
+            return false;
+        case x86:
+            return true;
+        case thumbv7:
+            return true;
+        }
+        throw new IllegalArgumentException("Unknown arch: " + arch);
+    }
+
+    /**
      * Returns whether aggregate types of the specified size should be passed
      * using LLVM {@code byval} semantics for this {@link OS} and the specified 
      * {@link Arch}.

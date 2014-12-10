@@ -238,10 +238,11 @@ public class BridgeMethodCompiler extends BroMethodCompiler {
                         // never have a NULL handle so we just check that the Java
                         // Object isn't null.
                         call(fn, CHECK_NULL, env, args.get(argIdx).getValue());
-                        parameterAttributes = new ParameterAttribute[1];
                         if (isStructRet(method, i)) {
+                            parameterAttributes = new ParameterAttribute[1];
                             parameterAttributes[0] = sret;
-                        } else {
+                        } else if (nativeType instanceof PointerType) {
+                            parameterAttributes = new ParameterAttribute[1];
                             parameterAttributes[0] = byval;
                         }
                     }

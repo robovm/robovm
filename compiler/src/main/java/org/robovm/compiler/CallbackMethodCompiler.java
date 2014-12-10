@@ -154,11 +154,11 @@ public class CallbackMethodCompiler extends BroMethodCompiler {
             if (argIdx == receiverIdx) {
                 argIdx++;
             }
-            if (isPassByValue(method, i)) {
-                callbackFn.setParameterAttributes(argIdx, ParameterAttribute.byval);
-            }
             Value arg = callbackFn.getParameterRef(argIdx);
             soot.Type type = method.getParameterType(i);
+            if (isPassByValue(method, i) && arg.getType() instanceof PointerType) {
+                callbackFn.setParameterAttributes(argIdx, ParameterAttribute.byval);
+            }
             
             if (needsMarshaler(type)) {
                 MarshalerMethod marshalerMethod = config.getMarshalerLookup().findMarshalerMethod(new MarshalSite(method, i));

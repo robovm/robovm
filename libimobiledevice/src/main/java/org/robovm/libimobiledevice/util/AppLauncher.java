@@ -822,6 +822,7 @@ public class AppLauncher {
             serverSocket.setReuseAddress(true);
             log("Waiting for GDB remote connection at http://127.0.0.1:" + localPort);
             clientSocket = serverSocket.accept();
+            clientSocket.setTcpNoDelay(true);
             log("GDB remote client connected");
         }
         

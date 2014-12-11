@@ -15,3 +15,9 @@ define private float @frem(%Env* %env, float %op1, float %op2) alwaysinline {
     %result = frem float %op1, %op2
     ret float %result
 }
+
+define private i1 @atomic_cas(i32 %old, i32 %new, i32* %ptr) alwaysinline {
+  %1 = cmpxchg i32* %ptr, i32 %old, i32 %new seq_cst
+  %2 = icmp eq i32 %1, %old
+  ret i1 %2
+}

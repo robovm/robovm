@@ -884,12 +884,6 @@ false:
     ret i32 0
 }
 
-define private i1 @atomic_cas(i32 %old, i32 %new, i32* %ptr) alwaysinline {
-  %1 = cmpxchg i32* %ptr, i32 %old, i32 %new seq_cst
-  %2 = icmp eq i32 %1, %old
-  ret i1 %2
-}
-
 define private void @monitorenter(%Env* %env, %Object* %o) alwaysinline {
     ; Try the common case first before we call _bcMonitorEnter
     %thin = call i32 @Object_lock(%Object* %o)

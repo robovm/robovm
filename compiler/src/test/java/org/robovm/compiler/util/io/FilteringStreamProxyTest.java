@@ -36,7 +36,8 @@ public class FilteringStreamProxyTest {
         class TestProxy extends FilteringStreamProxy {
             int foobar = -1;
             public TestProxy(InputStream in, OutputStream out) {
-                super(in, out);
+                // Use a small start buffer to test enlargement
+                super(2, in, out);
             }
             protected boolean findPattern(byte[] b, int length, OutputStream out) throws IOException {
                 String s = new String(b, 0, length, "utf-8");
@@ -61,10 +62,6 @@ public class FilteringStreamProxyTest {
         proxy.join();
         assertEquals(12345, proxy.foobar);
         assertEquals("line 1\nline 2\nline 4\nline 5\n", new String(out.toByteArray(), "utf-8"));
-    }
-
-    @Test
-    public void testBufferEnlargement() throws Exception {
     }
 
 }

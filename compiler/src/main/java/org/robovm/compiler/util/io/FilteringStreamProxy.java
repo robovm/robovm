@@ -23,7 +23,8 @@ import java.io.OutputStream;
 import org.apache.commons.io.IOUtils;
 
 /**
- * 
+ * Reads from one {@link InputStream} and writes to an {@link OutputStream}
+ * looking for a pattern in the in data.
  */
 public abstract class FilteringStreamProxy extends Thread {
     private final int bufferSize;
@@ -39,11 +40,27 @@ public abstract class FilteringStreamProxy extends Thread {
         this.in = in;
         this.out = out;
         setDaemon(true);
-        setName(getClass().getSimpleName());
+        setName(FilteringStreamProxy.class.getSimpleName() + "Thread[" 
+                + getClass().getSimpleName() + "]");
     }
 
-    protected abstract boolean findPattern(byte[] b, int length, OutputStream out) throws IOException;
+    /**
+     * Searches for a pattern in the specified buffer. Returns {@code true} when
+     * found. It's the responsibility of this method to write any buffered bytes
+     * to the specified {@link OutputStream} once the pattern has been found.
+     */
+    protected abstract boolean findPattern(byte[] b, int length, OutputStream out) 
+            throws IOException;
 
+    private byte[] ensureBufferSize(byte[] buffer, int requiredLength) {
+        if (buffer.length < requiredLength) {
+            byte[] newBuffer = new byte[buffer.length * 2];
+            System.arraycopy(buffer, 0, newBuffer, 0, buffer.length);
+            buffer = newBuffer;
+        }
+        return buffer;
+    }
+    
     public void run() {
         try {
             boolean eof = false;
@@ -56,18 +73,15 @@ public abstract class FilteringStreamProxy extends Thread {
                     eof = true;
                     break;
                 }
-                if (buffer.length <= pos) {
-                    byte[] newBuffer = new byte[buffer.length * 2];
-                    System.arraycopy(buffer, 0, newBuffer, 0, buffer.length);
-                    buffer = newBuffer;
-                }
+                buffer = ensureBufferSize(buffer, pos + 1);
                 buffer[pos++] = (byte) b;
                 if (findPattern(buffer, pos, out)) {
                     break;
                 }
             }
-            // Now just shuffle data from in to out
+            // Pattern has been found (or eof reached).
             while (!eof && !isInterrupted() && !shouldStop()) {
+                // Now just shuffle data from in to out
                 int n = in.read(buffer);
                 if (n == -1) {
                     eof = true;

@@ -135,6 +135,11 @@ import org.robovm.apple.corefoundation.*;
     /**
      * @since Available in iOS 2.0 and later.
      */
+    @GlobalValue(symbol="kCFHTTPAuthenticationSchemeKerberos", optional=true)
+    protected static native CFString KerberosValue();
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
     @GlobalValue(symbol="kCFHTTPAuthenticationSchemeNegotiate", optional=true)
     protected static native CFString NegotiateValue();
     /**
@@ -147,11 +152,6 @@ import org.robovm.apple.corefoundation.*;
      */
     @GlobalValue(symbol="kCFHTTPAuthenticationSchemeXMobileMeAuthToken", optional=true)
     protected static native CFString XMobileMeAuthTokenValue();
-    /**
-     * @since Available in iOS 2.0 and later.
-     */
-    @GlobalValue(symbol="kCFHTTPAuthenticationSchemeKerberos", optional=true)
-    protected static native CFString KerberosValue();
     /**
      * @since Available in iOS 7.0 and later.
      */

@@ -48,37 +48,91 @@ import org.robovm.apple.coremedia.*;
     /*<constructors>*/
     public CVTimeStamp() {}
     public CVTimeStamp(int version, int videoTimeScale, long videoTime, long hostTime, double rateScalar, long videoRefreshPeriod, CVSMPTETime smpteTime, long flags, long reserved) {
-        this.version(version);
-        this.videoTimeScale(videoTimeScale);
-        this.videoTime(videoTime);
-        this.hostTime(hostTime);
-        this.rateScalar(rateScalar);
-        this.videoRefreshPeriod(videoRefreshPeriod);
-        this.smpteTime(smpteTime);
-        this.flags(flags);
-        this.reserved(reserved);
+        this.setVersion(version);
+        this.setVideotimescale(videoTimeScale);
+        this.setVideotime(videoTime);
+        this.setHosttime(hostTime);
+        this.setRatescalar(rateScalar);
+        this.setVideorefreshperiod(videoRefreshPeriod);
+        this.setSmptetime(smpteTime);
+        this.setFlags(flags);
+        this.setReserved(reserved);
     }
     /*</constructors>*/
     /*<properties>*//*</properties>*/
     /*<members>*/
+    @StructMember(0) public native int getVersion();
+    @StructMember(0) public native CVTimeStamp setVersion(int version);
+    
+    @Deprecated
     @StructMember(0) public native int version();
+    @Deprecated
     @StructMember(0) public native CVTimeStamp version(int version);
+    
+    @StructMember(1) public native int getVideotimescale();
+    @StructMember(1) public native CVTimeStamp setVideotimescale(int videoTimeScale);
+    
+    @Deprecated
     @StructMember(1) public native int videoTimeScale();
+    @Deprecated
     @StructMember(1) public native CVTimeStamp videoTimeScale(int videoTimeScale);
+    
+    @StructMember(2) public native long getVideotime();
+    @StructMember(2) public native CVTimeStamp setVideotime(long videoTime);
+    
+    @Deprecated
     @StructMember(2) public native long videoTime();
+    @Deprecated
     @StructMember(2) public native CVTimeStamp videoTime(long videoTime);
+    
+    @StructMember(3) public native long getHosttime();
+    @StructMember(3) public native CVTimeStamp setHosttime(long hostTime);
+    
+    @Deprecated
     @StructMember(3) public native long hostTime();
+    @Deprecated
     @StructMember(3) public native CVTimeStamp hostTime(long hostTime);
+    
+    @StructMember(4) public native double getRatescalar();
+    @StructMember(4) public native CVTimeStamp setRatescalar(double rateScalar);
+    
+    @Deprecated
     @StructMember(4) public native double rateScalar();
+    @Deprecated
     @StructMember(4) public native CVTimeStamp rateScalar(double rateScalar);
+    
+    @StructMember(5) public native long getVideorefreshperiod();
+    @StructMember(5) public native CVTimeStamp setVideorefreshperiod(long videoRefreshPeriod);
+    
+    @Deprecated
     @StructMember(5) public native long videoRefreshPeriod();
+    @Deprecated
     @StructMember(5) public native CVTimeStamp videoRefreshPeriod(long videoRefreshPeriod);
+    
+    @StructMember(6) public native @ByVal CVSMPTETime getSmptetime();
+    @StructMember(6) public native CVTimeStamp setSmptetime(@ByVal CVSMPTETime smpteTime);
+    
+    @Deprecated
     @StructMember(6) public native @ByVal CVSMPTETime smpteTime();
+    @Deprecated
     @StructMember(6) public native CVTimeStamp smpteTime(@ByVal CVSMPTETime smpteTime);
+    
+    @StructMember(7) public native long getFlags();
+    @StructMember(7) public native CVTimeStamp setFlags(long flags);
+    
+    @Deprecated
     @StructMember(7) public native long flags();
+    @Deprecated
     @StructMember(7) public native CVTimeStamp flags(long flags);
+    
+    @StructMember(8) public native long getReserved();
+    @StructMember(8) public native CVTimeStamp setReserved(long reserved);
+    
+    @Deprecated
     @StructMember(8) public native long reserved();
+    @Deprecated
     @StructMember(8) public native CVTimeStamp reserved(long reserved);
+    
     /*</members>*/
     /*<methods>*//*</methods>*/
 }

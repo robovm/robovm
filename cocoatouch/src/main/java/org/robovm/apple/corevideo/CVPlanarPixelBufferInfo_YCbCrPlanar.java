@@ -48,19 +48,37 @@ import org.robovm.apple.coremedia.*;
     /*<constructors>*/
     public CVPlanarPixelBufferInfo_YCbCrPlanar() {}
     public CVPlanarPixelBufferInfo_YCbCrPlanar(CVPlanarComponentInfo componentInfoY, CVPlanarComponentInfo componentInfoCb, CVPlanarComponentInfo componentInfoCr) {
-        this.componentInfoY(componentInfoY);
-        this.componentInfoCb(componentInfoCb);
-        this.componentInfoCr(componentInfoCr);
+        this.setComponentinfoy(componentInfoY);
+        this.setComponentinfocb(componentInfoCb);
+        this.setComponentinfocr(componentInfoCr);
     }
     /*</constructors>*/
     /*<properties>*//*</properties>*/
     /*<members>*/
+    @StructMember(0) public native @ByVal CVPlanarComponentInfo getComponentinfoy();
+    @StructMember(0) public native CVPlanarPixelBufferInfo_YCbCrPlanar setComponentinfoy(@ByVal CVPlanarComponentInfo componentInfoY);
+    
+    @Deprecated
     @StructMember(0) public native @ByVal CVPlanarComponentInfo componentInfoY();
+    @Deprecated
     @StructMember(0) public native CVPlanarPixelBufferInfo_YCbCrPlanar componentInfoY(@ByVal CVPlanarComponentInfo componentInfoY);
+    
+    @StructMember(1) public native @ByVal CVPlanarComponentInfo getComponentinfocb();
+    @StructMember(1) public native CVPlanarPixelBufferInfo_YCbCrPlanar setComponentinfocb(@ByVal CVPlanarComponentInfo componentInfoCb);
+    
+    @Deprecated
     @StructMember(1) public native @ByVal CVPlanarComponentInfo componentInfoCb();
+    @Deprecated
     @StructMember(1) public native CVPlanarPixelBufferInfo_YCbCrPlanar componentInfoCb(@ByVal CVPlanarComponentInfo componentInfoCb);
+    
+    @StructMember(2) public native @ByVal CVPlanarComponentInfo getComponentinfocr();
+    @StructMember(2) public native CVPlanarPixelBufferInfo_YCbCrPlanar setComponentinfocr(@ByVal CVPlanarComponentInfo componentInfoCr);
+    
+    @Deprecated
     @StructMember(2) public native @ByVal CVPlanarComponentInfo componentInfoCr();
+    @Deprecated
     @StructMember(2) public native CVPlanarPixelBufferInfo_YCbCrPlanar componentInfoCr(@ByVal CVPlanarComponentInfo componentInfoCr);
+    
     /*</members>*/
     /*<methods>*//*</methods>*/
 }

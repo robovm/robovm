@@ -101,11 +101,15 @@ public class CallbackMethodCompiler extends BroMethodCompiler {
         if (originalMethod != method) {
             callbackFn.setParameterAttributes(0, ParameterAttribute.sret);
         } else if (passByValue) {
-            // Returns a small struct. We need to change the return type to
-            // i8/i16/i32/i64.
-            int size = dataLayout.getAllocSize(callbackFn.getType().getReturnType());
-            Type t = size <= 1 ? I8 : (size <= 2 ? I16 : (size <= 4 ? I32 : I64));
-            callbackFn = callback(method, t);
+            OS os = config.getOs();
+            Arch arch = config.getArch();
+            if (os.returnSmallAggregateAsInteger(arch, dataLayout.getAllocSize(callbackFn.getType().getReturnType()))) {
+                // Returns a small struct. We need to change the return type to
+                // i8/i16/i32/i64.
+                int size = dataLayout.getAllocSize(callbackFn.getType().getReturnType());
+                Type t = size <= 1 ? I8 : (size <= 2 ? I16 : (size <= 4 ? I32 : I64));
+                callbackFn = callback(method, t);
+            }
         }
         moduleBuilder.addFunction(callbackFn);
         moduleBuilder.addAlias(new Alias(Symbols.callbackPtrSymbol(originalMethod), 
@@ -154,11 +158,11 @@ public class CallbackMethodCompiler extends BroMethodCompiler {
             if (argIdx == receiverIdx) {
                 argIdx++;
             }
-            if (isPassByValue(method, i)) {
-                callbackFn.setParameterAttributes(argIdx, ParameterAttribute.byval);
-            }
             Value arg = callbackFn.getParameterRef(argIdx);
             soot.Type type = method.getParameterType(i);
+            if (isPassByValue(method, i) && arg.getType() instanceof PointerType) {
+                callbackFn.setParameterAttributes(argIdx, ParameterAttribute.byval);
+            }
             
             if (needsMarshaler(type)) {
                 MarshalerMethod marshalerMethod = config.getMarshalerLookup().findMarshalerMethod(new MarshalSite(method, i));

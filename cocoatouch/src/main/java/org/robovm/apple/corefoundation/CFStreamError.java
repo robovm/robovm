@@ -44,16 +44,28 @@ import org.robovm.apple.dispatch.*;
     /*<constructors>*/
     public CFStreamError() {}
     public CFStreamError(CFStreamErrorDomain domain, int error) {
-        this.domain(domain);
-        this.error(error);
+        this.setDomain(domain);
+        this.setError(error);
     }
     /*</constructors>*/
     /*<properties>*//*</properties>*/
     /*<members>*/
+    @StructMember(0) public native CFStreamErrorDomain getDomain();
+    @StructMember(0) public native CFStreamError setDomain(CFStreamErrorDomain domain);
+    
+    @Deprecated
     @StructMember(0) public native CFStreamErrorDomain domain();
+    @Deprecated
     @StructMember(0) public native CFStreamError domain(CFStreamErrorDomain domain);
+    
+    @StructMember(1) public native int getError();
+    @StructMember(1) public native CFStreamError setError(int error);
+    
+    @Deprecated
     @StructMember(1) public native int error();
+    @Deprecated
     @StructMember(1) public native CFStreamError error(int error);
+    
     /*</members>*/
     /*<methods>*//*</methods>*/
 }

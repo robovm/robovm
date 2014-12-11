@@ -561,5 +561,16 @@ import org.robovm.apple.coremedia.*;
      */
     @GlobalValue(symbol="kCVPixelFormatFillExtendedPixelsCallback", optional=true)
     public static native CFString CVPixelFormatFillExtendedPixelsCallback();
+    
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @Bridge(symbol="CVMetalTextureIsFlipped", optional=true)
+    public static native boolean function__CVMetalTextureIsFlipped(CVImageBuffer image);
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @Bridge(symbol="CVMetalTextureGetCleanTexCoords", optional=true)
+    public static native void function__CVMetalTextureGetCleanTexCoords(CVImageBuffer image, FloatPtr lowerLeft, FloatPtr lowerRight, FloatPtr upperRight, FloatPtr upperLeft);
     /*</methods>*/
 }

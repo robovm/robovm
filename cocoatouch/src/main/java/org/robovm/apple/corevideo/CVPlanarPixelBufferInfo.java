@@ -48,13 +48,19 @@ import org.robovm.apple.coremedia.*;
     /*<constructors>*/
     public CVPlanarPixelBufferInfo() {}
     public CVPlanarPixelBufferInfo(CVPlanarComponentInfo componentInfo) {
-        this.componentInfo(componentInfo);
+        this.setComponentinfo(componentInfo);
     }
     /*</constructors>*/
     /*<properties>*//*</properties>*/
     /*<members>*/
+    @StructMember(0) public native @Array({1}) CVPlanarComponentInfo getComponentinfo();
+    @StructMember(0) public native CVPlanarPixelBufferInfo setComponentinfo(@Array({1}) CVPlanarComponentInfo componentInfo);
+    
+    @Deprecated
     @StructMember(0) public native @Array({1}) CVPlanarComponentInfo componentInfo();
+    @Deprecated
     @StructMember(0) public native CVPlanarPixelBufferInfo componentInfo(@Array({1}) CVPlanarComponentInfo componentInfo);
+    
     /*</members>*/
     /*<methods>*//*</methods>*/
 }

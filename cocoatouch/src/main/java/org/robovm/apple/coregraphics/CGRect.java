@@ -45,22 +45,34 @@ import org.robovm.apple.uikit.*;
     /*<constructors>*/
     public CGRect() {}
     public CGRect(CGPoint origin, CGSize size) {
-        this.origin(origin);
-        this.size(size);
+        this.setOrigin(origin);
+        this.setSize(size);
     }
     /*</constructors>*/
     
     public CGRect(double x, double y, double width, double height) {
-        origin().x(x).y(y);
-        size().width(width).height(height);
+        getOrigin().setX(x).setY(y);
+        getSize().setWidth(width).setHeight(height);
     }
     
     /*<properties>*//*</properties>*/
     /*<members>*/
+    @StructMember(0) public native @ByVal CGPoint getOrigin();
+    @StructMember(0) public native CGRect setOrigin(@ByVal CGPoint origin);
+    
+    @Deprecated
     @StructMember(0) public native @ByVal CGPoint origin();
+    @Deprecated
     @StructMember(0) public native CGRect origin(@ByVal CGPoint origin);
+    
+    @StructMember(1) public native @ByVal CGSize getSize();
+    @StructMember(1) public native CGRect setSize(@ByVal CGSize size);
+    
+    @Deprecated
     @StructMember(1) public native @ByVal CGSize size();
+    @Deprecated
     @StructMember(1) public native CGRect size(@ByVal CGSize size);
+    
     /*</members>*/
     
     public static CGRect fromString(String string) {

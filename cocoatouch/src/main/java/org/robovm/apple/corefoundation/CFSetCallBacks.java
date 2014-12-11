@@ -44,28 +44,64 @@ import org.robovm.apple.dispatch.*;
     /*<constructors>*/
     public CFSetCallBacks() {}
     public CFSetCallBacks(@MachineSizedSInt long version, FunctionPtr retain, FunctionPtr release, FunctionPtr copyDescription, FunctionPtr equal, FunctionPtr hash) {
-        this.version(version);
-        this.retain(retain);
-        this.release(release);
-        this.copyDescription(copyDescription);
-        this.equal(equal);
-        this.hash(hash);
+        this.setVersion(version);
+        this.setRetain(retain);
+        this.setRelease(release);
+        this.setCopydescription(copyDescription);
+        this.setEqual(equal);
+        this.setHash(hash);
     }
     /*</constructors>*/
     /*<properties>*//*</properties>*/
     /*<members>*/
+    @StructMember(0) public native @MachineSizedSInt long getVersion();
+    @StructMember(0) public native CFSetCallBacks setVersion(@MachineSizedSInt long version);
+    
+    @Deprecated
     @StructMember(0) public native @MachineSizedSInt long version();
+    @Deprecated
     @StructMember(0) public native CFSetCallBacks version(@MachineSizedSInt long version);
+    
+    @StructMember(1) public native FunctionPtr getRetain();
+    @StructMember(1) public native CFSetCallBacks setRetain(FunctionPtr retain);
+    
+    @Deprecated
     @StructMember(1) public native FunctionPtr retain();
+    @Deprecated
     @StructMember(1) public native CFSetCallBacks retain(FunctionPtr retain);
+    
+    @StructMember(2) public native FunctionPtr getRelease();
+    @StructMember(2) public native CFSetCallBacks setRelease(FunctionPtr release);
+    
+    @Deprecated
     @StructMember(2) public native FunctionPtr release();
+    @Deprecated
     @StructMember(2) public native CFSetCallBacks release(FunctionPtr release);
+    
+    @StructMember(3) public native FunctionPtr getCopydescription();
+    @StructMember(3) public native CFSetCallBacks setCopydescription(FunctionPtr copyDescription);
+    
+    @Deprecated
     @StructMember(3) public native FunctionPtr copyDescription();
+    @Deprecated
     @StructMember(3) public native CFSetCallBacks copyDescription(FunctionPtr copyDescription);
+    
+    @StructMember(4) public native FunctionPtr getEqual();
+    @StructMember(4) public native CFSetCallBacks setEqual(FunctionPtr equal);
+    
+    @Deprecated
     @StructMember(4) public native FunctionPtr equal();
+    @Deprecated
     @StructMember(4) public native CFSetCallBacks equal(FunctionPtr equal);
+    
+    @StructMember(5) public native FunctionPtr getHash();
+    @StructMember(5) public native CFSetCallBacks setHash(FunctionPtr hash);
+    
+    @Deprecated
     @StructMember(5) public native FunctionPtr hash();
+    @Deprecated
     @StructMember(5) public native CFSetCallBacks hash(FunctionPtr hash);
+    
     /*</members>*/
     /*<methods>*//*</methods>*/
 }

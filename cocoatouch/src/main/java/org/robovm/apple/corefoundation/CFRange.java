@@ -44,16 +44,28 @@ import org.robovm.apple.dispatch.*;
     /*<constructors>*/
     public CFRange() {}
     public CFRange(@MachineSizedSInt long location, @MachineSizedSInt long length) {
-        this.location(location);
-        this.length(length);
+        this.setLocation(location);
+        this.setLength(length);
     }
     /*</constructors>*/
     /*<properties>*//*</properties>*/
     /*<members>*/
+    @StructMember(0) public native @MachineSizedSInt long getLocation();
+    @StructMember(0) public native CFRange setLocation(@MachineSizedSInt long location);
+    
+    @Deprecated
     @StructMember(0) public native @MachineSizedSInt long location();
+    @Deprecated
     @StructMember(0) public native CFRange location(@MachineSizedSInt long location);
+    
+    @StructMember(1) public native @MachineSizedSInt long getLength();
+    @StructMember(1) public native CFRange setLength(@MachineSizedSInt long length);
+    
+    @Deprecated
     @StructMember(1) public native @MachineSizedSInt long length();
+    @Deprecated
     @StructMember(1) public native CFRange length(@MachineSizedSInt long length);
+    
     /*</members>*/
     /*<methods>*//*</methods>*/
 }

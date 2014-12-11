@@ -48,16 +48,28 @@ import org.robovm.apple.coremedia.*;
     /*<constructors>*/
     public CVPlanarComponentInfo() {}
     public CVPlanarComponentInfo(int offset, int rowBytes) {
-        this.offset(offset);
-        this.rowBytes(rowBytes);
+        this.setOffset(offset);
+        this.setRowbytes(rowBytes);
     }
     /*</constructors>*/
     /*<properties>*//*</properties>*/
     /*<members>*/
+    @StructMember(0) public native int getOffset();
+    @StructMember(0) public native CVPlanarComponentInfo setOffset(int offset);
+    
+    @Deprecated
     @StructMember(0) public native int offset();
+    @Deprecated
     @StructMember(0) public native CVPlanarComponentInfo offset(int offset);
+    
+    @StructMember(1) public native int getRowbytes();
+    @StructMember(1) public native CVPlanarComponentInfo setRowbytes(int rowBytes);
+    
+    @Deprecated
     @StructMember(1) public native int rowBytes();
+    @Deprecated
     @StructMember(1) public native CVPlanarComponentInfo rowBytes(int rowBytes);
+    
     /*</members>*/
     /*<methods>*//*</methods>*/
 }

@@ -43,16 +43,28 @@ import org.robovm.rt.bro.ptr.*;
     /*<constructors>*/
     public timespec() {}
     public timespec(@MachineSizedSInt long tv_sec, @MachineSizedSInt long tv_nsec) {
-        this.tv_sec(tv_sec);
-        this.tv_nsec(tv_nsec);
+        this.setTvSec(tv_sec);
+        this.setTvNsec(tv_nsec);
     }
     /*</constructors>*/
     /*<properties>*//*</properties>*/
     /*<members>*/
+    @StructMember(0) public native @MachineSizedSInt long getTvSec();
+    @StructMember(0) public native timespec setTvSec(@MachineSizedSInt long tv_sec);
+    
+    @Deprecated
     @StructMember(0) public native @MachineSizedSInt long tv_sec();
+    @Deprecated
     @StructMember(0) public native timespec tv_sec(@MachineSizedSInt long tv_sec);
+    
+    @StructMember(1) public native @MachineSizedSInt long getTvNsec();
+    @StructMember(1) public native timespec setTvNsec(@MachineSizedSInt long tv_nsec);
+    
+    @Deprecated
     @StructMember(1) public native @MachineSizedSInt long tv_nsec();
+    @Deprecated
     @StructMember(1) public native timespec tv_nsec(@MachineSizedSInt long tv_nsec);
+    
     /*</members>*/
     /*<methods>*//*</methods>*/
 }

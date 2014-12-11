@@ -53,22 +53,46 @@ import org.robovm.apple.mediatoolbox.*;
     /*<constructors>*/
     public AVEdgeWidths() {}
     public AVEdgeWidths(@MachineSizedFloat double left, @MachineSizedFloat double top, @MachineSizedFloat double right, @MachineSizedFloat double bottom) {
-        this.left(left);
-        this.top(top);
-        this.right(right);
-        this.bottom(bottom);
+        this.setLeft(left);
+        this.setTop(top);
+        this.setRight(right);
+        this.setBottom(bottom);
     }
     /*</constructors>*/
     /*<properties>*//*</properties>*/
     /*<members>*/
+    @StructMember(0) public native @MachineSizedFloat double getLeft();
+    @StructMember(0) public native AVEdgeWidths setLeft(@MachineSizedFloat double left);
+    
+    @Deprecated
     @StructMember(0) public native @MachineSizedFloat double left();
+    @Deprecated
     @StructMember(0) public native AVEdgeWidths left(@MachineSizedFloat double left);
+    
+    @StructMember(1) public native @MachineSizedFloat double getTop();
+    @StructMember(1) public native AVEdgeWidths setTop(@MachineSizedFloat double top);
+    
+    @Deprecated
     @StructMember(1) public native @MachineSizedFloat double top();
+    @Deprecated
     @StructMember(1) public native AVEdgeWidths top(@MachineSizedFloat double top);
+    
+    @StructMember(2) public native @MachineSizedFloat double getRight();
+    @StructMember(2) public native AVEdgeWidths setRight(@MachineSizedFloat double right);
+    
+    @Deprecated
     @StructMember(2) public native @MachineSizedFloat double right();
+    @Deprecated
     @StructMember(2) public native AVEdgeWidths right(@MachineSizedFloat double right);
+    
+    @StructMember(3) public native @MachineSizedFloat double getBottom();
+    @StructMember(3) public native AVEdgeWidths setBottom(@MachineSizedFloat double bottom);
+    
+    @Deprecated
     @StructMember(3) public native @MachineSizedFloat double bottom();
+    @Deprecated
     @StructMember(3) public native AVEdgeWidths bottom(@MachineSizedFloat double bottom);
+    
     /*</members>*/
     /*<methods>*//*</methods>*/
 }

@@ -53,16 +53,28 @@ import org.robovm.apple.mediatoolbox.*;
     /*<constructors>*/
     public AVPixelAspectRatio() {}
     public AVPixelAspectRatio(@MachineSizedSInt long horizontalSpacing, @MachineSizedSInt long verticalSpacing) {
-        this.horizontalSpacing(horizontalSpacing);
-        this.verticalSpacing(verticalSpacing);
+        this.setHorizontalspacing(horizontalSpacing);
+        this.setVerticalspacing(verticalSpacing);
     }
     /*</constructors>*/
     /*<properties>*//*</properties>*/
     /*<members>*/
+    @StructMember(0) public native @MachineSizedSInt long getHorizontalspacing();
+    @StructMember(0) public native AVPixelAspectRatio setHorizontalspacing(@MachineSizedSInt long horizontalSpacing);
+    
+    @Deprecated
     @StructMember(0) public native @MachineSizedSInt long horizontalSpacing();
+    @Deprecated
     @StructMember(0) public native AVPixelAspectRatio horizontalSpacing(@MachineSizedSInt long horizontalSpacing);
+    
+    @StructMember(1) public native @MachineSizedSInt long getVerticalspacing();
+    @StructMember(1) public native AVPixelAspectRatio setVerticalspacing(@MachineSizedSInt long verticalSpacing);
+    
+    @Deprecated
     @StructMember(1) public native @MachineSizedSInt long verticalSpacing();
+    @Deprecated
     @StructMember(1) public native AVPixelAspectRatio verticalSpacing(@MachineSizedSInt long verticalSpacing);
+    
     /*</members>*/
     /*<methods>*//*</methods>*/
 }

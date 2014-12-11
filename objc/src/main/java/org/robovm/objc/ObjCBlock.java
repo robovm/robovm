@@ -24,6 +24,7 @@ import org.robovm.objc.block.VoidBooleanBlock;
 import org.robovm.rt.VM;
 import org.robovm.rt.bro.Struct;
 import org.robovm.rt.bro.annotation.Callback;
+import org.robovm.rt.bro.annotation.MachineSizedUInt;
 import org.robovm.rt.bro.annotation.Pointer;
 import org.robovm.rt.bro.annotation.StructMember;
 
@@ -104,16 +105,16 @@ public final class ObjCBlock extends Struct<ObjCBlock> {
     
     public static final class Descriptor extends Struct<Descriptor> {
         @StructMember(0)
-        public native int reserved();
+        public native @MachineSizedUInt long reserved();
         
         @StructMember(0)
-        public native Descriptor reserved(int reserved);
+        public native Descriptor reserved(@MachineSizedUInt long reserved);
 
         @StructMember(1)
-        public native int literal_size();
+        public native @MachineSizedUInt long literal_size();
         
         @StructMember(1)
-        public native Descriptor literal_size(int literal_size);
+        public native Descriptor literal_size(@MachineSizedUInt long literal_size);
 
         @StructMember(2)
         public native @Pointer long copy_helper();

@@ -51,19 +51,37 @@ import org.robovm.apple.dispatch.*;
     /*<constructors>*/
     public NSOperatingSystemVersion() {}
     public NSOperatingSystemVersion(@MachineSizedSInt long majorVersion, @MachineSizedSInt long minorVersion, @MachineSizedSInt long patchVersion) {
-        this.majorVersion(majorVersion);
-        this.minorVersion(minorVersion);
-        this.patchVersion(patchVersion);
+        this.setMajorversion(majorVersion);
+        this.setMinorversion(minorVersion);
+        this.setPatchversion(patchVersion);
     }
     /*</constructors>*/
     /*<properties>*//*</properties>*/
     /*<members>*/
+    @StructMember(0) public native @MachineSizedSInt long getMajorversion();
+    @StructMember(0) public native NSOperatingSystemVersion setMajorversion(@MachineSizedSInt long majorVersion);
+    
+    @Deprecated
     @StructMember(0) public native @MachineSizedSInt long majorVersion();
+    @Deprecated
     @StructMember(0) public native NSOperatingSystemVersion majorVersion(@MachineSizedSInt long majorVersion);
+    
+    @StructMember(1) public native @MachineSizedSInt long getMinorversion();
+    @StructMember(1) public native NSOperatingSystemVersion setMinorversion(@MachineSizedSInt long minorVersion);
+    
+    @Deprecated
     @StructMember(1) public native @MachineSizedSInt long minorVersion();
+    @Deprecated
     @StructMember(1) public native NSOperatingSystemVersion minorVersion(@MachineSizedSInt long minorVersion);
+    
+    @StructMember(2) public native @MachineSizedSInt long getPatchversion();
+    @StructMember(2) public native NSOperatingSystemVersion setPatchversion(@MachineSizedSInt long patchVersion);
+    
+    @Deprecated
     @StructMember(2) public native @MachineSizedSInt long patchVersion();
+    @Deprecated
     @StructMember(2) public native NSOperatingSystemVersion patchVersion(@MachineSizedSInt long patchVersion);
+    
     /*</members>*/
     /*<methods>*//*</methods>*/
 }

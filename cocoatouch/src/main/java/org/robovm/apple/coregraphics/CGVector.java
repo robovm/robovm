@@ -46,16 +46,28 @@ import org.robovm.apple.uikit.*;
     /*<constructors>*/
     public CGVector() {}
     public CGVector(@MachineSizedFloat double dx, @MachineSizedFloat double dy) {
-        this.dx(dx);
-        this.dy(dy);
+        this.setDx(dx);
+        this.setDy(dy);
     }
     /*</constructors>*/
     /*<properties>*//*</properties>*/
     /*<members>*/
+    @StructMember(0) public native @MachineSizedFloat double getDx();
+    @StructMember(0) public native CGVector setDx(@MachineSizedFloat double dx);
+    
+    @Deprecated
     @StructMember(0) public native @MachineSizedFloat double dx();
+    @Deprecated
     @StructMember(0) public native CGVector dx(@MachineSizedFloat double dx);
+    
+    @StructMember(1) public native @MachineSizedFloat double getDy();
+    @StructMember(1) public native CGVector setDy(@MachineSizedFloat double dy);
+    
+    @Deprecated
     @StructMember(1) public native @MachineSizedFloat double dy();
+    @Deprecated
     @StructMember(1) public native CGVector dy(@MachineSizedFloat double dy);
+    
     /*</members>*/
     /*<methods>*//*</methods>*/
 }

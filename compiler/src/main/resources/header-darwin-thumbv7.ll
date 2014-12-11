@@ -24,3 +24,10 @@ define private float @frem(%Env* %env, float %op1, float %op2) alwaysinline {
     %result = fptrunc double %dresult to float
     ret float %result
 }
+
+declare i1 @OSAtomicCompareAndSwap32(i32 %old, i32 %new, i32* %ptr)
+
+define private i1 @atomic_cas(i32 %old, i32 %new, i32* %ptr) alwaysinline {  
+  %1 = call i1 @OSAtomicCompareAndSwap32(i32 %old, i32 %new, i32* %ptr)  
+  ret i1 %1
+}

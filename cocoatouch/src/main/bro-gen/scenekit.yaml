@@ -1,0 +1,941 @@
+package: org.robovm.apple.scenekit
+include: [foundation.yaml, uikit.yaml, coreanimation.yaml, coregraphics.yaml, dispatch.yaml, glkit.yaml, spritekit.yaml, opengles.yaml]
+library: SceneKit
+framework: SceneKit
+clang_args: ['-x', 'objective-c']
+headers:
+    - /System/Library/Frameworks/SceneKit.framework/Headers/SceneKit.h
+typedefs:
+    'BOOL (^)()': '@Block Block0<Boolean>'
+    'void (^)(SCNNode *)': '@Block VoidBlock1<SCNNode>'
+    'void (^)(SCNNode *, CGFloat)': '@Block("(,@MachineSizedFloat)") VoidBlock2<SCNNode, Double>'
+    'BOOL (^)(SCNNode *, BOOL *)': '@Block Block2<SCNNode, BooleanPtr, Boolean>'
+    'void (^)(SCNNode *, BOOL *)': '@Block VoidBlock2<SCNNode, BooleanPtr>'
+    'BOOL (^)(id, NSString *, BOOL *)': '@Block Block3<NSObject, String, BooleanPtr, Boolean>'
+    'SCNMatrix4 (^)(SCNNode *, SCNMatrix4)': '@Block Block2<SCNNode, SCNMatrix4, SCNMatrix4>'
+    SCNQuaternion: SCNVector4
+    
+enums:
+    SCNErrorCode: { first: SCNProgramCompilationError, prefix: SCN, suffix: Error }
+    SCNConsistencyErrorCode: { first: SCNConsistencyInvalidURIError }
+    SCNAntialiasingMode: {}
+    SCNFilterMode: {}
+    SCNWrapMode: {}
+    SCNSceneSourceStatus: {}
+    SCNActionTimingMode: {}
+    SCNShadowMode: {}
+    SCNCullMode: {}
+    SCNTransparencyMode: {}
+    SCNGeometryPrimitiveType: {}
+    SCNChamferMode: {}
+    SCNMorpherCalculationMode: {}
+    SCNParticleSortingMode: {}
+    SCNParticleBlendMode: {}
+    SCNParticleOrientationMode: {}
+    SCNParticleBirthLocation: {}
+    SCNParticleBirthDirection: {}
+    SCNParticleImageSequenceAnimationMode: {}
+    SCNParticleInputMode: {}
+    SCNParticleModifierStage: {}
+    SCNParticleEvent: {}
+    SCNPhysicsBodyType: {}
+    SCNPhysicsCollisionCategory: {}
+    SCNPhysicsFieldScope: {}
+    
+categories:
+    NSValue: # DONE
+        methods:
+            '+valueWith.*':
+                name: create
+    CAAnimation: # DONE
+        properties:
+            'animationEvents':
+                type: NSArray<SCNAnimationEvent>
+        
+classes:
+    SCNError:
+        extends: NSError
+        
+    SCNErrorUserInfoKey:
+        extends: NSErrorUserInfoKey
+        
+    SCNGeometrySourceSemantic:
+        extends: SCNProgramSemantic
+    SCNRenderingTransform:
+        extends: SCNProgramSemantic
+
+    # Structs
+    SCNVector3: {}
+    SCNVector4: {}
+    SCNMatrix4: {}
+    
+    SCNAction: # DONE
+        properties:
+            'timingFunction':
+                type: '@Block Block1<Float, Float>'
+        methods:
+            '-reversedAction':
+                property: true
+            '+moveBy.*':
+                name: moveBy
+            '+moveTo.*':
+                name: moveTo
+            '+rotateBy.*':
+                name: rotateBy
+            '+rotateTo.*':
+                name: rotateTo
+            '+scaleBy.*':
+                name: scaleBy
+            '+scaleTo.*':
+                name: scaleTo
+            '+sequence:':
+                trim_after_first_colon: true
+                parameters:
+                    actions:
+                        type: NSArray<SCNAction>
+            '+group:':
+                trim_after_first_colon: true
+                parameters:
+                    actions:
+                        type: NSArray<SCNAction>
+            '+repeatAction:count:':
+                name: repeat
+            '+repeatActionForever:':
+                name: repeatForever
+            '+fadeInWithDuration:':
+                name: fadeIn
+            '+fadeOutWithDuration:':
+                name: fadeOut
+            '+fadeOpacityBy.*':
+                name: fadeOpacityBy
+            '+fadeOpacityTo.*':
+                name: fadeOpacityTo
+            '+waitForDuration:.*':
+                name: wait
+            '+runBlock.*':
+                name: run
+            '+javaScriptActionWithScript:duration:':
+                name: javaScript
+            '+customActionWithDuration:actionBlock:':
+                name: custom
+    SCNAnimationEvent: # DONE
+        methods:
+            '+animationEventWithKeyTime:block:':
+                name: create
+                parameters:
+                    eventBlock:
+                        type: '@Block VoidBlock3<CAAnimation, NSObject, Boolean>'
+    SCNCamera: # DONE
+        methods:
+            '-projectionTransform':
+                property: true
+            '+camera':
+                name: create
+    SCNConstraint: {} # DONE
+    SCNIKConstraint: # DONE
+        methods:
+            '-setMaxAllowedRotationAngle:forJoint:':
+                name: setMaxAllowedRotationAngleForJoint
+            '-maxAllowedRotationAngleForJoint:':
+                name: getMaxAllowedRotationAngleForJoint
+            '+inverseKinematicsConstraintWithChainRootNode:':
+                name: create
+    SCNLookAtConstraint: # DONE
+        methods:
+            '+lookAtConstraintWithTarget:':
+                name: create
+    SCNTransformConstraint: # DONE
+        methods:
+            '+transformConstraintInWorldSpace:withBlock:':
+                name: create
+    SCNGeometry: # DONE
+        properties:
+            'materials':
+                type: NSArray<SCNMaterial>
+            'levelsOfDetail':
+                type: NSArray<SCNLevelOfDetail>
+        methods:
+            '-insertMaterial:atIndex:':
+                trim_after_first_colon: true
+            '-removeMaterialAtIndex:':
+                name: removeMaterial
+            '-replaceMaterialAtIndex:withMaterial:':
+                name: replaceMaterial
+            '-materialWithName:':
+                name: getMaterial
+            '-geometrySourcesForSemantic:':
+                name: getGeometrySourcesForSemantic
+                return_type: NSArray<SCNGeometrySource>
+                parameters:
+                    semantic:
+                        type: SCNGeometrySourceSemantic
+            '-geometryElementAtIndex:':
+                name: getGeometryElement
+            '+geometry':
+                name: create
+            '+geometryWithSources:elements:':
+                name: create
+                parameters:
+                    sources:
+                        type: NSArray<SCNGeometrySource>
+                    elements:
+                        type: NSArray<SCNGeometryElement>
+    SCNBox: # DONE
+        methods:
+            '+boxWithWidth:height:length:chamferRadius:':
+                name: create
+    SCNCapsule: # DONE
+        methods:
+            '+capsuleWithCapRadius:height:':
+                name: create
+    SCNCone: # DONE
+        methods:
+            '+coneWithTopRadius:bottomRadius:height:':
+                name: create
+    SCNCylinder: # DONE
+        methods:
+            '+cylinderWithRadius:height:':
+                name: create
+    SCNFloor: # DONE
+        methods:
+            '+floor':
+                name: create
+    SCNPlane: # DONE
+        methods:
+            '+planeWithWidth:height:':
+                name: create
+    SCNPyramid: # DONE
+        methods:
+            '+pyramidWithWidth:height:length:':
+                name: create
+    SCNShape: # DONE
+        methods:
+            '+shapeWithPath:extrusionDepth:':
+                name: create
+    SCNSphere: # DONE
+        methods:
+            '+sphereWithRadius:':
+                name: create
+    SCNText: # DONE
+        properties:
+            'string':
+                type: NSAttributedString
+            'truncationMode':
+                type: String # CATruncationMode TODO
+            'alignmentMode':
+                type: String # CAAlignmentMode TODO
+        methods:
+            '+textWithString:extrusionDepth:':
+                name: create
+                parameters:
+                    string:
+                        type: NSAttributedString
+    SCNTorus: # DONE
+        methods:
+            '+torusWithRingRadius:pipeRadius:':
+                name: create
+    SCNTube: # DONE
+        methods:
+            '+tubeWithInnerRadius:outerRadius:height:':
+                name: create
+    SCNGeometryElement: # DONE
+        methods:
+            '+geometryElementWithData:primitiveType:primitiveCount:bytesPerIndex:':
+                name: create
+    SCNGeometrySource: # DONE
+        properties:
+            'semantic':
+                type: SCNGeometrySourceSemantic
+        methods:
+            '+geometrySourceWithData:semantic:vectorCount:floatComponents:componentsPerVector:bytesPerComponent:dataOffset:dataStride:':
+                name: createWithData
+                parameters:
+                    semantic:
+                        type: SCNGeometrySourceSemantic
+            '+geometrySourceWithVertices:count:':
+                name: createWithVertices
+            '+geometrySourceWithNormals:count:':
+                name: createWithNormals
+            '+geometrySourceWithTextureCoordinates:count:':
+                name: createWithTextureCoordinates
+    SCNHitTestResult: # DONE
+        methods:
+            '-textureCoordinatesWithMappingChannel:':
+                name: getTextureCoordinatesWithMappingChannel
+    SCNLevelOfDetail: # DONE
+        methods:
+            '+levelOfDetailWithGeometry:screenSpaceRadius:':
+                name: createWithGeometryAndRadius
+            '+levelOfDetailWithGeometry:worldSpaceDistance:':
+                name: createWithGeometryAndDistance
+    SCNLight: # DONE
+        properties:
+            'type':
+                type: SCNLightType
+            'color':
+                type: UIColor
+        methods:
+            '+light':
+                name: create
+    SCNMaterial: # DONE
+        methods:
+            '+material':
+                name: create
+    SCNMaterialProperty: # DONE
+        methods:
+            '+materialPropertyWithContents:':
+                name: create
+    SCNMorpher: # DONE
+        properties:
+            'targets':
+                type: NSArray<SCNGeometry>
+        methods:
+            '-setWeight:forTargetAtIndex:':
+                name: setWeightForTarget
+            '-weightForTargetAtIndex:':
+                name: getWeightForTarget
+    SCNNode: # DONE
+        properties:
+            'childNodes':
+                type: NSArray<SCNNode>
+            'constraints':
+                type: NSArray<SCNConstraint>
+            'filters':
+                type: NSArray<org.robovm.apple.coreimage.CIFilter>
+            'particleSystems':
+                type: NSArray<SCNParticleSystem>
+        methods:
+            '-clone':
+                return_type: SCNNode
+            '-addChildNode:':
+                trim_after_first_colon: true
+            '-insertChildNode:atIndex:':
+                trim_after_first_colon: true
+            '-replaceChildNode:with:':
+                trim_after_first_colon: true
+            '-childNodeWithName:recursively:':
+                name: findChildNodeWithName
+            '-childNodesPassingTest:':
+                name: getChildNodesPassingTest
+                return_type: NSArray<SCNNode>
+            '-enumerateChildNodesUsingBlock:':
+                name: enumerateChildNodes
+            '-convertPosition:toNode:':
+                name: convertPositionToNode
+            '-convertPosition:fromNode:':
+                name: convertPositionFromNode
+            '-convertTransform:toNode:':
+                name: convertTransformToNode
+            '-convertTransform:fromNode:':
+                name: convertTransformFromNode
+            '-presentationNode':
+                name: getPresentationNode
+            '-hitTestWithSegmentFromPoint:toPoint:options:':
+                name: hitTestWithSegment
+                return_type: NSArray<SCNHitTestResult>
+                parameters:
+                    options:
+                        type: SCNHitTestOptions
+            '+node.*':
+                name: create
+            '-addParticleSystem:':
+                trim_after_first_colon: true
+            '-removeParticleSystem:':
+                trim_after_first_colon: true
+    SCNParticlePropertyController: # DONE
+        properties:
+            'inputProperty':
+                type: SCNParticleProperty
+        methods:
+            '+controllerWithAnimation:':
+                name: create
+    SCNParticleSystem: # DONE
+        properties:
+            'particleImage':
+                type: UIImage
+            'colliderNodes':
+                type: NSArray<SCNNode>
+            'propertyControllers':
+                type: '@org.robovm.rt.bro.annotation.Marshaler(SCNParticleProperty.AsPropertyControllerMapMarshaler.class) Map<SCNParticleProperty, SCNParticlePropertyController>'            
+        methods:
+            '+particleSystem.*':
+                name: create
+            '-handleEvent:forProperties:withBlock:':
+                name: handleEventForProperties
+                parameters:
+                    properties:
+                        type: '@org.robovm.rt.bro.annotation.Marshaler(SCNParticleProperty.AsListMarshaler.class) List<SCNParticleProperty>'
+                    block:
+                        type: '@Block("(,,,@MachineSizedSInt)") VoidBlock4<VoidPtr.VoidPtrPtr, VoidPtr, IntPtr, Long>'
+            '-addModifierForProperties:atStage:withBlock:':
+                trim_after_first_colon: true
+                parameters:
+                    properties:
+                        type: '@org.robovm.rt.bro.annotation.Marshaler(SCNParticleProperty.AsListMarshaler.class) List<SCNParticleProperty>'
+                    block:
+                        type: '@Block("(,,,@MachineSizedSInt)") VoidBlock4<VoidPtr.VoidPtrPtr, VoidPtr, IntPtr, Long>'
+            '-removeModifiersOfStage:':
+                trim_after_first_colon: true
+    SCNPhysicsBehavior: {} # DONE
+    SCNPhysicsBallSocketJoint: # DONE
+        methods:
+            '+jointWithBody.*':
+                name: create
+    SCNPhysicsHingeJoint: # DONE
+        methods:
+            '+jointWithBody.*':
+                name: create
+    SCNPhysicsSliderJoint: # DONE
+        methods:
+            '+jointWithBody.*':
+                name: create
+    SCNPhysicsVehicle: # DONE
+        properties:
+            'wheels':
+                type: NSArray<SCNPhysicsVehicleWheel>
+        methods:
+            '-applyEngineForce:forWheelAtIndex:':
+                name: applyEngineForceForWheel
+            '-setSteeringAngle:forWheelAtIndex:':
+                name: setSteeringAngleForWheel
+            '-applyBrakingForce:forWheelAtIndex:':
+                name: applyBrakingForceForWheel
+            '+vehicleWithChassisBody:wheels:':
+                name: create
+                parameters:
+                    wheels:
+                        type: NSArray<SCNPhysicsVehicleWheel>
+    SCNPhysicsBody: # DONE
+        properties:
+            'collisionBitMask':
+                type: SCNPhysicsCollisionCategory
+        methods:
+            '-applyForce.*':
+                trim_after_first_colon: true
+            '-applyTorque:impulse:':
+                trim_after_first_colon: true
+            '+staticBody':
+                name: createStaticBody
+            '+dynamicBody':
+                name: createDynamicBody
+            '+kinematicBody':
+                name: createKinematicBody
+            '+bodyWithType:shape:':
+                name: create
+    SCNPhysicsContact: {} # DONE
+    SCNPhysicsField: # DONE
+        methods:
+            '+dragField':
+                name: createDragField
+            '+vortexField':
+                name: createVortexField
+            '+radialGravityField':
+                name: createRadialGravityField
+            '+linearGravityField':
+                name: createLinearGravityField
+            '+noiseFieldWithSmoothness:animationSpeed:':
+                name: createNoiseField
+            '+turbulenceFieldWithSmoothness:animationSpeed:':
+                name: createTurbulenceField
+            '+springField':
+                name: createSpringField
+            '+electricField':
+                name: createElectricField
+            '+magneticField':
+                name: createMagneticField
+            '+customFieldWithEvaluationBlock:':
+                name: createCustomField
+                parameters:
+                    block:
+                        type: '@Block Block5<SCNVector3, SCNVector3, Float, Float, Double, SCNVector3>'
+    SCNPhysicsShape: # DONE
+        methods:
+            '+shapeWithGeometry:options:':
+                name: create
+                parameters:
+                    options:
+                        type: SCNPhysicsShapeOptions
+            '+shapeWithNode:options:':
+                name: create
+                parameters:
+                    options:
+                        type: SCNPhysicsShapeOptions
+            '+shapeWithShapes:transforms:':
+                name: create
+                parameters:
+                    shapes:
+                        type: NSArray<SCNPhysicsShape>
+                    transforms:
+                        type: '@org.robovm.rt.bro.annotation.Marshaler(SCNMatrix4.AsListMarshaler.class) List<SCNMatrix4>'
+    SCNPhysicsVehicleWheel: # DONE
+        methods:
+            '+wheelWithNode:':
+                name: create
+    SCNPhysicsWorld: # DONE
+        methods:
+            '-addBehavior:':
+                trim_after_first_colon: true
+            '-removeBehavior:':
+                trim_after_first_colon: true
+            '-allBehaviors':
+                property: true
+                return_type: NSArray<SCNPhysicsBehavior>
+            '-rayTestWithSegmentFromPoint:toPoint:options:':
+                name: rayTestWithSegment
+                return_type: NSArray<SCNHitTestResult>
+                parameters:
+                    options:
+                        type: SCNPhysicsTestOptions
+            '-contactTestBetweenBody:andBody:options:':
+                name: contactTestBetweenBodies
+                return_type: NSArray<SCNHitTestResult>
+                parameters:
+                    options:
+                        type: SCNPhysicsTestOptions
+            '-contactTestWithBody:options:':
+                name: contactTestWithBody
+                return_type: NSArray<SCNHitTestResult>
+                parameters:
+                    options:
+                        type: SCNPhysicsTestOptions
+            '-convexSweepTestWithShape:fromTransform:toTransform:options:':
+                name: convexSweepTestWithShape
+                return_type: NSArray<SCNHitTestResult>
+                parameters:
+                    options:
+                        type: SCNPhysicsTestOptions
+    SCNProgram: # DONE
+        methods:
+            '-setSemantic:forSymbol:options:':
+                name: setSemanticForSymbol
+                parameters:
+                    semantic:
+                        type: SCNProgramSemantic
+                    options:
+                        type: SCNProgramSemanticOptions
+            '-semanticForSymbol:':
+                name: getSemanticForSymbol
+                return_type: SCNProgramSemantic
+            '+program':
+                name: create
+    SCNRenderer: # DONE
+        methods:
+            '-renderAtTime:':
+                trim_after_first_colon: true
+            '+rendererWithContext:options:':
+                name: create
+                parameters:
+                    context:
+                        type: EAGLContext
+    SCNScene: # DONE
+        properties:
+            'fogColor':
+                type: UIColor
+            'particleSystems':
+                type: NSArray<SCNParticleSystem>
+        methods:
+            '-attributeForKey:':
+                name: getAttribute
+                parameters:
+                    key:
+                        type: SCNSceneAttribute
+            '-setAttribute:forKey:':
+                name: setAttribute
+                visibility: protected
+                parameters:
+                    key:
+                        type: SCNSceneAttribute
+            '+scene':
+                name: create
+            '+sceneNamed:':
+                name: create
+            '+sceneNamed:inDirectory:options:':
+                name: create
+                parameters:
+                    options:
+                        type: SCNSceneSourceOptions
+            '+sceneWithURL:options:error:':
+                name: create
+                visibility: protected # throws NSErrorException
+                parameters:
+                    options:
+                        type: SCNSceneSourceOptions
+            '-addParticleSystem:withTransform:':
+                trim_after_first_colon: true
+            '-removeParticleSystem:':
+                trim_after_first_colon: true
+    SCNSceneSource: # DONE
+        methods:
+            '-initWith.*':
+                name: init
+                parameters:
+                    options:
+                        type: SCNSceneSourceOptions
+            '-propertyForKey:':
+                name: getProperty
+                parameters:
+                    key:
+                        type: SCNSceneSourceProperty
+            '-sceneWithOptions:statusHandler:':
+                name: newScene
+                parameters:
+                    options:
+                        type: SCNSceneSourceOptions
+                    statusHandler:
+                        type: '@Block VoidBlock4<Float, SCNSceneSourceStatus, NSError, BooleanPtr>'
+            '-sceneWithOptions:error:':
+                name: newScene
+                visibility: protected # throws NSErrorException
+                parameters:
+                    options:
+                        type: SCNSceneSourceOptions
+            '-entryWithIdentifier:withClass:':
+                name: getEntryWithIdentifier
+            '-identifiersOfEntriesWithClass:':
+                name: getIdentifiersOfEntriesWithClass
+                return_type: '@org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String>'
+            '-entriesPassingTest:':
+                name: getEntriesPassingTest
+            '+sceneSourceWith.*':
+                name: create
+                parameters:
+                    options:
+                        type: SCNSceneSourceOptions
+    SCNSkinner: # DONE
+         properties:
+            'boneInverseBindTransforms':
+                type: '@org.robovm.rt.bro.annotation.Marshaler(SCNMatrix4.AsListMarshaler.class) List<SCNMatrix4>'
+            'bones':
+                type: NSArray<SCNNode>
+         methods:
+            '+skinnerWithBaseGeometry:bones:boneInverseBindTransforms:boneWeights:boneIndices:':
+                name: create
+                parameters:
+                    bones:
+                        type: NSArray<SCNNode>
+                    boneInverseBindTransforms:
+                        type: '@org.robovm.rt.bro.annotation.Marshaler(SCNMatrix4.AsListMarshaler.class) List<SCNMatrix4>'
+    SCNTechnique: # DONE
+        methods:
+            '-handleBindingOfSymbol:usingBlock:':
+                trim_after_first_colon: true
+                parameters:
+                    block:
+                        type: '@Block VoidBlock4<Integer, Integer, SCNNode, SCNRenderer>'
+            '+techniqueWithDictionary:':
+                name: create
+            '+techniqueBySequencingTechniques:':
+                name: create
+                parameters:
+                    techniques:
+                        type: NSArray<SCNTechnique>
+    SCNTransaction: # DONE
+        methods:
+            '+(animationDuration|animationTimingFunction|disableActions|completionBlock)':
+                property: true
+            '+valueForKey:':
+                name: getValue
+            '+setValue:forKey:':
+                name: setValue
+    SCNView: # DONE
+        methods:
+            '-initWithFrame:options:':
+                name: init
+            '-play:':
+                trim_after_first_colon: true
+            '-pause:':
+                trim_after_first_colon: true
+            '-stop:':
+                trim_after_first_colon: true
+
+protocols:
+    SCNActionable: # DONE
+        methods:
+            '-runAction.*':
+                trim_after_first_colon: true
+            '-actionForKey:':
+                name: getAction
+            '-removeActionForKey:':
+                name: removeAction
+    SCNAnimatable: # DONE
+        methods:
+            '-addAnimation:forKey:':
+                trim_after_first_colon: true
+            '-removeAnimationForKey:':
+                name: removeAnimation
+            '-animationKeys':
+                property: true
+                return_type: '@org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String>'
+            '-animationForKey:':
+                name: getAnimation
+            '-pauseAnimationForKey:':
+                name: pauseAnimation
+            '-resumeAnimationForKey:':
+                name: resumeAnimation
+            '-isAnimationForKeyPaused:':
+                name: isAnimationPaused
+            '-removeAnimationForKey:fadeOutDuration:':
+                name: removeAnimation
+    SCNBoundingVolume: # DONE
+        methods:
+            '-getBoundingBoxMin:max:':
+                name: getBoundingBox
+                parameters:
+                    min:
+                        type: SCNVector3.SCNVector3Ptr
+                    max:
+                        type: SCNVector3.SCNVector3Ptr
+            '-getBoundingSphereCenter:radius:':
+                name: getBoundingSphere
+                parameters:
+                    center:
+                        type: SCNVector3.SCNVector3Ptr
+            '-setBoundingBoxMin:max:':
+                name: setBoundingBox
+                parameters:
+                    min:
+                        type: SCNVector3.SCNVector3Ptr
+                    max:
+                        type: SCNVector3.SCNVector3Ptr
+    SCNNodeRendererDelegate: # DONE
+        methods:
+            '-renderNode:renderer:arguments:':
+                trim_after_first_colon: true
+                parameters:
+                    arguments:
+                        type: '@org.robovm.rt.bro.annotation.Marshaler(SCNRenderingTransform.AsTransform3DMapMarshaler.class) Map<SCNRenderingTransform, CATransform3D>'
+    SCNPhysicsContactDelegate: # DONE
+        methods:
+            '-physicsWorld:didBeginContact:':
+                name: didBeginContact
+            '-physicsWorld:didUpdateContact:':
+                name: didUpdateContact
+            '-physicsWorld:didEndContact:':
+                name: didEndContact
+    SCNProgramDelegate: # DONE
+        methods:
+            '-program:handleError:':
+                name: handleError
+    SCNSceneRenderer: # DONE
+        properties:
+            'context':
+                type: EAGLContext
+        methods:
+            '-hitTest:options:':
+                trim_after_first_colon: true
+                return_type: NSArray<SCNHitTestResult>
+                parameters:
+                    options:
+                        type: SCNHitTestOptions
+            '-isNodeInsideFrustum:withPointOfView:':
+                trim_after_first_colon: true
+            '-projectPoint:':
+                trim_after_first_colon: true
+            '-unprojectPoint:':
+                trim_after_first_colon: true
+            '-prepareObject:shouldAbortBlock:':
+                trim_after_first_colon: true
+            '-prepareObjects:withCompletionHandler:':
+                trim_after_first_colon: true
+    SCNSceneRendererDelegate: # DONE
+        methods:
+            '-renderer:updateAtTime:':
+                name: update
+            '-renderer:didApplyAnimationsAtTime:':
+                name: didApplyAnimations
+            '-renderer:didSimulatePhysicsAtTime:':
+                name: didSimulatePhysics
+            '-renderer:willRenderScene:atTime:':
+                name: willRenderScene
+            '-renderer:didRenderScene:atTime:':
+                name: didRenderScene
+    SCNShadable: # DONE
+        properties:
+            'shaderModifiers':
+                type: '@org.robovm.rt.bro.annotation.Marshaler(SCNShaderModifierEntryPoint.AsStringMapMarshaler.class) Map<SCNShaderModifierEntryPoint, String>'
+        methods:
+            '-handleBindingOfSymbol:usingBlock:':    
+                trim_after_first_colon: true
+                parameters:
+                    block:
+                        type: '@Block VoidBlock4<Integer, Integer, SCNNode, SCNRenderer>'
+            '-handleUnbindingOfSymbol:usingBlock:':    
+                trim_after_first_colon: true
+                parameters:
+                    block:
+                        type: '@Block VoidBlock4<Integer, Integer, SCNNode, SCNRenderer>'    
+    SCNTechniqueSupport: {} # DONE
+
+functions:
+    SCNExportJavaScriptModule: {exclude: true} # TODO
+    
+    SCNVector3EqualToVector3:
+        class: SCNVector3
+        name: equalsTo
+    SCNVector4EqualToVector4:
+        class: SCNVector4
+        name: equalsTo
+    SCNMatrix4EqualToMatrix4:
+        class: SCNMatrix4
+        name: equalsTo
+    SCNMatrix4Make(Rotation):
+        class: SCNMatrix4
+        name: 'create#{g[0]}'
+    SCNMatrix4(.*):
+        class: SCNMatrix4
+        name: '#{g[0]}'
+
+    # Make sure we don't miss any functions if new ones are introduced in a later version
+    (k?SCN.*):
+        class: SceneKit
+        name: 'Function__#{g[0]}'
+
+values:
+    SCNErrorDomain:
+        class: SCNError
+        name: getClassDomain
+
+    # SCNTypes
+    SCNMatrix4(Identity):
+        class: SCNMatrix4
+        name: '#{g[0]}'      
+    SCNVector3(Zero):
+        class: SCNVector3
+        name: '#{g[0]}'
+    SCNVector4(Zero):
+        class: SCNVector4
+        name: '#{g[0]}'
+
+    # SCNGeometrySource
+    SCNGeometrySourceSemantic(.*):
+        class: SCNGeometrySourceSemantic
+        name: '#{g[0]}Value'
+        type: NSString
+        visibility: protected
+    SCN(.*)Transform:
+        class: SCNRenderingTransform
+        name: '#{g[0]}Value'
+        type: NSString
+        visibility: protected
+
+    # SCNLight
+    SCNLightType(.*):
+        class: SCNLightType
+        name: '#{g[0]}Value'
+        type: NSString
+        visibility: protected
+
+    # SCNMaterial
+    SCNLightingModel(.*):
+        class: SCNLightingModel
+        name: '#{g[0]}Value'
+        type: NSString
+        visibility: protected
+
+    # SCNParticleSystem
+    SCNParticleProperty(.*):
+        class: SCNParticleProperty
+        name: '#{g[0]}Value'
+        type: NSString
+        visibility: protected
+    
+    # SCNPhysicsShape
+    SCNPhysicsShape(.*Key):
+        class: SCNPhysicsShapeOptions
+        name: '#{g[0]}'
+        type: NSString
+        visibility: protected
+    SCNPhysicsShapeType(.*):
+        class: SCNPhysicsShapeType
+        name: '#{g[0]}Value'
+        type: NSString
+        visibility: protected
+
+    # SCNPhysicsWorld
+    SCNPhysicsTest(.*Key):
+        class: SCNPhysicsTestOptions
+        name: '#{g[0]}'
+        type: NSString
+        visibility: protected
+    SCNPhysicsTestSearchMode(.*):
+        class: SCNPhysicsTestSearchMode
+        name: '#{g[0]}Value'
+        type: NSString
+        visibility: protected
+
+    # SCNProgram
+    SCNProgram(MappingChannelKey):
+        class: SCNProgramSemanticOptions
+        name: '#{g[0]}'
+        type: NSString
+        visibility: protected
+    
+    # SCNScene
+    SCNScene(.*)AttributeKey:
+        class: SCNSceneAttribute
+        name: '#{g[0]}Value'
+        type: NSString
+        visibility: protected
+    SCNSceneExportDestinationURL: { exclude: true } # TODO
+
+    # SCNSceneRenderer
+    SCNHitTest(.*Key):
+        class: SCNHitTestOptions
+        name: '#{g[0]}'
+        type: NSString
+        visibility: protected
+    
+    # SCNSceneSource
+    SCNSceneSourceAsset(Contributors|CreatedDate|ModifiedDate|UpAxis|Unit)Key:
+        class: SCNSceneSourceProperty
+        name: '#{g[0]}Value'
+        type: NSString
+        visibility: protected
+    SCNSceneSourceAsset(AuthoringTool|Author)Key:
+        class: SCNSceneSourceContributor
+        name: '#{g[0]}Key'
+        type: NSString
+        visibility: protected
+    SCNSceneSourceAsset(UnitName|UnitMeter)Key:
+        class: SCNSceneSourceUnit
+        name: '#{g[0]}Key'
+        type: NSString
+        visibility: protected
+    SCNSceneSource(.*Key):
+        class: SCNSceneSourceOptions
+        name: '#{g[0]}'
+        type: NSString
+        visibility: protected
+    SCNSceneSourceAnimationImportPolicy(.*):
+        class: SCNSceneSourceAnimationImportPolicy
+        name: '#{g[0]}Value'
+        type: NSString
+        visibility: protected
+    SCN(Consistency.*ErrorKey):
+        class: SCNConsistencyErrorUserInfo
+        name: '#{g[0]}'
+        type: NSString
+        visibility: protected
+    SCN(DetailedErrors)Key:
+        class: SCNErrorUserInfoKey
+        name: '#{g[0]}Value'
+        type: NSString
+        visibility: protected
+
+    # SCNShadable
+    SCNShaderModifierEntryPoint(.*):
+        class: SCNShaderModifierEntryPoint
+        name: '#{g[0]}Value'
+        type: NSString
+        visibility: protected
+   
+    # Make sure we don't miss any values if new ones are introduced in a later version
+    (k?SCN.*):
+        class: SceneKit
+        name: 'Value__#{g[0]}'
+
+constants:
+    # Make sure we don't miss any constants if new ones are introduced in a later version
+    (k?SCN.*):
+        class: SceneKit
+        name: 'Constant__#{g[0]}'

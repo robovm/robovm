@@ -117,27 +117,27 @@ import org.robovm.apple.mediatoolbox.*;
      * @since Available in iOS 8.0 and later.
      */
     @Method(selector = "addInputWithNoConnections:")
-    public native void addInputWithNoConnections$(AVCaptureInput input);
+    public native void addInputWithNoConnections(AVCaptureInput input);
     /**
      * @since Available in iOS 8.0 and later.
      */
     @Method(selector = "addOutputWithNoConnections:")
-    public native void addOutputWithNoConnections$(AVCaptureOutput output);
+    public native void addOutputWithNoConnections(AVCaptureOutput output);
     /**
      * @since Available in iOS 8.0 and later.
      */
     @Method(selector = "canAddConnection:")
-    public native boolean canAddConnection$(AVCaptureConnection connection);
+    public native boolean canAddConnection(AVCaptureConnection connection);
     /**
      * @since Available in iOS 8.0 and later.
      */
     @Method(selector = "addConnection:")
-    public native void addConnection$(AVCaptureConnection connection);
+    public native void addConnection(AVCaptureConnection connection);
     /**
      * @since Available in iOS 8.0 and later.
      */
     @Method(selector = "removeConnection:")
-    public native void removeConnection$(AVCaptureConnection connection);
+    public native void removeConnection(AVCaptureConnection connection);
     @Method(selector = "beginConfiguration")
     public native void beginConfiguration();
     @Method(selector = "commitConfiguration")

@@ -754,9 +754,9 @@ classes:
     AVCaptureSession: # DONE
         properties:
             'inputs':
-                type: "NSArray<AVCaptureInput>"
+                type: NSArray<AVCaptureInput>
             'outputs':
-                type: "NSArray<AVCaptureOutput>"
+                type: NSArray<AVCaptureOutput>
         methods:
             '-canSetSessionPreset:':
                 trim_after_first_colon: true
@@ -771,6 +771,16 @@ classes:
             '-addOutput:':
                 trim_after_first_colon: true
             '-removeOutput:':
+                trim_after_first_colon: true
+            '-addInputWithNoConnections:':
+                trim_after_first_colon: true
+            '-addOutputWithNoConnections:':
+                trim_after_first_colon: true
+            '-canAddConnection:':
+                trim_after_first_colon: true
+            '-addConnection:':
+                trim_after_first_colon: true
+            '-removeConnection:':
                 trim_after_first_colon: true
     AVCaptureStillImageOutput: # DONE
         properties:

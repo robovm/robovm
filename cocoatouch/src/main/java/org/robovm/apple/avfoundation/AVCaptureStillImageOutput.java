@@ -115,11 +115,11 @@ import org.robovm.apple.mediatoolbox.*;
      * @since Available in iOS 8.0 and later.
      */
     @Method(selector = "prepareToCaptureStillImageBracketFromConnection:withSettingsArray:completionHandler:")
-    public native void prepareToCaptureStillImageBracketFromConnection$withSettingsArray$completionHandler$(AVCaptureConnection connection, NSArray<?> settings, ObjCBlock handler);
+    public native void prepareToCaptureStillImageBracketFromConnection$withSettingsArray$completionHandler$(AVCaptureConnection connection, NSArray<?> settings, @Block VoidBlock2<Boolean, NSError> handler);
     /**
      * @since Available in iOS 8.0 and later.
      */
     @Method(selector = "captureStillImageBracketAsynchronouslyFromConnection:withSettingsArray:completionHandler:")
-    public native void captureStillImageBracketAsynchronouslyFromConnection$withSettingsArray$completionHandler$(AVCaptureConnection connection, NSArray<?> settings, ObjCBlock handler);
+    public native void captureStillImageBracketAsynchronouslyFromConnection$withSettingsArray$completionHandler$(AVCaptureConnection connection, NSArray<?> settings, @Block VoidBlock3<CMSampleBuffer, AVCaptureBracketedStillImageSettings, NSError> handler);
     /*</methods>*/
 }

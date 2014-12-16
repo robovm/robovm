@@ -1,0 +1,508 @@
+package: org.robovm.apple.metal
+include: [foundation.yaml, dispatch.yaml]
+library: Metal
+framework: Metal
+clang_args: ['-x', 'objective-c']
+headers:
+    - /System/Library/Frameworks/Metal.framework/Headers/Metal.h
+typedefs:
+    'void (^)(id<MTLLibrary>, NSError *)': '@Block VoidBlock2<MTLLibrary, NSError>'
+    'void (^)(id<MTLRenderPipelineState>, NSError *)': '@Block VoidBlock2<MTLRenderPipelineState, NSError>'
+    'void (^)(id<MTLRenderPipelineState>, MTLRenderPipelineReflection *, NSError *)': '@Block VoidBlock3<MTLRenderPipelineState, MTLRenderPipelineReflection, NSError>'
+    'void (^)(id<MTLComputePipelineState>, NSError *)': '@Block VoidBlock2<MTLComputePipelineState, NSError>'
+    'void (^)(id<MTLComputePipelineState>, MTLComputePipelineReflection *, NSError *)': '@Block VoidBlock3<MTLComputePipelineState, MTLComputePipelineReflection, NSError>'    
+    'void (^)(void *, NSUInteger)': '@Block("(@Pointer,@MachineSizedUInt)") VoidBlock2<Long, Long>'
+
+enums:
+    MTLPixelFormat: {}
+    MTLPurgeableState: {}
+    MTLCPUCacheMode: {}
+    MTLResourceOptions: {}
+    MTLFunctionType: {}
+    MTLLibraryErrorCode: { first: MTLLibraryErrorUnsupported }
+    MTLRenderPipelineErrorCode: { first: MTLRenderPipelineErrorInternal }
+    MTLFeatureSet: {}
+    MTLPipelineOption: {}
+    MTLTextureType: {}
+    MTLCommandBufferStatus: {}
+    MTLCommandBufferErrorCode: { first: MTLCommandBufferErrorNone }
+    MTLCompareFunction: {}
+    MTLStencilOperation: {}
+    MTLLoadAction: {}
+    MTLStoreAction: {}
+    MTLDataType: {}
+    MTLArgumentType: {}
+    MTLArgumentAccess: {}
+    MTLBlendFactor: {}
+    MTLBlendOperation: {}
+    MTLColorWriteMask: {}
+    MTLVertexFormat: {}
+    MTLVertexStepFunction: {}
+    MTLPrimitiveType: {}
+    MTLIndexType: {}
+    MTLVisibilityResultMode: {}
+    MTLCullMode: {}
+    MTLWinding: { prefix: MTLWinding }
+    MTLTriangleFillMode: {}
+    MTLSamplerMinMagFilter: {}
+    MTLSamplerMipFilter: {}
+    MTLSamplerAddressMode: {}
+
+classes:
+    MTLCommandBufferError:
+        extends: NSError
+    MTLLibraryError:
+        extends: NSError
+    MTLRenderPipelineError:
+        extends: NSError
+
+    # Structs
+    MTLClearColor: {} # DONE
+    MTLOrigin: {} # DONE
+    MTLRegion: {} # DONE
+    MTLScissorRect: {} # DONE
+    MTLSize: {} # DONE
+    MTLViewport: {} # DONE
+
+    MTLArgument: {} # DONE
+    MTLArrayType: # DONE
+        methods:
+            '-elementStructType':
+                property: true
+            '-elementArrayType':
+                property: true
+    MTLCompileOptions: # DONE
+        properties:
+            'preprocessorMacros':
+                type: '@org.robovm.rt.bro.annotation.Marshaler(NSDictionary.AsStringStringMapMarshaler.class) Map<String, String>'
+    MTLComputePipelineReflection: # DONE
+        properties:
+            'arguments':
+                type: NSArray<MTLArgument>
+    MTLDepthStencilDescriptor: {} # DONE
+    MTLRenderPassAttachmentDescriptor: {} # DONE
+    MTLRenderPassColorAttachmentDescriptor: {} # DONE
+    MTLRenderPassDepthAttachmentDescriptor: {} # DONE
+    MTLRenderPassStencilAttachmentDescriptor: {} # DONE
+    MTLRenderPassColorAttachmentDescriptorArray: # DONE
+        methods:
+            '-objectAtIndexedSubscript:':
+                name: get
+            '-setObject:atIndexedSubscript:':
+                name: insert
+    MTLRenderPassDescriptor: # DONE
+        methods:
+            '+renderPassDescriptor':
+                name: create
+    MTLRenderPipelineColorAttachmentDescriptor: {} # DONE
+    MTLRenderPipelineColorAttachmentDescriptorArray: # DONE
+        methods:
+            '-objectAtIndexedSubscript:':
+                name: get
+            '-setObject:atIndexedSubscript:':
+                name: insert
+    MTLRenderPipelineDescriptor: {} # DONE
+    MTLRenderPipelineReflection: # DONE
+        properties:
+            'vertexArguments':
+                type: NSArray<MTLArgument>
+            'fragmentArguments':
+                type: NSArray<MTLArgument>
+    MTLSamplerDescriptor: {} # DONE
+    MTLStencilDescriptor: {} # DONE
+    MTLStructMember: # DONE
+        methods:
+            '-structType':
+                property: true
+            '-arrayType':
+                property: true
+    MTLStructType: # DONE
+        properties:
+            'members':
+                type: NSArray<MTLStructMember>
+        methods:
+            '-memberByName:':
+                name: getMemberByName
+    MTLTextureDescriptor: # DONE
+        methods:
+            '+texture2DDescriptorWithPixelFormat:width:height:mipmapped:':
+                name: create2DDescriptor
+            '+textureCubeDescriptorWithPixelFormat:size:mipmapped:':
+                name: createCubeDescriptor
+    MTLVertexAttribute: {} # DONE
+    MTLVertexAttributeDescriptor: {} # DONE
+    MTLVertexAttributeDescriptorArray: # DONE
+        methods:
+            '-objectAtIndexedSubscript:':
+                name: get
+            '-setObject:atIndexedSubscript:':
+                name: insert
+    MTLVertexBufferLayoutDescriptor: {} # DONE
+    MTLVertexBufferLayoutDescriptorArray: # DONE
+        methods:
+            '-objectAtIndexedSubscript:':
+                name: get
+            '-setObject:atIndexedSubscript:':
+                name: insert
+    MTLVertexDescriptor: # DONE
+        methods:
+            '+vertexDescriptor':
+                name: create
+
+protocols:
+    MTLBlitCommandEncoder: # DONE
+        class: true
+        visibility: 'public final'
+        methods:
+            '-copyFromTexture:sourceSlice:sourceLevel:sourceOrigin:sourceSize:toTexture:destinationSlice:destinationLevel:destinationOrigin:':
+                name: copyFromTextureToTexture
+            '-copyFromBuffer:sourceOffset:sourceBytesPerRow:sourceBytesPerImage:sourceSize:toTexture:destinationSlice:destinationLevel:destinationOrigin:':
+                name: copyFromBufferToTexture
+            '-copyFromTexture:sourceSlice:sourceLevel:sourceOrigin:sourceSize:toBuffer:destinationOffset:destinationBytesPerRow:destinationBytesPerImage:':
+                name: copyFromTextureToBuffer
+            '-generateMipmapsForTexture:':
+                trim_after_first_colon: true
+            '-fillBuffer:range:value:':
+                trim_after_first_colon: true
+            '-copyFromBuffer:sourceOffset:toBuffer:destinationOffset:size:':
+                name: copyFromBufferToBuffer
+    MTLBuffer: # DONE
+        class: true
+        visibility: 'public final'
+        methods:
+            '-contents':
+                name: getContents0
+                return_type: '@Pointer long'
+                visibility: protected
+            '-newTextureWithDescriptor:offset:bytesPerRow:':
+                name: newTexture
+    MTLCommandBuffer: # DONE
+        class: true
+        visibility: 'public final'
+        methods:
+            '-addScheduledHandler:':    
+                trim_after_first_colon: true
+                parameters:
+                    block:
+                        type: '@Block VoidBlock1<MTLCommandBuffer>'
+            '-presentDrawable:':    
+                trim_after_first_colon: true
+            '-presentDrawable:atTime:':    
+                name: presentDrawableAtTime
+            '-addCompletedHandler:':    
+                trim_after_first_colon: true
+                parameters:
+                    block:
+                        type: '@Block VoidBlock1<MTLCommandBuffer>'
+            '-blitCommandEncoder':    
+                name: newBlitCommandEncoder
+            '-renderCommandEncoderWithDescriptor:':    
+                name: newRenderCommandEncoder
+            '-computeCommandEncoder':
+                name: newComputeCommandEncoder
+            '-parallelRenderCommandEncoderWithDescriptor:':
+                name: newParallelRenderCommandEncoder
+    MTLCommandEncoder: # DONE
+        methods:
+            '-insertDebugSignpost:':
+                trim_after_first_colon: true
+            '-pushDebugGroup:':
+                trim_after_first_colon: true
+    MTLCommandQueue: # DONE
+        class: true
+        visibility: 'public final'
+        methods:
+            '-commandBuffer':
+                property: true
+            '-commandBufferWithUnretainedReferences':
+                property: true
+    MTLComputeCommandEncoder: # DONE
+        class: true
+        visibility: 'public final'
+        methods:
+            '-setBuffer:offset:atIndex:':
+                trim_after_first_colon: true
+            '-setBuffers:offsets:withRange:':
+                trim_after_first_colon: true
+                visibility: protected
+                parameters:
+                    buffers:
+                        type: MTLBuffer.MTLBufferPtr
+            '-setTexture:atIndex:':
+                trim_after_first_colon: true
+            '-setTextures:withRange:':
+                trim_after_first_colon: true
+                visibility: protected
+                parameters:
+                    textures:
+                        type: MTLTexture.MTLTexturePtr
+            '-setSamplerState:atIndex:':
+                trim_after_first_colon: true
+            '-setSamplerStates:withRange:':
+                trim_after_first_colon: true
+                visibility: protected
+                parameters:
+                    samplers:
+                        type: MTLSamplerState.MTLSamplerStatePtr
+            '-setSamplerState:lodMinClamp:lodMaxClamp:atIndex:':
+                trim_after_first_colon: true
+            '-setSamplerStates:lodMinClamps:lodMaxClamps:withRange:':
+                trim_after_first_colon: true
+                visibility: protected
+                parameters:
+                    samplers:
+                        type: MTLSamplerState.MTLSamplerStatePtr
+            '-setThreadgroupMemoryLength:atIndex:':
+                trim_after_first_colon: true
+            '-dispatchThreadgroups:threadsPerThreadgroup:':
+                trim_after_first_colon: true
+    MTLComputePipelineState: # DONE
+        class: true
+        visibility: 'public final'
+    MTLDepthStencilState: # DONE
+        class: true
+        visibility: 'public final'
+    MTLDevice: # DONE
+        class: true
+        visibility: 'public final'
+        methods:
+            '-newCommandQueueWithMaxCommandBufferCount:':
+                name: newCommandQueue
+            '-newBufferWithLength:options:':
+                name: newBuffer
+            '-newBufferWithBytes:length:options:':
+                name: newBuffer
+                visibility: protected
+                parameters:
+                    pointer:
+                        type: '@Pointer long'
+            '-newBufferWithBytesNoCopy:length:options:deallocator:':
+                name: newBuffer
+                visibility: protected
+                parameters:
+                    pointer:
+                        type: '@Pointer long'
+            '-newDepthStencilStateWithDescriptor:':
+                name: newDepthStencilState
+            '-newTextureWithDescriptor:':
+                name: newTexture
+            '-newSamplerStateWithDescriptor:':
+                name: newSamplerState
+            '-newLibraryWithFile:error:':
+                trim_after_first_colon: true
+                visibility: protected # throws NSErrorException
+            '-newLibraryWithData:error:':
+                trim_after_first_colon: true
+                visibility: protected # throws NSErrorException
+                parameters:
+                    data:
+                        type: DispatchData
+            '-newLibraryWithSource:options:error:':
+                trim_after_first_colon: true
+                visibility: protected # throws NSErrorException
+            '-newLibraryWithSource:options:completionHandler:':
+                trim_after_first_colon: true
+            '-newRenderPipelineStateWithDescriptor:error:':
+                name: newRenderPipelineState
+                visibility: protected # throws NSErrorException
+            '-newRenderPipelineStateWithDescriptor:options:reflection:error:':
+                name: newRenderPipelineState
+                visibility: protected # throws NSErrorException
+            '-newRenderPipelineStateWithDescriptor:completionHandler:':
+                name: newRenderPipelineState
+            '-newRenderPipelineStateWithDescriptor:options:completionHandler:':
+                name: newRenderPipelineState
+            '-newComputePipelineStateWithFunction:error:':
+                name: newComputePipelineState
+                visibility: protected # throws NSErrorException
+            '-newComputePipelineStateWithFunction:options:reflection:error:':
+                name: newComputePipelineState
+                visibility: protected # throws NSErrorException
+            '-newComputePipelineStateWithFunction:completionHandler:':
+                name: newComputePipelineState
+            '-newComputePipelineStateWithFunction:options:completionHandler:':
+                name: newComputePipelineState
+            '-supportsFeatureSet:':
+                trim_after_first_colon: true
+    MTLDrawable: # DONE
+        methods:
+            '-presentAtTime:':
+                trim_after_first_colon: true
+    MTLFunction: # DONE
+        class: true
+        visibility: 'public final'
+        properties:
+            'vertexAttributes':
+                type: NSArray<MTLVertexAttribute>
+    MTLLibrary: # DONE
+        class: true
+        visibility: 'public final'
+        properties:
+            'functionNames':
+                type: '@org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String>'
+        methods:
+            '-newFunctionWithName:':
+                name: newFunction
+    MTLParallelRenderCommandEncoder: # DONE
+        class: true
+        visibility: 'public final'
+        methods:
+            '-renderCommandEncoder':
+                name: newRenderCommandEncoder
+    MTLRenderCommandEncoder: # DONE
+        class: true
+        visibility: 'public final'
+        methods:
+            '-setVertexBuffer:offset:atIndex:':
+                trim_after_first_colon: true
+            '-setVertexBuffers:offsets:withRange:':
+                trim_after_first_colon: true
+                visibility: protected
+                parameters:
+                    buffers:
+                        type: MTLBuffer.MTLBufferPtr
+            '-setVertexTexture:atIndex:':
+                trim_after_first_colon: true
+            '-setVertexTextures:withRange:':
+                trim_after_first_colon: true
+                visibility: protected
+                parameters:
+                    textures:
+                        type: MTLTexture.MTLTexturePtr
+            '-setVertexSamplerState:atIndex:':
+                trim_after_first_colon: true
+            '-setVertexSamplerStates:withRange:':
+                trim_after_first_colon: true
+                visibility: protected
+                parameters:
+                    samplers:
+                        type: MTLSamplerState.MTLSamplerStatePtr
+            '-setVertexSamplerState:lodMinClamp:lodMaxClamp:atIndex:':
+                trim_after_first_colon: true
+            '-setVertexSamplerStates:lodMinClamps:lodMaxClamps:withRange:':
+                trim_after_first_colon: true
+                visibility: protected
+                parameters:
+                    samplers:
+                        type: MTLSamplerState.MTLSamplerStatePtr
+            '-setDepthBias:slopeScale:clamp:':
+                trim_after_first_colon: true
+            '-setFragmentBuffer:offset:atIndex:':
+                trim_after_first_colon: true
+            '-setFragmentBuffers:offsets:withRange:':
+                trim_after_first_colon: true
+                visibility: protected
+                parameters:
+                    buffers:
+                        type: MTLBuffer.MTLBufferPtr
+            '-setFragmentTexture:atIndex:':
+                trim_after_first_colon: true
+            '-setFragmentTextures:withRange:':
+                trim_after_first_colon: true
+                visibility: protected
+                parameters:
+                    textures:
+                        type: MTLTexture.MTLTexturePtr
+            '-setFragmentSamplerState:atIndex:':
+                trim_after_first_colon: true
+            '-setFragmentSamplerStates:withRange:':
+                trim_after_first_colon: true
+                visibility: protected
+                parameters:
+                    samplers:
+                        type: MTLSamplerState.MTLSamplerStatePtr
+            '-setFragmentSamplerState:lodMinClamp:lodMaxClamp:atIndex:':
+                trim_after_first_colon: true
+            '-setFragmentSamplerStates:lodMinClamps:lodMaxClamps:withRange:':
+                trim_after_first_colon: true
+                visibility: protected
+                parameters:
+                    samplers:
+                        type: MTLSamplerState.MTLSamplerStatePtr
+            '-setBlendColorRed:green:blue:alpha:':
+                name: setBlendColor
+            '-setVisibilityResultMode:offset:':
+                trim_after_first_colon: true
+            '-drawPrimitives:vertexStart:vertexCount:instanceCount:':
+                trim_after_first_colon: true
+            '-drawPrimitives:vertexStart:vertexCount:':
+                trim_after_first_colon: true
+            '-drawIndexedPrimitives:indexCount:indexType:indexBuffer:indexBufferOffset:instanceCount:':
+                trim_after_first_colon: true
+            '-drawIndexedPrimitives:indexCount:indexType:indexBuffer:indexBufferOffset:':
+                trim_after_first_colon: true
+    MTLRenderPipelineState: # DONE
+        class: true
+        visibility: 'public final'
+    MTLResource: # DONE
+        methods:
+            '-setPurgeableState:':
+                trim_after_first_colon: true
+    MTLSamplerState: # DONE
+        class: true
+        visibility: 'public final'
+    MTLTexture: # DONE
+        class: true
+        visibility: 'public final'
+        methods:
+            '-getBytes:bytesPerRow:bytesPerImage:fromRegion:mipmapLevel:slice:':
+                trim_after_first_colon: true
+                visibility: protected
+                parameters:
+                    pixelBytes:
+                        type: '@Pointer long'
+            '-replaceRegion:mipmapLevel:slice:withBytes:bytesPerRow:bytesPerImage:':
+                trim_after_first_colon: true
+                visibility: protected
+                parameters:
+                    pixelBytes:
+                        type: '@Pointer long'    
+            '-getBytes:bytesPerRow:fromRegion:mipmapLevel:':
+                trim_after_first_colon: true
+                visibility: protected
+                parameters:
+                    pixelBytes:
+                        type: '@Pointer long'
+            '-replaceRegion:mipmapLevel:withBytes:bytesPerRow:':
+                trim_after_first_colon: true
+                visibility: protected
+                parameters:
+                    pixelBytes:
+                        type: '@Pointer long'
+            '-newTextureViewWithPixelFormat:':
+                name: newTextureView
+
+functions:
+    MTLClearColorMake:
+        exclude: true # use constructor instead
+    MTL(CreateSystemDefaultDevice):
+        class: MTLDevice
+        name: '#{g[0]}'
+
+    # Make sure we don't miss any functions if new ones are introduced in a later version
+    (MTL.*):
+        class: Metal
+        name: 'Function__#{g[0]}'
+
+values:
+    # Error
+    MTLCommandBufferErrorDomain:
+        class: MTLCommandBufferError
+        name: getClassDomain
+    MTLLibraryErrorDomain:
+        class: MTLLibraryError
+        name: getClassDomain
+    MTLRenderPipelineErrorDomain:
+        class: MTLRenderPipelineError
+        name: getClassDomain
+
+    # Make sure we don't miss any values if new ones are introduced in a later version
+    (MTL.*):
+        class: Metal
+        name: 'Value__#{g[0]}'
+
+constants:
+    # Make sure we don't miss any constants if new ones are introduced in a later version
+    (MTL.*):
+        class: Metal
+        name: 'Constant__#{g[0]}'

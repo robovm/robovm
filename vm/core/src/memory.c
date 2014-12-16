@@ -1153,7 +1153,7 @@ Object* rvmNewDirectByteBuffer(Env* env, void* address, jlong capacity) {
 }
 
 void* rvmGetDirectBufferAddress(Env* env, Object* buf) {
-    jlong effectiveDirectAddress = rvmGetIntInstanceFieldValue(env, buf, java_nio_Buffer_effectiveDirectAddress);
+    jlong effectiveDirectAddress = rvmGetLongInstanceFieldValue(env, buf, java_nio_Buffer_effectiveDirectAddress);
     return (void*) (intptr_t) effectiveDirectAddress;
 }
 

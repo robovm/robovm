@@ -97,7 +97,7 @@ import org.robovm.apple.dispatch.*;
      * @since Available in iOS 4.0 and later.
      * @throws NSErrorException
      */
-    public NSArray<NSURL> getContentsOfDirectoryAtURL(NSURL url, @org.robovm.rt.bro.annotation.Marshaler(NSURLFileSystemProperty.AsListMarshaler.class) List<NSURLFileSystemProperty> keys, NSDirectoryEnumerationOptions mask) {
+    public NSArray<NSURL> getContentsOfDirectoryAtURL(NSURL url, @org.robovm.rt.bro.annotation.Marshaler(NSURLFileSystemProperty.AsListMarshaler.class) List<NSURLFileSystemProperty> keys, NSDirectoryEnumerationOptions mask) throws NSErrorException {
         NSError.NSErrorPtr err = new NSError.NSErrorPtr();
         NSArray<NSURL> result = getContentsOfDirectoryAtURL(url, keys, mask, err);
         if (err.get() != null) {
@@ -109,7 +109,7 @@ import org.robovm.apple.dispatch.*;
      * @since Available in iOS 4.0 and later.
      * @throws NSErrorException
      */
-    public NSURL getURLForDirectory(NSSearchPathDirectory directory, NSSearchPathDomainMask domain, NSURL url, boolean shouldCreate) {
+    public NSURL getURLForDirectory(NSSearchPathDirectory directory, NSSearchPathDomainMask domain, NSURL url, boolean shouldCreate) throws NSErrorException {
         NSError.NSErrorPtr err = new NSError.NSErrorPtr();
         NSURL result = getURLForDirectory(directory, domain, url, shouldCreate, err);
         if (err.get() != null) {
@@ -121,7 +121,7 @@ import org.robovm.apple.dispatch.*;
      * @since Available in iOS 8.0 and later.
      * @throws NSErrorException
      */
-    public NSURLRelationship getRelationshipOfDirectoryToItem(NSURL directoryURL, NSURL otherURL) {
+    public NSURLRelationship getRelationshipOfDirectoryToItem(NSURL directoryURL, NSURL otherURL) throws NSErrorException {
         MachineSizedSIntPtr ptr = new MachineSizedSIntPtr();
         NSError.NSErrorPtr err = new NSError.NSErrorPtr();
         if (getRelationshipOfDirectoryToItem(ptr, directoryURL, otherURL, err)) {
@@ -136,7 +136,7 @@ import org.robovm.apple.dispatch.*;
      * @since Available in iOS 8.0 and later.
      * @throws NSErrorException
      */
-    public NSURLRelationship getRelationshipOfDirectoryToItem(NSSearchPathDirectory directory, NSSearchPathDomainMask domainMask, NSURL url) {
+    public NSURLRelationship getRelationshipOfDirectoryToItem(NSSearchPathDirectory directory, NSSearchPathDomainMask domainMask, NSURL url) throws NSErrorException {
         MachineSizedSIntPtr ptr = new MachineSizedSIntPtr();
         NSError.NSErrorPtr err = new NSError.NSErrorPtr();
         if (getRelationshipOfDirectoryToItem(ptr, directory, domainMask, url, err)) {
@@ -151,7 +151,7 @@ import org.robovm.apple.dispatch.*;
      * @since Available in iOS 5.0 and later.
      * @throws NSErrorException
      */
-    public boolean createDirectoryAtURL(NSURL url, boolean createIntermediates, NSFileAttributes attributes) {
+    public boolean createDirectoryAtURL(NSURL url, boolean createIntermediates, NSFileAttributes attributes) throws NSErrorException {
         NSError.NSErrorPtr err = new NSError.NSErrorPtr();
         boolean result = createDirectoryAtURL(url, createIntermediates, attributes, err);
         if (err.get() != null) {
@@ -163,7 +163,7 @@ import org.robovm.apple.dispatch.*;
      * @since Available in iOS 5.0 and later.
      * @throws NSErrorException
      */
-    public boolean createSymbolicLinkAtURL(NSURL url, NSURL destURL) {
+    public boolean createSymbolicLinkAtURL(NSURL url, NSURL destURL) throws NSErrorException {
         NSError.NSErrorPtr err = new NSError.NSErrorPtr();
         boolean result = createSymbolicLinkAtURL(url, destURL, err);
         if (err.get() != null) {
@@ -175,7 +175,7 @@ import org.robovm.apple.dispatch.*;
      * @since Available in iOS 2.0 and later.
      * @throws NSErrorException
      */
-    public boolean setAttributesForItem(NSFileAttributes attributes, String path) {
+    public boolean setAttributesForItem(NSFileAttributes attributes, String path) throws NSErrorException {
         NSError.NSErrorPtr err = new NSError.NSErrorPtr();
         boolean result = setAttributesForItem(attributes, path, err);
         if (err.get() != null) {
@@ -187,7 +187,7 @@ import org.robovm.apple.dispatch.*;
      * @since Available in iOS 2.0 and later.
      * @throws NSErrorException
      */
-    public boolean createDirectoryAtPath(String path, boolean createIntermediates, NSFileAttributes attributes) {
+    public boolean createDirectoryAtPath(String path, boolean createIntermediates, NSFileAttributes attributes) throws NSErrorException {
         NSError.NSErrorPtr err = new NSError.NSErrorPtr();
         boolean result = createDirectoryAtPath(path, createIntermediates, attributes, err);
         if (err.get() != null) {
@@ -199,7 +199,7 @@ import org.robovm.apple.dispatch.*;
      * @since Available in iOS 2.0 and later.
      * @throws NSErrorException
      */
-    public NSArray<NSURL> getContentsOfDirectoryAtPath(String path) {
+    public NSArray<NSURL> getContentsOfDirectoryAtPath(String path) throws NSErrorException {
         NSError.NSErrorPtr err = new NSError.NSErrorPtr();
         NSArray<NSURL> result = getContentsOfDirectoryAtPath(path, err);
         if (err.get() != null) {
@@ -211,7 +211,7 @@ import org.robovm.apple.dispatch.*;
      * @since Available in iOS 2.0 and later.
      * @throws NSErrorException
      */
-    public List<String> getSubpathsOfDirectoryAtPath(String path) {
+    public List<String> getSubpathsOfDirectoryAtPath(String path) throws NSErrorException {
         NSError.NSErrorPtr err = new NSError.NSErrorPtr();
         List<String> result = getSubpathsOfDirectoryAtPath(path, err);
         if (err.get() != null) {
@@ -223,7 +223,7 @@ import org.robovm.apple.dispatch.*;
      * @since Available in iOS 2.0 and later.
      * @throws NSErrorException
      */
-    public NSFileAttributes getAttributesOfItemAtPath(String path) {
+    public NSFileAttributes getAttributesOfItemAtPath(String path) throws NSErrorException {
         NSError.NSErrorPtr err = new NSError.NSErrorPtr();
         NSFileAttributes result = getAttributesOfItemAtPath(path, err);
         if (err.get() != null) {
@@ -235,7 +235,7 @@ import org.robovm.apple.dispatch.*;
      * @since Available in iOS 2.0 and later.
      * @throws NSErrorException
      */
-    public NSFileSystemAttributes getAttributesOfFileSystemAtPath(String path) {
+    public NSFileSystemAttributes getAttributesOfFileSystemAtPath(String path) throws NSErrorException {
         NSError.NSErrorPtr err = new NSError.NSErrorPtr();
         NSFileSystemAttributes result = getAttributesOfFileSystemAtPath(path, err);
         if (err.get() != null) {
@@ -247,7 +247,7 @@ import org.robovm.apple.dispatch.*;
      * @since Available in iOS 2.0 and later.
      * @throws NSErrorException
      */
-    public boolean createSymbolicLinkAtPath(String path, String destPath) {
+    public boolean createSymbolicLinkAtPath(String path, String destPath) throws NSErrorException {
         NSError.NSErrorPtr err = new NSError.NSErrorPtr();
         boolean result = createSymbolicLinkAtPath(path, destPath, err);
         if (err.get() != null) {
@@ -259,7 +259,7 @@ import org.robovm.apple.dispatch.*;
      * @since Available in iOS 2.0 and later.
      * @throws NSErrorException
      */
-    public String getDestinationOfSymbolicLinkAtPath(String path) {
+    public String getDestinationOfSymbolicLinkAtPath(String path) throws NSErrorException {
         NSError.NSErrorPtr err = new NSError.NSErrorPtr();
         String result = getDestinationOfSymbolicLinkAtPath(path, err);
         if (err.get() != null) {
@@ -271,7 +271,7 @@ import org.robovm.apple.dispatch.*;
      * @since Available in iOS 2.0 and later.
      * @throws NSErrorException
      */
-    public boolean copyItemAtPath(String srcPath, String dstPath) {
+    public boolean copyItemAtPath(String srcPath, String dstPath) throws NSErrorException {
         NSError.NSErrorPtr err = new NSError.NSErrorPtr();
         boolean result = copyItemAtPath(srcPath, dstPath, err);
         if (err.get() != null) {
@@ -283,7 +283,7 @@ import org.robovm.apple.dispatch.*;
      * @since Available in iOS 2.0 and later.
      * @throws NSErrorException
      */
-    public boolean moveItemAtPath(String srcPath, String dstPath) {
+    public boolean moveItemAtPath(String srcPath, String dstPath) throws NSErrorException {
         NSError.NSErrorPtr err = new NSError.NSErrorPtr();
         boolean result = moveItemAtPath(srcPath, dstPath, err);
         if (err.get() != null) {
@@ -295,7 +295,7 @@ import org.robovm.apple.dispatch.*;
      * @since Available in iOS 2.0 and later.
      * @throws NSErrorException
      */
-    public boolean linkItemAtPath(String srcPath, String dstPath) {
+    public boolean linkItemAtPath(String srcPath, String dstPath) throws NSErrorException {
         NSError.NSErrorPtr err = new NSError.NSErrorPtr();
         boolean result = linkItemAtPath(srcPath, dstPath, err);
         if (err.get() != null) {
@@ -307,7 +307,7 @@ import org.robovm.apple.dispatch.*;
      * @since Available in iOS 2.0 and later.
      * @throws NSErrorException
      */
-    public boolean removeItemAtPath(String path) {
+    public boolean removeItemAtPath(String path) throws NSErrorException {
         NSError.NSErrorPtr err = new NSError.NSErrorPtr();
         boolean result = removeItemAtPath(path, err);
         if (err.get() != null) {
@@ -319,7 +319,7 @@ import org.robovm.apple.dispatch.*;
      * @since Available in iOS 4.0 and later.
      * @throws NSErrorException
      */
-    public boolean copyItemAtURL(NSURL srcURL, NSURL dstURL) {
+    public boolean copyItemAtURL(NSURL srcURL, NSURL dstURL) throws NSErrorException {
         NSError.NSErrorPtr err = new NSError.NSErrorPtr();
         boolean result = copyItemAtURL(srcURL, dstURL, err);
         if (err.get() != null) {
@@ -331,7 +331,7 @@ import org.robovm.apple.dispatch.*;
      * @since Available in iOS 4.0 and later.
      * @throws NSErrorException
      */
-    public boolean moveItemAtURL(NSURL srcURL, NSURL dstURL) {
+    public boolean moveItemAtURL(NSURL srcURL, NSURL dstURL) throws NSErrorException {
         NSError.NSErrorPtr err = new NSError.NSErrorPtr();
         boolean result = moveItemAtURL(srcURL, dstURL, err);
         if (err.get() != null) {
@@ -343,7 +343,7 @@ import org.robovm.apple.dispatch.*;
      * @since Available in iOS 4.0 and later.
      * @throws NSErrorException
      */
-    public boolean linkItemAtURL(NSURL srcURL, NSURL dstURL) {
+    public boolean linkItemAtURL(NSURL srcURL, NSURL dstURL) throws NSErrorException {
         NSError.NSErrorPtr err = new NSError.NSErrorPtr();
         boolean result = linkItemAtURL(srcURL, dstURL, err);
         if (err.get() != null) {
@@ -355,7 +355,7 @@ import org.robovm.apple.dispatch.*;
      * @since Available in iOS 4.0 and later.
      * @throws NSErrorException
      */
-    public boolean removeItemAtURL(NSURL URL) {
+    public boolean removeItemAtURL(NSURL URL) throws NSErrorException {
         NSError.NSErrorPtr err = new NSError.NSErrorPtr();
         boolean result = removeItemAtURL(URL, err);
         if (err.get() != null) {
@@ -367,7 +367,7 @@ import org.robovm.apple.dispatch.*;
      * @since Available in iOS 4.0 and later.
      * @throws NSErrorException
      */
-    public boolean replaceItemAtURL(NSURL originalItemURL, NSURL newItemURL, String backupItemName, NSFileManagerItemReplacementOptions options, NSURL.NSURLPtr resultingURL) {
+    public boolean replaceItemAtURL(NSURL originalItemURL, NSURL newItemURL, String backupItemName, NSFileManagerItemReplacementOptions options, NSURL.NSURLPtr resultingURL) throws NSErrorException {
         NSError.NSErrorPtr err = new NSError.NSErrorPtr();
         boolean result = replaceItemAtURL(originalItemURL, newItemURL, backupItemName, options, resultingURL, err);
         if (err.get() != null) {
@@ -379,7 +379,7 @@ import org.robovm.apple.dispatch.*;
      * @since Available in iOS 5.0 and later.
      * @throws NSErrorException
      */
-    public boolean setUbiquitousItemAtURL(boolean flag, NSURL url, NSURL destinationURL) {
+    public boolean setUbiquitousItemAtURL(boolean flag, NSURL url, NSURL destinationURL) throws NSErrorException {
         NSError.NSErrorPtr err = new NSError.NSErrorPtr();
         boolean result = setUbiquitousItemAtURL(flag, url, destinationURL, err);
         if (err.get() != null) {
@@ -391,7 +391,7 @@ import org.robovm.apple.dispatch.*;
      * @since Available in iOS 5.0 and later.
      * @throws NSErrorException
      */
-    public boolean startDownloadingUbiquitousItemAtURL(NSURL url) {
+    public boolean startDownloadingUbiquitousItemAtURL(NSURL url) throws NSErrorException {
         NSError.NSErrorPtr err = new NSError.NSErrorPtr();
         boolean result = startDownloadingUbiquitousItemAtURL(url, err);
         if (err.get() != null) {
@@ -403,7 +403,7 @@ import org.robovm.apple.dispatch.*;
      * @since Available in iOS 5.0 and later.
      * @throws NSErrorException
      */
-    public boolean evictUbiquitousItemAtURL(NSURL url) {
+    public boolean evictUbiquitousItemAtURL(NSURL url) throws NSErrorException {
         NSError.NSErrorPtr err = new NSError.NSErrorPtr();
         boolean result = evictUbiquitousItemAtURL(url, err);
         if (err.get() != null) {
@@ -415,7 +415,7 @@ import org.robovm.apple.dispatch.*;
      * @since Available in iOS 5.0 and later.
      * @throws NSErrorException
      */
-    public NSURL getURLForPublishingUbiquitousItemAtURL(NSURL url, NSDate.NSDatePtr outDate) {
+    public NSURL getURLForPublishingUbiquitousItemAtURL(NSURL url, NSDate.NSDatePtr outDate) throws NSErrorException {
         NSError.NSErrorPtr err = new NSError.NSErrorPtr();
         NSURL result = getURLForPublishingUbiquitousItemAtURL(url, outDate, err);
         if (err.get() != null) {

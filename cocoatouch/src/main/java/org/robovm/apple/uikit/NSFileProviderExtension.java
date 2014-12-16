@@ -63,7 +63,7 @@ import org.robovm.apple.corelocation.*;
      * @return
      * @throws NSErrorException
      */
-    public static boolean writePlaceholder(NSURL placeholderURL, NSURLProperties metadata) {
+    public static boolean writePlaceholder(NSURL placeholderURL, NSURLProperties metadata) throws NSErrorException {
         NSError.NSErrorPtr err = new NSError.NSErrorPtr();
         boolean result = writePlaceholder(placeholderURL, metadata, err);
         if (err.get() != null) {

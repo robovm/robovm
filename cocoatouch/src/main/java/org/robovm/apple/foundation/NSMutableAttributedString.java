@@ -91,7 +91,7 @@ import org.robovm.apple.dispatch.*;
      * @since Available in iOS 7.0 and later.
      * @throws NSErrorException
      */
-    public boolean read(NSURL url, NSAttributedStringDocumentAttributes opts) {
+    public boolean read(NSURL url, NSAttributedStringDocumentAttributes opts) throws NSErrorException {
         return NSMutableAttributedStringExtensions.readFromFileURL(this, url, opts);
     }
     /**
@@ -102,7 +102,7 @@ import org.robovm.apple.dispatch.*;
      * @since Available in iOS 7.0 and later.
      * @throws NSErrorException
      */
-    public boolean read(NSData data, NSAttributedStringDocumentAttributes opts) {
+    public boolean read(NSData data, NSAttributedStringDocumentAttributes opts) throws NSErrorException {
         return NSMutableAttributedStringExtensions.readFromData(this, data, opts);
     }
     /**

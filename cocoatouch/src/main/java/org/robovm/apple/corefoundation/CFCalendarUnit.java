@@ -43,6 +43,11 @@ public final class /*<name>*/CFCalendarUnit/*</name>*/ extends Bits</*<name>*/CF
     public static final CFCalendarUnit Hour = new CFCalendarUnit(32L);
     public static final CFCalendarUnit Minute = new CFCalendarUnit(64L);
     public static final CFCalendarUnit Second = new CFCalendarUnit(128L);
+    /**
+     * @since Available in iOS 2.0 and later.
+     * @deprecated Deprecated in iOS 8.0.
+     */
+    @Deprecated
     public static final CFCalendarUnit Week = new CFCalendarUnit(256L);
     public static final CFCalendarUnit Weekday = new CFCalendarUnit(512L);
     public static final CFCalendarUnit WeekdayOrdinal = new CFCalendarUnit(1024L);

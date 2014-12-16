@@ -57,7 +57,7 @@ import org.robovm.apple.mediatoolbox.*;
     /*</constructors>*/
     /*<properties>*/
     @Property(selector = "portType")
-    public native String getPortType();
+    public native AVAudioSessionPort getPortType();
     @Property(selector = "portName")
     public native String getPortName();
     @Property(selector = "UID")
@@ -81,11 +81,26 @@ import org.robovm.apple.mediatoolbox.*;
     public native AVAudioSessionDataSourceDescription getPreferredDataSource();
     /*</properties>*/
     /*<members>*//*</members>*/
+    /**
+     * 
+     * @param dataSource
+     * @return
+     * @throws NSErrorException
+     * @since Available in iOS 7.0 and later.
+     */
+    public boolean setPreferredDataSource(AVAudioSessionDataSourceDescription dataSource) throws NSErrorException {
+        NSError.NSErrorPtr err = new NSError.NSErrorPtr();
+        boolean result = setPreferredDataSource(dataSource, err);
+        if (err.get() != null) {
+            throw new NSErrorException(err.get());
+        }
+        return result;
+    }
     /*<methods>*/
     /**
      * @since Available in iOS 7.0 and later.
      */
     @Method(selector = "setPreferredDataSource:error:")
-    public native boolean setPreferredDataSource(AVAudioSessionDataSourceDescription dataSource, NSError.NSErrorPtr outError);
+    protected native boolean setPreferredDataSource(AVAudioSessionDataSourceDescription dataSource, NSError.NSErrorPtr outError);
     /*</methods>*/
 }

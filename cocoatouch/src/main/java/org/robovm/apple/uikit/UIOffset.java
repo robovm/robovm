@@ -49,16 +49,28 @@ import org.robovm.apple.corelocation.*;
     /*<constructors>*/
     public UIOffset() {}
     public UIOffset(@MachineSizedFloat double horizontal, @MachineSizedFloat double vertical) {
-        this.horizontal(horizontal);
-        this.vertical(vertical);
+        this.setHorizontal(horizontal);
+        this.setVertical(vertical);
     }
     /*</constructors>*/
     /*<properties>*//*</properties>*/
     /*<members>*/
+    @StructMember(0) public native @MachineSizedFloat double getHorizontal();
+    @StructMember(0) public native UIOffset setHorizontal(@MachineSizedFloat double horizontal);
+    
+    @Deprecated
     @StructMember(0) public native @MachineSizedFloat double horizontal();
+    @Deprecated
     @StructMember(0) public native UIOffset horizontal(@MachineSizedFloat double horizontal);
+    
+    @StructMember(1) public native @MachineSizedFloat double getVertical();
+    @StructMember(1) public native UIOffset setVertical(@MachineSizedFloat double vertical);
+    
+    @Deprecated
     @StructMember(1) public native @MachineSizedFloat double vertical();
+    @Deprecated
     @StructMember(1) public native UIOffset vertical(@MachineSizedFloat double vertical);
+    
     /*</members>*/
     
     @Override

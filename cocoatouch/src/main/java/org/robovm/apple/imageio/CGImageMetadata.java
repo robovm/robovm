@@ -54,7 +54,7 @@ import org.robovm.apple.coregraphics.*;
      * @since Available in iOS 7.0 and later.
      * @throws NSErrorException
      */
-    public boolean registerNamespaceForPrefix(String xmlns, String prefix) {
+    public boolean registerNamespaceForPrefix(String xmlns, String prefix) throws NSErrorException {
         CFError.CFErrorPtr err = new CFError.CFErrorPtr();
         boolean result = registerNamespaceForPrefix(xmlns, prefix, err);
         if (err.get() != null) {
@@ -70,7 +70,7 @@ import org.robovm.apple.coregraphics.*;
      * @since Available in iOS 7.0 and later.
      * @throws NSErrorException
      */
-    public boolean registerNamespaceForPrefix(CGImageMetadataNamespace xmlns, String prefix) {
+    public boolean registerNamespaceForPrefix(CGImageMetadataNamespace xmlns, String prefix) throws NSErrorException {
         return registerNamespaceForPrefix(xmlns.value().toString(), prefix);
     }
     /**
@@ -81,7 +81,7 @@ import org.robovm.apple.coregraphics.*;
      * @since Available in iOS 7.0 and later.
      * @throws NSErrorException
      */
-    public boolean registerNamespaceForPrefix(String xmlns, CGImageMetadataPrefix prefix) {
+    public boolean registerNamespaceForPrefix(String xmlns, CGImageMetadataPrefix prefix) throws NSErrorException {
         return registerNamespaceForPrefix(xmlns, prefix.value().toString());
     }
     /*<methods>*/

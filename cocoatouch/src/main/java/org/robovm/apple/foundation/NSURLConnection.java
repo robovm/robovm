@@ -77,7 +77,7 @@ import org.robovm.apple.newsstandkit.NKAssetDownload;
      * @return
      * @throws NSErrorException
      */
-    public static NSData sendSynchronousRequest(NSURLRequest request, NSURLResponse.NSURLResponsePtr response) {
+    public static NSData sendSynchronousRequest(NSURLRequest request, NSURLResponse.NSURLResponsePtr response) throws NSErrorException {
         NSError.NSErrorPtr err = new NSError.NSErrorPtr();
         NSData result = sendSynchronousRequest(request, response, err);
         if (err.get() != null) {

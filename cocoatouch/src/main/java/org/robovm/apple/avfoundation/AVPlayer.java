@@ -249,7 +249,7 @@ import org.robovm.apple.mediatoolbox.*;
     @Method(selector = "addPeriodicTimeObserverForInterval:queue:usingBlock:")
     public native NSObject addPeriodicTimeObserver(@ByVal CMTime interval, DispatchQueue queue, @Block VoidBlock1<CMTime> block);
     @Method(selector = "addBoundaryTimeObserverForTimes:queue:usingBlock:")
-    public native NSObject addBoundaryTimeObserver(NSArray<?> times, DispatchQueue queue, @Block Runnable block);
+    public native NSObject addBoundaryTimeObserver(@org.robovm.rt.bro.annotation.Marshaler(CMTime.AsValuedListMarshaler.class) List<CMTime> times, DispatchQueue queue, @Block Runnable block);
     @Method(selector = "removeTimeObserver:")
     public native void removeTimeObserver(NSObject observer);
     /**

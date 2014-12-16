@@ -107,7 +107,7 @@ import org.robovm.apple.dispatch.*;
     public @ByVal CLLocationCoordinate2D getMapCenter() {
         if (options.containsKey(MapCenterKey())) {
             NSValue val = (NSValue)options.get(MapCenterKey());
-            return NSValueExtensions.getCoordinateValue(val);
+            return NSValueExtensions.getMKCoordinateValue(val);
         }
         return null;
     }
@@ -123,7 +123,7 @@ import org.robovm.apple.dispatch.*;
     public @ByVal MKCoordinateSpan getMapSpan() {
         if (options.containsKey(MapSpanKey())) {
             NSValue val = (NSValue)options.get(MapSpanKey());
-            return NSValueExtensions.getCoordinateSpanValue(val);
+            return NSValueExtensions.getMKCoordinateSpanValue(val);
         }
         return null;
     }
@@ -176,7 +176,7 @@ import org.robovm.apple.dispatch.*;
     @GlobalValue(symbol="MKLaunchOptionsMapSpanKey", optional=true)
     protected static native NSString MapSpanKey();
     /**
-     * @since Available in iOS 7.0 and later.
+     * @since Available in iOS 7.1 and later.
      */
     @GlobalValue(symbol="MKLaunchOptionsCameraKey", optional=true)
     protected static native NSString CameraKey();

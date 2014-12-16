@@ -49,22 +49,46 @@ import org.robovm.apple.corelocation.*;
     /*<constructors>*/
     public UIEdgeInsets() {}
     public UIEdgeInsets(@MachineSizedFloat double top, @MachineSizedFloat double left, @MachineSizedFloat double bottom, @MachineSizedFloat double right) {
-        this.top(top);
-        this.left(left);
-        this.bottom(bottom);
-        this.right(right);
+        this.setTop(top);
+        this.setLeft(left);
+        this.setBottom(bottom);
+        this.setRight(right);
     }
     /*</constructors>*/
     /*<properties>*//*</properties>*/
     /*<members>*/
+    @StructMember(0) public native @MachineSizedFloat double getTop();
+    @StructMember(0) public native UIEdgeInsets setTop(@MachineSizedFloat double top);
+    
+    @Deprecated
     @StructMember(0) public native @MachineSizedFloat double top();
+    @Deprecated
     @StructMember(0) public native UIEdgeInsets top(@MachineSizedFloat double top);
+    
+    @StructMember(1) public native @MachineSizedFloat double getLeft();
+    @StructMember(1) public native UIEdgeInsets setLeft(@MachineSizedFloat double left);
+    
+    @Deprecated
     @StructMember(1) public native @MachineSizedFloat double left();
+    @Deprecated
     @StructMember(1) public native UIEdgeInsets left(@MachineSizedFloat double left);
+    
+    @StructMember(2) public native @MachineSizedFloat double getBottom();
+    @StructMember(2) public native UIEdgeInsets setBottom(@MachineSizedFloat double bottom);
+    
+    @Deprecated
     @StructMember(2) public native @MachineSizedFloat double bottom();
+    @Deprecated
     @StructMember(2) public native UIEdgeInsets bottom(@MachineSizedFloat double bottom);
+    
+    @StructMember(3) public native @MachineSizedFloat double getRight();
+    @StructMember(3) public native UIEdgeInsets setRight(@MachineSizedFloat double right);
+    
+    @Deprecated
     @StructMember(3) public native @MachineSizedFloat double right();
+    @Deprecated
     @StructMember(3) public native UIEdgeInsets right(@MachineSizedFloat double right);
+    
     /*</members>*/
     
     @Override

@@ -62,6 +62,15 @@ import org.robovm.apple.mediatoolbox.*;
     public native void setTrackID(int v);
     /*</properties>*/
     /*<members>*//*</members>*/
+    public void setTransformRamp(AVTimeRamp<CGAffineTransform> ramp) {
+        setTransformRamp(ramp.getStart(), ramp.getEnd(), ramp.getTimeRange());
+    }
+    public void setOpacityRamp(AVTimeRamp<Float> ramp) {
+        setOpacityRamp(ramp.getStart(), ramp.getEnd(), ramp.getTimeRange());
+    }
+    public void setCropRectangleRamp(AVTimeRamp<CGRect> ramp) {
+        setCropRectangleRamp(ramp.getStart(), ramp.getEnd(), ramp.getTimeRange());
+    }
     /*<methods>*/
     @Method(selector = "setTransformRampFromStartTransform:toEndTransform:timeRange:")
     public native void setTransformRamp(@ByVal CGAffineTransform startTransform, @ByVal CGAffineTransform endTransform, @ByVal CMTimeRange timeRange);

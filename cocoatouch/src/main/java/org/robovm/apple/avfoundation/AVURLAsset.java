@@ -54,7 +54,7 @@ import org.robovm.apple.mediatoolbox.*;
     /*<constructors>*/
     public AVURLAsset() {}
     protected AVURLAsset(SkipInit skipInit) { super(skipInit); }
-    public AVURLAsset(NSURL URL, NSDictionary<NSString, ?> options) { super((SkipInit) null); initObject(init(URL, options)); }
+    public AVURLAsset(NSURL URL, AVURLAssetOptions options) { super((SkipInit) null); initObject(init(URL, options)); }
     /*</constructors>*/
     /*<properties>*/
     @Property(selector = "URL")
@@ -68,24 +68,24 @@ import org.robovm.apple.mediatoolbox.*;
     /*<members>*//*</members>*/
     /*<methods>*/
     @Method(selector = "initWithURL:options:")
-    protected native @Pointer long init(NSURL URL, NSDictionary<NSString, ?> options);
+    protected native @Pointer long init(NSURL URL, AVURLAssetOptions options);
     /**
      * @since Available in iOS 5.0 and later.
      */
     @Method(selector = "audiovisualTypes")
-    public static native NSArray<NSString> getAudiovisualTypes();
+    public static native @org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String> getAudiovisualTypes();
     /**
      * @since Available in iOS 5.0 and later.
      */
     @Method(selector = "audiovisualMIMETypes")
-    public static native NSArray<NSString> getAudiovisualMIMETypes();
+    public static native @org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String> getAudiovisualMIMETypes();
     /**
      * @since Available in iOS 5.0 and later.
      */
     @Method(selector = "isPlayableExtendedMIMEType:")
     public static native boolean isPlayableExtendedMIMEType(String extendedMIMEType);
     @Method(selector = "URLAssetWithURL:options:")
-    public static native AVURLAsset create(NSURL URL, NSDictionary<NSString, ?> options);
+    public static native AVURLAsset create(NSURL URL, AVURLAssetOptions options);
     @Method(selector = "compatibleTrackForCompositionTrack:")
     public native AVAssetTrack getCompatibleTrack(AVCompositionTrack compositionTrack);
     /*</methods>*/

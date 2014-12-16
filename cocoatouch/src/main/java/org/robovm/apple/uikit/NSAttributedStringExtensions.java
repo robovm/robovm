@@ -61,7 +61,7 @@ import org.robovm.apple.corelocation.*;
      * @since Available in iOS 7.0 and later.
      * @throws NSErrorException
      */
-    public static NSAttributedString createFromURL(NSURL url, NSAttributedStringDocumentAttributes options) {
+    public static NSAttributedString createFromURL(NSURL url, NSAttributedStringDocumentAttributes options) throws NSErrorException {
         NSAttributedString thiz = alloc(NSAttributedString.class);
         NSError.NSErrorPtr err = new NSError.NSErrorPtr();
         initObject(thiz, initWithFileURL$options$documentAttributes$error$(thiz, url, options, null, err));
@@ -78,7 +78,7 @@ import org.robovm.apple.corelocation.*;
      * @since Available in iOS 7.0 and later.
      * @throws NSErrorException
      */
-    public static NSAttributedString createFromData(NSData data, NSAttributedStringDocumentAttributes options) {
+    public static NSAttributedString createFromData(NSData data, NSAttributedStringDocumentAttributes options) throws NSErrorException {
         NSAttributedString thiz = alloc(NSAttributedString.class);
         NSError.NSErrorPtr err = new NSError.NSErrorPtr();
         initObject(thiz, initWithData$options$documentAttributes$error$(thiz, data, options, null, err));
@@ -96,7 +96,7 @@ import org.robovm.apple.corelocation.*;
      * @since Available in iOS 7.0 and later.
      * @throws NSErrorException
      */
-    public static NSData getData(NSAttributedString thiz, @ByVal NSRange range, NSAttributedStringDocumentAttributes dict) {
+    public static NSData getData(NSAttributedString thiz, @ByVal NSRange range, NSAttributedStringDocumentAttributes dict) throws NSErrorException {
         NSError.NSErrorPtr err = new NSError.NSErrorPtr();
         NSData result = getData(thiz, range, dict, err);
         if (err.get() != null) {
@@ -112,7 +112,7 @@ import org.robovm.apple.corelocation.*;
      * @since Available in iOS 7.0 and later.
      * @throws NSErrorException
      */
-    public static NSFileWrapper getFileWrapper(NSAttributedString thiz, @ByVal NSRange range, NSAttributedStringDocumentAttributes dict) {
+    public static NSFileWrapper getFileWrapper(NSAttributedString thiz, @ByVal NSRange range, NSAttributedStringDocumentAttributes dict) throws NSErrorException {
         NSError.NSErrorPtr err = new NSError.NSErrorPtr();
         NSFileWrapper result = getFileWrapper(thiz, range, dict, null);
         if (err.get() != null) {

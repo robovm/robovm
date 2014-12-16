@@ -54,17 +54,17 @@ import org.robovm.apple.mediatoolbox.*;
     /*<constructors>*/
     public AVPlayerMediaSelectionCriteria() {}
     protected AVPlayerMediaSelectionCriteria(SkipInit skipInit) { super(skipInit); }
-    public AVPlayerMediaSelectionCriteria(NSArray<NSString> preferredLanguages, NSArray<NSString> preferredMediaCharacteristics) { super((SkipInit) null); initObject(init(preferredLanguages, preferredMediaCharacteristics)); }
+    public AVPlayerMediaSelectionCriteria(@org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String> preferredLanguages, @org.robovm.rt.bro.annotation.Marshaler(AVMediaCharacteristic.AsListMarshaler.class) List<AVMediaCharacteristic> preferredMediaCharacteristics) { super((SkipInit) null); initObject(init(preferredLanguages, preferredMediaCharacteristics)); }
     /*</constructors>*/
     /*<properties>*/
     @Property(selector = "preferredLanguages")
-    public native NSArray<NSString> getPreferredLanguages();
+    public native @org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String> getPreferredLanguages();
     @Property(selector = "preferredMediaCharacteristics")
-    public native NSArray<NSString> getPreferredMediaCharacteristics();
+    public native @org.robovm.rt.bro.annotation.Marshaler(AVMediaCharacteristic.AsListMarshaler.class) List<AVMediaCharacteristic> getPreferredMediaCharacteristics();
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
     @Method(selector = "initWithPreferredLanguages:preferredMediaCharacteristics:")
-    protected native @Pointer long init(NSArray<NSString> preferredLanguages, NSArray<NSString> preferredMediaCharacteristics);
+    protected native @Pointer long init(@org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String> preferredLanguages, @org.robovm.rt.bro.annotation.Marshaler(AVMediaCharacteristic.AsListMarshaler.class) List<AVMediaCharacteristic> preferredMediaCharacteristics);
     /*</methods>*/
 }

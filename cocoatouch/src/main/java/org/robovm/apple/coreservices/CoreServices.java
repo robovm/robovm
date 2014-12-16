@@ -47,11 +47,6 @@ import org.robovm.apple.corefoundation.*;
     public static final int Constant__kCFStreamErrorSOCKS4RequestFailed = 91;
     public static final int Constant__kCFStreamErrorSOCKS4IdentdFailed = 92;
     public static final int Constant__kCFStreamErrorSOCKS4IdConflict = 93;
-    public static final int Constant__kCFStreamSocketSecurityNone = 0;
-    public static final int Constant__kCFStreamSocketSecuritySSLv2 = 1;
-    public static final int Constant__kCFStreamSocketSecuritySSLv3 = 2;
-    public static final int Constant__kCFStreamSocketSecuritySSLv23 = 3;
-    public static final int Constant__kCFStreamSocketSecurityTLSv1 = 4;
     public static final int Constant__kCFStreamErrorHTTPParseFailure = -1;
     public static final int Constant__kCFStreamErrorHTTPRedirectionLoop = -2;
     public static final int Constant__kCFStreamErrorHTTPBadURL = -3;
@@ -191,13 +186,13 @@ import org.robovm.apple.corefoundation.*;
     /**
      * @since Available in iOS 5.0 and later.
      */
-    @GlobalValue(symbol="kCFStreamNetworkServiceTypeBackground", optional=true)
-    public static native String Value__kCFStreamNetworkServiceTypeBackground();
+    @GlobalValue(symbol="kCFStreamNetworkServiceTypeVoice", optional=true)
+    public static native String Value__kCFStreamNetworkServiceTypeVoice();
     /**
      * @since Available in iOS 5.0 and later.
      */
-    @GlobalValue(symbol="kCFStreamNetworkServiceTypeVoice", optional=true)
-    public static native String Value__kCFStreamNetworkServiceTypeVoice();
+    @GlobalValue(symbol="kCFStreamNetworkServiceTypeBackground", optional=true)
+    public static native String Value__kCFStreamNetworkServiceTypeBackground();
     /**
      * @since Available in iOS 5.0 and later.
      */
@@ -213,38 +208,94 @@ import org.robovm.apple.corefoundation.*;
      */
     @GlobalValue(symbol="kCFStreamErrorDomainWinSock", optional=true)
     public static native @MachineSizedSInt long Value__kCFStreamErrorDomainWinSock();
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
     @GlobalValue(symbol="kCFStreamErrorDomainSOCKS", optional=true)
     public static native int Value__kCFStreamErrorDomainSOCKS();
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
     @GlobalValue(symbol="kCFStreamPropertySOCKSProxy", optional=true)
     public static native String Value__kCFStreamPropertySOCKSProxy();
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
     @GlobalValue(symbol="kCFStreamPropertySOCKSProxyHost", optional=true)
     public static native String Value__kCFStreamPropertySOCKSProxyHost();
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
     @GlobalValue(symbol="kCFStreamPropertySOCKSProxyPort", optional=true)
     public static native String Value__kCFStreamPropertySOCKSProxyPort();
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
     @GlobalValue(symbol="kCFStreamPropertySOCKSVersion", optional=true)
     public static native String Value__kCFStreamPropertySOCKSVersion();
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
     @GlobalValue(symbol="kCFStreamSocketSOCKSVersion4", optional=true)
     public static native String Value__kCFStreamSocketSOCKSVersion4();
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
     @GlobalValue(symbol="kCFStreamSocketSOCKSVersion5", optional=true)
     public static native String Value__kCFStreamSocketSOCKSVersion5();
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
     @GlobalValue(symbol="kCFStreamPropertySOCKSUser", optional=true)
     public static native String Value__kCFStreamPropertySOCKSUser();
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
     @GlobalValue(symbol="kCFStreamPropertySOCKSPassword", optional=true)
     public static native String Value__kCFStreamPropertySOCKSPassword();
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
+    @GlobalValue(symbol="kCFStreamPropertyProxyLocalBypass", optional=true)
+    public static native String Value__kCFStreamPropertyProxyLocalBypass();
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
     @GlobalValue(symbol="kCFStreamErrorDomainSSL", optional=true)
     public static native int Value__kCFStreamErrorDomainSSL();
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
     @GlobalValue(symbol="kCFStreamPropertySocketSecurityLevel", optional=true)
     public static native String Value__kCFStreamPropertySocketSecurityLevel();
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
     @GlobalValue(symbol="kCFStreamSocketSecurityLevelNone", optional=true)
     public static native String Value__kCFStreamSocketSecurityLevelNone();
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
     @GlobalValue(symbol="kCFStreamSocketSecurityLevelSSLv2", optional=true)
     public static native String Value__kCFStreamSocketSecurityLevelSSLv2();
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
     @GlobalValue(symbol="kCFStreamSocketSecurityLevelSSLv3", optional=true)
     public static native String Value__kCFStreamSocketSecurityLevelSSLv3();
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
     @GlobalValue(symbol="kCFStreamSocketSecurityLevelTLSv1", optional=true)
     public static native String Value__kCFStreamSocketSecurityLevelTLSv1();
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
     @GlobalValue(symbol="kCFStreamSocketSecurityLevelNegotiatedSSL", optional=true)
     public static native String Value__kCFStreamSocketSecurityLevelNegotiatedSSL();
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
     @GlobalValue(symbol="kCFStreamPropertyShouldCloseNativeSocket", optional=true)
     public static native String Value__kCFStreamPropertyShouldCloseNativeSocket();
     /**
@@ -257,11 +308,6 @@ import org.robovm.apple.corefoundation.*;
      */
     @GlobalValue(symbol="kCFStreamPropertySocketRemoteNetService", optional=true)
     public static native String Value__kCFStreamPropertySocketRemoteNetService();
-    /**
-     * @since Available in iOS 2.0 and later.
-     */
-    @GlobalValue(symbol="kCFStreamPropertyProxyLocalBypass", optional=true)
-    public static native String Value__kCFStreamPropertyProxyLocalBypass();
     /**
      * @since Available in iOS 2.0 and later.
      */

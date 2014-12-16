@@ -38,7 +38,7 @@ import org.robovm.apple.coremedia.*;
 /*</javadoc>*/
 /*<annotations>*/@Library("AudioToolbox")/*</annotations>*/
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/AUGraph/*</name>*/ 
-    extends /*<extends>*/CFType/*</extends>*/ 
+    extends /*<extends>*/NativeObject/*</extends>*/ 
     /*<implements>*//*</implements>*/ {
 
     /*<ptr>*/public static class AUGraphPtr extends Ptr<AUGraph, AUGraphPtr> {}/*</ptr>*/

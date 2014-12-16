@@ -64,13 +64,6 @@ import org.robovm.apple.mediatoolbox.*;
     public native float getPreferredVolume();
     @Property(selector = "preferredTransform")
     public native @ByVal CGAffineTransform getPreferredTransform();
-    /**
-     * @since Available in iOS 4.0 and later.
-     * @deprecated Deprecated in iOS 5.0.
-     */
-    @Deprecated
-    @Property(selector = "naturalSize")
-    public native @ByVal CGSize getNaturalSize();
     @Property(selector = "providesPreciseDurationAndTiming")
     public native boolean isProvidesPreciseDurationAndTiming();
     /**
@@ -174,8 +167,8 @@ import org.robovm.apple.mediatoolbox.*;
     @Method(selector = "unusedTrackID")
     public native int getUnusedTrackID();
     @Method(selector = "statusOfValueForKey:error:")
-    public native AVKeyValueStatus getStatusOfValue(String key, NSError.NSErrorPtr outError);
+    public native AVKeyValueStatus getStatusOfValue(AVMetadataKey key, NSError.NSErrorPtr outError);
     @Method(selector = "loadValuesAsynchronouslyForKeys:completionHandler:")
-    public native void loadValuesAsynchronously(NSArray<NSString> keys, @Block Runnable handler);
+    public native void loadValuesAsynchronously(@org.robovm.rt.bro.annotation.Marshaler(AVMetadataKey.AsListMarshaler.class) List<AVMetadataKey> keys, @Block Runnable handler);
     /*</methods>*/
 }

@@ -59,56 +59,56 @@ import org.robovm.apple.dispatch.*;
     public native CFComparisonResult compare(CFDate otherDate, VoidPtr context);
     /**
      * @since Available in iOS 2.0 and later.
-     * @deprecated Deprecated in iOS 7.0.
+     * @deprecated Deprecated in iOS 8.0.
      */
     @Deprecated
     @Bridge(symbol="CFGregorianDateIsValid", optional=true)
     public static native boolean gregorianDateIsValid(@ByVal CFGregorianDate gdate, CFGregorianUnitFlags unitFlags);
     /**
      * @since Available in iOS 2.0 and later.
-     * @deprecated Deprecated in iOS 7.0.
+     * @deprecated Deprecated in iOS 8.0.
      */
     @Deprecated
     @Bridge(symbol="CFGregorianDateGetAbsoluteTime", optional=true)
     public static native double gregorianDateGetAbsoluteTime(@ByVal CFGregorianDate gdate, CFTimeZone tz);
     /**
      * @since Available in iOS 2.0 and later.
-     * @deprecated Deprecated in iOS 7.0.
+     * @deprecated Deprecated in iOS 8.0.
      */
     @Deprecated
     @Bridge(symbol="CFAbsoluteTimeGetGregorianDate", optional=true)
     public static native @ByVal CFGregorianDate absoluteTimeGetGregorianDate(double at, CFTimeZone tz);
     /**
      * @since Available in iOS 2.0 and later.
-     * @deprecated Deprecated in iOS 7.0.
+     * @deprecated Deprecated in iOS 8.0.
      */
     @Deprecated
     @Bridge(symbol="CFAbsoluteTimeAddGregorianUnits", optional=true)
     public static native double absoluteTimeAddGregorianUnits(double at, CFTimeZone tz, @ByVal CFGregorianUnits units);
     /**
      * @since Available in iOS 2.0 and later.
-     * @deprecated Deprecated in iOS 7.0.
+     * @deprecated Deprecated in iOS 8.0.
      */
     @Deprecated
     @Bridge(symbol="CFAbsoluteTimeGetDifferenceAsGregorianUnits", optional=true)
     public static native @ByVal CFGregorianUnits absoluteTimeGetDifferenceAsGregorianUnits(double at1, double at2, CFTimeZone tz, CFGregorianUnitFlags unitFlags);
     /**
      * @since Available in iOS 2.0 and later.
-     * @deprecated Deprecated in iOS 7.0.
+     * @deprecated Deprecated in iOS 8.0.
      */
     @Deprecated
     @Bridge(symbol="CFAbsoluteTimeGetDayOfWeek", optional=true)
     public static native int absoluteTimeGetDayOfWeek(double at, CFTimeZone tz);
     /**
      * @since Available in iOS 2.0 and later.
-     * @deprecated Deprecated in iOS 7.0.
+     * @deprecated Deprecated in iOS 8.0.
      */
     @Deprecated
     @Bridge(symbol="CFAbsoluteTimeGetDayOfYear", optional=true)
     public static native int absoluteTimeGetDayOfYear(double at, CFTimeZone tz);
     /**
      * @since Available in iOS 2.0 and later.
-     * @deprecated Deprecated in iOS 7.0.
+     * @deprecated Deprecated in iOS 8.0.
      */
     @Deprecated
     @Bridge(symbol="CFAbsoluteTimeGetWeekOfYear", optional=true)

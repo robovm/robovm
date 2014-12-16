@@ -106,7 +106,7 @@ import org.robovm.apple.corelocation.*;
      * @return
      * @throws NSErrorException
      */
-    public boolean loadFromContents(NSObject contents, String typeName) {
+    public boolean loadFromContents(NSObject contents, String typeName) throws NSErrorException {
         NSError.NSErrorPtr err = new NSError.NSErrorPtr();
         boolean result = loadFromContents(contents, typeName, err);
         if (err.get() != null) {
@@ -120,7 +120,7 @@ import org.robovm.apple.corelocation.*;
      * @return
      * @throws NSErrorException
      */
-    public NSObject getContentsForType(String typeName) {
+    public NSObject getContentsForType(String typeName) throws NSErrorException {
         NSError.NSErrorPtr err = new NSError.NSErrorPtr();
         NSObject result = getContentsForType(typeName, err);
         if (err.get() != null) {
@@ -137,7 +137,7 @@ import org.robovm.apple.corelocation.*;
      * @return
      * @throws NSErrorException
      */
-    public boolean writeContents(NSObject contents, NSFileAttributes additionalFileAttributes, NSURL url, UIDocumentSaveOperation saveOperation) {
+    public boolean writeContents(NSObject contents, NSFileAttributes additionalFileAttributes, NSURL url, UIDocumentSaveOperation saveOperation) throws NSErrorException {
         NSError.NSErrorPtr err = new NSError.NSErrorPtr();
         boolean result = writeContents(contents, additionalFileAttributes, url, saveOperation, err);
         if (err.get() != null) {
@@ -154,7 +154,7 @@ import org.robovm.apple.corelocation.*;
      * @return
      * @throws NSErrorException
      */
-    public boolean writeContents(NSObject contents, NSURL url, UIDocumentSaveOperation saveOperation, NSURL originalContentsURL) {
+    public boolean writeContents(NSObject contents, NSURL url, UIDocumentSaveOperation saveOperation, NSURL originalContentsURL) throws NSErrorException {
         NSError.NSErrorPtr err = new NSError.NSErrorPtr();
         boolean result = writeContents(contents, url, saveOperation, originalContentsURL, err);
         if (err.get() != null) {
@@ -169,7 +169,7 @@ import org.robovm.apple.corelocation.*;
      * @return
      * @throws NSErrorException
      */
-    public NSFileAttributes getFileAttributesToWrite(NSURL url, UIDocumentSaveOperation saveOperation) {
+    public NSFileAttributes getFileAttributesToWrite(NSURL url, UIDocumentSaveOperation saveOperation) throws NSErrorException {
         NSError.NSErrorPtr err = new NSError.NSErrorPtr();
         NSFileAttributes result = getFileAttributesToWrite(url, saveOperation, err);
         if (err.get() != null) {
@@ -183,7 +183,7 @@ import org.robovm.apple.corelocation.*;
      * @return
      * @throws NSErrorException
      */
-    public boolean read(NSURL url) {
+    public boolean read(NSURL url) throws NSErrorException {
         NSError.NSErrorPtr err = new NSError.NSErrorPtr();
         boolean result = read(url, err);
         if (err.get() != null) {

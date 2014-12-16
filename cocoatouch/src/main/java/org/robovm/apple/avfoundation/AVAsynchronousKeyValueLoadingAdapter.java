@@ -57,8 +57,8 @@ import org.robovm.apple.mediatoolbox.*;
     /*<members>*//*</members>*/
     /*<methods>*/
     @NotImplemented("statusOfValueForKey:error:")
-    public AVKeyValueStatus getStatusOfValue(String key, NSError.NSErrorPtr outError) { throw new UnsupportedOperationException(); }
+    public AVKeyValueStatus getStatusOfValue(AVMetadataKey key, NSError.NSErrorPtr outError) { throw new UnsupportedOperationException(); }
     @NotImplemented("loadValuesAsynchronouslyForKeys:completionHandler:")
-    public void loadValuesAsynchronously(NSArray<NSString> keys, @Block Runnable handler) { throw new UnsupportedOperationException(); }
+    public void loadValuesAsynchronously(@org.robovm.rt.bro.annotation.Marshaler(AVMetadataKey.AsListMarshaler.class) List<AVMetadataKey> keys, @Block Runnable handler) { throw new UnsupportedOperationException(); }
     /*</methods>*/
 }

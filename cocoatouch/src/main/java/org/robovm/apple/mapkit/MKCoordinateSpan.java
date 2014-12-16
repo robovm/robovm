@@ -49,16 +49,28 @@ import org.robovm.apple.dispatch.*;
     /*<constructors>*/
     public MKCoordinateSpan() {}
     public MKCoordinateSpan(double latitudeDelta, double longitudeDelta) {
-        this.latitudeDelta(latitudeDelta);
-        this.longitudeDelta(longitudeDelta);
+        this.setLatitudedelta(latitudeDelta);
+        this.setLongitudedelta(longitudeDelta);
     }
     /*</constructors>*/
     /*<properties>*//*</properties>*/
     /*<members>*/
+    @StructMember(0) public native double getLatitudedelta();
+    @StructMember(0) public native MKCoordinateSpan setLatitudedelta(double latitudeDelta);
+    
+    @Deprecated
     @StructMember(0) public native double latitudeDelta();
+    @Deprecated
     @StructMember(0) public native MKCoordinateSpan latitudeDelta(double latitudeDelta);
+    
+    @StructMember(1) public native double getLongitudedelta();
+    @StructMember(1) public native MKCoordinateSpan setLongitudedelta(double longitudeDelta);
+    
+    @Deprecated
     @StructMember(1) public native double longitudeDelta();
+    @Deprecated
     @StructMember(1) public native MKCoordinateSpan longitudeDelta(double longitudeDelta);
+    
     /*</members>*/
     /*<methods>*//*</methods>*/
 }

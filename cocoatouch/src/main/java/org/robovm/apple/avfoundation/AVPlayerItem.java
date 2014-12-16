@@ -59,7 +59,7 @@ import org.robovm.apple.mediatoolbox.*;
     /**
      * @since Available in iOS 7.0 and later.
      */
-    public AVPlayerItem(AVAsset asset, NSArray<NSString> automaticallyLoadedAssetKeys) { super((SkipInit) null); initObject(init(asset, automaticallyLoadedAssetKeys)); }
+    public AVPlayerItem(AVAsset asset, @org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String> automaticallyLoadedAssetKeys) { super((SkipInit) null); initObject(init(asset, automaticallyLoadedAssetKeys)); }
     /*</constructors>*/
     /*<properties>*/
     @Property(selector = "status")
@@ -83,7 +83,7 @@ import org.robovm.apple.mediatoolbox.*;
      * @since Available in iOS 7.0 and later.
      */
     @Property(selector = "automaticallyLoadedAssetKeys")
-    public native NSArray<NSString> getAutomaticallyLoadedAssetKeys();
+    public native @org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String> getAutomaticallyLoadedAssetKeys();
     /**
      * @since Available in iOS 5.0 and later.
      */
@@ -128,7 +128,7 @@ import org.robovm.apple.mediatoolbox.*;
     @Property(selector = "setReversePlaybackEndTime:")
     public native void setReversePlaybackEndTime(@ByVal CMTime v);
     @Property(selector = "seekableTimeRanges")
-    public native NSArray<NSValue> getSeekableTimeRanges();
+    public native @org.robovm.rt.bro.annotation.Marshaler(CMTimeRange.AsValuedListMarshaler.class) List<CMTimeRange> getSeekableTimeRanges();
     /**
      * @since Available in iOS 6.0 and later.
      */
@@ -178,7 +178,7 @@ import org.robovm.apple.mediatoolbox.*;
     @Property(selector = "setAudioMix:")
     public native void setAudioMix(AVAudioMix v);
     @Property(selector = "loadedTimeRanges")
-    public native NSArray<NSValue> getLoadedTimeRanges();
+    public native @org.robovm.rt.bro.annotation.Marshaler(CMTimeRange.AsValuedListMarshaler.class) List<CMTimeRange> getLoadedTimeRanges();
     @Property(selector = "isPlaybackLikelyToKeepUp")
     public native boolean isPlaybackLikelyToKeepUp();
     @Property(selector = "isPlaybackBufferFull")
@@ -211,7 +211,7 @@ import org.robovm.apple.mediatoolbox.*;
      * @since Available in iOS 7.0 and later.
      */
     @Method(selector = "initWithAsset:automaticallyLoadedAssetKeys:")
-    protected native @Pointer long init(AVAsset asset, NSArray<NSString> automaticallyLoadedAssetKeys);
+    protected native @Pointer long init(AVAsset asset, @org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String> automaticallyLoadedAssetKeys);
     @Method(selector = "playerItemWithURL:")
     public static native AVPlayerItem create(NSURL URL);
     @Method(selector = "playerItemWithAsset:")
@@ -220,7 +220,7 @@ import org.robovm.apple.mediatoolbox.*;
      * @since Available in iOS 7.0 and later.
      */
     @Method(selector = "playerItemWithAsset:automaticallyLoadedAssetKeys:")
-    public static native AVPlayerItem create(AVAsset asset, NSArray<NSString> automaticallyLoadedAssetKeys);
+    public static native AVPlayerItem create(AVAsset asset, @org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String> automaticallyLoadedAssetKeys);
     @Method(selector = "currentTime")
     public native @ByVal CMTime getCurrentTime();
     @Method(selector = "seekToTime:")

@@ -64,7 +64,7 @@ import org.robovm.apple.dispatch.*;
      * @return
      * @throws NSErrorException
      */
-    public static NSData createJSONData(NSObject obj, NSJSONWritingOptions opt) {
+    public static NSData createJSONData(NSObject obj, NSJSONWritingOptions opt) throws NSErrorException {
         NSError.NSErrorPtr err = new NSError.NSErrorPtr();
         NSData result = createJSONData(obj, opt, err);
         if (err.get() != null) {
@@ -79,7 +79,7 @@ import org.robovm.apple.dispatch.*;
      * @return
      * @throws NSErrorException
      */
-    public static NSObject createJSONObject(NSData data, NSJSONReadingOptions opt) {
+    public static NSObject createJSONObject(NSData data, NSJSONReadingOptions opt) throws NSErrorException {
         NSError.NSErrorPtr err = new NSError.NSErrorPtr();
         NSObject result = createJSONObject(data, opt, err);
         if (err.get() != null) {
@@ -95,7 +95,7 @@ import org.robovm.apple.dispatch.*;
      * @return
      * @throws NSErrorException
      */
-    public static @MachineSizedSInt long writeJSONObject(NSObject obj, NSOutputStream stream, NSJSONWritingOptions opt) {
+    public static @MachineSizedSInt long writeJSONObject(NSObject obj, NSOutputStream stream, NSJSONWritingOptions opt) throws NSErrorException {
         NSError.NSErrorPtr err = new NSError.NSErrorPtr();
         long result = writeJSONObject(obj, stream, opt, err);
         if (err.get() != null) {
@@ -110,7 +110,7 @@ import org.robovm.apple.dispatch.*;
      * @return
      * @throws NSErrorException
      */
-    public static NSObject readJSONObject(NSInputStream stream, NSJSONReadingOptions opt) {
+    public static NSObject readJSONObject(NSInputStream stream, NSJSONReadingOptions opt) throws NSErrorException {
         NSError.NSErrorPtr err = new NSError.NSErrorPtr();
         NSObject result = readJSONObject(stream, opt, err);
         if (err.get() != null) {

@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.robovm.apple.mapkit;
+package org.robovm.apple.scenekit;
 
 /*<imports>*/
 import java.io.*;
@@ -27,19 +27,21 @@ import org.robovm.rt.bro.*;
 import org.robovm.rt.bro.annotation.*;
 import org.robovm.rt.bro.ptr.*;
 import org.robovm.apple.foundation.*;
-import org.robovm.apple.corefoundation.*;
-import org.robovm.apple.coregraphics.*;
-import org.robovm.apple.corelocation.*;
 import org.robovm.apple.uikit.*;
+import org.robovm.apple.coreanimation.*;
+import org.robovm.apple.coregraphics.*;
 import org.robovm.apple.dispatch.*;
+import org.robovm.apple.glkit.*;
+import org.robovm.apple.spritekit.*;
+import org.robovm.apple.opengles.*;
 /*</imports>*/
 
 /*<javadoc>*/
 /*</javadoc>*/
 /*<annotations>*//*</annotations>*/
-/*<visibility>*/public/*</visibility>*/ class /*<name>*/MKReverseGeocoderDelegateAdapter/*</name>*/ 
+/*<visibility>*/public/*</visibility>*/ class /*<name>*/SCNNodeRendererDelegateAdapter/*</name>*/ 
     extends /*<extends>*/NSObject/*</extends>*/ 
-    /*<implements>*/implements MKReverseGeocoderDelegate/*</implements>*/ {
+    /*<implements>*/implements SCNNodeRendererDelegate/*</implements>*/ {
 
     /*<ptr>*/
     /*</ptr>*/
@@ -52,19 +54,7 @@ import org.robovm.apple.dispatch.*;
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
-    /**
-     * @since Available in iOS 3.0 and later.
-     * @deprecated Deprecated in iOS 5.0.
-     */
-    @Deprecated
-    @NotImplemented("reverseGeocoder:didFindPlacemark:")
-    public void didFindPlacemark(MKReverseGeocoder geocoder, MKPlacemark placemark) { throw new UnsupportedOperationException(); }
-    /**
-     * @since Available in iOS 3.0 and later.
-     * @deprecated Deprecated in iOS 5.0.
-     */
-    @Deprecated
-    @NotImplemented("reverseGeocoder:didFailWithError:")
-    public void didFail(MKReverseGeocoder geocoder, NSError error) { throw new UnsupportedOperationException(); }
+    @NotImplemented("renderNode:renderer:arguments:")
+    public void renderNode(SCNNode node, SCNRenderer renderer, @org.robovm.rt.bro.annotation.Marshaler(SCNRenderingTransform.AsTransform3DMapMarshaler.class) Map<SCNRenderingTransform, CATransform3D> arguments) { throw new UnsupportedOperationException(); }
     /*</methods>*/
 }

@@ -162,7 +162,7 @@ import org.robovm.apple.dispatch.*;
      * @return
      * @throws NSErrorException
      */
-    public static NSData read(java.io.File file, NSDataReadingOptions readOptionsMask) {
+    public static NSData read(java.io.File file, NSDataReadingOptions readOptionsMask) throws NSErrorException {
         NSError.NSErrorPtr err = new NSError.NSErrorPtr();
         NSData result = (NSData) dataWithContentsOfFile$options$error$(file.getAbsolutePath(), readOptionsMask, err);
         if (err.get() != null) {
@@ -188,7 +188,7 @@ import org.robovm.apple.dispatch.*;
      * @return
      * @throws NSErrorException
      */
-    public NSData read(NSURL url, NSDataReadingOptions readOptionsMask) {
+    public NSData read(NSURL url, NSDataReadingOptions readOptionsMask) throws NSErrorException {
         NSError.NSErrorPtr err = new NSError.NSErrorPtr();
         NSData result = read(url, readOptionsMask, err);
         if (err.get() != null) {
@@ -206,14 +206,19 @@ import org.robovm.apple.dispatch.*;
      * @param writeOptionsMask
      * @throws NSErrorException
      */
-    public void write(java.io.File file, NSDataWritingOptions writeOptionsMask) {
+    public void write(java.io.File file, NSDataWritingOptions writeOptionsMask) throws NSErrorException {
         NSError.NSErrorPtr err = new NSError.NSErrorPtr();
         writeToFile$options$error$(file.getAbsolutePath(), writeOptionsMask, err);
         if (err.get() != null) {
             throw new NSErrorException(err.get());
         }
     }
-    public boolean write(NSURL url, NSDataWritingOptions writeOptionsMask) {
+    /**
+    *
+    *
+    * @throws NSErrorException
+    */
+    public boolean write(NSURL url, NSDataWritingOptions writeOptionsMask) throws NSErrorException {
         NSError.NSErrorPtr err = new NSError.NSErrorPtr();
         boolean result = write(url, writeOptionsMask, err);
         if (err.get() != null) {

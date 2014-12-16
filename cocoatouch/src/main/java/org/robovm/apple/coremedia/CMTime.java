@@ -19,6 +19,7 @@ package org.robovm.apple.coremedia;
 import java.io.*;
 import java.nio.*;
 import java.util.*;
+
 import org.robovm.objc.*;
 import org.robovm.objc.annotation.*;
 import org.robovm.objc.block.*;
@@ -44,6 +45,33 @@ import org.robovm.apple.audiotoolbox.*;
     extends /*<extends>*/Struct<CMTime>/*</extends>*/ 
     /*<implements>*//*</implements>*/ {
 
+    public static class AsValuedListMarshaler {
+        @SuppressWarnings("unchecked")
+        @MarshalsPointer
+        public static List<CMTime> toObject(Class<? extends NSObject> cls, long handle, long flags) {
+            NSArray<NSValue> o = (NSArray<NSValue>) NSObject.Marshaler.toObject(cls, handle, flags);
+            if (o == null) {
+                return null;
+            }
+            List<CMTime> list = new ArrayList<>();
+            for (NSValue v : o) {
+                list.add(v.timeValue());
+            }
+            return list;
+        }
+        @MarshalsPointer
+        public static long toNative(List<CMTime> l, long flags) {
+            if (l == null) {
+                return 0L;
+            }
+            NSMutableArray<NSValue> array = new NSMutableArray<>();
+            for (CMTime i : l) {
+                array.add(NSValue.valueOf(i));
+            }
+            return NSObject.Marshaler.toNative(array, flags);
+        }
+    }
+    
     /*<ptr>*/public static class CMTimePtr extends Ptr<CMTime, CMTimePtr> {}/*</ptr>*/
     /*<bind>*/static { Bro.bind(CMTime.class); }/*</bind>*/
     /*<constants>*/

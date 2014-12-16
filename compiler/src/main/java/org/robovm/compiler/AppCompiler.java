@@ -201,6 +201,10 @@ public class AppCompiler {
             }
         } else {
             for (String pattern : config.getForceLinkClasses()) {
+                if (pattern == null || pattern.trim().isEmpty()) {
+                    continue;
+                }
+                pattern = pattern.trim();
                 if (pattern.indexOf('*') == -1) {
                     Clazz clazz = config.getClazzes().load(pattern.replace('.', '/'));
                     if (clazz == null) {

@@ -53,7 +53,7 @@ import org.robovm.apple.dispatch.*;
      * @since Available in iOS 4.0 and later.
      * @throws NSErrorException
      */
-    public NSFileWrapper(NSURL url, NSFileWrapperReadingOptions options) {
+    public NSFileWrapper(NSURL url, NSFileWrapperReadingOptions options) throws NSErrorException {
         super((SkipInit) null);
         NSError.NSErrorPtr err = new NSError.NSErrorPtr();
         initObject(init(url, options, err));
@@ -119,7 +119,7 @@ import org.robovm.apple.dispatch.*;
      * @since Available in iOS 4.0 and later.
      * @throws NSErrorException
      */
-    public boolean readFromURL(NSURL url, NSFileWrapperReadingOptions options) {
+    public boolean readFromURL(NSURL url, NSFileWrapperReadingOptions options) throws NSErrorException {
         NSError.NSErrorPtr err = new NSError.NSErrorPtr();
         boolean result = readFromURL(url, options, err);
         if (err.get() != null) {
@@ -131,7 +131,7 @@ import org.robovm.apple.dispatch.*;
      * @since Available in iOS 4.0 and later.
      * @throws NSErrorException
      */
-    public boolean writeToURL(NSURL url, NSFileWrapperWritingOptions options, NSURL originalContentsURL) {
+    public boolean writeToURL(NSURL url, NSFileWrapperWritingOptions options, NSURL originalContentsURL) throws NSErrorException {
         NSError.NSErrorPtr err = new NSError.NSErrorPtr();
         boolean result = writeToURL(url, options, originalContentsURL, err);
         if (err.get() != null) {

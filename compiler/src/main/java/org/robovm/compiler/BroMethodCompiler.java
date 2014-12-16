@@ -476,11 +476,14 @@ public abstract class BroMethodCompiler extends AbstractMethodCompiler {
             return new PointerType(getStructType(sootType));
         }        
         if (isStruct(sootType)) {
-            // Structs are always passed as pointers. The LLVM 
-            // byval attribute  will be added to the parameter when making the 
-            // call if @ByVal has been specified to get the desired pass by 
-            // value semantics.
-            return new PointerType(getStructType(sootType));
+            StructureType structType = getStructType(sootType);
+            if (hasByValAnnotation(method, i)) {
+                int size = config.getDataLayout().getAllocSize(structType);
+                if (!config.getOs().useByvalForAggregateOfSize(config.getArch(), size)) {
+                    return getStructType(sootType);
+                }
+            }
+            return new PointerType(structType);
         } else if (isNativeObject(sootType)) {
             // NativeObjects are always passed by reference.
             return I8_PTR;

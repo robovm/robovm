@@ -59,7 +59,7 @@ import org.robovm.apple.foundation.*;
      * @return
      * @throws NSErrorException
      */
-    public boolean canEvaluatePolicy(LAPolicy policy) {
+    public boolean canEvaluatePolicy(LAPolicy policy) throws NSErrorException {
         NSError.NSErrorPtr err = new NSError.NSErrorPtr();
         boolean result = canEvaluatePolicy(policy, err);
         if (err.get() != null) {

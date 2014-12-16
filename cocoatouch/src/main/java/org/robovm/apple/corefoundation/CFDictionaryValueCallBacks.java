@@ -44,25 +44,55 @@ import org.robovm.apple.dispatch.*;
     /*<constructors>*/
     public CFDictionaryValueCallBacks() {}
     public CFDictionaryValueCallBacks(@MachineSizedSInt long version, FunctionPtr retain, FunctionPtr release, FunctionPtr copyDescription, FunctionPtr equal) {
-        this.version(version);
-        this.retain(retain);
-        this.release(release);
-        this.copyDescription(copyDescription);
-        this.equal(equal);
+        this.setVersion(version);
+        this.setRetain(retain);
+        this.setRelease(release);
+        this.setCopydescription(copyDescription);
+        this.setEqual(equal);
     }
     /*</constructors>*/
     /*<properties>*//*</properties>*/
     /*<members>*/
+    @StructMember(0) public native @MachineSizedSInt long getVersion();
+    @StructMember(0) public native CFDictionaryValueCallBacks setVersion(@MachineSizedSInt long version);
+    
+    @Deprecated
     @StructMember(0) public native @MachineSizedSInt long version();
+    @Deprecated
     @StructMember(0) public native CFDictionaryValueCallBacks version(@MachineSizedSInt long version);
+    
+    @StructMember(1) public native FunctionPtr getRetain();
+    @StructMember(1) public native CFDictionaryValueCallBacks setRetain(FunctionPtr retain);
+    
+    @Deprecated
     @StructMember(1) public native FunctionPtr retain();
+    @Deprecated
     @StructMember(1) public native CFDictionaryValueCallBacks retain(FunctionPtr retain);
+    
+    @StructMember(2) public native FunctionPtr getRelease();
+    @StructMember(2) public native CFDictionaryValueCallBacks setRelease(FunctionPtr release);
+    
+    @Deprecated
     @StructMember(2) public native FunctionPtr release();
+    @Deprecated
     @StructMember(2) public native CFDictionaryValueCallBacks release(FunctionPtr release);
+    
+    @StructMember(3) public native FunctionPtr getCopydescription();
+    @StructMember(3) public native CFDictionaryValueCallBacks setCopydescription(FunctionPtr copyDescription);
+    
+    @Deprecated
     @StructMember(3) public native FunctionPtr copyDescription();
+    @Deprecated
     @StructMember(3) public native CFDictionaryValueCallBacks copyDescription(FunctionPtr copyDescription);
+    
+    @StructMember(4) public native FunctionPtr getEqual();
+    @StructMember(4) public native CFDictionaryValueCallBacks setEqual(FunctionPtr equal);
+    
+    @Deprecated
     @StructMember(4) public native FunctionPtr equal();
+    @Deprecated
     @StructMember(4) public native CFDictionaryValueCallBacks equal(FunctionPtr equal);
+    
     /*</members>*/
     /*<methods>*//*</methods>*/
 }

@@ -120,7 +120,7 @@ import org.robovm.apple.foundation.*;
      * @return
      * @throws NSErrorException
      */
-    public NSPersistentStore addPersistentStore(NSPersistentStoreType storeType, String configuration, NSURL storeURL, NSPersistentStoreOptions options) {
+    public NSPersistentStore addPersistentStore(NSPersistentStoreType storeType, String configuration, NSURL storeURL, NSPersistentStoreOptions options) throws NSErrorException {
         return addPersistentStore(storeType.value(), configuration, storeURL, options);
     }
     /**
@@ -132,7 +132,7 @@ import org.robovm.apple.foundation.*;
      * @return
      * @throws NSErrorException
      */
-    public NSPersistentStore addPersistentStore(String storeType, String configuration, NSURL storeURL, NSPersistentStoreOptions options) {
+    public NSPersistentStore addPersistentStore(String storeType, String configuration, NSURL storeURL, NSPersistentStoreOptions options) throws NSErrorException {
         NSError.NSErrorPtr err = new NSError.NSErrorPtr();
         NSPersistentStore result = addPersistentStore(storeType, configuration, storeURL, options, err);
         if (err.get() != null) {
@@ -146,7 +146,7 @@ import org.robovm.apple.foundation.*;
      * @return
      * @throws NSErrorException
      */
-    public boolean removePersistentStore(NSPersistentStore store) {
+    public boolean removePersistentStore(NSPersistentStore store) throws NSErrorException {
         NSError.NSErrorPtr err = new NSError.NSErrorPtr();
         boolean result = removePersistentStore(store, err);
         if (err.get() != null) {
@@ -162,7 +162,7 @@ import org.robovm.apple.foundation.*;
      * @since Available in iOS 5.0 and later.
      * @throws NSErrorException
      */
-    public NSObject executeRequest(NSPersistentStoreRequest request, NSManagedObjectContext context) {
+    public NSObject executeRequest(NSPersistentStoreRequest request, NSManagedObjectContext context) throws NSErrorException {
         NSError.NSErrorPtr err = new NSError.NSErrorPtr();
         NSObject result = executeRequest(request, context, err);
         if (err.get() != null) {
@@ -179,7 +179,7 @@ import org.robovm.apple.foundation.*;
      * @return
      * @throws NSErrorException
      */
-    public NSPersistentStore migratePersistentStore(NSPersistentStore store, NSURL URL, NSPersistentStoreOptions options, NSPersistentStoreType storeType) {
+    public NSPersistentStore migratePersistentStore(NSPersistentStore store, NSURL URL, NSPersistentStoreOptions options, NSPersistentStoreType storeType) throws NSErrorException {
         return migratePersistentStore(store, URL, options, storeType.value());
     }
     /**
@@ -191,7 +191,7 @@ import org.robovm.apple.foundation.*;
      * @return
      * @throws NSErrorException
      */
-    public NSPersistentStore migratePersistentStore(NSPersistentStore store, NSURL URL, NSPersistentStoreOptions options, String storeType) {
+    public NSPersistentStore migratePersistentStore(NSPersistentStore store, NSURL URL, NSPersistentStoreOptions options, String storeType) throws NSErrorException {
         NSError.NSErrorPtr err = new NSError.NSErrorPtr();
         NSPersistentStore result = migratePersistentStore(store, URL, options, storeType, err);
         if (err.get() != null) {
@@ -216,7 +216,7 @@ import org.robovm.apple.foundation.*;
      * @since Available in iOS 3.0 and later.
      * @throws NSErrorException
      */
-    public static NSPersistentStoreMetadata getMetadataForPersistentStoreType(NSPersistentStoreType storeType, NSURL url) {
+    public static NSPersistentStoreMetadata getMetadataForPersistentStoreType(NSPersistentStoreType storeType, NSURL url) throws NSErrorException {
         return getMetadataForPersistentStoreType(storeType.value(), url);
     }
     /**
@@ -227,7 +227,7 @@ import org.robovm.apple.foundation.*;
      * @since Available in iOS 3.0 and later.
      * @throws NSErrorException
      */
-    public static NSPersistentStoreMetadata getMetadataForPersistentStoreType(String storeType, NSURL url) {
+    public static NSPersistentStoreMetadata getMetadataForPersistentStoreType(String storeType, NSURL url) throws NSErrorException {
         NSError.NSErrorPtr err = new NSError.NSErrorPtr();
         NSPersistentStoreMetadata result = getMetadataForPersistentStoreType(storeType, url, err);
         if (err.get() != null) {
@@ -244,7 +244,7 @@ import org.robovm.apple.foundation.*;
      * @since Available in iOS 3.0 and later.
      * @throws NSErrorException
      */
-    public static boolean setMetadataForPersistentStoreType(NSPersistentStoreMetadata metadata, NSPersistentStoreType storeType, NSURL url) {
+    public static boolean setMetadataForPersistentStoreType(NSPersistentStoreMetadata metadata, NSPersistentStoreType storeType, NSURL url) throws NSErrorException {
         return setMetadataForPersistentStoreType(metadata, storeType.value(), url);
     }
     /**
@@ -256,7 +256,7 @@ import org.robovm.apple.foundation.*;
      * @since Available in iOS 3.0 and later.
      * @throws NSErrorException
      */
-    public static boolean setMetadataForPersistentStoreType(NSPersistentStoreMetadata metadata, String storeType, NSURL url) {
+    public static boolean setMetadataForPersistentStoreType(NSPersistentStoreMetadata metadata, String storeType, NSURL url) throws NSErrorException {
         NSError.NSErrorPtr err = new NSError.NSErrorPtr();
         boolean result = setMetadataForPersistentStoreType(metadata, storeType, url, err);
         if (err.get() != null) {
@@ -272,7 +272,7 @@ import org.robovm.apple.foundation.*;
      * @since Available in iOS 7.0 and later.
      * @throws NSErrorException
      */
-    public static boolean removeUbiquitousContentAndPersistentStore(NSURL storeURL, NSPersistentStoreOptions options) {
+    public static boolean removeUbiquitousContentAndPersistentStore(NSURL storeURL, NSPersistentStoreOptions options) throws NSErrorException {
         NSError.NSErrorPtr err = new NSError.NSErrorPtr();
         boolean result = removeUbiquitousContentAndPersistentStore(storeURL, options, err);
         if (err.get() != null) {

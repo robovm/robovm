@@ -38,7 +38,7 @@ import org.robovm.apple.coremedia.*;
 /*</javadoc>*/
 /*<annotations>*/@Library("AudioToolbox")/*</annotations>*/
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/AudioQueue/*</name>*/ 
-    extends /*<extends>*/CFType/*</extends>*/ 
+    extends /*<extends>*/NativeObject/*</extends>*/ 
     /*<implements>*//*</implements>*/ {
 
     /*<ptr>*/public static class AudioQueuePtr extends Ptr<AudioQueue, AudioQueuePtr> {}/*</ptr>*/
@@ -54,12 +54,12 @@ import org.robovm.apple.coremedia.*;
      * @since Available in iOS 2.0 and later.
      */
     @Bridge(symbol="AudioQueueNewOutput", optional=true)
-    public static native AudioQueueError newOutput(AudioStreamBasicDescription inFormat, FunctionPtr inCallbackProc, VoidPtr inUserData, CFRunLoop inCallbackRunLoop, String inCallbackRunLoopMode, int inFlags, AudioQueue.AudioQueuePtr outAQ);
+    public static native AudioQueueError newOutput(AudioStreamBasicDescription inFormat, FunctionPtr inCallbackProc, VoidPtr inUserData, CFRunLoop inCallbackRunLoop, CFString inCallbackRunLoopMode, int inFlags, AudioQueue.AudioQueuePtr outAQ);
     /**
      * @since Available in iOS 2.0 and later.
      */
     @Bridge(symbol="AudioQueueNewInput", optional=true)
-    public static native AudioQueueError newInput(AudioStreamBasicDescription inFormat, FunctionPtr inCallbackProc, VoidPtr inUserData, CFRunLoop inCallbackRunLoop, String inCallbackRunLoopMode, int inFlags, AudioQueue.AudioQueuePtr outAQ);
+    public static native AudioQueueError newInput(AudioStreamBasicDescription inFormat, FunctionPtr inCallbackProc, VoidPtr inUserData, CFRunLoop inCallbackRunLoop, CFString inCallbackRunLoopMode, int inFlags, AudioQueue.AudioQueuePtr outAQ);
     /**
      * @since Available in iOS 2.0 and later.
      */

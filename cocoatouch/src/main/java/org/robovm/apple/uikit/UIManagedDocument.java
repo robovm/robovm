@@ -76,7 +76,7 @@ import org.robovm.apple.corelocation.*;
      * @return
      * @throws NSErrorException
      */
-    public boolean configurePersistentStoreCoordinator(NSURL storeURL, String fileType, String configuration, NSPersistentStoreOptions storeOptions) {
+    public boolean configurePersistentStoreCoordinator(NSURL storeURL, String fileType, String configuration, NSPersistentStoreOptions storeOptions) throws NSErrorException {
         NSError.NSErrorPtr err = new NSError.NSErrorPtr();
         boolean result = configurePersistentStoreCoordinator(storeURL, fileType, configuration, storeOptions, err);
         if (err.get() != null) {
@@ -90,7 +90,7 @@ import org.robovm.apple.corelocation.*;
      * @return
      * @throws NSErrorException
      */
-    public boolean readAdditionalContent(NSURL absoluteURL) {
+    public boolean readAdditionalContent(NSURL absoluteURL) throws NSErrorException {
         NSError.NSErrorPtr err = new NSError.NSErrorPtr();
         boolean result = readAdditionalContent(absoluteURL, err);
         if (err.get() != null) {
@@ -104,7 +104,7 @@ import org.robovm.apple.corelocation.*;
      * @return
      * @throws NSErrorException
      */
-    public NSObject getAdditionalContent(NSURL absoluteURL) {
+    public NSObject getAdditionalContent(NSURL absoluteURL) throws NSErrorException {
         NSError.NSErrorPtr err = new NSError.NSErrorPtr();
         NSObject result = getAdditionalContent(absoluteURL, err);
         if (err.get() != null) {
@@ -120,7 +120,7 @@ import org.robovm.apple.corelocation.*;
      * @return
      * @throws NSErrorException
      */
-    public boolean writeAdditionalContent(NSObject content, NSURL absoluteURL, NSURL absoluteOriginalContentsURL) {
+    public boolean writeAdditionalContent(NSObject content, NSURL absoluteURL, NSURL absoluteOriginalContentsURL) throws NSErrorException {
         NSError.NSErrorPtr err = new NSError.NSErrorPtr();
         boolean result = writeAdditionalContent(content, absoluteURL, absoluteOriginalContentsURL, err);
         if (err.get() != null) {

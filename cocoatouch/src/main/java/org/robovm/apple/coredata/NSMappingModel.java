@@ -64,7 +64,7 @@ import org.robovm.apple.foundation.*;
      * @since Available in iOS 3.0 and later.
      * @throws NSErrorException
      */
-    public static NSMappingModel createInferred(NSManagedObjectModel sourceModel, NSManagedObjectModel destinationModel) {
+    public static NSMappingModel createInferred(NSManagedObjectModel sourceModel, NSManagedObjectModel destinationModel) throws NSErrorException {
         NSError.NSErrorPtr err = new NSError.NSErrorPtr();
         NSMappingModel result = createInferred(sourceModel, destinationModel, err);
         if (err.get() != null) {

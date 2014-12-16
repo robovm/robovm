@@ -48,7 +48,7 @@ import org.robovm.apple.coremedia.*;
     /*<constants>*//*</constants>*/
     /*<constructors>*/
     public AudioFileRegion() {}
-    public AudioFileRegion(int mRegionID, String mName, int mFlags, int mNumberMarkers, AudioFileMarker mMarkers) {
+    public AudioFileRegion(int mRegionID, CFString mName, int mFlags, int mNumberMarkers, AudioFileMarker mMarkers) {
         this.mRegionID(mRegionID);
         this.mName(mName);
         this.mFlags(mFlags);
@@ -60,8 +60,8 @@ import org.robovm.apple.coremedia.*;
     /*<members>*/
     @StructMember(0) public native int mRegionID();
     @StructMember(0) public native AudioFileRegion mRegionID(int mRegionID);
-    @StructMember(1) public native String mName();
-    @StructMember(1) public native AudioFileRegion mName(String mName);
+    @StructMember(1) public native CFString mName();
+    @StructMember(1) public native AudioFileRegion mName(CFString mName);
     @StructMember(2) public native int mFlags();
     @StructMember(2) public native AudioFileRegion mFlags(int mFlags);
     @StructMember(3) public native int mNumberMarkers();

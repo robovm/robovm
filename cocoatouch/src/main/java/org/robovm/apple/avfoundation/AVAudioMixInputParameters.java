@@ -62,7 +62,7 @@ import org.robovm.apple.mediatoolbox.*;
      * @since Available in iOS 7.0 and later.
      */
     @Property(selector = "audioTimePitchAlgorithm")
-    public native String getAudioTimePitchAlgorithm();
+    public native AVAudioTimePitchAlgorithm getAudioTimePitchAlgorithm();
     /**
      * @since Available in iOS 6.0 and later.
      */
@@ -70,8 +70,18 @@ import org.robovm.apple.mediatoolbox.*;
     public native MTAudioProcessingTap getAudioTapProcessor();
     /*</properties>*/
     /*<members>*//*</members>*/
+    public AVTimeRamp<Float> getVolumeRamp(CMTime time) {
+        FloatPtr start = new FloatPtr();
+        FloatPtr end = new FloatPtr();
+        CMTimeRange.CMTimeRangePtr timeRange = new CMTimeRange.CMTimeRangePtr();
+        boolean valid = getVolumeRamp(time, start, end, timeRange);
+        if (valid) {
+            return new AVTimeRamp<Float>(start.get(), end.get(), timeRange.get());
+        }
+        return null;
+    }
     /*<methods>*/
     @Method(selector = "getVolumeRampForTime:startVolume:endVolume:timeRange:")
-    public native boolean getVolumeRamp(@ByVal CMTime time, FloatPtr startVolume, FloatPtr endVolume, CMTimeRange timeRange);
+    protected native boolean getVolumeRamp(@ByVal CMTime time, FloatPtr startVolume, FloatPtr endVolume, CMTimeRange.CMTimeRangePtr timeRange);
     /*</methods>*/
 }

@@ -45,8 +45,7 @@ import org.robovm.apple.mediatoolbox.*;
 /*</javadoc>*/
 /*<annotations>*/@Library("AVFoundation") @NativeClass/*</annotations>*/
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/AVMetadataItem/*</name>*/ 
-    extends /*<extends>*/NSObject/*</extends>*/ 
-    /*<implements>*/implements AVAsynchronousKeyValueLoading/*</implements>*/ {
+    extends /*<extends>*/NSObject/*</extends>*/ {
 
     /*<ptr>*/public static class AVMetadataItemPtr extends Ptr<AVMetadataItem, AVMetadataItemPtr> {}/*</ptr>*/
     /*<bind>*/static { ObjCRuntime.bind(AVMetadataItem.class); }/*</bind>*/
@@ -60,7 +59,7 @@ import org.robovm.apple.mediatoolbox.*;
      * @since Available in iOS 8.0 and later.
      */
     @Property(selector = "identifier")
-    public native String getIdentifier();
+    public native AVMetadataIdentifier getIdentifier();
     /**
      * @since Available in iOS 8.0 and later.
      */
@@ -83,7 +82,7 @@ import org.robovm.apple.mediatoolbox.*;
     @Property(selector = "value")
     public native NSObject getValue();
     @Property(selector = "extraAttributes")
-    public native NSDictionary<NSString, ?> getExtraAttributes();
+    public native AVMetadataExtraAttributes getExtraAttributes();
     @Property(selector = "stringValue")
     public native String getStringValue();
     @Property(selector = "numberValue")
@@ -93,57 +92,72 @@ import org.robovm.apple.mediatoolbox.*;
     @Property(selector = "dataValue")
     public native NSData getDataValue();
     @Property(selector = "key")
-    public native NSString getKey();
+    public native AVMetadataKey getKey();
     @Property(selector = "commonKey")
-    public native String getCommonKey();
+    public native AVMetadataKeyCommon getCommonKey();
     @Property(selector = "keySpace")
-    public native String getKeySpace();
+    public native AVMetadataKeySpace getKeySpace();
     /*</properties>*/
     /*<members>*//*</members>*/
+    /**
+     * 
+     * @param key
+     * @return
+     * @throws NSErrorException
+     * @since Available in iOS 4.2 and later.
+     */
+    public AVKeyValueStatus getStatusOfValue(AVMetadataKey key) throws NSErrorException {
+        NSError.NSErrorPtr err = new NSError.NSErrorPtr();
+        AVKeyValueStatus result = getStatusOfValue(key, err);
+        if (err.get() != null) {
+            throw new NSErrorException(err.get());
+        }
+        return result;
+    }
     /*<methods>*/
     /**
      * @since Available in iOS 4.2 and later.
      */
     @Method(selector = "statusOfValueForKey:error:")
-    public native AVKeyValueStatus getStatusOfValue(String key, NSError.NSErrorPtr outError);
+    protected native AVKeyValueStatus getStatusOfValue(AVMetadataKey key, NSError.NSErrorPtr outError);
     /**
      * @since Available in iOS 4.2 and later.
      */
     @Method(selector = "loadValuesAsynchronouslyForKeys:completionHandler:")
-    public native void loadValuesAsynchronously(NSArray<NSString> keys, @Block Runnable handler);
+    public native void loadValuesAsynchronously(@org.robovm.rt.bro.annotation.Marshaler(AVMetadataKey.AsListMarshaler.class) List<AVMetadataKey> keys, @Block Runnable handler);
     /**
      * @since Available in iOS 6.0 and later.
      */
     @Method(selector = "metadataItemsFromArray:filteredAndSortedAccordingToPreferredLanguages:")
-    public static native NSArray<AVMetadataItem> getMetadataItems(NSArray<AVMetadataItem> metadataItems, NSArray<AVMetadataItem> preferredLanguages);
+    public static native NSArray<AVMetadataItem> filterMetadataItemsByPreferredLanguages(NSArray<AVMetadataItem> metadataItems, @org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String> preferredLanguages);
     /**
      * @since Available in iOS 8.0 and later.
      */
     @Method(selector = "metadataItemsFromArray:filteredByIdentifier:")
-    public static native NSArray<?> metadataItemsFromArray$filteredByIdentifier$(NSArray<?> metadataItems, String identifier);
+    public static native NSArray<AVMetadataItem> filterMetadataItemsByIdentifier(NSArray<AVMetadataItem> metadataItems, AVMetadataIdentifier identifier);
     /**
      * @since Available in iOS 7.0 and later.
      */
     @Method(selector = "metadataItemsFromArray:filteredByMetadataItemFilter:")
-    public static native NSArray<AVMetadataItem> getMetadataItems(NSArray<AVMetadataItem> metadataItems, AVMetadataItemFilter metadataItemFilter);
+    public static native NSArray<AVMetadataItem> filterMetadataItems(NSArray<AVMetadataItem> metadataItems, AVMetadataItemFilter metadataItemFilter);
     /**
      * @since Available in iOS 8.0 and later.
      */
     @Method(selector = "identifierForKey:keySpace:")
-    public static native String identifierForKey$keySpace$(NSObject key, String keySpace);
+    public static native AVMetadataIdentifier getIdentifierForKey(AVMetadataKey key, AVMetadataKeySpace keySpace);
     /**
      * @since Available in iOS 8.0 and later.
      */
     @Method(selector = "keySpaceForIdentifier:")
-    public static native String keySpaceForIdentifier$(String identifier);
+    public static native AVMetadataKeySpace getKeySpaceForIdentifier(AVMetadataIdentifier identifier);
     /**
      * @since Available in iOS 8.0 and later.
      */
     @Method(selector = "keyForIdentifier:")
-    public static native NSObject keyForIdentifier$(String identifier);
+    public static native AVMetadataKey getKeyForIdentifier(AVMetadataIdentifier identifier);
     @Method(selector = "metadataItemsFromArray:withLocale:")
-    public static native NSArray<AVMetadataItem> getMetadataItems(NSArray<AVMetadataItem> metadataItems, NSLocale locale);
+    public static native NSArray<AVMetadataItem> filterMetadataItemsByLocale(NSArray<AVMetadataItem> metadataItems, NSLocale locale);
     @Method(selector = "metadataItemsFromArray:withKey:keySpace:")
-    public static native NSArray<AVMetadataItem> getMetadataItems(NSArray<AVMetadataItem> metadataItems, NSObject key, String keySpace);
+    public static native NSArray<AVMetadataItem> filterMetadataItemsByKey(NSArray<AVMetadataItem> metadataItems, AVMetadataKey key, AVMetadataKeySpace keySpace);
     /*</methods>*/
 }

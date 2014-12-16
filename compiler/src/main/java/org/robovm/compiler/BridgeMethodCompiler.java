@@ -112,14 +112,14 @@ public class BridgeMethodCompiler extends BroMethodCompiler {
         SootMethod originalMethod = method;
         Value structObj = null;
         boolean passByValue = isPassByValue(originalMethod);
+        Arch arch = config.getArch();
+        OS os = config.getOs();
         DataLayout dataLayout = config.getDataLayout();
         if (passByValue) {
             // The method returns a struct by value. Determine whether that struct
             // is small enough to be passed in a register or has to be returned
             // using a @StructRet parameter.
             
-            Arch arch = config.getArch();
-            OS os = config.getOs();
             int size = dataLayout.getAllocSize(getStructType(originalMethod.getReturnType()));
             if (!os.isReturnedInRegisters(arch, size)) {
                 method = createFakeStructRetMethod(method);
@@ -144,11 +144,13 @@ public class BridgeMethodCompiler extends BroMethodCompiler {
         
         FunctionType targetFnType = getBridgeFunctionType(method, dynamic);
         if (method == originalMethod && passByValue) {
-            // Returns a small struct. We need to change the return type to
-            // i8/i16/i32/i64.
-            int size = dataLayout.getAllocSize(targetFnType.getReturnType());
-            Type t = size <= 1 ? I8 : (size <= 2 ? I16 : (size <= 4 ? I32 : I64));
-            targetFnType = new FunctionType(t, targetFnType.isVarargs(), targetFnType.getParameterTypes());
+            if (os.returnSmallAggregateAsInteger(arch, dataLayout.getAllocSize(targetFnType.getReturnType()))) {
+                // Returns a small struct. We need to change the return type to
+                // i8/i16/i32/i64.
+                int size = dataLayout.getAllocSize(targetFnType.getReturnType());
+                Type t = size <= 1 ? I8 : (size <= 2 ? I16 : (size <= 4 ? I32 : I64));
+                targetFnType = new FunctionType(t, targetFnType.isVarargs(), targetFnType.getParameterTypes());
+            }
         }
 
         VariableRef env = fn.getParameterRef(0);
@@ -238,10 +240,11 @@ public class BridgeMethodCompiler extends BroMethodCompiler {
                         // never have a NULL handle so we just check that the Java
                         // Object isn't null.
                         call(fn, CHECK_NULL, env, args.get(argIdx).getValue());
-                        parameterAttributes = new ParameterAttribute[1];
                         if (isStructRet(method, i)) {
+                            parameterAttributes = new ParameterAttribute[1];
                             parameterAttributes[0] = sret;
-                        } else {
+                        } else if (nativeType instanceof PointerType) {
+                            parameterAttributes = new ParameterAttribute[1];
                             parameterAttributes[0] = byval;
                         }
                     }

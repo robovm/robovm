@@ -47,19 +47,10 @@ public class ObjectFileTest {
                 }
                 try (ObjectFile objectFile = ObjectFile.load(oFile)) {
                     List<Symbol> symbols = objectFile.getSymbols();
-                    assertEquals(3, symbols.size());
-                    assertEquals("EH_frame0", symbols.get(0).getName());
-                    assertTrue(symbols.get(0).getAddress() > 0);
+                    assertEquals(1, symbols.size());
+                    assertEquals("_foo", symbols.get(0).getName());
+                    assertTrue(symbols.get(0).getAddress() == 0);
                     assertTrue(symbols.get(0).getSize() > 0);
-                    assertTrue(symbols.get(0).getFileOffset() > 0);
-                    assertEquals("_foo", symbols.get(1).getName());
-                    assertTrue(symbols.get(1).getAddress() == 0);
-                    assertTrue(symbols.get(1).getSize() > 0);
-                    assertTrue(symbols.get(1).getFileOffset() > 0);
-                    assertEquals("_foo.eh", symbols.get(2).getName());
-                    assertTrue(symbols.get(2).getAddress() > 0);
-                    assertTrue(symbols.get(2).getSize() > 0);
-                    assertTrue(symbols.get(2).getFileOffset() > 0);
                 }
             }
         }

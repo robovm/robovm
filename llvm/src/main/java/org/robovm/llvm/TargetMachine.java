@@ -81,54 +81,6 @@ public class TargetMachine implements AutoCloseable {
         return LLVM.GetTargetMachineFeatureString(ref);
     }
     
-    public boolean hasMCRelaxAll() {
-        return LLVM.TargetMachineHasMCRelaxAll(ref);
-    }
-
-    public void setMCRelaxAll(boolean value) {
-        LLVM.TargetMachineSetMCRelaxAll(ref, value);
-    }
-
-    public boolean hasMCSaveTempLabels() {
-        return LLVM.TargetMachineHasMCSaveTempLabels(ref);
-    }
-
-    public void setMCSaveTempLabels(boolean value) {
-        LLVM.TargetMachineSetMCSaveTempLabels(ref, value);
-    }
-
-    public boolean hasMCNoExecStack() {
-        return LLVM.TargetMachineHasMCNoExecStack(ref);
-    }
-
-    public void setMCNoExecStack(boolean value) {
-        LLVM.TargetMachineSetMCNoExecStack(ref, value);
-    }
-
-    public boolean hasMCUseLoc() {
-        return LLVM.TargetMachineHasMCUseLoc(ref);
-    }
-
-    public void setMCUseLoc(boolean value) {
-        LLVM.TargetMachineSetMCUseLoc(ref, value);
-    }
-
-    public boolean hasMCUseCFI() {
-        return LLVM.TargetMachineHasMCUseCFI(ref);
-    }
-
-    public void setMCUseCFI(boolean value) {
-        LLVM.TargetMachineSetMCUseCFI(ref, value);
-    }
-
-    public boolean hasMCUseDwarfDirectory() {
-        return LLVM.TargetMachineHasMCUseDwarfDirectory(ref);
-    }
-
-    public void setMCUseDwarfDirectory(boolean value) {
-        LLVM.TargetMachineSetMCUseDwarfDirectory(ref, value);
-    }
-
     public boolean getAsmVerbosityDefault() {
         return LLVM.TargetMachineGetAsmVerbosityDefault(ref);
     }

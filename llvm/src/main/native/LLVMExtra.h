@@ -33,18 +33,6 @@ LLVMBool LLVMParseIRInContext(LLVMContextRef ContextRef,
 
 LLVMTargetRef LLVMLookupTarget(const char *Triple, char **ErrorMessage);
 
-LLVMBool LLVMTargetMachineHasMCRelaxAll(LLVMTargetMachineRef T);
-void LLVMTargetMachineSetMCRelaxAll(LLVMTargetMachineRef T, LLVMBool Value);
-LLVMBool LLVMTargetMachineHasMCSaveTempLabels(LLVMTargetMachineRef T);
-void LLVMTargetMachineSetMCSaveTempLabels(LLVMTargetMachineRef T, LLVMBool Value);
-LLVMBool LLVMTargetMachineHasMCNoExecStack(LLVMTargetMachineRef T);
-void LLVMTargetMachineSetMCNoExecStack(LLVMTargetMachineRef T, LLVMBool Value);
-LLVMBool LLVMTargetMachineHasMCUseLoc(LLVMTargetMachineRef T);
-void LLVMTargetMachineSetMCUseLoc(LLVMTargetMachineRef T, LLVMBool Value);
-LLVMBool LLVMTargetMachineHasMCUseCFI(LLVMTargetMachineRef T);
-void LLVMTargetMachineSetMCUseCFI(LLVMTargetMachineRef T, LLVMBool Value);
-LLVMBool LLVMTargetMachineHasMCUseDwarfDirectory(LLVMTargetMachineRef T);
-void LLVMTargetMachineSetMCUseDwarfDirectory(LLVMTargetMachineRef T, LLVMBool Value);
 LLVMBool LLVMTargetMachineGetAsmVerbosityDefault(LLVMTargetMachineRef T);
 void LLVMTargetMachineSetAsmVerbosityDefault(LLVMTargetMachineRef T, LLVMBool Value);
 LLVMBool LLVMTargetMachineGetDataSections(LLVMTargetMachineRef T);
@@ -86,8 +74,6 @@ LLVMBool LLVMTargetOptionsGetEnableFastISel(LLVMTargetOptionsRef O);
 void LLVMTargetOptionsSetEnableFastISel(LLVMTargetOptionsRef O, LLVMBool V);
 LLVMBool LLVMTargetOptionsGetPositionIndependentExecutable(LLVMTargetOptionsRef O);
 void LLVMTargetOptionsSetPositionIndependentExecutable(LLVMTargetOptionsRef O, LLVMBool V);
-LLVMBool LLVMTargetOptionsGetEnableSegmentedStacks(LLVMTargetOptionsRef O);
-void LLVMTargetOptionsSetEnableSegmentedStacks(LLVMTargetOptionsRef O, LLVMBool V);
 LLVMBool LLVMTargetOptionsGetUseInitArray(LLVMTargetOptionsRef O);
 void LLVMTargetOptionsSetUseInitArray(LLVMTargetOptionsRef O, LLVMBool V);
 LLVMFloatABIType LLVMTargetOptionsGetFloatABIType(LLVMTargetOptionsRef O);

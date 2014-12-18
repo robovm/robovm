@@ -23,8 +23,6 @@ package org.robovm.compiler.llvm;
 public enum Linkage {
 
     _private,
-    linker_private,
-    linker_private_weak,
     linkonce,
     linkonce_odr,
     external, 

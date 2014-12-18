@@ -52,8 +52,7 @@ public class ObjectFile implements AutoCloseable {
             String name = LLVM.GetSymbolName(it);
             long address = LLVM.GetSymbolAddress(it);
             long size = LLVM.GetSymbolSize(it);
-            long fileOffset = LLVM.GetSymbolFileOffset(it);
-            result.add(new Symbol(name, address, size, fileOffset));
+            result.add(new Symbol(name, address, size));
             LLVM.MoveToNextSymbol(it);
         }
         LLVM.DisposeSymbolIterator(it);

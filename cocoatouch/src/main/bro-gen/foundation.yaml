@@ -62,6 +62,7 @@ typedefs:
     'void (^)(void (^)(void))': '@Block("(@Block)") VoidBlock1<Runnable>'
     'void (^)(NSInputStream *, NSOutputStream *, NSError *)': '@Block VoidBlock3<NSInputStream, NSOutputStream, NSError>'
     'void (^)(NSURLCredential *)': '@Block VoidBlock1<NSURLCredential>'
+    NSPropertyListReadOptions: NSPropertyListMutabilityOptions
 
 enums:
     NSActivityOptions: {}

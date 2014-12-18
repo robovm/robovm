@@ -40,26 +40,32 @@ import org.robovm.apple.corelocation.*;
  * @since Available in iOS 6.0 and later.
  */
 /*</javadoc>*/
-/*<annotations>*/@Marshaler(ValuedEnum.AsMachineSizedSIntMarshaler.class)/*</annotations>*/
-public enum /*<name>*/NSStringDrawingOptions/*</name>*/ implements ValuedEnum {
+/*<annotations>*/@Marshaler(Bits.AsMachineSizedIntMarshaler.class)/*</annotations>*/
+public final class /*<name>*/NSStringDrawingOptions/*</name>*/ extends Bits</*<name>*/NSStringDrawingOptions/*</name>*/> {
     /*<values>*/
-    TruncatesLastVisibleLine(32L),
-    UsesLineFragmentOrigin(1L),
-    UsesFontLeading(2L),
-    UsesDeviceMetrics(8L);
+    public static final NSStringDrawingOptions None = new NSStringDrawingOptions(0L);
+    public static final NSStringDrawingOptions TruncatesLastVisibleLine = new NSStringDrawingOptions(32L);
+    public static final NSStringDrawingOptions UsesLineFragmentOrigin = new NSStringDrawingOptions(1L);
+    public static final NSStringDrawingOptions UsesFontLeading = new NSStringDrawingOptions(2L);
+    public static final NSStringDrawingOptions UsesDeviceMetrics = new NSStringDrawingOptions(8L);
     /*</values>*/
 
-    private final long n;
+    /*<bind>*/
+    /*</bind>*/
+    /*<constants>*//*</constants>*/
+    /*<methods>*//*</methods>*/
 
-    private /*<name>*/NSStringDrawingOptions/*</name>*/(long n) { this.n = n; }
-    public long value() { return n; }
-    public static /*<name>*/NSStringDrawingOptions/*</name>*/ valueOf(long n) {
-        for (/*<name>*/NSStringDrawingOptions/*</name>*/ v : values()) {
-            if (v.n == n) {
-                return v;
-            }
-        }
-        throw new IllegalArgumentException("No constant with value " + n + " found in " 
-            + /*<name>*/NSStringDrawingOptions/*</name>*/.class.getName());
+    private static final /*<name>*/NSStringDrawingOptions/*</name>*/[] values = _values(/*<name>*/NSStringDrawingOptions/*</name>*/.class);
+
+    public /*<name>*/NSStringDrawingOptions/*</name>*/(long value) { super(value); }
+    private /*<name>*/NSStringDrawingOptions/*</name>*/(long value, long mask) { super(value, mask); }
+    protected /*<name>*/NSStringDrawingOptions/*</name>*/ wrap(long value, long mask) {
+        return new /*<name>*/NSStringDrawingOptions/*</name>*/(value, mask);
+    }
+    protected /*<name>*/NSStringDrawingOptions/*</name>*/[] _values() {
+        return values;
+    }
+    public static /*<name>*/NSStringDrawingOptions/*</name>*/[] values() {
+        return values.clone();
     }
 }

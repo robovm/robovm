@@ -19,7 +19,6 @@ package org.robovm.apple.corefoundation;
 import java.io.*;
 import java.nio.*;
 import java.util.*;
-
 import org.robovm.objc.*;
 import org.robovm.objc.annotation.*;
 import org.robovm.objc.block.*;
@@ -28,7 +27,6 @@ import org.robovm.rt.bro.*;
 import org.robovm.rt.bro.annotation.*;
 import org.robovm.rt.bro.ptr.*;
 import org.robovm.apple.dispatch.*;
-import org.robovm.apple.foundation.NSArray;
 /*</imports>*/
 import org.robovm.apple.foundation.NSObject;
 import org.robovm.apple.foundation.NSString;

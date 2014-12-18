@@ -31,7 +31,7 @@ enums:
     NSLayoutFormatOptions: {}
     NSLayoutRelation: {}
     NSLineBreakMode: {}
-    NSStringDrawingOptions: {}
+    NSStringDrawingOptions: { bits: true, marshaler: Bits.AsMachineSizedIntMarshaler }
     NSTextAlignment: {}
     NSTextLayoutOrientation: {}
     NSTextStorageEditActions: {}

@@ -19,6 +19,7 @@ package org.robovm.apple.foundation;
 import java.io.*;
 import java.nio.*;
 import java.util.*;
+
 import org.robovm.objc.*;
 import org.robovm.objc.annotation.*;
 import org.robovm.objc.block.*;
@@ -37,6 +38,9 @@ import org.robovm.apple.dispatch.*;
 /*</imports>*/
 import org.robovm.apple.corelocation.CLLocationCoordinate2D;
 import org.robovm.apple.mapkit.MKCoordinateSpan;
+import org.robovm.apple.scenekit.SCNMatrix4;
+import org.robovm.apple.scenekit.SCNVector3;
+import org.robovm.apple.scenekit.SCNVector4;
 
 /*<javadoc>*/
 
@@ -184,6 +188,25 @@ import org.robovm.apple.mapkit.MKCoordinateSpan;
         return org.robovm.apple.mapkit.NSValueExtensions.create(span);
     }
     
+    /* SceneKit extensions */
+    public SCNVector3 SCNVector3Value() {
+        return org.robovm.apple.scenekit.NSValueExtensions.getSCNVector3Value(this);
+    }
+    public SCNVector4 SCNVector4Value() {
+        return org.robovm.apple.scenekit.NSValueExtensions.getSCNVector4Value(this);
+    }
+    public SCNMatrix4 SCNMatrix4Value() {
+        return org.robovm.apple.scenekit.NSValueExtensions.getSCNMatrix4Value(this);
+    }
+    public static NSValue valueOf(SCNVector3 vector3) {
+        return org.robovm.apple.scenekit.NSValueExtensions.create(vector3);
+    }
+    public static NSValue valueOf(SCNVector4 vector4) {
+        return org.robovm.apple.scenekit.NSValueExtensions.create(vector4);
+    }
+    public static NSValue valueOf(SCNMatrix4 matrix4) {
+        return org.robovm.apple.scenekit.NSValueExtensions.create(matrix4);
+    }
     /*<methods>*/
     @Method(selector = "getValue:")
     protected native void getValue(VoidPtr value);

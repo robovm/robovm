@@ -41,7 +41,7 @@ public class Bro {
         IS_DARWIN = os.contains("mac") || os.contains("ios");
         IS_LINUX = !IS_DARWIN && os.contains("linux");
         IS_X86 = arch.contains("x86");
-        IS_ARM = !IS_X86 && arch.contains("arm");
+        IS_ARM = !IS_X86 && (arch.contains("arm") || arch.contains("aarch64"));
         IS_64BIT = VoidPtr.sizeOf() == 8;
         IS_32BIT = !IS_64BIT;
     }

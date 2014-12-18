@@ -26,7 +26,8 @@ import org.robovm.llvm.Target;
 public enum Arch {
     x86("i386", "i386", true, false),
     x86_64("x86_64", "x86_64", false, false),
-    thumbv7("thumbv7", "armv7", true, true);
+    thumbv7("thumbv7", "armv7", true, true),
+    arm64("arm64", "arm64", false, true);
     
     private final String llvmName;
     private final String clangName;

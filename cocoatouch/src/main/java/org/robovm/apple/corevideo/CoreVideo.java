@@ -31,6 +31,7 @@ import org.robovm.apple.corefoundation.*;
 import org.robovm.apple.coregraphics.*;
 import org.robovm.apple.opengles.*;
 import org.robovm.apple.coremedia.*;
+import org.robovm.apple.metal.*;
 /*</imports>*/
 
 /*<javadoc>*/
@@ -324,101 +325,6 @@ import org.robovm.apple.coremedia.*;
     /**
      * @since Available in iOS 4.0 and later.
      */
-    @GlobalValue(symbol="kCVPixelBufferPixelFormatTypeKey", optional=true)
-    public static native CFString CVPixelBufferPixelFormatTypeKey();
-    /**
-     * @since Available in iOS 4.0 and later.
-     */
-    @GlobalValue(symbol="kCVPixelBufferMemoryAllocatorKey", optional=true)
-    public static native CFString CVPixelBufferMemoryAllocatorKey();
-    /**
-     * @since Available in iOS 4.0 and later.
-     */
-    @GlobalValue(symbol="kCVPixelBufferWidthKey", optional=true)
-    public static native CFString CVPixelBufferWidthKey();
-    /**
-     * @since Available in iOS 4.0 and later.
-     */
-    @GlobalValue(symbol="kCVPixelBufferHeightKey", optional=true)
-    public static native CFString CVPixelBufferHeightKey();
-    /**
-     * @since Available in iOS 4.0 and later.
-     */
-    @GlobalValue(symbol="kCVPixelBufferExtendedPixelsLeftKey", optional=true)
-    public static native CFString CVPixelBufferExtendedPixelsLeftKey();
-    /**
-     * @since Available in iOS 4.0 and later.
-     */
-    @GlobalValue(symbol="kCVPixelBufferExtendedPixelsTopKey", optional=true)
-    public static native CFString CVPixelBufferExtendedPixelsTopKey();
-    /**
-     * @since Available in iOS 4.0 and later.
-     */
-    @GlobalValue(symbol="kCVPixelBufferExtendedPixelsRightKey", optional=true)
-    public static native CFString CVPixelBufferExtendedPixelsRightKey();
-    /**
-     * @since Available in iOS 4.0 and later.
-     */
-    @GlobalValue(symbol="kCVPixelBufferExtendedPixelsBottomKey", optional=true)
-    public static native CFString CVPixelBufferExtendedPixelsBottomKey();
-    /**
-     * @since Available in iOS 4.0 and later.
-     */
-    @GlobalValue(symbol="kCVPixelBufferBytesPerRowAlignmentKey", optional=true)
-    public static native CFString CVPixelBufferBytesPerRowAlignmentKey();
-    /**
-     * @since Available in iOS 4.0 and later.
-     */
-    @GlobalValue(symbol="kCVPixelBufferCGBitmapContextCompatibilityKey", optional=true)
-    public static native CFString CVPixelBufferCGBitmapContextCompatibilityKey();
-    /**
-     * @since Available in iOS 4.0 and later.
-     */
-    @GlobalValue(symbol="kCVPixelBufferCGImageCompatibilityKey", optional=true)
-    public static native CFString CVPixelBufferCGImageCompatibilityKey();
-    /**
-     * @since Available in iOS 4.0 and later.
-     */
-    @GlobalValue(symbol="kCVPixelBufferOpenGLCompatibilityKey", optional=true)
-    public static native CFString CVPixelBufferOpenGLCompatibilityKey();
-    /**
-     * @since Available in iOS 4.0 and later.
-     */
-    @GlobalValue(symbol="kCVPixelBufferPlaneAlignmentKey", optional=true)
-    public static native CFString CVPixelBufferPlaneAlignmentKey();
-    /**
-     * @since Available in iOS 4.0 and later.
-     */
-    @GlobalValue(symbol="kCVPixelBufferIOSurfacePropertiesKey", optional=true)
-    public static native CFString CVPixelBufferIOSurfacePropertiesKey();
-    /**
-     * @since Available in iOS 6.0 and later.
-     */
-    @GlobalValue(symbol="kCVPixelBufferOpenGLESCompatibilityKey", optional=true)
-    public static native CFString CVPixelBufferOpenGLESCompatibilityKey();
-    /**
-     * @since Available in iOS 8.0 and later.
-     */
-    @GlobalValue(symbol="kCVPixelBufferMetalCompatibilityKey", optional=true)
-    public static native CFString CVPixelBufferMetalCompatibilityKey();
-    /**
-     * @since Available in iOS 4.0 and later.
-     */
-    @GlobalValue(symbol="kCVPixelBufferPoolMinimumBufferCountKey", optional=true)
-    public static native CFString CVPixelBufferPoolMinimumBufferCountKey();
-    /**
-     * @since Available in iOS 4.0 and later.
-     */
-    @GlobalValue(symbol="kCVPixelBufferPoolMaximumBufferAgeKey", optional=true)
-    public static native CFString CVPixelBufferPoolMaximumBufferAgeKey();
-    /**
-     * @since Available in iOS 4.0 and later.
-     */
-    @GlobalValue(symbol="kCVPixelBufferPoolAllocationThresholdKey", optional=true)
-    public static native CFString CVPixelBufferPoolAllocationThresholdKey();
-    /**
-     * @since Available in iOS 4.0 and later.
-     */
     @GlobalValue(symbol="kCVPixelBufferPoolFreeBufferNotification", optional=true)
     public static native CFString CVPixelBufferPoolFreeBufferNotification();
     /**
@@ -562,6 +468,11 @@ import org.robovm.apple.coremedia.*;
     @GlobalValue(symbol="kCVPixelFormatFillExtendedPixelsCallback", optional=true)
     public static native CFString CVPixelFormatFillExtendedPixelsCallback();
     
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @Bridge(symbol="CVMetalTextureGetTexture", optional=true)
+    public static native MTLTexture function__CVMetalTextureGetTexture(CVImageBuffer image);
     /**
      * @since Available in iOS 8.0 and later.
      */

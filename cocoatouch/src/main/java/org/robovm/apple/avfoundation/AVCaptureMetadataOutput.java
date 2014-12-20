@@ -61,11 +61,11 @@ import org.robovm.apple.mediatoolbox.*;
     @Property(selector = "metadataObjectsCallbackQueue")
     public native DispatchQueue getMetadataObjectsCallbackQueue();
     @Property(selector = "availableMetadataObjectTypes")
-    public native NSArray<NSString> getAvailableMetadataObjectTypes();
+    public native @org.robovm.rt.bro.annotation.Marshaler(AVMetadataObjectType.AsListMarshaler.class) List<AVMetadataObjectType> getAvailableMetadataObjectTypes();
     @Property(selector = "metadataObjectTypes")
-    public native NSArray<NSString> getMetadataObjectTypes();
+    public native @org.robovm.rt.bro.annotation.Marshaler(AVMetadataObjectType.AsListMarshaler.class) List<AVMetadataObjectType> getMetadataObjectTypes();
     @Property(selector = "setMetadataObjectTypes:")
-    public native void setMetadataObjectTypes(NSArray<NSString> v);
+    public native void setMetadataObjectTypes(@org.robovm.rt.bro.annotation.Marshaler(AVMetadataObjectType.AsListMarshaler.class) List<AVMetadataObjectType> v);
     /**
      * @since Available in iOS 7.0 and later.
      */

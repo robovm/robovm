@@ -68,8 +68,23 @@ import org.robovm.apple.mediatoolbox.*;
     public native @MachineSizedUInt long getVersion();
     /*</properties>*/
     /*<members>*//*</members>*/
+    
+    /**
+     * 
+     * @param url
+     * @return
+     * @throws NSErrorException
+     */
+    public boolean loadAudioUnitPreset(NSURL url) throws NSErrorException {
+        NSError.NSErrorPtr err = new NSError.NSErrorPtr();
+        boolean result = loadAudioUnitPreset(url, err);
+        if (err.get() != null) {
+            throw new NSErrorException(err.get());
+        }
+        return result;
+    }
     /*<methods>*/
     @Method(selector = "loadAudioUnitPresetAtURL:error:")
-    public native boolean loadAudioUnitPresetAtURL$error$(NSURL url, NSError.NSErrorPtr error);
+    protected native boolean loadAudioUnitPreset(NSURL url, NSError.NSErrorPtr error);
     /*</methods>*/
 }

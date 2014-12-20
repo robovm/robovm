@@ -54,13 +54,28 @@ import org.robovm.apple.mediatoolbox.*;
     /*<constructors>*/
     public AVAssetReaderVideoCompositionOutput() {}
     protected AVAssetReaderVideoCompositionOutput(SkipInit skipInit) { super(skipInit); }
-    public AVAssetReaderVideoCompositionOutput(NSArray<AVAssetTrack> videoTracks, NSDictionary<NSString, ?> videoSettings) { super((SkipInit) null); initObject(init(videoTracks, videoSettings)); }
     /*</constructors>*/
+    public AVAssetReaderVideoCompositionOutput(NSArray<AVAssetTrack> videoTracks, AVVideoSettings videoSettings) {
+        super((SkipInit)null);
+        initObject(init(videoTracks, videoSettings.getDictionary()));
+    }
+    @SuppressWarnings("unchecked")
+    public AVAssetReaderVideoCompositionOutput(NSArray<AVAssetTrack> videoTracks, AVPixelBufferAttributes videoSettings) {
+        super((SkipInit)null);
+        initObject(init(videoTracks, videoSettings.getDictionary().as(NSDictionary.class)));
+    }
+    
+    public AVVideoSettings getVideoSettings() {
+        return new AVVideoSettings(getVideoSettings0());
+    }
+    public AVPixelBufferAttributes getPixelBufferSettings() {
+        return new AVPixelBufferAttributes(getVideoSettings0().as(CFDictionary.class));
+    }
     /*<properties>*/
     @Property(selector = "videoTracks")
     public native NSArray<AVAssetTrack> getVideoTracks();
     @Property(selector = "videoSettings")
-    public native NSDictionary<NSString, ?> getVideoSettings();
+    protected native NSDictionary<NSString, NSObject> getVideoSettings0();
     @Property(selector = "videoComposition")
     public native AVVideoComposition getVideoComposition();
     @Property(selector = "setVideoComposition:")
@@ -72,10 +87,17 @@ import org.robovm.apple.mediatoolbox.*;
     public native AVVideoCompositing getCustomVideoCompositor();
     /*</properties>*/
     /*<members>*//*</members>*/
+    public static AVAssetReaderVideoCompositionOutput create(NSArray<AVAssetTrack> videoTracks, AVVideoSettings videoSettings) {
+        return create(videoTracks, videoSettings.getDictionary());
+    }
+    @SuppressWarnings("unchecked")
+    public static AVAssetReaderVideoCompositionOutput create(NSArray<AVAssetTrack> videoTracks, AVPixelBufferAttributes videoSettings) {
+        return create(videoTracks, videoSettings.getDictionary().as(NSDictionary.class));
+    }
     /*<methods>*/
     @Method(selector = "initWithVideoTracks:videoSettings:")
-    protected native @Pointer long init(NSArray<AVAssetTrack> videoTracks, NSDictionary<NSString, ?> videoSettings);
+    protected native @Pointer long init(NSArray<AVAssetTrack> videoTracks, NSDictionary<NSString, NSObject> videoSettings);
     @Method(selector = "assetReaderVideoCompositionOutputWithVideoTracks:videoSettings:")
-    public static native AVAssetReaderVideoCompositionOutput create(NSArray<AVAssetTrack> videoTracks, NSDictionary<NSString, ?> videoSettings);
+    protected static native AVAssetReaderVideoCompositionOutput create(NSArray<AVAssetTrack> videoTracks, NSDictionary<NSString, NSObject> videoSettings);
     /*</methods>*/
 }

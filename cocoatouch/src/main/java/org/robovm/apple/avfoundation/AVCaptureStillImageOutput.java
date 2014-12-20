@@ -55,15 +55,28 @@ import org.robovm.apple.mediatoolbox.*;
     public AVCaptureStillImageOutput() {}
     protected AVCaptureStillImageOutput(SkipInit skipInit) { super(skipInit); }
     /*</constructors>*/
+    public AVVideoSettings getVideoOutputSettings() {
+        return new AVVideoSettings(getOutputSettings0());
+    }
+    public void setVideoOutputSettings(AVVideoSettings outputSettings) {
+        setOutputSettings0(outputSettings.getDictionary());
+    }
+    public AVPixelBufferAttributes getPixelBufferOutputSettings() {
+        return new AVPixelBufferAttributes(getOutputSettings0().as(CFDictionary.class));
+    }
+    @SuppressWarnings("unchecked")
+    public void setPixelBufferOutputSettings(AVPixelBufferAttributes outputSettings) {
+        setOutputSettings0(outputSettings.getDictionary().as(NSDictionary.class));
+    }
     /*<properties>*/
     @Property(selector = "outputSettings")
-    public native NSDictionary<NSString, ?> getOutputSettings();
+    protected native NSDictionary<NSString, NSObject> getOutputSettings0();
     @Property(selector = "setOutputSettings:")
-    public native void setOutputSettings(NSDictionary<NSString, ?> v);
+    protected native void setOutputSettings0(NSDictionary<NSString, NSObject> v);
     @Property(selector = "availableImageDataCVPixelFormatTypes")
-    public native NSArray<?> getAvailableImageDataCVPixelFormatTypes();
+    public native @org.robovm.rt.bro.annotation.Marshaler(CVPixelFormatType.AsListMarshaler.class) List<CVPixelFormatType> getAvailableImageDataCVPixelFormatTypes();
     @Property(selector = "availableImageDataCodecTypes")
-    public native NSArray<?> getAvailableImageDataCodecTypes();
+    public native @org.robovm.rt.bro.annotation.Marshaler(CMVideoCodecType.AsListMarshaler.class) List<CMVideoCodecType> getAvailableImageDataCodecTypes();
     /**
      * @since Available in iOS 7.0 and later.
      */
@@ -110,16 +123,16 @@ import org.robovm.apple.mediatoolbox.*;
     @Method(selector = "captureStillImageAsynchronouslyFromConnection:completionHandler:")
     public native void captureStillImageAsynchronously(AVCaptureConnection connection, @Block VoidBlock2<CMSampleBuffer, NSError> handler);
     @Method(selector = "jpegStillImageNSDataRepresentation:")
-    public static native NSData getJPEGStillImageNSDataRepresentation(CMSampleBuffer jpegSampleBuffer);
+    public static native NSData createJPEGStillImageNSDataRepresentation(CMSampleBuffer jpegSampleBuffer);
     /**
      * @since Available in iOS 8.0 and later.
      */
     @Method(selector = "prepareToCaptureStillImageBracketFromConnection:withSettingsArray:completionHandler:")
-    public native void prepareToCaptureStillImageBracketFromConnection$withSettingsArray$completionHandler$(AVCaptureConnection connection, NSArray<?> settings, @Block VoidBlock2<Boolean, NSError> handler);
+    public native void prepareToCaptureStillImageBracket(AVCaptureConnection connection, NSArray<AVCaptureBracketedStillImageSettings> settings, @Block VoidBlock2<Boolean, NSError> handler);
     /**
      * @since Available in iOS 8.0 and later.
      */
     @Method(selector = "captureStillImageBracketAsynchronouslyFromConnection:withSettingsArray:completionHandler:")
-    public native void captureStillImageBracketAsynchronouslyFromConnection$withSettingsArray$completionHandler$(AVCaptureConnection connection, NSArray<?> settings, @Block VoidBlock3<CMSampleBuffer, AVCaptureBracketedStillImageSettings, NSError> handler);
+    public native void captureStillImageBracketAsynchronously(AVCaptureConnection connection, NSArray<AVCaptureBracketedStillImageSettings> settings, @Block VoidBlock3<CMSampleBuffer, AVCaptureBracketedStillImageSettings, NSError> handler);
     /*</methods>*/
 }

@@ -71,9 +71,9 @@ import org.robovm.apple.mediatoolbox.*;
     @Property(selector = "setMaximumSize:")
     public native void setMaximumSize(@ByVal CGSize v);
     @Property(selector = "apertureMode")
-    public native String getApertureMode();
+    public native AVAssetImageGeneratorApertureMode getApertureMode();
     @Property(selector = "setApertureMode:")
-    public native void setApertureMode(String v);
+    public native void setApertureMode(AVAssetImageGeneratorApertureMode v);
     @Property(selector = "videoComposition")
     public native AVVideoComposition getVideoComposition();
     @Property(selector = "setVideoComposition:")
@@ -105,13 +105,28 @@ import org.robovm.apple.mediatoolbox.*;
     public native void setRequestedTimeToleranceAfter(@ByVal CMTime v);
     /*</properties>*/
     /*<members>*//*</members>*/
+    /**
+     * 
+     * @param requestedTime
+     * @param actualTime
+     * @return
+     * @throws NSErrorException
+     */
+    public CGImage getCGImageAtTime(@ByVal CMTime requestedTime, CMTime actualTime) throws NSErrorException {
+        NSError.NSErrorPtr err = new NSError.NSErrorPtr();
+        CGImage result = getCGImageAtTime(requestedTime, actualTime, err);
+        if (err.get() != null) {
+            throw new NSErrorException(err.get());
+        }
+        return result;
+    }
     /*<methods>*/
     @Method(selector = "initWithAsset:")
     protected native @Pointer long init(AVAsset asset);
     @Method(selector = "copyCGImageAtTime:actualTime:error:")
-    public native CGImage copyCGImage(@ByVal CMTime requestedTime, CMTime actualTime, NSError.NSErrorPtr outError);
+    protected native CGImage getCGImageAtTime(@ByVal CMTime requestedTime, CMTime actualTime, NSError.NSErrorPtr outError);
     @Method(selector = "generateCGImagesAsynchronouslyForTimes:completionHandler:")
-    public native void generateCGImagesAsynchronously(NSArray<NSValue> requestedTimes, @Block VoidBlock5<CMTime, CGImage, CMTime, AVAssetImageGeneratorResult, NSError> handler);
+    public native void generateCGImagesAsynchronously(@org.robovm.rt.bro.annotation.Marshaler(CMTime.AsValuedListMarshaler.class) List<CMTime> requestedTimes, @Block VoidBlock5<CMTime, CGImage, CMTime, AVAssetImageGeneratorResult, NSError> handler);
     @Method(selector = "cancelAllCGImageGeneration")
     public native void cancelAllCGImageGeneration();
     @Method(selector = "assetImageGeneratorWithAsset:")

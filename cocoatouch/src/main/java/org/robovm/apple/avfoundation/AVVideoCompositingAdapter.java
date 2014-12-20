@@ -53,9 +53,9 @@ import org.robovm.apple.mediatoolbox.*;
     /*<constructors>*//*</constructors>*/
     /*<properties>*/
     @NotImplemented("sourcePixelBufferAttributes")
-    public NSDictionary<NSString, ?> getSourcePixelBufferAttributes() { throw new UnsupportedOperationException(); }
+    public CVPixelBufferAttributes getSourcePixelBufferAttributes() { throw new UnsupportedOperationException(); }
     @NotImplemented("requiredPixelBufferAttributesForRenderContext")
-    public NSDictionary<NSString, ?> getRequiredPixelBufferAttributesForRenderContext() { throw new UnsupportedOperationException(); }
+    public CVPixelBufferAttributes getRequiredPixelBufferAttributesForRenderContext() { throw new UnsupportedOperationException(); }
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/

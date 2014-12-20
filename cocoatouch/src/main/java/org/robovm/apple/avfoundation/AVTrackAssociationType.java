@@ -40,51 +40,50 @@ import org.robovm.apple.mediatoolbox.*;
 
 /*<javadoc>*/
 /*</javadoc>*/
-@Marshaler(AVMediaType.Marshaler.class)
+@Marshaler(AVTrackAssociationType.Marshaler.class)
 /*<annotations>*/@Library("AVFoundation")/*</annotations>*/
-/*<visibility>*/public/*</visibility>*/ class /*<name>*/AVMediaType/*</name>*/ 
+/*<visibility>*/public/*</visibility>*/ class /*<name>*/AVTrackAssociationType/*</name>*/ 
     extends /*<extends>*/Object/*</extends>*/ 
     /*<implements>*//*</implements>*/ {
 
     public static class Marshaler {
         @MarshalsPointer
-        public static AVMediaType toObject(Class<AVMediaType> cls, long handle, long flags) {
+        public static AVTrackAssociationType toObject(Class<AVTrackAssociationType> cls, long handle, long flags) {
             NSString o = (NSString) NSObject.Marshaler.toObject(NSString.class, handle, flags);
             if (o == null) {
                 return null;
             }
-            return AVMediaType.valueOf(o);
+            return AVTrackAssociationType.valueOf(o);
         }
         @MarshalsPointer
-        public static long toNative(AVMediaType o, long flags) {
+        public static long toNative(AVTrackAssociationType o, long flags) {
             if (o == null) {
                 return 0L;
             }
             return NSObject.Marshaler.toNative(o.value(), flags);
         }
     }
-    
     public static class AsListMarshaler {
         @SuppressWarnings("unchecked")
         @MarshalsPointer
-        public static List<AVMediaType> toObject(Class<? extends NSObject> cls, long handle, long flags) {
+        public static List<AVTrackAssociationType> toObject(Class<? extends NSObject> cls, long handle, long flags) {
             NSArray<NSString> o = (NSArray<NSString>) NSObject.Marshaler.toObject(cls, handle, flags);
             if (o == null) {
                 return null;
             }
-            List<AVMediaType> list = new ArrayList<>();
+            List<AVTrackAssociationType> list = new ArrayList<>();
             for (NSString str : o) {
-                list.add(AVMediaType.valueOf(str));
+                list.add(AVTrackAssociationType.valueOf(str));
             }
             return list;
         }
         @MarshalsPointer
-        public static long toNative(List<AVMediaType> l, long flags) {
+        public static long toNative(List<AVTrackAssociationType> l, long flags) {
             if (l == null) {
                 return 0L;
             }
             NSMutableArray<NSString> array = new NSMutableArray<>();
-            for (AVMediaType i : l) {
+            for (AVTrackAssociationType i : l) {
                 array.add(i.value());
             }
             return NSObject.Marshaler.toNative(array, flags);
@@ -93,46 +92,38 @@ import org.robovm.apple.mediatoolbox.*;
     
     /*<ptr>*/
     /*</ptr>*/
-    /*<bind>*/static { Bro.bind(AVMediaType.class); }/*</bind>*/
+    /*<bind>*/static { Bro.bind(AVTrackAssociationType.class); }/*</bind>*/
     /*<constants>*//*</constants>*/
     /**
-     * @since Available in iOS 4.0 and later.
+     * @since Available in iOS 7.0 and later.
      */
-    public static final AVMediaType Video = new AVMediaType("VideoValue");
+    public static final AVTrackAssociationType AudioFallback = new AVTrackAssociationType("AudioFallbackValue");
     /**
-     * @since Available in iOS 4.0 and later.
+     * @since Available in iOS 7.0 and later.
      */
-    public static final AVMediaType Audio = new AVMediaType("AudioValue");
+    public static final AVTrackAssociationType ChapterList = new AVTrackAssociationType("ChapterListValue");
     /**
-     * @since Available in iOS 4.0 and later.
+     * @since Available in iOS 7.0 and later.
      */
-    public static final AVMediaType Text = new AVMediaType("TextValue");
+    public static final AVTrackAssociationType ForcedSubtitlesOnly = new AVTrackAssociationType("ForcedSubtitlesOnlyValue");
     /**
-     * @since Available in iOS 4.0 and later.
+     * @since Available in iOS 7.0 and later.
      */
-    public static final AVMediaType ClosedCaption = new AVMediaType("ClosedCaptionValue");
+    public static final AVTrackAssociationType SelectionFollower = new AVTrackAssociationType("SelectionFollowerValue");
     /**
-     * @since Available in iOS 4.0 and later.
+     * @since Available in iOS 7.0 and later.
      */
-    public static final AVMediaType Subtitle = new AVMediaType("SubtitleValue");
+    public static final AVTrackAssociationType Timecode = new AVTrackAssociationType("TimecodeValue");
     /**
-     * @since Available in iOS 4.0 and later.
+     * @since Available in iOS 8.0 and later.
      */
-    public static final AVMediaType Timecode = new AVMediaType("TimecodeValue");
-    /**
-     * @since Available in iOS 4.0 and later.
-     */
-    public static final AVMediaType Muxed = new AVMediaType("MuxedValue");
-    /**
-     * @since Available in iOS 6.0 and later.
-     */
-    public static final AVMediaType Metadata = new AVMediaType("MetadataValue");
+    public static final AVTrackAssociationType MetadataReferent = new AVTrackAssociationType("MetadataReferentValue");
     
-    private static AVMediaType[] values = new AVMediaType[] {Video, Audio, Text, ClosedCaption, Subtitle, Timecode, 
-        Muxed, Metadata};
+    private static AVTrackAssociationType[] values = new AVTrackAssociationType[] {AudioFallback, ChapterList, ForcedSubtitlesOnly, 
+        SelectionFollower, Timecode, MetadataReferent};
     private final LazyGlobalValue<NSString> lazyGlobalValue;
     
-    private AVMediaType(String getterName) {
+    private AVTrackAssociationType(String getterName) {
         lazyGlobalValue = new LazyGlobalValue<>(getClass(), getterName);
     }
     /*<constructors>*//*</constructors>*/
@@ -142,55 +133,45 @@ import org.robovm.apple.mediatoolbox.*;
         return lazyGlobalValue.value();
     }
     
-    public static AVMediaType valueOf(NSString value) {
-        for (AVMediaType v : values) {
+    public static AVTrackAssociationType valueOf(NSString value) {
+        for (AVTrackAssociationType v : values) {
             if (v.value().equals(value)) {
                 return v;
             }
         }
         throw new IllegalArgumentException("No constant with value " + value + " found in " 
-            + /*<name>*/AVMediaType/*</name>*/.class.getName());
+            + /*<name>*/AVTrackAssociationType/*</name>*/.class.getName());
     }
     /*<methods>*/
     /**
-     * @since Available in iOS 4.0 and later.
+     * @since Available in iOS 7.0 and later.
      */
-    @GlobalValue(symbol="AVMediaTypeVideo", optional=true)
-    protected static native NSString VideoValue();
+    @GlobalValue(symbol="AVTrackAssociationTypeAudioFallback", optional=true)
+    protected static native NSString AudioFallbackValue();
     /**
-     * @since Available in iOS 4.0 and later.
+     * @since Available in iOS 7.0 and later.
      */
-    @GlobalValue(symbol="AVMediaTypeAudio", optional=true)
-    protected static native NSString AudioValue();
+    @GlobalValue(symbol="AVTrackAssociationTypeChapterList", optional=true)
+    protected static native NSString ChapterListValue();
     /**
-     * @since Available in iOS 4.0 and later.
+     * @since Available in iOS 7.0 and later.
      */
-    @GlobalValue(symbol="AVMediaTypeText", optional=true)
-    protected static native NSString TextValue();
+    @GlobalValue(symbol="AVTrackAssociationTypeForcedSubtitlesOnly", optional=true)
+    protected static native NSString ForcedSubtitlesOnlyValue();
     /**
-     * @since Available in iOS 4.0 and later.
+     * @since Available in iOS 7.0 and later.
      */
-    @GlobalValue(symbol="AVMediaTypeClosedCaption", optional=true)
-    protected static native NSString ClosedCaptionValue();
+    @GlobalValue(symbol="AVTrackAssociationTypeSelectionFollower", optional=true)
+    protected static native NSString SelectionFollowerValue();
     /**
-     * @since Available in iOS 4.0 and later.
+     * @since Available in iOS 7.0 and later.
      */
-    @GlobalValue(symbol="AVMediaTypeSubtitle", optional=true)
-    protected static native NSString SubtitleValue();
-    /**
-     * @since Available in iOS 4.0 and later.
-     */
-    @GlobalValue(symbol="AVMediaTypeTimecode", optional=true)
+    @GlobalValue(symbol="AVTrackAssociationTypeTimecode", optional=true)
     protected static native NSString TimecodeValue();
     /**
-     * @since Available in iOS 6.0 and later.
+     * @since Available in iOS 8.0 and later.
      */
-    @GlobalValue(symbol="AVMediaTypeMetadata", optional=true)
-    protected static native NSString MetadataValue();
-    /**
-     * @since Available in iOS 4.0 and later.
-     */
-    @GlobalValue(symbol="AVMediaTypeMuxed", optional=true)
-    protected static native NSString MuxedValue();
+    @GlobalValue(symbol="AVTrackAssociationTypeMetadataReferent", optional=true)
+    protected static native NSString MetadataReferentValue();
     /*</methods>*/
 }

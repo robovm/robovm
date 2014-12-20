@@ -40,174 +40,87 @@ import org.robovm.apple.mediatoolbox.*;
 
 /*<javadoc>*/
 /*</javadoc>*/
-@Marshaler(AVFileType.Marshaler.class)
 /*<annotations>*/@Library("AVFoundation")/*</annotations>*/
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/AVFileType/*</name>*/ 
     extends /*<extends>*/Object/*</extends>*/ 
     /*<implements>*//*</implements>*/ {
-    
-    public static class Marshaler {
-        @MarshalsPointer
-        public static AVFileType toObject(Class<AVFileType> cls, long handle, long flags) {
-            NSString o = (NSString) NSObject.Marshaler.toObject(NSString.class, handle, flags);
-            if (o == null) {
-                return null;
-            }
-            return AVFileType.valueOf(o);
-        }
-        @MarshalsPointer
-        public static long toNative(AVFileType o, long flags) {
-            if (o == null) {
-                return 0L;
-            }
-            return NSObject.Marshaler.toNative(o.value(), flags);
-        }
-    }
-
     /*<ptr>*/
     /*</ptr>*/
     /*<bind>*/static { Bro.bind(AVFileType.class); }/*</bind>*/
     /*<constants>*//*</constants>*/
-    /**
-     * @since Available in iOS 4.0 and later.
-     */
-    public static final AVFileType QuickTimeMovie = new AVFileType("QuickTimeMovieValue");
-    /**
-     * @since Available in iOS 4.0 and later.
-     */
-    public static final AVFileType MPEG4 = new AVFileType("MPEG4Value");
-    /**
-     * @since Available in iOS 4.0 and later.
-     */
-    public static final AVFileType AppleM4V = new AVFileType("AppleM4VValue");
-    /**
-     * @since Available in iOS 4.0 and later.
-     */
-    public static final AVFileType AppleM4A = new AVFileType("AppleM4AValue");
-    /**
-     * @since Available in iOS 4.0 and later.
-     */
-    public static final AVFileType _3GPP = new AVFileType("_3GPPValue");
-    /**
-     * @since Available in iOS 4.0 and later.
-     */
-    public static final AVFileType CoreAudioFormat = new AVFileType("CoreAudioFormatValue");
-    /**
-     * @since Available in iOS 4.0 and later.
-     */
-    public static final AVFileType WAVE = new AVFileType("WAVEValue");
-    /**
-     * @since Available in iOS 4.0 and later.
-     */
-    public static final AVFileType AIFF = new AVFileType("AIFFValue");
-    /**
-     * @since Available in iOS 4.0 and later.
-     */
-    public static final AVFileType AIFC = new AVFileType("AIFCValue");
-    /**
-     * @since Available in iOS 4.0 and later.
-     */
-    public static final AVFileType AMR = new AVFileType("AMRValue");
-    /**
-     * @since Available in iOS 7.0 and later.
-     */
-    public static final AVFileType _3GPP2 = new AVFileType("_3GPP2Value");
-    /**
-     * @since Available in iOS 7.0 and later.
-     */
-    public static final AVFileType MPEGLayer3 = new AVFileType("MPEGLayer3Value");
-    /**
-     * @since Available in iOS 7.0 and later.
-     */
-    public static final AVFileType SunAU = new AVFileType("SunAUValue");
-    /**
-     * @since Available in iOS 7.0 and later.
-     */
-    public static final AVFileType AC3 = new AVFileType("AC3Value");
-    
-    private static AVFileType[] values = new AVFileType[] {QuickTimeMovie, MPEG4, AppleM4V, AppleM4A, _3GPP, CoreAudioFormat, 
-        WAVE, AIFF, AIFC, AMR, _3GPP2, MPEGLayer3, SunAU, AC3};
-    private final LazyGlobalValue<NSString> lazyGlobalValue;
-    
-    private AVFileType(String getterName) {
-        lazyGlobalValue = new LazyGlobalValue<>(getClass(), getterName);
-    }
     /*<constructors>*//*</constructors>*/
     /*<properties>*//*</properties>*/
     /*<members>*//*</members>*/
-    public NSString value() {
-        return lazyGlobalValue.value();
-    }
-    
-    public static AVFileType valueOf(NSString value) {
-        for (AVFileType v : values) {
-            if (v.value().equals(value)) {
-                return v;
-            }
-        }
-        throw new IllegalArgumentException("No constant with value " + value + " found in " 
-            + /*<name>*/AVFileType/*</name>*/.class.getName());
-    }
     /*<methods>*/
     /**
      * @since Available in iOS 4.0 and later.
      */
     @GlobalValue(symbol="AVFileTypeQuickTimeMovie", optional=true)
-    protected static native NSString QuickTimeMovieValue();
+    public static native String QuickTimeMovie();
     /**
      * @since Available in iOS 4.0 and later.
      */
     @GlobalValue(symbol="AVFileTypeMPEG4", optional=true)
-    protected static native NSString MPEG4Value();
+    public static native String MPEG4();
     /**
      * @since Available in iOS 4.0 and later.
      */
     @GlobalValue(symbol="AVFileTypeAppleM4V", optional=true)
-    protected static native NSString AppleM4VValue();
+    public static native String AppleM4V();
     /**
      * @since Available in iOS 4.0 and later.
      */
     @GlobalValue(symbol="AVFileTypeAppleM4A", optional=true)
-    protected static native NSString AppleM4AValue();
+    public static native String AppleM4A();
+    /**
+     * @since Available in iOS 4.0 and later.
+     */
+    @GlobalValue(symbol="AVFileType3GPP", optional=true)
+    public static native String _3GPP();
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
+    @GlobalValue(symbol="AVFileType3GPP2", optional=true)
+    public static native String _3GPP2();
     /**
      * @since Available in iOS 4.0 and later.
      */
     @GlobalValue(symbol="AVFileTypeCoreAudioFormat", optional=true)
-    protected static native NSString CoreAudioFormatValue();
+    public static native String CoreAudioFormat();
     /**
      * @since Available in iOS 4.0 and later.
      */
     @GlobalValue(symbol="AVFileTypeWAVE", optional=true)
-    protected static native NSString WAVEValue();
+    public static native String WAVE();
     /**
      * @since Available in iOS 4.0 and later.
      */
     @GlobalValue(symbol="AVFileTypeAIFF", optional=true)
-    protected static native NSString AIFFValue();
+    public static native String AIFF();
     /**
      * @since Available in iOS 4.0 and later.
      */
     @GlobalValue(symbol="AVFileTypeAIFC", optional=true)
-    protected static native NSString AIFCValue();
+    public static native String AIFC();
     /**
      * @since Available in iOS 4.0 and later.
      */
     @GlobalValue(symbol="AVFileTypeAMR", optional=true)
-    protected static native NSString AMRValue();
+    public static native String AMR();
     /**
      * @since Available in iOS 7.0 and later.
      */
     @GlobalValue(symbol="AVFileTypeMPEGLayer3", optional=true)
-    protected static native NSString MPEGLayer3Value();
+    public static native String MPEGLayer3();
     /**
      * @since Available in iOS 7.0 and later.
      */
     @GlobalValue(symbol="AVFileTypeSunAU", optional=true)
-    protected static native NSString SunAUValue();
+    public static native String SunAU();
     /**
      * @since Available in iOS 7.0 and later.
      */
     @GlobalValue(symbol="AVFileTypeAC3", optional=true)
-    protected static native NSString AC3Value();
+    public static native String AC3();
     /*</methods>*/
 }

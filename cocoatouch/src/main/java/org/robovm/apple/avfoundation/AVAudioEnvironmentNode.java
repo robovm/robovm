@@ -114,6 +114,6 @@ import org.robovm.apple.mediatoolbox.*;
     /*<members>*//*</members>*/
     /*<methods>*/
     @Method(selector = "applicableRenderingAlgorithms")
-    public native NSArray<?> applicableRenderingAlgorithms();
+    public native @org.robovm.rt.bro.annotation.Marshaler(AVAudio3DMixingRenderingAlgorithm.AsListMarshaler.class) List<AVAudio3DMixingRenderingAlgorithm> getApplicableRenderingAlgorithms();
     /*</methods>*/
 }

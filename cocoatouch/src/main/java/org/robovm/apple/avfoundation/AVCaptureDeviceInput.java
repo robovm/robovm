@@ -54,17 +54,43 @@ import org.robovm.apple.mediatoolbox.*;
     /*<constructors>*/
     public AVCaptureDeviceInput() {}
     protected AVCaptureDeviceInput(SkipInit skipInit) { super(skipInit); }
-    public AVCaptureDeviceInput(AVCaptureDevice device, NSError.NSErrorPtr outError) { super((SkipInit) null); initObject(init(device, outError)); }
     /*</constructors>*/
+    /**
+     * 
+     * @param device
+     * @throws NSErrorException
+     */
+    public AVCaptureDeviceInput(AVCaptureDevice device) throws NSErrorException {
+       super((SkipInit)null);
+       NSError.NSErrorPtr err = new NSError.NSErrorPtr();
+       initObject(init(device, err));
+       if (err.get() != null) {
+           throw new NSErrorException(err.get());
+       }
+    }
     /*<properties>*/
     @Property(selector = "device")
     public native AVCaptureDevice getDevice();
     /*</properties>*/
     /*<members>*//*</members>*/
+    /**
+     * 
+     * @param device
+     * @return
+     * @throws NSErrorException
+     */
+    public static AVCaptureDeviceInput create(AVCaptureDevice device) throws NSErrorException {
+        NSError.NSErrorPtr err = new NSError.NSErrorPtr();
+        AVCaptureDeviceInput result = create(device, err);
+        if (err.get() != null) {
+            throw new NSErrorException(err.get());
+        }
+        return result;
+    }
     /*<methods>*/
     @Method(selector = "initWithDevice:error:")
     protected native @Pointer long init(AVCaptureDevice device, NSError.NSErrorPtr outError);
     @Method(selector = "deviceInputWithDevice:error:")
-    public static native AVCaptureDeviceInput create(AVCaptureDevice device, NSError.NSErrorPtr outError);
+    protected static native AVCaptureDeviceInput create(AVCaptureDevice device, NSError.NSErrorPtr outError);
     /*</methods>*/
 }

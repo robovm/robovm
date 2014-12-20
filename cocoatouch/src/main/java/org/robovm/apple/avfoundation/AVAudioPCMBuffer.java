@@ -54,7 +54,7 @@ import org.robovm.apple.mediatoolbox.*;
     /*<constructors>*/
     public AVAudioPCMBuffer() {}
     protected AVAudioPCMBuffer(SkipInit skipInit) { super(skipInit); }
-    public AVAudioPCMBuffer(AVAudioFormat format, int frameCapacity) { super((SkipInit) null); initObject(initWithPCMFormat$frameCapacity$(format, frameCapacity)); }
+    public AVAudioPCMBuffer(AVAudioFormat format, int frameCapacity) { super((SkipInit) null); initObject(init(format, frameCapacity)); }
     /*</constructors>*/
     /*<properties>*/
     @Property(selector = "frameCapacity")
@@ -75,6 +75,6 @@ import org.robovm.apple.mediatoolbox.*;
     /*<members>*//*</members>*/
     /*<methods>*/
     @Method(selector = "initWithPCMFormat:frameCapacity:")
-    protected native @Pointer long initWithPCMFormat$frameCapacity$(AVAudioFormat format, int frameCapacity);
+    protected native @Pointer long init(AVAudioFormat format, int frameCapacity);
     /*</methods>*/
 }

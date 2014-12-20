@@ -48,6 +48,20 @@ import org.robovm.apple.mediatoolbox.*;
     extends /*<extends>*/NSObject/*</extends>*/ 
     /*<implements>*//*</implements>*/ {
 
+    public static class Notifications {
+        /**
+         * @since Available in iOS 4.0 and later.
+         */
+        public static NSObject observeFormatDescriptionDidChange(AVCaptureInputPort object, final VoidBlock1<AVCaptureInputPort> block) {
+            return NSNotificationCenter.getDefaultCenter().addObserver(FormatDescriptionDidChangeNotification(), object, NSOperationQueue.getMainQueue(), new VoidBlock1<NSNotification>() {
+                @Override
+                public void invoke(NSNotification a) {
+                    block.invoke((AVCaptureInputPort) a.getObject());
+                }
+            });
+        }
+    }
+    
     /*<ptr>*/public static class AVCaptureInputPortPtr extends Ptr<AVCaptureInputPort, AVCaptureInputPortPtr> {}/*</ptr>*/
     /*<bind>*/static { ObjCRuntime.bind(AVCaptureInputPort.class); }/*</bind>*/
     /*<constants>*//*</constants>*/
@@ -59,7 +73,7 @@ import org.robovm.apple.mediatoolbox.*;
     @Property(selector = "input")
     public native AVCaptureInput getInput();
     @Property(selector = "mediaType")
-    public native String getMediaType();
+    public native AVMediaType getMediaType();
     @Property(selector = "formatDescription")
     public native CMFormatDescription getFormatDescription();
     @Property(selector = "isEnabled")
@@ -74,6 +88,12 @@ import org.robovm.apple.mediatoolbox.*;
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
+    /**
+     * @since Available in iOS 4.0 and later.
+     */
+    @GlobalValue(symbol="AVCaptureInputPortFormatDescriptionDidChangeNotification", optional=true)
+    public static native NSString FormatDescriptionDidChangeNotification();
+    
     
     /*</methods>*/
 }

@@ -54,7 +54,7 @@ import org.robovm.apple.mediatoolbox.*;
     /*<constructors>*/
     public AVAssetReaderSampleReferenceOutput() {}
     protected AVAssetReaderSampleReferenceOutput(SkipInit skipInit) { super(skipInit); }
-    public AVAssetReaderSampleReferenceOutput(AVAssetTrack track) { super((SkipInit) null); initObject(initWithTrack$(track)); }
+    public AVAssetReaderSampleReferenceOutput(AVAssetTrack track) { super((SkipInit) null); initObject(init(track)); }
     /*</constructors>*/
     /*<properties>*/
     @Property(selector = "track")
@@ -63,8 +63,8 @@ import org.robovm.apple.mediatoolbox.*;
     /*<members>*//*</members>*/
     /*<methods>*/
     @Method(selector = "initWithTrack:")
-    protected native @Pointer long initWithTrack$(AVAssetTrack track);
+    protected native @Pointer long init(AVAssetTrack track);
     @Method(selector = "assetReaderSampleReferenceOutputWithTrack:")
-    public static native AVAssetReaderSampleReferenceOutput assetReaderSampleReferenceOutputWithTrack$(AVAssetTrack track);
+    public static native AVAssetReaderSampleReferenceOutput create(AVAssetTrack track);
     /*</methods>*/
 }

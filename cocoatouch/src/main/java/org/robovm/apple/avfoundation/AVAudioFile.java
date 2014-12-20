@@ -54,11 +54,45 @@ import org.robovm.apple.mediatoolbox.*;
     /*<constructors>*/
     public AVAudioFile() {}
     protected AVAudioFile(SkipInit skipInit) { super(skipInit); }
-    public AVAudioFile(NSURL fileURL, NSError.NSErrorPtr outError) { super((SkipInit) null); initObject(initForReading$error$(fileURL, outError)); }
-    public AVAudioFile(NSURL fileURL, AVAudioCommonFormat format, boolean interleaved, NSError.NSErrorPtr outError) { super((SkipInit) null); initObject(initForReading$commonFormat$interleaved$error$(fileURL, format, interleaved, outError)); }
-    public AVAudioFile(NSURL fileURL, NSDictionary<?, ?> settings, NSError.NSErrorPtr outError) { super((SkipInit) null); initObject(initForWriting$settings$error$(fileURL, settings, outError)); }
-    public AVAudioFile(NSURL fileURL, NSDictionary<?, ?> settings, AVAudioCommonFormat format, boolean interleaved, NSError.NSErrorPtr outError) { super((SkipInit) null); initObject(initForWriting$settings$commonFormat$interleaved$error$(fileURL, settings, format, interleaved, outError)); }
     /*</constructors>*/
+    /**
+     * 
+     * @param fileURL
+     * @throws NSErrorException
+     */
+    public AVAudioFile(NSURL fileURL) throws NSErrorException {
+        super((SkipInit)null);
+        NSError.NSErrorPtr err = new NSError.NSErrorPtr();
+        initObject(init(fileURL, err));
+        if (err.get() != null) {
+            throw new NSErrorException(err.get());
+        }
+    }
+    
+    public AVAudioFile(NSURL fileURL, AVAudioCommonFormat format, boolean interleaved) throws NSErrorException {
+        super((SkipInit)null);
+        NSError.NSErrorPtr err = new NSError.NSErrorPtr();
+        initObject(init(fileURL, format, interleaved, err));
+        if (err.get() != null) {
+            throw new NSErrorException(err.get());
+        }
+    }
+    public AVAudioFile(NSURL fileURL, AVAudioSettings settings) throws NSErrorException {
+        super((SkipInit)null);
+        NSError.NSErrorPtr err = new NSError.NSErrorPtr();
+        initObject(init(fileURL, settings, err));
+        if (err.get() != null) {
+            throw new NSErrorException(err.get());
+        }
+    }
+    public AVAudioFile(NSURL fileURL, AVAudioSettings settings, AVAudioCommonFormat format, boolean interleaved) throws NSErrorException {
+        super((SkipInit)null);
+        NSError.NSErrorPtr err = new NSError.NSErrorPtr();
+        initObject(init(fileURL, settings, format, interleaved, err));
+        if (err.get() != null) {
+            throw new NSErrorException(err.get());
+        }
+    }
     /*<properties>*/
     @Property(selector = "url")
     public native NSURL getUrl();
@@ -74,20 +108,63 @@ import org.robovm.apple.mediatoolbox.*;
     public native void setFramePosition(long v);
     /*</properties>*/
     /*<members>*//*</members>*/
+    /**
+     * 
+     * @param buffer
+     * @return
+     * @throws NSErrorException
+     */
+    public boolean readIntoBuffer(AVAudioPCMBuffer buffer) throws NSErrorException {
+        NSError.NSErrorPtr err = new NSError.NSErrorPtr();
+        boolean result = readIntoBuffer(buffer, err);
+        if (err.get() != null) {
+            throw new NSErrorException(err.get());
+        }
+        return result;
+    }
+    /**
+     * 
+     * @param buffer
+     * @param frames
+     * @return
+     * @throws NSErrorException
+     */
+    public boolean readIntoBuffer(AVAudioPCMBuffer buffer, int frames) throws NSErrorException {
+        NSError.NSErrorPtr err = new NSError.NSErrorPtr();
+        boolean result = readIntoBuffer(buffer, frames, err);
+        if (err.get() != null) {
+            throw new NSErrorException(err.get());
+        }
+        return result;
+    }
+    /**
+     * 
+     * @param buffer
+     * @return
+     * @throws NSErrorException
+     */
+    public boolean writeFromBuffer(AVAudioPCMBuffer buffer) throws NSErrorException {
+        NSError.NSErrorPtr err = new NSError.NSErrorPtr();
+        boolean result = writeFromBuffer(buffer, err);
+        if (err.get() != null) {
+            throw new NSErrorException(err.get());
+        }
+        return result;
+    }
     /*<methods>*/
     @Method(selector = "initForReading:error:")
-    protected native @Pointer long initForReading$error$(NSURL fileURL, NSError.NSErrorPtr outError);
+    protected native @Pointer long init(NSURL fileURL, NSError.NSErrorPtr outError);
     @Method(selector = "initForReading:commonFormat:interleaved:error:")
-    protected native @Pointer long initForReading$commonFormat$interleaved$error$(NSURL fileURL, AVAudioCommonFormat format, boolean interleaved, NSError.NSErrorPtr outError);
+    protected native @Pointer long init(NSURL fileURL, AVAudioCommonFormat format, boolean interleaved, NSError.NSErrorPtr outError);
     @Method(selector = "initForWriting:settings:error:")
-    protected native @Pointer long initForWriting$settings$error$(NSURL fileURL, NSDictionary<?, ?> settings, NSError.NSErrorPtr outError);
+    protected native @Pointer long init(NSURL fileURL, AVAudioSettings settings, NSError.NSErrorPtr outError);
     @Method(selector = "initForWriting:settings:commonFormat:interleaved:error:")
-    protected native @Pointer long initForWriting$settings$commonFormat$interleaved$error$(NSURL fileURL, NSDictionary<?, ?> settings, AVAudioCommonFormat format, boolean interleaved, NSError.NSErrorPtr outError);
+    protected native @Pointer long init(NSURL fileURL, AVAudioSettings settings, AVAudioCommonFormat format, boolean interleaved, NSError.NSErrorPtr outError);
     @Method(selector = "readIntoBuffer:error:")
-    public native boolean readIntoBuffer$error$(AVAudioPCMBuffer buffer, NSError.NSErrorPtr outError);
+    protected native boolean readIntoBuffer(AVAudioPCMBuffer buffer, NSError.NSErrorPtr outError);
     @Method(selector = "readIntoBuffer:frameCount:error:")
-    public native boolean readIntoBuffer$frameCount$error$(AVAudioPCMBuffer buffer, int frames, NSError.NSErrorPtr outError);
+    protected native boolean readIntoBuffer(AVAudioPCMBuffer buffer, int frames, NSError.NSErrorPtr outError);
     @Method(selector = "writeFromBuffer:error:")
-    public native boolean writeFromBuffer$error$(AVAudioPCMBuffer buffer, NSError.NSErrorPtr outError);
+    protected native boolean writeFromBuffer(AVAudioPCMBuffer buffer, NSError.NSErrorPtr outError);
     /*</methods>*/
 }

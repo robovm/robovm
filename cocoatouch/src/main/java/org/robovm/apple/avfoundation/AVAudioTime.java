@@ -54,10 +54,10 @@ import org.robovm.apple.mediatoolbox.*;
     /*<constructors>*/
     public AVAudioTime() {}
     protected AVAudioTime(SkipInit skipInit) { super(skipInit); }
-    public AVAudioTime(AudioTimeStamp ts, double sampleRate) { super((SkipInit) null); initObject(initWithAudioTimeStamp$sampleRate$(ts, sampleRate)); }
-    public AVAudioTime(long hostTime) { super((SkipInit) null); initObject(initWithHostTime$(hostTime)); }
-    public AVAudioTime(long sampleTime, double sampleRate) { super((SkipInit) null); initObject(initWithSampleTime$atRate$(sampleTime, sampleRate)); }
-    public AVAudioTime(long hostTime, long sampleTime, double sampleRate) { super((SkipInit) null); initObject(initWithHostTime$sampleTime$atRate$(hostTime, sampleTime, sampleRate)); }
+    public AVAudioTime(AudioTimeStamp ts, double sampleRate) { super((SkipInit) null); initObject(init(ts, sampleRate)); }
+    public AVAudioTime(long hostTime) { super((SkipInit) null); initObject(init(hostTime)); }
+    public AVAudioTime(long sampleTime, double sampleRate) { super((SkipInit) null); initObject(init(sampleTime, sampleRate)); }
+    public AVAudioTime(long hostTime, long sampleTime, double sampleRate) { super((SkipInit) null); initObject(init(hostTime, sampleTime, sampleRate)); }
     /*</constructors>*/
     /*<properties>*/
     @Property(selector = "isHostTimeValid")
@@ -76,26 +76,26 @@ import org.robovm.apple.mediatoolbox.*;
     /*<members>*//*</members>*/
     /*<methods>*/
     @Method(selector = "initWithAudioTimeStamp:sampleRate:")
-    protected native @Pointer long initWithAudioTimeStamp$sampleRate$(AudioTimeStamp ts, double sampleRate);
+    protected native @Pointer long init(AudioTimeStamp ts, double sampleRate);
     @Method(selector = "initWithHostTime:")
-    protected native @Pointer long initWithHostTime$(long hostTime);
+    protected native @Pointer long init(long hostTime);
     @Method(selector = "initWithSampleTime:atRate:")
-    protected native @Pointer long initWithSampleTime$atRate$(long sampleTime, double sampleRate);
+    protected native @Pointer long init(long sampleTime, double sampleRate);
     @Method(selector = "initWithHostTime:sampleTime:atRate:")
-    protected native @Pointer long initWithHostTime$sampleTime$atRate$(long hostTime, long sampleTime, double sampleRate);
+    protected native @Pointer long init(long hostTime, long sampleTime, double sampleRate);
     @Method(selector = "extrapolateTimeFromAnchor:")
-    public native AVAudioTime extrapolateTimeFromAnchor$(AVAudioTime anchorTime);
+    public native AVAudioTime extrapolateTimeFromAnchor(AVAudioTime anchorTime);
     @Method(selector = "timeWithAudioTimeStamp:sampleRate:")
-    public static native AVAudioTime timeWithAudioTimeStamp$sampleRate$(AudioTimeStamp ts, double sampleRate);
+    public static native AVAudioTime create(AudioTimeStamp ts, double sampleRate);
     @Method(selector = "timeWithHostTime:")
-    public static native AVAudioTime timeWithHostTime$(long hostTime);
+    public static native AVAudioTime create(long hostTime);
     @Method(selector = "timeWithSampleTime:atRate:")
-    public static native AVAudioTime timeWithSampleTime$atRate$(long sampleTime, double sampleRate);
+    public static native AVAudioTime create(long sampleTime, double sampleRate);
     @Method(selector = "timeWithHostTime:sampleTime:atRate:")
-    public static native AVAudioTime timeWithHostTime$sampleTime$atRate$(long hostTime, long sampleTime, double sampleRate);
+    public static native AVAudioTime create(long hostTime, long sampleTime, double sampleRate);
     @Method(selector = "hostTimeForSeconds:")
-    public static native long hostTimeForSeconds$(double seconds);
+    public static native long convertSecondsToHostTime(double seconds);
     @Method(selector = "secondsForHostTime:")
-    public static native double secondsForHostTime$(long hostTime);
+    public static native double convertHostTimeToSeconds(long hostTime);
     /*</methods>*/
 }

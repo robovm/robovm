@@ -54,7 +54,7 @@ import org.robovm.apple.mediatoolbox.*;
     /*<constructors>*/
     public AVAssetReaderOutputMetadataAdaptor() {}
     protected AVAssetReaderOutputMetadataAdaptor(SkipInit skipInit) { super(skipInit); }
-    public AVAssetReaderOutputMetadataAdaptor(AVAssetReaderTrackOutput trackOutput) { super((SkipInit) null); initObject(initWithAssetReaderTrackOutput$(trackOutput)); }
+    public AVAssetReaderOutputMetadataAdaptor(AVAssetReaderTrackOutput trackOutput) { super((SkipInit) null); initObject(init(trackOutput)); }
     /*</constructors>*/
     /*<properties>*/
     @Property(selector = "assetReaderTrackOutput")
@@ -63,10 +63,10 @@ import org.robovm.apple.mediatoolbox.*;
     /*<members>*//*</members>*/
     /*<methods>*/
     @Method(selector = "initWithAssetReaderTrackOutput:")
-    protected native @Pointer long initWithAssetReaderTrackOutput$(AVAssetReaderTrackOutput trackOutput);
+    protected native @Pointer long init(AVAssetReaderTrackOutput trackOutput);
     @Method(selector = "nextTimedMetadataGroup")
     public native AVTimedMetadataGroup nextTimedMetadataGroup();
     @Method(selector = "assetReaderOutputMetadataAdaptorWithAssetReaderTrackOutput:")
-    public static native AVAssetReaderOutputMetadataAdaptor assetReaderOutputMetadataAdaptorWithAssetReaderTrackOutput$(AVAssetReaderTrackOutput trackOutput);
+    public static native AVAssetReaderOutputMetadataAdaptor create(AVAssetReaderTrackOutput trackOutput);
     /*</methods>*/
 }

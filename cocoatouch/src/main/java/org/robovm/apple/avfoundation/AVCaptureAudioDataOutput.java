@@ -69,6 +69,6 @@ import org.robovm.apple.mediatoolbox.*;
      * @since Available in iOS 7.0 and later.
      */
     @Method(selector = "recommendedAudioSettingsForAssetWriterWithOutputFileType:")
-    public native NSDictionary<NSString, ?> getRecommendedAudioSettings(String outputFileType);
+    public native AVAudioSettings getRecommendedAudioSettings(String outputFileType);
     /*</methods>*/
 }

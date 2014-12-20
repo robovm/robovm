@@ -64,6 +64,33 @@ import org.robovm.apple.mediatoolbox.*;
         }
     }
     
+    public static class AsListMarshaler {
+        @SuppressWarnings("unchecked")
+        @MarshalsPointer
+        public static List<AVMetadataObjectType> toObject(Class<? extends NSObject> cls, long handle, long flags) {
+            NSArray<NSString> o = (NSArray<NSString>) NSObject.Marshaler.toObject(cls, handle, flags);
+            if (o == null) {
+                return null;
+            }
+            List<AVMetadataObjectType> list = new ArrayList<>();
+            for (NSString str : o) {
+                list.add(AVMetadataObjectType.valueOf(str));
+            }
+            return list;
+        }
+        @MarshalsPointer
+        public static long toNative(List<AVMetadataObjectType> l, long flags) {
+            if (l == null) {
+                return 0L;
+            }
+            NSMutableArray<NSString> array = new NSMutableArray<>();
+            for (AVMetadataObjectType i : l) {
+                array.add(i.value());
+            }
+            return NSObject.Marshaler.toNative(array, flags);
+        }
+    }
+    
     /*<ptr>*/
     /*</ptr>*/
     /*<bind>*/static { Bro.bind(AVMetadataObjectType.class); }/*</bind>*/

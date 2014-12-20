@@ -57,7 +57,7 @@ import org.robovm.apple.mediatoolbox.*;
     /*</constructors>*/
     /*<properties>*/
     @Property(selector = "mediaType")
-    public native String getMediaType();
+    public native AVMediaType getMediaType();
     @Property(selector = "formatDescription")
     public native CMFormatDescription getFormatDescription();
     @Property(selector = "videoSupportedFrameRateRanges")
@@ -131,6 +131,6 @@ import org.robovm.apple.mediatoolbox.*;
      * @since Available in iOS 8.0 and later.
      */
     @Method(selector = "isVideoStabilizationModeSupported:")
-    public native boolean isVideoStabilizationModeSupported$(AVCaptureVideoStabilizationMode videoStabilizationMode);
+    public native boolean isVideoStabilizationModeSupported(AVCaptureVideoStabilizationMode videoStabilizationMode);
     /*</methods>*/
 }

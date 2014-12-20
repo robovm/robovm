@@ -54,15 +54,22 @@ import org.robovm.apple.mediatoolbox.*;
     /*<constructors>*/
     public AVAudioRecorder() {}
     protected AVAudioRecorder(SkipInit skipInit) { super(skipInit); }
-    public AVAudioRecorder(NSURL url, NSDictionary<NSString, ?> settings, NSError.NSErrorPtr outError) { super((SkipInit) null); initObject(init(url, settings, outError)); }
     /*</constructors>*/
+    public AVAudioRecorder(NSURL url, AVAudioSettings settings) throws NSErrorException {
+        super((SkipInit)null);
+        NSError.NSErrorPtr err = new NSError.NSErrorPtr();
+        initObject(init(url, settings, err));
+        if (err.get() != null) {
+            throw new NSErrorException(err.get());
+        }
+    }
     /*<properties>*/
     @Property(selector = "isRecording")
     public native boolean isRecording();
     @Property(selector = "url")
     public native NSURL getUrl();
     @Property(selector = "settings")
-    public native NSDictionary<NSString, ?> getSettings();
+    public native AVAudioSettings getSettings();
     @Property(selector = "delegate")
     public native AVAudioRecorderDelegate getDelegate();
     @Property(selector = "setDelegate:", strongRef = true)
@@ -92,7 +99,7 @@ import org.robovm.apple.mediatoolbox.*;
     /*<members>*//*</members>*/
     /*<methods>*/
     @Method(selector = "initWithURL:settings:error:")
-    protected native @Pointer long init(NSURL url, NSDictionary<NSString, ?> settings, NSError.NSErrorPtr outError);
+    protected native @Pointer long init(NSURL url, AVAudioSettings settings, NSError.NSErrorPtr outError);
     @Method(selector = "prepareToRecord")
     public native boolean prepareToRecord();
     @Method(selector = "record")
@@ -103,12 +110,12 @@ import org.robovm.apple.mediatoolbox.*;
     @Method(selector = "recordAtTime:")
     public native boolean recordAtTime(double time);
     @Method(selector = "recordForDuration:")
-    public native boolean recordForDuration(double duration);
+    public native boolean record(double duration);
     /**
      * @since Available in iOS 6.0 and later.
      */
     @Method(selector = "recordAtTime:forDuration:")
-    public native boolean record(double time, double duration);
+    public native boolean recordAtTime(double time, double duration);
     @Method(selector = "pause")
     public native void pause();
     @Method(selector = "stop")
@@ -118,8 +125,8 @@ import org.robovm.apple.mediatoolbox.*;
     @Method(selector = "updateMeters")
     public native void updateMeters();
     @Method(selector = "peakPowerForChannel:")
-    public native float getPeakPower(@MachineSizedUInt long channelNumber);
+    public native float getPeakPowerForChannel(@MachineSizedUInt long channelNumber);
     @Method(selector = "averagePowerForChannel:")
-    public native float getAveragePower(@MachineSizedUInt long channelNumber);
+    public native float getAveragePowerForChannel(@MachineSizedUInt long channelNumber);
     /*</methods>*/
 }

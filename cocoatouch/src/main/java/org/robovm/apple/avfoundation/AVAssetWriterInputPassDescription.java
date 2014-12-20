@@ -57,7 +57,7 @@ import org.robovm.apple.mediatoolbox.*;
     /*</constructors>*/
     /*<properties>*/
     @Property(selector = "sourceTimeRanges")
-    public native NSArray<?> getSourceTimeRanges();
+    public native @org.robovm.rt.bro.annotation.Marshaler(CMTimeRange.AsValuedListMarshaler.class) List<CMTimeRange> getSourceTimeRanges();
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/

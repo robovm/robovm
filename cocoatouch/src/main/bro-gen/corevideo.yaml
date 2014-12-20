@@ -1,5 +1,5 @@
 package: org.robovm.apple.corevideo
-include: [foundation.yaml, corefoundation.yaml, coregraphics.yaml, opengles.yaml, coremedia.yaml]
+include: [foundation.yaml, corefoundation.yaml, coregraphics.yaml, opengles.yaml, coremedia.yaml, metal.yaml]
 library: CoreVideo
 framework: CoreVideo
 clang_args: ['-x', 'objective-c']
@@ -287,10 +287,16 @@ values:
     kCVImageBufferChromaSubsampling_(.*):
         class: CoreVideo
         name: "CVImageBufferChromaSubsampling_#{g[0]}"
-        
-    kCVPixelBuffer(.*)Key:
+    
+    kCVPixelBufferPool(.*)Key:
         class: CoreVideo
-        name: "CVPixelBuffer#{g[0]}Key"
+        name: "CVPixelBufferPoolPool#{g[0]}Key"
+    
+    kCVPixelBuffer(.*Key):
+        class: CVPixelBufferAttributes
+        name: '#{g[0]}'
+        type: CFString
+        visibility: protected
     
     kCVPixelBufferPool(.*)Notification:
         class: CoreVideo

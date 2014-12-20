@@ -65,7 +65,7 @@ import org.robovm.apple.mediatoolbox.*;
      * @since Available in iOS 5.0 and later.
      */
     @Method(selector = "connectionWithMediaType:")
-    public native AVCaptureConnection getConnection(String mediaType);
+    public native AVCaptureConnection getConnection(AVMediaType mediaType);
     /**
      * @since Available in iOS 6.0 and later.
      */

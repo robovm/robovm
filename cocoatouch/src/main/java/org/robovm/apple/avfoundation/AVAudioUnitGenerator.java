@@ -54,7 +54,7 @@ import org.robovm.apple.mediatoolbox.*;
     /*<constructors>*/
     public AVAudioUnitGenerator() {}
     protected AVAudioUnitGenerator(SkipInit skipInit) { super(skipInit); }
-    public AVAudioUnitGenerator(@ByVal AudioComponentDescription audioComponentDescription) { super((SkipInit) null); initObject(initWithAudioComponentDescription$(audioComponentDescription)); }
+    public AVAudioUnitGenerator(@ByVal AudioComponentDescription audioComponentDescription) { super((SkipInit) null); initObject(init(audioComponentDescription)); }
     /*</constructors>*/
     /*<properties>*/
     @Property(selector = "bypass")
@@ -97,6 +97,6 @@ import org.robovm.apple.mediatoolbox.*;
     /*<members>*//*</members>*/
     /*<methods>*/
     @Method(selector = "initWithAudioComponentDescription:")
-    protected native @Pointer long initWithAudioComponentDescription$(@ByVal AudioComponentDescription audioComponentDescription);
+    protected native @Pointer long init(@ByVal AudioComponentDescription audioComponentDescription);
     /*</methods>*/
 }

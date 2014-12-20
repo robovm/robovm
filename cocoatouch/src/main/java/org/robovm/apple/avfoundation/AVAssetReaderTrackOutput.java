@@ -54,29 +54,61 @@ import org.robovm.apple.mediatoolbox.*;
     /*<constructors>*/
     public AVAssetReaderTrackOutput() {}
     protected AVAssetReaderTrackOutput(SkipInit skipInit) { super(skipInit); }
-    public AVAssetReaderTrackOutput(AVAssetTrack track, NSDictionary<NSString, ?> outputSettings) { super((SkipInit) null); initObject(init(track, outputSettings)); }
     /*</constructors>*/
+    public AVAssetReaderTrackOutput(AVAssetTrack track, AVAudioSettings outputSettings) {
+        super((SkipInit)null);
+        initObject(init(track, outputSettings.getDictionary()));
+    }
+    public AVAssetReaderTrackOutput(AVAssetTrack track, AVVideoSettings outputSettings) {
+        super((SkipInit)null);
+        initObject(init(track, outputSettings.getDictionary()));
+    }
+    @SuppressWarnings("unchecked")
+    public AVAssetReaderTrackOutput(AVAssetTrack track, AVPixelBufferAttributes outputSettings) {
+        super((SkipInit)null);
+        initObject(init(track, outputSettings.getDictionary().as(NSDictionary.class)));
+    }
+    
+    public AVAudioSettings getAudioOutputSettings() {
+        return new AVAudioSettings(getOutputSettings());
+    }
+    public AVVideoSettings getVideoOutputSettings() {
+        return new AVVideoSettings(getOutputSettings());
+    }
+    public AVPixelBufferAttributes getPixelBufferOutputSettings() {
+        return new AVPixelBufferAttributes(getOutputSettings().as(CFDictionary.class));
+    }
     /*<properties>*/
     @Property(selector = "track")
     public native AVAssetTrack getTrack();
     @Property(selector = "outputSettings")
-    public native NSDictionary<NSString, ?> getOutputSettings();
+    protected native NSDictionary<NSString, NSObject> getOutputSettings();
     /**
      * @since Available in iOS 7.0 and later.
      */
     @Property(selector = "audioTimePitchAlgorithm")
-    public native String getAudioTimePitchAlgorithm();
+    public native AVAudioTimePitchAlgorithm getAudioTimePitchAlgorithm();
     /**
      * @since Available in iOS 7.0 and later.
      */
     @Property(selector = "setAudioTimePitchAlgorithm:")
-    public native void setAudioTimePitchAlgorithm(String v);
+    public native void setAudioTimePitchAlgorithm(AVAudioTimePitchAlgorithm v);
     /*</properties>*/
     /*<members>*//*</members>*/
+    public static AVAssetReaderTrackOutput create(AVAssetTrack track, AVAudioSettings outputSettings) {
+        return create(track, outputSettings.getDictionary());
+    }
+    public static AVAssetReaderTrackOutput create(AVAssetTrack track, AVVideoSettings outputSettings) {
+        return create(track, outputSettings.getDictionary());
+    }
+    @SuppressWarnings("unchecked")
+    public static AVAssetReaderTrackOutput create(AVAssetTrack track, AVPixelBufferAttributes outputSettings) {
+        return create(track, outputSettings.getDictionary().as(NSDictionary.class));
+    }
     /*<methods>*/
     @Method(selector = "initWithTrack:outputSettings:")
-    protected native @Pointer long init(AVAssetTrack track, NSDictionary<NSString, ?> outputSettings);
+    protected native @Pointer long init(AVAssetTrack track, NSDictionary<NSString, NSObject> outputSettings);
     @Method(selector = "assetReaderTrackOutputWithTrack:outputSettings:")
-    public static native AVAssetReaderTrackOutput create(AVAssetTrack track, NSDictionary<NSString, ?> outputSettings);
+    protected static native AVAssetReaderTrackOutput create(AVAssetTrack track, NSDictionary<NSString, NSObject> outputSettings);
     /*</methods>*/
 }

@@ -57,11 +57,11 @@ import org.robovm.apple.mediatoolbox.*;
     /**
      * @since Available in iOS 8.0 and later.
      */
-    public AVCaptureConnection(NSArray<?> ports, AVCaptureOutput output) { super((SkipInit) null); initObject(initWithInputPorts$output$(ports, output)); }
+    public AVCaptureConnection(NSArray<AVCaptureInputPort> ports, AVCaptureOutput output) { super((SkipInit) null); initObject(init(ports, output)); }
     /**
      * @since Available in iOS 8.0 and later.
      */
-    public AVCaptureConnection(AVCaptureInputPort port, AVCaptureVideoPreviewLayer layer) { super((SkipInit) null); initObject(initWithInputPort$videoPreviewLayer$(port, layer)); }
+    public AVCaptureConnection(AVCaptureInputPort port, AVCaptureVideoPreviewLayer layer) { super((SkipInit) null); initObject(init(port, layer)); }
     /*</constructors>*/
     /*<properties>*/
     @Property(selector = "inputPorts")
@@ -208,21 +208,21 @@ import org.robovm.apple.mediatoolbox.*;
      * @since Available in iOS 8.0 and later.
      */
     @Method(selector = "initWithInputPorts:output:")
-    protected native @Pointer long initWithInputPorts$output$(NSArray<?> ports, AVCaptureOutput output);
+    protected native @Pointer long init(NSArray<AVCaptureInputPort> ports, AVCaptureOutput output);
     /**
      * @since Available in iOS 8.0 and later.
      */
     @Method(selector = "initWithInputPort:videoPreviewLayer:")
-    protected native @Pointer long initWithInputPort$videoPreviewLayer$(AVCaptureInputPort port, AVCaptureVideoPreviewLayer layer);
+    protected native @Pointer long init(AVCaptureInputPort port, AVCaptureVideoPreviewLayer layer);
     /**
      * @since Available in iOS 8.0 and later.
      */
     @Method(selector = "connectionWithInputPorts:output:")
-    public static native AVCaptureConnection connectionWithInputPorts$output$(NSArray<?> ports, AVCaptureOutput output);
+    public static native AVCaptureConnection create(NSArray<AVCaptureInputPort> ports, AVCaptureOutput output);
     /**
      * @since Available in iOS 8.0 and later.
      */
     @Method(selector = "connectionWithInputPort:videoPreviewLayer:")
-    public static native AVCaptureConnection connectionWithInputPort$videoPreviewLayer$(AVCaptureInputPort port, AVCaptureVideoPreviewLayer layer);
+    public static native AVCaptureConnection create(AVCaptureInputPort port, AVCaptureVideoPreviewLayer layer);
     /*</methods>*/
 }

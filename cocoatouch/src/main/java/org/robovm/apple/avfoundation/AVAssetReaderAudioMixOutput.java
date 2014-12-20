@@ -54,13 +54,13 @@ import org.robovm.apple.mediatoolbox.*;
     /*<constructors>*/
     public AVAssetReaderAudioMixOutput() {}
     protected AVAssetReaderAudioMixOutput(SkipInit skipInit) { super(skipInit); }
-    public AVAssetReaderAudioMixOutput(NSArray<AVAssetTrack> audioTracks, NSDictionary<NSString, ?> audioSettings) { super((SkipInit) null); initObject(init(audioTracks, audioSettings)); }
+    public AVAssetReaderAudioMixOutput(NSArray<AVAssetTrack> audioTracks, AVAudioSettings audioSettings) { super((SkipInit) null); initObject(init(audioTracks, audioSettings)); }
     /*</constructors>*/
     /*<properties>*/
     @Property(selector = "audioTracks")
     public native NSArray<AVAssetTrack> getAudioTracks();
     @Property(selector = "audioSettings")
-    public native NSDictionary<NSString, ?> getAudioSettings();
+    public native AVAudioSettings getAudioSettings();
     @Property(selector = "audioMix")
     public native AVAudioMix getAudioMix();
     @Property(selector = "setAudioMix:")
@@ -69,18 +69,18 @@ import org.robovm.apple.mediatoolbox.*;
      * @since Available in iOS 7.0 and later.
      */
     @Property(selector = "audioTimePitchAlgorithm")
-    public native String getAudioTimePitchAlgorithm();
+    public native AVAudioTimePitchAlgorithm getAudioTimePitchAlgorithm();
     /**
      * @since Available in iOS 7.0 and later.
      */
     @Property(selector = "setAudioTimePitchAlgorithm:")
-    public native void setAudioTimePitchAlgorithm(String v);
+    public native void setAudioTimePitchAlgorithm(AVAudioTimePitchAlgorithm v);
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
     @Method(selector = "initWithAudioTracks:audioSettings:")
-    protected native @Pointer long init(NSArray<AVAssetTrack> audioTracks, NSDictionary<NSString, ?> audioSettings);
+    protected native @Pointer long init(NSArray<AVAssetTrack> audioTracks, AVAudioSettings audioSettings);
     @Method(selector = "assetReaderAudioMixOutputWithAudioTracks:audioSettings:")
-    public static native AVAssetReaderAudioMixOutput create(NSArray<AVAssetTrack> audioTracks, NSDictionary<NSString, ?> audioSettings);
+    public static native AVAssetReaderAudioMixOutput create(NSArray<AVAssetTrack> audioTracks, AVAudioSettings audioSettings);
     /*</methods>*/
 }

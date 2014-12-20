@@ -24,19 +24,25 @@ import org.robovm.llvm.Target;
  *
  */
 public enum Arch {
-    x86("i386", "i386", true, false),
-    x86_64("x86_64", "x86_64", false, false),
+    x86("i386", "i386", "penryn", true, false),
+    x86_64("x86_64", "x86_64", "penryn", false, false),
     thumbv7("thumbv7", "armv7", true, true),
     arm64("arm64", "arm64", false, true);
     
     private final String llvmName;
     private final String clangName;
+    private final String llvmCpu;
     private final boolean is32Bit;
     private final boolean isArm;
     
     private Arch(String llvmName, String clangName, boolean is32Bit, boolean isArm) {
+        this(llvmName, clangName, "generic", is32Bit, isArm);
+    }
+
+    private Arch(String llvmName, String clangName, String llvmCpu, boolean is32Bit, boolean isArm) {
         this.llvmName = llvmName;
         this.clangName = clangName;
+        this.llvmCpu = llvmCpu;
         this.is32Bit = is32Bit;
         this.isArm = isArm;
     }
@@ -47,6 +53,10 @@ public enum Arch {
     
     public String getClangName() {
         return clangName;
+    }
+    
+    public String getLlvmCpu() {
+        return llvmCpu;
     }
     
     public boolean isArm() {

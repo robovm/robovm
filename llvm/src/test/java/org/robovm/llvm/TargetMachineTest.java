@@ -36,7 +36,6 @@ public class TargetMachineTest {
                 ByteArrayOutputStream out = new ByteArrayOutputStream();
                 tm.emit(module, out, CodeGenFileType.AssemblyFile);
                 String asm = new String(out.toByteArray(), "utf-8");
-                System.out.println(asm);
                 assertTrue(asm.contains("_foo"));
             }
         }

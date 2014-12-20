@@ -104,8 +104,7 @@ import org.robovm.apple.dispatch.*;
                     Long typeId = (Long) m.invoke(null);
                     allCFTypeClasses.put(typeId, cls);
                 } catch (Throwable e) {
-                    System.err.println("WARN: Failed to call getClassTypeID() for " 
-                            + "the CFType subclass " + cls.getName());
+                	// Ignore, because several of Apple's CFType subclasses don't contain a getClassTypeID() method.
                 }
             }
         }

@@ -42,6 +42,8 @@ public enum OS {
             // and specifies that structs no larger than 4 bytes are returned
             // in r0.
             return size <= 4;
+        case arm64:
+            return size <= 16;
         case x86:
             // On Darwin structs of size 1, 2, 4 and 8 bytes are returned in eax:edx.
             // On Linux no structs are returned in registers.
@@ -85,6 +87,8 @@ public enum OS {
             return true;
         case thumbv7:
             return true;
+        case arm64:
+            return false;
         }
         throw new IllegalArgumentException("Unknown arch: " + arch);
     }
@@ -125,6 +129,8 @@ public enum OS {
         case thumbv7:
             // Always use byval.
             return true;
+        case arm64:
+            return size > 16;
         }
         throw new IllegalArgumentException("Unknown arch: " + arch);
     }

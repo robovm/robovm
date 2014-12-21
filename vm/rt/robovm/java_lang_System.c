@@ -38,8 +38,12 @@ ObjectArray* Java_java_lang_System_robovmSpecialProperties(Env* env, Class* c) {
     osArch = "os.arch=x86";
 #elif defined(RVM_X86_64)
     osArch = "os.arch=x86_64";
-#elif defined(RVM_ARMV6) || defined(RVM_ARMV7) || defined(RVM_THUMBV6) || defined(RVM_THUMBV7)
+#elif defined(RVM_THUMBV7)
     osArch = "os.arch=arm";
+#elif defined(RVM_ARM64)
+    osArch = "os.arch=aarch64";
+#else
+#   error Unsupported arch
 #endif
 
 #if defined(DARWIN)

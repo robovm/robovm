@@ -6,7 +6,7 @@ if [ -f "$COMPILER_JAR" ]; then
     export ROBOVM_HOME="$BASE"
 else
     if [ "x$ROBOVM_DEV_ROOT" != 'x' ]; then
-        COMPILER_JAR=$(ls "$ROBOVM_DEV_ROOT"/../robovm-dist/compiler/target/robovm-dist-compiler-*-nodep.jar 2> /dev/null)
+        COMPILER_JAR=$(ls "$ROBOVM_DEV_ROOT"/../robovm-dist/compiler/target/robovm-dist-compiler*.jar | egrep -v 'javadoc|sources' 2> /dev/null)
     fi
 fi
 if [ ! -f "$COMPILER_JAR" ]; then

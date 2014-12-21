@@ -101,7 +101,7 @@ public class IOSTarget extends AbstractTarget {
     }
 
     public static boolean isDeviceArch(Arch arch) {
-        return arch == Arch.thumbv7;
+        return arch == Arch.thumbv7 || arch == Arch.arm64;
     }
 
     public List<SDK> getSDKs() {

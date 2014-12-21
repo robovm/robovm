@@ -55,7 +55,7 @@ class raw_java_ostream : public raw_ostream {
   jobject m_target;
   uint64_t m_pos;
 
-  virtual void write_impl(const char *Ptr, size_t Size) LLVM_OVERRIDE {
+  virtual void write_impl(const char *Ptr, size_t Size) {
     JNIEnv *env = this->m_env;
     if (env->ExceptionCheck()) return;
 
@@ -92,7 +92,7 @@ class raw_java_ostream : public raw_ostream {
 
     m_pos += Size;
   }
-  virtual uint64_t current_pos() const LLVM_OVERRIDE { return m_pos; }
+  virtual uint64_t current_pos() const { return m_pos; }
 public:
   explicit raw_java_ostream(JNIEnv *env, jobject target) : m_env(env), m_target(target), m_pos(0) {}
   ~raw_java_ostream() {}
@@ -118,54 +118,6 @@ LLVMTargetRef LLVMLookupTarget(const char *Triple, char **ErrorMessage) {
     return NULL;
   }
   return wrap(TheTarget);
-}
-
-LLVMBool LLVMTargetMachineHasMCRelaxAll(LLVMTargetMachineRef T) {
-    return unwrap(T)->hasMCRelaxAll();
-}
-
-void LLVMTargetMachineSetMCRelaxAll(LLVMTargetMachineRef T, LLVMBool Value) {
-    unwrap(T)->setMCRelaxAll(Value != 0);
-}
-
-LLVMBool LLVMTargetMachineHasMCSaveTempLabels(LLVMTargetMachineRef T) {
-    return unwrap(T)->hasMCSaveTempLabels();
-}
-
-void LLVMTargetMachineSetMCSaveTempLabels(LLVMTargetMachineRef T, LLVMBool Value) {
-    unwrap(T)->setMCSaveTempLabels(Value != 0);
-}
-
-LLVMBool LLVMTargetMachineHasMCNoExecStack(LLVMTargetMachineRef T) {
-    return unwrap(T)->hasMCNoExecStack();
-}
-
-void LLVMTargetMachineSetMCNoExecStack(LLVMTargetMachineRef T, LLVMBool Value) {
-    unwrap(T)->setMCNoExecStack(Value != 0);
-}
-
-LLVMBool LLVMTargetMachineHasMCUseLoc(LLVMTargetMachineRef T) {
-    return unwrap(T)->hasMCUseLoc();
-}
-
-void LLVMTargetMachineSetMCUseLoc(LLVMTargetMachineRef T, LLVMBool Value) {
-    unwrap(T)->setMCUseLoc(Value != 0);
-}
-
-LLVMBool LLVMTargetMachineHasMCUseCFI(LLVMTargetMachineRef T) {
-    return unwrap(T)->hasMCUseCFI();
-}
-
-void LLVMTargetMachineSetMCUseCFI(LLVMTargetMachineRef T, LLVMBool Value) {
-    unwrap(T)->setMCUseCFI(Value != 0);
-}
-
-LLVMBool LLVMTargetMachineHasMCUseDwarfDirectory(LLVMTargetMachineRef T) {
-    return unwrap(T)->hasMCUseDwarfDirectory();
-}
-
-void LLVMTargetMachineSetMCUseDwarfDirectory(LLVMTargetMachineRef T, LLVMBool Value) {
-    unwrap(T)->setMCUseDwarfDirectory(Value != 0);
 }
 
 //Reloc::Model getRelocationModel() const;
@@ -249,9 +201,6 @@ void LLVMTargetOptionsSetEnableFastISel(LLVMTargetOptionsRef O, LLVMBool V) { un
 LLVMBool LLVMTargetOptionsGetPositionIndependentExecutable(LLVMTargetOptionsRef O) { return (LLVMBool) unwrap(O)->PositionIndependentExecutable; }
 void LLVMTargetOptionsSetPositionIndependentExecutable(LLVMTargetOptionsRef O, LLVMBool V) { unwrap(O)->PositionIndependentExecutable = V; }
 
-LLVMBool LLVMTargetOptionsGetEnableSegmentedStacks(LLVMTargetOptionsRef O) { return (LLVMBool) unwrap(O)->EnableSegmentedStacks; }
-void LLVMTargetOptionsSetEnableSegmentedStacks(LLVMTargetOptionsRef O, LLVMBool V) { unwrap(O)->EnableSegmentedStacks = V; }
-
 LLVMBool LLVMTargetOptionsGetUseInitArray(LLVMTargetOptionsRef O) { return (LLVMBool) unwrap(O)->UseInitArray; }
 void LLVMTargetOptionsSetUseInitArray(LLVMTargetOptionsRef O, LLVMBool V) { unwrap(O)->UseInitArray = V; }
 
@@ -297,27 +246,28 @@ int LLVMTargetMachineAssembleToOutputStream(LLVMTargetMachineRef TM, LLVMMemoryB
   // it later.
 //  SrcMgr.setIncludeDirs(IncludeDirs);
 
-  OwningPtr<MCRegisterInfo> MRI(TheTarget->createMCRegInfo(TripleName));
-  OwningPtr<MCAsmInfo> MAI(TheTarget->createMCAsmInfo(*MRI, TripleName));
-  OwningPtr<MCObjectFileInfo> MOFI(new MCObjectFileInfo());
+  std::unique_ptr<MCRegisterInfo> MRI(TheTarget->createMCRegInfo(TripleName));
+  std::unique_ptr<MCAsmInfo> MAI(TheTarget->createMCAsmInfo(*MRI, TripleName));
+  std::unique_ptr<MCObjectFileInfo> MOFI(new MCObjectFileInfo());
   MCContext Ctx(MAI.get(), MRI.get(), MOFI.get(), &SrcMgr);
   MOFI->InitMCObjectFileInfo(TripleName, RelocModel, CMModel, Ctx);
 
-  OwningPtr<MCInstrInfo> MCII(TheTarget->createMCInstrInfo());
-  OwningPtr<MCSubtargetInfo> STI(TheTarget->createMCSubtargetInfo(TripleName, MCPU, FeaturesStr));
+  std::unique_ptr<MCInstrInfo> MCII(TheTarget->createMCInstrInfo());
+  std::unique_ptr<MCSubtargetInfo> STI(TheTarget->createMCSubtargetInfo(TripleName, MCPU, FeaturesStr));
 
   raw_java_ostream& Out = *((raw_java_ostream*) JOStream);
 
-  OwningPtr<MCStreamer> Str;
+  std::unique_ptr<MCStreamer> Str;
   MCCodeEmitter *CE = TheTarget->createMCCodeEmitter(*MCII, *MRI, *STI, Ctx);
   MCAsmBackend *MAB = TheTarget->createMCAsmBackend(*MRI, TripleName, MCPU);
   Str.reset(TheTarget->createMCObjectStreamer(TripleName, Ctx, *MAB,
-                                              Out, CE, RelaxAll != 0,
+                                              Out, CE, *STI, RelaxAll != 0,
                                               NoExecStack != 0));
 
 
-  OwningPtr<MCAsmParser> Parser(createMCAsmParser(SrcMgr, Ctx, *Str, *MAI));
-  OwningPtr<MCTargetAsmParser> TAP(TheTarget->createMCAsmParser(*STI, *Parser, *MCII));
+  MCTargetOptions MCOptions;
+  std::unique_ptr<MCAsmParser> Parser(createMCAsmParser(SrcMgr, Ctx, *Str, *MAI));
+  std::unique_ptr<MCTargetAsmParser> TAP(TheTarget->createMCAsmParser(*STI, *Parser, *MCII, MCOptions));
   if (!TAP) {
     *ErrorMessage = strdup("this target does not support assembly parsing");
     goto done;
@@ -355,7 +305,8 @@ static LLVMBool LLVMTargetMachineEmit(LLVMTargetMachineRef T, LLVMModuleRef M,
     *ErrorMessage = strdup(error.c_str());
     return true;
   }
-  pass.add(new DataLayout(*td));
+  Mod->setDataLayout(td);
+  pass.add(new DataLayoutPass(Mod));
 
   TargetMachine::CodeGenFileType ft;
   switch (codegen) {
@@ -409,7 +360,7 @@ void LLVMGetLineInfoForAddressRange(LLVMObjectFileRef O, uint64_t Address, uint6
     for (int i = 0; i < lineTable.size(); i++) {
       std::pair<uint64_t, DILineInfo> p = lineTable[i];
       (*Out)[i * 2] = p.first;
-      (*Out)[i * 2 + 1] = p.second.getLine();
+      (*Out)[i * 2 + 1] = p.second.Line;
     }
   }
 }

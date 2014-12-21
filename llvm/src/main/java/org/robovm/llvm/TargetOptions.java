@@ -159,14 +159,6 @@ public class TargetOptions {
         LLVM.TargetOptionsSetPositionIndependentExecutable(ref, value);
     }
 
-    public boolean getEnableSegmentedStacks() {
-        return LLVM.TargetOptionsGetEnableSegmentedStacks(ref);
-    }
-
-    public void setEnableSegmentedStacks(boolean value) {
-        LLVM.TargetOptionsSetEnableSegmentedStacks(ref, value);
-    }
-
     public boolean getUseInitArray() {
         return LLVM.TargetOptionsGetUseInitArray(ref);
     }

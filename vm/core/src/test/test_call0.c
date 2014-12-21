@@ -18,6 +18,9 @@
 #include "../private.h"
 #include "CuTest.h"
 
+int main(int argc, char* argv[]) __attribute__ ((weak));
+int runTests(int argc, char* argv[]);
+
 void* rvmAllocateMemory(Env* env, size_t size) {
     return calloc(1, size);
 }
@@ -327,12 +330,62 @@ static void testCall0StackAlignment1(CuTest* tc) {
 }
 static void testCall0StackAlignment2(CuTest* tc) {
 }
+#elif defined(RVM_ARM64) && defined(DARWIN)
+/*
+ * On ARM64 Darwin the stack must be 16-byte aligned before a function call. 
+ * This means that (sp & 0xf) == 0 must be true when that function is entered (a 
+ * separate register (lr) is used to store the return address so the stack is
+ * not involved).
+ */
+asm("_stackPointer:    \n\
+        mov x0, sp     \n\
+        ret            \n\
+");
+void* stackPointer(void);
+static void testCall0StackAlignment1(CuTest* tc) {
+    // The first 8 ptr/int values are passed in registers. We need to push
+    // at least 9 ptrs to start using the stack. 
+    CallInfo* ci = CALL0_ALLOCATE_CALL_INFO(NULL, stackPointer, 9, 0, 0, 0, 0);
+    CuAssertPtrNotNull(tc, ci);
+    call0AddPtr(ci, (void*) 1);
+    call0AddPtr(ci, (void*) 2);
+    call0AddPtr(ci, (void*) 3);
+    call0AddPtr(ci, (void*) 4);
+    call0AddPtr(ci, (void*) 5);
+    call0AddPtr(ci, (void*) 6);
+    call0AddPtr(ci, (void*) 7);
+    call0AddPtr(ci, (void*) 8);
+    call0AddPtr(ci, (void*) 9);
+
+    void* (*f)(CallInfo*) = (void* (*)(CallInfo*)) _call0;
+    void* result = f(ci);
+    CuAssertTrue(tc, (((ptrdiff_t) result) & 0xf) == 0);
+}
+static void testCall0StackAlignment2(CuTest* tc) {
+    // The first 8 ptr/int values are passed in registers. We need to push
+    // at least 9 ptrs to start using the stack. 
+    CallInfo* ci = CALL0_ALLOCATE_CALL_INFO(NULL, stackPointer, 10, 0, 0, 0, 0);
+    CuAssertPtrNotNull(tc, ci);
+    call0AddPtr(ci, (void*) 1);
+    call0AddPtr(ci, (void*) 2);
+    call0AddPtr(ci, (void*) 3);
+    call0AddPtr(ci, (void*) 4);
+    call0AddPtr(ci, (void*) 5);
+    call0AddPtr(ci, (void*) 6);
+    call0AddPtr(ci, (void*) 7);
+    call0AddPtr(ci, (void*) 8);
+    call0AddPtr(ci, (void*) 9);
+    call0AddPtr(ci, (void*) 10);
+
+    void* (*f)(CallInfo*) = (void* (*)(CallInfo*)) _call0;
+    void* result = f(ci);
+    CuAssertTrue(tc, (((ptrdiff_t) result) & 0xf) == 0);
+}
 #else
 #error No stack alignment tests for this platform!
 #endif
 
 
-int main(int argc, char* argv[]);
 void* findFunctionAt(void* pc);
 static jboolean unwindCallStack(UnwindContext* ctx, void* d) {
     jint i;
@@ -363,22 +416,24 @@ void testCall0Unwind(CuTest* tc) {
     CuAssertPtrEquals(tc, testCall0Unwind, callers[2]);
     CuAssertPtrEquals(tc, CuTestRun, callers[3]);
     CuAssertPtrEquals(tc, CuSuiteRun, callers[4]);
-    CuAssertPtrEquals(tc, main, callers[5]);
-    CuAssertPtrEquals(tc, NULL, callers[6]);
+    CuAssertPtrEquals(tc, runTests, callers[5]);
+    CuAssertPtrEquals(tc, main, callers[6]);
+    CuAssertPtrEquals(tc, NULL, callers[7]);
 }
 void* findFunctionAt(void* pc) {
-    void* candidates[6] = {0};
+    void* candidates[7] = {0};
     candidates[0] = testCall0Unwind_target;
     candidates[1] = _call0;
     candidates[2] = testCall0Unwind;
     candidates[3] = CuTestRun;
     candidates[4] = CuSuiteRun;
-    candidates[5] = main;
+    candidates[5] = runTests;
+    candidates[6] = main;
 
     void* match = NULL;
     jint delta = 0x7fffffff;
     jint i;
-    for (i = 0; i < 6; i++) {
+    for (i = 0; i < 7; i++) {
         if (candidates[i] < pc && pc - candidates[i] < delta) {
             match = candidates[i];
             delta = pc - candidates[i];
@@ -388,7 +443,7 @@ void* findFunctionAt(void* pc) {
 }
 
 
-int main(int argc, char* argv[]) {
+int runTests(int argc, char* argv[]) {
     CuSuite* suite = CuSuiteNew();
 
     if (argc < 2 || !strcmp(argv[1], "testCall0ReturnByte")) SUITE_ADD_TEST(suite, testCall0ReturnByte);
@@ -415,3 +470,6 @@ int main(int argc, char* argv[]) {
     return suite->failCount;
 }
 
+int main(int argc, char* argv[]) {
+    return runTests(argc, argv);
+}

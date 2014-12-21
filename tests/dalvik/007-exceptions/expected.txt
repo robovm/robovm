@@ -1,7 +1,8 @@
 Got an NPE: second throw
 java.lang.NullPointerException: second throw
-	at Main.catchAndRethrow(Main.java)
-	at Main.main(Main.java)
+	at Main.catchAndRethrow(Main.java:36)
+	at Main.main(Main.java:23)
 Caused by: java.lang.NullPointerException: first throw
-	at Main.throwNullPointerException(Main.java)
-	... 2 more
+	at Main.throwNullPointerException(Main.java:43)
+	at Main.catchAndRethrow(Main.java:33)
+	... 1 more

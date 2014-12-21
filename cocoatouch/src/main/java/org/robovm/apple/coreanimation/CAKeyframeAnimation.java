@@ -31,6 +31,7 @@ import org.robovm.apple.foundation.*;
 import org.robovm.apple.coreimage.*;
 import org.robovm.apple.coretext.*;
 import org.robovm.apple.opengles.*;
+import org.robovm.apple.metal.*;
 /*</imports>*/
 
 /*<javadoc>*/
@@ -50,9 +51,9 @@ import org.robovm.apple.opengles.*;
     /*</constructors>*/
     /*<properties>*/
     @Property(selector = "values")
-    public native NSArray<?> getValues();
+    public native NSArray<NSObject> getValues();
     @Property(selector = "setValues:")
-    public native void setValues(NSArray<?> v);
+    public native void setValues(NSArray<NSObject> v);
     @Property(selector = "path")
     public native CGPath getPath();
     @Property(selector = "setPath:")
@@ -66,9 +67,9 @@ import org.robovm.apple.opengles.*;
     @Property(selector = "setTimingFunctions:")
     public native void setTimingFunctions(NSArray<CAMediaTimingFunction> v);
     @Property(selector = "calculationMode")
-    public native NSString getCalculationMode();
+    public native CAAnimationCalculationMode getCalculationMode();
     @Property(selector = "setCalculationMode:")
-    public native void setCalculationMode(NSString v);
+    public native void setCalculationMode(CAAnimationCalculationMode v);
     @Property(selector = "tensionValues")
     public native NSArray<NSNumber> getTensionValues();
     @Property(selector = "setTensionValues:")
@@ -82,9 +83,9 @@ import org.robovm.apple.opengles.*;
     @Property(selector = "setBiasValues:")
     public native void setBiasValues(NSArray<NSNumber> v);
     @Property(selector = "rotationMode")
-    public native NSString getRotationMode();
+    public native CAAnimationRotationMode getRotationMode();
     @Property(selector = "setRotationMode:")
-    public native void setRotationMode(NSString v);
+    public native void setRotationMode(CAAnimationRotationMode v);
     /*</properties>*/
     /*<members>*//*</members>*/
 

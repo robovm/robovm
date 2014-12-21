@@ -31,6 +31,7 @@ import org.robovm.apple.foundation.*;
 import org.robovm.apple.coreimage.*;
 import org.robovm.apple.coretext.*;
 import org.robovm.apple.opengles.*;
+import org.robovm.apple.metal.*;
 /*</imports>*/
 
 /*<javadoc>*/
@@ -50,7 +51,7 @@ import org.robovm.apple.opengles.*;
     /*</properties>*/
     /*<methods>*/
     @Method(selector = "runActionForKey:object:arguments:")
-    void runAction(String event, NSObject anObject, NSDictionary<NSString, ?> dict);
+    void runAction(String event, NSObject anObject, @org.robovm.rt.bro.annotation.Marshaler(NSDictionary.AsStringMapMarshaler.class) Map<String, NSObject> dict);
     /*</methods>*/
     /*<adapter>*/
     /*</adapter>*/

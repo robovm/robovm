@@ -31,6 +31,7 @@ import org.robovm.apple.foundation.*;
 import org.robovm.apple.coreimage.*;
 import org.robovm.apple.coretext.*;
 import org.robovm.apple.opengles.*;
+import org.robovm.apple.metal.*;
 /*</imports>*/
 
 /*<javadoc>*/
@@ -206,6 +207,12 @@ import org.robovm.apple.opengles.*;
     /**
      * @since Available in iOS 2.0 and later.
      */
+    @GlobalValue(symbol="CATransform3DIdentity", optional=true)
+    public static native @ByVal CATransform3D Identity();
+    
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
     public boolean isIdentity() { return isIdentity(this); }
     @Bridge(symbol="CATransform3DIsIdentity", optional=true)
     private static native boolean isIdentity(@ByVal CATransform3D t);
@@ -219,17 +226,17 @@ import org.robovm.apple.opengles.*;
      * @since Available in iOS 2.0 and later.
      */
     @Bridge(symbol="CATransform3DMakeTranslation", optional=true)
-    public static native @ByVal CATransform3D makeTranslation(@MachineSizedFloat double tx, @MachineSizedFloat double ty, @MachineSizedFloat double tz);
+    public static native @ByVal CATransform3D createTranslation(@MachineSizedFloat double tx, @MachineSizedFloat double ty, @MachineSizedFloat double tz);
     /**
      * @since Available in iOS 2.0 and later.
      */
     @Bridge(symbol="CATransform3DMakeScale", optional=true)
-    public static native @ByVal CATransform3D makeScale(@MachineSizedFloat double sx, @MachineSizedFloat double sy, @MachineSizedFloat double sz);
+    public static native @ByVal CATransform3D createScale(@MachineSizedFloat double sx, @MachineSizedFloat double sy, @MachineSizedFloat double sz);
     /**
      * @since Available in iOS 2.0 and later.
      */
     @Bridge(symbol="CATransform3DMakeRotation", optional=true)
-    public static native @ByVal CATransform3D makeRotation(@MachineSizedFloat double angle, @MachineSizedFloat double x, @MachineSizedFloat double y, @MachineSizedFloat double z);
+    public static native @ByVal CATransform3D createRotation(@MachineSizedFloat double angle, @MachineSizedFloat double x, @MachineSizedFloat double y, @MachineSizedFloat double z);
     /**
      * @since Available in iOS 2.0 and later.
      */
@@ -264,7 +271,7 @@ import org.robovm.apple.opengles.*;
      * @since Available in iOS 2.0 and later.
      */
     @Bridge(symbol="CATransform3DMakeAffineTransform", optional=true)
-    public static native @ByVal CATransform3D makeAffineTransform(@ByVal CGAffineTransform m);
+    public static native @ByVal CATransform3D createAffineTransform(@ByVal CGAffineTransform m);
     /**
      * @since Available in iOS 2.0 and later.
      */

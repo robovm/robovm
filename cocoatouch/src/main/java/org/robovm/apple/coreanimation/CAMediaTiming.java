@@ -31,6 +31,7 @@ import org.robovm.apple.foundation.*;
 import org.robovm.apple.coreimage.*;
 import org.robovm.apple.coretext.*;
 import org.robovm.apple.opengles.*;
+import org.robovm.apple.metal.*;
 /*</imports>*/
 
 /*<javadoc>*/
@@ -75,9 +76,9 @@ import org.robovm.apple.opengles.*;
     @Property(selector = "setAutoreverses:")
     void setAutoreverses(boolean v);
     @Property(selector = "fillMode")
-    NSString getFillMode();
+    CAFillMode getFillMode();
     @Property(selector = "setFillMode:")
-    void setFillMode(NSString v);
+    void setFillMode(CAFillMode v);
     /*</properties>*/
     /*<methods>*/
     

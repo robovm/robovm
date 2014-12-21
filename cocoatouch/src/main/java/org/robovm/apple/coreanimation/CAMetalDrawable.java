@@ -38,8 +38,8 @@ import org.robovm.apple.metal.*;
 
 /*</javadoc>*/
 /*<annotations>*//*</annotations>*/
-/*<visibility>*/public/*</visibility>*/ interface /*<name>*/CALayerDelegate/*</name>*/ 
-    /*<implements>*/extends NSObjectProtocol/*</implements>*/ {
+/*<visibility>*/public/*</visibility>*/ interface /*<name>*/CAMetalDrawable/*</name>*/ 
+    /*<implements>*/extends MTLDrawable/*</implements>*/ {
 
     /*<ptr>*/
     /*</ptr>*/
@@ -47,17 +47,13 @@ import org.robovm.apple.metal.*;
     /*</bind>*/
     /*<constants>*//*</constants>*/
     /*<properties>*/
-    
+    @Property(selector = "texture")
+    MTLTexture getTexture();
+    @Property(selector = "layer")
+    CAMetalLayer getLayer();
     /*</properties>*/
     /*<methods>*/
-    @Method(selector = "displayLayer:")
-    void displayLayer(CALayer layer);
-    @Method(selector = "drawLayer:inContext:")
-    void drawLayer(CALayer layer, CGContext ctx);
-    @Method(selector = "layoutSublayersOfLayer:")
-    void layoutSublayers(CALayer layer);
-    @Method(selector = "actionForLayer:forKey:")
-    CAAction getAction(CALayer layer, String event);
+    
     /*</methods>*/
     /*<adapter>*/
     /*</adapter>*/

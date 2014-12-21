@@ -31,6 +31,7 @@ import org.robovm.apple.foundation.*;
 import org.robovm.apple.coreimage.*;
 import org.robovm.apple.coretext.*;
 import org.robovm.apple.opengles.*;
+import org.robovm.apple.metal.*;
 /*</imports>*/
 
 /*<javadoc>*/
@@ -58,9 +59,9 @@ import org.robovm.apple.opengles.*;
     @Property(selector = "setFillColor:")
     public native void setFillColor(CGColor v);
     @Property(selector = "fillRule")
-    public native NSString getFillRule();
+    public native CAShapeFillRule getFillRule();
     @Property(selector = "setFillRule:")
-    public native void setFillRule(NSString v);
+    public native void setFillRule(CAShapeFillRule v);
     @Property(selector = "strokeColor")
     public native CGColor getStrokeColor();
     @Property(selector = "setStrokeColor:")
@@ -82,13 +83,13 @@ import org.robovm.apple.opengles.*;
     @Property(selector = "setMiterLimit:")
     public native void setMiterLimit(@MachineSizedFloat double v);
     @Property(selector = "lineCap")
-    public native NSString getLineCap();
+    public native CALineCap getLineCap();
     @Property(selector = "setLineCap:")
-    public native void setLineCap(NSString v);
+    public native void setLineCap(CALineCap v);
     @Property(selector = "lineJoin")
-    public native NSString getLineJoin();
+    public native CALineJoin getLineJoin();
     @Property(selector = "setLineJoin:")
-    public native void setLineJoin(NSString v);
+    public native void setLineJoin(CALineJoin v);
     @Property(selector = "lineDashPhase")
     public native @MachineSizedFloat double getLineDashPhase();
     @Property(selector = "setLineDashPhase:")

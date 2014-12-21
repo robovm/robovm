@@ -31,6 +31,7 @@ import org.robovm.apple.foundation.*;
 import org.robovm.apple.coreimage.*;
 import org.robovm.apple.coretext.*;
 import org.robovm.apple.opengles.*;
+import org.robovm.apple.metal.*;
 /*</imports>*/
 
 /*<javadoc>*/
@@ -41,11 +42,27 @@ import org.robovm.apple.opengles.*;
     extends /*<extends>*/NSObject/*</extends>*/ 
     /*<implements>*//*</implements>*/ {
 
+    public interface UpdateListener {
+        void onUpdate(CADisplayLink displayLink);
+    }
+    
+    private static final String LISTENER_KEY = "listener";
+    private static final Selector handleUpdate = Selector.register("handleUpdate");
+    private static class ListenerWrapper extends NSObject {
+        private final UpdateListener listener;
+        private ListenerWrapper(UpdateListener listener) {
+            this.listener = listener;
+        }
+        @Method(selector = "handleUpdate")
+        private void handleUpdate(CADisplayLink displayLink) {
+            listener.onUpdate(displayLink);
+        }
+    }
+    
     /*<ptr>*/public static class CADisplayLinkPtr extends Ptr<CADisplayLink, CADisplayLinkPtr> {}/*</ptr>*/
     /*<bind>*/static { ObjCRuntime.bind(CADisplayLink.class); }/*</bind>*/
     /*<constants>*//*</constants>*/
     /*<constructors>*/
-    public CADisplayLink() {}
     protected CADisplayLink(SkipInit skipInit) { super(skipInit); }
     /*</constructors>*/
     /*<properties>*/
@@ -63,14 +80,36 @@ import org.robovm.apple.opengles.*;
     public native void setFrameInterval(@MachineSizedSInt long v);
     /*</properties>*/
     /*<members>*//*</members>*/
+    public void addToRunLoop(NSRunLoop runloop, NSRunLoopMode mode) {
+        addToRunLoop(runloop, mode.value());
+    }
+    public void removeFromRunLoop(NSRunLoop runloop, NSRunLoopMode mode) {
+        removeFromRunLoop(runloop, mode.value());
+    }
+    
+    public static CADisplayLink create(UpdateListener listener) {
+        if (listener == null) {
+            throw new NullPointerException("listener");
+        }
+        ListenerWrapper l = new ListenerWrapper(listener);
+        CADisplayLink result = create(l, handleUpdate);
+        result.setAssociatedObject(LISTENER_KEY, l);
+        return result;
+    }
+    
+    @Override
+    protected void dispose(boolean finalizing) {
+        setAssociatedObject(LISTENER_KEY, null);
+        super.dispose(finalizing);
+    }
     /*<methods>*/
     @Method(selector = "addToRunLoop:forMode:")
-    public native void addToRunLoop(NSRunLoop runloop, NSString mode);
+    public native void addToRunLoop(NSRunLoop runloop, String mode);
     @Method(selector = "removeFromRunLoop:forMode:")
-    public native void removeFromRunLoop(NSRunLoop runloop, NSString mode);
+    public native void removeFromRunLoop(NSRunLoop runloop, String mode);
     @Method(selector = "invalidate")
     public native void invalidate();
     @Method(selector = "displayLinkWithTarget:selector:")
-    public static native CADisplayLink create(NSObject target, Selector sel);
+    protected static native CADisplayLink create(NSObject target, Selector sel);
     /*</methods>*/
 }

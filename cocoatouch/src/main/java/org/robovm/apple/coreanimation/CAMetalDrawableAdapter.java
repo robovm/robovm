@@ -35,30 +35,26 @@ import org.robovm.apple.metal.*;
 /*</imports>*/
 
 /*<javadoc>*/
-
 /*</javadoc>*/
 /*<annotations>*//*</annotations>*/
-/*<visibility>*/public/*</visibility>*/ interface /*<name>*/CALayerDelegate/*</name>*/ 
-    /*<implements>*/extends NSObjectProtocol/*</implements>*/ {
+/*<visibility>*/public/*</visibility>*/ class /*<name>*/CAMetalDrawableAdapter/*</name>*/ 
+    extends /*<extends>*/MTLDrawableAdapter/*</extends>*/ 
+    /*<implements>*/implements CAMetalDrawable/*</implements>*/ {
 
     /*<ptr>*/
     /*</ptr>*/
     /*<bind>*/
     /*</bind>*/
     /*<constants>*//*</constants>*/
+    /*<constructors>*//*</constructors>*/
     /*<properties>*/
-    
+    @NotImplemented("texture")
+    public MTLTexture getTexture() { throw new UnsupportedOperationException(); }
+    @NotImplemented("layer")
+    public CAMetalLayer getLayer() { throw new UnsupportedOperationException(); }
     /*</properties>*/
+    /*<members>*//*</members>*/
     /*<methods>*/
-    @Method(selector = "displayLayer:")
-    void displayLayer(CALayer layer);
-    @Method(selector = "drawLayer:inContext:")
-    void drawLayer(CALayer layer, CGContext ctx);
-    @Method(selector = "layoutSublayersOfLayer:")
-    void layoutSublayers(CALayer layer);
-    @Method(selector = "actionForLayer:forKey:")
-    CAAction getAction(CALayer layer, String event);
+    
     /*</methods>*/
-    /*<adapter>*/
-    /*</adapter>*/
 }

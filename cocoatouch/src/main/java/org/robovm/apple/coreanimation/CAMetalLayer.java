@@ -35,37 +35,49 @@ import org.robovm.apple.metal.*;
 /*</imports>*/
 
 /*<javadoc>*/
-
+/**
+ * @since Available in iOS 8.0 and later.
+ */
 /*</javadoc>*/
 /*<annotations>*/@Library("QuartzCore") @NativeClass/*</annotations>*/
-/*<visibility>*/public/*</visibility>*/ class /*<name>*/CATiledLayer/*</name>*/ 
+/*<visibility>*/public/*</visibility>*/ class /*<name>*/CAMetalLayer/*</name>*/ 
     extends /*<extends>*/CALayer/*</extends>*/ 
     /*<implements>*//*</implements>*/ {
 
-    /*<ptr>*/public static class CATiledLayerPtr extends Ptr<CATiledLayer, CATiledLayerPtr> {}/*</ptr>*/
-    /*<bind>*/static { ObjCRuntime.bind(CATiledLayer.class); }/*</bind>*/
+    /*<ptr>*/public static class CAMetalLayerPtr extends Ptr<CAMetalLayer, CAMetalLayerPtr> {}/*</ptr>*/
+    /*<bind>*/static { ObjCRuntime.bind(CAMetalLayer.class); }/*</bind>*/
     /*<constants>*//*</constants>*/
     /*<constructors>*/
-    public CATiledLayer() {}
-    protected CATiledLayer(SkipInit skipInit) { super(skipInit); }
+    public CAMetalLayer() {}
+    protected CAMetalLayer(SkipInit skipInit) { super(skipInit); }
     /*</constructors>*/
     /*<properties>*/
-    @Property(selector = "levelsOfDetail")
-    public native @MachineSizedUInt long getLevelsOfDetail();
-    @Property(selector = "setLevelsOfDetail:")
-    public native void setLevelsOfDetail(@MachineSizedUInt long v);
-    @Property(selector = "levelsOfDetailBias")
-    public native @MachineSizedUInt long getLevelsOfDetailBias();
-    @Property(selector = "setLevelsOfDetailBias:")
-    public native void setLevelsOfDetailBias(@MachineSizedUInt long v);
-    @Property(selector = "tileSize")
-    public native @ByVal CGSize getTileSize();
-    @Property(selector = "setTileSize:")
-    public native void setTileSize(@ByVal CGSize v);
+    @Property(selector = "device")
+    public native MTLDevice getDevice();
+    @Property(selector = "setDevice:")
+    public native void setDevice(MTLDevice v);
+    @Property(selector = "pixelFormat")
+    public native MTLPixelFormat getPixelFormat();
+    @Property(selector = "setPixelFormat:")
+    public native void setPixelFormat(MTLPixelFormat v);
+    @Property(selector = "framebufferOnly")
+    public native boolean isFramebufferOnly();
+    @Property(selector = "setFramebufferOnly:")
+    public native void setFramebufferOnly(boolean v);
+    @Property(selector = "drawableSize")
+    public native @ByVal CGSize getDrawableSize();
+    @Property(selector = "setDrawableSize:")
+    public native void setDrawableSize(@ByVal CGSize v);
+    @Property(selector = "presentsWithTransaction")
+    public native boolean isPresentsWithTransaction();
+    @Property(selector = "setPresentsWithTransaction:")
+    public native void setPresentsWithTransaction(boolean v);
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
-    @Method(selector = "fadeDuration")
-    public static native double getFadeDuration();
+    @Method(selector = "nextDrawable")
+    public native CAMetalDrawable nextDrawable();
+    @Method(selector = "newDrawable")
+    public native CAMetalDrawable newDrawable();
     /*</methods>*/
 }

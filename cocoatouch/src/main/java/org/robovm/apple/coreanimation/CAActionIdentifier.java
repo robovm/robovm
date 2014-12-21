@@ -35,30 +35,34 @@ import org.robovm.apple.metal.*;
 /*</imports>*/
 
 /*<javadoc>*/
-
 /*</javadoc>*/
-/*<annotations>*//*</annotations>*/
-/*<visibility>*/public/*</visibility>*/ interface /*<name>*/CALayerDelegate/*</name>*/ 
-    /*<implements>*/extends NSObjectProtocol/*</implements>*/ {
+/*<annotations>*/@Library("QuartzCore")/*</annotations>*/
+/*<visibility>*/public/*</visibility>*/ class /*<name>*/CAActionIdentifier/*</name>*/ 
+    extends /*<extends>*/Object/*</extends>*/ 
+    /*<implements>*//*</implements>*/ {
 
     /*<ptr>*/
     /*</ptr>*/
-    /*<bind>*/
-    /*</bind>*/
+    /*<bind>*/static { Bro.bind(CAActionIdentifier.class); }/*</bind>*/
     /*<constants>*//*</constants>*/
-    /*<properties>*/
-    
-    /*</properties>*/
+    /*<constructors>*//*</constructors>*/
+    /*<properties>*//*</properties>*/
+    /*<members>*//*</members>*/
     /*<methods>*/
-    @Method(selector = "displayLayer:")
-    void displayLayer(CALayer layer);
-    @Method(selector = "drawLayer:inContext:")
-    void drawLayer(CALayer layer, CGContext ctx);
-    @Method(selector = "layoutSublayersOfLayer:")
-    void layoutSublayers(CALayer layer);
-    @Method(selector = "actionForLayer:forKey:")
-    CAAction getAction(CALayer layer, String event);
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
+    @GlobalValue(symbol="kCAOnOrderIn", optional=true)
+    public static native String OnOrderIn();
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
+    @GlobalValue(symbol="kCAOnOrderOut", optional=true)
+    public static native String OnOrderOut();
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
+    @GlobalValue(symbol="kCATransition", optional=true)
+    public static native String Transition();
     /*</methods>*/
-    /*<adapter>*/
-    /*</adapter>*/
 }

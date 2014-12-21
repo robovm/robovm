@@ -31,6 +31,7 @@ import org.robovm.apple.foundation.*;
 import org.robovm.apple.coreimage.*;
 import org.robovm.apple.coretext.*;
 import org.robovm.apple.opengles.*;
+import org.robovm.apple.metal.*;
 /*</imports>*/
 
 /*<javadoc>*/
@@ -50,9 +51,9 @@ import org.robovm.apple.opengles.*;
     /*</constructors>*/
     /*<properties>*/
     @Property(selector = "string")
-    public native NSObject getString();
+    protected native @Pointer long getStringPtr();
     @Property(selector = "setString:")
-    public native void setString(NSObject v);
+    protected native void setStringPtr(@Pointer long v);
     @Property(selector = "font")
     protected native @Pointer long getFontPtr();
     @Property(selector = "setFont:")
@@ -70,16 +71,34 @@ import org.robovm.apple.opengles.*;
     @Property(selector = "setWrapped:")
     public native void setWrapped(boolean v);
     @Property(selector = "truncationMode")
-    public native NSString getTruncationMode();
+    public native CATextTruncationMode getTruncationMode();
     @Property(selector = "setTruncationMode:")
-    public native void setTruncationMode(NSString v);
+    public native void setTruncationMode(CATextTruncationMode v);
     @Property(selector = "alignmentMode")
-    public native NSString getAlignmentMode();
+    public native CATextAlignmentMode getAlignmentMode();
     @Property(selector = "setAlignmentMode:")
-    public native void setAlignmentMode(NSString v);
+    public native void setAlignmentMode(CATextAlignmentMode v);
     /*</properties>*/
     /*<members>*//*</members>*/
 
+    // String is either an NSString, or an NSAttributedString
+    public Object getString() {
+        long ptr = getStringPtr();
+        if (ptr == 0) {
+            return null;
+        }
+        NSObject obj = NSObject.Marshaler.toObject(NSObject.class, ptr, 0);
+        if (obj instanceof NSString) {
+            return obj.toString();
+        }
+        return obj;
+    }
+    public void setString(String string) {
+        setStringPtr(new NSString(string).getHandle());
+    }
+    public void setString(NSAttributedString string) {
+        setStringPtr(string.getHandle());
+    }
     // Font is either a CTFontRef, a CGFontRef, an instance of NSFont (OS X only), or an NSString naming the font.
     /**
      * Returns the value of the {@code font} property. Either a  {@link CTFont},

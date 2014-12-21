@@ -31,6 +31,7 @@ import org.robovm.apple.foundation.*;
 import org.robovm.apple.coreimage.*;
 import org.robovm.apple.coretext.*;
 import org.robovm.apple.opengles.*;
+import org.robovm.apple.metal.*;
 /*</imports>*/
 
 /*<javadoc>*/
@@ -52,8 +53,8 @@ import org.robovm.apple.opengles.*;
     
     /*</properties>*/
     /*<members>*//*</members>*/
-    public static void put(NSString key, NSObject value) {
-        put(value, key);
+    public static void set(CATransactionProperty key, NSObject value) {
+        set(value, key);
     }
     /*<methods>*/
     @Method(selector = "begin")
@@ -83,8 +84,8 @@ import org.robovm.apple.opengles.*;
     @Method(selector = "setCompletionBlock:")
     public static native void setCompletionBlock(@Block Runnable block);
     @Method(selector = "valueForKey:")
-    public static native NSObject get(NSString key);
+    public static native NSObject get(CATransactionProperty key);
     @Method(selector = "setValue:forKey:")
-    protected static native void put(NSObject anObject, NSString key);
+    protected static native void set(NSObject anObject, CATransactionProperty key);
     /*</methods>*/
 }

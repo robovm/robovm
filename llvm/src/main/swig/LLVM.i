@@ -227,6 +227,9 @@ typedef jlong uint64_t;
 %ignore LLVMInstallFatalErrorHandler;
 %ignore LLVMResetFatalErrorHandler;
 
+%ignore LLVMContextSetDiagnosticHandler;
+%ignore LLVMContextSetYieldCallback;
+
 // Prevent arguments named ContextRef to interfere with the type named ContextRef
 #define ContextRef contextRef
 

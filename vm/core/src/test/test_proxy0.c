@@ -18,7 +18,8 @@
 #include "../private.h"
 #include "CuTest.h"
 
-int main(int argc, char* argv[]);
+int main(int argc, char* argv[]) __attribute__ ((weak));
+int runTests(int argc, char* argv[]);
 
 void (*handler)(CallInfo*);
 void _rvmProxyHandler(CallInfo* ci) {
@@ -243,7 +244,6 @@ void testProxy0ManyArgsOfEach(CuTest* tc) {
 }
 
 
-int main(int argc, char* argv[]);
 void* findFunctionAt(void* pc);
 static jboolean unwindCallStack(UnwindContext* ctx, void* d) {
     jint i;
@@ -274,23 +274,25 @@ void testProxy0Unwind(CuTest* tc) {
     CuAssertPtrEquals(tc, testProxy0Unwind, callers[3]);
     CuAssertPtrEquals(tc, CuTestRun, callers[4]);
     CuAssertPtrEquals(tc, CuSuiteRun, callers[5]);
-    CuAssertPtrEquals(tc, main, callers[6]);
-    CuAssertPtrEquals(tc, NULL, callers[7]);
+    CuAssertPtrEquals(tc, runTests, callers[6]);
+    CuAssertPtrEquals(tc, main, callers[7]);
+    CuAssertPtrEquals(tc, NULL, callers[8]);
 }
 void* findFunctionAt(void* pc) {
-    void* candidates[7] = {0};
+    void* candidates[8] = {0};
     candidates[0] = testProxy0Unwind_handler;
     candidates[1] = _rvmProxyHandler;
     candidates[2] = _proxy0;
     candidates[3] = testProxy0Unwind;
     candidates[4] = CuTestRun;
     candidates[5] = CuSuiteRun;
-    candidates[6] = main;
+    candidates[6] = runTests;
+    candidates[7] = main;
 
     void* match = NULL;
     jint delta = 0x7fffffff;
     jint i;
-    for (i = 0; i < 7; i++) {
+    for (i = 0; i < 8; i++) {
         if (candidates[i] < pc && pc - candidates[i] < delta) {
             match = candidates[i];
             delta = pc - candidates[i];
@@ -300,7 +302,7 @@ void* findFunctionAt(void* pc) {
 }
 
 
-int main(int argc, char* argv[]) {
+int runTests(int argc, char* argv[]) {
     CuSuite* suite = CuSuiteNew();
 
     if (argc < 2 || !strcmp(argv[1], "testProxy0ReturnByte")) SUITE_ADD_TEST(suite, testProxy0ReturnByte);
@@ -325,3 +327,6 @@ int main(int argc, char* argv[]) {
     return suite->failCount;
 }
 
+int main(int argc, char* argv[]) {
+    return runTests(argc, argv);
+}

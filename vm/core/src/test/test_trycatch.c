@@ -17,6 +17,8 @@
 #include <string.h>
 #include "CuTest.h"
 
+int main(int argc, char* argv[]) __attribute__ ((weak));
+
 void testTrycatchEnterLeaveOnce(CuTest* tc) {
     Env env = {0};
     TrycatchContext ctx = {0};
@@ -110,8 +112,7 @@ void testTrycatchJumpNested(CuTest* tc) {
     CuAssertIntEquals(tc, 2, p3);
 }
 
-
-int main(int argc, char* argv[]) {
+int runTests(int argc, char* argv[]) {
     CuSuite* suite = CuSuiteNew();
 
     if (argc < 2 || !strcmp(argv[1], "testTrycatchEnterLeaveOnce")) SUITE_ADD_TEST(suite, testTrycatchEnterLeaveOnce);
@@ -131,3 +132,6 @@ int main(int argc, char* argv[]) {
     return suite->failCount;
 }
 
+int main(int argc, char* argv[]) {
+    return runTests(argc, argv);
+}

@@ -42,6 +42,8 @@ public enum OS {
             // and specifies that structs no larger than 4 bytes are returned
             // in r0.
             return size <= 4;
+        case arm64:
+            return true;
         case x86:
             // On Darwin structs of size 1, 2, 4 and 8 bytes are returned in eax:edx.
             // On Linux no structs are returned in registers.
@@ -85,6 +87,8 @@ public enum OS {
             return true;
         case thumbv7:
             return true;
+        case arm64:
+            return false;
         }
         throw new IllegalArgumentException("Unknown arch: " + arch);
     }
@@ -100,7 +104,7 @@ public enum OS {
      */
     public boolean useByvalForAggregateOfSize(Arch arch, int size) {
         /*
-         * On x86 and thumbv7 strcuts, regardless of size, are always passed by
+         * On x86 and thumbv7 structs, regardless of size, are always passed by
          * value on the stack or in registers by pushing the struct elements one
          * by one to the next available register/stack slot. This is what
          * happens when we use 'byval' on those platforms.
@@ -125,6 +129,9 @@ public enum OS {
         case thumbv7:
             // Always use byval.
             return true;
+        case arm64:
+            // Never use byval
+            return false;
         }
         throw new IllegalArgumentException("Unknown arch: " + arch);
     }

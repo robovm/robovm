@@ -10,6 +10,9 @@ typedefs: {}
 enums: {}
     
 classes:
+    ABPersonPredicateKeyPath:
+        extends: NSPredicateKeyPath
+
     ABNewPersonViewController: # DONE
         properties:
             'displayedPerson':
@@ -19,21 +22,19 @@ classes:
     ABPeoplePickerNavigationController: # DONE
         properties:
             'displayedProperties':
-                name: displayedProperties0
-                type: "NSArray<NSNumber>"
-                visibility: protected
+                type: '@org.robovm.rt.bro.annotation.Marshaler(ABProperty.AsListMarshaler.class) List<ABProperty>'
     ABPersonViewController: # DONE
         properties:
             'displayedPerson':
                 type: ABPerson
             'displayedProperties':
-                name: displayedProperties0
-                type: "NSArray<NSNumber>"
-                visibility: protected
+                type: '@org.robovm.rt.bro.annotation.Marshaler(ABProperty.AsListMarshaler.class) List<ABProperty>'
         methods:
             '-setHighlightedItemForProperty:withIdentifier:':
                 name: setHighlightedItem
-                visibility: protected
+                parameters:
+                    property:
+                        type: ABPersonProperty
     ABUnknownPersonViewController: # DONE
         properties:
             'displayedPerson':
@@ -61,6 +62,20 @@ protocols:
                 parameters:
                     person:
                         type: ABPerson
+                    property:
+                        type: ABProperty
+            '-peoplePickerNavigationController:didSelectPerson:':
+                name: didSelectPerson
+                parameters:
+                    person:
+                        type: ABPerson
+            '-peoplePickerNavigationController:didSelectPerson:property:identifier:':
+                name: didSelectPerson
+                parameters:
+                    person:
+                        type: ABPerson
+                    property:
+                        type: ABProperty
     ABPersonViewControllerDelegate: # DONE
         methods:
             '-personViewController:shouldPerformDefaultActionForPerson:property:identifier:':
@@ -68,6 +83,8 @@ protocols:
                 parameters:
                     person:
                         type: ABPerson
+                    property:
+                        type: ABProperty
     ABUnknownPersonViewControllerDelegate: # DONE
         methods:
             '-unknownPersonViewController:didResolveToPerson:':
@@ -80,28 +97,36 @@ protocols:
                 parameters:
                     person:
                         type: ABPerson
+                    property:
+                        type: ABProperty
 
 functions:
     AB(CreateString)WithAddressDictionary:
         class: ABAddressFormating
-        name: "#{g[0]}"
+        name: '#{g[0]}'
         parameters:
             address:
                 type: CFDictionary
 
     # Make sure we don't miss any functions if new ones are introduced in a later version
-    (AB.*):
+    (k?AB.*):
         class: AddressBookUI
-        name: "Function__#{g[0]}"
+        name: 'Function__#{g[0]}'
 
 values:
+    ABPerson(.*)Property:
+        class: ABPersonPredicateKeyPath
+        name: '#{g[0]}Value'
+        type: NSString
+        visibility: protected
+
     # Make sure we don't miss any values if new ones are introduced in a later version
-    (AB.*):
+    (k?AB.*):
         class: AddressBookUI
-        name: "Value__#{g[0]}"   
+        name: 'Value__#{g[0]}'
 
 constants:
     # Make sure we don't miss any constants if new ones are introduced in a later version
-    (AB.*):
+    (k?AB.*):
         class: AddressBookUI
-        name: "Constant__#{g[0]}"
+        name: 'Constant__#{g[0]}'

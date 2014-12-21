@@ -48,7 +48,7 @@ import org.robovm.apple.addressbook.*;
     /*</properties>*/
     /*<methods>*/
     @Method(selector = "personViewController:shouldPerformDefaultActionForPerson:property:identifier:")
-    boolean shouldPerformDefaultAction(ABPersonViewController personViewController, ABPerson person, int property, int identifier);
+    boolean shouldPerformDefaultAction(ABPersonViewController personViewController, ABPerson person, ABProperty property, int identifier);
     /*</methods>*/
     /*<adapter>*/
     /*</adapter>*/

@@ -48,38 +48,49 @@ import org.robovm.apple.addressbook.*;
     public ABPeoplePickerNavigationController() {}
     protected ABPeoplePickerNavigationController(SkipInit skipInit) { super(skipInit); }
     /*</constructors>*/
-    public List<ABPersonProperty> getDisplayedProperties() {
-        NSArray<NSNumber> p = getDisplayedProperties0();
-        List<ABPersonProperty> properties = new ArrayList<>();
-        if (p == null) return properties;
-        for (NSNumber property : p) {
-            properties.add(ABPersonProperty.valueOf(property.intValue()));
-        }
-        return properties;
-    }
-    public void setDisplayedProperties(ABPersonProperty...properties) {
-        setDisplayedProperties(Arrays.asList(properties));
-    }
-    public void setDisplayedProperties(List<ABPersonProperty> properties) {
-        NSMutableArray<NSNumber> p = new NSMutableArray<>();
-        for (ABPersonProperty property : properties) {
-            p.add(NSNumber.valueOf(property.value()));
-        }
-        setDisplayedProperties0(p);
-    }
     /*<properties>*/
     @Property(selector = "peoplePickerDelegate")
     public native ABPeoplePickerNavigationControllerDelegate getPeoplePickerDelegate();
     @Property(selector = "setPeoplePickerDelegate:", strongRef = true)
     public native void setPeoplePickerDelegate(ABPeoplePickerNavigationControllerDelegate v);
     @Property(selector = "displayedProperties")
-    protected native NSArray<NSNumber> getDisplayedProperties0();
+    public native @org.robovm.rt.bro.annotation.Marshaler(ABProperty.AsListMarshaler.class) List<ABProperty> getDisplayedProperties();
     @Property(selector = "setDisplayedProperties:")
-    protected native void setDisplayedProperties0(NSArray<NSNumber> v);
+    public native void setDisplayedProperties(@org.robovm.rt.bro.annotation.Marshaler(ABProperty.AsListMarshaler.class) List<ABProperty> v);
     @Property(selector = "addressBook")
     public native ABAddressBook getAddressBook();
     @Property(selector = "setAddressBook:")
     public native void setAddressBook(ABAddressBook v);
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @Property(selector = "predicateForEnablingPerson")
+    public native NSPredicate getPredicateForEnablingPerson();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @Property(selector = "setPredicateForEnablingPerson:")
+    public native void setPredicateForEnablingPerson(NSPredicate v);
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @Property(selector = "predicateForSelectionOfPerson")
+    public native NSPredicate getPredicateForSelectionOfPerson();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @Property(selector = "setPredicateForSelectionOfPerson:")
+    public native void setPredicateForSelectionOfPerson(NSPredicate v);
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @Property(selector = "predicateForSelectionOfProperty")
+    public native NSPredicate getPredicateForSelectionOfProperty();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @Property(selector = "setPredicateForSelectionOfProperty:")
+    public native void setPredicateForSelectionOfProperty(NSPredicate v);
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/

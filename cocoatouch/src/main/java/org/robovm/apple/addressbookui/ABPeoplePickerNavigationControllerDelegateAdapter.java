@@ -49,11 +49,31 @@ import org.robovm.apple.addressbook.*;
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @NotImplemented("peoplePickerNavigationController:didSelectPerson:")
+    public void didSelectPerson(ABPeoplePickerNavigationController peoplePicker, ABPerson person) { throw new UnsupportedOperationException(); }
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @NotImplemented("peoplePickerNavigationController:didSelectPerson:property:identifier:")
+    public void didSelectPerson(ABPeoplePickerNavigationController peoplePicker, ABPerson person, ABProperty property, int identifier) { throw new UnsupportedOperationException(); }
     @NotImplemented("peoplePickerNavigationControllerDidCancel:")
     public void didCancel(ABPeoplePickerNavigationController peoplePicker) { throw new UnsupportedOperationException(); }
+    /**
+     * @since Available in iOS 2.0 and later.
+     * @deprecated Deprecated in iOS 8.0.
+     */
+    @Deprecated
     @NotImplemented("peoplePickerNavigationController:shouldContinueAfterSelectingPerson:")
     public boolean shouldContinueAfterSelectingPerson(ABPeoplePickerNavigationController peoplePicker, ABPerson person) { throw new UnsupportedOperationException(); }
+    /**
+     * @since Available in iOS 2.0 and later.
+     * @deprecated Deprecated in iOS 8.0.
+     */
+    @Deprecated
     @NotImplemented("peoplePickerNavigationController:shouldContinueAfterSelectingPerson:property:identifier:")
-    public boolean shouldContinueAfterSelectingPerson(ABPeoplePickerNavigationController peoplePicker, ABPerson person, int property, int identifier) { throw new UnsupportedOperationException(); }
+    public boolean shouldContinueAfterSelectingPerson(ABPeoplePickerNavigationController peoplePicker, ABPerson person, ABProperty property, int identifier) { throw new UnsupportedOperationException(); }
     /*</methods>*/
 }

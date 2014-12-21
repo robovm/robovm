@@ -53,7 +53,7 @@ import org.robovm.apple.addressbook.*;
      * @since Available in iOS 3.0 and later.
      */
     @Method(selector = "unknownPersonViewController:shouldPerformDefaultActionForPerson:property:identifier:")
-    boolean shouldPerformDefaultAction(ABUnknownPersonViewController personViewController, ABPerson person, int property, int identifier);
+    boolean shouldPerformDefaultAction(ABUnknownPersonViewController personViewController, ABPerson person, ABProperty property, int identifier);
     /*</methods>*/
     /*<adapter>*/
     /*</adapter>*/

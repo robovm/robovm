@@ -55,6 +55,6 @@ import org.robovm.apple.addressbook.*;
      * @since Available in iOS 3.0 and later.
      */
     @NotImplemented("unknownPersonViewController:shouldPerformDefaultActionForPerson:property:identifier:")
-    public boolean shouldPerformDefaultAction(ABUnknownPersonViewController personViewController, ABPerson person, int property, int identifier) { throw new UnsupportedOperationException(); }
+    public boolean shouldPerformDefaultAction(ABUnknownPersonViewController personViewController, ABPerson person, ABProperty property, int identifier) { throw new UnsupportedOperationException(); }
     /*</methods>*/
 }

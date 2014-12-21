@@ -48,14 +48,12 @@ import org.robovm.apple.corefoundation.*;
         setService(service);
         this.label = new CFString(label);
     }
-    
     public ABPersonInstantMessageAccount(String username, ABPersonInstantMessageService service, ABPropertyLabel label) {
         this.data = CFMutableDictionary.create();
         setUsername(username);
         setService(service);
         this.label = label.value();
     }
-    
     protected ABPersonInstantMessageAccount(CFDictionary data, CFString label) {
         this.data = data;
         this.label = label;
@@ -77,9 +75,6 @@ import org.robovm.apple.corefoundation.*;
         return label;
     }
     
-    public void setUsername(String username) {
-        data.put(UsernameKey(), new CFString(username));
-    }
     public String getUsername() {
         if (data.containsKey(UsernameKey())) {
             CFString val = data.get(UsernameKey(), CFString.class);
@@ -87,8 +82,9 @@ import org.robovm.apple.corefoundation.*;
         }
         return null;
     }
-    public void setService(ABPersonInstantMessageService service) {
-        data.put(ServiceKey(), service.value());
+    public ABPersonInstantMessageAccount setUsername(String username) {
+        data.put(UsernameKey(), new CFString(username));
+        return this;
     }
     public ABPersonInstantMessageService getService() {
         if (data.containsKey(ServiceKey())) {
@@ -96,6 +92,10 @@ import org.robovm.apple.corefoundation.*;
             return ABPersonInstantMessageService.valueOf(val);
         }
         return null;
+    }
+    public ABPersonInstantMessageAccount setService(ABPersonInstantMessageService service) {
+        data.put(ServiceKey(), service.value());
+        return this;
     }
     /*<methods>*/
     @GlobalValue(symbol="kABPersonInstantMessageServiceKey", optional=true)

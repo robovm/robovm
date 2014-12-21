@@ -40,12 +40,10 @@ public class ABPersonEmailAddress {
         this.address = new CFString(address);
         this.label = new CFString(label);
     }
-    
     public ABPersonEmailAddress(String address, ABPropertyLabel label) {
         this.address = new CFString(address);
         this.label = label.value();
     }
-    
     protected ABPersonEmailAddress(CFString address, CFString label) {
         this.address = address;
         this.label = label;
@@ -54,15 +52,13 @@ public class ABPersonEmailAddress {
     public String getAddress() {
         return address.toString();
     }
-    
-    public String getLabel() {
-        return label.toString();
-    }
-    
     protected CFString getAddress0() {
         return address;
     }
     
+    public String getLabel() {
+        return label.toString();
+    }
     protected CFString getLabel0() {
         return label;
     }

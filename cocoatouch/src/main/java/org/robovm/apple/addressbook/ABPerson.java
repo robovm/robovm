@@ -37,6 +37,33 @@ import org.robovm.apple.corefoundation.*;
     extends /*<extends>*/ABRecord/*</extends>*/ 
     /*<implements>*//*</implements>*/ {
 
+    public static class AsListMarshaler {
+        @MarshalsPointer
+        public static List<ABPerson> toObject(Class<? extends CFType> cls, long handle, long flags) {
+            CFArray o = (CFArray) CFType.Marshaler.toObject(cls, handle, flags);
+            if (o == null) {
+                return null;
+            }
+            List<ABPerson> list = new ArrayList<>();
+            for (long i = 0, n = o.size(); i < n; i++) {
+                ABRecord record = o.get(i, ABRecord.class);
+                list.add((ABPerson)NativeObject.Marshaler.toObject(ABPerson.class, record.getHandle(), flags));
+            }
+            return list;
+        }
+        @MarshalsPointer
+        public static long toNative(List<ABPerson> l, long flags) {
+            if (l == null) {
+                return 0L;
+            }
+            CFArray array = CFMutableArray.create();
+            for (ABPerson i : l) {
+                array.add(i);
+            }
+            return CFType.Marshaler.toNative(array, flags);
+        }
+    }
+    
     /*<ptr>*/
     /*</ptr>*/
     /*<bind>*/static { Bro.bind(ABPerson.class); }/*</bind>*/
@@ -49,7 +76,7 @@ import org.robovm.apple.corefoundation.*;
         if (val != null) return val.toString();
         return null;
     }
-    public ABPerson setFirstName(String firstName) {
+    public ABPerson setFirstName(String firstName) throws NSErrorException {
         setValue(ABPersonProperty.FirstName, new CFString(firstName));
         return this;
     }
@@ -58,7 +85,7 @@ import org.robovm.apple.corefoundation.*;
         if (val != null) return val.toString();
         return null;
     }
-    public ABPerson setLastName(String lastName) {
+    public ABPerson setLastName(String lastName) throws NSErrorException {
         setValue(ABPersonProperty.LastName, new CFString(lastName));
         return this;
     }
@@ -67,7 +94,7 @@ import org.robovm.apple.corefoundation.*;
         if (val != null) return val.toString();
         return null;
     }
-    public ABPerson setMiddleName(String middleName) {
+    public ABPerson setMiddleName(String middleName) throws NSErrorException {
         setValue(ABPersonProperty.MiddleName, new CFString(middleName));
         return this;
     }
@@ -76,7 +103,7 @@ import org.robovm.apple.corefoundation.*;
         if (val != null) return val.toString();
         return null;
     }
-    public ABPerson setPrefix(String prefix) {
+    public ABPerson setPrefix(String prefix) throws NSErrorException {
         setValue(ABPersonProperty.Prefix, new CFString(prefix));
         return this;
     }
@@ -85,7 +112,7 @@ import org.robovm.apple.corefoundation.*;
         if (val != null) return val.toString();
         return null;
     }
-    public ABPerson setSuffix(String suffix) {
+    public ABPerson setSuffix(String suffix) throws NSErrorException {
         setValue(ABPersonProperty.Suffix, new CFString(suffix));
         return this;
     }
@@ -94,7 +121,7 @@ import org.robovm.apple.corefoundation.*;
         if (val != null) return val.toString();
         return null;
     }
-    public ABPerson setNickname(String nickname) {
+    public ABPerson setNickname(String nickname) throws NSErrorException {
         setValue(ABPersonProperty.Nickname, new CFString(nickname));
         return this;
     }
@@ -103,7 +130,7 @@ import org.robovm.apple.corefoundation.*;
         if (val != null) return val.toString();
         return null;
     }
-    public ABPerson setFirstNamePhonetic(String firstNamePhonetic) {
+    public ABPerson setFirstNamePhonetic(String firstNamePhonetic) throws NSErrorException {
         setValue(ABPersonProperty.FirstNamePhonetic, new CFString(firstNamePhonetic));
         return this;
     }
@@ -112,7 +139,7 @@ import org.robovm.apple.corefoundation.*;
         if (val != null) return val.toString();
         return null;
     }
-    public ABPerson setLastNamePhonetic(String lastNamePhonetic) {
+    public ABPerson setLastNamePhonetic(String lastNamePhonetic) throws NSErrorException {
         setValue(ABPersonProperty.LastNamePhonetic, new CFString(lastNamePhonetic));
         return this;
     }
@@ -121,7 +148,7 @@ import org.robovm.apple.corefoundation.*;
         if (val != null) return val.toString();
         return null;
     }
-    public ABPerson setMiddleNamePhonetic(String middleNamePhonetic) {
+    public ABPerson setMiddleNamePhonetic(String middleNamePhonetic) throws NSErrorException {
         setValue(ABPersonProperty.MiddleNamePhonetic, new CFString(middleNamePhonetic));
         return this;
     }
@@ -130,7 +157,7 @@ import org.robovm.apple.corefoundation.*;
         if (val != null) return val.toString();
         return null;
     }
-    public ABPerson setOrganization(String organization) {
+    public ABPerson setOrganization(String organization) throws NSErrorException {
         setValue(ABPersonProperty.Organization, new CFString(organization));
         return this;
     }
@@ -139,7 +166,7 @@ import org.robovm.apple.corefoundation.*;
         if (val != null) return val.toString();
         return null;
     }
-    public ABPerson setJobTitle(String jobTitle) {
+    public ABPerson setJobTitle(String jobTitle) throws NSErrorException {
         setValue(ABPersonProperty.JobTitle, new CFString(jobTitle));
         return this;
     }
@@ -148,7 +175,7 @@ import org.robovm.apple.corefoundation.*;
         if (val != null) return val.toString();
         return null;
     }
-    public ABPerson setDepartment(String department) {
+    public ABPerson setDepartment(String department) throws NSErrorException {
         setValue(ABPersonProperty.Department, new CFString(department));
         return this;
     }
@@ -164,7 +191,7 @@ import org.robovm.apple.corefoundation.*;
         }
         return list;
     }
-    public ABPerson setEmailAddresses(List<ABPersonEmailAddress> emailAddresses) {
+    public ABPerson setEmailAddresses(List<ABPersonEmailAddress> emailAddresses) throws NSErrorException {
         ABMutableMultiValue val = ABMutableMultiValue.create(ABPropertyType.MultiString);
         for (ABPersonEmailAddress address : emailAddresses) {
             val.addValueAndLabel(address.getAddress0(), address.getLabel0(), null);
@@ -185,7 +212,7 @@ import org.robovm.apple.corefoundation.*;
         NSDate val = (NSDate)getNSValue(ABPersonProperty.Birthday);
         return val;
     }
-    public ABPerson setBirthday(NSDate birthday) {
+    public ABPerson setBirthday(NSDate birthday) throws NSErrorException {
         setNSValue(ABPersonProperty.Birthday, birthday);
         return this;
     }
@@ -194,7 +221,7 @@ import org.robovm.apple.corefoundation.*;
         if (val != null) return val.toString();
         return null;
     }
-    public ABPerson setNote(String note) {
+    public ABPerson setNote(String note) throws NSErrorException {
         setValue(ABPersonProperty.Note, new CFString(note));
         return this;
     }
@@ -202,7 +229,7 @@ import org.robovm.apple.corefoundation.*;
         NSDate val = (NSDate)getNSValue(ABPersonProperty.CreationDate);
         return val;
     }
-    public ABPerson setCreationDate(NSDate creationDate) {
+    public ABPerson setCreationDate(NSDate creationDate) throws NSErrorException {
         setNSValue(ABPersonProperty.CreationDate, creationDate);
         return this;
     }
@@ -210,7 +237,7 @@ import org.robovm.apple.corefoundation.*;
         NSDate val = (NSDate)getNSValue(ABPersonProperty.ModificationDate);
         return val;
     }
-    public ABPerson setModificationDate(NSDate modificationDate) {
+    public ABPerson setModificationDate(NSDate modificationDate) throws NSErrorException {
         setNSValue(ABPersonProperty.ModificationDate, modificationDate);
         return this;
     }
@@ -226,7 +253,7 @@ import org.robovm.apple.corefoundation.*;
         }
         return list;
     }
-    public ABPerson setAddresses(List<ABPersonAddress> addresses) {
+    public ABPerson setAddresses(List<ABPersonAddress> addresses) throws NSErrorException {
         ABMutableMultiValue val = ABMutableMultiValue.create(ABPropertyType.MultiDictionary);
         for (ABPersonAddress address : addresses) {
             val.addValueAndLabel(address.getDictionary(), address.getLabel0(), null);
@@ -255,7 +282,7 @@ import org.robovm.apple.corefoundation.*;
         }
         return list;
     } 
-    public ABPerson setDates(List<ABPersonDate> dates) {
+    public ABPerson setDates(List<ABPersonDate> dates) throws NSErrorException {
         ABMutableMultiValue val = ABMutableMultiValue.create(ABPropertyType.MultiDateTime);
         for (ABPersonDate date : dates) {
             val.addValueAndLabel(date.getDate0(), date.getLabel0(), null);
@@ -267,7 +294,7 @@ import org.robovm.apple.corefoundation.*;
         CFNumber val = (CFNumber)getValue(ABPersonProperty.Kind);
         return ABPersonKind.valueOf(val);
     }
-    public ABPerson setKind(ABPersonKind kind) {
+    public ABPerson setKind(ABPersonKind kind) throws NSErrorException {
         setValue(ABPersonProperty.Kind, kind.value());
         return this;
     }
@@ -283,7 +310,7 @@ import org.robovm.apple.corefoundation.*;
         }
         return list;
     }
-    public ABPerson setPhoneNumbers(List<ABPersonPhoneNumber> phoneNumbers) {
+    public ABPerson setPhoneNumbers(List<ABPersonPhoneNumber> phoneNumbers) throws NSErrorException {
         ABMutableMultiValue val = ABMutableMultiValue.create(ABPropertyType.MultiString);
         for (ABPersonPhoneNumber number : phoneNumbers) {
             val.addValueAndLabel(number.getNumber0(), number.getLabel0(), null);
@@ -312,7 +339,7 @@ import org.robovm.apple.corefoundation.*;
         }
         return list;
     }
-    public ABPerson setInstantMessageAccounts(List<ABPersonInstantMessageAccount> instantMessageAccounts) {
+    public ABPerson setInstantMessageAccounts(List<ABPersonInstantMessageAccount> instantMessageAccounts) throws NSErrorException {
         ABMutableMultiValue val = ABMutableMultiValue.create(ABPropertyType.MultiDictionary);
         for (ABPersonInstantMessageAccount account : instantMessageAccounts) {
             val.addValueAndLabel(account.getDictionary(), account.getLabel0(), null);
@@ -341,7 +368,7 @@ import org.robovm.apple.corefoundation.*;
         }
         return list;
     }
-    public ABPerson setSocialProfiles(List<ABPersonSocialProfile> socialProfiles) {
+    public ABPerson setSocialProfiles(List<ABPersonSocialProfile> socialProfiles) throws NSErrorException {
         ABMutableMultiValue val = ABMutableMultiValue.create(ABPropertyType.MultiDictionary);
         for (ABPersonSocialProfile account : socialProfiles) {
             val.addValueAndLabel(account.getDictionary(), account.getLabel0(), null);
@@ -370,7 +397,7 @@ import org.robovm.apple.corefoundation.*;
         }
         return list;
     }
-    public ABPerson setURLs(List<ABPersonURL> urls) {
+    public ABPerson setURLs(List<ABPersonURL> urls) throws NSErrorException {
         ABMutableMultiValue val = ABMutableMultiValue.create(ABPropertyType.MultiString);
         for (ABPersonURL url : urls) {
             val.addValueAndLabel(url.getURL0(), url.getLabel0(), null);
@@ -399,7 +426,7 @@ import org.robovm.apple.corefoundation.*;
         }
         return list;
     }
-    public ABPerson setRelatedNames(List<ABPersonRelatedName> relatedNames) {
+    public ABPerson setRelatedNames(List<ABPersonRelatedName> relatedNames) throws NSErrorException {
         ABMutableMultiValue val = ABMutableMultiValue.create(ABPropertyType.MultiString);
         for (ABPersonRelatedName relatedName : relatedNames) {
             val.addValueAndLabel(relatedName.getName0(), relatedName.getLabel0(), null);
@@ -416,12 +443,42 @@ import org.robovm.apple.corefoundation.*;
         ABMutableMultiValue val = (ABMutableMultiValue)getValue(ABPersonProperty.RelatedNames);
         if (val != null) val.removeValueAndLabel(val.indexOf(id));
     }
-    
-    public boolean setImageData(NSData imageData) {
-        return setImageData(imageData, null);
+    public ABPersonAlternateBirthday getAlternateBirthday() {
+        CFDictionary val = (CFDictionary) getValue(ABPersonProperty.AlternateBirthday);
+        if (val != null) return new ABPersonAlternateBirthday(val);
+        return null;
     }
-    public boolean removeImageData() {
-        return removeImageData(null);
+    public ABPerson setAlternateBirthday(ABPersonAlternateBirthday alternateBirthday) throws NSErrorException {
+        setValue(ABPersonProperty.AlternateBirthday, alternateBirthday.getDictionary());
+        return this;
+    }
+    
+    /**
+     * 
+     * @param imageData
+     * @return
+     * @throws NSErrorException
+     */
+    public boolean setImageData(NSData imageData) throws NSErrorException {
+        NSError.NSErrorPtr err = new NSError.NSErrorPtr();
+        boolean result = setImageData(imageData, err);
+        if (err.get() != null) {
+            throw new NSErrorException(err.get());
+        }
+        return result;
+    }
+    /**
+     * 
+     * @return
+     * @throws NSErrorException
+     */
+    public boolean removeImageData() throws NSErrorException {
+        NSError.NSErrorPtr err = new NSError.NSErrorPtr();
+        boolean result = removeImageData(err);
+        if (err.get() != null) {
+            throw new NSErrorException(err.get());
+        }
+        return result;
     }
     /*<methods>*/
     @Bridge(symbol="ABPersonCreate", optional=true)
@@ -440,7 +497,7 @@ import org.robovm.apple.corefoundation.*;
      * @since Available in iOS 4.0 and later.
      */
     @Bridge(symbol="ABPersonCopyArrayOfAllLinkedPeople", optional=true)
-    public native @org.robovm.rt.bro.annotation.Marshaler(CFArray.AsListMarshaler.class) List<ABPerson> getAllLinkedPeople();
+    public native @org.robovm.rt.bro.annotation.Marshaler(ABPerson.AsListMarshaler.class) List<ABPerson> getAllLinkedPeople();
     @Bridge(symbol="ABPersonGetSortOrdering", optional=true)
     public static native ABPersonSortOrdering getSortOrdering();
     /**
@@ -479,11 +536,11 @@ import org.robovm.apple.corefoundation.*;
      * @since Available in iOS 5.0 and later.
      */
     @Bridge(symbol="ABPersonCreatePeopleInSourceWithVCardRepresentation", optional=true)
-    public static native @org.robovm.rt.bro.annotation.Marshaler(CFArray.AsListMarshaler.class) List<ABPerson> createPeopleInSource(ABSource source, NSData vCardData);
+    public static native @org.robovm.rt.bro.annotation.Marshaler(ABPerson.AsListMarshaler.class) List<ABPerson> createPeopleInSource(ABSource source, NSData vCardData);
     /**
      * @since Available in iOS 5.0 and later.
      */
     @Bridge(symbol="ABPersonCreateVCardRepresentationWithPeople", optional=true)
-    public static native NSData createVCardRepresentation(@org.robovm.rt.bro.annotation.Marshaler(CFArray.AsListMarshaler.class) List<ABPerson> people);
+    public static native NSData createVCardRepresentation(@org.robovm.rt.bro.annotation.Marshaler(ABPerson.AsListMarshaler.class) List<ABPerson> people);
     /*</methods>*/
 }

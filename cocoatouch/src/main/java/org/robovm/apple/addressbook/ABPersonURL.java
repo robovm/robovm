@@ -54,7 +54,7 @@ public class ABPersonURL {
     public String getURL() {
         return url.toString();
     }
-    public CFString getURL0() {
+    protected CFString getURL0() {
         return url;
     }
     

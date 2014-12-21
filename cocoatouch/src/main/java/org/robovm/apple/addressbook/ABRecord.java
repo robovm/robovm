@@ -93,11 +93,34 @@ import org.robovm.apple.corefoundation.*;
     public CFType getValue(ABProperty property) {
         return getValue(property.value());
     }
-    public boolean setValue(ABProperty property, CFType value) {
-        return setValue(property.value(), value, null);
+    /**
+     * 
+     * @param property
+     * @param value
+     * @return
+     * @throws NSErrorException
+     */
+    public boolean setValue(ABProperty property, CFType value) throws NSErrorException {
+        NSError.NSErrorPtr err = new NSError.NSErrorPtr();
+        boolean result = setValue(property.value(), value, err);
+        if (err.get() != null) {
+            throw new NSErrorException(err.get());
+        }
+        return result;
     }
-    public boolean removeValue(ABProperty property) {
-        return removeValue(property.value(), null);
+    /**
+     * 
+     * @param property
+     * @return
+     * @throws NSErrorException
+     */
+    public boolean removeValue(ABProperty property) throws NSErrorException {
+        NSError.NSErrorPtr err = new NSError.NSErrorPtr();
+        boolean result = removeValue(property.value(), err);
+        if (err.get() != null) {
+            throw new NSErrorException(err.get());
+        }
+        return result;
     }
     
     /**
@@ -115,9 +138,15 @@ import org.robovm.apple.corefoundation.*;
      * @param property
      * @param value
      * @return
+     * @throws NSErrorException
      */
-    public boolean setNSValue(ABProperty property, NSObject value) {
-        return setNSValue(property.value(), value, null);
+    public boolean setNSValue(ABProperty property, NSObject value) throws NSErrorException {
+        NSError.NSErrorPtr err = new NSError.NSErrorPtr();
+        boolean result = setNSValue(property.value(), value, err);
+        if (err.get() != null) {
+            throw new NSErrorException(err.get());
+        }
+        return result;
     }
     
     @Bridge(symbol="ABRecordCopyValue", optional=true)

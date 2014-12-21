@@ -54,7 +54,9 @@ import org.robovm.apple.corefoundation.*;
      */
     public static final ABPersonPhoneLabel OtherFAX = new ABPersonPhoneLabel("OtherFAXLabel");
     public static final ABPersonPhoneLabel Pager = new ABPersonPhoneLabel("PagerLabel");
-    private static ABPropertyLabel[] values = new ABPropertyLabel[] {Work, Home, Other, Mobile, Main, HomeFAX, WorkFAX, Pager, IPhone, OtherFAX};
+    
+    private static ABPropertyLabel[] values = new ABPropertyLabel[] {Work, Home, Other, Mobile, Main, 
+        HomeFAX, WorkFAX, Pager, IPhone, OtherFAX};
     
     private ABPersonPhoneLabel(String getterName) {
         super(getterName);

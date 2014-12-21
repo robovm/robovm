@@ -37,6 +37,33 @@ import org.robovm.apple.corefoundation.*;
     extends /*<extends>*/ABRecord/*</extends>*/ 
     /*<implements>*//*</implements>*/ {
 
+    public static class AsListMarshaler {
+        @MarshalsPointer
+        public static List<ABGroup> toObject(Class<? extends CFType> cls, long handle, long flags) {
+            CFArray o = (CFArray) CFType.Marshaler.toObject(cls, handle, flags);
+            if (o == null) {
+                return null;
+            }
+            List<ABGroup> list = new ArrayList<>();
+            for (long i = 0, n = o.size(); i < n; i++) {
+                ABRecord record = o.get(i, ABRecord.class);
+                list.add((ABGroup)NativeObject.Marshaler.toObject(ABGroup.class, record.getHandle(), flags));
+            }
+            return list;
+        }
+        @MarshalsPointer
+        public static long toNative(List<ABGroup> l, long flags) {
+            if (l == null) {
+                return 0L;
+            }
+            CFArray array = CFMutableArray.create();
+            for (ABGroup i : l) {
+                array.add(i);
+            }
+            return CFType.Marshaler.toNative(array, flags);
+        }
+    }
+    
     /*<ptr>*/
     /*</ptr>*/
     /*<bind>*/static { Bro.bind(ABGroup.class); }/*</bind>*/
@@ -49,17 +76,38 @@ import org.robovm.apple.corefoundation.*;
         if (val != null) return val.toString();
         return null;
     }
-    public ABGroup setName(String name) {
+    public ABGroup setName(String name) throws NSErrorException {
         setValue(ABGroupProperty.Name, new CFString(name));
         return this;
     }
     
-    public boolean addMember(ABPerson person) {
-        return addMember(person, null);
+    /**
+     * 
+     * @param person
+     * @return
+     * @throws NSErrorException
+     */
+    public boolean addMember(ABPerson member) throws NSErrorException {
+        NSError.NSErrorPtr err = new NSError.NSErrorPtr();
+        boolean result = addMember(member, err);
+        if (err.get() != null) {
+            throw new NSErrorException(err.get());
+        }
+        return result;
     }
-    
-    public boolean removeMember(ABPerson member) {
-        return removeMember(member, null);
+    /**
+     * 
+     * @param member
+     * @return
+     * @throws NSErrorException
+     */
+    public boolean removeMember(ABPerson member) throws NSErrorException {
+        NSError.NSErrorPtr err = new NSError.NSErrorPtr();
+        boolean result = removeMember(member, err);
+        if (err.get() != null) {
+            throw new NSErrorException(err.get());
+        }
+        return result;
     }
     /*<methods>*/
     @Bridge(symbol="ABGroupCreate", optional=true)
@@ -75,9 +123,9 @@ import org.robovm.apple.corefoundation.*;
     @Bridge(symbol="ABGroupCopySource", optional=true)
     public native ABSource source();
     @Bridge(symbol="ABGroupCopyArrayOfAllMembers", optional=true)
-    public native @org.robovm.rt.bro.annotation.Marshaler(CFArray.AsListMarshaler.class) List<ABPerson> getAllMembers();
+    public native @org.robovm.rt.bro.annotation.Marshaler(ABPerson.AsListMarshaler.class) List<ABPerson> getAllMembers();
     @Bridge(symbol="ABGroupCopyArrayOfAllMembersWithSortOrdering", optional=true)
-    public native @org.robovm.rt.bro.annotation.Marshaler(CFArray.AsListMarshaler.class) List<ABPerson> getAllMembers(ABPersonSortOrdering sortOrdering);
+    public native @org.robovm.rt.bro.annotation.Marshaler(ABPerson.AsListMarshaler.class) List<ABPerson> getAllMembers(ABPersonSortOrdering sortOrdering);
     @Bridge(symbol="ABGroupAddMember", optional=true)
     protected native boolean addMember(ABPerson person, NSError.NSErrorPtr error);
     @Bridge(symbol="ABGroupRemoveMember", optional=true)

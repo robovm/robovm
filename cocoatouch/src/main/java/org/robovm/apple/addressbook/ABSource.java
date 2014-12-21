@@ -38,6 +38,33 @@ import org.robovm.apple.corefoundation.*;
     extends /*<extends>*/ABRecord/*</extends>*/ 
     /*<implements>*//*</implements>*/ {
 
+    public static class AsListMarshaler {
+        @MarshalsPointer
+        public static List<ABSource> toObject(Class<? extends CFType> cls, long handle, long flags) {
+            CFArray o = (CFArray) CFType.Marshaler.toObject(cls, handle, flags);
+            if (o == null) {
+                return null;
+            }
+            List<ABSource> list = new ArrayList<>();
+            for (long i = 0, n = o.size(); i < n; i++) {
+                ABRecord record = o.get(i, ABRecord.class);
+                list.add((ABSource)NativeObject.Marshaler.toObject(ABSource.class, record.getHandle(), flags));
+            }
+            return list;
+        }
+        @MarshalsPointer
+        public static long toNative(List<ABSource> l, long flags) {
+            if (l == null) {
+                return 0L;
+            }
+            CFArray array = CFMutableArray.create();
+            for (ABSource i : l) {
+                array.add(i);
+            }
+            return CFType.Marshaler.toNative(array, flags);
+        }
+    }
+    
     /*<ptr>*/
     /*</ptr>*/
     /*<bind>*/static { Bro.bind(ABGroup.class); }/*</bind>*/
@@ -50,7 +77,7 @@ import org.robovm.apple.corefoundation.*;
         if (val != null) return val.toString();
         return null;
     }
-    public ABSource setName(String name) {
+    public ABSource setName(String name) throws NSErrorException {
         setValue(ABSourceProperty.Name, new CFString(name));
         return this;
     }
@@ -58,7 +85,7 @@ import org.robovm.apple.corefoundation.*;
         NSNumber val = (NSNumber)getNSValue(ABSourceProperty.Type);
         return ABSourceType.valueOf(val.intValue());
     }
-    public ABSource setType(ABSourceType type) {
+    public ABSource setType(ABSourceType type) throws NSErrorException {
         setNSValue(ABSourceProperty.Type, NSNumber.valueOf((int)type.value()));
         return this;
     }

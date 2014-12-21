@@ -19,6 +19,7 @@ package org.robovm.apple.eventkit;
 import java.io.*;
 import java.nio.*;
 import java.util.*;
+
 import org.robovm.objc.*;
 import org.robovm.objc.annotation.*;
 import org.robovm.objc.block.*;
@@ -76,6 +77,150 @@ import org.robovm.apple.corelocation.*;
     public native EKCalendar getDefaultCalendarForNewEvents();
     /*</properties>*/
     /*<members>*//*</members>*/
+    /**
+     * 
+     * @param calendar
+     * @param commit
+     * @return
+     * @throws NSErrorException
+     * @since Available in iOS 5.0 and later.
+     */
+    public boolean saveCalendar(EKCalendar calendar, boolean commit) throws NSErrorException {
+        NSError.NSErrorPtr err = new NSError.NSErrorPtr();
+        boolean result = saveCalendar(calendar, commit, err);
+        if (err.get() != null) {
+            throw new NSErrorException(err.get());
+        }
+        return result;
+    }
+    /**
+     * 
+     * @param calendar
+     * @param commit
+     * @return
+     * @throws NSErrorException
+     * @since Available in iOS 5.0 and later.
+     */
+    public boolean removeCalendar(EKCalendar calendar, boolean commit) throws NSErrorException {
+        NSError.NSErrorPtr err = new NSError.NSErrorPtr();
+        boolean result = removeCalendar(calendar, commit, err);
+        if (err.get() != null) {
+            throw new NSErrorException(err.get());
+        }
+        return result;
+    }
+    /**
+     * 
+     * @param event
+     * @param span
+     * @return
+     * @throws NSErrorException
+     * @since Available in iOS 4.0 and later.
+     */
+    public boolean saveEvent(EKEvent event, EKSpan span) throws NSErrorException {
+        NSError.NSErrorPtr err = new NSError.NSErrorPtr();
+        boolean result = saveEvent(event, span, err);
+        if (err.get() != null) {
+            throw new NSErrorException(err.get());
+        }
+        return result;
+    }
+    /**
+     * 
+     * @param event
+     * @param span
+     * @return
+     * @throws NSErrorException
+     * @since Available in iOS 4.0 and later.
+     */
+    public boolean removeEvent(EKEvent event, EKSpan span) throws NSErrorException {
+        NSError.NSErrorPtr err = new NSError.NSErrorPtr();
+        boolean result = removeEvent(event, span, err);
+        if (err.get() != null) {
+            throw new NSErrorException(err.get());
+        }
+        return result;
+    }
+    /**
+     * 
+     * @param event
+     * @param span
+     * @param commit
+     * @return
+     * @throws NSErrorException
+     * @since Available in iOS 5.0 and later.
+     */
+    public boolean saveEvent(EKEvent event, EKSpan span, boolean commit) throws NSErrorException {
+        NSError.NSErrorPtr err = new NSError.NSErrorPtr();
+        boolean result = saveEvent(event, span, commit, err);
+        if (err.get() != null) {
+            throw new NSErrorException(err.get());
+        }
+        return result;
+    }
+    /**
+     * 
+     * @param event
+     * @param span
+     * @param commit
+     * @return
+     * @throws NSErrorException
+     * @since Available in iOS 5.0 and later.
+     */
+    public boolean removeEvent(EKEvent event, EKSpan span, boolean commit) throws NSErrorException {
+        NSError.NSErrorPtr err = new NSError.NSErrorPtr();
+        boolean result = removeEvent(event, span, commit, err);
+        if (err.get() != null) {
+            throw new NSErrorException(err.get());
+        }
+        return result;
+    }
+    /**
+     * 
+     * @param reminder
+     * @param commit
+     * @return
+     * @throws NSErrorException
+     * @since Available in iOS 6.0 and later.
+     */
+    public boolean saveReminder(EKReminder reminder, boolean commit) throws NSErrorException {
+        NSError.NSErrorPtr err = new NSError.NSErrorPtr();
+        boolean result = saveReminder(reminder, commit, err);
+        if (err.get() != null) {
+            throw new NSErrorException(err.get());
+        }
+        return result;
+    }
+    /**
+     * 
+     * @param reminder
+     * @param commit
+     * @return
+     * @throws NSErrorException
+     * @since Available in iOS 6.0 and later.
+     */
+    public boolean removeReminder(EKReminder reminder, boolean commit) throws NSErrorException {
+        NSError.NSErrorPtr err = new NSError.NSErrorPtr();
+        boolean result = removeReminder(reminder, commit, err);
+        if (err.get() != null) {
+            throw new NSErrorException(err.get());
+        }
+        return result;
+    }
+    /**
+     * 
+     * @return
+     * @throws NSErrorException
+     * @since Available in iOS 5.0 and later.
+     */
+    public boolean commit() throws NSErrorException {
+        NSError.NSErrorPtr err = new NSError.NSErrorPtr();
+        boolean result = commit(err);
+        if (err.get() != null) {
+            throw new NSErrorException(err.get());
+        }
+        return result;
+    }
     /*<methods>*/
     /**
      * @since Available in iOS 4.0 and later.
@@ -117,12 +262,12 @@ import org.robovm.apple.corelocation.*;
      * @since Available in iOS 5.0 and later.
      */
     @Method(selector = "saveCalendar:commit:error:")
-    public native boolean saveCalendar(EKCalendar calendar, boolean commit, NSError.NSErrorPtr error);
+    protected native boolean saveCalendar(EKCalendar calendar, boolean commit, NSError.NSErrorPtr error);
     /**
      * @since Available in iOS 5.0 and later.
      */
     @Method(selector = "removeCalendar:commit:error:")
-    public native boolean removeCalendar(EKCalendar calendar, boolean commit, NSError.NSErrorPtr error);
+    protected native boolean removeCalendar(EKCalendar calendar, boolean commit, NSError.NSErrorPtr error);
     /**
      * @since Available in iOS 6.0 and later.
      */
@@ -137,22 +282,22 @@ import org.robovm.apple.corelocation.*;
      * @since Available in iOS 4.0 and later.
      */
     @Method(selector = "saveEvent:span:error:")
-    public native boolean saveEvent(EKEvent event, EKSpan span, NSError.NSErrorPtr error);
+    protected native boolean saveEvent(EKEvent event, EKSpan span, NSError.NSErrorPtr error);
     /**
      * @since Available in iOS 4.0 and later.
      */
     @Method(selector = "removeEvent:span:error:")
-    public native boolean removeEvent(EKEvent event, EKSpan span, NSError.NSErrorPtr error);
+    protected native boolean removeEvent(EKEvent event, EKSpan span, NSError.NSErrorPtr error);
     /**
      * @since Available in iOS 5.0 and later.
      */
     @Method(selector = "saveEvent:span:commit:error:")
-    public native boolean saveEvent(EKEvent event, EKSpan span, boolean commit, NSError.NSErrorPtr error);
+    protected native boolean saveEvent(EKEvent event, EKSpan span, boolean commit, NSError.NSErrorPtr error);
     /**
      * @since Available in iOS 5.0 and later.
      */
     @Method(selector = "removeEvent:span:commit:error:")
-    public native boolean removeEvent(EKEvent event, EKSpan span, boolean commit, NSError.NSErrorPtr error);
+    protected native boolean removeEvent(EKEvent event, EKSpan span, boolean commit, NSError.NSErrorPtr error);
     @Method(selector = "eventWithIdentifier:")
     public native EKEvent getEvent(String identifier);
     @Method(selector = "eventsMatchingPredicate:")
@@ -165,12 +310,12 @@ import org.robovm.apple.corelocation.*;
      * @since Available in iOS 6.0 and later.
      */
     @Method(selector = "saveReminder:commit:error:")
-    public native boolean saveReminder(EKReminder reminder, boolean commit, NSError.NSErrorPtr error);
+    protected native boolean saveReminder(EKReminder reminder, boolean commit, NSError.NSErrorPtr error);
     /**
      * @since Available in iOS 6.0 and later.
      */
     @Method(selector = "removeReminder:commit:error:")
-    public native boolean removeReminder(EKReminder reminder, boolean commit, NSError.NSErrorPtr error);
+    protected native boolean removeReminder(EKReminder reminder, boolean commit, NSError.NSErrorPtr error);
     /**
      * @since Available in iOS 6.0 and later.
      */
@@ -215,6 +360,6 @@ import org.robovm.apple.corelocation.*;
      * @since Available in iOS 6.0 and later.
      */
     @Method(selector = "authorizationStatusForEntityType:")
-    public static native EKAuthorizationStatus getAuthorizationStatus(EKEntityType entityType);
+    public static native EKAuthorizationStatus getAuthorizationStatusForEntityType(EKEntityType entityType);
     /*</methods>*/
 }

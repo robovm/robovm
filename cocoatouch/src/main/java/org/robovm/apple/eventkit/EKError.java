@@ -34,23 +34,31 @@ import org.robovm.apple.corelocation.*;
 
 /*<javadoc>*/
 /*</javadoc>*/
-/*<annotations>*/@Library("EventKit") @Marshaler(NSString.AsStringMarshaler.class)/*</annotations>*/
-/*<visibility>*/public/*</visibility>*/ class /*<name>*/EventKit/*</name>*/ 
-    extends /*<extends>*/Object/*</extends>*/ 
+/*<annotations>*/@Library("EventKit")/*</annotations>*/
+/*<visibility>*/public/*</visibility>*/ class /*<name>*/EKError/*</name>*/ 
+    extends /*<extends>*/NSError/*</extends>*/ 
     /*<implements>*//*</implements>*/ {
 
+    protected EKError(SkipInit skipInit) {
+        super(skipInit);
+    }
+    
     /*<ptr>*/
     /*</ptr>*/
-    /*<bind>*/static { Bro.bind(EventKit.class); }/*</bind>*/
+    /*<bind>*/static { Bro.bind(EKError.class); }/*</bind>*/
     /*<constants>*//*</constants>*/
     /*<constructors>*//*</constructors>*/
     /*<properties>*//*</properties>*/
     /*<members>*//*</members>*/
+    @Override
+    public EKErrorCode getErrorCode() {
+        return EKErrorCode.valueOf(getCode());
+    }
     /*<methods>*/
     /**
      * @since Available in iOS 4.0 and later.
      */
     @GlobalValue(symbol="EKErrorDomain", optional=true)
-    public static native String ErrorDomain();
+    public static native String getClassDomain();
     /*</methods>*/
 }

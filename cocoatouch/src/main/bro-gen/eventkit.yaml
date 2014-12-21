@@ -27,8 +27,8 @@ enums:
     EKAlarmProximity: { first: EKAlarmProximityNone }
         
 classes:
-    EventKit:
-        annotations: ['@Marshaler(NSString.AsStringMarshaler.class)']
+    EKError:
+        extends: NSError
 
     EKAlarm: # DONE
         methods:
@@ -45,11 +45,19 @@ classes:
     EKCalendarItem: # DONE
         properties:
             'attendees':
-                type: "NSArray<EKParticipant>"
+                type: NSArray<EKParticipant>
             'alarms':
-                type: "NSArray<EKAlarm>"
+                type: NSArray<EKAlarm>
             'recurrenceRules':
-                type: "NSArray<EKRecurrenceRule>"
+                type: NSArray<EKRecurrenceRule>
+            'hasAlarms':
+                omit_prefix: true
+            'hasRecurrenceRules':
+                omit_prefix: true
+            'hasAttendees':
+                omit_prefix: true
+            'hasNotes':
+                omit_prefix: true
         methods:
             '-addAlarm:':
                 trim_after_first_colon: true
@@ -71,87 +79,96 @@ classes:
     EKEventStore: # DONE
         properties:
             'calendars':
-                type: "NSArray<EKCalendar>"
+                type: NSArray<EKCalendar>
         methods:
             '-requestAccessToEntityType:completion:':
                 name: requestAccess
                 parameters:
                     completion:
-                        type: "@Block VoidBlock2<Boolean, NSError>"
+                        type: '@Block VoidBlock2<Boolean, NSError>'
             '-sources':
                 property: true
-                return_type: "NSArray<EKSource>"
+                return_type: NSArray<EKSource>
             '-sourceWithIdentifier:':
                 name: getSource
             '-calendarsForEntityType:':
                 name: getCalendars
-                return_type: "NSArray<EKCalendar>"
+                return_type: NSArray<EKCalendar>
             '-defaultCalendarForNewReminders':
                 property: true
             '-calendarWithIdentifier:':
                 name: getCalendar
             '-saveCalendar:commit:error:':
                 trim_after_first_colon: true
+                visibility: protected # throws NSErrorException
             '-removeCalendar:commit:error:':
                 trim_after_first_colon: true
+                visibility: protected # throws NSErrorException
             '-calendarItemWithIdentifier:':
                 name: getCalendarItem
             '-calendarItemsWithExternalIdentifier:':
                 name: getCalendarItems
-                return_type: "NSArray<EKCalendarItem>"
+                return_type: NSArray<EKCalendarItem>
             '-saveEvent:span:error:':
                 trim_after_first_colon: true
+                visibility: protected # throws NSErrorException
             '-removeEvent:span:error:':
                 trim_after_first_colon: true
+                visibility: protected # throws NSErrorException
             '-saveEvent:span:commit:error:':
                 trim_after_first_colon: true
+                visibility: protected # throws NSErrorException
             '-removeEvent:span:commit:error:':
                 trim_after_first_colon: true
+                visibility: protected # throws NSErrorException
             '-eventWithIdentifier:':
                 name: getEvent
             '-eventsMatchingPredicate:':
                 name: getEvents
-                return_type: "NSArray<EKEvent>"
+                return_type: NSArray<EKEvent>
             '-enumerateEventsMatchingPredicate:usingBlock:':
                 name: enumerateEvents
                 parameters:
                     block:
-                        type: "@Block VoidBlock2<EKEvent, BytePtr>"
+                        type: '@Block VoidBlock2<EKEvent, BooleanPtr>'
             '-predicateForEventsWithStartDate:endDate:calendars:':
                 name: getPredicateForEvents
                 parameters:
                     calendars:
-                        type: "NSArray<EKCalendar>"
+                        type: NSArray<EKCalendar>
             '-saveReminder:commit:error:':
                 trim_after_first_colon: true
+                visibility: protected # throws NSErrorException
             '-removeReminder:commit:error:':
                 trim_after_first_colon: true
+                visibility: protected # throws NSErrorException
             '-fetchRemindersMatchingPredicate:completion:':
                 name: fetchReminders
                 parameters:
                     completion:
-                        type: "@Block VoidBlock1<NSArray<EKReminder>>"
+                        type: '@Block VoidBlock1<NSArray<EKReminder>>'
             '-cancelFetchRequest:':
                 trim_after_first_colon: true
             '-predicateForRemindersInCalendars:':
                 name: getPredicateForReminders
                 parameters:
                     calendars:
-                        type: "NSArray<EKCalendar>"
+                        type: NSArray<EKCalendar>
             '-predicateForIncompleteRemindersWithDueDateStarting:ending:calendars:':
                 name: getPredicateForIncompleteReminders
                 parameters:
                     calendars:
-                        type: "NSArray<EKCalendar>"
+                        type: NSArray<EKCalendar>
             '-predicateForCompletedRemindersWithCompletionDateStarting:ending:calendars:':
                 name: getPredicateForCompletedReminders
                 parameters:
                     calendars:
-                        type: "NSArray<EKCalendar>"
+                        type: NSArray<EKCalendar>
             '-commit:':
                 trim_after_first_colon: true
+                visibility: protected # throws NSErrorException
             '+authorizationStatusForEntityType:':
-                name: getAuthorizationStatus
+                name: getAuthorizationStatusForEntityType
     EKObject: {} # DONE
     EKParticipant: # DONE
         properties:
@@ -179,17 +196,17 @@ classes:
     EKRecurrenceRule: # DONE
         properties:
             'daysOfTheWeek':
-                type: "NSArray<EKRecurrenceDayOfWeek>"
+                type: NSArray<EKRecurrenceDayOfWeek>
             'daysOfTheMonth':
-                type: "NSArray<NSNumber>"
+                type: NSArray<NSNumber>
             'daysOfTheYear':
-                type: "NSArray<NSNumber>"
+                type: NSArray<NSNumber>
             'weeksOfTheYear':
-                type: "NSArray<NSNumber>"
+                type: NSArray<NSNumber>
             'monthsOfTheYear':
-                type: "NSArray<NSNumber>"
+                type: NSArray<NSNumber>
             'setPositions':
-                type: "NSArray<NSNumber>"
+                type: NSArray<NSNumber>
         methods:
             '-initRecurrenceWithFrequency:interval:end:':
                 name: init
@@ -197,17 +214,17 @@ classes:
                 name: init
                 parameters:
                     days:
-                        type: "NSArray<EKRecurrenceDayOfWeek>"
+                        type: NSArray<EKRecurrenceDayOfWeek>
                     monthDays:
-                        type: "NSArray<NSNumber>"
+                        type: NSArray<NSNumber>
                     months:
-                        type: "NSArray<NSNumber>"
+                        type: NSArray<NSNumber>
                     weeksOfTheYear:
-                        type: "NSArray<NSNumber>"
+                        type: NSArray<NSNumber>
                     daysOfTheYear:
-                        type: "NSArray<NSNumber>"
+                        type: NSArray<NSNumber>
                     setPositions:
-                        type: "NSArray<NSNumber>"
+                        type: NSArray<NSNumber>
     EKReminder: # DONE
         methods:
             '+reminderWithEventStore:':
@@ -215,11 +232,11 @@ classes:
     EKSource: # DONE
         properties:
             'calendars':
-                type: "NSSet<EKCalendar>"
+                type: NSSet<EKCalendar>
         methods:
             '-calendarsForEntityType:':
                 name: getCalendars
-                return_type: "NSSet<EKCalendar>"
+                return_type: NSSet<EKCalendar>
     EKStructuredLocation: # DONE
         methods:
             '+locationWithTitle:':
@@ -228,27 +245,28 @@ protocols: {}
 
 functions:
     # Make sure we don't miss any functions if new ones are introduced in a later version
-    (EK.*):
+    (k?EK.*):
         class: EventKit
-        name: "Function__#{g[0]}"
+        name: 'Function__#{g[0]}'
 
 values:
+    EKErrorDomain:
+        class: EKError
+        name: getClassDomain
+
+    # EKEventStore
     EKEventStore(ChangedNotification):
         class: EKEventStore
-        name: "#{g[0]}"
+        name: '#{g[0]}'
         type: NSString
-        
-    EK(ErrorDomain):
-        class: EventKit
-        name: "#{g[0]}"
 
     # Make sure we don't miss any values if new ones are introduced in a later version
-    (EK.*):
+    (k?EK.*):
         class: EventKit
-        name: "Value__#{g[0]}"
+        name: 'Value__#{g[0]}'
 
 constants:
     # Make sure we don't miss any constants if new ones are introduced in a later version
-    (EK.*):
+    (k?EK.*):
         class: EventKit
-        name: "Constant__#{g[0]}"
+        name: 'Constant__#{g[0]}'

@@ -114,22 +114,22 @@ import org.robovm.apple.corelocation.*;
      * @since Available in iOS 5.0 and later.
      */
     @Property(selector = "hasAlarms")
-    public native boolean isHasAlarms();
+    public native boolean hasAlarms();
     /**
      * @since Available in iOS 5.0 and later.
      */
     @Property(selector = "hasRecurrenceRules")
-    public native boolean isHasRecurrenceRules();
+    public native boolean hasRecurrenceRules();
     /**
      * @since Available in iOS 5.0 and later.
      */
     @Property(selector = "hasAttendees")
-    public native boolean isHasAttendees();
+    public native boolean hasAttendees();
     /**
      * @since Available in iOS 5.0 and later.
      */
     @Property(selector = "hasNotes")
-    public native boolean isHasNotes();
+    public native boolean hasNotes();
     @Property(selector = "attendees")
     public native NSArray<EKParticipant> getAttendees();
     @Property(selector = "alarms")

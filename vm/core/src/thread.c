@@ -318,7 +318,7 @@ static jint detachThread(Env* env, jboolean ignoreAttachCount, jboolean unregist
 jboolean rvmInitThreads(Env* env) {
     gcAddRoot(&threads);
     threadGCKind = gcNewDirectBitmapKind(THREAD_GC_BITMAP);
-    if ((threadIdMap = rvmAllocBitVector(MAX_THREAD_ID, true)) == 0) return FALSE;
+    if ((threadIdMap = rvmAllocBitVector(MAX_THREAD_ID, TRUE)) == 0) return FALSE;
     if (rvmInitMutex(&threadsLock) != 0) return FALSE;
     if (pthread_key_create(&tlsEnvKey, NULL) != 0) return FALSE;
     if (pthread_key_create(&tlsThreadKey, NULL) != 0) return FALSE;

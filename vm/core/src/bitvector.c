@@ -20,7 +20,7 @@
 #include <robovm.h>
 
 #include <stdlib.h>
-#include <strings.h>
+#include <string.h>
 
 #define kBitVectorGrowth    4   /* increase by 4 u4s when limit hit */
 
@@ -237,13 +237,13 @@ jboolean rvmIntersectBitVectors(BitVector *dest, const BitVector *src1,
             dest->storageSize != src2->storageSize ||
             dest->expandable != src1->expandable ||
             dest->expandable != src2->expandable)
-        return false;
+        return FALSE;
 
     unsigned int idx;
     for (idx = 0; idx < dest->storageSize; idx++) {
         dest->storage[idx] = src1->storage[idx] & src2->storage[idx];
     }
-    return true;
+    return TRUE;
 }
 
 /*
@@ -256,29 +256,29 @@ jboolean rvmUnifyBitVectors(BitVector *dest, const BitVector *src1,
             dest->storageSize != src2->storageSize ||
             dest->expandable != src1->expandable ||
             dest->expandable != src2->expandable)
-        return false;
+        return FALSE;
 
     unsigned int idx;
     for (idx = 0; idx < dest->storageSize; idx++) {
         dest->storage[idx] = src1->storage[idx] | src2->storage[idx];
     }
-    return true;
+    return TRUE;
 }
 
 /*
- * Compare two bit vectors and return true if difference is seen.
+ * Compare two bit vectors and return TRUE if difference is seen.
  */
 jboolean rvmCompareBitVectors(const BitVector *src1, const BitVector *src2)
 {
     if (src1->storageSize != src2->storageSize ||
             src1->expandable != src2->expandable)
-        return true;
+        return TRUE;
 
     unsigned int idx;
     for (idx = 0; idx < src1->storageSize; idx++) {
-        if (src1->storage[idx] != src2->storage[idx]) return true;
+        if (src1->storage[idx] != src2->storage[idx]) return TRUE;
     }
-    return false;
+    return FALSE;
 }
 
 /* Initialize the iterator structure */
@@ -315,11 +315,11 @@ int rvmBitVectorIteratorNext(BitVectorIterator* iterator)
  * Merge the contents of "src" into "dst", checking to see if this causes
  * any changes to occur.  This is a logical OR.
  *
- * Returns "true" if the contents of the destination vector were modified.
+ * Returns "TRUE" if the contents of the destination vector were modified.
  */
 jboolean rvmCheckMergeBitVectors(BitVector* dst, const BitVector* src)
 {
-    bool changed = false;
+    jboolean changed = FALSE;
 
     checkSizes(dst, src);
 
@@ -328,7 +328,7 @@ jboolean rvmCheckMergeBitVectors(BitVector* dst, const BitVector* src)
         u4 merged = src->storage[idx] | dst->storage[idx];
         if (dst->storage[idx] != merged) {
             dst->storage[idx] = merged;
-            changed = true;
+            changed = TRUE;
         }
     }
 

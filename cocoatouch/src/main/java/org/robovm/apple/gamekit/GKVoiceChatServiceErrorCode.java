@@ -34,35 +34,25 @@ import org.robovm.apple.uikit.*;
 
 /*</javadoc>*/
 /*<annotations>*/@Marshaler(ValuedEnum.AsMachineSizedSIntMarshaler.class)/*</annotations>*/
-public enum /*<name>*/GKErrorCode/*</name>*/ implements NSErrorCode {
+public enum /*<name>*/GKVoiceChatServiceErrorCode/*</name>*/ implements NSErrorCode {
     /*<values>*/
-    Unknown(1L),
-    Cancelled(2L),
-    CommunicationsFailure(3L),
-    UserDenied(4L),
-    InvalidCredentials(5L),
-    NotAuthenticated(6L),
-    AuthenticationInProgress(7L),
-    InvalidPlayer(8L),
-    ScoreNotSet(9L),
-    ParentalControlsBlocked(10L),
-    PlayerStatusExceedsMaximumLength(11L),
-    PlayerStatusInvalid(12L),
-    MatchRequestInvalid(13L),
-    Underage(14L),
-    GameUnrecognized(15L),
-    NotSupported(16L),
-    InvalidParameter(17L),
-    UnexpectedConnection(18L),
-    ChallengeInvalid(19L),
-    TurnBasedMatchDataTooLarge(20L),
-    TurnBasedTooManySessions(21L),
-    TurnBasedInvalidParticipant(22L),
-    TurnBasedInvalidTurn(23L),
-    TurnBasedInvalidState(24L),
-    InvitationsDisabled(25L),
-    PlayerPhotoFailure(26L),
-    UbiquityContainerUnavailable(27L);
+    Internal(32000L),
+    NoRemotePackets(32001L),
+    UnableToConnect(32002L),
+    RemoteParticipantHangup(32003L),
+    InvalidCallID(32004L),
+    AudioUnavailable(32005L),
+    UninitializedClient(32006L),
+    ClientMissingRequiredMethods(32007L),
+    RemoteParticipantBusy(32008L),
+    RemoteParticipantCancelled(32009L),
+    RemoteParticipantResponseInvalid(32010L),
+    RemoteParticipantDeclinedInvite(32011L),
+    MethodCurrentlyInvalid(32012L),
+    NetworkConfiguration(32013L),
+    UnsupportedRemoteVersion(32014L),
+    OutOfMemory(32015L),
+    InvalidParameter(32016L);
     /*</values>*/
 
     /*<bind>*/
@@ -72,15 +62,15 @@ public enum /*<name>*/GKErrorCode/*</name>*/ implements NSErrorCode {
 
     private final long n;
 
-    private /*<name>*/GKErrorCode/*</name>*/(long n) { this.n = n; }
+    private /*<name>*/GKVoiceChatServiceErrorCode/*</name>*/(long n) { this.n = n; }
     public long value() { return n; }
-    public static /*<name>*/GKErrorCode/*</name>*/ valueOf(long n) {
-        for (/*<name>*/GKErrorCode/*</name>*/ v : values()) {
+    public static /*<name>*/GKVoiceChatServiceErrorCode/*</name>*/ valueOf(long n) {
+        for (/*<name>*/GKVoiceChatServiceErrorCode/*</name>*/ v : values()) {
             if (v.n == n) {
                 return v;
             }
         }
         throw new IllegalArgumentException("No constant with value " + n + " found in " 
-            + /*<name>*/GKErrorCode/*</name>*/.class.getName());
+            + /*<name>*/GKVoiceChatServiceErrorCode/*</name>*/.class.getName());
     }
 }

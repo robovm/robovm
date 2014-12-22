@@ -31,39 +31,31 @@ import org.robovm.apple.uikit.*;
 /*</imports>*/
 
 /*<javadoc>*/
-/*</javadoc>*/
-/*<annotations>*//*</annotations>*/
-/*<visibility>*/public/*</visibility>*/ class /*<name>*/GKInviteEventListenerAdapter/*</name>*/ 
-    extends /*<extends>*/NSObject/*</extends>*/ 
-    /*<implements>*/implements GKInviteEventListener/*</implements>*/ {
 
-    /*<ptr>*/
-    /*</ptr>*/
-    /*<bind>*/
-    /*</bind>*/
+/*</javadoc>*/
+/*<annotations>*/@Library("GameKit") @NativeClass/*</annotations>*/
+/*<visibility>*/public/*</visibility>*/ class /*<name>*/GKSavedGame/*</name>*/ 
+    extends /*<extends>*/NSObject/*</extends>*/ 
+    /*<implements>*//*</implements>*/ {
+
+    /*<ptr>*/public static class GKSavedGamePtr extends Ptr<GKSavedGame, GKSavedGamePtr> {}/*</ptr>*/
+    /*<bind>*/static { ObjCRuntime.bind(GKSavedGame.class); }/*</bind>*/
     /*<constants>*//*</constants>*/
-    /*<constructors>*//*</constructors>*/
+    /*<constructors>*/
+    public GKSavedGame() {}
+    protected GKSavedGame(SkipInit skipInit) { super(skipInit); }
+    /*</constructors>*/
     /*<properties>*/
-    
+    @Property(selector = "name")
+    public native String getName();
+    @Property(selector = "deviceName")
+    public native String getDeviceName();
+    @Property(selector = "modificationDate")
+    public native NSDate getModificationDate();
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
-    /**
-     * @since Available in iOS 7.0 and later.
-     */
-    @NotImplemented("player:didAcceptInvite:")
-    public void didAcceptInvite(GKPlayer player, GKInvite invite) { throw new UnsupportedOperationException(); }
-    /**
-     * @since Available in iOS 8.0 and later.
-     */
-    @NotImplemented("player:didRequestMatchWithRecipients:")
-    public void didRequestMatch(GKPlayer player, NSArray<GKPlayer> recipientPlayers) { throw new UnsupportedOperationException(); }
-    /**
-     * @since Available in iOS 7.0 and later.
-     * @deprecated Deprecated in iOS 8.0.
-     */
-    @Deprecated
-    @NotImplemented("player:didRequestMatchWithPlayers:")
-    public void didRequestMatch(GKPlayer player, @org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String> playerIDsToInvite) { throw new UnsupportedOperationException(); }
+    @Method(selector = "loadDataWithCompletionHandler:")
+    public native void loadData(@Block VoidBlock2<NSData, NSError> handler);
     /*</methods>*/
 }

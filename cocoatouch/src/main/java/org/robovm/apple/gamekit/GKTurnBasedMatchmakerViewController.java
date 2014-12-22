@@ -46,21 +46,17 @@ import org.robovm.apple.uikit.*;
     /*<constructors>*/
     public GKTurnBasedMatchmakerViewController() {}
     protected GKTurnBasedMatchmakerViewController(SkipInit skipInit) { super(skipInit); }
-    public GKTurnBasedMatchmakerViewController(GKMatchRequest request) { super((SkipInit) null); initObject(initWithMatchRequest$(request)); }
+    public GKTurnBasedMatchmakerViewController(GKMatchRequest request) { super((SkipInit) null); initObject(init(request)); }
     /*</constructors>*/
     /*<properties>*/
     @Property(selector = "turnBasedMatchmakerDelegate")
     public native GKTurnBasedMatchmakerViewControllerDelegate getTurnBasedMatchmakerDelegate();
-    @Property(selector = "setTurnBasedMatchmakerDelegate:", strongRef = true)
-    public native void setTurnBasedMatchmakerDelegate(GKTurnBasedMatchmakerViewControllerDelegate v);
     @Property(selector = "showExistingMatches")
     public native boolean isShowExistingMatches();
-    @Property(selector = "setShowExistingMatches:")
-    public native void setShowExistingMatches(boolean v);
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
     @Method(selector = "initWithMatchRequest:")
-    protected native @Pointer long initWithMatchRequest$(GKMatchRequest request);
+    protected native @Pointer long init(GKMatchRequest request);
     /*</methods>*/
 }

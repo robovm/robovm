@@ -32,24 +32,25 @@ import org.robovm.apple.uikit.*;
 
 /*<javadoc>*/
 /*</javadoc>*/
-/*<annotations>*/@Library("GameKit") @Marshaler(NSString.AsStringMarshaler.class)/*</annotations>*/
-/*<visibility>*/public/*</visibility>*/ class /*<name>*/GameKit/*</name>*/ 
-    extends /*<extends>*/Object/*</extends>*/ 
-    /*<implements>*//*</implements>*/ {
+/*<annotations>*//*</annotations>*/
+/*<visibility>*/public/*</visibility>*/ class /*<name>*/GKSavedGameListenerAdapter/*</name>*/ 
+    extends /*<extends>*/NSObject/*</extends>*/ 
+    /*<implements>*/implements GKSavedGameListener/*</implements>*/ {
 
     /*<ptr>*/
     /*</ptr>*/
-    /*<bind>*/static { Bro.bind(GameKit.class); }/*</bind>*/
+    /*<bind>*/
+    /*</bind>*/
     /*<constants>*//*</constants>*/
     /*<constructors>*//*</constructors>*/
-    /*<properties>*//*</properties>*/
+    /*<properties>*/
+    
+    /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
-    @GlobalValue(symbol="GKErrorDomain", optional=true)
-    public static native NSString ErrorDomain();
-    @GlobalValue(symbol="GKSessionErrorDomain", optional=true)
-    public static native NSString SessionErrorDomain();
-    @GlobalValue(symbol="GKVoiceChatServiceErrorDomain", optional=true)
-    public static native NSString VoiceChatServiceErrorDomain();
+    @NotImplemented("player:didModifySavedGame:")
+    public void didModifySavedGame(GKPlayer player, GKSavedGame savedGame) { throw new UnsupportedOperationException(); }
+    @NotImplemented("player:hasConflictingSavedGames:")
+    public void hasConflictingSavedGames(GKPlayer player, NSArray<GKSavedGame> savedGames) { throw new UnsupportedOperationException(); }
     /*</methods>*/
 }

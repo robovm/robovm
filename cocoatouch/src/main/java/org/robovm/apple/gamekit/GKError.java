@@ -32,38 +32,28 @@ import org.robovm.apple.uikit.*;
 
 /*<javadoc>*/
 /*</javadoc>*/
-/*<annotations>*//*</annotations>*/
-/*<visibility>*/public/*</visibility>*/ class /*<name>*/GKInviteEventListenerAdapter/*</name>*/ 
-    extends /*<extends>*/NSObject/*</extends>*/ 
-    /*<implements>*/implements GKInviteEventListener/*</implements>*/ {
+/*<annotations>*/@Library("GameKit")/*</annotations>*/
+/*<visibility>*/public/*</visibility>*/ class /*<name>*/GKError/*</name>*/ 
+    extends /*<extends>*/NSError/*</extends>*/ 
+    /*<implements>*//*</implements>*/ {
 
+    protected GKError(SkipInit skipInit) {
+        super(skipInit);
+    }
+    
     /*<ptr>*/
     /*</ptr>*/
-    /*<bind>*/
-    /*</bind>*/
+    /*<bind>*/static { Bro.bind(GKError.class); }/*</bind>*/
     /*<constants>*//*</constants>*/
     /*<constructors>*//*</constructors>*/
-    /*<properties>*/
-    
-    /*</properties>*/
+    /*<properties>*//*</properties>*/
     /*<members>*//*</members>*/
+    @Override
+    public GKErrorCode getErrorCode() {
+        return GKErrorCode.valueOf(getCode());
+    }
     /*<methods>*/
-    /**
-     * @since Available in iOS 7.0 and later.
-     */
-    @NotImplemented("player:didAcceptInvite:")
-    public void didAcceptInvite(GKPlayer player, GKInvite invite) { throw new UnsupportedOperationException(); }
-    /**
-     * @since Available in iOS 8.0 and later.
-     */
-    @NotImplemented("player:didRequestMatchWithRecipients:")
-    public void didRequestMatch(GKPlayer player, NSArray<GKPlayer> recipientPlayers) { throw new UnsupportedOperationException(); }
-    /**
-     * @since Available in iOS 7.0 and later.
-     * @deprecated Deprecated in iOS 8.0.
-     */
-    @Deprecated
-    @NotImplemented("player:didRequestMatchWithPlayers:")
-    public void didRequestMatch(GKPlayer player, @org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String> playerIDsToInvite) { throw new UnsupportedOperationException(); }
+    @GlobalValue(symbol="GKErrorDomain", optional=true)
+    public static native String getClassDomain();
     /*</methods>*/
 }

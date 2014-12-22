@@ -46,11 +46,17 @@ import org.robovm.apple.uikit.*;
     /*<constructors>*/
     public GKAchievement() {}
     protected GKAchievement(SkipInit skipInit) { super(skipInit); }
-    public GKAchievement(String identifier) { super((SkipInit) null); initObject(initWithIdentifier$(identifier)); }
+    public GKAchievement(String identifier) { super((SkipInit) null); initObject(init(identifier)); }
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    public GKAchievement(String identifier, GKPlayer player) { super((SkipInit) null); initObject(init(identifier, player)); }
     /**
      * @since Available in iOS 7.0 and later.
+     * @deprecated Deprecated in iOS 8.0.
      */
-    public GKAchievement(String identifier, String playerID) { super((SkipInit) null); initObject(initWithIdentifier$forPlayer$(identifier, playerID)); }
+    @Deprecated
+    public GKAchievement(String identifier, String playerID) { super((SkipInit) null); initObject(init(identifier, playerID)); }
     /*</constructors>*/
     /*<properties>*/
     @Property(selector = "identifier")
@@ -63,13 +69,6 @@ import org.robovm.apple.uikit.*;
     public native void setPercentComplete(double v);
     @Property(selector = "isCompleted")
     public native boolean isCompleted();
-    /**
-     * @since Available in iOS 4.1 and later.
-     * @deprecated Deprecated in iOS 6.0.
-     */
-    @Deprecated
-    @Property(selector = "isHidden")
-    public native boolean isHidden();
     @Property(selector = "lastReportedDate")
     public native NSDate getLastReportedDate();
     /**
@@ -83,27 +82,34 @@ import org.robovm.apple.uikit.*;
     @Property(selector = "setShowsCompletionBanner:")
     public native void setShowsCompletionBanner(boolean v);
     /**
-     * @since Available in iOS 7.0 and later.
+     * @since Available in iOS 8.0 and later.
      */
+    @Property(selector = "player")
+    public native GKPlayer getPlayer();
+    /**
+     * @since Available in iOS 4.1 and later.
+     * @deprecated Deprecated in iOS 6.0.
+     */
+    @Deprecated
+    @Property(selector = "isHidden")
+    public native boolean isHidden();
+    /**
+     * @since Available in iOS 7.0 and later.
+     * @deprecated Deprecated in iOS 8.0.
+     */
+    @Deprecated
     @Property(selector = "playerID")
     public native String getPlayerID();
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
     @Method(selector = "initWithIdentifier:")
-    protected native @Pointer long initWithIdentifier$(String identifier);
+    protected native @Pointer long init(String identifier);
     /**
-     * @since Available in iOS 7.0 and later.
+     * @since Available in iOS 8.0 and later.
      */
-    @Method(selector = "initWithIdentifier:forPlayer:")
-    protected native @Pointer long initWithIdentifier$forPlayer$(String identifier, String playerID);
-    /**
-     * @since Available in iOS 4.1 and later.
-     * @deprecated Deprecated in iOS 7.0.
-     */
-    @Deprecated
-    @Method(selector = "reportAchievementWithCompletionHandler:")
-    public native void reportAchievement(@Block VoidBlock1<NSError> completionHandler);
+    @Method(selector = "initWithIdentifier:player:")
+    protected native @Pointer long init(String identifier, GKPlayer player);
     @Method(selector = "loadAchievementsWithCompletionHandler:")
     public static native void loadAchievements(@Block VoidBlock2<NSArray<GKAchievement>, NSError> completionHandler);
     @Method(selector = "resetAchievementsWithCompletionHandler:")
@@ -114,20 +120,55 @@ import org.robovm.apple.uikit.*;
     @Method(selector = "reportAchievements:withCompletionHandler:")
     public static native void reportAchievements(NSArray<GKAchievement> achievements, @Block VoidBlock1<NSError> completionHandler);
     /**
-     * @since Available in iOS 7.0 and later.
+     * @since Available in iOS 4.1 and later.
+     * @deprecated Deprecated in iOS 7.0.
      */
-    @Method(selector = "challengeComposeControllerWithPlayers:message:completionHandler:")
-    public native UIViewController getChallengeComposeController(NSArray<NSString> playerIDs, String message, @Block VoidBlock3<UIViewController, Boolean, NSArray<NSString>> completionHandler);
+    @Deprecated
+    @Method(selector = "reportAchievementWithCompletionHandler:")
+    public native void reportAchievement(@Block VoidBlock1<NSError> completionHandler);
+    /**
+     * @since Available in iOS 7.0 and later.
+     * @deprecated Deprecated in iOS 8.0.
+     */
+    @Deprecated
+    @Method(selector = "initWithIdentifier:forPlayer:")
+    protected native @Pointer long init(String identifier, String playerID);
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @Method(selector = "challengeComposeControllerWithMessage:players:completionHandler:")
+    public native UIViewController getChallengeComposeController(String message, NSArray<GKPlayer> players, @Block VoidBlock3<UIViewController, Boolean, NSArray<GKPlayer>> completionHandler);
     /**
      * @since Available in iOS 6.0 and later.
+     * @deprecated Deprecated in iOS 7.0.
      */
-    @Method(selector = "selectChallengeablePlayerIDs:withCompletionHandler:")
-    public native void selectChallengeablePlayerIDs(NSArray<NSString> playerIDs, @Block VoidBlock2<NSArray<NSString>, NSError> completionHandler);
+    @Deprecated
+    @Method(selector = "issueChallengeToPlayers:message:")
+    public native void issueChallengeToPlayers(@org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String> playerIDs, String message);
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @Method(selector = "selectChallengeablePlayers:withCompletionHandler:")
+    public native void selectChallengeablePlayers(NSArray<GKPlayer> players, @Block VoidBlock2<NSArray<GKPlayer>, NSError> completionHandler);
     /**
      * @since Available in iOS 7.0 and later.
      */
     @Method(selector = "reportAchievements:withEligibleChallenges:withCompletionHandler:")
     public static native void reportAchievements(NSArray<GKAchievement> achievements, NSArray<GKChallenge> challenges, @Block VoidBlock1<NSError> completionHandler);
+    /**
+     * @since Available in iOS 6.0 and later.
+     * @deprecated Deprecated in iOS 8.0.
+     */
+    @Deprecated
+    @Method(selector = "selectChallengeablePlayerIDs:withCompletionHandler:")
+    public native void selectChallengeablePlayerIDs(@org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String> playerIDs, @Block VoidBlock2<NSArray<NSString>, NSError> completionHandler);
+    /**
+     * @since Available in iOS 7.0 and later.
+     * @deprecated Deprecated in iOS 8.0.
+     */
+    @Deprecated
+    @Method(selector = "challengeComposeControllerWithPlayers:message:completionHandler:")
+    public native UIViewController getChallengeComposeController(@org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String> playerIDs, String message, @Block VoidBlock3<UIViewController, Boolean, NSArray<NSString>> completionHandler);
     @Method(selector = "encodeWithCoder:")
     public native void encode(NSCoder aCoder);
     /*</methods>*/

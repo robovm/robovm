@@ -42,13 +42,34 @@ import org.robovm.apple.uikit.*;
     extends /*<extends>*/NSObject/*</extends>*/ 
     /*<implements>*//*</implements>*/ {
 
+    public interface DataReceiveHandler {
+        void onReceive(NSData data, String peer, GKSession session);
+    }
+    
+    private static final Selector handleDataReceive = Selector.register("receiveData:fromPeer:inSession:context:");
+    private static class ListenerWrapper extends NSObject {
+        private final DataReceiveHandler listener;
+        private ListenerWrapper(DataReceiveHandler listener) {
+            this.listener = listener;
+        }
+        @Method(selector = "handleDataReceive")
+        private void handleDataReceive(NSData data, String peer, GKSession session, @Pointer long context) {
+            listener.onReceive(data, peer, session);
+        }
+    }
+    
     /*<ptr>*/public static class GKSessionPtr extends Ptr<GKSession, GKSessionPtr> {}/*</ptr>*/
     /*<bind>*/static { ObjCRuntime.bind(GKSession.class); }/*</bind>*/
     /*<constants>*//*</constants>*/
     /*<constructors>*/
     public GKSession() {}
     protected GKSession(SkipInit skipInit) { super(skipInit); }
-    public GKSession(String sessionID, String name, GKSessionMode mode) { super((SkipInit) null); initObject(initWithSessionID$displayName$sessionMode$(sessionID, name, mode)); }
+    /**
+     * @since Available in iOS 3.0 and later.
+     * @deprecated Deprecated in iOS 7.0.
+     */
+    @Deprecated
+    public GKSession(String sessionID, String name, GKSessionMode mode) { super((SkipInit) null); initObject(init(sessionID, name, mode)); }
     /*</constructors>*/
     /*<properties>*/
     @Property(selector = "delegate")
@@ -59,6 +80,11 @@ import org.robovm.apple.uikit.*;
     public native String getSessionID();
     @Property(selector = "displayName")
     public native String getDisplayName();
+    /**
+     * @since Available in iOS 3.0 and later.
+     * @deprecated Deprecated in iOS 7.0.
+     */
+    @Deprecated
     @Property(selector = "sessionMode")
     public native GKSessionMode getSessionMode();
     @Property(selector = "peerID")
@@ -73,30 +99,111 @@ import org.robovm.apple.uikit.*;
     public native void setDisconnectTimeout(double v);
     /*</properties>*/
     /*<members>*//*</members>*/
+    /**
+     * 
+     * @param data
+     * @param peers
+     * @param mode
+     * @return
+     * @since Available in iOS 3.0 and later.
+     * @deprecated Deprecated in iOS 7.0.
+     * @throws NSErrorException
+     */
+    @Deprecated
+    public boolean sendData(NSData data, @org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String> peers, GKSendDataMode mode) throws NSErrorException {
+        NSError.NSErrorPtr err = new NSError.NSErrorPtr();
+        boolean result = sendData(data, peers, mode, err);
+        if (err.get() != null) {
+            throw new NSErrorException(err.get());
+        }
+        return result;
+    }
+    /**
+     * 
+     * @param data
+     * @param mode
+     * @return
+     * @since Available in iOS 3.0 and later.
+     * @deprecated Deprecated in iOS 7.0.
+     * @throws NSErrorException
+     */
+    @Deprecated
+    @Method(selector = "sendDataToAllPeers:withDataMode:error:")
+    public boolean sendDataToAllPeers(NSData data, GKSendDataMode mode) throws NSErrorException {
+        NSError.NSErrorPtr err = new NSError.NSErrorPtr();
+        boolean result = sendDataToAllPeers(data, mode, err);
+        if (err.get() != null) {
+            throw new NSErrorException(err.get());
+        }
+        return result;
+    }
+    /**
+     * 
+     * @param peerID
+     * @return
+     * @throws NSErrorException
+     */
+    public boolean acceptConnection(String peerID) throws NSErrorException {
+        NSError.NSErrorPtr err = new NSError.NSErrorPtr();
+        boolean result = acceptConnection(peerID, err);
+        if (err.get() != null) {
+            throw new NSErrorException(err.get());
+        }
+        return result;
+    }
+    
+    public void setDataReceiveHandler(DataReceiveHandler handler) {
+        if (handler == null) {
+            throw new NullPointerException("handler");
+        }
+        ListenerWrapper l = new ListenerWrapper(handler);
+        setDataReceiveHandler(l, 0);
+        addStrongRef(l);
+    }
     /*<methods>*/
+    /**
+     * @since Available in iOS 3.0 and later.
+     * @deprecated Deprecated in iOS 7.0.
+     */
+    @Deprecated
     @Method(selector = "initWithSessionID:displayName:sessionMode:")
-    protected native @Pointer long initWithSessionID$displayName$sessionMode$(String sessionID, String name, GKSessionMode mode);
+    protected native @Pointer long init(String sessionID, String name, GKSessionMode mode);
     @Method(selector = "displayNameForPeer:")
     public native String getDisplayName(String peerID);
+    /**
+     * @since Available in iOS 3.0 and later.
+     * @deprecated Deprecated in iOS 7.0.
+     */
+    @Deprecated
     @Method(selector = "sendData:toPeers:withDataMode:error:")
-    public native boolean sendData(NSData data, NSArray<NSString> peers, GKSendDataMode mode, NSError.NSErrorPtr error);
+    protected native boolean sendData(NSData data, @org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String> peers, GKSendDataMode mode, NSError.NSErrorPtr error);
+    /**
+     * @since Available in iOS 3.0 and later.
+     * @deprecated Deprecated in iOS 7.0.
+     */
+    @Deprecated
     @Method(selector = "sendDataToAllPeers:withDataMode:error:")
-    public native boolean sendDataToAllPeers(NSData data, GKSendDataMode mode, NSError.NSErrorPtr error);
+    protected native boolean sendDataToAllPeers(NSData data, GKSendDataMode mode, NSError.NSErrorPtr error);
     @Method(selector = "setDataReceiveHandler:withContext:")
-    public native void setDataReceiveHandler(NSObject handler, VoidPtr context);
+    protected native void setDataReceiveHandler(NSObject handler, @Pointer long context);
     @Method(selector = "connectToPeer:withTimeout:")
     public native void connect(String peerID, double timeout);
     @Method(selector = "cancelConnectToPeer:")
     public native void cancelConnect(String peerID);
     @Method(selector = "acceptConnectionFromPeer:error:")
-    public native boolean acceptConnection(String peerID, NSError.NSErrorPtr error);
+    protected native boolean acceptConnection(String peerID, NSError.NSErrorPtr error);
     @Method(selector = "denyConnectionFromPeer:")
     public native void denyConnection(String peerID);
     @Method(selector = "disconnectPeerFromAllPeers:")
     public native void disconnectPeer(String peerID);
     @Method(selector = "disconnectFromAllPeers")
     public native void disconnectFromAllPeers();
+    /**
+     * @since Available in iOS 3.0 and later.
+     * @deprecated Deprecated in iOS 7.0.
+     */
+    @Deprecated
     @Method(selector = "peersWithConnectionState:")
-    public native NSArray<NSString> getPeers(GKPeerConnectionState state);
+    public native @org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String> getPeers(GKPeerConnectionState state);
     /*</methods>*/
 }

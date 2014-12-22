@@ -35,7 +35,7 @@ import org.robovm.apple.uikit.*;
 /*</javadoc>*/
 /*<annotations>*//*</annotations>*/
 /*<visibility>*/public/*</visibility>*/ interface /*<name>*/GKLocalPlayerListener/*</name>*/ 
-    /*<implements>*/extends GKChallengeListener, GKInviteEventListener, GKTurnBasedEventListener/*</implements>*/ {
+    /*<implements>*/extends GKChallengeListener, GKInviteEventListener, GKTurnBasedEventListener, GKSavedGameListener/*</implements>*/ {
 
     /*<ptr>*/
     /*</ptr>*/

@@ -73,6 +73,6 @@ import org.robovm.apple.uikit.*;
      */
     @Deprecated
     @Method(selector = "sharedTurnBasedEventHandler")
-    public static native GKTurnBasedEventHandler sharedTurnBasedEventHandler();
+    public static native GKTurnBasedEventHandler getSharedTurnBasedEventHandler();
     /*</methods>*/
 }

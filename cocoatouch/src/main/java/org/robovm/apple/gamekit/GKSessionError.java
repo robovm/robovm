@@ -31,45 +31,27 @@ import org.robovm.apple.uikit.*;
 /*</imports>*/
 
 /*<javadoc>*/
-
 /*</javadoc>*/
-/*<annotations>*/@Marshaler(ValuedEnum.AsMachineSizedSIntMarshaler.class)/*</annotations>*/
-public enum /*<name>*/GKSessionError/*</name>*/ implements ValuedEnum {
-    /*<values>*/
-    InvalidParameter(30500L),
-    PeerNotFound(30501L),
-    Declined(30502L),
-    TimedOut(30503L),
-    Cancelled(30504L),
-    ConnectionFailed(30505L),
-    ConnectionClosed(30506L),
-    DataTooBig(30507L),
-    NotConnected(30508L),
-    CannotEnable(30509L),
-    InProgress(30510L),
-    Connectivity(30201L),
-    Transport(30202L),
-    Internal(30203L),
-    Unknown(30204L),
-    System(30205L);
-    /*</values>*/
+/*<annotations>*/@Library("GameKit")/*</annotations>*/
+/*<visibility>*/public/*</visibility>*/ class /*<name>*/GKSessionError/*</name>*/ 
+    extends /*<extends>*/NSError/*</extends>*/ 
+    /*<implements>*//*</implements>*/ {
 
-    /*<bind>*/
-    /*</bind>*/
-    /*<constants>*//*</constants>*/
-    /*<methods>*//*</methods>*/
-
-    private final long n;
-
-    private /*<name>*/GKSessionError/*</name>*/(long n) { this.n = n; }
-    public long value() { return n; }
-    public static /*<name>*/GKSessionError/*</name>*/ valueOf(long n) {
-        for (/*<name>*/GKSessionError/*</name>*/ v : values()) {
-            if (v.n == n) {
-                return v;
-            }
-        }
-        throw new IllegalArgumentException("No constant with value " + n + " found in " 
-            + /*<name>*/GKSessionError/*</name>*/.class.getName());
+    protected GKSessionError(SkipInit skipInit) {
+        super(skipInit);
     }
+    
+    /*<ptr>*/public static class GKSessionErrorPtr extends Ptr<GKSessionError, GKSessionErrorPtr> {}/*</ptr>*/
+    /*<bind>*/static { Bro.bind(GKSessionError.class); }/*</bind>*/
+    /*<constants>*//*</constants>*/
+    /*<properties>*//*</properties>*/
+    /*<members>*//*</members>*/
+    @Override
+    public GKSessionErrorCode getErrorCode() {
+        return GKSessionErrorCode.valueOf(getCode());
+    }
+    /*<methods>*/
+    @GlobalValue(symbol="GKSessionErrorDomain", optional=true)
+    public static native String getClassDomain();
+    /*</methods>*/
 }

@@ -48,34 +48,113 @@ import org.robovm.apple.uikit.*;
     protected GKMatch(SkipInit skipInit) { super(skipInit); }
     /*</constructors>*/
     /*<properties>*/
-    @Property(selector = "playerIDs")
-    public native NSArray<NSString> getPlayerIDs();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @Property(selector = "players")
+    public native NSArray<GKPlayer> getPlayers();
     @Property(selector = "delegate")
     public native GKMatchDelegate getDelegate();
     @Property(selector = "setDelegate:", strongRef = true)
     public native void setDelegate(GKMatchDelegate v);
     @Property(selector = "expectedPlayerCount")
     public native @MachineSizedUInt long getExpectedPlayerCount();
+    /**
+     * @since Available in iOS 4.1 and later.
+     * @deprecated Deprecated in iOS 8.0.
+     */
+    @Deprecated
+    @Property(selector = "playerIDs")
+    public native @org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String> getPlayerIDs();
     /*</properties>*/
     /*<members>*//*</members>*/
+    /**
+     * 
+     * @param data
+     * @param players
+     * @param mode
+     * @return
+     * @throws NSErrorException
+     * @since Available in iOS 8.0 and later.
+     */
+    public boolean sendDataToPlayers(NSData data, NSArray<GKPlayer> players, GKMatchSendDataMode mode) throws NSErrorException {
+        NSError.NSErrorPtr err = new NSError.NSErrorPtr();
+        boolean result = sendDataToPlayers(data, players, mode, err);
+        if (err.get() != null) {
+            throw new NSErrorException(err.get());
+        }
+        return result;
+    }
+    /**
+     * 
+     * @param data
+     * @param mode
+     * @return
+     * @throws NSErrorException
+     */
+    public boolean sendDataToAllPlayers(NSData data, GKMatchSendDataMode mode) throws NSErrorException {
+        NSError.NSErrorPtr err = new NSError.NSErrorPtr();
+        boolean result = sendDataToAllPlayers(data, mode, err);
+        if (err.get() != null) {
+            throw new NSErrorException(err.get());
+        }
+        return result;
+    }
+    /**
+     * 
+     * @param data
+     * @param playerIDs
+     * @param mode
+     * @return
+     * @throws NSErrorException
+     * @since Available in iOS 4.1 and later.
+     * @deprecated Deprecated in iOS 8.0.
+     */
+    @Deprecated
+    public boolean sendDataToPlayers(NSData data, @org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String> playerIDs, GKMatchSendDataMode mode) throws NSErrorException {
+        NSError.NSErrorPtr err = new NSError.NSErrorPtr();
+        boolean result = sendDataToPlayers(data, playerIDs, mode, err);
+        if (err.get() != null) {
+            throw new NSErrorException(err.get());
+        }
+        return result;
+    }
+
     /*<methods>*/
-    @Method(selector = "sendData:toPlayers:withDataMode:error:")
-    public native boolean sendData(NSData data, NSArray<NSString> playerIDs, GKMatchSendDataMode mode, NSError.NSErrorPtr error);
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @Method(selector = "sendData:toPlayers:dataMode:error:")
+    protected native boolean sendDataToPlayers(NSData data, NSArray<GKPlayer> players, GKMatchSendDataMode mode, NSError.NSErrorPtr error);
     @Method(selector = "sendDataToAllPlayers:withDataMode:error:")
-    public native boolean sendDataToAllPlayers(NSData data, GKMatchSendDataMode mode, NSError.NSErrorPtr error);
+    protected native boolean sendDataToAllPlayers(NSData data, GKMatchSendDataMode mode, NSError.NSErrorPtr error);
     @Method(selector = "disconnect")
     public native void disconnect();
     @Method(selector = "voiceChatWithName:")
     public native GKVoiceChat getVoiceChat(String name);
     /**
-     * @since Available in iOS 6.0 and later.
+     * @since Available in iOS 8.0 and later.
      */
-    @Method(selector = "chooseBestHostPlayerWithCompletionHandler:")
-    public native void chooseBestHostPlayer(@Block VoidBlock1<NSString> completionHandler);
+    @Method(selector = "chooseBestHostingPlayerWithCompletionHandler:")
+    public native void chooseBestHostingPlayer(@Block VoidBlock1<GKPlayer> completionHandler);
     /**
      * @since Available in iOS 6.0 and later.
      */
     @Method(selector = "rematchWithCompletionHandler:")
     public native void rematch(@Block VoidBlock2<GKMatch, NSError> completionHandler);
+    /**
+     * @since Available in iOS 6.0 and later.
+     * @deprecated Deprecated in iOS 8.0.
+     */
+    @Deprecated
+    @Method(selector = "chooseBestHostPlayerWithCompletionHandler:")
+    public native void chooseBestHostPlayer(@Block VoidBlock1<String> completionHandler);
+    /**
+     * @since Available in iOS 4.1 and later.
+     * @deprecated Deprecated in iOS 8.0.
+     */
+    @Deprecated
+    @Method(selector = "sendData:toPlayers:withDataMode:error:")
+    protected native boolean sendDataToPlayers(NSData data, @org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String> playerIDs, GKMatchSendDataMode mode, NSError.NSErrorPtr error);
     /*</methods>*/
 }

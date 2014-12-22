@@ -47,13 +47,27 @@ import org.robovm.apple.uikit.*;
     /*</properties>*/
     /*<methods>*/
     /**
-     * @since Available in iOS 4.1 and later.
+     * @since Available in iOS 8.0 and later.
      */
+    @Method(selector = "match:didReceiveData:fromRemotePlayer:")
+    void didReceiveData(GKMatch match, NSData data, GKPlayer player);
+    /**
+     * @since Available in iOS 4.1 and later.
+     * @deprecated Deprecated in iOS 8.0.
+     */
+    @Deprecated
     @Method(selector = "match:didReceiveData:fromPlayer:")
     void didReceiveData(GKMatch match, NSData data, String playerID);
     /**
      * @since Available in iOS 4.1 and later.
      */
+    @Method(selector = "match:player:didChangeConnectionState:")
+    void didChangeConnectionState(GKMatch match, GKPlayer player, GKPlayerConnectionState state);
+    /**
+     * @since Available in iOS 4.1 and later.
+     * @deprecated Deprecated in iOS 8.0.
+     */
+    @Deprecated
     @Method(selector = "match:player:didChangeState:")
     void didChangeState(GKMatch match, String playerID, GKPlayerConnectionState state);
     /**
@@ -62,8 +76,15 @@ import org.robovm.apple.uikit.*;
     @Method(selector = "match:didFailWithError:")
     void didFail(GKMatch match, NSError error);
     /**
-     * @since Available in iOS 5.0 and later.
+     * @since Available in iOS 8.0 and later.
      */
+    @Method(selector = "match:shouldReinviteDisconnectedPlayer:")
+    boolean shouldReinviteDisconnectedPlayer(GKMatch match, GKPlayer player);
+    /**
+     * @since Available in iOS 5.0 and later.
+     * @deprecated Deprecated in iOS 8.0.
+     */
+    @Deprecated
     @Method(selector = "match:shouldReinvitePlayer:")
     boolean shouldReinvitePlayer(GKMatch match, String playerID);
     /*</methods>*/

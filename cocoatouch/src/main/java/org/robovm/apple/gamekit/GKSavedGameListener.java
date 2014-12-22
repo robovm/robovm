@@ -31,39 +31,26 @@ import org.robovm.apple.uikit.*;
 /*</imports>*/
 
 /*<javadoc>*/
+
 /*</javadoc>*/
 /*<annotations>*//*</annotations>*/
-/*<visibility>*/public/*</visibility>*/ class /*<name>*/GKInviteEventListenerAdapter/*</name>*/ 
-    extends /*<extends>*/NSObject/*</extends>*/ 
-    /*<implements>*/implements GKInviteEventListener/*</implements>*/ {
+/*<visibility>*/public/*</visibility>*/ interface /*<name>*/GKSavedGameListener/*</name>*/ 
+    /*<implements>*/extends NSObjectProtocol/*</implements>*/ {
 
     /*<ptr>*/
     /*</ptr>*/
     /*<bind>*/
     /*</bind>*/
     /*<constants>*//*</constants>*/
-    /*<constructors>*//*</constructors>*/
     /*<properties>*/
     
     /*</properties>*/
-    /*<members>*//*</members>*/
     /*<methods>*/
-    /**
-     * @since Available in iOS 7.0 and later.
-     */
-    @NotImplemented("player:didAcceptInvite:")
-    public void didAcceptInvite(GKPlayer player, GKInvite invite) { throw new UnsupportedOperationException(); }
-    /**
-     * @since Available in iOS 8.0 and later.
-     */
-    @NotImplemented("player:didRequestMatchWithRecipients:")
-    public void didRequestMatch(GKPlayer player, NSArray<GKPlayer> recipientPlayers) { throw new UnsupportedOperationException(); }
-    /**
-     * @since Available in iOS 7.0 and later.
-     * @deprecated Deprecated in iOS 8.0.
-     */
-    @Deprecated
-    @NotImplemented("player:didRequestMatchWithPlayers:")
-    public void didRequestMatch(GKPlayer player, @org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String> playerIDsToInvite) { throw new UnsupportedOperationException(); }
+    @Method(selector = "player:didModifySavedGame:")
+    void didModifySavedGame(GKPlayer player, GKSavedGame savedGame);
+    @Method(selector = "player:hasConflictingSavedGames:")
+    void hasConflictingSavedGames(GKPlayer player, NSArray<GKSavedGame> savedGames);
     /*</methods>*/
+    /*<adapter>*/
+    /*</adapter>*/
 }

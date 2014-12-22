@@ -72,17 +72,20 @@ import org.robovm.apple.uikit.*;
     public native void match(GKInvite invite, @Block VoidBlock2<GKMatch, NSError> completionHandler);
     @Method(selector = "findMatchForRequest:withCompletionHandler:")
     public native void findMatch(GKMatchRequest request, @Block VoidBlock2<GKMatch, NSError> completionHandler);
-    @Method(selector = "findPlayersForHostedMatchRequest:withCompletionHandler:")
-    public native void findPlayers(GKMatchRequest request, @Block VoidBlock2<NSArray<NSString>, NSError> completionHandler);
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @Method(selector = "findPlayersForHostedRequest:withCompletionHandler:")
+    public native void findPlayersForHostedRequest(GKMatchRequest request, @Block VoidBlock2<NSArray<GKPlayer>, NSError> completionHandler);
     @Method(selector = "addPlayersToMatch:matchRequest:completionHandler:")
     public native void addPlayersToMatch(GKMatch match, GKMatchRequest matchRequest, @Block VoidBlock1<NSError> completionHandler);
     @Method(selector = "cancel")
     public native void cancel();
     /**
-     * @since Available in iOS 6.0 and later.
+     * @since Available in iOS 8.0 and later.
      */
-    @Method(selector = "cancelInviteToPlayer:")
-    public native void cancelInvite(String playerID);
+    @Method(selector = "cancelPendingInviteToPlayer:")
+    public native void cancelPendingInvite(GKPlayer player);
     /**
      * @since Available in iOS 6.0 and later.
      */
@@ -93,16 +96,37 @@ import org.robovm.apple.uikit.*;
     @Method(selector = "queryActivityWithCompletionHandler:")
     public native void queryActivity(@Block("(@MachineSizedSInt,)") VoidBlock2<Long, NSError> completionHandler);
     /**
-     * @since Available in iOS 6.0 and later.
+     * @since Available in iOS 8.0 and later.
      */
-    @Method(selector = "startBrowsingForNearbyPlayersWithReachableHandler:")
-    public native void startBrowsingForNearbyPlayers(@Block VoidBlock2<NSString, Boolean> reachableHandler);
+    @Method(selector = "startBrowsingForNearbyPlayersWithHandler:")
+    public native void startNearbyPlayersBrowsing(@Block VoidBlock2<GKPlayer, Boolean> reachableHandler);
     /**
      * @since Available in iOS 6.0 and later.
      */
     @Method(selector = "stopBrowsingForNearbyPlayers")
     public native void stopBrowsingForNearbyPlayers();
     @Method(selector = "sharedMatchmaker")
-    public static native GKMatchmaker sharedMatchmaker();
+    public static native GKMatchmaker getSharedMatchmaker();
+    /**
+     * @since Available in iOS 6.0 and later.
+     * @deprecated Deprecated in iOS 8.0.
+     */
+    @Deprecated
+    @Method(selector = "startBrowsingForNearbyPlayersWithReachableHandler:")
+    public native void startBrowsingForNearbyPlayers(@Block VoidBlock2<String, Boolean> reachableHandler);
+    /**
+     * @since Available in iOS 6.0 and later.
+     * @deprecated Deprecated in iOS 8.0.
+     */
+    @Deprecated
+    @Method(selector = "cancelInviteToPlayer:")
+    public native void cancelInvite(String playerID);
+    /**
+     * @since Available in iOS 4.1 and later.
+     * @deprecated Deprecated in iOS 8.0.
+     */
+    @Deprecated
+    @Method(selector = "findPlayersForHostedMatchRequest:withCompletionHandler:")
+    public native void findPlayers(GKMatchRequest request, @Block VoidBlock2<NSArray<NSString>, NSError> completionHandler);
     /*</methods>*/
 }

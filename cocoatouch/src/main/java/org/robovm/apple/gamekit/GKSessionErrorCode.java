@@ -34,35 +34,24 @@ import org.robovm.apple.uikit.*;
 
 /*</javadoc>*/
 /*<annotations>*/@Marshaler(ValuedEnum.AsMachineSizedSIntMarshaler.class)/*</annotations>*/
-public enum /*<name>*/GKErrorCode/*</name>*/ implements NSErrorCode {
+public enum /*<name>*/GKSessionErrorCode/*</name>*/ implements NSErrorCode {
     /*<values>*/
-    Unknown(1L),
-    Cancelled(2L),
-    CommunicationsFailure(3L),
-    UserDenied(4L),
-    InvalidCredentials(5L),
-    NotAuthenticated(6L),
-    AuthenticationInProgress(7L),
-    InvalidPlayer(8L),
-    ScoreNotSet(9L),
-    ParentalControlsBlocked(10L),
-    PlayerStatusExceedsMaximumLength(11L),
-    PlayerStatusInvalid(12L),
-    MatchRequestInvalid(13L),
-    Underage(14L),
-    GameUnrecognized(15L),
-    NotSupported(16L),
-    InvalidParameter(17L),
-    UnexpectedConnection(18L),
-    ChallengeInvalid(19L),
-    TurnBasedMatchDataTooLarge(20L),
-    TurnBasedTooManySessions(21L),
-    TurnBasedInvalidParticipant(22L),
-    TurnBasedInvalidTurn(23L),
-    TurnBasedInvalidState(24L),
-    InvitationsDisabled(25L),
-    PlayerPhotoFailure(26L),
-    UbiquityContainerUnavailable(27L);
+    InvalidParameter(30500L),
+    PeerNotFound(30501L),
+    Declined(30502L),
+    TimedOut(30503L),
+    Cancelled(30504L),
+    ConnectionFailed(30505L),
+    ConnectionClosed(30506L),
+    DataTooBig(30507L),
+    NotConnected(30508L),
+    CannotEnable(30509L),
+    InProgress(30510L),
+    Connectivity(30201L),
+    Transport(30202L),
+    Internal(30203L),
+    Unknown(30204L),
+    System(30205L);
     /*</values>*/
 
     /*<bind>*/
@@ -72,15 +61,15 @@ public enum /*<name>*/GKErrorCode/*</name>*/ implements NSErrorCode {
 
     private final long n;
 
-    private /*<name>*/GKErrorCode/*</name>*/(long n) { this.n = n; }
+    private /*<name>*/GKSessionErrorCode/*</name>*/(long n) { this.n = n; }
     public long value() { return n; }
-    public static /*<name>*/GKErrorCode/*</name>*/ valueOf(long n) {
-        for (/*<name>*/GKErrorCode/*</name>*/ v : values()) {
+    public static /*<name>*/GKSessionErrorCode/*</name>*/ valueOf(long n) {
+        for (/*<name>*/GKSessionErrorCode/*</name>*/ v : values()) {
             if (v.n == n) {
                 return v;
             }
         }
         throw new IllegalArgumentException("No constant with value " + n + " found in " 
-            + /*<name>*/GKErrorCode/*</name>*/.class.getName());
+            + /*<name>*/GKSessionErrorCode/*</name>*/.class.getName());
     }
 }

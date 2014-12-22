@@ -64,10 +64,30 @@ import org.robovm.apple.uikit.*;
     public native int getPlayerAttributes();
     @Property(selector = "setPlayerAttributes:")
     public native void setPlayerAttributes(int v);
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @Property(selector = "recipients")
+    public native NSArray<GKPlayer> getRecipients();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @Property(selector = "setRecipients:")
+    public native void setRecipients(NSArray<GKPlayer> v);
+    /**
+     * @since Available in iOS 4.1 and later.
+     * @deprecated Deprecated in iOS 8.0.
+     */
+    @Deprecated
     @Property(selector = "playersToInvite")
-    public native NSArray<NSString> getPlayersToInvite();
+    public native @org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String> getPlayersToInvite();
+    /**
+     * @since Available in iOS 4.1 and later.
+     * @deprecated Deprecated in iOS 8.0.
+     */
+    @Deprecated
     @Property(selector = "setPlayersToInvite:")
-    public native void setPlayersToInvite(NSArray<NSString> v);
+    public native void setPlayersToInvite(@org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String> v);
     /**
      * @since Available in iOS 6.0 and later.
      */
@@ -89,15 +109,29 @@ import org.robovm.apple.uikit.*;
     @Property(selector = "setDefaultNumberOfPlayers:")
     public native void setDefaultNumberOfPlayers(@MachineSizedUInt long v);
     /**
-     * @since Available in iOS 6.0 and later.
+     * @since Available in iOS 8.0 and later.
      */
-    @Property(selector = "inviteeResponseHandler")
-    public native @Block VoidBlock2<NSString, GKInviteeResponse> getInviteeResponseHandler();
+    @Property(selector = "recipientResponseHandler")
+    public native @Block VoidBlock2<GKPlayer, GKInviteRecipientResponse> getRecipientResponseHandler();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @Property(selector = "setRecipientResponseHandler:")
+    public native void setRecipientResponseHandler(@Block VoidBlock2<GKPlayer, GKInviteRecipientResponse> v);
     /**
      * @since Available in iOS 6.0 and later.
+     * @deprecated Deprecated in iOS 8.0.
      */
+    @Deprecated
+    @Property(selector = "inviteeResponseHandler")
+    public native @Block VoidBlock2<String, GKInviteeResponse> getInviteeResponseHandler();
+    /**
+     * @since Available in iOS 6.0 and later.
+     * @deprecated Deprecated in iOS 8.0.
+     */
+    @Deprecated
     @Property(selector = "setInviteeResponseHandler:")
-    public native void setInviteeResponseHandler(@Block VoidBlock2<NSString, GKInviteeResponse> v);
+    public native void setInviteeResponseHandler(@Block VoidBlock2<String, GKInviteeResponse> v);
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
@@ -105,6 +139,6 @@ import org.robovm.apple.uikit.*;
      * @since Available in iOS 6.0 and later.
      */
     @Method(selector = "maxPlayersAllowedForMatchOfType:")
-    public static native @MachineSizedUInt long getMaxPlayersAllowed(GKMatchType matchType);
+    public static native @MachineSizedUInt long getMaxPlayersAllowedForMatchType(GKMatchType matchType);
     /*</methods>*/
 }

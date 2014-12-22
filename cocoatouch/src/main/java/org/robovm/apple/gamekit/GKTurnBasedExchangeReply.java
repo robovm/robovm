@@ -54,6 +54,11 @@ import org.robovm.apple.uikit.*;
     public native String getMessage();
     @Property(selector = "data")
     public native NSData getData();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @Property(selector = "replyDate")
+    public native NSDate getReplyDate();
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/

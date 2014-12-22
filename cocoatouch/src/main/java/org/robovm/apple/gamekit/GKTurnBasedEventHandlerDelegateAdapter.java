@@ -54,7 +54,7 @@ import org.robovm.apple.uikit.*;
      */
     @Deprecated
     @NotImplemented("handleInviteFromGameCenter:")
-    public void handleInvite(NSArray<NSString> playersToInvite) { throw new UnsupportedOperationException(); }
+    public void handleInvite(@org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String> playersToInvite) { throw new UnsupportedOperationException(); }
     /**
      * @since Available in iOS 6.0 and later.
      * @deprecated Deprecated in iOS 7.0.
@@ -70,7 +70,7 @@ import org.robovm.apple.uikit.*;
     @NotImplemented("handleTurnEventForMatch:")
     public void handleTurnEvent(GKTurnBasedMatch match) { throw new UnsupportedOperationException(); }
     /**
-     * @since Available in iOS 5.0 and later.
+     * @since Available in iOS 6.0 and later.
      * @deprecated Deprecated in iOS 6.0.
      */
     @Deprecated

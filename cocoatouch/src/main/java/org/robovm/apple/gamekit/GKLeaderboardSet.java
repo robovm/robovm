@@ -63,12 +63,12 @@ import org.robovm.apple.uikit.*;
      * @since Available in iOS 7.0 and later.
      */
     @Method(selector = "loadLeaderboardsWithCompletionHandler:")
-    public native void loadLeaderboards(@Block VoidBlock2<NSArray<GKLeaderboardSet>, NSError> completionHandler);
+    public native void loadLeaderboards(@Block VoidBlock2<GKLeaderboard, NSError> completionHandler);
     /**
      * @since Available in iOS 7.0 and later.
      */
     @Method(selector = "loadLeaderboardSetsWithCompletionHandler:")
-    public static native void loadLeaderboardSets(@Block VoidBlock2<NSArray<GKLeaderboardSet>, NSError> completionHandler);
+    public static native void loadLeaderboardSets(@Block VoidBlock2<GKLeaderboardSet, NSError> completionHandler);
     @Method(selector = "loadImageWithCompletionHandler:")
     public native void loadImage(@Block VoidBlock2<UIImage, NSError> completionHandler);
     @Method(selector = "encodeWithCoder:")

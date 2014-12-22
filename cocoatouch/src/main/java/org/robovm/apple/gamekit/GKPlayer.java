@@ -42,7 +42,7 @@ import org.robovm.apple.uikit.*;
     
     public static class Notifications {
         public static NSObject observeDidChange(GKPlayer object, final VoidBlock1<GKPlayer> block) {
-            return NSNotificationCenter.getDefaultCenter().addObserver(DidChangeNotificationName(), object, NSOperationQueue.getMainQueue(), new VoidBlock1<NSNotification>() {
+            return NSNotificationCenter.getDefaultCenter().addObserver(DidChangeNotification(), object, NSOperationQueue.getMainQueue(), new VoidBlock1<NSNotification>() {
                 @Override
                 public void invoke(NSNotification a) {
                     block.invoke((GKPlayer) a.getObject());
@@ -60,8 +60,6 @@ import org.robovm.apple.uikit.*;
     /*<properties>*/
     @Property(selector = "playerID")
     public native String getPlayerID();
-    @Property(selector = "isFriend")
-    public native boolean isFriend();
     /**
      * @since Available in iOS 6.0 and later.
      */
@@ -69,14 +67,21 @@ import org.robovm.apple.uikit.*;
     public native String getDisplayName();
     @Property(selector = "alias")
     public native String getAlias();
+    /**
+     * @since Available in iOS 4.1 and later.
+     * @deprecated Deprecated in iOS 8.0.
+     */
+    @Deprecated
+    @Property(selector = "isFriend")
+    public native boolean isFriend();
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
     @GlobalValue(symbol="GKPlayerDidChangeNotificationName", optional=true)
-    public static native NSString DidChangeNotificationName();
+    public static native NSString DidChangeNotification();
     
     @Method(selector = "loadPlayersForIdentifiers:withCompletionHandler:")
-    public static native void loadPlayers(NSArray<NSString> identifiers, @Block VoidBlock2<NSArray<GKPlayer>, NSError> completionHandler);
+    public static native void loadPlayers(@org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String> identifiers, @Block VoidBlock2<NSArray<GKPlayer>, NSError> completionHandler);
     /**
      * @since Available in iOS 5.0 and later.
      */

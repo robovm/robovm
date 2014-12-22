@@ -38,11 +38,11 @@ import org.robovm.apple.uikit.*;
 /*<annotations>*/@Library("GameKit") @NativeClass/*</annotations>*/
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/GKLocalPlayer/*</name>*/ 
     extends /*<extends>*/GKPlayer/*</extends>*/ 
-    /*<implements>*//*</implements>*/ {
+    /*<implements>*/implements GKSavedGameListener/*</implements>*/ {
 
     public static class Notifications {
         public static NSObject observeAuthenticationDidChange(GKLocalPlayer object, final VoidBlock1<GKLocalPlayer> block) {
-            return NSNotificationCenter.getDefaultCenter().addObserver(AuthenticationDidChangeNotificationName(), object, NSOperationQueue.getMainQueue(), new VoidBlock1<NSNotification>() {
+            return NSNotificationCenter.getDefaultCenter().addObserver(AuthenticationDidChangeNotification(), object, NSOperationQueue.getMainQueue(), new VoidBlock1<NSNotification>() {
                 @Override
                 public void invoke(NSNotification a) {
                     block.invoke((GKLocalPlayer) a.getObject());
@@ -72,8 +72,13 @@ import org.robovm.apple.uikit.*;
      */
     @Property(selector = "setAuthenticateHandler:")
     public native void setAuthenticateHandler(@Block VoidBlock2<UIViewController, NSError> v);
+    /**
+     * @since Available in iOS 4.1 and later.
+     * @deprecated Deprecated in iOS 8.0.
+     */
+    @Deprecated
     @Property(selector = "friends")
-    public native NSArray<NSString> getFriends();
+    public native @org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String> getFriends();
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
@@ -81,10 +86,13 @@ import org.robovm.apple.uikit.*;
      * @since Available in iOS 4.1 and later.
      */
     @GlobalValue(symbol="GKPlayerAuthenticationDidChangeNotificationName", optional=true)
-    public static native NSString AuthenticationDidChangeNotificationName();
+    public static native NSString AuthenticationDidChangeNotification();
     
-    @Method(selector = "loadFriendsWithCompletionHandler:")
-    public native void loadFriends(@Block VoidBlock2<NSArray<NSString>, NSError> completionHandler);
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @Method(selector = "loadFriendPlayersWithCompletionHandler:")
+    public native void loadFriendPlayers(@Block VoidBlock2<NSArray<GKPlayer>, NSError> completionHandler);
     /**
      * @since Available in iOS 7.0 and later.
      */
@@ -94,19 +102,12 @@ import org.robovm.apple.uikit.*;
      * @since Available in iOS 7.0 and later.
      */
     @Method(selector = "loadDefaultLeaderboardIdentifierWithCompletionHandler:")
-    public native void loadDefaultLeaderboardIdentifier(@Block VoidBlock2<NSString, NSError> completionHandler);
+    public native void loadDefaultLeaderboardIdentifier(@Block VoidBlock2<String, NSError> completionHandler);
     /**
      * @since Available in iOS 7.0 and later.
      */
     @Method(selector = "generateIdentityVerificationSignatureWithCompletionHandler:")
     public native void generateIdentityVerificationSignature(@Block VoidBlock5<NSURL, NSData, NSData, Long, NSError> completionHandler);
-    /**
-     * @since Available in iOS 4.1 and later.
-     * @deprecated Deprecated in iOS 6.0.
-     */
-    @Deprecated
-    @Method(selector = "authenticateWithCompletionHandler:")
-    public native void authenticate(@Block VoidBlock1<NSError> completionHandler);
     @Method(selector = "localPlayer")
     public static native GKLocalPlayer getLocalPlayer();
     /**
@@ -124,5 +125,45 @@ import org.robovm.apple.uikit.*;
      */
     @Method(selector = "unregisterAllListeners")
     public native void unregisterAllListeners();
+    /**
+     * @since Available in iOS 6.0 and later.
+     * @deprecated Deprecated in iOS 7.0.
+     */
+    @Deprecated
+    @Method(selector = "setDefaultLeaderboardCategoryID:completionHandler:")
+    public native void setDefaultLeaderboardCategoryID(String categoryID, @Block VoidBlock1<NSError> completionHandler);
+    /**
+     * @since Available in iOS 6.0 and later.
+     * @deprecated Deprecated in iOS 7.0.
+     */
+    @Deprecated
+    @Method(selector = "loadDefaultLeaderboardCategoryIDWithCompletionHandler:")
+    public native void loadDefaultLeaderboardCategoryID(@Block VoidBlock2<String, NSError> completionHandler);
+    /**
+     * @since Available in iOS 4.1 and later.
+     * @deprecated Deprecated in iOS 8.0.
+     */
+    @Deprecated
+    @Method(selector = "loadFriendsWithCompletionHandler:")
+    public native void loadFriends(@Block VoidBlock2<NSArray<NSString>, NSError> completionHandler);
+    /**
+     * @since Available in iOS 4.1 and later.
+     * @deprecated Deprecated in iOS 6.0.
+     */
+    @Deprecated
+    @Method(selector = "authenticateWithCompletionHandler:")
+    public native void authenticate(@Block VoidBlock1<NSError> completionHandler);
+    @Method(selector = "fetchSavedGamesWithCompletionHandler:")
+    public native void fetchSavedGames(@Block VoidBlock2<NSArray<GKSavedGame>, NSError> handler);
+    @Method(selector = "saveGameData:withName:completionHandler:")
+    public native void saveGameData(NSData data, String name, @Block VoidBlock2<GKSavedGame, NSError> handler);
+    @Method(selector = "deleteSavedGamesWithName:completionHandler:")
+    public native void deleteSavedGames(String name, @Block VoidBlock1<NSError> handler);
+    @Method(selector = "resolveConflictingSavedGames:withData:completionHandler:")
+    public native void resolveConflictingSavedGames(NSArray<GKSavedGame> conflictingSavedGames, NSData data, @Block VoidBlock2<NSArray<GKSavedGame>, NSError> handler);
+    @Method(selector = "player:didModifySavedGame:")
+    public native void didModifySavedGame(GKPlayer player, GKSavedGame savedGame);
+    @Method(selector = "player:hasConflictingSavedGames:")
+    public native void hasConflictingSavedGames(GKPlayer player, NSArray<GKSavedGame> savedGames);
     /*</methods>*/
 }

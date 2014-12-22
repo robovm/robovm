@@ -29,12 +29,16 @@
                          |MAKE_GC_BITMAP(offsetof(Thread, waitMonitor)) \
                          |MAKE_GC_BITMAP(offsetof(Thread, next)))
 
+// Maximum thread id, 32767 (1 << 15 - 1), as Thread.threadId is a signed jint
+#define MAX_THREAD_ID ((1 << 15) - 1)
+
 static Mutex threadsLock;
 static pthread_cond_t threadStartCond;
 static Thread* threads = NULL; // List of currently running threads
 static pthread_cond_t threadsChangedCond; // Condition variable notified when the list of threads changes
 static pthread_key_t tlsEnvKey;
-static jint nextThreadId = 1;
+static pthread_key_t tlsThreadKey;
+static BitVector* threadIdMap;
 static Method* getUncaughtExceptionHandlerMethod;
 static Method* uncaughtExceptionMethod;
 static Method* removeThreadMethod;
@@ -100,6 +104,22 @@ static Thread* allocThread(Env* env) {
     return thread;
 }
 
+static jint getNextThreadId() {
+    // NOTE: threadsLock must be held
+    // thread ids start at 1
+    jint threadId = rvmAllocBit(threadIdMap) + 1;
+    assert(threadId != 0);
+    return threadId;
+}
+
+static void freeThreadId(jint threadId) {
+    // NOTE: threadsLock must be held
+    // thread ids start at 1
+    assert(threadId != 0);
+    rvmClearBit(threadIdMap, threadId - 1);
+    assert(!rvmIsBitSet(threadIdMap, threadId - 1));
+}
+
 static jboolean initThread(Env* env, Thread* thread, JavaThread* threadObj) {
     // NOTE: threadsLock must be held
     int err = 0;
@@ -108,7 +128,7 @@ static jboolean initThread(Env* env, Thread* thread, JavaThread* threadObj) {
         rvmThrowInternalErrorErrno(env, err);
         return FALSE;
     }
-    thread->threadId = nextThreadId++;
+    thread->threadId = getNextThreadId();
     thread->threadObj = threadObj;
     threadObj->threadPtr = PTR_TO_LONG(thread);
     env->currentThread = thread;
@@ -131,12 +151,28 @@ static void clearThreadEnv() {
     pthread_setspecific(tlsEnvKey, NULL);
 }
 
+/**
+* Stores the current thread in a TLS
+*/
+static void setThreadTLS(Env* env, Thread* thread) {
+    int err = pthread_setspecific(tlsThreadKey, thread);
+    assert(err == 0);
+    if (err != 0) {
+        rvmThrowInternalErrorErrno(env, err);
+    }
+}
+
+static void clearThreadTLS() {
+    pthread_setspecific(tlsThreadKey, NULL);
+}
+
 static jint attachThread(VM* vm, Env** envPtr, char* name, Object* group, jboolean daemon) {
     Env* env = *envPtr; // env is NULL if rvmAttachCurrentThread() was called. If non NULL rvmInitThreads() was called.
     if (!env) {
-        // If the thread was already attached there's an Env* associated with the thread.
+        // If the thread was already attached there's an Env* and a Thread* associated with the thread.
         env = (Env*) pthread_getspecific(tlsEnvKey);
-        if (env) {
+        Thread* thread = (Thread*) pthread_getspecific(tlsThreadKey);
+        if (env && thread) {
             env->attachCount++;
             *envPtr = env;
             return JNI_OK;
@@ -192,6 +228,7 @@ static jint attachThread(VM* vm, Env** envPtr, char* name, Object* group, jboole
     *envPtr = env;
     rvmHookThreadAttached(env, threadObj, thread);
 
+    setThreadTLS(env, thread);
     return JNI_OK;
 
 error_remove:
@@ -202,6 +239,7 @@ error_remove:
 error:
     if (env) env->currentThread = NULL;
     clearThreadEnv();
+    clearThreadTLS();
     return JNI_ERR;
 }
 
@@ -264,7 +302,9 @@ static jint detachThread(Env* env, jboolean ignoreAttachCount, jboolean unregist
     DL_DELETE(threads, thread);
     pthread_cond_broadcast(&threadsChangedCond);
     env->currentThread = NULL;
-    pthread_setspecific(tlsEnvKey, NULL);
+    clearThreadEnv();
+    clearThreadTLS();
+    freeThreadId(thread->threadId);
     rvmUnlockThreadsList();
 
     if (unregisterGC) {
@@ -278,9 +318,10 @@ static jint detachThread(Env* env, jboolean ignoreAttachCount, jboolean unregist
 jboolean rvmInitThreads(Env* env) {
     gcAddRoot(&threads);
     threadGCKind = gcNewDirectBitmapKind(THREAD_GC_BITMAP);
-
+    if ((threadIdMap = rvmAllocBitVector(MAX_THREAD_ID, TRUE)) == 0) return FALSE;
     if (rvmInitMutex(&threadsLock) != 0) return FALSE;
     if (pthread_key_create(&tlsEnvKey, NULL) != 0) return FALSE;
+    if (pthread_key_create(&tlsThreadKey, NULL) != 0) return FALSE;
     if (pthread_cond_init(&threadStartCond, NULL) != 0) return FALSE;
     if (pthread_cond_init(&threadsChangedCond, NULL) != 0) return FALSE;
     getUncaughtExceptionHandlerMethod = rvmGetInstanceMethod(env, java_lang_Thread, "getUncaughtExceptionHandler", "()Ljava/lang/Thread$UncaughtExceptionHandler;");
@@ -470,6 +511,18 @@ void rvmThreadNameChanged(Env* env, Thread* thread) {
     rvmLockThreadsList();
     pthread_cond_broadcast(&threadsChangedCond);
     rvmUnlockThreadsList();
+}
+
+jboolean rvmHasCurrentThread(Env* env) {
+    // check env separately so we don't have to
+    // do a TLS lookup
+    if(!env) {
+        return FALSE;
+    }
+    if(!pthread_getspecific(tlsThreadKey)) {
+        return FALSE;
+    }
+    return TRUE;
 }
 
 Thread* rvmGetThreadByThreadId(Env* env, uint32_t threadId) {

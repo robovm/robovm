@@ -4,7 +4,8 @@ include_directories(../include ${CMAKE_BINARY_DIR}/gc/include)
 
 set(SRC
   array.c 
-  attribute.c 
+  attribute.c
+  bitvector.c
   class.c 
   exception.c 
   field.c 

@@ -40,6 +40,7 @@ extern "C" {
 #endif
 
 #include "robovm/types.h"
+#include "robovm/bitvector.h"
 #include "robovm/access.h"
 #include "robovm/atomic.h"
 #include "robovm/init.h"

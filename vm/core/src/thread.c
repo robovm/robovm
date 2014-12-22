@@ -29,13 +29,16 @@
                          |MAKE_GC_BITMAP(offsetof(Thread, waitMonitor)) \
                          |MAKE_GC_BITMAP(offsetof(Thread, next)))
 
+// Maximum thread id, 32767 (1 << 15 - 1), as Thread.threadId is a signed jint
+#define MAX_THREAD_ID ((1 << 15) - 1)
+
 static Mutex threadsLock;
 static pthread_cond_t threadStartCond;
 static Thread* threads = NULL; // List of currently running threads
 static pthread_cond_t threadsChangedCond; // Condition variable notified when the list of threads changes
 static pthread_key_t tlsEnvKey;
 static pthread_key_t tlsThreadKey;
-static jint nextThreadId = 1;
+static BitVector* threadIdMap;
 static Method* getUncaughtExceptionHandlerMethod;
 static Method* uncaughtExceptionMethod;
 static Method* removeThreadMethod;
@@ -101,6 +104,22 @@ static Thread* allocThread(Env* env) {
     return thread;
 }
 
+static jint getNextThreadId() {
+    // NOTE: threadsLock must be held
+    // thread ids start at 1
+    jint threadId = rvmAllocBit(threadIdMap) + 1;
+    assert(threadId != 0);
+    return threadId;
+}
+
+static void freeThreadId(jint threadId) {
+    // NOTE: threadsLock must be held
+    // thread ids start at 1
+    assert(threadId != 0);
+    rvmClearBit(threadIdMap, threadId - 1);
+    assert(!rvmIsBitSet(threadIdMap, threadId - 1));
+}
+
 static jboolean initThread(Env* env, Thread* thread, JavaThread* threadObj) {
     // NOTE: threadsLock must be held
     int err = 0;
@@ -109,7 +128,7 @@ static jboolean initThread(Env* env, Thread* thread, JavaThread* threadObj) {
         rvmThrowInternalErrorErrno(env, err);
         return FALSE;
     }
-    thread->threadId = nextThreadId++;
+    thread->threadId = getNextThreadId();
     thread->threadObj = threadObj;
     threadObj->threadPtr = PTR_TO_LONG(thread);
     env->currentThread = thread;
@@ -285,6 +304,7 @@ static jint detachThread(Env* env, jboolean ignoreAttachCount, jboolean unregist
     env->currentThread = NULL;
     clearThreadEnv();
     clearThreadTLS();
+    freeThreadId(thread->threadId);
     rvmUnlockThreadsList();
 
     if (unregisterGC) {
@@ -298,7 +318,7 @@ static jint detachThread(Env* env, jboolean ignoreAttachCount, jboolean unregist
 jboolean rvmInitThreads(Env* env) {
     gcAddRoot(&threads);
     threadGCKind = gcNewDirectBitmapKind(THREAD_GC_BITMAP);
-
+    if ((threadIdMap = rvmAllocBitVector(MAX_THREAD_ID, true)) == 0) return FALSE;
     if (rvmInitMutex(&threadsLock) != 0) return FALSE;
     if (pthread_key_create(&tlsEnvKey, NULL) != 0) return FALSE;
     if (pthread_key_create(&tlsThreadKey, NULL) != 0) return FALSE;

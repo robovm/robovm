@@ -774,7 +774,7 @@ static void _finalizeObject(GC_PTR addr, GC_PTR client_data) {
     // When attaching a thread (except the main thread) there's a slight chance that the call to rvmCreateEnv()
     // first triggers a GC. If there are finalize objects this function will be called with no Env associated 
     // with the current thread. In such cases we reregister the object for finalization and it will be finalized later.
-    if (env) {
+    if (rvmHasCurrentThread(env)) {
         finalizeObject(env, obj);
     } else {
         GC_REGISTER_FINALIZER_NO_ORDER(obj, _finalizeObject, NULL, NULL, NULL);

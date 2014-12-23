@@ -371,6 +371,7 @@ typedef struct Options {
     jboolean enableHooks;
     jboolean waitForAttach;
     jboolean printPID;
+    char* pidFile;
     char basePath[PATH_MAX];
     char executablePath[PATH_MAX];
     char** rawBootclasspath; 

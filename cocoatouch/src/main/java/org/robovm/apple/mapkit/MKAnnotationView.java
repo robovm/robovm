@@ -50,8 +50,11 @@ import org.robovm.apple.dispatch.*;
     /*<constructors>*/
     public MKAnnotationView() {}
     protected MKAnnotationView(SkipInit skipInit) { super(skipInit); }
-    public MKAnnotationView(MKAnnotation annotation, String reuseIdentifier) { super((SkipInit) null); initObject(initWithAnnotation$reuseIdentifier$(annotation, reuseIdentifier)); }
+    public MKAnnotationView(MKAnnotation annotation, String reuseIdentifier) { super((SkipInit) null); initObject(init(annotation, reuseIdentifier)); }
     /*</constructors>*/
+    public MKAnnotationView(CGRect frame) {
+    	super(frame);
+    }
     /*<properties>*/
     @Property(selector = "reuseIdentifier")
     public native String getReuseIdentifier();
@@ -119,7 +122,7 @@ import org.robovm.apple.dispatch.*;
     /*<members>*//*</members>*/
     /*<methods>*/
     @Method(selector = "initWithAnnotation:reuseIdentifier:")
-    protected native @Pointer long initWithAnnotation$reuseIdentifier$(MKAnnotation annotation, String reuseIdentifier);
+    protected native @Pointer long init(MKAnnotation annotation, String reuseIdentifier);
     @Method(selector = "prepareForReuse")
     public native void prepareForReuse();
     @Method(selector = "setSelected:animated:")

@@ -50,7 +50,7 @@ import org.robovm.apple.dispatch.*;
     /*<constructors>*/
     public MKCircleRenderer() {}
     protected MKCircleRenderer(SkipInit skipInit) { super(skipInit); }
-    public MKCircleRenderer(MKCircle circle) { super((SkipInit) null); initObject(initWithCircle$(circle)); }
+    public MKCircleRenderer(MKCircle circle) { super((SkipInit) null); initObject(init(circle)); }
     /*</constructors>*/
     /*<properties>*/
     @Property(selector = "circle")
@@ -59,6 +59,6 @@ import org.robovm.apple.dispatch.*;
     /*<members>*//*</members>*/
     /*<methods>*/
     @Method(selector = "initWithCircle:")
-    protected native @Pointer long initWithCircle$(MKCircle circle);
+    protected native @Pointer long init(MKCircle circle);
     /*</methods>*/
 }

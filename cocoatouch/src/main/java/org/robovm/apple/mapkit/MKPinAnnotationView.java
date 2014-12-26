@@ -51,6 +51,12 @@ import org.robovm.apple.dispatch.*;
     public MKPinAnnotationView() {}
     protected MKPinAnnotationView(SkipInit skipInit) { super(skipInit); }
     /*</constructors>*/
+    public MKPinAnnotationView(MKAnnotation annotation, String reuseIdentifier) {
+    	super(annotation, reuseIdentifier);
+    }
+    public MKPinAnnotationView(CGRect frame) {
+    	super(frame);
+    }
     /*<properties>*/
     @Property(selector = "pinColor")
     public native MKPinAnnotationColor getPinColor();

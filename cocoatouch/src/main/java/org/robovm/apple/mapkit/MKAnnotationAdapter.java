@@ -50,6 +50,8 @@ import org.robovm.apple.dispatch.*;
     /*<properties>*/
     @NotImplemented("coordinate")
     public @ByVal CLLocationCoordinate2D getCoordinate() { throw new UnsupportedOperationException(); }
+    @NotImplemented("setCoordinate:")
+    public void setCoordinate(@ByVal CLLocationCoordinate2D v) { throw new UnsupportedOperationException(); }
     @NotImplemented("title")
     public String getTitle() { throw new UnsupportedOperationException(); }
     @NotImplemented("subtitle")
@@ -57,10 +59,6 @@ import org.robovm.apple.dispatch.*;
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
-    /**
-     * @since Available in iOS 4.0 and later.
-     */
-    @NotImplemented("setCoordinate:")
-    public void setCoordinate(@ByVal CLLocationCoordinate2D newCoordinate) { throw new UnsupportedOperationException(); }
+    
     /*</methods>*/
 }

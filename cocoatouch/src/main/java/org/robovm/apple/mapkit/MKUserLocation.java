@@ -71,13 +71,11 @@ import org.robovm.apple.dispatch.*;
     public native void setSubtitle(String v);
     @Property(selector = "coordinate")
     public native @ByVal CLLocationCoordinate2D getCoordinate();
+    @Property(selector = "setCoordinate:")
+    public native void setCoordinate(@ByVal CLLocationCoordinate2D v);
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
-    /**
-     * @since Available in iOS 4.0 and later.
-     */
-    @Method(selector = "setCoordinate:")
-    public native void setCoordinate(@ByVal CLLocationCoordinate2D newCoordinate);
+    
     /*</methods>*/
 }

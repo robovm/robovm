@@ -55,7 +55,7 @@ import org.robovm.apple.dispatch.*;
     @Property(selector = "name")
     public native String getName();
     @Property(selector = "advisoryNotices")
-    public native NSArray<NSString> getAdvisoryNotices();
+    public native @org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String> getAdvisoryNotices();
     @Property(selector = "distance")
     public native double getDistance();
     @Property(selector = "expectedTravelTime")

@@ -79,6 +79,8 @@ import org.robovm.apple.dispatch.*;
     public native @ByVal CLLocationCoordinate2D getCoordinate();
     @Property(selector = "boundingMapRect")
     public native @ByVal MKMapRect getBoundingMapRect();
+    @Property(selector = "setCoordinate:")
+    public native void setCoordinate(@ByVal CLLocationCoordinate2D v);
     @Property(selector = "title")
     public native String getTitle();
     @Property(selector = "subtitle")
@@ -94,11 +96,6 @@ import org.robovm.apple.dispatch.*;
     public native void loadTile(@ByVal MKTileOverlayPath path, @Block VoidBlock2<NSData, NSError> result);
     @Method(selector = "intersectsMapRect:")
     public native boolean intersects(@ByVal MKMapRect mapRect);
-    /**
-     * @since Available in iOS 4.0 and later.
-     */
-    @Method(selector = "setCoordinate:")
-    public native void setCoordinate(@ByVal CLLocationCoordinate2D newCoordinate);
     /*</methods>*/
     @Override
 	@NotImplemented("canReplaceMapContent")

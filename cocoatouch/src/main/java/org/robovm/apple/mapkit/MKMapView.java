@@ -152,18 +152,18 @@ import org.robovm.apple.dispatch.*;
     @Property(selector = "isUserLocationVisible")
     public native boolean isUserLocationVisible();
     @Property(selector = "annotations")
-    public native NSArray<NSObject> getAnnotations();
+    public native @org.robovm.rt.bro.annotation.Marshaler(NSArray.AsListMarshaler.class) List<MKAnnotation> getAnnotations();
     @Property(selector = "selectedAnnotations")
-    public native NSArray<NSObject> getSelectedAnnotations();
+    public native @org.robovm.rt.bro.annotation.Marshaler(NSArray.AsListMarshaler.class) List<MKAnnotation> getSelectedAnnotations();
     @Property(selector = "setSelectedAnnotations:")
-    public native void setSelectedAnnotations(NSArray<NSObject> v);
+    public native void setSelectedAnnotations(@org.robovm.rt.bro.annotation.Marshaler(NSArray.AsListMarshaler.class) List<MKAnnotation> v);
     @Property(selector = "annotationVisibleRect")
     public native @ByVal CGRect getAnnotationVisibleRect();
     /**
      * @since Available in iOS 4.0 and later.
      */
     @Property(selector = "overlays")
-    public native NSArray<NSObject> getOverlays();
+    public native @org.robovm.rt.bro.annotation.Marshaler(NSArray.AsListMarshaler.class) List<MKOverlay> getOverlays();
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
@@ -202,16 +202,16 @@ import org.robovm.apple.dispatch.*;
     @Method(selector = "addAnnotation:")
     public native void addAnnotation(MKAnnotation annotation);
     @Method(selector = "addAnnotations:")
-    public native void addAnnotations(NSArray<NSObject> annotations);
+    public native void addAnnotations(@org.robovm.rt.bro.annotation.Marshaler(NSArray.AsListMarshaler.class) List<MKAnnotation> annotations);
     @Method(selector = "removeAnnotation:")
     public native void removeAnnotation(MKAnnotation annotation);
     @Method(selector = "removeAnnotations:")
-    public native void removeAnnotations(NSArray<NSObject> annotations);
+    public native void removeAnnotations(@org.robovm.rt.bro.annotation.Marshaler(NSArray.AsListMarshaler.class) List<MKAnnotation> annotations);
     /**
      * @since Available in iOS 4.2 and later.
      */
     @Method(selector = "annotationsInMapRect:")
-    public native NSSet<NSObject> getAnnotations(@ByVal MKMapRect mapRect);
+    public native @org.robovm.rt.bro.annotation.Marshaler(NSSet.AsSetMarshaler.class) Set<MKAnnotation> getAnnotations(@ByVal MKMapRect mapRect);
     @Method(selector = "viewForAnnotation:")
     public native MKAnnotationView getView(MKAnnotation annotation);
     @Method(selector = "dequeueReusableAnnotationViewWithIdentifier:")
@@ -224,7 +224,7 @@ import org.robovm.apple.dispatch.*;
      * @since Available in iOS 7.0 and later.
      */
     @Method(selector = "showAnnotations:animated:")
-    public native void showAnnotations(NSArray<NSObject> annotations, boolean animated);
+    public native void showAnnotations(@org.robovm.rt.bro.annotation.Marshaler(NSArray.AsListMarshaler.class) List<MKAnnotation> annotations, boolean animated);
     /**
      * @since Available in iOS 7.0 and later.
      */
@@ -234,7 +234,7 @@ import org.robovm.apple.dispatch.*;
      * @since Available in iOS 7.0 and later.
      */
     @Method(selector = "addOverlays:level:")
-    public native void addOverlays(NSArray<NSObject> overlays, MKOverlayLevel level);
+    public native void addOverlays(@org.robovm.rt.bro.annotation.Marshaler(NSArray.AsListMarshaler.class) List<MKOverlay> overlays, MKOverlayLevel level);
     /**
      * @since Available in iOS 4.0 and later.
      */
@@ -244,7 +244,7 @@ import org.robovm.apple.dispatch.*;
      * @since Available in iOS 4.0 and later.
      */
     @Method(selector = "removeOverlays:")
-    public native void removeOverlays(NSArray<NSObject> overlays);
+    public native void removeOverlays(@org.robovm.rt.bro.annotation.Marshaler(NSArray.AsListMarshaler.class) List<MKOverlay> overlays);
     /**
      * @since Available in iOS 7.0 and later.
      */
@@ -269,7 +269,7 @@ import org.robovm.apple.dispatch.*;
      * @since Available in iOS 7.0 and later.
      */
     @Method(selector = "overlaysInLevel:")
-    public native NSArray<NSObject> getOverlays(MKOverlayLevel level);
+    public native @org.robovm.rt.bro.annotation.Marshaler(NSArray.AsListMarshaler.class) List<MKOverlay> getOverlays(MKOverlayLevel level);
     /**
      * @since Available in iOS 7.0 and later.
      */
@@ -291,7 +291,7 @@ import org.robovm.apple.dispatch.*;
      * @since Available in iOS 4.0 and later.
      */
     @Method(selector = "addOverlays:")
-    public native void addOverlays(NSArray<NSObject> overlays);
+    public native void addOverlays(@org.robovm.rt.bro.annotation.Marshaler(NSArray.AsListMarshaler.class) List<MKOverlay> overlays);
     /**
      * @since Available in iOS 4.0 and later.
      */

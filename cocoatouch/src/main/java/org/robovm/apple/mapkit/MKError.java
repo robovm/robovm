@@ -36,20 +36,28 @@ import org.robovm.apple.dispatch.*;
 
 /*<javadoc>*/
 /*</javadoc>*/
-/*<annotations>*/@Library("MapKit") @Marshaler(NSString.AsStringMarshaler.class)/*</annotations>*/
-/*<visibility>*/public/*</visibility>*/ class /*<name>*/MapKit/*</name>*/ 
-    extends /*<extends>*/Object/*</extends>*/ 
+/*<annotations>*/@Library("MapKit")/*</annotations>*/
+/*<visibility>*/public/*</visibility>*/ class /*<name>*/MKError/*</name>*/ 
+    extends /*<extends>*/NSError/*</extends>*/ 
     /*<implements>*//*</implements>*/ {
 
+    protected MKError(SkipInit skipInit) {
+        super(skipInit);
+    }
+    
     /*<ptr>*/
     /*</ptr>*/
-    /*<bind>*/static { Bro.bind(MapKit.class); }/*</bind>*/
+    /*<bind>*/static { Bro.bind(MKError.class); }/*</bind>*/
     /*<constants>*//*</constants>*/
     /*<constructors>*//*</constructors>*/
     /*<properties>*//*</properties>*/
     /*<members>*//*</members>*/
+    @Override
+    public MKErrorCode getErrorCode() {
+        return MKErrorCode.valueOf(getCode());
+    }
     /*<methods>*/
     @GlobalValue(symbol="MKErrorDomain", optional=true)
-    public static native NSString ErrorDomain();
+    public static native String getClassDomain();
     /*</methods>*/
 }

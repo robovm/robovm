@@ -167,7 +167,6 @@ classes:
     GKGameCenterViewController: {} # DONE
     GKInvite: {} # DONE
     GKLeaderboard: # DONE
-        skip_def_constructor: true
         properties:
             'scores':
                 type: NSArray<GKScore>

@@ -44,6 +44,7 @@ import org.robovm.apple.uikit.*;
     /*<bind>*/static { ObjCRuntime.bind(GKLeaderboard.class); }/*</bind>*/
     /*<constants>*//*</constants>*/
     /*<constructors>*/
+    public GKLeaderboard() {}
     protected GKLeaderboard(SkipInit skipInit) { super(skipInit); }
     /**
      * @since Available in iOS 8.0 and later.

@@ -42,7 +42,7 @@ import org.robovm.apple.dispatch.*;
 /*<annotations>*/@Library("Foundation") @NativeClass/*</annotations>*/
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/NSDictionary/*</name>*/ <K extends NSObject, V extends NSObject>
     extends /*<extends>*/NSObject/*</extends>*/ 
-    /*<implements>*/implements NSPropertyList, Map<K, V>/*</implements>*/ {
+    /*<implements>*/implements NSPropertyList, NSFastEnumeration, Map<K, V>/*</implements>*/ {
 
     public static class NSDictionaryPtr<K extends NSObject, V extends NSObject> extends Ptr<NSDictionary<K, V>, NSDictionaryPtr<K, V>> {}
     

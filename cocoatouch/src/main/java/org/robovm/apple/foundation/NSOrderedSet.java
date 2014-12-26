@@ -44,7 +44,7 @@ import org.robovm.apple.dispatch.*;
 /*<annotations>*/@Library("Foundation") @NativeClass/*</annotations>*/
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/NSOrderedSet/*</name>*/ <T extends NSObject>
     extends /*<extends>*/NSObject/*</extends>*/ 
-    /*<implements>*//*</implements>*/ implements Set<T>, List<T> {
+    /*<implements>*/implements NSFastEnumeration, Set<T>, List<T>/*</implements>*/ {
 
     public static class NSOrderedSetPtr<T extends NSObject> extends Ptr<NSOrderedSet<T>, NSOrderedSetPtr<T>> {}
     

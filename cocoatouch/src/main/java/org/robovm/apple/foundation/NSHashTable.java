@@ -46,7 +46,7 @@ import org.robovm.apple.foundation.NSSet.SetAdapter;
 /*<annotations>*/@Library("Foundation") @NativeClass/*</annotations>*/
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/NSHashTable/*</name>*/ <T extends NSObject>
     extends /*<extends>*/NSObject/*</extends>*/ 
-    /*<implements>*/implements NSCoding/*</implements>*/, Set<T> {
+    /*<implements>*/implements NSCoding, NSFastEnumeration/*</implements>*/, Set<T> {
     
     public static class NSHashTablePtr<T extends NSObject> extends Ptr<NSHashTable<T>, NSHashTablePtr<T>> {}
 

@@ -17,13 +17,7 @@ typedefs:
     'void (^)(UIAlertAction *)': '@Block VoidBlock1<UIAlertAction>'
     'void (^)(UITextField *)': '@Block VoidBlock1<UITextField>'
     'void (^)(UITableViewRowAction *, NSIndexPath *)': '@Block VoidBlock2<UITableViewRowAction, NSIndexPath>'
-    # UIAccelerationValue: double
-    # UIBackgroundTaskIdentifier: int
-    # CGPathRef: CGPath
-    # CGColorRef: CGColor
-    # CGImageRef: CGImage
-    # UIWindowLevel: float
-    # NSLayoutPriority: UILayoutPriority
+
 enums:
     NSControlCharacterAction: {}
     NSGlyphProperty: {}

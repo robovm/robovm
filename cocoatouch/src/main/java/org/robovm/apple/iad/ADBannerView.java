@@ -55,6 +55,9 @@ import org.robovm.apple.avkit.*;
      */
     public ADBannerView(ADAdType type) { super((SkipInit) null); initObject(init(type)); }
     /*</constructors>*/
+    public ADBannerView(CGRect frame) {
+    	super(frame);
+    }
     /*<properties>*/
     /**
      * @since Available in iOS 6.0 and later.

@@ -7,7 +7,7 @@ require 'fileutils'
 require 'tmpdir'
 
 @dev_root = File.realpath("#{File.dirname(__FILE__)}/../..")
-@dir = Dir.mktmpdir
+@dir = Dir.mktmpdir(['robovm-compiler-stress', ''])
 puts "Using tmp dir #{@dir}"
 
 def compile_artifact(group, artifact, version, n)
@@ -37,7 +37,7 @@ eof
   system("mvn -q -f #{pom} -DoutputAbsoluteArtifactFilename=true -DoutputFile=#{pom}.deps -Dsilent=true dependency:list")
   deps = File.readlines("#{pom}.deps").find_all {|e| e =~ /\.m2\/repo/}.map {|e| e.gsub(/.*?:\//, '/').strip}
   classpath = deps.join(':')
-  cmd = "#{@dev_root}/bin/robovm -cp #{classpath} -cache #{@dir}/cache -d #{@dir}/#{group}-#{artifact} -o out -verbose -forcelinkclasses '**.*'"
+  cmd = "#{@dev_root}/bin/robovm -cp #{classpath} -tmp #{@dir}/#{group}-#{artifact}.tmp -cache #{@dir}/cache -d #{@dir}/#{group}-#{artifact} -o out -verbose -forcelinkclasses '**.*' " + (ARGV.join(' '))
   puts "Running command: #{cmd}"
   system({"ROBOVM_DEV_ROOT" => @dev_root}, cmd)
 end

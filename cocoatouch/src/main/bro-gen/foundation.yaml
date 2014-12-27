@@ -37,13 +37,10 @@ typedefs:
     'NSEnumerator *': 'NSEnumerator<?>'
     'BOOL (^)(NSUInteger, BOOL *)': '@Block Block2<NSObject, BooleanPtr, Boolean>'
     'BOOL (^)(NSURL *, NSError *)': '@Block Block2<NSURL, NSError, Boolean>'
-    'void (^)(id, NSRange, BOOL *)': '@Block("(,@ByVal,)") VoidBlock3<NSObject, NSRange, BooleanPtr>'
-    'void (^)(id, NSUInteger, BOOL *)': '@Block("(,@MachineSizedUInt,)") VoidBlock3<NSObject, Long, BooleanPtr>'
     'void (^)(NSCachedURLResponse *)': '@Block VoidBlock1<NSCachedURLResponse>'
     'void (^)(NSData *)': '@Block VoidBlock1<NSData>'
     'void (^)(NSData *, NSURLResponse *, NSError *)': '@Block VoidBlock3<NSData, NSURLResponse, NSError>'
     'void (^)(NSDate *, BOOL, BOOL *)': '@Block VoidBlock3<NSDate, Boolean, BooleanPtr>'
-    'void (^)(NSDictionary *, NSRange, BOOL *)': '@Block("(,@ByVal,)") VoidBlock3<NSDictionary<NSString, NSObject>, NSRange, BooleanPtr>'
     'void (^)(NSError *)': '@Block VoidBlock1<NSError>'
     'void (^)(NSFileHandle *)': '@Block VoidBlock1<NSFileHandle>'
     'void (^)(NSInputStream *)': '@Block VoidBlock1<NSInputStream>'
@@ -63,6 +60,11 @@ typedefs:
     'void (^)(NSInputStream *, NSOutputStream *, NSError *)': '@Block VoidBlock3<NSInputStream, NSOutputStream, NSError>'
     'void (^)(NSURLCredential *)': '@Block VoidBlock1<NSURLCredential>'
     NSPropertyListReadOptions: NSPropertyListMutabilityOptions
+
+private_typedefs:
+    'void (^)(id, NSRange, BOOL *)': '@Block("(,@ByVal,)") VoidBlock3<NSObject, NSRange, BooleanPtr>'
+    'void (^)(id, NSUInteger, BOOL *)': '@Block("(,@MachineSizedUInt,)") VoidBlock3<NSObject, Long, BooleanPtr>'
+    'void (^)(NSDictionary *, NSRange, BOOL *)': '@Block("(,@ByVal,)") VoidBlock3<NSDictionary<NSString, NSObject>, NSRange, BooleanPtr>'
 
 enums:
     NSActivityOptions: {}
@@ -175,7 +177,7 @@ classes:
     NSRange: {}
     NSDecimal: {}
     NSZone: {}
-    #NSFastEnumerationState: {}
+    NSFastEnumerationState: {}
     NSOperatingSystemVersion: {}
 
     # These classes do not exist in Foundation. We use them to hold global values related to the
@@ -224,7 +226,7 @@ classes:
         extends: NSErrorUserInfoKey
 
     NSArray: # DONE
-        protocols: [NSPropertyList, List<T>]
+        protocols: [NSFastEnumeration, NSPropertyList, List<T>]
         properties:
             'count':
                 visibility: protected
@@ -783,7 +785,7 @@ classes:
                 property: true
                 return_type: NSDecimalNumberHandler
     NSDictionary: # DONE
-        protocols: [NSPropertyList, 'Map<K, V>']
+        protocols: [NSPropertyList, NSFastEnumeration, 'Map<K, V>']
         properties:
             'count':
                 visibility: protected
@@ -2330,6 +2332,7 @@ classes:
             '-addOperationWithBlock:':
                 name: addOperation
     NSOrderedSet: # DONE
+        protocols: [NSFastEnumeration, Set<T>, List<T>]
         properties:
             'count':
                 visibility: protected
@@ -2622,6 +2625,7 @@ classes:
                 trim_after_first_colon: true
                 visibility: private
     NSSet: # DONE
+        protocols: [NSFastEnumeration, Set<T>]
         properties:
             'count':
                 visibility: protected
@@ -3418,7 +3422,15 @@ protocols:
         methods:
             '-beginRequestWithExtensionContext:':
                 name: beginRequest
-#    NSFastEnumeration: {}
+    NSFastEnumeration: # DONE
+        properties:
+            '.*':
+                exclude: true
+        methods:
+            '-.*':
+                exclude: true
+            '+.*':
+                exclude: true
     NSFileManagerDelegate: # DONE
         methods:
             '-fileManager:shouldCopyItemAtPath:toPath:':

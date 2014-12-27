@@ -50,7 +50,7 @@ import org.robovm.apple.dispatch.*;
     /*<constructors>*/
     public MKDirections() {}
     protected MKDirections(SkipInit skipInit) { super(skipInit); }
-    public MKDirections(MKDirectionsRequest request) { super((SkipInit) null); initObject(initWithRequest$(request)); }
+    public MKDirections(MKDirectionsRequest request) { super((SkipInit) null); initObject(init(request)); }
     /*</constructors>*/
     /*<properties>*/
     @Property(selector = "isCalculating")
@@ -59,7 +59,7 @@ import org.robovm.apple.dispatch.*;
     /*<members>*//*</members>*/
     /*<methods>*/
     @Method(selector = "initWithRequest:")
-    protected native @Pointer long initWithRequest$(MKDirectionsRequest request);
+    protected native @Pointer long init(MKDirectionsRequest request);
     @Method(selector = "calculateDirectionsWithCompletionHandler:")
     public native void calculateDirections(@Block VoidBlock2<MKDirectionsResponse, NSError> completionHandler);
     @Method(selector = "calculateETAWithCompletionHandler:")

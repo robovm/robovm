@@ -58,6 +58,6 @@ import org.robovm.apple.dispatch.*;
     /*<members>*//*</members>*/
     /*<methods>*/
     @Method(selector = "pointForCoordinate:")
-    public native @ByVal CGPoint getPoint(@ByVal CLLocationCoordinate2D coordinate);
+    public native @ByVal CGPoint convertCoordinateToPoint(@ByVal CLLocationCoordinate2D coordinate);
     /*</methods>*/
 }

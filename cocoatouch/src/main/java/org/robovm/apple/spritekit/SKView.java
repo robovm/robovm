@@ -50,6 +50,9 @@ import org.robovm.apple.avfoundation.*;
     public SKView() {}
     protected SKView(SkipInit skipInit) { super(skipInit); }
     /*</constructors>*/
+    public SKView(CGRect frame) {
+    	super(frame);
+    }
     /*<properties>*/
     @Property(selector = "isPaused")
     public native boolean isPaused();

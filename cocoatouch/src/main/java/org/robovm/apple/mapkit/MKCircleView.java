@@ -55,7 +55,7 @@ import org.robovm.apple.dispatch.*;
      * @deprecated Deprecated in iOS 7.0.
      */
     @Deprecated
-    public MKCircleView(MKCircle circle) { super((SkipInit) null); initObject(initWithCircle$(circle)); }
+    public MKCircleView(MKCircle circle) { super((SkipInit) null); initObject(init(circle)); }
     /*</constructors>*/
     /*<properties>*/
     /**
@@ -74,6 +74,6 @@ import org.robovm.apple.dispatch.*;
      */
     @Deprecated
     @Method(selector = "initWithCircle:")
-    protected native @Pointer long initWithCircle$(MKCircle circle);
+    protected native @Pointer long init(MKCircle circle);
     /*</methods>*/
 }

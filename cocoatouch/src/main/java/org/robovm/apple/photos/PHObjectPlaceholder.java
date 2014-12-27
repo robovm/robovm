@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.robovm.apple.mapkit;
+package org.robovm.apple.photos;
 
 /*<imports>*/
 import java.io.*;
@@ -27,29 +27,34 @@ import org.robovm.rt.bro.*;
 import org.robovm.rt.bro.annotation.*;
 import org.robovm.rt.bro.ptr.*;
 import org.robovm.apple.foundation.*;
-import org.robovm.apple.corefoundation.*;
 import org.robovm.apple.coregraphics.*;
 import org.robovm.apple.corelocation.*;
 import org.robovm.apple.uikit.*;
-import org.robovm.apple.dispatch.*;
+import org.robovm.apple.avfoundation.*;
 /*</imports>*/
 
 /*<javadoc>*/
+/**
+ * @since Available in iOS 8.0 and later.
+ */
 /*</javadoc>*/
-/*<annotations>*/@Library("MapKit") @Marshaler(NSString.AsStringMarshaler.class)/*</annotations>*/
-/*<visibility>*/public/*</visibility>*/ class /*<name>*/MapKit/*</name>*/ 
-    extends /*<extends>*/Object/*</extends>*/ 
+/*<annotations>*/@Library("Photos") @NativeClass/*</annotations>*/
+/*<visibility>*/public/*</visibility>*/ class /*<name>*/PHObjectPlaceholder/*</name>*/ 
+    extends /*<extends>*/PHObject/*</extends>*/ 
     /*<implements>*//*</implements>*/ {
 
-    /*<ptr>*/
-    /*</ptr>*/
-    /*<bind>*/static { Bro.bind(MapKit.class); }/*</bind>*/
+    /*<ptr>*/public static class PHObjectPlaceholderPtr extends Ptr<PHObjectPlaceholder, PHObjectPlaceholderPtr> {}/*</ptr>*/
+    /*<bind>*/static { ObjCRuntime.bind(PHObjectPlaceholder.class); }/*</bind>*/
     /*<constants>*//*</constants>*/
-    /*<constructors>*//*</constructors>*/
-    /*<properties>*//*</properties>*/
+    /*<constructors>*/
+    public PHObjectPlaceholder() {}
+    protected PHObjectPlaceholder(SkipInit skipInit) { super(skipInit); }
+    /*</constructors>*/
+    /*<properties>*/
+    
+    /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
-    @GlobalValue(symbol="MKErrorDomain", optional=true)
-    public static native NSString ErrorDomain();
+    
     /*</methods>*/
 }

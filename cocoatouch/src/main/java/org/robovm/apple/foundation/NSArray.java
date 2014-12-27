@@ -42,7 +42,7 @@ import org.robovm.apple.dispatch.*;
 /*<annotations>*/@Library("Foundation") @NativeClass/*</annotations>*/
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/NSArray/*</name>*/ <T extends NSObject>
     extends /*<extends>*/NSObject/*</extends>*/ 
-    /*<implements>*/implements NSPropertyList, List<T>/*</implements>*/ {
+    /*<implements>*/implements NSFastEnumeration, NSPropertyList, List<T>/*</implements>*/ {
 
     public static class NSArrayPtr<T extends NSObject> extends Ptr<NSArray<T>, NSArrayPtr<T>> {}
     
@@ -382,6 +382,26 @@ import org.robovm.apple.dispatch.*;
             i++;
         }
         return new NSArray<NSString>(nsStrings);
+    }
+    
+    public static NSArray<NSNumber> fromNumbers (Number...numbers) {
+        int length = numbers.length;
+        NSNumber[] nsNumbers = new NSNumber[length];
+        
+        for (int i = 0; i < length; i++) {
+            nsNumbers[i] = NSNumber.valueOf(numbers[i]);
+        }
+        return new NSArray<NSNumber>(nsNumbers);
+    }
+    public static NSArray<NSNumber> fromNumbers (Collection<Number> numbers) {
+        NSNumber[] nsNumbers = new NSNumber[numbers.size()];
+        
+        int i = 0;
+        for (Number n : numbers) {
+            nsNumbers[i] = NSNumber.valueOf(n);
+            i++;
+        }
+        return new NSArray<NSNumber>(nsNumbers);
     }
 
     /*<methods>*/

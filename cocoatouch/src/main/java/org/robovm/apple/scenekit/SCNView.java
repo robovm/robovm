@@ -52,6 +52,9 @@ import org.robovm.apple.opengles.*;
     protected SCNView(SkipInit skipInit) { super(skipInit); }
     public SCNView(@ByVal CGRect frame, NSDictionary<?, ?> options) { super((SkipInit) null); initObject(init(frame, options)); }
     /*</constructors>*/
+    public SCNView(CGRect frame) {
+    	super(frame);
+    }
     /*<properties>*/
     @Property(selector = "scene")
     public native SCNScene getScene();

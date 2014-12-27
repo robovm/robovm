@@ -42,9 +42,30 @@ import org.robovm.apple.dispatch.*;
 /*<annotations>*/@Library("Foundation") @NativeClass/*</annotations>*/
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/NSSet/*</name>*/ <T extends NSObject>
     extends /*<extends>*/NSObject/*</extends>*/ 
-    /*<implements>*//*</implements>*/ implements Set<T> {
+    /*<implements>*/implements NSFastEnumeration, Set<T>/*</implements>*/ {
 
     public static class NSSetPtr<T extends NSObject> extends Ptr<NSSet<T>, NSSetPtr<T>> {}
+    
+    public static class AsSetMarshaler {
+        @MarshalsPointer
+        public static Set<?> toObject(Class<? extends NSObject> cls, long handle, long flags) {
+            return (NSSet<?>) NSObject.Marshaler.toObject(cls, handle, flags);
+        }
+        @SuppressWarnings("unchecked")
+        @MarshalsPointer
+        public static long toNative(Set<?> l, long flags) {
+            if (l == null) {
+                return 0L;
+            }
+            NSSet<?> o = null;
+            if (l instanceof NSSet) {
+                o = (NSSet<?>) l;
+            } else {
+                o = new NSSet<NSObject>((Set<NSObject>) l);
+            }
+            return NSObject.Marshaler.toNative(o, flags);
+        }
+    }
     
     public static class AsStringSetMarshaler {
         @MarshalsPointer

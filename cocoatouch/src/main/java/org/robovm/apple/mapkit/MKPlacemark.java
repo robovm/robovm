@@ -53,13 +53,15 @@ import org.robovm.apple.dispatch.*;
     /*<constructors>*/
     public MKPlacemark() {}
     protected MKPlacemark(SkipInit skipInit) { super(skipInit); }
-    public MKPlacemark(@ByVal CLLocationCoordinate2D coordinate, NSDictionary<NSString, ?> addressDictionary) { super((SkipInit) null); initObject(init(coordinate, addressDictionary)); }
+    public MKPlacemark(@ByVal CLLocationCoordinate2D coordinate, org.robovm.apple.addressbook.ABPersonAddress addressDictionary) { super((SkipInit) null); initObject(init(coordinate, addressDictionary)); }
     /*</constructors>*/
     /*<properties>*/
     @Property(selector = "countryCode")
     public native String getCountryCode();
     @Property(selector = "coordinate")
     public native @ByVal CLLocationCoordinate2D getCoordinate();
+    @Property(selector = "setCoordinate:")
+    public native void setCoordinate(@ByVal CLLocationCoordinate2D v);
     @Property(selector = "title")
     public native String getTitle();
     @Property(selector = "subtitle")
@@ -68,11 +70,6 @@ import org.robovm.apple.dispatch.*;
     /*<members>*//*</members>*/
     /*<methods>*/
     @Method(selector = "initWithCoordinate:addressDictionary:")
-    protected native @Pointer long init(@ByVal CLLocationCoordinate2D coordinate, NSDictionary<NSString, ?> addressDictionary);
-    /**
-     * @since Available in iOS 4.0 and later.
-     */
-    @Method(selector = "setCoordinate:")
-    public native void setCoordinate(@ByVal CLLocationCoordinate2D newCoordinate);
+    protected native @Pointer long init(@ByVal CLLocationCoordinate2D coordinate, org.robovm.apple.addressbook.ABPersonAddress addressDictionary);
     /*</methods>*/
 }

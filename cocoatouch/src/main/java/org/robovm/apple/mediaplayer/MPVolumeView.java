@@ -73,6 +73,9 @@ import org.robovm.apple.coregraphics.*;
     public MPVolumeView() {}
     protected MPVolumeView(SkipInit skipInit) { super(skipInit); }
     /*</constructors>*/
+    public MPVolumeView(CGRect frame) {
+    	super(frame);
+    }
     /*<properties>*/
     /**
      * @since Available in iOS 4.2 and later.

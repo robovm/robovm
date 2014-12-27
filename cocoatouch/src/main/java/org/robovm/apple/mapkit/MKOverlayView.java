@@ -57,6 +57,9 @@ import org.robovm.apple.dispatch.*;
     @Deprecated
     public MKOverlayView(MKOverlay overlay) { super((SkipInit) null); initObject(init(overlay)); }
     /*</constructors>*/
+    public MKOverlayView(CGRect frame) {
+    	super(frame);
+    }
     /*<properties>*/
     /**
      * @since Available in iOS 4.0 and later.

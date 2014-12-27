@@ -46,7 +46,7 @@ import org.robovm.apple.foundation.NSObject.SkipInit;
 /*<annotations>*/@Library("Foundation") @NativeClass/*</annotations>*/
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/NSMapTable/*</name>*/ <K extends NSObject, V extends NSObject>
     extends /*<extends>*/NSObject/*</extends>*/ 
-    /*<implements>*/implements NSCoding/*</implements>*/, Map<K, V> {
+    /*<implements>*/implements NSCoding, NSFastEnumeration/*</implements>*/, Map<K, V> {
 
     public static class NSMapTablePtr<K extends NSObject, V extends NSObject> extends Ptr<NSMapTable<K, V>, NSMapTablePtr<K, V>> {}
     

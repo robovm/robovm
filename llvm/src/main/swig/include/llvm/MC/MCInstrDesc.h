@@ -125,7 +125,10 @@ namespace MCID {
     Rematerializable,
     CheapAsAMove,
     ExtraSrcRegAllocReq,
-    ExtraDefRegAllocReq
+    ExtraDefRegAllocReq,
+    RegSequence,
+    ExtractSubreg,
+    InsertSubreg
   };
 }
 
@@ -357,6 +360,47 @@ public:
     return Flags & (1 << MCID::FoldableAsLoad);
   }
 
+  /// \brief Return true if this instruction behaves
+  /// the same way as the generic REG_SEQUENCE instructions.
+  /// E.g., on ARM,
+  /// dX VMOVDRR rY, rZ
+  /// is equivalent to
+  /// dX = REG_SEQUENCE rY, ssub_0, rZ, ssub_1.
+  ///
+  /// Note that for the optimizers to be able to take advantage of
+  /// this property, TargetInstrInfo::getRegSequenceLikeInputs has to be
+  /// override accordingly.
+  bool isRegSequenceLike() const { return Flags & (1 << MCID::RegSequence); }
+
+  /// \brief Return true if this instruction behaves
+  /// the same way as the generic EXTRACT_SUBREG instructions.
+  /// E.g., on ARM,
+  /// rX, rY VMOVRRD dZ
+  /// is equivalent to two EXTRACT_SUBREG:
+  /// rX = EXTRACT_SUBREG dZ, ssub_0
+  /// rY = EXTRACT_SUBREG dZ, ssub_1
+  ///
+  /// Note that for the optimizers to be able to take advantage of
+  /// this property, TargetInstrInfo::getExtractSubregLikeInputs has to be
+  /// override accordingly.
+  bool isExtractSubregLike() const {
+    return Flags & (1 << MCID::ExtractSubreg);
+  }
+
+  /// \brief Return true if this instruction behaves
+  /// the same way as the generic INSERT_SUBREG instructions.
+  /// E.g., on ARM,
+  /// dX = VSETLNi32 dY, rZ, Imm
+  /// is equivalent to a INSERT_SUBREG:
+  /// dX = INSERT_SUBREG dY, rZ, translateImmToSubIdx(Imm)
+  ///
+  /// Note that for the optimizers to be able to take advantage of
+  /// this property, TargetInstrInfo::getInsertSubregLikeInputs has to be
+  /// override accordingly.
+  bool isInsertSubregLike() const {
+    return Flags & (1 << MCID::InsertSubreg);
+  }
+
   //===--------------------------------------------------------------------===//
   // Side Effect Analysis
   //===--------------------------------------------------------------------===//
@@ -451,9 +495,12 @@ public:
   }
 
   /// isRematerializable - Returns true if this instruction is a candidate for
-  /// remat.  This flag is deprecated, please don't use it anymore.  If this
-  /// flag is set, the isReallyTriviallyReMaterializable() method is called to
-  /// verify the instruction is really rematable.
+  /// remat. This flag is only used in TargetInstrInfo method
+  /// isTriviallyRematerializable.
+  ///
+  /// If this flag is set, the isReallyTriviallyReMaterializable()
+  /// or isReallyTriviallyReMaterializableGeneric methods are called to verify
+  /// the instruction is really rematable.
   bool isRematerializable() const {
     return Flags & (1 << MCID::Rematerializable);
   }
@@ -464,6 +511,9 @@ public:
   /// where we would like to remat or hoist the instruction, but not if it costs
   /// more than moving the instruction into the appropriate register. Note, we
   /// are not marking copies from and to the same register class with this flag.
+  ///
+  /// This method could be called by interface TargetInstrInfo::isAsCheapAsAMove
+  /// for different subtargets.
   bool isAsCheapAsAMove() const {
     return Flags & (1 << MCID::CheapAsAMove);
   }

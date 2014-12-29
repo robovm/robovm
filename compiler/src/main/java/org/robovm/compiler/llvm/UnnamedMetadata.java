@@ -55,8 +55,10 @@ public class UnnamedMetadata {
         sb.append('!');
         sb.append(index);
         sb.append(" = ");
-        sb.append(value.getType());
-        sb.append(' ');
+        if (value.getType() != Type.METADATA) {
+            sb.append(value.getType());
+            sb.append(' ');
+        }
         sb.append(value.toString());
         return sb.toString();
     }

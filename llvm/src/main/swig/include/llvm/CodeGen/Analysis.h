@@ -22,7 +22,7 @@
 #include "llvm/IR/Instructions.h"
 
 namespace llvm {
-class GlobalVariable;
+class GlobalValue;
 class TargetLoweringBase;
 class TargetLowering;
 class TargetMachine;
@@ -59,7 +59,7 @@ void ComputeValueVTs(const TargetLowering &TLI, Type *Ty,
                      uint64_t StartingOffset = 0);
 
 /// ExtractTypeInfo - Returns the type info, possibly bitcast, encoded in V.
-GlobalVariable *ExtractTypeInfo(Value *V);
+GlobalValue *ExtractTypeInfo(Value *V);
 
 /// hasInlineAsmMemConstraint - Return true if the inline asm instruction being
 /// processed uses a memory 'm' constraint.
@@ -96,6 +96,13 @@ bool returnTypeIsEligibleForTailCall(const Function *F,
                                      const Instruction *I,
                                      const ReturnInst *Ret,
                                      const TargetLoweringBase &TLI);
+
+// True if GV can be left out of the object symbol table. This is the case
+// for linkonce_odr values whose address is not significant. While legal, it is
+// not normally profitable to omit them from the .o symbol table. Using this
+// analysis makes sense when the information can be passed down to the linker
+// or we are in LTO.
+bool canBeOmittedFromSymbolTable(const GlobalValue *GV);
 
 } // End llvm namespace
 

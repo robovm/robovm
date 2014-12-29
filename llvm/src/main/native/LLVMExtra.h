@@ -2,6 +2,7 @@
 #define LLVM_EXTRA_H
 
 #include <llvm-c/Core.h>
+#include <llvm-c/Transforms/PassManagerBuilder.h>
 
 #ifdef __cplusplus
 extern "C" {
@@ -22,6 +23,10 @@ typedef enum LLVMFPOpFusionMode {
 typedef struct LLVMOpaqueTargetOptions *LLVMTargetOptionsRef;
 
 extern const char *llvmHostTriple;
+
+void LLVMPassManagerBuilderSetDisableTailCalls(LLVMPassManagerBuilderRef PMB,
+                                            LLVMBool Value);
+void LLVMPassManagerBuilderUseAlwaysInliner(LLVMPassManagerBuilderRef PMB, LLVMBool InsertLifetime);
 
 LLVMBool LLVMParseIR(LLVMMemoryBufferRef MemBuf,
                           LLVMModuleRef *OutModule, char **OutMessage);

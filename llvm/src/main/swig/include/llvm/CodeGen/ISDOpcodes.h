@@ -485,7 +485,8 @@ namespace ISD {
     FNEG, FABS, FSQRT, FSIN, FCOS, FPOWI, FPOW,
     FLOG, FLOG2, FLOG10, FEXP, FEXP2,
     FCEIL, FTRUNC, FRINT, FNEARBYINT, FROUND, FFLOOR,
-    
+    FMINNUM, FMAXNUM,
+
     /// FSINCOS - Compute both fsin and fcos as a single operation.
     FSINCOS,
 
@@ -673,6 +674,9 @@ namespace ISD {
     ATOMIC_LOAD_MAX,
     ATOMIC_LOAD_UMIN,
     ATOMIC_LOAD_UMAX,
+
+    // Masked load and store
+    MLOAD, MSTORE,
 
     /// This corresponds to the llvm.lifetime.* intrinsics. The first operand
     /// is the chain and the second operand is the alloca pointer.

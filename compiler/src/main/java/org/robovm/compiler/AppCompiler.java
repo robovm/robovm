@@ -787,7 +787,7 @@ public class AppCompiler {
                 if(plugin.getArguments().getArguments().size() > 0) {
                     System.err.println(plugin.getClass().getSimpleName() + " options:");
                     for(PluginArgument arg: plugin.getArguments().getArguments()) {
-                        String argString = "  -" + plugin.getArguments().getPrefix() + ":" + arg.getName() + (arg.hasValue()? " " + arg.getValueName(): "");
+                        String argString = "  -" + plugin.getArguments().getPrefix() + ":" + arg.getName() + (arg.hasValue()? "=" + arg.getValueName(): "");
                         int whitespace = Math.max(1, 24 - argString.length());
                         System.err.println(argString + repeat(" ", whitespace) + arg.getDescription());
                     }

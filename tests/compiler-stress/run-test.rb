@@ -39,7 +39,7 @@ eof
   classpath = deps.join(':')
   cmd = "#{@dev_root}/bin/robovm -cp #{classpath} -tmp #{@dir}/#{group}-#{artifact}.tmp -cache #{@dir}/cache -d #{@dir}/#{group}-#{artifact} -o out -verbose -forcelinkclasses '**.*' " + (ARGV.join(' '))
   puts "Running command: #{cmd}"
-  system({"ROBOVM_DEV_ROOT" => @dev_root}, cmd) or raise "Compilation of #{group}:#{artifact} failed"
+  system({"ROBOVM_DEV_ROOT" => @dev_root, "JVM_MX" => "4G"}, cmd) or raise "Compilation of #{group}:#{artifact} failed"
   system("rm -rf #{@dir}/#{group}-#{artifact}.tmp #{@dir}/#{group}-#{artifact}")
 end
 

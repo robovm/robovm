@@ -166,11 +166,11 @@ classes:
     MKMapView: # DONE
         properties:
             'annotations':
-                type: '@org.robovm.rt.bro.annotation.Marshaler(NSArray.AsListMarshaler.class) List<MKAnnotation>'
+                type: '@org.robovm.rt.bro.annotation.Marshaler(NSArray.AsListMarshaler.class) List<? extends MKAnnotation>'
             'selectedAnnotations':
-                type: '@org.robovm.rt.bro.annotation.Marshaler(NSArray.AsListMarshaler.class) List<MKAnnotation>'
+                type: '@org.robovm.rt.bro.annotation.Marshaler(NSArray.AsListMarshaler.class) List<? extends MKAnnotation>'
             'overlays':
-                type: '@org.robovm.rt.bro.annotation.Marshaler(NSArray.AsListMarshaler.class) List<MKOverlay>'
+                type: '@org.robovm.rt.bro.annotation.Marshaler(NSArray.AsListMarshaler.class) List<? extends MKOverlay>'
         methods:
             '-setRegion:animated:':
                 trim_after_first_colon: true
@@ -204,17 +204,17 @@ classes:
                 trim_after_first_colon: true
                 parameters:
                     annotations:
-                        type: '@org.robovm.rt.bro.annotation.Marshaler(NSArray.AsListMarshaler.class) List<MKAnnotation>'
+                        type: '@org.robovm.rt.bro.annotation.Marshaler(NSArray.AsListMarshaler.class) List<? extends MKAnnotation>'
             '-removeAnnotation:':
                 trim_after_first_colon: true
             '-removeAnnotations:':
                 trim_after_first_colon: true
                 parameters:
                     annotations:
-                        type: '@org.robovm.rt.bro.annotation.Marshaler(NSArray.AsListMarshaler.class) List<MKAnnotation>'
+                        type: '@org.robovm.rt.bro.annotation.Marshaler(NSArray.AsListMarshaler.class) List<? extends MKAnnotation>'
             '-annotationsInMapRect:':
                 name: getAnnotations
-                return_type: '@org.robovm.rt.bro.annotation.Marshaler(NSSet.AsSetMarshaler.class) Set<MKAnnotation>'
+                return_type: '@org.robovm.rt.bro.annotation.Marshaler(NSSet.AsSetMarshaler.class) Set<? extends MKAnnotation>'
             '-viewForAnnotation:':
                 name: getView
             '-dequeueReusableAnnotationViewWithIdentifier:':
@@ -227,21 +227,21 @@ classes:
                 trim_after_first_colon: true
                 parameters:
                     annotations:
-                        type: '@org.robovm.rt.bro.annotation.Marshaler(NSArray.AsListMarshaler.class) List<MKAnnotation>'
+                        type: '@org.robovm.rt.bro.annotation.Marshaler(NSArray.AsListMarshaler.class) List<? extends MKAnnotation>'
             '-addOverlay:level:':
                 trim_after_first_colon: true
             '-addOverlays:level:':
                 trim_after_first_colon: true
                 parameters:
                     overlays:
-                        type: '@org.robovm.rt.bro.annotation.Marshaler(NSArray.AsListMarshaler.class) List<MKOverlay>'
+                        type: '@org.robovm.rt.bro.annotation.Marshaler(NSArray.AsListMarshaler.class) List<? extends MKOverlay>'
             '-removeOverlay:':
                 trim_after_first_colon: true
             '-removeOverlays:':
                 trim_after_first_colon: true
                 parameters:
                     overlays:
-                        type: '@org.robovm.rt.bro.annotation.Marshaler(NSArray.AsListMarshaler.class) List<MKOverlay>'
+                        type: '@org.robovm.rt.bro.annotation.Marshaler(NSArray.AsListMarshaler.class) List<? extends MKOverlay>'
             '-insertOverlay:atIndex:level:':
                 trim_after_first_colon: true
             '-insertOverlay:aboveOverlay:':
@@ -252,7 +252,7 @@ classes:
                 trim_after_first_colon: true
             '-overlaysInLevel:':
                 name: getOverlays
-                return_type: '@org.robovm.rt.bro.annotation.Marshaler(NSArray.AsListMarshaler.class) List<MKOverlay>'
+                return_type: '@org.robovm.rt.bro.annotation.Marshaler(NSArray.AsListMarshaler.class) List<? extends MKOverlay>'
             '-rendererForOverlay:':
                 name: getOverlayRenderer
             '-viewForOverlay:':
@@ -263,7 +263,7 @@ classes:
                 trim_after_first_colon: true
                 parameters:
                     overlays:
-                        type: '@org.robovm.rt.bro.annotation.Marshaler(NSArray.AsListMarshaler.class) List<MKOverlay>'
+                        type: '@org.robovm.rt.bro.annotation.Marshaler(NSArray.AsListMarshaler.class) List<? extends MKOverlay>'
             '-insertOverlay:atIndex:':
                 trim_after_first_colon: true
             '-exchangeOverlayAtIndex:withOverlayAtIndex:':

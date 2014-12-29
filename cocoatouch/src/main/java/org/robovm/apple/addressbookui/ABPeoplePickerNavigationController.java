@@ -54,9 +54,9 @@ import org.robovm.apple.addressbook.*;
     @Property(selector = "setPeoplePickerDelegate:", strongRef = true)
     public native void setPeoplePickerDelegate(ABPeoplePickerNavigationControllerDelegate v);
     @Property(selector = "displayedProperties")
-    public native @org.robovm.rt.bro.annotation.Marshaler(ABProperty.AsListMarshaler.class) List<ABProperty> getDisplayedProperties();
+    public native @org.robovm.rt.bro.annotation.Marshaler(ABProperty.AsListMarshaler.class) List<? extends ABProperty> getDisplayedProperties();
     @Property(selector = "setDisplayedProperties:")
-    public native void setDisplayedProperties(@org.robovm.rt.bro.annotation.Marshaler(ABProperty.AsListMarshaler.class) List<ABProperty> v);
+    public native void setDisplayedProperties(@org.robovm.rt.bro.annotation.Marshaler(ABProperty.AsListMarshaler.class) List<? extends ABProperty> v);
     @Property(selector = "addressBook")
     public native ABAddressBook getAddressBook();
     @Property(selector = "setAddressBook:")

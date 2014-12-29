@@ -33,6 +33,7 @@ import org.robovm.apple.uikit.*;
 /*<javadoc>*/
 
 /*</javadoc>*/
+@ForceLinkClass(GKError.class)
 /*<annotations>*/@Marshaler(ValuedEnum.AsMachineSizedSIntMarshaler.class)/*</annotations>*/
 public enum /*<name>*/GKErrorCode/*</name>*/ implements NSErrorCode {
     /*<values>*/

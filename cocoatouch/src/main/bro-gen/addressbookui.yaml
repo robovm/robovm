@@ -22,13 +22,13 @@ classes:
     ABPeoplePickerNavigationController: # DONE
         properties:
             'displayedProperties':
-                type: '@org.robovm.rt.bro.annotation.Marshaler(ABProperty.AsListMarshaler.class) List<ABProperty>'
+                type: '@org.robovm.rt.bro.annotation.Marshaler(ABProperty.AsListMarshaler.class) List<? extends ABProperty>'
     ABPersonViewController: # DONE
         properties:
             'displayedPerson':
                 type: ABPerson
             'displayedProperties':
-                type: '@org.robovm.rt.bro.annotation.Marshaler(ABProperty.AsListMarshaler.class) List<ABProperty>'
+                type: '@org.robovm.rt.bro.annotation.Marshaler(ABProperty.AsListMarshaler.class) List<? extends ABProperty>'
         methods:
             '-setHighlightedItemForProperty:withIdentifier:':
                 name: setHighlightedItem

@@ -39,6 +39,7 @@ import org.robovm.apple.dispatch.*;
  * @since Available in iOS 3.0 and later.
  */
 /*</javadoc>*/
+@ForceLinkClass(MKError.class)
 /*<annotations>*/@Marshaler(ValuedEnum.AsMachineSizedUIntMarshaler.class)/*</annotations>*/
 public enum /*<name>*/MKErrorCode/*</name>*/ implements NSErrorCode {
     /*<values>*/

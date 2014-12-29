@@ -306,7 +306,9 @@ classes:
                 type: NSArray<SCNParticleSystem>
         methods:
             '-clone':
-                return_type: SCNNode
+                exclude: true
+            '-flattenedClone':
+                exclude: true
             '-addChildNode:':
                 trim_after_first_colon: true
             '-insertChildNode:atIndex:':

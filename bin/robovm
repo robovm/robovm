@@ -14,9 +14,6 @@ if [ ! -f "$COMPILER_JAR" ]; then
   exit 1
 fi
 
-java \
-    -XX:+HeapDumpOnOutOfMemoryError \
-    -Xmx2g \
-    -Xss1024k \
-    -jar "$COMPILER_JAR" \
-    "$@"
+[ "x$JVM_MX" == 'x' ] && JVM_MX="2g"
+
+java -XX:+HeapDumpOnOutOfMemoryError -Xss1024k -Xmx$JVM_MX $JVM_OPTS -jar "$COMPILER_JAR" "$@"

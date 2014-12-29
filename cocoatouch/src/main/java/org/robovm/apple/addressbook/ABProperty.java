@@ -118,7 +118,7 @@ import org.robovm.apple.corefoundation.*;
             try {
                 Bro.bind(cls); // Global values need to be bound.
                 java.lang.reflect.Method m = cls.getMethod("valueOf", args);
-                ABProperty key = (ABProperty) m.invoke(null);
+                ABProperty key = (ABProperty) m.invoke(null, value);
                 if (key != null) return key;
             } catch (Throwable e) {
                 System.err.println("WARN: Failed to call valueOf() for " 

@@ -33,6 +33,7 @@ import org.robovm.apple.uikit.*;
 /*<javadoc>*/
 
 /*</javadoc>*/
+@ForceLinkClass(GKVoiceChatServiceError.class)
 /*<annotations>*/@Marshaler(ValuedEnum.AsMachineSizedSIntMarshaler.class)/*</annotations>*/
 public enum /*<name>*/GKVoiceChatServiceErrorCode/*</name>*/ implements NSErrorCode {
     /*<values>*/

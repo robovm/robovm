@@ -52,6 +52,10 @@ import org.robovm.apple.dispatch.*;
         this.setSize(size);
     }
     /*</constructors>*/
+    public MKMapRect(double x, double y, double width, double height) {
+        this.setOrigin(new MKMapPoint(x, y));
+        this.setSize(new MKMapSize(width, height));
+    }
     /*<properties>*//*</properties>*/
     /*<members>*/
     @StructMember(0) public native @ByVal MKMapPoint getOrigin();

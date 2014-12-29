@@ -62,9 +62,9 @@ import org.robovm.apple.addressbook.*;
     @Property(selector = "setDisplayedPerson:")
     public native void setDisplayedPerson(ABPerson v);
     @Property(selector = "displayedProperties")
-    public native @org.robovm.rt.bro.annotation.Marshaler(ABProperty.AsListMarshaler.class) List<ABProperty> getDisplayedProperties();
+    public native @org.robovm.rt.bro.annotation.Marshaler(ABProperty.AsListMarshaler.class) List<? extends ABProperty> getDisplayedProperties();
     @Property(selector = "setDisplayedProperties:")
-    public native void setDisplayedProperties(@org.robovm.rt.bro.annotation.Marshaler(ABProperty.AsListMarshaler.class) List<ABProperty> v);
+    public native void setDisplayedProperties(@org.robovm.rt.bro.annotation.Marshaler(ABProperty.AsListMarshaler.class) List<? extends ABProperty> v);
     @Property(selector = "allowsEditing")
     public native boolean isAllowsEditing();
     @Property(selector = "setAllowsEditing:")

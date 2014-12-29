@@ -198,10 +198,6 @@ import org.robovm.apple.opengles.*;
         setBoundingBox(minptr, maxptr);
     }
     /*<methods>*/
-    @Method(selector = "clone")
-    public native SCNNode clone();
-    @Method(selector = "flattenedClone")
-    public native SCNNode flattenedClone();
     @Method(selector = "addChildNode:")
     public native void addChildNode(SCNNode child);
     @Method(selector = "insertChildNode:atIndex:")

@@ -68,8 +68,13 @@ done
 
 mkdir -p "$TARGET"
 if [ ! -x $TARGET/vts ]; then
-  export ROBOVM_DEV_ROOT=$BASE
-  $ROBOVM_DEV_ROOT/bin/robovm \
+  if [ "x$ROBOVM_HOME" != 'x' ]; then
+    ROBOVM="$ROBOVM_HOME/bin/robovm"
+  else
+    export ROBOVM_DEV_ROOT=$BASE
+    ROBOVM="$ROBOVM_DEV_ROOT/bin/robovm"
+  fi
+  "$ROBOVM" \
     -tmp $TARGET.tmp \
     -d $TARGET \
     -arch $ARCH \

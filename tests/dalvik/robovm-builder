@@ -18,8 +18,13 @@ TMP=$(pwd).tmp
 TARGET=$(pwd)
 
 if [ ! -x $TARGET/test.out ]; then
-  export ROBOVM_DEV_ROOT=$BASE
-  echo "Build command line: " $ROBOVM_DEV_ROOT/bin/robovm \
+  if [ "x$ROBOVM_HOME" != 'x' ]; then
+    ROBOVM="$ROBOVM_HOME/bin/robovm"
+  else
+    export ROBOVM_DEV_ROOT=$BASE
+    ROBOVM="$ROBOVM_DEV_ROOT/bin/robovm"
+  fi
+  echo "Build command line: " "$ROBOVM" \
     -arch $ARCH \
     -os $OS \
     -tmp $TMP \
@@ -29,7 +34,7 @@ if [ ! -x $TARGET/test.out ]; then
     $EXTRA_ARGS \
     $@
 
-  $ROBOVM_DEV_ROOT/bin/robovm \
+  "$ROBOVM" \
     -arch $ARCH \
     -os $OS \
     -tmp $TMP \

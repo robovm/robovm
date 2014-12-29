@@ -10,6 +10,13 @@ require 'tmpdir'
 @dir = Dir.mktmpdir(['robovm-compiler-stress', ''])
 puts "Using tmp dir #{@dir}"
 
+@includes = [
+  'io.netty:netty-all'
+]
+@excludes = [
+  'org.scala-lang:scala-compiler' # Makes gcc segfault on linking. 20069 classes. Too large?
+]
+
 def compile_artifact(group, artifact, version, n)
   puts "**************"
   puts "Compiling #{group}:#{artifact}:#{version} (\##{n})"
@@ -43,7 +50,26 @@ eof
   system("rm -rf #{@dir}/#{group}-#{artifact}.tmp #{@dir}/#{group}-#{artifact}")
 end
 
+def determine_version(group, artifact)
+  url = "http://mvnrepository.com/artifact/#{group}/#{artifact}"
+  doc = Nokogiri::HTML(open(url))
+  versions = doc.css('#maincontent table.versions tr').map do |tr|
+    tds = tr.css('td').map {|e| e.content.strip}.to_a
+    {:group => group, :artifact => artifact, :version => tds[-4], :usages => (tds[-3] || '0').gsub(/ |,/, '').to_i, :type => tds[-2]}
+  end
+  versions = versions.sort_by {|e| e[:usages]}.reverse
+  versions.first[:version]
+end
+
 n = 1
+@includes.each do |e|
+  parts = e.split(/:/)
+  group = parts[0]
+  artifact = parts[1]
+  version = parts.size > 2 ? parts[2] : determine_version(group, artifact)
+  compile_artifact(group, artifact, version, n)
+  n = n + 1
+end
 (1..10).each do |page|
   url = "http://mvnrepository.com/popular?p=#{page}"
   doc = Nokogiri::HTML(open(url))
@@ -51,14 +77,11 @@ n = 1
     e =~ /\/artifact\/(.*)\/(.*)/
     group = $1
     artifact = $2
-    url = "http://mvnrepository.com#{e}"
-    doc = Nokogiri::HTML(open(url))
-    versions = doc.css('#maincontent table.versions tr').map do |tr|
-      tds = tr.css('td').map {|e| e.content.strip}.to_a
-      {:group => group, :artifact => artifact, :version => tds[-4], :usages => (tds[-3] || '0').gsub(/ |,/, '').to_i, :type => tds[-2]}
+    if !@excludes.include? "#{group}:#{artifact}"
+      compile_artifact(group, artifact, determine_version(group, artifact), n)
+    else
+      puts "Skipping excluded artifact #{group}:#{artifact} (\##{n})"
     end
-    versions = versions.sort_by {|e| e[:usages]}.reverse
-    compile_artifact(versions.first[:group], versions.first[:artifact], versions.first[:version], n)
     n = n + 1
   end
 end

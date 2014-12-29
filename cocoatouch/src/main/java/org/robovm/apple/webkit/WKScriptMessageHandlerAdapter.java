@@ -13,13 +13,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.robovm.apple.addressbook;
+package org.robovm.apple.webkit;
 
 /*<imports>*/
 import java.io.*;
 import java.nio.*;
 import java.util.*;
-
 import org.robovm.objc.*;
 import org.robovm.objc.annotation.*;
 import org.robovm.objc.block.*;
@@ -28,41 +27,29 @@ import org.robovm.rt.bro.*;
 import org.robovm.rt.bro.annotation.*;
 import org.robovm.rt.bro.ptr.*;
 import org.robovm.apple.foundation.*;
-import org.robovm.apple.corefoundation.*;
+import org.robovm.apple.uikit.*;
+import org.robovm.apple.coregraphics.*;
 /*</imports>*/
 
 /*<javadoc>*/
 /*</javadoc>*/
-/*<annotations>*/@Library("AddressBook")/*</annotations>*/
-/*<visibility>*/public/*</visibility>*/ class /*<name>*/ABGroupProperty/*</name>*/ 
-    extends /*<extends>*/ABProperty/*</extends>*/ 
-    /*<implements>*//*</implements>*/ {
+/*<annotations>*//*</annotations>*/
+/*<visibility>*/public/*</visibility>*/ class /*<name>*/WKScriptMessageHandlerAdapter/*</name>*/ 
+    extends /*<extends>*/NSObject/*</extends>*/ 
+    /*<implements>*/implements WKScriptMessageHandler/*</implements>*/ {
 
     /*<ptr>*/
     /*</ptr>*/
-    /*<bind>*/static { Bro.bind(ABGroupProperty.class); }/*</bind>*/
+    /*<bind>*/
+    /*</bind>*/
     /*<constants>*//*</constants>*/
-    public static final ABGroupProperty Name = new ABGroupProperty("NameValue");
-    
-    private static ABGroupProperty[] values = new ABGroupProperty[] {Name};
-    
-    private ABGroupProperty(String getterName) {
-        super(ABGroupProperty.class, getterName);
-    }
     /*<constructors>*//*</constructors>*/
-    /*<properties>*//*</properties>*/
+    /*<properties>*/
+    
+    /*</properties>*/
     /*<members>*//*</members>*/
-    public static ABGroupProperty valueOf(int value) {
-        for (ABGroupProperty v : values) {
-            if (v.value() == value) {
-                return v;
-            }
-        }
-        throw new IllegalArgumentException("No constant with value " + value + " found in " 
-            + /*<name>*/ABGroupProperty/*</name>*/.class.getName());
-    }
     /*<methods>*/
-    @GlobalValue(symbol="kABGroupNameProperty", optional=true)
-    protected static native int NameValue();
+    @NotImplemented("userContentController:didReceiveScriptMessage:")
+    public void didReceiveScriptMessage(WKUserContentController userContentController, WKScriptMessage message) { throw new UnsupportedOperationException(); }
     /*</methods>*/
 }

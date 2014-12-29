@@ -1,0 +1,40 @@
+package: org.robovm.apple.coreaudiokit
+include: [foundation.yaml, coreaudio.yaml, uikit.yaml]
+library: CoreAudioKit
+framework: CoreAudioKit
+clang_args: ['-x', 'objective-c']
+headers:
+    - /System/Library/Frameworks/CoreAudioKit.framework/Headers/CoreAudioKit.h
+typedefs: {}
+    
+enums:
+        
+classes:
+    CABTMIDICentralViewController: {} # DONE
+    CABTMIDILocalPeripheralViewController: {} # DONE
+    CAInterAppAudioSwitcherView: # DONE
+        methods:
+            '-contentWidth':
+                property: true
+    CAInterAppAudioTransportView: {} # DONE
+
+protocols: {}
+
+functions:
+    # Make sure we don't miss any functions if new ones are introduced in a later version
+    (k?CA.*):
+        class: CoreAudioKit
+        name: 'Function__#{g[0]}'
+
+values:
+   
+    # Make sure we don't miss any values if new ones are introduced in a later version
+    (k?CA.*):
+        class: CoreAudioKit
+        name: 'Value__#{g[0]}'
+
+constants:
+    # Make sure we don't miss any constants if new ones are introduced in a later version
+    (k?CA.*):
+        class: CoreAudioKit
+        name: 'Constant__#{g[0]}'

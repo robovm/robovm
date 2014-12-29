@@ -1,0 +1,168 @@
+package: org.robovm.apple.mobilecoreservices
+include: [foundation.yaml, corefoundation.yaml]
+library: MobileCoreServices
+framework: MobileCoreServices
+clang_args: ['-x', 'objective-c']
+headers:
+    - /System/Library/Frameworks/MobileCoreServices.framework/Headers/MobileCoreServices.h
+typedefs: {}
+private_typedefs:
+    '__CFString *': String
+    '__CFString **': 'NSString.NSStringPtr'
+    '__CFData *': NSData
+    '__CFURL *': NSURL
+    '__CFDictionary *': 'NSDictionary<?, ?>'
+    '__CFArray *': 'NSArray<?>'
+
+enums: {}
+        
+classes: {}
+
+protocols: {}
+
+functions:
+    UTType(CreatePreferredIdentifierForTag):
+        class: UTType
+        name: '#{g[0]}'
+        parameters:
+            inTagClass:
+                type: UTTagClass
+    UTType(CreateAllIdentifiersForTag):
+        class: UTType
+        name: '#{g[0]}'
+        return_type: '@org.robovm.rt.bro.annotation.Marshaler(CFArray.AsStringListMarshaler.class) List<String>'
+        parameters:
+            inTagClass:
+                type: UTTagClass
+    UTTypeCopy(PreferredTagWithClass):
+        class: UTType
+        name: 'get#{g[0]}'
+        parameters:
+            inTagClass:
+                type: UTTagClass
+    UTTypeCopy(AllTagsWithClass):
+        class: UTType
+        name: 'get#{g[0]}'
+        return_type: '@org.robovm.rt.bro.annotation.Marshaler(CFArray.AsStringListMarshaler.class) List<String>'
+        parameters:
+            inTagClass:
+                type: UTTagClass
+    UTTypeEqual:
+        class: UTType
+        name: typeEqualsTo
+    UTTypeCopy(Declaration):
+        class: UTType
+        name: 'get#{g[0]}ForType'
+        return_type: UTTypeDeclaration
+    UTTypeCopy(.*):
+        class: UTType
+        name: 'get#{g[0]}ForType'
+    UTType(.*):
+        class: UTType
+        name: 'type#{g[0]}'
+
+    # Make sure we don't miss any functions if new ones are introduced in a later version
+    (k?UT.*):
+        class: MobileCoreServices
+        name: 'Function__#{g[0]}'
+
+values:
+    kUTTagClass(.*):
+        class: UTTagClass
+        name: '#{g[0]}Value'
+        type: CFString
+        visibility: protected
+        
+    kUT(.*Key):
+        class: UTTypeDeclaration
+        name: '#{g[0]}'
+        type: NSString
+        visibility: protected
+        
+    kUTType(Item|Content|CompositeContent|Message|Contact|Archive|DiskImage):
+        class: UTType
+        static_class: AbstractBase
+        name: '#{g[0]}'
+    kUTType(Data|Directory|Resolvable|SymLink|Executable|MountPoint|AliasFile|AliasRecord|URLBookmarkData):
+        class: UTType
+        static_class: ConcreteBase
+        name: '#{g[0]}'
+    kUTType(URL|FileURL):
+        class: UTType
+        static_class: URL
+        name: '#{g[0]}'
+    kUTType(Text|PlainText|UTF8PlainText|UTF16ExternalPlainText|UTF16PlainText|DelimitedText|CommaSeparatedText|TabSeparatedText|UTF8TabSeparatedText|RTF):
+        class: UTType
+        static_class: Text
+        name: '#{g[0]}'        
+    kUTType(HTML|XML):
+        class: UTType
+        static_class: MarkupLanguage
+        name: '#{g[0]}'
+    kUTType(SourceCode|AssemblyLanguageSource|CSource|ObjectiveCSource|CPlusPlusSource|ObjectiveCPlusPlusSource|CHeader|CPlusPlusHeader|JavaSource):
+        class: UTType
+        static_class: ProgrammingLanguage
+        name: '#{g[0]}'
+    kUTType(Script|AppleScript|OSAScript|OSAScriptBundle|JavaScript|ShellScript|PerlScript|PythonScript|RubyScript|PHPScript):
+        class: UTType
+        static_class: ScriptingLanguage
+        name: '#{g[0]}'
+    kUTType(JSON|PropertyList|XMLPropertyList|BinaryPropertyList):
+        class: UTType
+        static_class: SerializedData
+        name: '#{g[0]}'
+    kUTType(PDF|RTFD|FlatRTFD|TXNTextAndMultimediaData|WebArchive):
+        class: UTType
+        static_class: CompositeContent
+        name: '#{g[0]}'
+    kUTType(Image|JPEG|JPEG2000|TIFF|PICT|GIF|PNG|QuickTimeImage|AppleICNS|BMP|ICO|RawImage|ScalableVectorGraphics):
+        class: UTType
+        static_class: ImageContent
+        name: '#{g[0]}'
+    kUTType(AudiovisualContent|Movie|Video|Audio|QuickTimeMovie|MPEG|MPEG2Video|MPEG2TransportStream|MP3|MPEG4|MPEG4Audio|AppleProtectedMPEG4Audio|AppleProtectedMPEG4Video|AVIMovie|AudioInterchangeFileFormat|WaveformAudio|MIDIAudio|Playlist|M3UPlaylist):
+        class: UTType
+        static_class: AudiovisualContent
+        name: '#{g[0]}'
+    kUTType(Folder|Volume|Package|Bundle|PluginBundle|SpotlightImporter|QuickLookGenerator|XPCService|Framework):
+        class: UTType
+        static_class: Directory
+        name: '#{g[0]}'
+    kUTType(Application|ApplicationBundle|ApplicationFile|UnixExecutable|WindowsExecutable|JavaClass|JavaArchive|SystemPreferencesPane):
+        class: UTType
+        static_class: ApplicationAndExecutable
+        name: '#{g[0]}'
+    kUTType(GNUZipArchive|Bzip2Archive|ZipArchive):
+        class: UTType
+        static_class: Archive
+        name: '#{g[0]}'
+    kUTType(Spreadsheet|Presentation|Database):
+        class: UTType
+        static_class: Document
+        name: '#{g[0]}'
+    kUTType(VCard|ToDoItem|CalendarEvent|EmailMessage):
+        class: UTType
+        static_class: Contact
+        name: '#{g[0]}'
+    kUTType(InternetLocation):
+        class: UTType
+        static_class: Internet
+        name: '#{g[0]}'
+    kUTType(InkText|Font|Bookmark|PKCS12|X509Certificate|ElectronicPublication|Log):
+        class: UTType
+        static_class: Miscellaneous
+        name: '#{g[0]}'
+    kUTType(3DContent):
+        class: UTType
+        static_class: Miscellaneous
+        name: '_#{g[0]}'
+   
+    # Make sure we don't miss any values if new ones are introduced in a later version
+    (k?UT.*):
+        class: MobileCoreServices
+        name: 'Value__#{g[0]}'
+
+constants:
+    # Make sure we don't miss any constants if new ones are introduced in a later version
+    (k?UT.*):
+        class: MobileCoreServices
+        name: 'Constant__#{g[0]}'

@@ -80,7 +80,7 @@ import org.robovm.apple.corefoundation.*;
         SocialProfile, AlternateBirthday};
 
     private ABPersonProperty(String getterName) {
-        super(getterName);
+        super(ABPersonProperty.class, getterName);
     }
     /*<constructors>*//*</constructors>*/
     /*<properties>*//*</properties>*/

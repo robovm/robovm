@@ -102,8 +102,8 @@ import org.robovm.apple.corefoundation.*;
     
     private final LazyGlobalValue<Integer> lazyGlobalValue;
     
-    protected ABProperty(String getterName) {
-        lazyGlobalValue = new LazyGlobalValue<>(getClass(), getterName);
+    protected ABProperty(Class<? extends ABProperty> clazz, String getterName) {
+        lazyGlobalValue = new LazyGlobalValue<>(clazz, getterName);
     }
     /*<constructors>*//*</constructors>*/
     /*<properties>*//*</properties>*/

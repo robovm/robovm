@@ -19,6 +19,7 @@ package org.robovm.apple.addressbook;
 import java.io.*;
 import java.nio.*;
 import java.util.*;
+
 import org.robovm.objc.*;
 import org.robovm.objc.annotation.*;
 import org.robovm.objc.block.*;
@@ -42,10 +43,11 @@ import org.robovm.apple.corefoundation.*;
     /*<bind>*/static { Bro.bind(ABGroupProperty.class); }/*</bind>*/
     /*<constants>*//*</constants>*/
     public static final ABGroupProperty Name = new ABGroupProperty("NameValue");
+    
     private static ABGroupProperty[] values = new ABGroupProperty[] {Name};
     
     private ABGroupProperty(String getterName) {
-        super(getterName);
+        super(ABGroupProperty.class, getterName);
     }
     /*<constructors>*//*</constructors>*/
     /*<properties>*//*</properties>*/

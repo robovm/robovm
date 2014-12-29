@@ -408,7 +408,9 @@ static InstanceField* getAnnotationMemberField(Env* env, Class* annotationImplCl
     return rvmGetInstanceField(env, annotationImplClass, fieldName, "Ljava/lang/Object;");
 }
 
-static jboolean getAnnotationValue(Env* env, void** attributes, Class* expectedAnnotationClass, ClassLoader* classLoader, jvalue* result) {
+static jboolean getAnnotationValue(Env* env, void** attributes, Class* expectedAnnotationClass, ClassLoader* classLoader, 
+        jvalue* result, jboolean ignoreClassNotFound) {
+
     char* annotationTypeName = getString(attributes);
     if (expectedAnnotationClass && strncmp(&annotationTypeName[1], expectedAnnotationClass->name, strlen(expectedAnnotationClass->name))) {
         return throwFormatError(env, rvmFromBinaryClassName(env, expectedAnnotationClass->name));
@@ -417,7 +419,17 @@ static jboolean getAnnotationValue(Env* env, void** attributes, Class* expectedA
     Class* annotationClass = expectedAnnotationClass;
     if (!annotationClass) {
         annotationClass = rvmFindClassByDescriptor(env, annotationTypeName, classLoader);
-        if (!annotationClass) return FALSE;
+        if (!annotationClass) {
+            if (ignoreClassNotFound && rvmExceptionOccurred(env)->clazz == java_lang_ClassNotFoundException) {
+                rvmExceptionClear(env);
+                jint length = getInt(attributes);
+                for (jint i = 0; i < length; i++) {
+                    getString(attributes);
+                    skipElementValue(attributes);
+                }
+            }
+            return FALSE;
+        }
     }
 
     // Find the annotation impl class
@@ -480,7 +492,7 @@ static jboolean parseAnnotationElementValue(Env* env, void** attributes, Class* 
     jbyte tag = getByte(attributes);
     if (tag != '@') return throwFormatError(env, "Annotation");
 
-    return getAnnotationValue(env, attributes, annotationClass, classLoader, result);
+    return getAnnotationValue(env, attributes, annotationClass, classLoader, result, FALSE);
 }
 
 static jboolean parseElementValue(Env* env, void** attributes, Class* type, ClassLoader* classLoader, jvalue* result) {
@@ -656,10 +668,22 @@ static jboolean getRuntimeVisibleAnnotationsIterator(Env* env, jbyte type, void*
         ObjectArray* annotations = rvmNewObjectArray(env, length, java_lang_annotation_Annotation, NULL, NULL);
         if (!annotations) return FALSE;
         jint i = 0;
+        jint actualLength = 0;
         for (i = 0; i < length; i++) {
             jvalue value = {0};
-            if (!getAnnotationValue(env, &attributes, NULL, classLoader, &value)) return FALSE;
-            annotations->values[i] = (Object*) value.l;
+            if (getAnnotationValue(env, &attributes, NULL, classLoader, &value, TRUE)) {
+                annotations->values[actualLength++] = (Object*) value.l;
+            } else if (rvmExceptionCheck(env)) {
+                return FALSE;
+            }
+        }
+        if (actualLength != length) {
+            // One or more annotations could not be loaded due to a missing class.
+            // Reallocate the result array and copy over the non null values.
+            ObjectArray* annotations2 = rvmNewObjectArray(env, actualLength, java_lang_annotation_Annotation, NULL, NULL);
+            if (!annotations2) return FALSE;
+            memcpy(annotations2->values, annotations->values, actualLength * sizeof(Object*));
+            annotations = annotations2;
         }
         *result = annotations;
         return FALSE; // Stop iterating
@@ -680,10 +704,23 @@ static jboolean getRuntimeVisibleParameterAnnotationsIterator(Env* env, jbyte ty
             ObjectArray* annotations = rvmNewObjectArray(env, length, java_lang_annotation_Annotation, NULL, NULL);
             if (!annotations) return FALSE;
             jint j = 0;
+            jint actualLength = 0;
             for (j = 0; j < length; j++) {
                 jvalue value = {0};
-                if (!getAnnotationValue(env, &attributes, NULL, classLoader, &value)) return FALSE;
+                if (getAnnotationValue(env, &attributes, NULL, classLoader, &value, TRUE)) {
+                    annotations->values[actualLength++] = (Object*) value.l;
+                } else if (rvmExceptionCheck(env)) {
+                    return FALSE;
+                }
                 annotations->values[j] = (Object*) value.l;
+            }
+            if (actualLength != length) {
+                // One or more annotations could not be loaded due to a missing class.
+                // Reallocate the result array and copy over the non null values.
+                ObjectArray* annotations2 = rvmNewObjectArray(env, actualLength, java_lang_annotation_Annotation, NULL, NULL);
+                if (!annotations2) return FALSE;
+                memcpy(annotations2->values, annotations->values, actualLength * sizeof(Object*));
+                annotations = annotations2;
             }
             paramAnnotations->values[i] = (Object*) annotations;
         }

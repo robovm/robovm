@@ -6,11 +6,23 @@ BASE=$(cd $(dirname $0)/../..; pwd -P)
 if [ -f "$BASE/tests/drlvm/robovm-vts.env" ]; then
   . $BASE/tests/drlvm/robovm-vts.env
 fi
-[ "x$ARCH" == 'x' ] && ARCH=auto
-[ "x$OS" == 'x' ] && OS=auto
-[ "x$TARGET" == 'x' ] && TARGET=/tmp/robovm-vts.$ARCH
+[ "x$ARCH" == 'x' ] && ARCH=x86_64
+if [ "x$OS" == 'x' ]; then
+  if [ $(uname) == 'Darwin' ]; then
+    OS=macosx
+  else
+    OS=linux
+  fi
+fi
 EXTRA_ARGS=
-[ "x$DEBUG" == 'x1' ] && EXTRA_ARGS="$EXTRA_ARGS -debug"
+if [ "x$DEBUG" == 'x1' ]; then
+  EXTRA_ARGS="$EXTRA_ARGS -debug"
+  [ "x$TARGET" == 'x' ] && TARGET=/tmp/robovm-vts.$OS-$ARCH.debug
+else
+  [ "x$TARGET" == 'x' ] && TARGET=/tmp/robovm-vts.$OS-$ARCH.release
+fi
+[ "x$USE_DEBUG_LIBS" == 'x1' ] && EXTRA_ARGS="$EXTRA_ARGS -use-debug-libs"
+[ "x$ARGS" != 'x' ] && EXTRA_ARGS="$EXTRA_ARGS $ARGS"
 
 if [ "$OS" == 'ios' ]; then
   EXTRA_ARGS="$EXTRA_ARGS -libs $BASE/tests/drlvm/drlvm-vts-bundle/vts/dest/VTS-built/bin/lib/libjnitests.a"
@@ -58,7 +70,7 @@ mkdir -p "$TARGET"
 if [ ! -x $TARGET/vts ]; then
   export ROBOVM_DEV_ROOT=$BASE
   $ROBOVM_DEV_ROOT/bin/robovm \
-    -tmp /tmp/robovm-vts.tmp \
+    -tmp $TARGET.tmp \
     -d $TARGET \
     -arch $ARCH \
     -os $OS \

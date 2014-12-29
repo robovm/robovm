@@ -28,6 +28,7 @@ namespace llvm {
   class Instruction;
   class CallSite;
   class AliasAnalysis;
+  class AssumptionTracker;
   class DataLayout;
   class MemoryDependenceAnalysis;
   class PredIteratorCache;
@@ -281,12 +282,12 @@ namespace llvm {
       /// Size - The maximum size of the dereferences of the
       /// pointer. May be UnknownSize if the sizes are unknown.
       uint64_t Size;
-      /// TBAATag - The TBAA tag associated with dereferences of the
-      /// pointer. May be null if there are no tags or conflicting tags.
-      const MDNode *TBAATag;
+      /// AATags - The AA tags associated with dereferences of the
+      /// pointer. The members may be null if there are no tags or
+      /// conflicting tags.
+      AAMDNodes AATags;
 
-      NonLocalPointerInfo()
-        : Size(AliasAnalysis::UnknownSize), TBAATag(nullptr) {}
+      NonLocalPointerInfo() : Size(AliasAnalysis::UnknownSize) {}
     };
 
     /// CachedNonLocalPointerInfo - This map stores the cached results of doing
@@ -325,6 +326,7 @@ namespace llvm {
     AliasAnalysis *AA;
     const DataLayout *DL;
     DominatorTree *DT;
+    AssumptionTracker *AT;
     std::unique_ptr<PredIteratorCache> PredCache;
 
   public:

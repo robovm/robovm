@@ -27,10 +27,13 @@
 #define LLVM_IR_VALUEMAP_H
 
 #include "llvm/ADT/DenseMap.h"
+#include "llvm/IR/TrackingMDRef.h"
 #include "llvm/IR/ValueHandle.h"
 #include "llvm/Support/Mutex.h"
+#include "llvm/Support/UniqueLock.h"
 #include "llvm/Support/type_traits.h"
 #include <iterator>
+#include <memory>
 
 namespace llvm {
 
@@ -78,8 +81,10 @@ class ValueMap {
   friend class ValueMapCallbackVH<KeyT, ValueT, Config>;
   typedef ValueMapCallbackVH<KeyT, ValueT, Config> ValueMapCVH;
   typedef DenseMap<ValueMapCVH, ValueT, DenseMapInfo<ValueMapCVH> > MapT;
+  typedef DenseMap<const Metadata *, TrackingMDRef> MDMapT;
   typedef typename Config::ExtraData ExtraData;
   MapT Map;
+  std::unique_ptr<MDMapT> MDMap;
   ExtraData Data;
   ValueMap(const ValueMap&) LLVM_DELETED_FUNCTION;
   ValueMap& operator=(const ValueMap&) LLVM_DELETED_FUNCTION;
@@ -90,11 +95,18 @@ public:
   typedef unsigned size_type;
 
   explicit ValueMap(unsigned NumInitBuckets = 64)
-    : Map(NumInitBuckets), Data() {}
+      : Map(NumInitBuckets), Data() {}
   explicit ValueMap(const ExtraData &Data, unsigned NumInitBuckets = 64)
-    : Map(NumInitBuckets), Data(Data) {}
+      : Map(NumInitBuckets), Data(Data) {}
 
   ~ValueMap() {}
+
+  bool hasMD() const { return MDMap; }
+  MDMapT &MD() {
+    if (!MDMap)
+      MDMap.reset(new MDMapT);
+    return *MDMap;
+  }
 
   typedef ValueMapIterator<MapT, KeyT> iterator;
   typedef ValueMapConstIterator<MapT, KeyT> const_iterator;
@@ -109,7 +121,10 @@ public:
   /// Grow the map so that it has at least Size buckets. Does not shrink
   void resize(size_t Size) { Map.resize(Size); }
 
-  void clear() { Map.clear(); }
+  void clear() {
+    Map.clear();
+    MDMap.reset();
+  }
 
   /// Return 1 if the specified key is in the map, 0 otherwise.
   size_type count(const KeyT &Val) const {
@@ -216,12 +231,11 @@ public:
     // Make a copy that won't get changed even when *this is destroyed.
     ValueMapCallbackVH Copy(*this);
     typename Config::mutex_type *M = Config::getMutex(Copy.Map->Data);
+    unique_lock<typename Config::mutex_type> Guard;
     if (M)
-      M->acquire();
+      Guard = unique_lock<typename Config::mutex_type>(*M);
     Config::onDelete(Copy.Map->Data, Copy.Unwrap());  // May destroy *this.
     Copy.Map->Map.erase(Copy);  // Definitely destroys *this.
-    if (M)
-      M->release();
   }
   void allUsesReplacedWith(Value *new_key) override {
     assert(isa<KeySansPointerT>(new_key) &&
@@ -229,8 +243,9 @@ public:
     // Make a copy that won't get changed even when *this is destroyed.
     ValueMapCallbackVH Copy(*this);
     typename Config::mutex_type *M = Config::getMutex(Copy.Map->Data);
+    unique_lock<typename Config::mutex_type> Guard;
     if (M)
-      M->acquire();
+      Guard = unique_lock<typename Config::mutex_type>(*M);
 
     KeyT typed_new_key = cast<KeySansPointerT>(new_key);
     // Can destroy *this:
@@ -245,8 +260,6 @@ public:
         Copy.Map->insert(std::make_pair(typed_new_key, Target));
       }
     }
-    if (M)
-      M->release();
   }
 };
 

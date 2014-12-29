@@ -52,11 +52,12 @@ public class Alias {
         StringBuilder sb = new StringBuilder();
         sb.append("@\"");
         sb.append(name);
-        sb.append("\" = alias ");
+        sb.append("\" = ");
         if (linkage != null) {
             sb.append(linkage);
             sb.append(' ');
         }
+        sb.append("alias ");
         sb.append(value.getType());
         sb.append(' ');
         sb.append(value);

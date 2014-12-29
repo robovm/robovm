@@ -1,6 +1,8 @@
---- a/lib/DebugInfo/DWARFContext.cpp	2014-06-13 04:24:39.000000000 +0200
-+++ b/lib/DebugInfo/DWARFContext.cpp	2014-12-18 14:06:47.000000000 +0100
-@@ -738,8 +738,10 @@
+diff --git a/lib/DebugInfo/DWARFContext.cpp b/lib/DebugInfo/DWARFContext.cpp
+index 37ba43f..d45618e 100644
+--- a/lib/DebugInfo/DWARFContext.cpp
++++ b/lib/DebugInfo/DWARFContext.cpp
+@@ -668,8 +668,10 @@ DWARFContextInMemory::DWARFContextInMemory(const object::ObjectFile &Obj)
            if (ec) {
              errs() << "Aaaaaa! Nameless relocation! Aaaaaa!\n";
            }
@@ -12,4 +14,3 @@
 +          //       << Name << "\n";
            continue;
          }
- 

@@ -37,26 +37,20 @@ class MapVector {
 public:
   typedef typename VectorType::iterator iterator;
   typedef typename VectorType::const_iterator const_iterator;
+  typedef typename VectorType::reverse_iterator reverse_iterator;
+  typedef typename VectorType::const_reverse_iterator const_reverse_iterator;
 
-  size_type size() const {
-    return Vector.size();
-  }
+  size_type size() const { return Vector.size(); }
 
-  iterator begin() {
-    return Vector.begin();
-  }
+  iterator begin() { return Vector.begin(); }
+  const_iterator begin() const { return Vector.begin(); }
+  iterator end() { return Vector.end(); }
+  const_iterator end() const { return Vector.end(); }
 
-  const_iterator begin() const {
-    return Vector.begin();
-  }
-
-  iterator end() {
-    return Vector.end();
-  }
-
-  const_iterator end() const {
-    return Vector.end();
-  }
+  reverse_iterator rbegin() { return Vector.rbegin(); }
+  const_reverse_iterator rbegin() const { return Vector.rbegin(); }
+  reverse_iterator rend() { return Vector.rend(); }
+  const_reverse_iterator rend() const { return Vector.rend(); }
 
   bool empty() const {
     return Vector.empty();
@@ -145,6 +139,17 @@ public:
         --I.second;
     }
     return Next;
+  }
+
+  /// \brief Remove all elements with the key value Key.
+  ///
+  /// Returns the number of elements removed.
+  size_type erase(const KeyT &Key) {
+    auto Iterator = find(Key);
+    if (Iterator == end())
+      return 0;
+    erase(Iterator);
+    return 1;
   }
 
   /// \brief Remove the elements that match the predicate.

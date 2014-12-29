@@ -277,6 +277,18 @@ SWIGINTERN void delete_IntOut(struct IntOut *self){
           free(self);
         }
 
+        typedef struct SizeTOut {
+            size_t value;
+        } SizeTOut;
+    
+SWIGINTERN struct SizeTOut *new_SizeTOut(void){
+          return (SizeTOut *) calloc(1,sizeof(size_t));
+        }
+SWIGINTERN void delete_SizeTOut(struct SizeTOut *self){
+          ;
+          free(self);
+        }
+
         typedef struct LongArrayOut {
             LongArrayPtr value;
         } LongArrayOut;
@@ -597,6 +609,43 @@ SWIGEXPORT void JNICALL Java_org_robovm_llvm_binding_LLVMJNI_delete_1IntOut(JNIE
   (void)jcls;
   arg1 = *(struct IntOut **)&jarg1; 
   delete_IntOut(arg1);
+}
+
+
+SWIGEXPORT jlong JNICALL Java_org_robovm_llvm_binding_LLVMJNI_SizeTOut_1value_1get(JNIEnv *jenv, jclass jcls, jlong jarg1, jobject jarg1_) {
+  jlong jresult = 0 ;
+  struct SizeTOut *arg1 = (struct SizeTOut *) 0 ;
+  size_t result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg1_;
+  arg1 = *(struct SizeTOut **)&jarg1; 
+  result =  ((arg1)->value);
+  jresult = (jlong)result; 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_org_robovm_llvm_binding_LLVMJNI_new_1SizeTOut(JNIEnv *jenv, jclass jcls) {
+  jlong jresult = 0 ;
+  struct SizeTOut *result = 0 ;
+  
+  (void)jenv;
+  (void)jcls;
+  result = (struct SizeTOut *)new_SizeTOut();
+  *(struct SizeTOut **)&jresult = result; 
+  return jresult;
+}
+
+
+SWIGEXPORT void JNICALL Java_org_robovm_llvm_binding_LLVMJNI_delete_1SizeTOut(JNIEnv *jenv, jclass jcls, jlong jarg1) {
+  struct SizeTOut *arg1 = (struct SizeTOut *) 0 ;
+  
+  (void)jenv;
+  (void)jcls;
+  arg1 = *(struct SizeTOut **)&jarg1; 
+  delete_SizeTOut(arg1);
 }
 
 
@@ -1286,6 +1335,20 @@ SWIGEXPORT jlong JNICALL Java_org_robovm_llvm_binding_LLVMJNI_ModuleCreateWithNa
   result = (LLVMModuleRef)LLVMModuleCreateWithNameInContext((char const *)arg1,arg2);
   *(LLVMModuleRef *)&jresult = result; 
   if (arg1) (*jenv)->ReleaseStringUTFChars(jenv, jarg1, (const char *)arg1);
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_org_robovm_llvm_binding_LLVMJNI_CloneModule(JNIEnv *jenv, jclass jcls, jlong jarg1) {
+  jlong jresult = 0 ;
+  LLVMModuleRef arg1 = (LLVMModuleRef) 0 ;
+  LLVMModuleRef result;
+  
+  (void)jenv;
+  (void)jcls;
+  arg1 = *(LLVMModuleRef *)&jarg1; 
+  result = (LLVMModuleRef)LLVMCloneModule(arg1);
+  *(LLVMModuleRef *)&jresult = result; 
   return jresult;
 }
 
@@ -2574,34 +2637,6 @@ SWIGEXPORT jlong JNICALL Java_org_robovm_llvm_binding_LLVMJNI_IsAInlineAsm(JNIEn
 }
 
 
-SWIGEXPORT jlong JNICALL Java_org_robovm_llvm_binding_LLVMJNI_IsAMDNode(JNIEnv *jenv, jclass jcls, jlong jarg1) {
-  jlong jresult = 0 ;
-  LLVMValueRef arg1 = (LLVMValueRef) 0 ;
-  LLVMValueRef result;
-  
-  (void)jenv;
-  (void)jcls;
-  arg1 = *(LLVMValueRef *)&jarg1; 
-  result = (LLVMValueRef)LLVMIsAMDNode(arg1);
-  *(LLVMValueRef *)&jresult = result; 
-  return jresult;
-}
-
-
-SWIGEXPORT jlong JNICALL Java_org_robovm_llvm_binding_LLVMJNI_IsAMDString(JNIEnv *jenv, jclass jcls, jlong jarg1) {
-  jlong jresult = 0 ;
-  LLVMValueRef arg1 = (LLVMValueRef) 0 ;
-  LLVMValueRef result;
-  
-  (void)jenv;
-  (void)jcls;
-  arg1 = *(LLVMValueRef *)&jarg1; 
-  result = (LLVMValueRef)LLVMIsAMDString(arg1);
-  *(LLVMValueRef *)&jresult = result; 
-  return jresult;
-}
-
-
 SWIGEXPORT jlong JNICALL Java_org_robovm_llvm_binding_LLVMJNI_IsAUser(JNIEnv *jenv, jclass jcls, jlong jarg1) {
   jlong jresult = 0 ;
   LLVMValueRef arg1 = (LLVMValueRef) 0 ;
@@ -3568,6 +3603,34 @@ SWIGEXPORT jlong JNICALL Java_org_robovm_llvm_binding_LLVMJNI_IsAVAArgInst(JNIEn
 }
 
 
+SWIGEXPORT jlong JNICALL Java_org_robovm_llvm_binding_LLVMJNI_IsAMDNode(JNIEnv *jenv, jclass jcls, jlong jarg1) {
+  jlong jresult = 0 ;
+  LLVMValueRef arg1 = (LLVMValueRef) 0 ;
+  LLVMValueRef result;
+  
+  (void)jenv;
+  (void)jcls;
+  arg1 = *(LLVMValueRef *)&jarg1; 
+  result = (LLVMValueRef)LLVMIsAMDNode(arg1);
+  *(LLVMValueRef *)&jresult = result; 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_org_robovm_llvm_binding_LLVMJNI_IsAMDString(JNIEnv *jenv, jclass jcls, jlong jarg1) {
+  jlong jresult = 0 ;
+  LLVMValueRef arg1 = (LLVMValueRef) 0 ;
+  LLVMValueRef result;
+  
+  (void)jenv;
+  (void)jcls;
+  arg1 = *(LLVMValueRef *)&jarg1; 
+  result = (LLVMValueRef)LLVMIsAMDString(arg1);
+  *(LLVMValueRef *)&jresult = result; 
+  return jresult;
+}
+
+
 SWIGEXPORT jlong JNICALL Java_org_robovm_llvm_binding_LLVMJNI_GetFirstUse(JNIEnv *jenv, jclass jcls, jlong jarg1) {
   jlong jresult = 0 ;
   LLVMValueRef arg1 = (LLVMValueRef) 0 ;
@@ -3636,6 +3699,22 @@ SWIGEXPORT jlong JNICALL Java_org_robovm_llvm_binding_LLVMJNI_GetOperand(JNIEnv 
   arg2 = (unsigned int)jarg2; 
   result = (LLVMValueRef)LLVMGetOperand(arg1,arg2);
   *(LLVMValueRef *)&jresult = result; 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_org_robovm_llvm_binding_LLVMJNI_GetOperandUse(JNIEnv *jenv, jclass jcls, jlong jarg1, jint jarg2) {
+  jlong jresult = 0 ;
+  LLVMValueRef arg1 = (LLVMValueRef) 0 ;
+  unsigned int arg2 ;
+  LLVMUseRef result;
+  
+  (void)jenv;
+  (void)jcls;
+  arg1 = *(LLVMValueRef *)&jarg1; 
+  arg2 = (unsigned int)jarg2; 
+  result = (LLVMUseRef)LLVMGetOperandUse(arg1,arg2);
+  *(LLVMUseRef *)&jresult = result; 
   return jresult;
 }
 
@@ -3902,6 +3981,23 @@ SWIGEXPORT jlong JNICALL Java_org_robovm_llvm_binding_LLVMJNI_ConstIntGetSExtVal
 }
 
 
+SWIGEXPORT jdouble JNICALL Java_org_robovm_llvm_binding_LLVMJNI_ConstRealGetDouble(JNIEnv *jenv, jclass jcls, jlong jarg1, jlong jarg2, jobject jarg2_) {
+  jdouble jresult = 0 ;
+  LLVMValueRef arg1 = (LLVMValueRef) 0 ;
+  LLVMBool *arg2 = (LLVMBool *) 0 ;
+  double result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg2_;
+  arg1 = *(LLVMValueRef *)&jarg1; 
+  arg2 = *(LLVMBool **)&jarg2; 
+  result = (double)LLVMConstRealGetDouble(arg1,arg2);
+  jresult = (jdouble)result; 
+  return jresult;
+}
+
+
 SWIGEXPORT jlong JNICALL Java_org_robovm_llvm_binding_LLVMJNI_ConstStringInContext(JNIEnv *jenv, jclass jcls, jlong jarg1, jstring jarg2, jboolean jarg4) {
   jlong jresult = 0 ;
   LLVMContextRef arg1 = (LLVMContextRef) 0 ;
@@ -3956,6 +4052,37 @@ SWIGEXPORT jlong JNICALL Java_org_robovm_llvm_binding_LLVMJNI_ConstString(JNIEnv
   {
     (*jenv)->ReleaseStringUTFChars(jenv, jarg1, arg1); 
   }
+  return jresult;
+}
+
+
+SWIGEXPORT jboolean JNICALL Java_org_robovm_llvm_binding_LLVMJNI_IsConstantString(JNIEnv *jenv, jclass jcls, jlong jarg1) {
+  jboolean jresult = 0 ;
+  LLVMValueRef arg1 = (LLVMValueRef) 0 ;
+  LLVMBool result;
+  
+  (void)jenv;
+  (void)jcls;
+  arg1 = *(LLVMValueRef *)&jarg1; 
+  result = LLVMIsConstantString(arg1);
+  jresult = result; 
+  return jresult;
+}
+
+
+SWIGEXPORT jstring JNICALL Java_org_robovm_llvm_binding_LLVMJNI_GetAsString(JNIEnv *jenv, jclass jcls, jlong jarg1, jlong jarg2, jobject jarg2_) {
+  jstring jresult = 0 ;
+  LLVMValueRef arg1 = (LLVMValueRef) 0 ;
+  size_t *arg2 = (size_t *) 0 ;
+  char *result = 0 ;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg2_;
+  arg1 = *(LLVMValueRef *)&jarg1; 
+  arg2 = *(size_t **)&jarg2; 
+  result = (char *)LLVMGetAsString(arg1,arg2);
+  if (result) jresult = (*jenv)->NewStringUTF(jenv, (const char *)result);
   return jresult;
 }
 
@@ -4033,6 +4160,22 @@ SWIGEXPORT jlong JNICALL Java_org_robovm_llvm_binding_LLVMJNI_ConstNamedStruct(J
   arg2 = *(LLVMValueRef **)&jarg2; 
   arg3 = (unsigned int)jarg3; 
   result = (LLVMValueRef)LLVMConstNamedStruct(arg1,arg2,arg3);
+  *(LLVMValueRef *)&jresult = result; 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_org_robovm_llvm_binding_LLVMJNI_GetElementAsConstant(JNIEnv *jenv, jclass jcls, jlong jarg1, jint jarg2) {
+  jlong jresult = 0 ;
+  LLVMValueRef arg1 = (LLVMValueRef) 0 ;
+  unsigned int arg2 ;
+  LLVMValueRef result;
+  
+  (void)jenv;
+  (void)jcls;
+  arg1 = *(LLVMValueRef *)&jarg1; 
+  arg2 = (unsigned int)jarg2; 
+  result = (LLVMValueRef)LLVMGetElementAsConstant(arg1,arg2);
   *(LLVMValueRef *)&jresult = result; 
   return jresult;
 }
@@ -6475,6 +6618,34 @@ SWIGEXPORT jint JNICALL Java_org_robovm_llvm_binding_LLVMJNI_GetICmpPredicate(JN
 }
 
 
+SWIGEXPORT jint JNICALL Java_org_robovm_llvm_binding_LLVMJNI_GetFCmpPredicate(JNIEnv *jenv, jclass jcls, jlong jarg1) {
+  jint jresult = 0 ;
+  LLVMValueRef arg1 = (LLVMValueRef) 0 ;
+  LLVMRealPredicate result;
+  
+  (void)jenv;
+  (void)jcls;
+  arg1 = *(LLVMValueRef *)&jarg1; 
+  result = (LLVMRealPredicate)LLVMGetFCmpPredicate(arg1);
+  jresult = (jint)result; 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_org_robovm_llvm_binding_LLVMJNI_InstructionClone(JNIEnv *jenv, jclass jcls, jlong jarg1) {
+  jlong jresult = 0 ;
+  LLVMValueRef arg1 = (LLVMValueRef) 0 ;
+  LLVMValueRef result;
+  
+  (void)jenv;
+  (void)jcls;
+  arg1 = *(LLVMValueRef *)&jarg1; 
+  result = (LLVMValueRef)LLVMInstructionClone(arg1);
+  *(LLVMValueRef *)&jresult = result; 
+  return jresult;
+}
+
+
 SWIGEXPORT void JNICALL Java_org_robovm_llvm_binding_LLVMJNI_SetInstructionCallConv(JNIEnv *jenv, jclass jcls, jlong jarg1, jint jarg2) {
   LLVMValueRef arg1 = (LLVMValueRef) 0 ;
   unsigned int arg2 ;
@@ -6566,6 +6737,90 @@ SWIGEXPORT void JNICALL Java_org_robovm_llvm_binding_LLVMJNI_SetTailCall(JNIEnv 
   arg1 = *(LLVMValueRef *)&jarg1; 
   arg2 = jarg2; 
   LLVMSetTailCall(arg1,arg2);
+}
+
+
+SWIGEXPORT jint JNICALL Java_org_robovm_llvm_binding_LLVMJNI_GetNumSuccessors(JNIEnv *jenv, jclass jcls, jlong jarg1) {
+  jint jresult = 0 ;
+  LLVMValueRef arg1 = (LLVMValueRef) 0 ;
+  unsigned int result;
+  
+  (void)jenv;
+  (void)jcls;
+  arg1 = *(LLVMValueRef *)&jarg1; 
+  result = (unsigned int)LLVMGetNumSuccessors(arg1);
+  jresult = (jlong)result; 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_org_robovm_llvm_binding_LLVMJNI_GetSuccessor(JNIEnv *jenv, jclass jcls, jlong jarg1, jint jarg2) {
+  jlong jresult = 0 ;
+  LLVMValueRef arg1 = (LLVMValueRef) 0 ;
+  unsigned int arg2 ;
+  LLVMBasicBlockRef result;
+  
+  (void)jenv;
+  (void)jcls;
+  arg1 = *(LLVMValueRef *)&jarg1; 
+  arg2 = (unsigned int)jarg2; 
+  result = (LLVMBasicBlockRef)LLVMGetSuccessor(arg1,arg2);
+  *(LLVMBasicBlockRef *)&jresult = result; 
+  return jresult;
+}
+
+
+SWIGEXPORT void JNICALL Java_org_robovm_llvm_binding_LLVMJNI_SetSuccessor(JNIEnv *jenv, jclass jcls, jlong jarg1, jint jarg2, jlong jarg3) {
+  LLVMValueRef arg1 = (LLVMValueRef) 0 ;
+  unsigned int arg2 ;
+  LLVMBasicBlockRef arg3 = (LLVMBasicBlockRef) 0 ;
+  
+  (void)jenv;
+  (void)jcls;
+  arg1 = *(LLVMValueRef *)&jarg1; 
+  arg2 = (unsigned int)jarg2; 
+  arg3 = *(LLVMBasicBlockRef *)&jarg3; 
+  LLVMSetSuccessor(arg1,arg2,arg3);
+}
+
+
+SWIGEXPORT jboolean JNICALL Java_org_robovm_llvm_binding_LLVMJNI_IsConditional(JNIEnv *jenv, jclass jcls, jlong jarg1) {
+  jboolean jresult = 0 ;
+  LLVMValueRef arg1 = (LLVMValueRef) 0 ;
+  LLVMBool result;
+  
+  (void)jenv;
+  (void)jcls;
+  arg1 = *(LLVMValueRef *)&jarg1; 
+  result = LLVMIsConditional(arg1);
+  jresult = result; 
+  return jresult;
+}
+
+
+SWIGEXPORT jlong JNICALL Java_org_robovm_llvm_binding_LLVMJNI_GetCondition(JNIEnv *jenv, jclass jcls, jlong jarg1) {
+  jlong jresult = 0 ;
+  LLVMValueRef arg1 = (LLVMValueRef) 0 ;
+  LLVMValueRef result;
+  
+  (void)jenv;
+  (void)jcls;
+  arg1 = *(LLVMValueRef *)&jarg1; 
+  result = (LLVMValueRef)LLVMGetCondition(arg1);
+  *(LLVMValueRef *)&jresult = result; 
+  return jresult;
+}
+
+
+SWIGEXPORT void JNICALL Java_org_robovm_llvm_binding_LLVMJNI_SetCondition(JNIEnv *jenv, jclass jcls, jlong jarg1, jlong jarg2) {
+  LLVMValueRef arg1 = (LLVMValueRef) 0 ;
+  LLVMValueRef arg2 = (LLVMValueRef) 0 ;
+  
+  (void)jenv;
+  (void)jcls;
+  arg1 = *(LLVMValueRef *)&jarg1; 
+  arg2 = *(LLVMValueRef *)&jarg2; 
+  LLVMSetCondition(arg1,arg2);
 }
 
 
@@ -9520,6 +9775,20 @@ SWIGEXPORT jint JNICALL Java_org_robovm_llvm_binding_LLVMJNI_WriteBitcodeToFD(JN
 }
 
 
+SWIGEXPORT jlong JNICALL Java_org_robovm_llvm_binding_LLVMJNI_WriteBitcodeToMemoryBuffer(JNIEnv *jenv, jclass jcls, jlong jarg1) {
+  jlong jresult = 0 ;
+  LLVMModuleRef arg1 = (LLVMModuleRef) 0 ;
+  LLVMMemoryBufferRef result;
+  
+  (void)jenv;
+  (void)jcls;
+  arg1 = *(LLVMModuleRef *)&jarg1; 
+  result = (LLVMMemoryBufferRef)LLVMWriteBitcodeToMemoryBuffer(arg1);
+  *(LLVMMemoryBufferRef *)&jresult = result; 
+  return jresult;
+}
+
+
 SWIGEXPORT jlong JNICALL Java_org_robovm_llvm_binding_LLVMJNI_CreateObjectFile(JNIEnv *jenv, jclass jcls, jlong jarg1) {
   jlong jresult = 0 ;
   LLVMMemoryBufferRef arg1 = (LLVMMemoryBufferRef) 0 ;
@@ -10190,6 +10459,16 @@ SWIGEXPORT void JNICALL Java_org_robovm_llvm_binding_LLVMJNI_AddAggressiveDCEPas
 }
 
 
+SWIGEXPORT void JNICALL Java_org_robovm_llvm_binding_LLVMJNI_AddAlignmentFromAssumptionsPass(JNIEnv *jenv, jclass jcls, jlong jarg1) {
+  LLVMPassManagerRef arg1 = (LLVMPassManagerRef) 0 ;
+  
+  (void)jenv;
+  (void)jcls;
+  arg1 = *(LLVMPassManagerRef *)&jarg1; 
+  LLVMAddAlignmentFromAssumptionsPass(arg1);
+}
+
+
 SWIGEXPORT void JNICALL Java_org_robovm_llvm_binding_LLVMJNI_AddCFGSimplificationPass(JNIEnv *jenv, jclass jcls, jlong jarg1) {
   LLVMPassManagerRef arg1 = (LLVMPassManagerRef) 0 ;
   
@@ -10360,6 +10639,16 @@ SWIGEXPORT void JNICALL Java_org_robovm_llvm_binding_LLVMJNI_AddPartiallyInlineL
 }
 
 
+SWIGEXPORT void JNICALL Java_org_robovm_llvm_binding_LLVMJNI_AddLowerSwitchPass(JNIEnv *jenv, jclass jcls, jlong jarg1) {
+  LLVMPassManagerRef arg1 = (LLVMPassManagerRef) 0 ;
+  
+  (void)jenv;
+  (void)jcls;
+  arg1 = *(LLVMPassManagerRef *)&jarg1; 
+  LLVMAddLowerSwitchPass(arg1);
+}
+
+
 SWIGEXPORT void JNICALL Java_org_robovm_llvm_binding_LLVMJNI_AddPromoteMemoryToRegisterPass(JNIEnv *jenv, jclass jcls, jlong jarg1) {
   LLVMPassManagerRef arg1 = (LLVMPassManagerRef) 0 ;
   
@@ -10509,6 +10798,16 @@ SWIGEXPORT void JNICALL Java_org_robovm_llvm_binding_LLVMJNI_AddTypeBasedAliasAn
   (void)jcls;
   arg1 = *(LLVMPassManagerRef *)&jarg1; 
   LLVMAddTypeBasedAliasAnalysisPass(arg1);
+}
+
+
+SWIGEXPORT void JNICALL Java_org_robovm_llvm_binding_LLVMJNI_AddScopedNoAliasAAPass(JNIEnv *jenv, jclass jcls, jlong jarg1) {
+  LLVMPassManagerRef arg1 = (LLVMPassManagerRef) 0 ;
+  
+  (void)jenv;
+  (void)jcls;
+  arg1 = *(LLVMPassManagerRef *)&jarg1; 
+  LLVMAddScopedNoAliasAAPass(arg1);
 }
 
 
@@ -11485,6 +11784,30 @@ SWIGEXPORT jstring JNICALL Java_org_robovm_llvm_binding_LLVMJNI_llvmHostTriple_1
   result = (char *)llvmHostTriple;
   if (result) jresult = (*jenv)->NewStringUTF(jenv, (const char *)result);
   return jresult;
+}
+
+
+SWIGEXPORT void JNICALL Java_org_robovm_llvm_binding_LLVMJNI_PassManagerBuilderSetDisableTailCalls(JNIEnv *jenv, jclass jcls, jlong jarg1, jboolean jarg2) {
+  LLVMPassManagerBuilderRef arg1 = (LLVMPassManagerBuilderRef) 0 ;
+  LLVMBool arg2 ;
+  
+  (void)jenv;
+  (void)jcls;
+  arg1 = *(LLVMPassManagerBuilderRef *)&jarg1; 
+  arg2 = jarg2; 
+  LLVMPassManagerBuilderSetDisableTailCalls(arg1,arg2);
+}
+
+
+SWIGEXPORT void JNICALL Java_org_robovm_llvm_binding_LLVMJNI_PassManagerBuilderUseAlwaysInliner(JNIEnv *jenv, jclass jcls, jlong jarg1, jboolean jarg2) {
+  LLVMPassManagerBuilderRef arg1 = (LLVMPassManagerBuilderRef) 0 ;
+  LLVMBool arg2 ;
+  
+  (void)jenv;
+  (void)jcls;
+  arg1 = *(LLVMPassManagerBuilderRef *)&jarg1; 
+  arg2 = jarg2; 
+  LLVMPassManagerBuilderUseAlwaysInliner(arg1,arg2);
 }
 
 

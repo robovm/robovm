@@ -50,6 +50,21 @@ namespace llvm {
     };
   }
 
+  namespace ThreadModel {
+    enum Model {
+      POSIX,  // POSIX Threads
+      Single  // Single Threaded Environment
+    };
+  }
+
+  enum class CFIntegrity {
+    Sub,             // Use subtraction-based checks.
+    Ror,             // Use rotation-based checks.
+    Add              // Use addition-based checks. This depends on having
+                     // sufficient alignment in the code and is usually not
+                     // feasible.
+  };
+
   class TargetOptions {
   public:
     TargetOptions()
@@ -63,9 +78,11 @@ namespace llvm {
           EnableFastISel(false), PositionIndependentExecutable(false),
           UseInitArray(false), DisableIntegratedAS(false),
           CompressDebugSections(false), FunctionSections(false),
-          DataSections(false), TrapUnreachable(false), TrapFuncName(""),
-          FloatABIType(FloatABI::Default),
-          AllowFPOpFusion(FPOpFusion::Standard), JTType(JumpTable::Single) {}
+          DataSections(false), TrapUnreachable(false), TrapFuncName(),
+          ABIName(), FloatABIType(FloatABI::Default),
+          AllowFPOpFusion(FPOpFusion::Standard), JTType(JumpTable::Single),
+          FCFI(false), ThreadModel(ThreadModel::POSIX),
+          CFIType(CFIntegrity::Sub), CFIEnforcing(false), CFIFuncName() {}
 
     /// PrintMachineCode - This flag is enabled when the -print-machineinstrs
     /// option is specified on the command line, and should enable debugging
@@ -190,6 +207,12 @@ namespace llvm {
     std::string TrapFuncName;
     StringRef getTrapFunctionName() const;
 
+    /// getABIName - If this returns a non-empty string this represents the
+    /// textual name of the ABI that we want the backend to use, e.g. o32, or
+    /// aapcs-linux.
+    std::string ABIName;
+    StringRef getABIName() const;
+
     /// FloatABIType - This setting is set by -float-abi=xxx option is specfied
     /// on the command line. This setting may either be Default, Soft, or Hard.
     /// Default selects the target's default behavior. Soft selects the ABI for
@@ -220,6 +243,28 @@ namespace llvm {
     /// create for functions that have the jumptable attribute.
     JumpTable::JumpTableType JTType;
 
+    /// FCFI - This flags controls whether or not forward-edge control-flow
+    /// integrity is applied.
+    bool FCFI;
+
+    /// ThreadModel - This flag specifies the type of threading model to assume
+    /// for things like atomics
+    ThreadModel::Model ThreadModel;
+
+    /// CFIType - This flag specifies the type of control-flow integrity check
+    /// to add as a preamble to indirect calls.
+    CFIntegrity CFIType;
+
+    /// CFIEnforcing - This flags controls whether or not CFI violations cause
+    /// the program to halt.
+    bool CFIEnforcing;
+
+    /// getCFIFuncName - If this returns a non-empty string, then this is the
+    /// name of the function that will be called for each CFI violation in
+    /// non-enforcing mode.
+    std::string CFIFuncName;
+    StringRef getCFIFuncName() const;
+
     /// Machine level options.
     MCTargetOptions MCOptions;
   };
@@ -247,8 +292,15 @@ inline bool operator==(const TargetOptions &LHS,
     ARE_EQUAL(UseInitArray) &&
     ARE_EQUAL(TrapUnreachable) &&
     ARE_EQUAL(TrapFuncName) &&
+    ARE_EQUAL(ABIName) &&
     ARE_EQUAL(FloatABIType) &&
     ARE_EQUAL(AllowFPOpFusion) &&
+    ARE_EQUAL(JTType) &&
+    ARE_EQUAL(FCFI) &&
+    ARE_EQUAL(ThreadModel) &&
+    ARE_EQUAL(CFIType) &&
+    ARE_EQUAL(CFIEnforcing) &&
+    ARE_EQUAL(CFIFuncName) &&
     ARE_EQUAL(MCOptions);
 #undef ARE_EQUAL
 }

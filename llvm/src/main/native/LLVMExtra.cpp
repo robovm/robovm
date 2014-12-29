@@ -20,8 +20,11 @@
 #include <llvm/MC/MCTargetAsmParser.h>
 #include <llvm/Object/ObjectFile.h>
 #include <llvm/PassManager.h>
+#include <llvm/Transforms/IPO/PassManagerBuilder.h>
+#include <llvm/Transforms/IPO.h>
 #include <llvm/Target/TargetMachine.h>
 #include <llvm/Target/TargetOptions.h>
+#include <llvm/Target/TargetSubtargetInfo.h>
 #include <llvm/Support/FormattedStream.h>
 #include <llvm/Support/TargetRegistry.h>
 #include <llvm/Support/MemoryBuffer.h>
@@ -46,7 +49,11 @@ using namespace llvm::object;
 DEFINE_SIMPLE_CONVERSION_FUNCTIONS(Target, LLVMTargetRef)
 DEFINE_SIMPLE_CONVERSION_FUNCTIONS(TargetMachine, LLVMTargetMachineRef)
 DEFINE_SIMPLE_CONVERSION_FUNCTIONS(TargetOptions, LLVMTargetOptionsRef)
-DEFINE_SIMPLE_CONVERSION_FUNCTIONS(ObjectFile, LLVMObjectFileRef)
+DEFINE_SIMPLE_CONVERSION_FUNCTIONS(PassManagerBuilder, LLVMPassManagerBuilderRef)
+
+inline OwningBinary<ObjectFile> *unwrap(LLVMObjectFileRef OF) {
+  return reinterpret_cast<OwningBinary<ObjectFile> *>(OF);
+}
 
 const char *llvmHostTriple = LLVM_HOST_TRIPLE;
 
@@ -103,6 +110,17 @@ void *AllocOutputStreamWrapper(JNIEnv *env, jobject jOutputStream) {
 }
 void FreeOutputStreamWrapper(void *p) {
   delete (raw_java_ostream*) p;
+}
+
+void LLVMPassManagerBuilderSetDisableTailCalls(LLVMPassManagerBuilderRef PMB,
+                                            LLVMBool Value) {
+  PassManagerBuilder *Builder = unwrap(PMB);
+  Builder->DisableTailCalls = Value;
+}
+
+void LLVMPassManagerBuilderUseAlwaysInliner(LLVMPassManagerBuilderRef PMB, LLVMBool InsertLifetime) {
+  PassManagerBuilder *Builder = unwrap(PMB);
+  Builder->Inliner = createAlwaysInlinerPass(InsertLifetime);
 }
 
 LLVMBool LLVMParseIR(LLVMMemoryBufferRef MemBuf,
@@ -232,7 +250,7 @@ int LLVMTargetMachineAssembleToOutputStream(LLVMTargetMachineRef TM, LLVMMemoryB
   Reloc::Model RelocModel = TheTargetMachine->getRelocationModel();
   CodeModel::Model CMModel = TheTargetMachine->getCodeModel();
 
-  MemoryBuffer *Buffer = unwrap(Mem);
+  std::unique_ptr<MemoryBuffer> Buffer(unwrap(Mem));
 
   std::string DiagStr;
   raw_string_ostream DiagStream(DiagStr);
@@ -240,7 +258,7 @@ int LLVMTargetMachineAssembleToOutputStream(LLVMTargetMachineRef TM, LLVMMemoryB
   SrcMgr.setDiagHandler(assembleDiagHandler, &DiagStream);
 
   // Tell SrcMgr about this buffer, which is what the parser will pick up.
-  SrcMgr.AddNewSourceBuffer(Buffer, SMLoc());
+  SrcMgr.AddNewSourceBuffer(std::move(Buffer), SMLoc());
 
   // Record the location of the include directories so that the lexer can find
   // it later.
@@ -261,9 +279,9 @@ int LLVMTargetMachineAssembleToOutputStream(LLVMTargetMachineRef TM, LLVMMemoryB
   MCCodeEmitter *CE = TheTarget->createMCCodeEmitter(*MCII, *MRI, *STI, Ctx);
   MCAsmBackend *MAB = TheTarget->createMCAsmBackend(*MRI, TripleName, MCPU);
   Str.reset(TheTarget->createMCObjectStreamer(TripleName, Ctx, *MAB,
-                                              Out, CE, *STI, RelaxAll != 0,
-                                              NoExecStack != 0));
-
+                                              Out, CE, *STI, RelaxAll != 0));
+  if (NoExecStack != 0)
+    Str->InitSections(true);
 
   MCTargetOptions MCOptions;
   std::unique_ptr<MCAsmParser> Parser(createMCAsmParser(SrcMgr, Ctx, *Str, *MAI));
@@ -298,7 +316,7 @@ static LLVMBool LLVMTargetMachineEmit(LLVMTargetMachineRef T, LLVMModuleRef M,
 
   std::string error;
 
-  const DataLayout* td = TM->getDataLayout();
+  const DataLayout *td = TM->getSubtargetImpl()->getDataLayout();
 
   if (!td) {
     error = "No DataLayout in TargetMachine";
@@ -306,7 +324,7 @@ static LLVMBool LLVMTargetMachineEmit(LLVMTargetMachineRef T, LLVMModuleRef M,
     return true;
   }
   Mod->setDataLayout(td);
-  pass.add(new DataLayoutPass(Mod));
+  pass.add(new DataLayoutPass());
 
   TargetMachine::CodeGenFileType ft;
   switch (codegen) {
@@ -350,8 +368,7 @@ LLVMBool LLVMTargetMachineEmitToOutputStream(LLVMTargetMachineRef T, LLVMModuleR
 }
 
 void LLVMGetLineInfoForAddressRange(LLVMObjectFileRef O, uint64_t Address, uint64_t Size, int* OutSize, uint64_t** Out) {
-  ObjectFile* OF = unwrap(O);
-  DIContext* ctx = DIContext::getDWARFContext(OF);
+  DIContext* ctx = DIContext::getDWARFContext(*(unwrap(O)->getBinary()));
   DILineInfoTable lineTable = ctx->getLineInfoForAddressRange(Address, Size);
   *OutSize = lineTable.size();
   *Out = NULL;

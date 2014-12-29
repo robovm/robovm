@@ -44,8 +44,10 @@ public class MetadataNode extends Metadata {
             if (values[i] == null) {
                 sb.append("null");
             } else {
-                sb.append(values[i].getType());
-                sb.append(' ');
+                if (values[i].getType() != Type.METADATA) {
+                    sb.append(values[i].getType());
+                    sb.append(' ');
+                }
                 sb.append(values[i]);
             }
         }

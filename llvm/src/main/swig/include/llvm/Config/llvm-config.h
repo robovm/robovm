@@ -78,7 +78,7 @@
 /* #undef LLVM_ON_WIN32 */
 
 /* Installation prefix directory */
-#define LLVM_PREFIX "/Users/niklas/Projects/robovm/llvm/target/build/macosx-x86_64/llvm"
+#define LLVM_PREFIX "/Users/niklas/Projects/robovm/llvm/target.llvm/build/macosx-x86_64/llvm"
 
 /* Define if we have the Intel JIT API runtime support library */
 /* #undef LLVM_USE_INTEL_JITEVENTS */
@@ -90,7 +90,10 @@
 #define LLVM_VERSION_MAJOR 3
 
 /* Minor version of the LLVM API */
-#define LLVM_VERSION_MINOR 5
+#define LLVM_VERSION_MINOR 6
+
+/* LLVM version string */
+#define LLVM_VERSION_STRING "3.6.0svn"
 
 /* Define if we link Polly to the tools */
 /* #undef LINK_POLLY_INTO_TOOLS */

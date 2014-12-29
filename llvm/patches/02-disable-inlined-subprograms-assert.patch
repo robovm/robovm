@@ -1,0 +1,15 @@
+diff --git a/lib/CodeGen/LexicalScopes.cpp b/lib/CodeGen/LexicalScopes.cpp
+index b621e3b..4f96678 100644
+--- a/lib/CodeGen/LexicalScopes.cpp
++++ b/lib/CodeGen/LexicalScopes.cpp
+@@ -176,8 +176,9 @@ LexicalScope *LexicalScopes::getOrCreateRegularScope(MDNode *Scope) {
+
+   if (!Parent) {
+     assert(DIDescriptor(Scope).isSubprogram());
+-    assert(DISubprogram(Scope).describes(MF->getFunction()));
+-    assert(!CurrentFnLexicalScope);
++    // RoboVM note: These asserts fail for inlined functions like our [set] functions.
++    //assert(DISubprogram(Scope).describes(MF->getFunction()));
++    //assert(!CurrentFnLexicalScope);
+     CurrentFnLexicalScope = &I->second;
+   }

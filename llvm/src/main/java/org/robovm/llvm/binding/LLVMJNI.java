@@ -27,6 +27,9 @@ public class LLVMJNI {
   public final static native int IntOut_value_get(long jarg1, IntOut jarg1_);
   public final static native long new_IntOut();
   public final static native void delete_IntOut(long jarg1);
+  public final static native long SizeTOut_value_get(long jarg1, SizeTOut jarg1_);
+  public final static native long new_SizeTOut();
+  public final static native void delete_SizeTOut(long jarg1);
   public final static native long LongArrayOut_value_get(long jarg1, LongArrayOut jarg1_);
   public final static native long new_LongArrayOut();
   public final static native void delete_LongArrayOut(long jarg1);
@@ -75,6 +78,7 @@ public class LLVMJNI {
   public final static native int GetMDKindID(String jarg1);
   public final static native long ModuleCreateWithName(String jarg1);
   public final static native long ModuleCreateWithNameInContext(String jarg1, long jarg2);
+  public final static native long CloneModule(long jarg1);
   public final static native void DisposeModule(long jarg1);
   public final static native String GetDataLayout(long jarg1);
   public final static native void SetDataLayout(long jarg1, String jarg2);
@@ -163,8 +167,6 @@ public class LLVMJNI {
   public final static native long IsAArgument(long jarg1);
   public final static native long IsABasicBlock(long jarg1);
   public final static native long IsAInlineAsm(long jarg1);
-  public final static native long IsAMDNode(long jarg1);
-  public final static native long IsAMDString(long jarg1);
   public final static native long IsAUser(long jarg1);
   public final static native long IsAConstant(long jarg1);
   public final static native long IsABlockAddress(long jarg1);
@@ -234,11 +236,14 @@ public class LLVMJNI {
   public final static native long IsAExtractValueInst(long jarg1);
   public final static native long IsALoadInst(long jarg1);
   public final static native long IsAVAArgInst(long jarg1);
+  public final static native long IsAMDNode(long jarg1);
+  public final static native long IsAMDString(long jarg1);
   public final static native long GetFirstUse(long jarg1);
   public final static native long GetNextUse(long jarg1);
   public final static native long GetUser(long jarg1);
   public final static native long GetUsedValue(long jarg1);
   public final static native long GetOperand(long jarg1, int jarg2);
+  public final static native long GetOperandUse(long jarg1, int jarg2);
   public final static native void SetOperand(long jarg1, int jarg2, long jarg3);
   public final static native int GetNumOperands(long jarg1);
   public final static native long ConstNull(long jarg1);
@@ -253,12 +258,16 @@ public class LLVMJNI {
   public final static native long ConstRealOfString(long jarg1, String jarg2);
   public final static native java.math.BigInteger ConstIntGetZExtValue(long jarg1);
   public final static native long ConstIntGetSExtValue(long jarg1);
+  public final static native double ConstRealGetDouble(long jarg1, long jarg2, IntOut jarg2_);
   public final static native long ConstStringInContext(long jarg1, String jarg2, boolean jarg4);
   public final static native long ConstString(String jarg1, boolean jarg3);
+  public final static native boolean IsConstantString(long jarg1);
+  public final static native String GetAsString(long jarg1, long jarg2, SizeTOut jarg2_);
   public final static native long ConstStructInContext(long jarg1, long jarg2, ValueRefArray jarg2_, int jarg3, boolean jarg4);
   public final static native long ConstStruct(long jarg1, ValueRefArray jarg1_, int jarg2, boolean jarg3);
   public final static native long ConstArray(long jarg1, long jarg2, ValueRefArray jarg2_, int jarg3);
   public final static native long ConstNamedStruct(long jarg1, long jarg2, ValueRefArray jarg2_, int jarg3);
+  public final static native long GetElementAsConstant(long jarg1, int jarg2);
   public final static native long ConstVector(long jarg1, ValueRefArray jarg1_, int jarg2);
   public final static native int GetConstOpcode(long jarg1);
   public final static native long AlignOf(long jarg1);
@@ -417,6 +426,8 @@ public class LLVMJNI {
   public final static native void InstructionEraseFromParent(long jarg1);
   public final static native int GetInstructionOpcode(long jarg1);
   public final static native int GetICmpPredicate(long jarg1);
+  public final static native int GetFCmpPredicate(long jarg1);
+  public final static native long InstructionClone(long jarg1);
   public final static native void SetInstructionCallConv(long jarg1, int jarg2);
   public final static native int GetInstructionCallConv(long jarg1);
   public final static native void AddInstrAttribute(long jarg1, int jarg2, int jarg3);
@@ -424,6 +435,12 @@ public class LLVMJNI {
   public final static native void SetInstrParamAlignment(long jarg1, int jarg2, int jarg3);
   public final static native boolean IsTailCall(long jarg1);
   public final static native void SetTailCall(long jarg1, boolean jarg2);
+  public final static native int GetNumSuccessors(long jarg1);
+  public final static native long GetSuccessor(long jarg1, int jarg2);
+  public final static native void SetSuccessor(long jarg1, int jarg2, long jarg3);
+  public final static native boolean IsConditional(long jarg1);
+  public final static native long GetCondition(long jarg1);
+  public final static native void SetCondition(long jarg1, long jarg2);
   public final static native long GetSwitchDefaultDest(long jarg1);
   public final static native void AddIncoming(long jarg1, long jarg2, ValueRefArray jarg2_, long jarg3, BasicBlockRefArray jarg3_, int jarg4);
   public final static native int CountIncoming(long jarg1);
@@ -565,6 +582,7 @@ public class LLVMJNI {
   public final static native boolean GetBitcodeModule(long jarg1, long jarg2, ModuleRefOut jarg2_, long jarg3, StringOut jarg3_);
   public final static native int WriteBitcodeToFile(long jarg1, String jarg2);
   public final static native int WriteBitcodeToFD(long jarg1, int jarg2, int jarg3, int jarg4);
+  public final static native long WriteBitcodeToMemoryBuffer(long jarg1);
   public final static native long CreateObjectFile(long jarg1);
   public final static native void DisposeObjectFile(long jarg1);
   public final static native long GetSections(long jarg1);
@@ -620,6 +638,7 @@ public class LLVMJNI {
   public final static native void PassManagerBuilderPopulateModulePassManager(long jarg1, long jarg2);
   public final static native void PassManagerBuilderPopulateLTOPassManager(long jarg1, long jarg2, boolean jarg3, boolean jarg4);
   public final static native void AddAggressiveDCEPass(long jarg1);
+  public final static native void AddAlignmentFromAssumptionsPass(long jarg1);
   public final static native void AddCFGSimplificationPass(long jarg1);
   public final static native void AddDeadStoreEliminationPass(long jarg1);
   public final static native void AddScalarizerPass(long jarg1);
@@ -637,6 +656,7 @@ public class LLVMJNI {
   public final static native void AddLoopUnswitchPass(long jarg1);
   public final static native void AddMemCpyOptPass(long jarg1);
   public final static native void AddPartiallyInlineLibCallsPass(long jarg1);
+  public final static native void AddLowerSwitchPass(long jarg1);
   public final static native void AddPromoteMemoryToRegisterPass(long jarg1);
   public final static native void AddReassociatePass(long jarg1);
   public final static native void AddSCCPPass(long jarg1);
@@ -652,6 +672,7 @@ public class LLVMJNI {
   public final static native void AddEarlyCSEPass(long jarg1);
   public final static native void AddLowerExpectIntrinsicPass(long jarg1);
   public final static native void AddTypeBasedAliasAnalysisPass(long jarg1);
+  public final static native void AddScopedNoAliasAAPass(long jarg1);
   public final static native void AddBasicAliasAnalysisPass(long jarg1);
   public final static native void AddBBVectorizePass(long jarg1);
   public final static native void AddLoopVectorizePass(long jarg1);
@@ -720,6 +741,8 @@ public class LLVMJNI {
   public final static native String GetDefaultTargetTriple();
   public final static native void AddAnalysisPasses(long jarg1, long jarg2);
   public final static native String llvmHostTriple_get();
+  public final static native void PassManagerBuilderSetDisableTailCalls(long jarg1, boolean jarg2);
+  public final static native void PassManagerBuilderUseAlwaysInliner(long jarg1, boolean jarg2);
   public final static native boolean ParseIR(long jarg1, long jarg2, ModuleRefOut jarg2_, long jarg3, StringOut jarg3_);
   public final static native boolean ParseIRInContext(long jarg1, long jarg2, long jarg3, ModuleRefOut jarg3_, long jarg4, StringOut jarg4_);
   public final static native long LookupTarget(String jarg1, long jarg2, StringOut jarg2_);

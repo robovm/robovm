@@ -14,7 +14,8 @@ public interface LLVMConstants {
   public final static int _HAS_ATOMICS = 1;
   public final static String _HOST_TRIPLE = "x86_64-apple-darwin13.4.0";
   public final static int _ON_UNIX = 1;
-  public final static String _PREFIX = "/Users/niklas/Projects/robovm/llvm/target/build/macosx-x86_64/llvm";
+  public final static String _PREFIX = "/Users/niklas/Projects/robovm/llvm/target.llvm/build/macosx-x86_64/llvm";
   public final static int _VERSION_MAJOR = 3;
-  public final static int _VERSION_MINOR = 5;
+  public final static int _VERSION_MINOR = 6;
+  public final static String _VERSION_STRING = "3.6.0svn";
 }

@@ -140,5 +140,20 @@ import org.robovm.apple.audiotoolbox.*;
      */
     @Bridge(symbol="CMAudioFormatDescriptionEqual", optional=true)
     protected native boolean equals(CMAudioFormatDescription desc2, CMAudioFormatDescriptionMask equalityMask, IntPtr equalityMaskOut);
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @Bridge(symbol="CMAudioFormatDescriptionCreateFromBigEndianSoundDescriptionData", optional=true)
+    public static native int createFromBigEndianSoundDescriptionData(CFAllocator allocator, BytePtr soundDescriptionData, @MachineSizedUInt long soundDescriptionSize, String soundDescriptionFlavor, CMAudioFormatDescription.CMAudioFormatDescriptionPtr audioFormatDescriptionOut);
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @Bridge(symbol="CMAudioFormatDescriptionCreateFromBigEndianSoundDescriptionBlockBuffer", optional=true)
+    public static native int createFromBigEndianSoundDescriptionBlockBuffer(CFAllocator allocator, CMBlockBuffer soundDescriptionBlockBuffer, String soundDescriptionFlavor, CMAudioFormatDescription.CMAudioFormatDescriptionPtr audioFormatDescriptionOut);
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @Bridge(symbol="CMAudioFormatDescriptionCopyAsBigEndianSoundDescriptionBlockBuffer", optional=true)
+    public static native int copyAsBigEndianSoundDescriptionBlockBuffer(CFAllocator allocator, CMAudioFormatDescription audioFormatDescription, String soundDescriptionFlavor, CMBlockBuffer.CMBlockBufferPtr soundDescriptionBlockBufferOut);
     /*</methods>*/
 }

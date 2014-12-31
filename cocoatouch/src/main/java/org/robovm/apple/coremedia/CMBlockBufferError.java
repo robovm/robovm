@@ -50,7 +50,8 @@ public enum /*<name>*/CMBlockBufferError/*</name>*/ implements ValuedEnum {
     BadLengthParameter(-12704L),
     BadPointerParameter(-12705L),
     EmptyBBuf(-12706L),
-    UnallocatedBlock(-12707L);
+    UnallocatedBlock(-12707L),
+    InsufficientSpace(-12708L);
     /*</values>*/
 
     /*<bind>*/

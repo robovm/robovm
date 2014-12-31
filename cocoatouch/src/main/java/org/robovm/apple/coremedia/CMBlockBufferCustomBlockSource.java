@@ -51,22 +51,46 @@ import org.robovm.apple.audiotoolbox.*;
     /*<constructors>*/
     public CMBlockBufferCustomBlockSource() {}
     public CMBlockBufferCustomBlockSource(int version, FunctionPtr AllocateBlock, FunctionPtr FreeBlock, VoidPtr refCon) {
-        this.version(version);
-        this.AllocateBlock(AllocateBlock);
-        this.FreeBlock(FreeBlock);
-        this.refCon(refCon);
+        this.setVersion(version);
+        this.setAllocateblock(AllocateBlock);
+        this.setFreeblock(FreeBlock);
+        this.setRefcon(refCon);
     }
     /*</constructors>*/
     /*<properties>*//*</properties>*/
     /*<members>*/
+    @StructMember(0) public native int getVersion();
+    @StructMember(0) public native CMBlockBufferCustomBlockSource setVersion(int version);
+    
+    @Deprecated
     @StructMember(0) public native int version();
+    @Deprecated
     @StructMember(0) public native CMBlockBufferCustomBlockSource version(int version);
+    
+    @StructMember(1) public native FunctionPtr getAllocateblock();
+    @StructMember(1) public native CMBlockBufferCustomBlockSource setAllocateblock(FunctionPtr AllocateBlock);
+    
+    @Deprecated
     @StructMember(1) public native FunctionPtr AllocateBlock();
+    @Deprecated
     @StructMember(1) public native CMBlockBufferCustomBlockSource AllocateBlock(FunctionPtr AllocateBlock);
+    
+    @StructMember(2) public native FunctionPtr getFreeblock();
+    @StructMember(2) public native CMBlockBufferCustomBlockSource setFreeblock(FunctionPtr FreeBlock);
+    
+    @Deprecated
     @StructMember(2) public native FunctionPtr FreeBlock();
+    @Deprecated
     @StructMember(2) public native CMBlockBufferCustomBlockSource FreeBlock(FunctionPtr FreeBlock);
+    
+    @StructMember(3) public native VoidPtr getRefcon();
+    @StructMember(3) public native CMBlockBufferCustomBlockSource setRefcon(VoidPtr refCon);
+    
+    @Deprecated
     @StructMember(3) public native VoidPtr refCon();
+    @Deprecated
     @StructMember(3) public native CMBlockBufferCustomBlockSource refCon(VoidPtr refCon);
+    
     /*</members>*/
     /*<methods>*//*</methods>*/
 }

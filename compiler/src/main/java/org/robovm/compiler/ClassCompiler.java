@@ -336,7 +336,7 @@ public class ClassCompiler {
                 String triple = config.getTriple();
                 Target target = Target.lookupTarget(triple);
                 try (TargetMachine targetMachine = target.createTargetMachine(triple,
-                        config.getArch().getLlvmCpu(), null, config.isDebug()? CodeGenOptLevel.CodeGenLevelDefault: null, null, null)) {
+                        config.getArch().getLlvmCpu(), null, config.isDebug()? CodeGenOptLevel.CodeGenLevelNone: null, null, null)) {
                     targetMachine.setAsmVerbosityDefault(true);
                     targetMachine.setFunctionSections(true);
                     targetMachine.setDataSections(true);

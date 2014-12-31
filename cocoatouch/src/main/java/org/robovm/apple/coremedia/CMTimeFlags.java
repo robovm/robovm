@@ -40,15 +40,15 @@ import org.robovm.apple.audiotoolbox.*;
 
 /*</javadoc>*/
 /*<annotations>*/@Marshaler(Bits.AsMachineSizedIntMarshaler.class)/*</annotations>*/
-public final class /*<name>*/CMTimeFlag/*</name>*/ extends Bits</*<name>*/CMTimeFlag/*</name>*/> {
+public final class /*<name>*/CMTimeFlags/*</name>*/ extends Bits</*<name>*/CMTimeFlags/*</name>*/> {
     /*<values>*/
-    public static final CMTimeFlag None = new CMTimeFlag(0L);
-    public static final CMTimeFlag Valid = new CMTimeFlag(1L);
-    public static final CMTimeFlag HasBeenRounded = new CMTimeFlag(2L);
-    public static final CMTimeFlag PositiveInfinity = new CMTimeFlag(4L);
-    public static final CMTimeFlag NegativeInfinity = new CMTimeFlag(8L);
-    public static final CMTimeFlag Indefinite = new CMTimeFlag(16L);
-    public static final CMTimeFlag ImpliedValueFlagsMask = new CMTimeFlag(28L);
+    public static final CMTimeFlags None = new CMTimeFlags(0L);
+    public static final CMTimeFlags Valid = new CMTimeFlags(1L);
+    public static final CMTimeFlags HasBeenRounded = new CMTimeFlags(2L);
+    public static final CMTimeFlags PositiveInfinity = new CMTimeFlags(4L);
+    public static final CMTimeFlags NegativeInfinity = new CMTimeFlags(8L);
+    public static final CMTimeFlags Indefinite = new CMTimeFlags(16L);
+    public static final CMTimeFlags ImpliedValueFlagsMask = new CMTimeFlags(28L);
     /*</values>*/
 
     /*<bind>*/
@@ -56,17 +56,17 @@ public final class /*<name>*/CMTimeFlag/*</name>*/ extends Bits</*<name>*/CMTime
     /*<constants>*//*</constants>*/
     /*<methods>*//*</methods>*/
 
-    private static final /*<name>*/CMTimeFlag/*</name>*/[] values = _values(/*<name>*/CMTimeFlag/*</name>*/.class);
+    private static final /*<name>*/CMTimeFlags/*</name>*/[] values = _values(/*<name>*/CMTimeFlags/*</name>*/.class);
 
-    public /*<name>*/CMTimeFlag/*</name>*/(long value) { super(value); }
-    private /*<name>*/CMTimeFlag/*</name>*/(long value, long mask) { super(value, mask); }
-    protected /*<name>*/CMTimeFlag/*</name>*/ wrap(long value, long mask) {
-        return new /*<name>*/CMTimeFlag/*</name>*/(value, mask);
+    public /*<name>*/CMTimeFlags/*</name>*/(long value) { super(value); }
+    private /*<name>*/CMTimeFlags/*</name>*/(long value, long mask) { super(value, mask); }
+    protected /*<name>*/CMTimeFlags/*</name>*/ wrap(long value, long mask) {
+        return new /*<name>*/CMTimeFlags/*</name>*/(value, mask);
     }
-    protected /*<name>*/CMTimeFlag/*</name>*/[] _values() {
+    protected /*<name>*/CMTimeFlags/*</name>*/[] _values() {
         return values;
     }
-    public static /*<name>*/CMTimeFlag/*</name>*/[] values() {
+    public static /*<name>*/CMTimeFlags/*</name>*/[] values() {
         return values.clone();
     }
 }

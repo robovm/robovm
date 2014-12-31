@@ -19,7 +19,6 @@ package org.robovm.apple.coremedia;
 import java.io.*;
 import java.nio.*;
 import java.util.*;
-
 import org.robovm.objc.*;
 import org.robovm.objc.annotation.*;
 import org.robovm.objc.block.*;
@@ -78,16 +77,28 @@ import org.robovm.apple.audiotoolbox.*;
     /*<constructors>*/
     public CMTimeRange() {}
     public CMTimeRange(CMTime start, CMTime duration) {
-        this.start(start);
-        this.duration(duration);
+        this.setStart(start);
+        this.setDuration(duration);
     }
     /*</constructors>*/
     /*<properties>*//*</properties>*/
     /*<members>*/
+    @StructMember(0) public native @ByVal CMTime getStart();
+    @StructMember(0) public native CMTimeRange setStart(@ByVal CMTime start);
+    
+    @Deprecated
     @StructMember(0) public native @ByVal CMTime start();
+    @Deprecated
     @StructMember(0) public native CMTimeRange start(@ByVal CMTime start);
+    
+    @StructMember(1) public native @ByVal CMTime getDuration();
+    @StructMember(1) public native CMTimeRange setDuration(@ByVal CMTime duration);
+    
+    @Deprecated
     @StructMember(1) public native @ByVal CMTime duration();
+    @Deprecated
     @StructMember(1) public native CMTimeRange duration(@ByVal CMTime duration);
+    
     /*</members>*/
     /*<methods>*/
     /**

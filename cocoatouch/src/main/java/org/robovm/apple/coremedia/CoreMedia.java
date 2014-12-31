@@ -50,6 +50,28 @@ import org.robovm.apple.audiotoolbox.*;
     public static final int PersistentTrackIDInvalid = 0;
     public static final int Constant__kCMAttachmentMode_ShouldNotPropagate = 0;
     public static final int Constant__kCMAttachmentMode_ShouldPropagate = 1;
+    public static final int Constant__kCMFormatDescriptionBridgeError_InvalidParameter = -12712;
+    public static final int Constant__kCMFormatDescriptionBridgeError_AllocationFailed = -12713;
+    public static final int Constant__kCMFormatDescriptionBridgeError_InvalidSerializedSampleDescription = -12714;
+    public static final int Constant__kCMFormatDescriptionBridgeError_InvalidFormatDescription = -12715;
+    public static final int Constant__kCMFormatDescriptionBridgeError_IncompatibleFormatDescription = -12716;
+    public static final int Constant__kCMFormatDescriptionBridgeError_UnsupportedSampleDescriptionFlavor = -12717;
+    public static final int Constant__kCMFormatDescriptionBridgeError_InvalidSlice = -12719;
+    public static final int Constant__kCMMetadataIdentifierError_AllocationFailed = -16300;
+    public static final int Constant__kCMMetadataIdentifierError_RequiredParameterMissing = -16301;
+    public static final int Constant__kCMMetadataIdentifierError_BadKey = -16302;
+    public static final int Constant__kCMMetadataIdentifierError_BadKeyLength = -16303;
+    public static final int Constant__kCMMetadataIdentifierError_BadKeyType = -16304;
+    public static final int Constant__kCMMetadataIdentifierError_BadNumberKey = -16305;
+    public static final int Constant__kCMMetadataIdentifierError_BadKeySpace = -16306;
+    public static final int Constant__kCMMetadataIdentifierError_BadIdentifier = -16307;
+    public static final int Constant__kCMMetadataIdentifierError_NoKeyValueAvailable = -16308;
+    public static final int Constant__kCMMetadataDataTypeRegistryError_AllocationFailed = -16310;
+    public static final int Constant__kCMMetadataDataTypeRegistryError_RequiredParameterMissing = -16311;
+    public static final int Constant__kCMMetadataDataTypeRegistryError_BadDataTypeIdentifier = -16312;
+    public static final int Constant__kCMMetadataDataTypeRegistryError_DataTypeAlreadyRegistered = -16313;
+    public static final int Constant__kCMMetadataDataTypeRegistryError_RequiresConformingBaseType = -16314;
+    public static final int Constant__kCMMetadataDataTypeRegistryError_MultipleConformingBaseTypes = -16315;
     /*</constants>*/
     /*<constructors>*//*</constructors>*/
     /*<properties>*//*</properties>*/
@@ -386,6 +408,76 @@ import org.robovm.apple.audiotoolbox.*;
     @GlobalValue(symbol="kCMMetadataFormatDescriptionKey_LocalID", optional=true)
     public static native String CMMetadataFormatDescriptionKeyLocalID();
     /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @GlobalValue(symbol="kCMMetadataFormatDescriptionKey_DataType", optional=true)
+    public static native String CMMetadataFormatDescriptionKeyDataType();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @GlobalValue(symbol="kCMMetadataFormatDescriptionKey_DataTypeNamespace", optional=true)
+    public static native String CMMetadataFormatDescriptionKeyDataTypeNamespace();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @GlobalValue(symbol="kCMMetadataFormatDescriptionKey_ConformingDataTypes", optional=true)
+    public static native String CMMetadataFormatDescriptionKeyConformingDataTypes();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @GlobalValue(symbol="kCMMetadataFormatDescriptionKey_LanguageTag", optional=true)
+    public static native String CMMetadataFormatDescriptionKeyLanguageTag();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @GlobalValue(symbol="kCMMetadataFormatDescriptionMetadataSpecificationKey_Identifier", optional=true)
+    public static native String Value__kCMMetadataFormatDescriptionMetadataSpecificationKey_Identifier();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @GlobalValue(symbol="kCMMetadataFormatDescriptionMetadataSpecificationKey_DataType", optional=true)
+    public static native String Value__kCMMetadataFormatDescriptionMetadataSpecificationKey_DataType();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @GlobalValue(symbol="kCMMetadataFormatDescriptionMetadataSpecificationKey_ExtendedLanguageTag", optional=true)
+    public static native String Value__kCMMetadataFormatDescriptionMetadataSpecificationKey_ExtendedLanguageTag();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @GlobalValue(symbol="kCMImageDescriptionFlavor_QuickTimeMovie", optional=true)
+    public static native String Value__kCMImageDescriptionFlavor_QuickTimeMovie();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @GlobalValue(symbol="kCMImageDescriptionFlavor_ISOFamily", optional=true)
+    public static native String Value__kCMImageDescriptionFlavor_ISOFamily();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @GlobalValue(symbol="kCMImageDescriptionFlavor_3GPFamily", optional=true)
+    public static native String Value__kCMImageDescriptionFlavor_3GPFamily();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @GlobalValue(symbol="kCMSoundDescriptionFlavor_QuickTimeMovie", optional=true)
+    public static native String Value__kCMSoundDescriptionFlavor_QuickTimeMovie();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @GlobalValue(symbol="kCMSoundDescriptionFlavor_QuickTimeMovieV2", optional=true)
+    public static native String Value__kCMSoundDescriptionFlavor_QuickTimeMovieV2();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @GlobalValue(symbol="kCMSoundDescriptionFlavor_ISOFamily", optional=true)
+    public static native String Value__kCMSoundDescriptionFlavor_ISOFamily();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @GlobalValue(symbol="kCMSoundDescriptionFlavor_3GPFamily", optional=true)
+    public static native String Value__kCMSoundDescriptionFlavor_3GPFamily();
+    /**
      * @since Available in iOS 4.0 and later.
      */
     @GlobalValue(symbol="kCMTimingInfoInvalid", optional=true)
@@ -395,6 +487,16 @@ import org.robovm.apple.audiotoolbox.*;
      */
     @GlobalValue(symbol="kCMSampleBufferNotification_DataBecameReady", optional=true)
     public static native String CMSampleBufferNotificationDataBecameReady();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @GlobalValue(symbol="kCMSampleBufferNotification_DataFailed", optional=true)
+    public static native String CMSampleBufferNotificationDataFailed();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @GlobalValue(symbol="kCMSampleBufferNotificationParameter_OSStatus", optional=true)
+    public static native String Value__kCMSampleBufferNotificationParameter_OSStatus();
     /**
      * @since Available in iOS 4.0 and later.
      */
@@ -590,6 +692,11 @@ import org.robovm.apple.audiotoolbox.*;
      */
     @GlobalValue(symbol="kCMSampleBufferDroppedFrameReasonInfo_CameraModeSwitch", optional=true)
     public static native String CMSampleBufferDroppedFrameReasonInfoCameraModeSwitch();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @GlobalValue(symbol="kCMSampleBufferAttachmentKey_ForceKeyFrame", optional=true)
+    public static native String CMSampleBufferSampleBufferAttachmentKeyForceKeyFrame();
     /**
      * @since Available in iOS 6.0 and later.
      */
@@ -810,5 +917,186 @@ import org.robovm.apple.audiotoolbox.*;
      */
     @GlobalValue(symbol="kCMTextMarkupCharacterEdgeStyle_DropShadow", optional=true)
     public static native String CMTextMarkupCharacterEdgeStyleDropShadow();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @GlobalValue(symbol="kCMMetadataKeySpace_QuickTimeUserData", optional=true)
+    public static native String Value__kCMMetadataKeySpace_QuickTimeUserData();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @GlobalValue(symbol="kCMMetadataKeySpace_ISOUserData", optional=true)
+    public static native String Value__kCMMetadataKeySpace_ISOUserData();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @GlobalValue(symbol="kCMMetadataKeySpace_QuickTimeMetadata", optional=true)
+    public static native String Value__kCMMetadataKeySpace_QuickTimeMetadata();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @GlobalValue(symbol="kCMMetadataKeySpace_iTunes", optional=true)
+    public static native String Value__kCMMetadataKeySpace_iTunes();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @GlobalValue(symbol="kCMMetadataKeySpace_ID3", optional=true)
+    public static native String Value__kCMMetadataKeySpace_ID3();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @GlobalValue(symbol="kCMMetadataKeySpace_Icy", optional=true)
+    public static native String Value__kCMMetadataKeySpace_Icy();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @GlobalValue(symbol="kCMMetadataIdentifier_QuickTimeMetadataLocation_ISO6709", optional=true)
+    public static native String Value__kCMMetadataIdentifier_QuickTimeMetadataLocation_ISO6709();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @GlobalValue(symbol="kCMMetadataIdentifier_QuickTimeMetadataDirection_Facing", optional=true)
+    public static native String Value__kCMMetadataIdentifier_QuickTimeMetadataDirection_Facing();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @GlobalValue(symbol="kCMMetadataIdentifier_QuickTimeMetadataPreferredAffineTransform", optional=true)
+    public static native String Value__kCMMetadataIdentifier_QuickTimeMetadataPreferredAffineTransform();
+    
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @Bridge(symbol="CMSwapBigEndianImageDescriptionToHost", optional=true)
+    public static native int function__CMSwapBigEndianImageDescriptionToHost(BytePtr imageDescriptionData, @MachineSizedUInt long imageDescriptionSize);
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @Bridge(symbol="CMSwapHostEndianImageDescriptionToBig", optional=true)
+    public static native int function__CMSwapHostEndianImageDescriptionToBig(BytePtr imageDescriptionData, @MachineSizedUInt long imageDescriptionSize);
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @Bridge(symbol="CMDoesBigEndianSoundDescriptionRequireLegacyCBRSampleTableLayout", optional=true)
+    public static native boolean function__CMDoesBigEndianSoundDescriptionRequireLegacyCBRSampleTableLayout(CMBlockBuffer soundDescriptionBlockBuffer, String soundDescriptionFlavor);
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @Bridge(symbol="CMSwapBigEndianSoundDescriptionToHost", optional=true)
+    public static native int function__CMSwapBigEndianSoundDescriptionToHost(BytePtr soundDescriptionData, @MachineSizedUInt long soundDescriptionSize);
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @Bridge(symbol="CMSwapHostEndianSoundDescriptionToBig", optional=true)
+    public static native int function__CMSwapHostEndianSoundDescriptionToBig(BytePtr soundDescriptionData, @MachineSizedUInt long soundDescriptionSize);
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @Bridge(symbol="CMSwapBigEndianTextDescriptionToHost", optional=true)
+    public static native int function__CMSwapBigEndianTextDescriptionToHost(BytePtr textDescriptionData, @MachineSizedUInt long textDescriptionSize);
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @Bridge(symbol="CMSwapHostEndianTextDescriptionToBig", optional=true)
+    public static native int function__CMSwapHostEndianTextDescriptionToBig(BytePtr textDescriptionData, @MachineSizedUInt long textDescriptionSize);
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @Bridge(symbol="CMClosedCaptionFormatDescriptionCreateFromBigEndianClosedCaptionDescriptionData", optional=true)
+    public static native int function__CMClosedCaptionFormatDescriptionCreateFromBigEndianClosedCaptionDescriptionData(CFAllocator allocator, BytePtr closedCaptionDescriptionData, @MachineSizedUInt long closedCaptionDescriptionSize, String closedCaptionDescriptionFlavor, CMFormatDescription.CMFormatDescriptionPtr closedCaptionFormatDescriptionOut);
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @Bridge(symbol="CMClosedCaptionFormatDescriptionCreateFromBigEndianClosedCaptionDescriptionBlockBuffer", optional=true)
+    public static native int function__CMClosedCaptionFormatDescriptionCreateFromBigEndianClosedCaptionDescriptionBlockBuffer(CFAllocator allocator, CMBlockBuffer closedCaptionDescriptionBlockBuffer, String closedCaptionDescriptionFlavor, CMFormatDescription.CMFormatDescriptionPtr closedCaptionFormatDescriptionOut);
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @Bridge(symbol="CMClosedCaptionFormatDescriptionCopyAsBigEndianClosedCaptionDescriptionBlockBuffer", optional=true)
+    public static native int function__CMClosedCaptionFormatDescriptionCopyAsBigEndianClosedCaptionDescriptionBlockBuffer(CFAllocator allocator, CMFormatDescription closedCaptionFormatDescription, String closedCaptionDescriptionFlavor, CMBlockBuffer.CMBlockBufferPtr closedCaptionDescriptionBlockBufferOut);
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @Bridge(symbol="CMSwapBigEndianClosedCaptionDescriptionToHost", optional=true)
+    public static native int function__CMSwapBigEndianClosedCaptionDescriptionToHost(BytePtr closedCaptionDescriptionData, @MachineSizedUInt long closedCaptionDescriptionSize);
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @Bridge(symbol="CMSwapHostEndianClosedCaptionDescriptionToBig", optional=true)
+    public static native int function__CMSwapHostEndianClosedCaptionDescriptionToBig(BytePtr closedCaptionDescriptionData, @MachineSizedUInt long closedCaptionDescriptionSize);
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @Bridge(symbol="CMSwapBigEndianTimeCodeDescriptionToHost", optional=true)
+    public static native int function__CMSwapBigEndianTimeCodeDescriptionToHost(BytePtr timeCodeDescriptionData, @MachineSizedUInt long timeCodeDescriptionSize);
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @Bridge(symbol="CMSwapHostEndianTimeCodeDescriptionToBig", optional=true)
+    public static native int function__CMSwapHostEndianTimeCodeDescriptionToBig(BytePtr timeCodeDescriptionData, @MachineSizedUInt long timeCodeDescriptionSize);
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @Bridge(symbol="CMSwapBigEndianMetadataDescriptionToHost", optional=true)
+    public static native int function__CMSwapBigEndianMetadataDescriptionToHost(BytePtr metadataDescriptionData, @MachineSizedUInt long metadataDescriptionSize);
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @Bridge(symbol="CMSwapHostEndianMetadataDescriptionToBig", optional=true)
+    public static native int function__CMSwapHostEndianMetadataDescriptionToBig(BytePtr metadataDescriptionData, @MachineSizedUInt long metadataDescriptionSize);
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @Bridge(symbol="CMAudioSampleBufferCreateReadyWithPacketDescriptions", optional=true)
+    public static native int function__CMAudioSampleBufferCreateReadyWithPacketDescriptions(CFAllocator allocator, CMBlockBuffer dataBuffer, CMFormatDescription formatDescription, @MachineSizedSInt long numSamples, @ByVal CMTime sbufPTS, AudioStreamPacketDescription packetDescriptions, CMSampleBuffer.CMSampleBufferPtr sBufOut);
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @Bridge(symbol="CMMetadataCreateKeyFromIdentifier", optional=true)
+    public static native int function__CMMetadataCreateKeyFromIdentifier(CFAllocator allocator, String identifier, CFType.CFTypePtr keyOut);
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @Bridge(symbol="CMMetadataCreateKeyFromIdentifierAsCFData", optional=true)
+    public static native int function__CMMetadataCreateKeyFromIdentifierAsCFData(CFAllocator allocator, String identifier, NSData keyOut);
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @Bridge(symbol="CMMetadataDataTypeRegistryRegisterDataType", optional=true)
+    public static native int function__CMMetadataDataTypeRegistryRegisterDataType(String dataType, String description, NSArray<?> conformingDataTypes);
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @Bridge(symbol="CMMetadataDataTypeRegistryDataTypeIsRegistered", optional=true)
+    public static native boolean function__CMMetadataDataTypeRegistryDataTypeIsRegistered(String dataType);
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @Bridge(symbol="CMMetadataDataTypeRegistryGetDataTypeDescription", optional=true)
+    public static native String function__CMMetadataDataTypeRegistryGetDataTypeDescription(String dataType);
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @Bridge(symbol="CMMetadataDataTypeRegistryGetConformingDataTypes", optional=true)
+    public static native NSArray<?> function__CMMetadataDataTypeRegistryGetConformingDataTypes(String dataType);
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @Bridge(symbol="CMMetadataDataTypeRegistryDataTypeConformsToDataType", optional=true)
+    public static native boolean function__CMMetadataDataTypeRegistryDataTypeConformsToDataType(String dataType, String conformsToDataType);
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @Bridge(symbol="CMMetadataDataTypeRegistryGetBaseDataTypes", optional=true)
+    public static native NSArray<?> function__CMMetadataDataTypeRegistryGetBaseDataTypes();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @Bridge(symbol="CMMetadataDataTypeRegistryDataTypeIsBaseDataType", optional=true)
+    public static native boolean function__CMMetadataDataTypeRegistryDataTypeIsBaseDataType(String dataType);
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @Bridge(symbol="CMMetadataDataTypeRegistryGetBaseDataTypeForConformingDataType", optional=true)
+    public static native String function__CMMetadataDataTypeRegistryGetBaseDataTypeForConformingDataType(String dataType);
     /*</methods>*/
 }

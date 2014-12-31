@@ -51,16 +51,28 @@ import org.robovm.apple.audiotoolbox.*;
     /*<constructors>*/
     public CMTimeMapping() {}
     public CMTimeMapping(CMTimeRange source, CMTimeRange target) {
-        this.source(source);
-        this.target(target);
+        this.setSource(source);
+        this.setTarget(target);
     }
     /*</constructors>*/
     /*<properties>*//*</properties>*/
     /*<members>*/
+    @StructMember(0) public native @ByVal CMTimeRange getSource();
+    @StructMember(0) public native CMTimeMapping setSource(@ByVal CMTimeRange source);
+    
+    @Deprecated
     @StructMember(0) public native @ByVal CMTimeRange source();
+    @Deprecated
     @StructMember(0) public native CMTimeMapping source(@ByVal CMTimeRange source);
+    
+    @StructMember(1) public native @ByVal CMTimeRange getTarget();
+    @StructMember(1) public native CMTimeMapping setTarget(@ByVal CMTimeRange target);
+    
+    @Deprecated
     @StructMember(1) public native @ByVal CMTimeRange target();
+    @Deprecated
     @StructMember(1) public native CMTimeMapping target(@ByVal CMTimeRange target);
+    
     /*</members>*/
     /*<methods>*//*</methods>*/
 }

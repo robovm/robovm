@@ -1334,7 +1334,7 @@ classes:
             'keySpace':
                 type: AVMetadataKeySpace
             'dataType':
-                type: String # TODO   types defined in CMMetadata.h
+                type: CMMetadataDataType
             'value':
                 type: NSObject
             'extraAttributes':
@@ -1506,7 +1506,7 @@ classes:
             'identifier':
                 type: AVMetadataIdentifier
             'dataType':
-                type: String # TODO   types defined in CMMetadata.h
+                type: CMMetadataDataType
             'key':
                 type: AVMetadataKey
             'keySpace':

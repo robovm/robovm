@@ -48,7 +48,7 @@ enums:
     CMSampleBufferError: { first: kCMSampleBufferError_AllocationFailed, prefix: kCMSampleBufferError_ }
     CMSampleBufferFlag: { first: kCMSampleBufferFlag_AudioBufferList_Assure16ByteAlignment, prefix: kCMSampleBufferFlag_, bits: true, marshaler: Bits.AsMachineSizedIntMarshaler }
     CMSimpleQueueError: { first: kCMSimpleQueueError_AllocationFailed, prefix: kCMSimpleQueueError_ }
-    CMTimeFlag: { first: kCMTimeFlags_Valid, prefix: kCMTimeFlags_, bits: true, marshaler: Bits.AsMachineSizedIntMarshaler }
+    CMTimeFlags: { first: kCMTimeFlags_Valid, prefix: kCMTimeFlags_, bits: true, marshaler: Bits.AsMachineSizedIntMarshaler }
     CMTimeRoundingMethod: { first: kCMTimeRoundingMethod_RoundHalfAwayFromZero, prefix: kCMTimeRoundingMethod_, marshaler: ValuedEnum.AsMachineSizedUIntMarshaler }
 
 classes:
@@ -607,12 +607,9 @@ functions:
         name: "#{g[0]}"
 
     # Make sure we don't miss any functions if new ones are introduced in a later version
-    (CM.*):
+    (k?CM.*):
         class: CoreMedia
-        name: "Function__#{g[0]}"
-    (kCM.*):
-        class: CoreMedia
-        name: "Function__#{g[0]}"
+        name: 'Function__#{g[0]}'
 
 values: # TODO converts keys, notifications... Strings to NSStrings/CFStrings??
 #    kCMTimebaseNotificationKey_(.*):
@@ -718,6 +715,13 @@ values: # TODO converts keys, notifications... Strings to NSStrings/CFStrings??
 #        class: CMTextMarkup
 #        name: "CharacterEdgeStyle#{g[0]}"
 
+    # CMMetadata
+    kCMMetadata.*DataType_(.*):
+        class: CMMetadataDataType
+        name: '#{g[0]}Value'
+        type: CFString
+        visibility: protected
+
     kCMTimebaseNotificationKey_(.*):
         class: CoreMedia
         name: "CMTimebaseNotificationKey#{g[0]}"
@@ -822,12 +826,9 @@ values: # TODO converts keys, notifications... Strings to NSStrings/CFStrings??
         name: "CMTextMarkupCharacterEdgeStyle#{g[0]}"
 
     # Make sure we don't miss any values if new ones are introduced in a later version
-    (CM):
+    (k?CM.*):
         class: CoreMedia
-        name: "Value__#{g[0]}"
-    (kCM.*):
-        class: CoreMedia
-        name: "Value__#{g[0]}"
+        name: 'Value__#{g[0]}'
 
 constants:
     kCMTime(MaxTimescale):
@@ -843,10 +844,6 @@ constants:
         name: "PersistentTrackIDInvalid"
         
     # Make sure we don't miss any constants if new ones are introduced in a later version
-    (CM.*):
+    (k?CM.*):
         class: CoreMedia
-        name: "Constant__#{g[0]}"
-        
-    (kCM.*):
-        class: CoreMedia
-        name: "Constant__#{g[0]}"
+        name: 'Constant__#{g[0]}'

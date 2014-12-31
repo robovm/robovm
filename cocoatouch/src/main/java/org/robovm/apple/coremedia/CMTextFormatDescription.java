@@ -128,5 +128,20 @@ import org.robovm.apple.audiotoolbox.*;
      */
     @Bridge(symbol="CMTextFormatDescriptionGetFontName", optional=true)
     protected native int getFontName(short localFontID, CFString.CFStringPtr outFontName);
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @Bridge(symbol="CMTextFormatDescriptionCreateFromBigEndianTextDescriptionData", optional=true)
+    public static native int createFromBigEndianTextDescriptionData(CFAllocator allocator, BytePtr textDescriptionData, @MachineSizedUInt long textDescriptionSize, String textDescriptionFlavor, CMMediaType mediaType, CMTextFormatDescription.CMTextFormatDescriptionPtr textFormatDescriptionOut);
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @Bridge(symbol="CMTextFormatDescriptionCreateFromBigEndianTextDescriptionBlockBuffer", optional=true)
+    public static native int createFromBigEndianTextDescriptionBlockBuffer(CFAllocator allocator, CMBlockBuffer textDescriptionBlockBuffer, String textDescriptionFlavor, CMMediaType mediaType, CMTextFormatDescription.CMTextFormatDescriptionPtr textFormatDescriptionOut);
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @Bridge(symbol="CMTextFormatDescriptionCopyAsBigEndianTextDescriptionBlockBuffer", optional=true)
+    public static native int copyAsBigEndianTextDescriptionBlockBuffer(CFAllocator allocator, CMTextFormatDescription textFormatDescription, String textDescriptionFlavor, CMBlockBuffer.CMBlockBufferPtr textDescriptionBlockBufferOut);
     /*</methods>*/
 }

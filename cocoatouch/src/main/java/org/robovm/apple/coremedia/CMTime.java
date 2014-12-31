@@ -19,7 +19,6 @@ package org.robovm.apple.coremedia;
 import java.io.*;
 import java.nio.*;
 import java.util.*;
-
 import org.robovm.objc.*;
 import org.robovm.objc.annotation.*;
 import org.robovm.objc.block.*;
@@ -79,23 +78,47 @@ import org.robovm.apple.audiotoolbox.*;
     /*</constants>*/
     /*<constructors>*/
     public CMTime() {}
-    public CMTime(long value, int timescale, int flags, long epoch) {
-        this.value(value);
-        this.timescale(timescale);
-        this.flags(flags);
-        this.epoch(epoch);
+    public CMTime(long value, int timescale, CMTimeFlags flags, long epoch) {
+        this.setValue(value);
+        this.setTimescale(timescale);
+        this.setFlags(flags);
+        this.setEpoch(epoch);
     }
     /*</constructors>*/
     /*<properties>*//*</properties>*/
     /*<members>*/
+    @StructMember(0) public native long getValue();
+    @StructMember(0) public native CMTime setValue(long value);
+    
+    @Deprecated
     @StructMember(0) public native long value();
+    @Deprecated
     @StructMember(0) public native CMTime value(long value);
+    
+    @StructMember(1) public native int getTimescale();
+    @StructMember(1) public native CMTime setTimescale(int timescale);
+    
+    @Deprecated
     @StructMember(1) public native int timescale();
+    @Deprecated
     @StructMember(1) public native CMTime timescale(int timescale);
-    @StructMember(2) public native int flags();
-    @StructMember(2) public native CMTime flags(int flags);
+    
+    @StructMember(2) public native CMTimeFlags getFlags();
+    @StructMember(2) public native CMTime setFlags(CMTimeFlags flags);
+    
+    @Deprecated
+    @StructMember(2) public native CMTimeFlags flags();
+    @Deprecated
+    @StructMember(2) public native CMTime flags(CMTimeFlags flags);
+    
+    @StructMember(3) public native long getEpoch();
+    @StructMember(3) public native CMTime setEpoch(long epoch);
+    
+    @Deprecated
     @StructMember(3) public native long epoch();
+    @Deprecated
     @StructMember(3) public native CMTime epoch(long epoch);
+    
     /*</members>*/
     public String asString() {
         return copyDescription(null, this);

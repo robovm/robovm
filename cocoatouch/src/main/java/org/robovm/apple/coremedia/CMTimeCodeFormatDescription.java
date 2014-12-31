@@ -75,5 +75,20 @@ import org.robovm.apple.audiotoolbox.*;
      */
     @Bridge(symbol="CMTimeCodeFormatDescriptionGetTimeCodeFlags", optional=true)
     public native CMTimeCodeFlag getTimeCodeFlags();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @Bridge(symbol="CMTimeCodeFormatDescriptionCreateFromBigEndianTimeCodeDescriptionData", optional=true)
+    public static native int createFromBigEndianTimeCodeDescriptionData(CFAllocator allocator, BytePtr timeCodeDescriptionData, @MachineSizedUInt long timeCodeDescriptionSize, String timeCodeDescriptionFlavor, CMTimeCodeFormatDescription.CMTimeCodeFormatDescriptionPtr timeCodeFormatDescriptionOut);
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @Bridge(symbol="CMTimeCodeFormatDescriptionCreateFromBigEndianTimeCodeDescriptionBlockBuffer", optional=true)
+    public static native int createFromBigEndianTimeCodeDescriptionBlockBuffer(CFAllocator allocator, CMBlockBuffer timeCodeDescriptionBlockBuffer, String timeCodeDescriptionFlavor, CMTimeCodeFormatDescription.CMTimeCodeFormatDescriptionPtr timeCodeFormatDescriptionOut);
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @Bridge(symbol="CMTimeCodeFormatDescriptionCopyAsBigEndianTimeCodeDescriptionBlockBuffer", optional=true)
+    public static native int copyAsBigEndianTimeCodeDescriptionBlockBuffer(CFAllocator allocator, CMTimeCodeFormatDescription timeCodeFormatDescription, String timeCodeDescriptionFlavor, CMBlockBuffer.CMBlockBufferPtr timeCodeDescriptionBlockBufferOut);
     /*</methods>*/
 }

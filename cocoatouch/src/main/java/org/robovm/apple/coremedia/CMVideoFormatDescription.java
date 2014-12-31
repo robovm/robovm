@@ -106,5 +106,20 @@ import org.robovm.apple.audiotoolbox.*;
      */
     @Bridge(symbol="CMVideoFormatDescriptionMatchesImageBuffer", optional=true)
     public native boolean matchesImageBuffer(CVImageBuffer imageBuffer);
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @Bridge(symbol="CMVideoFormatDescriptionCreateFromBigEndianImageDescriptionData", optional=true)
+    protected static native int create(CFAllocator allocator, BytePtr imageDescriptionData, @MachineSizedUInt long imageDescriptionSize, int imageDescriptionStringEncoding, String imageDescriptionFlavor, CMVideoFormatDescription.CMVideoFormatDescriptionPtr videoFormatDescriptionOut);
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @Bridge(symbol="CMVideoFormatDescriptionCreateFromBigEndianImageDescriptionBlockBuffer", optional=true)
+    protected static native int create(CFAllocator allocator, CMBlockBuffer imageDescriptionBlockBuffer, int imageDescriptionStringEncoding, String imageDescriptionFlavor, CMVideoFormatDescription.CMVideoFormatDescriptionPtr videoFormatDescriptionOut);
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @Bridge(symbol="CMVideoFormatDescriptionCopyAsBigEndianImageDescriptionBlockBuffer", optional=true)
+    public static native int copyAsBigEndianImageDescriptionBlockBuffer(CFAllocator allocator, CMVideoFormatDescription videoFormatDescription, int imageDescriptionStringEncoding, String imageDescriptionFlavor, CMBlockBuffer.CMBlockBufferPtr imageDescriptionBlockBufferOut);
     /*</methods>*/
 }

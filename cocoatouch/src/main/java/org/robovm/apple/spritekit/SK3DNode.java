@@ -95,9 +95,9 @@ import org.robovm.apple.scenekit.*;
     @Method(selector = "hitTest:options:")
     public native NSArray<SCNHitTestResult> hitTest(@ByVal CGPoint thePoint, SCNHitTestOptions options);
     @Method(selector = "projectPoint:")
-    public native @ByVal Vector3 projectPoint(@ByVal Vector3 point);
+    public native @ByVal SKVector3 projectPoint(@ByVal SKVector3 point);
     @Method(selector = "unprojectPoint:")
-    public native @ByVal Vector3 unprojectPoint(@ByVal Vector3 point);
+    public native @ByVal SKVector3 unprojectPoint(@ByVal SKVector3 point);
     @Method(selector = "nodeWithViewportSize:")
     public static native SK3DNode create(@ByVal CGSize viewportSize);
     /*</methods>*/

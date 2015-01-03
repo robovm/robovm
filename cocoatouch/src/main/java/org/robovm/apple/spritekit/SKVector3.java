@@ -40,17 +40,17 @@ import org.robovm.apple.glkit.*;
 /*<javadoc>*/
 /*</javadoc>*/
 /*<annotations>*//*</annotations>*/
-/*<visibility>*/public/*</visibility>*/ class /*<name>*/Vector3/*</name>*/ 
-    extends /*<extends>*/Struct<Vector3>/*</extends>*/ 
+/*<visibility>*/public/*</visibility>*/ class SKVector3 
+    extends /*<extends>*/Struct<SKVector3>/*</extends>*/ 
     /*<implements>*//*</implements>*/ {
 
-    /*<ptr>*/public static class Vector3Ptr extends Ptr<Vector3, Vector3Ptr> {}/*</ptr>*/
+    /*<ptr>*/public static class Vector3Ptr extends Ptr<SKVector3, Vector3Ptr> {}/*</ptr>*/
     /*<bind>*/
     /*</bind>*/
     /*<constants>*//*</constants>*/
     /*<constructors>*/
-    public Vector3() {}
-    public Vector3(float x, float y, float z) {
+    public SKVector3() {}
+    public SKVector3(float x, float y, float z) {
         this.setX(x);
         this.setY(y);
         this.setZ(z);
@@ -59,13 +59,13 @@ import org.robovm.apple.glkit.*;
     /*<properties>*//*</properties>*/
     /*<members>*/
     @StructMember(0) public native float getX();
-    @StructMember(0) public native Vector3 setX(float x);
+    @StructMember(0) public native SKVector3 setX(float x);
     
     @StructMember(1) public native float getY();
-    @StructMember(1) public native Vector3 setY(float x);
+    @StructMember(1) public native SKVector3 setY(float y);
     
     @StructMember(2) public native float getZ();
-    @StructMember(2) public native Vector3 setZ(float x);
+    @StructMember(2) public native SKVector3 setZ(float z);
     /*</members>*/
     public void set(float x, float y, float z) {
         setX(x);

@@ -78,7 +78,7 @@ import org.robovm.apple.scenekit.*;
      * @since Available in iOS 8.0 and later.
      */
     @Method(selector = "sampleFieldsAt:")
-    public native @ByVal Vector3 sampleFieldsAt(@ByVal Vector3 position);
+    public native @ByVal SKVector3 sampleFieldsAt(@ByVal SKVector3 position);
     @Method(selector = "bodyAtPoint:")
     public native SKPhysicsBody getBodyAtPoint(@ByVal CGPoint point);
     @Method(selector = "bodyInRect:")

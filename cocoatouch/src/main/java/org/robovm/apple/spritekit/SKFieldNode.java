@@ -84,9 +84,9 @@ import org.robovm.apple.scenekit.*;
     @Property(selector = "setCategoryBitMask:")
     public native void setCategoryBitMask(int v);
     @Property(selector = "direction")
-    public native @ByVal Vector3 getDirection();
+    public native @ByVal SKVector3 getDirection();
     @Property(selector = "setDirection:")
-    public native void setDirection(@ByVal Vector3 v);
+    public native void setDirection(@ByVal SKVector3 v);
     @Property(selector = "smoothness")
     public native float getSmoothness();
     @Property(selector = "setSmoothness:")
@@ -109,9 +109,9 @@ import org.robovm.apple.scenekit.*;
     @Method(selector = "radialGravityField")
     public static native SKFieldNode createRadialGravityField();
     @Method(selector = "linearGravityFieldWithVector:")
-    public static native SKFieldNode createLinearGravityField(@ByVal Vector3 direction);
+    public static native SKFieldNode createLinearGravityField(@ByVal SKVector3 direction);
     @Method(selector = "velocityFieldWithVector:")
-    public static native SKFieldNode createVelocityField(@ByVal Vector3 direction);
+    public static native SKFieldNode createVelocityField(@ByVal SKVector3 direction);
     @Method(selector = "velocityFieldWithTexture:")
     public static native SKFieldNode createVelocityField(SKTexture velocityTexture);
     @Method(selector = "noiseFieldWithSmoothness:animationSpeed:")
@@ -125,6 +125,6 @@ import org.robovm.apple.scenekit.*;
     @Method(selector = "magneticField")
     public static native SKFieldNode createMagneticField();
     @Method(selector = "customFieldWithEvaluationBlock:")
-    public static native SKFieldNode createCustomField(@Block Block5<Vector3, Vector3, Float, Float, Double, Vector3> block);
+    public static native SKFieldNode createCustomField(@Block Block5<SKVector3, SKVector3, Float, Float, Double, SKVector3> block);
     /*</methods>*/
 }

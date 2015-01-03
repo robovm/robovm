@@ -11,7 +11,7 @@ typedefs:
     'void (^)(SKNode *, BOOL *)': '@Block VoidBlock2<SKNode, BytePtr>'
     'void (^)(SKPhysicsBody *, BOOL *)': '@Block VoidBlock2<SKPhysicsBody, BytePtr>'
     'void (^)(SKPhysicsBody *, CGPoint, CGVector, BOOL *)': '@Block VoidBlock4<SKPhysicsBody, CGPoint, CGVector, BytePtr>'
-    vector_float3: '@ByVal Vector3'
+    vector_float3: '@ByVal SKVector3'
 
 enums:
     SKActionTimingMode: {}
@@ -212,7 +212,7 @@ classes:
                 name: createCustomField
                 parameters:
                     block:
-                        type: '@Block Block5<Vector3, Vector3, Float, Float, Double, Vector3>'
+                        type: '@Block Block5<SKVector3, SKVector3, Float, Float, Double, SKVector3>'
     SKKeyframeSequence: # DONE
         methods:
             '-initWithKeyframeValues:times:':

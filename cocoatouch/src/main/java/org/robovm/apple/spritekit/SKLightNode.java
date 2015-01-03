@@ -38,26 +38,50 @@ import org.robovm.apple.scenekit.*;
 /*</imports>*/
 
 /*<javadoc>*/
-
+/**
+ * @since Available in iOS 8.0 and later.
+ */
 /*</javadoc>*/
 /*<annotations>*/@Library("SpriteKit") @NativeClass/*</annotations>*/
-/*<visibility>*/public/*</visibility>*/ class /*<name>*/SKPhysicsJointFixed/*</name>*/ 
-    extends /*<extends>*/SKPhysicsJoint/*</extends>*/ 
+/*<visibility>*/public/*</visibility>*/ class /*<name>*/SKLightNode/*</name>*/ 
+    extends /*<extends>*/SKNode/*</extends>*/ 
     /*<implements>*//*</implements>*/ {
 
-    /*<ptr>*/public static class SKPhysicsJointFixedPtr extends Ptr<SKPhysicsJointFixed, SKPhysicsJointFixedPtr> {}/*</ptr>*/
-    /*<bind>*/static { ObjCRuntime.bind(SKPhysicsJointFixed.class); }/*</bind>*/
+    /*<ptr>*/public static class SKLightNodePtr extends Ptr<SKLightNode, SKLightNodePtr> {}/*</ptr>*/
+    /*<bind>*/static { ObjCRuntime.bind(SKLightNode.class); }/*</bind>*/
     /*<constants>*//*</constants>*/
     /*<constructors>*/
-    public SKPhysicsJointFixed() {}
-    protected SKPhysicsJointFixed(SkipInit skipInit) { super(skipInit); }
+    public SKLightNode() {}
+    protected SKLightNode(SkipInit skipInit) { super(skipInit); }
     /*</constructors>*/
     /*<properties>*/
-    
+    @Property(selector = "isEnabled")
+    public native boolean isEnabled();
+    @Property(selector = "setEnabled:")
+    public native void setEnabled(boolean v);
+    @Property(selector = "lightColor")
+    public native UIColor getLightColor();
+    @Property(selector = "setLightColor:")
+    public native void setLightColor(UIColor v);
+    @Property(selector = "ambientColor")
+    public native UIColor getAmbientColor();
+    @Property(selector = "setAmbientColor:")
+    public native void setAmbientColor(UIColor v);
+    @Property(selector = "shadowColor")
+    public native UIColor getShadowColor();
+    @Property(selector = "setShadowColor:")
+    public native void setShadowColor(UIColor v);
+    @Property(selector = "falloff")
+    public native @MachineSizedFloat double getFalloff();
+    @Property(selector = "setFalloff:")
+    public native void setFalloff(@MachineSizedFloat double v);
+    @Property(selector = "categoryBitMask")
+    public native int getCategoryBitMask();
+    @Property(selector = "setCategoryBitMask:")
+    public native void setCategoryBitMask(int v);
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
-    @Method(selector = "jointWithBodyA:bodyB:anchor:")
-    public static native SKPhysicsJointFixed create(SKPhysicsBody bodyA, SKPhysicsBody bodyB, @ByVal CGPoint anchor);
+    
     /*</methods>*/
 }

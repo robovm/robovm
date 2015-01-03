@@ -19,6 +19,7 @@ package org.robovm.apple.spritekit;
 import java.io.*;
 import java.nio.*;
 import java.util.*;
+
 import org.robovm.objc.*;
 import org.robovm.objc.annotation.*;
 import org.robovm.objc.block.*;
@@ -34,30 +35,42 @@ import org.robovm.apple.dispatch.*;
 import org.robovm.apple.coreimage.*;
 import org.robovm.apple.avfoundation.*;
 import org.robovm.apple.glkit.*;
-import org.robovm.apple.scenekit.*;
 /*</imports>*/
 
 /*<javadoc>*/
-
 /*</javadoc>*/
-/*<annotations>*/@Library("SpriteKit") @NativeClass/*</annotations>*/
-/*<visibility>*/public/*</visibility>*/ class /*<name>*/SKPhysicsJointFixed/*</name>*/ 
-    extends /*<extends>*/SKPhysicsJoint/*</extends>*/ 
+/*<annotations>*//*</annotations>*/
+/*<visibility>*/public/*</visibility>*/ class /*<name>*/Vector3/*</name>*/ 
+    extends /*<extends>*/Struct<Vector3>/*</extends>*/ 
     /*<implements>*//*</implements>*/ {
 
-    /*<ptr>*/public static class SKPhysicsJointFixedPtr extends Ptr<SKPhysicsJointFixed, SKPhysicsJointFixedPtr> {}/*</ptr>*/
-    /*<bind>*/static { ObjCRuntime.bind(SKPhysicsJointFixed.class); }/*</bind>*/
+    /*<ptr>*/public static class Vector3Ptr extends Ptr<Vector3, Vector3Ptr> {}/*</ptr>*/
+    /*<bind>*/
+    /*</bind>*/
     /*<constants>*//*</constants>*/
     /*<constructors>*/
-    public SKPhysicsJointFixed() {}
-    protected SKPhysicsJointFixed(SkipInit skipInit) { super(skipInit); }
+    public Vector3() {}
+    public Vector3(float x, float y, float z) {
+        this.setX(x);
+        this.setY(y);
+        this.setZ(z);
+    }
     /*</constructors>*/
-    /*<properties>*/
+    /*<properties>*//*</properties>*/
+    /*<members>*/
+    @StructMember(0) public native float getX();
+    @StructMember(0) public native Vector3 setX(float x);
     
-    /*</properties>*/
-    /*<members>*//*</members>*/
-    /*<methods>*/
-    @Method(selector = "jointWithBodyA:bodyB:anchor:")
-    public static native SKPhysicsJointFixed create(SKPhysicsBody bodyA, SKPhysicsBody bodyB, @ByVal CGPoint anchor);
-    /*</methods>*/
+    @StructMember(1) public native float getY();
+    @StructMember(1) public native Vector3 setY(float x);
+    
+    @StructMember(2) public native float getZ();
+    @StructMember(2) public native Vector3 setZ(float x);
+    /*</members>*/
+    public void set(float x, float y, float z) {
+        setX(x);
+        setY(y);
+        setZ(z);
+    }
+    /*<methods>*//*</methods>*/
 }

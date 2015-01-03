@@ -38,26 +38,32 @@ import org.robovm.apple.scenekit.*;
 /*</imports>*/
 
 /*<javadoc>*/
-
 /*</javadoc>*/
-/*<annotations>*/@Library("SpriteKit") @NativeClass/*</annotations>*/
-/*<visibility>*/public/*</visibility>*/ class /*<name>*/SKPhysicsJointFixed/*</name>*/ 
-    extends /*<extends>*/SKPhysicsJoint/*</extends>*/ 
-    /*<implements>*//*</implements>*/ {
+/*<annotations>*//*</annotations>*/
+/*<visibility>*/public/*</visibility>*/ class /*<name>*/SKSceneDelegateAdapter/*</name>*/ 
+    extends /*<extends>*/NSObject/*</extends>*/ 
+    /*<implements>*/implements SKSceneDelegate/*</implements>*/ {
 
-    /*<ptr>*/public static class SKPhysicsJointFixedPtr extends Ptr<SKPhysicsJointFixed, SKPhysicsJointFixedPtr> {}/*</ptr>*/
-    /*<bind>*/static { ObjCRuntime.bind(SKPhysicsJointFixed.class); }/*</bind>*/
+    /*<ptr>*/
+    /*</ptr>*/
+    /*<bind>*/
+    /*</bind>*/
     /*<constants>*//*</constants>*/
-    /*<constructors>*/
-    public SKPhysicsJointFixed() {}
-    protected SKPhysicsJointFixed(SkipInit skipInit) { super(skipInit); }
-    /*</constructors>*/
+    /*<constructors>*//*</constructors>*/
     /*<properties>*/
     
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
-    @Method(selector = "jointWithBodyA:bodyB:anchor:")
-    public static native SKPhysicsJointFixed create(SKPhysicsBody bodyA, SKPhysicsBody bodyB, @ByVal CGPoint anchor);
+    @NotImplemented("update:forScene:")
+    public void update(double currentTime, SKScene scene) { throw new UnsupportedOperationException(); }
+    @NotImplemented("didEvaluateActionsForScene:")
+    public void didEvaluateActions(SKScene scene) { throw new UnsupportedOperationException(); }
+    @NotImplemented("didSimulatePhysicsForScene:")
+    public void didSimulatePhysics(SKScene scene) { throw new UnsupportedOperationException(); }
+    @NotImplemented("didApplyConstraintsForScene:")
+    public void didApplyConstraints(SKScene scene) { throw new UnsupportedOperationException(); }
+    @NotImplemented("didFinishUpdateForScene:")
+    public void didFinishUpdate(SKScene scene) { throw new UnsupportedOperationException(); }
     /*</methods>*/
 }

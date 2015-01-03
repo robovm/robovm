@@ -33,6 +33,8 @@ import org.robovm.apple.coreanimation.*;
 import org.robovm.apple.dispatch.*;
 import org.robovm.apple.coreimage.*;
 import org.robovm.apple.avfoundation.*;
+import org.robovm.apple.glkit.*;
+import org.robovm.apple.scenekit.*;
 /*</imports>*/
 
 /*<javadoc>*/
@@ -56,7 +58,7 @@ import org.robovm.apple.avfoundation.*;
     @Property(selector = "setFilteringMode:")
     public native void setFilteringMode(SKTextureFilteringMode v);
     @Property(selector = "usesMipmaps")
-    public native boolean isUsesMipmaps();
+    public native boolean usesMipmaps();
     @Property(selector = "setUsesMipmaps:")
     public native void setUsesMipmaps(boolean v);
     /*</properties>*/
@@ -64,6 +66,16 @@ import org.robovm.apple.avfoundation.*;
     /*<methods>*/
     @Method(selector = "textureByApplyingCIFilter:")
     public native SKTexture newTextureByApplyingCIFilter(CIFilter filter);
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @Method(selector = "textureByGeneratingNormalMap")
+    public native SKTexture newTextureByGeneratingNormalMap();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @Method(selector = "textureByGeneratingNormalMapWithSmoothness:contrast:")
+    public native SKTexture newTextureByGeneratingNormalMap(@MachineSizedFloat double smoothness, @MachineSizedFloat double contrast);
     @Method(selector = "textureRect")
     public native @ByVal CGRect getTextureRect();
     @Method(selector = "size")
@@ -74,12 +86,24 @@ import org.robovm.apple.avfoundation.*;
     public static native SKTexture create(String name);
     @Method(selector = "textureWithRect:inTexture:")
     public static native SKTexture create(@ByVal CGRect rect, SKTexture texture);
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @Method(selector = "textureVectorNoiseWithSmoothness:size:")
+    public static native SKTexture createVectorNoise(@MachineSizedFloat double smoothness, @ByVal CGSize size);
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @Method(selector = "textureNoiseWithSmoothness:size:grayscale:")
+    public static native SKTexture createNoise(@MachineSizedFloat double smoothness, @ByVal CGSize size, boolean grayscale);
     @Method(selector = "textureWithCGImage:")
     public static native SKTexture create(CGImage image);
     @Method(selector = "textureWithImage:")
     public static native SKTexture create(UIImage image);
     @Method(selector = "textureWithData:size:")
     public static native SKTexture create(NSData pixelData, @ByVal CGSize size);
+    @Method(selector = "textureWithData:size:flipped:")
+    public static native SKTexture create(NSData pixelData, @ByVal CGSize size, boolean flipped);
     @Method(selector = "textureWithData:size:rowLength:alignment:")
     public static native SKTexture create(NSData pixelData, @ByVal CGSize size, int rowLength, int alignment);
     @Method(selector = "preloadTextures:withCompletionHandler:")

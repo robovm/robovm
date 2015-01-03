@@ -33,6 +33,8 @@ import org.robovm.apple.coreanimation.*;
 import org.robovm.apple.dispatch.*;
 import org.robovm.apple.coreimage.*;
 import org.robovm.apple.avfoundation.*;
+import org.robovm.apple.glkit.*;
+import org.robovm.apple.scenekit.*;
 /*</imports>*/
 
 /*<javadoc>*/
@@ -53,12 +55,53 @@ import org.robovm.apple.avfoundation.*;
     public SKSpriteNode(SKTexture texture) { super((SkipInit) null); initObject(init(texture)); }
     public SKSpriteNode(String name) { super((SkipInit) null); initObject(init(name)); }
     public SKSpriteNode(UIColor color, @ByVal CGSize size) { super((SkipInit) null); initObject(init(color, size)); }
+    public SKSpriteNode(NSCoder aDecoder) { super((SkipInit) null); initObject(init(aDecoder)); }
     /*</constructors>*/
     /*<properties>*/
     @Property(selector = "texture")
     public native SKTexture getTexture();
     @Property(selector = "setTexture:")
     public native void setTexture(SKTexture v);
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @Property(selector = "normalTexture")
+    public native SKTexture getNormalTexture();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @Property(selector = "setNormalTexture:")
+    public native void setNormalTexture(SKTexture v);
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @Property(selector = "lightingBitMask")
+    public native int getLightingBitMask();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @Property(selector = "setLightingBitMask:")
+    public native void setLightingBitMask(int v);
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @Property(selector = "shadowCastBitMask")
+    public native int getShadowCastBitMask();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @Property(selector = "setShadowCastBitMask:")
+    public native void setShadowCastBitMask(int v);
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @Property(selector = "shadowedBitMask")
+    public native int getShadowedBitMask();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @Property(selector = "setShadowedBitMask:")
+    public native void setShadowedBitMask(int v);
     @Property(selector = "centerRect")
     public native @ByVal CGRect getCenterRect();
     @Property(selector = "setCenterRect:")
@@ -83,6 +126,16 @@ import org.robovm.apple.avfoundation.*;
     public native @ByVal CGSize getSize();
     @Property(selector = "setSize:")
     public native void setSize(@ByVal CGSize v);
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @Property(selector = "shader")
+    public native SKShader getShader();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @Property(selector = "setShader:")
+    public native void setShader(SKShader v);
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
@@ -94,12 +147,18 @@ import org.robovm.apple.avfoundation.*;
     protected native @Pointer long init(String name);
     @Method(selector = "initWithColor:size:")
     protected native @Pointer long init(UIColor color, @ByVal CGSize size);
+    @Method(selector = "initWithCoder:")
+    protected native @Pointer long init(NSCoder aDecoder);
     @Method(selector = "spriteNodeWithTexture:size:")
     public static native SKSpriteNode create(SKTexture texture, @ByVal CGSize size);
     @Method(selector = "spriteNodeWithTexture:")
     public static native SKSpriteNode create(SKTexture texture);
+    @Method(selector = "spriteNodeWithTexture:normalMap:")
+    public static native SKSpriteNode create(SKTexture texture, SKTexture normalMap);
     @Method(selector = "spriteNodeWithImageNamed:")
     public static native SKSpriteNode create(String name);
+    @Method(selector = "spriteNodeWithImageNamed:normalMapped:")
+    public static native SKSpriteNode create(String name, boolean generateNormalMap);
     @Method(selector = "spriteNodeWithColor:size:")
     public static native SKSpriteNode create(UIColor color, @ByVal CGSize size);
     /*</methods>*/

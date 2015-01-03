@@ -38,26 +38,40 @@ import org.robovm.apple.scenekit.*;
 /*</imports>*/
 
 /*<javadoc>*/
-
+/**
+ * @since Available in iOS 8.0 and later.
+ */
 /*</javadoc>*/
-/*<annotations>*/@Library("SpriteKit") @NativeClass/*</annotations>*/
-/*<visibility>*/public/*</visibility>*/ class /*<name>*/SKPhysicsJointFixed/*</name>*/ 
-    extends /*<extends>*/SKPhysicsJoint/*</extends>*/ 
-    /*<implements>*//*</implements>*/ {
+/*<annotations>*/@Marshaler(ValuedEnum.AsMachineSizedSIntMarshaler.class)/*</annotations>*/
+public enum /*<name>*/SKUniformType/*</name>*/ implements ValuedEnum {
+    /*<values>*/
+    None(0L),
+    Float(1L),
+    FloatVector2(2L),
+    FloatVector3(3L),
+    FloatVector4(4L),
+    FloatMatrix2(5L),
+    FloatMatrix3(6L),
+    FloatMatrix4(7L),
+    Texture(8L);
+    /*</values>*/
 
-    /*<ptr>*/public static class SKPhysicsJointFixedPtr extends Ptr<SKPhysicsJointFixed, SKPhysicsJointFixedPtr> {}/*</ptr>*/
-    /*<bind>*/static { ObjCRuntime.bind(SKPhysicsJointFixed.class); }/*</bind>*/
+    /*<bind>*/
+    /*</bind>*/
     /*<constants>*//*</constants>*/
-    /*<constructors>*/
-    public SKPhysicsJointFixed() {}
-    protected SKPhysicsJointFixed(SkipInit skipInit) { super(skipInit); }
-    /*</constructors>*/
-    /*<properties>*/
-    
-    /*</properties>*/
-    /*<members>*//*</members>*/
-    /*<methods>*/
-    @Method(selector = "jointWithBodyA:bodyB:anchor:")
-    public static native SKPhysicsJointFixed create(SKPhysicsBody bodyA, SKPhysicsBody bodyB, @ByVal CGPoint anchor);
-    /*</methods>*/
+    /*<methods>*//*</methods>*/
+
+    private final long n;
+
+    private /*<name>*/SKUniformType/*</name>*/(long n) { this.n = n; }
+    public long value() { return n; }
+    public static /*<name>*/SKUniformType/*</name>*/ valueOf(long n) {
+        for (/*<name>*/SKUniformType/*</name>*/ v : values()) {
+            if (v.n == n) {
+                return v;
+            }
+        }
+        throw new IllegalArgumentException("No constant with value " + n + " found in " 
+            + /*<name>*/SKUniformType/*</name>*/.class.getName());
+    }
 }

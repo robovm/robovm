@@ -33,6 +33,8 @@ import org.robovm.apple.coreanimation.*;
 import org.robovm.apple.dispatch.*;
 import org.robovm.apple.coreimage.*;
 import org.robovm.apple.avfoundation.*;
+import org.robovm.apple.glkit.*;
+import org.robovm.apple.scenekit.*;
 /*</imports>*/
 
 /*<javadoc>*/
@@ -93,7 +95,9 @@ import org.robovm.apple.avfoundation.*;
     /*<methods>*/
     @Method(selector = "initWithFontNamed:")
     protected native @Pointer long init(String fontName);
+    @Method(selector = "labelNodeWithText:")
+    public static native SKLabelNode createWithText(String text);
     @Method(selector = "labelNodeWithFontNamed:")
-    public static native SKLabelNode create(String fontName);
+    public static native SKLabelNode createWithFont(String fontName);
     /*</methods>*/
 }

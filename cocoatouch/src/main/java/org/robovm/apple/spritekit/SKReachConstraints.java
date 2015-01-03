@@ -38,26 +38,38 @@ import org.robovm.apple.scenekit.*;
 /*</imports>*/
 
 /*<javadoc>*/
-
+/**
+ * @since Available in iOS 8.0 and later.
+ */
 /*</javadoc>*/
 /*<annotations>*/@Library("SpriteKit") @NativeClass/*</annotations>*/
-/*<visibility>*/public/*</visibility>*/ class /*<name>*/SKPhysicsJointFixed/*</name>*/ 
-    extends /*<extends>*/SKPhysicsJoint/*</extends>*/ 
-    /*<implements>*//*</implements>*/ {
+/*<visibility>*/public/*</visibility>*/ class /*<name>*/SKReachConstraints/*</name>*/ 
+    extends /*<extends>*/NSObject/*</extends>*/ 
+    /*<implements>*/implements NSCoding/*</implements>*/ {
 
-    /*<ptr>*/public static class SKPhysicsJointFixedPtr extends Ptr<SKPhysicsJointFixed, SKPhysicsJointFixedPtr> {}/*</ptr>*/
-    /*<bind>*/static { ObjCRuntime.bind(SKPhysicsJointFixed.class); }/*</bind>*/
+    /*<ptr>*/public static class SKReachConstraintsPtr extends Ptr<SKReachConstraints, SKReachConstraintsPtr> {}/*</ptr>*/
+    /*<bind>*/static { ObjCRuntime.bind(SKReachConstraints.class); }/*</bind>*/
     /*<constants>*//*</constants>*/
     /*<constructors>*/
-    public SKPhysicsJointFixed() {}
-    protected SKPhysicsJointFixed(SkipInit skipInit) { super(skipInit); }
+    public SKReachConstraints() {}
+    protected SKReachConstraints(SkipInit skipInit) { super(skipInit); }
+    public SKReachConstraints(@MachineSizedFloat double lowerAngleLimit, @MachineSizedFloat double upperAngleLimit) { super((SkipInit) null); initObject(init(lowerAngleLimit, upperAngleLimit)); }
     /*</constructors>*/
     /*<properties>*/
-    
+    @Property(selector = "lowerAngleLimit")
+    public native @MachineSizedFloat double getLowerAngleLimit();
+    @Property(selector = "setLowerAngleLimit:")
+    public native void setLowerAngleLimit(@MachineSizedFloat double v);
+    @Property(selector = "upperAngleLimit")
+    public native @MachineSizedFloat double getUpperAngleLimit();
+    @Property(selector = "setUpperAngleLimit:")
+    public native void setUpperAngleLimit(@MachineSizedFloat double v);
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
-    @Method(selector = "jointWithBodyA:bodyB:anchor:")
-    public static native SKPhysicsJointFixed create(SKPhysicsBody bodyA, SKPhysicsBody bodyB, @ByVal CGPoint anchor);
+    @Method(selector = "initWithLowerAngleLimit:upperAngleLimit:")
+    protected native @Pointer long init(@MachineSizedFloat double lowerAngleLimit, @MachineSizedFloat double upperAngleLimit);
+    @Method(selector = "encodeWithCoder:")
+    public native void encode(NSCoder aCoder);
     /*</methods>*/
 }

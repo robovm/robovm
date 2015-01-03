@@ -33,6 +33,8 @@ import org.robovm.apple.coreanimation.*;
 import org.robovm.apple.dispatch.*;
 import org.robovm.apple.coreimage.*;
 import org.robovm.apple.avfoundation.*;
+import org.robovm.apple.glkit.*;
+import org.robovm.apple.scenekit.*;
 /*</imports>*/
 
 /*<javadoc>*/
@@ -52,9 +54,32 @@ import org.robovm.apple.avfoundation.*;
     /*</constructors>*/
     /*<properties>*/
     @Property(selector = "textureNames")
-    public native NSArray<NSString> getTextureNames();
+    public native @org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String> getTextureNames();
     /*</properties>*/
     /*<members>*//*</members>*/
+    /**
+     * Creates a new texture atlas object from the specified texture files.
+     * @param properties The keys of this map represent the texture names. 
+     * The associated values can be of type String, NSURL or UIImage.
+     * @return
+     * @since Available in iOS 8.0 and later.
+     */
+    public static SKTextureAtlas create(Map<String, Object> textures) {
+        NSDictionary<NSString, NSObject> properties = new NSMutableDictionary<>();
+        for (Map.Entry<String, Object> entry : textures.entrySet()) {
+            NSString key = new NSString(entry.getKey());
+            NSObject value = null;
+            if (entry.getValue() instanceof String) {
+                value = new NSString((String)entry.getValue());
+            } else if (entry.getValue() instanceof NSURL || entry.getValue() instanceof UIImage || entry.getValue() instanceof NSString) {
+                value = (NSObject)entry.getValue();
+            } else {
+                throw new IllegalArgumentException("Only String, NSURL, UIImage or NSString are allowed!");
+            }
+            properties.put(key, value);
+        }
+        return create(properties);
+    }
     /*<methods>*/
     @Method(selector = "textureNamed:")
     public native SKTexture getTexture(String name);
@@ -62,6 +87,11 @@ import org.robovm.apple.avfoundation.*;
     public native void preload(@Block Runnable completionHandler);
     @Method(selector = "atlasNamed:")
     public static native SKTextureAtlas create(String name);
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @Method(selector = "atlasWithDictionary:")
+    protected static native SKTextureAtlas create(NSDictionary<NSString, NSObject> properties);
     @Method(selector = "preloadTextureAtlases:withCompletionHandler:")
     public static native void preloadTextureAtlases(NSArray<SKTextureAtlas> textureAtlases, @Block Runnable completionHandler);
     @Method(selector = "encodeWithCoder:")

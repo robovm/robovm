@@ -33,6 +33,8 @@ import org.robovm.apple.coreanimation.*;
 import org.robovm.apple.dispatch.*;
 import org.robovm.apple.coreimage.*;
 import org.robovm.apple.avfoundation.*;
+import org.robovm.apple.glkit.*;
+import org.robovm.apple.scenekit.*;
 /*</imports>*/
 
 /*<javadoc>*/
@@ -59,6 +61,16 @@ import org.robovm.apple.avfoundation.*;
     public native SKActionTimingMode getTimingMode();
     @Property(selector = "setTimingMode:")
     public native void setTimingMode(SKActionTimingMode v);
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @Property(selector = "timingFunction")
+    public native @Block Block1<Float, Float> getTimingFunction();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @Property(selector = "setTimingFunction:")
+    public native void setTimingFunction(@Block Block1<Float, Float> v);
     @Property(selector = "speed")
     public native @MachineSizedFloat double getSpeed();
     @Property(selector = "setSpeed:")
@@ -68,10 +80,10 @@ import org.robovm.apple.avfoundation.*;
     /*<methods>*/
     @Method(selector = "reversedAction")
     public native SKAction reversedAction();
-    @Method(selector = "moveByX:y:duration:")
-    public static native SKAction moveBy(@MachineSizedFloat double deltaX, @MachineSizedFloat double deltaY, double sec);
     @Method(selector = "moveBy:duration:")
     public static native SKAction moveBy(@ByVal CGVector delta, double sec);
+    @Method(selector = "moveByX:y:duration:")
+    public static native SKAction moveBy(@MachineSizedFloat double deltaX, @MachineSizedFloat double deltaY, double sec);
     @Method(selector = "moveTo:duration:")
     public static native SKAction moveTo(@ByVal CGPoint location, double sec);
     @Method(selector = "moveToX:duration:")
@@ -120,6 +132,16 @@ import org.robovm.apple.avfoundation.*;
     public static native SKAction fadeAlphaBy(@MachineSizedFloat double factor, double sec);
     @Method(selector = "fadeAlphaTo:duration:")
     public static native SKAction fadeAlphaTo(@MachineSizedFloat double alpha, double sec);
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @Method(selector = "hide")
+    public static native SKAction hide();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @Method(selector = "unhide")
+    public static native SKAction unhide();
     @Method(selector = "setTexture:")
     public static native SKAction setTexture(SKTexture texture);
     @Method(selector = "setTexture:resize:")
@@ -134,22 +156,58 @@ import org.robovm.apple.avfoundation.*;
     public static native SKAction colorize(UIColor color, @MachineSizedFloat double colorBlendFactor, double sec);
     @Method(selector = "colorizeWithColorBlendFactor:duration:")
     public static native SKAction colorize(@MachineSizedFloat double colorBlendFactor, double sec);
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @Method(selector = "falloffTo:duration:")
+    public static native SKAction falloffTo(float falloff, double sec);
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @Method(selector = "falloffBy:duration:")
+    public static native SKAction falloffBy(float falloff, double sec);
     @Method(selector = "followPath:duration:")
     public static native SKAction followPath(CGPath path, double sec);
     @Method(selector = "followPath:asOffset:orientToPath:duration:")
     public static native SKAction followPath(CGPath path, boolean offset, boolean orient, double sec);
+    @Method(selector = "followPath:speed:")
+    public static native SKAction followPathWithSpeed(CGPath path, @MachineSizedFloat double speed);
+    @Method(selector = "followPath:asOffset:orientToPath:speed:")
+    public static native SKAction followPathWithSpeed(CGPath path, boolean offset, boolean orient, @MachineSizedFloat double speed);
     @Method(selector = "speedBy:duration:")
     public static native SKAction speedBy(@MachineSizedFloat double speed, double sec);
     @Method(selector = "speedTo:duration:")
     public static native SKAction speedTo(@MachineSizedFloat double speed, double sec);
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @Method(selector = "reachTo:rootNode:duration:")
+    public static native SKAction reachTo(@ByVal CGPoint position, SKNode root, double sec);
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @Method(selector = "reachTo:rootNode:velocity:")
+    public static native SKAction reachToWithVelocity(@ByVal CGPoint position, SKNode root, @MachineSizedFloat double velocity);
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @Method(selector = "reachToNode:rootNode:duration:")
+    public static native SKAction reachToNode(SKNode node, SKNode root, double sec);
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @Method(selector = "reachToNode:rootNode:velocity:")
+    public static native SKAction reachToNodeWithVelocity(SKNode node, SKNode root, @MachineSizedFloat double velocity);
+    @Method(selector = "strengthTo:duration:")
+    public static native SKAction strengthTo(float strength, double sec);
+    @Method(selector = "strengthBy:duration:")
+    public static native SKAction strengthBy(float strength, double sec);
     @Method(selector = "waitForDuration:")
     public static native SKAction wait(double sec);
     @Method(selector = "waitForDuration:withRange:")
     public static native SKAction wait(double sec, double durationRange);
     @Method(selector = "removeFromParent")
     public static native SKAction removeFromParent();
-    @Method(selector = "performSelector:onTarget:")
-    public static native SKAction performSelector$onTarget$(Selector selector, NSObject target);
     @Method(selector = "runBlock:")
     public static native SKAction runBlock(@Block Runnable block);
     @Method(selector = "runBlock:queue:")

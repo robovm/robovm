@@ -38,36 +38,49 @@ import org.robovm.apple.scenekit.*;
 /*</imports>*/
 
 /*<javadoc>*/
-
+/**
+ * @since Available in iOS 8.0 and later.
+ */
 /*</javadoc>*/
 /*<annotations>*/@Library("SpriteKit") @NativeClass/*</annotations>*/
-/*<visibility>*/public/*</visibility>*/ class /*<name>*/SKPhysicsJoint/*</name>*/ 
+/*<visibility>*/public/*</visibility>*/ class /*<name>*/SKRegion/*</name>*/ 
     extends /*<extends>*/NSObject/*</extends>*/ 
     /*<implements>*/implements NSCoding/*</implements>*/ {
 
-    /*<ptr>*/public static class SKPhysicsJointPtr extends Ptr<SKPhysicsJoint, SKPhysicsJointPtr> {}/*</ptr>*/
-    /*<bind>*/static { ObjCRuntime.bind(SKPhysicsJoint.class); }/*</bind>*/
+    /*<ptr>*/public static class SKRegionPtr extends Ptr<SKRegion, SKRegionPtr> {}/*</ptr>*/
+    /*<bind>*/static { ObjCRuntime.bind(SKRegion.class); }/*</bind>*/
     /*<constants>*//*</constants>*/
     /*<constructors>*/
-    public SKPhysicsJoint() {}
-    protected SKPhysicsJoint(SkipInit skipInit) { super(skipInit); }
+    public SKRegion() {}
+    protected SKRegion(SkipInit skipInit) { super(skipInit); }
+    public SKRegion(float radius) { super((SkipInit) null); initObject(init(radius)); }
+    public SKRegion(@ByVal CGSize size) { super((SkipInit) null); initObject(init(size)); }
+    public SKRegion(CGPath path) { super((SkipInit) null); initObject(init(path)); }
     /*</constructors>*/
     /*<properties>*/
-    @Property(selector = "bodyA")
-    public native SKPhysicsBody getBodyA();
-    @Property(selector = "setBodyA:")
-    public native void setBodyA(SKPhysicsBody v);
-    @Property(selector = "bodyB")
-    public native SKPhysicsBody getBodyB();
-    @Property(selector = "setBodyB:")
-    public native void setBodyB(SKPhysicsBody v);
-    @Property(selector = "reactionForce")
-    public native @ByVal CGVector getReactionForce();
-    @Property(selector = "reactionTorque")
-    public native @MachineSizedFloat double getReactionTorque();
+    @Property(selector = "path")
+    public native CGPath getPath();
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
+    @Method(selector = "initWithRadius:")
+    protected native @Pointer long init(float radius);
+    @Method(selector = "initWithSize:")
+    protected native @Pointer long init(@ByVal CGSize size);
+    @Method(selector = "initWithPath:")
+    protected native @Pointer long init(CGPath path);
+    @Method(selector = "inverseRegion")
+    public native SKRegion inverseRegion();
+    @Method(selector = "regionByUnionWithRegion:")
+    public native SKRegion newRegionByUnionWithRegion(SKRegion region);
+    @Method(selector = "regionByDifferenceFromRegion:")
+    public native SKRegion newRegionByDifferenceFromRegion(SKRegion region);
+    @Method(selector = "regionByIntersectionWithRegion:")
+    public native SKRegion newRegionByIntersectionWithRegion(SKRegion region);
+    @Method(selector = "containsPoint:")
+    public native boolean containsPoint(@ByVal CGPoint point);
+    @Method(selector = "infiniteRegion")
+    public static native SKRegion createInfiniteRegion();
     @Method(selector = "encodeWithCoder:")
     public native void encode(NSCoder aCoder);
     /*</methods>*/

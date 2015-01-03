@@ -33,6 +33,8 @@ import org.robovm.apple.coreanimation.*;
 import org.robovm.apple.dispatch.*;
 import org.robovm.apple.coreimage.*;
 import org.robovm.apple.avfoundation.*;
+import org.robovm.apple.glkit.*;
+import org.robovm.apple.scenekit.*;
 /*</imports>*/
 
 /*<javadoc>*/
@@ -57,6 +59,8 @@ import org.robovm.apple.avfoundation.*;
     public native SKPhysicsBody getBodyB();
     @Property(selector = "contactPoint")
     public native @ByVal CGPoint getContactPoint();
+    @Property(selector = "contactNormal")
+    public native @ByVal CGVector getContactNormal();
     @Property(selector = "collisionImpulse")
     public native @MachineSizedFloat double getCollisionImpulse();
     /*</properties>*/

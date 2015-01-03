@@ -33,6 +33,8 @@ import org.robovm.apple.coreanimation.*;
 import org.robovm.apple.dispatch.*;
 import org.robovm.apple.coreimage.*;
 import org.robovm.apple.avfoundation.*;
+import org.robovm.apple.glkit.*;
+import org.robovm.apple.scenekit.*;
 /*</imports>*/
 
 /*<javadoc>*/
@@ -59,29 +61,75 @@ import org.robovm.apple.avfoundation.*;
     @Property(selector = "setPaused:")
     public native void setPaused(boolean v);
     @Property(selector = "showsFPS")
-    public native boolean isShowsFPS();
+    public native boolean showsFPS();
     @Property(selector = "setShowsFPS:")
     public native void setShowsFPS(boolean v);
     @Property(selector = "showsDrawCount")
-    public native boolean isShowsDrawCount();
+    public native boolean showsDrawCount();
     @Property(selector = "setShowsDrawCount:")
     public native void setShowsDrawCount(boolean v);
     @Property(selector = "showsNodeCount")
-    public native boolean isShowsNodeCount();
+    public native boolean showsNodeCount();
     @Property(selector = "setShowsNodeCount:")
     public native void setShowsNodeCount(boolean v);
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @Property(selector = "showsQuadCount")
+    public native boolean showsQuadCount();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @Property(selector = "setShowsQuadCount:")
+    public native void setShowsQuadCount(boolean v);
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
     @Property(selector = "showsPhysics")
-    public native boolean isShowsPhysics();
+    public native boolean showsPhysics();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
     @Property(selector = "setShowsPhysics:")
     public native void setShowsPhysics(boolean v);
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @Property(selector = "showsFields")
+    public native boolean showsFields();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @Property(selector = "setShowsFields:")
+    public native void setShowsFields(boolean v);
     @Property(selector = "isAsynchronous")
     public native boolean isAsynchronous();
     @Property(selector = "setAsynchronous:")
     public native void setAsynchronous(boolean v);
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @Property(selector = "allowsTransparency")
+    public native boolean allowsTransparency();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @Property(selector = "setAllowsTransparency:")
+    public native void setAllowsTransparency(boolean v);
     @Property(selector = "ignoresSiblingOrder")
-    public native boolean isIgnoresSiblingOrder();
+    public native boolean ignoresSiblingOrder();
     @Property(selector = "setIgnoresSiblingOrder:")
     public native void setIgnoresSiblingOrder(boolean v);
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @Property(selector = "shouldCullNonVisibleNodes")
+    public native boolean shouldCullNonVisibleNodes();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @Property(selector = "setShouldCullNonVisibleNodes:")
+    public native void setShouldCullNonVisibleNodes(boolean v);
     @Property(selector = "frameInterval")
     public native @MachineSizedSInt long getFrameInterval();
     @Property(selector = "setFrameInterval:")
@@ -97,6 +145,8 @@ import org.robovm.apple.avfoundation.*;
     public native void presentScene(SKScene scene, SKTransition transition);
     @Method(selector = "textureFromNode:")
     public native SKTexture getTextureFromNode(SKNode node);
+    @Method(selector = "textureFromNode:crop:")
+    public native SKTexture getTextureFromNode(SKNode node, @ByVal CGRect crop);
     @Method(selector = "convertPoint:toScene:")
     public native @ByVal CGPoint convertPointToScene(@ByVal CGPoint point, SKScene scene);
     @Method(selector = "convertPoint:fromScene:")

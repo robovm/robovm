@@ -38,26 +38,36 @@ import org.robovm.apple.scenekit.*;
 /*</imports>*/
 
 /*<javadoc>*/
-
+/**
+ * @since Available in iOS 8.0 and later.
+ */
 /*</javadoc>*/
 /*<annotations>*/@Library("SpriteKit") @NativeClass/*</annotations>*/
-/*<visibility>*/public/*</visibility>*/ class /*<name>*/SKPhysicsJointFixed/*</name>*/ 
-    extends /*<extends>*/SKPhysicsJoint/*</extends>*/ 
+/*<visibility>*/public/*</visibility>*/ class /*<name>*/SKMutableTexture/*</name>*/ 
+    extends /*<extends>*/SKTexture/*</extends>*/ 
     /*<implements>*//*</implements>*/ {
 
-    /*<ptr>*/public static class SKPhysicsJointFixedPtr extends Ptr<SKPhysicsJointFixed, SKPhysicsJointFixedPtr> {}/*</ptr>*/
-    /*<bind>*/static { ObjCRuntime.bind(SKPhysicsJointFixed.class); }/*</bind>*/
+    /*<ptr>*/public static class SKMutableTexturePtr extends Ptr<SKMutableTexture, SKMutableTexturePtr> {}/*</ptr>*/
+    /*<bind>*/static { ObjCRuntime.bind(SKMutableTexture.class); }/*</bind>*/
     /*<constants>*//*</constants>*/
     /*<constructors>*/
-    public SKPhysicsJointFixed() {}
-    protected SKPhysicsJointFixed(SkipInit skipInit) { super(skipInit); }
+    public SKMutableTexture() {}
+    protected SKMutableTexture(SkipInit skipInit) { super(skipInit); }
+    public SKMutableTexture(@ByVal CGSize size) { super((SkipInit) null); initObject(init(size)); }
+    public SKMutableTexture(@ByVal CGSize size, int format) { super((SkipInit) null); initObject(init(size, format)); }
     /*</constructors>*/
     /*<properties>*/
     
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
-    @Method(selector = "jointWithBodyA:bodyB:anchor:")
-    public static native SKPhysicsJointFixed create(SKPhysicsBody bodyA, SKPhysicsBody bodyB, @ByVal CGPoint anchor);
+    @Method(selector = "initWithSize:")
+    protected native @Pointer long init(@ByVal CGSize size);
+    @Method(selector = "initWithSize:pixelFormat:")
+    protected native @Pointer long init(@ByVal CGSize size, int format);
+    @Method(selector = "modifyPixelDataWithBlock:")
+    public native void modifyPixelData(@Block("(,@MachineSizedUInt)") VoidBlock2<VoidPtr, Long> block);
+    @Method(selector = "mutableTextureWithSize:")
+    public static native SKMutableTexture create(@ByVal CGSize size);
     /*</methods>*/
 }

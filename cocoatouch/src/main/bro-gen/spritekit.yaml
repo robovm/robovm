@@ -1,5 +1,5 @@
 package: org.robovm.apple.spritekit
-include: [foundation.yaml, uikit.yaml, coregraphics.yaml, coreanimation.yaml, dispatch.yaml, coreimage.yaml, avfoundation.yaml]
+include: [foundation.yaml, uikit.yaml, coregraphics.yaml, coreanimation.yaml, dispatch.yaml, coreimage.yaml, avfoundation.yaml, glkit.yaml, scenekit.yaml]
 library: SpriteKit
 framework: SpriteKit
 clang_args: ['-x', 'objective-c']
@@ -11,6 +11,7 @@ typedefs:
     'void (^)(SKNode *, BOOL *)': '@Block VoidBlock2<SKNode, BytePtr>'
     'void (^)(SKPhysicsBody *, BOOL *)': '@Block VoidBlock2<SKPhysicsBody, BytePtr>'
     'void (^)(SKPhysicsBody *, CGPoint, CGVector, BOOL *)': '@Block VoidBlock4<SKPhysicsBody, CGPoint, CGVector, BytePtr>'
+    vector_float3: '@ByVal Vector3'
 
 enums:
     SKActionTimingMode: {}
@@ -22,6 +23,7 @@ enums:
     SKSceneScaleMode: {}
     SKTextureFilteringMode: {}
     SKTransitionDirection: {}
+    SKUniformType: {}
 
 categories:
     SKNodeTouches: # DONE
@@ -32,10 +34,31 @@ categories:
                 name: getPreviousLocationInNode
 
 classes:
-    SpriteKit:
-        annotations: ['@Marshaler(NSString.AsStringMarshaler.class)']
-
+    SK3DNode:
+        properties:
+            'loops':
+                name: looping
+            'scnScene':
+                name: sceneKitScene
+        methods:
+            '-init.*':
+                name: init
+            '-hitTest:options:':
+                trim_after_first_colon: true
+                return_type: NSArray<SCNHitTestResult>
+                parameters:
+                    options:
+                        type: SCNHitTestOptions
+            '-projectPoint:':
+                trim_after_first_colon: true
+            '-unprojectPoint:':
+                trim_after_first_colon: true
+            '+nodeWithViewportSize:':
+                name: create
     SKAction: # DONE
+        properties:
+            'timingFunction':
+                type: '@Block Block1<Float, Float>'
         methods:
             '+moveBy.*':
                 name: moveBy
@@ -67,12 +90,12 @@ classes:
                 trim_after_first_colon: true
                 parameters:
                     actions:
-                        type: "NSArray<SKAction>"
+                        type: NSArray<SKAction>
             '+group:':
                 trim_after_first_colon: true
                 parameters:
                     actions:
-                        type: "NSArray<SKAction>"
+                        type: NSArray<SKAction>
             '+repeatAction:count:':
                 name: repeat
             '+repeatActionForever:':
@@ -91,21 +114,39 @@ classes:
                 name: animate
                 parameters:
                     textures:
-                        type: "NSArray<SKTexture>"
+                        type: NSArray<SKTexture>
             '+playSoundFileNamed:waitForCompletion:':
                 name: playSound
             '+colorizeWithColor.*':
                 name: colorize
+            '+falloffTo:duration:':
+                trim_after_first_colon: true
+            '+falloffBy:duration:':
+                trim_after_first_colon: true
+            '+followPath.*speed:':
+                name: followPathWithSpeed
             '+followPath:.*':
                 trim_after_first_colon: true
             '+speedBy:duration:':
                 trim_after_first_colon: true
             '+speedTo:duration:':
                 trim_after_first_colon: true
+            '+reachTo:rootNode:duration:':
+                trim_after_first_colon: true
+            '+reachTo:rootNode:velocity:':
+                name: reachToWithVelocity
+            '+reachToNode:rootNode:duration:':
+                trim_after_first_colon: true
+            '+reachToNode:rootNode:velocity:':
+                name: reachToNodeWithVelocity
+            '+strengthTo:duration:':
+                trim_after_first_colon: true
+            '+strengthBy:duration:':
+                trim_after_first_colon: true
             '+waitForDuration:.*':
                 name: wait
             '+performSelector:onTarget:':
-                ignore: true
+                exclude: true
             '+runBlock:':
                 trim_after_first_colon: true
             '+runBlock:queue:':
@@ -116,24 +157,75 @@ classes:
             '+runAction:onChildWithName:':
                 trim_after_first_colon: true
             '+customActionWithDuration:actionBlock:':
-                name: "customAction"
+                name: customAction
+    SKConstraint: # DONE
+        methods:
+            '+positionX:':
+                name: positionX
+            '+positionY:':
+                name: positionY
+            '+positionX:Y:':
+                name: positionXY
+            '+distance:toNode:':
+                name: distanceToNode
+            '+distance:toPoint:':
+                name: distanceToPoint
+            '+distance:toPoint:inNode:':
+                name: distanceToPointInNode
+            '+zRotation:':
+                name: zRotation
+            '+orientToNode:offset:':
+                name: orientToNode
+            '+orientToPoint:offset:':
+                name: orientToPoint
+            '+orientToPoint:inNode:offset:':
+                name: orientToPointInNode
     SKCropNode: {} # DONE
     SKEffectNode: {} # DONE
     SKEmitterNode: # DONE
         methods:
             '-advanceSimulationTime:':
                 trim_after_first_colon: true
+    SKFieldNode: # DONE
+        methods:
+            '+dragField':
+                name: createDragField
+            '+vortexField':
+                name: createVortexField
+            '+radialGravityField':
+                name: createRadialGravityField
+            '+linearGravityFieldWithVector:':
+                name: createLinearGravityField
+            '+velocityField.*':
+                name: createVelocityField
+            '+noiseFieldWithSmoothness:animationSpeed:':
+                name: createNoiseField
+            '+turbulenceFieldWithSmoothness:animationSpeed:':
+                name: createTurbulenceField
+            '+springField':
+                name: createSpringField
+            '+electricField':
+                name: createElectricField
+            '+magneticField':
+                name: createMagneticField
+            '+customFieldWithEvaluationBlock:':
+                name: createCustomField
+                parameters:
+                    block:
+                        type: '@Block Block5<Vector3, Vector3, Float, Float, Double, Vector3>'
     SKKeyframeSequence: # DONE
         methods:
             '-initWithKeyframeValues:times:':
-                name: "init"
+                name: init
                 parameters:
                     values:
-                        type: "NSArray<NSObject>"
+                        type: NSArray<NSObject>
                     times:
-                        type: "NSArray<NSNumber>"
-            '-initWithCapacity:':
+                        type: NSArray<NSNumber>
+            '-init.*':
                 name: init
+            '-count':
+                name: size
             '-addKeyframeValue:time:':
                 name: add
             '-removeLastKeyframe':
@@ -157,14 +249,34 @@ classes:
             '-initWithFontNamed:':
                 name: init
             '+labelNodeWithFontNamed:':
+                name: createWithFont
+            '+labelNodeWithText:':
+                name: createWithText
+    SKLightNode: {} # DONE
+    SKMutableTexture: # DONE
+        methods:
+            '-init.*':
+                name: init
+            '-modifyPixelDataWithBlock:':
+                name: modifyPixelData
+                parameters:
+                    block:
+                        type: '@Block("(,@MachineSizedUInt)") VoidBlock2<VoidPtr, Long>'
+            '+mutableTextureWithSize:':
                 name: create
     SKNode: # DONE
         properties:
             'children':
-                type: "NSArray<SKNode>"
+                type: NSArray<SKNode>
+            'constraints':
+                type: NSArray<SKConstraint>
             'userData':
-                type: "NSMutableDictionary<?, ?>"
+                type: 'NSMutableDictionary<?, ?>'
         methods:
+            '-init':
+                exclude: true
+            '-init.*':
+                name: init
             '-addChild:':
                 trim_after_first_colon: true
             '-insertChild:atIndex:':
@@ -173,7 +285,7 @@ classes:
                 name: removeChildren
                 parameters:
                     nodes:
-                        type: "NSArray<SKNode>"
+                        type: NSArray<SKNode>
             '-childNodeWithName:':
                 name: getChild
             '-enumerateChildNodesWithName:usingBlock:':
@@ -192,31 +304,37 @@ classes:
                 name: getNodeAtPoint
             '-nodesAtPoint:':
                 name: getNodesAtPoint
-                return_type: "NSArray<SKNode>"
+                return_type: NSArray<SKNode>
             '-convertPoint:fromNode:':
                 name: convertPointFromNode
             '-convertPoint:toNode:':
                 name: convertPointToNode
             '-intersectsNode:':
                 trim_after_first_colon: true
+            '-objectForKeyedSubscript:':
+                name: findNodesByName
+                return_type: NSArray<SKNode>
             '+node':
                 name: create
+            '+nodeWithFileNamed:':
+                name: create
+                visibility: private # Use File type
     SKPhysicsBody: # DONE
         properties:
             'joints':
-                type: "NSArray<SKPhysicsJoint>"
+                type: NSArray<SKPhysicsJoint>
         methods:
             '-applyForce:.*':
                 trim_after_first_colon: true
             '-applyTorque:':
                 trim_after_first_colon: true
-            '-applyImpulse:':
+            '-applyImpulse:.*':
                 trim_after_first_colon: true
             '-applyAngularImpulse:':
                 trim_after_first_colon: true
             '-allContactedBodies':
                 property: true
-                return_type: "NSArray<SKPhysicsBody>"
+                return_type: NSArray<SKPhysicsBody>
             '+bodyWithCircleOfRadius:.*':
                 name: createCircle
             '+bodyWithRectangleOfSize:.*':
@@ -231,11 +349,13 @@ classes:
                 name: createEdgeLoop
             '+bodyWithEdgeLoopFromRect:':
                 name: createEdgeLoop
+            '+bodyWithTexture.*':
+                name: createWithTexture
             '+bodyWithBodies:':
-                name: create
+                name: createWithBodies
                 parameters:
                     bodies:
-                        type: "NSArray<SKPhysicsBody>"
+                        type: NSArray<SKPhysicsBody>
     SKPhysicsContact: {} # DONE
     SKPhysicsJoint: {} # DONE
     SKPhysicsJointFixed: # DONE
@@ -276,6 +396,42 @@ classes:
                 trim_after_first_colon: true
             '-enumerateBodiesAlongRayStart:end:usingBlock:':
                 name: enumerateBodiesAlongRay
+            '-sampleFieldsAt:':
+                trim_after_first_colon: true
+    SKRange: # DONE
+        methods:
+            '-init.*':
+                name: init
+            '+rangeWithLowerLimit:upperLimit:':
+                name: create
+            '+rangeWithLowerLimit:':
+                name: createWithLowerLimit
+            '+rangeWithUpperLimit:':
+                name: createWithUpperLimit
+            '+rangeWithConstantValue:':
+                name: createWithConstantValue
+            '+rangeWithValue:variance:':
+                name: createWithValue
+            '+rangeWithNoLimits':
+                name: createWithNoLimits
+    SKReachConstraints: # DONE
+        methods:
+            '-init.*':
+                name: init
+    SKRegion: # DONE
+        methods:
+            '-init.*':
+                name: init
+            '-regionByUnionWithRegion:':
+                name: newRegionByUnionWithRegion
+            '-regionByDifferenceFromRegion:':
+                name: newRegionByDifferenceFromRegion
+            '-regionByIntersectionWithRegion:':
+                name: newRegionByIntersectionWithRegion
+            '-containsPoint:':
+                trim_after_first_colon: true
+            '+infiniteRegion':
+                name: createInfiniteRegion
     SKScene: # DONE
         methods:
             '-initWithSize:':
@@ -294,7 +450,48 @@ classes:
                 trim_after_first_colon: true
             '+sceneWithSize:':
                 name: create
-    SKShapeNode: {} # DONE
+    SKShader: # DONE
+        properties:
+            'uniforms':
+                type: NSArray<SKUniform>
+        methods:
+            '-initWithSource:':
+                name: init
+            '-initWithSource:uniforms:':
+                name: init
+                parameters:
+                    uniforms:
+                        type: NSArray<SKUniform>
+            '-addUniform:':
+                trim_after_first_colon: true
+            '-uniformNamed:':
+                name: getUniform
+            '-removeUniformNamed:':
+                name: removeUniform
+            '+shaderWithSource:uniforms:':
+                name: create
+                parameters:
+                    uniforms:
+                        type: NSArray<SKUniform>
+            '+shaderWithFileNamed:':
+                name: createWithFile
+                visibility: private # Use File type
+            '+shader.*':
+                name: create
+    SKShapeNode: # DONE
+        methods:
+            '+shapeNodeWithPath.*':
+                name: createPath
+            '+shapeNodeWithRect.*':
+                name: createRect
+            '+shapeNodeWithCircleOfRadius:':
+                name: createCircle
+            '+shapeNodeWithEllipse.*':
+                name: createEllipse
+            '+shapeNodeWithPoints:count:':
+                name: createWithPoints
+            '+shapeNodeWithSplinePoints:count:':
+                name: createWithSplinePoints
     SKSpriteNode: # DONE
         methods:
             '-init.*':
@@ -305,21 +502,27 @@ classes:
         methods:
             '-textureByApplyingCIFilter:':
                 name: newTextureByApplyingCIFilter
+            '-textureByGeneratingNormalMap.*':
+                name: newTextureByGeneratingNormalMap
             '-textureRect':
                 property: true
             '-preloadWithCompletionHandler:':
                 name: preload
+            '+textureVectorNoiseWithSmoothness:size:':
+                name: createVectorNoise
+            '+textureNoiseWithSmoothness:size:grayscale:':
+                name: createNoise
             '+textureWith.*':
                 name: create
             '+preloadTextures:withCompletionHandler:':
                 trim_after_first_colon: true
                 parameters:
                     textures:
-                        type: "NSArray<SKTexture>"
+                        type: NSArray<SKTexture>
     SKTextureAtlas: # DONE
         properties:
             'textureNames':
-                type: "NSArray<NSString>"
+                type: '@org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String>'
         methods:
             '-textureNamed:':
                 name: getTexture
@@ -327,11 +530,17 @@ classes:
                 name: preload
             '+atlasNamed:':
                 name: create
+            '+atlasWithDictionary:':
+                name: create
+                visibility: protected
+                parameters:
+                    properties:
+                        type: 'NSDictionary<NSString, NSObject>'
             '+preloadTextureAtlases:withCompletionHandler:':
                 trim_after_first_colon: true
                 parameters:
                     textureAtlases:
-                        type: "NSArray<SKTextureAtlas>"
+                        type: NSArray<SKTextureAtlas>
     SKTransition: # DONE
         methods:
             '+crossFadeWithDuration:':
@@ -360,6 +569,12 @@ classes:
                 name: doorway
             '+transitionWithCIFilter:duration:':
                 name: create
+    SKUniform: # DONE
+        methods:
+            '-initWithName:.*':
+                name: init
+            '+uniformWithName:.*':
+                name: create
     SKVideoNode: # DONE
         methods:
             '-initWith.*':
@@ -370,7 +585,7 @@ classes:
         methods:
             '-presentScene:.*':
                 trim_after_first_colon: true
-            '-textureFromNode:':
+            '-textureFromNode:.*':
                 name: getTextureFromNode
             '-convertPoint:toScene:':
                 name: convertPointToScene
@@ -384,21 +599,33 @@ protocols:
                 trim_after_first_colon: true
             '-didEndContact:':
                 trim_after_first_colon: true
+    SKSceneDelegate: # DONE
+        methods:
+            '-update:forScene:':
+                trim_after_first_colon: true
+            '-didEvaluateActionsForScene:':
+                name: didEvaluateActions
+            '-didSimulatePhysicsForScene:':
+                name: didSimulatePhysics
+            '-didApplyConstraintsForScene:':
+                name: didApplyConstraints
+            '-didFinishUpdateForScene:':
+                name: didFinishUpdate
     
 functions:
     # Make sure we don't miss any functions if new ones are introduced in a later version
-    (SK.*):
+    (k?SK.*):
         class: SpriteKit
-        name: "Function__#{g[0]}"
+        name: 'Function__#{g[0]}'
 
 values: 
     # Make sure we don't miss any values if new ones are introduced in a later version
-    (SK.*):
+    (k?SK.*):
         class: SpriteKit
-        name: "Value__#{g[0]}"
+        name: 'Value__#{g[0]}'
 
 constants:
     # Make sure we don't miss any constants if new ones are introduced in a later version
-    (SK.*):
+    (k?SK.*):
         class: SpriteKit
-        name: "Constant__#{g[0]}"
+        name: 'Constant__#{g[0]}'

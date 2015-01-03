@@ -14,8 +14,10 @@ puts "Using tmp dir #{@dir}"
   'io.netty:netty-all'
 ]
 @excludes = [
-  'org.scala-lang:scala-compiler' # Makes gcc segfault on linking. 20069 classes. Too large?
+  'org.scala-lang:scala-compiler', # Makes gcc segfault on linking. 20069 classes. Too large?
+  'org.specs2:specs2_2.10' # Makes gcc segfault on linking. 22006 classes. Too large?
 ]
+@compiled = []
 
 def compile_artifact(group, artifact, version, n)
   puts "**************"
@@ -68,6 +70,7 @@ n = 1
   artifact = parts[1]
   version = parts.size > 2 ? parts[2] : determine_version(group, artifact)
   compile_artifact(group, artifact, version, n)
+  @compiled.push("#{group}:#{artifact}")
   n = n + 1
 end
 (1..10).each do |page|
@@ -77,8 +80,11 @@ end
     e =~ /\/artifact\/(.*)\/(.*)/
     group = $1
     artifact = $2
-    if !@excludes.include? "#{group}:#{artifact}"
+    if @compiled.include? "#{group}:#{artifact}"
+      puts "Skipping already compipled artifact #{group}:#{artifact} (\##{n})"
+    elsif !@excludes.include? "#{group}:#{artifact}"
       compile_artifact(group, artifact, determine_version(group, artifact), n)
+      @compiled.push("#{group}:#{artifact}")
     else
       puts "Skipping excluded artifact #{group}:#{artifact} (\##{n})"
     end

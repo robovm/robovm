@@ -59,9 +59,18 @@ public class SigningIdentity implements Comparable<SigningIdentity> {
     }
 
     public static SigningIdentity find(List<SigningIdentity> ids, String search) {
-        for (SigningIdentity id : ids) {
-            if (id.name.startsWith(search) || id.fingerprint.equals(search.toUpperCase())) {
-                return id;
+        if (search.startsWith("/") && search.endsWith("/")) {
+            Pattern pattern = Pattern.compile(search.substring(1, search.length() - 1));
+            for (SigningIdentity id : ids) {
+                if (pattern.matcher(id.name).find()) {
+                    return id;
+                }
+            }
+        } else {
+            for (SigningIdentity id : ids) {
+                if (id.name.startsWith(search) || id.fingerprint.equals(search.toUpperCase())) {
+                    return id;
+                }
             }
         }
         throw new IllegalArgumentException("No signing identity found matching '" + search + "'");

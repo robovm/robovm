@@ -285,8 +285,10 @@ final class TzDataRoboVM extends ZoneInfoDB.TzData {
             }
             try {
                 String path = link.getCanonicalPath(); // Resolve the link
-                if (path.startsWith(ZONE_DIRECTORY_NAME)) {
-                    zoneName = path.substring(ZONE_DIRECTORY_NAME.length());
+                for (String id : ids) {
+                    if (path.endsWith(id)) {
+                        zoneName = id;
+                    }
                 }
             } catch (IOException e) {
             }

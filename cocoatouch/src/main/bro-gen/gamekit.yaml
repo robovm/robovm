@@ -543,6 +543,9 @@ classes:
             '+loadMatchWithID:withCompletionHandler:':
                 name: loadMatches
     GKTurnBasedMatchmakerViewController: # DONE
+        properties:
+            'showExistingMatches':
+                name: showsExistingMatches
         methods:
             '-init.*':
                 name: init

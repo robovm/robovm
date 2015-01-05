@@ -50,8 +50,12 @@ import org.robovm.apple.uikit.*;
     /*<properties>*/
     @Property(selector = "gameCenterDelegate")
     public native GKGameCenterControllerDelegate getGameCenterDelegate();
+    @Property(selector = "setGameCenterDelegate:", strongRef = true)
+    public native void setGameCenterDelegate(GKGameCenterControllerDelegate v);
     @Property(selector = "viewState")
     public native GKGameCenterViewControllerState getViewState();
+    @Property(selector = "setViewState:")
+    public native void setViewState(GKGameCenterViewControllerState v);
     /**
      * @since Available in iOS 4.1 and later.
      * @deprecated Deprecated in iOS 7.0.

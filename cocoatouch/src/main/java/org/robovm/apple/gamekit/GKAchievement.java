@@ -75,7 +75,7 @@ import org.robovm.apple.uikit.*;
      * @since Available in iOS 5.0 and later.
      */
     @Property(selector = "showsCompletionBanner")
-    public native boolean isShowsCompletionBanner();
+    public native boolean showsCompletionBanner();
     /**
      * @since Available in iOS 5.0 and later.
      */

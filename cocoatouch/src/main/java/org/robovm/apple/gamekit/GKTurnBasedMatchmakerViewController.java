@@ -51,8 +51,12 @@ import org.robovm.apple.uikit.*;
     /*<properties>*/
     @Property(selector = "turnBasedMatchmakerDelegate")
     public native GKTurnBasedMatchmakerViewControllerDelegate getTurnBasedMatchmakerDelegate();
+    @Property(selector = "setTurnBasedMatchmakerDelegate:", strongRef = true)
+    public native void setTurnBasedMatchmakerDelegate(GKTurnBasedMatchmakerViewControllerDelegate v);
     @Property(selector = "showExistingMatches")
-    public native boolean isShowExistingMatches();
+    public native boolean showsExistingMatches();
+    @Property(selector = "setShowExistingMatches:")
+    public native void setShowsExistingMatches(boolean v);
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/

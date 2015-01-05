@@ -50,6 +50,8 @@ import org.robovm.apple.uikit.*;
     /*<properties>*/
     @Property(selector = "composeViewDelegate")
     public native GKFriendRequestComposeViewControllerDelegate getComposeViewDelegate();
+    @Property(selector = "setComposeViewDelegate:", strongRef = true)
+    public native void setComposeViewDelegate(GKFriendRequestComposeViewControllerDelegate v);
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/

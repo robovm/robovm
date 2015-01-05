@@ -618,7 +618,7 @@ public class IOSTarget extends AbstractTarget {
             if (!config.isIosSkipSigning()) {
                 signIdentity = config.getIosSignIdentity();
                 if (signIdentity == null) {
-                    signIdentity = SigningIdentity.find(SigningIdentity.list(), "iPhone Developer");
+                    signIdentity = SigningIdentity.find(SigningIdentity.list(), "/(?i)iPhone Developer|iOS Development/");
                 }
             }
         }

@@ -766,7 +766,9 @@ public class AppCompiler {
                          + "                        passed to codesign when signing the app.");
         System.err.println("  -resourcerules <file> (iOS) Property list (.plist) file containing resource rules\n" 
                          + "                        passed to codesign when signing the app.");
-        System.err.println("  -signidentity <id>    (iOS) Sign using this identity. Default is 'iPhone Developer'.");
+        System.err.println("  -signidentity <id>    (iOS) Sign using this identity. Default is to look for an\n" 
+                         + "                        identity starting with 'iPhone Developer' or 'iOS Development'.\n" 
+                         + "                        Enclose in '/' to search by regexp, e.g. '/foo|bar/'");
         System.err.println("  -skipsign             (iOS) Skips signing of the compiled Application. Can be used\n"
                          + "                        to create unsigned packages for testing on a jailbroken device.");
         System.err.println("  -provisioningprofile <file>\n" 

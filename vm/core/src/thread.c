@@ -397,6 +397,7 @@ static void* startThreadEntryPoint(void* _args) {
         rvmHookThreadStarting(env, threadObj, thread);
         Method* run = rvmGetInstanceMethod(env, java_lang_Thread, "run", "()V");
         if (run) {
+            setThreadTLS(env, thread);
             jvalue emptyArgs[0];
             rvmCallVoidInstanceMethodA(env, (Object*) threadObj, run, emptyArgs);
         }

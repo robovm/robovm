@@ -147,7 +147,7 @@ public class CallbackMethodCompiler extends BroMethodCompiler {
             Value arg = callbackFn.getParameterRef(receiverIdx);
             String targetClassName = getInternalName(originalMethod.getDeclaringClass());
             arg = marshalNativeToObject(callbackFn, marshalerMethod, marshaledArg, env, targetClassName, arg,
-                    MarshalerFlags.CALL_TYPE_BRIDGE);
+                    MarshalerFlags.CALL_TYPE_CALLBACK);
             args.add(arg);
         }
         

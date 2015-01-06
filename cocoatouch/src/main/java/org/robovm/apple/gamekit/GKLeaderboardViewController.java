@@ -52,10 +52,16 @@ import org.robovm.apple.uikit.*;
     /*<properties>*/
     @Property(selector = "timeScope")
     public native GKLeaderboardTimeScope getTimeScope();
+    @Property(selector = "setTimeScope:")
+    public native void setTimeScope(GKLeaderboardTimeScope v);
     @Property(selector = "category")
     public native String getCategory();
+    @Property(selector = "setCategory:")
+    public native void setCategory(String v);
     @Property(selector = "leaderboardDelegate")
     public native GKLeaderboardViewControllerDelegate getLeaderboardDelegate();
+    @Property(selector = "setLeaderboardDelegate:", strongRef = true)
+    public native void setLeaderboardDelegate(GKLeaderboardViewControllerDelegate v);
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/

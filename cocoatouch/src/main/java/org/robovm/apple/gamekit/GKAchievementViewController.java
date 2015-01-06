@@ -52,6 +52,8 @@ import org.robovm.apple.uikit.*;
     /*<properties>*/
     @Property(selector = "achievementDelegate")
     public native GKAchievementViewControllerDelegate getAchievementDelegate();
+    @Property(selector = "setAchievementDelegate:", strongRef = true)
+    public native void setAchievementDelegate(GKAchievementViewControllerDelegate v);
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/

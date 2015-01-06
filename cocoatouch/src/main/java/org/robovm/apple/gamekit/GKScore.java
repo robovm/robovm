@@ -98,7 +98,7 @@ import org.robovm.apple.uikit.*;
      * @since Available in iOS 5.0 and later.
      */
     @Property(selector = "shouldSetDefaultLeaderboard")
-    public native boolean isShouldSetDefaultLeaderboard();
+    public native boolean shouldSetDefaultLeaderboard();
     /**
      * @since Available in iOS 5.0 and later.
      */

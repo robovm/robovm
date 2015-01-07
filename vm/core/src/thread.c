@@ -16,6 +16,10 @@
 #define _GNU_SOURCE
 #include <pthread.h>
 #include <robovm.h>
+#if defined(DARWIN)
+# include <mach/mach.h>
+# include <unistd.h>
+#endif
 #include "private.h"
 #include "utlist.h"
 
@@ -53,37 +57,46 @@ inline void rvmUnlockThreadsList() {
     rvmUnlockMutex(&threadsLock);
 }
 
+#if defined(DARWIN)
+#ifdef _LP64
+# define INFO_COUNT VM_REGION_BASIC_INFO_COUNT_64
+# define VM_REGION vm_region_64
+#else
+# define INFO_COUNT VM_REGION_BASIC_INFO_COUNT
+# define VM_REGION vm_region
+#endif
+static jboolean isGuardPage(void* page) {
+    vm_size_t vmsize;
+    vm_address_t address = (vm_address_t) page;
+    vm_region_basic_info_data_t info;
+    mach_msg_type_number_t info_count = INFO_COUNT;
+    memory_object_name_t object;
+
+    kern_return_t status = VM_REGION(mach_task_self(), &address, 
+            &vmsize, VM_REGION_BASIC_INFO, (vm_region_info_t) &info, 
+            &info_count, &object);
+    assert(status == 0);
+    return (info.protection & VM_PROT_READ) == 0 ? TRUE : FALSE;
+}
+#endif
+
 /**
  * Determines the stack address of the current thread
  */
 static void* getStackAddress(void) {
     void* result = NULL;
-    size_t stackSize = 0;
     pthread_t self = pthread_self();
 #if defined(DARWIN)
+    // pthread_get_stackaddr_np() returns the start of the stack (i.e. its highest address).
+    // Decrement by page size until vm_region() reports a read protected page. The lowest
+    // unprotected page is the start of the stack.
     result = pthread_get_stackaddr_np(self);
-    if (pthread_main_np()) {
-        // pthread_get_stacksize_np() cannot be relied upon under OSX 10.9 and
-        // iOS 7 so we need to implement a workaround here. See issue #274.
-#if defined(IOS)
-        size_t guardSize = 0;
-        pthread_attr_t attr;
-        pthread_attr_init(&attr);
-        pthread_attr_getguardsize(&attr, &guardSize);
-        // Stack size for the main thread is 1MB on iOS including the guard page size
-        stackSize = 1 * 1024 * 1024 - guardSize;
-#else // MACOSX
-        // Stack size for the main thread is 8MB on OSX excluding the guard page size
-        stackSize = 8 * 1024 * 1024;
-#endif
-    } else {
-        // For other threads pthread_get_stacksize_np() returns the correct stack size excluding guard page size
-        stackSize = pthread_get_stacksize_np(self);
+    long pageSize = sysconf(_SC_PAGE_SIZE);
+    while (!isGuardPage(result - pageSize)) {
+        result -= pageSize;
     }
-    // pthread_get_stackaddr_np returns the beginning (highest address) of the stack
-    // while we want the address of the memory area allocated for the stack (lowest address).
-    result -= stackSize;
 #else
+    size_t stackSize = 0;
     size_t guardSize = 0;
     pthread_attr_t attr;
     pthread_getattr_np(self, &attr);

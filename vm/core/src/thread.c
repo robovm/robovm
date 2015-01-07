@@ -260,12 +260,12 @@ static void threadExitUncaughtException(Env* env, Thread* thread) {
     rvmExceptionClear(env);
 }
 
-
 static jint detachThread(Env* env, jboolean ignoreAttachCount, jboolean unregisterGC, jboolean wasAttached) {
     env->attachCount--;
     if (!ignoreAttachCount && env->attachCount > 0) {
         return JNI_OK;
     }
+    env->attachCount = 0;
 
     if (env->gatewayFrames) {
         rvmAbort("Cannot detach thread when there are non native frames on the call stack");
@@ -315,15 +315,33 @@ static jint detachThread(Env* env, jboolean ignoreAttachCount, jboolean unregist
     return JNI_OK;
 }
 
+/**
+ * Called as a destructor for the Env TLS when an attached thread exits. If
+ * env->attachCount > 0 it means detachThread() won't be called for the
+ * thread. detachThread() sets env->attachCount to 0 before it clears the Env
+ * TLS so the call to this destructor cannot have been triggered by the
+ * clearing of the TLS by detachThread().
+ */
+static void attachedThreadExiting(Env* env) {
+    if (env->attachCount > 0) {
+        // The Env TLS has been cleared. We need it to be set.
+        setThreadEnv(env);
+        // The Thread TLS may have been cleared. We need it to be set.
+        setThreadTLS(env, env->currentThread);
+        detachThread(env, TRUE, TRUE, TRUE);
+    }
+}
+
 jboolean rvmInitThreads(Env* env) {
     gcAddRoot(&threads);
     threadGCKind = gcNewDirectBitmapKind(THREAD_GC_BITMAP);
     if ((threadIdMap = rvmAllocBitVector(MAX_THREAD_ID, TRUE)) == 0) return FALSE;
     if (rvmInitMutex(&threadsLock) != 0) return FALSE;
-    if (pthread_key_create(&tlsEnvKey, NULL) != 0) return FALSE;
+    if (pthread_key_create(&tlsEnvKey, (void (*)(void *)) attachedThreadExiting) != 0) return FALSE;
     if (pthread_key_create(&tlsThreadKey, NULL) != 0) return FALSE;
     if (pthread_cond_init(&threadStartCond, NULL) != 0) return FALSE;
     if (pthread_cond_init(&threadsChangedCond, NULL) != 0) return FALSE;
+
     getUncaughtExceptionHandlerMethod = rvmGetInstanceMethod(env, java_lang_Thread, "getUncaughtExceptionHandler", "()Ljava/lang/Thread$UncaughtExceptionHandler;");
     if (!getUncaughtExceptionHandlerMethod) return FALSE;
     Class* uncaughtExceptionHandler = rvmFindClassInClasspathForLoader(env, "java/lang/Thread$UncaughtExceptionHandler", NULL);

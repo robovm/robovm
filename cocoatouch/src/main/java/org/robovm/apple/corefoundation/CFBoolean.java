@@ -27,6 +27,7 @@ import org.robovm.rt.bro.*;
 import org.robovm.rt.bro.annotation.*;
 import org.robovm.rt.bro.ptr.*;
 import org.robovm.apple.dispatch.*;
+import org.robovm.apple.foundation.*;
 /*</imports>*/
 
 /*<javadoc>*/
@@ -49,10 +50,7 @@ import org.robovm.apple.dispatch.*;
     /*<properties>*//*</properties>*/
     /*<members>*//*</members>*/
     public static CFBoolean valueOf(boolean b) {
-        if (b) {
-            return TRUE;
-        }
-        return FALSE;
+        return b ? TRUE : FALSE;
     }
     /*<methods>*/
     @GlobalValue(symbol="kCFBooleanTrue", optional=true)

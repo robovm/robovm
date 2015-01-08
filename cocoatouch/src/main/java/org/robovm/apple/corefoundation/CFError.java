@@ -27,6 +27,7 @@ import org.robovm.rt.bro.*;
 import org.robovm.rt.bro.annotation.*;
 import org.robovm.rt.bro.ptr.*;
 import org.robovm.apple.dispatch.*;
+import org.robovm.apple.foundation.*;
 /*</imports>*/
 
 /*<javadoc>*/
@@ -44,6 +45,9 @@ import org.robovm.apple.dispatch.*;
     /*</constructors>*/
     /*<properties>*//*</properties>*/
     /*<members>*//*</members>*/
+    public static CFError create(String domain, @MachineSizedSInt long code, NSDictionary<NSString, NSObject> userInfo) {
+        return create(null, domain, code, userInfo);
+    }
     /*<methods>*/
     /**
      * @since Available in iOS 2.0 and later.
@@ -54,17 +58,12 @@ import org.robovm.apple.dispatch.*;
      * @since Available in iOS 2.0 and later.
      */
     @Bridge(symbol="CFErrorCreate", optional=true)
-    public static native CFError create(CFAllocator allocator, CFString domain, @MachineSizedSInt long code, CFDictionary userInfo);
-    /**
-     * @since Available in iOS 2.0 and later.
-     */
-    @Bridge(symbol="CFErrorCreateWithUserInfoKeysAndValues", optional=true)
-    public static native CFError createWithUserInfoKeysAndValues(CFAllocator allocator, CFString domain, @MachineSizedSInt long code, VoidPtr.VoidPtrPtr userInfoKeys, VoidPtr.VoidPtrPtr userInfoValues, @MachineSizedSInt long numUserInfoValues);
+    protected static native CFError create(CFAllocator allocator, String domain, @MachineSizedSInt long code, NSDictionary<NSString, NSObject> userInfo);
     /**
      * @since Available in iOS 2.0 and later.
      */
     @Bridge(symbol="CFErrorGetDomain", optional=true)
-    public native CFString getDomain();
+    public native String getDomain();
     /**
      * @since Available in iOS 2.0 and later.
      */
@@ -74,21 +73,16 @@ import org.robovm.apple.dispatch.*;
      * @since Available in iOS 2.0 and later.
      */
     @Bridge(symbol="CFErrorCopyUserInfo", optional=true)
-    public native CFDictionary copyUserInfo();
-    /**
-     * @since Available in iOS 2.0 and later.
-     */
-    @Bridge(symbol="CFErrorCopyDescription", optional=true)
-    public native CFString copyDescription();
+    public native CFDictionary getUserInfo();
     /**
      * @since Available in iOS 2.0 and later.
      */
     @Bridge(symbol="CFErrorCopyFailureReason", optional=true)
-    public native CFString copyFailureReason();
+    public native String getFailureReason();
     /**
      * @since Available in iOS 2.0 and later.
      */
     @Bridge(symbol="CFErrorCopyRecoverySuggestion", optional=true)
-    public native CFString copyRecoverySuggestion();
+    public native String getRecoverySuggestion();
     /*</methods>*/
 }

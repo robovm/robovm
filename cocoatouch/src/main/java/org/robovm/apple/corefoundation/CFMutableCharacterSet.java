@@ -27,6 +27,7 @@ import org.robovm.rt.bro.*;
 import org.robovm.rt.bro.annotation.*;
 import org.robovm.rt.bro.ptr.*;
 import org.robovm.apple.dispatch.*;
+import org.robovm.apple.foundation.*;
 /*</imports>*/
 
 /*<javadoc>*/
@@ -53,9 +54,9 @@ import org.robovm.apple.dispatch.*;
     @Bridge(symbol="CFCharacterSetRemoveCharactersInRange", optional=true)
     public native void removeCharactersInRange(@ByVal CFRange theRange);
     @Bridge(symbol="CFCharacterSetAddCharactersInString", optional=true)
-    public native void addCharactersInString(CFString theString);
+    public native void addCharactersInString(String theString);
     @Bridge(symbol="CFCharacterSetRemoveCharactersInString", optional=true)
-    public native void removeCharactersInString(CFString theString);
+    public native void removeCharactersInString(String theString);
     @Bridge(symbol="CFCharacterSetUnion", optional=true)
     public native void union(CFCharacterSet theOtherSet);
     @Bridge(symbol="CFCharacterSetIntersect", optional=true)

@@ -27,18 +27,23 @@ import org.robovm.rt.bro.*;
 import org.robovm.rt.bro.annotation.*;
 import org.robovm.rt.bro.ptr.*;
 import org.robovm.apple.dispatch.*;
+import org.robovm.apple.foundation.*;
 /*</imports>*/
 
 /*<javadoc>*/
-
+/**
+ * @since Available in iOS 4.0 and later.
+ */
 /*</javadoc>*/
 /*<annotations>*/@Marshaler(Bits.AsMachineSizedIntMarshaler.class)/*</annotations>*/
 public final class /*<name>*/CFURLBookmarkResolutionOptions/*</name>*/ extends Bits</*<name>*/CFURLBookmarkResolutionOptions/*</name>*/> {
     /*<values>*/
     public static final CFURLBookmarkResolutionOptions None = new CFURLBookmarkResolutionOptions(0L);
+    public static final CFURLBookmarkResolutionOptions kCFURLBookmarkResolutionWithoutUIMask = new CFURLBookmarkResolutionOptions(256L);
+    public static final CFURLBookmarkResolutionOptions kCFURLBookmarkResolutionWithoutMountingMask = new CFURLBookmarkResolutionOptions(512L);
+    public static final CFURLBookmarkResolutionOptions kCFURLBookmarkResolutionWithSecurityScope = new CFURLBookmarkResolutionOptions(1024L);
     public static final CFURLBookmarkResolutionOptions WithoutUIMask = new CFURLBookmarkResolutionOptions(256L);
     public static final CFURLBookmarkResolutionOptions WithoutMountingMask = new CFURLBookmarkResolutionOptions(512L);
-    public static final CFURLBookmarkResolutionOptions WithSecurityScope = new CFURLBookmarkResolutionOptions(1024L);
     /*</values>*/
 
     private static final /*<name>*/CFURLBookmarkResolutionOptions/*</name>*/[] values = _values(/*<name>*/CFURLBookmarkResolutionOptions/*</name>*/.class);

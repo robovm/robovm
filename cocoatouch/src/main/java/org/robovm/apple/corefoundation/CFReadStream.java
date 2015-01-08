@@ -27,6 +27,7 @@ import org.robovm.rt.bro.*;
 import org.robovm.rt.bro.annotation.*;
 import org.robovm.rt.bro.ptr.*;
 import org.robovm.apple.dispatch.*;
+import org.robovm.apple.foundation.*;
 /*</imports>*/
 
 /*<javadoc>*/
@@ -36,6 +37,22 @@ import org.robovm.apple.dispatch.*;
     extends /*<extends>*/CFType/*</extends>*/ 
     /*<implements>*//*</implements>*/ {
 
+    public interface ClientCallback {
+        void invoke(CFReadStream stream, CFStreamEventType eventType);
+    }
+    
+    private static java.util.concurrent.atomic.AtomicLong refconId = new java.util.concurrent.atomic.AtomicLong();
+    private static final Map<Long, ClientCallback> clientCallbacks = new HashMap<>();
+    private static final java.lang.reflect.Method cbClient;
+    
+    static {
+        try {
+            cbClient = CFWriteStream.class.getDeclaredMethod("cbClient", CFReadStream.class, CFStreamEventType.class, long.class);
+        } catch (Throwable e) {
+            throw new Error(e);
+        }
+    }
+    
     /*<ptr>*/public static class CFReadStreamPtr extends Ptr<CFReadStream, CFReadStreamPtr> {}/*</ptr>*/
     /*<bind>*/static { Bro.bind(CFReadStream.class); }/*</bind>*/
     /*<constants>*//*</constants>*/
@@ -44,20 +61,78 @@ import org.robovm.apple.dispatch.*;
     /*</constructors>*/
     /*<properties>*//*</properties>*/
     /*<members>*//*</members>*/
+    private long localRefconId;
+    
+    @Callback
+    private static void cbClient(CFReadStream stream, CFStreamEventType eventType, @Pointer long refcon) {
+        ClientCallback callback = null;
+        synchronized (clientCallbacks) {
+            callback = clientCallbacks.get(refcon);
+        }
+        callback.invoke(stream, eventType);
+    }
+    
+    public static CFReadStream create(byte[] bytes) {
+        if (bytes == null) {
+            throw new NullPointerException("bytes");
+        }
+        return create(null, VM.getArrayValuesAddress(bytes), bytes.length, null);
+    }
+    public static CFReadStream create(ByteBuffer bytes) {
+        if (bytes == null) {
+            throw new NullPointerException("bytes");
+        }
+        long handle = CFData.getEffectiveAddress(bytes) + bytes.position();
+        return create(null, handle, bytes.remaining(), null);
+    }
+    public static CFReadStream create(CFURL fileURL) {
+        return create(null, fileURL);
+    }
+    
+    public long read(BytePtr buffer, long len) {
+        return read(buffer.getHandle(), len);
+    }
+    public long read(ByteBuffer bytes) {
+        long handle = CFData.getEffectiveAddress(bytes) + bytes.position();
+        return read(handle, bytes.remaining());
+    }
+    public long read(byte[] bytes) {
+        return read(bytes, 0, bytes.length);
+    }
+    public long read(byte[] bytes, int offset, int length) {
+        CFMutableData.checkOffsetAndCount(bytes.length, offset, length);
+        if (length == 0) {
+            return 0;
+        }
+        return read(VM.getArrayValuesAddress(bytes) + offset, length);
+    }
+    
+    public boolean setClientCallback(CFStreamEventType streamEvents, ClientCallback callback) {
+        localRefconId = refconId.getAndIncrement();
+        CFStreamClientContext context = new CFStreamClientContext();
+        context.setInfo(localRefconId);
+        boolean result = setClient(streamEvents, new FunctionPtr(cbClient), context);
+        if (result) {
+            synchronized (clientCallbacks) {
+                clientCallbacks.put(localRefconId, callback);
+            }
+        }
+        return result;
+    }
     /*<methods>*/
     @Bridge(symbol="CFReadStreamGetTypeID", optional=true)
     public static native @MachineSizedUInt long getClassTypeID();
     @Bridge(symbol="CFReadStreamCreateWithBytesNoCopy", optional=true)
-    public static native CFReadStream createWithBytesNoCopy(CFAllocator alloc, BytePtr bytes, @MachineSizedSInt long length, CFAllocator bytesDeallocator);
+    protected static native CFReadStream create(CFAllocator alloc, @Pointer long bytes, @MachineSizedSInt long length, CFAllocator bytesDeallocator);
     @Bridge(symbol="CFReadStreamCreateWithFile", optional=true)
-    public static native CFReadStream createWithFile(CFAllocator alloc, CFURL fileURL);
+    protected static native CFReadStream create(CFAllocator alloc, CFURL fileURL);
     @Bridge(symbol="CFReadStreamGetStatus", optional=true)
     public native CFStreamStatus getStatus();
     /**
      * @since Available in iOS 2.0 and later.
      */
     @Bridge(symbol="CFReadStreamCopyError", optional=true)
-    public native CFError copyError();
+    public native CFError getError();
     @Bridge(symbol="CFReadStreamOpen", optional=true)
     public native boolean openStream();
     @Bridge(symbol="CFReadStreamClose", optional=true)
@@ -65,19 +140,19 @@ import org.robovm.apple.dispatch.*;
     @Bridge(symbol="CFReadStreamHasBytesAvailable", optional=true)
     public native boolean hasBytesAvailable();
     @Bridge(symbol="CFReadStreamRead", optional=true)
-    public native @MachineSizedSInt long read(BytePtr buffer, @MachineSizedSInt long bufferLength);
+    private native @MachineSizedSInt long read(@Pointer long buffer, @MachineSizedSInt long bufferLength);
     @Bridge(symbol="CFReadStreamGetBuffer", optional=true)
-    public native BytePtr getBuffer(@MachineSizedSInt long maxBytesToRead, MachineSizedSIntPtr numBytesRead);
+    private native BytePtr getBuffer(@MachineSizedSInt long maxBytesToRead, MachineSizedSIntPtr numBytesRead);
     @Bridge(symbol="CFReadStreamCopyProperty", optional=true)
-    public native CFType copyProperty(CFString propertyName);
+    public native CFType getProperty(CFStreamProperty propertyName);
     @Bridge(symbol="CFReadStreamSetProperty", optional=true)
-    public native boolean setProperty(CFString propertyName, CFType propertyValue);
+    public native boolean setProperty(CFStreamProperty propertyName, CFType propertyValue);
     @Bridge(symbol="CFReadStreamSetClient", optional=true)
-    public native boolean setClient(CFStreamEventType streamEvents, FunctionPtr clientCB, CFStreamClientContext clientContext);
+    private native boolean setClient(CFStreamEventType streamEvents, FunctionPtr clientCB, CFStreamClientContext clientContext);
     @Bridge(symbol="CFReadStreamScheduleWithRunLoop", optional=true)
-    public native void scheduleWithRunLoop(CFRunLoop runLoop, CFString runLoopMode);
+    public native void scheduleInRunLoop(CFRunLoop runLoop, String runLoopMode);
     @Bridge(symbol="CFReadStreamUnscheduleFromRunLoop", optional=true)
-    public native void unscheduleFromRunLoop(CFRunLoop runLoop, CFString runLoopMode);
+    public native void unscheduleFromRunLoop(CFRunLoop runLoop, String runLoopMode);
     /**
      * @since Available in iOS 7.0 and later.
      */
@@ -87,8 +162,8 @@ import org.robovm.apple.dispatch.*;
      * @since Available in iOS 7.0 and later.
      */
     @Bridge(symbol="CFReadStreamCopyDispatchQueue", optional=true)
-    public native DispatchQueue copyDispatchQueue();
+    public native DispatchQueue getDispatchQueue();
     @Bridge(symbol="CFReadStreamGetError", optional=true)
-    public native @ByVal CFStreamError getError();
+    public native @ByVal CFStreamError getStreamError();
     /*</methods>*/
 }

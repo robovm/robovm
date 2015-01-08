@@ -27,6 +27,7 @@ import org.robovm.rt.bro.*;
 import org.robovm.rt.bro.annotation.*;
 import org.robovm.rt.bro.ptr.*;
 import org.robovm.apple.dispatch.*;
+import org.robovm.apple.foundation.*;
 /*</imports>*/
 
 /*<javadoc>*/
@@ -44,32 +45,52 @@ import org.robovm.apple.dispatch.*;
     /*</constructors>*/
     /*<properties>*//*</properties>*/
     /*<members>*//*</members>*/
+    public static CFNumberFormatter create(CFLocale locale, CFNumberFormatterStyle style) {
+        return create(null, locale, style);
+    }
+    
+    public String format(CFNumber number) {
+        return format(null, this, number);
+    }
+    public CFNumber parse(String string, CFRange rangep, CFNumberFormatterOptionFlags options) {
+        return parse(null, this, string, rangep, options);
+    }
+    public static int getDefaultFractionDigitsForCurrencyCode(String currencyCode) {
+        IntPtr ptr = new IntPtr();
+        getDecimalInfoForCurrencyCode(currencyCode, ptr, new DoublePtr());
+        return ptr.get();
+    }
+    public static double getRoundingIncrementForCurrencyCode(String currencyCode) {
+        DoublePtr ptr = new DoublePtr();
+        getDecimalInfoForCurrencyCode(currencyCode, new IntPtr(), ptr);
+        return ptr.get();
+    }
     /*<methods>*/
     @Bridge(symbol="CFNumberFormatterGetTypeID", optional=true)
     public static native @MachineSizedUInt long getClassTypeID();
     @Bridge(symbol="CFNumberFormatterCreate", optional=true)
-    public static native CFNumberFormatter create(CFAllocator allocator, CFLocale locale, CFNumberFormatterStyle style);
+    protected static native CFNumberFormatter create(CFAllocator allocator, CFLocale locale, CFNumberFormatterStyle style);
     @Bridge(symbol="CFNumberFormatterGetLocale", optional=true)
     public native CFLocale getLocale();
     @Bridge(symbol="CFNumberFormatterGetStyle", optional=true)
     public native CFNumberFormatterStyle getStyle();
     @Bridge(symbol="CFNumberFormatterGetFormat", optional=true)
-    public native CFString getFormat();
+    public native String getFormat();
     @Bridge(symbol="CFNumberFormatterSetFormat", optional=true)
-    public native void setFormat(CFString formatString);
+    public native void setFormat(String formatString);
     @Bridge(symbol="CFNumberFormatterCreateStringWithNumber", optional=true)
-    public static native CFString createStringWithNumber(CFAllocator allocator, CFNumberFormatter formatter, CFNumber number);
+    protected static native String format(CFAllocator allocator, CFNumberFormatter formatter, CFNumber number);
     @Bridge(symbol="CFNumberFormatterCreateStringWithValue", optional=true)
-    public static native CFString createStringWithValue(CFAllocator allocator, CFNumberFormatter formatter, CFNumberType numberType, VoidPtr valuePtr);
+    protected static native String formatValue(CFAllocator allocator, CFNumberFormatter formatter, CFNumberType numberType, VoidPtr valuePtr);
     @Bridge(symbol="CFNumberFormatterCreateNumberFromString", optional=true)
-    public static native CFNumber createNumberFromString(CFAllocator allocator, CFNumberFormatter formatter, CFString string, CFRange rangep, CFNumberFormatterOptionFlags options);
+    protected static native CFNumber parse(CFAllocator allocator, CFNumberFormatter formatter, String string, CFRange rangep, CFNumberFormatterOptionFlags options);
     @Bridge(symbol="CFNumberFormatterGetValueFromString", optional=true)
-    public native boolean getValueFromString(CFString string, CFRange rangep, CFNumberType numberType, VoidPtr valuePtr);
+    protected native boolean parseValue(String string, CFRange rangep, CFNumberType numberType, VoidPtr valuePtr);
     @Bridge(symbol="CFNumberFormatterSetProperty", optional=true)
-    public native void setProperty(CFString key, CFType value);
+    public native void setProperty(CFNumberFormatterProperty key, CFType value);
     @Bridge(symbol="CFNumberFormatterCopyProperty", optional=true)
-    public native CFType copyProperty(CFString key);
+    public native CFType getProperty(CFNumberFormatterProperty key);
     @Bridge(symbol="CFNumberFormatterGetDecimalInfoForCurrencyCode", optional=true)
-    public static native boolean getDecimalInfoForCurrencyCode(CFString currencyCode, IntPtr defaultFractionDigits, DoublePtr roundingIncrement);
+    private static native boolean getDecimalInfoForCurrencyCode(String currencyCode, IntPtr defaultFractionDigits, DoublePtr roundingIncrement);
     /*</methods>*/
 }

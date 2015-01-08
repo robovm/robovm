@@ -27,6 +27,7 @@ import org.robovm.rt.bro.*;
 import org.robovm.rt.bro.annotation.*;
 import org.robovm.rt.bro.ptr.*;
 import org.robovm.apple.dispatch.*;
+import org.robovm.apple.foundation.*;
 /*</imports>*/
 
 /*<javadoc>*/
@@ -52,20 +53,8 @@ import org.robovm.apple.dispatch.*;
     /*<members>*/
     @StructMember(0) public native @MachineSizedSInt long getLocation();
     @StructMember(0) public native CFRange setLocation(@MachineSizedSInt long location);
-    
-    @Deprecated
-    @StructMember(0) public native @MachineSizedSInt long location();
-    @Deprecated
-    @StructMember(0) public native CFRange location(@MachineSizedSInt long location);
-    
     @StructMember(1) public native @MachineSizedSInt long getLength();
     @StructMember(1) public native CFRange setLength(@MachineSizedSInt long length);
-    
-    @Deprecated
-    @StructMember(1) public native @MachineSizedSInt long length();
-    @Deprecated
-    @StructMember(1) public native CFRange length(@MachineSizedSInt long length);
-    
     /*</members>*/
     /*<methods>*//*</methods>*/
 }

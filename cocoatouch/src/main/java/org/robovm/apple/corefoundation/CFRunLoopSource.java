@@ -27,6 +27,7 @@ import org.robovm.rt.bro.*;
 import org.robovm.rt.bro.annotation.*;
 import org.robovm.rt.bro.ptr.*;
 import org.robovm.apple.dispatch.*;
+import org.robovm.apple.foundation.*;
 /*</imports>*/
 
 /*<javadoc>*/
@@ -44,11 +45,20 @@ import org.robovm.apple.dispatch.*;
     /*</constructors>*/
     /*<properties>*//*</properties>*/
     /*<members>*//*</members>*/
+    public static CFRunLoopSource create(@MachineSizedSInt long order, CFRunLoopSourceContext context) {
+        return create(null, order, context);
+    }
+
+    public CFRunLoopSourceContext getContext() {
+        CFRunLoopSourceContext.CFRunLoopSourceContextPtr ptr = new CFRunLoopSourceContext.CFRunLoopSourceContextPtr();
+        getContext(ptr);
+        return ptr.get();
+    }
     /*<methods>*/
     @Bridge(symbol="CFRunLoopSourceGetTypeID", optional=true)
     public static native @MachineSizedUInt long getClassTypeID();
     @Bridge(symbol="CFRunLoopSourceCreate", optional=true)
-    public static native CFRunLoopSource create(CFAllocator allocator, @MachineSizedSInt long order, CFRunLoopSourceContext context);
+    protected static native CFRunLoopSource create(CFAllocator allocator, @MachineSizedSInt long order, CFRunLoopSourceContext context);
     @Bridge(symbol="CFRunLoopSourceGetOrder", optional=true)
     public native @MachineSizedSInt long getOrder();
     @Bridge(symbol="CFRunLoopSourceInvalidate", optional=true)
@@ -56,7 +66,7 @@ import org.robovm.apple.dispatch.*;
     @Bridge(symbol="CFRunLoopSourceIsValid", optional=true)
     public native boolean isValid();
     @Bridge(symbol="CFRunLoopSourceGetContext", optional=true)
-    public native void getContext(CFRunLoopSourceContext context);
+    private native void getContext(CFRunLoopSourceContext.CFRunLoopSourceContextPtr context);
     @Bridge(symbol="CFRunLoopSourceSignal", optional=true)
     public native void signal();
     /*</methods>*/

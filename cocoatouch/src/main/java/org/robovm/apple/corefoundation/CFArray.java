@@ -27,6 +27,7 @@ import org.robovm.rt.bro.*;
 import org.robovm.rt.bro.annotation.*;
 import org.robovm.rt.bro.ptr.*;
 import org.robovm.apple.dispatch.*;
+import org.robovm.apple.foundation.*;
 /*</imports>*/
 import org.robovm.apple.foundation.NSObject;
 import org.robovm.apple.foundation.NSString;
@@ -107,11 +108,11 @@ import org.robovm.apple.foundation.NSObject.NSObjectPtr;
             throw new NullPointerException("objects");
         }
         if (objects.length == 0) {
-            return create(null, null, 0, CoreFoundation.TypeArrayCallBacks());
+            return create(null, null, 0, getTypeCallBacks());
         }
         NSObjectPtr values = Struct.allocate(NSObjectPtr.class, objects.length);
         values.set(objects);
-        return create(null, values.as(VoidPtr.VoidPtrPtr.class), objects.length, CoreFoundation.TypeArrayCallBacks());
+        return create(null, values.as(VoidPtr.VoidPtrPtr.class), objects.length, getTypeCallBacks());
     }
     
     public static CFArray create(CFType ... objects) {
@@ -119,11 +120,11 @@ import org.robovm.apple.foundation.NSObject.NSObjectPtr;
             throw new NullPointerException("objects");
         }
         if (objects.length == 0) {
-            return create(null, null, 0, CoreFoundation.TypeArrayCallBacks());
+            return create(null, null, 0, getTypeCallBacks());
         }
         CFTypePtr values = Struct.allocate(CFTypePtr.class, objects.length);
         values.set(objects);
-        return create(null, values.as(VoidPtr.VoidPtrPtr.class), objects.length, CoreFoundation.TypeArrayCallBacks());
+        return create(null, values.as(VoidPtr.VoidPtrPtr.class), objects.length, getTypeCallBacks());
     }
     
     @SuppressWarnings("unchecked")
@@ -204,6 +205,9 @@ import org.robovm.apple.foundation.NSObject.NSObjectPtr;
         return CFArray.create(cfStrings);
     }
     /*<methods>*/
+    @GlobalValue(symbol="kCFTypeArrayCallBacks", optional=true)
+    public static native @ByVal CFArrayCallBacks getTypeCallBacks();
+    
     @Bridge(symbol="CFArrayGetTypeID", optional=true)
     public static native @MachineSizedUInt long getClassTypeID();
     @Bridge(symbol="CFArrayCreate", optional=true)

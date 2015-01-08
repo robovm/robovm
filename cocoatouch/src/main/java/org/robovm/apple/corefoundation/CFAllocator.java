@@ -27,6 +27,7 @@ import org.robovm.rt.bro.*;
 import org.robovm.rt.bro.annotation.*;
 import org.robovm.rt.bro.ptr.*;
 import org.robovm.apple.dispatch.*;
+import org.robovm.apple.foundation.*;
 /*</imports>*/
 
 /*<javadoc>*/
@@ -44,11 +45,29 @@ import org.robovm.apple.dispatch.*;
     /*</constructors>*/
     /*<properties>*//*</properties>*/
     /*<members>*//*</members>*/
+    public CFAllocatorContext getContext() {
+        CFAllocatorContext.CFAllocatorContextPtr ptr = new CFAllocatorContext.CFAllocatorContextPtr();
+        getContext(ptr);
+        return ptr.get();
+    }
     /*<methods>*/
+    @GlobalValue(symbol="kCFAllocatorDefault", optional=true)
+    public static native CFAllocator getDefaultAllocator();
+    @GlobalValue(symbol="kCFAllocatorSystemDefault", optional=true)
+    public static native CFAllocator getSystemDefaultAllocator();
+    @GlobalValue(symbol="kCFAllocatorMalloc", optional=true)
+    public static native CFAllocator getMallocAllocator();
+    @GlobalValue(symbol="kCFAllocatorMallocZone", optional=true)
+    public static native CFAllocator getMallocZoneAllocator();
+    @GlobalValue(symbol="kCFAllocatorNull", optional=true)
+    public static native CFAllocator getNullAllocator();
+    @GlobalValue(symbol="kCFAllocatorUseContext", optional=true)
+    public static native CFAllocator getUseContextAllocator();
+    
     @Bridge(symbol="CFAllocatorGetTypeID", optional=true)
     public static native @MachineSizedUInt long getClassTypeID();
     @Bridge(symbol="CFAllocatorSetDefault", optional=true)
-    public native void setDefault();
+    public static native void setDefault(CFAllocator allocator);
     @Bridge(symbol="CFAllocatorGetDefault", optional=true)
     public static native CFAllocator getDefault();
     @Bridge(symbol="CFAllocatorCreate", optional=true)
@@ -62,6 +81,6 @@ import org.robovm.apple.dispatch.*;
     @Bridge(symbol="CFAllocatorGetPreferredSizeForSize", optional=true)
     public native @MachineSizedSInt long getPreferredSizeForSize(@MachineSizedSInt long size, @MachineSizedSInt long hint);
     @Bridge(symbol="CFAllocatorGetContext", optional=true)
-    public native void getContext(CFAllocatorContext context);
+    private native void getContext(CFAllocatorContext.CFAllocatorContextPtr context);
     /*</methods>*/
 }

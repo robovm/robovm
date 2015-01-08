@@ -27,13 +27,14 @@ import org.robovm.rt.bro.*;
 import org.robovm.rt.bro.annotation.*;
 import org.robovm.rt.bro.ptr.*;
 import org.robovm.apple.dispatch.*;
+import org.robovm.apple.foundation.*;
 /*</imports>*/
 
 /*<javadoc>*/
 
 /*</javadoc>*/
 /*<annotations>*//*</annotations>*/
-/*<visibility>*/public/*</visibility>*/ class /*<name>*/CFRunLoopObserverContext/*</name>*/ 
+/*<visibility>*//*</visibility>*/ class /*<name>*/CFRunLoopObserverContext/*</name>*/ 
     extends /*<extends>*/Struct<CFRunLoopObserverContext>/*</extends>*/ 
     /*<implements>*//*</implements>*/ {
 
@@ -48,51 +49,21 @@ import org.robovm.apple.dispatch.*;
         this.setInfo(info);
         this.setRetain(retain);
         this.setRelease(release);
-        this.setCopydescription(copyDescription);
+        this.setCopyDescription(copyDescription);
     }
     /*</constructors>*/
     /*<properties>*//*</properties>*/
     /*<members>*/
     @StructMember(0) public native @MachineSizedSInt long getVersion();
     @StructMember(0) public native CFRunLoopObserverContext setVersion(@MachineSizedSInt long version);
-    
-    @Deprecated
-    @StructMember(0) public native @MachineSizedSInt long version();
-    @Deprecated
-    @StructMember(0) public native CFRunLoopObserverContext version(@MachineSizedSInt long version);
-    
     @StructMember(1) public native VoidPtr getInfo();
     @StructMember(1) public native CFRunLoopObserverContext setInfo(VoidPtr info);
-    
-    @Deprecated
-    @StructMember(1) public native VoidPtr info();
-    @Deprecated
-    @StructMember(1) public native CFRunLoopObserverContext info(VoidPtr info);
-    
     @StructMember(2) public native FunctionPtr getRetain();
     @StructMember(2) public native CFRunLoopObserverContext setRetain(FunctionPtr retain);
-    
-    @Deprecated
-    @StructMember(2) public native FunctionPtr retain();
-    @Deprecated
-    @StructMember(2) public native CFRunLoopObserverContext retain(FunctionPtr retain);
-    
     @StructMember(3) public native FunctionPtr getRelease();
     @StructMember(3) public native CFRunLoopObserverContext setRelease(FunctionPtr release);
-    
-    @Deprecated
-    @StructMember(3) public native FunctionPtr release();
-    @Deprecated
-    @StructMember(3) public native CFRunLoopObserverContext release(FunctionPtr release);
-    
-    @StructMember(4) public native FunctionPtr getCopydescription();
-    @StructMember(4) public native CFRunLoopObserverContext setCopydescription(FunctionPtr copyDescription);
-    
-    @Deprecated
-    @StructMember(4) public native FunctionPtr copyDescription();
-    @Deprecated
-    @StructMember(4) public native CFRunLoopObserverContext copyDescription(FunctionPtr copyDescription);
-    
+    @StructMember(4) public native FunctionPtr getCopyDescription();
+    @StructMember(4) public native CFRunLoopObserverContext setCopyDescription(FunctionPtr copyDescription);
     /*</members>*/
     /*<methods>*//*</methods>*/
 }

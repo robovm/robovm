@@ -27,6 +27,7 @@ import org.robovm.rt.bro.*;
 import org.robovm.rt.bro.annotation.*;
 import org.robovm.rt.bro.ptr.*;
 import org.robovm.apple.dispatch.*;
+import org.robovm.apple.foundation.*;
 /*</imports>*/
 
 /*<javadoc>*/
@@ -36,6 +37,29 @@ import org.robovm.apple.dispatch.*;
     extends /*<extends>*/CFType/*</extends>*/ 
     /*<implements>*//*</implements>*/ {
 
+    public interface MachPortCallback {
+        CFData invoke(CFMachPort port, VoidPtr msg, long size);
+    }
+    public interface InvalidationCallback {
+        void invalidate(CFMachPort port);
+    }
+    
+    private static java.util.concurrent.atomic.AtomicLong refconId = new java.util.concurrent.atomic.AtomicLong();
+    private static final Map<Long, MachPortCallback> portCallbacks = new HashMap<>();
+    private static final java.lang.reflect.Method cbPort;
+    private static final java.lang.reflect.Method cbInvalidate;
+    
+    static {
+        try {
+            cbPort = CFMachPort.class.getDeclaredMethod("cbPort", CFMachPort.class, VoidPtr.class, long.class, long.class);
+            cbInvalidate = CFMachPort.class.getDeclaredMethod("cbInvalidate", CFMachPort.class, long.class);
+        } catch (Throwable e) {
+            throw new Error(e);
+        }
+    }
+    
+    private InvalidationCallback invalidationCallback;
+    
     /*<ptr>*/public static class CFMachPortPtr extends Ptr<CFMachPort, CFMachPortPtr> {}/*</ptr>*/
     /*<bind>*/static { Bro.bind(CFMachPort.class); }/*</bind>*/
     /*<constants>*//*</constants>*/
@@ -44,26 +68,80 @@ import org.robovm.apple.dispatch.*;
     /*</constructors>*/
     /*<properties>*//*</properties>*/
     /*<members>*//*</members>*/
+    @Callback
+    private static void cbPort(CFMachPort port, VoidPtr msg, @MachineSizedSInt long size, @Pointer long refcon) {
+        MachPortCallback callback = null;
+        synchronized (portCallbacks) {
+            callback = portCallbacks.get(refcon);
+        }
+        callback.invoke(port, msg, size);
+    }
+    @Callback
+    private void cbInvalidate(CFMachPort port, @Pointer long refcon) {
+        if (invalidationCallback != null) {
+            invalidationCallback.invalidate(port);
+        }
+    }
+    
+    public static CFMachPort create(MachPortCallback callback) {
+        long refcon = refconId.getAndIncrement();
+        CFMachPortContext context = new CFMachPortContext();
+        context.setInfo(refcon);
+        BooleanPtr ptr = new BooleanPtr();
+        CFMachPort result = create(null, new FunctionPtr(cbPort), context, ptr);
+        if (result != null) {
+            synchronized (portCallbacks) {
+                portCallbacks.put(refcon, callback);
+            }
+        }
+        return result;
+    }
+    public static CFMachPort create(int portNum, MachPortCallback callback) {
+        long refcon = refconId.getAndIncrement();
+        CFMachPortContext context = new CFMachPortContext();
+        context.setInfo(refcon);
+        BooleanPtr ptr = new BooleanPtr();
+        CFMachPort result = create(null, portNum, new FunctionPtr(cbPort), context, ptr);
+        if (result != null) {
+            synchronized (portCallbacks) {
+                portCallbacks.put(refcon, callback);
+            }
+        }
+        return result;
+    }
+
+    public InvalidationCallback getInvalidationCallBack() {
+        return invalidationCallback;
+    }
+    public void setInvalidationCallBack(InvalidationCallback callback) {
+        invalidationCallback = callback;
+        if (callback == null) {
+            setInvalidationCallBack0(null);
+        } else {
+            setInvalidationCallBack0(new FunctionPtr(cbInvalidate));
+        }
+    }
+    public static CFRunLoopSource createRunLoopSource(CFMachPort port, @MachineSizedSInt long order) {
+        return createRunLoopSource(null, port, order);
+    }
     /*<methods>*/
     @Bridge(symbol="CFMachPortGetTypeID", optional=true)
     public static native @MachineSizedUInt long getClassTypeID();
     @Bridge(symbol="CFMachPortCreate", optional=true)
-    public static native CFMachPort create(CFAllocator allocator, FunctionPtr callout, CFMachPortContext context, BytePtr shouldFreeInfo);
+    protected static native CFMachPort create(CFAllocator allocator, FunctionPtr callout, CFMachPortContext context, BooleanPtr shouldFreeInfo);
     @Bridge(symbol="CFMachPortCreateWithPort", optional=true)
-    public static native CFMachPort createWithPort(CFAllocator allocator, int portNum, FunctionPtr callout, CFMachPortContext context, BytePtr shouldFreeInfo);
+    protected static native CFMachPort create(CFAllocator allocator, int portNum, FunctionPtr callout, CFMachPortContext context, BooleanPtr shouldFreeInfo);
     @Bridge(symbol="CFMachPortGetPort", optional=true)
     public native int getPort();
-    @Bridge(symbol="CFMachPortGetContext", optional=true)
-    public native void getContext(CFMachPortContext context);
     @Bridge(symbol="CFMachPortInvalidate", optional=true)
     public native void invalidate();
     @Bridge(symbol="CFMachPortIsValid", optional=true)
     public native boolean isValid();
     @Bridge(symbol="CFMachPortGetInvalidationCallBack", optional=true)
-    public native FunctionPtr getInvalidationCallBack();
+    private native FunctionPtr getInvalidationCallBack0();
     @Bridge(symbol="CFMachPortSetInvalidationCallBack", optional=true)
-    public native void setInvalidationCallBack(FunctionPtr callout);
+    private native void setInvalidationCallBack0(FunctionPtr callout);
     @Bridge(symbol="CFMachPortCreateRunLoopSource", optional=true)
-    public static native CFRunLoopSource createRunLoopSource(CFAllocator allocator, CFMachPort port, @MachineSizedSInt long order);
+    protected static native CFRunLoopSource createRunLoopSource(CFAllocator allocator, CFMachPort port, @MachineSizedSInt long order);
     /*</methods>*/
 }

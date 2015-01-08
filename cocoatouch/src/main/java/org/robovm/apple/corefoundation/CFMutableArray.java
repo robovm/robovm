@@ -27,6 +27,7 @@ import org.robovm.rt.bro.*;
 import org.robovm.rt.bro.annotation.*;
 import org.robovm.rt.bro.ptr.*;
 import org.robovm.apple.dispatch.*;
+import org.robovm.apple.foundation.*;
 /*</imports>*/
 
 /*<javadoc>*/
@@ -44,7 +45,7 @@ import org.robovm.apple.dispatch.*;
     /*<properties>*//*</properties>*/
     /*<members>*//*</members>*/
     public static CFMutableArray create() {
-        return createMutable(null, 0, CoreFoundation.TypeArrayCallBacks());
+        return createMutable(null, 0, getTypeCallBacks());
     }
     
     public void add(NativeObject value) {

@@ -27,30 +27,49 @@ import org.robovm.rt.bro.*;
 import org.robovm.rt.bro.annotation.*;
 import org.robovm.rt.bro.ptr.*;
 import org.robovm.apple.dispatch.*;
+import org.robovm.apple.foundation.*;
 /*</imports>*/
 
 /*<javadoc>*/
 /*</javadoc>*/
 /*<annotations>*/@Library("CoreFoundation")/*</annotations>*/
-/*<visibility>*/public/*</visibility>*/ class /*<name>*/CFStream/*</name>*/ 
+/*<visibility>*/public/*</visibility>*/ class /*<name>*/CFRunLoopMode/*</name>*/ 
     extends /*<extends>*/Object/*</extends>*/ 
     /*<implements>*//*</implements>*/ {
 
     /*<ptr>*/
     /*</ptr>*/
-    /*<bind>*/static { Bro.bind(CFStream.class); }/*</bind>*/
+    /*<bind>*/static { Bro.bind(CFRunLoopMode.class); }/*</bind>*/
     /*<constants>*//*</constants>*/
+    public static final CFRunLoopMode Default = new CFRunLoopMode("DefaultValue");
+    public static final CFRunLoopMode Common = new CFRunLoopMode("CommonValue");
+    
+    private static CFRunLoopMode[] values = new CFRunLoopMode[] {Default, Common};
+    private final LazyGlobalValue<String> lazyGlobalValue;
+    
+    private CFRunLoopMode(String getterName) {
+        lazyGlobalValue = new LazyGlobalValue<>(getClass(), getterName);
+    }
     /*<constructors>*//*</constructors>*/
     /*<properties>*//*</properties>*/
     /*<members>*//*</members>*/
+    public String value() {
+        return lazyGlobalValue.value();
+    }
+    
+    public static CFRunLoopMode valueOf(String value) {
+        for (CFRunLoopMode v : values) {
+            if (v.value().equals(value)) {
+                return v;
+            }
+        }
+        throw new IllegalArgumentException("No constant with value " + value + " found in " 
+            + /*<name>*/CFRunLoopMode/*</name>*/.class.getName());
+    }
     /*<methods>*/
-    @Bridge(symbol="CFStreamCreateBoundPair", optional=true)
-    public static native void createBoundPair(CFAllocator alloc, CFReadStream.CFReadStreamPtr readStream, CFWriteStream.CFWriteStreamPtr writeStream, @MachineSizedSInt long transferBufferSize);
-    @Bridge(symbol="CFStreamCreatePairWithSocket", optional=true)
-    public static native void createPairWithSocket(CFAllocator alloc, int sock, CFReadStream.CFReadStreamPtr readStream, CFWriteStream.CFWriteStreamPtr writeStream);
-    @Bridge(symbol="CFStreamCreatePairWithSocketToHost", optional=true)
-    public static native void createPairWithSocketToHost(CFAllocator alloc, CFString host, int port, CFReadStream.CFReadStreamPtr readStream, CFWriteStream.CFWriteStreamPtr writeStream);
-    @Bridge(symbol="CFStreamCreatePairWithPeerSocketSignature", optional=true)
-    public static native void createPairWithPeerSocketSignature(CFAllocator alloc, CFSocketSignature signature, CFReadStream.CFReadStreamPtr readStream, CFWriteStream.CFWriteStreamPtr writeStream);
+    @GlobalValue(symbol="kCFRunLoopDefaultMode", optional=true)
+    protected static native String DefaultValue();
+    @GlobalValue(symbol="kCFRunLoopCommonModes", optional=true)
+    protected static native String CommonValue();
     /*</methods>*/
 }

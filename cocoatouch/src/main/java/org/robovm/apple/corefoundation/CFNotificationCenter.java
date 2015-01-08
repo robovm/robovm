@@ -27,6 +27,7 @@ import org.robovm.rt.bro.*;
 import org.robovm.rt.bro.annotation.*;
 import org.robovm.rt.bro.ptr.*;
 import org.robovm.apple.dispatch.*;
+import org.robovm.apple.foundation.*;
 /*</imports>*/
 
 /*<javadoc>*/
@@ -36,6 +37,20 @@ import org.robovm.apple.dispatch.*;
     extends /*<extends>*/CFType/*</extends>*/ 
     /*<implements>*//*</implements>*/ {
 
+    public interface NotificationCallback {
+        void invoke(CFNotificationCenter center, CFType observer, String name, CFType object, NSDictionary<NSString, ?> userInfo);
+    }
+    
+    private static final Map<Long, NotificationCallback> callbacks = new HashMap<>();
+    private static final java.lang.reflect.Method cbNotification;
+    
+    static {
+        try {
+            cbNotification = CFNotificationCenter.class.getDeclaredMethod("cbNotification", CFNotificationCenter.class, CFType.class, String.class, CFType.class, NSDictionary.class);
+        } catch (Throwable e) {
+            throw new Error(e);
+        }
+    }
     /*<ptr>*/public static class CFNotificationCenterPtr extends Ptr<CFNotificationCenter, CFNotificationCenterPtr> {}/*</ptr>*/
     /*<bind>*/static { Bro.bind(CFNotificationCenter.class); }/*</bind>*/
     /*<constants>*//*</constants>*/
@@ -44,6 +59,39 @@ import org.robovm.apple.dispatch.*;
     /*</constructors>*/
     /*<properties>*//*</properties>*/
     /*<members>*//*</members>*/
+    @Callback
+    private static void cbNotification(CFNotificationCenter center, CFType observer, String name, CFType object, NSDictionary<NSString, ?> userInfo) {
+        NotificationCallback callback = null;
+        synchronized (callbacks) {
+            long id = getCallbackIdForNotification(observer, name, object);
+            callback = callbacks.get(id);
+        }
+        // We don't store observer callbacks for every possible combination of observer, name and object.
+        // Therefore a callback for the current combination is not registered and will be null.
+        if (callback != null) {
+            callback.invoke(center, observer, name, object, userInfo);
+        }
+    }
+    
+    public void addObserver(CFType observer, NotificationCallback callBack, String name, CFType object, CFNotificationSuspensionBehavior suspensionBehavior) {
+        synchronized(callbacks) {
+            long id = getCallbackIdForNotification(observer, name, object);
+            callbacks.put(id, callBack);
+        }
+        addObserver(observer, new FunctionPtr(cbNotification), name, object, suspensionBehavior);
+    }
+    
+    private static long getCallbackIdForNotification(CFType observer, String name, CFType object) {
+        final int prime = 31;
+        long id = name.hashCode();
+        if (observer != null) {
+            id = id * prime + observer.hash();
+        }
+        if (object != null) {
+            id = id * prime + object.hash();
+        }
+        return id;
+    }
     /*<methods>*/
     @Bridge(symbol="CFNotificationCenterGetTypeID", optional=true)
     public static native @MachineSizedUInt long getClassTypeID();
@@ -52,14 +100,14 @@ import org.robovm.apple.dispatch.*;
     @Bridge(symbol="CFNotificationCenterGetDarwinNotifyCenter", optional=true)
     public static native CFNotificationCenter getDarwinNotifyCenter();
     @Bridge(symbol="CFNotificationCenterAddObserver", optional=true)
-    public native void addObserver(VoidPtr observer, FunctionPtr callBack, CFString name, VoidPtr object, CFNotificationSuspensionBehavior suspensionBehavior);
+    private native void addObserver(CFType observer, FunctionPtr callBack, String name, CFType object, CFNotificationSuspensionBehavior suspensionBehavior);
     @Bridge(symbol="CFNotificationCenterRemoveObserver", optional=true)
-    public native void removeObserver(VoidPtr observer, CFString name, VoidPtr object);
+    public native void removeObserver(CFType observer, String name, CFType object);
     @Bridge(symbol="CFNotificationCenterRemoveEveryObserver", optional=true)
-    public native void removeEveryObserver(VoidPtr observer);
+    public native void removeEveryObserver(CFType observer);
     @Bridge(symbol="CFNotificationCenterPostNotification", optional=true)
-    public native void postNotification(CFString name, VoidPtr object, CFDictionary userInfo, boolean deliverImmediately);
+    public native void postNotification(String name, CFType object, NSDictionary<NSString, ?> userInfo, boolean deliverImmediately);
     @Bridge(symbol="CFNotificationCenterPostNotificationWithOptions", optional=true)
-    public native void postNotificationWithOptions(CFString name, VoidPtr object, CFDictionary userInfo, CFNotificationPostingOptions options);
+    public native void postNotification(String name, CFType object, NSDictionary<NSString, ?> userInfo, CFNotificationPostingOptions options);
     /*</methods>*/
 }

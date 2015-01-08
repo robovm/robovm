@@ -27,6 +27,7 @@ import org.robovm.rt.bro.*;
 import org.robovm.rt.bro.annotation.*;
 import org.robovm.rt.bro.ptr.*;
 import org.robovm.apple.dispatch.*;
+import org.robovm.apple.foundation.*;
 /*</imports>*/
 
 /*<javadoc>*/
@@ -49,13 +50,13 @@ import org.robovm.apple.dispatch.*;
     @Bridge(symbol="CFAttributedStringCreateMutable", optional=true)
     protected static native CFMutableAttributedString createMutable(CFAllocator alloc, @MachineSizedSInt long maxLength);
     @Bridge(symbol="CFAttributedStringReplaceString", optional=true)
-    public native void replaceString(@ByVal CFRange range, CFString replacement);
+    public native void replaceString(@ByVal CFRange range, String replacement);
     @Bridge(symbol="CFAttributedStringSetAttributes", optional=true)
     public native void setAttributes(@ByVal CFRange range, CFDictionary replacement, boolean clearOtherAttributes);
     @Bridge(symbol="CFAttributedStringSetAttribute", optional=true)
-    public native void setAttribute(@ByVal CFRange range, CFString attrName, CFType value);
+    public native void setAttribute(@ByVal CFRange range, String attrName, CFType value);
     @Bridge(symbol="CFAttributedStringRemoveAttribute", optional=true)
-    public native void removeAttribute(@ByVal CFRange range, CFString attrName);
+    public native void removeAttribute(@ByVal CFRange range, String attrName);
     @Bridge(symbol="CFAttributedStringReplaceAttributedString", optional=true)
     public native void replaceAttributedString(@ByVal CFRange range, CFAttributedString replacement);
     @Bridge(symbol="CFAttributedStringBeginEditing", optional=true)

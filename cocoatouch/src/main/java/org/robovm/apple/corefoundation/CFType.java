@@ -29,6 +29,7 @@ import org.robovm.rt.bro.*;
 import org.robovm.rt.bro.annotation.*;
 import org.robovm.rt.bro.ptr.*;
 import org.robovm.apple.dispatch.*;
+import org.robovm.apple.foundation.*;
 /*</imports>*/
 
 /*<javadoc>*/
@@ -161,7 +162,7 @@ import org.robovm.apple.dispatch.*;
 
     @Override
     public String toString() {
-        try (CFString s = copyDescription()) {
+        try (CFString s = getDescription()) {
             return s.toString();
         }
     }
@@ -177,7 +178,7 @@ import org.robovm.apple.dispatch.*;
     @Bridge(symbol="CFGetTypeID", optional=true)
     public native @MachineSizedUInt long getTypeID();
     @Bridge(symbol="CFCopyTypeIDDescription", optional=true)
-    public static native CFString getTypeIDDescription(@MachineSizedUInt long type_id);
+    public static native String getTypeIDDescription(@MachineSizedUInt long type_id);
     @Bridge(symbol="CFRetain", optional=true)
     public native CFType retain();
     @Bridge(symbol="CFRelease", optional=true)
@@ -190,11 +191,11 @@ import org.robovm.apple.dispatch.*;
     @Bridge(symbol="CFGetRetainCount", optional=true)
     public native @MachineSizedSInt long getRetainCount();
     @Bridge(symbol="CFEqual", optional=true)
-    public native boolean equal(CFType cf2);
+    public native boolean equalsTo(CFType cf2);
     @Bridge(symbol="CFHash", optional=true)
     public native @MachineSizedUInt long hash();
     @Bridge(symbol="CFCopyDescription", optional=true)
-    protected native CFString copyDescription();
+    protected native CFString getDescription();
     @Bridge(symbol="CFGetAllocator", optional=true)
     public native CFAllocator getAllocator();
     @Bridge(symbol="CFMakeCollectable", optional=true)

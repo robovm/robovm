@@ -76,9 +76,9 @@ import org.robovm.apple.avfoundation.*;
     @Property(selector = "setSynchronous:")
     public native void setSynchronous(boolean v);
     @Property(selector = "progressHandler")
-    public native @Block VoidBlock4<Boolean, Double, NSError, BooleanPtr> getProgressHandler();
+    public native @Block VoidBlock4<Double, NSError, BooleanPtr, NSDictionary<NSString, NSObject>> getProgressHandler();
     @Property(selector = "setProgressHandler:")
-    public native void setProgressHandler(@Block VoidBlock4<Boolean, Double, NSError, BooleanPtr> v);
+    public native void setProgressHandler(@Block VoidBlock4<Double, NSError, BooleanPtr, NSDictionary<NSString, NSObject>> v);
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/

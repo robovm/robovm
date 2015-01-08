@@ -104,7 +104,10 @@ classes:
                 name: create
             '+changeRequestForCollectionList:childCollections:':
                 name: create
-    PHContentEditingInput: {} # DONE
+    PHContentEditingInput: # DONE
+        properties:
+            'fullSizeImageOrientation':
+                type: org.robovm.apple.imageio.CGImagePropertyOrientation
     PHContentEditingInputRequestOptions: {} # DONE
     PHContentEditingOutput: # DONE
         methods:
@@ -195,7 +198,7 @@ classes:
     PHImageRequestOptions: # DONE
         properties:
             'progressHandler':
-                type: '@Block VoidBlock4<Boolean, Double, NSError, BooleanPtr>'
+                type: '@Block VoidBlock4<Double, NSError, BooleanPtr, NSDictionary<NSString, NSObject>>'
     PHObject: {} # DONE
     PHAsset: # DONE
         properties:

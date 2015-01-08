@@ -52,7 +52,7 @@ import org.robovm.apple.avfoundation.*;
     /*</constructors>*/
     /*<properties>*/
     @Property(selector = "allowsCachingHighQualityImages")
-    public native boolean isAllowsCachingHighQualityImages();
+    public native boolean allowsCachingHighQualityImages();
     @Property(selector = "setAllowsCachingHighQualityImages:")
     public native void setAllowsCachingHighQualityImages(boolean v);
     /*</properties>*/

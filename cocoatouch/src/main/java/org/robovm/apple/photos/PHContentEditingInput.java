@@ -68,7 +68,7 @@ import org.robovm.apple.avfoundation.*;
     @Property(selector = "fullSizeImageURL")
     public native NSURL getFullSizeImageURL();
     @Property(selector = "fullSizeImageOrientation")
-    public native int getFullSizeImageOrientation();
+    public native org.robovm.apple.imageio.CGImagePropertyOrientation getFullSizeImageOrientation();
     @Property(selector = "avAsset")
     public native AVAsset getAvAsset();
     /*</properties>*/

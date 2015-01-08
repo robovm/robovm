@@ -81,7 +81,8 @@ public class AppLauncher {
     
     private final IDevice device;
     private final String appId;
-    private File localAppPath;
+    private final File localAppPath;
+    private boolean installed = false;
     private List<String> args = new ArrayList<>();
     private Map<String, String> env = new HashMap<String, String>();
     private OutputStream stdout = System.out;
@@ -540,14 +541,14 @@ public class AppLauncher {
     }
     
     public void install() throws IOException {
-        if (localAppPath != null) {
+        if (!installed) {
             try (LockdowndClient lockdowndClient = new LockdowndClient(device, getClass().getSimpleName(), true)) {
                 uploadInternal();
                 if (uploadProgressCallback == null) {
                     log("[ 50%%] Upload done. Installing app...");
                 }
                 installInternal();
-                localAppPath = null;
+                installed = true;
             } catch (IOException e) {
                 throw e;
             } catch (RuntimeException e) {
@@ -703,6 +704,10 @@ public class AppLauncher {
                 }
                 conn = device.connect(debugService.getPort());
                 log("Debug server port: " + debugService.getPort());
+                if (localPort != -1) {
+                    String exe = ((NSDictionary) PropertyListParser.parse(new File(localAppPath, "Info.plist"))).objectForKey("CFBundleExecutable").toString();
+                    log("launchios " + new File(localAppPath, exe).getAbsolutePath() + " " + appPath + " " + localPort);
+                }
             }
     
             if (lockedRetriesLeft == launchOnLockedRetries) {

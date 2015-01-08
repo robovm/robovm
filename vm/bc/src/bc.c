@@ -956,15 +956,18 @@ void* _bcResolveNative(Env* env, Class* clazz, char* name, char* desc, char* sho
 }
 
 Env* _bcAttachThreadFromCallback(void) {
-    Env* env = NULL;
-    if (rvmAttachCurrentThread(vm, &env, NULL, NULL) != JNI_OK) {
-        rvmAbort("Failed to attach thread in callback");
+    Env* env = rvmGetEnv();
+    if (!env) {
+        // This thread has never been attached. Attach once.
+        if (rvmAttachCurrentThreadAsDaemon(vm, &env, NULL, NULL) != JNI_OK) {
+            rvmAbort("Failed to attach thread in callback");
+        }
     }
     return env;
 }
 
 void _bcDetachThreadFromCallback(Env* env) {
-    rvmDetachCurrentThread(env->vm, FALSE, TRUE);
+    // Do nothing. The thread will be detached when it terminates.
 }
 
 void* _bcCopyStruct(Env* env, void* src, jint size) {

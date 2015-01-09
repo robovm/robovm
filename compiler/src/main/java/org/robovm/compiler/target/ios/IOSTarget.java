@@ -453,9 +453,20 @@ public class IOSTarget extends AbstractTarget {
         return super.doLaunch(launchParameters);
     }
 
-    public void createIpa() throws IOException {
+    public void createIpa(List<File> slices) throws IOException {
         config.getLogger().debug("Creating IPA in %s", config.getInstallDir());
         config.getInstallDir().mkdirs();
+        if (slices.size() > 1) {
+            ToolchainUtil.lipo(config, new File(config.getTmpDir(), getExecutable()), slices);
+        } else {
+            File destFile = new File(config.getTmpDir(), getExecutable());
+            FileUtils.copyFile(slices.get(0), destFile);
+            destFile.setExecutable(true, false);
+        }
+        // Use the exported_symbols file created for the first slice.
+        File exportedSymbolsFile = new File(slices.get(0).getParentFile(), "exported_symbols");
+        FileUtils.copyFile(exportedSymbolsFile, new File(config.getTmpDir(), "exported_symbols"));
+        
         File tmpDir = new File(config.getInstallDir(), getExecutable() + ".app");
         FileUtils.deleteDirectory(tmpDir);
         tmpDir.mkdirs();

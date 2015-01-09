@@ -29,6 +29,7 @@ import org.apache.commons.io.IOUtils;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+import org.robovm.compiler.config.Config.Builder;
 import org.robovm.compiler.config.Config.Home;
 import org.robovm.compiler.config.Config.Lib;
 import org.robovm.compiler.config.Config.TargetType;
@@ -270,4 +271,70 @@ public class ConfigTest {
         assertEquals(Arrays.asList("WeakFoo", "WeakBaaz", "WeakYada"), config.getWeakFrameworks());
     }
 
+    @Test
+    public void testCreateBuilderFromConfig() throws Exception {
+        File tmpDir = createTempDir();
+        File cacheDir = new File(tmpDir, "cache");
+        
+        Config.Builder builder = new Config.Builder();
+        builder.tmpDir(tmpDir);
+        builder.cacheDir(cacheDir);
+        builder.os(OS.macosx);
+        builder.arch(Arch.x86);
+        builder.targetType(TargetType.console);
+        builder.mainClass("Main");
+        builder.addBootClasspathEntry(new File(tmpDir, "bcp1"));
+        builder.addBootClasspathEntry(new File(tmpDir, "bcp2"));
+        builder.addBootClasspathEntry(new File(tmpDir, "bcp3"));
+        builder.addClasspathEntry(new File(tmpDir, "cp1"));
+        builder.addClasspathEntry(new File(tmpDir, "cp2"));
+        builder.addClasspathEntry(new File(tmpDir, "cp3"));
+        builder.addExportedSymbol("YADA*");
+        builder.addFrameworkPath(new File(tmpDir, "yada"));
+        builder.addFramework("Yada");
+        builder.addForceLinkClass("org.yada.**");
+        builder.addLib(new Lib("yada", true));
+        builder.addResource(new Resource(new File(tmpDir, "resources")));
+        builder.addWeakFramework("WeakYada");
+        builder.addPluginArgument("foo:bar=yada");
+        builder.home(fakeHome);
+
+        Config config = builder.build();
+        
+        Builder builder2 = config.builder();
+        builder2.arch(Arch.arm64);
+        Config config2 = builder2.build();
+        
+        assertNotSame(config, config2);
+        assertEquals(config.getTmpDir(), config2.getTmpDir());
+        assertEquals(config.getCacheDir().getParentFile().getParentFile(), 
+                config2.getCacheDir().getParentFile().getParentFile());
+        assertEquals(config.getOs(), config2.getOs());
+        assertEquals(config.getMainClass(), config2.getMainClass());
+        assertEquals(config.getBootclasspath(), config2.getBootclasspath());
+        assertNotSame(config.getBootclasspath(), config2.getBootclasspath());
+        assertEquals(config.getClasspath(), config2.getClasspath());
+        assertNotSame(config.getClasspath(), config2.getClasspath());
+        assertEquals(config.getExportedSymbols(), config2.getExportedSymbols());
+        assertNotSame(config.getExportedSymbols(), config2.getExportedSymbols());
+        assertEquals(config.getFrameworkPaths(), config2.getFrameworkPaths());
+        assertNotSame(config.getFrameworkPaths(), config2.getFrameworkPaths());
+        assertEquals(config.getFrameworks(), config2.getFrameworks());
+        assertNotSame(config.getFrameworks(), config2.getFrameworks());
+        assertEquals(config.getForceLinkClasses(), config2.getForceLinkClasses());
+        assertNotSame(config.getForceLinkClasses(), config2.getForceLinkClasses());
+        assertEquals(config.getLibs(), config2.getLibs());
+        assertNotSame(config.getLibs(), config2.getLibs());
+        assertEquals(config.getResources(), config2.getResources());
+        assertNotSame(config.getResources(), config2.getResources());
+        assertEquals(config.getPluginArguments(), config2.getPluginArguments());
+        assertNotSame(config.getPluginArguments(), config2.getPluginArguments());
+        
+        assertEquals(Arch.arm64, config2.getArch());
+        
+        assertFalse(config.getPlugins().equals(config2.getPlugins()));
+        assertNotSame(config.getTarget(), config2.getTarget());
+        assertNotSame(config.getClazzes(), config2.getClazzes());
+    }
+    
 }

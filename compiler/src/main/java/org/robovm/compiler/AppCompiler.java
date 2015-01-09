@@ -350,6 +350,7 @@ public class AppCompiler {
         boolean verbose = false;
         boolean run = false;
         boolean createIpa = false;
+        List<Arch> ipaArchs = new ArrayList<>();
         String dumpConfigFile = null;
         List<String> runArgs = new ArrayList<String>();
         try {
@@ -498,6 +499,10 @@ public class AppCompiler {
                     builder.iosDeviceType(args[++i]);           
                 } else if ("-createipa".equals(args[i])) {
                     createIpa = true;
+                } else if ("-ipaarchs".equals(args[i])) {
+                    for (String s : args[++i].split(":")) {
+                        ipaArchs.add(Arch.valueOf(s));
+                    }
                 } else if (args[i].startsWith("-D")) {
                 } else if (args[i].startsWith("-X")) {
                 } else if (args[i].startsWith("-rvm:")) {
@@ -548,10 +553,10 @@ public class AppCompiler {
             compiler = new AppCompiler(builder.build());
             
             if (createIpa && (!(compiler.config.getTarget() instanceof IOSTarget) 
-                    || compiler.config.getArch() != Arch.thumbv7 
+                    || !(compiler.config.getArch() == Arch.thumbv7 || compiler.config.getArch() == Arch.arm64)
                     || compiler.config.getOs() != OS.ios)) {
                 
-                throw new IllegalArgumentException("Must build for iOS thumbv7 when creating IPA");
+                throw new IllegalArgumentException("Must build for iOS thumbv7/arm64 when creating IPA");
             }
             
         } catch (Throwable t) {
@@ -569,25 +574,27 @@ public class AppCompiler {
         }
         
         try {
-            compiler.compile();
-            if (run) {
-                LaunchParameters launchParameters = compiler.config.getTarget().createLaunchParameters();
-                if (launchParameters instanceof IOSSimulatorLaunchParameters) {
-                    IOSSimulatorLaunchParameters simParams = (IOSSimulatorLaunchParameters) launchParameters;
-                    DeviceType type = DeviceType.getDeviceType(compiler.config.getHome(),
-                            compiler.config.getIosDeviceType());
-                    if (type == null) {
-                        simParams.setDeviceType(DeviceType.getBestDeviceType(compiler.config.getHome()));
-                    } else {
-                        simParams.setDeviceType(type);
-                    }
-                }
-                launchParameters.setArguments(runArgs);
-                compiler.launch(launchParameters);
-            } else if (createIpa) {
-                ((IOSTarget) compiler.config.getTarget()).createIpa();
+            if (createIpa) {
+                compiler.createIpa(ipaArchs);
             } else {
-                compiler.config.getTarget().install();
+                compiler.compile();
+                if (run) {
+                    LaunchParameters launchParameters = compiler.config.getTarget().createLaunchParameters();
+                    if (launchParameters instanceof IOSSimulatorLaunchParameters) {
+                        IOSSimulatorLaunchParameters simParams = (IOSSimulatorLaunchParameters) launchParameters;
+                        DeviceType type = DeviceType.getDeviceType(compiler.config.getHome(),
+                                compiler.config.getIosDeviceType());
+                        if (type == null) {
+                            simParams.setDeviceType(DeviceType.getBestDeviceType(compiler.config.getHome()));
+                        } else {
+                            simParams.setDeviceType(type);
+                        }
+                    }
+                    launchParameters.setArguments(runArgs);
+                    compiler.launch(launchParameters);
+                } else {
+                    compiler.config.getTarget().install();
+                }
             }
         } catch (Throwable t) {
             String message = t.getMessage();
@@ -596,6 +603,35 @@ public class AppCompiler {
             }
             printUsageAndExit(message, builder.getPlugins());
         }
+    }
+
+    /**
+     * Creates an IPA with a single {@link Arch} as specified in 
+     * {@link Config#getArch()}.
+     */
+    public void createIpa() throws IOException {
+        createIpa(new ArrayList<Arch>());
+    }
+
+    /**
+     * Creates an IPA with a fat binary containing one slice for each of the
+     * specified {@link Arch}s.
+     */
+    public void createIpa(List<Arch> archs) throws IOException {
+        if (archs.isEmpty()) {
+            archs.add(this.config.getArch());
+        }
+        List<File> slices = new ArrayList<>();
+        for (Arch arch : archs) {
+            this.config.getLogger().info("Creating %s slice for IPA", arch);
+            Config sliceConfig = this.config.builder()
+                    .arch(arch)
+                    .tmpDir(new File(this.config.getTmpDir(), arch.toString()))
+                    .build();
+            new AppCompiler(sliceConfig).compile();
+            slices.add(new File(sliceConfig.getTmpDir(), sliceConfig.getExecutableName()));
+        }
+        ((IOSTarget) this.config.getTarget()).createIpa(slices);
     }
 
     public int launch(LaunchParameters launchParameters) throws Throwable {
@@ -759,6 +795,8 @@ public class AppCompiler {
         System.err.println("Target specific options:");
         System.err.println("  -createipa            (iOS) Create a .IPA file from the app bundle and place it in\n"
                          + "                        the install dir specified with -d.");
+        System.err.println("  -ipaarchs             (iOS) : separated list of architectures to include in the IPA.\n" 
+                         + "                        Either thumbv7 or arm64 or both.");
         System.err.println("  -plist <file>         (iOS) Info.plist file to be used by the app. If not specified\n"
                          + "                        a simple Info.plist will be generated with a CFBundleIdentifier\n" 
                          + "                        based on the main class name or executable file name.");

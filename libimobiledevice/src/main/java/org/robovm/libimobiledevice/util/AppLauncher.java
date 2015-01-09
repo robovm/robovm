@@ -687,7 +687,7 @@ public class AppLauncher {
                 String productVersion = lockdowndClient.getValue(null, "ProductVersion").toString(); // E.g. 7.0.2
                 String buildVersion = lockdowndClient.getValue(null, "BuildVersion").toString(); // E.g. 11B508
                 if(appLauncherCallback != null) {
-                    appLauncherCallback.setAppLaunchInfo(new AppLauncherInfo(appPath, productVersion, buildVersion));
+                    appLauncherCallback.setAppLaunchInfo(new AppLauncherInfo(device, appPath, productVersion, buildVersion));
                 }
                 LockdowndServiceDescriptor debugService = null;
                 try {

@@ -22,6 +22,9 @@ void _rvmHookThreadCreated(Env* env, JavaThread* threadObj);
 void _rvmHookThreadAttached(Env* env, JavaThread* threadObj, Thread* thread);
 void _rvmHookThreadStarting(Env* env, JavaThread* threadObj, Thread* thread);
 void _rvmHookThreadDetaching(Env* env, JavaThread* threadObj, Thread* thread, Object* throwable);
+void _rvmHookSetupTCPChannel();
+void _rvmHookHandshake();
+void _rvmHookDestroyTCPChannel();
 
 void rvmHookWaitForAttach(Options* options);
 void rvmHookDebuggerAttached(Options* options);
@@ -53,6 +56,21 @@ static inline void rvmHookThreadStarting(Env* env, JavaThread* threadObj, Thread
 static inline void rvmHookThreadDetaching(Env* env, JavaThread* threadObj, Thread* thread, Object* throwable) {
     if (env->vm->options->enableHooks) {
         _rvmHookThreadDetaching(env, threadObj, thread, throwable);
+    }
+}
+static inline void rvmHookSetupTCPChannel(Options* options) {
+    if(options->enableHooks) {
+        _rvmHookSetupTCPChannel();
+    }
+}
+static inline void rvmHookHandshake(Options* options) {
+    if(options->enableHooks) {
+        _rvmHookHandshake();
+    }
+}
+static inline void rvmHookDestroyTCPChannel(Options* options) {
+    if(options->enableHooks) {
+        _rvmHookDestroyTCPChannel();
     }
 }
 

@@ -62,3 +62,15 @@ void _rvmHookThreadStarting(Env* env, JavaThread* threadObj, Thread* thread) {
 void _rvmHookThreadDetaching(Env* env, JavaThread* threadObj, Thread* thread, Object* throwable) {
     DEBUGF("Thread %lld detaching", threadObj->id);
 }
+
+ void _rvmSetupTCPChannel() {
+    DEBUG("Setting up TCP channel");
+}
+
+void _rvmHookHandshake() {
+    DEBUG("Performing handshake");
+}
+
+void _rvmHookDestroyTCPChannel() {
+    DEBUG("Destroying TCP channel");
+}

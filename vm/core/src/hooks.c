@@ -27,13 +27,14 @@
 jboolean attachFlag = FALSE;
 static jint waitForAttachTime = 0;
 int listeningSocket = 0;
+int clientSocket = 0;
 jint debugPort = 0;
 
-void rvmHookDebuggerAttached(Options *options) {
+void rvmHookDebuggerAttached(Options* options) {
     DEBUG("Debugger attached");
 }
 
-void rvmHookWaitForAttach(Options *options) {
+void rvmHookWaitForAttach(Options* options) {
     if (attachFlag == FALSE && waitForAttachTime < 15) {
         waitForAttachTime++;
         sleep(1);
@@ -46,33 +47,33 @@ void rvmHookWaitForAttach(Options *options) {
     }
 }
 
-void _rvmHookBeforeMainThreadAttached(Env *env) {
+void _rvmHookBeforeMainThreadAttached(Env* env) {
     DEBUG("Before main thread attached");
 }
 
-void _rvmHookBeforeAppEntryPoint(Env *env, Class *clazz, Method *method, ObjectArray *args) {
+void _rvmHookBeforeAppEntryPoint(Env* env, Class* clazz, Method* method, ObjectArray* args) {
     DEBUGF("Before app entry point %s.%s%s", clazz->name, method->name, method->desc);
 }
 
-void _rvmHookThreadCreated(Env *env, JavaThread *threadObj) {
+void _rvmHookThreadCreated(Env* env, JavaThread* threadObj) {
     DEBUGF("Thread %lld created", threadObj->id);
 }
 
-void _rvmHookThreadAttached(Env *env, JavaThread *threadObj, Thread *thread) {
+void _rvmHookThreadAttached(Env* env, JavaThread* threadObj, Thread* thread) {
     DEBUGF("Thread %lld attached", threadObj->id);
 }
 
-void _rvmHookThreadStarting(Env *env, JavaThread *threadObj, Thread *thread) {
+void _rvmHookThreadStarting(Env* env, JavaThread* threadObj, Thread* thread) {
     DEBUGF("Thread %lld starting", threadObj->id);
 }
 
-void _rvmHookThreadDetaching(Env *env, JavaThread *threadObj, Thread *thread, Object *throwable) {
+void _rvmHookThreadDetaching(Env* env, JavaThread* threadObj, Thread* thread, Object* throwable) {
     DEBUGF("Thread %lld detaching", threadObj->id);
 }
 
 jboolean _rvmHookSetupTCPChannel() {
     DEBUG("Setting up TCP channel");
-    int listeningSocket = socket(AF_INET, SOCK_STREAM, 0);
+    listeningSocket = socket(AF_INET, SOCK_STREAM, 0);
     if (listeningSocket < 0) {
         return FALSE;
     }
@@ -85,13 +86,15 @@ jboolean _rvmHookSetupTCPChannel() {
     serverAddr.sin_addr.s_addr = INADDR_ANY;
     if (bind(listeningSocket, (struct sockaddr *) &serverAddr, sizeof(serverAddr))) {
         DEBUGF("Couldn't bind debug socket, errno: %d", errno);
+        close(listeningSocket);
         return FALSE;
     }
     if (listen(listeningSocket, 1)) {
         DEBUGF("Couldn't listen on debug socket, errno: %d", errno);
+        close(listeningSocket);
         return FALSE;
     }
-    socklen_t len;
+    socklen_t len = sizeof(serverAddr);
     getsockname(listeningSocket, (struct sockaddr *) &serverAddr, &len);
     debugPort = ntohs(serverAddr.sin_port);
     return TRUE;
@@ -103,10 +106,15 @@ jboolean _rvmHookHandshake() {
         DEBUG("Can't perform handshake, no listening socket");
         return FALSE;
     }
-    
-    return TRUE;
-}
 
-void _rvmHookDestroyTCPChannel() {
-    DEBUG("Destroying TCP channel");
+    struct sockaddr_storage clientAddr;
+    int clientSocket = 0;
+    socklen_t len = sizeof(clientAddr);
+    if ((clientSocket = accept(listeningSocket, (struct sockaddr *) &clientAddr, &len)) == -1) {
+        DEBUGF("Couldn't accept TCP debug connection, errno: %d", errno);
+        close(listeningSocket);
+        return FALSE;
+    }
+
+    return TRUE;
 }

@@ -272,7 +272,7 @@ Env* rvmStartup(Options* options) {
 
     // setup the TCP channel socket
     if(options->enableHooks) {
-        rvmHookSetupTCPChannel(options);
+        if(!rvmHookSetupTCPChannel(options)) return NULL;
     }
 
     // wait for the debugger to attach
@@ -282,7 +282,7 @@ Env* rvmStartup(Options* options) {
 
     // wait for the debugger to connect via TCP
     if(options->enableHooks) {
-        rvmHookHandshake(options);
+        if(!rvmHookHandshake(options)) return NULL;
     }
 
     TRACE("Initializing GC");

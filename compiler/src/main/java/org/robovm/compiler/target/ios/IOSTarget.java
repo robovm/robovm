@@ -26,6 +26,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.NoSuchElementException;
 import java.util.Properties;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -540,9 +541,30 @@ public class IOSTarget extends AbstractTarget {
             dict.put("DTPlatformVersion", sdk.getPlatformVersion());
             dict.put("DTPlatformBuild", sdk.getPlatformBuild());
             dict.put("DTSDKBuild", sdk.getBuild());
-            // Validation fails without these. Let's pretend the app was built with Xcode 5.0.2
-            putIfAbsent(dict, "DTXcode", "0502");
-            putIfAbsent(dict, "DTXcodeBuild", "5A3005");
+            
+            // Validation fails without DTXcode and DTXcodeBuild. Try to read them from the installed Xcode.
+            try {
+                File versionPListFile = new File(new File(ToolchainUtil.findXcodePath()).getParentFile(), "version.plist");
+                NSDictionary versionPList = (NSDictionary) PropertyListParser.parse(versionPListFile);
+                File xcodeInfoPListFile = new File(new File(ToolchainUtil.findXcodePath()).getParentFile(), "Info.plist");
+                NSDictionary xcodeInfoPList = (NSDictionary) PropertyListParser.parse(xcodeInfoPListFile);
+                NSString dtXcodeBuild = (NSString) versionPList.objectForKey("ProductBuildVersion");
+                if (dtXcodeBuild == null) {
+                    throw new NoSuchElementException("No ProductBuildVersion in " + versionPListFile.getAbsolutePath());
+                }
+                NSString dtXcode = (NSString) xcodeInfoPList.objectForKey("DTXcode");
+                if (dtXcode == null) {
+                    throw new NoSuchElementException("No DTXcode in " + xcodeInfoPListFile.getAbsolutePath());
+                }
+                putIfAbsent(dict, "DTXcode", dtXcode.toString());
+                putIfAbsent(dict, "DTXcodeBuild", dtXcodeBuild.toString());
+            } catch (Exception e) {
+                config.getLogger().warn("Failed to read DTXcodeBuild/DTXcode from current Xcode install. Will use fake values. (%s: %s)", 
+                        e.getClass().getName(), e.getMessage());
+            }
+            // Fake Xcode 6.1.1 values if the above fails.
+            putIfAbsent(dict, "DTXcode", "0611");
+            putIfAbsent(dict, "DTXcodeBuild", "6A2008a");
         }
     }
     
@@ -600,7 +622,7 @@ public class IOSTarget extends AbstractTarget {
 
         if (dict.objectForKey("MinimumOSVersion") == null) {
             // This is required
-            dict.put("MinimumOSVersion", "5.0");
+            dict.put("MinimumOSVersion", "6.0");
         }
         
         customizeInfoPList(dict);

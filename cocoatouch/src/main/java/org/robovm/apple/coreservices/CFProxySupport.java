@@ -92,7 +92,7 @@ import org.robovm.apple.corefoundation.*;
     public static CFRunLoopSource executeProxyAutoConfigurationScript(String proxyAutoConfigurationScript, NSURL targetURL, AutoConfigurationClientCallback callback) {
         long refconId = CFProxySupport.refconId.getAndIncrement();
         CFStreamClientContext context = new CFStreamClientContext();
-        context.info(refconId);
+        context.setInfo(refconId);
         CFRunLoopSource source = executeProxyAutoConfigurationScript(proxyAutoConfigurationScript, targetURL, new FunctionPtr(cbInvoke), context);
         if (source != null) {
             synchronized (callbacks) {
@@ -108,7 +108,7 @@ import org.robovm.apple.corefoundation.*;
     public static CFRunLoopSource executeProxyAutoConfigurationURL(NSURL proxyAutoConfigURL, NSURL targetURL, AutoConfigurationClientCallback callback) {
         long refconId = CFProxySupport.refconId.getAndIncrement();
         CFStreamClientContext context = new CFStreamClientContext();
-        context.info(refconId);
+        context.setInfo(refconId);
         CFRunLoopSource source = executeProxyAutoConfigurationURL(proxyAutoConfigURL, targetURL, new FunctionPtr(cbInvoke), context);
         if (source != null) {
             synchronized (callbacks) {

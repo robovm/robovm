@@ -63,7 +63,7 @@ void _rvmHookThreadDetaching(Env* env, JavaThread* threadObj, Thread* thread, Ob
     DEBUGF("Thread %lld detaching", threadObj->id);
 }
 
- void _rvmSetupTCPChannel() {
+ void _rvmHookSetupTCPChannel() {
     DEBUG("Setting up TCP channel");
 }
 

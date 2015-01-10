@@ -58,20 +58,20 @@ import org.robovm.apple.dispatch.*;
     /*</members>*/
     public static MTLRegion create1D(long x, long width) {
         MTLRegion region = new MTLRegion();
-        region.origin(new MTLOrigin(x, 0, 0));
-        region.size(new MTLSize(width, 1, 1));
+        region.setOrigin(new MTLOrigin(x, 0, 0));
+        region.setSize(new MTLSize(width, 1, 1));
         return region;
     }
     public static MTLRegion create2D(long x, long y, long width, long height) {
         MTLRegion region = new MTLRegion();
-        region.origin(new MTLOrigin(x, y, 0));
-        region.size(new MTLSize(width, height, 1));
+        region.setOrigin(new MTLOrigin(x, y, 0));
+        region.setSize(new MTLSize(width, height, 1));
         return region;
     }
     public static MTLRegion create3D(long x, long y, long z, long width, long height, long depth) {
         MTLRegion region = new MTLRegion();
-        region.origin(new MTLOrigin(x, y, z));
-        region.size(new MTLSize(width, height, depth));
+        region.setOrigin(new MTLOrigin(x, y, z));
+        region.setSize(new MTLSize(width, height, depth));
         return region;
     }
     /*<methods>*//*</methods>*/

@@ -1245,6 +1245,16 @@ public class Config {
             return this;
         }
 
+        public Builder addCompilerPlugin(CompilerPlugin compilerPlugin) {
+            config.plugins.add(compilerPlugin);
+            return this;
+        }
+
+        public Builder addLaunchPlugin(LaunchPlugin plugin) {
+            config.plugins.add(plugin);
+            return this;
+        }
+
         public void addPluginArgument(String argName) {
             if(config.pluginArguments == null) {
                 config.pluginArguments = new ArrayList<>();

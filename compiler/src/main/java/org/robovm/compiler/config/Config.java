@@ -26,8 +26,12 @@ import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.io.Reader;
 import java.io.Writer;
+import java.lang.reflect.Field;
+import java.lang.reflect.Method;
+import java.lang.reflect.Modifier;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.Enumeration;
 import java.util.HashMap;
@@ -147,10 +151,10 @@ public class Config {
 
     private boolean iosSkipSigning = false;
     
-    private Target target = null;
     private Properties properties = new Properties();
     
     private Home home = null;
+    private File tmpDir;
     private File cacheDir = new File(System.getProperty("user.home"), ".robovm/cache");
     private File ccBinPath = null;
     
@@ -161,17 +165,24 @@ public class Config {
     private boolean skipInstall = false;
     private boolean dumpIntermediates = false;
     private int threads = Runtime.getRuntime().availableProcessors();
-    
-    private File osArchDepLibDir;
-    private File tmpDir;
-    private Clazzes clazzes;
-    private VTable.Cache vtableCache;
-    private ITable.Cache itableCache;
     private Logger logger = Logger.NULL_LOGGER;
-    private List<Path> resourcesPaths = new ArrayList<Path>();
-    private DataLayout dataLayout;
-    private MarshalerLookup marshalerLookup;
-    private List<Plugin> plugins = new ArrayList<>();
+
+    /*
+     * The fields below are all initialized in build() and must not be included
+     * when constructing Config clone. We mark them as transient which will make
+     * the builder() method skip them.
+     */
+
+    private transient List<Plugin> plugins = new ArrayList<>();
+    private transient Target target = null;
+    private transient File osArchDepLibDir;
+    private transient File osArchCacheDir;
+    private transient Clazzes clazzes;
+    private transient VTable.Cache vtableCache;
+    private transient ITable.Cache itableCache;
+    private transient List<Path> resourcesPaths = new ArrayList<Path>();
+    private transient DataLayout dataLayout;
+    private transient MarshalerLookup marshalerLookup;
 
     protected Config() throws IOException {
         // Add standard plugins
@@ -183,6 +194,31 @@ public class Config {
                 new LambdaPlugin()
                 ));
         this.loadPluginsFromClassPath();
+    }
+    
+    /**
+     * Returns a new {@link Builder} which builds exactly this {@link Config}
+     * when {@link Builder#build()} is called.
+     */
+    public Builder builder() throws IOException {
+        Config clone = new Config();
+        for (Field f : Config.class.getDeclaredFields()) {
+            if (!Modifier.isTransient(f.getModifiers())) {
+                f.setAccessible(true);
+                try {
+                    Object o = f.get(this);
+                    if (o instanceof Collection && o instanceof Cloneable) {
+                        // Clone collections. Assume the class has a public clone() method.
+                        Method m = o.getClass().getMethod("clone");
+                        o = m.invoke(o);
+                    }
+                    f.set(clone, o);
+                } catch (Throwable t) {
+                    throw new Error(t);
+                }
+            }
+        }
+        return new Builder(clone);
     }
     
     public Home getHome() {
@@ -198,7 +234,7 @@ public class Config {
     }
 
     public File getCacheDir() {
-        return cacheDir;
+        return osArchCacheDir;
     }
 
     public File getCcBinPath() {
@@ -485,7 +521,7 @@ public class Config {
         File srcRoot = path.getFile().getParentFile();
         String name = path.getFile().getName();
         try {
-            return new File(makeFileRelativeTo(cacheDir, srcRoot.getCanonicalFile()), name);
+            return new File(makeFileRelativeTo(osArchCacheDir, srcRoot.getCanonicalFile()), name);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -710,8 +746,8 @@ public class Config {
         
         File osDir = new File(cacheDir, os.toString());
         File archDir = new File(osDir, arch.toString());
-        cacheDir = new File(archDir, debug ? "debug" : "release");
-        cacheDir.mkdirs();
+        osArchCacheDir = new File(archDir, debug ? "debug" : "release");
+        osArchCacheDir.mkdirs();
 
         this.clazzes = new Clazzes(this, realBootclasspath, classpath);        
 
@@ -887,6 +923,10 @@ public class Config {
     
     public static class Builder {
         final Config config;
+
+        Builder(Config config) {
+            this.config = config;
+        }
         
         public Builder() throws IOException {
             this.config = new Config();
@@ -1209,12 +1249,12 @@ public class Config {
             config.plugins.add(compilerPlugin);
             return this;
         }
-        
+
         public Builder addLaunchPlugin(LaunchPlugin plugin) {
             config.plugins.add(plugin);
             return this;
         }
-        
+
         public void addPluginArgument(String argName) {
             if(config.pluginArguments == null) {
                 config.pluginArguments = new ArrayList<>();

@@ -17,10 +17,18 @@
 #include <robovm.h>
 #include <stdio.h>
 #include <unistd.h>
+#include <sys/types.h>
+#include <sys/socket.h>
+#include <netinet/in.h>
+#include <string.h>
+#include <errno.h>
 
 #define LOG_TAG "hooks"
 jboolean attachFlag = FALSE;
 static jint waitForAttachTime = 0;
+int listeningSocket = 0;
+int clientSocket = 0;
+jint debugPort = 0;
 
 void rvmHookDebuggerAttached(Options* options) {
     DEBUG("Debugger attached");
@@ -61,4 +69,52 @@ void _rvmHookThreadStarting(Env* env, JavaThread* threadObj, Thread* thread) {
 
 void _rvmHookThreadDetaching(Env* env, JavaThread* threadObj, Thread* thread, Object* throwable) {
     DEBUGF("Thread %lld detaching", threadObj->id);
+}
+
+jboolean _rvmHookSetupTCPChannel() {
+    DEBUG("Setting up TCP channel");
+    listeningSocket = socket(AF_INET, SOCK_STREAM, 0);
+    if (listeningSocket < 0) {
+        return FALSE;
+    }
+    int yes = 1;
+    setsockopt(listeningSocket, SOL_SOCKET, SO_REUSEADDR, &yes, sizeof(int));
+
+    struct sockaddr_in serverAddr;
+    memset(&serverAddr, 0, sizeof(serverAddr));
+    serverAddr.sin_family = AF_INET;
+    serverAddr.sin_addr.s_addr = INADDR_ANY;
+    if (bind(listeningSocket, (struct sockaddr *) &serverAddr, sizeof(serverAddr))) {
+        DEBUGF("Couldn't bind debug socket, errno: %d", errno);
+        close(listeningSocket);
+        return FALSE;
+    }
+    if (listen(listeningSocket, 1)) {
+        DEBUGF("Couldn't listen on debug socket, errno: %d", errno);
+        close(listeningSocket);
+        return FALSE;
+    }
+    socklen_t len = sizeof(serverAddr);
+    getsockname(listeningSocket, (struct sockaddr *) &serverAddr, &len);
+    debugPort = ntohs(serverAddr.sin_port);
+    return TRUE;
+}
+
+jboolean _rvmHookHandshake() {
+    DEBUG("Performing handshake");
+    if (!listeningSocket) {
+        DEBUG("Can't perform handshake, no listening socket");
+        return FALSE;
+    }
+
+    struct sockaddr_storage clientAddr;
+    int clientSocket = 0;
+    socklen_t len = sizeof(clientAddr);
+    if ((clientSocket = accept(listeningSocket, (struct sockaddr *) &clientAddr, &len)) == -1) {
+        DEBUGF("Couldn't accept TCP debug connection, errno: %d", errno);
+        close(listeningSocket);
+        return FALSE;
+    }
+
+    return TRUE;
 }

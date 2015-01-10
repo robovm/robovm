@@ -60,7 +60,7 @@ import org.robovm.apple.dispatch.*;
     
     public NSUUID(String string) {
         super((SkipInit) null);
-        initObject(initWithUUIDString$(string));
+        initObject(init(string));
     }
 
     public NSUUID(byte[] bytes) {
@@ -71,7 +71,7 @@ import org.robovm.apple.dispatch.*;
         if (bytes.length != 16) {
             throw new IllegalArgumentException("bytes.length != 16 (" + bytes.length + ")");
         }
-        initObject(initWithUUIDBytes$(VM.getArrayValuesAddress(bytes)));
+        initObject(init(VM.getArrayValuesAddress(bytes)));
     }
 
     /*<properties>*/
@@ -82,7 +82,7 @@ import org.robovm.apple.dispatch.*;
     
     public byte[] getBytes() {
         byte[] bytes = new byte[16];
-        getUUIDBytes$(VM.getArrayValuesAddress(bytes));
+        getUUIDBytes(VM.getArrayValuesAddress(bytes));
         return bytes;
     }
     
@@ -92,10 +92,10 @@ import org.robovm.apple.dispatch.*;
     
     /*<methods>*/
     @Method(selector = "initWithUUIDString:")
-    protected native @Pointer long initWithUUIDString$(String string);
+    protected native @Pointer long init(String string);
     @Method(selector = "initWithUUIDBytes:")
-    protected native @Pointer long initWithUUIDBytes$(@Pointer long bytes);
+    protected native @Pointer long init(@Pointer long bytes);
     @Method(selector = "getUUIDBytes:")
-    protected native void getUUIDBytes$(@Pointer long uuid);
+    protected native void getUUIDBytes(@Pointer long uuid);
     /*</methods>*/
 }

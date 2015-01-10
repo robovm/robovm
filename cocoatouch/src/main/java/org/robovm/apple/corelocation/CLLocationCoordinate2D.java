@@ -53,20 +53,8 @@ import org.robovm.apple.corebluetooth.*;
     /*<members>*/
     @StructMember(0) public native double getLatitude();
     @StructMember(0) public native CLLocationCoordinate2D setLatitude(double latitude);
-    
-    @Deprecated
-    @StructMember(0) public native double latitude();
-    @Deprecated
-    @StructMember(0) public native CLLocationCoordinate2D latitude(double latitude);
-    
     @StructMember(1) public native double getLongitude();
     @StructMember(1) public native CLLocationCoordinate2D setLongitude(double longitude);
-    
-    @Deprecated
-    @StructMember(1) public native double longitude();
-    @Deprecated
-    @StructMember(1) public native CLLocationCoordinate2D longitude(double longitude);
-    
     /*</members>*/
     /*<methods>*/
     /**

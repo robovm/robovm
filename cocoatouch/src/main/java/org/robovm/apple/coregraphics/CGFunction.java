@@ -121,8 +121,8 @@ import org.robovm.apple.uikit.*;
         info.evaluate = evaluate;
         
         CGFunctionCallbacks callbacks = new CGFunctionCallbacks();
-        callbacks.evaluate(new FunctionPtr(cbEvaluate));
-        callbacks.releaseInfo(new FunctionPtr(cbReleaseInfo));
+        callbacks.setEvaluate(new FunctionPtr(cbEvaluate));
+        callbacks.setReleaseInfo(new FunctionPtr(cbReleaseInfo));
         
         long infoId = CGFunction.infoId.getAndIncrement();
         CGFunction result = create(infoId, domainDimension, domainPtr, rangeDimension, rangePtr, callbacks);

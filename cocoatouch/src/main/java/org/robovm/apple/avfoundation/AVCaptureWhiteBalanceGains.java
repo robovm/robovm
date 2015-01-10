@@ -53,37 +53,19 @@ import org.robovm.apple.mediatoolbox.*;
     /*<constructors>*/
     public AVCaptureWhiteBalanceGains() {}
     public AVCaptureWhiteBalanceGains(float redGain, float greenGain, float blueGain) {
-        this.setRedgain(redGain);
-        this.setGreengain(greenGain);
-        this.setBluegain(blueGain);
+        this.setRedGain(redGain);
+        this.setGreenGain(greenGain);
+        this.setBlueGain(blueGain);
     }
     /*</constructors>*/
     /*<properties>*//*</properties>*/
     /*<members>*/
-    @StructMember(0) public native float getRedgain();
-    @StructMember(0) public native AVCaptureWhiteBalanceGains setRedgain(float redGain);
-    
-    @Deprecated
-    @StructMember(0) public native float redGain();
-    @Deprecated
-    @StructMember(0) public native AVCaptureWhiteBalanceGains redGain(float redGain);
-    
-    @StructMember(1) public native float getGreengain();
-    @StructMember(1) public native AVCaptureWhiteBalanceGains setGreengain(float greenGain);
-    
-    @Deprecated
-    @StructMember(1) public native float greenGain();
-    @Deprecated
-    @StructMember(1) public native AVCaptureWhiteBalanceGains greenGain(float greenGain);
-    
-    @StructMember(2) public native float getBluegain();
-    @StructMember(2) public native AVCaptureWhiteBalanceGains setBluegain(float blueGain);
-    
-    @Deprecated
-    @StructMember(2) public native float blueGain();
-    @Deprecated
-    @StructMember(2) public native AVCaptureWhiteBalanceGains blueGain(float blueGain);
-    
+    @StructMember(0) public native float getRedGain();
+    @StructMember(0) public native AVCaptureWhiteBalanceGains setRedGain(float redGain);
+    @StructMember(1) public native float getGreenGain();
+    @StructMember(1) public native AVCaptureWhiteBalanceGains setGreenGain(float greenGain);
+    @StructMember(2) public native float getBlueGain();
+    @StructMember(2) public native AVCaptureWhiteBalanceGains setBlueGain(float blueGain);
     /*</members>*/
     /*<methods>*//*</methods>*/
 }

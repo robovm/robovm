@@ -59,7 +59,7 @@ import org.robovm.apple.opengles.*;
     @Property(selector = "vectorCount")
     public native @MachineSizedSInt long getVectorCount();
     @Property(selector = "floatComponents")
-    public native boolean isFloatComponents();
+    public native boolean usesFloatComponents();
     @Property(selector = "componentsPerVector")
     public native @MachineSizedSInt long getComponentsPerVector();
     @Property(selector = "bytesPerComponent")

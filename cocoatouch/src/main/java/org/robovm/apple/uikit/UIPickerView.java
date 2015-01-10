@@ -67,7 +67,7 @@ import org.robovm.apple.corelocation.*;
     @Property(selector = "setDelegate:", strongRef = true)
     public native void setDelegate(UIPickerViewDelegate v);
     @Property(selector = "showsSelectionIndicator")
-    public native boolean isShowsSelectionIndicator();
+    public native boolean showsSelectionIndicator();
     @Property(selector = "setShowsSelectionIndicator:")
     public native void setShowsSelectionIndicator(boolean v);
     @Property(selector = "numberOfComponents")

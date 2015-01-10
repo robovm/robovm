@@ -39,7 +39,10 @@ classes:
         properties:
             'canShowMIMEType':
                 omit_prefix: true
-    WKPreferences: {} # DONE
+    WKPreferences: # DONE
+        properties:
+            'javaScriptCanOpenWindowsAutomatically':
+                getter: javaScriptCanOpenWindowsAutomatically
     WKProcessPool: {} # DONE
     WKScriptMessage: {} # DONE
     WKUserContentController: # DONE
@@ -57,7 +60,12 @@ classes:
         methods:
             '-init.*':
                 name: init
-    WKWebViewConfiguration: {} # DONE
+    WKWebViewConfiguration: # DONE
+        properties:
+            'mediaPlaybackRequiresUserAction':
+                getter: mediaPlaybackRequiresUserAction
+            'mediaPlaybackAllowsAirPlay':
+                getter: mediaPlaybackAllowsAirPlay
     WKWindowFeatures: # DONE
         properties:
             'allowsResizing':

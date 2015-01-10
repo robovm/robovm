@@ -50,11 +50,11 @@ import org.robovm.apple.dispatch.*;
     /*<constructors>*/
     public NSMachPort() {}
     protected NSMachPort(SkipInit skipInit) { super(skipInit); }
-    public NSMachPort(int machPort) { super((SkipInit) null); initObject(initWithMachPort$(machPort)); }
+    public NSMachPort(int machPort) { super((SkipInit) null); initObject(init(machPort)); }
     /**
      * @since Available in iOS 2.0 and later.
      */
-    public NSMachPort(int machPort, NSMachPortRights f) { super((SkipInit) null); initObject(initWithMachPort$options$(machPort, f)); }
+    public NSMachPort(int machPort, NSMachPortRights f) { super((SkipInit) null); initObject(init(machPort, f)); }
     /*</constructors>*/
     /*<properties>*/
     @Property(selector = "machPort")
@@ -69,7 +69,7 @@ import org.robovm.apple.dispatch.*;
     }
     /*<methods>*/
     @Method(selector = "initWithMachPort:")
-    protected native @Pointer long initWithMachPort$(int machPort);
+    protected native @Pointer long init(int machPort);
     @Method(selector = "setDelegate:")
     public native void setDelegate(NSMachPortDelegate anObject);
     @Method(selector = "delegate")
@@ -78,7 +78,7 @@ import org.robovm.apple.dispatch.*;
      * @since Available in iOS 2.0 and later.
      */
     @Method(selector = "initWithMachPort:options:")
-    protected native @Pointer long initWithMachPort$options$(int machPort, NSMachPortRights f);
+    protected native @Pointer long init(int machPort, NSMachPortRights f);
     @Method(selector = "scheduleInRunLoop:forMode:")
     public native void scheduleInRunLoop(NSRunLoop runLoop, String mode);
     @Method(selector = "removeFromRunLoop:forMode:")

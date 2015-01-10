@@ -56,20 +56,8 @@ import org.robovm.apple.dispatch.*;
     /*<members>*/
     @StructMember(0) public native @ByVal CLLocationCoordinate2D getCenter();
     @StructMember(0) public native MKCoordinateRegion setCenter(@ByVal CLLocationCoordinate2D center);
-    
-    @Deprecated
-    @StructMember(0) public native @ByVal CLLocationCoordinate2D center();
-    @Deprecated
-    @StructMember(0) public native MKCoordinateRegion center(@ByVal CLLocationCoordinate2D center);
-    
     @StructMember(1) public native @ByVal MKCoordinateSpan getSpan();
     @StructMember(1) public native MKCoordinateRegion setSpan(@ByVal MKCoordinateSpan span);
-    
-    @Deprecated
-    @StructMember(1) public native @ByVal MKCoordinateSpan span();
-    @Deprecated
-    @StructMember(1) public native MKCoordinateRegion span(@ByVal MKCoordinateSpan span);
-    
     /*</members>*/
     /*<methods>*/
     @Bridge(symbol="MKCoordinateRegionMakeWithDistance", optional=true)

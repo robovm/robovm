@@ -51,7 +51,7 @@ import org.robovm.apple.corelocation.*;
     /*<constructors>*/
     public UIView() {}
     protected UIView(SkipInit skipInit) { super(skipInit); }
-    public UIView(@ByVal CGRect frame) { super((SkipInit) null); initObject(initWithFrame$(frame)); }
+    public UIView(@ByVal CGRect frame) { super((SkipInit) null); initObject(init(frame)); }
     /*</constructors>*/
     /*<properties>*/
     @Property(selector = "isUserInteractionEnabled")
@@ -99,7 +99,7 @@ import org.robovm.apple.corelocation.*;
     @Property(selector = "setExclusiveTouch:")
     public native void setExclusiveTouch(boolean v);
     @Property(selector = "autoresizesSubviews")
-    public native boolean isAutoresizesSubviews();
+    public native boolean autoresizesSubviews();
     @Property(selector = "setAutoresizesSubviews:")
     public native void setAutoresizesSubviews(boolean v);
     @Property(selector = "autoresizingMask")
@@ -126,14 +126,14 @@ import org.robovm.apple.corelocation.*;
      * @since Available in iOS 8.0 and later.
      */
     @Property(selector = "preservesSuperviewLayoutMargins")
-    public native boolean isPreservesSuperviewLayoutMargins();
+    public native boolean preservesSuperviewLayoutMargins();
     /**
      * @since Available in iOS 8.0 and later.
      */
     @Property(selector = "setPreservesSuperviewLayoutMargins:")
     public native void setPreservesSuperviewLayoutMargins(boolean v);
     @Property(selector = "clipsToBounds")
-    public native boolean isClipsToBounds();
+    public native boolean clipsToBounds();
     @Property(selector = "setClipsToBounds:")
     public native void setClipsToBounds(boolean v);
     @Property(selector = "backgroundColor")
@@ -149,7 +149,7 @@ import org.robovm.apple.corelocation.*;
     @Property(selector = "setOpaque:")
     public native void setOpaque(boolean v);
     @Property(selector = "clearsContextBeforeDrawing")
-    public native boolean isClearsContextBeforeDrawing();
+    public native boolean clearsContextBeforeDrawing();
     @Property(selector = "setClearsContextBeforeDrawing:")
     public native void setClearsContextBeforeDrawing(boolean v);
     @Property(selector = "isHidden")
@@ -256,7 +256,7 @@ import org.robovm.apple.corelocation.*;
     public static native @MachineSizedFloat double NoIntrinsicMetric();
     
     @Method(selector = "initWithFrame:")
-    protected native @Pointer long initWithFrame$(@ByVal CGRect frame);
+    protected native @Pointer long init(@ByVal CGRect frame);
     @Method(selector = "layerClass")
     public static native Class<?> getLayerClass();
     @Method(selector = "hitTest:withEvent:")

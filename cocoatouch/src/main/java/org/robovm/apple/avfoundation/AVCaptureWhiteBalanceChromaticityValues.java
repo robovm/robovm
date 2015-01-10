@@ -61,20 +61,8 @@ import org.robovm.apple.mediatoolbox.*;
     /*<members>*/
     @StructMember(0) public native float getX();
     @StructMember(0) public native AVCaptureWhiteBalanceChromaticityValues setX(float x);
-    
-    @Deprecated
-    @StructMember(0) public native float x();
-    @Deprecated
-    @StructMember(0) public native AVCaptureWhiteBalanceChromaticityValues x(float x);
-    
     @StructMember(1) public native float getY();
     @StructMember(1) public native AVCaptureWhiteBalanceChromaticityValues setY(float y);
-    
-    @Deprecated
-    @StructMember(1) public native float y();
-    @Deprecated
-    @StructMember(1) public native AVCaptureWhiteBalanceChromaticityValues y(float y);
-    
     /*</members>*/
     /*<methods>*//*</methods>*/
 }

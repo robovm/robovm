@@ -117,7 +117,7 @@ import org.robovm.apple.dispatch.*;
      * @since Available in iOS 7.0 and later.
      */
     @Property(selector = "showsPointsOfInterest")
-    public native boolean isShowsPointsOfInterest();
+    public native boolean showsPointsOfInterest();
     /**
      * @since Available in iOS 7.0 and later.
      */
@@ -127,14 +127,14 @@ import org.robovm.apple.dispatch.*;
      * @since Available in iOS 7.0 and later.
      */
     @Property(selector = "showsBuildings")
-    public native boolean isShowsBuildings();
+    public native boolean showsBuildings();
     /**
      * @since Available in iOS 7.0 and later.
      */
     @Property(selector = "setShowsBuildings:")
     public native void setShowsBuildings(boolean v);
     @Property(selector = "showsUserLocation")
-    public native boolean isShowsUserLocation();
+    public native boolean showsUserLocation();
     @Property(selector = "setShowsUserLocation:")
     public native void setShowsUserLocation(boolean v);
     @Property(selector = "userLocation")

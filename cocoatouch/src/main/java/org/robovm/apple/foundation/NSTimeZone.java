@@ -64,8 +64,8 @@ import org.robovm.apple.dispatch.*;
     /*<constructors>*/
     public NSTimeZone() {}
     protected NSTimeZone(SkipInit skipInit) { super(skipInit); }
-    public NSTimeZone(String tzName) { super((SkipInit) null); initObject(initWithName$(tzName)); }
-    public NSTimeZone(String tzName, NSData aData) { super((SkipInit) null); initObject(initWithName$data$(tzName, aData)); }
+    public NSTimeZone(String tzName) { super((SkipInit) null); initObject(init(tzName)); }
+    public NSTimeZone(String tzName, NSData aData) { super((SkipInit) null); initObject(init(tzName, aData)); }
     /*</constructors>*/
     /*<properties>*/
     @Property(selector = "name")
@@ -145,9 +145,9 @@ import org.robovm.apple.dispatch.*;
     @Method(selector = "timeZoneDataVersion")
     public static native String getTimeZoneDataVersion();
     @Method(selector = "initWithName:")
-    protected native @Pointer long initWithName$(String tzName);
+    protected native @Pointer long init(String tzName);
     @Method(selector = "initWithName:data:")
-    protected native @Pointer long initWithName$data$(String tzName, NSData aData);
+    protected native @Pointer long init(String tzName, NSData aData);
     @Method(selector = "timeZoneWithName:")
     public static native NSTimeZone fromName(String tzName);
     @Method(selector = "timeZoneWithName:data:")

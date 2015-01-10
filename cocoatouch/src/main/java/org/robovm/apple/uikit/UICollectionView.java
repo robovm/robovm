@@ -51,7 +51,7 @@ import org.robovm.apple.corelocation.*;
     /*<constructors>*/
     public UICollectionView() {}
     protected UICollectionView(SkipInit skipInit) { super(skipInit); }
-    public UICollectionView(@ByVal CGRect frame, UICollectionViewLayout layout) { super((SkipInit) null); initObject(initWithFrame$collectionViewLayout$(frame, layout)); }
+    public UICollectionView(@ByVal CGRect frame, UICollectionViewLayout layout) { super((SkipInit) null); initObject(init(frame, layout)); }
     /*</constructors>*/
     /*<properties>*/
     @Property(selector = "collectionViewLayout")
@@ -71,18 +71,18 @@ import org.robovm.apple.corelocation.*;
     @Property(selector = "setBackgroundView:")
     public native void setBackgroundView(UIView v);
     @Property(selector = "allowsSelection")
-    public native boolean isAllowsSelection();
+    public native boolean allowsSelection();
     @Property(selector = "setAllowsSelection:")
     public native void setAllowsSelection(boolean v);
     @Property(selector = "allowsMultipleSelection")
-    public native boolean isAllowsMultipleSelection();
+    public native boolean allowsMultipleSelection();
     @Property(selector = "setAllowsMultipleSelection:")
     public native void setAllowsMultipleSelection(boolean v);
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
     @Method(selector = "initWithFrame:collectionViewLayout:")
-    protected native @Pointer long initWithFrame$collectionViewLayout$(@ByVal CGRect frame, UICollectionViewLayout layout);
+    protected native @Pointer long init(@ByVal CGRect frame, UICollectionViewLayout layout);
     @Method(selector = "registerClass:forCellWithReuseIdentifier:")
     public native void registerReusableCellClass(Class<?> cellClass, String identifier);
     @Method(selector = "registerNib:forCellWithReuseIdentifier:")

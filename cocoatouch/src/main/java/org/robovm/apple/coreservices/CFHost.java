@@ -130,7 +130,7 @@ import org.robovm.apple.coremedia.CMTime;
      */
     public void setCallback(ClientCallback callback) {
         CFHostClientContext context = new CFHostClientContext();
-        context.info(localRefconId);
+        context.setInfo(localRefconId);
         synchronized (callbacks) {
             callbacks.put(localRefconId, callback);
         }
@@ -182,17 +182,17 @@ import org.robovm.apple.coremedia.CMTime;
      * @since Available in iOS 2.0 and later.
      */
     @Bridge(symbol="CFHostGetAddressing", optional=true)
-    protected native NSArray<NSData> getAddressing(BytePtr hasBeenResolved);
+    protected native NSArray<NSData> getAddressing(BooleanPtr hasBeenResolved);
     /**
      * @since Available in iOS 2.0 and later.
      */
     @Bridge(symbol="CFHostGetNames", optional=true)
-    protected native @org.robovm.rt.bro.annotation.Marshaler(CFArray.AsStringListMarshaler.class) List<String> getNames(BytePtr hasBeenResolved);
+    protected native @org.robovm.rt.bro.annotation.Marshaler(CFArray.AsStringListMarshaler.class) List<String> getNames(BooleanPtr hasBeenResolved);
     /**
      * @since Available in iOS 2.0 and later.
      */
     @Bridge(symbol="CFHostGetReachability", optional=true)
-    protected native NSData getReachability(BytePtr hasBeenResolved);
+    protected native NSData getReachability(BooleanPtr hasBeenResolved);
     /**
      * @since Available in iOS 2.0 and later.
      */

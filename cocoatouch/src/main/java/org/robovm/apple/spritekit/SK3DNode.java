@@ -74,9 +74,9 @@ import org.robovm.apple.scenekit.*;
     @Property(selector = "setPlaying:")
     public native void setPlaying(boolean v);
     @Property(selector = "loops")
-    public native boolean isLooping();
+    public native boolean loops();
     @Property(selector = "setLoops:")
-    public native void setLooping(boolean v);
+    public native void setLoops(boolean v);
     @Property(selector = "pointOfView")
     public native SCNNode getPointOfView();
     @Property(selector = "setPointOfView:")

@@ -370,6 +370,9 @@ classes:
             '-respondWithData:':
                 trim_after_first_colon: true
     AVAssetResourceLoadingRequest: # DONE
+        properties:
+            'cancelled':
+                name: isCancelled
         methods:
             '-finishLoadingWithError:':
                 name: finishLoading
@@ -702,6 +705,8 @@ classes:
                 type: AVAudioSettings
             'channelAssignments':
                 type: NSArray<AVAudioSessionChannelDescription>
+            'enableRate':
+                name: rateEnabled
         methods:
             '-init.*':
                 name: init
@@ -767,6 +772,8 @@ classes:
                 type: NSArray<AVAudioSessionDataSourceDescription>
             'outputDataSources':
                 type: NSArray<AVAudioSessionDataSourceDescription>
+            'secondaryAudioShouldBeSilencedHint':
+                omit_prefix: true
         methods:
             '-setActive:.*':
                 trim_after_first_colon: true
@@ -1537,6 +1544,8 @@ classes:
         properties:
             'layerInstructions':
                 type: NSArray<AVVideoCompositionLayerInstruction>
+            'enablePostProcessing':
+                name: postProcessingEnabled
         methods:
             '+videoCompositionInstruction':
                 name: create
@@ -1574,6 +1583,9 @@ classes:
                     presetIdentifier:
                         type: AVOutputSettingsPreset
     AVPlayer: # DONE
+        properties:
+            'outputObscuredDueToInsufficientExternalProtection':
+                omit_prefix: true
         methods:
             '-initWithURL:':
                 name: init
@@ -1628,6 +1640,8 @@ classes:
                 type: '@org.robovm.rt.bro.annotation.Marshaler(CMTimeRange.AsValuedListMarshaler.class) List<CMTimeRange>'
             'outputs':
                 type: NSArray<AVPlayerItemOutput>
+            'seekingWaitsForVideoCompositionRendering':
+                omit_prefix: true
         methods:
             '-initWithURL:':
                 name: init
@@ -1897,6 +1911,8 @@ classes:
                         type: NSArray<CALayer>
     AVVideoCompositionInstruction: # DONE
         properties:
+            'enablePostProcessing':
+                name: postProcessingEnabled
             'layerInstructions':
                 type: NSArray<AVVideoCompositionLayerInstruction>
             'requiredSourceTrackIDs':

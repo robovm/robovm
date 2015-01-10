@@ -19,7 +19,6 @@ package org.robovm.apple.eventkit;
 import java.io.*;
 import java.nio.*;
 import java.util.*;
-
 import org.robovm.objc.*;
 import org.robovm.objc.annotation.*;
 import org.robovm.objc.block.*;
@@ -303,7 +302,7 @@ import org.robovm.apple.corelocation.*;
     @Method(selector = "eventsMatchingPredicate:")
     public native NSArray<EKEvent> getEvents(NSPredicate predicate);
     @Method(selector = "enumerateEventsMatchingPredicate:usingBlock:")
-    public native void enumerateEvents(NSPredicate predicate, @Block VoidBlock2<EKEvent, BytePtr> block);
+    public native void enumerateEvents(NSPredicate predicate, @Block VoidBlock2<EKEvent, BooleanPtr> block);
     @Method(selector = "predicateForEventsWithStartDate:endDate:calendars:")
     public native NSPredicate getPredicateForEvents(NSDate startDate, NSDate endDate, NSArray<EKCalendar> calendars);
     /**
@@ -345,7 +344,7 @@ import org.robovm.apple.corelocation.*;
      * @since Available in iOS 5.0 and later.
      */
     @Method(selector = "commit:")
-    public native boolean commit(NSError.NSErrorPtr error);
+    protected native boolean commit(NSError.NSErrorPtr error);
     /**
      * @since Available in iOS 5.0 and later.
      */

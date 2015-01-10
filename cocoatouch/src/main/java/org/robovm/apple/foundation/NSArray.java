@@ -149,7 +149,7 @@ import org.robovm.apple.dispatch.*;
         @Override
         public U get(int index) {
             checkIndex(index);
-            return (U) array.objectAtIndex$(index);
+            return (U) array.getObjectAt(index);
         }
 
         protected void checkIndex(int index) {
@@ -167,7 +167,7 @@ import org.robovm.apple.dispatch.*;
         @Override
         public boolean contains(Object o) {
             if (o instanceof NSObject) {
-                return array.containsObject$((NSObject) o);
+                return array.containsObject((NSObject) o);
             }
             return false;
         }
@@ -175,7 +175,7 @@ import org.robovm.apple.dispatch.*;
         @Override
         public int indexOf(Object o) {
             if (o instanceof NSObject) {
-                return (int) array.indexOfObject$((NSObject) o);
+                return (int) array.indexOfObject((NSObject) o);
             }
             return -1;
         }
@@ -197,7 +197,7 @@ import org.robovm.apple.dispatch.*;
             throw new NullPointerException("c");
         }
         if (c instanceof NSArray) {
-            initObject(initWithArray$((NSArray<T>) c));
+            initObject(init((NSArray<T>) c));
         } else {
             NSObject[] objects = c.toArray(new NSObject[c.size()]);
             initWithObjects(objects);
@@ -245,7 +245,7 @@ import org.robovm.apple.dispatch.*;
             }
             ptr = ptr.previous(objects.length);
         }
-        initObject(initWithObjects$count$(ptr != null ? ptr.getHandle() : 0, objects.length));
+        initObject(init(ptr != null ? ptr.getHandle() : 0, objects.length));
     }
     
     protected AbstractList<T> createAdapter() {
@@ -323,7 +323,7 @@ import org.robovm.apple.dispatch.*;
     public NSArray<T> subList(int start, int end) {
         if (start >= 0 && end <= size()) {
             if (start <= end) {
-                return (NSArray<T>) subarrayWithRange$(new NSRange(start, end - start));
+                return (NSArray<T>) getSubarray(new NSRange(start, end - start));
             }
             throw new IllegalArgumentException();
         }
@@ -337,11 +337,11 @@ import org.robovm.apple.dispatch.*;
     }    
     
     public static NSArray<?> read(java.io.File file) {
-        return arrayWithContentsOfFile$(file.getAbsolutePath());
+        return readFile(file.getAbsolutePath());
     }
 
     public void write(java.io.File file, boolean atomically) {
-        writeToFile$atomically$(file.getAbsolutePath(), atomically);
+        writeFile(file.getAbsolutePath(), atomically);
     }
     
     /**
@@ -406,23 +406,23 @@ import org.robovm.apple.dispatch.*;
 
     /*<methods>*/
     @Method(selector = "objectAtIndex:")
-    protected native T objectAtIndex$(@MachineSizedUInt long index);
+    protected native T getObjectAt(@MachineSizedUInt long index);
     @Method(selector = "initWithObjects:count:")
-    protected native @Pointer long initWithObjects$count$(@Pointer long objects, @MachineSizedUInt long cnt);
+    protected native @Pointer long init(@Pointer long objects, @MachineSizedUInt long cnt);
     @Method(selector = "containsObject:")
-    protected native boolean containsObject$(NSObject anObject);
+    protected native boolean containsObject(NSObject anObject);
     @Method(selector = "indexOfObject:")
-    protected native @MachineSizedUInt long indexOfObject$(NSObject anObject);
+    protected native @MachineSizedUInt long indexOfObject(NSObject anObject);
     @Method(selector = "subarrayWithRange:")
-    protected native NSArray<T> subarrayWithRange$(@ByVal NSRange range);
+    protected native NSArray<T> getSubarray(@ByVal NSRange range);
     @Method(selector = "writeToFile:atomically:")
-    protected native boolean writeToFile$atomically$(String path, boolean useAuxiliaryFile);
+    protected native boolean writeFile(String path, boolean useAuxiliaryFile);
     @Method(selector = "writeToURL:atomically:")
     public native boolean write(NSURL url, boolean atomically);
     @Method(selector = "initWithArray:")
-    protected native @Pointer long initWithArray$(NSArray<?> array);
+    protected native @Pointer long init(NSArray<?> array);
     @Method(selector = "arrayWithContentsOfFile:")
-    protected static native NSArray<?> arrayWithContentsOfFile$(String path);
+    protected static native NSArray<?> readFile(String path);
     @Method(selector = "arrayWithContentsOfURL:")
     public static native NSArray<?> read(NSURL url);
     @Method(selector = "addObserver:toObjectsAtIndexes:forKeyPath:options:context:")

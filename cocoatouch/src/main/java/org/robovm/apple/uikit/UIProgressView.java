@@ -51,7 +51,7 @@ import org.robovm.apple.corelocation.*;
     /*<constructors>*/
     public UIProgressView() {}
     protected UIProgressView(SkipInit skipInit) { super(skipInit); }
-    public UIProgressView(UIProgressViewStyle style) { super((SkipInit) null); initObject(initWithProgressViewStyle$(style)); }
+    public UIProgressView(UIProgressViewStyle style) { super((SkipInit) null); initObject(init(style)); }
     /*</constructors>*/
     
     public UIProgressView(CGRect frame) {
@@ -111,7 +111,7 @@ import org.robovm.apple.corelocation.*;
     /*<members>*//*</members>*/
     /*<methods>*/
     @Method(selector = "initWithProgressViewStyle:")
-    protected native @Pointer long initWithProgressViewStyle$(UIProgressViewStyle style);
+    protected native @Pointer long init(UIProgressViewStyle style);
     /**
      * @since Available in iOS 5.0 and later.
      */

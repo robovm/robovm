@@ -45,28 +45,28 @@ import org.robovm.apple.corefoundation.*;
     /*<constructors>*/
     public MIDIObjectAddRemoveNotification() {}
     public MIDIObjectAddRemoveNotification(MIDINotificationMessageID messageID, int messageSize, MIDIObject parent, MIDIObjectType parentType, MIDIObject child, MIDIObjectType childType) {
-        this.messageID(messageID);
-        this.messageSize(messageSize);
-        this.parent(parent);
-        this.parentType(parentType);
-        this.child(child);
-        this.childType(childType);
+        this.setMessageID(messageID);
+        this.setMessageSize(messageSize);
+        this.setParent(parent);
+        this.setParentType(parentType);
+        this.setChild(child);
+        this.setChildType(childType);
     }
     /*</constructors>*/
     /*<properties>*//*</properties>*/
     /*<members>*/
-    @StructMember(0) public native MIDINotificationMessageID messageID();
-    @StructMember(0) public native MIDIObjectAddRemoveNotification messageID(MIDINotificationMessageID messageID);
-    @StructMember(1) public native int messageSize();
-    @StructMember(1) public native MIDIObjectAddRemoveNotification messageSize(int messageSize);
-    @StructMember(2) public native MIDIObject parent();
-    @StructMember(2) public native MIDIObjectAddRemoveNotification parent(MIDIObject parent);
-    @StructMember(3) public native MIDIObjectType parentType();
-    @StructMember(3) public native MIDIObjectAddRemoveNotification parentType(MIDIObjectType parentType);
-    @StructMember(4) public native MIDIObject child();
-    @StructMember(4) public native MIDIObjectAddRemoveNotification child(MIDIObject child);
-    @StructMember(5) public native MIDIObjectType childType();
-    @StructMember(5) public native MIDIObjectAddRemoveNotification childType(MIDIObjectType childType);
+    @StructMember(0) public native MIDINotificationMessageID getMessageID();
+    @StructMember(0) public native MIDIObjectAddRemoveNotification setMessageID(MIDINotificationMessageID messageID);
+    @StructMember(1) public native int getMessageSize();
+    @StructMember(1) public native MIDIObjectAddRemoveNotification setMessageSize(int messageSize);
+    @StructMember(2) public native MIDIObject getParent();
+    @StructMember(2) public native MIDIObjectAddRemoveNotification setParent(MIDIObject parent);
+    @StructMember(3) public native MIDIObjectType getParentType();
+    @StructMember(3) public native MIDIObjectAddRemoveNotification setParentType(MIDIObjectType parentType);
+    @StructMember(4) public native MIDIObject getChild();
+    @StructMember(4) public native MIDIObjectAddRemoveNotification setChild(MIDIObject child);
+    @StructMember(5) public native MIDIObjectType getChildType();
+    @StructMember(5) public native MIDIObjectAddRemoveNotification setChildType(MIDIObjectType childType);
     /*</members>*/
     /*<methods>*//*</methods>*/
 }

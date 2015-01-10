@@ -70,7 +70,7 @@ import org.robovm.apple.corefoundation.*;
      * @since Available in iOS 5.0 and later.
      */
     @Bridge(symbol="SSLGetSessionOption", optional=true)
-    public native int getSessionOption(SSLSessionOption option, BytePtr value);
+    public native int getSessionOption(SSLSessionOption option, BooleanPtr value);
     /**
      * @since Available in iOS 5.0 and later.
      */

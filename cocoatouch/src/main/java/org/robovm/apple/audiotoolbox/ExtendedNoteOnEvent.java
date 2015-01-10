@@ -49,22 +49,22 @@ import org.robovm.apple.coremedia.*;
     /*<constructors>*/
     public ExtendedNoteOnEvent() {}
     public ExtendedNoteOnEvent(int instrumentID, int groupID, float duration, MusicDeviceNoteParams extendedParams) {
-        this.instrumentID(instrumentID);
-        this.groupID(groupID);
-        this.duration(duration);
-        this.extendedParams(extendedParams);
+        this.setInstrumentID(instrumentID);
+        this.setGroupID(groupID);
+        this.setDuration(duration);
+        this.setExtendedParams(extendedParams);
     }
     /*</constructors>*/
     /*<properties>*//*</properties>*/
     /*<members>*/
-    @StructMember(0) public native int instrumentID();
-    @StructMember(0) public native ExtendedNoteOnEvent instrumentID(int instrumentID);
-    @StructMember(1) public native int groupID();
-    @StructMember(1) public native ExtendedNoteOnEvent groupID(int groupID);
-    @StructMember(2) public native float duration();
-    @StructMember(2) public native ExtendedNoteOnEvent duration(float duration);
-    @StructMember(3) public native @ByVal MusicDeviceNoteParams extendedParams();
-    @StructMember(3) public native ExtendedNoteOnEvent extendedParams(@ByVal MusicDeviceNoteParams extendedParams);
+    @StructMember(0) public native int getInstrumentID();
+    @StructMember(0) public native ExtendedNoteOnEvent setInstrumentID(int instrumentID);
+    @StructMember(1) public native int getGroupID();
+    @StructMember(1) public native ExtendedNoteOnEvent setGroupID(int groupID);
+    @StructMember(2) public native float getDuration();
+    @StructMember(2) public native ExtendedNoteOnEvent setDuration(float duration);
+    @StructMember(3) public native @ByVal MusicDeviceNoteParams getExtendedParams();
+    @StructMember(3) public native ExtendedNoteOnEvent setExtendedParams(@ByVal MusicDeviceNoteParams extendedParams);
     /*</members>*/
     /*<methods>*//*</methods>*/
 }

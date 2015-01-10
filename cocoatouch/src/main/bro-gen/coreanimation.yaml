@@ -279,7 +279,9 @@ classes:
             '+animationTimingFunction':
                 property: true
             '+disableActions':
-                property: true
+                name: disablesActions
+            '+setDisableActions:':
+                name: setDisablesActions
             '+completionBlock':
                 property: true
             '+valueForKey:':

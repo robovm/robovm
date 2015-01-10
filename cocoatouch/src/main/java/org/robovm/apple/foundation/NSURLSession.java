@@ -71,7 +71,7 @@ import org.robovm.apple.dispatch.*;
      * @since Available in iOS 7.0 and later.
      */
     @GlobalValue(symbol="NSURLSessionTransferSizeUnknown", optional=true)
-    public static native long TransferSizeUnknown();
+    public static native long getTransferSizeUnknown();
     
     @Method(selector = "finishTasksAndInvalidate")
     public native void finishTasksAndInvalidate();

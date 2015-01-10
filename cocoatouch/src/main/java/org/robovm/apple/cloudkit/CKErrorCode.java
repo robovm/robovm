@@ -35,6 +35,7 @@ import org.robovm.apple.corelocation.*;
  * @since Available in iOS 8.0 and later.
  */
 /*</javadoc>*/
+@ForceLinkClass(CKError.class)
 /*<annotations>*/@Marshaler(ValuedEnum.AsMachineSizedSIntMarshaler.class)/*</annotations>*/
 public enum /*<name>*/CKErrorCode/*</name>*/ implements NSErrorCode {
     /*<values>*/

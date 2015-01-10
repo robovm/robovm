@@ -53,28 +53,10 @@ import org.robovm.apple.foundation.*;
     /*<members>*/
     @StructMember(0) public native double getX();
     @StructMember(0) public native CMRotationRate setX(double x);
-    
-    @Deprecated
-    @StructMember(0) public native double x();
-    @Deprecated
-    @StructMember(0) public native CMRotationRate x(double x);
-    
     @StructMember(1) public native double getY();
     @StructMember(1) public native CMRotationRate setY(double y);
-    
-    @Deprecated
-    @StructMember(1) public native double y();
-    @Deprecated
-    @StructMember(1) public native CMRotationRate y(double y);
-    
     @StructMember(2) public native double getZ();
     @StructMember(2) public native CMRotationRate setZ(double z);
-    
-    @Deprecated
-    @StructMember(2) public native double z();
-    @Deprecated
-    @StructMember(2) public native CMRotationRate z(double z);
-    
     /*</members>*/
     /*<methods>*//*</methods>*/
 }

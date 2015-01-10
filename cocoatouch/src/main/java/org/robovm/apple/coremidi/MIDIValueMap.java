@@ -45,13 +45,13 @@ import org.robovm.apple.corefoundation.*;
     /*<constructors>*/
     public MIDIValueMap() {}
     public MIDIValueMap(ByteBuffer value) {
-        this.value(value);
+        this.setValue(value);
     }
     /*</constructors>*/
     /*<properties>*//*</properties>*/
     /*<members>*/
-    @StructMember(0) public native @Array({128}) ByteBuffer value();
-    @StructMember(0) public native MIDIValueMap value(@Array({128}) ByteBuffer value);
+    @StructMember(0) public native @Array({128}) ByteBuffer getValue();
+    @StructMember(0) public native MIDIValueMap setValue(@Array({128}) ByteBuffer value);
     /*</members>*/
     /*<methods>*//*</methods>*/
 }

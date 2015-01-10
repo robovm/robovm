@@ -51,36 +51,18 @@ import org.robovm.apple.audiotoolbox.*;
     public CMSampleTimingInfo() {}
     public CMSampleTimingInfo(CMTime duration, CMTime presentationTimeStamp, CMTime decodeTimeStamp) {
         this.setDuration(duration);
-        this.setPresentationtimestamp(presentationTimeStamp);
-        this.setDecodetimestamp(decodeTimeStamp);
+        this.setPresentationTimeStamp(presentationTimeStamp);
+        this.setDecodeTimeStamp(decodeTimeStamp);
     }
     /*</constructors>*/
     /*<properties>*//*</properties>*/
     /*<members>*/
     @StructMember(0) public native @ByVal CMTime getDuration();
     @StructMember(0) public native CMSampleTimingInfo setDuration(@ByVal CMTime duration);
-    
-    @Deprecated
-    @StructMember(0) public native @ByVal CMTime duration();
-    @Deprecated
-    @StructMember(0) public native CMSampleTimingInfo duration(@ByVal CMTime duration);
-    
-    @StructMember(1) public native @ByVal CMTime getPresentationtimestamp();
-    @StructMember(1) public native CMSampleTimingInfo setPresentationtimestamp(@ByVal CMTime presentationTimeStamp);
-    
-    @Deprecated
-    @StructMember(1) public native @ByVal CMTime presentationTimeStamp();
-    @Deprecated
-    @StructMember(1) public native CMSampleTimingInfo presentationTimeStamp(@ByVal CMTime presentationTimeStamp);
-    
-    @StructMember(2) public native @ByVal CMTime getDecodetimestamp();
-    @StructMember(2) public native CMSampleTimingInfo setDecodetimestamp(@ByVal CMTime decodeTimeStamp);
-    
-    @Deprecated
-    @StructMember(2) public native @ByVal CMTime decodeTimeStamp();
-    @Deprecated
-    @StructMember(2) public native CMSampleTimingInfo decodeTimeStamp(@ByVal CMTime decodeTimeStamp);
-    
+    @StructMember(1) public native @ByVal CMTime getPresentationTimeStamp();
+    @StructMember(1) public native CMSampleTimingInfo setPresentationTimeStamp(@ByVal CMTime presentationTimeStamp);
+    @StructMember(2) public native @ByVal CMTime getDecodeTimeStamp();
+    @StructMember(2) public native CMSampleTimingInfo setDecodeTimeStamp(@ByVal CMTime decodeTimeStamp);
     /*</members>*/
     /*<methods>*//*</methods>*/
 }

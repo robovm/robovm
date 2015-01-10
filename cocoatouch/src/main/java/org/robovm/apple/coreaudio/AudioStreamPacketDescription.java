@@ -45,37 +45,19 @@ import org.robovm.apple.corefoundation.*;
     /*<constructors>*/
     public AudioStreamPacketDescription() {}
     public AudioStreamPacketDescription(long mStartOffset, int mVariableFramesInPacket, int mDataByteSize) {
-        this.setMstartoffset(mStartOffset);
-        this.setMvariableframesinpacket(mVariableFramesInPacket);
-        this.setMdatabytesize(mDataByteSize);
+        this.setMStartOffset(mStartOffset);
+        this.setMVariableFramesInPacket(mVariableFramesInPacket);
+        this.setMDataByteSize(mDataByteSize);
     }
     /*</constructors>*/
     /*<properties>*//*</properties>*/
     /*<members>*/
-    @StructMember(0) public native long getMstartoffset();
-    @StructMember(0) public native AudioStreamPacketDescription setMstartoffset(long mStartOffset);
-    
-    @Deprecated
-    @StructMember(0) public native long mStartOffset();
-    @Deprecated
-    @StructMember(0) public native AudioStreamPacketDescription mStartOffset(long mStartOffset);
-    
-    @StructMember(1) public native int getMvariableframesinpacket();
-    @StructMember(1) public native AudioStreamPacketDescription setMvariableframesinpacket(int mVariableFramesInPacket);
-    
-    @Deprecated
-    @StructMember(1) public native int mVariableFramesInPacket();
-    @Deprecated
-    @StructMember(1) public native AudioStreamPacketDescription mVariableFramesInPacket(int mVariableFramesInPacket);
-    
-    @StructMember(2) public native int getMdatabytesize();
-    @StructMember(2) public native AudioStreamPacketDescription setMdatabytesize(int mDataByteSize);
-    
-    @Deprecated
-    @StructMember(2) public native int mDataByteSize();
-    @Deprecated
-    @StructMember(2) public native AudioStreamPacketDescription mDataByteSize(int mDataByteSize);
-    
+    @StructMember(0) public native long getMStartOffset();
+    @StructMember(0) public native AudioStreamPacketDescription setMStartOffset(long mStartOffset);
+    @StructMember(1) public native int getMVariableFramesInPacket();
+    @StructMember(1) public native AudioStreamPacketDescription setMVariableFramesInPacket(int mVariableFramesInPacket);
+    @StructMember(2) public native int getMDataByteSize();
+    @StructMember(2) public native AudioStreamPacketDescription setMDataByteSize(int mDataByteSize);
     /*</members>*/
     /*<methods>*//*</methods>*/
 }

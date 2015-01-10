@@ -53,7 +53,7 @@ import org.robovm.apple.corelocation.*;
     /*<constructors>*/
     public NSTextAttachment() {}
     protected NSTextAttachment(SkipInit skipInit) { super(skipInit); }
-    public NSTextAttachment(NSData contentData, String uti) { super((SkipInit) null); initObject(initWithData$ofType$(contentData, uti)); }
+    public NSTextAttachment(NSData contentData, String uti) { super((SkipInit) null); initObject(init(contentData, uti)); }
     /*</constructors>*/
     /*<properties>*/
     @Property(selector = "contents")
@@ -80,7 +80,7 @@ import org.robovm.apple.corelocation.*;
     /*<members>*//*</members>*/
     /*<methods>*/
     @Method(selector = "initWithData:ofType:")
-    protected native @Pointer long initWithData$ofType$(NSData contentData, String uti);
+    protected native @Pointer long init(NSData contentData, String uti);
     /**
      * @since Available in iOS 7.0 and later.
      */

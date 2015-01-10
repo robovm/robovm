@@ -67,11 +67,11 @@ import org.robovm.apple.corelocation.*;
     @Property(selector = "setCurrentPage:")
     public native void setCurrentPage(@MachineSizedSInt long v);
     @Property(selector = "hidesForSinglePage")
-    public native boolean isHidesForSinglePage();
+    public native boolean hidesForSinglePage();
     @Property(selector = "setHidesForSinglePage:")
     public native void setHidesForSinglePage(boolean v);
     @Property(selector = "defersCurrentPageDisplay")
-    public native boolean isDefersCurrentPageDisplay();
+    public native boolean defersCurrentPageDisplay();
     @Property(selector = "setDefersCurrentPageDisplay:")
     public native void setDefersCurrentPageDisplay(boolean v);
     /**

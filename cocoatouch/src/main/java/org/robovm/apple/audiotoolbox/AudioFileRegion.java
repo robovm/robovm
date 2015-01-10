@@ -49,25 +49,25 @@ import org.robovm.apple.coremedia.*;
     /*<constructors>*/
     public AudioFileRegion() {}
     public AudioFileRegion(int mRegionID, CFString mName, int mFlags, int mNumberMarkers, AudioFileMarker mMarkers) {
-        this.mRegionID(mRegionID);
-        this.mName(mName);
-        this.mFlags(mFlags);
-        this.mNumberMarkers(mNumberMarkers);
-        this.mMarkers(mMarkers);
+        this.setMRegionID(mRegionID);
+        this.setMName(mName);
+        this.setMFlags(mFlags);
+        this.setMNumberMarkers(mNumberMarkers);
+        this.setMMarkers(mMarkers);
     }
     /*</constructors>*/
     /*<properties>*//*</properties>*/
     /*<members>*/
-    @StructMember(0) public native int mRegionID();
-    @StructMember(0) public native AudioFileRegion mRegionID(int mRegionID);
-    @StructMember(1) public native CFString mName();
-    @StructMember(1) public native AudioFileRegion mName(CFString mName);
-    @StructMember(2) public native int mFlags();
-    @StructMember(2) public native AudioFileRegion mFlags(int mFlags);
-    @StructMember(3) public native int mNumberMarkers();
-    @StructMember(3) public native AudioFileRegion mNumberMarkers(int mNumberMarkers);
-    @StructMember(4) public native @Array({1}) AudioFileMarker mMarkers();
-    @StructMember(4) public native AudioFileRegion mMarkers(@Array({1}) AudioFileMarker mMarkers);
+    @StructMember(0) public native int getMRegionID();
+    @StructMember(0) public native AudioFileRegion setMRegionID(int mRegionID);
+    @StructMember(1) public native CFString getMName();
+    @StructMember(1) public native AudioFileRegion setMName(CFString mName);
+    @StructMember(2) public native int getMFlags();
+    @StructMember(2) public native AudioFileRegion setMFlags(int mFlags);
+    @StructMember(3) public native int getMNumberMarkers();
+    @StructMember(3) public native AudioFileRegion setMNumberMarkers(int mNumberMarkers);
+    @StructMember(4) public native @Array({1}) AudioFileMarker getMMarkers();
+    @StructMember(4) public native AudioFileRegion setMMarkers(@Array({1}) AudioFileMarker mMarkers);
     /*</members>*/
     /*<methods>*//*</methods>*/
 }

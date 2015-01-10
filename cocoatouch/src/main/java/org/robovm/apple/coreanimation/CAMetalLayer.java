@@ -69,7 +69,7 @@ import org.robovm.apple.metal.*;
     @Property(selector = "setDrawableSize:")
     public native void setDrawableSize(@ByVal CGSize v);
     @Property(selector = "presentsWithTransaction")
-    public native boolean isPresentsWithTransaction();
+    public native boolean presentsWithTransaction();
     @Property(selector = "setPresentsWithTransaction:")
     public native void setPresentsWithTransaction(boolean v);
     /*</properties>*/

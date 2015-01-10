@@ -80,21 +80,21 @@ import org.robovm.apple.audiotoolbox.*;
     }
     
     public boolean isDefaultStyleBold() {
-        BytePtr ptr = new BytePtr();
+        BooleanPtr ptr = new BooleanPtr();
         getDefaultStyle(null, ptr, null, null, null, null);
-        return ptr.get() >= 1;
+        return ptr.get();
     }
     
     public boolean isDefaultStyleItalic() {
-        BytePtr ptr = new BytePtr();
+        BooleanPtr ptr = new BooleanPtr();
         getDefaultStyle(null, null, ptr, null, null, null);
-        return ptr.get() >= 1;
+        return ptr.get();
     }
     
     public boolean isDefaultStyleUnderline() {
-        BytePtr ptr = new BytePtr();
+        BooleanPtr ptr = new BooleanPtr();
         getDefaultStyle(null, null, null, ptr, null, null);
-        return ptr.get() >= 1;
+        return ptr.get();
     }
     
     public @MachineSizedFloat double getDefaultStyleFontSize() {
@@ -122,7 +122,7 @@ import org.robovm.apple.audiotoolbox.*;
      * @since Available in iOS 4.0 and later.
      */
     @Bridge(symbol="CMTextFormatDescriptionGetDefaultStyle", optional=true)
-    protected native int getDefaultStyle(ShortPtr outLocalFontID, BytePtr outBold, BytePtr outItalic, BytePtr outUnderline, MachineSizedFloatPtr outFontSize, MachineSizedFloatPtr outColorComponents);
+    protected native int getDefaultStyle(ShortPtr outLocalFontID, BooleanPtr outBold, BooleanPtr outItalic, BooleanPtr outUnderline, MachineSizedFloatPtr outFontSize, MachineSizedFloatPtr outColorComponents);
     /**
      * @since Available in iOS 4.0 and later.
      */

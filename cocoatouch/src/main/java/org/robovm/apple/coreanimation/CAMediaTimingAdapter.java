@@ -73,7 +73,7 @@ import org.robovm.apple.metal.*;
     @NotImplemented("setRepeatDuration:")
     public void setRepeatDuration(double v) { throw new UnsupportedOperationException(); }
     @NotImplemented("autoreverses")
-    public boolean isAutoreverses() { throw new UnsupportedOperationException(); }
+    public boolean autoreverses() { throw new UnsupportedOperationException(); }
     @NotImplemented("setAutoreverses:")
     public void setAutoreverses(boolean v) { throw new UnsupportedOperationException(); }
     @NotImplemented("fillMode")

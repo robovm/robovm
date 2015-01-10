@@ -81,7 +81,7 @@ import org.robovm.apple.coregraphics.*;
      * @since Available in iOS 4.2 and later.
      */
     @Property(selector = "showsVolumeSlider")
-    public native boolean isShowsVolumeSlider();
+    public native boolean showsVolumeSlider();
     /**
      * @since Available in iOS 4.2 and later.
      */
@@ -91,7 +91,7 @@ import org.robovm.apple.coregraphics.*;
      * @since Available in iOS 4.2 and later.
      */
     @Property(selector = "showsRouteButton")
-    public native boolean isShowsRouteButton();
+    public native boolean showsRouteButton();
     /**
      * @since Available in iOS 4.2 and later.
      */
@@ -101,7 +101,7 @@ import org.robovm.apple.coregraphics.*;
      * @since Available in iOS 7.0 and later.
      */
     @Property(selector = "areWirelessRoutesAvailable")
-    public native boolean isWirelessRoutesAvailable();
+    public native boolean areWirelessRoutesAvailable();
     /**
      * @since Available in iOS 7.0 and later.
      */

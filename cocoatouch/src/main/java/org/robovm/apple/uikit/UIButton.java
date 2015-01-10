@@ -67,7 +67,7 @@ import org.robovm.apple.corelocation.*;
     @Property(selector = "setTitleEdgeInsets:")
     public native void setTitleEdgeInsets(@ByVal UIEdgeInsets v);
     @Property(selector = "reversesTitleShadowWhenHighlighted")
-    public native boolean isReversesTitleShadowWhenHighlighted();
+    public native boolean reversesTitleShadowWhenHighlighted();
     @Property(selector = "setReversesTitleShadowWhenHighlighted:")
     public native void setReversesTitleShadowWhenHighlighted(boolean v);
     @Property(selector = "imageEdgeInsets")
@@ -75,15 +75,15 @@ import org.robovm.apple.corelocation.*;
     @Property(selector = "setImageEdgeInsets:")
     public native void setImageEdgeInsets(@ByVal UIEdgeInsets v);
     @Property(selector = "adjustsImageWhenHighlighted")
-    public native boolean isAdjustsImageWhenHighlighted();
+    public native boolean adjustsImageWhenHighlighted();
     @Property(selector = "setAdjustsImageWhenHighlighted:")
     public native void setAdjustsImageWhenHighlighted(boolean v);
     @Property(selector = "adjustsImageWhenDisabled")
-    public native boolean isAdjustsImageWhenDisabled();
+    public native boolean adjustsImageWhenDisabled();
     @Property(selector = "setAdjustsImageWhenDisabled:")
     public native void setAdjustsImageWhenDisabled(boolean v);
     @Property(selector = "showsTouchWhenHighlighted")
-    public native boolean isShowsTouchWhenHighlighted();
+    public native boolean showsTouchWhenHighlighted();
     @Property(selector = "setShowsTouchWhenHighlighted:")
     public native void setShowsTouchWhenHighlighted(boolean v);
     /**

@@ -74,7 +74,7 @@ import org.robovm.apple.audiotoolbox.*;
     /*<ptr>*/public static class CMTimePtr extends Ptr<CMTime, CMTimePtr> {}/*</ptr>*/
     /*<bind>*/static { Bro.bind(CMTime.class); }/*</bind>*/
     /*<constants>*/
-    public static final long MaxTimescale = 0x7fffffffL;
+    public static final long getMaxTimescale = 0x7fffffffL;
     /*</constants>*/
     /*<constructors>*/
     public CMTime() {}
@@ -89,39 +89,15 @@ import org.robovm.apple.audiotoolbox.*;
     /*<members>*/
     @StructMember(0) public native long getValue();
     @StructMember(0) public native CMTime setValue(long value);
-    
-    @Deprecated
-    @StructMember(0) public native long value();
-    @Deprecated
-    @StructMember(0) public native CMTime value(long value);
-    
     @StructMember(1) public native int getTimescale();
     @StructMember(1) public native CMTime setTimescale(int timescale);
-    
-    @Deprecated
-    @StructMember(1) public native int timescale();
-    @Deprecated
-    @StructMember(1) public native CMTime timescale(int timescale);
-    
     @StructMember(2) public native CMTimeFlags getFlags();
     @StructMember(2) public native CMTime setFlags(CMTimeFlags flags);
-    
-    @Deprecated
-    @StructMember(2) public native CMTimeFlags flags();
-    @Deprecated
-    @StructMember(2) public native CMTime flags(CMTimeFlags flags);
-    
     @StructMember(3) public native long getEpoch();
     @StructMember(3) public native CMTime setEpoch(long epoch);
-    
-    @Deprecated
-    @StructMember(3) public native long epoch();
-    @Deprecated
-    @StructMember(3) public native CMTime epoch(long epoch);
-    
     /*</members>*/
     public String asString() {
-        return copyDescription(null, this);
+        return getDescription(null, this);
     }
     /*<methods>*/
     /**
@@ -208,9 +184,9 @@ import org.robovm.apple.audiotoolbox.*;
     /**
      * @since Available in iOS 4.0 and later.
      */
-    public NSDictionary<?, ?> copyAsDictionary(CFAllocator allocator) { return copyAsDictionary(this, allocator); }
+    public NSDictionary<?, ?> asDictionary(CFAllocator allocator) { return asDictionary(this, allocator); }
     @Bridge(symbol="CMTimeCopyAsDictionary", optional=true)
-    private static native NSDictionary<?, ?> copyAsDictionary(@ByVal CMTime time, CFAllocator allocator);
+    private static native NSDictionary<?, ?> asDictionary(@ByVal CMTime time, CFAllocator allocator);
     /**
      * @since Available in iOS 4.0 and later.
      */
@@ -220,7 +196,7 @@ import org.robovm.apple.audiotoolbox.*;
      * @since Available in iOS 4.0 and later.
      */
     @Bridge(symbol="CMTimeCopyDescription", optional=true)
-    protected static native String copyDescription(CFAllocator allocator, @ByVal CMTime time);
+    protected static native String getDescription(CFAllocator allocator, @ByVal CMTime time);
     /**
      * @since Available in iOS 4.0 and later.
      */

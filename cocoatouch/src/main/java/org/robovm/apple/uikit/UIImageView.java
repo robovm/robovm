@@ -51,11 +51,11 @@ import org.robovm.apple.corelocation.*;
     /*<constructors>*/
     public UIImageView() {}
     protected UIImageView(SkipInit skipInit) { super(skipInit); }
-    public UIImageView(UIImage image) { super((SkipInit) null); initObject(initWithImage$(image)); }
+    public UIImageView(UIImage image) { super((SkipInit) null); initObject(init(image)); }
     /**
      * @since Available in iOS 3.0 and later.
      */
-    public UIImageView(UIImage image, UIImage highlightedImage) { super((SkipInit) null); initObject(initWithImage$highlightedImage$(image, highlightedImage)); }
+    public UIImageView(UIImage image, UIImage highlightedImage) { super((SkipInit) null); initObject(init(image, highlightedImage)); }
     /*</constructors>*/
     
     public UIImageView(CGRect frame) {
@@ -127,12 +127,12 @@ import org.robovm.apple.corelocation.*;
     /*<members>*//*</members>*/
     /*<methods>*/
     @Method(selector = "initWithImage:")
-    protected native @Pointer long initWithImage$(UIImage image);
+    protected native @Pointer long init(UIImage image);
     /**
      * @since Available in iOS 3.0 and later.
      */
     @Method(selector = "initWithImage:highlightedImage:")
-    protected native @Pointer long initWithImage$highlightedImage$(UIImage image, UIImage highlightedImage);
+    protected native @Pointer long init(UIImage image, UIImage highlightedImage);
     @Method(selector = "startAnimating")
     public native void startAnimating();
     @Method(selector = "stopAnimating")

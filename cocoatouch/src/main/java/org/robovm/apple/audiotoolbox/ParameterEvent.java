@@ -49,22 +49,22 @@ import org.robovm.apple.coremedia.*;
     /*<constructors>*/
     public ParameterEvent() {}
     public ParameterEvent(int parameterID, int scope, int element, float value) {
-        this.parameterID(parameterID);
-        this.scope(scope);
-        this.element(element);
-        this.value(value);
+        this.setParameterID(parameterID);
+        this.setScope(scope);
+        this.setElement(element);
+        this.setValue(value);
     }
     /*</constructors>*/
     /*<properties>*//*</properties>*/
     /*<members>*/
-    @StructMember(0) public native int parameterID();
-    @StructMember(0) public native ParameterEvent parameterID(int parameterID);
-    @StructMember(1) public native int scope();
-    @StructMember(1) public native ParameterEvent scope(int scope);
-    @StructMember(2) public native int element();
-    @StructMember(2) public native ParameterEvent element(int element);
-    @StructMember(3) public native float value();
-    @StructMember(3) public native ParameterEvent value(float value);
+    @StructMember(0) public native int getParameterID();
+    @StructMember(0) public native ParameterEvent setParameterID(int parameterID);
+    @StructMember(1) public native int getScope();
+    @StructMember(1) public native ParameterEvent setScope(int scope);
+    @StructMember(2) public native int getElement();
+    @StructMember(2) public native ParameterEvent setElement(int element);
+    @StructMember(3) public native float getValue();
+    @StructMember(3) public native ParameterEvent setValue(float value);
     /*</members>*/
     /*<methods>*//*</methods>*/
 }

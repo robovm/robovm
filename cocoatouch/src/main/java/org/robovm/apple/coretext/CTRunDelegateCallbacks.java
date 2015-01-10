@@ -46,25 +46,25 @@ import org.robovm.apple.coregraphics.*;
     /*<constructors>*/
     public CTRunDelegateCallbacks() {}
     public CTRunDelegateCallbacks(@MachineSizedSInt long version, FunctionPtr dealloc, FunctionPtr getAscent, FunctionPtr getDescent, FunctionPtr getWidth) {
-        this.version(version);
-        this.dealloc(dealloc);
-        this.getAscent(getAscent);
-        this.getDescent(getDescent);
-        this.getWidth(getWidth);
+        this.setVersion(version);
+        this.setDealloc(dealloc);
+        this.setGetAscent(getAscent);
+        this.setGetDescent(getDescent);
+        this.setGetWidth(getWidth);
     }
     /*</constructors>*/
     /*<properties>*//*</properties>*/
     /*<members>*/
-    @StructMember(0) public native @MachineSizedSInt long version();
-    @StructMember(0) public native CTRunDelegateCallbacks version(@MachineSizedSInt long version);
-    @StructMember(1) public native FunctionPtr dealloc();
-    @StructMember(1) public native CTRunDelegateCallbacks dealloc(FunctionPtr dealloc);
-    @StructMember(2) public native FunctionPtr getAscent();
-    @StructMember(2) public native CTRunDelegateCallbacks getAscent(FunctionPtr getAscent);
-    @StructMember(3) public native FunctionPtr getDescent();
-    @StructMember(3) public native CTRunDelegateCallbacks getDescent(FunctionPtr getDescent);
-    @StructMember(4) public native FunctionPtr getWidth();
-    @StructMember(4) public native CTRunDelegateCallbacks getWidth(FunctionPtr getWidth);
+    @StructMember(0) public native @MachineSizedSInt long getVersion();
+    @StructMember(0) public native CTRunDelegateCallbacks setVersion(@MachineSizedSInt long version);
+    @StructMember(1) public native FunctionPtr getDealloc();
+    @StructMember(1) public native CTRunDelegateCallbacks setDealloc(FunctionPtr dealloc);
+    @StructMember(2) public native FunctionPtr getGetAscent();
+    @StructMember(2) public native CTRunDelegateCallbacks setGetAscent(FunctionPtr getAscent);
+    @StructMember(3) public native FunctionPtr getGetDescent();
+    @StructMember(3) public native CTRunDelegateCallbacks setGetDescent(FunctionPtr getDescent);
+    @StructMember(4) public native FunctionPtr getGetWidth();
+    @StructMember(4) public native CTRunDelegateCallbacks setGetWidth(FunctionPtr getWidth);
     /*</members>*/
     /*<methods>*//*</methods>*/
 }

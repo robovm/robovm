@@ -51,7 +51,7 @@ import org.robovm.apple.corelocation.*;
     /*<constructors>*/
     public UITableViewController() {}
     protected UITableViewController(SkipInit skipInit) { super(skipInit); }
-    public UITableViewController(UITableViewStyle style) { super((SkipInit) null); initObject(initWithStyle$(style)); }
+    public UITableViewController(UITableViewStyle style) { super((SkipInit) null); initObject(init(style)); }
     /*</constructors>*/
     /*<properties>*/
     @Property(selector = "tableView")
@@ -62,7 +62,7 @@ import org.robovm.apple.corelocation.*;
      * @since Available in iOS 3.2 and later.
      */
     @Property(selector = "clearsSelectionOnViewWillAppear")
-    public native boolean isClearsSelectionOnViewWillAppear();
+    public native boolean clearsSelectionOnViewWillAppear();
     /**
      * @since Available in iOS 3.2 and later.
      */
@@ -82,7 +82,7 @@ import org.robovm.apple.corelocation.*;
     /*<members>*//*</members>*/
     /*<methods>*/
     @Method(selector = "initWithStyle:")
-    protected native @Pointer long initWithStyle$(UITableViewStyle style);
+    protected native @Pointer long init(UITableViewStyle style);
     @Method(selector = "tableView:willDisplayCell:forRowAtIndexPath:")
     public native void willDisplayCell(UITableView tableView, UITableViewCell cell, NSIndexPath indexPath);
     /**

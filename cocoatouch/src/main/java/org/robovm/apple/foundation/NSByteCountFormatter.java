@@ -63,19 +63,19 @@ import org.robovm.apple.dispatch.*;
     @Property(selector = "setCountStyle:")
     public native void setCountStyle(NSByteCountFormatterCountStyle v);
     @Property(selector = "allowsNonnumericFormatting")
-    public native boolean isAllowsNonnumericFormatting();
+    public native boolean allowsNonnumericFormatting();
     @Property(selector = "setAllowsNonnumericFormatting:")
     public native void setAllowsNonnumericFormatting(boolean v);
     @Property(selector = "includesUnit")
-    public native boolean isIncludesUnit();
+    public native boolean includesUnit();
     @Property(selector = "setIncludesUnit:")
     public native void setIncludesUnit(boolean v);
     @Property(selector = "includesCount")
-    public native boolean isIncludesCount();
+    public native boolean includesCount();
     @Property(selector = "setIncludesCount:")
     public native void setIncludesCount(boolean v);
     @Property(selector = "includesActualByteCount")
-    public native boolean isIncludesActualByteCount();
+    public native boolean includesActualByteCount();
     @Property(selector = "setIncludesActualByteCount:")
     public native void setIncludesActualByteCount(boolean v);
     @Property(selector = "isAdaptive")
@@ -83,7 +83,7 @@ import org.robovm.apple.dispatch.*;
     @Property(selector = "setAdaptive:")
     public native void setAdaptive(boolean v);
     @Property(selector = "zeroPadsFractionDigits")
-    public native boolean isZeroPadsFractionDigits();
+    public native boolean zeroPadsFractionDigits();
     @Property(selector = "setZeroPadsFractionDigits:")
     public native void setZeroPadsFractionDigits(boolean v);
     /**

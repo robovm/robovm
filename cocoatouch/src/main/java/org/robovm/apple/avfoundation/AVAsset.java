@@ -65,7 +65,7 @@ import org.robovm.apple.mediatoolbox.*;
     @Property(selector = "preferredTransform")
     public native @ByVal CGAffineTransform getPreferredTransform();
     @Property(selector = "providesPreciseDurationAndTiming")
-    public native boolean isProvidesPreciseDurationAndTiming();
+    public native boolean providesPreciseDurationAndTiming();
     /**
      * @since Available in iOS 5.0 and later.
      */

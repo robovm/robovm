@@ -51,7 +51,7 @@ import org.robovm.apple.corelocation.*;
     /*<constructors>*/
     public UIPopoverController() {}
     protected UIPopoverController(SkipInit skipInit) { super(skipInit); }
-    public UIPopoverController(UIViewController viewController) { super((SkipInit) null); initObject(initWithContentViewController$(viewController)); }
+    public UIPopoverController(UIViewController viewController) { super((SkipInit) null); initObject(init(viewController)); }
     /*</constructors>*/
     /*<properties>*/
     @Property(selector = "delegate")
@@ -108,7 +108,7 @@ import org.robovm.apple.corelocation.*;
     /*<members>*//*</members>*/
     /*<methods>*/
     @Method(selector = "initWithContentViewController:")
-    protected native @Pointer long initWithContentViewController$(UIViewController viewController);
+    protected native @Pointer long init(UIViewController viewController);
     @Method(selector = "setContentViewController:animated:")
     public native void setContentViewController(UIViewController viewController, boolean animated);
     @Method(selector = "setPopoverContentSize:animated:")

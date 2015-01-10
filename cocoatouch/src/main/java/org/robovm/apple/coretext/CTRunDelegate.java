@@ -64,9 +64,9 @@ import org.robovm.apple.coregraphics.*;
     /*<constants>*//*</constants>*/
     public CTRunDelegate() {
         CTRunDelegateCallbacks callbacks = new CTRunDelegateCallbacks();
-        callbacks.getAscent(new FunctionPtr(cbGetAscent));
-        callbacks.getDescent(new FunctionPtr(cbGetDescent));
-        callbacks.getWidth(new FunctionPtr(cbGetWidth));
+        callbacks.setGetAscent(new FunctionPtr(cbGetAscent));
+        callbacks.setGetDescent(new FunctionPtr(cbGetDescent));
+        callbacks.setGetWidth(new FunctionPtr(cbGetWidth));
         long refconId = CTRunDelegate.refconId.getAndIncrement();
         delegate = CTRunDelegateIntern.create(callbacks, refconId);
         synchronized(runCallbacks) {

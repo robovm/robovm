@@ -49,31 +49,31 @@ import org.robovm.apple.coremedia.*;
     /*<constructors>*/
     public AudioFileMarker() {}
     public AudioFileMarker(double mFramePosition, CFString mName, int mMarkerID, AudioFileSMPTETime mSMPTETime, int mType, short mReserved, short mChannel) {
-        this.mFramePosition(mFramePosition);
-        this.mName(mName);
-        this.mMarkerID(mMarkerID);
-        this.mSMPTETime(mSMPTETime);
-        this.mType(mType);
-        this.mReserved(mReserved);
-        this.mChannel(mChannel);
+        this.setMFramePosition(mFramePosition);
+        this.setMName(mName);
+        this.setMMarkerID(mMarkerID);
+        this.setMSMPTETime(mSMPTETime);
+        this.setMType(mType);
+        this.setMReserved(mReserved);
+        this.setMChannel(mChannel);
     }
     /*</constructors>*/
     /*<properties>*//*</properties>*/
     /*<members>*/
-    @StructMember(0) public native double mFramePosition();
-    @StructMember(0) public native AudioFileMarker mFramePosition(double mFramePosition);
-    @StructMember(1) public native CFString mName();
-    @StructMember(1) public native AudioFileMarker mName(CFString mName);
-    @StructMember(2) public native int mMarkerID();
-    @StructMember(2) public native AudioFileMarker mMarkerID(int mMarkerID);
-    @StructMember(3) public native @ByVal AudioFileSMPTETime mSMPTETime();
-    @StructMember(3) public native AudioFileMarker mSMPTETime(@ByVal AudioFileSMPTETime mSMPTETime);
-    @StructMember(4) public native int mType();
-    @StructMember(4) public native AudioFileMarker mType(int mType);
-    @StructMember(5) public native short mReserved();
-    @StructMember(5) public native AudioFileMarker mReserved(short mReserved);
-    @StructMember(6) public native short mChannel();
-    @StructMember(6) public native AudioFileMarker mChannel(short mChannel);
+    @StructMember(0) public native double getMFramePosition();
+    @StructMember(0) public native AudioFileMarker setMFramePosition(double mFramePosition);
+    @StructMember(1) public native CFString getMName();
+    @StructMember(1) public native AudioFileMarker setMName(CFString mName);
+    @StructMember(2) public native int getMMarkerID();
+    @StructMember(2) public native AudioFileMarker setMMarkerID(int mMarkerID);
+    @StructMember(3) public native @ByVal AudioFileSMPTETime getMSMPTETime();
+    @StructMember(3) public native AudioFileMarker setMSMPTETime(@ByVal AudioFileSMPTETime mSMPTETime);
+    @StructMember(4) public native int getMType();
+    @StructMember(4) public native AudioFileMarker setMType(int mType);
+    @StructMember(5) public native short getMReserved();
+    @StructMember(5) public native AudioFileMarker setMReserved(short mReserved);
+    @StructMember(6) public native short getMChannel();
+    @StructMember(6) public native AudioFileMarker setMChannel(short mChannel);
     /*</members>*/
     /*<methods>*//*</methods>*/
 }

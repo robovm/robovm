@@ -37,9 +37,9 @@ public class UIAppearance {
     @Bridge
     private static native @Pointer long objc_appearance(ObjCClass cls, Selector sel);
     
-    private static final Selector appearanceWhenContainedIn$ = Selector.register("appearanceWhenContainedIn:");
+    private static final Selector appearanceWhenContainedIn = Selector.register("appearanceWhenContainedIn:");
     @Bridge
-    private static native @Pointer long objc_appearanceWhenContainedIn$(ObjCClass cls, Selector sel, 
+    private static native @Pointer long objc_appearanceWhenContainedIn(ObjCClass cls, Selector sel, 
             ObjCClass c01, ObjCClass c02, ObjCClass c03, ObjCClass c04, ObjCClass c05, ObjCClass c06,
             ObjCClass c07, ObjCClass c08, ObjCClass c09, ObjCClass c10, @Pointer long nil);
     
@@ -69,7 +69,7 @@ public class UIAppearance {
             ObjCClass c08 = toObjCClass(containedIn, 7);
             ObjCClass c09 = toObjCClass(containedIn, 8);
             ObjCClass c10 = toObjCClass(containedIn, 9);
-            proxyHandle = objc_appearanceWhenContainedIn$(objCClass, appearanceWhenContainedIn$, 
+            proxyHandle = objc_appearanceWhenContainedIn(objCClass, appearanceWhenContainedIn, 
                     c01, c02, c03, c04, c05, c06, c07, c08, c09, c10, 0);
         }
         return ObjCObject.toObjCObject(type, proxyHandle, true);

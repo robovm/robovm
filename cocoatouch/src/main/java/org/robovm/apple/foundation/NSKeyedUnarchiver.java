@@ -50,7 +50,7 @@ import org.robovm.apple.dispatch.*;
     /*<constructors>*/
     public NSKeyedUnarchiver() {}
     protected NSKeyedUnarchiver(SkipInit skipInit) { super(skipInit); }
-    public NSKeyedUnarchiver(NSData data) { super((SkipInit) null); initObject(initForReadingWithData$(data)); }
+    public NSKeyedUnarchiver(NSData data) { super((SkipInit) null); initObject(init(data)); }
     /*</constructors>*/
     /*<properties>*/
     @Property(selector = "delegate")
@@ -64,12 +64,12 @@ import org.robovm.apple.dispatch.*;
         if (file == null) {
             throw new NullPointerException("file");
         }
-        return unarchiveObjectWithFile$(file.getAbsolutePath());
+        return unarchiveObject(file.getAbsolutePath());
     }
     
     /*<methods>*/
     @Method(selector = "initForReadingWithData:")
-    protected native @Pointer long initForReadingWithData$(NSData data);
+    protected native @Pointer long init(NSData data);
     @Method(selector = "finishDecoding")
     public native void finishDecoding();
     @Method(selector = "setClass:forClassName:")
@@ -84,7 +84,7 @@ import org.robovm.apple.dispatch.*;
     @Method(selector = "unarchiveObjectWithData:")
     public static native NSObject unarchive(NSData data);
     @Method(selector = "unarchiveObjectWithFile:")
-    private static native NSObject unarchiveObjectWithFile$(String path);
+    private static native NSObject unarchiveObject(String path);
     @Method(selector = "setClass:forClassName:")
     public static native void setDefaultClassForClassName(Class<?> cls, String codedName);
     @Method(selector = "classForClassName:")

@@ -139,11 +139,11 @@ import org.robovm.apple.corelocation.*;
     @Property(selector = "setAttributedPlaceholder:")
     public native void setAttributedPlaceholder(NSAttributedString v);
     @Property(selector = "clearsOnBeginEditing")
-    public native boolean isClearsOnBeginEditing();
+    public native boolean clearsOnBeginEditing();
     @Property(selector = "setClearsOnBeginEditing:")
     public native void setClearsOnBeginEditing(boolean v);
     @Property(selector = "adjustsFontSizeToFitWidth")
-    public native boolean isAdjustsFontSizeToFitWidth();
+    public native boolean adjustsFontSizeToFitWidth();
     @Property(selector = "setAdjustsFontSizeToFitWidth:")
     public native void setAdjustsFontSizeToFitWidth(boolean v);
     @Property(selector = "minimumFontSize")
@@ -168,7 +168,7 @@ import org.robovm.apple.corelocation.*;
      * @since Available in iOS 6.0 and later.
      */
     @Property(selector = "allowsEditingTextAttributes")
-    public native boolean isAllowsEditingTextAttributes();
+    public native boolean allowsEditingTextAttributes();
     /**
      * @since Available in iOS 6.0 and later.
      */
@@ -216,7 +216,7 @@ import org.robovm.apple.corelocation.*;
      * @since Available in iOS 6.0 and later.
      */
     @Property(selector = "clearsOnInsertion")
-    public native boolean isClearsOnInsertion();
+    public native boolean clearsOnInsertion();
     /**
      * @since Available in iOS 6.0 and later.
      */
@@ -279,7 +279,7 @@ import org.robovm.apple.corelocation.*;
     @Property(selector = "setReturnKeyType:")
     public native void setReturnKeyType(UIReturnKeyType v);
     @Property(selector = "enablesReturnKeyAutomatically")
-    public native boolean isEnablesReturnKeyAutomatically();
+    public native boolean enablesReturnKeyAutomatically();
     @Property(selector = "setEnablesReturnKeyAutomatically:")
     public native void setEnablesReturnKeyAutomatically(boolean v);
     @Property(selector = "isSecureTextEntry")

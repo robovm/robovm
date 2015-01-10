@@ -11,9 +11,12 @@ enums:
 classes:
     CIColor: # DONE
         methods:
-            '+colorWithCGColor:':
+            '-initWithCGColor:':
                 exclude: true
+            '-init.*':
+                name: init
             '+color.*':
+                name: init
                 visibility: protected
                 return_type: '@Pointer long'
             '-(alpha|blue|colorSpace|green|numberOfComponents|red|stringRepresentation)':
@@ -172,7 +175,10 @@ classes:
             '-valueAtIndex:':
                 name: getValueAtIndex
             '-initWithValues:count:':
+                name: init
                 constructor: false
+            '-init.*':
+                name: init
     CIWarpKernel: # DONE
         methods:
             '-applyWithExtent:roiCallback:inputImage:arguments:':

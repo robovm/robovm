@@ -60,7 +60,7 @@ import org.robovm.apple.corelocation.*;
     public UIActionSheet(String title, UIActionSheetDelegate delegate, String cancelButtonTitle, 
             String destructiveButtonTitle, String ... otherButtonTitles) {
         super((SkipInit) null);
-        initObject(initWithTitle$delegate$cancelButtonTitle$destructiveButtonTitle$otherButtonTitles$(title, delegate, cancelButtonTitle, destructiveButtonTitle, 0));
+        initObject(init(title, delegate, cancelButtonTitle, destructiveButtonTitle, 0));
         for (String otherButtonTitle : otherButtonTitles) {
             addButton(otherButtonTitle);
         }
@@ -68,7 +68,7 @@ import org.robovm.apple.corelocation.*;
     }
     
     @Method(selector = "initWithTitle:delegate:cancelButtonTitle:destructiveButtonTitle:otherButtonTitles:")
-    protected native @Pointer long initWithTitle$delegate$cancelButtonTitle$destructiveButtonTitle$otherButtonTitles$(String title, UIActionSheetDelegate delegate, String cancelButtonTitle, String destructiveButtonTitle, @Pointer long otherButtonTitles);
+    protected native @Pointer long init(String title, UIActionSheetDelegate delegate, String cancelButtonTitle, String destructiveButtonTitle, @Pointer long otherButtonTitles);
     
     /*<properties>*/
     @Property(selector = "delegate")

@@ -71,7 +71,7 @@ import org.robovm.apple.dispatch.*;
     @Property(selector = "setCountLimit:")
     public native void setCountLimit(@MachineSizedUInt long v);
     @Property(selector = "evictsObjectsWithDiscardedContent")
-    public native boolean isEvictsObjectsWithDiscardedContent();
+    public native boolean evictsObjectsWithDiscardedContent();
     @Property(selector = "setEvictsObjectsWithDiscardedContent:")
     public native void setEvictsObjectsWithDiscardedContent(boolean v);
     /*</properties>*/

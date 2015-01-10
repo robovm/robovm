@@ -70,9 +70,9 @@ import org.robovm.apple.corelocation.*;
     @Property(selector = "request")
     public native NSURLRequest getRequest();
     @Property(selector = "canGoBack")
-    public native boolean isCanGoBack();
+    public native boolean canGoBack();
     @Property(selector = "canGoForward")
-    public native boolean isCanGoForward();
+    public native boolean canGoForward();
     @Property(selector = "isLoading")
     public native boolean isLoading();
     @Property(selector = "scalesPageToFit")
@@ -93,7 +93,7 @@ import org.robovm.apple.corelocation.*;
      * @since Available in iOS 4.0 and later.
      */
     @Property(selector = "allowsInlineMediaPlayback")
-    public native boolean isAllowsInlineMediaPlayback();
+    public native boolean allowsInlineMediaPlayback();
     /**
      * @since Available in iOS 4.0 and later.
      */
@@ -123,7 +123,7 @@ import org.robovm.apple.corelocation.*;
      * @since Available in iOS 6.0 and later.
      */
     @Property(selector = "suppressesIncrementalRendering")
-    public native boolean isSuppressesIncrementalRendering();
+    public native boolean suppressesIncrementalRendering();
     /**
      * @since Available in iOS 6.0 and later.
      */

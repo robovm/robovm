@@ -142,7 +142,7 @@ import org.robovm.apple.mediatoolbox.*;
      * @since Available in iOS 8.0 and later.
      */
     @Property(selector = "secondaryAudioShouldBeSilencedHint")
-    public native boolean isSecondaryAudioShouldBeSilencedHint();
+    public native boolean secondaryAudioShouldBeSilencedHint();
     /**
      * @since Available in iOS 6.0 and later.
      */

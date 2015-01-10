@@ -138,7 +138,7 @@ import org.robovm.apple.mediatoolbox.*;
      * @since Available in iOS 7.0 and later.
      */
     @Property(selector = "usesApplicationAudioSession")
-    public native boolean isUsesApplicationAudioSession();
+    public native boolean usesApplicationAudioSession();
     /**
      * @since Available in iOS 7.0 and later.
      */
@@ -148,7 +148,7 @@ import org.robovm.apple.mediatoolbox.*;
      * @since Available in iOS 7.0 and later.
      */
     @Property(selector = "automaticallyConfiguresApplicationAudioSession")
-    public native boolean isAutomaticallyConfiguresApplicationAudioSession();
+    public native boolean automaticallyConfiguresApplicationAudioSession();
     /**
      * @since Available in iOS 7.0 and later.
      */

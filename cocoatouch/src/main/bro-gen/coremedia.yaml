@@ -13,7 +13,7 @@ typedefs:
     CMTextFormatDescriptionRef: CMTextFormatDescription
     OS_dispatch_source: DispatchSource
 private_typedefs:
-    "__CFString *": String
+    '__CFString *': String
     "__CFString **": "NSString.NSStringPtr"
     "__CFData *": NSData
     "__CFURL *": NSURL
@@ -21,7 +21,7 @@ private_typedefs:
     "__CFArray *": "NSArray<?>"
 
 enums:
-    # CMAttachmentMode: { first: kCMAttachmentMode_ShouldNotPropagate, prefix: kCMAttachmentMode_, marshaler: ValuedEnum.AsMachineSizedUIntMarshaler }
+    CMAttachmentMode: { first: kCMAttachmentMode_ShouldNotPropagate, prefix: kCMAttachmentMode_, marshaler: ValuedEnum.AsMachineSizedUIntMarshaler }
     CMClockError: { first: kCMClockError_MissingRequiredParameter, prefix: kCMClockError_ }
     CMTimebaseError: { first: kCMTimebaseError_MissingRequiredParameter, prefix: kCMTimebaseError_ }
     CMSyncError: { first: kCMSyncError_MissingRequiredParameter, prefix: kCMSyncError_ }
@@ -40,7 +40,7 @@ enums:
     CMClosedCaptionFormatType: { first: kCMClosedCaptionFormatType_CEA608, prefix: kCMClosedCaptionFormatType, marshaler: ValuedEnum.AsMachineSizedUIntMarshaler }
     CMTextFormatType: { first: kCMTextFormatType_QTText, prefix: kCMTextFormatType_, marshaler: ValuedEnum.AsMachineSizedUIntMarshaler }
     CMTextDisplayFlag: { first: kCMTextDisplayFlag_scrollIn, prefix: kCMTextDisplayFlag_, bits: true, marshaler: Bits.AsMachineSizedIntMarshaler }
-    CMTextJustification: { first: kCMTextJustification_left_top, prefix: kCMTextJustification_ }
+    CMTextJustification: { first: kCMTextJustification_left_top, prefix: kCMTextJustification_, kCMTextJustification_left_top: LeftTop, kCMTextJustification_centered: Centered, kCMTextJustification_bottom_right: BottomRight }
     CMSubtitleFormatType: { first: kCMSubtitleFormatType_3GText, prefix: kCMSubtitleFormatType_, marshaler: ValuedEnum.AsMachineSizedUIntMarshaler }
     CMTimeCodeFormatType: { first: kCMTimeCodeFormatType_TimeCode32, prefix: kCMTimeCodeFormatType_, marshaler: ValuedEnum.AsMachineSizedUIntMarshaler }
     CMTimeCodeFlag: { first: kCMTimeCodeFlag_DropFrame, prefix: kCMTimeCodeFlag_, bits: true, marshaler: Bits.AsMachineSizedIntMarshaler }
@@ -50,6 +50,9 @@ enums:
     CMSimpleQueueError: { first: kCMSimpleQueueError_AllocationFailed, prefix: kCMSimpleQueueError_ }
     CMTimeFlags: { first: kCMTimeFlags_Valid, prefix: kCMTimeFlags_, bits: true, marshaler: Bits.AsMachineSizedIntMarshaler }
     CMTimeRoundingMethod: { first: kCMTimeRoundingMethod_RoundHalfAwayFromZero, prefix: kCMTimeRoundingMethod_, marshaler: ValuedEnum.AsMachineSizedUIntMarshaler }
+    CMFormatDescriptionBridgeError: { first: kCMFormatDescriptionBridgeError_InvalidParameter }
+    CMMetadataIdentifierError: { first: kCMMetadataIdentifierError_AllocationFailed }
+    CMMetadataDataTypeRegistryError: { first: kCMMetadataDataTypeRegistryError_AllocationFailed }
 
 classes:
     CoreMedia:
@@ -64,24 +67,24 @@ classes:
     CMBlockBuffer:
         extends: CFType
     OpaqueCMBlockBuffer:
-        name: "CMBlockBuffer"
+        name: CMBlockBuffer
         extends: CFType
     CMBufferQueue:
         extends: CFType
     opaqueCMBufferQueue:
-        name: "CMBufferQueue"
+        name: CMBufferQueue
         extends: CFType
     CMClockOrTimebase:
         extends: CFType
     CMClock:
         extends: CMClockOrTimebase
     OpaqueCMClock:
-        name: "CMClock"
+        name: CMClock
         extends: CMClockOrTimebase
     CMFormatDescription:
         extends: CFType
     opaqueCMFormatDescription:
-        name: "CMFormatDescription"
+        name: CMFormatDescription
         extends: CFType
     CMAudioFormatDescription:
         extends: CMFormatDescription
@@ -108,7 +111,7 @@ classes:
         extends: CFType
         implements: CMBuffer
     opaqueCMSampleBuffer:
-        name: "CMSampleBuffer"
+        name: CMSampleBuffer
         extends: CFType
         implements: CMBuffer
     CMTime:
@@ -116,31 +119,31 @@ classes:
     CMTimebase:
         extends: CMClockOrTimebase
     OpaqueCMTimebase:
-        name: "CMTimebase"
+        name: CMTimebase
         extends: CMClockOrTimebase
     CMTimeRange:
         extends: CFType
     CMMemoryPool:
         extends: CFType
     OpaqueCMMemoryPool:
-        name: "CMMemoryPool"
+        name: CMMemoryPool
         extends: CFType
     CMSimpleQueue:
         extends: CFType
     opaqueCMSimpleQueue:
-        name: "CMSimpleQueue"
+        name: CMSimpleQueue
         extends: CFType
 
     # Structs
     CMBlockBufferCustomBlockSource: {}
     CMBufferCallbacks:
-        name: "CMBufferCallbacksStruct"
+        name: CMBufferCallbacksStruct
         refcon:
-            type: "@Pointer long"
-        visibility: ""
+            type: '@Pointer long'
+        visibility: ''
     CMBufferQueueTriggerToken: {}
     opaqueCMBufferQueueTriggerToken:
-        name: "CMBufferQueueTriggerToken"
+        name: CMBufferQueueTriggerToken
     CMVideoDimensions: {}
     CMSampleTimingInfo: {}
     CMTime:
@@ -152,7 +155,7 @@ protocols: {}
 
 functions:
     (CM.*)GetTypeID:
-        class: "#{g[0]}"
+        class: '#{g[0]}'
         name: getClassTypeID
 
     # CMAttachment
@@ -175,30 +178,30 @@ functions:
     # CMClock
     CMClock(GetHostTimeClock):
         class: CMClock
-        name: "#{g[0]}"
+        name: '#{g[0]}'
     CMClock(ConvertHostTimeToSystemUnits):
         class: CMClock
-        name: "#{g[0]}"
+        name: '#{g[0]}'
     CMClockMakeHostTimeFromSystemUnits:
         class: CMClock
-        name: "createHostTimeFromSystemUnits"
+        name: createHostTimeFromSystemUnits
     CMClock(GetAnchorTime):
         class: CMClock
-        name: "#{g[0]}"
+        name: '#{g[0]}'
         visibility: protected
         parameters:
             outClockTime:
-                type: "CMTime.CMTimePtr"
+                type: CMTime.CMTimePtr
             outReferenceClockTime:
-                type: "CMTime.CMTimePtr"
+                type: CMTime.CMTimePtr
     CMClock(.*):
         class: CMClock
-        name: "#{g[0]}"
+        name: '#{g[0]}'
 
     # CMAudioClock
     CMAudioClockCreate:
         class: CMClock
-        name: "createAudioClock"
+        name: createAudioClock
         visibility: protected
 
     # CMTimebase
@@ -577,150 +580,81 @@ functions:
     # CMTimeRange
     CMTimeRangeMake.*:
         class: CMTimeRange
-        name: "create"
+        name: create
     CMTimeRangeGetUnion:
         class: CMTimeRange
-        name: "union"
+        name: union
     CMTimeRangeGetIntersection:
         class: CMTimeRange
-        name: "intersection"
+        name: intersection
     CMTimeRangeEqual:
         class: CMTimeRange
-        name: "equals"
+        name: equals
     CMTimeRange(.*):
         class: CMTimeRange
-        name: "#{g[0]}"
+        name: '#{g[0]}'
 
     # CMTime
     CMTimeMake.*:
         class: CMTime
-        name: "create"
-    CMTime(CopyDescription):
+        name: create
+    CMTimeCopy(Description):
         class: CMTime
-        name: "#{g[0]}"
+        name: 'get#{g[0]}'
         visibility: protected
     CMTimeShow:
         class: CMTime
-        name: "print"
+        name: print
+    CMTimeCopy(AsDictionary):
+        class: CMTime
+        name: '#{g[0]}'
     CMTime(.*):
         class: CMTime
-        name: "#{g[0]}"
+        name: '#{g[0]}'
 
     # Make sure we don't miss any functions if new ones are introduced in a later version
     (k?CM.*):
         class: CoreMedia
         name: 'Function__#{g[0]}'
 
-values: # TODO converts keys, notifications... Strings to NSStrings/CFStrings??
-#    kCMTimebaseNotificationKey_(.*):
-#        class: CMTimebase
-#        name: "NotificationKey#{g[0]}"
-#    kCMTimebaseNotification_(.*):
-#        class: CMTimebase
-#        name: "Notification#{g[0]}"
-#    kCMTimebase(.*):
-#        class: CMTimebase
-#        name: "#{g[0]}"
-#        
-#    kCMTime(.*):
-#        class: CMTime
-#        name: "#{g[0]}"  
-#        
-#    kCMTimeRange(.*):
-#        class: CMTimeRange
-#        name: "#{g[0]}"
-#        
-#    kCMFormatDescriptionExtension_(.*):
-#        class: CMFormatDescription
-#        name: "Extension#{g[0]}"
-#    kCMFormatDescriptionKey_(.*):
-#        class: CMFormatDescription
-#        name: "Key#{g[0]}"
-#    kCMFormatDescriptionColorPrimaries_(.*):
-#        class: CMFormatDescription
-#        name: "ColorPrimaries#{g[0]}"
-#    kCMFormatDescriptionVendor_(.*):
-#        class: CMFormatDescription
-#        name: "Vendor#{g[0]}"
-#    kCMFormatDescriptionExtensionKey_(.*):
-#        class: CMFormatDescription
-#        name: "ExtensionKey#{g[0]}"
-#        
-#    kCMTextFormatDescriptionExtension_(.*):
-#        class: CMTextFormatDescription
-#        name: "Extension#{g[0]}"
-#    kCMTextFormatDescriptionRect_(.*):
-#        class: CMTextFormatDescription
-#        name: "Rect#{g[0]}"
-#    kCMTextFormatDescriptionStyle_(.*):
-#        class: CMTextFormatDescription
-#        name: "Style#{g[0]}"
-#    kCMTextFormatDescriptionColor_(.*):
-#        class: CMTextFormatDescription
-#        name: "Color#{g[0]}"
-#        
-#    kCMMetadataFormatDescriptionKey_(.*):
-#        class: CMMetadataFormatDescription
-#        name: "Key#{g[0]}"     
-#    kCMFormatDescription(.*):
-#        class: CMMetadataFormatDescription
-#        name: "#{g[0]}"
-#        
-#    kCM(TimingInfoInvalid):
-#        class: CMSampleTimingInfo
-#        name: "#{g[0]}"
-#        
-#    kCMSampleBufferNotification_(.*):
-#        class: CMSampleBuffer
-#        name: "Notification#{g[0]}"    
-#    kCMSampleBufferConduitNotification_(.*):
-#        class: CMSampleBuffer
-#        name: "ConduitNotification#{g[0]}"
-#    kCMSampleBufferConduitNotificationParameter_(.*):
-#        class: CMSampleBuffer
-#        name: "ConduitNotificationParameter#{g[0]}"
-#    kCMSampleBufferConsumerNotification_(.*):
-#        class: CMSampleBuffer
-#        name: "ConsumerNotification#{g[0]}"
-#    kCMSampleAttachmentKey_(.*):
-#        class: CMSampleBuffer
-#        name: "SampleAttachmentKey#{g[0]}"
-#    kCMSampleBufferAttachmentKey_(.*):
-#        class: CMSampleBuffer
-#        name: "SampleBufferAttachmentKey#{g[0]}"
-#    kCMSampleBufferDroppedFrameReason_(.*):
-#        class: CMSampleBuffer
-#        name: "DroppedFrameReason#{g[0]}"
-#    kCMSampleBufferDroppedFrameReasonInfo_(.*):
-#        class: CMSampleBuffer
-#        name: "DroppedFrameReasonInfo#{g[0]}"
-#    
-#    kCMMemoryPoolOption_(.*):
-#        class: CMMemoryPool
-#        name: "Option#{g[0]}"
-#    
-#    kCMTextMarkupAttribute_(.*):
-#        class: CMTextMarkup
-#        name: "Attribute#{g[0]}"
-#    kCMTextMarkupGenericFontName_(.*):
-#        class: CMTextMarkup
-#        name: "GenericFontName#{g[0]}"
-#    kCMTextVerticalLayout_(.*):
-#        class: CMTextMarkup
-#        name: "VerticalLayout#{g[0]}"
-#    kCMTextMarkupAlignmentType_(.*):
-#        class: CMTextMarkup
-#        name: "AlignmentType#{g[0]}"
-#    kCMTextMarkupCharacterEdgeStyle_(.*):
-#        class: CMTextMarkup
-#        name: "CharacterEdgeStyle#{g[0]}"
-
+values:
     # CMMetadata
     kCMMetadata.*DataType_(.*):
         class: CMMetadataDataType
         name: '#{g[0]}Value'
         type: CFString
         visibility: protected
+    kCMMetadataKeySpace_(.*):
+        class: CMMetadataKeySpace
+        name: '#{g[0]}Value'
+        type: CFString
+        visibility: protected
+
+    # CMTextMarkup
+    kCMTextMarkupAlignmentType_(.*):
+        class: CMTextMarkupAlignmentType
+        name: '#{g[0]}Value'
+        type: CFString
+        visibility: protected
+    kCMTextVerticalLayout_(.*):
+        class: CMTextVerticalLayout
+        name: '#{g[0]}Value'
+        type: CFString
+        visibility: protected
+    kCMTextMarkupGenericFontName_(.*):
+        class: CMTextMarkupGenericFontName
+        name: '#{g[0]}Value'
+        type: CFString
+        visibility: protected
+    kCMTextMarkupCharacterEdgeStyle_(.*):
+        class: CMTextMarkupCharacterEdgeStyle
+        name: '#{g[0]}Value'
+        type: CFString
+        visibility: protected
+    
+    kCMTextMarkupAttribute_(.*):
+        class: CoreMedia
+        name: "CMTextMarkupAttribute#{g[0]}"
 
     kCMTimebaseNotificationKey_(.*):
         class: CoreMedia
@@ -808,22 +742,6 @@ values: # TODO converts keys, notifications... Strings to NSStrings/CFStrings??
     kCMMemoryPoolOption_(.*):
         class: CoreMedia
         name: "CMMemoryPoolOption#{g[0]}"
-    
-    kCMTextMarkupAttribute_(.*):
-        class: CoreMedia
-        name: "CMTextMarkupAttribute#{g[0]}"
-    kCMTextMarkupGenericFontName_(.*):
-        class: CoreMedia
-        name: "CMTextMarkupGenericFontName#{g[0]}"
-    kCMTextVerticalLayout_(.*):
-        class: CoreMedia
-        name: "CMTextMarkupVerticalLayout#{g[0]}"
-    kCMTextMarkupAlignmentType_(.*):
-        class: CoreMedia
-        name: "CMTextMarkupAlignmentType#{g[0]}"
-    kCMTextMarkupCharacterEdgeStyle_(.*):
-        class: CoreMedia
-        name: "CMTextMarkupCharacterEdgeStyle#{g[0]}"
 
     # Make sure we don't miss any values if new ones are introduced in a later version
     (k?CM.*):
@@ -831,18 +749,20 @@ values: # TODO converts keys, notifications... Strings to NSStrings/CFStrings??
         name: 'Value__#{g[0]}'
 
 constants:
+    # CMTime
     kCMTime(MaxTimescale):
         class: CMTime
-        name: "#{g[0]}"
-    
+        name: 'get#{g[0]}'
+
+    # CMBlockBuffer
     kCMBlockBuffer(CustomBlockSourceVersion):
         class: CMBlockBuffer
-        name: "#{g[0]}"
+        name: 'get#{g[0]}'
 
     kCMPersistentTrackID_Invalid:
         class: CoreMedia
         name: "PersistentTrackIDInvalid"
-        
+
     # Make sure we don't miss any constants if new ones are introduced in a later version
     (k?CM.*):
         class: CoreMedia

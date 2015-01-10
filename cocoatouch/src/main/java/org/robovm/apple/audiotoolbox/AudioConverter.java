@@ -69,7 +69,7 @@ import org.robovm.apple.coremedia.*;
      * @since Available in iOS 2.0 and later.
      */
     @Bridge(symbol="AudioConverterGetPropertyInfo", optional=true)
-    protected native AudioConverterError getPropertyInfo(int inPropertyID, IntPtr outSize, BytePtr outWritable);
+    protected native AudioConverterError getPropertyInfo(int inPropertyID, IntPtr outSize, BooleanPtr outWritable);
     /**
      * @since Available in iOS 2.0 and later.
      */

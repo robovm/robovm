@@ -52,8 +52,8 @@ import org.robovm.apple.dispatch.*;
     /*<constructors>*/
     public NSInvocationOperation() {}
     protected NSInvocationOperation(SkipInit skipInit) { super(skipInit); }
-    public NSInvocationOperation(NSObject target, Selector sel, NSObject arg) { super((SkipInit) null); initObject(initWithTarget$selector$object$(target, sel, arg)); }
-    public NSInvocationOperation(NSInvocation inv) { super((SkipInit) null); initObject(initWithInvocation$(inv)); }
+    public NSInvocationOperation(NSObject target, Selector sel, NSObject arg) { super((SkipInit) null); initObject(init(target, sel, arg)); }
+    public NSInvocationOperation(NSInvocation inv) { super((SkipInit) null); initObject(init(inv)); }
     /*</constructors>*/
     /*<properties>*/
     @Property(selector = "invocation")
@@ -64,8 +64,8 @@ import org.robovm.apple.dispatch.*;
     /*<members>*//*</members>*/
     /*<methods>*/
     @Method(selector = "initWithTarget:selector:object:")
-    protected native @Pointer long initWithTarget$selector$object$(NSObject target, Selector sel, NSObject arg);
+    protected native @Pointer long init(NSObject target, Selector sel, NSObject arg);
     @Method(selector = "initWithInvocation:")
-    protected native @Pointer long initWithInvocation$(NSInvocation inv);
+    protected native @Pointer long init(NSInvocation inv);
     /*</methods>*/
 }

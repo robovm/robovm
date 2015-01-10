@@ -49,37 +49,19 @@ import org.robovm.apple.metal.*;
     /*<constructors>*/
     public CVTime() {}
     public CVTime(long timeValue, int timeScale, int flags) {
-        this.setTimevalue(timeValue);
-        this.setTimescale(timeScale);
+        this.setTimeValue(timeValue);
+        this.setTimeScale(timeScale);
         this.setFlags(flags);
     }
     /*</constructors>*/
     /*<properties>*//*</properties>*/
     /*<members>*/
-    @StructMember(0) public native long getTimevalue();
-    @StructMember(0) public native CVTime setTimevalue(long timeValue);
-    
-    @Deprecated
-    @StructMember(0) public native long timeValue();
-    @Deprecated
-    @StructMember(0) public native CVTime timeValue(long timeValue);
-    
-    @StructMember(1) public native int getTimescale();
-    @StructMember(1) public native CVTime setTimescale(int timeScale);
-    
-    @Deprecated
-    @StructMember(1) public native int timeScale();
-    @Deprecated
-    @StructMember(1) public native CVTime timeScale(int timeScale);
-    
+    @StructMember(0) public native long getTimeValue();
+    @StructMember(0) public native CVTime setTimeValue(long timeValue);
+    @StructMember(1) public native int getTimeScale();
+    @StructMember(1) public native CVTime setTimeScale(int timeScale);
     @StructMember(2) public native int getFlags();
     @StructMember(2) public native CVTime setFlags(int flags);
-    
-    @Deprecated
-    @StructMember(2) public native int flags();
-    @Deprecated
-    @StructMember(2) public native CVTime flags(int flags);
-    
     /*</members>*/
     /*<methods>*//*</methods>*/
 }

@@ -60,9 +60,9 @@ import org.robovm.apple.dispatch.*;
         return getPoints0().toArray((int) getPointCount());
     }
     public CLLocationCoordinate2D[] getCoordinates(@ByVal NSRange range) {
-        CLLocationCoordinate2D coords = Struct.allocate(CLLocationCoordinate2D.class, (int)range.length());
+        CLLocationCoordinate2D coords = Struct.allocate(CLLocationCoordinate2D.class, (int)range.getLength());
         getCoordinates0(coords, range);
-        return coords.toArray((int) range.length());
+        return coords.toArray((int) range.getLength());
     }
     /*<methods>*/
     @Method(selector = "points")

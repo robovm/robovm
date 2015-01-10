@@ -82,7 +82,7 @@ import org.robovm.apple.mediatoolbox.*;
     @Property(selector = "audioChannels")
     public native NSArray<AVCaptureAudioChannel> getAudioChannels();
     @Property(selector = "isVideoMirroringSupported")
-    public native boolean isSupportsVideoMirroring();
+    public native boolean supportsVideoMirroring();
     @Property(selector = "isVideoMirrored")
     public native boolean isVideoMirrored();
     @Property(selector = "setVideoMirrored:")
@@ -91,14 +91,14 @@ import org.robovm.apple.mediatoolbox.*;
      * @since Available in iOS 6.0 and later.
      */
     @Property(selector = "automaticallyAdjustsVideoMirroring")
-    public native boolean isAutomaticallyAdjustsVideoMirroring();
+    public native boolean automaticallyAdjustsVideoMirroring();
     /**
      * @since Available in iOS 6.0 and later.
      */
     @Property(selector = "setAutomaticallyAdjustsVideoMirroring:")
     public native void setAutomaticallyAdjustsVideoMirroring(boolean v);
     @Property(selector = "isVideoOrientationSupported")
-    public native boolean isSupportsVideoOrientation();
+    public native boolean supportsVideoOrientation();
     @Property(selector = "videoOrientation")
     public native AVCaptureVideoOrientation getVideoOrientation();
     @Property(selector = "setVideoOrientation:")
@@ -109,7 +109,7 @@ import org.robovm.apple.mediatoolbox.*;
      */
     @Deprecated
     @Property(selector = "isVideoMinFrameDurationSupported")
-    public native boolean isSupportsVideoMinFrameDuration();
+    public native boolean supportsVideoMinFrameDuration();
     /**
      * @since Available in iOS 5.0 and later.
      * @deprecated Deprecated in iOS 7.0.
@@ -130,7 +130,7 @@ import org.robovm.apple.mediatoolbox.*;
      */
     @Deprecated
     @Property(selector = "isVideoMaxFrameDurationSupported")
-    public native boolean isSupportsVideoMaxFrameDuration();
+    public native boolean supportsVideoMaxFrameDuration();
     /**
      * @since Available in iOS 5.0 and later.
      * @deprecated Deprecated in iOS 7.0.
@@ -179,7 +179,7 @@ import org.robovm.apple.mediatoolbox.*;
      * @since Available in iOS 6.0 and later.
      */
     @Property(selector = "isVideoStabilizationSupported")
-    public native boolean isSupportsVideoStabilization();
+    public native boolean supportsVideoStabilization();
     /**
      * @since Available in iOS 6.0 and later.
      * @deprecated Deprecated in iOS 8.0.

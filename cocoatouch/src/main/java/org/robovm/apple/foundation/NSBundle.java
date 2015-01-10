@@ -72,12 +72,12 @@ import org.robovm.apple.dispatch.*;
     /**
      * @since Available in iOS 4.0 and later.
      */
-    public NSBundle(NSURL url) { super((SkipInit) null); initObject(initWithURL$(url)); }
+    public NSBundle(NSURL url) { super((SkipInit) null); initObject(init(url)); }
     /*</constructors>*/
     
     public NSBundle(File file) {
         super((SkipInit) null);
-        initObject(initWithPath$(file.getAbsolutePath()));
+        initObject(init(file.getAbsolutePath()));
     }
     
     /*<properties>*/
@@ -198,12 +198,12 @@ import org.robovm.apple.dispatch.*;
     protected static native NSString LoadedClassesKey();
     
     @Method(selector = "initWithPath:")
-    protected native @Pointer long initWithPath$(String path);
+    protected native @Pointer long init(String path);
     /**
      * @since Available in iOS 4.0 and later.
      */
     @Method(selector = "initWithURL:")
-    protected native @Pointer long initWithURL$(NSURL url);
+    protected native @Pointer long init(NSURL url);
     /**
      * @since Available in iOS 2.0 and later.
      */

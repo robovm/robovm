@@ -49,25 +49,25 @@ import org.robovm.apple.coremedia.*;
     /*<constructors>*/
     public CAFMarker() {}
     public CAFMarker(int mType, double mFramePosition, int mMarkerID, CAFSMPTETime mSMPTETime, int mChannel) {
-        this.mType(mType);
-        this.mFramePosition(mFramePosition);
-        this.mMarkerID(mMarkerID);
-        this.mSMPTETime(mSMPTETime);
-        this.mChannel(mChannel);
+        this.setMType(mType);
+        this.setMFramePosition(mFramePosition);
+        this.setMMarkerID(mMarkerID);
+        this.setMSMPTETime(mSMPTETime);
+        this.setMChannel(mChannel);
     }
     /*</constructors>*/
     /*<properties>*//*</properties>*/
     /*<members>*/
-    @StructMember(0) public native int mType();
-    @StructMember(0) public native CAFMarker mType(int mType);
-    @StructMember(1) public native double mFramePosition();
-    @StructMember(1) public native CAFMarker mFramePosition(double mFramePosition);
-    @StructMember(2) public native int mMarkerID();
-    @StructMember(2) public native CAFMarker mMarkerID(int mMarkerID);
-    @StructMember(3) public native @ByVal CAFSMPTETime mSMPTETime();
-    @StructMember(3) public native CAFMarker mSMPTETime(@ByVal CAFSMPTETime mSMPTETime);
-    @StructMember(4) public native int mChannel();
-    @StructMember(4) public native CAFMarker mChannel(int mChannel);
+    @StructMember(0) public native int getMType();
+    @StructMember(0) public native CAFMarker setMType(int mType);
+    @StructMember(1) public native double getMFramePosition();
+    @StructMember(1) public native CAFMarker setMFramePosition(double mFramePosition);
+    @StructMember(2) public native int getMMarkerID();
+    @StructMember(2) public native CAFMarker setMMarkerID(int mMarkerID);
+    @StructMember(3) public native @ByVal CAFSMPTETime getMSMPTETime();
+    @StructMember(3) public native CAFMarker setMSMPTETime(@ByVal CAFSMPTETime mSMPTETime);
+    @StructMember(4) public native int getMChannel();
+    @StructMember(4) public native CAFMarker setMChannel(int mChannel);
     /*</members>*/
     /*<methods>*//*</methods>*/
 }

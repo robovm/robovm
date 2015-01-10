@@ -53,7 +53,7 @@ import org.robovm.apple.corelocation.*;
     /*<constructors>*/
     public UISegmentedControl() {}
     protected UISegmentedControl(SkipInit skipInit) { super(skipInit); }
-    public UISegmentedControl(NSArray<?> items) { super((SkipInit) null); initObject(initWithItems$(items)); }
+    public UISegmentedControl(NSArray<?> items) { super((SkipInit) null); initObject(init(items)); }
     /*</constructors>*/
     
     public UISegmentedControl(CGRect frame) {
@@ -85,7 +85,7 @@ import org.robovm.apple.corelocation.*;
      * @since Available in iOS 5.0 and later.
      */
     @Property(selector = "apportionsSegmentWidthsByContent")
-    public native boolean isApportionsSegmentWidthsByContent();
+    public native boolean apportionsSegmentWidthsByContent();
     /**
      * @since Available in iOS 5.0 and later.
      */
@@ -103,7 +103,7 @@ import org.robovm.apple.corelocation.*;
     /*<members>*//*</members>*/
     /*<methods>*/
     @Method(selector = "initWithItems:")
-    protected native @Pointer long initWithItems$(NSArray<?> items);
+    protected native @Pointer long init(NSArray<?> items);
     @Method(selector = "insertSegmentWithTitle:atIndex:animated:")
     public native void insertSegment(String title, @MachineSizedUInt long segment, boolean animated);
     @Method(selector = "insertSegmentWithImage:atIndex:animated:")

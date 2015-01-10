@@ -49,16 +49,16 @@ import org.robovm.apple.coremedia.*;
     /*<constructors>*/
     public CAFPositionPeak() {}
     public CAFPositionPeak(float mValue, long mFrameNumber) {
-        this.mValue(mValue);
-        this.mFrameNumber(mFrameNumber);
+        this.setMValue(mValue);
+        this.setMFrameNumber(mFrameNumber);
     }
     /*</constructors>*/
     /*<properties>*//*</properties>*/
     /*<members>*/
-    @StructMember(0) public native float mValue();
-    @StructMember(0) public native CAFPositionPeak mValue(float mValue);
-    @StructMember(1) public native long mFrameNumber();
-    @StructMember(1) public native CAFPositionPeak mFrameNumber(long mFrameNumber);
+    @StructMember(0) public native float getMValue();
+    @StructMember(0) public native CAFPositionPeak setMValue(float mValue);
+    @StructMember(1) public native long getMFrameNumber();
+    @StructMember(1) public native CAFPositionPeak setMFrameNumber(long mFrameNumber);
     /*</members>*/
     /*<methods>*//*</methods>*/
 }

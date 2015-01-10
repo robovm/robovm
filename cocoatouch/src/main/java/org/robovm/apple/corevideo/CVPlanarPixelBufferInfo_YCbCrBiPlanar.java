@@ -49,28 +49,16 @@ import org.robovm.apple.metal.*;
     /*<constructors>*/
     public CVPlanarPixelBufferInfo_YCbCrBiPlanar() {}
     public CVPlanarPixelBufferInfo_YCbCrBiPlanar(CVPlanarComponentInfo componentInfoY, CVPlanarComponentInfo componentInfoCbCr) {
-        this.setComponentinfoy(componentInfoY);
-        this.setComponentinfocbcr(componentInfoCbCr);
+        this.setComponentInfoY(componentInfoY);
+        this.setComponentInfoCbCr(componentInfoCbCr);
     }
     /*</constructors>*/
     /*<properties>*//*</properties>*/
     /*<members>*/
-    @StructMember(0) public native @ByVal CVPlanarComponentInfo getComponentinfoy();
-    @StructMember(0) public native CVPlanarPixelBufferInfo_YCbCrBiPlanar setComponentinfoy(@ByVal CVPlanarComponentInfo componentInfoY);
-    
-    @Deprecated
-    @StructMember(0) public native @ByVal CVPlanarComponentInfo componentInfoY();
-    @Deprecated
-    @StructMember(0) public native CVPlanarPixelBufferInfo_YCbCrBiPlanar componentInfoY(@ByVal CVPlanarComponentInfo componentInfoY);
-    
-    @StructMember(1) public native @ByVal CVPlanarComponentInfo getComponentinfocbcr();
-    @StructMember(1) public native CVPlanarPixelBufferInfo_YCbCrBiPlanar setComponentinfocbcr(@ByVal CVPlanarComponentInfo componentInfoCbCr);
-    
-    @Deprecated
-    @StructMember(1) public native @ByVal CVPlanarComponentInfo componentInfoCbCr();
-    @Deprecated
-    @StructMember(1) public native CVPlanarPixelBufferInfo_YCbCrBiPlanar componentInfoCbCr(@ByVal CVPlanarComponentInfo componentInfoCbCr);
-    
+    @StructMember(0) public native @ByVal CVPlanarComponentInfo getComponentInfoY();
+    @StructMember(0) public native CVPlanarPixelBufferInfo_YCbCrBiPlanar setComponentInfoY(@ByVal CVPlanarComponentInfo componentInfoY);
+    @StructMember(1) public native @ByVal CVPlanarComponentInfo getComponentInfoCbCr();
+    @StructMember(1) public native CVPlanarPixelBufferInfo_YCbCrBiPlanar setComponentInfoCbCr(@ByVal CVPlanarComponentInfo componentInfoCbCr);
     /*</members>*/
     /*<methods>*//*</methods>*/
 }

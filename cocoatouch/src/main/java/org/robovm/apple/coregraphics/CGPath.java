@@ -88,24 +88,24 @@ import org.robovm.apple.uikit.*;
         CGPoint point1 = null;
         CGPoint point2 = null;
         CGPoint point3 = null;
-        switch (element.type()) {
+        switch (element.getType()) {
         case AddLineToPoint:
         case MoveToPoint:
-            point1 = element.points();
+            point1 = element.getPoints();
             break;
         case AddQuadCurveToPoint:
-            point1 = element.points();
+            point1 = element.getPoints();
             point2 = point1.next();
             break;
         case AddCurveToPoint:
-            point1 = element.points();
+            point1 = element.getPoints();
             point2 = point1.next();
             point3 = point2.next();
             break;
         case CloseSubpath:
             break;
         }
-        applier.apply(element.type(), point1, point2, point3);
+        applier.apply(element.getType(), point1, point2, point3);
     }
     
     /*<methods>*/

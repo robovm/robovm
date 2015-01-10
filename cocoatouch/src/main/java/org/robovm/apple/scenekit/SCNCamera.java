@@ -73,11 +73,11 @@ import org.robovm.apple.opengles.*;
     @Property(selector = "setZFar:")
     public native void setZFar(double v);
     @Property(selector = "automaticallyAdjustsZRange")
-    public native boolean isAutomaticallyAdjustsZRange();
+    public native boolean automaticallyAdjustsZRange();
     @Property(selector = "setAutomaticallyAdjustsZRange:")
     public native void setAutomaticallyAdjustsZRange(boolean v);
     @Property(selector = "usesOrthographicProjection")
-    public native boolean isUsesOrthographicProjection();
+    public native boolean usesOrthographicProjection();
     @Property(selector = "setUsesOrthographicProjection:")
     public native void setUsesOrthographicProjection(boolean v);
     @Property(selector = "orthographicScale")

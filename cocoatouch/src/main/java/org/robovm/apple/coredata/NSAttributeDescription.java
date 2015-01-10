@@ -78,7 +78,7 @@ import org.robovm.apple.foundation.*;
      * @since Available in iOS 5.0 and later.
      */
     @Property(selector = "allowsExternalBinaryDataStorage")
-    public native boolean isAllowsExternalBinaryDataStorage();
+    public native boolean allowsExternalBinaryDataStorage();
     /**
      * @since Available in iOS 5.0 and later.
      */

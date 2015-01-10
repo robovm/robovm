@@ -52,8 +52,8 @@ import org.robovm.apple.dispatch.*;
     public NSFastEnumerationState() {}
     public NSFastEnumerationState(@MachineSizedUInt long state, NSObject itemsPtr, MachineSizedUIntPtr mutationsPtr, MachineSizedUIntPtr extra) {
         this.setState(state);
-        this.setItemsptr(itemsPtr);
-        this.setMutationsptr(mutationsPtr);
+        this.setItemsPtr(itemsPtr);
+        this.setMutationsPtr(mutationsPtr);
         this.setExtra(extra);
     }
     /*</constructors>*/
@@ -61,36 +61,12 @@ import org.robovm.apple.dispatch.*;
     /*<members>*/
     @StructMember(0) public native @MachineSizedUInt long getState();
     @StructMember(0) public native NSFastEnumerationState setState(@MachineSizedUInt long state);
-    
-    @Deprecated
-    @StructMember(0) public native @MachineSizedUInt long state();
-    @Deprecated
-    @StructMember(0) public native NSFastEnumerationState state(@MachineSizedUInt long state);
-    
-    @StructMember(1) public native NSObject getItemsptr();
-    @StructMember(1) public native NSFastEnumerationState setItemsptr(NSObject itemsPtr);
-    
-    @Deprecated
-    @StructMember(1) public native NSObject itemsPtr();
-    @Deprecated
-    @StructMember(1) public native NSFastEnumerationState itemsPtr(NSObject itemsPtr);
-    
-    @StructMember(2) public native MachineSizedUIntPtr getMutationsptr();
-    @StructMember(2) public native NSFastEnumerationState setMutationsptr(MachineSizedUIntPtr mutationsPtr);
-    
-    @Deprecated
-    @StructMember(2) public native MachineSizedUIntPtr mutationsPtr();
-    @Deprecated
-    @StructMember(2) public native NSFastEnumerationState mutationsPtr(MachineSizedUIntPtr mutationsPtr);
-    
+    @StructMember(1) public native NSObject getItemsPtr();
+    @StructMember(1) public native NSFastEnumerationState setItemsPtr(NSObject itemsPtr);
+    @StructMember(2) public native MachineSizedUIntPtr getMutationsPtr();
+    @StructMember(2) public native NSFastEnumerationState setMutationsPtr(MachineSizedUIntPtr mutationsPtr);
     @StructMember(3) public native @Array({5}) MachineSizedUIntPtr getExtra();
     @StructMember(3) public native NSFastEnumerationState setExtra(@Array({5}) MachineSizedUIntPtr extra);
-    
-    @Deprecated
-    @StructMember(3) public native @Array({5}) MachineSizedUIntPtr extra();
-    @Deprecated
-    @StructMember(3) public native NSFastEnumerationState extra(@Array({5}) MachineSizedUIntPtr extra);
-    
     /*</members>*/
     /*<methods>*//*</methods>*/
 }

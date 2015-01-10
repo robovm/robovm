@@ -5,8 +5,6 @@ framework: GLKit
 clang_args: ['-x', 'objective-c']
 headers:
     - /System/Library/Frameworks/GLKit.framework/Headers/GLKit.h
-typedefs:
-    "_Bool *": BytePtr
 
 enums:
     GLKFogMode: {}

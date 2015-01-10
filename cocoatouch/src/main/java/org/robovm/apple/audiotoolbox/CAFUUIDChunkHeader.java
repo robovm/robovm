@@ -49,16 +49,16 @@ import org.robovm.apple.coremedia.*;
     /*<constructors>*/
     public CAFUUIDChunkHeader() {}
     public CAFUUIDChunkHeader(CAFChunkHeader mHeader, ByteBuffer mUUID) {
-        this.mHeader(mHeader);
-        this.mUUID(mUUID);
+        this.setMHeader(mHeader);
+        this.setMUUID(mUUID);
     }
     /*</constructors>*/
     /*<properties>*//*</properties>*/
     /*<members>*/
-    @StructMember(0) public native @ByVal CAFChunkHeader mHeader();
-    @StructMember(0) public native CAFUUIDChunkHeader mHeader(@ByVal CAFChunkHeader mHeader);
-    @StructMember(1) public native @Array({16}) ByteBuffer mUUID();
-    @StructMember(1) public native CAFUUIDChunkHeader mUUID(@Array({16}) ByteBuffer mUUID);
+    @StructMember(0) public native @ByVal CAFChunkHeader getMHeader();
+    @StructMember(0) public native CAFUUIDChunkHeader setMHeader(@ByVal CAFChunkHeader mHeader);
+    @StructMember(1) public native @Array({16}) ByteBuffer getMUUID();
+    @StructMember(1) public native CAFUUIDChunkHeader setMUUID(@Array({16}) ByteBuffer mUUID);
     /*</members>*/
     /*<methods>*//*</methods>*/
 }

@@ -39,6 +39,7 @@ import org.robovm.apple.opengles.*;
 /*<javadoc>*/
 
 /*</javadoc>*/
+@ForceLinkClass(SCNError.class)
 /*<annotations>*//*</annotations>*/
 public enum /*<name>*/SCNErrorCode/*</name>*/ implements NSErrorCode {
     /*<values>*/

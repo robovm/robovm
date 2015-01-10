@@ -77,9 +77,9 @@ import org.robovm.apple.dispatch.*;
     @Property(selector = "setRAddressMode:")
     public native void setRAddressMode(MTLSamplerAddressMode v);
     @Property(selector = "normalizedCoordinates")
-    public native boolean isNormalizedCoordinates();
+    public native boolean normalizesCoordinates();
     @Property(selector = "setNormalizedCoordinates:")
-    public native void setNormalizedCoordinates(boolean v);
+    public native void setNormalizesCoordinates(boolean v);
     @Property(selector = "lodMinClamp")
     public native float getLodMinClamp();
     @Property(selector = "setLodMinClamp:")

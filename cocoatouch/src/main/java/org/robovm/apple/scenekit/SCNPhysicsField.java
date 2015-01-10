@@ -77,7 +77,7 @@ import org.robovm.apple.opengles.*;
     @Property(selector = "setHalfExtent:")
     public native void setHalfExtent(@ByVal SCNVector3 v);
     @Property(selector = "usesEllipsoidalExtent")
-    public native boolean isUsesEllipsoidalExtent();
+    public native boolean usesEllipsoidalExtent();
     @Property(selector = "setUsesEllipsoidalExtent:")
     public native void setUsesEllipsoidalExtent(boolean v);
     @Property(selector = "scope")

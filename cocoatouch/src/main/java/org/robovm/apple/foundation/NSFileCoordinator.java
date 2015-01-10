@@ -52,7 +52,7 @@ import org.robovm.apple.dispatch.*;
     /*<constructors>*/
     public NSFileCoordinator() {}
     protected NSFileCoordinator(SkipInit skipInit) { super(skipInit); }
-    public NSFileCoordinator(NSFilePresenter filePresenterOrNil) { super((SkipInit) null); initObject(initWithFilePresenter$(filePresenterOrNil)); }
+    public NSFileCoordinator(NSFilePresenter filePresenterOrNil) { super((SkipInit) null); initObject(init(filePresenterOrNil)); }
     /*</constructors>*/
     /*<properties>*/
     /**
@@ -148,7 +148,7 @@ import org.robovm.apple.dispatch.*;
     
     /*<methods>*/
     @Method(selector = "initWithFilePresenter:")
-    protected native @Pointer long initWithFilePresenter$(NSFilePresenter filePresenterOrNil);
+    protected native @Pointer long init(NSFilePresenter filePresenterOrNil);
     /**
      * @since Available in iOS 8.0 and later.
      */

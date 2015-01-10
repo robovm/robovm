@@ -52,45 +52,21 @@ import org.robovm.apple.audiotoolbox.*;
     public CMBlockBufferCustomBlockSource() {}
     public CMBlockBufferCustomBlockSource(int version, FunctionPtr AllocateBlock, FunctionPtr FreeBlock, VoidPtr refCon) {
         this.setVersion(version);
-        this.setAllocateblock(AllocateBlock);
-        this.setFreeblock(FreeBlock);
-        this.setRefcon(refCon);
+        this.setAllocateBlock(AllocateBlock);
+        this.setFreeBlock(FreeBlock);
+        this.setRefCon(refCon);
     }
     /*</constructors>*/
     /*<properties>*//*</properties>*/
     /*<members>*/
     @StructMember(0) public native int getVersion();
     @StructMember(0) public native CMBlockBufferCustomBlockSource setVersion(int version);
-    
-    @Deprecated
-    @StructMember(0) public native int version();
-    @Deprecated
-    @StructMember(0) public native CMBlockBufferCustomBlockSource version(int version);
-    
-    @StructMember(1) public native FunctionPtr getAllocateblock();
-    @StructMember(1) public native CMBlockBufferCustomBlockSource setAllocateblock(FunctionPtr AllocateBlock);
-    
-    @Deprecated
-    @StructMember(1) public native FunctionPtr AllocateBlock();
-    @Deprecated
-    @StructMember(1) public native CMBlockBufferCustomBlockSource AllocateBlock(FunctionPtr AllocateBlock);
-    
-    @StructMember(2) public native FunctionPtr getFreeblock();
-    @StructMember(2) public native CMBlockBufferCustomBlockSource setFreeblock(FunctionPtr FreeBlock);
-    
-    @Deprecated
-    @StructMember(2) public native FunctionPtr FreeBlock();
-    @Deprecated
-    @StructMember(2) public native CMBlockBufferCustomBlockSource FreeBlock(FunctionPtr FreeBlock);
-    
-    @StructMember(3) public native VoidPtr getRefcon();
-    @StructMember(3) public native CMBlockBufferCustomBlockSource setRefcon(VoidPtr refCon);
-    
-    @Deprecated
-    @StructMember(3) public native VoidPtr refCon();
-    @Deprecated
-    @StructMember(3) public native CMBlockBufferCustomBlockSource refCon(VoidPtr refCon);
-    
+    @StructMember(1) public native FunctionPtr getAllocateBlock();
+    @StructMember(1) public native CMBlockBufferCustomBlockSource setAllocateBlock(FunctionPtr AllocateBlock);
+    @StructMember(2) public native FunctionPtr getFreeBlock();
+    @StructMember(2) public native CMBlockBufferCustomBlockSource setFreeBlock(FunctionPtr FreeBlock);
+    @StructMember(3) public native VoidPtr getRefCon();
+    @StructMember(3) public native CMBlockBufferCustomBlockSource setRefCon(VoidPtr refCon);
     /*</members>*/
     /*<methods>*//*</methods>*/
 }

@@ -118,7 +118,7 @@ import org.robovm.apple.corefoundation.*;
      */
     public void setCallback(ClientCallback callback) {
         CFNetServiceClientContext context = new CFNetServiceClientContext();
-        context.info(localRefconId);
+        context.setInfo(localRefconId);
         synchronized (callbacks) {
             callbacks.put(localRefconId, callback);
         }

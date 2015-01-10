@@ -49,25 +49,25 @@ import org.robovm.apple.coremedia.*;
     /*<constructors>*/
     public CAFSMPTETime() {}
     public CAFSMPTETime(byte mHours, byte mMinutes, byte mSeconds, byte mFrames, int mSubFrameSampleOffset) {
-        this.mHours(mHours);
-        this.mMinutes(mMinutes);
-        this.mSeconds(mSeconds);
-        this.mFrames(mFrames);
-        this.mSubFrameSampleOffset(mSubFrameSampleOffset);
+        this.setMHours(mHours);
+        this.setMMinutes(mMinutes);
+        this.setMSeconds(mSeconds);
+        this.setMFrames(mFrames);
+        this.setMSubFrameSampleOffset(mSubFrameSampleOffset);
     }
     /*</constructors>*/
     /*<properties>*//*</properties>*/
     /*<members>*/
-    @StructMember(0) public native byte mHours();
-    @StructMember(0) public native CAFSMPTETime mHours(byte mHours);
-    @StructMember(1) public native byte mMinutes();
-    @StructMember(1) public native CAFSMPTETime mMinutes(byte mMinutes);
-    @StructMember(2) public native byte mSeconds();
-    @StructMember(2) public native CAFSMPTETime mSeconds(byte mSeconds);
-    @StructMember(3) public native byte mFrames();
-    @StructMember(3) public native CAFSMPTETime mFrames(byte mFrames);
-    @StructMember(4) public native int mSubFrameSampleOffset();
-    @StructMember(4) public native CAFSMPTETime mSubFrameSampleOffset(int mSubFrameSampleOffset);
+    @StructMember(0) public native byte getMHours();
+    @StructMember(0) public native CAFSMPTETime setMHours(byte mHours);
+    @StructMember(1) public native byte getMMinutes();
+    @StructMember(1) public native CAFSMPTETime setMMinutes(byte mMinutes);
+    @StructMember(2) public native byte getMSeconds();
+    @StructMember(2) public native CAFSMPTETime setMSeconds(byte mSeconds);
+    @StructMember(3) public native byte getMFrames();
+    @StructMember(3) public native CAFSMPTETime setMFrames(byte mFrames);
+    @StructMember(4) public native int getMSubFrameSampleOffset();
+    @StructMember(4) public native CAFSMPTETime setMSubFrameSampleOffset(int mSubFrameSampleOffset);
     /*</members>*/
     /*<methods>*//*</methods>*/
 }

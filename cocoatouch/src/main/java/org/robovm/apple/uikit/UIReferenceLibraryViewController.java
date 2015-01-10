@@ -51,7 +51,7 @@ import org.robovm.apple.corelocation.*;
     /*<constructors>*/
     public UIReferenceLibraryViewController() {}
     protected UIReferenceLibraryViewController(SkipInit skipInit) { super(skipInit); }
-    public UIReferenceLibraryViewController(String term) { super((SkipInit) null); initObject(initWithTerm$(term)); }
+    public UIReferenceLibraryViewController(String term) { super((SkipInit) null); initObject(init(term)); }
     /*</constructors>*/
     /*<properties>*/
     
@@ -59,7 +59,7 @@ import org.robovm.apple.corelocation.*;
     /*<members>*//*</members>*/
     /*<methods>*/
     @Method(selector = "initWithTerm:")
-    protected native @Pointer long initWithTerm$(String term);
+    protected native @Pointer long init(String term);
     @Method(selector = "dictionaryHasDefinitionForTerm:")
     public static native boolean dictionaryHasDefinitionForTerm(String term);
     /*</methods>*/

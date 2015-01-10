@@ -163,37 +163,37 @@ import org.robovm.apple.mediatoolbox.*;
      * @since Available in iOS 5.0 and later.
      */
     @Property(selector = "canPlayFastForward")
-    public native boolean isCanPlayFastForward();
+    public native boolean canPlayFastForward();
     /**
      * @since Available in iOS 6.0 and later.
      */
     @Property(selector = "canPlaySlowForward")
-    public native boolean isCanPlaySlowForward();
+    public native boolean canPlaySlowForward();
     /**
      * @since Available in iOS 6.0 and later.
      */
     @Property(selector = "canPlayReverse")
-    public native boolean isCanPlayReverse();
+    public native boolean canPlayReverse();
     /**
      * @since Available in iOS 6.0 and later.
      */
     @Property(selector = "canPlaySlowReverse")
-    public native boolean isCanPlaySlowReverse();
+    public native boolean canPlaySlowReverse();
     /**
      * @since Available in iOS 5.0 and later.
      */
     @Property(selector = "canPlayFastReverse")
-    public native boolean isCanPlayFastReverse();
+    public native boolean canPlayFastReverse();
     /**
      * @since Available in iOS 6.0 and later.
      */
     @Property(selector = "canStepForward")
-    public native boolean isCanStepForward();
+    public native boolean canStepForward();
     /**
      * @since Available in iOS 6.0 and later.
      */
     @Property(selector = "canStepBackward")
-    public native boolean isCanStepBackward();
+    public native boolean canStepBackward();
     @Property(selector = "forwardPlaybackEndTime")
     public native @ByVal CMTime getForwardPlaybackEndTime();
     @Property(selector = "setForwardPlaybackEndTime:")
@@ -222,12 +222,12 @@ import org.robovm.apple.mediatoolbox.*;
      * @since Available in iOS 6.0 and later.
      */
     @Property(selector = "seekingWaitsForVideoCompositionRendering")
-    public native boolean isSeekingWaitsForVideoCompositionRendering();
+    public native boolean seekingWaitsForVideoCompositionRendering();
     /**
      * @since Available in iOS 6.0 and later.
      */
     @Property(selector = "setSeekingWaitsForVideoCompositionRendering:")
-    public native void setSeekingWaitsForVideoCompositionRendering(boolean v);
+    public native void seekingWaitsForVideoCompositionRendering(boolean v);
     /**
      * @since Available in iOS 6.0 and later.
      */

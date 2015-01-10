@@ -55,7 +55,7 @@ import org.robovm.apple.dispatch.*;
         public Iterator<U> iterator() {
             return new NSEnumerator.Iterator<U>(set.objectEnumerator()) {
                 void remove(int index, U o) {
-                    ((NSMutableSet<U>) set).removeObject$(o);
+                    ((NSMutableSet<U>) set).removeObject(o);
                 }
             };
         }
@@ -64,7 +64,7 @@ import org.robovm.apple.dispatch.*;
         public boolean add(U e) {
             checkNull(e);
             boolean replaced = contains(e);
-            ((NSMutableSet<U>) set).addObject$(e);
+            ((NSMutableSet<U>) set).addObject(e);
             return replaced;
         }
         
@@ -72,7 +72,7 @@ import org.robovm.apple.dispatch.*;
         @Override
         public boolean remove(Object o) {
             if (contains(o)) {
-                ((NSMutableSet<U>) set).removeObject$((U) o);
+                ((NSMutableSet<U>) set).removeObject((U) o);
                 return true;
             }
             return false;
@@ -89,7 +89,7 @@ import org.robovm.apple.dispatch.*;
     /*<constructors>*/
     public NSMutableSet() {}
     protected NSMutableSet(SkipInit skipInit) { super(skipInit); }
-    public NSMutableSet(@MachineSizedUInt long numItems) { super((SkipInit) null); initObject(initWithCapacity$(numItems)); }
+    public NSMutableSet(@MachineSizedUInt long numItems) { super((SkipInit) null); initObject(init(numItems)); }
     /*</constructors>*/
     
     public NSMutableSet(Collection<T> c) {
@@ -111,11 +111,11 @@ import org.robovm.apple.dispatch.*;
     
     /*<methods>*/
     @Method(selector = "addObject:")
-    protected native void addObject$(NSObject object);
+    protected native void addObject(NSObject object);
     @Method(selector = "removeObject:")
-    protected native void removeObject$(NSObject object);
+    protected native void removeObject(NSObject object);
     @Method(selector = "initWithCapacity:")
-    protected native @Pointer long initWithCapacity$(@MachineSizedUInt long numItems);
+    protected native @Pointer long init(@MachineSizedUInt long numItems);
     @Method(selector = "removeAllObjects")
     protected native void removeAllObjects();
     /*</methods>*/

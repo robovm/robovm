@@ -62,19 +62,19 @@ import org.robovm.apple.coregraphics.*;
     @Property(selector = "setUserContentController:")
     public native void setUserContentController(WKUserContentController v);
     @Property(selector = "suppressesIncrementalRendering")
-    public native boolean isSuppressesIncrementalRendering();
+    public native boolean suppressesIncrementalRendering();
     @Property(selector = "setSuppressesIncrementalRendering:")
     public native void setSuppressesIncrementalRendering(boolean v);
     @Property(selector = "allowsInlineMediaPlayback")
-    public native boolean isAllowsInlineMediaPlayback();
+    public native boolean allowsInlineMediaPlayback();
     @Property(selector = "setAllowsInlineMediaPlayback:")
     public native void setAllowsInlineMediaPlayback(boolean v);
     @Property(selector = "mediaPlaybackRequiresUserAction")
-    public native boolean isMediaPlaybackRequiresUserAction();
+    public native boolean mediaPlaybackRequiresUserAction();
     @Property(selector = "setMediaPlaybackRequiresUserAction:")
     public native void setMediaPlaybackRequiresUserAction(boolean v);
     @Property(selector = "mediaPlaybackAllowsAirPlay")
-    public native boolean isMediaPlaybackAllowsAirPlay();
+    public native boolean mediaPlaybackAllowsAirPlay();
     @Property(selector = "setMediaPlaybackAllowsAirPlay:")
     public native void setMediaPlaybackAllowsAirPlay(boolean v);
     @Property(selector = "selectionGranularity")

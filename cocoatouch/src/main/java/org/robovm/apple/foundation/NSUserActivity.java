@@ -52,7 +52,7 @@ import org.robovm.apple.dispatch.*;
     /*<constructors>*/
     public NSUserActivity() {}
     protected NSUserActivity(SkipInit skipInit) { super(skipInit); }
-    public NSUserActivity(String activityType) { super((SkipInit) null); initObject(initWithActivityType$(activityType)); }
+    public NSUserActivity(String activityType) { super((SkipInit) null); initObject(init(activityType)); }
     /*</constructors>*/
     public NSUserActivity(NSUserActivityType activityType) {
         this(activityType.value());
@@ -69,7 +69,7 @@ import org.robovm.apple.dispatch.*;
     @Property(selector = "setUserInfo:")
     public native void setUserInfo(NSDictionary<?, ?> v);
     @Property(selector = "needsSave")
-    public native boolean isNeedsSave();
+    public native boolean needsSave();
     @Property(selector = "setNeedsSave:")
     public native void setNeedsSave(boolean v);
     @Property(selector = "webpageURL")
@@ -77,7 +77,7 @@ import org.robovm.apple.dispatch.*;
     @Property(selector = "setWebpageURL:")
     public native void setWebpageURL(NSURL v);
     @Property(selector = "supportsContinuationStreams")
-    public native boolean isSupportsContinuationStreams();
+    public native boolean supportsContinuationStreams();
     @Property(selector = "setSupportsContinuationStreams:")
     public native void setSupportsContinuationStreams(boolean v);
     @Property(selector = "delegate")
@@ -88,7 +88,7 @@ import org.robovm.apple.dispatch.*;
     /*<members>*//*</members>*/
     /*<methods>*/
     @Method(selector = "initWithActivityType:")
-    protected native @Pointer long initWithActivityType$(String activityType);
+    protected native @Pointer long init(String activityType);
     @Method(selector = "addUserInfoEntriesFromDictionary:")
     public native void addUserInfoEntries(NSDictionary<?, ?> otherDictionary);
     @Method(selector = "becomeCurrent")

@@ -63,12 +63,12 @@ import org.robovm.apple.dispatch.*;
     /*<constants>*//*</constants>*/
     /*<constructors>*/
     protected NSLocale(SkipInit skipInit) { super(skipInit); }
-    public NSLocale(String string) { super((SkipInit) null); initObject(initWithLocaleIdentifier$(string)); }
+    public NSLocale(String string) { super((SkipInit) null); initObject(init(string)); }
     /*</constructors>*/
     
     public NSLocale(Locale locale) {
         super((SkipInit) null);
-        initObject(initWithLocaleIdentifier$(locale.toString()));
+        initObject(init(locale.toString()));
     }
     
     /*<properties>*/
@@ -187,9 +187,9 @@ import org.robovm.apple.dispatch.*;
     @Method(selector = "objectForKey:")
     public native NSObject getComponent(NSLocaleComponent key);
     @Method(selector = "displayNameForKey:value:")
-    public native String getDisplayName(NSLocaleComponent key, NSObject value);
+    public native String getComponentDisplayName(NSLocaleComponent key, NSObject value);
     @Method(selector = "initWithLocaleIdentifier:")
-    protected native @Pointer long initWithLocaleIdentifier$(String string);
+    protected native @Pointer long init(String string);
     /**
      * @since Available in iOS 2.0 and later.
      */

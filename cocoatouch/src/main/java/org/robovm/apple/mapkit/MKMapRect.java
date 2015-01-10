@@ -60,20 +60,8 @@ import org.robovm.apple.dispatch.*;
     /*<members>*/
     @StructMember(0) public native @ByVal MKMapPoint getOrigin();
     @StructMember(0) public native MKMapRect setOrigin(@ByVal MKMapPoint origin);
-    
-    @Deprecated
-    @StructMember(0) public native @ByVal MKMapPoint origin();
-    @Deprecated
-    @StructMember(0) public native MKMapRect origin(@ByVal MKMapPoint origin);
-    
     @StructMember(1) public native @ByVal MKMapSize getSize();
     @StructMember(1) public native MKMapRect setSize(@ByVal MKMapSize size);
-    
-    @Deprecated
-    @StructMember(1) public native @ByVal MKMapSize size();
-    @Deprecated
-    @StructMember(1) public native MKMapRect size(@ByVal MKMapSize size);
-    
     /*</members>*/
     /*<methods>*/
     /**

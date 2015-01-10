@@ -75,14 +75,13 @@ import org.robovm.apple.corelocation.*;
      * @since Available in iOS 3.1 and later.
      */
     public static boolean canEditVideo(File file) {
-        return canEditVideoAtPath$(file.getAbsolutePath());
-    }
-    
+        return canEditVideo(file.getAbsolutePath());
+    }    
     /*<methods>*/
     /**
      * @since Available in iOS 3.1 and later.
      */
     @Method(selector = "canEditVideoAtPath:")
-    protected static native boolean canEditVideoAtPath$(String videoPath);
+    protected static native boolean canEditVideo(String videoPath);
     /*</methods>*/
 }

@@ -54,7 +54,7 @@ import org.robovm.apple.scenekit.SCNVector4;
     /*<constants>*//*</constants>*/
     /*<constructors>*/
     protected NSValue(SkipInit skipInit) { super(skipInit); }
-    public NSValue(NSCoder aDecoder) { super((SkipInit) null); initObject(initWithCoder$(aDecoder)); }
+    public NSValue(NSCoder aDecoder) { super((SkipInit) null); initObject(init(aDecoder)); }
     /*</constructors>*/
     /*<properties>*/
     @Property(selector = "objCType")
@@ -73,7 +73,7 @@ import org.robovm.apple.scenekit.SCNVector4;
 
     public static NSValue valueOf(VoidPtr value, String type) {
         BytePtr p = type == null ? null : BytePtr.toBytePtrAsciiZ(type);
-        return valueWithBytes$objCType$(value, p);
+        return valueOf(value, p);
     }
 
     public VoidPtr getValue() {
@@ -210,9 +210,9 @@ import org.robovm.apple.scenekit.SCNVector4;
     @Method(selector = "getValue:")
     protected native void getValue(VoidPtr value);
     @Method(selector = "initWithCoder:")
-    protected native @Pointer long initWithCoder$(NSCoder aDecoder);
+    protected native @Pointer long init(NSCoder aDecoder);
     @Method(selector = "valueWithBytes:objCType:")
-    protected static native NSValue valueWithBytes$objCType$(VoidPtr value, BytePtr type);
+    public static native NSValue valueOf(VoidPtr value, BytePtr type);
     @Method(selector = "pointerValue")
     public native VoidPtr pointerValue();
     @Method(selector = "isEqualToValue:")

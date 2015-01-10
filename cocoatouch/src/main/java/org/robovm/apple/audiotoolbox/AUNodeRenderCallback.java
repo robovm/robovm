@@ -49,19 +49,19 @@ import org.robovm.apple.coremedia.*;
     /*<constructors>*/
     public AUNodeRenderCallback() {}
     public AUNodeRenderCallback(int destNode, int destInputNumber, AURenderCallbackStruct cback) {
-        this.destNode(destNode);
-        this.destInputNumber(destInputNumber);
-        this.cback(cback);
+        this.setDestNode(destNode);
+        this.setDestInputNumber(destInputNumber);
+        this.setCback(cback);
     }
     /*</constructors>*/
     /*<properties>*//*</properties>*/
     /*<members>*/
-    @StructMember(0) public native int destNode();
-    @StructMember(0) public native AUNodeRenderCallback destNode(int destNode);
-    @StructMember(1) public native int destInputNumber();
-    @StructMember(1) public native AUNodeRenderCallback destInputNumber(int destInputNumber);
-    @StructMember(2) public native @ByVal AURenderCallbackStruct cback();
-    @StructMember(2) public native AUNodeRenderCallback cback(@ByVal AURenderCallbackStruct cback);
+    @StructMember(0) public native int getDestNode();
+    @StructMember(0) public native AUNodeRenderCallback setDestNode(int destNode);
+    @StructMember(1) public native int getDestInputNumber();
+    @StructMember(1) public native AUNodeRenderCallback setDestInputNumber(int destInputNumber);
+    @StructMember(2) public native @ByVal AURenderCallbackStruct getCback();
+    @StructMember(2) public native AUNodeRenderCallback setCback(@ByVal AURenderCallbackStruct cback);
     /*</members>*/
     /*<methods>*//*</methods>*/
 }

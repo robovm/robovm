@@ -36,6 +36,7 @@ import org.robovm.apple.coregraphics.*;
  * @since Available in iOS 8.0 and later.
  */
 /*</javadoc>*/
+@ForceLinkClass(WKError.class)
 /*<annotations>*/@Marshaler(ValuedEnum.AsMachineSizedSIntMarshaler.class)/*</annotations>*/
 public enum /*<name>*/WKErrorCode/*</name>*/ implements NSErrorCode {
     /*<values>*/

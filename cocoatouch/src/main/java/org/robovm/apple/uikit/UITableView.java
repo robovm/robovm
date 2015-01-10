@@ -61,7 +61,7 @@ import org.robovm.apple.corelocation.*;
     /*<constructors>*/
     public UITableView() {}
     protected UITableView(SkipInit skipInit) { super(skipInit); }
-    public UITableView(@ByVal CGRect frame, UITableViewStyle style) { super((SkipInit) null); initObject(initWithFrame$style$(frame, style)); }
+    public UITableView(@ByVal CGRect frame, UITableViewStyle style) { super((SkipInit) null); initObject(init(frame, style)); }
     /*</constructors>*/
     
     public UITableView(CGRect frame) {
@@ -149,21 +149,21 @@ import org.robovm.apple.corelocation.*;
      * @since Available in iOS 3.0 and later.
      */
     @Property(selector = "allowsSelection")
-    public native boolean isAllowsSelection();
+    public native boolean allowsSelection();
     /**
      * @since Available in iOS 3.0 and later.
      */
     @Property(selector = "setAllowsSelection:")
     public native void setAllowsSelection(boolean v);
     @Property(selector = "allowsSelectionDuringEditing")
-    public native boolean isAllowsSelectionDuringEditing();
+    public native boolean allowsSelectionDuringEditing();
     @Property(selector = "setAllowsSelectionDuringEditing:")
     public native void setAllowsSelectionDuringEditing(boolean v);
     /**
      * @since Available in iOS 5.0 and later.
      */
     @Property(selector = "allowsMultipleSelection")
-    public native boolean isAllowsMultipleSelection();
+    public native boolean allowsMultipleSelection();
     /**
      * @since Available in iOS 5.0 and later.
      */
@@ -173,7 +173,7 @@ import org.robovm.apple.corelocation.*;
      * @since Available in iOS 5.0 and later.
      */
     @Property(selector = "allowsMultipleSelectionDuringEditing")
-    public native boolean isAllowsMultipleSelectionDuringEditing();
+    public native boolean allowsMultipleSelectionDuringEditing();
     /**
      * @since Available in iOS 5.0 and later.
      */
@@ -246,17 +246,17 @@ import org.robovm.apple.corelocation.*;
      * @since Available in iOS 3.0 and later.
      */
     @GlobalValue(symbol="UITableViewIndexSearch", optional=true)
-    public static native String IndexSearch();
+    public static native String getIndexSearch();
     /**
      * @since Available in iOS 5.0 and later.
      */
     @GlobalValue(symbol="UITableViewAutomaticDimension", optional=true)
-    public static native @MachineSizedFloat double AutomaticDimension();
+    public static native @MachineSizedFloat double getAutomaticDimension();
     @GlobalValue(symbol="UITableViewSelectionDidChangeNotification", optional=true)
     public static native NSString SelectionDidChangeNotification();
     
     @Method(selector = "initWithFrame:style:")
-    protected native @Pointer long initWithFrame$style$(@ByVal CGRect frame, UITableViewStyle style);
+    protected native @Pointer long init(@ByVal CGRect frame, UITableViewStyle style);
     @Method(selector = "reloadData")
     public native void reloadData();
     /**

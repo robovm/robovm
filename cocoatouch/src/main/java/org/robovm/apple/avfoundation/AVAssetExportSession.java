@@ -133,14 +133,14 @@ import org.robovm.apple.mediatoolbox.*;
     @Property(selector = "customVideoCompositor")
     public native AVVideoCompositing getCustomVideoCompositor();
     @Property(selector = "shouldOptimizeForNetworkUse")
-    public native boolean isShouldOptimizeForNetworkUse();
+    public native boolean shouldOptimizeForNetworkUse();
     @Property(selector = "setShouldOptimizeForNetworkUse:")
     public native void setShouldOptimizeForNetworkUse(boolean v);
     /**
      * @since Available in iOS 8.0 and later.
      */
     @Property(selector = "canPerformMultiplePassesOverSourceMediaData")
-    public native boolean isCanPerformMultiplePassesOverSourceMediaData();
+    public native boolean canPerformMultiplePassesOverSourceMediaData();
     /**
      * @since Available in iOS 8.0 and later.
      */

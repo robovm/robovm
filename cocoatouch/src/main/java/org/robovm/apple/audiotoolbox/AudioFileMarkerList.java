@@ -49,19 +49,19 @@ import org.robovm.apple.coremedia.*;
     /*<constructors>*/
     public AudioFileMarkerList() {}
     public AudioFileMarkerList(int mSMPTE_TimeType, int mNumberMarkers, AudioFileMarker mMarkers) {
-        this.mSMPTE_TimeType(mSMPTE_TimeType);
-        this.mNumberMarkers(mNumberMarkers);
-        this.mMarkers(mMarkers);
+        this.setMSMPTE_TimeType(mSMPTE_TimeType);
+        this.setMNumberMarkers(mNumberMarkers);
+        this.setMMarkers(mMarkers);
     }
     /*</constructors>*/
     /*<properties>*//*</properties>*/
     /*<members>*/
-    @StructMember(0) public native int mSMPTE_TimeType();
-    @StructMember(0) public native AudioFileMarkerList mSMPTE_TimeType(int mSMPTE_TimeType);
-    @StructMember(1) public native int mNumberMarkers();
-    @StructMember(1) public native AudioFileMarkerList mNumberMarkers(int mNumberMarkers);
-    @StructMember(2) public native @Array({1}) AudioFileMarker mMarkers();
-    @StructMember(2) public native AudioFileMarkerList mMarkers(@Array({1}) AudioFileMarker mMarkers);
+    @StructMember(0) public native int getMSMPTE_TimeType();
+    @StructMember(0) public native AudioFileMarkerList setMSMPTE_TimeType(int mSMPTE_TimeType);
+    @StructMember(1) public native int getMNumberMarkers();
+    @StructMember(1) public native AudioFileMarkerList setMNumberMarkers(int mNumberMarkers);
+    @StructMember(2) public native @Array({1}) AudioFileMarker getMMarkers();
+    @StructMember(2) public native AudioFileMarkerList setMMarkers(@Array({1}) AudioFileMarker mMarkers);
     /*</members>*/
     /*<methods>*//*</methods>*/
 }

@@ -57,52 +57,16 @@ import org.robovm.apple.uikit.*;
     /*<members>*/
     @StructMember(0) public native @MachineSizedFloat double getA();
     @StructMember(0) public native CGAffineTransform setA(@MachineSizedFloat double a);
-    
-    @Deprecated
-    @StructMember(0) public native @MachineSizedFloat double a();
-    @Deprecated
-    @StructMember(0) public native CGAffineTransform a(@MachineSizedFloat double a);
-    
     @StructMember(1) public native @MachineSizedFloat double getB();
     @StructMember(1) public native CGAffineTransform setB(@MachineSizedFloat double b);
-    
-    @Deprecated
-    @StructMember(1) public native @MachineSizedFloat double b();
-    @Deprecated
-    @StructMember(1) public native CGAffineTransform b(@MachineSizedFloat double b);
-    
     @StructMember(2) public native @MachineSizedFloat double getC();
     @StructMember(2) public native CGAffineTransform setC(@MachineSizedFloat double c);
-    
-    @Deprecated
-    @StructMember(2) public native @MachineSizedFloat double c();
-    @Deprecated
-    @StructMember(2) public native CGAffineTransform c(@MachineSizedFloat double c);
-    
     @StructMember(3) public native @MachineSizedFloat double getD();
     @StructMember(3) public native CGAffineTransform setD(@MachineSizedFloat double d);
-    
-    @Deprecated
-    @StructMember(3) public native @MachineSizedFloat double d();
-    @Deprecated
-    @StructMember(3) public native CGAffineTransform d(@MachineSizedFloat double d);
-    
     @StructMember(4) public native @MachineSizedFloat double getTx();
     @StructMember(4) public native CGAffineTransform setTx(@MachineSizedFloat double tx);
-    
-    @Deprecated
-    @StructMember(4) public native @MachineSizedFloat double tx();
-    @Deprecated
-    @StructMember(4) public native CGAffineTransform tx(@MachineSizedFloat double tx);
-    
     @StructMember(5) public native @MachineSizedFloat double getTy();
     @StructMember(5) public native CGAffineTransform setTy(@MachineSizedFloat double ty);
-    
-    @Deprecated
-    @StructMember(5) public native @MachineSizedFloat double ty();
-    @Deprecated
-    @StructMember(5) public native CGAffineTransform ty(@MachineSizedFloat double ty);
-    
     /*</members>*/
     
     public static CGAffineTransform fromString(String string) {

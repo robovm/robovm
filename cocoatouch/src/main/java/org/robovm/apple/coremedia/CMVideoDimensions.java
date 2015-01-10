@@ -59,20 +59,8 @@ import org.robovm.apple.audiotoolbox.*;
     /*<members>*/
     @StructMember(0) public native int getWidth();
     @StructMember(0) public native CMVideoDimensions setWidth(int width);
-    
-    @Deprecated
-    @StructMember(0) public native int width();
-    @Deprecated
-    @StructMember(0) public native CMVideoDimensions width(int width);
-    
     @StructMember(1) public native int getHeight();
     @StructMember(1) public native CMVideoDimensions setHeight(int height);
-    
-    @Deprecated
-    @StructMember(1) public native int height();
-    @Deprecated
-    @StructMember(1) public native CMVideoDimensions height(int height);
-    
     /*</members>*/
     /*<methods>*//*</methods>*/
 }

@@ -49,31 +49,31 @@ import org.robovm.apple.coremedia.*;
     /*<constructors>*/
     public AudioQueueBuffer() {}
     public AudioQueueBuffer(int mAudioDataBytesCapacity, VoidPtr mAudioData, int mAudioDataByteSize, VoidPtr mUserData, int mPacketDescriptionCapacity, AudioStreamPacketDescription mPacketDescriptions, int mPacketDescriptionCount) {
-        this.mAudioDataBytesCapacity(mAudioDataBytesCapacity);
-        this.mAudioData(mAudioData);
-        this.mAudioDataByteSize(mAudioDataByteSize);
-        this.mUserData(mUserData);
-        this.mPacketDescriptionCapacity(mPacketDescriptionCapacity);
-        this.mPacketDescriptions(mPacketDescriptions);
-        this.mPacketDescriptionCount(mPacketDescriptionCount);
+        this.setMAudioDataBytesCapacity(mAudioDataBytesCapacity);
+        this.setMAudioData(mAudioData);
+        this.setMAudioDataByteSize(mAudioDataByteSize);
+        this.setMUserData(mUserData);
+        this.setMPacketDescriptionCapacity(mPacketDescriptionCapacity);
+        this.setMPacketDescriptions(mPacketDescriptions);
+        this.setMPacketDescriptionCount(mPacketDescriptionCount);
     }
     /*</constructors>*/
     /*<properties>*//*</properties>*/
     /*<members>*/
-    @StructMember(0) public native int mAudioDataBytesCapacity();
-    @StructMember(0) public native AudioQueueBuffer mAudioDataBytesCapacity(int mAudioDataBytesCapacity);
-    @StructMember(1) public native VoidPtr mAudioData();
-    @StructMember(1) public native AudioQueueBuffer mAudioData(VoidPtr mAudioData);
-    @StructMember(2) public native int mAudioDataByteSize();
-    @StructMember(2) public native AudioQueueBuffer mAudioDataByteSize(int mAudioDataByteSize);
-    @StructMember(3) public native VoidPtr mUserData();
-    @StructMember(3) public native AudioQueueBuffer mUserData(VoidPtr mUserData);
-    @StructMember(4) public native int mPacketDescriptionCapacity();
-    @StructMember(4) public native AudioQueueBuffer mPacketDescriptionCapacity(int mPacketDescriptionCapacity);
-    @StructMember(5) public native AudioStreamPacketDescription mPacketDescriptions();
-    @StructMember(5) public native AudioQueueBuffer mPacketDescriptions(AudioStreamPacketDescription mPacketDescriptions);
-    @StructMember(6) public native int mPacketDescriptionCount();
-    @StructMember(6) public native AudioQueueBuffer mPacketDescriptionCount(int mPacketDescriptionCount);
+    @StructMember(0) public native int getMAudioDataBytesCapacity();
+    @StructMember(0) public native AudioQueueBuffer setMAudioDataBytesCapacity(int mAudioDataBytesCapacity);
+    @StructMember(1) public native VoidPtr getMAudioData();
+    @StructMember(1) public native AudioQueueBuffer setMAudioData(VoidPtr mAudioData);
+    @StructMember(2) public native int getMAudioDataByteSize();
+    @StructMember(2) public native AudioQueueBuffer setMAudioDataByteSize(int mAudioDataByteSize);
+    @StructMember(3) public native VoidPtr getMUserData();
+    @StructMember(3) public native AudioQueueBuffer setMUserData(VoidPtr mUserData);
+    @StructMember(4) public native int getMPacketDescriptionCapacity();
+    @StructMember(4) public native AudioQueueBuffer setMPacketDescriptionCapacity(int mPacketDescriptionCapacity);
+    @StructMember(5) public native AudioStreamPacketDescription getMPacketDescriptions();
+    @StructMember(5) public native AudioQueueBuffer setMPacketDescriptions(AudioStreamPacketDescription mPacketDescriptions);
+    @StructMember(6) public native int getMPacketDescriptionCount();
+    @StructMember(6) public native AudioQueueBuffer setMPacketDescriptionCount(int mPacketDescriptionCount);
     /*</members>*/
     /*<methods>*//*</methods>*/
 }

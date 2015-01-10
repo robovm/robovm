@@ -47,9 +47,9 @@ import org.robovm.apple.corebluetooth.*;
     /*<constructors>*/
     public CLBeaconRegion() {}
     protected CLBeaconRegion(SkipInit skipInit) { super(skipInit); }
-    public CLBeaconRegion(NSUUID proximityUUID, String identifier) { super((SkipInit) null); initObject(initWithProximityUUID$identifier$(proximityUUID, identifier)); }
-    public CLBeaconRegion(NSUUID proximityUUID, short major, String identifier) { super((SkipInit) null); initObject(initWithProximityUUID$major$identifier$(proximityUUID, major, identifier)); }
-    public CLBeaconRegion(NSUUID proximityUUID, short major, short minor, String identifier) { super((SkipInit) null); initObject(initWithProximityUUID$major$minor$identifier$(proximityUUID, major, minor, identifier)); }
+    public CLBeaconRegion(NSUUID proximityUUID, String identifier) { super((SkipInit) null); initObject(init(proximityUUID, identifier)); }
+    public CLBeaconRegion(NSUUID proximityUUID, short major, String identifier) { super((SkipInit) null); initObject(init(proximityUUID, major, identifier)); }
+    public CLBeaconRegion(NSUUID proximityUUID, short major, short minor, String identifier) { super((SkipInit) null); initObject(init(proximityUUID, major, minor, identifier)); }
     /*</constructors>*/
     /*<properties>*/
     @Property(selector = "proximityUUID")
@@ -59,18 +59,18 @@ import org.robovm.apple.corebluetooth.*;
     @Property(selector = "minor")
     public native NSNumber getMinor();
     @Property(selector = "notifyEntryStateOnDisplay")
-    public native boolean isNotifyEntryStateOnDisplay();
+    public native boolean notifiesEntryStateOnDisplay();
     @Property(selector = "setNotifyEntryStateOnDisplay:")
-    public native void setNotifyEntryStateOnDisplay(boolean v);
+    public native void setNotifiesEntryStateOnDisplay(boolean v);
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
     @Method(selector = "initWithProximityUUID:identifier:")
-    protected native @Pointer long initWithProximityUUID$identifier$(NSUUID proximityUUID, String identifier);
+    protected native @Pointer long init(NSUUID proximityUUID, String identifier);
     @Method(selector = "initWithProximityUUID:major:identifier:")
-    protected native @Pointer long initWithProximityUUID$major$identifier$(NSUUID proximityUUID, short major, String identifier);
+    protected native @Pointer long init(NSUUID proximityUUID, short major, String identifier);
     @Method(selector = "initWithProximityUUID:major:minor:identifier:")
-    protected native @Pointer long initWithProximityUUID$major$minor$identifier$(NSUUID proximityUUID, short major, short minor, String identifier);
+    protected native @Pointer long init(NSUUID proximityUUID, short major, short minor, String identifier);
     @Method(selector = "peripheralDataWithMeasuredPower:")
     public native CBAdvertisementData getPeripheralData(NSNumber measuredPower);
     /*</methods>*/

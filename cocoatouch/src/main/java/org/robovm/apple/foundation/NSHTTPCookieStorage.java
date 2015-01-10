@@ -93,7 +93,7 @@ import org.robovm.apple.dispatch.*;
      * @since Available in iOS 8.0 and later.
      */
     @Method(selector = "removeCookiesSinceDate:")
-    public native void removeCookiesSinceDate$(NSDate date);
+    public native void removeCookiesSinceDate(NSDate date);
     @Method(selector = "cookiesForURL:")
     public native NSArray<NSHTTPCookie> getCookiesForURL(NSURL URL);
     @Method(selector = "setCookies:forURL:mainDocumentURL:")

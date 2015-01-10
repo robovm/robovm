@@ -62,28 +62,10 @@ import org.robovm.apple.mediatoolbox.*;
     /*<members>*/
     @StructMember(0) public native float getYaw();
     @StructMember(0) public native AVAudio3DAngularOrientation setYaw(float yaw);
-    
-    @Deprecated
-    @StructMember(0) public native float yaw();
-    @Deprecated
-    @StructMember(0) public native AVAudio3DAngularOrientation yaw(float yaw);
-    
     @StructMember(1) public native float getPitch();
     @StructMember(1) public native AVAudio3DAngularOrientation setPitch(float pitch);
-    
-    @Deprecated
-    @StructMember(1) public native float pitch();
-    @Deprecated
-    @StructMember(1) public native AVAudio3DAngularOrientation pitch(float pitch);
-    
     @StructMember(2) public native float getRoll();
     @StructMember(2) public native AVAudio3DAngularOrientation setRoll(float roll);
-    
-    @Deprecated
-    @StructMember(2) public native float roll();
-    @Deprecated
-    @StructMember(2) public native AVAudio3DAngularOrientation roll(float roll);
-    
     /*</members>*/
     /*<methods>*//*</methods>*/
 }

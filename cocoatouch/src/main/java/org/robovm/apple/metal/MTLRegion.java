@@ -53,20 +53,8 @@ import org.robovm.apple.dispatch.*;
     /*<members>*/
     @StructMember(0) public native @ByVal MTLOrigin getOrigin();
     @StructMember(0) public native MTLRegion setOrigin(@ByVal MTLOrigin origin);
-    
-    @Deprecated
-    @StructMember(0) public native @ByVal MTLOrigin origin();
-    @Deprecated
-    @StructMember(0) public native MTLRegion origin(@ByVal MTLOrigin origin);
-    
     @StructMember(1) public native @ByVal MTLSize getSize();
     @StructMember(1) public native MTLRegion setSize(@ByVal MTLSize size);
-    
-    @Deprecated
-    @StructMember(1) public native @ByVal MTLSize size();
-    @Deprecated
-    @StructMember(1) public native MTLRegion size(@ByVal MTLSize size);
-    
     /*</members>*/
     public static MTLRegion create1D(long x, long width) {
         MTLRegion region = new MTLRegion();

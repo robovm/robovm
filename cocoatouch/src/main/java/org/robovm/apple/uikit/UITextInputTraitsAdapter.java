@@ -80,7 +80,7 @@ import org.robovm.apple.corelocation.*;
     @NotImplemented("setReturnKeyType:")
     public void setReturnKeyType(UIReturnKeyType v) { throw new UnsupportedOperationException(); }
     @NotImplemented("enablesReturnKeyAutomatically")
-    public boolean isEnablesReturnKeyAutomatically() { throw new UnsupportedOperationException(); }
+    public boolean enablesReturnKeyAutomatically() { throw new UnsupportedOperationException(); }
     @NotImplemented("setEnablesReturnKeyAutomatically:")
     public void setEnablesReturnKeyAutomatically(boolean v) { throw new UnsupportedOperationException(); }
     @NotImplemented("isSecureTextEntry")

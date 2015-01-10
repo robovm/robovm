@@ -75,7 +75,7 @@ import org.robovm.rt.bro.ptr.*;
      * @since Available in iOS 4.0 and later.
      */
     @Bridge(symbol="dispatch_source_set_cancel_handler", optional=true)
-    public native void setCancelHandler(@Block Runnable cancel_handler);
+    public native void setCancelHandler(@Block Runnable handler);
     /**
      * @since Available in iOS 4.0 and later.
      */
@@ -115,6 +115,6 @@ import org.robovm.rt.bro.ptr.*;
      * @since Available in iOS 4.3 and later.
      */
     @Bridge(symbol="dispatch_source_set_registration_handler", optional=true)
-    public native void setRegistrationHandler(@Block Runnable registration_handler);
+    public native void setRegistrationHandler(@Block Runnable handler);
     /*</methods>*/
 }

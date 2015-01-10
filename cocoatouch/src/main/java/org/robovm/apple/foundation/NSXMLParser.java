@@ -50,12 +50,12 @@ import org.robovm.apple.dispatch.*;
     /*<constructors>*/
     public NSXMLParser() {}
     protected NSXMLParser(SkipInit skipInit) { super(skipInit); }
-    public NSXMLParser(NSURL url) { super((SkipInit) null); initObject(initWithContentsOfURL$(url)); }
-    public NSXMLParser(NSData data) { super((SkipInit) null); initObject(initWithData$(data)); }
+    public NSXMLParser(NSURL url) { super((SkipInit) null); initObject(init(url)); }
+    public NSXMLParser(NSData data) { super((SkipInit) null); initObject(init(data)); }
     /**
      * @since Available in iOS 5.0 and later.
      */
-    public NSXMLParser(NSInputStream stream) { super((SkipInit) null); initObject(initWithStream$(stream)); }
+    public NSXMLParser(NSInputStream stream) { super((SkipInit) null); initObject(init(stream)); }
     /*</constructors>*/
     /*<properties>*/
     @Property(selector = "delegate")
@@ -63,11 +63,11 @@ import org.robovm.apple.dispatch.*;
     @Property(selector = "setDelegate:", strongRef = true)
     public native void setDelegate(NSXMLParserDelegate v);
     @Property(selector = "shouldProcessNamespaces")
-    public native boolean isShouldProcessNamespaces();
+    public native boolean shouldProcessNamespaces();
     @Property(selector = "setShouldProcessNamespaces:")
     public native void setShouldProcessNamespaces(boolean v);
     @Property(selector = "shouldReportNamespacePrefixes")
-    public native boolean isShouldReportNamespacePrefixes();
+    public native boolean shouldReportNamespacePrefixes();
     @Property(selector = "setShouldReportNamespacePrefixes:")
     public native void setShouldReportNamespacePrefixes(boolean v);
     /**
@@ -93,7 +93,7 @@ import org.robovm.apple.dispatch.*;
     @Property(selector = "parserError")
     public native NSError getParserError();
     @Property(selector = "shouldResolveExternalEntities")
-    public native boolean isShouldResolveExternalEntities();
+    public native boolean shouldResolveExternalEntities();
     @Property(selector = "setShouldResolveExternalEntities:")
     public native void setShouldResolveExternalEntities(boolean v);
     @Property(selector = "publicID")
@@ -108,14 +108,14 @@ import org.robovm.apple.dispatch.*;
     /*<members>*//*</members>*/
     /*<methods>*/
     @Method(selector = "initWithContentsOfURL:")
-    protected native @Pointer long initWithContentsOfURL$(NSURL url);
+    protected native @Pointer long init(NSURL url);
     @Method(selector = "initWithData:")
-    protected native @Pointer long initWithData$(NSData data);
+    protected native @Pointer long init(NSData data);
     /**
      * @since Available in iOS 5.0 and later.
      */
     @Method(selector = "initWithStream:")
-    protected native @Pointer long initWithStream$(NSInputStream stream);
+    protected native @Pointer long init(NSInputStream stream);
     @Method(selector = "parse")
     public native boolean parse();
     @Method(selector = "abortParsing")

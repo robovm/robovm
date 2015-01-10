@@ -55,36 +55,12 @@ import org.robovm.apple.dispatch.*;
     /*<members>*/
     @StructMember(0) public native double getRed();
     @StructMember(0) public native MTLClearColor setRed(double red);
-    
-    @Deprecated
-    @StructMember(0) public native double red();
-    @Deprecated
-    @StructMember(0) public native MTLClearColor red(double red);
-    
     @StructMember(1) public native double getGreen();
     @StructMember(1) public native MTLClearColor setGreen(double green);
-    
-    @Deprecated
-    @StructMember(1) public native double green();
-    @Deprecated
-    @StructMember(1) public native MTLClearColor green(double green);
-    
     @StructMember(2) public native double getBlue();
     @StructMember(2) public native MTLClearColor setBlue(double blue);
-    
-    @Deprecated
-    @StructMember(2) public native double blue();
-    @Deprecated
-    @StructMember(2) public native MTLClearColor blue(double blue);
-    
     @StructMember(3) public native double getAlpha();
     @StructMember(3) public native MTLClearColor setAlpha(double alpha);
-    
-    @Deprecated
-    @StructMember(3) public native double alpha();
-    @Deprecated
-    @StructMember(3) public native MTLClearColor alpha(double alpha);
-    
     /*</members>*/
     /*<methods>*//*</methods>*/
 }

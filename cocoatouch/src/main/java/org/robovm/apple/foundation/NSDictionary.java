@@ -290,37 +290,37 @@ import org.robovm.apple.dispatch.*;
     @SuppressWarnings("unchecked")
     public NSDictionary(K k, V v) {
         super((SkipInit) null);
-        initObject(initWithObjects$forKeys$(new NSArray<V>(v), new NSArray<K>(k)));
+        initObject(init(new NSArray<V>(v), new NSArray<K>(k)));
     }
 
     @SuppressWarnings("unchecked")
     public NSDictionary(K k1, V v1, K k2, V v2) {
         super((SkipInit) null);
-        initObject(initWithObjects$forKeys$(new NSArray<V>(v1, v2), new NSArray<K>(k1, k2)));
+        initObject(init(new NSArray<V>(v1, v2), new NSArray<K>(k1, k2)));
     }
 
     @SuppressWarnings("unchecked")
     public NSDictionary(K k1, V v1, K k2, V v2, K k3, V v3) {
         super((SkipInit) null);
-        initObject(initWithObjects$forKeys$(new NSArray<V>(v1, v2, v3), new NSArray<K>(k1, k2, k3)));
+        initObject(init(new NSArray<V>(v1, v2, v3), new NSArray<K>(k1, k2, k3)));
     }
 
     @SuppressWarnings("unchecked")
     public NSDictionary(K k1, V v1, K k2, V v2, K k3, V v3, K k4, V v4) {
         super((SkipInit) null);
-        initObject(initWithObjects$forKeys$(new NSArray<V>(v1, v2, v3, v4), new NSArray<K>(k1, k2, k3, k4)));
+        initObject(init(new NSArray<V>(v1, v2, v3, v4), new NSArray<K>(k1, k2, k3, k4)));
     }
 
     @SuppressWarnings("unchecked")
     public NSDictionary(K k1, V v1, K k2, V v2, K k3, V v3, K k4, V v4, K k5, V v5) {
         super((SkipInit) null);
-        initObject(initWithObjects$forKeys$(new NSArray<V>(v1, v2, v3, v4, v5), new NSArray<K>(k1, k2, k3, k4, k5)));
+        initObject(init(new NSArray<V>(v1, v2, v3, v4, v5), new NSArray<K>(k1, k2, k3, k4, k5)));
     }
 
     public NSDictionary(Map<K, V> m) {
         super((SkipInit) null);
         if (m instanceof NSDictionary) {
-            initObject(initWithDictionary$((NSDictionary<K, V>) m));
+            initObject(init((NSDictionary<K, V>) m));
         } else {
             Set<K> keys = m.keySet();
             List<V> objects = new ArrayList<V>(keys.size());
@@ -329,7 +329,7 @@ import org.robovm.apple.dispatch.*;
                 checkNull(key, value);
                 objects.add(value);
             }
-            initObject(initWithObjects$forKeys$(new NSArray<V>(objects), new NSArray<K>(keys)));
+            initObject(init(new NSArray<V>(objects), new NSArray<K>(keys)));
         }
     }
     
@@ -362,7 +362,7 @@ import org.robovm.apple.dispatch.*;
         NSArray<V> values = getAllValues();
         int count = (int) values.getCount();
         for (int i = 0; i < count; i++) {
-            NSObject o = values.objectAtIndex$(i);
+            NSObject o = values.getObjectAt(i);
             if (o.equals(value)) {
                 return true;
             }
@@ -377,7 +377,7 @@ import org.robovm.apple.dispatch.*;
         if (!(key instanceof NSObject)) {
             return null;
         }
-        return (V) objectForKey$((K) key);
+        return (V) getObject((K) key);
     }
     public boolean isEmpty() {
         return getCount() == 0;
@@ -406,15 +406,15 @@ import org.robovm.apple.dispatch.*;
     
     @Override
     public boolean equals(Object obj) {
-        return obj instanceof NSDictionary && isEqualToDictionary$((NSDictionary<?, ?>) obj);
+        return obj instanceof NSDictionary && equalsTo((NSDictionary<?, ?>) obj);
     }
     
     public static NSDictionary<?, ?> read(java.io.File file) {
-        return dictionaryWithContentsOfFile$(file.getAbsolutePath());
+        return read(file.getAbsolutePath());
     }
 
     public boolean write(java.io.File file, boolean useAuxiliaryFile) {
-        return writeToFile$atomically$(file.getAbsolutePath(), useAuxiliaryFile);
+        return writeFile(file.getAbsolutePath(), useAuxiliaryFile);
     }
     
     /**
@@ -446,19 +446,19 @@ import org.robovm.apple.dispatch.*;
     
     /*<methods>*/
     @Method(selector = "objectForKey:")
-    protected native V objectForKey$(K aKey);
+    protected native V getObject(K aKey);
     @Method(selector = "isEqualToDictionary:")
-    protected native boolean isEqualToDictionary$(NSDictionary<?, ?> otherDictionary);
+    protected native boolean equalsTo(NSDictionary<?, ?> otherDictionary);
     @Method(selector = "writeToFile:atomically:")
-    protected native boolean writeToFile$atomically$(String path, boolean useAuxiliaryFile);
+    protected native boolean writeFile(String path, boolean useAuxiliaryFile);
     @Method(selector = "writeToURL:atomically:")
     public native boolean write(NSURL url, boolean atomically);
     @Method(selector = "initWithDictionary:")
-    protected native @Pointer long initWithDictionary$(NSDictionary<?, ?> otherDictionary);
+    protected native @Pointer long init(NSDictionary<?, ?> otherDictionary);
     @Method(selector = "initWithObjects:forKeys:")
-    protected native @Pointer long initWithObjects$forKeys$(NSArray<?> objects, NSArray<?> keys);
+    protected native @Pointer long init(NSArray<?> objects, NSArray<?> keys);
     @Method(selector = "dictionaryWithContentsOfFile:")
-    protected static native NSDictionary<?, ?> dictionaryWithContentsOfFile$(String path);
+    protected static native NSDictionary<?, ?> read(String path);
     @Method(selector = "dictionaryWithContentsOfURL:")
     public static native NSDictionary<?, ?> read(NSURL url);
     /*</methods>*/

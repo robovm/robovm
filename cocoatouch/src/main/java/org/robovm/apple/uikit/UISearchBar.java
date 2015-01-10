@@ -79,18 +79,18 @@ import org.robovm.apple.corelocation.*;
     @Property(selector = "setPlaceholder:")
     public native void setPlaceholder(String v);
     @Property(selector = "showsBookmarkButton")
-    public native boolean isShowsBookmarkButton();
+    public native boolean showsBookmarkButton();
     @Property(selector = "setShowsBookmarkButton:")
     public native void setShowsBookmarkButton(boolean v);
     @Property(selector = "showsCancelButton")
-    public native boolean isShowsCancelButton();
+    public native boolean showsCancelButton();
     @Property(selector = "setShowsCancelButton:")
     public native void setShowsCancelButton(boolean v);
     /**
      * @since Available in iOS 3.2 and later.
      */
     @Property(selector = "showsSearchResultsButton")
-    public native boolean isShowsSearchResultsButton();
+    public native boolean showsSearchResultsButton();
     /**
      * @since Available in iOS 3.2 and later.
      */
@@ -164,7 +164,7 @@ import org.robovm.apple.corelocation.*;
      * @since Available in iOS 3.0 and later.
      */
     @Property(selector = "showsScopeBar")
-    public native boolean isShowsScopeBar();
+    public native boolean showsScopeBar();
     /**
      * @since Available in iOS 3.0 and later.
      */
@@ -247,7 +247,7 @@ import org.robovm.apple.corelocation.*;
     @Property(selector = "setReturnKeyType:")
     public native void setReturnKeyType(UIReturnKeyType v);
     @Property(selector = "enablesReturnKeyAutomatically")
-    public native boolean isEnablesReturnKeyAutomatically();
+    public native boolean enablesReturnKeyAutomatically();
     @Property(selector = "setEnablesReturnKeyAutomatically:")
     public native void setEnablesReturnKeyAutomatically(boolean v);
     @Property(selector = "isSecureTextEntry")

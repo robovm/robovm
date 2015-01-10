@@ -108,7 +108,10 @@ classes:
                 type: NSArray<MTLArgument>
             'fragmentArguments':
                 type: NSArray<MTLArgument>
-    MTLSamplerDescriptor: {} # DONE
+    MTLSamplerDescriptor: # DONE
+        properties:
+            'normalizedCoordinates':
+                name: normalizesCoordinates
     MTLStencilDescriptor: {} # DONE
     MTLStructMember: # DONE
         methods:
@@ -179,6 +182,10 @@ protocols:
     MTLCommandBuffer: # DONE
         class: true
         visibility: 'public final'
+        properties:
+            'retainedReferences':
+                name: maintainsRetainedReferences
+                omit_prefix: true
         methods:
             '-addScheduledHandler:':    
                 trim_after_first_colon: true

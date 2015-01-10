@@ -49,16 +49,16 @@ import org.robovm.apple.coremedia.*;
     /*<constructors>*/
     public AudioFormatListItem() {}
     public AudioFormatListItem(AudioStreamBasicDescription mASBD, AudioChannelLayoutTag mChannelLayoutTag) {
-        this.mASBD(mASBD);
-        this.mChannelLayoutTag(mChannelLayoutTag);
+        this.setMASBD(mASBD);
+        this.setMChannelLayoutTag(mChannelLayoutTag);
     }
     /*</constructors>*/
     /*<properties>*//*</properties>*/
     /*<members>*/
-    @StructMember(0) public native @ByVal AudioStreamBasicDescription mASBD();
-    @StructMember(0) public native AudioFormatListItem mASBD(@ByVal AudioStreamBasicDescription mASBD);
-    @StructMember(1) public native AudioChannelLayoutTag mChannelLayoutTag();
-    @StructMember(1) public native AudioFormatListItem mChannelLayoutTag(AudioChannelLayoutTag mChannelLayoutTag);
+    @StructMember(0) public native @ByVal AudioStreamBasicDescription getMASBD();
+    @StructMember(0) public native AudioFormatListItem setMASBD(@ByVal AudioStreamBasicDescription mASBD);
+    @StructMember(1) public native AudioChannelLayoutTag getMChannelLayoutTag();
+    @StructMember(1) public native AudioFormatListItem setMChannelLayoutTag(AudioChannelLayoutTag mChannelLayoutTag);
     /*</members>*/
     /*<methods>*//*</methods>*/
 }

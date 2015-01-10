@@ -49,16 +49,16 @@ import org.robovm.apple.coremedia.*;
     /*<constructors>*/
     public CAFChunkHeader() {}
     public CAFChunkHeader(int mChunkType, long mChunkSize) {
-        this.mChunkType(mChunkType);
-        this.mChunkSize(mChunkSize);
+        this.setMChunkType(mChunkType);
+        this.setMChunkSize(mChunkSize);
     }
     /*</constructors>*/
     /*<properties>*//*</properties>*/
     /*<members>*/
-    @StructMember(0) public native int mChunkType();
-    @StructMember(0) public native CAFChunkHeader mChunkType(int mChunkType);
-    @StructMember(1) public native long mChunkSize();
-    @StructMember(1) public native CAFChunkHeader mChunkSize(long mChunkSize);
+    @StructMember(0) public native int getMChunkType();
+    @StructMember(0) public native CAFChunkHeader setMChunkType(int mChunkType);
+    @StructMember(1) public native long getMChunkSize();
+    @StructMember(1) public native CAFChunkHeader setMChunkSize(long mChunkSize);
     /*</members>*/
     /*<methods>*//*</methods>*/
 }

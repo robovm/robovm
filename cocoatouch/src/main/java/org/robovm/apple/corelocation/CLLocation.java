@@ -47,12 +47,12 @@ import org.robovm.apple.corebluetooth.*;
     /*<constructors>*/
     public CLLocation() {}
     protected CLLocation(SkipInit skipInit) { super(skipInit); }
-    public CLLocation(double latitude, double longitude) { super((SkipInit) null); initObject(initWithLatitude$longitude$(latitude, longitude)); }
-    public CLLocation(@ByVal CLLocationCoordinate2D coordinate, double altitude, double hAccuracy, double vAccuracy, NSDate timestamp) { super((SkipInit) null); initObject(initWithCoordinate$altitude$horizontalAccuracy$verticalAccuracy$timestamp$(coordinate, altitude, hAccuracy, vAccuracy, timestamp)); }
+    public CLLocation(double latitude, double longitude) { super((SkipInit) null); initObject(init(latitude, longitude)); }
+    public CLLocation(@ByVal CLLocationCoordinate2D coordinate, double altitude, double hAccuracy, double vAccuracy, NSDate timestamp) { super((SkipInit) null); initObject(init(coordinate, altitude, hAccuracy, vAccuracy, timestamp)); }
     /**
      * @since Available in iOS 4.2 and later.
      */
-    public CLLocation(@ByVal CLLocationCoordinate2D coordinate, double altitude, double hAccuracy, double vAccuracy, double course, double speed, NSDate timestamp) { super((SkipInit) null); initObject(initWithCoordinate$altitude$horizontalAccuracy$verticalAccuracy$course$speed$timestamp$(coordinate, altitude, hAccuracy, vAccuracy, course, speed, timestamp)); }
+    public CLLocation(@ByVal CLLocationCoordinate2D coordinate, double altitude, double hAccuracy, double vAccuracy, double course, double speed, NSDate timestamp) { super((SkipInit) null); initObject(init(coordinate, altitude, hAccuracy, vAccuracy, course, speed, timestamp)); }
     /*</constructors>*/
     /*<properties>*/
     @Property(selector = "coordinate")
@@ -87,17 +87,17 @@ import org.robovm.apple.corebluetooth.*;
      * @since Available in iOS 6.0 and later.
      */
     @GlobalValue(symbol="CLLocationDistanceMax", optional=true)
-    public static native double LocationDistanceMax();
+    public static native double getLocationDistanceMax();
     
     @Method(selector = "initWithLatitude:longitude:")
-    protected native @Pointer long initWithLatitude$longitude$(double latitude, double longitude);
+    protected native @Pointer long init(double latitude, double longitude);
     @Method(selector = "initWithCoordinate:altitude:horizontalAccuracy:verticalAccuracy:timestamp:")
-    protected native @Pointer long initWithCoordinate$altitude$horizontalAccuracy$verticalAccuracy$timestamp$(@ByVal CLLocationCoordinate2D coordinate, double altitude, double hAccuracy, double vAccuracy, NSDate timestamp);
+    protected native @Pointer long init(@ByVal CLLocationCoordinate2D coordinate, double altitude, double hAccuracy, double vAccuracy, NSDate timestamp);
     /**
      * @since Available in iOS 4.2 and later.
      */
     @Method(selector = "initWithCoordinate:altitude:horizontalAccuracy:verticalAccuracy:course:speed:timestamp:")
-    protected native @Pointer long initWithCoordinate$altitude$horizontalAccuracy$verticalAccuracy$course$speed$timestamp$(@ByVal CLLocationCoordinate2D coordinate, double altitude, double hAccuracy, double vAccuracy, double course, double speed, NSDate timestamp);
+    protected native @Pointer long init(@ByVal CLLocationCoordinate2D coordinate, double altitude, double hAccuracy, double vAccuracy, double course, double speed, NSDate timestamp);
     /**
      * @since Available in iOS 3.2 and later.
      */

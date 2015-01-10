@@ -49,16 +49,16 @@ import org.robovm.apple.coremedia.*;
     /*<constructors>*/
     public CAFOverviewSample() {}
     public CAFOverviewSample(short mMinValue, short mMaxValue) {
-        this.mMinValue(mMinValue);
-        this.mMaxValue(mMaxValue);
+        this.setMMinValue(mMinValue);
+        this.setMMaxValue(mMaxValue);
     }
     /*</constructors>*/
     /*<properties>*//*</properties>*/
     /*<members>*/
-    @StructMember(0) public native short mMinValue();
-    @StructMember(0) public native CAFOverviewSample mMinValue(short mMinValue);
-    @StructMember(1) public native short mMaxValue();
-    @StructMember(1) public native CAFOverviewSample mMaxValue(short mMaxValue);
+    @StructMember(0) public native short getMMinValue();
+    @StructMember(0) public native CAFOverviewSample setMMinValue(short mMinValue);
+    @StructMember(1) public native short getMMaxValue();
+    @StructMember(1) public native CAFOverviewSample setMMaxValue(short mMaxValue);
     /*</members>*/
     /*<methods>*//*</methods>*/
 }

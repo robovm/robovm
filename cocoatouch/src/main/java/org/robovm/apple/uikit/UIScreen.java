@@ -157,7 +157,7 @@ import org.robovm.apple.corelocation.*;
      * @since Available in iOS 5.0 and later.
      */
     @Property(selector = "wantsSoftwareDimming")
-    public native boolean isWantsSoftwareDimming();
+    public native boolean wantsSoftwareDimming();
     /**
      * @since Available in iOS 5.0 and later.
      */

@@ -48,30 +48,6 @@ import org.robovm.apple.audiotoolbox.*;
     /*<bind>*/static { Bro.bind(CoreMedia.class); }/*</bind>*/
     /*<constants>*/
     public static final int PersistentTrackIDInvalid = 0;
-    public static final int Constant__kCMAttachmentMode_ShouldNotPropagate = 0;
-    public static final int Constant__kCMAttachmentMode_ShouldPropagate = 1;
-    public static final int Constant__kCMFormatDescriptionBridgeError_InvalidParameter = -12712;
-    public static final int Constant__kCMFormatDescriptionBridgeError_AllocationFailed = -12713;
-    public static final int Constant__kCMFormatDescriptionBridgeError_InvalidSerializedSampleDescription = -12714;
-    public static final int Constant__kCMFormatDescriptionBridgeError_InvalidFormatDescription = -12715;
-    public static final int Constant__kCMFormatDescriptionBridgeError_IncompatibleFormatDescription = -12716;
-    public static final int Constant__kCMFormatDescriptionBridgeError_UnsupportedSampleDescriptionFlavor = -12717;
-    public static final int Constant__kCMFormatDescriptionBridgeError_InvalidSlice = -12719;
-    public static final int Constant__kCMMetadataIdentifierError_AllocationFailed = -16300;
-    public static final int Constant__kCMMetadataIdentifierError_RequiredParameterMissing = -16301;
-    public static final int Constant__kCMMetadataIdentifierError_BadKey = -16302;
-    public static final int Constant__kCMMetadataIdentifierError_BadKeyLength = -16303;
-    public static final int Constant__kCMMetadataIdentifierError_BadKeyType = -16304;
-    public static final int Constant__kCMMetadataIdentifierError_BadNumberKey = -16305;
-    public static final int Constant__kCMMetadataIdentifierError_BadKeySpace = -16306;
-    public static final int Constant__kCMMetadataIdentifierError_BadIdentifier = -16307;
-    public static final int Constant__kCMMetadataIdentifierError_NoKeyValueAvailable = -16308;
-    public static final int Constant__kCMMetadataDataTypeRegistryError_AllocationFailed = -16310;
-    public static final int Constant__kCMMetadataDataTypeRegistryError_RequiredParameterMissing = -16311;
-    public static final int Constant__kCMMetadataDataTypeRegistryError_BadDataTypeIdentifier = -16312;
-    public static final int Constant__kCMMetadataDataTypeRegistryError_DataTypeAlreadyRegistered = -16313;
-    public static final int Constant__kCMMetadataDataTypeRegistryError_RequiresConformingBaseType = -16314;
-    public static final int Constant__kCMMetadataDataTypeRegistryError_MultipleConformingBaseTypes = -16315;
     /*</constants>*/
     /*<constructors>*//*</constructors>*/
     /*<properties>*//*</properties>*/
@@ -760,66 +736,6 @@ import org.robovm.apple.audiotoolbox.*;
     /**
      * @since Available in iOS 7.0 and later.
      */
-    @GlobalValue(symbol="kCMTextMarkupGenericFontName_Default", optional=true)
-    public static native String CMTextMarkupGenericFontNameDefault();
-    /**
-     * @since Available in iOS 7.0 and later.
-     */
-    @GlobalValue(symbol="kCMTextMarkupGenericFontName_Serif", optional=true)
-    public static native String CMTextMarkupGenericFontNameSerif();
-    /**
-     * @since Available in iOS 7.0 and later.
-     */
-    @GlobalValue(symbol="kCMTextMarkupGenericFontName_SansSerif", optional=true)
-    public static native String CMTextMarkupGenericFontNameSansSerif();
-    /**
-     * @since Available in iOS 7.0 and later.
-     */
-    @GlobalValue(symbol="kCMTextMarkupGenericFontName_Monospace", optional=true)
-    public static native String CMTextMarkupGenericFontNameMonospace();
-    /**
-     * @since Available in iOS 7.0 and later.
-     */
-    @GlobalValue(symbol="kCMTextMarkupGenericFontName_ProportionalSerif", optional=true)
-    public static native String CMTextMarkupGenericFontNameProportionalSerif();
-    /**
-     * @since Available in iOS 7.0 and later.
-     */
-    @GlobalValue(symbol="kCMTextMarkupGenericFontName_ProportionalSansSerif", optional=true)
-    public static native String CMTextMarkupGenericFontNameProportionalSansSerif();
-    /**
-     * @since Available in iOS 7.0 and later.
-     */
-    @GlobalValue(symbol="kCMTextMarkupGenericFontName_MonospaceSerif", optional=true)
-    public static native String CMTextMarkupGenericFontNameMonospaceSerif();
-    /**
-     * @since Available in iOS 7.0 and later.
-     */
-    @GlobalValue(symbol="kCMTextMarkupGenericFontName_MonospaceSansSerif", optional=true)
-    public static native String CMTextMarkupGenericFontNameMonospaceSansSerif();
-    /**
-     * @since Available in iOS 7.0 and later.
-     */
-    @GlobalValue(symbol="kCMTextMarkupGenericFontName_Casual", optional=true)
-    public static native String CMTextMarkupGenericFontNameCasual();
-    /**
-     * @since Available in iOS 7.0 and later.
-     */
-    @GlobalValue(symbol="kCMTextMarkupGenericFontName_Cursive", optional=true)
-    public static native String CMTextMarkupGenericFontNameCursive();
-    /**
-     * @since Available in iOS 7.0 and later.
-     */
-    @GlobalValue(symbol="kCMTextMarkupGenericFontName_Fantasy", optional=true)
-    public static native String CMTextMarkupGenericFontNameFantasy();
-    /**
-     * @since Available in iOS 7.0 and later.
-     */
-    @GlobalValue(symbol="kCMTextMarkupGenericFontName_SmallCapital", optional=true)
-    public static native String CMTextMarkupGenericFontNameSmallCapital();
-    /**
-     * @since Available in iOS 7.0 and later.
-     */
     @GlobalValue(symbol="kCMTextMarkupAttribute_BaseFontSizePercentageRelativeToVideoHeight", optional=true)
     public static native String CMTextMarkupAttributeBaseFontSizePercentageRelativeToVideoHeight();
     /**
@@ -835,43 +751,8 @@ import org.robovm.apple.audiotoolbox.*;
     /**
      * @since Available in iOS 7.0 and later.
      */
-    @GlobalValue(symbol="kCMTextVerticalLayout_LeftToRight", optional=true)
-    public static native String CMTextMarkupVerticalLayoutLeftToRight();
-    /**
-     * @since Available in iOS 7.0 and later.
-     */
-    @GlobalValue(symbol="kCMTextVerticalLayout_RightToLeft", optional=true)
-    public static native String CMTextMarkupVerticalLayoutRightToLeft();
-    /**
-     * @since Available in iOS 7.0 and later.
-     */
     @GlobalValue(symbol="kCMTextMarkupAttribute_Alignment", optional=true)
     public static native String CMTextMarkupAttributeAlignment();
-    /**
-     * @since Available in iOS 7.0 and later.
-     */
-    @GlobalValue(symbol="kCMTextMarkupAlignmentType_Start", optional=true)
-    public static native String CMTextMarkupAlignmentTypeStart();
-    /**
-     * @since Available in iOS 7.0 and later.
-     */
-    @GlobalValue(symbol="kCMTextMarkupAlignmentType_Middle", optional=true)
-    public static native String CMTextMarkupAlignmentTypeMiddle();
-    /**
-     * @since Available in iOS 7.0 and later.
-     */
-    @GlobalValue(symbol="kCMTextMarkupAlignmentType_End", optional=true)
-    public static native String CMTextMarkupAlignmentTypeEnd();
-    /**
-     * @since Available in iOS 7.0 and later.
-     */
-    @GlobalValue(symbol="kCMTextMarkupAlignmentType_Left", optional=true)
-    public static native String CMTextMarkupAlignmentTypeLeft();
-    /**
-     * @since Available in iOS 7.0 and later.
-     */
-    @GlobalValue(symbol="kCMTextMarkupAlignmentType_Right", optional=true)
-    public static native String CMTextMarkupAlignmentTypeRight();
     /**
      * @since Available in iOS 7.0 and later.
      */
@@ -892,61 +773,6 @@ import org.robovm.apple.audiotoolbox.*;
      */
     @GlobalValue(symbol="kCMTextMarkupAttribute_CharacterEdgeStyle", optional=true)
     public static native String CMTextMarkupAttributeCharacterEdgeStyle();
-    /**
-     * @since Available in iOS 7.0 and later.
-     */
-    @GlobalValue(symbol="kCMTextMarkupCharacterEdgeStyle_None", optional=true)
-    public static native String CMTextMarkupCharacterEdgeStyleNone();
-    /**
-     * @since Available in iOS 7.0 and later.
-     */
-    @GlobalValue(symbol="kCMTextMarkupCharacterEdgeStyle_Raised", optional=true)
-    public static native String CMTextMarkupCharacterEdgeStyleRaised();
-    /**
-     * @since Available in iOS 7.0 and later.
-     */
-    @GlobalValue(symbol="kCMTextMarkupCharacterEdgeStyle_Depressed", optional=true)
-    public static native String CMTextMarkupCharacterEdgeStyleDepressed();
-    /**
-     * @since Available in iOS 7.0 and later.
-     */
-    @GlobalValue(symbol="kCMTextMarkupCharacterEdgeStyle_Uniform", optional=true)
-    public static native String CMTextMarkupCharacterEdgeStyleUniform();
-    /**
-     * @since Available in iOS 7.0 and later.
-     */
-    @GlobalValue(symbol="kCMTextMarkupCharacterEdgeStyle_DropShadow", optional=true)
-    public static native String CMTextMarkupCharacterEdgeStyleDropShadow();
-    /**
-     * @since Available in iOS 8.0 and later.
-     */
-    @GlobalValue(symbol="kCMMetadataKeySpace_QuickTimeUserData", optional=true)
-    public static native String Value__kCMMetadataKeySpace_QuickTimeUserData();
-    /**
-     * @since Available in iOS 8.0 and later.
-     */
-    @GlobalValue(symbol="kCMMetadataKeySpace_ISOUserData", optional=true)
-    public static native String Value__kCMMetadataKeySpace_ISOUserData();
-    /**
-     * @since Available in iOS 8.0 and later.
-     */
-    @GlobalValue(symbol="kCMMetadataKeySpace_QuickTimeMetadata", optional=true)
-    public static native String Value__kCMMetadataKeySpace_QuickTimeMetadata();
-    /**
-     * @since Available in iOS 8.0 and later.
-     */
-    @GlobalValue(symbol="kCMMetadataKeySpace_iTunes", optional=true)
-    public static native String Value__kCMMetadataKeySpace_iTunes();
-    /**
-     * @since Available in iOS 8.0 and later.
-     */
-    @GlobalValue(symbol="kCMMetadataKeySpace_ID3", optional=true)
-    public static native String Value__kCMMetadataKeySpace_ID3();
-    /**
-     * @since Available in iOS 8.0 and later.
-     */
-    @GlobalValue(symbol="kCMMetadataKeySpace_Icy", optional=true)
-    public static native String Value__kCMMetadataKeySpace_Icy();
     /**
      * @since Available in iOS 8.0 and later.
      */

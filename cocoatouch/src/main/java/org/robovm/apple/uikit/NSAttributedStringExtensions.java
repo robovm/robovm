@@ -64,7 +64,7 @@ import org.robovm.apple.corelocation.*;
     public static NSAttributedString createFromURL(NSURL url, NSAttributedStringDocumentAttributes options) throws NSErrorException {
         NSAttributedString thiz = alloc(NSAttributedString.class);
         NSError.NSErrorPtr err = new NSError.NSErrorPtr();
-        initObject(thiz, initWithFileURL$options$documentAttributes$error$(thiz, url, options, null, err));
+        initObject(thiz, init(thiz, url, options, null, err));
         if (err.get() != null) {
             throw new NSErrorException(err.get());
         }
@@ -81,7 +81,7 @@ import org.robovm.apple.corelocation.*;
     public static NSAttributedString createFromData(NSData data, NSAttributedStringDocumentAttributes options) throws NSErrorException {
         NSAttributedString thiz = alloc(NSAttributedString.class);
         NSError.NSErrorPtr err = new NSError.NSErrorPtr();
-        initObject(thiz, initWithData$options$documentAttributes$error$(thiz, data, options, null, err));
+        initObject(thiz, init(thiz, data, options, null, err));
         if (err.get() != null) {
             throw new NSErrorException(err.get());
         }
@@ -125,12 +125,12 @@ import org.robovm.apple.corelocation.*;
      * @since Available in iOS 7.0 and later.
      */
     @Method(selector = "initWithFileURL:options:documentAttributes:error:")
-    protected static native @Pointer long initWithFileURL$options$documentAttributes$error$(NSAttributedString thiz, NSURL url, NSAttributedStringDocumentAttributes options, NSDictionary.NSDictionaryPtr<?, ?> dict, NSError.NSErrorPtr error);
+    protected static native @Pointer long init(NSAttributedString thiz, NSURL url, NSAttributedStringDocumentAttributes options, NSDictionary.NSDictionaryPtr<?, ?> dict, NSError.NSErrorPtr error);
     /**
      * @since Available in iOS 7.0 and later.
      */
     @Method(selector = "initWithData:options:documentAttributes:error:")
-    protected static native @Pointer long initWithData$options$documentAttributes$error$(NSAttributedString thiz, NSData data, NSAttributedStringDocumentAttributes options, NSDictionary.NSDictionaryPtr<?, ?> dict, NSError.NSErrorPtr error);
+    protected static native @Pointer long init(NSAttributedString thiz, NSData data, NSAttributedStringDocumentAttributes options, NSDictionary.NSDictionaryPtr<?, ?> dict, NSError.NSErrorPtr error);
     /**
      * @since Available in iOS 7.0 and later.
      */

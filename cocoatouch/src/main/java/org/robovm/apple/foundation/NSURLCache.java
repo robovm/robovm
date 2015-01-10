@@ -50,7 +50,7 @@ import org.robovm.apple.dispatch.*;
     /*<constructors>*/
     public NSURLCache() {}
     protected NSURLCache(SkipInit skipInit) { super(skipInit); }
-    public NSURLCache(@MachineSizedUInt long memoryCapacity, @MachineSizedUInt long diskCapacity, String path) { super((SkipInit) null); initObject(initWithMemoryCapacity$diskCapacity$diskPath$(memoryCapacity, diskCapacity, path)); }
+    public NSURLCache(@MachineSizedUInt long memoryCapacity, @MachineSizedUInt long diskCapacity, String path) { super((SkipInit) null); initObject(init(memoryCapacity, diskCapacity, path)); }
     /*</constructors>*/
     /*<properties>*/
     @Property(selector = "memoryCapacity")
@@ -69,7 +69,7 @@ import org.robovm.apple.dispatch.*;
     /*<members>*//*</members>*/
     /*<methods>*/
     @Method(selector = "initWithMemoryCapacity:diskCapacity:diskPath:")
-    protected native @Pointer long initWithMemoryCapacity$diskCapacity$diskPath$(@MachineSizedUInt long memoryCapacity, @MachineSizedUInt long diskCapacity, String path);
+    protected native @Pointer long init(@MachineSizedUInt long memoryCapacity, @MachineSizedUInt long diskCapacity, String path);
     @Method(selector = "cachedResponseForRequest:")
     public native NSCachedURLResponse getCachedResponse(NSURLRequest request);
     @Method(selector = "storeCachedResponse:forRequest:")

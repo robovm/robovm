@@ -54,13 +54,12 @@ import org.robovm.apple.corelocation.*;
     /**
      * @since Available in iOS 3.0 and later.
      */
-    public UITableViewCell(UITableViewCellStyle style, String reuseIdentifier) { super((SkipInit) null); initObject(initWithStyle$reuseIdentifier$(style, reuseIdentifier)); }
+    public UITableViewCell(UITableViewCellStyle style, String reuseIdentifier) { super((SkipInit) null); initObject(init(style, reuseIdentifier)); }
     /*</constructors>*/
     
     public UITableViewCell(CGRect frame) {
         super(frame);
     }
-    
     /*<properties>*/
     /**
      * @since Available in iOS 3.0 and later.
@@ -114,11 +113,11 @@ import org.robovm.apple.corelocation.*;
     @Property(selector = "editingStyle")
     public native UITableViewCellEditingStyle getEditingStyle();
     @Property(selector = "showsReorderControl")
-    public native boolean isShowsReorderControl();
+    public native boolean showsReorderControl();
     @Property(selector = "setShowsReorderControl:")
     public native void setShowsReorderControl(boolean v);
     @Property(selector = "shouldIndentWhileEditing")
-    public native boolean isShouldIndentWhileEditing();
+    public native boolean shouldIndentWhileEditing();
     @Property(selector = "setShouldIndentWhileEditing:")
     public native void setShouldIndentWhileEditing(boolean v);
     @Property(selector = "accessoryType")
@@ -168,7 +167,7 @@ import org.robovm.apple.corelocation.*;
      * @since Available in iOS 3.0 and later.
      */
     @Method(selector = "initWithStyle:reuseIdentifier:")
-    protected native @Pointer long initWithStyle$reuseIdentifier$(UITableViewCellStyle style, String reuseIdentifier);
+    protected native @Pointer long init(UITableViewCellStyle style, String reuseIdentifier);
     @Method(selector = "prepareForReuse")
     public native void prepareForReuse();
     @Method(selector = "setSelected:animated:")

@@ -211,7 +211,7 @@ import org.robovm.apple.metal.*;
     @Property(selector = "setRepeatDuration:")
     public native void setRepeatDuration(double v);
     @Property(selector = "autoreverses")
-    public native boolean isAutoreverses();
+    public native boolean autoreverses();
     @Property(selector = "setAutoreverses:")
     public native void setAutoreverses(boolean v);
     @Property(selector = "fillMode")

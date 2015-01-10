@@ -84,7 +84,7 @@ import org.robovm.apple.mediatoolbox.*;
     @Property(selector = "setMetadata:")
     public native void setMetadata(NSArray<AVMetadataItem> v);
     @Property(selector = "shouldOptimizeForNetworkUse")
-    public native boolean isShouldOptimizeForNetworkUse();
+    public native boolean shouldOptimizeForNetworkUse();
     @Property(selector = "setShouldOptimizeForNetworkUse:")
     public native void setShouldOptimizeForNetworkUse(boolean v);
     /**

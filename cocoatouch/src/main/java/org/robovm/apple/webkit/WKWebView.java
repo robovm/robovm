@@ -81,7 +81,7 @@ import org.robovm.apple.coregraphics.*;
     @Property(selector = "canGoForward")
     public native boolean canGoForward();
     @Property(selector = "allowsBackForwardNavigationGestures")
-    public native boolean isAllowsBackForwardNavigationGestures();
+    public native boolean allowsBackForwardNavigationGestures();
     @Property(selector = "setAllowsBackForwardNavigationGestures:")
     public native void setAllowsBackForwardNavigationGestures(boolean v);
     @Property(selector = "scrollView")

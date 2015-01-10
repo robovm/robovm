@@ -64,11 +64,11 @@ import org.robovm.apple.corelocation.*;
     @Property(selector = "setDelegate:", strongRef = true)
     public native void setDelegate(NSLayoutManagerDelegate v);
     @Property(selector = "showsInvisibleCharacters")
-    public native boolean isShowsInvisibleCharacters();
+    public native boolean showsInvisibleCharacters();
     @Property(selector = "setShowsInvisibleCharacters:")
     public native void setShowsInvisibleCharacters(boolean v);
     @Property(selector = "showsControlCharacters")
-    public native boolean isShowsControlCharacters();
+    public native boolean showsControlCharacters();
     @Property(selector = "setShowsControlCharacters:")
     public native void setShowsControlCharacters(boolean v);
     @Property(selector = "hyphenationFactor")
@@ -76,15 +76,15 @@ import org.robovm.apple.corelocation.*;
     @Property(selector = "setHyphenationFactor:")
     public native void setHyphenationFactor(@MachineSizedFloat double v);
     @Property(selector = "usesFontLeading")
-    public native boolean isUsesFontLeading();
+    public native boolean usesFontLeading();
     @Property(selector = "setUsesFontLeading:")
     public native void setUsesFontLeading(boolean v);
     @Property(selector = "allowsNonContiguousLayout")
-    public native boolean isAllowsNonContiguousLayout();
+    public native boolean allowsNonContiguousLayout();
     @Property(selector = "setAllowsNonContiguousLayout:")
     public native void setAllowsNonContiguousLayout(boolean v);
     @Property(selector = "hasNonContiguousLayout")
-    public native boolean isHasNonContiguousLayout();
+    public native boolean hasNonContiguousLayout();
     @Property(selector = "numberOfGlyphs")
     public native @MachineSizedUInt long getNumberOfGlyphs();
     @Property(selector = "extraLineFragmentRect")

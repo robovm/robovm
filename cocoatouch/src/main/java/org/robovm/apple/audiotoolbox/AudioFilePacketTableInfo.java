@@ -49,19 +49,19 @@ import org.robovm.apple.coremedia.*;
     /*<constructors>*/
     public AudioFilePacketTableInfo() {}
     public AudioFilePacketTableInfo(long mNumberValidFrames, int mPrimingFrames, int mRemainderFrames) {
-        this.mNumberValidFrames(mNumberValidFrames);
-        this.mPrimingFrames(mPrimingFrames);
-        this.mRemainderFrames(mRemainderFrames);
+        this.setMNumberValidFrames(mNumberValidFrames);
+        this.setMPrimingFrames(mPrimingFrames);
+        this.setMRemainderFrames(mRemainderFrames);
     }
     /*</constructors>*/
     /*<properties>*//*</properties>*/
     /*<members>*/
-    @StructMember(0) public native long mNumberValidFrames();
-    @StructMember(0) public native AudioFilePacketTableInfo mNumberValidFrames(long mNumberValidFrames);
-    @StructMember(1) public native int mPrimingFrames();
-    @StructMember(1) public native AudioFilePacketTableInfo mPrimingFrames(int mPrimingFrames);
-    @StructMember(2) public native int mRemainderFrames();
-    @StructMember(2) public native AudioFilePacketTableInfo mRemainderFrames(int mRemainderFrames);
+    @StructMember(0) public native long getMNumberValidFrames();
+    @StructMember(0) public native AudioFilePacketTableInfo setMNumberValidFrames(long mNumberValidFrames);
+    @StructMember(1) public native int getMPrimingFrames();
+    @StructMember(1) public native AudioFilePacketTableInfo setMPrimingFrames(int mPrimingFrames);
+    @StructMember(2) public native int getMRemainderFrames();
+    @StructMember(2) public native AudioFilePacketTableInfo setMRemainderFrames(int mRemainderFrames);
     /*</members>*/
     /*<methods>*//*</methods>*/
 }

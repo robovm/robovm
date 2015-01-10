@@ -54,20 +54,8 @@ import org.robovm.apple.uikit.*;
     /*<members>*/
     @StructMember(0) public native CGPathElementType getType();
     @StructMember(0) public native CGPathElement setType(CGPathElementType type);
-    
-    @Deprecated
-    @StructMember(0) public native CGPathElementType type();
-    @Deprecated
-    @StructMember(0) public native CGPathElement type(CGPathElementType type);
-    
     @StructMember(1) public native CGPoint getPoints();
     @StructMember(1) public native CGPathElement setPoints(CGPoint points);
-    
-    @Deprecated
-    @StructMember(1) public native CGPoint points();
-    @Deprecated
-    @StructMember(1) public native CGPathElement points(CGPoint points);
-    
     /*</members>*/
     /*<methods>*//*</methods>*/
 }

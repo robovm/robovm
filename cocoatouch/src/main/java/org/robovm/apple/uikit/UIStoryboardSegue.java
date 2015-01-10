@@ -51,7 +51,7 @@ import org.robovm.apple.corelocation.*;
     /*<constructors>*/
     public UIStoryboardSegue() {}
     protected UIStoryboardSegue(SkipInit skipInit) { super(skipInit); }
-    public UIStoryboardSegue(String identifier, UIViewController source, UIViewController destination) { super((SkipInit) null); initObject(initWithIdentifier$source$destination$(identifier, source, destination)); }
+    public UIStoryboardSegue(String identifier, UIViewController source, UIViewController destination) { super((SkipInit) null); initObject(init(identifier, source, destination)); }
     /*</constructors>*/
     /*<properties>*/
     @Property(selector = "identifier")
@@ -64,7 +64,7 @@ import org.robovm.apple.corelocation.*;
     /*<members>*//*</members>*/
     /*<methods>*/
     @Method(selector = "initWithIdentifier:source:destination:")
-    protected native @Pointer long initWithIdentifier$source$destination$(String identifier, UIViewController source, UIViewController destination);
+    protected native @Pointer long init(String identifier, UIViewController source, UIViewController destination);
     @Method(selector = "perform")
     public native void perform();
     /**

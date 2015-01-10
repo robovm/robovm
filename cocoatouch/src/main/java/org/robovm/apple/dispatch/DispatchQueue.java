@@ -111,7 +111,12 @@ import org.robovm.rt.bro.ptr.*;
      * @since Available in iOS 4.0 and later.
      */
     @Bridge(symbol="dispatch_get_global_queue", optional=true)
-    public static native DispatchQueue getGlobalQueue(@MachineSizedSInt long priority, @MachineSizedUInt long flags);
+    public static native DispatchQueue getGlobalQueue(@MachineSizedSInt long identifier, @MachineSizedUInt long flags);
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @Bridge(symbol="dispatch_queue_attr_make_with_qos_class", optional=true)
+    public static native DispatchQueueAttr attrMakeWithQosClass(DispatchQueueAttr attr, int qos_class, int relative_priority);
     /**
      * @since Available in iOS 4.0 and later.
      */
@@ -122,6 +127,11 @@ import org.robovm.rt.bro.ptr.*;
      */
     @Bridge(symbol="dispatch_queue_get_label", optional=true)
     public native @org.robovm.rt.bro.annotation.Marshaler(StringMarshalers.AsUtf8ZMarshaler.class) String getLabel();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @Bridge(symbol="dispatch_queue_get_qos_class", optional=true)
+    public native int getQosClass(IntPtr relative_priority_ptr);
     /**
      * @since Available in iOS 4.0 and later.
      */

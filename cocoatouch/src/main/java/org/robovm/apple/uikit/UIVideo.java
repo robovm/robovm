@@ -51,7 +51,7 @@ import org.robovm.apple.corelocation.*;
     }
     
     private static java.util.concurrent.atomic.AtomicLong id = new java.util.concurrent.atomic.AtomicLong();
-    private static final Selector video$didFinishSavingWithError$contextInfo$ = Selector.register("video:didFinishSavingWithError:contextInfo:");
+    private static final Selector didFinishSaving = Selector.register("video:didFinishSavingWithError:contextInfo:");
     private static Map<Long, ListenerWrapper> listeners = new HashMap<>();
     private static class ListenerWrapper extends NSObject {
         private final VideoSaveListener listener;
@@ -87,7 +87,7 @@ import org.robovm.apple.corelocation.*;
         if (listener != null) {
             long context = id.getAndIncrement();
             ListenerWrapper l = new ListenerWrapper(listener, context);
-            saveToPhotosAlbum(videoPath.getAbsolutePath(), l, video$didFinishSavingWithError$contextInfo$, context);
+            saveToPhotosAlbum(videoPath.getAbsolutePath(), l, didFinishSaving, context);
         } else {
             saveToPhotosAlbum(videoPath.getAbsolutePath(), null, null, 0);
         }

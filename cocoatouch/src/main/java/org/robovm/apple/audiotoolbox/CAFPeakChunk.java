@@ -49,16 +49,16 @@ import org.robovm.apple.coremedia.*;
     /*<constructors>*/
     public CAFPeakChunk() {}
     public CAFPeakChunk(int mEditCount, CAFPositionPeak mPeaks) {
-        this.mEditCount(mEditCount);
-        this.mPeaks(mPeaks);
+        this.setMEditCount(mEditCount);
+        this.setMPeaks(mPeaks);
     }
     /*</constructors>*/
     /*<properties>*//*</properties>*/
     /*<members>*/
-    @StructMember(0) public native int mEditCount();
-    @StructMember(0) public native CAFPeakChunk mEditCount(int mEditCount);
-    @StructMember(1) public native @Array({1}) CAFPositionPeak mPeaks();
-    @StructMember(1) public native CAFPeakChunk mPeaks(@Array({1}) CAFPositionPeak mPeaks);
+    @StructMember(0) public native int getMEditCount();
+    @StructMember(0) public native CAFPeakChunk setMEditCount(int mEditCount);
+    @StructMember(1) public native @Array({1}) CAFPositionPeak getMPeaks();
+    @StructMember(1) public native CAFPeakChunk setMPeaks(@Array({1}) CAFPositionPeak mPeaks);
     /*</members>*/
     /*<methods>*//*</methods>*/
 }

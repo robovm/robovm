@@ -110,7 +110,7 @@ import org.robovm.apple.mediatoolbox.*;
      * @since Available in iOS 7.0 and later.
      */
     @Property(selector = "appliesMediaSelectionCriteriaAutomatically")
-    public native boolean isAppliesMediaSelectionCriteriaAutomatically();
+    public native boolean appliesMediaSelectionCriteriaAutomatically();
     /**
      * @since Available in iOS 7.0 and later.
      */
@@ -120,7 +120,7 @@ import org.robovm.apple.mediatoolbox.*;
      * @since Available in iOS 6.0 and later.
      */
     @Property(selector = "allowsExternalPlayback")
-    public native boolean isAllowsExternalPlayback();
+    public native boolean allowsExternalPlayback();
     /**
      * @since Available in iOS 6.0 and later.
      */
@@ -135,7 +135,7 @@ import org.robovm.apple.mediatoolbox.*;
      * @since Available in iOS 6.0 and later.
      */
     @Property(selector = "usesExternalPlaybackWhileExternalScreenIsActive")
-    public native boolean isUsesExternalPlaybackWhileExternalScreenIsActive();
+    public native boolean usesExternalPlaybackWhileExternalScreenIsActive();
     /**
      * @since Available in iOS 6.0 and later.
      */
@@ -157,7 +157,7 @@ import org.robovm.apple.mediatoolbox.*;
      */
     @Deprecated
     @Property(selector = "allowsAirPlayVideo")
-    public native boolean isAllowsAirPlayVideo();
+    public native boolean allowsAirPlayVideo();
     /**
      * @since Available in iOS 5.0 and later.
      * @deprecated Deprecated in iOS 6.0.
@@ -178,7 +178,7 @@ import org.robovm.apple.mediatoolbox.*;
      */
     @Deprecated
     @Property(selector = "usesAirPlayVideoWhileAirPlayScreenIsActive")
-    public native boolean isUsesAirPlayVideoWhileAirPlayScreenIsActive();
+    public native boolean usesAirPlayVideoWhileAirPlayScreenIsActive();
     /**
      * @since Available in iOS 5.0 and later.
      * @deprecated Deprecated in iOS 6.0.
@@ -190,7 +190,7 @@ import org.robovm.apple.mediatoolbox.*;
      * @since Available in iOS 6.0 and later.
      */
     @Property(selector = "outputObscuredDueToInsufficientExternalProtection")
-    public native boolean isOutputObscuredDueToInsufficientExternalProtection();
+    public native boolean outputObscuredDueToInsufficientExternalProtection();
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/

@@ -49,7 +49,7 @@ import org.robovm.apple.dispatch.*;
     /*<constants>*//*</constants>*/
     /*<constructors>*/
     protected NSMutableDictionary(SkipInit skipInit) { super(skipInit); }
-    public NSMutableDictionary(@MachineSizedUInt long numItems) { super((SkipInit) null); initObject(initWithCapacity$(numItems)); }
+    public NSMutableDictionary(@MachineSizedUInt long numItems) { super((SkipInit) null); initObject(init(numItems)); }
     /*</constructors>*/
     
     public NSMutableDictionary() {
@@ -96,7 +96,7 @@ import org.robovm.apple.dispatch.*;
             return null;
         }
         V oldValue = get(key);
-        removeObjectForKey$((NSObject) key);
+        removeObject((NSObject) key);
         return oldValue;
     }
     
@@ -104,7 +104,7 @@ import org.robovm.apple.dispatch.*;
     public V put(K key, V value) {
         checkNull(key, value);
         V oldValue = get(key);
-        setObject$forKey$(value, key);
+        setObject(value, key);
         return oldValue;
     }
     
@@ -124,20 +124,20 @@ import org.robovm.apple.dispatch.*;
     }
     
     public static NSMutableDictionary<?, ?> read(java.io.File file) {
-        return dictionaryWithContentsOfFile$(file.getAbsolutePath());
+        return read(file.getAbsolutePath());
     }
     @Method(selector = "dictionaryWithContentsOfFile:")
-    protected static native NSMutableDictionary<?, ?> dictionaryWithContentsOfFile$(String path);
+    protected static native NSMutableDictionary<?, ?> read(String path);
     @Method(selector = "dictionaryWithContentsOfURL:")
     public static native NSMutableDictionary<?, ?> read(NSURL url);
     
     /*<methods>*/
     @Method(selector = "removeObjectForKey:")
-    protected native void removeObjectForKey$(NSObject aKey);
+    protected native void removeObject(NSObject aKey);
     @Method(selector = "setObject:forKey:")
-    protected native void setObject$forKey$(NSObject anObject, NSObject aKey);
+    protected native void setObject(NSObject anObject, NSObject aKey);
     @Method(selector = "initWithCapacity:")
-    protected native @Pointer long initWithCapacity$(@MachineSizedUInt long numItems);
+    protected native @Pointer long init(@MachineSizedUInt long numItems);
     @Method(selector = "removeAllObjects")
     protected native void removeAllObjects();
     /*</methods>*/

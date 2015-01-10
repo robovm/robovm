@@ -48,23 +48,23 @@ import org.robovm.apple.imageio.*;
     /*<constructors>*/
     public CIVector() {}
     protected CIVector(SkipInit skipInit) { super(skipInit); }
-    public CIVector(@MachineSizedFloat double x) { super((SkipInit) null); initObject(initWithX$(x)); }
-    public CIVector(@MachineSizedFloat double x, @MachineSizedFloat double y) { super((SkipInit) null); initObject(initWithX$Y$(x, y)); }
-    public CIVector(@MachineSizedFloat double x, @MachineSizedFloat double y, @MachineSizedFloat double z) { super((SkipInit) null); initObject(initWithX$Y$Z$(x, y, z)); }
-    public CIVector(@MachineSizedFloat double x, @MachineSizedFloat double y, @MachineSizedFloat double z, @MachineSizedFloat double w) { super((SkipInit) null); initObject(initWithX$Y$Z$W$(x, y, z, w)); }
+    public CIVector(@MachineSizedFloat double x) { super((SkipInit) null); initObject(init(x)); }
+    public CIVector(@MachineSizedFloat double x, @MachineSizedFloat double y) { super((SkipInit) null); initObject(init(x, y)); }
+    public CIVector(@MachineSizedFloat double x, @MachineSizedFloat double y, @MachineSizedFloat double z) { super((SkipInit) null); initObject(init(x, y, z)); }
+    public CIVector(@MachineSizedFloat double x, @MachineSizedFloat double y, @MachineSizedFloat double z, @MachineSizedFloat double w) { super((SkipInit) null); initObject(init(x, y, z, w)); }
     /**
      * @since Available in iOS 5.0 and later.
      */
-    public CIVector(@ByVal CGPoint p) { super((SkipInit) null); initObject(initWithCGPoint$(p)); }
+    public CIVector(@ByVal CGPoint p) { super((SkipInit) null); initObject(init(p)); }
     /**
      * @since Available in iOS 5.0 and later.
      */
-    public CIVector(@ByVal CGRect r) { super((SkipInit) null); initObject(initWithCGRect$(r)); }
+    public CIVector(@ByVal CGRect r) { super((SkipInit) null); initObject(init(r)); }
     /**
      * @since Available in iOS 5.0 and later.
      */
-    public CIVector(@ByVal CGAffineTransform r) { super((SkipInit) null); initObject(initWithCGAffineTransform$(r)); }
-    public CIVector(String representation) { super((SkipInit) null); initObject(initWithString$(representation)); }
+    public CIVector(@ByVal CGAffineTransform r) { super((SkipInit) null); initObject(init(r)); }
+    public CIVector(String representation) { super((SkipInit) null); initObject(init(representation)); }
     /*</constructors>*/
 
     public CIVector(double[] values) {
@@ -74,7 +74,7 @@ import org.robovm.apple.imageio.*;
         }
         MachineSizedFloatPtr p = Struct.allocate(MachineSizedFloatPtr.class, values.length);
         p.set(values);
-        initObject(initWithValues$count$(p, values.length));
+        initObject(init(p, values.length));
     }
 
     public CIVector(float[] values) {
@@ -84,7 +84,7 @@ import org.robovm.apple.imageio.*;
         }
         MachineSizedFloatPtr p = Struct.allocate(MachineSizedFloatPtr.class, values.length);
         p.set(values);
-        initObject(initWithValues$count$(p, values.length));
+        initObject(init(p, values.length));
     }
 
     /*<properties>*/
@@ -93,32 +93,32 @@ import org.robovm.apple.imageio.*;
     /*<members>*//*</members>*/
     /*<methods>*/
     @Method(selector = "initWithValues:count:")
-    protected native @Pointer long initWithValues$count$(MachineSizedFloatPtr values, @MachineSizedUInt long count);
+    protected native @Pointer long init(MachineSizedFloatPtr values, @MachineSizedUInt long count);
     @Method(selector = "initWithX:")
-    protected native @Pointer long initWithX$(@MachineSizedFloat double x);
+    protected native @Pointer long init(@MachineSizedFloat double x);
     @Method(selector = "initWithX:Y:")
-    protected native @Pointer long initWithX$Y$(@MachineSizedFloat double x, @MachineSizedFloat double y);
+    protected native @Pointer long init(@MachineSizedFloat double x, @MachineSizedFloat double y);
     @Method(selector = "initWithX:Y:Z:")
-    protected native @Pointer long initWithX$Y$Z$(@MachineSizedFloat double x, @MachineSizedFloat double y, @MachineSizedFloat double z);
+    protected native @Pointer long init(@MachineSizedFloat double x, @MachineSizedFloat double y, @MachineSizedFloat double z);
     @Method(selector = "initWithX:Y:Z:W:")
-    protected native @Pointer long initWithX$Y$Z$W$(@MachineSizedFloat double x, @MachineSizedFloat double y, @MachineSizedFloat double z, @MachineSizedFloat double w);
+    protected native @Pointer long init(@MachineSizedFloat double x, @MachineSizedFloat double y, @MachineSizedFloat double z, @MachineSizedFloat double w);
     /**
      * @since Available in iOS 5.0 and later.
      */
     @Method(selector = "initWithCGPoint:")
-    protected native @Pointer long initWithCGPoint$(@ByVal CGPoint p);
+    protected native @Pointer long init(@ByVal CGPoint p);
     /**
      * @since Available in iOS 5.0 and later.
      */
     @Method(selector = "initWithCGRect:")
-    protected native @Pointer long initWithCGRect$(@ByVal CGRect r);
+    protected native @Pointer long init(@ByVal CGRect r);
     /**
      * @since Available in iOS 5.0 and later.
      */
     @Method(selector = "initWithCGAffineTransform:")
-    protected native @Pointer long initWithCGAffineTransform$(@ByVal CGAffineTransform r);
+    protected native @Pointer long init(@ByVal CGAffineTransform r);
     @Method(selector = "initWithString:")
-    protected native @Pointer long initWithString$(String representation);
+    protected native @Pointer long init(String representation);
     @Method(selector = "valueAtIndex:")
     public native @MachineSizedFloat double getValueAtIndex(@MachineSizedUInt long index);
     @Method(selector = "count")

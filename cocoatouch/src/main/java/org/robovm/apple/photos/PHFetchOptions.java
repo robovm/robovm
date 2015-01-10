@@ -60,15 +60,15 @@ import org.robovm.apple.avfoundation.*;
     @Property(selector = "setSortDescriptors:")
     public native void setSortDescriptors(NSArray<NSSortDescriptor> v);
     @Property(selector = "includeHiddenAssets")
-    public native boolean isIncludeHiddenAssets();
+    public native boolean includesHiddenAssets();
     @Property(selector = "setIncludeHiddenAssets:")
-    public native void setIncludeHiddenAssets(boolean v);
+    public native void setIncludesHiddenAssets(boolean v);
     @Property(selector = "includeAllBurstAssets")
-    public native boolean isIncludeAllBurstAssets();
+    public native boolean includesAllBurstAssets();
     @Property(selector = "setIncludeAllBurstAssets:")
-    public native void setIncludeAllBurstAssets(boolean v);
+    public native void setIncludesAllBurstAssets(boolean v);
     @Property(selector = "wantsIncrementalChangeDetails")
-    public native boolean isWantsIncrementalChangeDetails();
+    public native boolean wantsIncrementalChangeDetails();
     @Property(selector = "setWantsIncrementalChangeDetails:")
     public native void setWantsIncrementalChangeDetails(boolean v);
     /*</properties>*/

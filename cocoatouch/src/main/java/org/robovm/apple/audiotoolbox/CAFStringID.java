@@ -49,16 +49,16 @@ import org.robovm.apple.coremedia.*;
     /*<constructors>*/
     public CAFStringID() {}
     public CAFStringID(int mStringID, long mStringStartByteOffset) {
-        this.mStringID(mStringID);
-        this.mStringStartByteOffset(mStringStartByteOffset);
+        this.setMStringID(mStringID);
+        this.setMStringStartByteOffset(mStringStartByteOffset);
     }
     /*</constructors>*/
     /*<properties>*//*</properties>*/
     /*<members>*/
-    @StructMember(0) public native int mStringID();
-    @StructMember(0) public native CAFStringID mStringID(int mStringID);
-    @StructMember(1) public native long mStringStartByteOffset();
-    @StructMember(1) public native CAFStringID mStringStartByteOffset(long mStringStartByteOffset);
+    @StructMember(0) public native int getMStringID();
+    @StructMember(0) public native CAFStringID setMStringID(int mStringID);
+    @StructMember(1) public native long getMStringStartByteOffset();
+    @StructMember(1) public native CAFStringID setMStringStartByteOffset(long mStringStartByteOffset);
     /*</members>*/
     /*<methods>*//*</methods>*/
 }

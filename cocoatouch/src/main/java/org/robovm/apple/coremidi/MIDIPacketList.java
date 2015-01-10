@@ -44,16 +44,16 @@ import org.robovm.apple.corefoundation.*;
     /*<constructors>*/
     public MIDIPacketList() {}
     public MIDIPacketList(int numPackets, MIDIPacket packet) {
-        this.numPackets(numPackets);
-        this.packet(packet);
+        this.setNumPackets(numPackets);
+        this.setPacket(packet);
     }
     /*</constructors>*/
     /*<properties>*//*</properties>*/
     /*<members>*/
-    @StructMember(0) public native int numPackets();
-    @StructMember(0) public native MIDIPacketList numPackets(int numPackets);
-    @StructMember(1) public native @Array({1}) MIDIPacket packet();
-    @StructMember(1) public native MIDIPacketList packet(@Array({1}) MIDIPacket packet);
+    @StructMember(0) public native int getNumPackets();
+    @StructMember(0) public native MIDIPacketList setNumPackets(int numPackets);
+    @StructMember(1) public native @Array({1}) MIDIPacket getPacket();
+    @StructMember(1) public native MIDIPacketList setPacket(@Array({1}) MIDIPacket packet);
     /*</members>*/
     /*<methods>*/
     /**

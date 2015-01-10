@@ -107,7 +107,7 @@ import org.robovm.apple.dispatch.*;
         @Override
         public boolean contains(Object o) {
             if (o instanceof NSObject) {
-                return set.member$((NSObject) o) != null;
+                return set.isMember((NSObject) o) != null;
             }
             return false;
         }
@@ -136,9 +136,9 @@ import org.robovm.apple.dispatch.*;
     public NSSet(Collection<T> c) {
         super((SkipInit) null);
         if (c instanceof NSArray) {
-            initObject(initWithArray$((NSArray<T>) c));
+            initObject(init((NSArray<T>) c));
         } else if (c instanceof NSSet) {
-            initObject(initWithSet$((NSSet<T>) c));
+            initObject(init((NSSet<T>) c));
         } else {
             NSObject[] objects = c.toArray(new NSObject[c.size()]);
             initWithObjects(objects);
@@ -172,7 +172,7 @@ import org.robovm.apple.dispatch.*;
             ptr = ptr.next();
         }
         ptr = ptr.previous(objects.length);
-        initObject(initWithObjects$count$(ptr.getHandle(), objects.length));
+        initObject(init(ptr.getHandle(), objects.length));
     }
 
     protected AbstractSet<T> createAdapter() {
@@ -282,16 +282,16 @@ import org.robovm.apple.dispatch.*;
     
     /*<methods>*/
     @Method(selector = "member:")
-    protected native NSObject member$(NSObject object);
+    protected native NSObject isMember(NSObject object);
     @Method(selector = "objectEnumerator")
     protected native NSEnumerator<T> objectEnumerator();
     @Method(selector = "initWithObjects:count:")
-    protected native @Pointer long initWithObjects$count$(@Pointer long objects, @MachineSizedUInt long cnt);
+    protected native @Pointer long init(@Pointer long objects, @MachineSizedUInt long cnt);
     @Method(selector = "anyObject")
     public native T any();
     @Method(selector = "initWithSet:")
-    protected native @Pointer long initWithSet$(NSSet<?> set);
+    protected native @Pointer long init(NSSet<?> set);
     @Method(selector = "initWithArray:")
-    protected native @Pointer long initWithArray$(NSArray<?> array);
+    protected native @Pointer long init(NSArray<?> array);
     /*</methods>*/
 }

@@ -37,7 +37,7 @@ import org.robovm.apple.foundation.*;
 /*<annotations>*/@Library("CoreData") @NativeClass/*</annotations>*/
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/NSEntityDescription/*</name>*/ 
     extends /*<extends>*/NSObject/*</extends>*/ 
-    /*<implements>*/implements NSCoding/*</implements>*/ {
+    /*<implements>*/implements NSCoding, NSFastEnumeration/*</implements>*/ {
 
     /*<ptr>*/public static class NSEntityDescriptionPtr extends Ptr<NSEntityDescription, NSEntityDescriptionPtr> {}/*</ptr>*/
     /*<bind>*/static { ObjCRuntime.bind(NSEntityDescription.class); }/*</bind>*/

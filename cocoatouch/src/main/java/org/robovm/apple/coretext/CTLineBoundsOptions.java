@@ -43,6 +43,10 @@ public final class /*<name>*/CTLineBoundsOptions/*</name>*/ extends Bits</*<name
     public static final CTLineBoundsOptions UseHangingPunctuation = new CTLineBoundsOptions(4L);
     public static final CTLineBoundsOptions UseGlyphPathBounds = new CTLineBoundsOptions(8L);
     public static final CTLineBoundsOptions UseOpticalBounds = new CTLineBoundsOptions(16L);
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    public static final CTLineBoundsOptions IncludeLanguageExtents = new CTLineBoundsOptions(32L);
     /*</values>*/
 
     /*<bind>*/

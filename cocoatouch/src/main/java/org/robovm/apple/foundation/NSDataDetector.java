@@ -58,7 +58,7 @@ import org.robovm.apple.dispatch.*;
     public NSDataDetector(NSTextCheckingType checkingTypes) throws NSErrorException { 
         super((SkipInit) null);
         NSError.NSErrorPtr err = new NSError.NSErrorPtr();
-        initObject(initWithTypes$error$(checkingTypes, err));
+        initObject(init(checkingTypes, err));
         if (err.get() != null) {
             throw new NSErrorException(err.get());
         }
@@ -74,6 +74,6 @@ import org.robovm.apple.dispatch.*;
     /*<members>*//*</members>*/
     /*<methods>*/
     @Method(selector = "initWithTypes:error:")
-    protected native @Pointer long initWithTypes$error$(NSTextCheckingType checkingTypes, NSError.NSErrorPtr error);
+    protected native @Pointer long init(NSTextCheckingType checkingTypes, NSError.NSErrorPtr error);
     /*</methods>*/
 }

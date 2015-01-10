@@ -126,12 +126,12 @@ import org.robovm.apple.mediatoolbox.*;
      * @since Available in iOS 5.0 and later.
      */
     @Property(selector = "enableRate")
-    public native boolean isEnableRate();
+    public native boolean isRateEnabled();
     /**
      * @since Available in iOS 5.0 and later.
      */
     @Property(selector = "setEnableRate:")
-    public native void setEnableRate(boolean v);
+    public native void setRateEnabled(boolean v);
     /**
      * @since Available in iOS 5.0 and later.
      */

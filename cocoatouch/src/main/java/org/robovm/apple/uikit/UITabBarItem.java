@@ -51,12 +51,12 @@ import org.robovm.apple.corelocation.*;
     /*<constructors>*/
     public UITabBarItem() {}
     protected UITabBarItem(SkipInit skipInit) { super(skipInit); }
-    public UITabBarItem(String title, UIImage image, @MachineSizedSInt long tag) { super((SkipInit) null); initObject(initWithTitle$image$tag$(title, image, tag)); }
+    public UITabBarItem(String title, UIImage image, @MachineSizedSInt long tag) { super((SkipInit) null); initObject(init(title, image, tag)); }
     /**
      * @since Available in iOS 7.0 and later.
      */
-    public UITabBarItem(String title, UIImage image, UIImage selectedImage) { super((SkipInit) null); initObject(initWithTitle$image$selectedImage$(title, image, selectedImage)); }
-    public UITabBarItem(UITabBarSystemItem systemItem, @MachineSizedSInt long tag) { super((SkipInit) null); initObject(initWithTabBarSystemItem$tag$(systemItem, tag)); }
+    public UITabBarItem(String title, UIImage image, UIImage selectedImage) { super((SkipInit) null); initObject(init(title, image, selectedImage)); }
+    public UITabBarItem(UITabBarSystemItem systemItem, @MachineSizedSInt long tag) { super((SkipInit) null); initObject(init(systemItem, tag)); }
     /*</constructors>*/
     /*<properties>*/
     /**
@@ -77,14 +77,14 @@ import org.robovm.apple.corelocation.*;
     /*<members>*//*</members>*/
     /*<methods>*/
     @Method(selector = "initWithTitle:image:tag:")
-    protected native @Pointer long initWithTitle$image$tag$(String title, UIImage image, @MachineSizedSInt long tag);
+    protected native @Pointer long init(String title, UIImage image, @MachineSizedSInt long tag);
     /**
      * @since Available in iOS 7.0 and later.
      */
     @Method(selector = "initWithTitle:image:selectedImage:")
-    protected native @Pointer long initWithTitle$image$selectedImage$(String title, UIImage image, UIImage selectedImage);
+    protected native @Pointer long init(String title, UIImage image, UIImage selectedImage);
     @Method(selector = "initWithTabBarSystemItem:tag:")
-    protected native @Pointer long initWithTabBarSystemItem$tag$(UITabBarSystemItem systemItem, @MachineSizedSInt long tag);
+    protected native @Pointer long init(UITabBarSystemItem systemItem, @MachineSizedSInt long tag);
     /**
      * @since Available in iOS 5.0 and later.
      * @deprecated Deprecated in iOS 7.0.

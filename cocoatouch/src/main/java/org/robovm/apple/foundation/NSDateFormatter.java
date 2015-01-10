@@ -79,7 +79,7 @@ import org.robovm.apple.dispatch.*;
     @Property(selector = "setLocale:")
     public native void setLocale(NSLocale v);
     @Property(selector = "generatesCalendarDates")
-    public native boolean isGeneratesCalendarDates();
+    public native boolean generatesCalendarDates();
     @Property(selector = "setGeneratesCalendarDates:")
     public native void setGeneratesCalendarDates(boolean v);
     @Property(selector = "formatterBehavior")
@@ -278,7 +278,7 @@ import org.robovm.apple.dispatch.*;
      * @since Available in iOS 4.0 and later.
      */
     @Property(selector = "doesRelativeDateFormatting")
-    public native boolean isDoesRelativeDateFormatting();
+    public native boolean doesRelativeDateFormatting();
     /**
      * @since Available in iOS 4.0 and later.
      */

@@ -52,7 +52,7 @@ import org.robovm.apple.corebluetooth.*;
      * @deprecated Deprecated in iOS 7.0.
      */
     @Deprecated
-    public CLRegion(@ByVal CLLocationCoordinate2D center, double radius, String identifier) { super((SkipInit) null); initObject(initCircularRegionWithCenter$radius$identifier$(center, radius, identifier)); }
+    public CLRegion(@ByVal CLLocationCoordinate2D center, double radius, String identifier) { super((SkipInit) null); initObject(init(center, radius, identifier)); }
     /*</constructors>*/
     /*<properties>*/
     /**
@@ -78,22 +78,22 @@ import org.robovm.apple.corebluetooth.*;
      * @since Available in iOS 7.0 and later.
      */
     @Property(selector = "notifyOnEntry")
-    public native boolean isNotifyOnEntry();
+    public native boolean notifiesOnEntry();
     /**
      * @since Available in iOS 7.0 and later.
      */
     @Property(selector = "setNotifyOnEntry:")
-    public native void setNotifyOnEntry(boolean v);
+    public native void setNotifiesOnEntry(boolean v);
     /**
      * @since Available in iOS 7.0 and later.
      */
     @Property(selector = "notifyOnExit")
-    public native boolean isNotifyOnExit();
+    public native boolean notifiesOnExit();
     /**
      * @since Available in iOS 7.0 and later.
      */
     @Property(selector = "setNotifyOnExit:")
-    public native void setNotifyOnExit(boolean v);
+    public native void setNotifiesOnExit(boolean v);
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
@@ -103,7 +103,7 @@ import org.robovm.apple.corebluetooth.*;
      */
     @Deprecated
     @Method(selector = "initCircularRegionWithCenter:radius:identifier:")
-    protected native @Pointer long initCircularRegionWithCenter$radius$identifier$(@ByVal CLLocationCoordinate2D center, double radius, String identifier);
+    protected native @Pointer long init(@ByVal CLLocationCoordinate2D center, double radius, String identifier);
     /**
      * @since Available in iOS 4.0 and later.
      * @deprecated Deprecated in iOS 7.0.

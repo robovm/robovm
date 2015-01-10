@@ -58,9 +58,9 @@ import org.robovm.apple.corelocation.*;
     @Property(selector = "writingDirection")
     public native UITextWritingDirection getWritingDirection();
     @Property(selector = "containsStart")
-    public native boolean isContainsStart();
+    public native boolean containsStart();
     @Property(selector = "containsEnd")
-    public native boolean isContainsEnd();
+    public native boolean containsEnd();
     @Property(selector = "isVertical")
     public native boolean isVertical();
     /*</properties>*/

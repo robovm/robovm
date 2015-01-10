@@ -51,6 +51,8 @@ import org.robovm.apple.foundation.*;
     public native NSArray<NKIssue> getIssues();
     @Property(selector = "downloadingAssets")
     public native NSArray<NKAssetDownload> getDownloadingAssets();
+    @Property(selector = "setDownloadingAssets:")
+    public native void setDownloadingAssets(NSArray<NKAssetDownload> v);
     @Property(selector = "currentlyReadingIssue")
     public native NKIssue getCurrentlyReadingIssue();
     @Property(selector = "setCurrentlyReadingIssue:")

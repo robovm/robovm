@@ -54,9 +54,9 @@ import org.robovm.apple.corelocation.*;
     /*</constructors>*/
     /*<properties>*/
     @Property(selector = "invalidateEverything")
-    public native boolean isInvalidateEverything();
+    public native boolean invalidatesEverything();
     @Property(selector = "invalidateDataSourceCounts")
-    public native boolean isInvalidateDataSourceCounts();
+    public native boolean invalidatesDataSourceCounts();
     /**
      * @since Available in iOS 8.0 and later.
      */

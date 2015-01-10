@@ -65,12 +65,12 @@ import org.robovm.apple.dispatch.*;
     public NSFileWrapper() {}
     protected NSFileWrapper(SkipInit skipInit) { super(skipInit); }
     public NSFileWrapper(@org.robovm.rt.bro.annotation.Marshaler(NSDictionary.AsStringMapMarshaler.class) Map<String, NSFileWrapper> childrenByPreferredName) { super((SkipInit) null); initObject(init(childrenByPreferredName)); }
-    public NSFileWrapper(NSData contents) { super((SkipInit) null); initObject(initRegularFileWithContents$(contents)); }
+    public NSFileWrapper(NSData contents) { super((SkipInit) null); initObject(init(contents)); }
     /**
      * @since Available in iOS 4.0 and later.
      */
-    public NSFileWrapper(NSURL url) { super((SkipInit) null); initObject(initSymbolicLinkWithDestinationURL$(url)); }
-    public NSFileWrapper(NSCoder inCoder) { super((SkipInit) null); initObject(initWithCoder$(inCoder)); }
+    public NSFileWrapper(NSURL url) { super((SkipInit) null); initObject(init(url)); }
+    public NSFileWrapper(NSCoder inCoder) { super((SkipInit) null); initObject(init(inCoder)); }
     /*</constructors>*/
     /*<properties>*/
     @Property(selector = "isDirectory")
@@ -107,7 +107,7 @@ import org.robovm.apple.dispatch.*;
     
     public static NSFileWrapper deserialize(NSData data) {
         NSFileWrapper wrapper = new NSFileWrapper((SkipInit) null);
-        long handle = wrapper.initWithSerializedRepresentation$(data);
+        long handle = wrapper.initSerialized(data);
         if (handle == 0) {
             return null;
         }
@@ -149,16 +149,16 @@ import org.robovm.apple.dispatch.*;
     @Method(selector = "initDirectoryWithFileWrappers:")
     protected native @Pointer long init(@org.robovm.rt.bro.annotation.Marshaler(NSDictionary.AsStringMapMarshaler.class) Map<String, NSFileWrapper> childrenByPreferredName);
     @Method(selector = "initRegularFileWithContents:")
-    protected native @Pointer long initRegularFileWithContents$(NSData contents);
+    protected native @Pointer long init(NSData contents);
     /**
      * @since Available in iOS 4.0 and later.
      */
     @Method(selector = "initSymbolicLinkWithDestinationURL:")
-    protected native @Pointer long initSymbolicLinkWithDestinationURL$(NSURL url);
+    protected native @Pointer long init(NSURL url);
     @Method(selector = "initWithSerializedRepresentation:")
-    protected native @Pointer long initWithSerializedRepresentation$(NSData serializeRepresentation);
+    protected native @Pointer long initSerialized(NSData serializeRepresentation);
     @Method(selector = "initWithCoder:")
-    protected native @Pointer long initWithCoder$(NSCoder inCoder);
+    protected native @Pointer long init(NSCoder inCoder);
     /**
      * @since Available in iOS 4.0 and later.
      */

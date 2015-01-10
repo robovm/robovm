@@ -100,9 +100,9 @@ import org.robovm.apple.dispatch.*;
     /*<constructors>*/
     public NSFileHandle() {}
     protected NSFileHandle(SkipInit skipInit) { super(skipInit); }
-    public NSFileHandle(int fd, boolean closeopt) { super((SkipInit) null); initObject(initWithFileDescriptor$closeOnDealloc$(fd, closeopt)); }
-    public NSFileHandle(NSCoder coder) { super((SkipInit) null); initObject(initWithCoder$(coder)); }
-    public NSFileHandle(int fd) { super((SkipInit) null); initObject(initWithFileDescriptor$(fd)); }
+    public NSFileHandle(int fd, boolean closeopt) { super((SkipInit) null); initObject(init(fd, closeopt)); }
+    public NSFileHandle(NSCoder coder) { super((SkipInit) null); initObject(init(coder)); }
+    public NSFileHandle(int fd) { super((SkipInit) null); initObject(init(fd)); }
     /*</constructors>*/
     /*<properties>*/
     @Property(selector = "availableData")
@@ -237,9 +237,9 @@ import org.robovm.apple.dispatch.*;
     @Method(selector = "closeFile")
     public native void closeFile();
     @Method(selector = "initWithFileDescriptor:closeOnDealloc:")
-    protected native @Pointer long initWithFileDescriptor$closeOnDealloc$(int fd, boolean closeopt);
+    protected native @Pointer long init(int fd, boolean closeopt);
     @Method(selector = "initWithCoder:")
-    protected native @Pointer long initWithCoder$(NSCoder coder);
+    protected native @Pointer long init(NSCoder coder);
     @Method(selector = "fileHandleWithStandardInput")
     public static native NSFileHandle getStandardInput();
     @Method(selector = "fileHandleWithStandardOutput")
@@ -286,6 +286,6 @@ import org.robovm.apple.dispatch.*;
     @Method(selector = "waitForDataInBackgroundAndNotify")
     public native void waitForDataInBackgroundAndNotify();
     @Method(selector = "initWithFileDescriptor:")
-    protected native @Pointer long initWithFileDescriptor$(int fd);
+    protected native @Pointer long init(int fd);
     /*</methods>*/
 }

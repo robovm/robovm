@@ -61,8 +61,8 @@ import org.robovm.apple.dispatch.*;
         public U set(int index, U element) {
             checkNull(element);
             checkIndex(index);
-            U old = (U) array.objectAtIndex$(index);
-            ((NSMutableArray<U>) array).replaceObjectAtIndex$withObject$(index, element);
+            U old = (U) array.getObjectAt(index);
+            ((NSMutableArray<U>) array).replaceObject(index, element);
             return old;
         }
         
@@ -72,14 +72,14 @@ import org.robovm.apple.dispatch.*;
             if (index < 0 || index > array.getCount()) {
                 checkIndex(index);
             }
-            ((NSMutableArray<U>) array).insertObject$atIndex$(element, index);
+            ((NSMutableArray<U>) array).insertObject(element, index);
         }
         
         @Override
         public U remove(int index) {
             checkIndex(index);
-            U old = (U) array.objectAtIndex$(index);
-            ((NSMutableArray<U>) array).removeObjectAtIndex$(index);
+            U old = (U) array.getObjectAt(index);
+            ((NSMutableArray<U>) array).removeObject(index);
             return old;
         }
     }
@@ -89,7 +89,7 @@ import org.robovm.apple.dispatch.*;
     /*<constructors>*/
     public NSMutableArray() {}
     protected NSMutableArray(SkipInit skipInit) { super(skipInit); }
-    public NSMutableArray(@MachineSizedUInt long numItems) { super((SkipInit) null); initObject(initWithCapacity$(numItems)); }
+    public NSMutableArray(@MachineSizedUInt long numItems) { super((SkipInit) null); initObject(init(numItems)); }
     /*</constructors>*/
     
     public NSMutableArray(Collection<T> c) {
@@ -109,7 +109,7 @@ import org.robovm.apple.dispatch.*;
     }
     
     public static NSArray<?> read(java.io.File file) {
-        return arrayWithContentsOfFile$(file.getAbsolutePath());
+        return read(file.getAbsolutePath());
     }
     
     public static NSMutableArray<NSString> toNSMutableArray (String... strings) {
@@ -133,19 +133,19 @@ import org.robovm.apple.dispatch.*;
     }
 
     @Method(selector = "arrayWithContentsOfFile:")
-    protected static native NSArray<? extends NSObject> arrayWithContentsOfFile$(String path);
+    protected static native NSArray<? extends NSObject> read(String path);
     @Method(selector = "arrayWithContentsOfURL:")
     public static native NSArray<? extends NSObject> read(NSURL url);
     
     /*<methods>*/
     @Method(selector = "insertObject:atIndex:")
-    protected native void insertObject$atIndex$(NSObject anObject, @MachineSizedUInt long index);
+    protected native void insertObject(NSObject anObject, @MachineSizedUInt long index);
     @Method(selector = "removeObjectAtIndex:")
-    protected native void removeObjectAtIndex$(@MachineSizedUInt long index);
+    protected native void removeObject(@MachineSizedUInt long index);
     @Method(selector = "replaceObjectAtIndex:withObject:")
-    protected native void replaceObjectAtIndex$withObject$(@MachineSizedUInt long index, NSObject anObject);
+    protected native void replaceObject(@MachineSizedUInt long index, NSObject anObject);
     @Method(selector = "initWithCapacity:")
-    protected native @Pointer long initWithCapacity$(@MachineSizedUInt long numItems);
+    protected native @Pointer long init(@MachineSizedUInt long numItems);
     @Method(selector = "removeAllObjects")
     protected native void removeAllObjects();
     /*</methods>*/

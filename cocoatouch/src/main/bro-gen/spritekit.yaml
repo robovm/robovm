@@ -37,7 +37,7 @@ classes:
     SK3DNode:
         properties:
             'loops':
-                name: looping
+                getter: loops
             'scnScene':
                 name: sceneKitScene
         methods:

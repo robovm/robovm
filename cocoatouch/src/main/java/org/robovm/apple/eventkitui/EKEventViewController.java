@@ -64,11 +64,11 @@ import org.robovm.apple.uikit.*;
     @Property(selector = "setEvent:")
     public native void setEvent(EKEvent v);
     @Property(selector = "allowsEditing")
-    public native boolean isAllowsEditing();
+    public native boolean allowsEditing();
     @Property(selector = "setAllowsEditing:")
     public native void setAllowsEditing(boolean v);
     @Property(selector = "allowsCalendarPreview")
-    public native boolean isAllowsCalendarPreview();
+    public native boolean allowsCalendarPreview();
     @Property(selector = "setAllowsCalendarPreview:")
     public native void setAllowsCalendarPreview(boolean v);
     /*</properties>*/

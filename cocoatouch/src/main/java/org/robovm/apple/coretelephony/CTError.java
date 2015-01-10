@@ -46,27 +46,15 @@ import org.robovm.apple.corefoundation.*;
     public CTError() {}
     public CTError(CTErrorDomain domain, NSErrorCode errorCode) {
         this.setDomain(domain);
-        this.setErrorcode(errorCode);
+        this.setErrorCode(errorCode);
     }
     /*</constructors>*/
     /*<properties>*//*</properties>*/
     /*<members>*/
     @StructMember(0) public native CTErrorDomain getDomain();
     @StructMember(0) public native CTError setDomain(CTErrorDomain domain);
-    
-    @Deprecated
-    @StructMember(0) public native CTErrorDomain domain();
-    @Deprecated
-    @StructMember(0) public native CTError domain(CTErrorDomain domain);
-    
-    @StructMember(1) public native NSErrorCode getErrorcode();
-    @StructMember(1) public native CTError setErrorcode(NSErrorCode errorCode);
-    
-    @Deprecated
-    @StructMember(1) public native NSErrorCode errorCode();
-    @Deprecated
-    @StructMember(1) public native CTError errorCode(NSErrorCode errorCode);
-    
+    @StructMember(1) public native NSErrorCode getErrorCode();
+    @StructMember(1) public native CTError setErrorCode(NSErrorCode errorCode);
     /*</members>*/
     /*<methods>*//*</methods>*/
 }

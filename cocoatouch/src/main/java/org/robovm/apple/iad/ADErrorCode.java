@@ -39,6 +39,7 @@ import org.robovm.apple.avkit.*;
  * @since Available in iOS 4.0 and later.
  */
 /*</javadoc>*/
+@ForceLinkClass(ADError.class)
 /*<annotations>*/@Marshaler(ValuedEnum.AsMachineSizedSIntMarshaler.class)/*</annotations>*/
 public enum /*<name>*/ADErrorCode/*</name>*/ implements NSErrorCode {
     /*<values>*/

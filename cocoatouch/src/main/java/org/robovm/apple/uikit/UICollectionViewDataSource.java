@@ -54,11 +54,11 @@ import org.robovm.apple.corelocation.*;
     @Method(selector = "collectionView:numberOfItemsInSection:")
     @MachineSizedSInt long getNumberOfItemsInSection(UICollectionView collectionView, @MachineSizedSInt long section);
     @Method(selector = "collectionView:cellForItemAtIndexPath:")
-    UICollectionViewCell getItemCell(UICollectionView collectionView, NSIndexPath indexPath);
+    UICollectionViewCell getCellForItem(UICollectionView collectionView, NSIndexPath indexPath);
     @Method(selector = "numberOfSectionsInCollectionView:")
     @MachineSizedSInt long getNumberOfSections(UICollectionView collectionView);
     @Method(selector = "collectionView:viewForSupplementaryElementOfKind:atIndexPath:")
-    UICollectionReusableView getSupplementaryElementView(UICollectionView collectionView, String kind, NSIndexPath indexPath);
+    UICollectionReusableView getViewForSupplementaryElement(UICollectionView collectionView, String kind, NSIndexPath indexPath);
     /*</methods>*/
     /*<adapter>*/
     /*</adapter>*/

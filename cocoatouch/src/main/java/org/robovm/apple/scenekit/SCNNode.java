@@ -119,7 +119,7 @@ import org.robovm.apple.opengles.*;
     @Property(selector = "setRenderingOrder:")
     public native void setRenderingOrder(@MachineSizedSInt long v);
     @Property(selector = "castsShadow")
-    public native boolean isCastsShadow();
+    public native boolean castsShadow();
     @Property(selector = "setCastsShadow:")
     public native void setCastsShadow(boolean v);
     @Property(selector = "parentNode")

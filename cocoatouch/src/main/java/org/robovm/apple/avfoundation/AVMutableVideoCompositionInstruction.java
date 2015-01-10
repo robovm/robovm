@@ -69,9 +69,9 @@ import org.robovm.apple.mediatoolbox.*;
     @Property(selector = "setLayerInstructions:")
     public native void setLayerInstructions(NSArray<AVVideoCompositionLayerInstruction> v);
     @Property(selector = "enablePostProcessing")
-    public native boolean isEnablePostProcessing();
+    public native boolean isPostProcessingEnabled();
     @Property(selector = "setEnablePostProcessing:")
-    public native void setEnablePostProcessing(boolean v);
+    public native void setPostProcessingEnabled(boolean v);
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/

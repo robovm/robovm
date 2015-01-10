@@ -66,14 +66,14 @@ import org.robovm.apple.addressbook.*;
     @Property(selector = "setDisplayedProperties:")
     public native void setDisplayedProperties(@org.robovm.rt.bro.annotation.Marshaler(ABProperty.AsListMarshaler.class) List<? extends ABProperty> v);
     @Property(selector = "allowsEditing")
-    public native boolean isAllowsEditing();
+    public native boolean allowsEditing();
     @Property(selector = "setAllowsEditing:")
     public native void setAllowsEditing(boolean v);
     /**
      * @since Available in iOS 4.0 and later.
      */
     @Property(selector = "allowsActions")
-    public native boolean isAllowsActions();
+    public native boolean allowsActions();
     /**
      * @since Available in iOS 4.0 and later.
      */
@@ -83,7 +83,7 @@ import org.robovm.apple.addressbook.*;
      * @since Available in iOS 4.0 and later.
      */
     @Property(selector = "shouldShowLinkedPeople")
-    public native boolean isShouldShowLinkedPeople();
+    public native boolean shouldShowLinkedPeople();
     /**
      * @since Available in iOS 4.0 and later.
      */

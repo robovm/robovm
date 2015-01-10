@@ -102,7 +102,7 @@ import org.robovm.apple.mediatoolbox.*;
     @Property(selector = "isReadyForMoreMediaData")
     public native boolean isReadyForMoreMediaData();
     @Property(selector = "expectsMediaDataInRealTime")
-    public native boolean isExpectsMediaDataInRealTime();
+    public native boolean expectsMediaDataInRealTime();
     @Property(selector = "setExpectsMediaDataInRealTime:")
     public native void setExpectsMediaDataInRealTime(boolean v);
     /**
@@ -153,7 +153,7 @@ import org.robovm.apple.mediatoolbox.*;
      * @since Available in iOS 7.0 and later.
      */
     @Property(selector = "marksOutputTrackAsEnabled")
-    public native boolean isMarksOutputTrackAsEnabled();
+    public native boolean marksOutputTrackAsEnabled();
     /**
      * @since Available in iOS 7.0 and later.
      */
@@ -203,7 +203,7 @@ import org.robovm.apple.mediatoolbox.*;
      * @since Available in iOS 8.0 and later.
      */
     @Property(selector = "performsMultiPassEncodingIfSupported")
-    public native boolean isPerformsMultiPassEncodingIfSupported();
+    public native boolean performsMultiPassEncodingIfSupported();
     /**
      * @since Available in iOS 8.0 and later.
      */

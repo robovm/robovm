@@ -51,8 +51,8 @@ import org.robovm.apple.metal.*;
     /*</constructors>*/
     
     /* SceneKit extensions */
-    public boolean isUsesSceneTimeBase() {
-        return org.robovm.apple.scenekit.CAAnimationExtensions.isUsesSceneTimeBase(this);
+    public boolean usesSceneTimeBase() {
+        return org.robovm.apple.scenekit.CAAnimationExtensions.usesSceneTimeBase(this);
     }
     public void setUsesSceneTimeBase(boolean v) {
         org.robovm.apple.scenekit.CAAnimationExtensions.setUsesSceneTimeBase(this, v);
@@ -113,7 +113,7 @@ import org.robovm.apple.metal.*;
     @Property(selector = "setRepeatDuration:")
     public native void setRepeatDuration(double v);
     @Property(selector = "autoreverses")
-    public native boolean isAutoreverses();
+    public native boolean autoreverses();
     @Property(selector = "setAutoreverses:")
     public native void setAutoreverses(boolean v);
     @Property(selector = "fillMode")

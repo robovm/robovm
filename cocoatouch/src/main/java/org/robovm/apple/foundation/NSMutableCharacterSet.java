@@ -59,7 +59,7 @@ import org.robovm.apple.dispatch.*;
         if (file == null) {
             throw new NullPointerException("file");
         }
-        return characterSetWithContentsOfFile$(file.getAbsolutePath());
+        return createWithFile(file.getAbsolutePath());
     }
     /*<methods>*/
     @Method(selector = "addCharactersInRange:")
@@ -116,6 +116,6 @@ import org.robovm.apple.dispatch.*;
     @Method(selector = "characterSetWithBitmapRepresentation:")
     public static native NSMutableCharacterSet create(NSData data);
     @Method(selector = "characterSetWithContentsOfFile:")
-    private static native NSMutableCharacterSet characterSetWithContentsOfFile$(String fName);
+    private static native NSMutableCharacterSet createWithFile(String fName);
     /*</methods>*/
 }

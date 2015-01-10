@@ -59,28 +59,10 @@ import org.robovm.apple.opengles.*;
     /*<members>*/
     @StructMember(0) public native float getX();
     @StructMember(0) public native SCNVector3 setX(float x);
-    
-    @Deprecated
-    @StructMember(0) public native float x();
-    @Deprecated
-    @StructMember(0) public native SCNVector3 x(float x);
-    
     @StructMember(1) public native float getY();
     @StructMember(1) public native SCNVector3 setY(float y);
-    
-    @Deprecated
-    @StructMember(1) public native float y();
-    @Deprecated
-    @StructMember(1) public native SCNVector3 y(float y);
-    
     @StructMember(2) public native float getZ();
     @StructMember(2) public native SCNVector3 setZ(float z);
-    
-    @Deprecated
-    @StructMember(2) public native float z();
-    @Deprecated
-    @StructMember(2) public native SCNVector3 z(float z);
-    
     /*</members>*/
     /*<methods>*/
     @GlobalValue(symbol="SCNVector3Zero", optional=true)

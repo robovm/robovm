@@ -83,7 +83,7 @@ import org.robovm.apple.corelocation.*;
      * @since Available in iOS 8.0 and later.
      */
     @Property(selector = "regionTriggersOnce")
-    public native boolean isRegionTriggersOnce();
+    public native boolean regionTriggersOnce();
     /**
      * @since Available in iOS 8.0 and later.
      */
@@ -94,7 +94,7 @@ import org.robovm.apple.corelocation.*;
     @Property(selector = "setAlertBody:")
     public native void setAlertBody(String v);
     @Property(selector = "hasAction")
-    public native boolean isHasAction();
+    public native boolean hasAction();
     @Property(selector = "setHasAction:")
     public native void setHasAction(boolean v);
     @Property(selector = "alertAction")
@@ -134,7 +134,7 @@ import org.robovm.apple.corelocation.*;
      * @since Available in iOS 4.0 and later.
      */
     @GlobalValue(symbol="UILocalNotificationDefaultSoundName", optional=true)
-    public static native String DefaultSoundName();
+    public static native String getDefaultSoundName();
     
     @Method(selector = "encodeWithCoder:")
     public native void encode(NSCoder aCoder);

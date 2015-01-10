@@ -49,25 +49,25 @@ import org.robovm.apple.coremedia.*;
     /*<constructors>*/
     public CAFPacketTableHeader() {}
     public CAFPacketTableHeader(long mNumberPackets, long mNumberValidFrames, int mPrimingFrames, int mRemainderFrames, ByteBuffer mPacketDescriptions) {
-        this.mNumberPackets(mNumberPackets);
-        this.mNumberValidFrames(mNumberValidFrames);
-        this.mPrimingFrames(mPrimingFrames);
-        this.mRemainderFrames(mRemainderFrames);
-        this.mPacketDescriptions(mPacketDescriptions);
+        this.setMNumberPackets(mNumberPackets);
+        this.setMNumberValidFrames(mNumberValidFrames);
+        this.setMPrimingFrames(mPrimingFrames);
+        this.setMRemainderFrames(mRemainderFrames);
+        this.setMPacketDescriptions(mPacketDescriptions);
     }
     /*</constructors>*/
     /*<properties>*//*</properties>*/
     /*<members>*/
-    @StructMember(0) public native long mNumberPackets();
-    @StructMember(0) public native CAFPacketTableHeader mNumberPackets(long mNumberPackets);
-    @StructMember(1) public native long mNumberValidFrames();
-    @StructMember(1) public native CAFPacketTableHeader mNumberValidFrames(long mNumberValidFrames);
-    @StructMember(2) public native int mPrimingFrames();
-    @StructMember(2) public native CAFPacketTableHeader mPrimingFrames(int mPrimingFrames);
-    @StructMember(3) public native int mRemainderFrames();
-    @StructMember(3) public native CAFPacketTableHeader mRemainderFrames(int mRemainderFrames);
-    @StructMember(4) public native @Array({1}) ByteBuffer mPacketDescriptions();
-    @StructMember(4) public native CAFPacketTableHeader mPacketDescriptions(@Array({1}) ByteBuffer mPacketDescriptions);
+    @StructMember(0) public native long getMNumberPackets();
+    @StructMember(0) public native CAFPacketTableHeader setMNumberPackets(long mNumberPackets);
+    @StructMember(1) public native long getMNumberValidFrames();
+    @StructMember(1) public native CAFPacketTableHeader setMNumberValidFrames(long mNumberValidFrames);
+    @StructMember(2) public native int getMPrimingFrames();
+    @StructMember(2) public native CAFPacketTableHeader setMPrimingFrames(int mPrimingFrames);
+    @StructMember(3) public native int getMRemainderFrames();
+    @StructMember(3) public native CAFPacketTableHeader setMRemainderFrames(int mRemainderFrames);
+    @StructMember(4) public native @Array({1}) ByteBuffer getMPacketDescriptions();
+    @StructMember(4) public native CAFPacketTableHeader setMPacketDescriptions(@Array({1}) ByteBuffer mPacketDescriptions);
     /*</members>*/
     /*<methods>*//*</methods>*/
 }

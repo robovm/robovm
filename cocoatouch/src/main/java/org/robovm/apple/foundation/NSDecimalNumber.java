@@ -49,10 +49,10 @@ import org.robovm.apple.dispatch.*;
     /*<constants>*//*</constants>*/
     /*<constructors>*/
     protected NSDecimalNumber(SkipInit skipInit) { super(skipInit); }
-    public NSDecimalNumber(long mantissa, short exponent, boolean flag) { super((SkipInit) null); initObject(initWithMantissa$exponent$isNegative$(mantissa, exponent, flag)); }
-    public NSDecimalNumber(@ByVal NSDecimal dcm) { super((SkipInit) null); initObject(initWithDecimal$(dcm)); }
-    public NSDecimalNumber(String numberValue) { super((SkipInit) null); initObject(initWithString$(numberValue)); }
-    public NSDecimalNumber(String numberValue, NSLocale locale) { super((SkipInit) null); initObject(initWithString$locale$(numberValue, locale)); }
+    public NSDecimalNumber(long mantissa, short exponent, boolean flag) { super((SkipInit) null); initObject(init(mantissa, exponent, flag)); }
+    public NSDecimalNumber(@ByVal NSDecimal dcm) { super((SkipInit) null); initObject(init(dcm)); }
+    public NSDecimalNumber(String numberValue) { super((SkipInit) null); initObject(init(numberValue)); }
+    public NSDecimalNumber(String numberValue, NSLocale locale) { super((SkipInit) null); initObject(init(numberValue, locale)); }
     /*</constructors>*/
     /*<properties>*/
     
@@ -60,13 +60,13 @@ import org.robovm.apple.dispatch.*;
     /*<members>*//*</members>*/
     /*<methods>*/
     @Method(selector = "initWithMantissa:exponent:isNegative:")
-    protected native @Pointer long initWithMantissa$exponent$isNegative$(long mantissa, short exponent, boolean flag);
+    protected native @Pointer long init(long mantissa, short exponent, boolean flag);
     @Method(selector = "initWithDecimal:")
-    protected native @Pointer long initWithDecimal$(@ByVal NSDecimal dcm);
+    protected native @Pointer long init(@ByVal NSDecimal dcm);
     @Method(selector = "initWithString:")
-    protected native @Pointer long initWithString$(String numberValue);
+    protected native @Pointer long init(String numberValue);
     @Method(selector = "initWithString:locale:")
-    protected native @Pointer long initWithString$locale$(String numberValue, NSLocale locale);
+    protected native @Pointer long init(String numberValue, NSLocale locale);
     @Method(selector = "decimalNumberByAdding:")
     public native NSDecimalNumber add(NSDecimalNumber decimalNumber);
     @Method(selector = "decimalNumberByAdding:withBehavior:")

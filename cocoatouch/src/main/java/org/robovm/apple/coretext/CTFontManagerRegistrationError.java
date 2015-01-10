@@ -34,14 +34,17 @@ import org.robovm.apple.coregraphics.*;
 /*<javadoc>*/
 
 /*</javadoc>*/
-/*<annotations>*//*</annotations>*/
+/*<annotations>*/@Marshaler(ValuedEnum.AsMachineSizedSIntMarshaler.class)/*</annotations>*/
 public enum /*<name>*/CTFontManagerRegistrationError/*</name>*/ implements ValuedEnum {
     /*<values>*/
     FileNotFound(101L),
     InsufficientPermissions(102L),
     UnrecognizedFormat(103L),
     InvalidFontData(104L),
-    AlreadyRegistered(105L);
+    AlreadyRegistered(105L),
+    NotRegistered(201L),
+    InUse(202L),
+    SystemRequired(203L);
     /*</values>*/
 
     /*<bind>*/

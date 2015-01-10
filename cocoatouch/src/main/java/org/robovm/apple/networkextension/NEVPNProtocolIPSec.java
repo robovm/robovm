@@ -61,12 +61,12 @@ import org.robovm.apple.foundation.*;
      * @since Available in iOS 8.0 and later.
      */
     @Property(selector = "useExtendedAuthentication")
-    public native boolean isUseExtendedAuthentication();
+    public native boolean usesExtendedAuthentication();
     /**
      * @since Available in iOS 8.0 and later.
      */
     @Property(selector = "setUseExtendedAuthentication:")
-    public native void setUseExtendedAuthentication(boolean v);
+    public native void setUsesExtendedAuthentication(boolean v);
     /**
      * @since Available in iOS 8.0 and later.
      */

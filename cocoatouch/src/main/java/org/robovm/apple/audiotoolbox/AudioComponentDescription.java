@@ -49,25 +49,25 @@ import org.robovm.apple.coremedia.*;
     /*<constructors>*/
     public AudioComponentDescription() {}
     public AudioComponentDescription(int componentType, int componentSubType, int componentManufacturer, int componentFlags, int componentFlagsMask) {
-        this.componentType(componentType);
-        this.componentSubType(componentSubType);
-        this.componentManufacturer(componentManufacturer);
-        this.componentFlags(componentFlags);
-        this.componentFlagsMask(componentFlagsMask);
+        this.setComponentType(componentType);
+        this.setComponentSubType(componentSubType);
+        this.setComponentManufacturer(componentManufacturer);
+        this.setComponentFlags(componentFlags);
+        this.setComponentFlagsMask(componentFlagsMask);
     }
     /*</constructors>*/
     /*<properties>*//*</properties>*/
     /*<members>*/
-    @StructMember(0) public native int componentType();
-    @StructMember(0) public native AudioComponentDescription componentType(int componentType);
-    @StructMember(1) public native int componentSubType();
-    @StructMember(1) public native AudioComponentDescription componentSubType(int componentSubType);
-    @StructMember(2) public native int componentManufacturer();
-    @StructMember(2) public native AudioComponentDescription componentManufacturer(int componentManufacturer);
-    @StructMember(3) public native int componentFlags();
-    @StructMember(3) public native AudioComponentDescription componentFlags(int componentFlags);
-    @StructMember(4) public native int componentFlagsMask();
-    @StructMember(4) public native AudioComponentDescription componentFlagsMask(int componentFlagsMask);
+    @StructMember(0) public native int getComponentType();
+    @StructMember(0) public native AudioComponentDescription setComponentType(int componentType);
+    @StructMember(1) public native int getComponentSubType();
+    @StructMember(1) public native AudioComponentDescription setComponentSubType(int componentSubType);
+    @StructMember(2) public native int getComponentManufacturer();
+    @StructMember(2) public native AudioComponentDescription setComponentManufacturer(int componentManufacturer);
+    @StructMember(3) public native int getComponentFlags();
+    @StructMember(3) public native AudioComponentDescription setComponentFlags(int componentFlags);
+    @StructMember(4) public native int getComponentFlagsMask();
+    @StructMember(4) public native AudioComponentDescription setComponentFlagsMask(int componentFlagsMask);
     /*</members>*/
     /*<methods>*//*</methods>*/
 }

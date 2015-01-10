@@ -56,14 +56,14 @@ import org.robovm.apple.coregraphics.*;
     @Property(selector = "setDelegate:", strongRef = true)
     public native void setDelegate(MPMediaPickerControllerDelegate v);
     @Property(selector = "allowsPickingMultipleItems")
-    public native boolean isAllowsPickingMultipleItems();
+    public native boolean allowsPickingMultipleItems();
     @Property(selector = "setAllowsPickingMultipleItems:")
     public native void setAllowsPickingMultipleItems(boolean v);
     /**
      * @since Available in iOS 6.0 and later.
      */
     @Property(selector = "showsCloudItems")
-    public native boolean isShowsCloudItems();
+    public native boolean showsCloudItems();
     /**
      * @since Available in iOS 6.0 and later.
      */

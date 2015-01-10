@@ -125,7 +125,7 @@ import org.robovm.apple.imageio.*;
     @SuppressWarnings("unchecked")
     private <T> T getPropertyValue(ALAssetProperty property, Class<T> type) {
         NSObject val = getValue(property);
-        if (val != null && val.equals(InvalidProperty())) {
+        if (val != null && val.equals(getInvalidProperty())) {
             return null;
         }
         return (T) val;
@@ -136,7 +136,7 @@ import org.robovm.apple.imageio.*;
      * @since Available in iOS 4.0 and later.
      */
     @GlobalValue(symbol="ALErrorInvalidProperty", optional=true)
-    public static native NSString InvalidProperty();
+    public static native NSString getInvalidProperty();
     
     @Method(selector = "valueForProperty:")
     public native NSObject getValue(ALAssetProperty property);

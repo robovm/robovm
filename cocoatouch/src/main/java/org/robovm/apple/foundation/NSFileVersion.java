@@ -74,12 +74,12 @@ import org.robovm.apple.dispatch.*;
      * @since Available in iOS 8.0 and later.
      */
     @Property(selector = "hasLocalContents")
-    public native boolean isHasLocalContents();
+    public native boolean hasLocalContents();
     /**
      * @since Available in iOS 8.0 and later.
      */
     @Property(selector = "hasThumbnail")
-    public native boolean isHasThumbnail();
+    public native boolean hasThumbnail();
     /*</properties>*/
     /*<members>*//*</members>*/
     /**

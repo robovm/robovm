@@ -101,15 +101,15 @@ import org.robovm.apple.opengles.*;
     @Property(selector = "setTransparencyMode:")
     public native void setTransparencyMode(SCNTransparencyMode v);
     @Property(selector = "locksAmbientWithDiffuse")
-    public native boolean isLocksAmbientWithDiffuse();
+    public native boolean locksAmbientWithDiffuse();
     @Property(selector = "setLocksAmbientWithDiffuse:")
     public native void setLocksAmbientWithDiffuse(boolean v);
     @Property(selector = "writesToDepthBuffer")
-    public native boolean isWritesToDepthBuffer();
+    public native boolean writesToDepthBuffer();
     @Property(selector = "setWritesToDepthBuffer:")
     public native void setWritesToDepthBuffer(boolean v);
     @Property(selector = "readsFromDepthBuffer")
-    public native boolean isReadsFromDepthBuffer();
+    public native boolean readsFromDepthBuffer();
     @Property(selector = "setReadsFromDepthBuffer:")
     public native void setReadsFromDepthBuffer(boolean v);
     @Property(selector = "fresnelExponent")

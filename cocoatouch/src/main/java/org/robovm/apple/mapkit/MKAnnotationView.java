@@ -87,7 +87,7 @@ import org.robovm.apple.dispatch.*;
     @Property(selector = "setSelected:")
     public native void setSelected(boolean v);
     @Property(selector = "canShowCallout")
-    public native boolean isCanShowCallout();
+    public native boolean canShowCallout();
     @Property(selector = "setCanShowCallout:")
     public native void setCanShowCallout(boolean v);
     @Property(selector = "leftCalloutAccessoryView")

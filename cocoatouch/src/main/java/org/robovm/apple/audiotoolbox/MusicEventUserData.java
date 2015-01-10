@@ -49,16 +49,16 @@ import org.robovm.apple.coremedia.*;
     /*<constructors>*/
     public MusicEventUserData() {}
     public MusicEventUserData(int length, ByteBuffer data) {
-        this.length(length);
-        this.data(data);
+        this.setLength(length);
+        this.setData(data);
     }
     /*</constructors>*/
     /*<properties>*//*</properties>*/
     /*<members>*/
-    @StructMember(0) public native int length();
-    @StructMember(0) public native MusicEventUserData length(int length);
-    @StructMember(1) public native @Array({1}) ByteBuffer data();
-    @StructMember(1) public native MusicEventUserData data(@Array({1}) ByteBuffer data);
+    @StructMember(0) public native int getLength();
+    @StructMember(0) public native MusicEventUserData setLength(int length);
+    @StructMember(1) public native @Array({1}) ByteBuffer getData();
+    @StructMember(1) public native MusicEventUserData setData(@Array({1}) ByteBuffer data);
     /*</members>*/
     /*<methods>*//*</methods>*/
 }

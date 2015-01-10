@@ -64,9 +64,9 @@ import org.robovm.apple.corelocation.*;
     @Property(selector = "makeAndModel")
     public native String getMakeAndModel();
     @Property(selector = "supportsColor")
-    public native boolean isSupportsColor();
+    public native boolean supportsColor();
     @Property(selector = "supportsDuplex")
-    public native boolean isSupportsDuplex();
+    public native boolean supportsDuplex();
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/

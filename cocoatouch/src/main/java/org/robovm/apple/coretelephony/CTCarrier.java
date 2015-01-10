@@ -72,7 +72,7 @@ import org.robovm.apple.corefoundation.*;
      * @since Available in iOS 4.0 and later.
      */
     @Property(selector = "allowsVOIP")
-    public native boolean isAllowsVOIP();
+    public native boolean allowsVOIP();
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/

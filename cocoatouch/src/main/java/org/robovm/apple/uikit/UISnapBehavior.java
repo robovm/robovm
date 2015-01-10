@@ -51,7 +51,7 @@ import org.robovm.apple.corelocation.*;
     /*<constructors>*/
     public UISnapBehavior() {}
     protected UISnapBehavior(SkipInit skipInit) { super(skipInit); }
-    public UISnapBehavior(UIDynamicItem item, @ByVal CGPoint point) { super((SkipInit) null); initObject(initWithItem$snapToPoint$(item, point)); }
+    public UISnapBehavior(UIDynamicItem item, @ByVal CGPoint point) { super((SkipInit) null); initObject(init(item, point)); }
     /*</constructors>*/
     /*<properties>*/
     @Property(selector = "damping")
@@ -62,6 +62,6 @@ import org.robovm.apple.corelocation.*;
     /*<members>*//*</members>*/
     /*<methods>*/
     @Method(selector = "initWithItem:snapToPoint:")
-    protected native @Pointer long initWithItem$snapToPoint$(UIDynamicItem item, @ByVal CGPoint point);
+    protected native @Pointer long init(UIDynamicItem item, @ByVal CGPoint point);
     /*</methods>*/
 }

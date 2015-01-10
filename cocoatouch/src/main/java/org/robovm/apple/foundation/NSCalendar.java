@@ -64,7 +64,7 @@ import org.robovm.apple.dispatch.*;
     /*<constructors>*/
     public NSCalendar() {}
     protected NSCalendar(SkipInit skipInit) { super(skipInit); }
-    public NSCalendar(NSCalendarIdentifier ident) { super((SkipInit) null); initObject(initWithCalendarIdentifier$(ident)); }
+    public NSCalendar(NSCalendarIdentifier ident) { super((SkipInit) null); initObject(init(ident)); }
     /*</constructors>*/
     /*<properties>*/
     @Property(selector = "calendarIdentifier")
@@ -215,7 +215,7 @@ import org.robovm.apple.dispatch.*;
     public static native NSString DayChangedNotification();
     
     @Method(selector = "initWithCalendarIdentifier:")
-    protected native @Pointer long initWithCalendarIdentifier$(NSCalendarIdentifier ident);
+    protected native @Pointer long init(NSCalendarIdentifier ident);
     @Method(selector = "minimumRangeOfUnit:")
     public native @ByVal NSRange getMinimumRange(NSCalendarUnit unit);
     @Method(selector = "maximumRangeOfUnit:")

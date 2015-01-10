@@ -45,7 +45,7 @@ import org.robovm.apple.foundation.*;
     /*<constructors>*/
     public HKStatisticsCollectionQuery() {}
     protected HKStatisticsCollectionQuery(SkipInit skipInit) { super(skipInit); }
-    public HKStatisticsCollectionQuery(HKQuantityType quantityType, NSPredicate quantitySamplePredicate, HKStatisticsOptions options, NSDate anchorDate, NSDateComponents intervalComponents) { super((SkipInit) null); initObject(initWithQuantityType$quantitySamplePredicate$options$anchorDate$intervalComponents$(quantityType, quantitySamplePredicate, options, anchorDate, intervalComponents)); }
+    public HKStatisticsCollectionQuery(HKQuantityType quantityType, NSPredicate quantitySamplePredicate, HKStatisticsOptions options, NSDate anchorDate, NSDateComponents intervalComponents) { super((SkipInit) null); initObject(init(quantityType, quantitySamplePredicate, options, anchorDate, intervalComponents)); }
     /*</constructors>*/
     /*<properties>*/
     @Property(selector = "anchorDate")
@@ -66,6 +66,6 @@ import org.robovm.apple.foundation.*;
     /*<members>*//*</members>*/
     /*<methods>*/
     @Method(selector = "initWithQuantityType:quantitySamplePredicate:options:anchorDate:intervalComponents:")
-    protected native @Pointer long initWithQuantityType$quantitySamplePredicate$options$anchorDate$intervalComponents$(HKQuantityType quantityType, NSPredicate quantitySamplePredicate, HKStatisticsOptions options, NSDate anchorDate, NSDateComponents intervalComponents);
+    protected native @Pointer long init(HKQuantityType quantityType, NSPredicate quantitySamplePredicate, HKStatisticsOptions options, NSDate anchorDate, NSDateComponents intervalComponents);
     /*</methods>*/
 }

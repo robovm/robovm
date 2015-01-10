@@ -54,28 +54,10 @@ import org.robovm.apple.dispatch.*;
     /*<members>*/
     @StructMember(0) public native @MachineSizedUInt long getX();
     @StructMember(0) public native MTLOrigin setX(@MachineSizedUInt long x);
-    
-    @Deprecated
-    @StructMember(0) public native @MachineSizedUInt long x();
-    @Deprecated
-    @StructMember(0) public native MTLOrigin x(@MachineSizedUInt long x);
-    
     @StructMember(1) public native @MachineSizedUInt long getY();
     @StructMember(1) public native MTLOrigin setY(@MachineSizedUInt long y);
-    
-    @Deprecated
-    @StructMember(1) public native @MachineSizedUInt long y();
-    @Deprecated
-    @StructMember(1) public native MTLOrigin y(@MachineSizedUInt long y);
-    
     @StructMember(2) public native @MachineSizedUInt long getZ();
     @StructMember(2) public native MTLOrigin setZ(@MachineSizedUInt long z);
-    
-    @Deprecated
-    @StructMember(2) public native @MachineSizedUInt long z();
-    @Deprecated
-    @StructMember(2) public native MTLOrigin z(@MachineSizedUInt long z);
-    
     /*</members>*/
     /*<methods>*//*</methods>*/
 }

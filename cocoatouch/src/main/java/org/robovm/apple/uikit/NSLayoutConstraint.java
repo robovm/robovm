@@ -58,7 +58,7 @@ import org.robovm.apple.corelocation.*;
     @Property(selector = "setPriority:")
     public native void setPriority(float v);
     @Property(selector = "shouldBeArchived")
-    public native boolean isShouldBeArchived();
+    public native boolean shouldBeArchived();
     @Property(selector = "setShouldBeArchived:")
     public native void setShouldBeArchived(boolean v);
     @Property(selector = "firstItem")

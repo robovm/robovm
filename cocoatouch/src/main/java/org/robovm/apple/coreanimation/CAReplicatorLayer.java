@@ -55,7 +55,7 @@ import org.robovm.apple.metal.*;
     @Property(selector = "setInstanceCount:")
     public native void setInstanceCount(@MachineSizedSInt long v);
     @Property(selector = "preservesDepth")
-    public native boolean isPreservesDepth();
+    public native boolean preservesDepth();
     @Property(selector = "setPreservesDepth:")
     public native void setPreservesDepth(boolean v);
     @Property(selector = "instanceDelay")

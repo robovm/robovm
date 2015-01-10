@@ -66,7 +66,7 @@ import org.robovm.apple.corelocation.*;
     @Property(selector = "type")
     public native EKCalendarType getType();
     @Property(selector = "allowsContentModifications")
-    public native boolean isAllowsContentModifications();
+    public native boolean allowsContentModifications();
     /**
      * @since Available in iOS 5.0 and later.
      */

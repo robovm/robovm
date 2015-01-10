@@ -50,11 +50,11 @@ import org.robovm.apple.dispatch.*;
     /*<constructors>*/
     public NSURLProtocol() {}
     protected NSURLProtocol(SkipInit skipInit) { super(skipInit); }
-    public NSURLProtocol(NSURLRequest request, NSCachedURLResponse cachedResponse, NSURLProtocolClient client) { super((SkipInit) null); initObject(initWithRequest$cachedResponse$client$(request, cachedResponse, client)); }
+    public NSURLProtocol(NSURLRequest request, NSCachedURLResponse cachedResponse, NSURLProtocolClient client) { super((SkipInit) null); initObject(init(request, cachedResponse, client)); }
     /**
      * @since Available in iOS 8.0 and later.
      */
-    public NSURLProtocol(NSURLSessionTask task, NSCachedURLResponse cachedResponse, NSURLProtocolClient client) { super((SkipInit) null); initObject(initWithTask$cachedResponse$client$(task, cachedResponse, client)); }
+    public NSURLProtocol(NSURLSessionTask task, NSCachedURLResponse cachedResponse, NSURLProtocolClient client) { super((SkipInit) null); initObject(init(task, cachedResponse, client)); }
     /*</constructors>*/
     /*<properties>*/
     @Property(selector = "client")
@@ -75,7 +75,7 @@ import org.robovm.apple.dispatch.*;
     }
     /*<methods>*/
     @Method(selector = "initWithRequest:cachedResponse:client:")
-    protected native @Pointer long initWithRequest$cachedResponse$client$(NSURLRequest request, NSCachedURLResponse cachedResponse, NSURLProtocolClient client);
+    protected native @Pointer long init(NSURLRequest request, NSCachedURLResponse cachedResponse, NSURLProtocolClient client);
     @Method(selector = "startLoading")
     public native void startLoading();
     @Method(selector = "stopLoading")
@@ -100,7 +100,7 @@ import org.robovm.apple.dispatch.*;
      * @since Available in iOS 8.0 and later.
      */
     @Method(selector = "initWithTask:cachedResponse:client:")
-    protected native @Pointer long initWithTask$cachedResponse$client$(NSURLSessionTask task, NSCachedURLResponse cachedResponse, NSURLProtocolClient client);
+    protected native @Pointer long init(NSURLSessionTask task, NSCachedURLResponse cachedResponse, NSURLProtocolClient client);
     /**
      * @since Available in iOS 8.0 and later.
      */

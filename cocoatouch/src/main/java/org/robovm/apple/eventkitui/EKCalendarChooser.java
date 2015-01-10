@@ -58,11 +58,11 @@ import org.robovm.apple.uikit.*;
     @Property(selector = "setDelegate:", strongRef = true)
     public native void setDelegate(EKCalendarChooserDelegate v);
     @Property(selector = "showsDoneButton")
-    public native boolean isShowsDoneButton();
+    public native boolean showsDoneButton();
     @Property(selector = "setShowsDoneButton:")
     public native void setShowsDoneButton(boolean v);
     @Property(selector = "showsCancelButton")
-    public native boolean isShowsCancelButton();
+    public native boolean showsCancelButton();
     @Property(selector = "setShowsCancelButton:")
     public native void setShowsCancelButton(boolean v);
     @Property(selector = "selectedCalendars")

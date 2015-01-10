@@ -83,7 +83,7 @@ import org.robovm.apple.coremedia.*;
      * @since Available in iOS 2.0 and later.
      */
     @Bridge(symbol="AudioServicesGetPropertyInfo", optional=true)
-    public static native int getPropertyInfo(int inPropertyID, int inSpecifierSize, VoidPtr inSpecifier, IntPtr outPropertyDataSize, BytePtr outWritable);
+    public static native int getPropertyInfo(int inPropertyID, int inSpecifierSize, VoidPtr inSpecifier, IntPtr outPropertyDataSize, BooleanPtr outWritable);
     /**
      * @since Available in iOS 2.0 and later.
      */

@@ -49,22 +49,22 @@ import org.robovm.apple.coremedia.*;
     /*<constructors>*/
     public ExtendedAudioFormatInfo() {}
     public ExtendedAudioFormatInfo(AudioStreamBasicDescription mASBD, VoidPtr mMagicCookie, int mMagicCookieSize, AudioClassDescription mClassDescription) {
-        this.mASBD(mASBD);
-        this.mMagicCookie(mMagicCookie);
-        this.mMagicCookieSize(mMagicCookieSize);
-        this.mClassDescription(mClassDescription);
+        this.setMASBD(mASBD);
+        this.setMMagicCookie(mMagicCookie);
+        this.setMMagicCookieSize(mMagicCookieSize);
+        this.setMClassDescription(mClassDescription);
     }
     /*</constructors>*/
     /*<properties>*//*</properties>*/
     /*<members>*/
-    @StructMember(0) public native @ByVal AudioStreamBasicDescription mASBD();
-    @StructMember(0) public native ExtendedAudioFormatInfo mASBD(@ByVal AudioStreamBasicDescription mASBD);
-    @StructMember(1) public native VoidPtr mMagicCookie();
-    @StructMember(1) public native ExtendedAudioFormatInfo mMagicCookie(VoidPtr mMagicCookie);
-    @StructMember(2) public native int mMagicCookieSize();
-    @StructMember(2) public native ExtendedAudioFormatInfo mMagicCookieSize(int mMagicCookieSize);
-    @StructMember(3) public native @ByVal AudioClassDescription mClassDescription();
-    @StructMember(3) public native ExtendedAudioFormatInfo mClassDescription(@ByVal AudioClassDescription mClassDescription);
+    @StructMember(0) public native @ByVal AudioStreamBasicDescription getMASBD();
+    @StructMember(0) public native ExtendedAudioFormatInfo setMASBD(@ByVal AudioStreamBasicDescription mASBD);
+    @StructMember(1) public native VoidPtr getMMagicCookie();
+    @StructMember(1) public native ExtendedAudioFormatInfo setMMagicCookie(VoidPtr mMagicCookie);
+    @StructMember(2) public native int getMMagicCookieSize();
+    @StructMember(2) public native ExtendedAudioFormatInfo setMMagicCookieSize(int mMagicCookieSize);
+    @StructMember(3) public native @ByVal AudioClassDescription getMClassDescription();
+    @StructMember(3) public native ExtendedAudioFormatInfo setMClassDescription(@ByVal AudioClassDescription mClassDescription);
     /*</members>*/
     /*<methods>*//*</methods>*/
 }

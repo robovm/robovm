@@ -85,20 +85,8 @@ import org.robovm.apple.audiotoolbox.*;
     /*<members>*/
     @StructMember(0) public native @ByVal CMTime getStart();
     @StructMember(0) public native CMTimeRange setStart(@ByVal CMTime start);
-    
-    @Deprecated
-    @StructMember(0) public native @ByVal CMTime start();
-    @Deprecated
-    @StructMember(0) public native CMTimeRange start(@ByVal CMTime start);
-    
     @StructMember(1) public native @ByVal CMTime getDuration();
     @StructMember(1) public native CMTimeRange setDuration(@ByVal CMTime duration);
-    
-    @Deprecated
-    @StructMember(1) public native @ByVal CMTime duration();
-    @Deprecated
-    @StructMember(1) public native CMTimeRange duration(@ByVal CMTime duration);
-    
     /*</members>*/
     /*<methods>*/
     /**

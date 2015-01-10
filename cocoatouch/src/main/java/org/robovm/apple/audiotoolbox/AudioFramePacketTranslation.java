@@ -49,19 +49,19 @@ import org.robovm.apple.coremedia.*;
     /*<constructors>*/
     public AudioFramePacketTranslation() {}
     public AudioFramePacketTranslation(long mFrame, long mPacket, int mFrameOffsetInPacket) {
-        this.mFrame(mFrame);
-        this.mPacket(mPacket);
-        this.mFrameOffsetInPacket(mFrameOffsetInPacket);
+        this.setMFrame(mFrame);
+        this.setMPacket(mPacket);
+        this.setMFrameOffsetInPacket(mFrameOffsetInPacket);
     }
     /*</constructors>*/
     /*<properties>*//*</properties>*/
     /*<members>*/
-    @StructMember(0) public native long mFrame();
-    @StructMember(0) public native AudioFramePacketTranslation mFrame(long mFrame);
-    @StructMember(1) public native long mPacket();
-    @StructMember(1) public native AudioFramePacketTranslation mPacket(long mPacket);
-    @StructMember(2) public native int mFrameOffsetInPacket();
-    @StructMember(2) public native AudioFramePacketTranslation mFrameOffsetInPacket(int mFrameOffsetInPacket);
+    @StructMember(0) public native long getMFrame();
+    @StructMember(0) public native AudioFramePacketTranslation setMFrame(long mFrame);
+    @StructMember(1) public native long getMPacket();
+    @StructMember(1) public native AudioFramePacketTranslation setMPacket(long mPacket);
+    @StructMember(2) public native int getMFrameOffsetInPacket();
+    @StructMember(2) public native AudioFramePacketTranslation setMFrameOffsetInPacket(int mFrameOffsetInPacket);
     /*</members>*/
     /*<methods>*//*</methods>*/
 }

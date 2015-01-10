@@ -86,7 +86,7 @@ import org.robovm.apple.mediatoolbox.*;
      * @since Available in iOS 7.0 and later.
      */
     @Property(selector = "automaticallyEnablesStillImageStabilizationWhenAvailable")
-    public native boolean isAutomaticallyEnablesStillImageStabilizationWhenAvailable();
+    public native boolean automaticallyEnablesStillImageStabilizationWhenAvailable();
     /**
      * @since Available in iOS 7.0 and later.
      */

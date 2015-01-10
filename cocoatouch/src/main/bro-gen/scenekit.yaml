@@ -36,7 +36,7 @@ enums:
     SCNParticleBirthDirection: {}
     SCNParticleImageSequenceAnimationMode: {}
     SCNParticleInputMode: {}
-    SCNParticleModifierStage: {}
+    SCNParticleModifierStage: { prefix: SCNParticleModifierStage }
     SCNParticleEvent: {}
     SCNPhysicsBodyType: {}
     SCNPhysicsCollisionCategory: {}
@@ -246,6 +246,8 @@ classes:
         properties:
             'semantic':
                 type: SCNGeometrySourceSemantic
+            'floatComponents':
+                name: usesFloatComponents
         methods:
             '+geometrySourceWithData:semantic:vectorCount:floatComponents:componentsPerVector:bytesPerComponent:dataOffset:dataStride:':
                 name: createWithData
@@ -357,6 +359,10 @@ classes:
                 type: UIImage
             'colliderNodes':
                 type: NSArray<SCNNode>
+            'loops':
+                getter: loops
+            'particleDiesOnCollision':
+                getter: particleDiesOnCollision
             'propertyControllers':
                 type: '@org.robovm.rt.bro.annotation.Marshaler(SCNParticleProperty.AsPropertyControllerMapMarshaler.class) Map<SCNParticleProperty, SCNParticlePropertyController>'            
         methods:
@@ -639,6 +645,10 @@ classes:
                 name: getValue
             '+setValue:forKey:':
                 name: setValue
+            '+disableActions':
+                name: areActionsDisabled
+            '+setDisableActions:':
+                name: setActionsDisabled
     SCNView: # DONE
         methods:
             '-initWithFrame:options:':
@@ -722,6 +732,8 @@ protocols:
         properties:
             'context':
                 type: EAGLContext
+            'loops':
+                getter: loops
         methods:
             '-hitTest:options:':
                 trim_after_first_colon: true

@@ -58,7 +58,7 @@ import org.robovm.apple.coregraphics.*;
     @Property(selector = "setJavaScriptEnabled:")
     public native void setJavaScriptEnabled(boolean v);
     @Property(selector = "javaScriptCanOpenWindowsAutomatically")
-    public native boolean isJavaScriptCanOpenWindowsAutomatically();
+    public native boolean javaScriptCanOpenWindowsAutomatically();
     @Property(selector = "setJavaScriptCanOpenWindowsAutomatically:")
     public native void setJavaScriptCanOpenWindowsAutomatically(boolean v);
     /*</properties>*/

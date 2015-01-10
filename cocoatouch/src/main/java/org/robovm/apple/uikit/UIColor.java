@@ -51,12 +51,12 @@ import org.robovm.apple.corelocation.*;
     /*<constructors>*/
     public UIColor() {}
     protected UIColor(SkipInit skipInit) { super(skipInit); }
-    public UIColor(@MachineSizedFloat double red, @MachineSizedFloat double green, @MachineSizedFloat double blue, @MachineSizedFloat double alpha) { super((SkipInit) null); initObject(initWithRed$green$blue$alpha$(red, green, blue, alpha)); }
-    public UIColor(CGColor cgColor) { super((SkipInit) null); initObject(initWithCGColor$(cgColor)); }
+    public UIColor(@MachineSizedFloat double red, @MachineSizedFloat double green, @MachineSizedFloat double blue, @MachineSizedFloat double alpha) { super((SkipInit) null); initObject(init(red, green, blue, alpha)); }
+    public UIColor(CGColor cgColor) { super((SkipInit) null); initObject(init(cgColor)); }
     /**
      * @since Available in iOS 5.0 and later.
      */
-    public UIColor(CIColor ciColor) { super((SkipInit) null); initObject(initWithCIColor$(ciColor)); }
+    public UIColor(CIColor ciColor) { super((SkipInit) null); initObject(init(ciColor)); }
     /*</constructors>*/
     /*<properties>*/
     @Property(selector = "CGColor")
@@ -118,14 +118,14 @@ import org.robovm.apple.corelocation.*;
     
     /*<methods>*/
     @Method(selector = "initWithRed:green:blue:alpha:")
-    protected native @Pointer long initWithRed$green$blue$alpha$(@MachineSizedFloat double red, @MachineSizedFloat double green, @MachineSizedFloat double blue, @MachineSizedFloat double alpha);
+    protected native @Pointer long init(@MachineSizedFloat double red, @MachineSizedFloat double green, @MachineSizedFloat double blue, @MachineSizedFloat double alpha);
     @Method(selector = "initWithCGColor:")
-    protected native @Pointer long initWithCGColor$(CGColor cgColor);
+    protected native @Pointer long init(CGColor cgColor);
     /**
      * @since Available in iOS 5.0 and later.
      */
     @Method(selector = "initWithCIColor:")
-    protected native @Pointer long initWithCIColor$(CIColor ciColor);
+    protected native @Pointer long init(CIColor ciColor);
     @Method(selector = "set")
     public native void setFillAndStroke();
     @Method(selector = "setFill")

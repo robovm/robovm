@@ -51,7 +51,7 @@ import org.robovm.apple.corelocation.*;
     /*<constructors>*/
     public UIInterpolatingMotionEffect() {}
     protected UIInterpolatingMotionEffect(SkipInit skipInit) { super(skipInit); }
-    public UIInterpolatingMotionEffect(String keyPath, UIInterpolatingMotionEffectType type) { super((SkipInit) null); initObject(initWithKeyPath$type$(keyPath, type)); }
+    public UIInterpolatingMotionEffect(String keyPath, UIInterpolatingMotionEffectType type) { super((SkipInit) null); initObject(init(keyPath, type)); }
     /*</constructors>*/
     /*<properties>*/
     @Property(selector = "keyPath")
@@ -70,6 +70,6 @@ import org.robovm.apple.corelocation.*;
     /*<members>*//*</members>*/
     /*<methods>*/
     @Method(selector = "initWithKeyPath:type:")
-    protected native @Pointer long initWithKeyPath$type$(String keyPath, UIInterpolatingMotionEffectType type);
+    protected native @Pointer long init(String keyPath, UIInterpolatingMotionEffectType type);
     /*</methods>*/
 }

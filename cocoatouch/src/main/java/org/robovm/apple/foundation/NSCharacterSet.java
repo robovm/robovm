@@ -52,7 +52,7 @@ import org.robovm.apple.dispatch.*;
     /*<constructors>*/
     public NSCharacterSet() {}
     protected NSCharacterSet(SkipInit skipInit) { super(skipInit); }
-    public NSCharacterSet(NSCoder aDecoder) { super((SkipInit) null); initObject(initWithCoder$(aDecoder)); }
+    public NSCharacterSet(NSCoder aDecoder) { super((SkipInit) null); initObject(init(aDecoder)); }
     /*</constructors>*/
     /*<properties>*/
     @Property(selector = "bitmapRepresentation")
@@ -66,12 +66,12 @@ import org.robovm.apple.dispatch.*;
         if (file == null) {
             throw new NullPointerException("file");
         }
-        return characterSetWithContentsOfFile$(file.getAbsolutePath());
+        return createWithFile(file.getAbsolutePath());
     }
     
     /*<methods>*/
     @Method(selector = "initWithCoder:")
-    protected native @Pointer long initWithCoder$(NSCoder aDecoder);
+    protected native @Pointer long init(NSCoder aDecoder);
     @Method(selector = "characterIsMember:")
     public native boolean isMember(short aCharacter);
     @Method(selector = "longCharacterIsMember:")
@@ -120,7 +120,7 @@ import org.robovm.apple.dispatch.*;
     @Method(selector = "characterSetWithBitmapRepresentation:")
     public static native NSCharacterSet create(NSData data);
     @Method(selector = "characterSetWithContentsOfFile:")
-    private static native NSCharacterSet characterSetWithContentsOfFile$(String fName);
+    private static native NSCharacterSet createWithFile(String fName);
     /**
      * @since Available in iOS 7.0 and later.
      */

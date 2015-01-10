@@ -88,7 +88,7 @@ import org.robovm.apple.mediatoolbox.*;
     @Property(selector = "availableVideoCodecTypes")
     public native @org.robovm.rt.bro.annotation.Marshaler(CMVideoCodecType.AsListMarshaler.class) List<CMVideoCodecType> getAvailableVideoCodecTypes();
     @Property(selector = "alwaysDiscardsLateVideoFrames")
-    public native boolean isAlwaysDiscardsLateVideoFrames();
+    public native boolean alwaysDiscardsLateVideoFrames();
     @Property(selector = "setAlwaysDiscardsLateVideoFrames:")
     public native void setAlwaysDiscardsLateVideoFrames(boolean v);
     /*</properties>*/

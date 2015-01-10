@@ -245,7 +245,7 @@ import org.robovm.apple.dispatch.*;
         }
         
         @Method(selector = "observeValueForKeyPath:ofObject:change:context:")
-        private void observeValueForKeyPath$ofObject$change$context$(String keyPath, NSObject object, NSKeyValueChangeInfo change, VoidPtr context) {
+        private void observeValueForKeyPath(String keyPath, NSObject object, NSKeyValueChangeInfo change, VoidPtr context) {
             observer.observeValue(keyPath, object, change);
         }
     }
@@ -292,7 +292,7 @@ import org.robovm.apple.dispatch.*;
                 keyValueObservers.add(wrapper);
             }
         }
-        addObserver$forKeyPath$options$context$(wrapper, keyPath, options, null);
+        addObserver(wrapper, keyPath, options, null);
     }
     /**
      * Removes all key value observers that listen for value changes to keyPath.
@@ -309,7 +309,7 @@ import org.robovm.apple.dispatch.*;
             for (Iterator<KeyValueObserverWrapper> i = keyValueObservers.iterator(); i.hasNext();) {
                 KeyValueObserverWrapper wrapper = i.next();
                 if (wrapper.keyPaths.remove(keyPath)) {
-                    removeObserver$forKeyPath$context$(wrapper, keyPath, null);
+                    removeObserver(wrapper, keyPath, null);
                     if (wrapper.keyPaths.size() == 0) {
                         i.remove();
                         removeStrongRef(wrapper);
@@ -343,7 +343,7 @@ import org.robovm.apple.dispatch.*;
             }
             if (wrapper != null) {
                 if (wrapper.keyPaths.remove(keyPath)) {
-                    removeObserver$forKeyPath$context$(wrapper, keyPath, null);
+                    removeObserver(wrapper, keyPath, null);
                     if (wrapper.keyPaths.size() == 0) {
                         keyValueObservers.remove(wrapper);
                         removeStrongRef(wrapper);
@@ -374,12 +374,12 @@ import org.robovm.apple.dispatch.*;
     @Method(selector = "mutableCopy")
     public native NSObject mutableCopy();
     @Method(selector = "addObserver:forKeyPath:options:context:")
-    private native void addObserver$forKeyPath$options$context$(NSObject observer, String keyPath, NSKeyValueObservingOptions options, VoidPtr context);
+    private native void addObserver(NSObject observer, String keyPath, NSKeyValueObservingOptions options, VoidPtr context);
     /**
      * @since Available in iOS 5.0 and later.
      */
     @Method(selector = "removeObserver:forKeyPath:context:")
-    private native void removeObserver$forKeyPath$context$(NSObject observer, String keyPath, VoidPtr context);
+    private native void removeObserver(NSObject observer, String keyPath, VoidPtr context);
     @Method(selector = "willChangeValueForKey:")
     public native void willChangeValue(String key);
     @Method(selector = "didChangeValueForKey:")

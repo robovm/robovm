@@ -52,7 +52,7 @@ import org.robovm.apple.opengles.*;
     /*</constructors>*/
     /*<properties>*/
     @Property(selector = "usesSceneTimeBase")
-    public static native boolean isUsesSceneTimeBase(CAAnimation thiz);
+    public static native boolean usesSceneTimeBase(CAAnimation thiz);
     @Property(selector = "setUsesSceneTimeBase:")
     public static native void setUsesSceneTimeBase(CAAnimation thiz, boolean v);
     @Property(selector = "fadeInDuration")

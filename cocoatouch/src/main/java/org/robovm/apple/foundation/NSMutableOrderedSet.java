@@ -59,7 +59,7 @@ import org.robovm.apple.dispatch.*;
         @Override
         public boolean remove(Object o) {
             if (contains(o)) {
-                ((NSMutableOrderedSet<U>) set).removeObject$((U) o);
+                ((NSMutableOrderedSet<U>) set).removeObject((U) o);
                 return true;
             }
             return false;
@@ -81,8 +81,8 @@ import org.robovm.apple.dispatch.*;
         public U set(int index, U element) {
             checkNull(element);
             checkIndex(index);
-            U old = (U) set.objectAtIndex$(index);
-            ((NSMutableOrderedSet<U>) set).replaceObjectAtIndex$withObject$(index, element);
+            U old = (U) set.getObjectAt(index);
+            ((NSMutableOrderedSet<U>) set).replaceObject(index, element);
             return old;
         }
         
@@ -92,14 +92,14 @@ import org.robovm.apple.dispatch.*;
             if (index != set.getCount() + 1) {
                 checkIndex(index);
             }
-            ((NSMutableOrderedSet<U>) set).insertObject$atIndex$(element, index);
+            ((NSMutableOrderedSet<U>) set).insertObject(element, index);
         }
         
         @Override
         public U remove(int index) {
             checkIndex(index);
-            U old = (U) set.objectAtIndex$(index);
-            ((NSMutableOrderedSet<U>) set).removeObjectAtIndex$(index);
+            U old = (U) set.getObjectAt(index);
+            ((NSMutableOrderedSet<U>) set).removeObject(index);
             return old;
         }
     }
@@ -109,7 +109,7 @@ import org.robovm.apple.dispatch.*;
     /*<constructors>*/
     public NSMutableOrderedSet() {}
     protected NSMutableOrderedSet(SkipInit skipInit) { super(skipInit); }
-    public NSMutableOrderedSet(@MachineSizedUInt long numItems) { super((SkipInit) null); initObject(initWithCapacity$(numItems)); }
+    public NSMutableOrderedSet(@MachineSizedUInt long numItems) { super((SkipInit) null); initObject(init(numItems)); }
     /*</constructors>*/
     
     public NSMutableOrderedSet(Collection<T> c) {
@@ -136,16 +136,16 @@ import org.robovm.apple.dispatch.*;
 
     /*<methods>*/
     @Method(selector = "insertObject:atIndex:")
-    protected native void insertObject$atIndex$(NSObject object, @MachineSizedUInt long idx);
+    protected native void insertObject(NSObject object, @MachineSizedUInt long idx);
     @Method(selector = "removeObjectAtIndex:")
-    protected native void removeObjectAtIndex$(@MachineSizedUInt long idx);
+    protected native void removeObject(@MachineSizedUInt long idx);
     @Method(selector = "replaceObjectAtIndex:withObject:")
-    protected native void replaceObjectAtIndex$withObject$(@MachineSizedUInt long idx, NSObject object);
+    protected native void replaceObject(@MachineSizedUInt long idx, NSObject object);
     @Method(selector = "initWithCapacity:")
-    protected native @Pointer long initWithCapacity$(@MachineSizedUInt long numItems);
+    protected native @Pointer long init(@MachineSizedUInt long numItems);
     @Method(selector = "removeAllObjects")
     protected native void removeAllObjects();
     @Method(selector = "removeObject:")
-    protected native void removeObject$(NSObject object);
+    protected native void removeObject(NSObject object);
     /*</methods>*/
 }

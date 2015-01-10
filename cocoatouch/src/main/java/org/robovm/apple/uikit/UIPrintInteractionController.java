@@ -62,14 +62,14 @@ import org.robovm.apple.corelocation.*;
     @Property(selector = "setDelegate:", strongRef = true)
     public native void setDelegate(UIPrintInteractionControllerDelegate v);
     @Property(selector = "showsPageRange")
-    public native boolean isShowsPageRange();
+    public native boolean showsPageRange();
     @Property(selector = "setShowsPageRange:")
     public native void setShowsPageRange(boolean v);
     /**
      * @since Available in iOS 7.0 and later.
      */
     @Property(selector = "showsNumberOfCopies")
-    public native boolean isShowsNumberOfCopies();
+    public native boolean showsNumberOfCopies();
     /**
      * @since Available in iOS 7.0 and later.
      */
@@ -79,7 +79,7 @@ import org.robovm.apple.corelocation.*;
      * @since Available in iOS 8.0 and later.
      */
     @Property(selector = "showsPaperSelectionForLoadedPapers")
-    public native boolean isShowsPaperSelectionForLoadedPapers();
+    public native boolean showsPaperSelectionForLoadedPapers();
     /**
      * @since Available in iOS 8.0 and later.
      */

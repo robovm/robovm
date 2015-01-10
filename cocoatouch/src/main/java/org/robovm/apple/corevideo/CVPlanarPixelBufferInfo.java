@@ -49,19 +49,13 @@ import org.robovm.apple.metal.*;
     /*<constructors>*/
     public CVPlanarPixelBufferInfo() {}
     public CVPlanarPixelBufferInfo(CVPlanarComponentInfo componentInfo) {
-        this.setComponentinfo(componentInfo);
+        this.setComponentInfo(componentInfo);
     }
     /*</constructors>*/
     /*<properties>*//*</properties>*/
     /*<members>*/
-    @StructMember(0) public native @Array({1}) CVPlanarComponentInfo getComponentinfo();
-    @StructMember(0) public native CVPlanarPixelBufferInfo setComponentinfo(@Array({1}) CVPlanarComponentInfo componentInfo);
-    
-    @Deprecated
-    @StructMember(0) public native @Array({1}) CVPlanarComponentInfo componentInfo();
-    @Deprecated
-    @StructMember(0) public native CVPlanarPixelBufferInfo componentInfo(@Array({1}) CVPlanarComponentInfo componentInfo);
-    
+    @StructMember(0) public native @Array({1}) CVPlanarComponentInfo getComponentInfo();
+    @StructMember(0) public native CVPlanarPixelBufferInfo setComponentInfo(@Array({1}) CVPlanarComponentInfo componentInfo);
     /*</members>*/
     /*<methods>*//*</methods>*/
 }

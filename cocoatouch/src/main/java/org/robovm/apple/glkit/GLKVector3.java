@@ -49,13 +49,13 @@ import org.robovm.apple.dispatch.*;
     /*<constructors>*/
     public GLKVector3() {}
     public GLKVector3(FloatBuffer v) {
-        this.v(v);
+        this.setV(v);
     }
     /*</constructors>*/
     /*<properties>*//*</properties>*/
     /*<members>*/
-    @StructMember(0) public native @Array({3}) FloatBuffer v();
-    @StructMember(0) public native GLKVector3 v(@Array({3}) FloatBuffer v);
+    @StructMember(0) public native @Array({3}) FloatBuffer getV();
+    @StructMember(0) public native GLKVector3 setV(@Array({3}) FloatBuffer v);
     /*</members>*/
     /*<methods>*//*</methods>*/
 }

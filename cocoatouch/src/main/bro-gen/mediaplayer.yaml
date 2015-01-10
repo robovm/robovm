@@ -97,6 +97,7 @@ classes:
             '+collectionWithItems:':
                 exclude: true
             '-initWithItems:':
+                name: init
                 parameters:
                     items:
                         type: NSArray<MPMediaItem>
@@ -173,6 +174,8 @@ classes:
         properties:
             'timedMetadata':
                 type: NSArray<MPTimedMetadata>
+            'useApplicationAudioSession':
+                name: usesApplicationAudioSession
         methods:
             '-init.*':
                 name: init
@@ -244,6 +247,9 @@ classes:
             'allMetadata':
                 type: NSDictionary<NSString, NSObject>
     MPVolumeView: # DONE
+        properties:
+            'wirelessRoutesAvailable':
+                name: areWirelessRoutesAvailable
         methods:
             '-maximumVolumeSliderImageForState:':
                 name: getMaximumVolumeSliderImage

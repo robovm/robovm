@@ -51,7 +51,7 @@ import org.robovm.apple.corelocation.*;
     /*<constructors>*/
     public UITableViewHeaderFooterView() {}
     protected UITableViewHeaderFooterView(SkipInit skipInit) { super(skipInit); }
-    public UITableViewHeaderFooterView(String reuseIdentifier) { super((SkipInit) null); initObject(initWithReuseIdentifier$(reuseIdentifier)); }
+    public UITableViewHeaderFooterView(String reuseIdentifier) { super((SkipInit) null); initObject(init(reuseIdentifier)); }
     /*</constructors>*/
     
     public UITableViewHeaderFooterView(CGRect frame) {
@@ -79,7 +79,7 @@ import org.robovm.apple.corelocation.*;
     /*<members>*//*</members>*/
     /*<methods>*/
     @Method(selector = "initWithReuseIdentifier:")
-    protected native @Pointer long initWithReuseIdentifier$(String reuseIdentifier);
+    protected native @Pointer long init(String reuseIdentifier);
     @Method(selector = "prepareForReuse")
     public native void prepareForReuse();
     /*</methods>*/

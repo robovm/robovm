@@ -46,7 +46,7 @@ import org.robovm.apple.audiotoolbox.*;
     /*<ptr>*/public static class CMBlockBufferPtr extends Ptr<CMBlockBuffer, CMBlockBufferPtr> {}/*</ptr>*/
     /*<bind>*/static { Bro.bind(CMBlockBuffer.class); }/*</bind>*/
     /*<constants>*/
-    public static final int CustomBlockSourceVersion = 0;
+    public static final int getCustomBlockSourceVersion = 0;
     /*</constants>*/
     /*<constructors>*/
     protected CMBlockBuffer() {}

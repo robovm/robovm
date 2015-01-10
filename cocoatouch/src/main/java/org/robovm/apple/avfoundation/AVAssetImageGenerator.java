@@ -63,7 +63,7 @@ import org.robovm.apple.mediatoolbox.*;
     @Property(selector = "asset")
     public native AVAsset getAsset();
     @Property(selector = "appliesPreferredTrackTransform")
-    public native boolean isAppliesPreferredTrackTransform();
+    public native boolean appliesPreferredTrackTransform();
     @Property(selector = "setAppliesPreferredTrackTransform:")
     public native void setAppliesPreferredTrackTransform(boolean v);
     @Property(selector = "maximumSize")

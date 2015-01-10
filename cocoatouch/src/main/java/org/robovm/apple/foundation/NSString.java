@@ -55,7 +55,7 @@ import org.robovm.apple.dispatch.*;
                     return EMPTY_STRING;
                 }
                 char[] chars = new char[(int) length];
-                getCharacters$range$(handle, sel_getCharacters$range$, VM.getArrayValuesAddress(chars), new NSRange(0, length));
+                getCharacters(handle, sel_getCharacters, VM.getArrayValuesAddress(chars), new NSRange(0, length));
                 return VM.newStringNoCopy(chars, 0, (int) length);
             }
             return null;
@@ -65,7 +65,7 @@ import org.robovm.apple.dispatch.*;
             if (o == null) {
                 return 0L;
             }
-            long handle = stringWithCharacters$length$(getChars(o), o.length());
+            long handle = create(getChars(o), o.length());
             // retainCount is now 1
             retain(handle); // Make sure the retainCount is 1 when we exit this try block
             // retainCount is now 2
@@ -90,7 +90,7 @@ import org.robovm.apple.dispatch.*;
     private static final long STRING_VALUE_OFFSET;    
     private static final long STRING_OFFSET_OFFSET;   
     private static final Selector sel_length = Selector.register("length");
-    private static final Selector sel_getCharacters$range$ = Selector.register("getCharacters:range:");
+    private static final Selector sel_getCharacters = Selector.register("getCharacters:range:");
     /*<bind>*/static { ObjCRuntime.bind(NSString.class); }/*</bind>*/
     static {
         try {
@@ -104,7 +104,7 @@ import org.robovm.apple.dispatch.*;
     
     public NSString(String s) {
         super((SkipInit) null);
-        initObject(initWithCharacters$length$(getChars(s), s.length()));
+        initObject(init(getChars(s), s.length()));
     }
     
     /*<constructors>*/
@@ -130,7 +130,7 @@ import org.robovm.apple.dispatch.*;
             return EMPTY_STRING;
         }
         char[] chars = new char[len];
-        getCharacters$range$(VM.getArrayValuesAddress(chars), new NSRange(0, len));
+        getCharacters(VM.getArrayValuesAddress(chars), new NSRange(0, len));
         return VM.newStringNoCopy(chars, 0, len);
     }
     
@@ -139,7 +139,7 @@ import org.robovm.apple.dispatch.*;
     }
     
     @Bridge protected static native @MachineSizedUInt long length(@Pointer long handle, Selector sel);
-    @Bridge protected static native void getCharacters$range$(@Pointer long handle, Selector sel, @Pointer long buffer, @ByVal NSRange aRange);
+    @Bridge protected static native void getCharacters(@Pointer long handle, Selector sel, @Pointer long buffer, @ByVal NSRange aRange);
 
     /* UIKit extensions */
     /**
@@ -304,20 +304,41 @@ import org.robovm.apple.dispatch.*;
     }
     /*<methods>*/
     @Method(selector = "characterAtIndex:")
-    protected native short characterAtIndex$(@MachineSizedUInt long index);
+    protected native short getCharactersAt(@MachineSizedUInt long index);
     @Method(selector = "getCharacters:range:")
-    protected native void getCharacters$range$(@Pointer long buffer, @ByVal NSRange aRange);
+    protected native void getCharacters(@Pointer long buffer, @ByVal NSRange aRange);
+    @Method(selector = "hasPrefix:")
+    public native boolean hasPrefix(String aString);
+    @Method(selector = "hasSuffix:")
+    public native boolean hasSuffix(String aString);
+    @Method(selector = "dataUsingEncoding:allowLossyConversion:")
+    public native NSData toData(NSStringEncoding encoding, boolean lossy);
+    @Method(selector = "dataUsingEncoding:")
+    public native NSData toData(NSStringEncoding encoding);
     @Method(selector = "initWithCharacters:length:")
-    protected native @Pointer long initWithCharacters$length$(@Pointer long characters, @MachineSizedUInt long length);
+    protected native @Pointer long init(@Pointer long characters, @MachineSizedUInt long length);
+    @Method(selector = "writeToURL:atomically:encoding:error:")
+    protected native boolean writeURL(NSURL url, boolean useAuxiliaryFile, NSStringEncoding enc, NSError.NSErrorPtr error);
+    @Method(selector = "writeToFile:atomically:encoding:error:")
+    protected native boolean writeFile(String path, boolean useAuxiliaryFile, NSStringEncoding enc, NSError.NSErrorPtr error);
     @Method(selector = "stringWithCharacters:length:")
-    protected static native @Pointer long stringWithCharacters$length$(@Pointer long characters, @MachineSizedUInt long length);
+    protected static native @Pointer long create(@Pointer long characters, @MachineSizedUInt long length);
     @Method(selector = "stringWithContentsOfURL:encoding:error:")
     protected static native String readURL(NSURL url, NSStringEncoding enc, NSError.NSErrorPtr error);
     @Method(selector = "stringWithContentsOfFile:encoding:error:")
     protected static native String readFile(String path, NSStringEncoding enc, NSError.NSErrorPtr error);
+    @Method(selector = "stringByAppendingPathComponent:")
+    public native String appendPathComponent(String str);
+    @Method(selector = "stringByAppendingPathExtension:")
+    public native String appendPathExtension(String str);
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
+    @Method(selector = "stringByAddingPercentEncodingWithAllowedCharacters:")
+    public native String addPercentEncoding(NSCharacterSet allowedCharacters);
     @Method(selector = "stringByAddingPercentEscapesUsingEncoding:")
-    protected native String stringByAddingPercentEscapesUsingEncoding$(NSStringEncoding enc);
+    public native String addPercentEscapes(NSStringEncoding enc);
     @Method(selector = "stringByReplacingPercentEscapesUsingEncoding:")
-    protected native String stringByReplacingPercentEscapesUsingEncoding$(NSStringEncoding enc);
+    public native String replacePercentEscapes(NSStringEncoding enc);
     /*</methods>*/
 }

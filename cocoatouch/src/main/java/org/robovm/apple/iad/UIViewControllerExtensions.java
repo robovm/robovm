@@ -63,7 +63,7 @@ import org.robovm.apple.avkit.*;
      * @since Available in iOS 7.0 and later.
      */
     @Property(selector = "canDisplayBannerAds")
-    public static native boolean isCanDisplayBannerAds(UIViewController thiz);
+    public static native boolean canDisplayBannerAds(UIViewController thiz);
     /**
      * @since Available in iOS 7.0 and later.
      */

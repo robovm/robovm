@@ -104,7 +104,7 @@ import org.robovm.apple.mediatoolbox.*;
      */
     @Deprecated
     @Property(selector = "automaticallyAdjustsMirroring")
-    public native boolean isAutomaticallyAdjustsMirroring();
+    public native boolean automaticallyAdjustsMirroring();
     /**
      * @since Available in iOS 4.0 and later.
      * @deprecated Deprecated in iOS 6.0.

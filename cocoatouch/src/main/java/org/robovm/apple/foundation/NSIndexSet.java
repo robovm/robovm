@@ -50,17 +50,17 @@ import org.robovm.apple.dispatch.*;
     /*<constructors>*/
     public NSIndexSet() {}
     protected NSIndexSet(SkipInit skipInit) { super(skipInit); }
-    public NSIndexSet(@ByVal NSRange range) { super((SkipInit) null); initObject(initWithIndexesInRange$(range)); }
-    public NSIndexSet(NSIndexSet indexSet) { super((SkipInit) null); initObject(initWithIndexSet$(indexSet)); }
-    public NSIndexSet(@MachineSizedUInt long value) { super((SkipInit) null); initObject(initWithIndex$(value)); }
+    public NSIndexSet(@ByVal NSRange range) { super((SkipInit) null); initObject(init(range)); }
+    public NSIndexSet(NSIndexSet indexSet) { super((SkipInit) null); initObject(init(indexSet)); }
+    public NSIndexSet(@MachineSizedUInt long value) { super((SkipInit) null); initObject(init(value)); }
     /*</constructors>*/
     /*<properties>*/
     @Property(selector = "count")
-    public native @MachineSizedUInt long getCount();
+    public native @MachineSizedUInt long size();
     @Property(selector = "firstIndex")
-    public native @MachineSizedUInt long getFirstIndex();
+    public native @MachineSizedUInt long first();
     @Property(selector = "lastIndex")
-    public native @MachineSizedUInt long getLastIndex();
+    public native @MachineSizedUInt long last();
     /*</properties>*/
     /*<members>*//*</members>*/
     public long[] getIndexesInRange(NSRange range, @MachineSizedUInt long maxIndexes) {
@@ -70,11 +70,11 @@ import org.robovm.apple.dispatch.*;
     }
     /*<methods>*/
     @Method(selector = "initWithIndexesInRange:")
-    protected native @Pointer long initWithIndexesInRange$(@ByVal NSRange range);
+    protected native @Pointer long init(@ByVal NSRange range);
     @Method(selector = "initWithIndexSet:")
-    protected native @Pointer long initWithIndexSet$(NSIndexSet indexSet);
+    protected native @Pointer long init(NSIndexSet indexSet);
     @Method(selector = "initWithIndex:")
-    protected native @Pointer long initWithIndex$(@MachineSizedUInt long value);
+    protected native @Pointer long init(@MachineSizedUInt long value);
     @Method(selector = "isEqualToIndexSet:")
     public native boolean equals(NSIndexSet indexSet);
     @Method(selector = "indexGreaterThanIndex:")

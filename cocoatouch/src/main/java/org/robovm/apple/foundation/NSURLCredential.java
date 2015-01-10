@@ -50,7 +50,7 @@ import org.robovm.apple.dispatch.*;
     /*<constructors>*/
     public NSURLCredential() {}
     protected NSURLCredential(SkipInit skipInit) { super(skipInit); }
-    public NSURLCredential(String user, String password, NSURLCredentialPersistence persistence) { super((SkipInit) null); initObject(initWithUser$password$persistence$(user, password, persistence)); }
+    public NSURLCredential(String user, String password, NSURLCredentialPersistence persistence) { super((SkipInit) null); initObject(init(user, password, persistence)); }
     /**
      * @since Available in iOS 3.0 and later.
      */
@@ -58,7 +58,7 @@ import org.robovm.apple.dispatch.*;
     /**
      * @since Available in iOS 3.0 and later.
      */
-    public NSURLCredential(SecTrust trust) { super((SkipInit) null); initObject(initWithTrust$(trust)); }
+    public NSURLCredential(SecTrust trust) { super((SkipInit) null); initObject(init(trust)); }
     /*</constructors>*/
     /*<properties>*/
     @Property(selector = "persistence")
@@ -68,7 +68,7 @@ import org.robovm.apple.dispatch.*;
     @Property(selector = "password")
     public native String getPassword();
     @Property(selector = "hasPassword")
-    public native boolean isHasPassword();
+    public native boolean hasPassword();
     @Property(selector = "identity")
     public native SecIdentity getIdentity();
     /**
@@ -80,7 +80,7 @@ import org.robovm.apple.dispatch.*;
     /*<members>*//*</members>*/
     /*<methods>*/
     @Method(selector = "initWithUser:password:persistence:")
-    protected native @Pointer long initWithUser$password$persistence$(String user, String password, NSURLCredentialPersistence persistence);
+    protected native @Pointer long init(String user, String password, NSURLCredentialPersistence persistence);
     /**
      * @since Available in iOS 3.0 and later.
      */
@@ -90,6 +90,6 @@ import org.robovm.apple.dispatch.*;
      * @since Available in iOS 3.0 and later.
      */
     @Method(selector = "initWithTrust:")
-    protected native @Pointer long initWithTrust$(SecTrust trust);
+    protected native @Pointer long init(SecTrust trust);
     /*</methods>*/
 }

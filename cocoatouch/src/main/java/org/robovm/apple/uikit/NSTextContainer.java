@@ -51,7 +51,7 @@ import org.robovm.apple.corelocation.*;
     /*<constructors>*/
     public NSTextContainer() {}
     protected NSTextContainer(SkipInit skipInit) { super(skipInit); }
-    public NSTextContainer(@ByVal CGSize size) { super((SkipInit) null); initObject(initWithSize$(size)); }
+    public NSTextContainer(@ByVal CGSize size) { super((SkipInit) null); initObject(init(size)); }
     /*</constructors>*/
     /*<properties>*/
     @Property(selector = "layoutManager")
@@ -79,11 +79,11 @@ import org.robovm.apple.corelocation.*;
     @Property(selector = "setMaximumNumberOfLines:")
     public native void setMaximumNumberOfLines(@MachineSizedUInt long v);
     @Property(selector = "widthTracksTextView")
-    public native boolean isWidthTracksTextView();
+    public native boolean widthTracksTextView();
     @Property(selector = "setWidthTracksTextView:")
     public native void setWidthTracksTextView(boolean v);
     @Property(selector = "heightTracksTextView")
-    public native boolean isHeightTracksTextView();
+    public native boolean heightTracksTextView();
     @Property(selector = "setHeightTracksTextView:")
     public native void setHeightTracksTextView(boolean v);
     /**
@@ -100,7 +100,7 @@ import org.robovm.apple.corelocation.*;
     /*<members>*//*</members>*/
     /*<methods>*/
     @Method(selector = "initWithSize:")
-    protected native @Pointer long initWithSize$(@ByVal CGSize size);
+    protected native @Pointer long init(@ByVal CGSize size);
     @Method(selector = "lineFragmentRectForProposedRect:atIndex:writingDirection:remainingRect:")
     public native @ByVal CGRect getLineFragmentRect(@ByVal CGRect proposedRect, @MachineSizedUInt long characterIndex, NSWritingDirection baseWritingDirection, CGRect remainingRect);
     @Method(selector = "encodeWithCoder:")

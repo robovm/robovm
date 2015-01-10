@@ -49,16 +49,16 @@ import org.robovm.apple.coremedia.*;
     /*<constructors>*/
     public CAFDataChunk() {}
     public CAFDataChunk(int mEditCount, ByteBuffer mData) {
-        this.mEditCount(mEditCount);
-        this.mData(mData);
+        this.setMEditCount(mEditCount);
+        this.setMData(mData);
     }
     /*</constructors>*/
     /*<properties>*//*</properties>*/
     /*<members>*/
-    @StructMember(0) public native int mEditCount();
-    @StructMember(0) public native CAFDataChunk mEditCount(int mEditCount);
-    @StructMember(1) public native @Array({1}) ByteBuffer mData();
-    @StructMember(1) public native CAFDataChunk mData(@Array({1}) ByteBuffer mData);
+    @StructMember(0) public native int getMEditCount();
+    @StructMember(0) public native CAFDataChunk setMEditCount(int mEditCount);
+    @StructMember(1) public native @Array({1}) ByteBuffer getMData();
+    @StructMember(1) public native CAFDataChunk setMData(@Array({1}) ByteBuffer mData);
     /*</members>*/
     /*<methods>*//*</methods>*/
 }

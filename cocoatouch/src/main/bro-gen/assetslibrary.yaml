@@ -182,7 +182,7 @@ values:
         visibility: protected
     ALError(InvalidProperty):
         class: ALAsset
-        name: '#{g[0]}'
+        name: 'get#{g[0]}'
         type: NSString
 
     # ALAssetsGroup

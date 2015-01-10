@@ -61,20 +61,8 @@ import org.robovm.apple.mediatoolbox.*;
     /*<members>*/
     @StructMember(0) public native float getTemperature();
     @StructMember(0) public native AVCaptureWhiteBalanceTemperatureAndTintValues setTemperature(float temperature);
-    
-    @Deprecated
-    @StructMember(0) public native float temperature();
-    @Deprecated
-    @StructMember(0) public native AVCaptureWhiteBalanceTemperatureAndTintValues temperature(float temperature);
-    
     @StructMember(1) public native float getTint();
     @StructMember(1) public native AVCaptureWhiteBalanceTemperatureAndTintValues setTint(float tint);
-    
-    @Deprecated
-    @StructMember(1) public native float tint();
-    @Deprecated
-    @StructMember(1) public native AVCaptureWhiteBalanceTemperatureAndTintValues tint(float tint);
-    
     /*</members>*/
     /*<methods>*//*</methods>*/
 }

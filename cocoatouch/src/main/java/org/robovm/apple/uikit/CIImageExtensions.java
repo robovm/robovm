@@ -58,7 +58,7 @@ import org.robovm.apple.corelocation.*;
      */
     public static CIImage create(UIImage image) {
         CIImage thiz = alloc(CIImage.class);
-        initObject(thiz, initWithImage$(thiz, image));
+        initObject(thiz, init(thiz, image));
         return thiz;
     }
     /**
@@ -66,7 +66,7 @@ import org.robovm.apple.corelocation.*;
      */
     public static CIImage create(UIImage image, CIImageOptions options) {
         CIImage thiz = alloc(CIImage.class);
-        initObject(thiz, initWithImage$options$(thiz, image, options));
+        initObject(thiz, init(thiz, image, options));
         return thiz;
     }
     /*<methods>*/
@@ -74,11 +74,11 @@ import org.robovm.apple.corelocation.*;
      * @since Available in iOS 5.0 and later.
      */
     @Method(selector = "initWithImage:")
-    protected static native @Pointer long initWithImage$(CIImage thiz, UIImage image);
+    protected static native @Pointer long init(CIImage thiz, UIImage image);
     /**
      * @since Available in iOS 5.0 and later.
      */
     @Method(selector = "initWithImage:options:")
-    protected static native @Pointer long initWithImage$options$(CIImage thiz, UIImage image, CIImageOptions options);
+    protected static native @Pointer long init(CIImage thiz, UIImage image, CIImageOptions options);
     /*</methods>*/
 }

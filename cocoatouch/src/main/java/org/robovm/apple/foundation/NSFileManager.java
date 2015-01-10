@@ -91,8 +91,6 @@ import org.robovm.apple.dispatch.*;
         return ptr.get();
     }
     
-    
-    
     /**
      * @since Available in iOS 4.0 and later.
      * @throws NSErrorException

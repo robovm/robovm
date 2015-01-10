@@ -49,19 +49,19 @@ import org.robovm.apple.coremedia.*;
     /*<constructors>*/
     public CAFMarkerChunk() {}
     public CAFMarkerChunk(int mSMPTE_TimeType, int mNumberMarkers, CAFMarker mMarkers) {
-        this.mSMPTE_TimeType(mSMPTE_TimeType);
-        this.mNumberMarkers(mNumberMarkers);
-        this.mMarkers(mMarkers);
+        this.setMSMPTE_TimeType(mSMPTE_TimeType);
+        this.setMNumberMarkers(mNumberMarkers);
+        this.setMMarkers(mMarkers);
     }
     /*</constructors>*/
     /*<properties>*//*</properties>*/
     /*<members>*/
-    @StructMember(0) public native int mSMPTE_TimeType();
-    @StructMember(0) public native CAFMarkerChunk mSMPTE_TimeType(int mSMPTE_TimeType);
-    @StructMember(1) public native int mNumberMarkers();
-    @StructMember(1) public native CAFMarkerChunk mNumberMarkers(int mNumberMarkers);
-    @StructMember(2) public native @Array({1}) CAFMarker mMarkers();
-    @StructMember(2) public native CAFMarkerChunk mMarkers(@Array({1}) CAFMarker mMarkers);
+    @StructMember(0) public native int getMSMPTE_TimeType();
+    @StructMember(0) public native CAFMarkerChunk setMSMPTE_TimeType(int mSMPTE_TimeType);
+    @StructMember(1) public native int getMNumberMarkers();
+    @StructMember(1) public native CAFMarkerChunk setMNumberMarkers(int mNumberMarkers);
+    @StructMember(2) public native @Array({1}) CAFMarker getMMarkers();
+    @StructMember(2) public native CAFMarkerChunk setMMarkers(@Array({1}) CAFMarker mMarkers);
     /*</members>*/
     /*<methods>*//*</methods>*/
 }

@@ -49,16 +49,16 @@ import org.robovm.apple.coremedia.*;
     /*<constructors>*/
     public AURenderCallbackStruct() {}
     public AURenderCallbackStruct(FunctionPtr inputProc, VoidPtr inputProcRefCon) {
-        this.inputProc(inputProc);
-        this.inputProcRefCon(inputProcRefCon);
+        this.setInputProc(inputProc);
+        this.setInputProcRefCon(inputProcRefCon);
     }
     /*</constructors>*/
     /*<properties>*//*</properties>*/
     /*<members>*/
-    @StructMember(0) public native FunctionPtr inputProc();
-    @StructMember(0) public native AURenderCallbackStruct inputProc(FunctionPtr inputProc);
-    @StructMember(1) public native VoidPtr inputProcRefCon();
-    @StructMember(1) public native AURenderCallbackStruct inputProcRefCon(VoidPtr inputProcRefCon);
+    @StructMember(0) public native FunctionPtr getInputProc();
+    @StructMember(0) public native AURenderCallbackStruct setInputProc(FunctionPtr inputProc);
+    @StructMember(1) public native VoidPtr getInputProcRefCon();
+    @StructMember(1) public native AURenderCallbackStruct setInputProcRefCon(VoidPtr inputProcRefCon);
     /*</members>*/
     /*<methods>*//*</methods>*/
 }

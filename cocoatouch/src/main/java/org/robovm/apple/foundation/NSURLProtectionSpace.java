@@ -55,7 +55,7 @@ import org.robovm.apple.dispatch.*;
     @Property(selector = "realm")
     public native String getRealm();
     @Property(selector = "receivesCredentialSecurely")
-    public native boolean isReceivesCredentialSecurely();
+    public native boolean receivesCredentialSecurely();
     @Property(selector = "isProxy")
     public native boolean isProxy();
     @Property(selector = "host")
@@ -83,7 +83,7 @@ import org.robovm.apple.dispatch.*;
     
     public static NSURLProtectionSpace create(String host, long port, NSURLProtectionSpaceProtocol protocol, String realm, NSURLAuthenticationMethod authenticationMethod) {
         NSURLProtectionSpace o = new NSURLProtectionSpace((SkipInit) null);
-        long handle = o.initWithHost$port$protocol$realm$authenticationMethod$(host, port, protocol, realm, authenticationMethod);
+        long handle = o.init(host, port, protocol, realm, authenticationMethod);
         if (handle == 0) {
             return null;
         }
@@ -93,7 +93,7 @@ import org.robovm.apple.dispatch.*;
 
     public static NSURLProtectionSpace createProxy(String host, long port, NSURLProtectionSpaceProxyType type, String realm, NSURLAuthenticationMethod authenticationMethod) {
         NSURLProtectionSpace o = new NSURLProtectionSpace((SkipInit) null);
-        long handle = o.initWithProxyHost$port$type$realm$authenticationMethod$(host, port, type, realm, authenticationMethod);
+        long handle = o.init(host, port, type, realm, authenticationMethod);
         if (handle == 0) {
             return null;
         }
@@ -103,8 +103,8 @@ import org.robovm.apple.dispatch.*;
 
     /*<methods>*/
     @Method(selector = "initWithHost:port:protocol:realm:authenticationMethod:")
-    protected native @Pointer long initWithHost$port$protocol$realm$authenticationMethod$(String host, @MachineSizedSInt long port, NSURLProtectionSpaceProtocol protocol, String realm, NSURLAuthenticationMethod authenticationMethod);
+    protected native @Pointer long init(String host, @MachineSizedSInt long port, NSURLProtectionSpaceProtocol protocol, String realm, NSURLAuthenticationMethod authenticationMethod);
     @Method(selector = "initWithProxyHost:port:type:realm:authenticationMethod:")
-    protected native @Pointer long initWithProxyHost$port$type$realm$authenticationMethod$(String host, @MachineSizedSInt long port, NSURLProtectionSpaceProxyType type, String realm, NSURLAuthenticationMethod authenticationMethod);
+    protected native @Pointer long init(String host, @MachineSizedSInt long port, NSURLProtectionSpaceProxyType type, String realm, NSURLAuthenticationMethod authenticationMethod);
     /*</methods>*/
 }

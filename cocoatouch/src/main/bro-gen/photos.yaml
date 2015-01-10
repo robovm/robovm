@@ -117,6 +117,10 @@ classes:
         properties:
             'sortDescriptors':
                 type: NSArray<NSSortDescriptor>
+            'includeHiddenAssets':
+                name: includesHiddenAssets
+            'includeAllBurstAssets':
+                name: includesAllBurstAssets
     PHFetchResult: # DONE
         properties:
             'count':

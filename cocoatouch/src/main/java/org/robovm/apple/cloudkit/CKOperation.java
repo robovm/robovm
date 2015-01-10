@@ -53,11 +53,11 @@ import org.robovm.apple.corelocation.*;
     @Property(selector = "setContainer:")
     public native void setContainer(CKContainer v);
     @Property(selector = "usesBackgroundSession")
-    public native boolean isUsesBackgroundSession();
+    public native boolean usesBackgroundSession();
     @Property(selector = "setUsesBackgroundSession:")
     public native void setUsesBackgroundSession(boolean v);
     @Property(selector = "allowsCellularAccess")
-    public native boolean isAllowsCellularAccess();
+    public native boolean allowsCellularAccess();
     @Property(selector = "setAllowsCellularAccess:")
     public native void setAllowsCellularAccess(boolean v);
     /*</properties>*/

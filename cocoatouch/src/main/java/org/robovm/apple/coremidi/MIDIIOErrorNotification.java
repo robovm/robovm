@@ -45,22 +45,22 @@ import org.robovm.apple.corefoundation.*;
     /*<constructors>*/
     public MIDIIOErrorNotification() {}
     public MIDIIOErrorNotification(MIDINotificationMessageID messageID, int messageSize, MIDIDevice driverDevice, int errorCode) {
-        this.messageID(messageID);
-        this.messageSize(messageSize);
-        this.driverDevice(driverDevice);
-        this.errorCode(errorCode);
+        this.setMessageID(messageID);
+        this.setMessageSize(messageSize);
+        this.setDriverDevice(driverDevice);
+        this.setErrorCode(errorCode);
     }
     /*</constructors>*/
     /*<properties>*//*</properties>*/
     /*<members>*/
-    @StructMember(0) public native MIDINotificationMessageID messageID();
-    @StructMember(0) public native MIDIIOErrorNotification messageID(MIDINotificationMessageID messageID);
-    @StructMember(1) public native int messageSize();
-    @StructMember(1) public native MIDIIOErrorNotification messageSize(int messageSize);
-    @StructMember(2) public native MIDIDevice driverDevice();
-    @StructMember(2) public native MIDIIOErrorNotification driverDevice(MIDIDevice driverDevice);
-    @StructMember(3) public native int errorCode();
-    @StructMember(3) public native MIDIIOErrorNotification errorCode(int errorCode);
+    @StructMember(0) public native MIDINotificationMessageID getMessageID();
+    @StructMember(0) public native MIDIIOErrorNotification setMessageID(MIDINotificationMessageID messageID);
+    @StructMember(1) public native int getMessageSize();
+    @StructMember(1) public native MIDIIOErrorNotification setMessageSize(int messageSize);
+    @StructMember(2) public native MIDIDevice getDriverDevice();
+    @StructMember(2) public native MIDIIOErrorNotification setDriverDevice(MIDIDevice driverDevice);
+    @StructMember(3) public native int getErrorCode();
+    @StructMember(3) public native MIDIIOErrorNotification setErrorCode(int errorCode);
     /*</members>*/
     /*<methods>*//*</methods>*/
 }

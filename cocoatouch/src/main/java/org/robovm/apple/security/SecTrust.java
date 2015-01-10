@@ -106,7 +106,7 @@ import org.robovm.apple.corefoundation.*;
      * @since Available in iOS 7.0 and later.
      */
     @Bridge(symbol="SecTrustGetNetworkFetchAllowed", optional=true)
-    public native int getNetworkFetchAllowed(BytePtr allowFetch);
+    public native int getNetworkFetchAllowed(BooleanPtr allowFetch);
     /**
      * @since Available in iOS 2.0 and later.
      */

@@ -49,16 +49,16 @@ import org.robovm.apple.coremedia.*;
     /*<constructors>*/
     public AudioQueueLevelMeterState() {}
     public AudioQueueLevelMeterState(float mAveragePower, float mPeakPower) {
-        this.mAveragePower(mAveragePower);
-        this.mPeakPower(mPeakPower);
+        this.setMAveragePower(mAveragePower);
+        this.setMPeakPower(mPeakPower);
     }
     /*</constructors>*/
     /*<properties>*//*</properties>*/
     /*<members>*/
-    @StructMember(0) public native float mAveragePower();
-    @StructMember(0) public native AudioQueueLevelMeterState mAveragePower(float mAveragePower);
-    @StructMember(1) public native float mPeakPower();
-    @StructMember(1) public native AudioQueueLevelMeterState mPeakPower(float mPeakPower);
+    @StructMember(0) public native float getMAveragePower();
+    @StructMember(0) public native AudioQueueLevelMeterState setMAveragePower(float mAveragePower);
+    @StructMember(1) public native float getMPeakPower();
+    @StructMember(1) public native AudioQueueLevelMeterState setMPeakPower(float mPeakPower);
     /*</members>*/
     /*<methods>*//*</methods>*/
 }

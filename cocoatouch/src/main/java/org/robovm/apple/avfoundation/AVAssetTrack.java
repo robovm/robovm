@@ -102,7 +102,7 @@ import org.robovm.apple.mediatoolbox.*;
      * @since Available in iOS 8.0 and later.
      */
     @Property(selector = "requiresFrameReordering")
-    public native boolean isRequiresFrameReordering();
+    public native boolean requiresFrameReordering();
     @Property(selector = "segments")
     public native NSArray<AVAssetTrackSegment> getSegments();
     @Property(selector = "commonMetadata")

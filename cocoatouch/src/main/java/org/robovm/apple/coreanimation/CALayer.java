@@ -106,7 +106,7 @@ import org.robovm.apple.metal.*;
     @Property(selector = "setMask:")
     public native void setMask(CALayer v);
     @Property(selector = "masksToBounds")
-    public native boolean isMasksToBounds();
+    public native boolean masksToBounds();
     @Property(selector = "setMasksToBounds:")
     public native void setMasksToBounds(boolean v);
     @Property(selector = "contents")
@@ -146,11 +146,11 @@ import org.robovm.apple.metal.*;
     @Property(selector = "setOpaque:")
     public native void setOpaque(boolean v);
     @Property(selector = "needsDisplayOnBoundsChange")
-    public native boolean isNeedsDisplayOnBoundsChange();
+    public native boolean needsDisplayOnBoundsChange();
     @Property(selector = "setNeedsDisplayOnBoundsChange:")
     public native void setNeedsDisplayOnBoundsChange(boolean v);
     @Property(selector = "drawsAsynchronously")
-    public native boolean isDrawsAsynchronously();
+    public native boolean drawsAsynchronously();
     @Property(selector = "setDrawsAsynchronously:")
     public native void setDrawsAsynchronously(boolean v);
     @Property(selector = "edgeAntialiasingMask")
@@ -158,7 +158,7 @@ import org.robovm.apple.metal.*;
     @Property(selector = "setEdgeAntialiasingMask:")
     public native void setEdgeAntialiasingMask(CAEdgeAntialiasingMask v);
     @Property(selector = "allowsEdgeAntialiasing")
-    public native boolean isAllowsEdgeAntialiasing();
+    public native boolean allowsEdgeAntialiasing();
     @Property(selector = "setAllowsEdgeAntialiasing:")
     public native void setAllowsEdgeAntialiasing(boolean v);
     @Property(selector = "backgroundColor")
@@ -182,7 +182,7 @@ import org.robovm.apple.metal.*;
     @Property(selector = "setOpacity:")
     public native void setOpacity(float v);
     @Property(selector = "allowsGroupOpacity")
-    public native boolean isAllowsGroupOpacity();
+    public native boolean allowsGroupOpacity();
     @Property(selector = "setAllowsGroupOpacity:")
     public native void setAllowsGroupOpacity(boolean v);
     @Property(selector = "compositingFilter")
@@ -198,7 +198,7 @@ import org.robovm.apple.metal.*;
     @Property(selector = "setBackgroundFilters:")
     public native void setBackgroundFilters(NSArray<CIFilter> v);
     @Property(selector = "shouldRasterize")
-    public native boolean isShouldRasterize();
+    public native boolean shouldRasterize();
     @Property(selector = "setShouldRasterize:")
     public native void setShouldRasterize(boolean v);
     @Property(selector = "rasterizationScale")
@@ -268,7 +268,7 @@ import org.robovm.apple.metal.*;
     @Property(selector = "setRepeatDuration:")
     public native void setRepeatDuration(double v);
     @Property(selector = "autoreverses")
-    public native boolean isAutoreverses();
+    public native boolean autoreverses();
     @Property(selector = "setAutoreverses:")
     public native void setAutoreverses(boolean v);
     @Property(selector = "fillMode")

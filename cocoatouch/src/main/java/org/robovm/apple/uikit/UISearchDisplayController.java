@@ -53,7 +53,7 @@ import org.robovm.apple.corelocation.*;
     /*<constructors>*/
     public UISearchDisplayController() {}
     protected UISearchDisplayController(SkipInit skipInit) { super(skipInit); }
-    public UISearchDisplayController(UISearchBar searchBar, UIViewController viewController) { super((SkipInit) null); initObject(initWithSearchBar$contentsController$(searchBar, viewController)); }
+    public UISearchDisplayController(UISearchBar searchBar, UIViewController viewController) { super((SkipInit) null); initObject(init(searchBar, viewController)); }
     /*</constructors>*/
     /*<properties>*/
     @Property(selector = "delegate")
@@ -92,7 +92,7 @@ import org.robovm.apple.corelocation.*;
      * @since Available in iOS 7.0 and later.
      */
     @Property(selector = "displaysSearchBarInNavigationBar")
-    public native boolean isDisplaysSearchBarInNavigationBar();
+    public native boolean displaysSearchBarInNavigationBar();
     /**
      * @since Available in iOS 7.0 and later.
      */
@@ -107,7 +107,7 @@ import org.robovm.apple.corelocation.*;
     /*<members>*//*</members>*/
     /*<methods>*/
     @Method(selector = "initWithSearchBar:contentsController:")
-    protected native @Pointer long initWithSearchBar$contentsController$(UISearchBar searchBar, UIViewController viewController);
+    protected native @Pointer long init(UISearchBar searchBar, UIViewController viewController);
     @Method(selector = "setActive:animated:")
     public native void setActive(boolean visible, boolean animated);
     /*</methods>*/

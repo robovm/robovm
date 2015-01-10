@@ -49,19 +49,19 @@ import org.robovm.apple.coremedia.*;
     /*<constructors>*/
     public AUPresetEvent() {}
     public AUPresetEvent(int scope, int element, CFType preset) {
-        this.scope(scope);
-        this.element(element);
-        this.preset(preset);
+        this.setScope(scope);
+        this.setElement(element);
+        this.setPreset(preset);
     }
     /*</constructors>*/
     /*<properties>*//*</properties>*/
     /*<members>*/
-    @StructMember(0) public native int scope();
-    @StructMember(0) public native AUPresetEvent scope(int scope);
-    @StructMember(1) public native int element();
-    @StructMember(1) public native AUPresetEvent element(int element);
-    @StructMember(2) public native CFType preset();
-    @StructMember(2) public native AUPresetEvent preset(CFType preset);
+    @StructMember(0) public native int getScope();
+    @StructMember(0) public native AUPresetEvent setScope(int scope);
+    @StructMember(1) public native int getElement();
+    @StructMember(1) public native AUPresetEvent setElement(int element);
+    @StructMember(2) public native CFType getPreset();
+    @StructMember(2) public native AUPresetEvent setPreset(CFType preset);
     /*</members>*/
     /*<methods>*//*</methods>*/
 }

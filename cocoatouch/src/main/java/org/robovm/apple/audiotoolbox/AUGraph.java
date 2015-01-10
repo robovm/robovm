@@ -124,7 +124,7 @@ import org.robovm.apple.coremedia.*;
      * @since Available in iOS 2.0 and later.
      */
     @Bridge(symbol="AUGraphUpdate", optional=true)
-    public native int update(BytePtr outIsUpdated);
+    public native int update(BooleanPtr outIsUpdated);
     /**
      * @since Available in iOS 2.0 and later.
      */
@@ -154,17 +154,17 @@ import org.robovm.apple.coremedia.*;
      * @since Available in iOS 2.0 and later.
      */
     @Bridge(symbol="AUGraphIsOpen", optional=true)
-    public native int isOpen(BytePtr outIsOpen);
+    public native int isOpen(BooleanPtr outIsOpen);
     /**
      * @since Available in iOS 2.0 and later.
      */
     @Bridge(symbol="AUGraphIsInitialized", optional=true)
-    public native int isInitialized(BytePtr outIsInitialized);
+    public native int isInitialized(BooleanPtr outIsInitialized);
     /**
      * @since Available in iOS 2.0 and later.
      */
     @Bridge(symbol="AUGraphIsRunning", optional=true)
-    public native int isRunning(BytePtr outIsRunning);
+    public native int isRunning(BooleanPtr outIsRunning);
     /**
      * @since Available in iOS 2.0 and later.
      */

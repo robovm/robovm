@@ -176,7 +176,7 @@ import org.robovm.apple.coremedia.*;
      * @since Available in iOS 2.0 and later.
      */
     @Bridge(symbol="AudioFileStreamGetPropertyInfo", optional=true)
-    public static native AudioFileError streamGetPropertyInfo(AudioFileStream inAudioFileStream, int inPropertyID, IntPtr outPropertyDataSize, BytePtr outWritable);
+    public static native AudioFileError streamGetPropertyInfo(AudioFileStream inAudioFileStream, int inPropertyID, IntPtr outPropertyDataSize, BooleanPtr outWritable);
     /**
      * @since Available in iOS 2.0 and later.
      */

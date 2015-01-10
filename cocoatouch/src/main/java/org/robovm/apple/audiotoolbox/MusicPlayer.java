@@ -109,7 +109,7 @@ import org.robovm.apple.coremedia.*;
      * @since Available in iOS 5.0 and later.
      */
     @Bridge(symbol="MusicPlayerIsPlaying", optional=true)
-    public native int isPlaying(BytePtr outIsPlaying);
+    public native int isPlaying(BooleanPtr outIsPlaying);
     /**
      * @since Available in iOS 5.0 and later.
      */

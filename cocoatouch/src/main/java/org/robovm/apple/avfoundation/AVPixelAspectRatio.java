@@ -53,28 +53,16 @@ import org.robovm.apple.mediatoolbox.*;
     /*<constructors>*/
     public AVPixelAspectRatio() {}
     public AVPixelAspectRatio(@MachineSizedSInt long horizontalSpacing, @MachineSizedSInt long verticalSpacing) {
-        this.setHorizontalspacing(horizontalSpacing);
-        this.setVerticalspacing(verticalSpacing);
+        this.setHorizontalSpacing(horizontalSpacing);
+        this.setVerticalSpacing(verticalSpacing);
     }
     /*</constructors>*/
     /*<properties>*//*</properties>*/
     /*<members>*/
-    @StructMember(0) public native @MachineSizedSInt long getHorizontalspacing();
-    @StructMember(0) public native AVPixelAspectRatio setHorizontalspacing(@MachineSizedSInt long horizontalSpacing);
-    
-    @Deprecated
-    @StructMember(0) public native @MachineSizedSInt long horizontalSpacing();
-    @Deprecated
-    @StructMember(0) public native AVPixelAspectRatio horizontalSpacing(@MachineSizedSInt long horizontalSpacing);
-    
-    @StructMember(1) public native @MachineSizedSInt long getVerticalspacing();
-    @StructMember(1) public native AVPixelAspectRatio setVerticalspacing(@MachineSizedSInt long verticalSpacing);
-    
-    @Deprecated
-    @StructMember(1) public native @MachineSizedSInt long verticalSpacing();
-    @Deprecated
-    @StructMember(1) public native AVPixelAspectRatio verticalSpacing(@MachineSizedSInt long verticalSpacing);
-    
+    @StructMember(0) public native @MachineSizedSInt long getHorizontalSpacing();
+    @StructMember(0) public native AVPixelAspectRatio setHorizontalSpacing(@MachineSizedSInt long horizontalSpacing);
+    @StructMember(1) public native @MachineSizedSInt long getVerticalSpacing();
+    @StructMember(1) public native AVPixelAspectRatio setVerticalSpacing(@MachineSizedSInt long verticalSpacing);
     /*</members>*/
     /*<methods>*//*</methods>*/
 }

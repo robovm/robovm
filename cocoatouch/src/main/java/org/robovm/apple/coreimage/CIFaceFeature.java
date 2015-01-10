@@ -53,31 +53,31 @@ import org.robovm.apple.imageio.*;
     @Property(selector = "bounds")
     public native @ByVal CGRect getBounds();
     @Property(selector = "hasLeftEyePosition")
-    public native boolean isHasLeftEyePosition();
+    public native boolean hasLeftEyePosition();
     @Property(selector = "leftEyePosition")
     public native @ByVal CGPoint getLeftEyePosition();
     @Property(selector = "hasRightEyePosition")
-    public native boolean isHasRightEyePosition();
+    public native boolean hasRightEyePosition();
     @Property(selector = "rightEyePosition")
     public native @ByVal CGPoint getRightEyePosition();
     @Property(selector = "hasMouthPosition")
-    public native boolean isHasMouthPosition();
+    public native boolean hasMouthPosition();
     @Property(selector = "mouthPosition")
     public native @ByVal CGPoint getMouthPosition();
     @Property(selector = "hasTrackingID")
-    public native boolean isHasTrackingID();
+    public native boolean hasTrackingID();
     @Property(selector = "trackingID")
     public native int getTrackingID();
     @Property(selector = "hasTrackingFrameCount")
-    public native boolean isHasTrackingFrameCount();
+    public native boolean hasTrackingFrameCount();
     @Property(selector = "trackingFrameCount")
     public native int getTrackingFrameCount();
     @Property(selector = "hasFaceAngle")
-    public native boolean isHasFaceAngle();
+    public native boolean hasFaceAngle();
     @Property(selector = "faceAngle")
     public native float getFaceAngle();
     @Property(selector = "hasSmile")
-    public native boolean isHasSmile();
+    public native boolean hasSmile();
     @Property(selector = "leftEyeClosed")
     public native boolean isLeftEyeClosed();
     @Property(selector = "rightEyeClosed")

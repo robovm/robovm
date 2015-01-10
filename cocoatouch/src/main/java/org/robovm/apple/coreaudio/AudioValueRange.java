@@ -45,28 +45,16 @@ import org.robovm.apple.corefoundation.*;
     /*<constructors>*/
     public AudioValueRange() {}
     public AudioValueRange(double mMinimum, double mMaximum) {
-        this.setMminimum(mMinimum);
-        this.setMmaximum(mMaximum);
+        this.setMMinimum(mMinimum);
+        this.setMMaximum(mMaximum);
     }
     /*</constructors>*/
     /*<properties>*//*</properties>*/
     /*<members>*/
-    @StructMember(0) public native double getMminimum();
-    @StructMember(0) public native AudioValueRange setMminimum(double mMinimum);
-    
-    @Deprecated
-    @StructMember(0) public native double mMinimum();
-    @Deprecated
-    @StructMember(0) public native AudioValueRange mMinimum(double mMinimum);
-    
-    @StructMember(1) public native double getMmaximum();
-    @StructMember(1) public native AudioValueRange setMmaximum(double mMaximum);
-    
-    @Deprecated
-    @StructMember(1) public native double mMaximum();
-    @Deprecated
-    @StructMember(1) public native AudioValueRange mMaximum(double mMaximum);
-    
+    @StructMember(0) public native double getMMinimum();
+    @StructMember(0) public native AudioValueRange setMMinimum(double mMinimum);
+    @StructMember(1) public native double getMMaximum();
+    @StructMember(1) public native AudioValueRange setMMaximum(double mMaximum);
     /*</members>*/
     /*<methods>*//*</methods>*/
 }

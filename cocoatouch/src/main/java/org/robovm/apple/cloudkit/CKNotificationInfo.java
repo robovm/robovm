@@ -77,11 +77,11 @@ import org.robovm.apple.corelocation.*;
     @Property(selector = "setDesiredKeys:")
     public native void setDesiredKeys(@org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String> v);
     @Property(selector = "shouldBadge")
-    public native boolean isShouldBadge();
+    public native boolean shouldBadge();
     @Property(selector = "setShouldBadge:")
     public native void setShouldBadge(boolean v);
     @Property(selector = "shouldSendContentAvailable")
-    public native boolean isShouldSendContentAvailable();
+    public native boolean shouldSendContentAvailable();
     @Property(selector = "setShouldSendContentAvailable:")
     public native void setShouldSendContentAvailable(boolean v);
     /*</properties>*/

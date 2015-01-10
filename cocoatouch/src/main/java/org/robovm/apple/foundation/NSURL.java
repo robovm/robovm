@@ -48,33 +48,29 @@ import org.robovm.apple.foundation.NSError.NSErrorPtr;
     /*<ptr>*/public static class NSURLPtr extends Ptr<NSURL, NSURLPtr> {}/*</ptr>*/
     /*<bind>*/static { ObjCRuntime.bind(NSURL.class); }/*</bind>*/
     /*<constants>*//*</constants>*/
-    public NSURL(NSURLScheme scheme, String host, String path) { super((SkipInit) null); initObject(initWithScheme$host$path$(scheme.value(), host, path)); }
+    public NSURL(NSURLScheme scheme, String host, String path) { super((SkipInit) null); initObject(init(scheme.value(), host, path)); }
     /*<constructors>*/
     public NSURL() {}
     protected NSURL(SkipInit skipInit) { super(skipInit); }
-    public NSURL(String scheme, String host, String path) { super((SkipInit) null); initObject(initWithScheme$host$path$(scheme, host, path)); }
-    public NSURL(String URLString) { super((SkipInit) null); initObject(initWithString$(URLString)); }
-    public NSURL(String URLString, NSURL baseURL) { super((SkipInit) null); initObject(initWithString$relativeToURL$(URLString, baseURL)); }
+    public NSURL(String scheme, String host, String path) { super((SkipInit) null); initObject(init(scheme, host, path)); }
+    public NSURL(String URLString) { super((SkipInit) null); initObject(init(URLString)); }
+    public NSURL(String URLString, NSURL baseURL) { super((SkipInit) null); initObject(init(URLString, baseURL)); }
     /*</constructors>*/
     
     public NSURL(File file) {
         super((SkipInit) null);
-        initObject(initFileURLWithPath$(file.getAbsolutePath()));
+        initObject(initFileURL(file.getAbsolutePath()));
     }
-
     public NSURL(File file, boolean isDir) {
         super((SkipInit) null);
-        initObject(initFileURLWithPath$isDirectory$(file.getAbsolutePath(), isDir));
+        initObject(initFileURL(file.getAbsolutePath(), isDir));
     }
-    
     public NSURL(java.net.URL url) throws java.net.URISyntaxException {
         this(url.toURI());
     }
-
     public NSURL(java.net.URI uri) {
         this(uri.toString());
     }
-    
     /**
      * 
      * @param bookmarkData
@@ -179,10 +175,10 @@ import org.robovm.apple.foundation.NSError.NSErrorPtr;
     }
 
     public static String encodeURLString(String urlString, NSStringEncoding encoding) {
-        return new NSString(urlString).stringByAddingPercentEscapesUsingEncoding$(encoding);
+        return new NSString(urlString).addPercentEscapes(encoding);
     }
     public static String decodeURLString(String urlString, NSStringEncoding encoding) {
-        return new NSString(urlString).stringByReplacingPercentEscapesUsingEncoding$(encoding);
+        return new NSString(urlString).replacePercentEscapes(encoding);
     }
     
     /**
@@ -217,7 +213,7 @@ import org.robovm.apple.foundation.NSError.NSErrorPtr;
         NSObjectPtr value = new NSObjectPtr();
         NSError.NSErrorPtr err = new NSError.NSErrorPtr();
         
-        getResourceValue$forKey$error$(value, key, err);
+        getResourceValue(value, key, err);
         if (err.get() != null) {
             throw new NSErrorException(err.get());
         }
@@ -433,18 +429,18 @@ import org.robovm.apple.foundation.NSError.NSErrorPtr;
     }
     /*<methods>*/
     @Method(selector = "initWithScheme:host:path:")
-    protected native @Pointer long initWithScheme$host$path$(String scheme, String host, String path);
+    protected native @Pointer long init(String scheme, String host, String path);
     /**
      * @since Available in iOS 2.0 and later.
      */
     @Method(selector = "initFileURLWithPath:isDirectory:")
-    protected native @Pointer long initFileURLWithPath$isDirectory$(String path, boolean isDir);
+    protected native @Pointer long initFileURL(String path, boolean isDir);
     @Method(selector = "initFileURLWithPath:")
-    protected native @Pointer long initFileURLWithPath$(String path);
+    protected native @Pointer long initFileURL(String path);
     @Method(selector = "initWithString:")
-    protected native @Pointer long initWithString$(String URLString);
+    protected native @Pointer long init(String URLString);
     @Method(selector = "initWithString:relativeToURL:")
-    protected native @Pointer long initWithString$relativeToURL$(String URLString, NSURL baseURL);
+    protected native @Pointer long init(String URLString, NSURL baseURL);
     /**
      * @since Available in iOS 4.0 and later.
      */
@@ -464,7 +460,7 @@ import org.robovm.apple.foundation.NSError.NSErrorPtr;
      * @since Available in iOS 4.0 and later.
      */
     @Method(selector = "getResourceValue:forKey:error:")
-    private native boolean getResourceValue$forKey$error$(NSObject.NSObjectPtr value, NSString key, NSError.NSErrorPtr error);
+    private native boolean getResourceValue(NSObject.NSObjectPtr value, NSString key, NSError.NSErrorPtr error);
     /**
      * @since Available in iOS 4.0 and later.
      */

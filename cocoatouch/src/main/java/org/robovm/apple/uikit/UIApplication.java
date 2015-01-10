@@ -261,12 +261,12 @@ import org.robovm.apple.corelocation.*;
      * @since Available in iOS 3.0 and later.
      */
     @Property(selector = "applicationSupportsShakeToEdit")
-    public native boolean isApplicationSupportsShakeToEdit();
+    public native boolean supportsShakeToEdit();
     /**
      * @since Available in iOS 3.0 and later.
      */
     @Property(selector = "setApplicationSupportsShakeToEdit:")
-    public native void setApplicationSupportsShakeToEdit(boolean v);
+    public native void setSupportsShakeToEdit(boolean v);
     /**
      * @since Available in iOS 4.0 and later.
      */
@@ -339,22 +339,22 @@ import org.robovm.apple.corelocation.*;
      * @since Available in iOS 4.0 and later.
      */
     @GlobalValue(symbol="UIBackgroundTaskInvalid", optional=true)
-    public static native @MachineSizedUInt long BackgroundTaskInvalid();
+    public static native @MachineSizedUInt long getInvalidBackgroundTask();
     /**
      * @since Available in iOS 4.0 and later.
      */
     @GlobalValue(symbol="UIMinimumKeepAliveTimeout", optional=true)
-    public static native double MinimumKeepAliveTimeout();
+    public static native double getMinimumKeepAliveTimeout();
     /**
      * @since Available in iOS 7.0 and later.
      */
     @GlobalValue(symbol="UIApplicationBackgroundFetchIntervalMinimum", optional=true)
-    public static native double BackgroundFetchIntervalMinimum();
+    public static native double getBackgroundFetchIntervalMinimum();
     /**
      * @since Available in iOS 7.0 and later.
      */
     @GlobalValue(symbol="UIApplicationBackgroundFetchIntervalNever", optional=true)
-    public static native double BackgroundFetchIntervalNever();
+    public static native double getBackgroundFetchIntervalNever();
     /**
      * @since Available in iOS 4.0 and later.
      */

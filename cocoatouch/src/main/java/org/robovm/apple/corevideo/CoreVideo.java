@@ -325,6 +325,21 @@ import org.robovm.apple.metal.*;
     /**
      * @since Available in iOS 4.0 and later.
      */
+    @GlobalValue(symbol="kCVPixelBufferPoolMinimumBufferCountKey", optional=true)
+    public static native CFString CVPixelBufferPoolPoolMinimumBufferCountKey();
+    /**
+     * @since Available in iOS 4.0 and later.
+     */
+    @GlobalValue(symbol="kCVPixelBufferPoolMaximumBufferAgeKey", optional=true)
+    public static native CFString CVPixelBufferPoolPoolMaximumBufferAgeKey();
+    /**
+     * @since Available in iOS 4.0 and later.
+     */
+    @GlobalValue(symbol="kCVPixelBufferPoolAllocationThresholdKey", optional=true)
+    public static native CFString CVPixelBufferPoolPoolAllocationThresholdKey();
+    /**
+     * @since Available in iOS 4.0 and later.
+     */
     @GlobalValue(symbol="kCVPixelBufferPoolFreeBufferNotification", optional=true)
     public static native CFString CVPixelBufferPoolFreeBufferNotification();
     /**
@@ -467,21 +482,5 @@ import org.robovm.apple.metal.*;
      */
     @GlobalValue(symbol="kCVPixelFormatFillExtendedPixelsCallback", optional=true)
     public static native CFString CVPixelFormatFillExtendedPixelsCallback();
-    
-    /**
-     * @since Available in iOS 8.0 and later.
-     */
-    @Bridge(symbol="CVMetalTextureGetTexture", optional=true)
-    public static native MTLTexture function__CVMetalTextureGetTexture(CVImageBuffer image);
-    /**
-     * @since Available in iOS 8.0 and later.
-     */
-    @Bridge(symbol="CVMetalTextureIsFlipped", optional=true)
-    public static native boolean function__CVMetalTextureIsFlipped(CVImageBuffer image);
-    /**
-     * @since Available in iOS 8.0 and later.
-     */
-    @Bridge(symbol="CVMetalTextureGetCleanTexCoords", optional=true)
-    public static native void function__CVMetalTextureGetCleanTexCoords(CVImageBuffer image, FloatPtr lowerLeft, FloatPtr lowerRight, FloatPtr upperRight, FloatPtr upperLeft);
     /*</methods>*/
 }

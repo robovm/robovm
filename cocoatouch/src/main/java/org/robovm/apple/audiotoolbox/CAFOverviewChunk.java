@@ -49,19 +49,19 @@ import org.robovm.apple.coremedia.*;
     /*<constructors>*/
     public CAFOverviewChunk() {}
     public CAFOverviewChunk(int mEditCount, int mNumFramesPerOVWSample, CAFOverviewSample mData) {
-        this.mEditCount(mEditCount);
-        this.mNumFramesPerOVWSample(mNumFramesPerOVWSample);
-        this.mData(mData);
+        this.setMEditCount(mEditCount);
+        this.setMNumFramesPerOVWSample(mNumFramesPerOVWSample);
+        this.setMData(mData);
     }
     /*</constructors>*/
     /*<properties>*//*</properties>*/
     /*<members>*/
-    @StructMember(0) public native int mEditCount();
-    @StructMember(0) public native CAFOverviewChunk mEditCount(int mEditCount);
-    @StructMember(1) public native int mNumFramesPerOVWSample();
-    @StructMember(1) public native CAFOverviewChunk mNumFramesPerOVWSample(int mNumFramesPerOVWSample);
-    @StructMember(2) public native @Array({1}) CAFOverviewSample mData();
-    @StructMember(2) public native CAFOverviewChunk mData(@Array({1}) CAFOverviewSample mData);
+    @StructMember(0) public native int getMEditCount();
+    @StructMember(0) public native CAFOverviewChunk setMEditCount(int mEditCount);
+    @StructMember(1) public native int getMNumFramesPerOVWSample();
+    @StructMember(1) public native CAFOverviewChunk setMNumFramesPerOVWSample(int mNumFramesPerOVWSample);
+    @StructMember(2) public native @Array({1}) CAFOverviewSample getMData();
+    @StructMember(2) public native CAFOverviewChunk setMData(@Array({1}) CAFOverviewSample mData);
     /*</members>*/
     /*<methods>*//*</methods>*/
 }

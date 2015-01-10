@@ -313,7 +313,7 @@ import org.robovm.apple.mediatoolbox.*;
      * @since Available in iOS 6.0 and later.
      */
     @Property(selector = "automaticallyEnablesLowLightBoostWhenAvailable")
-    public native boolean isAutomaticallyEnablesLowLightBoostWhenAvailable();
+    public native boolean automaticallyEnablesLowLightBoostWhenAvailable();
     /**
      * @since Available in iOS 6.0 and later.
      */
@@ -338,7 +338,7 @@ import org.robovm.apple.mediatoolbox.*;
      * @since Available in iOS 8.0 and later.
      */
     @Property(selector = "automaticallyAdjustsVideoHDREnabled")
-    public native boolean isAutomaticallyAdjustsVideoHDREnabled();
+    public native boolean automaticallyAdjustsVideoHDREnabled();
     /**
      * @since Available in iOS 8.0 and later.
      */

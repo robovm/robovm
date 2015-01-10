@@ -71,7 +71,7 @@ import org.robovm.apple.opengles.*;
     @Property(selector = "setPlaying:")
     public native void setPlaying(boolean v);
     @Property(selector = "loops")
-    public native boolean isLoops();
+    public native boolean loops();
     @Property(selector = "setLoops:")
     public native void setLoops(boolean v);
     @Property(selector = "pointOfView")
@@ -79,7 +79,7 @@ import org.robovm.apple.opengles.*;
     @Property(selector = "setPointOfView:")
     public native void setPointOfView(SCNNode v);
     @Property(selector = "autoenablesDefaultLighting")
-    public native boolean isAutoenablesDefaultLighting();
+    public native boolean autoenablesDefaultLighting();
     @Property(selector = "setAutoenablesDefaultLighting:")
     public native void setAutoenablesDefaultLighting(boolean v);
     @Property(selector = "isJitteringEnabled")
@@ -87,7 +87,7 @@ import org.robovm.apple.opengles.*;
     @Property(selector = "setJitteringEnabled:")
     public native void setJitteringEnabled(boolean v);
     @Property(selector = "showsStatistics")
-    public native boolean isShowsStatistics();
+    public native boolean showsStatistics();
     @Property(selector = "setShowsStatistics:")
     public native void setShowsStatistics(boolean v);
     @Property(selector = "overlaySKScene")

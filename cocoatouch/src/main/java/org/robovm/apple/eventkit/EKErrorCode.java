@@ -35,6 +35,7 @@ import org.robovm.apple.corelocation.*;
 /*<javadoc>*/
 
 /*</javadoc>*/
+@ForceLinkClass(EKError.class)
 /*<annotations>*//*</annotations>*/
 public enum /*<name>*/EKErrorCode/*</name>*/ implements NSErrorCode {
     /*<values>*/

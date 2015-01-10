@@ -55,12 +55,12 @@ import org.robovm.apple.dispatch.*;
     @Property(selector = "systemVersion")
     public native int getSystemVersion();
     @Property(selector = "allowsKeyedCoding")
-    public native boolean isAllowsKeyedCoding();
+    public native boolean allowsKeyedCoding();
     /**
      * @since Available in iOS 6.0 and later.
      */
     @Property(selector = "requiresSecureCoding")
-    public native boolean isRequiresSecureCoding();
+    public native boolean requiresSecureCoding();
     /**
      * @since Available in iOS 6.0 and later.
      */

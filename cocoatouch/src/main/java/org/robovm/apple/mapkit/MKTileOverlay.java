@@ -72,7 +72,7 @@ import org.robovm.apple.dispatch.*;
     @Property(selector = "URLTemplate")
     public native String getURLTemplate();
     @Property(selector = "canReplaceMapContent")
-    public native boolean isCanReplaceMapContent();
+    public native boolean canReplaceMapContent();
     @Property(selector = "setCanReplaceMapContent:")
     public native void setCanReplaceMapContent(boolean v);
     @Property(selector = "coordinate")
@@ -97,9 +97,4 @@ import org.robovm.apple.dispatch.*;
     @Method(selector = "intersectsMapRect:")
     public native boolean intersects(@ByVal MKMapRect mapRect);
     /*</methods>*/
-    @Override
-	@NotImplemented("canReplaceMapContent")
-	public boolean canReplaceMapContent () {
-		throw new UnsupportedOperationException();
-	}
 }

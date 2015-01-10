@@ -275,7 +275,7 @@ import org.robovm.apple.coregraphics.*;
     @Property(selector = "setRepeatMode:")
     public native void setRepeatMode(MPMovieRepeatMode v);
     @Property(selector = "shouldAutoplay")
-    public native boolean isShouldAutoplay();
+    public native boolean shouldAutoplay();
     @Property(selector = "setShouldAutoplay:")
     public native void setShouldAutoplay(boolean v);
     @Property(selector = "isFullscreen")
@@ -315,7 +315,7 @@ import org.robovm.apple.coregraphics.*;
      * @since Available in iOS 4.3 and later.
      */
     @Property(selector = "allowsAirPlay")
-    public native boolean isAllowsAirPlay();
+    public native boolean allowsAirPlay();
     /**
      * @since Available in iOS 4.3 and later.
      */
@@ -347,14 +347,14 @@ import org.robovm.apple.coregraphics.*;
      */
     @Deprecated
     @Property(selector = "useApplicationAudioSession")
-    public native boolean isUseApplicationAudioSession();
+    public native boolean usesApplicationAudioSession();
     /**
      * @since Available in iOS 3.2 and later.
      * @deprecated Deprecated in iOS 6.0.
      */
     @Deprecated
     @Property(selector = "setUseApplicationAudioSession:")
-    public native void setUseApplicationAudioSession(boolean v);
+    public native void setUsesApplicationAudioSession(boolean v);
     @Property(selector = "isPreparedToPlay")
     public native boolean isPreparedToPlay();
     @Property(selector = "currentPlaybackTime")

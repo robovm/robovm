@@ -116,7 +116,7 @@ import org.robovm.apple.corelocation.*;
     protected UIBarButtonItem(UIImage image, UIImage landscapeImagePhone, UIBarButtonItemStyle style, NSObject target, Selector action) { super((SkipInit) null); initObject(init(image, landscapeImagePhone, style, target, action)); }
     protected UIBarButtonItem(String title, UIBarButtonItemStyle style, NSObject target, Selector action) { super((SkipInit) null); initObject(init(title, style, target, action)); }
     protected UIBarButtonItem(UIBarButtonSystemItem systemItem, NSObject target, Selector action) { super((SkipInit) null); initObject(init(systemItem, target, action)); }
-    public UIBarButtonItem(UIView customView) { super((SkipInit) null); initObject(initWithCustomView$(customView)); }
+    public UIBarButtonItem(UIView customView) { super((SkipInit) null); initObject(init(customView)); }
     /*</constructors>*/
     
     public void setOnClickListener(OnClickListener listener) {
@@ -180,7 +180,7 @@ import org.robovm.apple.corelocation.*;
     @Method(selector = "initWithBarButtonSystemItem:target:action:")
     protected native @Pointer long init(UIBarButtonSystemItem systemItem, NSObject target, Selector action);
     @Method(selector = "initWithCustomView:")
-    protected native @Pointer long initWithCustomView$(UIView customView);
+    protected native @Pointer long init(UIView customView);
     /**
      * @since Available in iOS 5.0 and later.
      */

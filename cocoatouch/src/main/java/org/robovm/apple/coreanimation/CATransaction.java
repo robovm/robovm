@@ -76,9 +76,9 @@ import org.robovm.apple.metal.*;
     @Method(selector = "setAnimationTimingFunction:")
     public static native void setAnimationTimingFunction(CAMediaTimingFunction function);
     @Method(selector = "disableActions")
-    public static native boolean isDisableActions();
+    public static native boolean disablesActions();
     @Method(selector = "setDisableActions:")
-    public static native void setDisableActions(boolean flag);
+    public static native void setDisablesActions(boolean flag);
     @Method(selector = "completionBlock")
     public static native @Block Runnable getCompletionBlock();
     @Method(selector = "setCompletionBlock:")

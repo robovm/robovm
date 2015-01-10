@@ -65,8 +65,14 @@ classes:
                 name: saveToPreferences
             '+sharedManager':
                 property: true
-    NEVPNProtocol: {} # DONE
-    NEVPNProtocolIPSec: {} # DONE
+    NEVPNProtocol: # DONE
+        properties:
+            'disconnectOnSleep':
+                name: disconnectsOnSleep
+    NEVPNProtocolIPSec: # DONE
+        properties:
+            'useExtendedAuthentication':
+                name: usesExtendedAuthentication
     NEVPNProtocolIKEv2: {} # DONE
     NEVPNIKEv2SecurityAssociationParameters: {} # DONE
 

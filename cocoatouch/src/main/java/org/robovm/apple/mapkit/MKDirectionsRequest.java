@@ -70,7 +70,7 @@ import org.robovm.apple.dispatch.*;
      * @since Available in iOS 7.0 and later.
      */
     @Property(selector = "requestsAlternateRoutes")
-    public native boolean isRequestsAlternateRoutes();
+    public native boolean requestsAlternateRoutes();
     /**
      * @since Available in iOS 7.0 and later.
      */

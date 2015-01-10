@@ -67,7 +67,7 @@ import org.robovm.apple.opengles.*;
     @NotImplemented("setPlaying:")
     public void setPlaying(boolean v) { throw new UnsupportedOperationException(); }
     @NotImplemented("loops")
-    public boolean isLoops() { throw new UnsupportedOperationException(); }
+    public boolean loops() { throw new UnsupportedOperationException(); }
     @NotImplemented("setLoops:")
     public void setLoops(boolean v) { throw new UnsupportedOperationException(); }
     @NotImplemented("pointOfView")
@@ -75,7 +75,7 @@ import org.robovm.apple.opengles.*;
     @NotImplemented("setPointOfView:")
     public void setPointOfView(SCNNode v) { throw new UnsupportedOperationException(); }
     @NotImplemented("autoenablesDefaultLighting")
-    public boolean isAutoenablesDefaultLighting() { throw new UnsupportedOperationException(); }
+    public boolean autoenablesDefaultLighting() { throw new UnsupportedOperationException(); }
     @NotImplemented("setAutoenablesDefaultLighting:")
     public void setAutoenablesDefaultLighting(boolean v) { throw new UnsupportedOperationException(); }
     @NotImplemented("isJitteringEnabled")
@@ -83,7 +83,7 @@ import org.robovm.apple.opengles.*;
     @NotImplemented("setJitteringEnabled:")
     public void setJitteringEnabled(boolean v) { throw new UnsupportedOperationException(); }
     @NotImplemented("showsStatistics")
-    public boolean isShowsStatistics() { throw new UnsupportedOperationException(); }
+    public boolean showsStatistics() { throw new UnsupportedOperationException(); }
     @NotImplemented("setShowsStatistics:")
     public void setShowsStatistics(boolean v) { throw new UnsupportedOperationException(); }
     @NotImplemented("overlaySKScene")

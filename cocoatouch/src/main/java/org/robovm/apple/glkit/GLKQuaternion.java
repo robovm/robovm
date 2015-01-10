@@ -49,13 +49,13 @@ import org.robovm.apple.dispatch.*;
     /*<constructors>*/
     public GLKQuaternion() {}
     public GLKQuaternion(FloatBuffer q) {
-        this.q(q);
+        this.setQ(q);
     }
     /*</constructors>*/
     /*<properties>*//*</properties>*/
     /*<members>*/
-    @StructMember(0) public native @Array({4}) FloatBuffer q();
-    @StructMember(0) public native GLKQuaternion q(@Array({4}) FloatBuffer q);
+    @StructMember(0) public native @Array({4}) FloatBuffer getQ();
+    @StructMember(0) public native GLKQuaternion setQ(@Array({4}) FloatBuffer q);
     /*</members>*/
     /*<methods>*//*</methods>*/
 }

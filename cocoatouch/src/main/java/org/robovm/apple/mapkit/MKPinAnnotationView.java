@@ -63,7 +63,7 @@ import org.robovm.apple.dispatch.*;
     @Property(selector = "setPinColor:")
     public native void setPinColor(MKPinAnnotationColor v);
     @Property(selector = "animatesDrop")
-    public native boolean isAnimatesDrop();
+    public native boolean animatesDrop();
     @Property(selector = "setAnimatesDrop:")
     public native void setAnimatesDrop(boolean v);
     /*</properties>*/

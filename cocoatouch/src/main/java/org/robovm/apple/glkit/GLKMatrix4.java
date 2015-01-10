@@ -49,13 +49,13 @@ import org.robovm.apple.dispatch.*;
     /*<constructors>*/
     public GLKMatrix4() {}
     public GLKMatrix4(FloatBuffer m) {
-        this.m(m);
+        this.setM(m);
     }
     /*</constructors>*/
     /*<properties>*//*</properties>*/
     /*<members>*/
-    @StructMember(0) public native @Array({16}) FloatBuffer m();
-    @StructMember(0) public native GLKMatrix4 m(@Array({16}) FloatBuffer m);
+    @StructMember(0) public native @Array({16}) FloatBuffer getM();
+    @StructMember(0) public native GLKMatrix4 setM(@Array({16}) FloatBuffer m);
     /*</members>*/
     /*<methods>*//*</methods>*/
 }

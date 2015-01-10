@@ -59,20 +59,8 @@ import org.robovm.apple.uikit.*;
     /*<members>*/
     @StructMember(0) public native @ByVal CGPoint getOrigin();
     @StructMember(0) public native CGRect setOrigin(@ByVal CGPoint origin);
-    
-    @Deprecated
-    @StructMember(0) public native @ByVal CGPoint origin();
-    @Deprecated
-    @StructMember(0) public native CGRect origin(@ByVal CGPoint origin);
-    
     @StructMember(1) public native @ByVal CGSize getSize();
     @StructMember(1) public native CGRect setSize(@ByVal CGSize size);
-    
-    @Deprecated
-    @StructMember(1) public native @ByVal CGSize size();
-    @Deprecated
-    @StructMember(1) public native CGRect size(@ByVal CGSize size);
-    
     /*</members>*/
     
     public static CGRect fromString(String string) {

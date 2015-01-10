@@ -91,7 +91,7 @@ import org.robovm.apple.metal.*;
     @Property(selector = "setRenderMode:")
     public native void setRenderMode(CAEmitterRenderMode v);
     @Property(selector = "preservesDepth")
-    public native boolean isPreservesDepth();
+    public native boolean preservesDepth();
     @Property(selector = "setPreservesDepth:")
     public native void setPreservesDepth(boolean v);
     @Property(selector = "velocity")

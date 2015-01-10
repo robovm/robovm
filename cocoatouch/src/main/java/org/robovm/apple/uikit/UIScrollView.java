@@ -79,15 +79,15 @@ import org.robovm.apple.corelocation.*;
     @Property(selector = "setDirectionalLockEnabled:")
     public native void setDirectionalLockEnabled(boolean v);
     @Property(selector = "bounces")
-    public native boolean isBounces();
+    public native boolean bounces();
     @Property(selector = "setBounces:")
     public native void setBounces(boolean v);
     @Property(selector = "alwaysBounceVertical")
-    public native boolean isAlwaysBounceVertical();
+    public native boolean alwaysBounceVertical();
     @Property(selector = "setAlwaysBounceVertical:")
     public native void setAlwaysBounceVertical(boolean v);
     @Property(selector = "alwaysBounceHorizontal")
-    public native boolean isAlwaysBounceHorizontal();
+    public native boolean alwaysBounceHorizontal();
     @Property(selector = "setAlwaysBounceHorizontal:")
     public native void setAlwaysBounceHorizontal(boolean v);
     @Property(selector = "isPagingEnabled")
@@ -99,11 +99,11 @@ import org.robovm.apple.corelocation.*;
     @Property(selector = "setScrollEnabled:")
     public native void setScrollEnabled(boolean v);
     @Property(selector = "showsHorizontalScrollIndicator")
-    public native boolean isShowsHorizontalScrollIndicator();
+    public native boolean showsHorizontalScrollIndicator();
     @Property(selector = "setShowsHorizontalScrollIndicator:")
     public native void setShowsHorizontalScrollIndicator(boolean v);
     @Property(selector = "showsVerticalScrollIndicator")
-    public native boolean isShowsVerticalScrollIndicator();
+    public native boolean showsVerticalScrollIndicator();
     @Property(selector = "setShowsVerticalScrollIndicator:")
     public native void setShowsVerticalScrollIndicator(boolean v);
     @Property(selector = "scrollIndicatorInsets")
@@ -131,11 +131,11 @@ import org.robovm.apple.corelocation.*;
     @Property(selector = "isDecelerating")
     public native boolean isDecelerating();
     @Property(selector = "delaysContentTouches")
-    public native boolean isDelaysContentTouches();
+    public native boolean delaysContentTouches();
     @Property(selector = "setDelaysContentTouches:")
     public native void setDelaysContentTouches(boolean v);
     @Property(selector = "canCancelContentTouches")
-    public native boolean isCanCancelContentTouches();
+    public native boolean canCancelContentTouches();
     @Property(selector = "setCanCancelContentTouches:")
     public native void setCanCancelContentTouches(boolean v);
     @Property(selector = "minimumZoomScale")
@@ -157,7 +157,7 @@ import org.robovm.apple.corelocation.*;
     @Property(selector = "setZoomScale:")
     public native void setZoomScale(@MachineSizedFloat double v);
     @Property(selector = "bouncesZoom")
-    public native boolean isBouncesZoom();
+    public native boolean bouncesZoom();
     @Property(selector = "setBouncesZoom:")
     public native void setBouncesZoom(boolean v);
     @Property(selector = "isZooming")
@@ -165,7 +165,7 @@ import org.robovm.apple.corelocation.*;
     @Property(selector = "isZoomBouncing")
     public native boolean isZoomBouncing();
     @Property(selector = "scrollsToTop")
-    public native boolean isScrollsToTop();
+    public native boolean scrollsToTop();
     @Property(selector = "setScrollsToTop:")
     public native void setScrollsToTop(boolean v);
     /**
@@ -195,12 +195,12 @@ import org.robovm.apple.corelocation.*;
      * @since Available in iOS 3.0 and later.
      */
     @GlobalValue(symbol="UIScrollViewDecelerationRateNormal", optional=true)
-    public static native @MachineSizedFloat double DecelerationRateNormal();
+    public static native @MachineSizedFloat double getNormalDecelerationRate();
     /**
      * @since Available in iOS 3.0 and later.
      */
     @GlobalValue(symbol="UIScrollViewDecelerationRateFast", optional=true)
-    public static native @MachineSizedFloat double DecelerationRateFast();
+    public static native @MachineSizedFloat double getFastDecelerationRate();
     
     @Method(selector = "setContentOffset:animated:")
     public native void setContentOffset(@ByVal CGPoint contentOffset, boolean animated);

@@ -101,12 +101,12 @@ import org.robovm.apple.foundation.*;
      * @since Available in iOS 8.0 and later.
      */
     @Property(selector = "disconnectOnSleep")
-    public native boolean isDisconnectOnSleep();
+    public native boolean disconnectsOnSleep();
     /**
      * @since Available in iOS 8.0 and later.
      */
     @Property(selector = "setDisconnectOnSleep:")
-    public native void setDisconnectOnSleep(boolean v);
+    public native void setDisconnectsOnSleep(boolean v);
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/

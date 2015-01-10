@@ -49,13 +49,13 @@ import org.robovm.apple.coremedia.*;
     /*<constructors>*/
     public CAFUMIDChunk() {}
     public CAFUMIDChunk(ByteBuffer mBytes) {
-        this.mBytes(mBytes);
+        this.setMBytes(mBytes);
     }
     /*</constructors>*/
     /*<properties>*//*</properties>*/
     /*<members>*/
-    @StructMember(0) public native @Array({64}) ByteBuffer mBytes();
-    @StructMember(0) public native CAFUMIDChunk mBytes(@Array({64}) ByteBuffer mBytes);
+    @StructMember(0) public native @Array({64}) ByteBuffer getMBytes();
+    @StructMember(0) public native CAFUMIDChunk setMBytes(@Array({64}) ByteBuffer mBytes);
     /*</members>*/
     /*<methods>*//*</methods>*/
 }

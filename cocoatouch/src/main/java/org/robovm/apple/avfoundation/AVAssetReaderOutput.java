@@ -62,7 +62,7 @@ import org.robovm.apple.mediatoolbox.*;
      * @since Available in iOS 5.0 and later.
      */
     @Property(selector = "alwaysCopiesSampleData")
-    public native boolean isAlwaysCopiesSampleData();
+    public native boolean alwaysCopiesSampleData();
     /**
      * @since Available in iOS 5.0 and later.
      */
@@ -72,7 +72,7 @@ import org.robovm.apple.mediatoolbox.*;
      * @since Available in iOS 8.0 and later.
      */
     @Property(selector = "supportsRandomAccess")
-    public native boolean isSupportsRandomAccess();
+    public native boolean supportsRandomAccess();
     /**
      * @since Available in iOS 8.0 and later.
      */

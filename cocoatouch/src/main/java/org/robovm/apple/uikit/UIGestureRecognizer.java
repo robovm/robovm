@@ -126,15 +126,15 @@ import org.robovm.apple.corelocation.*;
     @Property(selector = "view")
     public native UIView getView();
     @Property(selector = "cancelsTouchesInView")
-    public native boolean isCancelsTouchesInView();
+    public native boolean cancelsTouchesInView();
     @Property(selector = "setCancelsTouchesInView:")
     public native void setCancelsTouchesInView(boolean v);
     @Property(selector = "delaysTouchesBegan")
-    public native boolean isDelaysTouchesBegan();
+    public native boolean delaysTouchesBegan();
     @Property(selector = "setDelaysTouchesBegan:")
     public native void setDelaysTouchesBegan(boolean v);
     @Property(selector = "delaysTouchesEnded")
-    public native boolean isDelaysTouchesEnded();
+    public native boolean delaysTouchesEnded();
     @Property(selector = "setDelaysTouchesEnded:")
     public native void setDelaysTouchesEnded(boolean v);
     /*</properties>*/

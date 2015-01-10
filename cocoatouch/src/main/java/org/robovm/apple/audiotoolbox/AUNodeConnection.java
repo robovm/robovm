@@ -49,22 +49,22 @@ import org.robovm.apple.coremedia.*;
     /*<constructors>*/
     public AUNodeConnection() {}
     public AUNodeConnection(int sourceNode, int sourceOutputNumber, int destNode, int destInputNumber) {
-        this.sourceNode(sourceNode);
-        this.sourceOutputNumber(sourceOutputNumber);
-        this.destNode(destNode);
-        this.destInputNumber(destInputNumber);
+        this.setSourceNode(sourceNode);
+        this.setSourceOutputNumber(sourceOutputNumber);
+        this.setDestNode(destNode);
+        this.setDestInputNumber(destInputNumber);
     }
     /*</constructors>*/
     /*<properties>*//*</properties>*/
     /*<members>*/
-    @StructMember(0) public native int sourceNode();
-    @StructMember(0) public native AUNodeConnection sourceNode(int sourceNode);
-    @StructMember(1) public native int sourceOutputNumber();
-    @StructMember(1) public native AUNodeConnection sourceOutputNumber(int sourceOutputNumber);
-    @StructMember(2) public native int destNode();
-    @StructMember(2) public native AUNodeConnection destNode(int destNode);
-    @StructMember(3) public native int destInputNumber();
-    @StructMember(3) public native AUNodeConnection destInputNumber(int destInputNumber);
+    @StructMember(0) public native int getSourceNode();
+    @StructMember(0) public native AUNodeConnection setSourceNode(int sourceNode);
+    @StructMember(1) public native int getSourceOutputNumber();
+    @StructMember(1) public native AUNodeConnection setSourceOutputNumber(int sourceOutputNumber);
+    @StructMember(2) public native int getDestNode();
+    @StructMember(2) public native AUNodeConnection setDestNode(int destNode);
+    @StructMember(3) public native int getDestInputNumber();
+    @StructMember(3) public native AUNodeConnection setDestInputNumber(int destInputNumber);
     /*</members>*/
     /*<methods>*//*</methods>*/
 }

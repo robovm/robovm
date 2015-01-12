@@ -269,6 +269,9 @@ public class IOSTarget extends AbstractTarget {
 
         if (isDeviceArch(arch)) {
             ccArgs.add("-miphoneos-version-min=" + config.getOs().getMinVersion());
+            if (config.isDebug()) {
+                ccArgs.add("-Wl,-no_pie");
+            }
         } else {
             ccArgs.add("-mios-simulator-version-min=" + config.getOs().getMinVersion());
             if (config.getArch() == Arch.x86) {

@@ -800,6 +800,21 @@ public class AppLauncher {
                         }
                         sb.append('C').append(signal).append(':').append(threadId);
                         sendGdbPacket(conn, encode(sb.toString()));
+                    } else if (payload.charAt(0) == 'X') {
+                        int signal = Integer.parseInt(payload.substring(1, 3), 16);
+                        String data = payload.substring(3);
+                        String description = null;
+                        if (data.contains("description:")) {
+                            description = new String(fromHex(data.replaceAll(".*description:([0-9a-fA-F]+).*", "$1")), "UTF8").trim();
+                            description = description.trim();
+                            description = description.isEmpty() ? null : description;
+                        }
+                        String message = signal > 0 ? "The app crashed with signal " + signal : "The app crashed";
+                        if (description != null) {
+                            message += ": " + description;
+                        }
+                        message += ". Check the device logs in Xcode (Window->Devices) for more info.";
+                        throw new RuntimeException(message);
                     } else {
                         throw new RuntimeException("Unexpected response " 
                                 + "from debugserver: " + response);

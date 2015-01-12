@@ -415,36 +415,8 @@ public class IOSTarget extends AbstractTarget {
     }
 
     private void strip(File dir, String executable) throws IOException {
-        File exportedSymbolsFile = new File(config.getTmpDir(), "exported_symbols");
-        
-        // FIXME #584 quick fix for *lookup?
-        String symbolList = new Executor(config.getLogger(), "nm").args("-j", new File(dir, executable)).execCapture();
-        String[] symbols = symbolList.split("\n");
-        Pattern pattern = Pattern.compile(".*lookup.");
-        List<String> lookupSymbols = new ArrayList<>();
-        for(String symbol: symbols) {
-            if(pattern.matcher(symbol).matches()) {
-                lookupSymbols.add(symbol);
-            }
-        }
-        
-        // create a temporary, "fixed" symbol file
-        File fixedExportedSymbolsFile = new File(config.getTmpDir(), "exported_symbols_fixed");
-        StringBuilder builder = new StringBuilder();        
-        for(String entry: FileUtils.readFileToString(exportedSymbolsFile).split("\n")) {
-            if(!"_*lookup?".equals(entry)) {
-                builder.append(entry);
-                builder.append("\n");
-            }
-        }
-        for(String symbol: lookupSymbols) {
-            builder.append(symbol);
-            builder.append("\n");
-        }
-        FileUtils.writeStringToFile(fixedExportedSymbolsFile, builder.toString());
-        
         new Executor(config.getLogger(), "xcrun")
-            .args("strip", "-s", fixedExportedSymbolsFile, new File(dir, executable))
+            .args("strip", "-x", new File(dir, executable))
             .exec();
     }
     

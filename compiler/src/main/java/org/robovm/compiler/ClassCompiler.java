@@ -340,7 +340,8 @@ public class ClassCompiler {
                     targetMachine.setAsmVerbosityDefault(true);
                     targetMachine.setFunctionSections(true);
                     targetMachine.setDataSections(true);
-                    targetMachine.getOptions().setNoFramePointerElim(true);                    
+                    targetMachine.getOptions().setNoFramePointerElim(true);
+                    targetMachine.getOptions().setPositionIndependentExecutable(true); // NOTE: Doesn't have any effect on x86. See #503.
 
                     ByteArrayOutputStream output = new ByteArrayOutputStream(256 * 1024);
                     targetMachine.emit(module, output, CodeGenFileType.AssemblyFile);

@@ -23,10 +23,26 @@ import org.robovm.llvm.Target;
  *
  */
 public enum OS {
-    linux, macosx, ios;
+    linux("linux", "linux"), macosx("macosx10.7.0", "10.7"), ios("ios5.0.0", "5.0");
     
     public enum Family {linux, darwin}
 
+    private final String llvmName;
+    private final String minVersion;
+
+    private OS(String llvmName, String minVersion) {
+        this.llvmName = llvmName;
+        this.minVersion = minVersion;
+    }
+
+    public String getLlvmName() {
+        return llvmName;
+    }
+    
+    public String getMinVersion() {
+        return minVersion;
+    }
+    
     /**
      * Returns whether aggregate types of the specified size can be returned
      * in registers for this {@link OS} and the specified {@link Arch}.

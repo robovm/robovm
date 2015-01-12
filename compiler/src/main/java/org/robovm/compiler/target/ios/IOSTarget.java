@@ -268,9 +268,12 @@ public class IOSTarget extends AbstractTarget {
         }
 
         if (isDeviceArch(arch)) {
-            ccArgs.add("-miphoneos-version-min=5.0");
+            ccArgs.add("-miphoneos-version-min=" + config.getOs().getMinVersion());
         } else {
-            ccArgs.add("-mios-simulator-version-min=5.0");
+            ccArgs.add("-mios-simulator-version-min=" + config.getOs().getMinVersion());
+            if (config.getArch() == Arch.x86) {
+                ccArgs.add("-Wl,-no_pie");
+            }
         }
         ccArgs.add("-isysroot");
         ccArgs.add(sdk.getRoot().getAbsolutePath());

@@ -582,13 +582,16 @@ public class AppCompiler {
                     LaunchParameters launchParameters = compiler.config.getTarget().createLaunchParameters();
                     if (launchParameters instanceof IOSSimulatorLaunchParameters) {
                         IOSSimulatorLaunchParameters simParams = (IOSSimulatorLaunchParameters) launchParameters;
-                        DeviceType type = DeviceType.getDeviceType(compiler.config.getHome(),
-                                compiler.config.getIosDeviceType());
-                        if (type == null) {
-                            simParams.setDeviceType(DeviceType.getBestDeviceType(compiler.config.getHome()));
-                        } else {
-                            simParams.setDeviceType(type);
+                        String deviceName = null;
+                        String sdkVersion = null;
+                        if (compiler.config.getIosDeviceType() != null) {
+                            String[] parts = compiler.config.getIosDeviceType().split("[:;, ]+");
+                            deviceName = parts[0].trim();
+                            sdkVersion = parts.length > 1 ? parts[1].trim() : null;
                         }
+                        DeviceType type = DeviceType.getBestDeviceType(compiler.config.getHome(), 
+                                compiler.config.getArch(), null, deviceName, sdkVersion);
+                        simParams.setDeviceType(type);
                     }
                     launchParameters.setArguments(runArgs);
                     compiler.launch(launchParameters);

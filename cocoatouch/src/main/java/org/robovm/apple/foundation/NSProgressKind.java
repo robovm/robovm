@@ -41,7 +41,7 @@ import org.robovm.apple.dispatch.*;
 @Marshaler(NSProgressKind.Marshaler.class)
 /*<annotations>*/@Library("Foundation")/*</annotations>*/
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/NSProgressKind/*</name>*/ 
-    extends /*<extends>*/Object/*</extends>*/ 
+    extends /*<extends>*/CocoaUtility/*</extends>*/ 
     /*<implements>*//*</implements>*/ {
 
     public static class Marshaler {

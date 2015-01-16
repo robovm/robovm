@@ -40,7 +40,7 @@ import org.robovm.apple.corelocation.*;
 @Marshaler(UITransitionContextViewType.Marshaler.class)
 /*<annotations>*/@Library("UIKit")/*</annotations>*/
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/UITransitionContextViewType/*</name>*/ 
-    extends /*<extends>*/Object/*</extends>*/ 
+    extends /*<extends>*/CocoaUtility/*</extends>*/ 
     /*<implements>*//*</implements>*/ {
 
     public static class Marshaler {

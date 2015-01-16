@@ -42,7 +42,7 @@ import org.robovm.apple.corelocation.*;
  */
 /*<annotations>*/@Library("UIKit")/*</annotations>*/
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/UIFontDescriptorAttribute/*</name>*/ 
-    extends /*<extends>*/Object/*</extends>*/ 
+    extends /*<extends>*/CocoaUtility/*</extends>*/ 
     /*<implements>*//*</implements>*/ {
 
     /*<ptr>*/

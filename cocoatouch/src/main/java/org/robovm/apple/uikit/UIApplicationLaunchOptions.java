@@ -40,7 +40,7 @@ import org.robovm.apple.corelocation.*;
 @Marshaler(UIApplicationLaunchOptions.Marshaler.class)
 /*<annotations>*/@Library("UIKit")/*</annotations>*/
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/UIApplicationLaunchOptions/*</name>*/ 
-    extends /*<extends>*/Object/*</extends>*/ 
+    extends /*<extends>*/CocoaUtility/*</extends>*/ 
     /*<implements>*//*</implements>*/ {
 
     public static class Marshaler {

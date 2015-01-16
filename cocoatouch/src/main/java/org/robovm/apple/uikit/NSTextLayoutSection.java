@@ -40,7 +40,7 @@ import org.robovm.apple.corelocation.*;
 @Marshaler(NSTextLayoutSection.Marshaler.class)
 /*<annotations>*/@Library("UIKit")/*</annotations>*/
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/NSTextLayoutSection/*</name>*/ 
-    extends /*<extends>*/Object/*</extends>*/ 
+    extends /*<extends>*/CocoaUtility/*</extends>*/ 
     /*<implements>*//*</implements>*/ {
     
     public static class Marshaler {

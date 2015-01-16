@@ -43,7 +43,7 @@ import org.robovm.apple.corelocation.*;
 @Marshaler(UIFontDescriptorAttributes.Marshaler.class)
 /*<annotations>*/@Library("UIKit")/*</annotations>*/
 /*<visibility>*/public/*</visibility>*/ class UIFontDescriptorAttributes 
-    extends /*<extends>*/Object/*</extends>*/ 
+    extends /*<extends>*/CocoaUtility/*</extends>*/ 
     /*<implements>*//*</implements>*/ {
 
     public static class Marshaler {

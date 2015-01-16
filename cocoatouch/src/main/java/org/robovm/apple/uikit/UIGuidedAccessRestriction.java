@@ -40,7 +40,7 @@ import org.robovm.apple.corelocation.*;
 /*<annotations>*/@Library("UIKit")/*</annotations>*/
 @Marshaler(NSString.AsStringMarshaler.class)
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/UIGuidedAccessRestriction/*</name>*/ 
-    extends /*<extends>*/Object/*</extends>*/ 
+    extends /*<extends>*/CocoaUtility/*</extends>*/ 
     /*<implements>*//*</implements>*/ {
 
     /*<ptr>*/

@@ -41,7 +41,7 @@ import org.robovm.apple.dispatch.*;
 @Marshaler(NSStreamProperty.Marshaler.class)
 /*<annotations>*/@Library("Foundation")/*</annotations>*/
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/NSStreamProperty/*</name>*/ 
-    extends /*<extends>*/Object/*</extends>*/ 
+    extends /*<extends>*/CocoaUtility/*</extends>*/ 
     /*<implements>*//*</implements>*/ {
 
     public static class Marshaler {

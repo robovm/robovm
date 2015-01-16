@@ -41,7 +41,7 @@ import org.robovm.apple.dispatch.*;
 @Marshaler(NSLinguisticTag.Marshaler.class)
 /*<annotations>*/@Library("Foundation")/*</annotations>*/
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/NSLinguisticTag/*</name>*/ 
-    extends /*<extends>*/Object/*</extends>*/ 
+    extends /*<extends>*/CocoaUtility/*</extends>*/ 
     /*<implements>*//*</implements>*/ {
 
     public static class Marshaler {

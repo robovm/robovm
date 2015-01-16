@@ -120,33 +120,7 @@ jboolean _rvmHookSetupTCPChannel() {
     socklen_t len = sizeof(serverAddr);
     getsockname(listeningSocket, (struct sockaddr *) &serverAddr, &len);
     debugPort = ntohs(serverAddr.sin_port);
-    return TRUE;
-}
-
-jboolean _rvmHookHandshake() {
-    DEBUG("Performing handshake");
-    if (!listeningSocket) {
-        DEBUG("Can't perform handshake, no listening socket");
-        return FALSE;
-    }
-
-    struct sockaddr_storage clientAddr;
-    clientSocket = 0;
-    socklen_t len = sizeof(clientAddr);
-    if ((clientSocket = accept(listeningSocket, (struct sockaddr *) &clientAddr, &len)) == -1) {
-        DEBUGF("Couldn't accept TCP debug connection, errno: %d", errno);
-        close(listeningSocket);
-        return FALSE;
-    }
-    int yes = 1;
-    setsockopt(clientSocket, IPPROTO_TCP, TCP_NODELAY, &yes, sizeof(int));
-    rvmInitMutex(&writeMutex);
-    int result = pthread_create(&debugThread, 0, channelLoop, 0);
-    if(result) {
-        DEBUGF("Couldn't start debug thread, error code: %d", result);
-        close(clientSocket);
-    }
-
+    DEBUGF("Listening for debug client on port %u", debugPort);
     return TRUE;
 }
 
@@ -193,6 +167,7 @@ void writeChannelByte(int socket, char val, ChannelError* error) {
 
 void writeChannelInt(int socket, jint val, ChannelError* error) {
     val = swap32(val);
+    DEBUGF("Writing %x (big endian)", val);
     writeChannel(socket, &val, 4, error);
 }
 
@@ -280,6 +255,37 @@ void handleRequest(char req, jlong reqId, jlong payloadSize, ChannelError* error
             error->errorCode = -1;
             error->message = "Unknown request";
     }
+}
+
+jboolean _rvmHookHandshake() {
+    DEBUG("Performing handshake");
+    if (!listeningSocket) {
+        DEBUG("Can't perform handshake, no listening socket");
+        return FALSE;
+    }
+
+    DEBUG("Waiting for client connection");
+    struct sockaddr_storage clientAddr;
+    clientSocket = 0;
+    socklen_t len = sizeof(clientAddr);
+    if ((clientSocket = accept(listeningSocket, (struct sockaddr *) &clientAddr, &len)) == -1) {
+        DEBUGF("Couldn't accept TCP debug connection, errno: %d", errno);
+        close(listeningSocket);
+        return FALSE;
+    }
+    int yes = 1;
+    setsockopt(clientSocket, IPPROTO_TCP, TCP_NODELAY, &yes, sizeof(int));
+
+    DEBUG("Starting channel thread");
+    rvmInitMutex(&writeMutex);
+    int result = pthread_create(&debugThread, 0, channelLoop, 0);
+    if(result) {
+        DEBUGF("Couldn't start debug thread, error code: %d", result);
+        close(clientSocket);
+        return FALSE;
+    }
+
+    return TRUE;
 }
 
 void* channelLoop(void* data) {

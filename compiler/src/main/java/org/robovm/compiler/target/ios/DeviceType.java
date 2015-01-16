@@ -38,12 +38,12 @@ import org.robovm.compiler.util.Executor;
  * @author badlogic
  *
  */
-public class DeviceType {
+public class DeviceType implements Comparable<DeviceType> {
     public static final String PREFIX = "com.apple.CoreSimulator.SimDeviceType.";
 
     public static enum DeviceFamily {
-        iPad,
-        iPhone
+        iPhone,
+        iPad
     }
 
     private final String deviceName;
@@ -127,10 +127,25 @@ public class DeviceType {
                     types.add(new DeviceType(tokens[0], sdk, archs));
                 }
             }
+            // Sort. Make sure that devices that have an id which is a prefix of
+            // another id comes before in the list.
+            Collections.sort(types);
             return types;
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
+    }
+    
+    @Override
+    public int compareTo(DeviceType that) {
+        int c = this.sdk.compareTo(that.sdk);
+        if (c == 0) {
+            c = this.getFamily().compareTo(that.getFamily());
+            if (c == 0) {
+                c = this.deviceName.compareToIgnoreCase(that.deviceName);
+            }
+        }
+        return c;
     }
     
     private static List<DeviceType> filter(List<DeviceType> deviceTypes, Arch arch, 
@@ -212,5 +227,10 @@ public class DeviceType {
                     + ", name=" + deviceName + ", sdk=" + sdkVersion + "]");
         }
         return best;
+    }
+
+    @Override
+    public String toString() {
+        return "DeviceType [deviceName=" + deviceName + ", sdk=" + sdk + ", archs=" + archs + "]";
     }
 }

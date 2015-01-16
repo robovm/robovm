@@ -109,13 +109,13 @@ import org.robovm.apple.corelocation.*;
     /*<constructors>*/
     public UIBarButtonItem() {}
     protected UIBarButtonItem(SkipInit skipInit) { super(skipInit); }
-    protected UIBarButtonItem(UIImage image, UIBarButtonItemStyle style, NSObject target, Selector action) { super((SkipInit) null); initObject(init(image, style, target, action)); }
+    public UIBarButtonItem(UIImage image, UIBarButtonItemStyle style, NSObject target, Selector action) { super((SkipInit) null); initObject(init(image, style, target, action)); }
     /**
      * @since Available in iOS 5.0 and later.
      */
-    protected UIBarButtonItem(UIImage image, UIImage landscapeImagePhone, UIBarButtonItemStyle style, NSObject target, Selector action) { super((SkipInit) null); initObject(init(image, landscapeImagePhone, style, target, action)); }
-    protected UIBarButtonItem(String title, UIBarButtonItemStyle style, NSObject target, Selector action) { super((SkipInit) null); initObject(init(title, style, target, action)); }
-    protected UIBarButtonItem(UIBarButtonSystemItem systemItem, NSObject target, Selector action) { super((SkipInit) null); initObject(init(systemItem, target, action)); }
+    public UIBarButtonItem(UIImage image, UIImage landscapeImagePhone, UIBarButtonItemStyle style, NSObject target, Selector action) { super((SkipInit) null); initObject(init(image, landscapeImagePhone, style, target, action)); }
+    public UIBarButtonItem(String title, UIBarButtonItemStyle style, NSObject target, Selector action) { super((SkipInit) null); initObject(init(title, style, target, action)); }
+    public UIBarButtonItem(UIBarButtonSystemItem systemItem, NSObject target, Selector action) { super((SkipInit) null); initObject(init(systemItem, target, action)); }
     public UIBarButtonItem(UIView customView) { super((SkipInit) null); initObject(init(customView)); }
     /*</constructors>*/
     
@@ -148,13 +148,13 @@ import org.robovm.apple.corelocation.*;
     @Property(selector = "setCustomView:")
     public native void setCustomView(UIView v);
     @Property(selector = "action")
-    protected native Selector getAction();
+    public native Selector getAction();
     @Property(selector = "setAction:")
-    protected native void setAction(Selector v);
+    public native void setAction(Selector v);
     @Property(selector = "target")
-    protected native NSObject getTarget();
+    public native NSObject getTarget();
     @Property(selector = "setTarget:", strongRef = true)
-    protected native void setTarget(NSObject v);
+    public native void setTarget(NSObject v);
     /**
      * @since Available in iOS 5.0 and later.
      */

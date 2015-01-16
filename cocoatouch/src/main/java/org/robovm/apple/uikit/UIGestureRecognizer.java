@@ -110,7 +110,7 @@ import org.robovm.apple.corelocation.*;
     /*<constructors>*/
     public UIGestureRecognizer() {}
     protected UIGestureRecognizer(SkipInit skipInit) { super(skipInit); }
-    protected UIGestureRecognizer(NSObject target, Selector action) { super((SkipInit) null); initObject(init(target, action)); }
+    public UIGestureRecognizer(NSObject target, Selector action) { super((SkipInit) null); initObject(init(target, action)); }
     /*</constructors>*/
     /*<properties>*/
     @Property(selector = "state")
@@ -143,9 +143,9 @@ import org.robovm.apple.corelocation.*;
     @Method(selector = "initWithTarget:action:")
     protected native @Pointer long init(NSObject target, Selector action);
     @Method(selector = "addTarget:action:")
-    protected native void addTarget(NSObject target, Selector action);
+    public native void addTarget(NSObject target, Selector action);
     @Method(selector = "removeTarget:action:")
-    protected native void removeTarget(NSObject target, Selector action);
+    public native void removeTarget(NSObject target, Selector action);
     @Method(selector = "requireGestureRecognizerToFail:")
     public native void requireGestureRecognizerToFail(UIGestureRecognizer otherGestureRecognizer);
     @Method(selector = "locationInView:")

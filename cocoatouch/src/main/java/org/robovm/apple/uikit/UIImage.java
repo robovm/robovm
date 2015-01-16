@@ -46,6 +46,34 @@ import org.robovm.apple.corelocation.*;
     /*<implements>*/implements UIAccessibilityIdentification/*</implements>*/ {
 
     /*<ptr>*/public static class UIImagePtr extends Ptr<UIImage, UIImagePtr> {}/*</ptr>*/
+    
+    public interface ImageSaveListener {
+        void didFinishSaving (UIImage image, NSError error);
+    }
+    
+    private static java.util.concurrent.atomic.AtomicLong id = new java.util.concurrent.atomic.AtomicLong();
+    private static final Selector didFinishSaving = Selector.register("image:didFinishSavingWithError:contextInfo:");
+    private static Map<Long, ListenerWrapper> listeners = new HashMap<>();
+    private static class ListenerWrapper extends NSObject {
+        private final ImageSaveListener listener;
+        private ListenerWrapper(ImageSaveListener listener, long contextInfo) {
+            this.listener = listener;
+            
+            synchronized (listeners) {
+                listeners.put(contextInfo, this);
+            }
+        }
+        @TypeEncoding("v@:@:^v")
+        @Method(selector = "image:didFinishSavingWithError:contextInfo:")
+        private void didFinishSaving(UIImage image, NSError error, @Pointer long contextInfo) {
+            listener.didFinishSaving(image, error);
+            
+            synchronized (listeners) {
+                listeners.remove(contextInfo);
+            }
+        }
+    }
+    
     /*<bind>*/static { ObjCRuntime.bind(UIImage.class); }/*</bind>*/
     /*<constants>*//*</constants>*/
     /*<constructors>*/
@@ -152,13 +180,23 @@ import org.robovm.apple.corelocation.*;
     public static UIImage create(File file) {
         return createFromFile(file.getAbsolutePath());
     }
+    
+    public void saveToPhotosAlbum(ImageSaveListener listener) {
+        if (listener != null) {
+            long context = id.getAndIncrement();
+            ListenerWrapper l = new ListenerWrapper(listener, context);
+            saveToPhotosAlbum(l, didFinishSaving, context);
+        } else {
+            saveToPhotosAlbum(null, null, 0);
+        }
+    }
     /*<methods>*/
     @Bridge(symbol="UIImagePNGRepresentation", optional=true)
     public native NSData toPNGData();
     @Bridge(symbol="UIImageJPEGRepresentation", optional=true)
     public native NSData toJPEGData(@MachineSizedFloat double compressionQuality);
     @Bridge(symbol="UIImageWriteToSavedPhotosAlbum", optional=true)
-    public native void saveToPhotosAlbum(NSObject completionTarget, Selector completionSelector, VoidPtr contextInfo);
+    public native void saveToPhotosAlbum(NSObject completionTarget, Selector completionSelector, @Pointer long contextInfo);
     
     @Method(selector = "initWithContentsOfFile:")
     protected native @Pointer long initWithFile(String path);

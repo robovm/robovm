@@ -737,23 +737,17 @@ classes:
                 name: init
     UIBarButtonItem: # DONE
         properties:
-            '(action|target)':
-                visibility: protected
             'possibleTitles':
                 type: '@org.robovm.rt.bro.annotation.Marshaler(NSSet.AsStringListMarshaler.class) List<String>'
         methods:
             '-initWithImage:style:target:action:':
                 name: init
-                constructor_visibility: protected
             '-initWithImage:landscapeImagePhone:style:target:action:':
                 name: init
-                constructor_visibility: protected
             '-initWithTitle:style:target:action:':
                 name: init
-                constructor_visibility: protected
             '-initWithBarButtonSystemItem:target:action:':
                 name: init
-                constructor_visibility: protected
             '-init.*':
                 name: init
             '-backButtonBackgroundImageForState:barMetrics:':
@@ -1160,14 +1154,11 @@ classes:
         methods:
             '-actionsForTarget:forControlEvent:':
                 name: getActions
-                visibility: protected
                 return_type: '@org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String>'
             '-allControlEvents':
                 property: true
-                visibility: protected
             '-allTargets':
                 property: true
-                visibility: protected
             '-beginTrackingWithTouch:withEvent:':
                 name: beginTracking
             '-cancelTrackingWithEvent:':
@@ -1180,13 +1171,10 @@ classes:
                 name: sendControlEventsActions
             '-addTarget:action:forControlEvents:':
                 name: addTarget
-                visibility: protected
             '-removeTarget:action:forControlEvents:':
                 name: removeTarget
-                visibility: protected
             '-sendAction:to:forEvent:':
                 name: sendAction
-                visibility: protected
     UIDatePicker: # DONE
         methods:
             '-setDate:animated:':
@@ -1475,7 +1463,6 @@ classes:
         methods:
             '-initWithTarget:action:':
                 name: init
-                constructor_visibility: protected
                 parameters:
                     target:
                         type: NSObject
@@ -1487,10 +1474,8 @@ classes:
                 name: getNumberOfTouches
             '-addTarget:action:':
                 trim_after_first_colon: true
-                visibility: protected
             '-removeTarget:action:':
                 trim_after_first_colon: true
-                visibility: protected
             '-requireGestureRecognizerToFail:':
                 trim_after_first_colon: true
     UIGravityBehavior: # DONE
@@ -1700,13 +1685,9 @@ classes:
             '-setTargetRect:inView:':
                 trim_after_first_colon: true
     UIMenuItem: # DONE
-        properties:
-            'action':
-                visibility: protected
         methods:
             '-initWithTitle:action:':
                 name: init
-                constructor_visibility: protected
     UIMotionEffect: # DONE
         methods:
             '-keyPathsAndRelativeValuesForViewerOffset:':
@@ -4095,10 +4076,10 @@ protocols:
 
 functions:
     # NSTextAlignment
-    NSTextAlignmentToCTTextAlignment:
-        exclude: true # We use them directly in NSTextAlignment
-    NSTextAlignmentFromCTTextAlignment:
-        exclude: true # We use them directly in NSTextAlignment
+    NSTextAlignmentToCTTextAlignment: # We use them directly in NSTextAlignment
+        exclude: true
+    NSTextAlignmentFromCTTextAlignment: # We use them directly in NSTextAlignment
+        exclude: true 
 
     # UIAccessibility
     UIAccessibility(PostNotification):
@@ -4147,12 +4128,16 @@ functions:
         class: UIGuidedAccessRestriction
         name: getState
 
+    # UIImage
     UIImage(.*)Representation:
         class: UIImage
         name: 'to#{g[0]}Data'
     UIImage(WriteToSavedPhotosAlbum):
         class: UIImage
         name: saveToPhotosAlbum
+        parameters:
+            contextInfo:
+                type: '@Pointer long'
 
     # UIVideo
     UIVideoAtPath(IsCompatibleWithSavedPhotosAlbum):
@@ -4161,7 +4146,6 @@ functions:
         name: '#{g[0]}'
     UISaveVideoAtPathToSavedPhotosAlbum:
         class: UIVideo
-        visibility: protected
         name: saveToPhotosAlbum
         parameters:
             contextInfo:

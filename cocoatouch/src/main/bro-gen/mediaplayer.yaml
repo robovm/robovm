@@ -221,16 +221,12 @@ classes:
         methods:
             '-addTarget:action:':
                 trim_after_first_colon: true
-                visibility: protected
             '-removeTarget:action:':
                 trim_after_first_colon: true
-                visibility: protected
             '-removeTarget:':
                 trim_after_first_colon: true
-                visibility: protected
             '-addTargetWithHandler:':
                 name: addTarget
-                visibility: protected
     MPRemoteCommandCenter: # DONE
         methods:
             '+sharedCommandCenter':

@@ -110,6 +110,6 @@ import org.robovm.apple.metal.*;
     @Method(selector = "invalidate")
     public native void invalidate();
     @Method(selector = "displayLinkWithTarget:selector:")
-    protected static native CADisplayLink create(NSObject target, Selector sel);
+    public static native CADisplayLink create(NSObject target, Selector sel);
     /*</methods>*/
 }

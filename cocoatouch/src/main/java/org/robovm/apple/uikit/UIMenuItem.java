@@ -83,7 +83,7 @@ import org.robovm.apple.corelocation.*;
     /*<constructors>*/
     public UIMenuItem() {}
     protected UIMenuItem(SkipInit skipInit) { super(skipInit); }
-    protected UIMenuItem(String title, Selector action) { super((SkipInit) null); initObject(init(title, action)); }
+    public UIMenuItem(String title, Selector action) { super((SkipInit) null); initObject(init(title, action)); }
     /*</constructors>*/
     /*<properties>*/
     @Property(selector = "title")
@@ -91,9 +91,9 @@ import org.robovm.apple.corelocation.*;
     @Property(selector = "setTitle:")
     public native void setTitle(String v);
     @Property(selector = "action")
-    protected native Selector getAction();
+    public native Selector getAction();
     @Property(selector = "setAction:")
-    protected native void setAction(Selector v);
+    public native void setAction(Selector v);
     /*</properties>*/
     /*<members>*//*</members>*/
     

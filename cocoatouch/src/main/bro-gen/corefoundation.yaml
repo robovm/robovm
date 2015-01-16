@@ -1146,8 +1146,10 @@ functions:
                 type: CFString
     CFShowStr:
         class: CFString
-        name: print
-        visibility: protected
+        name: show
+        parameters:
+            str:
+                type: CFString
 
     # CFTimeZone
     CFTimeZoneCopy(.*):

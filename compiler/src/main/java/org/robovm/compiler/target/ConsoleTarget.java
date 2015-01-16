@@ -93,7 +93,10 @@ public class ConsoleTarget extends AbstractTarget {
             throws IOException {
 
         if (config.getOs() == OS.macosx) {
-            ccArgs.add("-mmacosx-version-min=10.6");
+            ccArgs.add("-mmacosx-version-min=" + config.getOs().getMinVersion());
+            if (config.getArch() == Arch.x86 || config.isDebug()) {
+                ccArgs.add("-Wl,-no_pie");
+            }
         }
         super.doBuild(outFile, ccArgs, objectFiles, libArgs);
     }

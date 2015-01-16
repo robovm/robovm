@@ -353,9 +353,6 @@ public class Linker {
     private File generateMachineCode(final Config config, final ModuleBuilder mb,
             final int num) throws IOException {
 
-        final Arch arch = config.getArch();
-        final OS os = config.getOs();
-
         File linkerO = new File(config.getTmpDir(), "linker" + num + ".o");
         linkerO.getParentFile().mkdirs();
 
@@ -372,13 +369,20 @@ public class Linker {
                     passManager.run(module);
                 }
         
-                String triple = arch.getLlvmName() + "-unknown-" + os;
+                String triple = config.getTriple();
                 Target target = Target.lookupTarget(triple);
                 try (TargetMachine targetMachine = target.createTargetMachine(triple)) {
                     targetMachine.setAsmVerbosityDefault(true);
                     targetMachine.setFunctionSections(true);
                     targetMachine.setDataSections(true);
                     targetMachine.getOptions().setNoFramePointerElim(true);
+                    targetMachine.getOptions().setPositionIndependentExecutable(true); // NOTE: Doesn't have any effect on x86. See #503.
+                    if (config.isDumpIntermediates()) {
+                        File linkerS = new File(config.getTmpDir(), "linker" + num + ".s");
+                        try (OutputStream outS = new BufferedOutputStream(new FileOutputStream(linkerS))) {
+                            targetMachine.emit(module, outS, CodeGenFileType.AssemblyFile);
+                        }
+                    }
                     try (OutputStream outO = new BufferedOutputStream(new FileOutputStream(linkerO))) {
                         targetMachine.emit(module, outO, CodeGenFileType.ObjectFile);
                     }

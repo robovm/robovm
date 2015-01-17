@@ -294,7 +294,7 @@ void* channelLoop(void* data) {
     error.message = 0;
 
     DEBUG("Starting debug thread loop");
-    while(true) {
+    while(1) {
         char req = readChannelByte(clientSocket, &error);
         DEBUGF("Read request: '%c'", req);
         if(checkError(&error)) break;

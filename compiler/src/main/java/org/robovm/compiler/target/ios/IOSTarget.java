@@ -274,7 +274,7 @@ public class IOSTarget extends AbstractTarget {
             }
         } else {
             ccArgs.add("-mios-simulator-version-min=" + config.getOs().getMinVersion());
-            if (config.getArch() == Arch.x86) {
+            if (config.getArch() == Arch.x86 || config.isDebug()) {
                 ccArgs.add("-Wl,-no_pie");
             }
         }

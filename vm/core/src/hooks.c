@@ -94,7 +94,7 @@ void _rvmHookThreadDetaching(Env* env, JavaThread* threadObj, Thread* thread, Ob
     DEBUGF("Thread %lld detaching", threadObj->id);
 }
 
-jboolean _rvmHookSetupTCPChannel() {
+jboolean _rvmHookSetupTCPChannel(Options* options) {
     DEBUG("Setting up TCP channel");
     listeningSocket = socket(AF_INET, SOCK_STREAM, 0);
     if (listeningSocket < 0) {
@@ -121,6 +121,16 @@ jboolean _rvmHookSetupTCPChannel() {
     getsockname(listeningSocket, (struct sockaddr *) &serverAddr, &len);
     debugPort = ntohs(serverAddr.sin_port);
     DEBUGF("Listening for debug client on port %u", debugPort);
+    if (options->printDebugPort) {
+        if (options->debugPortFile) {
+            FILE *f = fopen(options->debugPortFile, "w");
+            if (!f) return FALSE;
+            fprintf(f, "%d", debugPort);
+            fclose(f);
+        } else {
+            fprintf(stderr, "[DEBUG] %s: debugPort=%d\n", LOG_TAG, debugPort);
+        }
+    }
     return TRUE;
 }
 
@@ -158,7 +168,6 @@ void writeChannel(int socket, void* buf, int numBytes, ChannelError* error) {
         totalWrittenBytes += writtenBytes;
         buf += writtenBytes;
     }
-    DEBUGF("Wrote %u bytes", totalWrittenBytes);
 }
 
 void writeChannelByte(int socket, char val, ChannelError* error) {
@@ -167,7 +176,6 @@ void writeChannelByte(int socket, char val, ChannelError* error) {
 
 void writeChannelInt(int socket, jint val, ChannelError* error) {
     val = swap32(val);
-    DEBUGF("Writing %x (big endian)", val);
     writeChannel(socket, &val, 4, error);
 }
 
@@ -245,11 +253,27 @@ void handleReadMemory(char req, jlong reqId, jlong payloadSize, ChannelError* er
     rvmUnlockMutex(&writeMutex);
 }
 
+void handleReadString(char req, jlong reqId, jlong payloadSize, ChannelError* error) {
+    jlong addr = readChannelLong(clientSocket, error);
+    if(checkError(error)) return;
+
+    DEBUGF("Reading string: %p, %s", addr, (char*)addr);
+    rvmLockMutex(&writeMutex);
+    size_t len = strlen((char*)addr);
+    writeChannelLong(clientSocket, reqId, error);
+    writeChannelLong(clientSocket, len, error);
+    writeChannel(clientSocket, (void*)addr, len, error);
+    rvmUnlockMutex(&writeMutex);
+}
+
 void handleRequest(char req, jlong reqId, jlong payloadSize, ChannelError* error) {
     DEBUGF("req: %c, reqId: %lu, payloadSize: %lu", req, reqId, payloadSize);
     switch(req) {
         case 'r':
             handleReadMemory(req, reqId, payloadSize, error);
+            break;
+        case 'c':
+            handleReadString(req, reqId, payloadSize, error);
             break;
         default:
             error->errorCode = -1;
@@ -294,17 +318,14 @@ void* channelLoop(void* data) {
     error.message = 0;
 
     DEBUG("Starting debug thread loop");
-    while(true) {
+    while(1) {
         char req = readChannelByte(clientSocket, &error);
-        DEBUGF("Read request: '%c'", req);
         if(checkError(&error)) break;
 
         jlong reqId = readChannelLong(clientSocket, &error);
-        DEBUGF("Read request id: %lu", reqId);
         if(checkError(&error)) break;
 
         jlong payLoadSize = readChannelLong(clientSocket, &error);
-        DEBUGF("Read payload size: %lu", payLoadSize);
         if(checkError(&error)) break;
 
         handleRequest(req, reqId, payLoadSize, &error);

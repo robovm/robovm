@@ -22,7 +22,7 @@ void _rvmHookThreadCreated(Env* env, JavaThread* threadObj);
 void _rvmHookThreadAttached(Env* env, JavaThread* threadObj, Thread* thread);
 void _rvmHookThreadStarting(Env* env, JavaThread* threadObj, Thread* thread);
 void _rvmHookThreadDetaching(Env* env, JavaThread* threadObj, Thread* thread, Object* throwable);
-jboolean _rvmHookSetupTCPChannel();
+jboolean _rvmHookSetupTCPChannel(Options* options);
 jboolean _rvmHookHandshake();
 
 void rvmHookWaitForAttach(Options* options);
@@ -59,7 +59,7 @@ static inline void rvmHookThreadDetaching(Env* env, JavaThread* threadObj, Threa
 }
 static inline jboolean rvmHookSetupTCPChannel(Options* options) {
     if(options->enableHooks) {
-        return _rvmHookSetupTCPChannel();
+        return _rvmHookSetupTCPChannel(options);
     } else {
         return TRUE;
     }

@@ -232,6 +232,10 @@ public class Config {
     public String getExecutableName() {
         return executableName;
     }
+    
+    public File getExecutablePath() {
+        return new File(installDir, getExecutableName());
+    }
 
     public File getCacheDir() {
         return osArchCacheDir;

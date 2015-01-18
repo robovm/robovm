@@ -49,19 +49,19 @@ import org.robovm.apple.coremedia.*;
     /*<constructors>*/
     public AudioFileRegionList() {}
     public AudioFileRegionList(int mSMPTE_TimeType, int mNumberRegions, AudioFileRegion mRegions) {
-        this.mSMPTE_TimeType(mSMPTE_TimeType);
-        this.mNumberRegions(mNumberRegions);
-        this.mRegions(mRegions);
+        this.setMSMPTE_TimeType(mSMPTE_TimeType);
+        this.setMNumberRegions(mNumberRegions);
+        this.setMRegions(mRegions);
     }
     /*</constructors>*/
     /*<properties>*//*</properties>*/
     /*<members>*/
-    @StructMember(0) public native int mSMPTE_TimeType();
-    @StructMember(0) public native AudioFileRegionList mSMPTE_TimeType(int mSMPTE_TimeType);
-    @StructMember(1) public native int mNumberRegions();
-    @StructMember(1) public native AudioFileRegionList mNumberRegions(int mNumberRegions);
-    @StructMember(2) public native @Array({1}) AudioFileRegion mRegions();
-    @StructMember(2) public native AudioFileRegionList mRegions(@Array({1}) AudioFileRegion mRegions);
+    @StructMember(0) public native int getMSMPTE_TimeType();
+    @StructMember(0) public native AudioFileRegionList setMSMPTE_TimeType(int mSMPTE_TimeType);
+    @StructMember(1) public native int getMNumberRegions();
+    @StructMember(1) public native AudioFileRegionList setMNumberRegions(int mNumberRegions);
+    @StructMember(2) public native @Array({1}) AudioFileRegion getMRegions();
+    @StructMember(2) public native AudioFileRegionList setMRegions(@Array({1}) AudioFileRegion mRegions);
     /*</members>*/
     /*<methods>*//*</methods>*/
 }

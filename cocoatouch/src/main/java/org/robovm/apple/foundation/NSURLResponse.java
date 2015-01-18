@@ -52,7 +52,7 @@ import org.robovm.apple.dispatch.*;
     /*<constructors>*/
     public NSURLResponse() {}
     protected NSURLResponse(SkipInit skipInit) { super(skipInit); }
-    public NSURLResponse(NSURL URL, String MIMEType, @MachineSizedSInt long length, String name) { super((SkipInit) null); initObject(initWithURL$MIMEType$expectedContentLength$textEncodingName$(URL, MIMEType, length, name)); }
+    public NSURLResponse(NSURL URL, String MIMEType, @MachineSizedSInt long length, String name) { super((SkipInit) null); initObject(init(URL, MIMEType, length, name)); }
     /*</constructors>*/
     /*<properties>*/
     @Property(selector = "URL")
@@ -69,6 +69,6 @@ import org.robovm.apple.dispatch.*;
     /*<members>*//*</members>*/
     /*<methods>*/
     @Method(selector = "initWithURL:MIMEType:expectedContentLength:textEncodingName:")
-    protected native @Pointer long initWithURL$MIMEType$expectedContentLength$textEncodingName$(NSURL URL, String MIMEType, @MachineSizedSInt long length, String name);
+    protected native @Pointer long init(NSURL URL, String MIMEType, @MachineSizedSInt long length, String name);
     /*</methods>*/
 }

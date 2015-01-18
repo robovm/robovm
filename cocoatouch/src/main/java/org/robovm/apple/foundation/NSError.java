@@ -97,12 +97,9 @@ import org.robovm.apple.dispatch.*;
     /*<ptr>*/public static class NSErrorPtr extends Ptr<NSError, NSErrorPtr> {}/*</ptr>*/
     /*<bind>*/static { ObjCRuntime.bind(NSError.class); }/*</bind>*/
     /*<constants>*//*</constants>*/
-    public NSError(String domain, @MachineSizedSInt long code, NSErrorUserInfo dict) {
-        this(new NSString(domain), code, dict);
-    }
     /*<constructors>*/
     protected NSError(SkipInit skipInit) { super(skipInit); }
-    public NSError(NSString domain, @MachineSizedSInt long code, NSErrorUserInfo dict) { super((SkipInit) null); initObject(initWithDomain$code$userInfo$(domain, code, dict)); }
+    public NSError(String domain, @MachineSizedSInt long code, NSErrorUserInfo dict) { super((SkipInit) null); initObject(init(domain, code, dict)); }
     /*</constructors>*/
     
     private static final Selector domain = Selector.register("domain");
@@ -144,6 +141,6 @@ import org.robovm.apple.dispatch.*;
     }
     /*<methods>*/
     @Method(selector = "initWithDomain:code:userInfo:")
-    protected native @Pointer long initWithDomain$code$userInfo$(NSString domain, @MachineSizedSInt long code, NSErrorUserInfo dict);
+    protected native @Pointer long init(String domain, @MachineSizedSInt long code, NSErrorUserInfo dict);
     /*</methods>*/
 }

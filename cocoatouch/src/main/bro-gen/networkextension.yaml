@@ -1,0 +1,112 @@
+package: org.robovm.apple.networkextension
+include: [foundation.yaml]
+library: NetworkExtension
+framework: NetworkExtension
+clang_args: ['-x', 'objective-c']
+headers:
+    - /System/Library/Frameworks/NetworkExtension.framework/Headers/NetworkExtension.h
+typedefs: {}
+    
+enums:
+    NEVPNErrorCode: { first: NEVPNErrorConfigurationInvalid }
+    NEVPNStatus: {}
+    NEVPNIKEAuthenticationMethod: {}
+    NEVPNIKEv2EncryptionAlgorithm: {}
+    NEVPNIKEv2IntegrityAlgorithm: {}
+    NEVPNIKEv2DeadPeerDetectionRate: {}
+    NEVPNIKEv2DiffieHellmanGroup: {}
+    NEOnDemandRuleAction: {}
+    NEOnDemandRuleInterfaceType: {}
+    NEEvaluateConnectionRuleAction: {}
+
+classes:
+    NEVPNError:
+        extends: NSError
+
+    NEOnDemandRule: # DONE
+        properties:
+            '(DNSSearchDomainMatch|DNSServerAddressMatch|SSIDMatch)':
+                type: '@org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String>'
+    NEOnDemandRuleConnect: {} # DONE
+    NEOnDemandRuleDisconnect: {} # DONE
+    NEOnDemandRuleIgnore: {} # DONE
+    NEOnDemandRuleEvaluateConnection: # DONE
+        properties:
+            'connectionRules':
+                type: NSArray<NEEvaluateConnectionRule>
+    NEEvaluateConnectionRule: # DONE
+        properties:
+            'matchDomains':
+                type: '@org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String>'
+            'useDNSServers':
+                name: DNSServers
+                type: '@org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String>'
+        methods:
+            '-init.*':
+                name: init
+                parameters:
+                    domains:
+                        type: '@org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String>'
+    NEVPNConnection: # DONE
+        methods:
+            '-startVPNTunnelAndReturnError:':
+                name: startVPNTunnel
+                visibility: protected # throws NSErrorException
+    NEVPNManager: # DONE
+        properties:
+            'onDemandRules':
+                type: NSArray<NEOnDemandRule>
+        methods:
+            '-loadFromPreferencesWithCompletionHandler:':
+                name: loadFromPreferences
+            '-removeFromPreferencesWithCompletionHandler:':
+                name: removeFromPreferences
+            '-saveToPreferencesWithCompletionHandler:':
+                name: saveToPreferences
+            '+sharedManager':
+                property: true
+    NEVPNProtocol: # DONE
+        properties:
+            'disconnectOnSleep':
+                name: disconnectsOnSleep
+    NEVPNProtocolIPSec: # DONE
+        properties:
+            'useExtendedAuthentication':
+                name: usesExtendedAuthentication
+    NEVPNProtocolIKEv2: {} # DONE
+    NEVPNIKEv2SecurityAssociationParameters: {} # DONE
+
+protocols: {}
+
+functions:
+    # Make sure we don't miss any functions if new ones are introduced in a later version
+    (k?NE.*):
+        class: NetworkExtension
+        name: 'Function__#{g[0]}'
+
+values:
+    NEVPNErrorDomain:
+        class: NEVPNError
+        name: getClassDomain
+
+    # NEVPNManager
+    NEVPN(ConfigurationChangeNotification):
+        class: NEVPNManager
+        name: '#{g[0]}'
+        type: NSString
+    # NEVPNConnection
+    NEVPN(StatusDidChangeNotification):
+        class: NEVPNConnection
+        name: '#{g[0]}'
+        type: NSString
+   
+    # Make sure we don't miss any values if new ones are introduced in a later version
+    (k?NE.*):
+        class: NetworkExtension
+        name: 'Value__#{g[0]}'
+
+constants:
+    # Make sure we don't miss any constants if new ones are introduced in a later version
+    (k?NE.*):
+        class: NetworkExtension
+        name: 'Constant__#{g[0]}'

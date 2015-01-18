@@ -27,6 +27,7 @@ import org.robovm.rt.bro.*;
 import org.robovm.rt.bro.annotation.*;
 import org.robovm.rt.bro.ptr.*;
 import org.robovm.apple.dispatch.*;
+import org.robovm.apple.foundation.*;
 /*</imports>*/
 
 /*<javadoc>*/
@@ -52,20 +53,8 @@ import org.robovm.apple.dispatch.*;
     /*<members>*/
     @StructMember(0) public native CFStreamErrorDomain getDomain();
     @StructMember(0) public native CFStreamError setDomain(CFStreamErrorDomain domain);
-    
-    @Deprecated
-    @StructMember(0) public native CFStreamErrorDomain domain();
-    @Deprecated
-    @StructMember(0) public native CFStreamError domain(CFStreamErrorDomain domain);
-    
     @StructMember(1) public native int getError();
     @StructMember(1) public native CFStreamError setError(int error);
-    
-    @Deprecated
-    @StructMember(1) public native int error();
-    @Deprecated
-    @StructMember(1) public native CFStreamError error(int error);
-    
     /*</members>*/
     /*<methods>*//*</methods>*/
 }

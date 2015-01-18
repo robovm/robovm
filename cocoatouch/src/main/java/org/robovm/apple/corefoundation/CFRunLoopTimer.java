@@ -27,6 +27,7 @@ import org.robovm.rt.bro.*;
 import org.robovm.rt.bro.annotation.*;
 import org.robovm.rt.bro.ptr.*;
 import org.robovm.apple.dispatch.*;
+import org.robovm.apple.foundation.*;
 /*</imports>*/
 
 /*<javadoc>*/
@@ -44,16 +45,20 @@ import org.robovm.apple.dispatch.*;
     /*</constructors>*/
     /*<properties>*//*</properties>*/
     /*<members>*//*</members>*/
+    /**
+     * @since Available in iOS 5.0 and later.
+     */
+    public static CFRunLoopTimer create(double fireDate, double interval, @MachineSizedUInt long flags, @MachineSizedSInt long order, @Block VoidBlock1<CFRunLoopTimer> block) {
+        return create(null, fireDate, interval, flags, order, block);
+    }
     /*<methods>*/
     @Bridge(symbol="CFRunLoopTimerGetTypeID", optional=true)
     public static native @MachineSizedUInt long getClassTypeID();
-    @Bridge(symbol="CFRunLoopTimerCreate", optional=true)
-    public static native CFRunLoopTimer create(CFAllocator allocator, double fireDate, double interval, @MachineSizedUInt long flags, @MachineSizedSInt long order, FunctionPtr callout, CFRunLoopTimerContext context);
     /**
      * @since Available in iOS 5.0 and later.
      */
     @Bridge(symbol="CFRunLoopTimerCreateWithHandler", optional=true)
-    public static native CFRunLoopTimer createWithHandler(CFAllocator allocator, double fireDate, double interval, @MachineSizedUInt long flags, @MachineSizedSInt long order, ObjCBlock block);
+    protected static native CFRunLoopTimer create(CFAllocator allocator, double fireDate, double interval, @MachineSizedUInt long flags, @MachineSizedSInt long order, @Block VoidBlock1<CFRunLoopTimer> block);
     @Bridge(symbol="CFRunLoopTimerGetNextFireDate", optional=true)
     public native double getNextFireDate();
     @Bridge(symbol="CFRunLoopTimerSetNextFireDate", optional=true)
@@ -68,8 +73,6 @@ import org.robovm.apple.dispatch.*;
     public native void invalidate();
     @Bridge(symbol="CFRunLoopTimerIsValid", optional=true)
     public native boolean isValid();
-    @Bridge(symbol="CFRunLoopTimerGetContext", optional=true)
-    public native void getContext(CFRunLoopTimerContext context);
     /**
      * @since Available in iOS 7.0 and later.
      */

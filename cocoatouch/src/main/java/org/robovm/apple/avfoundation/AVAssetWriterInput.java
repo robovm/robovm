@@ -54,17 +54,42 @@ import org.robovm.apple.mediatoolbox.*;
     /*<constructors>*/
     public AVAssetWriterInput() {}
     protected AVAssetWriterInput(SkipInit skipInit) { super(skipInit); }
-    public AVAssetWriterInput(String mediaType, NSDictionary<NSString, ?> outputSettings) { super((SkipInit) null); initObject(init(mediaType, outputSettings)); }
+    /*</constructors>*/
+    public AVAssetWriterInput(AVMediaType mediaType, AVAudioSettings outputSettings) {
+        super((SkipInit)null);
+        initObject(init(mediaType, outputSettings.getDictionary()));
+    }
     /**
      * @since Available in iOS 6.0 and later.
      */
-    public AVAssetWriterInput(String mediaType, NSDictionary<NSString, ?> outputSettings, CMFormatDescription sourceFormatHint) { super((SkipInit) null); initObject(init(mediaType, outputSettings, sourceFormatHint)); }
-    /*</constructors>*/
+    public AVAssetWriterInput(AVMediaType mediaType, AVAudioSettings outputSettings, CMFormatDescription sourceFormatHint) {
+        super((SkipInit)null);
+        initObject(init(mediaType, outputSettings.getDictionary(), sourceFormatHint));
+    }
+    public AVAssetWriterInput(AVMediaType mediaType, AVVideoSettings outputSettings) {
+        super((SkipInit)null);
+        initObject(init(mediaType, outputSettings.getDictionary()));
+    }
+    /**
+     * @since Available in iOS 6.0 and later.
+     */
+    public AVAssetWriterInput(AVMediaType mediaType, AVVideoSettings outputSettings, CMFormatDescription sourceFormatHint) {
+        super((SkipInit)null);
+        initObject(init(mediaType, outputSettings.getDictionary(), sourceFormatHint));
+    }
+    
+    
+    public AVAudioSettings getOutputAudioSettings() {
+        return new AVAudioSettings(getOutputSettings());
+    }
+    public AVVideoSettings getOutputVideoSettings() {
+        return new AVVideoSettings(getOutputSettings());
+    }
     /*<properties>*/
     @Property(selector = "mediaType")
-    public native String getMediaType();
+    public native AVMediaType getMediaType();
     @Property(selector = "outputSettings")
-    public native NSDictionary<NSString, ?> getOutputSettings();
+    protected native NSDictionary<NSString, NSObject> getOutputSettings();
     /**
      * @since Available in iOS 6.0 and later.
      */
@@ -77,7 +102,7 @@ import org.robovm.apple.mediatoolbox.*;
     @Property(selector = "isReadyForMoreMediaData")
     public native boolean isReadyForMoreMediaData();
     @Property(selector = "expectsMediaDataInRealTime")
-    public native boolean isExpectsMediaDataInRealTime();
+    public native boolean expectsMediaDataInRealTime();
     @Property(selector = "setExpectsMediaDataInRealTime:")
     public native void setExpectsMediaDataInRealTime(boolean v);
     /**
@@ -128,7 +153,7 @@ import org.robovm.apple.mediatoolbox.*;
      * @since Available in iOS 7.0 and later.
      */
     @Property(selector = "marksOutputTrackAsEnabled")
-    public native boolean isMarksOutputTrackAsEnabled();
+    public native boolean marksOutputTrackAsEnabled();
     /**
      * @since Available in iOS 7.0 and later.
      */
@@ -178,7 +203,7 @@ import org.robovm.apple.mediatoolbox.*;
      * @since Available in iOS 8.0 and later.
      */
     @Property(selector = "performsMultiPassEncodingIfSupported")
-    public native boolean isPerformsMultiPassEncodingIfSupported();
+    public native boolean performsMultiPassEncodingIfSupported();
     /**
      * @since Available in iOS 8.0 and later.
      */
@@ -188,7 +213,7 @@ import org.robovm.apple.mediatoolbox.*;
      * @since Available in iOS 8.0 and later.
      */
     @Property(selector = "canPerformMultiplePasses")
-    public native boolean isCanPerformMultiplePasses();
+    public native boolean canPerformMultiplePasses();
     /**
      * @since Available in iOS 8.0 and later.
      */
@@ -196,14 +221,32 @@ import org.robovm.apple.mediatoolbox.*;
     public native AVAssetWriterInputPassDescription getCurrentPassDescription();
     /*</properties>*/
     /*<members>*//*</members>*/
+    public static AVAssetWriterInput create(AVMediaType mediaType, AVAudioSettings outputSettings) {
+        return create(mediaType, outputSettings.getDictionary());
+    }
+    /**
+     * @since Available in iOS 6.0 and later.
+     */
+    public static AVAssetWriterInput create(AVMediaType mediaType, AVAudioSettings outputSettings, CMFormatDescription sourceFormatHint) {
+        return create(mediaType, outputSettings.getDictionary(), sourceFormatHint);
+    }
+    public static AVAssetWriterInput create(AVMediaType mediaType, AVVideoSettings outputSettings) {
+        return create(mediaType, outputSettings.getDictionary());
+    }
+    /**
+     * @since Available in iOS 6.0 and later.
+     */
+    public static AVAssetWriterInput create(AVMediaType mediaType, AVVideoSettings outputSettings, CMFormatDescription sourceFormatHint) {
+        return create(mediaType, outputSettings.getDictionary(), sourceFormatHint);
+    }
     /*<methods>*/
     @Method(selector = "initWithMediaType:outputSettings:")
-    protected native @Pointer long init(String mediaType, NSDictionary<NSString, ?> outputSettings);
+    protected native @Pointer long init(AVMediaType mediaType, NSDictionary<NSString, NSObject> outputSettings);
     /**
      * @since Available in iOS 6.0 and later.
      */
     @Method(selector = "initWithMediaType:outputSettings:sourceFormatHint:")
-    protected native @Pointer long init(String mediaType, NSDictionary<NSString, ?> outputSettings, CMFormatDescription sourceFormatHint);
+    protected native @Pointer long init(AVMediaType mediaType, NSDictionary<NSString, NSObject> outputSettings, CMFormatDescription sourceFormatHint);
     @Method(selector = "requestMediaDataWhenReadyOnQueue:usingBlock:")
     public native void requestMediaDataWhenReady(DispatchQueue queue, @Block Runnable block);
     @Method(selector = "appendSampleBuffer:")
@@ -211,27 +254,27 @@ import org.robovm.apple.mediatoolbox.*;
     @Method(selector = "markAsFinished")
     public native void markAsFinished();
     @Method(selector = "assetWriterInputWithMediaType:outputSettings:")
-    public static native AVAssetWriterInput create(String mediaType, NSDictionary<NSString, ?> outputSettings);
+    protected static native AVAssetWriterInput create(AVMediaType mediaType, NSDictionary<NSString, NSObject> outputSettings);
     /**
      * @since Available in iOS 6.0 and later.
      */
     @Method(selector = "assetWriterInputWithMediaType:outputSettings:sourceFormatHint:")
-    public static native AVAssetWriterInput create(String mediaType, NSDictionary<NSString, ?> outputSettings, CMFormatDescription sourceFormatHint);
+    protected static native AVAssetWriterInput create(AVMediaType mediaType, NSDictionary<NSString, NSObject> outputSettings, CMFormatDescription sourceFormatHint);
     /**
      * @since Available in iOS 7.0 and later.
      */
     @Method(selector = "canAddTrackAssociationWithTrackOfInput:type:")
-    public native boolean canAddTrackAssociation(AVAssetWriterInput input, String trackAssociationType);
+    public native boolean canAddTrackAssociation(AVAssetWriterInput input, AVTrackAssociationType trackAssociationType);
     /**
      * @since Available in iOS 7.0 and later.
      */
     @Method(selector = "addTrackAssociationWithTrackOfInput:type:")
-    public native void addTrackAssociation(AVAssetWriterInput input, String trackAssociationType);
+    public native void addTrackAssociation(AVAssetWriterInput input, AVTrackAssociationType trackAssociationType);
     /**
      * @since Available in iOS 8.0 and later.
      */
     @Method(selector = "respondToEachPassDescriptionOnQueue:usingBlock:")
-    public native void respondToEachPassDescriptionOnQueue$usingBlock$(DispatchQueue queue, @Block Runnable block);
+    public native void respondToEachPassDescriptionOnQueue(DispatchQueue queue, @Block Runnable block);
     /**
      * @since Available in iOS 8.0 and later.
      */

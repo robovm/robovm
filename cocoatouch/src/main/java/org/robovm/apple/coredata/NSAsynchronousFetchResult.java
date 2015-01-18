@@ -50,7 +50,7 @@ import org.robovm.apple.foundation.*;
     @Property(selector = "fetchRequest")
     public native NSAsynchronousFetchRequest getFetchRequest();
     @Property(selector = "finalResult")
-    public native NSArray<?> getFinalResult();
+    public native NSArray<NSManagedObject> getFinalResult();
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/

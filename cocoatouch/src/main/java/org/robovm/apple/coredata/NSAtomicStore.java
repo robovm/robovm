@@ -52,7 +52,6 @@ import org.robovm.apple.foundation.NSError.NSErrorPtr;
     
     /*</properties>*/
     /*<members>*//*</members>*/
-    
     /**
      * 
      * @return

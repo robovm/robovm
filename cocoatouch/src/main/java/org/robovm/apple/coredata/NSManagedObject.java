@@ -64,7 +64,7 @@ import org.robovm.apple.foundation.*;
      * @since Available in iOS 5.0 and later.
      */
     @Property(selector = "hasChanges")
-    public native boolean isHasChanges();
+    public native boolean hasChanges();
     @Property(selector = "isFault")
     public native boolean isFault();
     /**

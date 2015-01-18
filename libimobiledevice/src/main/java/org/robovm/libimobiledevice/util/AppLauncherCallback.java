@@ -16,6 +16,8 @@
  */
 package org.robovm.libimobiledevice.util;
 
+import org.robovm.libimobiledevice.IDevice;
+
 /**
  * Can be set on {@link AppLauncher} so it returns the remote app path, product
  * version and build version after the application has been deployed to the device.
@@ -26,14 +28,20 @@ public interface AppLauncherCallback {
     public void setAppLaunchInfo(AppLauncherInfo info);
     
     static class AppLauncherInfo {
+        final IDevice device;
         final String remoteAppPath;
         final String productVersion;
         final String buildVersion;
         
-        public AppLauncherInfo(String remoteAppPath, String productVersion, String buildVersion) {
+        public AppLauncherInfo(IDevice device, String remoteAppPath, String productVersion, String buildVersion) {
+            this.device = device;
             this.remoteAppPath = remoteAppPath;
             this.productVersion = productVersion;
             this.buildVersion = buildVersion;
+        }
+        
+        public IDevice getDevice() {
+            return device;
         }
 
         public String getRemoteAppPath() {

@@ -31,6 +31,7 @@ import org.robovm.apple.corefoundation.*;
 import org.robovm.apple.coregraphics.*;
 import org.robovm.apple.opengles.*;
 import org.robovm.apple.coremedia.*;
+import org.robovm.apple.metal.*;
 /*</imports>*/
 
 /*<javadoc>*/
@@ -47,11 +48,11 @@ import org.robovm.apple.coremedia.*;
     /*<constructors>*//*</constructors>*/
     /*<properties>*//*</properties>*/
     /*<members>*//*</members>*/
-    public CFType getAttachment(String key) {
+    public CFType getAttachment(CFString key) {
         return getAttachment(key, null);
     }
     
-    public CVAttachmentMode getAttachmentMode(String key) {
+    public CVAttachmentMode getAttachmentMode(CFString key) {
         IntPtr ptr = new IntPtr();
         getAttachment(key, ptr);
         return CVAttachmentMode.valueOf(ptr.get());
@@ -61,17 +62,17 @@ import org.robovm.apple.coremedia.*;
      * @since Available in iOS 4.0 and later.
      */
     @Bridge(symbol="CVBufferSetAttachment", optional=true)
-    public native void setAttachment(String key, CFType value, CVAttachmentMode attachmentMode);
+    public native void setAttachment(CFString key, CFType value, CVAttachmentMode attachmentMode);
     /**
      * @since Available in iOS 4.0 and later.
      */
     @Bridge(symbol="CVBufferGetAttachment", optional=true)
-    protected native CFType getAttachment(String key, IntPtr attachmentMode);
+    protected native CFType getAttachment(CFString key, IntPtr attachmentMode);
     /**
      * @since Available in iOS 4.0 and later.
      */
     @Bridge(symbol="CVBufferRemoveAttachment", optional=true)
-    public native void removeAttachment(String key);
+    public native void removeAttachment(CFString key);
     /**
      * @since Available in iOS 4.0 and later.
      */

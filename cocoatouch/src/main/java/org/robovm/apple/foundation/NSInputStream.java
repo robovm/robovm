@@ -50,26 +50,26 @@ import org.robovm.apple.dispatch.*;
     /*<constructors>*/
     public NSInputStream() {}
     protected NSInputStream(SkipInit skipInit) { super(skipInit); }
-    public NSInputStream(NSData data) { super((SkipInit) null); initObject(initWithData$(data)); }
+    public NSInputStream(NSData data) { super((SkipInit) null); initObject(init(data)); }
     /**
      * @since Available in iOS 4.0 and later.
      */
-    public NSInputStream(NSURL url) { super((SkipInit) null); initObject(initWithURL$(url)); }
-    public NSInputStream(String path) { super((SkipInit) null); initObject(initWithFileAtPath$(path)); }
+    public NSInputStream(NSURL url) { super((SkipInit) null); initObject(init(url)); }
+    public NSInputStream(String path) { super((SkipInit) null); initObject(init(path)); }
     /*</constructors>*/
     /*<properties>*/
     @Property(selector = "hasBytesAvailable")
-    public native boolean isHasBytesAvailable();
+    public native boolean hasBytesAvailable();
     /*</properties>*/
     /*<members>*//*</members>*/
     
     public long read(BytePtr buffer, long len) {
-        return read$maxLength$(buffer.getHandle(), len);
+        return read(buffer.getHandle(), len);
     }
 
     public long read(ByteBuffer bytes) {
         long handle = NSData.getEffectiveAddress(bytes) + bytes.position();
-        return read$maxLength$(handle, bytes.remaining());
+        return read(handle, bytes.remaining());
     }
 
     public long read(byte[] bytes) {
@@ -81,20 +81,20 @@ import org.robovm.apple.dispatch.*;
         if (length == 0) {
             return 0;
         }
-        return read$maxLength$(VM.getArrayValuesAddress(bytes) + offset, length);
+        return read(VM.getArrayValuesAddress(bytes) + offset, length);
     }
     
     /*<methods>*/
     @Method(selector = "read:maxLength:")
-    protected native @MachineSizedSInt long read$maxLength$(@Pointer long buffer, @MachineSizedUInt long len);
+    protected native @MachineSizedSInt long read(@Pointer long buffer, @MachineSizedUInt long len);
     @Method(selector = "initWithData:")
-    protected native @Pointer long initWithData$(NSData data);
+    protected native @Pointer long init(NSData data);
     /**
      * @since Available in iOS 4.0 and later.
      */
     @Method(selector = "initWithURL:")
-    protected native @Pointer long initWithURL$(NSURL url);
+    protected native @Pointer long init(NSURL url);
     @Method(selector = "initWithFileAtPath:")
-    protected native @Pointer long initWithFileAtPath$(String path);
+    protected native @Pointer long init(String path);
     /*</methods>*/
 }

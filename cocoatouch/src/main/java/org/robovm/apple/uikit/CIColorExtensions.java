@@ -58,7 +58,7 @@ import org.robovm.apple.corelocation.*;
      */
     public static CIColor create(UIColor color) {
         CIColor thiz = alloc(CIColor.class);
-        initObject(thiz, initWithColor$(thiz, color));
+        initObject(thiz, init(thiz, color));
         return thiz;
     }
     /*<methods>*/
@@ -66,6 +66,6 @@ import org.robovm.apple.corelocation.*;
      * @since Available in iOS 5.0 and later.
      */
     @Method(selector = "initWithColor:")
-    protected static native @Pointer long initWithColor$(CIColor thiz, UIColor color);
+    protected static native @Pointer long init(CIColor thiz, UIColor color);
     /*</methods>*/
 }

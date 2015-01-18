@@ -47,6 +47,16 @@ import org.robovm.apple.coregraphics.*;
     /*<members>*//*</members>*/
     /*<methods>*/
     /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @GlobalValue(symbol="kCTFontOpenTypeFeatureTag", optional=true)
+    public static native String Value__kCTFontOpenTypeFeatureTag();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @GlobalValue(symbol="kCTFontOpenTypeFeatureValue", optional=true)
+    public static native String Value__kCTFontOpenTypeFeatureValue();
+    /**
      * @since Available in iOS 3.2 and later.
      */
     @GlobalValue(symbol="kCTFontFeatureTypeIdentifierKey", optional=true)
@@ -241,6 +251,11 @@ import org.robovm.apple.coregraphics.*;
      */
     @GlobalValue(symbol="kCTWritingDirectionAttributeName", optional=true)
     public static native String Value__kCTWritingDirectionAttributeName();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @GlobalValue(symbol="kCTRubyAnnotationAttributeName", optional=true)
+    public static native String Value__kCTRubyAnnotationAttributeName();
     
     /**
      * @since Available in iOS 3.2 and later.

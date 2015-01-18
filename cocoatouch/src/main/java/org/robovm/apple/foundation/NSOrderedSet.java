@@ -44,7 +44,7 @@ import org.robovm.apple.dispatch.*;
 /*<annotations>*/@Library("Foundation") @NativeClass/*</annotations>*/
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/NSOrderedSet/*</name>*/ <T extends NSObject>
     extends /*<extends>*/NSObject/*</extends>*/ 
-    /*<implements>*//*</implements>*/ implements Set<T>, List<T> {
+    /*<implements>*/implements NSFastEnumeration, Set<T>, List<T>/*</implements>*/ {
 
     public static class NSOrderedSetPtr<T extends NSObject> extends Ptr<NSOrderedSet<T>, NSOrderedSetPtr<T>> {}
     
@@ -58,7 +58,7 @@ import org.robovm.apple.dispatch.*;
         @Override
         public boolean contains(Object o) {
             if (o instanceof NSObject) {
-                return set.containsObject$((NSObject) o);
+                return set.containsObject((NSObject) o);
             }
             return false;
         }
@@ -84,7 +84,7 @@ import org.robovm.apple.dispatch.*;
         @Override
         public U get(int index) {
             checkIndex(index);
-            return (U) set.objectAtIndex$(index);
+            return (U) set.getObjectAt(index);
         }
 
         protected void checkIndex(int index) {
@@ -102,7 +102,7 @@ import org.robovm.apple.dispatch.*;
         @Override
         public boolean contains(Object o) {
             if (o instanceof NSObject) {
-                return set.containsObject$((NSObject) o);
+                return set.containsObject((NSObject) o);
             }
             return false;
         }
@@ -110,7 +110,7 @@ import org.robovm.apple.dispatch.*;
         @Override
         public int indexOf(Object o) {
             if (o instanceof NSObject) {
-                return (int) set.indexOfObject$((NSObject) o);
+                return (int) set.indexOfObject((NSObject) o);
             }
             return -1;
         }
@@ -130,9 +130,9 @@ import org.robovm.apple.dispatch.*;
     public NSOrderedSet(Collection<T> c) {
         super((SkipInit) null);
         if (c instanceof NSArray) {
-            initObject(initWithArray$((NSArray<T>) c));
+            initObject(init((NSArray<T>) c));
         } else if (c instanceof NSSet) {
-            initObject(initWithOrderedSet$((NSOrderedSet<T>) c));
+            initObject(init((NSOrderedSet<T>) c));
         } else {
             NSObject[] objects = c.toArray(new NSObject[c.size()]);
             initWithObjects(objects);
@@ -175,7 +175,7 @@ import org.robovm.apple.dispatch.*;
             ptr = ptr.next();
         }
         ptr = ptr.previous(objects.length);
-        initObject(initWithObjects$count$(ptr.getHandle(), objects.length));
+        initObject(init(ptr.getHandle(), objects.length));
     }
     
     protected AbstractSet<T> createSetAdapter() {
@@ -259,7 +259,7 @@ import org.robovm.apple.dispatch.*;
     public NSOrderedSet<T> subList(int start, int end) {
         if (start >= 0 && end <= size()) {
             if (start <= end) {
-                return new NSOrderedSet<T>(objectsAtIndexes$(new NSIndexSet(new NSRange(start, end - start))));
+                return new NSOrderedSet<T>(getObjectsAt(new NSIndexSet(new NSRange(start, end - start))));
             }
             throw new IllegalArgumentException();
         }
@@ -274,20 +274,20 @@ import org.robovm.apple.dispatch.*;
     
     /*<methods>*/
     @Method(selector = "objectAtIndex:")
-    protected native T objectAtIndex$(@MachineSizedUInt long idx);
+    protected native T getObjectAt(@MachineSizedUInt long idx);
     @Method(selector = "indexOfObject:")
-    protected native @MachineSizedUInt long indexOfObject$(NSObject object);
+    protected native @MachineSizedUInt long indexOfObject(NSObject object);
     @Method(selector = "initWithObjects:count:")
-    protected native @Pointer long initWithObjects$count$(@Pointer long objects, @MachineSizedUInt long cnt);
+    protected native @Pointer long init(@Pointer long objects, @MachineSizedUInt long cnt);
     @Method(selector = "objectsAtIndexes:")
-    protected native NSArray<T> objectsAtIndexes$(NSIndexSet indexes);
+    protected native NSArray<T> getObjectsAt(NSIndexSet indexes);
     @Method(selector = "containsObject:")
-    protected native boolean containsObject$(NSObject object);
+    protected native boolean containsObject(NSObject object);
     @Method(selector = "objectEnumerator")
     protected native NSEnumerator<T> objectEnumerator();
     @Method(selector = "initWithOrderedSet:")
-    protected native @Pointer long initWithOrderedSet$(NSOrderedSet<?> set);
+    protected native @Pointer long init(NSOrderedSet<?> set);
     @Method(selector = "initWithArray:")
-    protected native @Pointer long initWithArray$(NSArray<?> array);
+    protected native @Pointer long init(NSArray<?> array);
     /*</methods>*/
 }

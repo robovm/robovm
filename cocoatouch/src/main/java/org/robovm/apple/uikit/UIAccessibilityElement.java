@@ -51,7 +51,7 @@ import org.robovm.apple.corelocation.*;
     /*<constructors>*/
     public UIAccessibilityElement() {}
     protected UIAccessibilityElement(SkipInit skipInit) { super(skipInit); }
-    public UIAccessibilityElement(UIAccessibilityContainer container) { super((SkipInit) null); initObject(initWithAccessibilityContainer$(container)); }
+    public UIAccessibilityElement(UIAccessibilityContainer container) { super((SkipInit) null); initObject(init(container)); }
     /*</constructors>*/
     /*<properties>*/
     @Property(selector = "accessibilityContainer")
@@ -96,6 +96,6 @@ import org.robovm.apple.corelocation.*;
     /*<members>*//*</members>*/
     /*<methods>*/
     @Method(selector = "initWithAccessibilityContainer:")
-    protected native @Pointer long initWithAccessibilityContainer$(UIAccessibilityContainer container);
+    protected native @Pointer long init(UIAccessibilityContainer container);
     /*</methods>*/
 }

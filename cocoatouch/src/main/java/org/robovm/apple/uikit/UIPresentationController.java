@@ -51,7 +51,7 @@ import org.robovm.apple.corelocation.*;
     /*<constructors>*/
     public UIPresentationController() {}
     protected UIPresentationController(SkipInit skipInit) { super(skipInit); }
-    public UIPresentationController(UIViewController presentedViewController, UIViewController presentingViewController) { super((SkipInit) null); initObject(initWithPresentedViewController$presentingViewController$(presentedViewController, presentingViewController)); }
+    public UIPresentationController(UIViewController presentedViewController, UIViewController presentingViewController) { super((SkipInit) null); initObject(init(presentedViewController, presentingViewController)); }
     /*</constructors>*/
     /*<properties>*/
     @Property(selector = "presentingViewController")
@@ -76,7 +76,7 @@ import org.robovm.apple.corelocation.*;
     /*<members>*//*</members>*/
     /*<methods>*/
     @Method(selector = "initWithPresentedViewController:presentingViewController:")
-    protected native @Pointer long initWithPresentedViewController$presentingViewController$(UIViewController presentedViewController, UIViewController presentingViewController);
+    protected native @Pointer long init(UIViewController presentedViewController, UIViewController presentingViewController);
     @Method(selector = "adaptivePresentationStyle")
     public native UIModalPresentationStyle getAdaptivePresentationStyle();
     @Method(selector = "containerViewWillLayoutSubviews")

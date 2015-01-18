@@ -45,7 +45,10 @@ classes:
                 parameters:
                     blk:
                         type: '@Block VoidBlock1<NSAsynchronousFetchResult>'
-    NSAsynchronousFetchResult: {} # DONE
+    NSAsynchronousFetchResult: # DONE
+        properties:
+            'finalResult':
+                type: NSArray<NSManagedObject>
     NSAtomicStore: # DONE
         methods:
             '-initWithPersistentStoreCoordinator:configurationName:URL:options:':
@@ -102,6 +105,8 @@ classes:
             'propertiesToUpdate':
                 type: '@org.robovm.rt.bro.annotation.Marshaler(NSDictionary.AsStringMapMarshaler.class) Map<String, NSExpression>'
         methods:
+            '-init.*':
+                name: init
             '+batchUpdateRequestWithEntityName:':
                 name: create
     NSBatchUpdateResult: {} # DONE
@@ -457,6 +462,8 @@ classes:
                         type: '@org.robovm.rt.bro.annotation.Marshaler(NSDictionary.AsStringMapMarshaler.class) Map<String, NSObject>'
     NSMergePolicy: # DONE
         methods:
+            '-init.*':
+                name: init
             '-resolveConflicts:error:':
                 trim_after_first_colon: true
                 visibility: protected # throws NSErrorException 

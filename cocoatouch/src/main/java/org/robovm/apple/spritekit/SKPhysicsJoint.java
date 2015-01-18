@@ -33,6 +33,8 @@ import org.robovm.apple.coreanimation.*;
 import org.robovm.apple.dispatch.*;
 import org.robovm.apple.coreimage.*;
 import org.robovm.apple.avfoundation.*;
+import org.robovm.apple.glkit.*;
+import org.robovm.apple.scenekit.*;
 /*</imports>*/
 
 /*<javadoc>*/
@@ -59,6 +61,10 @@ import org.robovm.apple.avfoundation.*;
     public native SKPhysicsBody getBodyB();
     @Property(selector = "setBodyB:")
     public native void setBodyB(SKPhysicsBody v);
+    @Property(selector = "reactionForce")
+    public native @ByVal CGVector getReactionForce();
+    @Property(selector = "reactionTorque")
+    public native @MachineSizedFloat double getReactionTorque();
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/

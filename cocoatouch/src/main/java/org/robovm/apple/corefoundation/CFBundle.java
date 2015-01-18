@@ -27,6 +27,7 @@ import org.robovm.rt.bro.*;
 import org.robovm.rt.bro.annotation.*;
 import org.robovm.rt.bro.ptr.*;
 import org.robovm.apple.dispatch.*;
+import org.robovm.apple.foundation.*;
 /*</imports>*/
 
 /*<javadoc>*/
@@ -48,7 +49,7 @@ import org.robovm.apple.dispatch.*;
     @Bridge(symbol="CFBundleGetMainBundle", optional=true)
     public static native CFBundle getMainBundle();
     @Bridge(symbol="CFBundleGetBundleWithIdentifier", optional=true)
-    public static native CFBundle getBundleWithIdentifier(CFString bundleID);
+    public static native CFBundle getBundleWithIdentifier(String bundleID);
     @Bridge(symbol="CFBundleGetAllBundles", optional=true)
     public static native CFArray getAllBundles();
     @Bridge(symbol="CFBundleGetTypeID", optional=true)
@@ -56,11 +57,11 @@ import org.robovm.apple.dispatch.*;
     @Bridge(symbol="CFBundleCreate", optional=true)
     public static native CFBundle create(CFAllocator allocator, CFURL bundleURL);
     @Bridge(symbol="CFBundleCreateBundlesFromDirectory", optional=true)
-    public static native CFArray createBundlesFromDirectory(CFAllocator allocator, CFURL directoryURL, CFString bundleType);
+    public static native CFArray createBundlesFromDirectory(CFAllocator allocator, CFURL directoryURL, String bundleType);
     @Bridge(symbol="CFBundleCopyBundleURL", optional=true)
     public native CFURL copyBundleURL();
     @Bridge(symbol="CFBundleGetValueForInfoDictionaryKey", optional=true)
-    public native CFType getValueForInfoDictionaryKey(CFString key);
+    public native CFType getValueForInfoDictionaryKey(String key);
     @Bridge(symbol="CFBundleGetInfoDictionary", optional=true)
     public native CFDictionary getInfoDictionary();
     @Bridge(symbol="CFBundleGetLocalInfoDictionary", optional=true)
@@ -68,11 +69,11 @@ import org.robovm.apple.dispatch.*;
     @Bridge(symbol="CFBundleGetPackageInfo", optional=true)
     public native void getPackageInfo(IntPtr packageType, IntPtr packageCreator);
     @Bridge(symbol="CFBundleGetIdentifier", optional=true)
-    public native CFString getIdentifier();
+    public native String getIdentifier();
     @Bridge(symbol="CFBundleGetVersionNumber", optional=true)
     public native int getVersionNumber();
     @Bridge(symbol="CFBundleGetDevelopmentRegion", optional=true)
-    public native CFString getDevelopmentRegion();
+    public native String getDevelopmentRegion();
     @Bridge(symbol="CFBundleCopySupportFilesDirectoryURL", optional=true)
     public native CFURL copySupportFilesDirectoryURL();
     @Bridge(symbol="CFBundleCopyResourcesDirectoryURL", optional=true)
@@ -90,15 +91,15 @@ import org.robovm.apple.dispatch.*;
     @Bridge(symbol="CFBundleGetPackageInfoInDirectory", optional=true)
     public static native boolean getPackageInfoInDirectory(CFURL url, IntPtr packageType, IntPtr packageCreator);
     @Bridge(symbol="CFBundleCopyResourceURL", optional=true)
-    public native CFURL copyResourceURL(CFString resourceName, CFString resourceType, CFString subDirName);
+    public native CFURL copyResourceURL(String resourceName, String resourceType, String subDirName);
     @Bridge(symbol="CFBundleCopyResourceURLsOfType", optional=true)
-    public native CFArray copyResourceURLsOfType(CFString resourceType, CFString subDirName);
+    public native CFArray copyResourceURLsOfType(String resourceType, String subDirName);
     @Bridge(symbol="CFBundleCopyLocalizedString", optional=true)
-    public native CFString copyLocalizedString(CFString key, CFString value, CFString tableName);
+    public native String copyLocalizedString(String key, String value, String tableName);
     @Bridge(symbol="CFBundleCopyResourceURLInDirectory", optional=true)
-    public static native CFURL copyResourceURLInDirectory(CFURL bundleURL, CFString resourceName, CFString resourceType, CFString subDirName);
+    public static native CFURL copyResourceURLInDirectory(CFURL bundleURL, String resourceName, String resourceType, String subDirName);
     @Bridge(symbol="CFBundleCopyResourceURLsOfTypeInDirectory", optional=true)
-    public static native CFArray copyResourceURLsOfTypeInDirectory(CFURL bundleURL, CFString resourceType, CFString subDirName);
+    public static native CFArray copyResourceURLsOfTypeInDirectory(CFURL bundleURL, String resourceType, String subDirName);
     @Bridge(symbol="CFBundleCopyBundleLocalizations", optional=true)
     public native CFArray copyBundleLocalizations();
     @Bridge(symbol="CFBundleCopyPreferredLocalizationsFromArray", optional=true)
@@ -106,9 +107,9 @@ import org.robovm.apple.dispatch.*;
     @Bridge(symbol="CFBundleCopyLocalizationsForPreferences", optional=true)
     public static native CFArray copyLocalizationsForPreferences(CFArray locArray, CFArray prefArray);
     @Bridge(symbol="CFBundleCopyResourceURLForLocalization", optional=true)
-    public native CFURL copyResourceURLForLocalization(CFString resourceName, CFString resourceType, CFString subDirName, CFString localizationName);
+    public native CFURL copyResourceURLForLocalization(String resourceName, String resourceType, String subDirName, String localizationName);
     @Bridge(symbol="CFBundleCopyResourceURLsOfTypeForLocalization", optional=true)
-    public native CFArray copyResourceURLsOfTypeForLocalization(CFString resourceType, CFString subDirName, CFString localizationName);
+    public native CFArray copyResourceURLsOfTypeForLocalization(String resourceType, String subDirName, String localizationName);
     @Bridge(symbol="CFBundleCopyInfoDictionaryForURL", optional=true)
     public static native CFDictionary copyInfoDictionaryForURL(CFURL url);
     @Bridge(symbol="CFBundleCopyLocalizationsForURL", optional=true)
@@ -142,17 +143,17 @@ import org.robovm.apple.dispatch.*;
     @Bridge(symbol="CFBundleUnloadExecutable", optional=true)
     public native void unloadExecutable();
     @Bridge(symbol="CFBundleGetFunctionPointerForName", optional=true)
-    public native VoidPtr getFunctionPointerForName(CFString functionName);
+    public native VoidPtr getFunctionPointerForName(String functionName);
     @Bridge(symbol="CFBundleGetFunctionPointersForNames", optional=true)
     public native void getFunctionPointersForNames(CFArray functionNames, VoidPtr.VoidPtrPtr ftbl);
     @Bridge(symbol="CFBundleGetDataPointerForName", optional=true)
-    public native VoidPtr getDataPointerForName(CFString symbolName);
+    public native VoidPtr getDataPointerForName(String symbolName);
     @Bridge(symbol="CFBundleGetDataPointersForNames", optional=true)
     public native void getDataPointersForNames(CFArray symbolNames, VoidPtr.VoidPtrPtr stbl);
     @Bridge(symbol="CFBundleCopyAuxiliaryExecutableURL", optional=true)
-    public native CFURL copyAuxiliaryExecutableURL(CFString executableName);
+    public native CFURL copyAuxiliaryExecutableURL(String executableName);
     @Bridge(symbol="CFBundleGetPlugIn", optional=true)
-    public native CFBundle getPlugIn();
+    public native CFPlugIn getPlugIn();
     @Bridge(symbol="CFBundleOpenBundleResourceMap", optional=true)
     public native short openBundleResourceMap();
     @Bridge(symbol="CFBundleOpenBundleResourceFiles", optional=true)

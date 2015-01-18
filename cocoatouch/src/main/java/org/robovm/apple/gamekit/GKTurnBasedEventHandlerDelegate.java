@@ -31,7 +31,11 @@ import org.robovm.apple.uikit.*;
 /*</imports>*/
 
 /*<javadoc>*/
-
+/**
+ * @since Available in iOS 5.0 and later.
+ * @deprecated Deprecated in iOS 7.0.
+ */
+@Deprecated
 /*</javadoc>*/
 /*<annotations>*//*</annotations>*/
 /*<visibility>*/public/*</visibility>*/ interface /*<name>*/GKTurnBasedEventHandlerDelegate/*</name>*/ 
@@ -52,7 +56,7 @@ import org.robovm.apple.uikit.*;
      */
     @Deprecated
     @Method(selector = "handleInviteFromGameCenter:")
-    void handleInvite(NSArray<NSString> playersToInvite);
+    void handleInvite(@org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String> playersToInvite);
     /**
      * @since Available in iOS 6.0 and later.
      * @deprecated Deprecated in iOS 7.0.
@@ -68,7 +72,7 @@ import org.robovm.apple.uikit.*;
     @Method(selector = "handleTurnEventForMatch:")
     void handleTurnEvent(GKTurnBasedMatch match);
     /**
-     * @since Available in iOS 5.0 and later.
+     * @since Available in iOS 6.0 and later.
      * @deprecated Deprecated in iOS 6.0.
      */
     @Deprecated

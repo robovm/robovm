@@ -121,7 +121,7 @@ import org.robovm.apple.corelocation.*;
      * @since Available in iOS 6.0 and later.
      */
     @NotImplemented("shouldGroupAccessibilityChildren")
-    public boolean isShouldGroupAccessibilityChildren() { throw new UnsupportedOperationException(); }
+    public boolean shouldGroupAccessibilityChildren() { throw new UnsupportedOperationException(); }
     /**
      * @since Available in iOS 6.0 and later.
      */

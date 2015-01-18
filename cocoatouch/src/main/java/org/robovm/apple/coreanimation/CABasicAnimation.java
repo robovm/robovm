@@ -31,6 +31,7 @@ import org.robovm.apple.foundation.*;
 import org.robovm.apple.coreimage.*;
 import org.robovm.apple.coretext.*;
 import org.robovm.apple.opengles.*;
+import org.robovm.apple.metal.*;
 /*</imports>*/
 
 /*<javadoc>*/
@@ -48,6 +49,36 @@ import org.robovm.apple.opengles.*;
     public CABasicAnimation() {}
     protected CABasicAnimation(SkipInit skipInit) { super(skipInit); }
     /*</constructors>*/
+    public double getNumericFromValue() {
+        NSObject val = getFromValue();
+        if (val instanceof NSNumber) {
+            return ((NSNumber) val).doubleValue();
+        }
+        return 0;
+    }
+    public void setNumericFromValue(double value) {
+        setFromValue(NSNumber.valueOf(value));
+    }
+    public double getNumericToValue() {
+        NSObject val = getToValue();
+        if (val instanceof NSNumber) {
+            return ((NSNumber) val).doubleValue();
+        }
+        return 0;
+    }
+    public void setNumericToValue(double value) {
+        setToValue(NSNumber.valueOf(value));
+    }
+    public double getNumericByValue() {
+        NSObject val = getByValue();
+        if (val instanceof NSNumber) {
+            return ((NSNumber) val).doubleValue();
+        }
+        return 0;
+    }
+    public void setNumericByValue(double value) {
+        setByValue(NSNumber.valueOf(value));
+    }
     /*<properties>*/
     @Property(selector = "fromValue")
     public native NSObject getFromValue();

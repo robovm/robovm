@@ -18,25 +18,30 @@
 #include "llvm/Pass.h"
 
 namespace llvm {
+  class AssumptionTracker;
   class Constant;
   class DataLayout;
+  class DominatorTree;
+  class Instruction;
   class TargetLibraryInfo;
   class Value;
   
 /// LazyValueInfo - This pass computes, caches, and vends lazy value constraint
 /// information.
 class LazyValueInfo : public FunctionPass {
-  class DataLayout *TD;
+  AssumptionTracker *AT;
+  const DataLayout *DL;
   class TargetLibraryInfo *TLI;
+  DominatorTree *DT;
   void *PImpl;
   LazyValueInfo(const LazyValueInfo&) LLVM_DELETED_FUNCTION;
   void operator=(const LazyValueInfo&) LLVM_DELETED_FUNCTION;
 public:
   static char ID;
-  LazyValueInfo() : FunctionPass(ID), PImpl(0) {
+  LazyValueInfo() : FunctionPass(ID), PImpl(nullptr) {
     initializeLazyValueInfoPass(*PassRegistry::getPassRegistry());
   }
-  ~LazyValueInfo() { assert(PImpl == 0 && "releaseMemory not called"); }
+  ~LazyValueInfo() { assert(!PImpl && "releaseMemory not called"); }
 
   /// Tristate - This is used to return true/false/dunno results.
   enum Tristate {
@@ -50,16 +55,23 @@ public:
   /// with a constant is known to be true or false on the specified CFG edge.
   /// Pred is a CmpInst predicate.
   Tristate getPredicateOnEdge(unsigned Pred, Value *V, Constant *C,
-                              BasicBlock *FromBB, BasicBlock *ToBB);
+                              BasicBlock *FromBB, BasicBlock *ToBB,
+                              Instruction *CxtI = nullptr);
   
-  
+  /// getPredicateAt - Determine whether the specified value comparison
+  /// with a constant is known to be true or false at the specified instruction
+  /// (from an assume intrinsic). Pred is a CmpInst predicate.
+  Tristate getPredicateAt(unsigned Pred, Value *V, Constant *C,
+                          Instruction *CxtI);
+ 
   /// getConstant - Determine whether the specified value is known to be a
   /// constant at the end of the specified block.  Return null if not.
-  Constant *getConstant(Value *V, BasicBlock *BB);
+  Constant *getConstant(Value *V, BasicBlock *BB, Instruction *CxtI = nullptr);
 
   /// getConstantOnEdge - Determine whether the specified value is known to be a
   /// constant on the specified edge.  Return null if not.
-  Constant *getConstantOnEdge(Value *V, BasicBlock *FromBB, BasicBlock *ToBB);
+  Constant *getConstantOnEdge(Value *V, BasicBlock *FromBB, BasicBlock *ToBB,
+                              Instruction *CxtI = nullptr);
   
   /// threadEdge - Inform the analysis cache that we have threaded an edge from
   /// PredBB to OldSucc to be from PredBB to NewSucc instead.
@@ -69,10 +81,10 @@ public:
   void eraseBlock(BasicBlock *BB);
   
   // Implementation boilerplate.
-  
-  virtual void getAnalysisUsage(AnalysisUsage &AU) const;
-  virtual void releaseMemory();
-  virtual bool runOnFunction(Function &F);
+
+  void getAnalysisUsage(AnalysisUsage &AU) const override;
+  void releaseMemory() override;
+  bool runOnFunction(Function &F) override;
 };
 
 }  // end namespace llvm

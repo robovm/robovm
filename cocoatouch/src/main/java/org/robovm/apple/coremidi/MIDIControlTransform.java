@@ -45,25 +45,25 @@ import org.robovm.apple.corefoundation.*;
     /*<constructors>*/
     public MIDIControlTransform() {}
     public MIDIControlTransform(MIDITransformControlType controlType, MIDITransformControlType remappedControlType, short controlNumber, MIDITransformType transform, short param) {
-        this.controlType(controlType);
-        this.remappedControlType(remappedControlType);
-        this.controlNumber(controlNumber);
-        this.transform(transform);
-        this.param(param);
+        this.setControlType(controlType);
+        this.setRemappedControlType(remappedControlType);
+        this.setControlNumber(controlNumber);
+        this.setTransform(transform);
+        this.setParam(param);
     }
     /*</constructors>*/
     /*<properties>*//*</properties>*/
     /*<members>*/
-    @StructMember(0) public native MIDITransformControlType controlType();
-    @StructMember(0) public native MIDIControlTransform controlType(MIDITransformControlType controlType);
-    @StructMember(1) public native MIDITransformControlType remappedControlType();
-    @StructMember(1) public native MIDIControlTransform remappedControlType(MIDITransformControlType remappedControlType);
-    @StructMember(2) public native short controlNumber();
-    @StructMember(2) public native MIDIControlTransform controlNumber(short controlNumber);
-    @StructMember(3) public native MIDITransformType transform();
-    @StructMember(3) public native MIDIControlTransform transform(MIDITransformType transform);
-    @StructMember(4) public native short param();
-    @StructMember(4) public native MIDIControlTransform param(short param);
+    @StructMember(0) public native MIDITransformControlType getControlType();
+    @StructMember(0) public native MIDIControlTransform setControlType(MIDITransformControlType controlType);
+    @StructMember(1) public native MIDITransformControlType getRemappedControlType();
+    @StructMember(1) public native MIDIControlTransform setRemappedControlType(MIDITransformControlType remappedControlType);
+    @StructMember(2) public native short getControlNumber();
+    @StructMember(2) public native MIDIControlTransform setControlNumber(short controlNumber);
+    @StructMember(3) public native MIDITransformType getTransform();
+    @StructMember(3) public native MIDIControlTransform setTransform(MIDITransformType transform);
+    @StructMember(4) public native short getParam();
+    @StructMember(4) public native MIDIControlTransform setParam(short param);
     /*</members>*/
     /*<methods>*//*</methods>*/
 }

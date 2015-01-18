@@ -78,7 +78,7 @@ import org.robovm.apple.corefoundation.*;
     public static CFNetServiceMonitor create(CFNetService theService, ClientCallback clientCB) {
         long refconId = CFNetServiceMonitor.refconId.getAndIncrement();
         CFNetServiceClientContext context = new CFNetServiceClientContext();
-        context.info(refconId);
+        context.setInfo(refconId);
         synchronized (callbacks) {
             callbacks.put(refconId, clientCB);
         }

@@ -54,8 +54,8 @@ import org.robovm.apple.corelocation.*;
     /**
      * @since Available in iOS 5.0 and later.
      */
-    public UINavigationController(Class<?> navigationBarClass, Class<?> toolbarClass) { super((SkipInit) null); initObject(initWithNavigationBarClass$toolbarClass$(navigationBarClass, toolbarClass)); }
-    public UINavigationController(UIViewController rootViewController) { super((SkipInit) null); initObject(initWithRootViewController$(rootViewController)); }
+    public UINavigationController(Class<?> navigationBarClass, Class<?> toolbarClass) { super((SkipInit) null); initObject(init(navigationBarClass, toolbarClass)); }
+    public UINavigationController(UIViewController rootViewController) { super((SkipInit) null); initObject(init(rootViewController)); }
     /*</constructors>*/
     /*<properties>*/
     @Property(selector = "topViewController")
@@ -100,7 +100,7 @@ import org.robovm.apple.corelocation.*;
      * @since Available in iOS 8.0 and later.
      */
     @Property(selector = "hidesBarsWhenKeyboardAppears")
-    public native boolean isHidesBarsWhenKeyboardAppears();
+    public native boolean hidesBarsWhenKeyboardAppears();
     /**
      * @since Available in iOS 8.0 and later.
      */
@@ -110,7 +110,7 @@ import org.robovm.apple.corelocation.*;
      * @since Available in iOS 8.0 and later.
      */
     @Property(selector = "hidesBarsOnSwipe")
-    public native boolean isHidesBarsOnSwipe();
+    public native boolean hidesBarsOnSwipe();
     /**
      * @since Available in iOS 8.0 and later.
      */
@@ -125,7 +125,7 @@ import org.robovm.apple.corelocation.*;
      * @since Available in iOS 8.0 and later.
      */
     @Property(selector = "hidesBarsWhenVerticallyCompact")
-    public native boolean isHidesBarsWhenVerticallyCompact();
+    public native boolean hidesBarsWhenVerticallyCompact();
     /**
      * @since Available in iOS 8.0 and later.
      */
@@ -135,7 +135,7 @@ import org.robovm.apple.corelocation.*;
      * @since Available in iOS 8.0 and later.
      */
     @Property(selector = "hidesBarsOnTap")
-    public native boolean isHidesBarsOnTap();
+    public native boolean hidesBarsOnTap();
     /**
      * @since Available in iOS 8.0 and later.
      */
@@ -150,15 +150,15 @@ import org.robovm.apple.corelocation.*;
     /*<members>*//*</members>*/
     /*<methods>*/
     @GlobalValue(symbol="UINavigationControllerHideShowBarDuration", optional=true)
-    public static native @MachineSizedFloat double HideShowBarDuration();
+    public static native @MachineSizedFloat double getHideShowBarDuration();
     
     /**
      * @since Available in iOS 5.0 and later.
      */
     @Method(selector = "initWithNavigationBarClass:toolbarClass:")
-    protected native @Pointer long initWithNavigationBarClass$toolbarClass$(Class<?> navigationBarClass, Class<?> toolbarClass);
+    protected native @Pointer long init(Class<?> navigationBarClass, Class<?> toolbarClass);
     @Method(selector = "initWithRootViewController:")
-    protected native @Pointer long initWithRootViewController$(UIViewController rootViewController);
+    protected native @Pointer long init(UIViewController rootViewController);
     @Method(selector = "pushViewController:animated:")
     public native void pushViewController(UIViewController viewController, boolean animated);
     @Method(selector = "popViewControllerAnimated:")

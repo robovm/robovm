@@ -86,6 +86,8 @@ import org.robovm.apple.dispatch.*;
     public native GLKViewDrawableMultisample getDrawableMultisample();
     @Property(selector = "setDrawableMultisample:")
     public native void setDrawableMultisample(GLKViewDrawableMultisample v);
+    @Property(selector = "snapshot")
+    public native UIImage getSnapshot();
     @Property(selector = "enableSetNeedsDisplay")
     public native boolean isEnableSetNeedsDisplay();
     @Property(selector = "setEnableSetNeedsDisplay:")
@@ -99,8 +101,6 @@ import org.robovm.apple.dispatch.*;
     public native void bindDrawable();
     @Method(selector = "deleteDrawable")
     public native void deleteDrawable();
-    @Method(selector = "snapshot")
-    public native UIImage snapshot();
     @Method(selector = "display")
     public native void display();
     /*</methods>*/

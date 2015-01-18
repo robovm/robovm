@@ -54,9 +54,9 @@ import org.robovm.apple.mediatoolbox.*;
     /*<constants>*//*</constants>*/
     /*<properties>*/
     @Property(selector = "sourcePixelBufferAttributes")
-    NSDictionary<NSString, ?> getSourcePixelBufferAttributes();
+    CVPixelBufferAttributes getSourcePixelBufferAttributes();
     @Property(selector = "requiredPixelBufferAttributesForRenderContext")
-    NSDictionary<NSString, ?> getRequiredPixelBufferAttributesForRenderContext();
+    CVPixelBufferAttributes getRequiredPixelBufferAttributesForRenderContext();
     /*</properties>*/
     /*<methods>*/
     @Method(selector = "renderContextChanged:")

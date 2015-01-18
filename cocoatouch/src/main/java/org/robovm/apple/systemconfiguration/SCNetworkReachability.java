@@ -138,7 +138,7 @@ import org.robovm.apple.dispatch.*;
      */
     public boolean setCallback(ClientCallback callback) {
         SCNetworkReachabilityContext context = new SCNetworkReachabilityContext();
-        context.info(localRefconId);
+        context.setInfo(localRefconId);
         synchronized (callbacks) {
             callbacks.put(localRefconId, callback);
         }

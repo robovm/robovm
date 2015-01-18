@@ -15,45 +15,15 @@
  */
 package org.robovm.apple.corefoundation;
 
-/*<imports>*/
-import java.io.*;
-import java.nio.*;
-import java.util.*;
-import org.robovm.objc.*;
-import org.robovm.objc.annotation.*;
-import org.robovm.objc.block.*;
-import org.robovm.rt.*;
-import org.robovm.rt.bro.*;
-import org.robovm.rt.bro.annotation.*;
-import org.robovm.rt.bro.ptr.*;
-import org.robovm.apple.dispatch.*;
-/*</imports>*/
+import org.robovm.apple.foundation.NSError;
 
-/*<javadoc>*/
+public class CFMessagePortError extends NSError {
 
-/*</javadoc>*/
-/*<annotations>*//*</annotations>*/
-public enum /*<name>*/CFMessagePortError/*</name>*/ implements ValuedEnum {
-    /*<values>*/
-    Success(0L),
-    SendTimeout(-1L),
-    ReceiveTimeout(-2L),
-    IsInvalid(-3L),
-    TransportError(-4L),
-    BecameInvalidError(-5L);
-    /*</values>*/
+    protected CFMessagePortError(CFMessagePortErrorCode code) {
+        super("CFMessagePortError", code.value(), null);
+    }
 
-    private final long n;
-
-    private /*<name>*/CFMessagePortError/*</name>*/(long n) { this.n = n; }
-    public long value() { return n; }
-    public static /*<name>*/CFMessagePortError/*</name>*/ valueOf(long n) {
-        for (/*<name>*/CFMessagePortError/*</name>*/ v : values()) {
-            if (v.n == n) {
-                return v;
-            }
-        }
-        throw new IllegalArgumentException("No constant with value " + n + " found in " 
-            + /*<name>*/CFMessagePortError/*</name>*/.class.getName());
+    public CFMessagePortErrorCode getErrorCode() {
+        return CFMessagePortErrorCode.valueOf(getCode());
     }
 }

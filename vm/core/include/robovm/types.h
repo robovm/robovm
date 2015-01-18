@@ -124,7 +124,7 @@ struct Interface {
 
 struct Object {
   Class* clazz;
-#if defined(RVM_X86_64)
+#if defined(RVM_X86_64) || defined(RVM_ARM64)
   uint64_t lock;
 #else
   uint32_t lock;
@@ -371,6 +371,7 @@ typedef struct Options {
     jboolean enableHooks;
     jboolean waitForAttach;
     jboolean printPID;
+    char* pidFile;
     char basePath[PATH_MAX];
     char executablePath[PATH_MAX];
     char** rawBootclasspath; 
@@ -462,6 +463,28 @@ struct TrycatchContext {
     void* r10;
     void* r11;
     void* pc; // r14 (lr)
+    double d8;
+    double d9;
+    double d10;
+    double d11;
+    double d12;
+    double d13;
+    double d14;
+    double d15;
+#elif defined(DARWIN) && defined(RVM_ARM64)
+    void* sp; // x31
+    void* x19;
+    void* x20;
+    void* x21;
+    void* x22;
+    void* x23;
+    void* x24;
+    void* x25;
+    void* x26;
+    void* x27;
+    void* x28;
+    void* fp; // x29
+    void* pc; // x30
     double d8;
     double d9;
     double d10;

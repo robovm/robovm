@@ -80,7 +80,7 @@ import org.robovm.apple.dispatch.*;
     /**
      * @since Available in iOS 2.0 and later.
      */
-    public NSThread(NSObject target, Selector selector, NSObject argument) { super((SkipInit) null); initObject(initWithTarget$selector$object$(target, selector, argument)); }
+    public NSThread(NSObject target, Selector selector, NSObject argument) { super((SkipInit) null); initObject(init(target, selector, argument)); }
     /*</constructors>*/
     /*<properties>*/
     @Property(selector = "threadDictionary")
@@ -149,7 +149,7 @@ import org.robovm.apple.dispatch.*;
      * @since Available in iOS 2.0 and later.
      */
     @Method(selector = "initWithTarget:selector:object:")
-    protected native @Pointer long initWithTarget$selector$object$(NSObject target, Selector selector, NSObject argument);
+    protected native @Pointer long init(NSObject target, Selector selector, NSObject argument);
     /**
      * @since Available in iOS 2.0 and later.
      */
@@ -177,6 +177,15 @@ import org.robovm.apple.dispatch.*;
     public static native void sleep(double ti);
     @Method(selector = "exit")
     public static native void exit();
+    @Method(selector = "threadPriority")
+    public static native double getThreadPriority();
+    @Method(selector = "setThreadPriority:")
+    public static native boolean setThreadPriority(double p);
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
+    @Method(selector = "isMainThread")
+    public static native boolean isCurrentThreadMainThread();
     /**
      * @since Available in iOS 2.0 and later.
      */

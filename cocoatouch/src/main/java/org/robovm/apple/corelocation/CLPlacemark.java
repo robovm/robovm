@@ -47,7 +47,7 @@ import org.robovm.apple.corebluetooth.*;
     /*<constructors>*/
     public CLPlacemark() {}
     protected CLPlacemark(SkipInit skipInit) { super(skipInit); }
-    public CLPlacemark(CLPlacemark placemark) { super((SkipInit) null); initObject(initWithPlacemark$(placemark)); }
+    public CLPlacemark(CLPlacemark placemark) { super((SkipInit) null); initObject(init(placemark)); }
     /*</constructors>*/
     /*<properties>*/
     @Property(selector = "location")
@@ -86,6 +86,6 @@ import org.robovm.apple.corebluetooth.*;
     /*<members>*//*</members>*/
     /*<methods>*/
     @Method(selector = "initWithPlacemark:")
-    protected native @Pointer long initWithPlacemark$(CLPlacemark placemark);
+    protected native @Pointer long init(CLPlacemark placemark);
     /*</methods>*/
 }

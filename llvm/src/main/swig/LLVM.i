@@ -97,6 +97,7 @@ OUT_CLASS(LLVMModuleProviderRef, ModuleProviderRefOut)
 OUT_CLASS(LLVMTargetRef, TargetRefOut)
 OUT_CLASS(charp, StringOut, if (self->value) free(self->value))
 OUT_CLASS(jint, IntOut)
+OUT_CLASS(size_t, SizeTOut)
 OUT_CLASS(LongArrayPtr, LongArrayOut, if (self->value) free(self->value))
 OUT_ARG(MemoryBufferRefOut, LLVMMemoryBufferRef *OutMemBuf)
 OUT_ARG(ModuleRefOut, LLVMModuleRef *OutM)
@@ -107,6 +108,8 @@ OUT_ARG(StringOut, char **OutMessage)
 OUT_ARG(StringOut, char **ErrorMessage)
 OUT_ARG(IntOut, unsigned *Len)
 OUT_ARG(IntOut, int* OutSize)
+OUT_ARG(IntOut, LLVMBool *losesInfo)
+OUT_ARG(SizeTOut, size_t* out)
 OUT_ARG(LongArrayOut, uint64_t **Out)
 
 ARRAY_CLASS(LLVMTypeRef, TypeRefArray)
@@ -226,6 +229,11 @@ typedef jlong uint64_t;
 
 %ignore LLVMInstallFatalErrorHandler;
 %ignore LLVMResetFatalErrorHandler;
+
+%ignore LLVMContextSetDiagnosticHandler;
+%ignore LLVMContextSetYieldCallback;
+
+%ignore LLVMParseCommandLineOptions;
 
 // Prevent arguments named ContextRef to interfere with the type named ContextRef
 #define ContextRef contextRef

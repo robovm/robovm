@@ -63,7 +63,7 @@ import org.robovm.apple.mediatoolbox.*;
     @Property(selector = "mediaType")
     public native String getMediaType();
     @Property(selector = "formatDescriptions")
-    public native NSArray<?> getFormatDescriptions();
+    public native @org.robovm.rt.bro.annotation.Marshaler(NSArray.AsListMarshaler.class) List<CMFormatDescription> getFormatDescriptions();
     /**
      * @since Available in iOS 5.0 and later.
      */
@@ -102,7 +102,7 @@ import org.robovm.apple.mediatoolbox.*;
      * @since Available in iOS 8.0 and later.
      */
     @Property(selector = "requiresFrameReordering")
-    public native boolean isRequiresFrameReordering();
+    public native boolean requiresFrameReordering();
     @Property(selector = "segments")
     public native NSArray<AVAssetTrackSegment> getSegments();
     @Property(selector = "commonMetadata")
@@ -111,30 +111,44 @@ import org.robovm.apple.mediatoolbox.*;
      * @since Available in iOS 8.0 and later.
      */
     @Property(selector = "metadata")
-    public native NSArray<?> getMetadata();
+    public native NSArray<AVMetadataItem> getMetadata();
     @Property(selector = "availableMetadataFormats")
-    public native NSArray<NSString> getAvailableMetadataFormats();
+    public native @org.robovm.rt.bro.annotation.Marshaler(AVMetadataFormat.AsListMarshaler.class) List<AVMetadataFormat> getAvailableMetadataFormats();
     /**
      * @since Available in iOS 7.0 and later.
      */
     @Property(selector = "availableTrackAssociationTypes")
-    public native NSArray<NSString> getAvailableTrackAssociationTypes();
+    public native @org.robovm.rt.bro.annotation.Marshaler(AVTrackAssociationType.AsListMarshaler.class) List<AVTrackAssociationType> getAvailableTrackAssociationTypes();
     /*</properties>*/
     /*<members>*//*</members>*/
+    /**
+     * 
+     * @param key
+     * @return
+     * @throws NSErrorException
+     */
+    public AVKeyValueStatus getStatusOfValue(AVMetadataKey key) throws NSErrorException {
+        NSError.NSErrorPtr err = new NSError.NSErrorPtr();
+        AVKeyValueStatus result = getStatusOfValue(key, err);
+        if (err.get() != null) {
+            throw new NSErrorException(err.get());
+        }
+        return result;
+    }
     /*<methods>*/
     @Method(selector = "hasMediaCharacteristic:")
-    public native boolean hasMediaCharacteristic(String mediaCharacteristic);
+    public native boolean hasMediaCharacteristic(AVMediaCharacteristic mediaCharacteristic);
     @Method(selector = "segmentForTrackTime:")
     public native AVAssetTrackSegment getSegment(@ByVal CMTime trackTime);
     @Method(selector = "samplePresentationTimeForTrackTime:")
     public native @ByVal CMTime getSamplePresentationTime(@ByVal CMTime trackTime);
     @Method(selector = "metadataForFormat:")
-    public native NSArray<AVMetadataItem> getMetadata(String format);
+    public native NSArray<AVMetadataItem> getMetadataForFormat(AVMetadataFormat format);
     /**
      * @since Available in iOS 7.0 and later.
      */
     @Method(selector = "associatedTracksOfType:")
-    public native NSArray<AVAssetTrack> getAssociatedTracks(String trackAssociationType);
+    public native NSArray<AVAssetTrack> getAssociatedTracksOfType(AVTrackAssociationType trackAssociationType);
     @Method(selector = "statusOfValueForKey:error:")
     public native AVKeyValueStatus getStatusOfValue(AVMetadataKey key, NSError.NSErrorPtr outError);
     @Method(selector = "loadValuesAsynchronouslyForKeys:completionHandler:")

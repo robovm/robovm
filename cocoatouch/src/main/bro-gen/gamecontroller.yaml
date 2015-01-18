@@ -46,13 +46,19 @@ classes:
         properties:
             'valueChangedHandler':
                 type: '@Block VoidBlock2<GCExtendedGamepad, GCControllerElement>'
-    GCExtendedGamepadSnapshot: {} # DONE
+    GCExtendedGamepadSnapshot: # DONE
+        methods:
+            '-init.*':
+                name: init
     GCExtendedGamepadSnapShotDataV100: {} # DONE
     GCGamepad: # DONE
         properties:
             'valueChangedHandler':
                 type: '@Block VoidBlock2<GCGamepad, GCControllerElement>'
-    GCGamepadSnapshot: {} # DONE
+    GCGamepadSnapshot: # DONE
+        methods:
+            '-init.*':
+                name: init
     GCGamepadSnapShotDataV100: {} # DONE
     GCMotion: # DONE
         properties:

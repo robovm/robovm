@@ -49,22 +49,22 @@ import org.robovm.apple.coremedia.*;
     /*<constructors>*/
     public AudioBytePacketTranslation() {}
     public AudioBytePacketTranslation(long mByte, long mPacket, int mByteOffsetInPacket, int mFlags) {
-        this.mByte(mByte);
-        this.mPacket(mPacket);
-        this.mByteOffsetInPacket(mByteOffsetInPacket);
-        this.mFlags(mFlags);
+        this.setMByte(mByte);
+        this.setMPacket(mPacket);
+        this.setMByteOffsetInPacket(mByteOffsetInPacket);
+        this.setMFlags(mFlags);
     }
     /*</constructors>*/
     /*<properties>*//*</properties>*/
     /*<members>*/
-    @StructMember(0) public native long mByte();
-    @StructMember(0) public native AudioBytePacketTranslation mByte(long mByte);
-    @StructMember(1) public native long mPacket();
-    @StructMember(1) public native AudioBytePacketTranslation mPacket(long mPacket);
-    @StructMember(2) public native int mByteOffsetInPacket();
-    @StructMember(2) public native AudioBytePacketTranslation mByteOffsetInPacket(int mByteOffsetInPacket);
-    @StructMember(3) public native int mFlags();
-    @StructMember(3) public native AudioBytePacketTranslation mFlags(int mFlags);
+    @StructMember(0) public native long getMByte();
+    @StructMember(0) public native AudioBytePacketTranslation setMByte(long mByte);
+    @StructMember(1) public native long getMPacket();
+    @StructMember(1) public native AudioBytePacketTranslation setMPacket(long mPacket);
+    @StructMember(2) public native int getMByteOffsetInPacket();
+    @StructMember(2) public native AudioBytePacketTranslation setMByteOffsetInPacket(int mByteOffsetInPacket);
+    @StructMember(3) public native int getMFlags();
+    @StructMember(3) public native AudioBytePacketTranslation setMFlags(int mFlags);
     /*</members>*/
     /*<methods>*//*</methods>*/
 }

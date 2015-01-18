@@ -40,7 +40,7 @@ import org.robovm.apple.dispatch.*;
 
 /*</javadoc>*/
 /*<annotations>*//*</annotations>*/
-@ForceLinkClass(NSError.class)
+@ForceLinkClass(NSCocoaError.class)
 public enum /*<name>*/NSCocoaErrorCode/*</name>*/ implements NSErrorCode {
     /*<values>*/
     FileNoSuchFileError(4L),

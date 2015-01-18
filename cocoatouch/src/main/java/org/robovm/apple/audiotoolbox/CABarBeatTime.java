@@ -49,25 +49,25 @@ import org.robovm.apple.coremedia.*;
     /*<constructors>*/
     public CABarBeatTime() {}
     public CABarBeatTime(int bar, short beat, short subbeat, short subbeatDivisor, short reserved) {
-        this.bar(bar);
-        this.beat(beat);
-        this.subbeat(subbeat);
-        this.subbeatDivisor(subbeatDivisor);
-        this.reserved(reserved);
+        this.setBar(bar);
+        this.setBeat(beat);
+        this.setSubbeat(subbeat);
+        this.setSubbeatDivisor(subbeatDivisor);
+        this.setReserved(reserved);
     }
     /*</constructors>*/
     /*<properties>*//*</properties>*/
     /*<members>*/
-    @StructMember(0) public native int bar();
-    @StructMember(0) public native CABarBeatTime bar(int bar);
-    @StructMember(1) public native short beat();
-    @StructMember(1) public native CABarBeatTime beat(short beat);
-    @StructMember(2) public native short subbeat();
-    @StructMember(2) public native CABarBeatTime subbeat(short subbeat);
-    @StructMember(3) public native short subbeatDivisor();
-    @StructMember(3) public native CABarBeatTime subbeatDivisor(short subbeatDivisor);
-    @StructMember(4) public native short reserved();
-    @StructMember(4) public native CABarBeatTime reserved(short reserved);
+    @StructMember(0) public native int getBar();
+    @StructMember(0) public native CABarBeatTime setBar(int bar);
+    @StructMember(1) public native short getBeat();
+    @StructMember(1) public native CABarBeatTime setBeat(short beat);
+    @StructMember(2) public native short getSubbeat();
+    @StructMember(2) public native CABarBeatTime setSubbeat(short subbeat);
+    @StructMember(3) public native short getSubbeatDivisor();
+    @StructMember(3) public native CABarBeatTime setSubbeatDivisor(short subbeatDivisor);
+    @StructMember(4) public native short getReserved();
+    @StructMember(4) public native CABarBeatTime setReserved(short reserved);
     /*</members>*/
     /*<methods>*//*</methods>*/
 }

@@ -57,11 +57,11 @@ import org.robovm.apple.dispatch.*;
     /*<members>*//*</members>*/
     
     public int getCount(T object) {
-        return (int) countForObject$(object);
+        return (int) countForObject(object);
     }
     
     /*<methods>*/
     @Method(selector = "countForObject:")
-    protected native @MachineSizedUInt long countForObject$(NSObject object);
+    protected native @MachineSizedUInt long countForObject(NSObject object);
     /*</methods>*/
 }

@@ -52,9 +52,9 @@ import org.robovm.apple.dispatch.*;
     /*<constructors>*/
     public NSAttributedString() {}
     protected NSAttributedString(SkipInit skipInit) { super(skipInit); }
-    public NSAttributedString(String str) { super((SkipInit) null); initObject(initWithString$(str)); }
-    public NSAttributedString(String str, NSAttributedStringAttributes attrs) { super((SkipInit) null); initObject(initWithString$attributes$(str, attrs)); }
-    public NSAttributedString(NSAttributedString attrStr) { super((SkipInit) null); initObject(initWithAttributedString$(attrStr)); }
+    public NSAttributedString(String str) { super((SkipInit) null); initObject(init(str)); }
+    public NSAttributedString(String str, NSAttributedStringAttributes attrs) { super((SkipInit) null); initObject(init(str, attrs)); }
+    public NSAttributedString(NSAttributedString attrStr) { super((SkipInit) null); initObject(init(attrStr)); }
     /*</constructors>*/
     /*<properties>*/
     @Property(selector = "string")
@@ -69,7 +69,7 @@ import org.robovm.apple.dispatch.*;
         if (!(obj instanceof NSAttributedString)) {
             return false;
         }
-        return isEqualToAttributedString$((NSAttributedString) obj);
+        return equalsTo((NSAttributedString) obj);
     }
     
     public NSObject getAttribute(String name, @MachineSizedUInt long location, NSRange range) {
@@ -212,13 +212,13 @@ import org.robovm.apple.dispatch.*;
     @Method(selector = "attribute:atIndex:longestEffectiveRange:inRange:")
     protected native NSObject getAttribute(NSString attrName, @MachineSizedUInt long location, NSRange range, @ByVal NSRange rangeLimit);
     @Method(selector = "isEqualToAttributedString:")
-    protected native boolean isEqualToAttributedString$(NSAttributedString other);
+    protected native boolean equalsTo(NSAttributedString other);
     @Method(selector = "initWithString:")
-    protected native @Pointer long initWithString$(String str);
+    protected native @Pointer long init(String str);
     @Method(selector = "initWithString:attributes:")
-    protected native @Pointer long initWithString$attributes$(String str, NSAttributedStringAttributes attrs);
+    protected native @Pointer long init(String str, NSAttributedStringAttributes attrs);
     @Method(selector = "initWithAttributedString:")
-    protected native @Pointer long initWithAttributedString$(NSAttributedString attrStr);
+    protected native @Pointer long init(NSAttributedString attrStr);
     /**
      * @since Available in iOS 4.0 and later.
      */

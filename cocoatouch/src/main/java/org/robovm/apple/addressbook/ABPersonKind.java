@@ -43,6 +43,7 @@ import org.robovm.apple.corefoundation.*;
     /*<constants>*//*</constants>*/
     public static final ABPersonKind Person = new ABPersonKind("PersonValue");
     public static final ABPersonKind Organization = new ABPersonKind("OrganizationValue");
+    
     private static ABPersonKind[] values = new ABPersonKind[] {Person, Organization};
     
     private final LazyGlobalValue<CFNumber> lazyGlobalValue;

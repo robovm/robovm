@@ -313,8 +313,14 @@ classes:
                 parameters:
                     completionHandler:
                         type: '@Block VoidBlock3<HKSourceQuery, NSSet<HKSource>, NSError>'
-    HKStatisticsCollectionQuery: {} # DONE
-    HKStatisticsQuery: {} # DONE
+    HKStatisticsCollectionQuery: # DONE
+        methods:
+            '-init.*':
+                name: init
+    HKStatisticsQuery: # DONE
+        methods:
+            '-init.*':
+                name: init
     HKSource: # DONE
         methods:
             '-init':

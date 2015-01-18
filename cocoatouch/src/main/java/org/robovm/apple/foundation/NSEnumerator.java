@@ -42,7 +42,7 @@ import org.robovm.apple.dispatch.*;
 /*<annotations>*/@Library("Foundation") @NativeClass/*</annotations>*/
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/NSEnumerator/*</name>*/ <T extends NSObject>
     extends /*<extends>*/NSObject/*</extends>*/ 
-    /*<implements>*//*</implements>*/ {
+    /*<implements>*/implements NSFastEnumeration/*</implements>*/ {
 
     public static class NSEnumeratorPtr<T extends NSObject> extends Ptr<NSEnumerator<T>, NSEnumeratorPtr<T>> {}
     

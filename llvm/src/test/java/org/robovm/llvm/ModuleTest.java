@@ -37,8 +37,12 @@ public class ModuleTest {
                     + "  ret i32 %a\n"
                     + "}\n", "Foo")) {
                 try (PassManager passManager = new PassManager()) {
-                    passManager.addAlwaysInlinerPass();
-                    passManager.addPromoteMemoryToRegisterPass();
+                    try (PassManagerBuilder builder = new PassManagerBuilder()) {
+                        builder.setSetOptLevel(2);
+                        builder.setDisableTailCalls(true);
+                        builder.useAlwaysInliner(true);
+                        builder.populateModulePassManager(passManager);
+                    }
                     passManager.run(m);
                     m.writeBitcode(new File("/tmp/test.bc"));
                 }

@@ -45,16 +45,16 @@ import org.robovm.apple.corefoundation.*;
     /*<constructors>*/
     public MIDIThruConnectionEndpoint() {}
     public MIDIThruConnectionEndpoint(MIDIEndpoint endpointRef, int uniqueID) {
-        this.endpointRef(endpointRef);
-        this.uniqueID(uniqueID);
+        this.setEndpointRef(endpointRef);
+        this.setUniqueID(uniqueID);
     }
     /*</constructors>*/
     /*<properties>*//*</properties>*/
     /*<members>*/
-    @StructMember(0) public native MIDIEndpoint endpointRef();
-    @StructMember(0) public native MIDIThruConnectionEndpoint endpointRef(MIDIEndpoint endpointRef);
-    @StructMember(1) public native int uniqueID();
-    @StructMember(1) public native MIDIThruConnectionEndpoint uniqueID(int uniqueID);
+    @StructMember(0) public native MIDIEndpoint getEndpointRef();
+    @StructMember(0) public native MIDIThruConnectionEndpoint setEndpointRef(MIDIEndpoint endpointRef);
+    @StructMember(1) public native int getUniqueID();
+    @StructMember(1) public native MIDIThruConnectionEndpoint setUniqueID(int uniqueID);
     /*</members>*/
     /*<methods>*//*</methods>*/
 }

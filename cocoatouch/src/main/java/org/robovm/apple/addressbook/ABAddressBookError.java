@@ -31,31 +31,29 @@ import org.robovm.apple.corefoundation.*;
 /*</imports>*/
 
 /*<javadoc>*/
-
 /*</javadoc>*/
-/*<annotations>*//*</annotations>*/
-public enum /*<name>*/ABAddressBookError/*</name>*/ implements ValuedEnum {
-    /*<values>*/
-    Store(0L),
-    User(1L);
-    /*</values>*/
+/*<annotations>*/@Library("AddressBook")/*</annotations>*/
+/*<visibility>*/public/*</visibility>*/ class /*<name>*/ABAddressBookError/*</name>*/ 
+    extends /*<extends>*/NSError/*</extends>*/ 
+    /*<implements>*//*</implements>*/ {
 
-    /*<bind>*/
-    /*</bind>*/
-    /*<constants>*//*</constants>*/
-    /*<methods>*//*</methods>*/
-
-    private final long n;
-
-    private /*<name>*/ABAddressBookError/*</name>*/(long n) { this.n = n; }
-    public long value() { return n; }
-    public static /*<name>*/ABAddressBookError/*</name>*/ valueOf(long n) {
-        for (/*<name>*/ABAddressBookError/*</name>*/ v : values()) {
-            if (v.n == n) {
-                return v;
-            }
-        }
-        throw new IllegalArgumentException("No constant with value " + n + " found in " 
-            + /*<name>*/ABAddressBookError/*</name>*/.class.getName());
+    protected ABAddressBookError(SkipInit skipInit) {
+        super(skipInit);
     }
+    
+    /*<ptr>*/
+    /*</ptr>*/
+    /*<bind>*/static { Bro.bind(ABAddressBookError.class); }/*</bind>*/
+    /*<constants>*//*</constants>*/
+    /*<constructors>*//*</constructors>*/
+    /*<properties>*//*</properties>*/
+    /*<members>*//*</members>*/
+    @Override
+    public ABAddressBookErrorCode getErrorCode() {
+        return ABAddressBookErrorCode.valueOf(getCode());
+    }
+    /*<methods>*/
+    @GlobalValue(symbol="ABAddressBookErrorDomain", optional=true)
+    public static native String getClassDomain();
+    /*</methods>*/
 }

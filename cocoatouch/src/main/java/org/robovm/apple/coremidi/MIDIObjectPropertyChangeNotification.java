@@ -45,25 +45,25 @@ import org.robovm.apple.corefoundation.*;
     /*<constructors>*/
     public MIDIObjectPropertyChangeNotification() {}
     public MIDIObjectPropertyChangeNotification(MIDINotificationMessageID messageID, int messageSize, MIDIObject object, MIDIObjectType objectType, String propertyName) {
-        this.messageID(messageID);
-        this.messageSize(messageSize);
-        this.object(object);
-        this.objectType(objectType);
-        this.propertyName(propertyName);
+        this.setMessageID(messageID);
+        this.setMessageSize(messageSize);
+        this.setObject(object);
+        this.setObjectType(objectType);
+        this.setPropertyName(propertyName);
     }
     /*</constructors>*/
     /*<properties>*//*</properties>*/
     /*<members>*/
-    @StructMember(0) public native MIDINotificationMessageID messageID();
-    @StructMember(0) public native MIDIObjectPropertyChangeNotification messageID(MIDINotificationMessageID messageID);
-    @StructMember(1) public native int messageSize();
-    @StructMember(1) public native MIDIObjectPropertyChangeNotification messageSize(int messageSize);
-    @StructMember(2) public native MIDIObject object();
-    @StructMember(2) public native MIDIObjectPropertyChangeNotification object(MIDIObject object);
-    @StructMember(3) public native MIDIObjectType objectType();
-    @StructMember(3) public native MIDIObjectPropertyChangeNotification objectType(MIDIObjectType objectType);
-    @StructMember(4) public native String propertyName();
-    @StructMember(4) public native MIDIObjectPropertyChangeNotification propertyName(String propertyName);
+    @StructMember(0) public native MIDINotificationMessageID getMessageID();
+    @StructMember(0) public native MIDIObjectPropertyChangeNotification setMessageID(MIDINotificationMessageID messageID);
+    @StructMember(1) public native int getMessageSize();
+    @StructMember(1) public native MIDIObjectPropertyChangeNotification setMessageSize(int messageSize);
+    @StructMember(2) public native MIDIObject getObject();
+    @StructMember(2) public native MIDIObjectPropertyChangeNotification setObject(MIDIObject object);
+    @StructMember(3) public native MIDIObjectType getObjectType();
+    @StructMember(3) public native MIDIObjectPropertyChangeNotification setObjectType(MIDIObjectType objectType);
+    @StructMember(4) public native String getPropertyName();
+    @StructMember(4) public native MIDIObjectPropertyChangeNotification setPropertyName(String propertyName);
     /*</members>*/
     /*<methods>*//*</methods>*/
 }

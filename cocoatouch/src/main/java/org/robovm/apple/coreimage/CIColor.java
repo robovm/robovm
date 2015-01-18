@@ -49,17 +49,16 @@ import org.robovm.apple.uikit.CIColorExtensions;
     /*<constructors>*/
     public CIColor() {}
     protected CIColor(SkipInit skipInit) { super(skipInit); }
-    public CIColor(CGColor c) { super((SkipInit) null); initObject(initWithCGColor$(c)); }
     /*</constructors>*/
     
     public CIColor(double r, double g, double b, double a) {
-        super(colorWithRed$green$blue$alpha$(r, g, b, a));
+        super(init(r, g, b, a));
     }
     public CIColor(double r, double g, double b) {
-        super(colorWithRed$green$blue$(r, g, b));
+        super(init(r, g, b));
     }
     public CIColor(String representation) {
-        super(colorWithString$(representation));
+        super(init(representation));
     }
     
     /*<properties>*/
@@ -81,8 +80,6 @@ import org.robovm.apple.uikit.CIColorExtensions;
     }
     
     /*<methods>*/
-    @Method(selector = "initWithCGColor:")
-    protected native @Pointer long initWithCGColor$(CGColor c);
     @Method(selector = "numberOfComponents")
     public native @MachineSizedUInt long getNumberOfComponents();
     @Method(selector = "components")
@@ -99,12 +96,14 @@ import org.robovm.apple.uikit.CIColorExtensions;
     public native @MachineSizedFloat double getBlue();
     @Method(selector = "stringRepresentation")
     public native String getStringRepresentation();
+    @Method(selector = "colorWithCGColor:")
+    protected static native @Pointer long init(CGColor c);
     @Method(selector = "colorWithRed:green:blue:alpha:")
-    protected static native @Pointer long colorWithRed$green$blue$alpha$(@MachineSizedFloat double r, @MachineSizedFloat double g, @MachineSizedFloat double b, @MachineSizedFloat double a);
+    protected static native @Pointer long init(@MachineSizedFloat double r, @MachineSizedFloat double g, @MachineSizedFloat double b, @MachineSizedFloat double a);
     @Method(selector = "colorWithRed:green:blue:")
-    protected static native @Pointer long colorWithRed$green$blue$(@MachineSizedFloat double r, @MachineSizedFloat double g, @MachineSizedFloat double b);
+    protected static native @Pointer long init(@MachineSizedFloat double r, @MachineSizedFloat double g, @MachineSizedFloat double b);
     @Method(selector = "colorWithString:")
-    protected static native @Pointer long colorWithString$(String representation);
+    protected static native @Pointer long init(String representation);
     @Method(selector = "encodeWithCoder:")
     public native void encode(NSCoder aCoder);
     /*</methods>*/

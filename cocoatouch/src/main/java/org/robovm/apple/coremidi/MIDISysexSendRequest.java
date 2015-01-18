@@ -45,31 +45,31 @@ import org.robovm.apple.corefoundation.*;
     /*<constructors>*/
     public MIDISysexSendRequest() {}
     public MIDISysexSendRequest(MIDIEndpoint destination, BytePtr data, int bytesToSend, boolean complete, ByteBuffer reserved, FunctionPtr completionProc, VoidPtr completionRefCon) {
-        this.destination(destination);
-        this.data(data);
-        this.bytesToSend(bytesToSend);
-        this.complete(complete);
-        this.reserved(reserved);
-        this.completionProc(completionProc);
-        this.completionRefCon(completionRefCon);
+        this.setDestination(destination);
+        this.setData(data);
+        this.setBytesToSend(bytesToSend);
+        this.setComplete(complete);
+        this.setReserved(reserved);
+        this.setCompletionProc(completionProc);
+        this.setCompletionRefCon(completionRefCon);
     }
     /*</constructors>*/
     /*<properties>*//*</properties>*/
     /*<members>*/
-    @StructMember(0) public native MIDIEndpoint destination();
-    @StructMember(0) public native MIDISysexSendRequest destination(MIDIEndpoint destination);
-    @StructMember(1) public native BytePtr data();
-    @StructMember(1) public native MIDISysexSendRequest data(BytePtr data);
-    @StructMember(2) public native int bytesToSend();
-    @StructMember(2) public native MIDISysexSendRequest bytesToSend(int bytesToSend);
-    @StructMember(3) public native boolean complete();
-    @StructMember(3) public native MIDISysexSendRequest complete(boolean complete);
-    @StructMember(4) public native @Array({3}) ByteBuffer reserved();
-    @StructMember(4) public native MIDISysexSendRequest reserved(@Array({3}) ByteBuffer reserved);
-    @StructMember(5) public native FunctionPtr completionProc();
-    @StructMember(5) public native MIDISysexSendRequest completionProc(FunctionPtr completionProc);
-    @StructMember(6) public native VoidPtr completionRefCon();
-    @StructMember(6) public native MIDISysexSendRequest completionRefCon(VoidPtr completionRefCon);
+    @StructMember(0) public native MIDIEndpoint getDestination();
+    @StructMember(0) public native MIDISysexSendRequest setDestination(MIDIEndpoint destination);
+    @StructMember(1) public native BytePtr getData();
+    @StructMember(1) public native MIDISysexSendRequest setData(BytePtr data);
+    @StructMember(2) public native int getBytesToSend();
+    @StructMember(2) public native MIDISysexSendRequest setBytesToSend(int bytesToSend);
+    @StructMember(3) public native boolean isComplete();
+    @StructMember(3) public native MIDISysexSendRequest setComplete(boolean complete);
+    @StructMember(4) public native @Array({3}) ByteBuffer getReserved();
+    @StructMember(4) public native MIDISysexSendRequest setReserved(@Array({3}) ByteBuffer reserved);
+    @StructMember(5) public native FunctionPtr getCompletionProc();
+    @StructMember(5) public native MIDISysexSendRequest setCompletionProc(FunctionPtr completionProc);
+    @StructMember(6) public native VoidPtr getCompletionRefCon();
+    @StructMember(6) public native MIDISysexSendRequest setCompletionRefCon(VoidPtr completionRefCon);
     /*</members>*/
     /*<methods>*//*</methods>*/
 }

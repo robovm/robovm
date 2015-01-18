@@ -49,16 +49,16 @@ import org.robovm.apple.coremedia.*;
     /*<constructors>*/
     public AudioConverterPrimeInfo() {}
     public AudioConverterPrimeInfo(int leadingFrames, int trailingFrames) {
-        this.leadingFrames(leadingFrames);
-        this.trailingFrames(trailingFrames);
+        this.setLeadingFrames(leadingFrames);
+        this.setTrailingFrames(trailingFrames);
     }
     /*</constructors>*/
     /*<properties>*//*</properties>*/
     /*<members>*/
-    @StructMember(0) public native int leadingFrames();
-    @StructMember(0) public native AudioConverterPrimeInfo leadingFrames(int leadingFrames);
-    @StructMember(1) public native int trailingFrames();
-    @StructMember(1) public native AudioConverterPrimeInfo trailingFrames(int trailingFrames);
+    @StructMember(0) public native int getLeadingFrames();
+    @StructMember(0) public native AudioConverterPrimeInfo setLeadingFrames(int leadingFrames);
+    @StructMember(1) public native int getTrailingFrames();
+    @StructMember(1) public native AudioConverterPrimeInfo setTrailingFrames(int trailingFrames);
     /*</members>*/
     /*<methods>*//*</methods>*/
 }

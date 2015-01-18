@@ -47,7 +47,7 @@ import org.robovm.apple.corebluetooth.*;
     /*<constructors>*/
     public CLCircularRegion() {}
     protected CLCircularRegion(SkipInit skipInit) { super(skipInit); }
-    public CLCircularRegion(@ByVal CLLocationCoordinate2D center, double radius, String identifier) { super((SkipInit) null); initObject(initWithCenter$radius$identifier$(center, radius, identifier)); }
+    public CLCircularRegion(@ByVal CLLocationCoordinate2D center, double radius, String identifier) { super((SkipInit) null); initObject(init(center, radius, identifier)); }
     /*</constructors>*/
     /*<properties>*/
     @Property(selector = "center")
@@ -58,6 +58,6 @@ import org.robovm.apple.corebluetooth.*;
     /*<members>*//*</members>*/
     /*<methods>*/
     @Method(selector = "initWithCenter:radius:identifier:")
-    protected native @Pointer long initWithCenter$radius$identifier$(@ByVal CLLocationCoordinate2D center, double radius, String identifier);
+    protected native @Pointer long init(@ByVal CLLocationCoordinate2D center, double radius, String identifier);
     /*</methods>*/
 }

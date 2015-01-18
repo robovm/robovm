@@ -80,7 +80,7 @@ import org.robovm.apple.corelocation.*;
     /**
      * @since Available in iOS 7.0 and later.
      */
-    public UITextView(@ByVal CGRect frame, NSTextContainer textContainer) { super((SkipInit) null); initObject(initWithFrame$textContainer$(frame, textContainer)); }
+    public UITextView(@ByVal CGRect frame, NSTextContainer textContainer) { super((SkipInit) null); initObject(init(frame, textContainer)); }
     /*</constructors>*/
     
     public UITextView(CGRect frame) {
@@ -140,7 +140,7 @@ import org.robovm.apple.corelocation.*;
      * @since Available in iOS 6.0 and later.
      */
     @Property(selector = "allowsEditingTextAttributes")
-    public native boolean isAllowsEditingTextAttributes();
+    public native boolean allowsEditingTextAttributes();
     /**
      * @since Available in iOS 6.0 and later.
      */
@@ -178,7 +178,7 @@ import org.robovm.apple.corelocation.*;
      * @since Available in iOS 6.0 and later.
      */
     @Property(selector = "clearsOnInsertion")
-    public native boolean isClearsOnInsertion();
+    public native boolean clearsOnInsertion();
     /**
      * @since Available in iOS 6.0 and later.
      */
@@ -276,7 +276,7 @@ import org.robovm.apple.corelocation.*;
     @Property(selector = "setReturnKeyType:")
     public native void setReturnKeyType(UIReturnKeyType v);
     @Property(selector = "enablesReturnKeyAutomatically")
-    public native boolean isEnablesReturnKeyAutomatically();
+    public native boolean enablesReturnKeyAutomatically();
     @Property(selector = "setEnablesReturnKeyAutomatically:")
     public native void setEnablesReturnKeyAutomatically(boolean v);
     @Property(selector = "isSecureTextEntry")
@@ -299,7 +299,7 @@ import org.robovm.apple.corelocation.*;
      * @since Available in iOS 7.0 and later.
      */
     @Method(selector = "initWithFrame:textContainer:")
-    protected native @Pointer long initWithFrame$textContainer$(@ByVal CGRect frame, NSTextContainer textContainer);
+    protected native @Pointer long init(@ByVal CGRect frame, NSTextContainer textContainer);
     @Method(selector = "textInRange:")
     public native String getText(UITextRange range);
     @Method(selector = "replaceRange:withText:")

@@ -117,7 +117,7 @@ import org.robovm.apple.foundation.*;
     @Property(selector = "setUndoManager:")
     public native void setUndoManager(NSUndoManager v);
     @Property(selector = "hasChanges")
-    public native boolean isHasChanges();
+    public native boolean hasChanges();
     /**
      * @since Available in iOS 5.0 and later.
      */
@@ -137,7 +137,7 @@ import org.robovm.apple.foundation.*;
     @Property(selector = "registeredObjects")
     public native NSSet<NSManagedObject> getRegisteredObjects();
     @Property(selector = "propagatesDeletesAtEndOfEvent")
-    public native boolean isPropagatesDeletesAtEndOfEvent();
+    public native boolean propagatesDeletesAtEndOfEvent();
     @Property(selector = "setPropagatesDeletesAtEndOfEvent:")
     public native void setPropagatesDeletesAtEndOfEvent(boolean v);
     @Property(selector = "retainsRegisteredObjects")
@@ -157,7 +157,7 @@ import org.robovm.apple.foundation.*;
     public void observeValue(String keyPath, NSObject object, NSKeyValueChangeInfo change) {}
     
     @Method(selector = "observeValueForKeyPath:ofObject:change:context:")
-    private void observeValueForKeyPath$ofObject$change$context$(String keyPath, NSObject object, NSKeyValueChangeInfo change, VoidPtr context) {
+    private void observeValueForKeyPath(String keyPath, NSObject object, NSKeyValueChangeInfo change, VoidPtr context) {
         observeValue(keyPath, object, change);
     }
     

@@ -51,37 +51,37 @@ import org.robovm.apple.audiotoolbox.*;
     /*<constructors>*/
     public CMBufferCallbacksStruct() {}
     public CMBufferCallbacksStruct(int version, @Pointer long refcon, FunctionPtr getDecodeTimeStamp, FunctionPtr getPresentationTimeStamp, FunctionPtr getDuration, FunctionPtr isDataReady, FunctionPtr compare, String dataBecameReadyNotification, FunctionPtr getSize) {
-        this.version(version);
-        this.refcon(refcon);
-        this.getDecodeTimeStamp(getDecodeTimeStamp);
-        this.getPresentationTimeStamp(getPresentationTimeStamp);
-        this.getDuration(getDuration);
-        this.isDataReady(isDataReady);
-        this.compare(compare);
-        this.dataBecameReadyNotification(dataBecameReadyNotification);
-        this.getSize(getSize);
+        this.setVersion(version);
+        this.setRefcon(refcon);
+        this.setGetDecodeTimeStamp(getDecodeTimeStamp);
+        this.setGetPresentationTimeStamp(getPresentationTimeStamp);
+        this.setGetDuration(getDuration);
+        this.setIsDataReady(isDataReady);
+        this.setCompare(compare);
+        this.setDataBecameReadyNotification(dataBecameReadyNotification);
+        this.setGetSize(getSize);
     }
     /*</constructors>*/
     /*<properties>*//*</properties>*/
     /*<members>*/
-    @StructMember(0) public native int version();
-    @StructMember(0) public native CMBufferCallbacksStruct version(int version);
-    @StructMember(1) public native @Pointer long refcon();
-    @StructMember(1) public native CMBufferCallbacksStruct refcon(@Pointer long refcon);
-    @StructMember(2) public native FunctionPtr getDecodeTimeStamp();
-    @StructMember(2) public native CMBufferCallbacksStruct getDecodeTimeStamp(FunctionPtr getDecodeTimeStamp);
-    @StructMember(3) public native FunctionPtr getPresentationTimeStamp();
-    @StructMember(3) public native CMBufferCallbacksStruct getPresentationTimeStamp(FunctionPtr getPresentationTimeStamp);
-    @StructMember(4) public native FunctionPtr getDuration();
-    @StructMember(4) public native CMBufferCallbacksStruct getDuration(FunctionPtr getDuration);
-    @StructMember(5) public native FunctionPtr isDataReady();
-    @StructMember(5) public native CMBufferCallbacksStruct isDataReady(FunctionPtr isDataReady);
-    @StructMember(6) public native FunctionPtr compare();
-    @StructMember(6) public native CMBufferCallbacksStruct compare(FunctionPtr compare);
-    @StructMember(7) public native String dataBecameReadyNotification();
-    @StructMember(7) public native CMBufferCallbacksStruct dataBecameReadyNotification(String dataBecameReadyNotification);
-    @StructMember(8) public native FunctionPtr getSize();
-    @StructMember(8) public native CMBufferCallbacksStruct getSize(FunctionPtr getSize);
+    @StructMember(0) public native int getVersion();
+    @StructMember(0) public native CMBufferCallbacksStruct setVersion(int version);
+    @StructMember(1) public native @Pointer long getRefcon();
+    @StructMember(1) public native CMBufferCallbacksStruct setRefcon(@Pointer long refcon);
+    @StructMember(2) public native FunctionPtr getGetDecodeTimeStamp();
+    @StructMember(2) public native CMBufferCallbacksStruct setGetDecodeTimeStamp(FunctionPtr getDecodeTimeStamp);
+    @StructMember(3) public native FunctionPtr getGetPresentationTimeStamp();
+    @StructMember(3) public native CMBufferCallbacksStruct setGetPresentationTimeStamp(FunctionPtr getPresentationTimeStamp);
+    @StructMember(4) public native FunctionPtr getGetDuration();
+    @StructMember(4) public native CMBufferCallbacksStruct setGetDuration(FunctionPtr getDuration);
+    @StructMember(5) public native FunctionPtr getIsDataReady();
+    @StructMember(5) public native CMBufferCallbacksStruct setIsDataReady(FunctionPtr isDataReady);
+    @StructMember(6) public native FunctionPtr getCompare();
+    @StructMember(6) public native CMBufferCallbacksStruct setCompare(FunctionPtr compare);
+    @StructMember(7) public native String getDataBecameReadyNotification();
+    @StructMember(7) public native CMBufferCallbacksStruct setDataBecameReadyNotification(String dataBecameReadyNotification);
+    @StructMember(8) public native FunctionPtr getGetSize();
+    @StructMember(8) public native CMBufferCallbacksStruct setGetSize(FunctionPtr getSize);
     /*</members>*/
     /*<methods>*//*</methods>*/
 }

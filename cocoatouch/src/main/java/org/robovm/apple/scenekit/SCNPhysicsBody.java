@@ -83,7 +83,7 @@ import org.robovm.apple.opengles.*;
     @Property(selector = "isResting")
     public native boolean isResting();
     @Property(selector = "allowsResting")
-    public native boolean isAllowsResting();
+    public native boolean allowsResting();
     @Property(selector = "setAllowsResting:")
     public native void setAllowsResting(boolean v);
     @Property(selector = "velocity")

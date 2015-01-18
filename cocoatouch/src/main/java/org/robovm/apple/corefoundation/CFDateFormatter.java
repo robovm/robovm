@@ -27,6 +27,7 @@ import org.robovm.rt.bro.*;
 import org.robovm.rt.bro.annotation.*;
 import org.robovm.rt.bro.ptr.*;
 import org.robovm.apple.dispatch.*;
+import org.robovm.apple.foundation.*;
 /*</imports>*/
 
 /*<javadoc>*/
@@ -44,16 +45,39 @@ import org.robovm.apple.dispatch.*;
     /*</constructors>*/
     /*<properties>*//*</properties>*/
     /*<members>*//*</members>*/
+    /**
+     * @since Available in iOS 4.0 and later.
+     */
+    public static String getDateFormat(String tmplate, @MachineSizedUInt long options, CFLocale locale) {
+        return getDateFormat(null, tmplate, options, locale);
+    }
+    public static CFDateFormatter create(CFLocale locale, CFDateFormatterStyle dateStyle, CFDateFormatterStyle timeStyle) {
+        return create(null, locale, dateStyle, timeStyle);
+    }
+    public String format(CFDate date) {
+        return format(null, this, date);
+    }
+    public String format(double at) {
+        return format(null, this, at);
+    }
+    public CFDate parse(String string, CFRange rangep) {
+        return parse(null, this, string, rangep);
+    }
+    public double getAbsoluteTime(String string, CFRange rangep) {
+        DoublePtr ptr = new DoublePtr();
+        getAbsoluteTime(string, rangep, ptr);
+        return ptr.get();
+    }
     /*<methods>*/
     /**
      * @since Available in iOS 4.0 and later.
      */
     @Bridge(symbol="CFDateFormatterCreateDateFormatFromTemplate", optional=true)
-    public static native CFString createDateFormatFromTemplate(CFAllocator allocator, CFString tmplate, @MachineSizedUInt long options, CFLocale locale);
+    protected static native String getDateFormat(CFAllocator allocator, String tmplate, @MachineSizedUInt long options, CFLocale locale);
     @Bridge(symbol="CFDateFormatterGetTypeID", optional=true)
     public static native @MachineSizedUInt long getClassTypeID();
     @Bridge(symbol="CFDateFormatterCreate", optional=true)
-    public static native CFDateFormatter create(CFAllocator allocator, CFLocale locale, CFDateFormatterStyle dateStyle, CFDateFormatterStyle timeStyle);
+    protected static native CFDateFormatter create(CFAllocator allocator, CFLocale locale, CFDateFormatterStyle dateStyle, CFDateFormatterStyle timeStyle);
     @Bridge(symbol="CFDateFormatterGetLocale", optional=true)
     public native CFLocale getLocale();
     @Bridge(symbol="CFDateFormatterGetDateStyle", optional=true)
@@ -61,20 +85,20 @@ import org.robovm.apple.dispatch.*;
     @Bridge(symbol="CFDateFormatterGetTimeStyle", optional=true)
     public native CFDateFormatterStyle getTimeStyle();
     @Bridge(symbol="CFDateFormatterGetFormat", optional=true)
-    public native CFString getFormat();
+    public native String getFormat();
     @Bridge(symbol="CFDateFormatterSetFormat", optional=true)
-    public native void setFormat(CFString formatString);
+    public native void setFormat(String formatString);
     @Bridge(symbol="CFDateFormatterCreateStringWithDate", optional=true)
-    public static native CFString createStringWithDate(CFAllocator allocator, CFDateFormatter formatter, CFDate date);
+    protected static native String format(CFAllocator allocator, CFDateFormatter formatter, CFDate date);
     @Bridge(symbol="CFDateFormatterCreateStringWithAbsoluteTime", optional=true)
-    public static native CFString createStringWithAbsoluteTime(CFAllocator allocator, CFDateFormatter formatter, double at);
+    protected static native String format(CFAllocator allocator, CFDateFormatter formatter, double at);
     @Bridge(symbol="CFDateFormatterCreateDateFromString", optional=true)
-    public static native CFDate createDateFromString(CFAllocator allocator, CFDateFormatter formatter, CFString string, CFRange rangep);
+    protected static native CFDate parse(CFAllocator allocator, CFDateFormatter formatter, String string, CFRange rangep);
     @Bridge(symbol="CFDateFormatterGetAbsoluteTimeFromString", optional=true)
-    public native boolean getAbsoluteTimeFromString(CFString string, CFRange rangep, DoublePtr atp);
+    protected native boolean getAbsoluteTime(String string, CFRange rangep, DoublePtr atp);
     @Bridge(symbol="CFDateFormatterSetProperty", optional=true)
-    public native void setProperty(CFString key, CFType value);
+    public native void setProperty(CFDateFormatterProperty key, CFType value);
     @Bridge(symbol="CFDateFormatterCopyProperty", optional=true)
-    public native CFType copyProperty(CFString key);
+    public native CFType getProperty(CFDateFormatterProperty key);
     /*</methods>*/
 }

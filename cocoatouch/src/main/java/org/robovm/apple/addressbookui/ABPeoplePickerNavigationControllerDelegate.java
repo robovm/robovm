@@ -47,12 +47,32 @@ import org.robovm.apple.addressbook.*;
     
     /*</properties>*/
     /*<methods>*/
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @Method(selector = "peoplePickerNavigationController:didSelectPerson:")
+    void didSelectPerson(ABPeoplePickerNavigationController peoplePicker, ABPerson person);
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @Method(selector = "peoplePickerNavigationController:didSelectPerson:property:identifier:")
+    void didSelectPerson(ABPeoplePickerNavigationController peoplePicker, ABPerson person, ABProperty property, int identifier);
     @Method(selector = "peoplePickerNavigationControllerDidCancel:")
     void didCancel(ABPeoplePickerNavigationController peoplePicker);
+    /**
+     * @since Available in iOS 2.0 and later.
+     * @deprecated Deprecated in iOS 8.0.
+     */
+    @Deprecated
     @Method(selector = "peoplePickerNavigationController:shouldContinueAfterSelectingPerson:")
     boolean shouldContinueAfterSelectingPerson(ABPeoplePickerNavigationController peoplePicker, ABPerson person);
+    /**
+     * @since Available in iOS 2.0 and later.
+     * @deprecated Deprecated in iOS 8.0.
+     */
+    @Deprecated
     @Method(selector = "peoplePickerNavigationController:shouldContinueAfterSelectingPerson:property:identifier:")
-    boolean shouldContinueAfterSelectingPerson(ABPeoplePickerNavigationController peoplePicker, ABPerson person, int property, int identifier);
+    boolean shouldContinueAfterSelectingPerson(ABPeoplePickerNavigationController peoplePicker, ABPerson person, ABProperty property, int identifier);
     /*</methods>*/
     /*<adapter>*/
     /*</adapter>*/

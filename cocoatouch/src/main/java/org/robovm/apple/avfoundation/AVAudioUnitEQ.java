@@ -54,11 +54,11 @@ import org.robovm.apple.mediatoolbox.*;
     /*<constructors>*/
     public AVAudioUnitEQ() {}
     protected AVAudioUnitEQ(SkipInit skipInit) { super(skipInit); }
-    public AVAudioUnitEQ(@MachineSizedUInt long numberOfBands) { super((SkipInit) null); initObject(initWithNumberOfBands$(numberOfBands)); }
+    public AVAudioUnitEQ(@MachineSizedUInt long numberOfBands) { super((SkipInit) null); initObject(init(numberOfBands)); }
     /*</constructors>*/
     /*<properties>*/
     @Property(selector = "bands")
-    public native NSArray<?> getBands();
+    public native AVAudioUnitEQFilterParameters getBands();
     @Property(selector = "globalGain")
     public native float getGlobalGain();
     @Property(selector = "setGlobalGain:")
@@ -67,6 +67,6 @@ import org.robovm.apple.mediatoolbox.*;
     /*<members>*//*</members>*/
     /*<methods>*/
     @Method(selector = "initWithNumberOfBands:")
-    protected native @Pointer long initWithNumberOfBands$(@MachineSizedUInt long numberOfBands);
+    protected native @Pointer long init(@MachineSizedUInt long numberOfBands);
     /*</methods>*/
 }

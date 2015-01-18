@@ -27,6 +27,7 @@ import org.robovm.rt.bro.*;
 import org.robovm.rt.bro.annotation.*;
 import org.robovm.rt.bro.ptr.*;
 import org.robovm.apple.dispatch.*;
+import org.robovm.apple.foundation.*;
 /*</imports>*/
 
 /*<javadoc>*/
@@ -44,21 +45,41 @@ import org.robovm.apple.dispatch.*;
     /*</constructors>*/
     /*<properties>*//*</properties>*/
     /*<members>*//*</members>*/
+    public static CFCalendar create(CFCalendarIdentifier identifier) {
+        return create(null, identifier);
+    }
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
+    public double getStartTimeOfUnit(CFCalendarUnit unit, double at) {
+        DoublePtr ptr = new DoublePtr();
+        getTimeRangeOfUnit(unit, at, ptr, new DoublePtr());
+        return ptr.get();
+    }
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
+    public double getDurationOfUnit(CFCalendarUnit unit, double at) {
+        DoublePtr ptr = new DoublePtr();
+        getTimeRangeOfUnit(unit, at, new DoublePtr(), ptr);
+        return ptr.get();
+    }
+    
     /*<methods>*/
     @Bridge(symbol="CFCalendarGetTypeID", optional=true)
     public static native @MachineSizedUInt long getClassTypeID();
     @Bridge(symbol="CFCalendarCopyCurrent", optional=true)
-    public static native CFCalendar copyCurrent();
+    public static native CFCalendar getCurrent();
     @Bridge(symbol="CFCalendarCreateWithIdentifier", optional=true)
-    public static native CFCalendar createWithIdentifier(CFAllocator allocator, CFString identifier);
+    protected static native CFCalendar create(CFAllocator allocator, CFCalendarIdentifier identifier);
     @Bridge(symbol="CFCalendarGetIdentifier", optional=true)
-    public native CFString getIdentifier();
+    public native CFCalendarIdentifier getIdentifier();
     @Bridge(symbol="CFCalendarCopyLocale", optional=true)
-    public native CFLocale copyLocale();
+    public native CFLocale getLocale();
     @Bridge(symbol="CFCalendarSetLocale", optional=true)
     public native void setLocale(CFLocale locale);
     @Bridge(symbol="CFCalendarCopyTimeZone", optional=true)
-    public native CFTimeZone copyTimeZone();
+    public native CFTimeZone getTimeZone();
     @Bridge(symbol="CFCalendarSetTimeZone", optional=true)
     public native void setTimeZone(CFTimeZone tz);
     @Bridge(symbol="CFCalendarGetFirstWeekday", optional=true)
@@ -81,6 +102,6 @@ import org.robovm.apple.dispatch.*;
      * @since Available in iOS 2.0 and later.
      */
     @Bridge(symbol="CFCalendarGetTimeRangeOfUnit", optional=true)
-    public native boolean getTimeRangeOfUnit(CFCalendarUnit unit, double at, DoublePtr startp, DoublePtr tip);
+    private native boolean getTimeRangeOfUnit(CFCalendarUnit unit, double at, DoublePtr startp, DoublePtr tip);
     /*</methods>*/
 }

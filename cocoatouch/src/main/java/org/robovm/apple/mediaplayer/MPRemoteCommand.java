@@ -106,12 +106,12 @@ import org.robovm.apple.coregraphics.*;
     }
     /*<methods>*/
     @Method(selector = "addTarget:action:")
-    protected native void addTarget(NSObject target, Selector action);
+    public native void addTarget(NSObject target, Selector action);
     @Method(selector = "removeTarget:action:")
-    protected native void removeTarget(NSObject target, Selector action);
+    public native void removeTarget(NSObject target, Selector action);
     @Method(selector = "removeTarget:")
-    protected native void removeTarget(NSObject target);
+    public native void removeTarget(NSObject target);
     @Method(selector = "addTargetWithHandler:")
-    protected native NSObject addTarget(@Block Block1<MPRemoteCommandEvent, MPRemoteCommandHandlerStatus> handler);
+    public native NSObject addTarget(@Block Block1<MPRemoteCommandEvent, MPRemoteCommandHandlerStatus> handler);
     /*</methods>*/
 }

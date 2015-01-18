@@ -51,7 +51,7 @@ import org.robovm.apple.corelocation.*;
     /*<constructors>*/
     public UIPushBehavior() {}
     protected UIPushBehavior(SkipInit skipInit) { super(skipInit); }
-    public UIPushBehavior(List<UIDynamicItem> items, UIPushBehaviorMode mode) { super((SkipInit) null); initObject(initWithItems$mode$(items, mode)); }
+    public UIPushBehavior(List<UIDynamicItem> items, UIPushBehaviorMode mode) { super((SkipInit) null); initObject(init(items, mode)); }
     /*</constructors>*/
     /*<properties>*/
     @Property(selector = "items")
@@ -78,7 +78,7 @@ import org.robovm.apple.corelocation.*;
     /*<members>*//*</members>*/
     /*<methods>*/
     @Method(selector = "initWithItems:mode:")
-    protected native @Pointer long initWithItems$mode$(List<UIDynamicItem> items, UIPushBehaviorMode mode);
+    protected native @Pointer long init(List<UIDynamicItem> items, UIPushBehaviorMode mode);
     @Method(selector = "addItem:")
     public native void addItem(UIDynamicItem item);
     @Method(selector = "removeItem:")

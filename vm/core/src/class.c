@@ -207,6 +207,7 @@ static Class* createArrayClass(Env* env, Class* componentType) {
     jint length = strlen(componentType->name);
     char* desc = NULL;
 
+    jint access = componentType->flags & 0x7; // ACC_PUBLIC, ACC_PRIVATE, ACC_PROTECTED are in the 3 least significant bits
     if (CLASS_IS_ARRAY(componentType) || CLASS_IS_PRIMITIVE(componentType)) {
         desc = rvmAllocateMemoryAtomic(env, length + 2);
         if (!desc) return NULL;
@@ -219,10 +220,17 @@ static Class* createArrayClass(Env* env, Class* componentType) {
         desc[1] = 'L';
         strcat(desc, componentType->name);
         desc[length + 2] = ';';
+
+        // For inner classes we also have to check the INNERCLASS attribute for the real access value.
+        jint innerAccess = 0;
+        if (rvmAttributeGetInnerClass(env, componentType, NULL, &innerAccess)) {
+            access = innerAccess & 0x7;
+        }
+        if (rvmExceptionCheck(env)) return NULL;
     }
 
     Class* clazz = rvmAllocateClass(env, desc, java_lang_Object, componentType->classLoader,
-        CLASS_TYPE_ARRAY | ACC_PUBLIC | ACC_FINAL | ACC_ABSTRACT, typeInfo, java_lang_Object->vitable, NULL,
+        CLASS_TYPE_ARRAY | access | ACC_FINAL | ACC_ABSTRACT, typeInfo, java_lang_Object->vitable, NULL,
         sizeof(Class), sizeof(Object), sizeof(Object), 0, 0, NULL, NULL);
     if (!clazz) return NULL;
     clazz->componentType = componentType;

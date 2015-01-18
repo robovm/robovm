@@ -70,12 +70,57 @@ import org.robovm.apple.mediatoolbox.*;
     public native void setGlobalTuning(float v);
     /*</properties>*/
     /*<members>*//*</members>*/
+    /**
+     * 
+     * @param bankURL
+     * @param program
+     * @param bankMSB
+     * @param bankLSB
+     * @return
+     * @throws NSErrorException
+     */
+    public boolean loadSoundBankInstrument(NSURL bankURL, byte program, byte bankMSB, byte bankLSB) throws NSErrorException {
+        NSError.NSErrorPtr err = new NSError.NSErrorPtr();
+        boolean result = loadSoundBankInstrument(bankURL, program, bankMSB, bankLSB, err);
+        if (err.get() != null) {
+            throw new NSErrorException(err.get());
+        }
+        return result;
+    }
+    /**
+     * 
+     * @param instrumentURL
+     * @return
+     * @throws NSErrorException
+     */
+    public boolean loadInstrument(NSURL instrumentURL) throws NSErrorException {
+        NSError.NSErrorPtr err = new NSError.NSErrorPtr();
+        boolean result = loadInstrument(instrumentURL, err);
+        if (err.get() != null) {
+            throw new NSErrorException(err.get());
+        }
+        return result;
+    }
+    /**
+     * 
+     * @param audioFiles
+     * @return
+     * @throws NSErrorException
+     */
+    public boolean loadAudioFiles(NSArray<NSURL> audioFiles) throws NSErrorException {
+        NSError.NSErrorPtr err = new NSError.NSErrorPtr();
+        boolean result = loadAudioFiles(audioFiles, err);
+        if (err.get() != null) {
+            throw new NSErrorException(err.get());
+        }
+        return result;
+    }
     /*<methods>*/
     @Method(selector = "loadSoundBankInstrumentAtURL:program:bankMSB:bankLSB:error:")
-    public native boolean loadSoundBankInstrumentAtURL$program$bankMSB$bankLSB$error$(NSURL bankURL, byte program, byte bankMSB, byte bankLSB, NSError.NSErrorPtr outError);
+    protected native boolean loadSoundBankInstrument(NSURL bankURL, byte program, byte bankMSB, byte bankLSB, NSError.NSErrorPtr outError);
     @Method(selector = "loadInstrumentAtURL:error:")
-    public native boolean loadInstrumentAtURL$error$(NSURL instrumentURL, NSError.NSErrorPtr outError);
+    protected native boolean loadInstrument(NSURL instrumentURL, NSError.NSErrorPtr outError);
     @Method(selector = "loadAudioFilesAtURLs:error:")
-    public native boolean loadAudioFilesAtURLs$error$(NSArray<?> audioFiles, NSError.NSErrorPtr outError);
+    protected native boolean loadAudioFiles(NSArray<NSURL> audioFiles, NSError.NSErrorPtr outError);
     /*</methods>*/
 }

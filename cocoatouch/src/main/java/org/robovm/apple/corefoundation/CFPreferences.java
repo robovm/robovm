@@ -27,6 +27,7 @@ import org.robovm.rt.bro.*;
 import org.robovm.rt.bro.annotation.*;
 import org.robovm.rt.bro.ptr.*;
 import org.robovm.apple.dispatch.*;
+import org.robovm.apple.foundation.*;
 /*</imports>*/
 
 /*<javadoc>*/
@@ -43,41 +44,127 @@ import org.robovm.apple.dispatch.*;
     /*<constructors>*//*</constructors>*/
     /*<properties>*//*</properties>*/
     /*<members>*//*</members>*/
+    private String applicationID;
+    
+    public CFPreferences(CFPreferencesDomain domain) {
+        this(domain.value().toString());
+    }
+    public CFPreferences(String applicationID) {
+        this.applicationID = applicationID;
+    }
+    
+    public static CFPreferences create(CFPreferencesDomain domain) {
+        return new CFPreferences(domain);
+    }
+    public static CFPreferences create(String applicationID) {
+        return new CFPreferences(applicationID);
+    }
+    
+    public CFType getValue(String key) {
+        return getAppValue(applicationID, key);
+    }
+    public boolean getBooleanValue(String key) {
+        return getAppBooleanValue(key, applicationID, new BooleanPtr());
+    }
+    public boolean hasBooleanValue(String key) {
+        BooleanPtr ptr = new BooleanPtr();
+        getAppBooleanValue(key, applicationID, ptr);
+        return ptr.get();
+    }
+    public long getLongValue(String key) {
+        return getAppIntegerValue(key, applicationID, new BooleanPtr());
+    }
+    public boolean hasLongValue(String key) {
+        BooleanPtr ptr = new BooleanPtr();
+        getAppIntegerValue(key, applicationID, ptr);
+        return ptr.get();
+    }
+    public void setValue(String key, CFType value) {
+        setAppValue(key, value, applicationID);
+    }
+    public void addSuitePreferences(String suiteID) {
+        addSuitePreferencesToApp(applicationID, suiteID);
+    }
+    public void removeSuitePreferences(String suiteID) {
+        removeSuitePreferencesFromApp(applicationID, suiteID);
+    }
+    public boolean synchronize() {
+        return appSynchronize(applicationID);
+    }
+    public CFType getValue(String key, CFPreferencesDomain userName, CFPreferencesDomain hostName) {
+        return getValue(key, applicationID, userName.value().toString(), hostName.value().toString());
+    }
+    public CFType getValue(String key, String userName, String hostName) {
+        return getValue(key, applicationID, userName, hostName);
+    }
+    public Map<String, ?> getMultipleValues(List<String> keysToFetch, CFPreferencesDomain userName, CFPreferencesDomain hostName) {
+        return getMultiple(keysToFetch, applicationID, userName.value().toString(), hostName.value().toString());
+    }
+    public Map<String, ?> getMultipleValues(List<String> keysToFetch, String userName, String hostName) {
+        return getMultiple(keysToFetch, applicationID, userName, hostName);
+    }
+    public void setValue(String key, CFType value, CFPreferencesDomain userName, CFPreferencesDomain hostName) {
+        setValue(key, value, applicationID, userName.value().toString(), hostName.value().toString());
+    }
+    public void setValue(String key, CFType value, String userName, String hostName) {
+        setValue(key, value, applicationID, userName, hostName);
+    }
+    public void setMultipleValues(Map<String, ?> keysToSet, List<String> keysToRemove, CFPreferencesDomain userName, CFPreferencesDomain hostName) {
+        setMultiple(keysToSet, keysToRemove, applicationID, userName.value().toString(), hostName.value().toString());
+    }
+    public void setMultipleValues(Map<String, ?> keysToSet, List<String> keysToRemove, String userName, String hostName) {
+        setMultiple(keysToSet, keysToRemove, applicationID, userName, hostName);
+    }
+    public boolean synchronize(CFPreferencesDomain userName, CFPreferencesDomain hostName) {
+        return synchronize(applicationID, userName.value().toString(), hostName.value().toString());
+    }
+    public boolean synchronize(String userName, String hostName) {
+        return synchronize(applicationID, userName, hostName);
+    }
+    public List<String> getKeyList(CFPreferencesDomain userName, CFPreferencesDomain hostName) {
+        return getKeyList(applicationID, userName.value().toString(), hostName.value().toString());
+    }
+    public List<String> getKeyList(String userName, String hostName) {
+        return getKeyList(applicationID, userName, hostName);
+    }
+    public boolean isValueForced(String key) {
+        return appValueIsForced(key, applicationID);
+    }
     /*<methods>*/
     @Bridge(symbol="CFPreferencesCopyAppValue", optional=true)
-    public static native CFType copyAppValue(CFString key, CFString applicationID);
+    protected static native CFType getAppValue(String key, String applicationID);
     @Bridge(symbol="CFPreferencesGetAppBooleanValue", optional=true)
-    public static native boolean getAppBooleanValue(CFString key, CFString applicationID, BytePtr keyExistsAndHasValidFormat);
+    protected static native boolean getAppBooleanValue(String key, String applicationID, BooleanPtr keyExistsAndHasValidFormat);
     @Bridge(symbol="CFPreferencesGetAppIntegerValue", optional=true)
-    public static native @MachineSizedSInt long getAppIntegerValue(CFString key, CFString applicationID, BytePtr keyExistsAndHasValidFormat);
+    protected static native @MachineSizedSInt long getAppIntegerValue(String key, String applicationID, BooleanPtr keyExistsAndHasValidFormat);
     @Bridge(symbol="CFPreferencesSetAppValue", optional=true)
-    public static native void setAppValue(CFString key, CFType value, CFString applicationID);
+    protected static native void setAppValue(String key, CFType value, String applicationID);
     @Bridge(symbol="CFPreferencesAddSuitePreferencesToApp", optional=true)
-    public static native void addSuitePreferencesToApp(CFString applicationID, CFString suiteID);
+    protected static native void addSuitePreferencesToApp(String applicationID, String suiteID);
     @Bridge(symbol="CFPreferencesRemoveSuitePreferencesFromApp", optional=true)
-    public static native void removeSuitePreferencesFromApp(CFString applicationID, CFString suiteID);
+    protected static native void removeSuitePreferencesFromApp(String applicationID, String suiteID);
     @Bridge(symbol="CFPreferencesAppSynchronize", optional=true)
-    public static native boolean appSynchronize(CFString applicationID);
+    protected static native boolean appSynchronize(String applicationID);
     @Bridge(symbol="CFPreferencesCopyValue", optional=true)
-    public static native CFType copyValue(CFString key, CFString applicationID, CFString userName, CFString hostName);
+    protected static native CFType getValue(String key, String applicationID, String userName, String hostName);
     @Bridge(symbol="CFPreferencesCopyMultiple", optional=true)
-    public static native CFDictionary copyMultiple(CFArray keysToFetch, CFString applicationID, CFString userName, CFString hostName);
+    protected static native @org.robovm.rt.bro.annotation.Marshaler(CFDictionary.AsStringMapMarshaler.class) Map<String, ?> getMultiple(@org.robovm.rt.bro.annotation.Marshaler(CFArray.AsStringListMarshaler.class) List<String> keysToFetch, String applicationID, String userName, String hostName);
     @Bridge(symbol="CFPreferencesSetValue", optional=true)
-    public static native void setValue(CFString key, CFType value, CFString applicationID, CFString userName, CFString hostName);
+    protected static native void setValue(String key, CFType value, String applicationID, String userName, String hostName);
     @Bridge(symbol="CFPreferencesSetMultiple", optional=true)
-    public static native void setMultiple(CFDictionary keysToSet, CFArray keysToRemove, CFString applicationID, CFString userName, CFString hostName);
+    protected static native void setMultiple(@org.robovm.rt.bro.annotation.Marshaler(CFDictionary.AsStringMapMarshaler.class) Map<String, ?> keysToSet, @org.robovm.rt.bro.annotation.Marshaler(CFArray.AsStringListMarshaler.class) List<String> keysToRemove, String applicationID, String userName, String hostName);
     @Bridge(symbol="CFPreferencesSynchronize", optional=true)
-    public static native boolean synchronize(CFString applicationID, CFString userName, CFString hostName);
+    protected static native boolean synchronize(String applicationID, String userName, String hostName);
     /**
      * @since Available in iOS 2.0 and later.
      * @deprecated Deprecated in iOS 7.0.
      */
     @Deprecated
     @Bridge(symbol="CFPreferencesCopyApplicationList", optional=true)
-    public static native CFArray copyApplicationList(CFString userName, CFString hostName);
+    protected static native @org.robovm.rt.bro.annotation.Marshaler(CFArray.AsStringListMarshaler.class) List<String> getApplicationList(String userName, String hostName);
     @Bridge(symbol="CFPreferencesCopyKeyList", optional=true)
-    public static native CFArray copyKeyList(CFString applicationID, CFString userName, CFString hostName);
+    protected static native @org.robovm.rt.bro.annotation.Marshaler(CFArray.AsStringListMarshaler.class) List<String> getKeyList(String applicationID, String userName, String hostName);
     @Bridge(symbol="CFPreferencesAppValueIsForced", optional=true)
-    public static native boolean appValueIsForced(CFString key, CFString applicationID);
+    protected static native boolean appValueIsForced(String key, String applicationID);
     /*</methods>*/
 }

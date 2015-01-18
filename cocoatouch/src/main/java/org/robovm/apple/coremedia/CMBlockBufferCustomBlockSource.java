@@ -51,22 +51,22 @@ import org.robovm.apple.audiotoolbox.*;
     /*<constructors>*/
     public CMBlockBufferCustomBlockSource() {}
     public CMBlockBufferCustomBlockSource(int version, FunctionPtr AllocateBlock, FunctionPtr FreeBlock, VoidPtr refCon) {
-        this.version(version);
-        this.AllocateBlock(AllocateBlock);
-        this.FreeBlock(FreeBlock);
-        this.refCon(refCon);
+        this.setVersion(version);
+        this.setAllocateBlock(AllocateBlock);
+        this.setFreeBlock(FreeBlock);
+        this.setRefCon(refCon);
     }
     /*</constructors>*/
     /*<properties>*//*</properties>*/
     /*<members>*/
-    @StructMember(0) public native int version();
-    @StructMember(0) public native CMBlockBufferCustomBlockSource version(int version);
-    @StructMember(1) public native FunctionPtr AllocateBlock();
-    @StructMember(1) public native CMBlockBufferCustomBlockSource AllocateBlock(FunctionPtr AllocateBlock);
-    @StructMember(2) public native FunctionPtr FreeBlock();
-    @StructMember(2) public native CMBlockBufferCustomBlockSource FreeBlock(FunctionPtr FreeBlock);
-    @StructMember(3) public native VoidPtr refCon();
-    @StructMember(3) public native CMBlockBufferCustomBlockSource refCon(VoidPtr refCon);
+    @StructMember(0) public native int getVersion();
+    @StructMember(0) public native CMBlockBufferCustomBlockSource setVersion(int version);
+    @StructMember(1) public native FunctionPtr getAllocateBlock();
+    @StructMember(1) public native CMBlockBufferCustomBlockSource setAllocateBlock(FunctionPtr AllocateBlock);
+    @StructMember(2) public native FunctionPtr getFreeBlock();
+    @StructMember(2) public native CMBlockBufferCustomBlockSource setFreeBlock(FunctionPtr FreeBlock);
+    @StructMember(3) public native VoidPtr getRefCon();
+    @StructMember(3) public native CMBlockBufferCustomBlockSource setRefCon(VoidPtr refCon);
     /*</members>*/
     /*<methods>*//*</methods>*/
 }

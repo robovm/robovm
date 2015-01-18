@@ -26,6 +26,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.NoSuchElementException;
 import java.util.Properties;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -101,7 +102,7 @@ public class IOSTarget extends AbstractTarget {
     }
 
     public static boolean isDeviceArch(Arch arch) {
-        return arch == Arch.thumbv7;
+        return arch == Arch.thumbv7 || arch == Arch.arm64;
     }
 
     public List<SDK> getSDKs() {
@@ -267,9 +268,15 @@ public class IOSTarget extends AbstractTarget {
         }
 
         if (isDeviceArch(arch)) {
-            ccArgs.add("-miphoneos-version-min=5.0");
+            ccArgs.add("-miphoneos-version-min=" + config.getOs().getMinVersion());
+            if (config.isDebug()) {
+                ccArgs.add("-Wl,-no_pie");
+            }
         } else {
-            ccArgs.add("-mios-simulator-version-min=5.0");
+            ccArgs.add("-mios-simulator-version-min=" + config.getOs().getMinVersion());
+            if (config.getArch() == Arch.x86) {
+                ccArgs.add("-Wl,-no_pie");
+            }
         }
         ccArgs.add("-isysroot");
         ccArgs.add(sdk.getRoot().getAbsolutePath());
@@ -408,36 +415,8 @@ public class IOSTarget extends AbstractTarget {
     }
 
     private void strip(File dir, String executable) throws IOException {
-        File exportedSymbolsFile = new File(config.getTmpDir(), "exported_symbols");
-        
-        // FIXME #584 quick fix for *lookup?
-        String symbolList = new Executor(config.getLogger(), "nm").args("-j", new File(dir, executable)).execCapture();
-        String[] symbols = symbolList.split("\n");
-        Pattern pattern = Pattern.compile(".*lookup.");
-        List<String> lookupSymbols = new ArrayList<>();
-        for(String symbol: symbols) {
-            if(pattern.matcher(symbol).matches()) {
-                lookupSymbols.add(symbol);
-            }
-        }
-        
-        // create a temporary, "fixed" symbol file
-        File fixedExportedSymbolsFile = new File(config.getTmpDir(), "exported_symbols_fixed");
-        StringBuilder builder = new StringBuilder();        
-        for(String entry: FileUtils.readFileToString(exportedSymbolsFile).split("\n")) {
-            if(!"_*lookup?".equals(entry)) {
-                builder.append(entry);
-                builder.append("\n");
-            }
-        }
-        for(String symbol: lookupSymbols) {
-            builder.append(symbol);
-            builder.append("\n");
-        }
-        FileUtils.writeStringToFile(fixedExportedSymbolsFile, builder.toString());
-        
         new Executor(config.getLogger(), "xcrun")
-            .args("strip", "-s", fixedExportedSymbolsFile, new File(dir, executable))
+            .args("strip", "-x", new File(dir, executable))
             .exec();
     }
     
@@ -453,9 +432,20 @@ public class IOSTarget extends AbstractTarget {
         return super.doLaunch(launchParameters);
     }
 
-    public void createIpa() throws IOException {
+    public void createIpa(List<File> slices) throws IOException {
         config.getLogger().debug("Creating IPA in %s", config.getInstallDir());
         config.getInstallDir().mkdirs();
+        if (slices.size() > 1) {
+            ToolchainUtil.lipo(config, new File(config.getTmpDir(), getExecutable()), slices);
+        } else {
+            File destFile = new File(config.getTmpDir(), getExecutable());
+            FileUtils.copyFile(slices.get(0), destFile);
+            destFile.setExecutable(true, false);
+        }
+        // Use the exported_symbols file created for the first slice.
+        File exportedSymbolsFile = new File(slices.get(0).getParentFile(), "exported_symbols");
+        FileUtils.copyFile(exportedSymbolsFile, new File(config.getTmpDir(), "exported_symbols"));
+        
         File tmpDir = new File(config.getInstallDir(), getExecutable() + ".app");
         FileUtils.deleteDirectory(tmpDir);
         tmpDir.mkdirs();
@@ -529,9 +519,30 @@ public class IOSTarget extends AbstractTarget {
             dict.put("DTPlatformVersion", sdk.getPlatformVersion());
             dict.put("DTPlatformBuild", sdk.getPlatformBuild());
             dict.put("DTSDKBuild", sdk.getBuild());
-            // Validation fails without these. Let's pretend the app was built with Xcode 5.0.2
-            putIfAbsent(dict, "DTXcode", "0502");
-            putIfAbsent(dict, "DTXcodeBuild", "5A3005");
+            
+            // Validation fails without DTXcode and DTXcodeBuild. Try to read them from the installed Xcode.
+            try {
+                File versionPListFile = new File(new File(ToolchainUtil.findXcodePath()).getParentFile(), "version.plist");
+                NSDictionary versionPList = (NSDictionary) PropertyListParser.parse(versionPListFile);
+                File xcodeInfoPListFile = new File(new File(ToolchainUtil.findXcodePath()).getParentFile(), "Info.plist");
+                NSDictionary xcodeInfoPList = (NSDictionary) PropertyListParser.parse(xcodeInfoPListFile);
+                NSString dtXcodeBuild = (NSString) versionPList.objectForKey("ProductBuildVersion");
+                if (dtXcodeBuild == null) {
+                    throw new NoSuchElementException("No ProductBuildVersion in " + versionPListFile.getAbsolutePath());
+                }
+                NSString dtXcode = (NSString) xcodeInfoPList.objectForKey("DTXcode");
+                if (dtXcode == null) {
+                    throw new NoSuchElementException("No DTXcode in " + xcodeInfoPListFile.getAbsolutePath());
+                }
+                putIfAbsent(dict, "DTXcode", dtXcode.toString());
+                putIfAbsent(dict, "DTXcodeBuild", dtXcodeBuild.toString());
+            } catch (Exception e) {
+                config.getLogger().warn("Failed to read DTXcodeBuild/DTXcode from current Xcode install. Will use fake values. (%s: %s)", 
+                        e.getClass().getName(), e.getMessage());
+            }
+            // Fake Xcode 6.1.1 values if the above fails.
+            putIfAbsent(dict, "DTXcode", "0611");
+            putIfAbsent(dict, "DTXcodeBuild", "6A2008a");
         }
     }
     
@@ -589,7 +600,7 @@ public class IOSTarget extends AbstractTarget {
 
         if (dict.objectForKey("MinimumOSVersion") == null) {
             // This is required
-            dict.put("MinimumOSVersion", "5.0");
+            dict.put("MinimumOSVersion", "6.0");
         }
         
         customizeInfoPList(dict);
@@ -618,7 +629,7 @@ public class IOSTarget extends AbstractTarget {
             if (!config.isIosSkipSigning()) {
                 signIdentity = config.getIosSignIdentity();
                 if (signIdentity == null) {
-                    signIdentity = SigningIdentity.find(SigningIdentity.list(), "iPhone Developer");
+                    signIdentity = SigningIdentity.find(SigningIdentity.list(), "/(?i)iPhone Developer|iOS Development/");
                 }
             }
         }

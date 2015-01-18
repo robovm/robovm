@@ -47,7 +47,17 @@ void rvmRaiseException(Env* env, Object* e) {
         rvmTrycatchLeave(env);
         tc = env->trycatchContext;
     }
-    rvmAbort("Unhandled exception: %s", e->clazz->name);
+
+    /*
+     * We only end up here if Java was called into from native without a
+     * TrycatchContext being set up first. This only happens for @Callback
+     * methods. The only sane thing to do here is to terminate the app. But
+     * first we want to detach the current thread which will report the
+     * uncaught exception to the uncaught exception handler.
+     */
+    env->gatewayFrames = NULL; // Needed to avoid the "Cannot detach thread when there are non native frames on the call stack" error
+    rvmDetachCurrentThread(env->vm, TRUE, TRUE);
+    rvmAbort("Unhandled exception (probably in a @Callback method called from native code): %s", e->clazz->name);
 }
 
 void rvmExceptionPrintStackTrace(Env* env, Object* e, FILE* f) {

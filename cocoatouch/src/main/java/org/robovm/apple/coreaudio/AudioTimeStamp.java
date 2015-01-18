@@ -45,73 +45,31 @@ import org.robovm.apple.corefoundation.*;
     /*<constructors>*/
     public AudioTimeStamp() {}
     public AudioTimeStamp(double mSampleTime, long mHostTime, double mRateScalar, long mWordClockTime, SMPTETime mSMPTETime, int mFlags, int mReserved) {
-        this.setMsampletime(mSampleTime);
-        this.setMhosttime(mHostTime);
-        this.setMratescalar(mRateScalar);
-        this.setMwordclocktime(mWordClockTime);
-        this.setMsmptetime(mSMPTETime);
-        this.setMflags(mFlags);
-        this.setMreserved(mReserved);
+        this.setMSampleTime(mSampleTime);
+        this.setMHostTime(mHostTime);
+        this.setMRateScalar(mRateScalar);
+        this.setMWordClockTime(mWordClockTime);
+        this.setMSMPTETime(mSMPTETime);
+        this.setMFlags(mFlags);
+        this.setMReserved(mReserved);
     }
     /*</constructors>*/
     /*<properties>*//*</properties>*/
     /*<members>*/
-    @StructMember(0) public native double getMsampletime();
-    @StructMember(0) public native AudioTimeStamp setMsampletime(double mSampleTime);
-    
-    @Deprecated
-    @StructMember(0) public native double mSampleTime();
-    @Deprecated
-    @StructMember(0) public native AudioTimeStamp mSampleTime(double mSampleTime);
-    
-    @StructMember(1) public native long getMhosttime();
-    @StructMember(1) public native AudioTimeStamp setMhosttime(long mHostTime);
-    
-    @Deprecated
-    @StructMember(1) public native long mHostTime();
-    @Deprecated
-    @StructMember(1) public native AudioTimeStamp mHostTime(long mHostTime);
-    
-    @StructMember(2) public native double getMratescalar();
-    @StructMember(2) public native AudioTimeStamp setMratescalar(double mRateScalar);
-    
-    @Deprecated
-    @StructMember(2) public native double mRateScalar();
-    @Deprecated
-    @StructMember(2) public native AudioTimeStamp mRateScalar(double mRateScalar);
-    
-    @StructMember(3) public native long getMwordclocktime();
-    @StructMember(3) public native AudioTimeStamp setMwordclocktime(long mWordClockTime);
-    
-    @Deprecated
-    @StructMember(3) public native long mWordClockTime();
-    @Deprecated
-    @StructMember(3) public native AudioTimeStamp mWordClockTime(long mWordClockTime);
-    
-    @StructMember(4) public native @ByVal SMPTETime getMsmptetime();
-    @StructMember(4) public native AudioTimeStamp setMsmptetime(@ByVal SMPTETime mSMPTETime);
-    
-    @Deprecated
-    @StructMember(4) public native @ByVal SMPTETime mSMPTETime();
-    @Deprecated
-    @StructMember(4) public native AudioTimeStamp mSMPTETime(@ByVal SMPTETime mSMPTETime);
-    
-    @StructMember(5) public native int getMflags();
-    @StructMember(5) public native AudioTimeStamp setMflags(int mFlags);
-    
-    @Deprecated
-    @StructMember(5) public native int mFlags();
-    @Deprecated
-    @StructMember(5) public native AudioTimeStamp mFlags(int mFlags);
-    
-    @StructMember(6) public native int getMreserved();
-    @StructMember(6) public native AudioTimeStamp setMreserved(int mReserved);
-    
-    @Deprecated
-    @StructMember(6) public native int mReserved();
-    @Deprecated
-    @StructMember(6) public native AudioTimeStamp mReserved(int mReserved);
-    
+    @StructMember(0) public native double getMSampleTime();
+    @StructMember(0) public native AudioTimeStamp setMSampleTime(double mSampleTime);
+    @StructMember(1) public native long getMHostTime();
+    @StructMember(1) public native AudioTimeStamp setMHostTime(long mHostTime);
+    @StructMember(2) public native double getMRateScalar();
+    @StructMember(2) public native AudioTimeStamp setMRateScalar(double mRateScalar);
+    @StructMember(3) public native long getMWordClockTime();
+    @StructMember(3) public native AudioTimeStamp setMWordClockTime(long mWordClockTime);
+    @StructMember(4) public native @ByVal SMPTETime getMSMPTETime();
+    @StructMember(4) public native AudioTimeStamp setMSMPTETime(@ByVal SMPTETime mSMPTETime);
+    @StructMember(5) public native int getMFlags();
+    @StructMember(5) public native AudioTimeStamp setMFlags(int mFlags);
+    @StructMember(6) public native int getMReserved();
+    @StructMember(6) public native AudioTimeStamp setMReserved(int mReserved);
     /*</members>*/
     /*<methods>*//*</methods>*/
 }

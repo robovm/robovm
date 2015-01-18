@@ -66,7 +66,7 @@ import org.robovm.apple.dispatch.*;
     /*<constructors>*/
     public NSDate() {}
     protected NSDate(SkipInit skipInit) { super(skipInit); }
-    public NSDate(double secs) { super((SkipInit) null); initObject(initWithTimeIntervalSince1970$(secs)); }
+    public NSDate(double secs) { super((SkipInit) null); initObject(init(secs)); }
     /*</constructors>*/
     
     public NSDate(Date date) {
@@ -109,7 +109,7 @@ import org.robovm.apple.dispatch.*;
     @Method(selector = "descriptionWithLocale:")
     public native String toString(NSLocale locale);
     @Method(selector = "initWithTimeIntervalSince1970:")
-    protected native @Pointer long initWithTimeIntervalSince1970$(double secs);
+    protected native @Pointer long init(double secs);
     @Method(selector = "date")
     public static native NSDate now();
     @Method(selector = "dateWithTimeIntervalSinceNow:")

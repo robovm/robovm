@@ -183,13 +183,13 @@ import org.robovm.apple.audiotoolbox.*;
     public static CMBufferQueue create(@MachineSizedSInt long capacity, CMBufferQueueCallbacks callback) {
         long refconId = CMBufferQueue.refconId.getAndIncrement();
         CMBufferCallbacksStruct callbacks = new CMBufferCallbacksStruct();
-        callbacks.refcon(refconId);
-        callbacks.getDecodeTimeStamp(new FunctionPtr(cbGetDecodeTimeStamp));
-        callbacks.getPresentationTimeStamp(new FunctionPtr(cbGetPresentationTimeStamp));
-        callbacks.getDuration(new FunctionPtr(cbGetDuration));
-        callbacks.isDataReady(new FunctionPtr(cbIsDataReady));
-        callbacks.compare(new FunctionPtr(cbCompare));
-        callbacks.getSize(new FunctionPtr(cbGetSize));
+        callbacks.setRefcon(refconId);
+        callbacks.setGetDecodeTimeStamp(new FunctionPtr(cbGetDecodeTimeStamp));
+        callbacks.setGetPresentationTimeStamp(new FunctionPtr(cbGetPresentationTimeStamp));
+        callbacks.setGetDuration(new FunctionPtr(cbGetDuration));
+        callbacks.setIsDataReady(new FunctionPtr(cbIsDataReady));
+        callbacks.setCompare(new FunctionPtr(cbCompare));
+        callbacks.setGetSize(new FunctionPtr(cbGetSize));
         CMBufferQueuePtr ptr = new CMBufferQueuePtr();
         CMBufferQueueError err = create(null, capacity, callbacks, ptr);
         if (err == CMBufferQueueError.No) {

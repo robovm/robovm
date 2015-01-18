@@ -33,6 +33,8 @@ import org.robovm.apple.coreanimation.*;
 import org.robovm.apple.dispatch.*;
 import org.robovm.apple.coreimage.*;
 import org.robovm.apple.avfoundation.*;
+import org.robovm.apple.glkit.*;
+import org.robovm.apple.scenekit.*;
 /*</imports>*/
 
 /*<javadoc>*/
@@ -56,13 +58,23 @@ import org.robovm.apple.avfoundation.*;
     @Property(selector = "setDynamic:")
     public native void setDynamic(boolean v);
     @Property(selector = "usesPreciseCollisionDetection")
-    public native boolean isUsesPreciseCollisionDetection();
+    public native boolean usesPreciseCollisionDetection();
     @Property(selector = "setUsesPreciseCollisionDetection:")
     public native void setUsesPreciseCollisionDetection(boolean v);
     @Property(selector = "allowsRotation")
-    public native boolean isAllowsRotation();
+    public native boolean allowsRotation();
     @Property(selector = "setAllowsRotation:")
     public native void setAllowsRotation(boolean v);
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @Property(selector = "pinned")
+    public native boolean isPinned();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @Property(selector = "setPinned:")
+    public native void setPinned(boolean v);
     @Property(selector = "isResting")
     public native boolean isResting();
     @Property(selector = "setResting:")
@@ -71,6 +83,16 @@ import org.robovm.apple.avfoundation.*;
     public native @MachineSizedFloat double getFriction();
     @Property(selector = "setFriction:")
     public native void setFriction(@MachineSizedFloat double v);
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @Property(selector = "charge")
+    public native @MachineSizedFloat double getCharge();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @Property(selector = "setCharge:")
+    public native void setCharge(@MachineSizedFloat double v);
     @Property(selector = "restitution")
     public native @MachineSizedFloat double getRestitution();
     @Property(selector = "setRestitution:")
@@ -97,6 +119,16 @@ import org.robovm.apple.avfoundation.*;
     public native boolean isAffectedByGravity();
     @Property(selector = "setAffectedByGravity:")
     public native void setAffectedByGravity(boolean v);
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @Property(selector = "fieldBitMask")
+    public native int getFieldBitMask();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @Property(selector = "setFieldBitMask:")
+    public native void setFieldBitMask(int v);
     @Property(selector = "categoryBitMask")
     public native int getCategoryBitMask();
     @Property(selector = "setCategoryBitMask:")
@@ -133,7 +165,7 @@ import org.robovm.apple.avfoundation.*;
     @Method(selector = "applyImpulse:")
     public native void applyImpulse(@ByVal CGVector impulse);
     @Method(selector = "applyImpulse:atPoint:")
-    public native void applyImpulse$atPoint$(@ByVal CGVector impulse, @ByVal CGPoint point);
+    public native void applyImpulse(@ByVal CGVector impulse, @ByVal CGPoint point);
     @Method(selector = "applyAngularImpulse:")
     public native void applyAngularImpulse(@MachineSizedFloat double impulse);
     @Method(selector = "allContactedBodies")
@@ -156,8 +188,18 @@ import org.robovm.apple.avfoundation.*;
     public static native SKPhysicsBody createEdgeLoop(CGPath path);
     @Method(selector = "bodyWithEdgeLoopFromRect:")
     public static native SKPhysicsBody createEdgeLoop(@ByVal CGRect rect);
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @Method(selector = "bodyWithTexture:size:")
+    public static native SKPhysicsBody createWithTexture(SKTexture texture, @ByVal CGSize size);
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @Method(selector = "bodyWithTexture:alphaThreshold:size:")
+    public static native SKPhysicsBody createWithTexture(SKTexture texture, float alphaThreshold, @ByVal CGSize size);
     @Method(selector = "bodyWithBodies:")
-    public static native SKPhysicsBody create(NSArray<SKPhysicsBody> bodies);
+    public static native SKPhysicsBody createWithBodies(NSArray<SKPhysicsBody> bodies);
     @Method(selector = "encodeWithCoder:")
     public native void encode(NSCoder aCoder);
     /*</methods>*/

@@ -49,16 +49,16 @@ import org.robovm.apple.coremedia.*;
     /*<constructors>*/
     public AudioFileTypeAndFormatID() {}
     public AudioFileTypeAndFormatID(int mFileType, int mFormatID) {
-        this.mFileType(mFileType);
-        this.mFormatID(mFormatID);
+        this.setMFileType(mFileType);
+        this.setMFormatID(mFormatID);
     }
     /*</constructors>*/
     /*<properties>*//*</properties>*/
     /*<members>*/
-    @StructMember(0) public native int mFileType();
-    @StructMember(0) public native AudioFileTypeAndFormatID mFileType(int mFileType);
-    @StructMember(1) public native int mFormatID();
-    @StructMember(1) public native AudioFileTypeAndFormatID mFormatID(int mFormatID);
+    @StructMember(0) public native int getMFileType();
+    @StructMember(0) public native AudioFileTypeAndFormatID setMFileType(int mFileType);
+    @StructMember(1) public native int getMFormatID();
+    @StructMember(1) public native AudioFileTypeAndFormatID setMFormatID(int mFormatID);
     /*</members>*/
     /*<methods>*//*</methods>*/
 }

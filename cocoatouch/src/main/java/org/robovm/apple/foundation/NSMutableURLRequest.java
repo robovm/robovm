@@ -82,7 +82,7 @@ import org.robovm.apple.dispatch.*;
      * @since Available in iOS 6.0 and later.
      */
     @Property(selector = "allowsCellularAccess")
-    public native boolean isAllowsCellularAccess();
+    public native boolean allowsCellularAccess();
     /**
      * @since Available in iOS 6.0 and later.
      */
@@ -105,19 +105,19 @@ import org.robovm.apple.dispatch.*;
     @Property(selector = "setHTTPBodyStream:")
     public native void setHTTPBodyStream(NSInputStream v);
     @Property(selector = "HTTPShouldHandleCookies")
-    public native boolean isHTTPShouldHandleCookies();
+    public native boolean shouldHandleHTTPCookies();
     @Property(selector = "setHTTPShouldHandleCookies:")
-    public native void setHTTPShouldHandleCookies(boolean v);
+    public native void setShouldHandleHTTPCookies(boolean v);
     /**
      * @since Available in iOS 4.0 and later.
      */
     @Property(selector = "HTTPShouldUsePipelining")
-    public native boolean isHTTPShouldUsePipelining();
+    public native boolean shouldUseHTTPPipelining();
     /**
      * @since Available in iOS 4.0 and later.
      */
     @Property(selector = "setHTTPShouldUsePipelining:")
-    public native void setHTTPShouldUsePipelining(boolean v);
+    public native void setShouldUseHTTPPipelining(boolean v);
     /*</properties>*/
     /*<members>*//*</members>*/
     public void setHTTPHeaderField(String field, String value) {

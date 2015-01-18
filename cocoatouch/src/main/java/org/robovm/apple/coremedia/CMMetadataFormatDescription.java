@@ -61,9 +61,44 @@ import org.robovm.apple.audiotoolbox.*;
     @Bridge(symbol="CMMetadataFormatDescriptionCreateWithKeys", optional=true)
     protected static native int create(CFAllocator allocator, CMMetadataFormatType metadataType, NSArray<?> keys, CMFormatDescription.CMFormatDescriptionPtr outDesc);
     /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @Bridge(symbol="CMMetadataFormatDescriptionCreateWithMetadataSpecifications", optional=true)
+    public static native int createWithMetadataSpecifications(CFAllocator allocator, CMMetadataFormatType metadataType, NSArray<?> metadataSpecifications, CMFormatDescription.CMFormatDescriptionPtr outDesc);
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @Bridge(symbol="CMMetadataFormatDescriptionCreateWithMetadataFormatDescriptionAndMetadataSpecifications", optional=true)
+    public static native int createWithMetadataFormatDescriptionAndMetadataSpecifications(CFAllocator allocator, CMFormatDescription srcDesc, NSArray<?> metadataSpecifications, CMFormatDescription.CMFormatDescriptionPtr outDesc);
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @Bridge(symbol="CMMetadataFormatDescriptionCreateByMergingMetadataFormatDescriptions", optional=true)
+    public static native int createByMergingMetadataFormatDescriptions(CFAllocator allocator, CMFormatDescription srcDesc1, CMFormatDescription srcDesc2, CMFormatDescription.CMFormatDescriptionPtr outDesc);
+    /**
      * @since Available in iOS 4.0 and later.
      */
     @Bridge(symbol="CMMetadataFormatDescriptionGetKeyWithLocalID", optional=true)
     public static native NSDictionary<?, ?> getKeyWithLocalID(CMFormatDescription desc, int localKeyID);
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @Bridge(symbol="CMMetadataFormatDescriptionGetIdentifiers", optional=true)
+    public static native NSArray<?> getIdentifiers(CMFormatDescription desc);
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @Bridge(symbol="CMMetadataFormatDescriptionCreateFromBigEndianMetadataDescriptionData", optional=true)
+    public static native int createFromBigEndianMetadataDescriptionData(CFAllocator allocator, BytePtr metadataDescriptionData, @MachineSizedUInt long metadataDescriptionSize, String metadataDescriptionFlavor, CMFormatDescription.CMFormatDescriptionPtr metadataFormatDescriptionOut);
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @Bridge(symbol="CMMetadataFormatDescriptionCreateFromBigEndianMetadataDescriptionBlockBuffer", optional=true)
+    public static native int createFromBigEndianMetadataDescriptionBlockBuffer(CFAllocator allocator, CMBlockBuffer metadataDescriptionBlockBuffer, String metadataDescriptionFlavor, CMFormatDescription.CMFormatDescriptionPtr metadataFormatDescriptionOut);
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @Bridge(symbol="CMMetadataFormatDescriptionCopyAsBigEndianMetadataDescriptionBlockBuffer", optional=true)
+    public static native int copyAsBigEndianMetadataDescriptionBlockBuffer(CFAllocator allocator, CMFormatDescription metadataFormatDescription, String metadataDescriptionFlavor, CMBlockBuffer.CMBlockBufferPtr metadataDescriptionBlockBufferOut);
     /*</methods>*/
 }

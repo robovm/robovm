@@ -45,46 +45,22 @@ import org.robovm.apple.corefoundation.*;
     /*<constructors>*/
     public AudioChannelLayout() {}
     public AudioChannelLayout(AudioChannelLayoutTag mChannelLayoutTag, AudioChannelBit mChannelBitmap, int mNumberChannelDescriptions, AudioChannelDescription mChannelDescriptions) {
-        this.setMchannellayouttag(mChannelLayoutTag);
-        this.setMchannelbitmap(mChannelBitmap);
-        this.setMnumberchanneldescriptions(mNumberChannelDescriptions);
-        this.setMchanneldescriptions(mChannelDescriptions);
+        this.setMChannelLayoutTag(mChannelLayoutTag);
+        this.setMChannelBitmap(mChannelBitmap);
+        this.setMNumberChannelDescriptions(mNumberChannelDescriptions);
+        this.setMChannelDescriptions(mChannelDescriptions);
     }
     /*</constructors>*/
     /*<properties>*//*</properties>*/
     /*<members>*/
-    @StructMember(0) public native AudioChannelLayoutTag getMchannellayouttag();
-    @StructMember(0) public native AudioChannelLayout setMchannellayouttag(AudioChannelLayoutTag mChannelLayoutTag);
-    
-    @Deprecated
-    @StructMember(0) public native AudioChannelLayoutTag mChannelLayoutTag();
-    @Deprecated
-    @StructMember(0) public native AudioChannelLayout mChannelLayoutTag(AudioChannelLayoutTag mChannelLayoutTag);
-    
-    @StructMember(1) public native AudioChannelBit getMchannelbitmap();
-    @StructMember(1) public native AudioChannelLayout setMchannelbitmap(AudioChannelBit mChannelBitmap);
-    
-    @Deprecated
-    @StructMember(1) public native AudioChannelBit mChannelBitmap();
-    @Deprecated
-    @StructMember(1) public native AudioChannelLayout mChannelBitmap(AudioChannelBit mChannelBitmap);
-    
-    @StructMember(2) public native int getMnumberchanneldescriptions();
-    @StructMember(2) public native AudioChannelLayout setMnumberchanneldescriptions(int mNumberChannelDescriptions);
-    
-    @Deprecated
-    @StructMember(2) public native int mNumberChannelDescriptions();
-    @Deprecated
-    @StructMember(2) public native AudioChannelLayout mNumberChannelDescriptions(int mNumberChannelDescriptions);
-    
-    @StructMember(3) public native @Array({1}) AudioChannelDescription getMchanneldescriptions();
-    @StructMember(3) public native AudioChannelLayout setMchanneldescriptions(@Array({1}) AudioChannelDescription mChannelDescriptions);
-    
-    @Deprecated
-    @StructMember(3) public native @Array({1}) AudioChannelDescription mChannelDescriptions();
-    @Deprecated
-    @StructMember(3) public native AudioChannelLayout mChannelDescriptions(@Array({1}) AudioChannelDescription mChannelDescriptions);
-    
+    @StructMember(0) public native AudioChannelLayoutTag getMChannelLayoutTag();
+    @StructMember(0) public native AudioChannelLayout setMChannelLayoutTag(AudioChannelLayoutTag mChannelLayoutTag);
+    @StructMember(1) public native AudioChannelBit getMChannelBitmap();
+    @StructMember(1) public native AudioChannelLayout setMChannelBitmap(AudioChannelBit mChannelBitmap);
+    @StructMember(2) public native int getMNumberChannelDescriptions();
+    @StructMember(2) public native AudioChannelLayout setMNumberChannelDescriptions(int mNumberChannelDescriptions);
+    @StructMember(3) public native @Array({1}) AudioChannelDescription getMChannelDescriptions();
+    @StructMember(3) public native AudioChannelLayout setMChannelDescriptions(@Array({1}) AudioChannelDescription mChannelDescriptions);
     /*</members>*/
     /*<methods>*//*</methods>*/
 }

@@ -40,7 +40,11 @@ import org.robovm.apple.uikit.*;
 
     /*<ptr>*/public static class CGFontPtr extends Ptr<CGFont, CGFontPtr> {}/*</ptr>*/
     /*<bind>*/static { Bro.bind(CGFont.class); }/*</bind>*/
-    /*<constants>*//*</constants>*/
+    /*<constants>*/
+    public static final int FontIndexMax = 65534;
+    public static final int FontIndexInvalid = 65535;
+    public static final int GlyphMax = 65534;
+    /*</constants>*/
     /*<constructors>*/
     protected CGFont() {}
     /*</constructors>*/

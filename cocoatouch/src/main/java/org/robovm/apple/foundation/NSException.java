@@ -47,7 +47,7 @@ import org.robovm.apple.security.*;
     /*<constants>*//*</constants>*/
     /*<constructors>*/
     protected NSException(SkipInit skipInit) { super(skipInit); }
-    public NSException(String aName, String aReason, NSDictionary<?, ?> aUserInfo) { super((SkipInit) null); initObject(initWithName$reason$userInfo$(aName, aReason, aUserInfo)); }
+    public NSException(String aName, String aReason, NSDictionary<?, ?> aUserInfo) { super((SkipInit) null); initObject(init(aName, aReason, aUserInfo)); }
     /*</constructors>*/
     /*<properties>*/
     @Property(selector = "name")
@@ -123,7 +123,7 @@ import org.robovm.apple.security.*;
     private static native void setUncaughtExceptionHandler(FunctionPtr p0);
     
     @Method(selector = "initWithName:reason:userInfo:")
-    protected native @Pointer long initWithName$reason$userInfo$(String aName, String aReason, NSDictionary<?, ?> aUserInfo);
+    protected native @Pointer long init(String aName, String aReason, NSDictionary<?, ?> aUserInfo);
     @Method(selector = "raise")
     public native void raise();
     @Method(selector = "encodeWithCoder:")

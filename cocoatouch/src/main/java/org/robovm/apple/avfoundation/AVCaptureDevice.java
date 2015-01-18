@@ -48,6 +48,42 @@ import org.robovm.apple.mediatoolbox.*;
     extends /*<extends>*/NSObject/*</extends>*/ 
     /*<implements>*//*</implements>*/ {
 
+    public static class Notifications {
+        /**
+         * @since Available in iOS 4.0 and later.
+         */
+        public static NSObject observeWasConnected(final VoidBlock1<AVCaptureDevice> block) {
+            return NSNotificationCenter.getDefaultCenter().addObserver(WasConnectedNotification(), null, NSOperationQueue.getMainQueue(), new VoidBlock1<NSNotification>() {
+                @Override
+                public void invoke(NSNotification a) {
+                    block.invoke((AVCaptureDevice) a.getObject());
+                }
+            });
+        }
+        /**
+         * @since Available in iOS 4.0 and later.
+         */
+        public static NSObject observeWasDisconnected(final VoidBlock1<AVCaptureDevice> block) {
+            return NSNotificationCenter.getDefaultCenter().addObserver(WasDisconnectedNotification(), null, NSOperationQueue.getMainQueue(), new VoidBlock1<NSNotification>() {
+                @Override
+                public void invoke(NSNotification a) {
+                    block.invoke((AVCaptureDevice) a.getObject());
+                }
+            });
+        }
+        /**
+         * @since Available in iOS 5.0 and later.
+         */
+        public static NSObject observeSubjectAreaDidChange(AVCaptureDevice object, final VoidBlock1<AVCaptureDevice> block) {
+            return NSNotificationCenter.getDefaultCenter().addObserver(SubjectAreaDidChangeNotification(), null, NSOperationQueue.getMainQueue(), new VoidBlock1<NSNotification>() {
+                @Override
+                public void invoke(NSNotification a) {
+                    block.invoke((AVCaptureDevice) a.getObject());
+                }
+            });
+        }
+    }
+    
     /*<ptr>*/public static class AVCaptureDevicePtr extends Ptr<AVCaptureDevice, AVCaptureDevicePtr> {}/*</ptr>*/
     /*<bind>*/static { ObjCRuntime.bind(AVCaptureDevice.class); }/*</bind>*/
     /*<constants>*//*</constants>*/
@@ -102,7 +138,7 @@ import org.robovm.apple.mediatoolbox.*;
     @Property(selector = "position")
     public native AVCaptureDevicePosition getPosition();
     @Property(selector = "hasFlash")
-    public native boolean isHasFlash();
+    public native boolean hasFlash();
     /**
      * @since Available in iOS 5.0 and later.
      */
@@ -118,7 +154,7 @@ import org.robovm.apple.mediatoolbox.*;
     @Property(selector = "setFlashMode:")
     public native void setFlashMode(AVCaptureFlashMode v);
     @Property(selector = "hasTorch")
-    public native boolean isHasTorch();
+    public native boolean hasTorch();
     /**
      * @since Available in iOS 5.0 and later.
      */
@@ -277,7 +313,7 @@ import org.robovm.apple.mediatoolbox.*;
      * @since Available in iOS 6.0 and later.
      */
     @Property(selector = "automaticallyEnablesLowLightBoostWhenAvailable")
-    public native boolean isAutomaticallyEnablesLowLightBoostWhenAvailable();
+    public native boolean automaticallyEnablesLowLightBoostWhenAvailable();
     /**
      * @since Available in iOS 6.0 and later.
      */
@@ -302,7 +338,7 @@ import org.robovm.apple.mediatoolbox.*;
      * @since Available in iOS 8.0 and later.
      */
     @Property(selector = "automaticallyAdjustsVideoHDREnabled")
-    public native boolean isAutomaticallyAdjustsVideoHDREnabled();
+    public native boolean automaticallyAdjustsVideoHDREnabled();
     /**
      * @since Available in iOS 8.0 and later.
      */
@@ -320,23 +356,79 @@ import org.robovm.apple.mediatoolbox.*;
     public native void setVideoHDREnabled(boolean v);
     /*</properties>*/
     /*<members>*//*</members>*/
+    /**
+     * 
+     * @return
+     * @throws NSErrorException
+     */
+    public boolean lockForConfiguration() throws NSErrorException {
+        NSError.NSErrorPtr err = new NSError.NSErrorPtr();
+        boolean result = lockForConfiguration(err);
+        if (err.get() != null) {
+            throw new NSErrorException(err.get());
+        }
+        return result;
+    }
     /*<methods>*/
+    /**
+     * @since Available in iOS 4.0 and later.
+     */
+    @GlobalValue(symbol="AVCaptureDeviceWasConnectedNotification", optional=true)
+    public static native NSString WasConnectedNotification();
+    /**
+     * @since Available in iOS 4.0 and later.
+     */
+    @GlobalValue(symbol="AVCaptureDeviceWasDisconnectedNotification", optional=true)
+    public static native NSString WasDisconnectedNotification();
+    /**
+     * @since Available in iOS 5.0 and later.
+     */
+    @GlobalValue(symbol="AVCaptureDeviceSubjectAreaDidChangeNotification", optional=true)
+    public static native NSString SubjectAreaDidChangeNotification();
+    @GlobalValue(symbol="AVCaptureMaxAvailableTorchLevel", optional=true)
+    public static native float getMaxAvailableTorchLevel();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @GlobalValue(symbol="AVCaptureLensPositionCurrent", optional=true)
+    public static native float getLensPositionCurrent();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @GlobalValue(symbol="AVCaptureExposureDurationCurrent", optional=true)
+    public static native @ByVal CMTime getExposureDurationCurrent();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @GlobalValue(symbol="AVCaptureISOCurrent", optional=true)
+    public static native float getISOCurrent();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @GlobalValue(symbol="AVCaptureExposureTargetBiasCurrent", optional=true)
+    public static native float getExposureTargetBiasCurrent();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @GlobalValue(symbol="AVCaptureWhiteBalanceGainsCurrent", optional=true)
+    public static native @ByVal AVCaptureWhiteBalanceGains getWhiteBalanceGainsCurrent();
+    
     @Method(selector = "hasMediaType:")
-    public native boolean hasMediaType(String mediaType);
+    public native boolean hasMediaType(AVMediaType mediaType);
     @Method(selector = "lockForConfiguration:")
-    public native boolean lockForConfiguration(NSError.NSErrorPtr outError);
+    protected native boolean lockForConfiguration(NSError.NSErrorPtr outError);
     @Method(selector = "unlockForConfiguration")
     public native void unlockForConfiguration();
     @Method(selector = "supportsAVCaptureSessionPreset:")
-    public native boolean supportsAVCaptureSessionPreset(String preset);
+    public native boolean supportsAVCaptureSessionPreset(AVCaptureSessionPreset preset);
     @Method(selector = "devices")
     public static native NSArray<AVCaptureDevice> getDevices();
     @Method(selector = "devicesWithMediaType:")
-    public static native NSArray<AVCaptureDevice> getDevices(String mediaType);
+    public static native NSArray<AVCaptureDevice> getDevicesForMediaType(AVMediaType mediaType);
     @Method(selector = "defaultDeviceWithMediaType:")
-    public static native AVCaptureDevice getDefaultDevice(String mediaType);
+    public static native AVCaptureDevice getDefaultDeviceForMediaType(AVMediaType mediaType);
     @Method(selector = "deviceWithUniqueID:")
-    public static native AVCaptureDevice getDevice(String deviceUniqueID);
+    public static native AVCaptureDevice getDeviceWithUniqueID(String deviceUniqueID);
     @Method(selector = "isFlashModeSupported:")
     public native boolean isFlashModeSupported(AVCaptureFlashMode flashMode);
     @Method(selector = "isTorchModeSupported:")
@@ -345,53 +437,53 @@ import org.robovm.apple.mediatoolbox.*;
      * @since Available in iOS 6.0 and later.
      */
     @Method(selector = "setTorchModeOnWithLevel:error:")
-    public native boolean setTorchModeOn(float torchLevel, NSError.NSErrorPtr outError);
+    protected native boolean setTorchModeOn(float torchLevel, NSError.NSErrorPtr outError);
     @Method(selector = "isFocusModeSupported:")
     public native boolean isFocusModeSupported(AVCaptureFocusMode focusMode);
     /**
      * @since Available in iOS 8.0 and later.
      */
     @Method(selector = "setFocusModeLockedWithLensPosition:completionHandler:")
-    public native void setFocusModeLockedWithLensPosition$completionHandler$(float lensPosition, @Block VoidBlock1<CMTime> handler);
+    public native void setFocusModeLocked(float lensPosition, @Block VoidBlock1<CMTime> handler);
     @Method(selector = "isExposureModeSupported:")
     public native boolean isExposureModeSupported(AVCaptureExposureMode exposureMode);
     /**
      * @since Available in iOS 8.0 and later.
      */
     @Method(selector = "setExposureModeCustomWithDuration:ISO:completionHandler:")
-    public native void setExposureModeCustomWithDuration$ISO$completionHandler$(@ByVal CMTime duration, float ISO, @Block VoidBlock1<CMTime> handler);
+    public native void setExposureModeCustom(@ByVal CMTime duration, float ISO, @Block VoidBlock1<CMTime> handler);
     /**
      * @since Available in iOS 8.0 and later.
      */
     @Method(selector = "setExposureTargetBias:completionHandler:")
-    public native void setExposureTargetBias$completionHandler$(float bias, @Block VoidBlock1<CMTime> handler);
+    public native void setExposureTargetBias(float bias, @Block VoidBlock1<CMTime> handler);
     @Method(selector = "isWhiteBalanceModeSupported:")
     public native boolean isWhiteBalanceModeSupported(AVCaptureWhiteBalanceMode whiteBalanceMode);
     /**
      * @since Available in iOS 8.0 and later.
      */
     @Method(selector = "setWhiteBalanceModeLockedWithDeviceWhiteBalanceGains:completionHandler:")
-    public native void setWhiteBalanceModeLockedWithDeviceWhiteBalanceGains$completionHandler$(@ByVal AVCaptureWhiteBalanceGains whiteBalanceGains, @Block VoidBlock1<CMTime> handler);
+    public native void setWhiteBalanceModeLocked(@ByVal AVCaptureWhiteBalanceGains whiteBalanceGains, @Block VoidBlock1<CMTime> handler);
     /**
      * @since Available in iOS 8.0 and later.
      */
     @Method(selector = "chromaticityValuesForDeviceWhiteBalanceGains:")
-    public native @ByVal AVCaptureWhiteBalanceChromaticityValues chromaticityValuesForDeviceWhiteBalanceGains$(@ByVal AVCaptureWhiteBalanceGains whiteBalanceGains);
+    public native @ByVal AVCaptureWhiteBalanceChromaticityValues convertDeviceWhiteBalanceGainsToChromaticityValues(@ByVal AVCaptureWhiteBalanceGains whiteBalanceGains);
     /**
      * @since Available in iOS 8.0 and later.
      */
     @Method(selector = "deviceWhiteBalanceGainsForChromaticityValues:")
-    public native @ByVal AVCaptureWhiteBalanceGains deviceWhiteBalanceGainsForChromaticityValues$(@ByVal AVCaptureWhiteBalanceChromaticityValues chromaticityValues);
+    public native @ByVal AVCaptureWhiteBalanceGains convertChromaticityValuesToDeviceWhiteBalanceGains(@ByVal AVCaptureWhiteBalanceChromaticityValues chromaticityValues);
     /**
      * @since Available in iOS 8.0 and later.
      */
     @Method(selector = "temperatureAndTintValuesForDeviceWhiteBalanceGains:")
-    public native @ByVal AVCaptureWhiteBalanceTemperatureAndTintValues temperatureAndTintValuesForDeviceWhiteBalanceGains$(@ByVal AVCaptureWhiteBalanceGains whiteBalanceGains);
+    public native @ByVal AVCaptureWhiteBalanceTemperatureAndTintValues convertDeviceWhiteBalanceGainsToTemperatureAndTintValues(@ByVal AVCaptureWhiteBalanceGains whiteBalanceGains);
     /**
      * @since Available in iOS 8.0 and later.
      */
     @Method(selector = "deviceWhiteBalanceGainsForTemperatureAndTintValues:")
-    public native @ByVal AVCaptureWhiteBalanceGains deviceWhiteBalanceGainsForTemperatureAndTintValues$(@ByVal AVCaptureWhiteBalanceTemperatureAndTintValues tempAndTintValues);
+    public native @ByVal AVCaptureWhiteBalanceGains convertTemperatureAndTintValuesToDeviceWhiteBalanceGains(@ByVal AVCaptureWhiteBalanceTemperatureAndTintValues tempAndTintValues);
     /**
      * @since Available in iOS 7.0 and later.
      */
@@ -406,11 +498,11 @@ import org.robovm.apple.mediatoolbox.*;
      * @since Available in iOS 7.0 and later.
      */
     @Method(selector = "authorizationStatusForMediaType:")
-    public static native AVAuthorizationStatus getAuthorizationStatus(String mediaType);
+    public static native AVAuthorizationStatus getAuthorizationStatusForMediaType(AVMediaType mediaType);
     /**
      * @since Available in iOS 7.0 and later.
      */
     @Method(selector = "requestAccessForMediaType:completionHandler:")
-    public static native void requestAccessForMediaType(String mediaType, @Block VoidBooleanBlock handler);
+    public static native void requestAccessForMediaType(AVMediaType mediaType, @Block VoidBooleanBlock handler);
     /*</methods>*/
 }

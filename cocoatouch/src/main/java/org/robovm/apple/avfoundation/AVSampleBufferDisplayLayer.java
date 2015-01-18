@@ -47,6 +47,25 @@ import org.robovm.apple.mediatoolbox.*;
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/AVSampleBufferDisplayLayer/*</name>*/ 
     extends /*<extends>*/CALayer/*</extends>*/ 
     /*<implements>*//*</implements>*/ {
+    
+    public static class Notifications {
+        /**
+         * @since Available in iOS 8.0 and later.
+         */
+        public static NSObject observeFailedToDecode(AVSampleBufferDisplayLayer object, final VoidBlock2<AVSampleBufferDisplayLayer, NSError> block) {
+            return NSNotificationCenter.getDefaultCenter().addObserver(FailedToDecodeNotification(), object, NSOperationQueue.getMainQueue(), new VoidBlock1<NSNotification>() {
+                @Override
+                public void invoke(NSNotification a) {
+                    NSDictionary<NSString, NSObject> data = a.getUserInfo();
+                    NSError error = null;
+                    if (data.containsKey(FailedToDecodeNotificationErrorKey())) {
+                        error = (NSError) data.get(FailedToDecodeNotificationErrorKey());
+                    }
+                    block.invoke((AVSampleBufferDisplayLayer)a.getObject(), error);
+                }
+            });
+        }
+    }
 
     /*<ptr>*/public static class AVSampleBufferDisplayLayerPtr extends Ptr<AVSampleBufferDisplayLayer, AVSampleBufferDisplayLayerPtr> {}/*</ptr>*/
     /*<bind>*/static { ObjCRuntime.bind(AVSampleBufferDisplayLayer.class); }/*</bind>*/
@@ -79,6 +98,17 @@ import org.robovm.apple.mediatoolbox.*;
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @GlobalValue(symbol="AVSampleBufferDisplayLayerFailedToDecodeNotification", optional=true)
+    public static native NSString FailedToDecodeNotification();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @GlobalValue(symbol="AVSampleBufferDisplayLayerFailedToDecodeNotificationErrorKey", optional=true)
+    protected static native NSString FailedToDecodeNotificationErrorKey();
+    
     @Method(selector = "enqueueSampleBuffer:")
     public native void enqueueSampleBuffer(CMSampleBuffer sampleBuffer);
     @Method(selector = "flush")

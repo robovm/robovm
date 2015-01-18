@@ -71,7 +71,7 @@ import org.robovm.apple.dispatch.*;
     @Property(selector = "setLocale:")
     public native void setLocale(NSLocale v);
     @Property(selector = "generatesDecimalNumbers")
-    public native boolean isGeneratesDecimalNumbers();
+    public native boolean generatesDecimalNumbers();
     @Property(selector = "setGeneratesDecimalNumbers:")
     public native void setGeneratesDecimalNumbers(boolean v);
     @Property(selector = "formatterBehavior")
@@ -95,7 +95,7 @@ import org.robovm.apple.dispatch.*;
     @Property(selector = "setTextAttributesForPositiveValues:")
     public native void setTextAttributesForPositiveValues(NSAttributedStringAttributes v);
     @Property(selector = "allowsFloats")
-    public native boolean isAllowsFloats();
+    public native boolean allowsFloats();
     @Property(selector = "setAllowsFloats:")
     public native void setAllowsFloats(boolean v);
     @Property(selector = "decimalSeparator")
@@ -103,7 +103,7 @@ import org.robovm.apple.dispatch.*;
     @Property(selector = "setDecimalSeparator:")
     public native void setDecimalSeparator(String v);
     @Property(selector = "alwaysShowsDecimalSeparator")
-    public native boolean isAlwaysShowsDecimalSeparator();
+    public native boolean alwaysShowsDecimalSeparator();
     @Property(selector = "setAlwaysShowsDecimalSeparator:")
     public native void setAlwaysShowsDecimalSeparator(boolean v);
     @Property(selector = "currencyDecimalSeparator")
@@ -111,7 +111,7 @@ import org.robovm.apple.dispatch.*;
     @Property(selector = "setCurrencyDecimalSeparator:")
     public native void setCurrencyDecimalSeparator(String v);
     @Property(selector = "usesGroupingSeparator")
-    public native boolean isUsesGroupingSeparator();
+    public native boolean usesGroupingSeparator();
     @Property(selector = "setUsesGroupingSeparator:")
     public native void setUsesGroupingSeparator(boolean v);
     @Property(selector = "groupingSeparator")
@@ -286,7 +286,7 @@ import org.robovm.apple.dispatch.*;
      * @since Available in iOS 2.0 and later.
      */
     @Property(selector = "usesSignificantDigits")
-    public native boolean isUsesSignificantDigits();
+    public native boolean usesSignificantDigits();
     /**
      * @since Available in iOS 2.0 and later.
      */

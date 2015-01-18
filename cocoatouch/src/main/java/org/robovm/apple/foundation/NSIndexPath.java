@@ -50,7 +50,7 @@ import org.robovm.apple.dispatch.*;
     /*<constructors>*/
     public NSIndexPath() {}
     protected NSIndexPath(SkipInit skipInit) { super(skipInit); }
-    public NSIndexPath(@MachineSizedUInt long index) { super((SkipInit) null); initObject(initWithIndex$(index)); }
+    public NSIndexPath(@MachineSizedUInt long index) { super((SkipInit) null); initObject(init(index)); }
     /*</constructors>*/
     
     public NSIndexPath(long[] indexes) {
@@ -60,7 +60,7 @@ import org.robovm.apple.dispatch.*;
         }
         MachineSizedUIntPtr p = Struct.allocate(MachineSizedUIntPtr.class, indexes.length);
         p.set(indexes);
-        initObject(initWithIndexes$length$(p, indexes.length));
+        initObject(init(p, indexes.length));
     }
     
     /*<properties>*/
@@ -72,7 +72,7 @@ import org.robovm.apple.dispatch.*;
     public long[] getIndexes() {
         int n = (int) getLength();
         MachineSizedUIntPtr p = Struct.allocate(MachineSizedUIntPtr.class, n);
-        getIndexes$(p);
+        getIndexes(p);
         return p.toLongArray(n);
     }
     
@@ -101,9 +101,9 @@ import org.robovm.apple.dispatch.*;
     
     /*<methods>*/
     @Method(selector = "initWithIndexes:length:")
-    private native @Pointer long initWithIndexes$length$(MachineSizedUIntPtr indexes, @MachineSizedUInt long length);
+    private native @Pointer long init(MachineSizedUIntPtr indexes, @MachineSizedUInt long length);
     @Method(selector = "initWithIndex:")
-    protected native @Pointer long initWithIndex$(@MachineSizedUInt long index);
+    protected native @Pointer long init(@MachineSizedUInt long index);
     @Method(selector = "indexPathByAddingIndex:")
     public native NSIndexPath addIndex(@MachineSizedUInt long index);
     @Method(selector = "indexPathByRemovingLastIndex")
@@ -111,7 +111,7 @@ import org.robovm.apple.dispatch.*;
     @Method(selector = "indexAtPosition:")
     public native @MachineSizedUInt long getIndexAt(@MachineSizedUInt long position);
     @Method(selector = "getIndexes:")
-    private native void getIndexes$(MachineSizedUIntPtr indexes);
+    private native void getIndexes(MachineSizedUIntPtr indexes);
     @Method(selector = "compare:")
     public native NSComparisonResult compare(NSIndexPath otherObject);
     /*</methods>*/

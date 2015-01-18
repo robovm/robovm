@@ -48,6 +48,7 @@ public enum /*<name>*/CTFontTableTag/*</name>*/ implements ValuedEnum {
     GSUB(1196643650L),
     JSTF(1246975046L),
     LTSH(1280594760L),
+    MATH(1296127048L),
     OS2(1330851634L),
     PCLT(1346587732L),
     VDMX(1447316824L),

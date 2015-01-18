@@ -27,6 +27,7 @@ import org.robovm.rt.bro.*;
 import org.robovm.rt.bro.annotation.*;
 import org.robovm.rt.bro.ptr.*;
 import org.robovm.apple.dispatch.*;
+import org.robovm.apple.foundation.*;
 /*</imports>*/
 
 /*<javadoc>*/
@@ -44,12 +45,26 @@ import org.robovm.apple.dispatch.*;
     /*</constructors>*/
     /*<properties>*//*</properties>*/
     /*<members>*//*</members>*/
+    /**
+     * @since Available in iOS 3.0 and later.
+     */
+    public static CFStringTokenizer create(String string, @ByVal CFRange range, CFStringTokenizerUnitOptions options, CFLocale locale) {
+        return create(null, string, range, options, locale);
+    }
+    /**
+     * @since Available in iOS 3.0 and later.
+     */
+    public CFRange[] getCurrentSubTokens(long maxRanges, List<String> derivedSubTokens) {
+        CFRange.CFRangePtr ptr = new CFRange.CFRangePtr();
+        long length = getCurrentSubTokens(ptr, maxRanges, derivedSubTokens);
+        return ptr.get().toArray((int)length);
+    }
     /*<methods>*/
     /**
      * @since Available in iOS 3.0 and later.
      */
     @Bridge(symbol="CFStringTokenizerCopyBestStringLanguage", optional=true)
-    public static native CFString copyBestStringLanguage(CFString string, @ByVal CFRange range);
+    public static native String getBestStringLanguage(String string, @ByVal CFRange range);
     /**
      * @since Available in iOS 3.0 and later.
      */
@@ -59,17 +74,17 @@ import org.robovm.apple.dispatch.*;
      * @since Available in iOS 3.0 and later.
      */
     @Bridge(symbol="CFStringTokenizerCreate", optional=true)
-    public static native CFStringTokenizer create(CFAllocator alloc, CFString string, @ByVal CFRange range, CFStringTokenizerUnitOptions options, CFLocale locale);
+    protected static native CFStringTokenizer create(CFAllocator alloc, String string, @ByVal CFRange range, CFStringTokenizerUnitOptions options, CFLocale locale);
     /**
      * @since Available in iOS 3.0 and later.
      */
     @Bridge(symbol="CFStringTokenizerSetString", optional=true)
-    public native void setString(CFString string, @ByVal CFRange range);
+    public native void setString(String string, @ByVal CFRange range);
     /**
      * @since Available in iOS 3.0 and later.
      */
     @Bridge(symbol="CFStringTokenizerGoToTokenAtIndex", optional=true)
-    public native CFStringTokenizerTokenType goToTokenAtIndex(@MachineSizedSInt long index);
+    public native CFStringTokenizerTokenType goToToken(@MachineSizedSInt long index);
     /**
      * @since Available in iOS 3.0 and later.
      */
@@ -84,11 +99,11 @@ import org.robovm.apple.dispatch.*;
      * @since Available in iOS 3.0 and later.
      */
     @Bridge(symbol="CFStringTokenizerCopyCurrentTokenAttribute", optional=true)
-    public native CFType copyCurrentTokenAttribute(CFStringTokenizerUnitOptions attribute);
+    public native CFType getCurrentTokenAttribute(CFStringTokenizerUnitOptions attribute);
     /**
      * @since Available in iOS 3.0 and later.
      */
     @Bridge(symbol="CFStringTokenizerGetCurrentSubTokens", optional=true)
-    public native @MachineSizedSInt long getCurrentSubTokens(CFRange ranges, @MachineSizedSInt long maxRangeLength, CFMutableArray derivedSubTokens);
+    protected native @MachineSizedSInt long getCurrentSubTokens(CFRange.CFRangePtr ranges, @MachineSizedSInt long maxRangeLength, @org.robovm.rt.bro.annotation.Marshaler(CFArray.AsStringListMarshaler.class) List<String> derivedSubTokens);
     /*</methods>*/
 }

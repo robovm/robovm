@@ -58,7 +58,7 @@ import org.robovm.apple.coregraphics.*;
      * @since Available in iOS 3.2 and later.
      */
     public CGPoint[] getPositions(@ByVal CFRange range) {
-        CGPoint p = Struct.allocate(CGPoint.class, (int)range.length());
+        CGPoint p = Struct.allocate(CGPoint.class, (int)range.getLength());
         getPositions(range, p);
         return p.toArray((int) getGlyphCount());
     }
@@ -66,7 +66,7 @@ import org.robovm.apple.coregraphics.*;
      * @since Available in iOS 3.2 and later.
      */
     public CGSize[] getAdvances(@ByVal CFRange range) {
-        CGSize s = Struct.allocate(CGSize.class, (int)range.length());
+        CGSize s = Struct.allocate(CGSize.class, (int)range.getLength());
         getAdvances(range, s);
         return s.toArray((int) getGlyphCount());
     }

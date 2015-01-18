@@ -49,16 +49,16 @@ import org.robovm.apple.coremedia.*;
     /*<constructors>*/
     public AudioQueueParameterEvent() {}
     public AudioQueueParameterEvent(int mID, float mValue) {
-        this.mID(mID);
-        this.mValue(mValue);
+        this.setMID(mID);
+        this.setMValue(mValue);
     }
     /*</constructors>*/
     /*<properties>*//*</properties>*/
     /*<members>*/
-    @StructMember(0) public native int mID();
-    @StructMember(0) public native AudioQueueParameterEvent mID(int mID);
-    @StructMember(1) public native float mValue();
-    @StructMember(1) public native AudioQueueParameterEvent mValue(float mValue);
+    @StructMember(0) public native int getMID();
+    @StructMember(0) public native AudioQueueParameterEvent setMID(int mID);
+    @StructMember(1) public native float getMValue();
+    @StructMember(1) public native AudioQueueParameterEvent setMValue(float mValue);
     /*</members>*/
     /*<methods>*//*</methods>*/
 }

@@ -53,28 +53,10 @@ import org.robovm.apple.foundation.*;
     /*<members>*/
     @StructMember(0) public native double getX();
     @StructMember(0) public native GCAcceleration setX(double x);
-    
-    @Deprecated
-    @StructMember(0) public native double x();
-    @Deprecated
-    @StructMember(0) public native GCAcceleration x(double x);
-    
     @StructMember(1) public native double getY();
     @StructMember(1) public native GCAcceleration setY(double y);
-    
-    @Deprecated
-    @StructMember(1) public native double y();
-    @Deprecated
-    @StructMember(1) public native GCAcceleration y(double y);
-    
     @StructMember(2) public native double getZ();
     @StructMember(2) public native GCAcceleration setZ(double z);
-    
-    @Deprecated
-    @StructMember(2) public native double z();
-    @Deprecated
-    @StructMember(2) public native GCAcceleration z(double z);
-    
     /*</members>*/
     /*<methods>*//*</methods>*/
 }

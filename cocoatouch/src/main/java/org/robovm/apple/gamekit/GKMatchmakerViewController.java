@@ -46,8 +46,8 @@ import org.robovm.apple.uikit.*;
     /*<constructors>*/
     public GKMatchmakerViewController() {}
     protected GKMatchmakerViewController(SkipInit skipInit) { super(skipInit); }
-    public GKMatchmakerViewController(GKMatchRequest request) { super((SkipInit) null); initObject(initWithMatchRequest$(request)); }
-    public GKMatchmakerViewController(GKInvite invite) { super((SkipInit) null); initObject(initWithInvite$(invite)); }
+    public GKMatchmakerViewController(GKMatchRequest request) { super((SkipInit) null); initObject(init(request)); }
+    public GKMatchmakerViewController(GKInvite invite) { super((SkipInit) null); initObject(init(invite)); }
     /*</constructors>*/
     /*<properties>*/
     @Property(selector = "matchmakerDelegate")
@@ -78,9 +78,9 @@ import org.robovm.apple.uikit.*;
     /*<members>*//*</members>*/
     /*<methods>*/
     @Method(selector = "initWithMatchRequest:")
-    protected native @Pointer long initWithMatchRequest$(GKMatchRequest request);
+    protected native @Pointer long init(GKMatchRequest request);
     @Method(selector = "initWithInvite:")
-    protected native @Pointer long initWithInvite$(GKInvite invite);
+    protected native @Pointer long init(GKInvite invite);
     /**
      * @since Available in iOS 5.0 and later.
      */
@@ -88,15 +88,15 @@ import org.robovm.apple.uikit.*;
     public native void addPlayersToMatch(GKMatch match);
     /**
      * @since Available in iOS 5.0 and later.
+     * @deprecated Deprecated in iOS 8.0.
      */
+    @Deprecated
     @Method(selector = "setHostedPlayer:connected:")
     public native void setHostedPlayer(String playerID, boolean connected);
     /**
-     * @since Available in iOS 4.1 and later.
-     * @deprecated Deprecated in iOS 5.0.
+     * @since Available in iOS 8.0 and later.
      */
-    @Deprecated
-    @Method(selector = "setHostedPlayerReady:")
-    public native void setHostedPlayerReady(String playerID);
+    @Method(selector = "setHostedPlayer:didConnect:")
+    public native void setHostedPlayer(GKPlayer player, boolean connected);
     /*</methods>*/
 }

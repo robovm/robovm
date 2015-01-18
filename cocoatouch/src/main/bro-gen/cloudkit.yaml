@@ -1,0 +1,459 @@
+package: org.robovm.apple.cloudkit
+include: [foundation.yaml, corelocation.yaml]
+library: CloudKit
+framework: CloudKit
+clang_args: ['-x', 'objective-c']
+headers:
+    - /System/Library/Frameworks/CloudKit.framework/Headers/CloudKit.h
+typedefs:
+    'void (^)(CKAccountStatus, NSError *)': '@Block VoidBlock2<CKAccountStatus, NSError>'
+    'void (^)(CKRecordID *, NSError *)': '@Block VoidBlock2<CKRecordID, NSError>'
+    'void (^)(CKDiscoveredUserInfo *, NSError *)': '@Block VoidBlock2<CKDiscoveredUserInfo, NSError>'
+    'void (^)(CKRecord *, NSError *)': '@Block VoidBlock2<CKRecord, NSError>'
+    'void (^)(CKRecordZone *, NSError *)': '@Block VoidBlock2<CKRecordZone, NSError>'
+    'void (^)(CKRecordZoneID *, NSError *)': '@Block VoidBlock2<CKRecordZoneID, NSError>'
+    'void (^)(CKSubscription *, NSError *)': '@Block VoidBlock2<CKSubscription, NSError>'
+    'void (^)(CKNotification *)': '@Block VoidBlock1<CKNotification>'
+    'void (^)(CKServerChangeToken *, NSError *)': '@Block VoidBlock2<CKServerChangeToken, NSError>'
+    'void (^)(CKRecord *)': '@Block VoidBlock1<CKRecord>'
+    'void (^)(CKRecordID *)': '@Block VoidBlock1<CKRecordID>'
+    'void (^)(CKServerChangeToken *, NSData *, NSError *)': '@Block VoidBlock3<CKServerChangeToken, NSData, NSError>'
+    'void (^)(CKRecordID *, double)': '@Block VoidBlock2<CKRecordID, Double>'
+    'void (^)(CKRecord *, CKRecordID *, NSError *)': '@Block VoidBlock3<CKRecord, CKRecordID, NSError>'
+    'void (^)(CKRecord *, double)': '@Block VoidBlock2<CKRecord, Double>'
+    'void (^)(CKQueryCursor *, NSError *)': '@Block VoidBlock2<CKQueryCursor, NSError>'
+
+enums:
+    CKAccountStatus: {}
+    CKApplicationPermissions: { prefix: CKApplicationPermission }
+    CKApplicationPermissionStatus: {}
+    CKErrorCode: {}
+    CKNotificationType: {}
+    CKQueryNotificationReason: {}
+    CKRecordZoneCapabilities: {}
+    CKReferenceAction: {}
+    CKSubscriptionType: {}
+    CKSubscriptionOptions: {}
+    CKRecordSavePolicy: {}
+
+classes:
+    CKError:
+        extends: NSError
+    CKErrorUserInfoKey:
+        extends: NSErrorUserInfoKey
+
+    CKAsset: # DONE
+        methods:
+            '-init':
+                exclude: true
+            '-init.*':
+                name: init
+    CKContainer: # DONE
+        methods:
+            '-init':
+                exclude: true
+            '-addOperation:':
+                trim_after_first_colon: true
+            '+defaultContainer':
+                property: true
+            '+containerWithIdentifier:':
+                name: create
+            '-accountStatusWithCompletionHandler:':
+                name: getAccountStatus
+            '-statusForApplicationPermission:completionHandler:':
+                name: getStatusForApplicationPermission
+                parameters:
+                    completionHandler:
+                        type: '@Block VoidBlock2<CKApplicationPermissionStatus, NSError>'
+            '-requestApplicationPermission:completionHandler:':
+                trim_after_first_colon: true
+                parameters:
+                    completionHandler:
+                        type: '@Block VoidBlock2<CKApplicationPermissionStatus, NSError>'
+            '-fetchUserRecordIDWithCompletionHandler:':
+                name: fetchUserRecordID
+            '-discoverAllContactUserInfosWithCompletionHandler:':
+                name: discoverAllContactUserInfos
+                parameters:
+                    completionHandler:
+                        type: '@Block VoidBlock2<NSArray<CKDiscoveredUserInfo>, NSError>'
+            '-discoverUserInfoWithEmailAddress:completionHandler:':
+                name: discoverUserInfo
+            '-discoverUserInfoWithUserRecordID:completionHandler:':
+                name: discoverUserInfo
+    CKDatabase: # DONE
+        methods:
+            '-init':
+                exclude: true
+            '-addOperation:':
+                trim_after_first_colon: true
+            '-fetchRecordWithID:completionHandler:':
+                name: fetchRecord
+            '-saveRecord:completionHandler:':
+                trim_after_first_colon: true
+            '-deleteRecordWithID:completionHandler:':
+                name: deleteRecord
+            '-performQuery:inZoneWithID:completionHandler:':
+                trim_after_first_colon: true
+                parameters:
+                    completionHandler:
+                        type: '@Block VoidBlock2<NSArray<CKRecord>, NSError>'
+            '-fetchAllRecordZonesWithCompletionHandler:':
+                name: fetchAllRecordZones
+                parameters:
+                    completionHandler:
+                        type: '@Block VoidBlock2<NSArray<CKRecordZone>, NSError>'
+            '-fetchRecordZoneWithID:completionHandler:':
+                name: fetchRecordZone
+            '-saveRecordZone:completionHandler:':
+                trim_after_first_colon: true
+            '-deleteRecordZoneWithID:completionHandler:':
+                name: deleteRecordZone
+            '-fetchSubscriptionWithID:completionHandler:':
+                name: fetchSubscription
+            '-fetchAllSubscriptionsWithCompletionHandler:':
+                name: fetchAllSubscriptions
+                parameters:
+                    completionHandler:
+                        type: '@Block VoidBlock2<NSArray<CKSubscription>, NSError>'
+            '-saveSubscription:completionHandler:':
+                trim_after_first_colon: true
+            '-deleteSubscriptionWithID:completionHandler:':
+                name: deleteSubscription
+                parameters:
+                    completionHandler:
+                        type: '@Block VoidBlock2<String, NSError>'
+    CKDiscoveredUserInfo: # DONE
+        methods:
+            '-init':
+                exclude: true
+    CKNotification: # DONE
+        properties:
+            'alertLocalizationArgs':
+                type: '@org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String>'
+        methods:
+            '-init':
+                exclude: true
+            '+notificationFromRemoteNotificationDictionary:':
+                name: create
+                parameters:
+                    notificationDictionary:
+                        type: org.robovm.apple.uikit.UIRemoteNotification
+    CKQueryNotification: # DONE
+        properties:
+            'recordFields':
+                type: '@org.robovm.rt.bro.annotation.Marshaler(NSDictionary.AsStringMapMarshaler.class) Map<String, NSObject>'
+    CKRecordZoneNotification: {} # DONE
+    CKNotificationID: {} # DONE
+    CKNotificationInfo: # DONE
+        properties:
+            'alertLocalizationArgs':
+                type: '@org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String>'
+            'desiredKeys':
+                type: '@org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String>'
+    CKQuery: # DONE
+        properties:
+            'sortDescriptors':
+                type: NSArray<NSSortDescriptor>
+        methods:
+            '-init':
+                exclude: true
+            '-init.*':
+                name: init
+    CKQueryCursor: # DONE
+        methods:
+            '-init':
+                exclude: true
+    CKRecord: # DONE
+        methods:
+            '-init':
+                exclude: true
+            '-init.*':
+                name: init
+            '-objectForKey:':
+                name: get
+            '-setObject:forKey:':
+                name: put
+                visibility: protected # We provide overloaded methods for each allowed type
+                parameters:
+                    object:
+                        type: NSObject # We don't use CKRecordValue here because we don't want to make several Foundation objects implement the CKRecordValue interface.
+            '-(allKeys|allTokens|changedKeys)':
+                property: true
+                return_type: '@org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String>'
+            '-encodeSystemFieldsWithCoder:':
+                name: encodeSystemFields
+            '-objectForKeyedSubscript:':
+                exclude: true
+            '-setObject:forKeyedSubscript:':
+                exclude: true
+    CKRecordID: # DONE
+        methods:
+            '-init':
+                exclude: true
+            '-init.*':
+                name: init
+    CKRecordZone: # DONE
+        methods:
+            '-init':
+                exclude: true
+            '-init.*':
+                name: init
+            '+defaultRecordZone':
+                property: true
+    CKRecordZoneID: # DONE
+        methods:
+            '-init':
+                exclude: true
+            '-init.*':
+                name: init
+    CKReference: # DONE
+        methods:
+            '-init':
+                exclude: true
+            '-init.*':
+                name: init
+    CKServerChangeToken: # DONE
+        methods:
+            '-init':
+                exclude: true
+    CKSubscription: # DONE
+        methods:
+            '-init':
+                exclude: true
+            '-init.*':
+                name: init
+    CKOperation: # DONE
+        methods:
+            '-init':
+                exclude: true
+    CKDatabaseOperation: {} # DONE
+    CKFetchRecordChangesOperation: # DONE
+        properties:
+            'desiredKeys':
+                type: '@org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String>'
+        methods:
+            '-init.*':
+                name: init
+    CKFetchRecordsOperation: # DONE
+        properties:
+            'recordIDs':
+                type: NSArray<CKRecordID>
+            'desiredKeys':
+                type: '@org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String>'
+            'fetchRecordsCompletionBlock':
+                type: '@Block VoidBlock2<NSDictionary<CKRecordID, CKRecord>, NSError>'
+        methods:
+            '-init':
+                exclude: true
+            '-initWithRecordIDs:':
+                name: init
+                parameters:
+                    recordIDs:
+                        type: NSArray<CKRecordID>
+            '+fetchCurrentUserRecordOperation':
+                name: createFetchCurrentUserRecordOperation
+    CKFetchRecordZonesOperation: # DONE
+        properties:
+            'recordZoneIDs':
+                type: NSArray<CKRecordZoneID>
+            'fetchRecordZonesCompletionBlock':
+                type: '@Block VoidBlock2<NSDictionary<CKRecordZoneID, CKRecordZone>, NSError>'
+        methods:
+            '-init':
+                exclude: true
+            '-initWithRecordZoneIDs:':
+                name: init
+                parameters:
+                    zoneIDs:
+                        type: NSArray<CKRecordZoneID>
+            '+fetchAllRecordZonesOperation':
+                name: createFetchAllRecordZonesOperation
+    CKFetchSubscriptionsOperation: # DONE
+        properties:
+            'subscriptionIDs':
+                type: '@org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String>'
+            'fetchSubscriptionCompletionBlock':
+                type: '@Block VoidBlock2<NSDictionary<NSString, CKSubscription>, NSError>' # TODO asStringMapMarshaler
+        methods:
+            '-init':
+                exclude: true
+            '-initWithSubscriptionIDs:':
+                name: init
+                parameters:
+                    subscriptionIDs:
+                        type: '@org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String>'
+            '+fetchAllSubscriptionsOperation':
+                name: createFetchAllSubscriptionsOperation
+    CKModifyRecordsOperation: # DONE
+        properties:
+            'recordsToSave':
+                type: NSArray<CKRecord>
+            'recordIDsToDelete':
+                type: NSArray<CKRecordID>
+            'modifyRecordsCompletionBlock':
+                type: '@Block VoidBlock3<NSArray<CKRecord>, NSArray<CKRecordID>, NSError>'
+        methods:
+            '-init':
+                exclude: true
+            '-initWithRecordsToSave:recordIDsToDelete:':
+                name: init
+                parameters:
+                    records:
+                        type: NSArray<CKRecord>
+                    recordIDs:
+                        type: NSArray<CKRecordID>
+    CKModifyRecordZonesOperation: # DONE
+        properties:
+            'recordZonesToSave':
+                type: NSArray<CKRecordZone>
+            'recordZoneIDsToDelete':
+                type: NSArray<CKRecordZoneID>
+            'modifyRecordZonesCompletionBlock':
+                type: '@Block VoidBlock3<NSArray<CKRecordZone>, NSArray<CKRecordZoneID>, NSError>'
+        methods:
+            '-init':
+                exclude: true
+            '-initWithRecordZonesToSave:recordZoneIDsToDelete:':
+                name: init
+                parameters:
+                    recordZonesToSave:
+                        type: NSArray<CKRecordZone>
+                    recordZoneIDsToDelete:
+                        type: NSArray<CKRecordZoneID>
+    CKModifySubscriptionsOperation: # DONE
+        properties:
+            'subscriptionsToSave':
+                type: NSArray<CKSubscription>
+            'subscriptionIDsToDelete':
+                type: '@org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String>'
+            'modifySubscriptionsCompletionBlock':
+                type: '@Block VoidBlock3<NSArray<CKSubscription>, NSArray<NSString>, NSError>' # TODO asStringListMarshaler
+        methods:
+            '-initWithSubscriptionsToSave:subscriptionIDsToDelete:':
+                name: init
+                parameters:
+                    subscriptionsToSave:
+                        type: NSArray<CKSubscription>
+                    subscriptionIDsToDelete:
+                        type: '@org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String>'
+    CKQueryOperation: # DONE
+        properties:
+            'desiredKeys':
+                type: '@org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String>'
+        methods:
+            '-init':
+                exclude: true
+            '-init.*':
+                name: init
+    CKDiscoverAllContactsOperation: # DONE
+        properties:
+            'discoverAllContactsCompletionBlock':
+                type: '@Block VoidBlock2<NSArray<CKDiscoveredUserInfo>, NSError>'
+        methods:
+            '-init':
+                exclude: true
+    CKDiscoverUserInfosOperation: # DONE
+        properties:
+            'emailAddresses':
+                type: '@org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String>'
+            'userRecordIDs':
+                type: NSArray<CKRecordID>
+            'discoverUserInfosCompletionBlock':
+                type: '@Block VoidBlock3<NSDictionary<NSString, CKDiscoveredUserInfo>, NSDictionary<CKRecordID, CKDiscoveredUserInfo>, NSError>' # TODO asStringMapMarshaler
+        methods:
+            '-init':
+                exclude: true
+            '-initWithEmailAddresses:userRecordIDs:':
+                name: init
+                parameters:
+                    emailAddresses:
+                        type: '@org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String>'
+                    userRecordIDs:
+                        type: NSArray<CKRecordID>
+    CKFetchNotificationChangesOperation: # DONE
+        methods:
+            '-init.*':
+                name: init
+    CKMarkNotificationsReadOperation: # DONE
+        properties:
+            'notificationIDs':
+                type: NSArray<CKNotificationID>
+            'markNotificationsReadCompletionBlock':
+                type: '@Block VoidBlock2<NSArray<CKNotificationID>, NSError>'
+        methods:
+            '-init':
+                exclude: true
+            '-init.*':
+                name: init
+    CKModifyBadgeOperation: # DONE
+        methods:
+            '-init':
+                exclude: true
+            '-init.*':
+                name: init
+    CKLocationSortDescriptor: # DONE
+        methods:
+            '-init':
+                exclude: true
+            '-init.*':
+                name: init
+
+protocols:
+    CKRecordValue: # DONE
+        adapter: false
+
+functions:
+    # Make sure we don't miss any functions if new ones are introduced in a later version
+    (k?CK.*):
+        class: CloudKit
+        name: 'Function__#{g[0]}'
+
+values:
+    CKErrorDomain:
+        class: CKError
+        name: getClassDomain
+    
+    CK(PartialErrorsByItemID)Key:
+        class: CKErrorUserInfoKey
+        name: '#{g[0]}Value'
+        visibility: protected
+    CKError(RetryAfter)Key:
+        class: CKErrorUserInfoKey
+        name: '#{g[0]}Value'
+        visibility: protected
+    CKRecordChangedError(.*)Key:
+        class: CKErrorUserInfoKey
+        name: '#{g[0]}Value'
+        visibility: protected
+
+    # CKContainer
+    CKOwnerDefaultName:
+        class: CKContainer
+        name: getDefaultOwnerName
+
+    # CKQueryOperation
+    CKQueryOperation(MaximumResults):
+        class: CKQueryOperation
+        name: 'get#{g[0]}'
+
+    # CKRecord
+    CKRecordType(.*)Record:
+        class: CKRecordType
+        name: '#{g[0]}'
+
+    # CKRecordZone
+    CKRecordZone(DefaultName):
+        class: CKRecordZone
+        name: 'get#{g[0]}'
+   
+    # Make sure we don't miss any values if new ones are introduced in a later version
+    (k?CK.*):
+        class: CloudKit
+        name: 'Value__#{g[0]}'
+
+constants:
+    # Make sure we don't miss any constants if new ones are introduced in a later version
+    (k?CK.*):
+        class: CloudKit
+        name: 'Constant__#{g[0]}'

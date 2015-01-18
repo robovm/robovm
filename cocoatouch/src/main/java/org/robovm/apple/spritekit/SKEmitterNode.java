@@ -33,6 +33,8 @@ import org.robovm.apple.coreanimation.*;
 import org.robovm.apple.dispatch.*;
 import org.robovm.apple.coreimage.*;
 import org.robovm.apple.avfoundation.*;
+import org.robovm.apple.glkit.*;
+import org.robovm.apple.scenekit.*;
 /*</imports>*/
 
 /*<javadoc>*/
@@ -63,6 +65,10 @@ import org.robovm.apple.avfoundation.*;
     public native @MachineSizedFloat double getParticleZPositionRange();
     @Property(selector = "setParticleZPositionRange:")
     public native void setParticleZPositionRange(@MachineSizedFloat double v);
+    @Property(selector = "particleZPositionSpeed")
+    public native @MachineSizedFloat double getParticleZPositionSpeed();
+    @Property(selector = "setParticleZPositionSpeed:")
+    public native void setParticleZPositionSpeed(@MachineSizedFloat double v);
     @Property(selector = "particleBlendMode")
     public native SKBlendMode getParticleBlendMode();
     @Property(selector = "setParticleBlendMode:")
@@ -223,10 +229,18 @@ import org.robovm.apple.avfoundation.*;
     public native SKAction getParticleAction();
     @Property(selector = "setParticleAction:")
     public native void setParticleAction(SKAction v);
+    @Property(selector = "fieldBitMask")
+    public native int getFieldBitMask();
+    @Property(selector = "setFieldBitMask:")
+    public native void setFieldBitMask(int v);
     @Property(selector = "targetNode")
     public native SKNode getTargetNode();
     @Property(selector = "setTargetNode:", strongRef = true)
     public native void setTargetNode(SKNode v);
+    @Property(selector = "shader")
+    public native SKShader getShader();
+    @Property(selector = "setShader:")
+    public native void setShader(SKShader v);
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/

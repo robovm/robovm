@@ -59,76 +59,22 @@ import org.robovm.apple.foundation.*;
     /*<members>*/
     @StructMember(0) public native double getM11();
     @StructMember(0) public native CMRotationMatrix setM11(double m11);
-    
-    @Deprecated
-    @StructMember(0) public native double m11();
-    @Deprecated
-    @StructMember(0) public native CMRotationMatrix m11(double m11);
-    
     @StructMember(1) public native double getM12();
     @StructMember(1) public native CMRotationMatrix setM12(double m12);
-    
-    @Deprecated
-    @StructMember(1) public native double m12();
-    @Deprecated
-    @StructMember(1) public native CMRotationMatrix m12(double m12);
-    
     @StructMember(2) public native double getM13();
     @StructMember(2) public native CMRotationMatrix setM13(double m13);
-    
-    @Deprecated
-    @StructMember(2) public native double m13();
-    @Deprecated
-    @StructMember(2) public native CMRotationMatrix m13(double m13);
-    
     @StructMember(3) public native double getM21();
     @StructMember(3) public native CMRotationMatrix setM21(double m21);
-    
-    @Deprecated
-    @StructMember(3) public native double m21();
-    @Deprecated
-    @StructMember(3) public native CMRotationMatrix m21(double m21);
-    
     @StructMember(4) public native double getM22();
     @StructMember(4) public native CMRotationMatrix setM22(double m22);
-    
-    @Deprecated
-    @StructMember(4) public native double m22();
-    @Deprecated
-    @StructMember(4) public native CMRotationMatrix m22(double m22);
-    
     @StructMember(5) public native double getM23();
     @StructMember(5) public native CMRotationMatrix setM23(double m23);
-    
-    @Deprecated
-    @StructMember(5) public native double m23();
-    @Deprecated
-    @StructMember(5) public native CMRotationMatrix m23(double m23);
-    
     @StructMember(6) public native double getM31();
     @StructMember(6) public native CMRotationMatrix setM31(double m31);
-    
-    @Deprecated
-    @StructMember(6) public native double m31();
-    @Deprecated
-    @StructMember(6) public native CMRotationMatrix m31(double m31);
-    
     @StructMember(7) public native double getM32();
     @StructMember(7) public native CMRotationMatrix setM32(double m32);
-    
-    @Deprecated
-    @StructMember(7) public native double m32();
-    @Deprecated
-    @StructMember(7) public native CMRotationMatrix m32(double m32);
-    
     @StructMember(8) public native double getM33();
     @StructMember(8) public native CMRotationMatrix setM33(double m33);
-    
-    @Deprecated
-    @StructMember(8) public native double m33();
-    @Deprecated
-    @StructMember(8) public native CMRotationMatrix m33(double m33);
-    
     /*</members>*/
     /*<methods>*//*</methods>*/
 }

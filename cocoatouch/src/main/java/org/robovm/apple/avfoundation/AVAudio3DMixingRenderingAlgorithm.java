@@ -53,6 +53,33 @@ public enum /*<name>*/AVAudio3DMixingRenderingAlgorithm/*</name>*/ implements Va
     StereoPassThrough(5L);
     /*</values>*/
 
+    public static class AsListMarshaler {
+        @SuppressWarnings("unchecked")
+        @MarshalsPointer
+        public static List<AVAudio3DMixingRenderingAlgorithm> toObject(Class<? extends NSObject> cls, long handle, long flags) {
+            NSArray<NSNumber> o = (NSArray<NSNumber>) NSObject.Marshaler.toObject(cls, handle, flags);
+            if (o == null) {
+                return null;
+            }
+            List<AVAudio3DMixingRenderingAlgorithm> list = new ArrayList<>();
+            for (NSNumber n : o) {
+                list.add(AVAudio3DMixingRenderingAlgorithm.valueOf(n.longValue()));
+            }
+            return list;
+        }
+        @MarshalsPointer
+        public static long toNative(List<AVAudio3DMixingRenderingAlgorithm> l, long flags) {
+            if (l == null) {
+                return 0L;
+            }
+            NSMutableArray<NSNumber> array = new NSMutableArray<>();
+            for (AVAudio3DMixingRenderingAlgorithm i : l) {
+                array.add(NSNumber.valueOf(i.value()));
+            }
+            return NSObject.Marshaler.toNative(array, flags);
+        }
+    }
+    
     /*<bind>*/
     /*</bind>*/
     /*<constants>*//*</constants>*/

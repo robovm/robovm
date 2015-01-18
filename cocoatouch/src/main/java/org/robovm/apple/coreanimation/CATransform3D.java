@@ -31,6 +31,7 @@ import org.robovm.apple.foundation.*;
 import org.robovm.apple.coreimage.*;
 import org.robovm.apple.coretext.*;
 import org.robovm.apple.opengles.*;
+import org.robovm.apple.metal.*;
 /*</imports>*/
 
 /*<javadoc>*/
@@ -69,132 +70,36 @@ import org.robovm.apple.opengles.*;
     /*<members>*/
     @StructMember(0) public native @MachineSizedFloat double getM11();
     @StructMember(0) public native CATransform3D setM11(@MachineSizedFloat double m11);
-    
-    @Deprecated
-    @StructMember(0) public native @MachineSizedFloat double m11();
-    @Deprecated
-    @StructMember(0) public native CATransform3D m11(@MachineSizedFloat double m11);
-    
     @StructMember(1) public native @MachineSizedFloat double getM12();
     @StructMember(1) public native CATransform3D setM12(@MachineSizedFloat double m12);
-    
-    @Deprecated
-    @StructMember(1) public native @MachineSizedFloat double m12();
-    @Deprecated
-    @StructMember(1) public native CATransform3D m12(@MachineSizedFloat double m12);
-    
     @StructMember(2) public native @MachineSizedFloat double getM13();
     @StructMember(2) public native CATransform3D setM13(@MachineSizedFloat double m13);
-    
-    @Deprecated
-    @StructMember(2) public native @MachineSizedFloat double m13();
-    @Deprecated
-    @StructMember(2) public native CATransform3D m13(@MachineSizedFloat double m13);
-    
     @StructMember(3) public native @MachineSizedFloat double getM14();
     @StructMember(3) public native CATransform3D setM14(@MachineSizedFloat double m14);
-    
-    @Deprecated
-    @StructMember(3) public native @MachineSizedFloat double m14();
-    @Deprecated
-    @StructMember(3) public native CATransform3D m14(@MachineSizedFloat double m14);
-    
     @StructMember(4) public native @MachineSizedFloat double getM21();
     @StructMember(4) public native CATransform3D setM21(@MachineSizedFloat double m21);
-    
-    @Deprecated
-    @StructMember(4) public native @MachineSizedFloat double m21();
-    @Deprecated
-    @StructMember(4) public native CATransform3D m21(@MachineSizedFloat double m21);
-    
     @StructMember(5) public native @MachineSizedFloat double getM22();
     @StructMember(5) public native CATransform3D setM22(@MachineSizedFloat double m22);
-    
-    @Deprecated
-    @StructMember(5) public native @MachineSizedFloat double m22();
-    @Deprecated
-    @StructMember(5) public native CATransform3D m22(@MachineSizedFloat double m22);
-    
     @StructMember(6) public native @MachineSizedFloat double getM23();
     @StructMember(6) public native CATransform3D setM23(@MachineSizedFloat double m23);
-    
-    @Deprecated
-    @StructMember(6) public native @MachineSizedFloat double m23();
-    @Deprecated
-    @StructMember(6) public native CATransform3D m23(@MachineSizedFloat double m23);
-    
     @StructMember(7) public native @MachineSizedFloat double getM24();
     @StructMember(7) public native CATransform3D setM24(@MachineSizedFloat double m24);
-    
-    @Deprecated
-    @StructMember(7) public native @MachineSizedFloat double m24();
-    @Deprecated
-    @StructMember(7) public native CATransform3D m24(@MachineSizedFloat double m24);
-    
     @StructMember(8) public native @MachineSizedFloat double getM31();
     @StructMember(8) public native CATransform3D setM31(@MachineSizedFloat double m31);
-    
-    @Deprecated
-    @StructMember(8) public native @MachineSizedFloat double m31();
-    @Deprecated
-    @StructMember(8) public native CATransform3D m31(@MachineSizedFloat double m31);
-    
     @StructMember(9) public native @MachineSizedFloat double getM32();
     @StructMember(9) public native CATransform3D setM32(@MachineSizedFloat double m32);
-    
-    @Deprecated
-    @StructMember(9) public native @MachineSizedFloat double m32();
-    @Deprecated
-    @StructMember(9) public native CATransform3D m32(@MachineSizedFloat double m32);
-    
     @StructMember(10) public native @MachineSizedFloat double getM33();
     @StructMember(10) public native CATransform3D setM33(@MachineSizedFloat double m33);
-    
-    @Deprecated
-    @StructMember(10) public native @MachineSizedFloat double m33();
-    @Deprecated
-    @StructMember(10) public native CATransform3D m33(@MachineSizedFloat double m33);
-    
     @StructMember(11) public native @MachineSizedFloat double getM34();
     @StructMember(11) public native CATransform3D setM34(@MachineSizedFloat double m34);
-    
-    @Deprecated
-    @StructMember(11) public native @MachineSizedFloat double m34();
-    @Deprecated
-    @StructMember(11) public native CATransform3D m34(@MachineSizedFloat double m34);
-    
     @StructMember(12) public native @MachineSizedFloat double getM41();
     @StructMember(12) public native CATransform3D setM41(@MachineSizedFloat double m41);
-    
-    @Deprecated
-    @StructMember(12) public native @MachineSizedFloat double m41();
-    @Deprecated
-    @StructMember(12) public native CATransform3D m41(@MachineSizedFloat double m41);
-    
     @StructMember(13) public native @MachineSizedFloat double getM42();
     @StructMember(13) public native CATransform3D setM42(@MachineSizedFloat double m42);
-    
-    @Deprecated
-    @StructMember(13) public native @MachineSizedFloat double m42();
-    @Deprecated
-    @StructMember(13) public native CATransform3D m42(@MachineSizedFloat double m42);
-    
     @StructMember(14) public native @MachineSizedFloat double getM43();
     @StructMember(14) public native CATransform3D setM43(@MachineSizedFloat double m43);
-    
-    @Deprecated
-    @StructMember(14) public native @MachineSizedFloat double m43();
-    @Deprecated
-    @StructMember(14) public native CATransform3D m43(@MachineSizedFloat double m43);
-    
     @StructMember(15) public native @MachineSizedFloat double getM44();
     @StructMember(15) public native CATransform3D setM44(@MachineSizedFloat double m44);
-    
-    @Deprecated
-    @StructMember(15) public native @MachineSizedFloat double m44();
-    @Deprecated
-    @StructMember(15) public native CATransform3D m44(@MachineSizedFloat double m44);
-    
     /*</members>*/
     
     @Override
@@ -203,6 +108,12 @@ import org.robovm.apple.opengles.*;
     }
     
     /*<methods>*/
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
+    @GlobalValue(symbol="CATransform3DIdentity", optional=true)
+    public static native @ByVal CATransform3D Identity();
+    
     /**
      * @since Available in iOS 2.0 and later.
      */
@@ -219,17 +130,17 @@ import org.robovm.apple.opengles.*;
      * @since Available in iOS 2.0 and later.
      */
     @Bridge(symbol="CATransform3DMakeTranslation", optional=true)
-    public static native @ByVal CATransform3D makeTranslation(@MachineSizedFloat double tx, @MachineSizedFloat double ty, @MachineSizedFloat double tz);
+    public static native @ByVal CATransform3D createTranslation(@MachineSizedFloat double tx, @MachineSizedFloat double ty, @MachineSizedFloat double tz);
     /**
      * @since Available in iOS 2.0 and later.
      */
     @Bridge(symbol="CATransform3DMakeScale", optional=true)
-    public static native @ByVal CATransform3D makeScale(@MachineSizedFloat double sx, @MachineSizedFloat double sy, @MachineSizedFloat double sz);
+    public static native @ByVal CATransform3D createScale(@MachineSizedFloat double sx, @MachineSizedFloat double sy, @MachineSizedFloat double sz);
     /**
      * @since Available in iOS 2.0 and later.
      */
     @Bridge(symbol="CATransform3DMakeRotation", optional=true)
-    public static native @ByVal CATransform3D makeRotation(@MachineSizedFloat double angle, @MachineSizedFloat double x, @MachineSizedFloat double y, @MachineSizedFloat double z);
+    public static native @ByVal CATransform3D createRotation(@MachineSizedFloat double angle, @MachineSizedFloat double x, @MachineSizedFloat double y, @MachineSizedFloat double z);
     /**
      * @since Available in iOS 2.0 and later.
      */
@@ -264,7 +175,7 @@ import org.robovm.apple.opengles.*;
      * @since Available in iOS 2.0 and later.
      */
     @Bridge(symbol="CATransform3DMakeAffineTransform", optional=true)
-    public static native @ByVal CATransform3D makeAffineTransform(@ByVal CGAffineTransform m);
+    public static native @ByVal CATransform3D createAffineTransform(@ByVal CGAffineTransform m);
     /**
      * @since Available in iOS 2.0 and later.
      */

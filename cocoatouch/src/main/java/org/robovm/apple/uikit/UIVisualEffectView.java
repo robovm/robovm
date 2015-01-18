@@ -51,7 +51,7 @@ import org.robovm.apple.corelocation.*;
     /*<constructors>*/
     public UIVisualEffectView() {}
     protected UIVisualEffectView(SkipInit skipInit) { super(skipInit); }
-    public UIVisualEffectView(UIVisualEffect effect) { super((SkipInit) null); initObject(initWithEffect$(effect)); }
+    public UIVisualEffectView(UIVisualEffect effect) { super((SkipInit) null); initObject(init(effect)); }
     /*</constructors>*/
     /*<properties>*/
     @Property(selector = "contentView")
@@ -62,6 +62,6 @@ import org.robovm.apple.corelocation.*;
     /*<members>*//*</members>*/
     /*<methods>*/
     @Method(selector = "initWithEffect:")
-    protected native @Pointer long initWithEffect$(UIVisualEffect effect);
+    protected native @Pointer long init(UIVisualEffect effect);
     /*</methods>*/
 }

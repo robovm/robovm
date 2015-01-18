@@ -31,46 +31,27 @@ import org.robovm.apple.uikit.*;
 /*</imports>*/
 
 /*<javadoc>*/
-
 /*</javadoc>*/
-/*<annotations>*/@Marshaler(ValuedEnum.AsMachineSizedSIntMarshaler.class)/*</annotations>*/
-public enum /*<name>*/GKVoiceChatServiceError/*</name>*/ implements ValuedEnum {
-    /*<values>*/
-    Internal(32000L),
-    NoRemotePackets(32001L),
-    UnableToConnect(32002L),
-    RemoteParticipantHangup(32003L),
-    InvalidCallID(32004L),
-    AudioUnavailable(32005L),
-    UninitializedClient(32006L),
-    ClientMissingRequiredMethods(32007L),
-    RemoteParticipantBusy(32008L),
-    RemoteParticipantCancelled(32009L),
-    RemoteParticipantResponseInvalid(32010L),
-    RemoteParticipantDeclinedInvite(32011L),
-    MethodCurrentlyInvalid(32012L),
-    NetworkConfiguration(32013L),
-    UnsupportedRemoteVersion(32014L),
-    OutOfMemory(32015L),
-    InvalidParameter(32016L);
-    /*</values>*/
+/*<annotations>*/@Library("GameKit")/*</annotations>*/
+/*<visibility>*/public/*</visibility>*/ class /*<name>*/GKVoiceChatServiceError/*</name>*/ 
+    extends /*<extends>*/NSError/*</extends>*/ 
+    /*<implements>*//*</implements>*/ {
 
-    /*<bind>*/
-    /*</bind>*/
-    /*<constants>*//*</constants>*/
-    /*<methods>*//*</methods>*/
-
-    private final long n;
-
-    private /*<name>*/GKVoiceChatServiceError/*</name>*/(long n) { this.n = n; }
-    public long value() { return n; }
-    public static /*<name>*/GKVoiceChatServiceError/*</name>*/ valueOf(long n) {
-        for (/*<name>*/GKVoiceChatServiceError/*</name>*/ v : values()) {
-            if (v.n == n) {
-                return v;
-            }
-        }
-        throw new IllegalArgumentException("No constant with value " + n + " found in " 
-            + /*<name>*/GKVoiceChatServiceError/*</name>*/.class.getName());
+    protected GKVoiceChatServiceError(SkipInit skipInit) {
+        super(skipInit);
     }
+    
+    /*<ptr>*/public static class GKVoiceChatServiceErrorPtr extends Ptr<GKVoiceChatServiceError, GKVoiceChatServiceErrorPtr> {}/*</ptr>*/
+    /*<bind>*/static { Bro.bind(GKVoiceChatServiceError.class); }/*</bind>*/
+    /*<constants>*//*</constants>*/
+    /*<properties>*//*</properties>*/
+    /*<members>*//*</members>*/
+    @Override
+    public GKVoiceChatServiceErrorCode getErrorCode() {
+        return GKVoiceChatServiceErrorCode.valueOf(getCode());
+    }
+    /*<methods>*/
+    @GlobalValue(symbol="GKVoiceChatServiceErrorDomain", optional=true)
+    public static native String getClassDomain();
+    /*</methods>*/
 }

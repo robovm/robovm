@@ -43,8 +43,8 @@ import org.robovm.apple.foundation.*;
     /*<constructors>*/
     public GCGamepadSnapshot() {}
     protected GCGamepadSnapshot(SkipInit skipInit) { super(skipInit); }
-    public GCGamepadSnapshot(NSData data) { super((SkipInit) null); initObject(initWithSnapshotData$(data)); }
-    public GCGamepadSnapshot(GCController controller, NSData data) { super((SkipInit) null); initObject(initWithController$snapshotData$(controller, data)); }
+    public GCGamepadSnapshot(NSData data) { super((SkipInit) null); initObject(init(data)); }
+    public GCGamepadSnapshot(GCController controller, NSData data) { super((SkipInit) null); initObject(init(controller, data)); }
     /*</constructors>*/
     /*<properties>*/
     @Property(selector = "snapshotData")
@@ -55,8 +55,8 @@ import org.robovm.apple.foundation.*;
     /*<members>*//*</members>*/
     /*<methods>*/
     @Method(selector = "initWithSnapshotData:")
-    protected native @Pointer long initWithSnapshotData$(NSData data);
+    protected native @Pointer long init(NSData data);
     @Method(selector = "initWithController:snapshotData:")
-    protected native @Pointer long initWithController$snapshotData$(GCController controller, NSData data);
+    protected native @Pointer long init(GCController controller, NSData data);
     /*</methods>*/
 }

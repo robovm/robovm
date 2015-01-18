@@ -27,6 +27,7 @@ import org.robovm.rt.bro.*;
 import org.robovm.rt.bro.annotation.*;
 import org.robovm.rt.bro.ptr.*;
 import org.robovm.apple.dispatch.*;
+import org.robovm.apple.foundation.*;
 /*</imports>*/
 
 /*<javadoc>*/
@@ -108,20 +109,52 @@ import org.robovm.apple.dispatch.*;
     public static CFNumber valueOf(boolean value) {
         return create(null, CFNumberType.SInt32Type, new IntPtr(value ? 1 : 0).as(VoidPtr.class));
     }
+    public static CFNumber valueOf(Number value) {
+        if (value instanceof Byte) {
+            return valueOf((byte)value);
+        }
+        if (value instanceof Short) {
+            return valueOf((short)value);
+        }
+        if (value instanceof Integer) {
+            return valueOf((int)value);
+        }
+        if (value instanceof Long) {
+            return valueOf((long)value);
+        }
+        if (value instanceof Float) {
+            return valueOf((float)value);
+        }
+        if (value instanceof Double) {
+            return valueOf((double)value);
+        }
+        throw new IllegalArgumentException("value is not a supported number type: " + value.getClass());
+    }
+    
+    public CFComparisonResult compareTo(CFNumber otherNumber) {
+        return compareTo(otherNumber, null);
+    }
     /*<methods>*/
+    @GlobalValue(symbol="kCFNumberPositiveInfinity", optional=true)
+    public static native CFNumber getPositiveInfinity();
+    @GlobalValue(symbol="kCFNumberNegativeInfinity", optional=true)
+    public static native CFNumber getNegativeInfinity();
+    @GlobalValue(symbol="kCFNumberNaN", optional=true)
+    public static native CFNumber getNaN();
+    
     @Bridge(symbol="CFNumberGetTypeID", optional=true)
     public static native @MachineSizedUInt long getClassTypeID();
     @Bridge(symbol="CFNumberCreate", optional=true)
     protected static native CFNumber create(CFAllocator allocator, CFNumberType theType, VoidPtr valuePtr);
     @Bridge(symbol="CFNumberGetType", optional=true)
-    protected native CFNumberType getType();
+    public native CFNumberType getType();
     @Bridge(symbol="CFNumberGetByteSize", optional=true)
-    protected native @MachineSizedSInt long getByteSize();
+    public native @MachineSizedSInt long getByteSize();
     @Bridge(symbol="CFNumberIsFloatType", optional=true)
-    protected native boolean isFloatType();
+    public native boolean isFloatType();
     @Bridge(symbol="CFNumberGetValue", optional=true)
     protected native boolean getValue(CFNumberType theType, VoidPtr valuePtr);
     @Bridge(symbol="CFNumberCompare", optional=true)
-    protected native CFComparisonResult compare(CFNumber otherNumber, VoidPtr context);
+    protected native CFComparisonResult compareTo(CFNumber otherNumber, VoidPtr context);
     /*</methods>*/
 }

@@ -117,7 +117,7 @@ import org.robovm.apple.corelocation.*;
     @Property(selector = "setNumberOfLines:")
     public native void setNumberOfLines(@MachineSizedSInt long v);
     @Property(selector = "adjustsFontSizeToFitWidth")
-    public native boolean isAdjustsFontSizeToFitWidth();
+    public native boolean adjustsFontSizeToFitWidth();
     @Property(selector = "setAdjustsFontSizeToFitWidth:")
     public native void setAdjustsFontSizeToFitWidth(boolean v);
     /**
@@ -126,7 +126,7 @@ import org.robovm.apple.corelocation.*;
      */
     @Deprecated
     @Property(selector = "adjustsLetterSpacingToFitWidth")
-    public native boolean isAdjustsLetterSpacingToFitWidth();
+    public native boolean adjustsLetterSpacingToFitWidth();
     /**
      * @since Available in iOS 6.0 and later.
      * @deprecated Deprecated in iOS 7.0.

@@ -51,7 +51,7 @@ import org.robovm.apple.corelocation.*;
     /*<constructors>*/
     public UITextInputStringTokenizer() {}
     protected UITextInputStringTokenizer(SkipInit skipInit) { super(skipInit); }
-    public UITextInputStringTokenizer(UITextInput textInput) { super((SkipInit) null); initObject(initWithTextInput$(textInput)); }
+    public UITextInputStringTokenizer(UITextInput textInput) { super((SkipInit) null); initObject(init(textInput)); }
     /*</constructors>*/
     /*<properties>*/
     
@@ -59,7 +59,7 @@ import org.robovm.apple.corelocation.*;
     /*<members>*//*</members>*/
     /*<methods>*/
     @Method(selector = "initWithTextInput:")
-    protected native @Pointer long initWithTextInput$(UITextInput textInput);
+    protected native @Pointer long init(UITextInput textInput);
     @Method(selector = "rangeEnclosingPosition:withGranularity:inDirection:")
     public native UITextRange getRangeEnclosingPosition(UITextPosition position, UITextGranularity granularity, UITextDirection direction);
     @Method(selector = "isPosition:atBoundary:inDirection:")

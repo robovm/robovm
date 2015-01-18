@@ -49,10 +49,11 @@ import org.robovm.apple.corefoundation.*;
      * @since Available in iOS 4.0 and later.
      */
     public static final ABSourceProperty Type = new ABSourceProperty("TypeValue");
+    
     private static ABSourceProperty[] values = new ABSourceProperty[] {Name, Type};
     
-    private ABSourceProperty (String getterName) {
-        super(getterName);
+    private ABSourceProperty(String getterName) {
+        super(ABSourceProperty.class, getterName);
     }
     /*<constructors>*//*</constructors>*/
     /*<properties>*//*</properties>*/

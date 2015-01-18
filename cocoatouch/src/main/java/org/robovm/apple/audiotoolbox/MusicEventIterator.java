@@ -99,16 +99,16 @@ import org.robovm.apple.coremedia.*;
      * @since Available in iOS 5.0 and later.
      */
     @Bridge(symbol="MusicEventIteratorHasPreviousEvent", optional=true)
-    public native int hasPreviousEvent(BytePtr outHasPrevEvent);
+    public native int hasPreviousEvent(BooleanPtr outHasPrevEvent);
     /**
      * @since Available in iOS 5.0 and later.
      */
     @Bridge(symbol="MusicEventIteratorHasNextEvent", optional=true)
-    public native int hasNextEvent(BytePtr outHasNextEvent);
+    public native int hasNextEvent(BooleanPtr outHasNextEvent);
     /**
      * @since Available in iOS 5.0 and later.
      */
     @Bridge(symbol="MusicEventIteratorHasCurrentEvent", optional=true)
-    public native int hasCurrentEvent(BytePtr outHasCurEvent);
+    public native int hasCurrentEvent(BooleanPtr outHasCurEvent);
     /*</methods>*/
 }

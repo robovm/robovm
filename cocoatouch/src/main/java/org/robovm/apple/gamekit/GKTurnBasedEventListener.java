@@ -47,10 +47,10 @@ import org.robovm.apple.uikit.*;
     /*</properties>*/
     /*<methods>*/
     /**
-     * @since Available in iOS 7.0 and later.
+     * @since Available in iOS 8.0 and later.
      */
-    @Method(selector = "player:didRequestMatchWithPlayers:")
-    void didRequestMatch(GKPlayer player, NSArray<NSString> playerIDsToInvite);
+    @Method(selector = "player:didRequestMatchWithOtherPlayers:")
+    void didRequestMatch(GKPlayer player, NSArray<GKPlayer> playersToInvite);
     /**
      * @since Available in iOS 7.0 and later.
      */
@@ -73,6 +73,13 @@ import org.robovm.apple.uikit.*;
      */
     @Method(selector = "player:receivedExchangeReplies:forCompletedExchange:forMatch:")
     void receivedExchangeReplies(GKPlayer player, NSArray<GKTurnBasedExchange> replies, GKTurnBasedExchange exchange, GKTurnBasedMatch match);
+    /**
+     * @since Available in iOS 7.0 and later.
+     * @deprecated Deprecated in iOS 8.0.
+     */
+    @Deprecated
+    @Method(selector = "player:didRequestMatchWithPlayers:")
+    void didRequestMatch(GKPlayer player, @org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String> playerIDsToInvite);
     /*</methods>*/
     /*<adapter>*/
     /*</adapter>*/

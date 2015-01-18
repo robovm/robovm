@@ -53,7 +53,7 @@ import org.robovm.apple.dispatch.*;
     public NSItemProvider() {}
     protected NSItemProvider(SkipInit skipInit) { super(skipInit); }
     public NSItemProvider(NSObject item, String typeIdentifier) { super((SkipInit) null); initObject(init(item, typeIdentifier)); }
-    public NSItemProvider(NSURL fileURL) { super((SkipInit) null); initObject(initWithContentsOfURL$(fileURL)); }
+    public NSItemProvider(NSURL fileURL) { super((SkipInit) null); initObject(init(fileURL)); }
     /*</constructors>*/
     /*<properties>*/
     @Property(selector = "registeredTypeIdentifiers")
@@ -85,7 +85,7 @@ import org.robovm.apple.dispatch.*;
     @Method(selector = "initWithItem:typeIdentifier:")
     protected native @Pointer long init(NSObject item, String typeIdentifier);
     @Method(selector = "initWithContentsOfURL:")
-    protected native @Pointer long initWithContentsOfURL$(NSURL fileURL);
+    protected native @Pointer long init(NSURL fileURL);
     @Method(selector = "registerItemForTypeIdentifier:loadHandler:")
     public native void registerItemForTypeIdentifier(String typeIdentifier, @Block("(@Block,,)") VoidBlock3<VoidBlock2<NSObject, NSError>, ObjCClass, NSDictionary<NSString, NSObject>> loadHandler);
     @Method(selector = "hasItemConformingToTypeIdentifier:")

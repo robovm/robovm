@@ -49,22 +49,22 @@ import org.robovm.apple.coremedia.*;
     /*<constructors>*/
     public AudioBalanceFade() {}
     public AudioBalanceFade(float mLeftRightBalance, float mBackFrontFade, int mType, AudioChannelLayout mChannelLayout) {
-        this.mLeftRightBalance(mLeftRightBalance);
-        this.mBackFrontFade(mBackFrontFade);
-        this.mType(mType);
-        this.mChannelLayout(mChannelLayout);
+        this.setMLeftRightBalance(mLeftRightBalance);
+        this.setMBackFrontFade(mBackFrontFade);
+        this.setMType(mType);
+        this.setMChannelLayout(mChannelLayout);
     }
     /*</constructors>*/
     /*<properties>*//*</properties>*/
     /*<members>*/
-    @StructMember(0) public native float mLeftRightBalance();
-    @StructMember(0) public native AudioBalanceFade mLeftRightBalance(float mLeftRightBalance);
-    @StructMember(1) public native float mBackFrontFade();
-    @StructMember(1) public native AudioBalanceFade mBackFrontFade(float mBackFrontFade);
-    @StructMember(2) public native int mType();
-    @StructMember(2) public native AudioBalanceFade mType(int mType);
-    @StructMember(3) public native AudioChannelLayout mChannelLayout();
-    @StructMember(3) public native AudioBalanceFade mChannelLayout(AudioChannelLayout mChannelLayout);
+    @StructMember(0) public native float getMLeftRightBalance();
+    @StructMember(0) public native AudioBalanceFade setMLeftRightBalance(float mLeftRightBalance);
+    @StructMember(1) public native float getMBackFrontFade();
+    @StructMember(1) public native AudioBalanceFade setMBackFrontFade(float mBackFrontFade);
+    @StructMember(2) public native int getMType();
+    @StructMember(2) public native AudioBalanceFade setMType(int mType);
+    @StructMember(3) public native AudioChannelLayout getMChannelLayout();
+    @StructMember(3) public native AudioBalanceFade setMChannelLayout(AudioChannelLayout mChannelLayout);
     /*</members>*/
     /*<methods>*//*</methods>*/
 }

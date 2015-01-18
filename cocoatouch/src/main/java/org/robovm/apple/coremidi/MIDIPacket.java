@@ -44,19 +44,19 @@ import org.robovm.apple.corefoundation.*;
     /*<constructors>*/
     public MIDIPacket() {}
     public MIDIPacket(long timeStamp, short length, ByteBuffer data) {
-        this.timeStamp(timeStamp);
-        this.length(length);
-        this.data(data);
+        this.setTimeStamp(timeStamp);
+        this.setLength(length);
+        this.setData(data);
     }
     /*</constructors>*/
     /*<properties>*//*</properties>*/
     /*<members>*/
-    @StructMember(0) public native long timeStamp();
-    @StructMember(0) public native MIDIPacket timeStamp(long timeStamp);
-    @StructMember(1) public native short length();
-    @StructMember(1) public native MIDIPacket length(short length);
-    @StructMember(2) public native @Array({256}) ByteBuffer data();
-    @StructMember(2) public native MIDIPacket data(@Array({256}) ByteBuffer data);
+    @StructMember(0) public native long getTimeStamp();
+    @StructMember(0) public native MIDIPacket setTimeStamp(long timeStamp);
+    @StructMember(1) public native short getLength();
+    @StructMember(1) public native MIDIPacket setLength(short length);
+    @StructMember(2) public native @Array({256}) ByteBuffer getData();
+    @StructMember(2) public native MIDIPacket setData(@Array({256}) ByteBuffer data);
     /*</members>*/
     /*<methods>*//*</methods>*/
 }

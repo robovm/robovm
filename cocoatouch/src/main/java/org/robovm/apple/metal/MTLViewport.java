@@ -45,8 +45,8 @@ import org.robovm.apple.dispatch.*;
     /*<constructors>*/
     public MTLViewport() {}
     public MTLViewport(double originX, double originY, double width, double height, double znear, double zfar) {
-        this.setOriginx(originX);
-        this.setOriginy(originY);
+        this.setOriginX(originX);
+        this.setOriginY(originY);
         this.setWidth(width);
         this.setHeight(height);
         this.setZnear(znear);
@@ -55,54 +55,18 @@ import org.robovm.apple.dispatch.*;
     /*</constructors>*/
     /*<properties>*//*</properties>*/
     /*<members>*/
-    @StructMember(0) public native double getOriginx();
-    @StructMember(0) public native MTLViewport setOriginx(double originX);
-    
-    @Deprecated
-    @StructMember(0) public native double originX();
-    @Deprecated
-    @StructMember(0) public native MTLViewport originX(double originX);
-    
-    @StructMember(1) public native double getOriginy();
-    @StructMember(1) public native MTLViewport setOriginy(double originY);
-    
-    @Deprecated
-    @StructMember(1) public native double originY();
-    @Deprecated
-    @StructMember(1) public native MTLViewport originY(double originY);
-    
+    @StructMember(0) public native double getOriginX();
+    @StructMember(0) public native MTLViewport setOriginX(double originX);
+    @StructMember(1) public native double getOriginY();
+    @StructMember(1) public native MTLViewport setOriginY(double originY);
     @StructMember(2) public native double getWidth();
     @StructMember(2) public native MTLViewport setWidth(double width);
-    
-    @Deprecated
-    @StructMember(2) public native double width();
-    @Deprecated
-    @StructMember(2) public native MTLViewport width(double width);
-    
     @StructMember(3) public native double getHeight();
     @StructMember(3) public native MTLViewport setHeight(double height);
-    
-    @Deprecated
-    @StructMember(3) public native double height();
-    @Deprecated
-    @StructMember(3) public native MTLViewport height(double height);
-    
     @StructMember(4) public native double getZnear();
     @StructMember(4) public native MTLViewport setZnear(double znear);
-    
-    @Deprecated
-    @StructMember(4) public native double znear();
-    @Deprecated
-    @StructMember(4) public native MTLViewport znear(double znear);
-    
     @StructMember(5) public native double getZfar();
     @StructMember(5) public native MTLViewport setZfar(double zfar);
-    
-    @Deprecated
-    @StructMember(5) public native double zfar();
-    @Deprecated
-    @StructMember(5) public native MTLViewport zfar(double zfar);
-    
     /*</members>*/
     /*<methods>*//*</methods>*/
 }

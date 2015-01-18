@@ -27,6 +27,7 @@ import org.robovm.rt.bro.*;
 import org.robovm.rt.bro.annotation.*;
 import org.robovm.rt.bro.ptr.*;
 import org.robovm.apple.dispatch.*;
+import org.robovm.apple.foundation.*;
 /*</imports>*/
 
 /*<javadoc>*/
@@ -44,16 +45,20 @@ import org.robovm.apple.dispatch.*;
     /*</constructors>*/
     /*<properties>*//*</properties>*/
     /*<members>*//*</members>*/
+    /**
+     * @since Available in iOS 5.0 and later.
+     */
+    public static CFRunLoopObserver create(CFRunLoopActivity activities, boolean repeats, @MachineSizedSInt long order, VoidBlock2<CFRunLoopObserver, CFRunLoopActivity> block) {
+        return create(null, activities, repeats, order, block);
+    }
     /*<methods>*/
     @Bridge(symbol="CFRunLoopObserverGetTypeID", optional=true)
     public static native @MachineSizedUInt long getClassTypeID();
-    @Bridge(symbol="CFRunLoopObserverCreate", optional=true)
-    public static native CFRunLoopObserver create(CFAllocator allocator, CFRunLoopActivity activities, boolean repeats, @MachineSizedSInt long order, FunctionPtr callout, CFRunLoopObserverContext context);
     /**
      * @since Available in iOS 5.0 and later.
      */
     @Bridge(symbol="CFRunLoopObserverCreateWithHandler", optional=true)
-    public static native CFRunLoopObserver createWithHandler(CFAllocator allocator, CFRunLoopActivity activities, boolean repeats, @MachineSizedSInt long order, ObjCBlock block);
+    protected static native CFRunLoopObserver create(CFAllocator allocator, CFRunLoopActivity activities, boolean repeats, @MachineSizedSInt long order, @Block VoidBlock2<CFRunLoopObserver, CFRunLoopActivity> block);
     @Bridge(symbol="CFRunLoopObserverGetActivities", optional=true)
     public native CFRunLoopActivity getActivities();
     @Bridge(symbol="CFRunLoopObserverDoesRepeat", optional=true)
@@ -64,7 +69,5 @@ import org.robovm.apple.dispatch.*;
     public native void invalidate();
     @Bridge(symbol="CFRunLoopObserverIsValid", optional=true)
     public native boolean isValid();
-    @Bridge(symbol="CFRunLoopObserverGetContext", optional=true)
-    public native void getContext(CFRunLoopObserverContext context);
     /*</methods>*/
 }

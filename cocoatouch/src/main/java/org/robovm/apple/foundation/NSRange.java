@@ -58,20 +58,8 @@ import org.robovm.apple.dispatch.*;
     /*<members>*/
     @StructMember(0) public native @MachineSizedUInt long getLocation();
     @StructMember(0) public native NSRange setLocation(@MachineSizedUInt long location);
-    
-    @Deprecated
-    @StructMember(0) public native @MachineSizedUInt long location();
-    @Deprecated
-    @StructMember(0) public native NSRange location(@MachineSizedUInt long location);
-    
     @StructMember(1) public native @MachineSizedUInt long getLength();
     @StructMember(1) public native NSRange setLength(@MachineSizedUInt long length);
-    
-    @Deprecated
-    @StructMember(1) public native @MachineSizedUInt long length();
-    @Deprecated
-    @StructMember(1) public native NSRange length(@MachineSizedUInt long length);
-    
     /*</members>*/
     /*<methods>*/
     @Bridge(symbol="NSUnionRange", optional=true)

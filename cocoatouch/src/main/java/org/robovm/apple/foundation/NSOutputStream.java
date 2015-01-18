@@ -35,6 +35,7 @@ import org.robovm.apple.coremedia.*;
 import org.robovm.apple.security.*;
 import org.robovm.apple.dispatch.*;
 /*</imports>*/
+import org.robovm.apple.foundation.NSObject.SkipInit;
 
 /*<javadoc>*/
 
@@ -49,54 +50,66 @@ import org.robovm.apple.dispatch.*;
     /*<constants>*//*</constants>*/
     /*<constructors>*/
     protected NSOutputStream(SkipInit skipInit) { super(skipInit); }
-    public NSOutputStream() { super((SkipInit) null); initObject(initToMemory()); }
-    public NSOutputStream(BytePtr buffer, @MachineSizedUInt long capacity) { super((SkipInit) null); initObject(initToBuffer$capacity$(buffer, capacity)); }
+    public NSOutputStream() { super((SkipInit) null); initObject(init()); }
     /**
      * @since Available in iOS 4.0 and later.
      */
-    public NSOutputStream(NSURL url, boolean shouldAppend) { super((SkipInit) null); initObject(initWithURL$append$(url, shouldAppend)); }
-    public NSOutputStream(String path, boolean shouldAppend) { super((SkipInit) null); initObject(initToFileAtPath$append$(path, shouldAppend)); }
+    public NSOutputStream(NSURL url, boolean shouldAppend) { super((SkipInit) null); initObject(init(url, shouldAppend)); }
+    public NSOutputStream(String path, boolean shouldAppend) { super((SkipInit) null); initObject(init(path, shouldAppend)); }
     /*</constructors>*/
+    public NSOutputStream(byte[] bytes) {
+        super((SkipInit) null);
+        if (bytes == null) {
+            throw new NullPointerException("bytes");
+        }
+        initObject(init(VM.getArrayValuesAddress(bytes), bytes.length));
+    }
+    public NSOutputStream(ByteBuffer bytes) {
+        super((SkipInit) null);
+        if (bytes == null) {
+            throw new NullPointerException("bytes");
+        }
+        long handle = NSData.getEffectiveAddress(bytes) + bytes.position();
+        initObject(init(handle, bytes.remaining()));
+        addStrongRef(bytes);
+    }
     /*<properties>*/
     @Property(selector = "hasSpaceAvailable")
-    public native boolean isHasSpaceAvailable();
+    public native boolean hasSpaceAvailable();
     /*</properties>*/
     /*<members>*//*</members>*/
 
     public long write(BytePtr buffer, long len) {
-        return write$maxLength$(buffer.getHandle(), len);
+        return write(buffer.getHandle(), len);
     }
-
     public long write(ByteBuffer bytes) {
         long handle = NSData.getEffectiveAddress(bytes) + bytes.position();
-        return write$maxLength$(handle, bytes.remaining());
+        return write(handle, bytes.remaining());
     }
-
     public long write(byte[] bytes) {
         return write(bytes, 0, bytes.length);
     }
-    
     public long write(byte[] bytes, int offset, int length) {
         NSMutableData.checkOffsetAndCount(bytes.length, offset, length);
         if (length == 0) {
             return 0;
         }
-        return write$maxLength$(VM.getArrayValuesAddress(bytes) + offset, length);
+        return write(VM.getArrayValuesAddress(bytes) + offset, length);
     }
     
     /*<methods>*/
     @Method(selector = "write:maxLength:")
-    protected native @MachineSizedSInt long write$maxLength$(@Pointer long buffer, @MachineSizedUInt long len);
+    protected native @MachineSizedSInt long write(@Pointer long buffer, @MachineSizedUInt long len);
     @Method(selector = "initToMemory")
-    protected native @Pointer long initToMemory();
+    protected native @Pointer long init();
     @Method(selector = "initToBuffer:capacity:")
-    protected native @Pointer long initToBuffer$capacity$(BytePtr buffer, @MachineSizedUInt long capacity);
+    protected native @Pointer long init(@Pointer long buffer, @MachineSizedUInt long capacity);
     /**
      * @since Available in iOS 4.0 and later.
      */
     @Method(selector = "initWithURL:append:")
-    protected native @Pointer long initWithURL$append$(NSURL url, boolean shouldAppend);
+    protected native @Pointer long init(NSURL url, boolean shouldAppend);
     @Method(selector = "initToFileAtPath:append:")
-    protected native @Pointer long initToFileAtPath$append$(String path, boolean shouldAppend);
+    protected native @Pointer long init(String path, boolean shouldAppend);
     /*</methods>*/
 }

@@ -35,8 +35,9 @@ import org.robovm.apple.corelocation.*;
 /*<javadoc>*/
 
 /*</javadoc>*/
+@ForceLinkClass(EKError.class)
 /*<annotations>*//*</annotations>*/
-public enum /*<name>*/EKErrorCode/*</name>*/ implements ValuedEnum {
+public enum /*<name>*/EKErrorCode/*</name>*/ implements NSErrorCode {
     /*<values>*/
     EventNotMutable(0L),
     NoCalendar(1L),

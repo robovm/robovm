@@ -51,7 +51,7 @@ import org.robovm.apple.corelocation.*;
     /*<constructors>*/
     public UIAccessibilityCustomAction() {}
     protected UIAccessibilityCustomAction(SkipInit skipInit) { super(skipInit); }
-    public UIAccessibilityCustomAction(String name, NSObject target, Selector selector) { super((SkipInit) null); initObject(initWithName$target$selector$(name, target, selector)); }
+    public UIAccessibilityCustomAction(String name, NSObject target, Selector selector) { super((SkipInit) null); initObject(init(name, target, selector)); }
     /*</constructors>*/
     /*<properties>*/
     @Property(selector = "name")
@@ -70,6 +70,6 @@ import org.robovm.apple.corelocation.*;
     /*<members>*//*</members>*/
     /*<methods>*/
     @Method(selector = "initWithName:target:selector:")
-    protected native @Pointer long initWithName$target$selector$(String name, NSObject target, Selector selector);
+    protected native @Pointer long init(String name, NSObject target, Selector selector);
     /*</methods>*/
 }

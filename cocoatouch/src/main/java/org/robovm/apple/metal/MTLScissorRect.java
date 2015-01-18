@@ -55,36 +55,12 @@ import org.robovm.apple.dispatch.*;
     /*<members>*/
     @StructMember(0) public native @MachineSizedUInt long getX();
     @StructMember(0) public native MTLScissorRect setX(@MachineSizedUInt long x);
-    
-    @Deprecated
-    @StructMember(0) public native @MachineSizedUInt long x();
-    @Deprecated
-    @StructMember(0) public native MTLScissorRect x(@MachineSizedUInt long x);
-    
     @StructMember(1) public native @MachineSizedUInt long getY();
     @StructMember(1) public native MTLScissorRect setY(@MachineSizedUInt long y);
-    
-    @Deprecated
-    @StructMember(1) public native @MachineSizedUInt long y();
-    @Deprecated
-    @StructMember(1) public native MTLScissorRect y(@MachineSizedUInt long y);
-    
     @StructMember(2) public native @MachineSizedUInt long getWidth();
     @StructMember(2) public native MTLScissorRect setWidth(@MachineSizedUInt long width);
-    
-    @Deprecated
-    @StructMember(2) public native @MachineSizedUInt long width();
-    @Deprecated
-    @StructMember(2) public native MTLScissorRect width(@MachineSizedUInt long width);
-    
     @StructMember(3) public native @MachineSizedUInt long getHeight();
     @StructMember(3) public native MTLScissorRect setHeight(@MachineSizedUInt long height);
-    
-    @Deprecated
-    @StructMember(3) public native @MachineSizedUInt long height();
-    @Deprecated
-    @StructMember(3) public native MTLScissorRect height(@MachineSizedUInt long height);
-    
     /*</members>*/
     /*<methods>*//*</methods>*/
 }

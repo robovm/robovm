@@ -64,7 +64,7 @@ import org.robovm.apple.mediatoolbox.*;
     @Property(selector = "defaultOption")
     public native AVMediaSelectionOption getDefaultOption();
     @Property(selector = "allowsEmptySelection")
-    public native boolean isAllowsEmptySelection();
+    public native boolean allowsEmptySelection();
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/

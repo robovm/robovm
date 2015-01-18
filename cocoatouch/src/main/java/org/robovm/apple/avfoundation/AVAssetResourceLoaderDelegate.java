@@ -58,27 +58,27 @@ import org.robovm.apple.mediatoolbox.*;
      * @since Available in iOS 6.0 and later.
      */
     @Method(selector = "resourceLoader:shouldWaitForLoadingOfRequestedResource:")
-    boolean shouldWait(AVAssetResourceLoader resourceLoader, AVAssetResourceLoadingRequest loadingRequest);
+    boolean shouldWaitForLoadingOfRequestedResource(AVAssetResourceLoader resourceLoader, AVAssetResourceLoadingRequest loadingRequest);
     /**
      * @since Available in iOS 8.0 and later.
      */
     @Method(selector = "resourceLoader:shouldWaitForRenewalOfRequestedResource:")
-    boolean resourceLoader$shouldWaitForRenewalOfRequestedResource$(AVAssetResourceLoader resourceLoader, AVAssetResourceRenewalRequest renewalRequest);
+    boolean shouldWaitForRenewalOfRequestedResource(AVAssetResourceLoader resourceLoader, AVAssetResourceRenewalRequest renewalRequest);
     /**
      * @since Available in iOS 7.0 and later.
      */
     @Method(selector = "resourceLoader:didCancelLoadingRequest:")
-    void didCancel(AVAssetResourceLoader resourceLoader, AVAssetResourceLoadingRequest loadingRequest);
+    void didCancelLoadingRequest(AVAssetResourceLoader resourceLoader, AVAssetResourceLoadingRequest loadingRequest);
     /**
      * @since Available in iOS 8.0 and later.
      */
     @Method(selector = "resourceLoader:shouldWaitForResponseToAuthenticationChallenge:")
-    boolean resourceLoader$shouldWaitForResponseToAuthenticationChallenge$(AVAssetResourceLoader resourceLoader, NSURLAuthenticationChallenge authenticationChallenge);
+    boolean shouldWaitForResponseToAuthenticationChallenge(AVAssetResourceLoader resourceLoader, NSURLAuthenticationChallenge authenticationChallenge);
     /**
      * @since Available in iOS 8.0 and later.
      */
     @Method(selector = "resourceLoader:didCancelAuthenticationChallenge:")
-    void resourceLoader$didCancelAuthenticationChallenge$(AVAssetResourceLoader resourceLoader, NSURLAuthenticationChallenge authenticationChallenge);
+    void didCancelAuthenticationChallenge(AVAssetResourceLoader resourceLoader, NSURLAuthenticationChallenge authenticationChallenge);
     /*</methods>*/
     /*<adapter>*/
     /*</adapter>*/

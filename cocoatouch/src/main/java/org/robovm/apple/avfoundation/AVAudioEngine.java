@@ -48,6 +48,20 @@ import org.robovm.apple.mediatoolbox.*;
     extends /*<extends>*/NSObject/*</extends>*/ 
     /*<implements>*//*</implements>*/ {
 
+    public static class Notifications {
+        /**
+         * @since Available in iOS 8.0 and later.
+         */
+        public static NSObject observeConfigurationChange(AVAudioEngine object, final VoidBlock1<AVAudioEngine> block) {
+            return NSNotificationCenter.getDefaultCenter().addObserver(ConfigurationChangeNotification(), object, NSOperationQueue.getMainQueue(), new VoidBlock1<NSNotification>() {
+                @Override
+                public void invoke(NSNotification a) {
+                    block.invoke((AVAudioEngine)a.getObject());
+                }
+            });
+        }
+    }
+    
     /*<ptr>*/public static class AVAudioEnginePtr extends Ptr<AVAudioEngine, AVAudioEnginePtr> {}/*</ptr>*/
     /*<bind>*/static { ObjCRuntime.bind(AVAudioEngine.class); }/*</bind>*/
     /*<constants>*//*</constants>*/
@@ -70,27 +84,46 @@ import org.robovm.apple.mediatoolbox.*;
     public native boolean isRunning();
     /*</properties>*/
     /*<members>*//*</members>*/
+    /**
+     * 
+     * @return
+     * @throws NSErrorException
+     */
+    public boolean start() throws NSErrorException {
+        NSError.NSErrorPtr err = new NSError.NSErrorPtr();
+        boolean result = start(err);
+        if (err.get() != null) {
+            throw new NSErrorException(err.get());
+        }
+        return result;
+    }
     /*<methods>*/
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @GlobalValue(symbol="AVAudioEngineConfigurationChangeNotification", optional=true)
+    public static native NSString ConfigurationChangeNotification();
+    
     @Method(selector = "attachNode:")
-    public native void attachNode$(AVAudioNode node);
+    public native void attachNode(AVAudioNode node);
     @Method(selector = "detachNode:")
-    public native void detachNode$(AVAudioNode node);
+    public native void detachNode(AVAudioNode node);
     @Method(selector = "connect:to:fromBus:toBus:format:")
-    public native void connect$to$fromBus$toBus$format$(AVAudioNode node1, AVAudioNode node2, @MachineSizedUInt long bus1, @MachineSizedUInt long bus2, AVAudioFormat format);
+    public native void connect(AVAudioNode node1, AVAudioNode node2, @MachineSizedUInt long bus1, @MachineSizedUInt long bus2, AVAudioFormat format);
     @Method(selector = "connect:to:format:")
-    public native void connect$to$format$(AVAudioNode node1, AVAudioNode node2, AVAudioFormat format);
+    public native void connect(AVAudioNode node1, AVAudioNode node2, AVAudioFormat format);
     @Method(selector = "disconnectNodeInput:bus:")
-    public native void disconnectNodeInput$bus$(AVAudioNode node, @MachineSizedUInt long bus);
+    public native void disconnectNodeInput(AVAudioNode node, @MachineSizedUInt long bus);
     @Method(selector = "disconnectNodeInput:")
-    public native void disconnectNodeInput$(AVAudioNode node);
+    public native void disconnectNodeInput(AVAudioNode node);
     @Method(selector = "disconnectNodeOutput:bus:")
-    public native void disconnectNodeOutput$bus$(AVAudioNode node, @MachineSizedUInt long bus);
+    public native void disconnectNodeOutput(AVAudioNode node, @MachineSizedUInt long bus);
     @Method(selector = "disconnectNodeOutput:")
-    public native void disconnectNodeOutput$(AVAudioNode node);
+    public native void disconnectNodeOutput(AVAudioNode node);
     @Method(selector = "prepare")
     public native void prepare();
     @Method(selector = "startAndReturnError:")
-    public native boolean startAndReturnError$(NSError.NSErrorPtr outError);
+    protected native boolean start(NSError.NSErrorPtr outError);
     @Method(selector = "pause")
     public native void pause();
     @Method(selector = "reset")

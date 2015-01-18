@@ -45,37 +45,19 @@ import org.robovm.apple.corefoundation.*;
     /*<constructors>*/
     public AudioChannelDescription() {}
     public AudioChannelDescription(AudioChannelLabel mChannelLabel, AudioChannelFlag mChannelFlags, FloatBuffer mCoordinates) {
-        this.setMchannellabel(mChannelLabel);
-        this.setMchannelflags(mChannelFlags);
-        this.setMcoordinates(mCoordinates);
+        this.setMChannelLabel(mChannelLabel);
+        this.setMChannelFlags(mChannelFlags);
+        this.setMCoordinates(mCoordinates);
     }
     /*</constructors>*/
     /*<properties>*//*</properties>*/
     /*<members>*/
-    @StructMember(0) public native AudioChannelLabel getMchannellabel();
-    @StructMember(0) public native AudioChannelDescription setMchannellabel(AudioChannelLabel mChannelLabel);
-    
-    @Deprecated
-    @StructMember(0) public native AudioChannelLabel mChannelLabel();
-    @Deprecated
-    @StructMember(0) public native AudioChannelDescription mChannelLabel(AudioChannelLabel mChannelLabel);
-    
-    @StructMember(1) public native AudioChannelFlag getMchannelflags();
-    @StructMember(1) public native AudioChannelDescription setMchannelflags(AudioChannelFlag mChannelFlags);
-    
-    @Deprecated
-    @StructMember(1) public native AudioChannelFlag mChannelFlags();
-    @Deprecated
-    @StructMember(1) public native AudioChannelDescription mChannelFlags(AudioChannelFlag mChannelFlags);
-    
-    @StructMember(2) public native @Array({3}) FloatBuffer getMcoordinates();
-    @StructMember(2) public native AudioChannelDescription setMcoordinates(@Array({3}) FloatBuffer mCoordinates);
-    
-    @Deprecated
-    @StructMember(2) public native @Array({3}) FloatBuffer mCoordinates();
-    @Deprecated
-    @StructMember(2) public native AudioChannelDescription mCoordinates(@Array({3}) FloatBuffer mCoordinates);
-    
+    @StructMember(0) public native AudioChannelLabel getMChannelLabel();
+    @StructMember(0) public native AudioChannelDescription setMChannelLabel(AudioChannelLabel mChannelLabel);
+    @StructMember(1) public native AudioChannelFlag getMChannelFlags();
+    @StructMember(1) public native AudioChannelDescription setMChannelFlags(AudioChannelFlag mChannelFlags);
+    @StructMember(2) public native @Array({3}) FloatBuffer getMCoordinates();
+    @StructMember(2) public native AudioChannelDescription setMCoordinates(@Array({3}) FloatBuffer mCoordinates);
     /*</members>*/
     /*<methods>*//*</methods>*/
 }

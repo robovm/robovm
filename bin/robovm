@@ -6,8 +6,7 @@ if [ -f "$COMPILER_JAR" ]; then
     export ROBOVM_HOME="$BASE"
 else
     if [ "x$ROBOVM_DEV_ROOT" != 'x' ]; then
-#        COMPILER_JAR=$(ls "$ROBOVM_DEV_ROOT"/../robovm-dist/compiler/target/robovm-dist-compiler-*-nodep.jar 2> /dev/null)
-        COMPILER_JAR=$(ls "$ROBOVM_DEV_ROOT"/../robovm-dist/compiler/target/robovm-dist-compiler-*-*.jar 2> /dev/null)
+        COMPILER_JAR=$(ls "$ROBOVM_DEV_ROOT"/../robovm-dist/compiler/target/robovm-dist-compiler*.jar | egrep -v 'javadoc|sources' 2> /dev/null)
     fi
 fi
 if [ ! -f "$COMPILER_JAR" ]; then
@@ -15,9 +14,6 @@ if [ ! -f "$COMPILER_JAR" ]; then
   exit 1
 fi
 
-java \
-    -XX:+HeapDumpOnOutOfMemoryError \
-    -Xmx2g \
-    -Xss1024k \
-    -jar "$COMPILER_JAR" \
-    "$@"
+[ "x$JVM_MX" == 'x' ] && JVM_MX="2g"
+
+java -XX:+HeapDumpOnOutOfMemoryError -Xss1024k -Xmx$JVM_MX $JVM_OPTS -jar "$COMPILER_JAR" "$@"

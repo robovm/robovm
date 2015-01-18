@@ -48,6 +48,81 @@ import org.robovm.apple.mediatoolbox.*;
     extends /*<extends>*/NSObject/*</extends>*/ 
     /*<implements>*//*</implements>*/ {
 
+    public static class Notifications {
+        /**
+         * @since Available in iOS 5.0 and later.
+         */
+        public static NSObject observeTimeJumped(AVPlayerItem object, final VoidBlock1<AVPlayerItem> block) {
+            return NSNotificationCenter.getDefaultCenter().addObserver(TimeJumpedNotification(), object, NSOperationQueue.getMainQueue(), new VoidBlock1<NSNotification>() {
+                @Override
+                public void invoke(NSNotification notification) {
+                    block.invoke((AVPlayerItem)notification.getObject());
+                }
+            });
+        }
+        /**
+         * @since Available in iOS 4.0 and later.
+         */
+        public static NSObject observeDidPlayToEndTime(AVPlayerItem object, final VoidBlock1<AVPlayerItem> block) {
+            return NSNotificationCenter.getDefaultCenter().addObserver(DidPlayToEndTimeNotification(), object, NSOperationQueue.getMainQueue(), new VoidBlock1<NSNotification>() {
+                @Override
+                public void invoke(NSNotification notification) {
+                    block.invoke((AVPlayerItem)notification.getObject());
+                }
+            });
+        }
+        /**
+         * @since Available in iOS 4.3 and later.
+         */
+        public static NSObject observeFailedToPlayToEndTime(AVPlayerItem object, final VoidBlock2<AVPlayerItem, NSError> block) {
+            return NSNotificationCenter.getDefaultCenter().addObserver(FailedToPlayToEndTimeNotification(), object, NSOperationQueue.getMainQueue(), new VoidBlock1<NSNotification>() {
+                @Override
+                public void invoke(NSNotification notification) {
+                    NSDictionary<NSString, NSObject> data = notification.getUserInfo();
+                    NSError error = null;
+                    if (data.containsKey(FailedToPlayToEndTimeErrorKey())) {
+                        error = (NSError) data.get(FailedToPlayToEndTimeErrorKey());
+                    }
+                    block.invoke((AVPlayerItem)notification.getObject(), error);
+                }
+            });
+        }
+        /**
+         * @since Available in iOS 6.0 and later.
+         */
+        public static NSObject observePlaybackStalled(AVPlayerItem object, final VoidBlock1<AVPlayerItem> block) {
+            return NSNotificationCenter.getDefaultCenter().addObserver(PlaybackStalledNotification(), object, NSOperationQueue.getMainQueue(), new VoidBlock1<NSNotification>() {
+                @Override
+                public void invoke(NSNotification notification) {
+                    block.invoke((AVPlayerItem)notification.getObject());
+                }
+            });
+        }
+        /**
+         * @since Available in iOS 6.0 and later.
+         */
+        public static NSObject observeNewAccessLogEntry(AVPlayerItem object, final VoidBlock1<AVPlayerItem> block) {
+            return NSNotificationCenter.getDefaultCenter().addObserver(NewAccessLogEntryNotification(), object, NSOperationQueue.getMainQueue(), new VoidBlock1<NSNotification>() {
+                @Override
+                public void invoke(NSNotification notification) {
+                    block.invoke((AVPlayerItem)notification.getObject());
+                }
+            });
+        }
+        /**
+         * @since Available in iOS 6.0 and later.
+         */
+        public static NSObject observeNewErrorLogEntry(AVPlayerItem object, final VoidBlock1<AVPlayerItem> block) {
+            return NSNotificationCenter.getDefaultCenter().addObserver(NewErrorLogEntryNotification(), object, NSOperationQueue.getMainQueue(), new VoidBlock1<NSNotification>() {
+                @Override
+                public void invoke(NSNotification notification) {
+                    block.invoke((AVPlayerItem)notification.getObject());
+                }
+            });
+        }
+    }
+    
+    
     /*<ptr>*/public static class AVPlayerItemPtr extends Ptr<AVPlayerItem, AVPlayerItemPtr> {}/*</ptr>*/
     /*<bind>*/static { ObjCRuntime.bind(AVPlayerItem.class); }/*</bind>*/
     /*<constants>*//*</constants>*/
@@ -88,37 +163,37 @@ import org.robovm.apple.mediatoolbox.*;
      * @since Available in iOS 5.0 and later.
      */
     @Property(selector = "canPlayFastForward")
-    public native boolean isCanPlayFastForward();
+    public native boolean canPlayFastForward();
     /**
      * @since Available in iOS 6.0 and later.
      */
     @Property(selector = "canPlaySlowForward")
-    public native boolean isCanPlaySlowForward();
+    public native boolean canPlaySlowForward();
     /**
      * @since Available in iOS 6.0 and later.
      */
     @Property(selector = "canPlayReverse")
-    public native boolean isCanPlayReverse();
+    public native boolean canPlayReverse();
     /**
      * @since Available in iOS 6.0 and later.
      */
     @Property(selector = "canPlaySlowReverse")
-    public native boolean isCanPlaySlowReverse();
+    public native boolean canPlaySlowReverse();
     /**
      * @since Available in iOS 5.0 and later.
      */
     @Property(selector = "canPlayFastReverse")
-    public native boolean isCanPlayFastReverse();
+    public native boolean canPlayFastReverse();
     /**
      * @since Available in iOS 6.0 and later.
      */
     @Property(selector = "canStepForward")
-    public native boolean isCanStepForward();
+    public native boolean canStepForward();
     /**
      * @since Available in iOS 6.0 and later.
      */
     @Property(selector = "canStepBackward")
-    public native boolean isCanStepBackward();
+    public native boolean canStepBackward();
     @Property(selector = "forwardPlaybackEndTime")
     public native @ByVal CMTime getForwardPlaybackEndTime();
     @Property(selector = "setForwardPlaybackEndTime:")
@@ -147,12 +222,12 @@ import org.robovm.apple.mediatoolbox.*;
      * @since Available in iOS 6.0 and later.
      */
     @Property(selector = "seekingWaitsForVideoCompositionRendering")
-    public native boolean isSeekingWaitsForVideoCompositionRendering();
+    public native boolean seekingWaitsForVideoCompositionRendering();
     /**
      * @since Available in iOS 6.0 and later.
      */
     @Property(selector = "setSeekingWaitsForVideoCompositionRendering:")
-    public native void setSeekingWaitsForVideoCompositionRendering(boolean v);
+    public native void seekingWaitsForVideoCompositionRendering(boolean v);
     /**
      * @since Available in iOS 6.0 and later.
      */
@@ -203,6 +278,42 @@ import org.robovm.apple.mediatoolbox.*;
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
+    /**
+     * @since Available in iOS 5.0 and later.
+     */
+    @GlobalValue(symbol="AVPlayerItemTimeJumpedNotification", optional=true)
+    public static native NSString TimeJumpedNotification();
+    /**
+     * @since Available in iOS 4.0 and later.
+     */
+    @GlobalValue(symbol="AVPlayerItemDidPlayToEndTimeNotification", optional=true)
+    public static native NSString DidPlayToEndTimeNotification();
+    /**
+     * @since Available in iOS 4.3 and later.
+     */
+    @GlobalValue(symbol="AVPlayerItemFailedToPlayToEndTimeNotification", optional=true)
+    public static native NSString FailedToPlayToEndTimeNotification();
+    /**
+     * @since Available in iOS 6.0 and later.
+     */
+    @GlobalValue(symbol="AVPlayerItemPlaybackStalledNotification", optional=true)
+    public static native NSString PlaybackStalledNotification();
+    /**
+     * @since Available in iOS 6.0 and later.
+     */
+    @GlobalValue(symbol="AVPlayerItemNewAccessLogEntryNotification", optional=true)
+    public static native NSString NewAccessLogEntryNotification();
+    /**
+     * @since Available in iOS 6.0 and later.
+     */
+    @GlobalValue(symbol="AVPlayerItemNewErrorLogEntryNotification", optional=true)
+    public static native NSString NewErrorLogEntryNotification();
+    /**
+     * @since Available in iOS 4.3 and later.
+     */
+    @GlobalValue(symbol="AVPlayerItemFailedToPlayToEndTimeErrorKey", optional=true)
+    protected static native NSString FailedToPlayToEndTimeErrorKey();
+    
     @Method(selector = "initWithURL:")
     protected native @Pointer long init(NSURL URL);
     @Method(selector = "initWithAsset:")

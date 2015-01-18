@@ -54,22 +54,22 @@ import org.robovm.apple.mediatoolbox.*;
     /*<constructors>*/
     public AVAssetExportSession() {}
     protected AVAssetExportSession(SkipInit skipInit) { super(skipInit); }
-    public AVAssetExportSession(AVAsset asset, String presetName) { super((SkipInit) null); initObject(init(asset, presetName)); }
+    public AVAssetExportSession(AVAsset asset, AVAssetExportPreset presetName) { super((SkipInit) null); initObject(init(asset, presetName)); }
     /*</constructors>*/
     /*<properties>*/
     @Property(selector = "presetName")
-    public native String getPresetName();
+    public native AVAssetExportPreset getPresetName();
     /**
      * @since Available in iOS 5.0 and later.
      */
     @Property(selector = "asset")
     public native AVAsset getAsset();
     @Property(selector = "supportedFileTypes")
-    public native NSArray<NSString> getSupportedFileTypes();
+    public native @org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String> getSupportedFileTypes();
     @Property(selector = "outputFileType")
-    public native NSString getOutputFileType();
+    public native String getOutputFileType();
     @Property(selector = "setOutputFileType:")
-    public native void setOutputFileType(NSString v);
+    public native void setOutputFileType(String v);
     @Property(selector = "outputURL")
     public native NSURL getOutputURL();
     @Property(selector = "setOutputURL:")
@@ -113,12 +113,12 @@ import org.robovm.apple.mediatoolbox.*;
      * @since Available in iOS 7.0 and later.
      */
     @Property(selector = "audioTimePitchAlgorithm")
-    public native String getAudioTimePitchAlgorithm();
+    public native AVAudioTimePitchAlgorithm getAudioTimePitchAlgorithm();
     /**
      * @since Available in iOS 7.0 and later.
      */
     @Property(selector = "setAudioTimePitchAlgorithm:")
-    public native void setAudioTimePitchAlgorithm(String v);
+    public native void setAudioTimePitchAlgorithm(AVAudioTimePitchAlgorithm v);
     @Property(selector = "audioMix")
     public native AVAudioMix getAudioMix();
     @Property(selector = "setAudioMix:")
@@ -133,14 +133,14 @@ import org.robovm.apple.mediatoolbox.*;
     @Property(selector = "customVideoCompositor")
     public native AVVideoCompositing getCustomVideoCompositor();
     @Property(selector = "shouldOptimizeForNetworkUse")
-    public native boolean isShouldOptimizeForNetworkUse();
+    public native boolean shouldOptimizeForNetworkUse();
     @Property(selector = "setShouldOptimizeForNetworkUse:")
     public native void setShouldOptimizeForNetworkUse(boolean v);
     /**
      * @since Available in iOS 8.0 and later.
      */
     @Property(selector = "canPerformMultiplePassesOverSourceMediaData")
-    public native boolean isCanPerformMultiplePassesOverSourceMediaData();
+    public native boolean canPerformMultiplePassesOverSourceMediaData();
     /**
      * @since Available in iOS 8.0 and later.
      */
@@ -160,7 +160,7 @@ import org.robovm.apple.mediatoolbox.*;
     /*<members>*//*</members>*/
     /*<methods>*/
     @Method(selector = "initWithAsset:presetName:")
-    protected native @Pointer long init(AVAsset asset, String presetName);
+    protected native @Pointer long init(AVAsset asset, AVAssetExportPreset presetName);
     /**
      * @since Available in iOS 6.0 and later.
      */
@@ -171,18 +171,18 @@ import org.robovm.apple.mediatoolbox.*;
     @Method(selector = "cancelExport")
     public native void cancelExport();
     @Method(selector = "allExportPresets")
-    public static native NSArray<NSString> getAllExportPresets();
+    public static native @org.robovm.rt.bro.annotation.Marshaler(AVAssetExportPreset.AsListMarshaler.class) List<AVAssetExportPreset> getAllExportPresets();
     @Method(selector = "exportPresetsCompatibleWithAsset:")
-    public static native NSArray<NSString> getCompatibleExportPresets(AVAsset asset);
+    public static native @org.robovm.rt.bro.annotation.Marshaler(AVAssetExportPreset.AsListMarshaler.class) List<AVAssetExportPreset> getCompatibleExportPresets(AVAsset asset);
     /**
      * @since Available in iOS 6.0 and later.
      */
     @Method(selector = "determineCompatibilityOfExportPreset:withAsset:outputFileType:completionHandler:")
-    public static native void determineCompatibilityOfExportPreset(String presetName, AVAsset asset, String outputFileType, @Block VoidBooleanBlock handler);
+    public static native void determineCompatibilityOfExportPreset(AVAssetExportPreset presetName, AVAsset asset, String outputFileType, @Block VoidBooleanBlock handler);
     /**
      * @since Available in iOS 4.1 and later.
      */
     @Method(selector = "exportSessionWithAsset:presetName:")
-    public static native AVAssetExportSession getExportSession(AVAsset asset, String presetName);
+    public static native AVAssetExportSession create(AVAsset asset, AVAssetExportPreset presetName);
     /*</methods>*/
 }

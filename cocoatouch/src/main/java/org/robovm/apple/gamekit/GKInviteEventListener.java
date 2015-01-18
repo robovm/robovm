@@ -52,10 +52,17 @@ import org.robovm.apple.uikit.*;
     @Method(selector = "player:didAcceptInvite:")
     void didAcceptInvite(GKPlayer player, GKInvite invite);
     /**
-     * @since Available in iOS 7.0 and later.
+     * @since Available in iOS 8.0 and later.
      */
+    @Method(selector = "player:didRequestMatchWithRecipients:")
+    void didRequestMatch(GKPlayer player, NSArray<GKPlayer> recipientPlayers);
+    /**
+     * @since Available in iOS 7.0 and later.
+     * @deprecated Deprecated in iOS 8.0.
+     */
+    @Deprecated
     @Method(selector = "player:didRequestMatchWithPlayers:")
-    void didRequestMatch(GKPlayer player, NSArray<NSString> playerIDsToInvite);
+    void didRequestMatch(GKPlayer player, @org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String> playerIDsToInvite);
     /*</methods>*/
     /*<adapter>*/
     /*</adapter>*/

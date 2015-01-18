@@ -70,11 +70,11 @@ import org.robovm.apple.addressbook.*;
     @Property(selector = "setMessage:")
     public native void setMessage(String v);
     @Property(selector = "allowsActions")
-    public native boolean isAllowsActions();
+    public native boolean allowsActions();
     @Property(selector = "setAllowsActions:")
     public native void setAllowsActions(boolean v);
     @Property(selector = "allowsAddingToAddressBook")
-    public native boolean isAllowsAddingToAddressBook();
+    public native boolean allowsAddingToAddressBook();
     @Property(selector = "setAllowsAddingToAddressBook:")
     public native void setAllowsAddingToAddressBook(boolean v);
     /*</properties>*/

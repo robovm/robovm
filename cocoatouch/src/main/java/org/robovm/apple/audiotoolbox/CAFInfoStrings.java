@@ -49,13 +49,13 @@ import org.robovm.apple.coremedia.*;
     /*<constructors>*/
     public CAFInfoStrings() {}
     public CAFInfoStrings(int mNumEntries) {
-        this.mNumEntries(mNumEntries);
+        this.setMNumEntries(mNumEntries);
     }
     /*</constructors>*/
     /*<properties>*//*</properties>*/
     /*<members>*/
-    @StructMember(0) public native int mNumEntries();
-    @StructMember(0) public native CAFInfoStrings mNumEntries(int mNumEntries);
+    @StructMember(0) public native int getMNumEntries();
+    @StructMember(0) public native CAFInfoStrings setMNumEntries(int mNumEntries);
     /*</members>*/
     /*<methods>*//*</methods>*/
 }

@@ -164,7 +164,7 @@ import org.robovm.apple.coremedia.*;
      * @since Available in iOS 2.0 and later.
      */
     @Bridge(symbol="AudioQueueGetCurrentTime", optional=true)
-    public native AudioQueueError getCurrentTime(AudioQueueTimeline inTimeline, AudioTimeStamp outTimeStamp, BytePtr outTimelineDiscontinuity);
+    public native AudioQueueError getCurrentTime(AudioQueueTimeline inTimeline, AudioTimeStamp outTimeStamp, BooleanPtr outTimelineDiscontinuity);
     /**
      * @since Available in iOS 2.0 and later.
      */

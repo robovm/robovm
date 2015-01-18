@@ -67,7 +67,7 @@ import org.robovm.apple.mediaplayer.MPMoviePlayerViewController;
     /*<constructors>*/
     public UIViewController() {}
     protected UIViewController(SkipInit skipInit) { super(skipInit); }
-    public UIViewController(String nibNameOrNil, NSBundle nibBundleOrNil) { super((SkipInit) null); initObject(initWithNibName$bundle$(nibNameOrNil, nibBundleOrNil)); }
+    public UIViewController(String nibNameOrNil, NSBundle nibBundleOrNil) { super((SkipInit) null); initObject(init(nibNameOrNil, nibBundleOrNil)); }
     /*</constructors>*/
     /*<properties>*/
     @Property(selector = "view")
@@ -110,7 +110,7 @@ import org.robovm.apple.mediaplayer.MPMoviePlayerViewController;
      * @since Available in iOS 5.0 and later.
      */
     @Property(selector = "definesPresentationContext")
-    public native boolean isDefinesPresentationContext();
+    public native boolean definesPresentationContext();
     /**
      * @since Available in iOS 5.0 and later.
      */
@@ -120,7 +120,7 @@ import org.robovm.apple.mediaplayer.MPMoviePlayerViewController;
      * @since Available in iOS 5.0 and later.
      */
     @Property(selector = "providesPresentationContextTransitionStyle")
-    public native boolean isProvidesPresentationContextTransitionStyle();
+    public native boolean providesPresentationContextTransitionStyle();
     /**
      * @since Available in iOS 5.0 and later.
      */
@@ -150,7 +150,7 @@ import org.robovm.apple.mediaplayer.MPMoviePlayerViewController;
      * @since Available in iOS 7.0 and later.
      */
     @Property(selector = "modalPresentationCapturesStatusBarAppearance")
-    public native boolean isModalPresentationCapturesStatusBarAppearance();
+    public native boolean modalPresentationCapturesStatusBarAppearance();
     /**
      * @since Available in iOS 7.0 and later.
      */
@@ -162,7 +162,7 @@ import org.robovm.apple.mediaplayer.MPMoviePlayerViewController;
      */
     @Deprecated
     @Property(selector = "wantsFullScreenLayout")
-    public native boolean isWantsFullScreenLayout();
+    public native boolean wantsFullScreenLayout();
     /**
      * @since Available in iOS 3.0 and later.
      * @deprecated Deprecated in iOS 7.0.
@@ -184,7 +184,7 @@ import org.robovm.apple.mediaplayer.MPMoviePlayerViewController;
      * @since Available in iOS 7.0 and later.
      */
     @Property(selector = "extendedLayoutIncludesOpaqueBars")
-    public native boolean isExtendedLayoutIncludesOpaqueBars();
+    public native boolean extendedLayoutIncludesOpaqueBars();
     /**
      * @since Available in iOS 7.0 and later.
      */
@@ -194,7 +194,7 @@ import org.robovm.apple.mediaplayer.MPMoviePlayerViewController;
      * @since Available in iOS 7.0 and later.
      */
     @Property(selector = "automaticallyAdjustsScrollViewInsets")
-    public native boolean isAutomaticallyAdjustsScrollViewInsets();
+    public native boolean automaticallyAdjustsScrollViewInsets();
     /**
      * @since Available in iOS 7.0 and later.
      */
@@ -291,7 +291,7 @@ import org.robovm.apple.mediaplayer.MPMoviePlayerViewController;
     @Property(selector = "navigationItem")
     public native UINavigationItem getNavigationItem();
     @Property(selector = "hidesBottomBarWhenPushed")
-    public native boolean isHidesBottomBarWhenPushed();
+    public native boolean hidesBottomBarWhenPushed();
     @Property(selector = "setHidesBottomBarWhenPushed:")
     public native void setHidesBottomBarWhenPushed(boolean v);
     @Property(selector = "navigationController")
@@ -364,7 +364,7 @@ import org.robovm.apple.mediaplayer.MPMoviePlayerViewController;
      * @since Available in iOS 7.0 and later.
      */
     public boolean isCanDisplayBannerAds() {
-        return org.robovm.apple.iad.UIViewControllerExtensions.isCanDisplayBannerAds(this);
+        return org.robovm.apple.iad.UIViewControllerExtensions.canDisplayBannerAds(this);
     }
     /**
      * @since Available in iOS 7.0 and later.
@@ -425,7 +425,7 @@ import org.robovm.apple.mediaplayer.MPMoviePlayerViewController;
     public static native NSString ShowDetailTargetDidChangeNotification();
     
     @Method(selector = "initWithNibName:bundle:")
-    protected native @Pointer long initWithNibName$bundle$(String nibNameOrNil, NSBundle nibBundleOrNil);
+    protected native @Pointer long init(String nibNameOrNil, NSBundle nibBundleOrNil);
     @Method(selector = "loadView")
     public native void loadView();
     /**

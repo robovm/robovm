@@ -33,8 +33,9 @@ import org.robovm.apple.uikit.*;
 /*<javadoc>*/
 
 /*</javadoc>*/
+@ForceLinkClass(GKError.class)
 /*<annotations>*/@Marshaler(ValuedEnum.AsMachineSizedSIntMarshaler.class)/*</annotations>*/
-public enum /*<name>*/GKErrorCode/*</name>*/ implements ValuedEnum {
+public enum /*<name>*/GKErrorCode/*</name>*/ implements NSErrorCode {
     /*<values>*/
     Unknown(1L),
     Cancelled(2L),
@@ -60,7 +61,9 @@ public enum /*<name>*/GKErrorCode/*</name>*/ implements ValuedEnum {
     TurnBasedInvalidParticipant(22L),
     TurnBasedInvalidTurn(23L),
     TurnBasedInvalidState(24L),
-    InvitationsDisabled(25L);
+    InvitationsDisabled(25L),
+    PlayerPhotoFailure(26L),
+    UbiquityContainerUnavailable(27L);
     /*</values>*/
 
     /*<bind>*/

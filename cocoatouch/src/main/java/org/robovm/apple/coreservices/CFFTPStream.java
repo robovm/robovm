@@ -53,9 +53,10 @@ import org.robovm.apple.corefoundation.*;
     /**
      * @since Available in iOS 2.0 and later.
      */
+    @SuppressWarnings({ "unchecked", "rawtypes" })
     public static NSDictionary<NSString, ?> createParsedResourceListing(byte[] bytes) {
         NSDictionary.NSDictionaryPtr ptr = new NSDictionary.NSDictionaryPtr<>();
-        createParsedResourceListing(CoreFoundation.AllocatorDefault(), VM.getArrayValuesAddress(bytes), bytes.length, ptr);
+        createParsedResourceListing(null, VM.getArrayValuesAddress(bytes), bytes.length, ptr);
         return (NSDictionary<NSString, ?>)ptr.get();
     }
     /**

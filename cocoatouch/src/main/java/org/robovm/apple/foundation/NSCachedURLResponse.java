@@ -50,8 +50,8 @@ import org.robovm.apple.dispatch.*;
     /*<constructors>*/
     public NSCachedURLResponse() {}
     protected NSCachedURLResponse(SkipInit skipInit) { super(skipInit); }
-    public NSCachedURLResponse(NSURLResponse response, NSData data) { super((SkipInit) null); initObject(initWithResponse$data$(response, data)); }
-    public NSCachedURLResponse(NSURLResponse response, NSData data, NSDictionary<?, ?> userInfo, NSURLCacheStoragePolicy storagePolicy) { super((SkipInit) null); initObject(initWithResponse$data$userInfo$storagePolicy$(response, data, userInfo, storagePolicy)); }
+    public NSCachedURLResponse(NSURLResponse response, NSData data) { super((SkipInit) null); initObject(init(response, data)); }
+    public NSCachedURLResponse(NSURLResponse response, NSData data, NSDictionary<?, ?> userInfo, NSURLCacheStoragePolicy storagePolicy) { super((SkipInit) null); initObject(init(response, data, userInfo, storagePolicy)); }
     /*</constructors>*/
     /*<properties>*/
     @Property(selector = "response")
@@ -66,8 +66,8 @@ import org.robovm.apple.dispatch.*;
     /*<members>*//*</members>*/
     /*<methods>*/
     @Method(selector = "initWithResponse:data:")
-    protected native @Pointer long initWithResponse$data$(NSURLResponse response, NSData data);
+    protected native @Pointer long init(NSURLResponse response, NSData data);
     @Method(selector = "initWithResponse:data:userInfo:storagePolicy:")
-    protected native @Pointer long initWithResponse$data$userInfo$storagePolicy$(NSURLResponse response, NSData data, NSDictionary<?, ?> userInfo, NSURLCacheStoragePolicy storagePolicy);
+    protected native @Pointer long init(NSURLResponse response, NSData data, NSDictionary<?, ?> userInfo, NSURLCacheStoragePolicy storagePolicy);
     /*</methods>*/
 }

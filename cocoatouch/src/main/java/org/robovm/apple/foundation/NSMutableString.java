@@ -50,7 +50,7 @@ import org.robovm.apple.dispatch.*;
     /*<constructors>*/
     public NSMutableString() {}
     protected NSMutableString(SkipInit skipInit) { super(skipInit); }
-    public NSMutableString(@MachineSizedUInt long capacity) { super((SkipInit) null); initObject(initWithCapacity$(capacity)); }
+    public NSMutableString(@MachineSizedUInt long capacity) { super((SkipInit) null); initObject(init(capacity)); }
     /*</constructors>*/
     /*<properties>*/
     
@@ -68,7 +68,7 @@ import org.robovm.apple.dispatch.*;
     @Method(selector = "setString:")
     public native void setString(String aString);
     @Method(selector = "initWithCapacity:")
-    protected native @Pointer long initWithCapacity$(@MachineSizedUInt long capacity);
+    protected native @Pointer long init(@MachineSizedUInt long capacity);
     @Method(selector = "replaceOccurrencesOfString:withString:options:range:")
     public native @MachineSizedUInt long replaceAll(String target, String replacement, NSStringCompareOptions options, @ByVal NSRange searchRange);
     /*</methods>*/

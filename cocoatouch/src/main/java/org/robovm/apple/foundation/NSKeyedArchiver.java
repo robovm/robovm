@@ -50,7 +50,7 @@ import org.robovm.apple.dispatch.*;
     /*<constructors>*/
     public NSKeyedArchiver() {}
     protected NSKeyedArchiver(SkipInit skipInit) { super(skipInit); }
-    public NSKeyedArchiver(NSMutableData data) { super((SkipInit) null); initObject(initForWritingWithMutableData$(data)); }
+    public NSKeyedArchiver(NSMutableData data) { super((SkipInit) null); initObject(init(data)); }
     /*</constructors>*/
     /*<properties>*/
     @Property(selector = "delegate")
@@ -71,7 +71,7 @@ import org.robovm.apple.dispatch.*;
         if (file == null) {
             throw new NullPointerException("file");
         }
-        return archiveRootObject$toFile$(rootObject, file.getAbsolutePath());
+        return archiveRootObject(rootObject, file.getAbsolutePath());
     }
     
     /*<methods>*/
@@ -82,7 +82,7 @@ import org.robovm.apple.dispatch.*;
     public static native String ArchiveRootObjectKey();
     
     @Method(selector = "initForWritingWithMutableData:")
-    protected native @Pointer long initForWritingWithMutableData$(NSMutableData data);
+    protected native @Pointer long init(NSMutableData data);
     @Method(selector = "finishEncoding")
     public native void finishEncoding();
     @Method(selector = "setClassName:forClass:")
@@ -97,7 +97,7 @@ import org.robovm.apple.dispatch.*;
     @Method(selector = "archivedDataWithRootObject:")
     public static native NSData archive(NSObject rootObject);
     @Method(selector = "archiveRootObject:toFile:")
-    private static native boolean archiveRootObject$toFile$(NSObject rootObject, String path);
+    private static native boolean archiveRootObject(NSObject rootObject, String path);
     @Method(selector = "setClassName:forClass:")
     public static native void setDefaultClassNameForClass(String codedName, Class<?> cls);
     @Method(selector = "classNameForClass:")

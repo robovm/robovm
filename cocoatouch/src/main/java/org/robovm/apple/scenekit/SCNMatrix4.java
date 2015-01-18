@@ -99,132 +99,36 @@ import org.robovm.apple.opengles.*;
     /*<members>*/
     @StructMember(0) public native float getM11();
     @StructMember(0) public native SCNMatrix4 setM11(float m11);
-    
-    @Deprecated
-    @StructMember(0) public native float m11();
-    @Deprecated
-    @StructMember(0) public native SCNMatrix4 m11(float m11);
-    
     @StructMember(1) public native float getM12();
     @StructMember(1) public native SCNMatrix4 setM12(float m12);
-    
-    @Deprecated
-    @StructMember(1) public native float m12();
-    @Deprecated
-    @StructMember(1) public native SCNMatrix4 m12(float m12);
-    
     @StructMember(2) public native float getM13();
     @StructMember(2) public native SCNMatrix4 setM13(float m13);
-    
-    @Deprecated
-    @StructMember(2) public native float m13();
-    @Deprecated
-    @StructMember(2) public native SCNMatrix4 m13(float m13);
-    
     @StructMember(3) public native float getM14();
     @StructMember(3) public native SCNMatrix4 setM14(float m14);
-    
-    @Deprecated
-    @StructMember(3) public native float m14();
-    @Deprecated
-    @StructMember(3) public native SCNMatrix4 m14(float m14);
-    
     @StructMember(4) public native float getM21();
     @StructMember(4) public native SCNMatrix4 setM21(float m21);
-    
-    @Deprecated
-    @StructMember(4) public native float m21();
-    @Deprecated
-    @StructMember(4) public native SCNMatrix4 m21(float m21);
-    
     @StructMember(5) public native float getM22();
     @StructMember(5) public native SCNMatrix4 setM22(float m22);
-    
-    @Deprecated
-    @StructMember(5) public native float m22();
-    @Deprecated
-    @StructMember(5) public native SCNMatrix4 m22(float m22);
-    
     @StructMember(6) public native float getM23();
     @StructMember(6) public native SCNMatrix4 setM23(float m23);
-    
-    @Deprecated
-    @StructMember(6) public native float m23();
-    @Deprecated
-    @StructMember(6) public native SCNMatrix4 m23(float m23);
-    
     @StructMember(7) public native float getM24();
     @StructMember(7) public native SCNMatrix4 setM24(float m24);
-    
-    @Deprecated
-    @StructMember(7) public native float m24();
-    @Deprecated
-    @StructMember(7) public native SCNMatrix4 m24(float m24);
-    
     @StructMember(8) public native float getM31();
     @StructMember(8) public native SCNMatrix4 setM31(float m31);
-    
-    @Deprecated
-    @StructMember(8) public native float m31();
-    @Deprecated
-    @StructMember(8) public native SCNMatrix4 m31(float m31);
-    
     @StructMember(9) public native float getM32();
     @StructMember(9) public native SCNMatrix4 setM32(float m32);
-    
-    @Deprecated
-    @StructMember(9) public native float m32();
-    @Deprecated
-    @StructMember(9) public native SCNMatrix4 m32(float m32);
-    
     @StructMember(10) public native float getM33();
     @StructMember(10) public native SCNMatrix4 setM33(float m33);
-    
-    @Deprecated
-    @StructMember(10) public native float m33();
-    @Deprecated
-    @StructMember(10) public native SCNMatrix4 m33(float m33);
-    
     @StructMember(11) public native float getM34();
     @StructMember(11) public native SCNMatrix4 setM34(float m34);
-    
-    @Deprecated
-    @StructMember(11) public native float m34();
-    @Deprecated
-    @StructMember(11) public native SCNMatrix4 m34(float m34);
-    
     @StructMember(12) public native float getM41();
     @StructMember(12) public native SCNMatrix4 setM41(float m41);
-    
-    @Deprecated
-    @StructMember(12) public native float m41();
-    @Deprecated
-    @StructMember(12) public native SCNMatrix4 m41(float m41);
-    
     @StructMember(13) public native float getM42();
     @StructMember(13) public native SCNMatrix4 setM42(float m42);
-    
-    @Deprecated
-    @StructMember(13) public native float m42();
-    @Deprecated
-    @StructMember(13) public native SCNMatrix4 m42(float m42);
-    
     @StructMember(14) public native float getM43();
     @StructMember(14) public native SCNMatrix4 setM43(float m43);
-    
-    @Deprecated
-    @StructMember(14) public native float m43();
-    @Deprecated
-    @StructMember(14) public native SCNMatrix4 m43(float m43);
-    
     @StructMember(15) public native float getM44();
     @StructMember(15) public native SCNMatrix4 setM44(float m44);
-    
-    @Deprecated
-    @StructMember(15) public native float m44();
-    @Deprecated
-    @StructMember(15) public native SCNMatrix4 m44(float m44);
-    
     /*</members>*/
     /*<methods>*/
     @GlobalValue(symbol="SCNMatrix4Identity", optional=true)

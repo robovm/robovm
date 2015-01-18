@@ -31,7 +31,11 @@ import org.robovm.apple.uikit.*;
 /*</imports>*/
 
 /*<javadoc>*/
-
+/**
+ * @since Available in iOS 4.1 and later.
+ * @deprecated Deprecated in iOS 7.0.
+ */
+@Deprecated
 /*</javadoc>*/
 /*<annotations>*/@Library("GameKit") @NativeClass/*</annotations>*/
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/GKLeaderboardViewController/*</name>*/ 

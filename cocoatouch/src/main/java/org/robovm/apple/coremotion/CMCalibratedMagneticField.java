@@ -52,20 +52,8 @@ import org.robovm.apple.foundation.*;
     /*<members>*/
     @StructMember(0) public native @ByVal CMMagneticField getField();
     @StructMember(0) public native CMCalibratedMagneticField setField(@ByVal CMMagneticField field);
-    
-    @Deprecated
-    @StructMember(0) public native @ByVal CMMagneticField field();
-    @Deprecated
-    @StructMember(0) public native CMCalibratedMagneticField field(@ByVal CMMagneticField field);
-    
     @StructMember(1) public native CMMagneticFieldCalibrationAccuracy getAccuracy();
     @StructMember(1) public native CMCalibratedMagneticField setAccuracy(CMMagneticFieldCalibrationAccuracy accuracy);
-    
-    @Deprecated
-    @StructMember(1) public native CMMagneticFieldCalibrationAccuracy accuracy();
-    @Deprecated
-    @StructMember(1) public native CMCalibratedMagneticField accuracy(CMMagneticFieldCalibrationAccuracy accuracy);
-    
     /*</members>*/
     /*<methods>*//*</methods>*/
 }

@@ -60,7 +60,7 @@ import org.robovm.apple.dispatch.*;
      * @since Available in iOS 7.0 and later.
      */
     @Property(selector = "includesPeerToPeer")
-    public native boolean isIncludesPeerToPeer();
+    public native boolean includesPeerToPeer();
     /**
      * @since Available in iOS 7.0 and later.
      */

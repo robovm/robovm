@@ -55,7 +55,7 @@ import org.robovm.apple.dispatch.*;
     @Property(selector = "methodSignature")
     public native NSMethodSignature getMethodSignature();
     @Property(selector = "argumentsRetained")
-    public native boolean isArgumentsRetained();
+    public native boolean argumentsRetained();
     @Property(selector = "target")
     public native NSObject getTarget();
     @Property(selector = "setTarget:", strongRef = true)

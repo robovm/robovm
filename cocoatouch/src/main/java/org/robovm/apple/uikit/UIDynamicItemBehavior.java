@@ -51,7 +51,7 @@ import org.robovm.apple.corelocation.*;
     /*<constructors>*/
     public UIDynamicItemBehavior() {}
     protected UIDynamicItemBehavior(SkipInit skipInit) { super(skipInit); }
-    public UIDynamicItemBehavior(List<UIDynamicItem> items) { super((SkipInit) null); initObject(initWithItems$(items)); }
+    public UIDynamicItemBehavior(List<UIDynamicItem> items) { super((SkipInit) null); initObject(init(items)); }
     /*</constructors>*/
     /*<properties>*/
     @Property(selector = "items")
@@ -77,14 +77,14 @@ import org.robovm.apple.corelocation.*;
     @Property(selector = "setAngularResistance:")
     public native void setAngularResistance(@MachineSizedFloat double v);
     @Property(selector = "allowsRotation")
-    public native boolean isAllowsRotation();
+    public native boolean allowsRotation();
     @Property(selector = "setAllowsRotation:")
     public native void setAllowsRotation(boolean v);
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
     @Method(selector = "initWithItems:")
-    protected native @Pointer long initWithItems$(List<UIDynamicItem> items);
+    protected native @Pointer long init(List<UIDynamicItem> items);
     @Method(selector = "addItem:")
     public native void addItem(UIDynamicItem item);
     @Method(selector = "removeItem:")

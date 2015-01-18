@@ -48,8 +48,6 @@
 
 package java.lang;
 
-import dalvik.system.VMRuntime;
-import dalvik.system.VMStack;
 import java.io.BufferedInputStream;
 import java.io.Console;
 import java.io.FileDescriptor;
@@ -66,14 +64,17 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
 import java.util.Set;
+
 import libcore.icu.ICU;
 import libcore.io.ErrnoException;
 import libcore.io.Libcore;
 import libcore.io.StructPasswd;
 import libcore.io.StructUtsname;
-import libcore.util.ZoneInfoDB;
 
 import org.robovm.rt.VM;
+
+import dalvik.system.VMRuntime;
+import dalvik.system.VMStack;
 
 /**
  * Provides access to system-related information and resources including
@@ -473,7 +474,7 @@ public final class System {
             p.put("user.home", passwd.pw_dir);
             p.put("user.name", passwd.pw_name);
         } catch (ErrnoException exception) {
-            // RoboVM note: Start change. Fall back to environment variables. getpwuid() fails on iOS.
+            // RoboVM note: Start change. Fall back to environment variables. getpwuid() fails on the iOS simulator.
             String home = getenv("HOME");
             String user = getenv("USER");
             p.put("user.home", home != null ? home : "");
@@ -495,6 +496,21 @@ public final class System {
 
         parsePropertyAssignments(p, robovmSpecialProperties());
         
+        // RoboVM note: Added in RoboVM. Make sure we get sane and consistent
+        // user.home, user.dir and user.name values on iOS.
+        if (p.getProperty("os.name").contains("iOS")) {
+            // On iOS we want user.home and user.dir to point to the app's data
+            // container root dir. This is the dir $HOME points to. We also set
+            // user.name to $USER or hardcode 'mobile' if $USER isn't set (iOS
+            // simulator).
+            String home = getenv("HOME");
+            String user = getenv("USER");
+            p.put("user.home", home != null ? home : "");
+            p.put("user.dir", home != null ? home : "/");
+            p.put("user.name", user != null ? user : "mobile");
+        }
+        // RoboVM note: End change.
+
         // Override built-in properties with settings from the command line.
         parsePropertyAssignments(p, runtime.properties());
 

@@ -69,7 +69,7 @@ import org.robovm.apple.opengles.*;
     @Property(selector = "setIdleDurationVariation:")
     public native void setIdleDurationVariation(@MachineSizedFloat double v);
     @Property(selector = "loops")
-    public native boolean isLoops();
+    public native boolean loops();
     @Property(selector = "setLoops:")
     public native void setLoops(boolean v);
     @Property(selector = "birthRate")
@@ -233,7 +233,7 @@ import org.robovm.apple.opengles.*;
     @Property(selector = "setAffectedByPhysicsFields:")
     public native void setAffectedByPhysicsFields(boolean v);
     @Property(selector = "particleDiesOnCollision")
-    public native boolean isParticleDiesOnCollision();
+    public native boolean particleDiesOnCollision();
     @Property(selector = "setParticleDiesOnCollision:")
     public native void setParticleDiesOnCollision(boolean v);
     @Property(selector = "colliderNodes")

@@ -51,7 +51,7 @@ import org.robovm.apple.corelocation.*;
     /*<constructors>*/
     public UIActivityIndicatorView() {}
     protected UIActivityIndicatorView(SkipInit skipInit) { super(skipInit); }
-    public UIActivityIndicatorView(UIActivityIndicatorViewStyle style) { super((SkipInit) null); initObject(initWithActivityIndicatorStyle$(style)); }
+    public UIActivityIndicatorView(UIActivityIndicatorViewStyle style) { super((SkipInit) null); initObject(init(style)); }
     /*</constructors>*/
     
     public UIActivityIndicatorView(CGRect frame) {
@@ -64,7 +64,7 @@ import org.robovm.apple.corelocation.*;
     @Property(selector = "setActivityIndicatorViewStyle:")
     public native void setActivityIndicatorViewStyle(UIActivityIndicatorViewStyle v);
     @Property(selector = "hidesWhenStopped")
-    public native boolean isHidesWhenStopped();
+    public native boolean hidesWhenStopped();
     @Property(selector = "setHidesWhenStopped:")
     public native void setHidesWhenStopped(boolean v);
     /**
@@ -81,7 +81,7 @@ import org.robovm.apple.corelocation.*;
     /*<members>*//*</members>*/
     /*<methods>*/
     @Method(selector = "initWithActivityIndicatorStyle:")
-    protected native @Pointer long initWithActivityIndicatorStyle$(UIActivityIndicatorViewStyle style);
+    protected native @Pointer long init(UIActivityIndicatorViewStyle style);
     @Method(selector = "startAnimating")
     public native void startAnimating();
     @Method(selector = "stopAnimating")

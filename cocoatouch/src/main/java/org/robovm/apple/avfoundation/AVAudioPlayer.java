@@ -54,17 +54,45 @@ import org.robovm.apple.mediatoolbox.*;
     /*<constructors>*/
     public AVAudioPlayer() {}
     protected AVAudioPlayer(SkipInit skipInit) { super(skipInit); }
-    public AVAudioPlayer(NSURL url, NSError.NSErrorPtr outError) { super((SkipInit) null); initObject(init(url, outError)); }
-    public AVAudioPlayer(NSData data, NSError.NSErrorPtr outError) { super((SkipInit) null); initObject(init(data, outError)); }
-    /**
-     * @since Available in iOS 7.0 and later.
-     */
-    public AVAudioPlayer(NSURL url, String utiString, NSError.NSErrorPtr outError) { super((SkipInit) null); initObject(init(url, utiString, outError)); }
-    /**
-     * @since Available in iOS 7.0 and later.
-     */
-    public AVAudioPlayer(NSData data, String utiString, NSError.NSErrorPtr outError) { super((SkipInit) null); initObject(init(data, utiString, outError)); }
     /*</constructors>*/
+    public AVAudioPlayer(NSURL url) throws NSErrorException {
+        super((SkipInit)null);
+        NSError.NSErrorPtr err = new NSError.NSErrorPtr();
+        initObject(init(url, err));
+        if (err.get() != null) {
+            throw new NSErrorException(err.get());
+        }
+    }
+    public AVAudioPlayer(NSData data) throws NSErrorException {
+        super((SkipInit)null);
+        NSError.NSErrorPtr err = new NSError.NSErrorPtr();
+        initObject(init(data, err));
+        if (err.get() != null) {
+            throw new NSErrorException(err.get());
+        }
+    }
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
+    public AVAudioPlayer(NSURL url, String utiString) throws NSErrorException {
+        super((SkipInit)null);
+        NSError.NSErrorPtr err = new NSError.NSErrorPtr();
+        initObject(init(url, utiString, err));
+        if (err.get() != null) {
+            throw new NSErrorException(err.get());
+        }
+    }
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
+    public AVAudioPlayer(NSData data, String utiString) throws NSErrorException {
+        super((SkipInit)null);
+        NSError.NSErrorPtr err = new NSError.NSErrorPtr();
+        initObject(init(data, utiString, err));
+        if (err.get() != null) {
+            throw new NSErrorException(err.get());
+        }
+    }
     /*<properties>*/
     @Property(selector = "isPlaying")
     public native boolean isPlaying();
@@ -98,12 +126,12 @@ import org.robovm.apple.mediatoolbox.*;
      * @since Available in iOS 5.0 and later.
      */
     @Property(selector = "enableRate")
-    public native boolean isEnableRate();
+    public native boolean isRateEnabled();
     /**
      * @since Available in iOS 5.0 and later.
      */
     @Property(selector = "setEnableRate:")
-    public native void setEnableRate(boolean v);
+    public native void setRateEnabled(boolean v);
     /**
      * @since Available in iOS 5.0 and later.
      */
@@ -131,7 +159,7 @@ import org.robovm.apple.mediatoolbox.*;
      * @since Available in iOS 4.0 and later.
      */
     @Property(selector = "settings")
-    public native NSDictionary<NSString, ?> getSettings();
+    public native AVAudioSettings getSettings();
     @Property(selector = "isMeteringEnabled")
     public native boolean isMeteringEnabled();
     @Property(selector = "setMeteringEnabled:")
@@ -179,8 +207,8 @@ import org.robovm.apple.mediatoolbox.*;
     @Method(selector = "updateMeters")
     public native void updateMeters();
     @Method(selector = "peakPowerForChannel:")
-    public native float getPeakPower(@MachineSizedUInt long channelNumber);
+    public native float getPeakPowerForChannel(@MachineSizedUInt long channelNumber);
     @Method(selector = "averagePowerForChannel:")
-    public native float getAveragePower(@MachineSizedUInt long channelNumber);
+    public native float getAveragePowerForChannel(@MachineSizedUInt long channelNumber);
     /*</methods>*/
 }

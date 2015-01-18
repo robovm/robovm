@@ -49,22 +49,22 @@ import org.robovm.apple.coremedia.*;
     /*<constructors>*/
     public CAFRegion() {}
     public CAFRegion(int mRegionID, int mFlags, int mNumberMarkers, CAFMarker mMarkers) {
-        this.mRegionID(mRegionID);
-        this.mFlags(mFlags);
-        this.mNumberMarkers(mNumberMarkers);
-        this.mMarkers(mMarkers);
+        this.setMRegionID(mRegionID);
+        this.setMFlags(mFlags);
+        this.setMNumberMarkers(mNumberMarkers);
+        this.setMMarkers(mMarkers);
     }
     /*</constructors>*/
     /*<properties>*//*</properties>*/
     /*<members>*/
-    @StructMember(0) public native int mRegionID();
-    @StructMember(0) public native CAFRegion mRegionID(int mRegionID);
-    @StructMember(1) public native int mFlags();
-    @StructMember(1) public native CAFRegion mFlags(int mFlags);
-    @StructMember(2) public native int mNumberMarkers();
-    @StructMember(2) public native CAFRegion mNumberMarkers(int mNumberMarkers);
-    @StructMember(3) public native @Array({1}) CAFMarker mMarkers();
-    @StructMember(3) public native CAFRegion mMarkers(@Array({1}) CAFMarker mMarkers);
+    @StructMember(0) public native int getMRegionID();
+    @StructMember(0) public native CAFRegion setMRegionID(int mRegionID);
+    @StructMember(1) public native int getMFlags();
+    @StructMember(1) public native CAFRegion setMFlags(int mFlags);
+    @StructMember(2) public native int getMNumberMarkers();
+    @StructMember(2) public native CAFRegion setMNumberMarkers(int mNumberMarkers);
+    @StructMember(3) public native @Array({1}) CAFMarker getMMarkers();
+    @StructMember(3) public native CAFRegion setMMarkers(@Array({1}) CAFMarker mMarkers);
     /*</members>*/
     /*<methods>*//*</methods>*/
 }

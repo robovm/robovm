@@ -70,16 +70,16 @@ import org.robovm.apple.mediatoolbox.*;
     @Method(selector = "reset")
     public native void reset();
     @Method(selector = "inputFormatForBus:")
-    public native AVAudioFormat inputFormatForBus$(@MachineSizedUInt long bus);
+    public native AVAudioFormat getInputFormatForBus(@MachineSizedUInt long bus);
     @Method(selector = "outputFormatForBus:")
-    public native AVAudioFormat outputFormatForBus$(@MachineSizedUInt long bus);
+    public native AVAudioFormat getOutputFormatForBus(@MachineSizedUInt long bus);
     @Method(selector = "nameForInputBus:")
-    public native String nameForInputBus$(@MachineSizedUInt long bus);
+    public native String getNameForInputBus(@MachineSizedUInt long bus);
     @Method(selector = "nameForOutputBus:")
-    public native String nameForOutputBus$(@MachineSizedUInt long bus);
+    public native String getNameForOutputBus(@MachineSizedUInt long bus);
     @Method(selector = "installTapOnBus:bufferSize:format:block:")
-    public native void installTapOnBus$bufferSize$format$block$(@MachineSizedUInt long bus, int bufferSize, AVAudioFormat format, FunctionPtr tapBlock);
+    public native void installTapOnBus(@MachineSizedUInt long bus, int bufferSize, AVAudioFormat format, @Block VoidBlock2<AVAudioPCMBuffer, AVAudioTime> tapBlock);
     @Method(selector = "removeTapOnBus:")
-    public native void removeTapOnBus$(@MachineSizedUInt long bus);
+    public native void removeTapOnBus(@MachineSizedUInt long bus);
     /*</methods>*/
 }

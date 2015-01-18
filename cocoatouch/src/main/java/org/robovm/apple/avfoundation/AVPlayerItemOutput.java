@@ -60,7 +60,7 @@ import org.robovm.apple.mediatoolbox.*;
      * @since Available in iOS 6.0 and later.
      */
     @Property(selector = "suppressesPlayerRendering")
-    public native boolean isSuppressesPlayerRendering();
+    public native boolean suppressesPlayerRendering();
     /**
      * @since Available in iOS 6.0 and later.
      */

@@ -45,46 +45,22 @@ import org.robovm.apple.corefoundation.*;
     /*<constructors>*/
     public AudioValueTranslation() {}
     public AudioValueTranslation(VoidPtr mInputData, int mInputDataSize, VoidPtr mOutputData, int mOutputDataSize) {
-        this.setMinputdata(mInputData);
-        this.setMinputdatasize(mInputDataSize);
-        this.setMoutputdata(mOutputData);
-        this.setMoutputdatasize(mOutputDataSize);
+        this.setMInputData(mInputData);
+        this.setMInputDataSize(mInputDataSize);
+        this.setMOutputData(mOutputData);
+        this.setMOutputDataSize(mOutputDataSize);
     }
     /*</constructors>*/
     /*<properties>*//*</properties>*/
     /*<members>*/
-    @StructMember(0) public native VoidPtr getMinputdata();
-    @StructMember(0) public native AudioValueTranslation setMinputdata(VoidPtr mInputData);
-    
-    @Deprecated
-    @StructMember(0) public native VoidPtr mInputData();
-    @Deprecated
-    @StructMember(0) public native AudioValueTranslation mInputData(VoidPtr mInputData);
-    
-    @StructMember(1) public native int getMinputdatasize();
-    @StructMember(1) public native AudioValueTranslation setMinputdatasize(int mInputDataSize);
-    
-    @Deprecated
-    @StructMember(1) public native int mInputDataSize();
-    @Deprecated
-    @StructMember(1) public native AudioValueTranslation mInputDataSize(int mInputDataSize);
-    
-    @StructMember(2) public native VoidPtr getMoutputdata();
-    @StructMember(2) public native AudioValueTranslation setMoutputdata(VoidPtr mOutputData);
-    
-    @Deprecated
-    @StructMember(2) public native VoidPtr mOutputData();
-    @Deprecated
-    @StructMember(2) public native AudioValueTranslation mOutputData(VoidPtr mOutputData);
-    
-    @StructMember(3) public native int getMoutputdatasize();
-    @StructMember(3) public native AudioValueTranslation setMoutputdatasize(int mOutputDataSize);
-    
-    @Deprecated
-    @StructMember(3) public native int mOutputDataSize();
-    @Deprecated
-    @StructMember(3) public native AudioValueTranslation mOutputDataSize(int mOutputDataSize);
-    
+    @StructMember(0) public native VoidPtr getMInputData();
+    @StructMember(0) public native AudioValueTranslation setMInputData(VoidPtr mInputData);
+    @StructMember(1) public native int getMInputDataSize();
+    @StructMember(1) public native AudioValueTranslation setMInputDataSize(int mInputDataSize);
+    @StructMember(2) public native VoidPtr getMOutputData();
+    @StructMember(2) public native AudioValueTranslation setMOutputData(VoidPtr mOutputData);
+    @StructMember(3) public native int getMOutputDataSize();
+    @StructMember(3) public native AudioValueTranslation setMOutputDataSize(int mOutputDataSize);
     /*</members>*/
     /*<methods>*//*</methods>*/
 }

@@ -94,26 +94,26 @@ import org.robovm.apple.mediatoolbox.*;
     /*<members>*//*</members>*/
     /*<methods>*/
     @Method(selector = "scheduleBuffer:completionHandler:")
-    public native void scheduleBuffer$completionHandler$(AVAudioPCMBuffer buffer, @Block Runnable completionHandler);
+    public native void scheduleBuffer(AVAudioPCMBuffer buffer, @Block Runnable completionHandler);
     @Method(selector = "scheduleBuffer:atTime:options:completionHandler:")
-    public native void scheduleBuffer$atTime$options$completionHandler$(AVAudioPCMBuffer buffer, AVAudioTime when, AVAudioPlayerNodeBufferOptions options, @Block Runnable completionHandler);
+    public native void scheduleBuffer(AVAudioPCMBuffer buffer, AVAudioTime when, AVAudioPlayerNodeBufferOptions options, @Block Runnable completionHandler);
     @Method(selector = "scheduleFile:atTime:completionHandler:")
-    public native void scheduleFile$atTime$completionHandler$(AVAudioFile file, AVAudioTime when, @Block Runnable completionHandler);
+    public native void scheduleFile(AVAudioFile file, AVAudioTime when, @Block Runnable completionHandler);
     @Method(selector = "scheduleSegment:startingFrame:frameCount:atTime:completionHandler:")
-    public native void scheduleSegment$startingFrame$frameCount$atTime$completionHandler$(AVAudioFile file, long startFrame, int numberFrames, AVAudioTime when, @Block Runnable completionHandler);
+    public native void scheduleSegment(AVAudioFile file, long startFrame, int numberFrames, AVAudioTime when, @Block Runnable completionHandler);
     @Method(selector = "stop")
     public native void stop();
     @Method(selector = "prepareWithFrameCount:")
-    public native void prepareWithFrameCount$(int frameCount);
+    public native void prepare(int frameCount);
     @Method(selector = "play")
     public native void play();
     @Method(selector = "playAtTime:")
-    public native void playAtTime$(AVAudioTime when);
+    public native void playAtTime(AVAudioTime when);
     @Method(selector = "pause")
     public native void pause();
     @Method(selector = "nodeTimeForPlayerTime:")
-    public native AVAudioTime nodeTimeForPlayerTime$(AVAudioTime playerTime);
+    public native AVAudioTime convertPlayerTimeToNodeTime(AVAudioTime playerTime);
     @Method(selector = "playerTimeForNodeTime:")
-    public native AVAudioTime playerTimeForNodeTime$(AVAudioTime nodeTime);
+    public native AVAudioTime convertNodeTimeToPlayerTime(AVAudioTime nodeTime);
     /*</methods>*/
 }

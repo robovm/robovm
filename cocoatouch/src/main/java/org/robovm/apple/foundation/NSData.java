@@ -72,7 +72,7 @@ import org.robovm.apple.dispatch.*;
     /*<constructors>*/
     public NSData() {}
     protected NSData(SkipInit skipInit) { super(skipInit); }
-    public NSData(NSData data) { super((SkipInit) null); initObject(initWithData$(data)); }
+    public NSData(NSData data) { super((SkipInit) null); initObject(init(data)); }
     /*</constructors>*/
     
     public NSData(byte[] bytes) {
@@ -80,7 +80,7 @@ import org.robovm.apple.dispatch.*;
         if (bytes == null) {
             throw new NullPointerException("bytes");
         }
-        initObject(initWithBytes$length$(VM.getArrayValuesAddress(bytes), bytes.length));
+        initObject(init(VM.getArrayValuesAddress(bytes), bytes.length));
     }
 
     public NSData(ByteBuffer bytes) {
@@ -89,7 +89,7 @@ import org.robovm.apple.dispatch.*;
             throw new NullPointerException("bytes");
         }
         long handle = getEffectiveAddress(bytes) + bytes.position();
-        initObject(initWithBytesNoCopy$length$freeWhenDone$(handle, bytes.remaining(), false));
+        initObject(init(handle, bytes.remaining(), false));
         addStrongRef(bytes);
     }
 
@@ -98,7 +98,7 @@ import org.robovm.apple.dispatch.*;
         if (bytes == null) {
             throw new NullPointerException("bytes");
         }
-        initObject(initWithBytesNoCopy$length$freeWhenDone$(bytes.getHandle(), length, freeWhenDone));
+        initObject(init(bytes.getHandle(), length, freeWhenDone));
     }
     
     public <T extends Struct<T>> NSData(T structData) {
@@ -106,7 +106,7 @@ import org.robovm.apple.dispatch.*;
         if (structData == null) {
             throw new NullPointerException("structData");
         }
-        initObject(initWithBytes$length$(structData.getHandle(), Struct.sizeOf(structData)));
+        initObject(init(structData.getHandle(), Struct.sizeOf(structData)));
     }
     
     /*<properties>*/
@@ -124,20 +124,20 @@ import org.robovm.apple.dispatch.*;
     public byte[] getBytes() {
         int length = (int) getLength();
         byte[] bytes = new byte[length];
-        getBytes$length$(VM.getArrayValuesAddress(bytes), length);
+        getBytes(VM.getArrayValuesAddress(bytes), length);
         return bytes;
     }
     
     public <T extends Struct<T>> T getStructData(Class<T> type) {
         int length = (int) getLength();
         T struct = Struct.allocate(type);
-        getBytes$length$(struct.getHandle(), length);
+        getBytes(struct.getHandle(), length);
         return struct;
     }
     
     public static NSData fromBaseEncodedData(NSData base64Data, NSDataBase64DecodingOptions options) {
         NSData data = new NSData((SkipInit) null);
-        long handle = data.initWithBase64EncodedData$options$(base64Data, options);
+        long handle = data.init(base64Data, options);
         if (handle == 0) {
             return null;
         }
@@ -147,7 +147,7 @@ import org.robovm.apple.dispatch.*;
 
     public static NSData fromBaseEncodedString(String base64String, NSDataBase64DecodingOptions options) {
         NSData data = new NSData((SkipInit) null);
-        long handle = data.initWithBase64EncodedString$options$(base64String, options);
+        long handle = data.init(base64String, options);
         if (handle == 0) {
             return null;
         }
@@ -164,14 +164,14 @@ import org.robovm.apple.dispatch.*;
      */
     public static NSData read(java.io.File file, NSDataReadingOptions readOptionsMask) throws NSErrorException {
         NSError.NSErrorPtr err = new NSError.NSErrorPtr();
-        NSData result = (NSData) dataWithContentsOfFile$options$error$(file.getAbsolutePath(), readOptionsMask, err);
+        NSData result = (NSData) readFile(file.getAbsolutePath(), readOptionsMask, err);
         if (err.get() != null) {
             throw new NSErrorException(err.get());
         }
         return result;
     }
     public static NSData read(java.io.File file) {
-        return (NSData) dataWithContentsOfFile$(file.getAbsolutePath());
+        return (NSData) readFile(file.getAbsolutePath());
     }
     /**
      * @since Available in iOS 2.0 and later.
@@ -179,7 +179,7 @@ import org.robovm.apple.dispatch.*;
      */
     @Deprecated
     public static NSData readMapped(java.io.File file) {
-        return (NSData) dataWithContentsOfMappedFile$(file.getAbsolutePath());
+        return (NSData) readMappedFile(file.getAbsolutePath());
     }
     /**
      * 
@@ -198,7 +198,7 @@ import org.robovm.apple.dispatch.*;
     }
     
     public void write(java.io.File file, boolean useAuxiliaryFile) {
-        writeToFile$atomically$(file.getAbsolutePath(), useAuxiliaryFile);
+        writeFile(file.getAbsolutePath(), useAuxiliaryFile);
     }
     /**
      * 
@@ -208,7 +208,7 @@ import org.robovm.apple.dispatch.*;
      */
     public void write(java.io.File file, NSDataWritingOptions writeOptionsMask) throws NSErrorException {
         NSError.NSErrorPtr err = new NSError.NSErrorPtr();
-        writeToFile$options$error$(file.getAbsolutePath(), writeOptionsMask, err);
+        writeFile(file.getAbsolutePath(), writeOptionsMask, err);
         if (err.get() != null) {
             throw new NSErrorException(err.get());
         }
@@ -228,15 +228,15 @@ import org.robovm.apple.dispatch.*;
     }
     /*<methods>*/
     @Method(selector = "getBytes:length:")
-    protected native void getBytes$length$(@Pointer long buffer, @MachineSizedUInt long length);
+    protected native void getBytes(@Pointer long buffer, @MachineSizedUInt long length);
     @Method(selector = "subdataWithRange:")
     public native NSData getSubdata(@ByVal NSRange range);
     @Method(selector = "writeToFile:atomically:")
-    protected native boolean writeToFile$atomically$(String path, boolean useAuxiliaryFile);
+    protected native boolean writeFile(String path, boolean useAuxiliaryFile);
     @Method(selector = "writeToURL:atomically:")
-    protected native boolean write(NSURL url, boolean atomically);
+    public native boolean write(NSURL url, boolean atomically);
     @Method(selector = "writeToFile:options:error:")
-    protected native boolean writeToFile$options$error$(String path, NSDataWritingOptions writeOptionsMask, NSError.NSErrorPtr errorPtr);
+    protected native boolean writeFile(String path, NSDataWritingOptions writeOptionsMask, NSError.NSErrorPtr errorPtr);
     @Method(selector = "writeToURL:options:error:")
     protected native boolean write(NSURL url, NSDataWritingOptions writeOptionsMask, NSError.NSErrorPtr errorPtr);
     /**
@@ -245,24 +245,24 @@ import org.robovm.apple.dispatch.*;
     @Method(selector = "rangeOfData:options:range:")
     public native @ByVal NSRange find(NSData dataToFind, NSDataSearchOptions mask, @ByVal NSRange searchRange);
     @Method(selector = "initWithBytes:length:")
-    protected native @Pointer long initWithBytes$length$(@Pointer long bytes, @MachineSizedUInt long length);
+    protected native @Pointer long init(@Pointer long bytes, @MachineSizedUInt long length);
     @Method(selector = "initWithBytesNoCopy:length:freeWhenDone:")
-    protected native @Pointer long initWithBytesNoCopy$length$freeWhenDone$(@Pointer long bytes, @MachineSizedUInt long length, boolean b);
+    protected native @Pointer long init(@Pointer long bytes, @MachineSizedUInt long length, boolean b);
     @Method(selector = "initWithData:")
-    protected native @Pointer long initWithData$(NSData data);
+    protected native @Pointer long init(NSData data);
     @Method(selector = "dataWithContentsOfFile:options:error:")
-    protected static native NSData dataWithContentsOfFile$options$error$(String path, NSDataReadingOptions readOptionsMask, NSError.NSErrorPtr errorPtr);
+    protected static native NSData readFile(String path, NSDataReadingOptions readOptionsMask, NSError.NSErrorPtr errorPtr);
     @Method(selector = "dataWithContentsOfURL:options:error:")
     protected static native NSData read(NSURL url, NSDataReadingOptions readOptionsMask, NSError.NSErrorPtr errorPtr);
     @Method(selector = "dataWithContentsOfFile:")
-    protected static native NSData dataWithContentsOfFile$(String path);
+    protected static native NSData readFile(String path);
     @Method(selector = "dataWithContentsOfURL:")
     public static native NSData read(NSURL url);
     /**
      * @since Available in iOS 7.0 and later.
      */
     @Method(selector = "initWithBase64EncodedString:options:")
-    protected native @Pointer long initWithBase64EncodedString$options$(String base64String, NSDataBase64DecodingOptions options);
+    protected native @Pointer long init(String base64String, NSDataBase64DecodingOptions options);
     /**
      * @since Available in iOS 7.0 and later.
      */
@@ -272,7 +272,7 @@ import org.robovm.apple.dispatch.*;
      * @since Available in iOS 7.0 and later.
      */
     @Method(selector = "initWithBase64EncodedData:options:")
-    protected native @Pointer long initWithBase64EncodedData$options$(NSData base64Data, NSDataBase64DecodingOptions options);
+    protected native @Pointer long init(NSData base64Data, NSDataBase64DecodingOptions options);
     /**
      * @since Available in iOS 7.0 and later.
      */
@@ -284,6 +284,6 @@ import org.robovm.apple.dispatch.*;
      */
     @Deprecated
     @Method(selector = "dataWithContentsOfMappedFile:")
-    protected static native NSObject dataWithContentsOfMappedFile$(String path);
+    protected static native NSObject readMappedFile(String path);
     /*</methods>*/
 }

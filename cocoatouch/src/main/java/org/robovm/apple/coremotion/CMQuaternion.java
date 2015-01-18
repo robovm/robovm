@@ -54,36 +54,12 @@ import org.robovm.apple.foundation.*;
     /*<members>*/
     @StructMember(0) public native double getX();
     @StructMember(0) public native CMQuaternion setX(double x);
-    
-    @Deprecated
-    @StructMember(0) public native double x();
-    @Deprecated
-    @StructMember(0) public native CMQuaternion x(double x);
-    
     @StructMember(1) public native double getY();
     @StructMember(1) public native CMQuaternion setY(double y);
-    
-    @Deprecated
-    @StructMember(1) public native double y();
-    @Deprecated
-    @StructMember(1) public native CMQuaternion y(double y);
-    
     @StructMember(2) public native double getZ();
     @StructMember(2) public native CMQuaternion setZ(double z);
-    
-    @Deprecated
-    @StructMember(2) public native double z();
-    @Deprecated
-    @StructMember(2) public native CMQuaternion z(double z);
-    
     @StructMember(3) public native double getW();
     @StructMember(3) public native CMQuaternion setW(double w);
-    
-    @Deprecated
-    @StructMember(3) public native double w();
-    @Deprecated
-    @StructMember(3) public native CMQuaternion w(double w);
-    
     /*</members>*/
     /*<methods>*//*</methods>*/
 }

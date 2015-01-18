@@ -31,6 +31,7 @@ import org.robovm.apple.foundation.*;
 import org.robovm.apple.coreimage.*;
 import org.robovm.apple.coretext.*;
 import org.robovm.apple.opengles.*;
+import org.robovm.apple.metal.*;
 /*</imports>*/
 
 /*<javadoc>*/
@@ -48,8 +49,10 @@ import org.robovm.apple.opengles.*;
     public CAAnimation() {}
     protected CAAnimation(SkipInit skipInit) { super(skipInit); }
     /*</constructors>*/
-    public boolean isUsesSceneTimeBase() {
-        return org.robovm.apple.scenekit.CAAnimationExtensions.isUsesSceneTimeBase(this);
+    
+    /* SceneKit extensions */
+    public boolean usesSceneTimeBase() {
+        return org.robovm.apple.scenekit.CAAnimationExtensions.usesSceneTimeBase(this);
     }
     public void setUsesSceneTimeBase(boolean v) {
         org.robovm.apple.scenekit.CAAnimationExtensions.setUsesSceneTimeBase(this, v);
@@ -110,13 +113,13 @@ import org.robovm.apple.opengles.*;
     @Property(selector = "setRepeatDuration:")
     public native void setRepeatDuration(double v);
     @Property(selector = "autoreverses")
-    public native boolean isAutoreverses();
+    public native boolean autoreverses();
     @Property(selector = "setAutoreverses:")
     public native void setAutoreverses(boolean v);
     @Property(selector = "fillMode")
-    public native NSString getFillMode();
+    public native CAFillMode getFillMode();
     @Property(selector = "setFillMode:")
-    public native void setFillMode(NSString v);
+    public native void setFillMode(CAFillMode v);
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
@@ -135,6 +138,6 @@ import org.robovm.apple.opengles.*;
     @Method(selector = "encodeWithCoder:")
     public native void encode(NSCoder aCoder);
     @Method(selector = "runActionForKey:object:arguments:")
-    public native void runAction(String event, NSObject anObject, NSDictionary<NSString, ?> dict);
+    public native void runAction(String event, NSObject anObject, @org.robovm.rt.bro.annotation.Marshaler(NSDictionary.AsStringMapMarshaler.class) Map<String, NSObject> dict);
     /*</methods>*/
 }

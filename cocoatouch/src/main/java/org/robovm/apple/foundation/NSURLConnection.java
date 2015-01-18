@@ -54,8 +54,8 @@ import org.robovm.apple.newsstandkit.NKAssetDownload;
     /**
      * @since Available in iOS 2.0 and later.
      */
-    public NSURLConnection(NSURLRequest request, NSURLConnectionDelegate delegate, boolean startImmediately) { super((SkipInit) null); initObject(initWithRequest$delegate$startImmediately$(request, delegate, startImmediately)); }
-    public NSURLConnection(NSURLRequest request, NSURLConnectionDelegate delegate) { super((SkipInit) null); initObject(initWithRequest$delegate$(request, delegate)); }
+    public NSURLConnection(NSURLRequest request, NSObject delegate, boolean startImmediately) { super((SkipInit) null); initObject(init(request, delegate, startImmediately)); }
+    public NSURLConnection(NSURLRequest request, NSObject delegate) { super((SkipInit) null); initObject(init(request, delegate)); }
     /*</constructors>*/
     /*<properties>*/
     /**
@@ -102,9 +102,9 @@ import org.robovm.apple.newsstandkit.NKAssetDownload;
      * @since Available in iOS 2.0 and later.
      */
     @Method(selector = "initWithRequest:delegate:startImmediately:")
-    protected native @Pointer long initWithRequest$delegate$startImmediately$(NSURLRequest request, NSURLConnectionDelegate delegate, boolean startImmediately);
+    protected native @Pointer long init(NSURLRequest request, NSObject delegate, boolean startImmediately);
     @Method(selector = "initWithRequest:delegate:")
-    protected native @Pointer long initWithRequest$delegate$(NSURLRequest request, NSURLConnectionDelegate delegate);
+    protected native @Pointer long init(NSURLRequest request, NSObject delegate);
     /**
      * @since Available in iOS 2.0 and later.
      */

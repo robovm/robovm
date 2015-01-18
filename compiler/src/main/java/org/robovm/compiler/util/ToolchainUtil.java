@@ -40,6 +40,7 @@ public class ToolchainUtil {
     private static String IOS_SIM_CLANG; 
     private static String PNGCRUSH;
     private static String PLUTIL;
+    private static String LIPO;
     private static String PACKAGE_APPLICATION;
 
     private static String getIOSDevClang() throws IOException {
@@ -68,6 +69,13 @@ public class ToolchainUtil {
             PLUTIL = findXcodeCommand("plutil", "iphoneos");
         }
         return PLUTIL;
+    }
+
+    private static String getLipo() throws IOException {
+        if (LIPO == null) {
+            LIPO = findXcodeCommand("lipo", "iphoneos");
+        }
+        return LIPO;
     }
 
     private static String getPackageApplication() throws IOException {
@@ -127,6 +135,12 @@ public class ToolchainUtil {
     public static void compileStrings(Config config, File inFile, File outFile) throws IOException {
         new Executor(config.getLogger(), getPlutil())
             .args("-convert", "binary1", inFile, "-o", outFile)
+            .exec();
+    }
+
+    public static void lipo(Config config, File outFile, List<File> inFiles) throws IOException {
+        new Executor(config.getLogger(), getLipo())
+            .args(inFiles, "-create", "-output", outFile)
             .exec();
     }
 

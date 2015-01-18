@@ -12,13 +12,13 @@ Options:
                           and debug versions of the libraries will be built.
   --target=...            Specifies the target(s) to build for. Supported 
                           targets are macosx-x86_64, macosx-x86, ios-x86_64,
-                          ios-x86, ios-thumbv7, linux-x86_64, linux-x86.
-                          Enclose multiple targets in quotes and separate
-                          with spaces or specify --target multiple times.
-                          If not set the current host OS determines the
+                          ios-x86, ios-thumbv7, ios-arm64, linux-x86_64, 
+                          linux-x86. Enclose multiple targets in quotes and 
+                          separate with spaces or specify --target multiple
+                          times. If not set the current host OS determines the
                           targets. macosx-x86_64, macosx-x86, ios-x86_64,
-                          ios-x86 and ios-thumbv7 on MacOSX and linux-x86_64
-                          and linux-x86 on Linux.
+                          ios-x86, ios-thumbv7 and ios-arm64 on MacOSX and
+                          linux-x86_64 and linux-x86 on Linux.
   --clean                 Cleans the build dir before starting the build.
   --help                  Displays this information and exits.
 EOF
@@ -47,7 +47,7 @@ if [ "x$TARGETS" = 'x' ]; then
   OS=$(uname)
   case $OS in
   Darwin)
-    TARGETS="macosx-x86_64 macosx-x86 ios-x86_64 ios-x86 ios-thumbv7"
+    TARGETS="macosx-x86_64 macosx-x86 ios-x86_64 ios-x86 ios-thumbv7 ios-arm64"
     ;;
   Linux)
     TARGETS="linux-x86_64 linux-x86"
@@ -64,7 +64,7 @@ fi
 
 # Validate targets
 for T in $TARGETS; do
-  if ! [[ $T =~ (macosx|ios|linux)-(x86_64|x86|thumbv7) ]] ; then
+  if ! [[ $T =~ (macosx-(x86_64|x86))|(ios-(x86_64|x86|thumbv7|arm64))|(linux-(x86_64|x86)) ]] ; then
     echo "Unsupported target: $T"
     exit 1
   fi

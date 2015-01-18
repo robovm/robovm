@@ -97,6 +97,22 @@ import org.robovm.apple.mediatoolbox.*;
     public native void setRedirect(NSURLRequest v);
     /*</properties>*/
     /*<members>*//*</members>*/
+    /**
+     * 
+     * @param appIdentifier
+     * @param contentIdentifier
+     * @param options
+     * @return
+     * @throws NSErrorException
+     */
+    public NSData getStreamingContentKeyRequestData(NSData appIdentifier, NSData contentIdentifier, NSDictionary<NSString, ?> options) throws NSErrorException {
+        NSError.NSErrorPtr err = new NSError.NSErrorPtr();
+        NSData result = getStreamingContentKeyRequestData(appIdentifier, contentIdentifier, options, err);
+        if (err.get() != null) {
+            throw new NSErrorException(err.get());
+        }
+        return result;
+    }
     /*<methods>*/
     /**
      * @since Available in iOS 7.0 and later.
@@ -106,7 +122,7 @@ import org.robovm.apple.mediatoolbox.*;
     @Method(selector = "finishLoadingWithError:")
     public native void finishLoading(NSError error);
     @Method(selector = "streamingContentKeyRequestDataForApp:contentIdentifier:options:error:")
-    public native NSData getStreamingContentKeyRequestData(NSData appIdentifier, NSData contentIdentifier, NSDictionary<NSString, ?> options, NSError.NSErrorPtr outError);
+    protected native NSData getStreamingContentKeyRequestData(NSData appIdentifier, NSData contentIdentifier, NSDictionary<NSString, ?> options, NSError.NSErrorPtr outError);
     /**
      * @since Available in iOS 6.0 and later.
      * @deprecated Deprecated in iOS 7.0.

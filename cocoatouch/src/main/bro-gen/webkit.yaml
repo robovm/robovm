@@ -1,0 +1,158 @@
+package: org.robovm.apple.webkit
+include: [foundation.yaml, uikit.yaml, coregraphics.yaml]
+library: WebKit
+framework: WebKit
+clang_args: ['-x', 'objective-c']
+headers:
+    - /System/Library/Frameworks/WebKit.framework/Headers/WebKit.h
+typedefs:
+    'void (^)(WKNavigationActionPolicy)': '@Block VoidBlock1<WKNavigationActionPolicy>'
+    'void (^)(WKNavigationResponsePolicy)': '@Block VoidBlock1<WKNavigationResponsePolicy>'
+    'void (^)(NSString *)': '@Block VoidBlock1<String>'
+
+enums:
+    WKErrorCode: {}
+    WKNavigationType: {}
+    WKNavigationActionPolicy: {}
+    WKNavigationResponsePolicy: {}
+    WKUserScriptInjectionTime: {}
+    WKSelectionGranularity: {}
+
+classes:
+    WKError:
+        extends: NSError
+
+    WKBackForwardList: # DONE
+        properties:
+            'backList':
+                type: NSArray<WKBackForwardListItem>
+            'forwardList':
+                type: NSArray<WKBackForwardListItem>
+        methods:
+            '-itemAtIndex:':
+                name: getItem
+    WKBackForwardListItem: {} # DONE
+    WKFrameInfo: {} # DONE
+    WKNavigation: {} # DONE
+    WKNavigationAction: {} # DONE
+    WKNavigationResponse: # DONE
+        properties:
+            'canShowMIMEType':
+                omit_prefix: true
+    WKPreferences: # DONE
+        properties:
+            'javaScriptCanOpenWindowsAutomatically':
+                getter: javaScriptCanOpenWindowsAutomatically
+    WKProcessPool: {} # DONE
+    WKScriptMessage: {} # DONE
+    WKUserContentController: # DONE
+        properties:
+            'userScripts':
+                type: NSArray<WKUserScript>
+        methods:
+            '-addUserScript:':
+                trim_after_first_colon: true
+            '-addScriptMessageHandler:name:':
+                trim_after_first_colon: true
+            '-removeScriptMessageHandlerForName:':
+                name: removeScriptMessageHandler
+    WKUserScript: # DONE
+        methods:
+            '-init.*':
+                name: init
+    WKWebViewConfiguration: # DONE
+        properties:
+            'mediaPlaybackRequiresUserAction':
+                getter: mediaPlaybackRequiresUserAction
+            'mediaPlaybackAllowsAirPlay':
+                getter: mediaPlaybackAllowsAirPlay
+    WKWindowFeatures: # DONE
+        properties:
+            'allowsResizing':
+                visibility: protected
+            '.*':
+                omit_prefix: true
+                visibility: protected
+    WKWebView: # DONE
+        properties:
+            'hasOnlySecureContent':
+                omit_prefix: true
+            'canGoBack':
+                omit_prefix: true
+            'canGoForward':
+                omit_prefix: true
+        methods:
+            '-init.*':
+                name: init
+            '-loadRequest:':
+                trim_after_first_colon: true
+            '-loadHTMLString:baseURL:':
+                trim_after_first_colon: true
+            '-goToBackForwardListItem:':
+                trim_after_first_colon: true
+            '-evaluateJavaScript:completionHandler:':
+                trim_after_first_colon: true
+                parameters:
+                    completionHandler:
+                        type: '@Block VoidBlock2<NSObject, NSError>' # TODO change NSObject type to correct type???
+
+protocols:
+    WKNavigationDelegate: # DONE
+        methods:
+            '-webView:decidePolicyForNavigationAction:decisionHandler:':
+                name: decidePolicyForNavigationAction
+            '-webView:decidePolicyForNavigationResponse:decisionHandler:':
+                name: decidePolicyForNavigationResponse
+            '-webView:didStartProvisionalNavigation:':
+                name: didStartProvisionalNavigation
+            '-webView:didReceiveServerRedirectForProvisionalNavigation:':
+                name: didReceiveServerRedirectForProvisionalNavigation
+            '-webView:didFailProvisionalNavigation:withError:':
+                name: didFailProvisionalNavigation
+            '-webView:didCommitNavigation:':
+                name: didCommitNavigation
+            '-webView:didFinishNavigation:':
+                name: didFinishNavigation
+            '-webView:didFailNavigation:withError:':
+                name: didFailNavigation
+            '-webView:didReceiveAuthenticationChallenge:completionHandler:':
+                name: didReceiveAuthenticationChallenge
+    WKScriptMessageHandler: # DONE
+        methods:
+            '-userContentController:didReceiveScriptMessage:':
+                name: didReceiveScriptMessage
+    WKUIDelegate: # DONE
+        methods:
+            '-webView:createWebViewWithConfiguration:forNavigationAction:windowFeatures:':
+                name: createWebView
+            '-webView:runJavaScriptAlertPanelWithMessage:initiatedByFrame:completionHandler:':
+                name: runJavaScriptAlertPanel
+            '-webView:runJavaScriptConfirmPanelWithMessage:initiatedByFrame:completionHandler:':
+                name: runJavaScriptConfirmPanel
+            '-webView:runJavaScriptTextInputPanelWithPrompt:defaultText:initiatedByFrame:completionHandler:':
+                name: runJavaScriptTextInputPanel
+
+functions:
+    # Make sure we don't miss any functions if new ones are introduced in a later version
+    (k?WK.*):
+        class: WebKit
+        name: 'Function__#{g[0]}'
+
+values:
+    WKErrorDomain:
+        class: WKError
+        name: getClassDomain
+   
+    # Make sure we don't miss any values if new ones are introduced in a later version
+    (k?WK.*):
+        class: WebKit
+        name: 'Value__#{g[0]}'
+
+constants:
+    WK_API_ENABLED:
+        exclude: true
+
+    # Make sure we don't miss any constants if new ones are introduced in a later version
+    (k?WK.*):
+        class: WebKit
+        name: 'Constant__#{g[0]}'

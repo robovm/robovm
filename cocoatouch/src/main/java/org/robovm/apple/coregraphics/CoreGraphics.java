@@ -33,8 +33,8 @@ import org.robovm.apple.uikit.*;
 
 /*<javadoc>*/
 /*</javadoc>*/
-/*<annotations>*//*</annotations>*/
-/*<visibility>*/public/*</visibility>*/ class /*<name>*/CoreGraphics/*</name>*/ 
+/*<annotations>*/@Library("CoreGraphics")/*</annotations>*/
+/*<visibility>*//*</visibility>*/ class /*<name>*/CoreGraphics/*</name>*/ 
     extends /*<extends>*/Object/*</extends>*/ 
     /*<implements>*//*</implements>*/ {
 
@@ -42,9 +42,14 @@ import org.robovm.apple.uikit.*;
     /*</ptr>*/
     /*<bind>*/static { Bro.bind(CoreGraphics.class); }/*</bind>*/
     /*<constants>*/
-    public static final int FontIndexMax = 65534;
-    public static final int FontIndexInvalid = 65535;
-    public static final int GlyphMax = 65534;
+    public static final int CGFLOAT_IS_DOUBLE = 0;
+    public static final int CGFLOAT_DEFINED = 1;
+    public static final int CGVECTOR_DEFINED = 1;
+    public static final int CGGlyphMin = 0;
+    public static final int CGGlyphMax = 1;
+    public static final int CGPDFDataFormatRaw = 0;
+    public static final int CGPDFDataFormatJPEGEncoded = 1;
+    public static final int CGPDFDataFormatJPEG2000 = 2;
     /*</constants>*/
     /*<constructors>*//*</constructors>*/
     /*<properties>*//*</properties>*/
@@ -79,5 +84,26 @@ import org.robovm.apple.uikit.*;
         }
     }
     
-    /*<methods>*//*</methods>*/
+    /*<methods>*/
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
+    @GlobalValue(symbol="kCGFontVariationAxisName", optional=true)
+    public static native String kCGFontVariationAxisName();
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
+    @GlobalValue(symbol="kCGFontVariationAxisMinValue", optional=true)
+    public static native String kCGFontVariationAxisMinValue();
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
+    @GlobalValue(symbol="kCGFontVariationAxisMaxValue", optional=true)
+    public static native String kCGFontVariationAxisMaxValue();
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
+    @GlobalValue(symbol="kCGFontVariationAxisDefaultValue", optional=true)
+    public static native String kCGFontVariationAxisDefaultValue();
+    /*</methods>*/
 }

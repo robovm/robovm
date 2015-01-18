@@ -54,13 +54,13 @@ import org.robovm.apple.mediatoolbox.*;
     /*<constructors>*/
     public AVAudioFormat() {}
     protected AVAudioFormat(SkipInit skipInit) { super(skipInit); }
-    public AVAudioFormat(AudioStreamBasicDescription asbd) { super((SkipInit) null); initObject(initWithStreamDescription$(asbd)); }
-    public AVAudioFormat(AudioStreamBasicDescription asbd, AVAudioChannelLayout layout) { super((SkipInit) null); initObject(initWithStreamDescription$channelLayout$(asbd, layout)); }
-    public AVAudioFormat(double sampleRate, int channels) { super((SkipInit) null); initObject(initStandardFormatWithSampleRate$channels$(sampleRate, channels)); }
-    public AVAudioFormat(double sampleRate, AVAudioChannelLayout layout) { super((SkipInit) null); initObject(initStandardFormatWithSampleRate$channelLayout$(sampleRate, layout)); }
-    public AVAudioFormat(AVAudioCommonFormat format, double sampleRate, int channels, boolean interleaved) { super((SkipInit) null); initObject(initWithCommonFormat$sampleRate$channels$interleaved$(format, sampleRate, channels, interleaved)); }
-    public AVAudioFormat(AVAudioCommonFormat format, double sampleRate, boolean interleaved, AVAudioChannelLayout layout) { super((SkipInit) null); initObject(initWithCommonFormat$sampleRate$interleaved$channelLayout$(format, sampleRate, interleaved, layout)); }
-    public AVAudioFormat(NSDictionary<?, ?> settings) { super((SkipInit) null); initObject(initWithSettings$(settings)); }
+    public AVAudioFormat(AudioStreamBasicDescription asbd) { super((SkipInit) null); initObject(init(asbd)); }
+    public AVAudioFormat(AudioStreamBasicDescription asbd, AVAudioChannelLayout layout) { super((SkipInit) null); initObject(init(asbd, layout)); }
+    public AVAudioFormat(double sampleRate, int channels) { super((SkipInit) null); initObject(init(sampleRate, channels)); }
+    public AVAudioFormat(double sampleRate, AVAudioChannelLayout layout) { super((SkipInit) null); initObject(init(sampleRate, layout)); }
+    public AVAudioFormat(AVAudioCommonFormat format, double sampleRate, int channels, boolean interleaved) { super((SkipInit) null); initObject(init(format, sampleRate, channels, interleaved)); }
+    public AVAudioFormat(AVAudioCommonFormat format, double sampleRate, boolean interleaved, AVAudioChannelLayout layout) { super((SkipInit) null); initObject(init(format, sampleRate, interleaved, layout)); }
+    public AVAudioFormat(AVAudioSettings settings) { super((SkipInit) null); initObject(init(settings)); }
     /*</constructors>*/
     /*<properties>*/
     @Property(selector = "isStandard")
@@ -78,25 +78,25 @@ import org.robovm.apple.mediatoolbox.*;
     @Property(selector = "channelLayout")
     public native AVAudioChannelLayout getChannelLayout();
     @Property(selector = "settings")
-    public native NSDictionary<?, ?> getSettings();
+    public native AVAudioSettings getSettings();
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
     @Method(selector = "initWithStreamDescription:")
-    protected native @Pointer long initWithStreamDescription$(AudioStreamBasicDescription asbd);
+    protected native @Pointer long init(AudioStreamBasicDescription asbd);
     @Method(selector = "initWithStreamDescription:channelLayout:")
-    protected native @Pointer long initWithStreamDescription$channelLayout$(AudioStreamBasicDescription asbd, AVAudioChannelLayout layout);
+    protected native @Pointer long init(AudioStreamBasicDescription asbd, AVAudioChannelLayout layout);
     @Method(selector = "initStandardFormatWithSampleRate:channels:")
-    protected native @Pointer long initStandardFormatWithSampleRate$channels$(double sampleRate, int channels);
+    protected native @Pointer long init(double sampleRate, int channels);
     @Method(selector = "initStandardFormatWithSampleRate:channelLayout:")
-    protected native @Pointer long initStandardFormatWithSampleRate$channelLayout$(double sampleRate, AVAudioChannelLayout layout);
+    protected native @Pointer long init(double sampleRate, AVAudioChannelLayout layout);
     @Method(selector = "initWithCommonFormat:sampleRate:channels:interleaved:")
-    protected native @Pointer long initWithCommonFormat$sampleRate$channels$interleaved$(AVAudioCommonFormat format, double sampleRate, int channels, boolean interleaved);
+    protected native @Pointer long init(AVAudioCommonFormat format, double sampleRate, int channels, boolean interleaved);
     @Method(selector = "initWithCommonFormat:sampleRate:interleaved:channelLayout:")
-    protected native @Pointer long initWithCommonFormat$sampleRate$interleaved$channelLayout$(AVAudioCommonFormat format, double sampleRate, boolean interleaved, AVAudioChannelLayout layout);
+    protected native @Pointer long init(AVAudioCommonFormat format, double sampleRate, boolean interleaved, AVAudioChannelLayout layout);
     @Method(selector = "initWithSettings:")
-    protected native @Pointer long initWithSettings$(NSDictionary<?, ?> settings);
+    protected native @Pointer long init(AVAudioSettings settings);
     @Method(selector = "isEqual:")
-    public native boolean isEqual$(NSObject object);
+    public native boolean equalsTo(AVAudioFormat object);
     /*</methods>*/
 }

@@ -49,25 +49,25 @@ import org.robovm.apple.coremedia.*;
     /*<constructors>*/
     public AudioPanningInfo() {}
     public AudioPanningInfo(int mPanningMode, int mCoordinateFlags, FloatBuffer mCoordinates, float mGainScale, AudioChannelLayout mOutputChannelMap) {
-        this.mPanningMode(mPanningMode);
-        this.mCoordinateFlags(mCoordinateFlags);
-        this.mCoordinates(mCoordinates);
-        this.mGainScale(mGainScale);
-        this.mOutputChannelMap(mOutputChannelMap);
+        this.setMPanningMode(mPanningMode);
+        this.setMCoordinateFlags(mCoordinateFlags);
+        this.setMCoordinates(mCoordinates);
+        this.setMGainScale(mGainScale);
+        this.setMOutputChannelMap(mOutputChannelMap);
     }
     /*</constructors>*/
     /*<properties>*//*</properties>*/
     /*<members>*/
-    @StructMember(0) public native int mPanningMode();
-    @StructMember(0) public native AudioPanningInfo mPanningMode(int mPanningMode);
-    @StructMember(1) public native int mCoordinateFlags();
-    @StructMember(1) public native AudioPanningInfo mCoordinateFlags(int mCoordinateFlags);
-    @StructMember(2) public native @Array({3}) FloatBuffer mCoordinates();
-    @StructMember(2) public native AudioPanningInfo mCoordinates(@Array({3}) FloatBuffer mCoordinates);
-    @StructMember(3) public native float mGainScale();
-    @StructMember(3) public native AudioPanningInfo mGainScale(float mGainScale);
-    @StructMember(4) public native AudioChannelLayout mOutputChannelMap();
-    @StructMember(4) public native AudioPanningInfo mOutputChannelMap(AudioChannelLayout mOutputChannelMap);
+    @StructMember(0) public native int getMPanningMode();
+    @StructMember(0) public native AudioPanningInfo setMPanningMode(int mPanningMode);
+    @StructMember(1) public native int getMCoordinateFlags();
+    @StructMember(1) public native AudioPanningInfo setMCoordinateFlags(int mCoordinateFlags);
+    @StructMember(2) public native @Array({3}) FloatBuffer getMCoordinates();
+    @StructMember(2) public native AudioPanningInfo setMCoordinates(@Array({3}) FloatBuffer mCoordinates);
+    @StructMember(3) public native float getMGainScale();
+    @StructMember(3) public native AudioPanningInfo setMGainScale(float mGainScale);
+    @StructMember(4) public native AudioChannelLayout getMOutputChannelMap();
+    @StructMember(4) public native AudioPanningInfo setMOutputChannelMap(AudioChannelLayout mOutputChannelMap);
     /*</members>*/
     /*<methods>*//*</methods>*/
 }

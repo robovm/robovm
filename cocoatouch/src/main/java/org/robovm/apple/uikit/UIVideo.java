@@ -40,7 +40,7 @@ import org.robovm.apple.corelocation.*;
 /*<annotations>*/@Library("UIKit")/*</annotations>*/
 @Marshaler(NSString.AsStringMarshaler.class)
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/UIVideo/*</name>*/ 
-    extends /*<extends>*/Object/*</extends>*/ 
+    extends /*<extends>*/CocoaUtility/*</extends>*/ 
     /*<implements>*//*</implements>*/ {
 
     /*<ptr>*/
@@ -51,7 +51,7 @@ import org.robovm.apple.corelocation.*;
     }
     
     private static java.util.concurrent.atomic.AtomicLong id = new java.util.concurrent.atomic.AtomicLong();
-    private static final Selector video$didFinishSavingWithError$contextInfo$ = Selector.register("video:didFinishSavingWithError:contextInfo:");
+    private static final Selector didFinishSaving = Selector.register("video:didFinishSavingWithError:contextInfo:");
     private static Map<Long, ListenerWrapper> listeners = new HashMap<>();
     private static class ListenerWrapper extends NSObject {
         private final VideoSaveListener listener;
@@ -87,7 +87,7 @@ import org.robovm.apple.corelocation.*;
         if (listener != null) {
             long context = id.getAndIncrement();
             ListenerWrapper l = new ListenerWrapper(listener, context);
-            saveToPhotosAlbum(videoPath.getAbsolutePath(), l, video$didFinishSavingWithError$contextInfo$, context);
+            saveToPhotosAlbum(videoPath.getAbsolutePath(), l, didFinishSaving, context);
         } else {
             saveToPhotosAlbum(videoPath.getAbsolutePath(), null, null, 0);
         }
@@ -103,6 +103,6 @@ import org.robovm.apple.corelocation.*;
      * @since Available in iOS 3.1 and later.
      */
     @Bridge(symbol="UISaveVideoAtPathToSavedPhotosAlbum", optional=true)
-    protected static native void saveToPhotosAlbum(String videoPath, NSObject completionTarget, Selector completionSelector, @Pointer long contextInfo);
+    public static native void saveToPhotosAlbum(String videoPath, NSObject completionTarget, Selector completionSelector, @Pointer long contextInfo);
     /*</methods>*/
 }

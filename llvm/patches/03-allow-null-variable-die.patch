@@ -1,0 +1,18 @@
+diff --git a/lib/CodeGen/AsmPrinter/DwarfDebug.cpp b/lib/CodeGen/AsmPrinter/DwarfDebug.cpp
+index 5413c9b..049e9d0 100644
+--- a/lib/CodeGen/AsmPrinter/DwarfDebug.cpp
++++ b/lib/CodeGen/AsmPrinter/DwarfDebug.cpp
+@@ -498,7 +498,12 @@ void DwarfDebug::beginModule() {
+ void DwarfDebug::finishVariableDefinitions() {
+   for (const auto &Var : ConcreteVariables) {
+     DIE *VariableDie = Var->getDIE();
+-    assert(VariableDie);
++    // RoboVM note: For some reason we sometimes have DbgVariables here without DIEs.
++    // The assert has been commented out and replaced with the if which is what this 
++    // method did in 3.5.
++    if (!VariableDie)
++      continue;
++    //assert(VariableDie);
+     // FIXME: Consider the time-space tradeoff of just storing the unit pointer
+     // in the ConcreteVariables list, rather than looking it up again here.
+     // DIE::getUnit isn't simple - it walks parent pointers, etc.

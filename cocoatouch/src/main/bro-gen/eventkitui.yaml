@@ -21,10 +21,10 @@ classes:
     EKCalendarChooser: # DONE
         properties:
             'selectedCalendars':
-                type: "NSSet<EKCalendar>"
+                type: NSSet<EKCalendar>
         methods:
             '-init.*':
-                name: "init"      
+                name: init
     EKEventEditViewController: {} # DONE
     EKEventViewController: {} # DONE
 
@@ -32,36 +32,36 @@ protocols:
     EKCalendarChooserDelegate: # DONE
         methods:
             '-calendarChooserSelectionDidChange:':
-                name: "didChangeSelection"
+                name: didChangeSelection
             '-calendarChooserDidFinish:':
-                name: "didFinish"
+                name: didFinish
             '-calendarChooserDidCancel:':
-                name: "didCancel"
+                name: didCancel
     EKEventEditViewDelegate: # DONE
         methods:
             '-eventEditViewController:didCompleteWithAction:':
-                name: "didComplete"
+                name: didComplete
             '-eventEditViewControllerDefaultCalendarForNewEvents:':
-                name: "getDefaultCalendarForNewEvents"
+                name: getDefaultCalendarForNewEvents
     EKEventViewDelegate: # DONE
         methods:
             '-eventViewController:didCompleteWithAction:':
-                name: "didComplete"
+                name: didComplete
 
 functions:
     # Make sure we don't miss any functions if new ones are introduced in a later version
     (EK.*):
         class: EventKitUI
-        name: "Function__#{g[0]}"
+        name: 'Function__#{g[0]}'
 
 values:
     # Make sure we don't miss any values if new ones are introduced in a later version
     (EK.*):
         class: EventKitUI
-        name: "Value__#{g[0]}"
+        name: 'Value__#{g[0]}'
 
 constants:
     # Make sure we don't miss any constants if new ones are introduced in a later version
     (EK.*):
         class: EventKitUI
-        name: "Constant__#{g[0]}"
+        name: 'Constant__#{g[0]}'

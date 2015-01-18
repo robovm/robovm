@@ -44,9 +44,18 @@ import org.robovm.apple.uikit.*;
     /*<bind>*/static { ObjCRuntime.bind(GKLeaderboard.class); }/*</bind>*/
     /*<constants>*//*</constants>*/
     /*<constructors>*/
+    public GKLeaderboard() {}
     protected GKLeaderboard(SkipInit skipInit) { super(skipInit); }
-    public GKLeaderboard() { super((SkipInit) null); initObject(init()); }
-    public GKLeaderboard(NSArray<NSString> playerIDs) { super((SkipInit) null); initObject(init(playerIDs)); }
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    public GKLeaderboard(NSArray<GKPlayer> players) { super((SkipInit) null); initObject(init(players)); }
+    /**
+     * @since Available in iOS 4.1 and later.
+     * @deprecated Deprecated in iOS 8.0.
+     */
+    @Deprecated
+    public GKLeaderboard(@org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String> playerIDs) { super((SkipInit) null); initObject(init(playerIDs)); }
     /*</constructors>*/
     /*<properties>*/
     @Property(selector = "timeScope")
@@ -57,20 +66,6 @@ import org.robovm.apple.uikit.*;
     public native GKLeaderboardPlayerScope getPlayerScope();
     @Property(selector = "setPlayerScope:")
     public native void setPlayerScope(GKLeaderboardPlayerScope v);
-    /**
-     * @since Available in iOS 4.1 and later.
-     * @deprecated Deprecated in iOS 7.0.
-     */
-    @Deprecated
-    @Property(selector = "category")
-    public native String getCategory();
-    /**
-     * @since Available in iOS 4.1 and later.
-     * @deprecated Deprecated in iOS 7.0.
-     */
-    @Deprecated
-    @Property(selector = "setCategory:")
-    public native void setCategory(String v);
     /**
      * @since Available in iOS 7.0 and later.
      */
@@ -100,15 +95,42 @@ import org.robovm.apple.uikit.*;
      */
     @Property(selector = "groupIdentifier")
     public native String getGroupIdentifier();
+    /**
+     * @since Available in iOS 4.1 and later.
+     * @deprecated Deprecated in iOS 7.0.
+     */
+    @Deprecated
+    @Property(selector = "category")
+    public native String getCategory();
+    /**
+     * @since Available in iOS 4.1 and later.
+     * @deprecated Deprecated in iOS 7.0.
+     */
+    @Deprecated
+    @Property(selector = "setCategory:")
+    public native void setCategory(String v);
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
-    @Method(selector = "init")
-    protected native @Pointer long init();
-    @Method(selector = "initWithPlayerIDs:")
-    protected native @Pointer long init(NSArray<NSString> playerIDs);
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @Method(selector = "initWithPlayers:")
+    protected native @Pointer long init(NSArray<GKPlayer> players);
     @Method(selector = "loadScoresWithCompletionHandler:")
     public native void loadScores(@Block VoidBlock2<NSArray<GKScore>, NSError> completionHandler);
+    /**
+     * @since Available in iOS 6.0 and later.
+     */
+    @Method(selector = "loadLeaderboardsWithCompletionHandler:")
+    public static native void loadLeaderboards(@Block VoidBlock2<NSArray<GKLeaderboard>, NSError> completionHandler);
+    /**
+     * @since Available in iOS 4.1 and later.
+     * @deprecated Deprecated in iOS 8.0.
+     */
+    @Deprecated
+    @Method(selector = "initWithPlayerIDs:")
+    protected native @Pointer long init(@org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String> playerIDs);
     /**
      * @since Available in iOS 4.1 and later.
      * @deprecated Deprecated in iOS 6.0.
@@ -117,10 +139,12 @@ import org.robovm.apple.uikit.*;
     @Method(selector = "loadCategoriesWithCompletionHandler:")
     public static native void loadCategories(@Block VoidBlock3<NSArray<NSString>, NSArray<NSString>, NSError> completionHandler);
     /**
-     * @since Available in iOS 6.0 and later.
+     * @since Available in iOS 5.0 and later.
+     * @deprecated Deprecated in iOS 7.0.
      */
-    @Method(selector = "loadLeaderboardsWithCompletionHandler:")
-    public static native void loadLeaderboards(@Block VoidBlock2<NSArray<GKLeaderboard>, NSError> completionHandler);
+    @Deprecated
+    @Method(selector = "setDefaultLeaderboard:withCompletionHandler:")
+    public static native void setDefaultLeaderboard(String leaderboardIdentifier, @Block VoidBlock1<NSError> completionHandler);
     /**
      * @since Available in iOS 7.0 and later.
      */

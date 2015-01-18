@@ -49,16 +49,16 @@ import org.robovm.apple.coremedia.*;
     /*<constructors>*/
     public AudioQueueChannelAssignment() {}
     public AudioQueueChannelAssignment(CFString mDeviceUID, int mChannelNumber) {
-        this.mDeviceUID(mDeviceUID);
-        this.mChannelNumber(mChannelNumber);
+        this.setMDeviceUID(mDeviceUID);
+        this.setMChannelNumber(mChannelNumber);
     }
     /*</constructors>*/
     /*<properties>*//*</properties>*/
     /*<members>*/
-    @StructMember(0) public native CFString mDeviceUID();
-    @StructMember(0) public native AudioQueueChannelAssignment mDeviceUID(CFString mDeviceUID);
-    @StructMember(1) public native int mChannelNumber();
-    @StructMember(1) public native AudioQueueChannelAssignment mChannelNumber(int mChannelNumber);
+    @StructMember(0) public native CFString getMDeviceUID();
+    @StructMember(0) public native AudioQueueChannelAssignment setMDeviceUID(CFString mDeviceUID);
+    @StructMember(1) public native int getMChannelNumber();
+    @StructMember(1) public native AudioQueueChannelAssignment setMChannelNumber(int mChannelNumber);
     /*</members>*/
     /*<methods>*//*</methods>*/
 }

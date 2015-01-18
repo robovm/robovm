@@ -84,7 +84,7 @@ import org.robovm.apple.corelocation.*;
     @Property(selector = "setFlatness:")
     public native void setFlatness(@MachineSizedFloat double v);
     @Property(selector = "usesEvenOddFillRule")
-    public native boolean isUsesEvenOddFillRule();
+    public native boolean usesEvenOddFillRule();
     @Property(selector = "setUsesEvenOddFillRule:")
     public native void setUsesEvenOddFillRule(boolean v);
     /*</properties>*/
@@ -96,7 +96,7 @@ import org.robovm.apple.corelocation.*;
         }
         MachineSizedFloatPtr patternPtr = Struct.allocate(MachineSizedFloatPtr.class, pattern.length);
         patternPtr.set(pattern);
-        setLineDash$count$phase$(patternPtr, pattern.length, phase);
+        setLineDash(patternPtr, pattern.length, phase);
     }
 
     public void setLineDash(float[] pattern, double phase) {
@@ -105,30 +105,30 @@ import org.robovm.apple.corelocation.*;
         }
         MachineSizedFloatPtr patternPtr = Struct.allocate(MachineSizedFloatPtr.class, pattern.length);
         patternPtr.set(pattern);
-        setLineDash$count$phase$(patternPtr, pattern.length, phase);
+        setLineDash(patternPtr, pattern.length, phase);
     }
 
     public double[] getLineDashD() {
         MachineSizedSIntPtr countPtr = new MachineSizedSIntPtr();
-        getLineDash$count$phase$(null, countPtr, null);
+        getLineDash(null, countPtr, null);
         int count = (int) countPtr.get();
         MachineSizedFloatPtr patternPtr = Struct.allocate(MachineSizedFloatPtr.class, count);
-        getLineDash$count$phase$(patternPtr, null, null);
+        getLineDash(patternPtr, null, null);
         return patternPtr.toDoubleArray(count);
     }
     
     public float[] getLineDashF() {
         MachineSizedSIntPtr countPtr = new MachineSizedSIntPtr();
-        getLineDash$count$phase$(null, countPtr, null);
+        getLineDash(null, countPtr, null);
         int count = (int) countPtr.get();
         MachineSizedFloatPtr patternPtr = Struct.allocate(MachineSizedFloatPtr.class, count);
-        getLineDash$count$phase$(patternPtr, null, null);
+        getLineDash(patternPtr, null, null);
         return patternPtr.toFloatArray(count);
     }
 
     public double getLineDashPhase() {
         MachineSizedFloatPtr phasePtr = new MachineSizedFloatPtr();
-        getLineDash$count$phase$(null, null, phasePtr);
+        getLineDash(null, null, phasePtr);
         return phasePtr.get();
     }
 
@@ -162,9 +162,9 @@ import org.robovm.apple.corelocation.*;
     @Method(selector = "containsPoint:")
     public native boolean containsPoint(@ByVal CGPoint point);
     @Method(selector = "setLineDash:count:phase:")
-    protected native void setLineDash$count$phase$(MachineSizedFloatPtr pattern, @MachineSizedSInt long count, @MachineSizedFloat double phase);
+    protected native void setLineDash(MachineSizedFloatPtr pattern, @MachineSizedSInt long count, @MachineSizedFloat double phase);
     @Method(selector = "getLineDash:count:phase:")
-    protected native void getLineDash$count$phase$(MachineSizedFloatPtr pattern, MachineSizedSIntPtr count, MachineSizedFloatPtr phase);
+    protected native void getLineDash(MachineSizedFloatPtr pattern, MachineSizedSIntPtr count, MachineSizedFloatPtr phase);
     @Method(selector = "fill")
     public native void fill();
     @Method(selector = "stroke")

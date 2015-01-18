@@ -59,11 +59,11 @@ import org.robovm.apple.mediatoolbox.*;
     @Property(selector = "faceID")
     public native @MachineSizedSInt long getFaceID();
     @Property(selector = "hasRollAngle")
-    public native boolean isHasRollAngle();
+    public native boolean hasRollAngle();
     @Property(selector = "rollAngle")
     public native @MachineSizedFloat double getRollAngle();
     @Property(selector = "hasYawAngle")
-    public native boolean isHasYawAngle();
+    public native boolean hasYawAngle();
     @Property(selector = "yawAngle")
     public native @MachineSizedFloat double getYawAngle();
     /*</properties>*/

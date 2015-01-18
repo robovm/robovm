@@ -75,9 +75,9 @@ import org.robovm.apple.opengles.*;
     @Method(selector = "setAnimationTimingFunction:")
     public static native void setAnimationTimingFunction(CAMediaTimingFunction function);
     @Method(selector = "disableActions")
-    public static native boolean isDisableActions();
+    public static native boolean areActionsDisabled();
     @Method(selector = "setDisableActions:")
-    public static native void setDisableActions(boolean flag);
+    public static native void setActionsDisabled(boolean flag);
     @Method(selector = "completionBlock")
     public static native @Block Runnable getCompletionBlock();
     @Method(selector = "setCompletionBlock:")

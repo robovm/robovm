@@ -57,12 +57,12 @@ import org.robovm.apple.mediatoolbox.*;
     /*</constructors>*/
     /*<properties>*/
     @Property(selector = "mediaType")
-    public native String getMediaType();
+    public native AVMediaType getMediaType();
     /**
      * @since Available in iOS 5.0 and later.
      */
     @Property(selector = "alwaysCopiesSampleData")
-    public native boolean isAlwaysCopiesSampleData();
+    public native boolean alwaysCopiesSampleData();
     /**
      * @since Available in iOS 5.0 and later.
      */
@@ -72,7 +72,7 @@ import org.robovm.apple.mediatoolbox.*;
      * @since Available in iOS 8.0 and later.
      */
     @Property(selector = "supportsRandomAccess")
-    public native boolean isSupportsRandomAccess();
+    public native boolean supportsRandomAccess();
     /**
      * @since Available in iOS 8.0 and later.
      */
@@ -82,12 +82,12 @@ import org.robovm.apple.mediatoolbox.*;
     /*<members>*//*</members>*/
     /*<methods>*/
     @Method(selector = "copyNextSampleBuffer")
-    public native CMSampleBuffer copyNextSampleBuffer();
+    public native CMSampleBuffer getNextSampleBuffer();
     /**
      * @since Available in iOS 8.0 and later.
      */
     @Method(selector = "resetForReadingTimeRanges:")
-    public native void resetForReadingTimeRanges$(NSArray<?> timeRanges);
+    public native void resetForReadingTimeRanges(@org.robovm.rt.bro.annotation.Marshaler(CMTimeRange.AsValuedListMarshaler.class) List<CMTimeRange> timeRanges);
     /**
      * @since Available in iOS 8.0 and later.
      */

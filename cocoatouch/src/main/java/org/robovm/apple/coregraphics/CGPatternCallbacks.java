@@ -47,36 +47,18 @@ import org.robovm.apple.uikit.*;
     public CGPatternCallbacks() {}
     public CGPatternCallbacks(int version, FunctionPtr drawPattern, FunctionPtr releaseInfo) {
         this.setVersion(version);
-        this.setDrawpattern(drawPattern);
-        this.setReleaseinfo(releaseInfo);
+        this.setDrawPattern(drawPattern);
+        this.setReleaseInfo(releaseInfo);
     }
     /*</constructors>*/
     /*<properties>*//*</properties>*/
     /*<members>*/
     @StructMember(0) public native int getVersion();
     @StructMember(0) public native CGPatternCallbacks setVersion(int version);
-    
-    @Deprecated
-    @StructMember(0) public native int version();
-    @Deprecated
-    @StructMember(0) public native CGPatternCallbacks version(int version);
-    
-    @StructMember(1) public native FunctionPtr getDrawpattern();
-    @StructMember(1) public native CGPatternCallbacks setDrawpattern(FunctionPtr drawPattern);
-    
-    @Deprecated
-    @StructMember(1) public native FunctionPtr drawPattern();
-    @Deprecated
-    @StructMember(1) public native CGPatternCallbacks drawPattern(FunctionPtr drawPattern);
-    
-    @StructMember(2) public native FunctionPtr getReleaseinfo();
-    @StructMember(2) public native CGPatternCallbacks setReleaseinfo(FunctionPtr releaseInfo);
-    
-    @Deprecated
-    @StructMember(2) public native FunctionPtr releaseInfo();
-    @Deprecated
-    @StructMember(2) public native CGPatternCallbacks releaseInfo(FunctionPtr releaseInfo);
-    
+    @StructMember(1) public native FunctionPtr getDrawPattern();
+    @StructMember(1) public native CGPatternCallbacks setDrawPattern(FunctionPtr drawPattern);
+    @StructMember(2) public native FunctionPtr getReleaseInfo();
+    @StructMember(2) public native CGPatternCallbacks setReleaseInfo(FunctionPtr releaseInfo);
     /*</members>*/
     /*<methods>*//*</methods>*/
 }

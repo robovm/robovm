@@ -79,7 +79,7 @@ import org.robovm.apple.corelocation.*;
     @Property(selector = "setReturnKeyType:")
     void setReturnKeyType(UIReturnKeyType v);
     @Property(selector = "enablesReturnKeyAutomatically")
-    boolean isEnablesReturnKeyAutomatically();
+    boolean enablesReturnKeyAutomatically();
     @Property(selector = "setEnablesReturnKeyAutomatically:")
     void setEnablesReturnKeyAutomatically(boolean v);
     @Property(selector = "isSecureTextEntry")

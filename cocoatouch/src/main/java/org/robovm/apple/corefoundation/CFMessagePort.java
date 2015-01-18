@@ -27,6 +27,7 @@ import org.robovm.rt.bro.*;
 import org.robovm.rt.bro.annotation.*;
 import org.robovm.rt.bro.ptr.*;
 import org.robovm.apple.dispatch.*;
+import org.robovm.apple.foundation.*;
 /*</imports>*/
 
 /*<javadoc>*/
@@ -36,6 +37,29 @@ import org.robovm.apple.dispatch.*;
     extends /*<extends>*/CFType/*</extends>*/ 
     /*<implements>*//*</implements>*/ {
 
+    public interface MessagePortCallback {
+        CFData invoke(CFMessagePort port, @MachineSizedSInt long msgid, CFData data);
+    }
+    public interface InvalidationCallback {
+        void invalidate(CFMessagePort port);
+    }
+    
+    private static java.util.concurrent.atomic.AtomicLong refconId = new java.util.concurrent.atomic.AtomicLong();
+    private static final Map<Long, MessagePortCallback> portCallbacks = new HashMap<>();
+    private static final java.lang.reflect.Method cbPort;
+    private static final java.lang.reflect.Method cbInvalidate;
+    
+    static {
+        try {
+            cbPort = CFMessagePort.class.getDeclaredMethod("cbPort", CFMessagePort.class, long.class, CFData.class, long.class);
+            cbInvalidate = CFMessagePort.class.getDeclaredMethod("cbInvalidate", CFMessagePort.class, long.class);
+        } catch (Throwable e) {
+            throw new Error(e);
+        }
+    }
+    
+    private InvalidationCallback invalidationCallback;
+    
     /*<ptr>*/public static class CFMessagePortPtr extends Ptr<CFMessagePort, CFMessagePortPtr> {}/*</ptr>*/
     /*<bind>*/static { Bro.bind(CFMessagePort.class); }/*</bind>*/
     /*<constants>*//*</constants>*/
@@ -44,33 +68,96 @@ import org.robovm.apple.dispatch.*;
     /*</constructors>*/
     /*<properties>*//*</properties>*/
     /*<members>*//*</members>*/
+    @Callback
+    private static void cbPort(CFMessagePort port, @MachineSizedSInt long msgid, CFData data, @Pointer long refcon) {
+        MessagePortCallback callback = null;
+        synchronized (portCallbacks) {
+            callback = portCallbacks.get(refcon);
+        }
+        callback.invoke(port, msgid, data);
+    }
+    @Callback
+    private void cbInvalidate(CFMessagePort port, @Pointer long refcon) {
+        if (invalidationCallback != null) {
+            invalidationCallback.invalidate(port);
+        }
+    }
+    
+    public static CFMessagePort createLocal(String name, MessagePortCallback callback) {
+        long refcon = refconId.getAndIncrement();
+        CFMessagePortContext context = new CFMessagePortContext();
+        context.setInfo(refcon);
+        BooleanPtr ptr = new BooleanPtr();
+        CFMessagePort result = createLocal(null, name, new FunctionPtr(cbPort), context, ptr);
+        if (result != null) {
+            synchronized (portCallbacks) {
+                portCallbacks.put(refcon, callback);
+            }
+        }
+        return result;
+    }
+    public static CFMessagePort createRemote(String name) {
+        return createRemote(null, name);
+    }
+    public InvalidationCallback getInvalidationCallBack() {
+        return invalidationCallback;
+    }
+    public void setInvalidationCallBack(InvalidationCallback callback) {
+        invalidationCallback = callback;
+        if (callback == null) {
+            setInvalidationCallBack0(null);
+        } else {
+            setInvalidationCallBack0(new FunctionPtr(cbInvalidate));
+        }
+    }
+    public static CFRunLoopSource createRunLoopSource(CFMessagePort local, @MachineSizedSInt long order) {
+        return createRunLoopSource(null, local, order);
+    }
+    
+    /**
+     * 
+     * @param msgid
+     * @param data
+     * @param sendTimeout
+     * @param rcvTimeout
+     * @param replyMode
+     * @return
+     * @throws NSErrorException
+     */
+    public CFData sendRequest(int msgid, CFData data, double sendTimeout, double rcvTimeout, String replyMode) throws NSErrorException {
+        CFData.CFDataPtr ptr = new CFData.CFDataPtr();
+        CFMessagePortErrorCode err = sendRequest(msgid, data, sendTimeout, rcvTimeout, replyMode, ptr);
+        if (err != CFMessagePortErrorCode.Success) {
+            CFMessagePortError error = new CFMessagePortError(err);
+            throw new NSErrorException(error);
+        }
+        return ptr.get();
+    }
     /*<methods>*/
     @Bridge(symbol="CFMessagePortGetTypeID", optional=true)
     public static native @MachineSizedUInt long getClassTypeID();
     @Bridge(symbol="CFMessagePortCreateLocal", optional=true)
-    public static native CFMessagePort createLocal(CFAllocator allocator, CFString name, FunctionPtr callout, CFMessagePortContext context, BytePtr shouldFreeInfo);
+    protected static native CFMessagePort createLocal(CFAllocator allocator, String name, FunctionPtr callout, CFMessagePortContext context, BooleanPtr shouldFreeInfo);
     @Bridge(symbol="CFMessagePortCreateRemote", optional=true)
-    public static native CFMessagePort createRemote(CFAllocator allocator, CFString name);
+    protected static native CFMessagePort createRemote(CFAllocator allocator, String name);
     @Bridge(symbol="CFMessagePortIsRemote", optional=true)
     public native boolean isRemote();
     @Bridge(symbol="CFMessagePortGetName", optional=true)
-    public native CFString getName();
+    public native String getName();
     @Bridge(symbol="CFMessagePortSetName", optional=true)
-    public native boolean setName(CFString newName);
-    @Bridge(symbol="CFMessagePortGetContext", optional=true)
-    public native void getContext(CFMessagePortContext context);
+    public native boolean setName(String newName);
     @Bridge(symbol="CFMessagePortInvalidate", optional=true)
     public native void invalidate();
     @Bridge(symbol="CFMessagePortIsValid", optional=true)
     public native boolean isValid();
     @Bridge(symbol="CFMessagePortGetInvalidationCallBack", optional=true)
-    public native FunctionPtr getInvalidationCallBack();
+    private native FunctionPtr getInvalidationCallBack0();
     @Bridge(symbol="CFMessagePortSetInvalidationCallBack", optional=true)
-    public native void setInvalidationCallBack(FunctionPtr callout);
+    private native void setInvalidationCallBack0(FunctionPtr callout);
     @Bridge(symbol="CFMessagePortSendRequest", optional=true)
-    public native int sendRequest(int msgid, CFData data, double sendTimeout, double rcvTimeout, CFString replyMode, CFData.CFDataPtr returnData);
+    protected native CFMessagePortErrorCode sendRequest(int msgid, CFData data, double sendTimeout, double rcvTimeout, String replyMode, CFData.CFDataPtr returnData);
     @Bridge(symbol="CFMessagePortCreateRunLoopSource", optional=true)
-    public static native CFRunLoopSource createRunLoopSource(CFAllocator allocator, CFMessagePort local, @MachineSizedSInt long order);
+    protected static native CFRunLoopSource createRunLoopSource(CFAllocator allocator, CFMessagePort local, @MachineSizedSInt long order);
     /**
      * @since Available in iOS 4.0 and later.
      */

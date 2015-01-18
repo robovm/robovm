@@ -52,7 +52,7 @@ import org.robovm.apple.foundation.*;
      * @since Available in iOS 5.0 and later.
      */
     @Property(selector = "usesStoreSpecificMigrationManager")
-    public native boolean isUsesStoreSpecificMigrationManager();
+    public native boolean usesStoreSpecificMigrationManager();
     /**
      * @since Available in iOS 5.0 and later.
      */

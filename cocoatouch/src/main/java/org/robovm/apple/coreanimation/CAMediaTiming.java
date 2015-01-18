@@ -31,6 +31,7 @@ import org.robovm.apple.foundation.*;
 import org.robovm.apple.coreimage.*;
 import org.robovm.apple.coretext.*;
 import org.robovm.apple.opengles.*;
+import org.robovm.apple.metal.*;
 /*</imports>*/
 
 /*<javadoc>*/
@@ -71,13 +72,13 @@ import org.robovm.apple.opengles.*;
     @Property(selector = "setRepeatDuration:")
     void setRepeatDuration(double v);
     @Property(selector = "autoreverses")
-    boolean isAutoreverses();
+    boolean autoreverses();
     @Property(selector = "setAutoreverses:")
     void setAutoreverses(boolean v);
     @Property(selector = "fillMode")
-    NSString getFillMode();
+    CAFillMode getFillMode();
     @Property(selector = "setFillMode:")
-    void setFillMode(NSString v);
+    void setFillMode(CAFillMode v);
     /*</properties>*/
     /*<methods>*/
     

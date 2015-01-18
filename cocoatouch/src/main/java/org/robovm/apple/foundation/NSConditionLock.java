@@ -50,7 +50,7 @@ import org.robovm.apple.dispatch.*;
     /*<constructors>*/
     public NSConditionLock() {}
     protected NSConditionLock(SkipInit skipInit) { super(skipInit); }
-    public NSConditionLock(@MachineSizedSInt long condition) { super((SkipInit) null); initObject(initWithCondition$(condition)); }
+    public NSConditionLock(@MachineSizedSInt long condition) { super((SkipInit) null); initObject(init(condition)); }
     /*</constructors>*/
     /*<properties>*/
     @Property(selector = "condition")
@@ -69,7 +69,7 @@ import org.robovm.apple.dispatch.*;
     /*<members>*//*</members>*/
     /*<methods>*/
     @Method(selector = "initWithCondition:")
-    protected native @Pointer long initWithCondition$(@MachineSizedSInt long condition);
+    protected native @Pointer long init(@MachineSizedSInt long condition);
     @Method(selector = "lockWhenCondition:")
     public native void lock(@MachineSizedSInt long condition);
     @Method(selector = "tryLock")

@@ -31,6 +31,7 @@ import org.robovm.apple.foundation.*;
 import org.robovm.apple.coreimage.*;
 import org.robovm.apple.coretext.*;
 import org.robovm.apple.opengles.*;
+import org.robovm.apple.metal.*;
 /*</imports>*/
 
 /*<javadoc>*/
@@ -50,9 +51,9 @@ import org.robovm.apple.opengles.*;
     /*</constructors>*/
     /*<properties>*/
     @Property(selector = "colors")
-    public native NSArray<?> getColors();
+    public native @org.robovm.rt.bro.annotation.Marshaler(NSArray.AsListMarshaler.class) List<CGColor> getColors();
     @Property(selector = "setColors:")
-    public native void setColors(NSArray<?> v);
+    public native void setColors(@org.robovm.rt.bro.annotation.Marshaler(NSArray.AsListMarshaler.class) List<CGColor> v);
     @Property(selector = "locations")
     public native NSArray<NSNumber> getLocations();
     @Property(selector = "setLocations:")
@@ -66,9 +67,9 @@ import org.robovm.apple.opengles.*;
     @Property(selector = "setEndPoint:")
     public native void setEndPoint(@ByVal CGPoint v);
     @Property(selector = "type")
-    public native NSString getType();
+    public native CAGradientType getType();
     @Property(selector = "setType:")
-    public native void setType(NSString v);
+    public native void setType(CAGradientType v);
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/

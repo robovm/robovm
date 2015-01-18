@@ -33,6 +33,8 @@ import org.robovm.apple.coreanimation.*;
 import org.robovm.apple.dispatch.*;
 import org.robovm.apple.coreimage.*;
 import org.robovm.apple.avfoundation.*;
+import org.robovm.apple.glkit.*;
+import org.robovm.apple.scenekit.*;
 /*</imports>*/
 
 /*<javadoc>*/
@@ -49,6 +51,7 @@ import org.robovm.apple.avfoundation.*;
     /*<constructors>*/
     public SKNode() {}
     protected SKNode(SkipInit skipInit) { super(skipInit); }
+    public SKNode(NSCoder aDecoder) { super((SkipInit) null); initObject(init(aDecoder)); }
     /*</constructors>*/
     /*<properties>*/
     @Property(selector = "frame")
@@ -111,9 +114,22 @@ import org.robovm.apple.avfoundation.*;
     public native NSMutableDictionary<?, ?> getUserData();
     @Property(selector = "setUserData:")
     public native void setUserData(NSMutableDictionary<?, ?> v);
+    @Property(selector = "reachConstraints")
+    public native SKReachConstraints getReachConstraints();
+    @Property(selector = "setReachConstraints:")
+    public native void setReachConstraints(SKReachConstraints v);
+    @Property(selector = "constraints")
+    public native NSArray<SKConstraint> getConstraints();
+    @Property(selector = "setConstraints:")
+    public native void setConstraints(NSArray<SKConstraint> v);
     /*</properties>*/
     /*<members>*//*</members>*/
+    public static SKNode create(File file) {
+        return create(file.getAbsolutePath());
+    }
     /*<methods>*/
+    @Method(selector = "initWithCoder:")
+    protected native @Pointer long init(NSCoder aDecoder);
     @Method(selector = "calculateAccumulatedFrame")
     public native @ByVal CGRect calculateAccumulatedFrame();
     @Method(selector = "setScale:")
@@ -132,6 +148,11 @@ import org.robovm.apple.avfoundation.*;
     public native SKNode getChild(String name);
     @Method(selector = "enumerateChildNodesWithName:usingBlock:")
     public native void enumerateChildNodes(String name, @Block VoidBlock2<SKNode, BytePtr> block);
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @Method(selector = "objectForKeyedSubscript:")
+    public native NSArray<SKNode> findNodesByName(String name);
     @Method(selector = "inParentHierarchy:")
     public native boolean isInParentHierarchy(SKNode parent);
     @Method(selector = "runAction:")
@@ -162,6 +183,8 @@ import org.robovm.apple.avfoundation.*;
     public native boolean intersectsNode(SKNode node);
     @Method(selector = "node")
     public static native SKNode create();
+    @Method(selector = "nodeWithFileNamed:")
+    private static native SKNode create(String filename);
     @Method(selector = "encodeWithCoder:")
     public native void encode(NSCoder aCoder);
     /*</methods>*/

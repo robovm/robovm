@@ -70,6 +70,6 @@ import org.robovm.apple.mediatoolbox.*;
     /*<members>*//*</members>*/
     /*<methods>*/
     @Method(selector = "loadFactoryReverbPreset:")
-    public native void loadFactoryReverbPreset$(AVAudioUnitReverbPreset preset);
+    public native void loadFactoryReverbPreset(AVAudioUnitReverbPreset preset);
     /*</methods>*/
 }

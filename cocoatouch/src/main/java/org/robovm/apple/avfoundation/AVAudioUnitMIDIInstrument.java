@@ -54,7 +54,7 @@ import org.robovm.apple.mediatoolbox.*;
     /*<constructors>*/
     public AVAudioUnitMIDIInstrument() {}
     protected AVAudioUnitMIDIInstrument(SkipInit skipInit) { super(skipInit); }
-    public AVAudioUnitMIDIInstrument(@ByVal AudioComponentDescription description) { super((SkipInit) null); initObject(initWithAudioComponentDescription$(description)); }
+    public AVAudioUnitMIDIInstrument(@ByVal AudioComponentDescription description) { super((SkipInit) null); initObject(init(description)); }
     /*</constructors>*/
     /*<properties>*/
     
@@ -62,28 +62,28 @@ import org.robovm.apple.mediatoolbox.*;
     /*<members>*//*</members>*/
     /*<methods>*/
     @Method(selector = "initWithAudioComponentDescription:")
-    protected native @Pointer long initWithAudioComponentDescription$(@ByVal AudioComponentDescription description);
+    protected native @Pointer long init(@ByVal AudioComponentDescription description);
     @Method(selector = "startNote:withVelocity:onChannel:")
-    public native void startNote$withVelocity$onChannel$(byte note, byte velocity, byte channel);
+    public native void startNote(byte note, byte velocity, byte channel);
     @Method(selector = "stopNote:onChannel:")
-    public native void stopNote$onChannel$(byte note, byte channel);
+    public native void stopNote(byte note, byte channel);
     @Method(selector = "sendController:withValue:onChannel:")
-    public native void sendController$withValue$onChannel$(byte controller, byte value, byte channel);
+    public native void sendController(byte controller, byte value, byte channel);
     @Method(selector = "sendPitchBend:onChannel:")
-    public native void sendPitchBend$onChannel$(short pitchbend, byte channel);
+    public native void sendPitchBend(short pitchbend, byte channel);
     @Method(selector = "sendPressure:onChannel:")
-    public native void sendPressure$onChannel$(byte pressure, byte channel);
+    public native void sendPressure(byte pressure, byte channel);
     @Method(selector = "sendPressureForKey:withValue:onChannel:")
-    public native void sendPressureForKey$withValue$onChannel$(byte key, byte value, byte channel);
+    public native void sendPressure(byte key, byte value, byte channel);
     @Method(selector = "sendProgramChange:onChannel:")
-    public native void sendProgramChange$onChannel$(byte program, byte channel);
+    public native void sendProgramChange(byte program, byte channel);
     @Method(selector = "sendProgramChange:bankMSB:bankLSB:onChannel:")
-    public native void sendProgramChange$bankMSB$bankLSB$onChannel$(byte program, byte bankMSB, byte bankLSB, byte channel);
+    public native void sendProgramChange(byte program, byte bankMSB, byte bankLSB, byte channel);
     @Method(selector = "sendMIDIEvent:data1:data2:")
-    public native void sendMIDIEvent$data1$data2$(byte midiStatus, byte data1, byte data2);
+    public native void sendMIDIEvent(byte midiStatus, byte data1, byte data2);
     @Method(selector = "sendMIDIEvent:data1:")
-    public native void sendMIDIEvent$data1$(byte midiStatus, byte data1);
+    public native void sendMIDIEvent(byte midiStatus, byte data1);
     @Method(selector = "sendMIDISysExEvent:")
-    public native void sendMIDISysExEvent$(NSData midiData);
+    public native void sendMIDISysExEvent(NSData midiData);
     /*</methods>*/
 }

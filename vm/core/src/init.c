@@ -148,6 +148,12 @@ static void parseArg(char* arg, Options* options) {
     } else if (startsWith(arg, "WaitForAttach")) {
         options->waitForAttach = TRUE;
         options->enableHooks = TRUE; // WaitForAttach also enables hooks
+    } else if (startsWith(arg, "PrintPID=")) {
+        options->printPID = TRUE;
+        if (!options->pidFile) {
+            char* s = strdup(&arg[9]);
+            options->pidFile = s;
+        }
     } else if (startsWith(arg, "PrintPID")) {
         options->printPID = TRUE;
     } else if (startsWith(arg, "D")) {
@@ -256,11 +262,29 @@ Env* rvmStartup(Options* options) {
     // print PID if it was requested
     if(options->printPID) {
         pid_t pid = getpid();
-        fprintf(stderr, "[DEBUG] %s: pid=%d\n", LOG_TAG, pid);
+        if(options->pidFile) {
+            FILE* f = fopen(options->pidFile, "w");
+            if (!f) return NULL;
+            fprintf(f, "%d", pid);
+            fclose(f);
+        } else {
+            fprintf(stderr, "[DEBUG] %s: pid=%d\n", LOG_TAG, pid);
+        }
     }
 
+    // setup the TCP channel socket
+    if(options->enableHooks) {
+        if(!rvmHookSetupTCPChannel(options)) return NULL;
+    }
+
+    // wait for the debugger to attach
     if(options->waitForAttach) {
         rvmHookWaitForAttach(options);
+    }
+
+    // wait for the debugger to connect via TCP
+    if(options->enableHooks) {
+        if(!rvmHookHandshake(options)) return NULL;
     }
 
     TRACE("Initializing GC");

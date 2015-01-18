@@ -42,10 +42,11 @@ import org.robovm.apple.corefoundation.*;
     /*<bind>*/static { Bro.bind(ABGroupProperty.class); }/*</bind>*/
     /*<constants>*//*</constants>*/
     public static final ABGroupProperty Name = new ABGroupProperty("NameValue");
+    
     private static ABGroupProperty[] values = new ABGroupProperty[] {Name};
     
     private ABGroupProperty(String getterName) {
-        super(getterName);
+        super(ABGroupProperty.class, getterName);
     }
     /*<constructors>*//*</constructors>*/
     /*<properties>*//*</properties>*/

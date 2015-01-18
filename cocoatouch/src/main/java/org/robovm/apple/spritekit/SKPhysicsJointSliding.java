@@ -33,6 +33,8 @@ import org.robovm.apple.coreanimation.*;
 import org.robovm.apple.dispatch.*;
 import org.robovm.apple.coreimage.*;
 import org.robovm.apple.avfoundation.*;
+import org.robovm.apple.glkit.*;
+import org.robovm.apple.scenekit.*;
 /*</imports>*/
 
 /*<javadoc>*/
@@ -52,7 +54,7 @@ import org.robovm.apple.avfoundation.*;
     /*</constructors>*/
     /*<properties>*/
     @Property(selector = "shouldEnableLimits")
-    public native boolean isShouldEnableLimits();
+    public native boolean shouldEnableLimits();
     @Property(selector = "setShouldEnableLimits:")
     public native void setShouldEnableLimits(boolean v);
     @Property(selector = "lowerDistanceLimit")

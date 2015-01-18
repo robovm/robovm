@@ -96,7 +96,7 @@ import org.robovm.apple.corelocation.*;
     @Property(selector = "setDelegate:", strongRef = true)
     public native void setDelegate(NSTextStorageDelegate v);
     @Property(selector = "fixesAttributesLazily")
-    public native boolean isFixesAttributesLazily();
+    public native boolean fixesAttributesLazily();
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/

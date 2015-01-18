@@ -9,6 +9,10 @@
 package org.robovm.llvm.binding;
 
 public class LLVM implements LLVMConstants {
+  public static boolean LoadLibraryPermanently(String Filename) {
+    return LLVMJNI.LoadLibraryPermanently(Filename);
+  }
+
   public static void InitializeCore(PassRegistryRef R) {
     LLVMJNI.InitializeCore(PassRegistryRef.getCPtr(R));
   }
@@ -43,6 +47,14 @@ public class LLVM implements LLVMConstants {
     LLVMJNI.ContextDispose(ContextRef.getCPtr(C));
   }
 
+  public static String GetDiagInfoDescription(DiagnosticInfoRef DI) {
+    return LLVMJNI.GetDiagInfoDescription(DiagnosticInfoRef.getCPtr(DI));
+  }
+
+  public static DiagnosticSeverity GetDiagInfoSeverity(DiagnosticInfoRef DI) {
+    return DiagnosticSeverity.swigToEnum(LLVMJNI.GetDiagInfoSeverity(DiagnosticInfoRef.getCPtr(DI)));
+  }
+
   public static int GetMDKindIDInContext(ContextRef C, String Name) {
     return LLVMJNI.GetMDKindIDInContext(ContextRef.getCPtr(C), Name);
   }
@@ -58,6 +70,11 @@ public class LLVM implements LLVMConstants {
 
   public static ModuleRef ModuleCreateWithNameInContext(String ModuleID, ContextRef C) {
     long cPtr = LLVMJNI.ModuleCreateWithNameInContext(ModuleID, ContextRef.getCPtr(C));
+    return (cPtr == 0) ? null : new ModuleRef(cPtr, false);
+  }
+
+  public static ModuleRef CloneModule(ModuleRef M) {
+    long cPtr = LLVMJNI.CloneModule(ModuleRef.getCPtr(M));
     return (cPtr == 0) ? null : new ModuleRef(cPtr, false);
   }
 
@@ -465,16 +482,6 @@ public class LLVM implements LLVMConstants {
     return (cPtr == 0) ? null : new ValueRef(cPtr, false);
   }
 
-  public static ValueRef IsAMDNode(ValueRef Val) {
-    long cPtr = LLVMJNI.IsAMDNode(ValueRef.getCPtr(Val));
-    return (cPtr == 0) ? null : new ValueRef(cPtr, false);
-  }
-
-  public static ValueRef IsAMDString(ValueRef Val) {
-    long cPtr = LLVMJNI.IsAMDString(ValueRef.getCPtr(Val));
-    return (cPtr == 0) ? null : new ValueRef(cPtr, false);
-  }
-
   public static ValueRef IsAUser(ValueRef Val) {
     long cPtr = LLVMJNI.IsAUser(ValueRef.getCPtr(Val));
     return (cPtr == 0) ? null : new ValueRef(cPtr, false);
@@ -550,13 +557,18 @@ public class LLVM implements LLVMConstants {
     return (cPtr == 0) ? null : new ValueRef(cPtr, false);
   }
 
-  public static ValueRef IsAFunction(ValueRef Val) {
-    long cPtr = LLVMJNI.IsAFunction(ValueRef.getCPtr(Val));
+  public static ValueRef IsAGlobalAlias(ValueRef Val) {
+    long cPtr = LLVMJNI.IsAGlobalAlias(ValueRef.getCPtr(Val));
     return (cPtr == 0) ? null : new ValueRef(cPtr, false);
   }
 
-  public static ValueRef IsAGlobalAlias(ValueRef Val) {
-    long cPtr = LLVMJNI.IsAGlobalAlias(ValueRef.getCPtr(Val));
+  public static ValueRef IsAGlobalObject(ValueRef Val) {
+    long cPtr = LLVMJNI.IsAGlobalObject(ValueRef.getCPtr(Val));
+    return (cPtr == 0) ? null : new ValueRef(cPtr, false);
+  }
+
+  public static ValueRef IsAFunction(ValueRef Val) {
+    long cPtr = LLVMJNI.IsAFunction(ValueRef.getCPtr(Val));
     return (cPtr == 0) ? null : new ValueRef(cPtr, false);
   }
 
@@ -815,6 +827,16 @@ public class LLVM implements LLVMConstants {
     return (cPtr == 0) ? null : new ValueRef(cPtr, false);
   }
 
+  public static ValueRef IsAMDNode(ValueRef Val) {
+    long cPtr = LLVMJNI.IsAMDNode(ValueRef.getCPtr(Val));
+    return (cPtr == 0) ? null : new ValueRef(cPtr, false);
+  }
+
+  public static ValueRef IsAMDString(ValueRef Val) {
+    long cPtr = LLVMJNI.IsAMDString(ValueRef.getCPtr(Val));
+    return (cPtr == 0) ? null : new ValueRef(cPtr, false);
+  }
+
   public static UseRef GetFirstUse(ValueRef Val) {
     long cPtr = LLVMJNI.GetFirstUse(ValueRef.getCPtr(Val));
     return (cPtr == 0) ? null : new UseRef(cPtr, false);
@@ -838,6 +860,11 @@ public class LLVM implements LLVMConstants {
   public static ValueRef GetOperand(ValueRef Val, int Index) {
     long cPtr = LLVMJNI.GetOperand(ValueRef.getCPtr(Val), Index);
     return (cPtr == 0) ? null : new ValueRef(cPtr, false);
+  }
+
+  public static UseRef GetOperandUse(ValueRef Val, int Index) {
+    long cPtr = LLVMJNI.GetOperandUse(ValueRef.getCPtr(Val), Index);
+    return (cPtr == 0) ? null : new UseRef(cPtr, false);
   }
 
   public static void SetOperand(ValueRef User, int Index, ValueRef Val) {
@@ -905,6 +932,10 @@ public class LLVM implements LLVMConstants {
     return LLVMJNI.ConstIntGetSExtValue(ValueRef.getCPtr(ConstantVal));
   }
 
+  public static double ConstRealGetDouble(ValueRef ConstantVal, IntOut losesInfo) {
+    return LLVMJNI.ConstRealGetDouble(ValueRef.getCPtr(ConstantVal), IntOut.getCPtr(losesInfo), losesInfo);
+  }
+
   public static ValueRef ConstStringInContext(ContextRef C, String Str, boolean DontNullTerminate) {
     long cPtr = LLVMJNI.ConstStringInContext(ContextRef.getCPtr(C), Str, DontNullTerminate);
     return (cPtr == 0) ? null : new ValueRef(cPtr, false);
@@ -913,6 +944,14 @@ public class LLVM implements LLVMConstants {
   public static ValueRef ConstString(String Str, boolean DontNullTerminate) {
     long cPtr = LLVMJNI.ConstString(Str, DontNullTerminate);
     return (cPtr == 0) ? null : new ValueRef(cPtr, false);
+  }
+
+  public static boolean IsConstantString(ValueRef c) {
+    return LLVMJNI.IsConstantString(ValueRef.getCPtr(c));
+  }
+
+  public static String GetAsString(ValueRef c, SizeTOut out) {
+    return LLVMJNI.GetAsString(ValueRef.getCPtr(c), SizeTOut.getCPtr(out), out);
   }
 
   public static ValueRef ConstStructInContext(ContextRef C, ValueRefArray ConstantVals, int Count, boolean Packed) {
@@ -932,6 +971,11 @@ public class LLVM implements LLVMConstants {
 
   public static ValueRef ConstNamedStruct(TypeRef StructTy, ValueRefArray ConstantVals, int Count) {
     long cPtr = LLVMJNI.ConstNamedStruct(TypeRef.getCPtr(StructTy), ValueRefArray.getCPtr(ConstantVals), ConstantVals, Count);
+    return (cPtr == 0) ? null : new ValueRef(cPtr, false);
+  }
+
+  public static ValueRef GetElementAsConstant(ValueRef c, int idx) {
+    long cPtr = LLVMJNI.GetElementAsConstant(ValueRef.getCPtr(c), idx);
     return (cPtr == 0) ? null : new ValueRef(cPtr, false);
   }
 
@@ -1290,6 +1334,22 @@ public class LLVM implements LLVMConstants {
 
   public static void SetVisibility(ValueRef Global, Visibility Viz) {
     LLVMJNI.SetVisibility(ValueRef.getCPtr(Global), Viz.swigValue());
+  }
+
+  public static DLLStorageClass GetDLLStorageClass(ValueRef Global) {
+    return DLLStorageClass.swigToEnum(LLVMJNI.GetDLLStorageClass(ValueRef.getCPtr(Global)));
+  }
+
+  public static void SetDLLStorageClass(ValueRef Global, DLLStorageClass Class) {
+    LLVMJNI.SetDLLStorageClass(ValueRef.getCPtr(Global), Class.swigValue());
+  }
+
+  public static boolean HasUnnamedAddr(ValueRef Global) {
+    return LLVMJNI.HasUnnamedAddr(ValueRef.getCPtr(Global));
+  }
+
+  public static void SetUnnamedAddr(ValueRef Global, boolean HasUnnamedAddr) {
+    LLVMJNI.SetUnnamedAddr(ValueRef.getCPtr(Global), HasUnnamedAddr);
   }
 
   public static int GetAlignment(ValueRef V) {
@@ -1654,6 +1714,15 @@ public class LLVM implements LLVMConstants {
     return IntPredicate.swigToEnum(LLVMJNI.GetICmpPredicate(ValueRef.getCPtr(Inst)));
   }
 
+  public static RealPredicate GetFCmpPredicate(ValueRef Inst) {
+    return RealPredicate.swigToEnum(LLVMJNI.GetFCmpPredicate(ValueRef.getCPtr(Inst)));
+  }
+
+  public static ValueRef InstructionClone(ValueRef Inst) {
+    long cPtr = LLVMJNI.InstructionClone(ValueRef.getCPtr(Inst));
+    return (cPtr == 0) ? null : new ValueRef(cPtr, false);
+  }
+
   public static void SetInstructionCallConv(ValueRef Instr, int CC) {
     LLVMJNI.SetInstructionCallConv(ValueRef.getCPtr(Instr), CC);
   }
@@ -1680,6 +1749,32 @@ public class LLVM implements LLVMConstants {
 
   public static void SetTailCall(ValueRef CallInst, boolean IsTailCall) {
     LLVMJNI.SetTailCall(ValueRef.getCPtr(CallInst), IsTailCall);
+  }
+
+  public static int GetNumSuccessors(ValueRef Term) {
+    return LLVMJNI.GetNumSuccessors(ValueRef.getCPtr(Term));
+  }
+
+  public static BasicBlockRef GetSuccessor(ValueRef Term, int i) {
+    long cPtr = LLVMJNI.GetSuccessor(ValueRef.getCPtr(Term), i);
+    return (cPtr == 0) ? null : new BasicBlockRef(cPtr, false);
+  }
+
+  public static void SetSuccessor(ValueRef Term, int i, BasicBlockRef block) {
+    LLVMJNI.SetSuccessor(ValueRef.getCPtr(Term), i, BasicBlockRef.getCPtr(block));
+  }
+
+  public static boolean IsConditional(ValueRef Branch) {
+    return LLVMJNI.IsConditional(ValueRef.getCPtr(Branch));
+  }
+
+  public static ValueRef GetCondition(ValueRef Branch) {
+    long cPtr = LLVMJNI.GetCondition(ValueRef.getCPtr(Branch));
+    return (cPtr == 0) ? null : new ValueRef(cPtr, false);
+  }
+
+  public static void SetCondition(ValueRef Branch, ValueRef Cond) {
+    LLVMJNI.SetCondition(ValueRef.getCPtr(Branch), ValueRef.getCPtr(Cond));
   }
 
   public static BasicBlockRef GetSwitchDefaultDest(ValueRef SwitchInstr) {
@@ -2225,6 +2320,11 @@ public class LLVM implements LLVMConstants {
     return (cPtr == 0) ? null : new ValueRef(cPtr, false);
   }
 
+  public static ValueRef BuildFence(BuilderRef B, AtomicOrdering ordering, boolean singleThread, String Name) {
+    long cPtr = LLVMJNI.BuildFence(BuilderRef.getCPtr(B), ordering.swigValue(), singleThread, Name);
+    return (cPtr == 0) ? null : new ValueRef(cPtr, false);
+  }
+
   public static ValueRef BuildAtomicRMW(BuilderRef B, AtomicRMWBinOp op, ValueRef PTR, ValueRef Val, AtomicOrdering ordering, boolean singleThread) {
     long cPtr = LLVMJNI.BuildAtomicRMW(BuilderRef.getCPtr(B), op.swigValue(), ValueRef.getCPtr(PTR), ValueRef.getCPtr(Val), ordering.swigValue(), singleThread);
     return (cPtr == 0) ? null : new ValueRef(cPtr, false);
@@ -2345,6 +2445,11 @@ public class LLVM implements LLVMConstants {
     return LLVMJNI.WriteBitcodeToFD(ModuleRef.getCPtr(M), FD, ShouldClose, Unbuffered);
   }
 
+  public static MemoryBufferRef WriteBitcodeToMemoryBuffer(ModuleRef M) {
+    long cPtr = LLVMJNI.WriteBitcodeToMemoryBuffer(ModuleRef.getCPtr(M));
+    return (cPtr == 0) ? null : new MemoryBufferRef(cPtr, false);
+  }
+
   public static ObjectFileRef CreateObjectFile(MemoryBufferRef MemBuf) {
     long cPtr = LLVMJNI.CreateObjectFile(MemoryBufferRef.getCPtr(MemBuf));
     return (cPtr == 0) ? null : new ObjectFileRef(cPtr, false);
@@ -2435,10 +2540,6 @@ public class LLVM implements LLVMConstants {
 
   public static long GetSymbolAddress(SymbolIteratorRef SI) {
     return LLVMJNI.GetSymbolAddress(SymbolIteratorRef.getCPtr(SI));
-  }
-
-  public static long GetSymbolFileOffset(SymbolIteratorRef SI) {
-    return LLVMJNI.GetSymbolFileOffset(SymbolIteratorRef.getCPtr(SI));
   }
 
   public static long GetSymbolSize(SymbolIteratorRef SI) {
@@ -2575,12 +2676,24 @@ public class LLVM implements LLVMConstants {
     LLVMJNI.AddAggressiveDCEPass(PassManagerRef.getCPtr(PM));
   }
 
+  public static void AddAlignmentFromAssumptionsPass(PassManagerRef PM) {
+    LLVMJNI.AddAlignmentFromAssumptionsPass(PassManagerRef.getCPtr(PM));
+  }
+
   public static void AddCFGSimplificationPass(PassManagerRef PM) {
     LLVMJNI.AddCFGSimplificationPass(PassManagerRef.getCPtr(PM));
   }
 
   public static void AddDeadStoreEliminationPass(PassManagerRef PM) {
     LLVMJNI.AddDeadStoreEliminationPass(PassManagerRef.getCPtr(PM));
+  }
+
+  public static void AddScalarizerPass(PassManagerRef PM) {
+    LLVMJNI.AddScalarizerPass(PassManagerRef.getCPtr(PM));
+  }
+
+  public static void AddMergedLoadStoreMotionPass(PassManagerRef PM) {
+    LLVMJNI.AddMergedLoadStoreMotionPass(PassManagerRef.getCPtr(PM));
   }
 
   public static void AddGVNPass(PassManagerRef PM) {
@@ -2633,6 +2746,10 @@ public class LLVM implements LLVMConstants {
 
   public static void AddPartiallyInlineLibCallsPass(PassManagerRef PM) {
     LLVMJNI.AddPartiallyInlineLibCallsPass(PassManagerRef.getCPtr(PM));
+  }
+
+  public static void AddLowerSwitchPass(PassManagerRef PM) {
+    LLVMJNI.AddLowerSwitchPass(PassManagerRef.getCPtr(PM));
   }
 
   public static void AddPromoteMemoryToRegisterPass(PassManagerRef PM) {
@@ -2695,6 +2812,10 @@ public class LLVM implements LLVMConstants {
     LLVMJNI.AddTypeBasedAliasAnalysisPass(PassManagerRef.getCPtr(PM));
   }
 
+  public static void AddScopedNoAliasAAPass(PassManagerRef PM) {
+    LLVMJNI.AddScopedNoAliasAAPass(PassManagerRef.getCPtr(PM));
+  }
+
   public static void AddBasicAliasAnalysisPass(PassManagerRef PM) {
     LLVMJNI.AddBasicAliasAnalysisPass(PassManagerRef.getCPtr(PM));
   }
@@ -2719,12 +2840,20 @@ public class LLVM implements LLVMConstants {
     LLVMJNI.InitializeARMTargetInfo();
   }
 
+  public static void InitializeAArch64TargetInfo() {
+    LLVMJNI.InitializeAArch64TargetInfo();
+  }
+
   public static void InitializeX86AsmPrinter() {
     LLVMJNI.InitializeX86AsmPrinter();
   }
 
   public static void InitializeARMAsmPrinter() {
     LLVMJNI.InitializeARMAsmPrinter();
+  }
+
+  public static void InitializeAArch64AsmPrinter() {
+    LLVMJNI.InitializeAArch64AsmPrinter();
   }
 
   public static void InitializeX86AsmParser() {
@@ -2735,12 +2864,20 @@ public class LLVM implements LLVMConstants {
     LLVMJNI.InitializeARMAsmParser();
   }
 
+  public static void InitializeAArch64AsmParser() {
+    LLVMJNI.InitializeAArch64AsmParser();
+  }
+
   public static void InitializeX86Disassembler() {
     LLVMJNI.InitializeX86Disassembler();
   }
 
   public static void InitializeARMDisassembler() {
     LLVMJNI.InitializeARMDisassembler();
+  }
+
+  public static void InitializeAArch64Disassembler() {
+    LLVMJNI.InitializeAArch64Disassembler();
   }
 
   public static void InitializeAllTargetInfos() {
@@ -2954,8 +3091,20 @@ public class LLVM implements LLVMConstants {
     return LLVMJNI.GetDefaultTargetTriple();
   }
 
+  public static void AddAnalysisPasses(TargetMachineRef T, PassManagerRef PM) {
+    LLVMJNI.AddAnalysisPasses(TargetMachineRef.getCPtr(T), PassManagerRef.getCPtr(PM));
+  }
+
   public static String getLlvmHostTriple() {
     return LLVMJNI.llvmHostTriple_get();
+  }
+
+  public static void PassManagerBuilderSetDisableTailCalls(PassManagerBuilderRef PMB, boolean Value) {
+    LLVMJNI.PassManagerBuilderSetDisableTailCalls(PassManagerBuilderRef.getCPtr(PMB), Value);
+  }
+
+  public static void PassManagerBuilderUseAlwaysInliner(PassManagerBuilderRef PMB, boolean InsertLifetime) {
+    LLVMJNI.PassManagerBuilderUseAlwaysInliner(PassManagerBuilderRef.getCPtr(PMB), InsertLifetime);
   }
 
   public static boolean ParseIR(MemoryBufferRef MemBuf, ModuleRefOut OutModule, StringOut OutMessage) {
@@ -2969,54 +3118,6 @@ public class LLVM implements LLVMConstants {
   public static TargetRef LookupTarget(String Triple, StringOut ErrorMessage) {
     long cPtr = LLVMJNI.LookupTarget(Triple, StringOut.getCPtr(ErrorMessage), ErrorMessage);
     return (cPtr == 0) ? null : new TargetRef(cPtr, false);
-  }
-
-  public static boolean TargetMachineHasMCRelaxAll(TargetMachineRef T) {
-    return LLVMJNI.TargetMachineHasMCRelaxAll(TargetMachineRef.getCPtr(T));
-  }
-
-  public static void TargetMachineSetMCRelaxAll(TargetMachineRef T, boolean Value) {
-    LLVMJNI.TargetMachineSetMCRelaxAll(TargetMachineRef.getCPtr(T), Value);
-  }
-
-  public static boolean TargetMachineHasMCSaveTempLabels(TargetMachineRef T) {
-    return LLVMJNI.TargetMachineHasMCSaveTempLabels(TargetMachineRef.getCPtr(T));
-  }
-
-  public static void TargetMachineSetMCSaveTempLabels(TargetMachineRef T, boolean Value) {
-    LLVMJNI.TargetMachineSetMCSaveTempLabels(TargetMachineRef.getCPtr(T), Value);
-  }
-
-  public static boolean TargetMachineHasMCNoExecStack(TargetMachineRef T) {
-    return LLVMJNI.TargetMachineHasMCNoExecStack(TargetMachineRef.getCPtr(T));
-  }
-
-  public static void TargetMachineSetMCNoExecStack(TargetMachineRef T, boolean Value) {
-    LLVMJNI.TargetMachineSetMCNoExecStack(TargetMachineRef.getCPtr(T), Value);
-  }
-
-  public static boolean TargetMachineHasMCUseLoc(TargetMachineRef T) {
-    return LLVMJNI.TargetMachineHasMCUseLoc(TargetMachineRef.getCPtr(T));
-  }
-
-  public static void TargetMachineSetMCUseLoc(TargetMachineRef T, boolean Value) {
-    LLVMJNI.TargetMachineSetMCUseLoc(TargetMachineRef.getCPtr(T), Value);
-  }
-
-  public static boolean TargetMachineHasMCUseCFI(TargetMachineRef T) {
-    return LLVMJNI.TargetMachineHasMCUseCFI(TargetMachineRef.getCPtr(T));
-  }
-
-  public static void TargetMachineSetMCUseCFI(TargetMachineRef T, boolean Value) {
-    LLVMJNI.TargetMachineSetMCUseCFI(TargetMachineRef.getCPtr(T), Value);
-  }
-
-  public static boolean TargetMachineHasMCUseDwarfDirectory(TargetMachineRef T) {
-    return LLVMJNI.TargetMachineHasMCUseDwarfDirectory(TargetMachineRef.getCPtr(T));
-  }
-
-  public static void TargetMachineSetMCUseDwarfDirectory(TargetMachineRef T, boolean Value) {
-    LLVMJNI.TargetMachineSetMCUseDwarfDirectory(TargetMachineRef.getCPtr(T), Value);
   }
 
   public static boolean TargetMachineGetAsmVerbosityDefault(TargetMachineRef T) {
@@ -3174,14 +3275,6 @@ public class LLVM implements LLVMConstants {
 
   public static void TargetOptionsSetPositionIndependentExecutable(TargetOptionsRef O, boolean V) {
     LLVMJNI.TargetOptionsSetPositionIndependentExecutable(TargetOptionsRef.getCPtr(O), V);
-  }
-
-  public static boolean TargetOptionsGetEnableSegmentedStacks(TargetOptionsRef O) {
-    return LLVMJNI.TargetOptionsGetEnableSegmentedStacks(TargetOptionsRef.getCPtr(O));
-  }
-
-  public static void TargetOptionsSetEnableSegmentedStacks(TargetOptionsRef O, boolean V) {
-    LLVMJNI.TargetOptionsSetEnableSegmentedStacks(TargetOptionsRef.getCPtr(O), V);
   }
 
   public static boolean TargetOptionsGetUseInitArray(TargetOptionsRef O) {

@@ -46,19 +46,19 @@ import org.robovm.apple.coregraphics.*;
     /*<constructors>*/
     public CTParagraphStyleSetting() {}
     public CTParagraphStyleSetting(CTParagraphStyleSpecifier spec, @MachineSizedUInt long valueSize, VoidPtr value) {
-        this.spec(spec);
-        this.valueSize(valueSize);
-        this.value(value);
+        this.setSpec(spec);
+        this.setValueSize(valueSize);
+        this.setValue(value);
     }
     /*</constructors>*/
     /*<properties>*//*</properties>*/
     /*<members>*/
-    @StructMember(0) public native CTParagraphStyleSpecifier spec();
-    @StructMember(0) public native CTParagraphStyleSetting spec(CTParagraphStyleSpecifier spec);
-    @StructMember(1) public native @MachineSizedUInt long valueSize();
-    @StructMember(1) public native CTParagraphStyleSetting valueSize(@MachineSizedUInt long valueSize);
-    @StructMember(2) public native VoidPtr value();
-    @StructMember(2) public native CTParagraphStyleSetting value(VoidPtr value);
+    @StructMember(0) public native CTParagraphStyleSpecifier getSpec();
+    @StructMember(0) public native CTParagraphStyleSetting setSpec(CTParagraphStyleSpecifier spec);
+    @StructMember(1) public native @MachineSizedUInt long getValueSize();
+    @StructMember(1) public native CTParagraphStyleSetting setValueSize(@MachineSizedUInt long valueSize);
+    @StructMember(2) public native VoidPtr getValue();
+    @StructMember(2) public native CTParagraphStyleSetting setValue(VoidPtr value);
     /*</members>*/
     /*<methods>*//*</methods>*/
 }

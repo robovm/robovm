@@ -27,6 +27,7 @@ import org.robovm.rt.bro.*;
 import org.robovm.rt.bro.annotation.*;
 import org.robovm.rt.bro.ptr.*;
 import org.robovm.apple.dispatch.*;
+import org.robovm.apple.foundation.*;
 /*</imports>*/
 
 /*<javadoc>*/
@@ -56,52 +57,16 @@ import org.robovm.apple.dispatch.*;
     /*<members>*/
     @StructMember(0) public native int getYears();
     @StructMember(0) public native CFGregorianUnits setYears(int years);
-    
-    @Deprecated
-    @StructMember(0) public native int years();
-    @Deprecated
-    @StructMember(0) public native CFGregorianUnits years(int years);
-    
     @StructMember(1) public native int getMonths();
     @StructMember(1) public native CFGregorianUnits setMonths(int months);
-    
-    @Deprecated
-    @StructMember(1) public native int months();
-    @Deprecated
-    @StructMember(1) public native CFGregorianUnits months(int months);
-    
     @StructMember(2) public native int getDays();
     @StructMember(2) public native CFGregorianUnits setDays(int days);
-    
-    @Deprecated
-    @StructMember(2) public native int days();
-    @Deprecated
-    @StructMember(2) public native CFGregorianUnits days(int days);
-    
     @StructMember(3) public native int getHours();
     @StructMember(3) public native CFGregorianUnits setHours(int hours);
-    
-    @Deprecated
-    @StructMember(3) public native int hours();
-    @Deprecated
-    @StructMember(3) public native CFGregorianUnits hours(int hours);
-    
     @StructMember(4) public native int getMinutes();
     @StructMember(4) public native CFGregorianUnits setMinutes(int minutes);
-    
-    @Deprecated
-    @StructMember(4) public native int minutes();
-    @Deprecated
-    @StructMember(4) public native CFGregorianUnits minutes(int minutes);
-    
     @StructMember(5) public native double getSeconds();
     @StructMember(5) public native CFGregorianUnits setSeconds(double seconds);
-    
-    @Deprecated
-    @StructMember(5) public native double seconds();
-    @Deprecated
-    @StructMember(5) public native CFGregorianUnits seconds(double seconds);
-    
     /*</members>*/
     /*<methods>*//*</methods>*/
 }

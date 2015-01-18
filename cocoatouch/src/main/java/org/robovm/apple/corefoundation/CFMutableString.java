@@ -27,6 +27,7 @@ import org.robovm.rt.bro.*;
 import org.robovm.rt.bro.annotation.*;
 import org.robovm.rt.bro.ptr.*;
 import org.robovm.apple.dispatch.*;
+import org.robovm.apple.foundation.*;
 /*</imports>*/
 
 /*<javadoc>*/
@@ -47,11 +48,11 @@ import org.robovm.apple.dispatch.*;
     @Bridge(symbol="CFStringCreateMutable", optional=true)
     protected static native CFMutableString createMutable(CFAllocator alloc, @MachineSizedSInt long maxLength);
     @Bridge(symbol="CFStringCreateMutableCopy", optional=true)
-    protected static native CFMutableString createMutableCopy(CFAllocator alloc, @MachineSizedSInt long maxLength, CFString theString);
+    protected static native CFMutableString createMutableCopy(CFAllocator alloc, @MachineSizedSInt long maxLength, String theString);
     @Bridge(symbol="CFStringCreateMutableWithExternalCharactersNoCopy", optional=true)
     protected static native CFMutableString createMutableWithExternalCharactersNoCopy(CFAllocator alloc, ShortPtr chars, @MachineSizedSInt long numChars, @MachineSizedSInt long capacity, CFAllocator externalCharactersAllocator);
     @Bridge(symbol="CFStringAppend", optional=true)
-    public native void append(CFString appendedString);
+    public native void append(String appendedString);
     @Bridge(symbol="CFStringAppendCharacters", optional=true)
     public native void appendCharacters(ShortPtr chars, @MachineSizedSInt long numChars);
     @Bridge(symbol="CFStringAppendPascalString", optional=true)
@@ -59,21 +60,21 @@ import org.robovm.apple.dispatch.*;
     @Bridge(symbol="CFStringAppendCString", optional=true)
     public native void appendCString(BytePtr cStr, int encoding);
     @Bridge(symbol="CFStringInsert", optional=true)
-    public native void insert(@MachineSizedSInt long idx, CFString insertedStr);
+    public native void insert(@MachineSizedSInt long idx, String insertedStr);
     @Bridge(symbol="CFStringDelete", optional=true)
     public native void delete(@ByVal CFRange range);
     @Bridge(symbol="CFStringReplace", optional=true)
-    public native void replace(@ByVal CFRange range, CFString replacement);
+    public native void replace(@ByVal CFRange range, String replacement);
     @Bridge(symbol="CFStringReplaceAll", optional=true)
-    public native void replaceAll(CFString replacement);
+    public native void replaceAll(String replacement);
     @Bridge(symbol="CFStringFindAndReplace", optional=true)
-    public native @MachineSizedSInt long findAndReplace(CFString stringToFind, CFString replacementString, @ByVal CFRange rangeToSearch, CFStringCompareFlags compareOptions);
+    public native @MachineSizedSInt long findAndReplace(String stringToFind, String replacementString, @ByVal CFRange rangeToSearch, CFStringCompareFlags compareOptions);
     @Bridge(symbol="CFStringSetExternalCharactersNoCopy", optional=true)
     public native void setExternalCharactersNoCopy(ShortPtr chars, @MachineSizedSInt long length, @MachineSizedSInt long capacity);
     @Bridge(symbol="CFStringPad", optional=true)
-    public native void pad(CFString padString, @MachineSizedSInt long length, @MachineSizedSInt long indexIntoPad);
+    public native void pad(String padString, @MachineSizedSInt long length, @MachineSizedSInt long indexIntoPad);
     @Bridge(symbol="CFStringTrim", optional=true)
-    public native void trim(CFString trimString);
+    public native void trim(String trimString);
     @Bridge(symbol="CFStringTrimWhitespace", optional=true)
     public native void trimWhitespace();
     @Bridge(symbol="CFStringLowercase", optional=true)
@@ -90,6 +91,6 @@ import org.robovm.apple.dispatch.*;
     @Bridge(symbol="CFStringFold", optional=true)
     public native void fold(CFStringCompareFlags theFlags, CFLocale theLocale);
     @Bridge(symbol="CFStringTransform", optional=true)
-    public native boolean transform(CFRange range, CFString transform, boolean reverse);
+    public native boolean transform(CFRange range, String transform, boolean reverse);
     /*</methods>*/
 }

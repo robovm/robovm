@@ -89,7 +89,7 @@ import org.robovm.apple.corebluetooth.*;
      * @since Available in iOS 6.0 and later.
      */
     @Property(selector = "pausesLocationUpdatesAutomatically")
-    public native boolean isPausesLocationUpdatesAutomatically();
+    public native boolean pausesLocationUpdatesAutomatically();
     /**
      * @since Available in iOS 6.0 and later.
      */
@@ -141,14 +141,14 @@ import org.robovm.apple.corebluetooth.*;
     /*<members>*//*</members>*/
     /*<methods>*/
     @GlobalValue(symbol="kCLDistanceFilterNone", optional=true)
-    public static native double DistanceFilterNone();
+    public static native double getDistanceFilterNone();
     /**
      * @since Available in iOS 6.0 and later.
      */
     @GlobalValue(symbol="CLTimeIntervalMax", optional=true)
-    public static native double TimeIntervalMax();
+    public static native double getTimeIntervalMax();
     @GlobalValue(symbol="kCLHeadingFilterNone", optional=true)
-    public static native double HeadingFilterNone();
+    public static native double getHeadingFilterNone();
     
     /**
      * @since Available in iOS 8.0 and later.

@@ -33,6 +33,8 @@ import org.robovm.apple.coreanimation.*;
 import org.robovm.apple.dispatch.*;
 import org.robovm.apple.coreimage.*;
 import org.robovm.apple.avfoundation.*;
+import org.robovm.apple.glkit.*;
+import org.robovm.apple.scenekit.*;
 /*</imports>*/
 
 /*<javadoc>*/
@@ -72,6 +74,11 @@ import org.robovm.apple.avfoundation.*;
     public native void removeJoint(SKPhysicsJoint joint);
     @Method(selector = "removeAllJoints")
     public native void removeAllJoints();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @Method(selector = "sampleFieldsAt:")
+    public native @ByVal SKVector3 sampleFieldsAt(@ByVal SKVector3 position);
     @Method(selector = "bodyAtPoint:")
     public native SKPhysicsBody getBodyAtPoint(@ByVal CGPoint point);
     @Method(selector = "bodyInRect:")

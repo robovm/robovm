@@ -27,7 +27,7 @@ public class Main {
         ThreadDeathHandler defHandler = new ThreadDeathHandler("DEFAULT");
         ThreadDeathHandler threadHandler = new ThreadDeathHandler("THREAD");
 
-        System.out.println("Test " + which);
+        System.err.println("Test " + which); // RoboVM note: Use System.err instead of System.out
         switch (which) {
             case 1: {
                 Thread.setDefaultUncaughtExceptionHandler(defHandler);

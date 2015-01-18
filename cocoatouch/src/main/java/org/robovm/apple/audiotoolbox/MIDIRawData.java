@@ -49,16 +49,16 @@ import org.robovm.apple.coremedia.*;
     /*<constructors>*/
     public MIDIRawData() {}
     public MIDIRawData(int length, ByteBuffer data) {
-        this.length(length);
-        this.data(data);
+        this.setLength(length);
+        this.setData(data);
     }
     /*</constructors>*/
     /*<properties>*//*</properties>*/
     /*<members>*/
-    @StructMember(0) public native int length();
-    @StructMember(0) public native MIDIRawData length(int length);
-    @StructMember(1) public native @Array({1}) ByteBuffer data();
-    @StructMember(1) public native MIDIRawData data(@Array({1}) ByteBuffer data);
+    @StructMember(0) public native int getLength();
+    @StructMember(0) public native MIDIRawData setLength(int length);
+    @StructMember(1) public native @Array({1}) ByteBuffer getData();
+    @StructMember(1) public native MIDIRawData setData(@Array({1}) ByteBuffer data);
     /*</members>*/
     /*<methods>*//*</methods>*/
 }

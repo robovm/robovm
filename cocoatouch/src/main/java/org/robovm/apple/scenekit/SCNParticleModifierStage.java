@@ -42,10 +42,10 @@ import org.robovm.apple.opengles.*;
 /*<annotations>*/@Marshaler(ValuedEnum.AsMachineSizedSIntMarshaler.class)/*</annotations>*/
 public enum /*<name>*/SCNParticleModifierStage/*</name>*/ implements ValuedEnum {
     /*<values>*/
-    reDynamics(0L),
-    ostDynamics(1L),
-    reCollision(2L),
-    ostCollision(3L);
+    PreDynamics(0L),
+    PostDynamics(1L),
+    PreCollision(2L),
+    PostCollision(3L);
     /*</values>*/
 
     /*<bind>*/

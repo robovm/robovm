@@ -33,8 +33,8 @@ categories:
                 name: create
    
 classes:
-    MapKit:
-        annotations: ['@Marshaler(NSString.AsStringMarshaler.class)']
+    MKError:
+        extends: NSError
 
     # Structs:
     MKCoordinateSpan: {}
@@ -46,6 +46,8 @@ classes:
 
     MKAnnotationView: # DONE
         methods:
+            '-init.*':
+                name: init
             '-setSelected:animated:':
                 trim_after_first_colon: true
             '-setDragState:animated:':
@@ -56,20 +58,28 @@ classes:
                 name: create
             '+circleWithMapRect:':
                 name: create
-    MKCircleRenderer: {} # DONE
-    MKCircleView: {} # DONE
+    MKCircleRenderer: # DONE
+        methods:
+            '-init.*':
+                name: init
+    MKCircleView: # DONE
+        methods:
+            '-init.*':
+                name: init
     MKDirections: # DONE
         methods:
+            '-init.*':
+                name: init
             '-calculateDirectionsWithCompletionHandler:':
                 name: calculateDirections
                 parameters:
                     completionHandler:
-                        type: "@Block VoidBlock2<MKDirectionsResponse, NSError>"
+                        type: '@Block VoidBlock2<MKDirectionsResponse, NSError>'
             '-calculateETAWithCompletionHandler:':
                 name: calculateETA
                 parameters:
                     completionHandler:
-                        type: "@Block VoidBlock2<MKETAResponse, NSError>"
+                        type: '@Block VoidBlock2<MKETAResponse, NSError>'
     MKDirectionsRequest: # DONE
         methods:
             '-source':
@@ -83,7 +93,7 @@ classes:
     MKDirectionsResponse: # DONE
         properties:
             'routes':
-                type: "NSArray<MKRoute>"
+                type: NSArray<MKRoute>
     MKETAResponse: {} # DONE
     MKGeodesicPolyline: # DONE
         methods:
@@ -101,12 +111,12 @@ classes:
                 name: start
                 parameters:
                     completionHandler:
-                        type: "@Block VoidBlock2<MKLocalSearchResponse, NSError>"
+                        type: '@Block VoidBlock2<MKLocalSearchResponse, NSError>'
     MKLocalSearchRequest: {} # DONE
     MKLocalSearchResponse: # DONE
         properties:
             'mapItems':
-                type: "NSArray<MKMapItem>"
+                type: NSArray<MKMapItem>
     MKMapCamera: # DONE
         methods:
             '+camera':
@@ -122,24 +132,22 @@ classes:
                 name: init
             '-openInMapsWithLaunchOptions:':
                 name: openInMaps
-                visibility: protected
                 parameters:
                     launchOptions:
-                        type: "NSDictionary<NSString, ?>"
+                        type: MKLaunchOptions
             '+mapItemForCurrentLocation':
-                name: getCurrentLocationMapItem
+                name: getMapItemForCurrentLocation
             '+openMapsWithItems:launchOptions:':
                 name: openMaps
-                visibility: protected
                 parameters:
                     mapItems:
-                        type: "NSArray<MKMapItem>"
+                        type: NSArray<MKMapItem>
                     launchOptions:
-                        type: "NSDictionary<NSString, ?>"
+                        type: MKLaunchOptions
     MKMapSnapshot: # DONE
         methods:
             '-pointForCoordinate:':
-                name: getPoint
+                name: convertCoordinateToPoint
     MKMapSnapshotOptions: {} # DONE
     MKMapSnapshotter: # DONE
         methods:
@@ -149,20 +157,20 @@ classes:
                 name: start
                 parameters:
                     completionHandler:
-                        type: "@Block VoidBlock2<MKMapSnapshot, NSError>"
+                        type: '@Block VoidBlock2<MKMapSnapshot, NSError>'
             '-startWithQueue:completionHandler:':
                 name: start
                 parameters:
                     completionHandler:
-                        type: "@Block VoidBlock2<MKMapSnapshot, NSError>"            
+                        type: '@Block VoidBlock2<MKMapSnapshot, NSError>'            
     MKMapView: # DONE
         properties:
             'annotations':
-                type: "NSArray<NSObject>" # MKAnnotation
+                type: '@org.robovm.rt.bro.annotation.Marshaler(NSArray.AsListMarshaler.class) List<? extends MKAnnotation>'
             'selectedAnnotations':
-                type: "NSArray<NSObject>" # MKAnnotation
+                type: '@org.robovm.rt.bro.annotation.Marshaler(NSArray.AsListMarshaler.class) List<? extends MKAnnotation>'
             'overlays':
-                type: "NSArray<NSObject>" # MKOverlay
+                type: '@org.robovm.rt.bro.annotation.Marshaler(NSArray.AsListMarshaler.class) List<? extends MKOverlay>'
         methods:
             '-setRegion:animated:':
                 trim_after_first_colon: true
@@ -196,17 +204,17 @@ classes:
                 trim_after_first_colon: true
                 parameters:
                     annotations:
-                        type: "NSArray<NSObject>" # MKAnnotation
+                        type: '@org.robovm.rt.bro.annotation.Marshaler(NSArray.AsListMarshaler.class) List<? extends MKAnnotation>'
             '-removeAnnotation:':
                 trim_after_first_colon: true
             '-removeAnnotations:':
                 trim_after_first_colon: true
                 parameters:
                     annotations:
-                        type: "NSArray<NSObject>" # MKAnnotation
+                        type: '@org.robovm.rt.bro.annotation.Marshaler(NSArray.AsListMarshaler.class) List<? extends MKAnnotation>'
             '-annotationsInMapRect:':
                 name: getAnnotations
-                return_type: "NSSet<NSObject>" # MKAnnotation
+                return_type: '@org.robovm.rt.bro.annotation.Marshaler(NSSet.AsSetMarshaler.class) Set<? extends MKAnnotation>'
             '-viewForAnnotation:':
                 name: getView
             '-dequeueReusableAnnotationViewWithIdentifier:':
@@ -219,21 +227,21 @@ classes:
                 trim_after_first_colon: true
                 parameters:
                     annotations:
-                        type: "NSArray<NSObject>" # MKAnnotation
+                        type: '@org.robovm.rt.bro.annotation.Marshaler(NSArray.AsListMarshaler.class) List<? extends MKAnnotation>'
             '-addOverlay:level:':
                 trim_after_first_colon: true
             '-addOverlays:level:':
                 trim_after_first_colon: true
                 parameters:
                     overlays:
-                        type: "NSArray<NSObject>" # MKOverlay
+                        type: '@org.robovm.rt.bro.annotation.Marshaler(NSArray.AsListMarshaler.class) List<? extends MKOverlay>'
             '-removeOverlay:':
                 trim_after_first_colon: true
             '-removeOverlays:':
                 trim_after_first_colon: true
                 parameters:
                     overlays:
-                        type: "NSArray<NSObject>" # MKOverlay
+                        type: '@org.robovm.rt.bro.annotation.Marshaler(NSArray.AsListMarshaler.class) List<? extends MKOverlay>'
             '-insertOverlay:atIndex:level:':
                 trim_after_first_colon: true
             '-insertOverlay:aboveOverlay:':
@@ -244,7 +252,7 @@ classes:
                 trim_after_first_colon: true
             '-overlaysInLevel:':
                 name: getOverlays
-                return_type: "NSArray<NSObject>" # MKOverlay
+                return_type: '@org.robovm.rt.bro.annotation.Marshaler(NSArray.AsListMarshaler.class) List<? extends MKOverlay>'
             '-rendererForOverlay:':
                 name: getOverlayRenderer
             '-viewForOverlay:':
@@ -255,7 +263,7 @@ classes:
                 trim_after_first_colon: true
                 parameters:
                     overlays:
-                        type: "NSArray<NSObject>" # MKOverlay
+                        type: '@org.robovm.rt.bro.annotation.Marshaler(NSArray.AsListMarshaler.class) List<? extends MKOverlay>'
             '-insertOverlay:atIndex:':
                 trim_after_first_colon: true
             '-exchangeOverlayAtIndex:withOverlayAtIndex:':
@@ -263,7 +271,7 @@ classes:
     MKMultiPoint: # DONE
         methods:
             '-points':
-                name: "getPoints0"
+                name: getPoints0
                 visibility: protected
             '-getCoordinates:range:':
                 name: getCoordinates0
@@ -271,7 +279,7 @@ classes:
     MKOverlayPathRenderer: # DONE
         properties:
             'lineDashPattern':
-                type: "NSArray<NSNumber>"
+                type: NSArray<NSNumber>
         methods:
             '-applyStrokePropertiesToContext:atZoomScale:':
                 name: applyStrokeProperties
@@ -284,7 +292,7 @@ classes:
     MKOverlayPathView: # DONE
         properties:
             'lineDashPattern':
-                type: "NSArray<NSNumber>"
+                type: NSArray<NSNumber>
         methods:
             '-applyStrokePropertiesToContext:atZoomScale:':
                 name: applyStrokeProperties
@@ -341,12 +349,12 @@ classes:
                 name: init
                 parameters:
                     addressDictionary:
-                        type: "NSDictionary<NSString, ?>"  
+                        type: org.robovm.apple.addressbook.ABPersonAddress
     MKPointAnnotation: {} # DONE
     MKPolygon: # DONE
         properties:
             'interiorPolygons':
-                type: "NSArray<MKPolygon>"
+                type: NSArray<MKPolygon>
         methods:
             '+polygonWithPoints:count:':
                 name: create
@@ -356,7 +364,7 @@ classes:
                 visibility: private
                 parameters:
                     interiorPolygons:
-                        type: "NSArray<MKPolygon>"
+                        type: NSArray<MKPolygon>
             '+polygonWithCoordinates:count:':
                 name: create
                 visibility: private
@@ -365,7 +373,7 @@ classes:
                 visibility: private
                 parameters:
                     interiorPolygons:
-                        type: "NSArray<MKPolygon>"    
+                        type: NSArray<MKPolygon>   
     MKPolygonRenderer: # DONE
         methods:
             '-initWithPolygon:':
@@ -390,16 +398,12 @@ classes:
         methods:
             '-initWithPolyline:':
                 name: init
-    MKReverseGeocoder: # DONE
-        methods:
-            '-initWithCoordinate:':
-                name: init
     MKRoute: # DONE
         properties:
             'advisoryNotices':
-                type: "NSArray<NSString>"
+                type: '@org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String>'
             'steps':
-                type: "NSArray<MKRouteStep>"
+                type: NSArray<MKRouteStep>
     MKRouteStep: {} # DONE
     MKShape: {} # DONE
     MKTileOverlay: # DONE
@@ -444,7 +448,7 @@ protocols:
                 name: didAddAnnotationViews
                 parameters:
                     views:
-                        type: "NSArray<MKAnnotationView>"
+                        type: NSArray<MKAnnotationView>
             '-mapView:annotationView:calloutAccessoryControlTapped:':
                 name: calloutAccessoryControlTapped
             '-mapView:didSelectAnnotationView:':
@@ -469,24 +473,18 @@ protocols:
                 name: didAddOverlayRenderers
                 parameters:
                     renderers:
-                        type: "NSArray<MKOverlayRenderer>"
+                        type: NSArray<MKOverlayRenderer>
             '-mapView:viewForOverlay:':
                 name: getOverlayView
             '-mapView:didAddOverlayViews:':
                 name: didAddOverlayViews
                 parameters:
                     overlayViews:
-                        type: "NSArray<MKOverlayView>"
+                        type: NSArray<MKOverlayView>
     MKOverlay: # DONE
         methods:
             '-intersectsMapRect:':
                 name: intersects
-    MKReverseGeocoderDelegate: # DONE
-        methods:
-            '-reverseGeocoder:didFindPlacemark:':
-                name: didFindPlacemark
-            '-reverseGeocoder:didFailWithError:':
-                name: didFail
                 
 functions:
     # MKCoordinateRegion
@@ -576,7 +574,7 @@ functions:
         name: isEmpty
     MKMapRectGet(.*):
         class: MKMapRect
-        name: "get#{g[0]}"
+        name: 'get#{g[0]}'
     MKMapRectMake:
         class: MKMapRect
         name: create
@@ -609,45 +607,46 @@ functions:
         name: asString
  
     # Make sure we don't miss any functions if new ones are introduced in a later version
-    (MK.*):
+    (k?MK.*):
         class: MapKit
-        name: "Function__#{g[0]}"
+        name: 'Function__#{g[0]}'
 
 values:
     MKMapSize(.*):
         class: MKMapSize
-        name: "get#{g[0]}Size"
+        name: 'get#{g[0]}Size'
       
     MKMapRect(.*):
         class: MKMapRect
-        name: "get#{g[0]}Rect"
+        name: 'get#{g[0]}Rect'
+        
+    MKErrorDomain:
+        class: MKError
+        name: getClassDomain
+        readonly: true
         
     MKLaunchOptions(.*Key):
         class: MKLaunchOptions
-        name: "#{g[0]}"
+        name: '#{g[0]}'
         type: NSString
         visibility: protected
         
     MKLaunchOptionsDirectionsMode(.*):
         class: MKDirectionsMode
-        name: "#{g[0]}Value"
+        name: '#{g[0]}Value'
         type: NSString
         visibility: protected
     
     MKAnnotationCalloutInfoDidChangeNotification: # Deprecated in favor of KVO notifications
         exclude: true
-    MK(.*ErrorDomain):
-        name: "#{g[0]}"
-        readonly: true
-        type: NSString
 
     # Make sure we don't miss any values if new ones are introduced in a later version
-    (MK.*):
+    (k?MK.*):
         class: MapKit
-        name: "Value__#{g[0]}"
+        name: 'Value__#{g[0]}'
 
 constants:
     # Make sure we don't miss any constants if new ones are introduced in a later version
-    (MK.*):
+    (k?MK.*):
         class: MapKit
-        name: "Constant__#{g[0]}"
+        name: 'Constant__#{g[0]}'

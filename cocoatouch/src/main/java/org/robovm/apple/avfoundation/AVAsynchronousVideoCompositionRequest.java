@@ -61,7 +61,7 @@ import org.robovm.apple.mediatoolbox.*;
     @Property(selector = "compositionTime")
     public native @ByVal CMTime getCompositionTime();
     @Property(selector = "sourceTrackIDs")
-    public native NSArray<NSString> getSourceTrackIDs();
+    public native @org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String> getSourceTrackIDs();
     @Property(selector = "videoCompositionInstruction")
     public native AVVideoCompositionInstruction getVideoCompositionInstruction();
     /*</properties>*/

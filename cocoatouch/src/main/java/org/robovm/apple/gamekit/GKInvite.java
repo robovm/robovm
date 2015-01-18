@@ -48,6 +48,16 @@ import org.robovm.apple.uikit.*;
     protected GKInvite(SkipInit skipInit) { super(skipInit); }
     /*</constructors>*/
     /*<properties>*/
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @Property(selector = "sender")
+    public native GKPlayer getSender();
+    /**
+     * @since Available in iOS 4.1 and later.
+     * @deprecated Deprecated in iOS 8.0.
+     */
+    @Deprecated
     @Property(selector = "inviter")
     public native String getInviter();
     @Property(selector = "isHosted")

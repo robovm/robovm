@@ -74,21 +74,40 @@ import org.robovm.apple.corefoundation.*;
     /**
     * @since Available in iOS 6.0 and later.
     */
-    public static ABAddressBook create(NSDictionary<NSString, ?> options) {
-        ABAddressBook addressBook = create(options, null);
-        return addressBook;
+    public static ABAddressBook create(NSDictionary<NSString, ?> options) throws NSErrorException {
+        NSError.NSErrorPtr err = new NSError.NSErrorPtr();
+        ABAddressBook result = create(options, err);
+        if (err.get() != null) {
+            throw new NSErrorException(err.get());
+        }
+        return result;
     }
     
-    public boolean save() {
-        return save(null);
+    public boolean save() throws NSErrorException {
+        NSError.NSErrorPtr err = new NSError.NSErrorPtr();
+        boolean result = save(err);
+        if (err.get() != null) {
+            throw new NSErrorException(err.get());
+        }
+        return result;
     }
     
-    public boolean addRecord(ABRecord record) {
-        return addRecord(record, null);
+    public boolean addRecord(ABRecord record) throws NSErrorException {
+        NSError.NSErrorPtr err = new NSError.NSErrorPtr();
+        boolean result = addRecord(record, err);
+        if (err.get() != null) {
+            throw new NSErrorException(err.get());
+        }
+        return result;
     }
     
-    public boolean removeRecord(ABRecord record) {
-        return removeRecord(record, null);
+    public boolean removeRecord(ABRecord record) throws NSErrorException {
+        NSError.NSErrorPtr err = new NSError.NSErrorPtr();
+        boolean result = removeRecord(record, err);
+        if (err.get() != null) {
+            throw new NSErrorException(err.get());
+        }
+        return result;
     }
     
     public void registerExternalChangeCallback(ExternalChangeCallback callback) {
@@ -110,6 +129,10 @@ import org.robovm.apple.corefoundation.*;
             }
         }
         unregisterExternalChangeCallback(new FunctionPtr(cbExternalChange), refconId);
+    }
+    
+    public static String getLocalizedLabel(ABPropertyLabel label) {
+        return getLocalizedLabel(label.value().toString());
     }
     /*<methods>*/
     /**
@@ -164,35 +187,35 @@ import org.robovm.apple.corefoundation.*;
      * @since Available in iOS 4.0 and later.
      */
     @Bridge(symbol="ABAddressBookCopyArrayOfAllSources", optional=true)
-    public native @org.robovm.rt.bro.annotation.Marshaler(CFArray.AsListMarshaler.class) List<ABSource> getAllSources();
+    public native @org.robovm.rt.bro.annotation.Marshaler(ABSource.AsListMarshaler.class) List<ABSource> getAllSources();
     @Bridge(symbol="ABAddressBookGetPersonCount", optional=true)
     public native @MachineSizedSInt long getPersonCount();
     @Bridge(symbol="ABAddressBookGetPersonWithRecordID", optional=true)
     public native ABPerson getPerson(int recordID);
     @Bridge(symbol="ABAddressBookCopyArrayOfAllPeople", optional=true)
-    public native @org.robovm.rt.bro.annotation.Marshaler(CFArray.AsListMarshaler.class) List<ABPerson> getAllPeople();
+    public native @org.robovm.rt.bro.annotation.Marshaler(ABPerson.AsListMarshaler.class) List<ABPerson> getAllPeople();
     /**
      * @since Available in iOS 4.0 and later.
      */
     @Bridge(symbol="ABAddressBookCopyArrayOfAllPeopleInSource", optional=true)
-    public native @org.robovm.rt.bro.annotation.Marshaler(CFArray.AsListMarshaler.class) List<ABPerson> getAllPeopleInSource(ABSource source);
+    public native @org.robovm.rt.bro.annotation.Marshaler(ABPerson.AsListMarshaler.class) List<ABPerson> getAllPeopleInSource(ABSource source);
     /**
      * @since Available in iOS 4.0 and later.
      */
     @Bridge(symbol="ABAddressBookCopyArrayOfAllPeopleInSourceWithSortOrdering", optional=true)
-    public native @org.robovm.rt.bro.annotation.Marshaler(CFArray.AsListMarshaler.class) List<ABPerson> getAllPeopleInSource(ABSource source, ABPersonSortOrdering sortOrdering);
+    public native @org.robovm.rt.bro.annotation.Marshaler(ABPerson.AsListMarshaler.class) List<ABPerson> getAllPeopleInSource(ABSource source, ABPersonSortOrdering sortOrdering);
     @Bridge(symbol="ABAddressBookCopyPeopleWithName", optional=true)
-    public native @org.robovm.rt.bro.annotation.Marshaler(CFArray.AsListMarshaler.class) List<ABPerson> getPeople(String name);
+    public native @org.robovm.rt.bro.annotation.Marshaler(ABPerson.AsListMarshaler.class) List<ABPerson> getPeople(String name);
     @Bridge(symbol="ABAddressBookGetGroupWithRecordID", optional=true)
     public native ABGroup getGroup(int recordID);
     @Bridge(symbol="ABAddressBookGetGroupCount", optional=true)
     public native @MachineSizedSInt long getGroupCount();
     @Bridge(symbol="ABAddressBookCopyArrayOfAllGroups", optional=true)
-    public native @org.robovm.rt.bro.annotation.Marshaler(CFArray.AsListMarshaler.class) List<ABGroup> getAllGroups();
+    public native @org.robovm.rt.bro.annotation.Marshaler(ABGroup.AsListMarshaler.class) List<ABGroup> getAllGroups();
     /**
      * @since Available in iOS 4.0 and later.
      */
     @Bridge(symbol="ABAddressBookCopyArrayOfAllGroupsInSource", optional=true)
-    public native @org.robovm.rt.bro.annotation.Marshaler(CFArray.AsListMarshaler.class) List<ABGroup> getAllGroupsInSource(ABSource source);
+    public native @org.robovm.rt.bro.annotation.Marshaler(ABGroup.AsListMarshaler.class) List<ABGroup> getAllGroupsInSource(ABSource source);
     /*</methods>*/
 }

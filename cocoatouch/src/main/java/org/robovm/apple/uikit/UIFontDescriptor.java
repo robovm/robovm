@@ -51,7 +51,7 @@ import org.robovm.apple.corelocation.*;
     /*<constructors>*/
     public UIFontDescriptor() {}
     protected UIFontDescriptor(SkipInit skipInit) { super(skipInit); }
-    public UIFontDescriptor(UIFontDescriptorAttributes attributes) { super((SkipInit) null); initObject(initWithFontAttributes$(attributes)); }
+    public UIFontDescriptor(UIFontDescriptorAttributes attributes) { super((SkipInit) null); initObject(init(attributes)); }
     /*</constructors>*/
     /*<properties>*/
     @Property(selector = "postscriptName")
@@ -91,7 +91,7 @@ import org.robovm.apple.corelocation.*;
     @Method(selector = "matchingFontDescriptorsWithMandatoryKeys:")
     protected native NSArray<UIFontDescriptor> getMatchingFontDescriptors(NSSet<NSString> mandatoryKeys);
     @Method(selector = "initWithFontAttributes:")
-    protected native @Pointer long initWithFontAttributes$(UIFontDescriptorAttributes attributes);
+    protected native @Pointer long init(UIFontDescriptorAttributes attributes);
     @Method(selector = "fontDescriptorByAddingAttributes:")
     public native UIFontDescriptor newWithAttributes(UIFontDescriptorAttributes attributes);
     @Method(selector = "fontDescriptorWithSymbolicTraits:")

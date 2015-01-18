@@ -27,6 +27,7 @@ import org.robovm.rt.bro.*;
 import org.robovm.rt.bro.annotation.*;
 import org.robovm.rt.bro.ptr.*;
 import org.robovm.apple.dispatch.*;
+import org.robovm.apple.foundation.*;
 /*</imports>*/
 
 /*<javadoc>*/
@@ -43,22 +44,90 @@ import org.robovm.apple.dispatch.*;
     protected CFMutableData() {}
     /*<properties>*//*</properties>*/
     /*<members>*//*</members>*/
+    static void checkOffsetAndCount(int arrayLength, int offset, int count) {
+        if ((offset | count) < 0 || offset > arrayLength || arrayLength - offset < count) {
+            throw new ArrayIndexOutOfBoundsException("length=" + arrayLength + "; regionStart=" + offset
+                    + "; regionLength=" + count);
+        }
+    }
+    
+    public static CFMutableData create(long capacity) {
+        return createMutable(null, capacity);
+    }
+    public static CFMutableData createCopy(long capacity, CFData theData) {
+        return createMutableCopy(null, capacity, theData);
+    }
+
+    public ByteBuffer asByteBuffer() {
+        return VM.newDirectByteBuffer(getMutableBytePtr(), getLength());
+    }
+    
+    public CFMutableData append(ByteBuffer bytes) {
+        long handle = getEffectiveAddress(bytes) + bytes.position();
+        append(handle, bytes.remaining());
+        return this;
+    }
+
+    public CFMutableData append(byte[] bytes) {
+        return append(bytes, 0, bytes.length);
+    }
+    
+    public CFMutableData append(byte[] bytes, int offset, int length) {
+        checkOffsetAndCount(bytes.length, offset, length);
+        if (length == 0) {
+            return this;
+        }
+        append(VM.getArrayValuesAddress(bytes) + offset, length);
+        return this;
+    }
+
+    public CFMutableData insert(long location, ByteBuffer bytes) {
+        return replace(new CFRange(location, 0), bytes);
+    }
+
+    public CFMutableData insert(long location, byte[] bytes) {
+        return replace(new CFRange(location, 0), bytes, 0, bytes.length);
+    }
+    
+    public CFMutableData insert(long location, byte[] bytes, int offset, int length) {
+        return replace(new CFRange(location, 0), bytes, offset, length);
+    }
+
+    public CFMutableData replace(CFRange range, ByteBuffer bytes) {
+        long handle = getEffectiveAddress(bytes) + bytes.position();
+        replace(range, handle, bytes.remaining());
+        return this;
+    }
+
+    public CFMutableData replace(CFRange range, byte[] bytes) {
+        return replace(range, bytes, 0, bytes.length);
+    }
+    
+    public CFMutableData replace(CFRange range, byte[] bytes, int offset, int length) {
+        checkOffsetAndCount(bytes.length, offset, length);
+        replace(range, VM.getArrayValuesAddress(bytes) + offset, length);
+        return this;
+    }
+    public CFMutableData delete(CFRange range) {
+        deleteBytes(range);
+        return this;
+    }
     /*<methods>*/
     @Bridge(symbol="CFDataCreateMutable", optional=true)
     protected static native CFMutableData createMutable(CFAllocator allocator, @MachineSizedSInt long capacity);
     @Bridge(symbol="CFDataCreateMutableCopy", optional=true)
     protected static native CFMutableData createMutableCopy(CFAllocator allocator, @MachineSizedSInt long capacity, CFData theData);
     @Bridge(symbol="CFDataGetMutableBytePtr", optional=true)
-    public native BytePtr getMutableBytePtr();
+    protected native @Pointer long getMutableBytePtr();
     @Bridge(symbol="CFDataSetLength", optional=true)
     public native void setLength(@MachineSizedSInt long length);
     @Bridge(symbol="CFDataIncreaseLength", optional=true)
     public native void increaseLength(@MachineSizedSInt long extraLength);
     @Bridge(symbol="CFDataAppendBytes", optional=true)
-    public native void appendBytes(BytePtr bytes, @MachineSizedSInt long length);
+    protected native void append(@Pointer long bytes, @MachineSizedSInt long length);
     @Bridge(symbol="CFDataReplaceBytes", optional=true)
-    public native void replaceBytes(@ByVal CFRange range, BytePtr newBytes, @MachineSizedSInt long newLength);
+    protected native void replace(@ByVal CFRange range, @Pointer long newBytes, @MachineSizedSInt long newLength);
     @Bridge(symbol="CFDataDeleteBytes", optional=true)
-    public native void deleteBytes(@ByVal CFRange range);
+    protected native void deleteBytes(@ByVal CFRange range);
     /*</methods>*/
 }

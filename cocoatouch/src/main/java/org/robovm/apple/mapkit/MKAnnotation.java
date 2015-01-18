@@ -49,17 +49,15 @@ import org.robovm.apple.dispatch.*;
     /*<properties>*/
     @Property(selector = "coordinate")
     @ByVal CLLocationCoordinate2D getCoordinate();
+    @Property(selector = "setCoordinate:")
+    void setCoordinate(@ByVal CLLocationCoordinate2D v);
     @Property(selector = "title")
     String getTitle();
     @Property(selector = "subtitle")
     String getSubtitle();
     /*</properties>*/
     /*<methods>*/
-    /**
-     * @since Available in iOS 4.0 and later.
-     */
-    @Method(selector = "setCoordinate:")
-    void setCoordinate(@ByVal CLLocationCoordinate2D newCoordinate);
+    
     /*</methods>*/
     /*<adapter>*/
     /*</adapter>*/

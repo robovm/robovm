@@ -62,28 +62,10 @@ import org.robovm.apple.mediatoolbox.*;
     /*<members>*/
     @StructMember(0) public native float getX();
     @StructMember(0) public native AVAudio3DPoint setX(float x);
-    
-    @Deprecated
-    @StructMember(0) public native float x();
-    @Deprecated
-    @StructMember(0) public native AVAudio3DPoint x(float x);
-    
     @StructMember(1) public native float getY();
     @StructMember(1) public native AVAudio3DPoint setY(float y);
-    
-    @Deprecated
-    @StructMember(1) public native float y();
-    @Deprecated
-    @StructMember(1) public native AVAudio3DPoint y(float y);
-    
     @StructMember(2) public native float getZ();
     @StructMember(2) public native AVAudio3DPoint setZ(float z);
-    
-    @Deprecated
-    @StructMember(2) public native float z();
-    @Deprecated
-    @StructMember(2) public native AVAudio3DPoint z(float z);
-    
     /*</members>*/
     /*<methods>*//*</methods>*/
 }

@@ -52,7 +52,7 @@ import org.robovm.apple.dispatch.*;
     @Property(selector = "commandQueue")
     public native MTLCommandQueue getCommandQueue();
     @Property(selector = "retainedReferences")
-    public native boolean isRetainedReferences();
+    public native boolean maintainsRetainedReferences();
     @Property(selector = "label")
     public native String getLabel();
     @Property(selector = "setLabel:")

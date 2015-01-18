@@ -44,46 +44,46 @@ import org.robovm.apple.corefoundation.*;
     /*<constructors>*/
     public MIDIDriverInterface() {}
     public MIDIDriverInterface(VoidPtr _reserved, FunctionPtr QueryInterface, FunctionPtr AddRef, FunctionPtr Release, FunctionPtr FindDevices, FunctionPtr Start, FunctionPtr Stop, FunctionPtr Configure, FunctionPtr Send, FunctionPtr EnableSource, FunctionPtr Flush, FunctionPtr Monitor) {
-        this._reserved(_reserved);
-        this.QueryInterface(QueryInterface);
-        this.AddRef(AddRef);
-        this.Release(Release);
-        this.FindDevices(FindDevices);
-        this.Start(Start);
-        this.Stop(Stop);
-        this.Configure(Configure);
-        this.Send(Send);
-        this.EnableSource(EnableSource);
-        this.Flush(Flush);
-        this.Monitor(Monitor);
+        this.set_reserved(_reserved);
+        this.setQueryInterface(QueryInterface);
+        this.setAddRef(AddRef);
+        this.setRelease(Release);
+        this.setFindDevices(FindDevices);
+        this.setStart(Start);
+        this.setStop(Stop);
+        this.setConfigure(Configure);
+        this.setSend(Send);
+        this.setEnableSource(EnableSource);
+        this.setFlush(Flush);
+        this.setMonitor(Monitor);
     }
     /*</constructors>*/
     /*<properties>*//*</properties>*/
     /*<members>*/
-    @StructMember(0) public native VoidPtr _reserved();
-    @StructMember(0) public native MIDIDriverInterface _reserved(VoidPtr _reserved);
-    @StructMember(1) public native FunctionPtr QueryInterface();
-    @StructMember(1) public native MIDIDriverInterface QueryInterface(FunctionPtr QueryInterface);
-    @StructMember(2) public native FunctionPtr AddRef();
-    @StructMember(2) public native MIDIDriverInterface AddRef(FunctionPtr AddRef);
-    @StructMember(3) public native FunctionPtr Release();
-    @StructMember(3) public native MIDIDriverInterface Release(FunctionPtr Release);
-    @StructMember(4) public native FunctionPtr FindDevices();
-    @StructMember(4) public native MIDIDriverInterface FindDevices(FunctionPtr FindDevices);
-    @StructMember(5) public native FunctionPtr Start();
-    @StructMember(5) public native MIDIDriverInterface Start(FunctionPtr Start);
-    @StructMember(6) public native FunctionPtr Stop();
-    @StructMember(6) public native MIDIDriverInterface Stop(FunctionPtr Stop);
-    @StructMember(7) public native FunctionPtr Configure();
-    @StructMember(7) public native MIDIDriverInterface Configure(FunctionPtr Configure);
-    @StructMember(8) public native FunctionPtr Send();
-    @StructMember(8) public native MIDIDriverInterface Send(FunctionPtr Send);
-    @StructMember(9) public native FunctionPtr EnableSource();
-    @StructMember(9) public native MIDIDriverInterface EnableSource(FunctionPtr EnableSource);
-    @StructMember(10) public native FunctionPtr Flush();
-    @StructMember(10) public native MIDIDriverInterface Flush(FunctionPtr Flush);
-    @StructMember(11) public native FunctionPtr Monitor();
-    @StructMember(11) public native MIDIDriverInterface Monitor(FunctionPtr Monitor);
+    @StructMember(0) public native VoidPtr get_reserved();
+    @StructMember(0) public native MIDIDriverInterface set_reserved(VoidPtr _reserved);
+    @StructMember(1) public native FunctionPtr getQueryInterface();
+    @StructMember(1) public native MIDIDriverInterface setQueryInterface(FunctionPtr QueryInterface);
+    @StructMember(2) public native FunctionPtr getAddRef();
+    @StructMember(2) public native MIDIDriverInterface setAddRef(FunctionPtr AddRef);
+    @StructMember(3) public native FunctionPtr getRelease();
+    @StructMember(3) public native MIDIDriverInterface setRelease(FunctionPtr Release);
+    @StructMember(4) public native FunctionPtr getFindDevices();
+    @StructMember(4) public native MIDIDriverInterface setFindDevices(FunctionPtr FindDevices);
+    @StructMember(5) public native FunctionPtr getStart();
+    @StructMember(5) public native MIDIDriverInterface setStart(FunctionPtr Start);
+    @StructMember(6) public native FunctionPtr getStop();
+    @StructMember(6) public native MIDIDriverInterface setStop(FunctionPtr Stop);
+    @StructMember(7) public native FunctionPtr getConfigure();
+    @StructMember(7) public native MIDIDriverInterface setConfigure(FunctionPtr Configure);
+    @StructMember(8) public native FunctionPtr getSend();
+    @StructMember(8) public native MIDIDriverInterface setSend(FunctionPtr Send);
+    @StructMember(9) public native FunctionPtr getEnableSource();
+    @StructMember(9) public native MIDIDriverInterface setEnableSource(FunctionPtr EnableSource);
+    @StructMember(10) public native FunctionPtr getFlush();
+    @StructMember(10) public native MIDIDriverInterface setFlush(FunctionPtr Flush);
+    @StructMember(11) public native FunctionPtr getMonitor();
+    @StructMember(11) public native MIDIDriverInterface setMonitor(FunctionPtr Monitor);
     /*</members>*/
     /*<methods>*//*</methods>*/
 }

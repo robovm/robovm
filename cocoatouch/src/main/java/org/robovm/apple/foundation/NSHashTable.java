@@ -46,7 +46,7 @@ import org.robovm.apple.foundation.NSSet.SetAdapter;
 /*<annotations>*/@Library("Foundation") @NativeClass/*</annotations>*/
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/NSHashTable/*</name>*/ <T extends NSObject>
     extends /*<extends>*/NSObject/*</extends>*/ 
-    /*<implements>*/implements NSCoding/*</implements>*/, Set<T> {
+    /*<implements>*/implements NSCoding, NSFastEnumeration/*</implements>*/, Set<T> {
     
     public static class NSHashTablePtr<T extends NSObject> extends Ptr<NSHashTable<T>, NSHashTablePtr<T>> {}
 
@@ -60,16 +60,16 @@ import org.robovm.apple.foundation.NSSet.SetAdapter;
         @Override
         public boolean contains(Object o) {
             if (o instanceof NSObject) {
-                return set.member$((NSObject) o) != null;
+                return set.isMember((NSObject) o) != null;
             }
             return false;
         }
 
         @Override
         public Iterator<U> iterator() {
-            return new NSEnumerator.Iterator<U>(set.objectEnumerator()) {
+            return new NSEnumerator.Iterator<U>(set.getObjectEnumerator()) {
                 void remove(int index, U o) {
-                    set.removeObject$(o);
+                    set.removeObject(o);
                 }
             };
         }
@@ -83,7 +83,7 @@ import org.robovm.apple.foundation.NSSet.SetAdapter;
         public boolean add(U e) {
             checkNull(e);
             boolean replaced = contains(e);
-            set.addObject$(e);
+            set.addObject(e);
             return replaced;
         }
         
@@ -91,7 +91,7 @@ import org.robovm.apple.foundation.NSSet.SetAdapter;
         @Override
         public boolean remove(Object o) {
             if (contains(o)) {
-                set.removeObject$((U) o);
+                set.removeObject((U) o);
                 return true;
             }
             return false;
@@ -204,17 +204,17 @@ import org.robovm.apple.foundation.NSSet.SetAdapter;
     @Method(selector = "initWithOptions:capacity:")
     protected native @Pointer long init(NSHashTableOptions options, @MachineSizedUInt long initialCapacity);
     @Method(selector = "member:")
-    protected native NSObject member$(NSObject object);
+    protected native NSObject isMember(NSObject object);
     @Method(selector = "objectEnumerator")
-    protected native NSEnumerator<T> objectEnumerator();
+    private native NSEnumerator<T> getObjectEnumerator();
     @Method(selector = "addObject:")
-    protected native void addObject$(NSObject object);
+    private native void addObject(NSObject object);
     @Method(selector = "removeObject:")
-    protected native void removeObject$(NSObject object);
+    private native void removeObject(NSObject object);
     @Method(selector = "removeAllObjects")
-    protected native void removeAllObjects();
+    private native void removeAllObjects();
     @Method(selector = "containsObject:")
-    protected native boolean containsObject$(NSObject anObject);
+    private native boolean containsObject(NSObject anObject);
     @Method(selector = "intersectsHashTable:")
     public native boolean intersects(NSHashTable<T> other);
     @Method(selector = "isEqualToHashTable:")

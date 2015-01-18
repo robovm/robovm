@@ -54,7 +54,7 @@ import org.robovm.apple.mediatoolbox.*;
     /*<constructors>*/
     public AVPlayerItemVideoOutput() {}
     protected AVPlayerItemVideoOutput(SkipInit skipInit) { super(skipInit); }
-    public AVPlayerItemVideoOutput(NSDictionary<NSString, ?> pixelBufferAttributes) { super((SkipInit) null); initObject(init(pixelBufferAttributes)); }
+    public AVPlayerItemVideoOutput(CVPixelBufferAttributes pixelBufferAttributes) { super((SkipInit) null); initObject(init(pixelBufferAttributes)); }
     /*</constructors>*/
     /*<properties>*/
     @Property(selector = "delegate")
@@ -65,11 +65,11 @@ import org.robovm.apple.mediatoolbox.*;
     /*<members>*//*</members>*/
     /*<methods>*/
     @Method(selector = "initWithPixelBufferAttributes:")
-    protected native @Pointer long init(NSDictionary<NSString, ?> pixelBufferAttributes);
+    protected native @Pointer long init(CVPixelBufferAttributes pixelBufferAttributes);
     @Method(selector = "hasNewPixelBufferForItemTime:")
-    public native boolean hasNewPixelBuffer(@ByVal CMTime itemTime);
+    public native boolean hasNewPixelBufferForItemTime(@ByVal CMTime itemTime);
     @Method(selector = "copyPixelBufferForItemTime:itemTimeForDisplay:")
-    public native CVPixelBuffer copyPixelBuffer(@ByVal CMTime itemTime, CMTime outItemTimeForDisplay);
+    public native CVPixelBuffer getPixelBufferForItemTime(@ByVal CMTime itemTime, CMTime outItemTimeForDisplay);
     @Method(selector = "setDelegate:queue:")
     public native void setDelegate(AVPlayerItemOutputPullDelegate delegate, DispatchQueue delegateQueue);
     @Method(selector = "requestNotificationOfMediaDataChangeWithAdvanceInterval:")

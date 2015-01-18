@@ -81,6 +81,11 @@ import org.robovm.apple.corefoundation.*;
     @GlobalValue(symbol="kSecAttrAccessible", optional=true)
     public static native CFType AttrAccessible();
     /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @GlobalValue(symbol="kSecAttrAccessControl", optional=true)
+    public static native CFType AttrAccessControl();
+    /**
      * @since Available in iOS 3.0 and later.
      */
     @GlobalValue(symbol="kSecAttrAccessGroup", optional=true)
@@ -305,6 +310,11 @@ import org.robovm.apple.corefoundation.*;
      */
     @GlobalValue(symbol="kSecAttrAccessibleAlways", optional=true)
     public static native CFType AttrAccessibleAlways();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @GlobalValue(symbol="kSecAttrAccessibleWhenPasscodeSetThisDeviceOnly", optional=true)
+    public static native CFType AttrAccessibleWhenPasscodeSetThisDeviceOnly();
     /**
      * @since Available in iOS 4.0 and later.
      */

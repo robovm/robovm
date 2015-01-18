@@ -49,25 +49,25 @@ import org.robovm.apple.coremedia.*;
     /*<constructors>*/
     public MIDINoteMessage() {}
     public MIDINoteMessage(byte channel, byte note, byte velocity, byte releaseVelocity, float duration) {
-        this.channel(channel);
-        this.note(note);
-        this.velocity(velocity);
-        this.releaseVelocity(releaseVelocity);
-        this.duration(duration);
+        this.setChannel(channel);
+        this.setNote(note);
+        this.setVelocity(velocity);
+        this.setReleaseVelocity(releaseVelocity);
+        this.setDuration(duration);
     }
     /*</constructors>*/
     /*<properties>*//*</properties>*/
     /*<members>*/
-    @StructMember(0) public native byte channel();
-    @StructMember(0) public native MIDINoteMessage channel(byte channel);
-    @StructMember(1) public native byte note();
-    @StructMember(1) public native MIDINoteMessage note(byte note);
-    @StructMember(2) public native byte velocity();
-    @StructMember(2) public native MIDINoteMessage velocity(byte velocity);
-    @StructMember(3) public native byte releaseVelocity();
-    @StructMember(3) public native MIDINoteMessage releaseVelocity(byte releaseVelocity);
-    @StructMember(4) public native float duration();
-    @StructMember(4) public native MIDINoteMessage duration(float duration);
+    @StructMember(0) public native byte getChannel();
+    @StructMember(0) public native MIDINoteMessage setChannel(byte channel);
+    @StructMember(1) public native byte getNote();
+    @StructMember(1) public native MIDINoteMessage setNote(byte note);
+    @StructMember(2) public native byte getVelocity();
+    @StructMember(2) public native MIDINoteMessage setVelocity(byte velocity);
+    @StructMember(3) public native byte getReleaseVelocity();
+    @StructMember(3) public native MIDINoteMessage setReleaseVelocity(byte releaseVelocity);
+    @StructMember(4) public native float getDuration();
+    @StructMember(4) public native MIDINoteMessage setDuration(float duration);
     /*</members>*/
     /*<methods>*//*</methods>*/
 }

@@ -78,7 +78,7 @@ import org.robovm.apple.mediatoolbox.*;
      * @since Available in iOS 8.0 and later.
      */
     @Property(selector = "dataType")
-    public native String getDataType();
+    public native CMMetadataDataType getDataType();
     @Property(selector = "value")
     public native NSObject getValue();
     @Property(selector = "extraAttributes")

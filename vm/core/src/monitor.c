@@ -52,7 +52,7 @@ typedef int32_t s4;
 typedef uint64_t u8;
 typedef int64_t s8;
 
-#if defined(RVM_X86_64)
+#if defined(RVM_X86_64) || defined(RVM_ARM64)
 # define LW_TYPE uint64_t
 #else
 # define LW_TYPE uint32_t
@@ -75,6 +75,23 @@ static inline int android_atomic_acquire_cas(LW_TYPE old_value, LW_TYPE new_valu
 #elif defined(RVM_THUMBV7)
 static inline void android_memory_barrier(void) {
     __asm__ __volatile__ ("dmb" : : : "memory");
+}
+static inline void android_atomic_release_store(LW_TYPE value, volatile LW_TYPE *ptr)
+{
+    android_memory_barrier();
+    *ptr = value;
+}
+static inline int android_atomic_cas(LW_TYPE old_value, LW_TYPE new_value, volatile LW_TYPE *ptr) {
+    return __sync_val_compare_and_swap(ptr, old_value, new_value) != old_value;
+}
+static inline int android_atomic_acquire_cas(LW_TYPE old_value, LW_TYPE new_value, volatile LW_TYPE *ptr) {
+    int status = android_atomic_cas(old_value, new_value, ptr);
+    android_memory_barrier();
+    return status;
+}
+#else
+static inline void android_memory_barrier(void) {
+    __sync_synchronize();
 }
 static inline void android_atomic_release_store(LW_TYPE value, volatile LW_TYPE *ptr)
 {

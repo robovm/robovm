@@ -90,7 +90,7 @@ import org.robovm.apple.foundation.*;
      * @since Available in iOS 3.0 and later.
      */
     @Property(selector = "includesSubentities")
-    public native boolean isIncludesSubentities();
+    public native boolean includesSubentities();
     /**
      * @since Available in iOS 3.0 and later.
      */
@@ -100,7 +100,7 @@ import org.robovm.apple.foundation.*;
      * @since Available in iOS 3.0 and later.
      */
     @Property(selector = "includesPropertyValues")
-    public native boolean isIncludesPropertyValues();
+    public native boolean includesPropertyValues();
     /**
      * @since Available in iOS 3.0 and later.
      */
@@ -110,7 +110,7 @@ import org.robovm.apple.foundation.*;
      * @since Available in iOS 3.0 and later.
      */
     @Property(selector = "returnsObjectsAsFaults")
-    public native boolean isReturnsObjectsAsFaults();
+    public native boolean returnsObjectsAsFaults();
     /**
      * @since Available in iOS 3.0 and later.
      */
@@ -130,7 +130,7 @@ import org.robovm.apple.foundation.*;
      * @since Available in iOS 3.0 and later.
      */
     @Property(selector = "includesPendingChanges")
-    public native boolean isIncludesPendingChanges();
+    public native boolean includesPendingChanges();
     /**
      * @since Available in iOS 3.0 and later.
      */
@@ -140,7 +140,7 @@ import org.robovm.apple.foundation.*;
      * @since Available in iOS 3.0 and later.
      */
     @Property(selector = "returnsDistinctResults")
-    public native boolean isReturnsDistinctResults();
+    public native boolean returnsDistinctResults();
     /**
      * @since Available in iOS 3.0 and later.
      */
@@ -180,7 +180,7 @@ import org.robovm.apple.foundation.*;
      * @since Available in iOS 5.0 and later.
      */
     @Property(selector = "shouldRefreshRefetchedObjects")
-    public native boolean isShouldRefreshRefetchedObjects();
+    public native boolean shouldRefreshRefetchedObjects();
     /**
      * @since Available in iOS 5.0 and later.
      */

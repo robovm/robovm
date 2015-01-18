@@ -51,7 +51,7 @@ import org.robovm.apple.corelocation.*;
     /*<constructors>*/
     public UIMarkupTextPrintFormatter() {}
     protected UIMarkupTextPrintFormatter(SkipInit skipInit) { super(skipInit); }
-    public UIMarkupTextPrintFormatter(String markupText) { super((SkipInit) null); initObject(initWithMarkupText$(markupText)); }
+    public UIMarkupTextPrintFormatter(String markupText) { super((SkipInit) null); initObject(init(markupText)); }
     /*</constructors>*/
     /*<properties>*/
     @Property(selector = "markupText")
@@ -62,6 +62,6 @@ import org.robovm.apple.corelocation.*;
     /*<members>*//*</members>*/
     /*<methods>*/
     @Method(selector = "initWithMarkupText:")
-    protected native @Pointer long initWithMarkupText$(String markupText);
+    protected native @Pointer long init(String markupText);
     /*</methods>*/
 }

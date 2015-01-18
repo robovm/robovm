@@ -52,7 +52,7 @@ import org.robovm.apple.dispatch.*;
     /*<constructors>*/
     public NSExpression() {}
     protected NSExpression(SkipInit skipInit) { super(skipInit); }
-    public NSExpression(NSExpressionType type) { super((SkipInit) null); initObject(initWithExpressionType$(type)); }
+    public NSExpression(NSExpressionType type) { super((SkipInit) null); initObject(init(type)); }
     /*</constructors>*/
     /*<properties>*/
     @Property(selector = "expressionType")
@@ -98,7 +98,7 @@ import org.robovm.apple.dispatch.*;
     /*<members>*//*</members>*/
     /*<methods>*/
     @Method(selector = "initWithExpressionType:")
-    protected native @Pointer long initWithExpressionType$(NSExpressionType type);
+    protected native @Pointer long init(NSExpressionType type);
     @Method(selector = "expressionValueWithObject:context:")
     public native NSObject evaluate(NSObject object, NSMutableDictionary<?, ?> context);
     /**

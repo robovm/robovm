@@ -57,10 +57,20 @@ import org.robovm.apple.uikit.*;
     /*<methods>*/
     @Method(selector = "setMessage:")
     public native void setMessage(String message);
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @Method(selector = "addRecipientPlayers:")
+    public native void addRecipientPlayers(NSArray<GKPlayer> players);
+    /**
+     * @since Available in iOS 4.2 and later.
+     * @deprecated Deprecated in iOS 8.0.
+     */
+    @Deprecated
     @Method(selector = "addRecipientsWithPlayerIDs:")
-    public native void addRecipientsWithPlayerIDs(NSArray<NSString> playerIDs);
+    public native void addRecipientsWithPlayerIDs(@org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String> playerIDs);
     @Method(selector = "addRecipientsWithEmailAddresses:")
-    public native void addRecipientsWithEmailAddresses(NSArray<NSString> emailAddresses);
+    public native void addRecipientsWithEmailAddresses(@org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String> emailAddresses);
     @Method(selector = "maxNumberOfRecipients")
     public static native @MachineSizedUInt long getMaxNumberOfRecipients();
     /*</methods>*/

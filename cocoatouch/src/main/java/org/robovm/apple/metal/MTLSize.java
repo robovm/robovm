@@ -54,28 +54,10 @@ import org.robovm.apple.dispatch.*;
     /*<members>*/
     @StructMember(0) public native @MachineSizedUInt long getWidth();
     @StructMember(0) public native MTLSize setWidth(@MachineSizedUInt long width);
-    
-    @Deprecated
-    @StructMember(0) public native @MachineSizedUInt long width();
-    @Deprecated
-    @StructMember(0) public native MTLSize width(@MachineSizedUInt long width);
-    
     @StructMember(1) public native @MachineSizedUInt long getHeight();
     @StructMember(1) public native MTLSize setHeight(@MachineSizedUInt long height);
-    
-    @Deprecated
-    @StructMember(1) public native @MachineSizedUInt long height();
-    @Deprecated
-    @StructMember(1) public native MTLSize height(@MachineSizedUInt long height);
-    
     @StructMember(2) public native @MachineSizedUInt long getDepth();
     @StructMember(2) public native MTLSize setDepth(@MachineSizedUInt long depth);
-    
-    @Deprecated
-    @StructMember(2) public native @MachineSizedUInt long depth();
-    @Deprecated
-    @StructMember(2) public native MTLSize depth(@MachineSizedUInt long depth);
-    
     /*</members>*/
     /*<methods>*//*</methods>*/
 }

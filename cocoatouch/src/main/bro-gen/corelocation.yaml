@@ -30,12 +30,19 @@ classes:
     # Classes
     CLBeacon: {} # DONE
     CLBeaconRegion: # DONE
+        properties:
+            'notifyEntryStateOnDisplay':
+                name: notifiesEntryStateOnDisplay
         methods:
+            '-init.*':
+                name: init
             '-peripheralDataWithMeasuredPower:':
                 name: getPeripheralData
                 return_type: CBAdvertisementData
     CLCircularRegion: # DONE
         methods:
+            '-init.*':
+                name: init
             '-containsCoordinate:': # Overrides a method in CLRegion
                 exclude: true
     CLFloor: {} # DONE
@@ -61,6 +68,8 @@ classes:
             'description':
                 exclude: true
         methods:
+            '-init.*':
+                name: init
             '-getDistanceFrom:':
                 exclude: true
             '-distanceFromLocation:':
@@ -116,8 +125,18 @@ classes:
             'addressDictionary':
                 name: address
                 type: ABPersonAddress
-    CLRegion: # DONE
         methods:
+            '-init.*':
+                name: init
+    CLRegion: # DONE
+        properties:
+            'notifyOnEntry':
+                name: notifiesOnEntry
+            'notifyOnExit':
+                name: notifiesOnExit
+        methods:
+            '-init.*':
+                name: init
             '-containsCoordinate:':
                 trim_after_first_colon: true
     CLVisit: {} # DONE
@@ -195,16 +214,16 @@ values:
 
     CL(LocationDistanceMax):
         class: CLLocation
-        name: '#{g[0]}'
+        name: 'get#{g[0]}'
     CL(TimeIntervalMax):
         class: CLLocationManager
-        name: '#{g[0]}'
+        name: 'get#{g[0]}'
     kCL(DistanceFilterNone):
         class: CLLocationManager
-        name: '#{g[0]}'
+        name: 'get#{g[0]}'
     kCL(HeadingFilterNone):
         class: CLLocationManager
-        name: '#{g[0]}'
+        name: 'get#{g[0]}'
 
     kCLLocationCoordinate2D(Invalid):
         class: CLLocationCoordinate2D

@@ -51,7 +51,7 @@ import org.robovm.apple.corelocation.*;
     /*<constructors>*/
     public UIGravityBehavior() {}
     protected UIGravityBehavior(SkipInit skipInit) { super(skipInit); }
-    public UIGravityBehavior(List<UIDynamicItem> items) { super((SkipInit) null); initObject(initWithItems$(items)); }
+    public UIGravityBehavior(List<UIDynamicItem> items) { super((SkipInit) null); initObject(init(items)); }
     /*</constructors>*/
     /*<properties>*/
     @Property(selector = "items")
@@ -72,7 +72,7 @@ import org.robovm.apple.corelocation.*;
     /*<members>*//*</members>*/
     /*<methods>*/
     @Method(selector = "initWithItems:")
-    protected native @Pointer long initWithItems$(List<UIDynamicItem> items);
+    protected native @Pointer long init(List<UIDynamicItem> items);
     @Method(selector = "addItem:")
     public native void addItem(UIDynamicItem item);
     @Method(selector = "removeItem:")

@@ -5,7 +5,7 @@ framework: Metal
 clang_args: ['-x', 'objective-c']
 headers:
     - /System/Library/Frameworks/Metal.framework/Headers/Metal.h
-typedefs:
+private_typedefs:
     'void (^)(id<MTLLibrary>, NSError *)': '@Block VoidBlock2<MTLLibrary, NSError>'
     'void (^)(id<MTLRenderPipelineState>, NSError *)': '@Block VoidBlock2<MTLRenderPipelineState, NSError>'
     'void (^)(id<MTLRenderPipelineState>, MTLRenderPipelineReflection *, NSError *)': '@Block VoidBlock3<MTLRenderPipelineState, MTLRenderPipelineReflection, NSError>'
@@ -108,7 +108,10 @@ classes:
                 type: NSArray<MTLArgument>
             'fragmentArguments':
                 type: NSArray<MTLArgument>
-    MTLSamplerDescriptor: {} # DONE
+    MTLSamplerDescriptor: # DONE
+        properties:
+            'normalizedCoordinates':
+                name: normalizesCoordinates
     MTLStencilDescriptor: {} # DONE
     MTLStructMember: # DONE
         methods:
@@ -179,6 +182,10 @@ protocols:
     MTLCommandBuffer: # DONE
         class: true
         visibility: 'public final'
+        properties:
+            'retainedReferences':
+                name: maintainsRetainedReferences
+                omit_prefix: true
         methods:
             '-addScheduledHandler:':    
                 trim_after_first_colon: true

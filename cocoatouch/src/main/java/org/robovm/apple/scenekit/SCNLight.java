@@ -65,7 +65,7 @@ import org.robovm.apple.opengles.*;
     @Property(selector = "setName:")
     public native void setName(String v);
     @Property(selector = "castsShadow")
-    public native boolean isCastsShadow();
+    public native boolean castsShadow();
     @Property(selector = "setCastsShadow:")
     public native void setCastsShadow(boolean v);
     @Property(selector = "shadowColor")

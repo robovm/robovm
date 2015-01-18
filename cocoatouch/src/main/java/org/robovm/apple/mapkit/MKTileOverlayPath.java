@@ -52,43 +52,19 @@ import org.robovm.apple.dispatch.*;
         this.setX(x);
         this.setY(y);
         this.setZ(z);
-        this.setContentscalefactor(contentScaleFactor);
+        this.setContentScaleFactor(contentScaleFactor);
     }
     /*</constructors>*/
     /*<properties>*//*</properties>*/
     /*<members>*/
     @StructMember(0) public native @MachineSizedSInt long getX();
     @StructMember(0) public native MKTileOverlayPath setX(@MachineSizedSInt long x);
-    
-    @Deprecated
-    @StructMember(0) public native @MachineSizedSInt long x();
-    @Deprecated
-    @StructMember(0) public native MKTileOverlayPath x(@MachineSizedSInt long x);
-    
     @StructMember(1) public native @MachineSizedSInt long getY();
     @StructMember(1) public native MKTileOverlayPath setY(@MachineSizedSInt long y);
-    
-    @Deprecated
-    @StructMember(1) public native @MachineSizedSInt long y();
-    @Deprecated
-    @StructMember(1) public native MKTileOverlayPath y(@MachineSizedSInt long y);
-    
     @StructMember(2) public native @MachineSizedSInt long getZ();
     @StructMember(2) public native MKTileOverlayPath setZ(@MachineSizedSInt long z);
-    
-    @Deprecated
-    @StructMember(2) public native @MachineSizedSInt long z();
-    @Deprecated
-    @StructMember(2) public native MKTileOverlayPath z(@MachineSizedSInt long z);
-    
-    @StructMember(3) public native @MachineSizedFloat double getContentscalefactor();
-    @StructMember(3) public native MKTileOverlayPath setContentscalefactor(@MachineSizedFloat double contentScaleFactor);
-    
-    @Deprecated
-    @StructMember(3) public native @MachineSizedFloat double contentScaleFactor();
-    @Deprecated
-    @StructMember(3) public native MKTileOverlayPath contentScaleFactor(@MachineSizedFloat double contentScaleFactor);
-    
+    @StructMember(3) public native @MachineSizedFloat double getContentScaleFactor();
+    @StructMember(3) public native MKTileOverlayPath setContentScaleFactor(@MachineSizedFloat double contentScaleFactor);
     /*</members>*/
     /*<methods>*//*</methods>*/
 }

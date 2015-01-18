@@ -51,7 +51,7 @@ import org.robovm.apple.corelocation.*;
     /*<constructors>*/
     public UISearchController() {}
     protected UISearchController(SkipInit skipInit) { super(skipInit); }
-    public UISearchController(UIViewController searchResultsController) { super((SkipInit) null); initObject(initWithSearchResultsController$(searchResultsController)); }
+    public UISearchController(UIViewController searchResultsController) { super((SkipInit) null); initObject(init(searchResultsController)); }
     /*</constructors>*/
     /*<properties>*/
     @Property(selector = "searchResultsUpdater")
@@ -67,11 +67,11 @@ import org.robovm.apple.corelocation.*;
     @Property(selector = "setDelegate:", strongRef = true)
     public native void setDelegate(UISearchControllerDelegate v);
     @Property(selector = "dimsBackgroundDuringPresentation")
-    public native boolean isDimsBackgroundDuringPresentation();
+    public native boolean dimsBackgroundDuringPresentation();
     @Property(selector = "setDimsBackgroundDuringPresentation:")
     public native void setDimsBackgroundDuringPresentation(boolean v);
     @Property(selector = "hidesNavigationBarDuringPresentation")
-    public native boolean isHidesNavigationBarDuringPresentation();
+    public native boolean hidesNavigationBarDuringPresentation();
     @Property(selector = "setHidesNavigationBarDuringPresentation:")
     public native void setHidesNavigationBarDuringPresentation(boolean v);
     @Property(selector = "searchResultsController")
@@ -82,7 +82,7 @@ import org.robovm.apple.corelocation.*;
     /*<members>*//*</members>*/
     /*<methods>*/
     @Method(selector = "initWithSearchResultsController:")
-    protected native @Pointer long initWithSearchResultsController$(UIViewController searchResultsController);
+    protected native @Pointer long init(UIViewController searchResultsController);
     @Method(selector = "animationControllerForPresentedController:presentingController:sourceController:")
     public native UIViewControllerAnimatedTransitioning getAnimationControllerForPresentedController(UIViewController presented, UIViewController presenting, UIViewController source);
     @Method(selector = "animationControllerForDismissedController:")

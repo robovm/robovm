@@ -64,6 +64,33 @@ import org.robovm.apple.mediatoolbox.*;
         }
     }
     
+    public static class AsListMarshaler {
+        @SuppressWarnings("unchecked")
+        @MarshalsPointer
+        public static List<AVMediaType> toObject(Class<? extends NSObject> cls, long handle, long flags) {
+            NSArray<NSString> o = (NSArray<NSString>) NSObject.Marshaler.toObject(cls, handle, flags);
+            if (o == null) {
+                return null;
+            }
+            List<AVMediaType> list = new ArrayList<>();
+            for (NSString str : o) {
+                list.add(AVMediaType.valueOf(str));
+            }
+            return list;
+        }
+        @MarshalsPointer
+        public static long toNative(List<AVMediaType> l, long flags) {
+            if (l == null) {
+                return 0L;
+            }
+            NSMutableArray<NSString> array = new NSMutableArray<>();
+            for (AVMediaType i : l) {
+                array.add(i.value());
+            }
+            return NSObject.Marshaler.toNative(array, flags);
+        }
+    }
+    
     /*<ptr>*/
     /*</ptr>*/
     /*<bind>*/static { Bro.bind(AVMediaType.class); }/*</bind>*/
@@ -165,15 +192,5 @@ import org.robovm.apple.mediatoolbox.*;
      */
     @GlobalValue(symbol="AVMediaTypeMuxed", optional=true)
     protected static native NSString MuxedValue();
-    /**
-     * @since Available in iOS 4.0 and later.
-     */
-    @GlobalValue(symbol="AVFileType3GPP", optional=true)
-    protected static native NSString _3GPPValue();
-    /**
-     * @since Available in iOS 7.0 and later.
-     */
-    @GlobalValue(symbol="AVFileType3GPP2", optional=true)
-    protected static native NSString _3GPP2Value();
     /*</methods>*/
 }

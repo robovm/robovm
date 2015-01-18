@@ -51,8 +51,8 @@ import org.robovm.apple.corelocation.*;
     /*<constructors>*/
     public UIDynamicAnimator() {}
     protected UIDynamicAnimator(SkipInit skipInit) { super(skipInit); }
-    public UIDynamicAnimator(UIView view) { super((SkipInit) null); initObject(initWithReferenceView$(view)); }
-    public UIDynamicAnimator(UICollectionViewLayout layout) { super((SkipInit) null); initObject(initWithCollectionViewLayout$(layout)); }
+    public UIDynamicAnimator(UIView view) { super((SkipInit) null); initObject(init(view)); }
+    public UIDynamicAnimator(UICollectionViewLayout layout) { super((SkipInit) null); initObject(init(layout)); }
     /*</constructors>*/
     /*<properties>*/
     @Property(selector = "referenceView")
@@ -69,7 +69,7 @@ import org.robovm.apple.corelocation.*;
     /*<members>*//*</members>*/
     /*<methods>*/
     @Method(selector = "initWithReferenceView:")
-    protected native @Pointer long initWithReferenceView$(UIView view);
+    protected native @Pointer long init(UIView view);
     @Method(selector = "addBehavior:")
     public native void addBehavior(UIDynamicBehavior behavior);
     @Method(selector = "removeBehavior:")
@@ -83,7 +83,7 @@ import org.robovm.apple.corelocation.*;
     @Method(selector = "elapsedTime")
     public native double getElapsedTime();
     @Method(selector = "initWithCollectionViewLayout:")
-    protected native @Pointer long initWithCollectionViewLayout$(UICollectionViewLayout layout);
+    protected native @Pointer long init(UICollectionViewLayout layout);
     @Method(selector = "layoutAttributesForCellAtIndexPath:")
     public native UICollectionViewLayoutAttributes getLayoutAttributesForCell(NSIndexPath indexPath);
     @Method(selector = "layoutAttributesForSupplementaryViewOfKind:atIndexPath:")

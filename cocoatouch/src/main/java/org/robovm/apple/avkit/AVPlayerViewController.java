@@ -56,7 +56,7 @@ import org.robovm.apple.iad.*;
     @Property(selector = "setPlayer:")
     public native void setPlayer(AVPlayer v);
     @Property(selector = "showsPlaybackControls")
-    public native boolean isShowsPlaybackControls();
+    public native boolean showsPlaybackControls();
     @Property(selector = "setShowsPlaybackControls:")
     public native void setShowsPlaybackControls(boolean v);
     @Property(selector = "videoGravity")

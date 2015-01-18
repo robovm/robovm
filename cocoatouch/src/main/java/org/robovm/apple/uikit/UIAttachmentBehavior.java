@@ -51,10 +51,10 @@ import org.robovm.apple.corelocation.*;
     /*<constructors>*/
     public UIAttachmentBehavior() {}
     protected UIAttachmentBehavior(SkipInit skipInit) { super(skipInit); }
-    public UIAttachmentBehavior(UIDynamicItem item, @ByVal CGPoint point) { super((SkipInit) null); initObject(initWithItem$attachedToAnchor$(item, point)); }
-    public UIAttachmentBehavior(UIDynamicItem item, @ByVal UIOffset offset, @ByVal CGPoint point) { super((SkipInit) null); initObject(initWithItem$offsetFromCenter$attachedToAnchor$(item, offset, point)); }
-    public UIAttachmentBehavior(UIDynamicItem item1, UIDynamicItem item2) { super((SkipInit) null); initObject(initWithItem$attachedToItem$(item1, item2)); }
-    public UIAttachmentBehavior(UIDynamicItem item1, @ByVal UIOffset offset1, UIDynamicItem item2, @ByVal UIOffset offset2) { super((SkipInit) null); initObject(initWithItem$offsetFromCenter$attachedToItem$offsetFromCenter$(item1, offset1, item2, offset2)); }
+    public UIAttachmentBehavior(UIDynamicItem item, @ByVal CGPoint point) { super((SkipInit) null); initObject(init(item, point)); }
+    public UIAttachmentBehavior(UIDynamicItem item, @ByVal UIOffset offset, @ByVal CGPoint point) { super((SkipInit) null); initObject(init(item, offset, point)); }
+    public UIAttachmentBehavior(UIDynamicItem item1, UIDynamicItem item2) { super((SkipInit) null); initObject(init(item1, item2)); }
+    public UIAttachmentBehavior(UIDynamicItem item1, @ByVal UIOffset offset1, UIDynamicItem item2, @ByVal UIOffset offset2) { super((SkipInit) null); initObject(init(item1, offset1, item2, offset2)); }
     /*</constructors>*/
     /*<properties>*/
     @Property(selector = "items")
@@ -81,12 +81,12 @@ import org.robovm.apple.corelocation.*;
     /*<members>*//*</members>*/
     /*<methods>*/
     @Method(selector = "initWithItem:attachedToAnchor:")
-    protected native @Pointer long initWithItem$attachedToAnchor$(UIDynamicItem item, @ByVal CGPoint point);
+    protected native @Pointer long init(UIDynamicItem item, @ByVal CGPoint point);
     @Method(selector = "initWithItem:offsetFromCenter:attachedToAnchor:")
-    protected native @Pointer long initWithItem$offsetFromCenter$attachedToAnchor$(UIDynamicItem item, @ByVal UIOffset offset, @ByVal CGPoint point);
+    protected native @Pointer long init(UIDynamicItem item, @ByVal UIOffset offset, @ByVal CGPoint point);
     @Method(selector = "initWithItem:attachedToItem:")
-    protected native @Pointer long initWithItem$attachedToItem$(UIDynamicItem item1, UIDynamicItem item2);
+    protected native @Pointer long init(UIDynamicItem item1, UIDynamicItem item2);
     @Method(selector = "initWithItem:offsetFromCenter:attachedToItem:offsetFromCenter:")
-    protected native @Pointer long initWithItem$offsetFromCenter$attachedToItem$offsetFromCenter$(UIDynamicItem item1, @ByVal UIOffset offset1, UIDynamicItem item2, @ByVal UIOffset offset2);
+    protected native @Pointer long init(UIDynamicItem item1, @ByVal UIOffset offset1, UIDynamicItem item2, @ByVal UIOffset offset2);
     /*</methods>*/
 }

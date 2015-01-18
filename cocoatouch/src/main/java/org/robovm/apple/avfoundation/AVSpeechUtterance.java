@@ -86,6 +86,13 @@ import org.robovm.apple.mediatoolbox.*;
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
+    @GlobalValue(symbol="AVSpeechUtteranceMinimumSpeechRate", optional=true)
+    public static native float getMinimumSpeechRate();
+    @GlobalValue(symbol="AVSpeechUtteranceMaximumSpeechRate", optional=true)
+    public static native float getMaximumSpeechRate();
+    @GlobalValue(symbol="AVSpeechUtteranceDefaultSpeechRate", optional=true)
+    public static native float getDefaultSpeechRate();
+    
     @Method(selector = "initWithString:")
     protected native @Pointer long init(String string);
     @Method(selector = "speechUtteranceWithString:")

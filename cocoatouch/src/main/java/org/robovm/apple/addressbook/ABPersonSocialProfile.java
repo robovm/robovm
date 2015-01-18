@@ -46,12 +46,10 @@ import org.robovm.apple.corefoundation.*;
         this.data = CFMutableDictionary.create();
         this.label = new CFString(label);
     }
-    
     public ABPersonSocialProfile(ABPropertyLabel label) {
         this.data = CFMutableDictionary.create();
         this.label = label.value();
     }
-    
     protected ABPersonSocialProfile(CFDictionary data, CFString label) {
         this.data = data;
         this.label = label;
@@ -64,13 +62,13 @@ import org.robovm.apple.corefoundation.*;
     public CFDictionary getDictionary() {
         return data;
     }
+    
     public String getLabel() {
         return label.toString();
     }
     protected CFString getLabel0() {
         return label;
     }
-    
     /**
      * @since Available in iOS 5.0 and later.
      */

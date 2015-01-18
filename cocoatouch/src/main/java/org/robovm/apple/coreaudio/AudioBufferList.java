@@ -45,28 +45,16 @@ import org.robovm.apple.corefoundation.*;
     /*<constructors>*/
     public AudioBufferList() {}
     public AudioBufferList(int mNumberBuffers, AudioBuffer mBuffers) {
-        this.setMnumberbuffers(mNumberBuffers);
-        this.setMbuffers(mBuffers);
+        this.setMNumberBuffers(mNumberBuffers);
+        this.setMBuffers(mBuffers);
     }
     /*</constructors>*/
     /*<properties>*//*</properties>*/
     /*<members>*/
-    @StructMember(0) public native int getMnumberbuffers();
-    @StructMember(0) public native AudioBufferList setMnumberbuffers(int mNumberBuffers);
-    
-    @Deprecated
-    @StructMember(0) public native int mNumberBuffers();
-    @Deprecated
-    @StructMember(0) public native AudioBufferList mNumberBuffers(int mNumberBuffers);
-    
-    @StructMember(1) public native @Array({1}) AudioBuffer getMbuffers();
-    @StructMember(1) public native AudioBufferList setMbuffers(@Array({1}) AudioBuffer mBuffers);
-    
-    @Deprecated
-    @StructMember(1) public native @Array({1}) AudioBuffer mBuffers();
-    @Deprecated
-    @StructMember(1) public native AudioBufferList mBuffers(@Array({1}) AudioBuffer mBuffers);
-    
+    @StructMember(0) public native int getMNumberBuffers();
+    @StructMember(0) public native AudioBufferList setMNumberBuffers(int mNumberBuffers);
+    @StructMember(1) public native @Array({1}) AudioBuffer getMBuffers();
+    @StructMember(1) public native AudioBufferList setMBuffers(@Array({1}) AudioBuffer mBuffers);
     /*</members>*/
     /*<methods>*//*</methods>*/
 }

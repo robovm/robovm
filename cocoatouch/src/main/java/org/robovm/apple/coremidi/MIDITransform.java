@@ -45,16 +45,16 @@ import org.robovm.apple.corefoundation.*;
     /*<constructors>*/
     public MIDITransform() {}
     public MIDITransform(MIDITransformType transform, short param) {
-        this.transform(transform);
-        this.param(param);
+        this.setTransform(transform);
+        this.setParam(param);
     }
     /*</constructors>*/
     /*<properties>*//*</properties>*/
     /*<members>*/
-    @StructMember(0) public native MIDITransformType transform();
-    @StructMember(0) public native MIDITransform transform(MIDITransformType transform);
-    @StructMember(1) public native short param();
-    @StructMember(1) public native MIDITransform param(short param);
+    @StructMember(0) public native MIDITransformType getTransform();
+    @StructMember(0) public native MIDITransform setTransform(MIDITransformType transform);
+    @StructMember(1) public native short getParam();
+    @StructMember(1) public native MIDITransform setParam(short param);
     /*</members>*/
     /*<methods>*//*</methods>*/
 }

@@ -33,6 +33,8 @@ import org.robovm.apple.coreanimation.*;
 import org.robovm.apple.dispatch.*;
 import org.robovm.apple.coreimage.*;
 import org.robovm.apple.avfoundation.*;
+import org.robovm.apple.glkit.*;
+import org.robovm.apple.scenekit.*;
 /*</imports>*/
 
 /*<javadoc>*/
@@ -51,6 +53,7 @@ import org.robovm.apple.avfoundation.*;
     protected SKKeyframeSequence(SkipInit skipInit) { super(skipInit); }
     public SKKeyframeSequence(NSArray<NSObject> values, NSArray<NSNumber> times) { super((SkipInit) null); initObject(init(values, times)); }
     public SKKeyframeSequence(@MachineSizedUInt long numItems) { super((SkipInit) null); initObject(init(numItems)); }
+    public SKKeyframeSequence(NSCoder aDecoder) { super((SkipInit) null); initObject(init(aDecoder)); }
     /*</constructors>*/
     /*<properties>*/
     @Property(selector = "interpolationMode")
@@ -68,8 +71,10 @@ import org.robovm.apple.avfoundation.*;
     protected native @Pointer long init(NSArray<NSObject> values, NSArray<NSNumber> times);
     @Method(selector = "initWithCapacity:")
     protected native @Pointer long init(@MachineSizedUInt long numItems);
+    @Method(selector = "initWithCoder:")
+    protected native @Pointer long init(NSCoder aDecoder);
     @Method(selector = "count")
-    public native @MachineSizedUInt long count();
+    public native @MachineSizedUInt long size();
     @Method(selector = "addKeyframeValue:time:")
     public native void add(NSObject value, @MachineSizedFloat double time);
     @Method(selector = "removeLastKeyframe")

@@ -48,8 +48,11 @@ import org.robovm.apple.uikit.*;
     protected GKTurnBasedParticipant(SkipInit skipInit) { super(skipInit); }
     /*</constructors>*/
     /*<properties>*/
-    @Property(selector = "playerID")
-    public native String getPlayerID();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @Property(selector = "player")
+    public native GKPlayer getPlayer();
     @Property(selector = "lastTurnDate")
     public native NSDate getLastTurnDate();
     @Property(selector = "status")
@@ -63,6 +66,13 @@ import org.robovm.apple.uikit.*;
      */
     @Property(selector = "timeoutDate")
     public native NSDate getTimeoutDate();
+    /**
+     * @since Available in iOS 5.0 and later.
+     * @deprecated Deprecated in iOS 8.0.
+     */
+    @Deprecated
+    @Property(selector = "playerID")
+    public native String getPlayerID();
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/

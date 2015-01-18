@@ -49,7 +49,7 @@ import org.robovm.apple.dispatch.*;
     /*<constants>*//*</constants>*/
     /*<constructors>*/
     protected NSNotificationQueue(SkipInit skipInit) { super(skipInit); }
-    public NSNotificationQueue(NSNotificationCenter notificationCenter) { super((SkipInit) null); initObject(initWithNotificationCenter$(notificationCenter)); }
+    public NSNotificationQueue(NSNotificationCenter notificationCenter) { super((SkipInit) null); initObject(init(notificationCenter)); }
     /*</constructors>*/
     /*<properties>*/
     
@@ -64,7 +64,7 @@ import org.robovm.apple.dispatch.*;
     }
     /*<methods>*/
     @Method(selector = "initWithNotificationCenter:")
-    protected native @Pointer long initWithNotificationCenter$(NSNotificationCenter notificationCenter);
+    protected native @Pointer long init(NSNotificationCenter notificationCenter);
     @Method(selector = "enqueueNotification:postingStyle:")
     public native void enqueueNotification(NSNotification notification, NSPostingStyle postingStyle);
     @Method(selector = "enqueueNotification:postingStyle:coalesceMask:forModes:")

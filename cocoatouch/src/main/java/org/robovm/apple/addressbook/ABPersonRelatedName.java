@@ -40,12 +40,10 @@ public class ABPersonRelatedName {
         this.name = new CFString(name);
         this.label = new CFString(label);
     }
-    
     public ABPersonRelatedName(String name, ABPersonRelatedNameLabel label) {
         this.name = new CFString(name);
         this.label = label.value();
     }
-    
     protected ABPersonRelatedName(CFString name, CFString label) {
         this.name = name;
         this.label = label;

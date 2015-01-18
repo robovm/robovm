@@ -54,13 +54,13 @@ import org.robovm.apple.corelocation.*;
     /*</constructors>*/
     /*<properties>*/
     @Property(selector = "invalidateFlowLayoutDelegateMetrics")
-    public native boolean isInvalidateFlowLayoutDelegateMetrics();
+    public native boolean invalidatesFlowLayoutDelegateMetrics();
     @Property(selector = "setInvalidateFlowLayoutDelegateMetrics:")
-    public native void setInvalidateFlowLayoutDelegateMetrics(boolean v);
+    public native void setInvalidatesFlowLayoutDelegateMetrics(boolean v);
     @Property(selector = "invalidateFlowLayoutAttributes")
-    public native boolean isInvalidateFlowLayoutAttributes();
+    public native boolean invalidatesFlowLayoutAttributes();
     @Property(selector = "setInvalidateFlowLayoutAttributes:")
-    public native void setInvalidateFlowLayoutAttributes(boolean v);
+    public native void setInvalidatesFlowLayoutAttributes(boolean v);
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/

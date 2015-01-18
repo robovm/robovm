@@ -69,7 +69,7 @@ import org.robovm.apple.corelocation.*;
      * @since Available in iOS 3.1 and later.
      */
     @Property(selector = "allowsEditing")
-    public native boolean isAllowsEditing();
+    public native boolean allowsEditing();
     /**
      * @since Available in iOS 3.1 and later.
      */
@@ -99,7 +99,7 @@ import org.robovm.apple.corelocation.*;
      * @since Available in iOS 3.1 and later.
      */
     @Property(selector = "showsCameraControls")
-    public native boolean isShowsCameraControls();
+    public native boolean showsCameraControls();
     /**
      * @since Available in iOS 3.1 and later.
      */

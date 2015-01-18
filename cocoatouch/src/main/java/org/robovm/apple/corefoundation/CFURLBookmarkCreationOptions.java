@@ -27,25 +27,28 @@ import org.robovm.rt.bro.*;
 import org.robovm.rt.bro.annotation.*;
 import org.robovm.rt.bro.ptr.*;
 import org.robovm.apple.dispatch.*;
+import org.robovm.apple.foundation.*;
 /*</imports>*/
 
 /*<javadoc>*/
-
+/**
+ * @since Available in iOS 4.0 and later.
+ */
 /*</javadoc>*/
 /*<annotations>*/@Marshaler(Bits.AsMachineSizedIntMarshaler.class)/*</annotations>*/
 public final class /*<name>*/CFURLBookmarkCreationOptions/*</name>*/ extends Bits</*<name>*/CFURLBookmarkCreationOptions/*</name>*/> {
     /*<values>*/
     public static final CFURLBookmarkCreationOptions None = new CFURLBookmarkCreationOptions(0L);
+    public static final CFURLBookmarkCreationOptions MinimalBookmarkMask = new CFURLBookmarkCreationOptions(512L);
+    public static final CFURLBookmarkCreationOptions SuitableForBookmarkFile = new CFURLBookmarkCreationOptions(1024L);
+    public static final CFURLBookmarkCreationOptions WithSecurityScope = new CFURLBookmarkCreationOptions(2048L);
+    public static final CFURLBookmarkCreationOptions SecurityScopeAllowOnlyReadAccess = new CFURLBookmarkCreationOptions(4096L);
     /**
      * @since Available in iOS 4.0 and later.
      * @deprecated Deprecated in iOS 7.0.
      */
     @Deprecated
     public static final CFURLBookmarkCreationOptions PreferFileIDResolutionMask = new CFURLBookmarkCreationOptions(256L);
-    public static final CFURLBookmarkCreationOptions MinimalBookmarkMask = new CFURLBookmarkCreationOptions(512L);
-    public static final CFURLBookmarkCreationOptions SuitableForBookmarkFile = new CFURLBookmarkCreationOptions(1024L);
-    public static final CFURLBookmarkCreationOptions WithSecurityScope = new CFURLBookmarkCreationOptions(2048L);
-    public static final CFURLBookmarkCreationOptions SecurityScopeAllowOnlyReadAccess = new CFURLBookmarkCreationOptions(4096L);
     /*</values>*/
 
     private static final /*<name>*/CFURLBookmarkCreationOptions/*</name>*/[] values = _values(/*<name>*/CFURLBookmarkCreationOptions/*</name>*/.class);

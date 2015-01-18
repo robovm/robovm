@@ -71,7 +71,7 @@ import org.robovm.apple.dispatch.*;
     @Property(selector = "setCalendar:")
     public native void setCalendar(NSCalendar v);
     @Property(selector = "allowsFractionalUnits")
-    public native boolean isAllowsFractionalUnits();
+    public native boolean allowsFractionalUnits();
     @Property(selector = "setAllowsFractionalUnits:")
     public native void setAllowsFractionalUnits(boolean v);
     @Property(selector = "maximumUnitCount")
@@ -79,15 +79,15 @@ import org.robovm.apple.dispatch.*;
     @Property(selector = "setMaximumUnitCount:")
     public native void setMaximumUnitCount(@MachineSizedSInt long v);
     @Property(selector = "collapsesLargestUnit")
-    public native boolean isCollapsesLargestUnit();
+    public native boolean collapsesLargestUnit();
     @Property(selector = "setCollapsesLargestUnit:")
     public native void setCollapsesLargestUnit(boolean v);
     @Property(selector = "includesApproximationPhrase")
-    public native boolean isIncludesApproximationPhrase();
+    public native boolean includesApproximationPhrase();
     @Property(selector = "setIncludesApproximationPhrase:")
     public native void setIncludesApproximationPhrase(boolean v);
     @Property(selector = "includesTimeRemainingPhrase")
-    public native boolean isIncludesTimeRemainingPhrase();
+    public native boolean includesTimeRemainingPhrase();
     @Property(selector = "setIncludesTimeRemainingPhrase:")
     public native void setIncludesTimeRemainingPhrase(boolean v);
     @Property(selector = "formattingContext")

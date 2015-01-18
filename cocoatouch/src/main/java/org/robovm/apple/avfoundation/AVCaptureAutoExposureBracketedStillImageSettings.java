@@ -62,6 +62,6 @@ import org.robovm.apple.mediatoolbox.*;
     /*<members>*//*</members>*/
     /*<methods>*/
     @Method(selector = "autoExposureSettingsWithExposureTargetBias:")
-    public static native AVCaptureAutoExposureBracketedStillImageSettings autoExposureSettingsWithExposureTargetBias$(float exposureTargetBias);
+    public static native AVCaptureAutoExposureBracketedStillImageSettings create(float exposureTargetBias);
     /*</methods>*/
 }

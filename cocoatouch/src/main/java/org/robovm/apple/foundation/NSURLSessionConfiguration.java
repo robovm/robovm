@@ -74,7 +74,7 @@ import org.robovm.apple.coreservices.CFProxy;
     @Property(selector = "setNetworkServiceType:")
     public native void setNetworkServiceType(NSURLRequestNetworkServiceType v);
     @Property(selector = "allowsCellularAccess")
-    public native boolean isAllowsCellularAccess();
+    public native boolean allowsCellularAccess();
     @Property(selector = "setAllowsCellularAccess:")
     public native void setAllowsCellularAccess(boolean v);
     /**
@@ -101,12 +101,12 @@ import org.robovm.apple.coreservices.CFProxy;
      * @since Available in iOS 7.0 and later.
      */
     @Property(selector = "sessionSendsLaunchEvents")
-    public native boolean isSessionSendsLaunchEvents();
+    public native boolean sendsLaunchEvents();
     /**
      * @since Available in iOS 7.0 and later.
      */
     @Property(selector = "setSessionSendsLaunchEvents:")
-    public native void setSessionSendsLaunchEvents(boolean v);
+    public native void setSendsLaunchEvents(boolean v);
     @Property(selector = "connectionProxyDictionary")
     public native CFProxy getConnectionProxy();
     @Property(selector = "setConnectionProxyDictionary:")
@@ -120,25 +120,25 @@ import org.robovm.apple.coreservices.CFProxy;
     @Property(selector = "setTLSMaximumSupportedProtocol:")
     public native void setTLSMaximumSupportedProtocol(SSLProtocol v);
     @Property(selector = "HTTPShouldUsePipelining")
-    public native boolean isHTTPShouldUsePipelining();
+    public native boolean shouldUseHTTPPipelining();
     @Property(selector = "setHTTPShouldUsePipelining:")
-    public native void setHTTPShouldUsePipelining(boolean v);
+    public native void setShouldUseHTTPPipelining(boolean v);
     @Property(selector = "HTTPShouldSetCookies")
-    public native boolean isHTTPShouldSetCookies();
+    public native boolean shouldSetHTTPCookies();
     @Property(selector = "setHTTPShouldSetCookies:")
-    public native void setHTTPShouldSetCookies(boolean v);
+    public native void setShouldSetHTTPCookies(boolean v);
     @Property(selector = "HTTPCookieAcceptPolicy")
     public native NSHTTPCookieAcceptPolicy getHTTPCookieAcceptPolicy();
     @Property(selector = "setHTTPCookieAcceptPolicy:")
     public native void setHTTPCookieAcceptPolicy(NSHTTPCookieAcceptPolicy v);
     @Property(selector = "HTTPAdditionalHeaders")
-    public native @org.robovm.rt.bro.annotation.Marshaler(NSDictionary.AsStringStringMapMarshaler.class) Map<String, String> getHTTPAdditionalHeaders();
+    public native @org.robovm.rt.bro.annotation.Marshaler(NSDictionary.AsStringStringMapMarshaler.class) Map<String, String> getGetAdditionalHTTPHeaders();
     @Property(selector = "setHTTPAdditionalHeaders:")
-    public native void setHTTPAdditionalHeaders(@org.robovm.rt.bro.annotation.Marshaler(NSDictionary.AsStringStringMapMarshaler.class) Map<String, String> v);
+    public native void setGetAdditionalHTTPHeaders(@org.robovm.rt.bro.annotation.Marshaler(NSDictionary.AsStringStringMapMarshaler.class) Map<String, String> v);
     @Property(selector = "HTTPMaximumConnectionsPerHost")
-    public native @MachineSizedSInt long getHTTPMaximumConnectionsPerHost();
+    public native @MachineSizedSInt long getMaximumHTTPConnectionsPerHost();
     @Property(selector = "setHTTPMaximumConnectionsPerHost:")
-    public native void setHTTPMaximumConnectionsPerHost(@MachineSizedSInt long v);
+    public native void setMaximumHTTPConnectionsPerHost(@MachineSizedSInt long v);
     @Property(selector = "HTTPCookieStorage")
     public native NSHTTPCookieStorage getHTTPCookieStorage();
     @Property(selector = "setHTTPCookieStorage:")

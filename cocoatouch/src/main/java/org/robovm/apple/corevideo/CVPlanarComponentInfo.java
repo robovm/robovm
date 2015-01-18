@@ -31,6 +31,7 @@ import org.robovm.apple.corefoundation.*;
 import org.robovm.apple.coregraphics.*;
 import org.robovm.apple.opengles.*;
 import org.robovm.apple.coremedia.*;
+import org.robovm.apple.metal.*;
 /*</imports>*/
 
 /*<javadoc>*/
@@ -49,27 +50,15 @@ import org.robovm.apple.coremedia.*;
     public CVPlanarComponentInfo() {}
     public CVPlanarComponentInfo(int offset, int rowBytes) {
         this.setOffset(offset);
-        this.setRowbytes(rowBytes);
+        this.setRowBytes(rowBytes);
     }
     /*</constructors>*/
     /*<properties>*//*</properties>*/
     /*<members>*/
     @StructMember(0) public native int getOffset();
     @StructMember(0) public native CVPlanarComponentInfo setOffset(int offset);
-    
-    @Deprecated
-    @StructMember(0) public native int offset();
-    @Deprecated
-    @StructMember(0) public native CVPlanarComponentInfo offset(int offset);
-    
-    @StructMember(1) public native int getRowbytes();
-    @StructMember(1) public native CVPlanarComponentInfo setRowbytes(int rowBytes);
-    
-    @Deprecated
-    @StructMember(1) public native int rowBytes();
-    @Deprecated
-    @StructMember(1) public native CVPlanarComponentInfo rowBytes(int rowBytes);
-    
+    @StructMember(1) public native int getRowBytes();
+    @StructMember(1) public native CVPlanarComponentInfo setRowBytes(int rowBytes);
     /*</members>*/
     /*<methods>*//*</methods>*/
 }

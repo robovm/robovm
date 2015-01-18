@@ -45,16 +45,16 @@ import org.robovm.apple.corefoundation.*;
     /*<constructors>*/
     public MIDINotification() {}
     public MIDINotification(MIDINotificationMessageID messageID, int messageSize) {
-        this.messageID(messageID);
-        this.messageSize(messageSize);
+        this.setMessageID(messageID);
+        this.setMessageSize(messageSize);
     }
     /*</constructors>*/
     /*<properties>*//*</properties>*/
     /*<members>*/
-    @StructMember(0) public native MIDINotificationMessageID messageID();
-    @StructMember(0) public native MIDINotification messageID(MIDINotificationMessageID messageID);
-    @StructMember(1) public native int messageSize();
-    @StructMember(1) public native MIDINotification messageSize(int messageSize);
+    @StructMember(0) public native MIDINotificationMessageID getMessageID();
+    @StructMember(0) public native MIDINotification setMessageID(MIDINotificationMessageID messageID);
+    @StructMember(1) public native int getMessageSize();
+    @StructMember(1) public native MIDINotification setMessageSize(int messageSize);
     /*</members>*/
     /*<methods>*//*</methods>*/
 }

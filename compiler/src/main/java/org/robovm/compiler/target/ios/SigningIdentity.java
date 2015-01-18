@@ -59,9 +59,18 @@ public class SigningIdentity implements Comparable<SigningIdentity> {
     }
 
     public static SigningIdentity find(List<SigningIdentity> ids, String search) {
-        for (SigningIdentity id : ids) {
-            if (id.name.startsWith(search) || id.fingerprint.equals(search.toUpperCase())) {
-                return id;
+        if (search.startsWith("/") && search.endsWith("/")) {
+            Pattern pattern = Pattern.compile(search.substring(1, search.length() - 1));
+            for (SigningIdentity id : ids) {
+                if (pattern.matcher(id.name).find()) {
+                    return id;
+                }
+            }
+        } else {
+            for (SigningIdentity id : ids) {
+                if (id.name.startsWith(search) || id.fingerprint.equals(search.toUpperCase())) {
+                    return id;
+                }
             }
         }
         throw new IllegalArgumentException("No signing identity found matching '" + search + "'");
@@ -69,6 +78,8 @@ public class SigningIdentity implements Comparable<SigningIdentity> {
     
     protected static List<SigningIdentity> parse(String securityOutput) {
         /* Output from security looks like this:
+         *   [... ommitted output ...]
+         *   Valid identities only
          *   1) 433D4A1CD97F77226F67959905A2840265A92D31 "iPhone Developer: Rolf Hudson (HS5OW37HQP)" (CSSMERR_TP_CERT_REVOKED)
          *   2) F8E60167BD74A2E9FC39B239E58CCD73BE1112E6 "iPhone Developer: Rolf Hudson (HS5OW37HQP)"
          *   3) AC2EC9D4D26889649DE4196FBFD54BF5924169F9 "iPhone Distribution: Acme Inc"
@@ -80,7 +91,7 @@ public class SigningIdentity implements Comparable<SigningIdentity> {
             line = line.trim();
             Matcher matcher = pattern.matcher(line);
             if (!matcher.find()) {
-                break;
+                continue;
             }
             String name = matcher.group(2);
             String fingerprint = matcher.group(1);

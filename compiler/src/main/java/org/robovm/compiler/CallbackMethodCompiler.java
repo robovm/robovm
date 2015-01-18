@@ -113,7 +113,7 @@ public class CallbackMethodCompiler extends BroMethodCompiler {
         }
         moduleBuilder.addFunction(callbackFn);
         moduleBuilder.addAlias(new Alias(Symbols.callbackPtrSymbol(originalMethod), 
-                Linkage.linker_private, new ConstantBitcast(callbackFn.ref(), I8_PTR)));
+                Linkage._private, new ConstantBitcast(callbackFn.ref(), I8_PTR)));
 
         String targetName = originalMethod.isSynchronized() 
                 ? Symbols.synchronizedWrapperSymbol(originalMethod) 
@@ -147,7 +147,7 @@ public class CallbackMethodCompiler extends BroMethodCompiler {
             Value arg = callbackFn.getParameterRef(receiverIdx);
             String targetClassName = getInternalName(originalMethod.getDeclaringClass());
             arg = marshalNativeToObject(callbackFn, marshalerMethod, marshaledArg, env, targetClassName, arg,
-                    MarshalerFlags.CALL_TYPE_BRIDGE);
+                    MarshalerFlags.CALL_TYPE_CALLBACK);
             args.add(arg);
         }
         

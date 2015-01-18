@@ -64,7 +64,7 @@ import org.robovm.apple.corelocation.*;
     /*<constructors>*/
     public UIDocument() {}
     protected UIDocument(SkipInit skipInit) { super(skipInit); }
-    public UIDocument(NSURL url) { super((SkipInit) null); initObject(initWithFileURL$(url)); }
+    public UIDocument(NSURL url) { super((SkipInit) null); initObject(init(url)); }
     /*</constructors>*/
     /*<properties>*/
     @Property(selector = "fileURL")
@@ -204,7 +204,7 @@ import org.robovm.apple.corelocation.*;
     public static native String UserActivityDocumentURLKey();
     
     @Method(selector = "initWithFileURL:")
-    protected native @Pointer long initWithFileURL$(NSURL url);
+    protected native @Pointer long init(NSURL url);
     @Method(selector = "openWithCompletionHandler:")
     public native void open(@Block VoidBooleanBlock completionHandler);
     @Method(selector = "closeWithCompletionHandler:")

@@ -49,19 +49,19 @@ import org.robovm.apple.coremedia.*;
     /*<constructors>*/
     public CAFRegionChunk() {}
     public CAFRegionChunk(int mSMPTE_TimeType, int mNumberRegions, CAFRegion mRegions) {
-        this.mSMPTE_TimeType(mSMPTE_TimeType);
-        this.mNumberRegions(mNumberRegions);
-        this.mRegions(mRegions);
+        this.setMSMPTE_TimeType(mSMPTE_TimeType);
+        this.setMNumberRegions(mNumberRegions);
+        this.setMRegions(mRegions);
     }
     /*</constructors>*/
     /*<properties>*//*</properties>*/
     /*<members>*/
-    @StructMember(0) public native int mSMPTE_TimeType();
-    @StructMember(0) public native CAFRegionChunk mSMPTE_TimeType(int mSMPTE_TimeType);
-    @StructMember(1) public native int mNumberRegions();
-    @StructMember(1) public native CAFRegionChunk mNumberRegions(int mNumberRegions);
-    @StructMember(2) public native @Array({1}) CAFRegion mRegions();
-    @StructMember(2) public native CAFRegionChunk mRegions(@Array({1}) CAFRegion mRegions);
+    @StructMember(0) public native int getMSMPTE_TimeType();
+    @StructMember(0) public native CAFRegionChunk setMSMPTE_TimeType(int mSMPTE_TimeType);
+    @StructMember(1) public native int getMNumberRegions();
+    @StructMember(1) public native CAFRegionChunk setMNumberRegions(int mNumberRegions);
+    @StructMember(2) public native @Array({1}) CAFRegion getMRegions();
+    @StructMember(2) public native CAFRegionChunk setMRegions(@Array({1}) CAFRegion mRegions);
     /*</members>*/
     /*<methods>*//*</methods>*/
 }

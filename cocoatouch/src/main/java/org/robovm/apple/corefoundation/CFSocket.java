@@ -27,6 +27,7 @@ import org.robovm.rt.bro.*;
 import org.robovm.rt.bro.annotation.*;
 import org.robovm.rt.bro.ptr.*;
 import org.robovm.apple.dispatch.*;
+import org.robovm.apple.foundation.*;
 /*</imports>*/
 
 /*<javadoc>*/
@@ -84,15 +85,15 @@ import org.robovm.apple.dispatch.*;
     @Bridge(symbol="CFSocketSendData", optional=true)
     public native CFSocketError sendData(CFData address, CFData data, double timeout);
     @Bridge(symbol="CFSocketRegisterValue", optional=true)
-    public static native CFSocketError registerValue(CFSocketSignature nameServerSignature, double timeout, CFString name, CFType value);
+    public static native CFSocketError registerValue(CFSocketSignature nameServerSignature, double timeout, String name, CFType value);
     @Bridge(symbol="CFSocketCopyRegisteredValue", optional=true)
-    public static native CFSocketError copyRegisteredValue(CFSocketSignature nameServerSignature, double timeout, CFString name, CFType.CFTypePtr value, CFData.CFDataPtr nameServerAddress);
+    public static native CFSocketError copyRegisteredValue(CFSocketSignature nameServerSignature, double timeout, String name, CFType.CFTypePtr value, CFData.CFDataPtr nameServerAddress);
     @Bridge(symbol="CFSocketRegisterSocketSignature", optional=true)
-    public static native CFSocketError registerSocketSignature(CFSocketSignature nameServerSignature, double timeout, CFString name, CFSocketSignature signature);
+    public static native CFSocketError registerSocketSignature(CFSocketSignature nameServerSignature, double timeout, String name, CFSocketSignature signature);
     @Bridge(symbol="CFSocketCopyRegisteredSocketSignature", optional=true)
-    public static native CFSocketError copyRegisteredSocketSignature(CFSocketSignature nameServerSignature, double timeout, CFString name, CFSocketSignature signature, CFData.CFDataPtr nameServerAddress);
+    public static native CFSocketError copyRegisteredSocketSignature(CFSocketSignature nameServerSignature, double timeout, String name, CFSocketSignature signature, CFData.CFDataPtr nameServerAddress);
     @Bridge(symbol="CFSocketUnregister", optional=true)
-    public static native CFSocketError unregister(CFSocketSignature nameServerSignature, double timeout, CFString name);
+    public static native CFSocketError unregister(CFSocketSignature nameServerSignature, double timeout, String name);
     @Bridge(symbol="CFSocketSetDefaultNameRegistryPortNumber", optional=true)
     public static native void setDefaultNameRegistryPortNumber(short port);
     @Bridge(symbol="CFSocketGetDefaultNameRegistryPortNumber", optional=true)

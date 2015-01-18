@@ -165,7 +165,7 @@ values:
         name: getClassDomain
         
     SKDownload(TimeRemainingUnknown):
-        name: '#{g[0]}'
+        name: getRemainingTimeUnknown
         class: SKDownload
         readonly: true
         

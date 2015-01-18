@@ -280,10 +280,6 @@ import org.robovm.apple.dispatch.*;
     public static native @ByVal GLKMatrix3 function__GLKMatrix3SetColumn(@ByVal GLKMatrix3 matrix, int column, @ByVal GLKVector3 vector);
     @Bridge(symbol="GLKMatrix3Transpose", optional=true)
     public static native @ByVal GLKMatrix3 function__GLKMatrix3Transpose(@ByVal GLKMatrix3 matrix);
-    @Bridge(symbol="GLKMatrix3Invert", optional=true)
-    public static native @ByVal GLKMatrix3 function__GLKMatrix3Invert(@ByVal GLKMatrix3 matrix, BytePtr isInvertible);
-    @Bridge(symbol="GLKMatrix3InvertAndTranspose", optional=true)
-    public static native @ByVal GLKMatrix3 function__GLKMatrix3InvertAndTranspose(@ByVal GLKMatrix3 matrix, BytePtr isInvertible);
     @Bridge(symbol="GLKMatrix3Multiply", optional=true)
     public static native @ByVal GLKMatrix3 function__GLKMatrix3Multiply(@ByVal GLKMatrix3 matrixLeft, @ByVal GLKMatrix3 matrixRight);
     @Bridge(symbol="GLKMatrix3Add", optional=true)
@@ -360,10 +356,6 @@ import org.robovm.apple.dispatch.*;
     public static native @ByVal GLKMatrix4 function__GLKMatrix4SetColumn(@ByVal GLKMatrix4 matrix, int column, @ByVal GLKVector4 vector);
     @Bridge(symbol="GLKMatrix4Transpose", optional=true)
     public static native @ByVal GLKMatrix4 function__GLKMatrix4Transpose(@ByVal GLKMatrix4 matrix);
-    @Bridge(symbol="GLKMatrix4Invert", optional=true)
-    public static native @ByVal GLKMatrix4 function__GLKMatrix4Invert(@ByVal GLKMatrix4 matrix, BytePtr isInvertible);
-    @Bridge(symbol="GLKMatrix4InvertAndTranspose", optional=true)
-    public static native @ByVal GLKMatrix4 function__GLKMatrix4InvertAndTranspose(@ByVal GLKMatrix4 matrix, BytePtr isInvertible);
     @Bridge(symbol="GLKMatrix4Multiply", optional=true)
     public static native @ByVal GLKMatrix4 function__GLKMatrix4Multiply(@ByVal GLKMatrix4 matrixLeft, @ByVal GLKMatrix4 matrixRight);
     @Bridge(symbol="GLKMatrix4Add", optional=true)
@@ -462,7 +454,5 @@ import org.robovm.apple.dispatch.*;
     public static native @ByVal GLKVector2 function__GLKVector2Project(@ByVal GLKVector2 vectorToProject, @ByVal GLKVector2 projectionVector);
     @Bridge(symbol="GLKMathProject", optional=true)
     public static native @ByVal GLKVector3 function__GLKMathProject(@ByVal GLKVector3 object, @ByVal GLKMatrix4 model, @ByVal GLKMatrix4 projection, IntPtr viewport);
-    @Bridge(symbol="GLKMathUnproject", optional=true)
-    public static native @ByVal GLKVector3 function__GLKMathUnproject(@ByVal GLKVector3 window, @ByVal GLKMatrix4 model, @ByVal GLKMatrix4 projection, IntPtr viewport, BytePtr success);
     /*</methods>*/
 }

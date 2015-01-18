@@ -27,6 +27,7 @@ import org.robovm.rt.bro.*;
 import org.robovm.rt.bro.annotation.*;
 import org.robovm.rt.bro.ptr.*;
 import org.robovm.apple.dispatch.*;
+import org.robovm.apple.foundation.*;
 /*</imports>*/
 
 /*<javadoc>*/
@@ -44,30 +45,43 @@ import org.robovm.apple.dispatch.*;
     /*</constructors>*/
     /*<properties>*//*</properties>*/
     /*<members>*//*</members>*/
+    public static CFCharacterSet create(CFRange theRange) {
+        return create(null, theRange);
+    }
+    public static CFCharacterSet create(String theString) {
+        return create(null, theString);
+    }
+    public static CFCharacterSet create(CFData theData) {
+        return create(null, theData);
+    }
+    public CFCharacterSet getInvertedSet() {
+        return createInvertedSet(null, this);
+    }
+    public CFData getBitmapRepresentation() {
+        return createBitmapRepresentation(null, this);
+    }
     /*<methods>*/
     @Bridge(symbol="CFCharacterSetGetTypeID", optional=true)
     public static native @MachineSizedUInt long getClassTypeID();
     @Bridge(symbol="CFCharacterSetGetPredefined", optional=true)
     public static native CFCharacterSet getPredefined(CFCharacterSetPredefinedSet theSetIdentifier);
     @Bridge(symbol="CFCharacterSetCreateWithCharactersInRange", optional=true)
-    public static native CFCharacterSet createWithCharactersInRange(CFAllocator alloc, @ByVal CFRange theRange);
+    protected static native CFCharacterSet create(CFAllocator alloc, @ByVal CFRange theRange);
     @Bridge(symbol="CFCharacterSetCreateWithCharactersInString", optional=true)
-    public static native CFCharacterSet createWithCharactersInString(CFAllocator alloc, CFString theString);
+    protected static native CFCharacterSet create(CFAllocator alloc, String theString);
     @Bridge(symbol="CFCharacterSetCreateWithBitmapRepresentation", optional=true)
-    public static native CFCharacterSet createWithBitmapRepresentation(CFAllocator alloc, CFData theData);
+    protected static native CFCharacterSet create(CFAllocator alloc, CFData theData);
     @Bridge(symbol="CFCharacterSetCreateInvertedSet", optional=true)
-    public static native CFCharacterSet createInvertedSet(CFAllocator alloc, CFCharacterSet theSet);
+    protected static native CFCharacterSet createInvertedSet(CFAllocator alloc, CFCharacterSet theSet);
     @Bridge(symbol="CFCharacterSetIsSupersetOfSet", optional=true)
     public native boolean isSupersetOfSet(CFCharacterSet theOtherset);
     @Bridge(symbol="CFCharacterSetHasMemberInPlane", optional=true)
     public native boolean hasMemberInPlane(@MachineSizedSInt long thePlane);
-    @Bridge(symbol="CFCharacterSetCreateCopy", optional=true)
-    public static native CFCharacterSet createCopy(CFAllocator alloc, CFCharacterSet theSet);
     @Bridge(symbol="CFCharacterSetIsCharacterMember", optional=true)
     public native boolean isCharacterMember(short theChar);
     @Bridge(symbol="CFCharacterSetIsLongCharacterMember", optional=true)
     public native boolean isLongCharacterMember(int theChar);
     @Bridge(symbol="CFCharacterSetCreateBitmapRepresentation", optional=true)
-    public static native CFData createBitmapRepresentation(CFAllocator alloc, CFCharacterSet theSet);
+    protected static native CFData createBitmapRepresentation(CFAllocator alloc, CFCharacterSet theSet);
     /*</methods>*/
 }

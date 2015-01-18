@@ -42,7 +42,7 @@ import org.robovm.apple.corelocation.*;
  * @since Available in iOS 7.0 and later.
  */
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/UIContentSizeCategory/*</name>*/ 
-    extends /*<extends>*/Object/*</extends>*/ 
+    extends /*<extends>*/CocoaUtility/*</extends>*/ 
     /*<implements>*//*</implements>*/ {
 
     /*<ptr>*/

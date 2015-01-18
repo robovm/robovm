@@ -45,8 +45,8 @@ import org.robovm.apple.foundation.*;
     /*<constructors>*/
     public NSBatchUpdateRequest() {}
     protected NSBatchUpdateRequest(SkipInit skipInit) { super(skipInit); }
-    public NSBatchUpdateRequest(String entityName) { super((SkipInit) null); initObject(initWithEntityName$(entityName)); }
-    public NSBatchUpdateRequest(NSEntityDescription entity) { super((SkipInit) null); initObject(initWithEntity$(entity)); }
+    public NSBatchUpdateRequest(String entityName) { super((SkipInit) null); initObject(init(entityName)); }
+    public NSBatchUpdateRequest(NSEntityDescription entity) { super((SkipInit) null); initObject(init(entity)); }
     /*</constructors>*/
     /*<properties>*/
     @Property(selector = "entityName")
@@ -58,7 +58,7 @@ import org.robovm.apple.foundation.*;
     @Property(selector = "setPredicate:")
     public native void setPredicate(NSPredicate v);
     @Property(selector = "includesSubentities")
-    public native boolean isIncludesSubentities();
+    public native boolean includesSubentities();
     @Property(selector = "setIncludesSubentities:")
     public native void setIncludesSubentities(boolean v);
     @Property(selector = "resultType")
@@ -73,9 +73,9 @@ import org.robovm.apple.foundation.*;
     /*<members>*//*</members>*/
     /*<methods>*/
     @Method(selector = "initWithEntityName:")
-    protected native @Pointer long initWithEntityName$(String entityName);
+    protected native @Pointer long init(String entityName);
     @Method(selector = "initWithEntity:")
-    protected native @Pointer long initWithEntity$(NSEntityDescription entity);
+    protected native @Pointer long init(NSEntityDescription entity);
     @Method(selector = "batchUpdateRequestWithEntityName:")
     public static native NSBatchUpdateRequest create(String entityName);
     /*</methods>*/

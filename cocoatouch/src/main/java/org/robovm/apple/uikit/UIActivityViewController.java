@@ -51,7 +51,7 @@ import org.robovm.apple.corelocation.*;
     /*<constructors>*/
     public UIActivityViewController() {}
     protected UIActivityViewController(SkipInit skipInit) { super(skipInit); }
-    public UIActivityViewController(NSArray<?> activityItems, NSArray<UIActivity> applicationActivities) { super((SkipInit) null); initObject(initWithActivityItems$applicationActivities$(activityItems, applicationActivities)); }
+    public UIActivityViewController(NSArray<?> activityItems, NSArray<UIActivity> applicationActivities) { super((SkipInit) null); initObject(init(activityItems, applicationActivities)); }
     /*</constructors>*/
     /*<properties>*/
     /**
@@ -86,6 +86,6 @@ import org.robovm.apple.corelocation.*;
     /*<members>*//*</members>*/
     /*<methods>*/
     @Method(selector = "initWithActivityItems:applicationActivities:")
-    protected native @Pointer long initWithActivityItems$applicationActivities$(NSArray<?> activityItems, NSArray<UIActivity> applicationActivities);
+    protected native @Pointer long init(NSArray<?> activityItems, NSArray<UIActivity> applicationActivities);
     /*</methods>*/
 }

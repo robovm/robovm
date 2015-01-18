@@ -2,7 +2,7 @@ package org.robovm.apple.foundation;
 
 import org.robovm.rt.bro.annotation.ForceLinkClass;
 
-@ForceLinkClass(NSError.class)
+@ForceLinkClass(NSMachError.class)
 public enum NSMachErrorCode implements NSErrorCode {
     SUCCESS(0),
     /**

@@ -54,8 +54,8 @@ import org.robovm.apple.mediatoolbox.*;
     /*<constructors>*/
     public AVAudioChannelLayout() {}
     protected AVAudioChannelLayout(SkipInit skipInit) { super(skipInit); }
-    public AVAudioChannelLayout(AudioChannelLayoutTag layoutTag) { super((SkipInit) null); initObject(initWithLayoutTag$(layoutTag)); }
-    public AVAudioChannelLayout(AudioChannelLayout layout) { super((SkipInit) null); initObject(initWithLayout$(layout)); }
+    public AVAudioChannelLayout(AudioChannelLayoutTag layoutTag) { super((SkipInit) null); initObject(init(layoutTag)); }
+    public AVAudioChannelLayout(AudioChannelLayout layout) { super((SkipInit) null); initObject(init(layout)); }
     /*</constructors>*/
     /*<properties>*/
     @Property(selector = "layoutTag")
@@ -68,14 +68,14 @@ import org.robovm.apple.mediatoolbox.*;
     /*<members>*//*</members>*/
     /*<methods>*/
     @Method(selector = "initWithLayoutTag:")
-    protected native @Pointer long initWithLayoutTag$(AudioChannelLayoutTag layoutTag);
+    protected native @Pointer long init(AudioChannelLayoutTag layoutTag);
     @Method(selector = "initWithLayout:")
-    protected native @Pointer long initWithLayout$(AudioChannelLayout layout);
+    protected native @Pointer long init(AudioChannelLayout layout);
     @Method(selector = "isEqual:")
-    public native boolean isEqual$(NSObject object);
+    public native boolean equalsTo(AVAudioChannelLayout object);
     @Method(selector = "layoutWithLayoutTag:")
-    public static native AVAudioChannelLayout layoutWithLayoutTag$(AudioChannelLayoutTag layoutTag);
+    public static native AVAudioChannelLayout create(AudioChannelLayoutTag layoutTag);
     @Method(selector = "layoutWithLayout:")
-    public static native AVAudioChannelLayout layoutWithLayout$(AudioChannelLayout layout);
+    public static native AVAudioChannelLayout create(AudioChannelLayout layout);
     /*</methods>*/
 }

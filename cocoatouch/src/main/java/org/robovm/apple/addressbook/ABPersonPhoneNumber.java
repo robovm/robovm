@@ -40,12 +40,10 @@ public class ABPersonPhoneNumber {
         this.number = new CFString(number);
         this.label = new CFString(label);
     }
-    
     public ABPersonPhoneNumber(String number, ABPersonPhoneLabel label) {
         this.number = new CFString(number);
         this.label = label.value();
     }
-    
     protected ABPersonPhoneNumber(CFString number, CFString label) {
         this.number = number;
         this.label = label;
@@ -54,15 +52,12 @@ public class ABPersonPhoneNumber {
     public String getNumber() {
         return number.toString();
     }
-    
-    public String getLabel() {
-        return label.toString();
-    }
-    
     protected CFString getNumber0() {
         return number;
     }
-    
+    public String getLabel() {
+        return label.toString();
+    }
     protected CFString getLabel0() {
         return label;
     }

@@ -50,8 +50,8 @@ import org.robovm.apple.dispatch.*;
     /*<constructors>*/
     public NSNetService() {}
     protected NSNetService(SkipInit skipInit) { super(skipInit); }
-    public NSNetService(String domain, String type, String name, int port) { super((SkipInit) null); initObject(initWithDomain$type$name$port$(domain, type, name, port)); }
-    public NSNetService(String domain, String type, String name) { super((SkipInit) null); initObject(initWithDomain$type$name$(domain, type, name)); }
+    public NSNetService(String domain, String type, String name, int port) { super((SkipInit) null); initObject(init(domain, type, name, port)); }
+    public NSNetService(String domain, String type, String name) { super((SkipInit) null); initObject(init(domain, type, name)); }
     /*</constructors>*/
     /*<properties>*/
     @Property(selector = "delegate")
@@ -62,7 +62,7 @@ import org.robovm.apple.dispatch.*;
      * @since Available in iOS 7.0 and later.
      */
     @Property(selector = "includesPeerToPeer")
-    public native boolean isIncludesPeerToPeer();
+    public native boolean includesPeerToPeer();
     /**
      * @since Available in iOS 7.0 and later.
      */
@@ -87,12 +87,12 @@ import org.robovm.apple.dispatch.*;
     /*<members>*//*</members>*/
     public NSInputStream getInputStream() {
         NSInputStream.NSInputStreamPtr ptr = new NSInputStream.NSInputStreamPtr();
-        getInputStream$outputStream$(ptr, null);
+        getStreams(ptr, null);
         return ptr.get();
     }
     public NSOutputStream getOutputStream() {
         NSOutputStream.NSOutputStreamPtr ptr = new NSOutputStream.NSOutputStreamPtr();
-        getInputStream$outputStream$(null, ptr);
+        getStreams(null, ptr);
         return ptr.get();
     }
     public void scheduleInRunLoop(NSRunLoop aRunLoop, NSRunLoopMode mode) {
@@ -103,9 +103,9 @@ import org.robovm.apple.dispatch.*;
     }
     /*<methods>*/
     @Method(selector = "initWithDomain:type:name:port:")
-    protected native @Pointer long initWithDomain$type$name$port$(String domain, String type, String name, int port);
+    protected native @Pointer long init(String domain, String type, String name, int port);
     @Method(selector = "initWithDomain:type:name:")
-    protected native @Pointer long initWithDomain$type$name$(String domain, String type, String name);
+    protected native @Pointer long init(String domain, String type, String name);
     @Method(selector = "scheduleInRunLoop:forMode:")
     public native void scheduleInRunLoop(NSRunLoop aRunLoop, String mode);
     @Method(selector = "removeFromRunLoop:forMode:")
@@ -122,7 +122,7 @@ import org.robovm.apple.dispatch.*;
     @Method(selector = "resolveWithTimeout:")
     public native void resolve(double timeout);
     @Method(selector = "getInputStream:outputStream:")
-    protected native boolean getInputStream$outputStream$(NSInputStream.NSInputStreamPtr inputStream, NSOutputStream.NSOutputStreamPtr outputStream);
+    protected native boolean getStreams(NSInputStream.NSInputStreamPtr inputStream, NSOutputStream.NSOutputStreamPtr outputStream);
     @Method(selector = "setTXTRecordData:")
     public native boolean setTXTRecordData(NSData recordData);
     @Method(selector = "TXTRecordData")

@@ -332,7 +332,7 @@ static inline void proxy0ReturnDouble(CallInfo* ci, jdouble d) {
     ci->returnType = RETURN_TYPE_DOUBLE;
 }
 
-#elif IOS && (RVM_THUMBV6 || RVM_THUMBV7)
+#elif IOS && RVM_THUMBV7
 
 #define MAX_REG_ARGS 4
 
@@ -445,6 +445,167 @@ static inline void proxy0ReturnDouble(CallInfo* ci, jdouble d) {
     ci->returnType = RETURN_TYPE_DOUBLE;
 }
 
+#elif IOS && RVM_ARM64
+
+#define MAX_INT_ARGS 8
+#define MAX_FP_ARGS 8
+
+typedef struct CallInfo {
+    void* function;
+    jint intArgsIndex;
+    IntValue intArgs[MAX_INT_ARGS];
+    jint fpArgsIndex;
+    FpValue fpArgs[MAX_FP_ARGS];
+    jint stackArgsSize;
+    jint stackArgsIndex;
+    char* stackArgs;
+    FpIntValue returnValue;
+    jint returnType;
+    jint padding;
+} CallInfo;
+
+// NOTE: On iOS ARM64 stack arguments are packed if possible but 64-bit values
+// must be 8-byte aligned. We ignore the fact that 2 ints are packed into
+// 64-bites and just allocate 8 bytes for each ints/floats. Considering that
+// ARM64 uses so many registers for parameter passing the stack should hardly
+// never be used so this is not that much of a waste anyway.
+
+#define CALL0_ALLOCATE_CALL_INFO(/* Env* */ _env, /* void* */ _function, /* jint */ _ptrArgsCount, /* jint */ _intArgsCount, /* jint */ _longArgsCount, /* jint */ _floatArgsCount, /* jint */ _doubleArgsCount) ({ \
+    jint _stackArgsSize = _ptrArgsCount + _intArgsCount + _longArgsCount + _floatArgsCount + _doubleArgsCount; \
+    _stackArgsSize -= MIN(_ptrArgsCount + _intArgsCount + _longArgsCount, MAX_INT_ARGS); \
+    _stackArgsSize -= MIN(_floatArgsCount + _doubleArgsCount, MAX_FP_ARGS); \
+    _stackArgsSize = (_stackArgsSize + 2 - 1) & ~(2 - 1); /* Add padding to make (_stackArgsSize * 8) & 0xf == 0 (16-byte aligned) */ \
+    CallInfo* _ci = (CallInfo*) alloca(sizeof(CallInfo) + _stackArgsSize * sizeof(void*)); \
+    memset(_ci, 0, sizeof(CallInfo)); \
+    _ci->function = _function; \
+    _ci->stackArgsSize = _stackArgsSize; \
+    _ci->stackArgs = (char*) &_ci[1]; \
+    _ci; \
+})
+
+static inline void call0AddLong(CallInfo* ci, jlong j) {
+    if (ci->intArgsIndex < MAX_INT_ARGS) {
+        ci->intArgs[ci->intArgsIndex++].j = j;
+        return;
+    }
+    ci->stackArgsIndex = (ci->stackArgsIndex + 8 - 1) & ~(8 - 1);
+    *((jlong*) &(ci->stackArgs[ci->stackArgsIndex])) = j;
+    ci->stackArgsIndex += sizeof(jlong);
+}
+
+static inline void call0AddInt(CallInfo* ci, jint i) {
+    if (ci->intArgsIndex < MAX_INT_ARGS) {
+        ci->intArgs[ci->intArgsIndex++].i = i;
+        return;
+    }
+    *((jint*) &(ci->stackArgs[ci->stackArgsIndex])) = i;
+    ci->stackArgsIndex += sizeof(jint);
+}
+
+static inline void call0AddPtr(CallInfo* ci, void* p) {
+    if (ci->intArgsIndex < MAX_INT_ARGS) {
+        ci->intArgs[ci->intArgsIndex++].p = p;
+        return;
+    }
+    ci->stackArgsIndex = (ci->stackArgsIndex + 8 - 1) & ~(8 - 1);
+    *((void**) &(ci->stackArgs[ci->stackArgsIndex])) = p;
+    ci->stackArgsIndex += sizeof(void*);
+}
+
+static inline void call0AddFloat(CallInfo* ci, jfloat f) {
+    if (ci->fpArgsIndex < MAX_FP_ARGS) {
+        ci->fpArgs[ci->fpArgsIndex++].f = f;
+        return;
+    }
+    *((jfloat*) &(ci->stackArgs[ci->stackArgsIndex])) = f;
+    ci->stackArgsIndex += sizeof(jfloat);
+}
+
+static inline void call0AddDouble(CallInfo* ci, jdouble d) {
+    if (ci->fpArgsIndex < MAX_FP_ARGS) {
+        ci->fpArgs[ci->fpArgsIndex++].d = d;
+        return;
+    }
+    ci->stackArgsIndex = (ci->stackArgsIndex + 8 - 1) & ~(8 - 1);
+    *((jdouble*) &(ci->stackArgs[ci->stackArgsIndex])) = d;
+    ci->stackArgsIndex += sizeof(jdouble);
+}
+
+static inline jint proxy0NextInt(CallInfo* ci) {
+    if (ci->intArgsIndex < MAX_INT_ARGS) {
+        return ci->intArgs[ci->intArgsIndex++].i;
+    }
+    jint v = *((jint*) &(ci->stackArgs[ci->stackArgsIndex]));
+    ci->stackArgsIndex += sizeof(jint);
+    return v;
+}
+
+static inline jlong proxy0NextLong(CallInfo* ci) {
+    if (ci->intArgsIndex < MAX_INT_ARGS) {
+        return ci->intArgs[ci->intArgsIndex++].j;
+    }
+    ci->stackArgsIndex = (ci->stackArgsIndex + 8 - 1) & ~(8 - 1);
+    jlong v = *((jlong*) &(ci->stackArgs[ci->stackArgsIndex]));
+    ci->stackArgsIndex += sizeof(jlong);
+    return v;
+}
+
+static inline void* proxy0NextPtr(CallInfo* ci) {
+    if (ci->intArgsIndex < MAX_INT_ARGS) {
+        return ci->intArgs[ci->intArgsIndex++].p;
+    }
+    ci->stackArgsIndex = (ci->stackArgsIndex + 8 - 1) & ~(8 - 1);
+    void* v = *((void**) &(ci->stackArgs[ci->stackArgsIndex]));
+    ci->stackArgsIndex += sizeof(void*);
+    return v;
+}
+
+static inline jfloat proxy0NextFloat(CallInfo* ci) {
+    if (ci->fpArgsIndex < MAX_FP_ARGS) {
+        return ci->fpArgs[ci->fpArgsIndex++].f;
+    }
+    jfloat v = *((jfloat*) &(ci->stackArgs[ci->stackArgsIndex]));
+    ci->stackArgsIndex += sizeof(jfloat);
+    return v;
+}
+
+static inline jdouble proxy0NextDouble(CallInfo* ci) {
+    if (ci->fpArgsIndex < MAX_FP_ARGS) {
+        return ci->fpArgs[ci->fpArgsIndex++].d;
+    }
+    ci->stackArgsIndex = (ci->stackArgsIndex + 8 - 1) & ~(8 - 1);
+    jdouble v = *((jdouble*) &(ci->stackArgs[ci->stackArgsIndex]));
+    ci->stackArgsIndex += sizeof(jdouble);
+    return v;
+}
+
+static inline void proxy0ReturnInt(CallInfo* ci, jint i) {
+    ci->returnValue.i = i;
+    ci->returnType = RETURN_TYPE_INT;
+}
+
+static inline void proxy0ReturnLong(CallInfo* ci, jlong j) {
+    ci->returnValue.j = j;
+    ci->returnType = RETURN_TYPE_LONG;
+}
+
+static inline void proxy0ReturnPtr(CallInfo* ci, void* p) {
+    proxy0ReturnLong(ci, (jlong) p);
+}
+
+static inline void proxy0ReturnFloat(CallInfo* ci, jfloat f) {
+    ci->returnValue.f = f;
+    ci->returnType = RETURN_TYPE_FLOAT;
+}
+
+static inline void proxy0ReturnDouble(CallInfo* ci, jdouble d) {
+    ci->returnValue.d = d;
+    ci->returnType = RETURN_TYPE_DOUBLE;
+}
+
+
+#else
+#error Unsupported arch
 #endif
 
 #endif

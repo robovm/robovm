@@ -31,6 +31,7 @@ import org.robovm.apple.foundation.*;
 import org.robovm.apple.coreimage.*;
 import org.robovm.apple.coretext.*;
 import org.robovm.apple.opengles.*;
+import org.robovm.apple.metal.*;
 /*</imports>*/
 
 /*<javadoc>*/
@@ -105,7 +106,7 @@ import org.robovm.apple.opengles.*;
     @Property(selector = "setMask:")
     public native void setMask(CALayer v);
     @Property(selector = "masksToBounds")
-    public native boolean isMasksToBounds();
+    public native boolean masksToBounds();
     @Property(selector = "setMasksToBounds:")
     public native void setMasksToBounds(boolean v);
     @Property(selector = "contents")
@@ -117,9 +118,9 @@ import org.robovm.apple.opengles.*;
     @Property(selector = "setContentsRect:")
     public native void setContentsRect(@ByVal CGRect v);
     @Property(selector = "contentsGravity")
-    public native NSString getContentsGravity();
+    public native CAGravity getContentsGravity();
     @Property(selector = "setContentsGravity:")
-    public native void setContentsGravity(NSString v);
+    public native void setContentsGravity(CAGravity v);
     @Property(selector = "contentsScale")
     public native @MachineSizedFloat double getContentsScale();
     @Property(selector = "setContentsScale:")
@@ -129,13 +130,13 @@ import org.robovm.apple.opengles.*;
     @Property(selector = "setContentsCenter:")
     public native void setContentsCenter(@ByVal CGRect v);
     @Property(selector = "minificationFilter")
-    public native NSString getMinificationFilter();
+    public native CAFilter getMinificationFilter();
     @Property(selector = "setMinificationFilter:")
-    public native void setMinificationFilter(NSString v);
+    public native void setMinificationFilter(CAFilter v);
     @Property(selector = "magnificationFilter")
-    public native NSString getMagnificationFilter();
+    public native CAFilter getMagnificationFilter();
     @Property(selector = "setMagnificationFilter:")
-    public native void setMagnificationFilter(NSString v);
+    public native void setMagnificationFilter(CAFilter v);
     @Property(selector = "minificationFilterBias")
     public native float getMinificationFilterBias();
     @Property(selector = "setMinificationFilterBias:")
@@ -145,11 +146,11 @@ import org.robovm.apple.opengles.*;
     @Property(selector = "setOpaque:")
     public native void setOpaque(boolean v);
     @Property(selector = "needsDisplayOnBoundsChange")
-    public native boolean isNeedsDisplayOnBoundsChange();
+    public native boolean needsDisplayOnBoundsChange();
     @Property(selector = "setNeedsDisplayOnBoundsChange:")
     public native void setNeedsDisplayOnBoundsChange(boolean v);
     @Property(selector = "drawsAsynchronously")
-    public native boolean isDrawsAsynchronously();
+    public native boolean drawsAsynchronously();
     @Property(selector = "setDrawsAsynchronously:")
     public native void setDrawsAsynchronously(boolean v);
     @Property(selector = "edgeAntialiasingMask")
@@ -157,7 +158,7 @@ import org.robovm.apple.opengles.*;
     @Property(selector = "setEdgeAntialiasingMask:")
     public native void setEdgeAntialiasingMask(CAEdgeAntialiasingMask v);
     @Property(selector = "allowsEdgeAntialiasing")
-    public native boolean isAllowsEdgeAntialiasing();
+    public native boolean allowsEdgeAntialiasing();
     @Property(selector = "setAllowsEdgeAntialiasing:")
     public native void setAllowsEdgeAntialiasing(boolean v);
     @Property(selector = "backgroundColor")
@@ -181,13 +182,13 @@ import org.robovm.apple.opengles.*;
     @Property(selector = "setOpacity:")
     public native void setOpacity(float v);
     @Property(selector = "allowsGroupOpacity")
-    public native boolean isAllowsGroupOpacity();
+    public native boolean allowsGroupOpacity();
     @Property(selector = "setAllowsGroupOpacity:")
     public native void setAllowsGroupOpacity(boolean v);
     @Property(selector = "compositingFilter")
-    public native NSObject getCompositingFilter();
+    public native CIFilter getCompositingFilter();
     @Property(selector = "setCompositingFilter:")
-    public native void setCompositingFilter(NSObject v);
+    public native void setCompositingFilter(CIFilter v);
     @Property(selector = "filters")
     public native NSArray<CIFilter> getFilters();
     @Property(selector = "setFilters:")
@@ -197,7 +198,7 @@ import org.robovm.apple.opengles.*;
     @Property(selector = "setBackgroundFilters:")
     public native void setBackgroundFilters(NSArray<CIFilter> v);
     @Property(selector = "shouldRasterize")
-    public native boolean isShouldRasterize();
+    public native boolean shouldRasterize();
     @Property(selector = "setShouldRasterize:")
     public native void setShouldRasterize(boolean v);
     @Property(selector = "rasterizationScale")
@@ -225,9 +226,9 @@ import org.robovm.apple.opengles.*;
     @Property(selector = "setShadowPath:")
     public native void setShadowPath(CGPath v);
     @Property(selector = "actions")
-    public native NSDictionary<NSString, ?> getActions();
+    public native @org.robovm.rt.bro.annotation.Marshaler(NSDictionary.AsStringMapMarshaler.class) Map<String, CAAction> getActions();
     @Property(selector = "setActions:")
-    public native void setActions(NSDictionary<NSString, ?> v);
+    public native void setActions(@org.robovm.rt.bro.annotation.Marshaler(NSDictionary.AsStringMapMarshaler.class) Map<String, CAAction> v);
     @Property(selector = "name")
     public native String getName();
     @Property(selector = "setName:")
@@ -237,9 +238,9 @@ import org.robovm.apple.opengles.*;
     @Property(selector = "setDelegate:", strongRef = true)
     public native void setDelegate(CALayerDelegate v);
     @Property(selector = "style")
-    public native NSDictionary<NSString, ?> getStyle();
+    public native NSDictionary<NSString, NSObject> getStyle();
     @Property(selector = "setStyle:")
-    public native void setStyle(NSDictionary<NSString, ?> v);
+    public native void setStyle(NSDictionary<NSString, NSObject> v);
     @Property(selector = "visibleRect")
     public native @ByVal CGRect getVisibleRect();
     @Property(selector = "beginTime")
@@ -267,13 +268,13 @@ import org.robovm.apple.opengles.*;
     @Property(selector = "setRepeatDuration:")
     public native void setRepeatDuration(double v);
     @Property(selector = "autoreverses")
-    public native boolean isAutoreverses();
+    public native boolean autoreverses();
     @Property(selector = "setAutoreverses:")
     public native void setAutoreverses(boolean v);
     @Property(selector = "fillMode")
-    public native NSString getFillMode();
+    public native CAFillMode getFillMode();
     @Property(selector = "setFillMode:")
-    public native void setFillMode(NSString v);
+    public native void setFillMode(CAFillMode v);
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
@@ -352,7 +353,7 @@ import org.robovm.apple.opengles.*;
     @Method(selector = "removeAnimationForKey:")
     public native void removeAnimation(String key);
     @Method(selector = "animationKeys")
-    public native NSArray<NSString> getAnimationKeys();
+    public native @org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String> getAnimationKeys();
     @Method(selector = "animationForKey:")
     public native CAAnimation getAnimation(String key);
     @Method(selector = "layer")

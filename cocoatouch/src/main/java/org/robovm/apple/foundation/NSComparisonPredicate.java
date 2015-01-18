@@ -52,8 +52,8 @@ import org.robovm.apple.dispatch.*;
     /*<constructors>*/
     public NSComparisonPredicate() {}
     protected NSComparisonPredicate(SkipInit skipInit) { super(skipInit); }
-    public NSComparisonPredicate(NSExpression lhs, NSExpression rhs, NSComparisonPredicateModifier modifier, NSPredicateOperatorType type, NSComparisonPredicateOptions options) { super((SkipInit) null); initObject(initWithLeftExpression$rightExpression$modifier$type$options$(lhs, rhs, modifier, type, options)); }
-    public NSComparisonPredicate(NSExpression lhs, NSExpression rhs, Selector selector) { super((SkipInit) null); initObject(initWithLeftExpression$rightExpression$customSelector$(lhs, rhs, selector)); }
+    public NSComparisonPredicate(NSExpression lhs, NSExpression rhs, NSComparisonPredicateModifier modifier, NSPredicateOperatorType type, NSComparisonPredicateOptions options) { super((SkipInit) null); initObject(init(lhs, rhs, modifier, type, options)); }
+    public NSComparisonPredicate(NSExpression lhs, NSExpression rhs, Selector selector) { super((SkipInit) null); initObject(init(lhs, rhs, selector)); }
     /*</constructors>*/
     /*<properties>*/
     @Property(selector = "predicateOperatorType")
@@ -72,8 +72,8 @@ import org.robovm.apple.dispatch.*;
     /*<members>*//*</members>*/
     /*<methods>*/
     @Method(selector = "initWithLeftExpression:rightExpression:modifier:type:options:")
-    protected native @Pointer long initWithLeftExpression$rightExpression$modifier$type$options$(NSExpression lhs, NSExpression rhs, NSComparisonPredicateModifier modifier, NSPredicateOperatorType type, NSComparisonPredicateOptions options);
+    protected native @Pointer long init(NSExpression lhs, NSExpression rhs, NSComparisonPredicateModifier modifier, NSPredicateOperatorType type, NSComparisonPredicateOptions options);
     @Method(selector = "initWithLeftExpression:rightExpression:customSelector:")
-    protected native @Pointer long initWithLeftExpression$rightExpression$customSelector$(NSExpression lhs, NSExpression rhs, Selector selector);
+    protected native @Pointer long init(NSExpression lhs, NSExpression rhs, Selector selector);
     /*</methods>*/
 }

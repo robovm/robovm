@@ -51,11 +51,11 @@ import org.robovm.apple.corelocation.*;
     /*<constructors>*/
     public UISimpleTextPrintFormatter() {}
     protected UISimpleTextPrintFormatter(SkipInit skipInit) { super(skipInit); }
-    public UISimpleTextPrintFormatter(String text) { super((SkipInit) null); initObject(initWithText$(text)); }
+    public UISimpleTextPrintFormatter(String text) { super((SkipInit) null); initObject(init(text)); }
     /**
      * @since Available in iOS 7.0 and later.
      */
-    public UISimpleTextPrintFormatter(NSAttributedString attributedText) { super((SkipInit) null); initObject(initWithAttributedText$(attributedText)); }
+    public UISimpleTextPrintFormatter(NSAttributedString attributedText) { super((SkipInit) null); initObject(init(attributedText)); }
     /*</constructors>*/
     /*<properties>*/
     @Property(selector = "text")
@@ -88,11 +88,11 @@ import org.robovm.apple.corelocation.*;
     /*<members>*//*</members>*/
     /*<methods>*/
     @Method(selector = "initWithText:")
-    protected native @Pointer long initWithText$(String text);
+    protected native @Pointer long init(String text);
     /**
      * @since Available in iOS 7.0 and later.
      */
     @Method(selector = "initWithAttributedText:")
-    protected native @Pointer long initWithAttributedText$(NSAttributedString attributedText);
+    protected native @Pointer long init(NSAttributedString attributedText);
     /*</methods>*/
 }

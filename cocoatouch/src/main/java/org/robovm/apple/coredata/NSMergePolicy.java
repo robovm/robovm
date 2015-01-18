@@ -46,7 +46,7 @@ import org.robovm.apple.foundation.NSError.NSErrorPtr;
     /*<constructors>*/
     public NSMergePolicy() {}
     protected NSMergePolicy(SkipInit skipInit) { super(skipInit); }
-    public NSMergePolicy(NSMergePolicyType ty) { super((SkipInit) null); initObject(initWithMergeType$(ty)); }
+    public NSMergePolicy(NSMergePolicyType ty) { super((SkipInit) null); initObject(init(ty)); }
     /*</constructors>*/
     /*<properties>*/
     @Property(selector = "mergeType")
@@ -95,7 +95,7 @@ import org.robovm.apple.foundation.NSError.NSErrorPtr;
     public static native NSMergePolicy getRollbackMergePolicy();
     
     @Method(selector = "initWithMergeType:")
-    protected native @Pointer long initWithMergeType$(NSMergePolicyType ty);
+    protected native @Pointer long init(NSMergePolicyType ty);
     @Method(selector = "resolveConflicts:error:")
     protected native boolean resolveConflicts(NSArray<NSMergeConflict> list, NSError.NSErrorPtr error);
     /*</methods>*/

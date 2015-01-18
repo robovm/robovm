@@ -65,7 +65,7 @@ import org.robovm.apple.corelocation.*;
      * @since Available in iOS 5.1 and later.
      */
     @Property(selector = "presentsWithGesture")
-    public native boolean isPresentsWithGesture();
+    public native boolean presentsWithGesture();
     /**
      * @since Available in iOS 5.1 and later.
      */
@@ -133,7 +133,7 @@ import org.robovm.apple.corelocation.*;
      * @since Available in iOS 8.0 and later.
      */
     @GlobalValue(symbol="UISplitViewControllerAutomaticDimension", optional=true)
-    public static native @MachineSizedFloat double AutomaticDimension();
+    public static native @MachineSizedFloat double getAutomaticDimension();
     
     /**
      * @since Available in iOS 8.0 and later.

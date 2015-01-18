@@ -27,6 +27,7 @@ import org.robovm.rt.bro.*;
 import org.robovm.rt.bro.annotation.*;
 import org.robovm.rt.bro.ptr.*;
 import org.robovm.apple.dispatch.*;
+import org.robovm.apple.foundation.*;
 /*</imports>*/
 import org.robovm.apple.foundation.NSObject;
 import org.robovm.apple.foundation.NSObject.NSObjectPtr;
@@ -63,22 +64,22 @@ import org.robovm.apple.foundation.NSObject.NSObjectPtr;
             throw new NullPointerException("objects");
         }
         if (objects.length == 0) {
-            return create(null, null, 0, CoreFoundation.TypeSetCallBacks());
+            return create(null, null, 0, getTypeCallBacks());
         }
         NSObjectPtr values = Struct.allocate(NSObjectPtr.class, objects.length);
         values.set(objects);
-        return create(null, values.as(VoidPtr.VoidPtrPtr.class), objects.length, CoreFoundation.TypeSetCallBacks());
+        return create(null, values.as(VoidPtr.VoidPtrPtr.class), objects.length, getTypeCallBacks());
     }
     public static CFSet create(CFType ... objects) {
         if (objects == null) {
             throw new NullPointerException("objects");
         }
         if (objects.length == 0) {
-            return create(null, null, 0, CoreFoundation.TypeSetCallBacks());
+            return create(null, null, 0, getTypeCallBacks());
         }
         CFTypePtr values = Struct.allocate(CFTypePtr.class, objects.length);
         values.set(objects);
-        return create(null, values.as(VoidPtr.VoidPtrPtr.class), objects.length, CoreFoundation.TypeSetCallBacks());
+        return create(null, values.as(VoidPtr.VoidPtrPtr.class), objects.length, getTypeCallBacks());
     }
     
     public boolean contains(NativeObject value) {
@@ -98,6 +99,11 @@ import org.robovm.apple.foundation.NSObject.NSObjectPtr;
         throw new UnsupportedOperationException("CFSet is immutable. Use CFMutableSet instead!");
     }
     /*<methods>*/
+    @GlobalValue(symbol="kCFTypeSetCallBacks", optional=true)
+    public static native @ByVal CFSetCallBacks getTypeCallBacks();
+    @GlobalValue(symbol="kCFCopyStringSetCallBacks", optional=true)
+    public static native @ByVal CFSetCallBacks getCopyStringCallBacks();
+    
     @Bridge(symbol="CFSetGetTypeID", optional=true)
     public static native @MachineSizedUInt long getClassTypeID();
     @Bridge(symbol="CFSetCreate", optional=true)

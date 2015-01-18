@@ -49,51 +49,21 @@ import org.robovm.apple.corefoundation.*;
         this.setInfo(info);
         this.setRetain(retain);
         this.setRelease(release);
-        this.setCopydescription(copyDescription);
+        this.setCopyDescription(copyDescription);
     }
     /*</constructors>*/
     /*<properties>*//*</properties>*/
     /*<members>*/
     @StructMember(0) public native @MachineSizedSInt long getVersion();
     @StructMember(0) public native CFNetServiceClientContext setVersion(@MachineSizedSInt long version);
-    
-    @Deprecated
-    @StructMember(0) public native @MachineSizedSInt long version();
-    @Deprecated
-    @StructMember(0) public native CFNetServiceClientContext version(@MachineSizedSInt long version);
-    
     @StructMember(1) public native @Pointer long getInfo();
     @StructMember(1) public native CFNetServiceClientContext setInfo(@Pointer long info);
-    
-    @Deprecated
-    @StructMember(1) public native @Pointer long info();
-    @Deprecated
-    @StructMember(1) public native CFNetServiceClientContext info(@Pointer long info);
-    
     @StructMember(2) public native FunctionPtr getRetain();
     @StructMember(2) public native CFNetServiceClientContext setRetain(FunctionPtr retain);
-    
-    @Deprecated
-    @StructMember(2) public native FunctionPtr retain();
-    @Deprecated
-    @StructMember(2) public native CFNetServiceClientContext retain(FunctionPtr retain);
-    
     @StructMember(3) public native FunctionPtr getRelease();
     @StructMember(3) public native CFNetServiceClientContext setRelease(FunctionPtr release);
-    
-    @Deprecated
-    @StructMember(3) public native FunctionPtr release();
-    @Deprecated
-    @StructMember(3) public native CFNetServiceClientContext release(FunctionPtr release);
-    
-    @StructMember(4) public native FunctionPtr getCopydescription();
-    @StructMember(4) public native CFNetServiceClientContext setCopydescription(FunctionPtr copyDescription);
-    
-    @Deprecated
-    @StructMember(4) public native FunctionPtr copyDescription();
-    @Deprecated
-    @StructMember(4) public native CFNetServiceClientContext copyDescription(FunctionPtr copyDescription);
-    
+    @StructMember(4) public native FunctionPtr getCopyDescription();
+    @StructMember(4) public native CFNetServiceClientContext setCopyDescription(FunctionPtr copyDescription);
     /*</members>*/
     /*<methods>*//*</methods>*/
 }

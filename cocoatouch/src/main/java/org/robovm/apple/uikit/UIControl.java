@@ -278,17 +278,17 @@ import org.robovm.apple.corelocation.*;
     @Method(selector = "cancelTrackingWithEvent:")
     public native void cancelTracking(UIEvent event);
     @Method(selector = "addTarget:action:forControlEvents:")
-    protected native void addTarget(NSObject target, Selector action, UIControlEvents controlEvents);
+    public native void addTarget(NSObject target, Selector action, UIControlEvents controlEvents);
     @Method(selector = "removeTarget:action:forControlEvents:")
-    protected native void removeTarget(NSObject target, Selector action, UIControlEvents controlEvents);
+    public native void removeTarget(NSObject target, Selector action, UIControlEvents controlEvents);
     @Method(selector = "allTargets")
-    protected native NSSet<?> getAllTargets();
+    public native NSSet<?> getAllTargets();
     @Method(selector = "allControlEvents")
-    protected native UIControlEvents getAllControlEvents();
+    public native UIControlEvents getAllControlEvents();
     @Method(selector = "actionsForTarget:forControlEvent:")
-    protected native @org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String> getActions(NSObject target, UIControlEvents controlEvent);
+    public native @org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String> getActions(NSObject target, UIControlEvents controlEvent);
     @Method(selector = "sendAction:to:forEvent:")
-    protected native void sendAction(Selector action, NSObject target, UIEvent event);
+    public native void sendAction(Selector action, NSObject target, UIEvent event);
     @Method(selector = "sendActionsForControlEvents:")
     public native void sendControlEventsActions(UIControlEvents controlEvents);
     /*</methods>*/

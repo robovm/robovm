@@ -49,10 +49,10 @@ import org.robovm.apple.uikit.*;
     /*<members>*//*</members>*/
     /*<methods>*/
     /**
-     * @since Available in iOS 7.0 and later.
+     * @since Available in iOS 8.0 and later.
      */
-    @NotImplemented("player:didRequestMatchWithPlayers:")
-    public void didRequestMatch(GKPlayer player, NSArray<NSString> playerIDsToInvite) { throw new UnsupportedOperationException(); }
+    @NotImplemented("player:didRequestMatchWithOtherPlayers:")
+    public void didRequestMatch(GKPlayer player, NSArray<GKPlayer> playersToInvite) { throw new UnsupportedOperationException(); }
     /**
      * @since Available in iOS 7.0 and later.
      */
@@ -75,5 +75,12 @@ import org.robovm.apple.uikit.*;
      */
     @NotImplemented("player:receivedExchangeReplies:forCompletedExchange:forMatch:")
     public void receivedExchangeReplies(GKPlayer player, NSArray<GKTurnBasedExchange> replies, GKTurnBasedExchange exchange, GKTurnBasedMatch match) { throw new UnsupportedOperationException(); }
+    /**
+     * @since Available in iOS 7.0 and later.
+     * @deprecated Deprecated in iOS 8.0.
+     */
+    @Deprecated
+    @NotImplemented("player:didRequestMatchWithPlayers:")
+    public void didRequestMatch(GKPlayer player, @org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String> playerIDsToInvite) { throw new UnsupportedOperationException(); }
     /*</methods>*/
 }

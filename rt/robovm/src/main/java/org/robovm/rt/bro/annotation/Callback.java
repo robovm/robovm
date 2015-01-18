@@ -20,9 +20,19 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
+import org.robovm.rt.VM;
+import org.robovm.rt.bro.ptr.FunctionPtr;
+
 /**
- *
- * @version $Id$
+ * Marks a method as a callback which can be called from native code. Use
+ * {@link VM#getCallbackMethodImpl(java.lang.reflect.Method)} or
+ * {@link FunctionPtr#FunctionPtr(java.lang.reflect.Method)} to get a function
+ * pointer which points to the {@code @Callback} annotated method.
+ * <p>
+ * See the <em>The Bro Java to Native Bridge</em> section in the <a
+ * href="http://docs.robovm.com">user reference documentation</a> for more
+ * information on how to call into native code and have native code call into
+ * Java using the Bro framework.
  */
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.METHOD)

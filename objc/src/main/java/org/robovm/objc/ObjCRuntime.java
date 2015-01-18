@@ -113,6 +113,9 @@ public class ObjCRuntime {
                     // larger than 4 bytes
                     return true;
                 }
+            } else if (Bro.IS_ARM && Bro.IS_64BIT) {
+                // iOS ARM64 doesn't have objc_msgSend_stret
+                return false;
             } else {
                 throw new Error("Unsupported architecture");
             }
@@ -230,6 +233,6 @@ public class ObjCRuntime {
     @Bridge(symbol = "objc_msgSend")
     public static native char char_objc_msgSend_int(@Pointer long receiver, @Pointer long selector, int i);
     
-    @Bridge(symbol = "objc_msgSend_stret")
+    @Bridge(symbol = "objc_msgSend_stret", optional = true) // Optional since it's not available on iOS ARM64
     public static native void objc_msgSend_stret(@StructRet @Pointer long ret, @Pointer long receiver, @Pointer long selector);
 }

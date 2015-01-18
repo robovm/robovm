@@ -27,6 +27,7 @@ import org.robovm.rt.bro.*;
 import org.robovm.rt.bro.annotation.*;
 import org.robovm.rt.bro.ptr.*;
 import org.robovm.apple.dispatch.*;
+import org.robovm.apple.foundation.*;
 /*</imports>*/
 
 /*<javadoc>*/
@@ -44,22 +45,40 @@ import org.robovm.apple.dispatch.*;
     /*</constructors>*/
     /*<properties>*//*</properties>*/
     /*<members>*//*</members>*/
+    public static CFUUID create() {
+        return create((CFAllocator)null);
+    }
+    public static CFUUID create(byte byte0, byte byte1, byte byte2, byte byte3, byte byte4, byte byte5, byte byte6, byte byte7, byte byte8, byte byte9, byte byte10, byte byte11, byte byte12, byte byte13, byte byte14, byte byte15) {
+        return create(null, byte0, byte1, byte2, byte3, byte4, byte5, byte6, byte7, byte8, byte9, byte10, byte11, byte12, byte13, byte14, byte15);
+    }
+    public static CFUUID create(String uuidStr) {
+        return create(null, uuidStr);
+    }
+    public String asString() {
+        return asString(null, this);
+    }
+    public static CFUUID getConstantUUID(byte byte0, byte byte1, byte byte2, byte byte3, byte byte4, byte byte5, byte byte6, byte byte7, byte byte8, byte byte9, byte byte10, byte byte11, byte byte12, byte byte13, byte byte14, byte byte15) {
+        return getConstantUUID(null, byte0, byte1, byte2, byte3, byte4, byte5, byte6, byte7, byte8, byte9, byte10, byte11, byte12, byte13, byte14, byte15);
+    }
+    public static CFUUID create(@ByVal CFUUIDBytes bytes) {
+        return create(null, bytes);
+    }
     /*<methods>*/
     @Bridge(symbol="CFUUIDGetTypeID", optional=true)
     public static native @MachineSizedUInt long getClassTypeID();
     @Bridge(symbol="CFUUIDCreate", optional=true)
-    public static native CFUUID create(CFAllocator alloc);
+    protected static native CFUUID create(CFAllocator alloc);
     @Bridge(symbol="CFUUIDCreateWithBytes", optional=true)
-    public static native CFUUID createWithBytes(CFAllocator alloc, byte byte0, byte byte1, byte byte2, byte byte3, byte byte4, byte byte5, byte byte6, byte byte7, byte byte8, byte byte9, byte byte10, byte byte11, byte byte12, byte byte13, byte byte14, byte byte15);
+    protected static native CFUUID create(CFAllocator alloc, byte byte0, byte byte1, byte byte2, byte byte3, byte byte4, byte byte5, byte byte6, byte byte7, byte byte8, byte byte9, byte byte10, byte byte11, byte byte12, byte byte13, byte byte14, byte byte15);
     @Bridge(symbol="CFUUIDCreateFromString", optional=true)
-    public static native CFUUID createFromString(CFAllocator alloc, CFString uuidStr);
+    protected static native CFUUID create(CFAllocator alloc, String uuidStr);
     @Bridge(symbol="CFUUIDCreateString", optional=true)
-    public static native CFString createString(CFAllocator alloc, CFUUID uuid);
+    protected static native String asString(CFAllocator alloc, CFUUID uuid);
     @Bridge(symbol="CFUUIDGetConstantUUIDWithBytes", optional=true)
-    public static native CFUUID getConstantUUIDWithBytes(CFAllocator alloc, byte byte0, byte byte1, byte byte2, byte byte3, byte byte4, byte byte5, byte byte6, byte byte7, byte byte8, byte byte9, byte byte10, byte byte11, byte byte12, byte byte13, byte byte14, byte byte15);
+    protected static native CFUUID getConstantUUID(CFAllocator alloc, byte byte0, byte byte1, byte byte2, byte byte3, byte byte4, byte byte5, byte byte6, byte byte7, byte byte8, byte byte9, byte byte10, byte byte11, byte byte12, byte byte13, byte byte14, byte byte15);
     @Bridge(symbol="CFUUIDGetUUIDBytes", optional=true)
     public native @ByVal CFUUIDBytes getUUIDBytes();
     @Bridge(symbol="CFUUIDCreateFromUUIDBytes", optional=true)
-    public static native CFUUID createFromUUIDBytes(CFAllocator alloc, @ByVal CFUUIDBytes bytes);
+    protected static native CFUUID create(CFAllocator alloc, @ByVal CFUUIDBytes bytes);
     /*</methods>*/
 }

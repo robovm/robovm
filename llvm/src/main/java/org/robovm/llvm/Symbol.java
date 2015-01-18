@@ -23,13 +23,11 @@ public class Symbol {
     private final String name;
     private final long address;
     private final long size;
-    private final long fileOffset;
 
-    Symbol(String name, long address, long size, long fileOffset) {
+    Symbol(String name, long address, long size) {
         this.name = name;
         this.address = address;
         this.size = size;
-        this.fileOffset = fileOffset;
     }
 
     public String getName() {
@@ -44,12 +42,8 @@ public class Symbol {
         return size;
     }
 
-    public long getFileOffset() {
-        return fileOffset;
-    }
-
     @Override
     public String toString() {
-        return String.format("Symbol [name=%s, address=%s, size=%s, fileOffset=%s]", name, address, size, fileOffset);
+        return String.format("Symbol [name=%s, address=%s, size=%s]", name, address, size);
     }
 }

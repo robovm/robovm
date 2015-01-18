@@ -49,40 +49,40 @@ import org.robovm.apple.coremedia.*;
     /*<constructors>*/
     public CAFInstrumentChunk() {}
     public CAFInstrumentChunk(float mBaseNote, byte mMIDILowNote, byte mMIDIHighNote, byte mMIDILowVelocity, byte mMIDIHighVelocity, float mdBGain, int mStartRegionID, int mSustainRegionID, int mReleaseRegionID, int mInstrumentID) {
-        this.mBaseNote(mBaseNote);
-        this.mMIDILowNote(mMIDILowNote);
-        this.mMIDIHighNote(mMIDIHighNote);
-        this.mMIDILowVelocity(mMIDILowVelocity);
-        this.mMIDIHighVelocity(mMIDIHighVelocity);
-        this.mdBGain(mdBGain);
-        this.mStartRegionID(mStartRegionID);
-        this.mSustainRegionID(mSustainRegionID);
-        this.mReleaseRegionID(mReleaseRegionID);
-        this.mInstrumentID(mInstrumentID);
+        this.setMBaseNote(mBaseNote);
+        this.setMMIDILowNote(mMIDILowNote);
+        this.setMMIDIHighNote(mMIDIHighNote);
+        this.setMMIDILowVelocity(mMIDILowVelocity);
+        this.setMMIDIHighVelocity(mMIDIHighVelocity);
+        this.setMdBGain(mdBGain);
+        this.setMStartRegionID(mStartRegionID);
+        this.setMSustainRegionID(mSustainRegionID);
+        this.setMReleaseRegionID(mReleaseRegionID);
+        this.setMInstrumentID(mInstrumentID);
     }
     /*</constructors>*/
     /*<properties>*//*</properties>*/
     /*<members>*/
-    @StructMember(0) public native float mBaseNote();
-    @StructMember(0) public native CAFInstrumentChunk mBaseNote(float mBaseNote);
-    @StructMember(1) public native byte mMIDILowNote();
-    @StructMember(1) public native CAFInstrumentChunk mMIDILowNote(byte mMIDILowNote);
-    @StructMember(2) public native byte mMIDIHighNote();
-    @StructMember(2) public native CAFInstrumentChunk mMIDIHighNote(byte mMIDIHighNote);
-    @StructMember(3) public native byte mMIDILowVelocity();
-    @StructMember(3) public native CAFInstrumentChunk mMIDILowVelocity(byte mMIDILowVelocity);
-    @StructMember(4) public native byte mMIDIHighVelocity();
-    @StructMember(4) public native CAFInstrumentChunk mMIDIHighVelocity(byte mMIDIHighVelocity);
-    @StructMember(5) public native float mdBGain();
-    @StructMember(5) public native CAFInstrumentChunk mdBGain(float mdBGain);
-    @StructMember(6) public native int mStartRegionID();
-    @StructMember(6) public native CAFInstrumentChunk mStartRegionID(int mStartRegionID);
-    @StructMember(7) public native int mSustainRegionID();
-    @StructMember(7) public native CAFInstrumentChunk mSustainRegionID(int mSustainRegionID);
-    @StructMember(8) public native int mReleaseRegionID();
-    @StructMember(8) public native CAFInstrumentChunk mReleaseRegionID(int mReleaseRegionID);
-    @StructMember(9) public native int mInstrumentID();
-    @StructMember(9) public native CAFInstrumentChunk mInstrumentID(int mInstrumentID);
+    @StructMember(0) public native float getMBaseNote();
+    @StructMember(0) public native CAFInstrumentChunk setMBaseNote(float mBaseNote);
+    @StructMember(1) public native byte getMMIDILowNote();
+    @StructMember(1) public native CAFInstrumentChunk setMMIDILowNote(byte mMIDILowNote);
+    @StructMember(2) public native byte getMMIDIHighNote();
+    @StructMember(2) public native CAFInstrumentChunk setMMIDIHighNote(byte mMIDIHighNote);
+    @StructMember(3) public native byte getMMIDILowVelocity();
+    @StructMember(3) public native CAFInstrumentChunk setMMIDILowVelocity(byte mMIDILowVelocity);
+    @StructMember(4) public native byte getMMIDIHighVelocity();
+    @StructMember(4) public native CAFInstrumentChunk setMMIDIHighVelocity(byte mMIDIHighVelocity);
+    @StructMember(5) public native float getMdBGain();
+    @StructMember(5) public native CAFInstrumentChunk setMdBGain(float mdBGain);
+    @StructMember(6) public native int getMStartRegionID();
+    @StructMember(6) public native CAFInstrumentChunk setMStartRegionID(int mStartRegionID);
+    @StructMember(7) public native int getMSustainRegionID();
+    @StructMember(7) public native CAFInstrumentChunk setMSustainRegionID(int mSustainRegionID);
+    @StructMember(8) public native int getMReleaseRegionID();
+    @StructMember(8) public native CAFInstrumentChunk setMReleaseRegionID(int mReleaseRegionID);
+    @StructMember(9) public native int getMInstrumentID();
+    @StructMember(9) public native CAFInstrumentChunk setMInstrumentID(int mInstrumentID);
     /*</members>*/
     /*<methods>*//*</methods>*/
 }

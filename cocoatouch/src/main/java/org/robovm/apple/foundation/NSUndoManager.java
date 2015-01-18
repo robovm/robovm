@@ -168,7 +168,7 @@ import org.robovm.apple.dispatch.*;
     @Property(selector = "isUndoRegistrationEnabled")
     public native boolean isUndoRegistrationEnabled();
     @Property(selector = "groupsByEvent")
-    public native boolean isGroupsByEvent();
+    public native boolean groupsByEvent();
     @Property(selector = "setGroupsByEvent:")
     public native void setGroupsByEvent(boolean v);
     @Property(selector = "levelsOfUndo")
@@ -180,9 +180,9 @@ import org.robovm.apple.dispatch.*;
     @Property(selector = "setRunLoopModes:")
     public native void setRunLoopModes(@org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String> v);
     @Property(selector = "canUndo")
-    public native boolean isCanUndo();
+    public native boolean canUndo();
     @Property(selector = "canRedo")
-    public native boolean isCanRedo();
+    public native boolean canRedo();
     @Property(selector = "isUndoing")
     public native boolean isUndoing();
     @Property(selector = "isRedoing")
@@ -191,12 +191,12 @@ import org.robovm.apple.dispatch.*;
      * @since Available in iOS 5.0 and later.
      */
     @Property(selector = "undoActionIsDiscardable")
-    public native boolean isUndoActionIsDiscardable();
+    public native boolean isUndoActionDiscardable();
     /**
      * @since Available in iOS 5.0 and later.
      */
     @Property(selector = "redoActionIsDiscardable")
-    public native boolean isRedoActionIsDiscardable();
+    public native boolean isRedoActionDiscardable();
     @Property(selector = "undoActionName")
     public native String getUndoActionName();
     @Property(selector = "redoActionName")

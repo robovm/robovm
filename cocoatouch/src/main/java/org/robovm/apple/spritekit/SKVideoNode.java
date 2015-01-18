@@ -33,6 +33,8 @@ import org.robovm.apple.coreanimation.*;
 import org.robovm.apple.dispatch.*;
 import org.robovm.apple.coreimage.*;
 import org.robovm.apple.avfoundation.*;
+import org.robovm.apple.glkit.*;
+import org.robovm.apple.scenekit.*;
 /*</imports>*/
 
 /*<javadoc>*/
@@ -52,6 +54,7 @@ import org.robovm.apple.avfoundation.*;
     public SKVideoNode(AVPlayer player) { super((SkipInit) null); initObject(init(player)); }
     public SKVideoNode(String videoFile) { super((SkipInit) null); initObject(init(videoFile)); }
     public SKVideoNode(NSURL url) { super((SkipInit) null); initObject(init(url)); }
+    public SKVideoNode(NSCoder aDecoder) { super((SkipInit) null); initObject(init(aDecoder)); }
     /*</constructors>*/
     /*<properties>*/
     @Property(selector = "size")
@@ -71,6 +74,8 @@ import org.robovm.apple.avfoundation.*;
     protected native @Pointer long init(String videoFile);
     @Method(selector = "initWithVideoURL:")
     protected native @Pointer long init(NSURL url);
+    @Method(selector = "initWithCoder:")
+    protected native @Pointer long init(NSCoder aDecoder);
     @Method(selector = "play")
     public native void play();
     @Method(selector = "pause")

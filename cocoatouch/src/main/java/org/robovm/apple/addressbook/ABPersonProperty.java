@@ -69,10 +69,18 @@ import org.robovm.apple.corefoundation.*;
      * @since Available in iOS 5.0 and later.
      */
     public static final ABPersonProperty SocialProfile = new ABPersonProperty("SocialProfileValue");
-    private static ABPersonProperty[] values = new ABPersonProperty[] {FirstName, LastName, Prefix, Suffix, Nickname, FirstNamePhonetic, LastNamePhonetic, MiddleNamePhonetic, Organization, JobTitle, Department, Email, Birthday, Note, CreationDate, ModificationDate, Address, Date, Kind, Phone, InstantMessage, URL, RelatedNames, SocialProfile};
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    public static final ABPersonProperty AlternateBirthday = new ABPersonProperty("AlternateBirthdayValue");
+    
+    private static ABPersonProperty[] values = new ABPersonProperty[] {FirstName, LastName, Prefix, Suffix, Nickname, 
+        FirstNamePhonetic, LastNamePhonetic, MiddleNamePhonetic, Organization, JobTitle, Department, Email, Birthday, 
+        Note, CreationDate, ModificationDate, Address, Date, Kind, Phone, InstantMessage, URL, RelatedNames, 
+        SocialProfile, AlternateBirthday};
 
     private ABPersonProperty(String getterName) {
-        super(getterName);
+        super(ABPersonProperty.class, getterName);
     }
     /*<constructors>*//*</constructors>*/
     /*<properties>*//*</properties>*/
@@ -85,6 +93,13 @@ import org.robovm.apple.corefoundation.*;
         }
         throw new IllegalArgumentException("No constant with value " + value + " found in " 
             + /*<name>*/ABPersonProperty/*</name>*/.class.getName());
+    }
+    
+    public ABPropertyType getType() {
+        return getType(value());
+    }
+    public String getLocalizedName() {
+        return getLocalizedPropertyName(value());
     }
     /*<methods>*/
     @GlobalValue(symbol="kABPersonFirstNameProperty", optional=true)
@@ -140,6 +155,11 @@ import org.robovm.apple.corefoundation.*;
      */
     @GlobalValue(symbol="kABPersonSocialProfileProperty", optional=true)
     protected static native int SocialProfileValue();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @GlobalValue(symbol="kABPersonAlternateBirthdayProperty", optional=true)
+    protected static native int AlternateBirthdayValue();
     
     @Bridge(symbol="ABPersonGetTypeOfProperty", optional=true)
     protected static native ABPropertyType getType(int property);

@@ -55,15 +55,28 @@ import org.robovm.apple.mediatoolbox.*;
     public AVCaptureVideoDataOutput() {}
     protected AVCaptureVideoDataOutput(SkipInit skipInit) { super(skipInit); }
     /*</constructors>*/
+    public AVVideoSettings getVideoSettings() {
+        return new AVVideoSettings(getVideoSettings0());
+    }
+    public void setVideoSettings(AVVideoSettings videoSettings) {
+        setVideoSettings0(videoSettings.getDictionary());
+    }
+    public AVPixelBufferAttributes getPixelBufferSettings() {
+        return new AVPixelBufferAttributes(getVideoSettings0().as(CFDictionary.class));
+    }
+    @SuppressWarnings("unchecked")
+    public void setPixelBufferSettings(AVPixelBufferAttributes videoSettings) {
+        setVideoSettings0(videoSettings.getDictionary().as(NSDictionary.class));
+    }
     /*<properties>*/
     @Property(selector = "sampleBufferDelegate")
     public native AVCaptureVideoDataOutputSampleBufferDelegate getSampleBufferDelegate();
     @Property(selector = "sampleBufferCallbackQueue")
     public native DispatchQueue getSampleBufferCallbackQueue();
     @Property(selector = "videoSettings")
-    public native AVVideoSettings getVideoSettings();
+    protected native NSDictionary<NSString, NSObject> getVideoSettings0();
     @Property(selector = "setVideoSettings:")
-    public native void setVideoSettings(AVVideoSettings v);
+    protected native void setVideoSettings0(NSDictionary<NSString, NSObject> v);
     /**
      * @since Available in iOS 5.0 and later.
      */
@@ -75,11 +88,23 @@ import org.robovm.apple.mediatoolbox.*;
     @Property(selector = "availableVideoCodecTypes")
     public native @org.robovm.rt.bro.annotation.Marshaler(CMVideoCodecType.AsListMarshaler.class) List<CMVideoCodecType> getAvailableVideoCodecTypes();
     @Property(selector = "alwaysDiscardsLateVideoFrames")
-    public native boolean isAlwaysDiscardsLateVideoFrames();
+    public native boolean alwaysDiscardsLateVideoFrames();
     @Property(selector = "setAlwaysDiscardsLateVideoFrames:")
     public native void setAlwaysDiscardsLateVideoFrames(boolean v);
     /*</properties>*/
     /*<members>*//*</members>*/
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
+    public AVVideoSettings getRecommendedVideoSettings(String outputFileType) {
+        return new AVVideoSettings(getRecommendedVideoSettings0(outputFileType));
+    }
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
+    public AVPixelBufferAttributes getRecommendedPixelBufferSettings(String outputFileType) {
+        return new AVPixelBufferAttributes(getRecommendedVideoSettings0(outputFileType).as(CFDictionary.class));
+    }
     /*<methods>*/
     @Method(selector = "setSampleBufferDelegate:queue:")
     public native void setSampleBufferDelegate(AVCaptureVideoDataOutputSampleBufferDelegate sampleBufferDelegate, DispatchQueue sampleBufferCallbackQueue);
@@ -87,6 +112,6 @@ import org.robovm.apple.mediatoolbox.*;
      * @since Available in iOS 7.0 and later.
      */
     @Method(selector = "recommendedVideoSettingsForAssetWriterWithOutputFileType:")
-    public native AVVideoSettings getRecommendedVideoSettings(AVFileType outputFileType);
+    protected native NSDictionary<NSString, NSObject> getRecommendedVideoSettings0(String outputFileType);
     /*</methods>*/
 }

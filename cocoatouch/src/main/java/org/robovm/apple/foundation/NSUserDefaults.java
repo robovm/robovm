@@ -64,45 +64,45 @@ import org.robovm.apple.dispatch.*;
     /*</constructors>*/
     /*<properties>*/
     @Property(selector = "volatileDomainNames")
-    public native NSArray<?> getVolatileDomainNames();
+    public native @org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String> getVolatileDomainNames();
     /*</properties>*/
     /*<members>*//*</members>*/
     public void put(String defaultName, NSObject value) {
-        setObject$forKey$(value, defaultName);
+        setObject(value, defaultName);
     }
     public void put(String defaultName, String value) {
-        setObject$forKey$(new NSString(value), defaultName);
+        setObject(new NSString(value), defaultName);
     }
     public void put(String defaultName, @MachineSizedSInt long value) {
-        setInteger$forKey$(value, defaultName);
+        setInteger(value, defaultName);
     }
     public void put(String defaultName, float value) {
-        setFloat$forKey$(value, defaultName);
+        setFloat(value, defaultName);
     }
     public void put(String defaultName, double value) {
-        setDouble$forKey$(value, defaultName);
+        setDouble(value, defaultName);
     }
     public void put(String defaultName, boolean value) {
-        setBool$forKey$(value, defaultName);
+        setBool(value, defaultName);
     }
     /**
      * @since Available in iOS 4.0 and later.
      */
     public void put(String defaultName, NSURL url) {
-        setURL$forKey$(url, defaultName);
+        setURL(url, defaultName);
     }
     
     public void setVolatileDomain(String domainName, NSDictionary<?, ?> domain) {
-        setVolatileDomain$forName$(domain, domainName);
+        setVolatileDomain(domain, domainName);
     }
     public void setVolatileDomain(NSUserDefaultsDomain domainName, NSDictionary<?, ?> domain) {
-        setVolatileDomain$forName$(domain, domainName.value());
+        setVolatileDomain(domain, domainName.value());
     } 
     public void setPersistentDomain(String domainName, NSDictionary<?, ?> domain) {
-        setPersistentDomain$forName$(domain, domainName);
+        setPersistentDomain(domain, domainName);
     }
     public void setPersistentDomain(NSUserDefaultsDomain domainName, NSDictionary<?, ?> domain) {
-        setPersistentDomain$forName$(domain, domainName.value());
+        setPersistentDomain(domain, domainName.value());
     }
     
     public NSDictionary<?, ?> getVolatileDomain(NSUserDefaultsDomain domainName) {
@@ -127,7 +127,7 @@ import org.robovm.apple.dispatch.*;
     @Method(selector = "objectForKey:")
     public native NSObject get(String defaultName);
     @Method(selector = "setObject:forKey:")
-    protected native void setObject$forKey$(NSObject value, String defaultName);
+    protected native void setObject(NSObject value, String defaultName);
     @Method(selector = "removeObjectForKey:")
     public native void remove(String defaultName);
     @Method(selector = "stringForKey:")
@@ -154,18 +154,18 @@ import org.robovm.apple.dispatch.*;
     @Method(selector = "URLForKey:")
     public native NSURL getURL(String defaultName);
     @Method(selector = "setInteger:forKey:")
-    protected native void setInteger$forKey$(@MachineSizedSInt long value, String defaultName);
+    protected native void setInteger(@MachineSizedSInt long value, String defaultName);
     @Method(selector = "setFloat:forKey:")
-    protected native void setFloat$forKey$(float value, String defaultName);
+    protected native void setFloat(float value, String defaultName);
     @Method(selector = "setDouble:forKey:")
-    protected native void setDouble$forKey$(double value, String defaultName);
+    protected native void setDouble(double value, String defaultName);
     @Method(selector = "setBool:forKey:")
-    protected native void setBool$forKey$(boolean value, String defaultName);
+    protected native void setBool(boolean value, String defaultName);
     /**
      * @since Available in iOS 4.0 and later.
      */
     @Method(selector = "setURL:forKey:")
-    protected native void setURL$forKey$(NSURL url, String defaultName);
+    protected native void setURL(NSURL url, String defaultName);
     @Method(selector = "registerDefaults:")
     public native void registerDefaults(NSDictionary<?, ?> registrationDictionary);
     @Method(selector = "addSuiteNamed:")
@@ -177,7 +177,7 @@ import org.robovm.apple.dispatch.*;
     @Method(selector = "volatileDomainForName:")
     public native NSDictionary<?, ?> getVolatileDomain(String domainName);
     @Method(selector = "setVolatileDomain:forName:")
-    protected native void setVolatileDomain$forName$(NSDictionary<?, ?> domain, String domainName);
+    protected native void setVolatileDomain(NSDictionary<?, ?> domain, String domainName);
     @Method(selector = "removeVolatileDomainForName:")
     public native void removeVolatileDomain(String domainName);
     /**
@@ -190,7 +190,7 @@ import org.robovm.apple.dispatch.*;
     @Method(selector = "persistentDomainForName:")
     public native NSDictionary<?, ?> getPersistentDomain(String domainName);
     @Method(selector = "setPersistentDomain:forName:")
-    protected native void setPersistentDomain$forName$(NSDictionary<?, ?> domain, String domainName);
+    protected native void setPersistentDomain(NSDictionary<?, ?> domain, String domainName);
     @Method(selector = "removePersistentDomainForName:")
     public native void removePersistentDomain(String domainName);
     @Method(selector = "synchronize")

@@ -51,13 +51,19 @@ import org.robovm.apple.dispatch.*;
     public MKPinAnnotationView() {}
     protected MKPinAnnotationView(SkipInit skipInit) { super(skipInit); }
     /*</constructors>*/
+    public MKPinAnnotationView(MKAnnotation annotation, String reuseIdentifier) {
+    	super(annotation, reuseIdentifier);
+    }
+    public MKPinAnnotationView(CGRect frame) {
+    	super(frame);
+    }
     /*<properties>*/
     @Property(selector = "pinColor")
     public native MKPinAnnotationColor getPinColor();
     @Property(selector = "setPinColor:")
     public native void setPinColor(MKPinAnnotationColor v);
     @Property(selector = "animatesDrop")
-    public native boolean isAnimatesDrop();
+    public native boolean animatesDrop();
     @Property(selector = "setAnimatesDrop:")
     public native void setAnimatesDrop(boolean v);
     /*</properties>*/

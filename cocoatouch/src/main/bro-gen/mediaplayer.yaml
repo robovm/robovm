@@ -97,6 +97,7 @@ classes:
             '+collectionWithItems:':
                 exclude: true
             '-initWithItems:':
+                name: init
                 parameters:
                     items:
                         type: NSArray<MPMediaItem>
@@ -173,6 +174,8 @@ classes:
         properties:
             'timedMetadata':
                 type: NSArray<MPTimedMetadata>
+            'useApplicationAudioSession':
+                name: usesApplicationAudioSession
         methods:
             '-init.*':
                 name: init
@@ -218,16 +221,12 @@ classes:
         methods:
             '-addTarget:action:':
                 trim_after_first_colon: true
-                visibility: protected
             '-removeTarget:action:':
                 trim_after_first_colon: true
-                visibility: protected
             '-removeTarget:':
                 trim_after_first_colon: true
-                visibility: protected
             '-addTargetWithHandler:':
                 name: addTarget
-                visibility: protected
     MPRemoteCommandCenter: # DONE
         methods:
             '+sharedCommandCenter':
@@ -244,6 +243,9 @@ classes:
             'allMetadata':
                 type: NSDictionary<NSString, NSObject>
     MPVolumeView: # DONE
+        properties:
+            'wirelessRoutesAvailable':
+                name: areWirelessRoutesAvailable
         methods:
             '-maximumVolumeSliderImageForState:':
                 name: getMaximumVolumeSliderImage

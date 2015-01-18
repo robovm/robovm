@@ -51,7 +51,7 @@ import org.robovm.apple.corelocation.*;
     /*<constructors>*/
     public UINavigationItem() {}
     protected UINavigationItem(SkipInit skipInit) { super(skipInit); }
-    public UINavigationItem(String title) { super((SkipInit) null); initObject(initWithTitle$(title)); }
+    public UINavigationItem(String title) { super((SkipInit) null); initObject(init(title)); }
     /*</constructors>*/
     /*<properties>*/
     @Property(selector = "title")
@@ -71,7 +71,7 @@ import org.robovm.apple.corelocation.*;
     @Property(selector = "setPrompt:")
     public native void setPrompt(String v);
     @Property(selector = "hidesBackButton")
-    public native boolean isHidesBackButton();
+    public native boolean hidesBackButton();
     @Property(selector = "setHidesBackButton:")
     public native void setHidesBackButton(boolean v);
     /**
@@ -98,7 +98,7 @@ import org.robovm.apple.corelocation.*;
      * @since Available in iOS 5.0 and later.
      */
     @Property(selector = "leftItemsSupplementBackButton")
-    public native boolean isLeftItemsSupplementBackButton();
+    public native boolean leftItemsSupplementBackButton();
     /**
      * @since Available in iOS 5.0 and later.
      */
@@ -116,7 +116,7 @@ import org.robovm.apple.corelocation.*;
     /*<members>*//*</members>*/
     /*<methods>*/
     @Method(selector = "initWithTitle:")
-    protected native @Pointer long initWithTitle$(String title);
+    protected native @Pointer long init(String title);
     @Method(selector = "setHidesBackButton:animated:")
     public native void setHidesBackButton(boolean hidesBackButton, boolean animated);
     /**

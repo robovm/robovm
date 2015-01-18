@@ -49,16 +49,16 @@ import org.robovm.apple.coremedia.*;
     /*<constructors>*/
     public MusicTrackLoopInfo() {}
     public MusicTrackLoopInfo(double loopDuration, int numberOfLoops) {
-        this.loopDuration(loopDuration);
-        this.numberOfLoops(numberOfLoops);
+        this.setLoopDuration(loopDuration);
+        this.setNumberOfLoops(numberOfLoops);
     }
     /*</constructors>*/
     /*<properties>*//*</properties>*/
     /*<members>*/
-    @StructMember(0) public native double loopDuration();
-    @StructMember(0) public native MusicTrackLoopInfo loopDuration(double loopDuration);
-    @StructMember(1) public native int numberOfLoops();
-    @StructMember(1) public native MusicTrackLoopInfo numberOfLoops(int numberOfLoops);
+    @StructMember(0) public native double getLoopDuration();
+    @StructMember(0) public native MusicTrackLoopInfo setLoopDuration(double loopDuration);
+    @StructMember(1) public native int getNumberOfLoops();
+    @StructMember(1) public native MusicTrackLoopInfo setNumberOfLoops(int numberOfLoops);
     /*</members>*/
     /*<methods>*//*</methods>*/
 }

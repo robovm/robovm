@@ -65,6 +65,11 @@ import org.robovm.rt.bro.ptr.*;
     @GlobalValue(symbol="_dispatch_source_type_mach_recv", optional=true, dereference=false)
     public static native DispatchSourceType MachRecv();
     /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @GlobalValue(symbol="_dispatch_source_type_memorypressure", optional=true, dereference=false)
+    public static native DispatchSourceType Memorypressure();
+    /**
      * @since Available in iOS 4.0 and later.
      */
     @GlobalValue(symbol="_dispatch_source_type_proc", optional=true, dereference=false)

@@ -278,7 +278,7 @@ import org.robovm.apple.corelocation.*;
      * @since Available in iOS 6.0 and later.
      */
     @Property(selector = "shouldGroupAccessibilityChildren")
-    boolean isShouldGroupAccessibilityChildren();
+    boolean shouldGroupAccessibilityChildren();
     /**
      * @since Available in iOS 6.0 and later.
      */

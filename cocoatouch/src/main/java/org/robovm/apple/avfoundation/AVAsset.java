@@ -65,7 +65,7 @@ import org.robovm.apple.mediatoolbox.*;
     @Property(selector = "preferredTransform")
     public native @ByVal CGAffineTransform getPreferredTransform();
     @Property(selector = "providesPreciseDurationAndTiming")
-    public native boolean isProvidesPreciseDurationAndTiming();
+    public native boolean providesPreciseDurationAndTiming();
     /**
      * @since Available in iOS 5.0 and later.
      */
@@ -91,9 +91,9 @@ import org.robovm.apple.mediatoolbox.*;
      * @since Available in iOS 8.0 and later.
      */
     @Property(selector = "metadata")
-    public native NSArray<?> getMetadata();
+    public native NSArray<AVMetadataItem> getMetadata();
     @Property(selector = "availableMetadataFormats")
-    public native NSArray<NSString> getAvailableMetadataFormats();
+    public native @org.robovm.rt.bro.annotation.Marshaler(AVMetadataFormat.AsListMarshaler.class) List<AVMetadataFormat> getAvailableMetadataFormats();
     /**
      * @since Available in iOS 4.3 and later.
      */
@@ -103,12 +103,12 @@ import org.robovm.apple.mediatoolbox.*;
      * @since Available in iOS 5.0 and later.
      */
     @Property(selector = "availableMediaCharacteristicsWithMediaSelectionOptions")
-    public native NSArray<NSString> getAvailableMediaCharacteristics();
+    public native @org.robovm.rt.bro.annotation.Marshaler(AVMediaCharacteristic.AsListMarshaler.class) List<AVMediaCharacteristic> getAvailableMediaCharacteristicsWithMediaSelectionOptions();
     /**
      * @since Available in iOS 4.2 and later.
      */
     @Property(selector = "hasProtectedContent")
-    public native boolean isHasProtectedContent();
+    public native boolean hasProtectedContent();
     /**
      * @since Available in iOS 4.3 and later.
      */
@@ -136,6 +136,20 @@ import org.robovm.apple.mediatoolbox.*;
     public native boolean isCompatibleWithSavedPhotosAlbum();
     /*</properties>*/
     /*<members>*//*</members>*/
+    /**
+     * 
+     * @param key
+     * @return
+     * @throws NSErrorException
+     */
+    public AVKeyValueStatus getStatusOfValue(AVMetadataKey key) throws NSErrorException {
+        NSError.NSErrorPtr err = new NSError.NSErrorPtr();
+        AVKeyValueStatus result = getStatusOfValue(key, err);
+        if (err.get() != null) {
+            throw new NSErrorException(err.get());
+        }
+        return result;
+    }
     /*<methods>*/
     @Method(selector = "assetWithURL:")
     public static native AVAsset create(NSURL URL);
@@ -144,26 +158,26 @@ import org.robovm.apple.mediatoolbox.*;
     @Method(selector = "trackWithTrackID:")
     public native AVAssetTrack getTrack(int trackID);
     @Method(selector = "tracksWithMediaType:")
-    public native NSArray<AVAssetTrack> getTracksWithType(String mediaType);
+    public native NSArray<AVAssetTrack> getTracksWithType(AVMediaType mediaType);
     @Method(selector = "tracksWithMediaCharacteristic:")
-    public native NSArray<AVAssetTrack> getTracksWithCharacteristic(String mediaCharacteristic);
+    public native NSArray<AVAssetTrack> getTracksWithCharacteristic(AVMediaCharacteristic mediaCharacteristic);
     @Method(selector = "metadataForFormat:")
-    public native NSArray<AVMetadataItem> getMetadata(String format);
+    public native NSArray<AVMetadataItem> getMetadata(AVMetadataFormat format);
     /**
      * @since Available in iOS 4.3 and later.
      */
     @Method(selector = "chapterMetadataGroupsWithTitleLocale:containingItemsWithCommonKeys:")
-    public native NSArray<AVTimedMetadataGroup> getChapterMetadataGroups(NSLocale locale, NSArray<AVMetadataItem> commonKeys);
+    public native NSArray<AVTimedMetadataGroup> getChapterMetadataGroupsContainingItemsWithCommonKeys(NSLocale locale, @org.robovm.rt.bro.annotation.Marshaler(AVMetadataKey.AsListMarshaler.class) List<AVMetadataKey> commonKeys);
     /**
      * @since Available in iOS 6.0 and later.
      */
     @Method(selector = "chapterMetadataGroupsBestMatchingPreferredLanguages:")
-    public native NSArray<AVTimedMetadataGroup> getChapterMetadataGroups(NSArray<NSString> preferredLanguages);
+    public native NSArray<AVTimedMetadataGroup> getChapterMetadataGroupsBestMatchingPreferredLanguages(@org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String> preferredLanguages);
     /**
      * @since Available in iOS 5.0 and later.
      */
     @Method(selector = "mediaSelectionGroupForMediaCharacteristic:")
-    public native AVMediaSelectionGroup getMediaSelectionGroup(String mediaCharacteristic);
+    public native AVMediaSelectionGroup getMediaSelectionGroup(AVMediaCharacteristic mediaCharacteristic);
     @Method(selector = "unusedTrackID")
     public native int getUnusedTrackID();
     @Method(selector = "statusOfValueForKey:error:")

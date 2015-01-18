@@ -54,23 +54,23 @@ import org.robovm.apple.mediatoolbox.*;
     /*<constructors>*/
     public AVAssetWriterInputPixelBufferAdaptor() {}
     protected AVAssetWriterInputPixelBufferAdaptor(SkipInit skipInit) { super(skipInit); }
-    public AVAssetWriterInputPixelBufferAdaptor(AVAssetWriterInput input, NSDictionary<NSString, ?> sourcePixelBufferAttributes) { super((SkipInit) null); initObject(init(input, sourcePixelBufferAttributes)); }
+    public AVAssetWriterInputPixelBufferAdaptor(AVAssetWriterInput input, CVPixelBufferAttributes sourcePixelBufferAttributes) { super((SkipInit) null); initObject(init(input, sourcePixelBufferAttributes)); }
     /*</constructors>*/
     /*<properties>*/
     @Property(selector = "assetWriterInput")
     public native AVAssetWriterInput getAssetWriterInput();
     @Property(selector = "sourcePixelBufferAttributes")
-    public native NSDictionary<NSString, ?> getSourcePixelBufferAttributes();
+    public native CVPixelBufferAttributes getSourcePixelBufferAttributes();
     @Property(selector = "pixelBufferPool")
     public native CVPixelBufferPool getPixelBufferPool();
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
     @Method(selector = "initWithAssetWriterInput:sourcePixelBufferAttributes:")
-    protected native @Pointer long init(AVAssetWriterInput input, NSDictionary<NSString, ?> sourcePixelBufferAttributes);
+    protected native @Pointer long init(AVAssetWriterInput input, CVPixelBufferAttributes sourcePixelBufferAttributes);
     @Method(selector = "appendPixelBuffer:withPresentationTime:")
     public native boolean appendPixelBuffer(CVPixelBuffer pixelBuffer, @ByVal CMTime presentationTime);
     @Method(selector = "assetWriterInputPixelBufferAdaptorWithAssetWriterInput:sourcePixelBufferAttributes:")
-    public static native AVAssetWriterInputPixelBufferAdaptor create(AVAssetWriterInput input, NSDictionary<NSString, ?> sourcePixelBufferAttributes);
+    public static native AVAssetWriterInputPixelBufferAdaptor create(AVAssetWriterInput input, CVPixelBufferAttributes sourcePixelBufferAttributes);
     /*</methods>*/
 }

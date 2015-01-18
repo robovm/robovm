@@ -31,6 +31,7 @@ import org.robovm.apple.foundation.*;
 import org.robovm.apple.coreimage.*;
 import org.robovm.apple.coretext.*;
 import org.robovm.apple.opengles.*;
+import org.robovm.apple.metal.*;
 /*</imports>*/
 
 /*<javadoc>*/
@@ -166,13 +167,13 @@ import org.robovm.apple.opengles.*;
     @Property(selector = "setContentsRect:")
     public native void setContentsRect(@ByVal CGRect v);
     @Property(selector = "minificationFilter")
-    public native NSString getMinificationFilter();
+    public native CAFilter getMinificationFilter();
     @Property(selector = "setMinificationFilter:")
-    public native void setMinificationFilter(NSString v);
+    public native void setMinificationFilter(CAFilter v);
     @Property(selector = "magnificationFilter")
-    public native NSString getMagnificationFilter();
+    public native CAFilter getMagnificationFilter();
     @Property(selector = "setMagnificationFilter:")
-    public native void setMagnificationFilter(NSString v);
+    public native void setMagnificationFilter(CAFilter v);
     @Property(selector = "minificationFilterBias")
     public native float getMinificationFilterBias();
     @Property(selector = "setMinificationFilterBias:")
@@ -182,9 +183,9 @@ import org.robovm.apple.opengles.*;
     @Property(selector = "setEmitterCells:")
     public native void setEmitterCells(NSArray<CAEmitterCell> v);
     @Property(selector = "style")
-    public native NSDictionary<NSString, ?> getStyle();
+    public native NSDictionary<NSString, NSObject> getStyle();
     @Property(selector = "setStyle:")
-    public native void setStyle(NSDictionary<NSString, ?> v);
+    public native void setStyle(NSDictionary<NSString, NSObject> v);
     @Property(selector = "beginTime")
     public native double getBeginTime();
     @Property(selector = "setBeginTime:")
@@ -210,13 +211,13 @@ import org.robovm.apple.opengles.*;
     @Property(selector = "setRepeatDuration:")
     public native void setRepeatDuration(double v);
     @Property(selector = "autoreverses")
-    public native boolean isAutoreverses();
+    public native boolean autoreverses();
     @Property(selector = "setAutoreverses:")
     public native void setAutoreverses(boolean v);
     @Property(selector = "fillMode")
-    public native NSString getFillMode();
+    public native CAFillMode getFillMode();
     @Property(selector = "setFillMode:")
-    public native void setFillMode(NSString v);
+    public native void setFillMode(CAFillMode v);
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/

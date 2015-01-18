@@ -14,58 +14,45 @@
 #ifndef LLVM_BITCODE_READERWRITER_H
 #define LLVM_BITCODE_READERWRITER_H
 
+#include "llvm/Support/ErrorOr.h"
+#include "llvm/Support/MemoryBuffer.h"
+#include <memory>
 #include <string>
 
 namespace llvm {
   class BitstreamWriter;
-  class MemoryBuffer;
   class DataStreamer;
   class LLVMContext;
   class Module;
   class ModulePass;
   class raw_ostream;
 
-  /// getLazyBitcodeModule - Read the header of the specified bitcode buffer
-  /// and prepare for lazy deserialization of function bodies.  If successful,
-  /// this takes ownership of 'buffer' and returns a non-null pointer.  On
-  /// error, this returns null, *does not* take ownership of Buffer, and fills
-  /// in *ErrMsg with an error description if ErrMsg is non-null.
-  Module *getLazyBitcodeModule(MemoryBuffer *Buffer,
-                               LLVMContext &Context,
-                               std::string *ErrMsg = 0);
+  /// Read the header of the specified bitcode buffer and prepare for lazy
+  /// deserialization of function bodies.  If successful, this moves Buffer. On
+  /// error, this *does not* move Buffer.
+  ErrorOr<Module *> getLazyBitcodeModule(std::unique_ptr<MemoryBuffer> &&Buffer,
+                                         LLVMContext &Context);
 
-  /// getStreamedBitcodeModule - Read the header of the specified stream
-  /// and prepare for lazy deserialization and streaming of function bodies.
-  /// On error, this returns null, and fills in *ErrMsg with an error
-  /// description if ErrMsg is non-null.
-  Module *getStreamedBitcodeModule(const std::string &name,
-                                   DataStreamer *streamer,
-                                   LLVMContext &Context,
-                                   std::string *ErrMsg = 0);
+  /// Read the header of the specified stream and prepare for lazy
+  /// deserialization and streaming of function bodies.
+  ErrorOr<std::unique_ptr<Module>>
+  getStreamedBitcodeModule(StringRef Name, DataStreamer *Streamer,
+                           LLVMContext &Context);
 
-  /// getBitcodeTargetTriple - Read the header of the specified bitcode
-  /// buffer and extract just the triple information. If successful,
-  /// this returns a string and *does not* take ownership
-  /// of 'buffer'. On error, this returns "", and fills in *ErrMsg
-  /// if ErrMsg is non-null.
-  std::string getBitcodeTargetTriple(MemoryBuffer *Buffer,
-                                     LLVMContext &Context,
-                                     std::string *ErrMsg = 0);
+  /// Read the header of the specified bitcode buffer and extract just the
+  /// triple information. If successful, this returns a string. On error, this
+  /// returns "".
+  std::string getBitcodeTargetTriple(MemoryBufferRef Buffer,
+                                     LLVMContext &Context);
 
-  /// ParseBitcodeFile - Read the specified bitcode file, returning the module.
-  /// If an error occurs, this returns null and fills in *ErrMsg if it is
-  /// non-null.  This method *never* takes ownership of Buffer.
-  Module *ParseBitcodeFile(MemoryBuffer *Buffer, LLVMContext &Context,
-                           std::string *ErrMsg = 0);
+  /// Read the specified bitcode file, returning the module.
+  ErrorOr<Module *> parseBitcodeFile(MemoryBufferRef Buffer,
+                                     LLVMContext &Context);
 
   /// WriteBitcodeToFile - Write the specified module to the specified
   /// raw output stream.  For streams where it matters, the given stream
   /// should be in "binary" mode.
   void WriteBitcodeToFile(const Module *M, raw_ostream &Out);
-
-  /// createBitcodeWriterPass - Create and return a pass that writes the module
-  /// to the specified ostream.
-  ModulePass *createBitcodeWriterPass(raw_ostream &Str);
 
 
   /// isBitcodeWrapper - Return true if the given bytes are the magic bytes
@@ -149,6 +136,38 @@ namespace llvm {
     BufEnd = BufPtr+Size;
     return false;
   }
+
+  const std::error_category &BitcodeErrorCategory();
+  enum class BitcodeError {
+    ConflictingMETADATA_KINDRecords,
+    CouldNotFindFunctionInStream,
+    ExpectedConstant,
+    InsufficientFunctionProtos,
+    InvalidBitcodeSignature,
+    InvalidBitcodeWrapperHeader,
+    InvalidConstantReference,
+    InvalidID, // A read identifier is not found in the table it should be in.
+    InvalidInstructionWithNoBB,
+    InvalidRecord, // A read record doesn't have the expected size or structure
+    InvalidTypeForValue, // Type read OK, but is invalid for its use
+    InvalidTYPETable,
+    InvalidType,    // We were unable to read a type
+    MalformedBlock, // We are unable to advance in the stream.
+    MalformedGlobalInitializerSet,
+    InvalidMultipleBlocks, // We found multiple blocks of a kind that should
+                           // have only one
+    NeverResolvedValueFoundInFunction,
+    NeverResolvedFunctionFromBlockAddress,
+    InvalidValue // Invalid version, inst number, attr number, etc
+  };
+  inline std::error_code make_error_code(BitcodeError E) {
+    return std::error_code(static_cast<int>(E), BitcodeErrorCategory());
+  }
+
 } // End llvm namespace
+
+namespace std {
+template <> struct is_error_code_enum<llvm::BitcodeError> : std::true_type {};
+}
 
 #endif

@@ -54,7 +54,7 @@ import org.robovm.apple.mediatoolbox.*;
     /*<constructors>*/
     public AVAssetWriterInputMetadataAdaptor() {}
     protected AVAssetWriterInputMetadataAdaptor(SkipInit skipInit) { super(skipInit); }
-    public AVAssetWriterInputMetadataAdaptor(AVAssetWriterInput input) { super((SkipInit) null); initObject(initWithAssetWriterInput$(input)); }
+    public AVAssetWriterInputMetadataAdaptor(AVAssetWriterInput input) { super((SkipInit) null); initObject(init(input)); }
     /*</constructors>*/
     /*<properties>*/
     @Property(selector = "assetWriterInput")
@@ -63,10 +63,10 @@ import org.robovm.apple.mediatoolbox.*;
     /*<members>*//*</members>*/
     /*<methods>*/
     @Method(selector = "initWithAssetWriterInput:")
-    protected native @Pointer long initWithAssetWriterInput$(AVAssetWriterInput input);
+    protected native @Pointer long init(AVAssetWriterInput input);
     @Method(selector = "appendTimedMetadataGroup:")
-    public native boolean appendTimedMetadataGroup$(AVTimedMetadataGroup timedMetadataGroup);
+    public native boolean appendTimedMetadataGroup(AVTimedMetadataGroup timedMetadataGroup);
     @Method(selector = "assetWriterInputMetadataAdaptorWithAssetWriterInput:")
-    public static native AVAssetWriterInputMetadataAdaptor assetWriterInputMetadataAdaptorWithAssetWriterInput$(AVAssetWriterInput input);
+    public static native AVAssetWriterInputMetadataAdaptor create(AVAssetWriterInput input);
     /*</methods>*/
 }

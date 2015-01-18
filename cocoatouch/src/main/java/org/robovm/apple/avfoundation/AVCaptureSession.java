@@ -48,6 +48,69 @@ import org.robovm.apple.mediatoolbox.*;
     extends /*<extends>*/NSObject/*</extends>*/ 
     /*<implements>*//*</implements>*/ {
 
+    public static class Notifications {
+        /**
+         * @since Available in iOS 4.0 and later.
+         */
+        public static NSObject observeRuntimeError(AVCaptureSession object, final VoidBlock2<AVCaptureSession, NSError> block) {
+            return NSNotificationCenter.getDefaultCenter().addObserver(RuntimeErrorNotification(), object, NSOperationQueue.getMainQueue(), new VoidBlock1<NSNotification>() {
+                @Override
+                public void invoke(NSNotification a) {
+                    NSDictionary<NSString, NSObject> data = a.getUserInfo();
+                    NSError error = null;
+                    if (data.containsKey(NotificationErrorKey())) {
+                        error = (NSError) data.get(NotificationErrorKey());
+                    }
+                    block.invoke((AVCaptureSession)a.getObject(), error);
+                }
+            });
+        }
+        /**
+         * @since Available in iOS 4.0 and later.
+         */
+        public static NSObject observeDidStartRunning(AVCaptureSession object, final VoidBlock1<AVCaptureSession> block) {
+            return NSNotificationCenter.getDefaultCenter().addObserver(DidStartRunningNotification(), object, NSOperationQueue.getMainQueue(), new VoidBlock1<NSNotification>() {
+                @Override
+                public void invoke(NSNotification a) {
+                    block.invoke((AVCaptureSession)a.getObject());
+                }
+            });
+        }
+        /**
+         * @since Available in iOS 4.0 and later.
+         */
+        public static NSObject observeDidStopRunning(AVCaptureSession object, final VoidBlock1<AVCaptureSession> block) {
+            return NSNotificationCenter.getDefaultCenter().addObserver(DidStopRunningNotification(), object, NSOperationQueue.getMainQueue(), new VoidBlock1<NSNotification>() {
+                @Override
+                public void invoke(NSNotification a) {
+                    block.invoke((AVCaptureSession)a.getObject());
+                }
+            });
+        }
+        /**
+         * @since Available in iOS 4.0 and later.
+         */
+        public static NSObject observeWasInterrupted(AVCaptureSession object, final VoidBlock1<AVCaptureSession> block) {
+            return NSNotificationCenter.getDefaultCenter().addObserver(WasInterruptedNotification(), object, NSOperationQueue.getMainQueue(), new VoidBlock1<NSNotification>() {
+                @Override
+                public void invoke(NSNotification a) {
+                    block.invoke((AVCaptureSession)a.getObject());
+                }
+            });
+        }
+        /**
+         * @since Available in iOS 4.0 and later.
+         */
+        public static NSObject observeInterruptionEnded(AVCaptureSession object, final VoidBlock1<AVCaptureSession> block) {
+            return NSNotificationCenter.getDefaultCenter().addObserver(InterruptionEndedNotification(), object, NSOperationQueue.getMainQueue(), new VoidBlock1<NSNotification>() {
+                @Override
+                public void invoke(NSNotification a) {
+                    block.invoke((AVCaptureSession)a.getObject());
+                }
+            });
+        }
+    }
+    
     /*<ptr>*/public static class AVCaptureSessionPtr extends Ptr<AVCaptureSession, AVCaptureSessionPtr> {}/*</ptr>*/
     /*<bind>*/static { ObjCRuntime.bind(AVCaptureSession.class); }/*</bind>*/
     /*<constants>*//*</constants>*/
@@ -57,9 +120,9 @@ import org.robovm.apple.mediatoolbox.*;
     /*</constructors>*/
     /*<properties>*/
     @Property(selector = "sessionPreset")
-    public native String getSessionPreset();
+    public native AVCaptureSessionPreset getSessionPreset();
     @Property(selector = "setSessionPreset:")
-    public native void setSessionPreset(String v);
+    public native void setSessionPreset(AVCaptureSessionPreset v);
     @Property(selector = "inputs")
     public native NSArray<AVCaptureInput> getInputs();
     @Property(selector = "outputs")
@@ -75,7 +138,7 @@ import org.robovm.apple.mediatoolbox.*;
      * @since Available in iOS 7.0 and later.
      */
     @Property(selector = "usesApplicationAudioSession")
-    public native boolean isUsesApplicationAudioSession();
+    public native boolean usesApplicationAudioSession();
     /**
      * @since Available in iOS 7.0 and later.
      */
@@ -85,7 +148,7 @@ import org.robovm.apple.mediatoolbox.*;
      * @since Available in iOS 7.0 and later.
      */
     @Property(selector = "automaticallyConfiguresApplicationAudioSession")
-    public native boolean isAutomaticallyConfiguresApplicationAudioSession();
+    public native boolean automaticallyConfiguresApplicationAudioSession();
     /**
      * @since Available in iOS 7.0 and later.
      */
@@ -99,8 +162,39 @@ import org.robovm.apple.mediatoolbox.*;
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
+    /**
+     * @since Available in iOS 4.0 and later.
+     */
+    @GlobalValue(symbol="AVCaptureSessionRuntimeErrorNotification", optional=true)
+    public static native NSString RuntimeErrorNotification();
+    /**
+     * @since Available in iOS 4.0 and later.
+     */
+    @GlobalValue(symbol="AVCaptureSessionErrorKey", optional=true)
+    protected static native NSString NotificationErrorKey();
+    /**
+     * @since Available in iOS 4.0 and later.
+     */
+    @GlobalValue(symbol="AVCaptureSessionDidStartRunningNotification", optional=true)
+    public static native NSString DidStartRunningNotification();
+    /**
+     * @since Available in iOS 4.0 and later.
+     */
+    @GlobalValue(symbol="AVCaptureSessionDidStopRunningNotification", optional=true)
+    public static native NSString DidStopRunningNotification();
+    /**
+     * @since Available in iOS 4.0 and later.
+     */
+    @GlobalValue(symbol="AVCaptureSessionWasInterruptedNotification", optional=true)
+    public static native NSString WasInterruptedNotification();
+    /**
+     * @since Available in iOS 4.0 and later.
+     */
+    @GlobalValue(symbol="AVCaptureSessionInterruptionEndedNotification", optional=true)
+    public static native NSString InterruptionEndedNotification();
+    
     @Method(selector = "canSetSessionPreset:")
-    public native boolean canSetSessionPreset(String preset);
+    public native boolean canSetSessionPreset(AVCaptureSessionPreset preset);
     @Method(selector = "canAddInput:")
     public native boolean canAddInput(AVCaptureInput input);
     @Method(selector = "addInput:")

@@ -46,7 +46,7 @@ import org.robovm.apple.foundation.NSObject.SkipInit;
 /*<annotations>*/@Library("Foundation") @NativeClass/*</annotations>*/
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/NSMapTable/*</name>*/ <K extends NSObject, V extends NSObject>
     extends /*<extends>*/NSObject/*</extends>*/ 
-    /*<implements>*/implements NSCoding/*</implements>*/, Map<K, V> {
+    /*<implements>*/implements NSCoding, NSFastEnumeration/*</implements>*/, Map<K, V> {
 
     public static class NSMapTablePtr<K extends NSObject, V extends NSObject> extends Ptr<NSMapTable<K, V>, NSMapTablePtr<K, V>> {}
     
@@ -59,9 +59,9 @@ import org.robovm.apple.foundation.NSObject.SkipInit;
 
         @Override
         public Iterator<K> iterator() {
-            return new NSEnumerator.Iterator<K>(map.keyEnumerator()) {
+            return new NSEnumerator.Iterator<K>(map.getKeyEnumerator()) {
                 void remove(int index, K o) {
-                    map.removeObjectForKey$(o);
+                    map.removeObject(o);
                 }
             };
         }
@@ -198,10 +198,10 @@ import org.robovm.apple.foundation.NSObject.SkipInit;
         if (!(value instanceof NSObject)) {
             return false;
         }
-        NSArray<V> values = objectEnumerator().getAllObjects();
+        NSArray<V> values = getObjectEnumerator().getAllObjects();
         int count = (int) values.getCount();
         for (int i = 0; i < count; i++) {
-            NSObject o = values.objectAtIndex$(i);
+            NSObject o = values.getObjectAt(i);
             if (o.equals(value)) {
                 return true;
             }
@@ -216,7 +216,7 @@ import org.robovm.apple.foundation.NSObject.SkipInit;
         if (!(key instanceof NSObject)) {
             return null;
         }
-        return (V) objectForKey$((K) key);
+        return (V) getObject((K) key);
     }
     public boolean isEmpty() {
         return getCount() == 0;
@@ -228,7 +228,7 @@ import org.robovm.apple.foundation.NSObject.SkipInit;
         return (int) getCount();
     }
     public Collection<V> values() {
-        return objectEnumerator().getAllObjects();
+        return getObjectEnumerator().getAllObjects();
     }
     @Override
     public void clear() {
@@ -240,14 +240,14 @@ import org.robovm.apple.foundation.NSObject.SkipInit;
             return null;
         }
         V oldValue = get(key);
-        removeObjectForKey$((NSObject) key);
+        removeObject((NSObject) key);
         return oldValue;
     }
     @Override
     public V put(K key, V value) {
         checkNull(key, value);
         V oldValue = get(key);
-        setObject$forKey$(value, key);
+        setObject(value, key);
         return oldValue;
     }
     @Override
@@ -271,15 +271,15 @@ import org.robovm.apple.foundation.NSObject.SkipInit;
     @Method(selector = "initWithKeyOptions:valueOptions:capacity:")
     protected native @Pointer long init(NSMapTableOptions keyOptions, NSMapTableOptions valueOptions, @MachineSizedUInt long initialCapacity);
     @Method(selector = "objectForKey:")
-    protected native NSObject objectForKey$(NSObject aKey);
+    protected native NSObject getObject(NSObject aKey);
     @Method(selector = "removeObjectForKey:")
-    protected native void removeObjectForKey$(NSObject aKey);
+    protected native void removeObject(NSObject aKey);
     @Method(selector = "setObject:forKey:")
-    protected native void setObject$forKey$(NSObject anObject, NSObject aKey);
+    protected native void setObject(NSObject anObject, NSObject aKey);
     @Method(selector = "keyEnumerator")
-    protected native NSEnumerator<K> keyEnumerator();
+    protected native NSEnumerator<K> getKeyEnumerator();
     @Method(selector = "objectEnumerator")
-    protected native NSEnumerator<V> objectEnumerator();
+    protected native NSEnumerator<V> getObjectEnumerator();
     @Method(selector = "removeAllObjects")
     protected native void removeAllObjects();
     @Method(selector = "dictionaryRepresentation")

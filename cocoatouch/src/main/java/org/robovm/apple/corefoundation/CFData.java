@@ -27,6 +27,7 @@ import org.robovm.rt.bro.*;
 import org.robovm.rt.bro.annotation.*;
 import org.robovm.rt.bro.ptr.*;
 import org.robovm.apple.dispatch.*;
+import org.robovm.apple.foundation.*;
 /*</imports>*/
 
 /*<javadoc>*/
@@ -37,6 +38,28 @@ import org.robovm.apple.dispatch.*;
     /*<implements>*//*</implements>*/ {
 
     /*<ptr>*/public static class CFDataPtr extends Ptr<CFData, CFDataPtr> {}/*</ptr>*/
+    
+    private static final int EFFECTIVE_DIRECT_ADDRESS_OFFSET;
+
+    static {
+        try {
+            java.lang.reflect.Field f1 = Buffer.class.getDeclaredField("effectiveDirectAddress");
+            if (f1.getType() != long.class) {
+                throw new Error("java.nio.Buffer.effectiveDirectAddress should be a long");
+            }
+            EFFECTIVE_DIRECT_ADDRESS_OFFSET = VM.getInstanceFieldOffset(VM.getFieldAddress(f1));
+        } catch (NoSuchFieldException e) {
+            throw new Error(e);
+        }
+    }
+    
+    static long getEffectiveAddress(ByteBuffer bytes) {
+        if (!bytes.isDirect()) {
+            throw new IllegalArgumentException("Direct ByteBuffer expected");
+        }
+        return VM.getLong(VM.getObjectAddress(bytes) + EFFECTIVE_DIRECT_ADDRESS_OFFSET);
+    }
+    
     /*<bind>*/static { Bro.bind(CFData.class); }/*</bind>*/
     /*<constants>*//*</constants>*/
     /*<constructors>*/
@@ -44,21 +67,48 @@ import org.robovm.apple.dispatch.*;
     /*</constructors>*/
     /*<properties>*//*</properties>*/
     /*<members>*//*</members>*/
+    public static CFData create(byte[] bytes) {
+        if (bytes == null) {
+            throw new NullPointerException("bytes");
+        }
+        return create(null, VM.getArrayValuesAddress(bytes), bytes.length);
+    }
+    public static CFData create(ByteBuffer bytes) {
+        if (bytes == null) {
+            throw new NullPointerException("bytes");
+        }
+        long handle = getEffectiveAddress(bytes) + bytes.position();
+        CFData result = create(null, handle, bytes.remaining(), null);
+        return result;
+    }
+    public static CFData create(CFData theData) {
+        return create(null, theData);
+    }
+    public ByteBuffer asByteBuffer() {
+        return VM.newDirectByteBuffer(getBytePtr(), getLength());
+    }
+
+    public byte[] getBytes() {
+        int length = (int) getLength();
+        byte[] bytes = new byte[length];
+        getBytes(new CFRange(0, length), VM.getArrayValuesAddress(bytes));
+        return bytes;
+    }
     /*<methods>*/
     @Bridge(symbol="CFDataGetTypeID", optional=true)
     public static native @MachineSizedUInt long getClassTypeID();
     @Bridge(symbol="CFDataCreate", optional=true)
-    public static native CFData create(CFAllocator allocator, BytePtr bytes, @MachineSizedSInt long length);
+    protected static native CFData create(CFAllocator allocator, @Pointer long bytes, @MachineSizedSInt long length);
     @Bridge(symbol="CFDataCreateWithBytesNoCopy", optional=true)
-    public static native CFData createWithBytesNoCopy(CFAllocator allocator, BytePtr bytes, @MachineSizedSInt long length, CFAllocator bytesDeallocator);
+    protected static native CFData create(CFAllocator allocator, @Pointer long bytes, @MachineSizedSInt long length, CFAllocator bytesDeallocator);
     @Bridge(symbol="CFDataCreateCopy", optional=true)
-    public static native CFData createCopy(CFAllocator allocator, CFData theData);
+    protected static native CFData create(CFAllocator allocator, CFData theData);
     @Bridge(symbol="CFDataGetLength", optional=true)
     public native @MachineSizedSInt long getLength();
     @Bridge(symbol="CFDataGetBytePtr", optional=true)
-    public native BytePtr getBytePtr();
+    protected native @Pointer long getBytePtr();
     @Bridge(symbol="CFDataGetBytes", optional=true)
-    public native void getBytes(@ByVal CFRange range, BytePtr buffer);
+    protected native void getBytes(@ByVal CFRange range, @Pointer long buffer);
     /**
      * @since Available in iOS 4.0 and later.
      */

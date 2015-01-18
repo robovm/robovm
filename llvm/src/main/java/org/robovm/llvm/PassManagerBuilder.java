@@ -64,6 +64,11 @@ public class PassManagerBuilder implements AutoCloseable {
         LLVM.PassManagerBuilderSetDisableUnrollLoops(ref, b);
     }
 
+    public void setDisableTailCalls(boolean b) {
+        checkDisposed();
+        LLVM.PassManagerBuilderSetDisableTailCalls(ref, b);
+    }
+
     public void setSetOptLevel(int level) {
         checkDisposed();
         LLVM.PassManagerBuilderSetOptLevel(ref, level);
@@ -77,6 +82,11 @@ public class PassManagerBuilder implements AutoCloseable {
     public void useInlinerWithThreshold(int threshold) {
         checkDisposed();
         LLVM.PassManagerBuilderUseInlinerWithThreshold(ref, threshold);
+    }
+
+    public void useAlwaysInliner(boolean insertLifeTime) {
+        checkDisposed();
+        LLVM.PassManagerBuilderUseAlwaysInliner(ref, insertLifeTime);
     }
 
     public void populateFunctionPassManager(PassManager passManager) {

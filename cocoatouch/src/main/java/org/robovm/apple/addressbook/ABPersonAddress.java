@@ -35,7 +35,6 @@ import org.robovm.apple.addressbookui.ABAddressFormating;
 public class ABPersonAddress {
     
     public static class Marshaler {
-        @SuppressWarnings("unchecked")
         @MarshalsPointer
         public static ABPersonAddress toObject(Class<ABPersonAddress> cls, long handle, long flags) {
             CFDictionary o = (CFDictionary) CFType.Marshaler.toObject(CFDictionary.class, handle, flags);
@@ -78,8 +77,9 @@ public class ABPersonAddress {
         }
         return null;
     }
-    public void setAddressPart(ABPersonAddressPart part, String s) {
+    public ABPersonAddress setAddressPart(ABPersonAddressPart part, String s) {
         data.put(part.value(), new CFString(s));
+        return this;
     }
     
     public String getLabel() {
@@ -95,38 +95,38 @@ public class ABPersonAddress {
     public String getStreet() {
         return getAddressPart(ABPersonAddressPart.Street);
     }
-    public void setStreet(String s) {
-        setAddressPart(ABPersonAddressPart.Street, s);
+    public ABPersonAddress setStreet(String s) {
+        return setAddressPart(ABPersonAddressPart.Street, s);
     }
     public String getCity() {
         return getAddressPart(ABPersonAddressPart.City);
     }
-    public void setCity(String s) {
-        setAddressPart(ABPersonAddressPart.City, s);
+    public ABPersonAddress setCity(String s) {
+        return setAddressPart(ABPersonAddressPart.City, s);
     }
     public String getState() {
         return getAddressPart(ABPersonAddressPart.State);
     }
-    public void setState(String s) {
-        setAddressPart(ABPersonAddressPart.State, s);
+    public ABPersonAddress setState(String s) {
+        return setAddressPart(ABPersonAddressPart.State, s);
     }
     public String getZIP() {
         return getAddressPart(ABPersonAddressPart.ZIP);
     }
-    public void setZIP(String s) {
-        setAddressPart(ABPersonAddressPart.ZIP, s);
+    public ABPersonAddress setZIP(String s) {
+        return setAddressPart(ABPersonAddressPart.ZIP, s);
     }
     public String getCountry() {
         return getAddressPart(ABPersonAddressPart.Country);
     }
-    public void setCountry(String s) {
-        setAddressPart(ABPersonAddressPart.Country, s);
+    public ABPersonAddress setCountry(String s) {
+        return setAddressPart(ABPersonAddressPart.Country, s);
     }
     public String getCountryCode() {
         return getAddressPart(ABPersonAddressPart.CountryCode);
     }
-    public void setCountryCode(String s) {
-        setAddressPart(ABPersonAddressPart.CountryCode, s);
+    public ABPersonAddress setCountryCode(String s) {
+        return setAddressPart(ABPersonAddressPart.CountryCode, s);
     }
     
     @Override

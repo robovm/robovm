@@ -76,13 +76,41 @@ import org.robovm.apple.uikit.*;
     public native float getInputMeterLevel();
     /*</properties>*/
     /*<members>*//*</members>*/
+    /**
+     * 
+     * @param participantID
+     * @return
+     * @throws NSErrorException
+     */
+    public boolean startVoiceChat(String participantID) throws NSErrorException {
+        NSError.NSErrorPtr err = new NSError.NSErrorPtr();
+        boolean result = startVoiceChat(participantID, err);
+        if (err.get() != null) {
+            throw new NSErrorException(err.get());
+        }
+        return result;
+    }
+    /**
+     * 
+     * @param callID
+     * @return
+     * @throws NSErrorException
+     */
+    public boolean acceptCallID(@MachineSizedSInt long callID) throws NSErrorException {
+        NSError.NSErrorPtr err = new NSError.NSErrorPtr();
+        boolean result = acceptCallID(callID, err);
+        if (err.get() != null) {
+            throw new NSErrorException(err.get());
+        }
+        return result;
+    }
     /*<methods>*/
     @Method(selector = "startVoiceChatWithParticipantID:error:")
-    public native boolean startVoiceChat(String participantID, NSError.NSErrorPtr error);
+    protected native boolean startVoiceChat(String participantID, NSError.NSErrorPtr error);
     @Method(selector = "stopVoiceChatWithParticipantID:")
     public native void stopVoiceChat(String participantID);
     @Method(selector = "acceptCallID:error:")
-    public native boolean acceptCallID(@MachineSizedSInt long callID, NSError.NSErrorPtr error);
+    protected native boolean acceptCallID(@MachineSizedSInt long callID, NSError.NSErrorPtr error);
     @Method(selector = "denyCallID:")
     public native void denyCallID(@MachineSizedSInt long callID);
     @Method(selector = "receivedRealTimeData:fromParticipantID:")
@@ -90,7 +118,7 @@ import org.robovm.apple.uikit.*;
     @Method(selector = "receivedData:fromParticipantID:")
     public native void receivedData(NSData arbitraryData, String participantID);
     @Method(selector = "defaultVoiceChatService")
-    public static native GKVoiceChatService defaultVoiceChatService();
+    public static native GKVoiceChatService getDefaultVoiceChatService();
     @Method(selector = "isVoIPAllowed")
     public static native boolean isVoIPAllowed();
     /*</methods>*/

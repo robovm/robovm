@@ -33,6 +33,8 @@ import org.robovm.apple.coreanimation.*;
 import org.robovm.apple.dispatch.*;
 import org.robovm.apple.coreimage.*;
 import org.robovm.apple.avfoundation.*;
+import org.robovm.apple.glkit.*;
+import org.robovm.apple.scenekit.*;
 /*</imports>*/
 
 /*<javadoc>*/
@@ -56,21 +58,25 @@ import org.robovm.apple.avfoundation.*;
     @Property(selector = "setFilter:")
     public native void setFilter(CIFilter v);
     @Property(selector = "shouldCenterFilter")
-    public native boolean isShouldCenterFilter();
+    public native boolean shouldCenterFilter();
     @Property(selector = "setShouldCenterFilter:")
     public native void setShouldCenterFilter(boolean v);
     @Property(selector = "shouldEnableEffects")
-    public native boolean isShouldEnableEffects();
+    public native boolean shouldEnableEffects();
     @Property(selector = "setShouldEnableEffects:")
     public native void setShouldEnableEffects(boolean v);
     @Property(selector = "shouldRasterize")
-    public native boolean isShouldRasterize();
+    public native boolean shouldRasterize();
     @Property(selector = "setShouldRasterize:")
     public native void setShouldRasterize(boolean v);
     @Property(selector = "blendMode")
     public native SKBlendMode getBlendMode();
     @Property(selector = "setBlendMode:")
     public native void setBlendMode(SKBlendMode v);
+    @Property(selector = "shader")
+    public native SKShader getShader();
+    @Property(selector = "setShader:")
+    public native void setShader(SKShader v);
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/

@@ -49,22 +49,22 @@ import org.robovm.apple.coremedia.*;
     /*<constructors>*/
     public MIDIChannelMessage() {}
     public MIDIChannelMessage(byte status, byte data1, byte data2, byte reserved) {
-        this.status(status);
-        this.data1(data1);
-        this.data2(data2);
-        this.reserved(reserved);
+        this.setStatus(status);
+        this.setData1(data1);
+        this.setData2(data2);
+        this.setReserved(reserved);
     }
     /*</constructors>*/
     /*<properties>*//*</properties>*/
     /*<members>*/
-    @StructMember(0) public native byte status();
-    @StructMember(0) public native MIDIChannelMessage status(byte status);
-    @StructMember(1) public native byte data1();
-    @StructMember(1) public native MIDIChannelMessage data1(byte data1);
-    @StructMember(2) public native byte data2();
-    @StructMember(2) public native MIDIChannelMessage data2(byte data2);
-    @StructMember(3) public native byte reserved();
-    @StructMember(3) public native MIDIChannelMessage reserved(byte reserved);
+    @StructMember(0) public native byte getStatus();
+    @StructMember(0) public native MIDIChannelMessage setStatus(byte status);
+    @StructMember(1) public native byte getData1();
+    @StructMember(1) public native MIDIChannelMessage setData1(byte data1);
+    @StructMember(2) public native byte getData2();
+    @StructMember(2) public native MIDIChannelMessage setData2(byte data2);
+    @StructMember(3) public native byte getReserved();
+    @StructMember(3) public native MIDIChannelMessage setReserved(byte reserved);
     /*</members>*/
     /*<methods>*//*</methods>*/
 }

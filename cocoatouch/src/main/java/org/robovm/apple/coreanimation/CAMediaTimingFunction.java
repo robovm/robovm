@@ -31,6 +31,7 @@ import org.robovm.apple.foundation.*;
 import org.robovm.apple.coreimage.*;
 import org.robovm.apple.coretext.*;
 import org.robovm.apple.opengles.*;
+import org.robovm.apple.metal.*;
 /*</imports>*/
 
 /*<javadoc>*/
@@ -64,7 +65,7 @@ import org.robovm.apple.opengles.*;
     @Method(selector = "getControlPointAtIndex:values:")
     protected native void getControlPoint(@MachineSizedUInt long idx, FloatPtr ptr);
     @Method(selector = "functionWithName:")
-    public static native CAMediaTimingFunction create(NSString name);
+    public static native CAMediaTimingFunction create(CAMediaTimingFunctionName name);
     @Method(selector = "functionWithControlPoints::::")
     public static native CAMediaTimingFunction create(float c1x, float c1y, float c2x, float c2y);
     @Method(selector = "encodeWithCoder:")

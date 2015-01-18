@@ -50,7 +50,7 @@ import org.robovm.apple.dispatch.*;
     /*<constructors>*/
     public NSMutableData() {}
     protected NSMutableData(SkipInit skipInit) { super(skipInit); }
-    public NSMutableData(@MachineSizedUInt long capacity) { super((SkipInit) null); initObject(initWithCapacity$(capacity)); }
+    public NSMutableData(@MachineSizedUInt long capacity) { super((SkipInit) null); initObject(init(capacity)); }
     /*</constructors>*/
     /*<properties>*/
     @Property(selector = "mutableBytes")
@@ -71,7 +71,7 @@ import org.robovm.apple.dispatch.*;
     
     public NSMutableData append(ByteBuffer bytes) {
         long handle = getEffectiveAddress(bytes) + bytes.position();
-        appendBytes$length$(handle, bytes.remaining());
+        appendBytes(handle, bytes.remaining());
         return this;
     }
 
@@ -84,7 +84,7 @@ import org.robovm.apple.dispatch.*;
         if (length == 0) {
             return this;
         }
-        appendBytes$length$(VM.getArrayValuesAddress(bytes) + offset, length);
+        appendBytes(VM.getArrayValuesAddress(bytes) + offset, length);
         return this;
     }
 
@@ -102,7 +102,7 @@ import org.robovm.apple.dispatch.*;
 
     public NSMutableData replace(NSRange range, ByteBuffer bytes) {
         long handle = getEffectiveAddress(bytes) + bytes.position();
-        replaceBytesInRange$withBytes$length$(range, handle, bytes.remaining());
+        replaceBytes(range, handle, bytes.remaining());
         return this;
     }
 
@@ -112,31 +112,31 @@ import org.robovm.apple.dispatch.*;
     
     public NSMutableData replace(NSRange range, byte[] bytes, int offset, int length) {
         checkOffsetAndCount(bytes.length, offset, length);
-        replaceBytesInRange$withBytes$length$(range, VM.getArrayValuesAddress(bytes) + offset, length);
+        replaceBytes(range, VM.getArrayValuesAddress(bytes) + offset, length);
         return this;
     }
     
     public NSMutableData delete(NSRange range) {
-        replaceBytesInRange$withBytes$length$(range, 0, 0);
+        replaceBytes(range, 0, 0);
         return this;
     }
     
     /*<methods>*/
     @Method(selector = "appendBytes:length:")
-    protected native void appendBytes$length$(@Pointer long bytes, @MachineSizedUInt long length);
+    protected native void appendBytes(@Pointer long bytes, @MachineSizedUInt long length);
     @Method(selector = "appendData:")
     public native void append(NSData other);
     @Method(selector = "increaseLengthBy:")
     public native void increaseLength(@MachineSizedUInt long extraLength);
     @Method(selector = "replaceBytesInRange:withBytes:")
-    protected native void replaceBytesInRange$withBytes$(@ByVal NSRange range, @Pointer long bytes);
+    protected native void replaceBytes(@ByVal NSRange range, @Pointer long bytes);
     @Method(selector = "resetBytesInRange:")
     public native void reset(@ByVal NSRange range);
     @Method(selector = "setData:")
     public native void setData(NSData data);
     @Method(selector = "replaceBytesInRange:withBytes:length:")
-    protected native void replaceBytesInRange$withBytes$length$(@ByVal NSRange range, @Pointer long replacementBytes, @MachineSizedUInt long replacementLength);
+    protected native void replaceBytes(@ByVal NSRange range, @Pointer long replacementBytes, @MachineSizedUInt long replacementLength);
     @Method(selector = "initWithCapacity:")
-    protected native @Pointer long initWithCapacity$(@MachineSizedUInt long capacity);
+    protected native @Pointer long init(@MachineSizedUInt long capacity);
     /*</methods>*/
 }

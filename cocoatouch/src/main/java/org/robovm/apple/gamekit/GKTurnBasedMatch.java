@@ -101,18 +101,18 @@ import org.robovm.apple.uikit.*;
      * @since Available in iOS 6.0 and later.
      */
     @GlobalValue(symbol="GKTurnTimeoutDefault", optional=true)
-    public static native double TimeoutDefault();
+    public static native double getDefaultTimeout();
     /**
      * @since Available in iOS 6.0 and later.
      */
     @GlobalValue(symbol="GKTurnTimeoutNone", optional=true)
-    public static native double TimeoutNone();
+    public static native double getNoneTimeout();
     
     /**
      * @since Available in iOS 7.0 and later.
      */
     @Method(selector = "setLocalizableMessageWithKey:arguments:")
-    public native void setLocalizableMessage(String key, NSArray<NSString> arguments);
+    public native void setLocalizableMessage(String key, @org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String> arguments);
     /**
      * @since Available in iOS 6.0 and later.
      */
@@ -165,12 +165,12 @@ import org.robovm.apple.uikit.*;
      * @since Available in iOS 7.0 and later.
      */
     @Method(selector = "sendExchangeToParticipants:data:localizableMessageKey:arguments:timeout:completionHandler:")
-    public native void sendExchange(NSArray<GKTurnBasedParticipant> participants, NSData data, String key, NSArray<NSString> arguments, double timeout, @Block VoidBlock2<GKTurnBasedExchange, NSError> completionHandler);
+    public native void sendExchange(NSArray<GKTurnBasedParticipant> participants, NSData data, String key, @org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String> arguments, double timeout, @Block VoidBlock2<GKTurnBasedExchange, NSError> completionHandler);
     /**
      * @since Available in iOS 7.0 and later.
      */
     @Method(selector = "sendReminderToParticipants:localizableMessageKey:arguments:completionHandler:")
-    public native void sendReminder(NSArray<GKTurnBasedParticipant> participants, String key, NSArray<NSString> arguments, @Block VoidBlock1<NSError> completionHandler);
+    public native void sendReminder(NSArray<GKTurnBasedParticipant> participants, String key, @org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String> arguments, @Block VoidBlock1<NSError> completionHandler);
     /**
      * @since Available in iOS 5.0 and later.
      * @deprecated Deprecated in iOS 6.0.

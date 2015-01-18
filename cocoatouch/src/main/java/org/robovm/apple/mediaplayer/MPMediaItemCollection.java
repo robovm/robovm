@@ -47,7 +47,7 @@ import org.robovm.apple.coregraphics.*;
     /*<constructors>*/
     public MPMediaItemCollection() {}
     protected MPMediaItemCollection(SkipInit skipInit) { super(skipInit); }
-    public MPMediaItemCollection(NSArray<MPMediaItem> items) { super((SkipInit) null); initObject(initWithItems$(items)); }
+    public MPMediaItemCollection(NSArray<MPMediaItem> items) { super((SkipInit) null); initObject(init(items)); }
     /*</constructors>*/
     /*<properties>*/
     @Property(selector = "items")
@@ -62,6 +62,6 @@ import org.robovm.apple.coregraphics.*;
     /*<members>*//*</members>*/
     /*<methods>*/
     @Method(selector = "initWithItems:")
-    protected native @Pointer long initWithItems$(NSArray<MPMediaItem> items);
+    protected native @Pointer long init(NSArray<MPMediaItem> items);
     /*</methods>*/
 }

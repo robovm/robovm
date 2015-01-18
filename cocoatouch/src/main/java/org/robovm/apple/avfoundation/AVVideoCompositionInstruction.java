@@ -65,7 +65,7 @@ import org.robovm.apple.mediatoolbox.*;
     @Property(selector = "layerInstructions")
     public native NSArray<AVVideoCompositionLayerInstruction> getLayerInstructions();
     @Property(selector = "enablePostProcessing")
-    public native boolean isEnablePostProcessing();
+    public native boolean isPostProcessingEnabled();
     /**
      * @since Available in iOS 7.0 and later.
      */

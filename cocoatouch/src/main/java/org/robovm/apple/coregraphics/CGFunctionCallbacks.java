@@ -48,35 +48,17 @@ import org.robovm.apple.uikit.*;
     public CGFunctionCallbacks(int version, FunctionPtr evaluate, FunctionPtr releaseInfo) {
         this.setVersion(version);
         this.setEvaluate(evaluate);
-        this.setReleaseinfo(releaseInfo);
+        this.setReleaseInfo(releaseInfo);
     }
     /*</constructors>*/
     /*<properties>*//*</properties>*/
     /*<members>*/
     @StructMember(0) public native int getVersion();
     @StructMember(0) public native CGFunctionCallbacks setVersion(int version);
-    
-    @Deprecated
-    @StructMember(0) public native int version();
-    @Deprecated
-    @StructMember(0) public native CGFunctionCallbacks version(int version);
-    
     @StructMember(1) public native FunctionPtr getEvaluate();
     @StructMember(1) public native CGFunctionCallbacks setEvaluate(FunctionPtr evaluate);
-    
-    @Deprecated
-    @StructMember(1) public native FunctionPtr evaluate();
-    @Deprecated
-    @StructMember(1) public native CGFunctionCallbacks evaluate(FunctionPtr evaluate);
-    
-    @StructMember(2) public native FunctionPtr getReleaseinfo();
-    @StructMember(2) public native CGFunctionCallbacks setReleaseinfo(FunctionPtr releaseInfo);
-    
-    @Deprecated
-    @StructMember(2) public native FunctionPtr releaseInfo();
-    @Deprecated
-    @StructMember(2) public native CGFunctionCallbacks releaseInfo(FunctionPtr releaseInfo);
-    
+    @StructMember(2) public native FunctionPtr getReleaseInfo();
+    @StructMember(2) public native CGFunctionCallbacks setReleaseInfo(FunctionPtr releaseInfo);
     /*</members>*/
     /*<methods>*//*</methods>*/
 }

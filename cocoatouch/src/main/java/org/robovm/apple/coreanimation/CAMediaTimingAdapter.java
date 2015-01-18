@@ -31,6 +31,7 @@ import org.robovm.apple.foundation.*;
 import org.robovm.apple.coreimage.*;
 import org.robovm.apple.coretext.*;
 import org.robovm.apple.opengles.*;
+import org.robovm.apple.metal.*;
 /*</imports>*/
 
 /*<javadoc>*/
@@ -72,13 +73,13 @@ import org.robovm.apple.opengles.*;
     @NotImplemented("setRepeatDuration:")
     public void setRepeatDuration(double v) { throw new UnsupportedOperationException(); }
     @NotImplemented("autoreverses")
-    public boolean isAutoreverses() { throw new UnsupportedOperationException(); }
+    public boolean autoreverses() { throw new UnsupportedOperationException(); }
     @NotImplemented("setAutoreverses:")
     public void setAutoreverses(boolean v) { throw new UnsupportedOperationException(); }
     @NotImplemented("fillMode")
-    public NSString getFillMode() { throw new UnsupportedOperationException(); }
+    public CAFillMode getFillMode() { throw new UnsupportedOperationException(); }
     @NotImplemented("setFillMode:")
-    public void setFillMode(NSString v) { throw new UnsupportedOperationException(); }
+    public void setFillMode(CAFillMode v) { throw new UnsupportedOperationException(); }
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/

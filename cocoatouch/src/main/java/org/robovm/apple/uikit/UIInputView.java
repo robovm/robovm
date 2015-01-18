@@ -51,7 +51,7 @@ import org.robovm.apple.corelocation.*;
     /*<constructors>*/
     public UIInputView() {}
     protected UIInputView(SkipInit skipInit) { super(skipInit); }
-    public UIInputView(@ByVal CGRect frame, UIInputViewStyle inputViewStyle) { super((SkipInit) null); initObject(initWithFrame$inputViewStyle$(frame, inputViewStyle)); }
+    public UIInputView(@ByVal CGRect frame, UIInputViewStyle inputViewStyle) { super((SkipInit) null); initObject(init(frame, inputViewStyle)); }
     /*</constructors>*/
     /*<properties>*/
     @Property(selector = "inputViewStyle")
@@ -60,6 +60,6 @@ import org.robovm.apple.corelocation.*;
     /*<members>*//*</members>*/
     /*<methods>*/
     @Method(selector = "initWithFrame:inputViewStyle:")
-    protected native @Pointer long initWithFrame$inputViewStyle$(@ByVal CGRect frame, UIInputViewStyle inputViewStyle);
+    protected native @Pointer long init(@ByVal CGRect frame, UIInputViewStyle inputViewStyle);
     /*</methods>*/
 }

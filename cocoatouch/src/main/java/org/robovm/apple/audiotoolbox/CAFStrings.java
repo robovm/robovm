@@ -49,16 +49,16 @@ import org.robovm.apple.coremedia.*;
     /*<constructors>*/
     public CAFStrings() {}
     public CAFStrings(int mNumEntries, CAFStringID mStringsIDs) {
-        this.mNumEntries(mNumEntries);
-        this.mStringsIDs(mStringsIDs);
+        this.setMNumEntries(mNumEntries);
+        this.setMStringsIDs(mStringsIDs);
     }
     /*</constructors>*/
     /*<properties>*//*</properties>*/
     /*<members>*/
-    @StructMember(0) public native int mNumEntries();
-    @StructMember(0) public native CAFStrings mNumEntries(int mNumEntries);
-    @StructMember(1) public native @Array({1}) CAFStringID mStringsIDs();
-    @StructMember(1) public native CAFStrings mStringsIDs(@Array({1}) CAFStringID mStringsIDs);
+    @StructMember(0) public native int getMNumEntries();
+    @StructMember(0) public native CAFStrings setMNumEntries(int mNumEntries);
+    @StructMember(1) public native @Array({1}) CAFStringID getMStringsIDs();
+    @StructMember(1) public native CAFStrings setMStringsIDs(@Array({1}) CAFStringID mStringsIDs);
     /*</members>*/
     /*<methods>*//*</methods>*/
 }

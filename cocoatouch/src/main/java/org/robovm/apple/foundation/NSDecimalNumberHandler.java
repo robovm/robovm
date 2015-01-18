@@ -49,7 +49,7 @@ import org.robovm.apple.dispatch.*;
     /*<constants>*//*</constants>*/
     /*<constructors>*/
     protected NSDecimalNumberHandler(SkipInit skipInit) { super(skipInit); }
-    public NSDecimalNumberHandler(NSRoundingMode roundingMode, short scale, boolean exact, boolean overflow, boolean underflow, boolean divideByZero) { super((SkipInit) null); initObject(initWithRoundingMode$scale$raiseOnExactness$raiseOnOverflow$raiseOnUnderflow$raiseOnDivideByZero$(roundingMode, scale, exact, overflow, underflow, divideByZero)); }
+    public NSDecimalNumberHandler(NSRoundingMode roundingMode, short scale, boolean exact, boolean overflow, boolean underflow, boolean divideByZero) { super((SkipInit) null); initObject(init(roundingMode, scale, exact, overflow, underflow, divideByZero)); }
     /*</constructors>*/
     /*<properties>*/
     
@@ -57,7 +57,7 @@ import org.robovm.apple.dispatch.*;
     /*<members>*//*</members>*/
     /*<methods>*/
     @Method(selector = "initWithRoundingMode:scale:raiseOnExactness:raiseOnOverflow:raiseOnUnderflow:raiseOnDivideByZero:")
-    protected native @Pointer long initWithRoundingMode$scale$raiseOnExactness$raiseOnOverflow$raiseOnUnderflow$raiseOnDivideByZero$(NSRoundingMode roundingMode, short scale, boolean exact, boolean overflow, boolean underflow, boolean divideByZero);
+    protected native @Pointer long init(NSRoundingMode roundingMode, short scale, boolean exact, boolean overflow, boolean underflow, boolean divideByZero);
     @Method(selector = "defaultDecimalNumberHandler")
     public static native NSDecimalNumberHandler getDefaultDecimalNumberHandler();
     @Method(selector = "roundingMode")

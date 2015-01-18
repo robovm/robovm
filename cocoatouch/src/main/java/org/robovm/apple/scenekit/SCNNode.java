@@ -119,7 +119,7 @@ import org.robovm.apple.opengles.*;
     @Property(selector = "setRenderingOrder:")
     public native void setRenderingOrder(@MachineSizedSInt long v);
     @Property(selector = "castsShadow")
-    public native boolean isCastsShadow();
+    public native boolean castsShadow();
     @Property(selector = "setCastsShadow:")
     public native void setCastsShadow(boolean v);
     @Property(selector = "parentNode")
@@ -198,10 +198,6 @@ import org.robovm.apple.opengles.*;
         setBoundingBox(minptr, maxptr);
     }
     /*<methods>*/
-    @Method(selector = "clone")
-    public native SCNNode clone();
-    @Method(selector = "flattenedClone")
-    public native SCNNode flattenedClone();
     @Method(selector = "addChildNode:")
     public native void addChildNode(SCNNode child);
     @Method(selector = "insertChildNode:atIndex:")

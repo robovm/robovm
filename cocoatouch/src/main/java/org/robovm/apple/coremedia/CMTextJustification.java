@@ -42,9 +42,9 @@ import org.robovm.apple.audiotoolbox.*;
 /*<annotations>*//*</annotations>*/
 public enum /*<name>*/CMTextJustification/*</name>*/ implements ValuedEnum {
     /*<values>*/
-    left_top(0L),
-    centered(1L),
-    bottom_right(-1L);
+    LeftTop(0L),
+    Centered(1L),
+    BottomRight(-1L);
     /*</values>*/
 
     /*<bind>*/

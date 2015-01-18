@@ -54,15 +54,27 @@ import org.robovm.apple.mediatoolbox.*;
     /*<constructors>*/
     public AVAssetWriter() {}
     protected AVAssetWriter(SkipInit skipInit) { super(skipInit); }
-    public AVAssetWriter(NSURL outputURL, String outputFileType, NSError.NSErrorPtr outError) { super((SkipInit) null); initObject(init(outputURL, outputFileType, outError)); }
     /*</constructors>*/
+    /**
+     * 
+     * @param outputURL
+     * @param outputFileType
+     * @throws NSErrorException
+     */
+    public AVAssetWriter(NSURL outputURL, String outputFileType) throws NSErrorException {
+        NSError.NSErrorPtr err = new NSError.NSErrorPtr();
+        initObject(init(outputURL, outputFileType, err));
+        if (err.get() != null) {
+            throw new NSErrorException(err.get());
+        }
+    }
     /*<properties>*/
     @Property(selector = "outputURL")
     public native NSURL getOutputURL();
     @Property(selector = "outputFileType")
     public native String getOutputFileType();
     @Property(selector = "availableMediaTypes")
-    public native NSArray<NSString> getAvailableMediaTypes();
+    public native @org.robovm.rt.bro.annotation.Marshaler(AVMediaType.AsListMarshaler.class) List<AVMediaType> getAvailableMediaTypes();
     @Property(selector = "status")
     public native AVAssetWriterStatus getStatus();
     @Property(selector = "error")
@@ -72,7 +84,7 @@ import org.robovm.apple.mediatoolbox.*;
     @Property(selector = "setMetadata:")
     public native void setMetadata(NSArray<AVMetadataItem> v);
     @Property(selector = "shouldOptimizeForNetworkUse")
-    public native boolean isShouldOptimizeForNetworkUse();
+    public native boolean shouldOptimizeForNetworkUse();
     @Property(selector = "setShouldOptimizeForNetworkUse:")
     public native void setShouldOptimizeForNetworkUse(boolean v);
     /**
@@ -108,11 +120,37 @@ import org.robovm.apple.mediatoolbox.*;
     public native NSArray<AVAssetWriterInputGroup> getInputGroups();
     /*</properties>*/
     /*<members>*//*</members>*/
+    public boolean canApplyOutputSettings(AVAudioSettings outputSettings, AVMediaType mediaType) {
+        return canApplyOutputSettings(outputSettings.getDictionary(), mediaType);
+    }
+    public boolean canApplyOutputSettings(AVVideoSettings outputSettings, AVMediaType mediaType) {
+        return canApplyOutputSettings(outputSettings.getDictionary(), mediaType);
+    }
+    @SuppressWarnings("unchecked")
+    public boolean canApplyOutputSettings(AVPixelBufferAttributes outputSettings, AVMediaType mediaType) {
+        return canApplyOutputSettings(outputSettings.getDictionary().as(NSDictionary.class), mediaType);
+    }
+    /**
+     * 
+     * @param outputURL
+     * @param outputFileType
+     * @return
+     * @throws NSErrorException
+     */
+    public AVAssetWriter create(NSURL outputURL, String outputFileType) throws NSErrorException {
+        NSError.NSErrorPtr err = new NSError.NSErrorPtr();
+        AVAssetWriter result = create(outputURL, outputFileType, err);
+        if (err.get() != null) {
+            throw new NSErrorException(err.get());
+        }
+        return result;
+    }
+   
     /*<methods>*/
     @Method(selector = "initWithURL:fileType:error:")
     protected native @Pointer long init(NSURL outputURL, String outputFileType, NSError.NSErrorPtr outError);
     @Method(selector = "canApplyOutputSettings:forMediaType:")
-    public native boolean canApplyOutputSettings(NSDictionary<NSString, ?> outputSettings, String mediaType);
+    protected native boolean canApplyOutputSettings(NSDictionary<NSString, NSObject> outputSettings, AVMediaType mediaType);
     @Method(selector = "canAddInput:")
     public native boolean canAddInput(AVAssetWriterInput input);
     @Method(selector = "addInput:")
@@ -138,7 +176,7 @@ import org.robovm.apple.mediatoolbox.*;
     @Method(selector = "finishWritingWithCompletionHandler:")
     public native void finishWriting(@Block Runnable handler);
     @Method(selector = "assetWriterWithURL:fileType:error:")
-    public static native AVAssetWriter create(NSURL outputURL, String outputFileType, NSError.NSErrorPtr outError);
+    protected static native AVAssetWriter create(NSURL outputURL, String outputFileType, NSError.NSErrorPtr outError);
     /**
      * @since Available in iOS 7.0 and later.
      */

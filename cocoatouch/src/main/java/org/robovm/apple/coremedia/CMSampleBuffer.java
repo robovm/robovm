@@ -253,6 +253,11 @@ import org.robovm.apple.audiotoolbox.*;
     @Bridge(symbol="CMSampleBufferCreate", optional=true)
     protected static native CMSampleBufferError create(CFAllocator allocator, CMBlockBuffer dataBuffer, boolean dataReady, FunctionPtr makeDataReadyCallback, @Pointer long makeDataReadyRefcon, CMFormatDescription formatDescription, @MachineSizedSInt long numSamples, @MachineSizedSInt long numSampleTimingEntries, CMSampleTimingInfo sampleTimingArray, @MachineSizedSInt long numSampleSizeEntries, MachineSizedUIntPtr sampleSizeArray, CMSampleBuffer.CMSampleBufferPtr sBufOut);
     /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @Bridge(symbol="CMSampleBufferCreateReady", optional=true)
+    protected static native CMSampleBufferError createReady(CFAllocator allocator, CMBlockBuffer dataBuffer, CMFormatDescription formatDescription, @MachineSizedSInt long numSamples, @MachineSizedSInt long numSampleTimingEntries, CMSampleTimingInfo sampleTimingArray, @MachineSizedSInt long numSampleSizeEntries, MachineSizedUIntPtr sampleSizeArray, CMSampleBuffer.CMSampleBufferPtr sBufOut);
+    /**
      * @since Available in iOS 4.0 and later.
      */
     @Bridge(symbol="CMAudioSampleBufferCreateWithPacketDescriptions", optional=true)
@@ -262,6 +267,11 @@ import org.robovm.apple.audiotoolbox.*;
      */
     @Bridge(symbol="CMSampleBufferCreateForImageBuffer", optional=true)
     protected static native CMSampleBufferError createForImageBuffer(CFAllocator allocator, CVImageBuffer imageBuffer, boolean dataReady, FunctionPtr makeDataReadyCallback, @Pointer long makeDataReadyRefcon, CMVideoFormatDescription formatDescription, CMSampleTimingInfo sampleTiming, CMSampleBuffer.CMSampleBufferPtr sBufOut);
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @Bridge(symbol="CMSampleBufferCreateReadyWithImageBuffer", optional=true)
+    protected static native CMSampleBufferError createReadyWithImageBuffer(CFAllocator allocator, CVImageBuffer imageBuffer, CMVideoFormatDescription formatDescription, CMSampleTimingInfo sampleTiming, CMSampleBuffer.CMSampleBufferPtr sBufOut);
     /**
      * @since Available in iOS 4.0 and later.
      */
@@ -328,6 +338,16 @@ import org.robovm.apple.audiotoolbox.*;
     @Bridge(symbol="CMSampleBufferDataIsReady", optional=true)
     public native boolean isDataReady();
     /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @Bridge(symbol="CMSampleBufferSetDataFailed", optional=true)
+    public native int setDataFailed(int status);
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @Bridge(symbol="CMSampleBufferHasDataFailed", optional=true)
+    public native boolean hasDataFailed(IntPtr statusOut);
+    /**
      * @since Available in iOS 4.0 and later.
      */
     @Bridge(symbol="CMSampleBufferMakeDataReady", optional=true)
@@ -347,6 +367,11 @@ import org.robovm.apple.audiotoolbox.*;
      */
     @Bridge(symbol="CMSampleBufferSetInvalidateCallback", optional=true)
     protected native CMSampleBufferError setInvalidateCallback(FunctionPtr invalidateCallback, long invalidateRefCon);
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @Bridge(symbol="CMSampleBufferSetInvalidateHandler", optional=true)
+    public native int setInvalidateHandler(FunctionPtr invalidateHandler);
     /**
      * @since Available in iOS 4.0 and later.
      */
@@ -437,5 +462,10 @@ import org.robovm.apple.audiotoolbox.*;
      */
     @Bridge(symbol="CMSampleBufferCallForEachSample", optional=true)
     protected native CMSampleBufferError callForEachSample(FunctionPtr callback, @Pointer long refcon);
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @Bridge(symbol="CMSampleBufferCallBlockForEachSample", optional=true)
+    public native int callBlockForEachSample(ObjCBlock handler);
     /*</methods>*/
 }

@@ -114,7 +114,7 @@ import org.robovm.apple.corelocation.*;
     @Property(selector = "identifierForVendor")
     public native NSUUID getIdentifierForVendor();
     @Property(selector = "isGeneratingDeviceOrientationNotifications")
-    public native boolean isGeneratesDeviceOrientationNotifications();
+    public native boolean generatesDeviceOrientationNotifications();
     /**
      * @since Available in iOS 3.0 and later.
      */

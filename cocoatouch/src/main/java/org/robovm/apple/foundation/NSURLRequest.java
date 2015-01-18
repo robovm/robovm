@@ -50,8 +50,8 @@ import org.robovm.apple.dispatch.*;
     /*<constructors>*/
     public NSURLRequest() {}
     protected NSURLRequest(SkipInit skipInit) { super(skipInit); }
-    public NSURLRequest(NSURL URL) { super((SkipInit) null); initObject(initWithURL$(URL)); }
-    public NSURLRequest(NSURL URL, NSURLRequestCachePolicy cachePolicy, double timeoutInterval) { super((SkipInit) null); initObject(initWithURL$cachePolicy$timeoutInterval$(URL, cachePolicy, timeoutInterval)); }
+    public NSURLRequest(NSURL URL) { super((SkipInit) null); initObject(init(URL)); }
+    public NSURLRequest(NSURL URL, NSURLRequestCachePolicy cachePolicy, double timeoutInterval) { super((SkipInit) null); initObject(init(URL, cachePolicy, timeoutInterval)); }
     /*</constructors>*/
     /*<properties>*/
     @Property(selector = "URL")
@@ -71,7 +71,7 @@ import org.robovm.apple.dispatch.*;
      * @since Available in iOS 6.0 and later.
      */
     @Property(selector = "allowsCellularAccess")
-    public native boolean isAllowsCellularAccess();
+    public native boolean allowsCellularAccess();
     @Property(selector = "HTTPMethod")
     public native String getHTTPMethod();
     @Property(selector = "allHTTPHeaderFields")
@@ -91,9 +91,9 @@ import org.robovm.apple.dispatch.*;
     /*<members>*//*</members>*/
     /*<methods>*/
     @Method(selector = "initWithURL:")
-    protected native @Pointer long initWithURL$(NSURL URL);
+    protected native @Pointer long init(NSURL URL);
     @Method(selector = "initWithURL:cachePolicy:timeoutInterval:")
-    protected native @Pointer long initWithURL$cachePolicy$timeoutInterval$(NSURL URL, NSURLRequestCachePolicy cachePolicy, double timeoutInterval);
+    protected native @Pointer long init(NSURL URL, NSURLRequestCachePolicy cachePolicy, double timeoutInterval);
     @Method(selector = "supportsSecureCoding")
     public static native boolean supportsSecureCoding();
     @Method(selector = "valueForHTTPHeaderField:")

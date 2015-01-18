@@ -51,7 +51,7 @@ import org.robovm.apple.corelocation.*;
     /*<constructors>*/
     public UICollectionViewController() {}
     protected UICollectionViewController(SkipInit skipInit) { super(skipInit); }
-    public UICollectionViewController(UICollectionViewLayout layout) { super((SkipInit) null); initObject(initWithCollectionViewLayout$(layout)); }
+    public UICollectionViewController(UICollectionViewLayout layout) { super((SkipInit) null); initObject(init(layout)); }
     /*</constructors>*/
     /*<properties>*/
     @Property(selector = "collectionView")
@@ -59,19 +59,19 @@ import org.robovm.apple.corelocation.*;
     @Property(selector = "setCollectionView:")
     public native void setCollectionView(UICollectionView v);
     @Property(selector = "clearsSelectionOnViewWillAppear")
-    public native boolean isClearsSelectionOnViewWillAppear();
+    public native boolean clearsSelectionOnViewWillAppear();
     @Property(selector = "setClearsSelectionOnViewWillAppear:")
     public native void setClearsSelectionOnViewWillAppear(boolean v);
     /**
      * @since Available in iOS 7.0 and later.
      */
     @Property(selector = "useLayoutToLayoutNavigationTransitions")
-    public native boolean isUseLayoutToLayoutNavigationTransitions();
+    public native boolean usesLayoutToLayoutNavigationTransitions();
     /**
      * @since Available in iOS 7.0 and later.
      */
     @Property(selector = "setUseLayoutToLayoutNavigationTransitions:")
-    public native void setUseLayoutToLayoutNavigationTransitions(boolean v);
+    public native void setUsesLayoutToLayoutNavigationTransitions(boolean v);
     /**
      * @since Available in iOS 7.0 and later.
      */
@@ -81,7 +81,7 @@ import org.robovm.apple.corelocation.*;
     /*<members>*//*</members>*/
     /*<methods>*/
     @Method(selector = "initWithCollectionViewLayout:")
-    protected native @Pointer long initWithCollectionViewLayout$(UICollectionViewLayout layout);
+    protected native @Pointer long init(UICollectionViewLayout layout);
     @Method(selector = "collectionView:shouldHighlightItemAtIndexPath:")
     public native boolean shouldHighlightItem(UICollectionView collectionView, NSIndexPath indexPath);
     @Method(selector = "collectionView:didHighlightItemAtIndexPath:")
@@ -156,10 +156,10 @@ import org.robovm.apple.corelocation.*;
     @Method(selector = "collectionView:numberOfItemsInSection:")
     public native @MachineSizedSInt long getNumberOfItemsInSection(UICollectionView collectionView, @MachineSizedSInt long section);
     @Method(selector = "collectionView:cellForItemAtIndexPath:")
-    public native UICollectionViewCell getItemCell(UICollectionView collectionView, NSIndexPath indexPath);
+    public native UICollectionViewCell getCellForItem(UICollectionView collectionView, NSIndexPath indexPath);
     @Method(selector = "numberOfSectionsInCollectionView:")
     public native @MachineSizedSInt long getNumberOfSections(UICollectionView collectionView);
     @Method(selector = "collectionView:viewForSupplementaryElementOfKind:atIndexPath:")
-    public native UICollectionReusableView getSupplementaryElementView(UICollectionView collectionView, String kind, NSIndexPath indexPath);
+    public native UICollectionReusableView getViewForSupplementaryElement(UICollectionView collectionView, String kind, NSIndexPath indexPath);
     /*</methods>*/
 }

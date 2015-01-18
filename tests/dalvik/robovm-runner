@@ -11,11 +11,13 @@ fi
 
 if [ "x$SSH_HOST" != 'x' -a "x$SSH_HOST" != 'xlocalhost' ]; then
   TARGET=$(pwd)
-  rsync -a --delete $TARGET/ $SSH_HOST:$TARGET/ > /dev/null
-  ssh $SSH_HOST "$@"
+  ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -o LogLevel=quiet $SSH_HOST "rm -rf /tmp/test-*"
+  rsync -az --delete -e "ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -o LogLevel=quiet" $TARGET/ $SSH_HOST:$TARGET/ > /dev/null
+  ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -o LogLevel=quiet $SSH_HOST "$@"
   result=$?
 else
   exec "$@"
+
   result=$?
 fi
 exit $result

@@ -81,7 +81,8 @@ public class AppLauncher {
     
     private final IDevice device;
     private final String appId;
-    private File localAppPath;
+    private final File localAppPath;
+    private boolean installed = false;
     private List<String> args = new ArrayList<>();
     private Map<String, String> env = new HashMap<String, String>();
     private OutputStream stdout = System.out;
@@ -540,14 +541,14 @@ public class AppLauncher {
     }
     
     public void install() throws IOException {
-        if (localAppPath != null) {
+        if (!installed) {
             try (LockdowndClient lockdowndClient = new LockdowndClient(device, getClass().getSimpleName(), true)) {
                 uploadInternal();
                 if (uploadProgressCallback == null) {
                     log("[ 50%%] Upload done. Installing app...");
                 }
                 installInternal();
-                localAppPath = null;
+                installed = true;
             } catch (IOException e) {
                 throw e;
             } catch (RuntimeException e) {
@@ -686,7 +687,7 @@ public class AppLauncher {
                 String productVersion = lockdowndClient.getValue(null, "ProductVersion").toString(); // E.g. 7.0.2
                 String buildVersion = lockdowndClient.getValue(null, "BuildVersion").toString(); // E.g. 11B508
                 if(appLauncherCallback != null) {
-                    appLauncherCallback.setAppLaunchInfo(new AppLauncherInfo(appPath, productVersion, buildVersion));
+                    appLauncherCallback.setAppLaunchInfo(new AppLauncherInfo(device, appPath, productVersion, buildVersion));
                 }
                 LockdowndServiceDescriptor debugService = null;
                 try {
@@ -703,6 +704,10 @@ public class AppLauncher {
                 }
                 conn = device.connect(debugService.getPort());
                 log("Debug server port: " + debugService.getPort());
+                if (localPort != -1) {
+                    String exe = ((NSDictionary) PropertyListParser.parse(new File(localAppPath, "Info.plist"))).objectForKey("CFBundleExecutable").toString();
+                    log("launchios " + new File(localAppPath, exe).getAbsolutePath() + " " + appPath + " " + localPort);
+                }
             }
     
             if (lockedRetriesLeft == launchOnLockedRetries) {
@@ -795,6 +800,21 @@ public class AppLauncher {
                         }
                         sb.append('C').append(signal).append(':').append(threadId);
                         sendGdbPacket(conn, encode(sb.toString()));
+                    } else if (payload.charAt(0) == 'X') {
+                        int signal = Integer.parseInt(payload.substring(1, 3), 16);
+                        String data = payload.substring(3);
+                        String description = null;
+                        if (data.contains("description:")) {
+                            description = new String(fromHex(data.replaceAll(".*description:([0-9a-fA-F]+).*", "$1")), "UTF8").trim();
+                            description = description.trim();
+                            description = description.isEmpty() ? null : description;
+                        }
+                        String message = signal > 0 ? "The app crashed with signal " + signal : "The app crashed";
+                        if (description != null) {
+                            message += ": " + description;
+                        }
+                        message += ". Check the device logs in Xcode (Window->Devices) for more info.";
+                        throw new RuntimeException(message);
                     } else {
                         throw new RuntimeException("Unexpected response " 
                                 + "from debugserver: " + response);

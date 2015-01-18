@@ -27,13 +27,14 @@ import org.robovm.rt.bro.*;
 import org.robovm.rt.bro.annotation.*;
 import org.robovm.rt.bro.ptr.*;
 import org.robovm.apple.dispatch.*;
+import org.robovm.apple.foundation.*;
 /*</imports>*/
 
 /*<javadoc>*/
 
 /*</javadoc>*/
 /*<annotations>*//*</annotations>*/
-/*<visibility>*/public/*</visibility>*/ class /*<name>*/CFSocketContext/*</name>*/ 
+/*<visibility>*//*</visibility>*/ class /*<name>*/CFSocketContext/*</name>*/ 
     extends /*<extends>*/Struct<CFSocketContext>/*</extends>*/ 
     /*<implements>*//*</implements>*/ {
 
@@ -48,51 +49,21 @@ import org.robovm.apple.dispatch.*;
         this.setInfo(info);
         this.setRetain(retain);
         this.setRelease(release);
-        this.setCopydescription(copyDescription);
+        this.setCopyDescription(copyDescription);
     }
     /*</constructors>*/
     /*<properties>*//*</properties>*/
     /*<members>*/
     @StructMember(0) public native @MachineSizedSInt long getVersion();
     @StructMember(0) public native CFSocketContext setVersion(@MachineSizedSInt long version);
-    
-    @Deprecated
-    @StructMember(0) public native @MachineSizedSInt long version();
-    @Deprecated
-    @StructMember(0) public native CFSocketContext version(@MachineSizedSInt long version);
-    
     @StructMember(1) public native VoidPtr getInfo();
     @StructMember(1) public native CFSocketContext setInfo(VoidPtr info);
-    
-    @Deprecated
-    @StructMember(1) public native VoidPtr info();
-    @Deprecated
-    @StructMember(1) public native CFSocketContext info(VoidPtr info);
-    
     @StructMember(2) public native FunctionPtr getRetain();
     @StructMember(2) public native CFSocketContext setRetain(FunctionPtr retain);
-    
-    @Deprecated
-    @StructMember(2) public native FunctionPtr retain();
-    @Deprecated
-    @StructMember(2) public native CFSocketContext retain(FunctionPtr retain);
-    
     @StructMember(3) public native FunctionPtr getRelease();
     @StructMember(3) public native CFSocketContext setRelease(FunctionPtr release);
-    
-    @Deprecated
-    @StructMember(3) public native FunctionPtr release();
-    @Deprecated
-    @StructMember(3) public native CFSocketContext release(FunctionPtr release);
-    
-    @StructMember(4) public native FunctionPtr getCopydescription();
-    @StructMember(4) public native CFSocketContext setCopydescription(FunctionPtr copyDescription);
-    
-    @Deprecated
-    @StructMember(4) public native FunctionPtr copyDescription();
-    @Deprecated
-    @StructMember(4) public native CFSocketContext copyDescription(FunctionPtr copyDescription);
-    
+    @StructMember(4) public native FunctionPtr getCopyDescription();
+    @StructMember(4) public native CFSocketContext setCopyDescription(FunctionPtr copyDescription);
     /*</members>*/
     /*<methods>*//*</methods>*/
 }

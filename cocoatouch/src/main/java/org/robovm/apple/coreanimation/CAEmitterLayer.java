@@ -31,6 +31,7 @@ import org.robovm.apple.foundation.*;
 import org.robovm.apple.coreimage.*;
 import org.robovm.apple.coretext.*;
 import org.robovm.apple.opengles.*;
+import org.robovm.apple.metal.*;
 /*</imports>*/
 
 /*<javadoc>*/
@@ -78,19 +79,19 @@ import org.robovm.apple.opengles.*;
     @Property(selector = "setEmitterDepth:")
     public native void setEmitterDepth(@MachineSizedFloat double v);
     @Property(selector = "emitterShape")
-    public native String getEmitterShape();
+    public native CAEmitterShape getEmitterShape();
     @Property(selector = "setEmitterShape:")
-    public native void setEmitterShape(String v);
+    public native void setEmitterShape(CAEmitterShape v);
     @Property(selector = "emitterMode")
-    public native NSString getEmitterMode();
+    public native CAEmitterMode getEmitterMode();
     @Property(selector = "setEmitterMode:")
-    public native void setEmitterMode(NSString v);
+    public native void setEmitterMode(CAEmitterMode v);
     @Property(selector = "renderMode")
-    public native NSString getRenderMode();
+    public native CAEmitterRenderMode getRenderMode();
     @Property(selector = "setRenderMode:")
-    public native void setRenderMode(NSString v);
+    public native void setRenderMode(CAEmitterRenderMode v);
     @Property(selector = "preservesDepth")
-    public native boolean isPreservesDepth();
+    public native boolean preservesDepth();
     @Property(selector = "setPreservesDepth:")
     public native void setPreservesDepth(boolean v);
     @Property(selector = "velocity")

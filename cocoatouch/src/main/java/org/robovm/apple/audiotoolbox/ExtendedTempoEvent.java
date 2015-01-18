@@ -49,13 +49,13 @@ import org.robovm.apple.coremedia.*;
     /*<constructors>*/
     public ExtendedTempoEvent() {}
     public ExtendedTempoEvent(double bpm) {
-        this.bpm(bpm);
+        this.setBpm(bpm);
     }
     /*</constructors>*/
     /*<properties>*//*</properties>*/
     /*<members>*/
-    @StructMember(0) public native double bpm();
-    @StructMember(0) public native ExtendedTempoEvent bpm(double bpm);
+    @StructMember(0) public native double getBpm();
+    @StructMember(0) public native ExtendedTempoEvent setBpm(double bpm);
     /*</members>*/
     /*<methods>*//*</methods>*/
 }

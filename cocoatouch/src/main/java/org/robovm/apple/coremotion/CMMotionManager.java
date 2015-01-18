@@ -111,7 +111,7 @@ import org.robovm.apple.foundation.*;
      * @since Available in iOS 5.0 and later.
      */
     @Property(selector = "showsDeviceMovementDisplay")
-    public native boolean isShowsDeviceMovementDisplay();
+    public native boolean showsDeviceMovementDisplay();
     /**
      * @since Available in iOS 5.0 and later.
      */

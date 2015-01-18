@@ -46,34 +46,62 @@ import org.robovm.apple.corelocation.*;
     /*<implements>*/implements UIAccessibilityIdentification/*</implements>*/ {
 
     /*<ptr>*/public static class UIImagePtr extends Ptr<UIImage, UIImagePtr> {}/*</ptr>*/
+    
+    public interface ImageSaveListener {
+        void didFinishSaving (UIImage image, NSError error);
+    }
+    
+    private static java.util.concurrent.atomic.AtomicLong id = new java.util.concurrent.atomic.AtomicLong();
+    private static final Selector didFinishSaving = Selector.register("image:didFinishSavingWithError:contextInfo:");
+    private static Map<Long, ListenerWrapper> listeners = new HashMap<>();
+    private static class ListenerWrapper extends NSObject {
+        private final ImageSaveListener listener;
+        private ListenerWrapper(ImageSaveListener listener, long contextInfo) {
+            this.listener = listener;
+            
+            synchronized (listeners) {
+                listeners.put(contextInfo, this);
+            }
+        }
+        @TypeEncoding("v@:@:^v")
+        @Method(selector = "image:didFinishSavingWithError:contextInfo:")
+        private void didFinishSaving(UIImage image, NSError error, @Pointer long contextInfo) {
+            listener.didFinishSaving(image, error);
+            
+            synchronized (listeners) {
+                listeners.remove(contextInfo);
+            }
+        }
+    }
+    
     /*<bind>*/static { ObjCRuntime.bind(UIImage.class); }/*</bind>*/
     /*<constants>*//*</constants>*/
     /*<constructors>*/
     public UIImage() {}
     protected UIImage(SkipInit skipInit) { super(skipInit); }
-    public UIImage(NSData data) { super((SkipInit) null); initObject(initWithData$(data)); }
+    public UIImage(NSData data) { super((SkipInit) null); initObject(init(data)); }
     /**
      * @since Available in iOS 6.0 and later.
      */
-    public UIImage(NSData data, @MachineSizedFloat double scale) { super((SkipInit) null); initObject(initWithData$scale$(data, scale)); }
-    public UIImage(CGImage cgImage) { super((SkipInit) null); initObject(initWithCGImage$(cgImage)); }
+    public UIImage(NSData data, @MachineSizedFloat double scale) { super((SkipInit) null); initObject(init(data, scale)); }
+    public UIImage(CGImage cgImage) { super((SkipInit) null); initObject(init(cgImage)); }
     /**
      * @since Available in iOS 4.0 and later.
      */
-    public UIImage(CGImage cgImage, @MachineSizedFloat double scale, UIImageOrientation orientation) { super((SkipInit) null); initObject(initWithCGImage$scale$orientation$(cgImage, scale, orientation)); }
+    public UIImage(CGImage cgImage, @MachineSizedFloat double scale, UIImageOrientation orientation) { super((SkipInit) null); initObject(init(cgImage, scale, orientation)); }
     /**
      * @since Available in iOS 5.0 and later.
      */
-    public UIImage(CIImage ciImage) { super((SkipInit) null); initObject(initWithCIImage$(ciImage)); }
+    public UIImage(CIImage ciImage) { super((SkipInit) null); initObject(init(ciImage)); }
     /**
      * @since Available in iOS 6.0 and later.
      */
-    public UIImage(CIImage ciImage, @MachineSizedFloat double scale, UIImageOrientation orientation) { super((SkipInit) null); initObject(initWithCIImage$scale$orientation$(ciImage, scale, orientation)); }
+    public UIImage(CIImage ciImage, @MachineSizedFloat double scale, UIImageOrientation orientation) { super((SkipInit) null); initObject(init(ciImage, scale, orientation)); }
     /*</constructors>*/
 
     public UIImage(File file) {
         super((SkipInit) null);
-        initObject(initWithContentsOfFile$(file.getAbsolutePath()));
+        initObject(initWithFile(file.getAbsolutePath()));
     }
     
     /*<properties>*/
@@ -152,40 +180,50 @@ import org.robovm.apple.corelocation.*;
     public static UIImage create(File file) {
         return createFromFile(file.getAbsolutePath());
     }
+    
+    public void saveToPhotosAlbum(ImageSaveListener listener) {
+        if (listener != null) {
+            long context = id.getAndIncrement();
+            ListenerWrapper l = new ListenerWrapper(listener, context);
+            saveToPhotosAlbum(l, didFinishSaving, context);
+        } else {
+            saveToPhotosAlbum(null, null, 0);
+        }
+    }
     /*<methods>*/
     @Bridge(symbol="UIImagePNGRepresentation", optional=true)
     public native NSData toPNGData();
     @Bridge(symbol="UIImageJPEGRepresentation", optional=true)
     public native NSData toJPEGData(@MachineSizedFloat double compressionQuality);
     @Bridge(symbol="UIImageWriteToSavedPhotosAlbum", optional=true)
-    public native void saveToPhotosAlbum(NSObject completionTarget, Selector completionSelector, VoidPtr contextInfo);
+    public native void saveToPhotosAlbum(NSObject completionTarget, Selector completionSelector, @Pointer long contextInfo);
     
     @Method(selector = "initWithContentsOfFile:")
-    protected native @Pointer long initWithContentsOfFile$(String path);
+    protected native @Pointer long initWithFile(String path);
     @Method(selector = "initWithData:")
-    protected native @Pointer long initWithData$(NSData data);
+    protected native @Pointer long init(NSData data);
     /**
      * @since Available in iOS 6.0 and later.
      */
     @Method(selector = "initWithData:scale:")
-    protected native @Pointer long initWithData$scale$(NSData data, @MachineSizedFloat double scale);
+    protected native @Pointer long init(NSData data, @MachineSizedFloat double scale);
     @Method(selector = "initWithCGImage:")
-    protected native @Pointer long initWithCGImage$(CGImage cgImage);
+    protected native @Pointer long init(CGImage cgImage);
     /**
      * @since Available in iOS 4.0 and later.
      */
     @Method(selector = "initWithCGImage:scale:orientation:")
-    protected native @Pointer long initWithCGImage$scale$orientation$(CGImage cgImage, @MachineSizedFloat double scale, UIImageOrientation orientation);
+    protected native @Pointer long init(CGImage cgImage, @MachineSizedFloat double scale, UIImageOrientation orientation);
     /**
      * @since Available in iOS 5.0 and later.
      */
     @Method(selector = "initWithCIImage:")
-    protected native @Pointer long initWithCIImage$(CIImage ciImage);
+    protected native @Pointer long init(CIImage ciImage);
     /**
      * @since Available in iOS 6.0 and later.
      */
     @Method(selector = "initWithCIImage:scale:orientation:")
-    protected native @Pointer long initWithCIImage$scale$orientation$(CIImage ciImage, @MachineSizedFloat double scale, UIImageOrientation orientation);
+    protected native @Pointer long init(CIImage ciImage, @MachineSizedFloat double scale, UIImageOrientation orientation);
     @Method(selector = "drawAtPoint:")
     public native void draw(@ByVal CGPoint point);
     @Method(selector = "drawAtPoint:blendMode:alpha:")

@@ -49,19 +49,19 @@ import org.robovm.apple.coremedia.*;
     /*<constructors>*/
     public CAFFileHeader() {}
     public CAFFileHeader(int mFileType, short mFileVersion, short mFileFlags) {
-        this.mFileType(mFileType);
-        this.mFileVersion(mFileVersion);
-        this.mFileFlags(mFileFlags);
+        this.setMFileType(mFileType);
+        this.setMFileVersion(mFileVersion);
+        this.setMFileFlags(mFileFlags);
     }
     /*</constructors>*/
     /*<properties>*//*</properties>*/
     /*<members>*/
-    @StructMember(0) public native int mFileType();
-    @StructMember(0) public native CAFFileHeader mFileType(int mFileType);
-    @StructMember(1) public native short mFileVersion();
-    @StructMember(1) public native CAFFileHeader mFileVersion(short mFileVersion);
-    @StructMember(2) public native short mFileFlags();
-    @StructMember(2) public native CAFFileHeader mFileFlags(short mFileFlags);
+    @StructMember(0) public native int getMFileType();
+    @StructMember(0) public native CAFFileHeader setMFileType(int mFileType);
+    @StructMember(1) public native short getMFileVersion();
+    @StructMember(1) public native CAFFileHeader setMFileVersion(short mFileVersion);
+    @StructMember(2) public native short getMFileFlags();
+    @StructMember(2) public native CAFFileHeader setMFileFlags(short mFileFlags);
     /*</members>*/
     /*<methods>*//*</methods>*/
 }

@@ -49,22 +49,22 @@ import org.robovm.apple.coremedia.*;
     /*<constructors>*/
     public MusicDeviceNoteParams() {}
     public MusicDeviceNoteParams(int argCount, float mPitch, float mVelocity, NoteParamsControlValue mControls) {
-        this.argCount(argCount);
-        this.mPitch(mPitch);
-        this.mVelocity(mVelocity);
-        this.mControls(mControls);
+        this.setArgCount(argCount);
+        this.setMPitch(mPitch);
+        this.setMVelocity(mVelocity);
+        this.setMControls(mControls);
     }
     /*</constructors>*/
     /*<properties>*//*</properties>*/
     /*<members>*/
-    @StructMember(0) public native int argCount();
-    @StructMember(0) public native MusicDeviceNoteParams argCount(int argCount);
-    @StructMember(1) public native float mPitch();
-    @StructMember(1) public native MusicDeviceNoteParams mPitch(float mPitch);
-    @StructMember(2) public native float mVelocity();
-    @StructMember(2) public native MusicDeviceNoteParams mVelocity(float mVelocity);
-    @StructMember(3) public native @Array({1}) NoteParamsControlValue mControls();
-    @StructMember(3) public native MusicDeviceNoteParams mControls(@Array({1}) NoteParamsControlValue mControls);
+    @StructMember(0) public native int getArgCount();
+    @StructMember(0) public native MusicDeviceNoteParams setArgCount(int argCount);
+    @StructMember(1) public native float getMPitch();
+    @StructMember(1) public native MusicDeviceNoteParams setMPitch(float mPitch);
+    @StructMember(2) public native float getMVelocity();
+    @StructMember(2) public native MusicDeviceNoteParams setMVelocity(float mVelocity);
+    @StructMember(3) public native @Array({1}) NoteParamsControlValue getMControls();
+    @StructMember(3) public native MusicDeviceNoteParams setMControls(@Array({1}) NoteParamsControlValue mControls);
     /*</members>*/
     /*<methods>*//*</methods>*/
 }

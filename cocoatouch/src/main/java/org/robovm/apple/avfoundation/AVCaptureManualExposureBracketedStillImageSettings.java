@@ -64,6 +64,6 @@ import org.robovm.apple.mediatoolbox.*;
     /*<members>*//*</members>*/
     /*<methods>*/
     @Method(selector = "manualExposureSettingsWithExposureDuration:ISO:")
-    public static native AVCaptureManualExposureBracketedStillImageSettings manualExposureSettingsWithExposureDuration$ISO$(@ByVal CMTime duration, float ISO);
+    public static native AVCaptureManualExposureBracketedStillImageSettings create(@ByVal CMTime duration, float ISO);
     /*</methods>*/
 }

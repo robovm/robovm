@@ -50,7 +50,7 @@ import org.robovm.apple.dispatch.*;
     /*<constructors>*/
     public NSScanner() {}
     protected NSScanner(SkipInit skipInit) { super(skipInit); }
-    public NSScanner(String string) { super((SkipInit) null); initObject(initWithString$(string)); }
+    public NSScanner(String string) { super((SkipInit) null); initObject(init(string)); }
     /*</constructors>*/
     /*<properties>*/
     @Property(selector = "string")
@@ -197,7 +197,7 @@ import org.robovm.apple.dispatch.*;
     }
     /*<methods>*/
     @Method(selector = "initWithString:")
-    protected native @Pointer long initWithString$(String string);
+    protected native @Pointer long init(String string);
     @Method(selector = "scanInt:")
     private native boolean scanInt(IntPtr result);
     /**

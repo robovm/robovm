@@ -16,6 +16,10 @@
 #define _GNU_SOURCE
 #include <pthread.h>
 #include <robovm.h>
+#if defined(DARWIN)
+# include <mach/mach.h>
+# include <unistd.h>
+#endif
 #include "private.h"
 #include "utlist.h"
 
@@ -29,12 +33,16 @@
                          |MAKE_GC_BITMAP(offsetof(Thread, waitMonitor)) \
                          |MAKE_GC_BITMAP(offsetof(Thread, next)))
 
+// Maximum thread id, 32767 (1 << 15 - 1), as Thread.threadId is a signed jint
+#define MAX_THREAD_ID ((1 << 15) - 1)
+
 static Mutex threadsLock;
 static pthread_cond_t threadStartCond;
 static Thread* threads = NULL; // List of currently running threads
 static pthread_cond_t threadsChangedCond; // Condition variable notified when the list of threads changes
 static pthread_key_t tlsEnvKey;
-static jint nextThreadId = 1;
+static pthread_key_t tlsThreadKey;
+static BitVector* threadIdMap;
 static Method* getUncaughtExceptionHandlerMethod;
 static Method* uncaughtExceptionMethod;
 static Method* removeThreadMethod;
@@ -49,37 +57,46 @@ inline void rvmUnlockThreadsList() {
     rvmUnlockMutex(&threadsLock);
 }
 
+#if defined(DARWIN)
+#ifdef _LP64
+# define INFO_COUNT VM_REGION_BASIC_INFO_COUNT_64
+# define VM_REGION vm_region_64
+#else
+# define INFO_COUNT VM_REGION_BASIC_INFO_COUNT
+# define VM_REGION vm_region
+#endif
+static jboolean isGuardPage(void* page) {
+    vm_size_t vmsize;
+    vm_address_t address = (vm_address_t) page;
+    vm_region_basic_info_data_t info;
+    mach_msg_type_number_t info_count = INFO_COUNT;
+    memory_object_name_t object;
+
+    kern_return_t status = VM_REGION(mach_task_self(), &address, 
+            &vmsize, VM_REGION_BASIC_INFO, (vm_region_info_t) &info, 
+            &info_count, &object);
+    assert(status == 0);
+    return (info.protection & VM_PROT_READ) == 0 ? TRUE : FALSE;
+}
+#endif
+
 /**
  * Determines the stack address of the current thread
  */
 static void* getStackAddress(void) {
     void* result = NULL;
-    size_t stackSize = 0;
     pthread_t self = pthread_self();
 #if defined(DARWIN)
+    // pthread_get_stackaddr_np() returns the start of the stack (i.e. its highest address).
+    // Decrement by page size until vm_region() reports a read protected page. The lowest
+    // unprotected page is the start of the stack.
     result = pthread_get_stackaddr_np(self);
-    if (pthread_main_np()) {
-        // pthread_get_stacksize_np() cannot be relied upon under OSX 10.9 and
-        // iOS 7 so we need to implement a workaround here. See issue #274.
-#if defined(IOS)
-        size_t guardSize = 0;
-        pthread_attr_t attr;
-        pthread_attr_init(&attr);
-        pthread_attr_getguardsize(&attr, &guardSize);
-        // Stack size for the main thread is 1MB on iOS including the guard page size
-        stackSize = 1 * 1024 * 1024 - guardSize;
-#else // MACOSX
-        // Stack size for the main thread is 8MB on OSX excluding the guard page size
-        stackSize = 8 * 1024 * 1024;
-#endif
-    } else {
-        // For other threads pthread_get_stacksize_np() returns the correct stack size excluding guard page size
-        stackSize = pthread_get_stacksize_np(self);
+    long pageSize = sysconf(_SC_PAGE_SIZE);
+    while (!isGuardPage(result - pageSize)) {
+        result -= pageSize;
     }
-    // pthread_get_stackaddr_np returns the beginning (highest address) of the stack
-    // while we want the address of the memory area allocated for the stack (lowest address).
-    result -= stackSize;
 #else
+    size_t stackSize = 0;
     size_t guardSize = 0;
     pthread_attr_t attr;
     pthread_getattr_np(self, &attr);
@@ -100,6 +117,22 @@ static Thread* allocThread(Env* env) {
     return thread;
 }
 
+static jint getNextThreadId() {
+    // NOTE: threadsLock must be held
+    // thread ids start at 1
+    jint threadId = rvmAllocBit(threadIdMap) + 1;
+    assert(threadId != 0);
+    return threadId;
+}
+
+static void freeThreadId(jint threadId) {
+    // NOTE: threadsLock must be held
+    // thread ids start at 1
+    assert(threadId != 0);
+    rvmClearBit(threadIdMap, threadId - 1);
+    assert(!rvmIsBitSet(threadIdMap, threadId - 1));
+}
+
 static jboolean initThread(Env* env, Thread* thread, JavaThread* threadObj) {
     // NOTE: threadsLock must be held
     int err = 0;
@@ -108,7 +141,7 @@ static jboolean initThread(Env* env, Thread* thread, JavaThread* threadObj) {
         rvmThrowInternalErrorErrno(env, err);
         return FALSE;
     }
-    thread->threadId = nextThreadId++;
+    thread->threadId = getNextThreadId();
     thread->threadObj = threadObj;
     threadObj->threadPtr = PTR_TO_LONG(thread);
     env->currentThread = thread;
@@ -131,12 +164,28 @@ static void clearThreadEnv() {
     pthread_setspecific(tlsEnvKey, NULL);
 }
 
+/**
+* Stores the current thread in a TLS
+*/
+static void setThreadTLS(Env* env, Thread* thread) {
+    int err = pthread_setspecific(tlsThreadKey, thread);
+    assert(err == 0);
+    if (err != 0) {
+        rvmThrowInternalErrorErrno(env, err);
+    }
+}
+
+static void clearThreadTLS() {
+    pthread_setspecific(tlsThreadKey, NULL);
+}
+
 static jint attachThread(VM* vm, Env** envPtr, char* name, Object* group, jboolean daemon) {
     Env* env = *envPtr; // env is NULL if rvmAttachCurrentThread() was called. If non NULL rvmInitThreads() was called.
     if (!env) {
-        // If the thread was already attached there's an Env* associated with the thread.
+        // If the thread was already attached there's an Env* and a Thread* associated with the thread.
         env = (Env*) pthread_getspecific(tlsEnvKey);
-        if (env) {
+        Thread* thread = (Thread*) pthread_getspecific(tlsThreadKey);
+        if (env && thread) {
             env->attachCount++;
             *envPtr = env;
             return JNI_OK;
@@ -192,6 +241,7 @@ static jint attachThread(VM* vm, Env** envPtr, char* name, Object* group, jboole
     *envPtr = env;
     rvmHookThreadAttached(env, threadObj, thread);
 
+    setThreadTLS(env, thread);
     return JNI_OK;
 
 error_remove:
@@ -202,6 +252,7 @@ error_remove:
 error:
     if (env) env->currentThread = NULL;
     clearThreadEnv();
+    clearThreadTLS();
     return JNI_ERR;
 }
 
@@ -222,12 +273,12 @@ static void threadExitUncaughtException(Env* env, Thread* thread) {
     rvmExceptionClear(env);
 }
 
-
 static jint detachThread(Env* env, jboolean ignoreAttachCount, jboolean unregisterGC, jboolean wasAttached) {
     env->attachCount--;
     if (!ignoreAttachCount && env->attachCount > 0) {
         return JNI_OK;
     }
+    env->attachCount = 0;
 
     if (env->gatewayFrames) {
         rvmAbort("Cannot detach thread when there are non native frames on the call stack");
@@ -264,7 +315,9 @@ static jint detachThread(Env* env, jboolean ignoreAttachCount, jboolean unregist
     DL_DELETE(threads, thread);
     pthread_cond_broadcast(&threadsChangedCond);
     env->currentThread = NULL;
-    pthread_setspecific(tlsEnvKey, NULL);
+    clearThreadEnv();
+    clearThreadTLS();
+    freeThreadId(thread->threadId);
     rvmUnlockThreadsList();
 
     if (unregisterGC) {
@@ -275,14 +328,33 @@ static jint detachThread(Env* env, jboolean ignoreAttachCount, jboolean unregist
     return JNI_OK;
 }
 
+/**
+ * Called as a destructor for the Env TLS when an attached thread exits. If
+ * env->attachCount > 0 it means detachThread() won't be called for the
+ * thread. detachThread() sets env->attachCount to 0 before it clears the Env
+ * TLS so the call to this destructor cannot have been triggered by the
+ * clearing of the TLS by detachThread().
+ */
+static void attachedThreadExiting(Env* env) {
+    if (env->attachCount > 0) {
+        // The Env TLS has been cleared. We need it to be set.
+        setThreadEnv(env);
+        // The Thread TLS may have been cleared. We need it to be set.
+        setThreadTLS(env, env->currentThread);
+        detachThread(env, TRUE, TRUE, TRUE);
+    }
+}
+
 jboolean rvmInitThreads(Env* env) {
     gcAddRoot(&threads);
     threadGCKind = gcNewDirectBitmapKind(THREAD_GC_BITMAP);
-
+    if ((threadIdMap = rvmAllocBitVector(MAX_THREAD_ID, TRUE)) == 0) return FALSE;
     if (rvmInitMutex(&threadsLock) != 0) return FALSE;
-    if (pthread_key_create(&tlsEnvKey, NULL) != 0) return FALSE;
+    if (pthread_key_create(&tlsEnvKey, (void (*)(void *)) attachedThreadExiting) != 0) return FALSE;
+    if (pthread_key_create(&tlsThreadKey, NULL) != 0) return FALSE;
     if (pthread_cond_init(&threadStartCond, NULL) != 0) return FALSE;
     if (pthread_cond_init(&threadsChangedCond, NULL) != 0) return FALSE;
+
     getUncaughtExceptionHandlerMethod = rvmGetInstanceMethod(env, java_lang_Thread, "getUncaughtExceptionHandler", "()Ljava/lang/Thread$UncaughtExceptionHandler;");
     if (!getUncaughtExceptionHandlerMethod) return FALSE;
     Class* uncaughtExceptionHandler = rvmFindClassInClasspathForLoader(env, "java/lang/Thread$UncaughtExceptionHandler", NULL);
@@ -356,6 +428,7 @@ static void* startThreadEntryPoint(void* _args) {
         rvmHookThreadStarting(env, threadObj, thread);
         Method* run = rvmGetInstanceMethod(env, java_lang_Thread, "run", "()V");
         if (run) {
+            setThreadTLS(env, thread);
             jvalue emptyArgs[0];
             rvmCallVoidInstanceMethodA(env, (Object*) threadObj, run, emptyArgs);
         }
@@ -470,6 +543,18 @@ void rvmThreadNameChanged(Env* env, Thread* thread) {
     rvmLockThreadsList();
     pthread_cond_broadcast(&threadsChangedCond);
     rvmUnlockThreadsList();
+}
+
+jboolean rvmHasCurrentThread(Env* env) {
+    // check env separately so we don't have to
+    // do a TLS lookup
+    if(!env) {
+        return FALSE;
+    }
+    if(!pthread_getspecific(tlsThreadKey)) {
+        return FALSE;
+    }
+    return TRUE;
 }
 
 Thread* rvmGetThreadByThreadId(Env* env, uint32_t threadId) {

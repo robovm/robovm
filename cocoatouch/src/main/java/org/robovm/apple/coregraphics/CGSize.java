@@ -53,20 +53,8 @@ import org.robovm.apple.uikit.*;
     /*<members>*/
     @StructMember(0) public native @MachineSizedFloat double getWidth();
     @StructMember(0) public native CGSize setWidth(@MachineSizedFloat double width);
-    
-    @Deprecated
-    @StructMember(0) public native @MachineSizedFloat double width();
-    @Deprecated
-    @StructMember(0) public native CGSize width(@MachineSizedFloat double width);
-    
     @StructMember(1) public native @MachineSizedFloat double getHeight();
     @StructMember(1) public native CGSize setHeight(@MachineSizedFloat double height);
-    
-    @Deprecated
-    @StructMember(1) public native @MachineSizedFloat double height();
-    @Deprecated
-    @StructMember(1) public native CGSize height(@MachineSizedFloat double height);
-    
     /*</members>*/
 
     public static CGSize fromString(String string) {

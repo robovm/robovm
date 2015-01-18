@@ -94,7 +94,7 @@ import org.robovm.apple.coremedia.*;
      * @since Available in iOS 2.1 and later.
      */
     @Bridge(symbol="ExtAudioFileGetPropertyInfo", optional=true)
-    public native int getPropertyInfo(int inPropertyID, IntPtr outSize, BytePtr outWritable);
+    public native int getPropertyInfo(int inPropertyID, IntPtr outSize, BooleanPtr outWritable);
     /**
      * @since Available in iOS 2.1 and later.
      */

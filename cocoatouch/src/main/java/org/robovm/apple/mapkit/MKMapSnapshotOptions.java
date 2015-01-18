@@ -69,11 +69,11 @@ import org.robovm.apple.dispatch.*;
     @Property(selector = "setMapType:")
     public native void setMapType(MKMapType v);
     @Property(selector = "showsPointsOfInterest")
-    public native boolean isShowsPointsOfInterest();
+    public native boolean showsPointsOfInterest();
     @Property(selector = "setShowsPointsOfInterest:")
     public native void setShowsPointsOfInterest(boolean v);
     @Property(selector = "showsBuildings")
-    public native boolean isShowsBuildings();
+    public native boolean showsBuildings();
     @Property(selector = "setShowsBuildings:")
     public native void setShowsBuildings(boolean v);
     @Property(selector = "size")

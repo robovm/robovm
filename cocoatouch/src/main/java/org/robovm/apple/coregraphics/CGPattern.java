@@ -70,8 +70,8 @@ import org.robovm.apple.uikit.*;
     public static CGPattern create(CGRect bounds, CGAffineTransform matrix, double xStep, double yStep, CGPatternTiling tiling, boolean isColored, DrawPattern drawPattern) {
         long infoId = CGPattern.infoId.getAndIncrement();
         CGPatternCallbacks callbacks = new CGPatternCallbacks();
-        callbacks.drawPattern(new FunctionPtr(cbDrawPattern));
-        callbacks.releaseInfo(new FunctionPtr(cbReleaseInfo));
+        callbacks.setDrawPattern(new FunctionPtr(cbDrawPattern));
+        callbacks.setReleaseInfo(new FunctionPtr(cbReleaseInfo));
         CGPattern result = create(infoId, bounds, matrix, xStep, yStep, tiling, isColored, callbacks);
         if (result != null) {
             synchronized (infos) {

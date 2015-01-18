@@ -26,6 +26,24 @@
 
 #define LOG_TAG "hooks"
 
+#define CMD_READ_MEMORY 1
+#define CMD_READ_CSTRING 2
+#define CMD_WRITE_MEMORY 3
+#define CMD_WRITE_BIT 4
+
+#define CMD_THREAD_SUSPEND 5
+#define CMD_THREAD_RESUME 6
+
+#define CMD_VM_SUSPEND 7
+#define CMD_VM_RESUME 8
+
+#define EVT_THREAD_ATTACHED 109
+#define EVT_THREAD_STARTED 110
+#define EVT_THREAD_DETTACHED 111
+#define EVT_THREAD_SUSPENDED 112
+#define EVT_THREAD_RESUMED 113
+#define EVT_BREAKPOINT 114
+
 typedef struct {
     int errorCode;
     char* message;
@@ -53,86 +71,6 @@ pthread_t debugThread;
 Mutex writeMutex;
 void* channelLoop(void* data);
 
-void rvmHookDebuggerAttached(Options* options) {
-    DEBUG("Debugger attached");
-}
-
-void rvmHookWaitForAttach(Options* options) {
-    if (attachFlag == FALSE && waitForAttachTime < 15) {
-        waitForAttachTime++;
-        sleep(1);
-        DEBUG("Waiting for debugger to attach");
-        rvmHookWaitForAttach(options);
-    } else {
-        if (attachFlag) {
-            rvmHookDebuggerAttached(options);
-        }
-    }
-}
-
-void _rvmHookBeforeMainThreadAttached(Env* env) {
-    DEBUG("Before main thread attached");
-}
-
-void _rvmHookBeforeAppEntryPoint(Env* env, Class* clazz, Method* method, ObjectArray* args) {
-    DEBUGF("Before app entry point %s.%s%s", clazz->name, method->name, method->desc);
-}
-
-void _rvmHookThreadCreated(Env* env, JavaThread* threadObj) {
-    DEBUGF("Thread %lld created", threadObj->id);
-}
-
-void _rvmHookThreadAttached(Env* env, JavaThread* threadObj, Thread* thread) {
-    DEBUGF("Thread %lld attached", threadObj->id);
-}
-
-void _rvmHookThreadStarting(Env* env, JavaThread* threadObj, Thread* thread) {
-    DEBUGF("Thread %lld starting", threadObj->id);
-}
-
-void _rvmHookThreadDetaching(Env* env, JavaThread* threadObj, Thread* thread, Object* throwable) {
-    DEBUGF("Thread %lld detaching", threadObj->id);
-}
-
-jboolean _rvmHookSetupTCPChannel(Options* options) {
-    DEBUG("Setting up TCP channel");
-    listeningSocket = socket(AF_INET, SOCK_STREAM, 0);
-    if (listeningSocket < 0) {
-        return FALSE;
-    }
-    int yes = 1;
-    setsockopt(listeningSocket, SOL_SOCKET, SO_REUSEADDR, &yes, sizeof(int));
-
-    struct sockaddr_in serverAddr;
-    memset(&serverAddr, 0, sizeof(serverAddr));
-    serverAddr.sin_family = AF_INET;
-    serverAddr.sin_addr.s_addr = INADDR_ANY;
-    if (bind(listeningSocket, (struct sockaddr *) &serverAddr, sizeof(serverAddr))) {
-        DEBUGF("Couldn't bind debug socket, errno: %d", errno);
-        close(listeningSocket);
-        return FALSE;
-    }
-    if (listen(listeningSocket, 1)) {
-        DEBUGF("Couldn't listen on debug socket, errno: %d", errno);
-        close(listeningSocket);
-        return FALSE;
-    }
-    socklen_t len = sizeof(serverAddr);
-    getsockname(listeningSocket, (struct sockaddr *) &serverAddr, &len);
-    debugPort = ntohs(serverAddr.sin_port);
-    DEBUGF("Listening for debug client on port %u", debugPort);
-    if (options->printDebugPort) {
-        if (options->debugPortFile) {
-            FILE *f = fopen(options->debugPortFile, "w");
-            if (!f) return FALSE;
-            fprintf(f, "%d", debugPort);
-            fclose(f);
-        } else {
-            fprintf(stderr, "[DEBUG] %s: debugPort=%d\n", LOG_TAG, debugPort);
-        }
-    }
-    return TRUE;
-}
 
 jint swap32(jint val) {
     val = ((val << 8) & 0xff00ff00 ) | ((val >> 8) & 0xff00ff );
@@ -238,6 +176,112 @@ jboolean checkError(ChannelError* error) {
     }
 }
 
+void rvmHookDebuggerAttached(Options* options) {
+    DEBUG("Debugger attached");
+}
+
+void rvmHookWaitForAttach(Options* options) {
+    if (attachFlag == FALSE && waitForAttachTime < 15) {
+        waitForAttachTime++;
+        sleep(1);
+        DEBUG("Waiting for debugger to attach");
+        rvmHookWaitForAttach(options);
+    } else {
+        if (attachFlag) {
+            rvmHookDebuggerAttached(options);
+        }
+    }
+}
+
+void _rvmHookBeforeMainThreadAttached(Env* env) {
+    DEBUG("Before main thread attached");
+}
+
+void _rvmHookBeforeAppEntryPoint(Env* env, Class* clazz, Method* method, ObjectArray* args) {
+    DEBUGF("Before app entry point %s.%s%s", clazz->name, method->name, method->desc);
+}
+
+void _rvmHookThreadCreated(Env* env, JavaThread* threadObj) {
+    DEBUGF("Thread %lld created", threadObj->id);
+}
+
+void _rvmHookThreadAttached(Env* env, JavaThread* threadObj, Thread* thread) {
+    DEBUGF("Thread %p attached, threadObj: %p, thread: %p", threadObj->id, threadObj, thread);
+    rvmLockMutex(&writeMutex);
+    ChannelError error = { 0 };
+    writeChannelByte(clientSocket, EVT_THREAD_ATTACHED, &error);
+    writeChannelLong(clientSocket, 0, &error);
+    writeChannelLong(clientSocket, 16, &error);
+    writeChannelLong(clientSocket, (jlong)threadObj, &error);
+    writeChannelLong(clientSocket, (jlong)thread, &error);
+    rvmUnlockMutex(&writeMutex);
+}
+
+void _rvmHookThreadStarting(Env* env, JavaThread* threadObj, Thread* thread) {
+    DEBUGF("Thread %lld starting, threadObj: %p, thread: %p", threadObj->id, threadObj, thread);
+    rvmLockMutex(&writeMutex);
+    ChannelError error = { 0 };
+    writeChannelByte(clientSocket, EVT_THREAD_STARTED, &error);
+    writeChannelLong(clientSocket, 0, &error);
+    writeChannelLong(clientSocket, 16, &error);
+    writeChannelLong(clientSocket, (jlong)threadObj, &error);
+    writeChannelLong(clientSocket, (jlong)thread, &error);
+    rvmUnlockMutex(&writeMutex);
+}
+
+void _rvmHookThreadDetaching(Env* env, JavaThread* threadObj, Thread* thread, Object* throwable) {
+    DEBUGF("Thread %p detaching, threadObj: %p, thread: %p, throwable: %p", threadObj->id, threadObj, thread, throwable);
+    rvmLockMutex(&writeMutex);
+    ChannelError error = { 0 };
+    writeChannelByte(clientSocket, EVT_THREAD_DETTACHED, &error);
+    writeChannelLong(clientSocket, 0, &error);
+    writeChannelLong(clientSocket, 24, &error);
+    writeChannelLong(clientSocket, (jlong)threadObj, &error);
+    writeChannelLong(clientSocket, (jlong)thread, &error);
+    writeChannelLong(clientSocket, (jlong)throwable, &error);
+    rvmUnlockMutex(&writeMutex);
+}
+
+jboolean _rvmHookSetupTCPChannel(Options* options) {
+    DEBUG("Setting up TCP channel");
+    listeningSocket = socket(AF_INET, SOCK_STREAM, 0);
+    if (listeningSocket < 0) {
+        return FALSE;
+    }
+    int yes = 1;
+    setsockopt(listeningSocket, SOL_SOCKET, SO_REUSEADDR, &yes, sizeof(int));
+
+    struct sockaddr_in serverAddr;
+    memset(&serverAddr, 0, sizeof(serverAddr));
+    serverAddr.sin_family = AF_INET;
+    serverAddr.sin_addr.s_addr = INADDR_ANY;
+    if (bind(listeningSocket, (struct sockaddr *) &serverAddr, sizeof(serverAddr))) {
+        DEBUGF("Couldn't bind debug socket, errno: %d", errno);
+        close(listeningSocket);
+        return FALSE;
+    }
+    if (listen(listeningSocket, 1)) {
+        DEBUGF("Couldn't listen on debug socket, errno: %d", errno);
+        close(listeningSocket);
+        return FALSE;
+    }
+    socklen_t len = sizeof(serverAddr);
+    getsockname(listeningSocket, (struct sockaddr *) &serverAddr, &len);
+    debugPort = ntohs(serverAddr.sin_port);
+    DEBUGF("Listening for debug client on port %u", debugPort);
+    if (options->printDebugPort) {
+        if (options->debugPortFile) {
+            FILE *f = fopen(options->debugPortFile, "w");
+            if (!f) return FALSE;
+            fprintf(f, "%d", debugPort);
+            fclose(f);
+        } else {
+            fprintf(stderr, "[DEBUG] %s: debugPort=%d\n", LOG_TAG, debugPort);
+        }
+    }
+    return TRUE;
+}
+
 void handleReadMemory(char req, jlong reqId, jlong payloadSize, ChannelError* error) {
     jlong addr = readChannelLong(clientSocket, error);
     if(checkError(error)) return;
@@ -247,6 +291,7 @@ void handleReadMemory(char req, jlong reqId, jlong payloadSize, ChannelError* er
 
     DEBUGF("Reading memory: %p, %lu bytes", addr, numBytes);
     rvmLockMutex(&writeMutex);
+    writeChannelByte(clientSocket, CMD_READ_MEMORY, error);
     writeChannelLong(clientSocket, reqId, error);
     writeChannelLong(clientSocket, numBytes, error);
     writeChannel(clientSocket, (void*)addr, numBytes, error);
@@ -260,6 +305,7 @@ void handleReadString(char req, jlong reqId, jlong payloadSize, ChannelError* er
     DEBUGF("Reading string: %p, %s", addr, (char*)addr);
     rvmLockMutex(&writeMutex);
     size_t len = strlen((char*)addr);
+    writeChannelByte(clientSocket, CMD_READ_CSTRING, error);
     writeChannelLong(clientSocket, reqId, error);
     writeChannelLong(clientSocket, len, error);
     writeChannel(clientSocket, (void*)addr, len, error);
@@ -269,10 +315,10 @@ void handleReadString(char req, jlong reqId, jlong payloadSize, ChannelError* er
 void handleRequest(char req, jlong reqId, jlong payloadSize, ChannelError* error) {
     DEBUGF("req: %c, reqId: %lu, payloadSize: %lu", req, reqId, payloadSize);
     switch(req) {
-        case 'r':
+        case CMD_READ_MEMORY:
             handleReadMemory(req, reqId, payloadSize, error);
             break;
-        case 'c':
+        case CMD_READ_CSTRING:
             handleReadString(req, reqId, payloadSize, error);
             break;
         default:
@@ -313,9 +359,7 @@ jboolean _rvmHookHandshake() {
 }
 
 void* channelLoop(void* data) {
-    ChannelError error;
-    error.errorCode = 0;
-    error.message = 0;
+    ChannelError error = { 0 };
 
     DEBUG("Starting debug thread loop");
     while(1) {

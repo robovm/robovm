@@ -94,7 +94,7 @@ void _rvmHookThreadDetaching(Env* env, JavaThread* threadObj, Thread* thread, Ob
     DEBUGF("Thread %lld detaching", threadObj->id);
 }
 
-jboolean _rvmHookSetupTCPChannel() {
+jboolean _rvmHookSetupTCPChannel(Options* options) {
     DEBUG("Setting up TCP channel");
     listeningSocket = socket(AF_INET, SOCK_STREAM, 0);
     if (listeningSocket < 0) {
@@ -121,6 +121,16 @@ jboolean _rvmHookSetupTCPChannel() {
     getsockname(listeningSocket, (struct sockaddr *) &serverAddr, &len);
     debugPort = ntohs(serverAddr.sin_port);
     DEBUGF("Listening for debug client on port %u", debugPort);
+    if (options->printDebugPort) {
+        if (options->debugPortFile) {
+            FILE *f = fopen(options->debugPortFile, "w");
+            if (!f) return FALSE;
+            fprintf(f, "%d", debugPort);
+            fclose(f);
+        } else {
+            fprintf(stderr, "[DEBUG] %s: debugPort=%d\n", LOG_TAG, debugPort);
+        }
+    }
     return TRUE;
 }
 

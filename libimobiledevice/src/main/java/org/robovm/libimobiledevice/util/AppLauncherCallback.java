@@ -27,6 +27,8 @@ import org.robovm.libimobiledevice.IDevice;
 public interface AppLauncherCallback {
     public void setAppLaunchInfo(AppLauncherInfo info);
     
+    public void setDebugPort(int debugPort);
+    
     static class AppLauncherInfo {
         final IDevice device;
         final String remoteAppPath;

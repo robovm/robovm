@@ -154,6 +154,14 @@ static void parseArg(char* arg, Options* options) {
         }
     } else if (startsWith(arg, "PrintPID")) {
         options->printPID = TRUE;
+    } else if (startsWith(arg, "PrintDebugPort=")) {
+        options->printDebugPort = TRUE;
+        if (!options->debugPortFile) {
+            char* s = strdup(&arg[15]);
+            options->debugPortFile = s;
+        }
+    } else if (startsWith(arg, "PrintDebugPort")) {
+        options->printDebugPort = TRUE;
     } else if (startsWith(arg, "D")) {
         char* s = strdup(&arg[1]);
         // Split the arg string on the '='. 'key' will have the

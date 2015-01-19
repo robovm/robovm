@@ -23,6 +23,7 @@
 #include <string.h>
 #include <errno.h>
 #include <netinet/tcp.h>
+#include <time.h>
 
 #define LOG_TAG "hooks"
 
@@ -43,6 +44,7 @@
 #define EVT_THREAD_SUSPENDED 112
 #define EVT_THREAD_RESUMED 113
 #define EVT_BREAKPOINT 114
+#define EVT_THREAD_STEPPED 115
 
 typedef struct {
     int errorCode;
@@ -54,6 +56,9 @@ jboolean attachFlag = FALSE;
 
 // timeout counter
 static jint waitForAttachTime = 0;
+
+// set when receiving a vm suspend cmd
+jboolean resumeFlag = FALSE;
 
 // socket on which we wait for a TCP connection
 // from the debugger
@@ -69,21 +74,27 @@ int clientSocket = 0;
 // thread handling requests from the debugger
 pthread_t debugThread;
 Mutex writeMutex;
-void* channelLoop(void* data);
+static void* channelLoop(void* data);
 
+static void nsleep(jlong millis) {
+    struct timespec time;
+    time.tv_sec = 0;
+    time.tv_nsec = millis * 1000000l;
+    nanosleep(&time , 0);
+}
 
-jint swap32(jint val) {
+static jint swap32(jint val) {
     val = ((val << 8) & 0xff00ff00 ) | ((val >> 8) & 0xff00ff );
     return (val << 16) | (val >> 16);
 }
 
-jlong swap64(jlong val) {
+static jlong swap64(jlong val) {
     val = ((val << 8) & 0xff00ff00ff00ff00ULL ) | ((val >> 8) & 0x00ff00ff00ff00ffULL );
     val = ((val << 16) & 0xffff0000ffff0000ULL ) | ((val >> 16) & 0x0000ffff0000ffffULL );
     return (val << 32) | (val >> 32);
 }
 
-void writeChannel(int socket, void* buf, int numBytes, ChannelError* error) {
+static void writeChannel(int socket, void* buf, int numBytes, ChannelError* error) {
     if(numBytes == 0) {
         return;
     }
@@ -108,21 +119,21 @@ void writeChannel(int socket, void* buf, int numBytes, ChannelError* error) {
     }
 }
 
-void writeChannelByte(int socket, char val, ChannelError* error) {
+static void writeChannelByte(int socket, char val, ChannelError* error) {
     writeChannel(socket, &val, 1, error);
 }
 
-void writeChannelInt(int socket, jint val, ChannelError* error) {
+static void writeChannelInt(int socket, jint val, ChannelError* error) {
     val = swap32(val);
     writeChannel(socket, &val, 4, error);
 }
 
-void writeChannelLong(int socket, jlong val, ChannelError* error) {
+static void writeChannelLong(int socket, jlong val, ChannelError* error) {
     val = swap64(val);
     writeChannel(socket, &val, 8, error);
 }
 
-void readChannel(int socket, void* buf, int numBytes, ChannelError* error) {
+static void readChannel(int socket, void* buf, int numBytes, ChannelError* error) {
     if(numBytes == 0) {
         return;
     }
@@ -147,25 +158,25 @@ void readChannel(int socket, void* buf, int numBytes, ChannelError* error) {
     }
 }
 
-char readChannelByte(int socket, ChannelError* error) {
+static char readChannelByte(int socket, ChannelError* error) {
     char val = 0;
     readChannel(socket, &val, 1, error);
     return val;
 }
 
-jint readChannelInt(int socket, ChannelError* error) {
+static jint readChannelInt(int socket, ChannelError* error) {
     jint val = 0;
     readChannel(socket, &val, 4, error);
     return swap32(val);
 }
 
-jlong readChannelLong(int socket, ChannelError* error) {
+static jlong readChannelLong(int socket, ChannelError* error) {
     jlong val = 0;
     readChannel(socket, &val, 8, error);
     return swap64(val);
 }
 
-jboolean checkError(ChannelError* error) {
+static jboolean checkError(ChannelError* error) {
     if(error->errorCode) {
         DEBUGF("Error: %s, errno: ", error->message, error->errorCode);
         DEBUG("Closing client socket");
@@ -189,6 +200,24 @@ void rvmHookWaitForAttach(Options* options) {
     } else {
         if (attachFlag) {
             rvmHookDebuggerAttached(options);
+        }
+    }
+}
+
+void rvmHookWaitForResume(Options* options) {
+    // resumeFlag is modified in handleVmResume()
+    // we sync on the write mutex to ensure
+    // caches are flushed
+    DEBUG("Waiting for debugger to resume");
+    while(true) {
+        rvmLockMutex(&writeMutex);
+        jboolean isResumed = resumeFlag;
+        rvmUnlockMutex(&writeMutex);
+        if (isResumed == FALSE) {
+            nsleep(50);
+        } else {
+            rvmHookDebuggerAttached(options);
+            break;
         }
     }
 }
@@ -282,52 +311,7 @@ jboolean _rvmHookSetupTCPChannel(Options* options) {
     return TRUE;
 }
 
-void handleReadMemory(char req, jlong reqId, jlong payloadSize, ChannelError* error) {
-    jlong addr = readChannelLong(clientSocket, error);
-    if(checkError(error)) return;
-
-    jint numBytes = readChannelInt(clientSocket, error);
-    if(checkError(error)) return;
-
-    DEBUGF("Reading memory: %p, %lu bytes", addr, numBytes);
-    rvmLockMutex(&writeMutex);
-    writeChannelByte(clientSocket, CMD_READ_MEMORY, error);
-    writeChannelLong(clientSocket, reqId, error);
-    writeChannelLong(clientSocket, numBytes, error);
-    writeChannel(clientSocket, (void*)addr, numBytes, error);
-    rvmUnlockMutex(&writeMutex);
-}
-
-void handleReadString(char req, jlong reqId, jlong payloadSize, ChannelError* error) {
-    jlong addr = readChannelLong(clientSocket, error);
-    if(checkError(error)) return;
-
-    DEBUGF("Reading string: %p, %s", addr, (char*)addr);
-    rvmLockMutex(&writeMutex);
-    size_t len = strlen((char*)addr);
-    writeChannelByte(clientSocket, CMD_READ_CSTRING, error);
-    writeChannelLong(clientSocket, reqId, error);
-    writeChannelLong(clientSocket, len, error);
-    writeChannel(clientSocket, (void*)addr, len, error);
-    rvmUnlockMutex(&writeMutex);
-}
-
-void handleRequest(char req, jlong reqId, jlong payloadSize, ChannelError* error) {
-    DEBUGF("req: %c, reqId: %lu, payloadSize: %lu", req, reqId, payloadSize);
-    switch(req) {
-        case CMD_READ_MEMORY:
-            handleReadMemory(req, reqId, payloadSize, error);
-            break;
-        case CMD_READ_CSTRING:
-            handleReadString(req, reqId, payloadSize, error);
-            break;
-        default:
-            error->errorCode = -1;
-            error->message = "Unknown request";
-    }
-}
-
-jboolean _rvmHookHandshake() {
+jboolean _rvmHookHandshake(Options* options) {
     DEBUG("Performing handshake");
     if (!listeningSocket) {
         DEBUG("Can't perform handshake, no listening socket");
@@ -355,10 +339,113 @@ jboolean _rvmHookHandshake() {
         return FALSE;
     }
 
+    if(options->waitForResume) {
+        rvmHookWaitForResume(options);
+    }
+
     return TRUE;
 }
 
-void* channelLoop(void* data) {
+static void handleReadMemory(jlong reqId, ChannelError* error) {
+    jlong addr = readChannelLong(clientSocket, error);
+    if(checkError(error)) return;
+
+    jint numBytes = readChannelInt(clientSocket, error);
+    if(checkError(error)) return;
+
+    DEBUGF("Reading memory: %p, %llu bytes", addr, numBytes);
+    rvmLockMutex(&writeMutex);
+    writeChannelByte(clientSocket, CMD_READ_MEMORY, error);
+    writeChannelLong(clientSocket, reqId, error);
+    writeChannelLong(clientSocket, numBytes, error);
+    writeChannel(clientSocket, (void*)addr, numBytes, error);
+    rvmUnlockMutex(&writeMutex);
+}
+
+static void handleReadString(jlong reqId, ChannelError* error) {
+    jlong addr = readChannelLong(clientSocket, error);
+    if(checkError(error)) return;
+
+    DEBUGF("Reading string: %p, %s", addr, (char*)addr);
+    rvmLockMutex(&writeMutex);
+    size_t len = strlen((char*)addr);
+    writeChannelByte(clientSocket, CMD_READ_CSTRING, error);
+    writeChannelLong(clientSocket, reqId, error);
+    writeChannelLong(clientSocket, len, error);
+    writeChannel(clientSocket, (void*)addr, len, error);
+    rvmUnlockMutex(&writeMutex);
+}
+
+static void handleVmSuspend(jlong reqId, ChannelError* error) {
+    DEBUG("Suspending VM");
+    rvmLockMutex(&writeMutex);
+    writeChannelByte(clientSocket, CMD_VM_SUSPEND, error);
+    writeChannelLong(clientSocket, reqId, error);
+    writeChannelLong(clientSocket, 0, error);
+    rvmUnlockMutex(&writeMutex);
+}
+
+static void handleVmResume(jlong reqId, ChannelError* error) {
+    DEBUG("Resuming VM");
+    rvmLockMutex(&writeMutex);
+    resumeFlag = TRUE; // will end the loop in rvmHookWaitForResume
+    writeChannelByte(clientSocket, CMD_VM_RESUME, error);
+    writeChannelLong(clientSocket, reqId, error);
+    writeChannelLong(clientSocket, 0, error);
+    rvmUnlockMutex(&writeMutex);
+}
+
+static void handleThreadSuspend(jlong reqId, ChannelError* error) {
+    jlong threadPtr = readChannelLong(clientSocket, error);
+    if(checkError(error)) return;
+
+    DEBUGF("Suspending thread %p", threadPtr);
+    rvmLockMutex(&writeMutex);
+    writeChannelByte(clientSocket, CMD_THREAD_SUSPEND, error);
+    writeChannelLong(clientSocket, reqId, error);
+    writeChannelLong(clientSocket, 0, error);
+    rvmUnlockMutex(&writeMutex);
+}
+
+static void handleThreadResume(jlong reqId, ChannelError* error) {
+    jlong threadPtr = readChannelLong(clientSocket, error);
+    if(checkError(error)) return;
+
+    DEBUGF("Resuming thread %p", threadPtr);
+    rvmLockMutex(&writeMutex);
+    writeChannelByte(clientSocket, CMD_THREAD_RESUME, error);
+    writeChannelLong(clientSocket, reqId, error);
+    writeChannelLong(clientSocket, 0, error);
+    rvmUnlockMutex(&writeMutex);
+}
+
+static void handleRequest(char req, jlong reqId, jlong payloadSize, ChannelError* error) {
+    DEBUGF("req: %d, reqId: %llu, payloadSize: %llu", req, reqId, payloadSize);
+    switch(req) {
+        case CMD_READ_MEMORY:
+            handleReadMemory(reqId, error);
+            break;
+        case CMD_READ_CSTRING:
+            handleReadString(reqId, error);
+            break;
+        case CMD_VM_SUSPEND:
+            handleVmSuspend(reqId, error);
+            break;
+        case CMD_VM_RESUME:
+            handleVmResume(reqId, error);
+            break;
+        case CMD_THREAD_SUSPEND:
+            handleThreadSuspend(reqId, error);
+            break;
+        case CMD_THREAD_RESUME:
+            handleThreadResume(reqId, error);
+        default:
+            error->errorCode = -1;
+            error->message = "Unknown request";
+    }
+}
+
+static void* channelLoop(void* data) {
     ChannelError error = { 0 };
 
     DEBUG("Starting debug thread loop");

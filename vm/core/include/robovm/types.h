@@ -370,6 +370,7 @@ typedef struct Options {
     jboolean enableGCHeapStats;
     jboolean enableHooks;
     jboolean waitForAttach;
+    jboolean waitForResume;
     jboolean printPID;
     char* pidFile;
     jboolean printDebugPort;

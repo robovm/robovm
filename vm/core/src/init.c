@@ -146,6 +146,9 @@ static void parseArg(char* arg, Options* options) {
     } else if (startsWith(arg, "WaitForAttach")) {
         options->waitForAttach = TRUE;
         options->enableHooks = TRUE; // WaitForAttach also enables hooks
+    } else if (startsWith(arg, "WaitForResume")) {
+        options->waitForResume = TRUE;
+        options->enableHooks = TRUE; // WaitForResume also enables hooks
     } else if (startsWith(arg, "PrintPID=")) {
         options->printPID = TRUE;
         if (!options->pidFile) {

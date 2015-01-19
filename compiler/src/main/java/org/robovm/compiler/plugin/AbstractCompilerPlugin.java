@@ -16,6 +16,7 @@
  */
 package org.robovm.compiler.plugin;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.Collections;
 
@@ -54,5 +55,9 @@ public abstract class AbstractCompilerPlugin extends CompilerPlugin {
     @Override
     public void afterMethod(Config config, Clazz clazz, SootMethod method, 
             ModuleBuilder moduleBuilder, Function function) throws IOException {
+    }
+
+    @Override
+    public void afterObjectFile(Config config, Clazz clazz, File objectFile) throws IOException {
     }
 }

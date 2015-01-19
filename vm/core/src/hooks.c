@@ -209,7 +209,7 @@ void rvmHookWaitForResume(Options* options) {
     // we sync on the write mutex to ensure
     // caches are flushed
     DEBUG("Waiting for debugger to resume");
-    while(true) {
+    while(TRUE) {
         rvmLockMutex(&writeMutex);
         jboolean isResumed = resumeFlag;
         rvmUnlockMutex(&writeMutex);

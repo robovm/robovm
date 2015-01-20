@@ -27,24 +27,28 @@
 
 #define LOG_TAG "hooks"
 
+// memory operations
 #define CMD_READ_MEMORY 1
 #define CMD_READ_CSTRING 2
 #define CMD_WRITE_MEMORY 3
-#define CMD_WRITE_BIT 4
+#define CMD_WRITE_AND_BITS 4
+#define CMD_ALLOCATE 5
+#define CMD_FREE 6
 
-#define CMD_THREAD_SUSPEND 5
-#define CMD_THREAD_RESUME 6
+// thread/vm operations
+#define CMD_THREAD_SUSPEND 50
+#define CMD_THREAD_RESUME 51
+#define CMD_VM_SUSPEND 52
+#define CMD_VM_RESUME 53
 
-#define CMD_VM_SUSPEND 7
-#define CMD_VM_RESUME 8
-
-#define EVT_THREAD_ATTACHED 109
-#define EVT_THREAD_STARTED 110
-#define EVT_THREAD_DETTACHED 111
-#define EVT_THREAD_SUSPENDED 112
-#define EVT_THREAD_RESUMED 113
-#define EVT_BREAKPOINT 114
-#define EVT_THREAD_STEPPED 115
+// events
+#define EVT_THREAD_ATTACHED 100
+#define EVT_THREAD_STARTED 101
+#define EVT_THREAD_DETTACHED 102
+#define EVT_THREAD_SUSPENDED 103
+#define EVT_THREAD_RESUMED 104
+#define EVT_BREAKPOINT 105
+#define EVT_THREAD_STEPPED 106
 
 typedef struct {
     int errorCode;
@@ -347,7 +351,7 @@ jboolean _rvmHookHandshake(Options* options) {
 }
 
 static void handleReadMemory(jlong reqId, ChannelError* error) {
-    jlong addr = readChannelLong(clientSocket, error);
+    void* addr = (void*)readChannelLong(clientSocket, error);
     if(checkError(error)) return;
 
     jint numBytes = readChannelInt(clientSocket, error);
@@ -358,12 +362,12 @@ static void handleReadMemory(jlong reqId, ChannelError* error) {
     writeChannelByte(clientSocket, CMD_READ_MEMORY, error);
     writeChannelLong(clientSocket, reqId, error);
     writeChannelLong(clientSocket, numBytes, error);
-    writeChannel(clientSocket, (void*)addr, numBytes, error);
+    writeChannel(clientSocket, addr, numBytes, error);
     rvmUnlockMutex(&writeMutex);
 }
 
 static void handleReadString(jlong reqId, ChannelError* error) {
-    jlong addr = readChannelLong(clientSocket, error);
+    void* addr = (void*)readChannelLong(clientSocket, error);
     if(checkError(error)) return;
 
     DEBUGF("Reading string: %p, %s", addr, (char*)addr);
@@ -372,11 +376,69 @@ static void handleReadString(jlong reqId, ChannelError* error) {
     writeChannelByte(clientSocket, CMD_READ_CSTRING, error);
     writeChannelLong(clientSocket, reqId, error);
     writeChannelLong(clientSocket, len, error);
-    writeChannel(clientSocket, (void*)addr, len, error);
+    writeChannel(clientSocket, addr, len, error);
+    rvmUnlockMutex(&writeMutex);
+}
+
+static void handleWriteMemory(jlong reqId, ChannelError* error) {
+    void* addr = (void*)readChannelLong(clientSocket, error);
+    if(checkError(error)) return;
+
+    jint numBytes = readChannelInt(clientSocket, error);
+    if(checkError(error)) return;
+
+    DEBUGF("Writing to memory %p, num bytes: %u", addr, numBytes);
+    rvmLockMutex(&writeMutex);
+    readChannel(clientSocket, addr, numBytes, error);
+    writeChannelByte(clientSocket, CMD_WRITE_MEMORY, error);
+    writeChannelLong(clientSocket, reqId, error);
+    writeChannelLong(clientSocket, 0, error);
+    rvmUnlockMutex(&writeMutex);
+}
+
+static void handleAndBits(jlong reqId, ChannelError* error) {
+    void* addr = (void*)readChannelLong(clientSocket, error);
+    if(checkError(error)) return;
+
+    jbyte mask = readChannelByte(clientSocket, error);
+    if(checkError(error)) return;
+
+    rvmLockMutex(&writeMutex);
+    char value = *((char*)addr) & mask;
+    *((char*)addr) = value;
+    DEBUGF("Anding bits at %p (=%x) with %x = %x", addr, *((char*)addr), mask, value);
+    writeChannelByte(clientSocket, CMD_WRITE_AND_BITS, error);
+    writeChannelLong(clientSocket, reqId, error);
+    writeChannelLong(clientSocket, 0, error);
+    rvmUnlockMutex(&writeMutex);
+}
+
+static void handleAllocate(jlong reqId, ChannelError* error) {
+    jint numBytes = readChannelInt(clientSocket, error);
+    if(checkError(error)) return;
+
+    rvmLockMutex(&writeMutex);
+    void* addr = malloc(numBytes);
+    DEBUGF("Allocated %u bytes, at %p", numBytes, addr);
+    writeChannelByte(clientSocket, CMD_ALLOCATE, error);
+    writeChannelLong(clientSocket, reqId, error);
+    writeChannelLong(clientSocket, 8, error);
+    writeChannelLong(clientSocket, (jlong)addr, error);
+    rvmUnlockMutex(&writeMutex);
+}
+
+static void handleFree(jlong reqId, ChannelError* error) {
+    void* addr = (void*)readChannelLong(clientSocket, error);
+    if(checkError(error)) return;
+
+    rvmLockMutex(&writeMutex);
+    free(addr);
+    DEBUGF("Freed memory at %p", addr);
     rvmUnlockMutex(&writeMutex);
 }
 
 static void handleVmSuspend(jlong reqId, ChannelError* error) {
+    // FIXME
     DEBUG("Suspending VM");
     rvmLockMutex(&writeMutex);
     writeChannelByte(clientSocket, CMD_VM_SUSPEND, error);
@@ -386,6 +448,7 @@ static void handleVmSuspend(jlong reqId, ChannelError* error) {
 }
 
 static void handleVmResume(jlong reqId, ChannelError* error) {
+    // FIXME
     DEBUG("Resuming VM");
     rvmLockMutex(&writeMutex);
     resumeFlag = TRUE; // will end the loop in rvmHookWaitForResume
@@ -396,10 +459,11 @@ static void handleVmResume(jlong reqId, ChannelError* error) {
 }
 
 static void handleThreadSuspend(jlong reqId, ChannelError* error) {
-    jlong threadPtr = readChannelLong(clientSocket, error);
+    Thread* thread = (Thread*)readChannelLong(clientSocket, error);
     if(checkError(error)) return;
 
-    DEBUGF("Suspending thread %p", threadPtr);
+    // FIXME
+    DEBUGF("Suspending thread %p, id %u", thread, thread->threadId);
     rvmLockMutex(&writeMutex);
     writeChannelByte(clientSocket, CMD_THREAD_SUSPEND, error);
     writeChannelLong(clientSocket, reqId, error);
@@ -408,10 +472,11 @@ static void handleThreadSuspend(jlong reqId, ChannelError* error) {
 }
 
 static void handleThreadResume(jlong reqId, ChannelError* error) {
-    jlong threadPtr = readChannelLong(clientSocket, error);
+    Thread* thread = (Thread*)readChannelLong(clientSocket, error);
     if(checkError(error)) return;
 
-    DEBUGF("Resuming thread %p", threadPtr);
+    // FIXME
+    DEBUGF("Resuming thread %p, id %u", thread, thread->threadId);
     rvmLockMutex(&writeMutex);
     writeChannelByte(clientSocket, CMD_THREAD_RESUME, error);
     writeChannelLong(clientSocket, reqId, error);
@@ -427,6 +492,18 @@ static void handleRequest(char req, jlong reqId, jlong payloadSize, ChannelError
             break;
         case CMD_READ_CSTRING:
             handleReadString(reqId, error);
+            break;
+        case CMD_WRITE_MEMORY:
+            handleWriteMemory(reqId, error);
+            break;
+        case CMD_WRITE_AND_BITS:
+            handleAndBits(reqId, error);
+            break;
+        case CMD_ALLOCATE:
+            handleAllocate(reqId, error);
+            break;
+        case CMD_FREE:
+            handleFree(reqId, error);
             break;
         case CMD_VM_SUSPEND:
             handleVmSuspend(reqId, error);
@@ -464,4 +541,8 @@ static void* channelLoop(void* data) {
     }
     DEBUG("Terminating debug thread");
     pthread_exit(0);
+}
+
+void rvmInstrument(void* method, jint lineBit) {
+    // FIXME
 }

@@ -25,6 +25,7 @@ void _rvmHookThreadDetaching(Env* env, JavaThread* threadObj, Thread* thread, Ob
 jboolean _rvmHookSetupTCPChannel(Options* options);
 jboolean _rvmHookHandshake(Options* options);
 
+void rvmInstrument(void* method, jint lineBit);
 void rvmHookWaitForAttach(Options* options);
 void rvmHookDebuggerAttached(Options* options);
 static inline void rvmHookBeforeAppEntryPoint(Env* env, Class* clazz, Method* method, ObjectArray* args) {

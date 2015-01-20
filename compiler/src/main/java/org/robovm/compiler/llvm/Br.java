@@ -17,6 +17,7 @@
 package org.robovm.compiler.llvm;
 
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.Set;
 
 /**
@@ -49,6 +50,16 @@ public class Br extends Instruction {
             return Collections.singleton((VariableRef) cond);
         }
         return super.getReadsFrom();
+    }
+    
+    @Override
+    public Set<BasicBlockRef> getBranchTargets() {
+        Set<BasicBlockRef> result = new HashSet<>();
+        result.add(destTrue);
+        if (cond != null) {
+            result.add(destFalse);
+        }
+        return result;
     }
     
     @Override

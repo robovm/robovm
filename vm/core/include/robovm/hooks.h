@@ -24,8 +24,8 @@ void _rvmHookThreadStarting(Env* env, JavaThread* threadObj, Thread* thread);
 void _rvmHookThreadDetaching(Env* env, JavaThread* threadObj, Thread* thread, Object* throwable);
 jboolean _rvmHookSetupTCPChannel(Options* options);
 jboolean _rvmHookHandshake(Options* options);
+void _rvmHookInstrumented(DebugEnv* env, jint lineNumber, void* bptable, void* pc);
 
-void rvmInstrument(void* method, jint lineBit);
 void rvmHookWaitForAttach(Options* options);
 void rvmHookDebuggerAttached(Options* options);
 static inline void rvmHookBeforeAppEntryPoint(Env* env, Class* clazz, Method* method, ObjectArray* args) {
@@ -70,6 +70,12 @@ static inline jboolean rvmHookHandshake(Options* options) {
         return _rvmHookHandshake(options);
     } else {
         return FALSE;
+    }
+}
+
+static inline void rvmHookInstrumented(DebugEnv* env, jint lineNumber, void* bptable, void* pc) {
+    if (env->env.vm->options->enableHooks) {
+        _rvmHookInstrumented(env, lineNumber, bptable, pc);
     }
 }
 

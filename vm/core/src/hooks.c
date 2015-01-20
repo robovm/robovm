@@ -543,6 +543,9 @@ static void* channelLoop(void* data) {
     pthread_exit(0);
 }
 
-void rvmInstrument(void* method, jint lineBit) {
-    // FIXME
+void _rvmHookInstrumented(DebugEnv* env, jint lineNumber, void* bptable, void* pc) {
+    if (IS_DEBUG_ENABLED) {
+        Method* method = rvmFindMethodAtAddress((Env*) env, pc);
+        DEBUGF("At %s.%s%s:%d (pc=%p)", method->clazz->name, method->name, method->desc, lineNumber, pc);
+    }
 }

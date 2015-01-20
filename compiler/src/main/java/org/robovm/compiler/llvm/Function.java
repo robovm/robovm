@@ -124,6 +124,10 @@ public class Function {
         return basicBlockList;
     }
     
+    public BasicBlock getBasicBlock(Label label) {
+        return basicBlockMap.get(label);
+    }
+    
     public Variable newVariable(Type type) {
         return newVariable("t" + (counter++), type);
     }

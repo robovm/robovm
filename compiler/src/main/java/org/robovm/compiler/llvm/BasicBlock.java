@@ -35,6 +35,10 @@ public class BasicBlock {
         this.label = label;
     }
     
+    public BasicBlockRef ref() {
+        return new BasicBlockRef(function, label);
+    }
+    
     public String getName() {
         return function.getLabel(this);
     }

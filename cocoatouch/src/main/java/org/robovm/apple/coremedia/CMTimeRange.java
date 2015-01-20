@@ -88,7 +88,22 @@ import org.robovm.apple.audiotoolbox.*;
     @StructMember(1) public native @ByVal CMTime getDuration();
     @StructMember(1) public native CMTimeRange setDuration(@ByVal CMTime duration);
     /*</members>*/
+    @Override
+    public String toString() {
+        return getDescription(null, this);
+    }
     /*<methods>*/
+    /**
+     * @since Available in iOS 4.0 and later.
+     */
+    @GlobalValue(symbol="kCMTimeRangeZero", optional=true)
+    public static native @ByVal CMTimeRange Zero();
+    /**
+     * @since Available in iOS 4.0 and later.
+     */
+    @GlobalValue(symbol="kCMTimeRangeInvalid", optional=true)
+    public static native @ByVal CMTimeRange Invalid();
+    
     /**
      * @since Available in iOS 4.0 and later.
      */
@@ -138,9 +153,9 @@ import org.robovm.apple.audiotoolbox.*;
     /**
      * @since Available in iOS 4.0 and later.
      */
-    public NSDictionary<?, ?> copyAsDictionary(CFAllocator allocator) { return copyAsDictionary(this, allocator); }
+    public NSDictionary<?, ?> asDictionary(CFAllocator allocator) { return asDictionary(this, allocator); }
     @Bridge(symbol="CMTimeRangeCopyAsDictionary", optional=true)
-    private static native NSDictionary<?, ?> copyAsDictionary(@ByVal CMTimeRange range, CFAllocator allocator);
+    private static native NSDictionary<?, ?> asDictionary(@ByVal CMTimeRange range, CFAllocator allocator);
     /**
      * @since Available in iOS 4.0 and later.
      */
@@ -150,7 +165,7 @@ import org.robovm.apple.audiotoolbox.*;
      * @since Available in iOS 4.0 and later.
      */
     @Bridge(symbol="CMTimeRangeCopyDescription", optional=true)
-    public static native String copyDescription(CFAllocator allocator, @ByVal CMTimeRange range);
+    private static native String getDescription(CFAllocator allocator, @ByVal CMTimeRange range);
     /**
      * @since Available in iOS 4.0 and later.
      */

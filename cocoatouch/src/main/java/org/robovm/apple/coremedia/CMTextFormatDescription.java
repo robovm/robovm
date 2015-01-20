@@ -49,57 +49,117 @@ import org.robovm.apple.audiotoolbox.*;
     /*<constructors>*//*</constructors>*/
     /*<properties>*//*</properties>*/
     /*<members>*//*</members>*/
+    public static CMTextFormatDescription create(CMMediaType mediaType, CMTextFormatType mediaSubtype, CMTextFormatDescriptionExtension extensions) {
+        CMFormatDescriptionPtr ptr = new CMFormatDescriptionPtr();
+        create(null, mediaType, (int)mediaSubtype.value(), extensions.getDictionary(), ptr);
+        if (ptr.get() != null) {
+            return ptr.get().as(CMTextFormatDescription.class);
+        }
+        return null;
+    }
+    
+    public CMTextFormatDescriptionExtension getExtensions() {
+        return new CMTextFormatDescriptionExtension(getExtensionDictionary());
+    }
+    public CMTextFormatType getTextFormatType() {
+        return CMTextFormatType.valueOf(getMediaSubType());
+    }
+    
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    public static CMTextFormatDescription createFromBigEndianTextDescriptionData(BytePtr textDescriptionData, @MachineSizedUInt long textDescriptionSize, String textDescriptionFlavor, CMMediaType mediaType) {
+        CMTextFormatDescription.CMTextFormatDescriptionPtr ptr = new CMTextFormatDescription.CMTextFormatDescriptionPtr();
+        createFromBigEndianTextDescriptionData(null, textDescriptionData, textDescriptionSize, textDescriptionFlavor, mediaType, ptr);
+        return ptr.get();
+    }
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    public static CMTextFormatDescription createFromBigEndianTextDescriptionBlockBuffer(CMBlockBuffer textDescriptionBlockBuffer, String textDescriptionFlavor, CMMediaType mediaType) {
+        CMTextFormatDescription.CMTextFormatDescriptionPtr ptr = new CMTextFormatDescription.CMTextFormatDescriptionPtr();
+        createFromBigEndianTextDescriptionBlockBuffer(null, textDescriptionBlockBuffer, textDescriptionFlavor, mediaType, ptr);
+        return ptr.get();
+    }
+
+    /**
+     * @since Available in iOS 4.0 and later.
+     */
     public CMTextDisplayFlag getDisplayFlags() {
         IntPtr ptr = new IntPtr();
         getDisplayFlags(ptr);
         return new CMTextDisplayFlag(ptr.get());
     }
-    
+    /**
+     * @since Available in iOS 4.0 and later.
+     */
     public CMTextJustification getHorizontalJustification() {
         BytePtr ptr = new BytePtr();
         getJustification(ptr, null);
         return CMTextJustification.valueOf(ptr.get());
     }
-    
+    /**
+     * @since Available in iOS 4.0 and later.
+     */
     public CMTextJustification getVerticalJustification() {
         BytePtr ptr = new BytePtr();
         getJustification(null, ptr);
         return CMTextJustification.valueOf(ptr.get());
     } 
-    
+    /**
+     * @since Available in iOS 4.0 and later.
+     */
     public @ByVal CGRect getDefaultTextBox(boolean originIsAtTopLeft, @MachineSizedFloat double heightOfTextTrack) {
         CGRect.CGRectPtr ptr = new CGRect.CGRectPtr();
         getDefaultTextBox(originIsAtTopLeft, heightOfTextTrack, ptr);
         return ptr.get();
     }
-    
+    /**
+     * @since Available in iOS 4.0 and later.
+     */
     public short getDefaultStyleLocalFontID() {
         ShortPtr ptr = new ShortPtr();
         getDefaultStyle(ptr, null, null, null, null, null);
         return ptr.get();
     }
-    
+    /**
+     * @since Available in iOS 4.0 and later.
+     */
     public boolean isDefaultStyleBold() {
         BooleanPtr ptr = new BooleanPtr();
         getDefaultStyle(null, ptr, null, null, null, null);
         return ptr.get();
     }
-    
+    /**
+     * @since Available in iOS 4.0 and later.
+     */
     public boolean isDefaultStyleItalic() {
         BooleanPtr ptr = new BooleanPtr();
         getDefaultStyle(null, null, ptr, null, null, null);
         return ptr.get();
     }
-    
+    /**
+     * @since Available in iOS 4.0 and later.
+     */
     public boolean isDefaultStyleUnderline() {
         BooleanPtr ptr = new BooleanPtr();
         getDefaultStyle(null, null, null, ptr, null, null);
         return ptr.get();
     }
-    
+    /**
+     * @since Available in iOS 4.0 and later.
+     */
     public @MachineSizedFloat double getDefaultStyleFontSize() {
         MachineSizedFloatPtr ptr = new MachineSizedFloatPtr();
         getDefaultStyle(null, null, null, null, ptr, null);
+        return ptr.get();
+    }
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    public CMBlockBuffer copyAsBigEndianTextDescriptionBlockBuffer(String textDescriptionFlavor) {
+        CMBlockBuffer.CMBlockBufferPtr ptr = new CMBlockBuffer.CMBlockBufferPtr();
+        copyAsBigEndianTextDescriptionBlockBuffer(null, this, textDescriptionFlavor, ptr);
         return ptr.get();
     }
     /*<methods>*/
@@ -107,41 +167,41 @@ import org.robovm.apple.audiotoolbox.*;
      * @since Available in iOS 4.0 and later.
      */
     @Bridge(symbol="CMTextFormatDescriptionGetDisplayFlags", optional=true)
-    protected native int getDisplayFlags(IntPtr outDisplayFlags);
+    private native int getDisplayFlags(IntPtr outDisplayFlags);
     /**
      * @since Available in iOS 4.0 and later.
      */
     @Bridge(symbol="CMTextFormatDescriptionGetJustification", optional=true)
-    protected native int getJustification(BytePtr outHorizontalJust, BytePtr outVerticalJust);
+    private native int getJustification(BytePtr outHorizontalJust, BytePtr outVerticalJust);
     /**
      * @since Available in iOS 4.0 and later.
      */
     @Bridge(symbol="CMTextFormatDescriptionGetDefaultTextBox", optional=true)
-    protected native int getDefaultTextBox(boolean originIsAtTopLeft, @MachineSizedFloat double heightOfTextTrack, CGRect.CGRectPtr outDefaultTextBox);
+    private native int getDefaultTextBox(boolean originIsAtTopLeft, @MachineSizedFloat double heightOfTextTrack, CGRect.CGRectPtr outDefaultTextBox);
     /**
      * @since Available in iOS 4.0 and later.
      */
     @Bridge(symbol="CMTextFormatDescriptionGetDefaultStyle", optional=true)
-    protected native int getDefaultStyle(ShortPtr outLocalFontID, BooleanPtr outBold, BooleanPtr outItalic, BooleanPtr outUnderline, MachineSizedFloatPtr outFontSize, MachineSizedFloatPtr outColorComponents);
+    private native int getDefaultStyle(ShortPtr outLocalFontID, BooleanPtr outBold, BooleanPtr outItalic, BooleanPtr outUnderline, MachineSizedFloatPtr outFontSize, MachineSizedFloatPtr outColorComponents);
     /**
      * @since Available in iOS 4.0 and later.
      */
     @Bridge(symbol="CMTextFormatDescriptionGetFontName", optional=true)
-    protected native int getFontName(short localFontID, CFString.CFStringPtr outFontName);
+    private native int getFontName(short localFontID, CFString.CFStringPtr outFontName);
     /**
      * @since Available in iOS 8.0 and later.
      */
     @Bridge(symbol="CMTextFormatDescriptionCreateFromBigEndianTextDescriptionData", optional=true)
-    public static native int createFromBigEndianTextDescriptionData(CFAllocator allocator, BytePtr textDescriptionData, @MachineSizedUInt long textDescriptionSize, String textDescriptionFlavor, CMMediaType mediaType, CMTextFormatDescription.CMTextFormatDescriptionPtr textFormatDescriptionOut);
+    private static native int createFromBigEndianTextDescriptionData(CFAllocator allocator, BytePtr textDescriptionData, @MachineSizedUInt long textDescriptionSize, String textDescriptionFlavor, CMMediaType mediaType, CMTextFormatDescription.CMTextFormatDescriptionPtr textFormatDescriptionOut);
     /**
      * @since Available in iOS 8.0 and later.
      */
     @Bridge(symbol="CMTextFormatDescriptionCreateFromBigEndianTextDescriptionBlockBuffer", optional=true)
-    public static native int createFromBigEndianTextDescriptionBlockBuffer(CFAllocator allocator, CMBlockBuffer textDescriptionBlockBuffer, String textDescriptionFlavor, CMMediaType mediaType, CMTextFormatDescription.CMTextFormatDescriptionPtr textFormatDescriptionOut);
+    private static native int createFromBigEndianTextDescriptionBlockBuffer(CFAllocator allocator, CMBlockBuffer textDescriptionBlockBuffer, String textDescriptionFlavor, CMMediaType mediaType, CMTextFormatDescription.CMTextFormatDescriptionPtr textFormatDescriptionOut);
     /**
      * @since Available in iOS 8.0 and later.
      */
     @Bridge(symbol="CMTextFormatDescriptionCopyAsBigEndianTextDescriptionBlockBuffer", optional=true)
-    public static native int copyAsBigEndianTextDescriptionBlockBuffer(CFAllocator allocator, CMTextFormatDescription textFormatDescription, String textDescriptionFlavor, CMBlockBuffer.CMBlockBufferPtr textDescriptionBlockBufferOut);
+    private static native int copyAsBigEndianTextDescriptionBlockBuffer(CFAllocator allocator, CMTextFormatDescription textFormatDescription, String textDescriptionFlavor, CMBlockBuffer.CMBlockBufferPtr textDescriptionBlockBufferOut);
     /*</methods>*/
 }

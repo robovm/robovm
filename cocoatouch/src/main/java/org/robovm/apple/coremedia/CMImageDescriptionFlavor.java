@@ -39,23 +39,23 @@ import org.robovm.apple.audiotoolbox.*;
 /*<javadoc>*/
 /*</javadoc>*/
 /*<annotations>*/@Library("CoreMedia")/*</annotations>*/
-@Marshaler(/*<name>*/CMTextVerticalLayout/*</name>*/.Marshaler.class)
-/*<visibility>*/public/*</visibility>*/ class /*<name>*/CMTextVerticalLayout/*</name>*/ 
+@Marshaler(/*<name>*/CMImageDescriptionFlavor/*</name>*/.Marshaler.class)
+/*<visibility>*/public/*</visibility>*/ class /*<name>*/CMImageDescriptionFlavor/*</name>*/ 
     extends /*<extends>*/GlobalValueEnumeration<CFString>/*</extends>*/
     /*<implements>*//*</implements>*/ {
 
     /*<marshalers>*/
     public static class Marshaler {
         @MarshalsPointer
-        public static CMTextVerticalLayout toObject(Class<CMTextVerticalLayout> cls, long handle, long flags) {
+        public static CMImageDescriptionFlavor toObject(Class<CMImageDescriptionFlavor> cls, long handle, long flags) {
             CFString o = (CFString) CFType.Marshaler.toObject(CFString.class, handle, flags);
             if (o == null) {
                 return null;
             }
-            return CMTextVerticalLayout.valueOf(o);
+            return CMImageDescriptionFlavor.valueOf(o);
         }
         @MarshalsPointer
-        public static long toNative(CMTextVerticalLayout o, long flags) {
+        public static long toNative(CMImageDescriptionFlavor o, long flags) {
             if (o == null) {
                 return 0L;
             }
@@ -64,24 +64,24 @@ import org.robovm.apple.audiotoolbox.*;
     }
     public static class AsListMarshaler {
         @MarshalsPointer
-        public static List<CMTextVerticalLayout> toObject(Class<? extends CFType> cls, long handle, long flags) {
+        public static List<CMImageDescriptionFlavor> toObject(Class<? extends CFType> cls, long handle, long flags) {
             CFArray o = (CFArray) CFType.Marshaler.toObject(cls, handle, flags);
             if (o == null) {
                 return null;
             }
-            List<CMTextVerticalLayout> list = new ArrayList<>();
+            List<CMImageDescriptionFlavor> list = new ArrayList<>();
             for (long i = 0, n = o.size(); i < n; i++) {
-                list.add(CMTextVerticalLayout.valueOf(o.get(i, CFString.class)));
+                list.add(CMImageDescriptionFlavor.valueOf(o.get(i, CFString.class)));
             }
             return list;
         }
         @MarshalsPointer
-        public static long toNative(List<CMTextVerticalLayout> l, long flags) {
+        public static long toNative(List<CMImageDescriptionFlavor> l, long flags) {
             if (l == null) {
                 return 0L;
             }
             CFArray array = CFMutableArray.create();
-            for (CMTextVerticalLayout i : l) {
+            for (CMImageDescriptionFlavor i : l) {
                 array.add(i.value());
             }
             return CFType.Marshaler.toNative(array, flags);
@@ -91,29 +91,33 @@ import org.robovm.apple.audiotoolbox.*;
 
     /*<constants>*/
     /**
-     * @since Available in iOS 7.0 and later.
+     * @since Available in iOS 8.0 and later.
      */
-    public static final CMTextVerticalLayout LeftToRight = new CMTextVerticalLayout("LeftToRight");
+    public static final CMImageDescriptionFlavor QuickTimeMovie = new CMImageDescriptionFlavor("QuickTimeMovie");
     /**
-     * @since Available in iOS 7.0 and later.
+     * @since Available in iOS 8.0 and later.
      */
-    public static final CMTextVerticalLayout RightToLeft = new CMTextVerticalLayout("RightToLeft");
+    public static final CMImageDescriptionFlavor ISOFamily = new CMImageDescriptionFlavor("ISOFamily");
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    public static final CMImageDescriptionFlavor _3GPFamily = new CMImageDescriptionFlavor("_3GPFamily");
     /*</constants>*/
     
-    private static /*<name>*/CMTextVerticalLayout/*</name>*/[] values = new /*<name>*/CMTextVerticalLayout/*</name>*/[] {/*<value_list>*/LeftToRight, RightToLeft/*</value_list>*/};
+    private static /*<name>*/CMImageDescriptionFlavor/*</name>*/[] values = new /*<name>*/CMImageDescriptionFlavor/*</name>*/[] {/*<value_list>*/QuickTimeMovie, ISOFamily, _3GPFamily/*</value_list>*/};
     
-    /*<name>*/CMTextVerticalLayout/*</name>*/ (String getterName) {
+    /*<name>*/CMImageDescriptionFlavor/*</name>*/ (String getterName) {
         super(Values.class, getterName);
     }
     
-    public static /*<name>*/CMTextVerticalLayout/*</name>*/ valueOf(/*<type>*/CFString/*</type>*/ value) {
-        for (/*<name>*/CMTextVerticalLayout/*</name>*/ v : values) {
+    public static /*<name>*/CMImageDescriptionFlavor/*</name>*/ valueOf(/*<type>*/CFString/*</type>*/ value) {
+        for (/*<name>*/CMImageDescriptionFlavor/*</name>*/ v : values) {
             if (v.value().equals(value)) {
                 return v;
             }
         }
         throw new IllegalArgumentException("No constant with value " + value + " found in " 
-            + /*<name>*/CMTextVerticalLayout/*</name>*/.class.getName());
+            + /*<name>*/CMImageDescriptionFlavor/*</name>*/.class.getName());
     }
     
     /*<methods>*//*</methods>*/
@@ -124,15 +128,20 @@ import org.robovm.apple.audiotoolbox.*;
 
         /*<values>*/
         /**
-         * @since Available in iOS 7.0 and later.
+         * @since Available in iOS 8.0 and later.
          */
-        @GlobalValue(symbol="kCMTextVerticalLayout_LeftToRight", optional=true)
-        public static native CFString LeftToRight();
+        @GlobalValue(symbol="kCMImageDescriptionFlavor_QuickTimeMovie", optional=true)
+        public static native CFString QuickTimeMovie();
         /**
-         * @since Available in iOS 7.0 and later.
+         * @since Available in iOS 8.0 and later.
          */
-        @GlobalValue(symbol="kCMTextVerticalLayout_RightToLeft", optional=true)
-        public static native CFString RightToLeft();
+        @GlobalValue(symbol="kCMImageDescriptionFlavor_ISOFamily", optional=true)
+        public static native CFString ISOFamily();
+        /**
+         * @since Available in iOS 8.0 and later.
+         */
+        @GlobalValue(symbol="kCMImageDescriptionFlavor_3GPFamily", optional=true)
+        public static native CFString _3GPFamily();
         /*</values>*/
     }
 }

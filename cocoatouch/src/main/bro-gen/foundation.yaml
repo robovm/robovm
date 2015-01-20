@@ -292,43 +292,38 @@ classes:
         methods:
             '-attribute:atIndex:effectiveRange:':
                 name: getAttribute
-                visibility: protected
                 parameters:
                     attrName:
                         type: NSString
             '-attribute:atIndex:longestEffectiveRange:inRange:':
                 name: getAttribute
-                visibility: protected
                 parameters:
                     attrName:
                         type: NSString    
             '-attributesAtIndex:effectiveRange:':
-                name: getAttributes
-                return_type: NSAttributedStringAttributes
+                name: getAttributesDictionary
+                return_type: 'NSDictionary<NSString, NSObject>'
             '-attributesAtIndex:longestEffectiveRange:inRange:':
-                name: getAttributes
-                return_type: NSAttributedStringAttributes
+                name: getAttributesDictionary
+                return_type: 'NSDictionary<NSString, NSObject>'
             '-attributedSubstringFromRange:':
                 name: substring
             '-initWithString:attributes:':
                 name: init
                 parameters:
                     attrs:
-                        type: NSAttributedStringAttributes
+                        type: 'NSDictionary<NSString, NSObject>'
             '-init.*':
                 name: init
             '-enumerateAttributesInRange:options:usingBlock:':
-                name: enumerateAttributes0
-                visibility: protected
+                name: enumerateAttributes
             '-enumerateAttribute:inRange:options:usingBlock:':
-                name: enumerateAttribute0
-                visibility: protected
+                name: enumerateAttribute
                 parameters:
                     attrName:
                         type: NSString
             '-isEqualToAttributedString:':
                 name: equalsTo
-                visibility: protected
     NSAutoreleasePool: # DONE
         methods:
             '-drain': {}
@@ -2007,10 +2002,9 @@ classes:
                 trim_after_first_colon: true
                 parameters:
                     attrs:
-                        type: NSAttributedStringAttributes
+                        type: 'NSDictionary<NSString, NSObject>'
             '-addAttribute:value:range:':
                 trim_after_first_colon: true
-                visibility: protected
                 parameters:
                     name:
                         type: NSString
@@ -2018,10 +2012,9 @@ classes:
                 trim_after_first_colon: true
                 parameters:
                     attrs:
-                        type: NSAttributedStringAttributes
+                        type: 'NSDictionary<NSString, NSObject>'
             '-removeAttribute:range:':
                 trim_after_first_colon: true
-                visibility: protected
                 parameters:
                     name:
                         type: NSString

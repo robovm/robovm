@@ -49,16 +49,23 @@ import org.robovm.apple.audiotoolbox.*;
     /*<constructors>*//*</constructors>*/
     /*<properties>*//*</properties>*/
     /*<members>*//*</members>*/
-    public static CMMuxedFormatDescription create(CMMuxedStreamType muxType, NSDictionary<NSString, ?> extensions) {
-        CMFormatDescriptionPtr ptr = new CMFormatDescriptionPtr();
+    /**
+     * @since Available in iOS 4.0 and later.
+     */
+    public static CMMuxedFormatDescription create(CMMuxedStreamType muxType, CMVideoFormatDescriptionExtension extensions) {
+        CMMuxedFormatDescription.CMMuxedFormatDescriptionPtr ptr = new CMMuxedFormatDescription.CMMuxedFormatDescriptionPtr();
         create(null, muxType, extensions, ptr);
-        return (CMMuxedFormatDescription)ptr.get();
+        return ptr.get();
+    }
+    
+    public CMMuxedStreamType getMuxedStreamType() {
+        return CMMuxedStreamType.valueOf(getMediaSubType());
     }
     /*<methods>*/
     /**
      * @since Available in iOS 4.0 and later.
      */
     @Bridge(symbol="CMMuxedFormatDescriptionCreate", optional=true)
-    protected static native int create(CFAllocator allocator, CMMuxedStreamType muxType, NSDictionary<NSString, ?> extensions, CMFormatDescription.CMFormatDescriptionPtr outDesc);
+    private static native int create(CFAllocator allocator, CMMuxedStreamType muxType, CMVideoFormatDescriptionExtension extensions, CMMuxedFormatDescription.CMMuxedFormatDescriptionPtr outDesc);
     /*</methods>*/
 }

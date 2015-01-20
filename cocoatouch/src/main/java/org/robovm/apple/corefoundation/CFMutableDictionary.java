@@ -51,12 +51,15 @@ import org.robovm.apple.foundation.*;
         return createMutable(null, capacity, getTypeKeyCallBacks(), getTypeValueCallBacks());
     }
     
+    @Override
     public void put(NativeObject key, NativeObject value) {
         setValue(key.as(VoidPtr.class), value.as(VoidPtr.class));
     }
+    @Override
     public void remove(NativeObject key) {
         removeValue(key.as(VoidPtr.class));
     }
+    @Override
     public void clear() {
         removeAllValues();
     }

@@ -43,6 +43,45 @@ import org.robovm.apple.audiotoolbox.*;
     extends /*<extends>*/CMClockOrTimebase/*</extends>*/ 
     /*<implements>*//*</implements>*/ {
 
+    public static class Notifications {
+        /**
+         * @since Available in iOS 6.0 and later.
+         */
+        public static NSObject observeEffectiveRateChanged(CMTimebase object, final VoidBlock2<CMTimebase, CMTime> block) {
+            return NSNotificationCenter.getDefaultCenter().addObserver(EffectiveRateChangedNotification(), object.as(NSObject.class), NSOperationQueue.getMainQueue(), new VoidBlock1<NSNotification>() {
+                @Override
+                public void invoke(NSNotification a) {
+                    CMTimebase object = a.getObject() != null ? a.getObject().as(CMTimebase.class) : null;
+                    CMTime time = null;
+                    
+                    NSDictionary<NSString, NSObject> data = a.getUserInfo();
+                    if (data.containsKey(EventTimeNotificationKey())) {
+                        time = data.get(EventTimeNotificationKey()).as(CMTime.class);
+                    }
+                    block.invoke(object, time);
+                }
+            });
+        }
+        /**
+         * @since Available in iOS 6.0 and later.
+         */
+        public static NSObject observeTimeJumped(CMTimebase object, final VoidBlock2<CMTimebase, CMTime> block) {
+            return NSNotificationCenter.getDefaultCenter().addObserver(TimeJumpedNotification(), object.as(NSObject.class), NSOperationQueue.getMainQueue(), new VoidBlock1<NSNotification>() {
+                @Override
+                public void invoke(NSNotification a) {
+                    CMTimebase object = a.getObject() != null ? a.getObject().as(CMTimebase.class) : null;
+                    CMTime time = null;
+                    
+                    NSDictionary<NSString, NSObject> data = a.getUserInfo();
+                    if (data.containsKey(EventTimeNotificationKey())) {
+                        time = data.get(EventTimeNotificationKey()).as(CMTime.class);
+                    }
+                    block.invoke(object, time);
+                }
+            });
+        }
+    }
+    
     /*<ptr>*/public static class CMTimebasePtr extends Ptr<CMTimebase, CMTimebasePtr> {}/*</ptr>*/
     /*<bind>*/static { Bro.bind(CMTimebase.class); }/*</bind>*/
     /*<constants>*//*</constants>*/
@@ -63,6 +102,22 @@ import org.robovm.apple.audiotoolbox.*;
         return ptr.get();
     }   
     /*<methods>*/
+    /**
+     * @since Available in iOS 6.0 and later.
+     */
+    @GlobalValue(symbol="kCMTimebaseNotification_EffectiveRateChanged", optional=true)
+    public static native NSString EffectiveRateChangedNotification();
+    /**
+     * @since Available in iOS 6.0 and later.
+     */
+    @GlobalValue(symbol="kCMTimebaseNotification_TimeJumped", optional=true)
+    public static native NSString TimeJumpedNotification();
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
+    @GlobalValue(symbol="kCMTimebaseNotificationKey_EventTime", optional=true)
+    protected static native NSString EventTimeNotificationKey();
+    
     /**
      * @since Available in iOS 6.0 and later.
      */

@@ -39,7 +39,7 @@ import org.robovm.apple.audiotoolbox.*;
 /*<javadoc>*/
 
 /*</javadoc>*/
-/*<annotations>*//*</annotations>*/
+/*<annotations>*/@Library("CoreMedia")/*</annotations>*/
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/CMSampleTimingInfo/*</name>*/ 
     extends /*<extends>*/Struct<CMSampleTimingInfo>/*</extends>*/ 
     /*<implements>*//*</implements>*/ {
@@ -64,5 +64,11 @@ import org.robovm.apple.audiotoolbox.*;
     @StructMember(2) public native @ByVal CMTime getDecodeTimeStamp();
     @StructMember(2) public native CMSampleTimingInfo setDecodeTimeStamp(@ByVal CMTime decodeTimeStamp);
     /*</members>*/
-    /*<methods>*//*</methods>*/
+    /*<methods>*/
+    /**
+     * @since Available in iOS 4.0 and later.
+     */
+    @GlobalValue(symbol="kCMTimingInfoInvalid", optional=true)
+    public static native @ByVal CMSampleTimingInfo Invalid();
+    /*</methods>*/
 }

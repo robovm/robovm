@@ -53,9 +53,17 @@ import org.robovm.apple.dispatch.*;
     public NSAttributedString() {}
     protected NSAttributedString(SkipInit skipInit) { super(skipInit); }
     public NSAttributedString(String str) { super((SkipInit) null); initObject(init(str)); }
-    public NSAttributedString(String str, NSAttributedStringAttributes attrs) { super((SkipInit) null); initObject(init(str, attrs)); }
+    public NSAttributedString(String str, NSDictionary<NSString, NSObject> attrs) { super((SkipInit) null); initObject(init(str, attrs)); }
     public NSAttributedString(NSAttributedString attrStr) { super((SkipInit) null); initObject(init(attrStr)); }
     /*</constructors>*/
+    public NSAttributedString(String str, NSAttributedStringAttributes attrs) {
+        super((SkipInit)null);
+        initObject(init(str, attrs.getDictionary()));
+    }
+    public NSAttributedString(String str, CMTextMarkupAttributes attrs) {
+        super((SkipInit)null);
+        initObject(init(str, attrs.getDictionary().as(NSDictionary.class)));
+    }
     /*<properties>*/
     @Property(selector = "string")
     public native String getString();
@@ -63,7 +71,6 @@ import org.robovm.apple.dispatch.*;
     public native @MachineSizedUInt long length();
     /*</properties>*/
     /*<members>*//*</members>*/
-    
     @Override
     public boolean equals(Object obj) {
         if (!(obj instanceof NSAttributedString)) {
@@ -78,44 +85,50 @@ import org.robovm.apple.dispatch.*;
     public NSObject getAttribute(NSAttributedStringAttribute attribute, @MachineSizedUInt long location, NSRange range) {
         return getAttribute(attribute.value(), location, range);
     }
+    public NSObject getAttribute(CMTextMarkupAttribute attribute, @MachineSizedUInt long location, NSRange range) {
+        return getAttribute(attribute.value().as(NSString.class), location, range);
+    }
+    
     public NSObject getAttribute(String name, @MachineSizedUInt long location, NSRange range, @ByVal NSRange rangeLimit) {
         return getAttribute(new NSString(name), location, range, rangeLimit);
     }
     public NSObject getAttribute(NSAttributedStringAttribute attribute, @MachineSizedUInt long location, NSRange range, @ByVal NSRange rangeLimit) {
         return getAttribute(attribute.value(), location, range, rangeLimit);
     }
+    public NSObject getAttribute(CMTextMarkupAttribute attribute, @MachineSizedUInt long location, NSRange range, @ByVal NSRange rangeLimit) {
+        return getAttribute(attribute.value().as(NSString.class), location, range, rangeLimit);
+    }
+
+    public NSAttributedStringAttributes getAttributes(long location, NSRange range) {
+        return new NSAttributedStringAttributes(getAttributesDictionary(location, range));
+    }
+    public NSAttributedStringAttributes getAttributes(long location, NSRange range, NSRange rangeLimit) {
+        return new NSAttributedStringAttributes(getAttributesDictionary(location, range, rangeLimit));
+    }
+    public CMTextMarkupAttributes getTextMarkupAttributes(long location, NSRange range) {
+        return new CMTextMarkupAttributes(getAttributesDictionary(location, range).as(CFDictionary.class));
+    }
+    public CMTextMarkupAttributes getTextMarkupAttributes(long location, NSRange range, NSRange rangeLimit) {
+        return new CMTextMarkupAttributes(getAttributesDictionary(location, range, rangeLimit).as(CFDictionary.class));
+    }
+    
     /**
      * @since Available in iOS 4.0 and later.
      */
-    public void enumerateAttributes(@ByVal NSRange enumerationRange, NSAttributedStringEnumerationOptions opts, final VoidBlock3<NSAttributedStringAttributes, NSRange, Boolean> block) {
-        enumerateAttributes0(enumerationRange, opts, new VoidBlock3<NSDictionary<NSString,NSObject>, NSRange, BooleanPtr>() {
-            @Override
-            public void invoke(NSDictionary<NSString, NSObject> a, NSRange b, BooleanPtr c) {
-                block.invoke(new NSAttributedStringAttributes(a), b, c.get());
-            }
-        });
+    public void enumerateAttribute(String name, @ByVal NSRange enumerationRange, NSAttributedStringEnumerationOptions opts, final VoidBlock3<NSObject, NSRange, BooleanPtr> block) {
+        enumerateAttribute(new NSString(name), enumerationRange, opts, block);
     }
     /**
      * @since Available in iOS 4.0 and later.
      */
-    public void enumerateAttribute(String name, @ByVal NSRange enumerationRange, NSAttributedStringEnumerationOptions opts, final VoidBlock3<NSObject, NSRange, Boolean> block) {
-        enumerateAttribute0(new NSString(name), enumerationRange, opts, new VoidBlock3<NSObject, NSRange, BooleanPtr>() {
-            @Override
-            public void invoke(NSObject a, NSRange b, BooleanPtr c) {
-                block.invoke(a, b, c.get());
-            }
-        });
+    public void enumerateAttribute(NSAttributedStringAttribute attribute, @ByVal NSRange enumerationRange, NSAttributedStringEnumerationOptions opts, final VoidBlock3<NSObject, NSRange, BooleanPtr> block) {
+        enumerateAttribute(attribute.value(), enumerationRange, opts, block);
     }
     /**
      * @since Available in iOS 4.0 and later.
      */
-    public void enumerateAttribute(NSAttributedStringAttribute attribute, @ByVal NSRange enumerationRange, NSAttributedStringEnumerationOptions opts, final VoidBlock3<NSObject, NSRange, Boolean> block) {
-        enumerateAttribute0(attribute.value(), enumerationRange, opts, new VoidBlock3<NSObject, NSRange, BooleanPtr>() {
-            @Override
-            public void invoke(NSObject a, NSRange b, BooleanPtr c) {
-                block.invoke(a, b, c.get());
-            }
-        });
+    public void enumerateAttribute(CMTextMarkupAttribute attribute, @ByVal NSRange enumerationRange, NSAttributedStringEnumerationOptions opts, final VoidBlock3<NSObject, NSRange, BooleanPtr> block) {
+        enumerateAttribute(attribute.value().as(NSString.class), enumerationRange, opts, block);
     }
     
     /* UIKit extensions */
@@ -199,35 +212,34 @@ import org.robovm.apple.dispatch.*;
     public static NSAttributedString create(NSTextAttachment attachment) {
         return NSAttributedStringExtensions.create(attachment);
     }
-    
     /*<methods>*/
     @Method(selector = "attributesAtIndex:effectiveRange:")
-    public native NSAttributedStringAttributes getAttributes(@MachineSizedUInt long location, NSRange range);
+    public native NSDictionary<NSString, NSObject> getAttributesDictionary(@MachineSizedUInt long location, NSRange range);
     @Method(selector = "attribute:atIndex:effectiveRange:")
-    protected native NSObject getAttribute(NSString attrName, @MachineSizedUInt long location, NSRange range);
+    public native NSObject getAttribute(NSString attrName, @MachineSizedUInt long location, NSRange range);
     @Method(selector = "attributedSubstringFromRange:")
     public native NSAttributedString substring(@ByVal NSRange range);
     @Method(selector = "attributesAtIndex:longestEffectiveRange:inRange:")
-    public native NSAttributedStringAttributes getAttributes(@MachineSizedUInt long location, NSRange range, @ByVal NSRange rangeLimit);
+    public native NSDictionary<NSString, NSObject> getAttributesDictionary(@MachineSizedUInt long location, NSRange range, @ByVal NSRange rangeLimit);
     @Method(selector = "attribute:atIndex:longestEffectiveRange:inRange:")
-    protected native NSObject getAttribute(NSString attrName, @MachineSizedUInt long location, NSRange range, @ByVal NSRange rangeLimit);
+    public native NSObject getAttribute(NSString attrName, @MachineSizedUInt long location, NSRange range, @ByVal NSRange rangeLimit);
     @Method(selector = "isEqualToAttributedString:")
-    protected native boolean equalsTo(NSAttributedString other);
+    public native boolean equalsTo(NSAttributedString other);
     @Method(selector = "initWithString:")
     protected native @Pointer long init(String str);
     @Method(selector = "initWithString:attributes:")
-    protected native @Pointer long init(String str, NSAttributedStringAttributes attrs);
+    protected native @Pointer long init(String str, NSDictionary<NSString, NSObject> attrs);
     @Method(selector = "initWithAttributedString:")
     protected native @Pointer long init(NSAttributedString attrStr);
     /**
      * @since Available in iOS 4.0 and later.
      */
     @Method(selector = "enumerateAttributesInRange:options:usingBlock:")
-    protected native void enumerateAttributes0(@ByVal NSRange enumerationRange, NSAttributedStringEnumerationOptions opts, @Block("(,@ByVal,)") VoidBlock3<NSDictionary<NSString, NSObject>, NSRange, BooleanPtr> block);
+    public native void enumerateAttributes(@ByVal NSRange enumerationRange, NSAttributedStringEnumerationOptions opts, @Block("(,@ByVal,)") VoidBlock3<NSDictionary<NSString, NSObject>, NSRange, BooleanPtr> block);
     /**
      * @since Available in iOS 4.0 and later.
      */
     @Method(selector = "enumerateAttribute:inRange:options:usingBlock:")
-    protected native void enumerateAttribute0(NSString attrName, @ByVal NSRange enumerationRange, NSAttributedStringEnumerationOptions opts, @Block("(,@ByVal,)") VoidBlock3<NSObject, NSRange, BooleanPtr> block);
+    public native void enumerateAttribute(NSString attrName, @ByVal NSRange enumerationRange, NSAttributedStringEnumerationOptions opts, @Block("(,@ByVal,)") VoidBlock3<NSObject, NSRange, BooleanPtr> block);
     /*</methods>*/
 }

@@ -523,7 +523,9 @@ typedef struct {
 
 typedef struct {
     void* pc;
+    void* fp;
     Method* method;
+    jint lineNumber;
 } CallStackFrame;
 typedef struct {
     jint length;

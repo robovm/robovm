@@ -569,9 +569,64 @@ static void* channelLoop(void* data) {
     pthread_exit(0);
 }
 
-void _rvmHookInstrumented(DebugEnv* env, jint lineNumber, void* bptable, void* pc) {
-    if (IS_DEBUG_ENABLED) {
-        Method* method = rvmFindMethodAtAddress((Env*) env, pc);
-        DEBUGF("At %s.%s%s:%d (pc=%p)", method->clazz->name, method->name, method->desc, lineNumber, pc);
+static inline jboolean checkBit(jbyte* tbl, jint bit) {
+    jbyte b = tbl[bit >> 3];
+    jbyte mask = 1 << (bit & 0x7);
+    return (b & mask) != 0 ? TRUE : FALSE;
+}
+
+static inline char getSuspendedEvent(DebugEnv* debugEnv, jint lineNumberOffset, jbyte* bptable, void* pc) {
+    if (debugEnv->suspended) {
+        return EVT_THREAD_SUSPENDED;
+    }
+    if (debugEnv->stepping && pc >= debugEnv->pclow && pc < debugEnv->pchigh) {
+        return EVT_THREAD_STEPPED;
+    }
+    if (checkBit(bptable, lineNumberOffset)) {
+        return EVT_BREAKPOINT;
+    }
+    return 0;
+}
+
+void _rvmHookInstrumented(DebugEnv* debugEnv, jint lineNumber, jint lineNumberOffset, jbyte* bptable, void* pc) {
+    Env* env = (Env*) debugEnv;
+    // Check whether we should suspend this thread.
+    char event = 0;
+    if ((event = getSuspendedEvent(debugEnv, lineNumberOffset, bptable, pc)) != 0) {
+
+        if (IS_DEBUG_ENABLED) {
+            Method* method = rvmFindMethodAtAddress(env, pc);
+            DEBUGF("Suspending thread %p due to event %d at %s.%s%s:%d (pc=%p)", env->currentThread, event, method->clazz->name, 
+                method->name, method->desc, lineNumber, pc);
+        }
+
+        CallStack* callStack = rvmCaptureCallStack(env);
+        if (rvmExceptionClear(env)) goto errorUnlock; // Bail out
+
+        jint index = 0;
+        jint length = 0;
+        while (rvmGetNextCallStackMethod(env, callStack, &index)) {
+            length++;
+        }
+
+        rvmLockMutex(&writeMutex);
+        ChannelError error = { 0 };
+        writeChannelByte(clientSocket, event, &error);
+        writeChannelLong(clientSocket, 0, &error);
+        writeChannelLong(clientSocket, sizeof(jlong) * 2 + sizeof(jint) + length * (sizeof(jlong) * 2 + sizeof(jint)), &error);
+        writeChannelLong(clientSocket, (jlong)env->currentThread->threadObj, &error);
+        writeChannelLong(clientSocket, (jlong)env->currentThread, &error);
+        writeChannelInt(clientSocket, length, &error);
+        index = 0;
+        CallStackFrame* frame = NULL;
+        while ((frame = rvmGetNextCallStackMethod(env, callStack, &index)) != NULL) {
+            // TODO: Handle proxy methods
+            writeChannelLong(clientSocket, PTR_TO_LONG(frame->method->impl), &error);
+            writeChannelInt(clientSocket, frame->lineNumber, &error);
+            writeChannelLong(clientSocket, PTR_TO_LONG(frame->fp), &error);
+        }
+        rvmUnlockMutex(&writeMutex);
+errorUnlock:
+        return;    
     }
 }

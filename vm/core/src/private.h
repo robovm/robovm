@@ -57,7 +57,7 @@ extern void unwindBacktrace(void* fp, jboolean (*it)(UnwindContext*, void*), voi
 extern void* unwindGetIP(UnwindContext* context);
 extern jint unwindRaiseException(Env* env);
 extern jint unwindReraiseException(Env* env, void* exInfo);
-extern void unwindIterateCallStack(Env* env, void* fp, jboolean (*iterator)(Env*, void*, ProxyMethod*, void*), void* data);
+extern void unwindIterateCallStack(Env* env, void* fp, jboolean (*iterator)(Env*, void*, void*, ProxyMethod*, void*), void* data);
 
 /* method.c */
 extern void captureCallStack(Env* env, Frame* fp, CallStack* data, jint maxLength);

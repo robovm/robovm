@@ -111,7 +111,7 @@ declare void @_bcDetachThreadFromCallback(%Env*)
 
 declare i8* @_bcCopyStruct(%Env*, i8*, i32)
 
-declare void @_bcHookInstrumented(%Env*, i32, i8*, i8*)
+declare void @_bcHookInstrumented(%Env*, i32, i32, i8*, i8*)
 
 declare i8* @llvm.frameaddress(i32) nounwind readnone
 declare void @llvm.memcpy.p0i8.p0i8.i32(i8*, i8*, i32, i32, i1)

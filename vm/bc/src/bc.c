@@ -976,9 +976,15 @@ void* _bcCopyStruct(Env* env, void* src, jint size) {
     LEAVE(result);
 }
 
-void _bcHookInstrumented(DebugEnv* debugEnv, jint lineNumber, void* bptable, void* pc) {
+void _bcHookInstrumented(DebugEnv* debugEnv, jint lineNumber, jint lineNumberOffset, jbyte* bptable, void* pc) {
     Env* env = (Env*) debugEnv;
-    ENTER;
-    rvmHookInstrumented(debugEnv, lineNumber, bptable, pc);
-    LEAVEV;
+    // Temporarily clear any exception that has been thrown. Could be the case if we are called from a catch block.
+    Object* throwable = rvmExceptionClear(env);
+    // We cannot use ENTER/LEAVEV as it will raise any exception thrown in here. We just want the code to 
+    // proceed normally after we return.
+    rvmPushGatewayFrame(env);
+    rvmHookInstrumented(debugEnv, lineNumber, lineNumberOffset, bptable, pc);
+    rvmPopGatewayFrame(env);
+    // Restore the exception if one had been thrown when this function was called.
+    env->throwable = throwable;
 }

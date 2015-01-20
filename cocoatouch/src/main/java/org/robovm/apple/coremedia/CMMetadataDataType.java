@@ -38,10 +38,10 @@ import org.robovm.apple.audiotoolbox.*;
 
 /*<javadoc>*/
 /*</javadoc>*/
-@Marshaler(CMMetadataDataType.Marshaler.class)
 /*<annotations>*/@Library("CoreMedia")/*</annotations>*/
+@Marshaler(CMMetadataDataType.Marshaler.class)
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/CMMetadataDataType/*</name>*/ 
-    extends /*<extends>*/Object/*</extends>*/ 
+    extends /*<extends>*/CocoaUtility/*</extends>*/ 
     /*<implements>*//*</implements>*/ {
 
     public static class Marshaler {
@@ -51,14 +51,14 @@ import org.robovm.apple.audiotoolbox.*;
             if (o == null) {
                 return null;
             }
-            return CMMetadataDataType.valueOf(o);
+            return new CMMetadataDataType(o.toString());
         }
         @MarshalsPointer
         public static long toNative(CMMetadataDataType o, long flags) {
             if (o == null) {
                 return 0L;
             }
-            return CFType.Marshaler.toNative(o.value(), flags);
+            return CFType.Marshaler.toNative(new CFString(o.dataType), flags);
         }
     }
     
@@ -66,238 +66,102 @@ import org.robovm.apple.audiotoolbox.*;
     /*</ptr>*/
     /*<bind>*/static { Bro.bind(CMMetadataDataType.class); }/*</bind>*/
     /*<constants>*//*</constants>*/
-    /**
-     * @since Available in iOS 8.0 and later.
-     */
-    public static final CMMetadataDataType RawData = new CMMetadataDataType("RawDataValue");
-    /**
-     * @since Available in iOS 8.0 and later.
-     */
-    public static final CMMetadataDataType UTF8 = new CMMetadataDataType("UTF8Value");
-    /**
-     * @since Available in iOS 8.0 and later.
-     */
-    public static final CMMetadataDataType UTF16 = new CMMetadataDataType("UTF16Value");
-    /**
-     * @since Available in iOS 8.0 and later.
-     */
-    public static final CMMetadataDataType GIF = new CMMetadataDataType("GIFValue");
-    /**
-     * @since Available in iOS 8.0 and later.
-     */
-    public static final CMMetadataDataType JPEG = new CMMetadataDataType("JPEGValue");
-    /**
-     * @since Available in iOS 8.0 and later.
-     */
-    public static final CMMetadataDataType PNG = new CMMetadataDataType("PNGValue");
-    /**
-     * @since Available in iOS 8.0 and later.
-     */
-    public static final CMMetadataDataType BMP = new CMMetadataDataType("BMPValue");
-    /**
-     * @since Available in iOS 8.0 and later.
-     */
-    public static final CMMetadataDataType Float32 = new CMMetadataDataType("Float32Value");
-    /**
-     * @since Available in iOS 8.0 and later.
-     */
-    public static final CMMetadataDataType Float64 = new CMMetadataDataType("Float64Value");
-    /**
-     * @since Available in iOS 8.0 and later.
-     */
-    public static final CMMetadataDataType SInt8 = new CMMetadataDataType("SInt8Value");
-    /**
-     * @since Available in iOS 8.0 and later.
-     */
-    public static final CMMetadataDataType SInt16 = new CMMetadataDataType("SInt16Value");
-    /**
-     * @since Available in iOS 8.0 and later.
-     */
-    public static final CMMetadataDataType SInt32 = new CMMetadataDataType("SInt32Value");
-    /**
-     * @since Available in iOS 8.0 and later.
-     */
-    public static final CMMetadataDataType SInt64 = new CMMetadataDataType("SInt64Value");
-    /**
-     * @since Available in iOS 8.0 and later.
-     */
-    public static final CMMetadataDataType UInt8 = new CMMetadataDataType("UInt8Value");
-    /**
-     * @since Available in iOS 8.0 and later.
-     */
-    public static final CMMetadataDataType UInt16 = new CMMetadataDataType("UInt16Value");
-    /**
-     * @since Available in iOS 8.0 and later.
-     */
-    public static final CMMetadataDataType UInt32 = new CMMetadataDataType("UInt32Value");
-    /**
-     * @since Available in iOS 8.0 and later.
-     */
-    public static final CMMetadataDataType UInt64 = new CMMetadataDataType("UInt64Value");
-    /**
-     * @since Available in iOS 8.0 and later.
-     */
-    public static final CMMetadataDataType PointF32 = new CMMetadataDataType("PointF32Value");
-    /**
-     * @since Available in iOS 8.0 and later.
-     */
-    public static final CMMetadataDataType DimensionsF32 = new CMMetadataDataType("DimensionsF32Value");
-    /**
-     * @since Available in iOS 8.0 and later.
-     */
-    public static final CMMetadataDataType RectF32 = new CMMetadataDataType("RectF32Value");
-    /**
-     * @since Available in iOS 8.0 and later.
-     */
-    public static final CMMetadataDataType AffineTransformF64 = new CMMetadataDataType("AffineTransformF64Value");
-    /**
-     * @since Available in iOS 8.0 and later.
-     */
-    public static final CMMetadataDataType QuickTimeMetadataLocation_ISO6709 = new CMMetadataDataType("QuickTimeMetadataLocation_ISO6709Value");
-    /**
-     * @since Available in iOS 8.0 and later.
-     */
-    public static final CMMetadataDataType QuickTimeMetadataDirection = new CMMetadataDataType("QuickTimeMetadataDirectionValue");
+    private String dataType;
     
-    private static CMMetadataDataType[] values = new CMMetadataDataType[] {RawData, UTF8, UTF16, GIF, JPEG, PNG, BMP, Float32, Float64, SInt8, 
-        SInt16, SInt32, SInt64, UInt8, UInt16, UInt32, UInt64, PointF32, DimensionsF32, RectF32, AffineTransformF64, QuickTimeMetadataLocation_ISO6709, 
-        QuickTimeMetadataDirection};
-    private final LazyGlobalValue<CFString> lazyGlobalValue;
-    
-    private CMMetadataDataType(String getterName) {
-        lazyGlobalValue = new LazyGlobalValue<>(getClass(), getterName);
+    public CMMetadataDataType(String dataType) {
+        this.dataType = dataType;
     }
+    
     /*<constructors>*//*</constructors>*/
     /*<properties>*//*</properties>*/
     /*<members>*//*</members>*/
-    public CFString value() {
-        return lazyGlobalValue.value();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    public CMMetadataDataTypeRegistryError register(String description, List<String> conformingDataTypes) {
+        return registerDataType(dataType, description, conformingDataTypes);
     }
-    
-    public static CMMetadataDataType valueOf(CFString value) {
-        for (CMMetadataDataType v : values) {
-            if (v.value().equals(value)) {
-                return v;
-            }
-        }
-        throw new IllegalArgumentException("No constant with value " + value + " found in " 
-            + /*<name>*/CMMetadataDataType/*</name>*/.class.getName());
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    public boolean isRegistered() {
+        return isDataTypeRegistered(dataType);
+    }
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    public String getDescription() {
+        return getDataTypeDescription(dataType);
+    }
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    public List<String> getConformingDataTypes() {
+        return getConformingDataTypes(dataType);
+    }
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    public boolean conformsToDataType(String conformsToDataType) {
+        return doesDataTypeConformToDataType(dataType, conformsToDataType);
+    }
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    public boolean isBaseDataType() {
+        return isDataTypeBaseDataType(dataType);
+    }
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    public CMMetadataBaseDataType getConformingBaseDataType() {
+        return getBaseDataTypeForConformingDataType(dataType);
     }
     /*<methods>*/
     /**
      * @since Available in iOS 8.0 and later.
      */
-    @GlobalValue(symbol="kCMMetadataBaseDataType_RawData", optional=true)
-    protected static native CFString RawDataValue();
+    @Bridge(symbol="CMMetadataDataTypeRegistryRegisterDataType", optional=true)
+    public static native CMMetadataDataTypeRegistryError registerDataType(String dataType, String description, @org.robovm.rt.bro.annotation.Marshaler(CFArray.AsStringListMarshaler.class) List<String> conformingDataTypes);
     /**
      * @since Available in iOS 8.0 and later.
      */
-    @GlobalValue(symbol="kCMMetadataBaseDataType_UTF8", optional=true)
-    protected static native CFString UTF8Value();
+    @Bridge(symbol="CMMetadataDataTypeRegistryDataTypeIsRegistered", optional=true)
+    public static native boolean isDataTypeRegistered(String dataType);
     /**
      * @since Available in iOS 8.0 and later.
      */
-    @GlobalValue(symbol="kCMMetadataBaseDataType_UTF16", optional=true)
-    protected static native CFString UTF16Value();
+    @Bridge(symbol="CMMetadataDataTypeRegistryGetDataTypeDescription", optional=true)
+    public static native String getDataTypeDescription(String dataType);
     /**
      * @since Available in iOS 8.0 and later.
      */
-    @GlobalValue(symbol="kCMMetadataBaseDataType_GIF", optional=true)
-    protected static native CFString GIFValue();
+    @Bridge(symbol="CMMetadataDataTypeRegistryGetConformingDataTypes", optional=true)
+    public static native @org.robovm.rt.bro.annotation.Marshaler(CFArray.AsStringListMarshaler.class) List<String> getConformingDataTypes(String dataType);
     /**
      * @since Available in iOS 8.0 and later.
      */
-    @GlobalValue(symbol="kCMMetadataBaseDataType_JPEG", optional=true)
-    protected static native CFString JPEGValue();
+    @Bridge(symbol="CMMetadataDataTypeRegistryDataTypeConformsToDataType", optional=true)
+    public static native boolean doesDataTypeConformToDataType(String dataType, String conformsToDataType);
     /**
      * @since Available in iOS 8.0 and later.
      */
-    @GlobalValue(symbol="kCMMetadataBaseDataType_PNG", optional=true)
-    protected static native CFString PNGValue();
+    @Bridge(symbol="CMMetadataDataTypeRegistryGetBaseDataTypes", optional=true)
+    public static native @org.robovm.rt.bro.annotation.Marshaler(CMMetadataBaseDataType.AsListMarshaler.class) List<CMMetadataBaseDataType> getBaseDataTypes();
     /**
      * @since Available in iOS 8.0 and later.
      */
-    @GlobalValue(symbol="kCMMetadataBaseDataType_BMP", optional=true)
-    protected static native CFString BMPValue();
+    @Bridge(symbol="CMMetadataDataTypeRegistryDataTypeIsBaseDataType", optional=true)
+    public static native boolean isDataTypeBaseDataType(String dataType);
     /**
      * @since Available in iOS 8.0 and later.
      */
-    @GlobalValue(symbol="kCMMetadataBaseDataType_Float32", optional=true)
-    protected static native CFString Float32Value();
-    /**
-     * @since Available in iOS 8.0 and later.
-     */
-    @GlobalValue(symbol="kCMMetadataBaseDataType_Float64", optional=true)
-    protected static native CFString Float64Value();
-    /**
-     * @since Available in iOS 8.0 and later.
-     */
-    @GlobalValue(symbol="kCMMetadataBaseDataType_SInt8", optional=true)
-    protected static native CFString SInt8Value();
-    /**
-     * @since Available in iOS 8.0 and later.
-     */
-    @GlobalValue(symbol="kCMMetadataBaseDataType_SInt16", optional=true)
-    protected static native CFString SInt16Value();
-    /**
-     * @since Available in iOS 8.0 and later.
-     */
-    @GlobalValue(symbol="kCMMetadataBaseDataType_SInt32", optional=true)
-    protected static native CFString SInt32Value();
-    /**
-     * @since Available in iOS 8.0 and later.
-     */
-    @GlobalValue(symbol="kCMMetadataBaseDataType_SInt64", optional=true)
-    protected static native CFString SInt64Value();
-    /**
-     * @since Available in iOS 8.0 and later.
-     */
-    @GlobalValue(symbol="kCMMetadataBaseDataType_UInt8", optional=true)
-    protected static native CFString UInt8Value();
-    /**
-     * @since Available in iOS 8.0 and later.
-     */
-    @GlobalValue(symbol="kCMMetadataBaseDataType_UInt16", optional=true)
-    protected static native CFString UInt16Value();
-    /**
-     * @since Available in iOS 8.0 and later.
-     */
-    @GlobalValue(symbol="kCMMetadataBaseDataType_UInt32", optional=true)
-    protected static native CFString UInt32Value();
-    /**
-     * @since Available in iOS 8.0 and later.
-     */
-    @GlobalValue(symbol="kCMMetadataBaseDataType_UInt64", optional=true)
-    protected static native CFString UInt64Value();
-    /**
-     * @since Available in iOS 8.0 and later.
-     */
-    @GlobalValue(symbol="kCMMetadataBaseDataType_PointF32", optional=true)
-    protected static native CFString PointF32Value();
-    /**
-     * @since Available in iOS 8.0 and later.
-     */
-    @GlobalValue(symbol="kCMMetadataBaseDataType_DimensionsF32", optional=true)
-    protected static native CFString DimensionsF32Value();
-    /**
-     * @since Available in iOS 8.0 and later.
-     */
-    @GlobalValue(symbol="kCMMetadataBaseDataType_RectF32", optional=true)
-    protected static native CFString RectF32Value();
-    /**
-     * @since Available in iOS 8.0 and later.
-     */
-    @GlobalValue(symbol="kCMMetadataBaseDataType_AffineTransformF64", optional=true)
-    protected static native CFString AffineTransformF64Value();
-    /**
-     * @since Available in iOS 8.0 and later.
-     */
-    @GlobalValue(symbol="kCMMetadataDataType_QuickTimeMetadataLocation_ISO6709", optional=true)
-    protected static native CFString QuickTimeMetadataLocation_ISO6709Value();
-    /**
-     * @since Available in iOS 8.0 and later.
-     */
-    @GlobalValue(symbol="kCMMetadataDataType_QuickTimeMetadataDirection", optional=true)
-    protected static native CFString QuickTimeMetadataDirectionValue();
+    @Bridge(symbol="CMMetadataDataTypeRegistryGetBaseDataTypeForConformingDataType", optional=true)
+    public static native CMMetadataBaseDataType getBaseDataTypeForConformingDataType(String dataType);
     /*</methods>*/
+    
+    @Override
+    public String toString() {
+        return dataType;
+    }
 }

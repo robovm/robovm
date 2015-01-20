@@ -48,18 +48,23 @@ import org.robovm.apple.foundation.*;
         return createMutable(null, 0, getTypeCallBacks());
     }
     
+    @Override
     public void add(NativeObject value) {
         appendValue(value.as(VoidPtr.class));
     }
+    @Override
     public void insert(@MachineSizedSInt long idx, NativeObject value) {
         insertValueAtIndex(idx, value.as(VoidPtr.class));
     }
+    @Override
     public void replace(@MachineSizedSInt long idx, NativeObject value) {
         setValueAtIndex(idx, value.as(VoidPtr.class));
     }
+    @Override
     public void remove(@MachineSizedSInt long idx) {
         removeValueAtIndex(idx);
     }
+    @Override
     public void clear() {
         removeAllValues();
     }

@@ -41,7 +41,7 @@ import org.robovm.apple.audiotoolbox.*;
 /*</javadoc>*/
 /*<annotations>*//*</annotations>*/
 public enum /*<name>*/CMSampleBufferError/*</name>*/ implements ValuedEnum {
-	No(0L),
+    No(0L),
     /*<values>*/
     AllocationFailed(-12730L),
     RequiredParameterMissing(-12731L),

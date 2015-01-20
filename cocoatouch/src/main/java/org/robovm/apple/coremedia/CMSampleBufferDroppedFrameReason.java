@@ -39,23 +39,23 @@ import org.robovm.apple.audiotoolbox.*;
 /*<javadoc>*/
 /*</javadoc>*/
 /*<annotations>*/@Library("CoreMedia")/*</annotations>*/
-@Marshaler(/*<name>*/CMTextVerticalLayout/*</name>*/.Marshaler.class)
-/*<visibility>*/public/*</visibility>*/ class /*<name>*/CMTextVerticalLayout/*</name>*/ 
+@Marshaler(/*<name>*/CMSampleBufferDroppedFrameReason/*</name>*/.Marshaler.class)
+/*<visibility>*/public/*</visibility>*/ class /*<name>*/CMSampleBufferDroppedFrameReason/*</name>*/ 
     extends /*<extends>*/GlobalValueEnumeration<CFString>/*</extends>*/
     /*<implements>*//*</implements>*/ {
 
     /*<marshalers>*/
     public static class Marshaler {
         @MarshalsPointer
-        public static CMTextVerticalLayout toObject(Class<CMTextVerticalLayout> cls, long handle, long flags) {
+        public static CMSampleBufferDroppedFrameReason toObject(Class<CMSampleBufferDroppedFrameReason> cls, long handle, long flags) {
             CFString o = (CFString) CFType.Marshaler.toObject(CFString.class, handle, flags);
             if (o == null) {
                 return null;
             }
-            return CMTextVerticalLayout.valueOf(o);
+            return CMSampleBufferDroppedFrameReason.valueOf(o);
         }
         @MarshalsPointer
-        public static long toNative(CMTextVerticalLayout o, long flags) {
+        public static long toNative(CMSampleBufferDroppedFrameReason o, long flags) {
             if (o == null) {
                 return 0L;
             }
@@ -64,24 +64,24 @@ import org.robovm.apple.audiotoolbox.*;
     }
     public static class AsListMarshaler {
         @MarshalsPointer
-        public static List<CMTextVerticalLayout> toObject(Class<? extends CFType> cls, long handle, long flags) {
+        public static List<CMSampleBufferDroppedFrameReason> toObject(Class<? extends CFType> cls, long handle, long flags) {
             CFArray o = (CFArray) CFType.Marshaler.toObject(cls, handle, flags);
             if (o == null) {
                 return null;
             }
-            List<CMTextVerticalLayout> list = new ArrayList<>();
+            List<CMSampleBufferDroppedFrameReason> list = new ArrayList<>();
             for (long i = 0, n = o.size(); i < n; i++) {
-                list.add(CMTextVerticalLayout.valueOf(o.get(i, CFString.class)));
+                list.add(CMSampleBufferDroppedFrameReason.valueOf(o.get(i, CFString.class)));
             }
             return list;
         }
         @MarshalsPointer
-        public static long toNative(List<CMTextVerticalLayout> l, long flags) {
+        public static long toNative(List<CMSampleBufferDroppedFrameReason> l, long flags) {
             if (l == null) {
                 return 0L;
             }
             CFArray array = CFMutableArray.create();
-            for (CMTextVerticalLayout i : l) {
+            for (CMSampleBufferDroppedFrameReason i : l) {
                 array.add(i.value());
             }
             return CFType.Marshaler.toNative(array, flags);
@@ -91,29 +91,33 @@ import org.robovm.apple.audiotoolbox.*;
 
     /*<constants>*/
     /**
-     * @since Available in iOS 7.0 and later.
+     * @since Available in iOS 6.0 and later.
      */
-    public static final CMTextVerticalLayout LeftToRight = new CMTextVerticalLayout("LeftToRight");
+    public static final CMSampleBufferDroppedFrameReason FrameWasLate = new CMSampleBufferDroppedFrameReason("FrameWasLate");
     /**
-     * @since Available in iOS 7.0 and later.
+     * @since Available in iOS 6.0 and later.
      */
-    public static final CMTextVerticalLayout RightToLeft = new CMTextVerticalLayout("RightToLeft");
+    public static final CMSampleBufferDroppedFrameReason OutOfBuffers = new CMSampleBufferDroppedFrameReason("OutOfBuffers");
+    /**
+     * @since Available in iOS 6.0 and later.
+     */
+    public static final CMSampleBufferDroppedFrameReason Discontinuity = new CMSampleBufferDroppedFrameReason("Discontinuity");
     /*</constants>*/
     
-    private static /*<name>*/CMTextVerticalLayout/*</name>*/[] values = new /*<name>*/CMTextVerticalLayout/*</name>*/[] {/*<value_list>*/LeftToRight, RightToLeft/*</value_list>*/};
+    private static /*<name>*/CMSampleBufferDroppedFrameReason/*</name>*/[] values = new /*<name>*/CMSampleBufferDroppedFrameReason/*</name>*/[] {/*<value_list>*/FrameWasLate, OutOfBuffers, Discontinuity/*</value_list>*/};
     
-    /*<name>*/CMTextVerticalLayout/*</name>*/ (String getterName) {
+    /*<name>*/CMSampleBufferDroppedFrameReason/*</name>*/ (String getterName) {
         super(Values.class, getterName);
     }
     
-    public static /*<name>*/CMTextVerticalLayout/*</name>*/ valueOf(/*<type>*/CFString/*</type>*/ value) {
-        for (/*<name>*/CMTextVerticalLayout/*</name>*/ v : values) {
+    public static /*<name>*/CMSampleBufferDroppedFrameReason/*</name>*/ valueOf(/*<type>*/CFString/*</type>*/ value) {
+        for (/*<name>*/CMSampleBufferDroppedFrameReason/*</name>*/ v : values) {
             if (v.value().equals(value)) {
                 return v;
             }
         }
         throw new IllegalArgumentException("No constant with value " + value + " found in " 
-            + /*<name>*/CMTextVerticalLayout/*</name>*/.class.getName());
+            + /*<name>*/CMSampleBufferDroppedFrameReason/*</name>*/.class.getName());
     }
     
     /*<methods>*//*</methods>*/
@@ -124,15 +128,20 @@ import org.robovm.apple.audiotoolbox.*;
 
         /*<values>*/
         /**
-         * @since Available in iOS 7.0 and later.
+         * @since Available in iOS 6.0 and later.
          */
-        @GlobalValue(symbol="kCMTextVerticalLayout_LeftToRight", optional=true)
-        public static native CFString LeftToRight();
+        @GlobalValue(symbol="kCMSampleBufferDroppedFrameReason_FrameWasLate", optional=true)
+        public static native CFString FrameWasLate();
         /**
-         * @since Available in iOS 7.0 and later.
+         * @since Available in iOS 6.0 and later.
          */
-        @GlobalValue(symbol="kCMTextVerticalLayout_RightToLeft", optional=true)
-        public static native CFString RightToLeft();
+        @GlobalValue(symbol="kCMSampleBufferDroppedFrameReason_OutOfBuffers", optional=true)
+        public static native CFString OutOfBuffers();
+        /**
+         * @since Available in iOS 6.0 and later.
+         */
+        @GlobalValue(symbol="kCMSampleBufferDroppedFrameReason_Discontinuity", optional=true)
+        public static native CFString Discontinuity();
         /*</values>*/
     }
 }

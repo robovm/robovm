@@ -61,7 +61,7 @@ import org.robovm.apple.audiotoolbox.*;
      * @since Available in iOS 6.0 and later.
      */
     @Bridge(symbol="CMMemoryPoolCreate", optional=true)
-    public static native CMMemoryPool create(NSDictionary<?, ?> options);
+    public static native CMMemoryPool create(CMMemoryPoolOptions options);
     /**
      * @since Available in iOS 6.0 and later.
      */

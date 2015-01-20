@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 Trillian Mobile AB
+ * Copyright (C) 2015 Trillian Mobile AB
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -38,12 +38,13 @@ import org.robovm.apple.audiotoolbox.*;
 
 /*<javadoc>*/
 /*</javadoc>*/
-@Marshaler(CMTextMarkupCharacterEdgeStyle.Marshaler.class)
 /*<annotations>*/@Library("CoreMedia")/*</annotations>*/
+@Marshaler(/*<name>*/CMTextMarkupCharacterEdgeStyle/*</name>*/.Marshaler.class)
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/CMTextMarkupCharacterEdgeStyle/*</name>*/ 
-    extends /*<extends>*/Object/*</extends>*/ 
+    extends /*<extends>*/GlobalValueEnumeration<CFString>/*</extends>*/
     /*<implements>*//*</implements>*/ {
 
+    /*<marshalers>*/
     public static class Marshaler {
         @MarshalsPointer
         public static CMTextMarkupCharacterEdgeStyle toObject(Class<CMTextMarkupCharacterEdgeStyle> cls, long handle, long flags) {
@@ -61,48 +62,64 @@ import org.robovm.apple.audiotoolbox.*;
             return CFType.Marshaler.toNative(o.value(), flags);
         }
     }
-    
-    /*<ptr>*/
-    /*</ptr>*/
-    /*<bind>*/static { Bro.bind(CMTextMarkupCharacterEdgeStyle.class); }/*</bind>*/
-    /*<constants>*//*</constants>*/
-    /**
-     * @since Available in iOS 7.0 and later.
-     */
-    public static final CMTextMarkupCharacterEdgeStyle None = new CMTextMarkupCharacterEdgeStyle("NoneValue");
-    /**
-     * @since Available in iOS 7.0 and later.
-     */
-    public static final CMTextMarkupCharacterEdgeStyle Raised = new CMTextMarkupCharacterEdgeStyle("RaisedValue");
-    /**
-     * @since Available in iOS 7.0 and later.
-     */
-    public static final CMTextMarkupCharacterEdgeStyle Depressed = new CMTextMarkupCharacterEdgeStyle("DepressedValue");
-    /**
-     * @since Available in iOS 7.0 and later.
-     */
-    public static final CMTextMarkupCharacterEdgeStyle Uniform = new CMTextMarkupCharacterEdgeStyle("UniformValue");
-    /**
-     * @since Available in iOS 7.0 and later.
-     */
-    public static final CMTextMarkupCharacterEdgeStyle DropShadow = new CMTextMarkupCharacterEdgeStyle("DropShadowValue");
-    
-    private static CMTextMarkupCharacterEdgeStyle[] values = new CMTextMarkupCharacterEdgeStyle[] {None, Raised, Depressed, 
-        Uniform, DropShadow};
-    private final LazyGlobalValue<CFString> lazyGlobalValue;
-    
-    private CMTextMarkupCharacterEdgeStyle(String getterName) {
-        lazyGlobalValue = new LazyGlobalValue<>(getClass(), getterName);
+    public static class AsListMarshaler {
+        @MarshalsPointer
+        public static List<CMTextMarkupCharacterEdgeStyle> toObject(Class<? extends CFType> cls, long handle, long flags) {
+            CFArray o = (CFArray) CFType.Marshaler.toObject(cls, handle, flags);
+            if (o == null) {
+                return null;
+            }
+            List<CMTextMarkupCharacterEdgeStyle> list = new ArrayList<>();
+            for (long i = 0, n = o.size(); i < n; i++) {
+                list.add(CMTextMarkupCharacterEdgeStyle.valueOf(o.get(i, CFString.class)));
+            }
+            return list;
+        }
+        @MarshalsPointer
+        public static long toNative(List<CMTextMarkupCharacterEdgeStyle> l, long flags) {
+            if (l == null) {
+                return 0L;
+            }
+            CFArray array = CFMutableArray.create();
+            for (CMTextMarkupCharacterEdgeStyle i : l) {
+                array.add(i.value());
+            }
+            return CFType.Marshaler.toNative(array, flags);
+        }
     }
-    /*<constructors>*//*</constructors>*/
-    /*<properties>*//*</properties>*/
-    /*<members>*//*</members>*/
-    public CFString value() {
-        return lazyGlobalValue.value();
+    /*</marshalers>*/
+
+    /*<constants>*/
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
+    public static final CMTextMarkupCharacterEdgeStyle None = new CMTextMarkupCharacterEdgeStyle("None");
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
+    public static final CMTextMarkupCharacterEdgeStyle Raised = new CMTextMarkupCharacterEdgeStyle("Raised");
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
+    public static final CMTextMarkupCharacterEdgeStyle Depressed = new CMTextMarkupCharacterEdgeStyle("Depressed");
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
+    public static final CMTextMarkupCharacterEdgeStyle Uniform = new CMTextMarkupCharacterEdgeStyle("Uniform");
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
+    public static final CMTextMarkupCharacterEdgeStyle DropShadow = new CMTextMarkupCharacterEdgeStyle("DropShadow");
+    /*</constants>*/
+    
+    private static /*<name>*/CMTextMarkupCharacterEdgeStyle/*</name>*/[] values = new /*<name>*/CMTextMarkupCharacterEdgeStyle/*</name>*/[] {/*<value_list>*/None, Raised, Depressed, Uniform, DropShadow/*</value_list>*/};
+    
+    /*<name>*/CMTextMarkupCharacterEdgeStyle/*</name>*/ (String getterName) {
+        super(Values.class, getterName);
     }
     
-    public static CMTextMarkupCharacterEdgeStyle valueOf(CFString value) {
-        for (CMTextMarkupCharacterEdgeStyle v : values) {
+    public static /*<name>*/CMTextMarkupCharacterEdgeStyle/*</name>*/ valueOf(/*<type>*/CFString/*</type>*/ value) {
+        for (/*<name>*/CMTextMarkupCharacterEdgeStyle/*</name>*/ v : values) {
             if (v.value().equals(value)) {
                 return v;
             }
@@ -110,31 +127,39 @@ import org.robovm.apple.audiotoolbox.*;
         throw new IllegalArgumentException("No constant with value " + value + " found in " 
             + /*<name>*/CMTextMarkupCharacterEdgeStyle/*</name>*/.class.getName());
     }
-    /*<methods>*/
-    /**
-     * @since Available in iOS 7.0 and later.
-     */
-    @GlobalValue(symbol="kCMTextMarkupCharacterEdgeStyle_None", optional=true)
-    protected static native CFString NoneValue();
-    /**
-     * @since Available in iOS 7.0 and later.
-     */
-    @GlobalValue(symbol="kCMTextMarkupCharacterEdgeStyle_Raised", optional=true)
-    protected static native CFString RaisedValue();
-    /**
-     * @since Available in iOS 7.0 and later.
-     */
-    @GlobalValue(symbol="kCMTextMarkupCharacterEdgeStyle_Depressed", optional=true)
-    protected static native CFString DepressedValue();
-    /**
-     * @since Available in iOS 7.0 and later.
-     */
-    @GlobalValue(symbol="kCMTextMarkupCharacterEdgeStyle_Uniform", optional=true)
-    protected static native CFString UniformValue();
-    /**
-     * @since Available in iOS 7.0 and later.
-     */
-    @GlobalValue(symbol="kCMTextMarkupCharacterEdgeStyle_DropShadow", optional=true)
-    protected static native CFString DropShadowValue();
-    /*</methods>*/
+    
+    /*<methods>*//*</methods>*/
+    
+    /*<annotations>*/@Library("CoreMedia")/*</annotations>*/
+    public static class Values {
+    	static { Bro.bind(Values.class); }
+
+        /*<values>*/
+        /**
+         * @since Available in iOS 7.0 and later.
+         */
+        @GlobalValue(symbol="kCMTextMarkupCharacterEdgeStyle_None", optional=true)
+        public static native CFString None();
+        /**
+         * @since Available in iOS 7.0 and later.
+         */
+        @GlobalValue(symbol="kCMTextMarkupCharacterEdgeStyle_Raised", optional=true)
+        public static native CFString Raised();
+        /**
+         * @since Available in iOS 7.0 and later.
+         */
+        @GlobalValue(symbol="kCMTextMarkupCharacterEdgeStyle_Depressed", optional=true)
+        public static native CFString Depressed();
+        /**
+         * @since Available in iOS 7.0 and later.
+         */
+        @GlobalValue(symbol="kCMTextMarkupCharacterEdgeStyle_Uniform", optional=true)
+        public static native CFString Uniform();
+        /**
+         * @since Available in iOS 7.0 and later.
+         */
+        @GlobalValue(symbol="kCMTextMarkupCharacterEdgeStyle_DropShadow", optional=true)
+        public static native CFString DropShadow();
+        /*</values>*/
+    }
 }

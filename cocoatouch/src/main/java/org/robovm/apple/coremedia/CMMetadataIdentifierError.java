@@ -41,6 +41,7 @@ import org.robovm.apple.audiotoolbox.*;
 /*</javadoc>*/
 /*<annotations>*//*</annotations>*/
 public enum /*<name>*/CMMetadataIdentifierError/*</name>*/ implements ValuedEnum {
+    No(0L),
     /*<values>*/
     AllocationFailed(-16300L),
     RequiredParameterMissing(-16301L),

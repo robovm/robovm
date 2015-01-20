@@ -75,11 +75,25 @@ import org.robovm.apple.dispatch.*;
     public void addAttribute(NSAttributedStringAttribute attribute, NSObject value, @ByVal NSRange range) {
         addAttribute(attribute.value(), value, range);
     }
+    public void addAttribute(CMTextMarkupAttribute attribute, NSObject value, @ByVal NSRange range) {
+        addAttribute(attribute.value().as(NSString.class), value, range);
+    }
+    
+    public void addAttributes(NSAttributedStringAttributes attrs, @ByVal NSRange range) {
+        addAttributes(attrs.getDictionary(), range);
+    }
+    public void addAttributes(CMTextMarkupAttributes attrs, @ByVal NSRange range) {
+        addAttributes(attrs.getDictionary().as(NSDictionary.class), range);
+    }
+    
     public void removeAttribute(String name, @ByVal NSRange range) {
         removeAttribute(new NSString(name), range);
     }
     public void removeAttribute(NSAttributedStringAttribute attribute, @ByVal NSRange range) {
         removeAttribute(attribute.value(), range);
+    }
+    public void removeAttribute(CMTextMarkupAttribute attribute, @ByVal NSRange range) {
+        removeAttribute(attribute.value().as(NSString.class), range);
     }
     
     /* UIKit extensions */
@@ -111,18 +125,17 @@ import org.robovm.apple.dispatch.*;
     public void fixAttributes(NSRange range) {
         NSMutableAttributedStringExtensions.fixAttributesInRange(this, range);
     }
-    
     /*<methods>*/
     @Method(selector = "replaceCharactersInRange:withString:")
     public native void replace(@ByVal NSRange range, String str);
     @Method(selector = "setAttributes:range:")
-    public native void setAttributes(NSAttributedStringAttributes attrs, @ByVal NSRange range);
+    public native void setAttributes(NSDictionary<NSString, NSObject> attrs, @ByVal NSRange range);
     @Method(selector = "addAttribute:value:range:")
-    protected native void addAttribute(NSString name, NSObject value, @ByVal NSRange range);
+    public native void addAttribute(NSString name, NSObject value, @ByVal NSRange range);
     @Method(selector = "addAttributes:range:")
-    public native void addAttributes(NSAttributedStringAttributes attrs, @ByVal NSRange range);
+    public native void addAttributes(NSDictionary<NSString, NSObject> attrs, @ByVal NSRange range);
     @Method(selector = "removeAttribute:range:")
-    protected native void removeAttribute(NSString name, @ByVal NSRange range);
+    public native void removeAttribute(NSString name, @ByVal NSRange range);
     @Method(selector = "replaceCharactersInRange:withAttributedString:")
     public native void replace(@ByVal NSRange range, NSAttributedString attrString);
     @Method(selector = "insertAttributedString:atIndex:")

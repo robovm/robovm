@@ -49,18 +49,25 @@ import org.robovm.apple.audiotoolbox.*;
     /*<constructors>*//*</constructors>*/
     /*<properties>*//*</properties>*/
     /*<members>*//*</members>*/
+    /**
+     * @since Available in iOS 6.0 and later.
+     */
     public @ByVal CMTime getAnchorTime() {
         CMTime.CMTimePtr ptr = new CMTime.CMTimePtr();
         getRelativeRateAndAnchorTime(this, null, ptr, null);
         return ptr.get();
     }
-    
+    /**
+     * @since Available in iOS 6.0 and later.
+     */
     public @ByVal CMTime getRelativeAnchorTime() {
         CMTime.CMTimePtr ptr = new CMTime.CMTimePtr();
         getRelativeRateAndAnchorTime(this, null, null, ptr);
         return ptr.get();
     }
-    
+    /**
+     * @since Available in iOS 6.0 and later.
+     */
     public @ByVal CMTime convertTime(@ByVal CMTime time, CMClockOrTimebase toClockOrTimebase) {
         return convertTime(time, this, toClockOrTimebase);
     }
@@ -74,12 +81,12 @@ import org.robovm.apple.audiotoolbox.*;
      * @since Available in iOS 6.0 and later.
      */
     @Bridge(symbol="CMSyncGetRelativeRateAndAnchorTime", optional=true)
-    protected native int getRelativeRateAndAnchorTime(CMClockOrTimebase relativeToClockOrTimebase, DoublePtr outRelativeRate, CMTime.CMTimePtr outOfClockOrTimebaseAnchorTime, CMTime.CMTimePtr outRelativeToClockOrTimebaseAnchorTime);
+    private native int getRelativeRateAndAnchorTime(CMClockOrTimebase relativeToClockOrTimebase, DoublePtr outRelativeRate, CMTime.CMTimePtr outOfClockOrTimebaseAnchorTime, CMTime.CMTimePtr outRelativeToClockOrTimebaseAnchorTime);
     /**
      * @since Available in iOS 6.0 and later.
      */
     @Bridge(symbol="CMSyncConvertTime", optional=true)
-    protected static native @ByVal CMTime convertTime(@ByVal CMTime time, CMClockOrTimebase fromClockOrTimebase, CMClockOrTimebase toClockOrTimebase);
+    public static native @ByVal CMTime convertTime(@ByVal CMTime time, CMClockOrTimebase fromClockOrTimebase, CMClockOrTimebase toClockOrTimebase);
     /**
      * @since Available in iOS 6.0 and later.
      */

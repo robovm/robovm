@@ -74,7 +74,7 @@ import org.robovm.apple.audiotoolbox.*;
     /*<ptr>*/public static class CMTimePtr extends Ptr<CMTime, CMTimePtr> {}/*</ptr>*/
     /*<bind>*/static { Bro.bind(CMTime.class); }/*</bind>*/
     /*<constants>*/
-    public static final long getMaxTimescale = 0x7fffffffL;
+    public static final long MaxTimescale = 0x7fffffffL;
     /*</constants>*/
     /*<constructors>*/
     public CMTime() {}
@@ -96,10 +96,37 @@ import org.robovm.apple.audiotoolbox.*;
     @StructMember(3) public native long getEpoch();
     @StructMember(3) public native CMTime setEpoch(long epoch);
     /*</members>*/
-    public String asString() {
+    @Override
+    public String toString() {
         return getDescription(null, this);
     }
     /*<methods>*/
+    /**
+     * @since Available in iOS 4.0 and later.
+     */
+    @GlobalValue(symbol="kCMTimeInvalid", optional=true)
+    public static native @ByVal CMTime Invalid();
+    /**
+     * @since Available in iOS 4.0 and later.
+     */
+    @GlobalValue(symbol="kCMTimeIndefinite", optional=true)
+    public static native @ByVal CMTime Indefinite();
+    /**
+     * @since Available in iOS 4.0 and later.
+     */
+    @GlobalValue(symbol="kCMTimePositiveInfinity", optional=true)
+    public static native @ByVal CMTime PositiveInfinity();
+    /**
+     * @since Available in iOS 4.0 and later.
+     */
+    @GlobalValue(symbol="kCMTimeNegativeInfinity", optional=true)
+    public static native @ByVal CMTime NegativeInfinity();
+    /**
+     * @since Available in iOS 4.0 and later.
+     */
+    @GlobalValue(symbol="kCMTimeZero", optional=true)
+    public static native @ByVal CMTime Zero();
+    
     /**
      * @since Available in iOS 4.0 and later.
      */
@@ -196,13 +223,13 @@ import org.robovm.apple.audiotoolbox.*;
      * @since Available in iOS 4.0 and later.
      */
     @Bridge(symbol="CMTimeCopyDescription", optional=true)
-    protected static native String getDescription(CFAllocator allocator, @ByVal CMTime time);
+    private static native String getDescription(CFAllocator allocator, @ByVal CMTime time);
     /**
      * @since Available in iOS 4.0 and later.
      */
-    public void print() { print(this); }
+    public void show() { show(this); }
     @Bridge(symbol="CMTimeShow", optional=true)
-    private static native void print(@ByVal CMTime time);
+    private static native void show(@ByVal CMTime time);
     /**
      * @since Available in iOS 4.0 and later.
      */

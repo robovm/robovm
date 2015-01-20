@@ -39,23 +39,23 @@ import org.robovm.apple.audiotoolbox.*;
 /*<javadoc>*/
 /*</javadoc>*/
 /*<annotations>*/@Library("CoreMedia")/*</annotations>*/
-@Marshaler(/*<name>*/CMTextVerticalLayout/*</name>*/.Marshaler.class)
-/*<visibility>*/public/*</visibility>*/ class /*<name>*/CMTextVerticalLayout/*</name>*/ 
+@Marshaler(/*<name>*/CMSampleBufferDroppedFrameReasonInfo/*</name>*/.Marshaler.class)
+/*<visibility>*/public/*</visibility>*/ class /*<name>*/CMSampleBufferDroppedFrameReasonInfo/*</name>*/ 
     extends /*<extends>*/GlobalValueEnumeration<CFString>/*</extends>*/
     /*<implements>*//*</implements>*/ {
 
     /*<marshalers>*/
     public static class Marshaler {
         @MarshalsPointer
-        public static CMTextVerticalLayout toObject(Class<CMTextVerticalLayout> cls, long handle, long flags) {
+        public static CMSampleBufferDroppedFrameReasonInfo toObject(Class<CMSampleBufferDroppedFrameReasonInfo> cls, long handle, long flags) {
             CFString o = (CFString) CFType.Marshaler.toObject(CFString.class, handle, flags);
             if (o == null) {
                 return null;
             }
-            return CMTextVerticalLayout.valueOf(o);
+            return CMSampleBufferDroppedFrameReasonInfo.valueOf(o);
         }
         @MarshalsPointer
-        public static long toNative(CMTextVerticalLayout o, long flags) {
+        public static long toNative(CMSampleBufferDroppedFrameReasonInfo o, long flags) {
             if (o == null) {
                 return 0L;
             }
@@ -64,24 +64,24 @@ import org.robovm.apple.audiotoolbox.*;
     }
     public static class AsListMarshaler {
         @MarshalsPointer
-        public static List<CMTextVerticalLayout> toObject(Class<? extends CFType> cls, long handle, long flags) {
+        public static List<CMSampleBufferDroppedFrameReasonInfo> toObject(Class<? extends CFType> cls, long handle, long flags) {
             CFArray o = (CFArray) CFType.Marshaler.toObject(cls, handle, flags);
             if (o == null) {
                 return null;
             }
-            List<CMTextVerticalLayout> list = new ArrayList<>();
+            List<CMSampleBufferDroppedFrameReasonInfo> list = new ArrayList<>();
             for (long i = 0, n = o.size(); i < n; i++) {
-                list.add(CMTextVerticalLayout.valueOf(o.get(i, CFString.class)));
+                list.add(CMSampleBufferDroppedFrameReasonInfo.valueOf(o.get(i, CFString.class)));
             }
             return list;
         }
         @MarshalsPointer
-        public static long toNative(List<CMTextVerticalLayout> l, long flags) {
+        public static long toNative(List<CMSampleBufferDroppedFrameReasonInfo> l, long flags) {
             if (l == null) {
                 return 0L;
             }
             CFArray array = CFMutableArray.create();
-            for (CMTextVerticalLayout i : l) {
+            for (CMSampleBufferDroppedFrameReasonInfo i : l) {
                 array.add(i.value());
             }
             return CFType.Marshaler.toNative(array, flags);
@@ -93,27 +93,23 @@ import org.robovm.apple.audiotoolbox.*;
     /**
      * @since Available in iOS 7.0 and later.
      */
-    public static final CMTextVerticalLayout LeftToRight = new CMTextVerticalLayout("LeftToRight");
-    /**
-     * @since Available in iOS 7.0 and later.
-     */
-    public static final CMTextVerticalLayout RightToLeft = new CMTextVerticalLayout("RightToLeft");
+    public static final CMSampleBufferDroppedFrameReasonInfo CameraModeSwitch = new CMSampleBufferDroppedFrameReasonInfo("CameraModeSwitch");
     /*</constants>*/
     
-    private static /*<name>*/CMTextVerticalLayout/*</name>*/[] values = new /*<name>*/CMTextVerticalLayout/*</name>*/[] {/*<value_list>*/LeftToRight, RightToLeft/*</value_list>*/};
+    private static /*<name>*/CMSampleBufferDroppedFrameReasonInfo/*</name>*/[] values = new /*<name>*/CMSampleBufferDroppedFrameReasonInfo/*</name>*/[] {/*<value_list>*/CameraModeSwitch/*</value_list>*/};
     
-    /*<name>*/CMTextVerticalLayout/*</name>*/ (String getterName) {
+    /*<name>*/CMSampleBufferDroppedFrameReasonInfo/*</name>*/ (String getterName) {
         super(Values.class, getterName);
     }
     
-    public static /*<name>*/CMTextVerticalLayout/*</name>*/ valueOf(/*<type>*/CFString/*</type>*/ value) {
-        for (/*<name>*/CMTextVerticalLayout/*</name>*/ v : values) {
+    public static /*<name>*/CMSampleBufferDroppedFrameReasonInfo/*</name>*/ valueOf(/*<type>*/CFString/*</type>*/ value) {
+        for (/*<name>*/CMSampleBufferDroppedFrameReasonInfo/*</name>*/ v : values) {
             if (v.value().equals(value)) {
                 return v;
             }
         }
         throw new IllegalArgumentException("No constant with value " + value + " found in " 
-            + /*<name>*/CMTextVerticalLayout/*</name>*/.class.getName());
+            + /*<name>*/CMSampleBufferDroppedFrameReasonInfo/*</name>*/.class.getName());
     }
     
     /*<methods>*//*</methods>*/
@@ -126,13 +122,8 @@ import org.robovm.apple.audiotoolbox.*;
         /**
          * @since Available in iOS 7.0 and later.
          */
-        @GlobalValue(symbol="kCMTextVerticalLayout_LeftToRight", optional=true)
-        public static native CFString LeftToRight();
-        /**
-         * @since Available in iOS 7.0 and later.
-         */
-        @GlobalValue(symbol="kCMTextVerticalLayout_RightToLeft", optional=true)
-        public static native CFString RightToLeft();
+        @GlobalValue(symbol="kCMSampleBufferDroppedFrameReasonInfo_CameraModeSwitch", optional=true)
+        public static native CFString CameraModeSwitch();
         /*</values>*/
     }
 }

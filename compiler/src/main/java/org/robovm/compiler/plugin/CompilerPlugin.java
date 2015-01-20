@@ -16,6 +16,7 @@
  */
 package org.robovm.compiler.plugin;
 
+import java.io.File;
 import java.io.IOException;
 
 import org.robovm.compiler.ModuleBuilder;
@@ -82,4 +83,12 @@ public abstract class CompilerPlugin extends Plugin {
      */
     public abstract void afterMethod(Config config, Clazz clazz, SootMethod method,
             ModuleBuilder moduleBuilder, Function function) throws IOException;
+    
+    /**
+     * Called after the object file of a class has been compiled to an object file.
+     * @param config the current {@link Config}
+     * @param clazz the {@link Clazz} being compiled
+     * @param objectFile the object file
+     */
+    public abstract void afterObjectFile(Config config, Clazz clazz, File objectFile) throws IOException;
 }

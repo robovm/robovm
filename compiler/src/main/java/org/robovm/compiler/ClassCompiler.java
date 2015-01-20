@@ -362,6 +362,10 @@ public class ClassCompiler {
                     try (BufferedOutputStream oOut = new BufferedOutputStream(new FileOutputStream(oFile))) {
                         targetMachine.assemble(asm, clazz.getClassName(), oOut);
                     }
+                    
+                    for (CompilerPlugin plugin : config.getCompilerPlugins()) {
+                        plugin.afterObjectFile(config, clazz, oFile);
+                    }
 
                     /*
                      * Read out line number info from the .o file if any and

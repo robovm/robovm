@@ -370,6 +370,7 @@ typedef struct Options {
     jboolean enableGCHeapStats;
     jboolean enableHooks;
     jboolean waitForAttach;
+    jboolean waitForResume;
     jboolean printPID;
     char* pidFile;
     jboolean printDebugPort;
@@ -511,6 +512,14 @@ struct Env {
     TrycatchContext* trycatchContext;
     jint attachCount;
 };
+
+typedef struct {
+    Env env;
+    void* pclow;
+    void* pchigh;
+    jboolean suspended;
+    jboolean stepping;
+} DebugEnv;
 
 typedef struct {
     void* pc;

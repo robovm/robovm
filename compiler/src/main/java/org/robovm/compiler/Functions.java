@@ -97,6 +97,7 @@ public class Functions {
     public static final FunctionRef BC_ABSTRACT_METHOD_CALLED = new FunctionRef("_bcAbstractMethodCalled", new FunctionType(VOID, ENV_PTR, OBJECT_PTR));
     public static final FunctionRef BC_NON_PUBLIC_METHOD_CALLED = new FunctionRef("_bcNonPublicMethodCalled", new FunctionType(VOID, ENV_PTR, OBJECT_PTR));
     public static final FunctionRef BC_COPY_STRUCT = new FunctionRef("_bcCopyStruct", new FunctionType(I8_PTR, ENV_PTR, I8_PTR, I32));
+    public static final FunctionRef BC_HOOK_INSTRUMENTED = new FunctionRef("_bcHookInstrumented", new FunctionType(VOID, ENV_PTR, I32, I8_PTR, I8_PTR));
 
     public static final FunctionRef LLVM_FRAMEADDRESS = new FunctionRef("llvm.frameaddress", new FunctionType(I8_PTR, I32));
     public static final FunctionRef LLVM_MEMCPY = new FunctionRef("llvm.memcpy.p0i8.p0i8.i32", new FunctionType(VOID, I8_PTR, I8_PTR, I32, I32, I1));
@@ -154,6 +155,7 @@ public class Functions {
     public static final FunctionRef MONITOREXIT = new FunctionRef("monitorexit", new FunctionType(VOID, ENV_PTR, OBJECT_PTR));
     public static final FunctionRef PUSH_NATIVE_FRAME = new FunctionRef("pushNativeFrame", new FunctionType(VOID, ENV_PTR));
     public static final FunctionRef POP_NATIVE_FRAME = new FunctionRef("popNativeFrame", new FunctionType(VOID, ENV_PTR));
+    public static final FunctionRef GETPC = new FunctionRef("getpc", new FunctionType(I8_PTR));
 
     public static FunctionRef getArrayLoad(soot.Type sootType) {
         if (sootType.equals(soot.BooleanType.v())) {

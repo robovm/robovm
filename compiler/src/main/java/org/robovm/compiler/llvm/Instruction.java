@@ -30,6 +30,10 @@ public abstract class Instruction {
     private List<Metadata> metadata;
     private List<Object> attachments;
 
+    public BasicBlock getBasicBlock() {
+        return basicBlock;
+    }
+    
     public Set<Variable> getWritesTo() {
         return Collections.emptySet();
     }
@@ -70,5 +74,9 @@ public abstract class Instruction {
             }
         }
         return null;
+    }
+    
+    public Set<BasicBlockRef> getBranchTargets() {
+        return Collections.emptySet();
     }
 }

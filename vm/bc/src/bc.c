@@ -975,3 +975,10 @@ void* _bcCopyStruct(Env* env, void* src, jint size) {
     void* result = rvmCopyMemory(env, src, size);
     LEAVE(result);
 }
+
+void _bcHookInstrumented(DebugEnv* debugEnv, jint lineNumber, void* bptable, void* pc) {
+    Env* env = (Env*) debugEnv;
+    ENTER;
+    rvmHookInstrumented(debugEnv, lineNumber, bptable, pc);
+    LEAVEV;
+}

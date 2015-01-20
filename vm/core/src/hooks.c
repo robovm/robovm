@@ -434,6 +434,9 @@ static void handleFree(jlong reqId, ChannelError* error) {
     rvmLockMutex(&writeMutex);
     free(addr);
     DEBUGF("Freed memory at %p", addr);
+    writeChannelByte(clientSocket, CMD_FREE, error);
+    writeChannelLong(clientSocket, reqId, error);
+    writeChannelLong(clientSocket, 0, error);
     rvmUnlockMutex(&writeMutex);
 }
 

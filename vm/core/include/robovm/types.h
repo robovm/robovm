@@ -514,6 +514,14 @@ struct Env {
 };
 
 typedef struct {
+    Env env;
+    void* pclow;
+    void* pchigh;
+    jboolean suspended;
+    jboolean stepping;
+} DebugEnv;
+
+typedef struct {
     void* pc;
     Method* method;
 } CallStackFrame;

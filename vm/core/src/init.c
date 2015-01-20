@@ -246,7 +246,7 @@ VM* rvmCreateVM(Options* options) {
 }
 
 Env* rvmCreateEnv(VM* vm) {
-    Env* env = gcAllocate(sizeof(Env));
+    Env* env = gcAllocate(vm->options->enableHooks ? sizeof(DebugEnv) : sizeof(Env));
     if (!env) return NULL;
     env->vm = vm;
     rvmInitJNIEnv(env);

@@ -32,8 +32,9 @@
 #define CMD_READ_CSTRING 2
 #define CMD_WRITE_MEMORY 3
 #define CMD_WRITE_AND_BITS 4
-#define CMD_ALLOCATE 5
-#define CMD_FREE 6
+#define CMD_WRITE_OR_BITS 5
+#define CMD_ALLOCATE 6
+#define CMD_FREE 7
 
 // thread/vm operations
 #define CMD_THREAD_SUSPEND 50
@@ -357,7 +358,7 @@ static void handleReadMemory(jlong reqId, ChannelError* error) {
     jint numBytes = readChannelInt(clientSocket, error);
     if(checkError(error)) return;
 
-    DEBUGF("Reading memory: %p, %llu bytes", addr, numBytes);
+    DEBUGF("Reading memory: %p, %u bytes", addr, numBytes);
     rvmLockMutex(&writeMutex);
     writeChannelByte(clientSocket, CMD_READ_MEMORY, error);
     writeChannelLong(clientSocket, reqId, error);
@@ -404,10 +405,29 @@ static void handleAndBits(jlong reqId, ChannelError* error) {
     if(checkError(error)) return;
 
     rvmLockMutex(&writeMutex);
-    char value = *((char*)addr) & mask;
+    char orig = *((char*)addr);
+    char value = orig & mask;
     *((char*)addr) = value;
-    DEBUGF("Anding bits at %p (=%x) with %x = %x", addr, *((char*)addr), mask, value);
+    DEBUGF("And-ing bits at %p (=%x) with %x = %x", addr, orig, mask, value);
     writeChannelByte(clientSocket, CMD_WRITE_AND_BITS, error);
+    writeChannelLong(clientSocket, reqId, error);
+    writeChannelLong(clientSocket, 0, error);
+    rvmUnlockMutex(&writeMutex);
+}
+
+static void handleOrBits(jlong reqId, ChannelError* error) {
+    void* addr = (void*)readChannelLong(clientSocket, error);
+    if(checkError(error)) return;
+
+    jbyte mask = readChannelByte(clientSocket, error);
+    if(checkError(error)) return;
+
+    rvmLockMutex(&writeMutex);
+    char orig = *((char*)addr);
+    char value = orig | mask;
+    *((char*)addr) = value;
+    DEBUGF("Or-ing bits at %p (=%x) with %x = %x", addr, orig, mask, value);
+    writeChannelByte(clientSocket, CMD_WRITE_OR_BITS, error);
     writeChannelLong(clientSocket, reqId, error);
     writeChannelLong(clientSocket, 0, error);
     rvmUnlockMutex(&writeMutex);
@@ -434,6 +454,9 @@ static void handleFree(jlong reqId, ChannelError* error) {
     rvmLockMutex(&writeMutex);
     free(addr);
     DEBUGF("Freed memory at %p", addr);
+    writeChannelByte(clientSocket, CMD_FREE, error);
+    writeChannelLong(clientSocket, reqId, error);
+    writeChannelLong(clientSocket, 0, error);
     rvmUnlockMutex(&writeMutex);
 }
 
@@ -498,6 +521,9 @@ static void handleRequest(char req, jlong reqId, jlong payloadSize, ChannelError
             break;
         case CMD_WRITE_AND_BITS:
             handleAndBits(reqId, error);
+            break;
+        case CMD_WRITE_OR_BITS:
+            handleOrBits(reqId, error);
             break;
         case CMD_ALLOCATE:
             handleAllocate(reqId, error);

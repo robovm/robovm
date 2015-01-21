@@ -24,6 +24,7 @@
 #include <errno.h>
 #include <netinet/tcp.h>
 #include <time.h>
+#include <robovm/types.h>
 
 #define LOG_TAG "hooks"
 
@@ -36,11 +37,9 @@
 #define CMD_ALLOCATE 6
 #define CMD_FREE 7
 
-// thread/vm operations
+// thread operations
 #define CMD_THREAD_SUSPEND 50
 #define CMD_THREAD_RESUME 51
-#define CMD_VM_SUSPEND 52
-#define CMD_VM_RESUME 53
 
 // events
 #define EVT_THREAD_ATTACHED 100
@@ -466,32 +465,18 @@ static void handleFree(jlong reqId, ChannelError* error) {
     rvmUnlockMutex(&writeMutex);
 }
 
-static void handleVmSuspend(jlong reqId, ChannelError* error) {
-    // FIXME
-    DEBUG("Suspending VM");
-    rvmLockMutex(&writeMutex);
-    writeChannelByte(clientSocket, CMD_VM_SUSPEND, error);
-    writeChannelLong(clientSocket, reqId, error);
-    writeChannelLong(clientSocket, 0, error);
-    rvmUnlockMutex(&writeMutex);
-}
-
-static void handleVmResume(jlong reqId, ChannelError* error) {
-    // FIXME
-    DEBUG("Resuming VM");
-    rvmLockMutex(&writeMutex);
-    resumeFlag = TRUE; // will end the loop in rvmHookWaitForResume
-    writeChannelByte(clientSocket, CMD_VM_RESUME, error);
-    writeChannelLong(clientSocket, reqId, error);
-    writeChannelLong(clientSocket, 0, error);
-    rvmUnlockMutex(&writeMutex);
-}
-
 static void handleThreadSuspend(jlong reqId, ChannelError* error) {
     Thread* thread = (Thread*)readChannelLong(clientSocket, error);
     if(checkError(error)) return;
 
-    // FIXME
+    DebugEnv* debugEnv = (DebugEnv*) thread->env;
+    rvmLockMutex(&debugEnv->suspendMutex);
+    debugEnv->suspended = TRUE;
+    debugEnv->stepping = FALSE;
+    debugEnv->pclow = 0;
+    debugEnv->pchigh = 0;
+    rvmUnlockMutex(&debugEnv->suspendMutex);
+
     DEBUGF("Suspending thread %p, id %u", thread, thread->threadId);
     rvmLockMutex(&writeMutex);
     writeChannelByte(clientSocket, CMD_THREAD_SUSPEND, error);
@@ -504,18 +489,18 @@ static void handleThreadResume(jlong reqId, ChannelError* error) {
     Thread* thread = (Thread*)readChannelLong(clientSocket, error);
     if(checkError(error)) return;
 
+    DebugEnv* debugEnv = (DebugEnv*) thread->env;
+    rvmLockMutex(&debugEnv->suspendMutex);
+    debugEnv->suspended = FALSE;
+    pthread_cond_signal(&debugEnv->suspendCond);
+    rvmUnlockMutex(&debugEnv->suspendMutex);
+
     DEBUGF("Resuming thread %p, id %u", thread, thread->threadId);
     rvmLockMutex(&writeMutex);
     writeChannelByte(clientSocket, CMD_THREAD_RESUME, error);
     writeChannelLong(clientSocket, reqId, error);
     writeChannelLong(clientSocket, 0, error);
     rvmUnlockMutex(&writeMutex);
-
-    DebugEnv* debugEnv = (DebugEnv*) thread->env;
-    rvmLockMutex(&debugEnv->suspendMutex);
-    debugEnv->suspended = FALSE;
-    pthread_cond_signal(&debugEnv->suspendCond);
-    rvmUnlockMutex(&debugEnv->suspendMutex);
 }
 
 static void handleRequest(char req, jlong reqId, jlong payloadSize, ChannelError* error) {
@@ -541,12 +526,6 @@ static void handleRequest(char req, jlong reqId, jlong payloadSize, ChannelError
             break;
         case CMD_FREE:
             handleFree(reqId, error);
-            break;
-        case CMD_VM_SUSPEND:
-            handleVmSuspend(reqId, error);
-            break;
-        case CMD_VM_RESUME:
-            handleVmResume(reqId, error);
             break;
         case CMD_THREAD_SUSPEND:
             handleThreadSuspend(reqId, error);

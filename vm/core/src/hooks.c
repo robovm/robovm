@@ -99,6 +99,12 @@ static jlong swap64(jlong val) {
     return (val << 32) | (val >> 32);
 }
 
+static inline jboolean checkBit(jbyte* tbl, jint offset) {
+    jbyte b = tbl[offset >> 3];
+    jbyte mask = 1 << (offset & 0x7);
+    return (b & mask) != 0 ? TRUE : FALSE;
+}
+
 static void writeChannel(int socket, void* buf, int numBytes, ChannelError* error) {
     if(numBytes == 0) {
         return;
@@ -542,6 +548,7 @@ static void handleRequest(char req, jlong reqId, jlong payloadSize, ChannelError
             break;
         case CMD_THREAD_RESUME:
             handleThreadResume(reqId, error);
+            break;
         default:
             error->errorCode = -1;
             error->message = "Unknown request";
@@ -567,12 +574,6 @@ static void* channelLoop(void* data) {
     }
     DEBUG("Terminating debug thread");
     pthread_exit(0);
-}
-
-static inline jboolean checkBit(jbyte* tbl, jint bit) {
-    jbyte b = tbl[bit >> 3];
-    jbyte mask = 1 << (bit & 0x7);
-    return (b & mask) != 0 ? TRUE : FALSE;
 }
 
 static inline char getSuspendedEvent(DebugEnv* debugEnv, jint lineNumberOffset, jbyte* bptable, void* pc) {

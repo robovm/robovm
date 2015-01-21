@@ -141,12 +141,32 @@ static jboolean initThread(Env* env, Thread* thread, JavaThread* threadObj) {
         rvmThrowInternalErrorErrno(env, err);
         return FALSE;
     }
+    if (env->vm->options->enableHooks) {
+        DebugEnv* debugEnv = (DebugEnv*) env;
+        if ((err = rvmInitMutex(&debugEnv->suspendMutex)) != 0 
+                || (err = pthread_cond_init(&debugEnv->suspendCond, NULL)) != 0) {
+            rvmThrowInternalErrorErrno(env, err);
+            return FALSE;
+        }
+    }
     thread->threadId = getNextThreadId();
     thread->threadObj = threadObj;
+    thread->env = env;
     threadObj->threadPtr = PTR_TO_LONG(thread);
     env->currentThread = thread;
     env->attachCount = 1;
     return TRUE;
+}
+
+static void cleanupThreadMutex(Env* env, Thread* thread) {
+    // NOTE: threadsLock must be held
+    pthread_cond_destroy(&thread->waitCond);
+    rvmDestroyMutex(&thread->waitMutex);
+    if (env->vm->options->enableHooks) {
+        DebugEnv* debugEnv = (DebugEnv*) env;
+        pthread_cond_destroy(&debugEnv->suspendCond);
+        rvmDestroyMutex(&debugEnv->suspendMutex);
+    }
 }
 
 /**
@@ -318,6 +338,7 @@ static jint detachThread(Env* env, jboolean ignoreAttachCount, jboolean unregist
     clearThreadEnv();
     clearThreadTLS();
     freeThreadId(thread->threadId);
+    cleanupThreadMutex(env, thread);
     rvmUnlockThreadsList();
 
     if (unregisterGC) {

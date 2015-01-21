@@ -504,13 +504,18 @@ static void handleThreadResume(jlong reqId, ChannelError* error) {
     Thread* thread = (Thread*)readChannelLong(clientSocket, error);
     if(checkError(error)) return;
 
-    // FIXME
     DEBUGF("Resuming thread %p, id %u", thread, thread->threadId);
     rvmLockMutex(&writeMutex);
     writeChannelByte(clientSocket, CMD_THREAD_RESUME, error);
     writeChannelLong(clientSocket, reqId, error);
     writeChannelLong(clientSocket, 0, error);
     rvmUnlockMutex(&writeMutex);
+
+    DebugEnv* debugEnv = (DebugEnv*) thread->env;
+    rvmLockMutex(&debugEnv->suspendMutex);
+    debugEnv->suspended = FALSE;
+    pthread_cond_signal(&debugEnv->suspendCond);
+    rvmUnlockMutex(&debugEnv->suspendMutex);
 }
 
 static void handleRequest(char req, jlong reqId, jlong payloadSize, ChannelError* error) {
@@ -591,43 +596,66 @@ static inline char getSuspendedEvent(DebugEnv* debugEnv, jint lineNumberOffset, 
 
 void _rvmHookInstrumented(DebugEnv* debugEnv, jint lineNumber, jint lineNumberOffset, jbyte* bptable, void* pc) {
     Env* env = (Env*) debugEnv;
-    // Check whether we should suspend this thread.
+
+    rvmLockMutex(&debugEnv->suspendMutex);
+
     char event = 0;
     if ((event = getSuspendedEvent(debugEnv, lineNumberOffset, bptable, pc)) != 0) {
 
         if (IS_DEBUG_ENABLED) {
             Method* method = rvmFindMethodAtAddress(env, pc);
-            DEBUGF("Suspending thread %p due to event %d at %s.%s%s:%d (pc=%p)", env->currentThread, event, method->clazz->name, 
+            DEBUGF("Suspending thread %p with id %u due to event %d at %s.%s%s:%d (pc=%p)", env->currentThread, 
+                env->currentThread->threadId, event, method->clazz->name, 
                 method->name, method->desc, lineNumber, pc);
         }
 
         CallStack* callStack = rvmCaptureCallStack(env);
-        if (rvmExceptionClear(env)) goto errorUnlock; // Bail out
+        if (rvmExceptionCheck(env)) {
+            Object* ex = rvmExceptionClear(env);
+            ERRORF("Failed to get a call stack for thread %p due to event %d (pc=%p). Got an exception of type: %s", 
+                env->currentThread, event, pc, ex->clazz->name);
+        } else {
 
-        jint index = 0;
-        jint length = 0;
-        while (rvmGetNextCallStackMethod(env, callStack, &index)) {
-            length++;
-        }
+            jint index = 0;
+            jint length = 0;
+            while (rvmGetNextCallStackMethod(env, callStack, &index)) {
+                length++;
+            }
 
-        rvmLockMutex(&writeMutex);
-        ChannelError error = { 0 };
-        writeChannelByte(clientSocket, event, &error);
-        writeChannelLong(clientSocket, 0, &error);
-        writeChannelLong(clientSocket, sizeof(jlong) * 2 + sizeof(jint) + length * (sizeof(jlong) * 2 + sizeof(jint)), &error);
-        writeChannelLong(clientSocket, (jlong)env->currentThread->threadObj, &error);
-        writeChannelLong(clientSocket, (jlong)env->currentThread, &error);
-        writeChannelInt(clientSocket, length, &error);
-        index = 0;
-        CallStackFrame* frame = NULL;
-        while ((frame = rvmGetNextCallStackMethod(env, callStack, &index)) != NULL) {
-            // TODO: Handle proxy methods
-            writeChannelLong(clientSocket, PTR_TO_LONG(frame->method->impl), &error);
-            writeChannelInt(clientSocket, frame->lineNumber, &error);
-            writeChannelLong(clientSocket, PTR_TO_LONG(frame->fp), &error);
+            rvmLockMutex(&writeMutex);
+            ChannelError error = { 0 };
+            writeChannelByte(clientSocket, event, &error);
+            writeChannelLong(clientSocket, 0, &error);
+            writeChannelLong(clientSocket, sizeof(jlong) * 2 + sizeof(jint) + length * (sizeof(jlong) * 2 + sizeof(jint)), &error);
+            writeChannelLong(clientSocket, PTR_TO_LONG(env->currentThread->threadObj), &error);
+            writeChannelLong(clientSocket, PTR_TO_LONG(env->currentThread), &error);
+            writeChannelInt(clientSocket, length, &error);
+            index = 0;
+            CallStackFrame* frame = NULL;
+            while ((frame = rvmGetNextCallStackMethod(env, callStack, &index)) != NULL) {
+                // TODO: Handle proxy methods
+                writeChannelLong(clientSocket, PTR_TO_LONG(frame->method->impl), &error);
+                writeChannelInt(clientSocket, frame->lineNumber, &error);
+                writeChannelLong(clientSocket, PTR_TO_LONG(frame->fp), &error);
+            }
+            rvmUnlockMutex(&writeMutex);
+
+            debugEnv->suspended = TRUE;
+            while (debugEnv->suspended) {
+                pthread_cond_wait(&debugEnv->suspendCond, &debugEnv->suspendMutex);
+            }
+
+            DEBUGF("Thread %p, id %u resumed", env->currentThread, env->currentThread->threadId);
+            rvmLockMutex(&writeMutex);
+            writeChannelByte(clientSocket, EVT_THREAD_RESUMED, &error);
+            writeChannelLong(clientSocket, 0, &error);
+            writeChannelLong(clientSocket, 16, &error);
+            writeChannelLong(clientSocket, PTR_TO_LONG(env->currentThread->threadObj), &error);
+            writeChannelLong(clientSocket, PTR_TO_LONG(env->currentThread), &error);
+            rvmUnlockMutex(&writeMutex);
+
         }
-        rvmUnlockMutex(&writeMutex);
-errorUnlock:
-        return;    
     }
+
+    rvmUnlockMutex(&debugEnv->suspendMutex);
 }

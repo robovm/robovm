@@ -56,6 +56,7 @@ typedef struct Monitor Monitor;
 typedef struct Array Array;
 typedef struct EnclosingMethod EnclosingMethod;
 typedef struct InnerClass InnerClass;
+typedef struct Env Env;
 typedef pthread_mutex_t Mutex;
 
 struct Field {
@@ -258,6 +259,7 @@ struct JavaThread {
 
 struct Thread {
   jint threadId;
+  Env* env;
   JavaThread* threadObj;
   struct Thread* waitNext;
   struct Thread* prev;
@@ -347,8 +349,6 @@ struct ClasspathEntry {
     char jarPath[PATH_MAX];
 };
 
-struct Env;
-typedef struct Env Env;
 struct TrycatchContext;
 typedef struct TrycatchContext TrycatchContext;
 
@@ -517,6 +517,8 @@ typedef struct {
     Env env;
     void* pclow;
     void* pchigh;
+    Mutex suspendMutex;
+    pthread_cond_t suspendCond;
     jboolean suspended;
     jboolean stepping;
 } DebugEnv;

@@ -84,18 +84,17 @@ static void nsleep(jlong millis) {
     struct timespec time;
     time.tv_sec = 0;
     time.tv_nsec = millis * 1000000l;
-    nanosleep(&time , 0);
+    nanosleep(&time, 0);
 }
 
 static jint swap32(jint val) {
-    val = ((val << 8) & 0xff00ff00 ) | ((val >> 8) & 0xff00ff );
-    return (val << 16) | (val >> 16);
+    return htonl(val);
 }
 
 static jlong swap64(jlong val) {
-    val = ((val << 8) & 0xff00ff00ff00ff00ULL ) | ((val >> 8) & 0x00ff00ff00ff00ffULL );
-    val = ((val << 16) & 0xffff0000ffff0000ULL ) | ((val >> 16) & 0x0000ffff0000ffffULL );
-    return (val << 32) | (val >> 32);
+    unsigned long long high_part = (unsigned long long)htonl((unsigned int)(val >> 32));
+    unsigned long long low_part = (unsigned long long)htonl((unsigned int)(val & 0xFFFFFFFFLL));
+    return (jlong)((low_part << 32) | high_part);
 }
 
 static inline jboolean checkBit(jbyte* tbl, jint offset) {

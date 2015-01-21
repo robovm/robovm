@@ -2728,10 +2728,6 @@ classes:
                 name: convertRectFromView
             '-convertRect:toView:':
                 name: convertRectToView
-            '-insertSubview:aboveSubview:':
-                name: insertSubviewAbove
-            '-insertSubview:belowSubview:':
-                name: insertSubviewBelow
             '-isDescendantOfView:':
                 name: isDescendantOf
             '-drawRect:':
@@ -2783,10 +2779,21 @@ classes:
                 trim_after_first_colon: true
             '-pointInside:withEvent:':
                 name: isPointInside
+            '-removeFromSuperview':
+                name: removeFromSuperview0
+                visibility: private # strong reference
             '-insertSubview:atIndex:':
-                trim_after_first_colon: true
+                name: insertSubview0
+                visibility: private # strong reference
             '-addSubview:':
-                trim_after_first_colon: true
+                name: addSubview0
+                visibility: private # strong reference
+            '-insertSubview:aboveSubview:':
+                name: insertSubviewAbove0
+                visibility: private # strong reference
+            '-insertSubview:belowSubview:':
+                name: insertSubviewBelow0
+                visibility: private # strong reference
             '-bringSubviewToFront:':
                 trim_after_first_colon: true
             '-sendSubviewToBack:':

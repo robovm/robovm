@@ -627,16 +627,16 @@ void _rvmHookInstrumented(DebugEnv* debugEnv, jint lineNumber, jint lineNumberOf
             writeChannelByte(clientSocket, event, &error);
             writeChannelLong(clientSocket, 0, &error);
             writeChannelLong(clientSocket, sizeof(jlong) * 2 + sizeof(jint) + length * (sizeof(jlong) * 2 + sizeof(jint)), &error);
-            writeChannelLong(clientSocket, PTR_TO_LONG(env->currentThread->threadObj), &error);
-            writeChannelLong(clientSocket, PTR_TO_LONG(env->currentThread), &error);
+            writeChannelLong(clientSocket, (jlong)env->currentThread->threadObj, &error);
+            writeChannelLong(clientSocket, (jlong)env->currentThread, &error);
             writeChannelInt(clientSocket, length, &error);
             index = 0;
             CallStackFrame* frame = NULL;
             while ((frame = rvmGetNextCallStackMethod(env, callStack, &index)) != NULL) {
                 // TODO: Handle proxy methods
-                writeChannelLong(clientSocket, PTR_TO_LONG(frame->method->impl), &error);
+                writeChannelLong(clientSocket, (jlong)(frame->method->impl), &error);
                 writeChannelInt(clientSocket, frame->lineNumber, &error);
-                writeChannelLong(clientSocket, PTR_TO_LONG(frame->fp), &error);
+                writeChannelLong(clientSocket, (jlong)(frame->fp), &error);
             }
             rvmUnlockMutex(&writeMutex);
 
@@ -650,8 +650,8 @@ void _rvmHookInstrumented(DebugEnv* debugEnv, jint lineNumber, jint lineNumberOf
             writeChannelByte(clientSocket, EVT_THREAD_RESUMED, &error);
             writeChannelLong(clientSocket, 0, &error);
             writeChannelLong(clientSocket, 16, &error);
-            writeChannelLong(clientSocket, PTR_TO_LONG(env->currentThread->threadObj), &error);
-            writeChannelLong(clientSocket, PTR_TO_LONG(env->currentThread), &error);
+            writeChannelLong(clientSocket, (jlong)env->currentThread->threadObj, &error);
+            writeChannelLong(clientSocket, (jlong)env->currentThread, &error);
             rvmUnlockMutex(&writeMutex);
 
         }

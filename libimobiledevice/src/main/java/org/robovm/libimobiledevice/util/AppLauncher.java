@@ -795,7 +795,7 @@ public class AppLauncher {
                                         // check if this is the last line, in which 
                                         // case we wait for another line so we know
                                         // the line's complete
-                                        if(line == lines[lines.length - 1]) break;
+                                        if(line == lines[lines.length - 1] && !line.endsWith("\r")) break;
                                         int debugPort = Integer.parseInt(line.substring("[DEBUG] hooks: debugPort=".length()).trim());
                                         appLauncherCallback.setDebugPort(debugPort);
                                         // we don't want to call the callback anymore and check

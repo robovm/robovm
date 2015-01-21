@@ -489,13 +489,20 @@ static void handleThreadResume(jlong reqId, ChannelError* error) {
     Thread* thread = (Thread*)readChannelLong(clientSocket, error);
     if(checkError(error)) return;
 
-    DebugEnv* debugEnv = (DebugEnv*) thread->env;
-    rvmLockMutex(&debugEnv->suspendMutex);
-    debugEnv->suspended = FALSE;
-    pthread_cond_signal(&debugEnv->suspendCond);
-    rvmUnlockMutex(&debugEnv->suspendMutex);
+    // special case: if thread is 0, we set the resumeFlag
+    // to true so rvmHookWaitForResume exits
+    if(thread == 0) {
+        DEBUG("Resuming VM");
+        resumeFlag = TRUE;
+    } else {
+        DEBUGF("Resuming thread %p, id %u", thread, thread->threadId);
+        DebugEnv *debugEnv = (DebugEnv *) thread->env;
+        rvmLockMutex(&debugEnv->suspendMutex);
+        debugEnv->suspended = FALSE;
+        pthread_cond_signal(&debugEnv->suspendCond);
+        rvmUnlockMutex(&debugEnv->suspendMutex);
+    }
 
-    DEBUGF("Resuming thread %p, id %u", thread, thread->threadId);
     rvmLockMutex(&writeMutex);
     writeChannelByte(clientSocket, CMD_THREAD_RESUME, error);
     writeChannelLong(clientSocket, reqId, error);

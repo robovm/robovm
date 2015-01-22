@@ -183,6 +183,7 @@ public class Config {
     private transient List<Path> resourcesPaths = new ArrayList<Path>();
     private transient DataLayout dataLayout;
     private transient MarshalerLookup marshalerLookup;
+    private transient Config configBeforeBuild;
 
     protected Config() throws IOException {
         // Add standard plugins
@@ -201,24 +202,7 @@ public class Config {
      * when {@link Builder#build()} is called.
      */
     public Builder builder() throws IOException {
-        Config clone = new Config();
-        for (Field f : Config.class.getDeclaredFields()) {
-            if (!Modifier.isTransient(f.getModifiers())) {
-                f.setAccessible(true);
-                try {
-                    Object o = f.get(this);
-                    if (o instanceof Collection && o instanceof Cloneable) {
-                        // Clone collections. Assume the class has a public clone() method.
-                        Method m = o.getClass().getMethod("clone");
-                        o = m.invoke(o);
-                    }
-                    f.set(clone, o);
-                } catch (Throwable t) {
-                    throw new Error(t);
-                }
-            }
-        }
-        return new Builder(clone);
+        return new Builder(clone(configBeforeBuild));
     }
     
     public Home getHome() {
@@ -677,7 +661,32 @@ public class Config {
         }
     }
 
+    private static Config clone(Config config) throws IOException {
+        Config clone = new Config();
+        for (Field f : Config.class.getDeclaredFields()) {
+            if (!Modifier.isTransient(f.getModifiers())) {
+                f.setAccessible(true);
+                try {
+                    Object o = f.get(config);
+                    if (o instanceof Collection && o instanceof Cloneable) {
+                        // Clone collections. Assume the class has a public clone() method.
+                        Method m = o.getClass().getMethod("clone");
+                        o = m.invoke(o);
+                    }
+                    f.set(clone, o);
+                } catch (Throwable t) {
+                    throw new Error(t);
+                }
+            }
+        }
+        return clone;
+    }
+    
     private Config build() throws IOException {
+        // Create a clone of this Config before we have done anything with it so
+        // that builder() has a fresh Config it can use.
+        this.configBeforeBuild = clone(this);
+        
         if (home == null) {
             home = Home.find();
         }

@@ -237,6 +237,9 @@ void _rvmHookBeforeMainThreadAttached(Env* env) {
 
 void _rvmHookBeforeAppEntryPoint(Env* env, Class* clazz, Method* method, ObjectArray* args) {
     DEBUGF("Before app entry point %s.%s%s", clazz->name, method->name, method->desc);
+    if(env->vm->options->waitForResume) {
+        rvmHookWaitForResume(env->vm->options);
+    }
 }
 
 void _rvmHookThreadCreated(Env* env, JavaThread* threadObj) {
@@ -346,10 +349,6 @@ jboolean _rvmHookHandshake(Options* options) {
         DEBUGF("Couldn't start debug thread, error code: %d", result);
         close(clientSocket);
         return FALSE;
-    }
-
-    if(options->waitForResume) {
-        rvmHookWaitForResume(options);
     }
 
     return TRUE;
@@ -492,8 +491,13 @@ static void handleThreadResume(jlong reqId, ChannelError* error) {
     // to true so rvmHookWaitForResume exits
     if(thread == 0) {
         DEBUG("Resuming VM");
+        rvmLockMutex(&writeMutex);
         resumeFlag = TRUE;
+        rvmUnlockMutex(&writeMutex);
     } else {
+        rvmLockMutex(&writeMutex);
+        resumeFlag = TRUE;
+        rvmUnlockMutex(&writeMutex);
         DEBUGF("Resuming thread %p, id %u", thread, thread->threadId);
         DebugEnv *debugEnv = (DebugEnv *) thread->env;
         rvmLockMutex(&debugEnv->suspendMutex);

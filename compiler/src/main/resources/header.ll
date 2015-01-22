@@ -2,7 +2,7 @@
 %StackFrame = type {i8*, i8*}
 %Thread = type {i32} ; Incomplete. Just enough to get threadId
 %Env = type {i8*, i8*, i8*, %Thread*, i8*, i8*, %GatewayFrame*, i8*, i32}
-%DebugEnv = type {%Env, i8*, i8*, i8, i8}
+%DebugEnv = type {%Env, i8*, i8*, i8*, i8*, i8, i8}
 %TypeInfo = type {i32, i32, i32, i32, i32, [0 x i32]}
 %VITable = type {i16, [0 x i8*]}
 %ITable = type {%TypeInfo*, %VITable}

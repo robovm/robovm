@@ -40,6 +40,7 @@
 // thread operations
 #define CMD_THREAD_SUSPEND 50
 #define CMD_THREAD_RESUME 51
+#define CMD_THREAD_STEP 52
 
 // events
 #define EVT_THREAD_ATTACHED 100
@@ -513,6 +514,39 @@ static void handleThreadResume(jlong reqId, ChannelError* error) {
     rvmUnlockMutex(&writeMutex);
 }
 
+static void handleThreadStep(jlong reqId, ChannelError* error) {
+    Thread* thread = (Thread*)readChannelLong(clientSocket, error);
+    if(checkError(error)) return;
+
+    jlong pclow = readChannelLong(clientSocket, error);
+    if(checkError(error)) return;
+
+    jlong pchigh = readChannelLong(clientSocket, error);
+    if(checkError(error)) return;
+
+    jlong pclow2 = readChannelLong(clientSocket, error);
+    if(checkError(error)) return;
+
+    jlong pchigh2 = readChannelLong(clientSocket, error);
+    if(checkError(error)) return;
+
+    DEBUGF("Stepping thread %p, id %u, pclow: %p, pchigh: %p, pclow2: %p, pchigh2: %p", thread, thread->threadId, pclow, pchigh);
+    DebugEnv *debugEnv = (DebugEnv *) thread->env;
+    rvmLockMutex(&debugEnv->suspendMutex);
+    debugEnv->stepping = TRUE;
+    debugEnv->pclow = (void*)pclow;
+    debugEnv->pchigh = (void*)pchigh;
+    debugEnv->pclow2 = (void*)pclow2;
+    debugEnv->pchigh2 = (void*)pchigh2;
+    rvmUnlockMutex(&debugEnv->suspendMutex);
+
+    rvmLockMutex(&writeMutex);
+    writeChannelByte(clientSocket, CMD_THREAD_STEP, error);
+    writeChannelLong(clientSocket, reqId, error);
+    writeChannelLong(clientSocket, 0, error);
+    rvmUnlockMutex(&writeMutex);
+}
+
 static void handleRequest(char req, jlong reqId, jlong payloadSize, ChannelError* error) {
     DEBUGF("req: %d, reqId: %llu, payloadSize: %llu", req, reqId, payloadSize);
     switch(req) {
@@ -542,6 +576,9 @@ static void handleRequest(char req, jlong reqId, jlong payloadSize, ChannelError
             break;
         case CMD_THREAD_RESUME:
             handleThreadResume(reqId, error);
+            break;
+        case CMD_THREAD_STEP:
+            handleThreadStep(reqId, error);
             break;
         default:
             error->errorCode = -1;
@@ -574,7 +611,7 @@ static inline char getSuspendedEvent(DebugEnv* debugEnv, jint lineNumberOffset, 
     if (debugEnv->suspended) {
         return EVT_THREAD_SUSPENDED;
     }
-    if (debugEnv->stepping && pc >= debugEnv->pclow && pc < debugEnv->pchigh) {
+    if (debugEnv->stepping && ((pc >= debugEnv->pclow && pc < debugEnv->pchigh) || (pc >= debugEnv->pclow2 && pc < debugEnv->pchigh2))) {
         return EVT_THREAD_STEPPED;
     }
     if (checkBit(bptable, lineNumberOffset)) {
@@ -629,6 +666,9 @@ void _rvmHookInstrumented(DebugEnv* debugEnv, jint lineNumber, jint lineNumberOf
             }
             rvmUnlockMutex(&writeMutex);
 
+            debugEnv->stepping = FALSE;
+            debugEnv->pclow = debugEnv->pclow2 = 0;
+            debugEnv->pchigh = debugEnv->pchigh2 = 0;
             debugEnv->suspended = TRUE;
             while (debugEnv->suspended) {
                 pthread_cond_wait(&debugEnv->suspendCond, &debugEnv->suspendMutex);

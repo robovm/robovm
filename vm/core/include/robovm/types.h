@@ -517,6 +517,8 @@ typedef struct {
     Env env;
     void* pclow;
     void* pchigh;
+    void* pclow2;
+    void* pchigh2;
     Mutex suspendMutex;
     pthread_cond_t suspendCond;
     jboolean suspended;

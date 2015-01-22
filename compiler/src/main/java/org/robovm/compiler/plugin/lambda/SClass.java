@@ -188,12 +188,12 @@ public abstract class SClass<T> {
             return that.implementsInterface(this);
         }
         
-        SClass<?> superclass = this.getSuperclass();
+        SClass<?> superclass = that.getSuperclass();
         while (superclass != null) {
-            if (superclass.getDescriptor().equals(thatDescriptor)) {
+            if (superclass.getDescriptor().equals(thisDescriptor)) {
                 return true;
             }
-            superclass = this.getSuperclass();
+            superclass = superclass.getSuperclass();
         }
         
         return false;

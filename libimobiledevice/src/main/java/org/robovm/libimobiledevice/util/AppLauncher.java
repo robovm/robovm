@@ -707,6 +707,14 @@ public class AppLauncher {
                 if (localPort != -1) {
                     String exe = ((NSDictionary) PropertyListParser.parse(new File(localAppPath, "Info.plist"))).objectForKey("CFBundleExecutable").toString();
                     log("launchios " + new File(localAppPath, exe).getAbsolutePath() + " " + appPath + " " + localPort);
+                    StringBuilder argsString = new StringBuilder();
+                    for (String arg : args) {
+                        if (argsString.length() > 0) {
+                            argsString.append(' ');
+                        }
+                        argsString.append(arg);
+                    }
+                    log("process launch -- " + argsString);
                 }
             }
     
@@ -773,7 +781,6 @@ public class AppLauncher {
         
         boolean wasInterrupted = false;
         try {
-            StringBuilder messages = new StringBuilder();
             while (true) {
                 try {
                     String response = receiveGdbPacket(conn);
@@ -784,30 +791,11 @@ public class AppLauncher {
                         return exitCode;
                     } else if (payload.charAt(0) == 'O') {
                         // Console output encoded as hex.
-                        byte[] msg = fromHex(payload.substring(1));
-                        if(appLauncherCallback != null) {
-                            try {
-                                String str = new String(msg, "UTF-8");
-                                messages.append(str);
-                                String[] lines = messages.toString().split("\n");
-                                for(String line: lines) {                                
-                                    if(line.startsWith("[DEBUG] hooks: debugPort=")) {
-                                        // check if this is the last line, in which 
-                                        // case we wait for another line so we know
-                                        // the line's complete
-                                        if(line == lines[lines.length - 1] && !line.endsWith("\r")) break;
-                                        int debugPort = Integer.parseInt(line.substring("[DEBUG] hooks: debugPort=".length()).trim());
-                                        appLauncherCallback.setDebugPort(debugPort);
-                                        // we don't want to call the callback anymore and check
-                                        // every string
-                                        appLauncherCallback = null;
-                                    }
-                                }
-                            } catch(Throwable t) {
-                                // nothing to do here
-                            }
+                        byte[] data = fromHex(payload.substring(1));
+                        if (appLauncherCallback != null) {
+                            data = appLauncherCallback.filterOutput(data);
                         }
-                        stdout.write(msg);
+                        stdout.write(data);
                     } else if (payload.charAt(0) == 'T') {
                         // Signal received. Just continue.
                         // The Continue packet looks like this (thread 0x2403 was interrupted by signal 0x0b):
@@ -920,8 +908,12 @@ public class AppLauncher {
                                     return exitCode;
                                 } else if (message[1] == 'O') {
                                     // Console output encoded as hex.
-                                    if(!nextPacketIsData) {
-                                        stdout.write(fromHex(message, 2, message.length - 2 - 3));
+                                    if (!nextPacketIsData) {
+                                        byte[] data = fromHex(message, 2, message.length - 2 - 3);
+                                        if (appLauncherCallback != null) {
+                                            data = appLauncherCallback.filterOutput(data);
+                                        }
+                                        stdout.write(data);
                                     } else {
                                         nextPacketIsData = false;
                                     }

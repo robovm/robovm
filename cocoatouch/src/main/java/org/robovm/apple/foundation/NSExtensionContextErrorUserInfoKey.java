@@ -40,40 +40,16 @@ import org.robovm.apple.dispatch.*;
 /*</javadoc>*/
 /*<annotations>*/@Library("Foundation")/*</annotations>*/
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/NSExtensionContextErrorUserInfoKey/*</name>*/ 
-    extends /*<extends>*/NSErrorUserInfoKey/*</extends>*/ 
+    extends /*<extends>*/CocoaUtility/*</extends>*/ 
     /*<implements>*//*</implements>*/ {
 
     /*<ptr>*/
     /*</ptr>*/
     /*<bind>*/static { Bro.bind(NSExtensionContextErrorUserInfoKey.class); }/*</bind>*/
     /*<constants>*//*</constants>*/
-    /**
-     * @since Available in iOS 8.0 and later.
-     */
-    public static NSExtensionContextErrorUserInfoKey ExtensionItemsAndErrors = new NSExtensionContextErrorUserInfoKey("ExtensionItemsAndErrorsKey");
-    
-    private static NSExtensionContextErrorUserInfoKey[] values = new NSExtensionContextErrorUserInfoKey[] {ExtensionItemsAndErrors};
-    private final LazyGlobalValue<NSString> lazyGlobalValue;
-    
-    private NSExtensionContextErrorUserInfoKey(String getterName) {
-        lazyGlobalValue = new LazyGlobalValue<>(getClass(), getterName);
-    }
     /*<constructors>*//*</constructors>*/
     /*<properties>*//*</properties>*/
     /*<members>*//*</members>*/
-    public NSString value() {
-        return lazyGlobalValue.value();
-    }
-    
-    public static NSExtensionContextErrorUserInfoKey valueOf(NSString value) {
-        for (NSExtensionContextErrorUserInfoKey v : values) {
-            if (v.value().equals(value)) {
-                return v;
-            }
-        }
-        throw new IllegalArgumentException("No constant with value " + value + " found in " 
-                + /*<name>*/NSExtensionContextErrorUserInfoKey/*</name>*/.class.getName());
-    }
     /*<methods>*/
     /**
      * @since Available in iOS 8.0 and later.

@@ -27,13 +27,8 @@ enums:
     # Don't know what to do with this one
     Ignored: {first: NSFetchRequestExpressionType, exclude: true}
 classes:
-    CoreData:
-        annotations: ['@Marshaler(NSString.AsStringMarshaler.class)']
-
     NSSQLiteError:
         extends: NSError
-    NSCoreDataErrorUserInfoKey:
-        extends: NSErrorUserInfoKey
 
     NSAsynchronousFetchRequest: # DONE
         properties:
@@ -677,10 +672,10 @@ values:
         class: NSSQLiteError
         name: getClassDomain
     NS(.*Error.?Key):
-        class: NSCoreDataErrorUserInfoKey
+        enum: NSCoreDataErrorUserInfoKey
         name: '#{g[0]}'
         type: NSString
-        visibility: protected
+        extends: NSErrorUserInfoKey
 
     # NSPersistentStoreCoordinator
     NSPersistentStoreCoordinator(.*Notification):

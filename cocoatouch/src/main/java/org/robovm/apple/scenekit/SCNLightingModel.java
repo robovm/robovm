@@ -41,7 +41,7 @@ import org.robovm.apple.opengles.*;
 @Marshaler(SCNLightingModel.Marshaler.class)
 /*<annotations>*/@Library("SceneKit")/*</annotations>*/
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/SCNLightingModel/*</name>*/ 
-    extends /*<extends>*/Object/*</extends>*/ 
+    extends /*<extends>*/CocoaUtility/*</extends>*/ 
     /*<implements>*//*</implements>*/ {
 
     public static class Marshaler {

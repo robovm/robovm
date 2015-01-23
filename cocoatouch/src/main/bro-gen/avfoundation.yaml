@@ -95,8 +95,6 @@ classes:
     
     AVError:
         extends: NSError
-    AVErrorUserInfoKey:
-        extends: NSErrorUserInfoKey
     
     AVMetadataIdentifierCommon:
         extends: AVMetadataIdentifier
@@ -2116,13 +2114,12 @@ functions:
 values:
     AVFoundationErrorDomain:
         class: AVError
-        name: getClassDomain
-        
+        name: getClassDomain     
     AVError(.*)Key:
-        class: AVErrorUserInfoKey
-        name: '#{g[0]}Value'
+        enum: AVErrorUserInfoKey
+        name: '#{g[0]}'
         type: NSString
-        visibility: protected
+        extends: NSErrorUserInfoKey
 
     AV(CoreAnimationBeginTimeAtZero):
         class: AVFoundation

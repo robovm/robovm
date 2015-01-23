@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 Trillian Mobile AB
+ * Copyright (C) 2015 Trillian Mobile AB
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -32,12 +32,15 @@ import org.robovm.apple.corelocation.*;
 
 /*<javadoc>*/
 /*</javadoc>*/
-@Marshaler(CKErrorUserInfoKey.Marshaler.class)
 /*<annotations>*/@Library("CloudKit")/*</annotations>*/
+@Marshaler(/*<name>*/CKErrorUserInfoKey/*</name>*/.Marshaler.class)
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/CKErrorUserInfoKey/*</name>*/ 
-    extends /*<extends>*/NSErrorUserInfoKey/*</extends>*/ 
+    extends /*<extends>*/NSErrorUserInfoKey/*</extends>*/
     /*<implements>*//*</implements>*/ {
-    
+
+    static { Bro.bind(/*<name>*/CKErrorUserInfoKey/*</name>*/.class); }
+
+    /*<marshalers>*/
     public static class Marshaler {
         @MarshalsPointer
         public static CKErrorUserInfoKey toObject(Class<CKErrorUserInfoKey> cls, long handle, long flags) {
@@ -55,48 +58,65 @@ import org.robovm.apple.corelocation.*;
             return NSObject.Marshaler.toNative(o.value(), flags);
         }
     }
+    public static class AsListMarshaler {
+        @SuppressWarnings("unchecked")
+        @MarshalsPointer
+        public static List<CKErrorUserInfoKey> toObject(Class<? extends NSObject> cls, long handle, long flags) {
+            NSArray<NSString> o = (NSArray<NSString>) NSObject.Marshaler.toObject(cls, handle, flags);
+            if (o == null) {
+                return null;
+            }
+            List<CKErrorUserInfoKey> list = new ArrayList<>();
+            for (int i = 0, n = o.size(); i < n; i++) {
+                list.add(CKErrorUserInfoKey.valueOf(o.get(i)));
+            }
+            return list;
+        }
+        @MarshalsPointer
+        public static long toNative(List<CKErrorUserInfoKey> l, long flags) {
+            if (l == null) {
+                return 0L;
+            }
+            NSArray<NSString> array = new NSMutableArray<>();
+            for (CKErrorUserInfoKey i : l) {
+                array.add(i.value());
+            }
+            return NSObject.Marshaler.toNative(array, flags);
+        }
+    }
+    /*</marshalers>*/
 
-    /*<ptr>*/
-    /*</ptr>*/
-    /*<bind>*/static { Bro.bind(CKErrorUserInfoKey.class); }/*</bind>*/
-    /*<constants>*//*</constants>*/
+    /*<constants>*/
     /**
      * @since Available in iOS 8.0 and later.
      */
-    public static final CKErrorUserInfoKey PartialErrorsByItemID = new CKErrorUserInfoKey("PartialErrorsByItemIDValue");
+    public static final CKErrorUserInfoKey PartialErrorsByItemID = new CKErrorUserInfoKey("PartialErrorsByItemID");
     /**
      * @since Available in iOS 8.0 and later.
      */
-    public static final CKErrorUserInfoKey AncestorRecord = new CKErrorUserInfoKey("AncestorRecordValue");
+    public static final CKErrorUserInfoKey AncestorRecord = new CKErrorUserInfoKey("AncestorRecord");
     /**
      * @since Available in iOS 8.0 and later.
      */
-    public static final CKErrorUserInfoKey ServerRecord = new CKErrorUserInfoKey("ServerRecordValue");
+    public static final CKErrorUserInfoKey ServerRecord = new CKErrorUserInfoKey("ServerRecord");
     /**
      * @since Available in iOS 8.0 and later.
      */
-    public static final CKErrorUserInfoKey ClientRecord = new CKErrorUserInfoKey("ClientRecordValue");
+    public static final CKErrorUserInfoKey ClientRecord = new CKErrorUserInfoKey("ClientRecord");
     /**
      * @since Available in iOS 8.0 and later.
      */
-    public static final CKErrorUserInfoKey RetryAfter = new CKErrorUserInfoKey("RetryAfterValue");
+    public static final CKErrorUserInfoKey RetryAfter = new CKErrorUserInfoKey("RetryAfter");
+    /*</constants>*/
     
-    private static CKErrorUserInfoKey[] values = new CKErrorUserInfoKey[] {PartialErrorsByItemID, AncestorRecord, ServerRecord, 
-        ClientRecord, RetryAfter};
-    private final LazyGlobalValue<NSString> lazyGlobalValue;
+    private static /*<name>*/CKErrorUserInfoKey/*</name>*/[] values = new /*<name>*/CKErrorUserInfoKey/*</name>*/[] {/*<value_list>*/PartialErrorsByItemID, AncestorRecord, ServerRecord, ClientRecord, RetryAfter/*</value_list>*/};
     
-    private CKErrorUserInfoKey(String getterName) {
-        lazyGlobalValue = new LazyGlobalValue<>(getClass(), getterName);
-    }
-    /*<constructors>*//*</constructors>*/
-    /*<properties>*//*</properties>*/
-    /*<members>*//*</members>*/
-    public NSString value() {
-        return lazyGlobalValue.value();
+    /*<name>*/CKErrorUserInfoKey/*</name>*/ (String getterName) {
+        super(Values.class, getterName);
     }
     
-    public static CKErrorUserInfoKey valueOf(NSString value) {
-        for (CKErrorUserInfoKey v : values) {
+    public static /*<name>*/CKErrorUserInfoKey/*</name>*/ valueOf(/*<type>*/NSString/*</type>*/ value) {
+        for (/*<name>*/CKErrorUserInfoKey/*</name>*/ v : values) {
             if (v.value().equals(value)) {
                 return v;
             }
@@ -104,31 +124,39 @@ import org.robovm.apple.corelocation.*;
         throw new IllegalArgumentException("No constant with value " + value + " found in " 
             + /*<name>*/CKErrorUserInfoKey/*</name>*/.class.getName());
     }
-    /*<methods>*/
-    /**
-     * @since Available in iOS 8.0 and later.
-     */
-    @GlobalValue(symbol="CKPartialErrorsByItemIDKey", optional=true)
-    protected static native String PartialErrorsByItemIDValue();
-    /**
-     * @since Available in iOS 8.0 and later.
-     */
-    @GlobalValue(symbol="CKRecordChangedErrorAncestorRecordKey", optional=true)
-    protected static native String AncestorRecordValue();
-    /**
-     * @since Available in iOS 8.0 and later.
-     */
-    @GlobalValue(symbol="CKRecordChangedErrorServerRecordKey", optional=true)
-    protected static native String ServerRecordValue();
-    /**
-     * @since Available in iOS 8.0 and later.
-     */
-    @GlobalValue(symbol="CKRecordChangedErrorClientRecordKey", optional=true)
-    protected static native String ClientRecordValue();
-    /**
-     * @since Available in iOS 8.0 and later.
-     */
-    @GlobalValue(symbol="CKErrorRetryAfterKey", optional=true)
-    protected static native String RetryAfterValue();
-    /*</methods>*/
+    
+    /*<methods>*//*</methods>*/
+    
+    /*<annotations>*/@Library("CloudKit")/*</annotations>*/
+    public static class Values {
+    	static { Bro.bind(Values.class); }
+
+        /*<values>*/
+        /**
+         * @since Available in iOS 8.0 and later.
+         */
+        @GlobalValue(symbol="CKPartialErrorsByItemIDKey", optional=true)
+        public static native NSString PartialErrorsByItemID();
+        /**
+         * @since Available in iOS 8.0 and later.
+         */
+        @GlobalValue(symbol="CKRecordChangedErrorAncestorRecordKey", optional=true)
+        public static native NSString AncestorRecord();
+        /**
+         * @since Available in iOS 8.0 and later.
+         */
+        @GlobalValue(symbol="CKRecordChangedErrorServerRecordKey", optional=true)
+        public static native NSString ServerRecord();
+        /**
+         * @since Available in iOS 8.0 and later.
+         */
+        @GlobalValue(symbol="CKRecordChangedErrorClientRecordKey", optional=true)
+        public static native NSString ClientRecord();
+        /**
+         * @since Available in iOS 8.0 and later.
+         */
+        @GlobalValue(symbol="CKErrorRetryAfterKey", optional=true)
+        public static native NSString RetryAfter();
+        /*</values>*/
+    }
 }

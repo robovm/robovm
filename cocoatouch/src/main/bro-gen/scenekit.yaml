@@ -56,9 +56,6 @@ classes:
     SCNError:
         extends: NSError
         
-    SCNErrorUserInfoKey:
-        extends: NSErrorUserInfoKey
-        
     SCNGeometrySourceSemantic:
         extends: SCNProgramSemantic
     SCNRenderingTransform:
@@ -931,10 +928,10 @@ values:
         type: NSString
         visibility: protected
     SCN(DetailedErrors)Key:
-        class: SCNErrorUserInfoKey
-        name: '#{g[0]}Value'
+        enum: SCNErrorUserInfoKey
+        name: '#{g[0]}'
         type: NSString
-        visibility: protected
+        extends: NSErrorUserInfoKey
 
     # SCNShadable
     SCNShaderModifierEntryPoint(.*):

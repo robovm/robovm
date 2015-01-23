@@ -34,7 +34,7 @@ import org.robovm.apple.foundation.*;
 @Marshaler(HMServiceType.Marshaler.class)
 /*<annotations>*/@Library("HomeKit")/*</annotations>*/
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/HMServiceType/*</name>*/ 
-    extends /*<extends>*/Object/*</extends>*/ 
+    extends /*<extends>*/CocoaUtility/*</extends>*/ 
     /*<implements>*//*</implements>*/ {
     
     public static class Marshaler {

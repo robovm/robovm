@@ -34,7 +34,7 @@ import org.robovm.apple.foundation.*;
 @Marshaler(HMCharacteristicMetadataFormat.Marshaler.class)
 /*<annotations>*/@Library("HomeKit")/*</annotations>*/
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/HMCharacteristicMetadataFormat/*</name>*/ 
-    extends /*<extends>*/Object/*</extends>*/ 
+    extends /*<extends>*/CocoaUtility/*</extends>*/ 
     /*<implements>*//*</implements>*/ {
     
     public static class Marshaler {

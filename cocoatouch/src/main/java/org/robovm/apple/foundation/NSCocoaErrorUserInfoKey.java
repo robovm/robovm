@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 Trillian Mobile AB
+ * Copyright (C) 2015 Trillian Mobile AB
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -39,40 +39,80 @@ import org.robovm.apple.dispatch.*;
 /*<javadoc>*/
 /*</javadoc>*/
 /*<annotations>*/@Library("Foundation")/*</annotations>*/
-/*<visibility>*/public/*</visibility>*/ class NSCocoaErrorUserInfoKey 
-    extends /*<extends>*/NSErrorUserInfoKey/*</extends>*/ 
+@Marshaler(/*<name>*/NSCocoaErrorUserInfoKey/*</name>*/.Marshaler.class)
+/*<visibility>*/public/*</visibility>*/ class /*<name>*/NSCocoaErrorUserInfoKey/*</name>*/ 
+    extends /*<extends>*/NSErrorUserInfoKey/*</extends>*/
     /*<implements>*//*</implements>*/ {
-    /*<ptr>*/
-    /*</ptr>*/
-    /*<bind>*/static { Bro.bind(NSCocoaErrorUserInfoKey.class); }/*</bind>*/
-    /*<constants>*//*</constants>*/
-    public static final NSCocoaErrorUserInfoKey UnderlyingError = new NSCocoaErrorUserInfoKey("UnderlyingErrorKey");
-    public static final NSCocoaErrorUserInfoKey LocalizedDescription = new NSCocoaErrorUserInfoKey("LocalizedDescriptionKey");
-    public static final NSCocoaErrorUserInfoKey LocalizedFailureReason = new NSCocoaErrorUserInfoKey("LocalizedFailureReasonErrorKey");
-    public static final NSCocoaErrorUserInfoKey LocalizedRecoverySuggestion = new NSCocoaErrorUserInfoKey("LocalizedRecoverySuggestionErrorKey");
-    public static final NSCocoaErrorUserInfoKey LocalizedRecoveryOptions = new NSCocoaErrorUserInfoKey("LocalizedRecoveryOptionsErrorKey");
-    public static final NSCocoaErrorUserInfoKey RecoveryAttempter = new NSCocoaErrorUserInfoKey("RecoveryAttempterErrorKey");
-    public static final NSCocoaErrorUserInfoKey HelpAnchor = new NSCocoaErrorUserInfoKey("HelpAnchorErrorKey");
-    public static final NSCocoaErrorUserInfoKey StringEncoding = new NSCocoaErrorUserInfoKey("StringEncodingErrorKey");
-    public static final NSCocoaErrorUserInfoKey FilePath = new NSCocoaErrorUserInfoKey("FilePathErrorKey");
-    public static final NSCocoaErrorUserInfoKey URL = new NSCocoaErrorUserInfoKey("URLErrorKey");
-    
-    private static NSCocoaErrorUserInfoKey[] values = new NSCocoaErrorUserInfoKey[] {UnderlyingError, LocalizedDescription, LocalizedFailureReason, LocalizedRecoverySuggestion, 
-        LocalizedRecoveryOptions, RecoveryAttempter, HelpAnchor, StringEncoding, FilePath, URL};
-    private final LazyGlobalValue<NSString> lazyGlobalValue;
-    
-    private NSCocoaErrorUserInfoKey(String getterName) {
-        lazyGlobalValue = new LazyGlobalValue<>(getClass(), getterName);
+
+    static { Bro.bind(/*<name>*/NSCocoaErrorUserInfoKey/*</name>*/.class); }
+
+    /*<marshalers>*/
+    public static class Marshaler {
+        @MarshalsPointer
+        public static NSCocoaErrorUserInfoKey toObject(Class<NSCocoaErrorUserInfoKey> cls, long handle, long flags) {
+            NSString o = (NSString) NSObject.Marshaler.toObject(NSString.class, handle, flags);
+            if (o == null) {
+                return null;
+            }
+            return NSCocoaErrorUserInfoKey.valueOf(o);
+        }
+        @MarshalsPointer
+        public static long toNative(NSCocoaErrorUserInfoKey o, long flags) {
+            if (o == null) {
+                return 0L;
+            }
+            return NSObject.Marshaler.toNative(o.value(), flags);
+        }
     }
-    /*<constructors>*//*</constructors>*/
-    /*<properties>*//*</properties>*/
-    /*<members>*//*</members>*/
-    public NSString value() {
-        return lazyGlobalValue.value();
+    public static class AsListMarshaler {
+        @SuppressWarnings("unchecked")
+        @MarshalsPointer
+        public static List<NSCocoaErrorUserInfoKey> toObject(Class<? extends NSObject> cls, long handle, long flags) {
+            NSArray<NSString> o = (NSArray<NSString>) NSObject.Marshaler.toObject(cls, handle, flags);
+            if (o == null) {
+                return null;
+            }
+            List<NSCocoaErrorUserInfoKey> list = new ArrayList<>();
+            for (int i = 0, n = o.size(); i < n; i++) {
+                list.add(NSCocoaErrorUserInfoKey.valueOf(o.get(i)));
+            }
+            return list;
+        }
+        @MarshalsPointer
+        public static long toNative(List<NSCocoaErrorUserInfoKey> l, long flags) {
+            if (l == null) {
+                return 0L;
+            }
+            NSArray<NSString> array = new NSMutableArray<>();
+            for (NSCocoaErrorUserInfoKey i : l) {
+                array.add(i.value());
+            }
+            return NSObject.Marshaler.toNative(array, flags);
+        }
+    }
+    /*</marshalers>*/
+
+    /*<constants>*/
+    public static final NSCocoaErrorUserInfoKey UnderlyingError = new NSCocoaErrorUserInfoKey("UnderlyingError");
+    public static final NSCocoaErrorUserInfoKey LocalizedDescription = new NSCocoaErrorUserInfoKey("LocalizedDescription");
+    public static final NSCocoaErrorUserInfoKey LocalizedFailureReason = new NSCocoaErrorUserInfoKey("LocalizedFailureReason");
+    public static final NSCocoaErrorUserInfoKey LocalizedRecoverySuggestion = new NSCocoaErrorUserInfoKey("LocalizedRecoverySuggestion");
+    public static final NSCocoaErrorUserInfoKey LocalizedRecoveryOptions = new NSCocoaErrorUserInfoKey("LocalizedRecoveryOptions");
+    public static final NSCocoaErrorUserInfoKey RecoveryAttempter = new NSCocoaErrorUserInfoKey("RecoveryAttempter");
+    public static final NSCocoaErrorUserInfoKey HelpAnchor = new NSCocoaErrorUserInfoKey("HelpAnchor");
+    public static final NSCocoaErrorUserInfoKey StringEncoding = new NSCocoaErrorUserInfoKey("StringEncoding");
+    public static final NSCocoaErrorUserInfoKey URL = new NSCocoaErrorUserInfoKey("URL");
+    public static final NSCocoaErrorUserInfoKey FilePath = new NSCocoaErrorUserInfoKey("FilePath");
+    /*</constants>*/
+    
+    private static /*<name>*/NSCocoaErrorUserInfoKey/*</name>*/[] values = new /*<name>*/NSCocoaErrorUserInfoKey/*</name>*/[] {/*<value_list>*/UnderlyingError, LocalizedDescription, LocalizedFailureReason, LocalizedRecoverySuggestion, LocalizedRecoveryOptions, RecoveryAttempter, HelpAnchor, StringEncoding, URL, FilePath/*</value_list>*/};
+    
+    /*<name>*/NSCocoaErrorUserInfoKey/*</name>*/ (String getterName) {
+        super(Values.class, getterName);
     }
     
-    public static NSCocoaErrorUserInfoKey valueOf(NSString value) {
-        for (NSCocoaErrorUserInfoKey v : values) {
+    public static /*<name>*/NSCocoaErrorUserInfoKey/*</name>*/ valueOf(/*<type>*/NSString/*</type>*/ value) {
+        for (/*<name>*/NSCocoaErrorUserInfoKey/*</name>*/ v : values) {
             if (v.value().equals(value)) {
                 return v;
             }
@@ -80,26 +120,34 @@ import org.robovm.apple.dispatch.*;
         throw new IllegalArgumentException("No constant with value " + value + " found in " 
             + /*<name>*/NSCocoaErrorUserInfoKey/*</name>*/.class.getName());
     }
-    /*<methods>*/
-    @GlobalValue(symbol="NSUnderlyingErrorKey", optional=true)
-    protected static native NSString UnderlyingErrorKey();
-    @GlobalValue(symbol="NSLocalizedDescriptionKey", optional=true)
-    protected static native NSString LocalizedDescriptionKey();
-    @GlobalValue(symbol="NSLocalizedFailureReasonErrorKey", optional=true)
-    protected static native NSString LocalizedFailureReasonErrorKey();
-    @GlobalValue(symbol="NSLocalizedRecoverySuggestionErrorKey", optional=true)
-    protected static native NSString LocalizedRecoverySuggestionErrorKey();
-    @GlobalValue(symbol="NSLocalizedRecoveryOptionsErrorKey", optional=true)
-    protected static native NSString LocalizedRecoveryOptionsErrorKey();
-    @GlobalValue(symbol="NSRecoveryAttempterErrorKey", optional=true)
-    protected static native NSString RecoveryAttempterErrorKey();
-    @GlobalValue(symbol="NSHelpAnchorErrorKey", optional=true)
-    protected static native NSString HelpAnchorErrorKey();
-    @GlobalValue(symbol="NSStringEncodingErrorKey", optional=true)
-    protected static native NSString StringEncodingErrorKey();
-    @GlobalValue(symbol="NSURLErrorKey", optional=true)
-    protected static native NSString URLErrorKey();
-    @GlobalValue(symbol="NSFilePathErrorKey", optional=true)
-    protected static native NSString FilePathErrorKey();
-    /*</methods>*/
+    
+    /*<methods>*//*</methods>*/
+    
+    /*<annotations>*/@Library("Foundation")/*</annotations>*/
+    public static class Values {
+    	static { Bro.bind(Values.class); }
+
+        /*<values>*/
+        @GlobalValue(symbol="NSUnderlyingErrorKey", optional=true)
+        public static native NSString UnderlyingError();
+        @GlobalValue(symbol="NSLocalizedDescriptionKey", optional=true)
+        public static native NSString LocalizedDescription();
+        @GlobalValue(symbol="NSLocalizedFailureReasonErrorKey", optional=true)
+        public static native NSString LocalizedFailureReason();
+        @GlobalValue(symbol="NSLocalizedRecoverySuggestionErrorKey", optional=true)
+        public static native NSString LocalizedRecoverySuggestion();
+        @GlobalValue(symbol="NSLocalizedRecoveryOptionsErrorKey", optional=true)
+        public static native NSString LocalizedRecoveryOptions();
+        @GlobalValue(symbol="NSRecoveryAttempterErrorKey", optional=true)
+        public static native NSString RecoveryAttempter();
+        @GlobalValue(symbol="NSHelpAnchorErrorKey", optional=true)
+        public static native NSString HelpAnchor();
+        @GlobalValue(symbol="NSStringEncodingErrorKey", optional=true)
+        public static native NSString StringEncoding();
+        @GlobalValue(symbol="NSURLErrorKey", optional=true)
+        public static native NSString URL();
+        @GlobalValue(symbol="NSFilePathErrorKey", optional=true)
+        public static native NSString FilePath();
+        /*</values>*/
+    }
 }

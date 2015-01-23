@@ -43,7 +43,7 @@ import org.robovm.apple.mediatoolbox.*;
 @Marshaler(AVAssetImageGeneratorApertureMode.Marshaler.class)
 /*<annotations>*/@Library("AVFoundation")/*</annotations>*/
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/AVAssetImageGeneratorApertureMode/*</name>*/ 
-    extends /*<extends>*/Object/*</extends>*/ 
+    extends /*<extends>*/CocoaUtility/*</extends>*/ 
     /*<implements>*//*</implements>*/ {
 
     public static class Marshaler {

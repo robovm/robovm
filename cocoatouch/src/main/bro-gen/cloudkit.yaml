@@ -39,8 +39,6 @@ enums:
 classes:
     CKError:
         extends: NSError
-    CKErrorUserInfoKey:
-        extends: NSErrorUserInfoKey
 
     CKAsset: # DONE
         methods:
@@ -415,17 +413,20 @@ values:
         name: getClassDomain
     
     CK(PartialErrorsByItemID)Key:
-        class: CKErrorUserInfoKey
-        name: '#{g[0]}Value'
-        visibility: protected
+        enum: CKErrorUserInfoKey
+        name: '#{g[0]}'
+        type: NSString
+        extends: NSErrorUserInfoKey
     CKError(RetryAfter)Key:
-        class: CKErrorUserInfoKey
-        name: '#{g[0]}Value'
-        visibility: protected
+        enum: CKErrorUserInfoKey
+        name: '#{g[0]}'
+        type: NSString
+        extends: NSErrorUserInfoKey
     CKRecordChangedError(.*)Key:
-        class: CKErrorUserInfoKey
-        name: '#{g[0]}Value'
-        visibility: protected
+        enum: CKErrorUserInfoKey
+        name: '#{g[0]}'
+        type: NSString
+        extends: NSErrorUserInfoKey
 
     # CKContainer
     CKOwnerDefaultName:

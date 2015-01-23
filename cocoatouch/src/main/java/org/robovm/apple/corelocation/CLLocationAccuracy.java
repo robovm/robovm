@@ -35,7 +35,7 @@ import org.robovm.apple.corebluetooth.*;
 /*</javadoc>*/
 /*<annotations>*/@Library("CoreLocation")/*</annotations>*/
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/CLLocationAccuracy/*</name>*/ 
-    extends /*<extends>*/Object/*</extends>*/ 
+    extends /*<extends>*/CocoaUtility/*</extends>*/ 
     /*<implements>*//*</implements>*/ {
 
     /*<ptr>*/

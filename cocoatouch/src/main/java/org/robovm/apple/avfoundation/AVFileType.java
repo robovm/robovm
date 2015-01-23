@@ -42,7 +42,7 @@ import org.robovm.apple.mediatoolbox.*;
 /*</javadoc>*/
 /*<annotations>*/@Library("AVFoundation")/*</annotations>*/
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/AVFileType/*</name>*/ 
-    extends /*<extends>*/Object/*</extends>*/ 
+    extends /*<extends>*/CocoaUtility/*</extends>*/ 
     /*<implements>*//*</implements>*/ {
     /*<ptr>*/
     /*</ptr>*/

@@ -34,7 +34,7 @@ import org.robovm.apple.foundation.*;
 @Marshaler(NSManagedObjectContextNotificationInfo.Marshaler.class)
 /*<annotations>*/@Library("CoreData")/*</annotations>*/
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/NSManagedObjectContextNotificationInfo/*</name>*/ 
-    extends /*<extends>*/Object/*</extends>*/ 
+    extends /*<extends>*/CocoaUtility/*</extends>*/ 
     /*<implements>*//*</implements>*/ {
 
     public static class Marshaler {

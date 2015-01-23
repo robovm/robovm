@@ -215,15 +215,6 @@ classes:
         extends: NSError
     NSXMLParserError:
         extends: NSError
-    
-    NSCocoaErrorUserInfoKey:
-        extends: NSErrorUserInfoKey
-    NSURLErrorUserInfoKey:
-        extends: NSErrorUserInfoKey
-    NSExtensionContextErrorUserInfoKey:
-        extends: NSErrorUserInfoKey
-    NSURLSessionErrorUserInfoKey:
-        extends: NSErrorUserInfoKey
 
     NSArray: # DONE
         protocols: [NSFastEnumeration, NSPropertyList, List<T>]
@@ -4151,42 +4142,41 @@ values:
         class: NSXMLParserError
         name: getClassDomain
     
-    NS((LocalizedDescription|FilePathError|StringEncodingError)Key):
-        class: NSCocoaErrorUserInfoKey
+    NS(LocalizedDescription|UnderlyingError)Key:
+        enum: NSCocoaErrorUserInfoKey
         name: '#{g[0]}'
         type: NSString
-        visibility: protected
-    NS((UnderlyingError|URLError|LocalizedFailureReasonError|LocalizedRecoverySuggestionError)Key):
-        class: NSCocoaErrorUserInfoKey
+        extends: NSErrorUserInfoKey
+    NS(FilePath|StringEncoding|URL|LocalizedFailureReason|LocalizedRecoverySuggestion)ErrorKey:
+        enum: NSCocoaErrorUserInfoKey
         name: '#{g[0]}'
         type: NSString
-        visibility: protected
-    NS((LocalizedRecoveryOptionsError|RecoveryAttempterError|HelpAnchorError)Key):
-        class: NSCocoaErrorUserInfoKey
+        extends: NSErrorUserInfoKey
+    NS(LocalizedRecoveryOptions|RecoveryAttempter|HelpAnchor)ErrorKey:
+        enum: NSCocoaErrorUserInfoKey
         name: '#{g[0]}'
         type: NSString
-        visibility: protected
-    NSURLError((FailingURLError|FailingURLStringError|FailingURLPeerTrustError)Key):
-        class: NSURLErrorUserInfoKey
+        extends: NSErrorUserInfoKey
+    NSURLError(FailingURL|FailingURLString|FailingURLPeerTrust)ErrorKey:
+        enum: NSURLErrorUserInfoKey
         name: '#{g[0]}'
         type: NSString
-        visibility: protected
-    NSURL(KeysOfUnsetValuesKey):
-        class: NSURLErrorUserInfoKey
+        extends: NSErrorUserInfoKey
+    NSURL(KeysOfUnsetValues)Key:
+        enum: NSURLErrorUserInfoKey
         name: '#{g[0]}'
         type: NSString
-        visibility: protected
-
-    NSURLError(BackgroundTaskCancelledReasonKey):
-        class: NSURLSessionErrorUserInfoKey
+        extends: NSErrorUserInfoKey
+    NSURLError(BackgroundTaskCancelledReason)Key:
+        enum: NSURLSessionErrorUserInfoKey
         name: '#{g[0]}'
         type: NSString
-        visibility: protected
+        extends: NSErrorUserInfoKey
     NSURLSession(DownloadTaskResumeData):
-        class: NSURLSessionErrorUserInfoKey
-        name: '#{g[0]}Key'
+        enum: NSURLSessionErrorUserInfoKey
+        name: '#{g[0]}'
         type: NSString
-        visibility: protected
+        extends: NSErrorUserInfoKey
 
     # NSBundle
     NSBundle(DidLoadNotification):

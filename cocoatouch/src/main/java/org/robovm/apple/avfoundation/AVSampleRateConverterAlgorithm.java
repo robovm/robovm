@@ -43,7 +43,7 @@ import org.robovm.apple.mediatoolbox.*;
 @Marshaler(AVSampleRateConverterAlgorithm.Marshaler.class)
 /*<annotations>*/@Library("AVFoundation")/*</annotations>*/
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/AVSampleRateConverterAlgorithm/*</name>*/ 
-    extends /*<extends>*/Object/*</extends>*/ 
+    extends /*<extends>*/CocoaUtility/*</extends>*/ 
     /*<implements>*//*</implements>*/ {
 
     public static class Marshaler {

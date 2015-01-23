@@ -15,13 +15,9 @@
  */
 package org.robovm.apple.foundation;
 
-import org.robovm.rt.bro.Bro;
-import org.robovm.rt.bro.annotation.Library;
-
-@Library("Foundation")
-public abstract class NSErrorUserInfoKey {
+public abstract class NSErrorUserInfoKey extends GlobalValueEnumeration<NSString> {
     
-    static { Bro.bind(NSErrorUserInfoKey.class); }
-    
-    public abstract NSString value();
+    protected NSErrorUserInfoKey (Class<?> clazz, String getterName) {
+        super(clazz, getterName);
+    }
 }

@@ -21,8 +21,6 @@ classes:
 
     CLError:
         extends: NSError
-    CLErrorUserInfoKey:
-        extends: NSErrorUserInfoKey
 
     # Structs
     CLLocationCoordinate2D: {}
@@ -201,11 +199,11 @@ values:
     kCLErrorDomain:
         class: CLError
         name: getClassDomain
-    kCLErrorUserInfo(.*):
-        class: CLErrorUserInfoKey
-        name: '#{g[0]}Value'
+    kCLErrorUserInfo(.*)Key:
+        enum: CLErrorUserInfoKey
+        name: '#{g[0]}'
         type: NSString
-        visibility: protected
+        extends: NSErrorUserInfoKey
 
     kCLLocationAccuracy(.*):
         class: CLLocationAccuracy

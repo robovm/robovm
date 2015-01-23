@@ -33,7 +33,7 @@ import org.robovm.apple.foundation.*;
 /*</javadoc>*/
 /*<annotations>*/@Library("CoreData")/*</annotations>*/
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/CoreDataVersionNumber/*</name>*/ 
-    extends /*<extends>*/Object/*</extends>*/ 
+    extends /*<extends>*/CocoaUtility/*</extends>*/ 
     /*<implements>*//*</implements>*/ {
 
     /*<ptr>*/

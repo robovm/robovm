@@ -193,7 +193,7 @@ import org.robovm.apple.mediatoolbox.*;
      */
     @Deprecated
     @Property(selector = "enablesVideoStabilizationWhenAvailable")
-    public native boolean isEnablesVideoStabilizationWhenAvailable();
+    public native boolean enablesVideoStabilizationWhenAvailable();
     /**
      * @since Available in iOS 6.0 and later.
      * @deprecated Deprecated in iOS 8.0.

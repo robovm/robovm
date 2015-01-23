@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 Trillian Mobile AB
+ * Copyright (C) 2015 Trillian Mobile AB
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -34,34 +34,74 @@ import org.robovm.apple.corebluetooth.*;
 /*<javadoc>*/
 /*</javadoc>*/
 /*<annotations>*/@Library("CoreLocation")/*</annotations>*/
+@Marshaler(/*<name>*/CLErrorUserInfoKey/*</name>*/.Marshaler.class)
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/CLErrorUserInfoKey/*</name>*/ 
-    extends /*<extends>*/NSErrorUserInfoKey/*</extends>*/ 
+    extends /*<extends>*/NSErrorUserInfoKey/*</extends>*/
     /*<implements>*//*</implements>*/ {
 
-    /*<ptr>*/
-    /*</ptr>*/
-    /*<bind>*/static { Bro.bind(CLErrorUserInfoKey.class); }/*</bind>*/
-    /*<constants>*//*</constants>*/
-    /*<constructors>*//*</constructors>*/
+    static { Bro.bind(/*<name>*/CLErrorUserInfoKey/*</name>*/.class); }
+
+    /*<marshalers>*/
+    public static class Marshaler {
+        @MarshalsPointer
+        public static CLErrorUserInfoKey toObject(Class<CLErrorUserInfoKey> cls, long handle, long flags) {
+            NSString o = (NSString) NSObject.Marshaler.toObject(NSString.class, handle, flags);
+            if (o == null) {
+                return null;
+            }
+            return CLErrorUserInfoKey.valueOf(o);
+        }
+        @MarshalsPointer
+        public static long toNative(CLErrorUserInfoKey o, long flags) {
+            if (o == null) {
+                return 0L;
+            }
+            return NSObject.Marshaler.toNative(o.value(), flags);
+        }
+    }
+    public static class AsListMarshaler {
+        @SuppressWarnings("unchecked")
+        @MarshalsPointer
+        public static List<CLErrorUserInfoKey> toObject(Class<? extends NSObject> cls, long handle, long flags) {
+            NSArray<NSString> o = (NSArray<NSString>) NSObject.Marshaler.toObject(cls, handle, flags);
+            if (o == null) {
+                return null;
+            }
+            List<CLErrorUserInfoKey> list = new ArrayList<>();
+            for (int i = 0, n = o.size(); i < n; i++) {
+                list.add(CLErrorUserInfoKey.valueOf(o.get(i)));
+            }
+            return list;
+        }
+        @MarshalsPointer
+        public static long toNative(List<CLErrorUserInfoKey> l, long flags) {
+            if (l == null) {
+                return 0L;
+            }
+            NSArray<NSString> array = new NSMutableArray<>();
+            for (CLErrorUserInfoKey i : l) {
+                array.add(i.value());
+            }
+            return NSObject.Marshaler.toNative(array, flags);
+        }
+    }
+    /*</marshalers>*/
+
+    /*<constants>*/
     /**
      * @since Available in iOS 5.0 and later.
      */
-    public static final CLErrorUserInfoKey AlternateRegion = new CLErrorUserInfoKey("AlternateRegionKeyValue");
+    public static final CLErrorUserInfoKey AlternateRegion = new CLErrorUserInfoKey("AlternateRegion");
+    /*</constants>*/
     
-    private static CLErrorUserInfoKey[] values = new CLErrorUserInfoKey[] {AlternateRegion};
-    private final LazyGlobalValue<NSString> lazyGlobalValue;
+    private static /*<name>*/CLErrorUserInfoKey/*</name>*/[] values = new /*<name>*/CLErrorUserInfoKey/*</name>*/[] {/*<value_list>*/AlternateRegion/*</value_list>*/};
     
-    private CLErrorUserInfoKey(String getterName) {
-        lazyGlobalValue = new LazyGlobalValue<>(getClass(), getterName);
-    }
-    /*<properties>*//*</properties>*/
-    /*<members>*//*</members>*/
-    public NSString value() {
-        return lazyGlobalValue.value();
+    /*<name>*/CLErrorUserInfoKey/*</name>*/ (String getterName) {
+        super(Values.class, getterName);
     }
     
-    public static CLErrorUserInfoKey valueOf(NSString value) {
-        for (CLErrorUserInfoKey v : values) {
+    public static /*<name>*/CLErrorUserInfoKey/*</name>*/ valueOf(/*<type>*/NSString/*</type>*/ value) {
+        for (/*<name>*/CLErrorUserInfoKey/*</name>*/ v : values) {
             if (v.value().equals(value)) {
                 return v;
             }
@@ -69,11 +109,19 @@ import org.robovm.apple.corebluetooth.*;
         throw new IllegalArgumentException("No constant with value " + value + " found in " 
             + /*<name>*/CLErrorUserInfoKey/*</name>*/.class.getName());
     }
-    /*<methods>*/
-    /**
-     * @since Available in iOS 5.0 and later.
-     */
-    @GlobalValue(symbol="kCLErrorUserInfoAlternateRegionKey", optional=true)
-    protected static native NSString AlternateRegionKeyValue();
-    /*</methods>*/
+    
+    /*<methods>*//*</methods>*/
+    
+    /*<annotations>*/@Library("CoreLocation")/*</annotations>*/
+    public static class Values {
+    	static { Bro.bind(Values.class); }
+
+        /*<values>*/
+        /**
+         * @since Available in iOS 5.0 and later.
+         */
+        @GlobalValue(symbol="kCLErrorUserInfoAlternateRegionKey", optional=true)
+        public static native NSString AlternateRegion();
+        /*</values>*/
+    }
 }

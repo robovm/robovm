@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 Trillian Mobile AB
+ * Copyright (C) 2015 Trillian Mobile AB
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -32,63 +32,102 @@ import org.robovm.apple.foundation.*;
 /*<javadoc>*/
 /*</javadoc>*/
 /*<annotations>*/@Library("CoreData")/*</annotations>*/
+@Marshaler(/*<name>*/NSCoreDataErrorUserInfoKey/*</name>*/.Marshaler.class)
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/NSCoreDataErrorUserInfoKey/*</name>*/ 
-    extends /*<extends>*/NSErrorUserInfoKey/*</extends>*/ 
+    extends /*<extends>*/NSErrorUserInfoKey/*</extends>*/
     /*<implements>*//*</implements>*/ {
 
-    /*<ptr>*/
-    /*</ptr>*/
-    /*<bind>*/static { Bro.bind(NSCoreDataErrorUserInfoKey.class); }/*</bind>*/
-    /*<constants>*//*</constants>*/
+    static { Bro.bind(/*<name>*/NSCoreDataErrorUserInfoKey/*</name>*/.class); }
+
+    /*<marshalers>*/
+    public static class Marshaler {
+        @MarshalsPointer
+        public static NSCoreDataErrorUserInfoKey toObject(Class<NSCoreDataErrorUserInfoKey> cls, long handle, long flags) {
+            NSString o = (NSString) NSObject.Marshaler.toObject(NSString.class, handle, flags);
+            if (o == null) {
+                return null;
+            }
+            return NSCoreDataErrorUserInfoKey.valueOf(o);
+        }
+        @MarshalsPointer
+        public static long toNative(NSCoreDataErrorUserInfoKey o, long flags) {
+            if (o == null) {
+                return 0L;
+            }
+            return NSObject.Marshaler.toNative(o.value(), flags);
+        }
+    }
+    public static class AsListMarshaler {
+        @SuppressWarnings("unchecked")
+        @MarshalsPointer
+        public static List<NSCoreDataErrorUserInfoKey> toObject(Class<? extends NSObject> cls, long handle, long flags) {
+            NSArray<NSString> o = (NSArray<NSString>) NSObject.Marshaler.toObject(cls, handle, flags);
+            if (o == null) {
+                return null;
+            }
+            List<NSCoreDataErrorUserInfoKey> list = new ArrayList<>();
+            for (int i = 0, n = o.size(); i < n; i++) {
+                list.add(NSCoreDataErrorUserInfoKey.valueOf(o.get(i)));
+            }
+            return list;
+        }
+        @MarshalsPointer
+        public static long toNative(List<NSCoreDataErrorUserInfoKey> l, long flags) {
+            if (l == null) {
+                return 0L;
+            }
+            NSArray<NSString> array = new NSMutableArray<>();
+            for (NSCoreDataErrorUserInfoKey i : l) {
+                array.add(i.value());
+            }
+            return NSObject.Marshaler.toNative(array, flags);
+        }
+    }
+    /*</marshalers>*/
+
+    /*<constants>*/
     /**
      * @since Available in iOS 3.0 and later.
      */
-    public static final NSCoreDataErrorUserInfoKey DetailedErrors = new NSCoreDataErrorUserInfoKey("DetailedErrorsKey");
+    public static final NSCoreDataErrorUserInfoKey DetailedErrorsKey = new NSCoreDataErrorUserInfoKey("DetailedErrorsKey");
     /**
      * @since Available in iOS 3.0 and later.
      */
-    public static final NSCoreDataErrorUserInfoKey ValidationObject = new NSCoreDataErrorUserInfoKey("ValidationObjectErrorKey");
+    public static final NSCoreDataErrorUserInfoKey ValidationObjectErrorKey = new NSCoreDataErrorUserInfoKey("ValidationObjectErrorKey");
     /**
      * @since Available in iOS 3.0 and later.
      */
-    public static final NSCoreDataErrorUserInfoKey ValidationKey = new NSCoreDataErrorUserInfoKey("ValidationKeyErrorKey");
+    public static final NSCoreDataErrorUserInfoKey ValidationKeyErrorKey = new NSCoreDataErrorUserInfoKey("ValidationKeyErrorKey");
     /**
      * @since Available in iOS 3.0 and later.
      */
-    public static final NSCoreDataErrorUserInfoKey ValidationPredicate = new NSCoreDataErrorUserInfoKey("ValidationPredicateErrorKey");
+    public static final NSCoreDataErrorUserInfoKey ValidationPredicateErrorKey = new NSCoreDataErrorUserInfoKey("ValidationPredicateErrorKey");
     /**
      * @since Available in iOS 3.0 and later.
      */
-    public static final NSCoreDataErrorUserInfoKey ValidationValue = new NSCoreDataErrorUserInfoKey("ValidationValueErrorKey");
+    public static final NSCoreDataErrorUserInfoKey ValidationValueErrorKey = new NSCoreDataErrorUserInfoKey("ValidationValueErrorKey");
     /**
      * @since Available in iOS 3.0 and later.
      */
-    public static final NSCoreDataErrorUserInfoKey AffectedStores = new NSCoreDataErrorUserInfoKey("AffectedStoresErrorKey");
+    public static final NSCoreDataErrorUserInfoKey AffectedStoresErrorKey = new NSCoreDataErrorUserInfoKey("AffectedStoresErrorKey");
     /**
      * @since Available in iOS 3.0 and later.
      */
-    public static final NSCoreDataErrorUserInfoKey AffectedObjects = new NSCoreDataErrorUserInfoKey("AffectedObjectsErrorKey");
+    public static final NSCoreDataErrorUserInfoKey AffectedObjectsErrorKey = new NSCoreDataErrorUserInfoKey("AffectedObjectsErrorKey");
     /**
      * @since Available in iOS 5.0 and later.
      */
-    public static final NSCoreDataErrorUserInfoKey SaveConflicts = new NSCoreDataErrorUserInfoKey("PersistentStoreSaveConflictsErrorKey");
+    public static final NSCoreDataErrorUserInfoKey PersistentStoreSaveConflictsErrorKey = new NSCoreDataErrorUserInfoKey("PersistentStoreSaveConflictsErrorKey");
+    /*</constants>*/
     
-    private static NSCoreDataErrorUserInfoKey[] values = new NSCoreDataErrorUserInfoKey[] {DetailedErrors, ValidationKey, ValidationObject, ValidationPredicate,
-        ValidationValue, AffectedStores, AffectedObjects, SaveConflicts};
-    private final LazyGlobalValue<NSString> lazyGlobalValue;
+    private static /*<name>*/NSCoreDataErrorUserInfoKey/*</name>*/[] values = new /*<name>*/NSCoreDataErrorUserInfoKey/*</name>*/[] {/*<value_list>*/DetailedErrorsKey, ValidationObjectErrorKey, ValidationKeyErrorKey, ValidationPredicateErrorKey, ValidationValueErrorKey, AffectedStoresErrorKey, AffectedObjectsErrorKey, PersistentStoreSaveConflictsErrorKey/*</value_list>*/};
     
-    private NSCoreDataErrorUserInfoKey(String getterName) {
-        lazyGlobalValue = new LazyGlobalValue<>(getClass(), getterName);
-    }
-    /*<constructors>*//*</constructors>*/
-    /*<properties>*//*</properties>*/
-    /*<members>*//*</members>*/
-    public NSString value() {
-        return lazyGlobalValue.value();
+    /*<name>*/NSCoreDataErrorUserInfoKey/*</name>*/ (String getterName) {
+        super(Values.class, getterName);
     }
     
-    public static NSCoreDataErrorUserInfoKey valueOf(NSString value) {
-        for (NSCoreDataErrorUserInfoKey v : values) {
+    public static /*<name>*/NSCoreDataErrorUserInfoKey/*</name>*/ valueOf(/*<type>*/NSString/*</type>*/ value) {
+        for (/*<name>*/NSCoreDataErrorUserInfoKey/*</name>*/ v : values) {
             if (v.value().equals(value)) {
                 return v;
             }
@@ -96,46 +135,54 @@ import org.robovm.apple.foundation.*;
         throw new IllegalArgumentException("No constant with value " + value + " found in " 
             + /*<name>*/NSCoreDataErrorUserInfoKey/*</name>*/.class.getName());
     }
-    /*<methods>*/
-    /**
-     * @since Available in iOS 3.0 and later.
-     */
-    @GlobalValue(symbol="NSDetailedErrorsKey", optional=true)
-    protected static native NSString DetailedErrorsKey();
-    /**
-     * @since Available in iOS 3.0 and later.
-     */
-    @GlobalValue(symbol="NSValidationObjectErrorKey", optional=true)
-    protected static native NSString ValidationObjectErrorKey();
-    /**
-     * @since Available in iOS 3.0 and later.
-     */
-    @GlobalValue(symbol="NSValidationKeyErrorKey", optional=true)
-    protected static native NSString ValidationKeyErrorKey();
-    /**
-     * @since Available in iOS 3.0 and later.
-     */
-    @GlobalValue(symbol="NSValidationPredicateErrorKey", optional=true)
-    protected static native NSString ValidationPredicateErrorKey();
-    /**
-     * @since Available in iOS 3.0 and later.
-     */
-    @GlobalValue(symbol="NSValidationValueErrorKey", optional=true)
-    protected static native NSString ValidationValueErrorKey();
-    /**
-     * @since Available in iOS 3.0 and later.
-     */
-    @GlobalValue(symbol="NSAffectedStoresErrorKey", optional=true)
-    protected static native NSString AffectedStoresErrorKey();
-    /**
-     * @since Available in iOS 3.0 and later.
-     */
-    @GlobalValue(symbol="NSAffectedObjectsErrorKey", optional=true)
-    protected static native NSString AffectedObjectsErrorKey();
-    /**
-     * @since Available in iOS 5.0 and later.
-     */
-    @GlobalValue(symbol="NSPersistentStoreSaveConflictsErrorKey", optional=true)
-    protected static native NSString PersistentStoreSaveConflictsErrorKey();
-    /*</methods>*/
+    
+    /*<methods>*//*</methods>*/
+    
+    /*<annotations>*/@Library("CoreData")/*</annotations>*/
+    public static class Values {
+    	static { Bro.bind(Values.class); }
+
+        /*<values>*/
+        /**
+         * @since Available in iOS 3.0 and later.
+         */
+        @GlobalValue(symbol="NSDetailedErrorsKey", optional=true)
+        public static native NSString DetailedErrorsKey();
+        /**
+         * @since Available in iOS 3.0 and later.
+         */
+        @GlobalValue(symbol="NSValidationObjectErrorKey", optional=true)
+        public static native NSString ValidationObjectErrorKey();
+        /**
+         * @since Available in iOS 3.0 and later.
+         */
+        @GlobalValue(symbol="NSValidationKeyErrorKey", optional=true)
+        public static native NSString ValidationKeyErrorKey();
+        /**
+         * @since Available in iOS 3.0 and later.
+         */
+        @GlobalValue(symbol="NSValidationPredicateErrorKey", optional=true)
+        public static native NSString ValidationPredicateErrorKey();
+        /**
+         * @since Available in iOS 3.0 and later.
+         */
+        @GlobalValue(symbol="NSValidationValueErrorKey", optional=true)
+        public static native NSString ValidationValueErrorKey();
+        /**
+         * @since Available in iOS 3.0 and later.
+         */
+        @GlobalValue(symbol="NSAffectedStoresErrorKey", optional=true)
+        public static native NSString AffectedStoresErrorKey();
+        /**
+         * @since Available in iOS 3.0 and later.
+         */
+        @GlobalValue(symbol="NSAffectedObjectsErrorKey", optional=true)
+        public static native NSString AffectedObjectsErrorKey();
+        /**
+         * @since Available in iOS 5.0 and later.
+         */
+        @GlobalValue(symbol="NSPersistentStoreSaveConflictsErrorKey", optional=true)
+        public static native NSString PersistentStoreSaveConflictsErrorKey();
+        /*</values>*/
+    }
 }

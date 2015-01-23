@@ -16,12 +16,14 @@ classes:
 
     EAGLContext: # DONE
         methods:
+            '-init.*':
+                name: init
             '+currentContext':
                 name: getCurrentContext
             '+setCurrentContext:':
                 name: setCurrentContext
             '-renderbufferStorage:fromDrawable:':
-                name: renderBufferStorage
+                trim_after_first_colon: true
             '-presentRenderbuffer:':
                 name: presentRenderbuffer
     EAGLSharegroup: {} # DONE
@@ -35,47 +37,49 @@ protocols:
 functions:
     EAGL(GetVersion):
         class: OpenGLES
-        name: "#{g[0]}"
-        visibility: protected
+        name: '#{g[0]}'
+        visibility: private
 
     # Make sure we don't miss any functions if new ones are introduced in a later version
-    (EAGL.*):
+    (k?EAGL.*):
         class: OpenGLES
-        name: "Function__#{g[0]}"
-    (GL.*):
+        name: 'Function__#{g[0]}'
+    (k?GL.*):
         class: OpenGLES
-        name: "Function__#{g[0]}"
+        name: 'Function__#{g[0]}'
 
 values:
 
     kEAGLColorFormat(.*):
-        class: EAGLColorFormat
-        name: "#{g[0]}Value"
+        enum: EAGLColorFormat
+        name: '#{g[0]}'
         type: NSString
-        visibility: protected
     kEAGLDrawableProperty(.*):
-        class: EAGLDrawableProperties
-        name: "#{g[0]}"
+        dictionary: EAGLDrawableProperties
+        name: '#{g[0]}'
         type: NSString
-        visibility: protected
+        methods:
+            RetainedBacking:
+                type: boolean
+            ColorFormat:
+                type: EAGLColorFormat
 
     # Make sure we don't miss any values if new ones are introduced in a later version
     (k?EAGL.*):
         class: OpenGLES
-        name: "Value__#{g[0]}"
+        name: 'Value__#{g[0]}'
     (k?GL.*):
         class: OpenGLES
-        name: "Value__#{g[0]}"
+        name: 'Value__#{g[0]}'
 
 constants:
-
     EAGL_(MAJOR|MINOR)_VERSION:
         exclude: true
 
     # Make sure we don't miss any constants if new ones are introduced in a later version
     (k?EAGL.*):
         class: OpenGLES
-        name: "Constant__#{g[0]}"
+        name: 'Constant__#{g[0]}'
     (k?GL.*):
         class: OpenGLES
-        name: "Constant__#{g[0]}"
+        name: 'Constant__#{g[0]}'

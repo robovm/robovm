@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 Trillian Mobile AB
+ * Copyright (C) 2015 Trillian Mobile AB
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -31,14 +31,14 @@ import org.robovm.apple.foundation.*;
 
 /*<javadoc>*/
 /*</javadoc>*/
-@Marshaler(EAGLDrawableProperties.Marshaler.class)
 /*<annotations>*/@Library("OpenGLES")/*</annotations>*/
+@Marshaler(/*<name>*/EAGLDrawableProperties/*</name>*/.Marshaler.class)
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/EAGLDrawableProperties/*</name>*/ 
-    extends /*<extends>*/Object/*</extends>*/ 
+    extends /*<extends>*/NSDictionaryWrapper/*</extends>*/
     /*<implements>*//*</implements>*/ {
 
+    /*<marshalers>*/
     public static class Marshaler {
-        @SuppressWarnings("unchecked")
         @MarshalsPointer
         public static EAGLDrawableProperties toObject(Class<EAGLDrawableProperties> cls, long handle, long flags) {
             NSDictionary<NSString, NSObject> o = (NSDictionary<NSString, NSObject>) NSObject.Marshaler.toObject(NSDictionary.class, handle, flags);
@@ -55,57 +55,88 @@ import org.robovm.apple.foundation.*;
             return NSObject.Marshaler.toNative(o.data, flags);
         }
     }
-    
-    /*<ptr>*/
-    /*</ptr>*/
-    private NSDictionary<NSString, NSObject> data;
-    
-    protected EAGLDrawableProperties(NSDictionary<NSString, NSObject> data) {
-        this.data = data;
+    public static class AsListMarshaler {
+        @MarshalsPointer
+        public static List<EAGLDrawableProperties> toObject(Class<? extends NSObject> cls, long handle, long flags) {
+            NSArray<NSDictionary<NSString, NSObject>> o = (NSArray<NSDictionary<NSString, NSObject>>) NSObject.Marshaler.toObject(cls, handle, flags);
+            if (o == null) {
+                return null;
+            }
+            List<EAGLDrawableProperties> list = new ArrayList<>();
+            for (int i = 0; i < o.size(); i++) {
+                list.add(new EAGLDrawableProperties(o.get(i)));
+            }
+            return list;
+        }
+        @MarshalsPointer
+        public static long toNative(List<EAGLDrawableProperties> l, long flags) {
+            if (l == null) {
+                return 0L;
+            }
+            NSArray<NSDictionary<NSString, NSObject>> array = new NSMutableArray<>();
+            for (EAGLDrawableProperties i : l) {
+                array.add(i.getDictionary());
+            }
+            return NSObject.Marshaler.toNative(array, flags);
+        }
     }
-    public EAGLDrawableProperties() {
-        this.data = new NSMutableDictionary<>();
+    /*</marshalers>*/
+
+    /*<constructors>*/
+     EAGLDrawableProperties(NSDictionary<NSString, NSObject> data) {
+        super(data);
     }
-    /*<bind>*/static { Bro.bind(EAGLDrawableProperties.class); }/*</bind>*/
-    /*<constants>*//*</constants>*/
-    /*<constructors>*//*</constructors>*/
-    /*<properties>*//*</properties>*/
-    /*<members>*//*</members>*/
-    public NSDictionary<NSString, NSObject> getDictionary() {
-        return data;
+    public EAGLDrawableProperties() {}
+    /*</constructors>*/
+
+    /*<methods>*/
+    public boolean has(NSString key) {
+        return data.containsKey(key);
+    }
+    public NSObject get(NSString key) {
+        if (has(key)) {
+            return data.get(key);
+        }
+        return null;
+    }
+    public EAGLDrawableProperties set(NSString key, NSObject value) {
+        data.put(key, value);
+        return this;
     }
     
+
     public boolean isRetainedBacking() {
-        if (data.containsKey(RetainedBacking())) {
-            NSNumber val = (NSNumber)data.get(RetainedBacking());
+        if (has(Keys.RetainedBacking())) {
+            NSNumber val = (NSNumber) get(Keys.RetainedBacking());
             return val.booleanValue();
         }
         return false;
     }
     public EAGLDrawableProperties setRetainedBacking(boolean retainedBacking) {
-        data.put(RetainedBacking(), NSNumber.valueOf(retainedBacking));
+        set(Keys.RetainedBacking(), NSNumber.valueOf(retainedBacking));
         return this;
     }
     public EAGLColorFormat getColorFormat() {
-        if (data.containsKey(ColorFormat())) {
-            NSString val = (NSString)data.get(ColorFormat());
+        if (has(Keys.ColorFormat())) {
+            NSString val = (NSString) get(Keys.ColorFormat());
             return EAGLColorFormat.valueOf(val);
         }
-        return EAGLColorFormat.RGBA8;
+        return null;
     }
     public EAGLDrawableProperties setColorFormat(EAGLColorFormat colorFormat) {
-        data.put(ColorFormat(), colorFormat.value());
+        set(Keys.ColorFormat(), colorFormat.value());
         return this;
     }
-    /*<methods>*/
-    @GlobalValue(symbol="kEAGLDrawablePropertyRetainedBacking", optional=true)
-    protected static native NSString RetainedBacking();
-    @GlobalValue(symbol="kEAGLDrawablePropertyColorFormat", optional=true)
-    protected static native NSString ColorFormat();
     /*</methods>*/
     
-    public String toString() {
-        if (data != null) return data.toString();
-        return super.toString();
+    /*<keys>*/
+    @Library("OpenGLES")
+    public static class Keys {
+        static { Bro.bind(Keys.class); }
+        @GlobalValue(symbol="kEAGLDrawablePropertyRetainedBacking", optional=true)
+        public static native NSString RetainedBacking();
+        @GlobalValue(symbol="kEAGLDrawablePropertyColorFormat", optional=true)
+        public static native NSString ColorFormat();
     }
+    /*</keys>*/
 }

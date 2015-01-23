@@ -77,13 +77,13 @@ import org.robovm.apple.dispatch.*;
     @Property(selector = "timeSinceLastDraw")
     public native double getTimeSinceLastDraw();
     @Property(selector = "pauseOnWillResignActive")
-    public native boolean isPauseOnWillResignActive();
+    public native boolean pausesOnWillResignActive();
     @Property(selector = "setPauseOnWillResignActive:")
-    public native void setPauseOnWillResignActive(boolean v);
+    public native void setPausesOnWillResignActive(boolean v);
     @Property(selector = "resumeOnDidBecomeActive")
-    public native boolean isResumeOnDidBecomeActive();
+    public native boolean resumesOnDidBecomeActive();
     @Property(selector = "setResumeOnDidBecomeActive:")
-    public native void setResumeOnDidBecomeActive(boolean v);
+    public native void setResumesOnDidBecomeActive(boolean v);
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/

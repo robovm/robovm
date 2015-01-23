@@ -53,13 +53,13 @@ import org.robovm.apple.dispatch.*;
     /*</constructors>*/
     /*<properties>*/
     @Property(selector = "enabled")
-    public native byte getEnabled();
+    public native boolean isEnabled();
     @Property(selector = "setEnabled:")
-    public native void setEnabled(byte v);
+    public native void setEnabled(boolean v);
     @Property(selector = "mode")
-    public native int getMode();
-    @Property(selector = "setMode:")
-    public native void setMode(int v);
+    public native GLKFogMode getMode();
+    @Property(selector = "setMode:", strongRef = true)
+    public native void setMode(GLKFogMode v);
     @Property(selector = "color")
     public native @ByVal GLKVector4 getColor();
     @Property(selector = "setColor:")

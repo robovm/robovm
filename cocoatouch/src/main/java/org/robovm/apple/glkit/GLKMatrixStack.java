@@ -83,21 +83,21 @@ import org.robovm.apple.dispatch.*;
     @Bridge(symbol="GLKMatrixStackTranslate", optional=true)
     public native void translate(float tx, float ty, float tz);
     @Bridge(symbol="GLKMatrixStackTranslateWithVector3", optional=true)
-    public native void translateWithVector3(@ByVal GLKVector3 translationVector);
+    public native void translate(@ByVal GLKVector3 translationVector);
     @Bridge(symbol="GLKMatrixStackTranslateWithVector4", optional=true)
-    public native void translateWithVector4(@ByVal GLKVector4 translationVector);
+    public native void translate(@ByVal GLKVector4 translationVector);
     @Bridge(symbol="GLKMatrixStackScale", optional=true)
     public native void scale(float sx, float sy, float sz);
     @Bridge(symbol="GLKMatrixStackScaleWithVector3", optional=true)
-    public native void scaleWithVector3(@ByVal GLKVector3 scaleVector);
+    public native void scale(@ByVal GLKVector3 scaleVector);
     @Bridge(symbol="GLKMatrixStackScaleWithVector4", optional=true)
-    public native void scaleWithVector4(@ByVal GLKVector4 scaleVector);
+    public native void scale(@ByVal GLKVector4 scaleVector);
     @Bridge(symbol="GLKMatrixStackRotate", optional=true)
     public native void rotate(float radians, float x, float y, float z);
     @Bridge(symbol="GLKMatrixStackRotateWithVector3", optional=true)
-    public native void rotateWithVector3(float radians, @ByVal GLKVector3 axisVector);
+    public native void rotate(float radians, @ByVal GLKVector3 axisVector);
     @Bridge(symbol="GLKMatrixStackRotateWithVector4", optional=true)
-    public native void rotateWithVector4(float radians, @ByVal GLKVector4 axisVector);
+    public native void rotate(float radians, @ByVal GLKVector4 axisVector);
     @Bridge(symbol="GLKMatrixStackRotateX", optional=true)
     public native void rotateX(float radians);
     @Bridge(symbol="GLKMatrixStackRotateY", optional=true)

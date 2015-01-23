@@ -53,9 +53,9 @@ import org.robovm.apple.dispatch.*;
     /*</constructors>*/
     /*<properties>*/
     @Property(selector = "enabled")
-    public native byte getEnabled();
+    public native boolean isEnabled();
     @Property(selector = "setEnabled:")
-    public native void setEnabled(byte v);
+    public native void setEnabled(boolean v);
     @Property(selector = "name")
     public native int getName();
     @Property(selector = "setName:")

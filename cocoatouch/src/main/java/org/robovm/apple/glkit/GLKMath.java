@@ -35,40 +35,33 @@ import org.robovm.apple.dispatch.*;
 /*</imports>*/
 
 /*<javadoc>*/
-/**
- * @since Available in iOS 5.0 and later.
- */
 /*</javadoc>*/
-/*<annotations>*/@Library("GLKit") @NativeClass/*</annotations>*/
-/*<visibility>*/public/*</visibility>*/ class /*<name>*/GLKTextureInfo/*</name>*/ 
-    extends /*<extends>*/NSObject/*</extends>*/ 
+/*<annotations>*/@Library("GLKit")/*</annotations>*/
+/*<visibility>*/public/*</visibility>*/ class /*<name>*/GLKMath/*</name>*/ 
+    extends /*<extends>*/CocoaUtility/*</extends>*/ 
     /*<implements>*//*</implements>*/ {
 
-    /*<ptr>*/public static class GLKTextureInfoPtr extends Ptr<GLKTextureInfo, GLKTextureInfoPtr> {}/*</ptr>*/
-    /*<bind>*/static { ObjCRuntime.bind(GLKTextureInfo.class); }/*</bind>*/
+    /*<ptr>*/
+    /*</ptr>*/
+    /*<bind>*/static { Bro.bind(GLKMath.class); }/*</bind>*/
     /*<constants>*//*</constants>*/
-    /*<constructors>*/
-    public GLKTextureInfo() {}
-    protected GLKTextureInfo(SkipInit skipInit) { super(skipInit); }
-    /*</constructors>*/
-    /*<properties>*/
-    @Property(selector = "name")
-    public native int getName();
-    @Property(selector = "target")
-    public native int getTarget();
-    @Property(selector = "width")
-    public native int getWidth();
-    @Property(selector = "height")
-    public native int getHeight();
-    @Property(selector = "alphaState")
-    public native GLKTextureInfoAlphaState getAlphaState();
-    @Property(selector = "textureOrigin")
-    public native GLKTextureInfoOrigin getTextureOrigin();
-    @Property(selector = "containsMipmaps")
-    public native boolean containsMipmaps();
-    /*</properties>*/
+    /*<constructors>*//*</constructors>*/
+    /*<properties>*//*</properties>*/
     /*<members>*//*</members>*/
+    public static GLKVector3 project(GLKVector3 object, GLKMatrix4 model, GLKMatrix4 projection, int[] viewport) {
+        IntPtr ptr = new IntPtr();
+        ptr.set(viewport);
+        return project(object, model, projection, ptr);
+    }
+    public static GLKVector3 unproject(GLKVector3 window, GLKMatrix4 model, GLKMatrix4 projection, int[] viewport, BooleanPtr success) {
+        IntPtr ptr = new IntPtr();
+        ptr.set(viewport);
+        return unproject(window, model, projection, ptr, success);
+    }
     /*<methods>*/
-    
+    @Bridge(symbol="GLKMathProject", optional=true)
+    private static native @ByVal GLKVector3 project(@ByVal GLKVector3 object, @ByVal GLKMatrix4 model, @ByVal GLKMatrix4 projection, IntPtr viewport);
+    @Bridge(symbol="GLKMathUnproject", optional=true)
+    private static native @ByVal GLKVector3 unproject(@ByVal GLKVector3 window, @ByVal GLKMatrix4 model, @ByVal GLKMatrix4 projection, IntPtr viewport, BooleanPtr success);
     /*</methods>*/
 }

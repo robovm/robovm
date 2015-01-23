@@ -50,7 +50,7 @@ import org.robovm.apple.dispatch.*;
     /*<constructors>*/
     public GLKTextureLoader() {}
     protected GLKTextureLoader(SkipInit skipInit) { super(skipInit); }
-    public GLKTextureLoader(EAGLSharegroup sharegroup) { super((SkipInit) null); initObject(initWithSharegroup$(sharegroup)); }
+    public GLKTextureLoader(EAGLSharegroup sharegroup) { super((SkipInit) null); initObject(init(sharegroup)); }
     /*</constructors>*/
     /*<properties>*/
     
@@ -58,34 +58,76 @@ import org.robovm.apple.dispatch.*;
     /*<members>*//*</members>*/
     /*<methods>*/
     @Method(selector = "initWithSharegroup:")
-    protected native @Pointer long initWithSharegroup$(EAGLSharegroup sharegroup);
+    protected native @Pointer long init(EAGLSharegroup sharegroup);
     @Method(selector = "textureWithContentsOfFile:options:queue:completionHandler:")
-    public native void textureWithContentsOfFile$options$queue$completionHandler$(String path, NSDictionary<?, ?> options, DispatchQueue queue, FunctionPtr block);
+    public native void loadTexture(String path, GLKTextureLoaderOptions options, DispatchQueue queue, @Block VoidBlock2<GLKTextureInfo, NSError> block);
     @Method(selector = "textureWithContentsOfURL:options:queue:completionHandler:")
-    public native void textureWithContentsOfURL$options$queue$completionHandler$(NSURL url, NSDictionary<?, ?> options, DispatchQueue queue, FunctionPtr block);
+    public native void loadTexture(NSURL url, GLKTextureLoaderOptions options, DispatchQueue queue, @Block VoidBlock2<GLKTextureInfo, NSError> block);
     @Method(selector = "textureWithContentsOfData:options:queue:completionHandler:")
-    public native void textureWithContentsOfData$options$queue$completionHandler$(NSData data, NSDictionary<?, ?> options, DispatchQueue queue, FunctionPtr block);
+    public native void createTexture(NSData data, GLKTextureLoaderOptions options, DispatchQueue queue, @Block VoidBlock2<GLKTextureInfo, NSError> block);
     @Method(selector = "textureWithCGImage:options:queue:completionHandler:")
-    public native void textureWithCGImage$options$queue$completionHandler$(CGImage cgImage, NSDictionary<?, ?> options, DispatchQueue queue, FunctionPtr block);
+    public native void createTexture(CGImage cgImage, GLKTextureLoaderOptions options, DispatchQueue queue, @Block VoidBlock2<GLKTextureInfo, NSError> block);
     @Method(selector = "cubeMapWithContentsOfFiles:options:queue:completionHandler:")
-    public native void cubeMapWithContentsOfFiles$options$queue$completionHandler$(NSArray<?> paths, NSDictionary<?, ?> options, DispatchQueue queue, FunctionPtr block);
+    public native void loadCubeMap(@org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String> paths, GLKTextureLoaderOptions options, DispatchQueue queue, @Block VoidBlock2<GLKTextureInfo, NSError> block);
     @Method(selector = "cubeMapWithContentsOfFile:options:queue:completionHandler:")
-    public native void cubeMapWithContentsOfFile$options$queue$completionHandler$(String path, NSDictionary<?, ?> options, DispatchQueue queue, FunctionPtr block);
+    public native void loadCubeMap(String path, GLKTextureLoaderOptions options, DispatchQueue queue, @Block VoidBlock2<GLKTextureInfo, NSError> block);
     @Method(selector = "cubeMapWithContentsOfURL:options:queue:completionHandler:")
-    public native void cubeMapWithContentsOfURL$options$queue$completionHandler$(NSURL url, NSDictionary<?, ?> options, DispatchQueue queue, FunctionPtr block);
+    public native void loadCubeMap(NSURL url, GLKTextureLoaderOptions options, DispatchQueue queue, @Block VoidBlock2<GLKTextureInfo, NSError> block);
+    public static GLKTextureInfo loadTexture(String path, GLKTextureLoaderOptions options) throws NSErrorException {
+       NSError.NSErrorPtr ptr = new NSError.NSErrorPtr();
+       GLKTextureInfo result = loadTexture(path, options, ptr);
+       if (ptr.get() != null) { throw new NSErrorException(ptr.get()); }
+       return result;
+    }
     @Method(selector = "textureWithContentsOfFile:options:error:")
-    public static native GLKTextureInfo textureWithContentsOfFile$options$error$(String path, NSDictionary<?, ?> options, NSError.NSErrorPtr outError);
+    private static native GLKTextureInfo loadTexture(String path, GLKTextureLoaderOptions options, NSError.NSErrorPtr outError);
+    public static GLKTextureInfo loadTexture(NSURL url, GLKTextureLoaderOptions options) throws NSErrorException {
+       NSError.NSErrorPtr ptr = new NSError.NSErrorPtr();
+       GLKTextureInfo result = loadTexture(url, options, ptr);
+       if (ptr.get() != null) { throw new NSErrorException(ptr.get()); }
+       return result;
+    }
     @Method(selector = "textureWithContentsOfURL:options:error:")
-    public static native GLKTextureInfo textureWithContentsOfURL$options$error$(NSURL url, NSDictionary<?, ?> options, NSError.NSErrorPtr outError);
+    private static native GLKTextureInfo loadTexture(NSURL url, GLKTextureLoaderOptions options, NSError.NSErrorPtr outError);
+    public static GLKTextureInfo createTexture(NSData data, GLKTextureLoaderOptions options) throws NSErrorException {
+       NSError.NSErrorPtr ptr = new NSError.NSErrorPtr();
+       GLKTextureInfo result = createTexture(data, options, ptr);
+       if (ptr.get() != null) { throw new NSErrorException(ptr.get()); }
+       return result;
+    }
     @Method(selector = "textureWithContentsOfData:options:error:")
-    public static native GLKTextureInfo textureWithContentsOfData$options$error$(NSData data, NSDictionary<?, ?> options, NSError.NSErrorPtr outError);
+    private static native GLKTextureInfo createTexture(NSData data, GLKTextureLoaderOptions options, NSError.NSErrorPtr outError);
+    public static GLKTextureInfo createTexture(CGImage cgImage, GLKTextureLoaderOptions options) throws NSErrorException {
+       NSError.NSErrorPtr ptr = new NSError.NSErrorPtr();
+       GLKTextureInfo result = createTexture(cgImage, options, ptr);
+       if (ptr.get() != null) { throw new NSErrorException(ptr.get()); }
+       return result;
+    }
     @Method(selector = "textureWithCGImage:options:error:")
-    public static native GLKTextureInfo textureWithCGImage$options$error$(CGImage cgImage, NSDictionary<?, ?> options, NSError.NSErrorPtr outError);
+    private static native GLKTextureInfo createTexture(CGImage cgImage, GLKTextureLoaderOptions options, NSError.NSErrorPtr outError);
+    public static GLKTextureInfo loadCubeMap(@org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String> paths, GLKTextureLoaderOptions options) throws NSErrorException {
+       NSError.NSErrorPtr ptr = new NSError.NSErrorPtr();
+       GLKTextureInfo result = loadCubeMap(paths, options, ptr);
+       if (ptr.get() != null) { throw new NSErrorException(ptr.get()); }
+       return result;
+    }
     @Method(selector = "cubeMapWithContentsOfFiles:options:error:")
-    public static native GLKTextureInfo cubeMapWithContentsOfFiles$options$error$(NSArray<?> paths, NSDictionary<?, ?> options, NSError.NSErrorPtr outError);
+    private static native GLKTextureInfo loadCubeMap(@org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String> paths, GLKTextureLoaderOptions options, NSError.NSErrorPtr outError);
+    public static GLKTextureInfo loadCubeMap(String path, GLKTextureLoaderOptions options) throws NSErrorException {
+       NSError.NSErrorPtr ptr = new NSError.NSErrorPtr();
+       GLKTextureInfo result = loadCubeMap(path, options, ptr);
+       if (ptr.get() != null) { throw new NSErrorException(ptr.get()); }
+       return result;
+    }
     @Method(selector = "cubeMapWithContentsOfFile:options:error:")
-    public static native GLKTextureInfo cubeMapWithContentsOfFile$options$error$(String path, NSDictionary<?, ?> options, NSError.NSErrorPtr outError);
+    private static native GLKTextureInfo loadCubeMap(String path, GLKTextureLoaderOptions options, NSError.NSErrorPtr outError);
+    public static GLKTextureInfo loadCubeMap(NSURL url, GLKTextureLoaderOptions options) throws NSErrorException {
+       NSError.NSErrorPtr ptr = new NSError.NSErrorPtr();
+       GLKTextureInfo result = loadCubeMap(url, options, ptr);
+       if (ptr.get() != null) { throw new NSErrorException(ptr.get()); }
+       return result;
+    }
     @Method(selector = "cubeMapWithContentsOfURL:options:error:")
-    public static native GLKTextureInfo cubeMapWithContentsOfURL$options$error$(NSURL url, NSDictionary<?, ?> options, NSError.NSErrorPtr outError);
+    private static native GLKTextureInfo loadCubeMap(NSURL url, GLKTextureLoaderOptions options, NSError.NSErrorPtr outError);
     /*</methods>*/
 }

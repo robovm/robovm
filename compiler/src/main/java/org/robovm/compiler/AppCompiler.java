@@ -633,6 +633,11 @@ public class AppCompiler {
                     .build();
             new AppCompiler(sliceConfig).compile();
             slices.add(new File(sliceConfig.getTmpDir(), sliceConfig.getExecutableName()));
+            for (Path path : sliceConfig.getResourcesPaths()) {
+                if (!this.config.getResourcesPaths().contains(path)) {
+                    this.config.addResourcesPath(path);
+                }
+            }
         }
         ((IOSTarget) this.config.getTarget()).createIpa(slices);
     }

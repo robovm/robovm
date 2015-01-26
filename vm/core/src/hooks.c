@@ -362,7 +362,7 @@ static void handleReadMemory(jlong reqId, ChannelError* error) {
     jint numBytes = readChannelInt(clientSocket, error);
     if(checkError(error)) return;
 
-    DEBUGF("Reading memory: %p, %u bytes", addr, numBytes);
+    // DEBUGF("Reading memory: %p, %u bytes", addr, numBytes);
     rvmLockMutex(&writeMutex);
     writeChannelByte(clientSocket, CMD_READ_MEMORY, error);
     writeChannelLong(clientSocket, reqId, error);
@@ -375,7 +375,7 @@ static void handleReadString(jlong reqId, ChannelError* error) {
     void* addr = (void*)readChannelLong(clientSocket, error);
     if(checkError(error)) return;
 
-    DEBUGF("Reading string: %p, %s", addr, (char*)addr);
+    // DEBUGF("Reading string: %p, %s", addr, (char*)addr);
     rvmLockMutex(&writeMutex);
     size_t len = strlen((char*)addr);
     writeChannelByte(clientSocket, CMD_READ_CSTRING, error);
@@ -392,7 +392,7 @@ static void handleWriteMemory(jlong reqId, ChannelError* error) {
     jint numBytes = readChannelInt(clientSocket, error);
     if(checkError(error)) return;
 
-    DEBUGF("Writing to memory %p, num bytes: %u", addr, numBytes);
+    // DEBUGF("Writing to memory %p, num bytes: %u", addr, numBytes);
     rvmLockMutex(&writeMutex);
     readChannel(clientSocket, addr, numBytes, error);
     writeChannelByte(clientSocket, CMD_WRITE_MEMORY, error);
@@ -412,7 +412,7 @@ static void handleAndBits(jlong reqId, ChannelError* error) {
     char orig = *((char*)addr);
     char value = orig & mask;
     *((char*)addr) = value;
-    DEBUGF("And-ing bits at %p (=%x) with %x = %x", addr, orig, mask, value);
+    // DEBUGF("And-ing bits at %p (=%x) with %x = %x", addr, orig, mask, value);
     writeChannelByte(clientSocket, CMD_WRITE_AND_BITS, error);
     writeChannelLong(clientSocket, reqId, error);
     writeChannelLong(clientSocket, 0, error);
@@ -430,7 +430,7 @@ static void handleOrBits(jlong reqId, ChannelError* error) {
     char orig = *((char*)addr);
     char value = orig | mask;
     *((char*)addr) = value;
-    DEBUGF("Or-ing bits at %p (=%x) with %x = %x", addr, orig, mask, value);
+    // DEBUGF("Or-ing bits at %p (=%x) with %x = %x", addr, orig, mask, value);
     writeChannelByte(clientSocket, CMD_WRITE_OR_BITS, error);
     writeChannelLong(clientSocket, reqId, error);
     writeChannelLong(clientSocket, 0, error);
@@ -443,7 +443,7 @@ static void handleAllocate(jlong reqId, ChannelError* error) {
 
     rvmLockMutex(&writeMutex);
     void* addr = malloc(numBytes);
-    DEBUGF("Allocated %u bytes, at %p", numBytes, addr);
+    // DEBUGF("Allocated %u bytes, at %p", numBytes, addr);
     writeChannelByte(clientSocket, CMD_ALLOCATE, error);
     writeChannelLong(clientSocket, reqId, error);
     writeChannelLong(clientSocket, 8, error);
@@ -457,7 +457,7 @@ static void handleFree(jlong reqId, ChannelError* error) {
 
     rvmLockMutex(&writeMutex);
     free(addr);
-    DEBUGF("Freed memory at %p", addr);
+    // DEBUGF("Freed memory at %p", addr);
     writeChannelByte(clientSocket, CMD_FREE, error);
     writeChannelLong(clientSocket, reqId, error);
     writeChannelLong(clientSocket, 0, error);
@@ -548,7 +548,7 @@ static void handleThreadStep(jlong reqId, ChannelError* error) {
 }
 
 static void handleRequest(char req, jlong reqId, jlong payloadSize, ChannelError* error) {
-    DEBUGF("req: %d, reqId: %llu, payloadSize: %llu", req, reqId, payloadSize);
+    // DEBUGF("req: %d, reqId: %llu, payloadSize: %llu", req, reqId, payloadSize);
     switch(req) {
         case CMD_READ_MEMORY:
             handleReadMemory(reqId, error);

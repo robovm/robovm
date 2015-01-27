@@ -959,15 +959,17 @@ functions:
     CFReadStreamCopy(Property):
         class: CFReadStream
         name: 'get#{g[0]}'
+        visibility: private
         parameters:
             propertyName:
-                type: CFStreamProperty
+                type: CFString
     CFReadStream(SetProperty):
         class: CFReadStream
         name: '#{g[0]}'
+        visibility: private
         parameters:
             propertyName:
-                type: CFStreamProperty
+                type: CFString
     CFReadStream(Open|Close):
         class: CFReadStream
         name: '#{g[0]}Stream'
@@ -1227,15 +1229,17 @@ functions:
     CFWriteStreamCopy(Property):
         class: CFWriteStream
         name: 'get#{g[0]}'
+        visibility: private
         parameters:
             propertyName:
-                type: CFStreamProperty
+                type: CFString
     CFWriteStream(SetProperty):
         class: CFWriteStream
         name: '#{g[0]}'
+        visibility: private
         parameters:
             propertyName:
-                type: CFStreamProperty
+                type: CFString
     CFWriteStream(Open|Close):
         class: CFWriteStream
         name: '#{g[0]}Stream'
@@ -1292,7 +1296,6 @@ values:
     kCFBoolean(.*):
         class: CFBoolean
         name: '#{g[0]}'
-        visibility: private
 
     # CFDate
     kCF(AbsoluteTimeIntervalSince.*):
@@ -1371,9 +1374,9 @@ values:
 
     # CFStream
     kCFStreamProperty(.*):
-        class: CFStreamProperty
-        name: '#{g[0]}Value'
-        visibility: protected
+        enum: CFStreamProperty
+        name: '#{g[0]}'
+        type: CFString
 
     kCF(StringTransform.*):
         name: "#{g[0]}"

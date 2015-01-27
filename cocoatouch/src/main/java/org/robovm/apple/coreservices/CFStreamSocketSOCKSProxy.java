@@ -33,23 +33,23 @@ import org.robovm.apple.corefoundation.*;
 /*<javadoc>*/
 /*</javadoc>*/
 /*<annotations>*/@Library("CFNetwork")/*</annotations>*/
-@Marshaler(/*<name>*/CFSystemProxySettings/*</name>*/.Marshaler.class)
-/*<visibility>*/public/*</visibility>*/ class /*<name>*/CFSystemProxySettings/*</name>*/ 
+@Marshaler(/*<name>*/CFStreamSocketSOCKSProxy/*</name>*/.Marshaler.class)
+/*<visibility>*/public/*</visibility>*/ class /*<name>*/CFStreamSocketSOCKSProxy/*</name>*/ 
     extends /*<extends>*/CFDictionaryWrapper/*</extends>*/
     /*<implements>*//*</implements>*/ {
 
     /*<marshalers>*/
     public static class Marshaler {
         @MarshalsPointer
-        public static CFSystemProxySettings toObject(Class<CFSystemProxySettings> cls, long handle, long flags) {
+        public static CFStreamSocketSOCKSProxy toObject(Class<CFStreamSocketSOCKSProxy> cls, long handle, long flags) {
             CFDictionary o = (CFDictionary) CFType.Marshaler.toObject(CFDictionary.class, handle, flags);
             if (o == null) {
                 return null;
             }
-            return new CFSystemProxySettings(o);
+            return new CFStreamSocketSOCKSProxy(o);
         }
         @MarshalsPointer
-        public static long toNative(CFSystemProxySettings o, long flags) {
+        public static long toNative(CFStreamSocketSOCKSProxy o, long flags) {
             if (o == null) {
                 return 0L;
             }
@@ -58,24 +58,24 @@ import org.robovm.apple.corefoundation.*;
     }
     public static class AsListMarshaler {
         @MarshalsPointer
-        public static List<CFSystemProxySettings> toObject(Class<? extends CFType> cls, long handle, long flags) {
+        public static List<CFStreamSocketSOCKSProxy> toObject(Class<? extends CFType> cls, long handle, long flags) {
             CFArray o = (CFArray) CFType.Marshaler.toObject(cls, handle, flags);
             if (o == null) {
                 return null;
             }
-            List<CFSystemProxySettings> list = new ArrayList<>();
+            List<CFStreamSocketSOCKSProxy> list = new ArrayList<>();
             for (int i = 0; i < o.size(); i++) {
-                list.add(new CFSystemProxySettings(o.get(i, CFDictionary.class)));
+                list.add(new CFStreamSocketSOCKSProxy(o.get(i, CFDictionary.class)));
             }
             return list;
         }
         @MarshalsPointer
-        public static long toNative(List<CFSystemProxySettings> l, long flags) {
+        public static long toNative(List<CFStreamSocketSOCKSProxy> l, long flags) {
             if (l == null) {
                 return 0L;
             }
             CFArray array = CFMutableArray.create();
-            for (CFSystemProxySettings i : l) {
+            for (CFStreamSocketSOCKSProxy i : l) {
                 array.add(i.getDictionary());
             }
             return CFType.Marshaler.toNative(array, flags);
@@ -84,9 +84,10 @@ import org.robovm.apple.corefoundation.*;
     /*</marshalers>*/
 
     /*<constructors>*/
-    CFSystemProxySettings(CFDictionary data) {
+    CFStreamSocketSOCKSProxy(CFDictionary data) {
         super(data);
     }
+    public CFStreamSocketSOCKSProxy() {}
     /*</constructors>*/
 
     /*<methods>*/
@@ -99,24 +100,35 @@ import org.robovm.apple.corefoundation.*;
         }
         return null;
     }
+    public CFStreamSocketSOCKSProxy set(CFString key, NativeObject value) {
+        data.put(key, value);
+        return this;
+    }
     
 
     /**
      * @since Available in iOS 2.0 and later.
      */
-    public boolean isHTTPProxyEnabled() {
-        if (has(Keys.HTTPEnable())) {
-            CFBoolean val = get(Keys.HTTPEnable(), CFBoolean.class);
-            return val.booleanValue();
+    public String getHost() {
+        if (has(Keys.ProxyHost())) {
+            CFString val = get(Keys.ProxyHost(), CFString.class);
+            return val.toString();
         }
-        return false;
+        return null;
     }
     /**
      * @since Available in iOS 2.0 and later.
      */
-    public int getHTTPProxyPort() {
-        if (has(Keys.HTTPPort())) {
-            CFNumber val = get(Keys.HTTPPort(), CFNumber.class);
+    public CFStreamSocketSOCKSProxy setHost(String host) {
+        set(Keys.ProxyHost(), new CFString(host));
+        return this;
+    }
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
+    public int getPort() {
+        if (has(Keys.ProxyPort())) {
+            CFNumber val = get(Keys.ProxyPort(), CFNumber.class);
             return val.intValue();
         }
         return 0;
@@ -124,9 +136,33 @@ import org.robovm.apple.corefoundation.*;
     /**
      * @since Available in iOS 2.0 and later.
      */
-    public String getHTTPProxyHost() {
-        if (has(Keys.HTTPProxy())) {
-            CFString val = get(Keys.HTTPProxy(), CFString.class);
+    public CFStreamSocketSOCKSProxy setPort(int port) {
+        set(Keys.ProxyPort(), CFNumber.valueOf(port));
+        return this;
+    }
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
+    public CFStreamSocketSOCKSVersion getVersion() {
+        if (has(Keys.Version())) {
+            CFString val = get(Keys.Version(), CFString.class);
+            return CFStreamSocketSOCKSVersion.valueOf(val);
+        }
+        return null;
+    }
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
+    public CFStreamSocketSOCKSProxy setVersion(CFStreamSocketSOCKSVersion version) {
+        set(Keys.Version(), version.value());
+        return this;
+    }
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
+    public String getUser() {
+        if (has(Keys.User())) {
+            CFString val = get(Keys.User(), CFString.class);
             return val.toString();
         }
         return null;
@@ -134,32 +170,26 @@ import org.robovm.apple.corefoundation.*;
     /**
      * @since Available in iOS 2.0 and later.
      */
-    public boolean isAutoConfigurationEnabled() {
-        if (has(Keys.ProxyAutoConfigEnable())) {
-            CFBoolean val = get(Keys.ProxyAutoConfigEnable(), CFBoolean.class);
-            return val.booleanValue();
-        }
-        return false;
+    public CFStreamSocketSOCKSProxy setUser(String user) {
+        set(Keys.User(), new CFString(user));
+        return this;
     }
     /**
      * @since Available in iOS 2.0 and later.
      */
-    public String getAutoConfigurationURL() {
-        if (has(Keys.ProxyAutoConfigURLString())) {
-            CFString val = get(Keys.ProxyAutoConfigURLString(), CFString.class);
+    public String getPassword() {
+        if (has(Keys.Password())) {
+            CFString val = get(Keys.Password(), CFString.class);
             return val.toString();
         }
         return null;
     }
     /**
-     * @since Available in iOS 3.0 and later.
+     * @since Available in iOS 2.0 and later.
      */
-    public String getAutoConfigurationJavaScript() {
-        if (has(Keys.ProxyAutoConfigJavaScript())) {
-            CFString val = get(Keys.ProxyAutoConfigJavaScript(), CFString.class);
-            return val.toString();
-        }
-        return null;
+    public CFStreamSocketSOCKSProxy setPassword(String password) {
+        set(Keys.Password(), new CFString(password));
+        return this;
     }
     /*</methods>*/
     
@@ -170,33 +200,28 @@ import org.robovm.apple.corefoundation.*;
         /**
          * @since Available in iOS 2.0 and later.
          */
-        @GlobalValue(symbol="kCFNetworkProxiesHTTPEnable", optional=true)
-        public static native CFString HTTPEnable();
+        @GlobalValue(symbol="kCFStreamPropertySOCKSProxyHost", optional=true)
+        public static native CFString ProxyHost();
         /**
          * @since Available in iOS 2.0 and later.
          */
-        @GlobalValue(symbol="kCFNetworkProxiesHTTPPort", optional=true)
-        public static native CFString HTTPPort();
+        @GlobalValue(symbol="kCFStreamPropertySOCKSProxyPort", optional=true)
+        public static native CFString ProxyPort();
         /**
          * @since Available in iOS 2.0 and later.
          */
-        @GlobalValue(symbol="kCFNetworkProxiesHTTPProxy", optional=true)
-        public static native CFString HTTPProxy();
+        @GlobalValue(symbol="kCFStreamPropertySOCKSVersion", optional=true)
+        public static native CFString Version();
         /**
          * @since Available in iOS 2.0 and later.
          */
-        @GlobalValue(symbol="kCFNetworkProxiesProxyAutoConfigEnable", optional=true)
-        public static native CFString ProxyAutoConfigEnable();
+        @GlobalValue(symbol="kCFStreamPropertySOCKSUser", optional=true)
+        public static native CFString User();
         /**
          * @since Available in iOS 2.0 and later.
          */
-        @GlobalValue(symbol="kCFNetworkProxiesProxyAutoConfigURLString", optional=true)
-        public static native CFString ProxyAutoConfigURLString();
-        /**
-         * @since Available in iOS 3.0 and later.
-         */
-        @GlobalValue(symbol="kCFNetworkProxiesProxyAutoConfigJavaScript", optional=true)
-        public static native CFString ProxyAutoConfigJavaScript();
+        @GlobalValue(symbol="kCFStreamPropertySOCKSPassword", optional=true)
+        public static native CFString Password();
     }
     /*</keys>*/
 }

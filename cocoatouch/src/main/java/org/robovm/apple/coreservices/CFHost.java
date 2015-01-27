@@ -104,12 +104,6 @@ import org.robovm.apple.coremedia.CMTime;
     /**
      * @since Available in iOS 2.0 and later.
      */
-    public boolean startInfoResolution(CFHostInfoType info) {
-        return startInfoResolution(info, null);
-    }
-    /**
-     * @since Available in iOS 2.0 and later.
-     */
     public NSArray<NSData> getAddressing() {
         return getAddressing(null);
     }
@@ -176,23 +170,32 @@ import org.robovm.apple.coremedia.CMTime;
     /**
      * @since Available in iOS 2.0 and later.
      */
+    public boolean startInfoResolution(CFHostInfoType info) throws CFStreamErrorException {
+       CFStreamError.CFStreamErrorPtr ptr = new CFStreamError.CFStreamErrorPtr();
+       boolean result = startInfoResolution(info, ptr);
+       if (ptr.get() != null) { throw new CFStreamErrorException(ptr.get()); }
+       return result;
+    }
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
     @Bridge(symbol="CFHostStartInfoResolution", optional=true)
-    protected native boolean startInfoResolution(CFHostInfoType info, CFStreamError.CFStreamErrorPtr error);
+    private native boolean startInfoResolution(CFHostInfoType info, CFStreamError.CFStreamErrorPtr error);
     /**
      * @since Available in iOS 2.0 and later.
      */
     @Bridge(symbol="CFHostGetAddressing", optional=true)
-    protected native NSArray<NSData> getAddressing(BooleanPtr hasBeenResolved);
+    public native NSArray<NSData> getAddressing(BooleanPtr hasBeenResolved);
     /**
      * @since Available in iOS 2.0 and later.
      */
     @Bridge(symbol="CFHostGetNames", optional=true)
-    protected native @org.robovm.rt.bro.annotation.Marshaler(CFArray.AsStringListMarshaler.class) List<String> getNames(BooleanPtr hasBeenResolved);
+    public native @org.robovm.rt.bro.annotation.Marshaler(CFArray.AsStringListMarshaler.class) List<String> getNames(BooleanPtr hasBeenResolved);
     /**
      * @since Available in iOS 2.0 and later.
      */
     @Bridge(symbol="CFHostGetReachability", optional=true)
-    protected native NSData getReachability(BooleanPtr hasBeenResolved);
+    public native NSData getReachability(BooleanPtr hasBeenResolved);
     /**
      * @since Available in iOS 2.0 and later.
      */
@@ -202,21 +205,21 @@ import org.robovm.apple.coremedia.CMTime;
      * @since Available in iOS 2.0 and later.
      */
     @Bridge(symbol="CFHostSetClient", optional=true)
-    protected native boolean setCallback(FunctionPtr clientCB, CFHostClientContext clientContext);
+    private native boolean setCallback(FunctionPtr clientCB, CFHostClientContext clientContext);
     /**
      * @since Available in iOS 2.0 and later.
      */
     @Bridge(symbol="CFHostScheduleWithRunLoop", optional=true)
-    public native void schedule(CFRunLoop runLoop, CFString runLoopMode);
+    public native void scheduleInRunLoop(CFRunLoop runLoop, String runLoopMode);
     /**
      * @since Available in iOS 2.0 and later.
      */
     @Bridge(symbol="CFHostUnscheduleFromRunLoop", optional=true)
-    public native void unschedule(CFRunLoop runLoop, CFString runLoopMode);
+    public native void unscheduleFromRunLoop(CFRunLoop runLoop, String runLoopMode);
     /**
      * @since Available in iOS 2.0 and later.
      */
     @Bridge(symbol="CFStreamCreatePairWithSocketToCFHost", optional=true)
-    protected static native void createSocketStreamPair(CFAllocator alloc, CFHost host, int port, CFReadStream.CFReadStreamPtr readStream, CFWriteStream.CFWriteStreamPtr writeStream);
+    private static native void createSocketStreamPair(CFAllocator alloc, CFHost host, int port, CFReadStream.CFReadStreamPtr readStream, CFWriteStream.CFWriteStreamPtr writeStream);
     /*</methods>*/
 }

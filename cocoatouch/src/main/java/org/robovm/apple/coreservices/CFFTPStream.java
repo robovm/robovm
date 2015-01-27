@@ -34,7 +34,7 @@ import org.robovm.apple.corefoundation.*;
 /*</javadoc>*/
 /*<annotations>*/@Library("CFNetwork")/*</annotations>*/
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/CFFTPStream/*</name>*/ 
-    extends /*<extends>*/Object/*</extends>*/ 
+    extends /*<extends>*/CocoaUtility/*</extends>*/ 
     /*<implements>*//*</implements>*/ {
 
     /*<ptr>*/
@@ -70,16 +70,16 @@ import org.robovm.apple.corefoundation.*;
      * @since Available in iOS 2.0 and later.
      */
     @Bridge(symbol="CFReadStreamCreateWithFTPURL", optional=true)
-    protected static native CFReadStream createReadStream(CFAllocator alloc, NSURL ftpURL);
+    public static native CFReadStream createReadStream(CFAllocator alloc, NSURL ftpURL);
     /**
      * @since Available in iOS 2.0 and later.
      */
     @Bridge(symbol="CFFTPCreateParsedResourceListing", optional=true)
-    protected static native @MachineSizedSInt long createParsedResourceListing(CFAllocator alloc, @Pointer long buffer, @MachineSizedSInt long bufferLength, NSDictionary.NSDictionaryPtr parsed);
+    private static native @MachineSizedSInt long createParsedResourceListing(CFAllocator alloc, @Pointer long buffer, @MachineSizedSInt long bufferLength, NSDictionary.NSDictionaryPtr parsed);
     /**
      * @since Available in iOS 2.0 and later.
      */
     @Bridge(symbol="CFWriteStreamCreateWithFTPURL", optional=true)
-    protected static native CFWriteStream createWriteStream(CFAllocator alloc, NSURL ftpURL);
+    public static native CFWriteStream createWriteStream(CFAllocator alloc, NSURL ftpURL);
     /*</methods>*/
 }

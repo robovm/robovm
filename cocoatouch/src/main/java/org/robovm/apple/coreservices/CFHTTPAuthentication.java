@@ -51,12 +51,6 @@ import org.robovm.apple.corefoundation.*;
     public static CFHTTPAuthentication create(CFHTTPMessage response) {
         return create(null, response);
     }
-    /**
-     * @since Available in iOS 2.0 and later.
-     */
-    public boolean isValid() {
-        return isValid(null);
-    }
     /*<methods>*/
     /**
      * @since Available in iOS 2.0 and later.
@@ -67,12 +61,21 @@ import org.robovm.apple.corefoundation.*;
      * @since Available in iOS 2.0 and later.
      */
     @Bridge(symbol="CFHTTPAuthenticationCreateFromResponse", optional=true)
-    protected static native CFHTTPAuthentication create(CFAllocator alloc, CFHTTPMessage response);
+    public static native CFHTTPAuthentication create(CFAllocator alloc, CFHTTPMessage response);
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
+    public boolean isValid() throws CFStreamErrorException {
+       CFStreamError.CFStreamErrorPtr ptr = new CFStreamError.CFStreamErrorPtr();
+       boolean result = isValid(ptr);
+       if (ptr.get() != null) { throw new CFStreamErrorException(ptr.get()); }
+       return result;
+    }
     /**
      * @since Available in iOS 2.0 and later.
      */
     @Bridge(symbol="CFHTTPAuthenticationIsValid", optional=true)
-    protected native boolean isValid(CFStreamError.CFStreamErrorPtr error);
+    private native boolean isValid(CFStreamError.CFStreamErrorPtr error);
     /**
      * @since Available in iOS 2.0 and later.
      */

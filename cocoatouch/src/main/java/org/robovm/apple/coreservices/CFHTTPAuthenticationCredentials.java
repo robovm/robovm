@@ -33,23 +33,23 @@ import org.robovm.apple.corefoundation.*;
 /*<javadoc>*/
 /*</javadoc>*/
 /*<annotations>*/@Library("CFNetwork")/*</annotations>*/
-@Marshaler(/*<name>*/CFSystemProxySettings/*</name>*/.Marshaler.class)
-/*<visibility>*/public/*</visibility>*/ class /*<name>*/CFSystemProxySettings/*</name>*/ 
+@Marshaler(/*<name>*/CFHTTPAuthenticationCredentials/*</name>*/.Marshaler.class)
+/*<visibility>*/public/*</visibility>*/ class /*<name>*/CFHTTPAuthenticationCredentials/*</name>*/ 
     extends /*<extends>*/CFDictionaryWrapper/*</extends>*/
     /*<implements>*//*</implements>*/ {
 
     /*<marshalers>*/
     public static class Marshaler {
         @MarshalsPointer
-        public static CFSystemProxySettings toObject(Class<CFSystemProxySettings> cls, long handle, long flags) {
+        public static CFHTTPAuthenticationCredentials toObject(Class<CFHTTPAuthenticationCredentials> cls, long handle, long flags) {
             CFDictionary o = (CFDictionary) CFType.Marshaler.toObject(CFDictionary.class, handle, flags);
             if (o == null) {
                 return null;
             }
-            return new CFSystemProxySettings(o);
+            return new CFHTTPAuthenticationCredentials(o);
         }
         @MarshalsPointer
-        public static long toNative(CFSystemProxySettings o, long flags) {
+        public static long toNative(CFHTTPAuthenticationCredentials o, long flags) {
             if (o == null) {
                 return 0L;
             }
@@ -58,24 +58,24 @@ import org.robovm.apple.corefoundation.*;
     }
     public static class AsListMarshaler {
         @MarshalsPointer
-        public static List<CFSystemProxySettings> toObject(Class<? extends CFType> cls, long handle, long flags) {
+        public static List<CFHTTPAuthenticationCredentials> toObject(Class<? extends CFType> cls, long handle, long flags) {
             CFArray o = (CFArray) CFType.Marshaler.toObject(cls, handle, flags);
             if (o == null) {
                 return null;
             }
-            List<CFSystemProxySettings> list = new ArrayList<>();
+            List<CFHTTPAuthenticationCredentials> list = new ArrayList<>();
             for (int i = 0; i < o.size(); i++) {
-                list.add(new CFSystemProxySettings(o.get(i, CFDictionary.class)));
+                list.add(new CFHTTPAuthenticationCredentials(o.get(i, CFDictionary.class)));
             }
             return list;
         }
         @MarshalsPointer
-        public static long toNative(List<CFSystemProxySettings> l, long flags) {
+        public static long toNative(List<CFHTTPAuthenticationCredentials> l, long flags) {
             if (l == null) {
                 return 0L;
             }
             CFArray array = CFMutableArray.create();
-            for (CFSystemProxySettings i : l) {
+            for (CFHTTPAuthenticationCredentials i : l) {
                 array.add(i.getDictionary());
             }
             return CFType.Marshaler.toNative(array, flags);
@@ -84,9 +84,10 @@ import org.robovm.apple.corefoundation.*;
     /*</marshalers>*/
 
     /*<constructors>*/
-    CFSystemProxySettings(CFDictionary data) {
+    CFHTTPAuthenticationCredentials(CFDictionary data) {
         super(data);
     }
+    public CFHTTPAuthenticationCredentials() {}
     /*</constructors>*/
 
     /*<methods>*/
@@ -99,34 +100,18 @@ import org.robovm.apple.corefoundation.*;
         }
         return null;
     }
+    public CFHTTPAuthenticationCredentials set(CFString key, NativeObject value) {
+        data.put(key, value);
+        return this;
+    }
     
 
     /**
      * @since Available in iOS 2.0 and later.
      */
-    public boolean isHTTPProxyEnabled() {
-        if (has(Keys.HTTPEnable())) {
-            CFBoolean val = get(Keys.HTTPEnable(), CFBoolean.class);
-            return val.booleanValue();
-        }
-        return false;
-    }
-    /**
-     * @since Available in iOS 2.0 and later.
-     */
-    public int getHTTPProxyPort() {
-        if (has(Keys.HTTPPort())) {
-            CFNumber val = get(Keys.HTTPPort(), CFNumber.class);
-            return val.intValue();
-        }
-        return 0;
-    }
-    /**
-     * @since Available in iOS 2.0 and later.
-     */
-    public String getHTTPProxyHost() {
-        if (has(Keys.HTTPProxy())) {
-            CFString val = get(Keys.HTTPProxy(), CFString.class);
+    public String getUsername() {
+        if (has(Keys.Username())) {
+            CFString val = get(Keys.Username(), CFString.class);
             return val.toString();
         }
         return null;
@@ -134,32 +119,43 @@ import org.robovm.apple.corefoundation.*;
     /**
      * @since Available in iOS 2.0 and later.
      */
-    public boolean isAutoConfigurationEnabled() {
-        if (has(Keys.ProxyAutoConfigEnable())) {
-            CFBoolean val = get(Keys.ProxyAutoConfigEnable(), CFBoolean.class);
-            return val.booleanValue();
-        }
-        return false;
+    public CFHTTPAuthenticationCredentials setUsername(String username) {
+        set(Keys.Username(), new CFString(username));
+        return this;
     }
     /**
      * @since Available in iOS 2.0 and later.
      */
-    public String getAutoConfigurationURL() {
-        if (has(Keys.ProxyAutoConfigURLString())) {
-            CFString val = get(Keys.ProxyAutoConfigURLString(), CFString.class);
+    public String getPassword() {
+        if (has(Keys.Password())) {
+            CFString val = get(Keys.Password(), CFString.class);
             return val.toString();
         }
         return null;
     }
     /**
-     * @since Available in iOS 3.0 and later.
+     * @since Available in iOS 2.0 and later.
      */
-    public String getAutoConfigurationJavaScript() {
-        if (has(Keys.ProxyAutoConfigJavaScript())) {
-            CFString val = get(Keys.ProxyAutoConfigJavaScript(), CFString.class);
+    public CFHTTPAuthenticationCredentials setPassword(String password) {
+        set(Keys.Password(), new CFString(password));
+        return this;
+    }
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
+    public String getAccountDomain() {
+        if (has(Keys.AccountDomain())) {
+            CFString val = get(Keys.AccountDomain(), CFString.class);
             return val.toString();
         }
         return null;
+    }
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
+    public CFHTTPAuthenticationCredentials setAccountDomain(String accountDomain) {
+        set(Keys.AccountDomain(), new CFString(accountDomain));
+        return this;
     }
     /*</methods>*/
     
@@ -170,33 +166,18 @@ import org.robovm.apple.corefoundation.*;
         /**
          * @since Available in iOS 2.0 and later.
          */
-        @GlobalValue(symbol="kCFNetworkProxiesHTTPEnable", optional=true)
-        public static native CFString HTTPEnable();
+        @GlobalValue(symbol="kCFHTTPAuthenticationUsername", optional=true)
+        public static native CFString Username();
         /**
          * @since Available in iOS 2.0 and later.
          */
-        @GlobalValue(symbol="kCFNetworkProxiesHTTPPort", optional=true)
-        public static native CFString HTTPPort();
+        @GlobalValue(symbol="kCFHTTPAuthenticationPassword", optional=true)
+        public static native CFString Password();
         /**
          * @since Available in iOS 2.0 and later.
          */
-        @GlobalValue(symbol="kCFNetworkProxiesHTTPProxy", optional=true)
-        public static native CFString HTTPProxy();
-        /**
-         * @since Available in iOS 2.0 and later.
-         */
-        @GlobalValue(symbol="kCFNetworkProxiesProxyAutoConfigEnable", optional=true)
-        public static native CFString ProxyAutoConfigEnable();
-        /**
-         * @since Available in iOS 2.0 and later.
-         */
-        @GlobalValue(symbol="kCFNetworkProxiesProxyAutoConfigURLString", optional=true)
-        public static native CFString ProxyAutoConfigURLString();
-        /**
-         * @since Available in iOS 3.0 and later.
-         */
-        @GlobalValue(symbol="kCFNetworkProxiesProxyAutoConfigJavaScript", optional=true)
-        public static native CFString ProxyAutoConfigJavaScript();
+        @GlobalValue(symbol="kCFHTTPAuthenticationAccountDomain", optional=true)
+        public static native CFString AccountDomain();
     }
     /*</keys>*/
 }

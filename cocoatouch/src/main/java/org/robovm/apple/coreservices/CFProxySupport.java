@@ -34,7 +34,7 @@ import org.robovm.apple.corefoundation.*;
 /*</javadoc>*/
 /*<annotations>*/@Library("CFNetwork")/*</annotations>*/
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/CFProxySupport/*</name>*/ 
-    extends /*<extends>*/Object/*</extends>*/ 
+    extends /*<extends>*/CocoaUtility/*</extends>*/ 
     /*<implements>*//*</implements>*/ {
 
     /*<ptr>*/
@@ -71,20 +71,6 @@ import org.robovm.apple.corefoundation.*;
             proxyList.add(new CFProxy(proxyList0.get(i, CFDictionary.class)));
         }
         callback.invoke(proxyList, error);
-    }
-    /**
-     * @since Available in iOS 2.0 and later.
-     */
-    public static List<CFProxy> getProxies(String proxyAutoConfigurationScript, NSURL targetURL) {
-        CFArray proxies0 = getProxies0(proxyAutoConfigurationScript, targetURL, null);
-        if (proxies0 != null) {
-            List<CFProxy> proxies = new ArrayList<CFProxy>();
-            for (int i = 0; i < proxies0.size(); i++) {
-                proxies.add(new CFProxy(proxies0.get(i, CFDictionary.class)));
-            }
-            return proxies;
-        }
-        return null;
     }
     /**
      * @since Available in iOS 2.0 and later.
@@ -127,17 +113,26 @@ import org.robovm.apple.corefoundation.*;
     /**
      * @since Available in iOS 2.0 and later.
      */
+    public static @org.robovm.rt.bro.annotation.Marshaler(CFProxy.AsListMarshaler.class) List<CFProxy> getProxies(String proxyAutoConfigurationScript, NSURL targetURL) throws NSErrorException {
+       NSError.NSErrorPtr ptr = new NSError.NSErrorPtr();
+       List<CFProxy> result = getProxies(proxyAutoConfigurationScript, targetURL, ptr);
+       if (ptr.get() != null) { throw new NSErrorException(ptr.get()); }
+       return result;
+    }
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
     @Bridge(symbol="CFNetworkCopyProxiesForAutoConfigurationScript", optional=true)
-    protected static native CFArray getProxies0(String proxyAutoConfigurationScript, NSURL targetURL, CFError.CFErrorPtr error);
+    private static native @org.robovm.rt.bro.annotation.Marshaler(CFProxy.AsListMarshaler.class) List<CFProxy> getProxies(String proxyAutoConfigurationScript, NSURL targetURL, NSError.NSErrorPtr error);
     /**
      * @since Available in iOS 2.0 and later.
      */
     @Bridge(symbol="CFNetworkExecuteProxyAutoConfigurationScript", optional=true)
-    protected static native CFRunLoopSource executeProxyAutoConfigurationScript(String proxyAutoConfigurationScript, NSURL targetURL, FunctionPtr cb, CFStreamClientContext clientContext);
+    private static native CFRunLoopSource executeProxyAutoConfigurationScript(String proxyAutoConfigurationScript, NSURL targetURL, FunctionPtr cb, CFStreamClientContext clientContext);
     /**
      * @since Available in iOS 2.0 and later.
      */
     @Bridge(symbol="CFNetworkExecuteProxyAutoConfigurationURL", optional=true)
-    protected static native CFRunLoopSource executeProxyAutoConfigurationURL(NSURL proxyAutoConfigURL, NSURL targetURL, FunctionPtr cb, CFStreamClientContext clientContext);
+    private static native CFRunLoopSource executeProxyAutoConfigurationURL(NSURL proxyAutoConfigURL, NSURL targetURL, FunctionPtr cb, CFStreamClientContext clientContext);
     /*</methods>*/
 }

@@ -33,25 +33,25 @@ import org.robovm.apple.corefoundation.*;
 /*<javadoc>*/
 /*</javadoc>*/
 /*<annotations>*/@Library("CFNetwork")/*</annotations>*/
-@Marshaler(/*<name>*/CFHTTPVersion/*</name>*/.Marshaler.class)
-/*<visibility>*/public/*</visibility>*/ class /*<name>*/CFHTTPVersion/*</name>*/ 
+@Marshaler(/*<name>*/CFStreamNetworkServiceType/*</name>*/.Marshaler.class)
+/*<visibility>*/public/*</visibility>*/ class /*<name>*/CFStreamNetworkServiceType/*</name>*/ 
     extends /*<extends>*/GlobalValueEnumeration<CFString>/*</extends>*/
     /*<implements>*//*</implements>*/ {
 
-    static { Bro.bind(/*<name>*/CFHTTPVersion/*</name>*/.class); }
+    static { Bro.bind(/*<name>*/CFStreamNetworkServiceType/*</name>*/.class); }
 
     /*<marshalers>*/
     public static class Marshaler {
         @MarshalsPointer
-        public static CFHTTPVersion toObject(Class<CFHTTPVersion> cls, long handle, long flags) {
+        public static CFStreamNetworkServiceType toObject(Class<CFStreamNetworkServiceType> cls, long handle, long flags) {
             CFString o = (CFString) CFType.Marshaler.toObject(CFString.class, handle, flags);
             if (o == null) {
                 return null;
             }
-            return CFHTTPVersion.valueOf(o);
+            return CFStreamNetworkServiceType.valueOf(o);
         }
         @MarshalsPointer
-        public static long toNative(CFHTTPVersion o, long flags) {
+        public static long toNative(CFStreamNetworkServiceType o, long flags) {
             if (o == null) {
                 return 0L;
             }
@@ -60,24 +60,24 @@ import org.robovm.apple.corefoundation.*;
     }
     public static class AsListMarshaler {
         @MarshalsPointer
-        public static List<CFHTTPVersion> toObject(Class<? extends CFType> cls, long handle, long flags) {
+        public static List<CFStreamNetworkServiceType> toObject(Class<? extends CFType> cls, long handle, long flags) {
             CFArray o = (CFArray) CFType.Marshaler.toObject(cls, handle, flags);
             if (o == null) {
                 return null;
             }
-            List<CFHTTPVersion> list = new ArrayList<>();
+            List<CFStreamNetworkServiceType> list = new ArrayList<>();
             for (int i = 0; i < o.size(); i++) {
-                list.add(CFHTTPVersion.valueOf(o.get(i, CFString.class)));
+                list.add(CFStreamNetworkServiceType.valueOf(o.get(i, CFString.class)));
             }
             return list;
         }
         @MarshalsPointer
-        public static long toNative(List<CFHTTPVersion> l, long flags) {
+        public static long toNative(List<CFStreamNetworkServiceType> l, long flags) {
             if (l == null) {
                 return 0L;
             }
             CFArray array = CFMutableArray.create();
-            for (CFHTTPVersion i : l) {
+            for (CFStreamNetworkServiceType i : l) {
                 array.add(i.value());
             }
             return CFType.Marshaler.toNative(array, flags);
@@ -87,29 +87,37 @@ import org.robovm.apple.corefoundation.*;
 
     /*<constants>*/
     /**
-     * @since Available in iOS 2.0 and later.
+     * @since Available in iOS 4.0 and later.
      */
-    public static final CFHTTPVersion Version1_0 = new CFHTTPVersion("Version1_0");
+    public static final CFStreamNetworkServiceType VoIP = new CFStreamNetworkServiceType("VoIP");
     /**
-     * @since Available in iOS 2.0 and later.
+     * @since Available in iOS 5.0 and later.
      */
-    public static final CFHTTPVersion Version1_1 = new CFHTTPVersion("Version1_1");
+    public static final CFStreamNetworkServiceType Video = new CFStreamNetworkServiceType("Video");
+    /**
+     * @since Available in iOS 5.0 and later.
+     */
+    public static final CFStreamNetworkServiceType Voice = new CFStreamNetworkServiceType("Voice");
+    /**
+     * @since Available in iOS 5.0 and later.
+     */
+    public static final CFStreamNetworkServiceType Background = new CFStreamNetworkServiceType("Background");
     /*</constants>*/
     
-    private static /*<name>*/CFHTTPVersion/*</name>*/[] values = new /*<name>*/CFHTTPVersion/*</name>*/[] {/*<value_list>*/Version1_0, Version1_1/*</value_list>*/};
+    private static /*<name>*/CFStreamNetworkServiceType/*</name>*/[] values = new /*<name>*/CFStreamNetworkServiceType/*</name>*/[] {/*<value_list>*/VoIP, Video, Voice, Background/*</value_list>*/};
     
-    /*<name>*/CFHTTPVersion/*</name>*/ (String getterName) {
+    /*<name>*/CFStreamNetworkServiceType/*</name>*/ (String getterName) {
         super(Values.class, getterName);
     }
     
-    public static /*<name>*/CFHTTPVersion/*</name>*/ valueOf(/*<type>*/CFString/*</type>*/ value) {
-        for (/*<name>*/CFHTTPVersion/*</name>*/ v : values) {
+    public static /*<name>*/CFStreamNetworkServiceType/*</name>*/ valueOf(/*<type>*/CFString/*</type>*/ value) {
+        for (/*<name>*/CFStreamNetworkServiceType/*</name>*/ v : values) {
             if (v.value().equals(value)) {
                 return v;
             }
         }
         throw new IllegalArgumentException("No constant with value " + value + " found in " 
-            + /*<name>*/CFHTTPVersion/*</name>*/.class.getName());
+            + /*<name>*/CFStreamNetworkServiceType/*</name>*/.class.getName());
     }
     
     /*<methods>*//*</methods>*/
@@ -120,15 +128,25 @@ import org.robovm.apple.corefoundation.*;
 
         /*<values>*/
         /**
-         * @since Available in iOS 2.0 and later.
+         * @since Available in iOS 4.0 and later.
          */
-        @GlobalValue(symbol="kCFHTTPVersion1_0", optional=true)
-        public static native CFString Version1_0();
+        @GlobalValue(symbol="kCFStreamNetworkServiceTypeVoIP", optional=true)
+        public static native CFString VoIP();
         /**
-         * @since Available in iOS 2.0 and later.
+         * @since Available in iOS 5.0 and later.
          */
-        @GlobalValue(symbol="kCFHTTPVersion1_1", optional=true)
-        public static native CFString Version1_1();
+        @GlobalValue(symbol="kCFStreamNetworkServiceTypeVideo", optional=true)
+        public static native CFString Video();
+        /**
+         * @since Available in iOS 5.0 and later.
+         */
+        @GlobalValue(symbol="kCFStreamNetworkServiceTypeVoice", optional=true)
+        public static native CFString Voice();
+        /**
+         * @since Available in iOS 5.0 and later.
+         */
+        @GlobalValue(symbol="kCFStreamNetworkServiceTypeBackground", optional=true)
+        public static native CFString Background();
         /*</values>*/
     }
 }

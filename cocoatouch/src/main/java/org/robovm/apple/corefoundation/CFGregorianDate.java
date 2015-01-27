@@ -74,6 +74,11 @@ import org.robovm.apple.foundation.*;
      */
     @Deprecated
     public boolean isValid(CFGregorianUnitFlags unitFlags) { return isValid(this, unitFlags); }
+    /**
+     * @since Available in iOS 2.0 and later.
+     * @deprecated Deprecated in iOS 8.0.
+     */
+    @Deprecated
     @Bridge(symbol="CFGregorianDateIsValid", optional=true)
     private static native boolean isValid(@ByVal CFGregorianDate gdate, CFGregorianUnitFlags unitFlags);
     /**
@@ -82,6 +87,11 @@ import org.robovm.apple.foundation.*;
      */
     @Deprecated
     public double getAbsoluteTime(CFTimeZone tz) { return getAbsoluteTime(this, tz); }
+    /**
+     * @since Available in iOS 2.0 and later.
+     * @deprecated Deprecated in iOS 8.0.
+     */
+    @Deprecated
     @Bridge(symbol="CFGregorianDateGetAbsoluteTime", optional=true)
     private static native double getAbsoluteTime(@ByVal CFGregorianDate gdate, CFTimeZone tz);
     /**

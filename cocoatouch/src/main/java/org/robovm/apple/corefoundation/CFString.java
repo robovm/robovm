@@ -261,6 +261,6 @@ import org.robovm.apple.foundation.*;
     @Bridge(symbol="CFStringGetMostCompatibleMacStringEncoding", optional=true)
     protected static native int getMostCompatibleMacStringEncoding(int encoding);
     @Bridge(symbol="CFShowStr", optional=true)
-    protected static native void print(String str);
+    public native void show();
     /*</methods>*/
 }

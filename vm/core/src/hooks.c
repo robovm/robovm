@@ -443,7 +443,7 @@ static void handleAllocate(jlong reqId, ChannelError* error) {
     if(checkError(error)) return;
 
     rvmLockMutex(&writeMutex);
-    void* addr = malloc(numBytes);
+    void* addr = calloc(numBytes, 1);
     // DEBUGF("Allocated %u bytes, at %p", numBytes, addr);
     writeChannelByte(clientSocket, CMD_ALLOCATE, error);
     writeChannelLong(clientSocket, reqId, error);
@@ -552,7 +552,7 @@ static void handleThreadInvoke(jlong reqId, ChannelError* error) {
     Thread* thread = (Thread*)readChannelLong(clientSocket, error);
     if(checkError(error)) return;
 
-    void* objectOrClass = (void*)readChannelLong(clientSocket, error);
+    void* classOrObjectPtr = (void*)readChannelLong(clientSocket, error);
     if(checkError(error)) return;
 
     jint methodNameLen = readChannelInt(clientSocket, error);
@@ -605,7 +605,7 @@ static void handleThreadInvoke(jlong reqId, ChannelError* error) {
     DebugEnv *debugEnv = (DebugEnv *) thread->env;
     rvmLockMutex(&debugEnv->suspendMutex);
     debugEnv->reqId = reqId;
-    debugEnv->objectOrClass = objectOrClass;
+    debugEnv->classOrObjectPtr = classOrObjectPtr;
     debugEnv->methodName = methodName;
     debugEnv->descriptor = descriptor;
     debugEnv->isClassMethod = isClassMethod;
@@ -618,7 +618,7 @@ static void handleThreadInvoke(jlong reqId, ChannelError* error) {
 
 static jlong invokeClassMethod(DebugEnv* debugEnv, Method* method) {
     Env* env = (Env*)debugEnv;
-    Class* clazz = (Class*)debugEnv->objectOrClass;
+    Class* clazz = (Class*)debugEnv->classOrObjectPtr;
     jlong result = 0;
 
     DEBUGF("Invoking class method %s%s on class %s", method->name, method->desc, clazz->name);
@@ -666,7 +666,7 @@ static jlong invokeClassMethod(DebugEnv* debugEnv, Method* method) {
 
 static jlong invokeInstanceMethod(DebugEnv* debugEnv, Method* method) {
     Env* env = (Env*)debugEnv;
-    Object* obj = (Object*)debugEnv->objectOrClass;
+    Object* obj = (Object*)debugEnv->classOrObjectPtr;
     jlong result = 0;
 
     DEBUGF("Invoking instance method %s%s on object %p", method->name, method->desc, obj);
@@ -713,7 +713,7 @@ static jlong invokeInstanceMethod(DebugEnv* debugEnv, Method* method) {
 }
 
 static void invokeMethod(DebugEnv* debugEnv) {
-    Class* clazz = debugEnv->isClassMethod? (Class*)debugEnv->objectOrClass: ((Object*)debugEnv->objectOrClass)->clazz;
+    Class* clazz = debugEnv->isClassMethod? (Class*)debugEnv->classOrObjectPtr: ((Object*)debugEnv->classOrObjectPtr)->clazz;
     Method* method = rvmGetMethod((Env*)debugEnv, clazz, debugEnv->methodName, debugEnv->descriptor);
     if(!method) {
         ChannelError error;

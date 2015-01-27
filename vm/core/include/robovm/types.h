@@ -524,7 +524,7 @@ typedef struct {
     jboolean suspended;
     jboolean stepping;
     jlong reqId;
-    void* objectOrClass;
+    void* classOrObjectPtr;
     char* methodName;
     char* descriptor;
     jboolean isClassMethod;

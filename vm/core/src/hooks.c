@@ -41,6 +41,7 @@
 #define CMD_THREAD_SUSPEND 50
 #define CMD_THREAD_RESUME 51
 #define CMD_THREAD_STEP 52
+#define CMD_THREAD_INVOKE 53
 
 // events
 #define EVT_THREAD_ATTACHED 100
@@ -547,6 +548,204 @@ static void handleThreadStep(jlong reqId, ChannelError* error) {
     rvmUnlockMutex(&writeMutex);
 }
 
+static void handleThreadInvoke(jlong reqId, ChannelError* error) {
+    Thread* thread = (Thread*)readChannelLong(clientSocket, error);
+    if(checkError(error)) return;
+
+    void* objectOrClass = (void*)readChannelLong(clientSocket, error);
+    if(checkError(error)) return;
+
+    jint methodNameLen = readChannelInt(clientSocket, error);
+    if(checkError(error)) return;
+
+    char* methodName = (char*)malloc(methodNameLen + 1);
+    methodName[methodNameLen] = 0;
+    readChannel(clientSocket, methodName, methodNameLen, error);
+    if(checkError(error)) {
+        free(methodName);
+        return;
+    }
+
+    jint descriptorLen = readChannelInt(clientSocket, error);
+    if(checkError(error)) {
+        free(methodName);
+        return;
+    }
+
+    char* descriptor = (char*)malloc(descriptorLen + 1);
+    descriptor[descriptorLen] = 0;
+    readChannel(clientSocket, descriptor, descriptorLen, error);
+    if(checkError(error)) {
+        free(descriptor);
+        free(methodName);
+        return;
+    }
+
+    jboolean isClassMethod = readChannelByte(clientSocket, error)? TRUE:FALSE;
+    if(checkError(error)) {
+        free(descriptor);
+        free(methodName);
+        return;
+    }
+
+    jbyte returnType = readChannelByte(clientSocket, error);
+    if(checkError(error)) {
+        free(descriptor);
+        free(methodName);
+        return;
+    }
+
+    jvalue* arguments = (jvalue*)readChannelLong(clientSocket, error);
+    if(checkError(error)) {
+        free(descriptor);
+        free(methodName);
+        return;
+    }
+
+    DebugEnv *debugEnv = (DebugEnv *) thread->env;
+    rvmLockMutex(&debugEnv->suspendMutex);
+    debugEnv->reqId = reqId;
+    debugEnv->objectOrClass = objectOrClass;
+    debugEnv->methodName = methodName;
+    debugEnv->descriptor = descriptor;
+    debugEnv->isClassMethod = isClassMethod;
+    debugEnv->returnType = returnType;
+    debugEnv->arguments = arguments;
+    pthread_cond_signal(&debugEnv->suspendCond);
+    rvmUnlockMutex(&debugEnv->suspendMutex);
+}
+
+
+static jlong invokeClassMethod(DebugEnv* debugEnv, Method* method) {
+    Env* env = (Env*)debugEnv;
+    Class* clazz = (Class*)debugEnv->objectOrClass;
+    jlong result = 0;
+
+    DEBUGF("Invoking class method %s%s on class %s", method->name, method->desc, clazz->name);
+    switch(debugEnv->returnType) {
+        case 'Z':
+            *((jboolean*)&result) = rvmCallBooleanClassMethodA(env, clazz, method, debugEnv->arguments);
+            break;
+        case 'B':
+            *((jbyte*)&result) = rvmCallByteClassMethodA(env, clazz, method, debugEnv->arguments);
+            break;
+        case 'C':
+            *((jchar*)&result) = rvmCallCharClassMethodA(env, clazz, method, debugEnv->arguments);
+            break;
+        case 'S':
+            *((jshort*)&result) = rvmCallShortClassMethodA(env, clazz, method, debugEnv->arguments);
+            break;
+        case 'I':
+            *((jint*)&result) = rvmCallIntClassMethodA(env, clazz, method, debugEnv->arguments);
+            break;
+        case 'J':
+            *((jlong*)&result) = rvmCallLongClassMethodA(env, clazz, method, debugEnv->arguments);
+            break;
+        case 'F':
+            *((jfloat*)&result) = rvmCallFloatClassMethodA(env, clazz, method, debugEnv->arguments);
+            break;
+        case 'D':
+            *((jdouble*)&result) = rvmCallDoubleClassMethodA(env, clazz, method, debugEnv->arguments);
+            break;
+        case 'L':
+            result = (jlong)rvmCallObjectClassMethodA(env, clazz, method, debugEnv->arguments);
+            break;
+        case 'V':
+            rvmCallVoidClassMethodA(env, clazz, method, debugEnv->arguments);
+            break;
+        default:
+            rvmThrowIllegalArgumentException(env, "Unknown return type");
+    }
+
+    if(rvmExceptionCheck(env)) {
+        return 0;
+    } else {
+        return result;
+    }
+}
+
+static jlong invokeInstanceMethod(DebugEnv* debugEnv, Method* method) {
+    Env* env = (Env*)debugEnv;
+    Object* obj = (Object*)debugEnv->objectOrClass;
+    jlong result = 0;
+
+    DEBUGF("Invoking instance method %s%s on object %p", method->name, method->desc, obj);
+    switch(debugEnv->returnType) {
+        case 'Z':
+            *((jboolean*)&result) = rvmCallBooleanInstanceMethodA(env, obj, method, debugEnv->arguments);
+            break;
+        case 'B':
+            *((jbyte*)&result) = rvmCallByteInstanceMethodA(env, obj, method, debugEnv->arguments);
+            break;
+        case 'C':
+            *((jchar*)&result) = rvmCallCharInstanceMethodA(env, obj, method, debugEnv->arguments);
+            break;
+        case 'S':
+            *((jshort*)&result) = rvmCallShortInstanceMethodA(env, obj, method, debugEnv->arguments);
+            break;
+        case 'I':
+            *((jint*)&result) = rvmCallIntInstanceMethodA(env, obj, method, debugEnv->arguments);
+            break;
+        case 'J':
+            *((jlong*)&result) = rvmCallLongInstanceMethodA(env, obj, method, debugEnv->arguments);
+            break;
+        case 'F':
+            *((jfloat*)&result) = rvmCallFloatInstanceMethodA(env, obj, method, debugEnv->arguments);
+            break;
+        case 'D':
+            *((jdouble*)&result) = rvmCallDoubleInstanceMethodA(env, obj, method, debugEnv->arguments);
+            break;
+        case 'L':
+            result = (jlong)rvmCallObjectInstanceMethodA(env, obj, method, debugEnv->arguments);
+            break;
+        case 'V':
+            rvmCallVoidInstanceMethodA(env, obj, method, debugEnv->arguments);
+            break;
+        default:
+            rvmThrowIllegalArgumentException(env, "Unknown return type");
+    }
+
+    if(rvmExceptionCheck(env)) {
+        return 0;
+    } else {
+        return result;
+    }
+}
+
+static void invokeMethod(DebugEnv* debugEnv) {
+    Class* clazz = debugEnv->isClassMethod? (Class*)debugEnv->objectOrClass: ((Object*)debugEnv->objectOrClass)->clazz;
+    Method* method = rvmGetMethod((Env*)debugEnv, clazz, debugEnv->methodName, debugEnv->descriptor);
+    if(!method) {
+        ChannelError error;
+        rvmLockMutex(&writeMutex);
+        writeChannelByte(clientSocket, CMD_THREAD_INVOKE, &error);
+        writeChannelLong(clientSocket, debugEnv->reqId, &error);
+        writeChannelLong(clientSocket, 16, &error);
+        writeChannelLong(clientSocket, 0, &error);
+        writeChannelLong(clientSocket, (jlong)rvmExceptionClear((Env*)debugEnv), &error);
+        rvmUnlockMutex(&writeMutex);
+        debugEnv->reqId = 0;
+        return;
+    }
+
+    jlong result = 0;
+    if(debugEnv->isClassMethod) {
+        result = invokeClassMethod(debugEnv, method);
+    } else {
+        result = invokeInstanceMethod(debugEnv, method);
+    }
+
+    ChannelError error;
+    rvmLockMutex(&writeMutex);
+    writeChannelByte(clientSocket, CMD_THREAD_INVOKE, &error);
+    writeChannelLong(clientSocket, debugEnv->reqId, &error);
+    writeChannelLong(clientSocket, 16, &error);
+    writeChannelLong(clientSocket, result, &error);
+    writeChannelLong(clientSocket, (jlong) rvmExceptionClear((Env*)debugEnv), &error);
+    rvmUnlockMutex(&writeMutex);
+    debugEnv->reqId = 0;
+}
+
 static void handleRequest(char req, jlong reqId, jlong payloadSize, ChannelError* error) {
     // DEBUGF("req: %d, reqId: %llu, payloadSize: %llu", req, reqId, payloadSize);
     switch(req) {
@@ -579,6 +778,9 @@ static void handleRequest(char req, jlong reqId, jlong payloadSize, ChannelError
             break;
         case CMD_THREAD_STEP:
             handleThreadStep(reqId, error);
+            break;
+        case CMD_THREAD_INVOKE:
+            handleThreadInvoke(reqId, error);
             break;
         default:
             error->errorCode = -1;
@@ -614,8 +816,12 @@ static inline char getSuspendedEvent(DebugEnv* debugEnv, jint lineNumberOffset, 
     if (debugEnv->stepping && ((pc >= debugEnv->pclow && pc < debugEnv->pchigh) || (pc >= debugEnv->pclow2 && pc < debugEnv->pchigh2))) {
         return EVT_THREAD_STEPPED;
     }
-    if (checkBit(bptable, lineNumberOffset)) {
-        return EVT_BREAKPOINT;
+
+    // we only check for breakpoints if we aren't invoking
+    if (!debugEnv->reqId) {
+        if (checkBit(bptable, lineNumberOffset)) {
+            return EVT_BREAKPOINT;
+        }
     }
     return 0;
 }
@@ -666,12 +872,22 @@ void _rvmHookInstrumented(DebugEnv* debugEnv, jint lineNumber, jint lineNumberOf
             }
             rvmUnlockMutex(&writeMutex);
 
+            debugEnv->reqId = 0;
             debugEnv->stepping = FALSE;
             debugEnv->pclow = debugEnv->pclow2 = 0;
             debugEnv->pchigh = debugEnv->pchigh2 = 0;
             debugEnv->suspended = TRUE;
             while (debugEnv->suspended) {
                 pthread_cond_wait(&debugEnv->suspendCond, &debugEnv->suspendMutex);
+
+                // If reqId is set, we have  method invocation request (see handleThreadInvoke)
+                // we temporarily reset the suspend flag, invoke the
+                // method, then go back into waiting for being woken up again
+                if(debugEnv->reqId != 0) {
+                    debugEnv->suspended = FALSE;
+                    invokeMethod(debugEnv);
+                    debugEnv->suspended = TRUE;
+                }
             }
 
             DEBUGF("Thread %p, id %u resumed", env->currentThread, env->currentThread->threadId);

@@ -523,6 +523,13 @@ typedef struct {
     pthread_cond_t suspendCond;
     jboolean suspended;
     jboolean stepping;
+    jlong reqId;
+    void* objectOrClass;
+    char* methodName;
+    char* descriptor;
+    jboolean isClassMethod;
+    jbyte returnType;
+    jvalue* arguments;
 } DebugEnv;
 
 typedef struct {

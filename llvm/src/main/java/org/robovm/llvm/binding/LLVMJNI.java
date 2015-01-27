@@ -794,6 +794,7 @@ public class LLVMJNI {
   public final static native int TargetMachineAssembleToOutputStream(long jarg1, long jarg2, java.io.OutputStream jarg3, boolean jarg4, boolean jarg5, long jarg6, StringOut jarg6_);
   public final static native boolean TargetMachineEmitToOutputStream(long jarg1, long jarg2, java.io.OutputStream jarg3, int jarg4, long jarg5, StringOut jarg5_);
   public final static native void GetLineInfoForAddressRange(long jarg1, long jarg2, long jarg3, long jarg4, IntOut jarg4_, long jarg5, LongArrayOut jarg5_);
+  public final static native long CopySectionContents(long jarg1, byte[] jarg2);
 
   static {
     org.robovm.llvm.NativeLibrary.load();

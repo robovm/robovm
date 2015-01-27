@@ -3,6 +3,7 @@
 
 #include <llvm-c/Core.h>
 #include <llvm-c/Transforms/PassManagerBuilder.h>
+#include <llvm-c/Object.h>
 
 #ifdef __cplusplus
 extern "C" {
@@ -94,6 +95,7 @@ LLVMBool LLVMTargetMachineEmitToOutputStream(LLVMTargetMachineRef T, LLVMModuleR
     void *OutputStream, LLVMCodeGenFileType codegen, char** ErrorMessage);
 
 void LLVMGetLineInfoForAddressRange(LLVMObjectFileRef O, uint64_t Address, uint64_t Size, int* OutSize, uint64_t** Out);
+size_t LLVMCopySectionContents(LLVMSectionIteratorRef SI, char* Dest, size_t DestSize);
 #ifdef __cplusplus
 }
 #endif

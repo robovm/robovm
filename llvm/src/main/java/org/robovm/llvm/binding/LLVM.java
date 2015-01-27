@@ -3313,4 +3313,8 @@ public class LLVM implements LLVMConstants {
     LLVMJNI.GetLineInfoForAddressRange(ObjectFileRef.getCPtr(O), Address, Size, IntOut.getCPtr(OutSize), OutSize, LongArrayOut.getCPtr(Out), Out);
   }
 
+  public static long CopySectionContents(SectionIteratorRef SI, byte[] Dest) {
+    return LLVMJNI.CopySectionContents(SectionIteratorRef.getCPtr(SI), Dest);
+  }
+
 }

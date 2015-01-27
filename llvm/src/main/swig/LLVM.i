@@ -176,6 +176,7 @@ ARRAY_ARG(IntArray, unsigned *IdxList)
 }
 
 %apply (char *ARRAY, size_t ARRAYSIZE) {(const char *InputData, size_t InputDataLength)};
+%apply (char *ARRAY, size_t ARRAYSIZE) {(char *Dest, size_t DestSize)};
 %apply (char *STRING, size_t STRINGSIZE) {(const char *Name, unsigned SLen)};
 %apply (char *STRING, size_t STRINGSIZE) {(const char *Str, unsigned Length)};
 %apply (char *STRING, size_t STRINGSIZE) {(const char *Str, unsigned SLen)};

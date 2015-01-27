@@ -12549,6 +12549,34 @@ SWIGEXPORT void JNICALL Java_org_robovm_llvm_binding_LLVMJNI_GetLineInfoForAddre
 }
 
 
+SWIGEXPORT jlong JNICALL Java_org_robovm_llvm_binding_LLVMJNI_CopySectionContents(JNIEnv *jenv, jclass jcls, jlong jarg1, jbyteArray jarg2) {
+  jlong jresult = 0 ;
+  LLVMSectionIteratorRef arg1 = (LLVMSectionIteratorRef) 0 ;
+  char *arg2 = (char *) 0 ;
+  size_t arg3 ;
+  size_t result;
+  
+  (void)jenv;
+  (void)jcls;
+  arg1 = *(LLVMSectionIteratorRef *)&jarg1; 
+  {
+    if (!jarg2) {
+      SWIG_JavaThrowException(jenv, SWIG_JavaNullPointerException, NULL);
+      return 0;
+    }
+    arg2 = (*jenv)->GetByteArrayElements(jenv, jarg2, NULL);
+    if (!arg2) return 0;
+    arg3 = (*jenv)->GetArrayLength(jenv, jarg2);
+  }
+  result = LLVMCopySectionContents(arg1,arg2,arg3);
+  jresult = (jlong)result; 
+  {
+    (*jenv)->ReleaseByteArrayElements(jenv, jarg2, arg2, 0); 
+  }
+  return jresult;
+}
+
+
 #ifdef __cplusplus
 }
 #endif

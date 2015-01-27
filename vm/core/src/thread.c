@@ -19,6 +19,7 @@
 #if defined(DARWIN)
 # include <mach/mach.h>
 # include <unistd.h>
+
 #endif
 #include "private.h"
 #include "utlist.h"
@@ -143,6 +144,7 @@ static jboolean initThread(Env* env, Thread* thread, JavaThread* threadObj) {
     }
     if (env->vm->options->enableHooks) {
         DebugEnv* debugEnv = (DebugEnv*) env;
+        debugEnv->reqId = 0;
         if ((err = rvmInitMutex(&debugEnv->suspendMutex)) != 0 
                 || (err = pthread_cond_init(&debugEnv->suspendCond, NULL)) != 0) {
             rvmThrowInternalErrorErrno(env, err);

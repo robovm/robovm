@@ -33,39 +33,26 @@ import org.robovm.apple.corefoundation.*;
 /*<javadoc>*/
 /*</javadoc>*/
 /*<annotations>*/@Library("CFNetwork")/*</annotations>*/
-/*<visibility>*/public/*</visibility>*/ class /*<name>*/CFHTTPStream/*</name>*/ 
-    extends /*<extends>*/CFReadStream/*</extends>*/ 
+/*<visibility>*/public/*</visibility>*/ class /*<name>*/CFNetworkError/*</name>*/ 
+    extends /*<extends>*/NSError/*</extends>*/ 
     /*<implements>*//*</implements>*/ {
 
+    protected CFNetworkError (SkipInit skipInit) {
+        super(skipInit);
+    }
+    
     /*<ptr>*/
     /*</ptr>*/
-    /*<bind>*/static { Bro.bind(CFHTTPStream.class); }/*</bind>*/
+    /*<bind>*/static { Bro.bind(CFNetworkError.class); }/*</bind>*/
     /*<constants>*//*</constants>*/
     /*<constructors>*//*</constructors>*/
     /*<properties>*//*</properties>*/
     /*<members>*//*</members>*/
-    /**
-     * @since Available in iOS 2.0 and later.
-     */
-    public static CFReadStream create(CFHTTPMessage request) {
-        return create(null, request);
-    }
-    /**
-     * @since Available in iOS 2.0 and later.
-     */
-    public static CFReadStream create(CFHTTPMessage requestHeaders, CFReadStream requestBody) {
-        return create(null, requestHeaders, requestBody);
-    }
     /*<methods>*/
     /**
      * @since Available in iOS 2.0 and later.
      */
-    @Bridge(symbol="CFReadStreamCreateForHTTPRequest", optional=true)
-    public static native CFReadStream create(CFAllocator alloc, CFHTTPMessage request);
-    /**
-     * @since Available in iOS 2.0 and later.
-     */
-    @Bridge(symbol="CFReadStreamCreateForStreamedHTTPRequest", optional=true)
-    public static native CFReadStream create(CFAllocator alloc, CFHTTPMessage requestHeaders, CFReadStream requestBody);
+    @GlobalValue(symbol="kCFErrorDomainCFNetwork", optional=true)
+    public static native String getClassDomain();
     /*</methods>*/
 }

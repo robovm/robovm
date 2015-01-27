@@ -90,18 +90,6 @@ import org.robovm.apple.corefoundation.*;
         return s;
     }
     /**
-     * @since Available in iOS 2.0 and later.
-     */
-    public boolean register(CFNetServiceOptions options) {
-        return register(options, null);
-    }
-    /**
-     * @since Available in iOS 2.0 and later.
-     */
-    public boolean resolve(double timeout) {
-        return resolve(timeout, null);
-    }
-    /**
     * @since Available in iOS 2.0 and later.
     */
     public static NSDictionary<NSString, NSData> parseTXTData(NSData txtRecord) {
@@ -110,7 +98,7 @@ import org.robovm.apple.corefoundation.*;
     /**
      * @since Available in iOS 2.0 and later.
      */
-    public static NSData createTXTData(NSDictionary<NSString, ?> keyValuePairs) {
+    public static NSData createTXTData(NSDictionary<NSString, NSData> keyValuePairs) {
         return createTXTData(null, keyValuePairs);
     }
     /**
@@ -139,6 +127,19 @@ import org.robovm.apple.corefoundation.*;
         CFWriteStream.CFWriteStreamPtr ptr = new CFWriteStream.CFWriteStreamPtr();
         createSocketStreamPair(null, this, null, ptr);
         return ptr.get();
+    }
+    
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
+    public void scheduleInRunLoop(CFRunLoop runLoop, CFRunLoopMode runLoopMode) {
+        scheduleInRunLoop(runLoop, runLoopMode.value());
+    }
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
+    public void removeFromRunLoop(CFRunLoop runLoop, CFRunLoopMode runLoopMode) {
+        scheduleInRunLoop(runLoop, runLoopMode.value());
     }
     /*<methods>*/
     /**
@@ -174,13 +175,31 @@ import org.robovm.apple.corefoundation.*;
     /**
      * @since Available in iOS 2.0 and later.
      */
+    public boolean register(CFNetServiceOptions options) throws CFStreamErrorException {
+       CFStreamError.CFStreamErrorPtr ptr = new CFStreamError.CFStreamErrorPtr();
+       boolean result = register(options, ptr);
+       if (ptr.get() != null) { throw new CFStreamErrorException(ptr.get()); }
+       return result;
+    }
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
     @Bridge(symbol="CFNetServiceRegisterWithOptions", optional=true)
-    protected native boolean register(CFNetServiceOptions options, CFStreamError.CFStreamErrorPtr error);
+    private native boolean register(CFNetServiceOptions options, CFStreamError.CFStreamErrorPtr error);
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
+    public boolean resolve(double timeout) throws CFStreamErrorException {
+       CFStreamError.CFStreamErrorPtr ptr = new CFStreamError.CFStreamErrorPtr();
+       boolean result = resolve(timeout, ptr);
+       if (ptr.get() != null) { throw new CFStreamErrorException(ptr.get()); }
+       return result;
+    }
     /**
      * @since Available in iOS 2.0 and later.
      */
     @Bridge(symbol="CFNetServiceResolveWithTimeout", optional=true)
-    protected native boolean resolve(double timeout, CFStreamError.CFStreamErrorPtr error);
+    private native boolean resolve(double timeout, CFStreamError.CFStreamErrorPtr error);
     /**
      * @since Available in iOS 2.0 and later.
      */
@@ -220,26 +239,26 @@ import org.robovm.apple.corefoundation.*;
      * @since Available in iOS 2.0 and later.
      */
     @Bridge(symbol="CFNetServiceCreateTXTDataWithDictionary", optional=true)
-    protected static native NSData createTXTData(CFAllocator alloc, NSDictionary<NSString, ?> keyValuePairs);
+    protected static native NSData createTXTData(CFAllocator alloc, NSDictionary<NSString, NSData> keyValuePairs);
     /**
      * @since Available in iOS 2.0 and later.
      */
     @Bridge(symbol="CFNetServiceSetClient", optional=true)
-    protected native boolean setCallback(FunctionPtr clientCB, CFNetServiceClientContext clientContext);
+    private native boolean setCallback(FunctionPtr clientCB, CFNetServiceClientContext clientContext);
     /**
      * @since Available in iOS 2.0 and later.
      */
     @Bridge(symbol="CFNetServiceScheduleWithRunLoop", optional=true)
-    public native void schedule(CFRunLoop runLoop, CFString runLoopMode);
+    public native void scheduleInRunLoop(CFRunLoop runLoop, String runLoopMode);
     /**
      * @since Available in iOS 2.0 and later.
      */
     @Bridge(symbol="CFNetServiceUnscheduleFromRunLoop", optional=true)
-    public native void unschedule(CFRunLoop runLoop, CFString runLoopMode);
+    public native void unscheduleFromRunLoop(CFRunLoop runLoop, String runLoopMode);
     /**
      * @since Available in iOS 2.0 and later.
      */
     @Bridge(symbol="CFStreamCreatePairWithSocketToNetService", optional=true)
-    protected static native void createSocketStreamPair(CFAllocator alloc, CFNetService service, CFReadStream.CFReadStreamPtr readStream, CFWriteStream.CFWriteStreamPtr writeStream);
+    private static native void createSocketStreamPair(CFAllocator alloc, CFNetService service, CFReadStream.CFReadStreamPtr readStream, CFWriteStream.CFWriteStreamPtr writeStream);
     /*</methods>*/
 }

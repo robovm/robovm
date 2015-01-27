@@ -86,23 +86,18 @@ import org.robovm.apple.corefoundation.*;
         if (service != null) service.localRefconId = refconId;
         return service;
     }
+    
     /**
      * @since Available in iOS 2.0 and later.
      */
-    public boolean searchForDomains(boolean registrationDomains) {
-        return searchForDomains(registrationDomains, null);
+    public void scheduleInRunLoop(CFRunLoop runLoop, CFRunLoopMode runLoopMode) {
+        scheduleInRunLoop(runLoop, runLoopMode.value());
     }
     /**
      * @since Available in iOS 2.0 and later.
      */
-    public boolean searchForServices(String domain, String serviceType) {
-        return searchForServices(domain, serviceType, null);
-    }
-    /**
-     * @since Available in iOS 2.0 and later.
-     */
-    public void stopSearch() {
-        stopSearch(null);
+    public void unscheduleFromRunLoop(CFRunLoop runLoop, CFRunLoopMode runLoopMode) {
+        unscheduleFromRunLoop(runLoop, runLoopMode.value());
     }
     /*<methods>*/
     /**
@@ -114,7 +109,7 @@ import org.robovm.apple.corefoundation.*;
      * @since Available in iOS 2.0 and later.
      */
     @Bridge(symbol="CFNetServiceBrowserCreate", optional=true)
-    protected static native CFNetServiceBrowser create(CFAllocator alloc, FunctionPtr clientCB, CFNetServiceClientContext clientContext);
+    private static native CFNetServiceBrowser create(CFAllocator alloc, FunctionPtr clientCB, CFNetServiceClientContext clientContext);
     /**
      * @since Available in iOS 2.0 and later.
      */
@@ -123,27 +118,53 @@ import org.robovm.apple.corefoundation.*;
     /**
      * @since Available in iOS 2.0 and later.
      */
+    public boolean searchForDomains(boolean registrationDomains) throws CFStreamErrorException {
+       CFStreamError.CFStreamErrorPtr ptr = new CFStreamError.CFStreamErrorPtr();
+       boolean result = searchForDomains(registrationDomains, ptr);
+       if (ptr.get() != null) { throw new CFStreamErrorException(ptr.get()); }
+       return result;
+    }
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
     @Bridge(symbol="CFNetServiceBrowserSearchForDomains", optional=true)
-    protected native boolean searchForDomains(boolean registrationDomains, CFStreamError.CFStreamErrorPtr error);
+    private native boolean searchForDomains(boolean registrationDomains, CFStreamError.CFStreamErrorPtr error);
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
+    public boolean searchForServices(String domain, String serviceType) throws CFStreamErrorException {
+       CFStreamError.CFStreamErrorPtr ptr = new CFStreamError.CFStreamErrorPtr();
+       boolean result = searchForServices(domain, serviceType, ptr);
+       if (ptr.get() != null) { throw new CFStreamErrorException(ptr.get()); }
+       return result;
+    }
     /**
      * @since Available in iOS 2.0 and later.
      */
     @Bridge(symbol="CFNetServiceBrowserSearchForServices", optional=true)
-    protected native boolean searchForServices(String domain, String serviceType, CFStreamError.CFStreamErrorPtr error);
+    private native boolean searchForServices(String domain, String serviceType, CFStreamError.CFStreamErrorPtr error);
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
+    public void stopSearch() throws CFStreamErrorException {
+       CFStreamError.CFStreamErrorPtr ptr = new CFStreamError.CFStreamErrorPtr();
+       stopSearch(ptr);
+       if (ptr.get() != null) { throw new CFStreamErrorException(ptr.get()); }
+    }
     /**
      * @since Available in iOS 2.0 and later.
      */
     @Bridge(symbol="CFNetServiceBrowserStopSearch", optional=true)
-    protected native void stopSearch(CFStreamError.CFStreamErrorPtr error);
+    private native void stopSearch(CFStreamError.CFStreamErrorPtr error);
     /**
      * @since Available in iOS 2.0 and later.
      */
     @Bridge(symbol="CFNetServiceBrowserScheduleWithRunLoop", optional=true)
-    public native void schedule(CFRunLoop runLoop, CFString runLoopMode);
+    public native void scheduleInRunLoop(CFRunLoop runLoop, String runLoopMode);
     /**
      * @since Available in iOS 2.0 and later.
      */
     @Bridge(symbol="CFNetServiceBrowserUnscheduleFromRunLoop", optional=true)
-    public native void unschedule(CFRunLoop runLoop, CFString runLoopMode);
+    public native void unscheduleFromRunLoop(CFRunLoop runLoop, String runLoopMode);
     /*</methods>*/
 }

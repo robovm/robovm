@@ -29,6 +29,8 @@ import org.robovm.rt.bro.ptr.*;
 import org.robovm.apple.dispatch.*;
 import org.robovm.apple.foundation.*;
 /*</imports>*/
+import org.robovm.apple.coreservices.CFSocketStreamProperty;
+import org.robovm.apple.coreservices.CFFTPStreamProperty;
 
 /*<javadoc>*/
 /*</javadoc>*/
@@ -119,6 +121,32 @@ import org.robovm.apple.foundation.*;
         }
         return result;
     }
+    
+    public CFType getProperty(CFStreamProperty property) {
+        return getProperty(property.value());
+    }
+    public CFType getProperty(CFSocketStreamProperty property) {
+        return getProperty(property.value());
+    }
+    public CFType getProperty(CFFTPStreamProperty property) {
+        return getProperty(property.value());
+    }
+    public boolean setProperty(CFStreamProperty property, CFType propertyValue) {
+        return setProperty(property.value(), propertyValue);
+    }
+    public boolean setProperty(CFSocketStreamProperty property, CFType propertyValue) {
+        return setProperty(property.value(), propertyValue);
+    }
+    public boolean setProperty(CFFTPStreamProperty property, CFType propertyValue) {
+        return setProperty(property.value(), propertyValue);
+    }
+    
+    public void scheduleInRunLoop(CFRunLoop runLoop, CFRunLoopMode runLoopMode) {
+        scheduleInRunLoop(runLoop, runLoopMode.value());
+    }
+    public void unscheduleFromRunLoop(CFRunLoop runLoop, CFRunLoopMode runLoopMode) {
+        unscheduleFromRunLoop(runLoop, runLoopMode.value());
+    }
     /*<methods>*/
     @Bridge(symbol="CFReadStreamGetTypeID", optional=true)
     public static native @MachineSizedUInt long getClassTypeID();
@@ -144,9 +172,9 @@ import org.robovm.apple.foundation.*;
     @Bridge(symbol="CFReadStreamGetBuffer", optional=true)
     private native BytePtr getBuffer(@MachineSizedSInt long maxBytesToRead, MachineSizedSIntPtr numBytesRead);
     @Bridge(symbol="CFReadStreamCopyProperty", optional=true)
-    public native CFType getProperty(CFStreamProperty propertyName);
+    private native CFType getProperty(CFString propertyName);
     @Bridge(symbol="CFReadStreamSetProperty", optional=true)
-    public native boolean setProperty(CFStreamProperty propertyName, CFType propertyValue);
+    private native boolean setProperty(CFString propertyName, CFType propertyValue);
     @Bridge(symbol="CFReadStreamSetClient", optional=true)
     private native boolean setClient(CFStreamEventType streamEvents, FunctionPtr clientCB, CFStreamClientContext clientContext);
     @Bridge(symbol="CFReadStreamScheduleWithRunLoop", optional=true)

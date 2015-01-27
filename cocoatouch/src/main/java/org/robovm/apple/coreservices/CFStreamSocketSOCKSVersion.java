@@ -33,25 +33,25 @@ import org.robovm.apple.corefoundation.*;
 /*<javadoc>*/
 /*</javadoc>*/
 /*<annotations>*/@Library("CFNetwork")/*</annotations>*/
-@Marshaler(/*<name>*/CFHTTPVersion/*</name>*/.Marshaler.class)
-/*<visibility>*/public/*</visibility>*/ class /*<name>*/CFHTTPVersion/*</name>*/ 
+@Marshaler(/*<name>*/CFStreamSocketSOCKSVersion/*</name>*/.Marshaler.class)
+/*<visibility>*/public/*</visibility>*/ class /*<name>*/CFStreamSocketSOCKSVersion/*</name>*/ 
     extends /*<extends>*/GlobalValueEnumeration<CFString>/*</extends>*/
     /*<implements>*//*</implements>*/ {
 
-    static { Bro.bind(/*<name>*/CFHTTPVersion/*</name>*/.class); }
+    static { Bro.bind(/*<name>*/CFStreamSocketSOCKSVersion/*</name>*/.class); }
 
     /*<marshalers>*/
     public static class Marshaler {
         @MarshalsPointer
-        public static CFHTTPVersion toObject(Class<CFHTTPVersion> cls, long handle, long flags) {
+        public static CFStreamSocketSOCKSVersion toObject(Class<CFStreamSocketSOCKSVersion> cls, long handle, long flags) {
             CFString o = (CFString) CFType.Marshaler.toObject(CFString.class, handle, flags);
             if (o == null) {
                 return null;
             }
-            return CFHTTPVersion.valueOf(o);
+            return CFStreamSocketSOCKSVersion.valueOf(o);
         }
         @MarshalsPointer
-        public static long toNative(CFHTTPVersion o, long flags) {
+        public static long toNative(CFStreamSocketSOCKSVersion o, long flags) {
             if (o == null) {
                 return 0L;
             }
@@ -60,24 +60,24 @@ import org.robovm.apple.corefoundation.*;
     }
     public static class AsListMarshaler {
         @MarshalsPointer
-        public static List<CFHTTPVersion> toObject(Class<? extends CFType> cls, long handle, long flags) {
+        public static List<CFStreamSocketSOCKSVersion> toObject(Class<? extends CFType> cls, long handle, long flags) {
             CFArray o = (CFArray) CFType.Marshaler.toObject(cls, handle, flags);
             if (o == null) {
                 return null;
             }
-            List<CFHTTPVersion> list = new ArrayList<>();
+            List<CFStreamSocketSOCKSVersion> list = new ArrayList<>();
             for (int i = 0; i < o.size(); i++) {
-                list.add(CFHTTPVersion.valueOf(o.get(i, CFString.class)));
+                list.add(CFStreamSocketSOCKSVersion.valueOf(o.get(i, CFString.class)));
             }
             return list;
         }
         @MarshalsPointer
-        public static long toNative(List<CFHTTPVersion> l, long flags) {
+        public static long toNative(List<CFStreamSocketSOCKSVersion> l, long flags) {
             if (l == null) {
                 return 0L;
             }
             CFArray array = CFMutableArray.create();
-            for (CFHTTPVersion i : l) {
+            for (CFStreamSocketSOCKSVersion i : l) {
                 array.add(i.value());
             }
             return CFType.Marshaler.toNative(array, flags);
@@ -89,27 +89,27 @@ import org.robovm.apple.corefoundation.*;
     /**
      * @since Available in iOS 2.0 and later.
      */
-    public static final CFHTTPVersion Version1_0 = new CFHTTPVersion("Version1_0");
+    public static final CFStreamSocketSOCKSVersion _4 = new CFStreamSocketSOCKSVersion("_4");
     /**
      * @since Available in iOS 2.0 and later.
      */
-    public static final CFHTTPVersion Version1_1 = new CFHTTPVersion("Version1_1");
+    public static final CFStreamSocketSOCKSVersion _5 = new CFStreamSocketSOCKSVersion("_5");
     /*</constants>*/
     
-    private static /*<name>*/CFHTTPVersion/*</name>*/[] values = new /*<name>*/CFHTTPVersion/*</name>*/[] {/*<value_list>*/Version1_0, Version1_1/*</value_list>*/};
+    private static /*<name>*/CFStreamSocketSOCKSVersion/*</name>*/[] values = new /*<name>*/CFStreamSocketSOCKSVersion/*</name>*/[] {/*<value_list>*/_4, _5/*</value_list>*/};
     
-    /*<name>*/CFHTTPVersion/*</name>*/ (String getterName) {
+    /*<name>*/CFStreamSocketSOCKSVersion/*</name>*/ (String getterName) {
         super(Values.class, getterName);
     }
     
-    public static /*<name>*/CFHTTPVersion/*</name>*/ valueOf(/*<type>*/CFString/*</type>*/ value) {
-        for (/*<name>*/CFHTTPVersion/*</name>*/ v : values) {
+    public static /*<name>*/CFStreamSocketSOCKSVersion/*</name>*/ valueOf(/*<type>*/CFString/*</type>*/ value) {
+        for (/*<name>*/CFStreamSocketSOCKSVersion/*</name>*/ v : values) {
             if (v.value().equals(value)) {
                 return v;
             }
         }
         throw new IllegalArgumentException("No constant with value " + value + " found in " 
-            + /*<name>*/CFHTTPVersion/*</name>*/.class.getName());
+            + /*<name>*/CFStreamSocketSOCKSVersion/*</name>*/.class.getName());
     }
     
     /*<methods>*//*</methods>*/
@@ -122,13 +122,13 @@ import org.robovm.apple.corefoundation.*;
         /**
          * @since Available in iOS 2.0 and later.
          */
-        @GlobalValue(symbol="kCFHTTPVersion1_0", optional=true)
-        public static native CFString Version1_0();
+        @GlobalValue(symbol="kCFStreamSocketSOCKSVersion4", optional=true)
+        public static native CFString _4();
         /**
          * @since Available in iOS 2.0 and later.
          */
-        @GlobalValue(symbol="kCFHTTPVersion1_1", optional=true)
-        public static native CFString Version1_1();
+        @GlobalValue(symbol="kCFStreamSocketSOCKSVersion5", optional=true)
+        public static native CFString _5();
         /*</values>*/
     }
 }

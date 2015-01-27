@@ -78,12 +78,12 @@ import org.robovm.apple.corefoundation.*;
      * @since Available in iOS 2.0 and later.
      */
     @Bridge(symbol="CFNetDiagnosticCreateWithStreams", optional=true)
-    protected static native CFNetDiagnostic create(CFAllocator alloc, CFReadStream readStream, CFWriteStream writeStream);
+    public static native CFNetDiagnostic create(CFAllocator alloc, CFReadStream readStream, CFWriteStream writeStream);
     /**
      * @since Available in iOS 2.0 and later.
      */
     @Bridge(symbol="CFNetDiagnosticCreateWithURL", optional=true)
-    protected static native CFNetDiagnostic create(CFAllocator alloc, NSURL url);
+    public static native CFNetDiagnostic create(CFAllocator alloc, NSURL url);
     /**
      * @since Available in iOS 2.0 and later.
      */
@@ -98,6 +98,6 @@ import org.robovm.apple.corefoundation.*;
      * @since Available in iOS 2.0 and later.
      */
     @Bridge(symbol="CFNetDiagnosticCopyNetworkStatusPassively", optional=true)
-    protected native CFNetDiagnosticStatus getNetworkStatusPassively(NSString.NSStringPtr description);
+    private native CFNetDiagnosticStatus getNetworkStatusPassively(NSString.NSStringPtr description);
     /*</methods>*/
 }

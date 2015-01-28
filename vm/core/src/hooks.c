@@ -51,6 +51,7 @@
 #define EVT_THREAD_RESUMED 104
 #define EVT_BREAKPOINT 105
 #define EVT_THREAD_STEPPED 106
+#define EVT_CLASS_LOAD 107
 
 typedef struct {
     int errorCode;
@@ -282,6 +283,18 @@ void _rvmHookThreadDetaching(Env* env, JavaThread* threadObj, Thread* thread, Ob
     writeChannelLong(clientSocket, (jlong)threadObj, &error);
     writeChannelLong(clientSocket, (jlong)thread, &error);
     writeChannelLong(clientSocket, (jlong)throwable, &error);
+    rvmUnlockMutex(&writeMutex);
+}
+
+void _rvmHookClassLoaded(Env* env, Class* clazz, void* classInfo) {
+    DEBUGF("Loaded class %s, Class*: %p, ClassInfo*: %p", clazz->name, clazz, classInfo);
+    rvmLockMutex(&writeMutex);
+    ChannelError error = { 0 };
+    writeChannelByte(clientSocket, EVT_CLASS_LOAD, &error);
+    writeChannelLong(clientSocket, 0, &error);
+    writeChannelLong(clientSocket, 16, &error);
+    writeChannelLong(clientSocket, (jlong)clazz, &error);
+    writeChannelLong(clientSocket, (jlong)classInfo, &error);
     rvmUnlockMutex(&writeMutex);
 }
 

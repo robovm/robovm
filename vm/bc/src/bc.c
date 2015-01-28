@@ -283,6 +283,7 @@ static Class* createClass(Env* env, ClassInfoHeader* header, ClassLoader* classL
             return NULL;
         }
         header->clazz = clazz;
+        rvmHookClassLoaded(env, clazz, (void*)header);
     }
 
     rvmReleaseClassLock(env);

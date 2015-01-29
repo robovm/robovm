@@ -24,7 +24,6 @@
 #include <errno.h>
 #include <netinet/tcp.h>
 #include <time.h>
-#include <robovm/types.h>
 
 #define LOG_TAG "hooks"
 
@@ -42,6 +41,9 @@
 #define CMD_THREAD_RESUME 51
 #define CMD_THREAD_STEP 52
 #define CMD_THREAD_INVOKE 53
+#define CMD_THREAD_NEWSTRING 54
+#define CMD_THREAD_NEWARRAY 55
+#define CMD_THREAD_NEWINSTANCE 56
 
 // events
 #define EVT_THREAD_ATTACHED 100
@@ -617,6 +619,7 @@ static void handleThreadInvoke(jlong reqId, ChannelError* error) {
 
     DebugEnv *debugEnv = (DebugEnv *) thread->env;
     rvmLockMutex(&debugEnv->suspendMutex);
+    debugEnv->command = CMD_THREAD_INVOKE;
     debugEnv->reqId = reqId;
     debugEnv->classOrObjectPtr = classOrObjectPtr;
     debugEnv->methodName = methodName;
@@ -628,6 +631,59 @@ static void handleThreadInvoke(jlong reqId, ChannelError* error) {
     rvmUnlockMutex(&debugEnv->suspendMutex);
 }
 
+static void handleNewString(jlong reqId, ChannelError* error) {
+    Thread* thread = (Thread*)readChannelLong(clientSocket, error);
+    if(checkError(error)) return;
+
+    jint stringLength = readChannelInt(clientSocket, error);
+    if(checkError(error)) return;
+
+    char* string = (char*)malloc(stringLength + 1);
+    string[stringLength] = 0;
+    readChannel(clientSocket, string, stringLength, error);
+    if(checkError(error)) {
+        free(string);
+        return;
+    }
+
+    DebugEnv *debugEnv = (DebugEnv *) thread->env;
+    rvmLockMutex(&debugEnv->suspendMutex);
+    debugEnv->command = CMD_THREAD_NEWSTRING;
+    debugEnv->reqId = reqId;
+    debugEnv->string = string;
+    debugEnv->stringLength = stringLength;
+    pthread_cond_signal(&debugEnv->suspendCond);
+    rvmUnlockMutex(&debugEnv->suspendMutex);
+}
+
+static void handleNewArray(jlong reqId, ChannelError* error) {
+    Thread* thread = (Thread*)readChannelLong(clientSocket, error);
+    if(checkError(error)) return;
+
+    jint arrayLength = readChannelInt(clientSocket, error);
+    if(checkError(error)) return;
+
+    jint elementNameLength = readChannelInt(clientSocket, error);
+    if(checkError(error)) return;
+
+    char* elementName = (char*)malloc(elementNameLength + 1);
+    elementName[elementNameLength] = 0;
+    readChannel(clientSocket, elementName, elementNameLength, error);
+    if(checkError(error)) {
+        free(elementName);
+        return;
+    }
+
+    DebugEnv *debugEnv = (DebugEnv *) thread->env;
+    rvmLockMutex(&debugEnv->suspendMutex);
+    debugEnv->command = CMD_THREAD_NEWARRAY;
+    debugEnv->reqId = reqId;
+    debugEnv->arrayLength = arrayLength;
+    debugEnv->elementName = elementName;
+    debugEnv->elementNameLength = elementNameLength;
+    pthread_cond_signal(&debugEnv->suspendCond);
+    rvmUnlockMutex(&debugEnv->suspendMutex);
+}
 
 static jlong invokeClassMethod(DebugEnv* debugEnv, Method* method) {
     Env* env = (Env*)debugEnv;
@@ -738,6 +794,8 @@ static void invokeMethod(DebugEnv* debugEnv) {
         writeChannelLong(clientSocket, (jlong)rvmExceptionClear((Env*)debugEnv), &error);
         rvmUnlockMutex(&writeMutex);
         debugEnv->reqId = 0;
+        free(debugEnv->methodName);
+        free(debugEnv->descriptor);
         return;
     }
 
@@ -756,6 +814,62 @@ static void invokeMethod(DebugEnv* debugEnv) {
     writeChannelLong(clientSocket, result, &error);
     writeChannelLong(clientSocket, (jlong) rvmExceptionClear((Env*)debugEnv), &error);
     rvmUnlockMutex(&writeMutex);
+    debugEnv->reqId = 0;
+    free(debugEnv->methodName);
+    free(debugEnv->descriptor);
+}
+
+static void newString(DebugEnv* debugEnv) {
+    DEBUGF("Creating new string \"%s\"", debugEnv->string);
+    ChannelError error;
+    rvmLockMutex(&writeMutex);
+    writeChannelByte(clientSocket, CMD_THREAD_NEWSTRING, &error);
+    writeChannelLong(clientSocket, debugEnv->reqId, &error);
+    writeChannelLong(clientSocket, 16, &error);
+    writeChannelLong(clientSocket, (jlong) rvmNewStringUTF((Env*)debugEnv, debugEnv->string, debugEnv->stringLength), &error);
+    writeChannelLong(clientSocket, (jlong) rvmExceptionClear((Env*)debugEnv), &error);
+    rvmUnlockMutex(&writeMutex);
+    free(debugEnv->string);
+    debugEnv->reqId = 0;
+}
+
+static void newArray(DebugEnv* debugEnv) {
+    DEBUGF("Creating new array, length: %d, element type: %s", debugEnv->arrayLength, debugEnv->elementName);
+    ChannelError error;
+    rvmLockMutex(&writeMutex);
+    writeChannelByte(clientSocket, CMD_THREAD_NEWARRAY, &error);
+    writeChannelLong(clientSocket, debugEnv->reqId, &error);
+    writeChannelLong(clientSocket, 16, &error);
+    Object* result = NULL;
+    if (!strcmp(debugEnv->elementName, "Z")) {
+        result = (Object*)rvmNewBooleanArray((Env *) debugEnv, debugEnv->arrayLength);
+    } else if (!strcmp(debugEnv->elementName, "B")) {
+        result = (Object*)rvmNewByteArray((Env *) debugEnv, debugEnv->arrayLength);
+    } else if (!strcmp(debugEnv->elementName, "C")) {
+        result = (Object*)rvmNewCharArray((Env *) debugEnv, debugEnv->arrayLength);
+    } else if (!strcmp(debugEnv->elementName, "S")) {
+        result = (Object*)rvmNewShortArray((Env *) debugEnv, debugEnv->arrayLength);
+    } else if (!strcmp(debugEnv->elementName, "I")) {
+        result = (Object*)rvmNewIntArray((Env *) debugEnv, debugEnv->arrayLength);
+    } else if (!strcmp(debugEnv->elementName, "J")) {
+        result = (Object*)rvmNewLongArray((Env *) debugEnv, debugEnv->arrayLength);
+    } else if (!strcmp(debugEnv->elementName, "F")) {
+        result = (Object*)rvmNewFloatArray((Env *) debugEnv, debugEnv->arrayLength);
+    } else if (!strcmp(debugEnv->elementName, "D")) {
+        result = (Object*)rvmNewDoubleArray((Env *) debugEnv, debugEnv->arrayLength);
+    } else {
+        Class* elementClass = rvmFindClass((Env *) debugEnv, debugEnv->elementName);
+        result = (Object*)rvmNewObjectArray((Env *) debugEnv, debugEnv->arrayLength, elementClass, NULL, NULL);
+    }
+
+    if (!result) {
+        rvmThrowInstantiationError((Env*)debugEnv, "Couldn't instantiate array");
+    }
+
+    writeChannelLong(clientSocket, (jlong) result, &error);
+    writeChannelLong(clientSocket, (jlong) rvmExceptionClear((Env *) debugEnv), &error);
+    rvmUnlockMutex(&writeMutex);
+    free(debugEnv->elementName);
     debugEnv->reqId = 0;
 }
 
@@ -794,6 +908,12 @@ static void handleRequest(char req, jlong reqId, jlong payloadSize, ChannelError
             break;
         case CMD_THREAD_INVOKE:
             handleThreadInvoke(reqId, error);
+            break;
+        case CMD_THREAD_NEWSTRING:
+            handleNewString(reqId, error);
+            break;
+        case CMD_THREAD_NEWARRAY:
+            handleNewArray(reqId, error);
             break;
         default:
             error->errorCode = -1;
@@ -893,12 +1013,25 @@ void _rvmHookInstrumented(DebugEnv* debugEnv, jint lineNumber, jint lineNumberOf
             while (debugEnv->suspended) {
                 pthread_cond_wait(&debugEnv->suspendCond, &debugEnv->suspendMutex);
 
-                // If reqId is set, we have  method invocation request (see handleThreadInvoke)
+                // If reqId is set, we have  method invocation request (see handleThreadInvoke),
+                // or a new instance request (see handleNewInstance, handleNewString, handleNewArray)
                 // we temporarily reset the suspend flag, invoke the
                 // method, then go back into waiting for being woken up again
                 if(debugEnv->reqId != 0) {
                     debugEnv->suspended = FALSE;
-                    invokeMethod(debugEnv);
+                    switch(debugEnv->command) {
+                        case CMD_THREAD_INVOKE:
+                            invokeMethod(debugEnv);
+                            break;
+                        case CMD_THREAD_NEWSTRING:
+                            newString(debugEnv);
+                            break;
+                        case CMD_THREAD_NEWARRAY:
+                            newArray(debugEnv);
+                            break;
+                        default:
+                            DEBUGF("Unknown invoke/newinstance command %d", debugEnv->command);
+                    }
                     debugEnv->suspended = TRUE;
                 }
             }

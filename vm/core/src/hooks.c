@@ -24,6 +24,7 @@
 #include <errno.h>
 #include <netinet/tcp.h>
 #include <time.h>
+#include <robovm/types.h>
 
 #define LOG_TAG "hooks"
 
@@ -631,6 +632,60 @@ static void handleThreadInvoke(jlong reqId, ChannelError* error) {
     rvmUnlockMutex(&debugEnv->suspendMutex);
 }
 
+static void handleNewInstance(jlong reqId, ChannelError* error) {
+    Thread* thread = (Thread*)readChannelLong(clientSocket, error);
+    if(checkError(error)) return;
+
+    void* classPtr = (void*)readChannelLong(clientSocket, error);
+    if(checkError(error)) return;
+
+    jint methodNameLen = readChannelInt(clientSocket, error);
+    if(checkError(error)) return;
+
+    char* methodName = (char*)malloc(methodNameLen + 1);
+    methodName[methodNameLen] = 0;
+    readChannel(clientSocket, methodName, methodNameLen, error);
+    if(checkError(error)) {
+        free(methodName);
+        return;
+    }
+
+    jint descriptorLen = readChannelInt(clientSocket, error);
+    if(checkError(error)) {
+        free(methodName);
+        return;
+    }
+
+    char* descriptor = (char*)malloc(descriptorLen + 1);
+    descriptor[descriptorLen] = 0;
+    readChannel(clientSocket, descriptor, descriptorLen, error);
+    if(checkError(error)) {
+        free(descriptor);
+        free(methodName);
+        return;
+    }
+
+    jvalue* arguments = (jvalue*)readChannelLong(clientSocket, error);
+    if(checkError(error)) {
+        free(descriptor);
+        free(methodName);
+        return;
+    }
+
+    DebugEnv *debugEnv = (DebugEnv *) thread->env;
+    rvmLockMutex(&debugEnv->suspendMutex);
+    debugEnv->command = CMD_THREAD_NEWINSTANCE;
+    debugEnv->reqId = reqId;
+    debugEnv->classOrObjectPtr = classPtr;
+    debugEnv->methodName = methodName;
+    debugEnv->descriptor = descriptor;
+    debugEnv->isClassMethod = false;
+    debugEnv->returnType = 0;
+    debugEnv->arguments = arguments;
+    pthread_cond_signal(&debugEnv->suspendCond);
+    rvmUnlockMutex(&debugEnv->suspendMutex);
+}
+
 static void handleNewString(jlong reqId, ChannelError* error) {
     Thread* thread = (Thread*)readChannelLong(clientSocket, error);
     if(checkError(error)) return;
@@ -819,6 +874,57 @@ static void invokeMethod(DebugEnv* debugEnv) {
     free(debugEnv->descriptor);
 }
 
+static void newInstance(DebugEnv* debugEnv) {
+    Class* clazz = debugEnv->classOrObjectPtr;
+    Method* method = rvmGetMethod((Env*)debugEnv, clazz, debugEnv->methodName, debugEnv->descriptor);
+    if(!method) {
+        ChannelError error;
+        rvmLockMutex(&writeMutex);
+        writeChannelByte(clientSocket, CMD_THREAD_NEWINSTANCE, &error);
+        writeChannelLong(clientSocket, debugEnv->reqId, &error);
+        writeChannelLong(clientSocket, 16, &error);
+        writeChannelLong(clientSocket, 0, &error);
+        writeChannelLong(clientSocket, (jlong)rvmExceptionClear((Env*)debugEnv), &error);
+        rvmUnlockMutex(&writeMutex);
+        debugEnv->reqId = 0;
+        free(debugEnv->methodName);
+        free(debugEnv->descriptor);
+        return;
+    }
+
+    Object* obj = rvmAllocateObject((Env*)debugEnv, clazz);
+    DEBUGF("Allocated new object of type %s (%p), using constructor %s%s", obj->clazz->name, obj, debugEnv->methodName, debugEnv->descriptor);
+    if(!obj) {
+        ChannelError error;
+        rvmLockMutex(&writeMutex);
+        writeChannelByte(clientSocket, CMD_THREAD_NEWINSTANCE, &error);
+        writeChannelLong(clientSocket, debugEnv->reqId, &error);
+        writeChannelLong(clientSocket, 16, &error);
+        writeChannelLong(clientSocket, 0, &error);
+        writeChannelLong(clientSocket, (jlong) rvmExceptionClear((Env *) debugEnv), &error);
+        rvmUnlockMutex(&writeMutex);
+        debugEnv->reqId = 0;
+        free(debugEnv->methodName);
+        free(debugEnv->descriptor);
+        return;
+    }
+    debugEnv->classOrObjectPtr = obj;
+    debugEnv->returnType = 'V';
+    invokeInstanceMethod(debugEnv, method);
+
+    ChannelError error;
+    rvmLockMutex(&writeMutex);
+    writeChannelByte(clientSocket, CMD_THREAD_NEWINSTANCE, &error);
+    writeChannelLong(clientSocket, debugEnv->reqId, &error);
+    writeChannelLong(clientSocket, 16, &error);
+    writeChannelLong(clientSocket, (jlong)obj, &error);
+    writeChannelLong(clientSocket, (jlong)rvmExceptionClear((Env*)debugEnv), &error);
+    rvmUnlockMutex(&writeMutex);
+    debugEnv->reqId = 0;
+    free(debugEnv->methodName);
+    free(debugEnv->descriptor);
+}
+
 static void newString(DebugEnv* debugEnv) {
     DEBUGF("Creating new string \"%s\"", debugEnv->string);
     ChannelError error;
@@ -914,6 +1020,9 @@ static void handleRequest(char req, jlong reqId, jlong payloadSize, ChannelError
             break;
         case CMD_THREAD_NEWARRAY:
             handleNewArray(reqId, error);
+            break;
+        case CMD_THREAD_NEWINSTANCE:
+            handleNewInstance(reqId, error);
             break;
         default:
             error->errorCode = -1;
@@ -1028,6 +1137,9 @@ void _rvmHookInstrumented(DebugEnv* debugEnv, jint lineNumber, jint lineNumberOf
                             break;
                         case CMD_THREAD_NEWARRAY:
                             newArray(debugEnv);
+                            break;
+                        case CMD_THREAD_NEWINSTANCE:
+                            newInstance(debugEnv);
                             break;
                         default:
                             DEBUGF("Unknown invoke/newinstance command %d", debugEnv->command);

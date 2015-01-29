@@ -321,6 +321,7 @@ public class ClassCompiler {
             FileUtils.writeByteArrayToFile(llFile, llData);
         }
 
+        File oFile = config.getOFile(clazz);
         try (Context context = new Context()) {
             try (Module module = Module.parseIR(context, llData, clazz.getClassName())) {
                 try (PassManager passManager = createPassManager(config)) {
@@ -357,7 +358,6 @@ public class ClassCompiler {
                         FileUtils.writeByteArrayToFile(sFile, asm);
                     }
 
-                    File oFile = config.getOFile(clazz);
                     oFile.getParentFile().mkdirs();
                     try (BufferedOutputStream oOut = new BufferedOutputStream(new FileOutputStream(oFile))) {
                         targetMachine.assemble(asm, clazz.getClassName(), oOut);
@@ -482,6 +482,20 @@ public class ClassCompiler {
                     }
                 }
             }
+        } catch (Throwable t) {
+            if (oFile.exists()) {
+                oFile.delete();
+            }
+            if (t instanceof IOException) {
+                throw (IOException) t;
+            }
+            if (t instanceof RuntimeException) {
+                throw (RuntimeException) t;
+            }
+            if (t instanceof Error) {
+                throw (Error) t;
+            }
+            throw new CompilerException(t);
         }
     }
 

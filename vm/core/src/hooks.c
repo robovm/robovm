@@ -679,7 +679,7 @@ static void handleNewInstance(jlong reqId, ChannelError* error) {
     debugEnv->classOrObjectPtr = classPtr;
     debugEnv->methodName = methodName;
     debugEnv->descriptor = descriptor;
-    debugEnv->isClassMethod = false;
+    debugEnv->isClassMethod = FALSE;
     debugEnv->returnType = 0;
     debugEnv->arguments = arguments;
     pthread_cond_signal(&debugEnv->suspendCond);

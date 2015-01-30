@@ -186,7 +186,7 @@ public class IDeviceConnection implements AutoCloseable {
         public int read() throws IOException {
             byte[] b = new byte[1];
             int n = read(b);
-            return n <= 0 ? -1 : b[0];
+            return n <= 0 ? -1 : b[0] & 0xff;
         }
 
         @Override

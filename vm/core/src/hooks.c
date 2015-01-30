@@ -395,19 +395,23 @@ jboolean _rvmHookHandshake(Options* options) {
 
     DEBUG("Starting channel thread");
     rvmInitMutex(&writeMutex);
-    ChannelError error;
+    rvmLockMutex(&writeMutex);
+    ChannelError error = { 0 };
     // write addresses of debugPort to client for PIE offseting
     writeChannelLong(clientSocket, (jlong)&debugPort, &error);
 
     // write ClassInfo*/MethodInfo* pairs to client. In the same
     // order we read them from the executable. Needed to combat ASLR
-    int count = 0;
+    jint count = 0;
     iterateClassInfos(NULL, countMethods, _bcBootClassesHash, &count);
     iterateClassInfos(NULL, countMethods, _bcClassesHash, &count);
 
+    DEBUGF("Writing %d method addresses to client", count);
     writeChannelInt(clientSocket, count, &error);
     iterateClassInfos(NULL, sendMethodInfos, _bcBootClassesHash, NULL);
     iterateClassInfos(NULL, sendMethodInfos, _bcClassesHash, NULL);
+    DEBUG("Finished writing PIE addreses to client");
+    rvmUnlockMutex(&writeMutex);
 
     int result = pthread_create(&debugThread, 0, channelLoop, 0);
     if(result) {

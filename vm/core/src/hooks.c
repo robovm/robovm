@@ -86,6 +86,26 @@ pthread_t debugThread;
 Mutex writeMutex;
 static void* channelLoop(void* data);
 
+// FIXME this is implemented in the bc project, we should
+// probably pull it into the core project.
+typedef struct {
+    jint flags;
+    jint vtableIndex;
+    jint access;
+    const char* name;
+    const char* desc;
+    void* attributes;
+    jint size;
+    void* impl;
+    void* synchronizedImpl;
+    void* linetable;
+    void** targetFnPtr;
+    void* callbackImpl;
+} MethodInfo;
+extern void iterateClassInfos(Env* env, jboolean (*callback)(Env* env, void* classInfoHeader, MethodInfo* methodInfo, void* data), void* hash, void* data);
+extern void* _bcBootClassesHash;
+extern void* _bcClassesHash;
+
 static void nsleep(jlong millis) {
     struct timespec time;
     time.tv_sec = 0;
@@ -341,6 +361,19 @@ jboolean _rvmHookSetupTCPChannel(Options* options) {
     return TRUE;
 }
 
+static jboolean countMethods(Env* env, void* classInfoHeader, MethodInfo* methodInfo, void* data) {
+    int* count = (int*)data;
+    *count = *count + 1;
+    return TRUE;
+}
+
+static jboolean sendMethodInfos(Env* env, void* classInfoHeader, MethodInfo* methodInfo, void* data) {
+    ChannelError error;
+    writeChannelLong(clientSocket, (jlong)classInfoHeader, &error);
+    writeChannelLong(clientSocket, (jlong)methodInfo->impl, &error);
+    return TRUE;
+}
+
 jboolean _rvmHookHandshake(Options* options) {
     DEBUG("Performing handshake");
     if (!listeningSocket) {
@@ -362,6 +395,20 @@ jboolean _rvmHookHandshake(Options* options) {
 
     DEBUG("Starting channel thread");
     rvmInitMutex(&writeMutex);
+    ChannelError error;
+    // write addresses of debugPort to client for PIE offseting
+    writeChannelLong(clientSocket, (jlong)&debugPort, &error);
+
+    // write ClassInfo*/MethodInfo* pairs to client. In the same
+    // order we read them from the executable. Needed to combat ASLR
+    int count = 0;
+    iterateClassInfos(NULL, countMethods, _bcBootClassesHash, &count);
+    iterateClassInfos(NULL, countMethods, _bcClassesHash, &count);
+
+    writeChannelInt(clientSocket, count, &error);
+    iterateClassInfos(NULL, sendMethodInfos, _bcBootClassesHash, NULL);
+    iterateClassInfos(NULL, sendMethodInfos, _bcClassesHash, NULL);
+
     int result = pthread_create(&debugThread, 0, channelLoop, 0);
     if(result) {
         DEBUGF("Couldn't start debug thread, error code: %d", result);

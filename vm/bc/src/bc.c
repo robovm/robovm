@@ -128,7 +128,7 @@ static ClassInfoHeader* lookupClassInfo(Env* env, const char* className, void* h
     return NULL;
 }
 
-static void iterateClassInfos(Env* env, jboolean (*callback)(Env*, ClassInfoHeader*, MethodInfo*, void*), void* hash, void* data) {
+void iterateClassInfos(Env* env, jboolean (*callback)(Env*, ClassInfoHeader*, MethodInfo*, void*), void* hash, void* data) {
     ClassInfoHeader** base = getClassInfosBase(hash);
     jint count = getClassInfosCount(hash);
     jint i = 0;
@@ -283,6 +283,7 @@ static Class* createClass(Env* env, ClassInfoHeader* header, ClassLoader* classL
             return NULL;
         }
         header->clazz = clazz;
+        rvmHookClassLoaded(env, clazz, (void*)header);
     }
 
     rvmReleaseClassLock(env);

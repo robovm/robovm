@@ -1,0 +1,66 @@
+diff --git a/lib/Target/ARM/ARMAsmPrinter.cpp b/lib/Target/ARM/ARMAsmPrinter.cpp
+index 0300f58..7e64c56 100644
+--- a/lib/Target/ARM/ARMAsmPrinter.cpp
++++ b/lib/Target/ARM/ARMAsmPrinter.cpp
+@@ -526,6 +526,27 @@ emitNonLazySymbolPointer(MCStreamer &OutStreamer, MCSymbol *StubLabel,
+ 
+ 
+ void ARMAsmPrinter::EmitEndOfAsmFile(Module &M) {
++  // RoboVM change: Emit spfpoffset symbols if requested to do so. The symbols are
++  // created in ARMFrameLowering::emitPrologue.
++  if (MMI->getModule()->getNamedValue("robovm.emitSpFpOffsets")) {
++    bool InTextSeciton = false;
++    for (const Function &F : *(MMI->getModule())) {
++      if (F.isDeclaration() || !F.hasExternalLinkage())
++        continue;
++
++      MCSymbol *Offset = OutContext.LookupSymbol(Twine("l_") + F.getName() + ".spfpoffset");
++      if (Offset) {
++        if (!InTextSeciton) {
++          OutStreamer.SwitchSection(getObjFileLowering().getTextSection());
++          OutStreamer.EmitCodeAlignment(4);
++          InTextSeciton = true;
++        }
++        OutStreamer.EmitLabel(Offset);
++        OutStreamer.EmitIntValue(((MCConstantExpr *) Offset->getVariableValue())->getValue(), 4);
++      }
++    }
++  }
++
+   if (Subtarget->isTargetMachO()) {
+     // All darwin targets use mach-o.
+     const TargetLoweringObjectFileMachO &TLOFMacho =
+diff --git a/lib/Target/ARM/ARMFrameLowering.cpp b/lib/Target/ARM/ARMFrameLowering.cpp
+index 831c2eb..270b18d 100644
+--- a/lib/Target/ARM/ARMFrameLowering.cpp
++++ b/lib/Target/ARM/ARMFrameLowering.cpp
+@@ -26,8 +26,10 @@
+ #include "llvm/IR/CallingConv.h"
+ #include "llvm/IR/Function.h"
+ #include "llvm/MC/MCContext.h"
++#include "llvm/MC/MCSymbol.h"
+ #include "llvm/Support/CommandLine.h"
+ #include "llvm/Target/TargetOptions.h"
++#include "llvm/IR/Module.h"
+ 
+ using namespace llvm;
+ 
+@@ -617,6 +619,18 @@ void ARMFrameLowering::emitPrologue(MachineFunction &MF) const {
+   // checks for hasVarSizedObjects.
+   if (MFI->hasVarSizedObjects())
+     AFI->setShouldRestoreSPFromFP(true);
++
++  // RoboVM change: Create a symbol which stores the sp<->fp offset and sp alignment. The symbol
++  // is finally emitted in ARMAsmPrinter::EmitEndOfAsmFile.
++  MCSymbol *Offset = Context.GetOrCreateSymbol(Twine("l_") + MF.getName() + ".spfpoffset");
++  // Calculare the SP<->FP offset for the function. We subtract 8 to ignore r7/lr on the stack.
++  // We divide by 4 since the offset is always at least a multiple of 4.
++  uint32_t spFpOffset = (GPRCS1Size - 8 + GPRCS2Size + DPRGapSize + DPRCSSize + NumBytes + AFI->getNumAlignedDPRCS2Regs()*8) >> 2;
++  // Calculate the stack alignment. It's at least a multiple of 4 so we divide by 4.
++  // We subtract by 1 since alignment/4 is always at least 1.
++  uint32_t spAlignment = (MFI->getMaxAlignment() >> 2) - 1;
++  // We store the stack alignment in the 4 MSBs of the symbol value.
++  Offset->setVariableValue(MCConstantExpr::Create(spFpOffset | (spAlignment << 28), Context));
+ }
+ 
+ // Resolve TCReturn pseudo-instruction

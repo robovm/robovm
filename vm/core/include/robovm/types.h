@@ -523,13 +523,28 @@ typedef struct {
     pthread_cond_t suspendCond;
     jboolean suspended;
     jboolean stepping;
+
+    // used for invoking methods/creating new
+    // instances on a thread
+    jbyte command;
     jlong reqId;
-    void* objectOrClass;
+
+    // used for method invocation and new instance
+    void* classOrObjectPtr;
     char* methodName;
     char* descriptor;
     jboolean isClassMethod;
     jbyte returnType;
     jvalue* arguments;
+
+    // used for new string
+    char* string;
+    jint stringLength;
+
+    // used for new array
+    jint arrayLength;
+    char* elementName;
+    jint elementNameLength;
 } DebugEnv;
 
 typedef struct {

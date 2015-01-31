@@ -44,11 +44,17 @@ import org.robovm.apple.foundation.*;
     protected CFMutableCharacterSet() {}
     /*<properties>*//*</properties>*/
     /*<members>*//*</members>*/
+    public static CFMutableCharacterSet create() {
+        return create((CFAllocator)null);
+    }
+    public static CFMutableCharacterSet createCopy(CFCharacterSet theSet) {
+        return createCopy(null, theSet);
+    }
     /*<methods>*/
     @Bridge(symbol="CFCharacterSetCreateMutable", optional=true)
-    protected static native CFMutableCharacterSet createMutable(CFAllocator alloc);
+    public static native CFMutableCharacterSet create(CFAllocator alloc);
     @Bridge(symbol="CFCharacterSetCreateMutableCopy", optional=true)
-    protected static native CFMutableCharacterSet createMutableCopy(CFAllocator alloc, CFCharacterSet theSet);
+    public static native CFMutableCharacterSet createCopy(CFAllocator alloc, CFCharacterSet theSet);
     @Bridge(symbol="CFCharacterSetAddCharactersInRange", optional=true)
     public native void addCharactersInRange(@ByVal CFRange theRange);
     @Bridge(symbol="CFCharacterSetRemoveCharactersInRange", optional=true)

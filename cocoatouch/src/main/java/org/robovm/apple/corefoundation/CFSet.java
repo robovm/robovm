@@ -85,9 +85,6 @@ import org.robovm.apple.foundation.NSObject.NSObjectPtr;
     public boolean contains(NativeObject value) {
         return containsValue(value.as(VoidPtr.class));
     }
-    public @MachineSizedSInt long size() {
-        return getCount();
-    }
     
     public void add(NativeObject value) {
         throw new UnsupportedOperationException("CFSet is immutable. Use CFMutableSet instead!");
@@ -111,7 +108,7 @@ import org.robovm.apple.foundation.NSObject.NSObjectPtr;
     @Bridge(symbol="CFSetCreateCopy", optional=true)
     protected static native CFSet createCopy(CFAllocator allocator, CFSet theSet);
     @Bridge(symbol="CFSetGetCount", optional=true)
-    protected native @MachineSizedSInt long getCount();
+    public native @MachineSizedSInt long size();
     @Bridge(symbol="CFSetGetCountOfValue", optional=true)
     protected native @MachineSizedSInt long getCountOfValue(VoidPtr value);
     @Bridge(symbol="CFSetContainsValue", optional=true)

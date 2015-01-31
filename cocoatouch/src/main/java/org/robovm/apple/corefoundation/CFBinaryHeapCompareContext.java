@@ -34,7 +34,7 @@ import org.robovm.apple.foundation.*;
 
 /*</javadoc>*/
 /*<annotations>*//*</annotations>*/
-/*<visibility>*/public/*</visibility>*/ class /*<name>*/CFBinaryHeapCompareContext/*</name>*/ 
+/*<visibility>*//*</visibility>*/ class /*<name>*/CFBinaryHeapCompareContext/*</name>*/ 
     extends /*<extends>*/Struct<CFBinaryHeapCompareContext>/*</extends>*/ 
     /*<implements>*//*</implements>*/ {
 

@@ -45,31 +45,42 @@ import org.robovm.apple.foundation.*;
     /*</constructors>*/
     /*<properties>*//*</properties>*/
     /*<members>*//*</members>*/
+    public static CFTree create() {
+        return create(null);
+    }
+    public static CFTree create(CFAllocator allocator) {
+        return create(allocator, new CFTreeContext());
+    }
+    
+    public CFTree[] getChildren() {
+        int n = (int)getChildCount();
+        CFTree[] children = new CFTree[n];
+        for (int i = 0; i < n; i++) {
+            children[i] = getChild(i);
+        }
+        return children;
+    }
     /*<methods>*/
     @Bridge(symbol="CFTreeGetTypeID", optional=true)
     public static native @MachineSizedUInt long getClassTypeID();
     @Bridge(symbol="CFTreeCreate", optional=true)
-    public static native CFTree create(CFAllocator allocator, CFTreeContext context);
+    private static native CFTree create(CFAllocator allocator, CFTreeContext context);
     @Bridge(symbol="CFTreeGetParent", optional=true)
     public native CFTree getParent();
     @Bridge(symbol="CFTreeGetNextSibling", optional=true)
-    public native CFTree getNextSibling();
+    public native CFTree nextSibling();
     @Bridge(symbol="CFTreeGetFirstChild", optional=true)
-    public native CFTree getFirstChild();
-    @Bridge(symbol="CFTreeGetContext", optional=true)
-    public native void getContext(CFTreeContext context);
+    public native CFTree firstChild();
     @Bridge(symbol="CFTreeGetChildCount", optional=true)
     public native @MachineSizedSInt long getChildCount();
     @Bridge(symbol="CFTreeGetChildAtIndex", optional=true)
-    public native CFTree getChildAtIndex(@MachineSizedSInt long idx);
+    public native CFTree getChild(@MachineSizedSInt long idx);
     @Bridge(symbol="CFTreeGetChildren", optional=true)
-    public native void getChildren(CFTree.CFTreePtr children);
+    private native void getChildren(CFTree.CFTreePtr children);
     @Bridge(symbol="CFTreeApplyFunctionToChildren", optional=true)
-    public native void applyFunctionToChildren(FunctionPtr applier, VoidPtr context);
+    private native void applyFunctionToChildren(FunctionPtr applier, VoidPtr context);
     @Bridge(symbol="CFTreeFindRoot", optional=true)
     public native CFTree findRoot();
-    @Bridge(symbol="CFTreeSetContext", optional=true)
-    public native void setContext(CFTreeContext context);
     @Bridge(symbol="CFTreePrependChild", optional=true)
     public native void prependChild(CFTree newChild);
     @Bridge(symbol="CFTreeAppendChild", optional=true)
@@ -81,6 +92,6 @@ import org.robovm.apple.foundation.*;
     @Bridge(symbol="CFTreeRemoveAllChildren", optional=true)
     public native void removeAllChildren();
     @Bridge(symbol="CFTreeSortChildren", optional=true)
-    public native void sortChildren(FunctionPtr comparator, VoidPtr context);
+    private native void sortChildren(FunctionPtr comparator, VoidPtr context);
     /*</methods>*/
 }

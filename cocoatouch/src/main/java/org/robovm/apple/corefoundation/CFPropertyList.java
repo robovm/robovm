@@ -43,30 +43,105 @@ import org.robovm.apple.foundation.*;
     /*<constructors>*//*</constructors>*/
     /*<properties>*//*</properties>*/
     /*<members>*//*</members>*/
+    public static CFPropertyList createDeepCopy(CFPropertyList propertyList, CFPropertyListMutabilityOptions mutabilityOption) {
+        return createDeepCopy(null, propertyList, mutabilityOption);
+    }
+    /**
+     * @since Available in iOS 4.0 and later.
+     */
+    public static CFPropertyList create(CFData data, @MachineSizedUInt long options) throws CFErrorException {
+       return create(null, data, options, null);
+    }
+    /**
+     * @since Available in iOS 4.0 and later.
+     */
+    public static CFPropertyList create(CFAllocator allocator, CFData data, @MachineSizedUInt long options) throws CFErrorException {
+       return create(allocator, data, options, null);
+    }
+    /**
+     * @since Available in iOS 4.0 and later.
+     */
+    public static CFPropertyList create(CFReadStream stream, @MachineSizedSInt long streamLength, @MachineSizedUInt long options) throws CFErrorException {
+        return create(null, stream, streamLength, options, null);
+    }
+    /**
+     * @since Available in iOS 4.0 and later.
+     */
+    public static CFPropertyList create(CFAllocator allocator, CFReadStream stream, @MachineSizedSInt long streamLength, @MachineSizedUInt long options) throws CFErrorException {
+        return create(allocator, stream, streamLength, options, null);
+    }
+    /**
+     * @since Available in iOS 4.0 and later.
+     */
+    public CFData asData(CFPropertyListFormat format, @MachineSizedUInt long options) {
+        return asData(null, this, format, options);
+    }
+    /**
+     * @since Available in iOS 4.0 and later.
+     */
+    public CFData asData(CFAllocator allocator, CFPropertyListFormat format, @MachineSizedUInt long options) {
+        return asData(allocator, this, format, options);
+    }
     /*<methods>*/
     @Bridge(symbol="CFPropertyListCreateDeepCopy", optional=true)
-    public static native CFType createDeepCopy(CFAllocator allocator, CFType propertyList, CFPropertyListMutabilityOptions mutabilityOption);
+    public static native CFPropertyList createDeepCopy(CFAllocator allocator, CFPropertyList propertyList, CFPropertyListMutabilityOptions mutabilityOption);
     @Bridge(symbol="CFPropertyListIsValid", optional=true)
-    public static native boolean isValid(CFType plist, CFPropertyListFormat format);
+    public native boolean isValid(CFPropertyListFormat format);
+    /**
+     * @since Available in iOS 4.0 and later.
+     */
+    protected static CFPropertyList create(CFAllocator allocator, CFData data, @MachineSizedUInt long options, MachineSizedSIntPtr format) throws CFErrorException {
+       CFError.CFErrorPtr ptr = new CFError.CFErrorPtr();
+       CFPropertyList result = create(allocator, data, options, format, ptr);
+       if (ptr.get() != null) { throw new CFErrorException(ptr.get()); }
+       return result;
+    }
     /**
      * @since Available in iOS 4.0 and later.
      */
     @Bridge(symbol="CFPropertyListCreateWithData", optional=true)
-    public static native CFType createWithData(CFAllocator allocator, CFData data, CFPropertyListMutabilityOptions options, MachineSizedSIntPtr format, CFError.CFErrorPtr error);
+    private static native CFPropertyList create(CFAllocator allocator, CFData data, @MachineSizedUInt long options, MachineSizedSIntPtr format, CFError.CFErrorPtr error);
+    /**
+     * @since Available in iOS 4.0 and later.
+     */
+    protected static CFPropertyList create(CFAllocator allocator, CFReadStream stream, @MachineSizedSInt long streamLength, @MachineSizedUInt long options, MachineSizedSIntPtr format) throws CFErrorException {
+       CFError.CFErrorPtr ptr = new CFError.CFErrorPtr();
+       CFPropertyList result = create(allocator, stream, streamLength, options, format, ptr);
+       if (ptr.get() != null) { throw new CFErrorException(ptr.get()); }
+       return result;
+    }
     /**
      * @since Available in iOS 4.0 and later.
      */
     @Bridge(symbol="CFPropertyListCreateWithStream", optional=true)
-    public static native CFType createWithStream(CFAllocator allocator, CFReadStream stream, @MachineSizedSInt long streamLength, CFPropertyListMutabilityOptions options, MachineSizedSIntPtr format, CFError.CFErrorPtr error);
+    private static native CFPropertyList create(CFAllocator allocator, CFReadStream stream, @MachineSizedSInt long streamLength, @MachineSizedUInt long options, MachineSizedSIntPtr format, CFError.CFErrorPtr error);
+    /**
+     * @since Available in iOS 4.0 and later.
+     */
+    public @MachineSizedSInt long write(CFWriteStream stream, CFPropertyListFormat format, @MachineSizedUInt long options) throws CFErrorException {
+       CFError.CFErrorPtr ptr = new CFError.CFErrorPtr();
+       long result = write(stream, format, options, ptr);
+       if (ptr.get() != null) { throw new CFErrorException(ptr.get()); }
+       return result;
+    }
     /**
      * @since Available in iOS 4.0 and later.
      */
     @Bridge(symbol="CFPropertyListWrite", optional=true)
-    public static native @MachineSizedSInt long write(CFType propertyList, CFWriteStream stream, CFPropertyListFormat format, CFPropertyListMutabilityOptions options, CFError.CFErrorPtr error);
+    private native @MachineSizedSInt long write(CFWriteStream stream, CFPropertyListFormat format, @MachineSizedUInt long options, CFError.CFErrorPtr error);
+    /**
+     * @since Available in iOS 4.0 and later.
+     */
+    private static CFData asData(CFAllocator allocator, CFPropertyList propertyList, CFPropertyListFormat format, @MachineSizedUInt long options) throws CFErrorException {
+       CFError.CFErrorPtr ptr = new CFError.CFErrorPtr();
+       CFData result = asData(allocator, propertyList, format, options, ptr);
+       if (ptr.get() != null) { throw new CFErrorException(ptr.get()); }
+       return result;
+    }
     /**
      * @since Available in iOS 4.0 and later.
      */
     @Bridge(symbol="CFPropertyListCreateData", optional=true)
-    public static native CFData createData(CFAllocator allocator, CFType propertyList, CFPropertyListFormat format, CFPropertyListMutabilityOptions options, CFError.CFErrorPtr error);
+    private static native CFData asData(CFAllocator allocator, CFPropertyList propertyList, CFPropertyListFormat format, @MachineSizedUInt long options, CFError.CFErrorPtr error);
     /*</methods>*/
 }

@@ -45,7 +45,13 @@ import org.robovm.apple.foundation.*;
     /*<properties>*//*</properties>*/
     /*<members>*//*</members>*/
     public static CFMutableSet create() {
-        return createMutable(null, 0, getTypeCallBacks());
+        return create(null, 0, getTypeCallBacks());
+    }
+    public static CFMutableSet create(long capacity) {
+        return create(null, capacity, getTypeCallBacks());
+    }
+    public static CFMutableSet createCopy(long capacity, CFSet theSet) {
+        return createCopy(null, capacity, theSet);
     }
     
     public void add(NativeObject value) {
@@ -54,23 +60,20 @@ import org.robovm.apple.foundation.*;
     public void remove(NativeObject value) {
         removeValue(value.as(VoidPtr.class));
     }
-    public void clear() {
-        removeAllValues();
-    }
     /*<methods>*/
     @Bridge(symbol="CFSetCreateMutable", optional=true)
-    protected static native CFMutableSet createMutable(CFAllocator allocator, @MachineSizedSInt long capacity, CFSetCallBacks callBacks);
+    public static native CFMutableSet create(CFAllocator allocator, @MachineSizedSInt long capacity, CFSetCallBacks callBacks);
     @Bridge(symbol="CFSetCreateMutableCopy", optional=true)
-    protected static native CFMutableSet createMutableCopy(CFAllocator allocator, @MachineSizedSInt long capacity, CFSet theSet);
+    public static native CFMutableSet createCopy(CFAllocator allocator, @MachineSizedSInt long capacity, CFSet theSet);
     @Bridge(symbol="CFSetAddValue", optional=true)
-    protected native void addValue(VoidPtr value);
+    private native void addValue(VoidPtr value);
     @Bridge(symbol="CFSetReplaceValue", optional=true)
-    protected native void replaceValue(VoidPtr value);
+    private native void replaceValue(VoidPtr value);
     @Bridge(symbol="CFSetSetValue", optional=true)
-    protected native void setValue(VoidPtr value);
+    private native void setValue(VoidPtr value);
     @Bridge(symbol="CFSetRemoveValue", optional=true)
-    protected native void removeValue(VoidPtr value);
+    private native void removeValue(VoidPtr value);
     @Bridge(symbol="CFSetRemoveAllValues", optional=true)
-    protected native void removeAllValues();
+    public native void clear();
     /*</methods>*/
 }

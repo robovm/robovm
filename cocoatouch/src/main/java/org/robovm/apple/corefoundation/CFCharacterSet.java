@@ -66,11 +66,11 @@ import org.robovm.apple.foundation.*;
     @Bridge(symbol="CFCharacterSetGetPredefined", optional=true)
     public static native CFCharacterSet getPredefined(CFCharacterSetPredefinedSet theSetIdentifier);
     @Bridge(symbol="CFCharacterSetCreateWithCharactersInRange", optional=true)
-    protected static native CFCharacterSet create(CFAllocator alloc, @ByVal CFRange theRange);
+    public static native CFCharacterSet create(CFAllocator alloc, @ByVal CFRange theRange);
     @Bridge(symbol="CFCharacterSetCreateWithCharactersInString", optional=true)
-    protected static native CFCharacterSet create(CFAllocator alloc, String theString);
+    public static native CFCharacterSet create(CFAllocator alloc, String theString);
     @Bridge(symbol="CFCharacterSetCreateWithBitmapRepresentation", optional=true)
-    protected static native CFCharacterSet create(CFAllocator alloc, CFData theData);
+    public static native CFCharacterSet create(CFAllocator alloc, CFData theData);
     @Bridge(symbol="CFCharacterSetCreateInvertedSet", optional=true)
     protected static native CFCharacterSet createInvertedSet(CFAllocator alloc, CFCharacterSet theSet);
     @Bridge(symbol="CFCharacterSetIsSupersetOfSet", optional=true)

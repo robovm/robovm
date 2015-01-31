@@ -28,6 +28,9 @@
 
 #define LOG_TAG "hooks"
 
+#define HANDSHAKE_QUESTION 0x526f626f564d3f3fLL // RoboVM??
+#define HANDSHAKE_ANSWER   0x526f626f564d2121LL // RoboVM!!
+
 // memory operations
 #define CMD_READ_MEMORY 1
 #define CMD_READ_CSTRING 2
@@ -86,25 +89,8 @@ pthread_t debugThread;
 Mutex writeMutex;
 static void* channelLoop(void* data);
 
-// FIXME this is implemented in the bc project, we should
-// probably pull it into the core project.
-typedef struct {
-    jint flags;
-    jint vtableIndex;
-    jint access;
-    const char* name;
-    const char* desc;
-    void* attributes;
-    jint size;
-    void* impl;
-    void* synchronizedImpl;
-    void* linetable;
-    void** targetFnPtr;
-    void* callbackImpl;
-} MethodInfo;
-extern void iterateClassInfos(Env* env, jboolean (*callback)(Env* env, void* classInfoHeader, MethodInfo* methodInfo, void* data), void* hash, void* data);
-extern void* _bcBootClassesHash;
-extern void* _bcClassesHash;
+// used to offset in PIE/ASLR mode
+void* robovmBaseSymbol = NULL;
 
 static void nsleep(jlong millis) {
     struct timespec time;
@@ -361,19 +347,6 @@ jboolean _rvmHookSetupTCPChannel(Options* options) {
     return TRUE;
 }
 
-static jboolean countMethods(Env* env, void* classInfoHeader, MethodInfo* methodInfo, void* data) {
-    int* count = (int*)data;
-    *count = *count + 1;
-    return TRUE;
-}
-
-static jboolean sendMethodInfos(Env* env, void* classInfoHeader, MethodInfo* methodInfo, void* data) {
-    ChannelError error;
-    writeChannelLong(clientSocket, (jlong)classInfoHeader, &error);
-    writeChannelLong(clientSocket, (jlong)methodInfo->impl, &error);
-    return TRUE;
-}
-
 jboolean _rvmHookHandshake(Options* options) {
     DEBUG("Performing handshake");
     if (!listeningSocket) {
@@ -393,26 +366,21 @@ jboolean _rvmHookHandshake(Options* options) {
     int yes = 1;
     setsockopt(clientSocket, IPPROTO_TCP, TCP_NODELAY, &yes, sizeof(int));
 
-    DEBUG("Starting channel thread");
-    rvmInitMutex(&writeMutex);
-    rvmLockMutex(&writeMutex);
+    // Let's see if we are taking to a RoboVM debug client
     ChannelError error = { 0 };
-    // write addresses of debugPort to client for PIE offseting
-    writeChannelLong(clientSocket, (jlong)&debugPort, &error);
+    writeChannelLong(clientSocket, HANDSHAKE_QUESTION, &error);
+    jlong response = readChannelLong(clientSocket, &error);
+    if(checkError(&error) || response != HANDSHAKE_ANSWER) {
+        DEBUG("Handshake failed");
+        close(clientSocket);
+        return FALSE;
+    }
 
-    // write ClassInfo*/MethodInfo* pairs to client. In the same
-    // order we read them from the executable. Needed to combat ASLR
-    jint count = 0;
-    iterateClassInfos(NULL, countMethods, _bcBootClassesHash, &count);
-    iterateClassInfos(NULL, countMethods, _bcClassesHash, &count);
+    // send base symbol address to deal with PIE/ASLR
+    writeChannelLong(clientSocket, (jlong) &robovmBaseSymbol, &error);
 
-    DEBUGF("Writing %d method addresses to client", count);
-    writeChannelInt(clientSocket, count, &error);
-    iterateClassInfos(NULL, sendMethodInfos, _bcBootClassesHash, NULL);
-    iterateClassInfos(NULL, sendMethodInfos, _bcClassesHash, NULL);
-    DEBUG("Finished writing PIE addreses to client");
-    rvmUnlockMutex(&writeMutex);
-
+    // setup
+    rvmInitMutex(&writeMutex);
     int result = pthread_create(&debugThread, 0, channelLoop, 0);
     if(result) {
         DEBUGF("Couldn't start debug thread, error code: %d", result);

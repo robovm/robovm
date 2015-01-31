@@ -44,7 +44,7 @@ import org.robovm.apple.foundation.*;
     /*<constants>*//*</constants>*/
     /*<constructors>*/
     public CFSocketContext() {}
-    public CFSocketContext(@MachineSizedSInt long version, VoidPtr info, FunctionPtr retain, FunctionPtr release, FunctionPtr copyDescription) {
+    public CFSocketContext(@MachineSizedSInt long version, @Pointer long info, FunctionPtr retain, FunctionPtr release, FunctionPtr copyDescription) {
         this.setVersion(version);
         this.setInfo(info);
         this.setRetain(retain);
@@ -56,8 +56,8 @@ import org.robovm.apple.foundation.*;
     /*<members>*/
     @StructMember(0) public native @MachineSizedSInt long getVersion();
     @StructMember(0) public native CFSocketContext setVersion(@MachineSizedSInt long version);
-    @StructMember(1) public native VoidPtr getInfo();
-    @StructMember(1) public native CFSocketContext setInfo(VoidPtr info);
+    @StructMember(1) public native @Pointer long getInfo();
+    @StructMember(1) public native CFSocketContext setInfo(@Pointer long info);
     @StructMember(2) public native FunctionPtr getRetain();
     @StructMember(2) public native CFSocketContext setRetain(FunctionPtr retain);
     @StructMember(3) public native FunctionPtr getRelease();

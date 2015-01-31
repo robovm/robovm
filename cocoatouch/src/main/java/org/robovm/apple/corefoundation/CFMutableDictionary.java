@@ -48,7 +48,7 @@ import org.robovm.apple.foundation.*;
         return create(0);
     }
     public static CFMutableDictionary create(long capacity) {
-        return createMutable(null, capacity, getTypeKeyCallBacks(), getTypeValueCallBacks());
+        return create(null, capacity, getTypeKeyCallBacks(), getTypeValueCallBacks());
     }
     
     @Override
@@ -65,18 +65,18 @@ import org.robovm.apple.foundation.*;
     }
     /*<methods>*/
     @Bridge(symbol="CFDictionaryCreateMutable", optional=true)
-    protected static native CFMutableDictionary createMutable(CFAllocator allocator, @MachineSizedSInt long capacity, CFDictionaryKeyCallBacks keyCallBacks, CFDictionaryValueCallBacks valueCallBacks);
+    public static native CFMutableDictionary create(CFAllocator allocator, @MachineSizedSInt long capacity, CFDictionaryKeyCallBacks keyCallBacks, CFDictionaryValueCallBacks valueCallBacks);
     @Bridge(symbol="CFDictionaryCreateMutableCopy", optional=true)
-    protected static native CFMutableDictionary createMutableCopy(CFAllocator allocator, @MachineSizedSInt long capacity, CFDictionary theDict);
+    public static native CFMutableDictionary createCopy(CFAllocator allocator, @MachineSizedSInt long capacity, CFDictionary theDict);
     @Bridge(symbol="CFDictionaryAddValue", optional=true)
-    protected native void addValue(VoidPtr key, VoidPtr value);
+    private native void addValue(VoidPtr key, VoidPtr value);
     @Bridge(symbol="CFDictionarySetValue", optional=true)
-    protected native void setValue(VoidPtr key, VoidPtr value);
+    private native void setValue(VoidPtr key, VoidPtr value);
     @Bridge(symbol="CFDictionaryReplaceValue", optional=true)
-    protected native void replaceValue(VoidPtr key, VoidPtr value);
+    private native void replaceValue(VoidPtr key, VoidPtr value);
     @Bridge(symbol="CFDictionaryRemoveValue", optional=true)
-    protected native void removeValue(VoidPtr key);
+    private native void removeValue(VoidPtr key);
     @Bridge(symbol="CFDictionaryRemoveAllValues", optional=true)
-    protected native void removeAllValues();
+    private native void removeAllValues();
     /*</methods>*/
 }

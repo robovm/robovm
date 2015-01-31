@@ -15,6 +15,7 @@ typedefs:
     'void (^)(CFRunLoopTimerRef)': '@Block VoidBlock1<CFRunLoopTimer>'
 private_typedefs:
     '__CFString *': String
+    CFStringEncoding: CFStringEncodings
     
 enums:
     CFBundleExecutableArchitectureType: {first: kCFBundleExecutableArchitectureI386}
@@ -72,13 +73,16 @@ classes:
         visibility: ''
     CFBinaryHeapCallBacks:
         visibility: ''
-    CFBinaryHeapCompareContext: {}
+    CFBinaryHeapCompareContext:
+        visibility: ''
     CFDictionaryKeyCallBacks:
         visibility: ''
     CFDictionaryValueCallBacks:
         visibility: ''
     CFFileDescriptorContext:
         visibility: ''
+        info:
+            type: '@Pointer long'
     CFGregorianDate: {}
     CFGregorianUnits: {}
     CFMachPortContext:
@@ -99,6 +103,8 @@ classes:
         visibility: ''
     CFSocketContext:
         visibility: ''
+        info:
+            type: '@Pointer long'
     CFSocketSignature: {}
     CFStreamClientContext:
         info:
@@ -328,113 +334,166 @@ functions:
         class: 'CF#{g[0]}'
         name: getClassTypeID
 
-    CF(.*)(CreateMutable.*):
-        class: "CFMutable#{g[0]}"
-        name: "#{g[1]}"
-        visibility: protected
-        return_type: "CFMutable#{g[0]}"
+
+    # Mutable CFTypes
+    CFStringCreateMutableWithExternalCharactersNoCopy: {exclude: true}
+    
+    CF(.*)CreateMutable(.*):
+        class: 'CFMutable#{g[0]}'
+        name: 'create#{g[1]}'
+        return_type: 'CFMutable#{g[0]}'
+        parameters:
+            theString: {type: CFMutableString}
     CF(Array|Bag|BitVector|Dictionary|Set)(Add.*):
-        class: "CFMutable#{g[0]}"
-        name: "#{g[1]}"
-        visibility: protected
+        class: 'CFMutable#{g[0]}'
+        name: '#{g[1]}'
+        visibility: private
         parameters:
             theArray: {type: CFMutableArray}
             theBag: {type: CFMutableBag}
             theDict: {type: CFMutableDictionary}
             theSet: {type: CFMutableSet}
     CF(Array|Bag|BitVector|Dictionary|Set)(Append.*):
-        class: "CFMutable#{g[0]}"
-        name: "#{g[1]}"
-        visibility: protected
+        class: 'CFMutable#{g[0]}'
+        name: '#{g[1]}'
+        visibility: private
         parameters:
             theArray: {type: CFMutableArray}
             theBag: {type: CFMutableBag}
             theDict: {type: CFMutableDictionary}
             theSet: {type: CFMutableSet}
     CF(Array|Bag|BitVector|Dictionary|Set)(Exchange.*):
-        class: "CFMutable#{g[0]}"
-        name: "#{g[1]}"
-        visibility: protected
+        class: 'CFMutable#{g[0]}'
+        name: '#{g[1]}'
+        visibility: private
         parameters:
             theArray: {type: CFMutableArray}
             theBag: {type: CFMutableBag}
             theDict: {type: CFMutableDictionary}
             theSet: {type: CFMutableSet}
     CF(Array|Bag|BitVector|Dictionary|Set)(Insert.*):
-        class: "CFMutable#{g[0]}"
-        name: "#{g[1]}"
-        visibility: protected
+        class: 'CFMutable#{g[0]}'
+        name: '#{g[1]}'
+        visibility: private
         parameters:
             theArray: {type: CFMutableArray}
             theBag: {type: CFMutableBag}
             theDict: {type: CFMutableDictionary}
             theSet: {type: CFMutableSet}
     CF(Array|Bag|BitVector|Dictionary|Set)(Remove.*):
-        class: "CFMutable#{g[0]}"
-        name: "#{g[1]}"
-        visibility: protected
+        class: 'CFMutable#{g[0]}'
+        name: '#{g[1]}'
+        visibility: private
         parameters:
             theArray: {type: CFMutableArray}
             theBag: {type: CFMutableBag}
             theDict: {type: CFMutableDictionary}
             theSet: {type: CFMutableSet}
     CF(Array|Bag|BitVector|Dictionary|Set)(Replace.*):
-        class: "CFMutable#{g[0]}"
-        name: "#{g[1]}"
-        visibility: protected
+        class: 'CFMutable#{g[0]}'
+        name: '#{g[1]}'
+        visibility: private
         parameters:
             theArray: {type: CFMutableArray}
             theBag: {type: CFMutableBag}
             theDict: {type: CFMutableDictionary}
             theSet: {type: CFMutableSet}
     CF(Array|Bag|BitVector|Dictionary|Set)(SetValue.*):
-        class: "CFMutable#{g[0]}"
-        name: "#{g[1]}"
-        visibility: protected
+        class: 'CFMutable#{g[0]}'
+        name: '#{g[1]}'
+        visibility: private
         parameters:
             theArray: {type: CFMutableArray}
             theBag: {type: CFMutableBag}
             theDict: {type: CFMutableDictionary}
             theSet: {type: CFMutableSet}
     CF(Array|Bag|BitVector|Dictionary|Set)(Sort.*):
-        class: "CFMutable#{g[0]}"
-        name: "#{g[1]}"
-        visibility: protected
+        class: 'CFMutable#{g[0]}'
+        name: '#{g[1]}'
+        visibility: private
         parameters:
             theArray: {type: CFMutableArray}
             theBag: {type: CFMutableBag}
             theDict: {type: CFMutableDictionary}
             theSet: {type: CFMutableSet}
-    CF(BitVector)((Flip|Set).*):
-        class: "CFMutable#{g[0]}"
-        name: "#{g[1]}"
+
+    # CFMutableSet
+    CFSetRemoveAllValues:
+        class: CFMutableSet
+        name: clear
+        parameters:
+            theSet: {type: CFMutableSet}
+
+    # CFMutableBitVector
+    CFBitVector(FlipBit|SetBit)AtIndex:
+        class: CFMutableBitVector
+        name: '#{g[0]}'
         parameters:
             bv: {type: CFMutableBitVector}
-    (CFAttributedString)(GetMutableString):
-        class: "#{g[0]}"
-        name: "#{g[1]}"
+    CFBitVector((Flip|Set).*):
+        class: CFMutableBitVector
+        name: '#{g[0]}'
+        parameters:
+            bv: {type: CFMutableBitVector}
+
+    # CFMutableAttributedString
+    CFAttributedString(GetMutableString):
+        class: CFMutableAttributedString
+        name: '#{g[0]}'
         return_type: CFMutableString
-    CF(AttributedString)((BeginEditing|EndEditing|GetMutable|Remove|Replace|SetAttribute).*):
-        class: "CFMutable#{g[0]}"
-        name: "#{g[1]}"
+    CFAttributedString(SetAttributes):
+        class: CFMutableAttributedString
+        name: '#{g[0]}Dictionary'
         parameters:
             aStr: {type: CFMutableAttributedString}
-    CF(CharacterSet)((Add|Intersect|Invert|Remove|Union).*):
-        class: "CFMutable#{g[0]}"
-        name: "#{g[1]}"
+    CFAttributedString((Remove|Set)Attribute):
+        class: CFMutableAttributedString
+        name: '#{g[0]}'
+        parameters:
+            aStr: {type: CFMutableAttributedString}
+            attrName:
+                type: CFString
+    CFAttributedString((BeginEditing|EndEditing|GetMutable|Replace).*):
+        class: CFMutableAttributedString
+        name: '#{g[0]}'
+        parameters:
+            aStr: {type: CFMutableAttributedString}
+
+    # CFMutableCharacterSet
+    CFCharacterSet((Add|Intersect|Invert|Remove|Union).*):
+        class: CFMutableCharacterSet
+        name: '#{g[0]}'
         parameters:
             theSet: {type: CFMutableCharacterSet}
-    CF(String)((Append|Capitalize|Delete|FindAndReplace|Fold|Lowercase|Normalize|Pad|Replace|SetExternal|Trim|Uppercase).*):
-        class: "CFMutable#{g[0]}"
-        name: "#{g[1]}"
+
+    # CFMutableString
+    CFStringSetExternalCharactersNoCopy:
+        exclude: true
+    CFString(AppendCharacters):
+        class: CFMutableString
+        name: '#{g[0]}'
+        visibility: private
         parameters:
             theString: {type: CFMutableString}
-    CF(String)((Insert|Transform).*):
-        class: "CFMutable#{g[0]}"
-        name: "#{g[1]}"
+            chars:
+                type: CharPtr
+    CFString((Append|Capitalize|Delete|FindAndReplace|Fold|Lowercase|Normalize|Pad|Replace|Trim|Uppercase).*):
+        class: CFMutableString
+        name: '#{g[0]}'
+        parameters:
+            theString: {type: CFMutableString}
+            encoding:
+                type: CFStringEncodings
+    CFString((Insert|Transform).*):
+        class: CFMutableString
+        name: '#{g[0]}'
         parameters:
             str: {type: CFMutableString}
             string: {type: CFMutableString}
+            transform: 
+                type: CFStringTransform
+            encoding:
+                type: CFStringEncodings
 
     # CFAllocator
     CFAllocator(SetDefault):
@@ -458,30 +517,129 @@ functions:
     # CFArray
     CFArray(.*):
         class: CFArray
-        name: "#{g[0]}"
+        name: '#{g[0]}'
         visibility: protected
+
+    # CFAttributedString
+    CFAttributedStringGet(Length):
+        class: CFAttributedString
+        name: '#{g[0]}'
+    CFAttributedString(GetAttributes):
+        class: CFAttributedString
+        name: '#{g[0]}Dictionary'
+    CFAttributedString(GetAttribute):
+        class: CFAttributedString
+        name: '#{g[0]}'
+        parameters:
+            attrName:
+                type: CFString
+    CFAttributedString(GetAttribute.?AndLongestEffectiveRange):
+        exclude: true
     CFAttributedString(.*):
         class: CFAttributedString
-        name: "#{g[0]}"
+        name: '#{g[0]}'
+
+    # CFBag
     CFBag(.*):
         class: CFBag
-        name: "#{g[0]}"
+        name: '#{g[0]}'
         visibility: protected
+
+    # CFBinaryHeap
+    CFBinaryHeap(Create):
+        class: CFBinaryHeap
+        name: '#{g[0]}'
+        visibility: private
+    CFBinaryHeapGetCount:
+        class: CFBinaryHeap
+        name: size
+    CFBinaryHeapGetCountOfValue:
+        class: CFBinaryHeap
+        name: count
+        visibility: private
+    CFBinaryHeap(GetMinimumIfPresent):
+        class: CFBinaryHeap
+        name: '#{g[0]}'
+        visibility: private
+    CFBinaryHeap(GetValues):
+        class: CFBinaryHeap
+        name: '#{g[0]}'
+        visibility: private
+    CFBinaryHeapApplyFunction:
+        exclude: true
+    CFBinaryHeap(Contains|Add)Value:
+        class: CFBinaryHeap
+        name: '#{g[0]}'
+        visibility: private
+    CFBinaryHeap(RemoveMinimum)Value:
+        class: CFBinaryHeap
+        name: '#{g[0]}'
+    CFBinaryHeapRemoveAllValues:
+        class: CFBinaryHeap
+        name: clear
     CFBinaryHeap(.*):
         class: CFBinaryHeap
-        name: "#{g[0]}"
+        name: '#{g[0]}'
+
+    # CFBitVector
+    CFBitVector(Create):
+        class: CFBitVector
+        name: '#{g[0]}'
+        visibility: private
+        parameters:
+            bytes:
+                type: '@Pointer long'
+    CFBitVector(GetBits):
+        class: CFBitVector
+        name: '#{g[0]}'
+        visibility: private
+        parameters:
+            bytes:
+                type: '@Pointer long'
+    CFBitVectorGetFirstIndexOfBit:
+        class: CFBitVector
+        name: indexOf
+    CFBitVectorGetLastIndexOfBit:
+        class: CFBitVector
+        name: lastIndexOf
+    CFBitVector(Get)BitAtIndex:
+        class: CFBitVector
+        name: '#{g[0]}'
+    CFBitVector(Contains)Bit:
+        class: CFBitVector
+        name: '#{g[0]}'
     CFBitVector(.*):
         class: CFBitVector
-        name: "#{g[0]}"
+        name: '#{g[0]}'
+
+    # CFBoolean
     CFBooleanGetValue:
         class: CFBoolean
         name: booleanValue
     CFBoolean(.*):
         class: CFBoolean
-        name: "#{g[0]}"
+        name: '#{g[0]}'
+
+    # CFBundle
+    CFBundle(GetBundle)WithIdentifier:
+        class: CFBundle
+        name: '#{g[0]}'
+    CFBundle(GetAllBundles):
+        class: CFBundle
+        name: '#{g[0]}'
+        return_type: List<CFBundle>
+        return_marshaler: CFArray.AsListMarshaler
+    CFBundle(CreateBundlesFromDirectory):
+        class: CFBundle
+        name: '#{g[0]}'
+        return_type: List<CFBundle>
+        return_marshaler: CFArray.AsListMarshaler
+    CFBundleCopy(.*):
+        class: CFBundle
+        name: 'get#{g[0]}'
     CFBundle(.*):
         class: CFBundle
-        name: "#{g[0]}"
+        name: '#{g[0]}'
 
     # CFCalendar
     CFCalendarCopy(.*):
@@ -520,7 +678,6 @@ functions:
     CFCharacterSet(Create).*:
         class: CFCharacterSet
         name: '#{g[0]}'
-        visibility: protected
     CFCharacterSet(.*):
         class: CFCharacterSet
         name: '#{g[0]}'
@@ -559,10 +716,13 @@ functions:
             theData: {type: CFMutableData}
 
     # CFData
+    CFData(CreateCopy):
+        class: CFData
+        name: '#{g[0]}'
     CFData(Create).*:
         class: CFData
         name: '#{g[0]}'
-        visibility: protected
+        visibility: private
         parameters:
             bytes:
                 type: '@Pointer long'
@@ -693,15 +853,32 @@ functions:
         class: CFError
         name: '#{g[0]}'
 
+    # CFFileDescriptor
+    CFFileDescriptor(Create):
+        class: CFFileDescriptor
+        name: '#{g[0]}'
+        visibility: private
+    CFFileDescriptorGetContext:
+        exclude: true
     CFFileDescriptor(.*):
         class: CFFileDescriptor
-        name: "#{g[0]}"
+        name: '#{g[0]}'
         parameters:
             callBackTypes:
                 type: CFFileDescriptorCallBackType
+
+    # CFFileSecurity
+    CFFileSecurityCopy(.*):
+        class: CFFileSecurity
+        name: 'get#{g[0]}'
+        visibility: private
+    CFFileSecurity(Get.*):
+        class: CFFileSecurity
+        name: '#{g[0]}'
+        visibility: private
     CFFileSecurity(.*):
         class: CFFileSecurity
-        name: "#{g[0]}"
+        name: '#{g[0]}'
 
     # CFLocale
     CFLocaleCopy(Current):
@@ -938,15 +1115,43 @@ functions:
 
     # CFProperlyList
     CFPropertyList(WriteToStream|CreateXMLData|CreateFromXMLData|CreateFromStream):
-        exclude: true
-    CFPropertyList(.*):
+        exclude: true # deprecated
+    CFPropertyList(CreateDeepCopy):
         class: CFPropertyList
-        name: "#{g[0]}"
+        name: '#{g[0]}'
+        return_type: CFPropertyList
         parameters:
+            propertyList:
+                type: CFPropertyList
             mutabilityOption:
                 type: CFPropertyListMutabilityOptions
-            options:
-                type: CFPropertyListMutabilityOptions
+    CFPropertyList(Create).*:
+        class: CFPropertyList
+        name: '#{g[0]}'
+        visibility: protected
+        return_type: CFPropertyList
+        throws: CFErrorException
+    CFPropertyListCreateData:
+        class: CFPropertyList
+        name: asData
+        visibility: private
+        throws: CFErrorException
+        parameters:
+            propertyList:
+                type: CFPropertyList
+    CFPropertyList(Write):
+        class: CFPropertyList
+        name: '#{g[0]}'
+        throws: CFErrorException
+        parameters:
+            propertyList:
+                type: CFPropertyList
+    CFPropertyList(.*):
+        class: CFPropertyList
+        name: '#{g[0]}'
+        parameters:
+            plist:
+                type: CFPropertyList
 
     # CFReadStream
     CFReadStream(Create).*:
@@ -1051,7 +1256,8 @@ functions:
     CFRunLoopCopy(AllModes):
         class: CFRunLoop
         name: 'get#{g[0]}'
-        return_type: '@org.robovm.rt.bro.annotation.Marshaler(CFArray.AsStringListMarshaler.class) List<String>'
+        return_type: List<String>
+        return_marshaler: CFArray.AsStringListMarshaler
     CFRunLoopCopy(.*):
         class: CFRunLoop
         name: 'get#{g[0]}'
@@ -1066,21 +1272,47 @@ functions:
     CFRunLoop(.*):
         class: CFRunLoop
         name: '#{g[0]}'
-        
+
+    # CFSet
+    CFSetGetCount:
+        class: CFSet
+        name: size
     CFSet(.*):
         class: CFSet
-        name: "#{g[0]}"
+        name: '#{g[0]}'
         visibility: protected
-    CFSocket(GetSocketFlags):
+
+    # CFSocket
+    CFSocket(CreateConnectedToSocketSignature):
         class: CFSocket
-        name: "#{g[0]}"
-        return_type: CFSocketFlags
-    CFSocket(.*):
-        class: CFSocket
-        name: "#{g[0]}"
+        name: '#{g[0]}'
+        visibility: private
         parameters:
             callBackTypes:
                 type: CFSocketCallBackType
+    CFSocket(CreateRunLoopSource):
+        class: CFSocket
+        name: '#{g[0]}'
+    CFSocket(Create).*:
+        class: CFSocket
+        name: '#{g[0]}'
+        visibility: private
+        parameters:
+            callBackTypes:
+                type: CFSocketCallBackType
+    CFSocket(GetSocketFlags):
+        class: CFSocket
+        name: '#{g[0]}'
+        return_type: CFSocketFlags
+    CFSocketCopy(.*):
+        class: CFSocket
+        name: 'get#{g[0]}'
+    CFSocketGetContext:
+        exclude: true
+    CFSocket(.*):
+        class: CFSocket
+        name: '#{g[0]}'
+        parameters:
             flags:
                 type: CFSocketFlags
 
@@ -1139,6 +1371,18 @@ functions:
                 type: CFString
             options:
                 type: '@MachineSizedUInt long'
+    CFString(Find|Compare).*:
+        class: CFString
+        name: '#{g[0]}'
+        parameters:
+            theString:
+                type: CFString
+    CFString(HasPrefix|HasSuffix):
+        class: CFString
+        name: '#{g[0]}'
+        parameters:
+            theString:
+                type: CFString
     CFString(.*):
         class: CFString
         name: '#{g[0]}'
@@ -1172,32 +1416,113 @@ functions:
     CFTimeZone(.*):
         class: CFTimeZone
         name: '#{g[0]}'
-  
+
+    # CFTree
+    CFTree(Create):
+        class: CFTree
+        name: '#{g[0]}'
+        visibility: private
+    CFTree((Get|Set)Context):
+        exclude: true
+    CFTreeGet(NextSibling|FirstChild):
+        class: CFTree
+        name: '#{g[0]}'
+    CFTree(GetChild)AtIndex:
+        class: CFTree
+        name: '#{g[0]}'
+    CFTree(GetChildren):
+        class: CFTree
+        name: '#{g[0]}'
+        visibility: private
+    CFTree(ApplyFunctionToChildren|SortChildren):
+        class: CFTree
+        name: '#{g[0]}'
+        visibility: private
     CFTree(.*):
         class: CFTree
-        name: "#{g[0]}"
+        name: '#{g[0]}'
 
     # CFURLEnumerator
     CFURLEnumerator(.*):
         class: CFURLEnumerator
         name: '#{g[0]}'
 
-    CFURL(WriteBookmarkDataToFile):
-        class: CFURL
-        name: "#{g[0]}"
-        parameters:
-            options:
-                type: "@MachineSizedUInt long"
+    # CFURL
     CFURLCreateFromFSRef.*:
         exclude: true
     CFURLGetFSRef:
         exclude: true
+    CFURLGetFileSystemRepresentation:
+        exclude: true
+    CFURL(Create.*FileSystem.*):
+        class: CFURL
+        name: '#{g[0]}'
+    CFURLCreateData:
+        class: CFURL
+        name: asData
+    CFURL(Create).*WithBytes:
+        class: CFURL
+        name: '#{g[0]}'
+        visibility: private
+    CFURL(CreateFile(Reference|Path)URL):
+        class: CFURL
+        name: '#{g[0]}'
+        throws: CFErrorException
+    CFURL.*BookmarkData.*:
+        exclude: true
+    CFURL(CreateDataAndPropertiesFromResource|WriteDataAndPropertiesToResource|DestroyResource|CreatePropertyFromResource):
+        exclude: true
+    CFURL(CreateCopy)(.*):
+        class: CFURL
+        name: '#{g[0]}By#{g[1]}'
+    CFURL(Create).*:
+        class: CFURL
+        name: '#{g[0]}'
+    CFURL(GetBytes|GetByteRangeForComponent):
+        exclude: true
+    CFURLCreateStringByReplacingPercentEscapes.*:
+        class: CFURL
+        name: decodeURLString
+    CFURLCreateStringByAddingPercentEscapes:
+        class: CFURL
+        name: encodeURLString
+    CFURLCopyResourcePropertyForKey:
+        class: CFURL
+        name: getResourceValue
+        throws: CFErrorException
+    CFURLSetResourcePropertyForKey:
+        class: CFURL
+        name: setResourceValue
+        throws: CFErrorException
+    CFURLCopyResourcePropertiesForKeys:
+        class: CFURL
+        name: getResourceValues
+        throws: CFErrorException
+    CFURLSetResourcePropertiesForKeys:
+        class: CFURL
+        name: setResourceValues
+        throws: CFErrorException
+    CFURLSetTemporaryResourcePropertyForKey:
+        exclude: true
+    CFURLCopy(.*):
+        class: CFURL
+        name: 'get#{g[0]}'
+    CFURLResourceIsReachable:
+        class: CFURL
+        name: isResourceReachable
+        throws: CFErrorException
+    CFURL(WriteBookmarkDataToFile):
+        class: CFURL
+        name: '#{g[0]}'
+        parameters:
+            options:
+                type: '@MachineSizedUInt long'
     CFURL(.*):
         class: CFURL
         name: '#{g[0]}'
-    CFCopyHomeDirectoryURL:
+    CFCopy(HomeDirectoryURL):
         class: CFURL
-        name: copyHomeDirectoryURL
+        name: 'get#{g[0]}'
 
     # CFUUID
     CFUUIDCreateString:
@@ -1297,6 +1622,12 @@ values:
         class: CFBoolean
         name: '#{g[0]}'
 
+    # CFBundle
+    kCFBundle(.*)Key:
+        enum: CFBundleInfoKey
+        name: '#{g[0]}'
+        type: CFString
+
     # CFDate
     kCF(AbsoluteTimeIntervalSince.*):
         class: CFDate
@@ -1368,9 +1699,12 @@ values:
         class: CFRunLoopMode
         name: '#{g[0]}Value'
         visibility: protected
-        
-    kCF(Socket.*Command):
-        name: "#{g[0]}"
+    
+    # CFSocket
+    kCFSocket(.*):
+        enum: CFSocketNameServerKey
+        name: '#{g[0]}'
+        type: CFString
 
     # CFStream
     kCFStreamProperty(.*):
@@ -1378,8 +1712,11 @@ values:
         name: '#{g[0]}'
         type: CFString
 
-    kCF(StringTransform.*):
-        name: "#{g[0]}"
+    # CFString
+    kCFStringTransform(.*):
+        enum: CFStringTransform
+        name: '#{g[0]}'
+        type: CFString
 
     # CFTimeZone
     kCFTimeZone(SystemTimeZoneDidChangeNotification):
@@ -1387,8 +1724,45 @@ values:
         name: '#{g[0]}'
         type: NSString
 
-    kCF(URL.*):
-        name: "#{g[0]}"
+    # CFURL
+    kCF(URLKeysOfUnsetValues)Key:
+        exclude: true
+    kCFURL(FileResourceType)Key:
+        enum: CFURLFileProperty
+        name: '#{g[0]}'
+        type: CFString
+    kCFURLFileResourceType(.*):
+        enum: CFURLFileResourceType
+        name: '#{g[0]}'
+        type: CFString
+    kCFURL(FileAllocatedSize|FileSize|IsAliasFile|IsMountTrigger|TotalFileAllocatedSize|TotalFileSize)Key:
+        enum: CFURLFileProperty
+        name: '#{g[0]}'
+        type: CFString
+    kCFURL(IsUbiquitousItem)Key:
+        enum: CFURLUbiquitousItemProperty
+        name: '#{g[0]}'
+        type: CFString
+    kCFURLUbiquitousItem(.*)Key:
+        enum: CFURLUbiquitousItemProperty
+        name: '#{g[0]}'
+        type: CFString
+    kCFURLUbiquitousItemDownloadingStatus(.*):
+        enum: CFURLUbiquitousItemDownloadingStatus
+        name: '#{g[0]}'
+        type: CFString
+    kCFURLVolume(.*)Key:
+        enum: CFURLVolumeProperty
+        name: '#{g[0]}'
+        type: CFString
+    kCFURL(.*)Key:
+        enum: CFURLFileSystemProperty
+        name: '#{g[0]}'
+        type: CFString
+    kCFURLFile.*:
+        exclude: true
+    kCFURLHTTP.*:
+        exclude: true
 
     # CoreFoundation
     kCFCoreFoundationVersionNumber:
@@ -1406,9 +1780,8 @@ constants:
         class: CoreFoundationVersionNumber
         name: '#{g[0]}'
 
-    kCF(StringEncodingInvalidId):
-        class: CoreFoundation
-        name: "#{g[0]}"
+    kCFStringEncodingInvalidId:
+        exclude: true
     kCFNotFound:
         exclude: true
     CF_USE_OSBYTEORDER_H:

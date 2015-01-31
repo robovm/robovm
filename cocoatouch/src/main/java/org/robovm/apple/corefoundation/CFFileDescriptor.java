@@ -37,6 +37,21 @@ import org.robovm.apple.foundation.*;
     extends /*<extends>*/CFType/*</extends>*/ 
     /*<implements>*//*</implements>*/ {
 
+    public interface CFFileDescriptorCallback {
+        void invoke(CFFileDescriptor fileDescriptor, CFFileDescriptorCallBackType callBackTypes);
+    }
+    
+    private static java.util.concurrent.atomic.AtomicLong refconId = new java.util.concurrent.atomic.AtomicLong();
+    private static Map<Long, CFFileDescriptorCallback> callbacks = new HashMap<Long, CFFileDescriptorCallback>();
+    private static final java.lang.reflect.Method cbInvoke;
+    
+    static {
+        try {
+            cbInvoke = CFFileDescriptor.class.getDeclaredMethod("cbInvoke", CFFileDescriptor.class, CFFileDescriptorCallBackType.class, long.class);
+        } catch (Throwable e) {
+            throw new Error(e);
+        }
+    }
     /*<ptr>*/public static class CFFileDescriptorPtr extends Ptr<CFFileDescriptor, CFFileDescriptorPtr> {}/*</ptr>*/
     /*<bind>*/static { Bro.bind(CFFileDescriptor.class); }/*</bind>*/
     /*<constants>*//*</constants>*/
@@ -45,6 +60,49 @@ import org.robovm.apple.foundation.*;
     /*</constructors>*/
     /*<properties>*//*</properties>*/
     /*<members>*//*</members>*/
+    @Callback
+    private static void cbInvoke(CFFileDescriptor fileDescriptor, CFFileDescriptorCallBackType callBackTypes, @Pointer long info) {
+        CFFileDescriptorCallback callback = null;
+        synchronized (callbacks) {
+            callback = callbacks.get(info);
+        }
+        callback.invoke(fileDescriptor, callBackTypes);
+    }
+    
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
+    public static CFFileDescriptor create(int fd, boolean closeOnInvalidate, CFFileDescriptorCallback callback) {
+        return create(null, fd, closeOnInvalidate, callback);
+    }
+    
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
+    public static CFFileDescriptor create(CFAllocator allocator, int fd, boolean closeOnInvalidate, CFFileDescriptorCallback callback) {
+        long refconId = CFFileDescriptor.refconId.getAndIncrement();
+        CFFileDescriptorContext context = new CFFileDescriptorContext();
+        context.setInfo(refconId);
+        CFFileDescriptor result = create(allocator, fd, closeOnInvalidate, new FunctionPtr(cbInvoke), context);
+        if (result != null) {
+            synchronized (callbacks) {
+                callbacks.put(refconId, callback);
+            }
+        }
+        return result;
+    }
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
+    public CFRunLoopSource createRunLoopSource(@MachineSizedSInt long order) {
+        return createRunLoopSource(null, order);
+    }
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
+    public CFRunLoopSource createRunLoopSource(CFAllocator allocator, @MachineSizedSInt long order) {
+        return createRunLoopSource(allocator, this, order);
+    }
     /*<methods>*/
     /**
      * @since Available in iOS 2.0 and later.
@@ -55,17 +113,12 @@ import org.robovm.apple.foundation.*;
      * @since Available in iOS 2.0 and later.
      */
     @Bridge(symbol="CFFileDescriptorCreate", optional=true)
-    public static native CFFileDescriptor create(CFAllocator allocator, int fd, boolean closeOnInvalidate, FunctionPtr callout, CFFileDescriptorContext context);
+    private static native CFFileDescriptor create(CFAllocator allocator, int fd, boolean closeOnInvalidate, FunctionPtr callout, CFFileDescriptorContext context);
     /**
      * @since Available in iOS 2.0 and later.
      */
     @Bridge(symbol="CFFileDescriptorGetNativeDescriptor", optional=true)
     public native int getNativeDescriptor();
-    /**
-     * @since Available in iOS 2.0 and later.
-     */
-    @Bridge(symbol="CFFileDescriptorGetContext", optional=true)
-    public native void getContext(CFFileDescriptorContext context);
     /**
      * @since Available in iOS 2.0 and later.
      */

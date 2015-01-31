@@ -52,10 +52,10 @@ import org.robovm.apple.foundation.*;
     }
     
     public static CFMutableData create(long capacity) {
-        return createMutable(null, capacity);
+        return create((CFAllocator)null, capacity);
     }
     public static CFMutableData createCopy(long capacity, CFData theData) {
-        return createMutableCopy(null, capacity, theData);
+        return createCopy(null, capacity, theData);
     }
 
     public ByteBuffer asByteBuffer() {
@@ -114,9 +114,9 @@ import org.robovm.apple.foundation.*;
     }
     /*<methods>*/
     @Bridge(symbol="CFDataCreateMutable", optional=true)
-    protected static native CFMutableData createMutable(CFAllocator allocator, @MachineSizedSInt long capacity);
+    public static native CFMutableData create(CFAllocator allocator, @MachineSizedSInt long capacity);
     @Bridge(symbol="CFDataCreateMutableCopy", optional=true)
-    protected static native CFMutableData createMutableCopy(CFAllocator allocator, @MachineSizedSInt long capacity, CFData theData);
+    public static native CFMutableData createCopy(CFAllocator allocator, @MachineSizedSInt long capacity, CFData theData);
     @Bridge(symbol="CFDataGetMutableBytePtr", optional=true)
     protected native @Pointer long getMutableBytePtr();
     @Bridge(symbol="CFDataSetLength", optional=true)

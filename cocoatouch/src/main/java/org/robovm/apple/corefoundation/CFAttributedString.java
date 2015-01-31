@@ -29,6 +29,10 @@ import org.robovm.rt.bro.ptr.*;
 import org.robovm.apple.dispatch.*;
 import org.robovm.apple.foundation.*;
 /*</imports>*/
+import org.robovm.apple.coremedia.CMTextMarkupAttribute;
+import org.robovm.apple.coremedia.CMTextMarkupAttributes;
+import org.robovm.apple.uikit.NSAttributedStringAttribute;
+import org.robovm.apple.uikit.NSAttributedStringAttributes;
 
 /*<javadoc>*/
 /*</javadoc>*/
@@ -45,6 +49,32 @@ import org.robovm.apple.foundation.*;
     /*</constructors>*/
     /*<properties>*//*</properties>*/
     /*<members>*//*</members>*/
+    public static CFAttributedString create(String str, NSAttributedStringAttributes attributes) {
+        return create(null, str, attributes);
+    }
+    public static CFAttributedString create(CFAllocator alloc, String str, NSAttributedStringAttributes attributes) {
+        return create(null, str, attributes.getDictionary().as(CFDictionary.class));
+    }
+    public static CFAttributedString create(String str, CMTextMarkupAttributes attributes) {
+        return create(null, str, attributes);
+    }
+    public static CFAttributedString create(CFAllocator alloc, String str, CMTextMarkupAttributes attributes) {
+        return create(null, str, attributes.getDictionary());
+    }
+
+    public CFType getAttribute(@MachineSizedSInt long loc, NSAttributedStringAttribute attrName, CFRange effectiveRange) {
+        return getAttribute(loc, attrName.value().as(CFString.class), effectiveRange);
+    }
+    public CFType getAttribute(@MachineSizedSInt long loc, CMTextMarkupAttribute attrName, CFRange effectiveRange) {
+        return getAttribute(loc, attrName.value(), effectiveRange);
+    }
+    
+    public NSAttributedStringAttributes getAttributes(@MachineSizedSInt long loc, CFRange effectiveRange) {
+        return new NSAttributedStringAttributes(getAttributesDictionary(loc, effectiveRange).as(NSDictionary.class));
+    }
+    public CMTextMarkupAttributes getTextMarkupAttributes(@MachineSizedSInt long loc, CFRange effectiveRange) {
+        return new CMTextMarkupAttributes(getAttributesDictionary(loc, effectiveRange));
+    }
     /*<methods>*/
     @Bridge(symbol="CFAttributedStringGetTypeID", optional=true)
     public static native @MachineSizedUInt long getClassTypeID();
@@ -57,16 +87,10 @@ import org.robovm.apple.foundation.*;
     @Bridge(symbol="CFAttributedStringGetString", optional=true)
     public native String getString();
     @Bridge(symbol="CFAttributedStringGetLength", optional=true)
-    public native @MachineSizedSInt long getLength();
+    public native @MachineSizedSInt long length();
     @Bridge(symbol="CFAttributedStringGetAttributes", optional=true)
-    public native CFDictionary getAttributes(@MachineSizedSInt long loc, CFRange effectiveRange);
+    public native CFDictionary getAttributesDictionary(@MachineSizedSInt long loc, CFRange effectiveRange);
     @Bridge(symbol="CFAttributedStringGetAttribute", optional=true)
-    public native CFType getAttribute(@MachineSizedSInt long loc, String attrName, CFRange effectiveRange);
-    @Bridge(symbol="CFAttributedStringGetAttributesAndLongestEffectiveRange", optional=true)
-    public native CFDictionary getAttributesAndLongestEffectiveRange(@MachineSizedSInt long loc, @ByVal CFRange inRange, CFRange longestEffectiveRange);
-    @Bridge(symbol="CFAttributedStringGetAttributeAndLongestEffectiveRange", optional=true)
-    public native CFType getAttributeAndLongestEffectiveRange(@MachineSizedSInt long loc, String attrName, @ByVal CFRange inRange, CFRange longestEffectiveRange);
-    @Bridge(symbol="CFAttributedStringGetMutableString", optional=true)
-    public native CFMutableString getMutableString();
+    public native CFType getAttribute(@MachineSizedSInt long loc, CFString attrName, CFRange effectiveRange);
     /*</methods>*/
 }

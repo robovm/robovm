@@ -112,6 +112,10 @@ public final class ObjCClass extends ObjCObject {
         this.type = type;
         this.name = name;
         this.custom = custom;
+        
+        if (custom) {
+            ObjCObject.ObjectOwnershipHelper.registerClass(this);
+        }
     }
     
     public Class<? extends ObjCObject> getType() {

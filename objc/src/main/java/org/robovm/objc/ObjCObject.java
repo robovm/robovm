@@ -60,6 +60,8 @@ public abstract class ObjCObject extends NativeObject {
         } catch (Throwable t) {
             throw new Error(t);
         }
+        
+        NS_OBJECT_CLASS = ObjCRuntime.objc_getClass(VM.getStringUTFChars("NSObject"));
     }
 
     /**
@@ -73,6 +75,7 @@ public abstract class ObjCObject extends NativeObject {
     private static final LongMap<ObjCObjectRef> peers = new LongMap<>();
 
     private static final long CUSTOM_CLASS_OFFSET;
+    private static final long NS_OBJECT_CLASS;
     
     private ObjCSuper zuper;
     protected final boolean customClass;
@@ -318,11 +321,61 @@ public abstract class ObjCObject extends NativeObject {
         }
     }
     
+    static class ObjectOwnershipHelper {
+        private static final Map<Long, Object> CUSTOM_OBJECTS = new HashMap<Long, Object>();
+        
+        private static final long retainCount = Selector.register("retainCount").getHandle();
+        private static final long retain = Selector.register("retain").getHandle();
+        private static final long newRetain = Selector.register("original_retain").getHandle();
+        private static final long release = Selector.register("release").getHandle();
+        private static final long newRelease = Selector.register("original_release").getHandle();
+        
+        public static void registerClass(ObjCClass objCClass) {
+            registerCallbackMethod(objCClass.getHandle(), retain, newRetain, "retain", ObjCObject.class, Long.TYPE);
+            registerCallbackMethod(objCClass.getHandle(), release, newRelease, "release", Long.TYPE, Long.TYPE);
+        }
+        
+        private static void registerCallbackMethod (long cls, long selector, long newSelector, String methodName, Class<?>... parameterTypes) {
+            Method method = null;
+            try {
+                method = ObjectOwnershipHelper.class.getDeclaredMethod(methodName, parameterTypes);
+            } catch (Throwable t) {
+                throw new Error(t);
+            }
+            long superMethod = ObjCRuntime.class_getInstanceMethod(cls, selector);
+            long typeEncoding = ObjCRuntime.method_getTypeEncoding(superMethod);
+
+            if (!ObjCRuntime.class_addMethod(cls, selector, VM.getCallbackMethodImpl(method), typeEncoding)) {
+                throw new Error("Failed to init the ObjectOwnershipHelper: class_addMethod(...) failed");
+            }
+            ObjCRuntime.class_replaceMethod(cls, newSelector, ObjCRuntime.method_getImplementation(superMethod), typeEncoding);
+        }
+
+        @Callback
+        private static @Pointer long retain (ObjCObject self, @Pointer long sel) {
+            if (ObjCRuntime.int_objc_msgSend(self.getHandle(), retainCount) == 1) {
+                synchronized (CUSTOM_OBJECTS) {
+                    CUSTOM_OBJECTS.put(self.getHandle(), self);
+                }
+            }
+            return ObjCRuntime.ptr_objc_msgSendSuper(new Super(self.getHandle(), NS_OBJECT_CLASS).getHandle(), sel);
+        }
+
+        @Callback
+        private static void release (@Pointer long self, @Pointer long sel) {
+            if (ObjCRuntime.int_objc_msgSend(self, retainCount) == 1) {
+                synchronized (CUSTOM_OBJECTS) {
+                    CUSTOM_OBJECTS.remove(self);
+                }
+            }
+            ObjCRuntime.void_objc_msgSendSuper(new Super(self, NS_OBJECT_CLASS).getHandle(), sel);
+        }
+    }
+    
     static class AssociatedObjectHelper {
         private static final String STRONG_REFS_KEY = AssociatedObjectHelper.class.getName() + ".StrongRefs";
 
         private static final int OBJC_ASSOCIATION_RETAIN_NONATOMIC = 1;
-        private static final long NS_OBJECT_CLASS;
         private static final long RELEASE_LISTENER_CLASS;
         private static final String OWNER_IVAR_NAME = "value";
         private static final int OWNER_IVAR_OFFSET;
@@ -336,7 +389,6 @@ public abstract class ObjCObject extends NativeObject {
             int ptrSize = VoidPtr.sizeOf();
             int alignment = ptrSize == 4 ? 2 : 3;
             
-            NS_OBJECT_CLASS = ObjCRuntime.objc_getClass(VM.getStringUTFChars("NSObject"));
             long cls = ObjCRuntime.objc_allocateClassPair(NS_OBJECT_CLASS, VM.getStringUTFChars("RoboVMReleaseListener"), ptrSize);
             if (cls == 0L) {
                 throw new Error("Failed to create the RoboVMReleaseListener Objective-C class: objc_allocateClassPair(...) failed");
@@ -455,25 +507,25 @@ public abstract class ObjCObject extends NativeObject {
             }
             ObjCRuntime.void_objc_msgSendSuper(new Super(self, NS_OBJECT_CLASS).getHandle(), sel);
         }
-        
-        public static final class Super extends Struct<Super> {
+    }
+    
+    public static final class Super extends Struct<Super> {
 
-            public Super(long receiver, long objcClass) {
-                receiver(receiver);
-                objCClass(objcClass);
-            }
-            
-            @StructMember(0)
-            public native @Pointer long receiver();
-            
-            @StructMember(0)
-            public native Super receiver(@Pointer long receiver);
-            
-            @StructMember(1)
-            public native @Pointer long objCClass();
-            
-            @StructMember(1)
-            public native Super objCClass(@Pointer long objCClass);
+        public Super(long receiver, long objcClass) {
+            receiver(receiver);
+            objCClass(objcClass);
         }
+        
+        @StructMember(0)
+        public native @Pointer long receiver();
+        
+        @StructMember(0)
+        public native Super receiver(@Pointer long receiver);
+        
+        @StructMember(1)
+        public native @Pointer long objCClass();
+        
+        @StructMember(1)
+        public native Super objCClass(@Pointer long objCClass);
     }
 }

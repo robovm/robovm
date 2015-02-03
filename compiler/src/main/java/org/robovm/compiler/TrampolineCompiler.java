@@ -90,6 +90,26 @@ public class TrampolineCompiler {
         return dependencies;
     }
 
+    private Linkage aliasLinkage() {
+        /*
+         * The {@link Linkage} used for alias functions used to be _private but
+         * for some reason LLVM's assembler doesn't resolve private symbols
+         * correctly when there is debug info in the module which causes weird
+         * crashes. See #559.
+         */
+        return config.isDebug() ? external : _private;
+    }
+
+    private FunctionAttribute shouldInline() {
+        /*
+         * Alias function used to be inlined always before we had debug builds.
+         * The problem with debug builds is that when the function is inlined we
+         * lose line number information for that line which. So now we don't
+         * inline alias functions in debug builds. See #559.
+         */
+        return config.isDebug() ? noinline : alwaysinline;
+    }
+
     public void compile(ModuleBuilder mb, Trampoline t) {
         this.mb = mb;
         this.dependencies = new HashSet<String>();
@@ -210,7 +230,7 @@ public class TrampolineCompiler {
         if (!mb.hasSymbol(fnName)) {
             mb.addFunctionDeclaration(new FunctionDeclaration(aliasee));
         }
-        Function fn = new FunctionBuilder(t).linkage(_private).attribs(alwaysinline, optsize).build();
+        Function fn = new FunctionBuilder(t).linkage(aliasLinkage()).attribs(shouldInline(), optsize).build();
         Value result = call(fn, aliasee, fn.getParameterRefs());
         fn.add(new Ret(result));
         mb.addFunction(fn);
@@ -225,7 +245,7 @@ public class TrampolineCompiler {
     }
 
     private void createInlinedAccessorForInstanceField(FieldAccessor t, SootField field) {
-        Function fn = new FunctionBuilder(t).linkage(_private).attribs(alwaysinline, optsize).build();
+        Function fn = new FunctionBuilder(t).linkage(aliasLinkage()).attribs(shouldInline(), optsize).build();
 
         List<SootField> classFields = Collections.emptyList();
         StructureType classType = new StructureType();

@@ -395,7 +395,6 @@ functions:
         class: CGDataProvider
         name: 'get#{g[0]}'
         return_type: NSData
-        return_marshaler: CFType.NoRetainMarshaler
     CGDataProvider(.*):
         class: CGDataProvider
         name: '#{g[0]}'

@@ -39,7 +39,7 @@ import org.robovm.apple.uikit.*;
     /*<implements>*//*</implements>*/ {
 
     /*<ptr>*/public static class CGPatternPtr extends Ptr<CGPattern, CGPatternPtr> {}/*</ptr>*/
-    
+  
     public interface DrawPattern {
         void drawPattern(CGContext context);
     }

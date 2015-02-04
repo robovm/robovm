@@ -973,7 +973,7 @@ public final class NativeCrypto {
      * a server negotiation, supplying the {@code alpnProtocols} will enable
      * ALPN negotiation.
      */
-    public static native int SSL_do_handshake(long sslNativePointer,
+    public static native long SSL_do_handshake(long sslNativePointer,
                                               FileDescriptor fd,
                                               SSLHandshakeCallbacks shc,
                                               int timeoutMillis,

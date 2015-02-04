@@ -34,23 +34,23 @@ import org.robovm.apple.uikit.*;
 /*<javadoc>*/
 /*</javadoc>*/
 /*<annotations>*/@Library("CoreGraphics")/*</annotations>*/
-@Marshaler(/*<name>*/CGPDFBoxOptions/*</name>*/.Marshaler.class)
-/*<visibility>*/public/*</visibility>*/ class /*<name>*/CGPDFBoxOptions/*</name>*/ 
+@Marshaler(/*<name>*/CGFontVariationAxis/*</name>*/.Marshaler.class)
+/*<visibility>*/public/*</visibility>*/ class /*<name>*/CGFontVariationAxis/*</name>*/ 
     extends /*<extends>*/CFDictionaryWrapper/*</extends>*/
     /*<implements>*//*</implements>*/ {
 
     /*<marshalers>*/
     public static class Marshaler {
         @MarshalsPointer
-        public static CGPDFBoxOptions toObject(Class<CGPDFBoxOptions> cls, long handle, long flags) {
+        public static CGFontVariationAxis toObject(Class<CGFontVariationAxis> cls, long handle, long flags) {
             CFDictionary o = (CFDictionary) CFType.Marshaler.toObject(CFDictionary.class, handle, flags);
             if (o == null) {
                 return null;
             }
-            return new CGPDFBoxOptions(o);
+            return new CGFontVariationAxis(o);
         }
         @MarshalsPointer
-        public static long toNative(CGPDFBoxOptions o, long flags) {
+        public static long toNative(CGFontVariationAxis o, long flags) {
             if (o == null) {
                 return 0L;
             }
@@ -59,24 +59,24 @@ import org.robovm.apple.uikit.*;
     }
     public static class AsListMarshaler {
         @MarshalsPointer
-        public static List<CGPDFBoxOptions> toObject(Class<? extends CFType> cls, long handle, long flags) {
+        public static List<CGFontVariationAxis> toObject(Class<? extends CFType> cls, long handle, long flags) {
             CFArray o = (CFArray) CFType.Marshaler.toObject(cls, handle, flags);
             if (o == null) {
                 return null;
             }
-            List<CGPDFBoxOptions> list = new ArrayList<>();
+            List<CGFontVariationAxis> list = new ArrayList<>();
             for (int i = 0; i < o.size(); i++) {
-                list.add(new CGPDFBoxOptions(o.get(i, CFDictionary.class)));
+                list.add(new CGFontVariationAxis(o.get(i, CFDictionary.class)));
             }
             return list;
         }
         @MarshalsPointer
-        public static long toNative(List<CGPDFBoxOptions> l, long flags) {
+        public static long toNative(List<CGFontVariationAxis> l, long flags) {
             if (l == null) {
                 return 0L;
             }
             CFArray array = CFMutableArray.create();
-            for (CGPDFBoxOptions i : l) {
+            for (CGFontVariationAxis i : l) {
                 array.add(i.getDictionary());
             }
             return CFType.Marshaler.toNative(array, flags);
@@ -85,10 +85,10 @@ import org.robovm.apple.uikit.*;
     /*</marshalers>*/
 
     /*<constructors>*/
-    CGPDFBoxOptions(CFDictionary data) {
+    CGFontVariationAxis(CFDictionary data) {
         super(data);
     }
-    public CGPDFBoxOptions() {}
+    public CGFontVariationAxis() {}
     /*</constructors>*/
 
     /*<methods>*/
@@ -101,7 +101,7 @@ import org.robovm.apple.uikit.*;
         }
         return null;
     }
-    public CGPDFBoxOptions set(CFString key, NativeObject value) {
+    public CGFontVariationAxis set(CFString key, NativeObject value) {
         data.put(key, value);
         return this;
     }
@@ -110,86 +110,69 @@ import org.robovm.apple.uikit.*;
     /**
      * @since Available in iOS 2.0 and later.
      */
-    public CGRect getMediaBox() {
-        if (has(Keys.MediaBox())) {
-            NSData val = get(Keys.MediaBox(), NSData.class);
-            return val.getStructData(CGRect.class);
+    public String getName() {
+        if (has(Keys.Name())) {
+            CFString val = get(Keys.Name(), CFString.class);
+            return val.toString();
         }
         return null;
     }
     /**
      * @since Available in iOS 2.0 and later.
      */
-    public CGPDFBoxOptions setMediaBox(CGRect mediaBox) {
-        set(Keys.MediaBox(), new NSData(mediaBox));
+    public CGFontVariationAxis setName(String name) {
+        set(Keys.Name(), new CFString(name));
         return this;
     }
     /**
      * @since Available in iOS 2.0 and later.
      */
-    public CGRect getCropBox() {
-        if (has(Keys.CropBox())) {
-            NSData val = get(Keys.CropBox(), NSData.class);
-            return val.getStructData(CGRect.class);
+    public double getMinValue() {
+        if (has(Keys.MinValue())) {
+            CFNumber val = get(Keys.MinValue(), CFNumber.class);
+            return val.doubleValue();
         }
-        return null;
+        return 0;
     }
     /**
      * @since Available in iOS 2.0 and later.
      */
-    public CGPDFBoxOptions setCropBox(CGRect cropBox) {
-        set(Keys.CropBox(), new NSData(cropBox));
+    public CGFontVariationAxis setMinValue(double minValue) {
+        set(Keys.MinValue(), CFNumber.valueOf(minValue));
         return this;
     }
     /**
      * @since Available in iOS 2.0 and later.
      */
-    public CGRect getBleedBox() {
-        if (has(Keys.BleedBox())) {
-            NSData val = get(Keys.BleedBox(), NSData.class);
-            return val.getStructData(CGRect.class);
+    public double getMaxValue() {
+        if (has(Keys.MaxValue())) {
+            CFNumber val = get(Keys.MaxValue(), CFNumber.class);
+            return val.doubleValue();
         }
-        return null;
+        return 0;
     }
     /**
      * @since Available in iOS 2.0 and later.
      */
-    public CGPDFBoxOptions setBleedBox(CGRect bleedBox) {
-        set(Keys.BleedBox(), new NSData(bleedBox));
+    public CGFontVariationAxis setMaxValue(double maxValue) {
+        set(Keys.MaxValue(), CFNumber.valueOf(maxValue));
         return this;
     }
     /**
      * @since Available in iOS 2.0 and later.
      */
-    public CGRect getTrimBox() {
-        if (has(Keys.TrimBox())) {
-            NSData val = get(Keys.TrimBox(), NSData.class);
-            return val.getStructData(CGRect.class);
+    public double getDefaultValue() {
+        if (has(Keys.DefaultValue())) {
+            CFNumber val = get(Keys.DefaultValue(), CFNumber.class);
+            return val.doubleValue();
         }
-        return null;
+        return 0;
     }
     /**
      * @since Available in iOS 2.0 and later.
      */
-    public CGPDFBoxOptions setTrimBox(CGRect trimBox) {
-        set(Keys.TrimBox(), new NSData(trimBox));
-        return this;
-    }
-    /**
-     * @since Available in iOS 2.0 and later.
-     */
-    public CGRect getArtBox() {
-        if (has(Keys.ArtBox())) {
-            NSData val = get(Keys.ArtBox(), NSData.class);
-            return val.getStructData(CGRect.class);
-        }
-        return null;
-    }
-    /**
-     * @since Available in iOS 2.0 and later.
-     */
-    public CGPDFBoxOptions setArtBox(CGRect artBox) {
-        set(Keys.ArtBox(), new NSData(artBox));
+    public CGFontVariationAxis setDefaultValue(double defaultValue) {
+        set(Keys.DefaultValue(), CFNumber.valueOf(defaultValue));
         return this;
     }
     /*</methods>*/
@@ -201,28 +184,23 @@ import org.robovm.apple.uikit.*;
         /**
          * @since Available in iOS 2.0 and later.
          */
-        @GlobalValue(symbol="kCGPDFContextMediaBox", optional=true)
-        public static native CFString MediaBox();
+        @GlobalValue(symbol="kCGFontVariationAxisName", optional=true)
+        public static native CFString Name();
         /**
          * @since Available in iOS 2.0 and later.
          */
-        @GlobalValue(symbol="kCGPDFContextCropBox", optional=true)
-        public static native CFString CropBox();
+        @GlobalValue(symbol="kCGFontVariationAxisMinValue", optional=true)
+        public static native CFString MinValue();
         /**
          * @since Available in iOS 2.0 and later.
          */
-        @GlobalValue(symbol="kCGPDFContextBleedBox", optional=true)
-        public static native CFString BleedBox();
+        @GlobalValue(symbol="kCGFontVariationAxisMaxValue", optional=true)
+        public static native CFString MaxValue();
         /**
          * @since Available in iOS 2.0 and later.
          */
-        @GlobalValue(symbol="kCGPDFContextTrimBox", optional=true)
-        public static native CFString TrimBox();
-        /**
-         * @since Available in iOS 2.0 and later.
-         */
-        @GlobalValue(symbol="kCGPDFContextArtBox", optional=true)
-        public static native CFString ArtBox();
+        @GlobalValue(symbol="kCGFontVariationAxisDefaultValue", optional=true)
+        public static native CFString DefaultValue();
     }
     /*</keys>*/
 }

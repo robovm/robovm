@@ -39,7 +39,7 @@ import org.robovm.apple.metal.*;
 @Marshaler(CALineJoin.Marshaler.class)
 /*<annotations>*/@Library("QuartzCore")/*</annotations>*/
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/CALineJoin/*</name>*/ 
-    extends /*<extends>*/Object/*</extends>*/ 
+    extends /*<extends>*/CocoaUtility/*</extends>*/ 
     /*<implements>*//*</implements>*/ {
 
     public static class Marshaler {

@@ -349,13 +349,18 @@ protocols:
     CAMetalDrawable: {} # DONE
 
 functions:
+    # CATransform3D
     CATransform3DMake(.*):
         class: CATransform3D
         name: 'create#{g[0]}'
+    CATransform3DEqualToTransform:
+        class: CATransform3D
+        name: equalsTo
     CATransform3D(.*):
         class: CATransform3D
         name: '#{g[0]}'
 
+    # CAAnimation
     CA(CurrentMediaTime):
         class: CAAnimation
         name: 'get#{g[0]}'

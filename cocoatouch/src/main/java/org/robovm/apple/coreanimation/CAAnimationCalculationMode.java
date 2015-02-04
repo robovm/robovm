@@ -39,7 +39,7 @@ import org.robovm.apple.metal.*;
 @Marshaler(CAAnimationCalculationMode.Marshaler.class)
 /*<annotations>*/@Library("QuartzCore")/*</annotations>*/
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/CAAnimationCalculationMode/*</name>*/ 
-    extends /*<extends>*/Object/*</extends>*/ 
+    extends /*<extends>*/CocoaUtility/*</extends>*/ 
     /*<implements>*//*</implements>*/ {
     
     public static class Marshaler {

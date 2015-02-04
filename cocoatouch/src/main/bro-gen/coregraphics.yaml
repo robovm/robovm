@@ -32,6 +32,7 @@ enums:
     CGPathElementType: {}
     CGPatternTiling: {}
     CGPDFBox: {}
+    CGPDFDataFormat: {}
     CGPDFObjectType: {}
     CGRectEdge: {prefix: CGRect}
     CGTextDrawingMode: {}
@@ -43,9 +44,6 @@ classes:
 
     # Structs
     CGAffineTransform: {}
-#    CGDataConsumerCallbacks: {}
-#    CGDataProviderDirectCallbacks: {}
-#    CGDataProviderSequentialCallbacks: {}
     CGFunctionCallbacks: {visibility: ''}
     CGPathElement: {visibility: ''}
     CGPatternCallbacks: {visibility: ''}
@@ -113,6 +111,9 @@ functions:
         class: CGAffineTransform
         name: 'create#{g[0]}'
         static: true
+    CGAffineTransformEqualToTransform:
+        class: CGAffineTransform
+        name: equalsTo
     CGAffineTransform(.*):
         class: CGAffineTransform
         name: '#{g[0]}'
@@ -121,15 +122,38 @@ functions:
     CGBitmapContext(CreateImage):
         class: CGBitmapContext
         name: toImage
-        return_type: '@org.robovm.rt.bro.annotation.Marshaler(CFType.NoRetainMarshaler.class) CGImage'
+        return_type: CGImage
+        return_marshaler: CFType.NoRetainMarshaler
         parameters:
             context:
                 type: CGBitmapContext
-    CGBitmapContext(Create.*):
+    CGBitmapContext(Create)WithData:
         class: CGBitmapContext
-        name: create
+        name: '#{g[0]}'
+        visibility: private
+        return_type: CGBitmapContext
+        return_marshaler: CFType.NoRetainMarshaler
+        parameters:
+            data:
+                type: IntPtr
+            releaseInfo:
+                type: '@Pointer long'
+    CGBitmapContext(Create):
+        class: CGBitmapContext
+        name: '#{g[0]}'
         static: true
-        return_type: '@org.robovm.rt.bro.annotation.Marshaler(CFType.NoRetainMarshaler.class) CGBitmapContext'
+        return_type: CGBitmapContext
+        return_marshaler: CFType.NoRetainMarshaler
+        parameters:
+            data:
+                type: IntPtr
+    CGBitmapContext(GetData):
+        class: CGBitmapContext
+        name: '#{g[0]}'
+        return_type: IntPtr
+        parameters:
+            context:
+                type: CGBitmapContext
     CGBitmapContext(.*):
         class: CGBitmapContext
         name: '#{g[0]}'
@@ -147,8 +171,9 @@ functions:
         class: CGColorSpace
         name: '#{g[0]}'
         static: true
-        visibility: protected
-        return_type: '@org.robovm.rt.bro.annotation.Marshaler(CFType.NoRetainMarshaler.class) CGColorSpace'
+        visibility: private
+        return_type: CGColorSpace
+        return_marshaler: CFType.NoRetainMarshaler
         parameters:
             whitePoint:
                 type: '@Pointer long'
@@ -158,8 +183,9 @@ functions:
         class: CGColorSpace
         name: '#{g[0]}'
         static: true
-        visibility: protected
-        return_type: '@org.robovm.rt.bro.annotation.Marshaler(CFType.NoRetainMarshaler.class) CGColorSpace'
+        visibility: private
+        return_type: CGColorSpace
+        return_marshaler: CFType.NoRetainMarshaler
         parameters:
             whitePoint:
                 type: '@Pointer long'
@@ -173,8 +199,9 @@ functions:
         class: CGColorSpace
         name: '#{g[0]}'
         static: true
-        visibility: protected
-        return_type: '@org.robovm.rt.bro.annotation.Marshaler(CFType.NoRetainMarshaler.class) CGColorSpace'
+        visibility: private
+        return_type: CGColorSpace
+        return_marshaler: CFType.NoRetainMarshaler
         parameters:
             range:
                 type: '@Pointer long'
@@ -182,8 +209,9 @@ functions:
         class: CGColorSpace
         name: '#{g[0]}'
         static: true
-        visibility: protected
-        return_type: '@org.robovm.rt.bro.annotation.Marshaler(CFType.NoRetainMarshaler.class) CGColorSpace'
+        visibility: private
+        return_type: CGColorSpace
+        return_marshaler: CFType.NoRetainMarshaler
         parameters:
             whitePoint:
                 type: '@Pointer long'
@@ -195,24 +223,35 @@ functions:
         class: CGColorSpace
         name: '#{g[0]}'
         static: true
-        visibility: protected
-        return_type: '@org.robovm.rt.bro.annotation.Marshaler(CFType.NoRetainMarshaler.class) CGColorSpace'
+        visibility: private
+        return_type: CGColorSpace
+        return_marshaler: CFType.NoRetainMarshaler
         parameters:
             colorTable:
                 type: '@Pointer long'
+    CGColorSpace(Create)WithName:
+        class: CGColorSpace
+        name: '#{g[0]}'
+        static: true
+        return_type: CGColorSpace
+        return_marshaler: CFType.NoRetainMarshaler
     CGColorSpace(Create.*):
         class: CGColorSpace
         name: '#{g[0]}'
-        return_type: '@org.robovm.rt.bro.annotation.Marshaler(CFType.NoRetainMarshaler.class) CGColorSpace'
         static: true
+        return_type: CGColorSpace
+        return_marshaler: CFType.NoRetainMarshaler
     CGColorSpaceCopy(Name):
         class: CGColorSpace
         name: 'get#{g[0]}'
-        return_type: '@org.robovm.rt.bro.annotation.Marshaler(CFString.AsStringNoRetainMarshaler.class) String'
+        return_marshaler: CFString.AsStringNoRetainMarshaler
+    CGColorSpaceCopy(ICCProfile):
+        class: CGColorSpace
+        name: 'get#{g[0]}'
     CGColorSpace(GetColorTable):
         class: CGColorSpace
         name: '#{g[0]}'
-        visibility: protected
+        visibility: private
         parameters:
             table:
                 type: '@Pointer long'
@@ -223,25 +262,30 @@ functions:
     # CGColor
     CGColor(Retain|Release):
         exclude: true
-    CGColor(Create|CreateWithPattern):
+    CGColor(CreateCopy).*:
         class: CGColor
         name: '#{g[0]}'
-        visibility: protected
-        return_type: '@org.robovm.rt.bro.annotation.Marshaler(CFType.NoRetainMarshaler.class) CGColor'
         static: true
+        return_type: CGColor
+        return_marshaler: CFType.NoRetainMarshaler
+    CGColor(Create|CreateWithPattern):
+        class: CGColor
+        name: create
+        visibility: private
+        static: true
+        return_type: CGColor
+        return_marshaler: CFType.NoRetainMarshaler
         parameters:
             components:
                 type: '@Pointer long'
-    CGColor(Create.*):
-        class: CGColor
-        name: '#{g[0]}'
-        return_type: '@org.robovm.rt.bro.annotation.Marshaler(CFType.NoRetainMarshaler.class) CGColor'
-        static: true
     CGColor(GetComponents):
         class: CGColor
         name: '#{g[0]}'
-        visibility: protected
+        visibility: private
         static: true
+    CGColorEqualToColor:
+        class: CGColor
+        name: equalsTo
     CGColor(.*):
         class: CGColor
         name: '#{g[0]}'
@@ -251,18 +295,18 @@ functions:
         exclude: true
     CGContext(AddRects|AddLines|FillRects|StrokeLineSegments|ClipToRects):
         class: CGContext
-        visibility: protected
+        visibility: private
         name: '#{g[0]}'
     CGContext(SetLineDash):
         class: CGContext
-        visibility: protected
+        visibility: private
         name: '#{g[0]}'
         parameters:
             lengths:
                 type: '@Pointer long'
     CGContext(SetFillColor|SetStrokeColor|SetFillPattern|SetStrokePattern):
         class: CGContext
-        visibility: protected
+        visibility: private
         name: '#{g[0]}'
         parameters:
             components:
@@ -272,7 +316,7 @@ functions:
         name: 'evenOdd#{g[0]}'
     CGContext(ShowGlyphs.*):
         class: CGContext
-        visibility: protected
+        visibility: private
         name: '#{g[0]}'
         parameters:
             g:
@@ -281,14 +325,14 @@ functions:
                 type: '@Pointer long'
     CGContext(ShowText.*):
         class: CGContext
-        visibility: protected
+        visibility: private
         name: '#{g[0]}'
         parameters:
             string:
                 type: '@Pointer long'
     CGContext(SelectFont):
         class: CGContext
-        visibility: protected
+        visibility: private
         name: '#{g[0]}'
         parameters:
             name:
@@ -296,7 +340,17 @@ functions:
     CGContextCopy(Path):
         class: CGContext
         name: 'get#{g[0]}'
-        return_type: '@org.robovm.rt.bro.annotation.Marshaler(CFType.NoRetainMarshaler.class) CGPath'
+        return_type: CGPath
+        return_marshaler: CFType.NoRetainMarshaler
+    CGContext(StrokeRect)WithWidth:
+        class: CGContext
+        name: '#{g[0]}'
+    CGContext(.*)WithColor:
+        class: CGContext
+        name: '#{g[0]}'
+    CGContext(BeginTransparencyLayer)WithRect:
+        class: CGContext
+        name: '#{g[0]}'
     CGContext(.*):
         class: CGContext
         name: '#{g[0]}'
@@ -306,11 +360,12 @@ functions:
         exclude: true
     CGDataConsumerCreate:
         exclude: true
-    CGDataConsumer(Create.*):
+    CGDataConsumer(Create).*:
         class: CGDataConsumer
-        name: create #'#{g[0]}'
-        return_type: '@org.robovm.rt.bro.annotation.Marshaler(CFType.NoRetainMarshaler.class) CGDataConsumer'
+        name: '#{g[0]}'
         static: true
+        return_type: CGDataConsumer
+        return_marshaler: CFType.NoRetainMarshaler
     CGDataConsumer(.*):
         class: CGDataConsumer
         name: '#{g[0]}'
@@ -320,24 +375,27 @@ functions:
         exclude: true
     CGDataProviderCreate(Direct|Sequential|WithData):
         exclude: true
-    CGDataProvider(CreateWithFilename):
+    CGDataProvider(Create)WithFilename:
         class: CGDataProvider
         name: '#{g[0]}'
-        visibility: protected
-        return_type: '@org.robovm.rt.bro.annotation.Marshaler(CFType.NoRetainMarshaler.class) CGDataProvider'
+        visibility: private
         static: true
+        return_type: CGDataProvider
+        return_marshaler: CFType.NoRetainMarshaler
         parameters:
             filename:
                 type: '@Pointer long'
-    CGDataProvider(Create.*):
+    CGDataProvider(Create).*:
         class: CGDataProvider
-        name: create # '#{g[0]}'
-        return_type: '@org.robovm.rt.bro.annotation.Marshaler(CFType.NoRetainMarshaler.class) CGDataProvider'
+        name: '#{g[0]}'
         static: true
-    CGDataProviderCopy(.*):
+        return_type: CGDataProvider
+        return_marshaler: CFType.NoRetainMarshaler
+    CGDataProviderCopy(Data):
         class: CGDataProvider
         name: 'get#{g[0]}'
-        return_type: 'NSData'
+        return_type: NSData
+        return_marshaler: CFType.NoRetainMarshaler
     CGDataProvider(.*):
         class: CGDataProvider
         name: '#{g[0]}'
@@ -349,36 +407,47 @@ functions:
         exclude: true
     CGFontCanCreatePostScriptSubset:
         exclude: true
-    CGFontCopy(Variations|VariationAxes|TableTags|TableForTag):
+    CGFontCopy(TableTags|TableForTag):
         exclude: true
     CGFont(Create.*):
         class: CGFont
         name: create
-        return_type: '@org.robovm.rt.bro.annotation.Marshaler(CFType.NoRetainMarshaler.class) CGFont'
+        return_type: CGFont
+        return_marshaler: CFType.NoRetainMarshaler
         static: true
     CGFontCopy(FullName|PostScriptName):
         class: CGFont
         name: 'get#{g[0]}'
-        return_type: '@org.robovm.rt.bro.annotation.Marshaler(CFString.AsStringNoRetainMarshaler.class) String'
-    CGFontCopy(GlyphNameForGlyph):
+        return_marshaler: CFString.AsStringNoRetainMarshaler
+    CGFontCopyGlyph(NameForGlyph):
         class: CGFont
         name: 'get#{g[0]}'
-        return_type: '@org.robovm.rt.bro.annotation.Marshaler(CFString.AsStringNoRetainMarshaler.class) String'
+        return_marshaler: CFString.AsStringNoRetainMarshaler
         parameters:
             glyph:
                 type: char
+    CGFontCopy(Variations):
+        class: CGFont
+        name: 'get#{g[0]}'
+        return_type: Map<String, NSNumber>
+        return_marshaler: CFDictionary.AsStringMapMarshaler
+    CGFontCopy(VariationAxes):
+        class: CGFont
+        name: 'get#{g[0]}'
+        return_type: List<CGFontVariationAxis>
+        return_marshaler: CGFontVariationAxis.AsListMarshaler
     CGFont(GetGlyphWithGlyphName):
         class: CGFont
-        name: '#{g[0]}'
+        name: getGlyphForName
         return_type: char
     CGFont(GetGlyphAdvances):
         class: CGFont
         name: '#{g[0]}'
-        visibility: protected
+        visibility: private
     CGFont(GetGlyphBBoxes):
         class: CGFont
         name: '#{g[0]}'
-        visibility: protected
+        visibility: private
     CGFont(.*):
         class: CGFont
         name: '#{g[0]}'
@@ -389,8 +458,9 @@ functions:
     CGFunction(Create):
         class: CGFunction
         name: '#{g[0]}'
-        visibility: protected
-        return_type: '@org.robovm.rt.bro.annotation.Marshaler(CFType.NoRetainMarshaler.class) CGFunction'
+        visibility: private
+        return_type: CGFunction
+        return_marshaler: CFType.NoRetainMarshaler
         parameters:
             info:
                 type: '@Pointer long'
@@ -401,12 +471,13 @@ functions:
     # CGGradient
     CGGradient(Retain|Release):
         exclude: true
-    CGGradient(Create.*):
+    CGGradient(Create).*:
         class: CGGradient
-        name: create #'#{g[0]}'
+        name: '#{g[0]}'
         static: true
-        visibility: protected
-        return_type: '@org.robovm.rt.bro.annotation.Marshaler(CFType.NoRetainMarshaler.class) CGGradient'
+        visibility: private
+        return_type: CGGradient
+        marshaler: CFType.NoRetainMarshaler
         parameters:
             components:
                 type: '@Pointer long'
@@ -421,28 +492,31 @@ functions:
     # CGImage
     CGImage(Retain|Release):
         exclude: true
-    CGImage(CreateCopy.*):
+    CGImage(CreateCopy).*:
         class: CGImage
-        name: copy
+        name: '#{g[0]}'
         static: true
-        return_type: '@org.robovm.rt.bro.annotation.Marshaler(CFType.NoRetainMarshaler.class) CGImage'
+        return_type: CGImage
+        return_marshaler: CFType.NoRetainMarshaler
     CGImage(Create|CreateWithMaskingColors|CreateWith.*DataProvider):
         class: CGImage
         name: '#{g[0]}'
         static: true
-        return_type: '@org.robovm.rt.bro.annotation.Marshaler(CFType.NoRetainMarshaler.class) CGImage'
-        visibility: protected
+        visibility: private
+        return_type: CGImage
+        return_marshaler: CFType.NoRetainMarshaler
         parameters:
             components:
                 type: '@Pointer long'
             decode:
                 type: '@Pointer long'
-    CGImage(MaskCreate):
+    CGImageMaskCreate:
         class: CGImage
         name: createMask
         static: true
-        return_type: '@org.robovm.rt.bro.annotation.Marshaler(CFType.NoRetainMarshaler.class) CGImage'
-        visibility: protected
+        visibility: private
+        return_type: CGImage
+        return_marshaler: CFType.NoRetainMarshaler
         parameters:
             decode:
                 type: '@Pointer long'
@@ -450,8 +524,11 @@ functions:
         class: CGImage
         name: '#{g[0]}'
         static: true
-        return_type: '@org.robovm.rt.bro.annotation.Marshaler(CFType.NoRetainMarshaler.class) CGImage'
-        #visibility: protected
+        return_type: CGImage
+        return_marshaler: CFType.NoRetainMarshaler
+    CGImageGet(ShouldInterpolate):
+        class: CGImage
+        name: '#{g[0]}'
     CGImage(.*):
         class: CGImage
         name: '#{g[0]}'
@@ -459,11 +536,12 @@ functions:
     # CGLayer
     CGLayer(Retain|Release):
         exclude: true
-    CGLayer(Create.*):
+    CGLayer(Create).*:
         class: CGLayer
-        name: create
+        name: '#{g[0]}'
         static: true
-        return_type: '@org.robovm.rt.bro.annotation.Marshaler(CFType.NoRetainMarshaler.class) CGLayer'
+        return_type: CGLayer
+        return_marshaler: CFType.NoRetainMarshaler
     CGLayer(.*):
         class: CGLayer
         name: '#{g[0]}'
@@ -472,7 +550,7 @@ functions:
     CGPath(AddLines|AddRects):
         class: CGMutablePath
         name: '#{g[0]}'
-        visibility: protected
+        visibility: private
     CGPath(Add.*):
         class: CGMutablePath
         name: '#{g[0]}'
@@ -480,7 +558,8 @@ functions:
         class: CGMutablePath
         name: '#{g[0]}'
         static: true
-        return_type: '@org.robovm.rt.bro.annotation.Marshaler(CFType.NoRetainMarshaler.class) CGMutablePath'
+        return_type: CGMutablePath
+        return_marshaler: CFType.NoRetainMarshaler
     CGPath(CloseSubpath|MoveToPoint):
         class: CGMutablePath
         name: '#{g[0]}'
@@ -492,8 +571,9 @@ functions:
         class: CGPath
         name: '#{g[0]}'
         static: true
-        visibility: protected
-        return_type: '@org.robovm.rt.bro.annotation.Marshaler(CFType.NoRetainMarshaler.class) CGPath'
+        visibility: private
+        return_type: CGPath
+        return_marshaler: CFType.NoRetainMarshaler
         parameters:
             lengths:
                 type: '@Pointer long'
@@ -501,16 +581,20 @@ functions:
         class: CGPath
         name: '#{g[0]}'
         static: true
-        return_type: '@org.robovm.rt.bro.annotation.Marshaler(CFType.NoRetainMarshaler.class) CGPath'
+        return_type: CGPath
+        return_marshaler: CFType.NoRetainMarshaler
     CGPath(Apply):
         class: CGPath
         name: '#{g[0]}'
-        visibility: protected
+        visibility: private
         parameters:
             info:
                 type: '@Pointer long'
             function:
                 type: '@Pointer long'
+    CGPathEqualToPath:
+        class: CGPath
+        name: equalsTo
     CGPath(.*):
         class: CGPath
         name: '#{g[0]}'
@@ -522,8 +606,9 @@ functions:
         class: CGPattern
         name: '#{g[0]}'
         static: true
-        visibility: protected
-        return_type: '@org.robovm.rt.bro.annotation.Marshaler(CFType.NoRetainMarshaler.class) CGPattern'
+        visibility: private
+        return_type: CGPattern
+        return_marshaler: CFType.NoRetainMarshaler
         parameters:
             info:
                 type: '@Pointer long'
@@ -531,37 +616,51 @@ functions:
         class: CGPattern
         name: '#{g[0]}'
 
-    # CGPDFDocument
-    CGPDFDocument(Retain|Release):
-        exclude: true
-    CGPDFDocument(GetCatalog|GetInfo|GetID):
-        exclude: true
-    CGPDFDocument(Create.*):
-        class: CGPDFDocument
+    # CGPDFArray
+    CGPDFArrayGetCount:
+        class: CGPDFArray
+        name: size
+    CGPDFArrayGetNull:
+        class: CGPDFArray
+        name: isNull
+    CGPDFArray(GetBoolean):
+        class: CGPDFArray
         name: '#{g[0]}'
-        static: true
-        return_type: '@org.robovm.rt.bro.annotation.Marshaler(CFType.NoRetainMarshaler.class) CGPDFDocument'
-    CGPDFDocument(GetVersion):
-        class: CGPDFDocument
-        name: '#{g[0]}'
-        visibility: protected
-    CGPDFDocument(UnlockWithPassword):
-        class: CGPDFDocument
-        name: '#{g[0]}'
+        visibility: private
         parameters:
-            password:
-                type: '@org.robovm.rt.bro.annotation.Marshaler(StringMarshalers.AsDefaultCharsetZMarshaler.class) String'
-    CGPDFDocument(.*):
-        class: CGPDFDocument
+            value:
+                type: BooleanPtr
+    CGPDFArray(Get.*):
+        class: CGPDFArray
+        name: '#{g[0]}'
+        visibility: private
+    CGPDFArray(.*):
+        class: CGPDFArray
         name: '#{g[0]}'
 
-    # CGPDFPage
-    CGPDFPage(Retain|Release):
+    # CGPDFContentStream
+    CGPDFContentStream(Retain|Release):
         exclude: true
-    CGPDFPage(GetDictionary):
-        exclude: true
-    CGPDFPage(.*):
-        class: CGPDFPage
+    CGPDFContentStream(Create).*:
+        class: CGPDFContentStream
+        name: '#{g[0]}'
+    CGPDFContentStream(GetStreams):
+        class: CGPDFContentStream
+        name: '#{g[0]}'
+        return_type: List<CGPDFObject>
+        return_marshaler: CFArray.AsListMarshaler
+    CGPDFContentStream(GetResource):
+        class: CGPDFContentStream
+        name: '#{g[0]}'
+        parameters:
+            category:
+                type: String
+                marshaler: StringMarshalers.AsAsciiZMarshaler
+            name:
+                type: String
+                marshaler: StringMarshalers.AsAsciiZMarshaler
+    CGPDFContentStream(.*):
+        class: CGPDFContentStream
         name: '#{g[0]}'
 
     # CGPDFContext
@@ -569,7 +668,8 @@ functions:
         class: CGPDFContext
         name: '#{g[0]}'
         static: true
-        return_type: '@org.robovm.rt.bro.annotation.Marshaler(CFType.NoRetainMarshaler.class) CGPDFContext'
+        return_type: CGPDFContext
+        return_marshaler: CFType.NoRetainMarshaler
         parameters:
             auxiliaryInfo:
                 type: CGPDFContextOptions
@@ -592,9 +692,142 @@ functions:
             context:
                 type: CGPDFContext
 
-    # Exclude all other PDF related functions for now
-    CGPDF(.*):
+    # CGPDFDictionary
+    CGPDFDictionaryApplyFunction:
         exclude: true
+    CGPDFDictionaryGetCount:
+        class: CGPDFDictionary
+        name: size
+    CGPDFDictionary(GetBoolean):
+        class: CGPDFDictionary
+        name: '#{g[0]}'
+        visibility: private
+        parameters:
+            key:
+                type: String
+                marshaler: StringMarshalers.AsDefaultCharsetZMarshaler
+            value:
+                type: BooleanPtr
+    CGPDFDictionary(Get.*):
+        class: CGPDFDictionary
+        name: '#{g[0]}'
+        visibility: private
+        parameters:
+            key:
+                type: String
+                marshaler: StringMarshalers.AsDefaultCharsetZMarshaler
+    CGPDFDictionary(.*):
+        class: CGPDFDictionary
+        name: '#{g[0]}'
+
+    # CGPDFDocument
+    CGPDFDocument(Retain|Release):
+        exclude: true
+    CGPDFDocument(GetCatalog|GetInfo|GetID):
+        exclude: true
+    CGPDFDocument(Create).*:
+        class: CGPDFDocument
+        name: '#{g[0]}'
+        static: true
+        return_type: CGPDFDocument
+        return_marshaler: CFType.NoRetainMarshaler
+    CGPDFDocument(GetVersion):
+        class: CGPDFDocument
+        name: '#{g[0]}'
+        visibility: private
+    CGPDFDocument(Unlock)WithPassword:
+        class: CGPDFDocument
+        name: '#{g[0]}'
+        parameters:
+            password:
+                type: String
+                marshaler: StringMarshalers.AsDefaultCharsetZMarshaler
+    CGPDFDocument(.*):
+        class: CGPDFDocument
+        name: '#{g[0]}'
+
+    # CGPDFObject
+    CGPDFObject(GetValue):
+        class: CGPDFObject
+        name: '#{g[0]}'
+        visibility: private
+    CGPDFObject(.*):
+        class: CGPDFObject
+        name: '#{g[0]}'
+
+    # CGPDFOperatorTable
+    CGPDFOperatorTable(Retain|Release):
+        exclude: true
+    CGPDFOperatorTable(SetCallback):
+        class: CGPDFOperatorTable
+        name: '#{g[0]}'
+        visibility: private
+        parameters:
+            name:
+                type: String
+                marshaler: StringMarshalers.AsAsciiZMarshaler
+    CGPDFOperatorTable(.*):
+        class: CGPDFOperatorTable
+        name: '#{g[0]}'
+
+    # CGPDFPage
+    CGPDFPage(Retain|Release):
+        exclude: true
+    CGPDFPage(.*):
+        class: CGPDFPage
+        name: '#{g[0]}'
+
+    # CGPDFScanner
+    CGPDFScanner(Retain|Release):
+        exclude: true
+    CGPDFScanner(Create):
+        class: CGPDFScanner
+        name: '#{g[0]}'
+        visibility: private
+        parameters:
+            info:
+                type: '@Pointer long'
+    CGPDFScanner(PopBoolean):
+        class: CGPDFScanner
+        name: '#{g[0]}'
+        visibility: private
+        parameters:
+            value:
+                type: BooleanPtr
+    CGPDFScanner(Pop.*):
+        class: CGPDFScanner
+        name: '#{g[0]}'
+        visibility: private
+    CGPDFScanner(.*):
+        class: CGPDFScanner
+        name: '#{g[0]}'
+
+    # CGPDFStream
+    CGPDFStreamCopy(Data):
+        class: CGPDFStream
+        name: 'get#{g[0]}'
+        visibility: private
+    CGPDFStream(.*):
+        class: CGPDFStream
+        name: '#{g[0]}'
+
+    # CGPDFString
+    CGPDFStringGetBytePtr:
+        exclude: true
+    CGPDFStringGet(Length):
+        class: CGPDFString
+        name: '#{g[0]}'
+    CGPDFStringCopy(TextString):
+        class: CGPDFString
+        name: 'get#{g[0]}'
+        return_marshaler: CFString.AsStringNoRetainMarshaler
+    CGPDFStringCopy(Date):
+        class: CGPDFString
+        name: 'get#{g[0]}'
+        return_type: NSDate
+    CGPDFString(.*):
+        class: CGPDFString
+        name: '#{g[0]}'
 
     # CGPoint
     CGPointMake:
@@ -613,6 +846,9 @@ functions:
     CGPoint(Apply).*:
         class: CGPoint
         name: '#{g[0]}'
+    CGPointEqualToPoint:
+        class: CGPoint
+        name: equalsTo
     CGPoint(.*):
         class: CGPoint
         name: '#{g[0]}'
@@ -634,6 +870,9 @@ functions:
     CGRect(Contains|Intersects|Apply).*:
         class: CGRect
         name: '#{g[0]}'
+    CGRectEqualToRect:
+        class: CGRect
+        name: equalsTo
     CGRect(.*):
         class: CGRect
         name: '#{g[0]}'
@@ -645,7 +884,8 @@ functions:
         class: CGShading
         name: '#{g[0]}'
         static: true
-        return_type: '@org.robovm.rt.bro.annotation.Marshaler(CFType.NoRetainMarshaler.class) CGShading'
+        return_type: CGShading
+        return_marshaler: CFType.NoRetainMarshaler
     CGShading(.*):
         class: CGShading
         name: '#{g[0]}'
@@ -667,6 +907,9 @@ functions:
     CGSize(Apply).*:
         class: CGSize
         name: '#{g[0]}'
+    CGSizeEqualToSize:
+        class: CGSize
+        name: equalsTo
     CGSize(.*):
         class: CGSize
         name: '#{g[0]}'
@@ -687,33 +930,66 @@ functions:
 values:
     # CGPDFContext
     kCGPDFContext(.*Box):
-        class: CGPDFBoxOptions
-        name: '#{g[0]}Key'
+        dictionary: CGPDFBoxOptions
+        name: '#{g[0]}'
         type: CFString
-        visibility: protected
+        methods:
+            MediaBox:
+                type: CGRect
+            CropBox:
+                type: CGRect
+            BleedBox:
+                type: CGRect
+            TrimBox:
+                type: CGRect
+            ArtBox:
+                type: CGRect
     kCGPDFContext(.*):
-        class: CGPDFContextOptions
-        name: '#{g[0]}Key'
+        dictionary: CGPDFContextOptions
+        name: '#{g[0]}'
         type: CFString
-        visibility: protected
-
-    # Exclude PDF related values for now
-    kCGPDF(.*):
-        exclude: true
+        methods:
+            Title:
+                type: String
+            Author:
+                type: String
+            Subject:
+                type: String
+            Keywords:
+                type: String
+            Creator:
+                type: String
+            OwnerPassword:
+                type: String
+            UserPassword:
+                type: String
+            EncryptionKeyLength:
+                type: int
+            AllowsPrinting:
+                type: boolean
+            AllowsCopying:
+                type: boolean    
 
     # CGAffineTransform
     CGAffineTransform(.*):
         class: CGAffineTransform
         name: '#{g[0]}'
 
-    # CGColorSpace
-    kCG(ColorSpace.*):
+    # CGFont
+    kCGFontVariationAxis(.*):
+        dictionary: CGFontVariationAxis
         name: '#{g[0]}'
-
-    # CGColor
-    kCG(Color.*):
-        name: '#{g[0]}'
-
+        type: CFString
+        methods:
+            Name:
+                type: String
+            MinValue:
+                type: double
+            MaxValue:
+                type: double
+            DefaultValue:
+                type: double
+    
     # CGPoint
     CGPoint(.*):
         class: CGPoint
@@ -736,11 +1012,12 @@ values:
 
 
 constants:
-    # Exclude PDF related constants for now
-    kCGPDF(.*):
+    (CGFLOAT_IS_DOUBLE|CGFLOAT_DEFINED|CGVECTOR_DEFINED):
         exclude: true
 
     # CGFont
+    CGGlyph(Min|Max): # deprecated
+        exclude: true
     kCG(FontIndex.*):
         class: CGFont
         name: '#{g[0]}'

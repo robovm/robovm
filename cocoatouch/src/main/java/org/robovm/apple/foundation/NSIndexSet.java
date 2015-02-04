@@ -76,7 +76,7 @@ import org.robovm.apple.dispatch.*;
     @Method(selector = "initWithIndex:")
     protected native @Pointer long init(@MachineSizedUInt long value);
     @Method(selector = "isEqualToIndexSet:")
-    public native boolean equals(NSIndexSet indexSet);
+    public native boolean equalsTo(NSIndexSet indexSet);
     @Method(selector = "indexGreaterThanIndex:")
     public native @MachineSizedUInt long greaterThan(@MachineSizedUInt long value);
     @Method(selector = "indexLessThanIndex:")

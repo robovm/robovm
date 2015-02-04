@@ -46,7 +46,6 @@ import org.robovm.apple.uikit.*;
     /*</constructors>*/
     /*<properties>*//*</properties>*/
     /*<members>*//*</members>*/
-    
     public int getMajorVersion() {
         IntPtr major = new IntPtr();
         IntPtr minor = new IntPtr();
@@ -60,23 +59,22 @@ import org.robovm.apple.uikit.*;
         getVersion(major, minor);
         return minor.get();
     }
-
     /*<methods>*/
     /**
      * @since Available in iOS 2.0 and later.
      */
     @Bridge(symbol="CGPDFDocumentCreateWithProvider", optional=true)
-    public static native @org.robovm.rt.bro.annotation.Marshaler(CFType.NoRetainMarshaler.class) CGPDFDocument createWithProvider(CGDataProvider provider);
+    public static native @org.robovm.rt.bro.annotation.Marshaler(CFType.NoRetainMarshaler.class) CGPDFDocument create(CGDataProvider provider);
     /**
      * @since Available in iOS 2.0 and later.
      */
     @Bridge(symbol="CGPDFDocumentCreateWithURL", optional=true)
-    public static native @org.robovm.rt.bro.annotation.Marshaler(CFType.NoRetainMarshaler.class) CGPDFDocument createWithURL(NSURL url);
+    public static native @org.robovm.rt.bro.annotation.Marshaler(CFType.NoRetainMarshaler.class) CGPDFDocument create(NSURL url);
     /**
      * @since Available in iOS 2.0 and later.
      */
     @Bridge(symbol="CGPDFDocumentGetVersion", optional=true)
-    protected native void getVersion(IntPtr majorVersion, IntPtr minorVersion);
+    private native void getVersion(IntPtr majorVersion, IntPtr minorVersion);
     /**
      * @since Available in iOS 2.0 and later.
      */
@@ -86,7 +84,7 @@ import org.robovm.apple.uikit.*;
      * @since Available in iOS 2.0 and later.
      */
     @Bridge(symbol="CGPDFDocumentUnlockWithPassword", optional=true)
-    public native boolean unlockWithPassword(@org.robovm.rt.bro.annotation.Marshaler(StringMarshalers.AsDefaultCharsetZMarshaler.class) String password);
+    public native boolean unlock(@org.robovm.rt.bro.annotation.Marshaler(StringMarshalers.AsDefaultCharsetZMarshaler.class) String password);
     /**
      * @since Available in iOS 2.0 and later.
      */

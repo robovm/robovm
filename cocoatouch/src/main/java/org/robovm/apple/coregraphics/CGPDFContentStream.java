@@ -33,19 +33,39 @@ import org.robovm.apple.uikit.*;
 
 /*<javadoc>*/
 /*</javadoc>*/
-/*<annotations>*//*</annotations>*/
+/*<annotations>*/@Library("CoreGraphics")/*</annotations>*/
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/CGPDFContentStream/*</name>*/ 
     extends /*<extends>*/NativeObject/*</extends>*/ 
     /*<implements>*//*</implements>*/ {
 
     /*<ptr>*/public static class CGPDFContentStreamPtr extends Ptr<CGPDFContentStream, CGPDFContentStreamPtr> {}/*</ptr>*/
-    /*<bind>*/
-    /*</bind>*/
+    /*<bind>*/static { Bro.bind(CGPDFContentStream.class); }/*</bind>*/
     /*<constants>*//*</constants>*/
     /*<constructors>*/
     protected CGPDFContentStream() {}
     /*</constructors>*/
     /*<properties>*//*</properties>*/
     /*<members>*//*</members>*/
-    /*<methods>*//*</methods>*/
+    /*<methods>*/
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
+    @Bridge(symbol="CGPDFContentStreamCreateWithPage", optional=true)
+    public static native CGPDFContentStream create(CGPDFPage page);
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
+    @Bridge(symbol="CGPDFContentStreamCreateWithStream", optional=true)
+    public static native CGPDFContentStream create(CGPDFStream stream, CGPDFDictionary streamResources, CGPDFContentStream parent);
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
+    @Bridge(symbol="CGPDFContentStreamGetStreams", optional=true)
+    public native @org.robovm.rt.bro.annotation.Marshaler(CFArray.AsListMarshaler.class) List<CGPDFObject> getStreams();
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
+    @Bridge(symbol="CGPDFContentStreamGetResource", optional=true)
+    public native CGPDFObject getResource(@org.robovm.rt.bro.annotation.Marshaler(StringMarshalers.AsAsciiZMarshaler.class) String category, @org.robovm.rt.bro.annotation.Marshaler(StringMarshalers.AsAsciiZMarshaler.class) String name);
+    /*</methods>*/
 }

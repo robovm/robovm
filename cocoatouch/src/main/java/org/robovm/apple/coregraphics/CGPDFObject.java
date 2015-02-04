@@ -33,19 +33,88 @@ import org.robovm.apple.uikit.*;
 
 /*<javadoc>*/
 /*</javadoc>*/
-/*<annotations>*//*</annotations>*/
+/*<annotations>*/@Library("CoreGraphics")/*</annotations>*/
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/CGPDFObject/*</name>*/ 
     extends /*<extends>*/NativeObject/*</extends>*/ 
     /*<implements>*//*</implements>*/ {
 
     /*<ptr>*/public static class CGPDFObjectPtr extends Ptr<CGPDFObject, CGPDFObjectPtr> {}/*</ptr>*/
-    /*<bind>*/
-    /*</bind>*/
+    /*<bind>*/static { Bro.bind(CGPDFObject.class); }/*</bind>*/
     /*<constants>*//*</constants>*/
     /*<constructors>*/
     protected CGPDFObject() {}
     /*</constructors>*/
     /*<properties>*//*</properties>*/
     /*<members>*//*</members>*/
-    /*<methods>*//*</methods>*/
+    public boolean isNull() {
+        return getValue(CGPDFObjectType.Null, new VoidPtr());
+    }
+    public boolean booleanValue() {
+        VoidPtr ptr = new VoidPtr();
+        if (getValue(CGPDFObjectType.Boolean, ptr)) {
+            return ptr.as(BooleanPtr.class).get();
+        }
+        return false;
+    }
+    public long longValue() {
+        VoidPtr ptr = new VoidPtr();
+        if (getValue(CGPDFObjectType.Integer, ptr)) {
+            return ptr.as(LongPtr.class).get();
+        }
+        return 0;
+    }
+    public double doubleValue() {
+        VoidPtr ptr = new VoidPtr();
+        if (getValue(CGPDFObjectType.Real, ptr)) {
+            return ptr.as(DoublePtr.class).get();
+        }
+        return 0;
+    }
+    public String nameValue() {
+        VoidPtr ptr = new VoidPtr();
+        if (getValue(CGPDFObjectType.Name, ptr)) {
+            return ptr.as(BytePtr.class).toStringZ();
+        }
+        return null;
+    }
+    public String stringValue() {
+        VoidPtr ptr = new VoidPtr();
+        if (getValue(CGPDFObjectType.String, ptr)) {
+            return ptr.as(BytePtr.class).toStringZ();
+        }
+        return null;
+    }
+    public CGPDFArray arrayValue() {
+        VoidPtr ptr = new VoidPtr();
+        if (getValue(CGPDFObjectType.Array, ptr)) {
+            return ptr.as(CGPDFArray.CGPDFArrayPtr.class).get();
+        }
+        return null;
+    }
+    public CGPDFDictionary dictionaryValue() {
+        VoidPtr ptr = new VoidPtr();
+        if (getValue(CGPDFObjectType.Dictionary, ptr)) {
+            return ptr.as(CGPDFDictionary.CGPDFDictionaryPtr.class).get();
+        }
+        return null;
+    }
+    public CGPDFStream streamValue() {
+        VoidPtr ptr = new VoidPtr();
+        if (getValue(CGPDFObjectType.Stream, ptr)) {
+            return ptr.as(CGPDFStream.CGPDFStreamPtr.class).get();
+        }
+        return null;
+    }
+    /*<methods>*/
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
+    @Bridge(symbol="CGPDFObjectGetType", optional=true)
+    public native CGPDFObjectType getType();
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
+    @Bridge(symbol="CGPDFObjectGetValue", optional=true)
+    private native boolean getValue(CGPDFObjectType type, VoidPtr value);
+    /*</methods>*/
 }

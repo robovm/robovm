@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 Trillian Mobile AB
+ * Copyright (C) 2015 Trillian Mobile AB
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -33,12 +33,13 @@ import org.robovm.apple.uikit.*;
 
 /*<javadoc>*/
 /*</javadoc>*/
-@Marshaler(CGPDFContextOptions.Marshaler.class)
 /*<annotations>*/@Library("CoreGraphics")/*</annotations>*/
+@Marshaler(/*<name>*/CGPDFContextOptions/*</name>*/.Marshaler.class)
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/CGPDFContextOptions/*</name>*/ 
-    extends /*<extends>*/Object/*</extends>*/ 
+    extends /*<extends>*/CFDictionaryWrapper/*</extends>*/
     /*<implements>*//*</implements>*/ {
 
+    /*<marshalers>*/
     public static class Marshaler {
         @MarshalsPointer
         public static CGPDFContextOptions toObject(Class<CGPDFContextOptions> cls, long handle, long flags) {
@@ -56,89 +57,40 @@ import org.robovm.apple.uikit.*;
             return CFType.Marshaler.toNative(o.data, flags);
         }
     }
-    /*<ptr>*/
-    /*</ptr>*/
-    private CFDictionary data;
-    
-    private CGPDFContextOptions(CFDictionary data) {
-        this.data = data;
-    }
-    public CGPDFContextOptions() {
-        this.data = CFMutableDictionary.create();
-    }
-    /*<bind>*/static { Bro.bind(CGPDFContextOptions.class); }/*</bind>*/
-    /*<constants>*//*</constants>*/
-    /*<constructors>*//*</constructors>*/
-    /*<properties>*//*</properties>*/
-    /*<members>*//*</members>*/
-    /**
-     * @since Available in iOS 2.0 and later.
-     */
-    public String getTitle() {
-        if (data.containsKey(TitleKey())) {
-            CFString val = data.get(TitleKey(), CFString.class);
-            return val.toString();
+    public static class AsListMarshaler {
+        @MarshalsPointer
+        public static List<CGPDFContextOptions> toObject(Class<? extends CFType> cls, long handle, long flags) {
+            CFArray o = (CFArray) CFType.Marshaler.toObject(cls, handle, flags);
+            if (o == null) {
+                return null;
+            }
+            List<CGPDFContextOptions> list = new ArrayList<>();
+            for (int i = 0; i < o.size(); i++) {
+                list.add(new CGPDFContextOptions(o.get(i, CFDictionary.class)));
+            }
+            return list;
         }
-        return null;
-    }
-    /**
-     * @since Available in iOS 2.0 and later.
-     */
-    public CGPDFContextOptions setTitle(String title) {
-        data.put(TitleKey(), new CFString(title));
-        return this;
-    }
-    /**
-     * @since Available in iOS 2.0 and later.
-     */
-    public String getAuthor() {
-        if (data.containsKey(AuthorKey())) {
-            CFString val = data.get(AuthorKey(), CFString.class);
-            return val.toString();
+        @MarshalsPointer
+        public static long toNative(List<CGPDFContextOptions> l, long flags) {
+            if (l == null) {
+                return 0L;
+            }
+            CFArray array = CFMutableArray.create();
+            for (CGPDFContextOptions i : l) {
+                array.add(i.getDictionary());
+            }
+            return CFType.Marshaler.toNative(array, flags);
         }
-        return null;
     }
-    /**
-     * @since Available in iOS 2.0 and later.
-     */
-    public CGPDFContextOptions setAuthor(String author) {
-        data.put(AuthorKey(), new CFString(author));
-        return this;
+    /*</marshalers>*/
+
+    /*<constructors>*/
+    CGPDFContextOptions(CFDictionary data) {
+        super(data);
     }
-    /**
-     * @since Available in iOS 2.0 and later.
-     */
-    public String getSubject() {
-        if (data.containsKey(SubjectKey())) {
-            CFString val = data.get(SubjectKey(), CFString.class);
-            return val.toString();
-        }
-        return null;
-    }
-    /**
-     * @since Available in iOS 2.0 and later.
-     */
-    public CGPDFContextOptions setSubject(String subject) {
-        data.put(SubjectKey(), new CFString(subject));
-        return this;
-    }
-    /**
-     * @since Available in iOS 2.0 and later.
-     */
-    public String getKeywords() {
-        if (data.containsKey(KeywordsKey())) {
-            CFString val = data.get(KeywordsKey(), CFString.class);
-            return val.toString();
-        }
-        return null;
-    }
-    /**
-     * @since Available in iOS 2.0 and later.
-     */
-    public CGPDFContextOptions setKeywoards(String keywords) {
-        data.put(KeywordsKey(), new CFString(keywords));
-        return this;
-    }
+    public CGPDFContextOptions() {}
+    /*</constructors>*/
+
     /**
      * @since Available in iOS 2.0 and later.
      */
@@ -147,15 +99,100 @@ import org.robovm.apple.uikit.*;
         for (String keyword : keywords) {
             list.add(new CFString(keyword));
         }
-        data.put(KeywordsKey(), list);
+        set(Keys.Keywords(), list);
+        return this;
+    }
+    
+    /*<methods>*/
+    public boolean has(CFString key) {
+        return data.containsKey(key);
+    }
+    public <T extends NativeObject> T get(CFString key, Class<T> type) {
+        if (has(key)) {
+            return data.get(key, type);
+        }
+        return null;
+    }
+    public CGPDFContextOptions set(CFString key, NativeObject value) {
+        data.put(key, value);
+        return this;
+    }
+    
+
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
+    public String getTitle() {
+        if (has(Keys.Title())) {
+            CFString val = get(Keys.Title(), CFString.class);
+            return val.toString();
+        }
+        return null;
+    }
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
+    public CGPDFContextOptions setTitle(String title) {
+        set(Keys.Title(), new CFString(title));
+        return this;
+    }
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
+    public String getAuthor() {
+        if (has(Keys.Author())) {
+            CFString val = get(Keys.Author(), CFString.class);
+            return val.toString();
+        }
+        return null;
+    }
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
+    public CGPDFContextOptions setAuthor(String author) {
+        set(Keys.Author(), new CFString(author));
+        return this;
+    }
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
+    public String getSubject() {
+        if (has(Keys.Subject())) {
+            CFString val = get(Keys.Subject(), CFString.class);
+            return val.toString();
+        }
+        return null;
+    }
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
+    public CGPDFContextOptions setSubject(String subject) {
+        set(Keys.Subject(), new CFString(subject));
+        return this;
+    }
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
+    public String getKeywords() {
+        if (has(Keys.Keywords())) {
+            CFString val = get(Keys.Keywords(), CFString.class);
+            return val.toString();
+        }
+        return null;
+    }
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
+    public CGPDFContextOptions setKeywords(String keywords) {
+        set(Keys.Keywords(), new CFString(keywords));
         return this;
     }
     /**
      * @since Available in iOS 2.0 and later.
      */
     public String getCreator() {
-        if (data.containsKey(CreatorKey())) {
-            CFString val = data.get(CreatorKey(), CFString.class);
+        if (has(Keys.Creator())) {
+            CFString val = get(Keys.Creator(), CFString.class);
             return val.toString();
         }
         return null;
@@ -164,15 +201,15 @@ import org.robovm.apple.uikit.*;
      * @since Available in iOS 2.0 and later.
      */
     public CGPDFContextOptions setCreator(String creator) {
-        data.put(CreatorKey(), new CFString(creator));
+        set(Keys.Creator(), new CFString(creator));
         return this;
     }
     /**
      * @since Available in iOS 2.0 and later.
      */
     public String getOwnerPassword() {
-        if (data.containsKey(OwnerPasswordKey())) {
-            CFString val = data.get(OwnerPasswordKey(), CFString.class);
+        if (has(Keys.OwnerPassword())) {
+            CFString val = get(Keys.OwnerPassword(), CFString.class);
             return val.toString();
         }
         return null;
@@ -180,16 +217,16 @@ import org.robovm.apple.uikit.*;
     /**
      * @since Available in iOS 2.0 and later.
      */
-    public CGPDFContextOptions setOwnerPassword(String password) {
-        data.put(OwnerPasswordKey(), new CFString(password));
+    public CGPDFContextOptions setOwnerPassword(String ownerPassword) {
+        set(Keys.OwnerPassword(), new CFString(ownerPassword));
         return this;
     }
     /**
      * @since Available in iOS 2.0 and later.
      */
     public String getUserPassword() {
-        if (data.containsKey(UserPasswordKey())) {
-            CFString val = data.get(UserPasswordKey(), CFString.class);
+        if (has(Keys.UserPassword())) {
+            CFString val = get(Keys.UserPassword(), CFString.class);
             return val.toString();
         }
         return null;
@@ -197,117 +234,117 @@ import org.robovm.apple.uikit.*;
     /**
      * @since Available in iOS 2.0 and later.
      */
-    public CGPDFContextOptions setUserPassword(String password) {
-        data.put(UserPasswordKey(), new CFString(password));
+    public CGPDFContextOptions setUserPassword(String userPassword) {
+        set(Keys.UserPassword(), new CFString(userPassword));
         return this;
     }
     /**
      * @since Available in iOS 2.0 and later.
      */
     public int getEncryptionKeyLength() {
-        if (data.containsKey(EncryptionKeyLengthKey())) {
-            CFNumber val = data.get(EncryptionKeyLengthKey(), CFNumber.class);
+        if (has(Keys.EncryptionKeyLength())) {
+            CFNumber val = get(Keys.EncryptionKeyLength(), CFNumber.class);
             return val.intValue();
         }
-        return 40;
+        return 0;
     }
     /**
      * @since Available in iOS 2.0 and later.
      */
-    public CGPDFContextOptions setEncryptionKeyLength(int keyLength) {
-        data.put(EncryptionKeyLengthKey(), CFNumber.valueOf(keyLength));
+    public CGPDFContextOptions setEncryptionKeyLength(int encryptionKeyLength) {
+        set(Keys.EncryptionKeyLength(), CFNumber.valueOf(encryptionKeyLength));
         return this;
     }
     /**
      * @since Available in iOS 2.0 and later.
      */
-    public boolean isAllowsPrinting() {
-        if (data.containsKey(AllowsPrintingKey())) {
-            CFBoolean val = data.get(AllowsPrintingKey(), CFBoolean.class);
+    public boolean allowsPrinting() {
+        if (has(Keys.AllowsPrinting())) {
+            CFBoolean val = get(Keys.AllowsPrinting(), CFBoolean.class);
             return val.booleanValue();
         }
-        return true;
+        return false;
     }
     /**
      * @since Available in iOS 2.0 and later.
      */
     public CGPDFContextOptions setAllowsPrinting(boolean allowsPrinting) {
-        data.put(AllowsPrintingKey(), CFBoolean.valueOf(allowsPrinting));
+        set(Keys.AllowsPrinting(), CFBoolean.valueOf(allowsPrinting));
         return this;
     }
     /**
      * @since Available in iOS 2.0 and later.
      */
-    public boolean isAllowsCopying() {
-        if (data.containsKey(AllowsCopyingKey())) {
-            CFBoolean val = data.get(AllowsCopyingKey(), CFBoolean.class);
+    public boolean allowsCopying() {
+        if (has(Keys.AllowsCopying())) {
+            CFBoolean val = get(Keys.AllowsCopying(), CFBoolean.class);
             return val.booleanValue();
         }
-        return true;
+        return false;
     }
     /**
      * @since Available in iOS 2.0 and later.
      */
     public CGPDFContextOptions setAllowsCopying(boolean allowsCopying) {
-        data.put(AllowsCopyingKey(), CFBoolean.valueOf(allowsCopying));
+        set(Keys.AllowsCopying(), CFBoolean.valueOf(allowsCopying));
         return this;
     }
-    /*<methods>*/
-    /**
-     * @since Available in iOS 2.0 and later.
-     */
-    @GlobalValue(symbol="kCGPDFContextTitle", optional=true)
-    protected static native CFString TitleKey();
-    /**
-     * @since Available in iOS 2.0 and later.
-     */
-    @GlobalValue(symbol="kCGPDFContextAuthor", optional=true)
-    protected static native CFString AuthorKey();
-    /**
-     * @since Available in iOS 2.0 and later.
-     */
-    @GlobalValue(symbol="kCGPDFContextSubject", optional=true)
-    protected static native CFString SubjectKey();
-    /**
-     * @since Available in iOS 2.0 and later.
-     */
-    @GlobalValue(symbol="kCGPDFContextKeywords", optional=true)
-    protected static native CFString KeywordsKey();
-    /**
-     * @since Available in iOS 2.0 and later.
-     */
-    @GlobalValue(symbol="kCGPDFContextCreator", optional=true)
-    protected static native CFString CreatorKey();
-    /**
-     * @since Available in iOS 2.0 and later.
-     */
-    @GlobalValue(symbol="kCGPDFContextOwnerPassword", optional=true)
-    protected static native CFString OwnerPasswordKey();
-    /**
-     * @since Available in iOS 2.0 and later.
-     */
-    @GlobalValue(symbol="kCGPDFContextUserPassword", optional=true)
-    protected static native CFString UserPasswordKey();
-    /**
-     * @since Available in iOS 2.0 and later.
-     */
-    @GlobalValue(symbol="kCGPDFContextEncryptionKeyLength", optional=true)
-    protected static native CFString EncryptionKeyLengthKey();
-    /**
-     * @since Available in iOS 2.0 and later.
-     */
-    @GlobalValue(symbol="kCGPDFContextAllowsPrinting", optional=true)
-    protected static native CFString AllowsPrintingKey();
-    /**
-     * @since Available in iOS 2.0 and later.
-     */
-    @GlobalValue(symbol="kCGPDFContextAllowsCopying", optional=true)
-    protected static native CFString AllowsCopyingKey();
     /*</methods>*/
     
-    @Override
-    public String toString() {
-        if (data != null) return data.toString();
-        return super.toString();
+    /*<keys>*/
+    @Library("CoreGraphics")
+    public static class Keys {
+        static { Bro.bind(Keys.class); }
+        /**
+         * @since Available in iOS 2.0 and later.
+         */
+        @GlobalValue(symbol="kCGPDFContextTitle", optional=true)
+        public static native CFString Title();
+        /**
+         * @since Available in iOS 2.0 and later.
+         */
+        @GlobalValue(symbol="kCGPDFContextAuthor", optional=true)
+        public static native CFString Author();
+        /**
+         * @since Available in iOS 2.0 and later.
+         */
+        @GlobalValue(symbol="kCGPDFContextSubject", optional=true)
+        public static native CFString Subject();
+        /**
+         * @since Available in iOS 2.0 and later.
+         */
+        @GlobalValue(symbol="kCGPDFContextKeywords", optional=true)
+        public static native CFString Keywords();
+        /**
+         * @since Available in iOS 2.0 and later.
+         */
+        @GlobalValue(symbol="kCGPDFContextCreator", optional=true)
+        public static native CFString Creator();
+        /**
+         * @since Available in iOS 2.0 and later.
+         */
+        @GlobalValue(symbol="kCGPDFContextOwnerPassword", optional=true)
+        public static native CFString OwnerPassword();
+        /**
+         * @since Available in iOS 2.0 and later.
+         */
+        @GlobalValue(symbol="kCGPDFContextUserPassword", optional=true)
+        public static native CFString UserPassword();
+        /**
+         * @since Available in iOS 2.0 and later.
+         */
+        @GlobalValue(symbol="kCGPDFContextEncryptionKeyLength", optional=true)
+        public static native CFString EncryptionKeyLength();
+        /**
+         * @since Available in iOS 2.0 and later.
+         */
+        @GlobalValue(symbol="kCGPDFContextAllowsPrinting", optional=true)
+        public static native CFString AllowsPrinting();
+        /**
+         * @since Available in iOS 2.0 and later.
+         */
+        @GlobalValue(symbol="kCGPDFContextAllowsCopying", optional=true)
+        public static native CFString AllowsCopying();
     }
+    /*</keys>*/
 }

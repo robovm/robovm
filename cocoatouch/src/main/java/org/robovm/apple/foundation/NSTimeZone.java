@@ -114,7 +114,7 @@ import org.robovm.apple.dispatch.*;
     @Method(selector = "nextDaylightSavingTimeTransitionAfterDate:")
     public native NSDate getNextDaylightSavingTimeTransitionAfterDate(NSDate aDate);
     @Method(selector = "isEqualToTimeZone:")
-    public native boolean isEqualTo(NSTimeZone aTimeZone);
+    public native boolean equalsTo(NSTimeZone aTimeZone);
     /**
      * @since Available in iOS 2.0 and later.
      */

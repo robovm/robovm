@@ -104,7 +104,7 @@ import org.robovm.apple.metal.*;
     
     @Override
     public boolean equals(Object o) {
-        return o instanceof CATransform3D && equalToTransform(this, (CATransform3D) o);
+        return o instanceof CATransform3D && equalsTo(this, (CATransform3D) o);
     }
     
     /*<methods>*/

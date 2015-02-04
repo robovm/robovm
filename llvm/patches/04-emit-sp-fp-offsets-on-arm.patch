@@ -1,13 +1,13 @@
-diff --git a/lib/Target/ARM/ARMAsmPrinter.cpp b/lib/Target/ARM/ARMAsmPrinter.cpp
-index 0300f58..7e64c56 100644
---- a/lib/Target/ARM/ARMAsmPrinter.cpp
-+++ b/lib/Target/ARM/ARMAsmPrinter.cpp
-@@ -526,6 +526,27 @@ emitNonLazySymbolPointer(MCStreamer &OutStreamer, MCSymbol *StubLabel,
+diff --git a/lib/CodeGen/AsmPrinter/AsmPrinter.cpp b/lib/CodeGen/AsmPrinter/AsmPrinter.cpp
+index 97ef12c..e175480 100644
+--- a/lib/CodeGen/AsmPrinter/AsmPrinter.cpp
++++ b/lib/CodeGen/AsmPrinter/AsmPrinter.cpp
+@@ -1018,6 +1018,27 @@ bool AsmPrinter::doFinalization(Module &M) {
+     if (const MCSection *S = MAI->getNonexecutableStackSection(OutContext))
+       OutStreamer.SwitchSection(S);
  
- 
- void ARMAsmPrinter::EmitEndOfAsmFile(Module &M) {
 +  // RoboVM change: Emit spfpoffset symbols if requested to do so. The symbols are
-+  // created in ARMFrameLowering::emitPrologue.
++  // created in ARMFrameLowering::emitPrologue and AAarch64FrameLowering::emitPrologue.
 +  if (MMI->getModule()->getNamedValue("robovm.emitSpFpOffsets")) {
 +    bool InTextSeciton = false;
 +    for (const Function &F : *(MMI->getModule())) {
@@ -27,11 +27,38 @@ index 0300f58..7e64c56 100644
 +    }
 +  }
 +
-   if (Subtarget->isTargetMachO()) {
-     // All darwin targets use mach-o.
-     const TargetLoweringObjectFileMachO &TLOFMacho =
+   // Allow the target to emit any magic that it wants at the end of the file,
+   // after everything else has gone out.
+   EmitEndOfAsmFile(M);
+diff --git a/lib/Target/AArch64/AArch64FrameLowering.cpp b/lib/Target/AArch64/AArch64FrameLowering.cpp
+index 66aa216..57fa466 100644
+--- a/lib/Target/AArch64/AArch64FrameLowering.cpp
++++ b/lib/Target/AArch64/AArch64FrameLowering.cpp
+@@ -28,6 +28,7 @@
+ #include "llvm/Support/CommandLine.h"
+ #include "llvm/Support/Debug.h"
+ #include "llvm/Support/raw_ostream.h"
++#include "llvm/MC/MCSymbol.h"
+ 
+ using namespace llvm;
+ 
+@@ -408,6 +409,14 @@ void AArch64FrameLowering::emitPrologue(MachineFunction &MF) const {
+     // Now emit the moves for whatever callee saved regs we have.
+     emitCalleeSavedFrameMoves(MBB, MBBI, FramePtr);
+   }
++    
++  // RoboVM change: Create a symbol which stores the sp<->fp offset and sp alignment. The symbol
++  // is finally emitted in AsmPrinter::doFinalization().
++  MCSymbol *Offset = MMI.getContext().GetOrCreateSymbol(Twine("l_") + MF.getName() + ".spfpoffset");
++  // Calculare the SP<->FP offset for the function. We subtract 16 to ignore fp/lr on the stack.
++  // We divide by 4 since the offset is always at least a multiple of 4.
++  uint32_t spFpOffset = (MFI->getStackSize() - 16) >> 2;
++  Offset->setVariableValue(MCConstantExpr::Create(spFpOffset, MMI.getContext()));
+ }
+ 
+ static bool isCalleeSavedRegister(unsigned Reg, const MCPhysReg *CSRegs) {
 diff --git a/lib/Target/ARM/ARMFrameLowering.cpp b/lib/Target/ARM/ARMFrameLowering.cpp
-index 831c2eb..270b18d 100644
+index 831c2eb..7ae8d19 100644
 --- a/lib/Target/ARM/ARMFrameLowering.cpp
 +++ b/lib/Target/ARM/ARMFrameLowering.cpp
 @@ -26,8 +26,10 @@
@@ -51,7 +78,7 @@ index 831c2eb..270b18d 100644
      AFI->setShouldRestoreSPFromFP(true);
 +
 +  // RoboVM change: Create a symbol which stores the sp<->fp offset and sp alignment. The symbol
-+  // is finally emitted in ARMAsmPrinter::EmitEndOfAsmFile.
++  // is finally emitted in AsmPrinter::doFinalization().
 +  MCSymbol *Offset = Context.GetOrCreateSymbol(Twine("l_") + MF.getName() + ".spfpoffset");
 +  // Calculare the SP<->FP offset for the function. We subtract 8 to ignore r7/lr on the stack.
 +  // We divide by 4 since the offset is always at least a multiple of 4.

@@ -1079,7 +1079,9 @@ static inline char getSuspendedEvent(DebugEnv* debugEnv, jint lineNumberOffset, 
     }
 
     // we only check for breakpoints if we aren't invoking
-    if (!debugEnv->reqId) {
+    // lineNumberOffset may be < 0 if the instrumented unit
+    // is part of a single line multi-statement
+    if (!debugEnv->reqId && lineNumberOffset >= 0) {
         if (checkBit(bptable, lineNumberOffset)) {
             return EVT_BREAKPOINT;
         }

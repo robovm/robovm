@@ -400,7 +400,7 @@ public class OpenSSLSocketImpl
                 }
             }
 
-            int sslSessionNativePointer;
+            long sslSessionNativePointer;
             try {
                 sslSessionNativePointer = NativeCrypto.SSL_do_handshake(sslNativePointer,
                         socket.getFileDescriptor$(), this, getSoTimeout(), client, npnProtocols,

@@ -349,9 +349,6 @@ public final class ObjCClass extends ObjCObject {
                 classes.add(objCProxy);
             }
         }
-        try {
-            classes.add(Class.forName(type.getName() + "$Callbacks", true, type.getClassLoader()));
-        } catch (ClassNotFoundException ignored) {}
         for (Class<?> c : classes) {
             for (Method m : c.getDeclaredMethods()) {
                 if (m.getAnnotation(Callback.class) != null) {

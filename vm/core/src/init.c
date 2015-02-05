@@ -143,9 +143,6 @@ static void parseArg(char* arg, Options* options) {
         options->enableGCHeapStats = TRUE;
     } else if (startsWith(arg, "EnableHooks")) {
         options->enableHooks = TRUE;
-    } else if (startsWith(arg, "WaitForAttach")) {
-        options->waitForAttach = TRUE;
-        options->enableHooks = TRUE; // WaitForAttach also enables hooks
     } else if (startsWith(arg, "WaitForResume")) {
         options->waitForResume = TRUE;
         options->enableHooks = TRUE; // WaitForResume also enables hooks
@@ -249,6 +246,11 @@ Env* rvmCreateEnv(VM* vm) {
     Env* env = gcAllocate(vm->options->enableHooks ? sizeof(DebugEnv) : sizeof(Env));
     if (!env) return NULL;
     env->vm = vm;
+    if(vm->options->enableHooks) {
+        DebugEnv* debugEnv = (DebugEnv*)env;
+        debugEnv->reqId = 0;
+        debugEnv->suspended = FALSE;
+    }
     rvmInitJNIEnv(env);
     return env;
 }
@@ -281,18 +283,10 @@ Env* rvmStartup(Options* options) {
         }
     }
 
-    // setup the TCP channel socket
+    // setup the TCP channel socket and wait
+    // for the debugger to connect
     if(options->enableHooks) {
         if(!rvmHookSetupTCPChannel(options)) return NULL;
-    }
-
-    // wait for the debugger to attach
-    if(options->waitForAttach) {
-        rvmHookWaitForAttach(options);
-    }
-
-    // wait for the debugger to connect via TCP
-    if(options->enableHooks) {
         if(!rvmHookHandshake(options)) return NULL;
     }
 

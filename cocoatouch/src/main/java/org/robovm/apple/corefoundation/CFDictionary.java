@@ -254,9 +254,9 @@ import org.robovm.apple.foundation.NSObject.NSObjectPtr;
     @Bridge(symbol="CFDictionaryGetTypeID", optional=true)
     public static native @MachineSizedUInt long getClassTypeID();
     @Bridge(symbol="CFDictionaryCreate", optional=true)
-    protected static native CFDictionary create(CFAllocator allocator, VoidPtr.VoidPtrPtr keys, VoidPtr.VoidPtrPtr values, @MachineSizedSInt long numValues, CFDictionaryKeyCallBacks keyCallBacks, CFDictionaryValueCallBacks valueCallBacks);
+    private static native @org.robovm.rt.bro.annotation.Marshaler(CFType.NoRetainMarshaler.class) CFDictionary create(CFAllocator allocator, VoidPtr.VoidPtrPtr keys, VoidPtr.VoidPtrPtr values, @MachineSizedSInt long numValues, CFDictionaryKeyCallBacks keyCallBacks, CFDictionaryValueCallBacks valueCallBacks);
     @Bridge(symbol="CFDictionaryCreateCopy", optional=true)
-    protected static native CFDictionary createCopy(CFAllocator allocator, CFDictionary theDict);
+    public static native @org.robovm.rt.bro.annotation.Marshaler(CFType.NoRetainMarshaler.class) CFDictionary createCopy(CFAllocator allocator, CFDictionary theDict);
     @Bridge(symbol="CFDictionaryGetCount", optional=true)
     protected native @MachineSizedSInt long getCount();
     @Bridge(symbol="CFDictionaryGetCountOfKey", optional=true)

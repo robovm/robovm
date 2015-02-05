@@ -107,12 +107,12 @@ import org.robovm.apple.foundation.*;
      * @since Available in iOS 5.0 and later.
      */
     @Bridge(symbol="CFFileSecurityCreate", optional=true)
-    public static native CFFileSecurity create(CFAllocator allocator);
+    public static native @org.robovm.rt.bro.annotation.Marshaler(CFType.NoRetainMarshaler.class) CFFileSecurity create(CFAllocator allocator);
     /**
      * @since Available in iOS 5.0 and later.
      */
     @Bridge(symbol="CFFileSecurityCreateCopy", optional=true)
-    public static native CFFileSecurity createCopy(CFAllocator allocator, CFFileSecurity fileSec);
+    public static native @org.robovm.rt.bro.annotation.Marshaler(CFType.NoRetainMarshaler.class) CFFileSecurity createCopy(CFAllocator allocator, CFFileSecurity fileSec);
     /**
      * @since Available in iOS 5.0 and later.
      */

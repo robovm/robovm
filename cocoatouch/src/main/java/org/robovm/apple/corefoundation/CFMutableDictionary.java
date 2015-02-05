@@ -65,9 +65,9 @@ import org.robovm.apple.foundation.*;
     }
     /*<methods>*/
     @Bridge(symbol="CFDictionaryCreateMutable", optional=true)
-    public static native CFMutableDictionary create(CFAllocator allocator, @MachineSizedSInt long capacity, CFDictionaryKeyCallBacks keyCallBacks, CFDictionaryValueCallBacks valueCallBacks);
+    public static native @org.robovm.rt.bro.annotation.Marshaler(CFType.NoRetainMarshaler.class) CFMutableDictionary create(CFAllocator allocator, @MachineSizedSInt long capacity, CFDictionaryKeyCallBacks keyCallBacks, CFDictionaryValueCallBacks valueCallBacks);
     @Bridge(symbol="CFDictionaryCreateMutableCopy", optional=true)
-    public static native CFMutableDictionary createCopy(CFAllocator allocator, @MachineSizedSInt long capacity, CFDictionary theDict);
+    public static native @org.robovm.rt.bro.annotation.Marshaler(CFType.NoRetainMarshaler.class) CFMutableDictionary createCopy(CFAllocator allocator, @MachineSizedSInt long capacity, CFDictionary theDict);
     @Bridge(symbol="CFDictionaryAddValue", optional=true)
     private native void addValue(VoidPtr key, VoidPtr value);
     @Bridge(symbol="CFDictionarySetValue", optional=true)

@@ -104,9 +104,9 @@ import org.robovm.apple.foundation.NSObject.NSObjectPtr;
     @Bridge(symbol="CFSetGetTypeID", optional=true)
     public static native @MachineSizedUInt long getClassTypeID();
     @Bridge(symbol="CFSetCreate", optional=true)
-    protected static native CFSet create(CFAllocator allocator, VoidPtr.VoidPtrPtr values, @MachineSizedSInt long numValues, CFSetCallBacks callBacks);
+    protected static native @org.robovm.rt.bro.annotation.Marshaler(CFType.NoRetainMarshaler.class) CFSet create(CFAllocator allocator, VoidPtr.VoidPtrPtr values, @MachineSizedSInt long numValues, CFSetCallBacks callBacks);
     @Bridge(symbol="CFSetCreateCopy", optional=true)
-    protected static native CFSet createCopy(CFAllocator allocator, CFSet theSet);
+    protected static native @org.robovm.rt.bro.annotation.Marshaler(CFType.NoRetainMarshaler.class) CFSet createCopy(CFAllocator allocator, CFSet theSet);
     @Bridge(symbol="CFSetGetCount", optional=true)
     public native @MachineSizedSInt long size();
     @Bridge(symbol="CFSetGetCountOfValue", optional=true)

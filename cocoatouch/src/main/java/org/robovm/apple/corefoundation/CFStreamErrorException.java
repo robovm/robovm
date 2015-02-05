@@ -22,7 +22,7 @@ package org.robovm.apple.corefoundation;
  * Use {@link #getError()} to get the {@code CFStreamError} instance that was used to instantiate this exception.
  */
 public class CFStreamErrorException extends RuntimeException {
-    private static final long serialVersionUID = -1423038930507165128L;
+    private static final long serialVersionUID = -1411765445335553566L;
     private CFStreamError error;
     
     public CFStreamErrorException(CFStreamError error) {

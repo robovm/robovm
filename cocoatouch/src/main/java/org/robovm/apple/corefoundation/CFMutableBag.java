@@ -46,9 +46,9 @@ import org.robovm.apple.foundation.*;
     /*<members>*//*</members>*/
     /*<methods>*/
     @Bridge(symbol="CFBagCreateMutable", optional=true)
-    public static native CFMutableBag create(CFAllocator allocator, @MachineSizedSInt long capacity, CFBagCallBacks callBacks);
+    public static native @org.robovm.rt.bro.annotation.Marshaler(CFType.NoRetainMarshaler.class) CFMutableBag create(CFAllocator allocator, @MachineSizedSInt long capacity, CFBagCallBacks callBacks);
     @Bridge(symbol="CFBagCreateMutableCopy", optional=true)
-    public static native CFMutableBag createCopy(CFAllocator allocator, @MachineSizedSInt long capacity, CFBag theBag);
+    public static native @org.robovm.rt.bro.annotation.Marshaler(CFType.NoRetainMarshaler.class) CFMutableBag createCopy(CFAllocator allocator, @MachineSizedSInt long capacity, CFBag theBag);
     @Bridge(symbol="CFBagAddValue", optional=true)
     private native void addValue(VoidPtr value);
     @Bridge(symbol="CFBagReplaceValue", optional=true)

@@ -151,16 +151,16 @@ import org.robovm.apple.coreservices.CFSocketStreamProperty;
     @Bridge(symbol="CFWriteStreamGetTypeID", optional=true)
     public static native @MachineSizedUInt long getClassTypeID();
     @Bridge(symbol="CFWriteStreamCreateWithBuffer", optional=true)
-    protected static native CFWriteStream create(CFAllocator alloc, @Pointer long buffer, @MachineSizedSInt long bufferCapacity);
+    private static native @org.robovm.rt.bro.annotation.Marshaler(CFType.NoRetainMarshaler.class) CFWriteStream create(CFAllocator alloc, @Pointer long buffer, @MachineSizedSInt long bufferCapacity);
     @Bridge(symbol="CFWriteStreamCreateWithFile", optional=true)
-    protected static native CFWriteStream create(CFAllocator alloc, CFURL fileURL);
+    private static native @org.robovm.rt.bro.annotation.Marshaler(CFType.NoRetainMarshaler.class) CFWriteStream create(CFAllocator alloc, CFURL fileURL);
     @Bridge(symbol="CFWriteStreamGetStatus", optional=true)
     public native CFStreamStatus getStatus();
     /**
      * @since Available in iOS 2.0 and later.
      */
     @Bridge(symbol="CFWriteStreamCopyError", optional=true)
-    public native CFError getError();
+    public native @org.robovm.rt.bro.annotation.Marshaler(CFType.NoRetainMarshaler.class) CFError getError();
     @Bridge(symbol="CFWriteStreamOpen", optional=true)
     public native boolean openStream();
     @Bridge(symbol="CFWriteStreamClose", optional=true)
@@ -170,7 +170,7 @@ import org.robovm.apple.coreservices.CFSocketStreamProperty;
     @Bridge(symbol="CFWriteStreamWrite", optional=true)
     private native @MachineSizedSInt long write(@Pointer long buffer, @MachineSizedSInt long bufferLength);
     @Bridge(symbol="CFWriteStreamCopyProperty", optional=true)
-    private native CFType getProperty(CFString propertyName);
+    private native @org.robovm.rt.bro.annotation.Marshaler(CFType.NoRetainMarshaler.class) CFType getProperty(CFString propertyName);
     @Bridge(symbol="CFWriteStreamSetProperty", optional=true)
     private native boolean setProperty(CFString propertyName, CFType propertyValue);
     @Bridge(symbol="CFWriteStreamSetClient", optional=true)

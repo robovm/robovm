@@ -132,25 +132,25 @@ import org.robovm.apple.foundation.*;
     @Bridge(symbol="CFStringGetTypeID", optional=true)
     public static native @MachineSizedUInt long getClassTypeID();
     @Bridge(symbol="CFStringCreateWithPascalString", optional=true)
-    protected static native String createWithPascalString(CFAllocator alloc, BytePtr pStr, CFStringEncodings encoding);
+    protected static native @org.robovm.rt.bro.annotation.Marshaler(CFType.NoRetainMarshaler.class) CFString createWithPascalString(CFAllocator alloc, BytePtr pStr, CFStringEncodings encoding);
     @Bridge(symbol="CFStringCreateWithCString", optional=true)
-    protected static native String createWithCString(CFAllocator alloc, BytePtr cStr, CFStringEncodings encoding);
+    protected static native @org.robovm.rt.bro.annotation.Marshaler(CFType.NoRetainMarshaler.class) CFString createWithCString(CFAllocator alloc, BytePtr cStr, CFStringEncodings encoding);
     @Bridge(symbol="CFStringCreateWithBytes", optional=true)
-    protected static native String createWithBytes(CFAllocator alloc, BytePtr bytes, @MachineSizedSInt long numBytes, CFStringEncodings encoding, boolean isExternalRepresentation);
+    protected static native @org.robovm.rt.bro.annotation.Marshaler(CFType.NoRetainMarshaler.class) CFString createWithBytes(CFAllocator alloc, BytePtr bytes, @MachineSizedSInt long numBytes, CFStringEncodings encoding, boolean isExternalRepresentation);
     @Bridge(symbol="CFStringCreateWithCharacters", optional=true)
-    protected static native String createWithCharacters(CFAllocator alloc, ShortPtr chars, @MachineSizedSInt long numChars);
+    protected static native @org.robovm.rt.bro.annotation.Marshaler(CFType.NoRetainMarshaler.class) CFString createWithCharacters(CFAllocator alloc, ShortPtr chars, @MachineSizedSInt long numChars);
     @Bridge(symbol="CFStringCreateWithPascalStringNoCopy", optional=true)
-    protected static native String createWithPascalStringNoCopy(CFAllocator alloc, BytePtr pStr, CFStringEncodings encoding, CFAllocator contentsDeallocator);
+    protected static native @org.robovm.rt.bro.annotation.Marshaler(CFType.NoRetainMarshaler.class) CFString createWithPascalStringNoCopy(CFAllocator alloc, BytePtr pStr, CFStringEncodings encoding, CFAllocator contentsDeallocator);
     @Bridge(symbol="CFStringCreateWithCStringNoCopy", optional=true)
-    protected static native String createWithCStringNoCopy(CFAllocator alloc, BytePtr cStr, CFStringEncodings encoding, CFAllocator contentsDeallocator);
+    protected static native @org.robovm.rt.bro.annotation.Marshaler(CFType.NoRetainMarshaler.class) CFString createWithCStringNoCopy(CFAllocator alloc, BytePtr cStr, CFStringEncodings encoding, CFAllocator contentsDeallocator);
     @Bridge(symbol="CFStringCreateWithBytesNoCopy", optional=true)
-    protected static native String createWithBytesNoCopy(CFAllocator alloc, BytePtr bytes, @MachineSizedSInt long numBytes, CFStringEncodings encoding, boolean isExternalRepresentation, CFAllocator contentsDeallocator);
+    protected static native @org.robovm.rt.bro.annotation.Marshaler(CFType.NoRetainMarshaler.class) CFString createWithBytesNoCopy(CFAllocator alloc, BytePtr bytes, @MachineSizedSInt long numBytes, CFStringEncodings encoding, boolean isExternalRepresentation, CFAllocator contentsDeallocator);
     @Bridge(symbol="CFStringCreateWithCharactersNoCopy", optional=true)
-    protected static native String createWithCharactersNoCopy(CFAllocator alloc, ShortPtr chars, @MachineSizedSInt long numChars, CFAllocator contentsDeallocator);
+    protected static native @org.robovm.rt.bro.annotation.Marshaler(CFType.NoRetainMarshaler.class) CFString createWithCharactersNoCopy(CFAllocator alloc, ShortPtr chars, @MachineSizedSInt long numChars, CFAllocator contentsDeallocator);
     @Bridge(symbol="CFStringCreateWithSubstring", optional=true)
-    protected static native String createWithSubstring(CFAllocator alloc, String str, @ByVal CFRange range);
+    protected static native @org.robovm.rt.bro.annotation.Marshaler(CFType.NoRetainMarshaler.class) CFString createWithSubstring(CFAllocator alloc, String str, @ByVal CFRange range);
     @Bridge(symbol="CFStringCreateCopy", optional=true)
-    protected static native String createCopy(CFAllocator alloc, CFString theString);
+    protected static native @org.robovm.rt.bro.annotation.Marshaler(CFType.NoRetainMarshaler.class) CFString createCopy(CFAllocator alloc, CFString theString);
     @Bridge(symbol="CFStringGetLength", optional=true)
     public native @MachineSizedSInt long length();
     @Bridge(symbol="CFStringGetCharacterAtIndex", optional=true)
@@ -170,9 +170,9 @@ import org.robovm.apple.foundation.*;
     @Bridge(symbol="CFStringGetBytes", optional=true)
     protected native @MachineSizedSInt long getBytes(@ByVal CFRange range, CFStringEncodings encoding, byte lossByte, boolean isExternalRepresentation, BytePtr buffer, @MachineSizedSInt long maxBufLen, MachineSizedSIntPtr usedBufLen);
     @Bridge(symbol="CFStringCreateFromExternalRepresentation", optional=true)
-    protected static native String createFromExternalRepresentation(CFAllocator alloc, CFData data, CFStringEncodings encoding);
+    protected static native @org.robovm.rt.bro.annotation.Marshaler(CFType.NoRetainMarshaler.class) CFString createFromExternalRepresentation(CFAllocator alloc, CFData data, CFStringEncodings encoding);
     @Bridge(symbol="CFStringCreateExternalRepresentation", optional=true)
-    protected static native CFData createExternalRepresentation(CFAllocator alloc, CFString theString, CFStringEncodings encoding, byte lossByte);
+    protected static native @org.robovm.rt.bro.annotation.Marshaler(CFType.NoRetainMarshaler.class) CFString createExternalRepresentation(CFAllocator alloc, CFString theString, CFStringEncodings encoding, byte lossByte);
     @Bridge(symbol="CFStringGetSmallestEncoding", optional=true)
     protected native CFStringEncodings getSmallestEncoding();
     @Bridge(symbol="CFStringGetFastestEncoding", optional=true)
@@ -186,7 +186,7 @@ import org.robovm.apple.foundation.*;
     @Bridge(symbol="CFStringGetMaximumSizeOfFileSystemRepresentation", optional=true)
     protected static native @MachineSizedSInt long getMaximumSizeOfFileSystemRepresentation(String string);
     @Bridge(symbol="CFStringCreateWithFileSystemRepresentation", optional=true)
-    protected static native String createWithFileSystemRepresentation(CFAllocator alloc, BytePtr buffer);
+    protected static native @org.robovm.rt.bro.annotation.Marshaler(CFType.NoRetainMarshaler.class) CFString createWithFileSystemRepresentation(CFAllocator alloc, BytePtr buffer);
     /**
      * @since Available in iOS 2.0 and later.
      */
@@ -204,7 +204,7 @@ import org.robovm.apple.foundation.*;
     @Bridge(symbol="CFStringFindWithOptions", optional=true)
     public native boolean find(String stringToFind, @ByVal CFRange rangeToSearch, CFStringCompareFlags searchOptions, CFRange result);
     @Bridge(symbol="CFStringCreateArrayWithFindResults", optional=true)
-    protected static native CFArray createArrayWithFindResults(CFAllocator alloc, CFString theString, String stringToFind, @ByVal CFRange rangeToSearch, CFStringCompareFlags compareOptions);
+    protected static native @org.robovm.rt.bro.annotation.Marshaler(CFType.NoRetainMarshaler.class) CFString createArrayWithFindResults(CFAllocator alloc, CFString theString, String stringToFind, @ByVal CFRange rangeToSearch, CFStringCompareFlags compareOptions);
     @Bridge(symbol="CFStringFind", optional=true)
     public native @ByVal CFRange find(String stringToFind, CFStringCompareFlags compareOptions);
     @Bridge(symbol="CFStringHasPrefix", optional=true)
@@ -233,9 +233,9 @@ import org.robovm.apple.foundation.*;
     @Bridge(symbol="CFStringIsHyphenationAvailableForLocale", optional=true)
     protected static native boolean isHyphenationAvailableForLocale(CFLocale locale);
     @Bridge(symbol="CFStringCreateByCombiningStrings", optional=true)
-    protected static native String createByCombiningStrings(CFAllocator alloc, CFArray theArray, String separatorString);
+    protected static native @org.robovm.rt.bro.annotation.Marshaler(CFType.NoRetainMarshaler.class) CFString createByCombiningStrings(CFAllocator alloc, CFArray theArray, String separatorString);
     @Bridge(symbol="CFStringCreateArrayBySeparatingStrings", optional=true)
-    protected static native CFArray createArrayBySeparatingStrings(CFAllocator alloc, CFString theString, String separatorString);
+    protected static native @org.robovm.rt.bro.annotation.Marshaler(CFType.NoRetainMarshaler.class) CFString createArrayBySeparatingStrings(CFAllocator alloc, CFString theString, String separatorString);
     @Bridge(symbol="CFStringGetIntValue", optional=true)
     protected static native int getIntValue(String str);
     @Bridge(symbol="CFStringGetDoubleValue", optional=true)

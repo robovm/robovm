@@ -1775,12 +1775,12 @@ classes:
                 name: getLineDirection
             '+componentsFromLocaleIdentifier:':
                 name: getComponentsFromLocaleIdentifier
-                return_type: '@org.robovm.rt.bro.annotation.Marshaler(NSLocaleComponent.AsMapMarshaler.class) Map<NSLocaleComponent, NSObject>'
+                return_type: NSLocaleComponents
             '+localeIdentifierFromComponents:':
                 name: getLocaleIdentifierFromComponents
                 parameters:
                     dict:
-                        type: '@org.robovm.rt.bro.annotation.Marshaler(NSLocaleComponent.AsMapMarshaler.class) Map<NSLocaleComponent, NSObject>'
+                        type: NSLocaleComponents
             '+localeIdentifierFromWindowsLocaleCode:':
                 name: getLocaleIdentifierFromWindowsLocaleCode
             '+windowsLocaleCodeFromLocaleIdentifier:':
@@ -4327,10 +4327,10 @@ values:
 
     # NSLocale
     NSLocale(.*):
-        class: NSLocaleComponent
-        name: '#{g[0]}Value'
+        dictionary: NSLocaleComponents
+        enum: NSLocaleComponent
+        name: '#{g[0]}'
         type: NSString
-        visibility: protected
     NS(CurrentLocaleDidChangeNotification):
         class: NSLocale
         name: '#{g[0]}'

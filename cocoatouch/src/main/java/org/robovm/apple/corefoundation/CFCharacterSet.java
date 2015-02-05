@@ -60,28 +60,33 @@ import org.robovm.apple.foundation.*;
     public CFData getBitmapRepresentation() {
         return createBitmapRepresentation(null, this);
     }
+    public CFData getBitmapRepresentation(CFAllocator allocator) {
+        return createBitmapRepresentation(allocator, this);
+    }
     /*<methods>*/
     @Bridge(symbol="CFCharacterSetGetTypeID", optional=true)
     public static native @MachineSizedUInt long getClassTypeID();
     @Bridge(symbol="CFCharacterSetGetPredefined", optional=true)
     public static native CFCharacterSet getPredefined(CFCharacterSetPredefinedSet theSetIdentifier);
     @Bridge(symbol="CFCharacterSetCreateWithCharactersInRange", optional=true)
-    public static native CFCharacterSet create(CFAllocator alloc, @ByVal CFRange theRange);
+    public static native @org.robovm.rt.bro.annotation.Marshaler(CFType.NoRetainMarshaler.class) CFCharacterSet create(CFAllocator alloc, @ByVal CFRange theRange);
     @Bridge(symbol="CFCharacterSetCreateWithCharactersInString", optional=true)
-    public static native CFCharacterSet create(CFAllocator alloc, String theString);
+    public static native @org.robovm.rt.bro.annotation.Marshaler(CFType.NoRetainMarshaler.class) CFCharacterSet create(CFAllocator alloc, String theString);
     @Bridge(symbol="CFCharacterSetCreateWithBitmapRepresentation", optional=true)
-    public static native CFCharacterSet create(CFAllocator alloc, CFData theData);
+    public static native @org.robovm.rt.bro.annotation.Marshaler(CFType.NoRetainMarshaler.class) CFCharacterSet create(CFAllocator alloc, CFData theData);
     @Bridge(symbol="CFCharacterSetCreateInvertedSet", optional=true)
-    protected static native CFCharacterSet createInvertedSet(CFAllocator alloc, CFCharacterSet theSet);
+    public static native @org.robovm.rt.bro.annotation.Marshaler(CFType.NoRetainMarshaler.class) CFCharacterSet createInvertedSet(CFAllocator alloc, CFCharacterSet theSet);
     @Bridge(symbol="CFCharacterSetIsSupersetOfSet", optional=true)
-    public native boolean isSupersetOfSet(CFCharacterSet theOtherset);
+    public native boolean isSupersetOf(CFCharacterSet theOtherset);
     @Bridge(symbol="CFCharacterSetHasMemberInPlane", optional=true)
     public native boolean hasMemberInPlane(@MachineSizedSInt long thePlane);
+    @Bridge(symbol="CFCharacterSetCreateCopy", optional=true)
+    public static native @org.robovm.rt.bro.annotation.Marshaler(CFType.NoRetainMarshaler.class) CFCharacterSet createCopy(CFAllocator alloc, CFCharacterSet theSet);
     @Bridge(symbol="CFCharacterSetIsCharacterMember", optional=true)
     public native boolean isCharacterMember(short theChar);
     @Bridge(symbol="CFCharacterSetIsLongCharacterMember", optional=true)
     public native boolean isLongCharacterMember(int theChar);
     @Bridge(symbol="CFCharacterSetCreateBitmapRepresentation", optional=true)
-    protected static native CFData createBitmapRepresentation(CFAllocator alloc, CFCharacterSet theSet);
+    private static native @org.robovm.rt.bro.annotation.Marshaler(CFType.NoRetainMarshaler.class) CFData createBitmapRepresentation(CFAllocator alloc, CFCharacterSet theSet);
     /*</methods>*/
 }

@@ -59,7 +59,6 @@ import org.robovm.apple.foundation.*;
         }
         return VM.getLong(VM.getObjectAddress(bytes) + EFFECTIVE_DIRECT_ADDRESS_OFFSET);
     }
-    
     /*<bind>*/static { Bro.bind(CFBitVector.class); }/*</bind>*/
     /*<constants>*//*</constants>*/
     /*<constructors>*/
@@ -101,9 +100,9 @@ import org.robovm.apple.foundation.*;
     @Bridge(symbol="CFBitVectorGetTypeID", optional=true)
     public static native @MachineSizedUInt long getClassTypeID();
     @Bridge(symbol="CFBitVectorCreate", optional=true)
-    private static native CFBitVector create(CFAllocator allocator, @Pointer long bytes, @MachineSizedSInt long numBits);
+    private static native @org.robovm.rt.bro.annotation.Marshaler(CFType.NoRetainMarshaler.class) CFBitVector create(CFAllocator allocator, @Pointer long bytes, @MachineSizedSInt long numBits);
     @Bridge(symbol="CFBitVectorCreateCopy", optional=true)
-    public static native CFBitVector createCopy(CFAllocator allocator, CFBitVector bv);
+    public static native @org.robovm.rt.bro.annotation.Marshaler(CFType.NoRetainMarshaler.class) CFBitVector createCopy(CFAllocator allocator, CFBitVector bv);
     @Bridge(symbol="CFBitVectorGetCount", optional=true)
     public native @MachineSizedSInt long getCount();
     @Bridge(symbol="CFBitVectorGetCountOfBit", optional=true)

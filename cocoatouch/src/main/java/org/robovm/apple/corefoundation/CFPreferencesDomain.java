@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 Trillian Mobile AB
+ * Copyright (C) 2015 Trillian Mobile AB
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -32,12 +32,15 @@ import org.robovm.apple.foundation.*;
 
 /*<javadoc>*/
 /*</javadoc>*/
-@Marshaler(CFPreferencesDomain.Marshaler.class)
 /*<annotations>*/@Library("CoreFoundation")/*</annotations>*/
+@Marshaler(/*<name>*/CFPreferencesDomain/*</name>*/.Marshaler.class)
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/CFPreferencesDomain/*</name>*/ 
-    extends /*<extends>*/CocoaUtility/*</extends>*/ 
+    extends /*<extends>*/GlobalValueEnumeration<CFString>/*</extends>*/
     /*<implements>*//*</implements>*/ {
 
+    static { Bro.bind(/*<name>*/CFPreferencesDomain/*</name>*/.class); }
+
+    /*<marshalers>*/
     public static class Marshaler {
         @MarshalsPointer
         public static CFPreferencesDomain toObject(Class<CFPreferencesDomain> cls, long handle, long flags) {
@@ -55,34 +58,50 @@ import org.robovm.apple.foundation.*;
             return CFType.Marshaler.toNative(o.value(), flags);
         }
     }
-    
-    /*<ptr>*/
-    /*</ptr>*/
-    /*<bind>*/static { Bro.bind(CFPreferencesDomain.class); }/*</bind>*/
-    /*<constants>*//*</constants>*/
-    public static final CFPreferencesDomain AnyApplication = new CFPreferencesDomain("AnyApplicationValue");
-    public static final CFPreferencesDomain CurrentApplication = new CFPreferencesDomain("CurrentApplicationValue");
-    public static final CFPreferencesDomain AnyHost = new CFPreferencesDomain("AnyHostValue");
-    public static final CFPreferencesDomain CurrentHost = new CFPreferencesDomain("CurrentHostValue");
-    public static final CFPreferencesDomain AnyUser = new CFPreferencesDomain("AnyUserValue");
-    public static final CFPreferencesDomain CurrentUser = new CFPreferencesDomain("CurrentUserValue");
-    
-    private static CFPreferencesDomain[] values = new CFPreferencesDomain[] {AnyApplication, CurrentApplication, AnyHost, 
-        CurrentHost, AnyUser, CurrentUser};
-    private final LazyGlobalValue<CFString> lazyGlobalValue;
-    
-    private CFPreferencesDomain(String getterName) {
-        lazyGlobalValue = new LazyGlobalValue<>(getClass(), getterName);
+    public static class AsListMarshaler {
+        @MarshalsPointer
+        public static List<CFPreferencesDomain> toObject(Class<? extends CFType> cls, long handle, long flags) {
+            CFArray o = (CFArray) CFType.Marshaler.toObject(cls, handle, flags);
+            if (o == null) {
+                return null;
+            }
+            List<CFPreferencesDomain> list = new ArrayList<>();
+            for (int i = 0; i < o.size(); i++) {
+                list.add(CFPreferencesDomain.valueOf(o.get(i, CFString.class)));
+            }
+            return list;
+        }
+        @MarshalsPointer
+        public static long toNative(List<CFPreferencesDomain> l, long flags) {
+            if (l == null) {
+                return 0L;
+            }
+            CFArray array = CFMutableArray.create();
+            for (CFPreferencesDomain i : l) {
+                array.add(i.value());
+            }
+            return CFType.Marshaler.toNative(array, flags);
+        }
     }
-    /*<constructors>*//*</constructors>*/
-    /*<properties>*//*</properties>*/
-    /*<members>*//*</members>*/
-    public CFString value() {
-        return lazyGlobalValue.value();
+    /*</marshalers>*/
+
+    /*<constants>*/
+    public static final CFPreferencesDomain AnyApplication = new CFPreferencesDomain("AnyApplication");
+    public static final CFPreferencesDomain CurrentApplication = new CFPreferencesDomain("CurrentApplication");
+    public static final CFPreferencesDomain AnyHost = new CFPreferencesDomain("AnyHost");
+    public static final CFPreferencesDomain CurrentHost = new CFPreferencesDomain("CurrentHost");
+    public static final CFPreferencesDomain AnyUser = new CFPreferencesDomain("AnyUser");
+    public static final CFPreferencesDomain CurrentUser = new CFPreferencesDomain("CurrentUser");
+    /*</constants>*/
+    
+    private static /*<name>*/CFPreferencesDomain/*</name>*/[] values = new /*<name>*/CFPreferencesDomain/*</name>*/[] {/*<value_list>*/AnyApplication, CurrentApplication, AnyHost, CurrentHost, AnyUser, CurrentUser/*</value_list>*/};
+    
+    /*<name>*/CFPreferencesDomain/*</name>*/ (String getterName) {
+        super(Values.class, getterName);
     }
     
-    public static CFPreferencesDomain valueOf(CFString value) {
-        for (CFPreferencesDomain v : values) {
+    public static /*<name>*/CFPreferencesDomain/*</name>*/ valueOf(/*<type>*/CFString/*</type>*/ value) {
+        for (/*<name>*/CFPreferencesDomain/*</name>*/ v : values) {
             if (v.value().equals(value)) {
                 return v;
             }
@@ -90,18 +109,26 @@ import org.robovm.apple.foundation.*;
         throw new IllegalArgumentException("No constant with value " + value + " found in " 
             + /*<name>*/CFPreferencesDomain/*</name>*/.class.getName());
     }
-    /*<methods>*/
-    @GlobalValue(symbol="kCFPreferencesAnyApplication", optional=true)
-    protected static native CFString AnyApplicationValue();
-    @GlobalValue(symbol="kCFPreferencesCurrentApplication", optional=true)
-    protected static native CFString CurrentApplicationValue();
-    @GlobalValue(symbol="kCFPreferencesAnyHost", optional=true)
-    protected static native CFString AnyHostValue();
-    @GlobalValue(symbol="kCFPreferencesCurrentHost", optional=true)
-    protected static native CFString CurrentHostValue();
-    @GlobalValue(symbol="kCFPreferencesAnyUser", optional=true)
-    protected static native CFString AnyUserValue();
-    @GlobalValue(symbol="kCFPreferencesCurrentUser", optional=true)
-    protected static native CFString CurrentUserValue();
-    /*</methods>*/
+    
+    /*<methods>*//*</methods>*/
+    
+    /*<annotations>*/@Library("CoreFoundation")/*</annotations>*/
+    public static class Values {
+    	static { Bro.bind(Values.class); }
+
+        /*<values>*/
+        @GlobalValue(symbol="kCFPreferencesAnyApplication", optional=true)
+        public static native CFString AnyApplication();
+        @GlobalValue(symbol="kCFPreferencesCurrentApplication", optional=true)
+        public static native CFString CurrentApplication();
+        @GlobalValue(symbol="kCFPreferencesAnyHost", optional=true)
+        public static native CFString AnyHost();
+        @GlobalValue(symbol="kCFPreferencesCurrentHost", optional=true)
+        public static native CFString CurrentHost();
+        @GlobalValue(symbol="kCFPreferencesAnyUser", optional=true)
+        public static native CFString AnyUser();
+        @GlobalValue(symbol="kCFPreferencesCurrentUser", optional=true)
+        public static native CFString CurrentUser();
+        /*</values>*/
+    }
 }

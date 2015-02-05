@@ -52,9 +52,9 @@ import org.robovm.apple.foundation.*;
     }
     /*<methods>*/
     @Bridge(symbol="CFBitVectorCreateMutable", optional=true)
-    public static native CFMutableBitVector create(CFAllocator allocator, @MachineSizedSInt long capacity);
+    public static native @org.robovm.rt.bro.annotation.Marshaler(CFType.NoRetainMarshaler.class) CFMutableBitVector create(CFAllocator allocator, @MachineSizedSInt long capacity);
     @Bridge(symbol="CFBitVectorCreateMutableCopy", optional=true)
-    public static native CFMutableBitVector createCopy(CFAllocator allocator, @MachineSizedSInt long capacity, CFBitVector bv);
+    public static native @org.robovm.rt.bro.annotation.Marshaler(CFType.NoRetainMarshaler.class) CFMutableBitVector createCopy(CFAllocator allocator, @MachineSizedSInt long capacity, CFBitVector bv);
     @Bridge(symbol="CFBitVectorSetCount", optional=true)
     public native void setCount(@MachineSizedSInt long count);
     @Bridge(symbol="CFBitVectorFlipBitAtIndex", optional=true)

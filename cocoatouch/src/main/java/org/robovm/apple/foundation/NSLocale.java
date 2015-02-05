@@ -218,9 +218,9 @@ import org.robovm.apple.dispatch.*;
     @Method(selector = "preferredLanguages")
     public static native @org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String> getPreferredLanguages();
     @Method(selector = "componentsFromLocaleIdentifier:")
-    public static native @org.robovm.rt.bro.annotation.Marshaler(NSLocaleComponent.AsMapMarshaler.class) Map<NSLocaleComponent, NSObject> getComponentsFromLocaleIdentifier(String string);
+    public static native NSLocaleComponents getComponentsFromLocaleIdentifier(String string);
     @Method(selector = "localeIdentifierFromComponents:")
-    public static native String getLocaleIdentifierFromComponents(@org.robovm.rt.bro.annotation.Marshaler(NSLocaleComponent.AsMapMarshaler.class) Map<NSLocaleComponent, NSObject> dict);
+    public static native String getLocaleIdentifierFromComponents(NSLocaleComponents dict);
     @Method(selector = "canonicalLocaleIdentifierFromString:")
     public static native String getCanonicalLocaleIdentifier(String string);
     @Method(selector = "canonicalLanguageIdentifierFromString:")

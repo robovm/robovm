@@ -114,9 +114,9 @@ import org.robovm.apple.foundation.*;
     }
     /*<methods>*/
     @Bridge(symbol="CFDataCreateMutable", optional=true)
-    public static native CFMutableData create(CFAllocator allocator, @MachineSizedSInt long capacity);
+    public static native @org.robovm.rt.bro.annotation.Marshaler(CFType.NoRetainMarshaler.class) CFMutableData create(CFAllocator allocator, @MachineSizedSInt long capacity);
     @Bridge(symbol="CFDataCreateMutableCopy", optional=true)
-    public static native CFMutableData createCopy(CFAllocator allocator, @MachineSizedSInt long capacity, CFData theData);
+    public static native @org.robovm.rt.bro.annotation.Marshaler(CFType.NoRetainMarshaler.class) CFMutableData createCopy(CFAllocator allocator, @MachineSizedSInt long capacity, CFData theData);
     @Bridge(symbol="CFDataGetMutableBytePtr", optional=true)
     protected native @Pointer long getMutableBytePtr();
     @Bridge(symbol="CFDataSetLength", optional=true)

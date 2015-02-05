@@ -62,28 +62,28 @@ import org.robovm.apple.uikit.NSAttributedStringAttributes;
         return create(null, str, attributes.getDictionary());
     }
 
-    public CFType getAttribute(@MachineSizedSInt long loc, NSAttributedStringAttribute attrName, CFRange effectiveRange) {
+    public CFType getAttribute(long loc, NSAttributedStringAttribute attrName, CFRange effectiveRange) {
         return getAttribute(loc, attrName.value().as(CFString.class), effectiveRange);
     }
-    public CFType getAttribute(@MachineSizedSInt long loc, CMTextMarkupAttribute attrName, CFRange effectiveRange) {
+    public CFType getAttribute(long loc, CMTextMarkupAttribute attrName, CFRange effectiveRange) {
         return getAttribute(loc, attrName.value(), effectiveRange);
     }
     
-    public NSAttributedStringAttributes getAttributes(@MachineSizedSInt long loc, CFRange effectiveRange) {
+    public NSAttributedStringAttributes getAttributes(long loc, CFRange effectiveRange) {
         return new NSAttributedStringAttributes(getAttributesDictionary(loc, effectiveRange).as(NSDictionary.class));
     }
-    public CMTextMarkupAttributes getTextMarkupAttributes(@MachineSizedSInt long loc, CFRange effectiveRange) {
+    public CMTextMarkupAttributes getTextMarkupAttributes(long loc, CFRange effectiveRange) {
         return new CMTextMarkupAttributes(getAttributesDictionary(loc, effectiveRange));
     }
     /*<methods>*/
     @Bridge(symbol="CFAttributedStringGetTypeID", optional=true)
     public static native @MachineSizedUInt long getClassTypeID();
     @Bridge(symbol="CFAttributedStringCreate", optional=true)
-    public static native CFAttributedString create(CFAllocator alloc, String str, CFDictionary attributes);
+    public static native @org.robovm.rt.bro.annotation.Marshaler(CFType.NoRetainMarshaler.class) CFAttributedString create(CFAllocator alloc, String str, CFDictionary attributes);
     @Bridge(symbol="CFAttributedStringCreateWithSubstring", optional=true)
-    public static native CFAttributedString createWithSubstring(CFAllocator alloc, CFAttributedString aStr, @ByVal CFRange range);
+    public static native @org.robovm.rt.bro.annotation.Marshaler(CFType.NoRetainMarshaler.class) CFAttributedString createWithSubstring(CFAllocator alloc, CFAttributedString aStr, @ByVal CFRange range);
     @Bridge(symbol="CFAttributedStringCreateCopy", optional=true)
-    public static native CFAttributedString createCopy(CFAllocator alloc, CFAttributedString aStr);
+    public static native @org.robovm.rt.bro.annotation.Marshaler(CFType.NoRetainMarshaler.class) CFAttributedString createCopy(CFAllocator alloc, CFAttributedString aStr);
     @Bridge(symbol="CFAttributedStringGetString", optional=true)
     public native String getString();
     @Bridge(symbol="CFAttributedStringGetLength", optional=true)

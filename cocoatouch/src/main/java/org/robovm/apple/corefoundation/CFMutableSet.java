@@ -62,9 +62,9 @@ import org.robovm.apple.foundation.*;
     }
     /*<methods>*/
     @Bridge(symbol="CFSetCreateMutable", optional=true)
-    public static native CFMutableSet create(CFAllocator allocator, @MachineSizedSInt long capacity, CFSetCallBacks callBacks);
+    public static native @org.robovm.rt.bro.annotation.Marshaler(CFType.NoRetainMarshaler.class) CFMutableSet create(CFAllocator allocator, @MachineSizedSInt long capacity, CFSetCallBacks callBacks);
     @Bridge(symbol="CFSetCreateMutableCopy", optional=true)
-    public static native CFMutableSet createCopy(CFAllocator allocator, @MachineSizedSInt long capacity, CFSet theSet);
+    public static native @org.robovm.rt.bro.annotation.Marshaler(CFType.NoRetainMarshaler.class) CFMutableSet createCopy(CFAllocator allocator, @MachineSizedSInt long capacity, CFSet theSet);
     @Bridge(symbol="CFSetAddValue", optional=true)
     private native void addValue(VoidPtr value);
     @Bridge(symbol="CFSetReplaceValue", optional=true)

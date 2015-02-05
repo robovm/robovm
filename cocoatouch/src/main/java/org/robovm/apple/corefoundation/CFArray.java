@@ -211,9 +211,9 @@ import org.robovm.apple.foundation.NSObject.NSObjectPtr;
     @Bridge(symbol="CFArrayGetTypeID", optional=true)
     public static native @MachineSizedUInt long getClassTypeID();
     @Bridge(symbol="CFArrayCreate", optional=true)
-    protected static native CFArray create(CFAllocator allocator, VoidPtr.VoidPtrPtr values, @MachineSizedSInt long numValues, CFArrayCallBacks callBacks);
+    private static native @org.robovm.rt.bro.annotation.Marshaler(CFType.NoRetainMarshaler.class) CFArray create(CFAllocator allocator, VoidPtr.VoidPtrPtr values, @MachineSizedSInt long numValues, CFArrayCallBacks callBacks);
     @Bridge(symbol="CFArrayCreateCopy", optional=true)
-    protected static native CFArray createCopy(CFAllocator allocator, CFArray theArray);
+    private static native @org.robovm.rt.bro.annotation.Marshaler(CFType.NoRetainMarshaler.class) CFArray createCopy(CFAllocator allocator, CFArray theArray);
     @Bridge(symbol="CFArrayGetCount", optional=true)
     protected native @MachineSizedSInt long getCount();
     @Bridge(symbol="CFArrayGetCountOfValue", optional=true)

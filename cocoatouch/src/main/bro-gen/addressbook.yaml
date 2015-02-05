@@ -75,10 +75,11 @@ functions:
     ABAddressBook(Create)WithOptions:
         class: ABAddressBook
         name: '#{g[0]}'
+        throws: NSErrorException
+        return_marshaler: CFType.NoRetainMarshaler
         parameters:
             options:
                 type: 'NSDictionary<NSString, ?>'
-        visibility: protected
     ABAddressBook(RequestAccess)WithCompletion:
         class: ABAddressBook
         name: '#{g[0]}'
@@ -88,14 +89,16 @@ functions:
     ABAddressBook(Save|AddRecord|RemoveRecord):
         class: ABAddressBook
         name: '#{g[0]}'
-        visibility: protected
+        throws: NSErrorException
     ABAddressBookCopy(LocalizedLabel):
         class: ABAddressBook
         name: 'get#{g[0]}'
+        return_marshaler: CFString.AsStringNoRetainMarshaler
     ABAddressBookCopy(DefaultSource):
         class: ABAddressBook
         name: 'get#{g[0]}'
         return_type: ABSource
+        return_marshaler: ABRecord.NoRetainMarshaler
     ABAddressBook(RegisterExternalChangeCallback|UnregisterExternalChangeCallback):
         class: ABAddressBook
         name: '#{g[0]}'
@@ -114,22 +117,26 @@ functions:
     ABAddressBookCopyArrayOf(AllSources):
         class: ABAddressBook
         name: 'get#{g[0]}'
-        return_type: '@org.robovm.rt.bro.annotation.Marshaler(ABSource.AsListMarshaler.class) List<ABSource>'
+        return_type: List<ABSource>
+        return_marshaler: ABSource.AsListMarshaler
     ABAddressBookCopyArrayOf(AllPeople):
         class: ABAddressBook
         name: 'get#{g[0]}'
-        return_type: '@org.robovm.rt.bro.annotation.Marshaler(ABPerson.AsListMarshaler.class) List<ABPerson>'
+        return_type: List<ABPerson>
+        return_marshaler: ABPerson.AsListMarshaler
     ABAddressBookCopyArrayOf(AllPeopleInSource).*:
         class: ABAddressBook
         name: 'get#{g[0]}'
-        return_type: '@org.robovm.rt.bro.annotation.Marshaler(ABPerson.AsListMarshaler.class) List<ABPerson>'
+        return_type: List<ABPerson>
+        return_marshaler: ABPerson.AsListMarshaler
         parameters:
             source:
                 type: ABSource
     ABAddressBookCopy(People)WithName:
         class: ABAddressBook
         name: 'get#{g[0]}'
-        return_type: '@org.robovm.rt.bro.annotation.Marshaler(ABPerson.AsListMarshaler.class) List<ABPerson>'
+        return_type: List<ABPerson>
+        return_marshaler: ABPerson.AsListMarshaler
     ABAddressBook(GetGroup)WithRecordID:
         class: ABAddressBook
         name: '#{g[0]}'
@@ -137,11 +144,13 @@ functions:
     ABAddressBookCopyArrayOf(AllGroups):
         class: ABAddressBook
         name: 'get#{g[0]}'
-        return_type: '@org.robovm.rt.bro.annotation.Marshaler(ABGroup.AsListMarshaler.class) List<ABGroup>'
+        return_type: List<ABGroup>
+        return_marshaler: ABGroup.AsListMarshaler
     ABAddressBookCopyArrayOf(AllGroupsInSource).*:
         class: ABAddressBook
         name: 'get#{g[0]}'
-        return_type: '@org.robovm.rt.bro.annotation.Marshaler(ABGroup.AsListMarshaler.class) List<ABGroup>'
+        return_type: List<ABGroup>
+        return_marshaler: ABGroup.AsListMarshaler
         parameters:
             source:
                 type: ABSource
@@ -150,21 +159,31 @@ functions:
         name: '#{g[0]}'
 
     # ABRecord
-    ABRecordCopyValue:
+    ABRecordCopy(Value):
         class: ABRecord
-        name: getValue
-        visibility: protected
+        name: 'get#{g[0]}'
+        return_marshaler: CFType.NoRetainMarshaler
+        parameters:
+            property:
+                type: ABProperty
     ABRecord(SetValue): 
         class: ABRecord
         name: '#{g[0]}'
-        visibility: protected
+        throws: NSErrorException
+        parameters:
+            property:
+                type: ABProperty
     ABRecord(RemoveValue):
         class: ABRecord
         name: '#{g[0]}'
-        visibility: protected
+        throws: NSErrorException
+        parameters:
+            property:
+                type: ABProperty
     ABRecordCopy(CompositeName):
         class: ABRecord
         name: 'get#{g[0]}'
+        return_marshaler: CFString.AsStringNoRetainMarshaler
     ABRecord(.*):
         class: ABRecord
         name: '#{g[0]}'
@@ -174,27 +193,30 @@ functions:
         class: ABGroup
         name: '#{g[0]}'
         return_type: ABGroup
+        return_marshaler: ABRecord.NoRetainMarshaler
         parameters:
             source:
                 type: ABSource
     ABGroupCopy(Source):
         class: ABGroup
-        name: '#{g[0]}'
+        name: 'get#{g[0]}'
         return_type: ABSource
+        return_marshaler: ABRecord.NoRetainMarshaler
         parameters:
             group:
                 type: ABGroup
     ABGroupCopyArrayOf(AllMembers).*:
         class: ABGroup
         name: 'get#{g[0]}'
-        return_type: '@org.robovm.rt.bro.annotation.Marshaler(ABPerson.AsListMarshaler.class) List<ABPerson>'
+        return_type: List<ABPerson>
+        return_marshaler: ABPerson.AsListMarshaler
         parameters:
             group:
                 type: ABGroup
     ABGroup(AddMember|RemoveMember):
         class: ABGroup
         name: '#{g[0]}'
-        visibility: protected # throws NSErrorException
+        throws: NSErrorException
         parameters:
             group:
                 type: ABGroup
@@ -210,14 +232,17 @@ functions:
     ABMultiValueCopyValueAtIndex:
         class: ABMultiValue
         name: getValue
+        return_marshaler: CFType.NoRetainMarshaler
     ABMultiValueCopyArrayOfAllValues:
         class: ABMultiValue
         name: getAllValues
-        return_type: '@org.robovm.rt.bro.annotation.Marshaler(CFArray.AsListMarshaler.class) List<CFType>'
+        return_type: List<CFType>
+        return_marshaler: CFArray.AsListMarshaler
     ABMultiValueCopyLabelAtIndex:
         class: ABMultiValue
         name: getLabel
         return_type: CFString
+        return_marshaler: CFType.NoRetainMarshaler
     ABMultiValue(GetIndex)ForIdentifier:
         class: ABMultiValue
         name: indexOf
@@ -230,6 +255,7 @@ functions:
     ABMultiValue(Create)Mutable.*:
         class: ABMutableMultiValue
         name: '#{g[0]}'
+        return_marshaler: CFType.NoRetainMarshaler
     ABMultiValue(AddValueAndLabel):
         class: ABMutableMultiValue
         name: '#{g[0]}'
@@ -265,31 +291,6 @@ functions:
         name: '#{g[0]}'
 
     # ABPerson
-    ABPerson(Create):
-        class: ABPerson
-        name: '#{g[0]}'
-        return_type: ABPerson
-    ABPerson(Create)InSource:
-        class: ABPerson
-        name: '#{g[0]}'
-        return_type: ABPerson
-        parameters:
-            source:
-                type: ABSource
-    ABPersonCopy(Source):
-        class: ABPerson
-        name: 'get#{g[0]}'
-        return_type: ABSource
-        parameters:
-            person:
-                type: ABPerson
-    ABPersonCopyArrayOf(AllLinkedPeople):
-        class: ABPerson
-        name: 'get#{g[0]}'
-        return_type: '@org.robovm.rt.bro.annotation.Marshaler(ABPerson.AsListMarshaler.class) List<ABPerson>'
-        parameters:
-            person:
-                type: ABPerson
     ABPersonGetTypeOfProperty:
         class: ABPersonProperty
         name: getType
@@ -298,6 +299,36 @@ functions:
         class: ABPersonProperty
         name: 'get#{g[0]}'
         visibility: protected
+    
+    ABPerson(Create):
+        class: ABPerson
+        name: '#{g[0]}'
+        return_type: ABPerson
+        return_marshaler: ABRecord.NoRetainMarshaler
+    ABPerson(Create)InSource:
+        class: ABPerson
+        name: '#{g[0]}'
+        return_type: ABPerson
+        return_marshaler: ABRecord.NoRetainMarshaler
+        parameters:
+            source:
+                type: ABSource
+    ABPersonCopy(Source):
+        class: ABPerson
+        name: 'get#{g[0]}'
+        return_type: ABSource
+        return_marshaler: ABRecord.NoRetainMarshaler
+        parameters:
+            person:
+                type: ABPerson
+    ABPersonCopyArrayOf(AllLinkedPeople):
+        class: ABPerson
+        name: 'get#{g[0]}'
+        return_type: List<ABPerson>
+        return_marshaler: ABPerson.AsListMarshaler
+        parameters:
+            person:
+                type: ABPerson
     ABPersonGet(CompositeNameFormat):
         class: ABPerson
         name: 'getConstant#{g[0]}'
@@ -310,13 +341,14 @@ functions:
     ABPersonCopy(CompositeNameDelimiter)ForRecord:
         class: ABPerson
         name: 'get#{g[0]}'
+        return_marshaler: CFString.AsStringNoRetainMarshaler
         parameters:
             record:
                 type: ABPerson
     ABPerson(SetImageData):
         class: ABPerson
         name: '#{g[0]}'
-        visibility: protected # throws NSErrorException
+        throws: NSErrorException
         parameters:
             person:
                 type: ABPerson
@@ -335,7 +367,7 @@ functions:
     ABPerson(RemoveImageData):
         class: ABPerson
         name: '#{g[0]}'
-        visibility: protected # throws NSErrorException
+        throws: NSErrorException
         parameters:
             person:
                 type: ABPerson
@@ -345,19 +377,21 @@ functions:
         parameters:
             person1:
                 type: ABPerson
-    ABPerson(CreatePeopleInSource)WithVCardRepresentation:
+    ABPerson(CreatePeople)InSource(WithVCardRepresentation):
         class: ABPerson
-        name: '#{g[0]}'
-        return_type: '@org.robovm.rt.bro.annotation.Marshaler(ABPerson.AsListMarshaler.class) List<ABPerson>'
+        name: '#{g[0]}#{g[1]}'
+        return_type: List<ABPerson>
+        return_marshaler: ABPerson.AsListMarshaler
         parameters:
             source:
                 type: ABSource
-    ABPerson(CreateVCardRepresentation)WithPeople:
+    ABPerson(CreateVCardRepresentationWithPeople):
         class: ABPerson
         name: '#{g[0]}'
         parameters:
             people:
-                type: '@org.robovm.rt.bro.annotation.Marshaler(ABPerson.AsListMarshaler.class) List<ABPerson>'
+                type: List<ABPerson>
+                marshaler: ABPerson.AsListMarshaler
     ABPerson(.*):
         class: ABPerson
         name: '#{g[0]}'

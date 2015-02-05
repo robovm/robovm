@@ -73,20 +73,29 @@ import org.robovm.apple.corefoundation.*;
     /*<properties>*//*</properties>*/
     /*<members>*//*</members>*/
     public String getName() {
-        CFString val = (CFString)getValue(ABSourceProperty.Name);
+        CFString val = getValue(ABSourceProperty.Name, CFString.class);
         if (val != null) return val.toString();
         return null;
     }
     public ABSource setName(String name) throws NSErrorException {
-        setValue(ABSourceProperty.Name, new CFString(name));
+        if (name == null) {
+            setValue(ABSourceProperty.Name, null);
+        } else {
+            setValue(ABSourceProperty.Name, new CFString(name));
+        }
         return this;
     }
     public ABSourceType getType() {
-        NSNumber val = (NSNumber)getNSValue(ABSourceProperty.Type);
-        return ABSourceType.valueOf(val.intValue());
+        CFNumber val = getValue(ABSourceProperty.Type, CFNumber.class);
+        if (val != null) return ABSourceType.valueOf(val.intValue());
+        return null;
     }
     public ABSource setType(ABSourceType type) throws NSErrorException {
-        setNSValue(ABSourceProperty.Type, NSNumber.valueOf((int)type.value()));
+        if (type == null) {
+            setValue(ABSourceProperty.Type, null);
+        } else {
+            setValue(ABSourceProperty.Type, CFNumber.valueOf((int)type.value()));
+        }
         return this;
     }
     /*<methods>*/

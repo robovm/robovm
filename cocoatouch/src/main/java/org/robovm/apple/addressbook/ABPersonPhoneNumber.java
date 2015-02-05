@@ -29,7 +29,7 @@ import org.robovm.rt.bro.ptr.*;
 import org.robovm.apple.foundation.*;
 import org.robovm.apple.corefoundation.*;
 
-@Library("numberBook")
+@Library("AddressBook")
 public class ABPersonPhoneNumber {
     static { Bro.bind(ABPersonPhoneNumber.class); }
     

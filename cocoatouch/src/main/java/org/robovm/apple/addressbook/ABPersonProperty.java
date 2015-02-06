@@ -53,7 +53,7 @@ import org.robovm.apple.corefoundation.*;
     public static final ABPersonProperty Organization = new ABPersonProperty("OrganizationValue");
     public static final ABPersonProperty JobTitle = new ABPersonProperty("JobTitleValue");
     public static final ABPersonProperty Department = new ABPersonProperty("DepartmentValue");
-    public static final ABPersonProperty Email = new ABPersonProperty("DepartmentValue");
+    public static final ABPersonProperty Email = new ABPersonProperty("EmailValue");
     public static final ABPersonProperty Birthday = new ABPersonProperty("BirthdayValue");
     public static final ABPersonProperty Note = new ABPersonProperty("NoteValue");
     public static final ABPersonProperty CreationDate = new ABPersonProperty("CreationDateValue");

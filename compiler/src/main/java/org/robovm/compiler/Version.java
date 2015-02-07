@@ -18,10 +18,7 @@ package org.robovm.compiler;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.Collections;
-import java.util.Enumeration;
 import java.util.Properties;
-import java.net.URL;
 
 import org.apache.commons.io.IOUtils;
 
@@ -44,12 +41,7 @@ public class Version {
         }
         InputStream is = null;
         try {
-			Enumeration<URL> resources = Version.class.getClassLoader().getResources("version.properties");
-			for (URL resource : Collections.list(resources)) {
-				if (resource.getFile().contains("robovm-dist")) {
-					is = resource.openStream();
-				}
-			}
+            is = Version.class.getResourceAsStream("/version.properties");
             Properties props = new Properties();
             props.load(is);
             version = props.getProperty("version");

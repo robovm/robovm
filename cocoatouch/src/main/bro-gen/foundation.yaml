@@ -712,7 +712,7 @@ classes:
                 name: newDateByAddingTimeInterval
                 return_type: NSDate
             '-isEqualToDate:':
-                name: isEqualTo
+                name: equalsTo
             '-descriptionWithLocale:':
                 name: toString
                 parameters:
@@ -1365,7 +1365,7 @@ classes:
                     other:
                         type: NSHashTable<T>
             '-isEqualToHashTable:':
-                name: isEqualTo
+                name: equalsTo
                 parameters:
                     other:
                         type: NSHashTable<T>
@@ -1506,7 +1506,7 @@ classes:
             '-init.*':
                 name: init
             '-isEqualToIndexSet:':
-                name: equals
+                name: equalsTo
             '-indexGreaterThanIndex:':
                 name: greaterThan
             '-indexLessThanIndex:':
@@ -1775,12 +1775,12 @@ classes:
                 name: getLineDirection
             '+componentsFromLocaleIdentifier:':
                 name: getComponentsFromLocaleIdentifier
-                return_type: '@org.robovm.rt.bro.annotation.Marshaler(NSLocaleComponent.AsMapMarshaler.class) Map<NSLocaleComponent, NSObject>'
+                return_type: NSLocaleComponents
             '+localeIdentifierFromComponents:':
                 name: getLocaleIdentifierFromComponents
                 parameters:
                     dict:
-                        type: '@org.robovm.rt.bro.annotation.Marshaler(NSLocaleComponent.AsMapMarshaler.class) Map<NSLocaleComponent, NSObject>'
+                        type: NSLocaleComponents
             '+localeIdentifierFromWindowsLocaleCode:':
                 name: getLocaleIdentifierFromWindowsLocaleCode
             '+windowsLocaleCodeFromLocaleIdentifier:':
@@ -2354,7 +2354,7 @@ classes:
             '-compare:':
                 trim_after_first_colon: true
             '-isEqualToNumber:':
-                name: isEqualTo
+                name: equalsTo
             '-descriptionWithLocale:':
                 name: toString
                 parameters:
@@ -3047,7 +3047,7 @@ classes:
             '-nextDaylightSavingTimeTransitionAfterDate:':
                 name: getNextDaylightSavingTimeTransitionAfterDate
             '-isEqualToTimeZone:':
-                name: isEqualTo
+                name: equalsTo
             '-localizedName:locale:':
                 name: getLocalizedName
             '+(systemTimeZone|defaultTimeZone|localTimeZone|timeZoneDataVersion)':
@@ -3614,7 +3614,7 @@ classes:
             '-initWithBytes:objCType:':
                 exclude: true
             '-isEqualToValue:':
-                name: isEqualTo
+                name: equalsTo
             '-getValue:':
                 name: getValue
                 visibility: protected
@@ -4327,10 +4327,10 @@ values:
 
     # NSLocale
     NSLocale(.*):
-        class: NSLocaleComponent
-        name: '#{g[0]}Value'
+        dictionary: NSLocaleComponents
+        enum: NSLocaleComponent
+        name: '#{g[0]}'
         type: NSString
-        visibility: protected
     NS(CurrentLocaleDidChangeNotification):
         class: NSLocale
         name: '#{g[0]}'

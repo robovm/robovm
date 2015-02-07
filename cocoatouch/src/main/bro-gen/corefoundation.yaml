@@ -319,6 +319,7 @@ functions:
         class: CFType
         name: 'get#{g[0]}'
         return_type: CFString
+        return_marshaler: CFType.NoRetainMarshaler
         visibility: protected
     CF(GetAllocator):
         class: CFType
@@ -342,6 +343,7 @@ functions:
         class: 'CFMutable#{g[0]}'
         name: 'create#{g[1]}'
         return_type: 'CFMutable#{g[0]}'
+        return_marshaler: CFType.NoRetainMarshaler
         parameters:
             theString: {type: CFMutableString}
     CF(Array|Bag|BitVector|Dictionary|Set)(Add.*):
@@ -507,6 +509,10 @@ functions:
         parameters:
             context:
                 type: CFAllocatorContext.CFAllocatorContextPtr
+    CFAllocator(Create):
+        class: CFAllocator
+        name: '#{g[0]}'
+        return_marshaler: CFType.NoRetainMarshaler
     CFAllocator(.*):
         class: CFAllocator
         name: '#{g[0]}'
@@ -515,6 +521,11 @@ functions:
                 type: '@MachineSizedSInt long'
 
     # CFArray
+    CFArray(Create.*):
+        class: CFArray
+        name: '#{g[0]}'
+        visibility: private
+        return_marshaler: CFType.NoRetainMarshaler
     CFArray(.*):
         class: CFArray
         name: '#{g[0]}'
@@ -535,11 +546,19 @@ functions:
                 type: CFString
     CFAttributedString(GetAttribute.?AndLongestEffectiveRange):
         exclude: true
+    CFAttributedString(Create.*):
+        class: CFAttributedString
+        name: '#{g[0]}'
+        return_marshaler: CFType.NoRetainMarshaler
     CFAttributedString(.*):
         class: CFAttributedString
         name: '#{g[0]}'
 
     # CFBag
+    CFBag(Create.*):
+        class: CFBag
+        name: '#{g[0]}'
+        return_marshaler: CFType.NoRetainMarshaler
     CFBag(.*):
         class: CFBag
         name: '#{g[0]}'
@@ -550,6 +569,11 @@ functions:
         class: CFBinaryHeap
         name: '#{g[0]}'
         visibility: private
+        return_marshaler: CFType.NoRetainMarshaler
+    CFBinaryHeap(CreateCopy):
+        class: CFBinaryHeap
+        name: '#{g[0]}'
+        return_marshaler: CFType.NoRetainMarshaler
     CFBinaryHeapGetCount:
         class: CFBinaryHeap
         name: size
@@ -586,9 +610,14 @@ functions:
         class: CFBitVector
         name: '#{g[0]}'
         visibility: private
+        return_marshaler: CFType.NoRetainMarshaler
         parameters:
             bytes:
                 type: '@Pointer long'
+    CFBitVector(CreateCopy):
+        class: CFBitVector
+        name: '#{g[0]}'   
+        return_marshaler: CFType.NoRetainMarshaler
     CFBitVector(GetBits):
         class: CFBitVector
         name: '#{g[0]}'
@@ -634,9 +663,18 @@ functions:
         name: '#{g[0]}'
         return_type: List<CFBundle>
         return_marshaler: CFArray.AsListMarshaler
+    CFBundle(Create):
+        class: CFBundle
+        name: '#{g[0]}'
+        return_marshaler: CFType.NoRetainMarshaler
+    CFBundleCopy(LocalizedString):
+        class: CFBundle
+        name: 'get#{g[0]}'
+        return_marshaler: CFString.AsStringNoRetainMarshaler
     CFBundleCopy(.*):
         class: CFBundle
         name: 'get#{g[0]}'
+        return_marshaler: CFType.NoRetainMarshaler
     CFBundle(.*):
         class: CFBundle
         name: '#{g[0]}'
@@ -645,10 +683,12 @@ functions:
     CFCalendarCopy(.*):
         class: CFCalendar
         name: 'get#{g[0]}'
+        return_marshaler: CFType.NoRetainMarshaler
     CFCalendar(Create)WithIdentifier:
         class: CFCalendar
         name: '#{g[0]}'
         visibility: protected
+        return_marshaler: CFType.NoRetainMarshaler
         parameters:
             identifier:
                 type: CFCalendarIdentifier
@@ -668,14 +708,21 @@ functions:
     CFCharacterSet(CreateInvertedSet):
         class: CFCharacterSet
         name: '#{g[0]}'
-        visibility: protected
+        return_marshaler: CFType.NoRetainMarshaler
     CFCharacterSet(CreateBitmapRepresentation):
         class: CFCharacterSet
         name: '#{g[0]}'
-        visibility: protected
-    CFCharacterSetCreateCopy:
-        exclude: true
+        visibility: private
+        return_marshaler: CFType.NoRetainMarshaler
+    CFCharacterSet(CreateCopy):
+        class: CFCharacterSet
+        name: '#{g[0]}'
+        return_marshaler: CFType.NoRetainMarshaler
     CFCharacterSet(Create).*:
+        class: CFCharacterSet
+        name: '#{g[0]}'
+        return_marshaler: CFType.NoRetainMarshaler
+    CFCharacterSet(IsSupersetOf)Set:
         class: CFCharacterSet
         name: '#{g[0]}'
     CFCharacterSet(.*):
@@ -719,10 +766,12 @@ functions:
     CFData(CreateCopy):
         class: CFData
         name: '#{g[0]}'
+        return_marshaler: CFType.NoRetainMarshaler
     CFData(Create).*:
         class: CFData
         name: '#{g[0]}'
         visibility: private
+        return_marshaler: CFType.NoRetainMarshaler
         parameters:
             bytes:
                 type: '@Pointer long'
@@ -746,26 +795,29 @@ functions:
     CFDateFormatterCreateDateFormatFromTemplate:
         class: CFDateFormatter
         name: getDateFormat
-        visibility: protected
+        visibility: private
+        return_marshaler: CFString.AsStringNoRetainMarshaler
         parameters:
             options:
                 type: '@MachineSizedUInt long'
     CFDateFormatter(Create):
         class: CFDateFormatter
         name: '#{g[0]}'
-        visibility: protected
+        return_marshaler: CFType.NoRetainMarshaler
     CFDateFormatterCreateString.*:
         class: CFDateFormatter
         name: format
-        visibility: protected
+        visibility: private
+        return_marshaler: CFString.AsStringNoRetainMarshaler
     CFDateFormatterCreateDateFromString:
         class: CFDateFormatter
         name: parse
-        visibility: protected
+        visibility: private
+        return_marshaler: CFType.NoRetainMarshaler
     CFDateFormatter(GetAbsoluteTime)FromString:
         class: CFDateFormatter
         name: '#{g[0]}'
-        visibility: protected
+        visibility: private
     CFDateFormatter(SetProperty):
         class: CFDateFormatter
         name: '#{g[0]}'
@@ -775,6 +827,7 @@ functions:
     CFDateFormatterCopy(Property):
         class: CFDateFormatter
         name: 'get#{g[0]}'
+        return_marshaler: CFType.NoRetainMarshaler
         parameters:
             key:
                 type: CFDateFormatterProperty
@@ -801,7 +854,7 @@ functions:
     CFDate(Create):
         class: CFDate
         name: '#{g[0]}'
-        visibility: protected
+        return_marshaler: CFType.NoRetainMarshaler
     CFDateCompare:
         class: CFDate
         name: compareTo
@@ -822,6 +875,15 @@ functions:
                 type: CFGregorianUnitFlags
 
     # CFDictionary
+    CFDictionary(CreateCopy):
+        class: CFDictionary
+        name: '#{g[0]}'
+        return_marshaler: CFType.NoRetainMarshaler
+    CFDictionary(Create):
+        class: CFDictionary
+        name: '#{g[0]}'
+        visibility: private
+        return_marshaler: CFType.NoRetainMarshaler
     CFDictionary(ApplyFunction):
         class: CFDictionary
         name: '#{g[0]}'
@@ -838,7 +900,7 @@ functions:
     CFError(Create):
         class: CFError
         name: '#{g[0]}'
-        visibility: protected
+        return_marshaler: CFType.NoRetainMarshaler
         parameters:
             userInfo:
                 type: 'NSDictionary<NSString, NSObject>'
@@ -846,9 +908,14 @@ functions:
         exclude: true
     CFErrorCopyDescription:
         exclude: true
+    CFErrorCopy(UserInfo):
+        class: CFError
+        name: 'get#{g[0]}'
+        return_type: 'NSDictionary<NSString, NSObject>'
     CFErrorCopy(.*):
         class: CFError
         name: 'get#{g[0]}'
+        return_marshaler: CFString.AsStringNoRetainMarshaler
     CFError(.*):
         class: CFError
         name: '#{g[0]}'
@@ -858,6 +925,11 @@ functions:
         class: CFFileDescriptor
         name: '#{g[0]}'
         visibility: private
+        return_marshaler: CFType.NoRetainMarshaler
+    CFFileDescriptor(CreateRunLoopSource):
+        class: CFFileDescriptor
+        name: '#{g[0]}'
+        return_marshaler: CFType.NoRetainMarshaler
     CFFileDescriptorGetContext:
         exclude: true
     CFFileDescriptor(.*):
@@ -868,6 +940,10 @@ functions:
                 type: CFFileDescriptorCallBackType
 
     # CFFileSecurity
+    CFFileSecurity(Create.*):
+        class: CFFileSecurity
+        name: '#{g[0]}'
+        return_marshaler: CFType.NoRetainMarshaler
     CFFileSecurityCopy(.*):
         class: CFFileSecurity
         name: 'get#{g[0]}'
@@ -887,35 +963,40 @@ functions:
     CFLocaleCopy(AvailableLocaleIdentifiers|PreferredLanguages):
         class: CFLocale
         name: 'get#{g[0]}'
-        return_type: '@org.robovm.rt.bro.annotation.Marshaler(CFArray.AsStringListMarshaler.class) List<String>'
+        return_type: List<String>
+        return_marshaler: CFArray.AsStringListMarshaler
     CFLocaleCopy(.*ISO.*Codes):
         class: CFLocale
         name: 'get#{g[0]}'
-        return_type: '@org.robovm.rt.bro.annotation.Marshaler(CFArray.AsStringListMarshaler.class) List<String>'
+        return_type: List<String>
+        return_marshaler: CFArray.AsStringListMarshaler
     CFLocaleCreate(Canonical.*Identifier)From.*:
         class: CFLocale
         name: 'get#{g[0]}'
         visibility: protected
+        return_marshaler: CFString.AsStringNoRetainMarshaler
     CFLocaleCreate(LocaleIdentifierFromWindowsLocaleCode):
         class: CFLocale
         name: 'get#{g[0]}'
         visibility: protected
+        return_marshaler: CFString.AsStringNoRetainMarshaler
     CFLocaleCreate(ComponentsFromLocaleIdentifier):
         class: CFLocale
         name: 'get#{g[0]}'
         visibility: protected
-        return_type: '@org.robovm.rt.bro.annotation.Marshaler(CFLocaleComponent.AsMapMarshaler.class) Map<CFLocaleComponent, NSObject>'
+        return_type: CFLocaleComponents
     CFLocaleCreate(LocaleIdentifierFromComponents):
         class: CFLocale
         name: 'get#{g[0]}'
         visibility: protected
+        return_marshaler: CFString.AsStringNoRetainMarshaler
         parameters:
             dictionary:
-                type: '@org.robovm.rt.bro.annotation.Marshaler(CFLocaleComponent.AsMapMarshaler.class) Map<CFLocaleComponent, NSObject>'
+                type: CFLocaleComponents
     CFLocale(Create.*):
         class: CFLocale
         name: '#{g[0]}'
-        visibility: protected
+        return_marshaler: CFType.NoRetainMarshaler
     CFLocaleGetValue:
         class: CFLocale
         name: getComponent
@@ -925,6 +1006,7 @@ functions:
     CFLocaleCopyDisplayNameForPropertyValue:
         class: CFLocale
         name: getComponentDisplayName
+        return_marshaler: CFString.AsStringNoRetainMarshaler
         parameters:
             key:
                 type: CFLocaleComponent
@@ -936,11 +1018,12 @@ functions:
     CFMachPort(CreateRunLoopSource):
         class: CFMachPort
         name: '#{g[0]}'
-        visibility: protected
+        return_marshaler: CFType.NoRetainMarshaler
     CFMachPort(Create).*:
         class: CFMachPort
         name: '#{g[0]}'
-        visibility: protected
+        visibility: private
+        return_marshaler: CFType.NoRetainMarshaler
     CFMachPortGetContext:
         exclude: true
     CFMachPort((Get|Set)InvalidationCallBack):
@@ -955,11 +1038,12 @@ functions:
     CFMessagePort(CreateRunLoopSource):
         class: CFMessagePort
         name: '#{g[0]}'
-        visibility: protected
+        return_marshaler: CFType.NoRetainMarshaler
     CFMessagePort(Create.*):
         class: CFMessagePort
         name: '#{g[0]}'
         visibility: protected
+        return_marshaler: CFType.NoRetainMarshaler
     CFMessagePortGetContext:
         exclude: true
     CFMessagePort((Get|Set)InvalidationCallBack):
@@ -1011,19 +1095,22 @@ functions:
     CFNumberFormatter(Create):
         class: CFNumberFormatter
         name: '#{g[0]}'
-        visibility: protected
+        return_marshaler: CFType.NoRetainMarshaler
     CFNumberFormatterCreateStringWithNumber:
         class: CFNumberFormatter
         name: format
         visibility: protected
+        return_marshaler: CFString.AsStringNoRetainMarshaler
     CFNumberFormatterCreateStringWithValue:
         class: CFNumberFormatter
         name: formatValue
         visibility: protected
+        return_marshaler: CFString.AsStringNoRetainMarshaler
     CFNumberFormatterCreateNumberFromString:
         class: CFNumberFormatter
         name: parse
         visibility: protected
+        return_marshaler: CFType.NoRetainMarshaler
         parameters:
             options:
                 type: CFNumberFormatterOptionFlags
@@ -1040,6 +1127,7 @@ functions:
     CFNumberFormatterCopy(Property):
         class: CFNumberFormatter
         name: 'get#{g[0]}'
+        return_marshaler: CFType.NoRetainMarshaler
         parameters:
             key:
                 type: CFNumberFormatterProperty
@@ -1052,14 +1140,19 @@ functions:
         name: '#{g[0]}'
 
     # CFNumber
-    CFNumber(Create|GetValue):
+    CFNumber(Create):
         class: CFNumber
         name: '#{g[0]}'
-        visibility: protected
+        visibility: private
+        return_marshaler: CFType.NoRetainMarshaler
+    CFNumber(GetValue):
+        class: CFNumber
+        name: '#{g[0]}'
+        visibility: private
     CFNumber(Compare):
         class: CFNumber
         name: '#{g[0]}To'
-        visibility: protected # Last parameter is useless
+        visibility: private # Last parameter is useless
     CFNumber(.*):
         class: CFNumber
         name: '#{g[0]}'
@@ -1068,7 +1161,7 @@ functions:
     CFPlugIn(Create):
         class: CFPlugIn
         name: '#{g[0]}'
-        visibility: protected
+        return_marshaler: CFType.NoRetainMarshaler
     CFPlugInIsLoadOnDemand:
         class: CFPlugIn
         name: isLoadingOnDemand
@@ -1081,33 +1174,40 @@ functions:
         class: CFPreferences
         name: 'get#{g[0]}'
         visibility: protected
-        return_type: '@org.robovm.rt.bro.annotation.Marshaler(CFDictionary.AsStringMapMarshaler.class) Map<String, ?>'
+        return_type: Map<String, ?>
+        return_marshaler: CFDictionary.AsStringMapMarshaler
         parameters:
             keysToFetch:
-                type: '@org.robovm.rt.bro.annotation.Marshaler(CFArray.AsStringListMarshaler.class) List<String>'
+                type: List<String>
+                marshaler: CFArray.AsStringListMarshaler
     CFPreferences(SetMultiple):
         class: CFPreferences
         name: '#{g[0]}'
         visibility: protected
         parameters:
             keysToSet:
-                type: '@org.robovm.rt.bro.annotation.Marshaler(CFDictionary.AsStringMapMarshaler.class) Map<String, ?>'
+                type: 'Map<String, ?>'
+                marshaler: CFDictionary.AsStringMapMarshaler
             keysToRemove:
-                type: '@org.robovm.rt.bro.annotation.Marshaler(CFArray.AsStringListMarshaler.class) List<String>'
+                type: List<String>
+                marshaler: CFArray.AsStringListMarshaler
     CFPreferencesCopy(ApplicationList):
         class: CFPreferences
         name: 'get#{g[0]}'
         visibility: protected
-        return_type: '@org.robovm.rt.bro.annotation.Marshaler(CFArray.AsStringListMarshaler.class) List<String>'
+        return_type: List<String>
+        return_marshaler: CFArray.AsStringListMarshaler
     CFPreferencesCopy(KeyList):
         class: CFPreferences
         name: 'get#{g[0]}'
         visibility: protected
-        return_type: '@org.robovm.rt.bro.annotation.Marshaler(CFArray.AsStringListMarshaler.class) List<String>'
+        return_type: List<String>
+        return_marshaler: CFArray.AsStringListMarshaler
     CFPreferencesCopy(.*):
         class: CFPreferences
         name: 'get#{g[0]}'
         visibility: protected
+        return_marshaler: CFType.NoRetainMarshaler
     CFPreferences(.*):
         class: CFPreferences
         name: '#{g[0]}'
@@ -1120,6 +1220,7 @@ functions:
         class: CFPropertyList
         name: '#{g[0]}'
         return_type: CFPropertyList
+        return_marshaler: CFType.NoRetainMarshaler
         parameters:
             propertyList:
                 type: CFPropertyList
@@ -1130,12 +1231,14 @@ functions:
         name: '#{g[0]}'
         visibility: protected
         return_type: CFPropertyList
+        return_marshaler: CFType.NoRetainMarshaler
         throws: CFErrorException
     CFPropertyListCreateData:
         class: CFPropertyList
         name: asData
         visibility: private
         throws: CFErrorException
+        return_marshaler: CFType.NoRetainMarshaler
         parameters:
             propertyList:
                 type: CFPropertyList
@@ -1154,17 +1257,23 @@ functions:
                 type: CFPropertyList
 
     # CFReadStream
-    CFReadStream(Create).*:
+    CFReadStream(Create)WithBytesNoCopy:
         class: CFReadStream
         name: '#{g[0]}'
-        visibility: protected
+        visibility: private
+        return_marshaler: CFType.NoRetainMarshaler
         parameters:
             bytes:
                 type: '@Pointer long'
+    CFReadStream(Create)WithFile:
+        class: CFReadStream
+        name: '#{g[0]}'
+        return_marshaler: CFType.NoRetainMarshaler
     CFReadStreamCopy(Property):
         class: CFReadStream
         name: 'get#{g[0]}'
         visibility: private
+        return_marshaler: CFType.NoRetainMarshaler
         parameters:
             propertyName:
                 type: CFString
@@ -1193,6 +1302,10 @@ functions:
     CFReadStreamScheduleWithRunLoop:
         class: CFReadStream
         name: scheduleInRunLoop
+    CFReadStreamCopy(Error):
+        class: CFReadStream
+        name: 'get#{g[0]}'
+        return_marshaler: CFType.NoRetainMarshaler
     CFReadStreamCopy(.*):
         class: CFReadStream
         name: 'get#{g[0]}'
@@ -1212,7 +1325,7 @@ functions:
     CFRunLoopObserver(Create)WithHandler:
         class: CFRunLoopObserver
         name: '#{g[0]}'
-        visibility: protected
+        return_marshaler: CFType.NoRetainMarshaler
         parameters:
             activities:
                 type: CFRunLoopActivity
@@ -1224,7 +1337,7 @@ functions:
     CFRunLoopSource(Create):
         class: CFRunLoopSource
         name: '#{g[0]}'
-        visibility: protected
+        return_marshaler: CFType.NoRetainMarshaler
     CFRunLoopSource(GetContext):
         class: CFRunLoopSource
         name: '#{g[0]}'
@@ -1240,7 +1353,7 @@ functions:
     CFRunLoopTimer(Create)WithHandler:
         class: CFRunLoopTimer
         name: '#{g[0]}'
-        visibility: protected
+        return_marshaler: CFType.NoRetainMarshaler
         parameters:
             flags:
                 type: '@MachineSizedUInt long'
@@ -1258,9 +1371,10 @@ functions:
         name: 'get#{g[0]}'
         return_type: List<String>
         return_marshaler: CFArray.AsStringListMarshaler
-    CFRunLoopCopy(.*):
+    CFRunLoopCopy(CurrentMode):
         class: CFRunLoop
         name: 'get#{g[0]}'
+        return_marshaler: CFString.AsStringNoRetainMarshaler
     CFRunLoop(PerformBlock):
         class: CFRunLoop
         name: '#{g[0]}'
@@ -1277,6 +1391,11 @@ functions:
     CFSetGetCount:
         class: CFSet
         name: size
+    CFSet(Create.*):
+        class: CFSet
+        name: '#{g[0]}'
+        return_marshaler: CFType.NoRetainMarshaler
+        visibility: protected
     CFSet(.*):
         class: CFSet
         name: '#{g[0]}'
@@ -1287,16 +1406,19 @@ functions:
         class: CFSocket
         name: '#{g[0]}'
         visibility: private
+        return_marshaler: CFType.NoRetainMarshaler
         parameters:
             callBackTypes:
                 type: CFSocketCallBackType
     CFSocket(CreateRunLoopSource):
         class: CFSocket
         name: '#{g[0]}'
+        return_marshaler: CFType.NoRetainMarshaler
     CFSocket(Create).*:
         class: CFSocket
         name: '#{g[0]}'
         visibility: private
+        return_marshaler: CFType.NoRetainMarshaler
         parameters:
             callBackTypes:
                 type: CFSocketCallBackType
@@ -1304,6 +1426,10 @@ functions:
         class: CFSocket
         name: '#{g[0]}'
         return_type: CFSocketFlags
+    CFSocketCopy(.*Address):
+        class: CFSocket
+        name: 'get#{g[0]}'
+        return_marshaler: CFType.NoRetainMarshaler
     CFSocketCopy(.*):
         class: CFSocket
         name: 'get#{g[0]}'
@@ -1326,13 +1452,14 @@ functions:
     CFStringTokenizer(Create):
         class: CFStringTokenizer
         name: '#{g[0]}'
-        visibility: protected
+        return_marshaler: CFType.NoRetainMarshaler
         parameters:
             options:
                 type: CFStringTokenizerUnitOptions
     CFStringTokenizerCopy(CurrentTokenAttribute):
         class: CFStringTokenizer
         name: 'get#{g[0]}'
+        return_marshaler: CFType.NoRetainMarshaler
         parameters:
             attribute:
                 type: CFStringTokenizerUnitOptions
@@ -1347,10 +1474,12 @@ functions:
             ranges:
                 type: CFRange.CFRangePtr
             derivedSubTokens:
-                type: '@org.robovm.rt.bro.annotation.Marshaler(CFArray.AsStringListMarshaler.class) List<String>'
-    CFStringTokenizerCopy(.*):
+                type: List<String>
+                marshaler: CFArray.AsStringListMarshaler
+    CFStringTokenizerCopy(BestStringLanguage):
         class: CFStringTokenizer
         name: 'get#{g[0]}'
+        return_marshaler: CFString.AsStringNoRetainMarshaler
     CFStringTokenizer(.*):
         class: CFStringTokenizer
         name: '#{g[0]}'
@@ -1383,6 +1512,15 @@ functions:
         parameters:
             theString:
                 type: CFString
+    CFString(Create.*):
+        class: CFString
+        name: '#{g[0]}'
+        visibility: protected
+        return_type: CFString
+        return_marshaler: CFType.NoRetainMarshaler
+        parameters:
+            theString:
+                type: CFString
     CFString(.*):
         class: CFString
         name: '#{g[0]}'
@@ -1398,17 +1536,23 @@ functions:
                 type: CFString
 
     # CFTimeZone
-    CFTimeZoneCopy(.*):
-        class: CFTimeZone
-        name: 'get#{g[0]}'
     CFTimeZone(Create).*:
         class: CFTimeZone
         name: '#{g[0]}'
-        visibility: protected
+        return_marshaler: CFType.NoRetainMarshaler
     CFTimeZoneCopy(KnownNames):
         class: CFTimeZone
         name: 'get#{g[0]}'
-        return_type: '@org.robovm.rt.bro.annotation.Marshaler(CFArray.AsStringListMarshaler.class) List<String>'
+        return_type: List<String>
+        return_marshaler: CFArray.AsStringListMarshaler
+    CFTimeZoneCopy(LocalizedName|Abbreviation):
+        class: CFTimeZone
+        name: 'get#{g[0]}'
+        return_marshaler: CFString.AsStringNoRetainMarshaler
+    CFTimeZoneCopy(.*):
+        class: CFTimeZone
+        name: 'get#{g[0]}'
+        return_marshaler: CFType.NoRetainMarshaler
     CFTimeZone(SetDefault):
         class: CFTimeZone
         name: '#{g[0]}'
@@ -1422,6 +1566,7 @@ functions:
         class: CFTree
         name: '#{g[0]}'
         visibility: private
+        return_marshaler: CFType.NoRetainMarshaler
     CFTree((Get|Set)Context):
         exclude: true
     CFTreeGet(NextSibling|FirstChild):
@@ -1443,6 +1588,14 @@ functions:
         name: '#{g[0]}'
 
     # CFURLEnumerator
+    CFURLEnumerator(Create.*):
+        class: CFURLEnumerator
+        name: '#{g[0]}'
+        return_marshaler: CFType.NoRetainMarshaler
+    CFURLEnumerator(GetNextURL):
+        class: CFURLEnumerator
+        name: '#{g[0]}'
+        throws: CFErrorException
     CFURLEnumerator(.*):
         class: CFURLEnumerator
         name: '#{g[0]}'
@@ -1457,17 +1610,21 @@ functions:
     CFURL(Create.*FileSystem.*):
         class: CFURL
         name: '#{g[0]}'
+        return_marshaler: CFType.NoRetainMarshaler
     CFURLCreateData:
         class: CFURL
         name: asData
+        return_marshaler: CFType.NoRetainMarshaler
     CFURL(Create).*WithBytes:
         class: CFURL
         name: '#{g[0]}'
         visibility: private
+        return_marshaler: CFType.NoRetainMarshaler
     CFURL(CreateFile(Reference|Path)URL):
         class: CFURL
         name: '#{g[0]}'
         throws: CFErrorException
+        return_marshaler: CFType.NoRetainMarshaler
     CFURL.*BookmarkData.*:
         exclude: true
     CFURL(CreateDataAndPropertiesFromResource|WriteDataAndPropertiesToResource|DestroyResource|CreatePropertyFromResource):
@@ -1475,17 +1632,21 @@ functions:
     CFURL(CreateCopy)(.*):
         class: CFURL
         name: '#{g[0]}By#{g[1]}'
-    CFURL(Create).*:
-        class: CFURL
-        name: '#{g[0]}'
-    CFURL(GetBytes|GetByteRangeForComponent):
-        exclude: true
+        return_marshaler: CFType.NoRetainMarshaler
     CFURLCreateStringByReplacingPercentEscapes.*:
         class: CFURL
         name: decodeURLString
+        return_marshaler: CFString.AsStringNoRetainMarshaler
     CFURLCreateStringByAddingPercentEscapes:
         class: CFURL
         name: encodeURLString
+        return_marshaler: CFString.AsStringNoRetainMarshaler
+    CFURL(Create).*:
+        class: CFURL
+        name: '#{g[0]}'
+        return_marshaler: CFType.NoRetainMarshaler
+    CFURL(GetBytes|GetByteRangeForComponent):
+        exclude: true
     CFURLCopyResourcePropertyForKey:
         class: CFURL
         name: getResourceValue
@@ -1498,15 +1659,21 @@ functions:
         class: CFURL
         name: getResourceValues
         throws: CFErrorException
+        return_marshaler: CFType.NoRetainMarshaler
     CFURLSetResourcePropertiesForKeys:
         class: CFURL
         name: setResourceValues
         throws: CFErrorException
     CFURLSetTemporaryResourcePropertyForKey:
         exclude: true
+    CFURLCopy(AbsoluteURL):
+        class: CFURL
+        name: 'get#{g[0]}'
+        return_marshaler: CFType.NoRetainMarshaler
     CFURLCopy(.*):
         class: CFURL
         name: 'get#{g[0]}'
+        return_marshaler: CFString.AsStringNoRetainMarshaler
     CFURLResourceIsReachable:
         class: CFURL
         name: isResourceReachable
@@ -1523,16 +1690,18 @@ functions:
     CFCopy(HomeDirectoryURL):
         class: CFURL
         name: 'get#{g[0]}'
+        return_marshaler: CFType.NoRetainMarshaler
 
     # CFUUID
     CFUUIDCreateString:
         class: CFUUID
         name: asString
         visibility: protected
+        return_marshaler: CFString.AsStringNoRetainMarshaler
     CFUUID(Create).*:
         class: CFUUID
         name: '#{g[0]}'
-        visibility: protected
+        return_marshaler: CFType.NoRetainMarshaler
     CFUUID(GetConstantUUID)WithBytes:
         class: CFUUID
         name: '#{g[0]}'
@@ -1547,7 +1716,8 @@ functions:
     CFWriteStream(Create).*:
         class: CFWriteStream
         name: '#{g[0]}'
-        visibility: protected
+        visibility: private
+        return_marshaler: CFType.NoRetainMarshaler
         parameters:
             buffer:
                 type: '@Pointer long'
@@ -1555,6 +1725,7 @@ functions:
         class: CFWriteStream
         name: 'get#{g[0]}'
         visibility: private
+        return_marshaler: CFType.NoRetainMarshaler
         parameters:
             propertyName:
                 type: CFString
@@ -1583,6 +1754,10 @@ functions:
     CFWriteStreamScheduleWithRunLoop:
         class: CFWriteStream
         name: scheduleInRunLoop
+    CFWriteStreamCopy(Error):
+        class: CFWriteStream
+        name: 'get#{g[0]}'
+        return_marshaler: CFType.NoRetainMarshaler
     CFWriteStreamCopy(.*):
         class: CFWriteStream
         name: 'get#{g[0]}'
@@ -1635,10 +1810,9 @@ values:
 
     # CFDateFormatter
     kCFDateFormatter(.*):
-        class: CFDateFormatterProperty
-        name: '#{g[0]}Value'
+        enum: CFDateFormatterProperty
+        name: '#{g[0]}'
         type: CFString
-        visibility: protected
 
     # CFError
     kCFError.*: # We use the Foundation version instead
@@ -1650,14 +1824,14 @@ values:
         name: '#{g[0]}'
         type: NSString
     kCFLocale(.*):
-        class: CFLocaleComponent
-        name: '#{g[0]}Value'
-        type: NSString
-    kCF(.*)Calendar:
-        class: CFCalendarIdentifier
-        name: '#{g[0]}Value'
+        dictionary: CFLocaleComponents
+        enum: CFLocaleComponent
+        name: '#{g[0]}'
         type: CFString
-        visibility: protected
+    kCF(.*)Calendar:
+        enum: CFCalendarIdentifier
+        name: '#{g[0]}'
+        type: CFString
 
     # CFNull
     kCF(Null):
@@ -1666,10 +1840,9 @@ values:
 
     # CFNumberFormatter
     kCFNumberFormatter(.*):
-        class: CFNumberFormatterProperty
-        name: '#{g[0]}Value'
+        enum: CFNumberFormatterProperty
+        name: '#{g[0]}'
         type: CFString
-        visibility: protected
 
     # CFNumber
     kCFNumber(.*):
@@ -1678,17 +1851,15 @@ values:
 
     # CFPlugin
     kCFPlugIn(.*)Key:
-        class: CFPlugInProperty
-        name: '#{g[0]}Value'
+        enum: CFPlugInProperty
+        name: '#{g[0]}'
         type: CFString
-        visibility: protected
 
     # CFPreferences
     kCFPreferences(.*):
-        class: CFPreferencesDomain
-        name: '#{g[0]}Value'
+        enum: CFPreferencesDomain
+        name: '#{g[0]}'
         type: CFString
-        visibility: protected
 
     # CFRunLoop
     kCFRunLoop(Default)Mode:

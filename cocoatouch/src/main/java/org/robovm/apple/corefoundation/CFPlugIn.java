@@ -51,7 +51,7 @@ import org.robovm.apple.foundation.*;
     @Bridge(symbol="CFPlugInGetTypeID", optional=true)
     public static native @MachineSizedUInt long getClassTypeID();
     @Bridge(symbol="CFPlugInCreate", optional=true)
-    protected static native CFPlugIn create(CFAllocator allocator, CFURL plugInURL);
+    public static native @org.robovm.rt.bro.annotation.Marshaler(CFType.NoRetainMarshaler.class) CFPlugIn create(CFAllocator allocator, CFURL plugInURL);
     @Bridge(symbol="CFPlugInGetBundle", optional=true)
     public native CFBundle getBundle();
     @Bridge(symbol="CFPlugInSetLoadOnDemand", optional=true)

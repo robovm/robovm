@@ -33,19 +33,64 @@ import org.robovm.apple.uikit.*;
 
 /*<javadoc>*/
 /*</javadoc>*/
-/*<annotations>*//*</annotations>*/
+/*<annotations>*/@Library("CoreGraphics")/*</annotations>*/
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/CGPDFOperatorTable/*</name>*/ 
     extends /*<extends>*/NativeObject/*</extends>*/ 
     /*<implements>*//*</implements>*/ {
 
+    public interface OperatorCallback {
+        void invoke(CGPDFScanner scanner);
+    }
+    
+    private static java.util.concurrent.atomic.AtomicLong infoId = new java.util.concurrent.atomic.AtomicLong();
+    private static final java.lang.reflect.Method cbOperator;
+    private static final Map<Long, OperatorCallback> callbacks = new HashMap<>();
+    
+    static {
+        try {
+            cbOperator = CGPDFOperatorTable.class.getDeclaredMethod("cbOperator", CGPDFScanner.class, long.class); 
+        } catch (Throwable e) {
+            throw new Error(e);
+        }
+    }
     /*<ptr>*/public static class CGPDFOperatorTablePtr extends Ptr<CGPDFOperatorTable, CGPDFOperatorTablePtr> {}/*</ptr>*/
-    /*<bind>*/
-    /*</bind>*/
+    /*<bind>*/static { Bro.bind(CGPDFOperatorTable.class); }/*</bind>*/
     /*<constants>*//*</constants>*/
     /*<constructors>*/
     protected CGPDFOperatorTable() {}
     /*</constructors>*/
     /*<properties>*//*</properties>*/
     /*<members>*//*</members>*/
-    /*<methods>*//*</methods>*/
+    long localInfoId = -1;
+    
+    @Callback
+    private static void cbOperator(CGPDFScanner scanner, long info) {
+        OperatorCallback callback = null;
+        synchronized (callbacks) {
+            callback = callbacks.get(info);
+        }
+        callback.invoke(scanner);
+    }
+    
+    public void setCallback(String name, OperatorCallback callback) {
+        if (localInfoId == -1) {
+            localInfoId = CGPDFOperatorTable.infoId.getAndIncrement();
+        }
+        setCallback(name, new FunctionPtr(cbOperator));
+        synchronized (callbacks) {
+            callbacks.put(localInfoId, callback);
+        }
+    }
+    /*<methods>*/
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
+    @Bridge(symbol="CGPDFOperatorTableCreate", optional=true)
+    public static native CGPDFOperatorTable create();
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
+    @Bridge(symbol="CGPDFOperatorTableSetCallback", optional=true)
+    private native void setCallback(@org.robovm.rt.bro.annotation.Marshaler(StringMarshalers.AsAsciiZMarshaler.class) String name, FunctionPtr callback);
+    /*</methods>*/
 }

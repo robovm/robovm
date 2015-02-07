@@ -132,7 +132,7 @@ import org.robovm.apple.foundation.*;
     }
     /*<methods>*/
     @Bridge(symbol="CFPreferencesCopyAppValue", optional=true)
-    protected static native CFType getAppValue(String key, String applicationID);
+    protected static native @org.robovm.rt.bro.annotation.Marshaler(CFType.NoRetainMarshaler.class) CFType getAppValue(String key, String applicationID);
     @Bridge(symbol="CFPreferencesGetAppBooleanValue", optional=true)
     protected static native boolean getAppBooleanValue(String key, String applicationID, BooleanPtr keyExistsAndHasValidFormat);
     @Bridge(symbol="CFPreferencesGetAppIntegerValue", optional=true)
@@ -146,7 +146,7 @@ import org.robovm.apple.foundation.*;
     @Bridge(symbol="CFPreferencesAppSynchronize", optional=true)
     protected static native boolean appSynchronize(String applicationID);
     @Bridge(symbol="CFPreferencesCopyValue", optional=true)
-    protected static native CFType getValue(String key, String applicationID, String userName, String hostName);
+    protected static native @org.robovm.rt.bro.annotation.Marshaler(CFType.NoRetainMarshaler.class) CFType getValue(String key, String applicationID, String userName, String hostName);
     @Bridge(symbol="CFPreferencesCopyMultiple", optional=true)
     protected static native @org.robovm.rt.bro.annotation.Marshaler(CFDictionary.AsStringMapMarshaler.class) Map<String, ?> getMultiple(@org.robovm.rt.bro.annotation.Marshaler(CFArray.AsStringListMarshaler.class) List<String> keysToFetch, String applicationID, String userName, String hostName);
     @Bridge(symbol="CFPreferencesSetValue", optional=true)

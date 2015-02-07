@@ -34,7 +34,7 @@ import org.robovm.apple.corefoundation.*;
 /*</javadoc>*/
 /*<annotations>*/@Library("AddressBook")/*</annotations>*/
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/ABPersonKind/*</name>*/ 
-    extends /*<extends>*/Object/*</extends>*/ 
+    extends /*<extends>*/CocoaUtility/*</extends>*/ 
     /*<implements>*//*</implements>*/ {
 
     /*<ptr>*/

@@ -142,13 +142,13 @@ import org.robovm.apple.foundation.*;
     @Bridge(symbol="CFSocketGetTypeID", optional=true)
     public static native @MachineSizedUInt long getClassTypeID();
     @Bridge(symbol="CFSocketCreate", optional=true)
-    private static native CFSocket create(CFAllocator allocator, int protocolFamily, int socketType, int protocol, CFSocketCallBackType callBackTypes, FunctionPtr callout, CFSocketContext context);
+    private static native @org.robovm.rt.bro.annotation.Marshaler(CFType.NoRetainMarshaler.class) CFSocket create(CFAllocator allocator, int protocolFamily, int socketType, int protocol, CFSocketCallBackType callBackTypes, FunctionPtr callout, CFSocketContext context);
     @Bridge(symbol="CFSocketCreateWithNative", optional=true)
-    private static native CFSocket create(CFAllocator allocator, int sock, CFSocketCallBackType callBackTypes, FunctionPtr callout, CFSocketContext context);
+    private static native @org.robovm.rt.bro.annotation.Marshaler(CFType.NoRetainMarshaler.class) CFSocket create(CFAllocator allocator, int sock, CFSocketCallBackType callBackTypes, FunctionPtr callout, CFSocketContext context);
     @Bridge(symbol="CFSocketCreateWithSocketSignature", optional=true)
-    private static native CFSocket create(CFAllocator allocator, CFSocketSignature signature, CFSocketCallBackType callBackTypes, FunctionPtr callout, CFSocketContext context);
+    private static native @org.robovm.rt.bro.annotation.Marshaler(CFType.NoRetainMarshaler.class) CFSocket create(CFAllocator allocator, CFSocketSignature signature, CFSocketCallBackType callBackTypes, FunctionPtr callout, CFSocketContext context);
     @Bridge(symbol="CFSocketCreateConnectedToSocketSignature", optional=true)
-    private static native CFSocket createConnectedToSocketSignature(CFAllocator allocator, CFSocketSignature signature, CFSocketCallBackType callBackTypes, FunctionPtr callout, CFSocketContext context, double timeout);
+    private static native @org.robovm.rt.bro.annotation.Marshaler(CFType.NoRetainMarshaler.class) CFSocket createConnectedToSocketSignature(CFAllocator allocator, CFSocketSignature signature, CFSocketCallBackType callBackTypes, FunctionPtr callout, CFSocketContext context, double timeout);
     @Bridge(symbol="CFSocketSetAddress", optional=true)
     public native CFSocketError setAddress(CFData address);
     @Bridge(symbol="CFSocketConnectToAddress", optional=true)
@@ -158,13 +158,13 @@ import org.robovm.apple.foundation.*;
     @Bridge(symbol="CFSocketIsValid", optional=true)
     public native boolean isValid();
     @Bridge(symbol="CFSocketCopyAddress", optional=true)
-    public native CFData getAddress();
+    public native @org.robovm.rt.bro.annotation.Marshaler(CFType.NoRetainMarshaler.class) CFData getAddress();
     @Bridge(symbol="CFSocketCopyPeerAddress", optional=true)
-    public native CFData getPeerAddress();
+    public native @org.robovm.rt.bro.annotation.Marshaler(CFType.NoRetainMarshaler.class) CFData getPeerAddress();
     @Bridge(symbol="CFSocketGetNative", optional=true)
     public native int getNative();
     @Bridge(symbol="CFSocketCreateRunLoopSource", optional=true)
-    public static native CFRunLoopSource createRunLoopSource(CFAllocator allocator, CFSocket s, @MachineSizedSInt long order);
+    public static native @org.robovm.rt.bro.annotation.Marshaler(CFType.NoRetainMarshaler.class) CFRunLoopSource createRunLoopSource(CFAllocator allocator, CFSocket s, @MachineSizedSInt long order);
     @Bridge(symbol="CFSocketGetSocketFlags", optional=true)
     public native CFSocketFlags getSocketFlags();
     @Bridge(symbol="CFSocketSetSocketFlags", optional=true)

@@ -101,7 +101,7 @@ import org.robovm.apple.foundation.*;
     @Bridge(symbol="CFRunLoopGetMain", optional=true)
     public static native CFRunLoop getMain();
     @Bridge(symbol="CFRunLoopCopyCurrentMode", optional=true)
-    public native String getCurrentMode();
+    public native @org.robovm.rt.bro.annotation.Marshaler(CFString.AsStringNoRetainMarshaler.class) String getCurrentMode();
     @Bridge(symbol="CFRunLoopCopyAllModes", optional=true)
     public native @org.robovm.rt.bro.annotation.Marshaler(CFArray.AsStringListMarshaler.class) List<String> getAllModes();
     @Bridge(symbol="CFRunLoopAddCommonMode", optional=true)

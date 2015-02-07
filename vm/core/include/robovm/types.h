@@ -369,7 +369,6 @@ typedef struct Options {
     jlong initialHeapSize;
     jboolean enableGCHeapStats;
     jboolean enableHooks;
-    jboolean waitForAttach;
     jboolean waitForResume;
     jboolean printPID;
     char* pidFile;

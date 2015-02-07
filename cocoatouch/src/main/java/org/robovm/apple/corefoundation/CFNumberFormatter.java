@@ -69,7 +69,7 @@ import org.robovm.apple.foundation.*;
     @Bridge(symbol="CFNumberFormatterGetTypeID", optional=true)
     public static native @MachineSizedUInt long getClassTypeID();
     @Bridge(symbol="CFNumberFormatterCreate", optional=true)
-    protected static native CFNumberFormatter create(CFAllocator allocator, CFLocale locale, CFNumberFormatterStyle style);
+    public static native @org.robovm.rt.bro.annotation.Marshaler(CFType.NoRetainMarshaler.class) CFNumberFormatter create(CFAllocator allocator, CFLocale locale, CFNumberFormatterStyle style);
     @Bridge(symbol="CFNumberFormatterGetLocale", optional=true)
     public native CFLocale getLocale();
     @Bridge(symbol="CFNumberFormatterGetStyle", optional=true)
@@ -79,17 +79,17 @@ import org.robovm.apple.foundation.*;
     @Bridge(symbol="CFNumberFormatterSetFormat", optional=true)
     public native void setFormat(String formatString);
     @Bridge(symbol="CFNumberFormatterCreateStringWithNumber", optional=true)
-    protected static native String format(CFAllocator allocator, CFNumberFormatter formatter, CFNumber number);
+    protected static native @org.robovm.rt.bro.annotation.Marshaler(CFString.AsStringNoRetainMarshaler.class) String format(CFAllocator allocator, CFNumberFormatter formatter, CFNumber number);
     @Bridge(symbol="CFNumberFormatterCreateStringWithValue", optional=true)
-    protected static native String formatValue(CFAllocator allocator, CFNumberFormatter formatter, CFNumberType numberType, VoidPtr valuePtr);
+    protected static native @org.robovm.rt.bro.annotation.Marshaler(CFString.AsStringNoRetainMarshaler.class) String formatValue(CFAllocator allocator, CFNumberFormatter formatter, CFNumberType numberType, VoidPtr valuePtr);
     @Bridge(symbol="CFNumberFormatterCreateNumberFromString", optional=true)
-    protected static native CFNumber parse(CFAllocator allocator, CFNumberFormatter formatter, String string, CFRange rangep, CFNumberFormatterOptionFlags options);
+    protected static native @org.robovm.rt.bro.annotation.Marshaler(CFType.NoRetainMarshaler.class) CFNumber parse(CFAllocator allocator, CFNumberFormatter formatter, String string, CFRange rangep, CFNumberFormatterOptionFlags options);
     @Bridge(symbol="CFNumberFormatterGetValueFromString", optional=true)
     protected native boolean parseValue(String string, CFRange rangep, CFNumberType numberType, VoidPtr valuePtr);
     @Bridge(symbol="CFNumberFormatterSetProperty", optional=true)
     public native void setProperty(CFNumberFormatterProperty key, CFType value);
     @Bridge(symbol="CFNumberFormatterCopyProperty", optional=true)
-    public native CFType getProperty(CFNumberFormatterProperty key);
+    public native @org.robovm.rt.bro.annotation.Marshaler(CFType.NoRetainMarshaler.class) CFType getProperty(CFNumberFormatterProperty key);
     @Bridge(symbol="CFNumberFormatterGetDecimalInfoForCurrencyCode", optional=true)
     private static native boolean getDecimalInfoForCurrencyCode(String currencyCode, IntPtr defaultFractionDigits, DoublePtr roundingIncrement);
     /*</methods>*/

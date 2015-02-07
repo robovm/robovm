@@ -52,9 +52,9 @@ import org.robovm.apple.foundation.*;
     }
     /*<methods>*/
     @Bridge(symbol="CFCharacterSetCreateMutable", optional=true)
-    public static native CFMutableCharacterSet create(CFAllocator alloc);
+    public static native @org.robovm.rt.bro.annotation.Marshaler(CFType.NoRetainMarshaler.class) CFMutableCharacterSet create(CFAllocator alloc);
     @Bridge(symbol="CFCharacterSetCreateMutableCopy", optional=true)
-    public static native CFMutableCharacterSet createCopy(CFAllocator alloc, CFCharacterSet theSet);
+    public static native @org.robovm.rt.bro.annotation.Marshaler(CFType.NoRetainMarshaler.class) CFMutableCharacterSet createCopy(CFAllocator alloc, CFCharacterSet theSet);
     @Bridge(symbol="CFCharacterSetAddCharactersInRange", optional=true)
     public native void addCharactersInRange(@ByVal CFRange theRange);
     @Bridge(symbol="CFCharacterSetRemoveCharactersInRange", optional=true)

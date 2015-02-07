@@ -151,16 +151,16 @@ import org.robovm.apple.coreservices.CFFTPStreamProperty;
     @Bridge(symbol="CFReadStreamGetTypeID", optional=true)
     public static native @MachineSizedUInt long getClassTypeID();
     @Bridge(symbol="CFReadStreamCreateWithBytesNoCopy", optional=true)
-    protected static native CFReadStream create(CFAllocator alloc, @Pointer long bytes, @MachineSizedSInt long length, CFAllocator bytesDeallocator);
+    private static native @org.robovm.rt.bro.annotation.Marshaler(CFType.NoRetainMarshaler.class) CFReadStream create(CFAllocator alloc, @Pointer long bytes, @MachineSizedSInt long length, CFAllocator bytesDeallocator);
     @Bridge(symbol="CFReadStreamCreateWithFile", optional=true)
-    protected static native CFReadStream create(CFAllocator alloc, CFURL fileURL);
+    public static native @org.robovm.rt.bro.annotation.Marshaler(CFType.NoRetainMarshaler.class) CFReadStream create(CFAllocator alloc, CFURL fileURL);
     @Bridge(symbol="CFReadStreamGetStatus", optional=true)
     public native CFStreamStatus getStatus();
     /**
      * @since Available in iOS 2.0 and later.
      */
     @Bridge(symbol="CFReadStreamCopyError", optional=true)
-    public native CFError getError();
+    public native @org.robovm.rt.bro.annotation.Marshaler(CFType.NoRetainMarshaler.class) CFError getError();
     @Bridge(symbol="CFReadStreamOpen", optional=true)
     public native boolean openStream();
     @Bridge(symbol="CFReadStreamClose", optional=true)
@@ -172,7 +172,7 @@ import org.robovm.apple.coreservices.CFFTPStreamProperty;
     @Bridge(symbol="CFReadStreamGetBuffer", optional=true)
     private native BytePtr getBuffer(@MachineSizedSInt long maxBytesToRead, MachineSizedSIntPtr numBytesRead);
     @Bridge(symbol="CFReadStreamCopyProperty", optional=true)
-    private native CFType getProperty(CFString propertyName);
+    private native @org.robovm.rt.bro.annotation.Marshaler(CFType.NoRetainMarshaler.class) CFType getProperty(CFString propertyName);
     @Bridge(symbol="CFReadStreamSetProperty", optional=true)
     private native boolean setProperty(CFString propertyName, CFType propertyValue);
     @Bridge(symbol="CFReadStreamSetClient", optional=true)

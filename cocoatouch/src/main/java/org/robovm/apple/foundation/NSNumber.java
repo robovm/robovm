@@ -98,7 +98,7 @@ import org.robovm.apple.dispatch.*;
     @Method(selector = "compare:")
     public native NSComparisonResult compare(NSNumber otherNumber);
     @Method(selector = "isEqualToNumber:")
-    public native boolean isEqualTo(NSNumber number);
+    public native boolean equalsTo(NSNumber number);
     @Method(selector = "descriptionWithLocale:")
     public native String toString(NSLocale locale);
     @Method(selector = "numberWithChar:")

@@ -64,7 +64,7 @@ import org.robovm.apple.foundation.*;
     @Bridge(symbol="CFTreeGetTypeID", optional=true)
     public static native @MachineSizedUInt long getClassTypeID();
     @Bridge(symbol="CFTreeCreate", optional=true)
-    private static native CFTree create(CFAllocator allocator, CFTreeContext context);
+    private static native @org.robovm.rt.bro.annotation.Marshaler(CFType.NoRetainMarshaler.class) CFTree create(CFAllocator allocator, CFTreeContext context);
     @Bridge(symbol="CFTreeGetParent", optional=true)
     public native CFTree getParent();
     @Bridge(symbol="CFTreeGetNextSibling", optional=true)

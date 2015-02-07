@@ -216,7 +216,7 @@ import org.robovm.apple.scenekit.SCNVector4;
     @Method(selector = "pointerValue")
     public native VoidPtr pointerValue();
     @Method(selector = "isEqualToValue:")
-    public native boolean isEqualTo(NSValue value);
+    public native boolean equalsTo(NSValue value);
     @Method(selector = "valueWithNonretainedObject:")
     public static native NSValue valueOf(NSObject anObject);
     @Method(selector = "valueWithPointer:")

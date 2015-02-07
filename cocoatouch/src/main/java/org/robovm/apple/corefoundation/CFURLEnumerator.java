@@ -55,17 +55,26 @@ import org.robovm.apple.foundation.*;
      * @since Available in iOS 4.0 and later.
      */
     @Bridge(symbol="CFURLEnumeratorCreateForDirectoryURL", optional=true)
-    public static native CFURLEnumerator createForDirectoryURL(CFAllocator alloc, CFURL directoryURL, CFURLEnumeratorOptions option, CFArray propertyKeys);
+    public static native @org.robovm.rt.bro.annotation.Marshaler(CFType.NoRetainMarshaler.class) CFURLEnumerator createForDirectoryURL(CFAllocator alloc, CFURL directoryURL, CFURLEnumeratorOptions option, CFArray propertyKeys);
     /**
      * @since Available in iOS 4.0 and later.
      */
     @Bridge(symbol="CFURLEnumeratorCreateForMountedVolumes", optional=true)
-    public static native CFURLEnumerator createForMountedVolumes(CFAllocator alloc, CFURLEnumeratorOptions option, CFArray propertyKeys);
+    public static native @org.robovm.rt.bro.annotation.Marshaler(CFType.NoRetainMarshaler.class) CFURLEnumerator createForMountedVolumes(CFAllocator alloc, CFURLEnumeratorOptions option, CFArray propertyKeys);
+    /**
+     * @since Available in iOS 4.0 and later.
+     */
+    public CFURLEnumeratorResult getNextURL(CFURL.CFURLPtr url) throws CFErrorException {
+       CFError.CFErrorPtr ptr = new CFError.CFErrorPtr();
+       CFURLEnumeratorResult result = getNextURL(url, ptr);
+       if (ptr.get() != null) { throw new CFErrorException(ptr.get()); }
+       return result;
+    }
     /**
      * @since Available in iOS 4.0 and later.
      */
     @Bridge(symbol="CFURLEnumeratorGetNextURL", optional=true)
-    public native CFURLEnumeratorResult getNextURL(CFURL.CFURLPtr url, CFError.CFErrorPtr error);
+    private native CFURLEnumeratorResult getNextURL(CFURL.CFURLPtr url, CFError.CFErrorPtr error);
     /**
      * @since Available in iOS 4.0 and later.
      */

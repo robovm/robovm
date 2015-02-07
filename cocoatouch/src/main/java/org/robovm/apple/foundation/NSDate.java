@@ -105,7 +105,7 @@ import org.robovm.apple.dispatch.*;
     @Method(selector = "compare:")
     public native NSComparisonResult compare(NSDate other);
     @Method(selector = "isEqualToDate:")
-    public native boolean isEqualTo(NSDate otherDate);
+    public native boolean equalsTo(NSDate otherDate);
     @Method(selector = "descriptionWithLocale:")
     public native String toString(NSLocale locale);
     @Method(selector = "initWithTimeIntervalSince1970:")

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 Trillian Mobile AB
+ * Copyright (C) 2015 Trillian Mobile AB
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -32,12 +32,15 @@ import org.robovm.apple.foundation.*;
 
 /*<javadoc>*/
 /*</javadoc>*/
-@Marshaler(CFCalendarIdentifier.Marshaler.class)
 /*<annotations>*/@Library("CoreFoundation")/*</annotations>*/
+@Marshaler(/*<name>*/CFCalendarIdentifier/*</name>*/.Marshaler.class)
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/CFCalendarIdentifier/*</name>*/ 
-    extends /*<extends>*/CocoaUtility/*</extends>*/ 
+    extends /*<extends>*/GlobalValueEnumeration<CFString>/*</extends>*/
     /*<implements>*//*</implements>*/ {
 
+    static { Bro.bind(/*<name>*/CFCalendarIdentifier/*</name>*/.class); }
+
+    /*<marshalers>*/
     public static class Marshaler {
         @MarshalsPointer
         public static CFCalendarIdentifier toObject(Class<CFCalendarIdentifier> cls, long handle, long flags) {
@@ -55,59 +58,75 @@ import org.robovm.apple.foundation.*;
             return CFType.Marshaler.toNative(o.value(), flags);
         }
     }
-    
-    /*<ptr>*/
-    /*</ptr>*/
-    /*<bind>*/static { Bro.bind(CFCalendarIdentifier.class); }/*</bind>*/
-    /*<constants>*//*</constants>*/
-    public static final CFCalendarIdentifier Gregorian = new CFCalendarIdentifier("GregorianValue");
-    public static final CFCalendarIdentifier Buddhist = new CFCalendarIdentifier("BuddhistValue");
-    public static final CFCalendarIdentifier Chinese = new CFCalendarIdentifier("ChineseValue");
-    public static final CFCalendarIdentifier Hebrew = new CFCalendarIdentifier("HebrewValue");
-    public static final CFCalendarIdentifier Islamic = new CFCalendarIdentifier("IslamicValue");
-    public static final CFCalendarIdentifier IslamicCivil = new CFCalendarIdentifier("IslamicCivilValue");
-    public static final CFCalendarIdentifier Japanese = new CFCalendarIdentifier("JapaneseValue");
+    public static class AsListMarshaler {
+        @MarshalsPointer
+        public static List<CFCalendarIdentifier> toObject(Class<? extends CFType> cls, long handle, long flags) {
+            CFArray o = (CFArray) CFType.Marshaler.toObject(cls, handle, flags);
+            if (o == null) {
+                return null;
+            }
+            List<CFCalendarIdentifier> list = new ArrayList<>();
+            for (int i = 0; i < o.size(); i++) {
+                list.add(CFCalendarIdentifier.valueOf(o.get(i, CFString.class)));
+            }
+            return list;
+        }
+        @MarshalsPointer
+        public static long toNative(List<CFCalendarIdentifier> l, long flags) {
+            if (l == null) {
+                return 0L;
+            }
+            CFArray array = CFMutableArray.create();
+            for (CFCalendarIdentifier i : l) {
+                array.add(i.value());
+            }
+            return CFType.Marshaler.toNative(array, flags);
+        }
+    }
+    /*</marshalers>*/
+
+    /*<constants>*/
+    public static final CFCalendarIdentifier Gregorian = new CFCalendarIdentifier("Gregorian");
+    public static final CFCalendarIdentifier Buddhist = new CFCalendarIdentifier("Buddhist");
+    public static final CFCalendarIdentifier Chinese = new CFCalendarIdentifier("Chinese");
+    public static final CFCalendarIdentifier Hebrew = new CFCalendarIdentifier("Hebrew");
+    public static final CFCalendarIdentifier Islamic = new CFCalendarIdentifier("Islamic");
+    public static final CFCalendarIdentifier IslamicCivil = new CFCalendarIdentifier("IslamicCivil");
+    public static final CFCalendarIdentifier Japanese = new CFCalendarIdentifier("Japanese");
     /**
      * @since Available in iOS 4.0 and later.
      */
-    public static final CFCalendarIdentifier RepublicOfChina = new CFCalendarIdentifier("RepublicOfChinaValue");
+    public static final CFCalendarIdentifier RepublicOfChina = new CFCalendarIdentifier("RepublicOfChina");
     /**
      * @since Available in iOS 4.0 and later.
      */
-    public static final CFCalendarIdentifier Persian = new CFCalendarIdentifier("PersianValue");
+    public static final CFCalendarIdentifier Persian = new CFCalendarIdentifier("Persian");
     /**
      * @since Available in iOS 4.0 and later.
      */
-    public static final CFCalendarIdentifier Indian = new CFCalendarIdentifier("IndianValue");
+    public static final CFCalendarIdentifier Indian = new CFCalendarIdentifier("Indian");
     /**
      * @since Available in iOS 4.0 and later.
      */
-    public static final CFCalendarIdentifier ISO8601 = new CFCalendarIdentifier("ISO8601Value");
+    public static final CFCalendarIdentifier ISO8601 = new CFCalendarIdentifier("ISO8601");
     /**
      * @since Available in iOS 8.0 and later.
      */
-    public static final CFCalendarIdentifier IslamicTabular = new CFCalendarIdentifier("IslamicTabularValue");
+    public static final CFCalendarIdentifier IslamicTabular = new CFCalendarIdentifier("IslamicTabular");
     /**
      * @since Available in iOS 8.0 and later.
      */
-    public static final CFCalendarIdentifier IslamicUmmAlQura = new CFCalendarIdentifier("IslamicUmmAlQuraValue");
+    public static final CFCalendarIdentifier IslamicUmmAlQura = new CFCalendarIdentifier("IslamicUmmAlQura");
+    /*</constants>*/
     
-    private static CFCalendarIdentifier[] values = new CFCalendarIdentifier[] {Gregorian, Buddhist, Chinese, Hebrew, Islamic, 
-        IslamicCivil, Japanese, RepublicOfChina, Persian, Indian, ISO8601, IslamicTabular, IslamicUmmAlQura};
-    private final LazyGlobalValue<CFString> lazyGlobalValue;
+    private static /*<name>*/CFCalendarIdentifier/*</name>*/[] values = new /*<name>*/CFCalendarIdentifier/*</name>*/[] {/*<value_list>*/Gregorian, Buddhist, Chinese, Hebrew, Islamic, IslamicCivil, Japanese, RepublicOfChina, Persian, Indian, ISO8601, IslamicTabular, IslamicUmmAlQura/*</value_list>*/};
     
-    private CFCalendarIdentifier(String getterName) {
-        lazyGlobalValue = new LazyGlobalValue<>(getClass(), getterName);
-    }
-    /*<constructors>*//*</constructors>*/
-    /*<properties>*//*</properties>*/
-    /*<members>*//*</members>*/
-    public CFString value() {
-        return lazyGlobalValue.value();
+    /*<name>*/CFCalendarIdentifier/*</name>*/ (String getterName) {
+        super(Values.class, getterName);
     }
     
-    public static CFCalendarIdentifier valueOf(CFString value) {
-        for (CFCalendarIdentifier v : values) {
+    public static /*<name>*/CFCalendarIdentifier/*</name>*/ valueOf(/*<type>*/CFString/*</type>*/ value) {
+        for (/*<name>*/CFCalendarIdentifier/*</name>*/ v : values) {
             if (v.value().equals(value)) {
                 return v;
             }
@@ -115,50 +134,58 @@ import org.robovm.apple.foundation.*;
         throw new IllegalArgumentException("No constant with value " + value + " found in " 
             + /*<name>*/CFCalendarIdentifier/*</name>*/.class.getName());
     }
-    /*<methods>*/
-    @GlobalValue(symbol="kCFGregorianCalendar", optional=true)
-    protected static native CFString GregorianValue();
-    @GlobalValue(symbol="kCFBuddhistCalendar", optional=true)
-    protected static native CFString BuddhistValue();
-    @GlobalValue(symbol="kCFChineseCalendar", optional=true)
-    protected static native CFString ChineseValue();
-    @GlobalValue(symbol="kCFHebrewCalendar", optional=true)
-    protected static native CFString HebrewValue();
-    @GlobalValue(symbol="kCFIslamicCalendar", optional=true)
-    protected static native CFString IslamicValue();
-    @GlobalValue(symbol="kCFIslamicCivilCalendar", optional=true)
-    protected static native CFString IslamicCivilValue();
-    @GlobalValue(symbol="kCFJapaneseCalendar", optional=true)
-    protected static native CFString JapaneseValue();
-    /**
-     * @since Available in iOS 4.0 and later.
-     */
-    @GlobalValue(symbol="kCFRepublicOfChinaCalendar", optional=true)
-    protected static native CFString RepublicOfChinaValue();
-    /**
-     * @since Available in iOS 4.0 and later.
-     */
-    @GlobalValue(symbol="kCFPersianCalendar", optional=true)
-    protected static native CFString PersianValue();
-    /**
-     * @since Available in iOS 4.0 and later.
-     */
-    @GlobalValue(symbol="kCFIndianCalendar", optional=true)
-    protected static native CFString IndianValue();
-    /**
-     * @since Available in iOS 4.0 and later.
-     */
-    @GlobalValue(symbol="kCFISO8601Calendar", optional=true)
-    protected static native CFString ISO8601Value();
-    /**
-     * @since Available in iOS 8.0 and later.
-     */
-    @GlobalValue(symbol="kCFIslamicTabularCalendar", optional=true)
-    protected static native CFString IslamicTabularValue();
-    /**
-     * @since Available in iOS 8.0 and later.
-     */
-    @GlobalValue(symbol="kCFIslamicUmmAlQuraCalendar", optional=true)
-    protected static native CFString IslamicUmmAlQuraValue();
-    /*</methods>*/
+    
+    /*<methods>*//*</methods>*/
+    
+    /*<annotations>*/@Library("CoreFoundation")/*</annotations>*/
+    public static class Values {
+    	static { Bro.bind(Values.class); }
+
+        /*<values>*/
+        @GlobalValue(symbol="kCFGregorianCalendar", optional=true)
+        public static native CFString Gregorian();
+        @GlobalValue(symbol="kCFBuddhistCalendar", optional=true)
+        public static native CFString Buddhist();
+        @GlobalValue(symbol="kCFChineseCalendar", optional=true)
+        public static native CFString Chinese();
+        @GlobalValue(symbol="kCFHebrewCalendar", optional=true)
+        public static native CFString Hebrew();
+        @GlobalValue(symbol="kCFIslamicCalendar", optional=true)
+        public static native CFString Islamic();
+        @GlobalValue(symbol="kCFIslamicCivilCalendar", optional=true)
+        public static native CFString IslamicCivil();
+        @GlobalValue(symbol="kCFJapaneseCalendar", optional=true)
+        public static native CFString Japanese();
+        /**
+         * @since Available in iOS 4.0 and later.
+         */
+        @GlobalValue(symbol="kCFRepublicOfChinaCalendar", optional=true)
+        public static native CFString RepublicOfChina();
+        /**
+         * @since Available in iOS 4.0 and later.
+         */
+        @GlobalValue(symbol="kCFPersianCalendar", optional=true)
+        public static native CFString Persian();
+        /**
+         * @since Available in iOS 4.0 and later.
+         */
+        @GlobalValue(symbol="kCFIndianCalendar", optional=true)
+        public static native CFString Indian();
+        /**
+         * @since Available in iOS 4.0 and later.
+         */
+        @GlobalValue(symbol="kCFISO8601Calendar", optional=true)
+        public static native CFString ISO8601();
+        /**
+         * @since Available in iOS 8.0 and later.
+         */
+        @GlobalValue(symbol="kCFIslamicTabularCalendar", optional=true)
+        public static native CFString IslamicTabular();
+        /**
+         * @since Available in iOS 8.0 and later.
+         */
+        @GlobalValue(symbol="kCFIslamicUmmAlQuraCalendar", optional=true)
+        public static native CFString IslamicUmmAlQura();
+        /*</values>*/
+    }
 }

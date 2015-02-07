@@ -62,7 +62,7 @@ import org.robovm.apple.foundation.*;
     @Bridge(symbol="CFDateGetTypeID", optional=true)
     public static native @MachineSizedUInt long getClassTypeID();
     @Bridge(symbol="CFDateCreate", optional=true)
-    protected static native CFDate create(CFAllocator allocator, double at);
+    public static native @org.robovm.rt.bro.annotation.Marshaler(CFType.NoRetainMarshaler.class) CFDate create(CFAllocator allocator, double at);
     @Bridge(symbol="CFDateGetAbsoluteTime", optional=true)
     public native double getAbsoluteTime();
     @Bridge(symbol="CFDateGetTimeIntervalSinceDate", optional=true)

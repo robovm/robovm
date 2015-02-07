@@ -64,7 +64,7 @@ import org.robovm.apple.foundation.*;
      * @since Available in iOS 3.0 and later.
      */
     @Bridge(symbol="CFStringTokenizerCopyBestStringLanguage", optional=true)
-    public static native String getBestStringLanguage(String string, @ByVal CFRange range);
+    public static native @org.robovm.rt.bro.annotation.Marshaler(CFString.AsStringNoRetainMarshaler.class) String getBestStringLanguage(String string, @ByVal CFRange range);
     /**
      * @since Available in iOS 3.0 and later.
      */
@@ -74,7 +74,7 @@ import org.robovm.apple.foundation.*;
      * @since Available in iOS 3.0 and later.
      */
     @Bridge(symbol="CFStringTokenizerCreate", optional=true)
-    protected static native CFStringTokenizer create(CFAllocator alloc, String string, @ByVal CFRange range, CFStringTokenizerUnitOptions options, CFLocale locale);
+    public static native @org.robovm.rt.bro.annotation.Marshaler(CFType.NoRetainMarshaler.class) CFStringTokenizer create(CFAllocator alloc, String string, @ByVal CFRange range, CFStringTokenizerUnitOptions options, CFLocale locale);
     /**
      * @since Available in iOS 3.0 and later.
      */
@@ -99,7 +99,7 @@ import org.robovm.apple.foundation.*;
      * @since Available in iOS 3.0 and later.
      */
     @Bridge(symbol="CFStringTokenizerCopyCurrentTokenAttribute", optional=true)
-    public native CFType getCurrentTokenAttribute(CFStringTokenizerUnitOptions attribute);
+    public native @org.robovm.rt.bro.annotation.Marshaler(CFType.NoRetainMarshaler.class) CFType getCurrentTokenAttribute(CFStringTokenizerUnitOptions attribute);
     /**
      * @since Available in iOS 3.0 and later.
      */

@@ -39,7 +39,7 @@ import org.robovm.apple.uikit.*;
     /*<implements>*//*</implements>*/ {
 
     /*<ptr>*/public static class CGPatternPtr extends Ptr<CGPattern, CGPatternPtr> {}/*</ptr>*/
-    
+  
     public interface DrawPattern {
         void drawPattern(CGContext context);
     }
@@ -59,14 +59,12 @@ import org.robovm.apple.uikit.*;
             throw new Error(e);
         }
     }
-    
     /*<constants>*//*</constants>*/
     /*<constructors>*/
     protected CGPattern() {}
     /*</constructors>*/
     /*<properties>*//*</properties>*/
     /*<members>*//*</members>*/
-    
     public static CGPattern create(CGRect bounds, CGAffineTransform matrix, double xStep, double yStep, CGPatternTiling tiling, boolean isColored, DrawPattern drawPattern) {
         long infoId = CGPattern.infoId.getAndIncrement();
         CGPatternCallbacks callbacks = new CGPatternCallbacks();
@@ -95,7 +93,6 @@ import org.robovm.apple.uikit.*;
             infos.remove(infoId);
         }
     }
-    
     /*<methods>*/
     /**
      * @since Available in iOS 2.0 and later.
@@ -106,6 +103,6 @@ import org.robovm.apple.uikit.*;
      * @since Available in iOS 2.0 and later.
      */
     @Bridge(symbol="CGPatternCreate", optional=true)
-    protected static native @org.robovm.rt.bro.annotation.Marshaler(CFType.NoRetainMarshaler.class) CGPattern create(@Pointer long info, @ByVal CGRect bounds, @ByVal CGAffineTransform matrix, @MachineSizedFloat double xStep, @MachineSizedFloat double yStep, CGPatternTiling tiling, boolean isColored, CGPatternCallbacks callbacks);
+    private static native @org.robovm.rt.bro.annotation.Marshaler(CFType.NoRetainMarshaler.class) CGPattern create(@Pointer long info, @ByVal CGRect bounds, @ByVal CGAffineTransform matrix, @MachineSizedFloat double xStep, @MachineSizedFloat double yStep, CGPatternTiling tiling, boolean isColored, CGPatternCallbacks callbacks);
     /*</methods>*/
 }

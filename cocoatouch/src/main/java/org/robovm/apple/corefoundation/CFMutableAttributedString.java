@@ -74,9 +74,9 @@ import org.robovm.apple.uikit.NSAttributedStringAttributes;
     }
     /*<methods>*/
     @Bridge(symbol="CFAttributedStringCreateMutableCopy", optional=true)
-    public static native CFMutableAttributedString createCopy(CFAllocator alloc, @MachineSizedSInt long maxLength, CFAttributedString aStr);
+    public static native @org.robovm.rt.bro.annotation.Marshaler(CFType.NoRetainMarshaler.class) CFMutableAttributedString createCopy(CFAllocator alloc, @MachineSizedSInt long maxLength, CFAttributedString aStr);
     @Bridge(symbol="CFAttributedStringCreateMutable", optional=true)
-    public static native CFMutableAttributedString create(CFAllocator alloc, @MachineSizedSInt long maxLength);
+    public static native @org.robovm.rt.bro.annotation.Marshaler(CFType.NoRetainMarshaler.class) CFMutableAttributedString create(CFAllocator alloc, @MachineSizedSInt long maxLength);
     @Bridge(symbol="CFAttributedStringReplaceString", optional=true)
     public native void replaceString(@ByVal CFRange range, String replacement);
     @Bridge(symbol="CFAttributedStringGetMutableString", optional=true)

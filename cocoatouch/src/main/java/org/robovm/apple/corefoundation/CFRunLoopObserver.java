@@ -58,7 +58,7 @@ import org.robovm.apple.foundation.*;
      * @since Available in iOS 5.0 and later.
      */
     @Bridge(symbol="CFRunLoopObserverCreateWithHandler", optional=true)
-    protected static native CFRunLoopObserver create(CFAllocator allocator, CFRunLoopActivity activities, boolean repeats, @MachineSizedSInt long order, @Block VoidBlock2<CFRunLoopObserver, CFRunLoopActivity> block);
+    public static native @org.robovm.rt.bro.annotation.Marshaler(CFType.NoRetainMarshaler.class) CFRunLoopObserver create(CFAllocator allocator, CFRunLoopActivity activities, boolean repeats, @MachineSizedSInt long order, @Block VoidBlock2<CFRunLoopObserver, CFRunLoopActivity> block);
     @Bridge(symbol="CFRunLoopObserverGetActivities", optional=true)
     public native CFRunLoopActivity getActivities();
     @Bridge(symbol="CFRunLoopObserverDoesRepeat", optional=true)

@@ -38,7 +38,7 @@ import org.robovm.apple.metal.*;
 /*</javadoc>*/
 /*<annotations>*/@Library("QuartzCore")/*</annotations>*/
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/CAActionIdentifier/*</name>*/ 
-    extends /*<extends>*/Object/*</extends>*/ 
+    extends /*<extends>*/CocoaUtility/*</extends>*/ 
     /*<implements>*//*</implements>*/ {
 
     /*<ptr>*/

@@ -46,7 +46,6 @@ import org.robovm.apple.uikit.*;
     /*</constructors>*/
     /*<properties>*//*</properties>*/
     /*<members>*//*</members>*/
-
     public static CGImage create(long width, long height, long bitsPerComponent, 
             long bitsPerPixel, long bytesPerRow, CGColorSpace space, 
             CGBitmapInfo bitmapInfo, CGDataProvider provider, double[] decode, 
@@ -57,42 +56,34 @@ import org.robovm.apple.uikit.*;
                 decode != null ? VM.getArrayValuesAddress(CoreGraphics.toMachineSizedFloatArray(decode)) : 0, 
                 shouldInterpolate, intent);
     }
-    
     public static CGImage createWithMaskingColors(CGImage image, double[] components) {
         return createWithMaskingColors(image, VM.getArrayValuesAddress(CoreGraphics.toMachineSizedFloatArray(components)));
     }
-    
     public static CGImage createWithJPEGDataProvider(CGDataProvider source, 
             boolean shouldInterpolate, CGColorRenderingIntent intent) {
         return createWithJPEGDataProvider(source, null, shouldInterpolate, intent);
     }
-    
     public static CGImage createWithJPEGDataProvider(CGDataProvider source, double[] decode, 
             boolean shouldInterpolate, CGColorRenderingIntent intent) {
-        
         return createWithJPEGDataProvider(source, 
                 decode != null ? VM.getArrayValuesAddress(CoreGraphics.toMachineSizedFloatArray(decode)) : 0,
                 shouldInterpolate, intent);
     }
-
     public static CGImage createWithPNGDataProvider(CGDataProvider source, 
             boolean shouldInterpolate, CGColorRenderingIntent intent) {
         return createWithPNGDataProvider(source, null, shouldInterpolate, intent);
     }
     public static CGImage createWithPNGDataProvider(CGDataProvider source, double[] decode, 
             boolean shouldInterpolate, CGColorRenderingIntent intent) {
-        
         return createWithPNGDataProvider(source, 
                 decode != null ? VM.getArrayValuesAddress(CoreGraphics.toMachineSizedFloatArray(decode)) : 0,
                 shouldInterpolate, intent);
     }
-    
     public static CGImage createMask(long width, long height, long bitsPerComponent, long bitsPerPixel, long bytesPerRow, CGDataProvider provider, double[] decode, boolean shouldInterpolate) {
         return createMask(width, height, bitsPerComponent, bitsPerPixel, bytesPerRow, provider, 
                 decode != null ? VM.getArrayValuesAddress(CoreGraphics.toMachineSizedFloatArray(decode)) : 0, 
                 shouldInterpolate);
     }
-    
     /*<methods>*/
     /**
      * @since Available in iOS 2.0 and later.
@@ -103,27 +94,27 @@ import org.robovm.apple.uikit.*;
      * @since Available in iOS 2.0 and later.
      */
     @Bridge(symbol="CGImageCreate", optional=true)
-    protected static native @org.robovm.rt.bro.annotation.Marshaler(CFType.NoRetainMarshaler.class) CGImage create(@MachineSizedUInt long width, @MachineSizedUInt long height, @MachineSizedUInt long bitsPerComponent, @MachineSizedUInt long bitsPerPixel, @MachineSizedUInt long bytesPerRow, CGColorSpace space, CGBitmapInfo bitmapInfo, CGDataProvider provider, @Pointer long decode, boolean shouldInterpolate, CGColorRenderingIntent intent);
+    private static native @org.robovm.rt.bro.annotation.Marshaler(CFType.NoRetainMarshaler.class) CGImage create(@MachineSizedUInt long width, @MachineSizedUInt long height, @MachineSizedUInt long bitsPerComponent, @MachineSizedUInt long bitsPerPixel, @MachineSizedUInt long bytesPerRow, CGColorSpace space, CGBitmapInfo bitmapInfo, CGDataProvider provider, @Pointer long decode, boolean shouldInterpolate, CGColorRenderingIntent intent);
     /**
      * @since Available in iOS 2.0 and later.
      */
     @Bridge(symbol="CGImageMaskCreate", optional=true)
-    protected static native @org.robovm.rt.bro.annotation.Marshaler(CFType.NoRetainMarshaler.class) CGImage createMask(@MachineSizedUInt long width, @MachineSizedUInt long height, @MachineSizedUInt long bitsPerComponent, @MachineSizedUInt long bitsPerPixel, @MachineSizedUInt long bytesPerRow, CGDataProvider provider, @Pointer long decode, boolean shouldInterpolate);
+    private static native @org.robovm.rt.bro.annotation.Marshaler(CFType.NoRetainMarshaler.class) CGImage createMask(@MachineSizedUInt long width, @MachineSizedUInt long height, @MachineSizedUInt long bitsPerComponent, @MachineSizedUInt long bitsPerPixel, @MachineSizedUInt long bytesPerRow, CGDataProvider provider, @Pointer long decode, boolean shouldInterpolate);
     /**
      * @since Available in iOS 2.0 and later.
      */
     @Bridge(symbol="CGImageCreateCopy", optional=true)
-    public static native @org.robovm.rt.bro.annotation.Marshaler(CFType.NoRetainMarshaler.class) CGImage copy(CGImage image);
+    public static native @org.robovm.rt.bro.annotation.Marshaler(CFType.NoRetainMarshaler.class) CGImage createCopy(CGImage image);
     /**
      * @since Available in iOS 2.0 and later.
      */
     @Bridge(symbol="CGImageCreateWithJPEGDataProvider", optional=true)
-    protected static native @org.robovm.rt.bro.annotation.Marshaler(CFType.NoRetainMarshaler.class) CGImage createWithJPEGDataProvider(CGDataProvider source, @Pointer long decode, boolean shouldInterpolate, CGColorRenderingIntent intent);
+    private static native @org.robovm.rt.bro.annotation.Marshaler(CFType.NoRetainMarshaler.class) CGImage createWithJPEGDataProvider(CGDataProvider source, @Pointer long decode, boolean shouldInterpolate, CGColorRenderingIntent intent);
     /**
      * @since Available in iOS 2.0 and later.
      */
     @Bridge(symbol="CGImageCreateWithPNGDataProvider", optional=true)
-    protected static native @org.robovm.rt.bro.annotation.Marshaler(CFType.NoRetainMarshaler.class) CGImage createWithPNGDataProvider(CGDataProvider source, @Pointer long decode, boolean shouldInterpolate, CGColorRenderingIntent intent);
+    private static native @org.robovm.rt.bro.annotation.Marshaler(CFType.NoRetainMarshaler.class) CGImage createWithPNGDataProvider(CGDataProvider source, @Pointer long decode, boolean shouldInterpolate, CGColorRenderingIntent intent);
     /**
      * @since Available in iOS 2.0 and later.
      */
@@ -138,12 +129,12 @@ import org.robovm.apple.uikit.*;
      * @since Available in iOS 2.0 and later.
      */
     @Bridge(symbol="CGImageCreateWithMaskingColors", optional=true)
-    protected static native @org.robovm.rt.bro.annotation.Marshaler(CFType.NoRetainMarshaler.class) CGImage createWithMaskingColors(CGImage image, @Pointer long components);
+    private static native @org.robovm.rt.bro.annotation.Marshaler(CFType.NoRetainMarshaler.class) CGImage createWithMaskingColors(CGImage image, @Pointer long components);
     /**
      * @since Available in iOS 2.0 and later.
      */
     @Bridge(symbol="CGImageCreateCopyWithColorSpace", optional=true)
-    public static native @org.robovm.rt.bro.annotation.Marshaler(CFType.NoRetainMarshaler.class) CGImage copy(CGImage image, CGColorSpace space);
+    public static native @org.robovm.rt.bro.annotation.Marshaler(CFType.NoRetainMarshaler.class) CGImage createCopy(CGImage image, CGColorSpace space);
     /**
      * @since Available in iOS 2.0 and later.
      */
@@ -198,7 +189,7 @@ import org.robovm.apple.uikit.*;
      * @since Available in iOS 2.0 and later.
      */
     @Bridge(symbol="CGImageGetShouldInterpolate", optional=true)
-    public native boolean getShouldInterpolate();
+    public native boolean shouldInterpolate();
     /**
      * @since Available in iOS 2.0 and later.
      */

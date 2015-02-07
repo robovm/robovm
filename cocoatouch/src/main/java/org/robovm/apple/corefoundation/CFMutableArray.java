@@ -70,9 +70,9 @@ import org.robovm.apple.foundation.*;
     }
     /*<methods>*/
     @Bridge(symbol="CFArrayCreateMutable", optional=true)
-    public static native CFMutableArray create(CFAllocator allocator, @MachineSizedSInt long capacity, CFArrayCallBacks callBacks);
+    public static native @org.robovm.rt.bro.annotation.Marshaler(CFType.NoRetainMarshaler.class) CFMutableArray create(CFAllocator allocator, @MachineSizedSInt long capacity, CFArrayCallBacks callBacks);
     @Bridge(symbol="CFArrayCreateMutableCopy", optional=true)
-    public static native CFMutableArray createCopy(CFAllocator allocator, @MachineSizedSInt long capacity, CFArray theArray);
+    public static native @org.robovm.rt.bro.annotation.Marshaler(CFType.NoRetainMarshaler.class) CFMutableArray createCopy(CFAllocator allocator, @MachineSizedSInt long capacity, CFArray theArray);
     @Bridge(symbol="CFArrayAppendValue", optional=true)
     private native void appendValue(VoidPtr value);
     @Bridge(symbol="CFArrayInsertValueAtIndex", optional=true)

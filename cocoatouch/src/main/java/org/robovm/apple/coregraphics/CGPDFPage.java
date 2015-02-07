@@ -75,6 +75,11 @@ import org.robovm.apple.uikit.*;
     /**
      * @since Available in iOS 2.0 and later.
      */
+    @Bridge(symbol="CGPDFPageGetDictionary", optional=true)
+    public native CGPDFDictionary getDictionary();
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
     @Bridge(symbol="CGPDFPageGetTypeID", optional=true)
     public static native @MachineSizedUInt long getClassTypeID();
     /*</methods>*/

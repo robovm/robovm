@@ -113,7 +113,7 @@ import org.robovm.apple.foundation.*;
      * @since Available in iOS 2.0 and later.
      */
     @Bridge(symbol="CFFileDescriptorCreate", optional=true)
-    private static native CFFileDescriptor create(CFAllocator allocator, int fd, boolean closeOnInvalidate, FunctionPtr callout, CFFileDescriptorContext context);
+    private static native @org.robovm.rt.bro.annotation.Marshaler(CFType.NoRetainMarshaler.class) CFFileDescriptor create(CFAllocator allocator, int fd, boolean closeOnInvalidate, FunctionPtr callout, CFFileDescriptorContext context);
     /**
      * @since Available in iOS 2.0 and later.
      */
@@ -143,6 +143,6 @@ import org.robovm.apple.foundation.*;
      * @since Available in iOS 2.0 and later.
      */
     @Bridge(symbol="CFFileDescriptorCreateRunLoopSource", optional=true)
-    public static native CFRunLoopSource createRunLoopSource(CFAllocator allocator, CFFileDescriptor f, @MachineSizedSInt long order);
+    public static native @org.robovm.rt.bro.annotation.Marshaler(CFType.NoRetainMarshaler.class) CFRunLoopSource createRunLoopSource(CFAllocator allocator, CFFileDescriptor f, @MachineSizedSInt long order);
     /*</methods>*/
 }

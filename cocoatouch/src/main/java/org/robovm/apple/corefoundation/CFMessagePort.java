@@ -137,9 +137,9 @@ import org.robovm.apple.foundation.*;
     @Bridge(symbol="CFMessagePortGetTypeID", optional=true)
     public static native @MachineSizedUInt long getClassTypeID();
     @Bridge(symbol="CFMessagePortCreateLocal", optional=true)
-    protected static native CFMessagePort createLocal(CFAllocator allocator, String name, FunctionPtr callout, CFMessagePortContext context, BooleanPtr shouldFreeInfo);
+    protected static native @org.robovm.rt.bro.annotation.Marshaler(CFType.NoRetainMarshaler.class) CFMessagePort createLocal(CFAllocator allocator, String name, FunctionPtr callout, CFMessagePortContext context, BooleanPtr shouldFreeInfo);
     @Bridge(symbol="CFMessagePortCreateRemote", optional=true)
-    protected static native CFMessagePort createRemote(CFAllocator allocator, String name);
+    protected static native @org.robovm.rt.bro.annotation.Marshaler(CFType.NoRetainMarshaler.class) CFMessagePort createRemote(CFAllocator allocator, String name);
     @Bridge(symbol="CFMessagePortIsRemote", optional=true)
     public native boolean isRemote();
     @Bridge(symbol="CFMessagePortGetName", optional=true)
@@ -157,7 +157,7 @@ import org.robovm.apple.foundation.*;
     @Bridge(symbol="CFMessagePortSendRequest", optional=true)
     protected native CFMessagePortErrorCode sendRequest(int msgid, CFData data, double sendTimeout, double rcvTimeout, String replyMode, CFData.CFDataPtr returnData);
     @Bridge(symbol="CFMessagePortCreateRunLoopSource", optional=true)
-    protected static native CFRunLoopSource createRunLoopSource(CFAllocator allocator, CFMessagePort local, @MachineSizedSInt long order);
+    public static native @org.robovm.rt.bro.annotation.Marshaler(CFType.NoRetainMarshaler.class) CFRunLoopSource createRunLoopSource(CFAllocator allocator, CFMessagePort local, @MachineSizedSInt long order);
     /**
      * @since Available in iOS 4.0 and later.
      */

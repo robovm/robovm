@@ -71,7 +71,7 @@ import org.robovm.apple.foundation.*;
     @Bridge(symbol="CFAllocatorGetDefault", optional=true)
     public static native CFAllocator getDefault();
     @Bridge(symbol="CFAllocatorCreate", optional=true)
-    public native CFAllocator create(CFAllocatorContext context);
+    public native @org.robovm.rt.bro.annotation.Marshaler(CFType.NoRetainMarshaler.class) CFAllocator create(CFAllocatorContext context);
     @Bridge(symbol="CFAllocatorAllocate", optional=true)
     public native VoidPtr allocate(@MachineSizedSInt long size, @MachineSizedSInt long hint);
     @Bridge(symbol="CFAllocatorReallocate", optional=true)

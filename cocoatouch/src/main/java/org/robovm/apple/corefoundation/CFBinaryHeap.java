@@ -89,9 +89,9 @@ import org.robovm.apple.foundation.*;
     @Bridge(symbol="CFBinaryHeapGetTypeID", optional=true)
     public static native @MachineSizedUInt long getClassTypeID();
     @Bridge(symbol="CFBinaryHeapCreate", optional=true)
-    private static native CFBinaryHeap create(CFAllocator allocator, @MachineSizedSInt long capacity, CFBinaryHeapCallBacks callBacks, CFBinaryHeapCompareContext compareContext);
+    private static native @org.robovm.rt.bro.annotation.Marshaler(CFType.NoRetainMarshaler.class) CFBinaryHeap create(CFAllocator allocator, @MachineSizedSInt long capacity, CFBinaryHeapCallBacks callBacks, CFBinaryHeapCompareContext compareContext);
     @Bridge(symbol="CFBinaryHeapCreateCopy", optional=true)
-    public static native CFBinaryHeap createCopy(CFAllocator allocator, @MachineSizedSInt long capacity, CFBinaryHeap heap);
+    public static native @org.robovm.rt.bro.annotation.Marshaler(CFType.NoRetainMarshaler.class) CFBinaryHeap createCopy(CFAllocator allocator, @MachineSizedSInt long capacity, CFBinaryHeap heap);
     @Bridge(symbol="CFBinaryHeapGetCount", optional=true)
     public native @MachineSizedSInt long size();
     @Bridge(symbol="CFBinaryHeapGetCountOfValue", optional=true)

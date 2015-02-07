@@ -218,7 +218,7 @@ import org.robovm.apple.foundation.NSSet.SetAdapter;
     @Method(selector = "intersectsHashTable:")
     public native boolean intersects(NSHashTable<T> other);
     @Method(selector = "isEqualToHashTable:")
-    public native boolean isEqualTo(NSHashTable<T> other);
+    public native boolean equalsTo(NSHashTable<T> other);
     @Method(selector = "isSubsetOfHashTable:")
     public native boolean isSubsetOf(NSHashTable<T> other);
     @Method(selector = "intersectHashTable:")

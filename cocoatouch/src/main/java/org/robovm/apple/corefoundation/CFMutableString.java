@@ -57,9 +57,9 @@ import org.robovm.apple.foundation.*;
     }
     /*<methods>*/
     @Bridge(symbol="CFStringCreateMutable", optional=true)
-    public static native CFMutableString create(CFAllocator alloc, @MachineSizedSInt long maxLength);
+    public static native @org.robovm.rt.bro.annotation.Marshaler(CFType.NoRetainMarshaler.class) CFMutableString create(CFAllocator alloc, @MachineSizedSInt long maxLength);
     @Bridge(symbol="CFStringCreateMutableCopy", optional=true)
-    public static native CFMutableString createCopy(CFAllocator alloc, @MachineSizedSInt long maxLength, CFMutableString theString);
+    public static native @org.robovm.rt.bro.annotation.Marshaler(CFType.NoRetainMarshaler.class) CFMutableString createCopy(CFAllocator alloc, @MachineSizedSInt long maxLength, CFMutableString theString);
     @Bridge(symbol="CFStringAppend", optional=true)
     public native void append(String appendedString);
     @Bridge(symbol="CFStringAppendCharacters", optional=true)

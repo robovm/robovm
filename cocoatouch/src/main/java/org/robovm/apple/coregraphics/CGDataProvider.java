@@ -46,14 +46,12 @@ import org.robovm.apple.uikit.*;
     /*</constructors>*/
     /*<properties>*//*</properties>*/
     /*<members>*//*</members>*/
-    
     public static CGDataProvider create(File file) {
         if (file == null) {
             throw new NullPointerException("file");
         }
-        return createWithFilename(VM.getStringUTFChars(file.getAbsolutePath()));
+        return create(VM.getStringUTFChars(file.getAbsolutePath()));
     }
-    
     /*<methods>*/
     /**
      * @since Available in iOS 2.0 and later.
@@ -74,7 +72,7 @@ import org.robovm.apple.uikit.*;
      * @since Available in iOS 2.0 and later.
      */
     @Bridge(symbol="CGDataProviderCreateWithFilename", optional=true)
-    protected static native @org.robovm.rt.bro.annotation.Marshaler(CFType.NoRetainMarshaler.class) CGDataProvider createWithFilename(@Pointer long filename);
+    private static native @org.robovm.rt.bro.annotation.Marshaler(CFType.NoRetainMarshaler.class) CGDataProvider create(@Pointer long filename);
     /**
      * @since Available in iOS 2.0 and later.
      */

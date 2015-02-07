@@ -145,7 +145,7 @@ import org.robovm.apple.foundation.*;
     @Bridge(symbol="CFNumberGetTypeID", optional=true)
     public static native @MachineSizedUInt long getClassTypeID();
     @Bridge(symbol="CFNumberCreate", optional=true)
-    protected static native CFNumber create(CFAllocator allocator, CFNumberType theType, VoidPtr valuePtr);
+    private static native @org.robovm.rt.bro.annotation.Marshaler(CFType.NoRetainMarshaler.class) CFNumber create(CFAllocator allocator, CFNumberType theType, VoidPtr valuePtr);
     @Bridge(symbol="CFNumberGetType", optional=true)
     public native CFNumberType getType();
     @Bridge(symbol="CFNumberGetByteSize", optional=true)
@@ -153,8 +153,8 @@ import org.robovm.apple.foundation.*;
     @Bridge(symbol="CFNumberIsFloatType", optional=true)
     public native boolean isFloatType();
     @Bridge(symbol="CFNumberGetValue", optional=true)
-    protected native boolean getValue(CFNumberType theType, VoidPtr valuePtr);
+    private native boolean getValue(CFNumberType theType, VoidPtr valuePtr);
     @Bridge(symbol="CFNumberCompare", optional=true)
-    protected native CFComparisonResult compareTo(CFNumber otherNumber, VoidPtr context);
+    private native CFComparisonResult compareTo(CFNumber otherNumber, VoidPtr context);
     /*</methods>*/
 }

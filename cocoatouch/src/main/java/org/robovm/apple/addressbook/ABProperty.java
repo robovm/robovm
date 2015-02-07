@@ -35,7 +35,7 @@ import org.robovm.apple.corefoundation.*;
 @Marshaler(ABProperty.Marshaler.class)
 /*<annotations>*//*</annotations>*/
 /*<visibility>*/public/*</visibility>*/abstract class /*<name>*/ABProperty/*</name>*/ 
-    extends /*<extends>*/Object/*</extends>*/ 
+    extends /*<extends>*/CocoaUtility/*</extends>*/ 
     /*<implements>*//*</implements>*/ {
 
     public static class Marshaler {

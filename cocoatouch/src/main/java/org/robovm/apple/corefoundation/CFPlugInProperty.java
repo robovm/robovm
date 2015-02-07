@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 Trillian Mobile AB
+ * Copyright (C) 2015 Trillian Mobile AB
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -32,12 +32,15 @@ import org.robovm.apple.foundation.*;
 
 /*<javadoc>*/
 /*</javadoc>*/
-@Marshaler(CFPlugInProperty.Marshaler.class)
 /*<annotations>*/@Library("CoreFoundation")/*</annotations>*/
+@Marshaler(/*<name>*/CFPlugInProperty/*</name>*/.Marshaler.class)
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/CFPlugInProperty/*</name>*/ 
-    extends /*<extends>*/CocoaUtility/*</extends>*/ 
+    extends /*<extends>*/GlobalValueEnumeration<CFString>/*</extends>*/
     /*<implements>*//*</implements>*/ {
 
+    static { Bro.bind(/*<name>*/CFPlugInProperty/*</name>*/.class); }
+
+    /*<marshalers>*/
     public static class Marshaler {
         @MarshalsPointer
         public static CFPlugInProperty toObject(Class<CFPlugInProperty> cls, long handle, long flags) {
@@ -55,33 +58,49 @@ import org.robovm.apple.foundation.*;
             return CFType.Marshaler.toNative(o.value(), flags);
         }
     }
-    
-    /*<ptr>*/
-    /*</ptr>*/
-    /*<bind>*/static { Bro.bind(CFPlugInProperty.class); }/*</bind>*/
-    /*<constants>*//*</constants>*/
-    public static final CFPlugInProperty DynamicRegistration = new CFPlugInProperty("DynamicRegistrationValue");
-    public static final CFPlugInProperty DynamicRegisterFunction = new CFPlugInProperty("DynamicRegisterFunctionValue");
-    public static final CFPlugInProperty UnloadFunction = new CFPlugInProperty("UnloadFunctionValue");
-    public static final CFPlugInProperty Factories = new CFPlugInProperty("FactoriesValue");
-    public static final CFPlugInProperty Types = new CFPlugInProperty("TypesValue");
-    
-    private static CFPlugInProperty[] values = new CFPlugInProperty[] {DynamicRegistration, DynamicRegisterFunction, 
-        UnloadFunction, Factories, Types};
-    private final LazyGlobalValue<CFString> lazyGlobalValue;
-    
-    private CFPlugInProperty(String getterName) {
-        lazyGlobalValue = new LazyGlobalValue<>(getClass(), getterName);
+    public static class AsListMarshaler {
+        @MarshalsPointer
+        public static List<CFPlugInProperty> toObject(Class<? extends CFType> cls, long handle, long flags) {
+            CFArray o = (CFArray) CFType.Marshaler.toObject(cls, handle, flags);
+            if (o == null) {
+                return null;
+            }
+            List<CFPlugInProperty> list = new ArrayList<>();
+            for (int i = 0; i < o.size(); i++) {
+                list.add(CFPlugInProperty.valueOf(o.get(i, CFString.class)));
+            }
+            return list;
+        }
+        @MarshalsPointer
+        public static long toNative(List<CFPlugInProperty> l, long flags) {
+            if (l == null) {
+                return 0L;
+            }
+            CFArray array = CFMutableArray.create();
+            for (CFPlugInProperty i : l) {
+                array.add(i.value());
+            }
+            return CFType.Marshaler.toNative(array, flags);
+        }
     }
-    /*<constructors>*//*</constructors>*/
-    /*<properties>*//*</properties>*/
-    /*<members>*//*</members>*/
-    public CFString value() {
-        return lazyGlobalValue.value();
+    /*</marshalers>*/
+
+    /*<constants>*/
+    public static final CFPlugInProperty DynamicRegistration = new CFPlugInProperty("DynamicRegistration");
+    public static final CFPlugInProperty DynamicRegisterFunction = new CFPlugInProperty("DynamicRegisterFunction");
+    public static final CFPlugInProperty UnloadFunction = new CFPlugInProperty("UnloadFunction");
+    public static final CFPlugInProperty Factories = new CFPlugInProperty("Factories");
+    public static final CFPlugInProperty Types = new CFPlugInProperty("Types");
+    /*</constants>*/
+    
+    private static /*<name>*/CFPlugInProperty/*</name>*/[] values = new /*<name>*/CFPlugInProperty/*</name>*/[] {/*<value_list>*/DynamicRegistration, DynamicRegisterFunction, UnloadFunction, Factories, Types/*</value_list>*/};
+    
+    /*<name>*/CFPlugInProperty/*</name>*/ (String getterName) {
+        super(Values.class, getterName);
     }
     
-    public static CFPlugInProperty valueOf(CFString value) {
-        for (CFPlugInProperty v : values) {
+    public static /*<name>*/CFPlugInProperty/*</name>*/ valueOf(/*<type>*/CFString/*</type>*/ value) {
+        for (/*<name>*/CFPlugInProperty/*</name>*/ v : values) {
             if (v.value().equals(value)) {
                 return v;
             }
@@ -89,16 +108,24 @@ import org.robovm.apple.foundation.*;
         throw new IllegalArgumentException("No constant with value " + value + " found in " 
             + /*<name>*/CFPlugInProperty/*</name>*/.class.getName());
     }
-    /*<methods>*/
-    @GlobalValue(symbol="kCFPlugInDynamicRegistrationKey", optional=true)
-    protected static native CFString DynamicRegistrationValue();
-    @GlobalValue(symbol="kCFPlugInDynamicRegisterFunctionKey", optional=true)
-    protected static native CFString DynamicRegisterFunctionValue();
-    @GlobalValue(symbol="kCFPlugInUnloadFunctionKey", optional=true)
-    protected static native CFString UnloadFunctionValue();
-    @GlobalValue(symbol="kCFPlugInFactoriesKey", optional=true)
-    protected static native CFString FactoriesValue();
-    @GlobalValue(symbol="kCFPlugInTypesKey", optional=true)
-    protected static native CFString TypesValue();
-    /*</methods>*/
+    
+    /*<methods>*//*</methods>*/
+    
+    /*<annotations>*/@Library("CoreFoundation")/*</annotations>*/
+    public static class Values {
+    	static { Bro.bind(Values.class); }
+
+        /*<values>*/
+        @GlobalValue(symbol="kCFPlugInDynamicRegistrationKey", optional=true)
+        public static native CFString DynamicRegistration();
+        @GlobalValue(symbol="kCFPlugInDynamicRegisterFunctionKey", optional=true)
+        public static native CFString DynamicRegisterFunction();
+        @GlobalValue(symbol="kCFPlugInUnloadFunctionKey", optional=true)
+        public static native CFString UnloadFunction();
+        @GlobalValue(symbol="kCFPlugInFactoriesKey", optional=true)
+        public static native CFString Factories();
+        @GlobalValue(symbol="kCFPlugInTypesKey", optional=true)
+        public static native CFString Types();
+        /*</values>*/
+    }
 }

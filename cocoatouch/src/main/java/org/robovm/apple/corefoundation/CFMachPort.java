@@ -128,9 +128,9 @@ import org.robovm.apple.foundation.*;
     @Bridge(symbol="CFMachPortGetTypeID", optional=true)
     public static native @MachineSizedUInt long getClassTypeID();
     @Bridge(symbol="CFMachPortCreate", optional=true)
-    protected static native CFMachPort create(CFAllocator allocator, FunctionPtr callout, CFMachPortContext context, BooleanPtr shouldFreeInfo);
+    private static native @org.robovm.rt.bro.annotation.Marshaler(CFType.NoRetainMarshaler.class) CFMachPort create(CFAllocator allocator, FunctionPtr callout, CFMachPortContext context, BooleanPtr shouldFreeInfo);
     @Bridge(symbol="CFMachPortCreateWithPort", optional=true)
-    protected static native CFMachPort create(CFAllocator allocator, int portNum, FunctionPtr callout, CFMachPortContext context, BooleanPtr shouldFreeInfo);
+    private static native @org.robovm.rt.bro.annotation.Marshaler(CFType.NoRetainMarshaler.class) CFMachPort create(CFAllocator allocator, int portNum, FunctionPtr callout, CFMachPortContext context, BooleanPtr shouldFreeInfo);
     @Bridge(symbol="CFMachPortGetPort", optional=true)
     public native int getPort();
     @Bridge(symbol="CFMachPortInvalidate", optional=true)
@@ -142,6 +142,6 @@ import org.robovm.apple.foundation.*;
     @Bridge(symbol="CFMachPortSetInvalidationCallBack", optional=true)
     private native void setInvalidationCallBack0(FunctionPtr callout);
     @Bridge(symbol="CFMachPortCreateRunLoopSource", optional=true)
-    protected static native CFRunLoopSource createRunLoopSource(CFAllocator allocator, CFMachPort port, @MachineSizedSInt long order);
+    public static native @org.robovm.rt.bro.annotation.Marshaler(CFType.NoRetainMarshaler.class) CFRunLoopSource createRunLoopSource(CFAllocator allocator, CFMachPort port, @MachineSizedSInt long order);
     /*</methods>*/
 }

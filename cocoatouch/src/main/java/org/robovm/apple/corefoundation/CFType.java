@@ -195,7 +195,7 @@ import org.robovm.apple.foundation.*;
     @Bridge(symbol="CFHash", optional=true)
     public native @MachineSizedUInt long hash();
     @Bridge(symbol="CFCopyDescription", optional=true)
-    protected native CFString getDescription();
+    protected native @org.robovm.rt.bro.annotation.Marshaler(CFType.NoRetainMarshaler.class) CFString getDescription();
     @Bridge(symbol="CFGetAllocator", optional=true)
     public native CFAllocator getAllocator();
     @Bridge(symbol="CFMakeCollectable", optional=true)

@@ -120,11 +120,6 @@ public abstract class AbstractTarget implements Target {
             if (config.isSkipInstall()) {
                 exportedSymbols.add("catch_exception_raise");
             }
-            if (config.isDebug()) {
-                // Keep lookup and eval functions 
-                exportedSymbols.add("*lookup?");
-                exportedSymbols.add("rvmEvalAll");
-            }
             exportedSymbols.addAll(config.getExportedSymbols());
             for (int i = 0; i < exportedSymbols.size(); i++) {
                 // On Darwin symbols are always prefixed with a '_'. We'll prepend

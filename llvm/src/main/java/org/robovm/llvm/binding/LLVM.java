@@ -3095,6 +3095,10 @@ public class LLVM implements LLVMConstants {
     LLVMJNI.AddAnalysisPasses(TargetMachineRef.getCPtr(T), PassManagerRef.getCPtr(PM));
   }
 
+  public static boolean LinkModules(ModuleRef Dest, ModuleRef Src, int Unused, StringOut OutMessage) {
+    return LLVMJNI.LinkModules(ModuleRef.getCPtr(Dest), ModuleRef.getCPtr(Src), Unused, StringOut.getCPtr(OutMessage), OutMessage);
+  }
+
   public static String getLlvmHostTriple() {
     return LLVMJNI.llvmHostTriple_get();
   }

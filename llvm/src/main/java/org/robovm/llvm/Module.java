@@ -29,7 +29,7 @@ import org.robovm.llvm.binding.StringOut;
  * 
  */
 public class Module implements AutoCloseable {
-    protected ModuleRef ref;
+    private ModuleRef ref;
 
     private Module(ModuleRef moduleRef) {
         this.ref = moduleRef;
@@ -40,10 +40,14 @@ public class Module implements AutoCloseable {
             throw new LlvmException("Already disposed");
         }
     }
-    
-    public synchronized void dispose() {
+
+    protected ModuleRef getRef() {
         checkDisposed();
-        LLVM.DisposeModule(ref);
+        return ref;
+    }
+
+    public synchronized void dispose() {
+        LLVM.DisposeModule(getRef());
         ref = null;
     }
 
@@ -53,14 +57,19 @@ public class Module implements AutoCloseable {
     }
 
     public Type getTypeByName(String name) {
-        checkDisposed();
-        return new Type(LLVM.GetTypeByName(ref, name));
+        return new Type(LLVM.GetTypeByName(getRef(), name));
     }
     
     public void writeBitcode(File file) {
-        checkDisposed();
-        if (LLVM.WriteBitcodeToFile(ref, file.getAbsolutePath()) != 0) {
+        if (LLVM.WriteBitcodeToFile(getRef(), file.getAbsolutePath()) != 0) {
             throw new LlvmException("Write failed");
+        }
+    }
+    
+    public void link(Module other) {
+        StringOut errorMessage = new StringOut();
+        if (LLVM.LinkModules(getRef(), other.getRef(), 0, errorMessage)) {
+            throw new LlvmException(errorMessage.getValue().trim());
         }
     }
     

@@ -11,6 +11,7 @@
 #include <llvm-c/Transforms/Vectorize.h>
 #include <llvm-c/Target.h>
 #include <llvm-c/TargetMachine.h>
+#include <llvm-c/Linker.h>
 #include "../native/LLVMExtra.h"
 
 struct LongArray;
@@ -257,6 +258,7 @@ typedef jlong uint64_t;
 %include "llvm-c/Transforms/Vectorize.h"
 %include "llvm-c/Target.h"
 %include "llvm-c/TargetMachine.h"
+%include "llvm-c/Linker.h"
 %include "../native/LLVMExtra.h"
 
 %pragma(java) jniclasscode=%{

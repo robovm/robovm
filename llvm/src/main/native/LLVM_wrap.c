@@ -198,6 +198,7 @@ static void SWIGUNUSED SWIG_JavaThrowException(JNIEnv *jenv, SWIG_JavaExceptionC
 #include <llvm-c/Transforms/Vectorize.h>
 #include <llvm-c/Target.h>
 #include <llvm-c/TargetMachine.h>
+#include <llvm-c/Linker.h>
 #include "../native/LLVMExtra.h"
 
 struct LongArray;
@@ -11772,6 +11773,27 @@ SWIGEXPORT void JNICALL Java_org_robovm_llvm_binding_LLVMJNI_AddAnalysisPasses(J
   arg1 = *(LLVMTargetMachineRef *)&jarg1; 
   arg2 = *(LLVMPassManagerRef *)&jarg2; 
   LLVMAddAnalysisPasses(arg1,arg2);
+}
+
+
+SWIGEXPORT jboolean JNICALL Java_org_robovm_llvm_binding_LLVMJNI_LinkModules(JNIEnv *jenv, jclass jcls, jlong jarg1, jlong jarg2, jint jarg3, jlong jarg4, jobject jarg4_) {
+  jboolean jresult = 0 ;
+  LLVMModuleRef arg1 = (LLVMModuleRef) 0 ;
+  LLVMModuleRef arg2 = (LLVMModuleRef) 0 ;
+  unsigned int arg3 ;
+  char **arg4 = (char **) 0 ;
+  LLVMBool result;
+  
+  (void)jenv;
+  (void)jcls;
+  (void)jarg4_;
+  arg1 = *(LLVMModuleRef *)&jarg1; 
+  arg2 = *(LLVMModuleRef *)&jarg2; 
+  arg3 = (unsigned int)jarg3; 
+  arg4 = *(char ***)&jarg4; 
+  result = LLVMLinkModules(arg1,arg2,arg3,arg4);
+  jresult = result; 
+  return jresult;
 }
 
 

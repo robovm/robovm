@@ -93,9 +93,9 @@ endif()
 add_definitions(-D__STDC_LIMIT_MACROS -D__STDC_CONSTANT_MACROS)
 include_directories(${JAVA_INCLUDE_PATH} ${JAVA_INCLUDE_PATH2} ${CMAKE_BINARY_DIR}/llvm/include)
 
-# This was generated using 'llvm-config --libs core bitreader bitwriter irreader ipo arm x86 aarch64 debuginfo'
+# This was generated using 'llvm-config --libs core bitreader bitwriter irreader ipo arm x86 aarch64 debuginfo linker'
 set(LLVM_LIBS
-  -lLLVMDebugInfo -lLLVMAArch64Disassembler -lLLVMAArch64CodeGen
+  -lLLVMLinker -lLLVMDebugInfo -lLLVMAArch64Disassembler -lLLVMAArch64CodeGen
   -lLLVMAArch64AsmParser -lLLVMAArch64Desc -lLLVMAArch64Info
   -lLLVMAArch64AsmPrinter -lLLVMAArch64Utils -lLLVMX86Disassembler
   -lLLVMX86AsmParser -lLLVMX86CodeGen -lLLVMX86Desc -lLLVMX86Info

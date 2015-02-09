@@ -411,7 +411,7 @@ public class IOSTarget extends AbstractTarget {
         FileUtils.deleteDirectory(dsymDir);
         new Executor(config.getLogger(), "xcrun")
             .args("dsymutil", "-o", dsymDir, new File(dir, executable))
-            .exec();
+            .execAsync();
     }
 
     private void strip(File dir, String executable) throws IOException {

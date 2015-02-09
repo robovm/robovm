@@ -78,12 +78,12 @@ import org.robovm.apple.corefoundation.*;
      * @since Available in iOS 2.0 and later.
      */
     @Bridge(symbol="CFNetDiagnosticCreateWithStreams", optional=true)
-    public static native CFNetDiagnostic create(CFAllocator alloc, CFReadStream readStream, CFWriteStream writeStream);
+    public static native @org.robovm.rt.bro.annotation.Marshaler(CFType.NoRetainMarshaler.class) CFNetDiagnostic create(CFAllocator alloc, CFReadStream readStream, CFWriteStream writeStream);
     /**
      * @since Available in iOS 2.0 and later.
      */
     @Bridge(symbol="CFNetDiagnosticCreateWithURL", optional=true)
-    public static native CFNetDiagnostic create(CFAllocator alloc, NSURL url);
+    public static native @org.robovm.rt.bro.annotation.Marshaler(CFType.NoRetainMarshaler.class) CFNetDiagnostic create(CFAllocator alloc, NSURL url);
     /**
      * @since Available in iOS 2.0 and later.
      */

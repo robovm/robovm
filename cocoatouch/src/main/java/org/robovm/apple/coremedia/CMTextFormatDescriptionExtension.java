@@ -90,7 +90,7 @@ import org.robovm.apple.audiotoolbox.*;
     /*</marshalers>*/
 
     /*<constructors>*/
-     CMTextFormatDescriptionExtension(CFDictionary data) {
+    CMTextFormatDescriptionExtension(CFDictionary data) {
         super(data);
     }
     public CMTextFormatDescriptionExtension() {}

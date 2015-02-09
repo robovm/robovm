@@ -113,6 +113,6 @@ import org.robovm.apple.audiotoolbox.*;
      * @since Available in iOS 6.0 and later.
      */
     @Bridge(symbol="CMAudioClockCreate", optional=true)
-    protected static native int createAudioClock(CFAllocator allocator, CMClock.CMClockPtr clockOut);
+    private static native int createAudioClock(CFAllocator allocator, CMClock.CMClockPtr clockOut);
     /*</methods>*/
 }

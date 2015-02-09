@@ -98,7 +98,7 @@ import org.robovm.apple.audiotoolbox.*;
      * @since Available in iOS 4.0  and later.
      */
     @Bridge(symbol="CMCopyDictionaryOfAttachments", optional=true)
-    private static native CFDictionary getAttachments(CFAllocator allocator, CFType target, CMAttachmentMode attachmentMode);
+    private static native @org.robovm.rt.bro.annotation.Marshaler(CFType.NoRetainMarshaler.class) CFDictionary getAttachments(CFAllocator allocator, CFType target, CMAttachmentMode attachmentMode);
     /**
      * @since Available in iOS 4.0  and later.
      */

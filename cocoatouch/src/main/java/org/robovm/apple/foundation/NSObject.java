@@ -211,9 +211,9 @@ import org.robovm.apple.dispatch.*;
     @Method(selector = "respondsToSelector:")
     public native boolean respondsToSelector(Selector aSelector);
     @Method(selector = "retain")
-    public native NSObject retain();
+    public final native NSObject retain();
     @Method(selector = "release")
-    public native void release();
+    public final native void release();
     @Method(selector = "autorelease")
     public native NSObject autorelease();
     @Method(selector = "retainCount")

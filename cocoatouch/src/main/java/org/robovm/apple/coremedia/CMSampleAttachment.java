@@ -90,7 +90,7 @@ import org.robovm.apple.audiotoolbox.*;
     /*</marshalers>*/
 
     /*<constructors>*/
-     CMSampleAttachment(CFDictionary data) {
+    CMSampleAttachment(CFDictionary data) {
         super(data);
     }
     public CMSampleAttachment() {}

@@ -156,17 +156,17 @@ import org.robovm.apple.coremedia.CMTime;
      * @since Available in iOS 2.0 and later.
      */
     @Bridge(symbol="CFHostCreateWithName", optional=true)
-    protected static native CFHost create(CFAllocator allocator, String hostname);
+    protected static native @org.robovm.rt.bro.annotation.Marshaler(CFType.NoRetainMarshaler.class) CFHost create(CFAllocator allocator, String hostname);
     /**
      * @since Available in iOS 2.0 and later.
      */
     @Bridge(symbol="CFHostCreateWithAddress", optional=true)
-    protected static native CFHost create(CFAllocator allocator, NSData addr);
+    protected static native @org.robovm.rt.bro.annotation.Marshaler(CFType.NoRetainMarshaler.class) CFHost create(CFAllocator allocator, NSData addr);
     /**
      * @since Available in iOS 2.0 and later.
      */
     @Bridge(symbol="CFHostCreateCopy", optional=true)
-    protected static native CFHost createCopy(CFAllocator alloc, CFHost host);
+    protected static native @org.robovm.rt.bro.annotation.Marshaler(CFType.NoRetainMarshaler.class) CFHost createCopy(CFAllocator alloc, CFHost host);
     /**
      * @since Available in iOS 2.0 and later.
      */

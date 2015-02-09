@@ -136,22 +136,22 @@ import org.robovm.apple.corefoundation.*;
      * @since Available in iOS 2.0 and later.
      */
     @Bridge(symbol="CFHTTPMessageCreateRequest", optional=true)
-    public static native CFHTTPMessage createRequest(CFAllocator alloc, String requestMethod, NSURL url, CFHTTPVersion httpVersion);
+    public static native @org.robovm.rt.bro.annotation.Marshaler(CFType.NoRetainMarshaler.class) CFHTTPMessage createRequest(CFAllocator alloc, String requestMethod, NSURL url, CFHTTPVersion httpVersion);
     /**
      * @since Available in iOS 2.0 and later.
      */
     @Bridge(symbol="CFHTTPMessageCreateResponse", optional=true)
-    public static native CFHTTPMessage createResponse(CFAllocator alloc, @MachineSizedSInt long statusCode, String statusDescription, CFHTTPVersion httpVersion);
+    public static native @org.robovm.rt.bro.annotation.Marshaler(CFType.NoRetainMarshaler.class) CFHTTPMessage createResponse(CFAllocator alloc, @MachineSizedSInt long statusCode, String statusDescription, CFHTTPVersion httpVersion);
     /**
      * @since Available in iOS 2.0 and later.
      */
     @Bridge(symbol="CFHTTPMessageCreateEmpty", optional=true)
-    protected static native CFHTTPMessage createEmpty(CFAllocator alloc, boolean isRequest);
+    public static native @org.robovm.rt.bro.annotation.Marshaler(CFType.NoRetainMarshaler.class) CFHTTPMessage createEmpty(CFAllocator alloc, boolean isRequest);
     /**
      * @since Available in iOS 2.0 and later.
      */
     @Bridge(symbol="CFHTTPMessageCreateCopy", optional=true)
-    public static native CFHTTPMessage createCopy(CFAllocator alloc, CFHTTPMessage message);
+    public static native @org.robovm.rt.bro.annotation.Marshaler(CFType.NoRetainMarshaler.class) CFHTTPMessage createCopy(CFAllocator alloc, CFHTTPMessage message);
     /**
      * @since Available in iOS 2.0 and later.
      */
@@ -176,7 +176,7 @@ import org.robovm.apple.corefoundation.*;
      * @since Available in iOS 2.0 and later.
      */
     @Bridge(symbol="CFHTTPMessageCopyHeaderFieldValue", optional=true)
-    public native String getHeaderFieldValue(String headerField);
+    public native @org.robovm.rt.bro.annotation.Marshaler(CFString.AsStringNoRetainMarshaler.class) String getHeaderFieldValue(String headerField);
     /**
      * @since Available in iOS 2.0 and later.
      */
@@ -211,7 +211,7 @@ import org.robovm.apple.corefoundation.*;
      * @since Available in iOS 2.0 and later.
      */
     @Bridge(symbol="CFHTTPMessageCopyRequestMethod", optional=true)
-    public native String getRequestMethod();
+    public native @org.robovm.rt.bro.annotation.Marshaler(CFString.AsStringNoRetainMarshaler.class) String getRequestMethod();
     /**
      * @since Available in iOS 2.0 and later.
      */
@@ -226,7 +226,7 @@ import org.robovm.apple.corefoundation.*;
      * @since Available in iOS 2.0 and later.
      */
     @Bridge(symbol="CFHTTPMessageCopyResponseStatusLine", optional=true)
-    public native String getResponseStatusLine();
+    public native @org.robovm.rt.bro.annotation.Marshaler(CFString.AsStringNoRetainMarshaler.class) String getResponseStatusLine();
     /**
      * @since Available in iOS 2.0 and later.
      */

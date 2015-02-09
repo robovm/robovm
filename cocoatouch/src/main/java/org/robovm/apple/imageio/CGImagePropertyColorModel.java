@@ -36,7 +36,7 @@ import org.robovm.apple.coregraphics.*;
 @Marshaler(CGImagePropertyColorModel.Marshaler.class)
 /*<annotations>*/@Library("ImageIO")/*</annotations>*/
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/CGImagePropertyColorModel/*</name>*/ 
-    extends /*<extends>*/Object/*</extends>*/ 
+    extends /*<extends>*/CocoaUtility/*</extends>*/ 
     /*<implements>*//*</implements>*/ {
 
     public static class Marshaler {

@@ -30,9 +30,6 @@ enums:
     CFHTTPAuthenticationError: { first: kCFStreamErrorHTTPAuthenticationTypeUnsupported }
 
 classes:
-    CoreServices:
-        annotations: ['@Marshaler(NSString.AsStringMarshaler.class)']
-
     __CFHost:
         name: CFHost
         extends: CFType
@@ -81,6 +78,7 @@ functions:
     CFReadStreamCreateWithFTPURL:
         class: CFFTPStream
         name: createReadStream
+        return_marshaler: CFType.NoRetainMarshaler
     CFFTP(CreateParsedResourceListing):
         class: CFFTPStream
         name: '#{g[0]}'
@@ -93,16 +91,19 @@ functions:
     CFWriteStreamCreateWithFTPURL:
         class: CFFTPStream
         name: createWriteStream
+        return_marshaler: CFType.NoRetainMarshaler
     
     # CFHost
     CFHost(Create)With.*:
         class: CFHost
         name: '#{g[0]}'
         visibility: protected
+        return_marshaler: CFType.NoRetainMarshaler
     CFHost(CreateCopy):
         class: CFHost
         name: '#{g[0]}'
         visibility: protected
+        return_marshaler: CFType.NoRetainMarshaler
     CFHost(StartInfoResolution):
         class: CFHost
         name: '#{g[0]}'
@@ -141,6 +142,7 @@ functions:
     CFHTTPAuthentication(Create)FromResponse:
         class: CFHTTPAuthentication
         name: '#{g[0]}'
+        return_marshaler: CFType.NoRetainMarshaler
     CFHTTPAuthentication(IsValid):
         class: CFHTTPAuthentication
         name: '#{g[0]}'
@@ -152,6 +154,7 @@ functions:
     CFHTTPAuthenticationCopy(.*):
         class: CFHTTPAuthentication
         name: 'get#{g[0]}'
+        return_marshaler: CFString.AsStringNoRetainMarshaler
     CFHTTPAuthentication(.*):
         class: CFHTTPAuthentication
         name: '#{g[0]}'
@@ -160,22 +163,25 @@ functions:
     CFHTTPMessage(CreateRequest):
         class: CFHTTPMessage
         name: '#{g[0]}'
+        return_marshaler: CFType.NoRetainMarshaler
         parameters:
             httpVersion:
                 type: CFHTTPVersion
     CFHTTPMessage(CreateResponse):
         class: CFHTTPMessage
         name: '#{g[0]}'
+        return_marshaler: CFType.NoRetainMarshaler
         parameters:
             httpVersion:
                 type: CFHTTPVersion
     CFHTTPMessage(CreateEmpty):
         class: CFHTTPMessage
         name: '#{g[0]}'
-        visibility: protected
+        return_marshaler: CFType.NoRetainMarshaler
     CFHTTPMessage(CreateCopy):
         class: CFHTTPMessage
         name: '#{g[0]}'
+        return_marshaler: CFType.NoRetainMarshaler
     CFHTTPMessageCopy(Version):
         class: CFHTTPMessage
         name: 'get#{g[0]}'
@@ -185,6 +191,10 @@ functions:
         name: 'get#{g[0]}'
         return_type: Map<String, String>
         return_marshaler: CFDictionary.AsStringStringMapMarshaler
+    CFHTTPMessageCopy(HeaderFieldValue|RequestMethod|ResponseStatusLine):
+        class: CFHTTPMessage
+        name: 'get#{g[0]}'
+        return_marshaler: CFString.AsStringNoRetainMarshaler
     CFHTTPMessageCopy(.*):
         class: CFHTTPMessage
         name: 'get#{g[0]}'
@@ -220,6 +230,7 @@ functions:
     CFReadStream(Create).*:
         class: CFHTTPStream
         name: '#{g[0]}'
+        return_marshaler: CFType.NoRetainMarshaler
     CFHTTPReadStream(.*):
         class: CFHTTPStream
         name: '#{g[0]}'
@@ -228,6 +239,7 @@ functions:
     CFNetDiagnostic(Create).*:
         class: CFNetDiagnostic
         name: '#{g[0]}'
+        return_marshaler: CFType.NoRetainMarshaler
     CFNetDiagnosticCopy(NetworkStatusPassively):
         class: CFNetDiagnostic
         name: 'get#{g[0]}'
@@ -244,6 +256,7 @@ functions:
         class: CFNetServiceBrowser
         name: '#{g[0]}'
         visibility: private
+        return_marshaler: CFType.NoRetainMarshaler
     CFNetServiceBrowser(SearchForDomains):
         class: CFNetServiceBrowser
         name: '#{g[0]}'
@@ -271,6 +284,7 @@ functions:
         class: CFNetServiceMonitor
         name: '#{g[0]}'
         visibility: private
+        return_marshaler: CFType.NoRetainMarshaler
     CFNetServiceMonitor(Start):
         class: CFNetServiceMonitor
         name: '#{g[0]}'
@@ -334,7 +348,7 @@ functions:
     CFNetService(Create.*):
         class: CFNetService
         name: '#{g[0]}'
-        visibility: protected
+        return_marshaler: CFType.NoRetainMarshaler
     CFNetService(.*):
         class: CFNetService
         name: '#{g[0]}'

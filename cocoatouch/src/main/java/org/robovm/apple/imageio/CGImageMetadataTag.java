@@ -56,22 +56,22 @@ import org.robovm.apple.coregraphics.*;
      * @since Available in iOS 7.0 and later.
      */
     @Bridge(symbol="CGImageMetadataTagCreate", optional=true)
-    public static native CGImageMetadataTag create(String xmlns, String prefix, String name, CGImageMetadataType type, CFType value);
+    public static native @org.robovm.rt.bro.annotation.Marshaler(CFType.NoRetainMarshaler.class) CGImageMetadataTag create(String xmlns, String prefix, String name, CGImageMetadataType type, CFType value);
     /**
      * @since Available in iOS 7.0 and later.
      */
     @Bridge(symbol="CGImageMetadataTagCopyNamespace", optional=true)
-    public native String getNamespace();
+    public native @org.robovm.rt.bro.annotation.Marshaler(CFString.AsStringNoRetainMarshaler.class) String getNamespace();
     /**
      * @since Available in iOS 7.0 and later.
      */
     @Bridge(symbol="CGImageMetadataTagCopyPrefix", optional=true)
-    public native String getPrefix();
+    public native @org.robovm.rt.bro.annotation.Marshaler(CFString.AsStringNoRetainMarshaler.class) String getPrefix();
     /**
      * @since Available in iOS 7.0 and later.
      */
     @Bridge(symbol="CGImageMetadataTagCopyName", optional=true)
-    public native String getName();
+    public native @org.robovm.rt.bro.annotation.Marshaler(CFString.AsStringNoRetainMarshaler.class) String getName();
     /**
      * @since Available in iOS 7.0 and later.
      */

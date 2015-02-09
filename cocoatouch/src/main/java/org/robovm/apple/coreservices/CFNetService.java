@@ -151,12 +151,12 @@ import org.robovm.apple.corefoundation.*;
      * @since Available in iOS 2.0 and later.
      */
     @Bridge(symbol="CFNetServiceCreate", optional=true)
-    protected static native CFNetService create(CFAllocator alloc, String domain, String serviceType, String name, int port);
+    public static native @org.robovm.rt.bro.annotation.Marshaler(CFType.NoRetainMarshaler.class) CFNetService create(CFAllocator alloc, String domain, String serviceType, String name, int port);
     /**
      * @since Available in iOS 2.0 and later.
      */
     @Bridge(symbol="CFNetServiceCreateCopy", optional=true)
-    protected static native CFNetService createCopy(CFAllocator alloc, CFNetService service);
+    public static native @org.robovm.rt.bro.annotation.Marshaler(CFType.NoRetainMarshaler.class) CFNetService createCopy(CFAllocator alloc, CFNetService service);
     /**
      * @since Available in iOS 2.0 and later.
      */

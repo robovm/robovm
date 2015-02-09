@@ -40,6 +40,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.concurrent.Executor;
+import java.util.concurrent.ExecutorService;
 import java.util.concurrent.RejectedExecutionException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -296,20 +297,25 @@ public class ClassCompiler {
     private static void scheduleMachineCodeGeneration(Executor executor, final ClassCompilerListener listener,
             final Config config, final Clazz clazz, final byte[] llData) {
         
-        try {
-            executor.execute(new Runnable() {
-                @Override
-                public void run() {
-                    try {
-                        generateMachineCode(config, clazz, llData);
-                        listener.success(clazz);
-                    } catch (Throwable t) {
-                        listener.failure(clazz, t);
-                    }
+        Runnable task = new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    generateMachineCode(config, clazz, llData);
+                    listener.success(clazz);
+                } catch (Throwable t) {
+                    listener.failure(clazz, t);
                 }
-            });
+            }
+        };
+        
+        try {
+            executor.execute(task);
         } catch (RejectedExecutionException e) {
-            // Ignore. The executor has been shutdown for some reason.
+            if (!(executor instanceof ExecutorService) || !((ExecutorService) executor).isShutdown()) {
+                // The task was rejected, probably because all workers are busy. Run it in this thread instead.
+                task.run();
+            }
         }
     }
     

@@ -33,9 +33,10 @@ import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
 import java.util.UUID;
+import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.Executor;
 import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
+import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
 import org.apache.commons.exec.ExecuteException;
@@ -250,7 +251,14 @@ public class AppCompiler {
         config.getLogger().debug("Compiling classes using %d threads", config.getThreads());
 
         final Executor executor = (config.getThreads() <= 1)
-                ? SAME_THREAD_EXECUTOR : Executors.newFixedThreadPool(config.getThreads());
+                ? SAME_THREAD_EXECUTOR
+                : new ThreadPoolExecutor(config.getThreads() - 1, config.getThreads() - 1,
+                        0L, TimeUnit.MILLISECONDS,
+                        // Use a bounded queue to avoid memory problems if the 
+                        // worker threads are slower than the enqueuing thread.
+                        // The optimal thread pool size and queue size have been 
+                        // determined by trial and error.
+                        new ArrayBlockingQueue<Runnable>((config.getThreads() - 1) * 20));
         class HandleFailureListener implements ClassCompilerListener {
             volatile Throwable t;
             @Override

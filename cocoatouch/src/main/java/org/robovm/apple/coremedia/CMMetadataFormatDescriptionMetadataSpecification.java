@@ -90,7 +90,7 @@ import org.robovm.apple.audiotoolbox.*;
     /*</marshalers>*/
 
     /*<constructors>*/
-     CMMetadataFormatDescriptionMetadataSpecification(CFDictionary data) {
+    CMMetadataFormatDescriptionMetadataSpecification(CFDictionary data) {
         super(data);
     }
     public CMMetadataFormatDescriptionMetadataSpecification() {}

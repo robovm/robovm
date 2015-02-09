@@ -61,11 +61,11 @@ import org.robovm.apple.corefoundation.*;
      * @since Available in iOS 2.0 and later.
      */
     @Bridge(symbol="CFReadStreamCreateForHTTPRequest", optional=true)
-    public static native CFReadStream create(CFAllocator alloc, CFHTTPMessage request);
+    public static native @org.robovm.rt.bro.annotation.Marshaler(CFType.NoRetainMarshaler.class) CFReadStream create(CFAllocator alloc, CFHTTPMessage request);
     /**
      * @since Available in iOS 2.0 and later.
      */
     @Bridge(symbol="CFReadStreamCreateForStreamedHTTPRequest", optional=true)
-    public static native CFReadStream create(CFAllocator alloc, CFHTTPMessage requestHeaders, CFReadStream requestBody);
+    public static native @org.robovm.rt.bro.annotation.Marshaler(CFType.NoRetainMarshaler.class) CFReadStream create(CFAllocator alloc, CFHTTPMessage requestHeaders, CFReadStream requestBody);
     /*</methods>*/
 }

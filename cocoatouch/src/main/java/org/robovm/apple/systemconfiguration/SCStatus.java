@@ -35,7 +35,7 @@ import org.robovm.apple.dispatch.*;
 /*</javadoc>*/
 /*<annotations>*/@Library("SystemConfiguration")/*</annotations>*/
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/SCStatus/*</name>*/ 
-    extends /*<extends>*/Object/*</extends>*/ 
+    extends /*<extends>*/CocoaUtility/*</extends>*/ 
     /*<implements>*//*</implements>*/ {
 
     /*<ptr>*/
@@ -57,7 +57,7 @@ import org.robovm.apple.dispatch.*;
      * @since Available in iOS 2.0 and later.
      */
     @Bridge(symbol="SCCopyLastError", optional=true)
-    public static native CFError getLastError();
+    public static native @org.robovm.rt.bro.annotation.Marshaler(CFType.NoRetainMarshaler.class) CFError getLastError();
     /**
      * @since Available in iOS 2.0 and later.
      */

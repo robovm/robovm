@@ -70,7 +70,7 @@ import org.robovm.apple.audiotoolbox.*;
                 return null;
             }
             List<CMSampleBufferAttachmentKey> list = new ArrayList<>();
-            for (long i = 0, n = o.size(); i < n; i++) {
+            for (int i = 0; i < o.size(); i++) {
                 list.add(CMSampleBufferAttachmentKey.valueOf(o.get(i, CFString.class)));
             }
             return list;

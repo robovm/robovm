@@ -149,17 +149,17 @@ import org.robovm.apple.dispatch.*;
      * @since Available in iOS 2.0 and later.
      */
     @Bridge(symbol="SCNetworkReachabilityCreateWithAddress", optional=true)
-    protected static native SCNetworkReachability create(CFAllocator allocator, Struct<?> address);
+    private static native @org.robovm.rt.bro.annotation.Marshaler(CFType.NoRetainMarshaler.class) SCNetworkReachability create(CFAllocator allocator, Struct<?> address);
     /**
      * @since Available in iOS 2.0 and later.
      */
     @Bridge(symbol="SCNetworkReachabilityCreateWithAddressPair", optional=true)
-    protected static native SCNetworkReachability create(CFAllocator allocator, Struct<?> localAddress, Struct<?> remoteAddress);
+    private static native @org.robovm.rt.bro.annotation.Marshaler(CFType.NoRetainMarshaler.class) SCNetworkReachability create(CFAllocator allocator, Struct<?> localAddress, Struct<?> remoteAddress);
     /**
      * @since Available in iOS 2.0 and later.
      */
     @Bridge(symbol="SCNetworkReachabilityCreateWithName", optional=true)
-    protected static native SCNetworkReachability create(CFAllocator allocator, BytePtr nodename);
+    private static native @org.robovm.rt.bro.annotation.Marshaler(CFType.NoRetainMarshaler.class) SCNetworkReachability create(CFAllocator allocator, BytePtr nodename);
     /**
      * @since Available in iOS 2.0 and later.
      */

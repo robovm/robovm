@@ -36,7 +36,7 @@ import org.robovm.apple.coregraphics.*;
 @Marshaler(CGImageMetadataPrefix.Marshaler.class)
 /*<annotations>*/@Library("ImageIO")/*</annotations>*/
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/CGImageMetadataPrefix/*</name>*/ 
-    extends /*<extends>*/Object/*</extends>*/ 
+    extends /*<extends>*/CocoaUtility/*</extends>*/ 
     /*<implements>*//*</implements>*/ {
     
     public static class Marshaler {

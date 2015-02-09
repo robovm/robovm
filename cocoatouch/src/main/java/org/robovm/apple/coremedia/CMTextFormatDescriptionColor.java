@@ -90,7 +90,7 @@ import org.robovm.apple.audiotoolbox.*;
     /*</marshalers>*/
 
     /*<constructors>*/
-     CMTextFormatDescriptionColor(CFDictionary data) {
+    CMTextFormatDescriptionColor(CFDictionary data) {
         super(data);
     }
     public CMTextFormatDescriptionColor() {}

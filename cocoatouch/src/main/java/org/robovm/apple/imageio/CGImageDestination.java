@@ -95,16 +95,16 @@ import org.robovm.apple.coregraphics.*;
     /**
      * @since Available in iOS 7.0 and later.
      */
-    public boolean copyImageSource(CGImageSource isrc, CGImageDestinationCopySourceOptions options) throws CFErrorException {
-       CFError.CFErrorPtr ptr = new CFError.CFErrorPtr();
+    public boolean copyImageSource(CGImageSource isrc, CGImageDestinationCopySourceOptions options) throws NSErrorException {
+       NSError.NSErrorPtr ptr = new NSError.NSErrorPtr();
        boolean result = copyImageSource(isrc, options, ptr);
-       if (ptr.get() != null) { throw new CFErrorException(ptr.get()); }
+       if (ptr.get() != null) { throw new NSErrorException(ptr.get()); }
        return result;
     }
     /**
      * @since Available in iOS 7.0 and later.
      */
     @Bridge(symbol="CGImageDestinationCopyImageSource", optional=true)
-    private native boolean copyImageSource(CGImageSource isrc, CGImageDestinationCopySourceOptions options, CFError.CFErrorPtr error);
+    private native boolean copyImageSource(CGImageSource isrc, CGImageDestinationCopySourceOptions options, NSError.NSErrorPtr error);
     /*</methods>*/
 }

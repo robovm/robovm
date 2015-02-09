@@ -110,17 +110,17 @@ import org.robovm.apple.coregraphics.*;
     /**
      * @since Available in iOS 7.0 and later.
      */
-    public boolean registerNamespaceForPrefix(String xmlns, String prefix) throws CFErrorException {
-       CFError.CFErrorPtr ptr = new CFError.CFErrorPtr();
+    public boolean registerNamespaceForPrefix(String xmlns, String prefix) throws NSErrorException {
+       NSError.NSErrorPtr ptr = new NSError.NSErrorPtr();
        boolean result = registerNamespaceForPrefix(xmlns, prefix, ptr);
-       if (ptr.get() != null) { throw new CFErrorException(ptr.get()); }
+       if (ptr.get() != null) { throw new NSErrorException(ptr.get()); }
        return result;
     }
     /**
      * @since Available in iOS 7.0 and later.
      */
     @Bridge(symbol="CGImageMetadataRegisterNamespaceForPrefix", optional=true)
-    private native boolean registerNamespaceForPrefix(String xmlns, String prefix, CFError.CFErrorPtr error);
+    private native boolean registerNamespaceForPrefix(String xmlns, String prefix, NSError.NSErrorPtr error);
     /**
      * @since Available in iOS 7.0 and later.
      */

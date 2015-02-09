@@ -56,7 +56,7 @@ functions:
     CGImageDestination(CopyImageSource):
         class: CGImageDestination
         name: '#{g[0]}'
-        throws: CFErrorException
+        throws: NSErrorException
         parameters:
             options:
                 type: CGImageDestinationCopySourceOptions
@@ -126,7 +126,7 @@ functions:
     CGImageMetadata(RegisterNamespaceForPrefix):
         class: CGImageMetadata
         name: '#{g[0]}'
-        throws: CFErrorException
+        throws: NSErrorException
     CGImageMetadata(EnumerateTags)UsingBlock:
         class: CGImageMetadata
         name: '#{g[0]}'

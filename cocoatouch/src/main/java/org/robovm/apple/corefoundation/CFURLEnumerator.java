@@ -64,17 +64,17 @@ import org.robovm.apple.foundation.*;
     /**
      * @since Available in iOS 4.0 and later.
      */
-    public CFURLEnumeratorResult getNextURL(CFURL.CFURLPtr url) throws CFErrorException {
-       CFError.CFErrorPtr ptr = new CFError.CFErrorPtr();
+    public CFURLEnumeratorResult getNextURL(CFURL.CFURLPtr url) throws NSErrorException {
+       NSError.NSErrorPtr ptr = new NSError.NSErrorPtr();
        CFURLEnumeratorResult result = getNextURL(url, ptr);
-       if (ptr.get() != null) { throw new CFErrorException(ptr.get()); }
+       if (ptr.get() != null) { throw new NSErrorException(ptr.get()); }
        return result;
     }
     /**
      * @since Available in iOS 4.0 and later.
      */
     @Bridge(symbol="CFURLEnumeratorGetNextURL", optional=true)
-    private native CFURLEnumeratorResult getNextURL(CFURL.CFURLPtr url, CFError.CFErrorPtr error);
+    private native CFURLEnumeratorResult getNextURL(CFURL.CFURLPtr url, NSError.NSErrorPtr error);
     /**
      * @since Available in iOS 4.0 and later.
      */

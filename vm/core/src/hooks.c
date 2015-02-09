@@ -64,12 +64,6 @@ typedef struct {
     char* message;
 } ChannelError;
 
-// set by debugger when connecting to the inferior
-jboolean attachFlag = FALSE;
-
-// timeout counter
-static jint waitForAttachTime = 0;
-
 // set when receiving a vm suspend cmd
 jboolean resumeFlag = FALSE;
 
@@ -208,23 +202,6 @@ static jboolean checkError(ChannelError* error) {
     }
 }
 
-void rvmHookDebuggerAttached(Options* options) {
-    DEBUG("Debugger attached");
-}
-
-void rvmHookWaitForAttach(Options* options) {
-    if (attachFlag == FALSE && waitForAttachTime < 15) {
-        waitForAttachTime++;
-        sleep(1);
-        DEBUG("Waiting for debugger to attach");
-        rvmHookWaitForAttach(options);
-    } else {
-        if (attachFlag) {
-            rvmHookDebuggerAttached(options);
-        }
-    }
-}
-
 void rvmHookWaitForResume(Options* options) {
     // resumeFlag is modified in handleVmResume()
     // we sync on the write mutex to ensure
@@ -237,7 +214,7 @@ void rvmHookWaitForResume(Options* options) {
         if (isResumed == FALSE) {
             nsleep(50);
         } else {
-            rvmHookDebuggerAttached(options);
+            DEBUG("Debugger attached");
             break;
         }
     }
@@ -296,7 +273,7 @@ void _rvmHookThreadDetaching(Env* env, JavaThread* threadObj, Thread* thread, Ob
 }
 
 void _rvmHookClassLoaded(Env* env, Class* clazz, void* classInfo) {
-    DEBUGF("Loaded class %s, Class*: %p, ClassInfo*: %p", clazz->name, clazz, classInfo);
+    // DEBUGF("Loaded class %s, Class*: %p, ClassInfo*: %p", clazz->name, clazz, classInfo);
     rvmLockMutex(&writeMutex);
     ChannelError error = { 0 };
     writeChannelByte(clientSocket, EVT_CLASS_LOAD, &error);
@@ -378,6 +355,7 @@ jboolean _rvmHookHandshake(Options* options) {
 
     // send base symbol address to deal with PIE/ASLR
     writeChannelLong(clientSocket, (jlong) &robovmBaseSymbol, &error);
+    DEBUG("Handshake complete");
 
     // setup
     rvmInitMutex(&writeMutex);
@@ -506,10 +484,15 @@ static void handleThreadSuspend(jlong reqId, ChannelError* error) {
 
     DebugEnv* debugEnv = (DebugEnv*) thread->env;
     rvmLockMutex(&debugEnv->suspendMutex);
-    debugEnv->suspended = TRUE;
+    // the order of the next few lines is important
+    // as we don't use a lock in getSuspendedEvent()
+    // around stepping and suspended.
     debugEnv->stepping = FALSE;
     debugEnv->pclow = 0;
     debugEnv->pchigh = 0;
+    debugEnv->pclow2 = 0;
+    debugEnv->pchigh2 = 0;
+    debugEnv->suspended = TRUE;
     rvmUnlockMutex(&debugEnv->suspendMutex);
 
     DEBUGF("Suspending thread %p, id %u", thread, thread->threadId);
@@ -569,11 +552,14 @@ static void handleThreadStep(jlong reqId, ChannelError* error) {
     DEBUGF("Stepping thread %p, id %u, pclow: %p, pchigh: %p, pclow2: %p, pchigh2: %p", thread, thread->threadId, pclow, pchigh, pclow2, pchigh2);
     DebugEnv *debugEnv = (DebugEnv *) thread->env;
     rvmLockMutex(&debugEnv->suspendMutex);
-    debugEnv->stepping = TRUE;
+    // the order of the next few lines is important
+    // as we don't use a lock in getSuspendedEvent()
+    // around stepping.
     debugEnv->pclow = (void*)pclow;
     debugEnv->pchigh = (void*)pchigh;
     debugEnv->pclow2 = (void*)pclow2;
     debugEnv->pchigh2 = (void*)pchigh2;
+    debugEnv->stepping = TRUE;
     rvmUnlockMutex(&debugEnv->suspendMutex);
 
     rvmLockMutex(&writeMutex);
@@ -1092,10 +1078,10 @@ static inline char getSuspendedEvent(DebugEnv* debugEnv, jint lineNumberOffset, 
 void _rvmHookInstrumented(DebugEnv* debugEnv, jint lineNumber, jint lineNumberOffset, jbyte* bptable, void* pc) {
     Env* env = (Env*) debugEnv;
 
-    rvmLockMutex(&debugEnv->suspendMutex);
-
     char event = 0;
     if ((event = getSuspendedEvent(debugEnv, lineNumberOffset, bptable, pc)) != 0) {
+
+        rvmLockMutex(&debugEnv->suspendMutex);
 
         if (IS_DEBUG_ENABLED) {
             Method* method = rvmFindMethodAtAddress(env, pc);
@@ -1179,7 +1165,7 @@ void _rvmHookInstrumented(DebugEnv* debugEnv, jint lineNumber, jint lineNumberOf
             rvmUnlockMutex(&writeMutex);
 
         }
-    }
 
-    rvmUnlockMutex(&debugEnv->suspendMutex);
+        rvmUnlockMutex(&debugEnv->suspendMutex);
+    }
 }

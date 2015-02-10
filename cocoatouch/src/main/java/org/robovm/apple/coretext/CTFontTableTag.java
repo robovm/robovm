@@ -98,6 +98,33 @@ public enum /*<name>*/CTFontTableTag/*</name>*/ implements ValuedEnum {
     Vmtx(1986884728L);
     /*</values>*/
 
+    public static class AsListMarshaler {
+        @MarshalsPointer
+        public static List<CTFontTableTag> toObject(Class<? extends CFType> cls, long handle, long flags) {
+            CFArray o = (CFArray) CFType.Marshaler.toObject(cls, handle, flags);
+            if (o == null) {
+                return null;
+            }
+            List<CTFontTableTag> list = new ArrayList<>();
+            long n = o.size();
+            for (int i = 0; i < n; i++) {
+                list.add(CTFontTableTag.valueOf(o.get(i, CFNumber.class).longValue()));
+            }
+            return list;
+        }
+        @MarshalsPointer
+        public static long toNative(List<CTFontTableTag> l, long flags) {
+            if (l == null) {
+                return 0L;
+            }
+            CFArray array = CFMutableArray.create();
+            for (CTFontTableTag i : l) {
+                array.add(CFNumber.valueOf(i.value()));
+            }
+            return CFType.Marshaler.toNative(array, flags);
+        }
+    }
+    
     /*<bind>*/
     /*</bind>*/
     /*<constants>*//*</constants>*/

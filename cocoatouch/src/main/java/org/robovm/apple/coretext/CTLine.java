@@ -47,12 +47,6 @@ import org.robovm.apple.coregraphics.*;
     /*<properties>*//*</properties>*/
     /*<members>*//*</members>*/
     /**
-     * @since Available in iOS 3.2 and later.
-     */
-    public CTRun[] getGlyphRuns() {
-        return getGlyphRuns0().toArray(CTRun.class);
-    }
-    /**
     * @since Available in iOS 3.2 and later.
     */
     public @MachineSizedFloat double getWidth() {
@@ -106,17 +100,17 @@ import org.robovm.apple.coregraphics.*;
      * @since Available in iOS 3.2 and later.
      */
     @Bridge(symbol="CTLineCreateWithAttributedString", optional=true)
-    public static native CTLine create(NSAttributedString string);
+    public static native @org.robovm.rt.bro.annotation.Marshaler(CFType.NoRetainMarshaler.class) CTLine create(NSAttributedString string);
     /**
      * @since Available in iOS 3.2 and later.
      */
     @Bridge(symbol="CTLineCreateTruncatedLine", optional=true)
-    public native CTLine createTruncatedLine(double width, CTLineTruncationType truncationType, CTLine truncationToken);
+    public native @org.robovm.rt.bro.annotation.Marshaler(CFType.NoRetainMarshaler.class) CTLine createTruncatedLine(double width, CTLineTruncationType truncationType, CTLine truncationToken);
     /**
      * @since Available in iOS 3.2 and later.
      */
     @Bridge(symbol="CTLineCreateJustifiedLine", optional=true)
-    public native CTLine createJustifiedLine(@MachineSizedFloat double justificationFactor, double justificationWidth);
+    public native @org.robovm.rt.bro.annotation.Marshaler(CFType.NoRetainMarshaler.class) CTLine createJustifiedLine(@MachineSizedFloat double justificationFactor, double justificationWidth);
     /**
      * @since Available in iOS 3.2 and later.
      */
@@ -126,7 +120,7 @@ import org.robovm.apple.coregraphics.*;
      * @since Available in iOS 3.2 and later.
      */
     @Bridge(symbol="CTLineGetGlyphRuns", optional=true)
-    protected native CFArray getGlyphRuns0();
+    public native @org.robovm.rt.bro.annotation.Marshaler(CFArray.AsListMarshaler.class) List<CTRun> getGlyphRuns();
     /**
      * @since Available in iOS 3.2 and later.
      */

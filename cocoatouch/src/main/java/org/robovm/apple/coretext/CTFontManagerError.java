@@ -34,43 +34,24 @@ import org.robovm.apple.coregraphics.*;
 /*<javadoc>*/
 /*</javadoc>*/
 /*<annotations>*/@Library("CoreText")/*</annotations>*/
-/*<visibility>*/public/*</visibility>*/ class /*<name>*/CTTextTab/*</name>*/ 
-    extends /*<extends>*/CFType/*</extends>*/ 
+/*<visibility>*/public/*</visibility>*/ class /*<name>*/CTFontManagerError/*</name>*/ 
+    extends /*<extends>*/NSError/*</extends>*/ 
     /*<implements>*//*</implements>*/ {
 
-    /*<ptr>*/public static class CTTextTabPtr extends Ptr<CTTextTab, CTTextTabPtr> {}/*</ptr>*/
-    /*<bind>*/static { Bro.bind(CTTextTab.class); }/*</bind>*/
+    protected CTFontManagerError (SkipInit skipInit) {
+        super(skipInit);
+    }
+    
+    /*<ptr>*/public static class CTFontManagerErrorPtr extends Ptr<CTFontManagerError, CTFontManagerErrorPtr> {}/*</ptr>*/
+    /*<bind>*/static { Bro.bind(CTFontManagerError.class); }/*</bind>*/
     /*<constants>*//*</constants>*/
-    /*<constructors>*/
-    protected CTTextTab() {}
-    /*</constructors>*/
     /*<properties>*//*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
     /**
      * @since Available in iOS 3.2 and later.
      */
-    @Bridge(symbol="CTTextTabGetTypeID", optional=true)
-    public static native @MachineSizedUInt long getClassTypeID();
-    /**
-     * @since Available in iOS 3.2 and later.
-     */
-    @Bridge(symbol="CTTextTabCreate", optional=true)
-    public static native @org.robovm.rt.bro.annotation.Marshaler(CFType.NoRetainMarshaler.class) CTTextTab create(CTTextAlignment alignment, double location, CTTextTabOptions options);
-    /**
-     * @since Available in iOS 3.2 and later.
-     */
-    @Bridge(symbol="CTTextTabGetAlignment", optional=true)
-    public native CTTextAlignment getAlignment();
-    /**
-     * @since Available in iOS 3.2 and later.
-     */
-    @Bridge(symbol="CTTextTabGetLocation", optional=true)
-    public native double getLocation();
-    /**
-     * @since Available in iOS 3.2 and later.
-     */
-    @Bridge(symbol="CTTextTabGetOptions", optional=true)
-    public native CTTextTabOptions getOptions();
+    @GlobalValue(symbol="kCTFontManagerErrorDomain", optional=true)
+    public static native String getClassDomain();
     /*</methods>*/
 }

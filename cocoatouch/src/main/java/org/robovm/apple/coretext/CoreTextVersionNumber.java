@@ -34,43 +34,32 @@ import org.robovm.apple.coregraphics.*;
 /*<javadoc>*/
 /*</javadoc>*/
 /*<annotations>*/@Library("CoreText")/*</annotations>*/
-/*<visibility>*/public/*</visibility>*/ class /*<name>*/CTTextTab/*</name>*/ 
-    extends /*<extends>*/CFType/*</extends>*/ 
+/*<visibility>*/public/*</visibility>*/ class /*<name>*/CoreTextVersionNumber/*</name>*/ 
+    extends /*<extends>*/CocoaUtility/*</extends>*/ 
     /*<implements>*//*</implements>*/ {
 
-    /*<ptr>*/public static class CTTextTabPtr extends Ptr<CTTextTab, CTTextTabPtr> {}/*</ptr>*/
-    /*<bind>*/static { Bro.bind(CTTextTab.class); }/*</bind>*/
-    /*<constants>*//*</constants>*/
-    /*<constructors>*/
-    protected CTTextTab() {}
-    /*</constructors>*/
+    /*<ptr>*/
+    /*</ptr>*/
+    /*<bind>*/static { Bro.bind(CoreTextVersionNumber.class); }/*</bind>*/
+    /*<constants>*/
+    public static final int Version10_5 = 0x00020000;
+    public static final int Version10_5_2 = 0x00020001;
+    public static final int Version10_5_3 = 0x00020002;
+    public static final int Version10_5_5 = 0x00020003;
+    public static final int Version10_6 = 0x00030000;
+    public static final int Version10_7 = 0x00040000;
+    public static final int Version10_8 = 0x00050000;
+    public static final int Version10_9 = 0x00060000;
+    public static final int Version10_10 = 0x00070000;
+    /*</constants>*/
+    /*<constructors>*//*</constructors>*/
     /*<properties>*//*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
     /**
      * @since Available in iOS 3.2 and later.
      */
-    @Bridge(symbol="CTTextTabGetTypeID", optional=true)
-    public static native @MachineSizedUInt long getClassTypeID();
-    /**
-     * @since Available in iOS 3.2 and later.
-     */
-    @Bridge(symbol="CTTextTabCreate", optional=true)
-    public static native @org.robovm.rt.bro.annotation.Marshaler(CFType.NoRetainMarshaler.class) CTTextTab create(CTTextAlignment alignment, double location, CTTextTabOptions options);
-    /**
-     * @since Available in iOS 3.2 and later.
-     */
-    @Bridge(symbol="CTTextTabGetAlignment", optional=true)
-    public native CTTextAlignment getAlignment();
-    /**
-     * @since Available in iOS 3.2 and later.
-     */
-    @Bridge(symbol="CTTextTabGetLocation", optional=true)
-    public native double getLocation();
-    /**
-     * @since Available in iOS 3.2 and later.
-     */
-    @Bridge(symbol="CTTextTabGetOptions", optional=true)
-    public native CTTextTabOptions getOptions();
+    @Bridge(symbol="CTGetCoreTextVersion", optional=true)
+    public static native int getVersion();
     /*</methods>*/
 }

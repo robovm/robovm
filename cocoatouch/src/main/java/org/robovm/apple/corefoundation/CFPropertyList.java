@@ -49,25 +49,25 @@ import org.robovm.apple.foundation.*;
     /**
      * @since Available in iOS 4.0 and later.
      */
-    public static CFPropertyList create(CFData data, @MachineSizedUInt long options) throws CFErrorException {
+    public static CFPropertyList create(CFData data, @MachineSizedUInt long options) throws NSErrorException {
        return create(null, data, options, null);
     }
     /**
      * @since Available in iOS 4.0 and later.
      */
-    public static CFPropertyList create(CFAllocator allocator, CFData data, @MachineSizedUInt long options) throws CFErrorException {
+    public static CFPropertyList create(CFAllocator allocator, CFData data, @MachineSizedUInt long options) throws NSErrorException {
        return create(allocator, data, options, null);
     }
     /**
      * @since Available in iOS 4.0 and later.
      */
-    public static CFPropertyList create(CFReadStream stream, @MachineSizedSInt long streamLength, @MachineSizedUInt long options) throws CFErrorException {
+    public static CFPropertyList create(CFReadStream stream, @MachineSizedSInt long streamLength, @MachineSizedUInt long options) throws NSErrorException {
         return create(null, stream, streamLength, options, null);
     }
     /**
      * @since Available in iOS 4.0 and later.
      */
-    public static CFPropertyList create(CFAllocator allocator, CFReadStream stream, @MachineSizedSInt long streamLength, @MachineSizedUInt long options) throws CFErrorException {
+    public static CFPropertyList create(CFAllocator allocator, CFReadStream stream, @MachineSizedSInt long streamLength, @MachineSizedUInt long options) throws NSErrorException {
         return create(allocator, stream, streamLength, options, null);
     }
     /**

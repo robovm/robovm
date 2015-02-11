@@ -509,19 +509,24 @@ public abstract class BroMethodCompiler extends AbstractMethodCompiler {
         }
     }
 
-    public FunctionType getBridgeFunctionType(SootMethod method, boolean dynamic) {
-        return getBridgeOrCallbackFunctionType("@Bridge", method, dynamic);
+    public FunctionType getBridgeFunctionType(SootMethod method, boolean dynamic, boolean considerVariadic) {
+        return getBridgeOrCallbackFunctionType("@Bridge", method, dynamic, considerVariadic);
     }
     
-    public FunctionType getCallbackFunctionType(SootMethod method) {
-        return getBridgeOrCallbackFunctionType("@Callback", method, false);
+    public FunctionType getCallbackFunctionType(SootMethod method, boolean considerVariadic) {
+        return getBridgeOrCallbackFunctionType("@Callback", method, false, considerVariadic);
     }
     
-    private FunctionType getBridgeOrCallbackFunctionType(String anno, SootMethod method, boolean dynamic) {
+    private FunctionType getBridgeOrCallbackFunctionType(String anno, SootMethod method, boolean dynamic, boolean considerVariadic) {
         Type returnType = getReturnType(anno, method);
         
+        boolean varargs = considerVariadic && hasVariadicAnnotation(method);
+        int variadicIndex = varargs ? getVariadicParameterIndex(method) : Integer.MAX_VALUE;
         List<Type> paramTypes = new ArrayList<>();
         for (int i = dynamic ? 1 : 0; i < method.getParameterCount(); i++) {
+            if (i == variadicIndex) {
+                break;
+            }
             paramTypes.add(getParameterType(anno, method, i));
         }
         if (!method.isStatic()) {
@@ -539,10 +544,9 @@ public abstract class BroMethodCompiler extends AbstractMethodCompiler {
             }
         }
 
-        return new FunctionType(returnType, paramTypes.toArray(new Type[paramTypes.size()]));
+        return new FunctionType(returnType, varargs, paramTypes.toArray(new Type[paramTypes.size()]));
     }
     
-
     public StructureType getStructType(soot.Type t) {
         return getStructType(((RefType) t).getSootClass());                
     }

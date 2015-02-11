@@ -120,11 +120,22 @@ set(LLVM_LIBS
   -lLLVMBitWriter -lLLVMBitReader -lLLVMCore -lLLVMSupport
 )
 # Required clang libs
-set(LLVM_LIBS ${LLVM_LIBS}
-  -lclang -lclangFrontend -lclangAST -lclangBasic -lclangLex
-  -lclangSerialization -lclangSema -lclangEdit -lclangCodeGen -lclangParse
-  -lclangAnalysis -lclangDriver
-)
+if(LINUX)
+  # With the GNU linker library order is important and some libraries have
+  # to be repeated in order to resolve all symbols properly.
+  set(LLVM_LIBS
+    -lclangBasic -lclangDriver -lclangFrontend -lclangCodeGen
+    -lclangFrontend -lclangDriver -lclangParse -lclangSerialization
+    -lclangSema -lclangEdit -lclangAnalysis -lclangAST -lclangLex
+    -lclangBasic ${LLVM_LIBS}
+  )
+elseif(MACOSX)
+  set(LLVM_LIBS ${LLVM_LIBS}
+    -lclangFrontend -lclangAST -lclangBasic -lclangLex -lclangSerialization
+    -lclangSema -lclangEdit -lclangCodeGen -lclangParse -lclangAnalysis
+    -lclangDriver
+  )
+endif()
 
 # This was generated using 'llvm-config --ldflags'
 if(LINUX)

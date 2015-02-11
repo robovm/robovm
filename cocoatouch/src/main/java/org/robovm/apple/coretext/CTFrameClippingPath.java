@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 Trillian Mobile AB
+ * Copyright (C) 2015 Trillian Mobile AB
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -33,12 +33,13 @@ import org.robovm.apple.coregraphics.*;
 
 /*<javadoc>*/
 /*</javadoc>*/
-@Marshaler(CTFrameClippingPath.Marshaler.class)
 /*<annotations>*/@Library("CoreText")/*</annotations>*/
+@Marshaler(/*<name>*/CTFrameClippingPath/*</name>*/.Marshaler.class)
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/CTFrameClippingPath/*</name>*/ 
-    extends /*<extends>*/Object/*</extends>*/ 
+    extends /*<extends>*/CFDictionaryWrapper/*</extends>*/
     /*<implements>*//*</implements>*/ {
 
+    /*<marshalers>*/
     public static class Marshaler {
         @MarshalsPointer
         public static CTFrameClippingPath toObject(Class<CTFrameClippingPath> cls, long handle, long flags) {
@@ -56,52 +57,84 @@ import org.robovm.apple.coregraphics.*;
             return CFType.Marshaler.toNative(o.data, flags);
         }
     }
+    public static class AsListMarshaler {
+        @MarshalsPointer
+        public static List<CTFrameClippingPath> toObject(Class<? extends CFType> cls, long handle, long flags) {
+            CFArray o = (CFArray) CFType.Marshaler.toObject(cls, handle, flags);
+            if (o == null) {
+                return null;
+            }
+            List<CTFrameClippingPath> list = new ArrayList<>();
+            for (int i = 0; i < o.size(); i++) {
+                list.add(new CTFrameClippingPath(o.get(i, CFDictionary.class)));
+            }
+            return list;
+        }
+        @MarshalsPointer
+        public static long toNative(List<CTFrameClippingPath> l, long flags) {
+            if (l == null) {
+                return 0L;
+            }
+            CFArray array = CFMutableArray.create();
+            for (CTFrameClippingPath i : l) {
+                array.add(i.getDictionary());
+            }
+            return CFType.Marshaler.toNative(array, flags);
+        }
+    }
+    /*</marshalers>*/
+
+    /*<constructors>*/
+    CTFrameClippingPath(CFDictionary data) {
+        super(data);
+    }
+    public CTFrameClippingPath() {}
+    /*</constructors>*/
+
+    /*<methods>*/
+    public boolean has(CFString key) {
+        return data.containsKey(key);
+    }
+    public <T extends NativeObject> T get(CFString key, Class<T> type) {
+        if (has(key)) {
+            return data.get(key, type);
+        }
+        return null;
+    }
+    public CTFrameClippingPath set(CFString key, NativeObject value) {
+        data.put(key, value);
+        return this;
+    }
     
-    /*<ptr>*/
-    /*</ptr>*/
-    private CFDictionary data;
-    
-    protected CTFrameClippingPath(CFDictionary data) {
-        this.data = data;
-    }
-    public CTFrameClippingPath() {
-        this.data = CFMutableDictionary.create();
-    }
-    public CTFrameClippingPath(CGPath path) {
-        this.data = CFMutableDictionary.create();
-        setPath(path);
-    }
-    /*<bind>*/static { Bro.bind(CTFrameClippingPath.class); }/*</bind>*/
-    /*<constants>*//*</constants>*/
-    /*<constructors>*//*</constructors>*/
-    /*<properties>*//*</properties>*/
-    /*<members>*//*</members>*/
-    protected CFDictionary getDictionary() {
-        return data;
-    }
-    
+
+    /**
+     * @since Available in iOS 4.3 and later.
+     */
     public CGPath getPath() {
-        if (data.containsKey(Path())) {
-            CGPath val = data.get(Path(), CGPath.class);
+        if (has(Keys.Path())) {
+            CGPath val = get(Keys.Path(), CGPath.class);
             return val;
         }
         return null;
     }
-    public CTFrameClippingPath setPath(CGPath path) {
-        data.put(Path(), path);
-        return this;
-    }
-    /*<methods>*/
     /**
      * @since Available in iOS 4.3 and later.
      */
-    @GlobalValue(symbol="kCTFramePathClippingPathAttributeName", optional=true)
-    protected static native CFString Path();
+    public CTFrameClippingPath setPath(CGPath path) {
+        set(Keys.Path(), path);
+        return this;
+    }
     /*</methods>*/
     
-    @Override
-    public String toString() {
-        if (data != null) return data.toString();
-        return super.toString();
+    /*<keys>*/
+    @Library("CoreText")
+    public static class Keys {
+        static { Bro.bind(Keys.class); }
+        /**
+         * @since Available in iOS 4.3 and later.
+         */
+        @GlobalValue(symbol="kCTFramePathClippingPathAttributeName", optional=true)
+        public static native CFString Path();
     }
+    /*</keys>*/
 }

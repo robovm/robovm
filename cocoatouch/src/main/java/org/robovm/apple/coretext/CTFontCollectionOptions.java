@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 Trillian Mobile AB
+ * Copyright (C) 2015 Trillian Mobile AB
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -33,12 +33,13 @@ import org.robovm.apple.coregraphics.*;
 
 /*<javadoc>*/
 /*</javadoc>*/
-@Marshaler(CTFontCollectionOptions.Marshaler.class)
 /*<annotations>*/@Library("CoreText")/*</annotations>*/
+@Marshaler(/*<name>*/CTFontCollectionOptions/*</name>*/.Marshaler.class)
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/CTFontCollectionOptions/*</name>*/ 
-    extends /*<extends>*/Object/*</extends>*/ 
+    extends /*<extends>*/CFDictionaryWrapper/*</extends>*/
     /*<implements>*//*</implements>*/ {
 
+    /*<marshalers>*/
     public static class Marshaler {
         @MarshalsPointer
         public static CTFontCollectionOptions toObject(Class<CTFontCollectionOptions> cls, long handle, long flags) {
@@ -56,32 +57,62 @@ import org.robovm.apple.coregraphics.*;
             return CFType.Marshaler.toNative(o.data, flags);
         }
     }
-    
-    /*<ptr>*/
-    /*</ptr>*/
-    private CFDictionary data;
-    
-    protected CTFontCollectionOptions(CFDictionary data) {
-        this.data = data;
+    public static class AsListMarshaler {
+        @MarshalsPointer
+        public static List<CTFontCollectionOptions> toObject(Class<? extends CFType> cls, long handle, long flags) {
+            CFArray o = (CFArray) CFType.Marshaler.toObject(cls, handle, flags);
+            if (o == null) {
+                return null;
+            }
+            List<CTFontCollectionOptions> list = new ArrayList<>();
+            for (int i = 0; i < o.size(); i++) {
+                list.add(new CTFontCollectionOptions(o.get(i, CFDictionary.class)));
+            }
+            return list;
+        }
+        @MarshalsPointer
+        public static long toNative(List<CTFontCollectionOptions> l, long flags) {
+            if (l == null) {
+                return 0L;
+            }
+            CFArray array = CFMutableArray.create();
+            for (CTFontCollectionOptions i : l) {
+                array.add(i.getDictionary());
+            }
+            return CFType.Marshaler.toNative(array, flags);
+        }
     }
-    public CTFontCollectionOptions() {
-        this.data = CFMutableDictionary.create();
+    /*</marshalers>*/
+
+    /*<constructors>*/
+    CTFontCollectionOptions(CFDictionary data) {
+        super(data);
     }
-    /*<bind>*/static { Bro.bind(CTFontCollectionOptions.class); }/*</bind>*/
-    /*<constants>*//*</constants>*/
-    /*<constructors>*//*</constructors>*/
-    /*<properties>*//*</properties>*/
-    /*<members>*//*</members>*/
-    protected CFDictionary getDictionary() {
-        return data;
+    public CTFontCollectionOptions() {}
+    /*</constructors>*/
+
+    /*<methods>*/
+    public boolean has(CFString key) {
+        return data.containsKey(key);
+    }
+    public <T extends NativeObject> T get(CFString key, Class<T> type) {
+        if (has(key)) {
+            return data.get(key, type);
+        }
+        return null;
+    }
+    public CTFontCollectionOptions set(CFString key, NativeObject value) {
+        data.put(key, value);
+        return this;
     }
     
+
     /**
      * @since Available in iOS 3.2 and later.
      */
-    public boolean isRemovingDuplicates() {
-        if (data.containsKey(RemoveDuplicates())) {
-            CFBoolean val = data.get(RemoveDuplicates(), CFBoolean.class);
+    public boolean removesDuplicates() {
+        if (has(Keys.RemoveDuplicates())) {
+            CFBoolean val = get(Keys.RemoveDuplicates(), CFBoolean.class);
             return val.booleanValue();
         }
         return false;
@@ -89,20 +120,21 @@ import org.robovm.apple.coregraphics.*;
     /**
      * @since Available in iOS 3.2 and later.
      */
-    public CTFontCollectionOptions setRemoveDuplicates(boolean removeDuplicates) {
-        data.put(RemoveDuplicates(), CFBoolean.valueOf(removeDuplicates));
+    public CTFontCollectionOptions setRemovesDuplicates(boolean removesDuplicates) {
+        set(Keys.RemoveDuplicates(), CFBoolean.valueOf(removesDuplicates));
         return this;
     }
-    /*<methods>*/
-    /**
-     * @since Available in iOS 3.2 and later.
-     */
-    @GlobalValue(symbol="kCTFontCollectionRemoveDuplicatesOption", optional=true)
-    protected static native CFString RemoveDuplicates();
     /*</methods>*/
-    @Override
-    public String toString() {
-        if (data != null) return data.toString();
-        return super.toString();
+    
+    /*<keys>*/
+    @Library("CoreText")
+    public static class Keys {
+        static { Bro.bind(Keys.class); }
+        /**
+         * @since Available in iOS 3.2 and later.
+         */
+        @GlobalValue(symbol="kCTFontCollectionRemoveDuplicatesOption", optional=true)
+        public static native CFString RemoveDuplicates();
     }
+    /*</keys>*/
 }

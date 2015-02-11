@@ -1232,12 +1232,12 @@ functions:
         visibility: protected
         return_type: CFPropertyList
         return_marshaler: CFType.NoRetainMarshaler
-        throws: CFErrorException
+        throws: NSErrorException
     CFPropertyListCreateData:
         class: CFPropertyList
         name: asData
         visibility: private
-        throws: CFErrorException
+        throws: NSErrorException
         return_marshaler: CFType.NoRetainMarshaler
         parameters:
             propertyList:
@@ -1245,7 +1245,7 @@ functions:
     CFPropertyList(Write):
         class: CFPropertyList
         name: '#{g[0]}'
-        throws: CFErrorException
+        throws: NSErrorException
         parameters:
             propertyList:
                 type: CFPropertyList
@@ -1595,7 +1595,7 @@ functions:
     CFURLEnumerator(GetNextURL):
         class: CFURLEnumerator
         name: '#{g[0]}'
-        throws: CFErrorException
+        throws: NSErrorException
     CFURLEnumerator(.*):
         class: CFURLEnumerator
         name: '#{g[0]}'
@@ -1623,7 +1623,7 @@ functions:
     CFURL(CreateFile(Reference|Path)URL):
         class: CFURL
         name: '#{g[0]}'
-        throws: CFErrorException
+        throws: NSErrorException
         return_marshaler: CFType.NoRetainMarshaler
     CFURL.*BookmarkData.*:
         exclude: true
@@ -1650,20 +1650,20 @@ functions:
     CFURLCopyResourcePropertyForKey:
         class: CFURL
         name: getResourceValue
-        throws: CFErrorException
+        throws: NSErrorException
     CFURLSetResourcePropertyForKey:
         class: CFURL
         name: setResourceValue
-        throws: CFErrorException
+        throws: NSErrorException
     CFURLCopyResourcePropertiesForKeys:
         class: CFURL
         name: getResourceValues
-        throws: CFErrorException
+        throws: NSErrorException
         return_marshaler: CFType.NoRetainMarshaler
     CFURLSetResourcePropertiesForKeys:
         class: CFURL
         name: setResourceValues
-        throws: CFErrorException
+        throws: NSErrorException
     CFURLSetTemporaryResourcePropertyForKey:
         exclude: true
     CFURLCopy(AbsoluteURL):
@@ -1677,7 +1677,7 @@ functions:
     CFURLResourceIsReachable:
         class: CFURL
         name: isResourceReachable
-        throws: CFErrorException
+        throws: NSErrorException
     CFURL(WriteBookmarkDataToFile):
         class: CFURL
         name: '#{g[0]}'

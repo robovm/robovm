@@ -1824,31 +1824,35 @@ classes:
     AVTextStyleRule: # DONE
         properties:
             'textMarkupAttributes':
-                type: "NSDictionary<NSString, ?>"
+                type: CMTextMarkupAttributes
         methods:
             '-init.*':
                 name: init
                 parameters:
                     textMarkupAttributes:
-                        type: "NSDictionary<NSString, ?>"
+                        type: CMTextMarkupAttributes
             '+propertyListForTextStyleRules:':
                 name: createPropertyList
+                return_type: NSPropertyList
                 parameters:
                     textStyleRules:
                         type: NSArray<AVTextStyleRule>
             '+textStyleRulesFromPropertyList:':
                 name: createTextStyleRulesArray
                 return_type: NSArray<AVTextStyleRule>
+                parameters:
+                    plist:
+                        type: NSPropertyList
             '+textStyleRuleWithTextMarkupAttributes:':
                 name: create
                 parameters:
                     textMarkupAttributes:
-                        type: "NSDictionary<NSString, ?>"
+                        type: CMTextMarkupAttributes
             '+textStyleRuleWithTextMarkupAttributes:textSelector:':
                 name: create
                 parameters:
                     textMarkupAttributes:
-                        type: "NSDictionary<NSString, ?>"
+                        type: CMTextMarkupAttributes
     AVTimedMetadataGroup: # DONE
         properties:
             'items':

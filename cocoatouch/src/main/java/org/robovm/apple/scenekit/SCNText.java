@@ -73,13 +73,13 @@ import org.robovm.apple.opengles.*;
     @Property(selector = "setContainerFrame:")
     public native void setContainerFrame(@ByVal CGRect v);
     @Property(selector = "truncationMode")
-    public native String getTruncationMode();
+    public native CATextTruncationMode getTruncationMode();
     @Property(selector = "setTruncationMode:")
-    public native void setTruncationMode(String v);
+    public native void setTruncationMode(CATextTruncationMode v);
     @Property(selector = "alignmentMode")
-    public native String getAlignmentMode();
+    public native CATextAlignmentMode getAlignmentMode();
     @Property(selector = "setAlignmentMode:")
-    public native void setAlignmentMode(String v);
+    public native void setAlignmentMode(CATextAlignmentMode v);
     @Property(selector = "chamferRadius")
     public native @MachineSizedFloat double getChamferRadius();
     @Property(selector = "setChamferRadius:")

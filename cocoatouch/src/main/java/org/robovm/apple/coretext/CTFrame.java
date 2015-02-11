@@ -46,6 +46,19 @@ import org.robovm.apple.coregraphics.*;
     /*</constructors>*/
     /*<properties>*//*</properties>*/
     /*<members>*//*</members>*/
+    /**
+     * @since Available in iOS 3.2 and later.
+     */
+    public CGPoint[] getLineOrigins(CFRange range) {
+        if (range == null) throw new NullPointerException("range");
+        int size = range.getLength() == 0 ? getLines().size() : (int)range.getLength();
+        if (size == 0) {
+            return new CGPoint[0];
+        }
+        CGPoint array = Struct.allocate(CGPoint.class, size);
+        getLineOrigins(range, array);
+        return array.toArray(size);
+    }
     /*<methods>*/
     /**
      * @since Available in iOS 3.2 and later.
@@ -81,7 +94,7 @@ import org.robovm.apple.coregraphics.*;
      * @since Available in iOS 3.2 and later.
      */
     @Bridge(symbol="CTFrameGetLineOrigins", optional=true)
-    public native void getLineOrigins(@ByVal CFRange range, CGPoint origins);
+    protected native void getLineOrigins(@ByVal CFRange range, CGPoint origins);
     /**
      * @since Available in iOS 3.2 and later.
      */

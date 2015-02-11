@@ -126,87 +126,87 @@ import org.robovm.apple.foundation.*;
     /**
      * @since Available in iOS 4.0 and later.
      */
-    public static @org.robovm.rt.bro.annotation.Marshaler(CFType.NoRetainMarshaler.class) CFURL createFileReferenceURL(CFAllocator allocator, CFURL url) throws CFErrorException {
-       CFError.CFErrorPtr ptr = new CFError.CFErrorPtr();
+    public static @org.robovm.rt.bro.annotation.Marshaler(CFType.NoRetainMarshaler.class) CFURL createFileReferenceURL(CFAllocator allocator, CFURL url) throws NSErrorException {
+       NSError.NSErrorPtr ptr = new NSError.NSErrorPtr();
        CFURL result = createFileReferenceURL(allocator, url, ptr);
-       if (ptr.get() != null) { throw new CFErrorException(ptr.get()); }
+       if (ptr.get() != null) { throw new NSErrorException(ptr.get()); }
        return result;
     }
     /**
      * @since Available in iOS 4.0 and later.
      */
     @Bridge(symbol="CFURLCreateFileReferenceURL", optional=true)
-    private static native @org.robovm.rt.bro.annotation.Marshaler(CFType.NoRetainMarshaler.class) CFURL createFileReferenceURL(CFAllocator allocator, CFURL url, CFError.CFErrorPtr error);
+    private static native @org.robovm.rt.bro.annotation.Marshaler(CFType.NoRetainMarshaler.class) CFURL createFileReferenceURL(CFAllocator allocator, CFURL url, NSError.NSErrorPtr error);
     /**
      * @since Available in iOS 4.0 and later.
      */
-    public static @org.robovm.rt.bro.annotation.Marshaler(CFType.NoRetainMarshaler.class) CFURL createFilePathURL(CFAllocator allocator, CFURL url) throws CFErrorException {
-       CFError.CFErrorPtr ptr = new CFError.CFErrorPtr();
+    public static @org.robovm.rt.bro.annotation.Marshaler(CFType.NoRetainMarshaler.class) CFURL createFilePathURL(CFAllocator allocator, CFURL url) throws NSErrorException {
+       NSError.NSErrorPtr ptr = new NSError.NSErrorPtr();
        CFURL result = createFilePathURL(allocator, url, ptr);
-       if (ptr.get() != null) { throw new CFErrorException(ptr.get()); }
+       if (ptr.get() != null) { throw new NSErrorException(ptr.get()); }
        return result;
     }
     /**
      * @since Available in iOS 4.0 and later.
      */
     @Bridge(symbol="CFURLCreateFilePathURL", optional=true)
-    private static native @org.robovm.rt.bro.annotation.Marshaler(CFType.NoRetainMarshaler.class) CFURL createFilePathURL(CFAllocator allocator, CFURL url, CFError.CFErrorPtr error);
+    private static native @org.robovm.rt.bro.annotation.Marshaler(CFType.NoRetainMarshaler.class) CFURL createFilePathURL(CFAllocator allocator, CFURL url, NSError.NSErrorPtr error);
     /**
      * @since Available in iOS 4.0 and later.
      */
-    public boolean getResourceValue(String key, VoidPtr propertyValueTypeRefPtr) throws CFErrorException {
-       CFError.CFErrorPtr ptr = new CFError.CFErrorPtr();
+    public boolean getResourceValue(String key, VoidPtr propertyValueTypeRefPtr) throws NSErrorException {
+       NSError.NSErrorPtr ptr = new NSError.NSErrorPtr();
        boolean result = getResourceValue(key, propertyValueTypeRefPtr, ptr);
-       if (ptr.get() != null) { throw new CFErrorException(ptr.get()); }
+       if (ptr.get() != null) { throw new NSErrorException(ptr.get()); }
        return result;
     }
     /**
      * @since Available in iOS 4.0 and later.
      */
     @Bridge(symbol="CFURLCopyResourcePropertyForKey", optional=true)
-    private native boolean getResourceValue(String key, VoidPtr propertyValueTypeRefPtr, CFError.CFErrorPtr error);
+    private native boolean getResourceValue(String key, VoidPtr propertyValueTypeRefPtr, NSError.NSErrorPtr error);
     /**
      * @since Available in iOS 4.0 and later.
      */
-    public @org.robovm.rt.bro.annotation.Marshaler(CFType.NoRetainMarshaler.class) CFDictionary getResourceValues(CFArray keys) throws CFErrorException {
-       CFError.CFErrorPtr ptr = new CFError.CFErrorPtr();
+    public @org.robovm.rt.bro.annotation.Marshaler(CFType.NoRetainMarshaler.class) CFDictionary getResourceValues(CFArray keys) throws NSErrorException {
+       NSError.NSErrorPtr ptr = new NSError.NSErrorPtr();
        CFDictionary result = getResourceValues(keys, ptr);
-       if (ptr.get() != null) { throw new CFErrorException(ptr.get()); }
+       if (ptr.get() != null) { throw new NSErrorException(ptr.get()); }
        return result;
     }
     /**
      * @since Available in iOS 4.0 and later.
      */
     @Bridge(symbol="CFURLCopyResourcePropertiesForKeys", optional=true)
-    private native @org.robovm.rt.bro.annotation.Marshaler(CFType.NoRetainMarshaler.class) CFDictionary getResourceValues(CFArray keys, CFError.CFErrorPtr error);
+    private native @org.robovm.rt.bro.annotation.Marshaler(CFType.NoRetainMarshaler.class) CFDictionary getResourceValues(CFArray keys, NSError.NSErrorPtr error);
     /**
      * @since Available in iOS 4.0 and later.
      */
-    public boolean setResourceValue(String key, CFType propertyValue) throws CFErrorException {
-       CFError.CFErrorPtr ptr = new CFError.CFErrorPtr();
+    public boolean setResourceValue(String key, CFType propertyValue) throws NSErrorException {
+       NSError.NSErrorPtr ptr = new NSError.NSErrorPtr();
        boolean result = setResourceValue(key, propertyValue, ptr);
-       if (ptr.get() != null) { throw new CFErrorException(ptr.get()); }
+       if (ptr.get() != null) { throw new NSErrorException(ptr.get()); }
        return result;
     }
     /**
      * @since Available in iOS 4.0 and later.
      */
     @Bridge(symbol="CFURLSetResourcePropertyForKey", optional=true)
-    private native boolean setResourceValue(String key, CFType propertyValue, CFError.CFErrorPtr error);
+    private native boolean setResourceValue(String key, CFType propertyValue, NSError.NSErrorPtr error);
     /**
      * @since Available in iOS 4.0 and later.
      */
-    public boolean setResourceValues(CFDictionary keyedPropertyValues) throws CFErrorException {
-       CFError.CFErrorPtr ptr = new CFError.CFErrorPtr();
+    public boolean setResourceValues(CFDictionary keyedPropertyValues) throws NSErrorException {
+       NSError.NSErrorPtr ptr = new NSError.NSErrorPtr();
        boolean result = setResourceValues(keyedPropertyValues, ptr);
-       if (ptr.get() != null) { throw new CFErrorException(ptr.get()); }
+       if (ptr.get() != null) { throw new NSErrorException(ptr.get()); }
        return result;
     }
     /**
      * @since Available in iOS 4.0 and later.
      */
     @Bridge(symbol="CFURLSetResourcePropertiesForKeys", optional=true)
-    private native boolean setResourceValues(CFDictionary keyedPropertyValues, CFError.CFErrorPtr error);
+    private native boolean setResourceValues(CFDictionary keyedPropertyValues, NSError.NSErrorPtr error);
     /**
      * @since Available in iOS 4.0 and later.
      */
@@ -220,17 +220,17 @@ import org.robovm.apple.foundation.*;
     /**
      * @since Available in iOS 4.0 and later.
      */
-    public boolean isResourceReachable() throws CFErrorException {
-       CFError.CFErrorPtr ptr = new CFError.CFErrorPtr();
+    public boolean isResourceReachable() throws NSErrorException {
+       NSError.NSErrorPtr ptr = new NSError.NSErrorPtr();
        boolean result = isResourceReachable(ptr);
-       if (ptr.get() != null) { throw new CFErrorException(ptr.get()); }
+       if (ptr.get() != null) { throw new NSErrorException(ptr.get()); }
        return result;
     }
     /**
      * @since Available in iOS 4.0 and later.
      */
     @Bridge(symbol="CFURLResourceIsReachable", optional=true)
-    private native boolean isResourceReachable(CFError.CFErrorPtr error);
+    private native boolean isResourceReachable(NSError.NSErrorPtr error);
     /**
      * @since Available in iOS 8.0 and later.
      */

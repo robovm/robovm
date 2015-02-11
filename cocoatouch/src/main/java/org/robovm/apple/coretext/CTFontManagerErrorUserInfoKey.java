@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.robovm.apple.scenekit;
+package org.robovm.apple.coretext;
 
 /*<imports>*/
 import java.io.*;
@@ -27,37 +27,32 @@ import org.robovm.rt.bro.*;
 import org.robovm.rt.bro.annotation.*;
 import org.robovm.rt.bro.ptr.*;
 import org.robovm.apple.foundation.*;
-import org.robovm.apple.uikit.*;
-import org.robovm.apple.coreanimation.*;
+import org.robovm.apple.corefoundation.*;
 import org.robovm.apple.coregraphics.*;
-import org.robovm.apple.dispatch.*;
-import org.robovm.apple.glkit.*;
-import org.robovm.apple.spritekit.*;
-import org.robovm.apple.opengles.*;
 /*</imports>*/
 
 /*<javadoc>*/
 /*</javadoc>*/
-/*<annotations>*/@Library("SceneKit")/*</annotations>*/
-@Marshaler(/*<name>*/SCNErrorUserInfoKey/*</name>*/.Marshaler.class)
-/*<visibility>*/public/*</visibility>*/ class /*<name>*/SCNErrorUserInfoKey/*</name>*/ 
+/*<annotations>*/@Library("CoreText")/*</annotations>*/
+@Marshaler(/*<name>*/CTFontManagerErrorUserInfoKey/*</name>*/.Marshaler.class)
+/*<visibility>*/public/*</visibility>*/ class /*<name>*/CTFontManagerErrorUserInfoKey/*</name>*/ 
     extends /*<extends>*/NSErrorUserInfoKey/*</extends>*/
     /*<implements>*//*</implements>*/ {
 
-    static { Bro.bind(/*<name>*/SCNErrorUserInfoKey/*</name>*/.class); }
+    static { Bro.bind(/*<name>*/CTFontManagerErrorUserInfoKey/*</name>*/.class); }
 
     /*<marshalers>*/
     public static class Marshaler {
         @MarshalsPointer
-        public static SCNErrorUserInfoKey toObject(Class<SCNErrorUserInfoKey> cls, long handle, long flags) {
+        public static CTFontManagerErrorUserInfoKey toObject(Class<CTFontManagerErrorUserInfoKey> cls, long handle, long flags) {
             NSString o = (NSString) NSObject.Marshaler.toObject(NSString.class, handle, flags);
             if (o == null) {
                 return null;
             }
-            return SCNErrorUserInfoKey.valueOf(o);
+            return CTFontManagerErrorUserInfoKey.valueOf(o);
         }
         @MarshalsPointer
-        public static long toNative(SCNErrorUserInfoKey o, long flags) {
+        public static long toNative(CTFontManagerErrorUserInfoKey o, long flags) {
             if (o == null) {
                 return 0L;
             }
@@ -67,24 +62,24 @@ import org.robovm.apple.opengles.*;
     public static class AsListMarshaler {
         @SuppressWarnings("unchecked")
         @MarshalsPointer
-        public static List<SCNErrorUserInfoKey> toObject(Class<? extends NSObject> cls, long handle, long flags) {
+        public static List<CTFontManagerErrorUserInfoKey> toObject(Class<? extends NSObject> cls, long handle, long flags) {
             NSArray<NSString> o = (NSArray<NSString>) NSObject.Marshaler.toObject(cls, handle, flags);
             if (o == null) {
                 return null;
             }
-            List<SCNErrorUserInfoKey> list = new ArrayList<>();
+            List<CTFontManagerErrorUserInfoKey> list = new ArrayList<>();
             for (int i = 0; i < o.size(); i++) {
-                list.add(SCNErrorUserInfoKey.valueOf(o.get(i)));
+                list.add(CTFontManagerErrorUserInfoKey.valueOf(o.get(i)));
             }
             return list;
         }
         @MarshalsPointer
-        public static long toNative(List<SCNErrorUserInfoKey> l, long flags) {
+        public static long toNative(List<CTFontManagerErrorUserInfoKey> l, long flags) {
             if (l == null) {
                 return 0L;
             }
             NSArray<NSString> array = new NSMutableArray<>();
-            for (SCNErrorUserInfoKey i : l) {
+            for (CTFontManagerErrorUserInfoKey i : l) {
                 array.add(i.value());
             }
             return NSObject.Marshaler.toNative(array, flags);
@@ -93,34 +88,40 @@ import org.robovm.apple.opengles.*;
     /*</marshalers>*/
 
     /*<constants>*/
-    public static final SCNErrorUserInfoKey DetailedErrors = new SCNErrorUserInfoKey("DetailedErrors");
+    /**
+     * @since Available in iOS 3.2 and later.
+     */
+    public static final CTFontManagerErrorUserInfoKey FontURLs = new CTFontManagerErrorUserInfoKey("FontURLs");
     /*</constants>*/
     
-    private static /*<name>*/SCNErrorUserInfoKey/*</name>*/[] values = new /*<name>*/SCNErrorUserInfoKey/*</name>*/[] {/*<value_list>*/DetailedErrors/*</value_list>*/};
+    private static /*<name>*/CTFontManagerErrorUserInfoKey/*</name>*/[] values = new /*<name>*/CTFontManagerErrorUserInfoKey/*</name>*/[] {/*<value_list>*/FontURLs/*</value_list>*/};
     
-    /*<name>*/SCNErrorUserInfoKey/*</name>*/ (String getterName) {
+    /*<name>*/CTFontManagerErrorUserInfoKey/*</name>*/ (String getterName) {
         super(Values.class, getterName);
     }
     
-    public static /*<name>*/SCNErrorUserInfoKey/*</name>*/ valueOf(/*<type>*/NSString/*</type>*/ value) {
-        for (/*<name>*/SCNErrorUserInfoKey/*</name>*/ v : values) {
+    public static /*<name>*/CTFontManagerErrorUserInfoKey/*</name>*/ valueOf(/*<type>*/NSString/*</type>*/ value) {
+        for (/*<name>*/CTFontManagerErrorUserInfoKey/*</name>*/ v : values) {
             if (v.value().equals(value)) {
                 return v;
             }
         }
         throw new IllegalArgumentException("No constant with value " + value + " found in " 
-            + /*<name>*/SCNErrorUserInfoKey/*</name>*/.class.getName());
+            + /*<name>*/CTFontManagerErrorUserInfoKey/*</name>*/.class.getName());
     }
     
     /*<methods>*//*</methods>*/
     
-    /*<annotations>*/@Library("SceneKit")/*</annotations>*/
+    /*<annotations>*/@Library("CoreText")/*</annotations>*/
     public static class Values {
     	static { Bro.bind(Values.class); }
 
         /*<values>*/
-        @GlobalValue(symbol="SCNDetailedErrorsKey", optional=true)
-        public static native NSString DetailedErrors();
+        /**
+         * @since Available in iOS 3.2 and later.
+         */
+        @GlobalValue(symbol="kCTFontManagerErrorFontURLsKey", optional=true)
+        public static native NSString FontURLs();
         /*</values>*/
     }
 }

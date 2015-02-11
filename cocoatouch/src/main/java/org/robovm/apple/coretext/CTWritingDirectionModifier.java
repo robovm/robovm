@@ -34,27 +34,11 @@ import org.robovm.apple.coregraphics.*;
 /*<javadoc>*/
 
 /*</javadoc>*/
-/*<annotations>*/@Marshaler(ValuedEnum.AsMachineSizedUIntMarshaler.class)/*</annotations>*/
-public enum /*<name>*/CTParagraphStyleSpecifier/*</name>*/ implements ValuedEnum {
+/*<annotations>*//*</annotations>*/
+public enum /*<name>*/CTWritingDirectionModifier/*</name>*/ implements ValuedEnum {
     /*<values>*/
-    Alignment(0L),
-    FirstLineHeadIndent(1L),
-    HeadIndent(2L),
-    TailIndent(3L),
-    TabStops(4L),
-    DefaultTabInterval(5L),
-    LineBreakMode(6L),
-    LineHeightMultiple(7L),
-    MaximumLineHeight(8L),
-    MinimumLineHeight(9L),
-    LineSpacing(10L),
-    ParagraphSpacing(11L),
-    ParagraphSpacingBefore(12L),
-    BaseWritingDirection(13L),
-    MaximumLineSpacing(14L),
-    MinimumLineSpacing(15L),
-    LineSpacingAdjustment(16L),
-    LineBoundsOptions(17L);
+    Embedding(0L),
+    Override(2L);
     /*</values>*/
 
     /*<bind>*/
@@ -64,15 +48,15 @@ public enum /*<name>*/CTParagraphStyleSpecifier/*</name>*/ implements ValuedEnum
 
     private final long n;
 
-    private /*<name>*/CTParagraphStyleSpecifier/*</name>*/(long n) { this.n = n; }
+    private /*<name>*/CTWritingDirectionModifier/*</name>*/(long n) { this.n = n; }
     public long value() { return n; }
-    public static /*<name>*/CTParagraphStyleSpecifier/*</name>*/ valueOf(long n) {
-        for (/*<name>*/CTParagraphStyleSpecifier/*</name>*/ v : values()) {
+    public static /*<name>*/CTWritingDirectionModifier/*</name>*/ valueOf(long n) {
+        for (/*<name>*/CTWritingDirectionModifier/*</name>*/ v : values()) {
             if (v.n == n) {
                 return v;
             }
         }
         throw new IllegalArgumentException("No constant with value " + n + " found in " 
-            + /*<name>*/CTParagraphStyleSpecifier/*</name>*/.class.getName());
+            + /*<name>*/CTWritingDirectionModifier/*</name>*/.class.getName());
     }
 }

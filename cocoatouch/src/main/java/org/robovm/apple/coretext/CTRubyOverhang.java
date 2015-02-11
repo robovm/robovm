@@ -32,29 +32,18 @@ import org.robovm.apple.coregraphics.*;
 /*</imports>*/
 
 /*<javadoc>*/
-
+/**
+ * @since Available in iOS 8.0 and later.
+ */
 /*</javadoc>*/
-/*<annotations>*/@Marshaler(ValuedEnum.AsMachineSizedUIntMarshaler.class)/*</annotations>*/
-public enum /*<name>*/CTParagraphStyleSpecifier/*</name>*/ implements ValuedEnum {
+/*<annotations>*//*</annotations>*/
+public enum /*<name>*/CTRubyOverhang/*</name>*/ implements ValuedEnum {
     /*<values>*/
-    Alignment(0L),
-    FirstLineHeadIndent(1L),
-    HeadIndent(2L),
-    TailIndent(3L),
-    TabStops(4L),
-    DefaultTabInterval(5L),
-    LineBreakMode(6L),
-    LineHeightMultiple(7L),
-    MaximumLineHeight(8L),
-    MinimumLineHeight(9L),
-    LineSpacing(10L),
-    ParagraphSpacing(11L),
-    ParagraphSpacingBefore(12L),
-    BaseWritingDirection(13L),
-    MaximumLineSpacing(14L),
-    MinimumLineSpacing(15L),
-    LineSpacingAdjustment(16L),
-    LineBoundsOptions(17L);
+    Invalid(-1L),
+    Auto(0L),
+    Start(1L),
+    End(2L),
+    None(3L);
     /*</values>*/
 
     /*<bind>*/
@@ -64,15 +53,15 @@ public enum /*<name>*/CTParagraphStyleSpecifier/*</name>*/ implements ValuedEnum
 
     private final long n;
 
-    private /*<name>*/CTParagraphStyleSpecifier/*</name>*/(long n) { this.n = n; }
+    private /*<name>*/CTRubyOverhang/*</name>*/(long n) { this.n = n; }
     public long value() { return n; }
-    public static /*<name>*/CTParagraphStyleSpecifier/*</name>*/ valueOf(long n) {
-        for (/*<name>*/CTParagraphStyleSpecifier/*</name>*/ v : values()) {
+    public static /*<name>*/CTRubyOverhang/*</name>*/ valueOf(long n) {
+        for (/*<name>*/CTRubyOverhang/*</name>*/ v : values()) {
             if (v.n == n) {
                 return v;
             }
         }
         throw new IllegalArgumentException("No constant with value " + n + " found in " 
-            + /*<name>*/CTParagraphStyleSpecifier/*</name>*/.class.getName());
+            + /*<name>*/CTRubyOverhang/*</name>*/.class.getName());
     }
 }

@@ -218,9 +218,9 @@ classes:
             'string':
                 type: NSAttributedString
             'truncationMode':
-                type: String # CATruncationMode TODO
+                type: CATextTruncationMode
             'alignmentMode':
-                type: String # CAAlignmentMode TODO
+                type: CATextAlignmentMode
         methods:
             '+textWithString:extrusionDepth:':
                 name: create
@@ -778,7 +778,7 @@ protocols:
     SCNTechniqueSupport: {} # DONE
 
 functions:
-    SCNExportJavaScriptModule: {exclude: true} # TODO
+    SCNExportJavaScriptModule: {exclude: true} # TODO when JavascriptCore is bound
     
     SCNVector3EqualToVector3:
         class: SCNVector3
@@ -887,7 +887,8 @@ values:
         name: '#{g[0]}Value'
         type: NSString
         visibility: protected
-    SCNSceneExportDestinationURL: { exclude: true } # TODO
+    SCNSceneExportDestinationURL: # not available on iOS
+        exclude: true
 
     # SCNSceneRenderer
     SCNHitTest(.*Key):

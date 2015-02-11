@@ -30,6 +30,8 @@ import org.robovm.apple.foundation.*;
 import org.robovm.apple.corefoundation.*;
 import org.robovm.apple.coregraphics.*;
 /*</imports>*/
+import org.robovm.apple.uikit.NSAttributedStringAttributes;
+import org.robovm.apple.coremedia.CMTextMarkupAttributes;
 
 /*<javadoc>*/
 /*</javadoc>*/
@@ -46,6 +48,16 @@ import org.robovm.apple.coregraphics.*;
     /*</constructors>*/
     /*<properties>*//*</properties>*/
     /*<members>*//*</members>*/
+    public NSAttributedStringAttributes getAttributes() {
+        return new NSAttributedStringAttributes(getAttributesDictionary());
+    }
+    public CMTextMarkupAttributes getTextMarkupAttributes() {
+        return new CMTextMarkupAttributes(getAttributesDictionary().as(CFDictionary.class));
+    }
+    public CTAttributedStringAttributes getCoreTextAttributes() {
+        return new CTAttributedStringAttributes(getAttributesDictionary().as(CFDictionary.class));
+    }
+    
     /**
      * @since Available in iOS 3.2 and later.
      */
@@ -123,7 +135,7 @@ import org.robovm.apple.coregraphics.*;
      * @since Available in iOS 3.2 and later.
      */
     @Bridge(symbol="CTRunGetAttributes", optional=true)
-    public native CFDictionary getAttributes();
+    public native NSDictionary<NSString, NSObject> getAttributesDictionary();
     /**
      * @since Available in iOS 3.2 and later.
      */

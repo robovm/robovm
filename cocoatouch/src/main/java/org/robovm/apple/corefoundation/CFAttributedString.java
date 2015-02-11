@@ -19,6 +19,7 @@ package org.robovm.apple.corefoundation;
 import java.io.*;
 import java.nio.*;
 import java.util.*;
+
 import org.robovm.objc.*;
 import org.robovm.objc.annotation.*;
 import org.robovm.objc.block.*;
@@ -31,6 +32,8 @@ import org.robovm.apple.foundation.*;
 /*</imports>*/
 import org.robovm.apple.coremedia.CMTextMarkupAttribute;
 import org.robovm.apple.coremedia.CMTextMarkupAttributes;
+import org.robovm.apple.coretext.CTAttributedStringAttribute;
+import org.robovm.apple.coretext.CTAttributedStringAttributes;
 import org.robovm.apple.uikit.NSAttributedStringAttribute;
 import org.robovm.apple.uikit.NSAttributedStringAttributes;
 
@@ -61,11 +64,20 @@ import org.robovm.apple.uikit.NSAttributedStringAttributes;
     public static CFAttributedString create(CFAllocator alloc, String str, CMTextMarkupAttributes attributes) {
         return create(null, str, attributes.getDictionary());
     }
+    public static CFAttributedString create(String str, CTAttributedStringAttributes attributes) {
+        return create(null, str, attributes);
+    }
+    public static CFAttributedString create(CFAllocator alloc, String str, CTAttributedStringAttributes attributes) {
+        return create(null, str, attributes.getDictionary());
+    }
 
     public CFType getAttribute(long loc, NSAttributedStringAttribute attrName, CFRange effectiveRange) {
         return getAttribute(loc, attrName.value().as(CFString.class), effectiveRange);
     }
     public CFType getAttribute(long loc, CMTextMarkupAttribute attrName, CFRange effectiveRange) {
+        return getAttribute(loc, attrName.value(), effectiveRange);
+    }
+    public CFType getAttribute(long loc, CTAttributedStringAttribute attrName, CFRange effectiveRange) {
         return getAttribute(loc, attrName.value(), effectiveRange);
     }
     
@@ -74,6 +86,9 @@ import org.robovm.apple.uikit.NSAttributedStringAttributes;
     }
     public CMTextMarkupAttributes getTextMarkupAttributes(long loc, CFRange effectiveRange) {
         return new CMTextMarkupAttributes(getAttributesDictionary(loc, effectiveRange));
+    }
+    public CTAttributedStringAttributes getCoreTextAttributes(long loc, CFRange effectiveRange) {
+        return new CTAttributedStringAttributes(getAttributesDictionary(loc, effectiveRange));
     }
     /*<methods>*/
     @Bridge(symbol="CFAttributedStringGetTypeID", optional=true)

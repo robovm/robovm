@@ -56,12 +56,12 @@ import org.robovm.apple.coregraphics.*;
      * @since Available in iOS 3.2 and later.
      */
     @Bridge(symbol="CTFramesetterCreateWithAttributedString", optional=true)
-    public static native CTFramesetter create(NSAttributedString string);
+    public static native @org.robovm.rt.bro.annotation.Marshaler(CFType.NoRetainMarshaler.class) CTFramesetter create(NSAttributedString string);
     /**
      * @since Available in iOS 3.2 and later.
      */
     @Bridge(symbol="CTFramesetterCreateFrame", optional=true)
-    public native CTFrame createFrame(@ByVal CFRange stringRange, CGPath path, CTFrameAttributes frameAttributes);
+    public native @org.robovm.rt.bro.annotation.Marshaler(CFType.NoRetainMarshaler.class) CTFrame createFrame(@ByVal CFRange stringRange, CGPath path, CTFrameAttributes frameAttributes);
     /**
      * @since Available in iOS 3.2 and later.
      */

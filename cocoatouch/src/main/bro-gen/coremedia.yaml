@@ -209,7 +209,7 @@ functions:
         parameters:
             formatDescriptionArray:
                 type: List<CMAudioFormatDescription>
-                marshaler: CFArray.AsListMarshaler
+                marshaler: CFType.AsListMarshaler
     CMAudioFormatDescription(GetChannelLayout|GetFormatList|GetMagicCookie):
         class: CMAudioFormatDescription
         name: '#{g[0]}'

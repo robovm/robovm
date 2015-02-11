@@ -237,7 +237,7 @@ functions:
         class: ABMultiValue
         name: getAllValues
         return_type: List<CFType>
-        return_marshaler: CFArray.AsListMarshaler
+        return_marshaler: CFType.AsListMarshaler
     ABMultiValueCopyLabelAtIndex:
         class: ABMultiValue
         name: getLabel

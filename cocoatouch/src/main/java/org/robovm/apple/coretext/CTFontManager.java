@@ -19,7 +19,6 @@ package org.robovm.apple.coretext;
 import java.io.*;
 import java.nio.*;
 import java.util.*;
-
 import org.robovm.objc.*;
 import org.robovm.objc.annotation.*;
 import org.robovm.objc.block.*;
@@ -95,7 +94,7 @@ import org.robovm.apple.coregraphics.*;
      * @since Available in iOS 7.0 and later.
      */
     @Bridge(symbol="CTFontManagerCreateFontDescriptorsFromURL", optional=true)
-    public static native @org.robovm.rt.bro.annotation.Marshaler(CFArray.AsListMarshaler.class) List<CTFontDescriptor> createFontDescriptors(NSURL fileURL);
+    public static native @org.robovm.rt.bro.annotation.Marshaler(CTFontDescriptor.AsListMarshaler.class) List<CTFontDescriptor> createFontDescriptors(NSURL fileURL);
     /**
      * @since Available in iOS 7.0 and later.
      */

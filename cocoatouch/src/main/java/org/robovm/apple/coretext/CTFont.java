@@ -397,6 +397,6 @@ import org.robovm.apple.coregraphics.*;
      * @since Available in iOS 6.0 and later.
      */
     @Bridge(symbol="CTFontCopyDefaultCascadeListForLanguages", optional=true)
-    public native @org.robovm.rt.bro.annotation.Marshaler(CFArray.AsListMarshaler.class) List<CTFontDescriptor> getDefaultCascadeList(@org.robovm.rt.bro.annotation.Marshaler(CFArray.AsStringListMarshaler.class) List<String> languagePrefList);
+    public native @org.robovm.rt.bro.annotation.Marshaler(CTFontDescriptor.AsListMarshaler.class) List<CTFontDescriptor> getDefaultCascadeList(@org.robovm.rt.bro.annotation.Marshaler(CFArray.AsStringListMarshaler.class) List<String> languagePrefList);
     /*</methods>*/
 }

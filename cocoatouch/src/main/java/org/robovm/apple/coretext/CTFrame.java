@@ -89,7 +89,7 @@ import org.robovm.apple.coregraphics.*;
      * @since Available in iOS 3.2 and later.
      */
     @Bridge(symbol="CTFrameGetLines", optional=true)
-    public native @org.robovm.rt.bro.annotation.Marshaler(CFArray.AsListMarshaler.class) List<CTLine> getLines();
+    public native @org.robovm.rt.bro.annotation.Marshaler(CTLine.AsListMarshaler.class) List<CTLine> getLines();
     /**
      * @since Available in iOS 3.2 and later.
      */

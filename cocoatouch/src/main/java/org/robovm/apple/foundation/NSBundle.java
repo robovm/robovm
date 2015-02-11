@@ -159,33 +159,6 @@ import org.robovm.apple.dispatch.*;
     /*</properties>*/
     /*<members>*//*</members>*/
     
-    /* NSErrorException */
-    /**
-     * @since Available in iOS 2.0 and later.
-     * @throws NSErrorException
-     */
-    public boolean preflight() throws NSErrorException {
-        NSError.NSErrorPtr err = new NSError.NSErrorPtr();
-        boolean result = preflight(err);
-        if (err.get() != null) {
-            throw new NSErrorException(err.get());
-        }
-        return result;
-    }
-    /**
-     * @since Available in iOS 2.0 and later.
-     * @throws NSErrorException
-     */
-    public boolean load() throws NSErrorException {
-        NSError.NSErrorPtr err = new NSError.NSErrorPtr();
-        boolean result = load(err);
-        if (err.get() != null) {
-            throw new NSErrorException(err.get());
-        }
-        return result;
-    }
-    
-    
     /* UIKit extensions */
     public NSArray<?> loadNib(String name, NSObject owner, UINibLoadingOptions options) {
         return NSBundleExtensions.loadNib(this, name, owner, options);
@@ -207,13 +180,31 @@ import org.robovm.apple.dispatch.*;
     /**
      * @since Available in iOS 2.0 and later.
      */
+    public boolean preflight() throws NSErrorException {
+       NSError.NSErrorPtr ptr = new NSError.NSErrorPtr();
+       boolean result = preflight(ptr);
+       if (ptr.get() != null) { throw new NSErrorException(ptr.get()); }
+       return result;
+    }
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
     @Method(selector = "preflightAndReturnError:")
-    protected native boolean preflight(NSError.NSErrorPtr error);
+    private native boolean preflight(NSError.NSErrorPtr error);
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
+    public boolean load() throws NSErrorException {
+       NSError.NSErrorPtr ptr = new NSError.NSErrorPtr();
+       boolean result = load(ptr);
+       if (ptr.get() != null) { throw new NSErrorException(ptr.get()); }
+       return result;
+    }
     /**
      * @since Available in iOS 2.0 and later.
      */
     @Method(selector = "loadAndReturnError:")
-    protected native boolean load(NSError.NSErrorPtr error);
+    private native boolean load(NSError.NSErrorPtr error);
     /**
      * @since Available in iOS 4.0 and later.
      */
@@ -225,37 +216,37 @@ import org.robovm.apple.dispatch.*;
      * @since Available in iOS 4.0 and later.
      */
     @Method(selector = "URLForResource:withExtension:")
-    public native NSURL findResourceURLInSubPath(String name, String ext);
+    public native NSURL findResourceURL(String name, String ext);
     /**
      * @since Available in iOS 4.0 and later.
      */
     @Method(selector = "URLForResource:withExtension:subdirectory:")
-    public native NSURL findResourceURLInSubPath(String name, String ext, String subpath);
+    public native NSURL findResourceURL(String name, String ext, String subpath);
     /**
      * @since Available in iOS 4.0 and later.
      */
     @Method(selector = "URLForResource:withExtension:subdirectory:localization:")
-    public native NSURL findResourceURLInSubPath(String name, String ext, String subpath, String localizationName);
+    public native NSURL findResourceURL(String name, String ext, String subpath, String localizationName);
     /**
      * @since Available in iOS 4.0 and later.
      */
     @Method(selector = "URLsForResourcesWithExtension:subdirectory:")
-    public native NSArray<NSURL> findResourceURLsInSubPath(String ext, String subpath);
+    public native NSArray<NSURL> findResourceURLs(String ext, String subpath);
     /**
      * @since Available in iOS 4.0 and later.
      */
     @Method(selector = "URLsForResourcesWithExtension:subdirectory:localization:")
-    public native NSArray<NSURL> findResourceURLsInSubPath(String ext, String subpath, String localizationName);
+    public native NSArray<NSURL> findResourceURLs(String ext, String subpath, String localizationName);
     @Method(selector = "pathForResource:ofType:")
     public native String findResourcePath(String name, String ext);
     @Method(selector = "pathForResource:ofType:inDirectory:")
-    public native String findResourcePathInSubPath(String name, String ext, String subpath);
+    public native String findResourcePath(String name, String ext, String subpath);
     @Method(selector = "pathForResource:ofType:inDirectory:forLocalization:")
-    public native String findResourcePathInSubPath(String name, String ext, String subpath, String localizationName);
+    public native String findResourcePath(String name, String ext, String subpath, String localizationName);
     @Method(selector = "pathsForResourcesOfType:inDirectory:")
-    public native @org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String> findResourcesPathsInSubPath(String ext, String subpath);
+    public native @org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String> findResourcesPaths(String ext, String subpath);
     @Method(selector = "pathsForResourcesOfType:inDirectory:forLocalization:")
-    public native @org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String> findResourcesPathsInSubPath(String ext, String subpath, String localizationName);
+    public native @org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String> findResourcesPaths(String ext, String subpath, String localizationName);
     @Method(selector = "localizedStringForKey:value:table:")
     public native String getLocalizedString(String key, String value, String tableName);
     @Method(selector = "objectForInfoDictionaryKey:")
@@ -276,16 +267,16 @@ import org.robovm.apple.dispatch.*;
      * @since Available in iOS 4.0 and later.
      */
     @Method(selector = "URLForResource:withExtension:subdirectory:inBundleWithURL:")
-    public static native NSURL findResourceURLInBundleURL(String name, String ext, String subpath, NSURL bundleURL);
+    public static native NSURL findResourceURLInBundle(String name, String ext, String subpath, NSURL bundleURL);
     /**
      * @since Available in iOS 4.0 and later.
      */
     @Method(selector = "URLsForResourcesWithExtension:subdirectory:inBundleWithURL:")
-    public static native @org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String> findResourceURLsInBundleURL(String ext, String subpath, NSURL bundleURL);
+    public static native @org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String> findResourceURLsInBundle(String ext, String subpath, NSURL bundleURL);
     @Method(selector = "pathForResource:ofType:inDirectory:")
-    public static native String findResourcePathInBundlePath(String name, String ext, String bundlePath);
+    public static native String findResourcePathInBundle(String name, String ext, String bundlePath);
     @Method(selector = "pathsForResourcesOfType:inDirectory:")
-    public static native @org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String> findResourcesPathsInBundlePath(String ext, String bundlePath);
+    public static native @org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String> findResourcesPathsInBundle(String ext, String bundlePath);
     @Method(selector = "preferredLocalizationsFromArray:")
     public static native @org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String> getPreferredLocalizations(@org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String> localizationsArray);
     @Method(selector = "preferredLocalizationsFromArray:forPreferences:")

@@ -78,6 +78,30 @@ import org.robovm.apple.foundation.*;
         }
     }
     
+    public static class AsListMarshaler {
+        @MarshalsPointer
+        public static List<?> toObject(Class<? extends CFType> cls, long handle, long flags) {
+            CFArray o = (CFArray) CFType.Marshaler.toObject(cls, handle, flags);
+            if (o == null) {
+                return null;
+            }
+            return o.toList(CFType.class);
+        }
+        @MarshalsPointer
+        public static long toNative(List<? extends CFType> l, long flags) {
+            if (l == null) {
+                return 0L;
+            }
+            CFArray o = null;
+            if (l instanceof CFArray) {
+                o = (CFArray) l;
+            } else {
+                o = CFArray.create((List<? extends CFType>) l);
+            }
+            return CFType.Marshaler.toNative(o, flags);
+        }
+    }
+    
     /**
      * Marshaler used for create and copy methods which have already retained
      * the object they return.

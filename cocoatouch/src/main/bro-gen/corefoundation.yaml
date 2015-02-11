@@ -657,12 +657,12 @@ functions:
         class: CFBundle
         name: '#{g[0]}'
         return_type: List<CFBundle>
-        return_marshaler: CFArray.AsListMarshaler
+        return_marshaler: CFBundle.AsListMarshaler
     CFBundle(CreateBundlesFromDirectory):
         class: CFBundle
         name: '#{g[0]}'
         return_type: List<CFBundle>
-        return_marshaler: CFArray.AsListMarshaler
+        return_marshaler: CFBundle.AsListMarshaler
     CFBundle(Create):
         class: CFBundle
         name: '#{g[0]}'

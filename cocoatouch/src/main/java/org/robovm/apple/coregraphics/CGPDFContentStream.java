@@ -19,6 +19,7 @@ package org.robovm.apple.coregraphics;
 import java.io.*;
 import java.nio.*;
 import java.util.*;
+
 import org.robovm.objc.*;
 import org.robovm.objc.annotation.*;
 import org.robovm.objc.block.*;
@@ -38,6 +39,30 @@ import org.robovm.apple.uikit.*;
     extends /*<extends>*/NativeObject/*</extends>*/ 
     /*<implements>*//*</implements>*/ {
 
+    public static class AsListMarshaler {
+        @MarshalsPointer
+        public static List<?> toObject(Class<? extends CFType> cls, long handle, long flags) {
+            CFArray o = (CFArray) CFType.Marshaler.toObject(cls, handle, flags);
+            if (o == null) {
+                return null;
+            }
+            return o.toList(CGPDFContentStream.class);
+        }
+        @MarshalsPointer
+        public static long toNative(List<CGPDFContentStream> l, long flags) {
+            if (l == null) {
+                return 0L;
+            }
+            CFArray o = null;
+            if (l instanceof CFArray) {
+                o = (CFArray) l;
+            } else {
+                o = CFArray.create((List<CGPDFContentStream>) l);
+            }
+            return CFType.Marshaler.toNative(o, flags);
+        }
+    }
+    
     /*<ptr>*/public static class CGPDFContentStreamPtr extends Ptr<CGPDFContentStream, CGPDFContentStreamPtr> {}/*</ptr>*/
     /*<bind>*/static { Bro.bind(CGPDFContentStream.class); }/*</bind>*/
     /*<constants>*//*</constants>*/
@@ -61,7 +86,7 @@ import org.robovm.apple.uikit.*;
      * @since Available in iOS 2.0 and later.
      */
     @Bridge(symbol="CGPDFContentStreamGetStreams", optional=true)
-    public native @org.robovm.rt.bro.annotation.Marshaler(CFArray.AsListMarshaler.class) List<CGPDFObject> getStreams();
+    public native @org.robovm.rt.bro.annotation.Marshaler(CGPDFContentStream.AsListMarshaler.class) List<CGPDFContentStream> getStreams();
     /**
      * @since Available in iOS 2.0 and later.
      */

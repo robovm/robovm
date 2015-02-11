@@ -40,6 +40,30 @@ import org.robovm.apple.coremedia.CMTextMarkupAttributes;
     extends /*<extends>*/CFType/*</extends>*/ 
     /*<implements>*//*</implements>*/ {
 
+    public static class AsListMarshaler {
+        @MarshalsPointer
+        public static List<?> toObject(Class<? extends CFType> cls, long handle, long flags) {
+            CFArray o = (CFArray) CFType.Marshaler.toObject(cls, handle, flags);
+            if (o == null) {
+                return null;
+            }
+            return o.toList(CTRun.class);
+        }
+        @MarshalsPointer
+        public static long toNative(List<? extends CFType> l, long flags) {
+            if (l == null) {
+                return 0L;
+            }
+            CFArray o = null;
+            if (l instanceof CFArray) {
+                o = (CFArray) l;
+            } else {
+                o = CFArray.create((List<? extends CFType>) l);
+            }
+            return CFType.Marshaler.toNative(o, flags);
+        }
+    }
+    
     /*<ptr>*/public static class CTRunPtr extends Ptr<CTRun, CTRunPtr> {}/*</ptr>*/
     /*<bind>*/static { Bro.bind(CTRun.class); }/*</bind>*/
     /*<constants>*//*</constants>*/

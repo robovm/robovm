@@ -122,7 +122,7 @@ import org.robovm.apple.audiotoolbox.*;
     /**
      * @since Available in iOS 4.0 and later.
      */
-    public static CMAudioFormatDescription createSummary(@org.robovm.rt.bro.annotation.Marshaler(CFArray.AsListMarshaler.class) List<CMAudioFormatDescription> formatDescriptionArray) {
+    public static CMAudioFormatDescription createSummary(List<CMAudioFormatDescription> formatDescriptionArray) {
         CMAudioFormatDescriptionPtr ptr = new CMAudioFormatDescriptionPtr();
         createSummary(null, formatDescriptionArray, 0, ptr);
         return ptr.get();
@@ -182,7 +182,7 @@ import org.robovm.apple.audiotoolbox.*;
      * @since Available in iOS 4.0 and later.
      */
     @Bridge(symbol="CMAudioFormatDescriptionCreateSummary", optional=true)
-    private static native int createSummary(CFAllocator allocator, @org.robovm.rt.bro.annotation.Marshaler(CFArray.AsListMarshaler.class) List<CMAudioFormatDescription> formatDescriptionArray, int flags, CMAudioFormatDescription.CMAudioFormatDescriptionPtr summaryFormatDescriptionOut);
+    private static native int createSummary(CFAllocator allocator, @org.robovm.rt.bro.annotation.Marshaler(CFType.AsListMarshaler.class) List<CMAudioFormatDescription> formatDescriptionArray, int flags, CMAudioFormatDescription.CMAudioFormatDescriptionPtr summaryFormatDescriptionOut);
     /**
      * @since Available in iOS 4.0 and later.
      */

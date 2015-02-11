@@ -18,12 +18,15 @@ package org.robovm.llvm;
 
 import java.io.File;
 import java.io.UnsupportedEncodingException;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.robovm.llvm.binding.LLVM;
 import org.robovm.llvm.binding.MemoryBufferRef;
 import org.robovm.llvm.binding.ModuleRef;
 import org.robovm.llvm.binding.ModuleRefOut;
 import org.robovm.llvm.binding.StringOut;
+import org.robovm.llvm.binding.ValueRef;
 
 /**
  * 
@@ -58,6 +61,19 @@ public class Module implements AutoCloseable {
 
     public Type getTypeByName(String name) {
         return new Type(LLVM.GetTypeByName(getRef(), name));
+    }
+
+    public Function getFunctionByName(String name) {
+        ValueRef fref = LLVM.GetNamedFunction(getRef(), name);
+        return fref != null ? new Function(fref) : null;
+    }
+    
+    public Function[] getFunctions() {
+        List<Function> result = new ArrayList<>();
+        for (ValueRef fref = LLVM.GetFirstFunction(getRef()); fref != null; fref = LLVM.GetNextFunction(fref)) {
+            result.add(new Function(fref));
+        }
+        return result.toArray(new Function[result.size()]);
     }
     
     public void writeBitcode(File file) {
@@ -121,8 +137,17 @@ public class Module implements AutoCloseable {
         StringOut errorMessage = new StringOut();
         // LLVMParseIRInContext() takes ownership of the MemoryBuffer so there's no need for us
         // to dispose of it
-        if (!LLVM.ParseIRInContext(context.ref, memoryBufferRef, moduleRefOut, errorMessage)) {
+        if (!LLVM.ParseIRInContext(context.getRef(), memoryBufferRef, moduleRefOut, errorMessage)) {
             return new Module(moduleRefOut.getValue());
+        }
+        throw new LlvmException(errorMessage.getValue().trim());
+    }
+
+    public static Module parseClangString(Context context, String buffer, String fileName, String triple) {
+        StringOut errorMessage = new StringOut();
+        ModuleRef ref = LLVM.ClangCompileFile(context.getRef(), buffer, fileName, triple, errorMessage);
+        if (ref != null) {
+            return new Module(ref);
         }
         throw new LlvmException(errorMessage.getValue().trim());
     }

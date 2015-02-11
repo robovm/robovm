@@ -16,7 +16,12 @@
  */
 package org.robovm.llvm;
 
+import static org.junit.Assert.*;
+
 import java.io.File;
+import java.util.Iterator;
+import java.util.Set;
+import java.util.TreeSet;
 
 import org.junit.Test;
 
@@ -46,6 +51,27 @@ public class ModuleTest {
                     passManager.run(m);
                     m.writeBitcode(new File("/tmp/test.bc"));
                 }
+            }
+        }
+    }
+    
+    @Test
+    public void testParseClangFile() throws Exception {
+        String c = 
+                "extern void printf(const char*, ...);\n" +
+                "int main() {\n" +
+                "    printf(\"Hello world!\");\n" +
+                "}\n";
+        try (Context context = new Context()) {
+            try (Module m = Module.parseClangString(context, c, "test.c", "arm64-unknown-ios")) {
+                Set<String> functionNames = new TreeSet<>();
+                for (Function f : m.getFunctions()) {
+                    functionNames.add(f.getName());
+                }
+                assertEquals(2, functionNames.size());
+                Iterator<String> it = functionNames.iterator();
+                assertEquals("main", it.next());
+                assertEquals("printf", it.next());
             }
         }
     }

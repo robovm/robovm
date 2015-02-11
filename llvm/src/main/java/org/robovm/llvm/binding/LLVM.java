@@ -1469,20 +1469,20 @@ public class LLVM implements LLVMConstants {
     LLVMJNI.SetGC(ValueRef.getCPtr(Fn), Name);
   }
 
-  public static void AddFunctionAttr(ValueRef Fn, Attribute PA) {
-    LLVMJNI.AddFunctionAttr(ValueRef.getCPtr(Fn), PA.swigValue());
+  public static void AddFunctionAttr(ValueRef Fn, int PA) {
+    LLVMJNI.AddFunctionAttr(ValueRef.getCPtr(Fn), PA);
   }
 
   public static void AddTargetDependentFunctionAttr(ValueRef Fn, String A, String V) {
     LLVMJNI.AddTargetDependentFunctionAttr(ValueRef.getCPtr(Fn), A, V);
   }
 
-  public static Attribute GetFunctionAttr(ValueRef Fn) {
-    return Attribute.swigToEnum(LLVMJNI.GetFunctionAttr(ValueRef.getCPtr(Fn)));
+  public static int GetFunctionAttr(ValueRef Fn) {
+    return LLVMJNI.GetFunctionAttr(ValueRef.getCPtr(Fn));
   }
 
-  public static void RemoveFunctionAttr(ValueRef Fn, Attribute PA) {
-    LLVMJNI.RemoveFunctionAttr(ValueRef.getCPtr(Fn), PA.swigValue());
+  public static void RemoveFunctionAttr(ValueRef Fn, int PA) {
+    LLVMJNI.RemoveFunctionAttr(ValueRef.getCPtr(Fn), PA);
   }
 
   public static int CountParams(ValueRef Fn) {
@@ -1523,16 +1523,16 @@ public class LLVM implements LLVMConstants {
     return (cPtr == 0) ? null : new ValueRef(cPtr, false);
   }
 
-  public static void AddAttribute(ValueRef Arg, Attribute PA) {
-    LLVMJNI.AddAttribute(ValueRef.getCPtr(Arg), PA.swigValue());
+  public static void AddAttribute(ValueRef Arg, int PA) {
+    LLVMJNI.AddAttribute(ValueRef.getCPtr(Arg), PA);
   }
 
-  public static void RemoveAttribute(ValueRef Arg, Attribute PA) {
-    LLVMJNI.RemoveAttribute(ValueRef.getCPtr(Arg), PA.swigValue());
+  public static void RemoveAttribute(ValueRef Arg, int PA) {
+    LLVMJNI.RemoveAttribute(ValueRef.getCPtr(Arg), PA);
   }
 
-  public static Attribute GetAttribute(ValueRef Arg) {
-    return Attribute.swigToEnum(LLVMJNI.GetAttribute(ValueRef.getCPtr(Arg)));
+  public static int GetAttribute(ValueRef Arg) {
+    return LLVMJNI.GetAttribute(ValueRef.getCPtr(Arg));
   }
 
   public static void SetParamAlignment(ValueRef Arg, int align) {
@@ -1731,12 +1731,12 @@ public class LLVM implements LLVMConstants {
     return LLVMJNI.GetInstructionCallConv(ValueRef.getCPtr(Instr));
   }
 
-  public static void AddInstrAttribute(ValueRef Instr, int index, Attribute arg2) {
-    LLVMJNI.AddInstrAttribute(ValueRef.getCPtr(Instr), index, arg2.swigValue());
+  public static void AddInstrAttribute(ValueRef Instr, int index, int arg2) {
+    LLVMJNI.AddInstrAttribute(ValueRef.getCPtr(Instr), index, arg2);
   }
 
-  public static void RemoveInstrAttribute(ValueRef Instr, int index, Attribute arg2) {
-    LLVMJNI.RemoveInstrAttribute(ValueRef.getCPtr(Instr), index, arg2.swigValue());
+  public static void RemoveInstrAttribute(ValueRef Instr, int index, int arg2) {
+    LLVMJNI.RemoveInstrAttribute(ValueRef.getCPtr(Instr), index, arg2);
   }
 
   public static void SetInstrParamAlignment(ValueRef Instr, int index, int align) {
@@ -3095,6 +3095,10 @@ public class LLVM implements LLVMConstants {
     LLVMJNI.AddAnalysisPasses(TargetMachineRef.getCPtr(T), PassManagerRef.getCPtr(PM));
   }
 
+  public static boolean LinkModules(ModuleRef Dest, ModuleRef Src, int Unused, StringOut OutMessage) {
+    return LLVMJNI.LinkModules(ModuleRef.getCPtr(Dest), ModuleRef.getCPtr(Src), Unused, StringOut.getCPtr(OutMessage), OutMessage);
+  }
+
   public static String getLlvmHostTriple() {
     return LLVMJNI.llvmHostTriple_get();
   }
@@ -3315,6 +3319,11 @@ public class LLVM implements LLVMConstants {
 
   public static long CopySectionContents(SectionIteratorRef SI, byte[] Dest) {
     return LLVMJNI.CopySectionContents(SectionIteratorRef.getCPtr(SI), Dest);
+  }
+
+  public static ModuleRef ClangCompileFile(ContextRef Context, String Data, String FileName, String Triple, StringOut ErrorMessage) {
+    long cPtr = LLVMJNI.ClangCompileFile(ContextRef.getCPtr(Context), Data, FileName, Triple, StringOut.getCPtr(ErrorMessage), ErrorMessage);
+    return (cPtr == 0) ? null : new ModuleRef(cPtr, false);
   }
 
 }

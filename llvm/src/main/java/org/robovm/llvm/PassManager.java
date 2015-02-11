@@ -240,7 +240,7 @@ public class PassManager implements AutoCloseable {
     
     public void run(Module module) {
         checkDisposed();
-        LLVM.RunPassManager(ref, module.ref);
+        LLVM.RunPassManager(ref, module.getRef());
     }
 
     @Override

@@ -22,36 +22,34 @@ import static org.robovm.compiler.Types.*;
 import static org.robovm.compiler.llvm.Type.*;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
+import java.util.TreeMap;
 
 import org.robovm.compiler.Bro.MarshalerFlags;
 import org.robovm.compiler.MarshalerLookup.MarshalSite;
 import org.robovm.compiler.MarshalerLookup.MarshalerMethod;
 import org.robovm.compiler.MarshalerLookup.PointerMarshalerMethod;
-import org.robovm.compiler.config.Arch;
 import org.robovm.compiler.config.Config;
-import org.robovm.compiler.config.OS;
 import org.robovm.compiler.llvm.Alias;
 import org.robovm.compiler.llvm.BasicBlockRef;
-import org.robovm.compiler.llvm.Bitcast;
-import org.robovm.compiler.llvm.BooleanConstant;
 import org.robovm.compiler.llvm.ConstantBitcast;
 import org.robovm.compiler.llvm.DataLayout;
 import org.robovm.compiler.llvm.Function;
+import org.robovm.compiler.llvm.FunctionDeclaration;
 import org.robovm.compiler.llvm.FunctionRef;
 import org.robovm.compiler.llvm.FunctionType;
 import org.robovm.compiler.llvm.IntegerConstant;
 import org.robovm.compiler.llvm.Label;
 import org.robovm.compiler.llvm.Linkage;
-import org.robovm.compiler.llvm.ParameterAttribute;
-import org.robovm.compiler.llvm.PointerType;
 import org.robovm.compiler.llvm.PrimitiveType;
 import org.robovm.compiler.llvm.Ret;
 import org.robovm.compiler.llvm.StructureType;
 import org.robovm.compiler.llvm.Type;
 import org.robovm.compiler.llvm.Unreachable;
 import org.robovm.compiler.llvm.Value;
-import org.robovm.compiler.llvm.Variable;
 import org.robovm.compiler.trampoline.Invokestatic;
 
 import soot.SootMethod;
@@ -71,54 +69,110 @@ public class CallbackMethodCompiler extends BroMethodCompiler {
         return compileCallback(moduleBuilder, method);
     }
     
-    private Function callback(SootMethod method) {
-        return FunctionBuilder.callback(method, getCallbackFunctionType(method));
+    protected FunctionRef getCallbackCWrapperRef(SootMethod method, String name) {
+        return new FunctionRef(name, getCallbackFunctionType(method));
     }
+    
+    protected static String createCallbackCWrapper(FunctionType functionType, String name, String innerName) {
+        // We order structs by name in reverse order. The names are constructed
+        // such that nested structs get names which are naturally ordered after
+        // their parent struct.
+        Map<String, String> structs = new TreeMap<String, String>(Collections.reverseOrder());
+        
+        StringBuilder hiSignature = new StringBuilder();
+        hiSignature
+            .append(getHiType(functionType.getReturnType()))
+            .append(' ')
+            .append(innerName)
+            .append('(');
 
-    private Function callback(SootMethod method, Type returnType) {
-        FunctionType ft = getCallbackFunctionType(method);
-        return FunctionBuilder.callback(method, new FunctionType(returnType, ft.isVarargs(), ft.getParameterTypes()));
+        StringBuilder loSignature = new StringBuilder();
+        String loReturnType = getLoType(functionType.getReturnType(), name, 0, structs);
+        loSignature
+            .append(loReturnType)
+            .append(' ')
+            .append(name)
+            .append('(');
+        
+        StringBuilder body = new StringBuilder(" {\n");
+        StringBuilder args = new StringBuilder();
+        
+        for (int i = 0; i < functionType.getParameterTypes().length; i++) {
+            String arg = "p" + i;
+            if (i > 0) {
+                hiSignature.append(", ");
+                loSignature.append(", ");
+                args.append(", ");
+            }
+
+            String hiParamType = getHiType(functionType.getParameterTypes()[i]);
+            hiSignature.append(hiParamType);
+
+            String loParamType = getLoType(functionType.getParameterTypes()[i], name, i + 1, structs);
+            loSignature.append(loParamType).append(' ').append(arg);
+
+            if (functionType.getParameterTypes()[i] instanceof StructureType) {
+                args.append("(void*) &").append(arg);
+            } else {
+                args.append(arg);
+            }
+        }
+        if (functionType.getParameterTypes().length == 0) {
+            hiSignature.append("void");
+            loSignature.append("void");
+        }
+        hiSignature.append(')');
+        loSignature.append(')');
+        
+        StringBuilder header = new StringBuilder();
+        for (Entry<String, String> struct : structs.entrySet()) {
+            header.append("struct " + struct.getKey() + " " + struct.getValue() + ";\n");
+        }
+        header.append(hiSignature + ";\n");
+        
+        if (functionType.getReturnType() instanceof StructureType) {
+            body.append("    return *((" + loReturnType + "*) " + innerName + "(" + args + "));\n");
+        } else if (functionType.getReturnType() != Type.VOID) {
+            body.append("    return " + innerName + "(" + args + ");\n");
+        } else {
+            body.append("    " + innerName + "(" + args + ");\n");
+        }
+        body.append("}\n");
+
+        return header.toString() + loSignature.toString() + body.toString();
     }
     
     private Function compileCallback(ModuleBuilder moduleBuilder, SootMethod method) {
-        DataLayout dataLayout = config.getDataLayout();
-        SootMethod originalMethod = method;
-        boolean passByValue = isPassByValue(originalMethod);
-        if (passByValue) {
-            // The method returns a struct by value. Determine whether that struct
-            // is small enough to be passed in a register or has to be returned
-            // using a @StructRet parameter.
-            
-            Arch arch = config.getArch();
-            OS os = config.getOs();
-            int size = dataLayout.getAllocSize(getStructType(originalMethod.getReturnType()));
-            if (!os.isReturnedInRegisters(arch, size)) {
-                method = createFakeStructRetMethod(method);
-            }
-        }
         
-        Function callbackFn = callback(method);
-        if (originalMethod != method) {
-            callbackFn.setParameterAttributes(0, ParameterAttribute.sret);
-        } else if (passByValue) {
-            OS os = config.getOs();
-            Arch arch = config.getArch();
-            if (os.returnSmallAggregateAsInteger(arch, dataLayout.getAllocSize(callbackFn.getType().getReturnType()))) {
-                // Returns a small struct. We need to change the return type to
-                // i8/i16/i32/i64.
-                int size = dataLayout.getAllocSize(callbackFn.getType().getReturnType());
-                Type t = size <= 1 ? I8 : (size <= 2 ? I16 : (size <= 4 ? I32 : I64));
-                callbackFn = callback(method, t);
+        // The C wrapper is the function which is called by native code. It
+        // handles structs passed/returned by value. It calls an LLVM function 
+        // which has the same signature but all structs passed/returned by value
+        // replaced by pointers (i8*).
+        FunctionRef callbackCWrapperRef = getCallbackCWrapperRef(method, Symbols.callbackCSymbol(method));
+        getCWrapperFunctions().add(createCallbackCWrapper(callbackCWrapperRef.getType(), 
+                callbackCWrapperRef.getName(), Symbols.callbackInnerCSymbol(method)));
+        moduleBuilder.addFunctionDeclaration(new FunctionDeclaration(callbackCWrapperRef));
+        Type callbackRetType = callbackCWrapperRef.getType().getReturnType() instanceof StructureType 
+                ? I8_PTR : callbackCWrapperRef.getType().getReturnType();
+        Type[] callbackParamTypes = new Type[callbackCWrapperRef.getType().getParameterTypes().length];
+        for (int i = 0; i < callbackParamTypes.length; i++) {
+            Type t = callbackCWrapperRef.getType().getParameterTypes()[i];
+            if (t instanceof StructureType) {
+                t = I8_PTR;
             }
+            callbackParamTypes[i] = t;
         }
-        moduleBuilder.addFunction(callbackFn);
-        moduleBuilder.addAlias(new Alias(Symbols.callbackPtrSymbol(originalMethod), 
-                Linkage._private, new ConstantBitcast(callbackFn.ref(), I8_PTR)));
+        Function callbackFn = new FunctionBuilder(Symbols.callbackInnerCSymbol(method), 
+                new FunctionType(callbackRetType, callbackParamTypes)).build();
 
-        String targetName = originalMethod.isSynchronized() 
-                ? Symbols.synchronizedWrapperSymbol(originalMethod) 
-                : Symbols.methodSymbol(originalMethod);
-        FunctionRef targetFn = new FunctionRef(targetName, getFunctionType(originalMethod));
+        moduleBuilder.addFunction(callbackFn);
+        moduleBuilder.addAlias(new Alias(Symbols.callbackPtrSymbol(method), 
+                Linkage._private, new ConstantBitcast(callbackCWrapperRef, I8_PTR)));
+
+        String targetName = method.isSynchronized() 
+                ? Symbols.synchronizedWrapperSymbol(method) 
+                : Symbols.methodSymbol(method);
+        FunctionRef targetFn = new FunctionRef(targetName, getFunctionType(method));
         
         // Increase the attach count for the current thread (attaches the thread
         // if not attached)
@@ -135,34 +189,24 @@ public class CallbackMethodCompiler extends BroMethodCompiler {
         ArrayList<Value> args = new ArrayList<Value>();
         args.add(env);
         
-        int receiverIdx = -1;
         if (!method.isStatic()) {
             MarshalerMethod marshalerMethod = config.getMarshalerLookup().findMarshalerMethod(new MarshalSite(method, MarshalSite.RECEIVER));
             MarshaledArg marshaledArg = new MarshaledArg();
             marshaledArg.paramIndex = MarshalSite.RECEIVER;
             marshaledArgs.add(marshaledArg);
-            // The receiver is either at index 0 or 1 in args depending on whether this method returns
-            // a large struct by value or not.
-            receiverIdx = method == originalMethod ? 0 : 1;
-            Value arg = callbackFn.getParameterRef(receiverIdx);
-            String targetClassName = getInternalName(originalMethod.getDeclaringClass());
+            Value arg = callbackFn.getParameterRef(0);
+            String targetClassName = getInternalName(method.getDeclaringClass());
             arg = marshalNativeToObject(callbackFn, marshalerMethod, marshaledArg, env, targetClassName, arg,
                     MarshalerFlags.CALL_TYPE_CALLBACK);
             args.add(arg);
         }
         
-        // Skip the first parameter if we're returning a large struct by value.
-        int start = originalMethod == method ? 0 : 1;
-        
-        for (int i = start, argIdx = start; i < method.getParameterCount(); i++, argIdx++) {
-            if (argIdx == receiverIdx) {
+        for (int i = 0, argIdx = 0; i < method.getParameterCount(); i++, argIdx++) {
+            if (!method.isStatic() && argIdx == 0) {
                 argIdx++;
             }
             Value arg = callbackFn.getParameterRef(argIdx);
             soot.Type type = method.getParameterType(i);
-            if (isPassByValue(method, i) && arg.getType() instanceof PointerType) {
-                callbackFn.setParameterAttributes(argIdx, ParameterAttribute.byval);
-            }
             
             if (needsMarshaler(type)) {
                 MarshalerMethod marshalerMethod = config.getMarshalerLookup().findMarshalerMethod(new MarshalSite(method, i));
@@ -175,8 +219,19 @@ public class CallbackMethodCompiler extends BroMethodCompiler {
                     MarshaledArg marshaledArg = new MarshaledArg();
                     marshaledArg.paramIndex = i;
                     marshaledArgs.add(marshaledArg);
-                    arg = marshalNativeToObject(callbackFn, marshalerMethod, marshaledArg, env, targetClassName, arg,
-                            MarshalerFlags.CALL_TYPE_CALLBACK);
+                    
+                    Type nativeType = callbackCWrapperRef.getType().getParameterTypes()[argIdx];
+                    if (nativeType instanceof StructureType) {
+                        // Struct passed by value on the stack. Make a heap copy of the data and marshal that.
+                        DataLayout dataLayout = config.getDataLayout();
+                        Value heapCopy = call(callbackFn, BC_COPY_STRUCT, env, arg, 
+                                new IntegerConstant(dataLayout.getAllocSize(nativeType)));
+                        arg = marshalNativeToObject(callbackFn, marshalerMethod, marshaledArg, env, targetClassName, heapCopy,
+                                MarshalerFlags.CALL_TYPE_CALLBACK);
+                    } else {
+                        arg = marshalNativeToObject(callbackFn, marshalerMethod, marshaledArg, env, targetClassName, arg,
+                                MarshalerFlags.CALL_TYPE_CALLBACK);
+                    }
                 }
             } else {
                 arg = marshalNativeToPrimitive(callbackFn, method, i, arg);
@@ -195,35 +250,13 @@ public class CallbackMethodCompiler extends BroMethodCompiler {
             MarshalerMethod marshalerMethod = config.getMarshalerLookup().findMarshalerMethod(new MarshalSite(method));
             Type nativeType = callbackFn.getType().getReturnType();
             
-            if (passByValue) {
-                // Small struct.
-                result = marshalObjectToNative(callbackFn, marshalerMethod, null, nativeType, env, result, 
-                        MarshalerFlags.CALL_TYPE_CALLBACK, true);
-            } else if (nativeType instanceof PrimitiveType) {
+            if (nativeType instanceof PrimitiveType) {
                 result = marshalValueObjectToNative(callbackFn, marshalerMethod, nativeType, env, result,
                         MarshalerFlags.CALL_TYPE_CALLBACK);
             } else {
                 result = marshalObjectToNative(callbackFn, marshalerMethod, null, nativeType, env, result,
                         MarshalerFlags.CALL_TYPE_CALLBACK);
             }
-        } else if (originalMethod != method) {
-            // The original method returns a large struct by value. The callback
-            // function takes a struct allocated on the stack by the caller as
-            // it's first parameter. We need to copy the struct which the Java
-            // method returned to the struct passed in by the caller.
-            MarshalerMethod marshalerMethod = config.getMarshalerLookup().findMarshalerMethod(new MarshalSite(originalMethod));
-            PointerType nativeType = (PointerType) callbackFn.getType().getParameterTypes()[0];
-            Value addr = marshalObjectToNative(callbackFn, marshalerMethod, null, nativeType, env, result,
-                    MarshalerFlags.CALL_TYPE_CALLBACK);
-            Variable src = callbackFn.newVariable(I8_PTR);
-            Variable dest = callbackFn.newVariable(I8_PTR);
-            callbackFn.add(new Bitcast(src, addr, I8_PTR));
-            callbackFn.add(new Bitcast(dest, callbackFn.getParameterRef(0), I8_PTR));
-            call(callbackFn, LLVM_MEMCPY, dest.ref(), src.ref(), 
-                    sizeof((StructureType) nativeType.getBase()), new IntegerConstant(0), BooleanConstant.FALSE);
-            
-            // Make sure the callback returns void.
-            result = null;
         } else {
             result = marshalPrimitiveToNative(callbackFn, method, result);
         }

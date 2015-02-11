@@ -70,7 +70,7 @@ public class CallbackMethodCompiler extends BroMethodCompiler {
     }
     
     protected FunctionRef getCallbackCWrapperRef(SootMethod method, String name) {
-        return new FunctionRef(name, getCallbackFunctionType(method));
+        return new FunctionRef(name, getCallbackFunctionType(method, false));
     }
     
     protected static String createCallbackCWrapper(FunctionType functionType, String name, String innerName) {

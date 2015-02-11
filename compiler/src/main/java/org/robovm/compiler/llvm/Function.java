@@ -169,7 +169,7 @@ public class Function {
         writer.write(name);
         writer.write("\"(");
         for (int i = 0; i < parameterTypes.length; i++) {
-            if (type.isVarargs() || i > 0) {
+            if (i > 0) {
                 writer.write(", ");
             }
             writer.write(parameterTypes[i].toString());
@@ -183,7 +183,7 @@ public class Function {
             writer.write(parameterNames[i]);
         }
         if (type.isVarargs()) {
-            writer.write("...");
+            writer.write(", ...");
         }
         writer.write(")");
         if (attributes != null && attributes.length > 0) {

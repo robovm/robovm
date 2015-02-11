@@ -24,6 +24,7 @@ import static org.robovm.compiler.llvm.Linkage.*;
 import static org.robovm.compiler.llvm.Type.*;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
@@ -93,6 +94,24 @@ public class BridgeMethodCompiler extends BroMethodCompiler {
                         + method + " must be static and take a @Pointer long as first parameter");
             }
         }
+        if (hasVariadicAnnotation(method)) {
+            int first = getVariadicParameterIndex(method);
+            if (first < 0) {
+                throw new IllegalArgumentException("Invalid @Variadic index on @Bridge annotated method " 
+                        + method + ". Index must be 0 or greater.");
+            }
+            if (method.isStatic() && first == 0) {
+                throw new IllegalArgumentException("At least 1 parameter must come " 
+                        + "before the first va_arg parameter on static @Bridge annotated method " 
+                        + method);
+            }
+            for (int i = first; i < method.getParameterCount(); i++) {
+                if (isPassByValue(method, i)) {
+                    throw new IllegalArgumentException("Parameter " + (i + 1) + " of @Bridge annotated method " 
+                        + method + " cannot be passed @ByVal when part of a va_arg parameter list");
+                }
+            }
+        }
     }
 
     protected static FunctionRef getBridgeCWrapperRef(FunctionType functionType, String name) {
@@ -110,17 +129,32 @@ public class BridgeMethodCompiler extends BroMethodCompiler {
                 wrapperParamTypes.add(t);
             }
         }
-        return new FunctionRef(name, new FunctionType(wrapperReturnType, 
-                wrapperParamTypes.toArray(new Type[wrapperParamTypes.size()])));
+        FunctionType wrapperFnType = new FunctionType(wrapperReturnType, functionType.isVarargs(),
+                wrapperParamTypes.toArray(new Type[wrapperParamTypes.size()]));
+        return new FunctionRef(name, wrapperFnType);
     }
-    protected static String createBridgeCWrapper(FunctionType functionType, String name) {
+    protected static String createBridgeCWrapper(Type returnType, Type[] hiParameterTypes, Type[] loParameterTypes, String name) {
+        if (hiParameterTypes.length != loParameterTypes.length) {
+            // Varargs
+            if (hiParameterTypes.length < loParameterTypes.length) {
+                throw new IllegalArgumentException("For va_arg functions lo's types parameter types must be a prefix of the hi type's parameters");
+            }
+            if (!Arrays.asList(hiParameterTypes).subList(0, loParameterTypes.length).equals(Arrays.asList(loParameterTypes))) {
+                throw new IllegalArgumentException("For va_arg functions lo's types parameter types must be a prefix of the hi type's parameters");
+            }
+        } else {
+            if (!Arrays.equals(hiParameterTypes, loParameterTypes)) {
+                throw new IllegalArgumentException("hi and lo parameter types must be equal");
+            }
+        }
+        
         // We order structs by name in reverse order. The names are constructed
         // such that nested structs get names which are naturally ordered after
         // their parent struct.
         Map<String, String> structs = new TreeMap<String, String>(Collections.reverseOrder());
         
-        String hiReturnType = functionType.getReturnType() instanceof StructureType 
-                ? "void" : getHiType(functionType.getReturnType());
+        String hiReturnType = returnType instanceof StructureType 
+                ? "void" : getHiType(returnType);
 
         StringBuilder hiSignature = new StringBuilder();
         hiSignature
@@ -128,12 +162,12 @@ public class BridgeMethodCompiler extends BroMethodCompiler {
             .append(' ')
             .append(name)
             .append("(void* target");
-        if (functionType.getReturnType() instanceof StructureType) {
+        if (returnType instanceof StructureType) {
             hiSignature.append(", void* ret");
         }
 
         StringBuilder loSignature = new StringBuilder();
-        String loReturnType = getLoType(functionType.getReturnType(), name, 0, structs);
+        String loReturnType = getLoType(returnType, name, 0, structs);
         loSignature
             .append(loReturnType)
             .append(' ')
@@ -142,32 +176,37 @@ public class BridgeMethodCompiler extends BroMethodCompiler {
         StringBuilder body = new StringBuilder(" {\n");
         StringBuilder args = new StringBuilder();
         
-        for (int i = 0; i < functionType.getParameterTypes().length; i++) {
+        for (int i = 0; i < hiParameterTypes.length; i++) {
             String arg = "p" + i;
-
-            String hiParamType = getHiType(functionType.getParameterTypes()[i]);
-            hiSignature.append(", ");
-            hiSignature.append(hiParamType).append(' ').append(arg);
-
-            String loParamType = getLoType(functionType.getParameterTypes()[i], name, i + 1, structs);
-            if (i > 0) {
-                loSignature.append(", ");
-            }
-            loSignature.append(loParamType);
-
             if (i > 0) {
                 args.append(", ");
             }
 
-            if (functionType.getParameterTypes()[i] instanceof StructureType) {
-                args.append("*((").append(loParamType).append("*)").append(arg).append(')');
+            String hiParamType = getHiType(hiParameterTypes[i]);
+            hiSignature.append(", ");
+            hiSignature.append(hiParamType).append(' ').append(arg);
+
+            if (i < loParameterTypes.length) {
+                String loParamType = getLoType(hiParameterTypes[i], name, i + 1, structs);
+                if (i > 0) {
+                    loSignature.append(", ");
+                }
+                loSignature.append(loParamType);
+    
+                if (hiParameterTypes[i] instanceof StructureType) {
+                    args.append("*((").append(loParamType).append("*)").append(arg).append(')');
+                } else {
+                    args.append(arg);
+                }
             } else {
                 args.append(arg);
             }
         }
         hiSignature.append(')');
-        if (functionType.getParameterTypes().length == 0) {
+        if (loParameterTypes.length == 0) {
             loSignature.append("void");
+        } else if (loParameterTypes.length < hiParameterTypes.length) {
+            loSignature.append(", ...");
         }
         loSignature.append(')');
         
@@ -175,9 +214,9 @@ public class BridgeMethodCompiler extends BroMethodCompiler {
             body.append("    struct " + struct.getKey() + " " + struct.getValue() + ";\n");
         }
         
-        if (functionType.getReturnType() instanceof StructureType) {
+        if (returnType instanceof StructureType) {
             body.append("    *((" + loReturnType + "*)ret) = ((" + loSignature + ") target)(" + args + ");\n");
-        } else if (functionType.getReturnType() != Type.VOID) {
+        } else if (returnType != Type.VOID) {
             body.append("    return ((" + loSignature + ") target)(" + args + ");\n");
         } else {
             body.append("    ((" + loSignature + ") target)(" + args + ");\n");
@@ -246,7 +285,7 @@ public class BridgeMethodCompiler extends BroMethodCompiler {
         // native code.
         List<MarshaledArg> marshaledArgs = new ArrayList<MarshaledArg>();
         
-        FunctionType targetFnType = getBridgeFunctionType(method, dynamic);
+        FunctionType targetFnType = getBridgeFunctionType(method, dynamic, false);
         Type[] targetParameterTypes = targetFnType.getParameterTypes();
         
         if (!method.isStatic()) {
@@ -317,8 +356,10 @@ public class BridgeMethodCompiler extends BroMethodCompiler {
         }
         
         String wrapperName = Symbols.bridgeCSymbol(method);
-        getCWrapperFunctions().add(createBridgeCWrapper(targetFnType, wrapperName));
-        FunctionRef wrapperFnRef = getBridgeCWrapperRef(targetFnType, wrapperName);
+        FunctionType wrapperFnType = getBridgeFunctionType(method, dynamic, true);
+        getCWrapperFunctions().add(createBridgeCWrapper(targetFnType.getReturnType(), 
+                targetFnType.getParameterTypes(), wrapperFnType.getParameterTypes(), wrapperName));
+        FunctionRef wrapperFnRef = getBridgeCWrapperRef(wrapperFnType, wrapperName);
         moduleBuilder.addFunctionDeclaration(new FunctionDeclaration(wrapperFnRef));
         
         // Execute the call to native code

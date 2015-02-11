@@ -68,7 +68,7 @@ import org.robovm.rt.bro.ptr.*;
      * @since Available in iOS 8.0 and later.
      */
     @GlobalValue(symbol="_dispatch_source_type_memorypressure", optional=true, dereference=false)
-    public static native DispatchSourceType Memorypressure();
+    public static native DispatchSourceType MemoryPressure();
     /**
      * @since Available in iOS 4.0 and later.
      */

@@ -43,6 +43,13 @@ import org.robovm.rt.bro.ptr.*;
     /*</constructors>*/
     /*<properties>*//*</properties>*/
     /*<members>*//*</members>*/
+    /**
+     * 
+     * @return null
+     */
+    public static DispatchQueueAttr Serial() {
+        return null;
+    }
     /*<methods>*/
     /**
      * @since Available in iOS 4.3 and later.

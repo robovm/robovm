@@ -41,8 +41,8 @@ import org.robovm.apple.dispatch.*;
 /*</javadoc>*/
 /*<annotations>*//*</annotations>*/
 public enum /*<name>*/NSBundleExecutableArchitectureType/*</name>*/ implements ValuedEnum {
-	ARM(12L), 
-	ARM64(16777228L),
+    ARM(12L),
+    ARM64(16777228L),
     /*<values>*/
     I386(7L),
     PPC(18L),

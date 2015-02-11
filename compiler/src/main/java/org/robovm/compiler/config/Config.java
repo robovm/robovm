@@ -240,7 +240,11 @@ public class Config {
     public String getTriple() {
         return arch.getLlvmName() + "-unknown-" + os.getLlvmName();
     }
-    
+
+    public String getClangTriple() {
+        return arch.getClangName() + "-unknown-" + os.getLlvmName();
+    }
+
     public DataLayout getDataLayout() {
         return dataLayout;
     }
@@ -469,7 +473,12 @@ public class Config {
         String baseName = clazz.getInternalName().replace('/', File.separatorChar);
         return new File(getCacheDir(clazz.getPath()), baseName + ".class.ll");
     }
-    
+
+    public File getCFile(Clazz clazz) {
+        String baseName = clazz.getInternalName().replace('/', File.separatorChar);
+        return new File(getCacheDir(clazz.getPath()), baseName + ".class.c");
+    }
+
     public File getBcFile(Clazz clazz) {
         String baseName = clazz.getInternalName().replace('/', File.separatorChar);
         return new File(getCacheDir(clazz.getPath()), baseName + ".class.bc");

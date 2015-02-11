@@ -21,26 +21,29 @@ import static org.robovm.compiler.Bro.*;
 import static org.robovm.compiler.Functions.*;
 import static org.robovm.compiler.Types.*;
 import static org.robovm.compiler.llvm.Linkage.*;
-import static org.robovm.compiler.llvm.ParameterAttribute.*;
 import static org.robovm.compiler.llvm.Type.*;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
+import java.util.TreeMap;
 
 import org.robovm.compiler.Bro.MarshalerFlags;
 import org.robovm.compiler.MarshalerLookup.MarshalSite;
 import org.robovm.compiler.MarshalerLookup.MarshalerMethod;
 import org.robovm.compiler.MarshalerLookup.PointerMarshalerMethod;
-import org.robovm.compiler.config.Arch;
 import org.robovm.compiler.config.Config;
-import org.robovm.compiler.config.OS;
+import org.robovm.compiler.llvm.Alloca;
 import org.robovm.compiler.llvm.Argument;
 import org.robovm.compiler.llvm.BasicBlockRef;
 import org.robovm.compiler.llvm.Bitcast;
 import org.robovm.compiler.llvm.Br;
-import org.robovm.compiler.llvm.ConstantBitcast;
 import org.robovm.compiler.llvm.DataLayout;
 import org.robovm.compiler.llvm.Function;
+import org.robovm.compiler.llvm.FunctionDeclaration;
+import org.robovm.compiler.llvm.FunctionRef;
 import org.robovm.compiler.llvm.FunctionType;
 import org.robovm.compiler.llvm.Global;
 import org.robovm.compiler.llvm.Icmp;
@@ -54,13 +57,13 @@ import org.robovm.compiler.llvm.ParameterAttribute;
 import org.robovm.compiler.llvm.PointerType;
 import org.robovm.compiler.llvm.PrimitiveType;
 import org.robovm.compiler.llvm.Ret;
+import org.robovm.compiler.llvm.StructureType;
 import org.robovm.compiler.llvm.Type;
 import org.robovm.compiler.llvm.Unreachable;
 import org.robovm.compiler.llvm.Value;
 import org.robovm.compiler.llvm.Variable;
 import org.robovm.compiler.llvm.VariableRef;
 import org.robovm.compiler.trampoline.Invokestatic;
-import org.robovm.compiler.trampoline.LdcClass;
 
 import soot.LongType;
 import soot.SootMethod;
@@ -92,6 +95,98 @@ public class BridgeMethodCompiler extends BroMethodCompiler {
         }
     }
 
+    protected static FunctionRef getBridgeCWrapperRef(FunctionType functionType, String name) {
+        Type returnType = functionType.getReturnType();
+        Type wrapperReturnType = returnType instanceof StructureType ? VOID : returnType;
+        List<Type> wrapperParamTypes = new ArrayList<>();
+        wrapperParamTypes.add(I8_PTR);
+        if (returnType instanceof StructureType) {
+            wrapperParamTypes.add(I8_PTR);
+        }
+        for (Type t : functionType.getParameterTypes()) {
+            if (t instanceof StructureType || t instanceof PointerType) {
+                wrapperParamTypes.add(I8_PTR);
+            } else {
+                wrapperParamTypes.add(t);
+            }
+        }
+        return new FunctionRef(name, new FunctionType(wrapperReturnType, 
+                wrapperParamTypes.toArray(new Type[wrapperParamTypes.size()])));
+    }
+    protected static String createBridgeCWrapper(FunctionType functionType, String name) {
+        // We order structs by name in reverse order. The names are constructed
+        // such that nested structs get names which are naturally ordered after
+        // their parent struct.
+        Map<String, String> structs = new TreeMap<String, String>(Collections.reverseOrder());
+        
+        String hiReturnType = functionType.getReturnType() instanceof StructureType 
+                ? "void" : getHiType(functionType.getReturnType());
+
+        StringBuilder hiSignature = new StringBuilder();
+        hiSignature
+            .append(hiReturnType)
+            .append(' ')
+            .append(name)
+            .append("(void* target");
+        if (functionType.getReturnType() instanceof StructureType) {
+            hiSignature.append(", void* ret");
+        }
+
+        StringBuilder loSignature = new StringBuilder();
+        String loReturnType = getLoType(functionType.getReturnType(), name, 0, structs);
+        loSignature
+            .append(loReturnType)
+            .append(' ')
+            .append("(*)(");
+        
+        StringBuilder body = new StringBuilder(" {\n");
+        StringBuilder args = new StringBuilder();
+        
+        for (int i = 0; i < functionType.getParameterTypes().length; i++) {
+            String arg = "p" + i;
+
+            String hiParamType = getHiType(functionType.getParameterTypes()[i]);
+            hiSignature.append(", ");
+            hiSignature.append(hiParamType).append(' ').append(arg);
+
+            String loParamType = getLoType(functionType.getParameterTypes()[i], name, i + 1, structs);
+            if (i > 0) {
+                loSignature.append(", ");
+            }
+            loSignature.append(loParamType);
+
+            if (i > 0) {
+                args.append(", ");
+            }
+
+            if (functionType.getParameterTypes()[i] instanceof StructureType) {
+                args.append("*((").append(loParamType).append("*)").append(arg).append(')');
+            } else {
+                args.append(arg);
+            }
+        }
+        hiSignature.append(')');
+        if (functionType.getParameterTypes().length == 0) {
+            loSignature.append("void");
+        }
+        loSignature.append(')');
+        
+        for (Entry<String, String> struct : structs.entrySet()) {
+            body.append("    struct " + struct.getKey() + " " + struct.getValue() + ";\n");
+        }
+        
+        if (functionType.getReturnType() instanceof StructureType) {
+            body.append("    *((" + loReturnType + "*)ret) = ((" + loSignature + ") target)(" + args + ");\n");
+        } else if (functionType.getReturnType() != Type.VOID) {
+            body.append("    return ((" + loSignature + ") target)(" + args + ");\n");
+        } else {
+            body.append("    ((" + loSignature + ") target)(" + args + ");\n");
+        }
+        body.append("}\n");
+
+        return hiSignature.toString() + body.toString();
+    }
+    
     protected Function doCompile(ModuleBuilder moduleBuilder, SootMethod method) {
         validateBridgeMethod(method);
 
@@ -109,77 +204,33 @@ public class BridgeMethodCompiler extends BroMethodCompiler {
             args.add(new Argument(new VariableRef(parameterNames[i], parameterTypes[i])));
         }
         
-        SootMethod originalMethod = method;
-        Value structObj = null;
-        boolean passByValue = isPassByValue(originalMethod);
-        Arch arch = config.getArch();
-        OS os = config.getOs();
-        DataLayout dataLayout = config.getDataLayout();
-        if (passByValue) {
-            // The method returns a struct by value. Determine whether that struct
-            // is small enough to be passed in a register or has to be returned
-            // using a @StructRet parameter.
-            
-            int size = dataLayout.getAllocSize(getStructType(originalMethod.getReturnType()));
-            if (!os.isReturnedInRegisters(arch, size)) {
-                method = createFakeStructRetMethod(method);
-                
-                // Call Struct.allocate(<returnType>) to allocate a struct instance
-                // which will be used as return value.
-                VariableRef env = fn.getParameterRef(0);
-                LdcClass ldcClass = new LdcClass(getInternalName(method.getDeclaringClass()), 
-                        getInternalName(originalMethod.getReturnType()));
-                trampolines.add(ldcClass);
-                Value cls = call(fn, ldcClass.getFunctionRef(), env);
-                Invokestatic invokestatic = new Invokestatic(
-                        getInternalName(method.getDeclaringClass()), "org/robovm/rt/bro/Struct", 
-                        "allocate", "(Ljava/lang/Class;)Lorg/robovm/rt/bro/Struct;");
-                trampolines.add(invokestatic);
-                structObj = call(fn, invokestatic.getFunctionRef(), env, cls);
-    
-                // Insert the allocated struct as arg 1 (first arg is always the Env*)
-                args.add(1, new Argument(structObj));
-            }
-        }
-        
-        FunctionType targetFnType = getBridgeFunctionType(method, dynamic);
-        if (method == originalMethod && passByValue) {
-            if (os.returnSmallAggregateAsInteger(arch, dataLayout.getAllocSize(targetFnType.getReturnType()))) {
-                // Returns a small struct. We need to change the return type to
-                // i8/i16/i32/i64.
-                int size = dataLayout.getAllocSize(targetFnType.getReturnType());
-                Type t = size <= 1 ? I8 : (size <= 2 ? I16 : (size <= 4 ? I32 : I64));
-                targetFnType = new FunctionType(t, targetFnType.isVarargs(), targetFnType.getParameterTypes());
-            }
-        }
-
         VariableRef env = fn.getParameterRef(0);
         
         // Load the address of the resolved @Bridge method
-        Variable targetFn = fn.newVariable(targetFnType);
+        Variable targetFn = fn.newVariable(I8_PTR);
         if (!dynamic) {
-            Global targetFnPtr = new Global(Symbols.bridgePtrSymbol(originalMethod), 
+            Global targetFnPtr = new Global(Symbols.bridgePtrSymbol(method), 
                     _private, new NullConstant(I8_PTR));
             moduleBuilder.addGlobal(targetFnPtr);
-            fn.add(new Load(targetFn, new ConstantBitcast(targetFnPtr.ref(), new PointerType(targetFnType))));
+            fn.add(new Load(targetFn, targetFnPtr.ref()));
     
             Label nullLabel = new Label();
             Label notNullLabel = new Label();
             Variable nullCheck = fn.newVariable(I1);
-            fn.add(new Icmp(nullCheck, Condition.eq, targetFn.ref(), new NullConstant(targetFnType)));
+            fn.add(new Icmp(nullCheck, Condition.eq, targetFn.ref(), new NullConstant(I8_PTR)));
             fn.add(new Br(nullCheck.ref(), fn.newBasicBlockRef(nullLabel), fn.newBasicBlockRef(notNullLabel)));
             fn.newBasicBlock(nullLabel);
             call(fn, BC_THROW_UNSATISIFED_LINK_ERROR, env,
                     moduleBuilder.getString(String.format((optional ? "Optional " : "")
                             + "@Bridge method %s.%s%s not bound", className,
-                            originalMethod.getName(), getDescriptor(originalMethod))));
+                            method.getName(), getDescriptor(method))));
             fn.add(new Unreachable());
             fn.newBasicBlock(notNullLabel);
         } else {
             // Dynamic @Bridge methods pass the target function pointer as a
             // long in the first parameter.
             fn.add(new Inttoptr(targetFn, fn.getParameterRef(1), targetFn.getType()));
-            args.remove(originalMethod == method ? 1 : 2);
+            args.remove(1);
         }
         
         // Marshal args
@@ -195,29 +246,25 @@ public class BridgeMethodCompiler extends BroMethodCompiler {
         // native code.
         List<MarshaledArg> marshaledArgs = new ArrayList<MarshaledArg>();
         
+        FunctionType targetFnType = getBridgeFunctionType(method, dynamic);
         Type[] targetParameterTypes = targetFnType.getParameterTypes();
         
-        int receiverIdx = -1;
         if (!method.isStatic()) {
             MarshalerMethod marshalerMethod = config.getMarshalerLookup().findMarshalerMethod(new MarshalSite(method, MarshalSite.RECEIVER));
             MarshaledArg marshaledArg = new MarshaledArg();
             marshaledArg.paramIndex = MarshalSite.RECEIVER;
             marshaledArgs.add(marshaledArg);
-            // The receiver is either at index 0 or 1 in args depending on whether this method returns
-            // a large struct by value or not.
-            receiverIdx = method == originalMethod ? 0 : 1;
-            Type nativeType = targetParameterTypes[receiverIdx];
-            Value nativeValue = marshalObjectToNative(fn, marshalerMethod, marshaledArg, nativeType, env, args.get(receiverIdx).getValue(),
+            Value nativeValue = marshalObjectToNative(fn, marshalerMethod, marshaledArg, I8_PTR, env, args.get(0).getValue(),
                     MarshalerFlags.CALL_TYPE_BRIDGE);
-            args.set(receiverIdx, new Argument(nativeValue));
+            args.set(0, new Argument(nativeValue));
         }
         
         for (int i = 0, argIdx = 0; i < method.getParameterCount(); i++) {
-            if (dynamic && (method == originalMethod && i == 0 || method != originalMethod && i == 1)) {
+            if (dynamic && i == 0) {
                 // Skip the target function pointer for dynamic bridge methods.
                 continue;
             }
-            if (argIdx == receiverIdx) {
+            if (!method.isStatic() && argIdx == 0) {
                 // Skip the receiver in args. It doesn't correspond to a parameter.
                 argIdx++;
             }
@@ -240,20 +287,13 @@ public class BridgeMethodCompiler extends BroMethodCompiler {
                         // never have a NULL handle so we just check that the Java
                         // Object isn't null.
                         call(fn, CHECK_NULL, env, args.get(argIdx).getValue());
-                        if (isStructRet(method, i)) {
-                            parameterAttributes = new ParameterAttribute[1];
-                            parameterAttributes[0] = sret;
-                        } else if (nativeType instanceof PointerType) {
-                            parameterAttributes = new ParameterAttribute[1];
-                            parameterAttributes[0] = byval;
-                        }
                     }
             
                     MarshaledArg marshaledArg = new MarshaledArg();
                     marshaledArg.paramIndex = i;
                     marshaledArgs.add(marshaledArg);
-                    Value nativeValue = marshalObjectToNative(fn, marshalerMethod, marshaledArg, nativeType, env, args.get(argIdx).getValue(),
-                            MarshalerFlags.CALL_TYPE_BRIDGE);
+                    Value nativeValue = marshalObjectToNative(fn, marshalerMethod, marshaledArg, I8_PTR, env, args.get(argIdx).getValue(),
+                            MarshalerFlags.CALL_TYPE_BRIDGE, false);
                     args.set(argIdx, new Argument(nativeValue, parameterAttributes));
                 }
                 
@@ -264,13 +304,30 @@ public class BridgeMethodCompiler extends BroMethodCompiler {
             argIdx++;
         }        
         
+        args.add(0, new Argument(targetFn.ref()));
+        
+        Variable structResult = null;
+        if (targetFnType.getReturnType() instanceof StructureType) {
+            // Allocate space on the stack big enough to hold the returned struct
+            Variable tmp = fn.newVariable(new PointerType(targetFnType.getReturnType()));
+            fn.add(new Alloca(tmp, targetFnType.getReturnType()));
+            structResult = fn.newVariable(I8_PTR);
+            fn.add(new Bitcast(structResult, tmp.ref(), I8_PTR));
+            args.add(1, new Argument(structResult.ref()));
+        }
+        
+        String wrapperName = Symbols.bridgeCSymbol(method);
+        getCWrapperFunctions().add(createBridgeCWrapper(targetFnType, wrapperName));
+        FunctionRef wrapperFnRef = getBridgeCWrapperRef(targetFnType, wrapperName);
+        moduleBuilder.addFunctionDeclaration(new FunctionDeclaration(wrapperFnRef));
+        
         // Execute the call to native code
         BasicBlockRef bbSuccess = fn.newBasicBlockRef(new Label("success"));
         BasicBlockRef bbFailure = fn.newBasicBlockRef(new Label("failure"));
         pushNativeFrame(fn);
         trycatchAllEnter(fn, env, bbSuccess, bbFailure);
         fn.newBasicBlock(bbSuccess.getLabel());
-        Value result = callWithArguments(fn, targetFn.ref(), args);
+        Value result = callWithArguments(fn, wrapperFnRef, args);
         trycatchLeave(fn, env);
         popNativeFrame(fn);
 
@@ -281,14 +338,11 @@ public class BridgeMethodCompiler extends BroMethodCompiler {
             MarshalerMethod marshalerMethod = config.getMarshalerLookup().findMarshalerMethod(new MarshalSite(method));
             String targetClassName = getInternalName(method.getReturnType());
             
-            if (passByValue) {
-                // Must be a small struct since larger structs are returned in 
-                // the first parameter. Copy to the stack and then copy to the heap.
-                Value stackCopy = createStackCopy(fn, result);
-                Variable src = fn.newVariable(I8_PTR);
-                fn.add(new Bitcast(src, stackCopy, I8_PTR));
-                Value heapCopy = call(fn, BC_COPY_STRUCT, env, src.ref(), 
-                        new IntegerConstant(dataLayout.getAllocSize(result.getType())));
+            if (structResult != null) {
+                // Copy to the heap.
+                DataLayout dataLayout = config.getDataLayout();
+                Value heapCopy = call(fn, BC_COPY_STRUCT, env, structResult.ref(), 
+                        new IntegerConstant(dataLayout.getAllocSize(targetFnType.getReturnType())));
                 result = marshalNativeToObject(fn, marshalerMethod, null, env, 
                         targetClassName, heapCopy, MarshalerFlags.CALL_TYPE_BRIDGE);
             } else if (targetFnType.getReturnType() instanceof PrimitiveType) {
@@ -302,11 +356,7 @@ public class BridgeMethodCompiler extends BroMethodCompiler {
             result = marshalNativeToPrimitive(fn, method, result);
         }
         
-        if (method != originalMethod) {
-            fn.add(new Ret(structObj));
-        } else {
-            fn.add(new Ret(result));
-        }
+        fn.add(new Ret(result));
         
         fn.newBasicBlock(bbFailure.getLabel());
         trycatchLeave(fn, env);

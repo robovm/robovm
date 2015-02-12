@@ -475,6 +475,15 @@ public class IOSTarget extends AbstractTarget {
     }
     
     @Override
+    protected boolean processDir(Resource resource, File dir, File destDir) throws IOException {
+        if (dir.getName().endsWith(".atlas")) {
+            ToolchainUtil.textureatlas(config, dir, destDir);
+            return false;
+        }
+        return super.processDir(resource, dir, destDir);
+    }
+    
+    @Override
     protected void copyFile(Resource resource, File file, File destDir)
             throws IOException {
         

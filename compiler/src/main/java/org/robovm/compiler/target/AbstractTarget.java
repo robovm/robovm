@@ -195,7 +195,11 @@ public abstract class AbstractTarget implements Target {
         for (Resource res : config.getResources()) {
             res.walk(new Walker() {
                 @Override
-                public void process(Resource resource, File file, File destDir)
+                public boolean processDir(Resource resource, File dir, File destDir) throws IOException {
+                    return AbstractTarget.this.processDir(resource, dir, destDir);
+                }
+                @Override
+                public void processFile(Resource resource, File file, File destDir)
                         throws IOException {
                     
                     copyFile(resource, file, destDir);
@@ -203,7 +207,11 @@ public abstract class AbstractTarget implements Target {
             }, destDir);
         }
     }
-    
+
+    protected boolean processDir(Resource resource, File dir, File destDir) throws IOException {
+        return true;
+    }
+
     protected void copyFile(Resource resource, File file, File destDir) throws IOException {
         config.getLogger().debug("Copying resource %s to %s", file, destDir);
         FileUtils.copyFileToDirectory(file, destDir, true);

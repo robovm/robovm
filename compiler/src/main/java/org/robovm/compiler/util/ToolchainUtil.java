@@ -42,6 +42,7 @@ public class ToolchainUtil {
     private static String PLUTIL;
     private static String LIPO;
     private static String PACKAGE_APPLICATION;
+    private static String TEXTUREATLAS;
 
     private static String getIOSDevClang() throws IOException {
         if (IOS_DEV_CLANG == null) {
@@ -62,6 +63,13 @@ public class ToolchainUtil {
             PNGCRUSH = findXcodeCommand("pngcrush", "iphoneos");
         }
         return PNGCRUSH;
+    }
+
+    private static String getTextureAtlas() throws IOException {
+        if (TEXTUREATLAS == null) {
+            TEXTUREATLAS = findXcodeCommand("TextureAtlas", "iphoneos");
+        }
+        return TEXTUREATLAS;
     }
 
     private static String getPlutil() throws IOException {
@@ -132,6 +140,12 @@ public class ToolchainUtil {
             .exec();
     }
 
+    public static void textureatlas(Config config, File inDir, File outDir) throws IOException {
+        new Executor(config.getLogger(), getTextureAtlas())
+            .args(inDir, outDir)
+            .exec();
+    }
+    
     public static void compileStrings(Config config, File inFile, File outFile) throws IOException {
         new Executor(config.getLogger(), getPlutil())
             .args("-convert", "binary1", inFile, "-o", outFile)

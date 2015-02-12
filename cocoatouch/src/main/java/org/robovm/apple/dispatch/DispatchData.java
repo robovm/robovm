@@ -52,11 +52,6 @@ import org.robovm.rt.bro.ptr.*;
     /**
      * @since Available in iOS 5.0 and later.
      */
-    @GlobalValue(symbol="_dispatch_data_empty", optional=true)
-    public static native void Empty(DispatchData v);
-    /**
-     * @since Available in iOS 5.0 and later.
-     */
     @GlobalValue(symbol="_dispatch_data_destructor_free", optional=true, dereference=false)
     public static native DispatchData DestructorFree();
     /**

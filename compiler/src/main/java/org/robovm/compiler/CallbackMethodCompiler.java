@@ -144,30 +144,42 @@ public class CallbackMethodCompiler extends BroMethodCompiler {
     
     private Function compileCallback(ModuleBuilder moduleBuilder, SootMethod method) {
         
-        // The C wrapper is the function which is called by native code. It
-        // handles structs passed/returned by value. It calls an LLVM function 
-        // which has the same signature but all structs passed/returned by value
-        // replaced by pointers (i8*).
-        FunctionRef callbackCWrapperRef = getCallbackCWrapperRef(method, Symbols.callbackCSymbol(method));
-        getCWrapperFunctions().add(createCallbackCWrapper(callbackCWrapperRef.getType(), 
-                callbackCWrapperRef.getName(), Symbols.callbackInnerCSymbol(method)));
-        moduleBuilder.addFunctionDeclaration(new FunctionDeclaration(callbackCWrapperRef));
-        Type callbackRetType = callbackCWrapperRef.getType().getReturnType() instanceof StructureType 
-                ? I8_PTR : callbackCWrapperRef.getType().getReturnType();
-        Type[] callbackParamTypes = new Type[callbackCWrapperRef.getType().getParameterTypes().length];
-        for (int i = 0; i < callbackParamTypes.length; i++) {
-            Type t = callbackCWrapperRef.getType().getParameterTypes()[i];
-            if (t instanceof StructureType) {
-                t = I8_PTR;
+        Function callbackFn = null;
+        FunctionType nativeFnType = null;
+        boolean useCWrapper = requiresCWrapper(method);
+        if (useCWrapper) {
+            // The C wrapper is the function which is called by native code. It
+            // handles structs passed/returned by value. It calls an LLVM function 
+            // which has the same signature but all structs passed/returned by value
+            // replaced by pointers (i8*).
+            FunctionRef callbackCWrapperRef = getCallbackCWrapperRef(method, Symbols.callbackCSymbol(method));
+            getCWrapperFunctions().add(createCallbackCWrapper(callbackCWrapperRef.getType(), 
+                    callbackCWrapperRef.getName(), Symbols.callbackInnerCSymbol(method)));
+            moduleBuilder.addFunctionDeclaration(new FunctionDeclaration(callbackCWrapperRef));
+            Type callbackRetType = callbackCWrapperRef.getType().getReturnType() instanceof StructureType 
+                    ? I8_PTR : callbackCWrapperRef.getType().getReturnType();
+            Type[] callbackParamTypes = new Type[callbackCWrapperRef.getType().getParameterTypes().length];
+            for (int i = 0; i < callbackParamTypes.length; i++) {
+                Type t = callbackCWrapperRef.getType().getParameterTypes()[i];
+                if (t instanceof StructureType) {
+                    t = I8_PTR;
+                }
+                callbackParamTypes[i] = t;
             }
-            callbackParamTypes[i] = t;
+            moduleBuilder.addAlias(new Alias(Symbols.callbackPtrSymbol(method), 
+                    Linkage._private, new ConstantBitcast(callbackCWrapperRef, I8_PTR)));
+            callbackFn = new FunctionBuilder(Symbols.callbackInnerCSymbol(method), 
+                    new FunctionType(callbackRetType, callbackParamTypes)).build();
+            nativeFnType = callbackCWrapperRef.getType();
+        } else {
+            FunctionType callbackFnType = getCallbackFunctionType(method, false);
+            callbackFn = FunctionBuilder.callback(method, callbackFnType);
+            moduleBuilder.addAlias(new Alias(Symbols.callbackPtrSymbol(method), 
+                    Linkage._private, new ConstantBitcast(callbackFn.ref(), I8_PTR)));
+            nativeFnType = callbackFnType;
         }
-        Function callbackFn = new FunctionBuilder(Symbols.callbackInnerCSymbol(method), 
-                new FunctionType(callbackRetType, callbackParamTypes)).build();
 
         moduleBuilder.addFunction(callbackFn);
-        moduleBuilder.addAlias(new Alias(Symbols.callbackPtrSymbol(method), 
-                Linkage._private, new ConstantBitcast(callbackCWrapperRef, I8_PTR)));
 
         String targetName = method.isSynchronized() 
                 ? Symbols.synchronizedWrapperSymbol(method) 
@@ -220,7 +232,7 @@ public class CallbackMethodCompiler extends BroMethodCompiler {
                     marshaledArg.paramIndex = i;
                     marshaledArgs.add(marshaledArg);
                     
-                    Type nativeType = callbackCWrapperRef.getType().getParameterTypes()[argIdx];
+                    Type nativeType = nativeFnType.getParameterTypes()[argIdx];
                     if (nativeType instanceof StructureType) {
                         // Struct passed by value on the stack. Make a heap copy of the data and marshal that.
                         DataLayout dataLayout = config.getDataLayout();

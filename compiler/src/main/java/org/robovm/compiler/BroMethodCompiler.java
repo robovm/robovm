@@ -94,6 +94,21 @@ public abstract class BroMethodCompiler extends AbstractMethodCompiler {
         return cWrapperFunctions;
     }
     
+    protected boolean requiresCWrapper(SootMethod method) {
+        if (isPassByValue(method)) {
+            return true;
+        }
+        if (hasVariadicAnnotation(method)) {
+            return true;
+        }
+        for (int i = 0; i < method.getParameterCount(); i++) {
+            if (isPassByValue(method, i)) {
+                return true;
+            }
+        }
+        return false;
+    }
+    
     protected Value ldcClass(Function fn, String name, Value env) {
         if (isArray(name) && isPrimitiveBaseType(name)) {
             String primitiveDesc = name.substring(name.length() - 1);
@@ -309,11 +324,6 @@ public abstract class BroMethodCompiler extends AbstractMethodCompiler {
 
     protected Value marshalObjectToNative(Function fn, MarshalerMethod marshalerMethod, MarshaledArg marshaledArg, 
             Type nativeType, Value env, Value object, long flags) {
-        return marshalObjectToNative(fn, marshalerMethod, marshaledArg, nativeType, env, object, flags, false);
-    }
-    
-    protected Value marshalObjectToNative(Function fn, MarshalerMethod marshalerMethod, MarshaledArg marshaledArg, 
-            Type nativeType, Value env, Value object, long flags, boolean smallStructRet) {
         
         Invokestatic invokestatic = marshalerMethod.getInvokeStatic(sootMethod.getDeclaringClass());
         trampolines.add(invokestatic);
@@ -321,7 +331,7 @@ public abstract class BroMethodCompiler extends AbstractMethodCompiler {
                 env, object, new IntegerConstant(flags));
     
         Variable nativeValue = fn.newVariable(nativeType);
-        if (nativeType instanceof StructureType || nativeType instanceof ArrayType || smallStructRet) {
+        if (nativeType instanceof StructureType || nativeType instanceof ArrayType) {
             Variable tmp = fn.newVariable(new PointerType(nativeType));
             fn.add(new Inttoptr(tmp, handle, tmp.getType()));
             fn.add(new Load(nativeValue, tmp.ref()));

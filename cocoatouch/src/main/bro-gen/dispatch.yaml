@@ -6,18 +6,12 @@ path_match: ^.*/usr/include/dispatch/.*$
 force_types: [timespec]
 typedefs:
     _NSZone: void
-    "Protocol *": ObjCProtocol
+    'Protocol *': ObjCProtocol
     dispatch_queue_t: DispatchQueue
     'void (^)(dispatch_data_t, int)': '@Block VoidBlock2<DispatchData, Integer>'
     'void (^)(int)': '@Block VoidBlock1<Integer>'
     'void (^)(size_t)': '@Block("(@MachineSizedUInt)") VoidBlock1<Long>'
-#    typedef void (^dispatch_io_handler_t)(bool done, dispatch_data_t data,
-#        int error);
     dispatch_io_handler_t: '@Block VoidBlock3<Boolean, DispatchData, Integer>'
-# typedef bool (^dispatch_data_applier_t)(dispatch_data_t region,
-#     size_t offset,
-#     const void *buffer,
-#     size_t size);
     dispatch_data_applier_t: '@Block("(,@MachineSizedUInt,,@MachineSizedUInt)") VoidBlock4<DispatchData, Long, VoidPtr, Long>'
 classes:
     timespec:
@@ -31,8 +25,11 @@ classes:
         name: DispatchObject
         exclude: true
     (dispatch_(data|group|queue|queue_attr|semaphore|source|source_type))_s:
-        name: "#{g[0].camelize}"
+        name: '#{g[0].camelize}'
         extends: DispatchObject
+    Dispatch:
+        extends: Object
+        
 functions:
     dispatch_(barrier_)?a?sync_f:
         exclude: true
@@ -54,112 +51,173 @@ functions:
         exclude: true
     dispatch_get_specific:
         exclude: true
+    dispatch_block_.*:
+        exclude: true
+    dispatch_(wait|notify|cancel|testcancel):
+        exclude: true
 
+    # DispatchQueue
+    dispatch_queue_attr_make_with_qos_class:
+        exclude: true
+    dispatch_queue_get_qos_class:
+        exclude: true
+    dispatch_get_current_queue:
+        exclude: true
     dispatch_((barrier_)?a?sync.*):
         class: DispatchQueue
-        name: "#{g[0].camelize}"
+        name: '#{g[0].camelize}'
     dispatch_((apply|after).*):
         class: DispatchQueue
-        name: "#{g[0].camelize}"
+        name: '#{g[0].camelize}'
         visibility: private
     dispatch_(get.*queue):
         class: DispatchQueue
-        name: "#{g[0].camelize}"
+        name: '#{g[0].camelize}'
+    dispatch_queue_(create):
+        class: DispatchQueue
+        name: '#{g[0].camelize}'
+        parameters:
+            label:
+                type: String
+                marshaler: StringMarshalers.AsUtf8ZMarshaler
+    dispatch_queue_(get_label):
+        class: DispatchQueue
+        name: '#{g[0].camelize}'
+        return_type: String
+        return_marshaler: StringMarshalers.AsUtf8ZMarshaler
+    dispatch_queue_(.*):
+        class: DispatchQueue
+        name: '#{g[0].camelize}'
+
+    # DispatchData
     dispatch_data_(.*):
         class: DispatchData
-        name: "#{g[0].camelize}"
+        name: '#{g[0].camelize}'
+
+    # DispatchGroup
     dispatch_group_wait:
         class: DispatchGroup
         name: await
     dispatch_group_(.*):
         class: DispatchGroup
-        name: "#{g[0].camelize}"
+        name: '#{g[0].camelize}'
+
+    # DispatchIO
+    dispatch_io_(create)_with_path:
+        class: DispatchIO
+        name: '#{g[0].camelize}'
+        parameters:
+            path:
+                type: String
+                marshaler: StringMarshalers.AsUtf8ZMarshaler
+    dispatch_io_(create)_with_io:
+        class: DispatchIO
+        name: '#{g[0].camelize}'
     dispatch_io_(.*):
         class: DispatchIO
-        name: "#{g[0].camelize}"
-    dispatch_queue_(create):
-        class: DispatchQueue
-        name: "#{g[0].camelize}"
-        parameters:
-            label:
-                type: '@org.robovm.rt.bro.annotation.Marshaler(StringMarshalers.AsUtf8ZMarshaler.class) String'
-    dispatch_queue_(get_label):
-        class: DispatchQueue
-        name: "#{g[0].camelize}"
-        return_type: '@org.robovm.rt.bro.annotation.Marshaler(StringMarshalers.AsUtf8ZMarshaler.class) String'
-    dispatch_queue_(.*):
-        class: DispatchQueue
-        name: "#{g[0].camelize}"
+        name: '#{g[0].camelize}'
+
+    # DispatchSemaphore
     dispatch_semaphore_wait:
         class: DispatchSemaphore
         name: await
     dispatch_semaphore_(.*):
         class: DispatchSemaphore
-        name: "#{g[0].camelize}"
+        name: '#{g[0].camelize}'
+
+    # DispatchSource
     dispatch_source_get_handle:
         class: DispatchSource
         name: getSourceHandle
+    dispatch_source_testcancel:
+        class: DispatchSource
+        name: testCancel
     dispatch_source_(.*):
         class: DispatchSource
-        name: "#{g[0].camelize}"
+        name: '#{g[0].camelize}'
+
+    # DispatchObject
     dispatch_(retain|release|(get|set)_context|set_finalizer_f|suspend|resume|set_target_queue):
         class: DispatchObject
-        name: "#{g[0].camelize}"
+        name: '#{g[0].camelize}'
         parameters:
             object:
                 type: DispatchObject
+
+    # Dispatch
     dispatch_(.*time):
         class: Dispatch
-        name: "#{g[0].camelize}"
+        name: '#{g[0].camelize}'
+        visibility: protected
+    dispatch_(once):
+        class: Dispatch
+        name: '#{g[0].camelize}'
         visibility: protected
     dispatch_(.*):
         class: Dispatch
-        name: "#{g[0].camelize}"
+        name: '#{g[0].camelize}'
 values:
+    # DispatchSourceType
+    _dispatch_source_type_memorypressure:
+        class: DispatchSourceType
+        type: DispatchSourceType
+        name: MemoryPressure
+        dereference: false
     _dispatch_source_type_(.*):
         class: DispatchSourceType
         type: DispatchSourceType
-        name: "#{g[0].camelize}"
+        name: '#{g[0].camelize}'
         dereference: false
-    _dispatch_data_(empty):
-        class: DispatchData
-        type: DispatchData
-        name: "#{g[0].camelize}"
-        dereference: false
+
+    # DispatchQueue
     _dispatch_main_q:
         class: DispatchQueue
         type: DispatchQueue
         name: getMainQueue
         readonly: true
         dereference: false
+
+    # DispatchQueueAttr
     _dispatch_queue_attr_concurrent:
         class: DispatchQueueAttr
         type: DispatchQueueAttr
         name: Concurrent
         readonly: true
         dereference: false
+
+    # DispatchData
+    _dispatch_data_(empty):
+        class: DispatchData
+        type: DispatchData
+        name: '#{g[0].camelize}'
+        readonly: true
+        dereference: false
     _dispatch_data_(.*):
         class: DispatchData
         type: DispatchData
-        name: "#{g[0].camelize}"
+        name: '#{g[0].camelize}'
         readonly: true
         dereference: false
+
+    # Dispatch
     dispatch_(.*):
         class: Dispatch
 constants:
     DISPATCH_QUEUE_(.*):
         class: DispatchQueue
-        name: "#{g[0]}"
+        name: '#{g[0]}'
     DISPATCH_((PROC|VNODE|MACH|MEMORYPRESSURE|TIMER).*):
         class: DispatchSource
-        name: "#{g[0]}"
+        name: '#{g[0]}'
     DISPATCH_IO_(.*):
         class: DispatchIO
-        name: "#{g[0]}"
+        name: '#{g[0]}'
     DISPATCH_(TIME.*):
         class: Dispatch
-        name: "#{g[0]}"
+        name: '#{g[0]}'
         visibility: protected
+    DISPATCH_BLOCK_.*:
+        exclude: true
     DISPATCH_(.*):
         class: Dispatch
-        name: "#{g[0]}"
+        name: '#{g[0]}'

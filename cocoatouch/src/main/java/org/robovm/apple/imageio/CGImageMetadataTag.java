@@ -19,6 +19,7 @@ package org.robovm.apple.imageio;
 import java.io.*;
 import java.nio.*;
 import java.util.*;
+
 import org.robovm.objc.*;
 import org.robovm.objc.annotation.*;
 import org.robovm.objc.block.*;
@@ -38,6 +39,30 @@ import org.robovm.apple.coregraphics.*;
     extends /*<extends>*/CFType/*</extends>*/ 
     /*<implements>*//*</implements>*/ {
 
+    public static class AsListMarshaler {
+        @MarshalsPointer
+        public static List<?> toObject(Class<? extends CFType> cls, long handle, long flags) {
+            CFArray o = (CFArray) CFType.Marshaler.toObject(cls, handle, flags);
+            if (o == null) {
+                return null;
+            }
+            return o.toList(CGImageMetadataTag.class);
+        }
+        @MarshalsPointer
+        public static long toNative(List<? extends CFType> l, long flags) {
+            if (l == null) {
+                return 0L;
+            }
+            CFArray o = null;
+            if (l instanceof CFArray) {
+                o = (CFArray) l;
+            } else {
+                o = CFArray.create((List<? extends CFType>) l);
+            }
+            return CFType.Marshaler.toNative(o, flags);
+        }
+    }
+    
     /*<ptr>*/public static class CGImageMetadataTagPtr extends Ptr<CGImageMetadataTag, CGImageMetadataTagPtr> {}/*</ptr>*/
     /*<bind>*/static { Bro.bind(CGImageMetadataTag.class); }/*</bind>*/
     /*<constants>*//*</constants>*/

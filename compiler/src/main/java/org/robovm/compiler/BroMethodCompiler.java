@@ -24,13 +24,16 @@ import static org.robovm.compiler.llvm.Type.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import org.robovm.compiler.Annotations.Visibility;
 import org.robovm.compiler.MarshalerLookup.ArrayMarshalerMethod;
 import org.robovm.compiler.MarshalerLookup.MarshalSite;
 import org.robovm.compiler.MarshalerLookup.MarshalerMethod;
 import org.robovm.compiler.MarshalerLookup.ValueMarshalerMethod;
+import org.robovm.compiler.clazz.Clazz;
 import org.robovm.compiler.config.Config;
+import org.robovm.compiler.llvm.AggregateType;
 import org.robovm.compiler.llvm.Alloca;
 import org.robovm.compiler.llvm.ArrayType;
 import org.robovm.compiler.llvm.Bitcast;
@@ -43,6 +46,7 @@ import org.robovm.compiler.llvm.FunctionRef;
 import org.robovm.compiler.llvm.FunctionType;
 import org.robovm.compiler.llvm.GlobalRef;
 import org.robovm.compiler.llvm.IntegerConstant;
+import org.robovm.compiler.llvm.IntegerType;
 import org.robovm.compiler.llvm.Inttoptr;
 import org.robovm.compiler.llvm.Load;
 import org.robovm.compiler.llvm.PointerType;
@@ -74,11 +78,22 @@ import soot.VoidType;
  * 
  */
 public abstract class BroMethodCompiler extends AbstractMethodCompiler {
+    private final List<String> cWrapperFunctions = new ArrayList<>();
 
     public BroMethodCompiler(Config config) {
         super(config);
     }
 
+    @Override
+    public void reset(Clazz clazz) {
+        cWrapperFunctions.clear();
+        super.reset(clazz);
+    }
+    
+    public List<String> getCWrapperFunctions() {
+        return cWrapperFunctions;
+    }
+    
     protected Value ldcClass(Function fn, String name, Value env) {
         if (isArray(name) && isPrimitiveBaseType(name)) {
             String primitiveDesc = name.substring(name.length() - 1);
@@ -415,8 +430,6 @@ public abstract class BroMethodCompiler extends AbstractMethodCompiler {
                 // Structs are returned by reference by default
                 return new PointerType(getStructType(sootType));
             }
-            // Only small Structs can be returned by value. How small is defined by the target ABI.
-            // Larger Structs should be passed as parameters with the @StructRet annotation.
             return getStructType(sootType);
         } else if (isNativeObject(sootType)) {
             // NativeObjects are always returned by reference.
@@ -478,10 +491,7 @@ public abstract class BroMethodCompiler extends AbstractMethodCompiler {
         if (isStruct(sootType)) {
             StructureType structType = getStructType(sootType);
             if (hasByValAnnotation(method, i)) {
-                int size = config.getDataLayout().getAllocSize(structType);
-                if (!config.getOs().useByvalForAggregateOfSize(config.getArch(), size)) {
-                    return getStructType(sootType);
-                }
+                return getStructType(sootType);
             }
             return new PointerType(structType);
         } else if (isNativeObject(sootType)) {
@@ -499,19 +509,24 @@ public abstract class BroMethodCompiler extends AbstractMethodCompiler {
         }
     }
 
-    public FunctionType getBridgeFunctionType(SootMethod method, boolean dynamic) {
-        return getBridgeOrCallbackFunctionType("@Bridge", method, dynamic);
+    public FunctionType getBridgeFunctionType(SootMethod method, boolean dynamic, boolean considerVariadic) {
+        return getBridgeOrCallbackFunctionType("@Bridge", method, dynamic, considerVariadic);
     }
     
-    public FunctionType getCallbackFunctionType(SootMethod method) {
-        return getBridgeOrCallbackFunctionType("@Callback", method, false);
+    public FunctionType getCallbackFunctionType(SootMethod method, boolean considerVariadic) {
+        return getBridgeOrCallbackFunctionType("@Callback", method, false, considerVariadic);
     }
     
-    private FunctionType getBridgeOrCallbackFunctionType(String anno, SootMethod method, boolean dynamic) {
+    private FunctionType getBridgeOrCallbackFunctionType(String anno, SootMethod method, boolean dynamic, boolean considerVariadic) {
         Type returnType = getReturnType(anno, method);
         
+        boolean varargs = considerVariadic && hasVariadicAnnotation(method);
+        int variadicIndex = varargs ? getVariadicParameterIndex(method) : Integer.MAX_VALUE;
         List<Type> paramTypes = new ArrayList<>();
         for (int i = dynamic ? 1 : 0; i < method.getParameterCount(); i++) {
+            if (i == variadicIndex) {
+                break;
+            }
             paramTypes.add(getParameterType(anno, method, i));
         }
         if (!method.isStatic()) {
@@ -529,10 +544,9 @@ public abstract class BroMethodCompiler extends AbstractMethodCompiler {
             }
         }
 
-        return new FunctionType(returnType, paramTypes.toArray(new Type[paramTypes.size()]));
+        return new FunctionType(returnType, varargs, paramTypes.toArray(new Type[paramTypes.size()]));
     }
     
-
     public StructureType getStructType(soot.Type t) {
         return getStructType(((RefType) t).getSootClass());                
     }
@@ -656,6 +670,62 @@ public abstract class BroMethodCompiler extends AbstractMethodCompiler {
         }
     }
     
+    protected static String getHiType(Type type) {
+        if (type == Type.VOID) {
+            return "void";
+        }
+        if (type instanceof PointerType || type instanceof AggregateType) {
+            return "void*";
+        } else if (type instanceof IntegerType) {
+            switch (((IntegerType) type).getBits()) {
+            case 8:
+                return "char";
+            case 16:
+                return "short";
+            case 32:
+                return "int";
+            case 64:
+                return "long long";
+            }
+        } else if (type == Type.FLOAT) {
+            return "float";
+        } else if (type == Type.DOUBLE) {
+            return "double";
+        }
+        throw new IllegalArgumentException("Cannot convert type " + type + " to C type");
+    }
+
+    protected static String getLoType(final Type type, String base, int index, Map<String, String> structs) {
+        if (type instanceof StructureType) {
+            StringBuilder sb = new StringBuilder();
+            StructureType st = (StructureType) type;
+            sb.append("{");
+            String name = String.format("%s_%04d", base, index);
+            for (int i = 0; i < st.getTypeCount(); i++) {
+                Type t = st.getTypeAt(i);
+                if (i == 0 && t instanceof StructureType) {
+                    if (((StructureType) t).getTypeCount() == 0) {
+                        // Skip empty structs as first member
+                        continue;
+                    }
+                }
+                // Only support arrays embedded in structs
+                StringBuilder dims = new StringBuilder();
+                while (t instanceof ArrayType) {
+                    ArrayType at = (ArrayType) t;
+                    dims.append('[').append(at.getSize()).append(']');
+                    t = ((ArrayType) t).getElementType();
+                }
+                sb.append(getLoType(t, name, i, structs)).append(" m" + i).append(dims).append(";");
+            }
+            sb.append("}");
+            structs.put(name, sb.toString());
+            return "struct " + name;
+        } else {
+            return getHiType(type);
+        }
+    }
+
     public Type getStructMemberType(SootMethod method) {
         String methodType = hasStructMemberAnnotation(method) ? "@StructMember" : "@GlobalValue";
         SootMethod getter = method.getParameterCount() == 0 ? method : null;

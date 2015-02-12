@@ -34,7 +34,7 @@ import org.robovm.llvm.binding.SymbolIteratorRef;
  */
 public class ObjectFile implements AutoCloseable {
     private final File file;
-    protected ObjectFileRef ref;
+    private ObjectFileRef ref;
 
     private ObjectFile(File file, ObjectFileRef objectFileRef) {
         this.file = file;
@@ -48,6 +48,7 @@ public class ObjectFile implements AutoCloseable {
     }
     
     protected ObjectFileRef getRef() {
+        checkDisposed();
         return ref;
     }
     

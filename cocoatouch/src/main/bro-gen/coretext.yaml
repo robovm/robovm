@@ -117,12 +117,12 @@ functions:
         class: CTFontCollection
         name: 'get#{g[0]}'
         return_type: List<CTFontDescriptor>
-        return_marshaler: CFArray.AsListMarshaler
+        return_marshaler: CTFontDescriptor.AsListMarshaler
     CTFontCollectionCreate(MatchingFontDescriptors)SortedWithCallback:
         class: CTFontCollection
         name: 'get#{g[0]}Sorted'
         return_type: List<CTFontDescriptor>
-        return_marshaler: CFArray.AsListMarshaler
+        return_marshaler: CTFontDescriptor.AsListMarshaler
         visibility: protected
         parameters:
             refCon:
@@ -141,7 +141,7 @@ functions:
         parameters:
             queryDescriptors:
                 type: List<CTFontDescriptor>
-                marshaler: CFArray.AsListMarshaler
+                marshaler: CTFontDescriptor.AsListMarshaler
             options:
                 type: CTFontCollectionOptions
     CTFontCollection(CreateCopy)WithFontDescriptors:
@@ -151,7 +151,7 @@ functions:
         parameters:
             queryDescriptors:
                 type: List<CTFontDescriptor>
-                marshaler: CFArray.AsListMarshaler
+                marshaler: CTFontDescriptor.AsListMarshaler
             options:
                 type: CTFontCollectionOptions
     CTFontCollection(.*):
@@ -224,7 +224,7 @@ functions:
         class: CTFontManager
         name: '#{g[0]}'
         return_type: List<CTFontDescriptor>
-        return_marshaler: CFArray.AsListMarshaler
+        return_marshaler: CTFontDescriptor.AsListMarshaler
     CTFontManager(CreateFontDescriptor)FromData:
         class: CTFontManager
         name: '#{g[0]}'
@@ -370,7 +370,7 @@ functions:
         class: CTFont
         name: 'get#{g[0]}'
         return_type: List<CTFontDescriptor>
-        return_marshaler: CFArray.AsListMarshaler
+        return_marshaler: CTFontDescriptor.AsListMarshaler
         parameters:
             languagePrefList:
                 type: List<String>
@@ -431,7 +431,7 @@ functions:
         class: CTFrame
         name: '#{g[0]}'
         return_type: List<CTLine>
-        return_marshaler: CFArray.AsListMarshaler
+        return_marshaler: CTLine.AsListMarshaler
     CTFrame(GetLineOrigins):
         class: CTFrame
         name: '#{g[0]}'
@@ -458,7 +458,7 @@ functions:
         class: CTLine
         name: '#{g[0]}'
         return_type: List<CTRun>
-        return_marshaler: CFArray.AsListMarshaler
+        return_marshaler: CTRun.AsListMarshaler
     CTLine(GetPenOffset)ForFlush:
         class: CTLine
         name: '#{g[0]}'

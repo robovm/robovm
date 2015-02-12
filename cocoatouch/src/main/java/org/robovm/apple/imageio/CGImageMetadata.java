@@ -19,6 +19,7 @@ package org.robovm.apple.imageio;
 import java.io.*;
 import java.nio.*;
 import java.util.*;
+
 import org.robovm.objc.*;
 import org.robovm.objc.annotation.*;
 import org.robovm.objc.block.*;
@@ -96,7 +97,7 @@ import org.robovm.apple.coregraphics.*;
      * @since Available in iOS 7.0 and later.
      */
     @Bridge(symbol="CGImageMetadataCopyTags", optional=true)
-    public native @org.robovm.rt.bro.annotation.Marshaler(CFArray.AsListMarshaler.class) List<CGImageMetadataTag> getTags();
+    public native @org.robovm.rt.bro.annotation.Marshaler(CGImageMetadataTag.AsListMarshaler.class) List<CGImageMetadataTag> getTags();
     /**
      * @since Available in iOS 7.0 and later.
      */

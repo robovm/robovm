@@ -85,7 +85,7 @@ import org.robovm.rt.bro.ptr.*;
      * @since Available in iOS 4.0 and later.
      */
     @Bridge(symbol="dispatch_source_testcancel", optional=true)
-    public native @MachineSizedSInt long testcancel();
+    public native @MachineSizedSInt long testCancel();
     /**
      * @since Available in iOS 4.0 and later.
      */

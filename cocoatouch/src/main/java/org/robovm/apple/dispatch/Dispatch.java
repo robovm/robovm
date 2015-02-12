@@ -42,16 +42,17 @@ import org.robovm.rt.bro.ptr.*;
     public static final int API_VERSION = 20140804;
     protected static final long TIME_NOW = 0L;
     protected static final long TIME_FOREVER = ~0L;
-    public static final int BLOCK_BARRIER = 1;
-    public static final int BLOCK_DETACHED = 2;
-    public static final int BLOCK_ASSIGN_CURRENT = 4;
-    public static final int BLOCK_NO_QOS_CLASS = 8;
-    public static final int BLOCK_INHERIT_QOS_CLASS = 16;
-    public static final int BLOCK_ENFORCE_QOS_CLASS = 32;
     /*</constants>*/
     /*<constructors>*//*</constructors>*/
     /*<properties>*//*</properties>*/
     /*<members>*//*</members>*/
+    /**
+     * @since Available in iOS 4.0 and later.
+     */
+    public static void once(Runnable block) {
+        MachineSizedSIntPtr ptr = new MachineSizedSIntPtr();
+        once(ptr, block);
+    }
     /*<methods>*/
     /**
      * @since Available in iOS 4.0 and later.
@@ -63,59 +64,16 @@ import org.robovm.rt.bro.ptr.*;
      */
     @Bridge(symbol="dispatch_walltime", optional=true)
     protected static native long walltime(timespec when, long delta);
-    @Bridge(symbol="dispatch_wait", optional=true)
-    public static native @MachineSizedSInt long wait(VoidPtr object, long timeout);
-    @Bridge(symbol="dispatch_notify", optional=true)
-    public static native void notify(VoidPtr object, @ByVal DispatchObject queue, @Block Runnable notification_block);
-    @Bridge(symbol="dispatch_cancel", optional=true)
-    public static native void cancel(VoidPtr object);
-    @Bridge(symbol="dispatch_testcancel", optional=true)
-    public static native @MachineSizedSInt long testcancel(VoidPtr object);
     /**
      * @since Available in iOS 4.0 and later.
      */
     @Bridge(symbol="dispatch_main", optional=true)
     public static native void main();
     /**
-     * @since Available in iOS 8.0 and later.
-     */
-    @Bridge(symbol="dispatch_block_create", optional=true)
-    public static native @Block Runnable blockCreate(@MachineSizedUInt long flags, @Block Runnable block);
-    /**
-     * @since Available in iOS 8.0 and later.
-     */
-    @Bridge(symbol="dispatch_block_create_with_qos_class", optional=true)
-    public static native @Block Runnable blockCreateWithQosClass(@MachineSizedUInt long flags, int qos_class, int relative_priority, @Block Runnable block);
-    /**
-     * @since Available in iOS 8.0 and later.
-     */
-    @Bridge(symbol="dispatch_block_perform", optional=true)
-    public static native void blockPerform(@MachineSizedUInt long flags, @Block Runnable block);
-    /**
-     * @since Available in iOS 8.0 and later.
-     */
-    @Bridge(symbol="dispatch_block_wait", optional=true)
-    public static native @MachineSizedSInt long blockWait(@Block Runnable block, long timeout);
-    /**
-     * @since Available in iOS 8.0 and later.
-     */
-    @Bridge(symbol="dispatch_block_notify", optional=true)
-    public static native void blockNotify(@Block Runnable block, DispatchQueue queue, @Block Runnable notification_block);
-    /**
-     * @since Available in iOS 8.0 and later.
-     */
-    @Bridge(symbol="dispatch_block_cancel", optional=true)
-    public static native void blockCancel(@Block Runnable block);
-    /**
-     * @since Available in iOS 8.0 and later.
-     */
-    @Bridge(symbol="dispatch_block_testcancel", optional=true)
-    public static native @MachineSizedSInt long blockTestcancel(@Block Runnable block);
-    /**
      * @since Available in iOS 4.0 and later.
      */
     @Bridge(symbol="dispatch_once", optional=true)
-    public static native void once(MachineSizedSIntPtr predicate, @Block Runnable block);
+    protected static native void once(MachineSizedSIntPtr predicate, @Block Runnable block);
     /**
      * @since Available in iOS 5.0 and later.
      */

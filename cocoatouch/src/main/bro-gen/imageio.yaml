@@ -108,7 +108,7 @@ functions:
         class: CGImageMetadata
         name: 'get#{g[0]}'
         return_type: List<CGImageMetadataTag>
-        return_marshaler: CFArray.AsListMarshaler
+        return_marshaler: CGImageMetadataTag.AsListMarshaler
     CGImageMetadataCopy(Tag)WithPath:
         class: CGImageMetadata
         name: 'get#{g[0]}AtPath'

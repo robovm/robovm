@@ -740,6 +740,7 @@ public class LLVMJNI {
   public final static native boolean TargetMachineEmitToMemoryBuffer(long jarg1, long jarg2, int jarg3, long jarg4, StringOut jarg4_, long jarg5, MemoryBufferRefOut jarg5_);
   public final static native String GetDefaultTargetTriple();
   public final static native void AddAnalysisPasses(long jarg1, long jarg2);
+  public final static native boolean LinkModules(long jarg1, long jarg2, int jarg3, long jarg4, StringOut jarg4_);
   public final static native String llvmHostTriple_get();
   public final static native void PassManagerBuilderSetDisableTailCalls(long jarg1, boolean jarg2);
   public final static native void PassManagerBuilderUseAlwaysInliner(long jarg1, boolean jarg2);
@@ -795,6 +796,7 @@ public class LLVMJNI {
   public final static native boolean TargetMachineEmitToOutputStream(long jarg1, long jarg2, java.io.OutputStream jarg3, int jarg4, long jarg5, StringOut jarg5_);
   public final static native void GetLineInfoForAddressRange(long jarg1, long jarg2, long jarg3, long jarg4, IntOut jarg4_, long jarg5, LongArrayOut jarg5_);
   public final static native long CopySectionContents(long jarg1, byte[] jarg2);
+  public final static native long ClangCompileFile(long jarg1, String jarg2, String jarg3, String jarg4, long jarg5, StringOut jarg5_);
 
   static {
     org.robovm.llvm.NativeLibrary.load();

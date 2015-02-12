@@ -72,7 +72,7 @@ import org.robovm.apple.audiotoolbox.*;
                 return null;
             }
             List<CMFormatDescriptionVendor> list = new ArrayList<>();
-            for (long i = 0, n = o.size(); i < n; i++) {
+            for (int i = 0; i < o.size(); i++) {
                 list.add(CMFormatDescriptionVendor.valueOf(o.get(i, CFString.class)));
             }
             return list;

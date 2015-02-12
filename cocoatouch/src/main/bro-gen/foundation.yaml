@@ -344,14 +344,14 @@ classes:
                 property: true
                 return_type: NSArray<NSBundle>
             '+pathForResource:ofType:inDirectory:':
-                name: findResourcePathInBundlePath
+                name: findResourcePathInBundle
             '+pathsForResourcesOfType:inDirectory:':
-                name: findResourcesPathsInBundlePath
+                name: findResourcesPathsInBundle
                 return_type: '@org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String>'
             '+URLForResource:withExtension:subdirectory:inBundleWithURL:':
-                name: findResourceURLInBundleURL
+                name: findResourceURLInBundle
             '+URLsForResourcesWithExtension:subdirectory:inBundleWithURL:':
-                name: findResourceURLsInBundleURL
+                name: findResourceURLsInBundle
                 return_type: '@org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String>'
             '+preferredLocalizationsFromArray:.*':
                 name: getPreferredLocalizations
@@ -366,33 +366,33 @@ classes:
             '-pathForResource:ofType:':
                 name: findResourcePath
             '-pathForResource:ofType:inDirectory:forLocalization:':
-                name: findResourcePathInSubPath
+                name: findResourcePath
             '-pathForResource:ofType:inDirectory:':
-                name: findResourcePathInSubPath
+                name: findResourcePath
             '-pathsForResourcesOfType:inDirectory:':
-                name: findResourcesPathsInSubPath
+                name: findResourcesPaths
                 return_type: '@org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String>'
             '-pathsForResourcesOfType:inDirectory:forLocalization:':
-                name: findResourcesPathsInSubPath
+                name: findResourcesPaths
                 return_type: '@org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String>'
             '-classNamed:':
                 name: getClassNamed
             '-loadAndReturnError:':
                 name: load
-                visibility: protected # throws NSErrorException
+                throws: NSErrorException
             '-localizedStringForKey:value:table:':
                 name: getLocalizedString
             '-objectForInfoDictionaryKey:':
                 name: getInfoDictionaryObject
             '-preflightAndReturnError:':
                 name: preflight
-                visibility: protected # throws NSErrorException
+                throws: NSErrorException
             '-URLForAuxiliaryExecutable:':
                 name: findAuxiliaryExecutableURL
             '-URLForResource.*':
-                name: findResourceURLInSubPath
+                name: findResourceURL
             '-URLsForResources.*':
-                name: findResourceURLsInSubPath
+                name: findResourceURLs
                 return_type: NSArray<NSURL>
             '+bundleForClass:':
                 name: getBundle

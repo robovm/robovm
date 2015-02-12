@@ -1,0 +1,8 @@
+<config>
+  <libs>
+    <lib>pass_return_byval_test.o</lib>
+  </libs>
+  <exportedSymbols>
+    <symbol>native_*</symbol>
+  </exportedSymbols>
+</config>

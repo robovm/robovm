@@ -646,8 +646,8 @@ functions:
     CGPDFContentStream(GetStreams):
         class: CGPDFContentStream
         name: '#{g[0]}'
-        return_type: List<CGPDFObject>
-        return_marshaler: CFArray.AsListMarshaler
+        return_type: List<CGPDFContentStream>
+        return_marshaler: CGPDFContentStream.AsListMarshaler
     CGPDFContentStream(GetResource):
         class: CGPDFContentStream
         name: '#{g[0]}'

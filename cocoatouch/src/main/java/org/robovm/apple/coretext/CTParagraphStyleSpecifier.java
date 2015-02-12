@@ -54,8 +54,7 @@ public enum /*<name>*/CTParagraphStyleSpecifier/*</name>*/ implements ValuedEnum
     MaximumLineSpacing(14L),
     MinimumLineSpacing(15L),
     LineSpacingAdjustment(16L),
-    LineBoundsOptions(17L),
-    Count(18L);
+    LineBoundsOptions(17L);
     /*</values>*/
 
     /*<bind>*/

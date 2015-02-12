@@ -54,7 +54,7 @@ public class Mangler {
         return sb.toString();
     }
     
-    private static String mangleNativeString(String name) {
+    static String mangleNativeString(String name) {
         StringBuilder sb = new StringBuilder();
         for (int i = 0; i < name.length(); i++) {
             char c = name.charAt(i);

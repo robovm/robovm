@@ -31,4 +31,6 @@ public abstract class AggregateType extends UserType {
     }
     
     public abstract Type getTypeAt(int index);
+
+    public abstract int getTypeCount();
 }

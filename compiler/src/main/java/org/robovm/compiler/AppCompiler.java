@@ -252,11 +252,13 @@ public class AppCompiler {
 
         final Executor executor = (config.getThreads() <= 1)
                 ? SAME_THREAD_EXECUTOR
-                : new ThreadPoolExecutor(config.getThreads(), config.getThreads(),
+                : new ThreadPoolExecutor(config.getThreads() - 1, config.getThreads() - 1,
                         0L, TimeUnit.MILLISECONDS,
                         // Use a bounded queue to avoid memory problems if the 
                         // worker threads are slower than the enqueuing thread.
-                        new ArrayBlockingQueue<Runnable>(config.getThreads()));
+                        // The optimal thread pool size and queue size have been 
+                        // determined by trial and error.
+                        new ArrayBlockingQueue<Runnable>((config.getThreads() - 1) * 20));
         class HandleFailureListener implements ClassCompilerListener {
             volatile Throwable t;
             @Override

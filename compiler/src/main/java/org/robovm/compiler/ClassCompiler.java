@@ -40,6 +40,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.concurrent.Executor;
+import java.util.concurrent.ExecutorService;
 import java.util.concurrent.RejectedExecutionException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -96,6 +97,7 @@ import org.robovm.llvm.PassManagerBuilder;
 import org.robovm.llvm.Symbol;
 import org.robovm.llvm.Target;
 import org.robovm.llvm.TargetMachine;
+import org.robovm.llvm.binding.Attribute;
 import org.robovm.llvm.binding.CodeGenFileType;
 import org.robovm.llvm.binding.CodeGenOptLevel;
 
@@ -202,7 +204,7 @@ public class ClassCompiler {
     
     private final Config config;
     private final MethodCompiler methodCompiler;
-    private final BridgeMethodCompiler bridgeMethodCompiler;
+    private final BroMethodCompiler bridgeMethodCompiler;
     private final CallbackMethodCompiler callbackMethodCompiler;
     private final NativeMethodCompiler nativeMethodCompiler;
     private final StructMemberMethodCompiler structMemberMethodCompiler;
@@ -290,40 +292,83 @@ public class ClassCompiler {
             throw new RuntimeException(t);
         }
 
-        scheduleMachineCodeGeneration(executor, listener, config, clazz, output.toByteArray());
+        List<String> cCode = new ArrayList<>();
+        cCode.addAll(bridgeMethodCompiler.getCWrapperFunctions());
+        cCode.addAll(callbackMethodCompiler.getCWrapperFunctions());
+        
+        scheduleMachineCodeGeneration(executor, listener, config, clazz, output.toByteArray(), cCode);
     }
 
     private static void scheduleMachineCodeGeneration(Executor executor, final ClassCompilerListener listener,
-            final Config config, final Clazz clazz, final byte[] llData) {
+            final Config config, final Clazz clazz, final byte[] llData, final List<String> cCode) {
+        
+        Runnable task = new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    generateMachineCode(config, clazz, llData, cCode);
+                    listener.success(clazz);
+                } catch (Throwable t) {
+                    listener.failure(clazz, t);
+                }
+            }
+        };
         
         try {
-            executor.execute(new Runnable() {
-                @Override
-                public void run() {
-                    try {
-                        generateMachineCode(config, clazz, llData);
-                        listener.success(clazz);
-                    } catch (Throwable t) {
-                        listener.failure(clazz, t);
-                    }
-                }
-            });
+            executor.execute(task);
         } catch (RejectedExecutionException e) {
-            // Ignore. The executor has been shutdown for some reason.
+            if (!(executor instanceof ExecutorService) || !((ExecutorService) executor).isShutdown()) {
+                // The task was rejected, probably because all workers are busy. Run it in this thread instead.
+                task.run();
+            }
         }
     }
     
-    private static void generateMachineCode(Config config, Clazz clazz, byte[] llData) throws IOException {
+    private static void generateMachineCode(Config config, Clazz clazz, byte[] llData, List<String> cCode) throws IOException {
 
         if (config.isDumpIntermediates()) {
             File llFile = config.getLlFile(clazz);
             llFile.getParentFile().mkdirs();
             FileUtils.writeByteArrayToFile(llFile, llData);
+            File cFile = config.getCFile(clazz);
+            if (cCode.isEmpty()) {
+                cFile.delete();
+            } else {
+                FileUtils.writeLines(cFile, "ascii", cCode);
+            }
         }
 
         File oFile = config.getOFile(clazz);
         try (Context context = new Context()) {
             try (Module module = Module.parseIR(context, llData, clazz.getClassName())) {
+                
+                if (!cCode.isEmpty()) {
+                    int size = 0;
+                    for (String s : cCode) {
+                        size += s.length();
+                    }
+                    StringBuilder sb = new StringBuilder(size);
+                    for (String s : cCode) {
+                        sb.append(s);
+                    }
+                    try (Module m2 = Module.parseClangString(context, sb.toString(), clazz.getClassName() + ".c", config.getClangTriple())) {
+                        module.link(m2);
+                        for (org.robovm.llvm.Function f1 : m2.getFunctions()) {
+                            String name = f1.getName();
+                            org.robovm.llvm.Function f2 = module.getFunctionByName(name);
+                            if (Symbols.isBridgeCSymbol(name) || Symbols.isCallbackCSymbol(name) || Symbols.isCallbackInnerCSymbol(name)) {
+                                f2.setLinkage(org.robovm.llvm.binding.Linkage.PrivateLinkage);
+                                if (Symbols.isCallbackInnerCSymbol(name)) {
+                                    // TODO: We should also always inline the bridge functions but for some reason
+                                    // that makes the RoboVM tests hang indefinitely.
+                                    f2.removeAttribute(Attribute.NoInlineAttribute);
+                                    f2.addAttribute(Attribute.AlwaysInlineAttribute);
+                                }
+                            }
+                        }
+                    }
+                }
+                
                 try (PassManager passManager = createPassManager(config)) {
                     passManager.run(module);
                 }

@@ -91,26 +91,26 @@ import org.robovm.apple.coregraphics.*;
      * @since Available in iOS 3.2 and later.
      */
     @Bridge(symbol="CTFontCollectionCreateFromAvailableFonts", optional=true)
-    public static native CTFontCollection createFromAvailableFonts(CTFontCollectionOptions options);
+    public static native @org.robovm.rt.bro.annotation.Marshaler(CFType.NoRetainMarshaler.class) CTFontCollection createFromAvailableFonts(CTFontCollectionOptions options);
     /**
      * @since Available in iOS 3.2 and later.
      */
     @Bridge(symbol="CTFontCollectionCreateWithFontDescriptors", optional=true)
-    public static native CTFontCollection create(@org.robovm.rt.bro.annotation.Marshaler(CFArray.AsListMarshaler.class) List<CTFontDescriptor> queryDescriptors, CTFontCollectionOptions options);
+    public static native @org.robovm.rt.bro.annotation.Marshaler(CFType.NoRetainMarshaler.class) CTFontCollection create(@org.robovm.rt.bro.annotation.Marshaler(CTFontDescriptor.AsListMarshaler.class) List<CTFontDescriptor> queryDescriptors, CTFontCollectionOptions options);
     /**
      * @since Available in iOS 3.2 and later.
      */
     @Bridge(symbol="CTFontCollectionCreateCopyWithFontDescriptors", optional=true)
-    public native CTFontCollection createCopy(@org.robovm.rt.bro.annotation.Marshaler(CFArray.AsListMarshaler.class) List<CTFontDescriptor> queryDescriptors, CTFontCollectionOptions options);
+    public native @org.robovm.rt.bro.annotation.Marshaler(CFType.NoRetainMarshaler.class) CTFontCollection createCopy(@org.robovm.rt.bro.annotation.Marshaler(CTFontDescriptor.AsListMarshaler.class) List<CTFontDescriptor> queryDescriptors, CTFontCollectionOptions options);
     /**
      * @since Available in iOS 3.2 and later.
      */
     @Bridge(symbol="CTFontCollectionCreateMatchingFontDescriptors", optional=true)
-    public native @org.robovm.rt.bro.annotation.Marshaler(CFArray.AsListMarshaler.class) List<CTFontDescriptor> getMatchingFontDescriptors();
+    public native @org.robovm.rt.bro.annotation.Marshaler(CTFontDescriptor.AsListMarshaler.class) List<CTFontDescriptor> getMatchingFontDescriptors();
     /**
      * @since Available in iOS 3.2 and later.
      */
     @Bridge(symbol="CTFontCollectionCreateMatchingFontDescriptorsSortedWithCallback", optional=true)
-    protected native @org.robovm.rt.bro.annotation.Marshaler(CFArray.AsListMarshaler.class) List<CTFontDescriptor> getMatchingFontDescriptorsSorted(FunctionPtr sortCallback, @Pointer long refCon);
+    protected native @org.robovm.rt.bro.annotation.Marshaler(CTFontDescriptor.AsListMarshaler.class) List<CTFontDescriptor> getMatchingFontDescriptorsSorted(FunctionPtr sortCallback, @Pointer long refCon);
     /*</methods>*/
 }

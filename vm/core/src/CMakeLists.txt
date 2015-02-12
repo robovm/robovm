@@ -24,7 +24,6 @@ set(SRC
   trycatch-${OS_FAMILY}-${ARCH}.s
   unwind.c
   hooks.c
-  eval.c
 )
 
 # The code in unwind.c doesn't work properly if compiled with tail call optimizations

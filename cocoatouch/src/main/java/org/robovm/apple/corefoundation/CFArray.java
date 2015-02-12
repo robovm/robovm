@@ -40,31 +40,6 @@ import org.robovm.apple.foundation.NSObject.NSObjectPtr;
     extends /*<extends>*/CFPropertyList/*</extends>*/ 
     /*<implements>*//*</implements>*/ {
 
-    public static class AsListMarshaler {
-        @MarshalsPointer
-        public static List<?> toObject(Class<? extends CFType> cls, long handle, long flags) {
-            CFArray o = (CFArray) CFType.Marshaler.toObject(cls, handle, flags);
-            if (o == null) {
-                return null;
-            }
-            return o.toList(NativeObject.class);
-        }
-        @SuppressWarnings("unchecked")
-        @MarshalsPointer
-        public static long toNative(List<?> l, long flags) {
-            if (l == null) {
-                return 0L;
-            }
-            CFArray o = null;
-            if (l instanceof CFArray) {
-                o = (CFArray) l;
-            } else {
-                o = CFArray.create((List<CFType>) l);
-            }
-            return CFType.Marshaler.toNative(o, flags);
-        }
-    }
-    
     public static class AsStringListMarshaler {
         @MarshalsPointer
         public static List<String> toObject(Class<? extends CFType> cls, long handle, long flags) {

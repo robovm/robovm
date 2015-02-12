@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 Trillian Mobile AB
+ * Copyright (C) 2015 Trillian Mobile AB
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -33,12 +33,13 @@ import org.robovm.apple.coregraphics.*;
 
 /*<javadoc>*/
 /*</javadoc>*/
-@Marshaler(CTFontVariationAxes.Marshaler.class)
 /*<annotations>*/@Library("CoreText")/*</annotations>*/
+@Marshaler(/*<name>*/CTFontVariationAxes/*</name>*/.Marshaler.class)
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/CTFontVariationAxes/*</name>*/ 
-    extends /*<extends>*/Object/*</extends>*/ 
+    extends /*<extends>*/CFDictionaryWrapper/*</extends>*/
     /*<implements>*//*</implements>*/ {
 
+    /*<marshalers>*/
     public static class Marshaler {
         @MarshalsPointer
         public static CTFontVariationAxes toObject(Class<CTFontVariationAxes> cls, long handle, long flags) {
@@ -56,32 +57,62 @@ import org.robovm.apple.coregraphics.*;
             return CFType.Marshaler.toNative(o.data, flags);
         }
     }
-    
-    /*<ptr>*/
-    /*</ptr>*/
-    private CFDictionary data;
-    
-    protected CTFontVariationAxes(CFDictionary data) {
-        this.data = data;
+    public static class AsListMarshaler {
+        @MarshalsPointer
+        public static List<CTFontVariationAxes> toObject(Class<? extends CFType> cls, long handle, long flags) {
+            CFArray o = (CFArray) CFType.Marshaler.toObject(cls, handle, flags);
+            if (o == null) {
+                return null;
+            }
+            List<CTFontVariationAxes> list = new ArrayList<>();
+            for (int i = 0; i < o.size(); i++) {
+                list.add(new CTFontVariationAxes(o.get(i, CFDictionary.class)));
+            }
+            return list;
+        }
+        @MarshalsPointer
+        public static long toNative(List<CTFontVariationAxes> l, long flags) {
+            if (l == null) {
+                return 0L;
+            }
+            CFArray array = CFMutableArray.create();
+            for (CTFontVariationAxes i : l) {
+                array.add(i.getDictionary());
+            }
+            return CFType.Marshaler.toNative(array, flags);
+        }
     }
-    public CTFontVariationAxes() {
-        this.data = CFMutableDictionary.create();
+    /*</marshalers>*/
+
+    /*<constructors>*/
+    CTFontVariationAxes(CFDictionary data) {
+        super(data);
     }
-    /*<bind>*/static { Bro.bind(CTFontVariationAxes.class); }/*</bind>*/
-    /*<constants>*//*</constants>*/
-    /*<constructors>*//*</constructors>*/
-    /*<properties>*//*</properties>*/
-    /*<members>*//*</members>*/
-    protected CFDictionary getDictionary() {
-        return data;
+    public CTFontVariationAxes() {}
+    /*</constructors>*/
+
+    /*<methods>*/
+    public boolean has(CFString key) {
+        return data.containsKey(key);
+    }
+    public <T extends NativeObject> T get(CFString key, Class<T> type) {
+        if (has(key)) {
+            return data.get(key, type);
+        }
+        return null;
+    }
+    public CTFontVariationAxes set(CFString key, NativeObject value) {
+        data.put(key, value);
+        return this;
     }
     
+
     /**
      * @since Available in iOS 3.2 and later.
      */
     public long getIdentifier() {
-        if (data.containsKey(IdentifierKey())) {
-            CFNumber val = data.get(IdentifierKey(), CFNumber.class);
+        if (has(Keys.Identifier())) {
+            CFNumber val = get(Keys.Identifier(), CFNumber.class);
             return val.longValue();
         }
         return 0;
@@ -90,15 +121,15 @@ import org.robovm.apple.coregraphics.*;
      * @since Available in iOS 3.2 and later.
      */
     public CTFontVariationAxes setIdentifier(long identifier) {
-        data.put(IdentifierKey(), CFNumber.valueOf(identifier));
+        set(Keys.Identifier(), CFNumber.valueOf(identifier));
         return this;
     }
     /**
      * @since Available in iOS 3.2 and later.
      */
     public double getMinimumValue() {
-        if (data.containsKey(MinimumValueKey())) {
-            CFNumber val = data.get(MinimumValueKey(), CFNumber.class);
+        if (has(Keys.MinimumValue())) {
+            CFNumber val = get(Keys.MinimumValue(), CFNumber.class);
             return val.doubleValue();
         }
         return 0;
@@ -106,16 +137,16 @@ import org.robovm.apple.coregraphics.*;
     /**
      * @since Available in iOS 3.2 and later.
      */
-    public CTFontVariationAxes setMinimumValue(double value) {
-        data.put(MinimumValueKey(), CFNumber.valueOf(value));
+    public CTFontVariationAxes setMinimumValue(double minimumValue) {
+        set(Keys.MinimumValue(), CFNumber.valueOf(minimumValue));
         return this;
     }
     /**
      * @since Available in iOS 3.2 and later.
      */
     public double getMaximumValue() {
-        if (data.containsKey(MaximumValueKey())) {
-            CFNumber val = data.get(MaximumValueKey(), CFNumber.class);
+        if (has(Keys.MaximumValue())) {
+            CFNumber val = get(Keys.MaximumValue(), CFNumber.class);
             return val.doubleValue();
         }
         return 0;
@@ -123,16 +154,16 @@ import org.robovm.apple.coregraphics.*;
     /**
      * @since Available in iOS 3.2 and later.
      */
-    public CTFontVariationAxes setMaximumValue(double value) {
-        data.put(MaximumValueKey(), CFNumber.valueOf(value));
+    public CTFontVariationAxes setMaximumValue(double maximumValue) {
+        set(Keys.MaximumValue(), CFNumber.valueOf(maximumValue));
         return this;
     }
     /**
      * @since Available in iOS 3.2 and later.
      */
     public double getDefaultValue() {
-        if (data.containsKey(DefaultValueKey())) {
-            CFNumber val = data.get(DefaultValueKey(), CFNumber.class);
+        if (has(Keys.DefaultValue())) {
+            CFNumber val = get(Keys.DefaultValue(), CFNumber.class);
             return val.doubleValue();
         }
         return 0;
@@ -140,16 +171,16 @@ import org.robovm.apple.coregraphics.*;
     /**
      * @since Available in iOS 3.2 and later.
      */
-    public CTFontVariationAxes setDefaultValue(double value) {
-        data.put(DefaultValueKey(), CFNumber.valueOf(value));
+    public CTFontVariationAxes setDefaultValue(double defaultValue) {
+        set(Keys.DefaultValue(), CFNumber.valueOf(defaultValue));
         return this;
     }
     /**
      * @since Available in iOS 3.2 and later.
      */
     public String getLocalizedName() {
-        if (data.containsKey(NameKey())) {
-            CFString val = data.get(NameKey(), CFString.class);
+        if (has(Keys.Name())) {
+            CFString val = get(Keys.Name(), CFString.class);
             return val.toString();
         }
         return null;
@@ -157,40 +188,41 @@ import org.robovm.apple.coregraphics.*;
     /**
      * @since Available in iOS 3.2 and later.
      */
-    public CTFontVariationAxes setLocalizedName(String name) {
-        data.put(NameKey(), new CFString(name));
+    public CTFontVariationAxes setLocalizedName(String localizedName) {
+        set(Keys.Name(), new CFString(localizedName));
         return this;
     }
-    /*<methods>*/
-    /**
-     * @since Available in iOS 3.2 and later.
-     */
-    @GlobalValue(symbol="kCTFontVariationAxisIdentifierKey", optional=true)
-    protected static native CFString IdentifierKey();
-    /**
-     * @since Available in iOS 3.2 and later.
-     */
-    @GlobalValue(symbol="kCTFontVariationAxisMinimumValueKey", optional=true)
-    protected static native CFString MinimumValueKey();
-    /**
-     * @since Available in iOS 3.2 and later.
-     */
-    @GlobalValue(symbol="kCTFontVariationAxisMaximumValueKey", optional=true)
-    protected static native CFString MaximumValueKey();
-    /**
-     * @since Available in iOS 3.2 and later.
-     */
-    @GlobalValue(symbol="kCTFontVariationAxisDefaultValueKey", optional=true)
-    protected static native CFString DefaultValueKey();
-    /**
-     * @since Available in iOS 3.2 and later.
-     */
-    @GlobalValue(symbol="kCTFontVariationAxisNameKey", optional=true)
-    protected static native CFString NameKey();
     /*</methods>*/
-    @Override
-    public String toString() {
-        if (data != null) return data.toString();
-        return super.toString();
+    
+    /*<keys>*/
+    @Library("CoreText")
+    public static class Keys {
+        static { Bro.bind(Keys.class); }
+        /**
+         * @since Available in iOS 3.2 and later.
+         */
+        @GlobalValue(symbol="kCTFontVariationAxisIdentifierKey", optional=true)
+        public static native CFString Identifier();
+        /**
+         * @since Available in iOS 3.2 and later.
+         */
+        @GlobalValue(symbol="kCTFontVariationAxisMinimumValueKey", optional=true)
+        public static native CFString MinimumValue();
+        /**
+         * @since Available in iOS 3.2 and later.
+         */
+        @GlobalValue(symbol="kCTFontVariationAxisMaximumValueKey", optional=true)
+        public static native CFString MaximumValue();
+        /**
+         * @since Available in iOS 3.2 and later.
+         */
+        @GlobalValue(symbol="kCTFontVariationAxisDefaultValueKey", optional=true)
+        public static native CFString DefaultValue();
+        /**
+         * @since Available in iOS 3.2 and later.
+         */
+        @GlobalValue(symbol="kCTFontVariationAxisNameKey", optional=true)
+        public static native CFString Name();
     }
+    /*</keys>*/
 }

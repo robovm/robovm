@@ -35,6 +35,8 @@ import org.robovm.apple.coremedia.*;
 import org.robovm.apple.security.*;
 import org.robovm.apple.dispatch.*;
 /*</imports>*/
+import org.robovm.apple.coretext.CTAttributedStringAttribute;
+import org.robovm.apple.coretext.CTAttributedStringAttributes;
 
 /*<javadoc>*/
 /**
@@ -60,7 +62,13 @@ import org.robovm.apple.dispatch.*;
         super((SkipInit)null);
         initObject(init(str, attrs.getDictionary()));
     }
+    @SuppressWarnings("unchecked")
     public NSAttributedString(String str, CMTextMarkupAttributes attrs) {
+        super((SkipInit)null);
+        initObject(init(str, attrs.getDictionary().as(NSDictionary.class)));
+    }
+    @SuppressWarnings("unchecked")
+    public NSAttributedString(String str, CTAttributedStringAttributes attrs) {
         super((SkipInit)null);
         initObject(init(str, attrs.getDictionary().as(NSDictionary.class)));
     }
@@ -88,6 +96,9 @@ import org.robovm.apple.dispatch.*;
     public NSObject getAttribute(CMTextMarkupAttribute attribute, @MachineSizedUInt long location, NSRange range) {
         return getAttribute(attribute.value().as(NSString.class), location, range);
     }
+    public NSObject getAttribute(CTAttributedStringAttribute attribute, @MachineSizedUInt long location, NSRange range) {
+        return getAttribute(attribute.value().as(NSString.class), location, range);
+    }
     
     public NSObject getAttribute(String name, @MachineSizedUInt long location, NSRange range, @ByVal NSRange rangeLimit) {
         return getAttribute(new NSString(name), location, range, rangeLimit);
@@ -96,6 +107,9 @@ import org.robovm.apple.dispatch.*;
         return getAttribute(attribute.value(), location, range, rangeLimit);
     }
     public NSObject getAttribute(CMTextMarkupAttribute attribute, @MachineSizedUInt long location, NSRange range, @ByVal NSRange rangeLimit) {
+        return getAttribute(attribute.value().as(NSString.class), location, range, rangeLimit);
+    }
+    public NSObject getAttribute(CTAttributedStringAttribute attribute, @MachineSizedUInt long location, NSRange range, @ByVal NSRange rangeLimit) {
         return getAttribute(attribute.value().as(NSString.class), location, range, rangeLimit);
     }
 
@@ -110,6 +124,12 @@ import org.robovm.apple.dispatch.*;
     }
     public CMTextMarkupAttributes getTextMarkupAttributes(long location, NSRange range, NSRange rangeLimit) {
         return new CMTextMarkupAttributes(getAttributesDictionary(location, range, rangeLimit).as(CFDictionary.class));
+    }
+    public CTAttributedStringAttributes getCoreTextAttributes(long location, NSRange range) {
+        return new CTAttributedStringAttributes(getAttributesDictionary(location, range).as(CFDictionary.class));
+    }
+    public CTAttributedStringAttributes getCoreTextAttributes(long location, NSRange range, NSRange rangeLimit) {
+        return new CTAttributedStringAttributes(getAttributesDictionary(location, range, rangeLimit).as(CFDictionary.class));
     }
     
     /**
@@ -128,6 +148,12 @@ import org.robovm.apple.dispatch.*;
      * @since Available in iOS 4.0 and later.
      */
     public void enumerateAttribute(CMTextMarkupAttribute attribute, @ByVal NSRange enumerationRange, NSAttributedStringEnumerationOptions opts, final VoidBlock3<NSObject, NSRange, BooleanPtr> block) {
+        enumerateAttribute(attribute.value().as(NSString.class), enumerationRange, opts, block);
+    }
+    /**
+     * @since Available in iOS 4.0 and later.
+     */
+    public void enumerateAttribute(CTAttributedStringAttribute attribute, @ByVal NSRange enumerationRange, NSAttributedStringEnumerationOptions opts, final VoidBlock3<NSObject, NSRange, BooleanPtr> block) {
         enumerateAttribute(attribute.value().as(NSString.class), enumerationRange, opts, block);
     }
     

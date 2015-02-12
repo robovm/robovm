@@ -36,9 +36,22 @@ public class ArrayType extends AggregateType {
         this.elementType = elementType;
     }
 
+    public Type getElementType() {
+        return elementType;
+    }
+    
+    public long getSize() {
+        return size;
+    }
+    
     @Override
     public Type getTypeAt(int index) {
         return elementType;
+    }
+    
+    @Override
+    public int getTypeCount() {
+        return (int) size;
     }
     
     @Override

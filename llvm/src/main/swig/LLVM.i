@@ -11,7 +11,9 @@
 #include <llvm-c/Transforms/Vectorize.h>
 #include <llvm-c/Target.h>
 #include <llvm-c/TargetMachine.h>
+#include <llvm-c/Linker.h>
 #include "../native/LLVMExtra.h"
+#include "../native/ClangExtra.h"
 
 struct LongArray;
 typedef char* charp;
@@ -206,6 +208,20 @@ ARRAY_ARG(IntArray, unsigned *IdxList)
   }
 %}
 
+%typemap(javain) enum LLVMAttribute "$javainput"
+%typemap(javaout) enum LLVMAttribute {
+    return $jnicall;
+  }
+%typemap(jni) enum LLVMAttribute "jint"
+%typemap(jtype) enum LLVMAttribute "int"
+%typemap(jstype) enum LLVMAttribute "int"
+%typemap(in) enum LLVMAttribute  %{ $1 = ($1_ltype)$input; %}
+%typemap(out) enum LLVMAttribute  %{ $result = (jint)$1; %}
+%typemap(directorout) enum LLVMAttribute  %{ $result = ($1_ltype)$input; %}
+%typemap(directorin, descriptor="L$packagepath/$javaclassname;") enum LLVMAttribute "$input = (jint) $1;"
+%typemap(javadirectorin) enum LLVMAttribute "$jniinput"
+%typemap(javadirectorout) enum LLVMAttribute "$javacall"
+
 typedef jboolean LLVMBool;
 typedef jbyte uint8_t;
 typedef jlong uint64_t;
@@ -257,7 +273,9 @@ typedef jlong uint64_t;
 %include "llvm-c/Transforms/Vectorize.h"
 %include "llvm-c/Target.h"
 %include "llvm-c/TargetMachine.h"
+%include "llvm-c/Linker.h"
 %include "../native/LLVMExtra.h"
+%include "../native/ClangExtra.h"
 
 %pragma(java) jniclasscode=%{
   static {

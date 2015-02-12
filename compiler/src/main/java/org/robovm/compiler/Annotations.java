@@ -64,6 +64,7 @@ public class Annotations {
     public static final String AFTER_CALLBACK_CALL = "Lorg/robovm/rt/bro/annotation/AfterCallbackCall;";
     public static final String BY_VAL = "Lorg/robovm/rt/bro/annotation/ByVal;";
     public static final String BY_REF = "Lorg/robovm/rt/bro/annotation/ByRef;";
+    public static final String VARIADIC = "Lorg/robovm/rt/bro/annotation/Variadic;";
 
     public static boolean hasAnnotation(Host host, String annotationType) {
         return getAnnotation(host, annotationType) != null;
@@ -233,6 +234,15 @@ public class Annotations {
         return hasParameterAnnotation(method, paramIndex, BY_REF);
     }
     
+    public static boolean hasVariadicAnnotation(SootMethod method) {
+        return hasAnnotation(method, VARIADIC);
+    }
+
+    public static int getVariadicParameterIndex(SootMethod method) {
+        AnnotationTag annotation = getAnnotation(method, VARIADIC);
+        return readIntElem(annotation, "value", 0);
+    }
+
     public static boolean hasAfterBridgeCallAnnotation(SootMethod method) {
         return hasAnnotation(method, AFTER_BRIDGE_CALL);
     }
@@ -340,7 +350,12 @@ public class Annotations {
         AnnotationIntElem elem = (AnnotationIntElem) getElemByName(annotation, name);
         return elem != null ? elem.getValue() == 1 : def;
     }
-    
+
+    public static int readIntElem(AnnotationTag annotation, String name, int def) {
+        AnnotationIntElem elem = (AnnotationIntElem) getElemByName(annotation, name);
+        return elem != null ? elem.getValue() : def;
+    }
+
     public static VisibilityAnnotationTag getOrCreateRuntimeVisibilityAnnotationTag(Host host) {
         for (Tag tag : host.getTags()) {
             if (tag instanceof VisibilityAnnotationTag) {

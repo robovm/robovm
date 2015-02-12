@@ -90,7 +90,7 @@ import org.robovm.apple.audiotoolbox.*;
     /*</marshalers>*/
 
     /*<constructors>*/
-     CMTimeCodeFormatDescriptionSourceReferenceName(CFDictionary data) {
+    CMTimeCodeFormatDescriptionSourceReferenceName(CFDictionary data) {
         super(data);
     }
     public CMTimeCodeFormatDescriptionSourceReferenceName() {}

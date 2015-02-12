@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 Trillian Mobile AB
+ * Copyright (C) 2015 Trillian Mobile AB
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -33,12 +33,13 @@ import org.robovm.apple.coregraphics.*;
 
 /*<javadoc>*/
 /*</javadoc>*/
-@Marshaler(CTFrameAttributes.Marshaler.class)
 /*<annotations>*/@Library("CoreText")/*</annotations>*/
+@Marshaler(/*<name>*/CTFrameAttributes/*</name>*/.Marshaler.class)
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/CTFrameAttributes/*</name>*/ 
-    extends /*<extends>*/Object/*</extends>*/ 
+    extends /*<extends>*/CFDictionaryWrapper/*</extends>*/
     /*<implements>*//*</implements>*/ {
 
+    /*<marshalers>*/
     public static class Marshaler {
         @MarshalsPointer
         public static CTFrameAttributes toObject(Class<CTFrameAttributes> cls, long handle, long flags) {
@@ -56,33 +57,63 @@ import org.robovm.apple.coregraphics.*;
             return CFType.Marshaler.toNative(o.data, flags);
         }
     }
-    
-    /*<ptr>*/
-    /*</ptr>*/
-    private CFDictionary data;
-    
-    protected CTFrameAttributes(CFDictionary data) {
-        this.data = data;
+    public static class AsListMarshaler {
+        @MarshalsPointer
+        public static List<CTFrameAttributes> toObject(Class<? extends CFType> cls, long handle, long flags) {
+            CFArray o = (CFArray) CFType.Marshaler.toObject(cls, handle, flags);
+            if (o == null) {
+                return null;
+            }
+            List<CTFrameAttributes> list = new ArrayList<>();
+            for (int i = 0; i < o.size(); i++) {
+                list.add(new CTFrameAttributes(o.get(i, CFDictionary.class)));
+            }
+            return list;
+        }
+        @MarshalsPointer
+        public static long toNative(List<CTFrameAttributes> l, long flags) {
+            if (l == null) {
+                return 0L;
+            }
+            CFArray array = CFMutableArray.create();
+            for (CTFrameAttributes i : l) {
+                array.add(i.getDictionary());
+            }
+            return CFType.Marshaler.toNative(array, flags);
+        }
     }
-    public CTFrameAttributes() {
-        this.data = CFMutableDictionary.create();
+    /*</marshalers>*/
+
+    /*<constructors>*/
+    CTFrameAttributes(CFDictionary data) {
+        super(data);
     }
-    /*<bind>*/static { Bro.bind(CTFrameAttributes.class); }/*</bind>*/
-    /*<constants>*//*</constants>*/
-    /*<constructors>*//*</constructors>*/
-    /*<properties>*//*</properties>*/
-    /*<members>*//*</members>*/
-    protected CFDictionary getDictionary() {
-        return data;
+    public CTFrameAttributes() {}
+    /*</constructors>*/
+
+    /*<methods>*/
+    public boolean has(CFString key) {
+        return data.containsKey(key);
+    }
+    public <T extends NativeObject> T get(CFString key, Class<T> type) {
+        if (has(key)) {
+            return data.get(key, type);
+        }
+        return null;
+    }
+    public CTFrameAttributes set(CFString key, NativeObject value) {
+        data.put(key, value);
+        return this;
     }
     
+
     /**
      * @since Available in iOS 3.2 and later.
      */
     public CTFrameProgression getProgression() {
-        if (data.containsKey(Progression())) {
-            CFNumber val = data.get(Progression(), CFNumber.class);
-            return CTFrameProgression.valueOf(val.intValue());
+        if (has(Keys.Progression())) {
+            CFNumber val = get(Keys.Progression(), CFNumber.class);
+            return CTFrameProgression.valueOf(val.longValue());
         }
         return null;
     }
@@ -90,16 +121,16 @@ import org.robovm.apple.coregraphics.*;
      * @since Available in iOS 3.2 and later.
      */
     public CTFrameAttributes setProgression(CTFrameProgression progression) {
-        data.put(Progression(), CFNumber.valueOf((int)progression.value()));
+        set(Keys.Progression(), CFNumber.valueOf(progression.value()));
         return this;
     }
     /**
      * @since Available in iOS 4.2 and later.
      */
     public CTFramePathFillRule getPathFillRule() {
-        if (data.containsKey(PathFillRule())) {
-            CFNumber val = data.get(PathFillRule(), CFNumber.class);
-            return CTFramePathFillRule.valueOf(val.intValue());
+        if (has(Keys.PathFillRule())) {
+            CFNumber val = get(Keys.PathFillRule(), CFNumber.class);
+            return CTFramePathFillRule.valueOf(val.longValue());
         }
         return null;
     }
@@ -107,15 +138,15 @@ import org.robovm.apple.coregraphics.*;
      * @since Available in iOS 4.2 and later.
      */
     public CTFrameAttributes setPathFillRule(CTFramePathFillRule pathFillRule) {
-        data.put(PathFillRule(), CFNumber.valueOf((int)pathFillRule.value()));
+        set(Keys.PathFillRule(), CFNumber.valueOf(pathFillRule.value()));
         return this;
     }
     /**
      * @since Available in iOS 4.2 and later.
      */
     public double getPathWidth() {
-        if (data.containsKey(PathWidth())) {
-            CFNumber val = data.get(PathWidth(), CFNumber.class);
+        if (has(Keys.PathWidth())) {
+            CFNumber val = get(Keys.PathWidth(), CFNumber.class);
             return val.doubleValue();
         }
         return 0;
@@ -123,61 +154,62 @@ import org.robovm.apple.coregraphics.*;
     /**
      * @since Available in iOS 4.2 and later.
      */
-    public CTFrameAttributes setPathWidth(double width) {
-        data.put(PathWidth(), CFNumber.valueOf(width));
+    public CTFrameAttributes setPathWidth(double pathWidth) {
+        set(Keys.PathWidth(), CFNumber.valueOf(pathWidth));
         return this;
     }
     /**
      * @since Available in iOS 4.3 and later.
      */
     public List<CTFrameClippingPath> getClippingPaths() {
-        List<CTFrameClippingPath> list = new ArrayList<>();
-        if (data.containsKey(ClippingPaths())) {
-            CFArray val = data.get(ClippingPaths(), CFArray.class);
-            CFDictionary[] arr = val.toArray(CFDictionary.class);
-            for (CFDictionary d : arr) {
-                list.add(new CTFrameClippingPath(d));
+        if (has(Keys.ClippingPaths())) {
+            CFArray val = get(Keys.ClippingPaths(), CFArray.class);
+            List<CTFrameClippingPath> list = new ArrayList<>();
+            CFDictionary[] array = val.toArray(CFDictionary.class);
+            for (CFDictionary d : array) {
+               list.add(new CTFrameClippingPath(d));
             }
+            return list;
         }
-        return list;
+        return null;
     }
     /**
      * @since Available in iOS 4.3 and later.
      */
-    public CTFrameAttributes setClippingPaths(List<CTFrameClippingPath> paths) {
-        CFArray list = CFMutableArray.create();
-        for (CTFrameClippingPath path : paths) {
-            list.add(path.getDictionary());
+    public CTFrameAttributes setClippingPaths(List<CTFrameClippingPath> clippingPaths) {
+        CFArray val = CFMutableArray.create();
+        for (CTFrameClippingPath e : clippingPaths) {
+            val.add(e.getDictionary());
         }
-        data.put(ClippingPaths(), list);
+        set(Keys.ClippingPaths(), val);
         return this;
     }
-    /*<methods>*/
-    /**
-     * @since Available in iOS 3.2 and later.
-     */
-    @GlobalValue(symbol="kCTFrameProgressionAttributeName", optional=true)
-    protected static native CFString Progression();
-    /**
-     * @since Available in iOS 4.2 and later.
-     */
-    @GlobalValue(symbol="kCTFramePathFillRuleAttributeName", optional=true)
-    protected static native CFString PathFillRule();
-    /**
-     * @since Available in iOS 4.2 and later.
-     */
-    @GlobalValue(symbol="kCTFramePathWidthAttributeName", optional=true)
-    protected static native CFString PathWidth();
-    /**
-     * @since Available in iOS 4.3 and later.
-     */
-    @GlobalValue(symbol="kCTFrameClippingPathsAttributeName", optional=true)
-    protected static native CFString ClippingPaths();
     /*</methods>*/
     
-    @Override
-    public String toString() {
-        if (data != null) return data.toString();
-        return super.toString();
+    /*<keys>*/
+    @Library("CoreText")
+    public static class Keys {
+        static { Bro.bind(Keys.class); }
+        /**
+         * @since Available in iOS 3.2 and later.
+         */
+        @GlobalValue(symbol="kCTFrameProgressionAttributeName", optional=true)
+        public static native CFString Progression();
+        /**
+         * @since Available in iOS 4.2 and later.
+         */
+        @GlobalValue(symbol="kCTFramePathFillRuleAttributeName", optional=true)
+        public static native CFString PathFillRule();
+        /**
+         * @since Available in iOS 4.2 and later.
+         */
+        @GlobalValue(symbol="kCTFramePathWidthAttributeName", optional=true)
+        public static native CFString PathWidth();
+        /**
+         * @since Available in iOS 4.3 and later.
+         */
+        @GlobalValue(symbol="kCTFrameClippingPathsAttributeName", optional=true)
+        public static native CFString ClippingPaths();
     }
+    /*</keys>*/
 }

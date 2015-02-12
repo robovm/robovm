@@ -38,6 +38,30 @@ import org.robovm.apple.coregraphics.*;
     extends /*<extends>*/CFType/*</extends>*/ 
     /*<implements>*//*</implements>*/ {
 
+    public static class AsListMarshaler {
+        @MarshalsPointer
+        public static List<?> toObject(Class<? extends CFType> cls, long handle, long flags) {
+            CFArray o = (CFArray) CFType.Marshaler.toObject(cls, handle, flags);
+            if (o == null) {
+                return null;
+            }
+            return o.toList(CTFontDescriptor.class);
+        }
+        @MarshalsPointer
+        public static long toNative(List<? extends CFType> l, long flags) {
+            if (l == null) {
+                return 0L;
+            }
+            CFArray o = null;
+            if (l instanceof CFArray) {
+                o = (CFArray) l;
+            } else {
+                o = CFArray.create((List<? extends CFType>) l);
+            }
+            return CFType.Marshaler.toNative(o, flags);
+        }
+    }
+    
     public interface ProgressHandler {
         boolean invoke(CTFontDescriptorMatchingState state, CTFontDescriptorProgressData data);
     }
@@ -63,37 +87,26 @@ import org.robovm.apple.coregraphics.*;
     private static boolean cbProgress(CTFontDescriptorMatchingState state, CFDictionary data) {
         return progressHandler.invoke(state, new CTFontDescriptorProgressData(data));
     }
-   
+
     /**
      * @since Available in iOS 3.2 and later.
      */
-    public CTFontDescriptor createCopy(long variationIdentifier, @MachineSizedFloat double variationValue) {
-        return createCopy(CFNumber.valueOf(variationIdentifier), variationValue);
-    }
-//    /**
-//     * @since Available in iOS 3.2 and later.
-//     */
-//    @Bridge(symbol="CTFontDescriptorCreateCopyWithFeature", optional=true) TODO
-//    protected native CTFontDescriptor createCopy(CFNumber featureTypeIdentifier, CFNumber featureSelectorIdentifier);
-    /**
-     * @since Available in iOS 3.2 and later.
-     */
-    public List<CTFontDescriptor> getMatchingFontDescriptors(List<CTFontAttribute> mandatoryAttributes) {
+    public List<CTFontDescriptor> createMatchingFontDescriptors(List<CTFontAttribute> mandatoryAttributes) {
         CFSet set = CFMutableSet.create();
         for (CTFontAttribute attr : mandatoryAttributes) {
             set.add(attr.value());
         }
-        return getMatchingFontDescriptors(set).toList(CTFontDescriptor.class);
+        return createMatchingFontDescriptors(set).toList(CTFontDescriptor.class);
     }
     /**
      * @since Available in iOS 3.2 and later.
      */
-    public CTFontDescriptor getMatchingFontDescriptor(List<CTFontAttribute> mandatoryAttributes) {
+    public CTFontDescriptor createMatchingFontDescriptor(List<CTFontAttribute> mandatoryAttributes) {
         CFSet set = CFMutableSet.create();
         for (CTFontAttribute attr : mandatoryAttributes) {
             set.add(attr.value());
         }
-        return getMatchingFontDescriptor(set);
+        return createMatchingFontDescriptor(set);
     }
     /**
      * @since Available in iOS 6.0 and later.
@@ -122,47 +135,37 @@ import org.robovm.apple.coregraphics.*;
      * @since Available in iOS 3.2 and later.
      */
     @Bridge(symbol="CTFontDescriptorCreateWithNameAndSize", optional=true)
-    public static native CTFontDescriptor create(String name, @MachineSizedFloat double size);
+    public static native @org.robovm.rt.bro.annotation.Marshaler(CFType.NoRetainMarshaler.class) CTFontDescriptor create(String name, @MachineSizedFloat double size);
     /**
      * @since Available in iOS 3.2 and later.
      */
     @Bridge(symbol="CTFontDescriptorCreateWithAttributes", optional=true)
-    public static native CTFontDescriptor create(CTFontAttributes attributes);
+    public static native @org.robovm.rt.bro.annotation.Marshaler(CFType.NoRetainMarshaler.class) CTFontDescriptor create(CTFontAttributes attributes);
     /**
      * @since Available in iOS 3.2 and later.
      */
     @Bridge(symbol="CTFontDescriptorCreateCopyWithAttributes", optional=true)
-    public native CTFontDescriptor createCopy(CTFontAttributes attributes);
+    public native @org.robovm.rt.bro.annotation.Marshaler(CFType.NoRetainMarshaler.class) CTFontDescriptor createCopy(CTFontAttributes attributes);
     /**
      * @since Available in iOS 7.0 and later.
      */
     @Bridge(symbol="CTFontDescriptorCreateCopyWithFamily", optional=true)
-    public native CTFontDescriptor createCopy(String family);
+    public native @org.robovm.rt.bro.annotation.Marshaler(CFType.NoRetainMarshaler.class) CTFontDescriptor createCopy(String family);
     /**
      * @since Available in iOS 7.0 and later.
      */
     @Bridge(symbol="CTFontDescriptorCreateCopyWithSymbolicTraits", optional=true)
-    public native CTFontDescriptor createCopy(CTFontSymbolicTraits symTraitValue, CTFontSymbolicTraits symTraitMask);
-    /**
-     * @since Available in iOS 3.2 and later.
-     */
-    @Bridge(symbol="CTFontDescriptorCreateCopyWithVariation", optional=true)
-    public native CTFontDescriptor createCopy(CFNumber variationIdentifier, @MachineSizedFloat double variationValue);
-    /**
-     * @since Available in iOS 3.2 and later.
-     */
-    @Bridge(symbol="CTFontDescriptorCreateCopyWithFeature", optional=true)
-    protected native CTFontDescriptor createCopy(CFNumber featureTypeIdentifier, CFNumber featureSelectorIdentifier);
+    public native @org.robovm.rt.bro.annotation.Marshaler(CFType.NoRetainMarshaler.class) CTFontDescriptor createCopy(CTFontSymbolicTraits symTraitValue, CTFontSymbolicTraits symTraitMask);
     /**
      * @since Available in iOS 3.2 and later.
      */
     @Bridge(symbol="CTFontDescriptorCreateMatchingFontDescriptors", optional=true)
-    protected native CFArray getMatchingFontDescriptors(CFSet mandatoryAttributes);
+    protected native @org.robovm.rt.bro.annotation.Marshaler(CFType.NoRetainMarshaler.class) CFArray createMatchingFontDescriptors(CFSet mandatoryAttributes);
     /**
      * @since Available in iOS 3.2 and later.
      */
     @Bridge(symbol="CTFontDescriptorCreateMatchingFontDescriptor", optional=true)
-    protected native CTFontDescriptor getMatchingFontDescriptor(CFSet mandatoryAttributes);
+    protected native @org.robovm.rt.bro.annotation.Marshaler(CFType.NoRetainMarshaler.class) CTFontDescriptor createMatchingFontDescriptor(CFSet mandatoryAttributes);
     /**
      * @since Available in iOS 6.0 and later.
      */
@@ -177,11 +180,11 @@ import org.robovm.apple.coregraphics.*;
      * @since Available in iOS 3.2 and later.
      */
     @Bridge(symbol="CTFontDescriptorCopyAttribute", optional=true)
-    public native CFType getAttribute(CTFontAttribute attribute);
+    public native @org.robovm.rt.bro.annotation.Marshaler(CFType.NoRetainMarshaler.class) CFType getAttribute(CTFontAttribute attribute);
     /**
      * @since Available in iOS 3.2 and later.
      */
     @Bridge(symbol="CTFontDescriptorCopyLocalizedAttribute", optional=true)
-    protected native CFType getLocalizedAttribute(CTFontAttribute attribute, CFString.CFStringPtr language);
+    protected native @org.robovm.rt.bro.annotation.Marshaler(CFType.NoRetainMarshaler.class) CFType getLocalizedAttribute(CTFontAttribute attribute, CFString.CFStringPtr language);
     /*</methods>*/
 }

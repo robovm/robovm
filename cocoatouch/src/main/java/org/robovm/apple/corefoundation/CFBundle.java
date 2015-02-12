@@ -19,6 +19,7 @@ package org.robovm.apple.corefoundation;
 import java.io.*;
 import java.nio.*;
 import java.util.*;
+
 import org.robovm.objc.*;
 import org.robovm.objc.annotation.*;
 import org.robovm.objc.block.*;
@@ -37,6 +38,30 @@ import org.robovm.apple.foundation.*;
     extends /*<extends>*/CFType/*</extends>*/ 
     /*<implements>*//*</implements>*/ {
 
+    public static class AsListMarshaler {
+        @MarshalsPointer
+        public static List<?> toObject(Class<? extends CFType> cls, long handle, long flags) {
+            CFArray o = (CFArray) CFType.Marshaler.toObject(cls, handle, flags);
+            if (o == null) {
+                return null;
+            }
+            return o.toList(CFBundle.class);
+        }
+        @MarshalsPointer
+        public static long toNative(List<? extends CFType> l, long flags) {
+            if (l == null) {
+                return 0L;
+            }
+            CFArray o = null;
+            if (l instanceof CFArray) {
+                o = (CFArray) l;
+            } else {
+                o = CFArray.create((List<? extends CFType>) l);
+            }
+            return CFType.Marshaler.toNative(o, flags);
+        }
+    }
+    
     /*<ptr>*/public static class CFBundlePtr extends Ptr<CFBundle, CFBundlePtr> {}/*</ptr>*/
     /*<bind>*/static { Bro.bind(CFBundle.class); }/*</bind>*/
     /*<constants>*//*</constants>*/
@@ -51,13 +76,13 @@ import org.robovm.apple.foundation.*;
     @Bridge(symbol="CFBundleGetBundleWithIdentifier", optional=true)
     public static native CFBundle getBundle(String bundleID);
     @Bridge(symbol="CFBundleGetAllBundles", optional=true)
-    public static native @org.robovm.rt.bro.annotation.Marshaler(CFArray.AsListMarshaler.class) List<CFBundle> getAllBundles();
+    public static native @org.robovm.rt.bro.annotation.Marshaler(CFBundle.AsListMarshaler.class) List<CFBundle> getAllBundles();
     @Bridge(symbol="CFBundleGetTypeID", optional=true)
     public static native @MachineSizedUInt long getClassTypeID();
     @Bridge(symbol="CFBundleCreate", optional=true)
     public static native @org.robovm.rt.bro.annotation.Marshaler(CFType.NoRetainMarshaler.class) CFBundle create(CFAllocator allocator, CFURL bundleURL);
     @Bridge(symbol="CFBundleCreateBundlesFromDirectory", optional=true)
-    public static native @org.robovm.rt.bro.annotation.Marshaler(CFArray.AsListMarshaler.class) List<CFBundle> createBundlesFromDirectory(CFAllocator allocator, CFURL directoryURL, String bundleType);
+    public static native @org.robovm.rt.bro.annotation.Marshaler(CFBundle.AsListMarshaler.class) List<CFBundle> createBundlesFromDirectory(CFAllocator allocator, CFURL directoryURL, String bundleType);
     @Bridge(symbol="CFBundleCopyBundleURL", optional=true)
     public native @org.robovm.rt.bro.annotation.Marshaler(CFType.NoRetainMarshaler.class) CFURL getBundleURL();
     @Bridge(symbol="CFBundleGetValueForInfoDictionaryKey", optional=true)

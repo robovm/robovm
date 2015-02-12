@@ -30,3 +30,4 @@ a.out
 /tests/libcore/sqliteTest*.db
 /eclipse/ui/lib/
 /tmp/
+!/tests/robovm/src/test/resources/META-INF/**/*.o

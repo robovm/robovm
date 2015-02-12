@@ -35,6 +35,7 @@ import javax.xml.parsers.DocumentBuilder;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
+import org.robovm.compiler.CompilerException;
 import org.robovm.compiler.config.Arch;
 import org.robovm.compiler.config.Config;
 import org.robovm.compiler.config.OS;
@@ -267,16 +268,35 @@ public class IOSTarget extends AbstractTarget {
             libArgs.add("UIKit");
         }
 
+        String minVersion = config.getOs().getMinVersion();
+        if (infoPListDict != null && infoPListDict.objectForKey("MinimumOSVersion") != null) {
+            minVersion = infoPListDict.objectForKey("MinimumOSVersion").toString();
+        }
+        int majorVersionNumber = -1;
+        try {
+            majorVersionNumber = Integer.parseInt(minVersion.substring(0, minVersion.indexOf('.')));
+        } catch (NumberFormatException e) {
+            throw new CompilerException("Failed to get major version number from " 
+                    + "MinimumOSVersion string '" + minVersion + "'");
+        }
         if (isDeviceArch(arch)) {
-            ccArgs.add("-miphoneos-version-min=" + config.getOs().getMinVersion());
+            ccArgs.add("-miphoneos-version-min=" + minVersion);
             if (config.isDebug()) {
                 ccArgs.add("-Wl,-no_pie");
             }
         } else {
-            ccArgs.add("-mios-simulator-version-min=" + config.getOs().getMinVersion());
+            ccArgs.add("-mios-simulator-version-min=" + minVersion);
             if (config.getArch() == Arch.x86 || config.isDebug()) {
                 ccArgs.add("-Wl,-no_pie");
             }
+        }
+        if (majorVersionNumber >= 7) {
+            // On iOS 7 and higher the linker will default to link against
+            // libc++ which is needed for C++11 support. We need the older
+            // libstdc++ as our native libs are compiled against it and need to
+            // work on iOS 6. If an app needs C++11 support the user will need
+            // to link against /usr/lib/libc++.dylib explicitly.
+            ccArgs.add("-stdlib=libstdc++");
         }
         ccArgs.add("-isysroot");
         ccArgs.add(sdk.getRoot().getAbsolutePath());
@@ -411,7 +431,7 @@ public class IOSTarget extends AbstractTarget {
         FileUtils.deleteDirectory(dsymDir);
         new Executor(config.getLogger(), "xcrun")
             .args("dsymutil", "-o", dsymDir, new File(dir, executable))
-            .exec();
+            .execAsync();
     }
 
     private void strip(File dir, String executable) throws IOException {

@@ -67,6 +67,7 @@ import org.robovm.apple.dispatch.*;
      * @param arg the argument to be used in the format string.
      */
     @Bridge(symbol = "NSLog")
+    @Variadic(1)
     public native static void log(String format, NSObject arg);
 
     /**
@@ -79,6 +80,7 @@ import org.robovm.apple.dispatch.*;
      * @param arg2 the second argument to be used in the format string.
      */
     @Bridge(symbol = "NSLog")
+    @Variadic(1)
     public native static void log(String format, NSObject arg1, NSObject arg2);
 
     /**
@@ -92,6 +94,7 @@ import org.robovm.apple.dispatch.*;
      * @param arg3 the third argument to be used in the format string.
      */
     @Bridge(symbol = "NSLog")
+    @Variadic(1)
     public native static void log(String format, NSObject arg1, NSObject arg2, NSObject arg3);
 
     /**
@@ -106,6 +109,7 @@ import org.robovm.apple.dispatch.*;
      * @param arg4 the forth argument to be used in the format string.
      */
     @Bridge(symbol = "NSLog")
+    @Variadic(1)
     public native static void log(String format, NSObject arg1, NSObject arg2, NSObject arg3, NSObject arg4);
 
     /**
@@ -121,6 +125,7 @@ import org.robovm.apple.dispatch.*;
      * @param arg5 the fifth argument to be used in the format string.
      */
     @Bridge(symbol = "NSLog")
+    @Variadic(1)
     public native static void log(String format, NSObject arg1, NSObject arg2, NSObject arg3, NSObject arg4, NSObject arg5);
     
     private static String systemVersionString;

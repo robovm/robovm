@@ -49,25 +49,25 @@ import org.robovm.apple.foundation.*;
     /**
      * @since Available in iOS 4.0 and later.
      */
-    public static CFPropertyList create(CFData data, @MachineSizedUInt long options) throws CFErrorException {
+    public static CFPropertyList create(CFData data, @MachineSizedUInt long options) throws NSErrorException {
        return create(null, data, options, null);
     }
     /**
      * @since Available in iOS 4.0 and later.
      */
-    public static CFPropertyList create(CFAllocator allocator, CFData data, @MachineSizedUInt long options) throws CFErrorException {
+    public static CFPropertyList create(CFAllocator allocator, CFData data, @MachineSizedUInt long options) throws NSErrorException {
        return create(allocator, data, options, null);
     }
     /**
      * @since Available in iOS 4.0 and later.
      */
-    public static CFPropertyList create(CFReadStream stream, @MachineSizedSInt long streamLength, @MachineSizedUInt long options) throws CFErrorException {
+    public static CFPropertyList create(CFReadStream stream, @MachineSizedSInt long streamLength, @MachineSizedUInt long options) throws NSErrorException {
         return create(null, stream, streamLength, options, null);
     }
     /**
      * @since Available in iOS 4.0 and later.
      */
-    public static CFPropertyList create(CFAllocator allocator, CFReadStream stream, @MachineSizedSInt long streamLength, @MachineSizedUInt long options) throws CFErrorException {
+    public static CFPropertyList create(CFAllocator allocator, CFReadStream stream, @MachineSizedSInt long streamLength, @MachineSizedUInt long options) throws NSErrorException {
         return create(allocator, stream, streamLength, options, null);
     }
     /**
@@ -90,58 +90,58 @@ import org.robovm.apple.foundation.*;
     /**
      * @since Available in iOS 4.0 and later.
      */
-    protected static @org.robovm.rt.bro.annotation.Marshaler(CFType.NoRetainMarshaler.class) CFPropertyList create(CFAllocator allocator, CFData data, @MachineSizedUInt long options, MachineSizedSIntPtr format) throws CFErrorException {
-       CFError.CFErrorPtr ptr = new CFError.CFErrorPtr();
+    protected static @org.robovm.rt.bro.annotation.Marshaler(CFType.NoRetainMarshaler.class) CFPropertyList create(CFAllocator allocator, CFData data, @MachineSizedUInt long options, MachineSizedSIntPtr format) throws NSErrorException {
+       NSError.NSErrorPtr ptr = new NSError.NSErrorPtr();
        CFPropertyList result = create(allocator, data, options, format, ptr);
-       if (ptr.get() != null) { throw new CFErrorException(ptr.get()); }
+       if (ptr.get() != null) { throw new NSErrorException(ptr.get()); }
        return result;
     }
     /**
      * @since Available in iOS 4.0 and later.
      */
     @Bridge(symbol="CFPropertyListCreateWithData", optional=true)
-    private static native @org.robovm.rt.bro.annotation.Marshaler(CFType.NoRetainMarshaler.class) CFPropertyList create(CFAllocator allocator, CFData data, @MachineSizedUInt long options, MachineSizedSIntPtr format, CFError.CFErrorPtr error);
+    private static native @org.robovm.rt.bro.annotation.Marshaler(CFType.NoRetainMarshaler.class) CFPropertyList create(CFAllocator allocator, CFData data, @MachineSizedUInt long options, MachineSizedSIntPtr format, NSError.NSErrorPtr error);
     /**
      * @since Available in iOS 4.0 and later.
      */
-    protected static @org.robovm.rt.bro.annotation.Marshaler(CFType.NoRetainMarshaler.class) CFPropertyList create(CFAllocator allocator, CFReadStream stream, @MachineSizedSInt long streamLength, @MachineSizedUInt long options, MachineSizedSIntPtr format) throws CFErrorException {
-       CFError.CFErrorPtr ptr = new CFError.CFErrorPtr();
+    protected static @org.robovm.rt.bro.annotation.Marshaler(CFType.NoRetainMarshaler.class) CFPropertyList create(CFAllocator allocator, CFReadStream stream, @MachineSizedSInt long streamLength, @MachineSizedUInt long options, MachineSizedSIntPtr format) throws NSErrorException {
+       NSError.NSErrorPtr ptr = new NSError.NSErrorPtr();
        CFPropertyList result = create(allocator, stream, streamLength, options, format, ptr);
-       if (ptr.get() != null) { throw new CFErrorException(ptr.get()); }
+       if (ptr.get() != null) { throw new NSErrorException(ptr.get()); }
        return result;
     }
     /**
      * @since Available in iOS 4.0 and later.
      */
     @Bridge(symbol="CFPropertyListCreateWithStream", optional=true)
-    private static native @org.robovm.rt.bro.annotation.Marshaler(CFType.NoRetainMarshaler.class) CFPropertyList create(CFAllocator allocator, CFReadStream stream, @MachineSizedSInt long streamLength, @MachineSizedUInt long options, MachineSizedSIntPtr format, CFError.CFErrorPtr error);
+    private static native @org.robovm.rt.bro.annotation.Marshaler(CFType.NoRetainMarshaler.class) CFPropertyList create(CFAllocator allocator, CFReadStream stream, @MachineSizedSInt long streamLength, @MachineSizedUInt long options, MachineSizedSIntPtr format, NSError.NSErrorPtr error);
     /**
      * @since Available in iOS 4.0 and later.
      */
-    public @MachineSizedSInt long write(CFWriteStream stream, CFPropertyListFormat format, @MachineSizedUInt long options) throws CFErrorException {
-       CFError.CFErrorPtr ptr = new CFError.CFErrorPtr();
+    public @MachineSizedSInt long write(CFWriteStream stream, CFPropertyListFormat format, @MachineSizedUInt long options) throws NSErrorException {
+       NSError.NSErrorPtr ptr = new NSError.NSErrorPtr();
        long result = write(stream, format, options, ptr);
-       if (ptr.get() != null) { throw new CFErrorException(ptr.get()); }
+       if (ptr.get() != null) { throw new NSErrorException(ptr.get()); }
        return result;
     }
     /**
      * @since Available in iOS 4.0 and later.
      */
     @Bridge(symbol="CFPropertyListWrite", optional=true)
-    private native @MachineSizedSInt long write(CFWriteStream stream, CFPropertyListFormat format, @MachineSizedUInt long options, CFError.CFErrorPtr error);
+    private native @MachineSizedSInt long write(CFWriteStream stream, CFPropertyListFormat format, @MachineSizedUInt long options, NSError.NSErrorPtr error);
     /**
      * @since Available in iOS 4.0 and later.
      */
-    private static @org.robovm.rt.bro.annotation.Marshaler(CFType.NoRetainMarshaler.class) CFData asData(CFAllocator allocator, CFPropertyList propertyList, CFPropertyListFormat format, @MachineSizedUInt long options) throws CFErrorException {
-       CFError.CFErrorPtr ptr = new CFError.CFErrorPtr();
+    private static @org.robovm.rt.bro.annotation.Marshaler(CFType.NoRetainMarshaler.class) CFData asData(CFAllocator allocator, CFPropertyList propertyList, CFPropertyListFormat format, @MachineSizedUInt long options) throws NSErrorException {
+       NSError.NSErrorPtr ptr = new NSError.NSErrorPtr();
        CFData result = asData(allocator, propertyList, format, options, ptr);
-       if (ptr.get() != null) { throw new CFErrorException(ptr.get()); }
+       if (ptr.get() != null) { throw new NSErrorException(ptr.get()); }
        return result;
     }
     /**
      * @since Available in iOS 4.0 and later.
      */
     @Bridge(symbol="CFPropertyListCreateData", optional=true)
-    private static native @org.robovm.rt.bro.annotation.Marshaler(CFType.NoRetainMarshaler.class) CFData asData(CFAllocator allocator, CFPropertyList propertyList, CFPropertyListFormat format, @MachineSizedUInt long options, CFError.CFErrorPtr error);
+    private static native @org.robovm.rt.bro.annotation.Marshaler(CFType.NoRetainMarshaler.class) CFData asData(CFAllocator allocator, CFPropertyList propertyList, CFPropertyListFormat format, @MachineSizedUInt long options, NSError.NSErrorPtr error);
     /*</methods>*/
 }

@@ -42,7 +42,8 @@ functions:
     SCNetworkReachability(Create).*:
         class: SCNetworkReachability
         name: '#{g[0]}'
-        visibility: protected
+        visibility: private
+        return_marshaler: CFType.NoRetainMarshaler
         parameters:
             address:
                 type: 'Struct<?>'
@@ -78,6 +79,7 @@ functions:
     SCCopyLastError:
         class: SCStatus
         name: getLastError
+        return_marshaler: CFType.NoRetainMarshaler
     SCError:
         class: SCStatus
         name: getLastStatus

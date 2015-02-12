@@ -52,10 +52,11 @@ functions:
     CGImageDestinationCreate.*:
         class: CGImageDestination
         name: create
+        return_marshaler: CFType.NoRetainMarshaler
     CGImageDestination(CopyImageSource):
         class: CGImageDestination
         name: '#{g[0]}'
-        visibility: protected
+        throws: NSErrorException
         parameters:
             options:
                 type: CGImageDestinationCopySourceOptions
@@ -72,13 +73,22 @@ functions:
         name: '#{g[0]}'
     
     # CGImageMetadataTag
+    CGImageMetadataTag(Create):
+        class: CGImageMetadataTag
+        name: '#{g[0]}'
+        return_marshaler: CFType.NoRetainMarshaler
     CGImageMetadataTagCopy(Qualifiers):
         class: CGImageMetadataTag
         name: 'get#{g[0]}'
-        return_type: '@org.robovm.rt.bro.annotation.Marshaler(CFArray.AsStringListMarshaler.class) List<String>'
+        return_type: List<String>
+        return_marshaler: CFArray.AsStringListMarshaler
+    CGImageMetadataTagCopy(Value):
+        class: CGImageMetadataTag
+        name: 'get#{g[0]}'
     CGImageMetadataTagCopy(.*):
         class: CGImageMetadataTag
         name: 'get#{g[0]}'
+        return_marshaler: CFString.AsStringNoRetainMarshaler
     CGImageMetadataTag(.*):
         class: CGImageMetadataTag
         name: '#{g[0]}'
@@ -88,17 +98,25 @@ functions:
         class: CGImageMetadata
         name: createCopy
         static: true
+        return_marshaler: CFType.NoRetainMarshaler
     CGImageMetadataCreateMutable:
         class: CGImageMetadata
         name: create
         static: true
+        return_marshaler: CFType.NoRetainMarshaler
     CGImageMetadataCopy(Tags):
         class: CGImageMetadata
         name: 'get#{g[0]}'
-        return_type: '@org.robovm.rt.bro.annotation.Marshaler(CFArray.AsListMarshaler.class) List<CGImageMetadataTag>'
-    CGImageMetadataCopy(.*)WithPath:
+        return_type: List<CGImageMetadataTag>
+        return_marshaler: CGImageMetadataTag.AsListMarshaler
+    CGImageMetadataCopy(Tag)WithPath:
         class: CGImageMetadata
         name: 'get#{g[0]}AtPath'
+        return_marshaler: CFType.NoRetainMarshaler
+    CGImageMetadataCopy(StringValue)WithPath:
+        class: CGImageMetadata
+        name: 'get#{g[0]}AtPath'
+        return_marshaler: CFString.AsStringNoRetainMarshaler
     CGImageMetadataSet(.*)WithPath:
         class: CGImageMetadata
         name: 'set#{g[0]}AtPath'
@@ -108,7 +126,7 @@ functions:
     CGImageMetadata(RegisterNamespaceForPrefix):
         class: CGImageMetadata
         name: '#{g[0]}'
-        visibility: protected # throws NSErrorException
+        throws: NSErrorException
     CGImageMetadata(EnumerateTags)UsingBlock:
         class: CGImageMetadata
         name: '#{g[0]}'
@@ -117,6 +135,10 @@ functions:
                 type: CGImageMetadataEnumerationOptions
             block:
                 type: '@Block VoidBlock2<String, CGImageMetadataTag>'
+    CGImageMetadata(CreateFromXMPData):
+        class: CGImageMetadata
+        name: '#{g[0]}'
+        return_marshaler: CFType.NoRetainMarshaler
     CGImageMetadataCopyTagMatchingImageProperty:
         exclude: true
     CGImageMetadataSetValueMatchingImageProperty:
@@ -140,18 +162,21 @@ functions:
     CGImageSourceCopy(Metadata)AtIndex:
         class: CGImageSource
         name: 'get#{g[0]}'
+        return_marshaler: CFType.NoRetainMarshaler
         parameters:
             options:
                 type: CGImageSourceOptions
-    CGImageSource(.*)AtIndex:
+    CGImageSource(Create.*)AtIndex:
         class: CGImageSource
         name: '#{g[0]}'
+        return_marshaler: CFType.NoRetainMarshaler
         parameters:
             options:
                 type: CGImageSourceOptions
     CGImageSource(CreateIncremental):
         class: CGImageSource
         name: '#{g[0]}'
+        return_marshaler: CFType.NoRetainMarshaler
         parameters:
             options:
                 type: CGImageSourceOptions
@@ -164,6 +189,7 @@ functions:
     CGImageSourceCreate.*:
         class: CGImageSource
         name: create
+        return_marshaler: CFType.NoRetainMarshaler
         parameters:
             options:
                 type: CGImageSourceOptions

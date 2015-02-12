@@ -54,7 +54,7 @@ import org.robovm.apple.corefoundation.*;
     @Bridge(symbol="ABMultiValueCopyValueAtIndex", optional=true)
     public native @org.robovm.rt.bro.annotation.Marshaler(CFType.NoRetainMarshaler.class) CFType getValue(@MachineSizedSInt long index);
     @Bridge(symbol="ABMultiValueCopyArrayOfAllValues", optional=true)
-    public native @org.robovm.rt.bro.annotation.Marshaler(CFArray.AsListMarshaler.class) List<CFType> getAllValues();
+    public native @org.robovm.rt.bro.annotation.Marshaler(CFType.AsListMarshaler.class) List<CFType> getAllValues();
     @Bridge(symbol="ABMultiValueCopyLabelAtIndex", optional=true)
     public native @org.robovm.rt.bro.annotation.Marshaler(CFType.NoRetainMarshaler.class) CFString getLabel(@MachineSizedSInt long index);
     @Bridge(symbol="ABMultiValueGetIndexForIdentifier", optional=true)

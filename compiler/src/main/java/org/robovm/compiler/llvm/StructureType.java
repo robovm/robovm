@@ -41,6 +41,11 @@ public class StructureType extends AggregateType {
     }
     
     @Override
+    public int getTypeCount() {
+        return types.length;
+    }
+    
+    @Override
     public String getDefinition() {
         StringBuilder sb = new StringBuilder("{");
         for (int i = 0; i < types.length; i++) {

@@ -61,7 +61,7 @@ import org.robovm.apple.corefoundation.*;
      * @since Available in iOS 2.0 and later.
      */
     @Bridge(symbol="CFHTTPAuthenticationCreateFromResponse", optional=true)
-    public static native CFHTTPAuthentication create(CFAllocator alloc, CFHTTPMessage response);
+    public static native @org.robovm.rt.bro.annotation.Marshaler(CFType.NoRetainMarshaler.class) CFHTTPAuthentication create(CFAllocator alloc, CFHTTPMessage response);
     /**
      * @since Available in iOS 2.0 and later.
      */
@@ -90,7 +90,7 @@ import org.robovm.apple.corefoundation.*;
      * @since Available in iOS 2.0 and later.
      */
     @Bridge(symbol="CFHTTPAuthenticationCopyRealm", optional=true)
-    public native String getRealm();
+    public native @org.robovm.rt.bro.annotation.Marshaler(CFString.AsStringNoRetainMarshaler.class) String getRealm();
     /**
      * @since Available in iOS 2.0 and later.
      */
@@ -100,7 +100,7 @@ import org.robovm.apple.corefoundation.*;
      * @since Available in iOS 2.0 and later.
      */
     @Bridge(symbol="CFHTTPAuthenticationCopyMethod", optional=true)
-    public native String getMethod();
+    public native @org.robovm.rt.bro.annotation.Marshaler(CFString.AsStringNoRetainMarshaler.class) String getMethod();
     /**
      * @since Available in iOS 2.0 and later.
      */

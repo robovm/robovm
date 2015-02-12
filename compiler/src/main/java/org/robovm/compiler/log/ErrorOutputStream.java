@@ -26,6 +26,12 @@ public class ErrorOutputStream extends LoggerOutputStream {
     }
     @Override
     protected void log(byte[] message, int off, int length) {
-        logger.error(new String(message, off, length).replace("%", "%%"));
+        String msg = new String(message, off, length).replace("%", "%%");
+        String msgToLower = msg.toLowerCase();
+        if (msgToLower.contains("warning")) {
+            logger.warn(msg);
+        } else {
+            logger.error(msg);
+        }
     }
 }

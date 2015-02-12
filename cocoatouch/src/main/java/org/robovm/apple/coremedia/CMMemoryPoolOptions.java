@@ -90,7 +90,7 @@ import org.robovm.apple.audiotoolbox.*;
     /*</marshalers>*/
 
     /*<constructors>*/
-     CMMemoryPoolOptions(CFDictionary data) {
+    CMMemoryPoolOptions(CFDictionary data) {
         super(data);
     }
     public CMMemoryPoolOptions() {}

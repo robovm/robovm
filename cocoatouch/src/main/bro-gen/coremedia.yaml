@@ -164,6 +164,7 @@ functions:
         name: 'get#{g[0]}'
         visibility: private
         return_type: CFDictionary
+        return_marshaler: CFType.NoRetainMarshaler
         static: true
         parameters:
             target:
@@ -208,7 +209,7 @@ functions:
         parameters:
             formatDescriptionArray:
                 type: List<CMAudioFormatDescription>
-                marshaler: CFArray.AsListMarshaler
+                marshaler: CFType.AsListMarshaler
     CMAudioFormatDescription(GetChannelLayout|GetFormatList|GetMagicCookie):
         class: CMAudioFormatDescription
         name: '#{g[0]}'
@@ -341,7 +342,7 @@ functions:
     CMAudioClockCreate:
         class: CMClock
         name: createAudioClock
-        visibility: protected
+        visibility: private
 
     # CMSync
     CMSync(GetRelativeRateAndAnchorTime):
@@ -575,6 +576,7 @@ functions:
     CMMemoryPool(Create):
         class: CMMemoryPool
         name: '#{g[0]}'
+        return_marshaler: CFType.NoRetainMarshaler
         parameters:
             options:
                 type: CMMemoryPoolOptions

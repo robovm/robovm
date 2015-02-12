@@ -157,7 +157,7 @@ public abstract class AbstractTarget implements Target {
                 String p = lib.getValue();
                 if (p.endsWith(".o")) {
                     objectFiles.add(new File(p));
-                } else if(p.endsWith(".a")) {
+                } else if (p.endsWith(".a")) {
                     // .a file
                     if (config.getOs().getFamily() == OS.Family.darwin) {
                         if (lib.isForce()) {
@@ -173,6 +173,8 @@ public abstract class AbstractTarget implements Target {
                             libs.add("-Wl,--no-whole-archive");
                         }
                     }
+                } else if (p.endsWith(".dylib") || p.endsWith(".so")) {
+                    libs.add(new File(p).getAbsolutePath());
                 } else {
                     // link via -l if suffix is omitted
                     libs.add("-l" + p);

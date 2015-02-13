@@ -232,6 +232,7 @@ public class BridgeMethodCompiler extends BroMethodCompiler {
         AnnotationTag bridgeAnnotation = getAnnotation(method, BRIDGE);
         boolean dynamic = readBooleanElem(bridgeAnnotation, "dynamic", false);
         boolean optional = readBooleanElem(bridgeAnnotation, "optional", false);
+        boolean useCWrapper = requiresCWrapper(method);
         
         Function fn = FunctionBuilder.method(method);
         moduleBuilder.addFunction(fn);
@@ -293,7 +294,9 @@ public class BridgeMethodCompiler extends BroMethodCompiler {
             MarshaledArg marshaledArg = new MarshaledArg();
             marshaledArg.paramIndex = MarshalSite.RECEIVER;
             marshaledArgs.add(marshaledArg);
-            Value nativeValue = marshalObjectToNative(fn, marshalerMethod, marshaledArg, I8_PTR, env, args.get(0).getValue(),
+            Type nativeType = targetParameterTypes[0];
+            Value nativeValue = marshalObjectToNative(fn, marshalerMethod, marshaledArg, 
+                    useCWrapper ? I8_PTR : nativeType, env, args.get(0).getValue(),
                     MarshalerFlags.CALL_TYPE_BRIDGE);
             args.set(0, new Argument(nativeValue));
         }
@@ -331,8 +334,9 @@ public class BridgeMethodCompiler extends BroMethodCompiler {
                     MarshaledArg marshaledArg = new MarshaledArg();
                     marshaledArg.paramIndex = i;
                     marshaledArgs.add(marshaledArg);
-                    Value nativeValue = marshalObjectToNative(fn, marshalerMethod, marshaledArg, I8_PTR, env, args.get(argIdx).getValue(),
-                            MarshalerFlags.CALL_TYPE_BRIDGE, false);
+                    Value nativeValue = marshalObjectToNative(fn, marshalerMethod, marshaledArg, 
+                            useCWrapper ? I8_PTR : nativeType, env, args.get(argIdx).getValue(),
+                            MarshalerFlags.CALL_TYPE_BRIDGE);
                     args.set(argIdx, new Argument(nativeValue, parameterAttributes));
                 }
                 
@@ -343,24 +347,33 @@ public class BridgeMethodCompiler extends BroMethodCompiler {
             argIdx++;
         }        
         
-        args.add(0, new Argument(targetFn.ref()));
-        
         Variable structResult = null;
-        if (targetFnType.getReturnType() instanceof StructureType) {
-            // Allocate space on the stack big enough to hold the returned struct
-            Variable tmp = fn.newVariable(new PointerType(targetFnType.getReturnType()));
-            fn.add(new Alloca(tmp, targetFnType.getReturnType()));
-            structResult = fn.newVariable(I8_PTR);
-            fn.add(new Bitcast(structResult, tmp.ref(), I8_PTR));
-            args.add(1, new Argument(structResult.ref()));
-        }
+        Value targetFnRef = null;
         
-        String wrapperName = Symbols.bridgeCSymbol(method);
-        FunctionType wrapperFnType = getBridgeFunctionType(method, dynamic, true);
-        getCWrapperFunctions().add(createBridgeCWrapper(targetFnType.getReturnType(), 
-                targetFnType.getParameterTypes(), wrapperFnType.getParameterTypes(), wrapperName));
-        FunctionRef wrapperFnRef = getBridgeCWrapperRef(wrapperFnType, wrapperName);
-        moduleBuilder.addFunctionDeclaration(new FunctionDeclaration(wrapperFnRef));
+        if (useCWrapper) {
+            args.add(0, new Argument(targetFn.ref()));
+
+            if (targetFnType.getReturnType() instanceof StructureType) {
+                // Allocate space on the stack big enough to hold the returned struct
+                Variable tmp = fn.newVariable(new PointerType(targetFnType.getReturnType()));
+                fn.add(new Alloca(tmp, targetFnType.getReturnType()));
+                structResult = fn.newVariable(I8_PTR);
+                fn.add(new Bitcast(structResult, tmp.ref(), I8_PTR));
+                args.add(1, new Argument(structResult.ref()));
+            }
+
+            String wrapperName = Symbols.bridgeCSymbol(method);
+            FunctionType wrapperFnType = getBridgeFunctionType(method, dynamic, true);
+            getCWrapperFunctions().add(createBridgeCWrapper(targetFnType.getReturnType(), 
+                    targetFnType.getParameterTypes(), wrapperFnType.getParameterTypes(), wrapperName));
+            FunctionRef wrapperFnRef = getBridgeCWrapperRef(wrapperFnType, wrapperName);
+            moduleBuilder.addFunctionDeclaration(new FunctionDeclaration(wrapperFnRef));
+            targetFnRef = wrapperFnRef;
+        } else {
+            Variable tmp = fn.newVariable(targetFnType);
+            fn.add(new Bitcast(tmp, targetFn.ref(), targetFnType));
+            targetFnRef = tmp.ref();
+        }
         
         // Execute the call to native code
         BasicBlockRef bbSuccess = fn.newBasicBlockRef(new Label("success"));
@@ -368,7 +381,7 @@ public class BridgeMethodCompiler extends BroMethodCompiler {
         pushNativeFrame(fn);
         trycatchAllEnter(fn, env, bbSuccess, bbFailure);
         fn.newBasicBlock(bbSuccess.getLabel());
-        Value result = callWithArguments(fn, wrapperFnRef, args);
+        Value result = callWithArguments(fn, targetFnRef, args);
         trycatchLeave(fn, env);
         popNativeFrame(fn);
 

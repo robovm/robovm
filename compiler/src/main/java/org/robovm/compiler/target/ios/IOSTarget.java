@@ -482,8 +482,6 @@ public class IOSTarget extends AbstractTarget {
             ToolchainUtil.textureatlas(config, dir, destDir);
             return false;
         } else if (dir.getName().endsWith(".xcassets")) {
-            destDir.mkdirs();
-            
             // Asset Catalogs need to be compiled to the app bundle root.
             ToolchainUtil.actool(config, dir, getAppDir());
             return false;

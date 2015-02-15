@@ -16,22 +16,23 @@
 #ifndef ROBOVM_HOOKS_H
 #define ROBOVM_HOOKS_H
 
-void _rvmHookBeforeAppEntryPoint(Env* env, Class* clazz, Method* method, ObjectArray* args);
+void _rvmHookBeforeAppEntryPoint(Env* env, char* mainClass);
 void _rvmHookBeforeMainThreadAttached(Env* env);
 void _rvmHookThreadCreated(Env* env, JavaThread* threadObj);
 void _rvmHookThreadAttached(Env* env, JavaThread* threadObj, Thread* thread);
 void _rvmHookThreadStarting(Env* env, JavaThread* threadObj, Thread* thread);
 void _rvmHookThreadDetaching(Env* env, JavaThread* threadObj, Thread* thread, Object* throwable);
 void _rvmHookClassLoaded(Env* env, Class* clazz, void* classInfo);
+void _rvmHookExceptionRaised(Env* env, Object* throwable);
 jboolean _rvmHookSetupTCPChannel(Options* options);
 jboolean _rvmHookHandshake(Options* options);
 void _rvmHookInstrumented(DebugEnv* debugEnv, jint lineNumber, jint lineNumberOffset, jbyte* bptable, void* pc);
 
 void rvmHookWaitForAttach(Options* options);
 void rvmHookDebuggerAttached(Options* options);
-static inline void rvmHookBeforeAppEntryPoint(Env* env, Class* clazz, Method* method, ObjectArray* args) {
+static inline void rvmHookBeforeAppEntryPoint(Env* env, char* mainClass) {
     if (env->vm->options->enableHooks) {
-        _rvmHookBeforeAppEntryPoint(env, clazz, method, args);
+        _rvmHookBeforeAppEntryPoint(env, mainClass);
     }
 }
 static inline void rvmHookBeforeMainThreadAttached(Env* env) {
@@ -62,6 +63,11 @@ static inline void rvmHookThreadDetaching(Env* env, JavaThread* threadObj, Threa
 static inline void rvmHookClassLoaded(Env* env, Class* clazz, void* classInfo) {
     if (env->vm->options->enableHooks) {
         _rvmHookClassLoaded(env, clazz, classInfo);
+    }
+}
+static inline void rvmHookExceptionRaised(Env* env, Object* throwable) {
+    if(env->vm->options->enableHooks) {
+        // _rvmHookExceptionRaised(env, throwable);
     }
 }
 static inline jboolean rvmHookSetupTCPChannel(Options* options) {

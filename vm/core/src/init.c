@@ -421,6 +421,7 @@ jboolean rvmRun(Env* env) {
     }
 
     if (!errorDuringSetup) {
+        rvmHookBeforeAppEntryPoint(env, options->mainClass);
         clazz = rvmFindClassUsingLoader(env, options->mainClass, systemClassLoader);
         if (clazz) {
             Method* method = rvmGetClassMethod(env, clazz, "main", "([Ljava/lang/String;)V");
@@ -437,7 +438,6 @@ jboolean rvmRun(Env* env) {
                         }
                     }
                     if (args) {
-                        rvmHookBeforeAppEntryPoint(env, clazz, method, args);
                         rvmCallVoidClassMethod(env, clazz, method, args);
                     }
                 }

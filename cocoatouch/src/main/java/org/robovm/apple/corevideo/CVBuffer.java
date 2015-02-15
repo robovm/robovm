@@ -37,7 +37,7 @@ import org.robovm.apple.metal.*;
 /*<javadoc>*/
 /*</javadoc>*/
 /*<annotations>*/@Library("CoreVideo")/*</annotations>*/
-/*<visibility>*/public/*</visibility>*/ class /*<name>*/CVBuffer/*</name>*/ 
+/*<visibility>*/public abstract/*</visibility>*/ class /*<name>*/CVBuffer/*</name>*/ 
     extends /*<extends>*/CFType/*</extends>*/ 
     /*<implements>*//*</implements>*/ {
 
@@ -48,11 +48,11 @@ import org.robovm.apple.metal.*;
     /*<constructors>*//*</constructors>*/
     /*<properties>*//*</properties>*/
     /*<members>*//*</members>*/
-    public CFType getAttachment(CFString key) {
-        return getAttachment(key, null);
+    protected CFType getAttachment(CFString key) {
+        return getAttachment(key, new IntPtr());
     }
     
-    public CVAttachmentMode getAttachmentMode(CFString key) {
+    protected CVAttachmentMode getAttachmentMode(CFString key) {
         IntPtr ptr = new IntPtr();
         getAttachment(key, ptr);
         return CVAttachmentMode.valueOf(ptr.get());
@@ -62,7 +62,7 @@ import org.robovm.apple.metal.*;
      * @since Available in iOS 4.0 and later.
      */
     @Bridge(symbol="CVBufferSetAttachment", optional=true)
-    public native void setAttachment(CFString key, CFType value, CVAttachmentMode attachmentMode);
+    protected native void setAttachment(CFString key, CFType value, CVAttachmentMode attachmentMode);
     /**
      * @since Available in iOS 4.0 and later.
      */
@@ -72,26 +72,26 @@ import org.robovm.apple.metal.*;
      * @since Available in iOS 4.0 and later.
      */
     @Bridge(symbol="CVBufferRemoveAttachment", optional=true)
-    public native void removeAttachment(CFString key);
+    protected native void removeAttachment(CFString key);
     /**
      * @since Available in iOS 4.0 and later.
      */
     @Bridge(symbol="CVBufferRemoveAllAttachments", optional=true)
-    public native void removeAllAttachments();
+    protected native void removeAllAttachments();
     /**
      * @since Available in iOS 4.0 and later.
      */
     @Bridge(symbol="CVBufferGetAttachments", optional=true)
-    public native NSDictionary<NSString, ?> getAttachments(CVAttachmentMode attachmentMode);
+    protected native NSDictionary<NSString, ?> getAttachments(CVAttachmentMode attachmentMode);
     /**
      * @since Available in iOS 4.0 and later.
      */
     @Bridge(symbol="CVBufferSetAttachments", optional=true)
-    public native void setAttachments(NSDictionary<NSString, ?> theAttachments, CVAttachmentMode attachmentMode);
+    protected native void setAttachments(NSDictionary<NSString, ?> theAttachments, CVAttachmentMode attachmentMode);
     /**
      * @since Available in iOS 4.0 and later.
      */
     @Bridge(symbol="CVBufferPropagateAttachments", optional=true)
-    public native void propagateAttachments(CVBuffer destinationBuffer);
+    protected native void propagateAttachments(CVBuffer destinationBuffer);
     /*</methods>*/
 }

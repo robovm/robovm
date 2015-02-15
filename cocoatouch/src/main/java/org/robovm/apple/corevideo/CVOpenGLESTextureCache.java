@@ -47,15 +47,32 @@ import org.robovm.apple.metal.*;
     /*<constructors>*//*</constructors>*/
     /*<properties>*//*</properties>*/
     /*<members>*//*</members>*/
-    public static CVOpenGLESTextureCache create(NSDictionary<NSString, ?> cacheAttributes, EAGLContext eaglContext, NSDictionary<NSString, ?> textureAttributes) {
+    /**
+     * @since Available in iOS 5.0 and later.
+     */
+    public static CVOpenGLESTextureCache create(CVOpenGLESTextureCacheAttributes cacheAttributes, EAGLContext eaglContext, NSDictionary<NSString, ?> textureAttributes) {
+        return create(null, cacheAttributes, eaglContext, textureAttributes);
+    }
+    /**
+     * @since Available in iOS 5.0 and later.
+     */
+    public static CVOpenGLESTextureCache create(CFAllocator allocator, CVOpenGLESTextureCacheAttributes cacheAttributes, EAGLContext eaglContext, NSDictionary<NSString, ?> textureAttributes) {
         CVOpenGLESTextureCachePtr ptr = new CVOpenGLESTextureCachePtr();
-        create(null, cacheAttributes, eaglContext, textureAttributes, ptr);
+        create(allocator, cacheAttributes, eaglContext, textureAttributes, ptr);
         return ptr.get();
     }
-    
+    /**
+     * @since Available in iOS 5.0 and later.
+     */
     public CVOpenGLESTexture createTexture(CVImageBuffer sourceImage, NSDictionary<NSString, ?> textureAttributes, int target, int internalFormat, int width, int height, int format, int type, @MachineSizedUInt long planeIndex) {
+        return createTexture(null, sourceImage, textureAttributes, target, internalFormat, width, height, format, type, planeIndex);
+    }
+    /**
+     * @since Available in iOS 5.0 and later.
+     */
+    public CVOpenGLESTexture createTexture(CFAllocator allocator, CVImageBuffer sourceImage, NSDictionary<NSString, ?> textureAttributes, int target, int internalFormat, int width, int height, int format, int type, @MachineSizedUInt long planeIndex) {
         CVOpenGLESTexture.CVOpenGLESTexturePtr ptr = new CVOpenGLESTexture.CVOpenGLESTexturePtr();
-        createTexture(null, this, sourceImage, textureAttributes, target, internalFormat, width, height, format, type, planeIndex, ptr);
+        createTexture(allocator, this, sourceImage, textureAttributes, target, internalFormat, width, height, format, type, planeIndex, ptr);
         return ptr.get();
     }
     /*<methods>*/
@@ -68,12 +85,12 @@ import org.robovm.apple.metal.*;
      * @since Available in iOS 5.0 and later.
      */
     @Bridge(symbol="CVOpenGLESTextureCacheCreate", optional=true)
-    protected static native CVReturn create(CFAllocator allocator, NSDictionary<NSString, ?> cacheAttributes, EAGLContext eaglContext, NSDictionary<NSString, ?> textureAttributes, CVOpenGLESTextureCache.CVOpenGLESTextureCachePtr cacheOut);
+    private static native CVReturn create(CFAllocator allocator, CVOpenGLESTextureCacheAttributes cacheAttributes, EAGLContext eaglContext, NSDictionary<NSString, ?> textureAttributes, CVOpenGLESTextureCache.CVOpenGLESTextureCachePtr cacheOut);
     /**
      * @since Available in iOS 5.0 and later.
      */
     @Bridge(symbol="CVOpenGLESTextureCacheCreateTextureFromImage", optional=true)
-    protected static native CVReturn createTexture(CFAllocator allocator, CVOpenGLESTextureCache textureCache, CVImageBuffer sourceImage, NSDictionary<NSString, ?> textureAttributes, int target, int internalFormat, int width, int height, int format, int type, @MachineSizedUInt long planeIndex, CVOpenGLESTexture.CVOpenGLESTexturePtr textureOut);
+    private static native CVReturn createTexture(CFAllocator allocator, CVOpenGLESTextureCache textureCache, CVImageBuffer sourceImage, NSDictionary<NSString, ?> textureAttributes, int target, int internalFormat, int width, int height, int format, int type, @MachineSizedUInt long planeIndex, CVOpenGLESTexture.CVOpenGLESTexturePtr textureOut);
     /**
      * @since Available in iOS 5.0 and later.
      */

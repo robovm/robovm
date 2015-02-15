@@ -477,7 +477,15 @@ public class IOSTarget extends AbstractTarget {
     @Override
     protected boolean processDir(Resource resource, File dir, File destDir) throws IOException {
         if (dir.getName().endsWith(".atlas")) {
+            destDir.mkdirs();
+            
             ToolchainUtil.textureatlas(config, dir, destDir);
+            return false;
+        } else if (dir.getName().endsWith(".xcassets")) {
+            destDir.mkdirs();
+            
+            // Asset Catalogs need to be compiled to the app bundle root.
+            ToolchainUtil.actool(config, dir, getAppDir());
             return false;
         }
         return super.processDir(resource, dir, destDir);

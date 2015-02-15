@@ -54,6 +54,7 @@ import org.robovm.compiler.Version;
 import org.robovm.compiler.clazz.Clazz;
 import org.robovm.compiler.clazz.Clazzes;
 import org.robovm.compiler.clazz.Path;
+import org.robovm.compiler.config.tools.Tools;
 import org.robovm.compiler.llvm.DataLayout;
 import org.robovm.compiler.log.Logger;
 import org.robovm.compiler.plugin.CompilerPlugin;
@@ -144,6 +145,9 @@ public class Config {
     private File iosResourceRulesPList;
     @Element(required = false)
     private File iosEntitlementsPList;
+    
+    @Element(required = false)
+    private Tools tools = new Tools();
 
     private SigningIdentity iosSignIdentity;
     private ProvisioningProfile iosProvisioningProfile;
@@ -452,6 +456,10 @@ public class Config {
 
     public boolean isIosSkipSigning() {
         return iosSkipSigning;
+    }
+    
+    public Tools getTools() {
+        return tools;
     }
     
     private static File makeFileRelativeTo(File dir, File f) {
@@ -1224,6 +1232,11 @@ public class Config {
         
         public Builder cacerts(Cacerts cacerts) {
             config.cacerts = cacerts;
+            return this;
+        }
+        
+        public Builder tools(Tools tools) {
+            config.tools = tools;
             return this;
         }
         

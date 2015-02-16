@@ -22,7 +22,6 @@
 #include <string.h>
 #include <errno.h>
 #include <netinet/tcp.h>
-#include <robovm/types.h>
 
 #define LOG_TAG "hooks"
 
@@ -145,15 +144,18 @@ static void writeChannel(int socket, void* buf, int numBytes, ChannelError* erro
 }
 
 static void writeChannelByte(int socket, char val, ChannelError* error) {
+    // DEBUGF("Writting byte %d", val);
     writeChannel(socket, &val, 1, error);
 }
 
 static void writeChannelInt(int socket, jint val, ChannelError* error) {
+    // DEBUGF("Writting int %d", val);
     val = swap32(val);
     writeChannel(socket, &val, 4, error);
 }
 
 static void writeChannelLong(int socket, jlong val, ChannelError* error) {
+    // DEBUGF("Writting long %llx", val);
     val = swap64(val);
     writeChannel(socket, &val, 8, error);
 }
@@ -346,6 +348,7 @@ jboolean _rvmHookHandshake(Options* options) {
     setsockopt(clientSocket, IPPROTO_TCP, TCP_NODELAY, &yes, sizeof(int));
 
     // Let's see if we are taking to a RoboVM debug client
+    rvmLockMutex(&writeMutex);
     ChannelError error = { 0 };
     writeChannelLong(clientSocket, HANDSHAKE_QUESTION, &error);
     jlong response = readChannelLong(clientSocket, &error);
@@ -357,6 +360,7 @@ jboolean _rvmHookHandshake(Options* options) {
 
     // send base symbol address to deal with PIE/ASLR
     writeChannelLong(clientSocket, (jlong) &robovmBaseSymbol, &error);
+    rvmUnlockMutex(&writeMutex);
     DEBUG("Handshake complete");
 
     // setup
@@ -519,8 +523,9 @@ static void handleClassFilter(jlong reqId, ChannelError* error) {
     }
     rvmUnlockMutex(&classFilterMutex);
 
-    rvmLockMutex(&writeMutex);;
-    writeChannelByte(clientSocket, CMD_FREE, error);
+    rvmLockMutex(&writeMutex);
+    // DEBUGF("Set/removed class filter, req id: %d", reqId);
+    writeChannelByte(clientSocket, CMD_CLASS_FILTER, error);
     writeChannelLong(clientSocket, reqId, error);
     writeChannelLong(clientSocket, 0, error);
     rvmUnlockMutex(&writeMutex);
@@ -1182,6 +1187,7 @@ static void writeStopOrExceptionEvent(Env* env, char event, Object* throwable, C
         classNamesSize += strlen(frame->method->clazz->name);
     }
 
+    rvmLockMutex(&writeMutex);
     ChannelError error = { 0 };
 
     int payLoadSize = sizeof(jlong) * (event == EVT_EXCEPTION? 3: 2) + sizeof(jint) + length * (sizeof(jlong) * 2 + sizeof(jint) * 2) + classNamesSize;
@@ -1206,6 +1212,8 @@ static void writeStopOrExceptionEvent(Env* env, char event, Object* throwable, C
         writeChannelInt(clientSocket, strLen, &error);
         writeChannel(clientSocket, (void*)frame->method->clazz->name, strLen, &error);
     }
+
+    rvmUnlockMutex(&writeMutex);
 }
 
 void _rvmHookInstrumented(DebugEnv* debugEnv, jint lineNumber, jint lineNumberOffset, jbyte* bptable, void* pc) {
@@ -1229,9 +1237,7 @@ void _rvmHookInstrumented(DebugEnv* debugEnv, jint lineNumber, jint lineNumberOf
             ERRORF("Failed to get a call stack for thread %p due to event %d (pc=%p). Got an exception of type: %s", 
                 env->currentThread, event, pc, ex->clazz->name);
         } else {
-            rvmLockMutex(&writeMutex);
             writeStopOrExceptionEvent(env, event, NULL, callStack);
-            rvmUnlockMutex(&writeMutex);
             suspendLoop(debugEnv);
         }
 
@@ -1256,9 +1262,7 @@ void _rvmHookExceptionRaised(Env* env, Object* throwable) {
         ERRORF("Failed to get a call stack for thread %p due to exception event. Got an exception of type: %s",
                 env->currentThread, ex->clazz->name);
     } else {
-        rvmLockMutex(&writeMutex);
         writeStopOrExceptionEvent(env, EVT_EXCEPTION, throwable, callStack);
-        rvmUnlockMutex(&writeMutex);
         suspendLoop(debugEnv);
     }
 

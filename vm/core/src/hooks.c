@@ -144,15 +144,18 @@ static void writeChannel(int socket, void* buf, int numBytes, ChannelError* erro
 }
 
 static void writeChannelByte(int socket, char val, ChannelError* error) {
+    // DEBUGF("Writting byte %d", val);
     writeChannel(socket, &val, 1, error);
 }
 
 static void writeChannelInt(int socket, jint val, ChannelError* error) {
+    // DEBUGF("Writting int %d", val);
     val = swap32(val);
     writeChannel(socket, &val, 4, error);
 }
 
 static void writeChannelLong(int socket, jlong val, ChannelError* error) {
+    // DEBUGF("Writting long %llx", val);
     val = swap64(val);
     writeChannel(socket, &val, 8, error);
 }
@@ -345,6 +348,7 @@ jboolean _rvmHookHandshake(Options* options) {
     setsockopt(clientSocket, IPPROTO_TCP, TCP_NODELAY, &yes, sizeof(int));
 
     // Let's see if we are taking to a RoboVM debug client
+    rvmLockMutex(&writeMutex);
     ChannelError error = { 0 };
     writeChannelLong(clientSocket, HANDSHAKE_QUESTION, &error);
     jlong response = readChannelLong(clientSocket, &error);
@@ -356,6 +360,7 @@ jboolean _rvmHookHandshake(Options* options) {
 
     // send base symbol address to deal with PIE/ASLR
     writeChannelLong(clientSocket, (jlong) &robovmBaseSymbol, &error);
+    rvmUnlockMutex(&writeMutex);
     DEBUG("Handshake complete");
 
     // setup
@@ -518,8 +523,9 @@ static void handleClassFilter(jlong reqId, ChannelError* error) {
     }
     rvmUnlockMutex(&classFilterMutex);
 
-    rvmLockMutex(&writeMutex);;
-    writeChannelByte(clientSocket, CMD_FREE, error);
+    rvmLockMutex(&writeMutex);
+    // DEBUGF("Set/removed class filter, req id: %d", reqId);
+    writeChannelByte(clientSocket, CMD_CLASS_FILTER, error);
     writeChannelLong(clientSocket, reqId, error);
     writeChannelLong(clientSocket, 0, error);
     rvmUnlockMutex(&writeMutex);
@@ -1171,6 +1177,45 @@ static inline void suspendLoop(DebugEnv* debugEnv) {
     rvmUnlockMutex(&writeMutex);
 }
 
+static void writeStopOrExceptionEvent(Env* env, char event, Object* throwable, CallStack* callStack) {
+    jint index = 0;
+    jint length = 0;
+    jint classNamesSize = 0;
+    CallStackFrame* frame = NULL;
+    while ((frame = rvmGetNextCallStackMethod(env, callStack, &index)) != NULL) {
+        length++;
+        classNamesSize += strlen(frame->method->clazz->name);
+    }
+
+    rvmLockMutex(&writeMutex);
+    ChannelError error = { 0 };
+
+    int payLoadSize = sizeof(jlong) * (event == EVT_EXCEPTION? 3: 2) + sizeof(jint) + length * (sizeof(jlong) * 2 + sizeof(jint) * 2) + classNamesSize;
+
+    writeChannelByte(clientSocket, event, &error);
+    writeChannelLong(clientSocket, 0, &error);
+    writeChannelLong(clientSocket, payLoadSize, &error);
+    writeChannelLong(clientSocket, (jlong)env->currentThread->threadObj, &error);
+    writeChannelLong(clientSocket, (jlong)env->currentThread, &error);
+    if(event == EVT_EXCEPTION) {
+        writeChannelLong(clientSocket, (jlong)throwable, &error);
+    }
+    writeChannelInt(clientSocket, length, &error);
+    index = 0;
+    frame = NULL;
+    while ((frame = rvmGetNextCallStackMethod(env, callStack, &index)) != NULL) {
+        // TODO: Handle proxy methods
+        writeChannelLong(clientSocket, (jlong)(frame->method->impl), &error);
+        writeChannelInt(clientSocket, frame->lineNumber, &error);
+        writeChannelLong(clientSocket, (jlong)(frame->fp), &error);
+        jint strLen = strlen(frame->method->clazz->name);
+        writeChannelInt(clientSocket, strLen, &error);
+        writeChannel(clientSocket, (void*)frame->method->clazz->name, strLen, &error);
+    }
+
+    rvmUnlockMutex(&writeMutex);
+}
+
 void _rvmHookInstrumented(DebugEnv* debugEnv, jint lineNumber, jint lineNumberOffset, jbyte* bptable, void* pc) {
     Env* env = (Env*) debugEnv;
 
@@ -1192,30 +1237,7 @@ void _rvmHookInstrumented(DebugEnv* debugEnv, jint lineNumber, jint lineNumberOf
             ERRORF("Failed to get a call stack for thread %p due to event %d (pc=%p). Got an exception of type: %s", 
                 env->currentThread, event, pc, ex->clazz->name);
         } else {
-
-            jint index = 0;
-            jint length = 0;
-            while (rvmGetNextCallStackMethod(env, callStack, &index)) {
-                length++;
-            }
-
-            rvmLockMutex(&writeMutex);
-            ChannelError error = { 0 };
-            writeChannelByte(clientSocket, event, &error);
-            writeChannelLong(clientSocket, 0, &error);
-            writeChannelLong(clientSocket, sizeof(jlong) * 2 + sizeof(jint) + length * (sizeof(jlong) * 2 + sizeof(jint)), &error);
-            writeChannelLong(clientSocket, (jlong)env->currentThread->threadObj, &error);
-            writeChannelLong(clientSocket, (jlong)env->currentThread, &error);
-            writeChannelInt(clientSocket, length, &error);
-            index = 0;
-            CallStackFrame* frame = NULL;
-            while ((frame = rvmGetNextCallStackMethod(env, callStack, &index)) != NULL) {
-                // TODO: Handle proxy methods
-                writeChannelLong(clientSocket, (jlong)(frame->method->impl), &error);
-                writeChannelInt(clientSocket, frame->lineNumber, &error);
-                writeChannelLong(clientSocket, (jlong)(frame->fp), &error);
-            }
-            rvmUnlockMutex(&writeMutex);
+            writeStopOrExceptionEvent(env, event, NULL, callStack);
             suspendLoop(debugEnv);
         }
 
@@ -1225,7 +1247,6 @@ void _rvmHookInstrumented(DebugEnv* debugEnv, jint lineNumber, jint lineNumberOf
 
 void _rvmHookExceptionRaised(Env* env, Object* throwable) {
     DebugEnv* debugEnv = (DebugEnv*)env;
-    jbyte event = EVT_EXCEPTION;
 
     rvmPushGatewayFrame(env);
     rvmLockMutex(&debugEnv->suspendMutex);
@@ -1241,32 +1262,7 @@ void _rvmHookExceptionRaised(Env* env, Object* throwable) {
         ERRORF("Failed to get a call stack for thread %p due to exception event. Got an exception of type: %s",
                 env->currentThread, ex->clazz->name);
     } else {
-
-        jint index = 0;
-        jint length = 0;
-        while (rvmGetNextCallStackMethod(env, callStack, &index)) {
-            length++;
-        }
-
-        rvmLockMutex(&writeMutex);
-        ChannelError error = { 0 };
-        writeChannelByte(clientSocket, event, &error);
-        writeChannelLong(clientSocket, 0, &error);
-        writeChannelLong(clientSocket, sizeof(jlong) * 3 + sizeof(jbyte) + sizeof(jint) + length * (sizeof(jlong) * 2 + sizeof(jint)), &error);
-        writeChannelLong(clientSocket, (jlong)env->currentThread->threadObj, &error);
-        writeChannelLong(clientSocket, (jlong)env->currentThread, &error);
-        writeChannelLong(clientSocket, (jlong)throwable, &error);
-        writeChannelLong(clientSocket, -1, &error); // we report every exception as caught
-        writeChannelInt(clientSocket, length, &error);
-        index = 0;
-        CallStackFrame* frame = NULL;
-        while ((frame = rvmGetNextCallStackMethod(env, callStack, &index)) != NULL) {
-            // TODO: Handle proxy methods
-            writeChannelLong(clientSocket, (jlong)(frame->method->impl), &error);
-            writeChannelInt(clientSocket, frame->lineNumber, &error);
-            writeChannelLong(clientSocket, (jlong)(frame->fp), &error);
-        }
-        rvmUnlockMutex(&writeMutex);
+        writeStopOrExceptionEvent(env, EVT_EXCEPTION, throwable, callStack);
         suspendLoop(debugEnv);
     }
 

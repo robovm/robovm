@@ -19,6 +19,7 @@ package org.robovm.apple.coreimage;
 import java.io.*;
 import java.nio.*;
 import java.util.*;
+
 import org.robovm.objc.*;
 import org.robovm.objc.annotation.*;
 import org.robovm.objc.block.*;
@@ -53,6 +54,78 @@ import org.robovm.apple.imageio.*;
     public native CIImage getOutputImage();
     /*</properties>*/
     /*<members>*//*</members>*/
+    
+    private static NSObject toNSObject(Object[] keysAndValues, int index) {
+        if (index >= keysAndValues.length) {
+            return null;
+        }
+        NSObject val = null;
+        
+        Object o = keysAndValues[index];
+        if (o instanceof String) {
+            val = new NSString((String)o);
+        } else if (o instanceof Number) {
+            val = NSNumber.valueOf((Number)o);
+        }
+           
+        return val;
+    }
+    
+    /**
+     * Creates a new CIFilter with the specified {@code name}.
+     * You can specify the input parameters as key-value pairs (String <-> Object). Currently a maximum
+     * of 10 key-value pairs is supported.
+     * The key of a key-value pair needs to be of type String or NSString.
+     * The value of a key-value pair needs to be a String, a Number or a subtype of NSObject.
+     * 
+     * @param name
+     * @param inputParameters
+     * @return
+     */
+    public static CIFilter create(String name, Object...inputParameters) {
+        if (inputParameters == null || inputParameters.length == 0) {
+            return create(name);
+        }
+        int n = inputParameters.length;
+        if (n > 20) {
+            throw new IllegalArgumentException("A maximum of 10 key-value pairs is supported");
+        }
+        if (n % 2 != 0) {
+            throw new IllegalArgumentException("Length of array inputParameters must be even but was " + n);
+        }
+        
+        NSObject key0 = toNSObject(inputParameters, 0);
+        NSObject value0 = toNSObject(inputParameters, 1);
+        NSObject key1 = toNSObject(inputParameters, 2);
+        NSObject value1 = toNSObject(inputParameters, 3);
+        NSObject key2 = toNSObject(inputParameters, 4);
+        NSObject value2 = toNSObject(inputParameters, 5);
+        NSObject key3 = toNSObject(inputParameters, 6);
+        NSObject value3 = toNSObject(inputParameters, 7);
+        NSObject key4 = toNSObject(inputParameters, 8);
+        NSObject value4 = toNSObject(inputParameters, 9);
+        NSObject key5 = toNSObject(inputParameters, 10);
+        NSObject value5 = toNSObject(inputParameters, 11);
+        NSObject key6 = toNSObject(inputParameters, 12);
+        NSObject value6 = toNSObject(inputParameters, 13);
+        NSObject key7 = toNSObject(inputParameters, 14);
+        NSObject value7 = toNSObject(inputParameters, 15);
+        NSObject key8 = toNSObject(inputParameters, 16);
+        NSObject value8 = toNSObject(inputParameters, 17);
+        NSObject key9 = toNSObject(inputParameters, 18);
+        NSObject value9 = toNSObject(inputParameters, 19);
+        
+        return create(name, key0, value0, key1, value1, key2, value2, key3, value3, key4, value4, 
+            key5, value5, key6, value6, key7, value7, key8, value8, key9, value9);
+    }
+    
+    @Method(selector = "filterWithName:keysAndValues:")
+    @Variadic(1)
+    private static native CIFilter create(String name, NSObject key0, NSObject value0, NSObject key1, NSObject value1, NSObject key2, NSObject value2, 
+        NSObject key3, NSObject value3, NSObject key4, NSObject value4, NSObject key5, NSObject value5, NSObject key6, NSObject value6, NSObject key7,
+        NSObject value7, NSObject key8, NSObject value8, NSObject key9, NSObject value9);
+    
+    
     /**
      * 
      * @param xmpData
@@ -69,7 +142,6 @@ import org.robovm.apple.imageio.*;
         }
         return result;
     }
-
     /*<methods>*/
     /**
      * @since Available in iOS 5.0 and later.

@@ -240,17 +240,23 @@ values:
     kCIInput(Time|Transform|Scale|AspectRatio|Center|Radius|Angle|Width|Sharpness|Intensity|EV|Saturation|Color|Brightness|Contrast|MaskImage|TargetImage|Extent)Key:
         exclude: true # not available in iOS
     kCIInput(.*Key):
-        class: CIFilterInputParameters
+        dictionary: CIFilterInputParameters
         name: '#{g[0]}'
         type: NSString
-        readonly: true
-        visibility: protected
+        methods:
+            OutputImage:
+                type: CIImage
+            BackgroundImage:
+                type: CIImage
+            Image:
+                name: InputImage
+                type: CIImage
+            Version:
+                type: long
     kCI(OutputImageKey):
-        class: CIFilterInputParameters
+        dictionary: CIFilterInputParameters
         name: '#{g[0]}'
         type: NSString
-        readonly: true
-        visibility: protected
     kCICategory(.*):
         class: CIFilterCategory
         name: '#{g[0]}Value'

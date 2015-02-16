@@ -39,7 +39,7 @@ import org.robovm.apple.imageio.*;
 @Marshaler(CIDetectorFeatureOptions.Marshaler.class)
 /*<annotations>*/@Library("CoreImage")/*</annotations>*/
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/CIDetectorFeatureOptions/*</name>*/ 
-    extends /*<extends>*/Object/*</extends>*/ 
+    extends /*<extends>*/CocoaUtility/*</extends>*/ 
     /*<implements>*//*</implements>*/ {
     
     public static class Marshaler {

@@ -38,7 +38,7 @@ import org.robovm.apple.imageio.*;
 /*</javadoc>*/
 /*<annotations>*/@Library("CoreImage")/*</annotations>*/
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/CIFormat/*</name>*/ 
-    extends /*<extends>*/Object/*</extends>*/ 
+    extends /*<extends>*/CocoaUtility/*</extends>*/ 
     /*<implements>*//*</implements>*/ {
 
     /*<ptr>*/

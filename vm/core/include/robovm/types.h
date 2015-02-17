@@ -512,6 +512,11 @@ struct Env {
     jint attachCount;
 };
 
+typedef struct DebugGcRoot {
+    Object* root;
+    struct DebugGcRoot* next;
+} DebugGcRoot;
+
 typedef struct {
     Env env;
     void* pclow;
@@ -544,6 +549,13 @@ typedef struct {
     jint arrayLength;
     char* elementName;
     jint elementNameLength;
+
+    // used to keep track of GC roots
+    // created when instantiating objects
+    // or invoking methods. All items
+    // are unrooted when a thread is
+    // resumed
+    DebugGcRoot* gcRoot;
 } DebugEnv;
 
 typedef struct {

@@ -1676,7 +1676,9 @@ classes:
     UIMenuController: # DONE
         properties:
             'menuItems':
+                name: menuItems0
                 type: NSArray<UIMenuItem>
+                visibility: private
         methods:
             '+sharedMenuController':
                 name: getSharedMenuController

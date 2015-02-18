@@ -40,6 +40,21 @@ import org.robovm.apple.metal.*;
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/CVPixelBufferPool/*</name>*/ 
     extends /*<extends>*/CFType/*</extends>*/ 
     /*<implements>*//*</implements>*/ {
+    
+    public static class Notifications {
+        /**
+         * @since Available in iOS 4.0 and later.
+         */
+        public static NSObject observeFreeBuffer(CVPixelBufferPool object, final VoidBlock1<CVPixelBufferPool> block) {
+            return NSNotificationCenter.getDefaultCenter().addObserver(FreeBufferNotification(), object.as(NSObject.class), NSOperationQueue.getMainQueue(), new VoidBlock1<NSNotification>() {
+                @Override
+                public void invoke (NSNotification a) {
+                    CVPixelBufferPool object = a.getObject() != null ? a.getObject().as(CVPixelBufferPool.class) : null;
+                    block.invoke(object);
+                }
+            });
+        }
+    }
 
     /*<ptr>*/public static class CVPixelBufferPoolPtr extends Ptr<CVPixelBufferPool, CVPixelBufferPoolPtr> {}/*</ptr>*/
     /*<bind>*/static { Bro.bind(CVPixelBufferPool.class); }/*</bind>*/
@@ -47,24 +62,43 @@ import org.robovm.apple.metal.*;
     /*<constructors>*//*</constructors>*/
     /*<properties>*//*</properties>*/
     /*<members>*//*</members>*/
-    public static CVPixelBufferPool create(NSDictionary<NSString, ?> poolAttributes, NSDictionary<NSString, ?> pixelBufferAttributes) {
+    public static CVPixelBufferPool create(CVPixelBufferPoolAttributes poolAttributes, CVPixelBufferAttributes pixelBufferAttributes) {
         CVPixelBufferPoolPtr ptr = new CVPixelBufferPoolPtr();
         create(null, poolAttributes, pixelBufferAttributes, ptr);
         return ptr.get();
     }
-    
+    public static CVPixelBufferPool create(CFAllocator allocator, CVPixelBufferPoolAttributes poolAttributes, CVPixelBufferAttributes pixelBufferAttributes) {
+        CVPixelBufferPoolPtr ptr = new CVPixelBufferPoolPtr();
+        create(allocator, poolAttributes, pixelBufferAttributes, ptr);
+        return ptr.get();
+    }
     public CVPixelBuffer createPixelBuffer() {
         CVPixelBuffer.CVPixelBufferPtr ptr = new CVPixelBuffer.CVPixelBufferPtr();
         createPixelBuffer(null, this, ptr);
         return ptr.get();
     }
-    
-    public CVPixelBuffer createPixelBuffer(NSDictionary<NSString, ?> auxAttributes) {
+    public CVPixelBuffer createPixelBuffer(CFAllocator allocator) {
+        CVPixelBuffer.CVPixelBufferPtr ptr = new CVPixelBuffer.CVPixelBufferPtr();
+        createPixelBuffer(allocator, this, ptr);
+        return ptr.get();
+    }
+    public CVPixelBuffer createPixelBuffer(CVPixelBufferPoolAuxiliaryAttributes auxAttributes) {
         CVPixelBuffer.CVPixelBufferPtr ptr = new CVPixelBuffer.CVPixelBufferPtr();
         createPixelBuffer(null, this, auxAttributes, ptr);
         return ptr.get();
     }
+    public CVPixelBuffer createPixelBuffer(CFAllocator allocator, CVPixelBufferPoolAuxiliaryAttributes auxAttributes) {
+        CVPixelBuffer.CVPixelBufferPtr ptr = new CVPixelBuffer.CVPixelBufferPtr();
+        createPixelBuffer(allocator, this, auxAttributes, ptr);
+        return ptr.get();
+    }
     /*<methods>*/
+    /**
+     * @since Available in iOS 4.0 and later.
+     */
+    @GlobalValue(symbol="kCVPixelBufferPoolFreeBufferNotification", optional=true)
+    public static native NSString FreeBufferNotification();
+    
     /**
      * @since Available in iOS 4.0 and later.
      */
@@ -74,26 +108,26 @@ import org.robovm.apple.metal.*;
      * @since Available in iOS 4.0 and later.
      */
     @Bridge(symbol="CVPixelBufferPoolCreate", optional=true)
-    protected static native CVReturn create(CFAllocator allocator, NSDictionary<NSString, ?> poolAttributes, NSDictionary<NSString, ?> pixelBufferAttributes, CVPixelBufferPool.CVPixelBufferPoolPtr poolOut);
+    private static native CVReturn create(CFAllocator allocator, CVPixelBufferPoolAttributes poolAttributes, CVPixelBufferAttributes pixelBufferAttributes, CVPixelBufferPool.CVPixelBufferPoolPtr poolOut);
     /**
      * @since Available in iOS 4.0 and later.
      */
     @Bridge(symbol="CVPixelBufferPoolGetAttributes", optional=true)
-    public native NSDictionary<NSString, ?> getAttributes();
+    public native CVPixelBufferPoolAttributes getAttributes();
     /**
      * @since Available in iOS 4.0 and later.
      */
     @Bridge(symbol="CVPixelBufferPoolGetPixelBufferAttributes", optional=true)
-    public native NSDictionary<NSString, ?> getPixelBufferAttributes();
+    public native CVPixelBufferAttributes getPixelBufferAttributes();
     /**
      * @since Available in iOS 4.0 and later.
      */
     @Bridge(symbol="CVPixelBufferPoolCreatePixelBuffer", optional=true)
-    protected static native CVReturn createPixelBuffer(CFAllocator allocator, CVPixelBufferPool pixelBufferPool, CVPixelBuffer.CVPixelBufferPtr pixelBufferOut);
+    private static native CVReturn createPixelBuffer(CFAllocator allocator, CVPixelBufferPool pixelBufferPool, CVPixelBuffer.CVPixelBufferPtr pixelBufferOut);
     /**
      * @since Available in iOS 4.0 and later.
      */
     @Bridge(symbol="CVPixelBufferPoolCreatePixelBufferWithAuxAttributes", optional=true)
-    protected static native CVReturn createPixelBuffer(CFAllocator allocator, CVPixelBufferPool pixelBufferPool, NSDictionary<NSString, ?> auxAttributes, CVPixelBuffer.CVPixelBufferPtr pixelBufferOut);
+    private static native CVReturn createPixelBuffer(CFAllocator allocator, CVPixelBufferPool pixelBufferPool, CVPixelBufferPoolAuxiliaryAttributes auxAttributes, CVPixelBuffer.CVPixelBufferPtr pixelBufferOut);
     /*</methods>*/
 }

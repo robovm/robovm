@@ -28,6 +28,7 @@ import org.apache.commons.io.IOUtils;
 public class Version {
 
     private static String version = null;
+    private static String PROPERTIES_RESOURCE = "/META-INF/robovm/version.properties";
 
     /**
      * Returns the version number of the compiler by reading the <code>version.properties</code>
@@ -41,7 +42,7 @@ public class Version {
         }
         InputStream is = null;
         try {
-            is = Version.class.getResourceAsStream("/version.properties");
+            is = Version.class.getResourceAsStream(PROPERTIES_RESOURCE);
             Properties props = new Properties();
             props.load(is);
             version = props.getProperty("version");

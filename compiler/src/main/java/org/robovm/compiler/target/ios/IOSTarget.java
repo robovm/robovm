@@ -74,8 +74,6 @@ public class IOSTarget extends AbstractTarget {
 
     private Arch arch;
     private SDK sdk;
-    private File infoPList = null;
-    private NSDictionary infoPListDict = null;
     private File resourceRulesPList;
     private File entitlementsPList;
     private SigningIdentity signIdentity;
@@ -268,10 +266,8 @@ public class IOSTarget extends AbstractTarget {
             libArgs.add("UIKit");
         }
 
-        String minVersion = config.getOs().getMinVersion();
-        if (infoPListDict != null && infoPListDict.objectForKey("MinimumOSVersion") != null) {
-            minVersion = infoPListDict.objectForKey("MinimumOSVersion").toString();
-        }
+        String minVersion = getMinimumOSVersion();
+        
         int majorVersionNumber = -1;
         try {
             majorVersionNumber = Integer.parseInt(minVersion.substring(0, minVersion.indexOf('.')));
@@ -520,23 +516,33 @@ public class IOSTarget extends AbstractTarget {
     }
     
     protected String getExecutable() {
-        if (infoPListDict != null) {
-            NSObject bundleExecutable = infoPListDict.objectForKey("CFBundleExecutable");
+        if (config.getIosInfoPList() != null) {
+            String bundleExecutable = config.getIosInfoPList().getBundleExecutable();
             if (bundleExecutable != null) {
-                return bundleExecutable.toString();
+                return bundleExecutable;
             }
         }
         return config.getExecutableName();
     }
 
     protected String getBundleId() {
-        if (infoPListDict != null) {
-            NSObject bundleIdentifier = infoPListDict.objectForKey("CFBundleIdentifier");
+        if (config.getIosInfoPList() != null) {
+            String bundleIdentifier = config.getIosInfoPList().getBundleIdentifier();
             if (bundleIdentifier != null) {
-                return bundleIdentifier.toString();
+                return bundleIdentifier;
             }
         }
         return config.getMainClass() != null ? config.getMainClass() : config.getExecutableName();
+    }
+    
+    protected String getMinimumOSVersion() {
+        if (config.getIosInfoPList() != null) {
+            String minVersion = config.getIosInfoPList().getMinimumOSVersion();
+            if (minVersion != null) {
+                return minVersion;
+            }
+        }
+        return config.getOs().getMinVersion();
     }
     
     private void putIfAbsent(NSDictionary dict, String key, String value) {
@@ -583,7 +589,8 @@ public class IOSTarget extends AbstractTarget {
     
     protected void createInfoPList(File dir) throws IOException {
         NSDictionary dict = new NSDictionary();
-        if (infoPListDict != null) {
+        if (config.getIosInfoPList() != null && config.getIosInfoPList().getDictionary() != null) {
+            NSDictionary infoPListDict = config.getIosInfoPList().getDictionary();
             for (String key : infoPListDict.allKeys()) {
                 dict.put(key, infoPListDict.objectForKey(key));
             }
@@ -669,24 +676,19 @@ public class IOSTarget extends AbstractTarget {
             }
         }
         
-        infoPList = config.getIosInfoPList();
-        if (infoPList != null) {
-            try {
-                infoPListDict = (NSDictionary) parsePropertyList(infoPList, config.getProperties());
-            } catch (Throwable t) {
-                throw new IllegalArgumentException("Failed to parse Info.plist XML file: " + infoPList, t);
-            }
+        if (config.getIosInfoPList() != null) {
+            config.getIosInfoPList().parse(config.getProperties());
         }
 
         if (isDeviceArch(arch)) {
             if (!config.isIosSkipSigning()) {
                 provisioningProfile = config.getIosProvisioningProfile();
                 if (provisioningProfile == null) {
-                    NSString bundleId = infoPListDict != null ? (NSString) infoPListDict.objectForKey("CFBundleIdentifier") : null;
+                    String bundleId = config.getIosInfoPList().getBundleIdentifier();
                     if (bundleId == null) {
-                        bundleId = new NSString("*");
+                        bundleId = "*";
                     }
-                    provisioningProfile = ProvisioningProfile.find(ProvisioningProfile.list(), signIdentity, bundleId.toString());
+                    provisioningProfile = ProvisioningProfile.find(ProvisioningProfile.list(), signIdentity, bundleId);
                 }
             }
         }

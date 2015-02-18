@@ -153,11 +153,11 @@ public class ToolchainUtil {
 
     public static void textureatlas(Config config, File inDir, File outDir) throws IOException {
         List<String> opts = new ArrayList<String>();
-        TextureAtlas atlasConfig = config.getTools().getTextureAtlas();
         int outputFormat = 1;
         int maxTextureDimension = 1;
         
-        if (atlasConfig != null) {
+        if (config.getTools() != null && config.getTools().getTextureAtlas() != null) {
+            TextureAtlas atlasConfig = config.getTools().getTextureAtlas();
             outputFormat = 1 + atlasConfig.getOutputFormat().ordinal();
             maxTextureDimension = 1 + atlasConfig.getMaximumTextureDimension().ordinal();
             
@@ -210,9 +210,17 @@ public class ToolchainUtil {
             opts.add("iphonesimulator");
         }
         
+        String minOSVersion = config.getOs().getMinVersion();
+        if (config.getIosInfoPList() != null) {
+            String v = config.getIosInfoPList().getMinimumOSVersion();
+            if (v != null) {
+                minOSVersion = v;
+            }
+        }
+        
         new Executor(config.getLogger(), getACTool())
             .args(inDir, opts, "--output-format", "human-readable-text", 
-                    "--minimum-deployment-target", "6.0", "--compile", outDir).exec();
+                    "--minimum-deployment-target", minOSVersion, "--compile", outDir).exec();
     }
     
     public static void compileStrings(Config config, File inFile, File outFile) throws IOException {

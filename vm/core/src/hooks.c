@@ -22,6 +22,8 @@
 #include <string.h>
 #include <errno.h>
 #include <netinet/tcp.h>
+#include <robovm/types.h>
+#include "private.h"
 
 #define LOG_TAG "hooks"
 
@@ -798,6 +800,35 @@ static void handleNewArray(jlong reqId, ChannelError* error) {
     rvmUnlockMutex(&debugEnv->suspendMutex);
 }
 
+static void addGcRoot(DebugEnv* debugEnv, Object* obj) {
+    if(obj == NULL) {
+        return;
+    }
+    if(rvmExceptionCheck((Env*)debugEnv)) {
+        return;
+    }
+
+    DebugGcRoot* root = (DebugGcRoot*) gcAllocate(sizeof(DebugGcRoot));
+    root->root = obj;
+    root->next = NULL;
+    if(debugEnv->gcRoot == NULL) {
+        debugEnv->gcRoot = root;
+    } else {
+        root->next = debugEnv->gcRoot;
+        debugEnv->gcRoot = root;
+    }
+    gcAddRoot(obj);
+    DEBUGF("Added %p, class %s, as GC root", obj, obj->clazz->name);
+}
+
+static void removeGcRoots(DebugEnv* debugEnv) {
+    // DebugEnv (Env) is allocated via the GC
+    // the roots should be scanned if DebugEnv
+    // is scanned. By nulling out the roots
+    // the GC should free the root nodes.
+    debugEnv->gcRoot = NULL;
+}
+
 static jlong invokeClassMethod(DebugEnv* debugEnv, Method* method) {
     Env* env = (Env*)debugEnv;
     Class* clazz = (Class*)debugEnv->classOrObjectPtr;
@@ -831,6 +862,7 @@ static jlong invokeClassMethod(DebugEnv* debugEnv, Method* method) {
             break;
         case 'L':
             result = (jlong)rvmCallObjectClassMethodA(env, clazz, method, debugEnv->arguments);
+            addGcRoot(debugEnv, (Object*)result);
             break;
         case 'V':
             rvmCallVoidClassMethodA(env, clazz, method, debugEnv->arguments);
@@ -879,6 +911,7 @@ static jlong invokeInstanceMethod(DebugEnv* debugEnv, Method* method) {
             break;
         case 'L':
             result = (jlong)rvmCallObjectInstanceMethodA(env, obj, method, debugEnv->arguments);
+            addGcRoot(debugEnv, (Object*)result);
             break;
         case 'V':
             rvmCallVoidInstanceMethodA(env, obj, method, debugEnv->arguments);
@@ -970,6 +1003,8 @@ static void newInstance(DebugEnv* debugEnv) {
     debugEnv->returnType = 'V';
     invokeInstanceMethod(debugEnv, method);
 
+    addGcRoot(debugEnv, obj);
+
     ChannelError error;
     rvmLockMutex(&writeMutex);
     writeChannelByte(clientSocket, CMD_THREAD_NEWINSTANCE, &error);
@@ -986,11 +1021,15 @@ static void newInstance(DebugEnv* debugEnv) {
 static void newString(DebugEnv* debugEnv) {
     DEBUGF("Creating new string \"%s\"", debugEnv->string);
     ChannelError error;
+
+    Object* str = rvmNewStringUTF((Env*)debugEnv, debugEnv->string, debugEnv->stringLength);
+    addGcRoot(debugEnv, str);
+
     rvmLockMutex(&writeMutex);
     writeChannelByte(clientSocket, CMD_THREAD_NEWSTRING, &error);
     writeChannelLong(clientSocket, debugEnv->reqId, &error);
     writeChannelLong(clientSocket, 16, &error);
-    writeChannelLong(clientSocket, (jlong) rvmNewStringUTF((Env*)debugEnv, debugEnv->string, debugEnv->stringLength), &error);
+    writeChannelLong(clientSocket, (jlong) str, &error);
     writeChannelLong(clientSocket, (jlong) rvmExceptionClear((Env*)debugEnv), &error);
     rvmUnlockMutex(&writeMutex);
     free(debugEnv->string);
@@ -1029,6 +1068,8 @@ static void newArray(DebugEnv* debugEnv) {
     if (!result) {
         rvmThrowInstantiationError((Env*)debugEnv, "Couldn't instantiate array");
     }
+
+    addGcRoot(debugEnv, result);
 
     writeChannelLong(clientSocket, (jlong) result, &error);
     writeChannelLong(clientSocket, (jlong) rvmExceptionClear((Env *) debugEnv), &error);
@@ -1166,6 +1207,8 @@ static inline void suspendLoop(DebugEnv* debugEnv) {
             debugEnv->suspended = TRUE;
         }
     }
+
+    removeGcRoots(debugEnv);
 
     DEBUGF("Thread %p, id %u resumed", debugEnv->env.currentThread, debugEnv->env.currentThread->threadId);
     rvmLockMutex(&writeMutex);

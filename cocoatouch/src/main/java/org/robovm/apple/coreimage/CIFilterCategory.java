@@ -39,7 +39,7 @@ import org.robovm.apple.imageio.*;
 @Marshaler(CIFilterCategory.Marshaler.class)
 /*<annotations>*/@Library("CoreImage")/*</annotations>*/
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/CIFilterCategory/*</name>*/ 
-    extends /*<extends>*/Object/*</extends>*/ 
+    extends /*<extends>*/CocoaUtility/*</extends>*/ 
     /*<implements>*//*</implements>*/ {
 
     public static class Marshaler {

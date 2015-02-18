@@ -38,16 +38,16 @@ import org.robovm.apple.metal.*;
 
 /*</javadoc>*/
 /*<annotations>*/@Marshaler(Bits.AsMachineSizedIntMarshaler.class)/*</annotations>*/
-public final class /*<name>*/CVTimeStampFlag/*</name>*/ extends Bits</*<name>*/CVTimeStampFlag/*</name>*/> {
+public final class /*<name>*/CVTimeStampFlags/*</name>*/ extends Bits</*<name>*/CVTimeStampFlags/*</name>*/> {
     /*<values>*/
-    public static final CVTimeStampFlag None = new CVTimeStampFlag(0L);
-    public static final CVTimeStampFlag VideoTimeValid = new CVTimeStampFlag(1L);
-    public static final CVTimeStampFlag HostTimeValid = new CVTimeStampFlag(2L);
-    public static final CVTimeStampFlag SMPTETimeValid = new CVTimeStampFlag(4L);
-    public static final CVTimeStampFlag VideoRefreshPeriodValid = new CVTimeStampFlag(8L);
-    public static final CVTimeStampFlag RateScalarValid = new CVTimeStampFlag(16L);
-    public static final CVTimeStampFlag TopField = new CVTimeStampFlag(65536L);
-    public static final CVTimeStampFlag BottomField = new CVTimeStampFlag(131072L);
+    public static final CVTimeStampFlags None = new CVTimeStampFlags(0L);
+    public static final CVTimeStampFlags VideoTimeValid = new CVTimeStampFlags(1L);
+    public static final CVTimeStampFlags HostTimeValid = new CVTimeStampFlags(2L);
+    public static final CVTimeStampFlags SMPTETimeValid = new CVTimeStampFlags(4L);
+    public static final CVTimeStampFlags VideoRefreshPeriodValid = new CVTimeStampFlags(8L);
+    public static final CVTimeStampFlags RateScalarValid = new CVTimeStampFlags(16L);
+    public static final CVTimeStampFlags TopField = new CVTimeStampFlags(65536L);
+    public static final CVTimeStampFlags BottomField = new CVTimeStampFlags(131072L);
     /*</values>*/
 
     /*<bind>*/
@@ -55,17 +55,17 @@ public final class /*<name>*/CVTimeStampFlag/*</name>*/ extends Bits</*<name>*/C
     /*<constants>*//*</constants>*/
     /*<methods>*//*</methods>*/
 
-    private static final /*<name>*/CVTimeStampFlag/*</name>*/[] values = _values(/*<name>*/CVTimeStampFlag/*</name>*/.class);
+    private static final /*<name>*/CVTimeStampFlags/*</name>*/[] values = _values(/*<name>*/CVTimeStampFlags/*</name>*/.class);
 
-    public /*<name>*/CVTimeStampFlag/*</name>*/(long value) { super(value); }
-    private /*<name>*/CVTimeStampFlag/*</name>*/(long value, long mask) { super(value, mask); }
-    protected /*<name>*/CVTimeStampFlag/*</name>*/ wrap(long value, long mask) {
-        return new /*<name>*/CVTimeStampFlag/*</name>*/(value, mask);
+    public /*<name>*/CVTimeStampFlags/*</name>*/(long value) { super(value); }
+    private /*<name>*/CVTimeStampFlags/*</name>*/(long value, long mask) { super(value, mask); }
+    protected /*<name>*/CVTimeStampFlags/*</name>*/ wrap(long value, long mask) {
+        return new /*<name>*/CVTimeStampFlags/*</name>*/(value, mask);
     }
-    protected /*<name>*/CVTimeStampFlag/*</name>*/[] _values() {
+    protected /*<name>*/CVTimeStampFlags/*</name>*/[] _values() {
         return values;
     }
-    public static /*<name>*/CVTimeStampFlag/*</name>*/[] values() {
+    public static /*<name>*/CVTimeStampFlags/*</name>*/[] values() {
         return values.clone();
     }
 }

@@ -38,21 +38,47 @@ import org.robovm.apple.metal.*;
 /*</javadoc>*/
 /*<annotations>*/@Library("CoreVideo")/*</annotations>*/
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/CVMetalTexture/*</name>*/ 
-    extends /*<extends>*/Object/*</extends>*/ 
+    extends /*<extends>*/CVImageBuffer/*</extends>*/ 
     /*<implements>*//*</implements>*/ {
 
-    /*<ptr>*/
-    /*</ptr>*/
+    /*<ptr>*/public static class CVMetalTexturePtr extends Ptr<CVMetalTexture, CVMetalTexturePtr> {}/*</ptr>*/
     /*<bind>*/static { Bro.bind(CVMetalTexture.class); }/*</bind>*/
     /*<constants>*//*</constants>*/
     /*<constructors>*//*</constructors>*/
     /*<properties>*//*</properties>*/
     /*<members>*//*</members>*/
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    public float[] getCleanTexCoords() {
+        FloatPtr lowerLeft = new FloatPtr();
+        FloatPtr lowerRight = new FloatPtr();
+        FloatPtr upperRight = new FloatPtr();
+        FloatPtr upperLeft = new FloatPtr();
+        getCleanTexCoords(lowerLeft, lowerRight, upperRight, upperLeft);
+        float[] coords = {lowerLeft.get(), lowerRight.get(), upperRight.get(), upperLeft.get()};
+        return coords;
+    }
     /*<methods>*/
     /**
      * @since Available in iOS 8.0 and later.
      */
     @Bridge(symbol="CVMetalTextureGetTypeID", optional=true)
     public static native @MachineSizedUInt long getClassTypeID();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @Bridge(symbol="CVMetalTextureGetTexture", optional=true)
+    public native MTLTexture getTexture();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @Bridge(symbol="CVMetalTextureIsFlipped", optional=true)
+    public native boolean isFlipped();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @Bridge(symbol="CVMetalTextureGetCleanTexCoords", optional=true)
+    protected native void getCleanTexCoords(FloatPtr lowerLeft, FloatPtr lowerRight, FloatPtr upperRight, FloatPtr upperLeft);
     /*</methods>*/
 }

@@ -48,7 +48,7 @@ import org.robovm.apple.metal.*;
     /*<constants>*//*</constants>*/
     /*<constructors>*/
     public CVSMPTETime() {}
-    public CVSMPTETime(short subframes, short subframeDivisor, int counter, int type, int flags, short hours, short minutes, short seconds, short frames) {
+    public CVSMPTETime(short subframes, short subframeDivisor, int counter, CVSMPTETimeType type, CVSMPTETimeFlags flags, short hours, short minutes, short seconds, short frames) {
         this.setSubframes(subframes);
         this.setSubframeDivisor(subframeDivisor);
         this.setCounter(counter);
@@ -68,10 +68,10 @@ import org.robovm.apple.metal.*;
     @StructMember(1) public native CVSMPTETime setSubframeDivisor(short subframeDivisor);
     @StructMember(2) public native int getCounter();
     @StructMember(2) public native CVSMPTETime setCounter(int counter);
-    @StructMember(3) public native int getType();
-    @StructMember(3) public native CVSMPTETime setType(int type);
-    @StructMember(4) public native int getFlags();
-    @StructMember(4) public native CVSMPTETime setFlags(int flags);
+    @StructMember(3) public native CVSMPTETimeType getType();
+    @StructMember(3) public native CVSMPTETime setType(CVSMPTETimeType type);
+    @StructMember(4) public native CVSMPTETimeFlags getFlags();
+    @StructMember(4) public native CVSMPTETime setFlags(CVSMPTETimeFlags flags);
     @StructMember(5) public native short getHours();
     @StructMember(5) public native CVSMPTETime setHours(short hours);
     @StructMember(6) public native short getMinutes();

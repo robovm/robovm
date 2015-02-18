@@ -48,6 +48,55 @@ import org.robovm.apple.metal.*;
     /*<constructors>*//*</constructors>*/
     /*<properties>*//*</properties>*/
     /*<members>*//*</members>*/
+    /**
+     * @since Available in iOS 4.0 and later.
+     */
+    public void setAttribute(CVImageBufferAttribute attribute, CFType value, CVAttachmentMode attachmentMode) {
+        setAttachment(attribute.value(), value, attachmentMode);
+    }
+    /**
+     * @since Available in iOS 4.0 and later.
+     */
+    public CFType getAttribute(CVImageBufferAttribute attribute) {
+        return getAttachment(attribute.value());
+    }
+    /**
+     * @since Available in iOS 4.0 and later.
+     */
+    public CVAttachmentMode getAttributeMode(CVImageBufferAttribute attribute) {
+        return getAttachmentMode(attribute.value());
+    }
+    /**
+     * @since Available in iOS 4.0 and later.
+     */
+    public void removeAttribute(CVImageBufferAttribute attribute) {
+        removeAttachment(attribute.value());
+    }
+    /**
+     * @since Available in iOS 4.0 and later.
+     */
+    public void removeAllAttributes() {
+        removeAllAttachments();
+    }
+    /**
+     * @since Available in iOS 4.0 and later.
+     */
+    public CVImageBufferAttributes getAttributes(CVAttachmentMode attachmentMode) {
+        return new CVImageBufferAttributes(getAttachments(attachmentMode).as(CFDictionary.class));
+    }
+    /**
+     * @since Available in iOS 4.0 and later.
+     */
+    @SuppressWarnings("unchecked")
+    public void setAttributes(CVImageBufferAttributes attributes, CVAttachmentMode attachmentMode) {
+        setAttachments(attributes.getDictionary().as(NSDictionary.class), attachmentMode);
+    }
+    /**
+     * @since Available in iOS 4.0 and later.
+     */
+    public void propagateAttributes(CVImageBuffer destinationBuffer) {
+        propagateAttachments(destinationBuffer);
+    }
     /*<methods>*/
     /**
      * @since Available in iOS 4.0 and later.

@@ -19,6 +19,7 @@ package org.robovm.apple.uikit;
 import java.io.*;
 import java.nio.*;
 import java.util.*;
+
 import org.robovm.objc.*;
 import org.robovm.objc.annotation.*;
 import org.robovm.objc.block.*;
@@ -87,6 +88,26 @@ import org.robovm.apple.corelocation.*;
             });
         }
     }
+    
+    private static final long UI_MENU_CONTROLLER = ObjCRuntime.objc_getClass(VM.getStringUTFChars("NSObject"));
+    private static final java.lang.reflect.Method cbForwarder;
+    
+    static {
+        try {
+            cbForwarder = UIMenuController.class.getDeclaredMethod("cbForwarder", long.class, long.class, UIMenuController.class);
+        } catch (Exception e) {
+            throw new Error(e);
+        }
+    }
+    
+    @Callback
+    private static void cbForwarder(@Pointer long self, @Pointer long sel, UIMenuController menuController) {
+        UIMenuItem item = UIMenuItem.items.get(sel);
+        if (item != null && item.getActionListener() != null) {
+            item.getActionListener().onAction(menuController, item);
+        }
+    }
+    
     /*<ptr>*/public static class UIMenuControllerPtr extends Ptr<UIMenuController, UIMenuControllerPtr> {}/*</ptr>*/
     /*<bind>*/static { ObjCRuntime.bind(UIMenuController.class); }/*</bind>*/
     /*<constants>*//*</constants>*/
@@ -113,16 +134,33 @@ import org.robovm.apple.corelocation.*;
      * @since Available in iOS 3.2 and later.
      */
     @Property(selector = "menuItems")
-    public native NSArray<UIMenuItem> getMenuItems();
+    private native NSArray<UIMenuItem> getMenuItems0();
     /**
      * @since Available in iOS 3.2 and later.
      */
     @Property(selector = "setMenuItems:")
-    public native void setMenuItems(NSArray<UIMenuItem> v);
+    private native void setMenuItems0(NSArray<UIMenuItem> v);
     @Property(selector = "menuFrame")
     public native @ByVal CGRect getMenuFrame();
     /*</properties>*/
     /*<members>*//*</members>*/
+    public NSArray<UIMenuItem> getMenuItems() {
+        return getMenuItems0();
+    }
+    public void setMenuItems(NSArray<UIMenuItem> items) {
+        updateMenu(items);
+        setMenuItems0(items);
+    }
+    
+    private void updateMenu(NSArray<UIMenuItem> items) {
+        long imp = VM.getCallbackMethodImpl(cbForwarder);
+        long typeEncodings = VM.getStringUTFChars("v@:@");
+        
+        for (UIMenuItem item : items) {
+            Selector sel = item.getAction();
+            ObjCRuntime.class_addMethod(UI_MENU_CONTROLLER, sel.getHandle(), imp, typeEncodings);
+        }
+    }
     /*<methods>*/
     @GlobalValue(symbol="UIMenuControllerWillShowMenuNotification", optional=true)
     public static native NSString WillShowMenuNotification();

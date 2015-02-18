@@ -37,35 +37,31 @@ import org.robovm.apple.metal.*;
 /*<javadoc>*/
 
 /*</javadoc>*/
-/*<annotations>*/@Library("CoreVideo")/*</annotations>*/
-/*<visibility>*/public/*</visibility>*/ class /*<name>*/CVTime/*</name>*/ 
-    extends /*<extends>*/Struct<CVTime>/*</extends>*/ 
+/*<annotations>*//*</annotations>*/
+/*<visibility>*//*</visibility>*/ class /*<name>*/CVFillExtendedPixelsCallBackData/*</name>*/ 
+    extends /*<extends>*/Struct<CVFillExtendedPixelsCallBackData>/*</extends>*/ 
     /*<implements>*//*</implements>*/ {
 
-    /*<ptr>*/public static class CVTimePtr extends Ptr<CVTime, CVTimePtr> {}/*</ptr>*/
-    /*<bind>*/static { Bro.bind(CVTime.class); }/*</bind>*/
+    /*<ptr>*/public static class CVFillExtendedPixelsCallBackDataPtr extends Ptr<CVFillExtendedPixelsCallBackData, CVFillExtendedPixelsCallBackDataPtr> {}/*</ptr>*/
+    /*<bind>*/
+    /*</bind>*/
     /*<constants>*//*</constants>*/
     /*<constructors>*/
-    public CVTime() {}
-    public CVTime(long timeValue, int timeScale, CVTimeFlags flags) {
-        this.setTimeValue(timeValue);
-        this.setTimeScale(timeScale);
-        this.setFlags(flags);
+    public CVFillExtendedPixelsCallBackData() {}
+    public CVFillExtendedPixelsCallBackData(@MachineSizedSInt long version, FunctionPtr fillCallBack, @Pointer long refCon) {
+        this.setVersion(version);
+        this.setFillCallBack(fillCallBack);
+        this.setRefCon(refCon);
     }
     /*</constructors>*/
     /*<properties>*//*</properties>*/
     /*<members>*/
-    @StructMember(0) public native long getTimeValue();
-    @StructMember(0) public native CVTime setTimeValue(long timeValue);
-    @StructMember(1) public native int getTimeScale();
-    @StructMember(1) public native CVTime setTimeScale(int timeScale);
-    @StructMember(2) public native CVTimeFlags getFlags();
-    @StructMember(2) public native CVTime setFlags(CVTimeFlags flags);
+    @StructMember(0) public native @MachineSizedSInt long getVersion();
+    @StructMember(0) public native CVFillExtendedPixelsCallBackData setVersion(@MachineSizedSInt long version);
+    @StructMember(1) public native FunctionPtr getFillCallBack();
+    @StructMember(1) public native CVFillExtendedPixelsCallBackData setFillCallBack(FunctionPtr fillCallBack);
+    @StructMember(2) public native @Pointer long getRefCon();
+    @StructMember(2) public native CVFillExtendedPixelsCallBackData setRefCon(@Pointer long refCon);
     /*</members>*/
-    /*<methods>*/
-    @GlobalValue(symbol="kCVZeroTime", optional=true)
-    public static native @ByVal CVTime Zero();
-    @GlobalValue(symbol="kCVIndefiniteTime", optional=true)
-    public static native @ByVal CVTime Indefinite();
-    /*</methods>*/
+    /*<methods>*//*</methods>*/
 }

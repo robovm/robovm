@@ -47,7 +47,10 @@ import org.robovm.apple.metal.*;
     /*<constructors>*//*</constructors>*/
     /*<properties>*//*</properties>*/
     /*<members>*//*</members>*/
-    public float[] getCleanTextureCoords() {
+    /**
+     * @since Available in iOS 5.0 and later.
+     */
+    public float[] getCleanTexCoords() {
         FloatPtr lowerLeft = new FloatPtr();
         FloatPtr lowerRight = new FloatPtr();
         FloatPtr upperRight = new FloatPtr();

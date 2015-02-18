@@ -38,11 +38,11 @@ import org.robovm.apple.metal.*;
 
 /*</javadoc>*/
 /*<annotations>*/@Marshaler(Bits.AsMachineSizedIntMarshaler.class)/*</annotations>*/
-public final class /*<name>*/CVSMPTETimeFlag/*</name>*/ extends Bits</*<name>*/CVSMPTETimeFlag/*</name>*/> {
+public final class /*<name>*/CVSMPTETimeFlags/*</name>*/ extends Bits</*<name>*/CVSMPTETimeFlags/*</name>*/> {
     /*<values>*/
-    public static final CVSMPTETimeFlag None = new CVSMPTETimeFlag(0L);
-    public static final CVSMPTETimeFlag Valid = new CVSMPTETimeFlag(1L);
-    public static final CVSMPTETimeFlag Running = new CVSMPTETimeFlag(2L);
+    public static final CVSMPTETimeFlags None = new CVSMPTETimeFlags(0L);
+    public static final CVSMPTETimeFlags Valid = new CVSMPTETimeFlags(1L);
+    public static final CVSMPTETimeFlags Running = new CVSMPTETimeFlags(2L);
     /*</values>*/
 
     /*<bind>*/
@@ -50,17 +50,17 @@ public final class /*<name>*/CVSMPTETimeFlag/*</name>*/ extends Bits</*<name>*/C
     /*<constants>*//*</constants>*/
     /*<methods>*//*</methods>*/
 
-    private static final /*<name>*/CVSMPTETimeFlag/*</name>*/[] values = _values(/*<name>*/CVSMPTETimeFlag/*</name>*/.class);
+    private static final /*<name>*/CVSMPTETimeFlags/*</name>*/[] values = _values(/*<name>*/CVSMPTETimeFlags/*</name>*/.class);
 
-    public /*<name>*/CVSMPTETimeFlag/*</name>*/(long value) { super(value); }
-    private /*<name>*/CVSMPTETimeFlag/*</name>*/(long value, long mask) { super(value, mask); }
-    protected /*<name>*/CVSMPTETimeFlag/*</name>*/ wrap(long value, long mask) {
-        return new /*<name>*/CVSMPTETimeFlag/*</name>*/(value, mask);
+    public /*<name>*/CVSMPTETimeFlags/*</name>*/(long value) { super(value); }
+    private /*<name>*/CVSMPTETimeFlags/*</name>*/(long value, long mask) { super(value, mask); }
+    protected /*<name>*/CVSMPTETimeFlags/*</name>*/ wrap(long value, long mask) {
+        return new /*<name>*/CVSMPTETimeFlags/*</name>*/(value, mask);
     }
-    protected /*<name>*/CVSMPTETimeFlag/*</name>*/[] _values() {
+    protected /*<name>*/CVSMPTETimeFlags/*</name>*/[] _values() {
         return values;
     }
-    public static /*<name>*/CVSMPTETimeFlag/*</name>*/[] values() {
+    public static /*<name>*/CVSMPTETimeFlags/*</name>*/[] values() {
         return values.clone();
     }
 }

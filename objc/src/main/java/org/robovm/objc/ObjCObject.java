@@ -379,6 +379,12 @@ public abstract class ObjCObject extends NativeObject {
             }
             ObjCRuntime.void_objc_msgSendSuper(new Super(self, NS_OBJECT_CLASS).getHandle(), sel);
         }
+        
+        public static boolean isObjectRetained(ObjCObject object) {
+            synchronized (CUSTOM_OBJECTS) {
+                return CUSTOM_OBJECTS.containsKey(object.getHandle());
+            }
+        }
     }
 
     static class AssociatedObjectHelper {
@@ -392,7 +398,7 @@ public abstract class ObjCObject extends NativeObject {
         private static final Selector init = Selector.register("init");
         private static final Selector release = Selector.register("release");
         private static final Selector retainCount = Selector.register("retainCount");
-        private static final Map<Long, Map<Object, Object>> ASSOCIATED_OBJECTS = new HashMap<Long, Map<Object, Object>>();
+        private static final LongMap<Map<Object, Object>> ASSOCIATED_OBJECTS = new LongMap<>();
 
         static {
             int ptrSize = VoidPtr.sizeOf();

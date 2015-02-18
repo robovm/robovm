@@ -1,3 +1,18 @@
+/*
+ * Copyright (C) 2013-2015 Trillian Mobile AB
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package org.robovm.objc;
 
 import static org.junit.Assert.*;
@@ -75,31 +90,27 @@ public class ObjCObjectOwnershipHelperTest {
         assertEquals(false, ObjCObject.ObjectOwnershipHelper.isObjectRetained(default2));
     }
 
+    private void addNewCustomObjectToCache(NSCache cache, String id, String stringValue, long longValue) {
+        cache.put(id, new CustomNSObject(stringValue, longValue));
+    }
+    
     /**
-     * Every retained object should not lose the values of its variables.
+     * Every retained object should not be GCed and lose the values of its variables.
      */
     @Test
     public void testIfCustomObjectsVariablesAreRetained() {
         final String stringValue = "ABC";
         final long longValue = 123;
-        
-        CustomNSObject custom = new CustomNSObject(stringValue, longValue);
-        
-        final NSCache cache = new NSCache();
-        cache.put("1", custom);
-        
+
+        NSCache cache = new NSCache();
+        // We don't want to have any reference to the CustomNSObject. 
+        // If it were not stored with the ownership helper, it would get GCed immediately.
+        addNewCustomObjectToCache(cache, "1", stringValue, longValue);
         forceGC();
-        
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                forceGC();
-                
-                CustomNSObject custom = (CustomNSObject) cache.get("1");
-                assertEquals(stringValue, custom.stringValue);
-                assertEquals(longValue, custom.longValue);
-            }
-        }).start();
+
+        CustomNSObject custom = (CustomNSObject) cache.get("1");
+        assertEquals(stringValue, custom.stringValue);
+        assertEquals(longValue, custom.longValue);
     }
 
     /**

@@ -19,6 +19,7 @@ package org.robovm.apple.uikit;
 import java.io.*;
 import java.nio.*;
 import java.util.*;
+
 import org.robovm.objc.*;
 import org.robovm.objc.annotation.*;
 import org.robovm.objc.block.*;
@@ -41,45 +42,64 @@ import org.robovm.apple.corelocation.*;
  */
 /*</javadoc>*/
 /*<annotations>*/@Library("UIKit") @NativeClass/*</annotations>*/
-/*<visibility>*/public/*</visibility>*/ class /*<name>*/UIMenuItem/*</name>*/ 
+/*<visibility>*/public/*</visibility>*/ class /*<name>*/UIMenuItem/*</name>*/
     extends /*<extends>*/NSObject/*</extends>*/ 
     /*<implements>*//*</implements>*/ {
 
+    public interface ActionListener {
+        void onAction(UIMenuController menuController, UIMenuItem menuItem);
+    }
+    
     /*<ptr>*/public static class UIMenuItemPtr extends Ptr<UIMenuItem, UIMenuItemPtr> {}/*</ptr>*/
     /*<bind>*/static { ObjCRuntime.bind(UIMenuItem.class); }/*</bind>*/
     /*<constants>*//*</constants>*/
+    static final Map<Long, UIMenuItem> items = new HashMap<>();
     
-    public interface OnActionListener {
-        void onAction(UIMenuController menuController, UIMenuItem item);
+    private ActionListener actionListener;
+    
+    public UIMenuItem(String title) {
+        setTitle(title);
     }
     
-    private OnActionListener listener;
-    private static final Selector handleAction = Selector.register("action:");
-    
-    @Method(selector = "action:")
-    private void handleAction(UIMenuController menuController) {
-        listener.onAction(menuController, this);
-    }
-    
-    public UIMenuItem(OnActionListener listener) {
-        if (listener != null) {
-            this.listener = listener;
-            setAction(handleAction);
-            addStrongRef(this.listener);
+    public UIMenuItem(String title, ActionListener action) {
+        super((SkipInit) null);
+        if (action == null) {
+            throw new NullPointerException("action");
+        }
+        this.actionListener = action;
+        Selector sel = getUniqueSelector();
+        initObject(init(title, sel));
+        
+        synchronized (items) {
+            items.put(sel.getHandle(), this);
         }
     }
     
-    public UIMenuItem(String title, OnActionListener listener) {
-        super((SkipInit) null); 
-        if (listener != null) {
-            initObject(init(title, handleAction));
-            this.listener = listener;
-            addStrongRef(this.listener);
-        } else {
-            initObject(init(title, null));
+    public void setActionListener(ActionListener action) {
+        this.actionListener = action;
+
+        Selector sel = null;
+        if (action != null) {
+            sel = getUniqueSelector();
+        } 
+        setAction(sel);
+        
+        synchronized (items) {
+            if (action != null) {
+                items.put(sel.getHandle(), this);
+            } else {
+                items.remove(sel.getHandle());
+            }
         }
     }
+    public ActionListener getActionListener() {
+        return actionListener;
+    }
     
+    private Selector getUniqueSelector() {
+        String name = "__menuitem_" + getHandle();
+        return Selector.register(name);
+    }
     /*<constructors>*/
     public UIMenuItem() {}
     protected UIMenuItem(SkipInit skipInit) { super(skipInit); }
@@ -96,17 +116,6 @@ import org.robovm.apple.corelocation.*;
     public native void setAction(Selector v);
     /*</properties>*/
     /*<members>*//*</members>*/
-    
-    public void setOnActionListener(OnActionListener listener) {
-        if (listener == null && getAction() != null) {
-            removeStrongRef(this.listener);
-            this.listener = null;
-        } else {
-            this.listener = listener;
-            setAction(handleAction);
-            addStrongRef(this.listener);
-        }
-    }
     
     /*<methods>*/
     @Method(selector = "initWithTitle:action:")

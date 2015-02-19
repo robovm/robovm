@@ -111,6 +111,7 @@
       </resource>
       <resource>
         <directory>src/main/filtered-resources</directory>
+        <targetPath>META-INF/robovm</targetPath>
         <filtering>true</filtering>
       </resource>
     </resources>

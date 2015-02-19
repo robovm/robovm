@@ -706,7 +706,7 @@ public class AppLauncher {
                 log("Debug server port: " + debugService.getPort());
                 if (localPort != -1) {
                     String exe = ((NSDictionary) PropertyListParser.parse(new File(localAppPath, "Info.plist"))).objectForKey("CFBundleExecutable").toString();
-                    log("launchios " + new File(localAppPath, exe).getAbsolutePath() + " " + appPath + " " + localPort);
+                    log("launchios \"" + new File(localAppPath, exe).getAbsolutePath() + "\" \"" + appPath + "\" " + localPort);
                     StringBuilder argsString = new StringBuilder();
                     for (String arg : args) {
                         if (argsString.length() > 0) {

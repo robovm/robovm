@@ -341,10 +341,19 @@ jboolean _rvmHookHandshake(Options* options) {
     struct sockaddr_storage clientAddr;
     clientSocket = 0;
     socklen_t len = sizeof(clientAddr);
-    if ((clientSocket = accept(listeningSocket, (struct sockaddr *) &clientAddr, &len)) == -1) {
-        DEBUGF("Couldn't accept TCP debug connection, errno: %d", errno);
-        close(listeningSocket);
-        return FALSE;
+    while(TRUE) {
+        clientSocket = accept(listeningSocket, (struct sockaddr *) &clientAddr, &len);
+        if(clientSocket == -1) {
+            if(errno == EINTR) {
+                continue;
+            } else {
+                DEBUGF("Couldn't accept TCP debug connection, errno: %d", errno);
+                close(listeningSocket);
+                return FALSE;
+            }
+        } else {
+            break;
+        }
     }
     int yes = 1;
     setsockopt(clientSocket, IPPROTO_TCP, TCP_NODELAY, &yes, sizeof(int));
@@ -1291,6 +1300,30 @@ void _rvmHookInstrumented(DebugEnv* debugEnv, jint lineNumber, jint lineNumberOf
 void _rvmHookExceptionRaised(Env* env, Object* throwable) {
     DebugEnv* debugEnv = (DebugEnv*)env;
 
+    // we need to temporarily clear the exception
+    // for the code below to not get upset.
+    Object* exception = rvmExceptionClear(env);
+
+    // special case for VMClassLoader, we don't
+    // report exceptions thrown by it.
+    CallStack* callStack = rvmCaptureCallStack(env);
+    jint index = 0;
+    jint length = 0;
+    jint classNamesSize = 0;
+    CallStackFrame* frame = NULL;
+    frame = rvmGetNextCallStackMethod(env, callStack, &index);
+    if(frame == NULL) {
+        DEBUG("No frames for exception event, resuming");
+        rvmThrow(env, exception);
+        return;
+    }
+    if(!strcmp(frame->method->name, "findClassInClasspathForLoader") &&
+            !strcmp(frame->method->clazz->name, "java/lang/VMClassLoader")) {
+        DEBUG("Skipping ClassNotFoundException from VMClassLoader#findClassInClasspathForLoader");
+        rvmThrow(env, exception);
+        return;
+    }
+
     rvmPushGatewayFrame(env);
     rvmLockMutex(&debugEnv->suspendMutex);
 
@@ -1299,7 +1332,6 @@ void _rvmHookExceptionRaised(Env* env, Object* throwable) {
                 env->currentThread->threadId, throwable->clazz->name);
     }
 
-    CallStack* callStack = rvmCaptureCallStack(env);
     if (rvmExceptionCheck(env)) {
         Object* ex = rvmExceptionClear(env);
         ERRORF("Failed to get a call stack for thread %p due to exception event. Got an exception of type: %s",
@@ -1311,6 +1343,8 @@ void _rvmHookExceptionRaised(Env* env, Object* throwable) {
 
     rvmUnlockMutex(&debugEnv->suspendMutex);
     rvmPopGatewayFrame(env);
+
+    rvmThrow(env, exception);
 }
 
 void _rvmHookClassLoaded(Env* env, Class* clazz, void* classInfo) {

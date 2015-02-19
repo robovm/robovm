@@ -67,7 +67,7 @@ static inline void rvmHookClassLoaded(Env* env, Class* clazz, void* classInfo) {
 }
 static inline void rvmHookExceptionRaised(Env* env, Object* throwable) {
     if(env->vm->options->enableHooks) {
-        // _rvmHookExceptionRaised(env, throwable);
+        _rvmHookExceptionRaised(env, throwable);
     }
 }
 static inline jboolean rvmHookSetupTCPChannel(Options* options) {

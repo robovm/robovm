@@ -22,7 +22,6 @@
 #include <string.h>
 #include <errno.h>
 #include <netinet/tcp.h>
-#include <robovm/types.h>
 #include "private.h"
 
 #define LOG_TAG "hooks"
@@ -341,10 +340,19 @@ jboolean _rvmHookHandshake(Options* options) {
     struct sockaddr_storage clientAddr;
     clientSocket = 0;
     socklen_t len = sizeof(clientAddr);
-    if ((clientSocket = accept(listeningSocket, (struct sockaddr *) &clientAddr, &len)) == -1) {
-        DEBUGF("Couldn't accept TCP debug connection, errno: %d", errno);
-        close(listeningSocket);
-        return FALSE;
+    while(true) {
+        clientSocket = accept(listeningSocket, (struct sockaddr *) &clientAddr, &len);
+        if(clientSocket == -1) {
+            if(errno == EINTR) {
+                continue;
+            } else {
+                DEBUGF("Couldn't accept TCP debug connection, errno: %d", errno);
+                close(listeningSocket);
+                return FALSE;
+            }
+        } else {
+            break;
+        }
     }
     int yes = 1;
     setsockopt(clientSocket, IPPROTO_TCP, TCP_NODELAY, &yes, sizeof(int));
@@ -1291,6 +1299,10 @@ void _rvmHookInstrumented(DebugEnv* debugEnv, jint lineNumber, jint lineNumberOf
 void _rvmHookExceptionRaised(Env* env, Object* throwable) {
     DebugEnv* debugEnv = (DebugEnv*)env;
 
+    // we need to temporarily clear the exception
+    // for the code below to not get upset.
+    Object* exception = rvmExceptionClear(env);
+
     rvmPushGatewayFrame(env);
     rvmLockMutex(&debugEnv->suspendMutex);
 
@@ -1311,6 +1323,8 @@ void _rvmHookExceptionRaised(Env* env, Object* throwable) {
 
     rvmUnlockMutex(&debugEnv->suspendMutex);
     rvmPopGatewayFrame(env);
+
+    rvmThrow(env, exception);
 }
 
 void _rvmHookClassLoaded(Env* env, Class* clazz, void* classInfo) {

@@ -1299,6 +1299,8 @@ void _rvmHookInstrumented(DebugEnv* debugEnv, jint lineNumber, jint lineNumberOf
 void _rvmHookExceptionRaised(Env* env, Object* throwable) {
     DebugEnv* debugEnv = (DebugEnv*)env;
 
+    return;
+
     // we need to temporarily clear the exception
     // for the code below to not get upset.
     Object* exception = rvmExceptionClear(env);

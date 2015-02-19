@@ -340,7 +340,7 @@ jboolean _rvmHookHandshake(Options* options) {
     struct sockaddr_storage clientAddr;
     clientSocket = 0;
     socklen_t len = sizeof(clientAddr);
-    while(true) {
+    while(TRUE) {
         clientSocket = accept(listeningSocket, (struct sockaddr *) &clientAddr, &len);
         if(clientSocket == -1) {
             if(errno == EINTR) {

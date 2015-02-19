@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 Trillian Mobile AB
+ * Copyright (C) 2013-2015 Trillian Mobile AB
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -38,14 +38,12 @@ import org.robovm.apple.coremedia.*;
 
 /*</javadoc>*/
 /*<annotations>*/@Marshaler(Bits.AsMachineSizedIntMarshaler.class)/*</annotations>*/
-public final class /*<name>*/AudioQueueProcessingTapFlag/*</name>*/ extends Bits</*<name>*/AudioQueueProcessingTapFlag/*</name>*/> {
+public final class /*<name>*/CAFRegionFlags/*</name>*/ extends Bits</*<name>*/CAFRegionFlags/*</name>*/> {
     /*<values>*/
-    public static final AudioQueueProcessingTapFlag None = new AudioQueueProcessingTapFlag(0L);
-    public static final AudioQueueProcessingTapFlag PreEffects = new AudioQueueProcessingTapFlag(1L);
-    public static final AudioQueueProcessingTapFlag PostEffects = new AudioQueueProcessingTapFlag(2L);
-    public static final AudioQueueProcessingTapFlag Siphon = new AudioQueueProcessingTapFlag(4L);
-    public static final AudioQueueProcessingTapFlag StartOfStream = new AudioQueueProcessingTapFlag(256L);
-    public static final AudioQueueProcessingTapFlag EndOfStream = new AudioQueueProcessingTapFlag(512L);
+    public static final CAFRegionFlags None = new CAFRegionFlags(0L);
+    public static final CAFRegionFlags LoopEnable = new CAFRegionFlags(1L);
+    public static final CAFRegionFlags PlayForward = new CAFRegionFlags(2L);
+    public static final CAFRegionFlags PlayBackward = new CAFRegionFlags(4L);
     /*</values>*/
 
     /*<bind>*/
@@ -53,17 +51,17 @@ public final class /*<name>*/AudioQueueProcessingTapFlag/*</name>*/ extends Bits
     /*<constants>*//*</constants>*/
     /*<methods>*//*</methods>*/
 
-    private static final /*<name>*/AudioQueueProcessingTapFlag/*</name>*/[] values = _values(/*<name>*/AudioQueueProcessingTapFlag/*</name>*/.class);
+    private static final /*<name>*/CAFRegionFlags/*</name>*/[] values = _values(/*<name>*/CAFRegionFlags/*</name>*/.class);
 
-    public /*<name>*/AudioQueueProcessingTapFlag/*</name>*/(long value) { super(value); }
-    private /*<name>*/AudioQueueProcessingTapFlag/*</name>*/(long value, long mask) { super(value, mask); }
-    protected /*<name>*/AudioQueueProcessingTapFlag/*</name>*/ wrap(long value, long mask) {
-        return new /*<name>*/AudioQueueProcessingTapFlag/*</name>*/(value, mask);
+    public /*<name>*/CAFRegionFlags/*</name>*/(long value) { super(value); }
+    private /*<name>*/CAFRegionFlags/*</name>*/(long value, long mask) { super(value, mask); }
+    protected /*<name>*/CAFRegionFlags/*</name>*/ wrap(long value, long mask) {
+        return new /*<name>*/CAFRegionFlags/*</name>*/(value, mask);
     }
-    protected /*<name>*/AudioQueueProcessingTapFlag/*</name>*/[] _values() {
+    protected /*<name>*/CAFRegionFlags/*</name>*/[] _values() {
         return values;
     }
-    public static /*<name>*/AudioQueueProcessingTapFlag/*</name>*/[] values() {
+    public static /*<name>*/CAFRegionFlags/*</name>*/[] values() {
         return values.clone();
     }
 }

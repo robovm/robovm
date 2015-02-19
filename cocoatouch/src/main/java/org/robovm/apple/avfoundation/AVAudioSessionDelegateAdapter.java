@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 Trillian Mobile AB
+ * Copyright (C) 2013-2015 Trillian Mobile AB
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -62,7 +62,7 @@ import org.robovm.apple.mediatoolbox.*;
      * @since Available in iOS 4.0 and later.
      */
     @NotImplemented("endInterruptionWithFlags:")
-    public void endInterruption(AVAudioSessionInterruptionFlag flags) { throw new UnsupportedOperationException(); }
+    public void endInterruption(AVAudioSessionInterruptionFlags flags) { throw new UnsupportedOperationException(); }
     @NotImplemented("endInterruption")
     public void endInterruption() { throw new UnsupportedOperationException(); }
     @NotImplemented("inputIsAvailableChanged:")

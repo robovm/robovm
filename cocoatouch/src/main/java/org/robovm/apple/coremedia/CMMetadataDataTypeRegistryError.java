@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 Trillian Mobile AB
+ * Copyright (C) 2013-2015 Trillian Mobile AB
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -41,6 +41,7 @@ import org.robovm.apple.audiotoolbox.*;
 /*</javadoc>*/
 /*<annotations>*//*</annotations>*/
 public enum /*<name>*/CMMetadataDataTypeRegistryError/*</name>*/ implements ValuedEnum {
+	No(0L),
     /*<values>*/
     AllocationFailed(-16310L),
     RequiredParameterMissing(-16311L),

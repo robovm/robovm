@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 Trillian Mobile AB
+ * Copyright (C) 2013-2015 Trillian Mobile AB
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -43,7 +43,6 @@ import org.robovm.apple.corelocation.*;
 /*<annotations>*/@Marshaler(Bits.AsMachineSizedIntMarshaler.class)/*</annotations>*/
 public final class /*<name>*/UIPrinterJobTypes/*</name>*/ extends Bits</*<name>*/UIPrinterJobTypes/*</name>*/> {
     /*<values>*/
-    public static final UIPrinterJobTypes None = new UIPrinterJobTypes(0L);
     public static final UIPrinterJobTypes Unknown = new UIPrinterJobTypes(0L);
     public static final UIPrinterJobTypes Document = new UIPrinterJobTypes(1L);
     public static final UIPrinterJobTypes Envelope = new UIPrinterJobTypes(2L);

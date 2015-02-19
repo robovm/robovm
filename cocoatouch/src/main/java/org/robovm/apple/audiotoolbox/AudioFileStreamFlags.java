@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 Trillian Mobile AB
+ * Copyright (C) 2013-2015 Trillian Mobile AB
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -38,11 +38,13 @@ import org.robovm.apple.coremedia.*;
 
 /*</javadoc>*/
 /*<annotations>*/@Marshaler(Bits.AsMachineSizedIntMarshaler.class)/*</annotations>*/
-public final class /*<name>*/CAFLinearPCMFormatFlag/*</name>*/ extends Bits</*<name>*/CAFLinearPCMFormatFlag/*</name>*/> {
+public final class /*<name>*/AudioFileStreamFlags/*</name>*/ extends Bits</*<name>*/AudioFileStreamFlags/*</name>*/> {
     /*<values>*/
-    public static final CAFLinearPCMFormatFlag None = new CAFLinearPCMFormatFlag(0L);
-    public static final CAFLinearPCMFormatFlag Float = new CAFLinearPCMFormatFlag(1L);
-    public static final CAFLinearPCMFormatFlag LittleEndian = new CAFLinearPCMFormatFlag(2L);
+    public static final AudioFileStreamFlags None = new AudioFileStreamFlags(0L);
+    public static final AudioFileStreamFlags PropertyFlag_PropertyIsCached = new AudioFileStreamFlags(1L);
+    public static final AudioFileStreamFlags PropertyFlag_CacheProperty = new AudioFileStreamFlags(2L);
+    public static final AudioFileStreamFlags ParseFlag_Discontinuity = new AudioFileStreamFlags(1L);
+    public static final AudioFileStreamFlags SeekFlag_OffsetIsEstimated = new AudioFileStreamFlags(1L);
     /*</values>*/
 
     /*<bind>*/
@@ -50,17 +52,17 @@ public final class /*<name>*/CAFLinearPCMFormatFlag/*</name>*/ extends Bits</*<n
     /*<constants>*//*</constants>*/
     /*<methods>*//*</methods>*/
 
-    private static final /*<name>*/CAFLinearPCMFormatFlag/*</name>*/[] values = _values(/*<name>*/CAFLinearPCMFormatFlag/*</name>*/.class);
+    private static final /*<name>*/AudioFileStreamFlags/*</name>*/[] values = _values(/*<name>*/AudioFileStreamFlags/*</name>*/.class);
 
-    public /*<name>*/CAFLinearPCMFormatFlag/*</name>*/(long value) { super(value); }
-    private /*<name>*/CAFLinearPCMFormatFlag/*</name>*/(long value, long mask) { super(value, mask); }
-    protected /*<name>*/CAFLinearPCMFormatFlag/*</name>*/ wrap(long value, long mask) {
-        return new /*<name>*/CAFLinearPCMFormatFlag/*</name>*/(value, mask);
+    public /*<name>*/AudioFileStreamFlags/*</name>*/(long value) { super(value); }
+    private /*<name>*/AudioFileStreamFlags/*</name>*/(long value, long mask) { super(value, mask); }
+    protected /*<name>*/AudioFileStreamFlags/*</name>*/ wrap(long value, long mask) {
+        return new /*<name>*/AudioFileStreamFlags/*</name>*/(value, mask);
     }
-    protected /*<name>*/CAFLinearPCMFormatFlag/*</name>*/[] _values() {
+    protected /*<name>*/AudioFileStreamFlags/*</name>*/[] _values() {
         return values;
     }
-    public static /*<name>*/CAFLinearPCMFormatFlag/*</name>*/[] values() {
+    public static /*<name>*/AudioFileStreamFlags/*</name>*/[] values() {
         return values.clone();
     }
 }

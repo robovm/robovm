@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 Trillian Mobile AB
+ * Copyright (C) 2013-2015 Trillian Mobile AB
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -46,18 +46,18 @@ import org.robovm.apple.mediatoolbox.*;
 /*<annotations>*/@Marshaler(ValuedEnum.AsMachineSizedSIntMarshaler.class)/*</annotations>*/
 public enum /*<name>*/AVAudioSessionErrorCode/*</name>*/ implements NSErrorCode {
     /*<values>*/
-    CodeNone(0L),
-    CodeMediaServicesFailed(1836282486L),
-    CodeIsBusy(560030580L),
-    CodeIncompatibleCategory(560161140L),
-    CodeCannotInterruptOthers(560557684L),
-    CodeMissingEntitlement(1701737535L),
-    CodeSiriIsRecording(1936290409L),
-    CodeCannotStartPlaying(561015905L),
-    CodeCannotStartRecording(561145187L),
-    CodeBadParam(-50L),
+    None(0L),
+    MediaServicesFailed(1836282486L),
+    IsBusy(560030580L),
+    IncompatibleCategory(560161140L),
+    CannotInterruptOthers(560557684L),
+    MissingEntitlement(1701737535L),
+    SiriIsRecording(1936290409L),
+    CannotStartPlaying(561015905L),
+    CannotStartRecording(561145187L),
+    BadParam(-50L),
     InsufficientPriority(561017449L),
-    CodeUnspecified(2003329396L);
+    Unspecified(2003329396L);
     /*</values>*/
 
     /*<bind>*/

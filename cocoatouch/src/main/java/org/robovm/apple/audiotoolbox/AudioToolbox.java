@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 Trillian Mobile AB
+ * Copyright (C) 2013-2015 Trillian Mobile AB
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -38,7 +38,7 @@ import org.robovm.apple.coremedia.*;
 /*</javadoc>*/
 /*<annotations>*/@Library("AudioToolbox") @Marshaler(NSString.AsStringMarshaler.class)/*</annotations>*/
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/AudioToolbox/*</name>*/ 
-    extends /*<extends>*/Object/*</extends>*/ 
+    extends /*<extends>*/CocoaUtility/*</extends>*/ 
     /*<implements>*//*</implements>*/ {
 
     /*<ptr>*/
@@ -47,10 +47,6 @@ import org.robovm.apple.coremedia.*;
     /*<constants>*/
     public static final int Constant__kAudioFileMarkerType_Generic = 0;
     public static final int Constant__kAudioFormatProperty_HardwareCodecCapabilities = 1752654691;
-    public static final int Constant__kAudioDecoderComponentType = 1633969507;
-    public static final int Constant__kAudioEncoderComponentType = 1634037347;
-    public static final int Constant__kAudioQueueProperty_HardwareCodecPolicy = 1634820976;
-    public static final int Constant__kAudioQueueProperty_ChannelAssignments = 1634820961;
     public static final int Constant__kAudioSessionSetActiveFlag_NotifyOthersOnDeactivation = 1;
     public static final int Constant__kAudioSessionCategory_UserInterfaceSoundEffects = 1969841784;
     public static final int Constant__kAudioSessionCategory_LiveAudio = 1818850917;

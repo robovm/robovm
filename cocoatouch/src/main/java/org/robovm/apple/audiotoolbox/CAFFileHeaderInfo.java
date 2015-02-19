@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 Trillian Mobile AB
+ * Copyright (C) 2013-2015 Trillian Mobile AB
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -37,19 +37,11 @@ import org.robovm.apple.coremedia.*;
 /*<javadoc>*/
 
 /*</javadoc>*/
-/*<annotations>*//*</annotations>*/
-public enum /*<name>*/AudioToolboxError/*</name>*/ implements ValuedEnum {
+/*<annotations>*/@Marshaler(ValuedEnum.AsMachineSizedUIntMarshaler.class)/*</annotations>*/
+public enum /*<name>*/CAFFileHeaderInfo/*</name>*/ implements ValuedEnum {
     /*<values>*/
-    InvalidSequenceType(-10846L),
-    TrackIndexError(-10859L),
-    TrackNotFound(-10858L),
-    EndOfTrack(-10857L),
-    StartOfTrack(-10856L),
-    IllegalTrackDestination(-10855L),
-    NoSequence(-10854L),
-    InvalidEventType(-10853L),
-    InvalidPlayerState(-10852L),
-    CannotDoInCurrentContext(-10863L);
+    Type(1667327590L),
+    Version_Initial(1L);
     /*</values>*/
 
     /*<bind>*/
@@ -59,15 +51,15 @@ public enum /*<name>*/AudioToolboxError/*</name>*/ implements ValuedEnum {
 
     private final long n;
 
-    private /*<name>*/AudioToolboxError/*</name>*/(long n) { this.n = n; }
+    private /*<name>*/CAFFileHeaderInfo/*</name>*/(long n) { this.n = n; }
     public long value() { return n; }
-    public static /*<name>*/AudioToolboxError/*</name>*/ valueOf(long n) {
-        for (/*<name>*/AudioToolboxError/*</name>*/ v : values()) {
+    public static /*<name>*/CAFFileHeaderInfo/*</name>*/ valueOf(long n) {
+        for (/*<name>*/CAFFileHeaderInfo/*</name>*/ v : values()) {
             if (v.n == n) {
                 return v;
             }
         }
         throw new IllegalArgumentException("No constant with value " + n + " found in " 
-            + /*<name>*/AudioToolboxError/*</name>*/.class.getName());
+            + /*<name>*/CAFFileHeaderInfo/*</name>*/.class.getName());
     }
 }

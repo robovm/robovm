@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 Trillian Mobile AB
+ * Copyright (C) 2013-2015 Trillian Mobile AB
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -87,7 +87,7 @@ import org.robovm.apple.corefoundation.*;
     }
     public ABSourceType getType() {
         CFNumber val = getValue(ABSourceProperty.Type, CFNumber.class);
-        if (val != null) return ABSourceType.valueOf(val.intValue());
+        if (val != null) return new ABSourceType(val.intValue());
         return null;
     }
     public ABSource setType(ABSourceType type) throws NSErrorException {

@@ -14,13 +14,9 @@ enums:
     LAErrorCode: { first: LAErrorAuthenticationFailed }
         
 classes:
-    LocalAuthentication:
-        annotations: ['@Marshaler(NSString.AsStringMarshaler.class)']
-        
-
+    
     LAError:
         extends: NSError
-        
         
     LAContext: # DONE
         methods:
@@ -33,7 +29,7 @@ protocols: {}
 
 functions:
     # Make sure we don't miss any functions if new ones are introduced in a later version
-    (LA.*):
+    (k?LA.*):
         class: LocalAuthentication
         name: 'Function__#{g[0]}'
 
@@ -43,12 +39,12 @@ values:
         name: getClassDomain
    
     # Make sure we don't miss any values if new ones are introduced in a later version
-    (LA.*):
+    (k?LA.*):
         class: LocalAuthentication
         name: 'Value__#{g[0]}'
 
 constants:
     # Make sure we don't miss any constants if new ones are introduced in a later version
-    (LA.*):
+    (k?LA.*):
         class: LocalAuthentication
         name: 'Constant__#{g[0]}'

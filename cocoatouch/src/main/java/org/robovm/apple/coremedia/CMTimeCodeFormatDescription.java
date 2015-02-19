@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 Trillian Mobile AB
+ * Copyright (C) 2013-2015 Trillian Mobile AB
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -52,7 +52,7 @@ import org.robovm.apple.audiotoolbox.*;
     /**
      * @since Available in iOS 4.0 and later.
      */
-    public static CMTimeCodeFormatDescription create(CMTimeCodeFormatType timeCodeFormatType, @ByVal CMTime frameDuration, int frameQuanta, CMTimeCodeFlag tcFlags, CMTimeCodeFormatDescriptionExtension extensions) {
+    public static CMTimeCodeFormatDescription create(CMTimeCodeFormatType timeCodeFormatType, @ByVal CMTime frameDuration, int frameQuanta, CMTimeCodeFlags tcFlags, CMTimeCodeFormatDescriptionExtension extensions) {
         CMTimeCodeFormatDescription.CMTimeCodeFormatDescriptionPtr ptr = new CMTimeCodeFormatDescription.CMTimeCodeFormatDescriptionPtr();
         create(null, timeCodeFormatType, frameDuration, frameQuanta, tcFlags, extensions, ptr);
         return ptr.get();
@@ -86,7 +86,7 @@ import org.robovm.apple.audiotoolbox.*;
      * @since Available in iOS 4.0 and later.
      */
     @Bridge(symbol="CMTimeCodeFormatDescriptionCreate", optional=true)
-    private static native int create(CFAllocator allocator, CMTimeCodeFormatType timeCodeFormatType, @ByVal CMTime frameDuration, int frameQuanta, CMTimeCodeFlag tcFlags, CMTimeCodeFormatDescriptionExtension extensions, CMTimeCodeFormatDescription.CMTimeCodeFormatDescriptionPtr descOut);
+    private static native int create(CFAllocator allocator, CMTimeCodeFormatType timeCodeFormatType, @ByVal CMTime frameDuration, int frameQuanta, CMTimeCodeFlags tcFlags, CMTimeCodeFormatDescriptionExtension extensions, CMTimeCodeFormatDescription.CMTimeCodeFormatDescriptionPtr descOut);
     /**
      * @since Available in iOS 4.0 and later.
      */
@@ -101,7 +101,7 @@ import org.robovm.apple.audiotoolbox.*;
      * @since Available in iOS 4.0 and later.
      */
     @Bridge(symbol="CMTimeCodeFormatDescriptionGetTimeCodeFlags", optional=true)
-    public native CMTimeCodeFlag getTimeCodeFlags();
+    public native CMTimeCodeFlags getTimeCodeFlags();
     /**
      * @since Available in iOS 8.0 and later.
      */

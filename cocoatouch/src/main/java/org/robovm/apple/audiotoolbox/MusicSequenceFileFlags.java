@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 Trillian Mobile AB
+ * Copyright (C) 2013-2015 Trillian Mobile AB
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -37,12 +37,10 @@ import org.robovm.apple.coremedia.*;
 /*<javadoc>*/
 
 /*</javadoc>*/
-/*<annotations>*/@Marshaler(Bits.AsMachineSizedIntMarshaler.class)/*</annotations>*/
-public final class /*<name>*/AudioFileFlag/*</name>*/ extends Bits</*<name>*/AudioFileFlag/*</name>*/> {
+/*<annotations>*/@Marshaler(ValuedEnum.AsMachineSizedUIntMarshaler.class)/*</annotations>*/
+public enum /*<name>*/MusicSequenceFileFlags/*</name>*/ implements ValuedEnum {
     /*<values>*/
-    public static final AudioFileFlag None = new AudioFileFlag(0L);
-    public static final AudioFileFlag EraseFile = new AudioFileFlag(1L);
-    public static final AudioFileFlag DontPageAlignAudioData = new AudioFileFlag(2L);
+    EraseFile(1L);
     /*</values>*/
 
     /*<bind>*/
@@ -50,17 +48,17 @@ public final class /*<name>*/AudioFileFlag/*</name>*/ extends Bits</*<name>*/Aud
     /*<constants>*//*</constants>*/
     /*<methods>*//*</methods>*/
 
-    private static final /*<name>*/AudioFileFlag/*</name>*/[] values = _values(/*<name>*/AudioFileFlag/*</name>*/.class);
+    private final long n;
 
-    public /*<name>*/AudioFileFlag/*</name>*/(long value) { super(value); }
-    private /*<name>*/AudioFileFlag/*</name>*/(long value, long mask) { super(value, mask); }
-    protected /*<name>*/AudioFileFlag/*</name>*/ wrap(long value, long mask) {
-        return new /*<name>*/AudioFileFlag/*</name>*/(value, mask);
-    }
-    protected /*<name>*/AudioFileFlag/*</name>*/[] _values() {
-        return values;
-    }
-    public static /*<name>*/AudioFileFlag/*</name>*/[] values() {
-        return values.clone();
+    private /*<name>*/MusicSequenceFileFlags/*</name>*/(long n) { this.n = n; }
+    public long value() { return n; }
+    public static /*<name>*/MusicSequenceFileFlags/*</name>*/ valueOf(long n) {
+        for (/*<name>*/MusicSequenceFileFlags/*</name>*/ v : values()) {
+            if (v.n == n) {
+                return v;
+            }
+        }
+        throw new IllegalArgumentException("No constant with value " + n + " found in " 
+            + /*<name>*/MusicSequenceFileFlags/*</name>*/.class.getName());
     }
 }

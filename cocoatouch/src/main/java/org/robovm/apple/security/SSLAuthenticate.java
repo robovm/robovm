@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 Trillian Mobile AB
+ * Copyright (C) 2013-2015 Trillian Mobile AB
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -36,9 +36,9 @@ import org.robovm.apple.corefoundation.*;
 /*<annotations>*//*</annotations>*/
 public enum /*<name>*/SSLAuthenticate/*</name>*/ implements ValuedEnum {
     /*<values>*/
-    NeverAuthenticate(0L),
-    AlwaysAuthenticate(1L),
-    TryAuthenticate(2L);
+    Never(0L),
+    Always(1L),
+    Try(2L);
     /*</values>*/
 
     private final long n;

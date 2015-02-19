@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 Trillian Mobile AB
+ * Copyright (C) 2013-2015 Trillian Mobile AB
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -54,7 +54,7 @@ import org.robovm.apple.audiotoolbox.*;
     /**
      * @since Available in iOS 4.0 and later.
      */
-    public static CMBlockBuffer create(int subBlockCapacity, CMBlockBufferFlag flags) {
+    public static CMBlockBuffer create(int subBlockCapacity, CMBlockBufferFlags flags) {
         CMBlockBuffer.CMBlockBufferPtr ptr = new CMBlockBuffer.CMBlockBufferPtr();
         create(null, subBlockCapacity, flags, ptr);
         return ptr.get();
@@ -62,7 +62,7 @@ import org.robovm.apple.audiotoolbox.*;
     /**
      * @since Available in iOS 4.0 and later.
      */
-    public static CMBlockBuffer create(VoidPtr memoryBlock, @MachineSizedUInt long blockLength, CFAllocator blockAllocator, CMBlockBufferCustomBlockSource customBlockSource, @MachineSizedUInt long offsetToData, @MachineSizedUInt long dataLength, CMBlockBufferFlag flags) {
+    public static CMBlockBuffer create(VoidPtr memoryBlock, @MachineSizedUInt long blockLength, CFAllocator blockAllocator, CMBlockBufferCustomBlockSource customBlockSource, @MachineSizedUInt long offsetToData, @MachineSizedUInt long dataLength, CMBlockBufferFlags flags) {
         CMBlockBuffer.CMBlockBufferPtr ptr = new CMBlockBuffer.CMBlockBufferPtr();
         create(null, memoryBlock, blockLength, blockAllocator, customBlockSource, offsetToData, dataLength, flags, ptr);
         return ptr.get();
@@ -70,7 +70,7 @@ import org.robovm.apple.audiotoolbox.*;
     /**
      * @since Available in iOS 4.0 and later.
      */
-    public static CMBlockBuffer create(CMBlockBuffer targetBuffer, @MachineSizedUInt long offsetToData, @MachineSizedUInt long dataLength, CMBlockBufferFlag flags) {
+    public static CMBlockBuffer create(CMBlockBuffer targetBuffer, @MachineSizedUInt long offsetToData, @MachineSizedUInt long dataLength, CMBlockBufferFlags flags) {
         CMBlockBuffer.CMBlockBufferPtr ptr = new CMBlockBuffer.CMBlockBufferPtr();
         create(null, targetBuffer, offsetToData, dataLength, flags, ptr);
         return ptr.get();
@@ -78,7 +78,7 @@ import org.robovm.apple.audiotoolbox.*;
     /**
      * @since Available in iOS 4.0 and later.
      */
-    public static CMBlockBuffer create(CMBlockBuffer sourceBuffer, CFAllocator blockAllocator, CMBlockBufferCustomBlockSource customBlockSource, @MachineSizedUInt long offsetToData, @MachineSizedUInt long dataLength, CMBlockBufferFlag flags) {
+    public static CMBlockBuffer create(CMBlockBuffer sourceBuffer, CFAllocator blockAllocator, CMBlockBufferCustomBlockSource customBlockSource, @MachineSizedUInt long offsetToData, @MachineSizedUInt long dataLength, CMBlockBufferFlags flags) {
         CMBlockBuffer.CMBlockBufferPtr ptr = new CMBlockBuffer.CMBlockBufferPtr();
         create(null, sourceBuffer, blockAllocator, customBlockSource, offsetToData, dataLength, flags, ptr);
         return ptr.get();
@@ -112,22 +112,22 @@ import org.robovm.apple.audiotoolbox.*;
      * @since Available in iOS 4.0 and later.
      */
     @Bridge(symbol="CMBlockBufferCreateEmpty", optional=true)
-    private static native int create(CFAllocator structureAllocator, int subBlockCapacity, CMBlockBufferFlag flags, CMBlockBuffer.CMBlockBufferPtr newBBufOut);
+    private static native int create(CFAllocator structureAllocator, int subBlockCapacity, CMBlockBufferFlags flags, CMBlockBuffer.CMBlockBufferPtr newBBufOut);
     /**
      * @since Available in iOS 4.0 and later.
      */
     @Bridge(symbol="CMBlockBufferCreateWithMemoryBlock", optional=true)
-    private static native int create(CFAllocator structureAllocator, VoidPtr memoryBlock, @MachineSizedUInt long blockLength, CFAllocator blockAllocator, CMBlockBufferCustomBlockSource customBlockSource, @MachineSizedUInt long offsetToData, @MachineSizedUInt long dataLength, CMBlockBufferFlag flags, CMBlockBuffer.CMBlockBufferPtr newBBufOut);
+    private static native int create(CFAllocator structureAllocator, VoidPtr memoryBlock, @MachineSizedUInt long blockLength, CFAllocator blockAllocator, CMBlockBufferCustomBlockSource customBlockSource, @MachineSizedUInt long offsetToData, @MachineSizedUInt long dataLength, CMBlockBufferFlags flags, CMBlockBuffer.CMBlockBufferPtr newBBufOut);
     /**
      * @since Available in iOS 4.0 and later.
      */
     @Bridge(symbol="CMBlockBufferCreateWithBufferReference", optional=true)
-    private static native int create(CFAllocator structureAllocator, CMBlockBuffer targetBuffer, @MachineSizedUInt long offsetToData, @MachineSizedUInt long dataLength, CMBlockBufferFlag flags, CMBlockBuffer.CMBlockBufferPtr newBBufOut);
+    private static native int create(CFAllocator structureAllocator, CMBlockBuffer targetBuffer, @MachineSizedUInt long offsetToData, @MachineSizedUInt long dataLength, CMBlockBufferFlags flags, CMBlockBuffer.CMBlockBufferPtr newBBufOut);
     /**
      * @since Available in iOS 4.0 and later.
      */
     @Bridge(symbol="CMBlockBufferCreateContiguous", optional=true)
-    private static native int create(CFAllocator structureAllocator, CMBlockBuffer sourceBuffer, CFAllocator blockAllocator, CMBlockBufferCustomBlockSource customBlockSource, @MachineSizedUInt long offsetToData, @MachineSizedUInt long dataLength, CMBlockBufferFlag flags, CMBlockBuffer.CMBlockBufferPtr newBBufOut);
+    private static native int create(CFAllocator structureAllocator, CMBlockBuffer sourceBuffer, CFAllocator blockAllocator, CMBlockBufferCustomBlockSource customBlockSource, @MachineSizedUInt long offsetToData, @MachineSizedUInt long dataLength, CMBlockBufferFlags flags, CMBlockBuffer.CMBlockBufferPtr newBBufOut);
     /**
      * @since Available in iOS 4.0 and later.
      */
@@ -137,12 +137,12 @@ import org.robovm.apple.audiotoolbox.*;
      * @since Available in iOS 4.0 and later.
      */
     @Bridge(symbol="CMBlockBufferAppendMemoryBlock", optional=true)
-    public native int appendMemoryBlock(VoidPtr memoryBlock, @MachineSizedUInt long blockLength, CFAllocator blockAllocator, CMBlockBufferCustomBlockSource customBlockSource, @MachineSizedUInt long offsetToData, @MachineSizedUInt long dataLength, CMBlockBufferFlag flags);
+    public native int appendMemoryBlock(VoidPtr memoryBlock, @MachineSizedUInt long blockLength, CFAllocator blockAllocator, CMBlockBufferCustomBlockSource customBlockSource, @MachineSizedUInt long offsetToData, @MachineSizedUInt long dataLength, CMBlockBufferFlags flags);
     /**
      * @since Available in iOS 4.0 and later.
      */
     @Bridge(symbol="CMBlockBufferAppendBufferReference", optional=true)
-    public native CMBlockBufferError appendBufferReference(CMBlockBuffer targetBBuf, @MachineSizedUInt long offsetToData, @MachineSizedUInt long dataLength, int flags);
+    public native CMBlockBufferError appendBufferReference(CMBlockBuffer targetBBuf, @MachineSizedUInt long offsetToData, @MachineSizedUInt long dataLength, CMBlockBufferFlags flags);
     /**
      * @since Available in iOS 4.0 and later.
      */

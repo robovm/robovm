@@ -14,7 +14,7 @@ enums:
     CBErrorCode: { first: CBErrorUnknown }
     CBATTErrorCode: { first: CBATTErrorSuccess }
     CBPeripheralState: {}
-    CBCharacteristicWriteType: {}
+    CBCharacteristicWriteType: { prefix: CBCharacteristicWrite }
     CBAttributePermissions: { bits: true, marshaler: Bits.AsMachineSizedIntMarshaler }
     CBPeripheralManagerAuthorizationStatus: {}
     CBPeripheralManagerState: {}

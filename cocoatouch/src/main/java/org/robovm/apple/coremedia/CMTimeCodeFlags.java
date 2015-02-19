@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 Trillian Mobile AB
+ * Copyright (C) 2013-2015 Trillian Mobile AB
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -40,13 +40,12 @@ import org.robovm.apple.audiotoolbox.*;
 
 /*</javadoc>*/
 /*<annotations>*/@Marshaler(Bits.AsMachineSizedIntMarshaler.class)/*</annotations>*/
-public final class /*<name>*/CMBlockBufferFlag/*</name>*/ extends Bits</*<name>*/CMBlockBufferFlag/*</name>*/> {
+public final class /*<name>*/CMTimeCodeFlags/*</name>*/ extends Bits</*<name>*/CMTimeCodeFlags/*</name>*/> {
     /*<values>*/
-    public static final CMBlockBufferFlag None = new CMBlockBufferFlag(0L);
-    public static final CMBlockBufferFlag AssureMemoryNow = new CMBlockBufferFlag(1L);
-    public static final CMBlockBufferFlag AlwaysCopyData = new CMBlockBufferFlag(2L);
-    public static final CMBlockBufferFlag DontOptimizeDepth = new CMBlockBufferFlag(4L);
-    public static final CMBlockBufferFlag PermitEmptyReference = new CMBlockBufferFlag(8L);
+    public static final CMTimeCodeFlags None = new CMTimeCodeFlags(0L);
+    public static final CMTimeCodeFlags DropFrame = new CMTimeCodeFlags(1L);
+    public static final CMTimeCodeFlags _24HourMax = new CMTimeCodeFlags(2L);
+    public static final CMTimeCodeFlags NegTimesOK = new CMTimeCodeFlags(4L);
     /*</values>*/
 
     /*<bind>*/
@@ -54,17 +53,17 @@ public final class /*<name>*/CMBlockBufferFlag/*</name>*/ extends Bits</*<name>*
     /*<constants>*//*</constants>*/
     /*<methods>*//*</methods>*/
 
-    private static final /*<name>*/CMBlockBufferFlag/*</name>*/[] values = _values(/*<name>*/CMBlockBufferFlag/*</name>*/.class);
+    private static final /*<name>*/CMTimeCodeFlags/*</name>*/[] values = _values(/*<name>*/CMTimeCodeFlags/*</name>*/.class);
 
-    public /*<name>*/CMBlockBufferFlag/*</name>*/(long value) { super(value); }
-    private /*<name>*/CMBlockBufferFlag/*</name>*/(long value, long mask) { super(value, mask); }
-    protected /*<name>*/CMBlockBufferFlag/*</name>*/ wrap(long value, long mask) {
-        return new /*<name>*/CMBlockBufferFlag/*</name>*/(value, mask);
+    public /*<name>*/CMTimeCodeFlags/*</name>*/(long value) { super(value); }
+    private /*<name>*/CMTimeCodeFlags/*</name>*/(long value, long mask) { super(value, mask); }
+    protected /*<name>*/CMTimeCodeFlags/*</name>*/ wrap(long value, long mask) {
+        return new /*<name>*/CMTimeCodeFlags/*</name>*/(value, mask);
     }
-    protected /*<name>*/CMBlockBufferFlag/*</name>*/[] _values() {
+    protected /*<name>*/CMTimeCodeFlags/*</name>*/[] _values() {
         return values;
     }
-    public static /*<name>*/CMBlockBufferFlag/*</name>*/[] values() {
+    public static /*<name>*/CMTimeCodeFlags/*</name>*/[] values() {
         return values.clone();
     }
 }

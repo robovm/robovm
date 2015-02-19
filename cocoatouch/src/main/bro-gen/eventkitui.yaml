@@ -11,7 +11,7 @@ typedefs: {}
 enums:
     EKCalendarChooserSelectionStyle: { first: EKCalendarChooserSelectionStyleSingle }
     EKCalendarChooserDisplayStyle: { first: EKCalendarChooserDisplayAllCalendars }
-    EKEventEditViewAction: { first: EKEventEditViewActionCanceled }
+    EKEventEditViewAction: { first: EKEventEditViewActionCanceled, ignore: Cancelled }
     EKEventViewAction: { first: EKEventViewActionDone }
         
 classes:

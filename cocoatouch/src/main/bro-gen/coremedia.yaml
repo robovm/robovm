@@ -26,7 +26,7 @@ enums:
     CMTimebaseError: { first: kCMTimebaseError_MissingRequiredParameter, prefix: kCMTimebaseError_ }
     CMSyncError: { first: kCMSyncError_MissingRequiredParameter, prefix: kCMSyncError_ }
     CMBlockBufferError: { first: kCMBlockBufferNoErr, prefix: kCMBlockBuffer, suffix: Err }
-    CMBlockBufferFlag: { first: kCMBlockBufferAssureMemoryNowFlag, prefix: kCMBlockBuffer, suffix: Flag, bits: true, marshaler: Bits.AsMachineSizedIntMarshaler }
+    CMBlockBufferFlags: { first: kCMBlockBufferAssureMemoryNowFlag, prefix: kCMBlockBuffer, suffix: Flag, bits: true, marshaler: Bits.AsMachineSizedIntMarshaler }
     CMBufferQueueError: { first: kCMBufferQueueError_AllocationFailed, prefix: kCMBufferQueueError_ }
     CMBufferQueueTriggerCondition: { first: kCMBufferQueueTrigger_WhenDurationBecomesLessThan, prefix: kCMBufferQueueTrigger_ }
     CMFormatDescriptionError: { first: kCMFormatDescriptionError_InvalidParameter, prefix: kCMFormatDescriptionError_ }
@@ -39,14 +39,14 @@ enums:
     CMMuxedStreamType: { first: kCMMuxedStreamType_MPEG1System, prefix: kCMMuxedStreamType_, marshaler: ValuedEnum.AsMachineSizedUIntMarshaler }
     CMClosedCaptionFormatType: { first: kCMClosedCaptionFormatType_CEA608, prefix: kCMClosedCaptionFormatType, marshaler: ValuedEnum.AsMachineSizedUIntMarshaler }
     CMTextFormatType: { first: kCMTextFormatType_QTText, prefix: kCMTextFormatType_, marshaler: ValuedEnum.AsMachineSizedUIntMarshaler }
-    CMTextDisplayFlag: { first: kCMTextDisplayFlag_scrollIn, prefix: kCMTextDisplayFlag_, bits: true, marshaler: Bits.AsMachineSizedIntMarshaler }
+    CMTextDisplayFlags: { first: kCMTextDisplayFlag_scrollIn, prefix: kCMTextDisplayFlag_, bits: true, marshaler: Bits.AsMachineSizedIntMarshaler }
     CMTextJustification: { first: kCMTextJustification_left_top, prefix: kCMTextJustification_, kCMTextJustification_left_top: LeftTop, kCMTextJustification_centered: Centered, kCMTextJustification_bottom_right: BottomRight }
     CMSubtitleFormatType: { first: kCMSubtitleFormatType_3GText, prefix: kCMSubtitleFormatType_, marshaler: ValuedEnum.AsMachineSizedUIntMarshaler }
     CMTimeCodeFormatType: { first: kCMTimeCodeFormatType_TimeCode32, prefix: kCMTimeCodeFormatType_, marshaler: ValuedEnum.AsMachineSizedUIntMarshaler }
-    CMTimeCodeFlag: { first: kCMTimeCodeFlag_DropFrame, prefix: kCMTimeCodeFlag_, bits: true, marshaler: Bits.AsMachineSizedIntMarshaler }
+    CMTimeCodeFlags: { first: kCMTimeCodeFlag_DropFrame, prefix: kCMTimeCodeFlag_, bits: true, marshaler: Bits.AsMachineSizedIntMarshaler }
     CMMetadataFormatType: { first: kCMMetadataFormatType_ICY, prefix: kCMMetadataFormatType_, marshaler: ValuedEnum.AsMachineSizedUIntMarshaler }
     CMSampleBufferError: { first: kCMSampleBufferError_AllocationFailed, prefix: kCMSampleBufferError_ }
-    CMSampleBufferFlag: { first: kCMSampleBufferFlag_AudioBufferList_Assure16ByteAlignment, prefix: kCMSampleBufferFlag_, bits: true, marshaler: Bits.AsMachineSizedIntMarshaler }
+    CMSampleBufferFlags: { first: kCMSampleBufferFlag_AudioBufferList_Assure16ByteAlignment, prefix: kCMSampleBufferFlag_, bits: true, marshaler: Bits.AsMachineSizedIntMarshaler }
     CMSimpleQueueError: { first: kCMSimpleQueueError_AllocationFailed, prefix: kCMSimpleQueueError_ }
     CMTimeFlags: { first: kCMTimeFlags_Valid, prefix: kCMTimeFlags_, bits: true, marshaler: Bits.AsMachineSizedIntMarshaler }
     CMTimeRoundingMethod: { first: kCMTimeRoundingMethod_RoundHalfAwayFromZero, prefix: kCMTimeRoundingMethod_, marshaler: ValuedEnum.AsMachineSizedUIntMarshaler }
@@ -55,9 +55,6 @@ enums:
     CMMetadataDataTypeRegistryError: { first: kCMMetadataDataTypeRegistryError_AllocationFailed }
 
 classes:
-    CoreMedia:
-        annotations: ['@Marshaler(NSString.AsStringMarshaler.class)']
-
     # Opaque Types
     CMAttachmentBearer:
         extends: CFType
@@ -243,13 +240,13 @@ functions:
         visibility: private
         parameters:
             flags:
-                type: CMBlockBufferFlag
+                type: CMBlockBufferFlags
     CMBlockBuffer(AppendMemoryBlock|CMBlockBufferAppendBufferReference):
         class: CMBlockBuffer
         name: '#{g[0]}'
         parameters:
             flags:
-                type: CMBlockBufferFlag
+                type: CMBlockBufferFlags
     CMBlockBuffer(AccessDataBytes|ReplaceDataBytes|FillDataBytes|):
         class: CMBlockBuffer
         name: '#{g[0]}'
@@ -626,7 +623,7 @@ functions:
         return_type: CMSampleBufferError
         parameters:
             flags:
-                type: CMSampleBufferFlag
+                type: CMSampleBufferFlags
     CMSampleBuffer(GetAudioBufferList)WithRetainedBlockBuffer:
         class: CMSampleBuffer
         name: '#{g[0]}'
@@ -634,7 +631,7 @@ functions:
         return_type: CMSampleBufferError
         parameters:
             flags:
-                type: CMSampleBufferFlag
+                type: CMSampleBufferFlags
     CMSampleBuffer(GetAudioStreamPacketDescriptions):
         class: CMSampleBuffer
         name: '#{g[0]}'
@@ -760,13 +757,13 @@ functions:
         visibility: private
         parameters:
             tcFlags:
-                type: CMTimeCodeFlag
+                type: CMTimeCodeFlags
             extensions:
                 type: CMTimeCodeFormatDescriptionExtension
     CMTimeCodeFormatDescription(GetTimeCodeFlags):
         class: CMTimeCodeFormatDescription
         name: '#{g[0]}'
-        return_type: CMTimeCodeFlag
+        return_type: CMTimeCodeFlags
     CMTimeCodeFormatDescription(CreateFromBigEndian.*):
         class: CMTimeCodeFormatDescription
         name: '#{g[0]}'
@@ -1083,7 +1080,7 @@ values:
         type: CFString
         methods:
             DisplayFlags:
-                type: CMTextDisplayFlag
+                type: CMTextDisplayFlags
             BackgroundColor:
                 type: CMTextFormatDescriptionColor
             DefaultTextBox:

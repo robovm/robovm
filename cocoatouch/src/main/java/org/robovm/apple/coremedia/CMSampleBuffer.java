@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 Trillian Mobile AB
+ * Copyright (C) 2013-2015 Trillian Mobile AB
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -328,10 +328,10 @@ import org.robovm.apple.audiotoolbox.*;
         createForRange(null, this, sampleRange, ptr);
         return ptr.get();
     }
-    public CMSampleBufferError setAudioBufferList(AudioBufferList bufferList, CMSampleBufferFlag flags) {
+    public CMSampleBufferError setAudioBufferList(AudioBufferList bufferList, CMSampleBufferFlags flags) {
         return setAudioBufferList(null, null, flags, bufferList);
     }
-    public AudioBufferList getAudioBufferList(@MachineSizedUInt long bufferListSize, CMSampleBufferFlag flags, CMBlockBuffer buffer) {
+    public AudioBufferList getAudioBufferList(@MachineSizedUInt long bufferListSize, CMSampleBufferFlags flags, CMBlockBuffer buffer) {
         CMBlockBuffer.CMBlockBufferPtr ptr = new CMBlockBuffer.CMBlockBufferPtr();
         ptr.set(buffer);
         AudioBufferList list = new AudioBufferList();
@@ -523,12 +523,12 @@ import org.robovm.apple.audiotoolbox.*;
      * @since Available in iOS 4.0 and later.
      */
     @Bridge(symbol="CMSampleBufferSetDataBufferFromAudioBufferList", optional=true)
-    public native CMSampleBufferError setAudioBufferList(CFAllocator bbufStructAllocator, CFAllocator bbufMemoryAllocator, CMSampleBufferFlag flags, AudioBufferList bufferList);
+    public native CMSampleBufferError setAudioBufferList(CFAllocator bbufStructAllocator, CFAllocator bbufMemoryAllocator, CMSampleBufferFlags flags, AudioBufferList bufferList);
     /**
      * @since Available in iOS 4.0 and later.
      */
     @Bridge(symbol="CMSampleBufferGetAudioBufferListWithRetainedBlockBuffer", optional=true)
-    private native CMSampleBufferError getAudioBufferList(MachineSizedUIntPtr bufferListSizeNeededOut, AudioBufferList bufferListOut, @MachineSizedUInt long bufferListSize, CFAllocator bbufStructAllocator, CFAllocator bbufMemoryAllocator, CMSampleBufferFlag flags, CMBlockBuffer.CMBlockBufferPtr blockBufferOut);
+    private native CMSampleBufferError getAudioBufferList(MachineSizedUIntPtr bufferListSizeNeededOut, AudioBufferList bufferListOut, @MachineSizedUInt long bufferListSize, CFAllocator bbufStructAllocator, CFAllocator bbufMemoryAllocator, CMSampleBufferFlags flags, CMBlockBuffer.CMBlockBufferPtr blockBufferOut);
     /**
      * @since Available in iOS 4.0 and later.
      */

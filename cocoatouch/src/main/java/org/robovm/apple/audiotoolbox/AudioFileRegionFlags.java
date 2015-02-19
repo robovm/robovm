@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 Trillian Mobile AB
+ * Copyright (C) 2013-2015 Trillian Mobile AB
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -38,12 +38,12 @@ import org.robovm.apple.coremedia.*;
 
 /*</javadoc>*/
 /*<annotations>*/@Marshaler(Bits.AsMachineSizedIntMarshaler.class)/*</annotations>*/
-public final class /*<name>*/CAFRegionFlag/*</name>*/ extends Bits</*<name>*/CAFRegionFlag/*</name>*/> {
+public final class /*<name>*/AudioFileRegionFlags/*</name>*/ extends Bits</*<name>*/AudioFileRegionFlags/*</name>*/> {
     /*<values>*/
-    public static final CAFRegionFlag None = new CAFRegionFlag(0L);
-    public static final CAFRegionFlag LoopEnable = new CAFRegionFlag(1L);
-    public static final CAFRegionFlag PlayForward = new CAFRegionFlag(2L);
-    public static final CAFRegionFlag PlayBackward = new CAFRegionFlag(4L);
+    public static final AudioFileRegionFlags None = new AudioFileRegionFlags(0L);
+    public static final AudioFileRegionFlags LoopEnable = new AudioFileRegionFlags(1L);
+    public static final AudioFileRegionFlags PlayForward = new AudioFileRegionFlags(2L);
+    public static final AudioFileRegionFlags PlayBackward = new AudioFileRegionFlags(4L);
     /*</values>*/
 
     /*<bind>*/
@@ -51,17 +51,17 @@ public final class /*<name>*/CAFRegionFlag/*</name>*/ extends Bits</*<name>*/CAF
     /*<constants>*//*</constants>*/
     /*<methods>*//*</methods>*/
 
-    private static final /*<name>*/CAFRegionFlag/*</name>*/[] values = _values(/*<name>*/CAFRegionFlag/*</name>*/.class);
+    private static final /*<name>*/AudioFileRegionFlags/*</name>*/[] values = _values(/*<name>*/AudioFileRegionFlags/*</name>*/.class);
 
-    public /*<name>*/CAFRegionFlag/*</name>*/(long value) { super(value); }
-    private /*<name>*/CAFRegionFlag/*</name>*/(long value, long mask) { super(value, mask); }
-    protected /*<name>*/CAFRegionFlag/*</name>*/ wrap(long value, long mask) {
-        return new /*<name>*/CAFRegionFlag/*</name>*/(value, mask);
+    public /*<name>*/AudioFileRegionFlags/*</name>*/(long value) { super(value); }
+    private /*<name>*/AudioFileRegionFlags/*</name>*/(long value, long mask) { super(value, mask); }
+    protected /*<name>*/AudioFileRegionFlags/*</name>*/ wrap(long value, long mask) {
+        return new /*<name>*/AudioFileRegionFlags/*</name>*/(value, mask);
     }
-    protected /*<name>*/CAFRegionFlag/*</name>*/[] _values() {
+    protected /*<name>*/AudioFileRegionFlags/*</name>*/[] _values() {
         return values;
     }
-    public static /*<name>*/CAFRegionFlag/*</name>*/[] values() {
+    public static /*<name>*/AudioFileRegionFlags/*</name>*/[] values() {
         return values.clone();
     }
 }

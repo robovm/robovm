@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 Trillian Mobile AB
+ * Copyright (C) 2013-2015 Trillian Mobile AB
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -37,8 +37,8 @@ import org.robovm.apple.foundation.*;
 public final class /*<name>*/CFFileDescriptorCallBackType/*</name>*/ extends Bits</*<name>*/CFFileDescriptorCallBackType/*</name>*/> {
     /*<values>*/
     public static final CFFileDescriptorCallBackType None = new CFFileDescriptorCallBackType(0L);
-    public static final CFFileDescriptorCallBackType ReadCallBack = new CFFileDescriptorCallBackType(1L);
-    public static final CFFileDescriptorCallBackType WriteCallBack = new CFFileDescriptorCallBackType(2L);
+    public static final CFFileDescriptorCallBackType Read = new CFFileDescriptorCallBackType(1L);
+    public static final CFFileDescriptorCallBackType Write = new CFFileDescriptorCallBackType(2L);
     /*</values>*/
 
     private static final /*<name>*/CFFileDescriptorCallBackType/*</name>*/[] values = _values(/*<name>*/CFFileDescriptorCallBackType/*</name>*/.class);

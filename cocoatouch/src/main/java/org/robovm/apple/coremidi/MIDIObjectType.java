@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 Trillian Mobile AB
+ * Copyright (C) 2013-2015 Trillian Mobile AB
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -41,7 +41,6 @@ public enum /*<name>*/MIDIObjectType/*</name>*/ implements ValuedEnum {
     Entity(1L),
     Source(2L),
     Destination(3L),
-    ExternalMask(16L),
     ExternalDevice(16L),
     ExternalEntity(17L),
     ExternalSource(18L),

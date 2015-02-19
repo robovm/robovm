@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 Trillian Mobile AB
+ * Copyright (C) 2013-2015 Trillian Mobile AB
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.robovm.apple.coremedia;
+package org.robovm.apple.avfoundation;
 
 /*<imports>*/
 import java.io.*;
@@ -27,23 +27,29 @@ import org.robovm.rt.bro.*;
 import org.robovm.rt.bro.annotation.*;
 import org.robovm.rt.bro.ptr.*;
 import org.robovm.apple.foundation.*;
-import org.robovm.apple.corefoundation.*;
 import org.robovm.apple.dispatch.*;
-import org.robovm.apple.coreaudio.*;
 import org.robovm.apple.coreanimation.*;
+import org.robovm.apple.corefoundation.*;
 import org.robovm.apple.coregraphics.*;
+import org.robovm.apple.coreaudio.*;
+import org.robovm.apple.coremedia.*;
 import org.robovm.apple.corevideo.*;
 import org.robovm.apple.audiotoolbox.*;
+import org.robovm.apple.mediatoolbox.*;
 /*</imports>*/
 
 /*<javadoc>*/
-
+/**
+ * @since Available in iOS 4.0 and later.
+ * @deprecated Deprecated in iOS 6.0.
+ */
+@Deprecated
 /*</javadoc>*/
 /*<annotations>*/@Marshaler(Bits.AsMachineSizedIntMarshaler.class)/*</annotations>*/
-public final class /*<name>*/CMSampleBufferFlag/*</name>*/ extends Bits</*<name>*/CMSampleBufferFlag/*</name>*/> {
+public final class /*<name>*/AVAudioSessionSetActiveFlags/*</name>*/ extends Bits</*<name>*/AVAudioSessionSetActiveFlags/*</name>*/> {
     /*<values>*/
-    public static final CMSampleBufferFlag None = new CMSampleBufferFlag(0L);
-    public static final CMSampleBufferFlag AudioBufferList_Assure16ByteAlignment = new CMSampleBufferFlag(1L);
+    public static final AVAudioSessionSetActiveFlags None = new AVAudioSessionSetActiveFlags(0L);
+    public static final AVAudioSessionSetActiveFlags NotifyOthersOnDeactivation = new AVAudioSessionSetActiveFlags(1L);
     /*</values>*/
 
     /*<bind>*/
@@ -51,17 +57,17 @@ public final class /*<name>*/CMSampleBufferFlag/*</name>*/ extends Bits</*<name>
     /*<constants>*//*</constants>*/
     /*<methods>*//*</methods>*/
 
-    private static final /*<name>*/CMSampleBufferFlag/*</name>*/[] values = _values(/*<name>*/CMSampleBufferFlag/*</name>*/.class);
+    private static final /*<name>*/AVAudioSessionSetActiveFlags/*</name>*/[] values = _values(/*<name>*/AVAudioSessionSetActiveFlags/*</name>*/.class);
 
-    public /*<name>*/CMSampleBufferFlag/*</name>*/(long value) { super(value); }
-    private /*<name>*/CMSampleBufferFlag/*</name>*/(long value, long mask) { super(value, mask); }
-    protected /*<name>*/CMSampleBufferFlag/*</name>*/ wrap(long value, long mask) {
-        return new /*<name>*/CMSampleBufferFlag/*</name>*/(value, mask);
+    public /*<name>*/AVAudioSessionSetActiveFlags/*</name>*/(long value) { super(value); }
+    private /*<name>*/AVAudioSessionSetActiveFlags/*</name>*/(long value, long mask) { super(value, mask); }
+    protected /*<name>*/AVAudioSessionSetActiveFlags/*</name>*/ wrap(long value, long mask) {
+        return new /*<name>*/AVAudioSessionSetActiveFlags/*</name>*/(value, mask);
     }
-    protected /*<name>*/CMSampleBufferFlag/*</name>*/[] _values() {
+    protected /*<name>*/AVAudioSessionSetActiveFlags/*</name>*/[] _values() {
         return values;
     }
-    public static /*<name>*/CMSampleBufferFlag/*</name>*/[] values() {
+    public static /*<name>*/AVAudioSessionSetActiveFlags/*</name>*/[] values() {
         return values.clone();
     }
 }

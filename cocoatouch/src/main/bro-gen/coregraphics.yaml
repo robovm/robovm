@@ -21,10 +21,10 @@ enums:
     CGBlendMode: {}
     CGColorRenderingIntent: {}
     CGColorSpaceModel: {}
-    CGError: {first: kCGErrorSuccess}
+    CGErrorCode: {first: kCGErrorSuccess}
     CGFontPostScriptFormat: {}
     CGGradientDrawingOptions: {first: kCGGradientDrawsBeforeStartLocation, bits: true, marshaler: Bits.AsMachineSizedIntMarshaler}
-    CGImageAlphaInfo: {}
+    CGImageAlphaInfo: {type: MachineUInt}
     CGInterpolationQuality: {}
     CGLineCap: {}
     CGLineJoin: {}
@@ -34,7 +34,7 @@ enums:
     CGPDFBox: {}
     CGPDFDataFormat: {}
     CGPDFObjectType: {}
-    CGRectEdge: {prefix: CGRect}
+    CGRectEdge: {prefix: CGRect, suffix: Edge, type: MachineUInt}
     CGTextDrawingMode: {}
     CGTextEncoding: {}
 

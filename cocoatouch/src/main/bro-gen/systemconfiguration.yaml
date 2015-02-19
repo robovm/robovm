@@ -20,9 +20,6 @@ enums:
     SCNetworkReachabilityFlags: { first: kSCNetworkReachabilityFlagsTransientConnection, bits: true, marshaler: Bits.AsMachineSizedIntMarshaler }
         
 classes:
-    SystemConfiguration:
-        annotations: ['@Marshaler(NSString.AsStringMarshaler.class)']
-
     __SCNetworkReachability:
         name: SCNetworkReachability
         extends: CFType

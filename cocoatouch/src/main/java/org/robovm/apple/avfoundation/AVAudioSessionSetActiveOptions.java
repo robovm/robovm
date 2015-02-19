@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 Trillian Mobile AB
+ * Copyright (C) 2013-2015 Trillian Mobile AB
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -43,7 +43,7 @@ import org.robovm.apple.mediatoolbox.*;
  * @since Available in iOS 6.0 and later.
  */
 /*</javadoc>*/
-/*<annotations>*/@Marshaler(ValuedEnum.AsMachineSizedUIntMarshaler.class)/*</annotations>*/
+/*<annotations>*/@Marshaler(Bits.AsMachineSizedIntMarshaler.class)/*</annotations>*/
 public final class /*<name>*/AVAudioSessionSetActiveOptions/*</name>*/ extends Bits</*<name>*/AVAudioSessionSetActiveOptions/*</name>*/> {
     /*<values>*/
     public static final AVAudioSessionSetActiveOptions None = new AVAudioSessionSetActiveOptions(0L);

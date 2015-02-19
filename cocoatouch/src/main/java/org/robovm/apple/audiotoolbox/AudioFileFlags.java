@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 Trillian Mobile AB
+ * Copyright (C) 2013-2015 Trillian Mobile AB
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.robovm.apple.coreaudio;
+package org.robovm.apple.audiotoolbox;
 
 /*<imports>*/
 import java.io.*;
@@ -28,19 +28,21 @@ import org.robovm.rt.bro.annotation.*;
 import org.robovm.rt.bro.ptr.*;
 import org.robovm.apple.foundation.*;
 import org.robovm.apple.corefoundation.*;
+import org.robovm.apple.coregraphics.*;
+import org.robovm.apple.opengles.*;
+import org.robovm.apple.coreaudio.*;
+import org.robovm.apple.coremedia.*;
 /*</imports>*/
 
 /*<javadoc>*/
 
 /*</javadoc>*/
 /*<annotations>*/@Marshaler(Bits.AsMachineSizedIntMarshaler.class)/*</annotations>*/
-public final class /*<name>*/AudioChannelFlag/*</name>*/ extends Bits</*<name>*/AudioChannelFlag/*</name>*/> {
+public final class /*<name>*/AudioFileFlags/*</name>*/ extends Bits</*<name>*/AudioFileFlags/*</name>*/> {
     /*<values>*/
-    public static final AudioChannelFlag None = new AudioChannelFlag(0L);
-    public static final AudioChannelFlag AllOff = new AudioChannelFlag(0L);
-    public static final AudioChannelFlag RectangularCoordinates = new AudioChannelFlag(1L);
-    public static final AudioChannelFlag SphericalCoordinates = new AudioChannelFlag(2L);
-    public static final AudioChannelFlag Meters = new AudioChannelFlag(4L);
+    public static final AudioFileFlags None = new AudioFileFlags(0L);
+    public static final AudioFileFlags EraseFile = new AudioFileFlags(1L);
+    public static final AudioFileFlags DontPageAlignAudioData = new AudioFileFlags(2L);
     /*</values>*/
 
     /*<bind>*/
@@ -48,17 +50,17 @@ public final class /*<name>*/AudioChannelFlag/*</name>*/ extends Bits</*<name>*/
     /*<constants>*//*</constants>*/
     /*<methods>*//*</methods>*/
 
-    private static final /*<name>*/AudioChannelFlag/*</name>*/[] values = _values(/*<name>*/AudioChannelFlag/*</name>*/.class);
+    private static final /*<name>*/AudioFileFlags/*</name>*/[] values = _values(/*<name>*/AudioFileFlags/*</name>*/.class);
 
-    public /*<name>*/AudioChannelFlag/*</name>*/(long value) { super(value); }
-    private /*<name>*/AudioChannelFlag/*</name>*/(long value, long mask) { super(value, mask); }
-    protected /*<name>*/AudioChannelFlag/*</name>*/ wrap(long value, long mask) {
-        return new /*<name>*/AudioChannelFlag/*</name>*/(value, mask);
+    public /*<name>*/AudioFileFlags/*</name>*/(long value) { super(value); }
+    private /*<name>*/AudioFileFlags/*</name>*/(long value, long mask) { super(value, mask); }
+    protected /*<name>*/AudioFileFlags/*</name>*/ wrap(long value, long mask) {
+        return new /*<name>*/AudioFileFlags/*</name>*/(value, mask);
     }
-    protected /*<name>*/AudioChannelFlag/*</name>*/[] _values() {
+    protected /*<name>*/AudioFileFlags/*</name>*/[] _values() {
         return values;
     }
-    public static /*<name>*/AudioChannelFlag/*</name>*/[] values() {
+    public static /*<name>*/AudioFileFlags/*</name>*/[] values() {
         return values.clone();
     }
 }

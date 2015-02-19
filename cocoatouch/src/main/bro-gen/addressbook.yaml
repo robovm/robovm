@@ -11,15 +11,14 @@ typedefs:
     ABRecordRef: ABRecord
     ABMultiValueRef: ABMultiValue
     ABMutableMultiValueRef: ABMutableMultiValue
-
 private_typedefs:
     '__CFString *': String
-    '__CFString **': 'NSString.NSStringPtr'
+    '__CFString **': NSString.NSStringPtr
     '__CFData *': NSData
     '__CFURL *': NSURL
     '__CFDictionary *': 'NSDictionary<?, ?>'
-    '__CFArray *': 'NSArray<?>'
-    '__CFError': NSError
+    '__CFArray *': NSArray<?>
+    __CFError: NSError
 
 enums:
     ABAddressBookErrorCode: { first: kABOperationNotPermittedByStoreError, suffix: Error }
@@ -29,7 +28,7 @@ enums:
     ABPersonSortOrdering: { first: kABPersonSortByFirstName, marshaler: ValuedEnum.AsMachineSizedUIntMarshaler }
     ABPersonCompositeNameFormat: { first: kABPersonCompositeNameFormatFirstNameFirst, marshaler: ValuedEnum.AsMachineSizedUIntMarshaler }
     ABPersonImageFormat: { first: kABPersonImageFormatThumbnail }
-    ABSourceType: { first: kABSourceTypeLocal }
+    ABSourceType: { first: kABSourceTypeLocal, bits: true, skip_none: true }
     
 classes:
     ABAddressBookError:

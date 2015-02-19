@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 Trillian Mobile AB
+ * Copyright (C) 2013-2015 Trillian Mobile AB
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.robovm.apple.gamecontroller;
+package org.robovm.apple.audiotoolbox;
 
 /*<imports>*/
 import java.io.*;
@@ -27,15 +27,29 @@ import org.robovm.rt.bro.*;
 import org.robovm.rt.bro.annotation.*;
 import org.robovm.rt.bro.ptr.*;
 import org.robovm.apple.foundation.*;
+import org.robovm.apple.corefoundation.*;
+import org.robovm.apple.coregraphics.*;
+import org.robovm.apple.opengles.*;
+import org.robovm.apple.coreaudio.*;
+import org.robovm.apple.coremedia.*;
 /*</imports>*/
 
 /*<javadoc>*/
 
 /*</javadoc>*/
 /*<annotations>*//*</annotations>*/
-public enum /*<name>*/GCControllerPlayerIndex/*</name>*/ implements ValuedEnum {
+public enum /*<name>*/MusicPlayerError/*</name>*/ implements ValuedEnum {
     /*<values>*/
-    Unset(-1L);
+    InvalidSequenceType(-10846L),
+    TrackIndexError(-10859L),
+    TrackNotFound(-10858L),
+    EndOfTrack(-10857L),
+    StartOfTrack(-10856L),
+    IllegalTrackDestination(-10855L),
+    NoSequence(-10854L),
+    InvalidEventType(-10853L),
+    InvalidPlayerState(-10852L),
+    CannotDoInCurrentContext(-10863L);
     /*</values>*/
 
     /*<bind>*/
@@ -45,15 +59,15 @@ public enum /*<name>*/GCControllerPlayerIndex/*</name>*/ implements ValuedEnum {
 
     private final long n;
 
-    private /*<name>*/GCControllerPlayerIndex/*</name>*/(long n) { this.n = n; }
+    private /*<name>*/MusicPlayerError/*</name>*/(long n) { this.n = n; }
     public long value() { return n; }
-    public static /*<name>*/GCControllerPlayerIndex/*</name>*/ valueOf(long n) {
-        for (/*<name>*/GCControllerPlayerIndex/*</name>*/ v : values()) {
+    public static /*<name>*/MusicPlayerError/*</name>*/ valueOf(long n) {
+        for (/*<name>*/MusicPlayerError/*</name>*/ v : values()) {
             if (v.n == n) {
                 return v;
             }
         }
         throw new IllegalArgumentException("No constant with value " + n + " found in " 
-            + /*<name>*/GCControllerPlayerIndex/*</name>*/.class.getName());
+            + /*<name>*/MusicPlayerError/*</name>*/.class.getName());
     }
 }

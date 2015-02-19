@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 Trillian Mobile AB
+ * Copyright (C) 2013-2015 Trillian Mobile AB
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -38,10 +38,10 @@ import org.robovm.apple.foundation.*;
 /*<annotations>*/@Marshaler(ValuedEnum.AsMachineSizedSIntMarshaler.class)/*</annotations>*/
 public enum /*<name>*/NEVPNErrorCode/*</name>*/ implements NSErrorCode {
     /*<values>*/
-    figurationInvalid(1L),
-    figurationDisabled(2L),
-    nectionFailed(3L),
-    figurationStale(4L);
+    ConfigurationInvalid(1L),
+    ConfigurationDisabled(2L),
+    ConnectionFailed(3L),
+    ConfigurationStale(4L);
     /*</values>*/
 
     /*<bind>*/

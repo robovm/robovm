@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 Trillian Mobile AB
+ * Copyright (C) 2013-2015 Trillian Mobile AB
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -34,13 +34,13 @@ import org.robovm.apple.uikit.*;
 /*<javadoc>*/
 
 /*</javadoc>*/
-/*<annotations>*//*</annotations>*/
+/*<annotations>*/@Marshaler(ValuedEnum.AsMachineSizedUIntMarshaler.class)/*</annotations>*/
 public enum /*<name>*/CGRectEdge/*</name>*/ implements ValuedEnum {
     /*<values>*/
-    MinXEdge(0L),
-    MinYEdge(1L),
-    MaxXEdge(2L),
-    MaxYEdge(3L);
+    MinX(0L),
+    MinY(1L),
+    MaxX(2L),
+    MaxY(3L);
     /*</values>*/
 
     private final long n;

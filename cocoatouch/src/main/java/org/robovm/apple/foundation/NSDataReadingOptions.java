@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 Trillian Mobile AB
+ * Copyright (C) 2013-2015 Trillian Mobile AB
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -43,15 +43,12 @@ import org.robovm.apple.dispatch.*;
 public final class /*<name>*/NSDataReadingOptions/*</name>*/ extends Bits</*<name>*/NSDataReadingOptions/*</name>*/> {
     /*<values>*/
     public static final NSDataReadingOptions None = new NSDataReadingOptions(0L);
-    public static final NSDataReadingOptions DataReadingMappedIfSafe = new NSDataReadingOptions(1L);
-    public static final NSDataReadingOptions DataReadingUncached = new NSDataReadingOptions(2L);
+    public static final NSDataReadingOptions MappedIfSafe = new NSDataReadingOptions(1L);
+    public static final NSDataReadingOptions Uncached = new NSDataReadingOptions(2L);
     /**
      * @since Available in iOS 5.0 and later.
      */
-    public static final NSDataReadingOptions DataReadingMappedAlways = new NSDataReadingOptions(8L);
-    public static final NSDataReadingOptions DataReadingMapped = new NSDataReadingOptions(1L);
-    public static final NSDataReadingOptions MappedRead = new NSDataReadingOptions(1L);
-    public static final NSDataReadingOptions UncachedRead = new NSDataReadingOptions(2L);
+    public static final NSDataReadingOptions MappedAlways = new NSDataReadingOptions(8L);
     /*</values>*/
 
     private static final /*<name>*/NSDataReadingOptions/*</name>*/[] values = _values(/*<name>*/NSDataReadingOptions/*</name>*/.class);

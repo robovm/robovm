@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 Trillian Mobile AB
+ * Copyright (C) 2013-2015 Trillian Mobile AB
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -119,12 +119,12 @@ import org.robovm.apple.coremedia.*;
      * @since Available in iOS 5.0 and later.
      */
     @Bridge(symbol="MusicSequenceFileCreate", optional=true)
-    public native int fileCreate(CFURL inFileRef, int inFileType, int inFlags, short inResolution);
+    public native int fileCreate(CFURL inFileRef, int inFileType, MusicSequenceFileFlags inFlags, short inResolution);
     /**
      * @since Available in iOS 5.0 and later.
      */
     @Bridge(symbol="MusicSequenceFileCreateData", optional=true)
-    public native int fileCreateData(int inFileType, int inFlags, short inResolution, CFData.CFDataPtr outData);
+    public native int fileCreateData(int inFileType, MusicSequenceFileFlags inFlags, short inResolution, CFData.CFDataPtr outData);
     /**
      * @since Available in iOS 5.0 and later.
      */

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 Trillian Mobile AB
+ * Copyright (C) 2013-2015 Trillian Mobile AB
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -44,7 +44,7 @@ import org.robovm.apple.corefoundation.*;
     /*<constants>*//*</constants>*/
     /*<constructors>*/
     public AudioChannelDescription() {}
-    public AudioChannelDescription(AudioChannelLabel mChannelLabel, AudioChannelFlag mChannelFlags, FloatBuffer mCoordinates) {
+    public AudioChannelDescription(AudioChannelLabel mChannelLabel, AudioChannelFlags mChannelFlags, FloatBuffer mCoordinates) {
         this.setMChannelLabel(mChannelLabel);
         this.setMChannelFlags(mChannelFlags);
         this.setMCoordinates(mCoordinates);
@@ -54,8 +54,8 @@ import org.robovm.apple.corefoundation.*;
     /*<members>*/
     @StructMember(0) public native AudioChannelLabel getMChannelLabel();
     @StructMember(0) public native AudioChannelDescription setMChannelLabel(AudioChannelLabel mChannelLabel);
-    @StructMember(1) public native AudioChannelFlag getMChannelFlags();
-    @StructMember(1) public native AudioChannelDescription setMChannelFlags(AudioChannelFlag mChannelFlags);
+    @StructMember(1) public native AudioChannelFlags getMChannelFlags();
+    @StructMember(1) public native AudioChannelDescription setMChannelFlags(AudioChannelFlags mChannelFlags);
     @StructMember(2) public native @Array({3}) FloatBuffer getMCoordinates();
     @StructMember(2) public native AudioChannelDescription setMCoordinates(@Array({3}) FloatBuffer mCoordinates);
     /*</members>*/

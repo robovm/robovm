@@ -16,9 +16,6 @@ enums:
     CLRegionState: {}
 
 classes:
-    CoreLocation:
-        annotations: ['@Marshaler(NSString.AsStringMarshaler.class)']
-
     CLError:
         extends: NSError
 

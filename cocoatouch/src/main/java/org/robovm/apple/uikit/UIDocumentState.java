@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 Trillian Mobile AB
+ * Copyright (C) 2013-2015 Trillian Mobile AB
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -41,7 +41,6 @@ import org.robovm.apple.corelocation.*;
 /*<annotations>*/@Marshaler(Bits.AsMachineSizedIntMarshaler.class)/*</annotations>*/
 public final class /*<name>*/UIDocumentState/*</name>*/ extends Bits</*<name>*/UIDocumentState/*</name>*/> {
     /*<values>*/
-    public static final UIDocumentState None = new UIDocumentState(0L);
     public static final UIDocumentState Normal = new UIDocumentState(0L);
     public static final UIDocumentState Closed = new UIDocumentState(1L);
     public static final UIDocumentState InConflict = new UIDocumentState(2L);

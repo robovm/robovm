@@ -23,8 +23,7 @@ enums:
     NSStatusOnlyResultType: {}
     NSUpdatedObjectIDsResultType: {}
     NSUpdatedObjectsCountResultType: {}
-    
-    # Don't know what to do with this one
+
     Ignored: {first: NSFetchRequestExpressionType, exclude: true}
 classes:
     NSSQLiteError:

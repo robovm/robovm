@@ -13,7 +13,7 @@ typedefs:
     'void (^)(CMSampleBufferRef, AVCaptureBracketedStillImageSettings *, NSError *)': '@Block VoidBlock3<CMSampleBuffer, AVCaptureBracketedStillImageSettings, NSError>'
     
 enums:
-    AVAssetReferenceRestrictions: { first: AVAssetReferenceRestrictionForbidNone, marshaler: ValuedEnum.AsMachineSizedUIntMarshaler }
+    AVAssetReferenceRestrictions: { first: AVAssetReferenceRestrictionForbidNone }
     AVAssetExportSessionStatus: { first: AVAssetExportSessionStatusUnknown }
     AVAssetImageGeneratorResult: { first: AVAssetImageGeneratorSucceeded }
     AVAssetReaderStatus: { first: AVAssetReaderStatusUnknown }
@@ -22,16 +22,16 @@ enums:
     AVAudioCommonFormat: { suffix: Format }
     AVAudioEnvironmentDistanceAttenuationModel: {}
     AVAudioPlayerNodeBufferOptions: {}
-    AVAudioSessionInterruptionOptions: { prefix: AVAudioSessionInterruptionOption, marshaler: ValuedEnum.AsMachineSizedUIntMarshaler }
-    AVAudioSessionSetActiveOptions: { prefix: AVAudioSessionSetActiveOption, marshaler: ValuedEnum.AsMachineSizedUIntMarshaler }
+    AVAudioSessionInterruptionOptions: { prefix: AVAudioSessionInterruptionOption }
+    AVAudioSessionSetActiveOptions: { prefix: AVAudioSessionSetActiveOption }
     AVAudioSessionPortOverride: { marshaler: ValuedEnum.AsMachineSizedUIntMarshaler }
     AVAudioSessionRouteChangeReason: { marshaler: ValuedEnum.AsMachineSizedUIntMarshaler }
-    AVAudioSessionCategoryOptions: { marshaler: ValuedEnum.AsMachineSizedUIntMarshaler }
+    AVAudioSessionCategoryOptions: {}
     AVAudioSessionInterruptionType: { marshaler: ValuedEnum.AsMachineSizedUIntMarshaler }
-    AVAudioSessionErrorCode: {}
-    AVAudioSessionInterruptionFlag: { first: AVAudioSessionInterruptionFlags_ShouldResume, prefix: AVAudioSessionInterruptionFlags_, bits: true, marshaler: Bits.AsMachineSizedIntMarshaler }
+    AVAudioSessionErrorCode: { prefix: AVAudioSessionErrorCode, AVAudioSessionErrorInsufficientPriority: InsufficientPriority }
+    AVAudioSessionInterruptionFlags: { first: AVAudioSessionInterruptionFlags_ShouldResume, prefix: AVAudioSessionInterruptionFlags_, bits: true, marshaler: Bits.AsMachineSizedIntMarshaler }
     AVAudioSessionRecordPermission: {}
-    AVAudioSessionSetActiveFlag: { first: AVAudioSessionSetActiveFlags_NotifyOthersOnDeactivation, prefix: AVAudioSessionSetActiveFlags_, bits: true, marshaler: Bits.AsMachineSizedIntMarshaler }
+    AVAudioSessionSetActiveFlags: { first: AVAudioSessionSetActiveFlags_NotifyOthersOnDeactivation, prefix: AVAudioSessionSetActiveFlags_, bits: true, marshaler: Bits.AsMachineSizedIntMarshaler }
     AVAudioSessionSilenceSecondaryAudioHintType: {}
     AVAudioQuality: { first: AVAudioQualityMin }
     AVAudioUnitReverbPreset: {}
@@ -2011,7 +2011,7 @@ protocols:
                 name: endInterruption
                 parameters:
                     flags:
-                        type: AVAudioSessionInterruptionFlag
+                        type: AVAudioSessionInterruptionFlags
             '-inputIsAvailableChanged:':
                 name: inputAvailabilityChanged
     AVCaptureAudioDataOutputSampleBufferDelegate: # DONE

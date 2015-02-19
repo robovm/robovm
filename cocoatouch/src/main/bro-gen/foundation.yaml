@@ -83,9 +83,9 @@ enums:
     NSCompoundPredicateType: { suffix: PredicateType }
     NSDataBase64DecodingOptions: { prefix: NSDataBase64Decoding }
     NSDataBase64EncodingOptions: {}
-    NSDataReadingOptions: {}
+    NSDataReadingOptions: { prefix: NSDataReading, ignore: '^(NSDataReadingMapped|NSMappedRead|NSUncachedRead)$'}
     NSDataSearchOptions: {}
-    NSDataWritingOptions: {}
+    NSDataWritingOptions: { prefix: NSDataWriting, ignore: NSAtomicWrite }
     NSDateComponentsFormatterUnitsStyle: {}
     NSDateComponentsFormatterZeroFormattingBehavior: {}
     NSDateFormatterBehavior: {}

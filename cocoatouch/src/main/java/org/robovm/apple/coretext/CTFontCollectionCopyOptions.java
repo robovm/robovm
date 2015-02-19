@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 Trillian Mobile AB
+ * Copyright (C) 2013-2015 Trillian Mobile AB
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -37,7 +37,6 @@ import org.robovm.apple.coregraphics.*;
 /*<annotations>*/@Marshaler(Bits.AsMachineSizedIntMarshaler.class)/*</annotations>*/
 public final class /*<name>*/CTFontCollectionCopyOptions/*</name>*/ extends Bits</*<name>*/CTFontCollectionCopyOptions/*</name>*/> {
     /*<values>*/
-    public static final CTFontCollectionCopyOptions None = new CTFontCollectionCopyOptions(0L);
     public static final CTFontCollectionCopyOptions DefaultOptions = new CTFontCollectionCopyOptions(0L);
     public static final CTFontCollectionCopyOptions Unique = new CTFontCollectionCopyOptions(1L);
     public static final CTFontCollectionCopyOptions StandardSort = new CTFontCollectionCopyOptions(2L);

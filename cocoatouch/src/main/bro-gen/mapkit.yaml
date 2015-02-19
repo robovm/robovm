@@ -11,7 +11,7 @@ typedefs:
     
 enums:
     MKAnnotationViewDragState: { marshaler: ValuedEnum.AsMachineSizedUIntMarshaler }
-    MKDirectionsTransportType: { marshaler: ValuedEnum.AsMachineSizedUIntMarshaler }
+    MKDirectionsTransportType: { }
     MKDistanceFormatterUnits: { marshaler: ValuedEnum.AsMachineSizedUIntMarshaler }
     MKDistanceFormatterUnitStyle: { marshaler: ValuedEnum.AsMachineSizedUIntMarshaler }
     MKUserTrackingMode: {}

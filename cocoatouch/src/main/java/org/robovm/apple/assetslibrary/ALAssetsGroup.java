@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 Trillian Mobile AB
+ * Copyright (C) 2013-2015 Trillian Mobile AB
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -68,7 +68,7 @@ import org.robovm.apple.imageio.*;
     public ALAssetsGroupType getType() {
         NSNumber val = (NSNumber)getValue(ALAssetsGroupProperty.Type);
         if (val != null) {
-            return ALAssetsGroupType.valueOf(val.longValue());
+            return new ALAssetsGroupType(val.longValue());
         }
         return null;
     }

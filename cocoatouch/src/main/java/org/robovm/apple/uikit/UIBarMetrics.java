@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 Trillian Mobile AB
+ * Copyright (C) 2013-2015 Trillian Mobile AB
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -44,19 +44,7 @@ public enum /*<name>*/UIBarMetrics/*</name>*/ implements ValuedEnum {
     Default(0L),
     Compact(1L),
     DefaultPrompt(101L),
-    CompactPrompt(102L),
-    /**
-     * @since Available in iOS 5.0 and later.
-     * @deprecated Deprecated in iOS 8.0.
-     */
-    @Deprecated
-    LandscapePhone(1L),
-    /**
-     * @since Available in iOS 7.0 and later.
-     * @deprecated Deprecated in iOS 8.0.
-     */
-    @Deprecated
-    LandscapePhonePrompt(102L);
+    CompactPrompt(102L);
     /*</values>*/
 
     private final long n;

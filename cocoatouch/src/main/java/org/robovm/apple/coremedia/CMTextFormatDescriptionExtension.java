@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2015 Trillian Mobile AB
+ * Copyright (C) 2013-2015 Trillian Mobile AB
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -115,17 +115,17 @@ import org.robovm.apple.audiotoolbox.*;
     /**
      * @since Available in iOS 4.0 and later.
      */
-    public CMTextDisplayFlag getDisplayFlags() {
+    public CMTextDisplayFlags getDisplayFlags() {
         if (has(Keys.DisplayFlags())) {
             CFNumber val = get(Keys.DisplayFlags(), CFNumber.class);
-            return new CMTextDisplayFlag(val.longValue());
+            return new CMTextDisplayFlags(val.longValue());
         }
         return null;
     }
     /**
      * @since Available in iOS 4.0 and later.
      */
-    public CMTextFormatDescriptionExtension setDisplayFlags(CMTextDisplayFlag displayFlags) {
+    public CMTextFormatDescriptionExtension setDisplayFlags(CMTextDisplayFlags displayFlags) {
         set(Keys.DisplayFlags(), CFNumber.valueOf(displayFlags.value()));
         return this;
     }

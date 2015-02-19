@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 Trillian Mobile AB
+ * Copyright (C) 2013-2015 Trillian Mobile AB
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -36,7 +36,7 @@ import org.robovm.apple.coregraphics.*;
 @Marshaler(MPMediaEntityProperty.Marshaler.class)
 /*<annotations>*/@Library("MediaPlayer")/*</annotations>*/
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/MPMediaEntityProperty/*</name>*/ 
-    extends /*<extends>*/Object/*</extends>*/ 
+    extends /*<extends>*/CocoaUtility/*</extends>*/ 
     /*<implements>*//*</implements>*/ {
     
     public static class Marshaler {

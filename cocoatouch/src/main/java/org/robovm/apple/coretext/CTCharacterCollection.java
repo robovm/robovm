@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 Trillian Mobile AB
+ * Copyright (C) 2013-2015 Trillian Mobile AB
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -37,18 +37,12 @@ import org.robovm.apple.coregraphics.*;
 /*<annotations>*/@Marshaler(ValuedEnum.AsUnsignedShortMarshaler.class)/*</annotations>*/
 public enum /*<name>*/CTCharacterCollection/*</name>*/ implements ValuedEnum {
     /*<values>*/
-    CharacterCollectionIdentityMapping(0L),
-    CharacterCollectionAdobeCNS1(1L),
-    CharacterCollectionAdobeGB1(2L),
-    CharacterCollectionAdobeJapan1(3L),
-    CharacterCollectionAdobeJapan2(4L),
-    CharacterCollectionAdobeKorea1(5L),
-    IdentityMappingCharacterCollection(0L),
-    AdobeCNS1CharacterCollection(1L),
-    AdobeGB1CharacterCollection(2L),
-    AdobeJapan1CharacterCollection(3L),
-    AdobeJapan2CharacterCollection(4L),
-    AdobeKorea1CharacterCollection(5L);
+    IdentityMapping(0L),
+    AdobeCNS1(1L),
+    AdobeGB1(2L),
+    AdobeJapan1(3L),
+    AdobeJapan2(4L),
+    AdobeKorea1(5L);
     /*</values>*/
 
     /*<bind>*/

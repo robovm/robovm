@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 Trillian Mobile AB
+ * Copyright (C) 2013-2015 Trillian Mobile AB
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -69,6 +69,9 @@ import org.robovm.apple.dispatch.*;
      * @since Available in iOS 4.0 and later.
      */
     public CLLocationCoordinate2D toCoordinate() { return toCoordinate(this); }
+    /**
+     * @since Available in iOS 4.0 and later.
+     */
     @Bridge(symbol="MKCoordinateForMapPoint", optional=true)
     private static native @ByVal CLLocationCoordinate2D toCoordinate(@ByVal MKMapPoint mapPoint);
     /**

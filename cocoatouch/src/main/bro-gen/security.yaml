@@ -7,11 +7,11 @@ headers:
     - /System/Library/Frameworks/Security.framework/Headers/Security.h
     - /System/Library/Frameworks/Security.framework/Headers/SecureTransport.h
 enums:
-    SSLAuthenticate: { first: kNeverAuthenticate }
+    SSLAuthenticate: { first: kNeverAuthenticate, suffix: Authenticate }
     SSLClientCertificateState: { first: kSSLClientCertNone }
-    SSLConnectionType: { first: kSSLStreamType }
+    SSLConnectionType: { first: kSSLStreamType, suffix: Type }
     SSLProtocol: { first: kSSLProtocolUnknown }
-    SSLProtocolSide: { first: kSSLServerSide }
+    SSLProtocolSide: { first: kSSLServerSide, suffix: Side }
     SSLSessionOption: { first: kSSLSessionOptionBreakOnServerAuth }
     SSLSessionState: { first: kSSLIdle }
     SSLCipherSuite: { first: SSL_NULL_WITH_NULL_NULL }

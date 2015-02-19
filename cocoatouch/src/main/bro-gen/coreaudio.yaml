@@ -11,11 +11,11 @@ enums:
     AudioError: { first: kAudio_UnimplementedError, prefix: kAudio_, suffix: Error }
     AudioFormat: { first: kAudioFormatLinearPCM, prefix: kAudioFormat, marshaler: ValuedEnum.AsMachineSizedUIntMarshaler }
     SMPTETimeType: { first: kSMPTETimeType24, prefix: kSMPTETimeType, marshaler: ValuedEnum.AsMachineSizedUIntMarshaler }
-    SMPTEStateFlags: { first: kSMPTETimeValid, prefix: kSMPTETime, marshaler: ValuedEnum.AsMachineSizedUIntMarshaler }
+    SMPTEStateFlags: { first: kSMPTETimeValid, prefix: kSMPTETime, bits: true }
     AudioChannelLabel: { first: kAudioChannelLabel_Unknown, prefix: kAudioChannelLabel_, marshaler: ValuedEnum.AsMachineSizedUIntMarshaler }
     AudioChannelBit: { first: kAudioChannelBit_Left, prefix: kAudioChannelBit_, bits: true, marshaler: Bits.AsMachineSizedIntMarshaler }
-    AudioChannelFlag: { first: kAudioChannelFlags_AllOff, prefix: kAudioChannelFlags_, bits: true, marshaler: Bits.AsMachineSizedIntMarshaler }
-    AudioChannelLayoutTag: { first: kAudioChannelLayoutTag_UseChannelDescriptions, prefix: kAudioChannelLayoutTag_, marshaler: ValuedEnum.AsMachineSizedUIntMarshaler }
+    AudioChannelFlags: { first: kAudioChannelFlags_AllOff, prefix: kAudioChannelFlags_, bits: true, marshaler: Bits.AsMachineSizedIntMarshaler }
+    AudioChannelLayoutTag: { first: kAudioChannelLayoutTag_UseChannelDescriptions, prefix: kAudioChannelLayoutTag_, bits: true }
     
 classes:
     # Structs:
@@ -36,7 +36,7 @@ classes:
     AudioClassDescription: {}
     AudioChannelDescription:
         mChannelFlags:
-            type: AudioChannelFlag
+            type: AudioChannelFlags
     AudioChannelLayout:
         mChannelBitmap:
             type: AudioChannelBit

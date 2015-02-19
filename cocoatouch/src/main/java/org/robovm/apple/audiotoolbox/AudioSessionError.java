@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 Trillian Mobile AB
+ * Copyright (C) 2013-2015 Trillian Mobile AB
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -40,17 +40,17 @@ import org.robovm.apple.coremedia.*;
 /*<annotations>*/@Marshaler(ValuedEnum.AsMachineSizedUIntMarshaler.class)/*</annotations>*/
 public enum /*<name>*/AudioSessionError/*</name>*/ implements ValuedEnum {
     /*<values>*/
-    ssionNo(0L),
-    ssionNotInitialized(560557673L),
-    ssionAlreadyInitialized(1768843636L),
-    ssionInitialization(1768843583L),
-    ssionUnsupportedProperty(1886681407L),
-    ssionBadPropertySize(561211770L),
-    ssionNotActive(560030580L),
-    rvicesNoHardware(1852794999L),
-    ssionNoCategorySet(1063477620L),
-    ssionIncompatibleCategory(560161140L),
-    ssionUnspecified(2003329396L);
+    No(0L),
+    NotInitialized(560557673L),
+    AlreadyInitialized(1768843636L),
+    Initialization(1768843583L),
+    UnsupportedProperty(1886681407L),
+    BadPropertySize(561211770L),
+    NotActive(560030580L),
+    NoHardware(1852794999L),
+    NoCategorySet(1063477620L),
+    IncompatibleCategory(560161140L),
+    Unspecified(2003329396L);
     /*</values>*/
 
     /*<bind>*/

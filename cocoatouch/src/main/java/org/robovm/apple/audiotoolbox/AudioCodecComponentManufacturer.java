@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 Trillian Mobile AB
+ * Copyright (C) 2013-2015 Trillian Mobile AB
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -37,13 +37,11 @@ import org.robovm.apple.coremedia.*;
 /*<javadoc>*/
 
 /*</javadoc>*/
-/*<annotations>*/@Marshaler(Bits.AsMachineSizedIntMarshaler.class)/*</annotations>*/
-public final class /*<name>*/AudioFileRegionFlag/*</name>*/ extends Bits</*<name>*/AudioFileRegionFlag/*</name>*/> {
+/*<annotations>*//*</annotations>*/
+public enum /*<name>*/AudioCodecComponentManufacturer/*</name>*/ implements ValuedEnum {
     /*<values>*/
-    public static final AudioFileRegionFlag None = new AudioFileRegionFlag(0L);
-    public static final AudioFileRegionFlag LoopEnable = new AudioFileRegionFlag(1L);
-    public static final AudioFileRegionFlag PlayForward = new AudioFileRegionFlag(2L);
-    public static final AudioFileRegionFlag PlayBackward = new AudioFileRegionFlag(4L);
+    Software(1634758764L),
+    Hardware(1634756727L);
     /*</values>*/
 
     /*<bind>*/
@@ -51,17 +49,17 @@ public final class /*<name>*/AudioFileRegionFlag/*</name>*/ extends Bits</*<name
     /*<constants>*//*</constants>*/
     /*<methods>*//*</methods>*/
 
-    private static final /*<name>*/AudioFileRegionFlag/*</name>*/[] values = _values(/*<name>*/AudioFileRegionFlag/*</name>*/.class);
+    private final long n;
 
-    public /*<name>*/AudioFileRegionFlag/*</name>*/(long value) { super(value); }
-    private /*<name>*/AudioFileRegionFlag/*</name>*/(long value, long mask) { super(value, mask); }
-    protected /*<name>*/AudioFileRegionFlag/*</name>*/ wrap(long value, long mask) {
-        return new /*<name>*/AudioFileRegionFlag/*</name>*/(value, mask);
-    }
-    protected /*<name>*/AudioFileRegionFlag/*</name>*/[] _values() {
-        return values;
-    }
-    public static /*<name>*/AudioFileRegionFlag/*</name>*/[] values() {
-        return values.clone();
+    private /*<name>*/AudioCodecComponentManufacturer/*</name>*/(long n) { this.n = n; }
+    public long value() { return n; }
+    public static /*<name>*/AudioCodecComponentManufacturer/*</name>*/ valueOf(long n) {
+        for (/*<name>*/AudioCodecComponentManufacturer/*</name>*/ v : values()) {
+            if (v.n == n) {
+                return v;
+            }
+        }
+        throw new IllegalArgumentException("No constant with value " + n + " found in " 
+            + /*<name>*/AudioCodecComponentManufacturer/*</name>*/.class.getName());
     }
 }

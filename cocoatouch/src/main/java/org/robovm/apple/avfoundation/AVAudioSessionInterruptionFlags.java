@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 Trillian Mobile AB
+ * Copyright (C) 2013-2015 Trillian Mobile AB
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -46,10 +46,10 @@ import org.robovm.apple.mediatoolbox.*;
 @Deprecated
 /*</javadoc>*/
 /*<annotations>*/@Marshaler(Bits.AsMachineSizedIntMarshaler.class)/*</annotations>*/
-public final class /*<name>*/AVAudioSessionSetActiveFlag/*</name>*/ extends Bits</*<name>*/AVAudioSessionSetActiveFlag/*</name>*/> {
+public final class /*<name>*/AVAudioSessionInterruptionFlags/*</name>*/ extends Bits</*<name>*/AVAudioSessionInterruptionFlags/*</name>*/> {
     /*<values>*/
-    public static final AVAudioSessionSetActiveFlag None = new AVAudioSessionSetActiveFlag(0L);
-    public static final AVAudioSessionSetActiveFlag NotifyOthersOnDeactivation = new AVAudioSessionSetActiveFlag(1L);
+    public static final AVAudioSessionInterruptionFlags None = new AVAudioSessionInterruptionFlags(0L);
+    public static final AVAudioSessionInterruptionFlags ShouldResume = new AVAudioSessionInterruptionFlags(1L);
     /*</values>*/
 
     /*<bind>*/
@@ -57,17 +57,17 @@ public final class /*<name>*/AVAudioSessionSetActiveFlag/*</name>*/ extends Bits
     /*<constants>*//*</constants>*/
     /*<methods>*//*</methods>*/
 
-    private static final /*<name>*/AVAudioSessionSetActiveFlag/*</name>*/[] values = _values(/*<name>*/AVAudioSessionSetActiveFlag/*</name>*/.class);
+    private static final /*<name>*/AVAudioSessionInterruptionFlags/*</name>*/[] values = _values(/*<name>*/AVAudioSessionInterruptionFlags/*</name>*/.class);
 
-    public /*<name>*/AVAudioSessionSetActiveFlag/*</name>*/(long value) { super(value); }
-    private /*<name>*/AVAudioSessionSetActiveFlag/*</name>*/(long value, long mask) { super(value, mask); }
-    protected /*<name>*/AVAudioSessionSetActiveFlag/*</name>*/ wrap(long value, long mask) {
-        return new /*<name>*/AVAudioSessionSetActiveFlag/*</name>*/(value, mask);
+    public /*<name>*/AVAudioSessionInterruptionFlags/*</name>*/(long value) { super(value); }
+    private /*<name>*/AVAudioSessionInterruptionFlags/*</name>*/(long value, long mask) { super(value, mask); }
+    protected /*<name>*/AVAudioSessionInterruptionFlags/*</name>*/ wrap(long value, long mask) {
+        return new /*<name>*/AVAudioSessionInterruptionFlags/*</name>*/(value, mask);
     }
-    protected /*<name>*/AVAudioSessionSetActiveFlag/*</name>*/[] _values() {
+    protected /*<name>*/AVAudioSessionInterruptionFlags/*</name>*/[] _values() {
         return values;
     }
-    public static /*<name>*/AVAudioSessionSetActiveFlag/*</name>*/[] values() {
+    public static /*<name>*/AVAudioSessionInterruptionFlags/*</name>*/[] values() {
         return values.clone();
     }
 }

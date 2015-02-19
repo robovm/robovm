@@ -8,7 +8,7 @@ headers:
 typedefs: {}
     
 enums:
-    NEVPNErrorCode: { first: NEVPNErrorConfigurationInvalid }
+    NEVPNErrorCode: { first: NEVPNErrorConfigurationInvalid, prefix: NEVPNError }
     NEVPNStatus: {}
     NEVPNIKEAuthenticationMethod: {}
     NEVPNIKEv2EncryptionAlgorithm: {}

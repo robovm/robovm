@@ -26,7 +26,7 @@ enums:
     CFComparisonResult: {}
     CFDataSearchFlags: {}
     CFDateFormatterStyle: {}
-    CFFileDescriptorCallBackType: {first: kCFFileDescriptorReadCallBack, bits: true, marshaler: Bits.AsMachineSizedIntMarshaler}
+    CFFileDescriptorCallBackType: {first: kCFFileDescriptorReadCallBack, suffix: CallBack, bits: true, marshaler: Bits.AsMachineSizedIntMarshaler}
     CFFileSecurityClearOptions: {}
     CFGregorianUnitFlags: {first: kCFGregorianUnitsYears}
     CFLocaleLanguageDirection: {}
@@ -49,7 +49,7 @@ enums:
     CFStreamErrorDomain: {}
     CFStreamEventType: {}
     CFStreamStatus: {}
-    CFStringBuiltInEncodings: {}
+    CFStringBuiltInEncodings: {type: MachineUInt}
     CFStringCompareFlags: {}
     CFStringEncodings: {}
     CFStringNormalizationForm: {}

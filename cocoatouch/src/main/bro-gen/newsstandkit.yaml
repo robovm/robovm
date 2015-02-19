@@ -13,9 +13,6 @@ enums:
 categories:
     NSURLConnection: {} # DONE
 classes:
-    NewsstandKit:
-        annotations: ['@Marshaler(NSString.AsStringMarshaler.class)']
-
     NKAssetDownload: # DONE
         methods:
             '-downloadWithDelegate:':

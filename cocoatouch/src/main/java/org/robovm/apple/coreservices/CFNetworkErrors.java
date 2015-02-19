@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 Trillian Mobile AB
+ * Copyright (C) 2013-2015 Trillian Mobile AB
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -35,6 +35,7 @@ import org.robovm.apple.corefoundation.*;
 /*</javadoc>*/
 /*<annotations>*//*</annotations>*/
 public enum /*<name>*/CFNetworkErrors/*</name>*/ implements ValuedEnum {
+    No(0L),
     /*<values>*/
     HostErrorHostNotFound(1L),
     HostErrorUnknown(2L),

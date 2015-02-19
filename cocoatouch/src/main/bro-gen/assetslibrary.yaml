@@ -7,10 +7,10 @@ headers:
     - /System/Library/Frameworks/AssetsLibrary.framework/Headers/AssetsLibrary.h
 typedefs: {}
 enums:
-    ALAssetOrientation: {first: ALAssetOrientationUp, marshaler: ValuedEnum.AsMachineSizedSIntMarshaler}
-    ALAssetsGroupType: {first: ALAssetsGroupLibrary, marshaler: ValuedEnum.AsMachineSizedUIntMarshaler}
-    ALAuthorizationStatus: {first: ALAuthorizationStatusNotDetermined, marshaler: ValuedEnum.AsMachineSizedSIntMarshaler}
-    ALAssetsLibraryErrorCode: {first: ALAssetsLibraryUnknownError, suffix: Error, marshaler: ValuedEnum.AsMachineSizedSIntMarshaler}
+    ALAssetOrientation: {first: ALAssetOrientationUp}
+    ALAssetsGroupType: {first: ALAssetsGroupLibrary, bits: true, marshaler: Bits.AsMachineSizedIntMarshaler}
+    ALAuthorizationStatus: {first: ALAuthorizationStatusNotDetermined}
+    ALAssetsLibraryErrorCode: {first: ALAssetsLibraryUnknownError, suffix: Error}
     
 classes:
     ALAssetsLibraryError:

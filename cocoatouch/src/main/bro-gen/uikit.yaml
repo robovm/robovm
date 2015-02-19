@@ -47,7 +47,7 @@ enums:
     UIBackgroundRefreshStatus: {}
     UIBarButtonItemStyle: {}
     UIBarButtonSystemItem: {}
-    UIBarMetrics: {}
+    UIBarMetrics: {ignore: Landscape}
     UIBarPosition: {}
     UIBarStyle: {}
     UIBaselineAdjustment: {}
@@ -61,7 +61,7 @@ enums:
     UIControlContentHorizontalAlignment: {}
     UIControlContentVerticalAlignment: {}
     UIControlEvents: {} # TODO: Extra values?
-    UIControlState: {} # TODO: Extra values?
+    UIControlState: {skip_none: true} # TODO: Extra values?
     UIDataDetectorTypes: {}
     UIDatePickerMode: {}
     UIDeviceBatteryState: {}
@@ -70,7 +70,7 @@ enums:
     UIDocumentMenuOrder: {}
     UIDocumentPickerMode: {}
     UIDocumentSaveOperation: {}
-    UIDocumentState: {}
+    UIDocumentState: {skip_none: true}
     UIEventSubtype: {}
     UIEventType: {}
     UIFontDescriptorSymbolicTraits: {}
@@ -103,7 +103,7 @@ enums:
     UIPageViewControllerTransitionStyle: {}
     UIPopoverArrowDirection: {}
     UIPrintErrorCode: {first: UIPrintingNotAvailableError, suffix: Error, UIPrintingNotAvailableError: PrintingNotAvailableError}
-    UIPrinterJobTypes: {}
+    UIPrinterJobTypes: {skip_none: true}
     UIPrintInfoDuplex: {}
     UIPrintInfoOrientation: {}
     UIPrintInfoOutputType: {}

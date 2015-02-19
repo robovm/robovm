@@ -54,6 +54,7 @@ import org.robovm.compiler.Version;
 import org.robovm.compiler.clazz.Clazz;
 import org.robovm.compiler.clazz.Clazzes;
 import org.robovm.compiler.clazz.Path;
+import org.robovm.compiler.config.tools.Tools;
 import org.robovm.compiler.llvm.DataLayout;
 import org.robovm.compiler.log.Logger;
 import org.robovm.compiler.plugin.CompilerPlugin;
@@ -68,6 +69,7 @@ import org.robovm.compiler.plugin.objc.ObjCProtocolProxyPlugin;
 import org.robovm.compiler.target.ConsoleTarget;
 import org.robovm.compiler.target.Target;
 import org.robovm.compiler.target.ios.IOSTarget;
+import org.robovm.compiler.target.ios.InfoPList;
 import org.robovm.compiler.target.ios.ProvisioningProfile;
 import org.robovm.compiler.target.ios.SigningIdentity;
 import org.simpleframework.xml.Element;
@@ -138,16 +140,20 @@ public class Config {
     
     @Element(required = false)
     private String iosSdkVersion;
-    @Element(required = false)
-    private File iosInfoPList = null;
+    @Element(required = false, name = "iosInfoPList")
+    private File iosInfoPListFile = null;
     @Element(required = false)
     private File iosResourceRulesPList;
     @Element(required = false)
     private File iosEntitlementsPList;
+    
+    @Element(required = false)
+    private Tools tools;
 
     private SigningIdentity iosSignIdentity;
     private ProvisioningProfile iosProvisioningProfile;
     private String iosDeviceType;
+    private InfoPList iosInfoPList;
 
     private boolean iosSkipSigning = false;
     
@@ -430,10 +436,13 @@ public class Config {
         return iosDeviceType;
     }
 
-    public File getIosInfoPList() {
+    public InfoPList getIosInfoPList() {
+        if (iosInfoPList == null && iosInfoPListFile != null) {
+            iosInfoPList = new InfoPList(iosInfoPListFile);
+        }
         return iosInfoPList;
     }
-
+    
     public File getIosResourceRulesPList() {
         return iosResourceRulesPList;
     }
@@ -452,6 +461,10 @@ public class Config {
 
     public boolean isIosSkipSigning() {
         return iosSkipSigning;
+    }
+    
+    public Tools getTools() {
+        return tools;
     }
     
     private static File makeFileRelativeTo(File dir, File f) {
@@ -1227,6 +1240,11 @@ public class Config {
             return this;
         }
         
+        public Builder tools(Tools tools) {
+            config.tools = tools;
+            return this;
+        }
+        
         public Builder iosSdkVersion(String sdkVersion) {
             config.iosSdkVersion = sdkVersion;
             return this;
@@ -1238,7 +1256,7 @@ public class Config {
         }
         
         public Builder iosInfoPList(File infoPList) {
-            config.iosInfoPList = infoPList;
+            config.iosInfoPListFile = infoPList;
             return this;
         }
         

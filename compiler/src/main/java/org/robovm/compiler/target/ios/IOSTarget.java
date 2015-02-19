@@ -684,9 +684,9 @@ public class IOSTarget extends AbstractTarget {
             if (!config.isIosSkipSigning()) {
                 provisioningProfile = config.getIosProvisioningProfile();
                 if (provisioningProfile == null) {
-                    String bundleId = config.getIosInfoPList().getBundleIdentifier();
-                    if (bundleId == null) {
-                        bundleId = "*";
+                    String bundleId = "*";
+                    if (config.getIosInfoPList() != null && config.getIosInfoPList().getBundleIdentifier() != null) {
+                        bundleId = config.getIosInfoPList().getBundleIdentifier();
                     }
                     provisioningProfile = ProvisioningProfile.find(ProvisioningProfile.list(), signIdentity, bundleId);
                 }

@@ -23,7 +23,7 @@ void _rvmHookThreadAttached(Env* env, JavaThread* threadObj, Thread* thread);
 void _rvmHookThreadStarting(Env* env, JavaThread* threadObj, Thread* thread);
 void _rvmHookThreadDetaching(Env* env, JavaThread* threadObj, Thread* thread, Object* throwable);
 void _rvmHookClassLoaded(Env* env, Class* clazz, void* classInfo);
-void _rvmHookExceptionRaised(Env* env, Object* throwable);
+void _rvmHookExceptionRaised(Env* env, Object* throwable, jboolean isCaught);
 jboolean _rvmHookSetupTCPChannel(Options* options);
 jboolean _rvmHookHandshake(Options* options);
 void _rvmHookInstrumented(DebugEnv* debugEnv, jint lineNumber, jint lineNumberOffset, jbyte* bptable, void* pc);
@@ -65,9 +65,9 @@ static inline void rvmHookClassLoaded(Env* env, Class* clazz, void* classInfo) {
         _rvmHookClassLoaded(env, clazz, classInfo);
     }
 }
-static inline void rvmHookExceptionRaised(Env* env, Object* throwable) {
+static inline void rvmHookExceptionRaised(Env* env, Object* throwable, jboolean isCaught) {
     if(env->vm->options->enableHooks) {
-        _rvmHookExceptionRaised(env, throwable);
+        _rvmHookExceptionRaised(env, throwable, isCaught);
     }
 }
 static inline jboolean rvmHookSetupTCPChannel(Options* options) {

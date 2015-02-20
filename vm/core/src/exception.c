@@ -41,7 +41,7 @@ void rvmRaiseException(Env* env, Object* e) {
     while (tc) {
         if (tc->sel != 0 && (tc->sel == CATCH_ALL_SEL || exceptionMatch(env, tc))) {
             rvmRestoreThreadSignalMask(env);
-            rvmHookExceptionRaised(env, e);
+            rvmHookExceptionRaised(env, e, tc->prev? TRUE: FALSE);
             rvmTrycatchJump(tc);
             // unreachable
         }

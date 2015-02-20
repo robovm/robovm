@@ -1229,7 +1229,7 @@ static inline void suspendLoop(DebugEnv* debugEnv) {
     rvmUnlockMutex(&writeMutex);
 }
 
-static void writeStopOrExceptionEvent(Env* env, char event, Object* throwable, CallStack* callStack) {
+static void writeStopOrExceptionEvent(Env* env, char event, Object* throwable, jboolean isCaught, CallStack* callStack) {
     jint index = 0;
     jint length = 0;
     jint classNamesSize = 0;
@@ -1242,7 +1242,7 @@ static void writeStopOrExceptionEvent(Env* env, char event, Object* throwable, C
     rvmLockMutex(&writeMutex);
     ChannelError error = { 0 };
 
-    int payLoadSize = sizeof(jlong) * (event == EVT_EXCEPTION? 3: 2) + sizeof(jint) + length * (sizeof(jlong) * 2 + sizeof(jint) * 2) + classNamesSize;
+    int payLoadSize = sizeof(jlong) * (event == EVT_EXCEPTION? 3: 2) + (event == EVT_EXCEPTION? 1: 0) + sizeof(jint) + length * (sizeof(jlong) * 2 + sizeof(jint) * 2) + classNamesSize;
 
     writeChannelByte(clientSocket, event, &error);
     writeChannelLong(clientSocket, 0, &error);
@@ -1251,6 +1251,7 @@ static void writeStopOrExceptionEvent(Env* env, char event, Object* throwable, C
     writeChannelLong(clientSocket, (jlong)env->currentThread, &error);
     if(event == EVT_EXCEPTION) {
         writeChannelLong(clientSocket, (jlong)throwable, &error);
+        writeChannelByte(clientSocket, isCaught? -1: 0, &error);
     }
     writeChannelInt(clientSocket, length, &error);
     index = 0;
@@ -1289,7 +1290,7 @@ void _rvmHookInstrumented(DebugEnv* debugEnv, jint lineNumber, jint lineNumberOf
             ERRORF("Failed to get a call stack for thread %p due to event %d (pc=%p). Got an exception of type: %s", 
                 env->currentThread, event, pc, ex->clazz->name);
         } else {
-            writeStopOrExceptionEvent(env, event, NULL, callStack);
+            writeStopOrExceptionEvent(env, event, NULL, 0, callStack);
             suspendLoop(debugEnv);
         }
 
@@ -1297,7 +1298,7 @@ void _rvmHookInstrumented(DebugEnv* debugEnv, jint lineNumber, jint lineNumberOf
     }
 }
 
-void _rvmHookExceptionRaised(Env* env, Object* throwable) {
+void _rvmHookExceptionRaised(Env* env, Object* throwable, jboolean isCaught) {
     DebugEnv* debugEnv = (DebugEnv*)env;
 
     // we need to temporarily clear the exception
@@ -1308,8 +1309,6 @@ void _rvmHookExceptionRaised(Env* env, Object* throwable) {
     // report exceptions thrown by it.
     CallStack* callStack = rvmCaptureCallStack(env);
     jint index = 0;
-    jint length = 0;
-    jint classNamesSize = 0;
     CallStackFrame* frame = NULL;
     frame = rvmGetNextCallStackMethod(env, callStack, &index);
     if(frame == NULL) {
@@ -1337,7 +1336,7 @@ void _rvmHookExceptionRaised(Env* env, Object* throwable) {
         ERRORF("Failed to get a call stack for thread %p due to exception event. Got an exception of type: %s",
                 env->currentThread, ex->clazz->name);
     } else {
-        writeStopOrExceptionEvent(env, EVT_EXCEPTION, throwable, callStack);
+        writeStopOrExceptionEvent(env, EVT_EXCEPTION, throwable, isCaught, callStack);
         suspendLoop(debugEnv);
     }
 
@@ -1361,7 +1360,7 @@ void _rvmHookClassLoaded(Env* env, Class* clazz, void* classInfo) {
     }
     rvmUnlockMutex(&classFilterMutex);
 
-    DEBUGF("Loaded class %s, Class*: %p, ClassInfo*: %p, Thread*: %p", clazz->name, clazz, classInfo, thread);
+    // DEBUGF("Loaded class %s, Class*: %p, ClassInfo*: %p, Thread*: %p", clazz->name, clazz, classInfo, thread);
     DebugEnv* debugEnv = (DebugEnv*)env;
     rvmLockMutex(&writeMutex);
     ChannelError error = { 0 };

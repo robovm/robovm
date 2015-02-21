@@ -25,11 +25,14 @@ import java.util.List;
 
 import org.apache.commons.exec.ExecuteException;
 import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.io.IOUtils;
 import org.robovm.compiler.config.Arch;
 import org.robovm.compiler.config.Config;
 import org.robovm.compiler.config.OS;
+import org.robovm.compiler.config.tools.TextureAtlas;
 import org.robovm.compiler.log.Logger;
+import org.robovm.compiler.target.ios.IOSTarget;
 
 /**
  * @author niklas
@@ -42,6 +45,8 @@ public class ToolchainUtil {
     private static String PLUTIL;
     private static String LIPO;
     private static String PACKAGE_APPLICATION;
+    private static String TEXTUREATLAS;
+    private static String ACTOOL;
 
     private static String getIOSDevClang() throws IOException {
         if (IOS_DEV_CLANG == null) {
@@ -62,6 +67,20 @@ public class ToolchainUtil {
             PNGCRUSH = findXcodeCommand("pngcrush", "iphoneos");
         }
         return PNGCRUSH;
+    }
+
+    private static String getTextureAtlas() throws IOException {
+        if (TEXTUREATLAS == null) {
+            TEXTUREATLAS = findXcodeCommand("TextureAtlas", "iphoneos");
+        }
+        return TEXTUREATLAS;
+    }
+    
+    private static String getACTool() throws IOException {
+        if (ACTOOL == null) {
+            ACTOOL = findXcodeCommand("actool", "iphoneos");
+        }
+        return ACTOOL;
     }
 
     private static String getPlutil() throws IOException {
@@ -132,6 +151,78 @@ public class ToolchainUtil {
             .exec();
     }
 
+    public static void textureatlas(Config config, File inDir, File outDir) throws IOException {
+        List<String> opts = new ArrayList<String>();
+        int outputFormat = 1;
+        int maxTextureDimension = 1;
+        
+        if (config.getTools() != null && config.getTools().getTextureAtlas() != null) {
+            TextureAtlas atlasConfig = config.getTools().getTextureAtlas();
+            outputFormat = 1 + atlasConfig.getOutputFormat().ordinal();
+            maxTextureDimension = 1 + atlasConfig.getMaximumTextureDimension().ordinal();
+            
+            if (atlasConfig.usePowerOfTwo()) {
+                opts.add("-p");
+            }
+        }
+        
+        new Executor(config.getLogger(), getTextureAtlas())
+            .args(opts, "-f", outputFormat, "-s", maxTextureDimension, inDir, outDir)
+            .exec();
+    }
+    
+    public static void actool(Config config, File inDir, File outDir) throws IOException {
+        List<Object> opts = new ArrayList<>();
+
+        String appIconSetName = null;
+        String launchImagesName = null;
+        
+        final String appiconset = "appiconset";
+        final String launchimage = "launchimage";
+        
+        for (String fileName : inDir.list()) {
+            String ext = FilenameUtils.getExtension(fileName);
+            if (ext.equals(appiconset)) {
+                appIconSetName = FilenameUtils.getBaseName(fileName);
+            } else if (ext.equals(launchimage)) {
+                launchImagesName = FilenameUtils.getBaseName(fileName);
+            }
+        }
+        if (appIconSetName != null || launchImagesName != null) {
+            if (appIconSetName != null) {
+                opts.add("--app-icon");
+                opts.add(appIconSetName);
+            }
+            if (launchImagesName != null) {
+                opts.add("--launch-image");
+                opts.add(launchImagesName);
+            }
+
+            File partialInfoPlist = new File(inDir, "assetcatalog-partial-info.plist");
+            opts.add("--output-partial-info-plist");
+            opts.add(partialInfoPlist);
+        }
+        
+        opts.add("--platform");
+        if (IOSTarget.isDeviceArch(config.getArch())) {
+            opts.add("iphoneos");
+        } else if (IOSTarget.isSimulatorArch(config.getArch())) {
+            opts.add("iphonesimulator");
+        }
+        
+        String minOSVersion = config.getOs().getMinVersion();
+        if (config.getIosInfoPList() != null) {
+            String v = config.getIosInfoPList().getMinimumOSVersion();
+            if (v != null) {
+                minOSVersion = v;
+            }
+        }
+        
+        new Executor(config.getLogger(), getACTool())
+            .args(inDir, opts, "--output-format", "human-readable-text", 
+                    "--minimum-deployment-target", minOSVersion, "--compile", outDir).exec();
+    }
+    
     public static void compileStrings(Config config, File inFile, File outFile) throws IOException {
         new Executor(config.getLogger(), getPlutil())
             .args("-convert", "binary1", inFile, "-o", outFile)

@@ -153,6 +153,22 @@ public class ResourceTest {
                 walker.paths);
     }
     
+    @Test
+    public void testCustomProcessDir() throws Exception {
+        File f = createDirStructure("src/bar/test1.txt", "src/foo/test2.txt", "src/woo/test3.txt");
+        Resource res = new Resource(new File(f, "src"), null);
+        TestWalker w = new TestWalker() {
+            @Override
+            public boolean processDir(Resource resource, File dir, File destDir) throws IOException {
+                return !dir.getName().equals("woo");
+            }
+        };
+        res.walk(w, new File("/dest"));
+        assertEquals(
+                Arrays.asList("/dest/bar/test1.txt", "/dest/foo/test2.txt"), 
+                w.paths);
+    }
+    
     private File createDirStructure(String ... files) throws IOException {
         File root = File.createTempFile(ResourceTest.class.getName(), ".tmp");
         root.delete();
@@ -170,7 +186,12 @@ public class ResourceTest {
         List<String> paths = new ArrayList<String>();
         
         @Override
-        public void process(Resource resource, File file, File destDir)
+        public boolean processDir(Resource resource, File dir, File destDir) throws IOException {
+            return true;
+        }
+        
+        @Override
+        public void processFile(Resource resource, File file, File destDir)
                 throws IOException {
             
             paths.add(new File(destDir, file.getName()).getAbsolutePath());

@@ -125,10 +125,18 @@ public class Resource {
      */
     public interface Walker {
         /**
-         * Processes the specified file. This typically copies the file to the destination directory
-         * possibly renaming/transforming the file in some way in the process.
+         * Processes the specified folder. This typically does nothing but 
+         * return {@code true} to signal that the files in the folder should be
+         * processed using {@link #processFile(Resource, File, File)}.
          */
-        void process(Resource resource, File file, File destDir) throws IOException;
+        boolean processDir(Resource resource, File dir, File destDir) throws IOException;
+        
+        /**
+         * Processes the specified file. This typically copies the file to the
+         * destination directory possibly renaming/transforming the file in some
+         * way in the process.
+         */
+        void processFile(Resource resource, File file, File destDir) throws IOException;
     }
     
     private static final AntPathMatcher MATCH_ALL_MATCHER = new AntPathMatcher("**/*");
@@ -415,8 +423,8 @@ public class Resource {
         // Always descend into directories unless explicitly excluded.
         if ((f.isDirectory() || matches(path, inc)) && !matches(path, exc)) {
             if (f.isFile()) {
-                walker.process(this, f, destDir);
-            } else if (f.isDirectory()) {
+                walker.processFile(this, f, destDir);
+            } else if (f.isDirectory() && walker.processDir(this, f, destDir)) {
                 File newDestDir = destDir;
                 if (!isFlatten()) {
                     newDestDir = new File(destDir, f.getName());

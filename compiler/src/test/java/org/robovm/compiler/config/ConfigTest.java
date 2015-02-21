@@ -143,7 +143,7 @@ public class ConfigTest {
         builder.read(new InputStreamReader(getClass().getResourceAsStream("ConfigTest.ios.xml"), "utf-8"), wd);
         Config config = builder.config;
         assertEquals("6.1", config.getIosSdkVersion());
-        assertEquals(new File(wd, "Info.plist"), config.getIosInfoPList());
+        assertEquals(new File(wd, "Info.plist"), config.getIosInfoPList().getFile());
         assertEquals(new File(wd, "entitlements.plist"), config.getIosEntitlementsPList());
         assertEquals(new File(tmp, "resourcerules.plist"), config.getIosResourceRulesPList());
     }

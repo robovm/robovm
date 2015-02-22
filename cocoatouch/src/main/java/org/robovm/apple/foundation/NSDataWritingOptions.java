@@ -67,7 +67,7 @@ public final class /*<name>*/NSDataWritingOptions/*</name>*/ extends Bits</*<nam
     /**
      * @since Available in iOS 4.0 and later.
      */
-    public static final NSDataWritingOptions FileProtectionMask = new NSDataWritingOptions(-268435456L);
+    public static final NSDataWritingOptions FileProtectionMask = new NSDataWritingOptions(4026531840L);
     /*</values>*/
 
     private static final /*<name>*/NSDataWritingOptions/*</name>*/[] values = _values(/*<name>*/NSDataWritingOptions/*</name>*/.class);

@@ -46,7 +46,7 @@ public final class /*<name>*/UIControlState/*</name>*/ extends Bits</*<name>*/UI
     public static final UIControlState Disabled = new UIControlState(2L);
     public static final UIControlState Selected = new UIControlState(4L);
     public static final UIControlState Application = new UIControlState(16711680L);
-    public static final UIControlState Reserved = new UIControlState(-16777216L);
+    public static final UIControlState Reserved = new UIControlState(4278190080L);
     /*</values>*/
 
     private static final /*<name>*/UIControlState/*</name>*/[] values = _values(/*<name>*/UIControlState/*</name>*/.class);

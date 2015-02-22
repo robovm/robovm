@@ -46,7 +46,7 @@ public final class /*<name>*/UICollisionBehaviorMode/*</name>*/ extends Bits</*<
     public static final UICollisionBehaviorMode None = new UICollisionBehaviorMode(0L);
     public static final UICollisionBehaviorMode Items = new UICollisionBehaviorMode(1L);
     public static final UICollisionBehaviorMode Boundaries = new UICollisionBehaviorMode(2L);
-    public static final UICollisionBehaviorMode Everything = new UICollisionBehaviorMode(-1L);
+    public static final UICollisionBehaviorMode Everything = new UICollisionBehaviorMode(Bro.IS_32BIT ? 0xffffffffL : 0xffffffffffffffffL);
     /*</values>*/
 
     private static final /*<name>*/UICollisionBehaviorMode/*</name>*/[] values = _values(/*<name>*/UICollisionBehaviorMode/*</name>*/.class);

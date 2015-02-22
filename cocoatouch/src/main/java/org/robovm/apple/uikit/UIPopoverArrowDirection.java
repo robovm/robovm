@@ -47,7 +47,7 @@ public final class /*<name>*/UIPopoverArrowDirection/*</name>*/ extends Bits</*<
     public static final UIPopoverArrowDirection Left = new UIPopoverArrowDirection(4L);
     public static final UIPopoverArrowDirection Right = new UIPopoverArrowDirection(8L);
     public static final UIPopoverArrowDirection Any = new UIPopoverArrowDirection(15L);
-    public static final UIPopoverArrowDirection Unknown = new UIPopoverArrowDirection(-1L);
+    public static final UIPopoverArrowDirection Unknown = new UIPopoverArrowDirection(Bro.IS_32BIT ? 0xffffffffL : 0xffffffffffffffffL);
     /*</values>*/
 
     private static final /*<name>*/UIPopoverArrowDirection/*</name>*/[] values = _values(/*<name>*/UIPopoverArrowDirection/*</name>*/.class);

@@ -647,8 +647,28 @@ public class IOSTarget extends AbstractTarget {
         
         customizeInfoPList(dict);
 
+        /*
+         * Make sure CFBundleShortVersionString and CFBundleVersion are at the
+         * top of the Info.plist file to avoid the "Could not hardlink copy"
+         * problem when launching on the simulator. com.dd.plist maintains the
+         * insertion order of keys so we rebuild the dictionary here and make
+         * sure those two keys are inserted first. See #771.
+         */
+        NSDictionary newDict = new NSDictionary();
+        if (dict.objectForKey("CFBundleShortVersionString") != null) {
+            newDict.put("CFBundleShortVersionString", dict.objectForKey("CFBundleShortVersionString"));
+            dict.remove("CFBundleShortVersionString");
+        }
+        if (dict.objectForKey("CFBundleVersion") != null) {
+            newDict.put("CFBundleVersion", dict.objectForKey("CFBundleVersion"));
+            dict.remove("CFBundleVersion");
+        }
+        for (String key : dict.allKeys()) {
+            newDict.put(key, dict.objectForKey(key));
+        }
+        
         File tmpInfoPlist = new File(config.getTmpDir(), "Info.plist");
-        PropertyListParser.saveAsBinary(dict, tmpInfoPlist);
+        PropertyListParser.saveAsBinary(newDict, tmpInfoPlist);
         
         config.getLogger().debug("Installing Info.plist to %s", dir);
         FileUtils.copyFile(tmpInfoPlist, new File(dir, tmpInfoPlist.getName()));

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2014 Trillian Mobile AB
+ * Copyright (C) 2013-2015 Trillian Mobile AB
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -37,11 +37,11 @@ import org.robovm.apple.audiotoolbox.*;
 
 /*</javadoc>*/
 /*<annotations>*/@Marshaler(Bits.AsMachineSizedIntMarshaler.class)/*</annotations>*/
-public final class /*<name>*/MTAudioProcessingTapFlag/*</name>*/ extends Bits</*<name>*/MTAudioProcessingTapFlag/*</name>*/> {
+public final class /*<name>*/MTAudioProcessingTapCreationFlags/*</name>*/ extends Bits</*<name>*/MTAudioProcessingTapCreationFlags/*</name>*/> {
     /*<values>*/
-    public static final MTAudioProcessingTapFlag None = new MTAudioProcessingTapFlag(0L);
-    public static final MTAudioProcessingTapFlag StartOfStream = new MTAudioProcessingTapFlag(256L);
-    public static final MTAudioProcessingTapFlag EndOfStream = new MTAudioProcessingTapFlag(512L);
+    public static final MTAudioProcessingTapCreationFlags None = new MTAudioProcessingTapCreationFlags(0L);
+    public static final MTAudioProcessingTapCreationFlags reEffects = new MTAudioProcessingTapCreationFlags(1L);
+    public static final MTAudioProcessingTapCreationFlags ostEffects = new MTAudioProcessingTapCreationFlags(2L);
     /*</values>*/
 
     /*<bind>*/
@@ -49,17 +49,17 @@ public final class /*<name>*/MTAudioProcessingTapFlag/*</name>*/ extends Bits</*
     /*<constants>*//*</constants>*/
     /*<methods>*//*</methods>*/
 
-    private static final /*<name>*/MTAudioProcessingTapFlag/*</name>*/[] values = _values(/*<name>*/MTAudioProcessingTapFlag/*</name>*/.class);
+    private static final /*<name>*/MTAudioProcessingTapCreationFlags/*</name>*/[] values = _values(/*<name>*/MTAudioProcessingTapCreationFlags/*</name>*/.class);
 
-    public /*<name>*/MTAudioProcessingTapFlag/*</name>*/(long value) { super(value); }
-    private /*<name>*/MTAudioProcessingTapFlag/*</name>*/(long value, long mask) { super(value, mask); }
-    protected /*<name>*/MTAudioProcessingTapFlag/*</name>*/ wrap(long value, long mask) {
-        return new /*<name>*/MTAudioProcessingTapFlag/*</name>*/(value, mask);
+    public /*<name>*/MTAudioProcessingTapCreationFlags/*</name>*/(long value) { super(value); }
+    private /*<name>*/MTAudioProcessingTapCreationFlags/*</name>*/(long value, long mask) { super(value, mask); }
+    protected /*<name>*/MTAudioProcessingTapCreationFlags/*</name>*/ wrap(long value, long mask) {
+        return new /*<name>*/MTAudioProcessingTapCreationFlags/*</name>*/(value, mask);
     }
-    protected /*<name>*/MTAudioProcessingTapFlag/*</name>*/[] _values() {
+    protected /*<name>*/MTAudioProcessingTapCreationFlags/*</name>*/[] _values() {
         return values;
     }
-    public static /*<name>*/MTAudioProcessingTapFlag/*</name>*/[] values() {
+    public static /*<name>*/MTAudioProcessingTapCreationFlags/*</name>*/[] values() {
         return values.clone();
     }
 }

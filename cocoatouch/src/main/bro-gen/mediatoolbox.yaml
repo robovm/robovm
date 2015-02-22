@@ -6,102 +6,77 @@ clang_args: ['-x', 'objective-c']
 headers:
     - /System/Library/Frameworks/MediaToolbox.framework/Headers/MediaToolbox.h
 typedefs:
-    'MTAudioProcessingTapRef': MTAudioProcessingTap
+    MTAudioProcessingTapRef: MTAudioProcessingTap
 
 enums:
-    MTAudioProcessingTapCreationFlag: { first: kMTAudioProcessingTapCreationFlag_PreEffects, bits: true, marshaler: Bits.AsMachineSizedIntMarshaler }
-    MTAudioProcessingTapFlag: { first: kMTAudioProcessingTapFlag_StartOfStream, bits: true, marshaler: Bits.AsMachineSizedIntMarshaler }
-    
-    
-# typedef void (*MTAudioProcessingTapInitCallback)(
-#		MTAudioProcessingTapRef tap,
-#		void *clientInfo,
-#		void **tapStorageOut);
-
-# typedef void (*MTAudioProcessingTapFinalizeCallback)(MTAudioProcessingTapRef tap);
-    
-# typedef void (*MTAudioProcessingTapPrepareCallback)(
-#		MTAudioProcessingTapRef tap,
-#		CMItemCount maxFrames,
-#		const AudioStreamBasicDescription *processingFormat);
-
-# typedef void (*MTAudioProcessingTapUnprepareCallback)(MTAudioProcessingTapRef tap);
-
-#typedef void (*MTAudioProcessingTapProcessCallback)(
-#		MTAudioProcessingTapRef tap,
-#		CMItemCount numberFrames,
-#		MTAudioProcessingTapFlags flags,
-#		AudioBufferList *bufferListInOut,
-#		CMItemCount *numberFramesOut,
-#		MTAudioProcessingTapFlags *flagsOut);
+    MTAudioProcessingTapCreationFlags: { first: kMTAudioProcessingTapCreationFlag_PreEffects, bits: true, marshaler: Bits.AsMachineSizedIntMarshaler }
+    MTAudioProcessingTapFlags: { first: kMTAudioProcessingTapFlag_StartOfStream, bits: true, marshaler: Bits.AsMachineSizedIntMarshaler }
 
 classes:
-    MediaToolbox:
-        annotations: ['@Marshaler(NSString.AsStringMarshaler.class)']
-
     # Opaque Types
     MTAudioProcessingTap:
         extends: CFType
     opaqueMTAudioProcessingTap:
-        name: "MTAudioProcessingTap"
+        name: MTAudioProcessingTap
         extends: CFType
 
     # Structs
     MTAudioProcessingTapCallbacks:
-        name: "MTAudioProcessingTapCallbacksStruct"
-        finalize:
-            name: "finalizeCbk"
+        name: MTAudioProcessingTapCallbacksStruct
         visibility: ''
+        finalize:
+            name: finalizeCbk
+        clientInfo:
+            type: '@Pointer long'
 
 protocols: {}
 
 functions:
     (MT.*)GetTypeID:
-        class: "#{g[0]}"
+        class: '#{g[0]}'
         name: getClassTypeID
     
     MTAudioProcessingTap(Create):
         class: MTAudioProcessingTap
-        name: "#{g[0]}"
+        name: '#{g[0]}'
         visibility: protected
         parameters:
             flags:
-                type: "MTAudioProcessingTapCreationFlag"
+                type: MTAudioProcessingTapCreationFlags
     MTAudioProcessingTap(GetSourceAudio):
         class: MTAudioProcessingTap
-        name: "#{g[0]}"
+        name: '#{g[0]}'
+        static: true
+        parameters:
+            flagsOut:
+                type: MTAudioProcessingTapFlags.MTAudioProcessingTapFlagsPtr
+            timeRangeOut:
+                type: CMTimeRange.CMTimeRangePtr
+    MTAudioProcessingTap(GetStorage):
+        class: MTAudioProcessingTap
+        name: '#{g[0]}'
+        return_type: '@Pointer long'
         visibility: protected
     MTAudioProcessingTap(.*):
         class: MTAudioProcessingTap
-        name: "#{g[0]}"
+        name: '#{g[0]}'
 
     # Make sure we don't miss any functions if new ones are introduced in a later version
-    (MT.*):
+    (k?MT.*):
         class: MediaToolbox
-        name: "Function__#{g[0]}"
-    (kMT.*):
-        class: MediaToolbox
-        name: "Function__#{g[0]}"
+        name: 'Function__#{g[0]}'
 
 values:
     # Make sure we don't miss any values if new ones are introduced in a later version
-    (MT):
+    (k?MT.*):
         class: MediaToolbox
-        name: "Value__#{g[0]}"
-    (kMT.*):
-        class: MediaToolbox
-        name: "Value__#{g[0]}"
+        name: 'Value__#{g[0]}'
 
 constants:
-    kMTAudioProcessingTap(CallbacksVersion).*:
-        class: MTAudioProcessingTap
-        name: "#{g[0]}"
+    kMTAudioProcessingTapCallbacksVersion.*:
+        exclude: true
       
-    # Make sure we don't miss any constants if new ones are introduced in a later version
-    (MT.*):
+    # Make sure we don't miss any constants if new ones are introduced in a later version        
+    (k?MT.*):
         class: MediaToolbox
-        name: "Constant__#{g[0]}"
-        
-    (kMT.*):
-        class: MediaToolbox
-        name: "Constant__#{g[0]}"
+        name: 'Constant__#{g[0]}'

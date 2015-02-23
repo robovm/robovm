@@ -73,12 +73,18 @@ import org.robovm.apple.coremedia.CMTextMarkupAttributes;
     /*<properties>*//*</properties>*/
     /*<members>*//*</members>*/
     public NSAttributedStringAttributes getAttributes() {
-        return new NSAttributedStringAttributes(getAttributesDictionary());
+        NSDictionary<NSString, NSObject> dict = getAttributesDictionary();
+        if (dict == null) return null;
+        return new NSAttributedStringAttributes(dict);
     }
     public CMTextMarkupAttributes getTextMarkupAttributes() {
+        NSDictionary<NSString, NSObject> dict = getAttributesDictionary();
+        if (dict == null) return null;
         return new CMTextMarkupAttributes(getAttributesDictionary().as(CFDictionary.class));
     }
     public CTAttributedStringAttributes getCoreTextAttributes() {
+        NSDictionary<NSString, NSObject> dict = getAttributesDictionary();
+        if (dict == null) return null;
         return new CTAttributedStringAttributes(getAttributesDictionary().as(CFDictionary.class));
     }
     

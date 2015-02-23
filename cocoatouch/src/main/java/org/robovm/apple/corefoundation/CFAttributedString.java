@@ -19,6 +19,7 @@ package org.robovm.apple.corefoundation;
 import java.io.*;
 import java.nio.*;
 import java.util.*;
+
 import org.robovm.objc.*;
 import org.robovm.objc.annotation.*;
 import org.robovm.objc.block.*;
@@ -55,39 +56,63 @@ import org.robovm.apple.uikit.NSAttributedStringAttributes;
         return create(null, str, attributes);
     }
     public static CFAttributedString create(CFAllocator alloc, String str, NSAttributedStringAttributes attributes) {
-        return create(null, str, attributes.getDictionary().as(CFDictionary.class));
+        if (attributes == null) {
+            return create(alloc, str, (CFDictionary)null);
+        }
+        return create(alloc, str, attributes.getDictionary().as(CFDictionary.class));
     }
     public static CFAttributedString create(String str, CMTextMarkupAttributes attributes) {
         return create(null, str, attributes);
     }
     public static CFAttributedString create(CFAllocator alloc, String str, CMTextMarkupAttributes attributes) {
-        return create(null, str, attributes.getDictionary());
+        if (attributes == null) {
+            return create(alloc, str, (CFDictionary)null);
+        }
+        return create(alloc, str, attributes.getDictionary());
     }
     public static CFAttributedString create(String str, CTAttributedStringAttributes attributes) {
         return create(null, str, attributes);
     }
     public static CFAttributedString create(CFAllocator alloc, String str, CTAttributedStringAttributes attributes) {
-        return create(null, str, attributes.getDictionary());
+        if (attributes == null) {
+            return create(alloc, str, (CFDictionary)null);
+        }
+        return create(alloc, str, attributes.getDictionary());
     }
 
     public CFType getAttribute(long loc, NSAttributedStringAttribute attrName, CFRange effectiveRange) {
+        if (attrName == null) {
+            throw new NullPointerException("attrName");
+        }
         return getAttribute(loc, attrName.value().as(CFString.class), effectiveRange);
     }
     public CFType getAttribute(long loc, CMTextMarkupAttribute attrName, CFRange effectiveRange) {
+        if (attrName == null) {
+            throw new NullPointerException("attrName");
+        }
         return getAttribute(loc, attrName.value(), effectiveRange);
     }
     public CFType getAttribute(long loc, CTAttributedStringAttribute attrName, CFRange effectiveRange) {
+        if (attrName == null) {
+            throw new NullPointerException("attrName");
+        }
         return getAttribute(loc, attrName.value(), effectiveRange);
     }
     
     public NSAttributedStringAttributes getAttributes(long loc, CFRange effectiveRange) {
-        return new NSAttributedStringAttributes(getAttributesDictionary(loc, effectiveRange).as(NSDictionary.class));
+        CFDictionary dict = getAttributesDictionary(loc, effectiveRange);
+        if (dict == null) return null;
+        return new NSAttributedStringAttributes(dict.as(NSDictionary.class));
     }
     public CMTextMarkupAttributes getTextMarkupAttributes(long loc, CFRange effectiveRange) {
-        return new CMTextMarkupAttributes(getAttributesDictionary(loc, effectiveRange));
+        CFDictionary dict = getAttributesDictionary(loc, effectiveRange);
+        if (dict == null) return null;
+        return new CMTextMarkupAttributes(dict);
     }
     public CTAttributedStringAttributes getCoreTextAttributes(long loc, CFRange effectiveRange) {
-        return new CTAttributedStringAttributes(getAttributesDictionary(loc, effectiveRange));
+        CFDictionary dict = getAttributesDictionary(loc, effectiveRange);
+        if (dict == null) return null;
+        return new CTAttributedStringAttributes(null);
     }
     /*<methods>*/
     @Bridge(symbol="CFAttributedStringGetTypeID", optional=true)

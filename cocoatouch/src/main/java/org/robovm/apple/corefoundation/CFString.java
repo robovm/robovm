@@ -243,7 +243,7 @@ import org.robovm.apple.foundation.*;
     @Bridge(symbol="CFStringIsEncodingAvailable", optional=true)
     protected static native boolean isEncodingAvailable(CFStringEncodings encoding);
     @Bridge(symbol="CFStringGetListOfAvailableEncodings", optional=true)
-    protected static native MachineSizedUIntPtr getListOfAvailableEncodings();
+    protected static native IntPtr getListOfAvailableEncodings();
     @Bridge(symbol="CFStringGetNameOfEncoding", optional=true)
     protected static native String getNameOfEncoding(CFStringEncodings encoding);
     @Bridge(symbol="CFStringConvertEncodingToNSStringEncoding", optional=true)

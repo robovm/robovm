@@ -19,6 +19,7 @@ package org.robovm.apple.corefoundation;
 import java.io.*;
 import java.nio.*;
 import java.util.*;
+
 import org.robovm.objc.*;
 import org.robovm.objc.annotation.*;
 import org.robovm.objc.block.*;
@@ -55,21 +56,41 @@ import org.robovm.apple.uikit.NSAttributedStringAttributes;
         return create(null, maxLength);
     }
     public void setAttributes(@ByVal CFRange range, NSAttributedStringAttributes replacement, boolean clearOtherAttributes) {
-        setAttributesDictionary(range, replacement.getDictionary().as(CFDictionary.class), clearOtherAttributes);
+        if (replacement == null) {
+            setAttributesDictionary(range, null, clearOtherAttributes);
+        } else {
+            setAttributesDictionary(range, replacement.getDictionary().as(CFDictionary.class), clearOtherAttributes);
+        }
     }
     public void setAttributes(@ByVal CFRange range, CMTextMarkupAttributes replacement, boolean clearOtherAttributes) {
-        setAttributesDictionary(range, replacement.getDictionary(), clearOtherAttributes);
+        if (replacement == null) {
+            setAttributesDictionary(range, null, clearOtherAttributes);
+        } else {
+            setAttributesDictionary(range, replacement.getDictionary(), clearOtherAttributes);
+        }
     }
     public void setAttribute(@ByVal CFRange range, NSAttributedStringAttribute attribute, CFType value) {
+        if (attribute == null) {
+            throw new NullPointerException("attribute");
+        }
         setAttribute(range, attribute.value().as(CFString.class), value);
     }
     public void setAttribute(@ByVal CFRange range, CMTextMarkupAttribute attribute, CFType value) {
+        if (attribute == null) {
+            throw new NullPointerException("attribute");
+        }
         setAttribute(range, attribute.value(), value);
     }
     public void removeAttribute(@ByVal CFRange range, NSAttributedStringAttribute attribute) {
+        if (attribute == null) {
+            throw new NullPointerException("attribute");
+        }
         removeAttribute(range, attribute.value().as(CFString.class));
     }
     public void removeAttribute(@ByVal CFRange range, CMTextMarkupAttribute attribute) {
+        if (attribute == null) {
+            throw new NullPointerException("attribute");
+        }
         removeAttribute(range, attribute.value());
     }
     /*<methods>*/

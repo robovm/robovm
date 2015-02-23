@@ -45,7 +45,7 @@ import org.robovm.apple.corelocation.*;
     extends /*<extends>*/NSObject/*</extends>*/ 
     /*<implements>*//*</implements>*/ {
 
-    public interface ActionListener {
+    public interface OnActionListener {
         void onAction(UIMenuController menuController, UIMenuItem menuItem);
     }
     
@@ -54,13 +54,13 @@ import org.robovm.apple.corelocation.*;
     /*<constants>*//*</constants>*/
     static final Map<Long, UIMenuItem> items = new HashMap<>();
     
-    private ActionListener actionListener;
+    private OnActionListener actionListener;
     
     public UIMenuItem(String title) {
         setTitle(title);
     }
     
-    public UIMenuItem(String title, ActionListener action) {
+    public UIMenuItem(String title, OnActionListener action) {
         super((SkipInit) null);
         if (action == null) {
             throw new NullPointerException("action");
@@ -74,7 +74,7 @@ import org.robovm.apple.corelocation.*;
         }
     }
     
-    public void setActionListener(ActionListener action) {
+    public void setActionListener(OnActionListener action) {
         this.actionListener = action;
 
         Selector sel = null;
@@ -91,7 +91,7 @@ import org.robovm.apple.corelocation.*;
             }
         }
     }
-    public ActionListener getActionListener() {
+    public OnActionListener getActionListener() {
         return actionListener;
     }
     

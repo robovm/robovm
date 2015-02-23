@@ -2365,13 +2365,14 @@ classes:
     NSNumberFormatter: # DONE
         properties:
             'textAttributesForNil':
-                name: textAttributesForNull
-                type: NSAttributedStringAttributes
+                name: textAttributesDictionaryForNull
+                type: 'NSDictionary<NSString, NSObject>'
             'textAttributesForNotANumber':
-                name: textAttributesForNaN
-                type: NSAttributedStringAttributes
-            'textAttributesFor.*':
-                type: NSAttributedStringAttributes
+                name: textAttributesDictionaryForNaN
+                type: 'NSDictionary<NSString, NSObject>'
+            'textAttributesFor(.*)':
+                name: 'textAttributesDictionaryFor#{g[0]}'
+                type: 'NSDictionary<NSString, NSObject>'
             'nilSymbol':
                 name: nullSymbol
             'notANumberSymbol':

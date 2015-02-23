@@ -19,6 +19,7 @@ package org.robovm.apple.foundation;
 import java.io.*;
 import java.nio.*;
 import java.util.*;
+
 import org.robovm.objc.*;
 import org.robovm.objc.annotation.*;
 import org.robovm.objc.block.*;
@@ -35,6 +36,7 @@ import org.robovm.apple.coremedia.*;
 import org.robovm.apple.security.*;
 import org.robovm.apple.dispatch.*;
 /*</imports>*/
+import org.robovm.apple.coretext.CTAttributedStringAttributes;
 
 /*<javadoc>*/
 
@@ -233,32 +235,176 @@ import org.robovm.apple.dispatch.*;
     /**
      * @since Available in iOS 7.0 and later.
      */
-    public CGSize getSize(NSAttributedStringAttributes attrs) {
+    public CGSize getSize(NSDictionary<NSString, NSObject> attrs) {
         return NSStringExtensions.getSize(this, attrs);
     }
     /**
      * @since Available in iOS 7.0 and later.
      */
-    public void draw(CGPoint point, NSAttributedStringAttributes attrs) {
+    public CGSize getSize(NSAttributedStringAttributes attrs) {
+        if (attrs == null) {
+            throw new NullPointerException("attrs");
+        }
+        return NSStringExtensions.getSize(this, attrs.getDictionary());
+    }
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
+    public CGSize getSize(CMTextMarkupAttributes attrs) {
+        if (attrs == null) {
+            throw new NullPointerException("attrs");
+        }
+        return NSStringExtensions.getSize(this, attrs.getDictionary().as(NSDictionary.class));
+    }
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
+    public CGSize getSize(CTAttributedStringAttributes attrs) {
+        if (attrs == null) {
+            throw new NullPointerException("attrs");
+        }
+        return NSStringExtensions.getSize(this, attrs.getDictionary().as(NSDictionary.class));
+    }
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
+    public void draw(CGPoint point, NSDictionary<NSString, NSObject> attrs) {
         NSStringExtensions.draw(this, point, attrs);
     }
     /**
      * @since Available in iOS 7.0 and later.
      */
-    public void draw(CGRect rect, NSAttributedStringAttributes attrs) {
+    public void draw(CGPoint point, NSAttributedStringAttributes attrs) {
+        if (attrs == null) {
+            NSStringExtensions.draw(this, point, (NSDictionary<NSString, NSObject>)null);
+        } else {
+            NSStringExtensions.draw(this, point, attrs.getDictionary());
+        }
+    }
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
+    public void draw(CGPoint point, CMTextMarkupAttributes attrs) {
+        if (attrs == null) {
+            NSStringExtensions.draw(this, point, (NSDictionary<NSString, NSObject>)null);
+        } else {
+            NSStringExtensions.draw(this, point, attrs.getDictionary().as(NSDictionary.class));
+        }
+    }
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
+    public void draw(CGPoint point, CTAttributedStringAttributes attrs) {
+        if (attrs == null) {
+            NSStringExtensions.draw(this, point, (NSDictionary<NSString, NSObject>)null);
+        } else {
+            NSStringExtensions.draw(this, point, attrs.getDictionary().as(NSDictionary.class));
+        }
+    }
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
+    public void draw(CGRect rect, NSDictionary<NSString, NSObject> attrs) {
         NSStringExtensions.draw(this, rect, attrs);
     }
     /**
      * @since Available in iOS 7.0 and later.
      */
-    public void draw(CGRect rect, NSStringDrawingOptions options, NSAttributedStringAttributes attributes, NSStringDrawingContext context) {
+    public void draw(CGRect rect, NSAttributedStringAttributes attrs) {
+        if (attrs == null) {
+            NSStringExtensions.draw(this, rect, (NSDictionary<NSString, NSObject>)null);
+        } else {
+            NSStringExtensions.draw(this, rect, attrs.getDictionary());
+        }
+    }
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
+    public void draw(CGRect rect, CMTextMarkupAttributes attrs) {
+        if (attrs == null) {
+            NSStringExtensions.draw(this, rect, (NSDictionary<NSString, NSObject>)null);
+        } else {
+            NSStringExtensions.draw(this, rect, attrs.getDictionary().as(NSDictionary.class));
+        }
+    }
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
+    public void draw(CGRect rect, CTAttributedStringAttributes attrs) {
+        if (attrs == null) {
+            NSStringExtensions.draw(this, rect, (NSDictionary<NSString, NSObject>)null);
+        } else {
+            NSStringExtensions.draw(this, rect, attrs.getDictionary().as(NSDictionary.class));
+        }
+    }
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
+    public void draw(CGRect rect, NSStringDrawingOptions options, NSDictionary<NSString, NSObject> attributes, NSStringDrawingContext context) {
         NSStringExtensions.draw(this, rect, options, attributes, context);
     }
     /**
      * @since Available in iOS 7.0 and later.
      */
-    public CGRect getBoundingRect(CGSize size, NSStringDrawingOptions options, NSAttributedStringAttributes attributes, NSStringDrawingContext context) {
+    public void draw(CGRect rect, NSStringDrawingOptions options, NSAttributedStringAttributes attributes, NSStringDrawingContext context) {
+        if (attributes == null) {
+            NSStringExtensions.draw(this, rect, options, null, context);
+        } else {
+            NSStringExtensions.draw(this, rect, options, attributes.getDictionary(), context);
+        }
+    }
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
+    public void draw(CGRect rect, NSStringDrawingOptions options, CMTextMarkupAttributes attributes, NSStringDrawingContext context) {
+        if (attributes == null) {
+            NSStringExtensions.draw(this, rect, options, null, context);
+        } else {
+            NSStringExtensions.draw(this, rect, options, attributes.getDictionary().as(NSDictionary.class), context);
+        }
+    }
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
+    public void draw(CGRect rect, NSStringDrawingOptions options, CTAttributedStringAttributes attributes, NSStringDrawingContext context) {
+        if (attributes == null) {
+            NSStringExtensions.draw(this, rect, options, null, context);
+        } else {
+            NSStringExtensions.draw(this, rect, options, attributes.getDictionary().as(NSDictionary.class), context);
+        }
+    }
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
+    public CGRect getBoundingRect(CGSize size, NSStringDrawingOptions options, NSDictionary<NSString, NSObject> attributes, NSStringDrawingContext context) {
         return NSStringExtensions.getBoundingRect(this, size, options, attributes, context);
+    }
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
+    public CGRect getBoundingRect(CGSize size, NSStringDrawingOptions options, NSAttributedStringAttributes attributes, NSStringDrawingContext context) {
+        if (attributes == null) {
+            return NSStringExtensions.getBoundingRect(this, size, options, null, context);
+        }
+        return NSStringExtensions.getBoundingRect(this, size, options, attributes.getDictionary(), context);
+    }
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
+    public CGRect getBoundingRect(CGSize size, NSStringDrawingOptions options, CMTextMarkupAttributes attributes, NSStringDrawingContext context) {
+        if (attributes == null) {
+            return NSStringExtensions.getBoundingRect(this, size, options, null, context);
+        }
+        return NSStringExtensions.getBoundingRect(this, size, options, attributes.getDictionary().as(NSDictionary.class), context);
+    }
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
+    public CGRect getBoundingRect(CGSize size, NSStringDrawingOptions options, CTAttributedStringAttributes attributes, NSStringDrawingContext context) {
+        if (attributes == null) {
+            return NSStringExtensions.getBoundingRect(this, size, options, null, context);
+        }
+        return NSStringExtensions.getBoundingRect(this, size, options, attributes.getDictionary().as(NSDictionary.class), context);
     }
 
     /**

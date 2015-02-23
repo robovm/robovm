@@ -256,7 +256,7 @@ categories:
                 name: getBoundingRect
                 parameters:
                     attributes:
-                        type: NSAttributedStringAttributes
+                        type: 'NSDictionary<NSString, NSObject>'
             '-drawAtPoint:forWidth:withFont:fontSize:lineBreakMode:baselineAdjustment:':
                 name: draw
             '-drawAtPoint:forWidth:withFont:lineBreakMode:':
@@ -267,14 +267,14 @@ categories:
                 name: draw
                 parameters:
                     attrs:
-                        type: NSAttributedStringAttributes
+                        type: 'NSDictionary<NSString, NSObject>'
             '-drawAtPoint:withFont:':
                 name: draw
             '-drawInRect:withAttributes:':
                 name: draw
                 parameters:
                     attrs:
-                        type: NSAttributedStringAttributes
+                        type: 'NSDictionary<NSString, NSObject>'
             '-drawInRect:withFont:':
                 name: draw
             '-drawInRect:withFont:lineBreakMode:':
@@ -285,12 +285,12 @@ categories:
                 name: draw
                 parameters:
                     attributes:
-                        type: NSAttributedStringAttributes
+                        type: 'NSDictionary<NSString, NSObject>'
             '-sizeWithAttributes:':
                 name: getSize
                 parameters:
                     attrs:
-                        type: NSAttributedStringAttributes
+                        type: 'NSDictionary<NSString, NSObject>'
             '-sizeWithFont:':
                 name: getSize
             '-sizeWithFont:constrainedToSize:':
@@ -782,13 +782,13 @@ classes:
         protocols: [UIAppearanceContainer]
         methods:
             '-setTitleTextAttributes:forState:':
-                name: setTitleTextAttributes
+                name: setTitleTextAttributesDictionary
                 parameters:
                     attributes:
-                        type: NSAttributedStringAttributes
+                        type: 'NSDictionary<NSString, NSObject>'
             '-titleTextAttributesForState:':
-                name: getTitleTextAttributes
-                return_type: NSAttributedStringAttributes
+                name: getTitleTextAttributesDictionary
+                return_type: 'NSDictionary<NSString, NSObject>'
     UIBezierPath: # DONE
         methods:
             '+bezierPath':
@@ -1706,7 +1706,8 @@ classes:
             'items':
                 type: NSArray<UINavigationItem>
             'titleTextAttributes':
-                type: NSAttributedStringAttributes
+                name: titleTextAttributesDictionary
+                type: 'NSDictionary<NSString, NSObject>'
         methods:
             '-backgroundImageForBarMetrics:':
                 name: getBackgroundImage
@@ -2174,8 +2175,8 @@ classes:
             '-scopeBarButtonDividerImageForLeftSegmentState:rightSegmentState:':
                 name: getScopeBarButtonDividerImage
             '-scopeBarButtonTitleTextAttributesForState:':
-                name: getScopeBarButtonTitleTextAttributes
-                return_type: NSAttributedStringAttributes
+                name: getScopeBarButtonTitleTextAttributesDictionary
+                return_type: 'NSDictionary<NSString, NSObject>'
             '-searchFieldBackgroundImageForState:':
                 name: getSearchFieldBackgroundImage
             '-setImage:forSearchBarIcon:state:':
@@ -2195,10 +2196,10 @@ classes:
             '-setScopeBarButtonDividerImage:forLeftSegmentState:rightSegmentState:':
                 trim_after_first_colon: true 
             '-setScopeBarButtonTitleTextAttributes:forState:':
-                name: setScopeBarButtonTitleTextAttributes
+                name: setScopeBarButtonTitleTextAttributesDictionary
                 parameters:
                     attributes:
-                        type: NSAttributedStringAttributes
+                        type: 'NSDictionary<NSString, NSObject>'
     UISearchController: # DONE
         methods:
             '-init.*':
@@ -2239,8 +2240,8 @@ classes:
             '-titleForSegmentAtIndex:':
                 name: getTitle
             '-titleTextAttributesForState:':
-                name: getTitleTextAttributes
-                return_type: NSAttributedStringAttributes
+                name: getTitleTextAttributesDictionary
+                return_type: 'NSDictionary<NSString, NSObject>'
             '-removeSegmentAtIndex:animated:':
                 name: removeSegment
             '-setTitle:forSegmentAtIndex:':
@@ -2258,10 +2259,10 @@ classes:
             '-setDividerImage:forLeftSegmentState:rightSegmentState:barMetrics:':
                 name: setDividerImage
             '-setTitleTextAttributes:forState:':
-                name: setTitleTextAttributes
+                name: setTitleTextAttributesDictionary
                 parameters:
                     attributes:
-                        type: NSAttributedStringAttributes
+                        type: 'NSDictionary<NSString, NSObject>'
             '-setContentPositionAdjustment:forSegmentType:barMetrics:':
                 name: setContentPositionAdjustment
     UISimpleTextPrintFormatter: # DONE
@@ -2549,9 +2550,11 @@ classes:
     UITextField: # DONE
         properties:
             'defaultTextAttributes':
-                type: NSAttributedStringAttributes
+                name: defaultTextAttributesDictionary
+                type: 'NSDictionary<NSString, NSObject>'
             'typingAttributes':
-                type: NSAttributedStringAttributes
+                name: typingAttributesDictionary
+                type: 'NSDictionary<NSString, NSObject>'
         methods:
             '-borderRectForBounds:':
                 name: getBorderRect
@@ -2594,9 +2597,11 @@ classes:
     UITextView: # DONE
         properties:
             'linkTextAttributes':
-                type: NSAttributedStringAttributes
+                name: linkTextAttributesDictionary
+                type: 'NSDictionary<NSString, NSObject>'
             'typingAttributes':
-                type: NSAttributedStringAttributes
+                name: typingAttributesDictionary
+                type: 'NSDictionary<NSString, NSObject>'
         methods:
             '-init.*':
                 name: init

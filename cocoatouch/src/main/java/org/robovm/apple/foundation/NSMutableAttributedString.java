@@ -19,6 +19,7 @@ package org.robovm.apple.foundation;
 import java.io.*;
 import java.nio.*;
 import java.util.*;
+
 import org.robovm.objc.*;
 import org.robovm.objc.annotation.*;
 import org.robovm.objc.block.*;
@@ -35,6 +36,8 @@ import org.robovm.apple.coremedia.*;
 import org.robovm.apple.security.*;
 import org.robovm.apple.dispatch.*;
 /*</imports>*/
+import org.robovm.apple.coretext.CTAttributedStringAttribute;
+import org.robovm.apple.coretext.CTAttributedStringAttributes;
 
 /*<javadoc>*/
 /**
@@ -60,6 +63,12 @@ import org.robovm.apple.dispatch.*;
     public NSMutableAttributedString(String str, NSAttributedStringAttributes attrs) {
         super(str, attrs);
     }
+    public NSMutableAttributedString(String str, CMTextMarkupAttributes attrs) {
+        super(str, attrs);
+    }
+    public NSMutableAttributedString(String str, CTAttributedStringAttributes attrs) {
+        super(str, attrs);
+    }
     public NSMutableAttributedString(String str) {
         super(str);
     }    
@@ -70,29 +79,71 @@ import org.robovm.apple.dispatch.*;
     /*</properties>*/
     /*<members>*//*</members>*/
     public void addAttribute(String name, NSObject value, @ByVal NSRange range) {
+        if (name == null) {
+            throw new NullPointerException("name");
+        }
         addAttribute(new NSString(name), value, range);
     }
     public void addAttribute(NSAttributedStringAttribute attribute, NSObject value, @ByVal NSRange range) {
+        if (attribute == null) {
+            throw new NullPointerException("attribute");
+        }
         addAttribute(attribute.value(), value, range);
     }
     public void addAttribute(CMTextMarkupAttribute attribute, NSObject value, @ByVal NSRange range) {
+        if (attribute == null) {
+            throw new NullPointerException("attribute");
+        }
+        addAttribute(attribute.value().as(NSString.class), value, range);
+    }
+    public void addAttribute(CTAttributedStringAttribute attribute, NSObject value, @ByVal NSRange range) {
+        if (attribute == null) {
+            throw new NullPointerException("attribute");
+        }
         addAttribute(attribute.value().as(NSString.class), value, range);
     }
     
     public void addAttributes(NSAttributedStringAttributes attrs, @ByVal NSRange range) {
+        if (attrs == null) {
+            throw new NullPointerException("attrs");
+        }
         addAttributes(attrs.getDictionary(), range);
     }
     public void addAttributes(CMTextMarkupAttributes attrs, @ByVal NSRange range) {
+        if (attrs == null) {
+            throw new NullPointerException("attrs");
+        }
+        addAttributes(attrs.getDictionary().as(NSDictionary.class), range);
+    }
+    public void addAttributes(CTAttributedStringAttributes attrs, @ByVal NSRange range) {
+        if (attrs == null) {
+            throw new NullPointerException("attrs");
+        }
         addAttributes(attrs.getDictionary().as(NSDictionary.class), range);
     }
     
     public void removeAttribute(String name, @ByVal NSRange range) {
+        if (name == null) {
+            throw new NullPointerException("name");
+        }
         removeAttribute(new NSString(name), range);
     }
     public void removeAttribute(NSAttributedStringAttribute attribute, @ByVal NSRange range) {
+        if (attribute == null) {
+            throw new NullPointerException("attribute");
+        }
         removeAttribute(attribute.value(), range);
     }
     public void removeAttribute(CMTextMarkupAttribute attribute, @ByVal NSRange range) {
+        if (attribute == null) {
+            throw new NullPointerException("attribute");
+        }
+        removeAttribute(attribute.value().as(NSString.class), range);
+    }
+    public void removeAttribute(CTAttributedStringAttribute attribute, @ByVal NSRange range) {
+        if (attribute == null) {
+            throw new NullPointerException("attribute");
+        }
         removeAttribute(attribute.value().as(NSString.class), range);
     }
     

@@ -179,10 +179,10 @@ import org.robovm.apple.foundation.*;
     @Bridge(symbol="CFBundleGetPlugIn", optional=true)
     public native CFPlugIn getPlugIn();
     @Bridge(symbol="CFBundleOpenBundleResourceMap", optional=true)
-    public native short openBundleResourceMap();
+    public native int openBundleResourceMap();
     @Bridge(symbol="CFBundleOpenBundleResourceFiles", optional=true)
-    public native int openBundleResourceFiles(ShortPtr refNum, ShortPtr localizedRefNum);
+    public native int openBundleResourceFiles(IntPtr refNum, IntPtr localizedRefNum);
     @Bridge(symbol="CFBundleCloseBundleResourceMap", optional=true)
-    public native void closeBundleResourceMap(short refNum);
+    public native void closeBundleResourceMap(int refNum);
     /*</methods>*/
 }

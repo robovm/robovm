@@ -19,6 +19,7 @@ package org.robovm.apple.foundation;
 import java.io.*;
 import java.nio.*;
 import java.util.*;
+
 import org.robovm.objc.*;
 import org.robovm.objc.annotation.*;
 import org.robovm.objc.block.*;
@@ -60,16 +61,25 @@ import org.robovm.apple.coretext.CTAttributedStringAttributes;
     /*</constructors>*/
     public NSAttributedString(String str, NSAttributedStringAttributes attrs) {
         super((SkipInit)null);
+        if (attrs == null) {
+            throw new NullPointerException("attrs");
+        }
         initObject(init(str, attrs.getDictionary()));
     }
     @SuppressWarnings("unchecked")
     public NSAttributedString(String str, CMTextMarkupAttributes attrs) {
         super((SkipInit)null);
+        if (attrs == null) {
+            throw new NullPointerException("attrs");
+        }
         initObject(init(str, attrs.getDictionary().as(NSDictionary.class)));
     }
     @SuppressWarnings("unchecked")
     public NSAttributedString(String str, CTAttributedStringAttributes attrs) {
         super((SkipInit)null);
+        if (attrs == null) {
+            throw new NullPointerException("attrs");
+        }
         initObject(init(str, attrs.getDictionary().as(NSDictionary.class)));
     }
     /*<properties>*/
@@ -88,28 +98,52 @@ import org.robovm.apple.coretext.CTAttributedStringAttributes;
     }
     
     public NSObject getAttribute(String name, @MachineSizedUInt long location, NSRange range) {
+        if (name == null) {
+            throw new NullPointerException("name");
+        }
         return getAttribute(new NSString(name), location, range);
     }
     public NSObject getAttribute(NSAttributedStringAttribute attribute, @MachineSizedUInt long location, NSRange range) {
+        if (attribute == null) {
+            throw new NullPointerException("attribute");
+        }
         return getAttribute(attribute.value(), location, range);
     }
     public NSObject getAttribute(CMTextMarkupAttribute attribute, @MachineSizedUInt long location, NSRange range) {
+        if (attribute == null) {
+            throw new NullPointerException("attribute");
+        }
         return getAttribute(attribute.value().as(NSString.class), location, range);
     }
     public NSObject getAttribute(CTAttributedStringAttribute attribute, @MachineSizedUInt long location, NSRange range) {
+        if (attribute == null) {
+            throw new NullPointerException("attribute");
+        }
         return getAttribute(attribute.value().as(NSString.class), location, range);
     }
     
     public NSObject getAttribute(String name, @MachineSizedUInt long location, NSRange range, @ByVal NSRange rangeLimit) {
+        if (name == null) {
+            throw new NullPointerException("name");
+        }
         return getAttribute(new NSString(name), location, range, rangeLimit);
     }
     public NSObject getAttribute(NSAttributedStringAttribute attribute, @MachineSizedUInt long location, NSRange range, @ByVal NSRange rangeLimit) {
+        if (attribute == null) {
+            throw new NullPointerException("attribute");
+        }
         return getAttribute(attribute.value(), location, range, rangeLimit);
     }
     public NSObject getAttribute(CMTextMarkupAttribute attribute, @MachineSizedUInt long location, NSRange range, @ByVal NSRange rangeLimit) {
+        if (attribute == null) {
+            throw new NullPointerException("attribute");
+        }
         return getAttribute(attribute.value().as(NSString.class), location, range, rangeLimit);
     }
     public NSObject getAttribute(CTAttributedStringAttribute attribute, @MachineSizedUInt long location, NSRange range, @ByVal NSRange rangeLimit) {
+        if (attribute == null) {
+            throw new NullPointerException("attribute");
+        }
         return getAttribute(attribute.value().as(NSString.class), location, range, rangeLimit);
     }
 
@@ -136,24 +170,36 @@ import org.robovm.apple.coretext.CTAttributedStringAttributes;
      * @since Available in iOS 4.0 and later.
      */
     public void enumerateAttribute(String name, @ByVal NSRange enumerationRange, NSAttributedStringEnumerationOptions opts, final VoidBlock3<NSObject, NSRange, BooleanPtr> block) {
+        if (name == null) {
+            throw new NullPointerException("name");
+        }
         enumerateAttribute(new NSString(name), enumerationRange, opts, block);
     }
     /**
      * @since Available in iOS 4.0 and later.
      */
     public void enumerateAttribute(NSAttributedStringAttribute attribute, @ByVal NSRange enumerationRange, NSAttributedStringEnumerationOptions opts, final VoidBlock3<NSObject, NSRange, BooleanPtr> block) {
+        if (attribute == null) {
+            throw new NullPointerException("attribute");
+        }
         enumerateAttribute(attribute.value(), enumerationRange, opts, block);
     }
     /**
      * @since Available in iOS 4.0 and later.
      */
     public void enumerateAttribute(CMTextMarkupAttribute attribute, @ByVal NSRange enumerationRange, NSAttributedStringEnumerationOptions opts, final VoidBlock3<NSObject, NSRange, BooleanPtr> block) {
+        if (attribute == null) {
+            throw new NullPointerException("attribute");
+        }
         enumerateAttribute(attribute.value().as(NSString.class), enumerationRange, opts, block);
     }
     /**
      * @since Available in iOS 4.0 and later.
      */
     public void enumerateAttribute(CTAttributedStringAttribute attribute, @ByVal NSRange enumerationRange, NSAttributedStringEnumerationOptions opts, final VoidBlock3<NSObject, NSRange, BooleanPtr> block) {
+        if (attribute == null) {
+            throw new NullPointerException("attribute");
+        }
         enumerateAttribute(attribute.value().as(NSString.class), enumerationRange, opts, block);
     }
     

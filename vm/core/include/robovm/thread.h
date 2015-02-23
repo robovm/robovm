@@ -46,6 +46,11 @@ enum {
     THREAD_MAX_PRIORITY     = 10,
 };
 
+struct StoppedJavaThread {
+    pthread_t thread;
+    struct StoppedJavaThread* next;
+} StoppedJavaThread;
+
 extern jboolean rvmInitThreads(Env* env);
 extern void rvmLockThreadsList();
 extern void rvmUnlockThreadsList();
@@ -61,6 +66,7 @@ extern jint rvmChangeThreadStatus(Env* env, Thread* thread, jint newStatus);
 extern void rvmChangeThreadPriority(Env* env, Thread* thread, jint priority);
 extern void rvmThreadNameChanged(Env* env, Thread* thread);
 extern jboolean rvmHasCurrentThread(Env* env);
+extern jboolean rvmIsStoppedJavaThread();
 
 #endif
 

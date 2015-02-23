@@ -295,7 +295,13 @@ public final class ObjCClass extends ObjCObject {
             }
         }
         ObjCRuntime.objc_registerClassPair(handle);
-        return new ObjCClass(handle, type, name, true);
+        
+        ObjCClass objcClass = new ObjCClass(handle, type, name, true);
+        if (objcClass.custom) {
+            ObjCObject.ObjectOwnershipHelper.registerClass(objcClass);
+        }
+        
+        return objcClass;
     }
     
     private static Map<String, Method> getCallbacks(Class<?> type) {

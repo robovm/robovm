@@ -14,6 +14,9 @@ private_typedefs:
     '__CFData *': NSData
     '__CFURL *': NSURL
     '__CFArray *': NSArray<?>
+    '__CFError *': NSError
+    '__CFReadStream *': NSInputStream
+    '__CFWriteStream *': NSOutputStream
     
 enums:
     CFHostInfoType: {}
@@ -60,7 +63,7 @@ classes:
         name: CFNetServiceBrowser
         extends: CFType
     CFHTTPStream:
-        extends: CFReadStream
+        extends: NSInputStream
     
     CFNetworkError:
         extends: NSError
@@ -78,7 +81,6 @@ functions:
     CFReadStreamCreateWithFTPURL:
         class: CFFTPStream
         name: createReadStream
-        return_marshaler: CFType.NoRetainMarshaler
     CFFTP(CreateParsedResourceListing):
         class: CFFTPStream
         name: '#{g[0]}'
@@ -91,7 +93,6 @@ functions:
     CFWriteStreamCreateWithFTPURL:
         class: CFFTPStream
         name: createWriteStream
-        return_marshaler: CFType.NoRetainMarshaler
     
     # CFHost
     CFHost(Create)With.*:
@@ -230,7 +231,6 @@ functions:
     CFReadStream(Create).*:
         class: CFHTTPStream
         name: '#{g[0]}'
-        return_marshaler: CFType.NoRetainMarshaler
     CFHTTPReadStream(.*):
         class: CFHTTPStream
         name: '#{g[0]}'

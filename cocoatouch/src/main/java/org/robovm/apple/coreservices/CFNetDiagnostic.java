@@ -48,7 +48,7 @@ import org.robovm.apple.corefoundation.*;
     /**
      * @since Available in iOS 2.0 and later.
      */
-    public static CFNetDiagnostic create(CFReadStream readStream, CFWriteStream writeStream) {
+    public static CFNetDiagnostic create(NSInputStream readStream, NSOutputStream writeStream) {
         return create(null, readStream, writeStream);
     }
     /**
@@ -78,7 +78,7 @@ import org.robovm.apple.corefoundation.*;
      * @since Available in iOS 2.0 and later.
      */
     @Bridge(symbol="CFNetDiagnosticCreateWithStreams", optional=true)
-    public static native @org.robovm.rt.bro.annotation.Marshaler(CFType.NoRetainMarshaler.class) CFNetDiagnostic create(CFAllocator alloc, CFReadStream readStream, CFWriteStream writeStream);
+    public static native @org.robovm.rt.bro.annotation.Marshaler(CFType.NoRetainMarshaler.class) CFNetDiagnostic create(CFAllocator alloc, NSInputStream readStream, NSOutputStream writeStream);
     /**
      * @since Available in iOS 2.0 and later.
      */

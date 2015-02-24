@@ -19,6 +19,7 @@ private_typedefs:
     '__CFURL *': NSURL
     '__CFDictionary *': 'NSDictionary<?, ?>'
     '__CFArray *': NSArray<?>
+    '__CFRunLoopTimer *': NSTimer
 
 enums:
     CMAttachmentMode: { first: kCMAttachmentMode_ShouldNotPropagate, prefix: kCMAttachmentMode_, marshaler: ValuedEnum.AsMachineSizedUIntMarshaler }
@@ -775,7 +776,6 @@ functions:
     CMTimebase(.*):
         class: CMTimebase
         name: '#{g[0]}'
-        return_type: CMTimebaseError
 
     # CMTimeRange
     CMTimeRangeMake.*:
@@ -1003,7 +1003,7 @@ values:
                 name: endsPreviousSampleDuration
                 type: boolean
             SampleReferenceURL:
-                type: CFURL
+                type: NSURL
             SampleReferenceByteOffset:
                 type: long
             GradualDecoderRefresh:

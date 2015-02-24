@@ -44,16 +44,13 @@ public class ABPersonDate {
         this.date = date;
         this.label = label.value();
     }
-    protected ABPersonDate(CFDate date, CFString label) {
-        this.date = date.as(NSDate.class);
+    protected ABPersonDate(NSDate date, CFString label) {
+        this.date = date;
         this.label = label;
     }
     
     public NSDate getDate() {
         return date;
-    }
-    protected CFDate getDate0() {
-        return date.as(CFDate.class);
     }
     
     public String getLabel() {

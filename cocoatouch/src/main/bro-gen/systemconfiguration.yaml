@@ -14,6 +14,7 @@ private_typedefs:
     '__CFURL *': NSURL
     '__CFDictionary *': 'NSDictionary<?, ?>'
     '__CFArray *': 'NSArray<?>'
+    '__CFError *': NSError
     
 enums:
     SCStatusCode: { first: kSCStatusOK }
@@ -76,7 +77,6 @@ functions:
     SCCopyLastError:
         class: SCStatus
         name: getLastError
-        return_marshaler: CFType.NoRetainMarshaler
     SCError:
         class: SCStatus
         name: getLastStatus

@@ -356,9 +356,9 @@ import org.robovm.apple.audiotoolbox.*;
     /**
      * @since Available in iOS 4.0 and later.
      */
-    public CFURL getSampleReferenceURL() {
+    public NSURL getSampleReferenceURL() {
         if (has(CMSampleBufferAttachmentKey.SampleReferenceURL)) {
-            CFURL val = get(CMSampleBufferAttachmentKey.SampleReferenceURL, CFURL.class);
+            NSURL val = get(CMSampleBufferAttachmentKey.SampleReferenceURL, NSURL.class);
             return val;
         }
         return null;
@@ -366,7 +366,7 @@ import org.robovm.apple.audiotoolbox.*;
     /**
      * @since Available in iOS 4.0 and later.
      */
-    public CMSampleBufferAttachment setSampleReferenceURL(CFURL sampleReferenceURL) {
+    public CMSampleBufferAttachment setSampleReferenceURL(NSURL sampleReferenceURL) {
         set(CMSampleBufferAttachmentKey.SampleReferenceURL, sampleReferenceURL);
         return this;
     }

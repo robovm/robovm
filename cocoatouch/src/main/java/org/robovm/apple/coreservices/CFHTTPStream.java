@@ -34,7 +34,7 @@ import org.robovm.apple.corefoundation.*;
 /*</javadoc>*/
 /*<annotations>*/@Library("CFNetwork")/*</annotations>*/
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/CFHTTPStream/*</name>*/ 
-    extends /*<extends>*/CFReadStream/*</extends>*/ 
+    extends /*<extends>*/NSInputStream/*</extends>*/ 
     /*<implements>*//*</implements>*/ {
 
     /*<ptr>*/
@@ -47,13 +47,13 @@ import org.robovm.apple.corefoundation.*;
     /**
      * @since Available in iOS 2.0 and later.
      */
-    public static CFReadStream create(CFHTTPMessage request) {
+    public static NSInputStream create(CFHTTPMessage request) {
         return create(null, request);
     }
     /**
      * @since Available in iOS 2.0 and later.
      */
-    public static CFReadStream create(CFHTTPMessage requestHeaders, CFReadStream requestBody) {
+    public static NSInputStream create(CFHTTPMessage requestHeaders, NSInputStream requestBody) {
         return create(null, requestHeaders, requestBody);
     }
     /*<methods>*/
@@ -61,11 +61,11 @@ import org.robovm.apple.corefoundation.*;
      * @since Available in iOS 2.0 and later.
      */
     @Bridge(symbol="CFReadStreamCreateForHTTPRequest", optional=true)
-    public static native @org.robovm.rt.bro.annotation.Marshaler(CFType.NoRetainMarshaler.class) CFReadStream create(CFAllocator alloc, CFHTTPMessage request);
+    public static native NSInputStream create(CFAllocator alloc, CFHTTPMessage request);
     /**
      * @since Available in iOS 2.0 and later.
      */
     @Bridge(symbol="CFReadStreamCreateForStreamedHTTPRequest", optional=true)
-    public static native @org.robovm.rt.bro.annotation.Marshaler(CFType.NoRetainMarshaler.class) CFReadStream create(CFAllocator alloc, CFHTTPMessage requestHeaders, CFReadStream requestBody);
+    public static native NSInputStream create(CFAllocator alloc, CFHTTPMessage requestHeaders, NSInputStream requestBody);
     /*</methods>*/
 }

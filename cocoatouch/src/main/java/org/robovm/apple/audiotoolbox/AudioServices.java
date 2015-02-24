@@ -63,7 +63,7 @@ import org.robovm.apple.coremedia.*;
      * @since Available in iOS 2.0 and later.
      */
     @Bridge(symbol="AudioServicesCreateSystemSoundID", optional=true)
-    public static native OSStatus createSystemSoundID(CFURL inFileURL, IntPtr outSystemSoundID);
+    public static native OSStatus createSystemSoundID(NSURL inFileURL, IntPtr outSystemSoundID);
     /**
      * @since Available in iOS 2.0 and later.
      */
@@ -73,7 +73,7 @@ import org.robovm.apple.coremedia.*;
      * @since Available in iOS 2.0 and later.
      */
     @Bridge(symbol="AudioServicesAddSystemSoundCompletion", optional=true)
-    public static native OSStatus addSystemSoundCompletion(int inSystemSoundID, CFRunLoop inRunLoop, CFString inRunLoopMode, FunctionPtr inCompletionRoutine, VoidPtr inClientData);
+    public static native OSStatus addSystemSoundCompletion(int inSystemSoundID, CFRunLoop inRunLoop, String inRunLoopMode, FunctionPtr inCompletionRoutine, VoidPtr inClientData);
     /**
      * @since Available in iOS 2.0 and later.
      */

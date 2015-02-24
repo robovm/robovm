@@ -54,12 +54,12 @@ import org.robovm.apple.coremedia.*;
      * @since Available in iOS 2.0 and later.
      */
     @Bridge(symbol="AudioQueueNewOutput", optional=true)
-    public static native OSStatus newOutput(AudioStreamBasicDescription inFormat, FunctionPtr inCallbackProc, VoidPtr inUserData, CFRunLoop inCallbackRunLoop, CFString inCallbackRunLoopMode, int inFlags, AudioQueue.AudioQueuePtr outAQ);
+    public static native OSStatus newOutput(AudioStreamBasicDescription inFormat, FunctionPtr inCallbackProc, VoidPtr inUserData, CFRunLoop inCallbackRunLoop, String inCallbackRunLoopMode, int inFlags, AudioQueue.AudioQueuePtr outAQ);
     /**
      * @since Available in iOS 2.0 and later.
      */
     @Bridge(symbol="AudioQueueNewInput", optional=true)
-    public static native OSStatus newInput(AudioStreamBasicDescription inFormat, FunctionPtr inCallbackProc, VoidPtr inUserData, CFRunLoop inCallbackRunLoop, CFString inCallbackRunLoopMode, int inFlags, AudioQueue.AudioQueuePtr outAQ);
+    public static native OSStatus newInput(AudioStreamBasicDescription inFormat, FunctionPtr inCallbackProc, VoidPtr inUserData, CFRunLoop inCallbackRunLoop, String inCallbackRunLoopMode, int inFlags, AudioQueue.AudioQueuePtr outAQ);
     /**
      * @since Available in iOS 2.0 and later.
      */

@@ -47,7 +47,7 @@ import org.robovm.apple.corefoundation.*;
     /**
      * @since Available in iOS 2.0 and later.
      */
-    public static CFReadStream createReadStream(NSURL ftpURL) {
+    public static NSInputStream createReadStream(NSURL ftpURL) {
         return createReadStream(null, ftpURL);
     }
     /**
@@ -62,7 +62,7 @@ import org.robovm.apple.corefoundation.*;
     /**
      * @since Available in iOS 2.0 and later.
      */
-    public static CFWriteStream createWriteStream(NSURL ftpURL) {
+    public static NSOutputStream createWriteStream(NSURL ftpURL) {
         return createWriteStream(null, ftpURL);
     }
     /*<methods>*/
@@ -70,7 +70,7 @@ import org.robovm.apple.corefoundation.*;
      * @since Available in iOS 2.0 and later.
      */
     @Bridge(symbol="CFReadStreamCreateWithFTPURL", optional=true)
-    public static native @org.robovm.rt.bro.annotation.Marshaler(CFType.NoRetainMarshaler.class) CFReadStream createReadStream(CFAllocator alloc, NSURL ftpURL);
+    public static native NSInputStream createReadStream(CFAllocator alloc, NSURL ftpURL);
     /**
      * @since Available in iOS 2.0 and later.
      */
@@ -80,6 +80,6 @@ import org.robovm.apple.corefoundation.*;
      * @since Available in iOS 2.0 and later.
      */
     @Bridge(symbol="CFWriteStreamCreateWithFTPURL", optional=true)
-    public static native @org.robovm.rt.bro.annotation.Marshaler(CFType.NoRetainMarshaler.class) CFWriteStream createWriteStream(CFAllocator alloc, NSURL ftpURL);
+    public static native NSOutputStream createWriteStream(CFAllocator alloc, NSURL ftpURL);
     /*</methods>*/
 }

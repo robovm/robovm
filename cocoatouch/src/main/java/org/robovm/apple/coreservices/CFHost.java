@@ -133,16 +133,16 @@ import org.robovm.apple.coremedia.CMTime;
     /**
      * @since Available in iOS 2.0 and later.
      */
-    public CFReadStream createSocketReadStream(int port) {
-        CFReadStream.CFReadStreamPtr ptr = new CFReadStream.CFReadStreamPtr();
+    public NSInputStream createSocketReadStream(int port) {
+        NSInputStream.NSInputStreamPtr ptr = new NSInputStream.NSInputStreamPtr();
         createSocketStreamPair(null, this, port, ptr, null);
         return ptr.get();
     }
     /**
      * @since Available in iOS 2.0 and later.
      */
-    public CFWriteStream createSocketWriteStream(int port) {
-        CFWriteStream.CFWriteStreamPtr ptr = new CFWriteStream.CFWriteStreamPtr();
+    public NSOutputStream createSocketWriteStream(int port) {
+        NSOutputStream.NSOutputStreamPtr ptr = new NSOutputStream.NSOutputStreamPtr();
         createSocketStreamPair(null, this, port, null, ptr);
         return ptr.get();
     }
@@ -220,6 +220,6 @@ import org.robovm.apple.coremedia.CMTime;
      * @since Available in iOS 2.0 and later.
      */
     @Bridge(symbol="CFStreamCreatePairWithSocketToCFHost", optional=true)
-    private static native void createSocketStreamPair(CFAllocator alloc, CFHost host, int port, CFReadStream.CFReadStreamPtr readStream, CFWriteStream.CFWriteStreamPtr writeStream);
+    private static native void createSocketStreamPair(CFAllocator alloc, CFHost host, int port, NSInputStream.NSInputStreamPtr readStream, NSOutputStream.NSOutputStreamPtr writeStream);
     /*</methods>*/
 }

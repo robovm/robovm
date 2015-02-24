@@ -57,7 +57,7 @@ import org.robovm.apple.dispatch.*;
      * @since Available in iOS 2.0 and later.
      */
     @Bridge(symbol="SCCopyLastError", optional=true)
-    public static native @org.robovm.rt.bro.annotation.Marshaler(CFType.NoRetainMarshaler.class) CFError getLastError();
+    public static native NSError getLastError();
     /**
      * @since Available in iOS 2.0 and later.
      */

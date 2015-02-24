@@ -167,12 +167,12 @@ import org.robovm.apple.audiotoolbox.*;
      * @since Available in iOS 6.0 and later.
      */
     @Bridge(symbol="CMTimebaseSetTime", optional=true)
-    public native CMTimebaseError setTime(@ByVal CMTime time);
+    public native OSStatus setTime(@ByVal CMTime time);
     /**
      * @since Available in iOS 6.0 and later.
      */
     @Bridge(symbol="CMTimebaseSetAnchorTime", optional=true)
-    public native CMTimebaseError setAnchorTime(@ByVal CMTime timebaseTime, @ByVal CMTime immediateMasterTime);
+    public native OSStatus setAnchorTime(@ByVal CMTime timebaseTime, @ByVal CMTime immediateMasterTime);
     /**
      * @since Available in iOS 6.0 and later.
      */
@@ -182,12 +182,12 @@ import org.robovm.apple.audiotoolbox.*;
      * @since Available in iOS 6.0 and later.
      */
     @Bridge(symbol="CMTimebaseSetRate", optional=true)
-    public native CMTimebaseError setRate(double rate);
+    public native OSStatus setRate(double rate);
     /**
      * @since Available in iOS 6.0 and later.
      */
     @Bridge(symbol="CMTimebaseSetRateAndAnchorTime", optional=true)
-    public native CMTimebaseError setRateAndAnchorTime(double rate, @ByVal CMTime timebaseTime, @ByVal CMTime immediateMasterTime);
+    public native OSStatus setRateAndAnchorTime(double rate, @ByVal CMTime timebaseTime, @ByVal CMTime immediateMasterTime);
     /**
      * @since Available in iOS 6.0 and later.
      */
@@ -197,46 +197,46 @@ import org.robovm.apple.audiotoolbox.*;
      * @since Available in iOS 6.0 and later.
      */
     @Bridge(symbol="CMTimebaseAddTimer", optional=true)
-    public native CMTimebaseError addTimer(CFRunLoopTimer timer, CFRunLoop runloop);
+    public native OSStatus addTimer(NSTimer timer, CFRunLoop runloop);
     /**
      * @since Available in iOS 6.0 and later.
      */
     @Bridge(symbol="CMTimebaseRemoveTimer", optional=true)
-    public native CMTimebaseError removeTimer(CFRunLoopTimer timer);
+    public native OSStatus removeTimer(NSTimer timer);
     /**
      * @since Available in iOS 6.0 and later.
      */
     @Bridge(symbol="CMTimebaseSetTimerNextFireTime", optional=true)
-    public native CMTimebaseError setTimerNextFireTime(CFRunLoopTimer timer, @ByVal CMTime fireTime, int flags);
+    public native OSStatus setTimerNextFireTime(NSTimer timer, @ByVal CMTime fireTime, int flags);
     /**
      * @since Available in iOS 6.0 and later.
      */
     @Bridge(symbol="CMTimebaseSetTimerToFireImmediately", optional=true)
-    public native CMTimebaseError setTimerToFireImmediately(CFRunLoopTimer timer);
+    public native OSStatus setTimerToFireImmediately(NSTimer timer);
     /**
      * @since Available in iOS 6.0 and later.
      */
     @Bridge(symbol="CMTimebaseAddTimerDispatchSource", optional=true)
-    public native CMTimebaseError addTimerDispatchSource(DispatchSource timerSource);
+    public native OSStatus addTimerDispatchSource(DispatchSource timerSource);
     /**
      * @since Available in iOS 6.0 and later.
      */
     @Bridge(symbol="CMTimebaseRemoveTimerDispatchSource", optional=true)
-    public native CMTimebaseError removeTimerDispatchSource(DispatchSource timerSource);
+    public native OSStatus removeTimerDispatchSource(DispatchSource timerSource);
     /**
      * @since Available in iOS 6.0 and later.
      */
     @Bridge(symbol="CMTimebaseSetTimerDispatchSourceNextFireTime", optional=true)
-    public native CMTimebaseError setTimerDispatchSourceNextFireTime(DispatchSource timerSource, @ByVal CMTime fireTime, int flags);
+    public native OSStatus setTimerDispatchSourceNextFireTime(DispatchSource timerSource, @ByVal CMTime fireTime, int flags);
     /**
      * @since Available in iOS 6.0 and later.
      */
     @Bridge(symbol="CMTimebaseSetTimerDispatchSourceToFireImmediately", optional=true)
-    public native CMTimebaseError setTimerDispatchSourceToFireImmediately(DispatchSource timerSource);
+    public native OSStatus setTimerDispatchSourceToFireImmediately(DispatchSource timerSource);
     /**
      * @since Available in iOS 6.0 and later.
      */
     @Bridge(symbol="CMTimebaseNotificationBarrier", optional=true)
-    public native CMTimebaseError notificationBarrier();
+    public native OSStatus notificationBarrier();
     /*</methods>*/
 }

@@ -109,22 +109,22 @@ import org.robovm.apple.coremedia.*;
      * @since Available in iOS 5.0 and later.
      */
     @Bridge(symbol="MusicSequenceFileLoad", optional=true)
-    public native OSStatus fileLoad(CFURL inFileRef, int inFileTypeHint, int inFlags);
+    public native OSStatus fileLoad(NSURL inFileRef, int inFileTypeHint, int inFlags);
     /**
      * @since Available in iOS 5.0 and later.
      */
     @Bridge(symbol="MusicSequenceFileLoadData", optional=true)
-    public native OSStatus fileLoadData(CFData inData, int inFileTypeHint, int inFlags);
+    public native OSStatus fileLoadData(NSData inData, int inFileTypeHint, int inFlags);
     /**
      * @since Available in iOS 5.0 and later.
      */
     @Bridge(symbol="MusicSequenceFileCreate", optional=true)
-    public native OSStatus fileCreate(CFURL inFileRef, int inFileType, MusicSequenceFileFlags inFlags, short inResolution);
+    public native OSStatus fileCreate(NSURL inFileRef, int inFileType, MusicSequenceFileFlags inFlags, short inResolution);
     /**
      * @since Available in iOS 5.0 and later.
      */
     @Bridge(symbol="MusicSequenceFileCreateData", optional=true)
-    public native OSStatus fileCreateData(int inFileType, MusicSequenceFileFlags inFlags, short inResolution, CFData.CFDataPtr outData);
+    public native OSStatus fileCreateData(int inFileType, MusicSequenceFileFlags inFlags, short inResolution, NSData outData);
     /**
      * @since Available in iOS 5.0 and later.
      */
@@ -159,6 +159,6 @@ import org.robovm.apple.coremedia.*;
      * @since Available in iOS 5.0 and later.
      */
     @Bridge(symbol="MusicSequenceGetInfoDictionary", optional=true)
-    public native CFDictionary getInfoDictionary();
+    public native NSDictionary<?, ?> getInfoDictionary();
     /*</methods>*/
 }

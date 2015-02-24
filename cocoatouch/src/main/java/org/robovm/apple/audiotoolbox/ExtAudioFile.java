@@ -54,7 +54,7 @@ import org.robovm.apple.coremedia.*;
      * @since Available in iOS 2.1 and later.
      */
     @Bridge(symbol="ExtAudioFileOpenURL", optional=true)
-    public static native OSStatus openURL(CFURL inURL, ExtAudioFile.ExtAudioFilePtr outExtAudioFile);
+    public static native OSStatus openURL(NSURL inURL, ExtAudioFile.ExtAudioFilePtr outExtAudioFile);
     /**
      * @since Available in iOS 2.1 and later.
      */
@@ -64,7 +64,7 @@ import org.robovm.apple.coremedia.*;
      * @since Available in iOS 2.1 and later.
      */
     @Bridge(symbol="ExtAudioFileCreateWithURL", optional=true)
-    public static native OSStatus createWithURL(CFURL inURL, int inFileType, AudioStreamBasicDescription inStreamDesc, AudioChannelLayout inChannelLayout, int inFlags, ExtAudioFile.ExtAudioFilePtr outExtAudioFile);
+    public static native OSStatus createWithURL(NSURL inURL, int inFileType, AudioStreamBasicDescription inStreamDesc, AudioChannelLayout inChannelLayout, int inFlags, ExtAudioFile.ExtAudioFilePtr outExtAudioFile);
     /**
      * @since Available in iOS 2.1 and later.
      */

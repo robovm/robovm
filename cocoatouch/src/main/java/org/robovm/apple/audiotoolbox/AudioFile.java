@@ -54,12 +54,12 @@ import org.robovm.apple.coremedia.*;
      * @since Available in iOS 2.0 and later.
      */
     @Bridge(symbol="AudioFileCreateWithURL", optional=true)
-    public static native OSStatus createWithURL(CFURL inFileRef, int inFileType, AudioStreamBasicDescription inFormat, int inFlags, AudioFile.AudioFilePtr outAudioFile);
+    public static native OSStatus createWithURL(NSURL inFileRef, int inFileType, AudioStreamBasicDescription inFormat, int inFlags, AudioFile.AudioFilePtr outAudioFile);
     /**
      * @since Available in iOS 2.0 and later.
      */
     @Bridge(symbol="AudioFileOpenURL", optional=true)
-    public static native OSStatus openURL(CFURL inFileRef, byte inPermissions, int inFileTypeHint, AudioFile.AudioFilePtr outAudioFile);
+    public static native OSStatus openURL(NSURL inFileRef, byte inPermissions, int inFileTypeHint, AudioFile.AudioFilePtr outAudioFile);
     /**
      * @since Available in iOS 2.0 and later.
      */

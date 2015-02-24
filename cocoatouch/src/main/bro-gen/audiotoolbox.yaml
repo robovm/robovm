@@ -7,6 +7,14 @@ headers:
     - /System/Library/Frameworks/AudioToolbox.framework/Headers/AudioToolbox.h
 typedefs:
 
+private_typedefs:
+    '__CFString *': String
+    '__CFString **': 'NSString.NSStringPtr'
+    '__CFData *': NSData
+    '__CFURL *': NSURL
+    '__CFDictionary *': 'NSDictionary<?, ?>'
+    '__CFArray *': 'NSArray<?>'
+
 enums:
     AudioConverterProperty: { first: kAudioConverterPropertyMinimumInputBufferSize, marshaler: ValuedEnum.AsMachineSizedUIntMarshaler }
     AudioConverterDitherAlgorithm: { first: kDitherAlgorithm_TPDF }

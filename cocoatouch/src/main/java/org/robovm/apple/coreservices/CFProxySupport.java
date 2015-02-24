@@ -40,7 +40,7 @@ import org.robovm.apple.corefoundation.*;
     /*<ptr>*/
     /*</ptr>*/
     public interface AutoConfigurationClientCallback {
-        void invoke(List<CFProxy> proxyList, CFError error);
+        void invoke(List<CFProxy> proxyList, NSError error);
     }
     
     private static java.util.concurrent.atomic.AtomicLong refconId = new java.util.concurrent.atomic.AtomicLong();
@@ -50,7 +50,7 @@ import org.robovm.apple.corefoundation.*;
     
     static {
         try {
-            cbInvoke = CFProxySupport.class.getDeclaredMethod("cbInvoke", long.class, CFArray.class, CFError.class);
+            cbInvoke = CFProxySupport.class.getDeclaredMethod("cbInvoke", long.class, CFArray.class, NSError.class);
         } catch (Throwable e) {
             throw new Error(e);
         }
@@ -61,7 +61,7 @@ import org.robovm.apple.corefoundation.*;
     /*<properties>*//*</properties>*/
     /*<members>*//*</members>*/
     @Callback
-    private static void cbInvoke(@Pointer long refcon, CFArray proxyList0, CFError error) {
+    private static void cbInvoke(@Pointer long refcon, CFArray proxyList0, NSError error) {
         AutoConfigurationClientCallback callback = null;
         synchronized (callbacks) {
             callback = callbacks.get(refcon);

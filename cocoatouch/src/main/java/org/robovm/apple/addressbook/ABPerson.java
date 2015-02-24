@@ -376,7 +376,7 @@ import org.robovm.apple.corefoundation.*;
         if (val == null) return list;
         long size = val.getCount();
         for (int i = 0; i < size; i++) {
-            CFDate date = (CFDate)val.getValue(i);
+            NSDate date = val.getValue(i).as(NSDate.class);
             CFString label = val.getLabel(i);
             list.add(new ABPersonDate(date, label));
         }
@@ -388,7 +388,7 @@ import org.robovm.apple.corefoundation.*;
         } else {
             ABMutableMultiValue val = ABMutableMultiValue.create(ABPropertyType.MultiDateTime);
             for (ABPersonDate date : dates) {
-                val.addValueAndLabel(date.getDate0(), date.getLabel0(), null);
+                val.addValueAndLabel(date.getDate().as(CFDate.class), date.getLabel0(), null);
             }
             setValue(ABPersonProperty.Date, val);
         }

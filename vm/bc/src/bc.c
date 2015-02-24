@@ -967,7 +967,9 @@ Env* _bcAttachThreadFromCallback(void) {
 }
 
 void _bcDetachThreadFromCallback(Env* env) {
-    // Do nothing. The thread will be detached when it terminates.
+    if(rvmHasThreadBeenDetached()) {
+        rvmDetachCurrentThread(vm, TRUE, TRUE);
+    }
 }
 
 void* _bcCopyStruct(Env* env, void* src, jint size) {

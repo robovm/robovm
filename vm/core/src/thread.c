@@ -19,7 +19,7 @@
 #if defined(DARWIN)
 # include <mach/mach.h>
 # include <unistd.h>
-
+#include <errno.h>
 #endif
 #include "private.h"
 #include "utlist.h"
@@ -37,6 +37,12 @@
 // Maximum thread id, 32767 (1 << 15 - 1), as Thread.threadId is a signed jint
 #define MAX_THREAD_ID ((1 << 15) - 1)
 
+typedef struct DetachedThread DetachedThread;
+struct DetachedThread {
+    pthread_t thread;
+    DetachedThread* next;
+};
+
 static Mutex threadsLock;
 static pthread_cond_t threadStartCond;
 static Thread* threads = NULL; // List of currently running threads
@@ -48,7 +54,70 @@ static Method* getUncaughtExceptionHandlerMethod;
 static Method* uncaughtExceptionMethod;
 static Method* removeThreadMethod;
 static uint32_t threadGCKind;
+static Mutex detachedThreadsLock;
+static DetachedThread* detachedThreads = NULL;
 
+static void addToDetachedList(pthread_t thread) {
+    rvmLockMutex(&detachedThreadsLock);
+    DetachedThread* dt = (DetachedThread*)malloc(sizeof(DetachedThread));
+    dt->thread = thread;
+    dt->next = detachedThreads? detachedThreads: NULL;
+    detachedThreads = dt;
+    rvmUnlockMutex(&detachedThreadsLock);
+}
+
+static void cleanupDetachedList() {
+    // we only clean up the detached thread list on
+    // Darwin, as that supports pthread_kill(deadthread, 0) == ESRCH
+    // That's in Posix standard from 1996 which Mac OS X and iOS
+    // implement. Linux doesn't implement this behaviour as it
+    // adhere's to a newer Posix standard which reomved this
+    // behaviour from the spec.
+    //
+    // This means we leak memory on Linux (one DetachedThread struct
+    // per thread that's been created. FIXME
+#if defined(DARWIN)
+    rvmLockMutex(&detachedThreadsLock);
+    DetachedThread* dt = detachedThreads;
+    DetachedThread* prev = NULL;
+
+    while(dt) {
+        // check if the thread's dead and remove
+        // it from the list
+        if(pthread_kill(dt->thread, 0) == ESRCH) {
+            if(!prev) {
+                detachedThreads = dt->next;
+            } else {
+                prev->next = dt->next;
+            }
+            // prev stays the same
+            DetachedThread* tmp = dt;
+            dt = dt->next;
+            free(tmp);
+        } else {
+            prev = dt;
+            dt = dt->next;
+        }
+    }
+    rvmUnlockMutex(&detachedThreadsLock);
+#endif
+}
+
+jboolean rvmHasThreadBeenDetached() {
+    pthread_t self = pthread_self();
+    rvmLockMutex(&detachedThreadsLock);
+    DetachedThread* dt = detachedThreads;
+    jboolean result = FALSE;
+    while(dt) {
+        if(pthread_equal(dt->thread, self)) {
+            result = TRUE;
+            break;
+        }
+        dt = dt->next;
+    }
+    rvmUnlockMutex(&detachedThreadsLock);
+    return result;
+}
 
 inline void rvmLockThreadsList() {
     rvmLockMutex(&threadsLock);
@@ -364,6 +433,7 @@ static void attachedThreadExiting(Env* env) {
         // The Thread TLS may have been cleared. We need it to be set.
         setThreadTLS(env, env->currentThread);
         detachThread(env, TRUE, TRUE, TRUE);
+        addToDetachedList(pthread_self());
     }
 }
 
@@ -372,6 +442,7 @@ jboolean rvmInitThreads(Env* env) {
     threadGCKind = gcNewDirectBitmapKind(THREAD_GC_BITMAP);
     if ((threadIdMap = rvmAllocBitVector(MAX_THREAD_ID, TRUE)) == 0) return FALSE;
     if (rvmInitMutex(&threadsLock) != 0) return FALSE;
+    if (rvmInitMutex(&detachedThreadsLock) != 0) return FALSE;
     if (pthread_key_create(&tlsEnvKey, (void (*)(void *)) attachedThreadExiting) != 0) return FALSE;
     if (pthread_key_create(&tlsThreadKey, NULL) != 0) return FALSE;
     if (pthread_cond_init(&threadStartCond, NULL) != 0) return FALSE;
@@ -457,7 +528,8 @@ static void* startThreadEntryPoint(void* _args) {
     }
 
     detachThread(env, TRUE, FALSE, !failure);
-
+    addToDetachedList(pthread_self());
+    cleanupDetachedList();
     return NULL;
 }
 

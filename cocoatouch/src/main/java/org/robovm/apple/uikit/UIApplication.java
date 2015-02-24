@@ -33,6 +33,7 @@ import org.robovm.apple.coredata.*;
 import org.robovm.apple.coreimage.*;
 import org.robovm.apple.coretext.*;
 import org.robovm.apple.corelocation.*;
+import org.robovm.apple.logging.FoundationLogPrintStream;
 /*</imports>*/
 
 /*<javadoc>*/
@@ -330,6 +331,14 @@ import org.robovm.apple.corelocation.*;
         String delegateClassName = null;
         if (delegateClass != null) {
             delegateClassName = ObjCClass.getByType(delegateClass).getName();            
+        }
+        if ("true".equals(System.getProperty("org.robovm.apple.logging.err"))) {
+            System.setErr(new FoundationLogPrintStream());
+            System.err.println("SET System.err to FoundationLogPrintStream");
+        }
+        if ("true".equals(System.getProperty("org.robovm.apple.logging.out"))) {
+    		System.setOut(new FoundationLogPrintStream());
+            System.out.println("SET System.out to FoundationLogPrintStream");
         }
         main(argc, argv, principalClassName, delegateClassName);
     }

@@ -53,7 +53,7 @@ import org.robovm.apple.corelocation.*;
     protected UIPinchGestureRecognizer(SkipInit skipInit) { super(skipInit); }
     /*</constructors>*/
     
-    public UIPinchGestureRecognizer(GestureListener listener) {
+    public UIPinchGestureRecognizer(OnGestureListener listener) {
         super(listener);
     }
     

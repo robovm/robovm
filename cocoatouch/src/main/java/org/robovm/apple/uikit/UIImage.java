@@ -47,29 +47,25 @@ import org.robovm.apple.corelocation.*;
 
     /*<ptr>*/public static class UIImagePtr extends Ptr<UIImage, UIImagePtr> {}/*</ptr>*/
     
-    public interface ImageSaveListener {
-        void didFinishSaving (UIImage image, NSError error);
-    }
-    
     private static java.util.concurrent.atomic.AtomicLong id = new java.util.concurrent.atomic.AtomicLong();
     private static final Selector didFinishSaving = Selector.register("image:didFinishSavingWithError:contextInfo:");
-    private static Map<Long, ListenerWrapper> listeners = new HashMap<>();
-    private static class ListenerWrapper extends NSObject {
-        private final ImageSaveListener listener;
-        private ListenerWrapper(ImageSaveListener listener, long contextInfo) {
-            this.listener = listener;
+    private static final Map<Long, CallbackWrapper> callbacks = new HashMap<>();
+    private static class CallbackWrapper extends NSObject {
+        private final VoidBlock2<UIImage, NSError> callback;
+        private CallbackWrapper(VoidBlock2<UIImage, NSError> callback, long contextInfo) {
+            this.callback = callback;
             
-            synchronized (listeners) {
-                listeners.put(contextInfo, this);
+            synchronized (callbacks) {
+                callbacks.put(contextInfo, this);
             }
         }
         @TypeEncoding("v@:@:^v")
         @Method(selector = "image:didFinishSavingWithError:contextInfo:")
         private void didFinishSaving(UIImage image, NSError error, @Pointer long contextInfo) {
-            listener.didFinishSaving(image, error);
+            callback.invoke(image, error);
             
-            synchronized (listeners) {
-                listeners.remove(contextInfo);
+            synchronized (callbacks) {
+                callbacks.remove(contextInfo);
             }
         }
     }
@@ -181,10 +177,10 @@ import org.robovm.apple.corelocation.*;
         return createFromFile(file.getAbsolutePath());
     }
     
-    public void saveToPhotosAlbum(ImageSaveListener listener) {
-        if (listener != null) {
+    public void saveToPhotosAlbum(VoidBlock2<UIImage, NSError> callback) {
+        if (callback != null) {
             long context = id.getAndIncrement();
-            ListenerWrapper l = new ListenerWrapper(listener, context);
+            CallbackWrapper l = new CallbackWrapper(callback, context);
             saveToPhotosAlbum(l, didFinishSaving, context);
         } else {
             saveToPhotosAlbum(null, null, 0);

@@ -53,7 +53,7 @@ import org.robovm.apple.corelocation.*;
     protected UISwipeGestureRecognizer(SkipInit skipInit) { super(skipInit); }
     /*</constructors>*/
     
-    public UISwipeGestureRecognizer(GestureListener listener) {
+    public UISwipeGestureRecognizer(OnGestureListener listener) {
         super(listener);
     }
     

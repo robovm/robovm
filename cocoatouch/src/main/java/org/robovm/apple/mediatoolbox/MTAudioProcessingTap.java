@@ -167,7 +167,7 @@ import org.robovm.apple.audiotoolbox.*;
      * @since Available in iOS 6.0 and later.
      */
     @Bridge(symbol="MTAudioProcessingTapCreate", optional=true)
-    protected static native int create(CFAllocator allocator, MTAudioProcessingTapCallbacksStruct callbacks, MTAudioProcessingTapCreationFlags flags, MTAudioProcessingTap.MTAudioProcessingTapPtr tapOut);
+    protected static native OSStatus create(CFAllocator allocator, MTAudioProcessingTapCallbacksStruct callbacks, MTAudioProcessingTapCreationFlags flags, MTAudioProcessingTap.MTAudioProcessingTapPtr tapOut);
     /**
      * @since Available in iOS 6.0 and later.
      */
@@ -177,6 +177,6 @@ import org.robovm.apple.audiotoolbox.*;
      * @since Available in iOS 6.0 and later.
      */
     @Bridge(symbol="MTAudioProcessingTapGetSourceAudio", optional=true)
-    public static native int getSourceAudio(MTAudioProcessingTap tap, @MachineSizedSInt long numberFrames, AudioBufferList bufferListInOut, MTAudioProcessingTapFlags.MTAudioProcessingTapFlagsPtr flagsOut, CMTimeRange.CMTimeRangePtr timeRangeOut, MachineSizedSIntPtr numberFramesOut);
+    public static native OSStatus getSourceAudio(MTAudioProcessingTap tap, @MachineSizedSInt long numberFrames, AudioBufferList bufferListInOut, MTAudioProcessingTapFlags.MTAudioProcessingTapFlagsPtr flagsOut, CMTimeRange.CMTimeRangePtr timeRangeOut, MachineSizedSIntPtr numberFramesOut);
     /*</methods>*/
 }

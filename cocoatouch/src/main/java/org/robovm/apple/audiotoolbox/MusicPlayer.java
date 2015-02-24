@@ -54,71 +54,71 @@ import org.robovm.apple.coremedia.*;
      * @since Available in iOS 5.0 and later.
      */
     @Bridge(symbol="NewMusicPlayer", optional=true)
-    public static native int create(MusicPlayer.MusicPlayerPtr outPlayer);
+    public static native OSStatus create(MusicPlayer.MusicPlayerPtr outPlayer);
     /**
      * @since Available in iOS 5.0 and later.
      */
     @Bridge(symbol="DisposeMusicPlayer", optional=true)
-    public native int dispose();
+    public native OSStatus dispose();
     /**
      * @since Available in iOS 5.0 and later.
      */
     @Bridge(symbol="MusicPlayerSetSequence", optional=true)
-    public native int setSequence(MusicSequence inSequence);
+    public native OSStatus setSequence(MusicSequence inSequence);
     /**
      * @since Available in iOS 5.0 and later.
      */
     @Bridge(symbol="MusicPlayerGetSequence", optional=true)
-    public native int getSequence(MusicSequence.MusicSequencePtr outSequence);
+    public native OSStatus getSequence(MusicSequence.MusicSequencePtr outSequence);
     /**
      * @since Available in iOS 5.0 and later.
      */
     @Bridge(symbol="MusicPlayerSetTime", optional=true)
-    public native int setTime(double inTime);
+    public native OSStatus setTime(double inTime);
     /**
      * @since Available in iOS 5.0 and later.
      */
     @Bridge(symbol="MusicPlayerGetTime", optional=true)
-    public native int getTime(DoublePtr outTime);
+    public native OSStatus getTime(DoublePtr outTime);
     /**
      * @since Available in iOS 5.0 and later.
      */
     @Bridge(symbol="MusicPlayerGetHostTimeForBeats", optional=true)
-    public native int getHostTimeForBeats(double inBeats, LongPtr outHostTime);
+    public native OSStatus getHostTimeForBeats(double inBeats, LongPtr outHostTime);
     /**
      * @since Available in iOS 5.0 and later.
      */
     @Bridge(symbol="MusicPlayerGetBeatsForHostTime", optional=true)
-    public native int getBeatsForHostTime(long inHostTime, DoublePtr outBeats);
+    public native OSStatus getBeatsForHostTime(long inHostTime, DoublePtr outBeats);
     /**
      * @since Available in iOS 5.0 and later.
      */
     @Bridge(symbol="MusicPlayerPreroll", optional=true)
-    public native int preroll();
+    public native OSStatus preroll();
     /**
      * @since Available in iOS 5.0 and later.
      */
     @Bridge(symbol="MusicPlayerStart", optional=true)
-    public native int start();
+    public native OSStatus start();
     /**
      * @since Available in iOS 5.0 and later.
      */
     @Bridge(symbol="MusicPlayerStop", optional=true)
-    public native int stop();
+    public native OSStatus stop();
     /**
      * @since Available in iOS 5.0 and later.
      */
     @Bridge(symbol="MusicPlayerIsPlaying", optional=true)
-    public native int isPlaying(BooleanPtr outIsPlaying);
+    public native OSStatus isPlaying(BooleanPtr outIsPlaying);
     /**
      * @since Available in iOS 5.0 and later.
      */
     @Bridge(symbol="MusicPlayerSetPlayRateScalar", optional=true)
-    public native int setPlayRateScalar(double inScaleRate);
+    public native OSStatus setPlayRateScalar(double inScaleRate);
     /**
      * @since Available in iOS 5.0 and later.
      */
     @Bridge(symbol="MusicPlayerGetPlayRateScalar", optional=true)
-    public native int getPlayRateScalar(DoublePtr outScaleRate);
+    public native OSStatus getPlayRateScalar(DoublePtr outScaleRate);
     /*</methods>*/
 }

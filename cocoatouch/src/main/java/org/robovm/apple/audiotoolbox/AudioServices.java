@@ -63,17 +63,17 @@ import org.robovm.apple.coremedia.*;
      * @since Available in iOS 2.0 and later.
      */
     @Bridge(symbol="AudioServicesCreateSystemSoundID", optional=true)
-    public static native int createSystemSoundID(CFURL inFileURL, IntPtr outSystemSoundID);
+    public static native OSStatus createSystemSoundID(CFURL inFileURL, IntPtr outSystemSoundID);
     /**
      * @since Available in iOS 2.0 and later.
      */
     @Bridge(symbol="AudioServicesDisposeSystemSoundID", optional=true)
-    public static native int disposeSystemSoundID(int inSystemSoundID);
+    public static native OSStatus disposeSystemSoundID(int inSystemSoundID);
     /**
      * @since Available in iOS 2.0 and later.
      */
     @Bridge(symbol="AudioServicesAddSystemSoundCompletion", optional=true)
-    public static native int addSystemSoundCompletion(int inSystemSoundID, CFRunLoop inRunLoop, CFString inRunLoopMode, FunctionPtr inCompletionRoutine, VoidPtr inClientData);
+    public static native OSStatus addSystemSoundCompletion(int inSystemSoundID, CFRunLoop inRunLoop, CFString inRunLoopMode, FunctionPtr inCompletionRoutine, VoidPtr inClientData);
     /**
      * @since Available in iOS 2.0 and later.
      */
@@ -83,16 +83,16 @@ import org.robovm.apple.coremedia.*;
      * @since Available in iOS 2.0 and later.
      */
     @Bridge(symbol="AudioServicesGetPropertyInfo", optional=true)
-    public static native int getPropertyInfo(int inPropertyID, int inSpecifierSize, VoidPtr inSpecifier, IntPtr outPropertyDataSize, BooleanPtr outWritable);
+    public static native OSStatus getPropertyInfo(int inPropertyID, int inSpecifierSize, VoidPtr inSpecifier, IntPtr outPropertyDataSize, BooleanPtr outWritable);
     /**
      * @since Available in iOS 2.0 and later.
      */
     @Bridge(symbol="AudioServicesGetProperty", optional=true)
-    public static native int getProperty(int inPropertyID, int inSpecifierSize, VoidPtr inSpecifier, IntPtr ioPropertyDataSize, VoidPtr outPropertyData);
+    public static native OSStatus getProperty(int inPropertyID, int inSpecifierSize, VoidPtr inSpecifier, IntPtr ioPropertyDataSize, VoidPtr outPropertyData);
     /**
      * @since Available in iOS 2.0 and later.
      */
     @Bridge(symbol="AudioServicesSetProperty", optional=true)
-    public static native int setProperty(int inPropertyID, int inSpecifierSize, VoidPtr inSpecifier, int inPropertyDataSize, VoidPtr inPropertyData);
+    public static native OSStatus setProperty(int inPropertyID, int inSpecifierSize, VoidPtr inSpecifier, int inPropertyDataSize, VoidPtr inPropertyData);
     /*</methods>*/
 }

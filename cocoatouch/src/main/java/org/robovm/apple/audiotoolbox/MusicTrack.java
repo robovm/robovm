@@ -54,106 +54,106 @@ import org.robovm.apple.coremedia.*;
      * @since Available in iOS 5.0 and later.
      */
     @Bridge(symbol="MusicTrackGetSequence", optional=true)
-    public native int getSequence(MusicSequence.MusicSequencePtr outSequence);
+    public native OSStatus getSequence(MusicSequence.MusicSequencePtr outSequence);
     /**
      * @since Available in iOS 5.0 and later.
      */
     @Bridge(symbol="MusicTrackSetDestNode", optional=true)
-    public native int setDestNode(int inNode);
+    public native OSStatus setDestNode(int inNode);
     /**
      * @since Available in iOS 5.0 and later.
      */
     @Bridge(symbol="MusicTrackSetDestMIDIEndpoint", optional=true)
-    public native int setDestMIDIEndpoint(MIDIEndpoint inEndpoint);
+    public native OSStatus setDestMIDIEndpoint(int inEndpoint);
     /**
      * @since Available in iOS 5.0 and later.
      */
     @Bridge(symbol="MusicTrackGetDestNode", optional=true)
-    public native int getDestNode(IntPtr outNode);
+    public native OSStatus getDestNode(IntPtr outNode);
     /**
      * @since Available in iOS 5.0 and later.
      */
     @Bridge(symbol="MusicTrackGetDestMIDIEndpoint", optional=true)
-    public native int getDestMIDIEndpoint(MIDIEndpoint.MIDIEndpointPtr outEndpoint);
+    public native OSStatus getDestMIDIEndpoint(IntPtr outEndpoint);
     /**
      * @since Available in iOS 5.0 and later.
      */
     @Bridge(symbol="MusicTrackSetProperty", optional=true)
-    public native int setProperty(int inPropertyID, VoidPtr inData, int inLength);
+    public native OSStatus setProperty(int inPropertyID, VoidPtr inData, int inLength);
     /**
      * @since Available in iOS 5.0 and later.
      */
     @Bridge(symbol="MusicTrackGetProperty", optional=true)
-    public native int getProperty(int inPropertyID, VoidPtr outData, IntPtr ioLength);
+    public native OSStatus getProperty(int inPropertyID, VoidPtr outData, IntPtr ioLength);
     /**
      * @since Available in iOS 5.0 and later.
      */
     @Bridge(symbol="MusicTrackMoveEvents", optional=true)
-    public native int moveEvents(double inStartTime, double inEndTime, double inMoveTime);
+    public native OSStatus moveEvents(double inStartTime, double inEndTime, double inMoveTime);
     /**
      * @since Available in iOS 5.0 and later.
      */
     @Bridge(symbol="MusicTrackClear", optional=true)
-    public native int clear(double inStartTime, double inEndTime);
+    public native OSStatus clear(double inStartTime, double inEndTime);
     /**
      * @since Available in iOS 5.0 and later.
      */
     @Bridge(symbol="MusicTrackCut", optional=true)
-    public native int cut(double inStartTime, double inEndTime);
+    public native OSStatus cut(double inStartTime, double inEndTime);
     /**
      * @since Available in iOS 5.0 and later.
      */
     @Bridge(symbol="MusicTrackCopyInsert", optional=true)
-    public native int copyInsert(double inSourceStartTime, double inSourceEndTime, MusicTrack inDestTrack, double inDestInsertTime);
+    public native OSStatus copyInsert(double inSourceStartTime, double inSourceEndTime, MusicTrack inDestTrack, double inDestInsertTime);
     /**
      * @since Available in iOS 5.0 and later.
      */
     @Bridge(symbol="MusicTrackMerge", optional=true)
-    public native int merge(double inSourceStartTime, double inSourceEndTime, MusicTrack inDestTrack, double inDestInsertTime);
+    public native OSStatus merge(double inSourceStartTime, double inSourceEndTime, MusicTrack inDestTrack, double inDestInsertTime);
     /**
      * @since Available in iOS 5.0 and later.
      */
     @Bridge(symbol="MusicTrackNewMIDINoteEvent", optional=true)
-    public native int newMIDINoteEvent(double inTimeStamp, MIDINoteMessage inMessage);
+    public native OSStatus newMIDINoteEvent(double inTimeStamp, MIDINoteMessage inMessage);
     /**
      * @since Available in iOS 5.0 and later.
      */
     @Bridge(symbol="MusicTrackNewMIDIChannelEvent", optional=true)
-    public native int newMIDIChannelEvent(double inTimeStamp, MIDIChannelMessage inMessage);
+    public native OSStatus newMIDIChannelEvent(double inTimeStamp, MIDIChannelMessage inMessage);
     /**
      * @since Available in iOS 5.0 and later.
      */
     @Bridge(symbol="MusicTrackNewMIDIRawDataEvent", optional=true)
-    public native int newMIDIRawDataEvent(double inTimeStamp, MIDIRawData inRawData);
+    public native OSStatus newMIDIRawDataEvent(double inTimeStamp, MIDIRawData inRawData);
     /**
      * @since Available in iOS 5.0 and later.
      */
     @Bridge(symbol="MusicTrackNewExtendedNoteEvent", optional=true)
-    public native int newExtendedNoteEvent(double inTimeStamp, ExtendedNoteOnEvent inInfo);
+    public native OSStatus newExtendedNoteEvent(double inTimeStamp, ExtendedNoteOnEvent inInfo);
     /**
      * @since Available in iOS 5.0 and later.
      */
     @Bridge(symbol="MusicTrackNewParameterEvent", optional=true)
-    public native int newParameterEvent(double inTimeStamp, ParameterEvent inInfo);
+    public native OSStatus newParameterEvent(double inTimeStamp, ParameterEvent inInfo);
     /**
      * @since Available in iOS 5.0 and later.
      */
     @Bridge(symbol="MusicTrackNewExtendedTempoEvent", optional=true)
-    public native int newExtendedTempoEvent(double inTimeStamp, double inBPM);
+    public native OSStatus newExtendedTempoEvent(double inTimeStamp, double inBPM);
     /**
      * @since Available in iOS 5.0 and later.
      */
     @Bridge(symbol="MusicTrackNewMetaEvent", optional=true)
-    public native int newMetaEvent(double inTimeStamp, MIDIMetaEvent inMetaEvent);
+    public native OSStatus newMetaEvent(double inTimeStamp, MIDIMetaEvent inMetaEvent);
     /**
      * @since Available in iOS 5.0 and later.
      */
     @Bridge(symbol="MusicTrackNewUserEvent", optional=true)
-    public native int newUserEvent(double inTimeStamp, MusicEventUserData inUserData);
+    public native OSStatus newUserEvent(double inTimeStamp, MusicEventUserData inUserData);
     /**
      * @since Available in iOS 5.0 and later.
      */
     @Bridge(symbol="MusicTrackNewAUPresetEvent", optional=true)
-    public native int newAUPresetEvent(double inTimeStamp, AUPresetEvent inPresetEvent);
+    public native OSStatus newAUPresetEvent(double inTimeStamp, AUPresetEvent inPresetEvent);
     /*</methods>*/
 }

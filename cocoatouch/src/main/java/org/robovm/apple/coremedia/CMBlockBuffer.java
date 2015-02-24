@@ -89,8 +89,8 @@ import org.robovm.apple.audiotoolbox.*;
      */
     public BytePtr accessDataBytes(@MachineSizedUInt long offset, @MachineSizedUInt long length, VoidPtr temporaryBlock) {
         BytePtr.BytePtrPtr ptr = new BytePtr.BytePtrPtr();
-        CMBlockBufferError err = accessDataBytes(this, offset, length, temporaryBlock, ptr);
-        if (err == CMBlockBufferError.No) {
+        OSStatus err = accessDataBytes(this, offset, length, temporaryBlock, ptr);
+        if (err.equals(CMBlockBufferError.No)) {
             return ptr.get();
         }
         return null;
@@ -98,13 +98,13 @@ import org.robovm.apple.audiotoolbox.*;
     /**
      * @since Available in iOS 4.0 and later.
      */
-    private CMBlockBufferError replaceDataBytes(VoidPtr sourceBytes, @MachineSizedUInt long offsetIntoDestination, @MachineSizedUInt long dataLength) {
+    private OSStatus replaceDataBytes(VoidPtr sourceBytes, @MachineSizedUInt long offsetIntoDestination, @MachineSizedUInt long dataLength) {
         return replaceDataBytes(sourceBytes, this, offsetIntoDestination, dataLength);
     }
     /**
      * @since Available in iOS 4.0 and later.
      */
-    public CMBlockBufferError fillDataBytes(byte fillByte, @MachineSizedUInt long offsetIntoDestination, @MachineSizedUInt long dataLength) {
+    public OSStatus fillDataBytes(byte fillByte, @MachineSizedUInt long offsetIntoDestination, @MachineSizedUInt long dataLength) {
         return fillDataBytes(fillByte, this, offsetIntoDestination, dataLength);
     }
     /*<methods>*/
@@ -112,22 +112,22 @@ import org.robovm.apple.audiotoolbox.*;
      * @since Available in iOS 4.0 and later.
      */
     @Bridge(symbol="CMBlockBufferCreateEmpty", optional=true)
-    private static native int create(CFAllocator structureAllocator, int subBlockCapacity, CMBlockBufferFlags flags, CMBlockBuffer.CMBlockBufferPtr newBBufOut);
+    private static native OSStatus create(CFAllocator structureAllocator, int subBlockCapacity, CMBlockBufferFlags flags, CMBlockBuffer.CMBlockBufferPtr newBBufOut);
     /**
      * @since Available in iOS 4.0 and later.
      */
     @Bridge(symbol="CMBlockBufferCreateWithMemoryBlock", optional=true)
-    private static native int create(CFAllocator structureAllocator, VoidPtr memoryBlock, @MachineSizedUInt long blockLength, CFAllocator blockAllocator, CMBlockBufferCustomBlockSource customBlockSource, @MachineSizedUInt long offsetToData, @MachineSizedUInt long dataLength, CMBlockBufferFlags flags, CMBlockBuffer.CMBlockBufferPtr newBBufOut);
+    private static native OSStatus create(CFAllocator structureAllocator, VoidPtr memoryBlock, @MachineSizedUInt long blockLength, CFAllocator blockAllocator, CMBlockBufferCustomBlockSource customBlockSource, @MachineSizedUInt long offsetToData, @MachineSizedUInt long dataLength, CMBlockBufferFlags flags, CMBlockBuffer.CMBlockBufferPtr newBBufOut);
     /**
      * @since Available in iOS 4.0 and later.
      */
     @Bridge(symbol="CMBlockBufferCreateWithBufferReference", optional=true)
-    private static native int create(CFAllocator structureAllocator, CMBlockBuffer targetBuffer, @MachineSizedUInt long offsetToData, @MachineSizedUInt long dataLength, CMBlockBufferFlags flags, CMBlockBuffer.CMBlockBufferPtr newBBufOut);
+    private static native OSStatus create(CFAllocator structureAllocator, CMBlockBuffer targetBuffer, @MachineSizedUInt long offsetToData, @MachineSizedUInt long dataLength, CMBlockBufferFlags flags, CMBlockBuffer.CMBlockBufferPtr newBBufOut);
     /**
      * @since Available in iOS 4.0 and later.
      */
     @Bridge(symbol="CMBlockBufferCreateContiguous", optional=true)
-    private static native int create(CFAllocator structureAllocator, CMBlockBuffer sourceBuffer, CFAllocator blockAllocator, CMBlockBufferCustomBlockSource customBlockSource, @MachineSizedUInt long offsetToData, @MachineSizedUInt long dataLength, CMBlockBufferFlags flags, CMBlockBuffer.CMBlockBufferPtr newBBufOut);
+    private static native OSStatus create(CFAllocator structureAllocator, CMBlockBuffer sourceBuffer, CFAllocator blockAllocator, CMBlockBufferCustomBlockSource customBlockSource, @MachineSizedUInt long offsetToData, @MachineSizedUInt long dataLength, CMBlockBufferFlags flags, CMBlockBuffer.CMBlockBufferPtr newBBufOut);
     /**
      * @since Available in iOS 4.0 and later.
      */
@@ -137,42 +137,42 @@ import org.robovm.apple.audiotoolbox.*;
      * @since Available in iOS 4.0 and later.
      */
     @Bridge(symbol="CMBlockBufferAppendMemoryBlock", optional=true)
-    public native int appendMemoryBlock(VoidPtr memoryBlock, @MachineSizedUInt long blockLength, CFAllocator blockAllocator, CMBlockBufferCustomBlockSource customBlockSource, @MachineSizedUInt long offsetToData, @MachineSizedUInt long dataLength, CMBlockBufferFlags flags);
+    public native OSStatus appendMemoryBlock(VoidPtr memoryBlock, @MachineSizedUInt long blockLength, CFAllocator blockAllocator, CMBlockBufferCustomBlockSource customBlockSource, @MachineSizedUInt long offsetToData, @MachineSizedUInt long dataLength, CMBlockBufferFlags flags);
     /**
      * @since Available in iOS 4.0 and later.
      */
     @Bridge(symbol="CMBlockBufferAppendBufferReference", optional=true)
-    public native CMBlockBufferError appendBufferReference(CMBlockBuffer targetBBuf, @MachineSizedUInt long offsetToData, @MachineSizedUInt long dataLength, CMBlockBufferFlags flags);
+    public native OSStatus appendBufferReference(CMBlockBuffer targetBBuf, @MachineSizedUInt long offsetToData, @MachineSizedUInt long dataLength, CMBlockBufferFlags flags);
     /**
      * @since Available in iOS 4.0 and later.
      */
     @Bridge(symbol="CMBlockBufferAssureBlockMemory", optional=true)
-    public native CMBlockBufferError assureBlockMemory();
+    public native OSStatus assureBlockMemory();
     /**
      * @since Available in iOS 4.0 and later.
      */
     @Bridge(symbol="CMBlockBufferAccessDataBytes", optional=true)
-    private static native CMBlockBufferError accessDataBytes(CMBlockBuffer theBuffer, @MachineSizedUInt long offset, @MachineSizedUInt long length, VoidPtr temporaryBlock, BytePtr.BytePtrPtr returnedPointer);
+    private static native OSStatus accessDataBytes(CMBlockBuffer theBuffer, @MachineSizedUInt long offset, @MachineSizedUInt long length, VoidPtr temporaryBlock, BytePtr.BytePtrPtr returnedPointer);
     /**
      * @since Available in iOS 4.0 and later.
      */
     @Bridge(symbol="CMBlockBufferCopyDataBytes", optional=true)
-    public native CMBlockBufferError copyDataBytes(@MachineSizedUInt long offsetToData, @MachineSizedUInt long dataLength, VoidPtr destination);
+    public native OSStatus copyDataBytes(@MachineSizedUInt long offsetToData, @MachineSizedUInt long dataLength, VoidPtr destination);
     /**
      * @since Available in iOS 4.0 and later.
      */
     @Bridge(symbol="CMBlockBufferReplaceDataBytes", optional=true)
-    private static native CMBlockBufferError replaceDataBytes(VoidPtr sourceBytes, CMBlockBuffer destinationBuffer, @MachineSizedUInt long offsetIntoDestination, @MachineSizedUInt long dataLength);
+    private static native OSStatus replaceDataBytes(VoidPtr sourceBytes, CMBlockBuffer destinationBuffer, @MachineSizedUInt long offsetIntoDestination, @MachineSizedUInt long dataLength);
     /**
      * @since Available in iOS 4.0 and later.
      */
     @Bridge(symbol="CMBlockBufferFillDataBytes", optional=true)
-    private static native CMBlockBufferError fillDataBytes(byte fillByte, CMBlockBuffer destinationBuffer, @MachineSizedUInt long offsetIntoDestination, @MachineSizedUInt long dataLength);
+    private static native OSStatus fillDataBytes(byte fillByte, CMBlockBuffer destinationBuffer, @MachineSizedUInt long offsetIntoDestination, @MachineSizedUInt long dataLength);
     /**
      * @since Available in iOS 4.0 and later.
      */
     @Bridge(symbol="CMBlockBufferGetDataPointer", optional=true)
-    public native int getDataPointer(@MachineSizedUInt long offset, MachineSizedUIntPtr lengthAtOffset, MachineSizedUIntPtr totalLength, BytePtr.BytePtrPtr dataPointer);
+    public native OSStatus getDataPointer(@MachineSizedUInt long offset, MachineSizedUIntPtr lengthAtOffset, MachineSizedUIntPtr totalLength, BytePtr.BytePtrPtr dataPointer);
     /**
      * @since Available in iOS 4.0 and later.
      */

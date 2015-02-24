@@ -13,6 +13,7 @@ typedefs:
     CFPlugInRef: CFPlugIn
     'void (^)(CFRunLoopObserverRef, CFRunLoopActivity)': '@Block VoidBlock2<CFRunLoopObserver, CFRunLoopActivity>'
     'void (^)(CFRunLoopTimerRef)': '@Block VoidBlock1<CFRunLoopTimer>'
+    OSStatus: OSStatus
 private_typedefs:
     '__CFString *': String
     CFStringEncoding: CFStringEncodings

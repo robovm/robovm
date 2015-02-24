@@ -74,7 +74,7 @@ import org.robovm.apple.audiotoolbox.*;
      * @since Available in iOS 4.0 and later.
      */
     @Bridge(symbol="CMFormatDescriptionCreate", optional=true)
-    protected static native int create(CFAllocator allocator, CMMediaType mediaType, int mediaSubtype, CFDictionary extensions, CMFormatDescription.CMFormatDescriptionPtr descOut);
+    protected static native OSStatus create(CFAllocator allocator, CMMediaType mediaType, int mediaSubtype, CFDictionary extensions, CMFormatDescription.CMFormatDescriptionPtr descOut);
     /**
      * @since Available in iOS 4.0 and later.
      */

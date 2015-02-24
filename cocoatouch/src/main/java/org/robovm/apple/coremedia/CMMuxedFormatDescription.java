@@ -66,6 +66,6 @@ import org.robovm.apple.audiotoolbox.*;
      * @since Available in iOS 4.0 and later.
      */
     @Bridge(symbol="CMMuxedFormatDescriptionCreate", optional=true)
-    private static native int create(CFAllocator allocator, CMMuxedStreamType muxType, CMVideoFormatDescriptionExtension extensions, CMMuxedFormatDescription.CMMuxedFormatDescriptionPtr outDesc);
+    private static native OSStatus create(CFAllocator allocator, CMMuxedStreamType muxType, CMVideoFormatDescriptionExtension extensions, CMMuxedFormatDescription.CMMuxedFormatDescriptionPtr outDesc);
     /*</methods>*/
 }

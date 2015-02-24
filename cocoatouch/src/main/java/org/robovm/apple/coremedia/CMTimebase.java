@@ -127,12 +127,12 @@ import org.robovm.apple.audiotoolbox.*;
      * @since Available in iOS 6.0 and later.
      */
     @Bridge(symbol="CMTimebaseCreateWithMasterClock", optional=true)
-    protected static native int create(CFAllocator allocator, CMClock masterClock, CMTimebase.CMTimebasePtr timebaseOut);
+    protected static native OSStatus create(CFAllocator allocator, CMClock masterClock, CMTimebase.CMTimebasePtr timebaseOut);
     /**
      * @since Available in iOS 6.0 and later.
      */
     @Bridge(symbol="CMTimebaseCreateWithMasterTimebase", optional=true)
-    protected static native int create(CFAllocator allocator, CMTimebase masterTimebase, CMTimebase.CMTimebasePtr timebaseOut);
+    protected static native OSStatus create(CFAllocator allocator, CMTimebase masterTimebase, CMTimebase.CMTimebasePtr timebaseOut);
     /**
      * @since Available in iOS 6.0 and later.
      */

@@ -35,7 +35,7 @@ import org.robovm.apple.corefoundation.*;
 @Marshaler(UTTypeDeclaration.Marshaler.class)
 /*<annotations>*/@Library("MobileCoreServices")/*</annotations>*/
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/UTTypeDeclaration/*</name>*/ 
-    extends /*<extends>*/Object/*</extends>*/ 
+    extends /*<extends>*/CocoaUtility/*</extends>*/ 
     /*<implements>*//*</implements>*/ {
 
     public static class Marshaler {

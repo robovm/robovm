@@ -55,55 +55,55 @@ import org.robovm.apple.coremedia.*;
      */
     @Deprecated
     @Bridge(symbol="AudioSessionInitialize", optional=true)
-    public static native int initialize(CFRunLoop inRunLoop, CFString inRunLoopMode, FunctionPtr inInterruptionListener, VoidPtr inClientData);
+    public static native OSStatus initialize(CFRunLoop inRunLoop, CFString inRunLoopMode, FunctionPtr inInterruptionListener, VoidPtr inClientData);
     /**
      * @since Available in iOS 2.0 and later.
      * @deprecated Deprecated in iOS 7.0.
      */
     @Deprecated
     @Bridge(symbol="AudioSessionSetActive", optional=true)
-    public static native int setActive(boolean active);
+    public static native OSStatus setActive(boolean active);
     /**
      * @since Available in iOS 4.0 and later.
      * @deprecated Deprecated in iOS 7.0.
      */
     @Deprecated
     @Bridge(symbol="AudioSessionSetActiveWithFlags", optional=true)
-    public static native int setActiveWithFlags(boolean active, int inFlags);
+    public static native OSStatus setActiveWithFlags(boolean active, int inFlags);
     /**
      * @since Available in iOS 2.0 and later.
      * @deprecated Deprecated in iOS 7.0.
      */
     @Deprecated
     @Bridge(symbol="AudioSessionGetProperty", optional=true)
-    public static native int getProperty(int inID, IntPtr ioDataSize, VoidPtr outData);
+    public static native OSStatus getProperty(int inID, IntPtr ioDataSize, VoidPtr outData);
     /**
      * @since Available in iOS 2.0 and later.
      * @deprecated Deprecated in iOS 7.0.
      */
     @Deprecated
     @Bridge(symbol="AudioSessionSetProperty", optional=true)
-    public static native int setProperty(int inID, int inDataSize, VoidPtr inData);
+    public static native OSStatus setProperty(int inID, int inDataSize, VoidPtr inData);
     /**
      * @since Available in iOS 2.0 and later.
      * @deprecated Deprecated in iOS 7.0.
      */
     @Deprecated
     @Bridge(symbol="AudioSessionGetPropertySize", optional=true)
-    public static native int getPropertySize(int inID, IntPtr outDataSize);
+    public static native OSStatus getPropertySize(int inID, IntPtr outDataSize);
     /**
      * @since Available in iOS 2.0 and later.
      * @deprecated Deprecated in iOS 7.0.
      */
     @Deprecated
     @Bridge(symbol="AudioSessionAddPropertyListener", optional=true)
-    public static native int addPropertyListener(int inID, FunctionPtr inProc, VoidPtr inClientData);
+    public static native OSStatus addPropertyListener(int inID, FunctionPtr inProc, VoidPtr inClientData);
     /**
      * @since Available in iOS 2.1 and later.
      * @deprecated Deprecated in iOS 7.0.
      */
     @Deprecated
     @Bridge(symbol="AudioSessionRemovePropertyListenerWithUserData", optional=true)
-    public static native int removePropertyListenerWithUserData(int inID, FunctionPtr inProc, VoidPtr inClientData);
+    public static native OSStatus removePropertyListenerWithUserData(int inID, FunctionPtr inProc, VoidPtr inClientData);
     /*</methods>*/
 }

@@ -167,41 +167,41 @@ import org.robovm.apple.audiotoolbox.*;
      * @since Available in iOS 4.0 and later.
      */
     @Bridge(symbol="CMTextFormatDescriptionGetDisplayFlags", optional=true)
-    private native int getDisplayFlags(IntPtr outDisplayFlags);
+    private native OSStatus getDisplayFlags(IntPtr outDisplayFlags);
     /**
      * @since Available in iOS 4.0 and later.
      */
     @Bridge(symbol="CMTextFormatDescriptionGetJustification", optional=true)
-    private native int getJustification(BytePtr outHorizontalJust, BytePtr outVerticalJust);
+    private native OSStatus getJustification(BytePtr outHorizontalJust, BytePtr outVerticalJust);
     /**
      * @since Available in iOS 4.0 and later.
      */
     @Bridge(symbol="CMTextFormatDescriptionGetDefaultTextBox", optional=true)
-    private native int getDefaultTextBox(boolean originIsAtTopLeft, @MachineSizedFloat double heightOfTextTrack, CGRect.CGRectPtr outDefaultTextBox);
+    private native OSStatus getDefaultTextBox(boolean originIsAtTopLeft, @MachineSizedFloat double heightOfTextTrack, CGRect.CGRectPtr outDefaultTextBox);
     /**
      * @since Available in iOS 4.0 and later.
      */
     @Bridge(symbol="CMTextFormatDescriptionGetDefaultStyle", optional=true)
-    private native int getDefaultStyle(ShortPtr outLocalFontID, BooleanPtr outBold, BooleanPtr outItalic, BooleanPtr outUnderline, MachineSizedFloatPtr outFontSize, MachineSizedFloatPtr outColorComponents);
+    private native OSStatus getDefaultStyle(ShortPtr outLocalFontID, BooleanPtr outBold, BooleanPtr outItalic, BooleanPtr outUnderline, MachineSizedFloatPtr outFontSize, MachineSizedFloatPtr outColorComponents);
     /**
      * @since Available in iOS 4.0 and later.
      */
     @Bridge(symbol="CMTextFormatDescriptionGetFontName", optional=true)
-    private native int getFontName(short localFontID, CFString.CFStringPtr outFontName);
+    private native OSStatus getFontName(short localFontID, CFString.CFStringPtr outFontName);
     /**
      * @since Available in iOS 8.0 and later.
      */
     @Bridge(symbol="CMTextFormatDescriptionCreateFromBigEndianTextDescriptionData", optional=true)
-    private static native int createFromBigEndianTextDescriptionData(CFAllocator allocator, BytePtr textDescriptionData, @MachineSizedUInt long textDescriptionSize, String textDescriptionFlavor, CMMediaType mediaType, CMTextFormatDescription.CMTextFormatDescriptionPtr textFormatDescriptionOut);
+    private static native OSStatus createFromBigEndianTextDescriptionData(CFAllocator allocator, BytePtr textDescriptionData, @MachineSizedUInt long textDescriptionSize, String textDescriptionFlavor, CMMediaType mediaType, CMTextFormatDescription.CMTextFormatDescriptionPtr textFormatDescriptionOut);
     /**
      * @since Available in iOS 8.0 and later.
      */
     @Bridge(symbol="CMTextFormatDescriptionCreateFromBigEndianTextDescriptionBlockBuffer", optional=true)
-    private static native int createFromBigEndianTextDescriptionBlockBuffer(CFAllocator allocator, CMBlockBuffer textDescriptionBlockBuffer, String textDescriptionFlavor, CMMediaType mediaType, CMTextFormatDescription.CMTextFormatDescriptionPtr textFormatDescriptionOut);
+    private static native OSStatus createFromBigEndianTextDescriptionBlockBuffer(CFAllocator allocator, CMBlockBuffer textDescriptionBlockBuffer, String textDescriptionFlavor, CMMediaType mediaType, CMTextFormatDescription.CMTextFormatDescriptionPtr textFormatDescriptionOut);
     /**
      * @since Available in iOS 8.0 and later.
      */
     @Bridge(symbol="CMTextFormatDescriptionCopyAsBigEndianTextDescriptionBlockBuffer", optional=true)
-    private static native int copyAsBigEndianTextDescriptionBlockBuffer(CFAllocator allocator, CMTextFormatDescription textFormatDescription, String textDescriptionFlavor, CMBlockBuffer.CMBlockBufferPtr textDescriptionBlockBufferOut);
+    private static native OSStatus copyAsBigEndianTextDescriptionBlockBuffer(CFAllocator allocator, CMTextFormatDescription textFormatDescription, String textDescriptionFlavor, CMBlockBuffer.CMBlockBufferPtr textDescriptionBlockBufferOut);
     /*</methods>*/
 }

@@ -195,22 +195,22 @@ import org.robovm.apple.audiotoolbox.*;
      * @since Available in iOS 8.0 and later.
      */
     @Bridge(symbol="CMMetadataCreateIdentifierForKeyAndKeySpace", optional=true)
-    private static native CMMetadataIdentifierError createIdentifier(CFAllocator allocator, CFType key, String keySpace, CFString.CFStringPtr identifierOut);
+    private static native OSStatus createIdentifier(CFAllocator allocator, CFType key, String keySpace, CFString.CFStringPtr identifierOut);
     /**
      * @since Available in iOS 8.0 and later.
      */
     @Bridge(symbol="CMMetadataCreateKeyFromIdentifier", optional=true)
-    private static native CMMetadataIdentifierError createKey(CFAllocator allocator, String identifier, CFType.CFTypePtr keyOut);
+    private static native OSStatus createKey(CFAllocator allocator, String identifier, CFType.CFTypePtr keyOut);
     /**
      * @since Available in iOS 8.0 and later.
      */
     @Bridge(symbol="CMMetadataCreateKeyFromIdentifierAsCFData", optional=true)
-    private static native CMMetadataIdentifierError createKeyAsData(CFAllocator allocator, String identifier, NSData.NSDataPtr keyOut);
+    private static native OSStatus createKeyAsData(CFAllocator allocator, String identifier, NSData.NSDataPtr keyOut);
     /**
      * @since Available in iOS 8.0 and later.
      */
     @Bridge(symbol="CMMetadataCreateKeySpaceFromIdentifier", optional=true)
-    private static native CMMetadataIdentifierError createKeySpace(CFAllocator allocator, String identifier, CFString.CFStringPtr keySpaceOut);
+    private static native OSStatus createKeySpace(CFAllocator allocator, String identifier, CFString.CFStringPtr keySpaceOut);
     /*</methods>*/
     
     /*<annotations>*/@Library("CoreMedia")/*</annotations>*/

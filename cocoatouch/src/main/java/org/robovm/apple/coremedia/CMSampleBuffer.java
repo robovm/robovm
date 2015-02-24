@@ -204,8 +204,8 @@ import org.robovm.apple.audiotoolbox.*;
         sampleSizePtr.set(sampleSizeArray);
         
         CMSampleBufferPtr ptr = new CMSampleBufferPtr();
-        CMSampleBufferError err = create(null, dataBuffer, dataReady, new FunctionPtr(cbMakeDataReady), refconId, formatDescription, numSamples, sampleTimingArray.length, sampleTimingPtr, sampleSizeArray.length, sampleSizePtr, ptr);
-        if (err == CMSampleBufferError.No) {
+        OSStatus err = create(null, dataBuffer, dataReady, new FunctionPtr(cbMakeDataReady), refconId, formatDescription, numSamples, sampleTimingArray.length, sampleTimingPtr, sampleSizeArray.length, sampleSizePtr, ptr);
+        if (err.equals(CMSampleBufferError.No)) {
             CMSampleBuffer buffer = ptr.get();
             buffer.localRefconId = refconId;
             synchronized (makeDataReadyCallbacks) {
@@ -235,8 +235,8 @@ import org.robovm.apple.audiotoolbox.*;
         sampleSizePtr.set(sampleSizeArray);
         
         CMSampleBufferPtr ptr = new CMSampleBufferPtr();
-        CMSampleBufferError err = createReady(null, dataBuffer, formatDescription, numSamples, sampleTimingArray.length, sampleTimingPtr, sampleSizeArray.length, sampleSizePtr, ptr);
-        if (err == CMSampleBufferError.No) {
+        OSStatus err = createReady(null, dataBuffer, formatDescription, numSamples, sampleTimingArray.length, sampleTimingPtr, sampleSizeArray.length, sampleSizePtr, ptr);
+        if (err.equals(CMSampleBufferError.No)) {
             CMSampleBuffer buffer = ptr.get();
             buffer.localRefconId = refconId;
             return buffer;
@@ -250,8 +250,8 @@ import org.robovm.apple.audiotoolbox.*;
         packetDescriptionPtr.update(packetDescriptions);
         
         CMSampleBufferPtr ptr = new CMSampleBufferPtr();
-        CMSampleBufferError err = createAudioSampleBuffer(null, dataBuffer, dataReady, new FunctionPtr(cbMakeDataReady), refconId, formatDescription, numSamples, sbufPTS, packetDescriptionPtr, ptr);
-        if (err == CMSampleBufferError.No) {
+        OSStatus err = createAudioSampleBuffer(null, dataBuffer, dataReady, new FunctionPtr(cbMakeDataReady), refconId, formatDescription, numSamples, sbufPTS, packetDescriptionPtr, ptr);
+        if (err.equals(CMSampleBufferError.No)) {
             CMSampleBuffer buffer = ptr.get();
             buffer.localRefconId = refconId;
             synchronized (makeDataReadyCallbacks) {
@@ -271,8 +271,8 @@ import org.robovm.apple.audiotoolbox.*;
         packetDescriptionPtr.update(packetDescriptions);
         
         CMSampleBufferPtr ptr = new CMSampleBufferPtr();
-        CMSampleBufferError err = createAudioSampleBuffer(null, dataBuffer, formatDescription, numSamples, sbufPTS, packetDescriptionPtr, ptr);
-        if (err == CMSampleBufferError.No) {
+        OSStatus err = createAudioSampleBuffer(null, dataBuffer, formatDescription, numSamples, sbufPTS, packetDescriptionPtr, ptr);
+        if (err.equals(CMSampleBufferError.No)) {
             CMSampleBuffer buffer = ptr.get();
             buffer.localRefconId = refconId;
             return buffer;
@@ -287,8 +287,8 @@ import org.robovm.apple.audiotoolbox.*;
         long refconId = CMSampleBuffer.refconId.getAndIncrement();
         
         CMSampleBufferPtr ptr = new CMSampleBufferPtr();
-        CMSampleBufferError err = createReadyWithImageBuffer(null, imageBuffer, formatDescription, sampleTiming, ptr);
-        if (err == CMSampleBufferError.No) {
+        OSStatus err = createReadyWithImageBuffer(null, imageBuffer, formatDescription, sampleTiming, ptr);
+        if (err.equals(CMSampleBufferError.No)) {
             CMSampleBuffer buffer = ptr.get();
             buffer.localRefconId = refconId;
             return buffer;
@@ -299,8 +299,8 @@ import org.robovm.apple.audiotoolbox.*;
         long refconId = CMSampleBuffer.refconId.getAndIncrement();
         
         CMSampleBufferPtr ptr = new CMSampleBufferPtr();
-        CMSampleBufferError err = createForImageBuffer(null, imageBuffer, dataReady, new FunctionPtr(cbMakeDataReady), refconId, formatDescription, sampleTiming, ptr);
-        if (err == CMSampleBufferError.No) {
+        OSStatus err = createForImageBuffer(null, imageBuffer, dataReady, new FunctionPtr(cbMakeDataReady), refconId, formatDescription, sampleTiming, ptr);
+        if (err.equals(CMSampleBufferError.No)) {
             CMSampleBuffer buffer = ptr.get();
             buffer.localRefconId = refconId;
             synchronized (makeDataReadyCallbacks) {
@@ -328,7 +328,7 @@ import org.robovm.apple.audiotoolbox.*;
         createForRange(null, this, sampleRange, ptr);
         return ptr.get();
     }
-    public CMSampleBufferError setAudioBufferList(AudioBufferList bufferList, CMSampleBufferFlags flags) {
+    public OSStatus setAudioBufferList(AudioBufferList bufferList, CMSampleBufferFlags flags) {
         return setAudioBufferList(null, null, flags, bufferList);
     }
     public AudioBufferList getAudioBufferList(@MachineSizedUInt long bufferListSize, CMSampleBufferFlags flags, CMBlockBuffer buffer) {
@@ -346,14 +346,14 @@ import org.robovm.apple.audiotoolbox.*;
     /**
      * @since Available in iOS 8.0 and later.
      */
-    public CMSampleBufferError hasDataFailed() {
+    public OSStatus hasDataFailed() {
         IntPtr ptr = new IntPtr();
         hasDataFailed(ptr);
-        return CMSampleBufferError.valueOf(ptr.get());
+        return OSStatus.valueOf(ptr.get());
     }
-    public CMSampleBufferError setInvalidateCallback(InvalidateCallback callback) {
+    public OSStatus setInvalidateCallback(InvalidateCallback callback) {
         long refconId = localRefconId;
-        CMSampleBufferError error = setInvalidateCallback(new FunctionPtr(cbInvalidate), refconId);
+        OSStatus error = setInvalidateCallback(new FunctionPtr(cbInvalidate), refconId);
         synchronized (invalidateCallbacks) {
             invalidateCallbacks.put(refconId, callback);
         }
@@ -379,9 +379,9 @@ import org.robovm.apple.audiotoolbox.*;
         getSampleSizeArray(sizeArrayEntries, ptr, null);
         return ptr.toLongArray((int)sizeArrayEntries);
     }
-    public CMSampleBufferError callForEachSample(ForEachCallback callback) {
+    public OSStatus callForEachSample(ForEachCallback callback) {
         long refconId = localRefconId;
-        CMSampleBufferError error = callForEachSample(new FunctionPtr(cbForEach), refconId);
+        OSStatus error = callForEachSample(new FunctionPtr(cbForEach), refconId);
         synchronized (forEachCallbacks) {
             forEachCallbacks.put(refconId, callback);
         }
@@ -458,47 +458,47 @@ import org.robovm.apple.audiotoolbox.*;
      * @since Available in iOS 4.0 and later.
      */
     @Bridge(symbol="CMSampleBufferCreate", optional=true)
-    private static native CMSampleBufferError create(CFAllocator allocator, CMBlockBuffer dataBuffer, boolean dataReady, FunctionPtr makeDataReadyCallback, @Pointer long makeDataReadyRefcon, CMFormatDescription formatDescription, @MachineSizedSInt long numSamples, @MachineSizedSInt long numSampleTimingEntries, CMSampleTimingInfo sampleTimingArray, @MachineSizedSInt long numSampleSizeEntries, MachineSizedUIntPtr sampleSizeArray, CMSampleBuffer.CMSampleBufferPtr sBufOut);
+    private static native OSStatus create(CFAllocator allocator, CMBlockBuffer dataBuffer, boolean dataReady, FunctionPtr makeDataReadyCallback, @Pointer long makeDataReadyRefcon, CMFormatDescription formatDescription, @MachineSizedSInt long numSamples, @MachineSizedSInt long numSampleTimingEntries, CMSampleTimingInfo sampleTimingArray, @MachineSizedSInt long numSampleSizeEntries, MachineSizedUIntPtr sampleSizeArray, CMSampleBuffer.CMSampleBufferPtr sBufOut);
     /**
      * @since Available in iOS 8.0 and later.
      */
     @Bridge(symbol="CMSampleBufferCreateReady", optional=true)
-    private static native CMSampleBufferError createReady(CFAllocator allocator, CMBlockBuffer dataBuffer, CMFormatDescription formatDescription, @MachineSizedSInt long numSamples, @MachineSizedSInt long numSampleTimingEntries, CMSampleTimingInfo sampleTimingArray, @MachineSizedSInt long numSampleSizeEntries, MachineSizedUIntPtr sampleSizeArray, CMSampleBuffer.CMSampleBufferPtr sBufOut);
+    private static native OSStatus createReady(CFAllocator allocator, CMBlockBuffer dataBuffer, CMFormatDescription formatDescription, @MachineSizedSInt long numSamples, @MachineSizedSInt long numSampleTimingEntries, CMSampleTimingInfo sampleTimingArray, @MachineSizedSInt long numSampleSizeEntries, MachineSizedUIntPtr sampleSizeArray, CMSampleBuffer.CMSampleBufferPtr sBufOut);
     /**
      * @since Available in iOS 4.0 and later.
      */
     @Bridge(symbol="CMAudioSampleBufferCreateWithPacketDescriptions", optional=true)
-    private static native CMSampleBufferError createAudioSampleBuffer(CFAllocator allocator, CMBlockBuffer dataBuffer, boolean dataReady, FunctionPtr makeDataReadyCallback, @Pointer long makeDataReadyRefcon, CMFormatDescription formatDescription, @MachineSizedSInt long numSamples, @ByVal CMTime sbufPTS, AudioStreamPacketDescription packetDescriptions, CMSampleBuffer.CMSampleBufferPtr sBufOut);
+    private static native OSStatus createAudioSampleBuffer(CFAllocator allocator, CMBlockBuffer dataBuffer, boolean dataReady, FunctionPtr makeDataReadyCallback, @Pointer long makeDataReadyRefcon, CMFormatDescription formatDescription, @MachineSizedSInt long numSamples, @ByVal CMTime sbufPTS, AudioStreamPacketDescription packetDescriptions, CMSampleBuffer.CMSampleBufferPtr sBufOut);
     /**
      * @since Available in iOS 8.0 and later.
      */
     @Bridge(symbol="CMAudioSampleBufferCreateReadyWithPacketDescriptions", optional=true)
-    private static native CMSampleBufferError createAudioSampleBuffer(CFAllocator allocator, CMBlockBuffer dataBuffer, CMFormatDescription formatDescription, @MachineSizedSInt long numSamples, @ByVal CMTime sbufPTS, AudioStreamPacketDescription packetDescriptions, CMSampleBuffer.CMSampleBufferPtr sBufOut);
+    private static native OSStatus createAudioSampleBuffer(CFAllocator allocator, CMBlockBuffer dataBuffer, CMFormatDescription formatDescription, @MachineSizedSInt long numSamples, @ByVal CMTime sbufPTS, AudioStreamPacketDescription packetDescriptions, CMSampleBuffer.CMSampleBufferPtr sBufOut);
     /**
      * @since Available in iOS 4.0 and later.
      */
     @Bridge(symbol="CMSampleBufferCreateForImageBuffer", optional=true)
-    private static native CMSampleBufferError createForImageBuffer(CFAllocator allocator, CVImageBuffer imageBuffer, boolean dataReady, FunctionPtr makeDataReadyCallback, @Pointer long makeDataReadyRefcon, CMVideoFormatDescription formatDescription, CMSampleTimingInfo sampleTiming, CMSampleBuffer.CMSampleBufferPtr sBufOut);
+    private static native OSStatus createForImageBuffer(CFAllocator allocator, CVImageBuffer imageBuffer, boolean dataReady, FunctionPtr makeDataReadyCallback, @Pointer long makeDataReadyRefcon, CMVideoFormatDescription formatDescription, CMSampleTimingInfo sampleTiming, CMSampleBuffer.CMSampleBufferPtr sBufOut);
     /**
      * @since Available in iOS 8.0 and later.
      */
     @Bridge(symbol="CMSampleBufferCreateReadyWithImageBuffer", optional=true)
-    private static native CMSampleBufferError createReadyWithImageBuffer(CFAllocator allocator, CVImageBuffer imageBuffer, CMVideoFormatDescription formatDescription, CMSampleTimingInfo sampleTiming, CMSampleBuffer.CMSampleBufferPtr sBufOut);
+    private static native OSStatus createReadyWithImageBuffer(CFAllocator allocator, CVImageBuffer imageBuffer, CMVideoFormatDescription formatDescription, CMSampleTimingInfo sampleTiming, CMSampleBuffer.CMSampleBufferPtr sBufOut);
     /**
      * @since Available in iOS 4.0 and later.
      */
     @Bridge(symbol="CMSampleBufferCreateCopy", optional=true)
-    private static native CMSampleBufferError createCopy(CFAllocator allocator, CMSampleBuffer sbuf, CMSampleBuffer.CMSampleBufferPtr sbufCopyOut);
+    private static native OSStatus createCopy(CFAllocator allocator, CMSampleBuffer sbuf, CMSampleBuffer.CMSampleBufferPtr sbufCopyOut);
     /**
      * @since Available in iOS 4.0 and later.
      */
     @Bridge(symbol="CMSampleBufferCreateCopyWithNewTiming", optional=true)
-    private static native CMSampleBufferError createCopyWithNewTiming(CFAllocator allocator, CMSampleBuffer originalSBuf, @MachineSizedSInt long numSampleTimingEntries, CMSampleTimingInfo sampleTimingArray, CMSampleBuffer.CMSampleBufferPtr sBufCopyOut);
+    private static native OSStatus createCopyWithNewTiming(CFAllocator allocator, CMSampleBuffer originalSBuf, @MachineSizedSInt long numSampleTimingEntries, CMSampleTimingInfo sampleTimingArray, CMSampleBuffer.CMSampleBufferPtr sBufCopyOut);
     /**
      * @since Available in iOS 4.0 and later.
      */
     @Bridge(symbol="CMSampleBufferCopySampleBufferForRange", optional=true)
-    protected static native CMSampleBufferError createForRange(CFAllocator allocator, CMSampleBuffer sbuf, @ByVal CFRange sampleRange, CMSampleBuffer.CMSampleBufferPtr sBufOut);
+    protected static native OSStatus createForRange(CFAllocator allocator, CMSampleBuffer sbuf, @ByVal CFRange sampleRange, CMSampleBuffer.CMSampleBufferPtr sBufOut);
     /**
      * @since Available in iOS 4.0 and later.
      */
@@ -508,7 +508,7 @@ import org.robovm.apple.audiotoolbox.*;
      * @since Available in iOS 4.0 and later.
      */
     @Bridge(symbol="CMSampleBufferSetDataBuffer", optional=true)
-    public native int setDataBuffer(CMBlockBuffer dataBuffer);
+    public native OSStatus setDataBuffer(CMBlockBuffer dataBuffer);
     /**
      * @since Available in iOS 4.0 and later.
      */
@@ -523,27 +523,27 @@ import org.robovm.apple.audiotoolbox.*;
      * @since Available in iOS 4.0 and later.
      */
     @Bridge(symbol="CMSampleBufferSetDataBufferFromAudioBufferList", optional=true)
-    public native CMSampleBufferError setAudioBufferList(CFAllocator bbufStructAllocator, CFAllocator bbufMemoryAllocator, CMSampleBufferFlags flags, AudioBufferList bufferList);
+    public native OSStatus setAudioBufferList(CFAllocator bbufStructAllocator, CFAllocator bbufMemoryAllocator, CMSampleBufferFlags flags, AudioBufferList bufferList);
     /**
      * @since Available in iOS 4.0 and later.
      */
     @Bridge(symbol="CMSampleBufferGetAudioBufferListWithRetainedBlockBuffer", optional=true)
-    private native CMSampleBufferError getAudioBufferList(MachineSizedUIntPtr bufferListSizeNeededOut, AudioBufferList bufferListOut, @MachineSizedUInt long bufferListSize, CFAllocator bbufStructAllocator, CFAllocator bbufMemoryAllocator, CMSampleBufferFlags flags, CMBlockBuffer.CMBlockBufferPtr blockBufferOut);
+    private native OSStatus getAudioBufferList(MachineSizedUIntPtr bufferListSizeNeededOut, AudioBufferList bufferListOut, @MachineSizedUInt long bufferListSize, CFAllocator bbufStructAllocator, CFAllocator bbufMemoryAllocator, CMSampleBufferFlags flags, CMBlockBuffer.CMBlockBufferPtr blockBufferOut);
     /**
      * @since Available in iOS 4.0 and later.
      */
     @Bridge(symbol="CMSampleBufferGetAudioStreamPacketDescriptions", optional=true)
-    private native CMSampleBufferError getAudioStreamPacketDescriptions(@MachineSizedUInt long packetDescriptionsSize, AudioStreamPacketDescription packetDescriptionsOut, MachineSizedUIntPtr packetDescriptionsSizeNeededOut);
+    private native OSStatus getAudioStreamPacketDescriptions(@MachineSizedUInt long packetDescriptionsSize, AudioStreamPacketDescription packetDescriptionsOut, MachineSizedUIntPtr packetDescriptionsSizeNeededOut);
     /**
      * @since Available in iOS 7.0 and later.
      */
     @Bridge(symbol="CMSampleBufferCopyPCMDataIntoAudioBufferList", optional=true)
-    public native CMSampleBufferError copyPCMDataIntoAudioBufferList(int frameOffset, int numFrames, AudioBufferList bufferList);
+    public native OSStatus copyPCMDataIntoAudioBufferList(int frameOffset, int numFrames, AudioBufferList bufferList);
     /**
      * @since Available in iOS 4.0 and later.
      */
     @Bridge(symbol="CMSampleBufferSetDataReady", optional=true)
-    public native CMSampleBufferError setDataReady();
+    public native OSStatus setDataReady();
     /**
      * @since Available in iOS 4.0 and later.
      */
@@ -553,37 +553,37 @@ import org.robovm.apple.audiotoolbox.*;
      * @since Available in iOS 8.0 and later.
      */
     @Bridge(symbol="CMSampleBufferSetDataFailed", optional=true)
-    public native CMSampleBufferError setDataFailed(CMSampleBufferError status);
+    public native OSStatus setDataFailed(OSStatus status);
     /**
      * @since Available in iOS 8.0 and later.
      */
     @Bridge(symbol="CMSampleBufferHasDataFailed", optional=true)
-    private native boolean hasDataFailed(IntPtr statusOut);
+    public native boolean hasDataFailed(IntPtr statusOut);
     /**
      * @since Available in iOS 4.0 and later.
      */
     @Bridge(symbol="CMSampleBufferMakeDataReady", optional=true)
-    public native CMSampleBufferError makeDataReady();
+    public native OSStatus makeDataReady();
     /**
      * @since Available in iOS 4.0 and later.
      */
     @Bridge(symbol="CMSampleBufferTrackDataReadiness", optional=true)
-    public native CMSampleBufferError trackDataReadiness(CMSampleBuffer sbufToTrack);
+    public native OSStatus trackDataReadiness(CMSampleBuffer sbufToTrack);
     /**
      * @since Available in iOS 4.0 and later.
      */
     @Bridge(symbol="CMSampleBufferInvalidate", optional=true)
-    public native CMSampleBufferError invalidate();
+    public native OSStatus invalidate();
     /**
      * @since Available in iOS 4.0 and later.
      */
     @Bridge(symbol="CMSampleBufferSetInvalidateCallback", optional=true)
-    private native CMSampleBufferError setInvalidateCallback(FunctionPtr invalidateCallback, long invalidateRefCon);
+    private native OSStatus setInvalidateCallback(FunctionPtr invalidateCallback, long invalidateRefCon);
     /**
      * @since Available in iOS 8.0 and later.
      */
     @Bridge(symbol="CMSampleBufferSetInvalidateHandler", optional=true)
-    public native CMSampleBufferError setInvalidateHandler(@Block VoidBlock1<CMSampleBuffer> invalidateHandler);
+    public native OSStatus setInvalidateHandler(@Block VoidBlock1<CMSampleBuffer> invalidateHandler);
     /**
      * @since Available in iOS 4.0 and later.
      */
@@ -623,7 +623,7 @@ import org.robovm.apple.audiotoolbox.*;
      * @since Available in iOS 4.0 and later.
      */
     @Bridge(symbol="CMSampleBufferSetOutputPresentationTimeStamp", optional=true)
-    public native CMSampleBufferError setOutputPresentationTimeStamp(@ByVal CMTime outputPresentationTimeStamp);
+    public native OSStatus setOutputPresentationTimeStamp(@ByVal CMTime outputPresentationTimeStamp);
     /**
      * @since Available in iOS 4.0 and later.
      */
@@ -633,22 +633,22 @@ import org.robovm.apple.audiotoolbox.*;
      * @since Available in iOS 4.0 and later.
      */
     @Bridge(symbol="CMSampleBufferGetSampleTimingInfoArray", optional=true)
-    private native CMSampleBufferError getSampleTimingInfoArray(@MachineSizedSInt long timingArrayEntries, CMSampleTimingInfo timingArrayOut, MachineSizedSIntPtr timingArrayEntriesNeededOut);
+    private native OSStatus getSampleTimingInfoArray(@MachineSizedSInt long timingArrayEntries, CMSampleTimingInfo timingArrayOut, MachineSizedSIntPtr timingArrayEntriesNeededOut);
     /**
      * @since Available in iOS 4.0 and later.
      */
     @Bridge(symbol="CMSampleBufferGetOutputSampleTimingInfoArray", optional=true)
-    private native CMSampleBufferError getOutputSampleTimingInfoArray(@MachineSizedSInt long timingArrayEntries, CMSampleTimingInfo timingArrayOut, MachineSizedSIntPtr timingArrayEntriesNeededOut);
+    private native OSStatus getOutputSampleTimingInfoArray(@MachineSizedSInt long timingArrayEntries, CMSampleTimingInfo timingArrayOut, MachineSizedSIntPtr timingArrayEntriesNeededOut);
     /**
      * @since Available in iOS 4.0 and later.
      */
     @Bridge(symbol="CMSampleBufferGetSampleTimingInfo", optional=true)
-    private native CMSampleBufferError getSampleTimingInfo(@MachineSizedSInt long sampleIndex, CMSampleTimingInfo timingInfoOut);
+    private native OSStatus getSampleTimingInfo(@MachineSizedSInt long sampleIndex, CMSampleTimingInfo timingInfoOut);
     /**
      * @since Available in iOS 4.0 and later.
      */
     @Bridge(symbol="CMSampleBufferGetSampleSizeArray", optional=true)
-    private native CMSampleBufferError getSampleSizeArray(@MachineSizedSInt long sizeArrayEntries, MachineSizedUIntPtr sizeArrayOut, MachineSizedSIntPtr sizeArrayEntriesNeededOut);
+    private native OSStatus getSampleSizeArray(@MachineSizedSInt long sizeArrayEntries, MachineSizedUIntPtr sizeArrayOut, MachineSizedSIntPtr sizeArrayEntriesNeededOut);
     /**
      * @since Available in iOS 4.0 and later.
      */
@@ -673,11 +673,11 @@ import org.robovm.apple.audiotoolbox.*;
      * @since Available in iOS 4.0 and later.
      */
     @Bridge(symbol="CMSampleBufferCallForEachSample", optional=true)
-    private native CMSampleBufferError callForEachSample(FunctionPtr callback, @Pointer long refcon);
+    private native OSStatus callForEachSample(FunctionPtr callback, @Pointer long refcon);
     /**
      * @since Available in iOS 8.0 and later.
      */
     @Bridge(symbol="CMSampleBufferCallBlockForEachSample", optional=true)
-    public native CMSampleBufferError callForEachSample(@Block Block2<CMSampleBuffer, Long, CMSampleBufferError> handler);
+    public native OSStatus callForEachSample(@Block Block2<CMSampleBuffer, Long, CMSampleBufferError> handler);
     /*</methods>*/
 }

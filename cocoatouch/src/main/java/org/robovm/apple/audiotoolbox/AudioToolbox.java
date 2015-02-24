@@ -232,11 +232,11 @@ import org.robovm.apple.coremedia.*;
      * @since Available in iOS 2.0 and later.
      */
     @Bridge(symbol="AudioFormatGetPropertyInfo", optional=true)
-    public static native int function__AudioFormatGetPropertyInfo(int inPropertyID, int inSpecifierSize, VoidPtr inSpecifier, IntPtr outPropertyDataSize);
+    public static native OSStatus function__AudioFormatGetPropertyInfo(int inPropertyID, int inSpecifierSize, VoidPtr inSpecifier, IntPtr outPropertyDataSize);
     /**
      * @since Available in iOS 2.0 and later.
      */
     @Bridge(symbol="AudioFormatGetProperty", optional=true)
-    public static native int function__AudioFormatGetProperty(int inPropertyID, int inSpecifierSize, VoidPtr inSpecifier, IntPtr ioPropertyDataSize, VoidPtr outPropertyData);
+    public static native OSStatus function__AudioFormatGetProperty(int inPropertyID, int inSpecifierSize, VoidPtr inSpecifier, IntPtr ioPropertyDataSize, VoidPtr outPropertyData);
     /*</methods>*/
 }

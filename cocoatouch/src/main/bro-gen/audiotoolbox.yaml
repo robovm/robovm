@@ -189,40 +189,33 @@ functions:
     AudioConverter(New.*):
         class: AudioConverter
         name: "create"
-        return_type: AudioConverterError
         visibility: protected
     AudioConverter(.*Property.*):
         class: AudioConverter
         name: "#{g[0]}"
-        return_type: AudioConverterError
         visibility: protected
     AudioConverter(.*Buffer):
         class: AudioConverter
         name: "#{g[0]}"
-        return_type: AudioConverterError
         visibility: protected
     AudioConverterDispose:
         exclude: true
     AudioConverter(.*):
         class: AudioConverter
         name: "#{g[0]}"
-        return_type: AudioConverterError
 
     # AudioFile
     AudioFileClose:
         class: AudioFile
         name: "closeFile"
-        return_type: AudioFileError
     AudioFile(.*):
         class: AudioFile
         name: "#{g[0]}"
-        return_type: AudioFileError
 
     # AudioFileStream
     AudioFileStream(.*):
         class: AudioFileStream
         name: "#{g[0]}"
-        return_type: AudioFileStreamError
 
     # AudioQueue
     AudioQueueDispose:
@@ -230,7 +223,6 @@ functions:
     AudioQueue(.*):
         class: AudioQueue
         name: "#{g[0]}"
-        return_type: AudioQueueError
 
     # AudioServices
     AudioServices(.*):

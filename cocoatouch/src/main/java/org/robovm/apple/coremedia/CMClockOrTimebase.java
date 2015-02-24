@@ -81,7 +81,7 @@ import org.robovm.apple.audiotoolbox.*;
      * @since Available in iOS 6.0 and later.
      */
     @Bridge(symbol="CMSyncGetRelativeRateAndAnchorTime", optional=true)
-    private native int getRelativeRateAndAnchorTime(CMClockOrTimebase relativeToClockOrTimebase, DoublePtr outRelativeRate, CMTime.CMTimePtr outOfClockOrTimebaseAnchorTime, CMTime.CMTimePtr outRelativeToClockOrTimebaseAnchorTime);
+    private native OSStatus getRelativeRateAndAnchorTime(CMClockOrTimebase relativeToClockOrTimebase, DoublePtr outRelativeRate, CMTime.CMTimePtr outOfClockOrTimebaseAnchorTime, CMTime.CMTimePtr outRelativeToClockOrTimebaseAnchorTime);
     /**
      * @since Available in iOS 6.0 and later.
      */

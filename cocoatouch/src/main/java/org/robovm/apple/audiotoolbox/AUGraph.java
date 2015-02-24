@@ -54,146 +54,146 @@ import org.robovm.apple.coremedia.*;
      * @since Available in iOS 2.0 and later.
      */
     @Bridge(symbol="NewAUGraph", optional=true)
-    public static native int create(AUGraph.AUGraphPtr outGraph);
+    public static native OSStatus create(AUGraph.AUGraphPtr outGraph);
     /**
      * @since Available in iOS 2.0 and later.
      */
     @Bridge(symbol="AUGraphAddNode", optional=true)
-    public native int addNode(AudioComponentDescription inDescription, IntPtr outNode);
+    public native OSStatus addNode(AudioComponentDescription inDescription, IntPtr outNode);
     /**
      * @since Available in iOS 2.0 and later.
      */
     @Bridge(symbol="AUGraphRemoveNode", optional=true)
-    public native int removeNode(int inNode);
+    public native OSStatus removeNode(int inNode);
     /**
      * @since Available in iOS 2.0 and later.
      */
     @Bridge(symbol="AUGraphGetNodeCount", optional=true)
-    public native int getNodeCount(IntPtr outNumberOfNodes);
+    public native OSStatus getNodeCount(IntPtr outNumberOfNodes);
     /**
      * @since Available in iOS 2.0 and later.
      */
     @Bridge(symbol="AUGraphGetIndNode", optional=true)
-    public native int getIndNode(int inIndex, IntPtr outNode);
+    public native OSStatus getIndNode(int inIndex, IntPtr outNode);
     /**
      * @since Available in iOS 2.0 and later.
      */
     @Bridge(symbol="AUGraphNodeInfo", optional=true)
-    public native int nodeInfo(int inNode, AudioComponentDescription outDescription, AudioComponentInstance.AudioComponentInstancePtr outAudioUnit);
+    public native OSStatus nodeInfo(int inNode, AudioComponentDescription outDescription, AudioComponentInstance.AudioComponentInstancePtr outAudioUnit);
     /**
      * @since Available in iOS 2.0 and later.
      */
     @Bridge(symbol="AUGraphConnectNodeInput", optional=true)
-    public native int connectNodeInput(int inSourceNode, int inSourceOutputNumber, int inDestNode, int inDestInputNumber);
+    public native OSStatus connectNodeInput(int inSourceNode, int inSourceOutputNumber, int inDestNode, int inDestInputNumber);
     /**
      * @since Available in iOS 2.0 and later.
      */
     @Bridge(symbol="AUGraphSetNodeInputCallback", optional=true)
-    public native int setNodeInputCallback(int inDestNode, int inDestInputNumber, AURenderCallbackStruct inInputCallback);
+    public native OSStatus setNodeInputCallback(int inDestNode, int inDestInputNumber, AURenderCallbackStruct inInputCallback);
     /**
      * @since Available in iOS 2.0 and later.
      */
     @Bridge(symbol="AUGraphDisconnectNodeInput", optional=true)
-    public native int disconnectNodeInput(int inDestNode, int inDestInputNumber);
+    public native OSStatus disconnectNodeInput(int inDestNode, int inDestInputNumber);
     /**
      * @since Available in iOS 2.0 and later.
      */
     @Bridge(symbol="AUGraphClearConnections", optional=true)
-    public native int clearConnections();
+    public native OSStatus clearConnections();
     /**
      * @since Available in iOS 2.0 and later.
      */
     @Bridge(symbol="AUGraphGetNumberOfInteractions", optional=true)
-    public native int getNumberOfInteractions(IntPtr outNumInteractions);
+    public native OSStatus getNumberOfInteractions(IntPtr outNumInteractions);
     /**
      * @since Available in iOS 2.0 and later.
      */
     @Bridge(symbol="AUGraphGetInteractionInfo", optional=true)
-    public native int getInteractionInfo(int inInteractionIndex, AUNodeInteraction outInteraction);
+    public native OSStatus getInteractionInfo(int inInteractionIndex, AUNodeInteraction outInteraction);
     /**
      * @since Available in iOS 2.0 and later.
      */
     @Bridge(symbol="AUGraphCountNodeInteractions", optional=true)
-    public native int countNodeInteractions(int inNode, IntPtr outNumInteractions);
+    public native OSStatus countNodeInteractions(int inNode, IntPtr outNumInteractions);
     /**
      * @since Available in iOS 2.0 and later.
      */
     @Bridge(symbol="AUGraphGetNodeInteractions", optional=true)
-    public native int getNodeInteractions(int inNode, IntPtr ioNumInteractions, AUNodeInteraction outInteractions);
+    public native OSStatus getNodeInteractions(int inNode, IntPtr ioNumInteractions, AUNodeInteraction outInteractions);
     /**
      * @since Available in iOS 2.0 and later.
      */
     @Bridge(symbol="AUGraphUpdate", optional=true)
-    public native int update(BooleanPtr outIsUpdated);
+    public native OSStatus update(BooleanPtr outIsUpdated);
     /**
      * @since Available in iOS 2.0 and later.
      */
     @Bridge(symbol="AUGraphOpen", optional=true)
-    public native int open();
+    public native OSStatus open();
     /**
      * @since Available in iOS 2.0 and later.
      */
     @Bridge(symbol="AUGraphInitialize", optional=true)
-    public native int initialize();
+    public native OSStatus initialize();
     /**
      * @since Available in iOS 2.0 and later.
      */
     @Bridge(symbol="AUGraphUninitialize", optional=true)
-    public native int uninitialize();
+    public native OSStatus uninitialize();
     /**
      * @since Available in iOS 2.0 and later.
      */
     @Bridge(symbol="AUGraphStart", optional=true)
-    public native int start();
+    public native OSStatus start();
     /**
      * @since Available in iOS 2.0 and later.
      */
     @Bridge(symbol="AUGraphStop", optional=true)
-    public native int stop();
+    public native OSStatus stop();
     /**
      * @since Available in iOS 2.0 and later.
      */
     @Bridge(symbol="AUGraphIsOpen", optional=true)
-    public native int isOpen(BooleanPtr outIsOpen);
+    public native OSStatus isOpen(BooleanPtr outIsOpen);
     /**
      * @since Available in iOS 2.0 and later.
      */
     @Bridge(symbol="AUGraphIsInitialized", optional=true)
-    public native int isInitialized(BooleanPtr outIsInitialized);
+    public native OSStatus isInitialized(BooleanPtr outIsInitialized);
     /**
      * @since Available in iOS 2.0 and later.
      */
     @Bridge(symbol="AUGraphIsRunning", optional=true)
-    public native int isRunning(BooleanPtr outIsRunning);
+    public native OSStatus isRunning(BooleanPtr outIsRunning);
     /**
      * @since Available in iOS 2.0 and later.
      */
     @Bridge(symbol="AUGraphGetCPULoad", optional=true)
-    public native int getCPULoad(FloatPtr outAverageCPULoad);
+    public native OSStatus getCPULoad(FloatPtr outAverageCPULoad);
     /**
      * @since Available in iOS 2.0 and later.
      */
     @Bridge(symbol="AUGraphGetMaxCPULoad", optional=true)
-    public native int getMaxCPULoad(FloatPtr outMaxLoad);
+    public native OSStatus getMaxCPULoad(FloatPtr outMaxLoad);
     /**
      * @since Available in iOS 2.0 and later.
      */
     @Bridge(symbol="AUGraphAddRenderNotify", optional=true)
-    public native int addRenderNotify(FunctionPtr inCallback, VoidPtr inRefCon);
+    public native OSStatus addRenderNotify(FunctionPtr inCallback, VoidPtr inRefCon);
     /**
      * @since Available in iOS 2.0 and later.
      */
     @Bridge(symbol="AUGraphRemoveRenderNotify", optional=true)
-    public native int removeRenderNotify(FunctionPtr inCallback, VoidPtr inRefCon);
+    public native OSStatus removeRenderNotify(FunctionPtr inCallback, VoidPtr inRefCon);
     /**
      * @since Available in iOS 5.0 and later.
      */
     @Bridge(symbol="MusicSequenceSetAUGraph", optional=true)
-    public static native int musicSequenceSet(MusicSequence inSequence, AUGraph inGraph);
+    public static native OSStatus musicSequenceSet(MusicSequence inSequence, AUGraph inGraph);
     /**
      * @since Available in iOS 5.0 and later.
      */
     @Bridge(symbol="MusicSequenceGetAUGraph", optional=true)
-    public static native int musicSequenceGet(MusicSequence inSequence, AUGraph.AUGraphPtr outGraph);
+    public static native OSStatus musicSequenceGet(MusicSequence inSequence, AUGraph.AUGraphPtr outGraph);
     /*</methods>*/
 }

@@ -78,7 +78,7 @@ import org.robovm.apple.audiotoolbox.*;
     /**
      * @since Available in iOS 8.0 and later.
      */
-    public CMMetadataDataTypeRegistryError register(String description, List<String> conformingDataTypes) {
+    public OSStatus register(String description, List<String> conformingDataTypes) {
         return registerDataType(dataType, description, conformingDataTypes);
     }
     /**
@@ -122,7 +122,7 @@ import org.robovm.apple.audiotoolbox.*;
      * @since Available in iOS 8.0 and later.
      */
     @Bridge(symbol="CMMetadataDataTypeRegistryRegisterDataType", optional=true)
-    public static native CMMetadataDataTypeRegistryError registerDataType(String dataType, String description, @org.robovm.rt.bro.annotation.Marshaler(CFArray.AsStringListMarshaler.class) List<String> conformingDataTypes);
+    public static native OSStatus registerDataType(String dataType, String description, @org.robovm.rt.bro.annotation.Marshaler(CFArray.AsStringListMarshaler.class) List<String> conformingDataTypes);
     /**
      * @since Available in iOS 8.0 and later.
      */

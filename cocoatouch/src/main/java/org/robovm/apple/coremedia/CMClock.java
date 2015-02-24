@@ -98,7 +98,7 @@ import org.robovm.apple.audiotoolbox.*;
      * @since Available in iOS 6.0 and later.
      */
     @Bridge(symbol="CMClockGetAnchorTime", optional=true)
-    protected native int getAnchorTime(CMTime.CMTimePtr outClockTime, CMTime.CMTimePtr outReferenceClockTime);
+    protected native OSStatus getAnchorTime(CMTime.CMTimePtr outClockTime, CMTime.CMTimePtr outReferenceClockTime);
     /**
      * @since Available in iOS 6.0 and later.
      */
@@ -113,6 +113,6 @@ import org.robovm.apple.audiotoolbox.*;
      * @since Available in iOS 6.0 and later.
      */
     @Bridge(symbol="CMAudioClockCreate", optional=true)
-    private static native int createAudioClock(CFAllocator allocator, CMClock.CMClockPtr clockOut);
+    private static native OSStatus createAudioClock(CFAllocator allocator, CMClock.CMClockPtr clockOut);
     /*</methods>*/
 }

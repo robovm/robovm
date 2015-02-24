@@ -69,12 +69,12 @@ import org.robovm.apple.audiotoolbox.*;
      * @since Available in iOS 5.0 and later.
      */
     @Bridge(symbol="CMSimpleQueueCreate", optional=true)
-    private static native CMSimpleQueueError create(CFAllocator allocator, int capacity, CMSimpleQueue.CMSimpleQueuePtr queueOut);
+    private static native OSStatus create(CFAllocator allocator, int capacity, CMSimpleQueue.CMSimpleQueuePtr queueOut);
     /**
      * @since Available in iOS 5.0 and later.
      */
     @Bridge(symbol="CMSimpleQueueEnqueue", optional=true)
-    public native CMSimpleQueueError enqueue(VoidPtr element);
+    public native OSStatus enqueue(VoidPtr element);
     /**
      * @since Available in iOS 5.0 and later.
      */
@@ -89,16 +89,16 @@ import org.robovm.apple.audiotoolbox.*;
      * @since Available in iOS 5.0 and later.
      */
     @Bridge(symbol="CMSimpleQueueReset", optional=true)
-    public native CMSimpleQueueError reset();
+    public native OSStatus reset();
     /**
      * @since Available in iOS 5.0 and later.
      */
     @Bridge(symbol="CMSimpleQueueGetCapacity", optional=true)
-    public native CMSimpleQueueError getCapacity();
+    public native int getCapacity();
     /**
      * @since Available in iOS 5.0 and later.
      */
     @Bridge(symbol="CMSimpleQueueGetCount", optional=true)
-    public native CMSimpleQueueError getCount();
+    public native int getCount();
     /*</methods>*/
 }

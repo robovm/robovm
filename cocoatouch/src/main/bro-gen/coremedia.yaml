@@ -252,7 +252,6 @@ functions:
         name: '#{g[0]}'
         visibility: private
         static: true
-        return_type: CMBlockBufferError
     CMBlockBuffer(Get.*): 
         class: CMBlockBuffer
         name: '#{g[0]}'
@@ -262,7 +261,6 @@ functions:
     CMBlockBuffer(.*):
         class: CMBlockBuffer
         name: '#{g[0]}'
-        return_type: CMBlockBufferError
 
     # CMBufferQueue
     CMBufferQueue(GetCallbacks.*):
@@ -273,15 +271,12 @@ functions:
         class: CMBufferQueue
         name: '#{g[0]}'
         visibility: private
-        return_type: CMBufferQueueError
     CMBufferQueue(Enqueue|MarkEndOfData|Reset|RemoveTrigger):
         class: CMBufferQueue
         name: '#{g[0]}'
-        return_type: CMBufferQueueError
     CMBufferQueue(Reset)WithCallback:
         class: CMBufferQueue
         name: '#{g[0]}'
-        return_type: CMBufferQueueError
         visibility: private
         parameters:
             refcon:
@@ -289,7 +284,6 @@ functions:
     CMBufferQueue(InstallTrigger).*:
         class: CMBufferQueue
         name: '#{g[0]}'
-        return_type: CMBufferQueueError
         visibility: private
         parameters:
             triggerRefcon:
@@ -297,7 +291,6 @@ functions:
     CMBufferQueue(CallForEachBuffer):
         class: CMBufferQueue
         name: '#{g[0]}'
-        return_type: CMBufferQueueError
         visibility: private
         parameters:
             refcon:
@@ -305,7 +298,6 @@ functions:
     CMBufferQueue(SetValidationCallback):
         class: CMBufferQueue
         name: '#{g[0]}'
-        return_type: CMBufferQueueError
         visibility: private
         parameters:
             validationRefCon:
@@ -433,7 +425,6 @@ functions:
         class: CMMetadataIdentifier
         name: '#{g[0]}'
         visibility: private
-        return_type: CMMetadataIdentifierError
         parameters:
             identifierOut:
                 type: CFString.CFStringPtr
@@ -441,12 +432,10 @@ functions:
         class: CMMetadataIdentifier
         name: '#{g[0]}'
         visibility: private
-        return_type: CMMetadataIdentifierError
     CMMetadata(CreateKey)FromIdentifierAsCFData:
         class: CMMetadataIdentifier
         name: '#{g[0]}AsData'
         visibility: private
-        return_type: CMMetadataIdentifierError
         parameters:
             keyOut:
                 type: NSData.NSDataPtr
@@ -454,7 +443,6 @@ functions:
         class: CMMetadataIdentifier
         name: '#{g[0]}'
         visibility: private
-        return_type: CMMetadataIdentifierError
         parameters:
             keySpaceOut:
                 type: CFString.CFStringPtr
@@ -463,7 +451,6 @@ functions:
     CMMetadataDataTypeRegistry(RegisterDataType):
         class: CMMetadataDataType
         name: '#{g[0]}'
-        return_type: CMMetadataDataTypeRegistryError
         parameters:
             conformingDataTypes:
                 type: List<String>
@@ -603,7 +590,6 @@ functions:
         parameters:
             makeDataReadyRefcon:
                 type: '@Pointer long'
-        return_type: CMSampleBufferError
     CMAudioSampleBufferCreate.*:
         class: CMSampleBuffer
         name: createAudioSampleBuffer
@@ -611,16 +597,13 @@ functions:
         parameters:
             makeDataReadyRefcon:
                 type: '@Pointer long'
-        return_type: CMSampleBufferError
     CMSampleBufferCopySampleBufferForRange:
         class: CMSampleBuffer
         name: createForRange
         visibility: protected
-        return_type: CMSampleBufferError
     CMSampleBufferSetDataBufferFromAudioBufferList:
         class: CMSampleBuffer
         name: setAudioBufferList
-        return_type: CMSampleBufferError
         parameters:
             flags:
                 type: CMSampleBufferFlags
@@ -628,7 +611,6 @@ functions:
         class: CMSampleBuffer
         name: '#{g[0]}'
         visibility: private
-        return_type: CMSampleBufferError
         parameters:
             flags:
                 type: CMSampleBufferFlags
@@ -636,17 +618,12 @@ functions:
         class: CMSampleBuffer
         name: '#{g[0]}'
         visibility: private
-        return_type: CMSampleBufferError
     CMSampleBufferDataIsReady:
         class: CMSampleBuffer
         name: isDataReady
     CMSampleBuffer(SetDataFailed):
         class: CMSampleBuffer
         name: '#{g[0]}'
-        return_type: CMSampleBufferError
-        parameters:
-            status:
-                type: CMSampleBufferError
     CMSampleBuffer(HasDataFailed):
         class: CMSampleBuffer
         name: '#{g[0]}'
@@ -656,24 +633,20 @@ functions:
     CMSampleBuffer(CopyPCMDataIntoAudioBufferList|SetDataReady|MakeDataReady|TrackDataReadiness|Invalidate|SetOutputPresentationTimeStamp):
         class: CMSampleBuffer
         name: '#{g[0]}'
-        return_type: CMSampleBufferError
     CMSampleBuffer(SetInvalidateHandler):
         class: CMSampleBuffer
         name: '#{g[0]}'
-        return_type: CMSampleBufferError
         parameters:
             invalidateHandler:
                 type: '@Block VoidBlock1<CMSampleBuffer>'
     CMSampleBuffer(SetInvalidateCallback):
         class: CMSampleBuffer
         name: '#{g[0]}'
-        return_type: CMSampleBufferError
         visibility: private
     CMSampleBuffer(GetSampleTimingInfoArray|GetOutputSampleTimingInfoArray|GetSampleTimingInfo|GetSampleSizeArray):
         class: CMSampleBuffer
         name: '#{g[0]}'
         visibility: private
-        return_type: CMSampleBufferError
     CMSampleBuffer(GetSampleAttachments)Array:
         class: CMSampleBuffer
         name: '#{g[0]}'
@@ -683,14 +656,18 @@ functions:
         class: CMSampleBuffer
         name: '#{g[0]}'
         visibility: private
-        return_type: CMSampleBufferError
         parameters:
             refcon:
                 type: '@Pointer long'
+    CMSampleBuffer(HasDataFailed):
+        class: CMSampleBuffer
+        name: '#{g[0]}'
+        parameters:
+            statusOut:
+                type: IntPtr
     CMSampleBufferCallBlockForEachSample:
         class: CMSampleBuffer
         name: callForEachSample
-        return_type: CMSampleBufferError
         parameters:
             handler:
                 type: '@Block Block2<CMSampleBuffer, Long, CMSampleBufferError>'
@@ -703,14 +680,12 @@ functions:
         class: CMSimpleQueue
         name: create
         visibility: private
-        return_type: CMSimpleQueueError
     CMSimpleQueue(Dequeue|GetHead):
         class: CMSimpleQueue
         name: '#{g[0]}'
     CMSimpleQueue(.*):
         class: CMSimpleQueue
         name: '#{g[0]}'
-        return_type: CMSimpleQueueError
 
     # CMTextFormatDescription
     CMTextFormatDescription(GetDefaultTextBox):

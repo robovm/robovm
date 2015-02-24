@@ -21,9 +21,6 @@ enums:
     CGImageSourceStatus: {}
         
 classes:
-    ImageIO:
-        annotations: ['@Marshaler(NSString.AsStringMarshaler.class)']
-
     CGImageDestinationProperties:
         extends: CGImageProperties
 
@@ -48,7 +45,8 @@ functions:
     CGImageDestinationCopy(TypeIdentifiers):
         class: CGImageDestination
         name: 'get#{g[0]}'
-        return_type: '@org.robovm.rt.bro.annotation.Marshaler(CFArray.AsStringListMarshaler.class) List<String>'
+        return_type: List<String>
+        return_marshaler: CFArray.AsStringListMarshaler
     CGImageDestinationCreate.*:
         class: CGImageDestination
         name: create

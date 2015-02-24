@@ -54,107 +54,107 @@ import org.robovm.apple.coremedia.*;
      * @since Available in iOS 5.0 and later.
      */
     @Bridge(symbol="NewMusicSequence", optional=true)
-    public static native int create(MusicSequence.MusicSequencePtr outSequence);
+    public static native OSStatus create(MusicSequence.MusicSequencePtr outSequence);
     /**
      * @since Available in iOS 5.0 and later.
      */
     @Bridge(symbol="DisposeMusicSequence", optional=true)
-    public native int dispose();
+    public native OSStatus dispose();
     /**
      * @since Available in iOS 5.0 and later.
      */
     @Bridge(symbol="MusicSequenceNewTrack", optional=true)
-    public native int newTrack(MusicTrack.MusicTrackPtr outTrack);
+    public native OSStatus newTrack(MusicTrack.MusicTrackPtr outTrack);
     /**
      * @since Available in iOS 5.0 and later.
      */
     @Bridge(symbol="MusicSequenceDisposeTrack", optional=true)
-    public native int disposeTrack(MusicTrack inTrack);
+    public native OSStatus disposeTrack(MusicTrack inTrack);
     /**
      * @since Available in iOS 5.0 and later.
      */
     @Bridge(symbol="MusicSequenceGetTrackCount", optional=true)
-    public native int getTrackCount(IntPtr outNumberOfTracks);
+    public native OSStatus getTrackCount(IntPtr outNumberOfTracks);
     /**
      * @since Available in iOS 5.0 and later.
      */
     @Bridge(symbol="MusicSequenceGetIndTrack", optional=true)
-    public native int getIndTrack(int inTrackIndex, MusicTrack.MusicTrackPtr outTrack);
+    public native OSStatus getIndTrack(int inTrackIndex, MusicTrack.MusicTrackPtr outTrack);
     /**
      * @since Available in iOS 5.0 and later.
      */
     @Bridge(symbol="MusicSequenceGetTrackIndex", optional=true)
-    public native int getTrackIndex(MusicTrack inTrack, IntPtr outTrackIndex);
+    public native OSStatus getTrackIndex(MusicTrack inTrack, IntPtr outTrackIndex);
     /**
      * @since Available in iOS 5.0 and later.
      */
     @Bridge(symbol="MusicSequenceGetTempoTrack", optional=true)
-    public native int getTempoTrack(MusicTrack.MusicTrackPtr outTrack);
+    public native OSStatus getTempoTrack(MusicTrack.MusicTrackPtr outTrack);
     /**
      * @since Available in iOS 5.0 and later.
      */
     @Bridge(symbol="MusicSequenceSetMIDIEndpoint", optional=true)
-    public native int setMIDIEndpoint(MIDIEndpoint inEndpoint);
+    public native OSStatus setMIDIEndpoint(int inEndpoint);
     /**
      * @since Available in iOS 5.0 and later.
      */
     @Bridge(symbol="MusicSequenceSetSequenceType", optional=true)
-    public native int setSequenceType(MusicSequenceType inType);
+    public native OSStatus setSequenceType(MusicSequenceType inType);
     /**
      * @since Available in iOS 5.0 and later.
      */
     @Bridge(symbol="MusicSequenceGetSequenceType", optional=true)
-    public native int getSequenceType(MachineSizedUIntPtr outType);
+    public native OSStatus getSequenceType(IntPtr outType);
     /**
      * @since Available in iOS 5.0 and later.
      */
     @Bridge(symbol="MusicSequenceFileLoad", optional=true)
-    public native int fileLoad(CFURL inFileRef, int inFileTypeHint, int inFlags);
+    public native OSStatus fileLoad(CFURL inFileRef, int inFileTypeHint, int inFlags);
     /**
      * @since Available in iOS 5.0 and later.
      */
     @Bridge(symbol="MusicSequenceFileLoadData", optional=true)
-    public native int fileLoadData(CFData inData, int inFileTypeHint, int inFlags);
+    public native OSStatus fileLoadData(CFData inData, int inFileTypeHint, int inFlags);
     /**
      * @since Available in iOS 5.0 and later.
      */
     @Bridge(symbol="MusicSequenceFileCreate", optional=true)
-    public native int fileCreate(CFURL inFileRef, int inFileType, MusicSequenceFileFlags inFlags, short inResolution);
+    public native OSStatus fileCreate(CFURL inFileRef, int inFileType, MusicSequenceFileFlags inFlags, short inResolution);
     /**
      * @since Available in iOS 5.0 and later.
      */
     @Bridge(symbol="MusicSequenceFileCreateData", optional=true)
-    public native int fileCreateData(int inFileType, MusicSequenceFileFlags inFlags, short inResolution, CFData.CFDataPtr outData);
+    public native OSStatus fileCreateData(int inFileType, MusicSequenceFileFlags inFlags, short inResolution, CFData.CFDataPtr outData);
     /**
      * @since Available in iOS 5.0 and later.
      */
     @Bridge(symbol="MusicSequenceReverse", optional=true)
-    public native int reverse();
+    public native OSStatus reverse();
     /**
      * @since Available in iOS 5.0 and later.
      */
     @Bridge(symbol="MusicSequenceGetSecondsForBeats", optional=true)
-    public native int getSecondsForBeats(double inBeats, DoublePtr outSeconds);
+    public native OSStatus getSecondsForBeats(double inBeats, DoublePtr outSeconds);
     /**
      * @since Available in iOS 5.0 and later.
      */
     @Bridge(symbol="MusicSequenceGetBeatsForSeconds", optional=true)
-    public native int getBeatsForSeconds(double inSeconds, DoublePtr outBeats);
+    public native OSStatus getBeatsForSeconds(double inSeconds, DoublePtr outBeats);
     /**
      * @since Available in iOS 5.0 and later.
      */
     @Bridge(symbol="MusicSequenceSetUserCallback", optional=true)
-    public native int setUserCallback(FunctionPtr inCallback, VoidPtr inClientData);
+    public native OSStatus setUserCallback(FunctionPtr inCallback, VoidPtr inClientData);
     /**
      * @since Available in iOS 5.0 and later.
      */
     @Bridge(symbol="MusicSequenceBeatsToBarBeatTime", optional=true)
-    public native int beatsToBarBeatTime(double inBeats, int inSubbeatDivisor, CABarBeatTime outBarBeatTime);
+    public native OSStatus beatsToBarBeatTime(double inBeats, int inSubbeatDivisor, CABarBeatTime outBarBeatTime);
     /**
      * @since Available in iOS 5.0 and later.
      */
     @Bridge(symbol="MusicSequenceBarBeatTimeToBeats", optional=true)
-    public native int barBeatTimeToBeats(CABarBeatTime inBarBeatTime, DoublePtr outBeats);
+    public native OSStatus barBeatTimeToBeats(CABarBeatTime inBarBeatTime, DoublePtr outBeats);
     /**
      * @since Available in iOS 5.0 and later.
      */

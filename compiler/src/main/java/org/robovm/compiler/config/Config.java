@@ -1303,6 +1303,7 @@ public class Config {
         }
         
         public Config build() throws IOException {
+            new RamDiskTools().setupRamDisk(this);
             return config.build();
         }
 

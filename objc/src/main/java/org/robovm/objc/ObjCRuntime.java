@@ -180,6 +180,9 @@ public class ObjCRuntime {
     public static native boolean class_addMethod(@Pointer long cls, @Pointer long name, @Pointer long imp, @Pointer long types);
     
     @Bridge
+    public static native @Pointer long class_replaceMethod(@Pointer long cls, @Pointer long name, @Pointer long imp, @Pointer long types);
+    
+    @Bridge
     public static native boolean class_addIvar(@Pointer long cls, @Pointer long name, int size, byte alignment, @Pointer long types);
     
     @Bridge
@@ -196,6 +199,9 @@ public class ObjCRuntime {
     
     @Bridge
     public static native @Pointer long method_getImplementation(@Pointer long method);
+    
+    @Bridge
+    public static native @Pointer long method_setImplementation(@Pointer long m, @Pointer long imp);
     
     @Bridge(symbol = "objc_msgSend")
     public static native @Pointer long ptr_objc_msgSend(@Pointer long receiver, @Pointer long selector);

@@ -115,13 +115,16 @@ import org.robovm.apple.imageio.*;
         NSObject key9 = toNSObject(inputParameters, 18);
         NSObject value9 = toNSObject(inputParameters, 19);
         
-        return create(name, key0, value0, key1, value1, key2, value2, key3, value3, key4, value4, 
+        return create(objCClass, createSelector, name, key0, value0, key1, value1, key2, value2, key3, value3, key4, value4, 
             key5, value5, key6, value6, key7, value7, key8, value8, key9, value9);
     }
     
-    @Method(selector = "filterWithName:keysAndValues:")
-    @Variadic(1)
-    private static native CIFilter create(String name, NSObject key0, NSObject value0, NSObject key1, NSObject value1, NSObject key2, NSObject value2, 
+    // FIXME use the new @Method annotation when #783 is fixed.
+    private static final ObjCClass objCClass = ObjCClass.getByType(CIFilter.class);
+    private static final Selector createSelector = Selector.register("filterWithName:keysAndValues:");
+    @Bridge
+    @Variadic(2)
+    private static native CIFilter create(ObjCClass __self__, Selector __cmd__, String name, NSObject key0, NSObject value0, NSObject key1, NSObject value1, NSObject key2, NSObject value2, 
         NSObject key3, NSObject value3, NSObject key4, NSObject value4, NSObject key5, NSObject value5, NSObject key6, NSObject value6, NSObject key7,
         NSObject value7, NSObject key8, NSObject value8, NSObject key9, NSObject value9);
     

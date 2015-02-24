@@ -68,8 +68,9 @@ public class RamDiskTools {
             File newTmpDir = new File(volume, "tmp");
             if (!newTmpDir.exists() && !newTmpDir.mkdirs()) {
                 builder.config.getLogger().debug("Couldn't create tmp directory on RAM disk, using hard drive");
+                return;
             }
-            newTmpDir = new File(newTmpDir, tmpDir.getAbsolutePath().substring(0));
+            newTmpDir = new File(newTmpDir, tmpDir.getAbsolutePath());
             builder.config.getLogger().debug("Using RAM disk at %s for cache and tmp directory", ROBOVM_RAM_DISK_PATH);
             builder.cacheDir(newCacheDir);
             builder.tmpDir(newTmpDir);

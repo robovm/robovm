@@ -967,7 +967,12 @@ Env* _bcAttachThreadFromCallback(void) {
 }
 
 void _bcDetachThreadFromCallback(Env* env) {
-    // Do nothing. The thread will be detached when it terminates.
+    // this may be called after a Java thread
+    // has been destroyed already, e.g. due to
+    // autorelease pool cleanup. See #772
+    if(rvmIsStoppedJavaThread()) {
+        rvmDetachCurrentThread(vm, TRUE, TRUE);
+    }
 }
 
 void* _bcCopyStruct(Env* env, void* src, jint size) {

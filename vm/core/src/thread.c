@@ -48,7 +48,8 @@ static Method* getUncaughtExceptionHandlerMethod;
 static Method* uncaughtExceptionMethod;
 static Method* removeThreadMethod;
 static uint32_t threadGCKind;
-
+static Mutex stoppedThreadsLock;
+static struct StoppedJavaThread* stoppedJavaThreads = NULL;
 
 inline void rvmLockThreadsList() {
     rvmLockMutex(&threadsLock);
@@ -372,6 +373,7 @@ jboolean rvmInitThreads(Env* env) {
     threadGCKind = gcNewDirectBitmapKind(THREAD_GC_BITMAP);
     if ((threadIdMap = rvmAllocBitVector(MAX_THREAD_ID, TRUE)) == 0) return FALSE;
     if (rvmInitMutex(&threadsLock) != 0) return FALSE;
+    if (rvmInitMutex(&stoppedThreadsLock) != 0) return FALSE;
     if (pthread_key_create(&tlsEnvKey, (void (*)(void *)) attachedThreadExiting) != 0) return FALSE;
     if (pthread_key_create(&tlsThreadKey, NULL) != 0) return FALSE;
     if (pthread_cond_init(&threadStartCond, NULL) != 0) return FALSE;
@@ -458,6 +460,13 @@ static void* startThreadEntryPoint(void* _args) {
 
     detachThread(env, TRUE, FALSE, !failure);
 
+    // we need to mark this thread as a stopped Java
+    // thread, see #772
+    rvmLockMutex(&stoppedThreadsLock);
+    struct StoppedJavaThread* stoppedThread = (struct StoppedJavaThread*)malloc(sizeof(struct StoppedJavaThread));
+    stoppedThread->next = stoppedJavaThreads;
+    stoppedJavaThreads = stoppedThread;
+    rvmUnlockMutex(&stoppedThreadsLock);
     return NULL;
 }
 
@@ -591,4 +600,39 @@ Thread* rvmGetThreadByThreadId(Env* env, uint32_t threadId) {
     }
     rvmUnlockThreadsList();
     return result;
+}
+
+jboolean rvmIsStoppedJavaThread() {
+    pthread_t self = pthread_self();
+    rvmLockMutex(&stoppedThreadsLock);
+    struct StoppedJavaThread* thread = stoppedJavaThreads;
+    struct StoppedJavaThread* prev = NULL;
+    jboolean found = TRUE;
+
+    if(!thread) {
+        return FALSE;
+    }
+    
+    while(thread) {
+        if(thread == NULL) {
+            found = FALSE;
+            break;
+        }
+
+        if(thread->thread == self) {
+            if(prev == NULL) {
+                stoppedJavaThreads = thread->next;
+            } else {
+                prev->next = thread->next;
+            }
+            break;
+        }
+        prev = thread;
+        thread = thread->next;
+    }
+    if(found) {
+        free(thread);
+    }
+    rvmUnlockMutex(&stoppedThreadsLock);
+    return found;
 }

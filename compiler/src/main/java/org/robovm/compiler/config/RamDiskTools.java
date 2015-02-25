@@ -47,8 +47,7 @@ public class RamDiskTools {
         }
         
         File volume = new File(ROBOVM_RAM_DISK_PATH);
-        if (!volume.exists()) {
-            builder.config.getLogger().debug("No RAM disk available");
+        if (!volume.exists()) {            
             return;
         }
 

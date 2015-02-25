@@ -52,9 +52,7 @@ import org.robovm.apple.coremidi.MIDIPort.MIDIPortPtr;
     }
     /*<bind>*/static { Bro.bind(MIDIClient.class); }/*</bind>*/
     /*<constants>*//*</constants>*/
-    /*<constructors>*/
-    protected MIDIClient() {}
-    /*</constructors>*/
+    /*<constructors>*//*</constructors>*/
     /*<properties>*//*</properties>*/
     /*<members>*//*</members>*/
     @Callback

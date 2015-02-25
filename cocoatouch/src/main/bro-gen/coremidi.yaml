@@ -74,6 +74,7 @@ classes:
    
     MIDIObject:
         extends: NativeObject
+        annotations: ['@Marshaler(CFString.AsStringMarshaler.class)']
         add_ptr: true
     MIDIClient:
         extends: MIDIObject

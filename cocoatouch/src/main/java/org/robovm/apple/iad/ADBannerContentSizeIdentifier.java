@@ -39,7 +39,7 @@ import org.robovm.apple.avkit.*;
 @Marshaler(ADBannerContentSizeIdentifier.Marshaler.class)
 /*<annotations>*/@Library("iAd")/*</annotations>*/
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/ADBannerContentSizeIdentifier/*</name>*/ 
-    extends /*<extends>*/Object/*</extends>*/ 
+    extends /*<extends>*/CocoaUtility/*</extends>*/ 
     /*<implements>*//*</implements>*/ {
 
     public static class Marshaler {

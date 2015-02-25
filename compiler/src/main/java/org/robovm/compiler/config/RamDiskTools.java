@@ -42,6 +42,10 @@ public class RamDiskTools {
      * @param builder
      */
     public void setupRamDisk(Config.Builder builder) {
+        if(OS.getDefaultOS() != OS.macosx) {
+            return;
+        }
+        
         File volume = new File(ROBOVM_RAM_DISK_PATH);
         if (!volume.exists()) {
             builder.config.getLogger().debug("No RAM disk available");

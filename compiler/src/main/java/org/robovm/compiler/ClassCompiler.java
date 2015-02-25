@@ -88,6 +88,7 @@ import org.robovm.compiler.plugin.CompilerPlugin;
 import org.robovm.compiler.trampoline.FieldAccessor;
 import org.robovm.compiler.trampoline.Invoke;
 import org.robovm.compiler.trampoline.Trampoline;
+import org.robovm.compiler.util.io.HfsCompressor;
 import org.robovm.llvm.Context;
 import org.robovm.llvm.LineInfo;
 import org.robovm.llvm.Module;
@@ -404,9 +405,9 @@ public class ClassCompiler {
                     }
 
                     oFile.getParentFile().mkdirs();
-                    try (BufferedOutputStream oOut = new BufferedOutputStream(new FileOutputStream(oFile))) {
-                        targetMachine.assemble(asm, clazz.getClassName(), oOut);
-                    }
+                    ByteArrayOutputStream oFileBytes = new ByteArrayOutputStream();
+                    targetMachine.assemble(asm, clazz.getClassName(), oFileBytes);                                                                                               
+                    new HfsCompressor().compress(oFile, oFileBytes.toByteArray(), config);
                     
                     for (CompilerPlugin plugin : config.getCompilerPlugins()) {
                         plugin.afterObjectFile(config, clazz, oFile);
@@ -516,7 +517,9 @@ public class ClassCompiler {
                         }
                         try (Module linesModule = Module.parseIR(context, linesData, clazz.getClassName() + ".lines")) {
                             File linesOFile = config.getLinesOFile(clazz);
-                            targetMachine.emit(linesModule, linesOFile, CodeGenFileType.ObjectFile);
+                            ByteArrayOutputStream linesOBytes = new ByteArrayOutputStream();
+                            targetMachine.emit(linesModule, linesOBytes, CodeGenFileType.ObjectFile);
+                            new HfsCompressor().compress(linesOFile, linesOBytes.toByteArray(), config);
                         }
                     } else {
                         // Make sure there's no stale lines.o file lingering

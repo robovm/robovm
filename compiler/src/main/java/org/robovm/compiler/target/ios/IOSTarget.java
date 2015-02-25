@@ -64,6 +64,7 @@ import com.dd.plist.NSObject;
 import com.dd.plist.NSString;
 import com.dd.plist.PropertyListParser;
 import com.dd.plist.XMLPropertyListParser;
+import java.util.HashMap;
 
 
 /**
@@ -162,6 +163,8 @@ public class IOSTarget extends AbstractTarget {
                 args.add(entry.getKey() + "=" + entry.getValue());
             }
         }
+        args.add("--setenv");
+        args.add("robovmcompilerenv=true");
         if (!launchParameters.getArguments().isEmpty()) {
             args.add("--args");
             args.addAll(launchParameters.getArguments());
@@ -205,9 +208,9 @@ public class IOSTarget extends AbstractTarget {
         
         Map<String, String> env = launchParameters.getEnvironment();
         if (env == null) {
-            env = Collections.emptyMap();
+            env = new HashMap<>();
         }
-        
+        env.put("robovmcompilerenv", "true");
         AppLauncher launcher = new AppLauncher(device, getAppDir()) {
             protected void log(String s, Object ... args) {
                 config.getLogger().debug(s, args);

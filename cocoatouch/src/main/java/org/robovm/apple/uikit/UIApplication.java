@@ -332,11 +332,10 @@ import org.robovm.apple.logging.FoundationLogPrintStream;
         if (delegateClass != null) {
             delegateClassName = ObjCClass.getByType(delegateClass).getName();            
         }
-        if ("true".equals(System.getProperty("org.robovm.apple.logging.err"))) {
+        NSObject inCompilerEnv = NSProcessInfo.getSharedProcessInfo().getEnvironment().get("robovmcompilerenv");
+        if (inCompilerEnv == null || !inCompilerEnv.toString().equals("true")) {
             System.setErr(new FoundationLogPrintStream());
             System.err.println("SET System.err to FoundationLogPrintStream");
-        }
-        if ("true".equals(System.getProperty("org.robovm.apple.logging.out"))) {
     		System.setOut(new FoundationLogPrintStream());
             System.out.println("SET System.out to FoundationLogPrintStream");
         }

@@ -19,6 +19,7 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.io.PrintStream;
 import org.robovm.apple.foundation.Foundation;
+import org.robovm.apple.foundation.NSString;
 
 public class FoundationLogPrintStream extends PrintStream {
 
@@ -42,7 +43,7 @@ public class FoundationLogPrintStream extends PrintStream {
     @Override
     public void flush() {
         if (st.length() > 0) {
-            Foundation.log(st.toString());
+            Foundation.log("%@", new NSString(st.toString()));
             st.setLength(0);
         }
     }

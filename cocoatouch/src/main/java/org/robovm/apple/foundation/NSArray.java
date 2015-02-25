@@ -253,11 +253,11 @@ import org.robovm.apple.dispatch.*;
     }
     
     @Override
-    protected void afterMarshaled() {
+    protected void afterMarshaled(int flags) {
         if (adapter == null) {
             adapter = createAdapter();
         }
-        super.afterMarshaled();
+        super.afterMarshaled(flags);
     }
     
     public void add(int index, T element) {

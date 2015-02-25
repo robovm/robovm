@@ -21,6 +21,7 @@ import static org.robovm.rt.bro.MarshalerFlags.*;
 import java.io.*;
 import java.nio.*;
 import java.util.*;
+
 import org.robovm.objc.*;
 import org.robovm.objc.annotation.*;
 import org.robovm.objc.block.*;
@@ -53,6 +54,8 @@ import org.robovm.apple.dispatch.*;
     extends /*<extends>*/ObjCObject/*</extends>*/ 
     /*<implements>*/implements NSObjectProtocol/*</implements>*/ {
 
+    public static final int FLAG_NO_RETAIN = 0x1;
+    
     protected static class SkipInit {}
 
     /*<ptr>*/public static class NSObjectPtr extends Ptr<NSObject, NSObjectPtr> {}/*</ptr>*/
@@ -60,7 +63,10 @@ import org.robovm.apple.dispatch.*;
     public static class Marshaler {
         @MarshalsPointer
         public static NSObject toObject(Class<? extends NSObject> cls, long handle, long flags) {
-            NSObject o = ObjCObject.toObjCObject(cls, handle);
+            return toObject(cls, handle, flags, true);
+        }
+        static NSObject toObject(Class<? extends NSObject> cls, long handle, long flags, boolean retain) {
+            NSObject o = ObjCObject.toObjCObject(cls, handle, retain ? 0 : FLAG_NO_RETAIN);
             return o;
         }
         @MarshalsPointer
@@ -82,6 +88,17 @@ import org.robovm.apple.dispatch.*;
         @MarshalsPointer
         public static long toNative(NSObjectProtocol o, long flags) {
             return toNative((NSObject) o, flags) ;
+        }
+    }
+    
+    /**
+     * Marshaler used for factory methods which have already retained the object
+     * they return.
+     */
+    public static class NoRetainMarshaler {
+        @MarshalsPointer
+        public static NSObject toObject(Class<? extends NSObject> cls, long handle, long flags) {
+            return Marshaler.toObject(cls, handle, flags, false);
         }
     }
     
@@ -122,9 +139,11 @@ import org.robovm.apple.dispatch.*;
     /*<members>*//*</members>*/
     
     @Override
-    protected void afterMarshaled() {
-        super.afterMarshaled();
-        retain(getHandle());
+    protected void afterMarshaled(int flags) {
+        super.afterMarshaled(flags);
+        if ((flags & FLAG_NO_RETAIN) == 0) {
+            retain(getHandle());
+        }
     }
     
     protected long alloc() {

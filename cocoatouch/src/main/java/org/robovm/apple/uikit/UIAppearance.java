@@ -72,6 +72,6 @@ public class UIAppearance {
             proxyHandle = objc_appearanceWhenContainedIn(objCClass, appearanceWhenContainedIn, 
                     c01, c02, c03, c04, c05, c06, c07, c08, c09, c10, 0);
         }
-        return ObjCObject.toObjCObject(type, proxyHandle, true);
+        return ObjCObject.toObjCObject(type, proxyHandle, 0, true);
     }
 }

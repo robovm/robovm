@@ -14,7 +14,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/gpl-2.0.html>.
  */
-package org.robovm.compiler.config;
+package org.robovm.compiler.util.io;
 
 import java.io.File;
 import java.io.IOException;
@@ -23,6 +23,7 @@ import java.nio.file.Files;
 
 import org.apache.commons.io.FileUtils;
 import org.robovm.compiler.config.Config.Builder;
+import org.robovm.compiler.config.Config;
 import org.robovm.compiler.config.OS;
 import org.robovm.compiler.log.Logger;
 import org.robovm.compiler.util.Executor;
@@ -71,34 +72,34 @@ public class RamDiskTools {
             return;
         }
 
-        File cacheDir = builder.config.getCacheDir();
-        File tmpDir = builder.config.getTmpDir();
+        File cacheDir = config.getCacheDir();
+        File tmpDir = config.getTmpDir();
         try {
             FileStore store = Files.getFileStore(volume.toPath());
             if (store.getUsableSpace() < MIN_FREE_SPACE) {
                 cleanRamDisk(store, volume);
                 if (store.getUsableSpace() < MIN_FREE_SPACE) {
-                    builder.config.getLogger().debug("Couldn't free enough space on RAM disk, using hard drive");
+                    config.getLogger().debug("Couldn't free enough space on RAM disk, using hard drive");
                     return;
                 }
             }
 
             File newCacheDir = new File(volume, "cache");
             if (!newCacheDir.exists() && !newCacheDir.mkdirs()) {
-                builder.config.getLogger().debug("Couldn't create cache directory on RAM disk, using hard drive");
+                config.getLogger().debug("Couldn't create cache directory on RAM disk, using hard drive");
                 return;
             }
             File newTmpDir = new File(volume, "tmp");
             if (!newTmpDir.exists() && !newTmpDir.mkdirs()) {
-                builder.config.getLogger().debug("Couldn't create tmp directory on RAM disk, using hard drive");
+                config.getLogger().debug("Couldn't create tmp directory on RAM disk, using hard drive");
                 return;
             }
             newTmpDir = new File(newTmpDir, tmpDir.getAbsolutePath());
-            builder.config.getLogger().debug("Using RAM disk at %s for cache and tmp directory", ROBOVM_RAM_DISK_PATH);
+            config.getLogger().debug("Using RAM disk at %s for cache and tmp directory", ROBOVM_RAM_DISK_PATH);
             builder.cacheDir(newCacheDir);
             builder.tmpDir(newTmpDir);
         } catch (Throwable t) {
-            builder.config.getLogger().error("Couldn't setup RAM disk, using hard drive, %s", t.getMessage());
+            config.getLogger().error("Couldn't setup RAM disk, using hard drive, %s", t.getMessage());
             builder.cacheDir(cacheDir);
             builder.tmpDir(tmpDir);
         }

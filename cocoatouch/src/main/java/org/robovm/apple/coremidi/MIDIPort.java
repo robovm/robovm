@@ -53,9 +53,7 @@ import org.robovm.apple.coremidi.MIDIEndpoint.MIDIEndpointPtr;
     }
     /*<bind>*/static { Bro.bind(MIDIPort.class); }/*</bind>*/
     /*<constants>*//*</constants>*/
-    /*<constructors>*/
-    protected MIDIPort() {}
-    /*</constructors>*/
+    /*<constructors>*//*</constructors>*/
     /*<properties>*//*</properties>*/
     /*<members>*//*</members>*/
     @Callback

@@ -36,7 +36,7 @@ import org.robovm.apple.accounts.*;
 @Marshaler(SKStoreProductParameters.Marshaler.class)
 /*<annotations>*/@Library("StoreKit")/*</annotations>*/
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/SKStoreProductParameters/*</name>*/ 
-    extends /*<extends>*/Object/*</extends>*/ 
+    extends /*<extends>*/CocoaUtility/*</extends>*/ 
     /*<implements>*//*</implements>*/ {
 
     public static class Marshaler {

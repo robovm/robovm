@@ -35,7 +35,7 @@ import org.robovm.apple.uikit.*;
 @Marshaler(MFMessageComposeViewControllerAttachment.Marshaler.class)
 /*<annotations>*/@Library("MessageUI")/*</annotations>*/
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/MFMessageComposeViewControllerAttachment/*</name>*/ 
-    extends /*<extends>*/Object/*</extends>*/ 
+    extends /*<extends>*/CocoaUtility/*</extends>*/ 
     /*<implements>*//*</implements>*/ {
 
     public static class Marshaler {

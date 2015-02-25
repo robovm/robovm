@@ -35,7 +35,7 @@ import org.robovm.apple.addressbook.*;
 /*</javadoc>*/
 /*<annotations>*/@Library("PassKit")/*</annotations>*/
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/PKPassLibraryNotificationArgs/*</name>*/ 
-    extends /*<extends>*/Object/*</extends>*/ 
+    extends /*<extends>*/CocoaUtility/*</extends>*/ 
     /*<implements>*//*</implements>*/ {
 
     /*<ptr>*/

@@ -21,7 +21,6 @@ import static org.robovm.rt.bro.MarshalerFlags.*;
 import java.io.*;
 import java.nio.*;
 import java.util.*;
-
 import org.robovm.objc.*;
 import org.robovm.objc.annotation.*;
 import org.robovm.objc.block.*;

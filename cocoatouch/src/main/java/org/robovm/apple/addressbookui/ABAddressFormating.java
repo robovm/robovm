@@ -36,7 +36,7 @@ import org.robovm.apple.corefoundation.CFDictionary;
 /*</javadoc>*/
 /*<annotations>*/@Library("AddressBookUI")/*</annotations>*/
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/ABAddressFormating/*</name>*/ 
-    extends /*<extends>*/Object/*</extends>*/ 
+    extends /*<extends>*/CocoaUtility/*</extends>*/ 
     /*<implements>*//*</implements>*/ {
 
     /*<ptr>*/

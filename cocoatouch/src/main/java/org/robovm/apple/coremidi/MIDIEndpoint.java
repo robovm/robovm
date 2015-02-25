@@ -51,9 +51,7 @@ import org.robovm.apple.corefoundation.*;
     }
     /*<bind>*/static { Bro.bind(MIDIEndpoint.class); }/*</bind>*/
     /*<constants>*//*</constants>*/
-    /*<constructors>*/
-    protected MIDIEndpoint() {}
-    /*</constructors>*/
+    /*<constructors>*//*</constructors>*/
     /*<properties>*//*</properties>*/
     /*<members>*//*</members>*/
     @Callback

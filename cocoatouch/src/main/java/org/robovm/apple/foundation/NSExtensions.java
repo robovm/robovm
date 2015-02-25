@@ -31,7 +31,7 @@ public abstract class NSExtensions extends ObjCExtensions {
     
     protected static <T extends NSObject> T alloc(Class<T> c) {
         long h = NSObject.alloc(ObjCClass.getByType(c));
-        return ObjCObject.toObjCObject(c, h);
+        return ObjCObject.toObjCObject(c, h, NSObject.FLAG_NO_RETAIN);
     }
 
 }

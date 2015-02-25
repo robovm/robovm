@@ -160,7 +160,7 @@ public abstract class ObjCObject extends NativeObject {
         return zuper;
     }
 
-    protected void afterMarshaled() {}
+    protected void afterMarshaled(int flags) {}
 
     public final ObjCClass getObjCClass() {
         return ObjCClass.getFromObject(this);
@@ -242,12 +242,12 @@ public abstract class ObjCObject extends NativeObject {
         AssociatedObjectHelper.setAssociatedObject(this, key, value);
     }
 
-    public static <T extends ObjCObject> T toObjCObject(Class<T> cls, long handle) {
-        return toObjCObject(cls, handle, false);
+    public static <T extends ObjCObject> T toObjCObject(Class<T> cls, long handle, int afterMarshaledFlags) {
+        return toObjCObject(cls, handle, afterMarshaledFlags, false);
     }
 
     @SuppressWarnings("unchecked")
-    public static <T extends ObjCObject> T toObjCObject(Class<T> cls, long handle, boolean forceType) {
+    public static <T extends ObjCObject> T toObjCObject(Class<T> cls, long handle, int afterMarshaledFlags, boolean forceType) {
         if (handle == 0L) {
             return null;
         }
@@ -274,7 +274,7 @@ public abstract class ObjCObject extends NativeObject {
             if (objCClass.isCustom()) {
                 VM.setBoolean(VM.getObjectAddress(o) + CUSTOM_CLASS_OFFSET, true);
             }
-            o.afterMarshaled();
+            o.afterMarshaled(afterMarshaledFlags);
             return o;
         }
     }
@@ -282,7 +282,7 @@ public abstract class ObjCObject extends NativeObject {
     public static class Marshaler {
         @MarshalsPointer
         public static ObjCObject toObject(Class<? extends ObjCObject> cls, long handle, long flags) {
-            ObjCObject o = ObjCObject.toObjCObject(cls, handle);
+            ObjCObject o = ObjCObject.toObjCObject(cls, handle, 0);
             return o;
         }
 
@@ -300,7 +300,7 @@ public abstract class ObjCObject extends NativeObject {
             if (proxyClass == null) {
                 proxyClass = ObjCObject.class;
             }
-            ObjCObject o = ObjCObject.toObjCObject(proxyClass, handle);
+            ObjCObject o = ObjCObject.toObjCObject(proxyClass, handle, 0);
             return (ObjCProtocol) o;
         }
 

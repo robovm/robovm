@@ -23,6 +23,7 @@ import org.robovm.objc.Selector;
 import org.robovm.rt.bro.annotation.Bridge;
 import org.robovm.rt.bro.annotation.Library;
 import org.robovm.rt.bro.annotation.Pointer;
+import org.robovm.rt.bro.annotation.Variadic;
 
 /*<javadoc>*/
 /*</javadoc>*/
@@ -39,9 +40,22 @@ public class UIAppearance {
     
     private static final Selector appearanceWhenContainedIn = Selector.register("appearanceWhenContainedIn:");
     @Bridge
+    @Variadic(2)
     private static native @Pointer long objc_appearanceWhenContainedIn(ObjCClass cls, Selector sel, 
             ObjCClass c01, ObjCClass c02, ObjCClass c03, ObjCClass c04, ObjCClass c05, ObjCClass c06,
             ObjCClass c07, ObjCClass c08, ObjCClass c09, ObjCClass c10, @Pointer long nil);
+    
+    private static final Selector appearanceForTraitCollection = Selector.register("appearanceForTraitCollection:");
+    @Bridge
+    private static native @Pointer long objc_appearanceForTraitCollection(ObjCClass cls, Selector sel, UITraitCollection trait);
+    
+    private static final Selector appearanceForTraitCollectionWhenContainedIn = Selector.register("appearanceForTraitCollection:whenContainedIn:");
+    @Bridge
+    @Variadic(3)
+    private static native @Pointer long objc_appearanceForTraitCollectionWhenContainedIn(ObjCClass cls, Selector sel, UITraitCollection trait,
+            ObjCClass c01, ObjCClass c02, ObjCClass c03, ObjCClass c04, ObjCClass c05, ObjCClass c06,
+            ObjCClass c07, ObjCClass c08, ObjCClass c09, ObjCClass c10, @Pointer long nil);
+    
     
     @SuppressWarnings("unchecked")
     private static ObjCClass toObjCClass(Class<?>[] array, int index) {
@@ -72,6 +86,33 @@ public class UIAppearance {
             proxyHandle = objc_appearanceWhenContainedIn(objCClass, appearanceWhenContainedIn, 
                     c01, c02, c03, c04, c05, c06, c07, c08, c09, c10, 0);
         }
-        return ObjCObject.toObjCObject(type, proxyHandle, true);
+        return ObjCObject.toObjCObject(type, proxyHandle, 0, true);
+    }
+    
+    public static <T extends NSObject & UIAppearanceContainer> T getAppearanceForTraitCollection(Class<T> type, 
+            UITraitCollection trait, Class<?> ... containedIn) {
+        
+        ObjCClass objCClass = ObjCClass.getByType(type);
+        long proxyHandle = 0;
+        if (containedIn == null || containedIn.length == 0) {
+            proxyHandle = objc_appearanceForTraitCollection(objCClass, appearanceForTraitCollection, trait);
+        } else {
+            if (containedIn.length > 10) {
+                throw new IllegalArgumentException("A maximum of 10 container classes is supported");
+            }
+            ObjCClass c01 = toObjCClass(containedIn, 0);
+            ObjCClass c02 = toObjCClass(containedIn, 1);
+            ObjCClass c03 = toObjCClass(containedIn, 2);
+            ObjCClass c04 = toObjCClass(containedIn, 3);
+            ObjCClass c05 = toObjCClass(containedIn, 4);
+            ObjCClass c06 = toObjCClass(containedIn, 5);
+            ObjCClass c07 = toObjCClass(containedIn, 6);
+            ObjCClass c08 = toObjCClass(containedIn, 7);
+            ObjCClass c09 = toObjCClass(containedIn, 8);
+            ObjCClass c10 = toObjCClass(containedIn, 9);
+            proxyHandle = objc_appearanceForTraitCollectionWhenContainedIn(objCClass, appearanceForTraitCollectionWhenContainedIn, 
+                    trait, c01, c02, c03, c04, c05, c06, c07, c08, c09, c10, 0);
+        }
+        return ObjCObject.toObjCObject(type, proxyHandle, 0, true);
     }
 }

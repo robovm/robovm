@@ -24,6 +24,7 @@ import java.nio.file.Files;
 import org.apache.commons.io.FileUtils;
 import org.robovm.compiler.config.Config;
 import org.robovm.compiler.config.Config.Builder;
+import org.robovm.compiler.config.OS;
 
 /**
  * Will modify cache and tmpdir paths given a {@link Config#builder()} and prun
@@ -43,9 +44,12 @@ public class RamDiskTools {
      * @param builder
      */
     public void setupRamDisk(Config.Builder builder, Config config) {
+        if(OS.getDefaultOS() != OS.macosx) {
+            return;
+        }
+        
         File volume = new File(ROBOVM_RAM_DISK_PATH);
-        if (!volume.exists()) {
-            config.getLogger().debug("No RAM disk available");
+        if (!volume.exists()) {            
             return;
         }
 

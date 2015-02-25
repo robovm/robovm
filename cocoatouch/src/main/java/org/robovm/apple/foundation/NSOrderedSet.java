@@ -186,14 +186,14 @@ import org.robovm.apple.dispatch.*;
     }
     
     @Override
-    protected void afterMarshaled() {
+    protected void afterMarshaled(int flags) {
         if (setAdapter == null) {
             setAdapter = createSetAdapter();
         }
         if (listAdapter == null) {
             listAdapter = createListAdapter();
         }
-        super.afterMarshaled();
+        super.afterMarshaled(flags);
     }
     
     public boolean remove(Object o) {

@@ -53,7 +53,7 @@ public class RamDiskTools {
         File volume = new File(ROBOVM_RAM_DISK_PATH);
         if (!volume.exists()) {
             try {
-                FileStore store = Files.getFileStore(new File(System.getProperty("user.home"), ".robovm/cache")
+                FileStore store = Files.getFileStore(new File(System.getProperty("user.home"))
                         .toPath());
                 String plist = new Executor(Logger.NULL_LOGGER, "diskutil").args("info", "-plist", store.name())
                         .execCapture();

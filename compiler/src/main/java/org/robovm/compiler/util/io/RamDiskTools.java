@@ -187,7 +187,6 @@ public class RamDiskTools {
         for(CacheDir dir: cacheDirs) {
             for(File file: dir.objFiles) {
                 file.delete();
-                System.out.println("Deleting " + file.getAbsolutePath());
                 if(store.getUsableSpace() > MIN_FREE_SPACE) {
                     return;
                 }

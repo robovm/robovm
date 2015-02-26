@@ -33,7 +33,7 @@ import org.robovm.apple.foundation.*;
 /*</javadoc>*/
 /*<annotations>*/@Library("HealthKit")/*</annotations>*/
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/HKMetadataKey/*</name>*/ 
-    extends /*<extends>*/Object/*</extends>*/ 
+    extends /*<extends>*/CocoaUtility/*</extends>*/ 
     /*<implements>*//*</implements>*/ {
 
     /*<ptr>*/

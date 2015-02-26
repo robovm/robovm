@@ -40,9 +40,7 @@ import org.robovm.apple.corefoundation.*;
     /*<ptr>*/public static class MIDIThruConnectionPtr extends Ptr<MIDIThruConnection, MIDIThruConnectionPtr> {}/*</ptr>*/
     /*<bind>*/static { Bro.bind(MIDIThruConnection.class); }/*</bind>*/
     /*<constants>*//*</constants>*/
-    /*<constructors>*/
-    protected MIDIThruConnection() {}
-    /*</constructors>*/
+    /*<constructors>*//*</constructors>*/
     /*<properties>*//*</properties>*/
     /*<members>*//*</members>*/
     /**

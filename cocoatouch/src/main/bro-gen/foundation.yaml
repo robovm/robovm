@@ -176,7 +176,8 @@ classes:
 
     NSRange: {}
     NSDecimal: {}
-    NSZone: {}
+    NSZone:
+        annotations: ['@Marshaler(NSString.AsStringMarshaler.class)']
     NSFastEnumerationState: {}
     NSOperatingSystemVersion: {}
 

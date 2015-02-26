@@ -19,6 +19,7 @@ package org.robovm.apple.uikit;
 import java.io.*;
 import java.nio.*;
 import java.util.*;
+
 import org.robovm.objc.*;
 import org.robovm.objc.annotation.*;
 import org.robovm.objc.block.*;
@@ -33,8 +34,8 @@ import org.robovm.apple.coredata.*;
 import org.robovm.apple.coreimage.*;
 import org.robovm.apple.coretext.*;
 import org.robovm.apple.corelocation.*;
-import org.robovm.apple.logging.FoundationLogPrintStream;
 /*</imports>*/
+import org.robovm.apple.logging.FoundationLogPrintStream;
 
 /*<javadoc>*/
 /**
@@ -214,6 +215,10 @@ import org.robovm.apple.logging.FoundationLogPrintStream;
             });
         }
     }
+    
+    /* Used to preserve the key window from being released. */
+    private static UIWindow KEY_WINDOW = null;
+    
     /*<ptr>*/public static class UIApplicationPtr extends Ptr<UIApplication, UIApplicationPtr> {}/*</ptr>*/
     /*<bind>*/static { ObjCRuntime.bind(UIApplication.class); }/*</bind>*/
     /*<constants>*//*</constants>*/
@@ -332,13 +337,30 @@ import org.robovm.apple.logging.FoundationLogPrintStream;
         if (delegateClass != null) {
             delegateClassName = ObjCClass.getByType(delegateClass).getName();            
         }
+        
+        // Set FoundationLogPrintStream as default for System.out and System.err.
         NSObject inCompilerEnv = NSProcessInfo.getSharedProcessInfo().getEnvironment().get("robovmcompilerenv");
         if (inCompilerEnv == null || !inCompilerEnv.toString().equals("true")) {
             System.setErr(new FoundationLogPrintStream());
             System.err.println("SET System.err to FoundationLogPrintStream");
-    		System.setOut(new FoundationLogPrintStream());
+            System.setOut(new FoundationLogPrintStream());
             System.out.println("SET System.out to FoundationLogPrintStream");
         }
+        
+        // Observe the key UIWindow and keep a strong reference to it.
+        NSNotificationCenter.getDefaultCenter().addObserver(UIWindow.DidBecomeKeyNotification(), null, NSOperationQueue.getMainQueue(), new VoidBlock1<NSNotification>() {
+            @Override
+            public void invoke(NSNotification a) {
+                KEY_WINDOW = (UIWindow) a.getObject();
+            }
+        });
+        NSNotificationCenter.getDefaultCenter().addObserver(UIWindow.DidResignKeyNotification(), null, NSOperationQueue.getMainQueue(), new VoidBlock1<NSNotification>() {
+            @Override
+            public void invoke(NSNotification a) {
+                if (a.getObject() == KEY_WINDOW) KEY_WINDOW = null;
+            }
+        });
+        
         main(argc, argv, principalClassName, delegateClassName);
     }
     

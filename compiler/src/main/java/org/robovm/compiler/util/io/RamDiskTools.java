@@ -25,6 +25,8 @@ import org.apache.commons.io.FileUtils;
 import org.robovm.compiler.config.Config;
 import org.robovm.compiler.config.Config.Builder;
 import org.robovm.compiler.config.OS;
+import org.robovm.compiler.log.Logger;
+import org.robovm.compiler.util.Executor;
 
 /**
  * Will modify cache and tmpdir paths given a {@link Config#builder()} and prun
@@ -44,12 +46,29 @@ public class RamDiskTools {
      * @param builder
      */
     public void setupRamDisk(Config.Builder builder, Config config) {
-        if(OS.getDefaultOS() != OS.macosx) {
+        if (OS.getDefaultOS() != OS.macosx) {
             return;
         }
-        
+
         File volume = new File(ROBOVM_RAM_DISK_PATH);
-        if (!volume.exists()) {            
+        if (!volume.exists()) {
+            try {
+                FileStore store = Files.getFileStore(new File(System.getProperty("user.home"), ".robovm/cache")
+                        .toPath());
+                String plist = new Executor(Logger.NULL_LOGGER, "diskutil").args("info", "-plist", store.name())
+                        .execCapture();
+                if (!plist.contains("<key>SolidState</key>")) {
+                    // @formatter:off
+                    config.getLogger().warn("RoboVM has detected that you are running on a slow HDD. Please consider mounting a RAM disk.\n" +
+                                            "To create a 2GB RAM disk, run this in your terminal:\n" +
+                                            "SIZE=2048 ; diskutil erasevolume HFS+ 'RoboVM RAM Disk' `hdiutil attach -nomount ram://$((SIZE * 2048))`\n" +
+                                            "See http://docs.robovm.com/ for more info");
+                    // @formatter:on
+                }
+            } catch (Throwable t) {
+                // nothing to do here, can't decide if we are on a SSD or HDD
+                t.printStackTrace();
+            }
             return;
         }
 

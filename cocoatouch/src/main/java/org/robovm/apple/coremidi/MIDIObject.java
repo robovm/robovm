@@ -32,7 +32,7 @@ import org.robovm.apple.corefoundation.*;
 
 /*<javadoc>*/
 /*</javadoc>*/
-/*<annotations>*/@Library("CoreMIDI")/*</annotations>*/
+/*<annotations>*/@Library("CoreMIDI") @Marshaler(CFString.AsStringMarshaler.class)/*</annotations>*/
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/MIDIObject/*</name>*/ 
     extends /*<extends>*/NativeObject/*</extends>*/ 
     /*<implements>*//*</implements>*/ {
@@ -97,7 +97,7 @@ import org.robovm.apple.corefoundation.*;
      * @since Available in iOS 4.2 and later.
      */
     public static MIDIObjectType findObjectTypeById(int uniqueID) {
-        MachineSizedSIntPtr ptr = new MachineSizedSIntPtr();
+        IntPtr ptr = new IntPtr();
         findByUniqueID(uniqueID, null, ptr);
         return MIDIObjectType.valueOf(ptr.get());
     }
@@ -156,6 +156,6 @@ import org.robovm.apple.corefoundation.*;
      * @since Available in iOS 4.2 and later.
      */
     @Bridge(symbol="MIDIObjectFindByUniqueID", optional=true)
-    protected static native MIDIError findByUniqueID(int inUniqueID, MIDIObject.MIDIObjectPtr outObject, MachineSizedSIntPtr outObjectType);
+    protected static native MIDIError findByUniqueID(int inUniqueID, MIDIObject.MIDIObjectPtr outObject, IntPtr outObjectType);
     /*</methods>*/
 }

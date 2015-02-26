@@ -35,6 +35,11 @@ import org.robovm.compiler.config.OS;
 import org.robovm.compiler.log.Logger;
 import org.robovm.compiler.util.Executor;
 
+import com.dd.plist.NSDictionary;
+import com.dd.plist.NSNumber;
+import com.dd.plist.NSObject;
+import com.dd.plist.PropertyListParser;
+
 /**
  * Will modify cache and tmpdir paths given a {@link Config#builder()} and prun
  * the cache if necessary.
@@ -62,9 +67,12 @@ public class RamDiskTools {
             try {
                 FileStore store = Files.getFileStore(new File(System.getProperty("user.home"))
                         .toPath());
+                
                 String plist = new Executor(Logger.NULL_LOGGER, "diskutil").args("info", "-plist", store.name())
                         .execCapture();
-                if (!plist.contains("<key>SolidState</key>")) {
+                NSDictionary dict = (NSDictionary)PropertyListParser.parse(plist.getBytes("UTF-8"));
+                NSObject value = dict.objectForKey("SolidState");
+                if(value == null || (value instanceof NSNumber && !((NSNumber)value).boolValue())) {
                     // @formatter:off
                     config.getLogger().warn("RoboVM has detected that you are running on a slow HDD. Please consider mounting a RAM disk.\n" +
                                             "To create a 2GB RAM disk, run this in your terminal:\n" +

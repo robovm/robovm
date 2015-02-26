@@ -41,7 +41,7 @@ public enum /*<name>*/PKPassType/*</name>*/ implements ValuedEnum {
     /*<values>*/
     Barcode(0L),
     Payment(1L),
-    Any(-1L);
+    Any(Bro.IS_32BIT ? 0xffffffffL : 0xffffffffffffffffL);
     /*</values>*/
 
     /*<bind>*/

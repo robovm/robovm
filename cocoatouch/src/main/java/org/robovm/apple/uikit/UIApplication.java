@@ -19,6 +19,7 @@ package org.robovm.apple.uikit;
 import java.io.*;
 import java.nio.*;
 import java.util.*;
+
 import org.robovm.objc.*;
 import org.robovm.objc.annotation.*;
 import org.robovm.objc.block.*;
@@ -213,6 +214,10 @@ import org.robovm.apple.corelocation.*;
             });
         }
     }
+    
+    /* Used to preserve the key window from being released. */
+    private static UIWindow KEY_WINDOW = null;
+    
     /*<ptr>*/public static class UIApplicationPtr extends Ptr<UIApplication, UIApplicationPtr> {}/*</ptr>*/
     /*<bind>*/static { ObjCRuntime.bind(UIApplication.class); }/*</bind>*/
     /*<constants>*//*</constants>*/
@@ -340,6 +345,21 @@ import org.robovm.apple.corelocation.*;
                 System.setOut(new FoundationLogPrintStream());
             }
         }
+        
+        // Observe the key UIWindow and keep a strong reference to it.
+        NSNotificationCenter.getDefaultCenter().addObserver(UIWindow.DidBecomeKeyNotification(), null, NSOperationQueue.getMainQueue(), new VoidBlock1<NSNotification>() {
+            @Override
+            public void invoke(NSNotification a) {
+                KEY_WINDOW = (UIWindow) a.getObject();
+            }
+        });
+        NSNotificationCenter.getDefaultCenter().addObserver(UIWindow.DidResignKeyNotification(), null, NSOperationQueue.getMainQueue(), new VoidBlock1<NSNotification>() {
+            @Override
+            public void invoke(NSNotification a) {
+                if (a.getObject() == KEY_WINDOW) KEY_WINDOW = null;
+            }
+        });
+        
         main(argc, argv, principalClassName, delegateClassName);
     }
     

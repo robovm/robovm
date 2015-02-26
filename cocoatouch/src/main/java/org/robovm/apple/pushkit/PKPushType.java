@@ -34,7 +34,7 @@ import org.robovm.apple.dispatch.*;
 /*</javadoc>*/
 /*<annotations>*/@Library("PushKit")/*</annotations>*/
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/PKPushType/*</name>*/ 
-    extends /*<extends>*/Object/*</extends>*/ 
+    extends /*<extends>*/CocoaUtility/*</extends>*/ 
     /*<implements>*//*</implements>*/ {
 
     /*<ptr>*/

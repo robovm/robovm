@@ -36,7 +36,7 @@ import org.robovm.apple.addressbook.*;
 @Marshaler(PKPaymentNetwork.Marshaler.class)
 /*<annotations>*/@Library("PassKit")/*</annotations>*/
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/PKPaymentNetwork/*</name>*/ 
-    extends /*<extends>*/Object/*</extends>*/ 
+    extends /*<extends>*/CocoaUtility/*</extends>*/ 
     /*<implements>*//*</implements>*/ {
 
     public static class Marshaler {

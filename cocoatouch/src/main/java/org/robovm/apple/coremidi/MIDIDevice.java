@@ -40,9 +40,7 @@ import org.robovm.apple.corefoundation.*;
     /*<ptr>*/public static class MIDIDevicePtr extends Ptr<MIDIDevice, MIDIDevicePtr> {}/*</ptr>*/
     /*<bind>*/static { Bro.bind(MIDIDevice.class); }/*</bind>*/
     /*<constants>*//*</constants>*/
-    /*<constructors>*/
-    protected MIDIDevice() {}
-    /*</constructors>*/
+    /*<constructors>*//*</constructors>*/
     /*<properties>*//*</properties>*/
     /*<members>*//*</members>*/
     public MIDIError addEntity(String name, boolean embedded, @MachineSizedUInt long numSourceEndpoints, @MachineSizedUInt long numDestinationEndpoints, MIDIEntity newEntity) {

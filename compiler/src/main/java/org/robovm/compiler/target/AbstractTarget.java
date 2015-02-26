@@ -25,9 +25,12 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.Enumeration;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 import java.util.zip.ZipOutputStream;
@@ -257,6 +260,11 @@ public abstract class AbstractTarget implements Target {
             launchParameters.setArguments(args);
         }
 
+        Map<String, String> env = new HashMap<>(launchParameters.getEnvironment() != null 
+                ? launchParameters.getEnvironment() : Collections.<String, String>emptyMap());
+        env.put("ROBOVM_LAUNCH_MODE", config.isDebug() ? "debug" : "release");
+        launchParameters.setEnvironment(env);
+        
         return doLaunch(launchParameters);
     }
     

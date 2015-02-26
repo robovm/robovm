@@ -33,7 +33,6 @@ import org.robovm.apple.coredata.*;
 import org.robovm.apple.coreimage.*;
 import org.robovm.apple.coretext.*;
 import org.robovm.apple.corelocation.*;
-import org.robovm.apple.logging.FoundationLogPrintStream;
 /*</imports>*/
 
 /*<javadoc>*/
@@ -332,12 +331,14 @@ import org.robovm.apple.logging.FoundationLogPrintStream;
         if (delegateClass != null) {
             delegateClassName = ObjCClass.getByType(delegateClass).getName();            
         }
-        NSObject inCompilerEnv = NSProcessInfo.getSharedProcessInfo().getEnvironment().get("robovmcompilerenv");
-        if (inCompilerEnv == null || !inCompilerEnv.toString().equals("true")) {
-            System.setErr(new FoundationLogPrintStream());
-            System.err.println("SET System.err to FoundationLogPrintStream");
-    		System.setOut(new FoundationLogPrintStream());
-            System.out.println("SET System.out to FoundationLogPrintStream");
+
+        if (System.getenv("ROBOVM_LAUNCH_MODE") == null) {
+            if (!(System.err instanceof FoundationLogPrintStream)) {
+                System.setErr(new FoundationLogPrintStream());
+            }
+            if (!(System.out instanceof FoundationLogPrintStream)) {
+                System.setOut(new FoundationLogPrintStream());
+            }
         }
         main(argc, argv, principalClassName, delegateClassName);
     }

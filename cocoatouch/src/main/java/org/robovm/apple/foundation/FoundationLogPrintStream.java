@@ -13,13 +13,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.robovm.apple.logging;
+package org.robovm.apple.foundation;
 
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.PrintStream;
-import org.robovm.apple.foundation.Foundation;
-import org.robovm.apple.foundation.NSString;
 
 public class FoundationLogPrintStream extends PrintStream {
 

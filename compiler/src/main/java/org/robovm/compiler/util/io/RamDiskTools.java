@@ -20,10 +20,17 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.FileStore;
 import java.nio.file.Files;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Comparator;
+import java.util.Date;
+import java.util.List;
 
 import org.apache.commons.io.FileUtils;
+import org.robovm.compiler.config.Arch;
 import org.robovm.compiler.config.Config;
 import org.robovm.compiler.config.Config.Builder;
+import org.robovm.compiler.config.Config.TargetType;
 import org.robovm.compiler.config.OS;
 import org.robovm.compiler.log.Logger;
 import org.robovm.compiler.util.Executor;
@@ -37,7 +44,7 @@ import org.robovm.compiler.util.Executor;
  */
 public class RamDiskTools {
     private static final String ROBOVM_RAM_DISK_PATH = "/Volumes/RoboVM RAM Disk";
-    private static final long MIN_FREE_SPACE = 1024 * 1024 * 200;
+    private static final long MIN_FREE_SPACE = 1024 * 1024 * 400;
 
     /**
      * Checks if a RAM disk is available, pruns it if necessary and rewires the
@@ -77,7 +84,7 @@ public class RamDiskTools {
         try {
             FileStore store = Files.getFileStore(volume.toPath());
             if (store.getUsableSpace() < MIN_FREE_SPACE) {
-                cleanRamDisk(store, volume);
+                cleanRamDisk(store, volume, config);
                 if (store.getUsableSpace() < MIN_FREE_SPACE) {
                     config.getLogger().debug("Couldn't free enough space on RAM disk, using hard drive");
                     return;
@@ -105,17 +112,121 @@ public class RamDiskTools {
         }
     }
 
-    private void cleanRamDisk(FileStore store, File volume) {
+    private void cleanRamDisk(FileStore store, File volume, Config config) {
         // clean the cache/ and tmp/ dirs
         // FIXME be smarter as per the issue report
         try {
-            FileUtils.deleteDirectory(new File(volume, "tmp"));
+//            FileUtils.deleteDirectory(new File(volume, "tmp"));
             // only clean the cache if killing the tmp dir didn't work
             if (store.getUsableSpace() < MIN_FREE_SPACE) {
-                FileUtils.deleteDirectory(new File(volume, "cache"));
+                cleanCache(store, volume, config);
             }
         } catch (IOException e) {
             // nothing to do here
+        }
+    }
+
+    private void cleanCache(FileStore store, File volume, Config config) throws IOException {
+        // Figur out the cache dir for our current confi. We need to reconstruct
+        // os/arch ourselves as they may not have been set on the config yet.
+        // calling build on the config before we do this doesn't work
+        // either because we can not set the cache/tmpDir after that.
+        TargetType currTarget = config.getTargetType();
+        OS currOs = config.getOs();
+        if (currOs == null) {
+            if (currTarget != null) {
+                currOs = currTarget == TargetType.console ? OS.getDefaultOS() : OS.ios;
+            } else {
+                currOs = OS.getDefaultOS();
+            }
+        }
+        Arch currArch = config.getArch();
+        if (currArch == null) {
+            if (currTarget != null) {
+                currArch = currTarget == TargetType.console ? Arch.getDefaultArch() : Arch.thumbv7;
+            } else {
+                currArch = Arch.getDefaultArch();
+            }
+        }        
+        CacheDir currCacheDir = constructCacheDir(volume, currOs, currArch, config.isDebug());
+
+        // Enumerate all directories that are not our current cache
+        // dir
+        List<CacheDir> cacheDirs = new ArrayList<CacheDir>();
+        for (OS os : OS.values()) {
+            for (Arch arch : Arch.values()) {
+                for (boolean isDebug : new boolean[] { false, true }) {
+                    CacheDir cacheDir = constructCacheDir(volume, os, arch, isDebug);
+                    if (cacheDir != null && !cacheDir.directory.equals(currCacheDir.directory)) {
+                        cacheDirs.add(cacheDir);
+                    }
+                }
+            }
+        }
+        
+        // sort the directories by their last modified
+        // date in ascending order (oldest first). We
+        // start deleting  the oldest cache files first
+        // before we start deleting the cache files for
+        // the current os/arch
+        cacheDirs.sort(new Comparator<CacheDir>() {
+            @Override
+            public int compare(CacheDir o1, CacheDir o2) {
+                return new Date(o1.lastModified).compareTo(new Date(o2.lastModified));
+            }
+        });
+
+        // add our current target dir last if it already
+        // exists. This way we delete its cache files last
+        if(currCacheDir != null) {
+            cacheDirs.add(currCacheDir);
+        }
+        
+        // start deleting files until we have enough
+        // space
+        for(CacheDir dir: cacheDirs) {
+            for(File file: dir.objFiles) {
+                file.delete();
+                System.out.println("Deleting " + file.getAbsolutePath());
+                if(store.getUsableSpace() > MIN_FREE_SPACE) {
+                    return;
+                }
+            }            
+        }                
+        
+        // nuclear option, we couldn't delete enough files
+        FileUtils.deleteDirectory(new File(volume, "cache"));
+    }
+
+    private CacheDir constructCacheDir(File volume, OS os, Arch arch, boolean isDebug) {
+        File dir = new File(volume, "cache/" + os.toString() + "/" + arch.toString() + "/"
+                + (isDebug ? "debug" : "release"));
+        if (!dir.exists())
+            return null;
+        List<File> objFiles = new ArrayList<File>((Collection<File>) FileUtils.listFiles(dir, new String[] { "o" },
+                true));
+        objFiles.sort(new Comparator<File>() {
+            @Override
+            public int compare(File f1, File f2) {
+                return new Date(f2.lastModified()).compareTo(new Date(f1.lastModified()));
+            }
+        });
+        long lastModified = 0;
+        for (File file : objFiles) {
+            lastModified = Math.max(lastModified, file.lastModified());
+        }
+        return new CacheDir(dir, objFiles, lastModified);
+    }
+
+    static class CacheDir {
+        File directory;
+        List<File> objFiles;
+        long lastModified;
+
+        public CacheDir(File directory, List<File> objFiles, long lastModified) {
+            this.directory = directory;
+            this.objFiles = objFiles;
+            this.lastModified = lastModified;
         }
     }
 }

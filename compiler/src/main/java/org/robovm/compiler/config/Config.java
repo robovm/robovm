@@ -429,6 +429,10 @@ public class Config {
         return target;
     }
     
+    public TargetType getTargetType() {
+        return targetType;
+    }
+    
     public String getIosSdkVersion() {
         return iosSdkVersion;
     }

@@ -22,6 +22,7 @@ import java.nio.file.FileStore;
 import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
@@ -177,7 +178,7 @@ public class RamDiskTools {
         // start deleting  the oldest cache files first
         // before we start deleting the cache files for
         // the current os/arch
-        cacheDirs.sort(new Comparator<CacheDir>() {
+        Collections.sort(cacheDirs, new Comparator<CacheDir>() {
             @Override
             public int compare(CacheDir o1, CacheDir o2) {
                 return new Date(o1.lastModified).compareTo(new Date(o2.lastModified));
@@ -212,7 +213,7 @@ public class RamDiskTools {
             return null;
         List<File> objFiles = new ArrayList<File>((Collection<File>) FileUtils.listFiles(dir, new String[] { "o" },
                 true));
-        objFiles.sort(new Comparator<File>() {
+        Collections.sort(objFiles, new Comparator<File>() {
             @Override
             public int compare(File f1, File f2) {
                 return new Date(f2.lastModified()).compareTo(new Date(f1.lastModified()));

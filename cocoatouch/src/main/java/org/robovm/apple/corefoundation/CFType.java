@@ -111,6 +111,10 @@ import org.robovm.apple.foundation.*;
         public static CFType toObject(Class<? extends CFType> cls, long handle, long flags) {
             return Marshaler.toObject(cls, handle, flags, false);
         }
+        @MarshalsPointer
+        public static long toNative(CFType o, long flags) {
+            return Marshaler.toNative(o, flags);
+        }
     }
 
     private static final Map<Long, Class<? extends CFType>> allCFTypeClasses = new HashMap<>();

@@ -99,6 +99,10 @@ import org.robovm.apple.dispatch.*;
         public static NSObject toObject(Class<? extends NSObject> cls, long handle, long flags) {
             return Marshaler.toObject(cls, handle, flags, false);
         }
+        @MarshalsPointer
+        public static long toNative(NSObject o, long flags) {
+            return Marshaler.toNative(o, flags);
+        }
     }
     
     /*<bind>*/static { ObjCRuntime.bind(NSObject.class); }/*</bind>*/

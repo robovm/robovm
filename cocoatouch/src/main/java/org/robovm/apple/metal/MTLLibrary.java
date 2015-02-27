@@ -59,6 +59,6 @@ import org.robovm.apple.dispatch.*;
     /*<members>*//*</members>*/
     /*<methods>*/
     @Method(selector = "newFunctionWithName:")
-    public native MTLFunction newFunction(String functionName);
+    public native @org.robovm.rt.bro.annotation.Marshaler(NSObject.NoRetainMarshaler.class) MTLFunction newFunction(String functionName);
     /*</methods>*/
 }

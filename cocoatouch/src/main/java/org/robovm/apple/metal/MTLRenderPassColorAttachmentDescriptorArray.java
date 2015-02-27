@@ -55,6 +55,6 @@ import org.robovm.apple.dispatch.*;
     @Method(selector = "objectAtIndexedSubscript:")
     public native MTLRenderPassColorAttachmentDescriptor get(@MachineSizedUInt long attachmentIndex);
     @Method(selector = "setObject:atIndexedSubscript:")
-    public native void insert(MTLRenderPassColorAttachmentDescriptor attachment, @MachineSizedUInt long attachmentIndex);
+    public native void set(MTLRenderPassColorAttachmentDescriptor attachment, @MachineSizedUInt long attachmentIndex);
     /*</methods>*/
 }

@@ -69,7 +69,7 @@ import org.robovm.apple.mediatoolbox.*;
     @Method(selector = "hasNewPixelBufferForItemTime:")
     public native boolean hasNewPixelBufferForItemTime(@ByVal CMTime itemTime);
     @Method(selector = "copyPixelBufferForItemTime:itemTimeForDisplay:")
-    public native CVPixelBuffer getPixelBufferForItemTime(@ByVal CMTime itemTime, CMTime outItemTimeForDisplay);
+    public native @org.robovm.rt.bro.annotation.Marshaler(CFType.NoRetainMarshaler.class) CVPixelBuffer getPixelBufferForItemTime(@ByVal CMTime itemTime, CMTime outItemTimeForDisplay);
     @Method(selector = "setDelegate:queue:")
     public native void setDelegate(AVPlayerItemOutputPullDelegate delegate, DispatchQueue delegateQueue);
     @Method(selector = "requestNotificationOfMediaDataChangeWithAdvanceInterval:")

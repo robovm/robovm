@@ -35,7 +35,7 @@ classes:
                     completionBlock: 
                         type: '@Block VoidBlock2<NSURL, NSError>'
             '-writeModifiedVideoAtPathToSavedPhotosAlbum:completionBlock:':
-                name: writeModifiedVideoData
+                name: writeModifiedVideo
                 parameters:
                     completionBlock: 
                         type: '@Block VoidBlock2<NSURL, NSError>'

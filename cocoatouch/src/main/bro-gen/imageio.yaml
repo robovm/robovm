@@ -141,6 +141,10 @@ functions:
         exclude: true
     CGImageMetadataSetValueMatchingImageProperty:
         exclude: true
+    CGImageMetadata(CreateXMPData):
+        class: CGImageMetadata
+        name: '#{g[0]}'
+        return_marshaler: NSObject.NoRetainMarshaler
     CGImageMetadata(.*):
         class: CGImageMetadata
         name: '#{g[0]}'

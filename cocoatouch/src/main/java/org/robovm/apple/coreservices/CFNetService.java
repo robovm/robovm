@@ -239,7 +239,7 @@ import org.robovm.apple.corefoundation.*;
      * @since Available in iOS 2.0 and later.
      */
     @Bridge(symbol="CFNetServiceCreateTXTDataWithDictionary", optional=true)
-    protected static native NSData createTXTData(CFAllocator alloc, NSDictionary<NSString, NSData> keyValuePairs);
+    protected static native @org.robovm.rt.bro.annotation.Marshaler(NSObject.NoRetainMarshaler.class) NSData createTXTData(CFAllocator alloc, NSDictionary<NSString, NSData> keyValuePairs);
     /**
      * @since Available in iOS 2.0 and later.
      */

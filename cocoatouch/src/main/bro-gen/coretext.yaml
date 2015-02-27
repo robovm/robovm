@@ -300,6 +300,10 @@ functions:
         name: 'get#{g[0]}'
         return_type: List<String>
         return_marshaler: CFArray.AsStringListMarshaler
+    CTFontCopy(Table):
+        class: CTFont
+        name: 'get#{g[0]}'
+        return_marshaler: NSObject.NoRetainMarshaler
     CTFont(GetGlyphs)ForCharacters:
         class: CTFont
         name: '#{g[0]}'

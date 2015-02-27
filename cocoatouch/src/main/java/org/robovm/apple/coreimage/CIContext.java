@@ -75,11 +75,11 @@ import org.robovm.apple.imageio.*;
     @Method(selector = "drawImage:inRect:fromRect:")
     public native void drawImage(CIImage im, @ByVal CGRect dest, @ByVal CGRect src);
     @Method(selector = "createCGImage:fromRect:")
-    public native CGImage createCGImage(CIImage im, @ByVal CGRect r);
+    public native @org.robovm.rt.bro.annotation.Marshaler(CFType.NoRetainMarshaler.class) CGImage createCGImage(CIImage im, @ByVal CGRect r);
     @Method(selector = "createCGImage:fromRect:format:colorSpace:")
-    public native CGImage createCGImage(CIImage im, @ByVal CGRect r, int f, CGColorSpace cs);
+    public native @org.robovm.rt.bro.annotation.Marshaler(CFType.NoRetainMarshaler.class) CGImage createCGImage(CIImage im, @ByVal CGRect r, int f, CGColorSpace cs);
     @Method(selector = "render:toBitmap:rowBytes:bounds:format:colorSpace:")
-    public native void render(CIImage im, VoidPtr data, int rb, @ByVal CGRect r, int f, CGColorSpace cs);
+    public native void render(CIImage im, VoidPtr data, @MachineSizedSInt long rb, @ByVal CGRect r, int f, CGColorSpace cs);
     /**
      * @since Available in iOS 5.0 and later.
      */

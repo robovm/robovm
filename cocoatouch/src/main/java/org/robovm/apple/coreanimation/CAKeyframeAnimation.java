@@ -91,7 +91,6 @@ import org.robovm.apple.metal.*;
 
     @Method(selector = "animationWithKeyPath:")
     public static native CAKeyframeAnimation create(String path);
-
     @Method(selector = "animation")
     public static native CAKeyframeAnimation create();
     

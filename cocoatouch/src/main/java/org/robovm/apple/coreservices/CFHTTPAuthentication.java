@@ -95,7 +95,7 @@ import org.robovm.apple.corefoundation.*;
      * @since Available in iOS 2.0 and later.
      */
     @Bridge(symbol="CFHTTPAuthenticationCopyDomains", optional=true)
-    public native NSArray<NSURL> getDomains();
+    public native @org.robovm.rt.bro.annotation.Marshaler(NSObject.NoRetainMarshaler.class) NSArray<NSURL> getDomains();
     /**
      * @since Available in iOS 2.0 and later.
      */

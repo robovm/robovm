@@ -105,7 +105,7 @@ import org.robovm.apple.dispatch.*;
     }
     @Method(selector = "textureWithCGImage:options:error:")
     private static native GLKTextureInfo createTexture(CGImage cgImage, GLKTextureLoaderOptions options, NSError.NSErrorPtr outError);
-    public static GLKTextureInfo loadCubeMap(@org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String> paths, GLKTextureLoaderOptions options) throws NSErrorException {
+    public static GLKTextureInfo loadCubeMap(List<String> paths, GLKTextureLoaderOptions options) throws NSErrorException {
        NSError.NSErrorPtr ptr = new NSError.NSErrorPtr();
        GLKTextureInfo result = loadCubeMap(paths, options, ptr);
        if (ptr.get() != null) { throw new NSErrorException(ptr.get()); }

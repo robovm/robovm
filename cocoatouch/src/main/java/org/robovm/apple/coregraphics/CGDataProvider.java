@@ -77,6 +77,6 @@ import org.robovm.apple.uikit.*;
      * @since Available in iOS 2.0 and later.
      */
     @Bridge(symbol="CGDataProviderCopyData", optional=true)
-    public native NSData getData();
+    public native @org.robovm.rt.bro.annotation.Marshaler(NSObject.NoRetainMarshaler.class) NSData getData();
     /*</methods>*/
 }

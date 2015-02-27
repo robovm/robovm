@@ -74,6 +74,6 @@ import org.robovm.apple.mediatoolbox.*;
     /*<members>*//*</members>*/
     /*<methods>*/
     @Method(selector = "newPixelBuffer")
-    public native CVPixelBuffer newPixelBuffer();
+    public native @org.robovm.rt.bro.annotation.Marshaler(CFType.NoRetainMarshaler.class) CVPixelBuffer newPixelBuffer();
     /*</methods>*/
 }

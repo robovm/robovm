@@ -151,8 +151,7 @@ enums:
     NSTimeZoneNameStyle: {}
     NSUbiquitousKeyValueStoreChangeReason: { first: NSUbiquitousKeyValueStoreServerChange }
     NSURLBookmarkCreationOptions: {}
-    NSURLBookmarkResolutionOptions: {}
-    NSURLBookmarkResolutionOptions: {}
+    NSURLBookmarkResolutionOptions: {prefix: NSURLBookmarkResolution}
     NSURLCacheStoragePolicy: { first: NSURLCacheStorageAllowed, marshaler: ValuedEnum.AsMachineSizedUIntMarshaler }
     NSURLCredentialPersistence: {}
     NSURLErrorCode: { first: NSURLErrorUnknown }
@@ -1802,8 +1801,8 @@ classes:
             '-.*': {exclude: true}
     NSLock: # DONE
         methods:
-            '-lock.*':
-                name: lock
+            '-lockBeforeDate:':
+                name: lockBefore
     NSMachPort: # DONE
         methods:
             '-delegate':

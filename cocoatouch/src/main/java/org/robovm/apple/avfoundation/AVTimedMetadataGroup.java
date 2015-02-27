@@ -79,6 +79,6 @@ import org.robovm.apple.mediatoolbox.*;
      * @since Available in iOS 8.0 and later.
      */
     @Method(selector = "copyFormatDescription")
-    public native CMFormatDescription getFormatDescription();
+    public native @org.robovm.rt.bro.annotation.Marshaler(CFType.NoRetainMarshaler.class) CMFormatDescription getFormatDescription();
     /*</methods>*/
 }

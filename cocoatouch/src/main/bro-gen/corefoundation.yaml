@@ -58,8 +58,7 @@ enums:
     CFStringTokenizerUnitOptions: {first: kCFStringTokenizerUnitWord, bits: true, marshaler: Bits.AsMachineSizedIntMarshaler}
     CFTimeZoneNameStyle: {}
     CFURLBookmarkCreationOptions: {}
-    CFURLBookmarkResolutionOptions2: {first: kCFURLBookmarkResolutionWithSecurityScope, merge_with: CFURLBookmarkResolutionOptions, prefix: kCFURLBookmarkResolution}
-    CFURLBookmarkResolutionOptions: {first: kCFBookmarkResolutionWithoutUIMask, prefix: kCFBookmarkResolution, bits: true}
+    CFURLBookmarkResolutionOptions: {first: kCFURLBookmarkResolutionWithSecurityScope, prefix: kCFURLBookmarkResolution, ignore: kCFBookmarkResolution, bits: true }
     CFURLComponentType: {}
     CFURLEnumeratorOptions: {}
     CFURLEnumeratorResult: {}

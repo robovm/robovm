@@ -48,8 +48,10 @@ classes:
                 name: render
             '-createCGImage.*':
                 name: createCGImage
+                return_marshaler: CFType.NoRetainMarshaler
             '-createCGLayer.*':
                 name: createCGLayer
+                return_marshaler: CFType.NoRetainMarshaler
     CIDetector: # DONE
         methods:
             '+detectorOfType:context:options:':

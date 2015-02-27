@@ -338,6 +338,6 @@ import org.robovm.apple.uikit.*;
      * @since Available in iOS 6.0 and later.
      */
     @Bridge(symbol="CGColorSpaceCopyICCProfile", optional=true)
-    public native NSData getICCProfile();
+    public native @org.robovm.rt.bro.annotation.Marshaler(NSObject.NoRetainMarshaler.class) NSData getICCProfile();
     /*</methods>*/
 }

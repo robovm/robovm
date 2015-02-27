@@ -160,7 +160,7 @@ import org.robovm.apple.imageio.*;
      * @since Available in iOS 5.0 and later.
      */
     @Method(selector = "writeModifiedVideoAtPathToSavedPhotosAlbum:completionBlock:")
-    public native void writeModifiedVideoData(NSURL videoPathURL, @Block VoidBlock2<NSURL, NSError> completionBlock);
+    public native void writeModifiedVideo(NSURL videoPathURL, @Block VoidBlock2<NSURL, NSError> completionBlock);
     /**
      * @since Available in iOS 5.0 and later.
      */

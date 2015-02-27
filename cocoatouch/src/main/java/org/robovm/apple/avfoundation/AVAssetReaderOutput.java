@@ -82,7 +82,7 @@ import org.robovm.apple.mediatoolbox.*;
     /*<members>*//*</members>*/
     /*<methods>*/
     @Method(selector = "copyNextSampleBuffer")
-    public native CMSampleBuffer getNextSampleBuffer();
+    public native @org.robovm.rt.bro.annotation.Marshaler(CFType.NoRetainMarshaler.class) CMSampleBuffer getNextSampleBuffer();
     /**
      * @since Available in iOS 8.0 and later.
      */

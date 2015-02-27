@@ -81,6 +81,7 @@ functions:
     CFReadStreamCreateWithFTPURL:
         class: CFFTPStream
         name: createReadStream
+        return_marshaler: NSObject.NoRetainMarshaler
     CFFTP(CreateParsedResourceListing):
         class: CFFTPStream
         name: '#{g[0]}'
@@ -93,6 +94,7 @@ functions:
     CFWriteStreamCreateWithFTPURL:
         class: CFFTPStream
         name: createWriteStream
+        return_marshaler: NSObject.NoRetainMarshaler
     
     # CFHost
     CFHost(Create)With.*:
@@ -152,6 +154,7 @@ functions:
         class: CFHTTPAuthentication
         name: 'get#{g[0]}'
         return_type: NSArray<NSURL>
+        return_marshaler: NSObject.NoRetainMarshaler
     CFHTTPAuthenticationCopy(.*):
         class: CFHTTPAuthentication
         name: 'get#{g[0]}'
@@ -196,6 +199,10 @@ functions:
         class: CFHTTPMessage
         name: 'get#{g[0]}'
         return_marshaler: CFString.AsStringNoRetainMarshaler
+    CFHTTPMessageCopy(SerializedMessage|RequestURL):
+        class: CFHTTPMessage
+        name: 'get#{g[0]}'
+        return_marshaler: NSObject.NoRetainMarshaler
     CFHTTPMessageCopy(.*):
         class: CFHTTPMessage
         name: 'get#{g[0]}'
@@ -231,6 +238,7 @@ functions:
     CFReadStream(Create).*:
         class: CFHTTPStream
         name: '#{g[0]}'
+        return_marshaler: NSObject.NoRetainMarshaler
     CFHTTPReadStream(.*):
         class: CFHTTPStream
         name: '#{g[0]}'
@@ -328,6 +336,7 @@ functions:
         class: CFNetService
         name: createTXTData
         visibility: protected
+        return_marshaler: NSObject.NoRetainMarshaler
         parameters:
             keyValuePairs:
                 type: 'NSDictionary<NSString, NSData>'

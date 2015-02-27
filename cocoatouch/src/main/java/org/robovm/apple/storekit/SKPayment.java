@@ -76,6 +76,6 @@ import org.robovm.apple.accounts.*;
      * @since Available in iOS 3.0 and later.
      */
     @Method(selector = "paymentWithProduct:")
-    public static native SKPayment createFromProduct(SKProduct product);
+    public static native SKPayment create(SKProduct product);
     /*</methods>*/
 }

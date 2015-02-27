@@ -248,6 +248,7 @@ functions:
     CGColorSpaceCopy(ICCProfile):
         class: CGColorSpace
         name: 'get#{g[0]}'
+        return_marshaler: NSObject.NoRetainMarshaler
     CGColorSpace(GetColorTable):
         class: CGColorSpace
         name: '#{g[0]}'
@@ -395,6 +396,7 @@ functions:
         class: CGDataProvider
         name: 'get#{g[0]}'
         return_type: NSData
+        return_marshaler: NSObject.NoRetainMarshaler
     CGDataProvider(.*):
         class: CGDataProvider
         name: '#{g[0]}'
@@ -806,6 +808,7 @@ functions:
         class: CGPDFStream
         name: 'get#{g[0]}'
         visibility: private
+        return_marshaler: NSObject.NoRetainMarshaler
     CGPDFStream(.*):
         class: CGPDFStream
         name: '#{g[0]}'
@@ -824,6 +827,7 @@ functions:
         class: CGPDFString
         name: 'get#{g[0]}'
         return_type: NSDate
+        return_marshaler: NSObject.NoRetainMarshaler
     CGPDFString(.*):
         class: CGPDFString
         name: '#{g[0]}'

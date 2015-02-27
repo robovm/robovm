@@ -122,7 +122,7 @@ import org.robovm.apple.foundation.*;
     /*<members>*//*</members>*/
     /*<methods>*/
     @Method(selector = "relationshipsWithDestinationEntity:")
-    public native NSArray<NSRelationshipDescription> getRelationshipsWith(NSEntityDescription entity);
+    public native NSArray<NSRelationshipDescription> getRelationshipsWithDestination(NSEntityDescription entity);
     /**
      * @since Available in iOS 3.0 and later.
      */

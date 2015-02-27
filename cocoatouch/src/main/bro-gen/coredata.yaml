@@ -12,7 +12,7 @@ enums:
     NSDeleteRule: {first: NSNoActionDeleteRule, suffix: DeleteRule, type: MachineUInt}
     NSEntityMappingType: {first: NSUndefinedEntityMappingType, suffix: EntityMappingType, type: MachineUInt}
     NSFetchedResultsChangeType: {first: NSFetchedResultsChangeInsert, type: MachineUInt}
-    NSFetchRequestResultType: {first: NSManagedObjectResultType, suffix: ResultType, type: MachineUInt}
+    NSFetchRequestResultType: {first: NSManagedObjectResultType, skip_none: true, suffix: ResultType, type: MachineUInt}
     NSManagedObjectContextConcurrencyType: {first: NSConfinementConcurrencyType, suffix: ConcurrencyType, type: MachineUInt}
     NSMergePolicyType: {first: NSErrorMergePolicyType, suffix: MergePolicyType, type: MachineUInt}
     NSPersistentStoreRequestType: {first: NSFetchRequestType, suffix: RequestType, type: MachineUInt}
@@ -58,6 +58,7 @@ classes:
                 visibility: protected # throws NSErrorException 
             '-newCacheNodeForManagedObject:':
                 name: newCacheNode
+                return_marshaler: NSObject.NoRetainMarshaler
             '-updateCacheNode:fromManagedObject:':
                 name: updateCacheNode
             '-cacheNodes':
@@ -79,6 +80,7 @@ classes:
                 name: getObjectID
             '-newReferenceObjectForManagedObject:':
                 name:  newReferenceObject
+                return_marshaler: NSObject.NoRetainMarshaler
             '-referenceObjectForObjectID:':
                 name: getReferenceObject
     NSAtomicStoreCacheNode: # DONE
@@ -120,7 +122,7 @@ classes:
                 type: '@org.robovm.rt.bro.annotation.Marshaler(NSDictionary.AsStringMapMarshaler.class) Map<String, NSRelationshipDescription>'
         methods:
             '-relationshipsWithDestinationEntity:':
-                name: getRelationshipsWith
+                name: getRelationshipsWithDestination
                 return_type: NSArray<NSRelationshipDescription>
             '-isKindOfEntity:':
                 trim_after_first_colon: true
@@ -210,21 +212,22 @@ classes:
     NSIncrementalStore: # DONE
         methods:
             '-loadMetadata:':
-                trim_after_first_colon: true
-                visibility: protected # throws NSErrorException
+                exclude: true
             '-executeRequest:withContext:error:':
                 trim_after_first_colon: true
-                visibility: protected # throws NSErrorException
+                throws: NSErrorException
             '-newValuesForObjectWithID:withContext:error:':
                 name: newValuesForObjectID
-                visibility: protected # throws NSErrorException
+                return_marshaler: NSObject.NoRetainMarshaler
+                throws: NSErrorException
             '-newValueForRelationship:forObjectWithID:withContext:error:':
                 trim_after_first_colon: true
-                visibility: protected # throws NSErrorException
+                return_marshaler: NSObject.NoRetainMarshaler
+                throws: NSErrorException
             '-obtainPermanentIDsForObjects:error:':
                 trim_after_first_colon: true
                 return_type: NSArray<NSManagedObjectID>
-                visibility: protected # throws NSErrorException
+                throws: NSErrorException
                 parameters:
                     array:
                         type: NSArray<NSManagedObject>
@@ -240,6 +243,7 @@ classes:
                         type: NSArray<NSManagedObjectID>
             '-newObjectIDForEntity:referenceObject:':
                 trim_after_first_colon: true
+                return_marshaler: NSObject.NoRetainMarshaler
             '-referenceObjectForObjectID:':
                 name: getReferenceObjectForID
             '+identifierForNewStoreAtURL:':

@@ -71,6 +71,6 @@ import org.robovm.apple.uikit.*;
      * @since Available in iOS 2.0 and later.
      */
     @Bridge(symbol="CGPDFStreamCopyData", optional=true)
-    private native NSData getData(IntPtr format);
+    private native @org.robovm.rt.bro.annotation.Marshaler(NSObject.NoRetainMarshaler.class) NSData getData(IntPtr format);
     /*</methods>*/
 }

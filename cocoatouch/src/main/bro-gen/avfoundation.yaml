@@ -241,7 +241,8 @@ classes:
                 name: init
             '-copyCGImageAtTime:actualTime:error:':
                 name: getCGImageAtTime
-                visibility: protected # throws NSErrorException
+                throws: NSErrorException
+                return_marshaler: CFType.NoRetainMarshaler
             '-generateCGImagesAsynchronouslyForTimes:completionHandler:':
                 name: generateCGImagesAsynchronously
                 parameters:
@@ -296,6 +297,7 @@ classes:
         methods:
             '-copyNextSampleBuffer':
                 name: getNextSampleBuffer
+                return_marshaler: CFType.NoRetainMarshaler
             '-resetForReadingTimeRanges:':
                 trim_after_first_colon: true
                 parameters:
@@ -1738,6 +1740,7 @@ classes:
                 trim_after_first_colon: true
             '-copyPixelBufferForItemTime:itemTimeForDisplay:':
                 name: getPixelBufferForItemTime
+                return_marshaler: CFType.NoRetainMarshaler
             '-setDelegate:queue:':
                 trim_after_first_colon: true
             '-requestNotificationOfMediaDataChangeWithAdvanceInterval:':
@@ -1867,6 +1870,7 @@ classes:
                 name: init
             '-copyFormatDescription':
                 name: getFormatDescription
+                return_marshaler: CFType.NoRetainMarshaler
     AVURLAsset: # DONE
         methods:
             '-initWithURL:options:':
@@ -1947,7 +1951,10 @@ classes:
                         type: CGRect.CGRectPtr
                     timeRange:
                         type: CMTimeRange.CMTimeRangePtr
-    AVVideoCompositionRenderContext: {} # DONE
+    AVVideoCompositionRenderContext: # DONE
+        methods:
+            '-newPixelBuffer':
+                return_marshaler: CFType.NoRetainMarshaler
 
 protocols:
     AVAssetResourceLoaderDelegate: # DONE

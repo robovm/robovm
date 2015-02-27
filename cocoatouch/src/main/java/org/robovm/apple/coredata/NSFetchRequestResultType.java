@@ -35,7 +35,6 @@ import org.robovm.apple.foundation.*;
 /*<annotations>*/@Marshaler(Bits.AsMachineSizedIntMarshaler.class)/*</annotations>*/
 public final class /*<name>*/NSFetchRequestResultType/*</name>*/ extends Bits</*<name>*/NSFetchRequestResultType/*</name>*/> {
     /*<values>*/
-    public static final NSFetchRequestResultType None = new NSFetchRequestResultType(0L);
     public static final NSFetchRequestResultType ManagedObject = new NSFetchRequestResultType(0L);
     public static final NSFetchRequestResultType ManagedObjectID = new NSFetchRequestResultType(1L);
     /**

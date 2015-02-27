@@ -86,7 +86,7 @@ import org.robovm.apple.foundation.NSError.NSErrorPtr;
     @Method(selector = "save:")
     protected native boolean save(NSError.NSErrorPtr error);
     @Method(selector = "newCacheNodeForManagedObject:")
-    public native NSAtomicStoreCacheNode newCacheNode(NSManagedObject managedObject);
+    public native @org.robovm.rt.bro.annotation.Marshaler(NSObject.NoRetainMarshaler.class) NSAtomicStoreCacheNode newCacheNode(NSManagedObject managedObject);
     @Method(selector = "updateCacheNode:fromManagedObject:")
     public native void updateCacheNode(NSAtomicStoreCacheNode node, NSManagedObject managedObject);
     @Method(selector = "cacheNodes")
@@ -100,7 +100,7 @@ import org.robovm.apple.foundation.NSError.NSErrorPtr;
     @Method(selector = "objectIDForEntity:referenceObject:")
     public native NSManagedObjectID getObjectID(NSEntityDescription entity, NSObject data);
     @Method(selector = "newReferenceObjectForManagedObject:")
-    public native NSObject newReferenceObject(NSManagedObject managedObject);
+    public native @org.robovm.rt.bro.annotation.Marshaler(NSObject.NoRetainMarshaler.class) NSObject newReferenceObject(NSManagedObject managedObject);
     @Method(selector = "referenceObjectForObjectID:")
     public native NSObject getReferenceObject(NSManagedObjectID objectID);
     /*</methods>*/

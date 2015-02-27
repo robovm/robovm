@@ -46,7 +46,7 @@ import org.robovm.apple.corelocation.*;
     /*<constructors>*/
     public CKMarkNotificationsReadOperation() {}
     protected CKMarkNotificationsReadOperation(SkipInit skipInit) { super(skipInit); }
-    public CKMarkNotificationsReadOperation(NSArray<?> notificationIDs) { super((SkipInit) null); initObject(init(notificationIDs)); }
+    public CKMarkNotificationsReadOperation(NSArray<CKNotificationID> notificationIDs) { super((SkipInit) null); initObject(init(notificationIDs)); }
     /*</constructors>*/
     /*<properties>*/
     @Property(selector = "notificationIDs")
@@ -61,6 +61,6 @@ import org.robovm.apple.corelocation.*;
     /*<members>*//*</members>*/
     /*<methods>*/
     @Method(selector = "initWithNotificationIDsToMarkRead:")
-    protected native @Pointer long init(NSArray<?> notificationIDs);
+    protected native @Pointer long init(NSArray<CKNotificationID> notificationIDs);
     /*</methods>*/
 }

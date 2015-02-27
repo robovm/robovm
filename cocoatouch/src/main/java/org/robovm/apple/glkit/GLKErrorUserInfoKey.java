@@ -71,7 +71,7 @@ import org.robovm.apple.dispatch.*;
                 return null;
             }
             List<GLKErrorUserInfoKey> list = new ArrayList<>();
-            for (int i = 0, n = o.size(); i < n; i++) {
+            for (int i = 0; i < o.size(); i++) {
                 list.add(GLKErrorUserInfoKey.valueOf(o.get(i)));
             }
             return list;

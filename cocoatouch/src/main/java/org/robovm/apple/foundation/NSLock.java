@@ -68,7 +68,7 @@ import org.robovm.apple.dispatch.*;
     @Method(selector = "tryLock")
     public native boolean tryLock();
     @Method(selector = "lockBeforeDate:")
-    public native boolean lock(NSDate limit);
+    public native boolean lockBefore(NSDate limit);
     @Method(selector = "lock")
     public native void lock();
     @Method(selector = "unlock")

@@ -354,6 +354,7 @@ functions:
     ABPersonCopy(ImageData).*:
         class: ABPerson
         name: 'get#{g[0]}'
+        return_marshaler: NSObject.NoRetainMarshaler
         parameters:
             person:
                 type: ABPerson
@@ -387,6 +388,7 @@ functions:
     ABPerson(CreateVCardRepresentationWithPeople):
         class: ABPerson
         name: '#{g[0]}'
+        return_marshaler: NSObject.NoRetainMarshaler
         parameters:
             people:
                 type: List<ABPerson>

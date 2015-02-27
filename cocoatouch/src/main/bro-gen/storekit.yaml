@@ -23,10 +23,7 @@ classes:
     SKPayment: # DONE
         methods:
             '+paymentWithProduct:':
-                name: createFromProduct
-                return_type: SKPayment
-            '+paymentWithProductIdentifier:':
-                name: createFromProductIdentifier
+                name: create
                 return_type: SKPayment
     SKPaymentQueue: # DONE
         properties:

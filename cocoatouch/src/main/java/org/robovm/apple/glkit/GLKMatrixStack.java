@@ -51,7 +51,7 @@ import org.robovm.apple.dispatch.*;
     /*<members>*//*</members>*/
     /*<methods>*/
     @Bridge(symbol="GLKMatrixStackCreate", optional=true)
-    public static native GLKMatrixStack create(CFAllocator alloc);
+    public static native @org.robovm.rt.bro.annotation.Marshaler(CFType.NoRetainMarshaler.class) GLKMatrixStack create(CFAllocator alloc);
     @Bridge(symbol="GLKMatrixStackGetTypeID", optional=true)
     public static native @MachineSizedUInt long getClassTypeID();
     @Bridge(symbol="GLKMatrixStackPush", optional=true)

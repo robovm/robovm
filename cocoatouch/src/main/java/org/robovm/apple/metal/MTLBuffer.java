@@ -66,7 +66,7 @@ import org.robovm.apple.dispatch.*;
     @Method(selector = "contents")
     protected native @Pointer long getContents0();
     @Method(selector = "newTextureWithDescriptor:offset:bytesPerRow:")
-    public native MTLTexture newTexture(MTLTextureDescriptor descriptor, @MachineSizedUInt long offset, @MachineSizedUInt long bytesPerRow);
+    public native @org.robovm.rt.bro.annotation.Marshaler(NSObject.NoRetainMarshaler.class) MTLTexture newTexture(MTLTextureDescriptor descriptor, @MachineSizedUInt long offset, @MachineSizedUInt long bytesPerRow);
     @Method(selector = "setPurgeableState:")
     public native MTLPurgeableState setPurgeableState(MTLPurgeableState state);
     /*</methods>*/

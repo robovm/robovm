@@ -33,7 +33,7 @@ enums:
     CKRecordZoneCapabilities: {}
     CKReferenceAction: {}
     CKSubscriptionType: {}
-    CKSubscriptionOptions: {}
+    CKSubscriptionOptions: { prefix: CKSubscriptionOptionsFires }
     CKRecordSavePolicy: {}
 
 classes:
@@ -382,8 +382,11 @@ classes:
         methods:
             '-init':
                 exclude: true
-            '-init.*':
+            '-initWithNotificationIDsToMarkRead:':
                 name: init
+                parameters:
+                    notificationIDs:
+                        type: NSArray<CKNotificationID>
     CKModifyBadgeOperation: # DONE
         methods:
             '-init':

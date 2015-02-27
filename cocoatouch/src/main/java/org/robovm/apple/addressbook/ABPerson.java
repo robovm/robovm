@@ -700,12 +700,12 @@ import org.robovm.apple.corefoundation.*;
     @Bridge(symbol="ABPersonSetImageData", optional=true)
     private native boolean setImageData(NSData imageData, NSError.NSErrorPtr error);
     @Bridge(symbol="ABPersonCopyImageData", optional=true)
-    public native NSData getImageData();
+    public native @org.robovm.rt.bro.annotation.Marshaler(NSObject.NoRetainMarshaler.class) NSData getImageData();
     /**
      * @since Available in iOS 4.1 and later.
      */
     @Bridge(symbol="ABPersonCopyImageDataWithFormat", optional=true)
-    public native NSData getImageData(ABPersonImageFormat format);
+    public native @org.robovm.rt.bro.annotation.Marshaler(NSObject.NoRetainMarshaler.class) NSData getImageData(ABPersonImageFormat format);
     @Bridge(symbol="ABPersonHasImageData", optional=true)
     public native boolean hasImageData();
     public boolean removeImageData() throws NSErrorException {
@@ -727,6 +727,6 @@ import org.robovm.apple.corefoundation.*;
      * @since Available in iOS 5.0 and later.
      */
     @Bridge(symbol="ABPersonCreateVCardRepresentationWithPeople", optional=true)
-    public static native NSData createVCardRepresentationWithPeople(@org.robovm.rt.bro.annotation.Marshaler(ABPerson.AsListMarshaler.class) List<ABPerson> people);
+    public static native @org.robovm.rt.bro.annotation.Marshaler(NSObject.NoRetainMarshaler.class) NSData createVCardRepresentationWithPeople(@org.robovm.rt.bro.annotation.Marshaler(ABPerson.AsListMarshaler.class) List<ABPerson> people);
     /*</methods>*/
 }

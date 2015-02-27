@@ -105,26 +105,17 @@ import org.robovm.apple.mediatoolbox.*;
     public native void setRequestedTimeToleranceAfter(@ByVal CMTime v);
     /*</properties>*/
     /*<members>*//*</members>*/
-    /**
-     * 
-     * @param requestedTime
-     * @param actualTime
-     * @return
-     * @throws NSErrorException
-     */
-    public CGImage getCGImageAtTime(@ByVal CMTime requestedTime, CMTime actualTime) throws NSErrorException {
-        NSError.NSErrorPtr err = new NSError.NSErrorPtr();
-        CGImage result = getCGImageAtTime(requestedTime, actualTime, err);
-        if (err.get() != null) {
-            throw new NSErrorException(err.get());
-        }
-        return result;
-    }
     /*<methods>*/
     @Method(selector = "initWithAsset:")
     protected native @Pointer long init(AVAsset asset);
+    public CGImage getCGImageAtTime(@ByVal CMTime requestedTime, CMTime actualTime) throws NSErrorException {
+       NSError.NSErrorPtr ptr = new NSError.NSErrorPtr();
+       CGImage result = getCGImageAtTime(requestedTime, actualTime, ptr);
+       if (ptr.get() != null) { throw new NSErrorException(ptr.get()); }
+       return result;
+    }
     @Method(selector = "copyCGImageAtTime:actualTime:error:")
-    protected native CGImage getCGImageAtTime(@ByVal CMTime requestedTime, CMTime actualTime, NSError.NSErrorPtr outError);
+    private native @org.robovm.rt.bro.annotation.Marshaler(CFType.NoRetainMarshaler.class) CGImage getCGImageAtTime(@ByVal CMTime requestedTime, CMTime actualTime, NSError.NSErrorPtr outError);
     @Method(selector = "generateCGImagesAsynchronouslyForTimes:completionHandler:")
     public native void generateCGImagesAsynchronously(@org.robovm.rt.bro.annotation.Marshaler(CMTime.AsValuedListMarshaler.class) List<CMTime> requestedTimes, @Block VoidBlock5<CMTime, CGImage, CMTime, AVAssetImageGeneratorResult, NSError> handler);
     @Method(selector = "cancelAllCGImageGeneration")

@@ -61,7 +61,7 @@ import org.robovm.apple.uikit.*;
      * @since Available in iOS 2.0 and later.
      */
     @Bridge(symbol="CGPDFStringCopyDate", optional=true)
-    public native NSDate getDate();
+    public native @org.robovm.rt.bro.annotation.Marshaler(NSObject.NoRetainMarshaler.class) NSDate getDate();
     /*</methods>*/
     public String toString() {
         return getTextString();

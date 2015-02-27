@@ -21,9 +21,6 @@ enums:
     CBPeripheralManagerConnectionLatency: {}
         
 classes:
-    CoreBluetooth:
-        annotations: ['@Marshaler(NSString.AsStringMarshaler.class)']
-
     CBError:
         extends: NSError
     CBATTError:

@@ -382,7 +382,7 @@ import org.robovm.apple.coregraphics.*;
      * @since Available in iOS 3.2 and later.
      */
     @Bridge(symbol="CTFontCopyTable", optional=true)
-    public native NSData getTable(CTFontTableTag table, CTFontTableOptions options);
+    public native @org.robovm.rt.bro.annotation.Marshaler(NSObject.NoRetainMarshaler.class) NSData getTable(CTFontTableTag table, CTFontTableOptions options);
     /**
      * @since Available in iOS 4.2 and later.
      */

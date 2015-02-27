@@ -55,6 +55,6 @@ import org.robovm.apple.dispatch.*;
     @Method(selector = "objectAtIndexedSubscript:")
     public native MTLVertexAttributeDescriptor get(@MachineSizedUInt long index);
     @Method(selector = "setObject:atIndexedSubscript:")
-    public native void insert(MTLVertexAttributeDescriptor attributeDesc, @MachineSizedUInt long index);
+    public native void set(MTLVertexAttributeDescriptor attributeDesc, @MachineSizedUInt long index);
     /*</methods>*/
 }

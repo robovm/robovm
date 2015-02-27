@@ -168,7 +168,7 @@ import org.robovm.apple.dispatch.*;
      * @since Available in iOS 8.0 and later.
      */
     @Bridge(symbol="MTLCreateSystemDefaultDevice", optional=true)
-    public static native MTLDevice createSystemDefaultDevice();
+    public static native @org.robovm.rt.bro.annotation.Marshaler(NSObject.NoRetainMarshaler.class) MTLDevice getSystemDefaultDevice();
     
     @Method(selector = "newCommandQueue")
     public native MTLCommandQueue newCommandQueue();

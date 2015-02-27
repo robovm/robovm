@@ -67,7 +67,7 @@ import org.robovm.apple.corelocation.*;
                 return null;
             }
             List<CKErrorUserInfoKey> list = new ArrayList<>();
-            for (int i = 0, n = o.size(); i < n; i++) {
+            for (int i = 0; i < o.size(); i++) {
                 list.add(CKErrorUserInfoKey.valueOf(o.get(i)));
             }
             return list;

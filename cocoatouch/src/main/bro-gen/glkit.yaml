@@ -152,6 +152,10 @@ functions:
     GLKMatrixStack(Rotate)With.*:
         class: GLKMatrixStack
         name: '#{g[0]}'
+    GLKMatrixStack(Create):
+        class: GLKMatrixStack
+        name: '#{g[0]}'
+        return_marshaler: CFType.NoRetainMarshaler
     GLKMatrixStack(.*):
         class: GLKMatrixStack
         name: '#{g[0]}'

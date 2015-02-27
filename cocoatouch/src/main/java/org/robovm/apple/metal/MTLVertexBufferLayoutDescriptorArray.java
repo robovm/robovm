@@ -55,6 +55,6 @@ import org.robovm.apple.dispatch.*;
     @Method(selector = "objectAtIndexedSubscript:")
     public native MTLVertexBufferLayoutDescriptor get(@MachineSizedUInt long index);
     @Method(selector = "setObject:atIndexedSubscript:")
-    public native void insert(MTLVertexBufferLayoutDescriptor bufferDesc, @MachineSizedUInt long index);
+    public native void set(MTLVertexBufferLayoutDescriptor bufferDesc, @MachineSizedUInt long index);
     /*</methods>*/
 }

@@ -66,7 +66,7 @@ import org.robovm.apple.foundation.*;
                 return null;
             }
             List<NSCoreDataErrorUserInfoKey> list = new ArrayList<>();
-            for (int i = 0, n = o.size(); i < n; i++) {
+            for (int i = 0; i < o.size(); i++) {
                 list.add(NSCoreDataErrorUserInfoKey.valueOf(o.get(i)));
             }
             return list;

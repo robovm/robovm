@@ -201,12 +201,12 @@ import org.robovm.apple.corefoundation.*;
      * @since Available in iOS 2.0 and later.
      */
     @Bridge(symbol="CFHTTPMessageCopySerializedMessage", optional=true)
-    public native NSData getSerializedMessage();
+    public native @org.robovm.rt.bro.annotation.Marshaler(NSObject.NoRetainMarshaler.class) NSData getSerializedMessage();
     /**
      * @since Available in iOS 2.0 and later.
      */
     @Bridge(symbol="CFHTTPMessageCopyRequestURL", optional=true)
-    public native NSURL getRequestURL();
+    public native @org.robovm.rt.bro.annotation.Marshaler(NSObject.NoRetainMarshaler.class) NSURL getRequestURL();
     /**
      * @since Available in iOS 2.0 and later.
      */

@@ -88,7 +88,7 @@ import org.robovm.apple.dispatch.*;
     /*</marshalers>*/
 
     /*<constructors>*/
-     GLKTextureLoaderOptions(NSDictionary<NSString, NSObject> data) {
+    GLKTextureLoaderOptions(NSDictionary<NSString, NSObject> data) {
         super(data);
     }
     public GLKTextureLoaderOptions() {}

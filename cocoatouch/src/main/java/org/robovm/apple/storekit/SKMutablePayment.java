@@ -48,6 +48,11 @@ import org.robovm.apple.accounts.*;
     public SKMutablePayment() {}
     protected SKMutablePayment(SkipInit skipInit) { super(skipInit); }
     /*</constructors>*/
+    /**
+     * @since Available in iOS 3.0 and later.
+     */
+    @Method(selector = "paymentWithProduct:")
+    public static native SKMutablePayment create(SKProduct product);
     /*<properties>*/
     /**
      * @since Available in iOS 7.0 and later.

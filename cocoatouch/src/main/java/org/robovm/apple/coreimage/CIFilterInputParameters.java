@@ -115,7 +115,7 @@ import org.robovm.apple.imageio.*;
      */
     public CIImage getOutputImage() {
         if (has(Keys.OutputImage())) {
-            CIImage val = get(Keys.OutputImage(), CIImage.class);
+            CIImage val = (CIImage) get(Keys.OutputImage());
             return val;
         }
         return null;
@@ -132,7 +132,7 @@ import org.robovm.apple.imageio.*;
      */
     public CIImage getBackgroundImage() {
         if (has(Keys.BackgroundImage())) {
-            CIImage val = get(Keys.BackgroundImage(), CIImage.class);
+            CIImage val = (CIImage) get(Keys.BackgroundImage());
             return val;
         }
         return null;
@@ -149,7 +149,7 @@ import org.robovm.apple.imageio.*;
      */
     public CIImage getInputImage() {
         if (has(Keys.Image())) {
-            CIImage val = get(Keys.Image(), CIImage.class);
+            CIImage val = (CIImage) get(Keys.Image());
             return val;
         }
         return null;

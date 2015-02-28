@@ -108,6 +108,76 @@ import org.robovm.apple.imageio.*;
         data.put(key, value);
         return this;
     }
+    
+
+    /**
+     * @since Available in iOS 5.0 and later.
+     */
+    public CIImage getOutputImage() {
+        if (has(Keys.OutputImage())) {
+            CIImage val = get(Keys.OutputImage(), CIImage.class);
+            return val;
+        }
+        return null;
+    }
+    /**
+     * @since Available in iOS 5.0 and later.
+     */
+    public CIFilterInputParameters setOutputImage(CIImage outputImage) {
+        set(Keys.OutputImage(), outputImage);
+        return this;
+    }
+    /**
+     * @since Available in iOS 5.0 and later.
+     */
+    public CIImage getBackgroundImage() {
+        if (has(Keys.BackgroundImage())) {
+            CIImage val = get(Keys.BackgroundImage(), CIImage.class);
+            return val;
+        }
+        return null;
+    }
+    /**
+     * @since Available in iOS 5.0 and later.
+     */
+    public CIFilterInputParameters setBackgroundImage(CIImage backgroundImage) {
+        set(Keys.BackgroundImage(), backgroundImage);
+        return this;
+    }
+    /**
+     * @since Available in iOS 5.0 and later.
+     */
+    public CIImage getInputImage() {
+        if (has(Keys.Image())) {
+            CIImage val = get(Keys.Image(), CIImage.class);
+            return val;
+        }
+        return null;
+    }
+    /**
+     * @since Available in iOS 5.0 and later.
+     */
+    public CIFilterInputParameters setInputImage(CIImage inputImage) {
+        set(Keys.Image(), inputImage);
+        return this;
+    }
+    /**
+     * @since Available in iOS 6.0 and later.
+     */
+    public long getVersion() {
+        if (has(Keys.Version())) {
+            NSNumber val = (NSNumber) get(Keys.Version());
+            return val.longValue();
+        }
+        return 0;
+    }
+    /**
+     * @since Available in iOS 6.0 and later.
+     */
+    public CIFilterInputParameters setVersion(long version) {
+        set(Keys.Version(), NSNumber.valueOf(version));
+        return this;
+    }
     /*</methods>*/
     public boolean has(String key) {
         return has(new NSString(key));
@@ -127,22 +197,22 @@ import org.robovm.apple.imageio.*;
          * @since Available in iOS 5.0 and later.
          */
         @GlobalValue(symbol="kCIOutputImageKey", optional=true)
-        public static native NSString OutputImageKey();
+        public static native NSString OutputImage();
         /**
          * @since Available in iOS 5.0 and later.
          */
         @GlobalValue(symbol="kCIInputBackgroundImageKey", optional=true)
-        public static native NSString BackgroundImageKey();
+        public static native NSString BackgroundImage();
         /**
          * @since Available in iOS 5.0 and later.
          */
         @GlobalValue(symbol="kCIInputImageKey", optional=true)
-        public static native NSString ImageKey();
+        public static native NSString Image();
         /**
          * @since Available in iOS 6.0 and later.
          */
         @GlobalValue(symbol="kCIInputVersionKey", optional=true)
-        public static native NSString VersionKey();
+        public static native NSString Version();
     }
     /*</keys>*/
 }

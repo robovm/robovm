@@ -241,7 +241,11 @@ values:
     # CIFilter
     kCIInput(Time|Transform|Scale|AspectRatio|Center|Radius|Angle|Width|Sharpness|Intensity|EV|Saturation|Color|Brightness|Contrast|MaskImage|TargetImage|Extent)Key:
         exclude: true # not available in iOS
-    kCIInput(.*Key):
+    kCIInput(.*)Key:
+        dictionary: CIFilterInputParameters
+        name: '#{g[0]}'
+        type: NSString
+    kCI(OutputImage)Key:
         dictionary: CIFilterInputParameters
         name: '#{g[0]}'
         type: NSString
@@ -255,10 +259,6 @@ values:
                 type: CIImage
             Version:
                 type: long
-    kCI(OutputImageKey):
-        dictionary: CIFilterInputParameters
-        name: '#{g[0]}'
-        type: NSString
     kCICategory(.*):
         class: CIFilterCategory
         name: '#{g[0]}Value'

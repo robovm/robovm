@@ -27,6 +27,7 @@ import org.robovm.rt.bro.*;
 import org.robovm.rt.bro.annotation.*;
 import org.robovm.rt.bro.ptr.*;
 import org.robovm.apple.dispatch.*;
+import org.robovm.apple.foundation.*;
 import org.robovm.apple.corefoundation.*;
 /*</imports>*/
 
@@ -34,7 +35,7 @@ import org.robovm.apple.corefoundation.*;
 
 /*</javadoc>*/
 /*<annotations>*//*</annotations>*/
-public enum /*<name>*/SSLProtocol/*</name>*/ implements ValuedEnum {
+public enum /*<name>*/SSLProtocolVersion/*</name>*/ implements ValuedEnum {
     /*<values>*/
     SSLProtocolUnknown(0L),
     SSLProtocol3(2L),
@@ -48,17 +49,22 @@ public enum /*<name>*/SSLProtocol/*</name>*/ implements ValuedEnum {
     SSLProtocolAll(6L);
     /*</values>*/
 
+    /*<bind>*/
+    /*</bind>*/
+    /*<constants>*//*</constants>*/
+    /*<methods>*//*</methods>*/
+
     private final long n;
 
-    private /*<name>*/SSLProtocol/*</name>*/(long n) { this.n = n; }
+    private /*<name>*/SSLProtocolVersion/*</name>*/(long n) { this.n = n; }
     public long value() { return n; }
-    public static /*<name>*/SSLProtocol/*</name>*/ valueOf(long n) {
-        for (/*<name>*/SSLProtocol/*</name>*/ v : values()) {
+    public static /*<name>*/SSLProtocolVersion/*</name>*/ valueOf(long n) {
+        for (/*<name>*/SSLProtocolVersion/*</name>*/ v : values()) {
             if (v.n == n) {
                 return v;
             }
         }
         throw new IllegalArgumentException("No constant with value " + n + " found in " 
-            + /*<name>*/SSLProtocol/*</name>*/.class.getName());
+            + /*<name>*/SSLProtocolVersion/*</name>*/.class.getName());
     }
 }

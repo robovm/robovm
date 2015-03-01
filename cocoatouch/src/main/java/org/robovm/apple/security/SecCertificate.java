@@ -27,6 +27,7 @@ import org.robovm.rt.bro.*;
 import org.robovm.rt.bro.annotation.*;
 import org.robovm.rt.bro.ptr.*;
 import org.robovm.apple.dispatch.*;
+import org.robovm.apple.foundation.*;
 import org.robovm.apple.corefoundation.*;
 /*</imports>*/
 
@@ -47,17 +48,6 @@ import org.robovm.apple.corefoundation.*;
     /*<members>*//*</members>*/
     /*<methods>*/
     /**
-     * @since Available in iOS 7.0 and later.
-     */
-    @GlobalValue(symbol="kSecPropertyTypeTitle", optional=true)
-    public static native CFType PropertyTypeTitle();
-    /**
-     * @since Available in iOS 7.0 and later.
-     */
-    @GlobalValue(symbol="kSecPropertyTypeError", optional=true)
-    public static native CFType PropertyTypeError();
-    
-    /**
      * @since Available in iOS 2.0 and later.
      */
     @Bridge(symbol="SecCertificateGetTypeID", optional=true)
@@ -66,16 +56,16 @@ import org.robovm.apple.corefoundation.*;
      * @since Available in iOS 2.0 and later.
      */
     @Bridge(symbol="SecCertificateCreateWithData", optional=true)
-    public static native SecCertificate createWithData(CFAllocator allocator, CFData data);
+    public static native SecCertificate create(CFAllocator allocator, NSData data);
     /**
      * @since Available in iOS 2.0 and later.
      */
     @Bridge(symbol="SecCertificateCopyData", optional=true)
-    public native CFData copyData();
+    public native @org.robovm.rt.bro.annotation.Marshaler(NSObject.NoRetainMarshaler.class) NSData getData();
     /**
      * @since Available in iOS 2.0 and later.
      */
     @Bridge(symbol="SecCertificateCopySubjectSummary", optional=true)
-    public native CFString copySubjectSummary();
+    public native @org.robovm.rt.bro.annotation.Marshaler(CFString.NoRetainMarshaler.class) String getSubjectSummary();
     /*</methods>*/
 }

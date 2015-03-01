@@ -19,6 +19,7 @@ package org.robovm.apple.corefoundation;
 import java.io.*;
 import java.nio.*;
 import java.util.*;
+
 import org.robovm.objc.*;
 import org.robovm.objc.annotation.*;
 import org.robovm.objc.block.*;
@@ -54,6 +55,10 @@ import org.robovm.apple.foundation.*;
     @Override
     public void put(NativeObject key, NativeObject value) {
         setValue(key.as(VoidPtr.class), value.as(VoidPtr.class));
+    }
+    @Override
+    public void putAll(CFDictionary dict) {
+        dict.applyFunction(new FunctionPtr(cbPutAll), getHandle());
     }
     @Override
     public void remove(NativeObject key) {

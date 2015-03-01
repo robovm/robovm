@@ -32,26 +32,15 @@ import org.robovm.apple.corefoundation.*;
 /*</imports>*/
 
 /*<javadoc>*/
-
+/**
+ * @since Available in iOS 8.0 and later.
+ */
 /*</javadoc>*/
-/*<annotations>*//*</annotations>*/
-public enum /*<name>*/SecErrorCode/*</name>*/ implements ValuedEnum {
+/*<annotations>*/@Marshaler(Bits.AsMachineSizedIntMarshaler.class)/*</annotations>*/
+public final class /*<name>*/SecAccessControlCreateFlags/*</name>*/ extends Bits</*<name>*/SecAccessControlCreateFlags/*</name>*/> {
     /*<values>*/
-    Success(0L),
-    Unimplemented(-4L),
-    IO(-36L),
-    OpWr(-49L),
-    Param(-50L),
-    Allocate(-108L),
-    UserCanceled(-128L),
-    BadReq(-909L),
-    InternalComponent(-2070L),
-    NotAvailable(-25291L),
-    DuplicateItem(-25299L),
-    ItemNotFound(-25300L),
-    InteractionNotAllowed(-25308L),
-    Decode(-26275L),
-    AuthFailed(-25293L);
+    public static final SecAccessControlCreateFlags None = new SecAccessControlCreateFlags(0L);
+    public static final SecAccessControlCreateFlags UserPresence = new SecAccessControlCreateFlags(1L);
     /*</values>*/
 
     /*<bind>*/
@@ -59,17 +48,17 @@ public enum /*<name>*/SecErrorCode/*</name>*/ implements ValuedEnum {
     /*<constants>*//*</constants>*/
     /*<methods>*//*</methods>*/
 
-    private final long n;
+    private static final /*<name>*/SecAccessControlCreateFlags/*</name>*/[] values = _values(/*<name>*/SecAccessControlCreateFlags/*</name>*/.class);
 
-    private /*<name>*/SecErrorCode/*</name>*/(long n) { this.n = n; }
-    public long value() { return n; }
-    public static /*<name>*/SecErrorCode/*</name>*/ valueOf(long n) {
-        for (/*<name>*/SecErrorCode/*</name>*/ v : values()) {
-            if (v.n == n) {
-                return v;
-            }
-        }
-        throw new IllegalArgumentException("No constant with value " + n + " found in " 
-            + /*<name>*/SecErrorCode/*</name>*/.class.getName());
+    public /*<name>*/SecAccessControlCreateFlags/*</name>*/(long value) { super(value); }
+    private /*<name>*/SecAccessControlCreateFlags/*</name>*/(long value, long mask) { super(value, mask); }
+    protected /*<name>*/SecAccessControlCreateFlags/*</name>*/ wrap(long value, long mask) {
+        return new /*<name>*/SecAccessControlCreateFlags/*</name>*/(value, mask);
+    }
+    protected /*<name>*/SecAccessControlCreateFlags/*</name>*/[] _values() {
+        return values;
+    }
+    public static /*<name>*/SecAccessControlCreateFlags/*</name>*/[] values() {
+        return values.clone();
     }
 }

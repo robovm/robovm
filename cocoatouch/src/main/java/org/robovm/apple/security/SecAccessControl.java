@@ -34,49 +34,43 @@ import org.robovm.apple.corefoundation.*;
 /*<javadoc>*/
 /*</javadoc>*/
 /*<annotations>*/@Library("Security")/*</annotations>*/
-/*<visibility>*/public/*</visibility>*/ class /*<name>*/SecIdentity/*</name>*/ 
+/*<visibility>*/public/*</visibility>*/ class /*<name>*/SecAccessControl/*</name>*/ 
     extends /*<extends>*/CFType/*</extends>*/ 
     /*<implements>*//*</implements>*/ {
 
-    /*<ptr>*/public static class SecIdentityPtr extends Ptr<SecIdentity, SecIdentityPtr> {}/*</ptr>*/
-    /*<bind>*/static { Bro.bind(SecIdentity.class); }/*</bind>*/
+    /*<ptr>*/public static class SecAccessControlPtr extends Ptr<SecAccessControl, SecAccessControlPtr> {}/*</ptr>*/
+    /*<bind>*/static { Bro.bind(SecAccessControl.class); }/*</bind>*/
     /*<constants>*//*</constants>*/
     /*<constructors>*/
-    protected SecIdentity() {}
+    protected SecAccessControl() {}
     /*</constructors>*/
     /*<properties>*//*</properties>*/
     /*<members>*//*</members>*/
     /**
-     * @since Available in iOS 2.0 and later.
+     * @since Available in iOS 8.0 and later.
      */
-    public SecCertificate getCertificate() {
-        SecCertificate.SecCertificatePtr ptr = new SecCertificate.SecCertificatePtr();
-        getCertificate(ptr);
-        return ptr.get();
-    }
-    /**
-     * @since Available in iOS 2.0 and later.
-     */
-    public SecKey getPrivateKey() {
-        SecKey.SecKeyPtr ptr = new SecKey.SecKeyPtr();
-        getPrivateKey(ptr);
-        return ptr.get();
+    public static SecAccessControl create(SecAttrAccessible protection, SecAccessControlCreateFlags flags) throws NSErrorException {
+        return create(null, protection, flags);
     }
     /*<methods>*/
     /**
-     * @since Available in iOS 2.0 and later.
+     * @since Available in iOS 8.0 and later.
      */
-    @Bridge(symbol="SecIdentityGetTypeID", optional=true)
+    @Bridge(symbol="SecAccessControlGetTypeID", optional=true)
     public static native @MachineSizedUInt long getClassTypeID();
     /**
-     * @since Available in iOS 2.0 and later.
+     * @since Available in iOS 8.0 and later.
      */
-    @Bridge(symbol="SecIdentityCopyCertificate", optional=true)
-    protected native OSStatus getCertificate(SecCertificate.SecCertificatePtr certificateRef);
+    public static SecAccessControl create(CFAllocator allocator, SecAttrAccessible protection, SecAccessControlCreateFlags flags) throws NSErrorException {
+       NSError.NSErrorPtr ptr = new NSError.NSErrorPtr();
+       SecAccessControl result = create(allocator, protection, flags, ptr);
+       if (ptr.get() != null) { throw new NSErrorException(ptr.get()); }
+       return result;
+    }
     /**
-     * @since Available in iOS 2.0 and later.
+     * @since Available in iOS 8.0 and later.
      */
-    @Bridge(symbol="SecIdentityCopyPrivateKey", optional=true)
-    protected native OSStatus getPrivateKey(SecKey.SecKeyPtr privateKeyRef);
+    @Bridge(symbol="SecAccessControlCreateWithFlags", optional=true)
+    private static native @org.robovm.rt.bro.annotation.Marshaler(CFType.NoRetainMarshaler.class) SecAccessControl create(CFAllocator allocator, SecAttrAccessible protection, SecAccessControlCreateFlags flags, NSError.NSErrorPtr error);
     /*</methods>*/
 }

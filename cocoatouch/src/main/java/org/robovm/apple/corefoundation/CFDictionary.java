@@ -19,6 +19,7 @@ package org.robovm.apple.corefoundation;
 import java.io.*;
 import java.nio.*;
 import java.util.*;
+
 import org.robovm.objc.*;
 import org.robovm.objc.annotation.*;
 import org.robovm.objc.block.*;
@@ -94,6 +95,17 @@ import org.robovm.apple.foundation.NSObject.NSObjectPtr;
             return CFType.Marshaler.toNative(CFDictionary.fromStringStringMap(l), flags);
         }
     }
+    
+    static final java.lang.reflect.Method cbPutAll;
+    
+    static {
+        try {
+            cbPutAll = CFDictionary.class.getDeclaredMethod("cbPutAll", VoidPtr.class, VoidPtr.class, CFMutableDictionary.class);
+        } catch (Throwable e) {
+            throw new Error(e);
+        }
+    }
+    
     /*<ptr>*/public static class CFDictionaryPtr extends Ptr<CFDictionary, CFDictionaryPtr> {}/*</ptr>*/
     /*<bind>*/static { Bro.bind(CFDictionary.class); }/*</bind>*/
     /*<constants>*//*</constants>*/
@@ -102,6 +114,12 @@ import org.robovm.apple.foundation.NSObject.NSObjectPtr;
     /*</constructors>*/
     /*<properties>*//*</properties>*/
     /*<members>*//*</members>*/
+    @Callback
+    private static void cbPutAll(VoidPtr key, VoidPtr value, CFMutableDictionary thiz) {
+        thiz.put(key, value);
+    }
+    
+    
     public static <K extends NativeObject, V extends NativeObject> CFDictionary create(Map<K, V> m) {
         if (m == null) {
             throw new NullPointerException("m");
@@ -235,6 +253,9 @@ import org.robovm.apple.foundation.NSObject.NSObjectPtr;
     }
     
     public void put(NativeObject key, NativeObject value) {
+        throw new UnsupportedOperationException("CFDictionary is immutable. Use CFMutableDictionary instead!");
+    }
+    public void putAll(CFDictionary dict) {
         throw new UnsupportedOperationException("CFDictionary is immutable. Use CFMutableDictionary instead!");
     }
     public void remove(NativeObject key) {

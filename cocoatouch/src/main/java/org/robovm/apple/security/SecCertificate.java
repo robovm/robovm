@@ -66,6 +66,6 @@ import org.robovm.apple.corefoundation.*;
      * @since Available in iOS 2.0 and later.
      */
     @Bridge(symbol="SecCertificateCopySubjectSummary", optional=true)
-    public native @org.robovm.rt.bro.annotation.Marshaler(CFString.NoRetainMarshaler.class) String getSubjectSummary();
+    public native @org.robovm.rt.bro.annotation.Marshaler(CFString.AsStringNoRetainMarshaler.class) String getSubjectSummary();
     /*</methods>*/
 }

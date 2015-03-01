@@ -83,7 +83,7 @@ functions:
     SecCertificateCopy(SubjectSummary):
         class: SecCertificate
         name: 'get#{g[0]}'
-        return_marshaler: CFString.NoRetainMarshaler
+        return_marshaler: CFString.AsStringNoRetainMarshaler
     SecCertificate(.*):
         class: SecCertificate
         name: '#{g[0]}'

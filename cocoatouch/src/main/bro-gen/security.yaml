@@ -22,7 +22,7 @@ enums:
     SSLClientCertificateState: { first: kSSLClientCertNone }
     SSLConnectionType: { first: kSSLStreamType, suffix: Type }
     SSLErrorCode: { first: errSSLProtocol }
-    SSLProtocolVersion: { first: kSSLProtocolUnknown }
+    SSLProtocol: { first: kSSLProtocolUnknown }
     SSLProtocolSide: { first: kSSLServerSide, suffix: Side }
     SSLSessionOption: { first: kSSLSessionOptionBreakOnServerAuth }
     SSLSessionState: { first: kSSLIdle }
@@ -190,7 +190,7 @@ functions:
         name: '#{g[0]}'
         parameters:
             revocationFlags:
-                type: SecRevocation
+                type: SecRevocationPolicyFlags
     SecPolicyCopy(Properties):
         class: SecPolicy
         name: 'get#{g[0]}'

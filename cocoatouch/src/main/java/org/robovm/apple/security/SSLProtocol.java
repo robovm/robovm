@@ -35,7 +35,7 @@ import org.robovm.apple.corefoundation.*;
 
 /*</javadoc>*/
 /*<annotations>*//*</annotations>*/
-public enum /*<name>*/SSLProtocolVersion/*</name>*/ implements ValuedEnum {
+public enum /*<name>*/SSLProtocol/*</name>*/ implements ValuedEnum {
     /*<values>*/
     SSLProtocolUnknown(0L),
     SSLProtocol3(2L),
@@ -56,15 +56,15 @@ public enum /*<name>*/SSLProtocolVersion/*</name>*/ implements ValuedEnum {
 
     private final long n;
 
-    private /*<name>*/SSLProtocolVersion/*</name>*/(long n) { this.n = n; }
+    private /*<name>*/SSLProtocol/*</name>*/(long n) { this.n = n; }
     public long value() { return n; }
-    public static /*<name>*/SSLProtocolVersion/*</name>*/ valueOf(long n) {
-        for (/*<name>*/SSLProtocolVersion/*</name>*/ v : values()) {
+    public static /*<name>*/SSLProtocol/*</name>*/ valueOf(long n) {
+        for (/*<name>*/SSLProtocol/*</name>*/ v : values()) {
             if (v.n == n) {
                 return v;
             }
         }
         throw new IllegalArgumentException("No constant with value " + n + " found in " 
-            + /*<name>*/SSLProtocolVersion/*</name>*/.class.getName());
+            + /*<name>*/SSLProtocol/*</name>*/.class.getName());
     }
 }

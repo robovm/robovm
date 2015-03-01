@@ -19,7 +19,6 @@ package org.robovm.apple.security;
 import java.io.*;
 import java.nio.*;
 import java.util.*;
-
 import org.robovm.objc.*;
 import org.robovm.objc.annotation.*;
 import org.robovm.objc.block.*;
@@ -72,18 +71,18 @@ import org.robovm.apple.corefoundation.*;
     /**
      * @since Available in iOS 5.0 and later.
      */
-    public SSLProtocolVersion getMinProtocolVersion() {
+    public SSLProtocol getMinProtocolVersion() {
         IntPtr ptr = new IntPtr();
         getMinProtocolVersion(ptr);
-        return SSLProtocolVersion.valueOf(ptr.get());
+        return SSLProtocol.valueOf(ptr.get());
     }
     /**
      * @since Available in iOS 5.0 and later.
      */
-    public SSLProtocolVersion getMaxProtocolVersion() {
+    public SSLProtocol getMaxProtocolVersion() {
         IntPtr ptr = new IntPtr();
         getMaxProtocolVersion(ptr);
-        return SSLProtocolVersion.valueOf(ptr.get());
+        return SSLProtocol.valueOf(ptr.get());
     }
     /**
      * @since Available in iOS 5.0 and later.
@@ -151,10 +150,10 @@ import org.robovm.apple.corefoundation.*;
     /**
      * @since Available in iOS 5.0 and later.
      */
-    public SSLProtocolVersion getNegotiatedProtocolVersion() {
+    public SSLProtocol getNegotiatedProtocolVersion() {
         IntPtr ptr = new IntPtr();
         getNegotiatedProtocolVersion(ptr);
-        return SSLProtocolVersion.valueOf(ptr.get());
+        return SSLProtocol.valueOf(ptr.get());
     }
     /**
      * @since Available in iOS 5.0 and later.

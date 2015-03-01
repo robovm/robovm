@@ -71,7 +71,7 @@ import org.robovm.apple.corefoundation.*;
      * @since Available in iOS 7.0 and later.
      */
     @Bridge(symbol="SecPolicyCreateRevocation", optional=true)
-    public static native SecPolicy createRevocation(SecRevocation revocationFlags);
+    public static native SecPolicy createRevocation(SecRevocationPolicyFlags revocationFlags);
     /**
      * @since Available in iOS 7.0 and later.
      */

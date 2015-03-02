@@ -243,7 +243,7 @@ VM* rvmCreateVM(Options* options) {
 }
 
 Env* rvmCreateEnv(VM* vm) {
-    Env* env = gcAllocate(vm->options->enableHooks ? sizeof(DebugEnv) : sizeof(Env));
+    Env* env = gcAllocateUncollectable(vm->options->enableHooks ? sizeof(DebugEnv) : sizeof(Env));
     if (!env) return NULL;
     env->vm = vm;
     if(vm->options->enableHooks) {

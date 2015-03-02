@@ -434,6 +434,7 @@ static void attachedThreadExiting(Env* env) {
         setThreadTLS(env, env->currentThread);
         detachThread(env, TRUE, TRUE, TRUE);
         addToDetachedList(pthread_self());
+        gcFree(env);
     }
 }
 

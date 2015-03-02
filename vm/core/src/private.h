@@ -38,6 +38,8 @@ extern void gcAddRoot(void* ptr);
 extern void gcAddRoots(void* start, void* end);
 extern uint32_t gcNewDirectBitmapKind(size_t bitmap);
 extern void* gcAllocate(size_t size);
+extern void* gcAllocateUncollectable(size_t size);
+extern void gcFree(void* ptr);
 extern void* allocateMemoryOfKind(Env* env, size_t size, uint32_t kind);
 extern void registerCleanupHandler(Env* env, Object* object, CleanupHandler handler);
 

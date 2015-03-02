@@ -545,7 +545,7 @@ static inline void* gcAllocateObject(size_t size, void* clazz) {
     }
     return m;
 }
-static inline void* gcAllocateUncollectable(size_t size) {
+void* gcAllocateUncollectable(size_t size) {
     void* m = GC_MALLOC_UNCOLLECTABLE(size);
     if (!m) {
         // Force GC and try again
@@ -577,6 +577,10 @@ static inline void* gcAllocateAtomicUncollectable(size_t size) {
         memset(m, 0, size);
     }
     return m;
+}
+
+void gcFree(void* ptr) {
+    GC_free(ptr);
 }
 
 /*

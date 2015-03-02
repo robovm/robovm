@@ -27,6 +27,7 @@
 /*
  * This code has been heavily inspired by Android's dalvik/vm/Thread.cpp code.
  */
+#define LOG_TAG "thread.c"
 
 // GC descriptor specifying which words in a Thread that should be scanned 
 // for heap pointers.
@@ -39,6 +40,7 @@
 
 typedef struct DetachedThread DetachedThread;
 struct DetachedThread {
+    jlong threadId;
     pthread_t thread;
     DetachedThread* next;
 };
@@ -57,11 +59,24 @@ static uint32_t threadGCKind;
 static Mutex detachedThreadsLock;
 static DetachedThread* detachedThreads = NULL;
 
+static jlong getUniqueThreadId(pthread_t thread) {
+#if defined(DARWIN)
+    __uint64_t threadId = 0;
+    pthread_threadid_np(thread, &threadId);
+    return (jlong)threadId;
+#else
+    // FIXME need to get a unique id on Linux
+    return 0;
+#endif
+}
+
 static void addToDetachedList(pthread_t thread) {
     rvmLockMutex(&detachedThreadsLock);
     DetachedThread* dt = (DetachedThread*)malloc(sizeof(DetachedThread));
+    dt->threadId = getUniqueThreadId(thread);
     dt->thread = thread;
     dt->next = detachedThreads? detachedThreads: NULL;
+    DEBUGF("Added thread with tid %llu to detach list", dt->threadId);
     detachedThreads = dt;
     rvmUnlockMutex(&detachedThreadsLock);
 }
@@ -108,14 +123,18 @@ jboolean rvmHasThreadBeenDetached() {
     rvmLockMutex(&detachedThreadsLock);
     DetachedThread* dt = detachedThreads;
     jboolean result = FALSE;
+    jlong threadId = getUniqueThreadId(self);
     while(dt) {
-        if(pthread_equal(dt->thread, self)) {
+        if(dt->threadId == threadId) {
             result = TRUE;
             break;
         }
         dt = dt->next;
     }
     rvmUnlockMutex(&detachedThreadsLock);
+    if(result) {
+        DEBUGF("Thread with tid %llu has been detached already", threadId);
+    }
     return result;
 }
 
@@ -434,6 +453,14 @@ static void attachedThreadExiting(Env* env) {
         setThreadTLS(env, env->currentThread);
         detachThread(env, TRUE, TRUE, TRUE);
         addToDetachedList(pthread_self());
+        // we need to set the env TLS to 0 here
+        // as we are about to free it. If this
+        // thread calls back into Java code, a
+        // new env has to be created. This happens
+        // in _bcAttachThreadFromCallback when
+        // an auto-release pool calls back into
+        // Java code. See #817, #772
+        setThreadEnv(0);
         gcFree(env);
     }
 }

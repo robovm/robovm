@@ -958,7 +958,11 @@ void* _bcResolveNative(Env* env, Class* clazz, char* name, char* desc, char* sho
 Env* _bcAttachThreadFromCallback(void) {
     Env* env = rvmGetEnv();
     if (!env) {
-        // This thread has never been attached. Attach once.
+        // This thread has never been attached or it has been
+        // attached, then detached in the TLS destructor. In the
+        // latter case, we are getting called back by native code
+        // e.g. an auto-release pool, that is triggered after
+        // the TLS destructor.
         if (rvmAttachCurrentThreadAsDaemon(vm, &env, NULL, NULL) != JNI_OK) {
             rvmAbort("Failed to attach thread in callback");
         }
@@ -968,6 +972,13 @@ Env* _bcAttachThreadFromCallback(void) {
 
 void _bcDetachThreadFromCallback(Env* env) {
     if(rvmHasThreadBeenDetached()) {
+        // this can only ever be called after
+        // the TLS destructor for this thread
+        // has been called. It happens when
+        // an auto-release pool calls back
+        // into our Java code. In that case
+        // bcAttachThreadFromCallback must
+        // reattach the thread first.
         rvmDetachCurrentThread(vm, TRUE, TRUE);
     }
 }

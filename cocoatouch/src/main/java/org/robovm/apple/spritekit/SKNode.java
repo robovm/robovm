@@ -147,7 +147,7 @@ import org.robovm.apple.scenekit.*;
     @Method(selector = "childNodeWithName:")
     public native SKNode getChild(String name);
     @Method(selector = "enumerateChildNodesWithName:usingBlock:")
-    public native void enumerateChildNodes(String name, @Block VoidBlock2<SKNode, BytePtr> block);
+    public native void enumerateChildNodes(String name, @Block VoidBlock2<SKNode, BooleanPtr> block);
     /**
      * @since Available in iOS 8.0 and later.
      */

@@ -66,7 +66,6 @@ import com.dd.plist.PropertyListParser;
 import com.dd.plist.XMLPropertyListParser;
 import java.util.HashMap;
 
-
 /**
  * @author niklas
  *
@@ -80,15 +79,14 @@ public class IOSTarget extends AbstractTarget {
     private SigningIdentity signIdentity;
     private ProvisioningProfile provisioningProfile;
     private IDevice device;
-    
-    public IOSTarget() {
-    }
-    
+
+    public IOSTarget() {}
+
     @Override
     public Arch getArch() {
         return arch;
     }
-    
+
     @Override
     public LaunchParameters createLaunchParameters() {
         if (isSimulatorArch(arch)) {
@@ -114,7 +112,7 @@ public class IOSTarget extends AbstractTarget {
     }
 
     /**
-     * Returns the {@link IDevice} when an app has been launched on a device. 
+     * Returns the {@link IDevice} when an app has been launched on a device.
      * Returns {@code null} before {@link #launch(LaunchParameters)} has been
      * called or if the app was launched in the simulator.
      */
@@ -130,14 +128,14 @@ public class IOSTarget extends AbstractTarget {
             return createIOSDevLauncher(launchParameters);
         }
     }
-    
+
     private Launcher createIOSSimLauncher(LaunchParameters launchParameters)
             throws IOException {
 
         File dir = getAppDir();
-        
+
         String iosSimPath = new File(config.getHome().getBinDir(), "ios-sim").getAbsolutePath();
-        
+
         List<Object> args = new ArrayList<Object>();
         args.add("launch");
         args.add(dir);
@@ -168,20 +166,20 @@ public class IOSTarget extends AbstractTarget {
             args.add("--args");
             args.addAll(launchParameters.getArguments());
         }
-        
+
         File xcodePath = new File(ToolchainUtil.findXcodePath());
         Map<String, String> env = Collections.singletonMap("DEVELOPER_DIR", xcodePath.getAbsolutePath());
         return new Executor(config.getLogger(), iosSimPath)
-            .args(args)
-            .wd(launchParameters.getWorkingDirectory())
-            .inheritEnv(false)
-            .env(env);
+                .args(args)
+                .wd(launchParameters.getWorkingDirectory())
+                .inheritEnv(false)
+                .env(env);
     }
-    
+
     private Launcher createIOSDevLauncher(LaunchParameters launchParameters)
             throws IOException {
-                
-        IOSDeviceLaunchParameters deviceLaunchParameters = (IOSDeviceLaunchParameters)launchParameters;
+
+        IOSDeviceLaunchParameters deviceLaunchParameters = (IOSDeviceLaunchParameters) launchParameters;
         String deviceId = deviceLaunchParameters.getDeviceId();
         int forwardPort = deviceLaunchParameters.getForwardPort();
         AppLauncherCallback callback = deviceLaunchParameters.getAppPathCallback();
@@ -191,68 +189,72 @@ public class IOSTarget extends AbstractTarget {
                 throw new RuntimeException("No devices connected");
             }
             if (udids.length > 1) {
-                config.getLogger().warn("More than 1 device connected (%s). " 
+                config.getLogger().warn("More than 1 device connected (%s). "
                         + "Using %s.", Arrays.asList(udids), udids[0]);
             }
             deviceId = udids[0];
         }
         device = new IDevice(deviceId);
-        
+
         OutputStream out = null;
         if (launchParameters.getStdoutFifo() != null) {
             out = new OpenOnWriteFileOutputStream(launchParameters.getStdoutFifo());
         } else {
             out = System.out;
         }
-        
+
         Map<String, String> env = launchParameters.getEnvironment();
         if (env == null) {
             env = new HashMap<>();
         }
 
         AppLauncher launcher = new AppLauncher(device, getAppDir()) {
-            protected void log(String s, Object ... args) {
+            protected void log(String s, Object... args) {
                 config.getLogger().debug(s, args);
             }
         }
-            .stdout(out)
-            .closeOutOnExit(true)
-            .args(launchParameters.getArguments().toArray(new String[0]))
-            .env(env)
-            .forward(forwardPort)
-            .appLauncherCallback(callback)
-            .xcodePath(ToolchainUtil.findXcodePath())
-            .uploadProgressCallback(new UploadProgressCallback() {
-                boolean first = true;
-                public void success() {
-                    config.getLogger().debug("[100%%] Upload complete");
-                }
-                public void progress(File path, int percentComplete) {
-                    if (first) {
-                        config.getLogger().debug("[  0%%] Beginning upload...");
+                .stdout(out)
+                .closeOutOnExit(true)
+                .args(launchParameters.getArguments().toArray(new String[0]))
+                .env(env)
+                .forward(forwardPort)
+                .appLauncherCallback(callback)
+                .xcodePath(ToolchainUtil.findXcodePath())
+                .uploadProgressCallback(new UploadProgressCallback() {
+                    boolean first = true;
+
+                    public void success() {
+                        config.getLogger().debug("[100%%] Upload complete");
                     }
-                    first = false;
-                    config.getLogger().debug("[%3d%%] Uploading %s...", percentComplete, path);
-                }
-                public void error(String message) {
-                }
-            })
-            .installStatusCallback(new StatusCallback() {
-                boolean first = true;
-                public void success() {
-                    config.getLogger().debug("[100%%] Install complete");
-                }
-                public void progress(String status, int percentComplete) {
-                    if (first) {
-                        config.getLogger().debug("[  0%%] Beginning installation...");
+
+                    public void progress(File path, int percentComplete) {
+                        if (first) {
+                            config.getLogger().debug("[  0%%] Beginning upload...");
+                        }
+                        first = false;
+                        config.getLogger().debug("[%3d%%] Uploading %s...", percentComplete, path);
                     }
-                    first = false;
-                    config.getLogger().debug("[%3d%%] %s", percentComplete, status);
-                }
-                public void error(String message) {
-                }
-            });
-        
+
+                    public void error(String message) {}
+                })
+                .installStatusCallback(new StatusCallback() {
+                    boolean first = true;
+
+                    public void success() {
+                        config.getLogger().debug("[100%%] Install complete");
+                    }
+
+                    public void progress(String status, int percentComplete) {
+                        if (first) {
+                            config.getLogger().debug("[  0%%] Beginning installation...");
+                        }
+                        first = false;
+                        config.getLogger().debug("[%3d%%] %s", percentComplete, status);
+                    }
+
+                    public void error(String message) {}
+                });
+
         return new AppLauncherProcess(config.getLogger(), launcher, launchParameters);
     }
 
@@ -262,19 +264,20 @@ public class IOSTarget extends AbstractTarget {
             throws IOException {
 
         // Always link against UIKit or else it will not be initialized properly
-        // causing problems with UIAlertView and maybe other classes on iOS 7 (#195)
+        // causing problems with UIAlertView and maybe other classes on iOS 7
+        // (#195)
         if (!config.getFrameworks().contains("UIKit")) {
             libArgs.add("-framework");
             libArgs.add("UIKit");
         }
 
         String minVersion = getMinimumOSVersion();
-        
+
         int majorVersionNumber = -1;
         try {
             majorVersionNumber = Integer.parseInt(minVersion.substring(0, minVersion.indexOf('.')));
         } catch (NumberFormatException e) {
-            throw new CompilerException("Failed to get major version number from " 
+            throw new CompilerException("Failed to get major version number from "
                     + "MinimumOSVersion string '" + minVersion + "'");
         }
         if (isDeviceArch(arch)) {
@@ -307,7 +310,7 @@ public class IOSTarget extends AbstractTarget {
         if (isDeviceArch(arch)) {
             // only strip if this is not a debug build, otherwise
             // LLDB can't resolve the DWARF info
-            if(!config.isDebug()) {
+            if (!config.isDebug()) {
                 strip(installDir, getExecutable());
             }
             copyResourcesPList(installDir);
@@ -320,11 +323,13 @@ public class IOSTarget extends AbstractTarget {
                 copyProvisioningProfile(provisioningProfile, installDir);
                 boolean getTaskAllow = provisioningProfile.getType() == Type.Development;
                 codesign(signIdentity, getOrCreateEntitlementsPList(getTaskAllow), installDir);
-                // For some odd reason there needs to be a symbolic link in the root of
-                // the app bundle named CodeResources pointing at _CodeSignature/CodeResources
+                // For some odd reason there needs to be a symbolic link in the
+                // root of
+                // the app bundle named CodeResources pointing at
+                // _CodeSignature/CodeResources
                 new Executor(config.getLogger(), "ln")
-                    .args("-f", "-s", "_CodeSignature/CodeResources", new File(installDir, "CodeResources"))
-                    .exec();
+                        .args("-f", "-s", "_CodeSignature/CodeResources", new File(installDir, "CodeResources"))
+                        .exec();
             }
         }
     }
@@ -332,11 +337,11 @@ public class IOSTarget extends AbstractTarget {
     private void copyProvisioningProfile(ProvisioningProfile profile, File destDir) throws IOException {
         config.getLogger().debug("Copying %s provisioning profile: %s (%s)",
                 profile.getType(),
-                profile.getName(), 
+                profile.getName(),
                 profile.getEntitlements().objectForKey("application-identifier"));
         FileUtils.copyFile(profile.getFile(), new File(destDir, "embedded.mobileprovision"));
     }
-    
+
     protected void prepareLaunch(File appDir) throws IOException {
         super.doInstall(appDir, getExecutable());
         createInfoPList(appDir);
@@ -353,9 +358,9 @@ public class IOSTarget extends AbstractTarget {
             }
         }
     }
-    
+
     private void codesign(SigningIdentity identity, File entitlementsPList, File appDir) throws IOException {
-        config.getLogger().debug("Code signing using identity '%s' with fingerprint %s", identity.getName(), 
+        config.getLogger().debug("Code signing using identity '%s' with fingerprint %s", identity.getName(),
                 identity.getFingerprint());
         List<Object> args = new ArrayList<Object>();
         args.add("-f");
@@ -367,9 +372,9 @@ public class IOSTarget extends AbstractTarget {
         }
         args.add(appDir);
         new Executor(config.getLogger(), "codesign")
-            .addEnv("CODESIGN_ALLOCATE", ToolchainUtil.findXcodeCommand("codesign_allocate", "iphoneos"))
-            .args(args)
-            .exec();
+                .addEnv("CODESIGN_ALLOCATE", ToolchainUtil.findXcodeCommand("codesign_allocate", "iphoneos"))
+                .args(args)
+                .exec();
     }
 
     private void ldid(File entitlementsPList, File appDir) throws IOException {
@@ -383,8 +388,8 @@ public class IOSTarget extends AbstractTarget {
         }
         args.add(executableFile);
         new Executor(config.getLogger(), new File(config.getHome().getBinDir(), "ldid"))
-            .args(args)
-            .exec();
+                .args(args)
+                .exec();
     }
 
     private void copyResourcesPList(File destDir) throws IOException {
@@ -395,7 +400,7 @@ public class IOSTarget extends AbstractTarget {
             FileUtils.copyURLToFile(getClass().getResource("/ResourceRules.plist"), destFile);
         }
     }
-    
+
     private File getOrCreateEntitlementsPList(boolean getTaskAllow) throws IOException {
         try {
             File destFile = new File(config.getTmpDir(), "Entitlements.plist");
@@ -403,7 +408,8 @@ public class IOSTarget extends AbstractTarget {
             if (entitlementsPList != null) {
                 dict = (NSDictionary) PropertyListParser.parse(entitlementsPList);
             } else {
-                dict = (NSDictionary) PropertyListParser.parse(IOUtils.toByteArray(getClass().getResourceAsStream("/Entitlements.plist")));
+                dict = (NSDictionary) PropertyListParser.parse(IOUtils.toByteArray(getClass().getResourceAsStream(
+                        "/Entitlements.plist")));
             }
             if (provisioningProfile != null) {
                 NSDictionary profileEntitlements = provisioningProfile.getEntitlements();
@@ -423,27 +429,27 @@ public class IOSTarget extends AbstractTarget {
             throw new RuntimeException(e);
         }
     }
-    
+
     private void generateDsym(File dir, String executable) throws IOException {
         File dsymDir = new File(dir.getParentFile(), dir.getName() + ".dSYM");
         FileUtils.deleteDirectory(dsymDir);
         new Executor(config.getLogger(), "xcrun")
-            .args("dsymutil", "-o", dsymDir, new File(dir, executable))
-            .execAsync();
+                .args("dsymutil", "-o", dsymDir, new File(dir, executable))
+                .execAsync();
     }
 
     private void strip(File dir, String executable) throws IOException {
         new Executor(config.getLogger(), "xcrun")
-            .args("strip", "-x", new File(dir, executable))
-            .exec();
+                .args("strip", "-x", new File(dir, executable))
+                .exec();
     }
-    
+
     @Override
     protected void doInstall(File installDir, String executable) throws IOException {
         super.doInstall(installDir, getExecutable());
         prepareInstall(installDir);
     }
-    
+
     @Override
     protected Process doLaunch(LaunchParameters launchParameters) throws IOException {
         prepareLaunch(getAppDir());
@@ -463,7 +469,7 @@ public class IOSTarget extends AbstractTarget {
         // Use the exported_symbols file created for the first slice.
         File exportedSymbolsFile = new File(slices.get(0).getParentFile(), "exported_symbols");
         FileUtils.copyFile(exportedSymbolsFile, new File(config.getTmpDir(), "exported_symbols"));
-        
+
         File tmpDir = new File(config.getInstallDir(), getExecutable() + ".app");
         FileUtils.deleteDirectory(tmpDir);
         tmpDir.mkdirs();
@@ -471,12 +477,12 @@ public class IOSTarget extends AbstractTarget {
         prepareInstall(tmpDir);
         ToolchainUtil.packageApplication(config, tmpDir, new File(config.getInstallDir(), getExecutable() + ".ipa"));
     }
-    
+
     @Override
     protected boolean processDir(Resource resource, File dir, File destDir) throws IOException {
         if (dir.getName().endsWith(".atlas")) {
             destDir.mkdirs();
-            
+
             ToolchainUtil.textureatlas(config, dir, destDir);
             return false;
         } else if (dir.getName().endsWith(".xcassets")) {
@@ -486,14 +492,13 @@ public class IOSTarget extends AbstractTarget {
         }
         return super.processDir(resource, dir, destDir);
     }
-    
+
     @Override
     protected void copyFile(Resource resource, File file, File destDir)
             throws IOException {
-        
-        if (isDeviceArch(arch) && !resource.isSkipPngCrush() 
+
+        if (isDeviceArch(arch) && !resource.isSkipPngCrush()
                 && file.getName().toLowerCase().endsWith(".png")) {
-            
             destDir.mkdirs();
             File outFile = new File(destDir, file.getName());
             ToolchainUtil.pngcrush(config, file, outFile);
@@ -501,11 +506,21 @@ public class IOSTarget extends AbstractTarget {
             destDir.mkdirs();
             File outFile = new File(destDir, file.getName());
             ToolchainUtil.compileStrings(config, file, outFile);
+        } else if (file.getName().toLowerCase().endsWith(".storyboard")) {
+            String fileName = file.getName();
+            fileName = fileName.substring(0, fileName.lastIndexOf('.')) + ".storyboardc";
+            File outFile = new File(destDir, fileName);
+            ToolchainUtil.ibtool(config, file, outFile);
+        } else if (file.getName().toLowerCase().endsWith(".xib")) {
+            String fileName = file.getName();
+            fileName = fileName.substring(0, fileName.lastIndexOf('.')) + ".nib";
+            File outFile = new File(destDir, fileName);
+            ToolchainUtil.ibtool(config, file, outFile);
         } else {
             super.copyFile(resource, file, destDir);
         }
     }
-    
+
     protected File getAppDir() {
         File dir = null;
         if (!config.isSkipInstall()) {
@@ -516,7 +531,7 @@ public class IOSTarget extends AbstractTarget {
         }
         return dir;
     }
-    
+
     protected String getExecutable() {
         if (config.getIosInfoPList() != null) {
             String bundleExecutable = config.getIosInfoPList().getBundleExecutable();
@@ -536,7 +551,7 @@ public class IOSTarget extends AbstractTarget {
         }
         return config.getMainClass() != null ? config.getMainClass() : config.getExecutableName();
     }
-    
+
     protected String getMinimumOSVersion() {
         if (config.getIosInfoPList() != null) {
             String minVersion = config.getIosInfoPList().getMinimumOSVersion();
@@ -546,7 +561,7 @@ public class IOSTarget extends AbstractTarget {
         }
         return config.getOs().getMinVersion();
     }
-    
+
     private void putIfAbsent(NSDictionary dict, String key, String value) {
         if (dict.objectForKey(key) == null) {
             dict.put(key, value);
@@ -562,12 +577,15 @@ public class IOSTarget extends AbstractTarget {
             dict.put("DTPlatformVersion", sdk.getPlatformVersion());
             dict.put("DTPlatformBuild", sdk.getPlatformBuild());
             dict.put("DTSDKBuild", sdk.getBuild());
-            
-            // Validation fails without DTXcode and DTXcodeBuild. Try to read them from the installed Xcode.
+
+            // Validation fails without DTXcode and DTXcodeBuild. Try to read
+            // them from the installed Xcode.
             try {
-                File versionPListFile = new File(new File(ToolchainUtil.findXcodePath()).getParentFile(), "version.plist");
+                File versionPListFile = new File(new File(ToolchainUtil.findXcodePath()).getParentFile(),
+                        "version.plist");
                 NSDictionary versionPList = (NSDictionary) PropertyListParser.parse(versionPListFile);
-                File xcodeInfoPListFile = new File(new File(ToolchainUtil.findXcodePath()).getParentFile(), "Info.plist");
+                File xcodeInfoPListFile = new File(new File(ToolchainUtil.findXcodePath()).getParentFile(),
+                        "Info.plist");
                 NSDictionary xcodeInfoPList = (NSDictionary) PropertyListParser.parse(xcodeInfoPListFile);
                 NSString dtXcodeBuild = (NSString) versionPList.objectForKey("ProductBuildVersion");
                 if (dtXcodeBuild == null) {
@@ -580,15 +598,16 @@ public class IOSTarget extends AbstractTarget {
                 putIfAbsent(dict, "DTXcode", dtXcode.toString());
                 putIfAbsent(dict, "DTXcodeBuild", dtXcodeBuild.toString());
             } catch (Exception e) {
-                config.getLogger().warn("Failed to read DTXcodeBuild/DTXcode from current Xcode install. Will use fake values. (%s: %s)", 
-                        e.getClass().getName(), e.getMessage());
+                config.getLogger()
+                        .warn("Failed to read DTXcodeBuild/DTXcode from current Xcode install. Will use fake values. (%s: %s)",
+                                e.getClass().getName(), e.getMessage());
             }
             // Fake Xcode 6.1.1 values if the above fails.
             putIfAbsent(dict, "DTXcode", "0611");
             putIfAbsent(dict, "DTXcodeBuild", "6A2008a");
         }
     }
-    
+
     protected void createInfoPList(File dir) throws IOException {
         NSDictionary dict = new NSDictionary();
         if (config.getIosInfoPList() != null && config.getIosInfoPList().getDictionary() != null) {
@@ -605,8 +624,10 @@ public class IOSTarget extends AbstractTarget {
             dict.put("LSRequiresIPhoneOS", true);
             NSObject supportedDeviceFamilies = sdk.getDefaultProperty("SUPPORTED_DEVICE_FAMILIES");
             if (supportedDeviceFamilies != null) {
-                // SUPPORTED_DEVICE_FAMILIES is either a NSString of comma separated numbers
-                // or an NSArray with NSStrings. UIDeviceFamily values should be NSNumbers.
+                // SUPPORTED_DEVICE_FAMILIES is either a NSString of comma
+                // separated numbers
+                // or an NSArray with NSStrings. UIDeviceFamily values should be
+                // NSNumbers.
                 NSArray families = null;
                 if (supportedDeviceFamilies instanceof NSString) {
                     NSString defFamilies = (NSString) supportedDeviceFamilies;
@@ -629,13 +650,13 @@ public class IOSTarget extends AbstractTarget {
                     new NSString("UIInterfaceOrientationLandscapeLeft"),
                     new NSString("UIInterfaceOrientationLandscapeRight"),
                     new NSString("UIInterfaceOrientationPortraitUpsideDown")
-            ));
+                    ));
             dict.put("UISupportedInterfaceOrientations~ipad", new NSArray(
                     new NSString("UIInterfaceOrientationPortrait"),
                     new NSString("UIInterfaceOrientationLandscapeLeft"),
                     new NSString("UIInterfaceOrientationLandscapeRight"),
                     new NSString("UIInterfaceOrientationPortraitUpsideDown")
-            ));
+                    ));
             dict.put("UIRequiredDeviceCapabilities", new NSArray(new NSString("armv7")));
         }
 
@@ -646,7 +667,7 @@ public class IOSTarget extends AbstractTarget {
             // This is required
             dict.put("MinimumOSVersion", "6.0");
         }
-        
+
         customizeInfoPList(dict);
 
         /*
@@ -668,22 +689,22 @@ public class IOSTarget extends AbstractTarget {
         for (String key : dict.allKeys()) {
             newDict.put(key, dict.objectForKey(key));
         }
-        
+
         File tmpInfoPlist = new File(config.getTmpDir(), "Info.plist");
         PropertyListParser.saveAsBinary(newDict, tmpInfoPlist);
-        
+
         config.getLogger().debug("Installing Info.plist to %s", dir);
         FileUtils.copyFile(tmpInfoPlist, new File(dir, tmpInfoPlist.getName()));
     }
-    
+
     public void init(Config config) {
         super.init(config);
-        
+
         if (config.getArch() == null) {
             arch = Arch.thumbv7;
         } else {
             if (!isSimulatorArch(config.getArch()) && !isDeviceArch(config.getArch())) {
-                throw new IllegalArgumentException("Arch '" + config.getArch() 
+                throw new IllegalArgumentException("Arch '" + config.getArch()
                         + "' is unsupported for iOS target");
             }
             arch = config.getArch();
@@ -693,11 +714,12 @@ public class IOSTarget extends AbstractTarget {
             if (!config.isIosSkipSigning()) {
                 signIdentity = config.getIosSignIdentity();
                 if (signIdentity == null) {
-                    signIdentity = SigningIdentity.find(SigningIdentity.list(), "/(?i)iPhone Developer|iOS Development/");
+                    signIdentity = SigningIdentity.find(SigningIdentity.list(),
+                            "/(?i)iPhone Developer|iOS Development/");
                 }
             }
         }
-        
+
         if (config.getIosInfoPList() != null) {
             config.getIosInfoPList().parse(config.getProperties());
         }
@@ -719,7 +741,8 @@ public class IOSTarget extends AbstractTarget {
         List<SDK> sdks = getSDKs();
         if (sdkVersion == null) {
             if (sdks.isEmpty()) {
-                throw new IllegalArgumentException("No " + (isDeviceArch(arch) ? "device" : "simulator") + " SDKs installed");
+                throw new IllegalArgumentException("No " + (isDeviceArch(arch) ? "device" : "simulator")
+                        + " SDKs installed");
             }
             Collections.sort(sdks);
             this.sdk = sdks.get(sdks.size() - 1);
@@ -747,9 +770,9 @@ public class IOSTarget extends AbstractTarget {
     public boolean canLaunchInPlace() {
         return false;
     }
-    
+
     private final static Pattern VARIABLE_PATTERN = Pattern.compile("\\$\\{([^}]+)\\}");
-    
+
     static void replacePropertyRefs(Node node, Properties props) {
         if (node instanceof Text) {
             Text el = (Text) node;
@@ -777,11 +800,11 @@ public class IOSTarget extends AbstractTarget {
             replacePropertyRefs(children.item(i), props);
         }
     }
-    
+
     static NSObject parsePropertyList(File file, Properties props) throws Exception {
         Properties allProps = new Properties(System.getProperties());
         allProps.putAll(props);
-        
+
         Method getDocBuilder = XMLPropertyListParser.class.getDeclaredMethod("getDocBuilder");
         getDocBuilder.setAccessible(true);
         Method parseDocument = XMLPropertyListParser.class.getDeclaredMethod("parseDocument", Document.class);

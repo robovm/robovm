@@ -322,7 +322,7 @@ public abstract class ObjCObject extends NativeObject {
         }
     }
 
-    public static class ObjectOwnershipHelper {
+    static class ObjectOwnershipHelper {
         private static final LongMap<Object> CUSTOM_OBJECTS = new LongMap<>();
 
         private static final long retainCount = Selector.register("retainCount").getHandle();
@@ -388,7 +388,10 @@ public abstract class ObjCObject extends NativeObject {
                 }
             }     
             long cls = ObjCRuntime.object_getClass(self);
-            long nativeSuper = customClassToNativeSuper.get(cls);
+            long nativeSuper = 0;
+            synchronized(customClassToNativeSuper) {
+                nativeSuper = customClassToNativeSuper.get(cls);
+            }
             Super sup = new Super(self, nativeSuper);
             return ObjCRuntime.ptr_objc_msgSendSuper(sup.getHandle(), sel);
         }
@@ -401,7 +404,10 @@ public abstract class ObjCObject extends NativeObject {
                 }
             }            
             long cls = ObjCRuntime.object_getClass(self);
-            long nativeSuper = customClassToNativeSuper.get(cls);
+            long nativeSuper = 0;
+            synchronized(customClassToNativeSuper) {
+                nativeSuper = customClassToNativeSuper.get(cls);
+            }
             Super sup = new Super(self, nativeSuper);
             ObjCRuntime.void_objc_msgSendSuper(sup.getHandle(), sel);
         }

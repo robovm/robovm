@@ -114,9 +114,9 @@ import org.robovm.apple.opengles.*;
     @Method(selector = "propertyForKey:")
     public native NSObject getProperty(SCNSceneSourceProperty key);
     @Method(selector = "entryWithIdentifier:withClass:")
-    public native NSObject getEntryWithIdentifier(String uid, Class<?> entryClass);
+    public native NSObject getEntryWithIdentifier(String uid, Class<? extends NSObject> entryClass);
     @Method(selector = "identifiersOfEntriesWithClass:")
-    public native @org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String> getIdentifiersOfEntriesWithClass(Class<?> entryClass);
+    public native @org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String> getIdentifiersOfEntriesWithClass(Class<? extends NSObject> entryClass);
     @Method(selector = "entriesPassingTest:")
     public native NSArray<?> getEntriesPassingTest(@Block Block3<NSObject, String, BooleanPtr, Boolean> predicate);
     @Method(selector = "sceneSourceWithURL:options:")

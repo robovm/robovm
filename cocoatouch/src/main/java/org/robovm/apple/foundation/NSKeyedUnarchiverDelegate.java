@@ -53,7 +53,7 @@ import org.robovm.apple.dispatch.*;
     /*</properties>*/
     /*<methods>*/
     @Method(selector = "unarchiver:cannotDecodeObjectOfClassName:originalClasses:")
-    Class<?> cannotDecodeObjectOfClassName(NSKeyedUnarchiver unarchiver, String name, @org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String> classNames);
+    Class<? extends NSObject> cannotDecodeObjectOfClassName(NSKeyedUnarchiver unarchiver, String name, @org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String> classNames);
     @Method(selector = "unarchiver:didDecodeObject:")
     NSObject didDecodeObject(NSKeyedUnarchiver unarchiver, NSObject object);
     @Method(selector = "unarchiver:willReplaceObject:withObject:")

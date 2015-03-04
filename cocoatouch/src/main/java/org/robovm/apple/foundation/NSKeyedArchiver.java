@@ -86,9 +86,9 @@ import org.robovm.apple.dispatch.*;
     @Method(selector = "finishEncoding")
     public native void finishEncoding();
     @Method(selector = "setClassName:forClass:")
-    public native void setClassNameForClass(String codedName, Class<?> cls);
+    public native void setClassNameForClass(String codedName, Class<? extends NSObject> cls);
     @Method(selector = "classNameForClass:")
-    public native String getClassNameForClass(Class<?> cls);
+    public native String getClassNameForClass(Class<? extends NSObject> cls);
     /**
      * @since Available in iOS 6.0 and later.
      */
@@ -99,8 +99,8 @@ import org.robovm.apple.dispatch.*;
     @Method(selector = "archiveRootObject:toFile:")
     private static native boolean archiveRootObject(NSObject rootObject, String path);
     @Method(selector = "setClassName:forClass:")
-    public static native void setDefaultClassNameForClass(String codedName, Class<?> cls);
+    public static native void setDefaultClassNameForClass(String codedName, Class<? extends NSObject> cls);
     @Method(selector = "classNameForClass:")
-    public static native String getDefaultClassNameForClass(Class<?> cls);
+    public static native String getDefaultClassNameForClass(Class<? extends NSObject> cls);
     /*</methods>*/
 }

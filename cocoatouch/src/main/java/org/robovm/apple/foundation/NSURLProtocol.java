@@ -93,9 +93,9 @@ import org.robovm.apple.dispatch.*;
     @Method(selector = "removePropertyForKey:inRequest:")
     public static native void removePropertyInRequest(String key, NSMutableURLRequest request);
     @Method(selector = "registerClass:")
-    public static native boolean registerClass(Class<?> protocolClass);
+    public static native boolean registerClass(Class<? extends NSURLProtocol> protocolClass);
     @Method(selector = "unregisterClass:")
-    public static native void unregisterClass(Class<?> protocolClass);
+    public static native void unregisterClass(Class<? extends NSURLProtocol> protocolClass);
     /**
      * @since Available in iOS 8.0 and later.
      */

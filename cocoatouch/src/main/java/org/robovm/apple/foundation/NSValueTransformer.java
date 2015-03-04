@@ -72,8 +72,8 @@ import org.robovm.apple.dispatch.*;
     @Method(selector = "valueTransformerNames")
     public static native NSArray<NSValueTransformer> getValueTransformers();
     @Method(selector = "transformedValueClass")
-    public static native Class<?> getTransformedValueClass();
+    public static native Class<? extends NSObject> getTransformedValueClass();
     @Method(selector = "allowsReverseTransformation")
-    public static native boolean allowsReverseTransformation();
+    public static native boolean isAllowsReverseTransformation();
     /*</methods>*/
 }

@@ -333,19 +333,21 @@ public abstract class ObjCObject extends NativeObject {
 
         private static final Method retainMethod;
         private static final Method releaseMethod;
+        
+        private static final LongMap<Long> customClassToNativeSuper = new LongMap<>();
 
         static {
             try {
-                retainMethod = ObjectOwnershipHelper.class.getDeclaredMethod("retain", ObjCObject.class, Long.TYPE);
+                retainMethod = ObjectOwnershipHelper.class.getDeclaredMethod("retain", Long.TYPE, Long.TYPE);
                 releaseMethod = ObjectOwnershipHelper.class.getDeclaredMethod("release", Long.TYPE, Long.TYPE);
             } catch (Throwable t) {
                 throw new Error(t);
             }
         }
 
-        public static void registerClass(ObjCClass objCClass) {
-            registerCallbackMethod(objCClass.getHandle(), retain, originalRetain, retainMethod);
-            registerCallbackMethod(objCClass.getHandle(), release, originalRelease, releaseMethod);
+        public static void registerClass(long cls) {
+            registerCallbackMethod(cls, retain, originalRetain, retainMethod);
+            registerCallbackMethod(cls, release, originalRelease, releaseMethod);
         }
 
         private static void registerCallbackMethod(long cls, long selector, long newSelector, Method method) {
@@ -356,18 +358,42 @@ public abstract class ObjCObject extends NativeObject {
                 throw new Error(
                         "Failed to register callback method on the ObjectOwnershipHelper: class_addMethod(...) failed");
             }
-            ObjCRuntime.class_replaceMethod(cls, newSelector, ObjCRuntime.method_getImplementation(superMethod),
-                    typeEncoding);
+            
+            // find the super class that is a native class and cache it
+            long superClass = ObjCRuntime.class_getSuperclass(cls);
+            long nativeSuper = 0;
+            while(superClass != 0) {
+                ObjCClass objCClass = ObjCClass.toObjCClass(superClass);
+                if(!objCClass.isCustom()) {
+                    nativeSuper = superClass;
+                    break;
+                }
+                superClass = ObjCRuntime.class_getSuperclass(superClass);
+            }
+            if(nativeSuper == 0) {
+                throw new Error("Couldn't find native super class for " + VM.newStringUTF(ObjCRuntime.class_getName(cls)));
+            }
+            synchronized(customClassToNativeSuper) {
+                customClassToNativeSuper.put(cls, nativeSuper);
+            }
         }
 
         @Callback
-        private static @Pointer long retain(ObjCObject self, @Pointer long sel) {
-            if (ObjCRuntime.int_objc_msgSend(self.getHandle(), retainCount) <= 1) {
+        private static @Pointer long retain(@Pointer long self, @Pointer long sel) {
+            if (ObjCRuntime.int_objc_msgSend(self, retainCount) <= 1) {
                 synchronized (CUSTOM_OBJECTS) {
-                    CUSTOM_OBJECTS.put(self.getHandle(), self);
+                    ObjCClass cls = ObjCClass.toObjCClass(ObjCRuntime.object_getClass(self));
+                    ObjCObject obj = ObjCObject.toObjCObject(cls.getType(), self, 0);
+                    CUSTOM_OBJECTS.put(self, obj);
                 }
+            }     
+            long cls = ObjCRuntime.object_getClass(self);
+            long nativeSuper = 0;
+            synchronized(customClassToNativeSuper) {
+                nativeSuper = customClassToNativeSuper.get(cls);
             }
-            return ObjCRuntime.ptr_objc_msgSendSuper(new Super(self.getHandle(), NS_OBJECT_CLASS).getHandle(), sel);
+            Super sup = new Super(self, nativeSuper);
+            return ObjCRuntime.ptr_objc_msgSendSuper(sup.getHandle(), sel);
         }
 
         @Callback
@@ -376,8 +402,14 @@ public abstract class ObjCObject extends NativeObject {
                 synchronized (CUSTOM_OBJECTS) {
                     CUSTOM_OBJECTS.remove(self);
                 }
+            }            
+            long cls = ObjCRuntime.object_getClass(self);
+            long nativeSuper = 0;
+            synchronized(customClassToNativeSuper) {
+                nativeSuper = customClassToNativeSuper.get(cls);
             }
-            ObjCRuntime.void_objc_msgSendSuper(new Super(self, NS_OBJECT_CLASS).getHandle(), sel);
+            Super sup = new Super(self, nativeSuper);
+            ObjCRuntime.void_objc_msgSendSuper(sup.getHandle(), sel);
         }
         
         public static boolean isObjectRetained(ObjCObject object) {

@@ -1193,10 +1193,11 @@ static inline void suspendLoop(DebugEnv* debugEnv) {
 
         // If reqId is set, we have  method invocation request (see handleThreadInvoke),
         // or a new instance request (see handleNewInstance, handleNewString, handleNewArray)
-        // we temporarily reset the suspend flag, invoke the
+        // we temporarily reset the suspend flag, set the ignore exceptions flag, invoke the
         // method, then go back into waiting for being woken up again
         if(debugEnv->reqId != 0) {
             debugEnv->suspended = FALSE;
+            debugEnv->ignoreExceptions = TRUE;
             switch(debugEnv->command) {
                 case CMD_THREAD_INVOKE:
                     invokeMethod(debugEnv);
@@ -1213,6 +1214,7 @@ static inline void suspendLoop(DebugEnv* debugEnv) {
                 default:
                     DEBUGF("Unknown invoke/newinstance command %d", debugEnv->command);
             }
+            debugEnv->ignoreExceptions = FALSE;
             debugEnv->suspended = TRUE;
         }
     }
@@ -1229,33 +1231,39 @@ static inline void suspendLoop(DebugEnv* debugEnv) {
     rvmUnlockMutex(&writeMutex);
 }
 
-static void writeStopOrExceptionEvent(Env* env, char event, Object* throwable, jboolean isCaught, CallStack* callStack) {
+static jboolean prepareCallStack(Env* env, char event, CallStack** callStack, jint* length, jint* payloadSize, CallStackFrame** firstFrame) {
+    *callStack = rvmCaptureCallStack(env);
+    if (rvmExceptionCheck(env)) {
+        Object* ex = rvmExceptionClear(env);
+        ERRORF("Failed to get a call stack for thread %p due to event %d. Got an exception of type: %s",
+                env->currentThread, event, ex->clazz->name);
+        return FALSE;
+    }
+
     jint index = 0;
-    jint length = 0;
     jint classNamesSize = 0;
     CallStackFrame* frame = NULL;
-    while ((frame = rvmGetNextCallStackMethod(env, callStack, &index)) != NULL) {
-        length++;
+    *firstFrame = NULL;
+    while ((frame = rvmGetNextCallStackMethod(env, *callStack, &index)) != NULL) {
+        if(!*firstFrame) {
+            *firstFrame = frame;
+        }
+        (*length)++;
         classNamesSize += strlen(frame->method->clazz->name);
     }
-
-    rvmLockMutex(&writeMutex);
-    ChannelError error = { 0 };
-
-    int payLoadSize = sizeof(jlong) * (event == EVT_EXCEPTION? 3: 2) + (event == EVT_EXCEPTION? 1: 0) + sizeof(jint) + length * (sizeof(jlong) * 2 + sizeof(jint) * 2) + classNamesSize;
-
-    writeChannelByte(clientSocket, event, &error);
-    writeChannelLong(clientSocket, 0, &error);
-    writeChannelLong(clientSocket, payLoadSize, &error);
-    writeChannelLong(clientSocket, (jlong)env->currentThread->threadObj, &error);
-    writeChannelLong(clientSocket, (jlong)env->currentThread, &error);
-    if(event == EVT_EXCEPTION) {
-        writeChannelLong(clientSocket, (jlong)throwable, &error);
-        writeChannelByte(clientSocket, isCaught? -1: 0, &error);
+    *payloadSize = sizeof(jint) + (*length) * (sizeof(jlong) * 2 + sizeof(jint) * 2) + classNamesSize;
+    if(length == 0) {
+        ERRORF("No frames on callstack of thread %p for event %d.", env->currentThread, event);
+        return FALSE;
     }
+    return TRUE;
+}
+
+static void writeCallstack(Env* env, jint length, CallStack* callStack ) {
+    ChannelError error;
     writeChannelInt(clientSocket, length, &error);
-    index = 0;
-    frame = NULL;
+    jint index = 0;
+    CallStackFrame* frame = NULL;
     while ((frame = rvmGetNextCallStackMethod(env, callStack, &index)) != NULL) {
         // TODO: Handle proxy methods
         writeChannelLong(clientSocket, (jlong)(frame->method->impl), &error);
@@ -1265,60 +1273,104 @@ static void writeStopOrExceptionEvent(Env* env, char event, Object* throwable, j
         writeChannelInt(clientSocket, strLen, &error);
         writeChannel(clientSocket, (void*)frame->method->clazz->name, strLen, &error);
     }
+}
 
+static void writeStopOrExceptionEvent(Env* env, char event, Object* throwable, jboolean isCaught, CallStack* callStack, jint callStackLength, jint callStackPayloadSize) {
+    ChannelError error = { 0 };
+    int payLoadSize = sizeof(jlong) * (event == EVT_EXCEPTION? 3: 2) + (event == EVT_EXCEPTION? 1: 0) + callStackPayloadSize;
+
+    rvmLockMutex(&writeMutex);
+    writeChannelByte(clientSocket, event, &error);
+    writeChannelLong(clientSocket, 0, &error);
+    writeChannelLong(clientSocket, payLoadSize, &error);
+    writeChannelLong(clientSocket, (jlong)env->currentThread->threadObj, &error);
+    writeChannelLong(clientSocket, (jlong)env->currentThread, &error);
+    if(event == EVT_EXCEPTION) {
+        writeChannelLong(clientSocket, (jlong)throwable, &error);
+        writeChannelByte(clientSocket, isCaught? -1: 0, &error);
+    }
+    writeCallstack(env, callStackLength, callStack);
     rvmUnlockMutex(&writeMutex);
 }
 
-void _rvmHookInstrumented(DebugEnv* debugEnv, jint lineNumber, jint lineNumberOffset, jbyte* bptable, void* pc) {
-    Env* env = (Env*) debugEnv;
+void _rvmHookClassLoaded(Env* env, Class* clazz, void* classInfo) {
+    JavaThread* javaThread = NULL;
+    Thread* thread = NULL;
 
-    char event = 0;
-    if ((event = getSuspendedEvent(debugEnv, lineNumberOffset, bptable, pc)) != 0) {
+    // check if there's a filter for that class
+    rvmLockMutex(&classFilterMutex);
+    for(ClassFilter* f = classFilters; f; f = f->next) {
+        if(!strcmp(f->className, clazz->name)) {
+            if(env->currentThread) {
+                javaThread = env->currentThread->threadObj;
+                thread = env->currentThread;
+            }
+            break;
+        }
+    }
+    rvmUnlockMutex(&classFilterMutex);
 
+    CallStack* callStack = NULL;
+    jint callStackLength = 0;
+    jint callStackPayloadSize = 0;
+    CallStackFrame* frame = NULL;
+    // only report the callstack if the class is
+    // filtered
+    if(javaThread) {
+        if (!prepareCallStack(env, EVT_CLASS_LOAD, &callStack, &callStackLength, &callStackPayloadSize, &frame)) {
+            ERROR("Couldn't prepare callstack for class load event, not reporting callstack");
+            javaThread = NULL;
+            thread = NULL;
+            callStackPayloadSize = 0;
+        }
+    }
+
+    // DEBUGF("Loaded class %s, Class*: %p, ClassInfo*: %p, Thread*: %p", clazz->name, clazz, classInfo, thread);
+    DebugEnv* debugEnv = (DebugEnv*)env;
+    rvmLockMutex(&writeMutex);
+    ChannelError error = { 0 };
+    writeChannelByte(clientSocket, EVT_CLASS_LOAD, &error);
+    writeChannelLong(clientSocket, 0, &error);
+    writeChannelLong(clientSocket, 32 + callStackPayloadSize, &error);
+    writeChannelLong(clientSocket, (jlong)javaThread, &error);
+    writeChannelLong(clientSocket, (jlong)thread, &error);
+    writeChannelLong(clientSocket, (jlong)clazz, &error);
+    writeChannelLong(clientSocket, (jlong)classInfo, &error);
+    if(javaThread) writeCallstack(env, callStackLength, callStack);
+    rvmUnlockMutex(&writeMutex);
+
+    if(javaThread) {
         rvmLockMutex(&debugEnv->suspendMutex);
-
-        if (IS_DEBUG_ENABLED) {
-            Method* method = rvmFindMethodAtAddress(env, pc);
-            DEBUGF("Suspending thread %p with id %u due to event %d at %s.%s%s:%d (pc=%p)", env->currentThread, 
-                env->currentThread->threadId, event, method->clazz->name, 
-                method->name, method->desc, lineNumber, pc);
-        }
-
-        CallStack* callStack = rvmCaptureCallStack(env);
-        if (rvmExceptionCheck(env)) {
-            Object* ex = rvmExceptionClear(env);
-            ERRORF("Failed to get a call stack for thread %p due to event %d (pc=%p). Got an exception of type: %s", 
-                env->currentThread, event, pc, ex->clazz->name);
-        } else {
-            writeStopOrExceptionEvent(env, event, NULL, 0, callStack);
-            suspendLoop(debugEnv);
-        }
-
+        suspendLoop(debugEnv);
         rvmUnlockMutex(&debugEnv->suspendMutex);
     }
 }
 
 void _rvmHookExceptionRaised(Env* env, Object* throwable, jboolean isCaught) {
     DebugEnv* debugEnv = (DebugEnv*)env;
+    // we might be invoking a function due to a debugger
+    // request while suspended. Don't report the exception
+    // in that case.
+    if(debugEnv->ignoreExceptions) {
+        return;
+    }
 
     // we need to temporarily clear the exception
     // for the code below to not get upset.
     Object* exception = rvmExceptionClear(env);
 
-    // special case for VMClassLoader, we don't
-    // report exceptions thrown by it.
-    CallStack* callStack = rvmCaptureCallStack(env);
-    jint index = 0;
+    CallStack* callStack = NULL;
+    jint callStackLength = 0;
+    jint callStackPayloadSize = 0;
     CallStackFrame* frame = NULL;
-    frame = rvmGetNextCallStackMethod(env, callStack, &index);
-    if(frame == NULL) {
-        DEBUG("No frames for exception event, resuming");
-        rvmThrow(env, exception);
+    if(!prepareCallStack(env, EVT_EXCEPTION, &callStack, &callStackLength, &callStackPayloadSize, &frame)) {
         return;
     }
+
+    // special case for VMClassLoader, we don't
+    // report exceptions thrown by it.
     if(!strcmp(frame->method->name, "findClassInClasspathForLoader") &&
             !strcmp(frame->method->clazz->name, "java/lang/VMClassLoader")) {
-        DEBUG("Skipping ClassNotFoundException from VMClassLoader#findClassInClasspathForLoader");
         rvmThrow(env, exception);
         return;
     }
@@ -1336,7 +1388,7 @@ void _rvmHookExceptionRaised(Env* env, Object* throwable, jboolean isCaught) {
         ERRORF("Failed to get a call stack for thread %p due to exception event. Got an exception of type: %s",
                 env->currentThread, ex->clazz->name);
     } else {
-        writeStopOrExceptionEvent(env, EVT_EXCEPTION, throwable, isCaught, callStack);
+        writeStopOrExceptionEvent(env, EVT_EXCEPTION, throwable, isCaught, callStack, callStackLength, callStackPayloadSize);
         suspendLoop(debugEnv);
     }
 
@@ -1346,35 +1398,33 @@ void _rvmHookExceptionRaised(Env* env, Object* throwable, jboolean isCaught) {
     rvmThrow(env, exception);
 }
 
-void _rvmHookClassLoaded(Env* env, Class* clazz, void* classInfo) {
-    JavaThread* thread = 0;
+void _rvmHookInstrumented(DebugEnv* debugEnv, jint lineNumber, jint lineNumberOffset, jbyte* bptable, void* pc) {
+    Env* env = (Env*) debugEnv;
 
-    rvmLockMutex(&classFilterMutex);
-    for(ClassFilter* f = classFilters; f; f = f->next) {
-        if(!strcmp(f->className, clazz->name)) {
-            if(env->currentThread) {
-                thread = env->currentThread->threadObj;
-            }
-            break;
-        }
-    }
-    rvmUnlockMutex(&classFilterMutex);
+    char event = 0;
+    if ((event = getSuspendedEvent(debugEnv, lineNumberOffset, bptable, pc)) != 0) {
 
-    // DEBUGF("Loaded class %s, Class*: %p, ClassInfo*: %p, Thread*: %p", clazz->name, clazz, classInfo, thread);
-    DebugEnv* debugEnv = (DebugEnv*)env;
-    rvmLockMutex(&writeMutex);
-    ChannelError error = { 0 };
-    writeChannelByte(clientSocket, EVT_CLASS_LOAD, &error);
-    writeChannelLong(clientSocket, 0, &error);
-    writeChannelLong(clientSocket, 24, &error);
-    writeChannelLong(clientSocket, (jlong)thread, &error);
-    writeChannelLong(clientSocket, (jlong)clazz, &error);
-    writeChannelLong(clientSocket, (jlong)classInfo, &error);
-    rvmUnlockMutex(&writeMutex);
-
-    if(thread) {
         rvmLockMutex(&debugEnv->suspendMutex);
+
+        if (IS_DEBUG_ENABLED) {
+            Method* method = rvmFindMethodAtAddress(env, pc);
+            DEBUGF("Suspending thread %p with id %u due to event %d at %s.%s%s:%d (pc=%p)", env->currentThread,
+                    env->currentThread->threadId, event, method->clazz->name,
+                    method->name, method->desc, lineNumber, pc);
+        }
+
+        CallStack* callStack = NULL;
+        jint callStackLength = 0;
+        jint callStackPayloadSize = 0;
+        CallStackFrame* frame = NULL;
+        if(!prepareCallStack(env, event, &callStack, &callStackLength, &callStackPayloadSize, &frame)) {
+            rvmUnlockMutex(&debugEnv->suspendMutex);
+            return;
+        }
+
+        writeStopOrExceptionEvent(env, event, NULL, 0, callStack, callStackLength, callStackPayloadSize);
         suspendLoop(debugEnv);
+
         rvmUnlockMutex(&debugEnv->suspendMutex);
     }
 }

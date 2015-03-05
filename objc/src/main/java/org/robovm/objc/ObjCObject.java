@@ -48,6 +48,8 @@ import org.robovm.rt.bro.ptr.VoidPtr;
     @Marshaler(ObjCClass.Marshaler.class)
 })
 public abstract class ObjCObject extends NativeObject {
+    
+    private static volatile boolean logRetainRelease = false;
 
     public static class ObjCObjectPtr extends Ptr<ObjCObject, ObjCObjectPtr> {}
 
@@ -324,8 +326,7 @@ public abstract class ObjCObject extends NativeObject {
 
     static class ObjectOwnershipHelper {
         private static final LongMap<Object> CUSTOM_OBJECTS = new LongMap<>();
-
-        private static volatile boolean logRetainRelease = false;
+        
         private static final long retainCount = Selector.register("retainCount").getHandle();
         private static final long retain = Selector.register("retain").getHandle();
         private static final long originalRetain = Selector.register("original_retain").getHandle();
@@ -424,14 +425,7 @@ public abstract class ObjCObject extends NativeObject {
             synchronized (CUSTOM_OBJECTS) {
                 return CUSTOM_OBJECTS.containsKey(object.getHandle());
             }
-        }
-
-        private static void logRetainRelease(long cls, long self, int count, boolean isRetain) {
-            String className = ObjCClass.getFromObject(cls).getType().getName();
-            System.err.println(String.format("[Debug] %s %s@0x%s, retain count: %d",
-                    isRetain ? "Retained" : "Released", className, Long.toHexString(self), isRetain ? count + 1
-                            : count - 1));
-        }
+        }        
     }
 
     static class AssociatedObjectHelper {
@@ -569,11 +563,16 @@ public abstract class ObjCObject extends NativeObject {
 
         @Callback
         static void release(@Pointer long self, @Pointer long sel) {
-            if (ObjCRuntime.int_objc_msgSend(self, retainCount.getHandle()) == 1) {
+            int count = ObjCRuntime.int_objc_msgSend(self, retainCount.getHandle());
+            if (count == 1) {
                 long owner = VM.getPointer(self + OWNER_IVAR_OFFSET);
                 synchronized (ASSOCIATED_OBJECTS) {
                     ASSOCIATED_OBJECTS.remove(owner);
                 }
+            }
+            if(logRetainRelease) {
+                long cls = ObjCRuntime.object_getClass(self);
+                logRetainRelease(cls, self, count, false);
             }
             ObjCRuntime.void_objc_msgSendSuper(new Super(self, NS_OBJECT_CLASS).getHandle(), sel);
         }
@@ -610,6 +609,13 @@ public abstract class ObjCObject extends NativeObject {
      * custom objects in Instruments.
      */
     public static void logRetainRelease(boolean enabled) {
-        ObjectOwnershipHelper.logRetainRelease = enabled;
+        logRetainRelease = enabled;
+    }
+    
+    private static void logRetainRelease(long cls, long self, int count, boolean isRetain) {
+        String className = ObjCClass.getFromObject(cls).getType().getName();
+        System.err.println(String.format("[Debug] %s %s@0x%s, retain count: %d",
+                isRetain ? "Retained" : "Released", className, Long.toHexString(self), isRetain ? count + 1
+                        : count - 1));
     }
 }

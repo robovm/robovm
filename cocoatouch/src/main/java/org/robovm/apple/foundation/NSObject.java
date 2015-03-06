@@ -126,7 +126,7 @@ import org.robovm.apple.dispatch.*;
     /*</constructors>*/
     /*<properties>*/
     @Property(selector = "classForCoder")
-    public native Class<?> getClassForCoder();
+    public native Class<? extends NSObject> getClassForCoder();
     /**
      * @since Available in iOS 4.0 and later.
      */
@@ -137,7 +137,7 @@ import org.robovm.apple.dispatch.*;
     @Property(selector = "setObservationInfo:")
     public native void setObservationInfo(VoidPtr v);
     @Property(selector = "classForKeyedArchiver")
-    public native Class<?> getClassForKeyedArchiver();
+    public native Class<? extends NSObject> getClassForKeyedArchiver();
     /*</properties>*/
     /*<members>*//*</members>*/
     

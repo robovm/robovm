@@ -258,7 +258,7 @@ import org.robovm.apple.corelocation.*;
     @Method(selector = "initWithFrame:")
     protected native @Pointer long init(@ByVal CGRect frame);
     @Method(selector = "layerClass")
-    public static native Class<?> getLayerClass();
+    public static native Class<? extends CALayer> getLayerClass();
     @Method(selector = "hitTest:withEvent:")
     public native UIView hitTest(@ByVal CGPoint point, UIEvent event);
     @Method(selector = "pointInside:withEvent:")

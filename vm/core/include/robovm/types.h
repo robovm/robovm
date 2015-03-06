@@ -527,6 +527,7 @@ typedef struct {
     pthread_cond_t suspendCond;
     jboolean suspended;
     jboolean stepping;
+    jboolean ignoreExceptions;
 
     // used for invoking methods/creating new
     // instances on a thread

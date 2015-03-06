@@ -256,6 +256,11 @@ public abstract class ObjCObject extends NativeObject {
         if (cls == ObjCClass.class) {
             return (T) ObjCClass.toObjCClass(handle);
         }
+        
+        if (!forceType) {
+            ObjCClass objCClass = ObjCClass.getFromObject(handle);
+            forceType = !cls.isAssignableFrom(objCClass.getType()) && !ObjCClass.isObjCProxy(cls);
+        }
 
         synchronized (objcBridgeLock) {
             T o = getPeerObject(handle);

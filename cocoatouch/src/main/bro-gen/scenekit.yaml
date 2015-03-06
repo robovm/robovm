@@ -596,9 +596,15 @@ classes:
                         type: SCNSceneSourceOptions
             '-entryWithIdentifier:withClass:':
                 name: getEntryWithIdentifier
+                parameters:
+                    entryClass:
+                        type: 'Class<? extends NSObject>'
             '-identifiersOfEntriesWithClass:':
                 name: getIdentifiersOfEntriesWithClass
                 return_type: '@org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String>'
+                parameters:
+                    entryClass:
+                        type: 'Class<? extends NSObject>'
             '-entriesPassingTest:':
                 name: getEntriesPassingTest
             '+sceneSourceWith.*':

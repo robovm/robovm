@@ -527,6 +527,9 @@ classes:
                 name: decodeBytes
             '-decodeObjectOfClass:forKey:':
                 name: decodeObject
+                parameters:
+                    aClass:
+                        type: 'Class<? extends NSObject>'
             '-decodeObjectOfClasses:forKey:':
                 name: decodeObject
                 parameters:
@@ -1669,12 +1672,24 @@ classes:
                 visibility: private
             '+classNameForClass:':
                 name: getDefaultClassNameForClass
+                parameters:
+                    cls:
+                        type: 'Class<? extends NSObject>'
             '+setClassName:forClass:':
                 name: setDefaultClassNameForClass
+                parameters:
+                    cls:
+                        type: 'Class<? extends NSObject>'
             '-classNameForClass:':
                 name: getClassNameForClass
+                parameters:
+                    cls:
+                        type: 'Class<? extends NSObject>'
             '-setClassName:forClass:':
                 name: setClassNameForClass
+                parameters:
+                    cls:
+                        type: 'Class<? extends NSObject>'
     NSKeyedUnarchiver: # DONE
         methods:
             '-init.*':
@@ -1688,12 +1703,20 @@ classes:
                 visibility: private
             '+classForClassName:':
                 name: getDefaultClassForClassName
+                return_type: 'Class<? extends NSObject>'
             '+setClass:forClassName:':
                 name: setDefaultClassForClassName
+                parameters:
+                    cls:
+                        type: 'Class<? extends NSObject>'
             '-classForClassName:':
                 name: getClassForClassName
+                return_type: 'Class<? extends NSObject>'
             '-setClass:forClassName:':
                 name: setClassForClassName
+                parameters:
+                    cls:
+                        type: 'Class<? extends NSObject>'
     NSLengthFormatter: # DONE
         methods:
             '-stringFromValue:unit:':
@@ -2391,6 +2414,11 @@ classes:
     NSObject: # DONE
         skip_def_constructor: true
         skip_skip_init_constructor: true
+        properties:
+            'classForCoder':
+                type: 'Class<? extends NSObject>'
+            'classForKeyedArchiver':
+                type: 'Class<? extends NSObject>'
         methods:
             '-init':
                 visibility: private
@@ -3380,8 +3408,14 @@ classes:
                 name: removePropertyInRequest
             '+registerClass:':
                 trim_after_first_colon: true
+                parameters:
+                    protocolClass:
+                        type: 'Class<? extends NSURLProtocol>'
             '+unregisterClass:':
                 trim_after_first_colon: true
+                parameters:
+                    protocolClass:
+                        type: 'Class<? extends NSURLProtocol>'
             '+canInitWithTask:':
                 trim_after_first_colon: true
     NSURLRequest: # DONE
@@ -3632,9 +3666,11 @@ classes:
             '+valueTransformerNames':
                 name: getValueTransformers
                 return_type: NSArray<NSValueTransformer>
-            '+allowsReverseTransformation': # We should add a setter for this property, because Java doesn't allow static method overriding.
+            '+allowsReverseTransformation':
+                property: true
             '+transformedValueClass':
-                property: true # We should add a setter for this property, because Java doesn't allow static method overriding.
+                property: true 
+                return_type: 'Class<? extends NSObject>'
     NSXMLParser: # DONE
         properties:
             'allowedExternalEntityURLs':
@@ -3763,6 +3799,7 @@ protocols:
         methods:
             '-unarchiver:cannotDecodeObjectOfClassName:originalClasses:':
                 name: cannotDecodeObjectOfClassName
+                return_type: 'Class<? extends NSObject>'
                 parameters:
                     classNames:
                         type: '@org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String>'

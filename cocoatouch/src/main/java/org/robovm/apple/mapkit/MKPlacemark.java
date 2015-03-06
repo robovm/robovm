@@ -51,7 +51,6 @@ import org.robovm.apple.dispatch.*;
         super(placemark);
     }
     /*<constructors>*/
-    public MKPlacemark() {}
     protected MKPlacemark(SkipInit skipInit) { super(skipInit); }
     public MKPlacemark(@ByVal CLLocationCoordinate2D coordinate, org.robovm.apple.addressbook.ABPersonAddress addressDictionary) { super((SkipInit) null); initObject(init(coordinate, addressDictionary)); }
     /*</constructors>*/

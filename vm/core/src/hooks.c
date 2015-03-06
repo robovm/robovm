@@ -1232,6 +1232,13 @@ static inline void suspendLoop(DebugEnv* debugEnv) {
 }
 
 static jboolean prepareCallStack(Env* env, char event, CallStack** callStack, jint* length, jint* payloadSize, CallStackFrame** firstFrame) {
+    DebugEnv* debugEnv = (DebugEnv*)env;
+    // need to ignore exceptions, as the callstack unwinding
+    // might throw one, resulting in infinite recursion in
+    // rvmHookExceptionRaised
+    jboolean oldIgnoreException = debugEnv->ignoreExceptions;
+    debugEnv->ignoreExceptions = TRUE;
+
     *callStack = rvmCaptureCallStack(env);
     if (rvmExceptionCheck(env)) {
         Object* ex = rvmExceptionClear(env);
@@ -1252,6 +1259,10 @@ static jboolean prepareCallStack(Env* env, char event, CallStack** callStack, ji
         classNamesSize += strlen(frame->method->clazz->name);
     }
     *payloadSize = sizeof(jint) + (*length) * (sizeof(jlong) * 2 + sizeof(jint) * 2) + classNamesSize;
+
+    // reset old exception handling
+    debugEnv->ignoreExceptions = oldIgnoreException;
+
     if(length == 0) {
         ERRORF("No frames on callstack of thread %p for event %d.", env->currentThread, event);
         return FALSE;
@@ -1363,7 +1374,9 @@ void _rvmHookExceptionRaised(Env* env, Object* throwable, jboolean isCaught) {
     jint callStackLength = 0;
     jint callStackPayloadSize = 0;
     CallStackFrame* frame = NULL;
-    if(!prepareCallStack(env, EVT_EXCEPTION, &callStack, &callStackLength, &callStackPayloadSize, &frame)) {
+    jboolean error = !prepareCallStack(env, EVT_EXCEPTION, &callStack, &callStackLength, &callStackPayloadSize, &frame);
+    if(error) {
+        rvmThrow(env, exception);
         return;
     }
 

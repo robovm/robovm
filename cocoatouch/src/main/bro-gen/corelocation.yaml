@@ -114,6 +114,7 @@ classes:
             '-allowDeferredLocationUpdatesUntilTraveled:timeout:':
                 name: allowDeferredLocationUpdatesUntil
     CLPlacemark: # DONE
+        skip_def_constructor: true
         properties:
             'areasOfInterest':
                 type: '@org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String>'

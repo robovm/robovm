@@ -410,7 +410,7 @@ public abstract class ObjCObject extends NativeObject {
         @Callback
         private static void release(@Pointer long self, @Pointer long sel) {
             int count = ObjCRuntime.int_objc_msgSend(self, retainCount);
-            if (count == 2) {
+            if (count <= 2) {
                 synchronized (CUSTOM_OBJECTS) {
                     CUSTOM_OBJECTS.remove(self);
                 }

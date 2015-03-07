@@ -71,7 +71,7 @@ public class BasicLineFormatter implements LineFormatter {
      * The instance here provides non-customized, default behavior.
      */
     public final static BasicLineFormatter DEFAULT = new BasicLineFormatter();
-
+    public final static BasicLineFormatter INSTANCE = new BasicLineFormatter();
 
 
     // public default constructor

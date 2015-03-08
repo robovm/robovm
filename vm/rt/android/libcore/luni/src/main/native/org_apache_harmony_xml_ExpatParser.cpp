@@ -632,7 +632,8 @@ static void startElement(void* data, const char* elementName, const char** attri
     parsingContext->stringStack.push(env, uri);
     parsingContext->stringStack.push(env, localName);
 
-    env->CallVoidMethod(javaParser, startElementMethod, uri, localName, qName, attributes, count);
+    jlong attributesAddress = reinterpret_cast<jlong>(attributes);
+    env->CallVoidMethod(javaParser, startElementMethod, uri, localName, qName, attributesAddress, count);
 
     parsingContext->attributes = NULL;
     parsingContext->attributeCount = -1;
@@ -1291,7 +1292,7 @@ extern "C" void Java_org_apache_harmony_xml_ExpatAttributes_freeAttributes(JNIEn
 extern "C" void Java_org_apache_harmony_xml_ExpatParser_staticInitialize(JNIEnv* env, jobject classObject, jstring empty) {
     jclass clazz = reinterpret_cast<jclass>(classObject);
     startElementMethod = env->GetMethodID(clazz, "startElement",
-        "(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;II)V");
+        "(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;JI)V");
     if (startElementMethod == NULL) return;
 
     endElementMethod = env->GetMethodID(clazz, "endElement",

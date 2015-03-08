@@ -48,6 +48,8 @@ import org.robovm.rt.bro.ptr.VoidPtr;
     @Marshaler(ObjCClass.Marshaler.class)
 })
 public abstract class ObjCObject extends NativeObject {
+    
+    private static final Object peerLock = new Object();
 
     public static class ObjCObjectPtr extends Ptr<ObjCObject, ObjCObjectPtr> {}
 
@@ -168,7 +170,7 @@ public abstract class ObjCObject extends NativeObject {
 
     @SuppressWarnings("unchecked")
     static <T extends ObjCObject> T getPeerObject(long handle) {
-        synchronized (objcBridgeLock) {
+        synchronized (peerLock) {
             ObjCObjectRef ref = peers.get(handle);
             T o = ref != null ? (T) ref.get() : null;
             return o;
@@ -176,7 +178,7 @@ public abstract class ObjCObject extends NativeObject {
     }
 
     private static void setPeerObject(long handle, ObjCObject o) {
-        synchronized (objcBridgeLock) {
+        synchronized (peerLock) {
             if (o == null) {
                 peers.remove(handle);
             } else {
@@ -186,7 +188,7 @@ public abstract class ObjCObject extends NativeObject {
     }
 
     private static void removePeerObject(ObjCObject o) {
-        synchronized (objcBridgeLock) {
+        synchronized (peerLock) {
             ObjCObjectRef ref = peers.remove(o.getHandle());
             ObjCObject p = ref != null ? ref.get() : null;
             if (p != null && o != p) {

@@ -71,7 +71,8 @@ public class BasicLineFormatter implements LineFormatter {
      * The instance here provides non-customized, default behavior.
      */
     public final static BasicLineFormatter DEFAULT = new BasicLineFormatter();
-
+    // RoboVM: added, see issue #834 
+    public final static BasicLineFormatter INSTANCE = new BasicLineFormatter();
 
 
     // public default constructor

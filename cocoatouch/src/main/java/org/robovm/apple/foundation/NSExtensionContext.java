@@ -19,6 +19,7 @@ package org.robovm.apple.foundation;
 import java.io.*;
 import java.nio.*;
 import java.util.*;
+
 import org.robovm.objc.*;
 import org.robovm.objc.annotation.*;
 import org.robovm.objc.block.*;
@@ -46,6 +47,53 @@ import org.robovm.apple.dispatch.*;
     extends /*<extends>*/NSObject/*</extends>*/ 
     /*<implements>*//*</implements>*/ {
 
+    public static class Notifications {
+        /**
+         * @since Available in iOS 8.2 and later.
+         */
+        public static NSObject observeHostWillEnterForeground(NSExtensionContext object, final VoidBlock1<NSExtensionContext> block) {
+            return NSNotificationCenter.getDefaultCenter().addObserver(HostWillEnterForegroundNotification(), object, NSOperationQueue.getMainQueue(), new VoidBlock1<NSNotification>() {
+                @Override
+                public void invoke(NSNotification a) {
+                    block.invoke((NSExtensionContext) a.getObject());
+                }
+            });
+        }
+        /**
+         * @since Available in iOS 8.2 and later.
+         */
+        public static NSObject observeHostDidEnterBackground(NSExtensionContext object, final VoidBlock1<NSExtensionContext> block) {
+            return NSNotificationCenter.getDefaultCenter().addObserver(HostDidEnterBackgroundNotification(), object, NSOperationQueue.getMainQueue(), new VoidBlock1<NSNotification>() {
+                @Override
+                public void invoke(NSNotification a) {
+                    block.invoke((NSExtensionContext) a.getObject());
+                }
+            });
+        }
+        /**
+         * @since Available in iOS 8.2 and later.
+         */
+        public static NSObject observeHostWillResignActive(NSExtensionContext object, final VoidBlock1<NSExtensionContext> block) {
+            return NSNotificationCenter.getDefaultCenter().addObserver(HostWillResignActiveNotification(), object, NSOperationQueue.getMainQueue(), new VoidBlock1<NSNotification>() {
+                @Override
+                public void invoke(NSNotification a) {
+                    block.invoke((NSExtensionContext) a.getObject());
+                }
+            });
+        }
+        /**
+         * @since Available in iOS 8.2 and later.
+         */
+        public static NSObject observeHostDidBecomeActive(NSExtensionContext object, final VoidBlock1<NSExtensionContext> block) {
+            return NSNotificationCenter.getDefaultCenter().addObserver(HostDidBecomeActiveNotification(), object, NSOperationQueue.getMainQueue(), new VoidBlock1<NSNotification>() {
+                @Override
+                public void invoke(NSNotification a) {
+                    block.invoke((NSExtensionContext) a.getObject());
+                }
+            });
+        }
+    }
+    
     /*<ptr>*/public static class NSExtensionContextPtr extends Ptr<NSExtensionContext, NSExtensionContextPtr> {}/*</ptr>*/
     /*<bind>*/static { ObjCRuntime.bind(NSExtensionContext.class); }/*</bind>*/
     /*<constants>*//*</constants>*/
@@ -59,6 +107,27 @@ import org.robovm.apple.dispatch.*;
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
+    /**
+     * @since Available in iOS 8.2 and later.
+     */
+    @GlobalValue(symbol="NSExtensionHostWillEnterForegroundNotification", optional=true)
+    public static native NSString HostWillEnterForegroundNotification();
+    /**
+     * @since Available in iOS 8.2 and later.
+     */
+    @GlobalValue(symbol="NSExtensionHostDidEnterBackgroundNotification", optional=true)
+    public static native NSString HostDidEnterBackgroundNotification();
+    /**
+     * @since Available in iOS 8.2 and later.
+     */
+    @GlobalValue(symbol="NSExtensionHostWillResignActiveNotification", optional=true)
+    public static native NSString HostWillResignActiveNotification();
+    /**
+     * @since Available in iOS 8.2 and later.
+     */
+    @GlobalValue(symbol="NSExtensionHostDidBecomeActiveNotification", optional=true)
+    public static native NSString HostDidBecomeActiveNotification();
+    
     @Method(selector = "completeRequestReturningItems:completionHandler:")
     public native void completeRequest(NSArray<NSExtensionItem> items, @Block VoidBooleanBlock completionHandler);
     @Method(selector = "cancelRequestWithError:")

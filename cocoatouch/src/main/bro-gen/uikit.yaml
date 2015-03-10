@@ -1399,6 +1399,8 @@ classes:
                 name: getSmallSystemFontSize
             '+systemFontOfSize:':
                 name: getSystemFont
+            '+systemFontOfSize:weight:':
+                name: getSystemFont
             '+systemFontSize':
                 name: getSystemFontSize
             '+fontWithName:size:':
@@ -3220,6 +3222,11 @@ protocols:
                 name: didFailToContinueUserActivity
             '-application:didUpdateUserActivity:':
                 name: didUpdateUserActivity
+            '-application:handleWatchKitExtensionRequest:reply:':
+                name: handleWatchKitExtensionRequest
+                parameters:
+                    reply:
+                        type: '@Block VoidBlock1<NSDictionary<?, ?>>'
     UIBarPositioning: {} # DONE
     UIBarPositioningDelegate: # DONE
         methods:
@@ -4419,6 +4426,9 @@ values:
         name: '#{g[0]}'
         type: NSString
         visibility: protected
+    UIFontWeight(.*):
+        enum: UIFontWeight
+        name: '#{g[0]}'
 
     # UIImagePickerController
     UIImagePickerController(.*):

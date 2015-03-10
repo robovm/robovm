@@ -19,6 +19,7 @@ package org.robovm.apple.healthkit;
 import java.io.*;
 import java.nio.*;
 import java.util.*;
+
 import org.robovm.objc.*;
 import org.robovm.objc.annotation.*;
 import org.robovm.objc.block.*;
@@ -39,6 +40,20 @@ import org.robovm.apple.foundation.*;
     extends /*<extends>*/NSObject/*</extends>*/ 
     /*<implements>*//*</implements>*/ {
 
+    public static class Notifications {
+        /**
+         * @since Available in iOS 8.2 and later.
+         */
+        public static NSObject observeUserPreferencesDidChange(HKHealthStore object, final VoidBlock1<HKHealthStore> block) {
+            return NSNotificationCenter.getDefaultCenter().addObserver(UserPreferencesDidChangeNotification(), object, NSOperationQueue.getMainQueue(), new VoidBlock1<NSNotification>() {
+                @Override
+                public void invoke(NSNotification a) {
+                    block.invoke((HKHealthStore) a.getObject());
+                }
+            });
+        }
+    }
+    
     /*<ptr>*/public static class HKHealthStorePtr extends Ptr<HKHealthStore, HKHealthStorePtr> {}/*</ptr>*/
     /*<bind>*/static { ObjCRuntime.bind(HKHealthStore.class); }/*</bind>*/
     /*<constants>*//*</constants>*/
@@ -90,6 +105,12 @@ import org.robovm.apple.foundation.*;
         return result;
     }
     /*<methods>*/
+    /**
+     * @since Available in iOS 8.2 and later.
+     */
+    @GlobalValue(symbol="HKUserPreferencesDidChangeNotification", optional=true)
+    public static native NSString UserPreferencesDidChangeNotification();
+    
     @Method(selector = "authorizationStatusForType:")
     public native HKAuthorizationStatus getAuthorizationStatusForType(HKObjectType type);
     @Method(selector = "requestAuthorizationToShareTypes:readTypes:completion:")
@@ -120,5 +141,10 @@ import org.robovm.apple.foundation.*;
     public native void disableBackgroundDeliveryForType(HKObjectType type, @Block VoidBlock2<Boolean, NSError> completion);
     @Method(selector = "disableAllBackgroundDeliveryWithCompletion:")
     public native void disableAllBackgroundDelivery(@Block VoidBlock2<Boolean, NSError> completion);
+    /**
+     * @since Available in iOS 8.2 and later.
+     */
+    @Method(selector = "preferredUnitsForQuantityTypes:completion:")
+    public native void getPreferredUnitsForQuantityTypes(NSSet<HKQuantityType> quantityTypes, @Block VoidBlock2<NSDictionary<HKQuantityType, HKUnit>, NSError> completion);
     /*</methods>*/
 }

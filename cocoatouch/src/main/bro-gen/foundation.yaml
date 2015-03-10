@@ -2668,6 +2668,8 @@ classes:
                 name: performActivity
             '-isOperatingSystemAtLeastVersion:':
                 trim_after_first_colon: true
+            '-performExpiringActivityWithReason:usingBlock:':
+                name: performExpiringActivity
     NSProgress: # DONE
         properties:
             'kind':
@@ -4252,6 +4254,10 @@ values:
         name: '#{g[0]}'
         type: NSString
         visibility: protected
+    NSExtension(.*Notification):
+        class: NSExtensionContext
+        name: '#{g[0]}'
+        type: NSString
 
     # NSExtensionItem
     NSExtensionItem(.*Key):

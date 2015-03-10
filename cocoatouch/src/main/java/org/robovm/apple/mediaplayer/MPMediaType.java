@@ -76,7 +76,7 @@ public final class /*<name>*/MPMediaType/*</name>*/ extends Bits</*<name>*/MPMed
      * @since Available in iOS 5.0 and later.
      */
     public static final MPMediaType AnyVideo = new MPMediaType(65280L);
-    public static final MPMediaType Any = new MPMediaType(-1L);
+    public static final MPMediaType Any = new MPMediaType(Bro.IS_32BIT ? 0xffffffffL : 0xffffffffffffffffL);
     /*</values>*/
 
     private static final /*<name>*/MPMediaType/*</name>*/[] values = _values(/*<name>*/MPMediaType/*</name>*/.class);

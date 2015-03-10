@@ -105,6 +105,16 @@ import org.robovm.apple.corelocation.*;
     public native String getAlertLaunchImage();
     @Property(selector = "setAlertLaunchImage:")
     public native void setAlertLaunchImage(String v);
+    /**
+     * @since Available in iOS 8.2 and later.
+     */
+    @Property(selector = "alertTitle")
+    public native String getAlertTitle();
+    /**
+     * @since Available in iOS 8.2 and later.
+     */
+    @Property(selector = "setAlertTitle:")
+    public native void setAlertTitle(String v);
     @Property(selector = "soundName")
     public native String getSoundName();
     @Property(selector = "setSoundName:")

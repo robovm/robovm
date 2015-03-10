@@ -19,6 +19,7 @@ package org.robovm.apple.uikit;
 import java.io.*;
 import java.nio.*;
 import java.util.*;
+
 import org.robovm.objc.*;
 import org.robovm.objc.annotation.*;
 import org.robovm.objc.block.*;
@@ -41,10 +42,29 @@ import org.robovm.apple.corelocation.*;
 /**
  * @since Available in iOS 7.0 and later.
  */
+@Marshaler(UIContentSizeCategory.Marshaler.class)
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/UIContentSizeCategory/*</name>*/ 
     extends /*<extends>*/CocoaUtility/*</extends>*/ 
     /*<implements>*//*</implements>*/ {
 
+    public static class Marshaler {
+        @MarshalsPointer
+        public static UIContentSizeCategory toObject(Class<UIContentSizeCategory> cls, long handle, long flags) {
+            NSString o = (NSString) NSObject.Marshaler.toObject(NSString.class, handle, flags);
+            if (o == null) {
+                return null;
+            }
+            return UIContentSizeCategory.valueOf(o);
+        }
+        @MarshalsPointer
+        public static long toNative(UIContentSizeCategory o, long flags) {
+            if (o == null) {
+                return 0L;
+            }
+            return NSObject.Marshaler.toNative(o.value(), flags);
+        }
+    }
+    
     /*<ptr>*/
     /*</ptr>*/
     /*<bind>*/static { Bro.bind(UIContentSizeCategory.class); }/*</bind>*/

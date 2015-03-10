@@ -82,6 +82,12 @@ import org.robovm.apple.corelocation.*;
     public static UIFont getPreferredFont(UIFontTextStyle style) {
         return getPreferredFont(style.value());
     }
+    /**
+     * @since Available in iOS 8.2 and later.
+     */
+    public static UIFont getSystemFont(double fontSize, UIFontWeight weight) {
+        return getSystemFont(fontSize, weight.value());
+    }
     /*<methods>*/
     @Method(selector = "fontWithSize:")
     public native UIFont getFontWithSize(@MachineSizedFloat double fontSize);
@@ -107,6 +113,11 @@ import org.robovm.apple.corelocation.*;
     public static native UIFont getBoldSystemFont(@MachineSizedFloat double fontSize);
     @Method(selector = "italicSystemFontOfSize:")
     public static native UIFont getItalicSystemFont(@MachineSizedFloat double fontSize);
+    /**
+     * @since Available in iOS 8.2 and later.
+     */
+    @Method(selector = "systemFontOfSize:weight:")
+    public static native UIFont getSystemFont(@MachineSizedFloat double fontSize, @MachineSizedFloat double weight);
     /**
      * @since Available in iOS 7.0 and later.
      */

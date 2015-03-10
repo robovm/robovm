@@ -150,6 +150,11 @@ import org.robovm.apple.corelocation.*;
     @NotImplemented("application:handleEventsForBackgroundURLSession:completionHandler:")
     public void handleEventsForBackgroundURLSession(UIApplication application, String identifier, @Block Runnable completionHandler) { throw new UnsupportedOperationException(); }
     /**
+     * @since Available in iOS 8.2 and later.
+     */
+    @NotImplemented("application:handleWatchKitExtensionRequest:reply:")
+    public void handleWatchKitExtensionRequest(UIApplication application, NSDictionary<?, ?> userInfo, @Block VoidBlock1<NSDictionary<?, ?>> reply) { throw new UnsupportedOperationException(); }
+    /**
      * @since Available in iOS 4.0 and later.
      */
     @NotImplemented("applicationDidEnterBackground:")

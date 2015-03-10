@@ -30,16 +30,24 @@ import org.robovm.apple.foundation.*;
 /*</imports>*/
 
 /*<javadoc>*/
-/**
- * @since Available in iOS 8.0 and later.
- */
+
 /*</javadoc>*/
 /*<annotations>*/@Marshaler(ValuedEnum.AsMachineSizedSIntMarshaler.class)/*</annotations>*/
 public enum /*<name>*/HKBiologicalSex/*</name>*/ implements ValuedEnum {
     /*<values>*/
     NotSet(0L),
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
     Female(1L),
-    Male(2L);
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    Male(2L),
+    /**
+     * @since Available in iOS 8.2 and later.
+     */
+    Other(3L);
     /*</values>*/
 
     /*<bind>*/

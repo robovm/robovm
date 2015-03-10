@@ -131,5 +131,10 @@ import org.robovm.apple.dispatch.*;
      */
     @Method(selector = "performActivityWithOptions:reason:usingBlock:")
     public native void performActivity(NSActivityOptions options, String reason, @Block Runnable block);
+    /**
+     * @since Available in iOS 8.2 and later.
+     */
+    @Method(selector = "performExpiringActivityWithReason:usingBlock:")
+    public native void performExpiringActivity(String reason, @Block VoidBooleanBlock block);
     /*</methods>*/
 }

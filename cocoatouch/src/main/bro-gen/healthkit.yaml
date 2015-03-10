@@ -109,6 +109,13 @@ classes:
                 trim_after_first_colon: true
             '-disableAllBackgroundDeliveryWithCompletion:':
                 name: disableAllBackgroundDelivery
+            '-preferredUnitsForQuantityTypes:completion:':
+                name: getPreferredUnitsForQuantityTypes
+                parameters:
+                    quantityTypes:
+                        type: NSSet<HKQuantityType>
+                    completion:
+                        type: '@Block VoidBlock2<NSDictionary<HKQuantityType, HKUnit>, NSError>'
     HKObject: # DONE
         properties:
             'metadata':
@@ -397,12 +404,17 @@ functions:
     # Make sure we don't miss any functions if new ones are introduced in a later version
     (HK.*):
         class: HealthKit
-        name: "Function__#{g[0]}"
+        name: 'Function__#{g[0]}'
 
 values:
     HKErrorDomain:
         class: HKError
         name: getClassDomain
+
+    HK(UserPreferencesDidChangeNotification):
+        class: HKHealthStore
+        name: '#{g[0]}'
+        type: NSString
 
     HKQuantityTypeIdentifier(BodyMassIndex|BodyFatPercentage|Height|BodyMass|LeanBodyMass):
         class: HKBodyQuantityTypeIdentifier
@@ -481,20 +493,20 @@ values:
     # Make sure we don't miss any values if new ones are introduced in a later version
     (HK.*):
         class: HealthKit
-        name: "Value__#{g[0]}"
+        name: 'Value__#{g[0]}'
 
 constants:
     HKAnchoredObjectQuery(NoAnchor):
         class: HKAnchoredObjectQuery
-        name: "#{g[0]}"
+        name: '#{g[0]}'
     HKObjectQuery(NoLimit):
         class: HKSampleQuery
-        name: "#{g[0]}"
+        name: '#{g[0]}'
     HKUnit(MolarMassBloodGlucose):
         class: HKUnit
-        name: "#{g[0]}"
+        name: '#{g[0]}'
 
     # Make sure we don't miss any constants if new ones are introduced in a later version
     (HK.*):
         class: HealthKit
-        name: "Constant__#{g[0]}"
+        name: 'Constant__#{g[0]}'

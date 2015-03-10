@@ -93,7 +93,8 @@ public enum /*<name>*/HKWorkoutActivityType/*</name>*/ implements ValuedEnum {
     WaterPolo(54L),
     WaterSports(55L),
     Wrestling(56L),
-    Yoga(57L);
+    Yoga(57L),
+    Other(3000L);
     /*</values>*/
 
     /*<bind>*/

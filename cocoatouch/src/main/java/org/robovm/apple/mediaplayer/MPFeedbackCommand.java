@@ -57,6 +57,16 @@ import org.robovm.apple.coregraphics.*;
     public native String getLocalizedTitle();
     @Property(selector = "setLocalizedTitle:")
     public native void setLocalizedTitle(String v);
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @Property(selector = "localizedShortTitle")
+    public native String getLocalizedShortTitle();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @Property(selector = "setLocalizedShortTitle:")
+    public native void setLocalizedShortTitle(String v);
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/

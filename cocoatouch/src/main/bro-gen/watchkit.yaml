@@ -1,0 +1,179 @@
+package: org.robovm.apple.watchkit
+include: [foundation.yaml, uikit.yaml, coregraphics.yaml, mapkit.yaml, corelocation.yaml]
+library: WatchKit
+framework: WatchKit
+clang_args: ['-x', 'objective-c']
+headers:
+    - /System/Library/Frameworks/WatchKit.framework/Headers/WatchKit.h
+typedefs:
+    'void (^)(WKUserNotificationInterfaceType)': '@Block VoidBlock1<WKUserNotificationInterfaceType>'
+    
+enums:
+    WKUserNotificationInterfaceType: {}
+    WKMenuItemIcon: {}
+    WKTextInputMode: {}
+    WKInterfaceMapPinColor: {}
+    WatchKitErrorCode: {}
+        
+classes:
+    WatchKitError:
+        extends: NSError
+    
+    WKAccessibilityImageRegion: {} # DONE
+    WKInterfaceController: # DONE
+        methods:
+            '-awakeWithContext:':
+                name: awake
+            '-table:didSelectRowAtIndex:':
+                name: didSelectRow
+            '-handleActionWithIdentifier:forRemoteNotification:':
+                name: handleAction
+                parameters:
+                    remoteNotification:
+                        type: UIRemoteNotification
+            '-handleActionWithIdentifier:forLocalNotification:':
+                name: handleAction
+            '-handleUserActivity:':
+                trim_after_first_colon: true
+            '-pushControllerWithName:context:':
+                name: pushController
+            '-presentControllerWithName:context:':
+                name: presentController
+            '-presentControllerWithNames:contexts:':
+                name: presentController
+                parameters:
+                    names:
+                        type: List<String>
+                        marshaler: NSArray.AsStringListMarshaler
+                    contexts:
+                        type: NSArray<NSObject>
+            '-presentTextInputControllerWithSuggestions:allowedInputMode:completion:':
+                name: presentTextInputController
+                parameters:
+                    suggestions:
+                        type: List<String>
+                        marshaler: NSArray.AsStringListMarshaler
+                    completion:
+                        type: '@Block VoidBlock1<NSArray<?>>' # either NSString or NSData
+            '-contextForSegueWithIdentifier:':
+                name: getContextForSegue
+            '-contextsForSegueWithIdentifier:':
+                name: getContextsForSegue
+                return_type: NSArray<NSObject>
+            '-contextForSegueWithIdentifier:inTable:rowIndex:':
+                name: getContextForSegue
+            '-contextsForSegueWithIdentifier:inTable:rowIndex:':
+                name: getContextsForSegue
+                return_type: NSArray<NSObject>
+            '-addMenuItemWithImage:title:action:':
+                name: addMenuItem
+            '-addMenuItemWithImageNamed:title:action:':
+                name: addMenuItem
+            '-addMenuItemWithItemIcon:title:action:':
+                name: addMenuItem
+            '-updateUserActivity:userInfo:webpageURL:':
+                trim_after_first_colon: true
+            '+reloadRootControllersWithNames:contexts:':
+                name: reloadRootControllers
+                parameters:
+                    names:
+                        type: List<String>
+                        marshaler: NSArray.AsStringListMarshaler
+                    contexts:
+                        type: NSArray<NSObject>
+            '+openParentApplication:reply:':
+                trim_after_first_colon: true
+                parameters:
+                    reply:
+                        type: '@Block VoidBlock2<NSDictionary<?, ?>, NSError>'
+    WKUserNotificationInterfaceController: # DONE
+        methods:
+            '-didReceiveRemoteNotification:withCompletion:':
+                name: didReceiveRemoteNotification
+                parameters:
+                    remoteNotification:
+                        type: UIRemoteNotification
+            '-didReceiveLocalNotification:withCompletion:':
+                name: didReceiveLocalNotification
+    WKInterfaceDevice: # DONE
+        properties:
+            'preferredContentSizeCategory':
+                type: UIContentSizeCategory
+            'cachedImages':
+                type: Map<String, NSNumber>
+                marshaler: NSDictionary.AsStringMapMarshaler
+        methods:
+            '-addCachedImage:name:':
+                trim_after_first_colon: true
+            '-addCachedImageWithData:name:':
+                name: addCachedImage
+            '-removeCachedImageWithName:':
+                name: removeCachedImage
+            '+currentDevice':
+                property: true
+    WKInterfaceObject: # DONE
+        methods:
+            '-setAccessibilityImageRegions:':
+                parameters:
+                    accessibilityImageRegions:
+                        type: NSArray<WKAccessibilityImageRegion>
+    WKInterfaceButton: {} # DONE
+    WKInterfaceDate: {} # DONE
+    WKInterfaceGroup: # DONE
+        methods:
+            '-startAnimatingWithImagesInRange:duration:repeatCount:':
+                name: startAnimatingWithImages
+    WKInterfaceImage: # DONE
+        methods:
+            '-startAnimatingWithImagesInRange:duration:repeatCount:':
+                name: startAnimatingWithImages
+    WKInterfaceLabel: {} # DONE
+    WKInterfaceMap: # DONE
+        methods:
+            '-addAnnotation:.*':
+                trim_after_first_colon: true
+    WKInterfaceSeparator: {} # DONE
+    WKInterfaceSlider: {} # DONE
+    WKInterfaceSwitch: {} # DONE
+    WKInterfaceTable: # DONE
+        methods:
+            '-setRowTypes:':
+                parameters:
+                    rowTypes:
+                        type: List<String>
+                        marshaler: NSArray.AsStringListMarshaler
+            '-setNumberOfRows:withRowType:':
+                trim_after_first_colon: true
+            '-rowControllerAtIndex:':
+                name: getRowController
+            '-insertRowsAtIndexes:withRowType:':
+                name: insertRows
+            '-removeRowsAtIndexes:':
+                name: removeRows
+            '-scrollToRowAtIndex:':
+                name: scrollToRow
+    WKInterfaceTimer: {} # DONE
+
+protocols: {}
+
+functions:
+    # Make sure we don't miss any functions if new ones are introduced in a later version
+    (k?WK.*):
+        class: WatchKit
+        name: 'Function__#{g[0]}'
+
+values:
+    WatchKitErrorDomain:
+        class: WatchKitError
+        name: getClassDomain
+   
+    # Make sure we don't miss any values if new ones are introduced in a later version
+    (k?WK.*):
+        class: WatchKit
+        name: 'Value__#{g[0]}'
+
+constants:
+    # Make sure we don't miss any constants if new ones are introduced in a later version
+    (k?WK.*):
+        class: WatchKit
+        name: 'Constant__#{g[0]}'

@@ -49,7 +49,13 @@ import org.robovm.apple.foundation.*;
     /*<members>*//*</members>*/
     @Override
     public SSReadingListErrorCode getErrorCode() {
-        return SSReadingListErrorCode.valueOf(getCode());
+        SSReadingListErrorCode code = null;
+        try {
+            code = SSReadingListErrorCode.valueOf(getCode());
+        } catch (IllegalArgumentException e) {
+            // ignore
+        }
+        return code;
     }
     /*<methods>*/
     /**

@@ -56,8 +56,16 @@ import org.robovm.apple.opengles.*;
     /*<members>*//*</members>*/
     @Override
     public NSErrorCode getErrorCode() {
-        NSErrorCode code = SCNConsistencyErrorCode.valueOf(getCode());
-        if (code == null) code = SCNErrorCode.valueOf(getCode());
+        NSErrorCode code = null;
+        try {
+            code = SCNConsistencyErrorCode.valueOf(getCode());
+        } catch (IllegalArgumentException e) {
+            try {
+                code = SCNErrorCode.valueOf(getCode());
+            } catch (IllegalArgumentException e2) {
+                // ignored
+            }
+        }
         return code;
     }
     

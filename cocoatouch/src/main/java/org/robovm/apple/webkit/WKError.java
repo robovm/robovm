@@ -51,7 +51,13 @@ import org.robovm.apple.coregraphics.*;
     /*<members>*//*</members>*/
     @Override
     public WKErrorCode getErrorCode() {
-        return WKErrorCode.valueOf(getCode());
+        WKErrorCode code = null;
+        try {
+            code = WKErrorCode.valueOf(getCode());
+        } catch (IllegalArgumentException e) {
+            // ignore
+        }
+        return code;
     }
     /*<methods>*/
     /**

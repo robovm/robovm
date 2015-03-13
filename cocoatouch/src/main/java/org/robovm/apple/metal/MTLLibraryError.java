@@ -48,7 +48,13 @@ import org.robovm.apple.dispatch.*;
     /*<members>*//*</members>*/
     @Override
     public MTLLibraryErrorCode getErrorCode() {
-        return MTLLibraryErrorCode.valueOf(getCode());
+        MTLLibraryErrorCode code = null;
+        try {
+            code = MTLLibraryErrorCode.valueOf(getCode());
+        } catch (IllegalArgumentException e) {
+            // ignore
+        }
+        return code;
     }
     /*<methods>*/
     /**

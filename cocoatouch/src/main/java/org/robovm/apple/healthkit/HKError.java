@@ -48,7 +48,13 @@ import org.robovm.apple.foundation.*;
     /*<members>*//*</members>*/
     @Override
     public HKErrorCode getErrorCode() {
-        return HKErrorCode.valueOf(getCode());
+        HKErrorCode code = null;
+        try {
+            code = HKErrorCode.valueOf(getCode());
+        } catch (IllegalArgumentException e) {
+            // ignore
+        }
+        return code;
     }
     /*<methods>*/
     /**

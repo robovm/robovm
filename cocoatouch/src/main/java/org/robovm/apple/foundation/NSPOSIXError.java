@@ -56,7 +56,13 @@ import org.robovm.apple.dispatch.*;
     /*<members>*//*</members>*/
     @Override
     public NSPOSIXErrorCode getErrorCode() {
-        return NSPOSIXErrorCode.valueOf(getCode());
+        NSPOSIXErrorCode code = null;
+        try {
+            code = NSPOSIXErrorCode.valueOf(getCode());
+        } catch (IllegalArgumentException e) {
+            // ignore
+        }
+        return code;
     }
     /*<methods>*/
     @GlobalValue(symbol="NSPOSIXErrorDomain", optional=true)

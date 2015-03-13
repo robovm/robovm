@@ -24,6 +24,12 @@ public class CFMessagePortError extends NSError {
     }
 
     public CFMessagePortErrorCode getErrorCode() {
-        return CFMessagePortErrorCode.valueOf(getCode());
+        CFMessagePortErrorCode code = null;
+        try {
+            code = CFMessagePortErrorCode.valueOf(getCode());
+        } catch (IllegalArgumentException e) {
+            // ignore
+        }
+        return code;
     }
 }

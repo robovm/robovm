@@ -49,7 +49,13 @@ import org.robovm.apple.uikit.*;
     /*<members>*//*</members>*/
     @Override
     public MFMailComposeErrorCode getErrorCode() {
-        return MFMailComposeErrorCode.valueOf(getCode());
+        MFMailComposeErrorCode code = null;
+        try {
+            code = MFMailComposeErrorCode.valueOf(getCode());
+        } catch (IllegalArgumentException e) {
+            // ignore
+        }
+        return code;
     }
     /*<methods>*/
     /**

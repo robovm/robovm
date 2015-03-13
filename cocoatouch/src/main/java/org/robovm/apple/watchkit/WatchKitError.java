@@ -53,7 +53,13 @@ import org.robovm.apple.corelocation.*;
     /*<members>*//*</members>*/
     @Override
     public WatchKitErrorCode getErrorCode() {
-        return WatchKitErrorCode.valueOf(getCode());
+        WatchKitErrorCode code = null;
+        try {
+            code = WatchKitErrorCode.valueOf(getCode());
+        } catch (IllegalArgumentException e) {
+            // ignore
+        }
+        return code;
     }
     /*<methods>*/
     @GlobalValue(symbol="WatchKitErrorDomain", optional=true)

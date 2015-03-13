@@ -47,7 +47,13 @@ import org.robovm.apple.foundation.*;
     /*<members>*//*</members>*/
     @Override
     public CMErrorCode getErrorCode() {
-        return CMErrorCode.valueOf(getCode());
+        CMErrorCode code = null;
+        try {
+            code = CMErrorCode.valueOf(getCode());
+        } catch (IllegalArgumentException e) {
+            // ignore
+        }
+        return code;
     }
     /*<methods>*/
     /**

@@ -49,7 +49,13 @@ import org.robovm.apple.foundation.*;
     /*<members>*//*</members>*/
     @Override
     public HMErrorCode getErrorCode() {
-        return HMErrorCode.valueOf(getCode());
+        HMErrorCode code = null;
+        try {
+            code = HMErrorCode.valueOf(getCode());
+        } catch (IllegalArgumentException e) {
+            // ignore
+        }
+        return code;
     }
     
     @SuppressWarnings("unchecked")

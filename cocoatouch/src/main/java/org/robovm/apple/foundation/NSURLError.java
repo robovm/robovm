@@ -56,7 +56,13 @@ import org.robovm.apple.dispatch.*;
     /*<members>*//*</members>*/
     @Override
     public NSURLErrorCode getErrorCode() {
-        return NSURLErrorCode.valueOf(getCode());
+        NSURLErrorCode code = null;
+        try {
+            code = NSURLErrorCode.valueOf(getCode());
+        } catch (IllegalArgumentException e) {
+            // ignore
+        }
+        return code;
     }
     
     /**

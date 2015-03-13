@@ -49,7 +49,13 @@ import org.robovm.apple.foundation.*;
     /*<members>*//*</members>*/
     @Override
     public ACErrorCode getErrorCode() {
-        return ACErrorCode.valueOf(getCode());
+        ACErrorCode code = null;
+        try {
+            code = ACErrorCode.valueOf(getCode());
+        } catch (IllegalArgumentException e) {
+            // ignore
+        }
+        return code;
     }
     /*<methods>*/
     /**

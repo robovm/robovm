@@ -56,7 +56,13 @@ import org.robovm.apple.dispatch.*;
     /*<members>*//*</members>*/
     @Override
     public NSItemProviderErrorCode getErrorCode() {
-        return NSItemProviderErrorCode.valueOf(getCode());
+        NSItemProviderErrorCode code = null;
+        try {
+            code = NSItemProviderErrorCode.valueOf(getCode());
+        } catch (IllegalArgumentException e) {
+            // ignore
+        }
+        return code;
     }
     /*<methods>*/
     /**

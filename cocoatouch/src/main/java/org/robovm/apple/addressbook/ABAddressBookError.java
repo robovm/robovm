@@ -50,7 +50,13 @@ import org.robovm.apple.corefoundation.*;
     /*<members>*//*</members>*/
     @Override
     public ABAddressBookErrorCode getErrorCode() {
-        return ABAddressBookErrorCode.valueOf(getCode());
+        ABAddressBookErrorCode code = null;
+        try {
+            code = ABAddressBookErrorCode.valueOf(getCode());
+        } catch (IllegalArgumentException e) {
+            // ignore
+        }
+        return code;
     }
     /*<methods>*/
     @GlobalValue(symbol="ABAddressBookErrorDomain", optional=true)

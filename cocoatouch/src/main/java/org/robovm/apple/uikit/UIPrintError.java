@@ -55,7 +55,13 @@ import org.robovm.apple.corelocation.*;
     /*<members>*//*</members>*/
     @Override
     public UIPrintErrorCode getErrorCode() {
-        return UIPrintErrorCode.valueOf(getCode());
+        UIPrintErrorCode code = null;
+        try {
+            code = UIPrintErrorCode.valueOf(getCode());
+        } catch (IllegalArgumentException e) {
+            // ignore
+        }
+        return code;
     }
     /*<methods>*/
     @GlobalValue(symbol="UIPrintErrorDomain", optional=true)

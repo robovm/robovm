@@ -52,7 +52,13 @@ import org.robovm.apple.avkit.*;
     /*<members>*//*</members>*/
     @Override
     public ADErrorCode getErrorCode() {
-        return ADErrorCode.valueOf(getCode());
+        ADErrorCode code = null;
+        try {
+            code = ADErrorCode.valueOf(getCode());
+        } catch (IllegalArgumentException e) {
+            // ignore
+        }
+        return code;
     }
     /*<methods>*/
     @GlobalValue(symbol="ADErrorDomain", optional=true)

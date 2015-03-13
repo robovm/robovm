@@ -49,7 +49,13 @@ import org.robovm.apple.dispatch.*;
     /*<members>*//*</members>*/
     @Override
     public CBATTErrorCode getErrorCode() {
-        return CBATTErrorCode.valueOf(getCode());
+        CBATTErrorCode code = null;
+        try {
+            code = CBATTErrorCode.valueOf(getCode());
+        } catch (IllegalArgumentException e) {
+            // ignore
+        }
+        return code;
     }
     /*<methods>*/
     @GlobalValue(symbol="CBATTErrorDomain", optional=true)

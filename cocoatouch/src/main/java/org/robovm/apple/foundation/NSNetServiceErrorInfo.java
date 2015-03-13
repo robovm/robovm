@@ -83,7 +83,13 @@ import org.robovm.apple.dispatch.*;
     public NSNetServiceErrorCode getErrorCode() {
         if (data.containsKey(ErrorCodeKey())) {
             NSNumber val = (NSNumber)data.get(ErrorCodeKey());
-            return NSNetServiceErrorCode.valueOf(val.intValue());
+            NSNetServiceErrorCode code = null;
+            try {
+                code = NSNetServiceErrorCode.valueOf(val.intValue());
+            } catch (IllegalArgumentException e) {
+                // ignore
+            }
+            return code;
         }
         return null;
     }

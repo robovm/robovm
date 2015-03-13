@@ -50,7 +50,13 @@ import org.robovm.apple.corelocation.*;
     /*<members>*//*</members>*/
     @Override
     public CKErrorCode getErrorCode() {
-        return CKErrorCode.valueOf(getCode());
+        CKErrorCode code = null;
+        try {
+            code = CKErrorCode.valueOf(getCode());
+        } catch (IllegalArgumentException e) {
+            // ignore
+        }
+        return code;
     }
     
     /* Convenience methods */

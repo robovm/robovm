@@ -52,7 +52,13 @@ import org.robovm.apple.dispatch.*;
     /*<members>*//*</members>*/
     @Override
     public GLKTextureLoaderErrorCode getErrorCode () {
-        return GLKTextureLoaderErrorCode.valueOf(getCode());
+        GLKTextureLoaderErrorCode code = null;
+        try {
+            code = GLKTextureLoaderErrorCode.valueOf(getCode());
+        } catch (IllegalArgumentException e) {
+            // ignore
+        }
+        return code;
     }
     
     /* Convenience methods */

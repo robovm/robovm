@@ -75,8 +75,7 @@ public enum /*<name>*/AVAudioSessionErrorCode/*</name>*/ implements NSErrorCode 
                 return v;
             }
         }
-        return null;
-//        throw new IllegalArgumentException("No constant with value " + n + " found in " 
-//            + /*<name>*/AVAudioSessionErrorCode/*</name>*/.class.getName());
+        throw new IllegalArgumentException("No constant with value " + n + " found in " 
+            + /*<name>*/AVAudioSessionErrorCode/*</name>*/.class.getName());
     }
 }

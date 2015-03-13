@@ -47,7 +47,13 @@ import org.robovm.apple.foundation.*;
     /*<members>*//*</members>*/
     @Override
     public NEVPNErrorCode getErrorCode() {
-        return NEVPNErrorCode.valueOf(getCode());
+        NEVPNErrorCode code = null;
+        try {
+            code = NEVPNErrorCode.valueOf(getCode());
+        } catch (IllegalArgumentException e) {
+            // ignore
+        }
+        return code;
     }
     /*<methods>*/
     /**

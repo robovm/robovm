@@ -51,7 +51,13 @@ import org.robovm.apple.security.*;
     /*<members>*//*</members>*/
     @Override
     public MCErrorCode getErrorCode() {
-        return MCErrorCode.valueOf(getCode());
+        MCErrorCode code = null;
+        try {
+            code = MCErrorCode.valueOf(getCode());
+        } catch (IllegalArgumentException e) {
+            // ignore
+        }
+        return code;
     }
     /*<methods>*/
     @GlobalValue(symbol="MCErrorDomain", optional=true)

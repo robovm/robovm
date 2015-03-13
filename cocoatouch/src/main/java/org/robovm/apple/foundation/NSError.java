@@ -137,7 +137,13 @@ import org.robovm.apple.dispatch.*;
     }
     
     public NSErrorCode getErrorCode() {
-        return NSCocoaErrorCode.valueOf(getCode());
+        NSErrorCode code = null;
+        try {
+            code = NSCocoaErrorCode.valueOf(getCode());
+        } catch (IllegalArgumentException e) {
+            // ignore
+        }
+        return code;
     }
     /*<methods>*/
     @Method(selector = "initWithDomain:code:userInfo:")

@@ -47,7 +47,13 @@ import org.robovm.apple.foundation.*;
     /*<members>*//*</members>*/
     @Override
     public LAErrorCode getErrorCode() {
-        return LAErrorCode.valueOf(getCode());
+        LAErrorCode code = null;
+        try {
+            code = LAErrorCode.valueOf(getCode());
+        } catch (IllegalArgumentException e) {
+            // ignore
+        }
+        return code;
     }
     /*<methods>*/
     /**

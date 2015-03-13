@@ -50,7 +50,13 @@ import org.robovm.apple.uikit.*;
     /*<members>*//*</members>*/
     @Override
     public GKErrorCode getErrorCode() {
-        return GKErrorCode.valueOf(getCode());
+        GKErrorCode code = null;
+        try {
+            code = GKErrorCode.valueOf(getCode());
+        } catch (IllegalArgumentException e) {
+            // ignore
+        }
+        return code;
     }
     /*<methods>*/
     @GlobalValue(symbol="GKErrorDomain", optional=true)

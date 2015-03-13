@@ -54,7 +54,13 @@ import org.robovm.apple.dispatch.*;
     /*<members>*//*</members>*/
     @Override
     public NSXMLParserErrorCode getErrorCode() {
-        return NSXMLParserErrorCode.valueOf(getCode());
+        NSXMLParserErrorCode code = null;
+        try {
+            code = NSXMLParserErrorCode.valueOf(getCode());
+        } catch (IllegalArgumentException e) {
+            // ignore
+        }
+        return code;
     }
     /*<methods>*/
     /**

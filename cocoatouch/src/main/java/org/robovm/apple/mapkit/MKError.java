@@ -54,7 +54,13 @@ import org.robovm.apple.dispatch.*;
     /*<members>*//*</members>*/
     @Override
     public MKErrorCode getErrorCode() {
-        return MKErrorCode.valueOf(getCode());
+        MKErrorCode code = null;
+        try {
+            code = MKErrorCode.valueOf(getCode());
+        } catch (IllegalArgumentException e) {
+            // ignore
+        }
+        return code;
     }
     /*<methods>*/
     @GlobalValue(symbol="MKErrorDomain", optional=true)

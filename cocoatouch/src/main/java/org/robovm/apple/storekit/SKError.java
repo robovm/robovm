@@ -51,7 +51,13 @@ import org.robovm.apple.accounts.*;
     /*<members>*//*</members>*/
     @Override
     public SKErrorCode getErrorCode() {
-        return SKErrorCode.valueOf(getCode());
+        SKErrorCode code = null;
+        try {
+            code = SKErrorCode.valueOf(getCode());
+        } catch (IllegalArgumentException e) {
+            // ignore
+        }
+        return code;
     }
     /*<methods>*/
     /**

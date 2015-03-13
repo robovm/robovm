@@ -48,7 +48,13 @@ import org.robovm.apple.uikit.*;
     /*<members>*//*</members>*/
     @Override
     public GKSessionErrorCode getErrorCode() {
-        return GKSessionErrorCode.valueOf(getCode());
+        GKSessionErrorCode code = null;
+        try {
+            code = GKSessionErrorCode.valueOf(getCode());
+        } catch (IllegalArgumentException e) {
+            // ignore
+        }
+        return code;
     }
     /*<methods>*/
     @GlobalValue(symbol="GKSessionErrorDomain", optional=true)

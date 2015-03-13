@@ -56,9 +56,15 @@ import org.robovm.apple.mediatoolbox.*;
     /*<members>*//*</members>*/
     @Override
     public NSErrorCode getErrorCode() {
-        NSErrorCode code = AVAudioSessionErrorCode.valueOf(getCode());
-        if (code == null) {
-            code = AVErrorCode.valueOf(getCode());
+        NSErrorCode code = null;
+        try {
+            code = AVAudioSessionErrorCode.valueOf(getCode());
+        } catch (IllegalArgumentException e) {
+            try {
+                code = AVErrorCode.valueOf(getCode());
+            } catch (IllegalArgumentException e2) {
+                // ignore
+            }
         }
         return code;
     }

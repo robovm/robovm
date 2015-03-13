@@ -51,7 +51,13 @@ import org.robovm.apple.dispatch.*;
     /*<members>*//*</members>*/
     @Override
     public EABluetoothAccessoryPickerErrorCode getErrorCode() {
-        return EABluetoothAccessoryPickerErrorCode.valueOf(getCode());
+        EABluetoothAccessoryPickerErrorCode code = null;
+        try {
+            code = EABluetoothAccessoryPickerErrorCode.valueOf(getCode());
+        } catch (IllegalArgumentException e) {
+            // ignore
+        }
+        return code;
     }
     /*<methods>*/
     @GlobalValue(symbol="EABluetoothAccessoryPickerErrorDomain", optional=true)

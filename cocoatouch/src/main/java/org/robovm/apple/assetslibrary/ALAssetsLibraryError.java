@@ -51,7 +51,13 @@ import org.robovm.apple.imageio.*;
     /*<members>*//*</members>*/
     @Override
     public ALAssetsLibraryErrorCode getErrorCode() {
-        return ALAssetsLibraryErrorCode.valueOf(getCode());
+        ALAssetsLibraryErrorCode code = null;
+        try {
+            code = ALAssetsLibraryErrorCode.valueOf(getCode());
+        } catch (IllegalArgumentException e) {
+            // ignore
+        }
+        return code;
     }
     /*<methods>*/
     /**

@@ -51,7 +51,13 @@ import org.robovm.apple.addressbook.*;
     /*<members>*//*</members>*/
     @Override
     public PKPassKitErrorCode getErrorCode() {
-        return PKPassKitErrorCode.valueOf(getCode());
+        PKPassKitErrorCode code = null;
+        try {
+            code = PKPassKitErrorCode.valueOf(getCode());
+        } catch (IllegalArgumentException e) {
+            // ignore
+        }
+        return code;
     }
     /*<methods>*/
     /**

@@ -65,8 +65,7 @@ public enum /*<name>*/SCNConsistencyErrorCode/*</name>*/ implements NSErrorCode 
                 return v;
             }
         }
-        return null;
-//        throw new IllegalArgumentException("No constant with value " + n + " found in " 
-//            + /*<name>*/SCNConsistencyErrorCode/*</name>*/.class.getName());
+        throw new IllegalArgumentException("No constant with value " + n + " found in " 
+            + /*<name>*/SCNConsistencyErrorCode/*</name>*/.class.getName());
     }
 }

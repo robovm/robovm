@@ -49,7 +49,13 @@ import org.robovm.apple.corebluetooth.*;
     /*<members>*//*</members>*/
     @Override
     public CLErrorCode getErrorCode() {
-        return CLErrorCode.valueOf(getCode());
+        CLErrorCode code = null;
+        try {
+            code = CLErrorCode.valueOf(getCode());
+        } catch (IllegalArgumentException e) {
+            // ignore
+        }
+        return code;
     }
     
     public CLRegion getAlternateRegion() {

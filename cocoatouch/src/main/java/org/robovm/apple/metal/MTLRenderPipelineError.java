@@ -48,7 +48,13 @@ import org.robovm.apple.dispatch.*;
     /*<members>*//*</members>*/
     @Override
     public MTLRenderPipelineErrorCode getErrorCode() {
-        return MTLRenderPipelineErrorCode.valueOf(getCode());
+        MTLRenderPipelineErrorCode code = null;
+        try {
+            code = MTLRenderPipelineErrorCode.valueOf(getCode());
+        } catch (IllegalArgumentException e) {
+            // ignore
+        }
+        return code;
     }
     /*<methods>*/
     @GlobalValue(symbol="MTLRenderPipelineErrorDomain", optional=true)

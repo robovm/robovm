@@ -52,7 +52,13 @@ import org.robovm.apple.corelocation.*;
     /*<members>*//*</members>*/
     @Override
     public EKErrorCode getErrorCode() {
-        return EKErrorCode.valueOf(getCode());
+        EKErrorCode code = null;
+        try {
+            code = EKErrorCode.valueOf(getCode());
+        } catch (IllegalArgumentException e) {
+            // ignore
+        }
+        return code;
     }
     /*<methods>*/
     /**

@@ -55,7 +55,13 @@ import org.robovm.apple.dispatch.*;
     /*<members>*//*</members>*/
     @Override
     public NSMachErrorCode getErrorCode() {
-        return NSMachErrorCode.valueOf(getCode());
+        NSMachErrorCode code = null;
+        try {
+            code = NSMachErrorCode.valueOf(getCode());
+        } catch (IllegalArgumentException e) {
+            // ignore
+        }
+        return code;
     }
     /*<methods>*/
     @GlobalValue(symbol="NSMachErrorDomain", optional=true)

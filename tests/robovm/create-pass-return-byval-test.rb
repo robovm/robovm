@@ -1,6 +1,6 @@
 #!/usr/bin/env ruby
 
-# Copyright (C) 2014 Trillian Mobile AB
+# Copyright (C) 2014 RoboVM AB
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -115,7 +115,7 @@ end
 File.open("#{base_dir}/src/test/java/org/robovm/rt/bro/PassReturnByValTest.java",'w') do |s|
   s.puts <<-eos
 /*
- * Copyright (C) 2015 Trillian Mobile AB
+ * Copyright (C) 2015 RoboVM AB
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.

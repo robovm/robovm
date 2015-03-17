@@ -232,6 +232,8 @@ import org.robovm.apple.dispatch.*;
     public native boolean conformsToProtocol(ObjCProtocol aProtocol);
     @Method(selector = "respondsToSelector:")
     public native boolean respondsToSelector(Selector aSelector);
+    @Method(selector = "init")
+    private native @Pointer long init();
     @Method(selector = "retain")
     public final native NSObject retain();
     @Method(selector = "release")
@@ -389,8 +391,6 @@ import org.robovm.apple.dispatch.*;
         didChangeValues(changeKind, indexes, key);
     }
     /*<methods>*/
-    @Method(selector = "init")
-    private native @Pointer long init();
     @Method(selector = "copy")
     public native NSObject copy();
     @Method(selector = "mutableCopy")

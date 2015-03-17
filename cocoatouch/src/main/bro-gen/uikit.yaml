@@ -3116,6 +3116,9 @@ protocols:
     UIAppearanceContainer: # DONE
         skip_adapter: true
     UIApplicationDelegate: # DONE
+        properties:
+            'window':
+                skip_adapter: true
         methods:
             '-application:didChangeStatusBarFrame:':
                 name: didChangStatusBarFrame
@@ -3156,6 +3159,7 @@ protocols:
                 name: didEnterBackground
             '-applicationDidReceiveMemoryWarning:':
                 name: didReceiveMemoryWarning
+                skip_adapter: true
             '-applicationProtectedDataDidBecomeAvailable:':
                 name: protectedDataDidBecomeAvailable
             '-applicationProtectedDataWillBecomeUnavailable:':

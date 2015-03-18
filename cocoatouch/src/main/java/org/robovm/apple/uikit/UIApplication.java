@@ -376,15 +376,17 @@ import org.robovm.apple.corelocation.*;
                 String line = reader.readLine();
                 String[] customClasses = line.split(",");
                 for (String customClass : customClasses) {
-                    // Register classes
-                    ObjCClass.getByName(customClass);
+                    try {
+                        // Register classes
+                        ObjCClass.getByName(customClass);
+                    } catch (ObjCClassNotFoundException e) {
+                        // ignore
+                    }
                 }
                 
                 reader.close();
             } catch (IOException e) {
                 e.printStackTrace();
-            } catch (ObjCClassNotFoundException e) {
-                // ignore
             }
         }
     }

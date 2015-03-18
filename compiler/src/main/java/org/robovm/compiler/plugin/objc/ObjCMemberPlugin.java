@@ -80,6 +80,7 @@ public class ObjCMemberPlugin extends AbstractCompilerPlugin {
     public static final String IBACTION = "L" + OBJC_ANNOTATIONS_PACKAGE + "/IBAction;";
     public static final String IBOUTLET = "L" + OBJC_ANNOTATIONS_PACKAGE + "/IBOutlet;";
     public static final String NATIVE_CLASS = "L" + OBJC_ANNOTATIONS_PACKAGE + "/NativeClass;";
+    public static final String TYPE_ENCODING = "L" + OBJC_ANNOTATIONS_PACKAGE + "/TypeEncoding;";
     public static final String SELECTOR = "org.robovm.objc.Selector";
     public static final String OBJC_SUPER = "org.robovm.objc.ObjCSuper";
     public static final String OBJC_CLASS = "org.robovm.objc.ObjCClass";
@@ -90,6 +91,7 @@ public class ObjCMemberPlugin extends AbstractCompilerPlugin {
     public static final String UI_EVENT = "org.robovm.apple.uikit.UIEvent";
 
     private boolean initialized = false;
+    private Config config;
     private SootClass org_robovm_objc_ObjCClass = null;
     private SootClass org_robovm_objc_ObjCSuper = null;
     private SootClass org_robovm_objc_ObjCObject = null;
@@ -287,6 +289,7 @@ public class ObjCMemberPlugin extends AbstractCompilerPlugin {
         if (initialized) {
             return;
         }
+        this.config = config;
         if (config.getClazzes().load(OBJC_OBJECT.replace('.', '/')) == null) {
             initialized = true;
             return;
@@ -593,6 +596,16 @@ public class ObjCMemberPlugin extends AbstractCompilerPlugin {
         sootClass.addMethod(callbackMethod);
         addCallbackAnnotation(callbackMethod);
         addBindSelectorAnnotation(callbackMethod, selectorName);
+        if (!hasAnnotation(method, TYPE_ENCODING) && (isCustomClass(sootClass) 
+                || ObjCProtocolProxyPlugin.isObjCProxy(sootClass))) {
+            String encoding = generateTypeEncoding(callbackMethod);
+            try {
+                addTypeEncodingAnnotation(callbackMethod, encoding);
+            } catch (IllegalArgumentException e) {
+                throw new CompilerException("Failed to determine method type encoding for method "
+                        + method + ": " + e.getMessage());
+            }
+        }
 
         Body body = j.newBody(callbackMethod);
         callbackMethod.setActiveBody(body);
@@ -645,6 +658,11 @@ public class ObjCMemberPlugin extends AbstractCompilerPlugin {
         } else {
             units.add(j.newReturnVoidStmt());
         }
+    }
+
+    private String generateTypeEncoding(SootMethod method) {
+        TypeEncoder encoder = new TypeEncoder();
+        return encoder.encode(method, !config.getArch().is32Bit());
     }
 
     private SootMethod findStrongRefGetter(SootClass sootClass,
@@ -900,4 +918,9 @@ public class ObjCMemberPlugin extends AbstractCompilerPlugin {
         addRuntimeVisibleAnnotation(method, annotationTag);
     }
 
+    static void addTypeEncodingAnnotation(SootMethod method, String encoding) {
+        AnnotationTag annotationTag = new AnnotationTag(TYPE_ENCODING, 1);
+        annotationTag.addElem(new AnnotationStringElem(encoding, 's', "value"));
+        addRuntimeVisibleAnnotation(method, annotationTag);
+    }
 }

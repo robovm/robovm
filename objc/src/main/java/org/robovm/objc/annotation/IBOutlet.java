@@ -24,7 +24,7 @@ import org.robovm.objc.ObjCObject;
 
 /**
  * Used to mark a class method or field as an Objective-C property compliant
- * with a XCode interface builder outlet. Outlets must have the
+ * with a Xcode interface builder outlet. Outlets must have the
  * <code>native</code> modifier and must not be <code>static</code>.
  * <p>
  * Outlet methods in ordinary classes can have any name if a 
@@ -36,7 +36,7 @@ import org.robovm.objc.ObjCObject;
  * the method will be used to determine the selector for the outlet. In that
  * case the property methods must follow the Java beans property methods
  * naming convention: the getter name starts with "is" or "get" while the 
- * setter name starts with "set.
+ * setter name starts with "set".
  */
 @Retention(RetentionPolicy.RUNTIME)
 @Target({ ElementType.METHOD, ElementType.FIELD })

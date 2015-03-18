@@ -77,8 +77,8 @@ public class ObjCMemberPlugin extends AbstractCompilerPlugin {
     public static final String PROPERTY = "L" + OBJC_ANNOTATIONS_PACKAGE + "/Property;";
     public static final String BIND_SELECTOR = "L" + OBJC_ANNOTATIONS_PACKAGE + "/BindSelector;";
     public static final String NOT_IMPLEMENTED = "L" + OBJC_ANNOTATIONS_PACKAGE + "/NotImplemented;";
-    public static final String IBACTION = "L" + OBJC_ANNOTATIONS_PACKAGE + "/IBAction";
-    public static final String IBOUTLET = "L" + OBJC_ANNOTATIONS_PACKAGE + "/IBOutlet";
+    public static final String IBACTION = "L" + OBJC_ANNOTATIONS_PACKAGE + "/IBAction;";
+    public static final String IBOUTLET = "L" + OBJC_ANNOTATIONS_PACKAGE + "/IBOutlet;";
     public static final String SELECTOR = "org.robovm.objc.Selector";
     public static final String OBJC_SUPER = "org.robovm.objc.ObjCSuper";
     public static final String OBJC_CLASS = "org.robovm.objc.ObjCClass";

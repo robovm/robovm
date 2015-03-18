@@ -20,7 +20,6 @@ import java.io.*;
 import java.nio.*;
 import java.util.*;
 
-import org.apache.xpath.functions.FuncNormalizeSpace;
 import org.robovm.objc.*;
 import org.robovm.objc.annotation.*;
 import org.robovm.objc.block.*;

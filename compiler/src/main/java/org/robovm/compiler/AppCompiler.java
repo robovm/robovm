@@ -205,9 +205,6 @@ public class AppCompiler {
         
         if (!config.getCustomIBClasses().isEmpty()) {
             for (String s : config.getCustomIBClasses()) {
-                if (s == null || s.trim().isEmpty()) {
-                    continue;
-                }
                 s = s.trim();
                 Clazz clazz = config.getClazzes().load(s.replace('.', '/'));
                 if (clazz != null) {
@@ -390,7 +387,9 @@ public class AppCompiler {
                             config.addCustomIBClasses(customClasses);
                         } catch (XMLStreamException | IOException e) {
                             // Storyboard or Xib may be corrupt.
-                            e.printStackTrace();
+                            if (config.getHome().isDev()) {
+                                e.printStackTrace();
+                            }
                         }
                     }
                 }
@@ -415,7 +414,7 @@ public class AppCompiler {
                 case "view":
                 case "placeholder":
                     String customClass = reader.getAttributeValue(null, "customClass");
-                    if (customClass != null) {
+                    if (customClass != null && !customClass.trim().isEmpty()) {
                         customClasses.add(customClass);
                     }
                     break;

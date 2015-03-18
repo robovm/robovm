@@ -77,6 +77,8 @@ public class ObjCMemberPlugin extends AbstractCompilerPlugin {
     public static final String PROPERTY = "L" + OBJC_ANNOTATIONS_PACKAGE + "/Property;";
     public static final String BIND_SELECTOR = "L" + OBJC_ANNOTATIONS_PACKAGE + "/BindSelector;";
     public static final String NOT_IMPLEMENTED = "L" + OBJC_ANNOTATIONS_PACKAGE + "/NotImplemented;";
+    public static final String IBACTION = "L" + OBJC_ANNOTATIONS_PACKAGE + "/IBAction";
+    public static final String IBOUTLET = "L" + OBJC_ANNOTATIONS_PACKAGE + "/IBOutlet";
     public static final String SELECTOR = "org.robovm.objc.Selector";
     public static final String OBJC_SUPER = "org.robovm.objc.ObjCSuper";
     public static final String OBJC_CLASS = "org.robovm.objc.ObjCClass";
@@ -417,110 +419,151 @@ public class ObjCMemberPlugin extends AbstractCompilerPlugin {
     private void transformMethod(Config config, Clazz clazz, SootClass sootClass,
             SootMethod method, Set<String> selectors, Set<String> overridables, boolean extensions) {
 
-        AnnotationTag methodAnno = getAnnotation(method, METHOD);
-        if (methodAnno != null) {
-
+        AnnotationTag annotation = getAnnotation(method, METHOD);
+        if (annotation != null) {
             if (extensions && !(method.isStatic() && method.isNative())) {
                 throw new CompilerException("Objective-C @Method method "
                         + method + " in extension class must be static and native.");
             }
 
-            // Determine the selector
-            String selectorName = readStringElem(methodAnno, "selector", "").trim();
-            if (selectorName.length() == 0) {
-                StringBuilder sb = new StringBuilder(method.getName());
-                int argCount = method.getParameterCount();
-                for (int i = extensions ? 1 : 0; i < argCount; i++) {
-                    sb.append(':');
-                }
-                selectorName = sb.toString();
+            transformObjCMethod(annotation, sootClass, method, selectors, overridables, extensions);
+            return;
+        }
+
+        annotation = getAnnotation(method, IBACTION);
+        if (annotation != null) {
+            if (method.isStatic() || method.isNative()) {
+                throw new CompilerException("Objective-C @IBAction method "
+                        + method + " must not be static or native.");
+            }
+            int paramCount = method.getParameterCount();
+            Type param1 = paramCount > 0 ? method.getParameterType(0) : null;
+            Type param2 = paramCount > 1 ? method.getParameterType(1) : null;
+            // TODO check types
+            if (method.getReturnType() != VoidType.v() || paramCount < 1 || paramCount > 2) {
+                throw new CompilerException("Objective-C @IBAction method "
+                        + method + " does not have a supported signature. @IBAction methods"
+                        + " must return void and either take 1 argument of type UIResponder"
+                        + " or 2 arguments of types UIResponder and UIEvent.");
             }
 
-            // Create the @Bridge and @Callback methods needed for this selector
-            if (!extensions && (method.getModifiers() & Modifier.FINAL) == 0) {
-                Type receiverType = ObjCProtocolProxyPlugin.isObjCProxy(sootClass)
-                        ? sootClass.getInterfaces().getFirst().getType()
-                        : sootClass.getType();
-                createCallback(sootClass, method, selectorName, receiverType);
+            transformObjCMethod(annotation, sootClass, method, selectors, overridables, extensions);
+            return;
+        }
+
+        annotation = getAnnotation(method, PROPERTY);
+        if (annotation != null) {
+            if (extensions && !(method.isStatic() && method.isNative())) {
+                throw new CompilerException("Objective-C @Property method "
+                        + method + " in extension class must be static and native.");
             }
-            if (method.isNative()) {
-                if (checkOverridable(overridables, selectorName, method)) {
-                    overridables.add(selectorName);
-                }
-                selectors.add(selectorName);
-                createBridge(sootClass, method, selectorName, false, extensions);
+
+            transformObjCProperty(annotation, "@Property", sootClass, method, selectors, overridables, extensions);
+            return;
+        }
+        annotation = getAnnotation(method, IBOUTLET);
+        if (annotation != null) {
+            if (method.isStatic() || !method.isNative()) {
+                throw new CompilerException("Objective-C @IBOutlet method "
+                        + method + " must not be static but must be native.");
             }
-        } else {
-            AnnotationTag propertyAnno = getAnnotation(method, PROPERTY);
-            if (propertyAnno != null) {
 
-                // Validate
+            transformObjCProperty(annotation, "@IBOutlet", sootClass, method, selectors, overridables, extensions);
+            return;
+        }
+    }
 
-                if (extensions && !(method.isStatic() && method.isNative())) {
-                    throw new CompilerException("Objective-C @Property method "
-                            + method + " in extension class must be static and native.");
-                }
+    private void transformObjCMethod(AnnotationTag annotation, SootClass sootClass,
+            SootMethod method, Set<String> selectors, Set<String> overridables, boolean extensions) {
 
-                int getterParamCount = extensions ? 1 : 0;
-                int setterParamCount = extensions ? 2 : 1;
-                if (method.getReturnType() != VoidType.v() && method.getParameterCount() != getterParamCount
-                        || method.getReturnType() == VoidType.v() && method.getParameterCount() != setterParamCount) {
-
-                    if (!extensions) {
-                        throw new CompilerException("Objective-C @Property method " + method
-                                + " does not have a supported signature. @Property getter methods"
-                                + " must take 0 arguments and must not return void. "
-                                + "@Property setter methods must take 1 argument and return void.");
-                    }
-                    throw new CompilerException("Objective-C @Property method " + method + " in extension class"
-                            + " does not have a supported signature. @Property getter methods in extension classes"
-                            + " must take 1 argument (the 'this' reference) and must not return void. "
-                            + "@Property setter methods in extension classes must "
-                            + "take 2 arguments (first is the 'this' reference) and return void.");
-                }
-
-                boolean isGetter = method.getReturnType() != VoidType.v();
-
-                // Determine the selector
-                String selectorName = readStringElem(propertyAnno, "selector", "").trim();
-                if (selectorName.length() == 0) {
-                    String methodName = method.getName();
-                    if (!(isGetter && methodName.startsWith("get") && methodName.length() > 3)
-                            && !(isGetter && methodName.startsWith("is") && methodName.length() > 2)
-                            && !(!isGetter && methodName.startsWith("set") && methodName.length() > 3)) {
-                        throw new CompilerException("Invalid Objective-C @Property method name "
-                                + method + ". @Property methods without an explicit selector value "
-                                + "must follow the Java beans property method naming convention.");
-                    }
-                    selectorName = methodName;
-                    if (isGetter) {
-                        selectorName = methodName.startsWith("is")
-                                ? methodName.substring(2)
-                                : methodName.substring(3);
-                        selectorName = selectorName.substring(0, 1).toLowerCase()
-                                + selectorName.substring(1);
-                    } else {
-                        selectorName += ":";
-                    }
-                }
-
-                // Create the @Bridge and @Callback methods needed for this
-                // selector
-                if (!extensions && (method.getModifiers() & Modifier.FINAL) == 0) {
-                    Type receiverType = ObjCProtocolProxyPlugin.isObjCProxy(sootClass)
-                            ? sootClass.getInterfaces().getFirst().getType()
-                            : sootClass.getType();
-                    createCallback(sootClass, method, selectorName, receiverType);
-                }
-                if (method.isNative()) {
-                    if (checkOverridable(overridables, selectorName, method)) {
-                        overridables.add(selectorName);
-                    }
-                    selectors.add(selectorName);
-                    boolean strongRefSetter = !isGetter && readBooleanElem(propertyAnno, "strongRef", false);
-                    createBridge(sootClass, method, selectorName, strongRefSetter, extensions);
-                }
+        // Determine the selector
+        String selectorName = readStringElem(annotation, "selector", "").trim();
+        if (selectorName.length() == 0) {
+            StringBuilder sb = new StringBuilder(method.getName());
+            int argCount = method.getParameterCount();
+            for (int i = extensions ? 1 : 0; i < argCount; i++) {
+                sb.append(':');
             }
+            selectorName = sb.toString();
+        }
+
+        // Create the @Bridge and @Callback methods needed for this selector
+        if (!extensions && (method.getModifiers() & Modifier.FINAL) == 0) {
+            Type receiverType = ObjCProtocolProxyPlugin.isObjCProxy(sootClass)
+                    ? sootClass.getInterfaces().getFirst().getType()
+                    : sootClass.getType();
+            createCallback(sootClass, method, selectorName, receiverType);
+        }
+        if (method.isNative()) {
+            if (checkOverridable(overridables, selectorName, method)) {
+                overridables.add(selectorName);
+            }
+            selectors.add(selectorName);
+            createBridge(sootClass, method, selectorName, false, extensions);
+        }
+    }
+
+    private void transformObjCProperty(AnnotationTag annotation, String javaAnnotation, SootClass sootClass,
+            SootMethod method, Set<String> selectors, Set<String> overridables, boolean extensions) {
+
+        int getterParamCount = extensions ? 1 : 0;
+        int setterParamCount = extensions ? 2 : 1;
+        if (method.getReturnType() != VoidType.v() && method.getParameterCount() != getterParamCount
+                || method.getReturnType() == VoidType.v() && method.getParameterCount() != setterParamCount) {
+
+            if (!extensions) {
+                throw new CompilerException("Objective-C " + javaAnnotation + " method " + method
+                        + " does not have a supported signature. " + javaAnnotation + " getter methods"
+                        + " must take 0 arguments and must not return void. "
+                        + javaAnnotation + " setter methods must take 1 argument and return void.");
+            }
+            throw new CompilerException("Objective-C " + javaAnnotation + " method " + method + " in extension class"
+                    + " does not have a supported signature. " + javaAnnotation
+                    + " getter methods in extension classes"
+                    + " must take 1 argument (the 'this' reference) and must not return void. "
+                    + javaAnnotation + " setter methods in extension classes must "
+                    + "take 2 arguments (first is the 'this' reference) and return void.");
+        }
+
+        boolean isGetter = method.getReturnType() != VoidType.v();
+
+        // Determine the selector
+        String selectorName = readStringElem(annotation, "selector", "").trim();
+        if (selectorName.length() == 0) {
+            String methodName = method.getName();
+            if (!(isGetter && methodName.startsWith("get") && methodName.length() > 3)
+                    && !(isGetter && methodName.startsWith("is") && methodName.length() > 2)
+                    && !(!isGetter && methodName.startsWith("set") && methodName.length() > 3)) {
+                throw new CompilerException("Invalid Objective-C " + javaAnnotation + " method name "
+                        + method + ". " + javaAnnotation + " methods without an explicit selector value "
+                        + "must follow the Java beans property method naming convention.");
+            }
+            selectorName = methodName;
+            if (isGetter) {
+                selectorName = methodName.startsWith("is")
+                        ? methodName.substring(2)
+                        : methodName.substring(3);
+                selectorName = selectorName.substring(0, 1).toLowerCase()
+                        + selectorName.substring(1);
+            } else {
+                selectorName += ":";
+            }
+        }
+
+        // Create the @Bridge and @Callback methods needed for this selector
+        if (!extensions && (method.getModifiers() & Modifier.FINAL) == 0) {
+            Type receiverType = ObjCProtocolProxyPlugin.isObjCProxy(sootClass)
+                    ? sootClass.getInterfaces().getFirst().getType()
+                    : sootClass.getType();
+            createCallback(sootClass, method, selectorName, receiverType);
+        }
+        if (method.isNative()) {
+            if (checkOverridable(overridables, selectorName, method)) {
+                overridables.add(selectorName);
+            }
+            selectors.add(selectorName);
+            boolean strongRefSetter = !isGetter && readBooleanElem(annotation, "strongRef", false);
+            createBridge(sootClass, method, selectorName, strongRefSetter, extensions);
         }
     }
 
@@ -588,7 +631,12 @@ public class ObjCMemberPlugin extends AbstractCompilerPlugin {
     private SootMethod findStrongRefGetter(SootClass sootClass,
             final SootMethod method, boolean extensions) {
 
-        String setterPropName = readStringElem(getAnnotation(method, PROPERTY), "name", "").trim();
+        AnnotationTag annotation = getAnnotation(method, PROPERTY);
+        if (annotation == null) {
+            annotation = getAnnotation(method, IBOUTLET);
+        }
+        
+        String setterPropName = readStringElem(annotation, "name", "").trim();
         if (setterPropName.length() == 0) {
             String methodName = method.getName();
             if (!methodName.startsWith("set") || methodName.length() == 3) {

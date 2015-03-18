@@ -485,9 +485,9 @@ public class ObjCMemberPlugin extends AbstractCompilerPlugin {
         }
         annotation = getAnnotation(method, IBOUTLET);
         if (annotation != null) {
-            if (method.isStatic() || !method.isNative()) {
+            if (method.isStatic()) {
                 throw new CompilerException("Objective-C @IBOutlet method "
-                        + method + " must not be static but must be native.");
+                        + method + " must not be static.");
             }
 
             transformObjCProperty(annotation, "@IBOutlet", sootClass, method, selectors, overridables, extensions);

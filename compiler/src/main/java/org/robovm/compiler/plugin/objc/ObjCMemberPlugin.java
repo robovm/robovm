@@ -85,6 +85,8 @@ public class ObjCMemberPlugin extends AbstractCompilerPlugin {
     public static final String OBJC_OBJECT = "org.robovm.objc.ObjCObject";
     public static final String OBJC_RUNTIME = "org.robovm.objc.ObjCRuntime";
     public static final String OBJC_EXTENSIONS = "org.robovm.objc.ObjCExtensions";
+    public static final String UI_RESPONDER = "org.robovm.apple.uikit.UIResponder";
+    public static final String UI_EVENT = "org.robovm.apple.uikit.UIEvent";
 
     private boolean initialized = false;
     private SootClass org_robovm_objc_ObjCClass = null;
@@ -95,6 +97,8 @@ public class ObjCMemberPlugin extends AbstractCompilerPlugin {
     private SootClass org_robovm_objc_Selector = null;
     private SootClass java_lang_String = null;
     private SootClass java_lang_Class = null;
+    private SootClass org_robovm_apple_uikit_UIResponder = null;
+    private SootClass org_robovm_apple_uikit_UIEvent = null;
     private SootMethodRef org_robovm_objc_Selector_register = null;
     private SootMethodRef org_robovm_objc_ObjCObject_getSuper = null;
     private SootFieldRef org_robovm_objc_ObjCObject_customClass = null;
@@ -296,6 +300,8 @@ public class ObjCMemberPlugin extends AbstractCompilerPlugin {
         org_robovm_objc_ObjCSuper = r.makeClassRef(OBJC_SUPER);
         org_robovm_objc_ObjCRuntime = r.makeClassRef(OBJC_RUNTIME);
         org_robovm_objc_Selector = r.makeClassRef(SELECTOR);
+        org_robovm_apple_uikit_UIResponder = r.makeClassRef(UI_RESPONDER);
+        org_robovm_apple_uikit_UIEvent = r.makeClassRef(UI_EVENT);
         SootClass java_lang_Object = r.makeClassRef("java.lang.Object");
         java_lang_String = r.makeClassRef("java.lang.String");
         java_lang_Class = r.makeClassRef("java.lang.Class");
@@ -348,24 +354,32 @@ public class ObjCMemberPlugin extends AbstractCompilerPlugin {
         initialized = true;
     }
 
-    private boolean isObjCObject(SootClass cls) {
-        if (org_robovm_objc_ObjCObject == null || org_robovm_objc_ObjCObject.isPhantom()) {
+    private boolean isAssignable(SootClass cls, SootClass type) {
+        if (type == null || type.isPhantom()) {
             return false;
         }
-        while (cls != org_robovm_objc_ObjCObject && cls.hasSuperclass()) {
+        while (cls != type && cls.hasSuperclass()) {
             cls = cls.getSuperclass();
         }
-        return cls == org_robovm_objc_ObjCObject;
+        return cls == type;
+    }
+
+    private boolean isObjCObject(SootClass cls) {
+        return isAssignable(cls, org_robovm_objc_ObjCObject);
     }
 
     private boolean isObjCExtensions(SootClass cls) {
-        if (org_robovm_objc_ObjCExtensions == null || org_robovm_objc_ObjCExtensions.isPhantom()) {
-            return false;
-        }
-        while (cls != org_robovm_objc_ObjCExtensions && cls.hasSuperclass()) {
-            cls = cls.getSuperclass();
-        }
-        return cls == org_robovm_objc_ObjCExtensions;
+        return isAssignable(cls, org_robovm_objc_ObjCExtensions);
+    }
+
+    private boolean isUIResponder(Type type) {
+        return (type instanceof RefType)
+                && isAssignable(((RefType) type).getSootClass(), org_robovm_apple_uikit_UIResponder);
+    }
+
+    private boolean isUIEvent(Type type) {
+        return (type instanceof RefType)
+                && isAssignable(((RefType) type).getSootClass(), org_robovm_apple_uikit_UIEvent);
     }
 
     @Override
@@ -439,8 +453,8 @@ public class ObjCMemberPlugin extends AbstractCompilerPlugin {
             int paramCount = method.getParameterCount();
             Type param1 = paramCount > 0 ? method.getParameterType(0) : null;
             Type param2 = paramCount > 1 ? method.getParameterType(1) : null;
-            // TODO check types
-            if (method.getReturnType() != VoidType.v() || paramCount < 1 || paramCount > 2) {
+            if (method.getReturnType() != VoidType.v() || paramCount < 1 || paramCount > 2 
+                    || !isUIResponder(param1) || (param2 != null && !isUIEvent(param2))) {
                 throw new CompilerException("Objective-C @IBAction method "
                         + method + " does not have a supported signature. @IBAction methods"
                         + " must return void and either take 1 argument of type UIResponder"

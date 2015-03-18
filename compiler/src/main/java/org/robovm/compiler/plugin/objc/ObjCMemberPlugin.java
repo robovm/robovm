@@ -79,6 +79,7 @@ public class ObjCMemberPlugin extends AbstractCompilerPlugin {
     public static final String NOT_IMPLEMENTED = "L" + OBJC_ANNOTATIONS_PACKAGE + "/NotImplemented;";
     public static final String IBACTION = "L" + OBJC_ANNOTATIONS_PACKAGE + "/IBAction;";
     public static final String IBOUTLET = "L" + OBJC_ANNOTATIONS_PACKAGE + "/IBOutlet;";
+    public static final String NATIVE_CLASS = "L" + OBJC_ANNOTATIONS_PACKAGE + "/NativeClass;";
     public static final String SELECTOR = "org.robovm.objc.Selector";
     public static final String OBJC_SUPER = "org.robovm.objc.ObjCSuper";
     public static final String OBJC_CLASS = "org.robovm.objc.ObjCClass";
@@ -382,6 +383,10 @@ public class ObjCMemberPlugin extends AbstractCompilerPlugin {
                 && isAssignable(((RefType) type).getSootClass(), org_robovm_apple_uikit_UIEvent);
     }
 
+    private boolean isCustomClass(SootClass cls) {
+        return !hasAnnotation(cls, NATIVE_CLASS);
+    }
+
     @Override
     public void beforeClass(Config config, Clazz clazz, ModuleBuilder moduleBuilder) {
         init(config);
@@ -453,7 +458,7 @@ public class ObjCMemberPlugin extends AbstractCompilerPlugin {
             int paramCount = method.getParameterCount();
             Type param1 = paramCount > 0 ? method.getParameterType(0) : null;
             Type param2 = paramCount > 1 ? method.getParameterType(1) : null;
-            if (method.getReturnType() != VoidType.v() || paramCount < 1 || paramCount > 2 
+            if (method.getReturnType() != VoidType.v() || paramCount < 1 || paramCount > 2
                     || !isUIResponder(param1) || (param2 != null && !isUIEvent(param2))) {
                 throw new CompilerException("Objective-C @IBAction method "
                         + method + " does not have a supported signature. @IBAction methods"
@@ -502,7 +507,7 @@ public class ObjCMemberPlugin extends AbstractCompilerPlugin {
         }
 
         // Create the @Bridge and @Callback methods needed for this selector
-        if (!extensions && (method.getModifiers() & Modifier.FINAL) == 0) {
+        if (!extensions && (isCustomClass(sootClass) || (method.getModifiers() & Modifier.FINAL) == 0)) {
             Type receiverType = ObjCProtocolProxyPlugin.isObjCProxy(sootClass)
                     ? sootClass.getInterfaces().getFirst().getType()
                     : sootClass.getType();
@@ -565,7 +570,7 @@ public class ObjCMemberPlugin extends AbstractCompilerPlugin {
         }
 
         // Create the @Bridge and @Callback methods needed for this selector
-        if (!extensions && (method.getModifiers() & Modifier.FINAL) == 0) {
+        if (!extensions && (isCustomClass(sootClass) || (method.getModifiers() & Modifier.FINAL) == 0)) {
             Type receiverType = ObjCProtocolProxyPlugin.isObjCProxy(sootClass)
                     ? sootClass.getInterfaces().getFirst().getType()
                     : sootClass.getType();
@@ -649,7 +654,7 @@ public class ObjCMemberPlugin extends AbstractCompilerPlugin {
         if (annotation == null) {
             annotation = getAnnotation(method, IBOUTLET);
         }
-        
+
         String setterPropName = readStringElem(annotation, "name", "").trim();
         if (setterPropName.length() == 0) {
             String methodName = method.getName();

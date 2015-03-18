@@ -188,6 +188,7 @@ public class Config {
     private transient VTable.Cache vtableCache;
     private transient ITable.Cache itableCache;
     private transient List<Path> resourcesPaths = new ArrayList<Path>();
+    private transient List<String> customIBClasses = new ArrayList<String>();
     private transient DataLayout dataLayout;
     private transient MarshalerLookup marshalerLookup;
     private transient Config configBeforeBuild;
@@ -310,6 +311,14 @@ public class Config {
     
     public void addResourcesPath(Path path) {
         resourcesPaths.add(path);
+    }
+    
+    public List<String> getCustomIBClasses() {
+        return customIBClasses;
+    }
+    
+    public void addCustomIBClasses(Collection<String> classes) {
+        customIBClasses.addAll(classes);
     }
     
     public File getTmpDir() {

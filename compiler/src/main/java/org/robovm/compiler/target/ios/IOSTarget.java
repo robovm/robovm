@@ -17,6 +17,7 @@
 package org.robovm.compiler.target.ios;
 
 import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.lang.reflect.Method;
@@ -33,6 +34,7 @@ import java.util.regex.Pattern;
 
 import javax.xml.parsers.DocumentBuilder;
 
+import org.apache.commons.exec.util.StringUtils;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
 import org.robovm.compiler.CompilerException;
@@ -64,6 +66,7 @@ import com.dd.plist.NSObject;
 import com.dd.plist.NSString;
 import com.dd.plist.PropertyListParser;
 import com.dd.plist.XMLPropertyListParser;
+
 import java.util.HashMap;
 
 /**
@@ -307,6 +310,8 @@ public class IOSTarget extends AbstractTarget {
     protected void prepareInstall(File installDir) throws IOException {
         createInfoPList(installDir);
         generateDsym(installDir, getExecutable());
+        generateIBClassesFile(installDir);
+        
         if (isDeviceArch(arch)) {
             // only strip if this is not a debug build, otherwise
             // LLDB can't resolve the DWARF info
@@ -315,7 +320,7 @@ public class IOSTarget extends AbstractTarget {
             }
             copyResourcesPList(installDir);
             if (config.isIosSkipSigning()) {
-                config.getLogger().warn("Skiping code signing. The resulting app will "
+                config.getLogger().warn("Skipping code signing. The resulting app will "
                         + "be unsigned and will not run on unjailbroken devices");
                 ldid(entitlementsPList, installDir);
             } else {
@@ -346,6 +351,8 @@ public class IOSTarget extends AbstractTarget {
         super.doInstall(appDir, getExecutable());
         createInfoPList(appDir);
         generateDsym(appDir, getExecutable());
+        generateIBClassesFile(appDir);
+        
         if (isDeviceArch(arch)) {
             copyResourcesPList(appDir);
             if (config.isIosSkipSigning()) {
@@ -442,6 +449,16 @@ public class IOSTarget extends AbstractTarget {
         new Executor(config.getLogger(), "xcrun")
                 .args("strip", "-x", new File(dir, executable))
                 .exec();
+    }
+    
+    private void generateIBClassesFile(File installDir) throws IOException {
+        List<String> customClasses = config.getCustomIBClasses();
+        if (!customClasses.isEmpty()) {
+            FileWriter fw = new FileWriter(new File(installDir, "ib.classes"));
+            String array = StringUtils.toString(customClasses.toArray(new String[customClasses.size()]), ",");
+            fw.write(array);
+            fw.close();
+        }
     }
 
     @Override
@@ -567,7 +584,7 @@ public class IOSTarget extends AbstractTarget {
             dict.put(key, value);
         }
     }
-
+    
     protected void customizeInfoPList(NSDictionary dict) {
         if (isSimulatorArch(arch)) {
             dict.put("CFBundleSupportedPlatforms", new NSArray(new NSString("iPhoneSimulator")));

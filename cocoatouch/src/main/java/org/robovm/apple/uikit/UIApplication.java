@@ -372,19 +372,18 @@ import org.robovm.apple.corelocation.*;
         File ibClassesFile = new File(NSBundle.getMainBundle().getBundlePath() + "/ib.classes");
         if (ibClassesFile.exists()) {
             try {
-                BufferedReader reader = new BufferedReader(new FileReader(ibClassesFile));
-                String line = reader.readLine();
-                String[] customClasses = line.split(",");
-                for (String customClass : customClasses) {
-                    try {
-                        // Register classes
-                        ObjCClass.getByName(customClass);
-                    } catch (ObjCClassNotFoundException e) {
-                        // ignore
+                try (BufferedReader reader = new BufferedReader(new FileReader(ibClassesFile))) {
+                    String line = reader.readLine();
+                    String[] customClasses = line.split(",");
+                    for (String customClass : customClasses) {
+                        try {
+                            // Register class.
+                            ObjCClass.getByName(customClass);
+                        } catch (ObjCClassNotFoundException e) {
+                            // ignore
+                        }
                     }
                 }
-                
-                reader.close();
             } catch (IOException e) {
                 e.printStackTrace();
             }

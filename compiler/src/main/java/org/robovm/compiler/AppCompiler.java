@@ -724,6 +724,11 @@ public class AppCompiler {
                     this.config.addResourcesPath(path);
                 }
             }
+            for (String customIBClass : sliceConfig.getCustomIBClasses()) {
+                if (!this.config.getCustomIBClasses().contains(customIBClass)) {
+                    this.config.addCustomIBClass(customIBClass);
+                }
+            }
         }
         ((IOSTarget) this.config.getTarget()).createIpa(slices);
     }

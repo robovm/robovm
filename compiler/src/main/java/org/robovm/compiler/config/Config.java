@@ -317,8 +317,12 @@ public class Config {
         return customIBClasses;
     }
     
-    public void addCustomIBClasses(Collection<String> classes) {
-        customIBClasses.addAll(classes);
+    public void addCustomIBClass(String customClass) {
+        customIBClasses.add(customClass);
+    }
+    
+    public void addCustomIBClasses(Collection<String> customClasses) {
+        customIBClasses.addAll(customClasses);
     }
     
     public File getTmpDir() {
@@ -1215,7 +1219,7 @@ public class Config {
             config.resources.add(resource);
             return this;
         }
-
+        
         public Builder targetType(TargetType targetType) {
             config.targetType = targetType;
             return this;

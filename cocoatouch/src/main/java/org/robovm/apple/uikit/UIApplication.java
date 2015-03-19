@@ -19,6 +19,7 @@ package org.robovm.apple.uikit;
 import java.io.*;
 import java.nio.*;
 import java.util.*;
+
 import org.robovm.objc.*;
 import org.robovm.objc.annotation.*;
 import org.robovm.objc.block.*;
@@ -359,7 +360,34 @@ import org.robovm.apple.corelocation.*;
             }
         });
         
+        registerCustomIBClasses();
+        
         main(argc, argv, principalClassName, delegateClassName);
+    }
+    
+    /**
+     * Registers all custom interface builder classes from the compiler generated ib.classes file, if any.
+     */
+    private static void registerCustomIBClasses() {
+        File ibClassesFile = new File(NSBundle.getMainBundle().getBundlePath() + "/ib.classes");
+        if (ibClassesFile.exists()) {
+            try {
+                try (BufferedReader reader = new BufferedReader(new FileReader(ibClassesFile))) {
+                    String line = reader.readLine();
+                    String[] customClasses = line.split(",");
+                    for (String customClass : customClasses) {
+                        try {
+                            // Register class.
+                            ObjCClass.getByName(customClass);
+                        } catch (ObjCClassNotFoundException e) {
+                            // ignore
+                        }
+                    }
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
     }
     
     /*<methods>*/

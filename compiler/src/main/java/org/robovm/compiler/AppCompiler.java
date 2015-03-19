@@ -18,6 +18,7 @@ package org.robovm.compiler;
 
 import java.io.BufferedInputStream;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStreamWriter;
@@ -39,6 +40,11 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
+import javax.xml.stream.XMLInputFactory;
+import javax.xml.stream.XMLStreamConstants;
+import javax.xml.stream.XMLStreamException;
+import javax.xml.stream.XMLStreamReader;
+
 import org.apache.commons.exec.ExecuteException;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
@@ -51,6 +57,7 @@ import org.robovm.compiler.config.Arch;
 import org.robovm.compiler.config.Config;
 import org.robovm.compiler.config.Config.Home;
 import org.robovm.compiler.config.Config.TargetType;
+import org.robovm.compiler.config.Resource.Walker;
 import org.robovm.compiler.config.OS;
 import org.robovm.compiler.config.Resource;
 import org.robovm.compiler.log.ConsoleLogger;
@@ -196,6 +203,16 @@ public class AppCompiler {
             classes.add(clazz);
         }
         
+        if (!config.getCustomIBClasses().isEmpty()) {
+            for (String s : config.getCustomIBClasses()) {
+                s = s.trim();
+                Clazz clazz = config.getClazzes().load(s.replace('.', '/'));
+                if (clazz != null) {
+                    classes.add(clazz);
+                }
+            }
+        }
+        
         if (config.getForceLinkClasses().isEmpty()) {
             if (config.getMainClass() == null) {
                 classes.addAll(config.getClazzes().listClasses());
@@ -331,6 +348,8 @@ public class AppCompiler {
     public void compile() throws IOException {
         updateCheck();
 
+        processResources(config.getInstallDir());
+        
         Set<Clazz> linkClasses = compile(getRootClasses(), true, null);
 
         if (Thread.currentThread().isInterrupted()) {
@@ -350,6 +369,65 @@ public class AppCompiler {
         config.getLogger().debug("Linked %d classes in %.2f seconds", linkClasses.size(), duration / 1000.0);
     }
 
+    private void processResources(File destDir) throws IOException {
+        for (Resource res : config.getResources()) {
+            res.walk(new Walker() {
+                @Override
+                public boolean processDir(Resource resource, File dir, File destDir) throws IOException {
+                    return true;
+                }
+                @Override
+                public void processFile(Resource resource, File file, File destDir)
+                        throws IOException {
+                    
+                    String filename = file.getName().toLowerCase();
+                    if (filename.endsWith(".storyboard") || filename.endsWith(".xib")) {
+                        try {
+                            List<String> customClasses = findCustomClassesInIBFile(file);
+                            config.addCustomIBClasses(customClasses);
+                        } catch (XMLStreamException | IOException e) {
+                            // Storyboard or Xib may be corrupt.
+                            if (config.getHome().isDev()) {
+                                e.printStackTrace();
+                            }
+                        }
+                    }
+                }
+            }, destDir);
+        }
+    }
+    
+    private List<String> findCustomClassesInIBFile(File file) throws XMLStreamException, IOException {
+        List<String> customClasses = new ArrayList<>();
+
+        try (FileInputStream fis = FileUtils.openInputStream(file)) {
+            XMLInputFactory factory = XMLInputFactory.newInstance();
+            XMLStreamReader reader = factory.createXMLStreamReader(fis);
+    
+            while (reader.hasNext()) {
+                int event = reader.next();
+    
+                switch (event) {
+                case XMLStreamConstants.START_ELEMENT:
+                    switch (reader.getLocalName()) {
+                    case "viewController":
+                    case "view":
+                    case "placeholder":
+                        String customClass = reader.getAttributeValue(null, "customClass");
+                        if (customClass != null && !customClass.trim().isEmpty()) {
+                            customClasses.add(customClass);
+                        }
+                        break;
+                    }
+                    break;
+                }
+            }
+            reader.close();
+        }
+
+        return customClasses;
+    }
+    
     public static void main(String[] args) throws IOException {
         
         AppCompiler compiler = null;
@@ -646,6 +724,11 @@ public class AppCompiler {
                     this.config.addResourcesPath(path);
                 }
             }
+            for (String customIBClass : sliceConfig.getCustomIBClasses()) {
+                if (!this.config.getCustomIBClasses().contains(customIBClass)) {
+                    this.config.addCustomIBClass(customIBClass);
+                }
+            }
         }
         ((IOSTarget) this.config.getTarget()).createIpa(slices);
     }
@@ -877,7 +960,7 @@ public class AppCompiler {
     }
     
     /**
-     * Performs a an update check. If a newer version of RoboVM is available
+     * Performs an update check. If a newer version of RoboVM is available
      * a message will be printed to the log. The update check is also used to
      * gather some anonymous usage statistics.
      */

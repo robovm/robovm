@@ -400,30 +400,30 @@ public class AppCompiler {
     private List<String> findCustomClassesInIBFile(File file) throws XMLStreamException, IOException {
         List<String> customClasses = new ArrayList<>();
 
-        FileInputStream fis = FileUtils.openInputStream(file);
-        XMLInputFactory factory = XMLInputFactory.newInstance();
-        XMLStreamReader reader = factory.createXMLStreamReader(fis);
-
-        while (reader.hasNext()) {
-            int event = reader.next();
-
-            switch (event) {
-            case XMLStreamConstants.START_ELEMENT:
-                switch (reader.getLocalName()) {
-                case "viewController":
-                case "view":
-                case "placeholder":
-                    String customClass = reader.getAttributeValue(null, "customClass");
-                    if (customClass != null && !customClass.trim().isEmpty()) {
-                        customClasses.add(customClass);
+        try (FileInputStream fis = FileUtils.openInputStream(file)) {
+            XMLInputFactory factory = XMLInputFactory.newInstance();
+            XMLStreamReader reader = factory.createXMLStreamReader(fis);
+    
+            while (reader.hasNext()) {
+                int event = reader.next();
+    
+                switch (event) {
+                case XMLStreamConstants.START_ELEMENT:
+                    switch (reader.getLocalName()) {
+                    case "viewController":
+                    case "view":
+                    case "placeholder":
+                        String customClass = reader.getAttributeValue(null, "customClass");
+                        if (customClass != null && !customClass.trim().isEmpty()) {
+                            customClasses.add(customClass);
+                        }
+                        break;
                     }
                     break;
                 }
-                break;
             }
+            reader.close();
         }
-        reader.close();
-        fis.close();
 
         return customClasses;
     }

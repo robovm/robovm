@@ -454,10 +454,10 @@ public class IOSTarget extends AbstractTarget {
     private void generateIBClassesFile(File installDir) throws IOException {
         List<String> customClasses = config.getCustomIBClasses();
         if (!customClasses.isEmpty()) {
-            FileWriter fw = new FileWriter(new File(installDir, "ib.classes"));
-            String array = StringUtils.toString(customClasses.toArray(new String[customClasses.size()]), ",");
-            fw.write(array);
-            fw.close();
+            try (FileWriter fw = new FileWriter(new File(installDir, "ib.classes"))) {
+                String array = StringUtils.toString(customClasses.toArray(new String[customClasses.size()]), ",");
+                fw.write(array);
+            }
         }
     }
 

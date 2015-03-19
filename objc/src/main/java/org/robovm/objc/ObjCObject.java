@@ -342,6 +342,7 @@ public abstract class ObjCObject extends NativeObject {
         private static final Method releaseMethod;
 
         private static final LongMap<Long> customClassToNativeSuper = new LongMap<>();
+        private static final Long ZERO_LONG = Long.valueOf(0);
 
         static {
             try {
@@ -397,13 +398,10 @@ public abstract class ObjCObject extends NativeObject {
                 }
             }
             long cls = ObjCRuntime.object_getClass(self);
-            if (logRetainRelease)
+            if (logRetainRelease) {
                 logRetainRelease(cls, self, count, true);
-            long nativeSuper = 0;
-            synchronized (customClassToNativeSuper) {
-                nativeSuper = customClassToNativeSuper.get(cls);
             }
-            Super sup = new Super(self, nativeSuper);
+            Super sup = new Super(self, getNativeSuper(cls));
             return ObjCRuntime.ptr_objc_msgSendSuper(sup.getHandle(), sel);
         }
 
@@ -416,13 +414,10 @@ public abstract class ObjCObject extends NativeObject {
                 }
             }
             long cls = ObjCRuntime.object_getClass(self);
-            if (logRetainRelease)
+            if (logRetainRelease) {
                 logRetainRelease(cls, self, count, false);
-            long nativeSuper = 0;
-            synchronized (customClassToNativeSuper) {
-                nativeSuper = customClassToNativeSuper.get(cls);
             }
-            Super sup = new Super(self, nativeSuper);
+            Super sup = new Super(self, getNativeSuper(cls));
             ObjCRuntime.void_objc_msgSendSuper(sup.getHandle(), sel);
         }
 
@@ -430,7 +425,36 @@ public abstract class ObjCObject extends NativeObject {
             synchronized (CUSTOM_OBJECTS) {
                 return CUSTOM_OBJECTS.containsKey(object.getHandle());
             }
-        }        
+        }
+
+        private static long getNativeSuper(final long cls) {
+            /*
+             * We cannot just assume that cls is a custom class that has an
+             * entry in customClassToNativeSuper. The Obj-C runtime will
+             * sometimes subclass our custom classes (e.g. when doing key-value
+             * observing) which means that retain()/release() in this class may
+             * be called with instances of such subclasses. We must walk the
+             * class hierarchy to find the actual custom class.
+             */
+            long c = cls;
+            synchronized (customClassToNativeSuper) {
+                while (c != 0) {
+                    long nativeSuper = customClassToNativeSuper.get(c, ZERO_LONG);
+                    if (nativeSuper != 0) {
+                        return nativeSuper;
+                    }
+                    c = ObjCRuntime.class_getSuperclass(c);
+                }
+            }
+            List<String> classHierarchy = new ArrayList<>();
+            c = cls;
+            while (c != 0) {
+                classHierarchy.add(VM.newStringUTF(ObjCRuntime.class_getName(c)));
+                c = ObjCRuntime.class_getSuperclass(c);
+            }
+            throw new Error("Failed to find a custom class to native super class "
+                    + "mapping for class hierarchy " + classHierarchy);
+        }
     }
 
     static class AssociatedObjectHelper {

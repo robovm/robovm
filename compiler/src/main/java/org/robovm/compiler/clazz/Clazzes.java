@@ -17,6 +17,7 @@
 package org.robovm.compiler.clazz;
 
 import java.io.File;
+import java.io.InputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -135,6 +136,16 @@ public class Clazzes {
             }
         }
         return clazz;
+    }
+
+    public List<InputStream> loadResources(String resource) throws IOException {
+        List<InputStream> arr = new ArrayList<>();
+        for (Path p : getPaths()) {
+            if (p.contains(resource)) {
+                arr.add(p.open(resource));
+            }
+        }
+        return arr;
     }
 
     public List<Path> getBootclasspathPaths() {

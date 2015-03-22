@@ -41,15 +41,20 @@ public class ZipFilePath extends AbstractPath {
     
     @Override
     public boolean contains(String file) {
-        Enumeration<? extends ZipEntry> entries = zipFile.entries();
-        while (entries.hasMoreElements()) {
-            ZipEntry entry = entries.nextElement();
-            if (entry.getName().equals(file) && !entry.isDirectory()) {
-                return true;
-            }
-        }
-        return false;
+        ZipEntry en = zipFile.getEntry(file);
+        return en != null && !en.isDirectory();
     }
+
+    @Override
+    public InputStream open(String file) throws IOException {
+        ZipEntry en = zipFile.getEntry(file);
+        if (en == null) {
+            throw new IOException();
+        }
+        return zipFile.getInputStream(en);
+    }
+    
+    
     
     @Override
     protected Set<Clazz> doListClasses() {

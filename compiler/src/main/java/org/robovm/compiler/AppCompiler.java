@@ -17,6 +17,8 @@
 package org.robovm.compiler;
 
 import java.io.BufferedInputStream;
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
@@ -45,6 +47,7 @@ import org.apache.commons.io.IOUtils;
 import org.json.simple.JSONObject;
 import org.json.simple.JSONValue;
 import org.robovm.compiler.clazz.Clazz;
+import org.robovm.compiler.clazz.Clazzes;
 import org.robovm.compiler.clazz.Dependency;
 import org.robovm.compiler.clazz.Path;
 import org.robovm.compiler.config.Arch;
@@ -241,8 +244,31 @@ public class AppCompiler {
                     compileQueue.add(depClazz);
                 }
             }
+            addMetaInfImplementations(config.getClazzes(), clazz, compiled, compileQueue);
         }
         return result;
+    }
+
+    static void addMetaInfImplementations(Clazzes clazzes, Clazz clazz, Set<Clazz> compiled, Set<Clazz> compileQueue) throws IOException {
+        String metaInfName = "META-INF/services/" + clazz.getClassName();
+        for (InputStream is : clazzes.loadResources(metaInfName)) {
+            try (BufferedReader r = new BufferedReader(new InputStreamReader(is))) {
+                for (;;) {
+                    String line = r.readLine();
+                    if (line == null) {
+                        break;                        
+                    }
+                    if (line.startsWith("#")) {
+                        continue;
+                    }
+                    String implClazzName = line.replace('.', '/');
+                    Clazz implClazz = clazzes.load(implClazzName);
+                    if (implClazz != null && !compiled.contains(implClazz)) {
+                        compileQueue.add(implClazz);
+                    }
+                }
+            }
+        }
     }
 
     public Set<Clazz> compile(Collection<Clazz> rootClasses, boolean compileDependencies, 

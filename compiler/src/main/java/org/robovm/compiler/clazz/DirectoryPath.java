@@ -17,7 +17,9 @@
 package org.robovm.compiler.clazz;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -41,6 +43,12 @@ public class DirectoryPath extends AbstractPath {
     public boolean contains(String file) {
         File f = new File(getFile(), file);
         return f.exists() && f.isFile();
+    }
+
+    @Override
+    public InputStream open(String file) throws IOException {
+        File f = new File(getFile(), file);
+        return new FileInputStream(f);
     }
     
     @Override

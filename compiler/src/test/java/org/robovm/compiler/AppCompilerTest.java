@@ -19,6 +19,7 @@ package org.robovm.compiler;
 
 import java.io.ByteArrayInputStream;
 import java.io.File;
+import java.io.FilterInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Arrays;
@@ -108,6 +109,27 @@ public class AppCompilerTest {
         assertTrue("Integer in queue" + queue, queue.contains(clazzes.load("java/lang/Integer")));
     }
     
+    @Test
+    public void allStreamsAreClosedInCaseOfFailure() throws Exception {
+        final MockPath impl1 = new MockPath("META-INF/services/java.lang.Number", "java.lang.Integer");
+        impl1.toThrow = new IOException();
+        final MockPath impl2 = new MockPath("META-INF/services/java.lang.Number", "nobody.knows.such.Class");
+        Clazzes clazzes = createClazzes(impl1, impl2);
+        Clazz interfaceClazz = clazzes.load("java/lang/Number");
+
+        Set<Clazz> compiled = new HashSet<>();
+        Set<Clazz> queue = new LinkedHashSet<>();
+        try {
+            AppCompiler.addMetaInfImplementations(clazzes, interfaceClazz, compiled, queue);
+            fail("Should throw an exception");
+        } catch (IOException ex) {
+            assertSame("Our exception is thrown", impl1.toThrow, ex);
+        }
+
+        assertTrue("First stream is closed", impl1.closed);
+        assertTrue("Second stream is closed", impl2.closed);
+    }
+    
     private static Clazzes createClazzes(final Path... paths) throws Exception {
         File home = new File(System.getProperty("java.home"));
         Config cfg = new Config() {
@@ -128,6 +150,8 @@ public class AppCompilerTest {
     private static final class MockPath implements Path {
         private final String file;
         private final String content;
+        private IOException toThrow;
+        private boolean closed;
 
         public MockPath(String file, String content) {
             this.file = file;
@@ -177,7 +201,22 @@ public class AppCompilerTest {
         @Override
         public InputStream open(String file) throws IOException {
             if (this.file.equals(file)) {
-                return new ByteArrayInputStream(this.content.getBytes("UTF-8"));
+                ByteArrayInputStream is = new ByteArrayInputStream(this.content.getBytes("UTF-8"));
+                return new FilterInputStream(is) {
+                    @Override
+                    public synchronized int read(byte[] b, int off, int len) throws IOException {
+                        if (toThrow != null) {
+                            throw toThrow;
+                        }
+                        return super.read(b, off, len);
+                    }
+                    
+                    @Override
+                    public void close() throws IOException {
+                        closed = true;
+                        super.close();
+                    }
+                };
             }
             throw new IOException();
         }

@@ -251,6 +251,7 @@ public class AppCompiler {
 
     static void addMetaInfImplementations(Clazzes clazzes, Clazz clazz, Set<Clazz> compiled, Set<Clazz> compileQueue) throws IOException {
         String metaInfName = "META-INF/services/" + clazz.getClassName();
+        IOException throwLater = null;
         for (InputStream is : clazzes.loadResources(metaInfName)) {
             try (BufferedReader r = new BufferedReader(new InputStreamReader(is))) {
                 for (;;) {
@@ -267,7 +268,12 @@ public class AppCompiler {
                         compileQueue.add(implClazz);
                     }
                 }
+            } catch (IOException ex) {
+                throwLater = ex;
             }
+        }
+        if (throwLater != null) {
+            throw throwLater;
         }
     }
 

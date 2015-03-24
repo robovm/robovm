@@ -397,6 +397,12 @@ import org.robovm.apple.audiotoolbox.*;
         }
         return null;
     }
+    
+    /**
+     * @since Available in iOS 4.0 and later.
+     */
+    @Bridge(symbol="CMSampleBufferGetImageBuffer", optional=true)
+    public native CVPixelBuffer getPixelBuffer();
     /*<methods>*/
     /**
      * @since Available in iOS 4.0 and later.

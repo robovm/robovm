@@ -185,6 +185,18 @@ public abstract class AbstractTarget implements Target {
             }
         }
      
+        if (config.getOs() == OS.macosx) {
+            if (!config.getFrameworks().contains("CoreServices")) {
+                libs.add("-framework");
+                libs.add("CoreServices");
+            }
+        } else if (config.getOs() == OS.ios) {
+            if (!config.getFrameworks().contains("MobileCoreServices")) {
+                libs.add("-framework");
+                libs.add("MobileCoreServices");
+            }
+        }
+        
         doBuild(outFile, ccArgs, objectFiles, libs);
     }
     

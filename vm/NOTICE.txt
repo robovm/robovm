@@ -59,3 +59,7 @@ http://www.sqlite.org/
 The code in rt/android/external/zlib is licensed under a BSD like license.
 Please see the NOTICE file in this directory for copyright and license
 information. http://www.zlib.net
+
+The code in rt/robovm/minizip comes from the zlib project and is licensed
+under the same BSD like license as zlib. See the entry for zlib for copyright
+and license information. http://www.zlib.net

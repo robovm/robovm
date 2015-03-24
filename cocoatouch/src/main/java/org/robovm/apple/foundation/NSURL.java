@@ -65,8 +65,8 @@ import org.robovm.apple.foundation.NSError.NSErrorPtr;
         super((SkipInit) null);
         initObject(initFileURL(file.getAbsolutePath(), isDir));
     }
-    public NSURL(java.net.URL url) throws java.net.URISyntaxException {
-        this(url.toURI());
+    public NSURL(java.net.URL url) {
+        this(url.toString());
     }
     public NSURL(java.net.URI uri) {
         this(uri.toString());

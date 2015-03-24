@@ -33,6 +33,9 @@ static Class* java_lang_Daemons = NULL;
 static Method* java_lang_Daemons_start = NULL;
 
 extern int registerCoreLibrariesJni(JNIEnv* env);
+#ifdef DARWIN
+  extern void registerJARURLProtocol(void);
+#endif
 
 static inline jint startsWith(char* s, char* prefix) {
     return s && strncasecmp(s, prefix, strlen(prefix)) == 0;
@@ -340,6 +343,11 @@ Env* rvmStartup(Options* options) {
     // Initialize the dalvik rt JNI code
     TRACE("Initializing dalvik's runtime JNI code");
     registerCoreLibrariesJni((JNIEnv*) env);
+
+#ifdef DARWIN
+    TRACE("Initializing JAR NSURLProtocol");
+    registerJARURLProtocol();
+#endif
 
     TRACE("Creating system ClassLoader");
     systemClassLoader = rvmGetSystemClassLoader(env);

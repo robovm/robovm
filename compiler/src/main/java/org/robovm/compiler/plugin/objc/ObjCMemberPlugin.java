@@ -79,6 +79,7 @@ public class ObjCMemberPlugin extends AbstractCompilerPlugin {
     public static final String NOT_IMPLEMENTED = "L" + OBJC_ANNOTATIONS_PACKAGE + "/NotImplemented;";
     public static final String IBACTION = "L" + OBJC_ANNOTATIONS_PACKAGE + "/IBAction;";
     public static final String IBOUTLET = "L" + OBJC_ANNOTATIONS_PACKAGE + "/IBOutlet;";
+    public static final String IBOUTLETCOLLECTION = "L" + OBJC_ANNOTATIONS_PACKAGE + "/IBOutletCollection;";
     public static final String NATIVE_CLASS = "L" + OBJC_ANNOTATIONS_PACKAGE + "/NativeClass;";
     public static final String TYPE_ENCODING = "L" + OBJC_ANNOTATIONS_PACKAGE + "/TypeEncoding;";
     public static final String SELECTOR = "org.robovm.objc.Selector";
@@ -89,6 +90,7 @@ public class ObjCMemberPlugin extends AbstractCompilerPlugin {
     public static final String OBJC_EXTENSIONS = "org.robovm.objc.ObjCExtensions";
     public static final String UI_RESPONDER = "org.robovm.apple.uikit.UIResponder";
     public static final String UI_EVENT = "org.robovm.apple.uikit.UIEvent";
+    public static final String NS_ARRAY = "org.robovm.apple.foundation.NSArray";
 
     private boolean initialized = false;
     private Config config;
@@ -102,6 +104,7 @@ public class ObjCMemberPlugin extends AbstractCompilerPlugin {
     private SootClass java_lang_Class = null;
     private SootClass org_robovm_apple_uikit_UIResponder = null;
     private SootClass org_robovm_apple_uikit_UIEvent = null;
+    private SootClass org_robovm_apple_foundation_NSArray = null;
     private SootMethodRef org_robovm_objc_Selector_register = null;
     private SootMethodRef org_robovm_objc_ObjCObject_getSuper = null;
     private SootFieldRef org_robovm_objc_ObjCObject_customClass = null;
@@ -306,6 +309,7 @@ public class ObjCMemberPlugin extends AbstractCompilerPlugin {
         org_robovm_objc_Selector = r.makeClassRef(SELECTOR);
         org_robovm_apple_uikit_UIResponder = r.makeClassRef(UI_RESPONDER);
         org_robovm_apple_uikit_UIEvent = r.makeClassRef(UI_EVENT);
+        org_robovm_apple_foundation_NSArray = r.makeClassRef(NS_ARRAY);
         SootClass java_lang_Object = r.makeClassRef("java.lang.Object");
         java_lang_String = r.makeClassRef("java.lang.String");
         java_lang_Class = r.makeClassRef("java.lang.Class");
@@ -384,6 +388,11 @@ public class ObjCMemberPlugin extends AbstractCompilerPlugin {
     private boolean isUIEvent(Type type) {
         return (type instanceof RefType)
                 && isAssignable(((RefType) type).getSootClass(), org_robovm_apple_uikit_UIEvent);
+    }
+
+    private boolean isNSArray(Type type) {
+        return (type instanceof RefType)
+                && isAssignable(((RefType) type).getSootClass(), org_robovm_apple_foundation_NSArray);
     }
 
     private boolean isCustomClass(SootClass cls) {
@@ -493,6 +502,25 @@ public class ObjCMemberPlugin extends AbstractCompilerPlugin {
             transformObjCProperty(annotation, "@IBOutlet", sootClass, method, selectors, overridables, extensions);
             return;
         }
+        annotation = getAnnotation(method, IBOUTLETCOLLECTION);
+        if (annotation != null) {
+            if (method.isStatic()) {
+                throw new CompilerException("Objective-C @IBOutletCollection method "
+                        + method + " must not be static.");
+            }
+            if (method.getReturnType() != VoidType.v() && !isNSArray(method.getReturnType())
+                    || method.getReturnType() == VoidType.v() && method.getParameterCount() == 1 && !isNSArray(method
+                            .getParameterType(0))) {
+                throw new CompilerException("Objective-C @IBOutletCollection method " + method
+                        + " does not have a supported signature. "
+                        + "@IBOutletCollection getter methods must return NSArray. "
+                        + "@IBOutletCollection setter methods must have 1 parameter of type NSArray.");
+            }
+
+            transformObjCProperty(annotation, "@IBOutletCollection", sootClass, method, selectors, overridables,
+                    extensions);
+            return;
+        }
     }
 
     private void transformObjCMethod(AnnotationTag annotation, SootClass sootClass,
@@ -596,7 +624,7 @@ public class ObjCMemberPlugin extends AbstractCompilerPlugin {
         sootClass.addMethod(callbackMethod);
         addCallbackAnnotation(callbackMethod);
         addBindSelectorAnnotation(callbackMethod, selectorName);
-        if (!hasAnnotation(method, TYPE_ENCODING) && (isCustomClass(sootClass) 
+        if (!hasAnnotation(method, TYPE_ENCODING) && (isCustomClass(sootClass)
                 || ObjCProtocolProxyPlugin.isObjCProxy(sootClass))) {
             String encoding = generateTypeEncoding(callbackMethod);
             try {
@@ -671,6 +699,9 @@ public class ObjCMemberPlugin extends AbstractCompilerPlugin {
         AnnotationTag annotation = getAnnotation(method, PROPERTY);
         if (annotation == null) {
             annotation = getAnnotation(method, IBOUTLET);
+        }
+        if (annotation == null) {
+            annotation = getAnnotation(method, IBOUTLETCOLLECTION);
         }
 
         String setterPropName = readStringElem(annotation, "name", "").trim();

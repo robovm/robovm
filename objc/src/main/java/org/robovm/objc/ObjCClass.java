@@ -43,6 +43,7 @@ public final class ObjCClass extends ObjCObject {
     static final Map<String, Class<? extends ObjCObject>> allObjCProxyClasses = new HashMap<>();
 
     private static final int ACC_SYNTHETIC = 0x1000;
+    private static final String CUSTOM_CLASS_NAME_PREFIX = "j_";
     
     static {
         ObjCRuntime.bind();
@@ -246,9 +247,10 @@ public final class ObjCClass extends ObjCObject {
         String name = type.getName();
         if (customClassAnno != null && customClassAnno.value().length() > 0) {
             name = customClassAnno.value();
-        } else if (name.indexOf('.') == -1) {
-            name = "." + name;
+        } else {
+            name = CUSTOM_CLASS_NAME_PREFIX + name;
         }
+        name = name.replace('.', '_');
         return name;
     }
     

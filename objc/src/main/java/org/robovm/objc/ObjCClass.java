@@ -247,8 +247,10 @@ public final class ObjCClass extends ObjCObject {
         String name = type.getName();
         if (customClassAnno != null && customClassAnno.value().length() > 0) {
             name = customClassAnno.value();
+        } else {
+            name = CUSTOM_CLASS_NAME_PREFIX + name;
         }
-        name = CUSTOM_CLASS_NAME_PREFIX + name.replace('.', '_');
+        name = name.replace('.', '_');
         return name;
     }
     

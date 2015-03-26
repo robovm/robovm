@@ -270,7 +270,7 @@ public class AppCompiler {
         String metaInfName = "META-INF/services/" + clazz.getClassName();
         IOException throwLater = null;
         for (InputStream is : clazzes.loadResources(metaInfName)) {
-            try (BufferedReader r = new BufferedReader(new InputStreamReader(is))) {
+            try (BufferedReader r = new BufferedReader(new InputStreamReader(is, "UTF8"))) {
                 for (;;) {
                     String line = r.readLine();
                     if (line == null) {

@@ -78,8 +78,8 @@
     </dependency>
     <dependency>
       <groupId>org.ow2.asm</groupId>
-      <artifactId>asm-all</artifactId>
-      <version>4.2</version>
+      <artifactId>asm-debug-all</artifactId>
+      <version>5.0.3</version>
     </dependency>
     <dependency>
       <groupId>org.robovm</groupId>

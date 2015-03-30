@@ -1,5 +1,6 @@
 *~
 *.o
+*.iml
 a.out
 *.class
 .*

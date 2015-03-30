@@ -1311,7 +1311,7 @@ void _rvmHookClassLoaded(Env* env, Class* clazz, void* classInfo) {
     // check if there's a filter for that class
     rvmLockMutex(&classFilterMutex);
     for(ClassFilter* f = classFilters; f; f = f->next) {
-        if(!strcmp(f->className, clazz->name)) {
+        if(!strcmp(f->className, clazz->name)) {            
             if(env->currentThread) {
                 javaThread = env->currentThread->threadObj;
                 thread = env->currentThread;
@@ -1333,6 +1333,15 @@ void _rvmHookClassLoaded(Env* env, Class* clazz, void* classInfo) {
             javaThread = NULL;
             thread = NULL;
             callStackPayloadSize = 0;
+        }
+
+        if (IS_DEBUG_ENABLED) {
+            DEBUGF("Suspending thread %p with id %u due to class load event %s", env->currentThread,
+                env->currentThread->threadId, clazz->name);
+        }
+    } else {
+        if (IS_DEBUG_ENABLED) {
+            DEBUGF("Not suspending thread due to class load event %s", clazz->name);
         }
     }
 

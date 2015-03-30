@@ -50,6 +50,6 @@ import org.robovm.apple.coregraphics.*;
     /*<members>*//*</members>*/
     /*<methods>*/
     @NotImplemented("playableContentManager:initiatePlaybackOfContentItemAtIndexPath:completionHandler:")
-    public void initiatePlayback(MPPlayableContentManager contentManager, NSIndexPath indexPath, @Block VoidBlock1<NSError> completionHandler) { throw new UnsupportedOperationException(); }
+    public void initiatePlayback(MPPlayableContentManager contentManager, NSIndexPath indexPath, @Block VoidBlock1<NSError> completionHandler) {}
     /*</methods>*/
 }

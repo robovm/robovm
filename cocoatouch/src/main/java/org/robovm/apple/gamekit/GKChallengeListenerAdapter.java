@@ -52,21 +52,21 @@ import org.robovm.apple.uikit.*;
      * @since Available in iOS 7.0 and later.
      */
     @NotImplemented("player:wantsToPlayChallenge:")
-    public void wantsToPlayChallenge(GKPlayer player, GKChallenge challenge) { throw new UnsupportedOperationException(); }
+    public void wantsToPlayChallenge(GKPlayer player, GKChallenge challenge) {}
     /**
      * @since Available in iOS 7.0 and later.
      */
     @NotImplemented("player:didReceiveChallenge:")
-    public void didReceiveChallenge(GKPlayer player, GKChallenge challenge) { throw new UnsupportedOperationException(); }
+    public void didReceiveChallenge(GKPlayer player, GKChallenge challenge) {}
     /**
      * @since Available in iOS 7.0 and later.
      */
     @NotImplemented("player:didCompleteChallenge:issuedByFriend:")
-    public void didCompleteChallenge(GKPlayer player, GKChallenge challenge, GKPlayer friendPlayer) { throw new UnsupportedOperationException(); }
+    public void didCompleteChallenge(GKPlayer player, GKChallenge challenge, GKPlayer friendPlayer) {}
     /**
      * @since Available in iOS 7.0 and later.
      */
     @NotImplemented("player:issuedChallengeWasCompleted:byFriend:")
-    public void issuedChallengeWasCompleted(GKPlayer player, GKChallenge challenge, GKPlayer friendPlayer) { throw new UnsupportedOperationException(); }
+    public void issuedChallengeWasCompleted(GKPlayer player, GKChallenge challenge, GKPlayer friendPlayer) {}
     /*</methods>*/
 }

@@ -56,8 +56,8 @@ import org.robovm.apple.scenekit.*;
     /*<members>*//*</members>*/
     /*<methods>*/
     @NotImplemented("didBeginContact:")
-    public void didBeginContact(SKPhysicsContact contact) { throw new UnsupportedOperationException(); }
+    public void didBeginContact(SKPhysicsContact contact) {}
     @NotImplemented("didEndContact:")
-    public void didEndContact(SKPhysicsContact contact) { throw new UnsupportedOperationException(); }
+    public void didEndContact(SKPhysicsContact contact) {}
     /*</methods>*/
 }

@@ -55,6 +55,6 @@ import org.robovm.apple.opengles.*;
     /*<members>*//*</members>*/
     /*<methods>*/
     @NotImplemented("program:handleError:")
-    public void handleError(SCNProgram program, NSError error) { throw new UnsupportedOperationException(); }
+    public void handleError(SCNProgram program, NSError error) {}
     /*</methods>*/
 }

@@ -49,6 +49,6 @@ import org.robovm.apple.uikit.*;
     /*<members>*//*</members>*/
     /*<methods>*/
     @NotImplemented("leaderboardViewControllerDidFinish:")
-    public void didFinish(GKLeaderboardViewController viewController) { throw new UnsupportedOperationException(); }
+    public void didFinish(GKLeaderboardViewController viewController) {}
     /*</methods>*/
 }

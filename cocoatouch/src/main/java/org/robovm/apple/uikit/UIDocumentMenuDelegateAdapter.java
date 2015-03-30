@@ -54,8 +54,8 @@ import org.robovm.apple.corelocation.*;
     /*<members>*//*</members>*/
     /*<methods>*/
     @NotImplemented("documentMenu:didPickDocumentPicker:")
-    public void didPickDocumentPicker(UIDocumentMenuViewController documentMenu, UIDocumentPickerViewController documentPicker) { throw new UnsupportedOperationException(); }
+    public void didPickDocumentPicker(UIDocumentMenuViewController documentMenu, UIDocumentPickerViewController documentPicker) {}
     @NotImplemented("documentMenuWasCancelled:")
-    public void wasCancelled(UIDocumentMenuViewController documentMenu) { throw new UnsupportedOperationException(); }
+    public void wasCancelled(UIDocumentMenuViewController documentMenu) {}
     /*</methods>*/
 }

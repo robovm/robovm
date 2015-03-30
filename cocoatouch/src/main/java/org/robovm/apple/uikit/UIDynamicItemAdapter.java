@@ -50,15 +50,15 @@ import org.robovm.apple.corelocation.*;
     /*<constructors>*//*</constructors>*/
     /*<properties>*/
     @NotImplemented("center")
-    public @ByVal CGPoint getCenter() { throw new UnsupportedOperationException(); }
+    public @ByVal CGPoint getCenter() { return null; }
     @NotImplemented("setCenter:")
-    public void setCenter(@ByVal CGPoint v) { throw new UnsupportedOperationException(); }
+    public void setCenter(@ByVal CGPoint v) {}
     @NotImplemented("bounds")
-    public @ByVal CGRect getBounds() { throw new UnsupportedOperationException(); }
+    public @ByVal CGRect getBounds() { return null; }
     @NotImplemented("transform")
-    public @ByVal CGAffineTransform getTransform() { throw new UnsupportedOperationException(); }
+    public @ByVal CGAffineTransform getTransform() { return null; }
     @NotImplemented("setTransform:")
-    public void setTransform(@ByVal CGAffineTransform v) { throw new UnsupportedOperationException(); }
+    public void setTransform(@ByVal CGAffineTransform v) {}
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/

@@ -48,12 +48,12 @@ import org.robovm.apple.foundation.*;
     /*<members>*//*</members>*/
     /*<methods>*/
     @NotImplemented("homeManagerDidUpdateHomes:")
-    public void didUpdateHomes(HMHomeManager manager) { throw new UnsupportedOperationException(); }
+    public void didUpdateHomes(HMHomeManager manager) {}
     @NotImplemented("homeManagerDidUpdatePrimaryHome:")
-    public void didUpdatePrimaryHome(HMHomeManager manager) { throw new UnsupportedOperationException(); }
+    public void didUpdatePrimaryHome(HMHomeManager manager) {}
     @NotImplemented("homeManager:didAddHome:")
-    public void didAddHome(HMHomeManager manager, HMHome home) { throw new UnsupportedOperationException(); }
+    public void didAddHome(HMHomeManager manager, HMHome home) {}
     @NotImplemented("homeManager:didRemoveHome:")
-    public void didRemoveHome(HMHomeManager manager, HMHome home) { throw new UnsupportedOperationException(); }
+    public void didRemoveHome(HMHomeManager manager, HMHome home) {}
     /*</methods>*/
 }

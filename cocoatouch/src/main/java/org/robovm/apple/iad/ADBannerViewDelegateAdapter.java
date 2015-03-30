@@ -56,14 +56,14 @@ import org.robovm.apple.avkit.*;
      * @since Available in iOS 5.0 and later.
      */
     @NotImplemented("bannerViewWillLoadAd:")
-    public void willLoadAd(ADBannerView banner) { throw new UnsupportedOperationException(); }
+    public void willLoadAd(ADBannerView banner) {}
     @NotImplemented("bannerViewDidLoadAd:")
-    public void didLoadAd(ADBannerView banner) { throw new UnsupportedOperationException(); }
+    public void didLoadAd(ADBannerView banner) {}
     @NotImplemented("bannerView:didFailToReceiveAdWithError:")
-    public void didFailToReceiveAd(ADBannerView banner, NSError error) { throw new UnsupportedOperationException(); }
+    public void didFailToReceiveAd(ADBannerView banner, NSError error) {}
     @NotImplemented("bannerViewActionShouldBegin:willLeaveApplication:")
-    public boolean actionShouldBegin(ADBannerView banner, boolean willLeave) { throw new UnsupportedOperationException(); }
+    public boolean actionShouldBegin(ADBannerView banner, boolean willLeave) { return false; }
     @NotImplemented("bannerViewActionDidFinish:")
-    public void actionDidFinish(ADBannerView banner) { throw new UnsupportedOperationException(); }
+    public void actionDidFinish(ADBannerView banner) {}
     /*</methods>*/
 }

@@ -49,6 +49,6 @@ import org.robovm.apple.uikit.*;
     /*<members>*//*</members>*/
     /*<methods>*/
     @NotImplemented("messageComposeViewController:didFinishWithResult:")
-    public void didFinish(MFMessageComposeViewController controller, MessageComposeResult result) { throw new UnsupportedOperationException(); }
+    public void didFinish(MFMessageComposeViewController controller, MessageComposeResult result) {}
     /*</methods>*/
 }

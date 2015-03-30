@@ -57,11 +57,11 @@ import org.robovm.apple.corelocation.*;
      * @since Available in iOS 7.0 and later.
      */
     @NotImplemented("imageForBounds:textContainer:characterIndex:")
-    public UIImage getImageForBounds(@ByVal CGRect imageBounds, NSTextContainer textContainer, @MachineSizedUInt long charIndex) { throw new UnsupportedOperationException(); }
+    public UIImage getImageForBounds(@ByVal CGRect imageBounds, NSTextContainer textContainer, @MachineSizedUInt long charIndex) { return null; }
     /**
      * @since Available in iOS 7.0 and later.
      */
     @NotImplemented("attachmentBoundsForTextContainer:proposedLineFragment:glyphPosition:characterIndex:")
-    public @ByVal CGRect getAttachmentBounds(NSTextContainer textContainer, @ByVal CGRect lineFrag, @ByVal CGPoint position, @MachineSizedUInt long charIndex) { throw new UnsupportedOperationException(); }
+    public @ByVal CGRect getAttachmentBounds(NSTextContainer textContainer, @ByVal CGRect lineFrag, @ByVal CGPoint position, @MachineSizedUInt long charIndex) { return null; }
     /*</methods>*/
 }

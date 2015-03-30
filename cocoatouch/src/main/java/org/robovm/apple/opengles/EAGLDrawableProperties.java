@@ -83,7 +83,7 @@ import org.robovm.apple.foundation.*;
     /*</marshalers>*/
 
     /*<constructors>*/
-     EAGLDrawableProperties(NSDictionary<NSString, NSObject> data) {
+    EAGLDrawableProperties(NSDictionary<NSString, NSObject> data) {
         super(data);
     }
     public EAGLDrawableProperties() {}

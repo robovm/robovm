@@ -54,28 +54,28 @@ import org.robovm.apple.corelocation.*;
     /*<members>*//*</members>*/
     /*<methods>*/
     @NotImplemented("navigationController:willShowViewController:animated:")
-    public void willShowViewController(UINavigationController navigationController, UIViewController viewController, boolean animated) { throw new UnsupportedOperationException(); }
+    public void willShowViewController(UINavigationController navigationController, UIViewController viewController, boolean animated) {}
     @NotImplemented("navigationController:didShowViewController:animated:")
-    public void didShowViewController(UINavigationController navigationController, UIViewController viewController, boolean animated) { throw new UnsupportedOperationException(); }
+    public void didShowViewController(UINavigationController navigationController, UIViewController viewController, boolean animated) {}
     /**
      * @since Available in iOS 7.0 and later.
      */
     @NotImplemented("navigationControllerSupportedInterfaceOrientations:")
-    public UIInterfaceOrientationMask getSupportedInterfaceOrientations(UINavigationController navigationController) { throw new UnsupportedOperationException(); }
+    public UIInterfaceOrientationMask getSupportedInterfaceOrientations(UINavigationController navigationController) { return null; }
     /**
      * @since Available in iOS 7.0 and later.
      */
     @NotImplemented("navigationControllerPreferredInterfaceOrientationForPresentation:")
-    public UIInterfaceOrientation getPreferredInterfaceOrientation(UINavigationController navigationController) { throw new UnsupportedOperationException(); }
+    public UIInterfaceOrientation getPreferredInterfaceOrientation(UINavigationController navigationController) { return null; }
     /**
      * @since Available in iOS 7.0 and later.
      */
     @NotImplemented("navigationController:interactionControllerForAnimationController:")
-    public UIViewControllerInteractiveTransitioning getInteractionController(UINavigationController navigationController, UIViewControllerAnimatedTransitioning animationController) { throw new UnsupportedOperationException(); }
+    public UIViewControllerInteractiveTransitioning getInteractionController(UINavigationController navigationController, UIViewControllerAnimatedTransitioning animationController) { return null; }
     /**
      * @since Available in iOS 7.0 and later.
      */
     @NotImplemented("navigationController:animationControllerForOperation:fromViewController:toViewController:")
-    public UIViewControllerAnimatedTransitioning getAnimationController(UINavigationController navigationController, UINavigationControllerOperation operation, UIViewController fromVC, UIViewController toVC) { throw new UnsupportedOperationException(); }
+    public UIViewControllerAnimatedTransitioning getAnimationController(UINavigationController navigationController, UINavigationControllerOperation operation, UIViewController fromVC, UIViewController toVC) { return null; }
     /*</methods>*/
 }

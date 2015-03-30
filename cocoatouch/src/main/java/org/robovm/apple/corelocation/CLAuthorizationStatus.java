@@ -41,19 +41,19 @@ public enum /*<name>*/CLAuthorizationStatus/*</name>*/ implements ValuedEnum {
     Restricted(1L),
     Denied(2L),
     /**
-     * @since Available in iOS 2.0 and later.
-     * @deprecated Deprecated in iOS 8.0.
-     */
-    @Deprecated
-    Authorized(3L),
-    /**
      * @since Available in iOS 8.0 and later.
      */
     AuthorizedAlways(3L),
     /**
      * @since Available in iOS 8.0 and later.
      */
-    AuthorizedWhenInUse(4L);
+    AuthorizedWhenInUse(4L),
+    /**
+     * @since Available in iOS 2.0 and later.
+     * @deprecated Deprecated in iOS 8.0.
+     */
+    @Deprecated
+    Authorized(3L);
     /*</values>*/
 
     /*<bind>*/

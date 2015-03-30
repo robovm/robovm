@@ -60,11 +60,11 @@ import org.robovm.apple.mediatoolbox.*;
      * @since Available in iOS 6.0 and later.
      */
     @NotImplemented("outputMediaDataWillChange:")
-    public void mediaDataWillChange(AVPlayerItemOutput sender) { throw new UnsupportedOperationException(); }
+    public void mediaDataWillChange(AVPlayerItemOutput sender) {}
     /**
      * @since Available in iOS 6.0 and later.
      */
     @NotImplemented("outputSequenceWasFlushed:")
-    public void sequenceWasFlushed(AVPlayerItemOutput output) { throw new UnsupportedOperationException(); }
+    public void sequenceWasFlushed(AVPlayerItemOutput output) {}
     /*</methods>*/
 }

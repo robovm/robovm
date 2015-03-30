@@ -35,7 +35,7 @@ import org.robovm.apple.corefoundation.*;
 @Marshaler(CTCallState.Marshaler.class)
 /*<annotations>*/@Library("CoreTelephony")/*</annotations>*/
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/CTCallState/*</name>*/ 
-    extends /*<extends>*/Object/*</extends>*/ 
+    extends /*<extends>*/CocoaUtility/*</extends>*/ 
     /*<implements>*//*</implements>*/ {
 
     public static class Marshaler {

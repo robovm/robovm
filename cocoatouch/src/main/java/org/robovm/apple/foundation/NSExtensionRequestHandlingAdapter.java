@@ -55,6 +55,6 @@ import org.robovm.apple.dispatch.*;
     /*<members>*//*</members>*/
     /*<methods>*/
     @NotImplemented("beginRequestWithExtensionContext:")
-    public void beginRequest(NSExtensionContext context) { throw new UnsupportedOperationException(); }
+    public void beginRequest(NSExtensionContext context) {}
     /*</methods>*/
 }

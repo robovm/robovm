@@ -57,56 +57,56 @@ import org.robovm.apple.corelocation.*;
      * @since Available in iOS 7.0 and later.
      */
     @NotImplemented("layoutManager:shouldGenerateGlyphs:properties:characterIndexes:font:forGlyphRange:")
-    public @MachineSizedUInt long shouldGenerateGlyphs(NSLayoutManager layoutManager, ShortPtr glyphs, MachineSizedSIntPtr props, MachineSizedUIntPtr charIndexes, UIFont aFont, @ByVal NSRange glyphRange) { throw new UnsupportedOperationException(); }
+    public @MachineSizedUInt long shouldGenerateGlyphs(NSLayoutManager layoutManager, ShortPtr glyphs, MachineSizedSIntPtr props, MachineSizedUIntPtr charIndexes, UIFont aFont, @ByVal NSRange glyphRange) { return 0; }
     /**
      * @since Available in iOS 7.0 and later.
      */
     @NotImplemented("layoutManager:lineSpacingAfterGlyphAtIndex:withProposedLineFragmentRect:")
-    public @MachineSizedFloat double getLineSpacingAfterGlyph(NSLayoutManager layoutManager, @MachineSizedUInt long glyphIndex, @ByVal CGRect rect) { throw new UnsupportedOperationException(); }
+    public @MachineSizedFloat double getLineSpacingAfterGlyph(NSLayoutManager layoutManager, @MachineSizedUInt long glyphIndex, @ByVal CGRect rect) { return 0; }
     /**
      * @since Available in iOS 7.0 and later.
      */
     @NotImplemented("layoutManager:paragraphSpacingBeforeGlyphAtIndex:withProposedLineFragmentRect:")
-    public @MachineSizedFloat double getParagraphSpacingBeforeGlyph(NSLayoutManager layoutManager, @MachineSizedUInt long glyphIndex, @ByVal CGRect rect) { throw new UnsupportedOperationException(); }
+    public @MachineSizedFloat double getParagraphSpacingBeforeGlyph(NSLayoutManager layoutManager, @MachineSizedUInt long glyphIndex, @ByVal CGRect rect) { return 0; }
     /**
      * @since Available in iOS 7.0 and later.
      */
     @NotImplemented("layoutManager:paragraphSpacingAfterGlyphAtIndex:withProposedLineFragmentRect:")
-    public @MachineSizedFloat double getParagraphSpacingAfterGlyph(NSLayoutManager layoutManager, @MachineSizedUInt long glyphIndex, @ByVal CGRect rect) { throw new UnsupportedOperationException(); }
+    public @MachineSizedFloat double getParagraphSpacingAfterGlyph(NSLayoutManager layoutManager, @MachineSizedUInt long glyphIndex, @ByVal CGRect rect) { return 0; }
     /**
      * @since Available in iOS 7.0 and later.
      */
     @NotImplemented("layoutManager:shouldUseAction:forControlCharacterAtIndex:")
-    public NSControlCharacterAction shouldUseAction(NSLayoutManager layoutManager, NSControlCharacterAction action, @MachineSizedUInt long charIndex) { throw new UnsupportedOperationException(); }
+    public NSControlCharacterAction shouldUseAction(NSLayoutManager layoutManager, NSControlCharacterAction action, @MachineSizedUInt long charIndex) { return null; }
     /**
      * @since Available in iOS 7.0 and later.
      */
     @NotImplemented("layoutManager:shouldBreakLineByWordBeforeCharacterAtIndex:")
-    public boolean shouldBreakLineByWordBeforeCharacter(NSLayoutManager layoutManager, @MachineSizedUInt long charIndex) { throw new UnsupportedOperationException(); }
+    public boolean shouldBreakLineByWordBeforeCharacter(NSLayoutManager layoutManager, @MachineSizedUInt long charIndex) { return false; }
     /**
      * @since Available in iOS 7.0 and later.
      */
     @NotImplemented("layoutManager:shouldBreakLineByHyphenatingBeforeCharacterAtIndex:")
-    public boolean shouldBreakLineByHyphenatingBeforeCharacter(NSLayoutManager layoutManager, @MachineSizedUInt long charIndex) { throw new UnsupportedOperationException(); }
+    public boolean shouldBreakLineByHyphenatingBeforeCharacter(NSLayoutManager layoutManager, @MachineSizedUInt long charIndex) { return false; }
     /**
      * @since Available in iOS 7.0 and later.
      */
     @NotImplemented("layoutManager:boundingBoxForControlGlyphAtIndex:forTextContainer:proposedLineFragment:glyphPosition:characterIndex:")
-    public @ByVal CGRect getBoundingBoxForControlGlyph(NSLayoutManager layoutManager, @MachineSizedUInt long glyphIndex, NSTextContainer textContainer, @ByVal CGRect proposedRect, @ByVal CGPoint glyphPosition, @MachineSizedUInt long charIndex) { throw new UnsupportedOperationException(); }
+    public @ByVal CGRect getBoundingBoxForControlGlyph(NSLayoutManager layoutManager, @MachineSizedUInt long glyphIndex, NSTextContainer textContainer, @ByVal CGRect proposedRect, @ByVal CGPoint glyphPosition, @MachineSizedUInt long charIndex) { return null; }
     /**
      * @since Available in iOS 7.0 and later.
      */
     @NotImplemented("layoutManagerDidInvalidateLayout:")
-    public void didInvalidateLayout(NSLayoutManager sender) { throw new UnsupportedOperationException(); }
+    public void didInvalidateLayout(NSLayoutManager sender) {}
     /**
      * @since Available in iOS 7.0 and later.
      */
     @NotImplemented("layoutManager:didCompleteLayoutForTextContainer:atEnd:")
-    public void didCompleteLayout(NSLayoutManager layoutManager, NSTextContainer textContainer, boolean layoutFinishedFlag) { throw new UnsupportedOperationException(); }
+    public void didCompleteLayout(NSLayoutManager layoutManager, NSTextContainer textContainer, boolean layoutFinishedFlag) {}
     /**
      * @since Available in iOS 7.0 and later.
      */
     @NotImplemented("layoutManager:textContainer:didChangeGeometryFromSize:")
-    public void didChangeGeometry(NSLayoutManager layoutManager, NSTextContainer textContainer, @ByVal CGSize oldSize) { throw new UnsupportedOperationException(); }
+    public void didChangeGeometry(NSLayoutManager layoutManager, NSTextContainer textContainer, @ByVal CGSize oldSize) {}
     /*</methods>*/
 }

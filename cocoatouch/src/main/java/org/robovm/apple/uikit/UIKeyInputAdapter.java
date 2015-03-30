@@ -54,10 +54,10 @@ import org.robovm.apple.corelocation.*;
     /*<members>*//*</members>*/
     /*<methods>*/
     @NotImplemented("hasText")
-    public boolean hasText() { throw new UnsupportedOperationException(); }
+    public boolean hasText() { return false; }
     @NotImplemented("insertText:")
-    public void insertText(String text) { throw new UnsupportedOperationException(); }
+    public void insertText(String text) {}
     @NotImplemented("deleteBackward")
-    public void deleteBackward() { throw new UnsupportedOperationException(); }
+    public void deleteBackward() {}
     /*</methods>*/
 }

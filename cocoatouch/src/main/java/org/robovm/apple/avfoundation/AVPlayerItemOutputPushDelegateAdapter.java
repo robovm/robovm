@@ -57,6 +57,6 @@ import org.robovm.apple.mediatoolbox.*;
     /*<members>*//*</members>*/
     /*<methods>*/
     @NotImplemented("outputSequenceWasFlushed:")
-    public void wasFlushed(AVPlayerItemOutput output) { throw new UnsupportedOperationException(); }
+    public void wasFlushed(AVPlayerItemOutput output) {}
     /*</methods>*/
 }

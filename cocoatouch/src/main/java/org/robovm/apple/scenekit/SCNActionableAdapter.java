@@ -55,20 +55,20 @@ import org.robovm.apple.opengles.*;
     /*<members>*//*</members>*/
     /*<methods>*/
     @NotImplemented("runAction:")
-    public void runAction(SCNAction action) { throw new UnsupportedOperationException(); }
+    public void runAction(SCNAction action) {}
     @NotImplemented("runAction:completionHandler:")
-    public void runAction(SCNAction action, @Block Runnable block) { throw new UnsupportedOperationException(); }
+    public void runAction(SCNAction action, @Block Runnable block) {}
     @NotImplemented("runAction:forKey:")
-    public void runAction(SCNAction action, String key) { throw new UnsupportedOperationException(); }
+    public void runAction(SCNAction action, String key) {}
     @NotImplemented("runAction:forKey:completionHandler:")
-    public void runAction(SCNAction action, String key, @Block Runnable block) { throw new UnsupportedOperationException(); }
+    public void runAction(SCNAction action, String key, @Block Runnable block) {}
     @NotImplemented("hasActions")
-    public boolean hasActions() { throw new UnsupportedOperationException(); }
+    public boolean hasActions() { return false; }
     @NotImplemented("actionForKey:")
-    public SCNAction getAction(String key) { throw new UnsupportedOperationException(); }
+    public SCNAction getAction(String key) { return null; }
     @NotImplemented("removeActionForKey:")
-    public void removeAction(String key) { throw new UnsupportedOperationException(); }
+    public void removeAction(String key) {}
     @NotImplemented("removeAllActions")
-    public void removeAllActions() { throw new UnsupportedOperationException(); }
+    public void removeAllActions() {}
     /*</methods>*/
 }

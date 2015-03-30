@@ -45,21 +45,21 @@ import org.robovm.apple.dispatch.*;
     /*<constructors>*//*</constructors>*/
     /*<properties>*/
     @NotImplemented("device")
-    public MTLDevice getDevice() { throw new UnsupportedOperationException(); }
+    public MTLDevice getDevice() { return null; }
     @NotImplemented("label")
-    public String getLabel() { throw new UnsupportedOperationException(); }
+    public String getLabel() { return null; }
     @NotImplemented("setLabel:")
-    public void setLabel(String v) { throw new UnsupportedOperationException(); }
+    public void setLabel(String v) {}
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
     @NotImplemented("endEncoding")
-    public void endEncoding() { throw new UnsupportedOperationException(); }
+    public void endEncoding() {}
     @NotImplemented("insertDebugSignpost:")
-    public void insertDebugSignpost(String string) { throw new UnsupportedOperationException(); }
+    public void insertDebugSignpost(String string) {}
     @NotImplemented("pushDebugGroup:")
-    public void pushDebugGroup(String string) { throw new UnsupportedOperationException(); }
+    public void pushDebugGroup(String string) {}
     @NotImplemented("popDebugGroup")
-    public void popDebugGroup() { throw new UnsupportedOperationException(); }
+    public void popDebugGroup() {}
     /*</methods>*/
 }

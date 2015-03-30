@@ -51,19 +51,19 @@ import org.robovm.apple.opengles.*;
     /*<constructors>*//*</constructors>*/
     /*<properties>*/
     @NotImplemented("shaderModifiers")
-    public @org.robovm.rt.bro.annotation.Marshaler(SCNShaderModifierEntryPoint.AsStringMapMarshaler.class) Map<SCNShaderModifierEntryPoint, String> getShaderModifiers() { throw new UnsupportedOperationException(); }
+    public @org.robovm.rt.bro.annotation.Marshaler(SCNShaderModifierEntryPoint.AsStringMapMarshaler.class) Map<SCNShaderModifierEntryPoint, String> getShaderModifiers() { return null; }
     @NotImplemented("setShaderModifiers:")
-    public void setShaderModifiers(@org.robovm.rt.bro.annotation.Marshaler(SCNShaderModifierEntryPoint.AsStringMapMarshaler.class) Map<SCNShaderModifierEntryPoint, String> v) { throw new UnsupportedOperationException(); }
+    public void setShaderModifiers(@org.robovm.rt.bro.annotation.Marshaler(SCNShaderModifierEntryPoint.AsStringMapMarshaler.class) Map<SCNShaderModifierEntryPoint, String> v) {}
     @NotImplemented("program")
-    public SCNProgram getProgram() { throw new UnsupportedOperationException(); }
+    public SCNProgram getProgram() { return null; }
     @NotImplemented("setProgram:")
-    public void setProgram(SCNProgram v) { throw new UnsupportedOperationException(); }
+    public void setProgram(SCNProgram v) {}
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
     @NotImplemented("handleBindingOfSymbol:usingBlock:")
-    public void handleBindingOfSymbol(String symbol, @Block VoidBlock4<Integer, Integer, SCNNode, SCNRenderer> block) { throw new UnsupportedOperationException(); }
+    public void handleBindingOfSymbol(String symbol, @Block VoidBlock4<Integer, Integer, SCNNode, SCNRenderer> block) {}
     @NotImplemented("handleUnbindingOfSymbol:usingBlock:")
-    public void handleUnbindingOfSymbol(String symbol, @Block VoidBlock4<Integer, Integer, SCNNode, SCNRenderer> block) { throw new UnsupportedOperationException(); }
+    public void handleUnbindingOfSymbol(String symbol, @Block VoidBlock4<Integer, Integer, SCNNode, SCNRenderer> block) {}
     /*</methods>*/
 }

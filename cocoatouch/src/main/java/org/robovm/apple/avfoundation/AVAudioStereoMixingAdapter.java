@@ -53,9 +53,9 @@ import org.robovm.apple.mediatoolbox.*;
     /*<constructors>*//*</constructors>*/
     /*<properties>*/
     @NotImplemented("pan")
-    public float getPan() { throw new UnsupportedOperationException(); }
+    public float getPan() { return 0; }
     @NotImplemented("setPan:")
-    public void setPan(float v) { throw new UnsupportedOperationException(); }
+    public void setPan(float v) {}
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/

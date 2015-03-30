@@ -54,8 +54,8 @@ import org.robovm.apple.corelocation.*;
     /*<members>*//*</members>*/
     /*<methods>*/
     @NotImplemented("imagePickerController:didFinishPickingMediaWithInfo:")
-    public void didFinishPickingMedia(UIImagePickerController picker, UIImagePickerControllerEditingInfo info) { throw new UnsupportedOperationException(); }
+    public void didFinishPickingMedia(UIImagePickerController picker, UIImagePickerControllerEditingInfo info) {}
     @NotImplemented("imagePickerControllerDidCancel:")
-    public void didCancel(UIImagePickerController picker) { throw new UnsupportedOperationException(); }
+    public void didCancel(UIImagePickerController picker) {}
     /*</methods>*/
 }

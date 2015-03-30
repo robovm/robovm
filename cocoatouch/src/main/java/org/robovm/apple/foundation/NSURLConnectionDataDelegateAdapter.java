@@ -55,18 +55,18 @@ import org.robovm.apple.dispatch.*;
     /*<members>*//*</members>*/
     /*<methods>*/
     @NotImplemented("connection:willSendRequest:redirectResponse:")
-    public NSURLRequest willSendRequest(NSURLConnection connection, NSURLRequest request, NSURLResponse response) { throw new UnsupportedOperationException(); }
+    public NSURLRequest willSendRequest(NSURLConnection connection, NSURLRequest request, NSURLResponse response) { return null; }
     @NotImplemented("connection:didReceiveResponse:")
-    public void didReceiveResponse(NSURLConnection connection, NSURLResponse response) { throw new UnsupportedOperationException(); }
+    public void didReceiveResponse(NSURLConnection connection, NSURLResponse response) {}
     @NotImplemented("connection:didReceiveData:")
-    public void didReceiveData(NSURLConnection connection, NSData data) { throw new UnsupportedOperationException(); }
+    public void didReceiveData(NSURLConnection connection, NSData data) {}
     @NotImplemented("connection:needNewBodyStream:")
-    public NSInputStream needNewBodyStream(NSURLConnection connection, NSURLRequest request) { throw new UnsupportedOperationException(); }
+    public NSInputStream needNewBodyStream(NSURLConnection connection, NSURLRequest request) { return null; }
     @NotImplemented("connection:didSendBodyData:totalBytesWritten:totalBytesExpectedToWrite:")
-    public void didSendBodyData(NSURLConnection connection, @MachineSizedSInt long bytesWritten, @MachineSizedSInt long totalBytesWritten, @MachineSizedSInt long totalBytesExpectedToWrite) { throw new UnsupportedOperationException(); }
+    public void didSendBodyData(NSURLConnection connection, @MachineSizedSInt long bytesWritten, @MachineSizedSInt long totalBytesWritten, @MachineSizedSInt long totalBytesExpectedToWrite) {}
     @NotImplemented("connection:willCacheResponse:")
-    public NSCachedURLResponse willCacheResponse(NSURLConnection connection, NSCachedURLResponse cachedResponse) { throw new UnsupportedOperationException(); }
+    public NSCachedURLResponse willCacheResponse(NSURLConnection connection, NSCachedURLResponse cachedResponse) { return null; }
     @NotImplemented("connectionDidFinishLoading:")
-    public void didFinishLoading(NSURLConnection connection) { throw new UnsupportedOperationException(); }
+    public void didFinishLoading(NSURLConnection connection) {}
     /*</methods>*/
 }

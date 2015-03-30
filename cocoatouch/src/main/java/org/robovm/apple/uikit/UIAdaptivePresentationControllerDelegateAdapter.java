@@ -54,8 +54,8 @@ import org.robovm.apple.corelocation.*;
     /*<members>*//*</members>*/
     /*<methods>*/
     @NotImplemented("adaptivePresentationStyleForPresentationController:")
-    public UIModalPresentationStyle getAdaptivePresentationStyle(UIPresentationController controller) { throw new UnsupportedOperationException(); }
+    public UIModalPresentationStyle getAdaptivePresentationStyle(UIPresentationController controller) { return null; }
     @NotImplemented("presentationController:viewControllerForAdaptivePresentationStyle:")
-    public UIViewController getViewController(UIPresentationController controller, UIModalPresentationStyle style) { throw new UnsupportedOperationException(); }
+    public UIViewController getViewController(UIPresentationController controller, UIModalPresentationStyle style) { return null; }
     /*</methods>*/
 }

@@ -52,40 +52,40 @@ import org.robovm.apple.uikit.*;
      * @since Available in iOS 4.1 and later.
      */
     @NotImplemented("matchmakerViewControllerWasCancelled:")
-    public void wasCancelled(GKMatchmakerViewController viewController) { throw new UnsupportedOperationException(); }
+    public void wasCancelled(GKMatchmakerViewController viewController) {}
     /**
      * @since Available in iOS 4.1 and later.
      */
     @NotImplemented("matchmakerViewController:didFailWithError:")
-    public void didFail(GKMatchmakerViewController viewController, NSError error) { throw new UnsupportedOperationException(); }
+    public void didFail(GKMatchmakerViewController viewController, NSError error) {}
     /**
      * @since Available in iOS 4.1 and later.
      */
     @NotImplemented("matchmakerViewController:didFindMatch:")
-    public void didFindMatch(GKMatchmakerViewController viewController, GKMatch match) { throw new UnsupportedOperationException(); }
+    public void didFindMatch(GKMatchmakerViewController viewController, GKMatch match) {}
     /**
      * @since Available in iOS 8.0 and later.
      */
     @NotImplemented("matchmakerViewController:didFindHostedPlayers:")
-    public void didFindHostedPlayers(GKMatchmakerViewController viewController, NSArray<GKPlayer> players) { throw new UnsupportedOperationException(); }
+    public void didFindHostedPlayers(GKMatchmakerViewController viewController, NSArray<GKPlayer> players) {}
     /**
      * @since Available in iOS 4.1 and later.
      * @deprecated Deprecated in iOS 8.0.
      */
     @Deprecated
     @NotImplemented("matchmakerViewController:didFindPlayers:")
-    public void didFindPlayers(GKMatchmakerViewController viewController, @org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String> playerIDs) { throw new UnsupportedOperationException(); }
+    public void didFindPlayers(GKMatchmakerViewController viewController, @org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String> playerIDs) {}
     /**
      * @since Available in iOS 8.0 and later.
      */
     @NotImplemented("matchmakerViewController:hostedPlayerDidAccept:")
-    public void hostedPlayerDidAccept(GKMatchmakerViewController viewController, GKPlayer player) { throw new UnsupportedOperationException(); }
+    public void hostedPlayerDidAccept(GKMatchmakerViewController viewController, GKPlayer player) {}
     /**
      * @since Available in iOS 5.0 and later.
      * @deprecated Deprecated in iOS 8.0.
      */
     @Deprecated
     @NotImplemented("matchmakerViewController:didReceiveAcceptFromHostedPlayer:")
-    public void didReceiveAccept(GKMatchmakerViewController viewController, String playerID) { throw new UnsupportedOperationException(); }
+    public void didReceiveAccept(GKMatchmakerViewController viewController, String playerID) {}
     /*</methods>*/
 }

@@ -54,6 +54,6 @@ import org.robovm.apple.corelocation.*;
     /*<members>*//*</members>*/
     /*<methods>*/
     @NotImplemented("positionForBar:")
-    public UIBarPosition getPosition(UIBarPositioning bar) { throw new UnsupportedOperationException(); }
+    public UIBarPosition getPosition(UIBarPositioning bar) { return null; }
     /*</methods>*/
 }

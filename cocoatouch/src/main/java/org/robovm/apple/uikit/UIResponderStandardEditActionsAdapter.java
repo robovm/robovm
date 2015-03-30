@@ -57,66 +57,66 @@ import org.robovm.apple.corelocation.*;
      * @since Available in iOS 3.0 and later.
      */
     @NotImplemented("cut:")
-    public void cut(NSObject sender) { throw new UnsupportedOperationException(); }
+    public void cut(NSObject sender) {}
     /**
      * @since Available in iOS 3.0 and later.
      */
     @NotImplemented("copy:")
-    public void copy(NSObject sender) { throw new UnsupportedOperationException(); }
+    public void copy(NSObject sender) {}
     /**
      * @since Available in iOS 3.0 and later.
      */
     @NotImplemented("paste:")
-    public void paste(NSObject sender) { throw new UnsupportedOperationException(); }
+    public void paste(NSObject sender) {}
     /**
      * @since Available in iOS 3.0 and later.
      */
     @NotImplemented("select:")
-    public void select(NSObject sender) { throw new UnsupportedOperationException(); }
+    public void select(NSObject sender) {}
     /**
      * @since Available in iOS 3.0 and later.
      */
     @NotImplemented("selectAll:")
-    public void selectAll(NSObject sender) { throw new UnsupportedOperationException(); }
+    public void selectAll(NSObject sender) {}
     /**
      * @since Available in iOS 3.2 and later.
      */
     @NotImplemented("delete:")
-    public void delete(NSObject sender) { throw new UnsupportedOperationException(); }
+    public void delete(NSObject sender) {}
     /**
      * @since Available in iOS 5.0 and later.
      */
     @NotImplemented("makeTextWritingDirectionLeftToRight:")
-    public void makeTextWritingDirectionLeftToRight(NSObject sender) { throw new UnsupportedOperationException(); }
+    public void makeTextWritingDirectionLeftToRight(NSObject sender) {}
     /**
      * @since Available in iOS 5.0 and later.
      */
     @NotImplemented("makeTextWritingDirectionRightToLeft:")
-    public void makeTextWritingDirectionRightToLeft(NSObject sender) { throw new UnsupportedOperationException(); }
+    public void makeTextWritingDirectionRightToLeft(NSObject sender) {}
     /**
      * @since Available in iOS 6.0 and later.
      */
     @NotImplemented("toggleBoldface:")
-    public void toggleBoldface(NSObject sender) { throw new UnsupportedOperationException(); }
+    public void toggleBoldface(NSObject sender) {}
     /**
      * @since Available in iOS 6.0 and later.
      */
     @NotImplemented("toggleItalics:")
-    public void toggleItalics(NSObject sender) { throw new UnsupportedOperationException(); }
+    public void toggleItalics(NSObject sender) {}
     /**
      * @since Available in iOS 6.0 and later.
      */
     @NotImplemented("toggleUnderline:")
-    public void toggleUnderline(NSObject sender) { throw new UnsupportedOperationException(); }
+    public void toggleUnderline(NSObject sender) {}
     /**
      * @since Available in iOS 7.0 and later.
      */
     @NotImplemented("increaseSize:")
-    public void increaseSize(NSObject sender) { throw new UnsupportedOperationException(); }
+    public void increaseSize(NSObject sender) {}
     /**
      * @since Available in iOS 7.0 and later.
      */
     @NotImplemented("decreaseSize:")
-    public void decreaseSize(NSObject sender) { throw new UnsupportedOperationException(); }
+    public void decreaseSize(NSObject sender) {}
     /*</methods>*/
 }

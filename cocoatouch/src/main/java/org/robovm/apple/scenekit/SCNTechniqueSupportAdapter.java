@@ -51,9 +51,9 @@ import org.robovm.apple.opengles.*;
     /*<constructors>*//*</constructors>*/
     /*<properties>*/
     @NotImplemented("technique")
-    public SCNTechnique getTechnique() { throw new UnsupportedOperationException(); }
+    public SCNTechnique getTechnique() { return null; }
     @NotImplemented("setTechnique:")
-    public void setTechnique(SCNTechnique v) { throw new UnsupportedOperationException(); }
+    public void setTechnique(SCNTechnique v) {}
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/

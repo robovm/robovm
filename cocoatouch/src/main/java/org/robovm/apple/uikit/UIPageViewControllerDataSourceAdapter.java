@@ -54,18 +54,18 @@ import org.robovm.apple.corelocation.*;
     /*<members>*//*</members>*/
     /*<methods>*/
     @NotImplemented("pageViewController:viewControllerBeforeViewController:")
-    public UIViewController getViewControllerBefore(UIPageViewController pageViewController, UIViewController viewController) { throw new UnsupportedOperationException(); }
+    public UIViewController getViewControllerBefore(UIPageViewController pageViewController, UIViewController viewController) { return null; }
     @NotImplemented("pageViewController:viewControllerAfterViewController:")
-    public UIViewController getViewControllerAfter(UIPageViewController pageViewController, UIViewController viewController) { throw new UnsupportedOperationException(); }
+    public UIViewController getViewControllerAfter(UIPageViewController pageViewController, UIViewController viewController) { return null; }
     /**
      * @since Available in iOS 6.0 and later.
      */
     @NotImplemented("presentationCountForPageViewController:")
-    public @MachineSizedSInt long getPresentationCount(UIPageViewController pageViewController) { throw new UnsupportedOperationException(); }
+    public @MachineSizedSInt long getPresentationCount(UIPageViewController pageViewController) { return 0; }
     /**
      * @since Available in iOS 6.0 and later.
      */
     @NotImplemented("presentationIndexForPageViewController:")
-    public @MachineSizedSInt long getPresentationIndex(UIPageViewController pageViewController) { throw new UnsupportedOperationException(); }
+    public @MachineSizedSInt long getPresentationIndex(UIPageViewController pageViewController) { return 0; }
     /*</methods>*/
 }

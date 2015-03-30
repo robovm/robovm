@@ -49,6 +49,6 @@ import org.robovm.apple.uikit.*;
     /*<members>*//*</members>*/
     /*<methods>*/
     @NotImplemented("achievementViewControllerDidFinish:")
-    public void didFinish(GKAchievementViewController viewController) { throw new UnsupportedOperationException(); }
+    public void didFinish(GKAchievementViewController viewController) {}
     /*</methods>*/
 }

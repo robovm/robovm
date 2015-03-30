@@ -54,11 +54,11 @@ import org.robovm.apple.corelocation.*;
     /*<members>*//*</members>*/
     /*<methods>*/
     @NotImplemented("awakeFromNib")
-    public void awakeFromNib() { throw new UnsupportedOperationException(); }
+    public void awakeFromNib() {}
     /**
      * @since Available in iOS 8.0 and later.
      */
     @NotImplemented("prepareForInterfaceBuilder")
-    public void prepareForInterfaceBuilder() { throw new UnsupportedOperationException(); }
+    public void prepareForInterfaceBuilder() {}
     /*</methods>*/
 }

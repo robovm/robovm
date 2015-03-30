@@ -50,13 +50,13 @@ import org.robovm.apple.corelocation.*;
     /*<constructors>*//*</constructors>*/
     /*<properties>*/
     @NotImplemented("documentContextBeforeInput")
-    public String getDocumentContextBeforeInput() { throw new UnsupportedOperationException(); }
+    public String getDocumentContextBeforeInput() { return null; }
     @NotImplemented("documentContextAfterInput")
-    public String getDocumentContextAfterInput() { throw new UnsupportedOperationException(); }
+    public String getDocumentContextAfterInput() { return null; }
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
     @NotImplemented("adjustTextPositionByCharacterOffset:")
-    public void adjustTextPosition(@MachineSizedSInt long offset) { throw new UnsupportedOperationException(); }
+    public void adjustTextPosition(@MachineSizedSInt long offset) {}
     /*</methods>*/
 }

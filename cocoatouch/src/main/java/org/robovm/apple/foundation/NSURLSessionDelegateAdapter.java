@@ -55,13 +55,13 @@ import org.robovm.apple.dispatch.*;
     /*<members>*//*</members>*/
     /*<methods>*/
     @NotImplemented("URLSession:didBecomeInvalidWithError:")
-    public void didBecomeInvalid(NSURLSession session, NSError error) { throw new UnsupportedOperationException(); }
+    public void didBecomeInvalid(NSURLSession session, NSError error) {}
     @NotImplemented("URLSession:didReceiveChallenge:completionHandler:")
-    public void didReceiveChallenge(NSURLSession session, NSURLAuthenticationChallenge challenge, @Block VoidBlock2<NSURLSessionAuthChallengeDisposition, NSURLCredential> completionHandler) { throw new UnsupportedOperationException(); }
+    public void didReceiveChallenge(NSURLSession session, NSURLAuthenticationChallenge challenge, @Block VoidBlock2<NSURLSessionAuthChallengeDisposition, NSURLCredential> completionHandler) {}
     /**
      * @since Available in iOS 7.0 and later.
      */
     @NotImplemented("URLSessionDidFinishEventsForBackgroundURLSession:")
-    public void didFinishEvents(NSURLSession session) { throw new UnsupportedOperationException(); }
+    public void didFinishEvents(NSURLSession session) {}
     /*</methods>*/
 }

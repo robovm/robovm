@@ -54,19 +54,19 @@ import org.robovm.apple.corelocation.*;
     /*<members>*//*</members>*/
     /*<methods>*/
     @NotImplemented("pickerView:widthForComponent:")
-    public @MachineSizedFloat double getComponentWidth(UIPickerView pickerView, @MachineSizedSInt long component) { throw new UnsupportedOperationException(); }
+    public @MachineSizedFloat double getComponentWidth(UIPickerView pickerView, @MachineSizedSInt long component) { return 0; }
     @NotImplemented("pickerView:rowHeightForComponent:")
-    public @MachineSizedFloat double getRowHeight(UIPickerView pickerView, @MachineSizedSInt long component) { throw new UnsupportedOperationException(); }
+    public @MachineSizedFloat double getRowHeight(UIPickerView pickerView, @MachineSizedSInt long component) { return 0; }
     @NotImplemented("pickerView:titleForRow:forComponent:")
-    public String getRowTitle(UIPickerView pickerView, @MachineSizedSInt long row, @MachineSizedSInt long component) { throw new UnsupportedOperationException(); }
+    public String getRowTitle(UIPickerView pickerView, @MachineSizedSInt long row, @MachineSizedSInt long component) { return null; }
     /**
      * @since Available in iOS 6.0 and later.
      */
     @NotImplemented("pickerView:attributedTitleForRow:forComponent:")
-    public NSAttributedString getAttributedRowTitle(UIPickerView pickerView, @MachineSizedSInt long row, @MachineSizedSInt long component) { throw new UnsupportedOperationException(); }
+    public NSAttributedString getAttributedRowTitle(UIPickerView pickerView, @MachineSizedSInt long row, @MachineSizedSInt long component) { return null; }
     @NotImplemented("pickerView:viewForRow:forComponent:reusingView:")
-    public UIView getRowView(UIPickerView pickerView, @MachineSizedSInt long row, @MachineSizedSInt long component, UIView view) { throw new UnsupportedOperationException(); }
+    public UIView getRowView(UIPickerView pickerView, @MachineSizedSInt long row, @MachineSizedSInt long component, UIView view) { return null; }
     @NotImplemented("pickerView:didSelectRow:inComponent:")
-    public void didSelectRow(UIPickerView pickerView, @MachineSizedSInt long row, @MachineSizedSInt long component) { throw new UnsupportedOperationException(); }
+    public void didSelectRow(UIPickerView pickerView, @MachineSizedSInt long row, @MachineSizedSInt long component) {}
     /*</methods>*/
 }

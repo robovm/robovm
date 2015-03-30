@@ -55,8 +55,8 @@ import org.robovm.apple.dispatch.*;
     /*<members>*//*</members>*/
     /*<methods>*/
     @NotImplemented("lock")
-    public void lock() { throw new UnsupportedOperationException(); }
+    public void lock() {}
     @NotImplemented("unlock")
-    public void unlock() { throw new UnsupportedOperationException(); }
+    public void unlock() {}
     /*</methods>*/
 }

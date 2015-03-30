@@ -55,6 +55,6 @@ import org.robovm.apple.dispatch.*;
     /*<members>*//*</members>*/
     /*<methods>*/
     @NotImplemented("stream:handleEvent:")
-    public void handleEvent(NSStream aStream, NSStreamEvent eventCode) { throw new UnsupportedOperationException(); }
+    public void handleEvent(NSStream aStream, NSStreamEvent eventCode) {}
     /*</methods>*/
 }

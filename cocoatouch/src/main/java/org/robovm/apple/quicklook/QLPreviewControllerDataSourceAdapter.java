@@ -50,8 +50,8 @@ import org.robovm.apple.uikit.*;
     /*<members>*//*</members>*/
     /*<methods>*/
     @NotImplemented("numberOfPreviewItemsInPreviewController:")
-    public @MachineSizedSInt long getNumberOfPreviewItems(QLPreviewController controller) { throw new UnsupportedOperationException(); }
+    public @MachineSizedSInt long getNumberOfPreviewItems(QLPreviewController controller) { return 0; }
     @NotImplemented("previewController:previewItemAtIndex:")
-    public QLPreviewItem getPreviewItem(QLPreviewController controller, @MachineSizedSInt long index) { throw new UnsupportedOperationException(); }
+    public QLPreviewItem getPreviewItem(QLPreviewController controller, @MachineSizedSInt long index) { return null; }
     /*</methods>*/
 }

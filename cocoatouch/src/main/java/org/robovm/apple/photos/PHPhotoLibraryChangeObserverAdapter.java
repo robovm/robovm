@@ -52,6 +52,6 @@ import org.robovm.apple.avfoundation.*;
     /*<members>*//*</members>*/
     /*<methods>*/
     @NotImplemented("photoLibraryDidChange:")
-    public void didChange(PHChange changeInstance) { throw new UnsupportedOperationException(); }
+    public void didChange(PHChange changeInstance) {}
     /*</methods>*/
 }

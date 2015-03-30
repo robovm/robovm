@@ -60,26 +60,26 @@ import org.robovm.apple.mediatoolbox.*;
      * @since Available in iOS 6.0 and later.
      */
     @NotImplemented("resourceLoader:shouldWaitForLoadingOfRequestedResource:")
-    public boolean shouldWaitForLoadingOfRequestedResource(AVAssetResourceLoader resourceLoader, AVAssetResourceLoadingRequest loadingRequest) { throw new UnsupportedOperationException(); }
+    public boolean shouldWaitForLoadingOfRequestedResource(AVAssetResourceLoader resourceLoader, AVAssetResourceLoadingRequest loadingRequest) { return false; }
     /**
      * @since Available in iOS 8.0 and later.
      */
     @NotImplemented("resourceLoader:shouldWaitForRenewalOfRequestedResource:")
-    public boolean shouldWaitForRenewalOfRequestedResource(AVAssetResourceLoader resourceLoader, AVAssetResourceRenewalRequest renewalRequest) { throw new UnsupportedOperationException(); }
+    public boolean shouldWaitForRenewalOfRequestedResource(AVAssetResourceLoader resourceLoader, AVAssetResourceRenewalRequest renewalRequest) { return false; }
     /**
      * @since Available in iOS 7.0 and later.
      */
     @NotImplemented("resourceLoader:didCancelLoadingRequest:")
-    public void didCancelLoadingRequest(AVAssetResourceLoader resourceLoader, AVAssetResourceLoadingRequest loadingRequest) { throw new UnsupportedOperationException(); }
+    public void didCancelLoadingRequest(AVAssetResourceLoader resourceLoader, AVAssetResourceLoadingRequest loadingRequest) {}
     /**
      * @since Available in iOS 8.0 and later.
      */
     @NotImplemented("resourceLoader:shouldWaitForResponseToAuthenticationChallenge:")
-    public boolean shouldWaitForResponseToAuthenticationChallenge(AVAssetResourceLoader resourceLoader, NSURLAuthenticationChallenge authenticationChallenge) { throw new UnsupportedOperationException(); }
+    public boolean shouldWaitForResponseToAuthenticationChallenge(AVAssetResourceLoader resourceLoader, NSURLAuthenticationChallenge authenticationChallenge) { return false; }
     /**
      * @since Available in iOS 8.0 and later.
      */
     @NotImplemented("resourceLoader:didCancelAuthenticationChallenge:")
-    public void didCancelAuthenticationChallenge(AVAssetResourceLoader resourceLoader, NSURLAuthenticationChallenge authenticationChallenge) { throw new UnsupportedOperationException(); }
+    public void didCancelAuthenticationChallenge(AVAssetResourceLoader resourceLoader, NSURLAuthenticationChallenge authenticationChallenge) {}
     /*</methods>*/
 }

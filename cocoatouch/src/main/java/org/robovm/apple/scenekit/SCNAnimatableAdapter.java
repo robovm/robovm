@@ -55,22 +55,22 @@ import org.robovm.apple.opengles.*;
     /*<members>*//*</members>*/
     /*<methods>*/
     @NotImplemented("addAnimation:forKey:")
-    public void addAnimation(CAAnimation animation, String key) { throw new UnsupportedOperationException(); }
+    public void addAnimation(CAAnimation animation, String key) {}
     @NotImplemented("removeAllAnimations")
-    public void removeAllAnimations() { throw new UnsupportedOperationException(); }
+    public void removeAllAnimations() {}
     @NotImplemented("removeAnimationForKey:")
-    public void removeAnimation(String key) { throw new UnsupportedOperationException(); }
+    public void removeAnimation(String key) {}
     @NotImplemented("animationKeys")
-    public @org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String> getAnimationKeys() { throw new UnsupportedOperationException(); }
+    public @org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String> getAnimationKeys() { return null; }
     @NotImplemented("animationForKey:")
-    public CAAnimation getAnimation(String key) { throw new UnsupportedOperationException(); }
+    public CAAnimation getAnimation(String key) { return null; }
     @NotImplemented("pauseAnimationForKey:")
-    public void pauseAnimation(String key) { throw new UnsupportedOperationException(); }
+    public void pauseAnimation(String key) {}
     @NotImplemented("resumeAnimationForKey:")
-    public void resumeAnimation(String key) { throw new UnsupportedOperationException(); }
+    public void resumeAnimation(String key) {}
     @NotImplemented("isAnimationForKeyPaused:")
-    public boolean isAnimationPaused(String key) { throw new UnsupportedOperationException(); }
+    public boolean isAnimationPaused(String key) { return false; }
     @NotImplemented("removeAnimationForKey:fadeOutDuration:")
-    public void removeAnimation(String key, @MachineSizedFloat double duration) { throw new UnsupportedOperationException(); }
+    public void removeAnimation(String key, @MachineSizedFloat double duration) {}
     /*</methods>*/
 }

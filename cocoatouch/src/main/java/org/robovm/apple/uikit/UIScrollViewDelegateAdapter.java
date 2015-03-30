@@ -54,39 +54,39 @@ import org.robovm.apple.corelocation.*;
     /*<members>*//*</members>*/
     /*<methods>*/
     @NotImplemented("scrollViewDidScroll:")
-    public void didScroll(UIScrollView scrollView) { throw new UnsupportedOperationException(); }
+    public void didScroll(UIScrollView scrollView) {}
     /**
      * @since Available in iOS 3.2 and later.
      */
     @NotImplemented("scrollViewDidZoom:")
-    public void didZoom(UIScrollView scrollView) { throw new UnsupportedOperationException(); }
+    public void didZoom(UIScrollView scrollView) {}
     @NotImplemented("scrollViewWillBeginDragging:")
-    public void willBeginDragging(UIScrollView scrollView) { throw new UnsupportedOperationException(); }
+    public void willBeginDragging(UIScrollView scrollView) {}
     /**
      * @since Available in iOS 5.0 and later.
      */
     @NotImplemented("scrollViewWillEndDragging:withVelocity:targetContentOffset:")
-    public void willEndDragging(UIScrollView scrollView, @ByVal CGPoint velocity, CGPoint targetContentOffset) { throw new UnsupportedOperationException(); }
+    public void willEndDragging(UIScrollView scrollView, @ByVal CGPoint velocity, CGPoint targetContentOffset) {}
     @NotImplemented("scrollViewDidEndDragging:willDecelerate:")
-    public void didEndDragging(UIScrollView scrollView, boolean decelerate) { throw new UnsupportedOperationException(); }
+    public void didEndDragging(UIScrollView scrollView, boolean decelerate) {}
     @NotImplemented("scrollViewWillBeginDecelerating:")
-    public void willBeginDecelerating(UIScrollView scrollView) { throw new UnsupportedOperationException(); }
+    public void willBeginDecelerating(UIScrollView scrollView) {}
     @NotImplemented("scrollViewDidEndDecelerating:")
-    public void didEndDecelerating(UIScrollView scrollView) { throw new UnsupportedOperationException(); }
+    public void didEndDecelerating(UIScrollView scrollView) {}
     @NotImplemented("scrollViewDidEndScrollingAnimation:")
-    public void didEndScrollingAnimation(UIScrollView scrollView) { throw new UnsupportedOperationException(); }
+    public void didEndScrollingAnimation(UIScrollView scrollView) {}
     @NotImplemented("viewForZoomingInScrollView:")
-    public UIView getViewForZooming(UIScrollView scrollView) { throw new UnsupportedOperationException(); }
+    public UIView getViewForZooming(UIScrollView scrollView) { return null; }
     /**
      * @since Available in iOS 3.2 and later.
      */
     @NotImplemented("scrollViewWillBeginZooming:withView:")
-    public void willBeginZooming(UIScrollView scrollView, UIView view) { throw new UnsupportedOperationException(); }
+    public void willBeginZooming(UIScrollView scrollView, UIView view) {}
     @NotImplemented("scrollViewDidEndZooming:withView:atScale:")
-    public void didEndZooming(UIScrollView scrollView, UIView view, @MachineSizedFloat double scale) { throw new UnsupportedOperationException(); }
+    public void didEndZooming(UIScrollView scrollView, UIView view, @MachineSizedFloat double scale) {}
     @NotImplemented("scrollViewShouldScrollToTop:")
-    public boolean shouldScrollToTop(UIScrollView scrollView) { throw new UnsupportedOperationException(); }
+    public boolean shouldScrollToTop(UIScrollView scrollView) { return false; }
     @NotImplemented("scrollViewDidScrollToTop:")
-    public void didScrollToTop(UIScrollView scrollView) { throw new UnsupportedOperationException(); }
+    public void didScrollToTop(UIScrollView scrollView) {}
     /*</methods>*/
 }

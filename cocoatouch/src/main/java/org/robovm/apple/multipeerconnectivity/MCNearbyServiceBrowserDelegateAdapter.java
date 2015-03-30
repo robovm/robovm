@@ -50,10 +50,10 @@ import org.robovm.apple.security.*;
     /*<members>*//*</members>*/
     /*<methods>*/
     @NotImplemented("browser:foundPeer:withDiscoveryInfo:")
-    public void foundPeer(MCNearbyServiceBrowser browser, MCPeerID peerID, @org.robovm.rt.bro.annotation.Marshaler(NSDictionary.AsStringStringMapMarshaler.class) Map<String, String> info) { throw new UnsupportedOperationException(); }
+    public void foundPeer(MCNearbyServiceBrowser browser, MCPeerID peerID, @org.robovm.rt.bro.annotation.Marshaler(NSDictionary.AsStringStringMapMarshaler.class) Map<String, String> info) {}
     @NotImplemented("browser:lostPeer:")
-    public void lostPeer(MCNearbyServiceBrowser browser, MCPeerID peerID) { throw new UnsupportedOperationException(); }
+    public void lostPeer(MCNearbyServiceBrowser browser, MCPeerID peerID) {}
     @NotImplemented("browser:didNotStartBrowsingForPeers:")
-    public void didNotStartBrowsing(MCNearbyServiceBrowser browser, NSError error) { throw new UnsupportedOperationException(); }
+    public void didNotStartBrowsing(MCNearbyServiceBrowser browser, NSError error) {}
     /*</methods>*/
 }

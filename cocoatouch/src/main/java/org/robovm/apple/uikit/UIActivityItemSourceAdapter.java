@@ -54,14 +54,14 @@ import org.robovm.apple.corelocation.*;
     /*<members>*//*</members>*/
     /*<methods>*/
     @NotImplemented("activityViewControllerPlaceholderItem:")
-    public NSObject getPlaceholderItem(UIActivityViewController activityViewController) { throw new UnsupportedOperationException(); }
+    public NSObject getPlaceholderItem(UIActivityViewController activityViewController) { return null; }
     @NotImplemented("activityViewController:itemForActivityType:")
-    public NSObject getItem(UIActivityViewController activityViewController, String activityType) { throw new UnsupportedOperationException(); }
+    public NSObject getItem(UIActivityViewController activityViewController, String activityType) { return null; }
     @NotImplemented("activityViewController:subjectForActivityType:")
-    public String getSubject(UIActivityViewController activityViewController, String activityType) { throw new UnsupportedOperationException(); }
+    public String getSubject(UIActivityViewController activityViewController, String activityType) { return null; }
     @NotImplemented("activityViewController:dataTypeIdentifierForActivityType:")
-    public String getDataTypeIdentifier(UIActivityViewController activityViewController, String activityType) { throw new UnsupportedOperationException(); }
+    public String getDataTypeIdentifier(UIActivityViewController activityViewController, String activityType) { return null; }
     @NotImplemented("activityViewController:thumbnailImageForActivityType:suggestedSize:")
-    public UIImage getThumbnailImage(UIActivityViewController activityViewController, String activityType, @ByVal CGSize size) { throw new UnsupportedOperationException(); }
+    public UIImage getThumbnailImage(UIActivityViewController activityViewController, String activityType, @ByVal CGSize size) { return null; }
     /*</methods>*/
 }

@@ -55,6 +55,6 @@ import org.robovm.apple.dispatch.*;
     /*<members>*//*</members>*/
     /*<methods>*/
     @NotImplemented("encodeWithCoder:")
-    public void encode(NSCoder aCoder) { throw new UnsupportedOperationException(); }
+    public void encode(NSCoder aCoder) {}
     /*</methods>*/
 }

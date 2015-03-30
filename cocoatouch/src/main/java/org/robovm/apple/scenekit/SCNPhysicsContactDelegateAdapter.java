@@ -55,10 +55,10 @@ import org.robovm.apple.opengles.*;
     /*<members>*//*</members>*/
     /*<methods>*/
     @NotImplemented("physicsWorld:didBeginContact:")
-    public void didBeginContact(SCNPhysicsWorld world, SCNPhysicsContact contact) { throw new UnsupportedOperationException(); }
+    public void didBeginContact(SCNPhysicsWorld world, SCNPhysicsContact contact) {}
     @NotImplemented("physicsWorld:didUpdateContact:")
-    public void didUpdateContact(SCNPhysicsWorld world, SCNPhysicsContact contact) { throw new UnsupportedOperationException(); }
+    public void didUpdateContact(SCNPhysicsWorld world, SCNPhysicsContact contact) {}
     @NotImplemented("physicsWorld:didEndContact:")
-    public void didEndContact(SCNPhysicsWorld world, SCNPhysicsContact contact) { throw new UnsupportedOperationException(); }
+    public void didEndContact(SCNPhysicsWorld world, SCNPhysicsContact contact) {}
     /*</methods>*/
 }

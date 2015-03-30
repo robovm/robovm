@@ -57,15 +57,15 @@ import org.robovm.apple.mediatoolbox.*;
     /*<members>*//*</members>*/
     /*<methods>*/
     @NotImplemented("beginInterruption")
-    public void beginInterruption() { throw new UnsupportedOperationException(); }
+    public void beginInterruption() {}
     /**
      * @since Available in iOS 4.0 and later.
      */
     @NotImplemented("endInterruptionWithFlags:")
-    public void endInterruption(AVAudioSessionInterruptionFlags flags) { throw new UnsupportedOperationException(); }
+    public void endInterruption(AVAudioSessionInterruptionFlags flags) {}
     @NotImplemented("endInterruption")
-    public void endInterruption() { throw new UnsupportedOperationException(); }
+    public void endInterruption() {}
     @NotImplemented("inputIsAvailableChanged:")
-    public void inputAvailabilityChanged(boolean isInputAvailable) { throw new UnsupportedOperationException(); }
+    public void inputAvailabilityChanged(boolean isInputAvailable) {}
     /*</methods>*/
 }

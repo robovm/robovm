@@ -53,6 +53,6 @@ import org.robovm.apple.dispatch.*;
      * @since Available in iOS 3.0 and later.
      */
     @NotImplemented("accessoryDidDisconnect:")
-    public void didDisconnect(EAAccessory accessory) { throw new UnsupportedOperationException(); }
+    public void didDisconnect(EAAccessory accessory) {}
     /*</methods>*/
 }

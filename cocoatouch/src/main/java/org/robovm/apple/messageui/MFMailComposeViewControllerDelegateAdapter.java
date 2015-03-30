@@ -52,6 +52,6 @@ import org.robovm.apple.uikit.*;
      * @since Available in iOS 3.0 and later.
      */
     @NotImplemented("mailComposeController:didFinishWithResult:error:")
-    public void didFinish(MFMailComposeViewController controller, MFMailComposeResult result, NSError error) { throw new UnsupportedOperationException(); }
+    public void didFinish(MFMailComposeViewController controller, MFMailComposeResult result, NSError error) {}
     /*</methods>*/
 }

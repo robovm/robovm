@@ -57,36 +57,36 @@ import org.robovm.apple.mediatoolbox.*;
     /*<members>*//*</members>*/
     /*<methods>*/
     @NotImplemented("audioRecorderDidFinishRecording:successfully:")
-    public void didFinishRecording(AVAudioRecorder recorder, boolean flag) { throw new UnsupportedOperationException(); }
+    public void didFinishRecording(AVAudioRecorder recorder, boolean flag) {}
     @NotImplemented("audioRecorderEncodeErrorDidOccur:error:")
-    public void encodeErrorDidOccur(AVAudioRecorder recorder, NSError error) { throw new UnsupportedOperationException(); }
+    public void encodeErrorDidOccur(AVAudioRecorder recorder, NSError error) {}
     /**
      * @since Available in iOS 2.2 and later.
      * @deprecated Deprecated in iOS 8.0.
      */
     @Deprecated
     @NotImplemented("audioRecorderBeginInterruption:")
-    public void beginInterruption(AVAudioRecorder recorder) { throw new UnsupportedOperationException(); }
+    public void beginInterruption(AVAudioRecorder recorder) {}
     /**
      * @since Available in iOS 6.0 and later.
      * @deprecated Deprecated in iOS 8.0.
      */
     @Deprecated
     @NotImplemented("audioRecorderEndInterruption:withOptions:")
-    public void endInterruptionWithOptions(AVAudioRecorder recorder, @MachineSizedUInt long flags) { throw new UnsupportedOperationException(); }
+    public void endInterruptionWithOptions(AVAudioRecorder recorder, @MachineSizedUInt long flags) {}
     /**
      * @since Available in iOS 4.0 and later.
      * @deprecated Deprecated in iOS 6.0.
      */
     @Deprecated
     @NotImplemented("audioRecorderEndInterruption:withFlags:")
-    public void endInterruptionWithFlags(AVAudioRecorder recorder, @MachineSizedUInt long flags) { throw new UnsupportedOperationException(); }
+    public void endInterruptionWithFlags(AVAudioRecorder recorder, @MachineSizedUInt long flags) {}
     /**
      * @since Available in iOS 2.2 and later.
      * @deprecated Deprecated in iOS 6.0.
      */
     @Deprecated
     @NotImplemented("audioRecorderEndInterruption:")
-    public void endInterruption(AVAudioRecorder recorder) { throw new UnsupportedOperationException(); }
+    public void endInterruption(AVAudioRecorder recorder) {}
     /*</methods>*/
 }

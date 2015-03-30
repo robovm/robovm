@@ -53,12 +53,12 @@ import org.robovm.apple.corelocation.*;
      * @since Available in iOS 8.0 and later.
      */
     @NotImplemented("accessibilityCustomActions")
-    public NSArray<UIAccessibilityCustomAction> getAccessibilityCustomActions() { throw new UnsupportedOperationException(); }
+    public NSArray<UIAccessibilityCustomAction> getAccessibilityCustomActions() { return null; }
     /**
      * @since Available in iOS 8.0 and later.
      */
     @NotImplemented("setAccessibilityCustomActions:")
-    public void setAccessibilityCustomActions(NSArray<UIAccessibilityCustomAction> v) { throw new UnsupportedOperationException(); }
+    public void setAccessibilityCustomActions(NSArray<UIAccessibilityCustomAction> v) {}
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
@@ -66,31 +66,31 @@ import org.robovm.apple.corelocation.*;
      * @since Available in iOS 7.0 and later.
      */
     @NotImplemented("accessibilityActivate")
-    public boolean activate() { throw new UnsupportedOperationException(); }
+    public boolean activate() { return false; }
     /**
      * @since Available in iOS 4.0 and later.
      */
     @NotImplemented("accessibilityIncrement")
-    public void increment() { throw new UnsupportedOperationException(); }
+    public void increment() {}
     /**
      * @since Available in iOS 4.0 and later.
      */
     @NotImplemented("accessibilityDecrement")
-    public void decrement() { throw new UnsupportedOperationException(); }
+    public void decrement() {}
     /**
      * @since Available in iOS 4.2 and later.
      */
     @NotImplemented("accessibilityScroll:")
-    public boolean scroll(UIAccessibilityScrollDirection direction) { throw new UnsupportedOperationException(); }
+    public boolean scroll(UIAccessibilityScrollDirection direction) { return false; }
     /**
      * @since Available in iOS 5.0 and later.
      */
     @NotImplemented("accessibilityPerformEscape")
-    public boolean performEscape() { throw new UnsupportedOperationException(); }
+    public boolean performEscape() { return false; }
     /**
      * @since Available in iOS 6.0 and later.
      */
     @NotImplemented("accessibilityPerformMagicTap")
-    public boolean performMagicTap() { throw new UnsupportedOperationException(); }
+    public boolean performMagicTap() { return false; }
     /*</methods>*/
 }

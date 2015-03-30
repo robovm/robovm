@@ -54,40 +54,40 @@ import org.robovm.apple.corelocation.*;
     /*<members>*//*</members>*/
     /*<methods>*/
     @NotImplemented("collectionView:shouldHighlightItemAtIndexPath:")
-    public boolean shouldHighlightItem(UICollectionView collectionView, NSIndexPath indexPath) { throw new UnsupportedOperationException(); }
+    public boolean shouldHighlightItem(UICollectionView collectionView, NSIndexPath indexPath) { return false; }
     @NotImplemented("collectionView:didHighlightItemAtIndexPath:")
-    public void didHighlightItem(UICollectionView collectionView, NSIndexPath indexPath) { throw new UnsupportedOperationException(); }
+    public void didHighlightItem(UICollectionView collectionView, NSIndexPath indexPath) {}
     @NotImplemented("collectionView:didUnhighlightItemAtIndexPath:")
-    public void didUnhighlightItem(UICollectionView collectionView, NSIndexPath indexPath) { throw new UnsupportedOperationException(); }
+    public void didUnhighlightItem(UICollectionView collectionView, NSIndexPath indexPath) {}
     @NotImplemented("collectionView:shouldSelectItemAtIndexPath:")
-    public boolean shouldSelectItem(UICollectionView collectionView, NSIndexPath indexPath) { throw new UnsupportedOperationException(); }
+    public boolean shouldSelectItem(UICollectionView collectionView, NSIndexPath indexPath) { return false; }
     @NotImplemented("collectionView:shouldDeselectItemAtIndexPath:")
-    public boolean shouldDeselectItem(UICollectionView collectionView, NSIndexPath indexPath) { throw new UnsupportedOperationException(); }
+    public boolean shouldDeselectItem(UICollectionView collectionView, NSIndexPath indexPath) { return false; }
     @NotImplemented("collectionView:didSelectItemAtIndexPath:")
-    public void didSelectItem(UICollectionView collectionView, NSIndexPath indexPath) { throw new UnsupportedOperationException(); }
+    public void didSelectItem(UICollectionView collectionView, NSIndexPath indexPath) {}
     @NotImplemented("collectionView:didDeselectItemAtIndexPath:")
-    public void didDeselectItem(UICollectionView collectionView, NSIndexPath indexPath) { throw new UnsupportedOperationException(); }
+    public void didDeselectItem(UICollectionView collectionView, NSIndexPath indexPath) {}
     /**
      * @since Available in iOS 8.0 and later.
      */
     @NotImplemented("collectionView:willDisplayCell:forItemAtIndexPath:")
-    public void willDisplayCell(UICollectionView collectionView, UICollectionViewCell cell, NSIndexPath indexPath) { throw new UnsupportedOperationException(); }
+    public void willDisplayCell(UICollectionView collectionView, UICollectionViewCell cell, NSIndexPath indexPath) {}
     /**
      * @since Available in iOS 8.0 and later.
      */
     @NotImplemented("collectionView:willDisplaySupplementaryView:forElementKind:atIndexPath:")
-    public void willDisplaySupplementaryView(UICollectionView collectionView, UICollectionReusableView view, String elementKind, NSIndexPath indexPath) { throw new UnsupportedOperationException(); }
+    public void willDisplaySupplementaryView(UICollectionView collectionView, UICollectionReusableView view, String elementKind, NSIndexPath indexPath) {}
     @NotImplemented("collectionView:didEndDisplayingCell:forItemAtIndexPath:")
-    public void didEndDisplayingCell(UICollectionView collectionView, UICollectionViewCell cell, NSIndexPath indexPath) { throw new UnsupportedOperationException(); }
+    public void didEndDisplayingCell(UICollectionView collectionView, UICollectionViewCell cell, NSIndexPath indexPath) {}
     @NotImplemented("collectionView:didEndDisplayingSupplementaryView:forElementOfKind:atIndexPath:")
-    public void didEndDisplayingSupplementaryView(UICollectionView collectionView, UICollectionReusableView view, String elementKind, NSIndexPath indexPath) { throw new UnsupportedOperationException(); }
+    public void didEndDisplayingSupplementaryView(UICollectionView collectionView, UICollectionReusableView view, String elementKind, NSIndexPath indexPath) {}
     @NotImplemented("collectionView:shouldShowMenuForItemAtIndexPath:")
-    public boolean shouldShowMenuForItem(UICollectionView collectionView, NSIndexPath indexPath) { throw new UnsupportedOperationException(); }
+    public boolean shouldShowMenuForItem(UICollectionView collectionView, NSIndexPath indexPath) { return false; }
     @NotImplemented("collectionView:canPerformAction:forItemAtIndexPath:withSender:")
-    public boolean canPerformAction(UICollectionView collectionView, Selector action, NSIndexPath indexPath, NSObject sender) { throw new UnsupportedOperationException(); }
+    public boolean canPerformAction(UICollectionView collectionView, Selector action, NSIndexPath indexPath, NSObject sender) { return false; }
     @NotImplemented("collectionView:performAction:forItemAtIndexPath:withSender:")
-    public void performAction(UICollectionView collectionView, Selector action, NSIndexPath indexPath, NSObject sender) { throw new UnsupportedOperationException(); }
+    public void performAction(UICollectionView collectionView, Selector action, NSIndexPath indexPath, NSObject sender) {}
     @NotImplemented("collectionView:transitionLayoutForOldLayout:newLayout:")
-    public UICollectionViewTransitionLayout getTransitionLayout(UICollectionView collectionView, UICollectionViewLayout fromLayout, UICollectionViewLayout toLayout) { throw new UnsupportedOperationException(); }
+    public UICollectionViewTransitionLayout getTransitionLayout(UICollectionView collectionView, UICollectionViewLayout fromLayout, UICollectionViewLayout toLayout) { return null; }
     /*</methods>*/
 }

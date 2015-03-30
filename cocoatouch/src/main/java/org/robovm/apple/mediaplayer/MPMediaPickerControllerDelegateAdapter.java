@@ -50,8 +50,8 @@ import org.robovm.apple.coregraphics.*;
     /*<members>*//*</members>*/
     /*<methods>*/
     @NotImplemented("mediaPicker:didPickMediaItems:")
-    public void didPickMediaItems(MPMediaPickerController mediaPicker, MPMediaItemCollection mediaItemCollection) { throw new UnsupportedOperationException(); }
+    public void didPickMediaItems(MPMediaPickerController mediaPicker, MPMediaItemCollection mediaItemCollection) {}
     @NotImplemented("mediaPickerDidCancel:")
-    public void didCancel(MPMediaPickerController mediaPicker) { throw new UnsupportedOperationException(); }
+    public void didCancel(MPMediaPickerController mediaPicker) {}
     /*</methods>*/
 }

@@ -53,29 +53,29 @@ import org.robovm.apple.mediatoolbox.*;
     /*<constructors>*//*</constructors>*/
     /*<properties>*/
     @NotImplemented("renderingAlgorithm")
-    public AVAudio3DMixingRenderingAlgorithm getRenderingAlgorithm() { throw new UnsupportedOperationException(); }
+    public AVAudio3DMixingRenderingAlgorithm getRenderingAlgorithm() { return null; }
     @NotImplemented("setRenderingAlgorithm:")
-    public void setRenderingAlgorithm(AVAudio3DMixingRenderingAlgorithm v) { throw new UnsupportedOperationException(); }
+    public void setRenderingAlgorithm(AVAudio3DMixingRenderingAlgorithm v) {}
     @NotImplemented("rate")
-    public float getRate() { throw new UnsupportedOperationException(); }
+    public float getRate() { return 0; }
     @NotImplemented("setRate:")
-    public void setRate(float v) { throw new UnsupportedOperationException(); }
+    public void setRate(float v) {}
     @NotImplemented("reverbBlend")
-    public float getReverbBlend() { throw new UnsupportedOperationException(); }
+    public float getReverbBlend() { return 0; }
     @NotImplemented("setReverbBlend:")
-    public void setReverbBlend(float v) { throw new UnsupportedOperationException(); }
+    public void setReverbBlend(float v) {}
     @NotImplemented("obstruction")
-    public float getObstruction() { throw new UnsupportedOperationException(); }
+    public float getObstruction() { return 0; }
     @NotImplemented("setObstruction:")
-    public void setObstruction(float v) { throw new UnsupportedOperationException(); }
+    public void setObstruction(float v) {}
     @NotImplemented("occlusion")
-    public float getOcclusion() { throw new UnsupportedOperationException(); }
+    public float getOcclusion() { return 0; }
     @NotImplemented("setOcclusion:")
-    public void setOcclusion(float v) { throw new UnsupportedOperationException(); }
+    public void setOcclusion(float v) {}
     @NotImplemented("position")
-    public @ByVal AVAudio3DPoint getPosition() { throw new UnsupportedOperationException(); }
+    public @ByVal AVAudio3DPoint getPosition() { return null; }
     @NotImplemented("setPosition:")
-    public void setPosition(@ByVal AVAudio3DPoint v) { throw new UnsupportedOperationException(); }
+    public void setPosition(@ByVal AVAudio3DPoint v) {}
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/

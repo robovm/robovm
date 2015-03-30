@@ -57,11 +57,11 @@ import org.robovm.apple.mediatoolbox.*;
     /*<members>*//*</members>*/
     /*<methods>*/
     @NotImplemented("captureOutput:didOutputSampleBuffer:fromConnection:")
-    public void didOutputSampleBuffer(AVCaptureOutput captureOutput, CMSampleBuffer sampleBuffer, AVCaptureConnection connection) { throw new UnsupportedOperationException(); }
+    public void didOutputSampleBuffer(AVCaptureOutput captureOutput, CMSampleBuffer sampleBuffer, AVCaptureConnection connection) {}
     /**
      * @since Available in iOS 6.0 and later.
      */
     @NotImplemented("captureOutput:didDropSampleBuffer:fromConnection:")
-    public void didDropSampleBuffer(AVCaptureOutput captureOutput, CMSampleBuffer sampleBuffer, AVCaptureConnection connection) { throw new UnsupportedOperationException(); }
+    public void didDropSampleBuffer(AVCaptureOutput captureOutput, CMSampleBuffer sampleBuffer, AVCaptureConnection connection) {}
     /*</methods>*/
 }

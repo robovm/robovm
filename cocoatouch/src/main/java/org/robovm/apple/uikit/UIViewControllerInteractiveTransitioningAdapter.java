@@ -54,10 +54,10 @@ import org.robovm.apple.corelocation.*;
     /*<members>*//*</members>*/
     /*<methods>*/
     @NotImplemented("startInteractiveTransition:")
-    public void startInteractiveTransition(UIViewControllerContextTransitioning transitionContext) { throw new UnsupportedOperationException(); }
+    public void startInteractiveTransition(UIViewControllerContextTransitioning transitionContext) {}
     @NotImplemented("completionSpeed")
-    public @MachineSizedFloat double getCompletionSpeed() { throw new UnsupportedOperationException(); }
+    public @MachineSizedFloat double getCompletionSpeed() { return 0; }
     @NotImplemented("completionCurve")
-    public UIViewAnimationCurve getCompletionCurve() { throw new UnsupportedOperationException(); }
+    public UIViewAnimationCurve getCompletionCurve() { return null; }
     /*</methods>*/
 }

@@ -54,12 +54,12 @@ import org.robovm.apple.corelocation.*;
     /*<members>*//*</members>*/
     /*<methods>*/
     @NotImplemented("rangeEnclosingPosition:withGranularity:inDirection:")
-    public UITextRange getRangeEnclosingPosition(UITextPosition position, UITextGranularity granularity, UITextDirection direction) { throw new UnsupportedOperationException(); }
+    public UITextRange getRangeEnclosingPosition(UITextPosition position, UITextGranularity granularity, UITextDirection direction) { return null; }
     @NotImplemented("isPosition:atBoundary:inDirection:")
-    public boolean isPositionAtBoundary(UITextPosition position, UITextGranularity granularity, UITextDirection direction) { throw new UnsupportedOperationException(); }
+    public boolean isPositionAtBoundary(UITextPosition position, UITextGranularity granularity, UITextDirection direction) { return false; }
     @NotImplemented("positionFromPosition:toBoundary:inDirection:")
-    public UITextPosition getPosition(UITextPosition position, UITextGranularity granularity, UITextDirection direction) { throw new UnsupportedOperationException(); }
+    public UITextPosition getPosition(UITextPosition position, UITextGranularity granularity, UITextDirection direction) { return null; }
     @NotImplemented("isPosition:withinTextUnit:inDirection:")
-    public boolean isPositionWithinTextUnit(UITextPosition position, UITextGranularity granularity, UITextDirection direction) { throw new UnsupportedOperationException(); }
+    public boolean isPositionWithinTextUnit(UITextPosition position, UITextGranularity granularity, UITextDirection direction) { return false; }
     /*</methods>*/
 }

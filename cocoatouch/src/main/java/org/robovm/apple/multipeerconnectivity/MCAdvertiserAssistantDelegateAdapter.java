@@ -50,8 +50,8 @@ import org.robovm.apple.security.*;
     /*<members>*//*</members>*/
     /*<methods>*/
     @NotImplemented("advertiserAssistantWillPresentInvitation:")
-    public void willPresentInvitation(MCAdvertiserAssistant advertiserAssistant) { throw new UnsupportedOperationException(); }
+    public void willPresentInvitation(MCAdvertiserAssistant advertiserAssistant) {}
     @NotImplemented("advertiserAssistantDidDismissInvitation:")
-    public void didDismissInvitation(MCAdvertiserAssistant advertiserAssistant) { throw new UnsupportedOperationException(); }
+    public void didDismissInvitation(MCAdvertiserAssistant advertiserAssistant) {}
     /*</methods>*/
 }

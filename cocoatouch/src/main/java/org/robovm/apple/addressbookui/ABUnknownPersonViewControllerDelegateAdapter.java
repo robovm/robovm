@@ -50,11 +50,11 @@ import org.robovm.apple.addressbook.*;
     /*<members>*//*</members>*/
     /*<methods>*/
     @NotImplemented("unknownPersonViewController:didResolveToPerson:")
-    public void didResolveToPerson(ABUnknownPersonViewController unknownCardViewController, ABPerson person) { throw new UnsupportedOperationException(); }
+    public void didResolveToPerson(ABUnknownPersonViewController unknownCardViewController, ABPerson person) {}
     /**
      * @since Available in iOS 3.0 and later.
      */
     @NotImplemented("unknownPersonViewController:shouldPerformDefaultActionForPerson:property:identifier:")
-    public boolean shouldPerformDefaultAction(ABUnknownPersonViewController personViewController, ABPerson person, ABProperty property, int identifier) { throw new UnsupportedOperationException(); }
+    public boolean shouldPerformDefaultAction(ABUnknownPersonViewController personViewController, ABPerson person, ABProperty property, int identifier) { return false; }
     /*</methods>*/
 }

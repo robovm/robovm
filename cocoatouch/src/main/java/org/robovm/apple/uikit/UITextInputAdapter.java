@@ -50,97 +50,97 @@ import org.robovm.apple.corelocation.*;
     /*<constructors>*//*</constructors>*/
     /*<properties>*/
     @NotImplemented("selectedTextRange")
-    public UITextRange getSelectedTextRange() { throw new UnsupportedOperationException(); }
+    public UITextRange getSelectedTextRange() { return null; }
     @NotImplemented("setSelectedTextRange:")
-    public void setSelectedTextRange(UITextRange v) { throw new UnsupportedOperationException(); }
+    public void setSelectedTextRange(UITextRange v) {}
     @NotImplemented("markedTextRange")
-    public UITextRange getMarkedTextRange() { throw new UnsupportedOperationException(); }
+    public UITextRange getMarkedTextRange() { return null; }
     @NotImplemented("markedTextStyle")
-    public UITextInputTextStyle getMarkedTextStyle() { throw new UnsupportedOperationException(); }
+    public UITextInputTextStyle getMarkedTextStyle() { return null; }
     @NotImplemented("setMarkedTextStyle:")
-    public void setMarkedTextStyle(UITextInputTextStyle v) { throw new UnsupportedOperationException(); }
+    public void setMarkedTextStyle(UITextInputTextStyle v) {}
     @NotImplemented("beginningOfDocument")
-    public UITextPosition getBeginningOfDocument() { throw new UnsupportedOperationException(); }
+    public UITextPosition getBeginningOfDocument() { return null; }
     @NotImplemented("endOfDocument")
-    public UITextPosition getEndOfDocument() { throw new UnsupportedOperationException(); }
+    public UITextPosition getEndOfDocument() { return null; }
     @NotImplemented("inputDelegate")
-    public UITextInputDelegate getInputDelegate() { throw new UnsupportedOperationException(); }
+    public UITextInputDelegate getInputDelegate() { return null; }
     @NotImplemented("setInputDelegate:")
-    public void setInputDelegate(UITextInputDelegate v) { throw new UnsupportedOperationException(); }
+    public void setInputDelegate(UITextInputDelegate v) {}
     @NotImplemented("tokenizer")
-    public UITextInputTokenizer getTokenizer() { throw new UnsupportedOperationException(); }
+    public UITextInputTokenizer getTokenizer() { return null; }
     @NotImplemented("textInputView")
-    public UIView getTextInputView() { throw new UnsupportedOperationException(); }
+    public UIView getTextInputView() { return null; }
     @NotImplemented("selectionAffinity")
-    public UITextStorageDirection getSelectionAffinity() { throw new UnsupportedOperationException(); }
+    public UITextStorageDirection getSelectionAffinity() { return null; }
     @NotImplemented("setSelectionAffinity:")
-    public void setSelectionAffinity(UITextStorageDirection v) { throw new UnsupportedOperationException(); }
+    public void setSelectionAffinity(UITextStorageDirection v) {}
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
     @NotImplemented("textInRange:")
-    public String getText(UITextRange range) { throw new UnsupportedOperationException(); }
+    public String getText(UITextRange range) { return null; }
     @NotImplemented("replaceRange:withText:")
-    public void replaceText(UITextRange range, String text) { throw new UnsupportedOperationException(); }
+    public void replaceText(UITextRange range, String text) {}
     @NotImplemented("setMarkedText:selectedRange:")
-    public void setMarkedText(String markedText, @ByVal NSRange selectedRange) { throw new UnsupportedOperationException(); }
+    public void setMarkedText(String markedText, @ByVal NSRange selectedRange) {}
     @NotImplemented("unmarkText")
-    public void unmarkText() { throw new UnsupportedOperationException(); }
+    public void unmarkText() {}
     @NotImplemented("textRangeFromPosition:toPosition:")
-    public UITextRange getTextRange(UITextPosition fromPosition, UITextPosition toPosition) { throw new UnsupportedOperationException(); }
+    public UITextRange getTextRange(UITextPosition fromPosition, UITextPosition toPosition) { return null; }
     @NotImplemented("positionFromPosition:offset:")
-    public UITextPosition getPosition(UITextPosition position, @MachineSizedSInt long offset) { throw new UnsupportedOperationException(); }
+    public UITextPosition getPosition(UITextPosition position, @MachineSizedSInt long offset) { return null; }
     @NotImplemented("positionFromPosition:inDirection:offset:")
-    public UITextPosition getPosition(UITextPosition position, UITextLayoutDirection direction, @MachineSizedSInt long offset) { throw new UnsupportedOperationException(); }
+    public UITextPosition getPosition(UITextPosition position, UITextLayoutDirection direction, @MachineSizedSInt long offset) { return null; }
     @NotImplemented("comparePosition:toPosition:")
-    public NSComparisonResult comparePositions(UITextPosition position, UITextPosition other) { throw new UnsupportedOperationException(); }
+    public NSComparisonResult comparePositions(UITextPosition position, UITextPosition other) { return null; }
     @NotImplemented("offsetFromPosition:toPosition:")
-    public @MachineSizedSInt long getOffset(UITextPosition from, UITextPosition toPosition) { throw new UnsupportedOperationException(); }
+    public @MachineSizedSInt long getOffset(UITextPosition from, UITextPosition toPosition) { return 0; }
     @NotImplemented("positionWithinRange:farthestInDirection:")
-    public UITextPosition getPosition(UITextRange range, UITextLayoutDirection direction) { throw new UnsupportedOperationException(); }
+    public UITextPosition getPosition(UITextRange range, UITextLayoutDirection direction) { return null; }
     @NotImplemented("characterRangeByExtendingPosition:inDirection:")
-    public UITextRange getCharacterRange(UITextPosition position, UITextLayoutDirection direction) { throw new UnsupportedOperationException(); }
+    public UITextRange getCharacterRange(UITextPosition position, UITextLayoutDirection direction) { return null; }
     @NotImplemented("baseWritingDirectionForPosition:inDirection:")
-    public UITextWritingDirection getBaseWritingDirection(UITextPosition position, UITextStorageDirection direction) { throw new UnsupportedOperationException(); }
+    public UITextWritingDirection getBaseWritingDirection(UITextPosition position, UITextStorageDirection direction) { return null; }
     @NotImplemented("setBaseWritingDirection:forRange:")
-    public void setBaseWritingDirection(UITextWritingDirection writingDirection, UITextRange range) { throw new UnsupportedOperationException(); }
+    public void setBaseWritingDirection(UITextWritingDirection writingDirection, UITextRange range) {}
     @NotImplemented("firstRectForRange:")
-    public @ByVal CGRect getFirstRect(UITextRange range) { throw new UnsupportedOperationException(); }
+    public @ByVal CGRect getFirstRect(UITextRange range) { return null; }
     @NotImplemented("caretRectForPosition:")
-    public @ByVal CGRect getCaretRect(UITextPosition position) { throw new UnsupportedOperationException(); }
+    public @ByVal CGRect getCaretRect(UITextPosition position) { return null; }
     /**
      * @since Available in iOS 6.0 and later.
      */
     @NotImplemented("selectionRectsForRange:")
-    public NSArray<UITextSelectionRect> getSelectionRects(UITextRange range) { throw new UnsupportedOperationException(); }
+    public NSArray<UITextSelectionRect> getSelectionRects(UITextRange range) { return null; }
     @NotImplemented("closestPositionToPoint:")
-    public UITextPosition getClosestPosition(@ByVal CGPoint point) { throw new UnsupportedOperationException(); }
+    public UITextPosition getClosestPosition(@ByVal CGPoint point) { return null; }
     @NotImplemented("closestPositionToPoint:withinRange:")
-    public UITextPosition getClosestPosition(@ByVal CGPoint point, UITextRange range) { throw new UnsupportedOperationException(); }
+    public UITextPosition getClosestPosition(@ByVal CGPoint point, UITextRange range) { return null; }
     @NotImplemented("characterRangeAtPoint:")
-    public UITextRange getCharacterRange(@ByVal CGPoint point) { throw new UnsupportedOperationException(); }
+    public UITextRange getCharacterRange(@ByVal CGPoint point) { return null; }
     /**
      * @since Available in iOS 6.0 and later.
      */
     @NotImplemented("shouldChangeTextInRange:replacementText:")
-    public boolean shouldChangeText(UITextRange range, String text) { throw new UnsupportedOperationException(); }
+    public boolean shouldChangeText(UITextRange range, String text) { return false; }
     @NotImplemented("textStylingAtPosition:inDirection:")
-    public UITextInputTextStyle getTextStyling(UITextPosition position, UITextStorageDirection direction) { throw new UnsupportedOperationException(); }
+    public UITextInputTextStyle getTextStyling(UITextPosition position, UITextStorageDirection direction) { return null; }
     @NotImplemented("positionWithinRange:atCharacterOffset:")
-    public UITextPosition getPosition(UITextRange range, @MachineSizedSInt long offset) { throw new UnsupportedOperationException(); }
+    public UITextPosition getPosition(UITextRange range, @MachineSizedSInt long offset) { return null; }
     @NotImplemented("characterOffsetOfPosition:withinRange:")
-    public @MachineSizedSInt long getCharacterOffset(UITextPosition position, UITextRange range) { throw new UnsupportedOperationException(); }
+    public @MachineSizedSInt long getCharacterOffset(UITextPosition position, UITextRange range) { return 0; }
     @NotImplemented("insertDictationResult:")
-    public void insertDictationResult(NSArray<UIDictationPhrase> dictationResult) { throw new UnsupportedOperationException(); }
+    public void insertDictationResult(NSArray<UIDictationPhrase> dictationResult) {}
     @NotImplemented("dictationRecordingDidEnd")
-    public void dictationRecordingDidEnd() { throw new UnsupportedOperationException(); }
+    public void dictationRecordingDidEnd() {}
     @NotImplemented("dictationRecognitionFailed")
-    public void dictationRecognitionFailed() { throw new UnsupportedOperationException(); }
+    public void dictationRecognitionFailed() {}
     @NotImplemented("insertDictationResultPlaceholder")
-    public NSObject getInsertDictationResultPlaceholder() { throw new UnsupportedOperationException(); }
+    public NSObject getInsertDictationResultPlaceholder() { return null; }
     @NotImplemented("frameForDictationResultPlaceholder:")
-    public @ByVal CGRect getDictationResultPlaceholderFrame(NSObject placeholder) { throw new UnsupportedOperationException(); }
+    public @ByVal CGRect getDictationResultPlaceholderFrame(NSObject placeholder) { return null; }
     @NotImplemented("removeDictationResultPlaceholder:willInsertResult:")
-    public void removeDictationResultPlaceholder(NSObject placeholder, boolean willInsertResult) { throw new UnsupportedOperationException(); }
+    public void removeDictationResultPlaceholder(NSObject placeholder, boolean willInsertResult) {}
     /*</methods>*/
 }

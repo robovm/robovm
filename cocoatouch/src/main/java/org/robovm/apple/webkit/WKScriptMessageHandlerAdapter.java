@@ -50,6 +50,6 @@ import org.robovm.apple.coregraphics.*;
     /*<members>*//*</members>*/
     /*<methods>*/
     @NotImplemented("userContentController:didReceiveScriptMessage:")
-    public void didReceiveScriptMessage(WKUserContentController userContentController, WKScriptMessage message) { throw new UnsupportedOperationException(); }
+    public void didReceiveScriptMessage(WKUserContentController userContentController, WKScriptMessage message) {}
     /*</methods>*/
 }

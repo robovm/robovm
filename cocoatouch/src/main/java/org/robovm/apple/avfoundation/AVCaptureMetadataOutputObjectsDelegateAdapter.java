@@ -57,6 +57,6 @@ import org.robovm.apple.mediatoolbox.*;
     /*<members>*//*</members>*/
     /*<methods>*/
     @NotImplemented("captureOutput:didOutputMetadataObjects:fromConnection:")
-    public void didOutputMetadataObjects(AVCaptureOutput captureOutput, NSArray<AVMetadataObject> metadataObjects, AVCaptureConnection connection) { throw new UnsupportedOperationException(); }
+    public void didOutputMetadataObjects(AVCaptureOutput captureOutput, NSArray<AVMetadataObject> metadataObjects, AVCaptureConnection connection) {}
     /*</methods>*/
 }

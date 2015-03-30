@@ -54,10 +54,10 @@ import org.robovm.apple.corelocation.*;
     /*<members>*//*</members>*/
     /*<methods>*/
     @NotImplemented("videoEditorController:didSaveEditedVideoToPath:")
-    public void didSave(UIVideoEditorController editor, String editedVideoPath) { throw new UnsupportedOperationException(); }
+    public void didSave(UIVideoEditorController editor, String editedVideoPath) {}
     @NotImplemented("videoEditorController:didFailWithError:")
-    public void didFail(UIVideoEditorController editor, NSError error) { throw new UnsupportedOperationException(); }
+    public void didFail(UIVideoEditorController editor, NSError error) {}
     @NotImplemented("videoEditorControllerDidCancel:")
-    public void didCancel(UIVideoEditorController editor) { throw new UnsupportedOperationException(); }
+    public void didCancel(UIVideoEditorController editor) {}
     /*</methods>*/
 }

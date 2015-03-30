@@ -55,10 +55,10 @@ import org.robovm.apple.dispatch.*;
     /*<members>*//*</members>*/
     /*<methods>*/
     @NotImplemented("URLSession:downloadTask:didFinishDownloadingToURL:")
-    public void didFinishDownloading(NSURLSession session, NSURLSessionDownloadTask downloadTask, NSURL location) { throw new UnsupportedOperationException(); }
+    public void didFinishDownloading(NSURLSession session, NSURLSessionDownloadTask downloadTask, NSURL location) {}
     @NotImplemented("URLSession:downloadTask:didWriteData:totalBytesWritten:totalBytesExpectedToWrite:")
-    public void didWriteData(NSURLSession session, NSURLSessionDownloadTask downloadTask, long bytesWritten, long totalBytesWritten, long totalBytesExpectedToWrite) { throw new UnsupportedOperationException(); }
+    public void didWriteData(NSURLSession session, NSURLSessionDownloadTask downloadTask, long bytesWritten, long totalBytesWritten, long totalBytesExpectedToWrite) {}
     @NotImplemented("URLSession:downloadTask:didResumeAtOffset:expectedTotalBytes:")
-    public void didResume(NSURLSession session, NSURLSessionDownloadTask downloadTask, long fileOffset, long expectedTotalBytes) { throw new UnsupportedOperationException(); }
+    public void didResume(NSURLSession session, NSURLSessionDownloadTask downloadTask, long fileOffset, long expectedTotalBytes) {}
     /*</methods>*/
 }

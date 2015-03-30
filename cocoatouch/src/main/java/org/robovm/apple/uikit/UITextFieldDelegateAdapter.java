@@ -54,18 +54,18 @@ import org.robovm.apple.corelocation.*;
     /*<members>*//*</members>*/
     /*<methods>*/
     @NotImplemented("textFieldShouldBeginEditing:")
-    public boolean shouldBeginEditing(UITextField textField) { throw new UnsupportedOperationException(); }
+    public boolean shouldBeginEditing(UITextField textField) { return false; }
     @NotImplemented("textFieldDidBeginEditing:")
-    public void didBeginEditing(UITextField textField) { throw new UnsupportedOperationException(); }
+    public void didBeginEditing(UITextField textField) {}
     @NotImplemented("textFieldShouldEndEditing:")
-    public boolean shouldEndEditing(UITextField textField) { throw new UnsupportedOperationException(); }
+    public boolean shouldEndEditing(UITextField textField) { return false; }
     @NotImplemented("textFieldDidEndEditing:")
-    public void didEndEditing(UITextField textField) { throw new UnsupportedOperationException(); }
+    public void didEndEditing(UITextField textField) {}
     @NotImplemented("textField:shouldChangeCharactersInRange:replacementString:")
-    public boolean shouldChangeCharacters(UITextField textField, @ByVal NSRange range, String string) { throw new UnsupportedOperationException(); }
+    public boolean shouldChangeCharacters(UITextField textField, @ByVal NSRange range, String string) { return false; }
     @NotImplemented("textFieldShouldClear:")
-    public boolean shouldClear(UITextField textField) { throw new UnsupportedOperationException(); }
+    public boolean shouldClear(UITextField textField) { return false; }
     @NotImplemented("textFieldShouldReturn:")
-    public boolean shouldReturn(UITextField textField) { throw new UnsupportedOperationException(); }
+    public boolean shouldReturn(UITextField textField) { return false; }
     /*</methods>*/
 }

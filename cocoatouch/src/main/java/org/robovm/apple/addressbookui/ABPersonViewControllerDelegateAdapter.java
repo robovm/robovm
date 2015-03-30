@@ -50,6 +50,6 @@ import org.robovm.apple.addressbook.*;
     /*<members>*//*</members>*/
     /*<methods>*/
     @NotImplemented("personViewController:shouldPerformDefaultActionForPerson:property:identifier:")
-    public boolean shouldPerformDefaultAction(ABPersonViewController personViewController, ABPerson person, ABProperty property, int identifier) { throw new UnsupportedOperationException(); }
+    public boolean shouldPerformDefaultAction(ABPersonViewController personViewController, ABPerson person, ABProperty property, int identifier) { return false; }
     /*</methods>*/
 }

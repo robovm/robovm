@@ -48,17 +48,17 @@ import org.robovm.apple.foundation.*;
     /*<members>*//*</members>*/
     /*<methods>*/
     @NotImplemented("controller:didChangeObject:atIndexPath:forChangeType:newIndexPath:")
-    public void didChangeObject(NSFetchedResultsController controller, NSObject anObject, NSIndexPath indexPath, NSFetchedResultsChangeType type, NSIndexPath newIndexPath) { throw new UnsupportedOperationException(); }
+    public void didChangeObject(NSFetchedResultsController controller, NSObject anObject, NSIndexPath indexPath, NSFetchedResultsChangeType type, NSIndexPath newIndexPath) {}
     @NotImplemented("controller:didChangeSection:atIndex:forChangeType:")
-    public void didChangeSection(NSFetchedResultsController controller, NSFetchedResultsSectionInfo sectionInfo, @MachineSizedUInt long sectionIndex, NSFetchedResultsChangeType type) { throw new UnsupportedOperationException(); }
+    public void didChangeSection(NSFetchedResultsController controller, NSFetchedResultsSectionInfo sectionInfo, @MachineSizedUInt long sectionIndex, NSFetchedResultsChangeType type) {}
     @NotImplemented("controllerWillChangeContent:")
-    public void willChangeContent(NSFetchedResultsController controller) { throw new UnsupportedOperationException(); }
+    public void willChangeContent(NSFetchedResultsController controller) {}
     @NotImplemented("controllerDidChangeContent:")
-    public void didChangeContent(NSFetchedResultsController controller) { throw new UnsupportedOperationException(); }
+    public void didChangeContent(NSFetchedResultsController controller) {}
     /**
      * @since Available in iOS 4.0 and later.
      */
     @NotImplemented("controller:sectionIndexTitleForSectionName:")
-    public String getSectionIndexTitle(NSFetchedResultsController controller, String sectionName) { throw new UnsupportedOperationException(); }
+    public String getSectionIndexTitle(NSFetchedResultsController controller, String sectionName) { return null; }
     /*</methods>*/
 }

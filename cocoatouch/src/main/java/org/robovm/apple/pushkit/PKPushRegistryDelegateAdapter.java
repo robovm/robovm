@@ -49,10 +49,10 @@ import org.robovm.apple.dispatch.*;
     /*<members>*//*</members>*/
     /*<methods>*/
     @NotImplemented("pushRegistry:didUpdatePushCredentials:forType:")
-    public void didUpdatePushCredentials(PKPushRegistry registry, PKPushCredentials credentials, String type) { throw new UnsupportedOperationException(); }
+    public void didUpdatePushCredentials(PKPushRegistry registry, PKPushCredentials credentials, String type) {}
     @NotImplemented("pushRegistry:didReceiveIncomingPushWithPayload:forType:")
-    public void didReceiveIncomingPush(PKPushRegistry registry, PKPushPayload payload, String type) { throw new UnsupportedOperationException(); }
+    public void didReceiveIncomingPush(PKPushRegistry registry, PKPushPayload payload, String type) {}
     @NotImplemented("pushRegistry:didInvalidatePushTokenForType:")
-    public void didInvalidatePushToken(PKPushRegistry registry, String type) { throw new UnsupportedOperationException(); }
+    public void didInvalidatePushToken(PKPushRegistry registry, String type) {}
     /*</methods>*/
 }

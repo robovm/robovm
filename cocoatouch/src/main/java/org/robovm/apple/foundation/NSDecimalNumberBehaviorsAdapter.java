@@ -55,10 +55,10 @@ import org.robovm.apple.dispatch.*;
     /*<members>*//*</members>*/
     /*<methods>*/
     @NotImplemented("roundingMode")
-    public NSRoundingMode getRoundingMode() { throw new UnsupportedOperationException(); }
+    public NSRoundingMode getRoundingMode() { return null; }
     @NotImplemented("scale")
-    public short getScale() { throw new UnsupportedOperationException(); }
+    public short getScale() { return 0; }
     @NotImplemented("exceptionDuringOperation:error:leftOperand:rightOperand:")
-    public NSDecimalNumber exceptionDuringOperation(Selector operation, NSCalculationError error, NSDecimalNumber leftOperand, NSDecimalNumber rightOperand) { throw new UnsupportedOperationException(); }
+    public NSDecimalNumber exceptionDuringOperation(Selector operation, NSCalculationError error, NSDecimalNumber leftOperand, NSDecimalNumber rightOperand) { return null; }
     /*</methods>*/
 }

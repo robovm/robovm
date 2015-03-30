@@ -55,14 +55,14 @@ import org.robovm.apple.opengles.*;
     /*<members>*//*</members>*/
     /*<methods>*/
     @NotImplemented("renderer:updateAtTime:")
-    public void update(SCNSceneRenderer aRenderer, double time) { throw new UnsupportedOperationException(); }
+    public void update(SCNSceneRenderer aRenderer, double time) {}
     @NotImplemented("renderer:didApplyAnimationsAtTime:")
-    public void didApplyAnimations(SCNSceneRenderer aRenderer, double time) { throw new UnsupportedOperationException(); }
+    public void didApplyAnimations(SCNSceneRenderer aRenderer, double time) {}
     @NotImplemented("renderer:didSimulatePhysicsAtTime:")
-    public void didSimulatePhysics(SCNSceneRenderer aRenderer, double time) { throw new UnsupportedOperationException(); }
+    public void didSimulatePhysics(SCNSceneRenderer aRenderer, double time) {}
     @NotImplemented("renderer:willRenderScene:atTime:")
-    public void willRenderScene(SCNSceneRenderer aRenderer, SCNScene scene, double time) { throw new UnsupportedOperationException(); }
+    public void willRenderScene(SCNSceneRenderer aRenderer, SCNScene scene, double time) {}
     @NotImplemented("renderer:didRenderScene:atTime:")
-    public void didRenderScene(SCNSceneRenderer aRenderer, SCNScene scene, double time) { throw new UnsupportedOperationException(); }
+    public void didRenderScene(SCNSceneRenderer aRenderer, SCNScene scene, double time) {}
     /*</methods>*/
 }

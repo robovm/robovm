@@ -54,26 +54,26 @@ import org.robovm.apple.corelocation.*;
     /*<members>*//*</members>*/
     /*<methods>*/
     @NotImplemented("tableView:numberOfRowsInSection:")
-    public @MachineSizedSInt long getNumberOfRowsInSection(UITableView tableView, @MachineSizedSInt long section) { throw new UnsupportedOperationException(); }
+    public @MachineSizedSInt long getNumberOfRowsInSection(UITableView tableView, @MachineSizedSInt long section) { return 0; }
     @NotImplemented("tableView:cellForRowAtIndexPath:")
-    public UITableViewCell getCellForRow(UITableView tableView, NSIndexPath indexPath) { throw new UnsupportedOperationException(); }
+    public UITableViewCell getCellForRow(UITableView tableView, NSIndexPath indexPath) { return null; }
     @NotImplemented("numberOfSectionsInTableView:")
-    public @MachineSizedSInt long getNumberOfSections(UITableView tableView) { throw new UnsupportedOperationException(); }
+    public @MachineSizedSInt long getNumberOfSections(UITableView tableView) { return 0; }
     @NotImplemented("tableView:titleForHeaderInSection:")
-    public String getTitleForHeader(UITableView tableView, @MachineSizedSInt long section) { throw new UnsupportedOperationException(); }
+    public String getTitleForHeader(UITableView tableView, @MachineSizedSInt long section) { return null; }
     @NotImplemented("tableView:titleForFooterInSection:")
-    public String getTitleForFooter(UITableView tableView, @MachineSizedSInt long section) { throw new UnsupportedOperationException(); }
+    public String getTitleForFooter(UITableView tableView, @MachineSizedSInt long section) { return null; }
     @NotImplemented("tableView:canEditRowAtIndexPath:")
-    public boolean canEditRow(UITableView tableView, NSIndexPath indexPath) { throw new UnsupportedOperationException(); }
+    public boolean canEditRow(UITableView tableView, NSIndexPath indexPath) { return false; }
     @NotImplemented("tableView:canMoveRowAtIndexPath:")
-    public boolean canMoveRow(UITableView tableView, NSIndexPath indexPath) { throw new UnsupportedOperationException(); }
+    public boolean canMoveRow(UITableView tableView, NSIndexPath indexPath) { return false; }
     @NotImplemented("sectionIndexTitlesForTableView:")
-    public @org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String> getSectionIndexTitles(UITableView tableView) { throw new UnsupportedOperationException(); }
+    public @org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String> getSectionIndexTitles(UITableView tableView) { return null; }
     @NotImplemented("tableView:sectionForSectionIndexTitle:atIndex:")
-    public @MachineSizedSInt long getSectionForSectionIndexTitle(UITableView tableView, String title, @MachineSizedSInt long index) { throw new UnsupportedOperationException(); }
+    public @MachineSizedSInt long getSectionForSectionIndexTitle(UITableView tableView, String title, @MachineSizedSInt long index) { return 0; }
     @NotImplemented("tableView:commitEditingStyle:forRowAtIndexPath:")
-    public void commitEditingStyleForRow(UITableView tableView, UITableViewCellEditingStyle editingStyle, NSIndexPath indexPath) { throw new UnsupportedOperationException(); }
+    public void commitEditingStyleForRow(UITableView tableView, UITableViewCellEditingStyle editingStyle, NSIndexPath indexPath) {}
     @NotImplemented("tableView:moveRowAtIndexPath:toIndexPath:")
-    public void moveRow(UITableView tableView, NSIndexPath sourceIndexPath, NSIndexPath destinationIndexPath) { throw new UnsupportedOperationException(); }
+    public void moveRow(UITableView tableView, NSIndexPath sourceIndexPath, NSIndexPath destinationIndexPath) {}
     /*</methods>*/
 }

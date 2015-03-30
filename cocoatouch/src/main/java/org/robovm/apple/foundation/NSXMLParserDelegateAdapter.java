@@ -55,44 +55,44 @@ import org.robovm.apple.dispatch.*;
     /*<members>*//*</members>*/
     /*<methods>*/
     @NotImplemented("parserDidStartDocument:")
-    public void didStartDocument(NSXMLParser parser) { throw new UnsupportedOperationException(); }
+    public void didStartDocument(NSXMLParser parser) {}
     @NotImplemented("parserDidEndDocument:")
-    public void didEndDocument(NSXMLParser parser) { throw new UnsupportedOperationException(); }
+    public void didEndDocument(NSXMLParser parser) {}
     @NotImplemented("parser:foundNotationDeclarationWithName:publicID:systemID:")
-    public void foundNotationDeclaration(NSXMLParser parser, String name, String publicID, String systemID) { throw new UnsupportedOperationException(); }
+    public void foundNotationDeclaration(NSXMLParser parser, String name, String publicID, String systemID) {}
     @NotImplemented("parser:foundUnparsedEntityDeclarationWithName:publicID:systemID:notationName:")
-    public void foundUnparsedEntityDeclaration(NSXMLParser parser, String name, String publicID, String systemID, String notationName) { throw new UnsupportedOperationException(); }
+    public void foundUnparsedEntityDeclaration(NSXMLParser parser, String name, String publicID, String systemID, String notationName) {}
     @NotImplemented("parser:foundAttributeDeclarationWithName:forElement:type:defaultValue:")
-    public void foundAttributeDeclaration(NSXMLParser parser, String attributeName, String elementName, String type, String defaultValue) { throw new UnsupportedOperationException(); }
+    public void foundAttributeDeclaration(NSXMLParser parser, String attributeName, String elementName, String type, String defaultValue) {}
     @NotImplemented("parser:foundElementDeclarationWithName:model:")
-    public void foundElementDeclaration(NSXMLParser parser, String elementName, String model) { throw new UnsupportedOperationException(); }
+    public void foundElementDeclaration(NSXMLParser parser, String elementName, String model) {}
     @NotImplemented("parser:foundInternalEntityDeclarationWithName:value:")
-    public void foundInternalEntityDeclaration(NSXMLParser parser, String name, String value) { throw new UnsupportedOperationException(); }
+    public void foundInternalEntityDeclaration(NSXMLParser parser, String name, String value) {}
     @NotImplemented("parser:foundExternalEntityDeclarationWithName:publicID:systemID:")
-    public void foundExternalEntityDeclaration(NSXMLParser parser, String name, String publicID, String systemID) { throw new UnsupportedOperationException(); }
+    public void foundExternalEntityDeclaration(NSXMLParser parser, String name, String publicID, String systemID) {}
     @NotImplemented("parser:didStartElement:namespaceURI:qualifiedName:attributes:")
-    public void didStartElement(NSXMLParser parser, String elementName, String namespaceURI, String qName, @org.robovm.rt.bro.annotation.Marshaler(NSDictionary.AsStringMapMarshaler.class) Map<String, NSObject> attributeDict) { throw new UnsupportedOperationException(); }
+    public void didStartElement(NSXMLParser parser, String elementName, String namespaceURI, String qName, @org.robovm.rt.bro.annotation.Marshaler(NSDictionary.AsStringMapMarshaler.class) Map<String, NSObject> attributeDict) {}
     @NotImplemented("parser:didEndElement:namespaceURI:qualifiedName:")
-    public void didEndElement(NSXMLParser parser, String elementName, String namespaceURI, String qName) { throw new UnsupportedOperationException(); }
+    public void didEndElement(NSXMLParser parser, String elementName, String namespaceURI, String qName) {}
     @NotImplemented("parser:didStartMappingPrefix:toURI:")
-    public void didStartMappingPrefix(NSXMLParser parser, String prefix, String namespaceURI) { throw new UnsupportedOperationException(); }
+    public void didStartMappingPrefix(NSXMLParser parser, String prefix, String namespaceURI) {}
     @NotImplemented("parser:didEndMappingPrefix:")
-    public void didEndMappingPrefix(NSXMLParser parser, String prefix) { throw new UnsupportedOperationException(); }
+    public void didEndMappingPrefix(NSXMLParser parser, String prefix) {}
     @NotImplemented("parser:foundCharacters:")
-    public void foundCharacters(NSXMLParser parser, String string) { throw new UnsupportedOperationException(); }
+    public void foundCharacters(NSXMLParser parser, String string) {}
     @NotImplemented("parser:foundIgnorableWhitespace:")
-    public void foundIgnorableWhitespace(NSXMLParser parser, String whitespaceString) { throw new UnsupportedOperationException(); }
+    public void foundIgnorableWhitespace(NSXMLParser parser, String whitespaceString) {}
     @NotImplemented("parser:foundProcessingInstructionWithTarget:data:")
-    public void foundProcessingInstruction(NSXMLParser parser, String target, String data) { throw new UnsupportedOperationException(); }
+    public void foundProcessingInstruction(NSXMLParser parser, String target, String data) {}
     @NotImplemented("parser:foundComment:")
-    public void foundComment(NSXMLParser parser, String comment) { throw new UnsupportedOperationException(); }
+    public void foundComment(NSXMLParser parser, String comment) {}
     @NotImplemented("parser:foundCDATA:")
-    public void foundCDATA(NSXMLParser parser, NSData CDATABlock) { throw new UnsupportedOperationException(); }
+    public void foundCDATA(NSXMLParser parser, NSData CDATABlock) {}
     @NotImplemented("parser:resolveExternalEntityName:systemID:")
-    public NSData resolveExternalEntityName(NSXMLParser parser, String name, String systemID) { throw new UnsupportedOperationException(); }
+    public NSData resolveExternalEntityName(NSXMLParser parser, String name, String systemID) { return null; }
     @NotImplemented("parser:parseErrorOccurred:")
-    public void parseErrorOccurred(NSXMLParser parser, NSError parseError) { throw new UnsupportedOperationException(); }
+    public void parseErrorOccurred(NSXMLParser parser, NSError parseError) {}
     @NotImplemented("parser:validationErrorOccurred:")
-    public void validationErrorOccurred(NSXMLParser parser, NSError validationError) { throw new UnsupportedOperationException(); }
+    public void validationErrorOccurred(NSXMLParser parser, NSError validationError) {}
     /*</methods>*/
 }

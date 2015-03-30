@@ -50,7 +50,7 @@ import org.robovm.apple.corelocation.*;
     /*<constructors>*//*</constructors>*/
     /*<properties>*/
     @NotImplemented("length")
-    public @MachineSizedFloat double getLength() { throw new UnsupportedOperationException(); }
+    public @MachineSizedFloat double getLength() { return 0; }
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/

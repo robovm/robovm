@@ -48,8 +48,8 @@ import org.robovm.apple.foundation.*;
     /*<members>*//*</members>*/
     /*<methods>*/
     @NotImplemented("accessoryBrowser:didFindNewAccessory:")
-    public void didFindNewAccessory(HMAccessoryBrowser browser, HMAccessory accessory) { throw new UnsupportedOperationException(); }
+    public void didFindNewAccessory(HMAccessoryBrowser browser, HMAccessory accessory) {}
     @NotImplemented("accessoryBrowser:didRemoveNewAccessory:")
-    public void didRemoveNewAccessory(HMAccessoryBrowser browser, HMAccessory accessory) { throw new UnsupportedOperationException(); }
+    public void didRemoveNewAccessory(HMAccessoryBrowser browser, HMAccessory accessory) {}
     /*</methods>*/
 }

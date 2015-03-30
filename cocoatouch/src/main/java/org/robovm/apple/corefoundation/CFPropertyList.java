@@ -90,7 +90,7 @@ import org.robovm.apple.foundation.*;
     /**
      * @since Available in iOS 4.0 and later.
      */
-    protected static @org.robovm.rt.bro.annotation.Marshaler(CFType.NoRetainMarshaler.class) CFPropertyList create(CFAllocator allocator, CFData data, @MachineSizedUInt long options, MachineSizedSIntPtr format) throws NSErrorException {
+    protected static CFPropertyList create(CFAllocator allocator, CFData data, @MachineSizedUInt long options, MachineSizedSIntPtr format) throws NSErrorException {
        NSError.NSErrorPtr ptr = new NSError.NSErrorPtr();
        CFPropertyList result = create(allocator, data, options, format, ptr);
        if (ptr.get() != null) { throw new NSErrorException(ptr.get()); }
@@ -104,7 +104,7 @@ import org.robovm.apple.foundation.*;
     /**
      * @since Available in iOS 4.0 and later.
      */
-    protected static @org.robovm.rt.bro.annotation.Marshaler(CFType.NoRetainMarshaler.class) CFPropertyList create(CFAllocator allocator, CFReadStream stream, @MachineSizedSInt long streamLength, @MachineSizedUInt long options, MachineSizedSIntPtr format) throws NSErrorException {
+    protected static CFPropertyList create(CFAllocator allocator, CFReadStream stream, @MachineSizedSInt long streamLength, @MachineSizedUInt long options, MachineSizedSIntPtr format) throws NSErrorException {
        NSError.NSErrorPtr ptr = new NSError.NSErrorPtr();
        CFPropertyList result = create(allocator, stream, streamLength, options, format, ptr);
        if (ptr.get() != null) { throw new NSErrorException(ptr.get()); }
@@ -132,7 +132,7 @@ import org.robovm.apple.foundation.*;
     /**
      * @since Available in iOS 4.0 and later.
      */
-    private static @org.robovm.rt.bro.annotation.Marshaler(CFType.NoRetainMarshaler.class) CFData asData(CFAllocator allocator, CFPropertyList propertyList, CFPropertyListFormat format, @MachineSizedUInt long options) throws NSErrorException {
+    private static CFData asData(CFAllocator allocator, CFPropertyList propertyList, CFPropertyListFormat format, @MachineSizedUInt long options) throws NSErrorException {
        NSError.NSErrorPtr ptr = new NSError.NSErrorPtr();
        CFData result = asData(allocator, propertyList, format, options, ptr);
        if (ptr.get() != null) { throw new NSErrorException(ptr.get()); }

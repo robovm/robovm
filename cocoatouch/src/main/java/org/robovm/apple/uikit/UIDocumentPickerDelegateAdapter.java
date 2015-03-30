@@ -54,8 +54,8 @@ import org.robovm.apple.corelocation.*;
     /*<members>*//*</members>*/
     /*<methods>*/
     @NotImplemented("documentPicker:didPickDocumentAtURL:")
-    public void didPickDocument(UIDocumentPickerViewController controller, NSURL url) { throw new UnsupportedOperationException(); }
+    public void didPickDocument(UIDocumentPickerViewController controller, NSURL url) {}
     @NotImplemented("documentPickerWasCancelled:")
-    public void wasCancelled(UIDocumentPickerViewController controller) { throw new UnsupportedOperationException(); }
+    public void wasCancelled(UIDocumentPickerViewController controller) {}
     /*</methods>*/
 }

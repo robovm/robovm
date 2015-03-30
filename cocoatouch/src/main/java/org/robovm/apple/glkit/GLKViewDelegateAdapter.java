@@ -53,6 +53,6 @@ import org.robovm.apple.dispatch.*;
     /*<members>*//*</members>*/
     /*<methods>*/
     @NotImplemented("glkView:drawInRect:")
-    public void draw(GLKView view, @ByVal CGRect rect) { throw new UnsupportedOperationException(); }
+    public void draw(GLKView view, @ByVal CGRect rect) {}
     /*</methods>*/
 }

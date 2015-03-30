@@ -50,22 +50,22 @@ import org.robovm.apple.coregraphics.*;
     /*<members>*//*</members>*/
     /*<methods>*/
     @NotImplemented("webView:decidePolicyForNavigationAction:decisionHandler:")
-    public void decidePolicyForNavigationAction(WKWebView webView, WKNavigationAction navigationAction, @Block VoidBlock1<WKNavigationActionPolicy> decisionHandler) { throw new UnsupportedOperationException(); }
+    public void decidePolicyForNavigationAction(WKWebView webView, WKNavigationAction navigationAction, @Block VoidBlock1<WKNavigationActionPolicy> decisionHandler) {}
     @NotImplemented("webView:decidePolicyForNavigationResponse:decisionHandler:")
-    public void decidePolicyForNavigationResponse(WKWebView webView, WKNavigationResponse navigationResponse, @Block VoidBlock1<WKNavigationResponsePolicy> decisionHandler) { throw new UnsupportedOperationException(); }
+    public void decidePolicyForNavigationResponse(WKWebView webView, WKNavigationResponse navigationResponse, @Block VoidBlock1<WKNavigationResponsePolicy> decisionHandler) {}
     @NotImplemented("webView:didStartProvisionalNavigation:")
-    public void didStartProvisionalNavigation(WKWebView webView, WKNavigation navigation) { throw new UnsupportedOperationException(); }
+    public void didStartProvisionalNavigation(WKWebView webView, WKNavigation navigation) {}
     @NotImplemented("webView:didReceiveServerRedirectForProvisionalNavigation:")
-    public void didReceiveServerRedirectForProvisionalNavigation(WKWebView webView, WKNavigation navigation) { throw new UnsupportedOperationException(); }
+    public void didReceiveServerRedirectForProvisionalNavigation(WKWebView webView, WKNavigation navigation) {}
     @NotImplemented("webView:didFailProvisionalNavigation:withError:")
-    public void didFailProvisionalNavigation(WKWebView webView, WKNavigation navigation, NSError error) { throw new UnsupportedOperationException(); }
+    public void didFailProvisionalNavigation(WKWebView webView, WKNavigation navigation, NSError error) {}
     @NotImplemented("webView:didCommitNavigation:")
-    public void didCommitNavigation(WKWebView webView, WKNavigation navigation) { throw new UnsupportedOperationException(); }
+    public void didCommitNavigation(WKWebView webView, WKNavigation navigation) {}
     @NotImplemented("webView:didFinishNavigation:")
-    public void didFinishNavigation(WKWebView webView, WKNavigation navigation) { throw new UnsupportedOperationException(); }
+    public void didFinishNavigation(WKWebView webView, WKNavigation navigation) {}
     @NotImplemented("webView:didFailNavigation:withError:")
-    public void didFailNavigation(WKWebView webView, WKNavigation navigation, NSError error) { throw new UnsupportedOperationException(); }
+    public void didFailNavigation(WKWebView webView, WKNavigation navigation, NSError error) {}
     @NotImplemented("webView:didReceiveAuthenticationChallenge:completionHandler:")
-    public void didReceiveAuthenticationChallenge(WKWebView webView, NSURLAuthenticationChallenge challenge, @Block VoidBlock2<NSURLSessionAuthChallengeDisposition, NSURLCredential> completionHandler) { throw new UnsupportedOperationException(); }
+    public void didReceiveAuthenticationChallenge(WKWebView webView, NSURLAuthenticationChallenge challenge, @Block VoidBlock2<NSURLSessionAuthChallengeDisposition, NSURLCredential> completionHandler) {}
     /*</methods>*/
 }

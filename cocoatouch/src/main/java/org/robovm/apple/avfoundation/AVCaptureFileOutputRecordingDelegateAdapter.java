@@ -57,8 +57,8 @@ import org.robovm.apple.mediatoolbox.*;
     /*<members>*//*</members>*/
     /*<methods>*/
     @NotImplemented("captureOutput:didStartRecordingToOutputFileAtURL:fromConnections:")
-    public void didStartRecording(AVCaptureFileOutput captureOutput, NSURL fileURL, NSArray<AVCaptureConnection> connections) { throw new UnsupportedOperationException(); }
+    public void didStartRecording(AVCaptureFileOutput captureOutput, NSURL fileURL, NSArray<AVCaptureConnection> connections) {}
     @NotImplemented("captureOutput:didFinishRecordingToOutputFileAtURL:fromConnections:error:")
-    public void didFinishRecording(AVCaptureFileOutput captureOutput, NSURL outputFileURL, NSArray<AVCaptureConnection> connections, NSError error) { throw new UnsupportedOperationException(); }
+    public void didFinishRecording(AVCaptureFileOutput captureOutput, NSURL outputFileURL, NSArray<AVCaptureConnection> connections, NSError error) {}
     /*</methods>*/
 }

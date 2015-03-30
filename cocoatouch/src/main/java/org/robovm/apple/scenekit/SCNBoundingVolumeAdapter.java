@@ -55,10 +55,10 @@ import org.robovm.apple.opengles.*;
     /*<members>*//*</members>*/
     /*<methods>*/
     @NotImplemented("getBoundingBoxMin:max:")
-    public boolean getBoundingBox(SCNVector3.SCNVector3Ptr min, SCNVector3.SCNVector3Ptr max) { throw new UnsupportedOperationException(); }
+    public boolean getBoundingBox(SCNVector3.SCNVector3Ptr min, SCNVector3.SCNVector3Ptr max) { return false; }
     @NotImplemented("getBoundingSphereCenter:radius:")
-    public boolean getBoundingSphere(SCNVector3.SCNVector3Ptr center, MachineSizedFloatPtr radius) { throw new UnsupportedOperationException(); }
+    public boolean getBoundingSphere(SCNVector3.SCNVector3Ptr center, MachineSizedFloatPtr radius) { return false; }
     @NotImplemented("setBoundingBoxMin:max:")
-    public void setBoundingBox(SCNVector3.SCNVector3Ptr min, SCNVector3.SCNVector3Ptr max) { throw new UnsupportedOperationException(); }
+    public void setBoundingBox(SCNVector3.SCNVector3Ptr min, SCNVector3.SCNVector3Ptr max) {}
     /*</methods>*/
 }

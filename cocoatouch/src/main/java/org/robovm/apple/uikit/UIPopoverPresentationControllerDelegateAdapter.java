@@ -54,12 +54,12 @@ import org.robovm.apple.corelocation.*;
     /*<members>*//*</members>*/
     /*<methods>*/
     @NotImplemented("prepareForPopoverPresentation:")
-    public void prepareForPopoverPresentation(UIPopoverPresentationController popoverPresentationController) { throw new UnsupportedOperationException(); }
+    public void prepareForPopoverPresentation(UIPopoverPresentationController popoverPresentationController) {}
     @NotImplemented("popoverPresentationControllerShouldDismissPopover:")
-    public boolean shouldDismissPopover(UIPopoverPresentationController popoverPresentationController) { throw new UnsupportedOperationException(); }
+    public boolean shouldDismissPopover(UIPopoverPresentationController popoverPresentationController) { return false; }
     @NotImplemented("popoverPresentationControllerDidDismissPopover:")
-    public void didDismissPopover(UIPopoverPresentationController popoverPresentationController) { throw new UnsupportedOperationException(); }
+    public void didDismissPopover(UIPopoverPresentationController popoverPresentationController) {}
     @NotImplemented("popoverPresentationController:willRepositionPopoverToRect:inView:")
-    public void willRepositionPopover(UIPopoverPresentationController popoverPresentationController, CGRect rect, UIView.UIViewPtr view) { throw new UnsupportedOperationException(); }
+    public void willRepositionPopover(UIPopoverPresentationController popoverPresentationController, CGRect rect, UIView.UIViewPtr view) {}
     /*</methods>*/
 }

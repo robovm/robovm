@@ -49,8 +49,8 @@ import org.robovm.apple.uikit.*;
     /*<members>*//*</members>*/
     /*<methods>*/
     @NotImplemented("widgetPerformUpdateWithCompletionHandler:")
-    public void performUpdate(@Block VoidBlock1<NCUpdateResult> completionHandler) { throw new UnsupportedOperationException(); }
+    public void performUpdate(@Block VoidBlock1<NCUpdateResult> completionHandler) {}
     @NotImplemented("widgetMarginInsetsForProposedMarginInsets:")
-    public @ByVal UIEdgeInsets getMarginInsetsForProposedInsets(@ByVal UIEdgeInsets defaultMarginInsets) { throw new UnsupportedOperationException(); }
+    public @ByVal UIEdgeInsets getMarginInsetsForProposedInsets(@ByVal UIEdgeInsets defaultMarginInsets) { return null; }
     /*</methods>*/
 }

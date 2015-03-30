@@ -104,7 +104,7 @@ import org.robovm.apple.corefoundation.*;
     /**
      * @since Available in iOS 6.0 and later.
      */
-    public static @org.robovm.rt.bro.annotation.Marshaler(CFType.NoRetainMarshaler.class) ABAddressBook create(NSDictionary<NSString, ?> options) throws NSErrorException {
+    public static ABAddressBook create(NSDictionary<NSString, ?> options) throws NSErrorException {
        NSError.NSErrorPtr ptr = new NSError.NSErrorPtr();
        ABAddressBook result = create(options, ptr);
        if (ptr.get() != null) { throw new NSErrorException(ptr.get()); }

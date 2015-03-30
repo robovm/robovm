@@ -55,6 +55,6 @@ import org.robovm.apple.dispatch.*;
     /*<members>*//*</members>*/
     /*<methods>*/
     @NotImplemented("cache:willEvictObject:")
-    public void willEvictObject(NSCache cache, NSObject obj) { throw new UnsupportedOperationException(); }
+    public void willEvictObject(NSCache cache, NSObject obj) {}
     /*</methods>*/
 }

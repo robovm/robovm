@@ -53,6 +53,6 @@ import org.robovm.apple.accounts.*;
      * @since Available in iOS 6.0 and later.
      */
     @NotImplemented("productViewControllerDidFinish:")
-    public void didFinish(SKStoreProductViewController viewController) { throw new UnsupportedOperationException(); }
+    public void didFinish(SKStoreProductViewController viewController) {}
     /*</methods>*/
 }

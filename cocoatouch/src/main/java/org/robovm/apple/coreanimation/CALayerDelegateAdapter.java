@@ -53,12 +53,12 @@ import org.robovm.apple.metal.*;
     /*<members>*//*</members>*/
     /*<methods>*/
     @NotImplemented("displayLayer:")
-    public void displayLayer(CALayer layer) { throw new UnsupportedOperationException(); }
+    public void displayLayer(CALayer layer) {}
     @NotImplemented("drawLayer:inContext:")
-    public void drawLayer(CALayer layer, CGContext ctx) { throw new UnsupportedOperationException(); }
+    public void drawLayer(CALayer layer, CGContext ctx) {}
     @NotImplemented("layoutSublayersOfLayer:")
-    public void layoutSublayers(CALayer layer) { throw new UnsupportedOperationException(); }
+    public void layoutSublayers(CALayer layer) {}
     @NotImplemented("actionForLayer:forKey:")
-    public CAAction getAction(CALayer layer, String event) { throw new UnsupportedOperationException(); }
+    public CAAction getAction(CALayer layer, String event) { return null; }
     /*</methods>*/
 }

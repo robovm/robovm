@@ -54,8 +54,8 @@ import org.robovm.apple.corelocation.*;
     /*<members>*//*</members>*/
     /*<methods>*/
     @NotImplemented("modelIdentifierForElementAtIndexPath:inView:")
-    public String getElementModelIdentifier(NSIndexPath idx, UIView view) { throw new UnsupportedOperationException(); }
+    public String getElementModelIdentifier(NSIndexPath idx, UIView view) { return null; }
     @NotImplemented("indexPathForElementWithModelIdentifier:inView:")
-    public NSIndexPath getElementIndexPath(String identifier, UIView view) { throw new UnsupportedOperationException(); }
+    public NSIndexPath getElementIndexPath(String identifier, UIView view) { return null; }
     /*</methods>*/
 }

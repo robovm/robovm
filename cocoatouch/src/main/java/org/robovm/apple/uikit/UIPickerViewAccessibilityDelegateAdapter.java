@@ -54,8 +54,8 @@ import org.robovm.apple.corelocation.*;
     /*<members>*//*</members>*/
     /*<methods>*/
     @NotImplemented("pickerView:accessibilityLabelForComponent:")
-    public String getAccessibilityLabel(UIPickerView pickerView, @MachineSizedSInt long component) { throw new UnsupportedOperationException(); }
+    public String getAccessibilityLabel(UIPickerView pickerView, @MachineSizedSInt long component) { return null; }
     @NotImplemented("pickerView:accessibilityHintForComponent:")
-    public String getAccessibilityHint(UIPickerView pickerView, @MachineSizedSInt long component) { throw new UnsupportedOperationException(); }
+    public String getAccessibilityHint(UIPickerView pickerView, @MachineSizedSInt long component) { return null; }
     /*</methods>*/
 }

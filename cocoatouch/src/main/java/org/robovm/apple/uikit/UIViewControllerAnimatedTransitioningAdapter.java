@@ -54,10 +54,10 @@ import org.robovm.apple.corelocation.*;
     /*<members>*//*</members>*/
     /*<methods>*/
     @NotImplemented("transitionDuration:")
-    public double getTransitionDuration(UIViewControllerContextTransitioning transitionContext) { throw new UnsupportedOperationException(); }
+    public double getTransitionDuration(UIViewControllerContextTransitioning transitionContext) { return 0; }
     @NotImplemented("animateTransition:")
-    public void animateTransition(UIViewControllerContextTransitioning transitionContext) { throw new UnsupportedOperationException(); }
+    public void animateTransition(UIViewControllerContextTransitioning transitionContext) {}
     @NotImplemented("animationEnded:")
-    public void animationEnded(boolean transitionCompleted) { throw new UnsupportedOperationException(); }
+    public void animationEnded(boolean transitionCompleted) {}
     /*</methods>*/
 }

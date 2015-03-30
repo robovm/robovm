@@ -50,22 +50,22 @@ import org.robovm.apple.dispatch.*;
     /*<members>*//*</members>*/
     /*<methods>*/
     @NotImplemented("peripheralManagerDidUpdateState:")
-    public void didUpdateState(CBPeripheralManager peripheral) { throw new UnsupportedOperationException(); }
+    public void didUpdateState(CBPeripheralManager peripheral) {}
     @NotImplemented("peripheralManager:willRestoreState:")
-    public void willRestoreState(CBPeripheralManager peripheral, CBPeripheralManagerRestoredState dict) { throw new UnsupportedOperationException(); }
+    public void willRestoreState(CBPeripheralManager peripheral, CBPeripheralManagerRestoredState dict) {}
     @NotImplemented("peripheralManagerDidStartAdvertising:error:")
-    public void didStartAdvertising(CBPeripheralManager peripheral, NSError error) { throw new UnsupportedOperationException(); }
+    public void didStartAdvertising(CBPeripheralManager peripheral, NSError error) {}
     @NotImplemented("peripheralManager:didAddService:error:")
-    public void didAddService(CBPeripheralManager peripheral, CBService service, NSError error) { throw new UnsupportedOperationException(); }
+    public void didAddService(CBPeripheralManager peripheral, CBService service, NSError error) {}
     @NotImplemented("peripheralManager:central:didSubscribeToCharacteristic:")
-    public void didSubscribeToCharacteristic(CBPeripheralManager peripheral, CBCentral central, CBCharacteristic characteristic) { throw new UnsupportedOperationException(); }
+    public void didSubscribeToCharacteristic(CBPeripheralManager peripheral, CBCentral central, CBCharacteristic characteristic) {}
     @NotImplemented("peripheralManager:central:didUnsubscribeFromCharacteristic:")
-    public void didUnsubscribeFromCharacteristic(CBPeripheralManager peripheral, CBCentral central, CBCharacteristic characteristic) { throw new UnsupportedOperationException(); }
+    public void didUnsubscribeFromCharacteristic(CBPeripheralManager peripheral, CBCentral central, CBCharacteristic characteristic) {}
     @NotImplemented("peripheralManager:didReceiveReadRequest:")
-    public void didReceiveReadRequest(CBPeripheralManager peripheral, CBATTRequest request) { throw new UnsupportedOperationException(); }
+    public void didReceiveReadRequest(CBPeripheralManager peripheral, CBATTRequest request) {}
     @NotImplemented("peripheralManager:didReceiveWriteRequests:")
-    public void didReceiveWriteRequests(CBPeripheralManager peripheral, NSArray<CBATTRequest> requests) { throw new UnsupportedOperationException(); }
+    public void didReceiveWriteRequests(CBPeripheralManager peripheral, NSArray<CBATTRequest> requests) {}
     @NotImplemented("peripheralManagerIsReadyToUpdateSubscribers:")
-    public void readyToUpdateSubscribers(CBPeripheralManager peripheral) { throw new UnsupportedOperationException(); }
+    public void readyToUpdateSubscribers(CBPeripheralManager peripheral) {}
     /*</methods>*/
 }

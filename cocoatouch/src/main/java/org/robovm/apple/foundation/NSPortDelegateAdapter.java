@@ -55,6 +55,6 @@ import org.robovm.apple.dispatch.*;
     /*<members>*//*</members>*/
     /*<methods>*/
     @NotImplemented("handlePortMessage:")
-    public void handlePortMessage(NSPortMessage message) { throw new UnsupportedOperationException(); }
+    public void handlePortMessage(NSPortMessage message) {}
     /*</methods>*/
 }

@@ -55,14 +55,14 @@ import org.robovm.apple.dispatch.*;
     /*<members>*//*</members>*/
     /*<methods>*/
     @NotImplemented("useCredential:forAuthenticationChallenge:")
-    public void useCredential(NSURLCredential credential, NSURLAuthenticationChallenge challenge) { throw new UnsupportedOperationException(); }
+    public void useCredential(NSURLCredential credential, NSURLAuthenticationChallenge challenge) {}
     @NotImplemented("continueWithoutCredentialForAuthenticationChallenge:")
-    public void continueWithoutCredential(NSURLAuthenticationChallenge challenge) { throw new UnsupportedOperationException(); }
+    public void continueWithoutCredential(NSURLAuthenticationChallenge challenge) {}
     @NotImplemented("cancelAuthenticationChallenge:")
-    public void cancel(NSURLAuthenticationChallenge challenge) { throw new UnsupportedOperationException(); }
+    public void cancel(NSURLAuthenticationChallenge challenge) {}
     @NotImplemented("performDefaultHandlingForAuthenticationChallenge:")
-    public void performDefaultHandling(NSURLAuthenticationChallenge challenge) { throw new UnsupportedOperationException(); }
+    public void performDefaultHandling(NSURLAuthenticationChallenge challenge) {}
     @NotImplemented("rejectProtectionSpaceAndContinueWithChallenge:")
-    public void rejectProtectionSpaceAndContinue(NSURLAuthenticationChallenge challenge) { throw new UnsupportedOperationException(); }
+    public void rejectProtectionSpaceAndContinue(NSURLAuthenticationChallenge challenge) {}
     /*</methods>*/
 }

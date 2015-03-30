@@ -57,16 +57,16 @@ import org.robovm.apple.corelocation.*;
      * @since Available in iOS 4.0 and later.
      */
     @NotImplemented("accessibilityElementDidBecomeFocused")
-    public void didBecomeFocused() { throw new UnsupportedOperationException(); }
+    public void didBecomeFocused() {}
     /**
      * @since Available in iOS 4.0 and later.
      */
     @NotImplemented("accessibilityElementDidLoseFocus")
-    public void didLoseFocus() { throw new UnsupportedOperationException(); }
+    public void didLoseFocus() {}
     /**
      * @since Available in iOS 4.0 and later.
      */
     @NotImplemented("accessibilityElementIsFocused")
-    public boolean isFocused() { throw new UnsupportedOperationException(); }
+    public boolean isFocused() { return false; }
     /*</methods>*/
 }

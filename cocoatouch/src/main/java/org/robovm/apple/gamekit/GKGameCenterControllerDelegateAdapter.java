@@ -52,6 +52,6 @@ import org.robovm.apple.uikit.*;
      * @since Available in iOS 6.0 and later.
      */
     @NotImplemented("gameCenterViewControllerDidFinish:")
-    public void didFinish(GKGameCenterViewController gameCenterViewController) { throw new UnsupportedOperationException(); }
+    public void didFinish(GKGameCenterViewController gameCenterViewController) {}
     /*</methods>*/
 }

@@ -53,6 +53,6 @@ import org.robovm.apple.uikit.*;
      * @since Available in iOS 4.2 and later.
      */
     @NotImplemented("eventViewController:didCompleteWithAction:")
-    public void didComplete(EKEventViewController controller, EKEventViewAction action) { throw new UnsupportedOperationException(); }
+    public void didComplete(EKEventViewController controller, EKEventViewAction action) {}
     /*</methods>*/
 }

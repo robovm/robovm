@@ -53,6 +53,6 @@ import org.robovm.apple.dispatch.*;
     /*<members>*//*</members>*/
     /*<methods>*/
     @NotImplemented("prepareToDraw")
-    public void prepareToDraw() { throw new UnsupportedOperationException(); }
+    public void prepareToDraw() {}
     /*</methods>*/
 }

@@ -54,36 +54,36 @@ import org.robovm.apple.corelocation.*;
     /*<members>*//*</members>*/
     /*<methods>*/
     @NotImplemented("isAnimated")
-    public boolean isAnimated() { throw new UnsupportedOperationException(); }
+    public boolean isAnimated() { return false; }
     @NotImplemented("presentationStyle")
-    public UIModalPresentationStyle getPresentationStyle() { throw new UnsupportedOperationException(); }
+    public UIModalPresentationStyle getPresentationStyle() { return null; }
     @NotImplemented("initiallyInteractive")
-    public boolean isInitiallyInteractive() { throw new UnsupportedOperationException(); }
+    public boolean isInitiallyInteractive() { return false; }
     @NotImplemented("isInteractive")
-    public boolean isInteractive() { throw new UnsupportedOperationException(); }
+    public boolean isInteractive() { return false; }
     @NotImplemented("isCancelled")
-    public boolean isCancelled() { throw new UnsupportedOperationException(); }
+    public boolean isCancelled() { return false; }
     @NotImplemented("transitionDuration")
-    public double getTransitionDuration() { throw new UnsupportedOperationException(); }
+    public double getTransitionDuration() { return 0; }
     @NotImplemented("percentComplete")
-    public @MachineSizedFloat double getPercentComplete() { throw new UnsupportedOperationException(); }
+    public @MachineSizedFloat double getPercentComplete() { return 0; }
     @NotImplemented("completionVelocity")
-    public @MachineSizedFloat double getCompletionVelocity() { throw new UnsupportedOperationException(); }
+    public @MachineSizedFloat double getCompletionVelocity() { return 0; }
     @NotImplemented("completionCurve")
-    public UIViewAnimationCurve getCompletionCurve() { throw new UnsupportedOperationException(); }
+    public UIViewAnimationCurve getCompletionCurve() { return null; }
     @NotImplemented("viewControllerForKey:")
-    public UIViewController getViewController(String key) { throw new UnsupportedOperationException(); }
+    public UIViewController getViewController(String key) { return null; }
     /**
      * @since Available in iOS 8.0 and later.
      */
     @NotImplemented("viewForKey:")
-    public UIView getView(String key) { throw new UnsupportedOperationException(); }
+    public UIView getView(String key) { return null; }
     @NotImplemented("containerView")
-    public UIView getContainerView() { throw new UnsupportedOperationException(); }
+    public UIView getContainerView() { return null; }
     /**
      * @since Available in iOS 8.0 and later.
      */
     @NotImplemented("targetTransform")
-    public @ByVal CGAffineTransform getTargetTransform() { throw new UnsupportedOperationException(); }
+    public @ByVal CGAffineTransform getTargetTransform() { return null; }
     /*</methods>*/
 }

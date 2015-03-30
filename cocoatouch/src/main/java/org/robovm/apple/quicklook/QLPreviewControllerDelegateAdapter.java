@@ -50,14 +50,14 @@ import org.robovm.apple.uikit.*;
     /*<members>*//*</members>*/
     /*<methods>*/
     @NotImplemented("previewControllerWillDismiss:")
-    public void willDismiss(QLPreviewController controller) { throw new UnsupportedOperationException(); }
+    public void willDismiss(QLPreviewController controller) {}
     @NotImplemented("previewControllerDidDismiss:")
-    public void didDismiss(QLPreviewController controller) { throw new UnsupportedOperationException(); }
+    public void didDismiss(QLPreviewController controller) {}
     @NotImplemented("previewController:shouldOpenURL:forPreviewItem:")
-    public boolean shouldOpenURL(QLPreviewController controller, NSURL url, QLPreviewItem item) { throw new UnsupportedOperationException(); }
+    public boolean shouldOpenURL(QLPreviewController controller, NSURL url, QLPreviewItem item) { return false; }
     @NotImplemented("previewController:frameForPreviewItem:inSourceView:")
-    public @ByVal CGRect getFrame(QLPreviewController controller, QLPreviewItem item, UIView.UIViewPtr view) { throw new UnsupportedOperationException(); }
+    public @ByVal CGRect getFrame(QLPreviewController controller, QLPreviewItem item, UIView.UIViewPtr view) { return null; }
     @NotImplemented("previewController:transitionImageForPreviewItem:contentRect:")
-    public UIImage getTransitionImage(QLPreviewController controller, QLPreviewItem item, CGRect contentRect) { throw new UnsupportedOperationException(); }
+    public UIImage getTransitionImage(QLPreviewController controller, QLPreviewItem item, CGRect contentRect) { return null; }
     /*</methods>*/
 }

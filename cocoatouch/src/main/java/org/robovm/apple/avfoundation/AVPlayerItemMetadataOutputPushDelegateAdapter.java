@@ -60,6 +60,6 @@ import org.robovm.apple.mediatoolbox.*;
      * @since Available in iOS 8.0 and later.
      */
     @NotImplemented("metadataOutput:didOutputTimedMetadataGroups:fromPlayerItemTrack:")
-    public void didOutputTimedMetadataGroups(AVPlayerItemMetadataOutput output, NSArray<AVTimedMetadataGroup> groups, AVPlayerItemTrack track) { throw new UnsupportedOperationException(); }
+    public void didOutputTimedMetadataGroups(AVPlayerItemMetadataOutput output, NSArray<AVTimedMetadataGroup> groups, AVPlayerItemTrack track) {}
     /*</methods>*/
 }

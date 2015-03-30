@@ -53,8 +53,8 @@ import org.robovm.apple.metal.*;
     /*<members>*//*</members>*/
     /*<methods>*/
     @NotImplemented("animationDidStart:")
-    public void didStart(CAAnimation anim) { throw new UnsupportedOperationException(); }
+    public void didStart(CAAnimation anim) {}
     @NotImplemented("animationDidStop:finished:")
-    public void didStop(CAAnimation anim, boolean flag) { throw new UnsupportedOperationException(); }
+    public void didStop(CAAnimation anim, boolean flag) {}
     /*</methods>*/
 }

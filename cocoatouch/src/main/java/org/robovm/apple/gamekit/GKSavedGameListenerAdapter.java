@@ -49,8 +49,8 @@ import org.robovm.apple.uikit.*;
     /*<members>*//*</members>*/
     /*<methods>*/
     @NotImplemented("player:didModifySavedGame:")
-    public void didModifySavedGame(GKPlayer player, GKSavedGame savedGame) { throw new UnsupportedOperationException(); }
+    public void didModifySavedGame(GKPlayer player, GKSavedGame savedGame) {}
     @NotImplemented("player:hasConflictingSavedGames:")
-    public void hasConflictingSavedGames(GKPlayer player, NSArray<GKSavedGame> savedGames) { throw new UnsupportedOperationException(); }
+    public void hasConflictingSavedGames(GKPlayer player, NSArray<GKSavedGame> savedGames) {}
     /*</methods>*/
 }

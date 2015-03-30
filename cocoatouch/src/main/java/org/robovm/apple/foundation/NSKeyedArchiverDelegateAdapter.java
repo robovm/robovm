@@ -55,14 +55,14 @@ import org.robovm.apple.dispatch.*;
     /*<members>*//*</members>*/
     /*<methods>*/
     @NotImplemented("archiver:willEncodeObject:")
-    public NSObject willEncodeObject(NSKeyedArchiver archiver, NSObject object) { throw new UnsupportedOperationException(); }
+    public NSObject willEncodeObject(NSKeyedArchiver archiver, NSObject object) { return null; }
     @NotImplemented("archiver:didEncodeObject:")
-    public void didEncodeObject(NSKeyedArchiver archiver, NSObject object) { throw new UnsupportedOperationException(); }
+    public void didEncodeObject(NSKeyedArchiver archiver, NSObject object) {}
     @NotImplemented("archiver:willReplaceObject:withObject:")
-    public void willReplaceObject(NSKeyedArchiver archiver, NSObject object, NSObject newObject) { throw new UnsupportedOperationException(); }
+    public void willReplaceObject(NSKeyedArchiver archiver, NSObject object, NSObject newObject) {}
     @NotImplemented("archiverWillFinish:")
-    public void willFinish(NSKeyedArchiver archiver) { throw new UnsupportedOperationException(); }
+    public void willFinish(NSKeyedArchiver archiver) {}
     @NotImplemented("archiverDidFinish:")
-    public void didFinish(NSKeyedArchiver archiver) { throw new UnsupportedOperationException(); }
+    public void didFinish(NSKeyedArchiver archiver) {}
     /*</methods>*/
 }

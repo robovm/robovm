@@ -54,14 +54,14 @@ import org.robovm.apple.corelocation.*;
     /*<members>*//*</members>*/
     /*<methods>*/
     @NotImplemented("willPresentSearchController:")
-    public void willPresent(UISearchController searchController) { throw new UnsupportedOperationException(); }
+    public void willPresent(UISearchController searchController) {}
     @NotImplemented("didPresentSearchController:")
-    public void didPresent(UISearchController searchController) { throw new UnsupportedOperationException(); }
+    public void didPresent(UISearchController searchController) {}
     @NotImplemented("willDismissSearchController:")
-    public void willDismiss(UISearchController searchController) { throw new UnsupportedOperationException(); }
+    public void willDismiss(UISearchController searchController) {}
     @NotImplemented("didDismissSearchController:")
-    public void didDismiss(UISearchController searchController) { throw new UnsupportedOperationException(); }
+    public void didDismiss(UISearchController searchController) {}
     @NotImplemented("presentSearchController:")
-    public void present(UISearchController searchController) { throw new UnsupportedOperationException(); }
+    public void present(UISearchController searchController) {}
     /*</methods>*/
 }

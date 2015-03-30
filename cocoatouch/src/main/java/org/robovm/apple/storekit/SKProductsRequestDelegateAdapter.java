@@ -53,6 +53,6 @@ import org.robovm.apple.accounts.*;
      * @since Available in iOS 3.0 and later.
      */
     @NotImplemented("productsRequest:didReceiveResponse:")
-    public void didReceiveResponse(SKProductsRequest request, SKProductsResponse response) { throw new UnsupportedOperationException(); }
+    public void didReceiveResponse(SKProductsRequest request, SKProductsResponse response) {}
     /*</methods>*/
 }

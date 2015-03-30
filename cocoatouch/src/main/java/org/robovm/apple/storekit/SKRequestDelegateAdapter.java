@@ -53,11 +53,11 @@ import org.robovm.apple.accounts.*;
      * @since Available in iOS 3.0 and later.
      */
     @NotImplemented("requestDidFinish:")
-    public void didFinish(SKRequest request) { throw new UnsupportedOperationException(); }
+    public void didFinish(SKRequest request) {}
     /**
      * @since Available in iOS 3.0 and later.
      */
     @NotImplemented("request:didFailWithError:")
-    public void didFail(SKRequest request, NSError error) { throw new UnsupportedOperationException(); }
+    public void didFail(SKRequest request, NSError error) {}
     /*</methods>*/
 }

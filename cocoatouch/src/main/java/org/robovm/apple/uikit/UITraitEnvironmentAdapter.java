@@ -50,11 +50,11 @@ import org.robovm.apple.corelocation.*;
     /*<constructors>*//*</constructors>*/
     /*<properties>*/
     @NotImplemented("traitCollection")
-    public UITraitCollection getTraitCollection() { throw new UnsupportedOperationException(); }
+    public UITraitCollection getTraitCollection() { return null; }
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
     @NotImplemented("traitCollectionDidChange:")
-    public void traitCollectionDidChange(UITraitCollection previousTraitCollection) { throw new UnsupportedOperationException(); }
+    public void traitCollectionDidChange(UITraitCollection previousTraitCollection) {}
     /*</methods>*/
 }

@@ -57,40 +57,40 @@ import org.robovm.apple.corelocation.*;
      * @since Available in iOS 3.0 and later.
      */
     @NotImplemented("tabBarController:shouldSelectViewController:")
-    public boolean shouldSelectViewController(UITabBarController tabBarController, UIViewController viewController) { throw new UnsupportedOperationException(); }
+    public boolean shouldSelectViewController(UITabBarController tabBarController, UIViewController viewController) { return false; }
     @NotImplemented("tabBarController:didSelectViewController:")
-    public void didSelectViewController(UITabBarController tabBarController, UIViewController viewController) { throw new UnsupportedOperationException(); }
+    public void didSelectViewController(UITabBarController tabBarController, UIViewController viewController) {}
     /**
      * @since Available in iOS 3.0 and later.
      */
     @NotImplemented("tabBarController:willBeginCustomizingViewControllers:")
-    public void willBeginCustomizingViewControllers(UITabBarController tabBarController, NSArray<UIViewController> viewControllers) { throw new UnsupportedOperationException(); }
+    public void willBeginCustomizingViewControllers(UITabBarController tabBarController, NSArray<UIViewController> viewControllers) {}
     /**
      * @since Available in iOS 3.0 and later.
      */
     @NotImplemented("tabBarController:willEndCustomizingViewControllers:changed:")
-    public void willEndCustomizingViewControllers(UITabBarController tabBarController, NSArray<UIViewController> viewControllers, boolean changed) { throw new UnsupportedOperationException(); }
+    public void willEndCustomizingViewControllers(UITabBarController tabBarController, NSArray<UIViewController> viewControllers, boolean changed) {}
     @NotImplemented("tabBarController:didEndCustomizingViewControllers:changed:")
-    public void didEndCustomizingViewControllers(UITabBarController tabBarController, NSArray<UIViewController> viewControllers, boolean changed) { throw new UnsupportedOperationException(); }
+    public void didEndCustomizingViewControllers(UITabBarController tabBarController, NSArray<UIViewController> viewControllers, boolean changed) {}
     /**
      * @since Available in iOS 7.0 and later.
      */
     @NotImplemented("tabBarControllerSupportedInterfaceOrientations:")
-    public UIInterfaceOrientation getSupportedInterfaceOrientations(UITabBarController tabBarController) { throw new UnsupportedOperationException(); }
+    public UIInterfaceOrientation getSupportedInterfaceOrientations(UITabBarController tabBarController) { return null; }
     /**
      * @since Available in iOS 7.0 and later.
      */
     @NotImplemented("tabBarControllerPreferredInterfaceOrientationForPresentation:")
-    public UIInterfaceOrientation getPreferredInterfaceOrientation(UITabBarController tabBarController) { throw new UnsupportedOperationException(); }
+    public UIInterfaceOrientation getPreferredInterfaceOrientation(UITabBarController tabBarController) { return null; }
     /**
      * @since Available in iOS 7.0 and later.
      */
     @NotImplemented("tabBarController:interactionControllerForAnimationController:")
-    public UIViewControllerInteractiveTransitioning getInteractionController(UITabBarController tabBarController, UIViewControllerAnimatedTransitioning animationController) { throw new UnsupportedOperationException(); }
+    public UIViewControllerInteractiveTransitioning getInteractionController(UITabBarController tabBarController, UIViewControllerAnimatedTransitioning animationController) { return null; }
     /**
      * @since Available in iOS 7.0 and later.
      */
     @NotImplemented("tabBarController:animationControllerForTransitionFromViewController:toViewController:")
-    public UIViewControllerAnimatedTransitioning getAnimationController(UITabBarController tabBarController, UIViewController fromVC, UIViewController toVC) { throw new UnsupportedOperationException(); }
+    public UIViewControllerAnimatedTransitioning getAnimationController(UITabBarController tabBarController, UIViewController fromVC, UIViewController toVC) { return null; }
     /*</methods>*/
 }

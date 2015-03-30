@@ -54,13 +54,13 @@ import org.robovm.apple.corelocation.*;
     /*<members>*//*</members>*/
     /*<methods>*/
     @NotImplemented("popoverControllerShouldDismissPopover:")
-    public boolean shouldDismiss(UIPopoverController popoverController) { throw new UnsupportedOperationException(); }
+    public boolean shouldDismiss(UIPopoverController popoverController) { return false; }
     @NotImplemented("popoverControllerDidDismissPopover:")
-    public void didDismiss(UIPopoverController popoverController) { throw new UnsupportedOperationException(); }
+    public void didDismiss(UIPopoverController popoverController) {}
     /**
      * @since Available in iOS 7.0 and later.
      */
     @NotImplemented("popoverController:willRepositionPopoverToRect:inView:")
-    public void willReposition(UIPopoverController popoverController, CGRect rect, UIView.UIViewPtr view) { throw new UnsupportedOperationException(); }
+    public void willReposition(UIPopoverController popoverController, CGRect rect, UIView.UIViewPtr view) {}
     /*</methods>*/
 }

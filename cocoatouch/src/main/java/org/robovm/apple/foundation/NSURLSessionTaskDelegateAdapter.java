@@ -55,14 +55,14 @@ import org.robovm.apple.dispatch.*;
     /*<members>*//*</members>*/
     /*<methods>*/
     @NotImplemented("URLSession:task:willPerformHTTPRedirection:newRequest:completionHandler:")
-    public void willPerformHTTPRedirection(NSURLSession session, NSURLSessionTask task, NSHTTPURLResponse response, NSURLRequest request, @Block VoidBlock1<NSURLRequest> completionHandler) { throw new UnsupportedOperationException(); }
+    public void willPerformHTTPRedirection(NSURLSession session, NSURLSessionTask task, NSHTTPURLResponse response, NSURLRequest request, @Block VoidBlock1<NSURLRequest> completionHandler) {}
     @NotImplemented("URLSession:task:didReceiveChallenge:completionHandler:")
-    public void didReceiveChallenge(NSURLSession session, NSURLSessionTask task, NSURLAuthenticationChallenge challenge, @Block VoidBlock2<NSURLSessionAuthChallengeDisposition, NSURLCredential> completionHandler) { throw new UnsupportedOperationException(); }
+    public void didReceiveChallenge(NSURLSession session, NSURLSessionTask task, NSURLAuthenticationChallenge challenge, @Block VoidBlock2<NSURLSessionAuthChallengeDisposition, NSURLCredential> completionHandler) {}
     @NotImplemented("URLSession:task:needNewBodyStream:")
-    public void needNewBodyStream(NSURLSession session, NSURLSessionTask task, @Block VoidBlock1<NSInputStream> completionHandler) { throw new UnsupportedOperationException(); }
+    public void needNewBodyStream(NSURLSession session, NSURLSessionTask task, @Block VoidBlock1<NSInputStream> completionHandler) {}
     @NotImplemented("URLSession:task:didSendBodyData:totalBytesSent:totalBytesExpectedToSend:")
-    public void didSendBodyData(NSURLSession session, NSURLSessionTask task, long bytesSent, long totalBytesSent, long totalBytesExpectedToSend) { throw new UnsupportedOperationException(); }
+    public void didSendBodyData(NSURLSession session, NSURLSessionTask task, long bytesSent, long totalBytesSent, long totalBytesExpectedToSend) {}
     @NotImplemented("URLSession:task:didCompleteWithError:")
-    public void didComplete(NSURLSession session, NSURLSessionTask task, NSError error) { throw new UnsupportedOperationException(); }
+    public void didComplete(NSURLSession session, NSURLSessionTask task, NSError error) {}
     /*</methods>*/
 }

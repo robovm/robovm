@@ -55,10 +55,10 @@ import org.robovm.apple.dispatch.*;
     /*<members>*//*</members>*/
     /*<methods>*/
     @NotImplemented("connection:didWriteData:totalBytesWritten:expectedTotalBytes:")
-    public void didWriteData(NSURLConnection connection, long bytesWritten, long totalBytesWritten, long expectedTotalBytes) { throw new UnsupportedOperationException(); }
+    public void didWriteData(NSURLConnection connection, long bytesWritten, long totalBytesWritten, long expectedTotalBytes) {}
     @NotImplemented("connectionDidResumeDownloading:totalBytesWritten:expectedTotalBytes:")
-    public void didResumeDownloading(NSURLConnection connection, long totalBytesWritten, long expectedTotalBytes) { throw new UnsupportedOperationException(); }
+    public void didResumeDownloading(NSURLConnection connection, long totalBytesWritten, long expectedTotalBytes) {}
     @NotImplemented("connectionDidFinishDownloading:destinationURL:")
-    public void didFinishDownloading(NSURLConnection connection, NSURL destinationURL) { throw new UnsupportedOperationException(); }
+    public void didFinishDownloading(NSURLConnection connection, NSURL destinationURL) {}
     /*</methods>*/
 }

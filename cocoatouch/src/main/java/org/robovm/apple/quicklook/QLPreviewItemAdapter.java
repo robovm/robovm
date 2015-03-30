@@ -46,9 +46,9 @@ import org.robovm.apple.uikit.*;
     /*<constructors>*//*</constructors>*/
     /*<properties>*/
     @NotImplemented("previewItemURL")
-    public NSURL getURL() { throw new UnsupportedOperationException(); }
+    public NSURL getURL() { return null; }
     @NotImplemented("previewItemTitle")
-    public String getTitle() { throw new UnsupportedOperationException(); }
+    public String getTitle() { return null; }
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/

@@ -53,6 +53,6 @@ import org.robovm.apple.metal.*;
     /*<members>*//*</members>*/
     /*<methods>*/
     @NotImplemented("runActionForKey:object:arguments:")
-    public void runAction(String event, NSObject anObject, @org.robovm.rt.bro.annotation.Marshaler(NSDictionary.AsStringMapMarshaler.class) Map<String, NSObject> dict) { throw new UnsupportedOperationException(); }
+    public void runAction(String event, NSObject anObject, @org.robovm.rt.bro.annotation.Marshaler(NSDictionary.AsStringMapMarshaler.class) Map<String, NSObject> dict) {}
     /*</methods>*/
 }

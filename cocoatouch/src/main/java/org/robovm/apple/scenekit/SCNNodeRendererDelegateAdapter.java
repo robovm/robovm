@@ -55,6 +55,6 @@ import org.robovm.apple.opengles.*;
     /*<members>*//*</members>*/
     /*<methods>*/
     @NotImplemented("renderNode:renderer:arguments:")
-    public void renderNode(SCNNode node, SCNRenderer renderer, @org.robovm.rt.bro.annotation.Marshaler(SCNRenderingTransform.AsTransform3DMapMarshaler.class) Map<SCNRenderingTransform, CATransform3D> arguments) { throw new UnsupportedOperationException(); }
+    public void renderNode(SCNNode node, SCNRenderer renderer, @org.robovm.rt.bro.annotation.Marshaler(SCNRenderingTransform.AsTransform3DMapMarshaler.class) Map<SCNRenderingTransform, CATransform3D> arguments) {}
     /*</methods>*/
 }

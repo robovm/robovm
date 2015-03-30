@@ -49,9 +49,9 @@ import org.robovm.apple.metal.*;
     /*<constructors>*//*</constructors>*/
     /*<properties>*/
     @NotImplemented("texture")
-    public MTLTexture getTexture() { throw new UnsupportedOperationException(); }
+    public MTLTexture getTexture() { return null; }
     @NotImplemented("layer")
-    public CAMetalLayer getLayer() { throw new UnsupportedOperationException(); }
+    public CAMetalLayer getLayer() { return null; }
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/

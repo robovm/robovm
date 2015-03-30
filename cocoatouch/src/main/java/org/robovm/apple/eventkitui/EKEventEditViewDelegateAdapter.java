@@ -50,8 +50,8 @@ import org.robovm.apple.uikit.*;
     /*<members>*//*</members>*/
     /*<methods>*/
     @NotImplemented("eventEditViewController:didCompleteWithAction:")
-    public void didComplete(EKEventEditViewController controller, EKEventEditViewAction action) { throw new UnsupportedOperationException(); }
+    public void didComplete(EKEventEditViewController controller, EKEventEditViewAction action) {}
     @NotImplemented("eventEditViewControllerDefaultCalendarForNewEvents:")
-    public EKCalendar getDefaultCalendarForNewEvents(EKEventEditViewController controller) { throw new UnsupportedOperationException(); }
+    public EKCalendar getDefaultCalendarForNewEvents(EKEventEditViewController controller) { return null; }
     /*</methods>*/
 }

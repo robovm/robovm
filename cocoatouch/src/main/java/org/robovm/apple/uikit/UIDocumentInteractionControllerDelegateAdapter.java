@@ -54,40 +54,40 @@ import org.robovm.apple.corelocation.*;
     /*<members>*//*</members>*/
     /*<methods>*/
     @NotImplemented("documentInteractionControllerViewControllerForPreview:")
-    public UIViewController getViewControllerForPreview(UIDocumentInteractionController controller) { throw new UnsupportedOperationException(); }
+    public UIViewController getViewControllerForPreview(UIDocumentInteractionController controller) { return null; }
     @NotImplemented("documentInteractionControllerRectForPreview:")
-    public @ByVal CGRect getRectForPreview(UIDocumentInteractionController controller) { throw new UnsupportedOperationException(); }
+    public @ByVal CGRect getRectForPreview(UIDocumentInteractionController controller) { return null; }
     @NotImplemented("documentInteractionControllerViewForPreview:")
-    public UIView getViewForPreview(UIDocumentInteractionController controller) { throw new UnsupportedOperationException(); }
+    public UIView getViewForPreview(UIDocumentInteractionController controller) { return null; }
     @NotImplemented("documentInteractionControllerWillBeginPreview:")
-    public void willBeginPreview(UIDocumentInteractionController controller) { throw new UnsupportedOperationException(); }
+    public void willBeginPreview(UIDocumentInteractionController controller) {}
     @NotImplemented("documentInteractionControllerDidEndPreview:")
-    public void didEndPreview(UIDocumentInteractionController controller) { throw new UnsupportedOperationException(); }
+    public void didEndPreview(UIDocumentInteractionController controller) {}
     @NotImplemented("documentInteractionControllerWillPresentOptionsMenu:")
-    public void willPresentOptionsMenu(UIDocumentInteractionController controller) { throw new UnsupportedOperationException(); }
+    public void willPresentOptionsMenu(UIDocumentInteractionController controller) {}
     @NotImplemented("documentInteractionControllerDidDismissOptionsMenu:")
-    public void didDismissOptionsMenu(UIDocumentInteractionController controller) { throw new UnsupportedOperationException(); }
+    public void didDismissOptionsMenu(UIDocumentInteractionController controller) {}
     @NotImplemented("documentInteractionControllerWillPresentOpenInMenu:")
-    public void willPresentOpenInMenu(UIDocumentInteractionController controller) { throw new UnsupportedOperationException(); }
+    public void willPresentOpenInMenu(UIDocumentInteractionController controller) {}
     @NotImplemented("documentInteractionControllerDidDismissOpenInMenu:")
-    public void didDismissOpenInMenu(UIDocumentInteractionController controller) { throw new UnsupportedOperationException(); }
+    public void didDismissOpenInMenu(UIDocumentInteractionController controller) {}
     @NotImplemented("documentInteractionController:willBeginSendingToApplication:")
-    public void willBeginSendingToApplication(UIDocumentInteractionController controller, String application) { throw new UnsupportedOperationException(); }
+    public void willBeginSendingToApplication(UIDocumentInteractionController controller, String application) {}
     @NotImplemented("documentInteractionController:didEndSendingToApplication:")
-    public void didEndSendingToApplication(UIDocumentInteractionController controller, String application) { throw new UnsupportedOperationException(); }
+    public void didEndSendingToApplication(UIDocumentInteractionController controller, String application) {}
     /**
      * @since Available in iOS 3.2 and later.
      * @deprecated Deprecated in iOS 6.0.
      */
     @Deprecated
     @NotImplemented("documentInteractionController:canPerformAction:")
-    public boolean canPerformAction(UIDocumentInteractionController controller, Selector action) { throw new UnsupportedOperationException(); }
+    public boolean canPerformAction(UIDocumentInteractionController controller, Selector action) { return false; }
     /**
      * @since Available in iOS 3.2 and later.
      * @deprecated Deprecated in iOS 6.0.
      */
     @Deprecated
     @NotImplemented("documentInteractionController:performAction:")
-    public boolean performAction(UIDocumentInteractionController controller, Selector action) { throw new UnsupportedOperationException(); }
+    public boolean performAction(UIDocumentInteractionController controller, Selector action) { return false; }
     /*</methods>*/
 }

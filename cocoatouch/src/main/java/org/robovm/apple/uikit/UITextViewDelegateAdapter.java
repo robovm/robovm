@@ -54,28 +54,28 @@ import org.robovm.apple.corelocation.*;
     /*<members>*//*</members>*/
     /*<methods>*/
     @NotImplemented("textViewShouldBeginEditing:")
-    public boolean shouldBeginEditing(UITextView textView) { throw new UnsupportedOperationException(); }
+    public boolean shouldBeginEditing(UITextView textView) { return false; }
     @NotImplemented("textViewShouldEndEditing:")
-    public boolean shouldEndEditing(UITextView textView) { throw new UnsupportedOperationException(); }
+    public boolean shouldEndEditing(UITextView textView) { return false; }
     @NotImplemented("textViewDidBeginEditing:")
-    public void didBeginEditing(UITextView textView) { throw new UnsupportedOperationException(); }
+    public void didBeginEditing(UITextView textView) {}
     @NotImplemented("textViewDidEndEditing:")
-    public void didEndEditing(UITextView textView) { throw new UnsupportedOperationException(); }
+    public void didEndEditing(UITextView textView) {}
     @NotImplemented("textView:shouldChangeTextInRange:replacementText:")
-    public boolean shouldChangeCharacters(UITextView textView, @ByVal NSRange range, String text) { throw new UnsupportedOperationException(); }
+    public boolean shouldChangeCharacters(UITextView textView, @ByVal NSRange range, String text) { return false; }
     @NotImplemented("textViewDidChange:")
-    public void didChange(UITextView textView) { throw new UnsupportedOperationException(); }
+    public void didChange(UITextView textView) {}
     @NotImplemented("textViewDidChangeSelection:")
-    public void didChangeSelection(UITextView textView) { throw new UnsupportedOperationException(); }
+    public void didChangeSelection(UITextView textView) {}
     /**
      * @since Available in iOS 7.0 and later.
      */
     @NotImplemented("textView:shouldInteractWithURL:inRange:")
-    public boolean shouldInteractWithURL(UITextView textView, NSURL URL, @ByVal NSRange characterRange) { throw new UnsupportedOperationException(); }
+    public boolean shouldInteractWithURL(UITextView textView, NSURL URL, @ByVal NSRange characterRange) { return false; }
     /**
      * @since Available in iOS 7.0 and later.
      */
     @NotImplemented("textView:shouldInteractWithTextAttachment:inRange:")
-    public boolean shouldInteractWithTextAttachment(UITextView textView, NSTextAttachment textAttachment, @ByVal NSRange characterRange) { throw new UnsupportedOperationException(); }
+    public boolean shouldInteractWithTextAttachment(UITextView textView, NSTextAttachment textAttachment, @ByVal NSRange characterRange) { return false; }
     /*</methods>*/
 }

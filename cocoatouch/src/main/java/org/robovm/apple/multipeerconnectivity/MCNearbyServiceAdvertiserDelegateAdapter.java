@@ -50,8 +50,8 @@ import org.robovm.apple.security.*;
     /*<members>*//*</members>*/
     /*<methods>*/
     @NotImplemented("advertiser:didReceiveInvitationFromPeer:withContext:invitationHandler:")
-    public void didReceiveInvitation(MCNearbyServiceAdvertiser advertiser, MCPeerID peerID, NSData context, @Block VoidBlock2<Boolean, MCSession> invitationHandler) { throw new UnsupportedOperationException(); }
+    public void didReceiveInvitation(MCNearbyServiceAdvertiser advertiser, MCPeerID peerID, NSData context, @Block VoidBlock2<Boolean, MCSession> invitationHandler) {}
     @NotImplemented("advertiser:didNotStartAdvertisingPeer:")
-    public void didNotStart(MCNearbyServiceAdvertiser advertiser, NSError error) { throw new UnsupportedOperationException(); }
+    public void didNotStart(MCNearbyServiceAdvertiser advertiser, NSError error) {}
     /*</methods>*/
 }

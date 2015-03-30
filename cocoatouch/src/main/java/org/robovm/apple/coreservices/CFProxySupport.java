@@ -113,7 +113,7 @@ import org.robovm.apple.corefoundation.*;
     /**
      * @since Available in iOS 2.0 and later.
      */
-    public static @org.robovm.rt.bro.annotation.Marshaler(CFProxy.AsListMarshaler.class) List<CFProxy> getProxies(String proxyAutoConfigurationScript, NSURL targetURL) throws NSErrorException {
+    public static List<CFProxy> getProxies(String proxyAutoConfigurationScript, NSURL targetURL) throws NSErrorException {
        NSError.NSErrorPtr ptr = new NSError.NSErrorPtr();
        List<CFProxy> result = getProxies(proxyAutoConfigurationScript, targetURL, ptr);
        if (ptr.get() != null) { throw new NSErrorException(ptr.get()); }

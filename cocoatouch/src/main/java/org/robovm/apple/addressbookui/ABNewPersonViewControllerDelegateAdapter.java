@@ -50,6 +50,6 @@ import org.robovm.apple.addressbook.*;
     /*<members>*//*</members>*/
     /*<methods>*/
     @NotImplemented("newPersonViewController:didCompleteWithNewPerson:")
-    public void didComplete(ABNewPersonViewController newPersonView, ABPerson person) { throw new UnsupportedOperationException(); }
+    public void didComplete(ABNewPersonViewController newPersonView, ABPerson person) {}
     /*</methods>*/
 }

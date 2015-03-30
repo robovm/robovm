@@ -49,18 +49,18 @@ import org.robovm.apple.uikit.*;
     /*<members>*//*</members>*/
     /*<methods>*/
     @NotImplemented("voiceChatService:sendData:toParticipantID:")
-    public void sendData(GKVoiceChatService voiceChatService, NSData data, String participantID) { throw new UnsupportedOperationException(); }
+    public void sendData(GKVoiceChatService voiceChatService, NSData data, String participantID) {}
     @NotImplemented("participantID")
-    public String getParticipantID() { throw new UnsupportedOperationException(); }
+    public String getParticipantID() { return null; }
     @NotImplemented("voiceChatService:sendRealTimeData:toParticipantID:")
-    public void sendRealTimeData(GKVoiceChatService voiceChatService, NSData data, String participantID) { throw new UnsupportedOperationException(); }
+    public void sendRealTimeData(GKVoiceChatService voiceChatService, NSData data, String participantID) {}
     @NotImplemented("voiceChatService:didStartWithParticipantID:")
-    public void didStart(GKVoiceChatService voiceChatService, String participantID) { throw new UnsupportedOperationException(); }
+    public void didStart(GKVoiceChatService voiceChatService, String participantID) {}
     @NotImplemented("voiceChatService:didNotStartWithParticipantID:error:")
-    public void didNotStart(GKVoiceChatService voiceChatService, String participantID, NSError error) { throw new UnsupportedOperationException(); }
+    public void didNotStart(GKVoiceChatService voiceChatService, String participantID, NSError error) {}
     @NotImplemented("voiceChatService:didStopWithParticipantID:error:")
-    public void didStop(GKVoiceChatService voiceChatService, String participantID, NSError error) { throw new UnsupportedOperationException(); }
+    public void didStop(GKVoiceChatService voiceChatService, String participantID, NSError error) {}
     @NotImplemented("voiceChatService:didReceiveInvitationFromParticipantID:callID:")
-    public void didReceiveInvitation(GKVoiceChatService voiceChatService, String participantID, @MachineSizedSInt long callID) { throw new UnsupportedOperationException(); }
+    public void didReceiveInvitation(GKVoiceChatService voiceChatService, String participantID, @MachineSizedSInt long callID) {}
     /*</methods>*/
 }

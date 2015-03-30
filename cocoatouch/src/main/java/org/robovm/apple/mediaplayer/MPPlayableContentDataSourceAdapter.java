@@ -50,12 +50,12 @@ import org.robovm.apple.coregraphics.*;
     /*<members>*//*</members>*/
     /*<methods>*/
     @NotImplemented("beginLoadingChildItemsAtIndexPath:completionHandler:")
-    public void beginLoadingChildItems(NSIndexPath indexPath, @Block VoidBlock1<NSError> completionHandler) { throw new UnsupportedOperationException(); }
+    public void beginLoadingChildItems(NSIndexPath indexPath, @Block VoidBlock1<NSError> completionHandler) {}
     @NotImplemented("childItemsDisplayPlaybackProgressAtIndexPath:")
-    public boolean childItemsDisplayPlaybackProgress(NSIndexPath indexPath) { throw new UnsupportedOperationException(); }
+    public boolean childItemsDisplayPlaybackProgress(NSIndexPath indexPath) { return false; }
     @NotImplemented("numberOfChildItemsAtIndexPath:")
-    public @MachineSizedSInt long getNumberOfChildItems(NSIndexPath indexPath) { throw new UnsupportedOperationException(); }
+    public @MachineSizedSInt long getNumberOfChildItems(NSIndexPath indexPath) { return 0; }
     @NotImplemented("contentItemAtIndexPath:")
-    public MPContentItem getContentItem(NSIndexPath indexPath) { throw new UnsupportedOperationException(); }
+    public MPContentItem getContentItem(NSIndexPath indexPath) { return null; }
     /*</methods>*/
 }

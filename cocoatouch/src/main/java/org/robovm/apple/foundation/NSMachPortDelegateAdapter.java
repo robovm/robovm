@@ -55,6 +55,6 @@ import org.robovm.apple.dispatch.*;
     /*<members>*//*</members>*/
     /*<methods>*/
     @NotImplemented("handleMachMessage:")
-    public void handleMachMessage(VoidPtr msg) { throw new UnsupportedOperationException(); }
+    public void handleMachMessage(VoidPtr msg) {}
     /*</methods>*/
 }

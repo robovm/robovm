@@ -50,10 +50,10 @@ import org.robovm.apple.uikit.*;
     /*<members>*//*</members>*/
     /*<methods>*/
     @NotImplemented("calendarChooserSelectionDidChange:")
-    public void didChangeSelection(EKCalendarChooser calendarChooser) { throw new UnsupportedOperationException(); }
+    public void didChangeSelection(EKCalendarChooser calendarChooser) {}
     @NotImplemented("calendarChooserDidFinish:")
-    public void didFinish(EKCalendarChooser calendarChooser) { throw new UnsupportedOperationException(); }
+    public void didFinish(EKCalendarChooser calendarChooser) {}
     @NotImplemented("calendarChooserDidCancel:")
-    public void didCancel(EKCalendarChooser calendarChooser) { throw new UnsupportedOperationException(); }
+    public void didCancel(EKCalendarChooser calendarChooser) {}
     /*</methods>*/
 }

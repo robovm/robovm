@@ -52,21 +52,21 @@ import org.robovm.apple.uikit.*;
      * @since Available in iOS 5.0 and later.
      */
     @NotImplemented("turnBasedMatchmakerViewControllerWasCancelled:")
-    public void wasCancelled(GKTurnBasedMatchmakerViewController viewController) { throw new UnsupportedOperationException(); }
+    public void wasCancelled(GKTurnBasedMatchmakerViewController viewController) {}
     /**
      * @since Available in iOS 5.0 and later.
      */
     @NotImplemented("turnBasedMatchmakerViewController:didFailWithError:")
-    public void didFail(GKTurnBasedMatchmakerViewController viewController, NSError error) { throw new UnsupportedOperationException(); }
+    public void didFail(GKTurnBasedMatchmakerViewController viewController, NSError error) {}
     /**
      * @since Available in iOS 5.0 and later.
      */
     @NotImplemented("turnBasedMatchmakerViewController:didFindMatch:")
-    public void didFindMatch(GKTurnBasedMatchmakerViewController viewController, GKTurnBasedMatch match) { throw new UnsupportedOperationException(); }
+    public void didFindMatch(GKTurnBasedMatchmakerViewController viewController, GKTurnBasedMatch match) {}
     /**
      * @since Available in iOS 5.0 and later.
      */
     @NotImplemented("turnBasedMatchmakerViewController:playerQuitForMatch:")
-    public void playerQuit(GKTurnBasedMatchmakerViewController viewController, GKTurnBasedMatch match) { throw new UnsupportedOperationException(); }
+    public void playerQuit(GKTurnBasedMatchmakerViewController viewController, GKTurnBasedMatch match) {}
     /*</methods>*/
 }

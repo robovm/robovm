@@ -50,7 +50,7 @@ import org.robovm.apple.corelocation.*;
     /*<constructors>*//*</constructors>*/
     /*<properties>*/
     @NotImplemented("barPosition")
-    public UIBarPosition getBarPosition() { throw new UnsupportedOperationException(); }
+    public UIBarPosition getBarPosition() { return null; }
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/

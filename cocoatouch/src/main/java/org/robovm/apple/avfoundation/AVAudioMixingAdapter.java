@@ -53,9 +53,9 @@ import org.robovm.apple.mediatoolbox.*;
     /*<constructors>*//*</constructors>*/
     /*<properties>*/
     @NotImplemented("volume")
-    public float getVolume() { throw new UnsupportedOperationException(); }
+    public float getVolume() { return 0; }
     @NotImplemented("setVolume:")
-    public void setVolume(float v) { throw new UnsupportedOperationException(); }
+    public void setVolume(float v) {}
     /*</properties>*/
     /*<members>*//*</members>*/
     @NotImplemented("renderingAlgorithm")

@@ -52,42 +52,42 @@ import org.robovm.apple.uikit.*;
      * @since Available in iOS 8.0 and later.
      */
     @NotImplemented("match:didReceiveData:fromRemotePlayer:")
-    public void didReceiveData(GKMatch match, NSData data, GKPlayer player) { throw new UnsupportedOperationException(); }
+    public void didReceiveData(GKMatch match, NSData data, GKPlayer player) {}
     /**
      * @since Available in iOS 4.1 and later.
      * @deprecated Deprecated in iOS 8.0.
      */
     @Deprecated
     @NotImplemented("match:didReceiveData:fromPlayer:")
-    public void didReceiveData(GKMatch match, NSData data, String playerID) { throw new UnsupportedOperationException(); }
+    public void didReceiveData(GKMatch match, NSData data, String playerID) {}
     /**
      * @since Available in iOS 4.1 and later.
      */
     @NotImplemented("match:player:didChangeConnectionState:")
-    public void didChangeConnectionState(GKMatch match, GKPlayer player, GKPlayerConnectionState state) { throw new UnsupportedOperationException(); }
+    public void didChangeConnectionState(GKMatch match, GKPlayer player, GKPlayerConnectionState state) {}
     /**
      * @since Available in iOS 4.1 and later.
      * @deprecated Deprecated in iOS 8.0.
      */
     @Deprecated
     @NotImplemented("match:player:didChangeState:")
-    public void didChangeState(GKMatch match, String playerID, GKPlayerConnectionState state) { throw new UnsupportedOperationException(); }
+    public void didChangeState(GKMatch match, String playerID, GKPlayerConnectionState state) {}
     /**
      * @since Available in iOS 4.1 and later.
      */
     @NotImplemented("match:didFailWithError:")
-    public void didFail(GKMatch match, NSError error) { throw new UnsupportedOperationException(); }
+    public void didFail(GKMatch match, NSError error) {}
     /**
      * @since Available in iOS 8.0 and later.
      */
     @NotImplemented("match:shouldReinviteDisconnectedPlayer:")
-    public boolean shouldReinviteDisconnectedPlayer(GKMatch match, GKPlayer player) { throw new UnsupportedOperationException(); }
+    public boolean shouldReinviteDisconnectedPlayer(GKMatch match, GKPlayer player) { return false; }
     /**
      * @since Available in iOS 5.0 and later.
      * @deprecated Deprecated in iOS 8.0.
      */
     @Deprecated
     @NotImplemented("match:shouldReinvitePlayer:")
-    public boolean shouldReinvitePlayer(GKMatch match, String playerID) { throw new UnsupportedOperationException(); }
+    public boolean shouldReinvitePlayer(GKMatch match, String playerID) { return false; }
     /*</methods>*/
 }

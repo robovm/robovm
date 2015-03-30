@@ -53,17 +53,17 @@ import org.robovm.apple.mediatoolbox.*;
     /*<constructors>*//*</constructors>*/
     /*<properties>*/
     @NotImplemented("sourcePixelBufferAttributes")
-    public CVPixelBufferAttributes getSourcePixelBufferAttributes() { throw new UnsupportedOperationException(); }
+    public CVPixelBufferAttributes getSourcePixelBufferAttributes() { return null; }
     @NotImplemented("requiredPixelBufferAttributesForRenderContext")
-    public CVPixelBufferAttributes getRequiredPixelBufferAttributesForRenderContext() { throw new UnsupportedOperationException(); }
+    public CVPixelBufferAttributes getRequiredPixelBufferAttributesForRenderContext() { return null; }
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
     @NotImplemented("renderContextChanged:")
-    public void renderContextChanged(AVVideoCompositionRenderContext newRenderContext) { throw new UnsupportedOperationException(); }
+    public void renderContextChanged(AVVideoCompositionRenderContext newRenderContext) {}
     @NotImplemented("startVideoCompositionRequest:")
-    public void startVideoCompositionRequest(AVAsynchronousVideoCompositionRequest asyncVideoCompositionRequest) { throw new UnsupportedOperationException(); }
+    public void startVideoCompositionRequest(AVAsynchronousVideoCompositionRequest asyncVideoCompositionRequest) {}
     @NotImplemented("cancelAllPendingVideoCompositionRequests")
-    public void cancelAllPendingVideoCompositionRequests() { throw new UnsupportedOperationException(); }
+    public void cancelAllPendingVideoCompositionRequests() {}
     /*</methods>*/
 }

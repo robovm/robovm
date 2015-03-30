@@ -53,8 +53,8 @@ import org.robovm.apple.dispatch.*;
     /*<members>*//*</members>*/
     /*<methods>*/
     @NotImplemented("glkViewControllerUpdate:")
-    public void update(GLKViewController controller) { throw new UnsupportedOperationException(); }
+    public void update(GLKViewController controller) {}
     @NotImplemented("glkViewController:willPause:")
-    public void willPause(GLKViewController controller, boolean pause) { throw new UnsupportedOperationException(); }
+    public void willPause(GLKViewController controller, boolean pause) {}
     /*</methods>*/
 }

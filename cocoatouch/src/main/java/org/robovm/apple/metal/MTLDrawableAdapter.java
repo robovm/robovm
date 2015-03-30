@@ -49,8 +49,8 @@ import org.robovm.apple.dispatch.*;
     /*<members>*//*</members>*/
     /*<methods>*/
     @NotImplemented("present")
-    public void present() { throw new UnsupportedOperationException(); }
+    public void present() {}
     @NotImplemented("presentAtTime:")
-    public void presentAtTime(double presentationTime) { throw new UnsupportedOperationException(); }
+    public void presentAtTime(double presentationTime) {}
     /*</methods>*/
 }

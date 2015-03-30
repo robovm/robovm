@@ -54,12 +54,12 @@ import org.robovm.apple.corelocation.*;
     /*<members>*//*</members>*/
     /*<methods>*/
     @NotImplemented("collectionView:numberOfItemsInSection:")
-    public @MachineSizedSInt long getNumberOfItemsInSection(UICollectionView collectionView, @MachineSizedSInt long section) { throw new UnsupportedOperationException(); }
+    public @MachineSizedSInt long getNumberOfItemsInSection(UICollectionView collectionView, @MachineSizedSInt long section) { return 0; }
     @NotImplemented("collectionView:cellForItemAtIndexPath:")
-    public UICollectionViewCell getCellForItem(UICollectionView collectionView, NSIndexPath indexPath) { throw new UnsupportedOperationException(); }
+    public UICollectionViewCell getCellForItem(UICollectionView collectionView, NSIndexPath indexPath) { return null; }
     @NotImplemented("numberOfSectionsInCollectionView:")
-    public @MachineSizedSInt long getNumberOfSections(UICollectionView collectionView) { throw new UnsupportedOperationException(); }
+    public @MachineSizedSInt long getNumberOfSections(UICollectionView collectionView) { return 0; }
     @NotImplemented("collectionView:viewForSupplementaryElementOfKind:atIndexPath:")
-    public UICollectionReusableView getViewForSupplementaryElement(UICollectionView collectionView, String kind, NSIndexPath indexPath) { throw new UnsupportedOperationException(); }
+    public UICollectionReusableView getViewForSupplementaryElement(UICollectionView collectionView, String kind, NSIndexPath indexPath) { return null; }
     /*</methods>*/
 }

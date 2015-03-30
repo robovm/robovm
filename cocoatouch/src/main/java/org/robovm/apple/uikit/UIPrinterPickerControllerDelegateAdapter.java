@@ -54,18 +54,18 @@ import org.robovm.apple.corelocation.*;
     /*<members>*//*</members>*/
     /*<methods>*/
     @NotImplemented("printerPickerControllerParentViewController:")
-    public UIViewController getParentViewController(UIPrinterPickerController printerPickerController) { throw new UnsupportedOperationException(); }
+    public UIViewController getParentViewController(UIPrinterPickerController printerPickerController) { return null; }
     @NotImplemented("printerPickerController:shouldShowPrinter:")
-    public boolean shouldShowPrinter(UIPrinterPickerController printerPickerController, UIPrinter printer) { throw new UnsupportedOperationException(); }
+    public boolean shouldShowPrinter(UIPrinterPickerController printerPickerController, UIPrinter printer) { return false; }
     @NotImplemented("printerPickerControllerWillPresent:")
-    public void willPresent(UIPrinterPickerController printerPickerController) { throw new UnsupportedOperationException(); }
+    public void willPresent(UIPrinterPickerController printerPickerController) {}
     @NotImplemented("printerPickerControllerDidPresent:")
-    public void didPresent(UIPrinterPickerController printerPickerController) { throw new UnsupportedOperationException(); }
+    public void didPresent(UIPrinterPickerController printerPickerController) {}
     @NotImplemented("printerPickerControllerWillDismiss:")
-    public void willDismiss(UIPrinterPickerController printerPickerController) { throw new UnsupportedOperationException(); }
+    public void willDismiss(UIPrinterPickerController printerPickerController) {}
     @NotImplemented("printerPickerControllerDidDismiss:")
-    public void didDismiss(UIPrinterPickerController printerPickerController) { throw new UnsupportedOperationException(); }
+    public void didDismiss(UIPrinterPickerController printerPickerController) {}
     @NotImplemented("printerPickerControllerDidSelectPrinter:")
-    public void didSelectPrinter(UIPrinterPickerController printerPickerController) { throw new UnsupportedOperationException(); }
+    public void didSelectPrinter(UIPrinterPickerController printerPickerController) {}
     /*</methods>*/
 }

@@ -52,6 +52,6 @@ import org.robovm.apple.uikit.*;
      * @since Available in iOS 4.2 and later.
      */
     @NotImplemented("friendRequestComposeViewControllerDidFinish:")
-    public void didFinish(GKFriendRequestComposeViewController viewController) { throw new UnsupportedOperationException(); }
+    public void didFinish(GKFriendRequestComposeViewController viewController) {}
     /*</methods>*/
 }

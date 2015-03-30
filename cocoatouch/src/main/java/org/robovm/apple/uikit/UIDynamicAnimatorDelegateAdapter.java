@@ -54,8 +54,8 @@ import org.robovm.apple.corelocation.*;
     /*<members>*//*</members>*/
     /*<methods>*/
     @NotImplemented("dynamicAnimatorWillResume:")
-    public void willResume(UIDynamicAnimator animator) { throw new UnsupportedOperationException(); }
+    public void willResume(UIDynamicAnimator animator) {}
     @NotImplemented("dynamicAnimatorDidPause:")
-    public void didPause(UIDynamicAnimator animator) { throw new UnsupportedOperationException(); }
+    public void didPause(UIDynamicAnimator animator) {}
     /*</methods>*/
 }

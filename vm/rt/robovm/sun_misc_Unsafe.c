@@ -100,7 +100,7 @@ jint Java_sun_misc_Unsafe_getIntVolatile(Env* env, Object* unsafe, Object* obj, 
 
 jlong Java_sun_misc_Unsafe_getLong(Env* env, Object* unsafe, Object* obj, jlong offset) {
     if (!checkNull(env, obj)) return 0;
-    jlong* address = (jlong*) getFieldAddress(obj, offset);
+    long* address = (long *)getFieldAddress(obj, offset);
     return *address;
 }
 

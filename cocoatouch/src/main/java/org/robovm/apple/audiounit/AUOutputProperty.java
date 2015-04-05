@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.robovm.apple.coremedia;
+package org.robovm.apple.audiounit;
 
 /*<imports>*/
 import java.io.*;
@@ -27,32 +27,31 @@ import org.robovm.rt.bro.*;
 import org.robovm.rt.bro.annotation.*;
 import org.robovm.rt.bro.ptr.*;
 import org.robovm.apple.foundation.*;
-import org.robovm.apple.corefoundation.*;
-import org.robovm.apple.dispatch.*;
-import org.robovm.apple.coreaudio.*;
-import org.robovm.apple.coreanimation.*;
-import org.robovm.apple.coregraphics.*;
-import org.robovm.apple.corevideo.*;
 import org.robovm.apple.audiotoolbox.*;
+import org.robovm.apple.corefoundation.*;
+import org.robovm.apple.coreaudio.*;
+import org.robovm.apple.uikit.*;
 /*</imports>*/
 
 /*<javadoc>*/
 
 /*</javadoc>*/
 /*<annotations>*//*</annotations>*/
-public enum /*<name>*/CMBufferQueueError/*</name>*/ implements ValuedEnum {
-    No(0L),
+public enum /*<name>*/AUOutputProperty/*</name>*/ implements AUPropertyID {
     /*<values>*/
-    AllocationFailed(-12760L),
-    RequiredParameterMissing(-12761L),
-    InvalidCMBufferCallbacksStruct(-12762L),
-    EnqueueAfterEndOfData(-12763L),
-    QueueIsFull(-12764L),
-    BadTriggerDuration(-12765L),
-    CannotModifyQueueFromTriggerCallback(-12766L),
-    InvalidTriggerCondition(-12767L),
-    InvalidTriggerToken(-12768L),
-    InvalidBuffer(-12769L);
+    CurrentDevice(2000L),
+    ChannelMap(2002L),
+    EnableIO(2003L),
+    StartTime(2004L),
+    SetInputCallback(2005L),
+    HasIO(2006L),
+    StartTimestampsAtZero(2007L),
+    IsRunning(2001L),
+    MIDICallbacks(2010L),
+    HostReceivesRemoteControlEvents(2011L),
+    RemoteControlToHost(2012L),
+    HostTransportState(2013L),
+    NodeComponentDescription(2014L);
     /*</values>*/
 
     /*<bind>*/
@@ -62,15 +61,15 @@ public enum /*<name>*/CMBufferQueueError/*</name>*/ implements ValuedEnum {
 
     private final long n;
 
-    private /*<name>*/CMBufferQueueError/*</name>*/(long n) { this.n = n; }
+    private /*<name>*/AUOutputProperty/*</name>*/(long n) { this.n = n; }
     public long value() { return n; }
-    public static /*<name>*/CMBufferQueueError/*</name>*/ valueOf(long n) {
-        for (/*<name>*/CMBufferQueueError/*</name>*/ v : values()) {
+    public static /*<name>*/AUOutputProperty/*</name>*/ valueOf(long n) {
+        for (/*<name>*/AUOutputProperty/*</name>*/ v : values()) {
             if (v.n == n) {
                 return v;
             }
         }
         throw new IllegalArgumentException("No constant with value " + n + " found in " 
-            + /*<name>*/CMBufferQueueError/*</name>*/.class.getName());
+            + /*<name>*/AUOutputProperty/*</name>*/.class.getName());
     }
 }

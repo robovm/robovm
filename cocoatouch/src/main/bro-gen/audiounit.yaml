@@ -1,0 +1,600 @@
+package: org.robovm.apple.audiounit
+include: [foundation.yaml, audiotoolbox.yaml, corefoundation.yaml, coreaudio.yaml, uikit.yaml]
+library: AudioUnit
+framework: AudioUnit
+clang_args: ['-x', 'objective-c']
+headers:
+    - /System/Library/Frameworks/AudioUnit.framework/Headers/AudioUnit.h
+typedefs: {}
+private_typedefs:
+    '__CFString *': String
+    '__CFString **': NSString.NSStringPtr
+    '__CFData *': NSData
+    '__CFURL *': NSURL
+    '__CFDictionary *': 'NSDictionary<?, ?>'
+    '__CFArray *': NSArray<?>
+    '__CFRunLoopTimer *': NSTimer
+    'AudioUnitParameterEvent *': AUParameterEvent
+    MusicDeviceComponent: MusicDevice
+    
+enums:
+    AudioComponentFlags: {first: kAudioComponentFlag_Unsearchable, bits: true}
+    AudioComponentErrorCode: {first: kAudioComponentErr_DuplicateDescription}
+    AUType: {first: kAudioUnitType_Output}
+    AUType2: {first: kAudioUnitType_RemoteEffect, prefix: kAudioUnitType_, merge_with: AUType}
+    AUManufacturer: {first: kAudioUnitManufacturer_Apple, prefix: kAudioUnitManufacturer_}
+    AUSubType: {first: kAudioUnitSubType_GenericOutput}
+    AUSubType2: {first: kAudioUnitSubType_Sampler, merge_with: AUSubType}
+    AUSubType3: {first: kAudioUnitSubType_AUConverter, merge_with: AUSubType}
+    AUSubType4: {first: kAudioUnitSubType_PeakLimiter, merge_with: AUSubType}
+    AUSubType5: {first: kAudioUnitSubType_MultiChannelMixer, merge_with: AUSubType}
+    AUSubType6: {first: kAudioUnitSubType_ScheduledSoundPlayer, merge_with: AUSubType}
+    AURenderActionFlags: {first: kAudioUnitRenderAction_PreRender, bits: true, prefix: kAudioUnitRenderAction_, kAudioOfflineUnitRenderAction_(.*): 'Offline#{g[0]}'}
+    AUErrorCode: {first: kAudioUnitErr_InvalidProperty}
+    AUParameterEventType: {first: kParameterEvent_Immediate, marshaler: ValuedEnum.AsUnsignedIntMarshaler}
+    AUSelector: {first: kAudioUnitRange, suffix: Select, ignore: kAudioUnitRange}
+    AUOutputSelector: {first: kAudioOutputUnitRange, suffix: Select, ignore: kAudioOutputUnitRange}
+    AUMIDIParam: {first: kAUGroupParameterID_Volume}
+    AUSpatialMixerParam: {first: kSpatialMixerParam_Azimuth}
+    AUReverbParam: {first: kReverbParam_FilterFrequency}
+    AUMultiChannelMixerParam: {first: kMultiChannelMixerParam_Volume}
+    AUMatrixMixerParam: {first: kMatrixMixerParam_Volume}
+    AUOutputParam: {first: kHALOutputParam_Volume, prefix: kHALOutputParam_}
+    AUTimePitchParam: {first: kTimePitchParam_Rate, prefix: kTimePitchParam_}
+    AUNewTimePitchParam: {first: kNewTimePitchParam_Rate}
+    AUSamplerParam: {first: kAUSamplerParam_Gain}
+    AUBandpassParam: {first: kBandpassParam_CenterFrequency}
+    AUHipassParam: {first: kHipassParam_CutoffFrequency}
+    AULowpassParam: {first: kLowPassParam_CutoffFrequency}
+    AUHighShelfParam: {first: kHighShelfParam_CutOffFrequency}
+    AULowShelfParam: {first: kAULowShelfParam_CutoffFrequency}
+    AUParametricEQParam: {first: kParametricEQParam_CenterFreq}
+    AUPeakLimiterParam: {first: kLimiterParam_AttackTime}
+    AUDynamicsProcessorParam: {first: kDynamicsProcessorParam_Threshold}
+    AUVarispeedParam: {first: kVarispeedParam_PlaybackRate}
+    AUDistortionParam: {first: kDistortionParam_Delay}
+    AUDelayParam: {first: kDelayParam_WetDryMix}
+    AUNBandEQParam: {first: kAUNBandEQParam_GlobalGain}
+    AUNBandEQFilterType: {first: kAUNBandEQFilterType_Parametric, prefix: kAUNBandEQFilterType_, ignore: kNumAUNBandEQFilterTypes}
+    AURoundTripAACParam: {first: kRoundTripAACParam_Format}
+    AURandomParam: {first: kRandomParam_BoundA}
+    AUReverb2Param: {first: kReverb2Param_DryWetMix}
+    AUScope: {first: kAudioUnitScope_Global}
+    AUGenericProperty: {first: kAudioUnitProperty_ClassInfo}
+    AUGenericProperty2: {first: kAudioUnitProperty_RemoteControlEventListener, merge_with: AUGenericProperty}
+    AUConverterProperty: {first: kAudioUnitProperty_SampleRateConverterComplexity, prefix: kAudioUnitProperty_}
+    AUMixerProperty: {first: kAudioUnitProperty_MeteringMode, prefix: kAudioUnitProperty_}
+    AUSpatialMixerProperty: {first: kAudioUnitProperty_ReverbRoomType, kAudioUnitProperty_SpatialMixer(.*): '#{g[0]}' }
+    AUScheduledSoundPlayerProperty: {first: kAudioUnitProperty_ScheduleAudioSlice}
+    AUAudioFilePlayerProperty: {first: kAudioUnitProperty_ScheduledFileIDs, prefix: kAudioUnitProperty_}
+    AUDeferredRendererProperty: {first: kAudioUnitProperty_DeferredRendererPullSize}
+    AUVoiceIOProperty: {first: kAUVoiceIOProperty_BypassVoiceProcessing}
+    AUNBandEQProperty: {first: kAUNBandEQProperty_NumberOfBands}
+    AUMIDISynthProperty: {first: kAUMIDISynthProperty_EnablePreload, prefix: kAUMIDISynthProperty_}
+    AUSamplerProperty: {first: kAUSamplerProperty_LoadInstrument}
+    AUOutputProperty: {first: kAudioOutputUnitProperty_CurrentDevice}
+    AUOutputProperty2: {first: kAudioOutputUnitProperty_MIDICallbacks, merge_with: AUOutputProperty}
+    AUOutputProperty3: {first: kAudioOutputUnitProperty_IsRunning, prefix: kAudioOutputUnitProperty_, merge_with: AUOutputProperty}
+    MusicDeviceProperty: {first: kMusicDeviceProperty_InstrumentName, prefix: kMusicDeviceProperty_}
+    MusicDeviceProperty1: {first: kMusicDeviceProperty_InstrumentCount, prefix: kMusicDeviceProperty_, merge_with: MusicDeviceProperty}
+    AURenderQuality: {first: kRenderQuality_Max}
+    AUParameterUnit: {first: kAudioUnitParameterUnit_Generic, marshaler: ValuedEnum.AsUnsignedIntMarshaler}
+    AUParameterFlags: {first: kAudioUnitParameterFlag_CFNameRelease, bits: true}
+    AURemoteControlEvent: {first: kAudioUnitRemoteControlEvent_TogglePlayPause, marshaler: ValuedEnum.AsUnsignedIntMarshaler}
+    AUampleRateConverterComplexity: {first: kAudioUnitSampleRateConverterComplexity_Linear}
+    AUSpatializationAlgorithm: {first: kSpatializationAlgorithm_EqualPowerPanning}
+    AUReverbRoomType: {first: kReverbRoomType_SmallRoom}
+    AUSpatialMixerAttenuationCurve: {first: kSpatialMixerAttenuationCurve_Power}
+    AUSpatialMixerRenderingFlags: {first: kSpatialMixerRenderingFlags_InterAuralDelay, bits: true}
+    AUScheduledAudioSliceFlags: {first: kScheduledAudioSliceFlag_Complete, bits: true}
+    AUInstrumentType: {first: kInstrumentType_DLSPreset}
+    AUSamplerBank: {first: kAUSampler_DefaultPercussionBankMSB}
+    MusicDeviceSelector: {first: kMusicDeviceRange, suffix: Select, ignore: kMusicDeviceRange}
+
+    # Deprecated
+    Deprecated1: {first: kAudioUnitErr_IllegalInstrument, exclude: true}
+    Deprecated2: {first: kAudioUnitProperty_3DMixerDistanceParams, exclude: true}
+    Deprecated3: {first: kAUVoiceIOProperty_DuckNonVoiceAudio, exclude: true}
+    Deprecated4: {first: kAUSamplerProperty_LoadPresetFromBank, exclude: true}
+    Deprecated5: {first: k3DMixerRenderingFlags_InterAuralDelay, exclude: true}
+    Deprecated6: {first: k3DMixerAttenuationCurve_Power, exclude: true}
+    Deprecated7: {first: k3DMixerParam_Azimuth, exclude: true}
+    Deprecated8: {first: kMusicNoteEvent_UseGroupInstrument, exclude: true}
+
+    # System reserved
+    System1: {first: kAudioUnitClumpID_System, exclude: true}
+
+classes:
+    AudioUnit:
+        extends: AudioComponentInstance
+    AudioComponent: {}
+    OpaqueAudioComponent:
+        name: AudioComponent
+    AudioComponentInstance: {}
+    OpaqueAudioComponentInstance:
+        name: AudioComponentInstance
+    MusicDevice:
+        extends: AudioComponentInstance
+
+    AudioComponentDescription: # DONE
+        componentType:
+            type: AUType
+        componentSubType:
+            type: AUSubType
+        componentManufacturer:
+            type: AUManufacturer
+        componentFlags:
+            type: AudioComponentFlags
+    AudioComponentPlugInInterface: {}
+   # AudioUnitParameterEvent: {} TODO union
+    AudioUnitParameter: # DONE
+        name: AUParameter
+        mAudioUnit:
+            name: audioUnit
+        mParameterID:
+            name: parameterID
+            type: AUParameterID
+        mScope:
+            name: scope
+            type: AUScope
+        mElement:
+            name: element
+    AudioUnitProperty: # DONE
+        name: AUProperty
+        mAudioUnit:
+            name: audioUnit
+        mPropertyID:
+            name: propertyID
+            type: AUPropertyID
+        mScope:
+            name: scope
+            type: AUScope
+        mElement:
+            name: element
+    AudioUnitConnection: # DONE
+        name: AUConnection
+    AUChannelInfo: {} # DONE
+    AudioUnitExternalBuffer:
+        name: AUExternalBuffer
+    AURenderCallbackStruct: # DONE
+        inputProcRefCon:
+            type: '@Pointer long'
+    AUPreset: {} # DONE
+    AudioUnitFrequencyResponseBin: # DONE
+        name: AUFrequencyResponseBin
+        mFrequency:
+            name: freqency
+        mMagnitude:
+            name: magnitude
+    HostCallbackInfo: # DONE
+        name: AUHostCallbackInfo
+        hostUserData:
+            type: '@Pointer long'
+    AUDependentParameter: # DONE
+        mScope:
+            name: scope
+            type: AUScope
+        mParameterID:
+            name: parameterID
+            type: AUParameterID
+    AUInputSamplesInOutputCallbackStruct: # DONE
+        userData:
+            type: '@Pointer long'
+    AudioUnitParameterHistoryInfo: # DONE
+        name: AUParameterHistoryInfo
+    AudioUnitParameterInfo: # DONE
+        name: AUParameterInfo
+        skip_def_constructor: true
+        0:
+            visibility: private
+        flags:
+            type: AUParameterFlags
+        cfNameString:
+            name: nameString
+        unit:
+            type: AUParameterUnit
+    AudioUnitParameterNameInfo: # DONE
+        name: AUParameterNameInfo
+    AudioUnitParameterStringFromValue: # DONE
+        name: AUParameterStringFromValue
+    AudioUnitParameterValueFromString: # DONE
+        name: AUParameterValueFromString
+        inString:
+            type: CFString.CFStringPtr
+    AudioOutputUnitMIDICallbacks: # DONE
+        name: AUOutputMIDICallbacksStruct
+        userData:
+            type: '@Pointer long'
+    AudioOutputUnitStartAtTimeParams: # DONE
+        name: AUOutputStartAtTimeParams
+        mTimestamp:
+            name: timestamp
+        mFlags:
+            name: flags
+    AudioUnitMeterClipping: # DONE
+        name: AUMeterClipping
+    MixerDistanceParams: # DONE
+        name: AUMixerDistanceParams
+        mReferenceDistance:
+            name: referenceDistance
+        mMaxDistance:
+            name: maxDistance
+        mMaxAttenuation:
+            name: maxAttenuation
+    ScheduledAudioSlice: # DONE
+        name: AUScheduledAudioSlice
+        mTimeStamp:
+            name: timeStamp
+        mCompletionProc:
+            name: completionProc
+            visibility: private
+        mCompletionProcUserData:
+            name: completionProcUserData
+            type: '@Pointer long'
+            visibility: private
+        mFlags:
+            name: flags
+            type: AUScheduledAudioSlice
+        mReserved:
+            name: reserved
+            visibility: private
+        mReserved2:
+            name: reserved2
+            visibility: private
+        mNumberFrames:
+            name: numberFrames
+        mBufferList:
+            name: bufferList
+    ScheduledAudioFileRegion: # DONE
+        name: AUScheduledAudioFileRegion
+        mTimeStamp:
+            name: timeStamp
+        mCompletionProc:
+            name: completionProc
+            visibility: private
+        mCompletionProcUserData:
+            name: completionProcUserData
+            type: '@Pointer long'
+            visibility: private
+        mAudioFile:
+            name: audioFile
+        mLoopCount:
+            name: loopCount
+        mStartFrame:
+            name: startFrame
+        mFramesToPlay:
+            name: framesToPlay
+    AUSamplerInstrumentData: # DONE
+        instrumentType:
+            type: AUInstrumentType
+    MusicDeviceStdNoteParams: # DONE
+        skip_def_constructor: true
+        mPitch:
+            name: pitch
+        mVelocity:
+            name: velocity
+        argCount:
+            visibility: private
+    NoteParamsControlValue: # DONE
+        mID:
+            name: id
+        mValue:
+            name: value
+    MusicDeviceNoteParams: # DONE
+        skip_def_constructor: true
+        argCount:
+            visibility: private
+        mPitch:
+            name: pitch
+        mVelocity:
+            name: velocity
+        mControls:
+            exclude: true
+
+protocols: {}
+
+functions:
+    # AudioComponentInstance
+    AudioComponentInstanceNew:
+        class: AudioComponentInstance
+        name: create
+        visibility: protected
+    AudioComponentInstance(CanDo):
+        class: AudioComponentInstance
+        name: '#{g[0]}'
+        visibility: ''
+    AudioComponentInstance(.*):
+        class: AudioComponentInstance
+        name: '#{g[0]}'
+
+    # AudioComponent
+    AudioComponent(FindNext):
+        class: AudioComponent
+        name: '#{g[0]}'
+        static: true
+    AudioComponentCopy(Name):
+        class: AudioComponent
+        name: 'get#{g[0]}'
+        visibility: private
+        parameters:
+            outName:
+                type: CFString.CFStringPtr
+    AudioComponent(GetDescription):
+        class: AudioComponent
+        name: '#{g[0]}'
+        visibility: private
+        parameters:
+            outDesc:
+                name: desc
+                type: AudioComponentDescription.AudioComponentDescriptionPtr
+    AudioComponent(GetVersion):
+        class: AudioComponent
+        name: '#{g[0]}'
+        visibility: private
+    AudioComponent(Register):
+        exclude: true
+    AudioComponent(.*):
+        class: AudioComponent
+        name: '#{g[0]}'
+
+    # AudioUnit
+    AudioUnit(GetPropertyInfo):
+        class: AudioUnit
+        name: '#{g[0]}'
+        visibility: private
+        parameters:
+            inID:
+                name: id
+                type: AUPropertyID
+            inScope:
+                name: scope
+                type: AUScope
+            inElement:
+                name: element
+    AudioUnit(GetProperty):
+        class: AudioUnit
+        name: '#{g[0]}'
+        visibility: protected
+        parameters:
+            inID:
+                name: id
+                type: AUPropertyID
+            inScope:
+                name: scope
+                type: AUScope
+            inElement:
+                name: element
+    AudioUnit(SetProperty):
+        class: AudioUnit
+        name: '#{g[0]}'
+        visibility: protected
+        parameters:
+            inID:
+                name: id
+                type: AUPropertyID
+            inScope:
+                name: scope
+                type: AUScope
+            inElement:
+                name: element
+            inDataSize:
+                name: dataSize
+    AudioUnit(AddPropertyListener):
+        class: AudioUnit
+        name: '#{g[0]}'
+        visibility: protected
+        parameters:
+            inID:
+                name: id
+                type: AUPropertyID
+            inProc:
+                name: proc
+            inProcUserData:
+                name: procUserData
+                type: '@Pointer long'
+    AudioUnit(RemovePropertyListener)WithUserData:
+        class: AudioUnit
+        name: '#{g[0]}'
+        visibility: protected
+        parameters:
+            inID:
+                name: id
+                type: AUPropertyID
+            inProc:
+                name: proc
+            inProcUserData:
+                name: procUserData
+                type: '@Pointer long'
+    AudioUnit(AddRenderNotify):
+        class: AudioUnit
+        name: '#{g[0]}'
+        visibility: protected
+        parameters:
+            inProc:
+                name: proc
+            inProcUserData:
+                name: procUserData
+                type: '@Pointer long'
+    AudioUnit(RemoveRenderNotify):
+        class: AudioUnit
+        name: '#{g[0]}'
+        visibility: protected
+        parameters:
+            inProc:
+                name: proc
+            inProcUserData:
+                name: procUserData
+                type: '@Pointer long'
+    AudioUnit(GetParameter):
+        class: AudioUnit
+        name: '#{g[0]}'
+        visibility: protected
+        parameters:
+            inID:
+                name: id
+                type: AUPropertyID
+            inScope:
+                name: scope
+                type: AUScope
+            inElement:
+                name: element
+    AudioUnit(SetParameter):
+        class: AudioUnit
+        name: '#{g[0]}'
+        parameters:
+            inID:
+                name: id
+                type: AUPropertyID
+            inScope:
+                name: scope
+                type: AUScope
+            inElement:
+                name: element
+            inValue:
+                name: value
+            inBufferOffsetInFrames:
+                name: bufferOffsetInFrames
+    AudioUnit(Render):
+        class: AudioUnit
+        name: '#{g[0]}'
+        parameters:
+            ioActionFlags:
+                name: actionFlags
+                type: AUMutableRenderActionFlags
+            inTimeStamp:
+                name: timeStamp
+            inOutputBusNumber:
+                name: outputBusNumber
+            inNumberFrames:
+                name: numberFrames
+            ioData:
+                name: data
+    AudioUnit(Process):
+        class: AudioUnit
+        name: '#{g[0]}'
+        parameters:
+            ioActionFlags:
+                name: actionFlags
+                type: AUMutableRenderActionFlags
+            inTimeStamp:
+                name: timeStamp
+            inNumberFrames:
+                name: numberFrames
+            ioData:
+                name: data
+    AudioUnit(ProcessMultiple):
+        class: AudioUnit
+        name: '#{g[0]}'
+        visibility: protected
+        parameters:
+            ioActionFlags:
+                name: actionFlags
+                type: AUMutableRenderActionFlags
+            inTimeStamp:
+                name: timeStamp
+            inNumberFrames:
+                name: numberFrames
+    AudioOutputUnit(Publish):
+        class: AudioUnit
+        name: '#{g[0]}'
+        visibility: private
+    AudioOutputUnit(GetHostIcon):
+        class: AudioUnit
+        name: getOutputHostIcon
+    AudioOutputUnit(Start|Stop):
+        class: AudioUnit
+        name: '#{g[0]}Output'
+    AudioUnit(Reset):
+        class: AudioUnit
+        name: '#{g[0]}'
+        parameters:
+            inScope:
+                name: scope
+                type: AUScope
+    AudioUnit(ScheduleParameters):
+        class: AudioUnit
+        name: '#{g[0]}'
+        exclude: true # TODO
+    AudioUnit(.*):
+        class: AudioUnit
+        name: '#{g[0]}'
+
+    # MusicDevice
+    MusicDeviceMIDIEvent:
+        class: MusicDevice
+        name: midiEvent
+        parameters:
+            inStatus:
+                name: status
+            inData1:
+                name: data1
+            inData2:
+                name: data2
+            inOffsetSampleFrame:
+                name: offsetSampleFrame
+    MusicDevice(SysEx):
+        class: MusicDevice
+        name: '#{g[0]}'
+        visibility: protected
+        parameters:
+            inData:
+                name: data
+                type: '@Pointer long'
+            inLength:
+                name: length
+    MusicDevice(StartNote):
+        class: MusicDevice
+        name: '#{g[0]}'
+        visibility: protected
+    MusicDevice(StopNote):
+        class: MusicDevice
+        name: '#{g[0]}'
+        parameters:
+            inGroupID:
+                name: groupID
+            inNoteInstanceID:
+                name: noteInstanceID
+            inOffsetSampleFrame:
+                name: offsetSampleFrame
+    MusicDevice(.*):
+        class: MusicDevice
+        name: '#{g[0]}'
+
+    # Make sure we don't miss any functions if new ones are introduced in a later version
+    (k?AU.*):
+        class: AudioUnitGlobals
+        name: 'Function__#{g[0]}'
+    (k?Audio.*):
+        class: AudioUnitGlobals
+        name: 'Function__#{g[0]}'
+
+values:
+    # AudioComponent
+    kAudioComponent(RegistrationsChangedNotification):
+        class: AudioComponent
+        name: '#{g[0]}'
+        type: NSString
+
+    # Make sure we don't miss any values if new ones are introduced in a later version
+    (k?AU.*):
+        class: AudioUnitGlobals
+        name: 'Value__#{g[0]}'
+    (k?Audio.*):
+        class: AudioUnitGlobals
+        name: 'Value__#{g[0]}'
+
+constants:
+    AUDIO_UNIT_VERSION:
+        exclude: true
+
+    kAudioUnitParameterName_Full:
+        class: AUParameterNameInfo
+        name: FullNameLength
+
+    # Make sure we don't miss any constants if new ones are introduced in a later version
+    (k?AU.*):
+        class: AudioUnitGlobals
+        name: 'Constant__#{g[0]}'
+    (k?Audio.*):
+        class: AudioUnitGlobals
+        name: 'Constant__#{g[0]}'

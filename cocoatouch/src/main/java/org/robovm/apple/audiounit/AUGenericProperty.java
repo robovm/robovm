@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.robovm.apple.coremedia;
+package org.robovm.apple.audiounit;
 
 /*<imports>*/
 import java.io.*;
@@ -27,32 +27,55 @@ import org.robovm.rt.bro.*;
 import org.robovm.rt.bro.annotation.*;
 import org.robovm.rt.bro.ptr.*;
 import org.robovm.apple.foundation.*;
-import org.robovm.apple.corefoundation.*;
-import org.robovm.apple.dispatch.*;
-import org.robovm.apple.coreaudio.*;
-import org.robovm.apple.coreanimation.*;
-import org.robovm.apple.coregraphics.*;
-import org.robovm.apple.corevideo.*;
 import org.robovm.apple.audiotoolbox.*;
+import org.robovm.apple.corefoundation.*;
+import org.robovm.apple.coreaudio.*;
+import org.robovm.apple.uikit.*;
 /*</imports>*/
 
 /*<javadoc>*/
 
 /*</javadoc>*/
 /*<annotations>*//*</annotations>*/
-public enum /*<name>*/CMBufferQueueError/*</name>*/ implements ValuedEnum {
-    No(0L),
+public enum /*<name>*/AUGenericProperty/*</name>*/ implements AUPropertyID {
     /*<values>*/
-    AllocationFailed(-12760L),
-    RequiredParameterMissing(-12761L),
-    InvalidCMBufferCallbacksStruct(-12762L),
-    EnqueueAfterEndOfData(-12763L),
-    QueueIsFull(-12764L),
-    BadTriggerDuration(-12765L),
-    CannotModifyQueueFromTriggerCallback(-12766L),
-    InvalidTriggerCondition(-12767L),
-    InvalidTriggerToken(-12768L),
-    InvalidBuffer(-12769L);
+    ClassInfo(0L),
+    MakeConnection(1L),
+    SampleRate(2L),
+    ParameterList(3L),
+    ParameterInfo(4L),
+    CPULoad(6L),
+    StreamFormat(8L),
+    ElementCount(11L),
+    Latency(12L),
+    SupportedNumChannels(13L),
+    MaximumFramesPerSlice(14L),
+    ParameterValueStrings(16L),
+    AudioChannelLayout(19L),
+    TailTime(20L),
+    BypassEffect(21L),
+    LastRenderError(22L),
+    SetRenderCallback(23L),
+    FactoryPresets(24L),
+    RenderQuality(26L),
+    HostCallbacks(27L),
+    InPlaceProcessing(29L),
+    ElementName(30L),
+    SupportedChannelLayoutTags(32L),
+    PresentPreset(36L),
+    DependentParameters(45L),
+    InputSamplesInOutput(49L),
+    ShouldAllocateBuffer(51L),
+    FrequencyResponse(52L),
+    ParameterHistoryInfo(53L),
+    NickName(54L),
+    OfflineRender(37L),
+    ParameterIDName(34L),
+    ParameterStringFromValue(33L),
+    ParameterValueFromString(38L),
+    RemoteControlEventListener(100L),
+    IsInterAppConnected(101L),
+    PeerURL(102L);
     /*</values>*/
 
     /*<bind>*/
@@ -62,15 +85,15 @@ public enum /*<name>*/CMBufferQueueError/*</name>*/ implements ValuedEnum {
 
     private final long n;
 
-    private /*<name>*/CMBufferQueueError/*</name>*/(long n) { this.n = n; }
+    private /*<name>*/AUGenericProperty/*</name>*/(long n) { this.n = n; }
     public long value() { return n; }
-    public static /*<name>*/CMBufferQueueError/*</name>*/ valueOf(long n) {
-        for (/*<name>*/CMBufferQueueError/*</name>*/ v : values()) {
+    public static /*<name>*/AUGenericProperty/*</name>*/ valueOf(long n) {
+        for (/*<name>*/AUGenericProperty/*</name>*/ v : values()) {
             if (v.n == n) {
                 return v;
             }
         }
         throw new IllegalArgumentException("No constant with value " + n + " found in " 
-            + /*<name>*/CMBufferQueueError/*</name>*/.class.getName());
+            + /*<name>*/AUGenericProperty/*</name>*/.class.getName());
     }
 }

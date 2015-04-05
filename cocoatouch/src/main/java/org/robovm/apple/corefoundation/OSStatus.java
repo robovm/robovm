@@ -49,6 +49,10 @@ public final class OSStatus {
         return new OSStatus(value);
     }
     
+    public static OSStatus valueOf(ValuedEnum value) {
+        return new OSStatus((int)value.value());
+    }
+    
     @Override
     public boolean equals(Object o) {
         if ((o instanceof OSStatus) && ((OSStatus) o).n == n) {

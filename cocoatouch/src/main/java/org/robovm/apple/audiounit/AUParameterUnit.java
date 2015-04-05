@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.robovm.apple.coremedia;
+package org.robovm.apple.audiounit;
 
 /*<imports>*/
 import java.io.*;
@@ -27,32 +27,45 @@ import org.robovm.rt.bro.*;
 import org.robovm.rt.bro.annotation.*;
 import org.robovm.rt.bro.ptr.*;
 import org.robovm.apple.foundation.*;
-import org.robovm.apple.corefoundation.*;
-import org.robovm.apple.dispatch.*;
-import org.robovm.apple.coreaudio.*;
-import org.robovm.apple.coreanimation.*;
-import org.robovm.apple.coregraphics.*;
-import org.robovm.apple.corevideo.*;
 import org.robovm.apple.audiotoolbox.*;
+import org.robovm.apple.corefoundation.*;
+import org.robovm.apple.coreaudio.*;
+import org.robovm.apple.uikit.*;
 /*</imports>*/
 
 /*<javadoc>*/
 
 /*</javadoc>*/
-/*<annotations>*//*</annotations>*/
-public enum /*<name>*/CMBufferQueueError/*</name>*/ implements ValuedEnum {
-    No(0L),
+/*<annotations>*/@Marshaler(ValuedEnum.AsUnsignedIntMarshaler.class)/*</annotations>*/
+public enum /*<name>*/AUParameterUnit/*</name>*/ implements ValuedEnum {
     /*<values>*/
-    AllocationFailed(-12760L),
-    RequiredParameterMissing(-12761L),
-    InvalidCMBufferCallbacksStruct(-12762L),
-    EnqueueAfterEndOfData(-12763L),
-    QueueIsFull(-12764L),
-    BadTriggerDuration(-12765L),
-    CannotModifyQueueFromTriggerCallback(-12766L),
-    InvalidTriggerCondition(-12767L),
-    InvalidTriggerToken(-12768L),
-    InvalidBuffer(-12769L);
+    Generic(0L),
+    Indexed(1L),
+    Boolean(2L),
+    Percent(3L),
+    Seconds(4L),
+    SampleFrames(5L),
+    Phase(6L),
+    Rate(7L),
+    Hertz(8L),
+    Cents(9L),
+    RelativeSemiTones(10L),
+    MIDINoteNumber(11L),
+    MIDIController(12L),
+    Decibels(13L),
+    LinearGain(14L),
+    Degrees(15L),
+    EqualPowerCrossfade(16L),
+    MixerFaderCurve1(17L),
+    Pan(18L),
+    Meters(19L),
+    AbsoluteCents(20L),
+    Octaves(21L),
+    BPM(22L),
+    Beats(23L),
+    Milliseconds(24L),
+    Ratio(25L),
+    CustomUnit(26L);
     /*</values>*/
 
     /*<bind>*/
@@ -62,15 +75,15 @@ public enum /*<name>*/CMBufferQueueError/*</name>*/ implements ValuedEnum {
 
     private final long n;
 
-    private /*<name>*/CMBufferQueueError/*</name>*/(long n) { this.n = n; }
+    private /*<name>*/AUParameterUnit/*</name>*/(long n) { this.n = n; }
     public long value() { return n; }
-    public static /*<name>*/CMBufferQueueError/*</name>*/ valueOf(long n) {
-        for (/*<name>*/CMBufferQueueError/*</name>*/ v : values()) {
+    public static /*<name>*/AUParameterUnit/*</name>*/ valueOf(long n) {
+        for (/*<name>*/AUParameterUnit/*</name>*/ v : values()) {
             if (v.n == n) {
                 return v;
             }
         }
         throw new IllegalArgumentException("No constant with value " + n + " found in " 
-            + /*<name>*/CMBufferQueueError/*</name>*/.class.getName());
+            + /*<name>*/AUParameterUnit/*</name>*/.class.getName());
     }
 }

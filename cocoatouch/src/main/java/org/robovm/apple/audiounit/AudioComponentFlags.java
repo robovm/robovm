@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.robovm.apple.coremedia;
+package org.robovm.apple.audiounit;
 
 /*<imports>*/
 import java.io.*;
@@ -27,32 +27,21 @@ import org.robovm.rt.bro.*;
 import org.robovm.rt.bro.annotation.*;
 import org.robovm.rt.bro.ptr.*;
 import org.robovm.apple.foundation.*;
-import org.robovm.apple.corefoundation.*;
-import org.robovm.apple.dispatch.*;
-import org.robovm.apple.coreaudio.*;
-import org.robovm.apple.coreanimation.*;
-import org.robovm.apple.coregraphics.*;
-import org.robovm.apple.corevideo.*;
 import org.robovm.apple.audiotoolbox.*;
+import org.robovm.apple.corefoundation.*;
+import org.robovm.apple.coreaudio.*;
+import org.robovm.apple.uikit.*;
 /*</imports>*/
 
 /*<javadoc>*/
 
 /*</javadoc>*/
 /*<annotations>*//*</annotations>*/
-public enum /*<name>*/CMBufferQueueError/*</name>*/ implements ValuedEnum {
-    No(0L),
+public final class /*<name>*/AudioComponentFlags/*</name>*/ extends Bits</*<name>*/AudioComponentFlags/*</name>*/> {
     /*<values>*/
-    AllocationFailed(-12760L),
-    RequiredParameterMissing(-12761L),
-    InvalidCMBufferCallbacksStruct(-12762L),
-    EnqueueAfterEndOfData(-12763L),
-    QueueIsFull(-12764L),
-    BadTriggerDuration(-12765L),
-    CannotModifyQueueFromTriggerCallback(-12766L),
-    InvalidTriggerCondition(-12767L),
-    InvalidTriggerToken(-12768L),
-    InvalidBuffer(-12769L);
+    public static final AudioComponentFlags None = new AudioComponentFlags(0L);
+    public static final AudioComponentFlags Unsearchable = new AudioComponentFlags(1L);
+    public static final AudioComponentFlags SandboxSafe = new AudioComponentFlags(2L);
     /*</values>*/
 
     /*<bind>*/
@@ -60,17 +49,17 @@ public enum /*<name>*/CMBufferQueueError/*</name>*/ implements ValuedEnum {
     /*<constants>*//*</constants>*/
     /*<methods>*//*</methods>*/
 
-    private final long n;
+    private static final /*<name>*/AudioComponentFlags/*</name>*/[] values = _values(/*<name>*/AudioComponentFlags/*</name>*/.class);
 
-    private /*<name>*/CMBufferQueueError/*</name>*/(long n) { this.n = n; }
-    public long value() { return n; }
-    public static /*<name>*/CMBufferQueueError/*</name>*/ valueOf(long n) {
-        for (/*<name>*/CMBufferQueueError/*</name>*/ v : values()) {
-            if (v.n == n) {
-                return v;
-            }
-        }
-        throw new IllegalArgumentException("No constant with value " + n + " found in " 
-            + /*<name>*/CMBufferQueueError/*</name>*/.class.getName());
+    public /*<name>*/AudioComponentFlags/*</name>*/(long value) { super(value); }
+    private /*<name>*/AudioComponentFlags/*</name>*/(long value, long mask) { super(value, mask); }
+    protected /*<name>*/AudioComponentFlags/*</name>*/ wrap(long value, long mask) {
+        return new /*<name>*/AudioComponentFlags/*</name>*/(value, mask);
+    }
+    protected /*<name>*/AudioComponentFlags/*</name>*/[] _values() {
+        return values;
+    }
+    public static /*<name>*/AudioComponentFlags/*</name>*/[] values() {
+        return values.clone();
     }
 }

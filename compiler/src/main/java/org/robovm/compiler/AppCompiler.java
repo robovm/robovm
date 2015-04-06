@@ -82,15 +82,17 @@ import org.robovm.compiler.util.AntPathMatcher;
 public class AppCompiler {
 
     /**
-     * Patterns for root classes. Classes matching these patterns will always be linked in.
+     * Patterns for root classes. Classes matching these patterns will always be
+     * linked in.
      */
     private static final String[] ROOT_CLASS_PATTERNS = {
         "java.lang.**.*",
         "org.robovm.rt.**.*"
     };
     /**
-     * Names of root classes. These classes will always be linked in. Most of these
-     * are here because they are required by Android's libcore native code.
+     * Names of root classes. These classes will always be linked in. Most of
+     * these are here because they are required by Android's libcore native
+     * code.
      */
     private static final String[] ROOT_CLASSES = {
         "java/io/FileDescriptor",
@@ -128,7 +130,7 @@ public class AppCompiler {
         "libcore/util/MutableLong"
     };
 
-    private static final String TRUSTED_CERTIFICATE_STORE_CLASS = 
+    private static final String TRUSTED_CERTIFICATE_STORE_CLASS =
             "com/android/org/conscrypt/TrustedCertificateStore";
 
     /**
@@ -140,11 +142,11 @@ public class AppCompiler {
             r.run();
         }
     };
-    
+
     private final Config config;
     private final ClassCompiler classCompiler;
     private final Linker linker;
-    
+
     public AppCompiler(Config config) {
         this.config = config;
         this.classCompiler = new ClassCompiler(config);
@@ -156,46 +158,49 @@ public class AppCompiler {
     }
 
     /**
-     * Returns all {@link Clazz}es in all {@link Path}s matching the specified ANT-style pattern.
+     * Returns all {@link Clazz}es in all {@link Path}s matching the specified
+     * ANT-style pattern.
      */
     private Collection<Clazz> getMatchingClasses(String pattern) {
         AntPathMatcher matcher = new AntPathMatcher(pattern, ".");
         Map<String, Clazz> matches = new HashMap<String, Clazz>();
         for (Path path : config.getClazzes().getPaths()) {
             for (Clazz clazz : path.listClasses()) {
-                if (!matches.containsKey(clazz.getClassName()) 
+                if (!matches.containsKey(clazz.getClassName())
                         && matcher.matches(clazz.getClassName())) {
-                    
+
                     matches.put(clazz.getClassName(), clazz);
                 }
             }
         }
         return matches.values();
     }
-    
+
     /**
-     * Returns all root classes. These are the minimum set of classes that needs to be compiled
-     * and linked. The compiler will use this set to determine which classes need to be recompiled
-     * and linked in through the root classes' dependencies.
+     * Returns all root classes. These are the minimum set of classes that needs
+     * to be compiled and linked. The compiler will use this set to determine
+     * which classes need to be recompiled and linked in through the root
+     * classes' dependencies.
      * 
-     * The classes matching {@link #ROOT_CLASS_PATTERNS} and {@link #ROOT_CLASSES} will always be 
-     * included. If a main class has been specified it will also become a root. Any root class 
-     * pattern specified on the command line (as returned by {@link Config#getRoots()} will also be
-     * used to find root classes. If no main class has been specified and {@link Config#getRoots()} 
-     * returns an empty set all classes available on the bootclasspath and the classpath will become 
-     * roots.
+     * The classes matching {@link #ROOT_CLASS_PATTERNS} and
+     * {@link #ROOT_CLASSES} will always be included. If a main class has been
+     * specified it will also become a root. Any root class pattern specified on
+     * the command line (as returned by {@link Config#getRoots()} will also be
+     * used to find root classes. If no main class has been specified and
+     * {@link Config#getRoots()} returns an empty set all classes available on
+     * the bootclasspath and the classpath will become roots.
      */
     private TreeSet<Clazz> getRootClasses() {
         TreeSet<Clazz> classes = new TreeSet<Clazz>();
         for (String rootClassPattern : ROOT_CLASS_PATTERNS) {
-            classes.addAll(getMatchingClasses(rootClassPattern));            
+            classes.addAll(getMatchingClasses(rootClassPattern));
         }
         for (String rootClassName : ROOT_CLASSES) {
             Clazz clazz = config.getClazzes().load(rootClassName);
             if (clazz == null) {
                 throw new CompilerException("Root class " + rootClassName + " not found");
             }
-            classes.add(clazz);            
+            classes.add(clazz);
         }
 
         if (config.getMainClass() != null) {
@@ -205,7 +210,7 @@ public class AppCompiler {
             }
             classes.add(clazz);
         }
-        
+
         if (!config.getCustomIBClasses().isEmpty()) {
             for (String s : config.getCustomIBClasses()) {
                 s = s.trim();
@@ -215,7 +220,7 @@ public class AppCompiler {
                 }
             }
         }
-        
+
         if (config.getForceLinkClasses().isEmpty()) {
             if (config.getMainClass() == null) {
                 classes.addAll(config.getClazzes().listClasses());
@@ -243,10 +248,10 @@ public class AppCompiler {
             }
         }
         return classes;
-    }    
-    
-    private boolean compile(Executor executor, ClassCompilerListener listener, 
-            Clazz clazz, Set<Clazz> compileQueue, Set<Clazz> compiled, 
+    }
+
+    private boolean compile(Executor executor, ClassCompilerListener listener,
+            Clazz clazz, Set<Clazz> compileQueue, Set<Clazz> compiled,
             boolean compileDependencies) throws IOException {
 
         boolean result = false;
@@ -266,7 +271,8 @@ public class AppCompiler {
         return result;
     }
 
-    static void addMetaInfImplementations(Clazzes clazzes, Clazz clazz, Set<Clazz> compiled, Set<Clazz> compileQueue) throws IOException {
+    static void addMetaInfImplementations(Clazzes clazzes, Clazz clazz, Set<Clazz> compiled, Set<Clazz> compileQueue)
+            throws IOException {
         String metaInfName = "META-INF/services/" + clazz.getClassName();
         IOException throwLater = null;
         for (InputStream is : clazzes.loadResources(metaInfName)) {
@@ -274,7 +280,7 @@ public class AppCompiler {
                 for (;;) {
                     String line = r.readLine();
                     if (line == null) {
-                        break;                        
+                        break;
                     }
                     if (line.startsWith("#")) {
                         continue;
@@ -294,7 +300,7 @@ public class AppCompiler {
         }
     }
 
-    public Set<Clazz> compile(Collection<Clazz> rootClasses, boolean compileDependencies, 
+    public Set<Clazz> compile(Collection<Clazz> rootClasses, boolean compileDependencies,
             final ClassCompilerListener listener) throws IOException {
 
         config.getLogger().debug("Compiling classes using %d threads", config.getThreads());
@@ -303,19 +309,21 @@ public class AppCompiler {
                 ? SAME_THREAD_EXECUTOR
                 : new ThreadPoolExecutor(config.getThreads() - 1, config.getThreads() - 1,
                         0L, TimeUnit.MILLISECONDS,
-                        // Use a bounded queue to avoid memory problems if the 
+                        // Use a bounded queue to avoid memory problems if the
                         // worker threads are slower than the enqueuing thread.
-                        // The optimal thread pool size and queue size have been 
+                        // The optimal thread pool size and queue size have been
                         // determined by trial and error.
                         new ArrayBlockingQueue<Runnable>((config.getThreads() - 1) * 20));
         class HandleFailureListener implements ClassCompilerListener {
             volatile Throwable t;
+
             @Override
             public void success(Clazz clazz) {
                 if (listener != null) {
                     listener.success(clazz);
                 }
             }
+
             @Override
             public void failure(Clazz clazz, Throwable t) {
                 // Compilation failed. Save the error and stop the executor.
@@ -354,7 +362,8 @@ public class AppCompiler {
             executorService.shutdown();
             try {
                 executorService.awaitTermination(Long.MAX_VALUE, TimeUnit.DAYS);
-            } catch (InterruptedException e) {}
+            } catch (InterruptedException e) {
+            }
         }
 
         if (listenerWrapper.t != null) {
@@ -381,7 +390,7 @@ public class AppCompiler {
         updateCheck();
 
         processResources(config.getInstallDir());
-        
+
         Set<Clazz> linkClasses = compile(getRootClasses(), true, null);
 
         if (Thread.currentThread().isInterrupted()) {
@@ -408,10 +417,11 @@ public class AppCompiler {
                 public boolean processDir(Resource resource, File dir, File destDir) throws IOException {
                     return true;
                 }
+
                 @Override
                 public void processFile(Resource resource, File file, File destDir)
                         throws IOException {
-                    
+
                     String filename = file.getName().toLowerCase();
                     if (filename.endsWith(".storyboard") || filename.endsWith(".xib")) {
                         try {
@@ -428,17 +438,17 @@ public class AppCompiler {
             }, destDir);
         }
     }
-    
+
     private List<String> findCustomClassesInIBFile(File file) throws XMLStreamException, IOException {
         List<String> customClasses = new ArrayList<>();
 
         try (FileInputStream fis = FileUtils.openInputStream(file)) {
             XMLInputFactory factory = XMLInputFactory.newInstance();
             XMLStreamReader reader = factory.createXMLStreamReader(fis);
-    
+
             while (reader.hasNext()) {
                 int event = reader.next();
-    
+
                 switch (event) {
                 case XMLStreamConstants.START_ELEMENT:
                     switch (reader.getLocalName()) {
@@ -459,12 +469,12 @@ public class AppCompiler {
 
         return customClasses;
     }
-    
+
     public static void main(String[] args) throws IOException {
-        
+
         AppCompiler compiler = null;
         Config.Builder builder = null;
-        
+
         boolean verbose = false;
         boolean run = false;
         boolean createIpa = false;
@@ -474,7 +484,7 @@ public class AppCompiler {
         try {
             builder = new Config.Builder();
             Map<String, PluginArgument> pluginArguments = builder.fetchPluginArguments();
- 
+
             int i = 0;
             while (i < args.length) {
                 if ("-cp".equals(args[i]) || "-classpath".equals(args[i])) {
@@ -614,7 +624,7 @@ public class AppCompiler {
                 } else if ("-printdevicetypes".equals(args[i])) {
                     printDeviceTypesAndExit(Home.find());
                 } else if ("-devicetype".equals(args[i])) {
-                    builder.iosDeviceType(args[++i]);           
+                    builder.iosDeviceType(args[++i]);
                 } else if ("-createipa".equals(args[i])) {
                     createIpa = true;
                 } else if ("-ipaarchs".equals(args[i])) {
@@ -627,12 +637,12 @@ public class AppCompiler {
                     runArgs.add(args[i]);
                 } else if (args[i].startsWith("-")) {
                     String argName = args[i].substring(1, args[i].length());
-                    if(argName.contains("=")) {
+                    if (argName.contains("=")) {
                         argName = argName.substring(0, argName.indexOf('='));
                     }
                     PluginArgument arg = pluginArguments.get(argName);
                     if (arg != null) {
-                        builder.addPluginArgument(args[i].substring(1));                        
+                        builder.addPluginArgument(args[i].substring(1));
                     } else {
                         throw new IllegalArgumentException("Unrecognized option: " + args[i]);
                     }
@@ -642,41 +652,41 @@ public class AppCompiler {
                 }
                 i++;
             }
-            
+
             while (i < args.length) {
                 runArgs.add(args[i++]);
             }
-            
+
             if (createIpa && run) {
                 throw new IllegalArgumentException("Specify either -run or -createipa, not both");
             }
-            
+
             builder.logger(new ConsoleLogger(verbose));
             builder.skipInstall(run);
-            
+
             if (dumpConfigFile != null) {
                 if (dumpConfigFile.equals("-")) {
                     builder.write(new OutputStreamWriter(System.out), new File("."));
                 } else {
                     File file = new File(dumpConfigFile);
                     if (file.exists()) {
-                        throw new IllegalArgumentException("Cannot dump config to " + file.getAbsolutePath() 
+                        throw new IllegalArgumentException("Cannot dump config to " + file.getAbsolutePath()
                                 + ". The file already exists.");
                     }
                     builder.write(file);
                 }
                 return;
             }
-            
+
             compiler = new AppCompiler(builder.build());
-            
-            if (createIpa && (!(compiler.config.getTarget() instanceof IOSTarget) 
+
+            if (createIpa && (!(compiler.config.getTarget() instanceof IOSTarget)
                     || !(compiler.config.getArch() == Arch.thumbv7 || compiler.config.getArch() == Arch.arm64)
                     || compiler.config.getOs() != OS.ios)) {
-                
+
                 throw new IllegalArgumentException("Must build for iOS thumbv7/arm64 when creating IPA");
             }
-            
+
         } catch (Throwable t) {
             String message = t.getMessage();
             if (t instanceof ArrayIndexOutOfBoundsException) {
@@ -690,7 +700,7 @@ public class AppCompiler {
             }
             printUsageAndExit(message, builder != null ? builder.getPlugins() : null);
         }
-        
+
         try {
             if (createIpa) {
                 compiler.createIpa(ipaArchs);
@@ -707,7 +717,7 @@ public class AppCompiler {
                             deviceName = parts[0].trim();
                             sdkVersion = parts.length > 1 ? parts[1].trim() : null;
                         }
-                        DeviceType type = DeviceType.getBestDeviceType(compiler.config.getHome(), 
+                        DeviceType type = DeviceType.getBestDeviceType(compiler.config.getHome(),
                                 compiler.config.getArch(), null, deviceName, sdkVersion);
                         simParams.setDeviceType(type);
                     }
@@ -727,7 +737,7 @@ public class AppCompiler {
     }
 
     /**
-     * Creates an IPA with a single {@link Arch} as specified in 
+     * Creates an IPA with a single {@link Arch} as specified in
      * {@link Config#getArch()}.
      */
     public void createIpa() throws IOException {
@@ -817,7 +827,7 @@ public class AppCompiler {
         System.err.println(Version.getVersion());
         System.exit(0);
     }
-    
+
     private static void printUsageAndExit(String errorMessage, List<Plugin> plugins) {
         if (errorMessage != null) {
             System.err.format("robovm: %s\n", errorMessage);
@@ -968,7 +978,7 @@ public class AppCompiler {
         System.exit(errorMessage != null ? 1 : 0);
         // @formatter:on
     }
-    
+
     private static String repeat(String s, int n) {
         StringBuilder builder = new StringBuilder();
         for (int i = 0; i < n; i++) {
@@ -977,23 +987,24 @@ public class AppCompiler {
         return builder.toString();
     }
 
-    
     private class UpdateChecker extends Thread {
         private final String address;
         private volatile JSONObject result;
+
         public UpdateChecker(String address) {
             this.address = address;
             setDaemon(true);
         }
+
         @Override
         public void run() {
             result = fetchJson(address);
         }
     }
-    
+
     /**
-     * Performs an update check. If a newer version of RoboVM is available
-     * a message will be printed to the log. The update check is also used to
+     * Performs an update check. If a newer version of RoboVM is available a
+     * message will be printed to the log. The update check is also used to
      * gather some anonymous usage statistics.
      */
     private void updateCheck() {
@@ -1023,7 +1034,7 @@ public class AppCompiler {
             if (result != null) {
                 String version = (String) result.get("version");
                 if (version != null && Version.isOlderThan(version)) {
-                    config.getLogger().info("A new version of RoboVM is available. " 
+                    config.getLogger().info("A new version of RoboVM is available. "
                             + "Current version: %s. New version: %s.", Version.getVersion(), version);
                 }
             }
@@ -1048,7 +1059,7 @@ public class AppCompiler {
         }
         return null;
     }
-    
+
     private long getLastUpdateCheckTime() {
         try {
             File timeFile = new File(new File(System.getProperty("user.home"), ".robovm"), "last-update-check");

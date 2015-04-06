@@ -28,36 +28,31 @@ import org.robovm.compiler.llvm.Function;
 import soot.SootMethod;
 
 /**
- * Abstract implementation for {@link CompilerPlugin} with empty 
- * implementations for all methods.
+ * Abstract implementation for {@link CompilerPlugin} with empty implementations
+ * for all methods.
  */
 public abstract class AbstractCompilerPlugin extends CompilerPlugin {
     @Override
     public PluginArguments getArguments() {
-        return new PluginArguments("", Collections.<PluginArgument>emptyList());
-    }
-    
-    @Override
-    public void beforeClass(Config config, Clazz clazz, ModuleBuilder moduleBuilder) 
-            throws IOException {
-    }
-    
-    @Override
-    public void beforeMethod(Config config, Clazz clazz, SootMethod method, 
-            ModuleBuilder moduleBuilder) throws IOException {
-    }
-    
-    @Override
-    public void afterClass(Config config, Clazz clazz, ModuleBuilder moduleBuilder) 
-            throws IOException {
-    }
-    
-    @Override
-    public void afterMethod(Config config, Clazz clazz, SootMethod method, 
-            ModuleBuilder moduleBuilder, Function function) throws IOException {
+        return new PluginArguments("", Collections.<PluginArgument> emptyList());
     }
 
     @Override
-    public void afterObjectFile(Config config, Clazz clazz, File objectFile) throws IOException {
-    }
+    public void beforeClass(Config config, Clazz clazz, ModuleBuilder moduleBuilder)
+            throws IOException {}
+
+    @Override
+    public void beforeMethod(Config config, Clazz clazz, SootMethod method,
+            ModuleBuilder moduleBuilder) throws IOException {}
+
+    @Override
+    public void afterClass(Config config, Clazz clazz, ModuleBuilder moduleBuilder)
+            throws IOException {}
+
+    @Override
+    public void afterMethod(Config config, Clazz clazz, SootMethod method,
+            ModuleBuilder moduleBuilder, Function function) throws IOException {}
+
+    @Override
+    public void afterObjectFile(Config config, Clazz clazz, File objectFile) throws IOException {}
 }

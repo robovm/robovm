@@ -76,16 +76,16 @@ import org.robovm.llvm.binding.CodeGenFileType;
  *
  */
 public class Linker {
-    
+
     private static final TypeInfo[] EMPTY_TYPE_INFOS = new TypeInfo[0];
-    
+
     private static class TypeInfo implements Comparable<TypeInfo> {
         boolean error;
         Clazz clazz;
         List<Clazz> children = new ArrayList<Clazz>();
         int id;
         /**
-         * Ordered list of TypeInfos for each superclass of this class and the 
+         * Ordered list of TypeInfos for each superclass of this class and the
          * class itself. Empty if this is an interface.
          */
         TypeInfo[] classTypes;
@@ -94,7 +94,7 @@ public class Linker {
          * class or interface.
          */
         TypeInfo[] interfaceTypes;
-        
+
         @Override
         public int hashCode() {
             final int prime = 31;
@@ -122,19 +122,19 @@ public class Linker {
             return id < o.id ? -1 : (id == o.id ? 0 : 1);
         }
     }
-    
+
     private final Config config;
 
     public Linker(Config config) {
         this.config = config;
     }
-    
+
     public void link(Set<Clazz> classes) throws IOException {
         Arch arch = config.getArch();
         OS os = config.getOs();
 
         Set<Clazz> linkClasses = new TreeSet<Clazz>(classes);
-        config.getLogger().info("Linking %d classes (%s %s %s)", linkClasses.size(), 
+        config.getLogger().info("Linking %d classes (%s %s %s)", linkClasses.size(),
                 os, arch, config.isDebug() ? "debug" : "release");
 
         ModuleBuilder mb = new ModuleBuilder();
@@ -157,10 +157,13 @@ public class Linker {
             }
         }
         staticLibs.add(new NullConstant(Type.I8_PTR));
-        mb.addGlobal(new Global("_bcStaticLibs", new ConstantGetelementptr(mb.newGlobal(staticLibs.build()).ref(), 0, 0)));
+        mb.addGlobal(new Global("_bcStaticLibs",
+                new ConstantGetelementptr(mb.newGlobal(staticLibs.build()).ref(), 0, 0)));
 
-        HashTableGenerator<String, Constant> bcpHashGen = new HashTableGenerator<String, Constant>(new ModifiedUtf8HashFunction());
-        HashTableGenerator<String, Constant> cpHashGen = new HashTableGenerator<String, Constant>(new ModifiedUtf8HashFunction());
+        HashTableGenerator<String, Constant> bcpHashGen = new HashTableGenerator<String, Constant>(
+                new ModifiedUtf8HashFunction());
+        HashTableGenerator<String, Constant> cpHashGen = new HashTableGenerator<String, Constant>(
+                new ModifiedUtf8HashFunction());
         int classCount = 0;
         Map<ClazzInfo, TypeInfo> typeInfos = new HashMap<ClazzInfo, TypeInfo>();
         for (Clazz clazz : linkClasses) {
@@ -168,7 +171,7 @@ public class Linker {
             typeInfo.clazz = clazz;
             typeInfo.id = classCount++;
             typeInfos.put(clazz.getClazzInfo(), typeInfo);
-            
+
             StructureConstant infoErrorStruct = createClassInfoErrorStruct(mb, clazz.getClazzInfo());
             Global info = null;
             if (infoErrorStruct == null) {
@@ -184,9 +187,11 @@ public class Linker {
                 cpHashGen.put(clazz.getInternalName(), new ConstantBitcast(info.ref(), I8_PTR));
             }
         }
-        mb.addGlobal(new Global("_bcBootClassesHash", new ConstantGetelementptr(mb.newGlobal(bcpHashGen.generate(), true).ref(), 0, 0)));
-        mb.addGlobal(new Global("_bcClassesHash", new ConstantGetelementptr(mb.newGlobal(cpHashGen.generate(), true).ref(), 0, 0)));
-        
+        mb.addGlobal(new Global("_bcBootClassesHash", new ConstantGetelementptr(mb.newGlobal(bcpHashGen.generate(),
+                true).ref(), 0, 0)));
+        mb.addGlobal(new Global("_bcClassesHash", new ConstantGetelementptr(mb.newGlobal(cpHashGen.generate(), true)
+                .ref(), 0, 0)));
+
         ArrayConstantBuilder bootClasspathValues = new ArrayConstantBuilder(I8_PTR);
         ArrayConstantBuilder classpathValues = new ArrayConstantBuilder(I8_PTR);
         List<Path> allPaths = new ArrayList<Path>();
@@ -207,38 +212,41 @@ public class Linker {
         }
         bootClasspathValues.add(new NullConstant(Type.I8_PTR));
         classpathValues.add(new NullConstant(Type.I8_PTR));
-        mb.addGlobal(new Global("_bcBootclasspath", new ConstantGetelementptr(mb.newGlobal(bootClasspathValues.build()).ref(), 0, 0)));
-        mb.addGlobal(new Global("_bcClasspath", new ConstantGetelementptr(mb.newGlobal(classpathValues.build()).ref(), 0, 0)));
+        mb.addGlobal(new Global("_bcBootclasspath", new ConstantGetelementptr(mb.newGlobal(bootClasspathValues.build())
+                .ref(), 0, 0)));
+        mb.addGlobal(new Global("_bcClasspath", new ConstantGetelementptr(mb.newGlobal(classpathValues.build()).ref(),
+                0, 0)));
 
         if (config.getMainClass() != null) {
             mb.addGlobal(new Global("_bcMainClass", mb.getString(config.getMainClass())));
-        }        
-        
+        }
+
         ModuleBuilder[] mbs = new ModuleBuilder[config.getThreads() + 1];
         mbs[0] = mb;
         for (int i = 1; i < mbs.length; i++) {
             mbs[i] = new ModuleBuilder();
-            mbs[i].addInclude(getClass().getClassLoader().getResource(String.format("header-%s-%s.ll", os.getFamily(), arch)));
+            mbs[i].addInclude(getClass().getClassLoader().getResource(
+                    String.format("header-%s-%s.ll", os.getFamily(), arch)));
             mbs[i].addInclude(getClass().getClassLoader().getResource("header.ll"));
         }
         Random rnd = new Random();
-        
+
         buildTypeInfos(typeInfos);
-        
+
         for (Clazz clazz : linkClasses) {
             int mbIdx = rnd.nextInt(mbs.length - 1) + 1;
             ClazzInfo ci = clazz.getClazzInfo();
             TypeInfo typeInfo = typeInfos.get(ci);
             if (typeInfo.error) {
                 // Add an empty TypeInfo
-                mb.addGlobal(new Global(Symbols.typeInfoSymbol(clazz.getInternalName()), 
+                mb.addGlobal(new Global(Symbols.typeInfoSymbol(clazz.getInternalName()),
                         new StructureConstantBuilder()
-                            .add(new IntegerConstant(typeInfo.id))
-                            .add(new IntegerConstant(0))
-                            .add(new IntegerConstant(-1))
-                            .add(new IntegerConstant(0))
-                            .add(new IntegerConstant(0))
-                            .build()));
+                                .add(new IntegerConstant(typeInfo.id))
+                                .add(new IntegerConstant(0))
+                                .add(new IntegerConstant(-1))
+                                .add(new IntegerConstant(0))
+                                .add(new IntegerConstant(0))
+                                .build()));
             } else {
                 int[] classIds = new int[typeInfo.classTypes.length];
                 for (int i = 0; i < typeInfo.classTypes.length; i++) {
@@ -248,23 +256,24 @@ public class Linker {
                 for (int i = 0; i < typeInfo.interfaceTypes.length; i++) {
                     interfaceIds[i] = typeInfo.interfaceTypes[i].id;
                 }
-                mb.addGlobal(new Global(Symbols.typeInfoSymbol(clazz.getInternalName()), 
+                mb.addGlobal(new Global(Symbols.typeInfoSymbol(clazz.getInternalName()),
                         new StructureConstantBuilder()
-                            .add(new IntegerConstant(typeInfo.id))
-                            .add(new IntegerConstant((typeInfo.classTypes.length - 1) * 4 + 5 * 4))
-                            .add(new IntegerConstant(-1))
-                            .add(new IntegerConstant(typeInfo.classTypes.length))
-                            .add(new IntegerConstant(typeInfo.interfaceTypes.length))
-                            .add(new ArrayConstantBuilder(I32).add(classIds).build())
-                            .add(new ArrayConstantBuilder(I32).add(interfaceIds).build())
-                            .build()));
+                                .add(new IntegerConstant(typeInfo.id))
+                                .add(new IntegerConstant((typeInfo.classTypes.length - 1) * 4 + 5 * 4))
+                                .add(new IntegerConstant(-1))
+                                .add(new IntegerConstant(typeInfo.classTypes.length))
+                                .add(new IntegerConstant(typeInfo.interfaceTypes.length))
+                                .add(new ArrayConstantBuilder(I32).add(classIds).build())
+                                .add(new ArrayConstantBuilder(I32).add(interfaceIds).build())
+                                .build()));
 
                 if (!config.isDebug() && !ci.isInterface() && !ci.isFinal() && typeInfo.children.isEmpty()) {
-                    // Non-final class with 0 children. Override every lookup function with one
+                    // Non-final class with 0 children. Override every lookup
+                    // function with one
                     // which doesn't do any lookup.
                     for (MethodInfo mi : ci.getMethods()) {
                         String name = mi.getName();
-                        if (!name.equals("<clinit>") && !name.equals("<init>") 
+                        if (!name.equals("<clinit>") && !name.equals("<init>")
                                 && !mi.isPrivate() && !mi.isStatic() && !mi.isFinal() && !mi.isAbstract()) {
 
                             mbs[mbIdx].addFunction(createLookup(mbs[mbIdx], ci, mi));
@@ -273,15 +282,15 @@ public class Linker {
                     }
                 }
             }
-            
+
             mbs[mbIdx].addFunction(createCheckcast(mbs[mbIdx], clazz, typeInfo));
             mbs[mbIdx].addFunction(createInstanceof(mbs[mbIdx], clazz, typeInfo));
         }
-                
+
         List<File> objectFiles = new ArrayList<File>();
 
         generateMachineCode(config, mbs, objectFiles);
-        
+
         for (Clazz clazz : linkClasses) {
             objectFiles.add(config.getOFile(clazz));
         }
@@ -299,7 +308,7 @@ public class Linker {
         config.getTarget().build(objectFiles);
     }
 
-    private void generateMachineCode(final Config config, ModuleBuilder[] mbs, 
+    private void generateMachineCode(final Config config, ModuleBuilder[] mbs,
             final List<File> objectFiles) throws IOException {
 
         /*
@@ -308,7 +317,7 @@ public class Linker {
          */
         config.getTmpDir().mkdirs();
 
-        Executor executor = config.getThreads() <= 1 ? AppCompiler.SAME_THREAD_EXECUTOR 
+        Executor executor = config.getThreads() <= 1 ? AppCompiler.SAME_THREAD_EXECUTOR
                 : Executors.newFixedThreadPool(config.getThreads());
 
         final List<Throwable> errors = Collections.synchronizedList(new ArrayList<Throwable>());
@@ -328,16 +337,17 @@ public class Linker {
                 }
             });
         }
-        
+
         // Shutdown the executor and wait for running tasks to complete.
         if (executor instanceof ExecutorService) {
             ExecutorService executorService = (ExecutorService) executor;
             executorService.shutdown();
             try {
                 executorService.awaitTermination(Long.MAX_VALUE, TimeUnit.DAYS);
-            } catch (InterruptedException e) {}
+            } catch (InterruptedException e) {
+            }
         }
-        
+
         if (!errors.isEmpty()) {
             Throwable t = errors.get(0);
             if (t instanceof IOException) {
@@ -359,7 +369,7 @@ public class Linker {
         try (Context context = new Context()) {
             String ir = mb.build().toString();
             if (config.isDumpIntermediates()) {
-                File linkerLl= new File(config.getTmpDir(), "linker" + num + ".ll");
+                File linkerLl = new File(config.getTmpDir(), "linker" + num + ".ll");
                 FileUtils.writeStringToFile(linkerLl, ir, "utf-8");
             }
             try (Module module = Module.parseIR(context, ir, "linker" + num + ".ll")) {
@@ -368,7 +378,7 @@ public class Linker {
                     passManager.addPromoteMemoryToRegisterPass();
                     passManager.run(module);
                 }
-        
+
                 String triple = config.getTriple();
                 Target target = Target.lookupTarget(triple);
                 try (TargetMachine targetMachine = target.createTargetMachine(triple)) {
@@ -376,7 +386,8 @@ public class Linker {
                     targetMachine.setFunctionSections(true);
                     targetMachine.setDataSections(true);
                     targetMachine.getOptions().setNoFramePointerElim(true);
-                    targetMachine.getOptions().setPositionIndependentExecutable(true); // NOTE: Doesn't have any effect on x86. See #503.
+                    // NOTE: Doesn't have any effect on x86. See #503.
+                    targetMachine.getOptions().setPositionIndependentExecutable(true);
                     if (config.isDumpIntermediates()) {
                         File linkerS = new File(config.getTmpDir(), "linker" + num + ".s");
                         try (OutputStream outS = new BufferedOutputStream(new FileOutputStream(linkerS))) {
@@ -400,7 +411,7 @@ public class Linker {
         ClazzInfo ci = typeInfo.clazz.getClazzInfo();
         List<TypeInfo> clTypeInfos = new ArrayList<TypeInfo>();
         Set<TypeInfo> ifTypeInfos = new TreeSet<TypeInfo>();
-        
+
         if (!ci.isInterface()) {
             if (ci.hasSuperclass()) {
                 TypeInfo superTypeInfo = buildTypeInfo(typeInfos.get(ci.getSuperclass()), typeInfos);
@@ -416,7 +427,7 @@ public class Linker {
                 clTypeInfos.add(typeInfo);
             }
         }
-        
+
         for (ClazzInfo ifCi : ci.getInterfaces()) {
             TypeInfo ifTypeInfo = buildTypeInfo(typeInfos.get(ifCi), typeInfos);
             if (ifTypeInfo.error) {
@@ -437,26 +448,25 @@ public class Linker {
         if (!ifTypeInfos.isEmpty()) {
             typeInfo.interfaceTypes = ifTypeInfos.toArray(new TypeInfo[ifTypeInfos.size()]);
         }
-        
+
         return typeInfo;
     }
-    
+
     private void buildTypeInfos(Map<ClazzInfo, TypeInfo> typeInfos) {
         for (TypeInfo typeInfo : typeInfos.values()) {
             buildTypeInfo(typeInfo, typeInfos);
         }
     }
-    
+
     private StructureConstant createClassInfoErrorStruct(ModuleBuilder mb, ClazzInfo ci) {
         /*
-         * Check that the class can be loaded, i.e. that the superclass 
-         * and interfaces of the class exist and are accessible to the
-         * class. Also check that any exception the class uses in catch
-         * clauses exist and is accessible to the class. If the class
-         * cannot be loaded we override the ClassInfoHeader struct
-         * produced by the ClassCompiler for the class with one which
-         * tells the code in bc.c to throw an appropriate exception
-         * whenever the class is accessed.
+         * Check that the class can be loaded, i.e. that the superclass and
+         * interfaces of the class exist and are accessible to the class. Also
+         * check that any exception the class uses in catch clauses exist and is
+         * accessible to the class. If the class cannot be loaded we override
+         * the ClassInfoHeader struct produced by the ClassCompiler for the
+         * class with one which tells the code in bc.c to throw an appropriate
+         * exception whenever the class is accessed.
          */
 
         int errorType = ClassCompiler.CI_ERROR_TYPE_NONE;
@@ -474,13 +484,13 @@ public class Linker {
                 errorType = ClassCompiler.CI_ERROR_TYPE_INCOMPATIBLE_CLASS_CHANGE;
                 errorMessage = String.format("class %s has interface %s as super class", ci, superclazz);
             }
-            // No need to check for ClassCircularityError. Soot doesn't handle 
+            // No need to check for ClassCircularityError. Soot doesn't handle
             // such problems so the compilation will fail earlier.
         }
-        
+
         if (errorType == ClassCompiler.CI_ERROR_TYPE_NONE) {
             // Check interfaces
-            for (ClazzInfo interfaze :  ci.getInterfaces()) {
+            for (ClazzInfo interfaze : ci.getInterfaces()) {
                 if (interfaze.isPhantom()) {
                     errorType = ClassCompiler.CI_ERROR_TYPE_NO_CLASS_DEF_FOUND;
                     errorMessage = interfaze.getName();
@@ -491,17 +501,18 @@ public class Linker {
                     break;
                 } else if (!interfaze.isInterface()) {
                     errorType = ClassCompiler.CI_ERROR_TYPE_INCOMPATIBLE_CLASS_CHANGE;
-                    errorMessage = String.format("class %s tries to implement class %s as interface", 
+                    errorMessage = String.format("class %s tries to implement class %s as interface",
                             ci, interfaze);
                     break;
                 }
             }
         }
-        
+
         if (errorType == ClassCompiler.CI_ERROR_TYPE_NONE) {
             // Check exceptions used in catch clauses. I cannot find any info in
-            // the VM spec specifying that this has to be done when the class is loaded.
-            // However, this is how it's done in other VMs so we do it too.
+            // the VM spec specifying that this has to be done when the class is
+            // loaded. However, this is how it's done in other VMs so we do it
+            // too.
             for (ClazzInfo ex : ci.getCatches()) {
                 if (ex == null || ex.isPhantom()) {
                     errorType = ClassCompiler.CI_ERROR_TYPE_NO_CLASS_DEF_FOUND;
@@ -514,14 +525,15 @@ public class Linker {
                 }
             }
         }
-        
+
         if (errorType == ClassCompiler.CI_ERROR_TYPE_NONE) {
             return null;
         }
-        
+
         // Create a ClassInfoError struct
         StructureConstantBuilder error = new StructureConstantBuilder();
-        error.add(new NullConstant(I8_PTR)); // Points to the runtime Class struct
+        error.add(new NullConstant(I8_PTR)); // Points to the runtime Class
+                                             // struct
         error.add(new IntegerConstant(ClassCompiler.CI_ERROR));
         error.add(mb.getString(ci.getInternalName()));
         error.add(new IntegerConstant(errorType));
@@ -529,7 +541,6 @@ public class Linker {
         return error.build();
     }
 
-    
     private Function createCheckcast(ModuleBuilder mb, Clazz clazz, TypeInfo typeInfo) {
         Function fn = FunctionBuilder.checkcast(clazz);
         Value info = getInfoStruct(mb, fn, clazz);
@@ -538,14 +549,14 @@ public class Linker {
             call(fn, BC_LDC_CLASS, fn.getParameterRef(0), info);
             fn.add(new Ret(new NullConstant(Types.OBJECT_PTR)));
         } else if (!clazz.getClazzInfo().isInterface()) {
-            Value result = call(fn, CHECKCAST_CLASS, fn.getParameterRef(0), info, 
-                    fn.getParameterRef(1), 
+            Value result = call(fn, CHECKCAST_CLASS, fn.getParameterRef(0), info,
+                    fn.getParameterRef(1),
                     new IntegerConstant((typeInfo.classTypes.length - 1) * 4 + 5 * 4),
                     new IntegerConstant(typeInfo.id));
             fn.add(new Ret(result));
         } else {
-            Value result = call(fn, CHECKCAST_INTERFACE, fn.getParameterRef(0), info, 
-                    fn.getParameterRef(1), 
+            Value result = call(fn, CHECKCAST_INTERFACE, fn.getParameterRef(0), info,
+                    fn.getParameterRef(1),
                     new IntegerConstant(typeInfo.id));
             fn.add(new Ret(result));
         }
@@ -560,14 +571,14 @@ public class Linker {
             call(fn, BC_LDC_CLASS, fn.getParameterRef(0), info);
             fn.add(new Ret(new IntegerConstant(0)));
         } else if (!clazz.getClazzInfo().isInterface()) {
-            Value result = call(fn, INSTANCEOF_CLASS, fn.getParameterRef(0), info, 
-                    fn.getParameterRef(1), 
+            Value result = call(fn, INSTANCEOF_CLASS, fn.getParameterRef(0), info,
+                    fn.getParameterRef(1),
                     new IntegerConstant((typeInfo.classTypes.length - 1) * 4 + 5 * 4),
                     new IntegerConstant(typeInfo.id));
             fn.add(new Ret(result));
         } else {
-            Value result = call(fn, INSTANCEOF_INTERFACE, fn.getParameterRef(0), info, 
-                    fn.getParameterRef(1), 
+            Value result = call(fn, INSTANCEOF_INTERFACE, fn.getParameterRef(0), info,
+                    fn.getParameterRef(1),
                     new IntegerConstant(typeInfo.id));
             fn.add(new Ret(result));
         }
@@ -576,8 +587,8 @@ public class Linker {
 
     private Function createLookup(ModuleBuilder mb, ClazzInfo ci, MethodInfo mi) {
         Function function = FunctionBuilder.lookup(ci, mi, false);
-        String targetFnName = mi.isSynchronized() 
-                ? Symbols.synchronizedWrapperSymbol(ci.getInternalName(), mi.getName(), mi.getDesc()) 
+        String targetFnName = mi.isSynchronized()
+                ? Symbols.synchronizedWrapperSymbol(ci.getInternalName(), mi.getName(), mi.getDesc())
                 : Symbols.methodSymbol(ci.getInternalName(), mi.getName(), mi.getDesc());
 
         FunctionRef fn = new FunctionRef(targetFnName, function.getType());
@@ -588,7 +599,7 @@ public class Linker {
         function.add(new Ret(result));
         return function;
     }
-   
+
     private Value getInfoStruct(ModuleBuilder mb, Function f, Clazz clazz) {
         String symbol = Symbols.infoStructSymbol(clazz.getInternalName());
         if (!mb.hasSymbol(symbol)) {

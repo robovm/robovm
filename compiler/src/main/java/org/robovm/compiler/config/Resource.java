@@ -401,6 +401,10 @@ public class Resource {
         return this;
     }
 
+    public void walk(Walker walker) throws IOException {
+        walk(walker, new File("."));
+    }
+
     public void walk(Walker walker, File destDir) throws IOException {
         if (targetPath != null && targetPath.trim().length() > 0) {
             destDir = new File(destDir, targetPath);

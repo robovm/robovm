@@ -15,9 +15,12 @@
  */
 package org.robovm.rt;
 
+import java.io.UnsupportedEncodingException;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.nio.ByteBuffer;
+import java.nio.ByteOrder;
+import java.util.HashMap;
 
 import libcore.util.EmptyArray;
 
@@ -26,6 +29,7 @@ import libcore.util.EmptyArray;
  * @version $Id$
  */
 public final class VM {
+    private static HashMap<String, byte[]> runtimeData;
 
     /**
      * Returns the VM's boot class path.
@@ -92,6 +96,45 @@ public final class VM {
         }
         return result;
     }
+
+    /**
+     * Returns runtime data linked into the executable during compilation.
+     */
+    public static final byte[] getRuntimeData(String id) {
+        try {
+            return getRuntimeData0(id);
+        } catch (UnsupportedEncodingException e) {
+            throw new Error(e);
+        }
+    }
+
+    private static final byte[] getRuntimeData0(String id) throws UnsupportedEncodingException {
+        if (runtimeData == null) {
+            // The data consists of key value pairs prefixed with the number of
+            // pairs (int). In each pair the key is an UTF8 encoded string
+            // prefixed with the key's length (int) and the data is a byte array
+            // prefixed with the data length (int).
+            HashMap<String, byte[]> map = new HashMap<>();
+            byte[] allData = getRuntimeData0();
+            if (allData != null) {
+                ByteBuffer bb = ByteBuffer.wrap(allData).order(ByteOrder.nativeOrder());
+                int pairCount = bb.getInt();
+                for (int i = 0; i < pairCount; i++) {
+                    int keySize = bb.getInt();
+                    String key = new String(allData, bb.position(), keySize, "UTF8");
+                    bb.position(bb.position() + keySize);
+                    int dataSize = bb.getInt();
+                    byte[] data = new byte[dataSize];
+                    bb.get(data);
+                    map.put(key, data);
+                }
+            }
+            runtimeData = map;
+        }
+        return runtimeData.get(id);
+    }
+
+    private static native final byte[] getRuntimeData0();
 
     private static native final Class<?>[] listClasses0(Class<?> assignableToClass, ClassLoader classLoader);
 

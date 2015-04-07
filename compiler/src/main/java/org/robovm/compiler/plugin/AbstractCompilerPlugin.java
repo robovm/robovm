@@ -19,10 +19,13 @@ package org.robovm.compiler.plugin;
 import java.io.File;
 import java.io.IOException;
 import java.util.Collections;
+import java.util.Set;
 
+import org.robovm.compiler.Linker;
 import org.robovm.compiler.ModuleBuilder;
 import org.robovm.compiler.clazz.Clazz;
 import org.robovm.compiler.config.Config;
+import org.robovm.compiler.config.Config.Builder;
 import org.robovm.compiler.llvm.Function;
 
 import soot.SootMethod;
@@ -36,6 +39,9 @@ public abstract class AbstractCompilerPlugin extends CompilerPlugin {
     public PluginArguments getArguments() {
         return new PluginArguments("", Collections.<PluginArgument> emptyList());
     }
+
+    @Override
+    public void beforeConfig(Builder builder, Config config) throws IOException {}
 
     @Override
     public void beforeClass(Config config, Clazz clazz, ModuleBuilder moduleBuilder)
@@ -55,4 +61,7 @@ public abstract class AbstractCompilerPlugin extends CompilerPlugin {
 
     @Override
     public void afterObjectFile(Config config, Clazz clazz, File objectFile) throws IOException {}
+
+    @Override
+    public void beforeLinker(Config config, Linker linker, Set<Clazz> classes) throws IOException {}
 }

@@ -26,12 +26,17 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.io.UnsupportedEncodingException;
+import java.nio.ByteBuffer;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
+import java.util.Objects;
 import java.util.Random;
 import java.util.Set;
 import java.util.TreeSet;
@@ -50,6 +55,7 @@ import org.robovm.compiler.config.Config;
 import org.robovm.compiler.config.OS;
 import org.robovm.compiler.hash.HashTableGenerator;
 import org.robovm.compiler.hash.ModifiedUtf8HashFunction;
+import org.robovm.compiler.llvm.ArrayConstant;
 import org.robovm.compiler.llvm.ArrayConstantBuilder;
 import org.robovm.compiler.llvm.Constant;
 import org.robovm.compiler.llvm.ConstantBitcast;
@@ -65,6 +71,7 @@ import org.robovm.compiler.llvm.StructureConstant;
 import org.robovm.compiler.llvm.StructureConstantBuilder;
 import org.robovm.compiler.llvm.Type;
 import org.robovm.compiler.llvm.Value;
+import org.robovm.compiler.plugin.CompilerPlugin;
 import org.robovm.llvm.Context;
 import org.robovm.llvm.Module;
 import org.robovm.llvm.PassManager;
@@ -124,12 +131,54 @@ public class Linker {
     }
 
     private final Config config;
+    private final Map<String, byte[]> runtimeData = new HashMap<>();
 
     public Linker(Config config) {
         this.config = config;
     }
 
+    /**
+     * Adds arbitrary data which will be compiled into the executable and will
+     * be available at runtime using {@code VM.getRuntimeData(id)}.
+     */
+    public void addRuntimeData(String id, byte[] data) {
+        Objects.requireNonNull(id, "id");
+        Objects.requireNonNull(data, "data");
+        runtimeData.put(id, data);
+    }
+
+    private ArrayConstant runtimeDataToBytes() throws UnsupportedEncodingException {
+        // The data consists of key value pairs prefixed with the number of
+        // pairs (int). In each pair the key is an UTF8 encoded string prefixed
+        // with the key's length (int) and the data is a byte array prefixed
+        // with the data length (int). We prefix the data with the length of the
+        // data (int).
+
+        LinkedList<byte[]> dataList = new LinkedList<>();
+        int length = 4;
+        for (Entry<String, byte[]> entry : runtimeData.entrySet()) {
+            dataList.add(entry.getKey().getBytes("UTF8"));
+            length += 4 + dataList.getLast().length;
+            dataList.add(entry.getValue());
+            length += 4 + dataList.getLast().length;
+        }
+
+        ByteBuffer bb = ByteBuffer.wrap(new byte[length + 4]).order(config.getArch().getByteOrder());
+        bb.putInt(length);
+        bb.putInt(runtimeData.size());
+        for (byte[] b : dataList) {
+            bb.putInt(b.length);
+            bb.put(b);
+        }
+
+        return new ArrayConstantBuilder(I8).add(bb.array()).build();
+    }
+
     public void link(Set<Clazz> classes) throws IOException {
+        for (CompilerPlugin plugin : config.getCompilerPlugins()) {
+            plugin.beforeLinker(config, this, classes);
+        }
+
         Arch arch = config.getArch();
         OS os = config.getOs();
 
@@ -140,6 +189,8 @@ public class Linker {
         ModuleBuilder mb = new ModuleBuilder();
         mb.addInclude(getClass().getClassLoader().getResource(String.format("header-%s-%s.ll", os.getFamily(), arch)));
         mb.addInclude(getClass().getClassLoader().getResource("header.ll"));
+
+        mb.addGlobal(new Global("_bcRuntimeData", runtimeDataToBytes()));
 
         mb.addGlobal(new Global("_bcDynamicJNI", new IntegerConstant(config.isUseDynamicJni() ? (byte) 1 : (byte) 0)));
         ArrayConstantBuilder staticLibs = new ArrayConstantBuilder(I8_PTR);

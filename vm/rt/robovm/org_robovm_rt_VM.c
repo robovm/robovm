@@ -83,6 +83,25 @@ ObjectArray* Java_org_robovm_rt_VM_staticLibs(Env* env, Class* c) {
     return result;
 }
 
+ByteArray* Java_org_robovm_rt_VM_getRuntimeData0(Env* env, Class* c) {
+    Options* options = env->vm->options;
+    if (!options->runtimeData) {
+        return NULL;
+    }
+    void* p = options->runtimeData;
+    jint length = *((jint*) p);
+    if (length == 0) {
+        return NULL;
+    }
+    p += sizeof(jint);
+    ByteArray* data = rvmNewByteArray(env, length);
+    if (!data) {
+        return NULL;
+    }
+    memcpy(data->values, p, length);
+    return data;
+}
+
 ObjectArray* Java_org_robovm_rt_VM_getStackClasses(Env* env, Class* c, jint skipNum, jint maxDepth) {
     CallStack* callStack = rvmCaptureCallStack(env);
     if (!callStack) return NULL;

@@ -18,10 +18,13 @@ package org.robovm.compiler.plugin;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Set;
 
+import org.robovm.compiler.Linker;
 import org.robovm.compiler.ModuleBuilder;
 import org.robovm.compiler.clazz.Clazz;
 import org.robovm.compiler.config.Config;
+import org.robovm.compiler.config.Config.Builder;
 import org.robovm.compiler.llvm.Function;
 
 import soot.SootClass;
@@ -32,6 +35,19 @@ import soot.SootMethod;
  * and modify classes and methods during the compilation.
  */
 public abstract class CompilerPlugin extends Plugin {
+
+    /**
+     * Called before the {@link Config} for a compilation is built. Allows the
+     * plugin to modify the compiler configuration. NOTE: Some properties of the
+     * passed {@link Config} may not have been set at the time of the call to
+     * this method.
+     * 
+     * @param builder the {@link Builder}
+     * @param config the not yet built {@link Config}. Can be used to get
+     *            configuration set on the {@link Builder} so far.
+     */
+    public abstract void beforeConfig(Builder builder, Config config) throws IOException;
+
     /**
      * Called just before a class is about to be compiled. Modifications to the
      * underlying {@link SootClass} ({@link Clazz#getSootClass()}) should be
@@ -93,4 +109,13 @@ public abstract class CompilerPlugin extends Plugin {
      * @param objectFile the object file
      */
     public abstract void afterObjectFile(Config config, Clazz clazz, File objectFile) throws IOException;
+
+    /**
+     * Called just before {@link Linker} is invoked.
+     * 
+     * @param config the current {@link Config}
+     * @param linker the {@link Linker} instance.
+     * @param classes the classes that will be linked.
+     */
+    public abstract void beforeLinker(Config config, Linker linker, Set<Clazz> classes) throws IOException;
 }

@@ -46,6 +46,7 @@ extern char** _bcBootclasspath;
 extern char** _bcClasspath;
 extern void* _bcBootClassesHash;
 extern void* _bcClassesHash;
+extern void* _bcRuntimeData;
 static Class* loadBootClass(Env*, const char*, ClassLoader*);
 static Class* loadUserClass(Env*, const char*, ClassLoader*);
 static void classInitialized(Env*, Class*);
@@ -76,6 +77,7 @@ int main(int argc, char* argv[]) {
     options.exceptionMatch = exceptionMatch;
     options.dynamicJNI = _bcDynamicJNI;
     options.staticLibs = _bcStaticLibs;
+    options.runtimeData = &_bcRuntimeData;
     options.listBootClasses = listBootClasses;
     options.listUserClasses = listUserClasses;
     if (!rvmInitOptions(argc, argv, &options, FALSE)) {

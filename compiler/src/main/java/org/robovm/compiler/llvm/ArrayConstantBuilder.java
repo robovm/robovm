@@ -30,10 +30,10 @@ public class ArrayConstantBuilder {
     public ArrayConstantBuilder(Type type) {
         this.type = type;
     }
-    
+
     public ArrayConstantBuilder add(Value v) {
         if (!v.getType().equals(type)) {
-            throw new IllegalArgumentException("Wrong type. Was " + v.getType() 
+            throw new IllegalArgumentException("Wrong type. Was " + v.getType()
                     + ". Expected " + type);
         }
         values.add(v);
@@ -47,16 +47,23 @@ public class ArrayConstantBuilder {
         return this;
     }
 
-    public ArrayConstantBuilder add(int ... values) {
+    public ArrayConstantBuilder add(int... values) {
         for (int v : values) {
             add(new IntegerConstant(v));
         }
         return this;
     }
 
+    public ArrayConstantBuilder add(byte... values) {
+        for (byte v : values) {
+            add(new IntegerConstant(v));
+        }
+        return this;
+    }
+
     public ArrayConstant build() {
-        return new ArrayConstant(new ArrayType(values.size(), type), 
+        return new ArrayConstant(new ArrayType(values.size(), type),
                 values.toArray(new Value[values.size()]));
     }
-    
+
 }

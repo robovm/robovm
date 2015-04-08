@@ -63,6 +63,7 @@ import org.robovm.compiler.plugin.Plugin;
 import org.robovm.compiler.plugin.PluginArgument;
 import org.robovm.compiler.plugin.annotation.AnnotationImplPlugin;
 import org.robovm.compiler.plugin.lambda.LambdaPlugin;
+import org.robovm.compiler.plugin.objc.InterfaceBuilderClassesPlugin;
 import org.robovm.compiler.plugin.objc.ObjCBlockPlugin;
 import org.robovm.compiler.plugin.objc.ObjCMemberPlugin;
 import org.robovm.compiler.plugin.objc.ObjCProtocolProxyPlugin;
@@ -192,7 +193,6 @@ public class Config {
     private transient VTable.Cache vtableCache;
     private transient ITable.Cache itableCache;
     private transient List<Path> resourcesPaths = new ArrayList<Path>();
-    private transient List<String> customIBClasses = new ArrayList<String>();
     private transient DataLayout dataLayout;
     private transient MarshalerLookup marshalerLookup;
     private transient Config configBeforeBuild;
@@ -200,6 +200,7 @@ public class Config {
     protected Config() throws IOException {
         // Add standard plugins
         this.plugins.addAll(0, Arrays.asList(
+                new InterfaceBuilderClassesPlugin(),
                 new ObjCProtocolProxyPlugin(),
                 new ObjCBlockPlugin(),
                 new ObjCMemberPlugin(),
@@ -317,18 +318,6 @@ public class Config {
         resourcesPaths.add(path);
     }
 
-    public List<String> getCustomIBClasses() {
-        return customIBClasses;
-    }
-
-    public void addCustomIBClass(String customClass) {
-        customIBClasses.add(customClass);
-    }
-
-    public void addCustomIBClasses(Collection<String> customClasses) {
-        customIBClasses.addAll(customClasses);
-    }
-
     public File getTmpDir() {
         if (tmpDir == null) {
             try {
@@ -427,11 +416,13 @@ public class Config {
     }
 
     public List<File> getBootclasspath() {
-        return bootclasspath;
+        return bootclasspath == null ? Collections.<File> emptyList()
+                : Collections.unmodifiableList(bootclasspath);
     }
 
     public List<File> getClasspath() {
-        return classpath;
+        return classpath == null ? Collections.<File> emptyList()
+                : Collections.unmodifiableList(classpath);
     }
 
     public Properties getProperties() {
@@ -1326,6 +1317,10 @@ public class Config {
         }
 
         public Config build() throws IOException {
+            for (CompilerPlugin plugin : config.getCompilerPlugins()) {
+                plugin.beforeConfig(this, config);
+            }
+
             new RamDiskTools().setupRamDisk(this, config);
             return config.build();
         }

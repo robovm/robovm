@@ -383,6 +383,7 @@ typedef struct Options {
     ClasspathEntry* classpath;
     jboolean dynamicJNI;
     char** staticLibs; 
+    void* runtimeData;
     Class* (*loadBootClass)(Env*, const char*, ClassLoader*);
     Class* (*loadUserClass)(Env*, const char*, ClassLoader*);
     void (*classInitialized)(Env*, Class*);

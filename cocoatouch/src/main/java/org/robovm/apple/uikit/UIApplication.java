@@ -359,32 +359,32 @@ import org.robovm.apple.corelocation.*;
             }
         });
         
-        registerCustomIBClasses();
+        try {
+            preloadClasses();
+        } catch (UnsupportedEncodingException e) {
+            throw new Error(e);
+        }
         
         main(argc, argv, principalClassName, delegateClassName);
     }
     
     /**
-     * Registers all custom interface builder classes from the compiler generated ib.classes file, if any.
+     * Preloads classes added during compilation, if any.
      */
-    private static void registerCustomIBClasses() {
-        File ibClassesFile = new File(NSBundle.getMainBundle().getBundlePath() + "/ib.classes");
-        if (ibClassesFile.exists()) {
-            try {
-                try (BufferedReader reader = new BufferedReader(new FileReader(ibClassesFile))) {
-                    String line = reader.readLine();
-                    String[] customClasses = line.split(",");
-                    for (String customClass : customClasses) {
-                        try {
-                            // Register class.
-                            ObjCClass.getByName(customClass);
-                        } catch (ObjCClassNotFoundException e) {
-                            // ignore
-                        }
-                    }
+    private static void preloadClasses() throws UnsupportedEncodingException {
+        byte[] data = VM.getRuntimeData(UIApplication.class.getName() + ".preloadClasses");
+        if (data != null) {
+            String[] customClasses = new String(data, "UTF8").split(",");
+            for (String customClass : customClasses) {
+                try {
+                    // Register class.
+                    @SuppressWarnings("unchecked")
+                    Class<? extends ObjCClass> cls = (Class<? extends ObjCClass>) Class.forName(customClass);
+                    ObjCClass.registerCustomClass(cls);
+                } catch (Throwable t) {
+                    Foundation.log("Failed to preload class " + customClass + ": " + t.getMessage());
+                    t.printStackTrace();
                 }
-            } catch (IOException e) {
-                e.printStackTrace();
             }
         }
     }

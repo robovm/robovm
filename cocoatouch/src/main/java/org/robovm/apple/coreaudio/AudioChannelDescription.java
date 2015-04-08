@@ -70,8 +70,8 @@ import org.robovm.apple.corefoundation.*;
     @StructMember(0) public native AudioChannelDescription setChannelLabel(AudioChannelLabel channelLabel);
     @StructMember(1) public native AudioChannelFlags getChannelFlags();
     @StructMember(1) public native AudioChannelDescription setChannelFlags(AudioChannelFlags channelFlags);
-    @StructMember(2) public native float[] getCoordinates();
-    @StructMember(2) public native AudioChannelDescription setCoordinates(float[] coordinates);
+    @StructMember(2) public native @Array({3}) float[] getCoordinates();
+    @StructMember(2) public native AudioChannelDescription setCoordinates(@Array({3}) float[] coordinates);
     /*</members>*/
     /*<methods>*//*</methods>*/
 }

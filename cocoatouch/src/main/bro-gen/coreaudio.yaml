@@ -151,7 +151,7 @@ classes:
             type: AudioChannelFlags
         mCoordinates:
             name: coordinates
-            type: float[]
+            type: '@Array({3}) float[]'
     AudioChannelLayout: # DONE
         mChannelLayoutTag:
             name: channelLayoutTag

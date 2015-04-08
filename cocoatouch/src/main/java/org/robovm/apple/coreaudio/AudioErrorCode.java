@@ -34,7 +34,7 @@ import org.robovm.apple.corefoundation.*;
 
 /*</javadoc>*/
 /*<annotations>*//*</annotations>*/
-public enum /*<name>*/AudioError/*</name>*/ implements ValuedEnum {
+public enum /*<name>*/AudioErrorCode/*</name>*/ implements ValuedEnum {
     /*<values>*/
     Unimplemented(-4L),
     FileNotFound(-43L),
@@ -52,15 +52,15 @@ public enum /*<name>*/AudioError/*</name>*/ implements ValuedEnum {
 
     private final long n;
 
-    private /*<name>*/AudioError/*</name>*/(long n) { this.n = n; }
+    private /*<name>*/AudioErrorCode/*</name>*/(long n) { this.n = n; }
     public long value() { return n; }
-    public static /*<name>*/AudioError/*</name>*/ valueOf(long n) {
-        for (/*<name>*/AudioError/*</name>*/ v : values()) {
+    public static /*<name>*/AudioErrorCode/*</name>*/ valueOf(long n) {
+        for (/*<name>*/AudioErrorCode/*</name>*/ v : values()) {
             if (v.n == n) {
                 return v;
             }
         }
         throw new IllegalArgumentException("No constant with value " + n + " found in " 
-            + /*<name>*/AudioError/*</name>*/.class.getName());
+            + /*<name>*/AudioErrorCode/*</name>*/.class.getName());
     }
 }

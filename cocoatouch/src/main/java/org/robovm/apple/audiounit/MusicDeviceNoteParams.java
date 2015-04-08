@@ -19,6 +19,7 @@ package org.robovm.apple.audiounit;
 import java.io.*;
 import java.nio.*;
 import java.util.*;
+
 import org.robovm.objc.*;
 import org.robovm.objc.annotation.*;
 import org.robovm.objc.block.*;
@@ -46,19 +47,45 @@ import org.robovm.apple.uikit.*;
     /*</bind>*/
     /*<constants>*//*</constants>*/
     /*<constructors>*//*</constructors>*/
-    public MusicDeviceNoteParams() {}
+    public MusicDeviceNoteParams() {
+        setArgCount(2);
+    }
     public MusicDeviceNoteParams(float pitch, float velocity, NoteParamsControlValue[] controls) {
         this.setPitch(pitch);
         this.setVelocity(velocity);
         setControls(controls);
     }
     
-    public void setControls(NoteParamsControlValue[] controls) {
-        this.setArgCount(controls.length + 2);
-        getControls0().set(controls);
+    public int getControlsCount() {
+        return getArgCount() - 2;
+    }
+    
+    public NoteParamsControlValue getControl(int index) {
+        if (index >= getControlsCount()) {
+            throw new ArrayIndexOutOfBoundsException(index);
+        }
+        return getControls0().next(index).get();
+    }
+    public MusicDeviceNoteParams setControl(int index, NoteParamsControlValue value) {
+        if (index >= getControlsCount()) {
+            throw new ArrayIndexOutOfBoundsException(index);
+        }
+        getControls0().next(index).set(value);
+        return this;
     }
     public NoteParamsControlValue[] getControls() {
-        return getControls0().get().toArray(getArgCount() - 2);
+        int count = getControlsCount();
+        NoteParamsControlValue[] array = new NoteParamsControlValue[count];
+        NoteParamsControlValue.NoteParamsControlValuePtr ptr = getControls0();
+        for (int i = 0; i < count; i++) {
+            array[i] = ptr.next(i).get();
+        }
+        return array;
+    }
+    public MusicDeviceNoteParams setControls(NoteParamsControlValue... controls) {
+        this.setArgCount(controls.length + 2);
+        getControls0().set(controls);
+        return this;
     }
     /*<properties>*//*</properties>*/
     /*<members>*/

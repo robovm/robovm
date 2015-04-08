@@ -34,30 +34,32 @@ import org.robovm.apple.corefoundation.*;
 
 /*</javadoc>*/
 /*<annotations>*//*</annotations>*/
-/*<visibility>*/public/*</visibility>*/ class /*<name>*/AudioClassDescription/*</name>*/ 
-    extends /*<extends>*/Struct<AudioClassDescription>/*</extends>*/ 
-    /*<implements>*//*</implements>*/ {
+public enum /*<name>*/AudioChannelCoordinate/*</name>*/ implements ValuedEnum {
+    /*<values>*/
+    LeftRight(0L),
+    BackFront(1L),
+    DownUp(2L),
+    Azimuth(0L),
+    Elevation(1L),
+    Distance(2L);
+    /*</values>*/
 
-    /*<ptr>*/public static class AudioClassDescriptionPtr extends Ptr<AudioClassDescription, AudioClassDescriptionPtr> {}/*</ptr>*/
     /*<bind>*/
     /*</bind>*/
     /*<constants>*//*</constants>*/
-    /*<constructors>*/
-    public AudioClassDescription() {}
-    public AudioClassDescription(int type, int subType, int manufacturer) {
-        this.setType(type);
-        this.setSubType(subType);
-        this.setManufacturer(manufacturer);
-    }
-    /*</constructors>*/
-    /*<properties>*//*</properties>*/
-    /*<members>*/
-    @StructMember(0) public native int getType();
-    @StructMember(0) public native AudioClassDescription setType(int type);
-    @StructMember(1) public native int getSubType();
-    @StructMember(1) public native AudioClassDescription setSubType(int subType);
-    @StructMember(2) public native int getManufacturer();
-    @StructMember(2) public native AudioClassDescription setManufacturer(int manufacturer);
-    /*</members>*/
     /*<methods>*//*</methods>*/
+
+    private final long n;
+
+    private /*<name>*/AudioChannelCoordinate/*</name>*/(long n) { this.n = n; }
+    public long value() { return n; }
+    public static /*<name>*/AudioChannelCoordinate/*</name>*/ valueOf(long n) {
+        for (/*<name>*/AudioChannelCoordinate/*</name>*/ v : values()) {
+            if (v.n == n) {
+                return v;
+            }
+        }
+        throw new IllegalArgumentException("No constant with value " + n + " found in " 
+            + /*<name>*/AudioChannelCoordinate/*</name>*/.class.getName());
+    }
 }

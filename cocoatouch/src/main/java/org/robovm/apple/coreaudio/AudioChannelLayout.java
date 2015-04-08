@@ -44,23 +44,53 @@ import org.robovm.apple.corefoundation.*;
     /*<constants>*//*</constants>*/
     /*<constructors>*/
     public AudioChannelLayout() {}
-    public AudioChannelLayout(AudioChannelLayoutTag mChannelLayoutTag, AudioChannelBit mChannelBitmap, int mNumberChannelDescriptions, AudioChannelDescription mChannelDescriptions) {
-        this.setMChannelLayoutTag(mChannelLayoutTag);
-        this.setMChannelBitmap(mChannelBitmap);
-        this.setMNumberChannelDescriptions(mNumberChannelDescriptions);
-        this.setMChannelDescriptions(mChannelDescriptions);
+    public AudioChannelLayout(AudioChannelLayoutTag channelLayoutTag, AudioChannelBits channelBitmap) {
+        this.setChannelLayoutTag(channelLayoutTag);
+        this.setChannelBitmap(channelBitmap);
     }
     /*</constructors>*/
     /*<properties>*//*</properties>*/
+    public int getChannelDescriptionCount() {
+        return getNumberChannelDescriptions();
+    }
+    
+    public AudioChannelDescription getChannelDescription(int index) {
+        if (index >= getNumberChannelDescriptions()) {
+            throw new ArrayIndexOutOfBoundsException(index);
+        }
+        return getChannelDescriptions0().next(index).get();
+    }
+    public AudioChannelLayout setChannelDescription(int index, AudioChannelDescription value) {
+        if (index >= getNumberChannelDescriptions()) {
+            throw new ArrayIndexOutOfBoundsException(index);
+        }
+        getChannelDescriptions0().next(index).set(value);
+        return this;
+    }
+    
+    public AudioChannelDescription[] getChannelDescriptions() {
+        int count = getChannelDescriptionCount();
+        AudioChannelDescription[] array = new AudioChannelDescription[count];
+        AudioChannelDescription.AudioChannelDescriptionPtr ptr = getChannelDescriptions0();
+        for (int i = 0; i < count; i++) {
+            array[i] = ptr.next(i).get();
+        }
+        return array;
+    }
+    public AudioChannelLayout setChannelDescriptions(AudioChannelDescription[] channelDescriptions) {
+        this.setNumberChannelDescriptions(channelDescriptions.length);
+        getChannelDescriptions0().set(channelDescriptions);
+        return this;
+    }
     /*<members>*/
-    @StructMember(0) public native AudioChannelLayoutTag getMChannelLayoutTag();
-    @StructMember(0) public native AudioChannelLayout setMChannelLayoutTag(AudioChannelLayoutTag mChannelLayoutTag);
-    @StructMember(1) public native AudioChannelBit getMChannelBitmap();
-    @StructMember(1) public native AudioChannelLayout setMChannelBitmap(AudioChannelBit mChannelBitmap);
-    @StructMember(2) public native int getMNumberChannelDescriptions();
-    @StructMember(2) public native AudioChannelLayout setMNumberChannelDescriptions(int mNumberChannelDescriptions);
-    @StructMember(3) public native @Array({1}) AudioChannelDescription getMChannelDescriptions();
-    @StructMember(3) public native AudioChannelLayout setMChannelDescriptions(@Array({1}) AudioChannelDescription mChannelDescriptions);
+    @StructMember(0) public native AudioChannelLayoutTag getChannelLayoutTag();
+    @StructMember(0) public native AudioChannelLayout setChannelLayoutTag(AudioChannelLayoutTag channelLayoutTag);
+    @StructMember(1) public native AudioChannelBits getChannelBitmap();
+    @StructMember(1) public native AudioChannelLayout setChannelBitmap(AudioChannelBits channelBitmap);
+    @StructMember(2) protected native int getNumberChannelDescriptions();
+    @StructMember(2) protected native AudioChannelLayout setNumberChannelDescriptions(int numberChannelDescriptions);
+    @StructMember(3) protected native AudioChannelDescription.AudioChannelDescriptionPtr getChannelDescriptions0();
+    @StructMember(3) protected native AudioChannelLayout setChannelDescriptions0(AudioChannelDescription.AudioChannelDescriptionPtr channelDescriptions0);
     /*</members>*/
     /*<methods>*//*</methods>*/
 }

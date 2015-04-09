@@ -8,38 +8,163 @@ headers:
 typedefs: {}
     
 enums:
-    AudioError: { first: kAudio_UnimplementedError, prefix: kAudio_, suffix: Error }
-    AudioFormat: { first: kAudioFormatLinearPCM, prefix: kAudioFormat, marshaler: ValuedEnum.AsMachineSizedUIntMarshaler }
-    SMPTETimeType: { first: kSMPTETimeType24, prefix: kSMPTETimeType, marshaler: ValuedEnum.AsMachineSizedUIntMarshaler }
-    SMPTEStateFlags: { first: kSMPTETimeValid, prefix: kSMPTETime, bits: true }
-    AudioChannelLabel: { first: kAudioChannelLabel_Unknown, prefix: kAudioChannelLabel_, marshaler: ValuedEnum.AsMachineSizedUIntMarshaler }
-    AudioChannelBit: { first: kAudioChannelBit_Left, prefix: kAudioChannelBit_, bits: true, marshaler: Bits.AsMachineSizedIntMarshaler }
-    AudioChannelFlags: { first: kAudioChannelFlags_AllOff, prefix: kAudioChannelFlags_, bits: true, marshaler: Bits.AsMachineSizedIntMarshaler }
-    AudioChannelLayoutTag: { first: kAudioChannelLayoutTag_UseChannelDescriptions, prefix: kAudioChannelLayoutTag_, bits: true }
+    AudioErrorCode: {first: kAudio_UnimplementedError, prefix: kAudio_, suffix: Error}
+    AudioFormat: {first: kAudioFormatLinearPCM, prefix: kAudioFormat, marshaler: ValuedEnum.AsMachineSizedUIntMarshaler}
+    AudioFormatFlags: 
+        first: kAudioFormatFlagIsFloat
+        bits: true
+        kAudioFormatFlag?s(.*): '#{g[0]}'
+        k(LinearPCM)FormatFlag?s(.*): '#{g[0]}#{g[1]}'
+        k(AppleLossless)FormatFlag_(.*): '#{g[0]}#{g[1]}'
+    AudioFormatFlags2: {first: kAudioFormatFlagsNativeEndian, merge_with: AudioFormatFlags}
+    AudioTimeStampFlags: {first: kAudioTimeStampSampleTimeValid, bits: true}
+    AudioTimeStampFlags2: {first: kAudioTimeStampSampleHostTimeValid, prefix: kAudioTimeStamp, merge_with: AudioTimeStampFlags}
+    SMPTETimeType: {first: kSMPTETimeType24, prefix: kSMPTETimeType, marshaler: ValuedEnum.AsMachineSizedUIntMarshaler}
+    SMPTEStateFlags: {first: kSMPTETimeValid, prefix: kSMPTETime, bits: true}
+    AudioChannelLabel: {first: kAudioChannelLabel_Unknown, prefix: kAudioChannelLabel_, marshaler: ValuedEnum.AsMachineSizedUIntMarshaler}
+    AudioChannelBits: {first: kAudioChannelBit_Left, prefix: kAudioChannelBit_, bits: true}
+    AudioChannelCoordinate: {first: kAudioChannelCoordinates_LeftRight}
+    AudioChannelFlags: {first: kAudioChannelFlags_AllOff, prefix: kAudioChannelFlags_, bits: true, marshaler: Bits.AsMachineSizedIntMarshaler}
+    AudioChannelLayoutTag: {first: kAudioChannelLayoutTag_UseChannelDescriptions, skip_none: true, prefix: kAudioChannelLayoutTag_, bits: true}
+    
+    Excluded1: {first: kAudioStreamAnyRate, exclude: true}    
+    Deprecated1: {first: kMPEG4Object_AAC_Main, exclude: true}
     
 classes:
     # Structs:
-    AudioValueRange: {}
-    AudioValueTranslation: {}
-    AudioBuffer: {}
-    AudioBufferList: {}
-    AudioStreamBasicDescription:
+    AudioValueRange: # DONE
+        mMinimum:
+            name: minimum
+        mMaximum:
+            name: maximum
+    AudioValueTranslation: # DONE
+        skip_def_constructor: true
+        mInputData:
+            name: inputData
+            exclude: true
+        mInputDataSize:
+            name: inputDataSize
+            visibility: private
+        mOutputData:
+            name: outputData
+            exclude: true
+        mOutputDataSize:
+            name: outputDataSize
+            visibility: private
+    AudioBuffer: # DONE
+        skip_def_constructor: true
+        mNumberChannels:
+            name: numberChannels
+        mDataByteSize:
+            name: dataByteSize
+            visibility: private
+        mData:
+            name: data
+            exclude: true
+    AudioBufferList: # DONE
+        mNumberBuffers:
+            name: numberBuffers
+            visibility: protected
+        mBuffers:
+            name: buffers0
+            type: AudioBuffer.AudioBufferPtr
+            visibility: protected
+    AudioStreamBasicDescription: # DONE
+        mSampleRate:
+            name: sampleRate
         mFormatID:
+            name: format
             type: AudioFormat
-    AudioStreamPacketDescription: {}
-    SMPTETime:
+        mFormatFlags:
+            name: formatFlags
+            type: AudioFormatFlags
+        mBytesPerPacket:
+            name: bytesPerPacket
+        mFramesPerPacket:
+            name: framesPerPacket
+        mBytesPerFrame:
+            name: bytesPerFrame
+        mChannelsPerFrame:
+            name: channelsPerFrame
+        mBitsPerChannel:
+            name: bitsPerChannel
+        mReserved:
+            name: reserved
+            visibility: private
+    AudioStreamPacketDescription: # DONE
+        mStartOffset:
+            name: startOffset
+        mVariableFramesInPacket:
+            name: variableFramesInPacket
+        mDataByteSize:
+            name: dataByteSize
+    SMPTETime: # DONE
+        mSubframes:
+            name: subframes
+        mSubframeDivisor:
+            name: subframeDivisor
+        mCounter:
+            name: counter
         mType:
+            name: type
             type: SMPTETimeType
         mFlags:
+            name: flags
             type: SMPTEStateFlags
-    AudioTimeStamp: {}
-    AudioClassDescription: {}
-    AudioChannelDescription:
+        mHours:
+            name: hours
+        mMinutes:
+            name: minutes
+        mSeconds:
+            name: seconds
+        mFrames:
+            name: frames
+    AudioTimeStamp: # DONE
+        mSampleTime:
+            name: sampleTime
+        mHostTime:
+            name: hostTime
+        mRateScalar:
+            name: rateScalar
+        mWordClockTime:
+            name: wordClockTime
+        mSMPTETime:
+            name: smpteTime
+        mFlags:
+            name: flags
+            type: AudioTimeStampFlags
+        mReserved:
+            name: reserved
+            visibility: private
+    AudioClassDescription: # DONE
+        mType:
+            name: type
+        mSubType:
+            name: subType
+        mManufacturer:
+            name: manufacturer
+    AudioChannelDescription: # DONE
+        mChannelLabel:
+            name: channelLabel
         mChannelFlags:
+            name: channelFlags
             type: AudioChannelFlags
-    AudioChannelLayout:
+        mCoordinates:
+            name: coordinates
+            type: '@Array({3}) float[]'
+    AudioChannelLayout: # DONE
+        mChannelLayoutTag:
+            name: channelLayoutTag
         mChannelBitmap:
-            type: AudioChannelBit
+            name: channelBitmap
+            type: AudioChannelBits
+        mNumberChannelDescriptions:
+            name: numberChannelDescriptions
+            visibility: protected
+        mChannelDescriptions:
+            name: channelDescriptions0
+            visibility: protected
+            type: AudioChannelDescription.AudioChannelDescriptionPtr
 
 protocols: {}
 
@@ -47,51 +172,29 @@ functions:
     # Make sure we don't miss any functions if new ones are introduced in a later version
     (Audio.*):
         class: CoreAudio
-        name: "Function__#{g[0]}"
+        name: 'Function__#{g[0]}'
     (kAudio.*):
         class: CoreAudio
-        name: "Function__#{g[0]}"
+        name: 'Function__#{g[0]}'
 
 values:   
     # Make sure we don't miss any values if new ones are introduced in a later version
     (Audio.*):
         class: CoreAudio
-        name: "Value__#{g[0]}"
+        name: 'Value__#{g[0]}'
     (kAudio.*):
         class: CoreAudio
-        name: "Value__#{g[0]}"
+        name: 'Value__#{g[0]}'
 
 constants:
-    k(AudioUnitSampleFractionBits):
-        class: CoreAudio
-        name: "#{g[0]}"
-    k(AudioStreamAnyRate):
-        class: CoreAudio
-        name: "#{g[0]}"
-    k(AudioTimeStamp.*):
-        class: CoreAudio
-        name: "#{g[0]}"
-    k(AudioFormatFlag.*):
-        class: CoreAudio
-        name: "#{g[0]}"
-    k(LinearPCMFormatFlag.*):
-        class: CoreAudio
-        name: "#{g[0]}"
-    k(AppleLosslessFormatFlag.*):
-        class: CoreAudio
-        name: "#{g[0]}"
-    k(MPEG4Object.*):
-        class: CoreAudio
-        name: "#{g[0]}"
-    k(AudioChannelCoordinates.*):
-        class: CoreAudio
-        name: "#{g[0]}"
+    kAudioUnitSampleFractionBits:
+        exclude: true
 
     # Make sure we don't miss any constants if new ones are introduced in a later version
     (Audio.*):
         class: CoreAudio
-        name: "Constant__#{g[0]}"
+        name: 'Constant__#{g[0]}'
         
     (kAudio.*):
         class: CoreAudio
-        name: "Constant__#{g[0]}"
+        name: 'Constant__#{g[0]}'

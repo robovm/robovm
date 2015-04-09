@@ -44,20 +44,34 @@ import org.robovm.apple.corefoundation.*;
     /*<constants>*//*</constants>*/
     /*<constructors>*/
     public AudioChannelDescription() {}
-    public AudioChannelDescription(AudioChannelLabel mChannelLabel, AudioChannelFlags mChannelFlags, FloatBuffer mCoordinates) {
-        this.setMChannelLabel(mChannelLabel);
-        this.setMChannelFlags(mChannelFlags);
-        this.setMCoordinates(mCoordinates);
+    public AudioChannelDescription(AudioChannelLabel channelLabel, AudioChannelFlags channelFlags, float[] coordinates) {
+        this.setChannelLabel(channelLabel);
+        this.setChannelFlags(channelFlags);
+        this.setCoordinates(coordinates);
     }
     /*</constructors>*/
     /*<properties>*//*</properties>*/
+    public float getCoordinate(AudioChannelCoordinate coordinate) {
+        return getCoordinates()[(int)coordinate.value()];
+    }
+    public AudioChannelDescription setCoordinate(AudioChannelCoordinate coordinate, float value) {
+        float[] coords = getCoordinates();
+        coords[(int)coordinate.value()] = value;
+        setCoordinates(coords);
+        return this;
+    }
+    public AudioChannelDescription setCoordinates(float x, float y, float z) {
+        float[] coords = new float[] {x, y, z};
+        setCoordinates(coords);
+        return this;
+    }
     /*<members>*/
-    @StructMember(0) public native AudioChannelLabel getMChannelLabel();
-    @StructMember(0) public native AudioChannelDescription setMChannelLabel(AudioChannelLabel mChannelLabel);
-    @StructMember(1) public native AudioChannelFlags getMChannelFlags();
-    @StructMember(1) public native AudioChannelDescription setMChannelFlags(AudioChannelFlags mChannelFlags);
-    @StructMember(2) public native @Array({3}) FloatBuffer getMCoordinates();
-    @StructMember(2) public native AudioChannelDescription setMCoordinates(@Array({3}) FloatBuffer mCoordinates);
+    @StructMember(0) public native AudioChannelLabel getChannelLabel();
+    @StructMember(0) public native AudioChannelDescription setChannelLabel(AudioChannelLabel channelLabel);
+    @StructMember(1) public native AudioChannelFlags getChannelFlags();
+    @StructMember(1) public native AudioChannelDescription setChannelFlags(AudioChannelFlags channelFlags);
+    @StructMember(2) public native @Array({3}) float[] getCoordinates();
+    @StructMember(2) public native AudioChannelDescription setCoordinates(@Array({3}) float[] coordinates);
     /*</members>*/
     /*<methods>*//*</methods>*/
 }

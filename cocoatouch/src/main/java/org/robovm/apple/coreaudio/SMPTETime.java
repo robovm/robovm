@@ -44,38 +44,38 @@ import org.robovm.apple.corefoundation.*;
     /*<constants>*//*</constants>*/
     /*<constructors>*/
     public SMPTETime() {}
-    public SMPTETime(short mSubframes, short mSubframeDivisor, int mCounter, SMPTETimeType mType, SMPTEStateFlags mFlags, short mHours, short mMinutes, short mSeconds, short mFrames) {
-        this.setMSubframes(mSubframes);
-        this.setMSubframeDivisor(mSubframeDivisor);
-        this.setMCounter(mCounter);
-        this.setMType(mType);
-        this.setMFlags(mFlags);
-        this.setMHours(mHours);
-        this.setMMinutes(mMinutes);
-        this.setMSeconds(mSeconds);
-        this.setMFrames(mFrames);
+    public SMPTETime(short subframes, short subframeDivisor, int counter, SMPTETimeType type, SMPTEStateFlags flags, short hours, short minutes, short seconds, short frames) {
+        this.setSubframes(subframes);
+        this.setSubframeDivisor(subframeDivisor);
+        this.setCounter(counter);
+        this.setType(type);
+        this.setFlags(flags);
+        this.setHours(hours);
+        this.setMinutes(minutes);
+        this.setSeconds(seconds);
+        this.setFrames(frames);
     }
     /*</constructors>*/
     /*<properties>*//*</properties>*/
     /*<members>*/
-    @StructMember(0) public native short getMSubframes();
-    @StructMember(0) public native SMPTETime setMSubframes(short mSubframes);
-    @StructMember(1) public native short getMSubframeDivisor();
-    @StructMember(1) public native SMPTETime setMSubframeDivisor(short mSubframeDivisor);
-    @StructMember(2) public native int getMCounter();
-    @StructMember(2) public native SMPTETime setMCounter(int mCounter);
-    @StructMember(3) public native SMPTETimeType getMType();
-    @StructMember(3) public native SMPTETime setMType(SMPTETimeType mType);
-    @StructMember(4) public native SMPTEStateFlags getMFlags();
-    @StructMember(4) public native SMPTETime setMFlags(SMPTEStateFlags mFlags);
-    @StructMember(5) public native short getMHours();
-    @StructMember(5) public native SMPTETime setMHours(short mHours);
-    @StructMember(6) public native short getMMinutes();
-    @StructMember(6) public native SMPTETime setMMinutes(short mMinutes);
-    @StructMember(7) public native short getMSeconds();
-    @StructMember(7) public native SMPTETime setMSeconds(short mSeconds);
-    @StructMember(8) public native short getMFrames();
-    @StructMember(8) public native SMPTETime setMFrames(short mFrames);
+    @StructMember(0) public native short getSubframes();
+    @StructMember(0) public native SMPTETime setSubframes(short subframes);
+    @StructMember(1) public native short getSubframeDivisor();
+    @StructMember(1) public native SMPTETime setSubframeDivisor(short subframeDivisor);
+    @StructMember(2) public native int getCounter();
+    @StructMember(2) public native SMPTETime setCounter(int counter);
+    @StructMember(3) public native SMPTETimeType getType();
+    @StructMember(3) public native SMPTETime setType(SMPTETimeType type);
+    @StructMember(4) public native SMPTEStateFlags getFlags();
+    @StructMember(4) public native SMPTETime setFlags(SMPTEStateFlags flags);
+    @StructMember(5) public native short getHours();
+    @StructMember(5) public native SMPTETime setHours(short hours);
+    @StructMember(6) public native short getMinutes();
+    @StructMember(6) public native SMPTETime setMinutes(short minutes);
+    @StructMember(7) public native short getSeconds();
+    @StructMember(7) public native SMPTETime setSeconds(short seconds);
+    @StructMember(8) public native short getFrames();
+    @StructMember(8) public native SMPTETime setFrames(short frames);
     /*</members>*/
     /*<methods>*//*</methods>*/
 }

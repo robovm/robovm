@@ -79,6 +79,7 @@ public class IOSTarget extends AbstractTarget {
     private SigningIdentity signIdentity;
     private ProvisioningProfile provisioningProfile;
     private IDevice device;
+    private File partialPListDir;
 
     public IOSTarget() {}
 
@@ -488,8 +489,7 @@ public class IOSTarget extends AbstractTarget {
             ToolchainUtil.textureatlas(config, dir, destDir);
             return false;
         } else if (dir.getName().endsWith(".xcassets")) {
-            // Asset Catalogs need to be compiled to the app bundle root.
-            ToolchainUtil.actool(config, dir, getAppDir());
+            ToolchainUtil.actool(config, createPartialInfoPlistFile(dir), dir, getAppDir());
             return false;
         }
         return super.processDir(resource, dir, destDir);
@@ -510,16 +510,20 @@ public class IOSTarget extends AbstractTarget {
             ToolchainUtil.compileStrings(config, file, outFile);
         } else if (file.getName().toLowerCase().endsWith(".storyboard")) {
             destDir.mkdirs();
-            ToolchainUtil.ibtool(config, file, destDir);
+            ToolchainUtil.ibtool(config, createPartialInfoPlistFile(file), file, destDir);
         } else if (file.getName().toLowerCase().endsWith(".xib")) {
             destDir.mkdirs();
             String fileName = file.getName();
             fileName = fileName.substring(0, fileName.lastIndexOf('.')) + ".nib";
             File outFile = new File(destDir, fileName);
-            ToolchainUtil.ibtool(config, file, outFile);
+            ToolchainUtil.ibtool(config, createPartialInfoPlistFile(file), file, outFile);
         } else {
             super.copyFile(resource, file, destDir);
         }
+    }
+
+    private File createPartialInfoPlistFile(File f) throws IOException {
+        return File.createTempFile(f.getName() + "_", ".plist", partialPListDir);
     }
 
     protected File getAppDir() {
@@ -664,6 +668,15 @@ public class IOSTarget extends AbstractTarget {
         dict.put("DTPlatformName", sdk.getPlatformName());
         dict.put("DTSDKName", sdk.getCanonicalName());
 
+        for (File f : FileUtils.listFiles(partialPListDir, new String[] {"plist"}, false)) {
+            try {
+                NSDictionary d = (NSDictionary) PropertyListParser.parse(f);
+                dict.putAll(d);
+            } catch (Exception e) {
+                throw new CompilerException(e);
+            }
+        }
+
         if (dict.objectForKey("MinimumOSVersion") == null) {
             // This is required
             dict.put("MinimumOSVersion", "6.0");
@@ -760,6 +773,14 @@ public class IOSTarget extends AbstractTarget {
         }
 
         entitlementsPList = config.getIosEntitlementsPList();
+
+        partialPListDir = new File(config.getTmpDir(), "partial-plists");
+        partialPListDir.mkdirs();
+        try {
+            FileUtils.cleanDirectory(partialPListDir);
+        } catch (IOException e) {
+            throw new CompilerException(e);
+        }
     }
 
     @Override

@@ -22,7 +22,7 @@ classes:
         methods:
             '-canEvaluatePolicy:error:':
                 trim_after_first_colon: true
-                visibility: protected # throws NSErrorException
+                throws: NSErrorException
             '-evaluatePolicy:localizedReason:reply:':
                 trim_after_first_colon: true
 protocols: {}
@@ -44,6 +44,14 @@ values:
         name: 'Value__#{g[0]}'
 
 constants:
+    # Unused
+    kLAPolicyDeviceOwnerAuthenticationWithBiometrics:
+        exclude: true
+    kLAError.*:
+        exclude: true
+    kLAOption.*:
+        exclude: true
+
     # Make sure we don't miss any constants if new ones are introduced in a later version
     (k?LA.*):
         class: LocalAuthentication

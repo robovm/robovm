@@ -470,11 +470,12 @@ public class ObjCMemberPlugin extends AbstractCompilerPlugin {
             int paramCount = method.getParameterCount();
             Type param1 = paramCount > 0 ? method.getParameterType(0) : null;
             Type param2 = paramCount > 1 ? method.getParameterType(1) : null;
-            if (method.getReturnType() != VoidType.v() || paramCount < 1 || paramCount > 2
-                    || !isUIResponder(param1) || (param2 != null && !isUIEvent(param2))) {
+            if (method.getReturnType() != VoidType.v() || paramCount > 2
+                    || (param1 != null && !isUIResponder(param1))
+                    || (param2 != null && !isUIEvent(param2))) {
                 throw new CompilerException("Objective-C @IBAction method "
                         + method + " does not have a supported signature. @IBAction methods"
-                        + " must return void and either take 1 argument of type UIResponder"
+                        + " must return void and either take no arguments, 1 argument of type UIResponder"
                         + " or 2 arguments of types UIResponder and UIEvent.");
             }
 
@@ -529,12 +530,16 @@ public class ObjCMemberPlugin extends AbstractCompilerPlugin {
         // Determine the selector
         String selectorName = readStringElem(annotation, "selector", "").trim();
         if (selectorName.length() == 0) {
-            StringBuilder sb = new StringBuilder(method.getName());
             int argCount = method.getParameterCount();
-            for (int i = extensions ? 1 : 0; i < argCount; i++) {
-                sb.append(':');
+            if (IBACTION.equals(annotation.getType()) && argCount == 2) {
+                selectorName = method.getName() + ":withEvent:";
+            } else {
+                StringBuilder sb = new StringBuilder(method.getName());
+                for (int i = extensions ? 1 : 0; i < argCount; i++) {
+                    sb.append(':');
+                }
+                selectorName = sb.toString();
             }
-            selectorName = sb.toString();
         }
 
         // Create the @Bridge and @Callback methods needed for this selector

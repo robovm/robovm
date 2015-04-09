@@ -189,7 +189,7 @@ public class InterfaceBuilderClassesPlugin extends AbstractCompilerPlugin {
         }
 
         if (!unresolved.isEmpty()) {
-            logger.warn("Failed to find Java classes for the following Objective-C classes in Storyboard/XIB files: ",
+            logger.warn("Failed to find Java classes for the following Objective-C classes in Storyboard/XIB files: %s",
                     unresolved);
         }
 

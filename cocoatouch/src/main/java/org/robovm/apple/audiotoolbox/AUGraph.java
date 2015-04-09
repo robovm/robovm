@@ -30,6 +30,7 @@ import org.robovm.apple.foundation.*;
 import org.robovm.apple.corefoundation.*;
 import org.robovm.apple.coregraphics.*;
 import org.robovm.apple.opengles.*;
+import org.robovm.apple.audiounit.*;
 import org.robovm.apple.coreaudio.*;
 import org.robovm.apple.coremedia.*;
 /*</imports>*/
@@ -42,6 +43,19 @@ import org.robovm.apple.coremedia.*;
     /*<implements>*//*</implements>*/ {
 
     /*<ptr>*/public static class AUGraphPtr extends Ptr<AUGraph, AUGraphPtr> {}/*</ptr>*/
+    
+    private static java.util.concurrent.atomic.AtomicLong callbackId = new java.util.concurrent.atomic.AtomicLong();
+    
+    private static LongMap<AURenderCallback> renderCallbacks = new LongMap<>();
+    private static final java.lang.reflect.Method cbRender;
+    
+    static {
+        try {
+            cbRender = AudioUnit.class.getDeclaredMethod("cbRender", Long.TYPE, AUMutableRenderActionFlags.class, AudioTimeStamp.class, Integer.TYPE, Integer.TYPE, AudioBufferList.class);
+        } catch (Throwable e) {
+            throw new Error(e);
+        }
+    }
     /*<bind>*/static { Bro.bind(AUGraph.class); }/*</bind>*/
     /*<constants>*//*</constants>*/
     /*<constructors>*/
@@ -49,17 +63,210 @@ import org.robovm.apple.coremedia.*;
     /*</constructors>*/
     /*<properties>*//*</properties>*/
     /*<members>*//*</members>*/
+    @Callback
+    private static OSStatus cbRender(@Pointer long refCon, AUMutableRenderActionFlags actionFlags, AudioTimeStamp timeStamp, int busNumber, int numberFrames, AudioBufferList data) {
+        synchronized (renderCallbacks) {
+            return renderCallbacks.get(refCon).onRender(actionFlags, timeStamp, busNumber, numberFrames, data);
+        }
+    }
+    
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
+    public static AUGraph create() {
+        AUGraph.AUGraphPtr ptr = new AUGraph.AUGraphPtr();
+        create(ptr);
+        return ptr.get();
+    }
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
+    public int addNode(AudioComponentDescription description) {
+        IntPtr ptr = new IntPtr();
+        addNode(description, ptr);
+        return ptr.get();
+    }
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
+    public int getNodeCount() {
+        IntPtr ptr = new IntPtr();
+        getNodeCount(ptr);
+        return ptr.get();
+    }
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
+    public int getIndNode(int index) {
+        IntPtr ptr = new IntPtr();
+        getIndNode(index, ptr);
+        return ptr.get();
+    }
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
+    public AudioComponentDescription getNodeDescription(int node) {
+        AudioComponentDescription.AudioComponentDescriptionPtr ptr = new AudioComponentDescription.AudioComponentDescriptionPtr();
+        getNodeInfo(node, ptr, null);
+        return ptr.get();
+    }
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
+    public AudioUnit getNodeAudioUnit(int node) {
+        AudioUnit.AudioUnitPtr ptr = new AudioUnit.AudioUnitPtr();
+        getNodeInfo(node, null, ptr);
+        return ptr.get();
+    }
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
+    public OSStatus setNodeInputCallback(int destNode, int destInputNumber, AURenderCallback inputCallback) {
+        long cid = callbackId.getAndIncrement();
+        
+        AURenderCallbackStruct struct = new AURenderCallbackStruct(new FunctionPtr(cbRender), cid);
+        OSStatus result = setNodeInputCallback(destNode, destInputNumber, struct);
+        if (result.equals(0)) {
+            synchronized (renderCallbacks) {
+                renderCallbacks.put(cid, inputCallback);
+            }
+        }
+        return result;
+    }
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
+    public int getNumberOfInteractions() {
+        IntPtr ptr = new IntPtr();
+        getNumberOfInteractions(ptr);
+        return ptr.get();
+    }
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
+    public AUNodeInteraction getInteractionInfo(int interactionIndex) {
+        AUNodeInteraction.AUNodeInteractionPtr ptr = new AUNodeInteraction.AUNodeInteractionPtr();
+        getInteractionInfo(interactionIndex, ptr);
+        return ptr.get();
+    }
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
+    public int countNodeInteractions(int node) {
+        IntPtr ptr = new IntPtr();
+        countNodeInteractions(node, ptr);
+        return ptr.get();
+    }
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
+    public AUNodeInteraction[] getNodeInteractions(int node) {
+        return getNodeInteractions(node, countNodeInteractions(node));
+    }
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
+    public AUNodeInteraction[] getNodeInteractions(int node, int maxInteractions) {
+        IntPtr count = new IntPtr(maxInteractions);
+        AUNodeInteraction.AUNodeInteractionPtr ptr = new AUNodeInteraction.AUNodeInteractionPtr();
+        
+        OSStatus status = getNodeInteractions(node, count, ptr);
+        if (status.equals(OSStatus.NO_ERR)) {
+            AUNodeInteraction[] result = new AUNodeInteraction[count.get()];
+            for (int i = 0; i < result.length; i++) {
+                result[i] = ptr.next(i).get();
+            }
+            return result;
+        }
+        return null;
+    }
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
+    public boolean update() {
+        BooleanPtr ptr = new BooleanPtr();
+        update(ptr);
+        return ptr.get();
+    }
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
+    public boolean isOpen() {
+        BooleanPtr ptr = new BooleanPtr();
+        isOpen(ptr);
+        return ptr.get();
+    }
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
+    public boolean isInitialized() {
+        BooleanPtr ptr = new BooleanPtr();
+        isInitialized(ptr);
+        return ptr.get();
+    }
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
+    public boolean isRunning() {
+        BooleanPtr ptr = new BooleanPtr();
+        isRunning(ptr);
+        return ptr.get();
+    }
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
+    public float getCPULoad() {
+        FloatPtr ptr = new FloatPtr();
+        getCPULoad(ptr);
+        return ptr.get();
+    }
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
+    public float getMaxCPULoad() {
+        FloatPtr ptr = new FloatPtr();
+        getMaxCPULoad(ptr);
+        return ptr.get();
+    }
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
+    public OSStatus addRenderNotify(AURenderCallback callback) {
+        long cid = callbackId.getAndIncrement();
+        
+        OSStatus result = addRenderNotify(new FunctionPtr(cbRender), cid);
+        if (result.equals(0)) {
+            synchronized (renderCallbacks) {
+                renderCallbacks.put(cid, callback);
+            }
+        }
+        return result;
+    }
+    /**
+     * @since Available in iOS 2.0 and later.
+     */
+    public OSStatus removeRenderNotify(AURenderCallback callback) {
+        synchronized (renderCallbacks) {
+            for (Iterator<LongMap.Entry<AURenderCallback>> it = renderCallbacks.entries().iterator(); it.hasNext();) {
+                LongMap.Entry<AURenderCallback> entry = it.next();
+                if (entry.value == callback) {
+                    return removeRenderNotify(new FunctionPtr(cbRender), entry.key);
+                }
+            }
+        }
+        return null;
+    }
     /*<methods>*/
     /**
      * @since Available in iOS 2.0 and later.
      */
     @Bridge(symbol="NewAUGraph", optional=true)
-    public static native OSStatus create(AUGraph.AUGraphPtr outGraph);
+    private static native OSStatus create(AUGraph.AUGraphPtr outGraph);
     /**
      * @since Available in iOS 2.0 and later.
      */
     @Bridge(symbol="AUGraphAddNode", optional=true)
-    public native OSStatus addNode(AudioComponentDescription inDescription, IntPtr outNode);
+    private native OSStatus addNode(AudioComponentDescription inDescription, IntPtr outNode);
     /**
      * @since Available in iOS 2.0 and later.
      */
@@ -69,17 +276,17 @@ import org.robovm.apple.coremedia.*;
      * @since Available in iOS 2.0 and later.
      */
     @Bridge(symbol="AUGraphGetNodeCount", optional=true)
-    public native OSStatus getNodeCount(IntPtr outNumberOfNodes);
+    private native OSStatus getNodeCount(IntPtr outNumberOfNodes);
     /**
      * @since Available in iOS 2.0 and later.
      */
     @Bridge(symbol="AUGraphGetIndNode", optional=true)
-    public native OSStatus getIndNode(int inIndex, IntPtr outNode);
+    private native OSStatus getIndNode(int inIndex, IntPtr outNode);
     /**
      * @since Available in iOS 2.0 and later.
      */
     @Bridge(symbol="AUGraphNodeInfo", optional=true)
-    public native OSStatus nodeInfo(int inNode, AudioComponentDescription outDescription, AudioComponentInstance.AudioComponentInstancePtr outAudioUnit);
+    private native OSStatus getNodeInfo(int inNode, AudioComponentDescription.AudioComponentDescriptionPtr outDescription, AudioUnit.AudioUnitPtr outAudioUnit);
     /**
      * @since Available in iOS 2.0 and later.
      */
@@ -89,7 +296,7 @@ import org.robovm.apple.coremedia.*;
      * @since Available in iOS 2.0 and later.
      */
     @Bridge(symbol="AUGraphSetNodeInputCallback", optional=true)
-    public native OSStatus setNodeInputCallback(int inDestNode, int inDestInputNumber, AURenderCallbackStruct inInputCallback);
+    private native OSStatus setNodeInputCallback(int inDestNode, int inDestInputNumber, AURenderCallbackStruct inInputCallback);
     /**
      * @since Available in iOS 2.0 and later.
      */
@@ -104,27 +311,27 @@ import org.robovm.apple.coremedia.*;
      * @since Available in iOS 2.0 and later.
      */
     @Bridge(symbol="AUGraphGetNumberOfInteractions", optional=true)
-    public native OSStatus getNumberOfInteractions(IntPtr outNumInteractions);
+    private native OSStatus getNumberOfInteractions(IntPtr outNumInteractions);
     /**
      * @since Available in iOS 2.0 and later.
      */
     @Bridge(symbol="AUGraphGetInteractionInfo", optional=true)
-    public native OSStatus getInteractionInfo(int inInteractionIndex, AUNodeInteraction outInteraction);
+    private native OSStatus getInteractionInfo(int interactionIndex, AUNodeInteraction.AUNodeInteractionPtr outInteraction);
     /**
      * @since Available in iOS 2.0 and later.
      */
     @Bridge(symbol="AUGraphCountNodeInteractions", optional=true)
-    public native OSStatus countNodeInteractions(int inNode, IntPtr outNumInteractions);
+    private native OSStatus countNodeInteractions(int inNode, IntPtr outNumInteractions);
     /**
      * @since Available in iOS 2.0 and later.
      */
     @Bridge(symbol="AUGraphGetNodeInteractions", optional=true)
-    public native OSStatus getNodeInteractions(int inNode, IntPtr ioNumInteractions, AUNodeInteraction outInteractions);
+    private native OSStatus getNodeInteractions(int node, IntPtr ioNumInteractions, AUNodeInteraction.AUNodeInteractionPtr outInteractions);
     /**
      * @since Available in iOS 2.0 and later.
      */
     @Bridge(symbol="AUGraphUpdate", optional=true)
-    public native OSStatus update(BooleanPtr outIsUpdated);
+    private native OSStatus update(BooleanPtr outIsUpdated);
     /**
      * @since Available in iOS 2.0 and later.
      */
@@ -154,46 +361,36 @@ import org.robovm.apple.coremedia.*;
      * @since Available in iOS 2.0 and later.
      */
     @Bridge(symbol="AUGraphIsOpen", optional=true)
-    public native OSStatus isOpen(BooleanPtr outIsOpen);
+    private native OSStatus isOpen(BooleanPtr outIsOpen);
     /**
      * @since Available in iOS 2.0 and later.
      */
     @Bridge(symbol="AUGraphIsInitialized", optional=true)
-    public native OSStatus isInitialized(BooleanPtr outIsInitialized);
+    private native OSStatus isInitialized(BooleanPtr outIsInitialized);
     /**
      * @since Available in iOS 2.0 and later.
      */
     @Bridge(symbol="AUGraphIsRunning", optional=true)
-    public native OSStatus isRunning(BooleanPtr outIsRunning);
+    private native OSStatus isRunning(BooleanPtr outIsRunning);
     /**
      * @since Available in iOS 2.0 and later.
      */
     @Bridge(symbol="AUGraphGetCPULoad", optional=true)
-    public native OSStatus getCPULoad(FloatPtr outAverageCPULoad);
+    private native OSStatus getCPULoad(FloatPtr outAverageCPULoad);
     /**
      * @since Available in iOS 2.0 and later.
      */
     @Bridge(symbol="AUGraphGetMaxCPULoad", optional=true)
-    public native OSStatus getMaxCPULoad(FloatPtr outMaxLoad);
+    private native OSStatus getMaxCPULoad(FloatPtr outMaxLoad);
     /**
      * @since Available in iOS 2.0 and later.
      */
     @Bridge(symbol="AUGraphAddRenderNotify", optional=true)
-    public native OSStatus addRenderNotify(FunctionPtr inCallback, VoidPtr inRefCon);
+    private native OSStatus addRenderNotify(FunctionPtr callback, @Pointer long refCon);
     /**
      * @since Available in iOS 2.0 and later.
      */
     @Bridge(symbol="AUGraphRemoveRenderNotify", optional=true)
-    public native OSStatus removeRenderNotify(FunctionPtr inCallback, VoidPtr inRefCon);
-    /**
-     * @since Available in iOS 5.0 and later.
-     */
-    @Bridge(symbol="MusicSequenceSetAUGraph", optional=true)
-    public static native OSStatus musicSequenceSet(MusicSequence inSequence, AUGraph inGraph);
-    /**
-     * @since Available in iOS 5.0 and later.
-     */
-    @Bridge(symbol="MusicSequenceGetAUGraph", optional=true)
-    public static native OSStatus musicSequenceGet(MusicSequence inSequence, AUGraph.AUGraphPtr outGraph);
+    private native OSStatus removeRenderNotify(FunctionPtr callback, @Pointer long refCon);
     /*</methods>*/
 }

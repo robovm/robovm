@@ -1,5 +1,5 @@
 package: org.robovm.apple.audiotoolbox
-include: [foundation.yaml, corefoundation.yaml, coregraphics.yaml, opengles.yaml, coreaudio.yaml, coremedia.yaml]
+include: [foundation.yaml, corefoundation.yaml, coregraphics.yaml, opengles.yaml, audiounit.yaml, coreaudio.yaml, coremedia.yaml]
 library: AudioToolbox
 framework: AudioToolbox
 clang_args: ['-x', 'objective-c']
@@ -62,8 +62,8 @@ enums:
     AudioSessionInterruptionType: { first: kAudioSessionInterruptionType_ShouldResume, marshaler: ValuedEnum.AsMachineSizedUIntMarshaler }
     AudioSessionMode: { first: kAudioSessionMode_Default, marshaler: ValuedEnum.AsMachineSizedUIntMarshaler }
     AudioSessionProperty: { first: kAudioSessionProperty_PreferredHardwareSampleRate, marshaler: ValuedEnum.AsMachineSizedUIntMarshaler }
-    AUGraphError: { first: kAUGraphErr_NodeNotFound }
-    AUNodeInteraction: { first: kAUNodeInteraction_Connection }
+    AUGraphErrorCode: { first: kAUGraphErr_NodeNotFound }
+    AUNodeInteractionType: { first: kAUNodeInteraction_Connection }
     CAFFileHeaderInfo: { first: kCAF_FileType, marshaler: ValuedEnum.AsMachineSizedUIntMarshaler }
     CAFChunkType: { first: kCAF_StreamDescriptionChunkID, marshaler: ValuedEnum.AsMachineSizedUIntMarshaler }
     CAFLinearPCMFormatFlags: { first: kCAFLinearPCMFormatFlagIsFloat, bits: true, marshaler: Bits.AsMachineSizedIntMarshaler }
@@ -88,37 +88,38 @@ classes:
     AudioConverterRef:
         name: AudioConverter
     OpaqueAudioFileID:
-        name: "AudioFile"
+        name: AudioFile
     AudioFileID:
-        name: "AudioFile"
+        name: AudioFile
     OpaqueAudioFileStreamID:
-        name: "AudioFileStream"
+        name: AudioFileStream
     AudioFileStreamID:
-        name: "AudioFileStream"
+        name: AudioFileStream
     OpaqueAudioQueue:
-        name: "AudioQueue"
+        name: AudioQueue
     OpaqueAUGraph:
-        name: "AUGraph"
+        name: AUGraph
     OpaqueExtAudioFile:
-        name: "ExtAudioFile"
+        name: ExtAudioFile
     OpaqueAudioQueueTimeline:
-        name: "AudioQueueTimeline"
+        name: AudioQueueTimeline
     OpaqueAudioQueueProcessingTap:
-        name: "AudioQueueProcessingTap"
+        name: AudioQueueProcessingTap
     AudioQueueProcessingTap:
         add_ptr: true
-    OpaqueAudioComponentInstance:
-        name: "AudioComponentInstance"
-    AudioComponentInstance:
-        add_ptr: true
     OpaqueMIDIEndpoint:
-        name: "MIDIEndpoint"
+        name: MIDIEndpoint
         add_ptr: true
+    
+    OpaqueAudioComponentInstance: # DONE (already bound in AudioUnit)
+        exclude: true
+    AudioComponentInstance: # DONE (already bound in AudioUnit)
+        exclude: true
 
     # Structs
     AudioConverterPrimeInfo: {}
     AudioFile_SMPTE_Time:
-        name: "AudioFileSMPTETime"
+        name: AudioFileSMPTETime
     AudioFileMarker: {}
     AudioFileMarkerList: {}
     AudioFileRegion: {}
@@ -136,23 +137,32 @@ classes:
     AudioQueueParameterEvent: {}
     AudioQueueLevelMeterState: {}
     AudioQueueChannelAssignment: {}
-    AudioUnitNodeConnection:
-        name: "AUNodeConnection"
-    AUNodeConnection: {}
-    AUNodeRenderCallback: {}
-    #AUNodeInteraction: {}
-    AudioComponentDescription: {}
-    AURenderCallbackStruct: {}
+    AudioUnitNodeConnection: # DONE
+        name: AUNodeConnection
+    AUNodeConnection: {} # DONE
+    AUNodeRenderCallback: {} # DONE
+    AUNodeInteraction: # DONE
+        nodeInteractionType:
+            type: AUNodeInteractionType
+    AudioComponentDescription: # DONE (already bound in AudioUnit)
+        exclude: true
+    AURenderCallbackStruct: # DONE (already bound in AudioUnit)
+        exclude: true
+    AUPresetEvent: # DONE
+        scope:
+            type: AUScope
+        preset:
+            type: NSPropertyList
     CAFFileHeader: {}
     CAFChunkHeader: {}
     CAF_UUID_ChunkHeader:
-        name: "CAFUUIDChunkHeader"
+        name: CAFUUIDChunkHeader
     CAFAudioDescription: {}
     CAFAudioFormatListItem: {}
     CAFPacketTableHeader: {}
     CAFDataChunk: {}
     CAF_SMPTE_Time:
-        name: "CAFSMPTETime"
+        name: CAFSMPTETime
     CAFMarker: {}
     CAFMarkerChunk: {}
     CAFRegion: {}
@@ -174,8 +184,6 @@ classes:
     ExtendedNoteOnEvent: {}
     ParameterEvent: {}
     ExtendedTempoEvent: {}
-    AUPresetEvent: {}
-    AURenderCallbackStruct: {}
     CABarBeatTime: {}
     MusicTrackLoopInfo: {}
     MusicDeviceNoteParams: {}
@@ -250,17 +258,58 @@ functions:
     # AUGraph
     NewAUGraph:
         class: AUGraph
-        name: "create"
+        name: create
+        visibility: private
     DisposeAUGraph:
         exclude: true
     AUGraphClose:
         exclude: true
-    (.*)AUGraph:
+    AUGraph(AddNode|GetNodeCount|GetIndNode|SetNodeInputCallback|GetNumberOfInteractions|CountNodeInteractions|Update|IsOpen):
         class: AUGraph
-        name: "#{g[0]}"
+        name: '#{g[0]}'
+        visibility: private
+    AUGraph(IsInitialized|IsRunning|GetCPULoad|GetMaxCPULoad):
+        class: AUGraph
+        name: '#{g[0]}'
+        visibility: private
+    AUGraph(AddRenderNotify|RemoveRenderNotify):
+        class: AUGraph
+        name: '#{g[0]}'
+        visibility: private
+        parameters:
+            inCallback:
+                name: callback
+            inRefCon:
+                name: refCon
+                type: '@Pointer long'
+    AUGraph(NodeInfo):
+        class: AUGraph
+        name: 'get#{g[0]}'
+        visibility: private
+        parameters:
+            outDescription:
+                type: AudioComponentDescription.AudioComponentDescriptionPtr
+    AUGraph(GetInteractionInfo):
+        class: AUGraph
+        name: '#{g[0]}'
+        visibility: private
+        parameters:
+            inInteractionIndex:
+                name: interactionIndex
+            outInteraction:
+                type: AUNodeInteraction.AUNodeInteractionPtr
+    AUGraph(GetNodeInteractions):
+        class: AUGraph
+        name: '#{g[0]}'
+        visibility: private
+        parameters:
+            inNode:
+                name: node
+            outInteractions:
+                type: AUNodeInteraction.AUNodeInteractionPtr
     AUGraph(.*):
         class: AUGraph
-        name: "#{g[0]}"
+        name: '#{g[0]}'
 
     # ExtAudioFile
     ExtAudioFileDispose:

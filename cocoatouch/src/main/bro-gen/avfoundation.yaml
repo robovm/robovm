@@ -1,5 +1,5 @@
 package: org.robovm.apple.avfoundation
-include: [foundation.yaml, dispatch.yaml, coreanimation.yaml, corefoundation.yaml, coregraphics.yaml, coreaudio.yaml, coremedia.yaml, corevideo.yaml, audiotoolbox.yaml, mediatoolbox.yaml ]
+include: [foundation.yaml, dispatch.yaml, coreanimation.yaml, corefoundation.yaml, coregraphics.yaml, coreaudio.yaml, coremedia.yaml, corevideo.yaml, audiotoolbox.yaml, mediatoolbox.yaml, audiounit.yaml ]
 library: AVFoundation
 framework: AVFoundation
 clang_args: ['-x', 'objective-c']

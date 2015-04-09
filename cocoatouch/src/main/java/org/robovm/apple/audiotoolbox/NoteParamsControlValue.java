@@ -30,6 +30,7 @@ import org.robovm.apple.foundation.*;
 import org.robovm.apple.corefoundation.*;
 import org.robovm.apple.coregraphics.*;
 import org.robovm.apple.opengles.*;
+import org.robovm.apple.audiounit.*;
 import org.robovm.apple.coreaudio.*;
 import org.robovm.apple.coremedia.*;
 /*</imports>*/

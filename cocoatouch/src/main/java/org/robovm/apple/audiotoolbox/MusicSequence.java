@@ -30,6 +30,7 @@ import org.robovm.apple.foundation.*;
 import org.robovm.apple.corefoundation.*;
 import org.robovm.apple.coregraphics.*;
 import org.robovm.apple.opengles.*;
+import org.robovm.apple.audiounit.*;
 import org.robovm.apple.coreaudio.*;
 import org.robovm.apple.coremedia.*;
 /*</imports>*/
@@ -90,6 +91,16 @@ import org.robovm.apple.coremedia.*;
      */
     @Bridge(symbol="MusicSequenceGetTempoTrack", optional=true)
     public native OSStatus getTempoTrack(MusicTrack.MusicTrackPtr outTrack);
+    /**
+     * @since Available in iOS 5.0 and later.
+     */
+    @Bridge(symbol="MusicSequenceSetAUGraph", optional=true)
+    public native OSStatus setAUGraph(AUGraph inGraph);
+    /**
+     * @since Available in iOS 5.0 and later.
+     */
+    @Bridge(symbol="MusicSequenceGetAUGraph", optional=true)
+    public native OSStatus getAUGraph(AUGraph.AUGraphPtr outGraph);
     /**
      * @since Available in iOS 5.0 and later.
      */

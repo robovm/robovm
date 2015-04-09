@@ -30,6 +30,7 @@ import org.robovm.apple.foundation.*;
 import org.robovm.apple.corefoundation.*;
 import org.robovm.apple.coregraphics.*;
 import org.robovm.apple.opengles.*;
+import org.robovm.apple.audiounit.*;
 import org.robovm.apple.coreaudio.*;
 import org.robovm.apple.coremedia.*;
 /*</imports>*/
@@ -38,27 +39,31 @@ import org.robovm.apple.coremedia.*;
 
 /*</javadoc>*/
 /*<annotations>*//*</annotations>*/
-/*<visibility>*/public/*</visibility>*/ class /*<name>*/AURenderCallbackStruct/*</name>*/ 
-    extends /*<extends>*/Struct<AURenderCallbackStruct>/*</extends>*/ 
-    /*<implements>*//*</implements>*/ {
+public enum /*<name>*/AUGraphErrorCode/*</name>*/ implements ValuedEnum {
+    /*<values>*/
+    NodeNotFound(-10860L),
+    InvalidConnection(-10861L),
+    OutputNodeErr(-10862L),
+    CannotDoInCurrentContext(-10863L),
+    InvalidAudioUnit(-10864L);
+    /*</values>*/
 
-    /*<ptr>*/public static class AURenderCallbackStructPtr extends Ptr<AURenderCallbackStruct, AURenderCallbackStructPtr> {}/*</ptr>*/
     /*<bind>*/
     /*</bind>*/
     /*<constants>*//*</constants>*/
-    /*<constructors>*/
-    public AURenderCallbackStruct() {}
-    public AURenderCallbackStruct(FunctionPtr inputProc, VoidPtr inputProcRefCon) {
-        this.setInputProc(inputProc);
-        this.setInputProcRefCon(inputProcRefCon);
-    }
-    /*</constructors>*/
-    /*<properties>*//*</properties>*/
-    /*<members>*/
-    @StructMember(0) public native FunctionPtr getInputProc();
-    @StructMember(0) public native AURenderCallbackStruct setInputProc(FunctionPtr inputProc);
-    @StructMember(1) public native VoidPtr getInputProcRefCon();
-    @StructMember(1) public native AURenderCallbackStruct setInputProcRefCon(VoidPtr inputProcRefCon);
-    /*</members>*/
     /*<methods>*//*</methods>*/
+
+    private final long n;
+
+    private /*<name>*/AUGraphErrorCode/*</name>*/(long n) { this.n = n; }
+    public long value() { return n; }
+    public static /*<name>*/AUGraphErrorCode/*</name>*/ valueOf(long n) {
+        for (/*<name>*/AUGraphErrorCode/*</name>*/ v : values()) {
+            if (v.n == n) {
+                return v;
+            }
+        }
+        throw new IllegalArgumentException("No constant with value " + n + " found in " 
+            + /*<name>*/AUGraphErrorCode/*</name>*/.class.getName());
+    }
 }

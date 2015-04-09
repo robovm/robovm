@@ -22,6 +22,7 @@ import org.robovm.rt.bro.annotation.Marshaler;
 
 @Marshaler(OSStatus.Marshaler.class)
 public final class OSStatus {
+    public static final OSStatus NO_ERR = new OSStatus(0);
 
     public static class Marshaler {
         @MarshalsValue

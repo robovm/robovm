@@ -30,6 +30,7 @@ import org.robovm.apple.foundation.*;
 import org.robovm.apple.corefoundation.*;
 import org.robovm.apple.coregraphics.*;
 import org.robovm.apple.opengles.*;
+import org.robovm.apple.audiounit.*;
 import org.robovm.apple.coreaudio.*;
 import org.robovm.apple.coremedia.*;
 /*</imports>*/
@@ -38,13 +39,10 @@ import org.robovm.apple.coremedia.*;
 
 /*</javadoc>*/
 /*<annotations>*//*</annotations>*/
-public enum /*<name>*/AUGraphError/*</name>*/ implements ValuedEnum {
+public enum /*<name>*/AUNodeInteractionType/*</name>*/ implements ValuedEnum {
     /*<values>*/
-    NodeNotFound(-10860L),
-    InvalidConnection(-10861L),
-    OutputNodeErr(-10862L),
-    CannotDoInCurrentContext(-10863L),
-    InvalidAudioUnit(-10864L);
+    Connection(1L),
+    InputCallback(2L);
     /*</values>*/
 
     /*<bind>*/
@@ -54,15 +52,15 @@ public enum /*<name>*/AUGraphError/*</name>*/ implements ValuedEnum {
 
     private final long n;
 
-    private /*<name>*/AUGraphError/*</name>*/(long n) { this.n = n; }
+    private /*<name>*/AUNodeInteractionType/*</name>*/(long n) { this.n = n; }
     public long value() { return n; }
-    public static /*<name>*/AUGraphError/*</name>*/ valueOf(long n) {
-        for (/*<name>*/AUGraphError/*</name>*/ v : values()) {
+    public static /*<name>*/AUNodeInteractionType/*</name>*/ valueOf(long n) {
+        for (/*<name>*/AUNodeInteractionType/*</name>*/ v : values()) {
             if (v.n == n) {
                 return v;
             }
         }
         throw new IllegalArgumentException("No constant with value " + n + " found in " 
-            + /*<name>*/AUGraphError/*</name>*/.class.getName());
+            + /*<name>*/AUNodeInteractionType/*</name>*/.class.getName());
     }
 }

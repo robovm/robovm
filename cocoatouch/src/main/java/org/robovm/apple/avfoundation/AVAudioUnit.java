@@ -36,6 +36,7 @@ import org.robovm.apple.coremedia.*;
 import org.robovm.apple.corevideo.*;
 import org.robovm.apple.audiotoolbox.*;
 import org.robovm.apple.mediatoolbox.*;
+import org.robovm.apple.audiounit.*;
 /*</imports>*/
 
 /*<javadoc>*/
@@ -59,7 +60,7 @@ import org.robovm.apple.mediatoolbox.*;
     @Property(selector = "audioComponentDescription")
     public native @ByVal AudioComponentDescription getAudioComponentDescription();
     @Property(selector = "audioUnit")
-    public native AudioComponentInstance getAudioUnit();
+    public native AudioUnit getAudioUnit();
     @Property(selector = "name")
     public native String getName();
     @Property(selector = "manufacturerName")

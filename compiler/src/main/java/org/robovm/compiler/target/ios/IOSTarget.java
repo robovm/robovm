@@ -509,11 +509,10 @@ public class IOSTarget extends AbstractTarget {
             File outFile = new File(destDir, file.getName());
             ToolchainUtil.compileStrings(config, file, outFile);
         } else if (file.getName().toLowerCase().endsWith(".storyboard")) {
-            String fileName = file.getName();
-            fileName = fileName.substring(0, fileName.lastIndexOf('.')) + ".storyboardc";
-            File outFile = new File(destDir, fileName);
-            ToolchainUtil.ibtool(config, file, outFile);
+            destDir.mkdirs();
+            ToolchainUtil.ibtool(config, file, destDir);
         } else if (file.getName().toLowerCase().endsWith(".xib")) {
+            destDir.mkdirs();
             String fileName = file.getName();
             fileName = fileName.substring(0, fileName.lastIndexOf('.')) + ".nib";
             File outFile = new File(destDir, fileName);

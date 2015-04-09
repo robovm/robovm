@@ -237,9 +237,15 @@ public class ToolchainUtil {
             }
         }
 
-        new Executor(config.getLogger(), getIBTool()).args("--target-device", "iphone", "--target-device",
+        Executor executor = new Executor(config.getLogger(), getIBTool()).args("--target-device", "iphone", "--target-device",
                 "ipad", "--minimum-deployment-target", minOSVersion, "--auto-activate-custom-fonts", "--output-format",
-                "human-readable-text", "--compile", outFile, inFile).exec();
+                "human-readable-text");
+        if (outFile.isDirectory()) {
+            executor.args("--compilation-directory", outFile);
+        } else {
+            executor.args("--compile", outFile);
+        }
+        executor.args(inFile).exec();
     }
 
     public static void compileStrings(Config config, File inFile, File outFile) throws IOException {

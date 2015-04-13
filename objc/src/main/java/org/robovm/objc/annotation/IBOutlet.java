@@ -23,7 +23,7 @@ import java.lang.annotation.Target;
 import org.robovm.objc.ObjCObject;
 
 /**
- * Used to mark a class method or field as an Objective-C property compliant
+ * Used to mark a class method as an Objective-C property compliant
  * with a XCode interface builder outlet. Outlets must not be
  * <code>static</code>.
  * <p>
@@ -38,18 +38,17 @@ import org.robovm.objc.ObjCObject;
  * "set".
  */
 @Retention(RetentionPolicy.RUNTIME)
-@Target({ ElementType.METHOD, ElementType.FIELD })
+@Target({ ElementType.METHOD })
 public @interface IBOutlet {
     /**
      * The name of the Objective-C selector this outlet binds to. If not
-     * specified the selector will be derived from the name of the method or
-     * field.
+     * specified the selector will be derived from the name of the method.
      */
     String selector() default "";
 
     /**
      * The name of the outlet. If not specified the name will be derived from
-     * the name of the method or field. In case of methods "is", "get" or "set"
+     * the name of the method. In case of methods "is", "get" or "set"
      * will be dropped from the start of the method name and the rest will be
      * used as property name with the first character downcased.
      */

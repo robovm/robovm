@@ -25,7 +25,8 @@ import java.lang.annotation.Target;
  * interface builder action. The method must have exactly zero, one or two
  * arguments, with the first argument (if any) being of type {@code UIResponder}
  * or any subtype, and the second argument (if any) being of type
- * {@code UIEvent}.
+ * {@code UIEvent}. For single argument variants, the argument may also be of
+ * type {@code UIStoryboardSegue} or any subtype.
  */
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.METHOD)

@@ -366,17 +366,10 @@ public class InterfaceBuilderClassesPlugin extends AbstractCompilerPlugin {
 
                 switch (event) {
                 case XMLStreamConstants.START_ELEMENT:
-                    switch (reader.getLocalName()) {
-                    case "viewController":
-                    case "view":
-                    case "placeholder":
-                        String customClass = reader.getAttributeValue(null, "customClass");
-                        if (customClass != null && !customClass.trim().isEmpty()) {
-                            customClasses.add(customClass);
-                        }
-                        break;
+                    String customClass = reader.getAttributeValue(null, "customClass");
+                    if (customClass != null && !customClass.trim().isEmpty()) {
+                        customClasses.add(customClass);
                     }
-                    break;
                 }
             }
             reader.close();

@@ -170,10 +170,18 @@ values:
         visibility: protected
         
     SKStoreProductParameter(.*):
-        class: SKStoreProductParameters
-        name: '#{g[0]}Key'
+        dictionary: SKStoreProductParameters
+        name: '#{g[0]}'
         type: NSString
-        visibility: protected
+        methods:
+            ITunesItemIdentifier:
+                type: long
+            AffiliateToken:
+                type: String
+            CampaignToken:
+                type: String
+            ProviderToken:
+                type: String
 
     # Make sure we don't miss any values if new ones are introduced in a later version
     (SK.*):

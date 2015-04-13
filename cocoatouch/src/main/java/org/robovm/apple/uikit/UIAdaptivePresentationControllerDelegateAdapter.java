@@ -55,7 +55,17 @@ import org.robovm.apple.corelocation.*;
     /*<methods>*/
     @NotImplemented("adaptivePresentationStyleForPresentationController:")
     public UIModalPresentationStyle getAdaptivePresentationStyle(UIPresentationController controller) { return null; }
+    /**
+     * @since Available in iOS 8.3 and later.
+     */
+    @NotImplemented("adaptivePresentationStyleForPresentationController:traitCollection:")
+    public UIModalPresentationStyle getAdaptivePresentationStyle(UIPresentationController controller, UITraitCollection traitCollection) { return null; }
     @NotImplemented("presentationController:viewControllerForAdaptivePresentationStyle:")
     public UIViewController getViewController(UIPresentationController controller, UIModalPresentationStyle style) { return null; }
+    /**
+     * @since Available in iOS 8.3 and later.
+     */
+    @NotImplemented("presentationController:willPresentWithAdaptiveStyle:transitionCoordinator:")
+    public void willPresent(UIPresentationController presentationController, UIModalPresentationStyle style, UIViewControllerTransitionCoordinator transitionCoordinator) {}
     /*</methods>*/
 }

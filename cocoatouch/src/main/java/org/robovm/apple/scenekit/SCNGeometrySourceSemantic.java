@@ -108,12 +108,24 @@ import org.robovm.apple.opengles.*;
     protected static native NSString ColorValue();
     @GlobalValue(symbol="SCNGeometrySourceSemanticTexcoord", optional=true)
     protected static native NSString TexcoordValue();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
     @GlobalValue(symbol="SCNGeometrySourceSemanticVertexCrease", optional=true)
     protected static native NSString VertexCreaseValue();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
     @GlobalValue(symbol="SCNGeometrySourceSemanticEdgeCrease", optional=true)
     protected static native NSString EdgeCreaseValue();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
     @GlobalValue(symbol="SCNGeometrySourceSemanticBoneWeights", optional=true)
     protected static native NSString BoneWeightsValue();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
     @GlobalValue(symbol="SCNGeometrySourceSemanticBoneIndices", optional=true)
     protected static native NSString BoneIndicesValue();
     /*</methods>*/

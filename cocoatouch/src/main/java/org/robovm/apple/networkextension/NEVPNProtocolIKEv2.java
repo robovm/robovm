@@ -80,6 +80,16 @@ import org.robovm.apple.foundation.*;
     /**
      * @since Available in iOS 8.0 and later.
      */
+    @Property(selector = "certificateType")
+    public native NEVPNIKEv2CertificateType getCertificateType();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    @Property(selector = "setCertificateType:")
+    public native void setCertificateType(NEVPNIKEv2CertificateType v);
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
     @Property(selector = "IKESecurityAssociationParameters")
     public native NEVPNIKEv2SecurityAssociationParameters getIKESecurityAssociationParameters();
     /**

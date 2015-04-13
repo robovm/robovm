@@ -1971,6 +1971,8 @@ classes:
                 name: init
             '-(adaptivePresentationStyle|presentedView)':
                 property: true
+            '-adaptivePresentationStyleForTraitCollection:':
+                name: getAdaptivePresentationStyleForTraitCollection
             '-frameOfPresentedViewInContainerView':
                 property: true
             '-presentationTransitionDidEnd:':
@@ -3093,8 +3095,12 @@ protocols:
         methods:
             '-adaptivePresentationStyleForPresentationController:':
                 name: getAdaptivePresentationStyle
+            '-adaptivePresentationStyleForPresentationController:traitCollection:':
+                name: getAdaptivePresentationStyle
             '-presentationController:viewControllerForAdaptivePresentationStyle:':
                 name: getViewController
+            '-presentationController:willPresentWithAdaptiveStyle:transitionCoordinator:':
+                name: willPresent
     UIAlertViewDelegate: # DONE
         methods:
             '-alertView:clickedButtonAtIndex:':
@@ -3112,7 +3118,7 @@ protocols:
             '-alertViewShouldEnableFirstOtherButton:':
                 name: shouldEnableFirstOtherButton
     # UIAppearance is bound as a class with static methods rather than an interface.
-#    UIAppearance: {}
+    # UIAppearance: {}
     UIAppearanceContainer: # DONE
         skip_adapter: true
     UIApplicationDelegate: # DONE

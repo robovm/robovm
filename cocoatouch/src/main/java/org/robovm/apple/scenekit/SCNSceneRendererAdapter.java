@@ -54,8 +54,14 @@ import org.robovm.apple.opengles.*;
     public SCNScene getScene() { return null; }
     @NotImplemented("setScene:")
     public void setScene(SCNScene v) {}
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
     @NotImplemented("sceneTime")
     public double getSceneTime() { return 0; }
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
     @NotImplemented("setSceneTime:")
     public void setSceneTime(double v) {}
     @NotImplemented("delegate")
@@ -82,12 +88,24 @@ import org.robovm.apple.opengles.*;
     public boolean isJitteringEnabled() { return false; }
     @NotImplemented("setJitteringEnabled:")
     public void setJitteringEnabled(boolean v) {}
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
     @NotImplemented("showsStatistics")
     public boolean showsStatistics() { return false; }
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
     @NotImplemented("setShowsStatistics:")
     public void setShowsStatistics(boolean v) {}
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
     @NotImplemented("overlaySKScene")
     public SKScene getOverlaySKScene() { return null; }
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
     @NotImplemented("setOverlaySKScene:")
     public void setOverlaySKScene(SKScene v) {}
     @NotImplemented("context")
@@ -97,14 +115,29 @@ import org.robovm.apple.opengles.*;
     /*<methods>*/
     @NotImplemented("hitTest:options:")
     public NSArray<SCNHitTestResult> hitTest(@ByVal CGPoint thePoint, SCNHitTestOptions options) { return null; }
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
     @NotImplemented("isNodeInsideFrustum:withPointOfView:")
     public boolean isNodeInsideFrustum(SCNNode node, SCNNode pointOfView) { return false; }
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
     @NotImplemented("projectPoint:")
     public @ByVal SCNVector3 projectPoint(@ByVal SCNVector3 point) { return null; }
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
     @NotImplemented("unprojectPoint:")
     public @ByVal SCNVector3 unprojectPoint(@ByVal SCNVector3 point) { return null; }
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
     @NotImplemented("prepareObject:shouldAbortBlock:")
     public boolean prepareObject(NSObject object, @Block Block0<Boolean> block) { return false; }
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
     @NotImplemented("prepareObjects:withCompletionHandler:")
     public void prepareObjects(NSArray<?> objects, @Block VoidBooleanBlock completionHandler) {}
     /*</methods>*/

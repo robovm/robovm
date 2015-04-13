@@ -94,6 +94,16 @@ import org.robovm.apple.accounts.*;
      */
     @Property(selector = "setRequestData:")
     public native void setRequestData(NSData v);
+    /**
+     * @since Available in iOS 8.3 and later.
+     */
+    @Property(selector = "simulatesAskToBuyInSandbox")
+    public native boolean simulatesAskToBuyInSandbox();
+    /**
+     * @since Available in iOS 8.3 and later.
+     */
+    @Property(selector = "setSimulatesAskToBuyInSandbox:")
+    public native void setSimulatesAskToBuyInSandbox(boolean v);
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/

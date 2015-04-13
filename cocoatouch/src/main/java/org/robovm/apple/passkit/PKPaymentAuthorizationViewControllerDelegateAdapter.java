@@ -53,6 +53,11 @@ import org.robovm.apple.addressbook.*;
     public void didAuthorizePayment(PKPaymentAuthorizationViewController controller, PKPayment payment, @Block VoidBlock1<PKPaymentAuthorizationStatus> completion) {}
     @NotImplemented("paymentAuthorizationViewControllerDidFinish:")
     public void didFinish(PKPaymentAuthorizationViewController controller) {}
+    /**
+     * @since Available in iOS 8.3 and later.
+     */
+    @NotImplemented("paymentAuthorizationViewControllerWillAuthorizePayment:")
+    public void willAuthorizePayment(PKPaymentAuthorizationViewController controller) {}
     @NotImplemented("paymentAuthorizationViewController:didSelectShippingMethod:completion:")
     public void didSelectShippingMethod(PKPaymentAuthorizationViewController controller, PKShippingMethod shippingMethod, @Block VoidBlock2<PKPaymentAuthorizationStatus, NSArray<PKPaymentSummaryItem>> completion) {}
     @NotImplemented("paymentAuthorizationViewController:didSelectShippingAddress:completion:")

@@ -100,6 +100,9 @@ import org.robovm.apple.opengles.*;
     protected static native NSString EndTimeValue();
     @GlobalValue(symbol="SCNSceneFrameRateAttributeKey", optional=true)
     protected static native NSString FrameRateValue();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
     @GlobalValue(symbol="SCNSceneUpAxisAttributeKey", optional=true)
     protected static native NSString UpAxisValue();
     /*</methods>*/

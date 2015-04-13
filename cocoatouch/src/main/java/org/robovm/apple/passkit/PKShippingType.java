@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.robovm.apple.homekit;
+package org.robovm.apple.passkit;
 
 /*<imports>*/
 import java.io.*;
@@ -27,25 +27,22 @@ import org.robovm.rt.bro.*;
 import org.robovm.rt.bro.annotation.*;
 import org.robovm.rt.bro.ptr.*;
 import org.robovm.apple.foundation.*;
+import org.robovm.apple.uikit.*;
+import org.robovm.apple.addressbook.*;
 /*</imports>*/
 
 /*<javadoc>*/
 /**
- * @since Available in iOS 8.0 and later.
+ * @since Available in iOS 8.3 and later.
  */
 /*</javadoc>*/
-/*<annotations>*/@Marshaler(ValuedEnum.AsMachineSizedSIntMarshaler.class)/*</annotations>*/
-public enum /*<name>*/HMCharacteristicValueLockMechanism/*</name>*/ implements ValuedEnum {
+/*<annotations>*/@Marshaler(ValuedEnum.AsMachineSizedUIntMarshaler.class)/*</annotations>*/
+public enum /*<name>*/PKShippingType/*</name>*/ implements ValuedEnum {
     /*<values>*/
-    SecuredUsingPhysicalMovementInterior(0L),
-    UnsecuredUsingPhysicalMovementInterior(1L),
-    SecuredUsingPhysicalMovementExterior(2L),
-    UnsecuredUsingPhysicalMovementExterior(3L),
-    SecuredWithKeypad(4L),
-    UnsecuredWithKeypad(5L),
-    SecuredRemotely(6L),
-    UnsecuredRemotely(7L),
-    SecuredWithAutomaticSecureTimeout(8L);
+    Shipping(0L),
+    Delivery(1L),
+    StorePickup(2L),
+    ServicePickup(3L);
     /*</values>*/
 
     /*<bind>*/
@@ -55,15 +52,15 @@ public enum /*<name>*/HMCharacteristicValueLockMechanism/*</name>*/ implements V
 
     private final long n;
 
-    private /*<name>*/HMCharacteristicValueLockMechanism/*</name>*/(long n) { this.n = n; }
+    private /*<name>*/PKShippingType/*</name>*/(long n) { this.n = n; }
     public long value() { return n; }
-    public static /*<name>*/HMCharacteristicValueLockMechanism/*</name>*/ valueOf(long n) {
-        for (/*<name>*/HMCharacteristicValueLockMechanism/*</name>*/ v : values()) {
+    public static /*<name>*/PKShippingType/*</name>*/ valueOf(long n) {
+        for (/*<name>*/PKShippingType/*</name>*/ v : values()) {
             if (v.n == n) {
                 return v;
             }
         }
         throw new IllegalArgumentException("No constant with value " + n + " found in " 
-            + /*<name>*/HMCharacteristicValueLockMechanism/*</name>*/.class.getName());
+            + /*<name>*/PKShippingType/*</name>*/.class.getName());
     }
 }

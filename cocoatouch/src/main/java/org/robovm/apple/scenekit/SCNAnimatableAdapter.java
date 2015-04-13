@@ -64,12 +64,24 @@ import org.robovm.apple.opengles.*;
     public @org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String> getAnimationKeys() { return null; }
     @NotImplemented("animationForKey:")
     public CAAnimation getAnimation(String key) { return null; }
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
     @NotImplemented("pauseAnimationForKey:")
     public void pauseAnimation(String key) {}
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
     @NotImplemented("resumeAnimationForKey:")
     public void resumeAnimation(String key) {}
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
     @NotImplemented("isAnimationForKeyPaused:")
     public boolean isAnimationPaused(String key) { return false; }
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
     @NotImplemented("removeAnimationForKey:fadeOutDuration:")
     public void removeAnimation(String key, @MachineSizedFloat double duration) {}
     /*</methods>*/

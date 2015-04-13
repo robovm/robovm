@@ -37,7 +37,9 @@ import org.robovm.apple.opengles.*;
 /*</imports>*/
 
 /*<javadoc>*/
-
+/**
+ * @since Available in iOS 8.0 and later.
+ */
 /*</javadoc>*/
 /*<annotations>*/@Library("SceneKit") @NativeClass/*</annotations>*/
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/SCNNode/*</name>*/ 
@@ -68,12 +70,24 @@ import org.robovm.apple.opengles.*;
     public native SCNGeometry getGeometry();
     @Property(selector = "setGeometry:")
     public native void setGeometry(SCNGeometry v);
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
     @Property(selector = "skinner")
     public native SCNSkinner getSkinner();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
     @Property(selector = "setSkinner:")
     public native void setSkinner(SCNSkinner v);
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
     @Property(selector = "morpher")
     public native SCNMorpher getMorpher();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
     @Property(selector = "setMorpher:")
     public native void setMorpher(SCNMorpher v);
     @Property(selector = "transform")
@@ -88,12 +102,24 @@ import org.robovm.apple.opengles.*;
     public native @ByVal SCNVector4 getRotation();
     @Property(selector = "setRotation:")
     public native void setRotation(@ByVal SCNVector4 v);
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
     @Property(selector = "orientation")
     public native @ByVal SCNVector4 getOrientation();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
     @Property(selector = "setOrientation:")
     public native void setOrientation(@ByVal SCNVector4 v);
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
     @Property(selector = "eulerAngles")
     public native @ByVal SCNVector3 getEulerAngles();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
     @Property(selector = "setEulerAngles:")
     public native void setEulerAngles(@ByVal SCNVector3 v);
     @Property(selector = "scale")
@@ -118,40 +144,82 @@ import org.robovm.apple.opengles.*;
     public native @MachineSizedSInt long getRenderingOrder();
     @Property(selector = "setRenderingOrder:")
     public native void setRenderingOrder(@MachineSizedSInt long v);
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
     @Property(selector = "castsShadow")
     public native boolean castsShadow();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
     @Property(selector = "setCastsShadow:")
     public native void setCastsShadow(boolean v);
     @Property(selector = "parentNode")
     public native SCNNode getParentNode();
     @Property(selector = "childNodes")
     public native NSArray<SCNNode> getChildNodes();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
     @Property(selector = "physicsBody")
     public native SCNPhysicsBody getPhysicsBody();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
     @Property(selector = "setPhysicsBody:")
     public native void setPhysicsBody(SCNPhysicsBody v);
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
     @Property(selector = "physicsField")
     public native SCNPhysicsField getPhysicsField();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
     @Property(selector = "setPhysicsField:")
     public native void setPhysicsField(SCNPhysicsField v);
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
     @Property(selector = "constraints")
     public native NSArray<SCNConstraint> getConstraints();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
     @Property(selector = "setConstraints:")
     public native void setConstraints(NSArray<SCNConstraint> v);
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
     @Property(selector = "filters")
     public native NSArray<org.robovm.apple.coreimage.CIFilter> getFilters();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
     @Property(selector = "setFilters:")
     public native void setFilters(NSArray<org.robovm.apple.coreimage.CIFilter> v);
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
     @Property(selector = "isPaused")
     public native boolean isPaused();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
     @Property(selector = "setPaused:")
     public native void setPaused(boolean v);
     @Property(selector = "rendererDelegate")
     public native SCNNodeRendererDelegate getRendererDelegate();
     @Property(selector = "setRendererDelegate:", strongRef = true)
     public native void setRendererDelegate(SCNNodeRendererDelegate v);
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
     @Property(selector = "categoryBitMask")
     public native @MachineSizedUInt long getCategoryBitMask();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
     @Property(selector = "setCategoryBitMask:")
     public native void setCategoryBitMask(@MachineSizedUInt long v);
     @Property(selector = "particleSystems")
@@ -210,18 +278,36 @@ import org.robovm.apple.opengles.*;
     public native SCNNode findChildNodeWithName(String name, boolean recursively);
     @Method(selector = "childNodesPassingTest:")
     public native NSArray<SCNNode> getChildNodesPassingTest(@Block Block2<SCNNode, BooleanPtr, Boolean> predicate);
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
     @Method(selector = "enumerateChildNodesUsingBlock:")
     public native void enumerateChildNodes(@Block VoidBlock2<SCNNode, BooleanPtr> block);
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
     @Method(selector = "convertPosition:toNode:")
     public native @ByVal SCNVector3 convertPositionToNode(@ByVal SCNVector3 position, SCNNode node);
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
     @Method(selector = "convertPosition:fromNode:")
     public native @ByVal SCNVector3 convertPositionFromNode(@ByVal SCNVector3 position, SCNNode node);
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
     @Method(selector = "convertTransform:toNode:")
     public native @ByVal SCNMatrix4 convertTransformToNode(@ByVal SCNMatrix4 transform, SCNNode node);
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
     @Method(selector = "convertTransform:fromNode:")
     public native @ByVal SCNMatrix4 convertTransformFromNode(@ByVal SCNMatrix4 transform, SCNNode node);
     @Method(selector = "presentationNode")
     public native SCNNode getPresentationNode();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
     @Method(selector = "hitTestWithSegmentFromPoint:toPoint:options:")
     public native NSArray<SCNHitTestResult> hitTestWithSegment(@ByVal SCNVector3 pointA, @ByVal SCNVector3 pointB, SCNHitTestOptions options);
     @Method(selector = "node")
@@ -244,34 +330,73 @@ import org.robovm.apple.opengles.*;
     public native @org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String> getAnimationKeys();
     @Method(selector = "animationForKey:")
     public native CAAnimation getAnimation(String key);
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
     @Method(selector = "pauseAnimationForKey:")
     public native void pauseAnimation(String key);
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
     @Method(selector = "resumeAnimationForKey:")
     public native void resumeAnimation(String key);
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
     @Method(selector = "isAnimationForKeyPaused:")
     public native boolean isAnimationPaused(String key);
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
     @Method(selector = "removeAnimationForKey:fadeOutDuration:")
     public native void removeAnimation(String key, @MachineSizedFloat double duration);
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
     @Method(selector = "runAction:")
     public native void runAction(SCNAction action);
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
     @Method(selector = "runAction:completionHandler:")
     public native void runAction(SCNAction action, @Block Runnable block);
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
     @Method(selector = "runAction:forKey:")
     public native void runAction(SCNAction action, String key);
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
     @Method(selector = "runAction:forKey:completionHandler:")
     public native void runAction(SCNAction action, String key, @Block Runnable block);
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
     @Method(selector = "hasActions")
     public native boolean hasActions();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
     @Method(selector = "actionForKey:")
     public native SCNAction getAction(String key);
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
     @Method(selector = "removeActionForKey:")
     public native void removeAction(String key);
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
     @Method(selector = "removeAllActions")
     public native void removeAllActions();
     @Method(selector = "getBoundingBoxMin:max:")
     public native boolean getBoundingBox(SCNVector3.SCNVector3Ptr min, SCNVector3.SCNVector3Ptr max);
     @Method(selector = "getBoundingSphereCenter:radius:")
     public native boolean getBoundingSphere(SCNVector3.SCNVector3Ptr center, MachineSizedFloatPtr radius);
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
     @Method(selector = "setBoundingBoxMin:max:")
     public native void setBoundingBox(SCNVector3.SCNVector3Ptr min, SCNVector3.SCNVector3Ptr max);
     /*</methods>*/

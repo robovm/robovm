@@ -31,12 +31,15 @@ import org.robovm.apple.foundation.*;
 
 /*<javadoc>*/
 /*</javadoc>*/
-@Marshaler(HMCharacteristicMetadataFormat.Marshaler.class)
 /*<annotations>*/@Library("HomeKit")/*</annotations>*/
+@Marshaler(/*<name>*/HMCharacteristicMetadataFormat/*</name>*/.Marshaler.class)
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/HMCharacteristicMetadataFormat/*</name>*/ 
-    extends /*<extends>*/CocoaUtility/*</extends>*/ 
+    extends /*<extends>*/GlobalValueEnumeration<NSString>/*</extends>*/
     /*<implements>*//*</implements>*/ {
-    
+
+    static { Bro.bind(/*<name>*/HMCharacteristicMetadataFormat/*</name>*/.class); }
+
+    /*<marshalers>*/
     public static class Marshaler {
         @MarshalsPointer
         public static HMCharacteristicMetadataFormat toObject(Class<HMCharacteristicMetadataFormat> cls, long handle, long flags) {
@@ -54,76 +57,93 @@ import org.robovm.apple.foundation.*;
             return NSObject.Marshaler.toNative(o.value(), flags);
         }
     }
+    public static class AsListMarshaler {
+        @SuppressWarnings("unchecked")
+        @MarshalsPointer
+        public static List<HMCharacteristicMetadataFormat> toObject(Class<? extends NSObject> cls, long handle, long flags) {
+            NSArray<NSString> o = (NSArray<NSString>) NSObject.Marshaler.toObject(cls, handle, flags);
+            if (o == null) {
+                return null;
+            }
+            List<HMCharacteristicMetadataFormat> list = new ArrayList<>();
+            for (int i = 0; i < o.size(); i++) {
+                list.add(HMCharacteristicMetadataFormat.valueOf(o.get(i)));
+            }
+            return list;
+        }
+        @MarshalsPointer
+        public static long toNative(List<HMCharacteristicMetadataFormat> l, long flags) {
+            if (l == null) {
+                return 0L;
+            }
+            NSArray<NSString> array = new NSMutableArray<>();
+            for (HMCharacteristicMetadataFormat i : l) {
+                array.add(i.value());
+            }
+            return NSObject.Marshaler.toNative(array, flags);
+        }
+    }
+    /*</marshalers>*/
 
-    /*<ptr>*/
-    /*</ptr>*/
-    /*<bind>*/static { Bro.bind(HMCharacteristicMetadataFormat.class); }/*</bind>*/
-    /*<constants>*//*</constants>*/
+    /*<constants>*/
     /**
      * @since Available in iOS 8.0 and later.
      */
-    public static final HMCharacteristicMetadataFormat Bool = new HMCharacteristicMetadataFormat("BoolValue");
+    public static final HMCharacteristicMetadataFormat Bool = new HMCharacteristicMetadataFormat("Bool");
     /**
      * @since Available in iOS 8.0 and later.
      */
-    public static final HMCharacteristicMetadataFormat Int = new HMCharacteristicMetadataFormat("IntValue");
+    public static final HMCharacteristicMetadataFormat Int = new HMCharacteristicMetadataFormat("Int");
     /**
      * @since Available in iOS 8.0 and later.
      */
-    public static final HMCharacteristicMetadataFormat Float = new HMCharacteristicMetadataFormat("FloatValue");
+    public static final HMCharacteristicMetadataFormat Float = new HMCharacteristicMetadataFormat("Float");
     /**
      * @since Available in iOS 8.0 and later.
      */
-    public static final HMCharacteristicMetadataFormat String = new HMCharacteristicMetadataFormat("StringValue");
+    public static final HMCharacteristicMetadataFormat String = new HMCharacteristicMetadataFormat("String");
     /**
      * @since Available in iOS 8.0 and later.
      */
-    public static final HMCharacteristicMetadataFormat Array = new HMCharacteristicMetadataFormat("ArrayValue");
+    public static final HMCharacteristicMetadataFormat Array = new HMCharacteristicMetadataFormat("Array");
     /**
      * @since Available in iOS 8.0 and later.
      */
-    public static final HMCharacteristicMetadataFormat Dictionary = new HMCharacteristicMetadataFormat("DictionaryValue");
+    public static final HMCharacteristicMetadataFormat Dictionary = new HMCharacteristicMetadataFormat("Dictionary");
     /**
      * @since Available in iOS 8.0 and later.
      */
-    public static final HMCharacteristicMetadataFormat UInt8 = new HMCharacteristicMetadataFormat("UInt8Value");
+    public static final HMCharacteristicMetadataFormat UInt8 = new HMCharacteristicMetadataFormat("UInt8");
     /**
      * @since Available in iOS 8.0 and later.
      */
-    public static final HMCharacteristicMetadataFormat UInt16 = new HMCharacteristicMetadataFormat("UInt16Value");
+    public static final HMCharacteristicMetadataFormat UInt16 = new HMCharacteristicMetadataFormat("UInt16");
     /**
      * @since Available in iOS 8.0 and later.
      */
-    public static final HMCharacteristicMetadataFormat UInt32 = new HMCharacteristicMetadataFormat("UInt32Value");
+    public static final HMCharacteristicMetadataFormat UInt32 = new HMCharacteristicMetadataFormat("UInt32");
     /**
      * @since Available in iOS 8.0 and later.
      */
-    public static final HMCharacteristicMetadataFormat UInt64 = new HMCharacteristicMetadataFormat("UInt64Value");
+    public static final HMCharacteristicMetadataFormat UInt64 = new HMCharacteristicMetadataFormat("UInt64");
     /**
      * @since Available in iOS 8.0 and later.
      */
-    public static final HMCharacteristicMetadataFormat Data = new HMCharacteristicMetadataFormat("DataValue");
+    public static final HMCharacteristicMetadataFormat Data = new HMCharacteristicMetadataFormat("Data");
     /**
      * @since Available in iOS 8.0 and later.
      */
-    public static final HMCharacteristicMetadataFormat TLV8 = new HMCharacteristicMetadataFormat("TLV8Value");
+    public static final HMCharacteristicMetadataFormat TLV8 = new HMCharacteristicMetadataFormat("TLV8");
+    /*</constants>*/
     
-    private static HMCharacteristicMetadataFormat[] values = new HMCharacteristicMetadataFormat[] {Bool, Int, Float, String, 
-        Array, Dictionary, UInt8, UInt16, UInt32, UInt64, Data, TLV8};
-    private final LazyGlobalValue<NSString> lazyGlobalValue;
+    private static /*<name>*/HMCharacteristicMetadataFormat/*</name>*/[] values = new /*<name>*/HMCharacteristicMetadataFormat/*</name>*/[] {/*<value_list>*/Bool, Int, Float, String, Array, Dictionary, UInt8, UInt16, UInt32, UInt64, Data, TLV8/*</value_list>*/};
     
-    private HMCharacteristicMetadataFormat(String getterName) {
-        lazyGlobalValue = new LazyGlobalValue<>(getClass(), getterName);
-    }
-    /*<constructors>*//*</constructors>*/
-    /*<properties>*//*</properties>*/
-    /*<members>*//*</members>*/
-    public NSString value() {
-        return lazyGlobalValue.value();
+    /*<name>*/HMCharacteristicMetadataFormat/*</name>*/ (String getterName) {
+        super(Values.class, getterName);
     }
     
-    public static HMCharacteristicMetadataFormat valueOf(NSString value) {
-        for (HMCharacteristicMetadataFormat v : values) {
+    public static /*<name>*/HMCharacteristicMetadataFormat/*</name>*/ valueOf(/*<type>*/NSString/*</type>*/ value) {
+        for (/*<name>*/HMCharacteristicMetadataFormat/*</name>*/ v : values) {
             if (v.value().equals(value)) {
                 return v;
             }
@@ -131,66 +151,74 @@ import org.robovm.apple.foundation.*;
         throw new IllegalArgumentException("No constant with value " + value + " found in " 
             + /*<name>*/HMCharacteristicMetadataFormat/*</name>*/.class.getName());
     }
-    /*<methods>*/
-    /**
-     * @since Available in iOS 8.0 and later.
-     */
-    @GlobalValue(symbol="HMCharacteristicMetadataFormatBool", optional=true)
-    protected static native NSString BoolValue();
-    /**
-     * @since Available in iOS 8.0 and later.
-     */
-    @GlobalValue(symbol="HMCharacteristicMetadataFormatInt", optional=true)
-    protected static native NSString IntValue();
-    /**
-     * @since Available in iOS 8.0 and later.
-     */
-    @GlobalValue(symbol="HMCharacteristicMetadataFormatFloat", optional=true)
-    protected static native NSString FloatValue();
-    /**
-     * @since Available in iOS 8.0 and later.
-     */
-    @GlobalValue(symbol="HMCharacteristicMetadataFormatString", optional=true)
-    protected static native NSString StringValue();
-    /**
-     * @since Available in iOS 8.0 and later.
-     */
-    @GlobalValue(symbol="HMCharacteristicMetadataFormatArray", optional=true)
-    protected static native NSString ArrayValue();
-    /**
-     * @since Available in iOS 8.0 and later.
-     */
-    @GlobalValue(symbol="HMCharacteristicMetadataFormatDictionary", optional=true)
-    protected static native NSString DictionaryValue();
-    /**
-     * @since Available in iOS 8.0 and later.
-     */
-    @GlobalValue(symbol="HMCharacteristicMetadataFormatUInt8", optional=true)
-    protected static native NSString UInt8Value();
-    /**
-     * @since Available in iOS 8.0 and later.
-     */
-    @GlobalValue(symbol="HMCharacteristicMetadataFormatUInt16", optional=true)
-    protected static native NSString UInt16Value();
-    /**
-     * @since Available in iOS 8.0 and later.
-     */
-    @GlobalValue(symbol="HMCharacteristicMetadataFormatUInt32", optional=true)
-    protected static native NSString UInt32Value();
-    /**
-     * @since Available in iOS 8.0 and later.
-     */
-    @GlobalValue(symbol="HMCharacteristicMetadataFormatUInt64", optional=true)
-    protected static native NSString UInt64Value();
-    /**
-     * @since Available in iOS 8.0 and later.
-     */
-    @GlobalValue(symbol="HMCharacteristicMetadataFormatData", optional=true)
-    protected static native NSString DataValue();
-    /**
-     * @since Available in iOS 8.0 and later.
-     */
-    @GlobalValue(symbol="HMCharacteristicMetadataFormatTLV8", optional=true)
-    protected static native NSString TLV8Value();
-    /*</methods>*/
+    
+    /*<methods>*//*</methods>*/
+    
+    /*<annotations>*/@Library("HomeKit")/*</annotations>*/
+    public static class Values {
+    	static { Bro.bind(Values.class); }
+
+        /*<values>*/
+        /**
+         * @since Available in iOS 8.0 and later.
+         */
+        @GlobalValue(symbol="HMCharacteristicMetadataFormatBool", optional=true)
+        public static native NSString Bool();
+        /**
+         * @since Available in iOS 8.0 and later.
+         */
+        @GlobalValue(symbol="HMCharacteristicMetadataFormatInt", optional=true)
+        public static native NSString Int();
+        /**
+         * @since Available in iOS 8.0 and later.
+         */
+        @GlobalValue(symbol="HMCharacteristicMetadataFormatFloat", optional=true)
+        public static native NSString Float();
+        /**
+         * @since Available in iOS 8.0 and later.
+         */
+        @GlobalValue(symbol="HMCharacteristicMetadataFormatString", optional=true)
+        public static native NSString String();
+        /**
+         * @since Available in iOS 8.0 and later.
+         */
+        @GlobalValue(symbol="HMCharacteristicMetadataFormatArray", optional=true)
+        public static native NSString Array();
+        /**
+         * @since Available in iOS 8.0 and later.
+         */
+        @GlobalValue(symbol="HMCharacteristicMetadataFormatDictionary", optional=true)
+        public static native NSString Dictionary();
+        /**
+         * @since Available in iOS 8.0 and later.
+         */
+        @GlobalValue(symbol="HMCharacteristicMetadataFormatUInt8", optional=true)
+        public static native NSString UInt8();
+        /**
+         * @since Available in iOS 8.0 and later.
+         */
+        @GlobalValue(symbol="HMCharacteristicMetadataFormatUInt16", optional=true)
+        public static native NSString UInt16();
+        /**
+         * @since Available in iOS 8.0 and later.
+         */
+        @GlobalValue(symbol="HMCharacteristicMetadataFormatUInt32", optional=true)
+        public static native NSString UInt32();
+        /**
+         * @since Available in iOS 8.0 and later.
+         */
+        @GlobalValue(symbol="HMCharacteristicMetadataFormatUInt64", optional=true)
+        public static native NSString UInt64();
+        /**
+         * @since Available in iOS 8.0 and later.
+         */
+        @GlobalValue(symbol="HMCharacteristicMetadataFormatData", optional=true)
+        public static native NSString Data();
+        /**
+         * @since Available in iOS 8.0 and later.
+         */
+        @GlobalValue(symbol="HMCharacteristicMetadataFormatTLV8", optional=true)
+        public static native NSString TLV8();
+        /*</values>*/
+    }
 }

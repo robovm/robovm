@@ -95,12 +95,24 @@ import org.robovm.apple.opengles.*;
             + /*<name>*/SCNSceneSourceAnimationImportPolicy/*</name>*/.class.getName());
     }
     /*<methods>*/
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
     @GlobalValue(symbol="SCNSceneSourceAnimationImportPolicyPlay", optional=true)
     protected static native NSString PlayValue();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
     @GlobalValue(symbol="SCNSceneSourceAnimationImportPolicyPlayRepeatedly", optional=true)
     protected static native NSString PlayRepeatedlyValue();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
     @GlobalValue(symbol="SCNSceneSourceAnimationImportPolicyDoNotPlay", optional=true)
     protected static native NSString DoNotPlayValue();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
     @GlobalValue(symbol="SCNSceneSourceAnimationImportPolicyPlayUsingSceneTimeBase", optional=true)
     protected static native NSString PlayUsingSceneTimeBaseValue();
     /*</methods>*/

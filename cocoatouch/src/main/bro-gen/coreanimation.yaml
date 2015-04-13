@@ -371,6 +371,9 @@ functions:
         name: 'Function__#{g[0]}'
 
 values:     
+    # CAEmitterBehavior
+    kCAEmitterBehavior.*: # exclude for now
+        exclude: true 
 
     # CAEmitterLayer
     kCAEmitterLayer(Point|Line|Rectangle|Cuboid|Circle|Sphere):

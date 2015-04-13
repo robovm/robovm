@@ -37,7 +37,9 @@ import org.robovm.apple.opengles.*;
 /*</imports>*/
 
 /*<javadoc>*/
-
+/**
+ * @since Available in iOS 8.0 and later.
+ */
 /*</javadoc>*/
 /*<annotations>*/@Library("SceneKit") @NativeClass/*</annotations>*/
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/SCNMaterialProperty/*</name>*/ 
@@ -56,8 +58,14 @@ import org.robovm.apple.opengles.*;
     public native NSObject getContents();
     @Property(selector = "setContents:")
     public native void setContents(NSObject v);
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
     @Property(selector = "intensity")
     public native @MachineSizedFloat double getIntensity();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
     @Property(selector = "setIntensity:")
     public native void setIntensity(@MachineSizedFloat double v);
     @Property(selector = "minificationFilter")
@@ -92,13 +100,22 @@ import org.robovm.apple.opengles.*;
     public native @MachineSizedSInt long getMappingChannel();
     @Property(selector = "setMappingChannel:")
     public native void setMappingChannel(@MachineSizedSInt long v);
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
     @Property(selector = "maxAnisotropy")
     public native @MachineSizedFloat double getMaxAnisotropy();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
     @Property(selector = "setMaxAnisotropy:")
     public native void setMaxAnisotropy(@MachineSizedFloat double v);
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
     @Method(selector = "materialPropertyWithContents:")
     public static native SCNMaterialProperty create(NSObject contents);
     @Method(selector = "addAnimation:forKey:")
@@ -111,12 +128,24 @@ import org.robovm.apple.opengles.*;
     public native @org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String> getAnimationKeys();
     @Method(selector = "animationForKey:")
     public native CAAnimation getAnimation(String key);
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
     @Method(selector = "pauseAnimationForKey:")
     public native void pauseAnimation(String key);
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
     @Method(selector = "resumeAnimationForKey:")
     public native void resumeAnimation(String key);
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
     @Method(selector = "isAnimationForKeyPaused:")
     public native boolean isAnimationPaused(String key);
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
     @Method(selector = "removeAnimationForKey:fadeOutDuration:")
     public native void removeAnimation(String key, @MachineSizedFloat double duration);
     /*</methods>*/

@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.robovm.apple.networkextension;
+package org.robovm.apple.homekit;
 
 /*<imports>*/
 import java.io.*;
@@ -35,14 +35,19 @@ import org.robovm.apple.foundation.*;
  */
 /*</javadoc>*/
 /*<annotations>*/@Marshaler(ValuedEnum.AsMachineSizedSIntMarshaler.class)/*</annotations>*/
-public enum /*<name>*/NEVPNIKEv2EncryptionAlgorithm/*</name>*/ implements ValuedEnum {
+public enum /*<name>*/HMCharacteristicValueLockMechanismLastKnownAction/*</name>*/ implements ValuedEnum {
     /*<values>*/
-    DES(1L),
-    _3DES(2L),
-    AES128(3L),
-    AES256(4L),
-    AES128GCM(5L),
-    AES256GCM(6L);
+    SecuredUsingPhysicalMovementInterior(0L),
+    UnsecuredUsingPhysicalMovementInterior(1L),
+    SecuredUsingPhysicalMovementExterior(2L),
+    UnsecuredUsingPhysicalMovementExterior(3L),
+    SecuredWithKeypad(4L),
+    UnsecuredWithKeypad(5L),
+    SecuredRemotely(6L),
+    UnsecuredRemotely(7L),
+    SecuredWithAutomaticSecureTimeout(8L),
+    SecuredUsingPhysicalMovement(9L),
+    UnsecuredUsingPhysicalMovement(10L);
     /*</values>*/
 
     /*<bind>*/
@@ -52,15 +57,15 @@ public enum /*<name>*/NEVPNIKEv2EncryptionAlgorithm/*</name>*/ implements Valued
 
     private final long n;
 
-    private /*<name>*/NEVPNIKEv2EncryptionAlgorithm/*</name>*/(long n) { this.n = n; }
+    private /*<name>*/HMCharacteristicValueLockMechanismLastKnownAction/*</name>*/(long n) { this.n = n; }
     public long value() { return n; }
-    public static /*<name>*/NEVPNIKEv2EncryptionAlgorithm/*</name>*/ valueOf(long n) {
-        for (/*<name>*/NEVPNIKEv2EncryptionAlgorithm/*</name>*/ v : values()) {
+    public static /*<name>*/HMCharacteristicValueLockMechanismLastKnownAction/*</name>*/ valueOf(long n) {
+        for (/*<name>*/HMCharacteristicValueLockMechanismLastKnownAction/*</name>*/ v : values()) {
             if (v.n == n) {
                 return v;
             }
         }
         throw new IllegalArgumentException("No constant with value " + n + " found in " 
-            + /*<name>*/NEVPNIKEv2EncryptionAlgorithm/*</name>*/.class.getName());
+            + /*<name>*/HMCharacteristicValueLockMechanismLastKnownAction/*</name>*/.class.getName());
     }
 }

@@ -39,7 +39,7 @@ import org.robovm.apple.uikit.*;
 /*</javadoc>*/
 /*<annotations>*/@Library("CoreAudioKit") @NativeClass/*</annotations>*/
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/CABTMIDICentralViewController/*</name>*/ 
-    extends /*<extends>*/UIViewController/*</extends>*/ 
+    extends /*<extends>*/UITableViewController/*</extends>*/ 
     /*<implements>*//*</implements>*/ {
 
     /*<ptr>*/public static class CABTMIDICentralViewControllerPtr extends Ptr<CABTMIDICentralViewController, CABTMIDICentralViewControllerPtr> {}/*</ptr>*/

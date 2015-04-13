@@ -16,10 +16,10 @@ typedefs:
 enums:
     HMCharacteristicValueDoorState: {}
     HMCharacteristicValueHeatingCooling: {}
-    HMCharacteristicValueRotationDirection: { prefix: HMCharacteristicValueRotationDirection }
+    HMCharacteristicValueRotationDirection: {prefix: HMCharacteristicValueRotationDirection}
     HMCharacteristicValueTemperatureUnit: {}
     HMCharacteristicValueLockMechanismState: {}
-    HMCharacteristicValueLockMechanism: {}
+    HMCharacteristicValueLockMechanismLastKnownAction: {}
     HMErrorCode: {}
         
 classes:
@@ -351,34 +351,29 @@ values:
 
     # HMCharacteristic
     HMCharacteristicProperty(.*):
-        class: HMCharacteristicProperty
-        name: '#{g[0]}Value'
+        enum: HMCharacteristicProperty
+        name: '#{g[0]}'
         type: NSString
-        visibility: protected
     HMCharacteristicType(.*):
-        class: HMCharacteristicType
-        name: '#{g[0]}Value'
+        enum: HMCharacteristicType
+        name: '#{g[0]}'
         type: NSString
-        visibility: protected
     
     # HMCharacteristicMetadata
     HMCharacteristicMetadataFormat(.*):
-        class: HMCharacteristicMetadataFormat
-        name: '#{g[0]}Value'
+        enum: HMCharacteristicMetadataFormat
+        name: '#{g[0]}'
         type: NSString
-        visibility: protected
     HMCharacteristicMetadataUnits(.*):
-        class: HMCharacteristicMetadataUnits
-        name: '#{g[0]}Value'
+        enum: HMCharacteristicMetadataUnits
+        name: '#{g[0]}'
         type: NSString
-        visibility: protected
 
     # HMService
     HMServiceType(.*):
-        class: HMServiceType
-        name: '#{g[0]}Value'
+        enum: HMServiceType
+        name: '#{g[0]}'
         type: NSString
-        visibility: protected
    
     # Make sure we don't miss any values if new ones are introduced in a later version
     (k?HM.*):

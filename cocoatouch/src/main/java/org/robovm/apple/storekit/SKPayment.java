@@ -69,6 +69,11 @@ import org.robovm.apple.accounts.*;
      */
     @Property(selector = "applicationUsername")
     public native String getApplicationUsername();
+    /**
+     * @since Available in iOS 8.3 and later.
+     */
+    @Property(selector = "simulatesAskToBuyInSandbox")
+    public native boolean simulatesAskToBuyInSandbox();
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/

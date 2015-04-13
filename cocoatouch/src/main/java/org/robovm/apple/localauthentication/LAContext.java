@@ -51,6 +51,16 @@ import org.robovm.apple.foundation.*;
     public native String getLocalizedFallbackTitle();
     @Property(selector = "setLocalizedFallbackTitle:")
     public native void setLocalizedFallbackTitle(String v);
+    /**
+     * @since Available in iOS 8.1 and later.
+     */
+    @Property(selector = "maxBiometryFailures")
+    public native NSNumber getMaxBiometryFailures();
+    /**
+     * @since Available in iOS 8.1 and later.
+     */
+    @Property(selector = "setMaxBiometryFailures:")
+    public native void setMaxBiometryFailures(NSNumber v);
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/

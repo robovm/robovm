@@ -37,7 +37,9 @@ import org.robovm.apple.opengles.*;
 /*</imports>*/
 
 /*<javadoc>*/
-
+/**
+ * @since Available in iOS 8.0 and later.
+ */
 /*</javadoc>*/
 /*<annotations>*/@Marshaler(ValuedEnum.AsMachineSizedUIntMarshaler.class)/*</annotations>*/
 public enum /*<name>*/SCNAntialiasingMode/*</name>*/ implements ValuedEnum {

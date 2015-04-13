@@ -11,6 +11,7 @@ enums:
     NEVPNErrorCode: { first: NEVPNErrorConfigurationInvalid, prefix: NEVPNError }
     NEVPNStatus: {}
     NEVPNIKEAuthenticationMethod: {}
+    NEVPNIKEv2CertificateType: {}
     NEVPNIKEv2EncryptionAlgorithm: {}
     NEVPNIKEv2IntegrityAlgorithm: {}
     NEVPNIKEv2DeadPeerDetectionRate: {}

@@ -482,8 +482,8 @@ public class IOSTarget extends AbstractTarget {
         if (launchParameters instanceof IOSSimulatorLaunchParameters) {
             File script = File.createTempFile("BISTF", ".scpt");
             FileUtils.copyURLToFile(getClass().getResource("/BringIOSSimulatorToFront.scpt"), script);
-            script.setExecutable(true);
-            new Executor(config.getHome().isDev() ? config.getLogger() : Logger.NULL_LOGGER, script)
+            new Executor(config.getHome().isDev() ? config.getLogger() : Logger.NULL_LOGGER, "osascript")
+                    .args(script)
                     .execAsync();
         }
         return process;

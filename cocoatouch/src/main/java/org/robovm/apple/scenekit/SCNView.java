@@ -72,12 +72,24 @@ import org.robovm.apple.opengles.*;
     public native @MachineSizedSInt long getPreferredFramesPerSecond();
     @Property(selector = "setPreferredFramesPerSecond:")
     public native void setPreferredFramesPerSecond(@MachineSizedSInt long v);
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
     @Property(selector = "antialiasingMode")
     public native SCNAntialiasingMode getAntialiasingMode();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
     @Property(selector = "setAntialiasingMode:")
     public native void setAntialiasingMode(SCNAntialiasingMode v);
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
     @Property(selector = "sceneTime")
     public native double getSceneTime();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
     @Property(selector = "setSceneTime:")
     public native void setSceneTime(double v);
     @Property(selector = "delegate")
@@ -104,12 +116,24 @@ import org.robovm.apple.opengles.*;
     public native boolean isJitteringEnabled();
     @Property(selector = "setJitteringEnabled:")
     public native void setJitteringEnabled(boolean v);
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
     @Property(selector = "showsStatistics")
     public native boolean showsStatistics();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
     @Property(selector = "setShowsStatistics:")
     public native void setShowsStatistics(boolean v);
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
     @Property(selector = "overlaySKScene")
     public native SKScene getOverlaySKScene();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
     @Property(selector = "setOverlaySKScene:")
     public native void setOverlaySKScene(SKScene v);
     @Property(selector = "context")
@@ -123,6 +147,9 @@ import org.robovm.apple.opengles.*;
     /*<methods>*/
     @Method(selector = "initWithFrame:options:")
     protected native @Pointer long init(@ByVal CGRect frame, NSDictionary<?, ?> options);
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
     @Method(selector = "snapshot")
     public native UIImage snapshot();
     @Method(selector = "play:")
@@ -133,14 +160,29 @@ import org.robovm.apple.opengles.*;
     public native void stop(NSObject sender);
     @Method(selector = "hitTest:options:")
     public native NSArray<SCNHitTestResult> hitTest(@ByVal CGPoint thePoint, SCNHitTestOptions options);
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
     @Method(selector = "isNodeInsideFrustum:withPointOfView:")
     public native boolean isNodeInsideFrustum(SCNNode node, SCNNode pointOfView);
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
     @Method(selector = "projectPoint:")
     public native @ByVal SCNVector3 projectPoint(@ByVal SCNVector3 point);
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
     @Method(selector = "unprojectPoint:")
     public native @ByVal SCNVector3 unprojectPoint(@ByVal SCNVector3 point);
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
     @Method(selector = "prepareObject:shouldAbortBlock:")
     public native boolean prepareObject(NSObject object, @Block Block0<Boolean> block);
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
     @Method(selector = "prepareObjects:withCompletionHandler:")
     public native void prepareObjects(NSArray<?> objects, @Block VoidBooleanBlock completionHandler);
     /*</methods>*/

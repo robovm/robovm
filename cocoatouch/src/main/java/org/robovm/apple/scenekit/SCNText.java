@@ -37,7 +37,9 @@ import org.robovm.apple.opengles.*;
 /*</imports>*/
 
 /*<javadoc>*/
-
+/**
+ * @since Available in iOS 8.0 and later.
+ */
 /*</javadoc>*/
 /*<annotations>*/@Library("SceneKit") @NativeClass/*</annotations>*/
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/SCNText/*</name>*/ 
@@ -88,8 +90,14 @@ import org.robovm.apple.opengles.*;
     public native UIBezierPath getChamferProfile();
     @Property(selector = "setChamferProfile:")
     public native void setChamferProfile(UIBezierPath v);
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
     @Property(selector = "flatness")
     public native @MachineSizedFloat double getFlatness();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
     @Property(selector = "setFlatness:")
     public native void setFlatness(@MachineSizedFloat double v);
     /*</properties>*/

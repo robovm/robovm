@@ -37,7 +37,9 @@ import org.robovm.apple.opengles.*;
 /*</imports>*/
 
 /*<javadoc>*/
-
+/**
+ * @since Available in iOS 8.0 and later.
+ */
 /*</javadoc>*/
 /*<annotations>*/@Library("SceneKit") @NativeClass/*</annotations>*/
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/SCNSceneSource/*</name>*/ 
@@ -117,6 +119,9 @@ import org.robovm.apple.opengles.*;
     public native NSObject getEntryWithIdentifier(String uid, Class<? extends NSObject> entryClass);
     @Method(selector = "identifiersOfEntriesWithClass:")
     public native @org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String> getIdentifiersOfEntriesWithClass(Class<? extends NSObject> entryClass);
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
     @Method(selector = "entriesPassingTest:")
     public native NSArray<?> getEntriesPassingTest(@Block Block3<NSObject, String, BooleanPtr, Boolean> predicate);
     @Method(selector = "sceneSourceWithURL:options:")

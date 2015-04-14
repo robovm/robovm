@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.robovm.apple.networkextension;
+package org.robovm.apple.passkit;
 
 /*<imports>*/
 import java.io.*;
@@ -27,22 +27,19 @@ import org.robovm.rt.bro.*;
 import org.robovm.rt.bro.annotation.*;
 import org.robovm.rt.bro.ptr.*;
 import org.robovm.apple.foundation.*;
+import org.robovm.apple.uikit.*;
+import org.robovm.apple.addressbook.*;
 /*</imports>*/
 
 /*<javadoc>*/
-/**
- * @since Available in iOS 8.0 and later.
- */
+
 /*</javadoc>*/
 /*<annotations>*/@Marshaler(ValuedEnum.AsMachineSizedSIntMarshaler.class)/*</annotations>*/
-public enum /*<name>*/NEVPNIKEv2EncryptionAlgorithm/*</name>*/ implements ValuedEnum {
+public enum /*<name>*/PKPaymentButtonStyle/*</name>*/ implements ValuedEnum {
     /*<values>*/
-    DES(1L),
-    _3DES(2L),
-    AES128(3L),
-    AES256(4L),
-    AES128GCM(5L),
-    AES256GCM(6L);
+    White(0L),
+    WhiteOutline(1L),
+    Black(2L);
     /*</values>*/
 
     /*<bind>*/
@@ -52,15 +49,15 @@ public enum /*<name>*/NEVPNIKEv2EncryptionAlgorithm/*</name>*/ implements Valued
 
     private final long n;
 
-    private /*<name>*/NEVPNIKEv2EncryptionAlgorithm/*</name>*/(long n) { this.n = n; }
+    private /*<name>*/PKPaymentButtonStyle/*</name>*/(long n) { this.n = n; }
     public long value() { return n; }
-    public static /*<name>*/NEVPNIKEv2EncryptionAlgorithm/*</name>*/ valueOf(long n) {
-        for (/*<name>*/NEVPNIKEv2EncryptionAlgorithm/*</name>*/ v : values()) {
+    public static /*<name>*/PKPaymentButtonStyle/*</name>*/ valueOf(long n) {
+        for (/*<name>*/PKPaymentButtonStyle/*</name>*/ v : values()) {
             if (v.n == n) {
                 return v;
             }
         }
         throw new IllegalArgumentException("No constant with value " + n + " found in " 
-            + /*<name>*/NEVPNIKEv2EncryptionAlgorithm/*</name>*/.class.getName());
+            + /*<name>*/PKPaymentButtonStyle/*</name>*/.class.getName());
     }
 }

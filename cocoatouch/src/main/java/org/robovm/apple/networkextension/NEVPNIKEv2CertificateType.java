@@ -35,14 +35,12 @@ import org.robovm.apple.foundation.*;
  */
 /*</javadoc>*/
 /*<annotations>*/@Marshaler(ValuedEnum.AsMachineSizedSIntMarshaler.class)/*</annotations>*/
-public enum /*<name>*/NEVPNIKEv2EncryptionAlgorithm/*</name>*/ implements ValuedEnum {
+public enum /*<name>*/NEVPNIKEv2CertificateType/*</name>*/ implements ValuedEnum {
     /*<values>*/
-    DES(1L),
-    _3DES(2L),
-    AES128(3L),
-    AES256(4L),
-    AES128GCM(5L),
-    AES256GCM(6L);
+    RSA(1L),
+    ECDSA256(2L),
+    ECDSA384(3L),
+    ECDSA521(4L);
     /*</values>*/
 
     /*<bind>*/
@@ -52,15 +50,15 @@ public enum /*<name>*/NEVPNIKEv2EncryptionAlgorithm/*</name>*/ implements Valued
 
     private final long n;
 
-    private /*<name>*/NEVPNIKEv2EncryptionAlgorithm/*</name>*/(long n) { this.n = n; }
+    private /*<name>*/NEVPNIKEv2CertificateType/*</name>*/(long n) { this.n = n; }
     public long value() { return n; }
-    public static /*<name>*/NEVPNIKEv2EncryptionAlgorithm/*</name>*/ valueOf(long n) {
-        for (/*<name>*/NEVPNIKEv2EncryptionAlgorithm/*</name>*/ v : values()) {
+    public static /*<name>*/NEVPNIKEv2CertificateType/*</name>*/ valueOf(long n) {
+        for (/*<name>*/NEVPNIKEv2CertificateType/*</name>*/ v : values()) {
             if (v.n == n) {
                 return v;
             }
         }
         throw new IllegalArgumentException("No constant with value " + n + " found in " 
-            + /*<name>*/NEVPNIKEv2EncryptionAlgorithm/*</name>*/.class.getName());
+            + /*<name>*/NEVPNIKEv2CertificateType/*</name>*/.class.getName());
     }
 }

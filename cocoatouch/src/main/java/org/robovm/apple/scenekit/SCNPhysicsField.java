@@ -92,8 +92,14 @@ import org.robovm.apple.opengles.*;
     public native @ByVal SCNVector3 getDirection();
     @Property(selector = "setDirection:")
     public native void setDirection(@ByVal SCNVector3 v);
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
     @Property(selector = "categoryBitMask")
     public native @MachineSizedUInt long getCategoryBitMask();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
     @Property(selector = "setCategoryBitMask:")
     public native void setCategoryBitMask(@MachineSizedUInt long v);
     /*</properties>*/

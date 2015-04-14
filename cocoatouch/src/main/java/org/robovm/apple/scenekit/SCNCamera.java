@@ -37,7 +37,9 @@ import org.robovm.apple.opengles.*;
 /*</imports>*/
 
 /*<javadoc>*/
-
+/**
+ * @since Available in iOS 8.0 and later.
+ */
 /*</javadoc>*/
 /*<annotations>*/@Library("SceneKit") @NativeClass/*</annotations>*/
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/SCNCamera/*</name>*/ 
@@ -72,36 +74,78 @@ import org.robovm.apple.opengles.*;
     public native double getZFar();
     @Property(selector = "setZFar:")
     public native void setZFar(double v);
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
     @Property(selector = "automaticallyAdjustsZRange")
     public native boolean automaticallyAdjustsZRange();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
     @Property(selector = "setAutomaticallyAdjustsZRange:")
     public native void setAutomaticallyAdjustsZRange(boolean v);
     @Property(selector = "usesOrthographicProjection")
     public native boolean usesOrthographicProjection();
     @Property(selector = "setUsesOrthographicProjection:")
     public native void setUsesOrthographicProjection(boolean v);
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
     @Property(selector = "orthographicScale")
     public native double getOrthographicScale();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
     @Property(selector = "setOrthographicScale:")
     public native void setOrthographicScale(double v);
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
     @Property(selector = "focalDistance")
     public native @MachineSizedFloat double getFocalDistance();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
     @Property(selector = "setFocalDistance:")
     public native void setFocalDistance(@MachineSizedFloat double v);
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
     @Property(selector = "focalSize")
     public native @MachineSizedFloat double getFocalSize();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
     @Property(selector = "setFocalSize:")
     public native void setFocalSize(@MachineSizedFloat double v);
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
     @Property(selector = "focalBlurRadius")
     public native @MachineSizedFloat double getFocalBlurRadius();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
     @Property(selector = "setFocalBlurRadius:")
     public native void setFocalBlurRadius(@MachineSizedFloat double v);
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
     @Property(selector = "aperture")
     public native @MachineSizedFloat double getAperture();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
     @Property(selector = "setAperture:")
     public native void setAperture(@MachineSizedFloat double v);
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
     @Property(selector = "categoryBitMask")
     public native @MachineSizedUInt long getCategoryBitMask();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
     @Property(selector = "setCategoryBitMask:")
     public native void setCategoryBitMask(@MachineSizedUInt long v);
     @Property(selector = "technique")
@@ -113,6 +157,9 @@ import org.robovm.apple.opengles.*;
     /*<methods>*/
     @Method(selector = "projectionTransform")
     public native @ByVal SCNMatrix4 getProjectionTransform();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
     @Method(selector = "setProjectionTransform:")
     public native void setProjectionTransform(@ByVal SCNMatrix4 projectionTransform);
     @Method(selector = "camera")
@@ -127,12 +174,24 @@ import org.robovm.apple.opengles.*;
     public native @org.robovm.rt.bro.annotation.Marshaler(NSArray.AsStringListMarshaler.class) List<String> getAnimationKeys();
     @Method(selector = "animationForKey:")
     public native CAAnimation getAnimation(String key);
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
     @Method(selector = "pauseAnimationForKey:")
     public native void pauseAnimation(String key);
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
     @Method(selector = "resumeAnimationForKey:")
     public native void resumeAnimation(String key);
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
     @Method(selector = "isAnimationForKeyPaused:")
     public native boolean isAnimationPaused(String key);
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
     @Method(selector = "removeAnimationForKey:fadeOutDuration:")
     public native void removeAnimation(String key, @MachineSizedFloat double duration);
     /*</methods>*/

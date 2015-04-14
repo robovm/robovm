@@ -52,10 +52,19 @@ import org.robovm.apple.opengles.*;
     
     /*</properties>*/
     /*<methods>*/
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
     @Method(selector = "renderer:updateAtTime:")
     void update(SCNSceneRenderer aRenderer, double time);
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
     @Method(selector = "renderer:didApplyAnimationsAtTime:")
     void didApplyAnimations(SCNSceneRenderer aRenderer, double time);
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
     @Method(selector = "renderer:didSimulatePhysicsAtTime:")
     void didSimulatePhysics(SCNSceneRenderer aRenderer, double time);
     @Method(selector = "renderer:willRenderScene:atTime:")

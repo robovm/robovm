@@ -15,9 +15,12 @@ enums:
     PKPassLibraryAddPassesStatus: {first: PKPassLibraryDidAddPasses, marshaler: ValuedEnum.AsMachineSizedSIntMarshaler}
     PKPassType: {}
     PKPaymentAuthorizationStatus: {}
+    PKPaymentButtonStyle: {}
+    PKPaymentButtonType: {}
     PKPaymentPassActivationState: {}
     PKAddressField: {}
     PKMerchantCapability: {}
+    PKShippingType: {}
 
 classes:
     PKPassKitError:
@@ -81,6 +84,10 @@ classes:
                 parameters:
                     supportedNetworks:
                         type: '@org.robovm.rt.bro.annotation.Marshaler(PKPaymentNetwork.AsListMarshaler.class) List<PKPaymentNetwork>'
+    PKPaymentButton: # DONE
+        methods:
+            '+buttonWithType:style:':
+                name: create
     PKPaymentPass: {} # DONE
     PKPaymentRequest: # DONE
         properties:
@@ -111,6 +118,8 @@ protocols:
                 name: didAuthorizePayment
             '-paymentAuthorizationViewControllerDidFinish:':
                 name: didFinish
+            '-paymentAuthorizationViewControllerWillAuthorizePayment:':
+                name: willAuthorizePayment
             '-paymentAuthorizationViewController:didSelectShippingMethod:completion:':
                 name: didSelectShippingMethod
                 parameters:
@@ -138,10 +147,16 @@ values:
         name: '#{g[0]}'
         type: NSString
     PKPassLibrary(PassTypeIdentifier|SerialNumber)UserInfoKey:
-        class: PKRemovedPassInfo
-        name: '#{g[0]}Key'
+        dictionary: PKRemovedPassInfo
+        name: '#{g[0]}'
         type: NSString
-        visibility: protected
+        mutable: false
+        marshalers: false
+        methods:
+            PassTypeIdentifier:
+                type: String
+            SerialNumber:
+                type: String
     PKPassLibrary(.*)UserInfoKey:
         class: PKPassLibraryNotificationArgs
         name: '#{g[0]}Key'
@@ -150,10 +165,9 @@ values:
 
     # PKPayment
     PKPaymentNetwork(.*):
-        class: PKPaymentNetwork
-        name: '#{g[0]}Value'
+        enum: PKPaymentNetwork
+        name: '#{g[0]}'
         type: NSString
-        visibility: protected
 
     # Make sure we don't miss any values if new ones are introduced in a later version
     (PK.*):

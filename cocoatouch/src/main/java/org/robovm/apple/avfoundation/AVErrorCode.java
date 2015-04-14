@@ -107,7 +107,15 @@ public enum /*<name>*/AVErrorCode/*</name>*/ implements NSErrorCode {
     /**
      * @since Available in iOS 8.0 and later.
      */
-    UndecodableMediaData(-11855L);
+    UndecodableMediaData(-11855L),
+    /**
+     * @since Available in iOS 8.3 and later.
+     */
+    AirPlayControllerRequiresInternet(-11856L),
+    /**
+     * @since Available in iOS 8.3 and later.
+     */
+    AirPlayReceiverRequiresInternet(-11857L);
     /*</values>*/
 
     /*<bind>*/

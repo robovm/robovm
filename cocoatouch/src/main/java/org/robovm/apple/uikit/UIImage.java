@@ -252,6 +252,9 @@ import org.robovm.apple.corelocation.*;
     public native UIImage create(UIImageRenderingMode renderingMode);
     @Method(selector = "imageNamed:")
     public static native UIImage create(String name);
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
     @Method(selector = "imageNamed:inBundle:compatibleWithTraitCollection:")
     public static native UIImage create(String name, NSBundle bundle, UITraitCollection traitCollection);
     @Method(selector = "imageWithContentsOfFile:")

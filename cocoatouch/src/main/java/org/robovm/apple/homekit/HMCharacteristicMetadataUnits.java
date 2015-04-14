@@ -31,12 +31,15 @@ import org.robovm.apple.foundation.*;
 
 /*<javadoc>*/
 /*</javadoc>*/
-@Marshaler(HMCharacteristicMetadataUnits.Marshaler.class)
 /*<annotations>*/@Library("HomeKit")/*</annotations>*/
+@Marshaler(/*<name>*/HMCharacteristicMetadataUnits/*</name>*/.Marshaler.class)
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/HMCharacteristicMetadataUnits/*</name>*/ 
-    extends /*<extends>*/CocoaUtility/*</extends>*/ 
+    extends /*<extends>*/GlobalValueEnumeration<NSString>/*</extends>*/
     /*<implements>*//*</implements>*/ {
-    
+
+    static { Bro.bind(/*<name>*/HMCharacteristicMetadataUnits/*</name>*/.class); }
+
+    /*<marshalers>*/
     public static class Marshaler {
         @MarshalsPointer
         public static HMCharacteristicMetadataUnits toObject(Class<HMCharacteristicMetadataUnits> cls, long handle, long flags) {
@@ -54,44 +57,65 @@ import org.robovm.apple.foundation.*;
             return NSObject.Marshaler.toNative(o.value(), flags);
         }
     }
+    public static class AsListMarshaler {
+        @SuppressWarnings("unchecked")
+        @MarshalsPointer
+        public static List<HMCharacteristicMetadataUnits> toObject(Class<? extends NSObject> cls, long handle, long flags) {
+            NSArray<NSString> o = (NSArray<NSString>) NSObject.Marshaler.toObject(cls, handle, flags);
+            if (o == null) {
+                return null;
+            }
+            List<HMCharacteristicMetadataUnits> list = new ArrayList<>();
+            for (int i = 0; i < o.size(); i++) {
+                list.add(HMCharacteristicMetadataUnits.valueOf(o.get(i)));
+            }
+            return list;
+        }
+        @MarshalsPointer
+        public static long toNative(List<HMCharacteristicMetadataUnits> l, long flags) {
+            if (l == null) {
+                return 0L;
+            }
+            NSArray<NSString> array = new NSMutableArray<>();
+            for (HMCharacteristicMetadataUnits i : l) {
+                array.add(i.value());
+            }
+            return NSObject.Marshaler.toNative(array, flags);
+        }
+    }
+    /*</marshalers>*/
 
-    /*<ptr>*/
-    /*</ptr>*/
-    /*<bind>*/static { Bro.bind(HMCharacteristicMetadataUnits.class); }/*</bind>*/
-    /*<constants>*//*</constants>*/
+    /*<constants>*/
     /**
      * @since Available in iOS 8.0 and later.
      */
-    public static final HMCharacteristicMetadataUnits Celsius = new HMCharacteristicMetadataUnits("CelsiusValue");
+    public static final HMCharacteristicMetadataUnits Celsius = new HMCharacteristicMetadataUnits("Celsius");
     /**
      * @since Available in iOS 8.0 and later.
      */
-    public static final HMCharacteristicMetadataUnits Fahrenheit = new HMCharacteristicMetadataUnits("FahrenheitValue");
+    public static final HMCharacteristicMetadataUnits Fahrenheit = new HMCharacteristicMetadataUnits("Fahrenheit");
     /**
      * @since Available in iOS 8.0 and later.
      */
-    public static final HMCharacteristicMetadataUnits Percentage = new HMCharacteristicMetadataUnits("PercentageValue");
+    public static final HMCharacteristicMetadataUnits Percentage = new HMCharacteristicMetadataUnits("Percentage");
     /**
      * @since Available in iOS 8.0 and later.
      */
-    public static final HMCharacteristicMetadataUnits ArcDegree = new HMCharacteristicMetadataUnits("ArcDegreeValue");
+    public static final HMCharacteristicMetadataUnits ArcDegree = new HMCharacteristicMetadataUnits("ArcDegree");
+    /**
+     * @since Available in iOS 8.3 and later.
+     */
+    public static final HMCharacteristicMetadataUnits Seconds = new HMCharacteristicMetadataUnits("Seconds");
+    /*</constants>*/
     
-    private static HMCharacteristicMetadataUnits[] values = new HMCharacteristicMetadataUnits[] {Celsius, Fahrenheit, 
-        Percentage, ArcDegree};
-    private final LazyGlobalValue<NSString> lazyGlobalValue;
+    private static /*<name>*/HMCharacteristicMetadataUnits/*</name>*/[] values = new /*<name>*/HMCharacteristicMetadataUnits/*</name>*/[] {/*<value_list>*/Celsius, Fahrenheit, Percentage, ArcDegree, Seconds/*</value_list>*/};
     
-    private HMCharacteristicMetadataUnits(String getterName) {
-        lazyGlobalValue = new LazyGlobalValue<>(getClass(), getterName);
-    }
-    /*<constructors>*//*</constructors>*/
-    /*<properties>*//*</properties>*/
-    /*<members>*//*</members>*/
-    public NSString value() {
-        return lazyGlobalValue.value();
+    /*<name>*/HMCharacteristicMetadataUnits/*</name>*/ (String getterName) {
+        super(Values.class, getterName);
     }
     
-    public static HMCharacteristicMetadataUnits valueOf(NSString value) {
-        for (HMCharacteristicMetadataUnits v : values) {
+    public static /*<name>*/HMCharacteristicMetadataUnits/*</name>*/ valueOf(/*<type>*/NSString/*</type>*/ value) {
+        for (/*<name>*/HMCharacteristicMetadataUnits/*</name>*/ v : values) {
             if (v.value().equals(value)) {
                 return v;
             }
@@ -99,26 +123,39 @@ import org.robovm.apple.foundation.*;
         throw new IllegalArgumentException("No constant with value " + value + " found in " 
             + /*<name>*/HMCharacteristicMetadataUnits/*</name>*/.class.getName());
     }
-    /*<methods>*/
-    /**
-     * @since Available in iOS 8.0 and later.
-     */
-    @GlobalValue(symbol="HMCharacteristicMetadataUnitsCelsius", optional=true)
-    protected static native NSString CelsiusValue();
-    /**
-     * @since Available in iOS 8.0 and later.
-     */
-    @GlobalValue(symbol="HMCharacteristicMetadataUnitsFahrenheit", optional=true)
-    protected static native NSString FahrenheitValue();
-    /**
-     * @since Available in iOS 8.0 and later.
-     */
-    @GlobalValue(symbol="HMCharacteristicMetadataUnitsPercentage", optional=true)
-    protected static native NSString PercentageValue();
-    /**
-     * @since Available in iOS 8.0 and later.
-     */
-    @GlobalValue(symbol="HMCharacteristicMetadataUnitsArcDegree", optional=true)
-    protected static native NSString ArcDegreeValue();
-    /*</methods>*/
+    
+    /*<methods>*//*</methods>*/
+    
+    /*<annotations>*/@Library("HomeKit")/*</annotations>*/
+    public static class Values {
+    	static { Bro.bind(Values.class); }
+
+        /*<values>*/
+        /**
+         * @since Available in iOS 8.0 and later.
+         */
+        @GlobalValue(symbol="HMCharacteristicMetadataUnitsCelsius", optional=true)
+        public static native NSString Celsius();
+        /**
+         * @since Available in iOS 8.0 and later.
+         */
+        @GlobalValue(symbol="HMCharacteristicMetadataUnitsFahrenheit", optional=true)
+        public static native NSString Fahrenheit();
+        /**
+         * @since Available in iOS 8.0 and later.
+         */
+        @GlobalValue(symbol="HMCharacteristicMetadataUnitsPercentage", optional=true)
+        public static native NSString Percentage();
+        /**
+         * @since Available in iOS 8.0 and later.
+         */
+        @GlobalValue(symbol="HMCharacteristicMetadataUnitsArcDegree", optional=true)
+        public static native NSString ArcDegree();
+        /**
+         * @since Available in iOS 8.3 and later.
+         */
+        @GlobalValue(symbol="HMCharacteristicMetadataUnitsSeconds", optional=true)
+        public static native NSString Seconds();
+        /*</values>*/
+    }
 }

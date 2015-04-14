@@ -167,6 +167,6 @@ import org.robovm.apple.foundation.*;
      * @since Available in iOS 5.0 and later.
      */
     @Method(selector = "availableAttitudeReferenceFrames")
-    public static native @MachineSizedUInt long getAvailableAttitudeReferenceFrames();
+    public static native CMAttitudeReferenceFrame getAvailableAttitudeReferenceFrames();
     /*</methods>*/
 }

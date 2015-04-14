@@ -56,6 +56,9 @@ import org.robovm.apple.opengles.*;
     boolean getBoundingBox(SCNVector3.SCNVector3Ptr min, SCNVector3.SCNVector3Ptr max);
     @Method(selector = "getBoundingSphereCenter:radius:")
     boolean getBoundingSphere(SCNVector3.SCNVector3Ptr center, MachineSizedFloatPtr radius);
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
     @Method(selector = "setBoundingBoxMin:max:")
     void setBoundingBox(SCNVector3.SCNVector3Ptr min, SCNVector3.SCNVector3Ptr max);
     /*</methods>*/

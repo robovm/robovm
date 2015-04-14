@@ -33,14 +33,14 @@ import org.robovm.apple.accounts.*;
 
 /*<javadoc>*/
 /*</javadoc>*/
-@Marshaler(SKStoreProductParameters.Marshaler.class)
 /*<annotations>*/@Library("StoreKit")/*</annotations>*/
+@Marshaler(/*<name>*/SKStoreProductParameters/*</name>*/.Marshaler.class)
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/SKStoreProductParameters/*</name>*/ 
-    extends /*<extends>*/CocoaUtility/*</extends>*/ 
+    extends /*<extends>*/NSDictionaryWrapper/*</extends>*/
     /*<implements>*//*</implements>*/ {
 
+    /*<marshalers>*/
     public static class Marshaler {
-        @SuppressWarnings("unchecked")
         @MarshalsPointer
         public static SKStoreProductParameters toObject(Class<SKStoreProductParameters> cls, long handle, long flags) {
             NSDictionary<NSString, NSObject> o = (NSDictionary<NSString, NSObject>) NSObject.Marshaler.toObject(NSDictionary.class, handle, flags);
@@ -57,39 +57,62 @@ import org.robovm.apple.accounts.*;
             return NSObject.Marshaler.toNative(o.data, flags);
         }
     }
+    public static class AsListMarshaler {
+        @MarshalsPointer
+        public static List<SKStoreProductParameters> toObject(Class<? extends NSObject> cls, long handle, long flags) {
+            NSArray<NSDictionary<NSString, NSObject>> o = (NSArray<NSDictionary<NSString, NSObject>>) NSObject.Marshaler.toObject(cls, handle, flags);
+            if (o == null) {
+                return null;
+            }
+            List<SKStoreProductParameters> list = new ArrayList<>();
+            for (int i = 0; i < o.size(); i++) {
+                list.add(new SKStoreProductParameters(o.get(i)));
+            }
+            return list;
+        }
+        @MarshalsPointer
+        public static long toNative(List<SKStoreProductParameters> l, long flags) {
+            if (l == null) {
+                return 0L;
+            }
+            NSArray<NSDictionary<NSString, NSObject>> array = new NSMutableArray<>();
+            for (SKStoreProductParameters i : l) {
+                array.add(i.getDictionary());
+            }
+            return NSObject.Marshaler.toNative(array, flags);
+        }
+    }
+    /*</marshalers>*/
+
+    /*<constructors>*/
+    SKStoreProductParameters(NSDictionary<NSString, NSObject> data) {
+        super(data);
+    }
+    public SKStoreProductParameters() {}
+    /*</constructors>*/
+
+    /*<methods>*/
+    public boolean has(NSString key) {
+        return data.containsKey(key);
+    }
+    public NSObject get(NSString key) {
+        if (has(key)) {
+            return data.get(key);
+        }
+        return null;
+    }
+    public SKStoreProductParameters set(NSString key, NSObject value) {
+        data.put(key, value);
+        return this;
+    }
     
-    /*<ptr>*/
-    /*</ptr>*/
-    private NSDictionary<NSString, NSObject> data;
-    
-    protected SKStoreProductParameters(NSDictionary<NSString, NSObject> data) {
-        this.data = data;
-    }
-    public SKStoreProductParameters() {
-        data = new NSMutableDictionary<>();
-    }
-    /**
-     * @since Available in iOS 6.0 and later.
-     */
-    public SKStoreProductParameters(long iTunesItemIdentifier) {
-        data = new NSMutableDictionary<>();
-        setITunesItemIdentifier(iTunesItemIdentifier);
-    }
-    /*<bind>*/static { Bro.bind(SKStoreProductParameters.class); }/*</bind>*/
-    /*<constants>*//*</constants>*/
-    /*<constructors>*//*</constructors>*/
-    /*<properties>*//*</properties>*/
-    /*<members>*//*</members>*/
-    public NSDictionary<NSString, NSObject> getDictionary() {
-        return data;
-    }
-    
+
     /**
      * @since Available in iOS 6.0 and later.
      */
     public long getITunesItemIdentifier() {
-        if (data.containsKey(ITunesItemIdentifierKey())) {
-            NSNumber val = (NSNumber)data.get(ITunesItemIdentifierKey());
+        if (has(Keys.ITunesItemIdentifier())) {
+            NSNumber val = (NSNumber) get(Keys.ITunesItemIdentifier());
             return val.longValue();
         }
         return 0;
@@ -97,16 +120,16 @@ import org.robovm.apple.accounts.*;
     /**
      * @since Available in iOS 6.0 and later.
      */
-    public SKStoreProductParameters setITunesItemIdentifier(long identifier) {
-        data.put(ITunesItemIdentifierKey(), NSNumber.valueOf(identifier));
+    public SKStoreProductParameters setITunesItemIdentifier(long iTunesItemIdentifier) {
+        set(Keys.ITunesItemIdentifier(), NSNumber.valueOf(iTunesItemIdentifier));
         return this;
     }
     /**
      * @since Available in iOS 8.0 and later.
      */
     public String getAffiliateToken() {
-        if (data.containsKey(AffiliateTokenKey())) {
-            NSString val = (NSString)data.get(AffiliateTokenKey());
+        if (has(Keys.AffiliateToken())) {
+            NSString val = (NSString) get(Keys.AffiliateToken());
             return val.toString();
         }
         return null;
@@ -114,16 +137,16 @@ import org.robovm.apple.accounts.*;
     /**
      * @since Available in iOS 8.0 and later.
      */
-    public SKStoreProductParameters setAffiliateToken(String token) {
-        data.put(AffiliateTokenKey(), new NSString(token));
+    public SKStoreProductParameters setAffiliateToken(String affiliateToken) {
+        set(Keys.AffiliateToken(), new NSString(affiliateToken));
         return this;
     }
     /**
      * @since Available in iOS 8.0 and later.
      */
     public String getCampaignToken() {
-        if (data.containsKey(CampaignTokenKey())) {
-            NSString val = (NSString)data.get(CampaignTokenKey());
+        if (has(Keys.CampaignToken())) {
+            NSString val = (NSString) get(Keys.CampaignToken());
             return val.toString();
         }
         return null;
@@ -131,30 +154,53 @@ import org.robovm.apple.accounts.*;
     /**
      * @since Available in iOS 8.0 and later.
      */
-    public SKStoreProductParameters setCampaignToken(String token) {
-        data.put(CampaignTokenKey(), new NSString(token));
+    public SKStoreProductParameters setCampaignToken(String campaignToken) {
+        set(Keys.CampaignToken(), new NSString(campaignToken));
         return this;
     }
-    /*<methods>*/
     /**
-     * @since Available in iOS 6.0 and later.
+     * @since Available in iOS 8.3 and later.
      */
-    @GlobalValue(symbol="SKStoreProductParameterITunesItemIdentifier", optional=true)
-    protected static native NSString ITunesItemIdentifierKey();
-    /**
-     * @since Available in iOS 8.0 and later.
-     */
-    @GlobalValue(symbol="SKStoreProductParameterAffiliateToken", optional=true)
-    protected static native NSString AffiliateTokenKey();
-    /**
-     * @since Available in iOS 8.0 and later.
-     */
-    @GlobalValue(symbol="SKStoreProductParameterCampaignToken", optional=true)
-    protected static native NSString CampaignTokenKey();
-    /*</methods>*/
-    @Override
-    public String toString() {
-        if (data != null) return data.toString();
-        return super.toString();
+    public String getProviderToken() {
+        if (has(Keys.ProviderToken())) {
+            NSString val = (NSString) get(Keys.ProviderToken());
+            return val.toString();
+        }
+        return null;
     }
+    /**
+     * @since Available in iOS 8.3 and later.
+     */
+    public SKStoreProductParameters setProviderToken(String providerToken) {
+        set(Keys.ProviderToken(), new NSString(providerToken));
+        return this;
+    }
+    /*</methods>*/
+    
+    /*<keys>*/
+    @Library("StoreKit")
+    public static class Keys {
+        static { Bro.bind(Keys.class); }
+        /**
+         * @since Available in iOS 6.0 and later.
+         */
+        @GlobalValue(symbol="SKStoreProductParameterITunesItemIdentifier", optional=true)
+        public static native NSString ITunesItemIdentifier();
+        /**
+         * @since Available in iOS 8.0 and later.
+         */
+        @GlobalValue(symbol="SKStoreProductParameterAffiliateToken", optional=true)
+        public static native NSString AffiliateToken();
+        /**
+         * @since Available in iOS 8.0 and later.
+         */
+        @GlobalValue(symbol="SKStoreProductParameterCampaignToken", optional=true)
+        public static native NSString CampaignToken();
+        /**
+         * @since Available in iOS 8.3 and later.
+         */
+        @GlobalValue(symbol="SKStoreProductParameterProviderToken", optional=true)
+        public static native NSString ProviderToken();
+    }
+    /*</keys>*/
 }

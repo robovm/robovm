@@ -37,7 +37,9 @@ import org.robovm.apple.opengles.*;
 /*</imports>*/
 
 /*<javadoc>*/
-
+/**
+ * @since Available in iOS 8.0 and later.
+ */
 /*</javadoc>*/
 /*<annotations>*/@Library("SceneKit") @NativeClass/*</annotations>*/
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/SCNProgram/*</name>*/ 
@@ -60,8 +62,14 @@ import org.robovm.apple.opengles.*;
     public native String getFragmentShader();
     @Property(selector = "setFragmentShader:")
     public native void setFragmentShader(String v);
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
     @Property(selector = "isOpaque")
     public native boolean isOpaque();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
     @Property(selector = "setOpaque:")
     public native void setOpaque(boolean v);
     @Property(selector = "delegate")

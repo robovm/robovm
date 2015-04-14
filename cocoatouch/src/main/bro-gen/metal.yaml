@@ -228,6 +228,14 @@ protocols:
         class: true
         visibility: 'public final'
         methods:
+            '-setBytes:length:atIndex:':
+                trim_after_first_colon: true
+                visibility: protected
+                parameters:
+                    bytes:
+                        type: '@Pointer long'
+            '-setBufferOffset:atIndex:':
+                trim_after_first_colon: true
             '-setBuffer:offset:atIndex:':
                 trim_after_first_colon: true
             '-setBuffers:offsets:withRange:':
@@ -362,6 +370,14 @@ protocols:
         class: true
         visibility: 'public final'
         methods:
+            '-setVertexBytes:length:atIndex:':
+                trim_after_first_colon: true
+                visibility: protected
+                parameters:
+                    bytes:
+                        type: '@Pointer long'
+            '-setVertexBufferOffset:atIndex:':
+                trim_after_first_colon: true
             '-setVertexBuffer:offset:atIndex:':
                 trim_after_first_colon: true
             '-setVertexBuffers:offsets:withRange:':

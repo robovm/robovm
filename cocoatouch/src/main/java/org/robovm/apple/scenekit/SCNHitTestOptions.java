@@ -185,6 +185,9 @@ import org.robovm.apple.opengles.*;
     protected static native NSString IgnoreChildNodesKey();
     @GlobalValue(symbol="SCNHitTestRootNodeKey", optional=true)
     protected static native NSString RootNodeKey();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
     @GlobalValue(symbol="SCNHitTestIgnoreHiddenNodesKey", optional=true)
     protected static native NSString IgnoreHiddenNodesKey();
     /*</methods>*/

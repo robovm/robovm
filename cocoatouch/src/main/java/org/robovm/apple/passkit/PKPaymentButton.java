@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.robovm.apple.scenekit;
+package org.robovm.apple.passkit;
 
 /*<imports>*/
 import java.io.*;
@@ -28,40 +28,32 @@ import org.robovm.rt.bro.annotation.*;
 import org.robovm.rt.bro.ptr.*;
 import org.robovm.apple.foundation.*;
 import org.robovm.apple.uikit.*;
-import org.robovm.apple.coreanimation.*;
-import org.robovm.apple.coregraphics.*;
-import org.robovm.apple.dispatch.*;
-import org.robovm.apple.glkit.*;
-import org.robovm.apple.spritekit.*;
-import org.robovm.apple.opengles.*;
+import org.robovm.apple.addressbook.*;
 /*</imports>*/
 
 /*<javadoc>*/
+/**
+ * @since Available in iOS 8.3 and later.
+ */
 /*</javadoc>*/
-/*<annotations>*//*</annotations>*/
-/*<visibility>*/public/*</visibility>*/ class /*<name>*/SCNBoundingVolumeAdapter/*</name>*/ 
-    extends /*<extends>*/NSObject/*</extends>*/ 
-    /*<implements>*/implements SCNBoundingVolume/*</implements>*/ {
+/*<annotations>*/@Library("PassKit") @NativeClass/*</annotations>*/
+/*<visibility>*/public/*</visibility>*/ class /*<name>*/PKPaymentButton/*</name>*/ 
+    extends /*<extends>*/UIButton/*</extends>*/ 
+    /*<implements>*//*</implements>*/ {
 
-    /*<ptr>*/
-    /*</ptr>*/
-    /*<bind>*/
-    /*</bind>*/
+    /*<ptr>*/public static class PKPaymentButtonPtr extends Ptr<PKPaymentButton, PKPaymentButtonPtr> {}/*</ptr>*/
+    /*<bind>*/static { ObjCRuntime.bind(PKPaymentButton.class); }/*</bind>*/
     /*<constants>*//*</constants>*/
-    /*<constructors>*//*</constructors>*/
+    /*<constructors>*/
+    public PKPaymentButton() {}
+    protected PKPaymentButton(SkipInit skipInit) { super(skipInit); }
+    /*</constructors>*/
     /*<properties>*/
     
     /*</properties>*/
     /*<members>*//*</members>*/
     /*<methods>*/
-    @NotImplemented("getBoundingBoxMin:max:")
-    public boolean getBoundingBox(SCNVector3.SCNVector3Ptr min, SCNVector3.SCNVector3Ptr max) { return false; }
-    @NotImplemented("getBoundingSphereCenter:radius:")
-    public boolean getBoundingSphere(SCNVector3.SCNVector3Ptr center, MachineSizedFloatPtr radius) { return false; }
-    /**
-     * @since Available in iOS 8.0 and later.
-     */
-    @NotImplemented("setBoundingBoxMin:max:")
-    public void setBoundingBox(SCNVector3.SCNVector3Ptr min, SCNVector3.SCNVector3Ptr max) {}
+    @Method(selector = "buttonWithType:style:")
+    public static native PKPaymentButton create(PKPaymentButtonType buttonType, PKPaymentButtonStyle buttonStyle);
     /*</methods>*/
 }

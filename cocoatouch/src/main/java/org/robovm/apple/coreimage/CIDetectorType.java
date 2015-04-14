@@ -111,7 +111,7 @@ import org.robovm.apple.imageio.*;
     @GlobalValue(symbol="CIDetectorTypeRectangle", optional=true)
     protected static native NSString RectangleValue();
     /**
-     * @since Available in iOS 6.0 and later.
+     * @since Available in iOS 8.0 and later.
      */
     @GlobalValue(symbol="CIDetectorTypeQRCode", optional=true)
     protected static native NSString QRCodeValue();

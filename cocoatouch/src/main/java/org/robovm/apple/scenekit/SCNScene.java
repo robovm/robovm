@@ -37,7 +37,9 @@ import org.robovm.apple.opengles.*;
 /*</imports>*/
 
 /*<javadoc>*/
-
+/**
+ * @since Available in iOS 8.0 and later.
+ */
 /*</javadoc>*/
 /*<annotations>*/@Library("SceneKit") @NativeClass/*</annotations>*/
 /*<visibility>*/public/*</visibility>*/ class /*<name>*/SCNScene/*</name>*/ 
@@ -54,28 +56,64 @@ import org.robovm.apple.opengles.*;
     /*<properties>*/
     @Property(selector = "rootNode")
     public native SCNNode getRootNode();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
     @Property(selector = "physicsWorld")
     public native SCNPhysicsWorld getPhysicsWorld();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
     @Property(selector = "background")
     public native SCNMaterialProperty getBackground();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
     @Property(selector = "fogStartDistance")
     public native @MachineSizedFloat double getFogStartDistance();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
     @Property(selector = "setFogStartDistance:")
     public native void setFogStartDistance(@MachineSizedFloat double v);
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
     @Property(selector = "fogEndDistance")
     public native @MachineSizedFloat double getFogEndDistance();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
     @Property(selector = "setFogEndDistance:")
     public native void setFogEndDistance(@MachineSizedFloat double v);
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
     @Property(selector = "fogDensityExponent")
     public native @MachineSizedFloat double getFogDensityExponent();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
     @Property(selector = "setFogDensityExponent:")
     public native void setFogDensityExponent(@MachineSizedFloat double v);
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
     @Property(selector = "fogColor")
     public native UIColor getFogColor();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
     @Property(selector = "setFogColor:")
     public native void setFogColor(UIColor v);
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
     @Property(selector = "isPaused")
     public native boolean isPaused();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
     @Property(selector = "setPaused:")
     public native void setPaused(boolean v);
     @Property(selector = "particleSystems")
@@ -153,8 +191,14 @@ import org.robovm.apple.opengles.*;
     protected native void setAttribute(NSObject attribute, SCNSceneAttribute key);
     @Method(selector = "scene")
     public static native SCNScene create();
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
     @Method(selector = "sceneNamed:")
     public static native SCNScene create(String name);
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
     @Method(selector = "sceneNamed:inDirectory:options:")
     public static native SCNScene create(String name, String directory, SCNSceneSourceOptions options);
     @Method(selector = "sceneWithURL:options:error:")

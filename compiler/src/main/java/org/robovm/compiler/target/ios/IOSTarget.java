@@ -17,12 +17,16 @@
 package org.robovm.compiler.target.ios;
 
 import java.io.File;
+import java.io.FileFilter;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.lang.reflect.Method;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.Comparator;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -35,7 +39,11 @@ import java.util.regex.Pattern;
 import javax.xml.parsers.DocumentBuilder;
 
 import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.io.IOUtils;
+import org.apache.commons.io.filefilter.AndFileFilter;
+import org.apache.commons.io.filefilter.PrefixFileFilter;
+import org.apache.commons.io.filefilter.RegexFileFilter;
 import org.robovm.compiler.CompilerException;
 import org.robovm.compiler.config.Arch;
 import org.robovm.compiler.config.Config;
@@ -308,7 +316,7 @@ public class IOSTarget extends AbstractTarget {
 
     protected void prepareInstall(File installDir) throws IOException {
         createInfoPList(installDir);
-        generateDsym(installDir, getExecutable());
+        generateDsym(installDir, getExecutable(), false);
 
         if (isDeviceArch(arch)) {
             // only strip if this is not a debug build, otherwise
@@ -348,7 +356,7 @@ public class IOSTarget extends AbstractTarget {
     protected void prepareLaunch(File appDir) throws IOException {
         super.doInstall(appDir, getExecutable());
         createInfoPList(appDir);
-        generateDsym(appDir, getExecutable());
+        generateDsym(appDir, getExecutable(), true);
 
         if (isDeviceArch(arch)) {
             copyResourcesPList(appDir);
@@ -434,12 +442,25 @@ public class IOSTarget extends AbstractTarget {
         }
     }
 
-    private void generateDsym(File dir, String executable) throws IOException {
-        File dsymDir = new File(dir.getParentFile(), dir.getName() + ".dSYM");
+    private void generateDsym(final File dir, final String executable, boolean copyToIndexedDir) throws IOException {
+        final File dsymDir = new File(dir.getParentFile(), dir.getName() + ".dSYM");
+        final File exePath = new File(dir, executable);
         FileUtils.deleteDirectory(dsymDir);
-        new Executor(config.getLogger(), "xcrun")
-                .args("dsymutil", "-o", dsymDir, new File(dir, executable))
+        final Process process = new Executor(config.getLogger(), "xcrun")
+                .args("dsymutil", "-o", dsymDir, exePath)
                 .execAsync();
+        if (copyToIndexedDir) {
+            new Thread() {
+                public void run() {
+                    try {
+                        process.waitFor();
+                    } catch (InterruptedException e) {
+                        return;
+                    }
+                    copyToIndexedDir(dir, executable, dsymDir, exePath);
+                }
+            }.start();
+        }
     }
 
     private void strip(File dir, String executable) throws IOException {
@@ -800,6 +821,61 @@ public class IOSTarget extends AbstractTarget {
     @Override
     public boolean canLaunchInPlace() {
         return false;
+    }
+
+    /**
+     * Copies the dSYM and the executable to {@code ~/Library/Developer/Xcode/
+     * DerivedData/RoboVM/Build/Products/<appname>_<timestamp>/}.
+     */
+    private void copyToIndexedDir(File dir, String executable, File dsymDir, File exePath) {
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHHmmss");
+        final File indexedDir = new File(System.getProperty("user.home"),
+                "Library/Developer/Xcode/DerivedData/RoboVM/Build/Products/"
+                        + FilenameUtils.removeExtension(dir.getName()) + "_"
+                        + sdf.format(new Date()));
+        indexedDir.mkdirs();
+        File indexedDSymDir = new File(indexedDir, dsymDir.getName());
+        File indexedAppDir = new File(indexedDir, dir.getName());
+        indexedAppDir.mkdirs();
+
+        try {
+            // No need to copy the whole .app folder. Just the exe
+            // is enough to make symbolication happy.
+            FileUtils.copyFile(exePath, new File(indexedAppDir, executable));
+        } catch (IOException e) {
+            config.getLogger().error("Failed to copy %s to indexed dir %s: %s",
+                    exePath.getAbsolutePath(),
+                    indexedAppDir.getAbsolutePath(), e.getMessage());
+        }
+
+        try {
+            FileUtils.copyDirectory(dsymDir, indexedDSymDir);
+        } catch (IOException e) {
+            config.getLogger().error("Failed to copy %s to indexed dir %s: %s",
+                    dsymDir.getAbsolutePath(),
+                    indexedDir.getAbsolutePath(), e.getMessage());
+        }
+
+        // Now do some cleanup and delete all but the 3 most recent dirs
+        List<File> dirs = new ArrayList<>(Arrays.asList(indexedDir.getParentFile().listFiles((FileFilter)
+                new AndFileFilter(
+                        new PrefixFileFilter(FilenameUtils.removeExtension(dir.getName())),
+                        new RegexFileFilter(".*_\\d{14}")))));
+        Collections.sort(dirs, new Comparator<File>() {
+            public int compare(File o1, File o2) {
+                return Long.compare(o1.lastModified(), o2.lastModified());
+            }
+        });
+        if (dirs.size() > 3) {
+            for (File f : dirs.subList(0, dirs.size() - 3)) {
+                try {
+                    FileUtils.deleteDirectory(f);
+                } catch (IOException e) {
+                    config.getLogger().error("Failed to delete diretcory %s",
+                            f.getAbsolutePath(), e.getMessage());
+                }
+            }
+        }
     }
 
     private final static Pattern VARIABLE_PATTERN = Pattern.compile("\\$\\{([^}]+)\\}");

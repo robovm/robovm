@@ -41,6 +41,7 @@ import org.robovm.compiler.config.Arch;
 import org.robovm.compiler.config.Config;
 import org.robovm.compiler.config.OS;
 import org.robovm.compiler.config.Resource;
+import org.robovm.compiler.log.Logger;
 import org.robovm.compiler.target.AbstractTarget;
 import org.robovm.compiler.target.LaunchParameters;
 import org.robovm.compiler.target.Launcher;
@@ -456,7 +457,15 @@ public class IOSTarget extends AbstractTarget {
     @Override
     protected Process doLaunch(LaunchParameters launchParameters) throws IOException {
         prepareLaunch(getAppDir());
-        return super.doLaunch(launchParameters);
+        Process process = super.doLaunch(launchParameters);
+        if (launchParameters instanceof IOSSimulatorLaunchParameters) {
+            File script = File.createTempFile("BISTF", ".scpt");
+            FileUtils.copyURLToFile(getClass().getResource("/BringIOSSimulatorToFront.scpt"), script);
+            script.setExecutable(true);
+            new Executor(config.getHome().isDev() ? config.getLogger() : Logger.NULL_LOGGER, script)
+                    .execAsync();
+        }
+        return process;
     }
 
     public void createIpa(List<File> slices) throws IOException {

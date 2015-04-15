@@ -755,7 +755,7 @@ public class IOSTarget extends AbstractTarget {
         }
 
         if (isDeviceArch(arch)) {
-            if (!config.isIosSkipSigning()) {
+            if (!config.isSkipLinking() && !config.isIosSkipSigning()) {
                 signIdentity = config.getIosSignIdentity();
                 if (signIdentity == null) {
                     signIdentity = SigningIdentity.find(SigningIdentity.list(),
@@ -769,7 +769,7 @@ public class IOSTarget extends AbstractTarget {
         }
 
         if (isDeviceArch(arch)) {
-            if (!config.isIosSkipSigning()) {
+            if (!config.isSkipLinking() &&!config.isIosSkipSigning()) {
                 provisioningProfile = config.getIosProvisioningProfile();
                 if (provisioningProfile == null) {
                     String bundleId = "*";

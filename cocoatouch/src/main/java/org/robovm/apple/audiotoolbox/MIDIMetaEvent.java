@@ -79,6 +79,6 @@ import org.robovm.apple.coremidi.*;
     @StructMember(4) protected native MIDIMetaEvent setDataLength0(int dataLength0);
     /*</members>*/
     @StructMember(1) protected native BytePtr getData0();
-    @StructMember(1) protected native MIDIRawData setData0(@Pointer long data0);
+    @StructMember(1) protected native MIDIMetaEvent setData0(@Pointer long data0);
     /*<methods>*//*</methods>*/
 }

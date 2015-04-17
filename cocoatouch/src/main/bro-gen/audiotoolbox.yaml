@@ -734,6 +734,7 @@ functions:
         class: AudioFormatProperty
         name: '#{g[0]}0'
         visibility: protected
+        static: true
         parameters:
             inPropertyID:
                 type: AudioFormatProperty

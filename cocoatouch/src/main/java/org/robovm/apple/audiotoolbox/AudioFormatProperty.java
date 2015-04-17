@@ -19,7 +19,6 @@ package org.robovm.apple.audiotoolbox;
 import java.io.*;
 import java.nio.*;
 import java.util.*;
-
 import org.robovm.objc.*;
 import org.robovm.objc.annotation.*;
 import org.robovm.objc.block.*;
@@ -91,7 +90,7 @@ public enum /*<name>*/AudioFormatProperty/*</name>*/ implements ValuedEnum {
      */
     public int getPropertySize(Struct<?> specifier) throws OSStatusException {
         IntPtr ptr = new IntPtr();
-        OSStatus status = getPropertyInfo0(specifier == null ? 0 : Struct.sizeOf(specifier), specifier == null ? null : specifier.as(VoidPtr.class), ptr);
+        OSStatus status = getPropertyInfo0(this, specifier == null ? 0 : Struct.sizeOf(specifier), specifier == null ? null : specifier.as(VoidPtr.class), ptr);
         OSStatusException.throwIfNecessary(status);
         return ptr.get();
     }
@@ -102,7 +101,7 @@ public enum /*<name>*/AudioFormatProperty/*</name>*/ implements ValuedEnum {
     public <T extends Struct<T>> T getProperty(Struct<?> specifier, Class<T> type) throws OSStatusException {
         T data = Struct.allocate(type);
         IntPtr dataSize = new IntPtr(Struct.sizeOf(data));
-        OSStatus status = getProperty0(specifier == null ? 0 : Struct.sizeOf(specifier), specifier == null ? null : specifier.as(VoidPtr.class), dataSize, data.as(VoidPtr.class));
+        OSStatus status = getProperty0(this, specifier == null ? 0 : Struct.sizeOf(specifier), specifier == null ? null : specifier.as(VoidPtr.class), dataSize, data.as(VoidPtr.class));
         OSStatusException.throwIfNecessary(status);
         return data;
     }
@@ -111,12 +110,12 @@ public enum /*<name>*/AudioFormatProperty/*</name>*/ implements ValuedEnum {
      * @since Available in iOS 2.0 and later.
      */
     @Bridge(symbol="AudioFormatGetPropertyInfo", optional=true)
-    protected native OSStatus getPropertyInfo0(int inSpecifierSize, VoidPtr inSpecifier, IntPtr outPropertyDataSize);
+    protected static native OSStatus getPropertyInfo0(AudioFormatProperty inPropertyID, int inSpecifierSize, VoidPtr inSpecifier, IntPtr outPropertyDataSize);
     /**
      * @since Available in iOS 2.0 and later.
      */
     @Bridge(symbol="AudioFormatGetProperty", optional=true)
-    protected native OSStatus getProperty0(int inSpecifierSize, VoidPtr inSpecifier, IntPtr ioPropertyDataSize, VoidPtr outPropertyData);
+    protected static native OSStatus getProperty0(AudioFormatProperty inPropertyID, int inSpecifierSize, VoidPtr inSpecifier, IntPtr ioPropertyDataSize, VoidPtr outPropertyData);
     /*</methods>*/
 
     private final long n;

@@ -33,33 +33,35 @@ import org.robovm.apple.opengles.*;
 import org.robovm.apple.audiounit.*;
 import org.robovm.apple.coreaudio.*;
 import org.robovm.apple.coremedia.*;
+import org.robovm.apple.coremidi.*;
 /*</imports>*/
 
 /*<javadoc>*/
 
 /*</javadoc>*/
 /*<annotations>*//*</annotations>*/
-/*<visibility>*/public/*</visibility>*/ class /*<name>*/NoteParamsControlValue/*</name>*/ 
-    extends /*<extends>*/Struct<NoteParamsControlValue>/*</extends>*/ 
-    /*<implements>*//*</implements>*/ {
+public final class /*<name>*/MusicSequenceLoadFlags/*</name>*/ extends Bits</*<name>*/MusicSequenceLoadFlags/*</name>*/> {
+    /*<values>*/
+    public static final MusicSequenceLoadFlags None = new MusicSequenceLoadFlags(0L);
+    public static final MusicSequenceLoadFlags ChannelsToTracks = new MusicSequenceLoadFlags(1L);
+    /*</values>*/
 
-    /*<ptr>*/public static class NoteParamsControlValuePtr extends Ptr<NoteParamsControlValue, NoteParamsControlValuePtr> {}/*</ptr>*/
     /*<bind>*/
     /*</bind>*/
     /*<constants>*//*</constants>*/
-    /*<constructors>*/
-    public NoteParamsControlValue() {}
-    public NoteParamsControlValue(int mID, float mValue) {
-        this.setMID(mID);
-        this.setMValue(mValue);
-    }
-    /*</constructors>*/
-    /*<properties>*//*</properties>*/
-    /*<members>*/
-    @StructMember(0) public native int getMID();
-    @StructMember(0) public native NoteParamsControlValue setMID(int mID);
-    @StructMember(1) public native float getMValue();
-    @StructMember(1) public native NoteParamsControlValue setMValue(float mValue);
-    /*</members>*/
     /*<methods>*//*</methods>*/
+
+    private static final /*<name>*/MusicSequenceLoadFlags/*</name>*/[] values = _values(/*<name>*/MusicSequenceLoadFlags/*</name>*/.class);
+
+    public /*<name>*/MusicSequenceLoadFlags/*</name>*/(long value) { super(value); }
+    private /*<name>*/MusicSequenceLoadFlags/*</name>*/(long value, long mask) { super(value, mask); }
+    protected /*<name>*/MusicSequenceLoadFlags/*</name>*/ wrap(long value, long mask) {
+        return new /*<name>*/MusicSequenceLoadFlags/*</name>*/(value, mask);
+    }
+    protected /*<name>*/MusicSequenceLoadFlags/*</name>*/[] _values() {
+        return values;
+    }
+    public static /*<name>*/MusicSequenceLoadFlags/*</name>*/[] values() {
+        return values.clone();
+    }
 }

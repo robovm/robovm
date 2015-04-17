@@ -33,13 +33,14 @@ import org.robovm.apple.opengles.*;
 import org.robovm.apple.audiounit.*;
 import org.robovm.apple.coreaudio.*;
 import org.robovm.apple.coremedia.*;
+import org.robovm.apple.coremidi.*;
 /*</imports>*/
 
 /*<javadoc>*/
 
 /*</javadoc>*/
 /*<annotations>*/@Marshaler(ValuedEnum.AsMachineSizedUIntMarshaler.class)/*</annotations>*/
-public enum /*<name>*/AudioFileStreamError/*</name>*/ implements ValuedEnum {
+public enum /*<name>*/AudioFileStreamErrorCode/*</name>*/ implements ValuedEnum {
     /*<values>*/
     UnsupportedFileType(1954115647L),
     UnsupportedDataFormat(1718449215L),
@@ -62,15 +63,15 @@ public enum /*<name>*/AudioFileStreamError/*</name>*/ implements ValuedEnum {
 
     private final long n;
 
-    private /*<name>*/AudioFileStreamError/*</name>*/(long n) { this.n = n; }
+    private /*<name>*/AudioFileStreamErrorCode/*</name>*/(long n) { this.n = n; }
     public long value() { return n; }
-    public static /*<name>*/AudioFileStreamError/*</name>*/ valueOf(long n) {
-        for (/*<name>*/AudioFileStreamError/*</name>*/ v : values()) {
+    public static /*<name>*/AudioFileStreamErrorCode/*</name>*/ valueOf(long n) {
+        for (/*<name>*/AudioFileStreamErrorCode/*</name>*/ v : values()) {
             if (v.n == n) {
                 return v;
             }
         }
         throw new IllegalArgumentException("No constant with value " + n + " found in " 
-            + /*<name>*/AudioFileStreamError/*</name>*/.class.getName());
+            + /*<name>*/AudioFileStreamErrorCode/*</name>*/.class.getName());
     }
 }

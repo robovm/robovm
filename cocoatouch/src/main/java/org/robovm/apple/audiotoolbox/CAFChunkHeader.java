@@ -33,6 +33,7 @@ import org.robovm.apple.opengles.*;
 import org.robovm.apple.audiounit.*;
 import org.robovm.apple.coreaudio.*;
 import org.robovm.apple.coremedia.*;
+import org.robovm.apple.coremidi.*;
 /*</imports>*/
 
 /*<javadoc>*/
@@ -49,17 +50,17 @@ import org.robovm.apple.coremedia.*;
     /*<constants>*//*</constants>*/
     /*<constructors>*/
     public CAFChunkHeader() {}
-    public CAFChunkHeader(int mChunkType, long mChunkSize) {
-        this.setMChunkType(mChunkType);
-        this.setMChunkSize(mChunkSize);
+    public CAFChunkHeader(CAFChunkType chunkType, long chunkSize) {
+        this.setChunkType(chunkType);
+        this.setChunkSize(chunkSize);
     }
     /*</constructors>*/
     /*<properties>*//*</properties>*/
     /*<members>*/
-    @StructMember(0) public native int getMChunkType();
-    @StructMember(0) public native CAFChunkHeader setMChunkType(int mChunkType);
-    @StructMember(1) public native long getMChunkSize();
-    @StructMember(1) public native CAFChunkHeader setMChunkSize(long mChunkSize);
+    @StructMember(0) public native CAFChunkType getChunkType();
+    @StructMember(0) public native CAFChunkHeader setChunkType(CAFChunkType chunkType);
+    @StructMember(1) public native long getChunkSize();
+    @StructMember(1) public native CAFChunkHeader setChunkSize(long chunkSize);
     /*</members>*/
     /*<methods>*//*</methods>*/
 }

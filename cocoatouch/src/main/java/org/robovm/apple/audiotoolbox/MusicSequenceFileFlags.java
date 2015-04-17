@@ -33,15 +33,17 @@ import org.robovm.apple.opengles.*;
 import org.robovm.apple.audiounit.*;
 import org.robovm.apple.coreaudio.*;
 import org.robovm.apple.coremedia.*;
+import org.robovm.apple.coremidi.*;
 /*</imports>*/
 
 /*<javadoc>*/
 
 /*</javadoc>*/
-/*<annotations>*/@Marshaler(ValuedEnum.AsMachineSizedUIntMarshaler.class)/*</annotations>*/
-public enum /*<name>*/MusicSequenceFileFlags/*</name>*/ implements ValuedEnum {
+/*<annotations>*//*</annotations>*/
+public final class /*<name>*/MusicSequenceFileFlags/*</name>*/ extends Bits</*<name>*/MusicSequenceFileFlags/*</name>*/> {
     /*<values>*/
-    EraseFile(1L);
+    public static final MusicSequenceFileFlags None = new MusicSequenceFileFlags(0L);
+    public static final MusicSequenceFileFlags EraseFile = new MusicSequenceFileFlags(1L);
     /*</values>*/
 
     /*<bind>*/
@@ -49,17 +51,17 @@ public enum /*<name>*/MusicSequenceFileFlags/*</name>*/ implements ValuedEnum {
     /*<constants>*//*</constants>*/
     /*<methods>*//*</methods>*/
 
-    private final long n;
+    private static final /*<name>*/MusicSequenceFileFlags/*</name>*/[] values = _values(/*<name>*/MusicSequenceFileFlags/*</name>*/.class);
 
-    private /*<name>*/MusicSequenceFileFlags/*</name>*/(long n) { this.n = n; }
-    public long value() { return n; }
-    public static /*<name>*/MusicSequenceFileFlags/*</name>*/ valueOf(long n) {
-        for (/*<name>*/MusicSequenceFileFlags/*</name>*/ v : values()) {
-            if (v.n == n) {
-                return v;
-            }
-        }
-        throw new IllegalArgumentException("No constant with value " + n + " found in " 
-            + /*<name>*/MusicSequenceFileFlags/*</name>*/.class.getName());
+    public /*<name>*/MusicSequenceFileFlags/*</name>*/(long value) { super(value); }
+    private /*<name>*/MusicSequenceFileFlags/*</name>*/(long value, long mask) { super(value, mask); }
+    protected /*<name>*/MusicSequenceFileFlags/*</name>*/ wrap(long value, long mask) {
+        return new /*<name>*/MusicSequenceFileFlags/*</name>*/(value, mask);
+    }
+    protected /*<name>*/MusicSequenceFileFlags/*</name>*/[] _values() {
+        return values;
+    }
+    public static /*<name>*/MusicSequenceFileFlags/*</name>*/[] values() {
+        return values.clone();
     }
 }

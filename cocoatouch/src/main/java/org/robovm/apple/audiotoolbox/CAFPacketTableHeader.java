@@ -33,6 +33,7 @@ import org.robovm.apple.opengles.*;
 import org.robovm.apple.audiounit.*;
 import org.robovm.apple.coreaudio.*;
 import org.robovm.apple.coremedia.*;
+import org.robovm.apple.coremidi.*;
 /*</imports>*/
 
 /*<javadoc>*/
@@ -49,26 +50,33 @@ import org.robovm.apple.coremedia.*;
     /*<constants>*//*</constants>*/
     /*<constructors>*/
     public CAFPacketTableHeader() {}
-    public CAFPacketTableHeader(long mNumberPackets, long mNumberValidFrames, int mPrimingFrames, int mRemainderFrames, ByteBuffer mPacketDescriptions) {
-        this.setMNumberPackets(mNumberPackets);
-        this.setMNumberValidFrames(mNumberValidFrames);
-        this.setMPrimingFrames(mPrimingFrames);
-        this.setMRemainderFrames(mRemainderFrames);
-        this.setMPacketDescriptions(mPacketDescriptions);
+    public CAFPacketTableHeader(long numberValidFrames, int primingFrames, int remainderFrames) {
+        this.setNumberValidFrames(numberValidFrames);
+        this.setPrimingFrames(primingFrames);
+        this.setRemainderFrames(remainderFrames);
     }
     /*</constructors>*/
     /*<properties>*//*</properties>*/
+    public byte[] getPacketDescriptions() {
+        return getPacketDescriptions0().toByteArray((int)getNumberPackets());
+    }
+    public CAFPacketTableHeader setPacketDescriptions(byte[] packetDescriptions) {
+        BytePtr ptr = new BytePtr();
+        ptr.set(packetDescriptions);
+        setPacketDescriptions0(ptr);
+        return this;
+    }
     /*<members>*/
-    @StructMember(0) public native long getMNumberPackets();
-    @StructMember(0) public native CAFPacketTableHeader setMNumberPackets(long mNumberPackets);
-    @StructMember(1) public native long getMNumberValidFrames();
-    @StructMember(1) public native CAFPacketTableHeader setMNumberValidFrames(long mNumberValidFrames);
-    @StructMember(2) public native int getMPrimingFrames();
-    @StructMember(2) public native CAFPacketTableHeader setMPrimingFrames(int mPrimingFrames);
-    @StructMember(3) public native int getMRemainderFrames();
-    @StructMember(3) public native CAFPacketTableHeader setMRemainderFrames(int mRemainderFrames);
-    @StructMember(4) public native @Array({1}) ByteBuffer getMPacketDescriptions();
-    @StructMember(4) public native CAFPacketTableHeader setMPacketDescriptions(@Array({1}) ByteBuffer mPacketDescriptions);
+    @StructMember(0) protected native long getNumberPackets();
+    @StructMember(0) protected native CAFPacketTableHeader setNumberPackets(long numberPackets);
+    @StructMember(1) public native long getNumberValidFrames();
+    @StructMember(1) public native CAFPacketTableHeader setNumberValidFrames(long numberValidFrames);
+    @StructMember(2) public native int getPrimingFrames();
+    @StructMember(2) public native CAFPacketTableHeader setPrimingFrames(int primingFrames);
+    @StructMember(3) public native int getRemainderFrames();
+    @StructMember(3) public native CAFPacketTableHeader setRemainderFrames(int remainderFrames);
+    @StructMember(4) protected native BytePtr getPacketDescriptions0();
+    @StructMember(4) protected native CAFPacketTableHeader setPacketDescriptions0(BytePtr packetDescriptions0);
     /*</members>*/
     /*<methods>*//*</methods>*/
 }

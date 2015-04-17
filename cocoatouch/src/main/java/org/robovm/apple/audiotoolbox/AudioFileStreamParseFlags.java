@@ -38,28 +38,29 @@ import org.robovm.apple.coremedia.*;
 /*<javadoc>*/
 
 /*</javadoc>*/
-/*<annotations>*//*</annotations>*/
-/*<visibility>*/public/*</visibility>*/ class /*<name>*/CAFStringID/*</name>*/ 
-    extends /*<extends>*/Struct<CAFStringID>/*</extends>*/ 
-    /*<implements>*//*</implements>*/ {
+/*<annotations>*/@Marshaler(Bits.AsMachineSizedIntMarshaler.class)/*</annotations>*/
+public final class /*<name>*/AudioFileStreamParseFlags/*</name>*/ extends Bits</*<name>*/AudioFileStreamParseFlags/*</name>*/> {
+    /*<values>*/
+    public static final AudioFileStreamParseFlags None = new AudioFileStreamParseFlags(0L);
+    public static final AudioFileStreamParseFlags Discontinuity = new AudioFileStreamParseFlags(1L);
+    /*</values>*/
 
-    /*<ptr>*/public static class CAFStringIDPtr extends Ptr<CAFStringID, CAFStringIDPtr> {}/*</ptr>*/
     /*<bind>*/
     /*</bind>*/
     /*<constants>*//*</constants>*/
-    /*<constructors>*/
-    public CAFStringID() {}
-    public CAFStringID(int mStringID, long mStringStartByteOffset) {
-        this.setMStringID(mStringID);
-        this.setMStringStartByteOffset(mStringStartByteOffset);
-    }
-    /*</constructors>*/
-    /*<properties>*//*</properties>*/
-    /*<members>*/
-    @StructMember(0) public native int getMStringID();
-    @StructMember(0) public native CAFStringID setMStringID(int mStringID);
-    @StructMember(1) public native long getMStringStartByteOffset();
-    @StructMember(1) public native CAFStringID setMStringStartByteOffset(long mStringStartByteOffset);
-    /*</members>*/
     /*<methods>*//*</methods>*/
+
+    private static final /*<name>*/AudioFileStreamParseFlags/*</name>*/[] values = _values(/*<name>*/AudioFileStreamParseFlags/*</name>*/.class);
+
+    public /*<name>*/AudioFileStreamParseFlags/*</name>*/(long value) { super(value); }
+    private /*<name>*/AudioFileStreamParseFlags/*</name>*/(long value, long mask) { super(value, mask); }
+    protected /*<name>*/AudioFileStreamParseFlags/*</name>*/ wrap(long value, long mask) {
+        return new /*<name>*/AudioFileStreamParseFlags/*</name>*/(value, mask);
+    }
+    protected /*<name>*/AudioFileStreamParseFlags/*</name>*/[] _values() {
+        return values;
+    }
+    public static /*<name>*/AudioFileStreamParseFlags/*</name>*/[] values() {
+        return values.clone();
+    }
 }

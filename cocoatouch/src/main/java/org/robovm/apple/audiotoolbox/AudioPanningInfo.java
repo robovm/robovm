@@ -33,6 +33,7 @@ import org.robovm.apple.opengles.*;
 import org.robovm.apple.audiounit.*;
 import org.robovm.apple.coreaudio.*;
 import org.robovm.apple.coremedia.*;
+import org.robovm.apple.coremidi.*;
 /*</imports>*/
 
 /*<javadoc>*/
@@ -49,26 +50,40 @@ import org.robovm.apple.coremedia.*;
     /*<constants>*//*</constants>*/
     /*<constructors>*/
     public AudioPanningInfo() {}
-    public AudioPanningInfo(int mPanningMode, int mCoordinateFlags, FloatBuffer mCoordinates, float mGainScale, AudioChannelLayout mOutputChannelMap) {
-        this.setMPanningMode(mPanningMode);
-        this.setMCoordinateFlags(mCoordinateFlags);
-        this.setMCoordinates(mCoordinates);
-        this.setMGainScale(mGainScale);
-        this.setMOutputChannelMap(mOutputChannelMap);
+    public AudioPanningInfo(AudioPanningMode panningMode, AudioChannelFlags coordinateFlags, float[] coordinates, float gainScale, AudioChannelLayout outputChannelMap) {
+        this.setPanningMode(panningMode);
+        this.setCoordinateFlags(coordinateFlags);
+        this.setCoordinates(coordinates);
+        this.setGainScale(gainScale);
+        this.setOutputChannelMap(outputChannelMap);
     }
     /*</constructors>*/
     /*<properties>*//*</properties>*/
+    public float getCoordinate(AudioChannelCoordinate coordinate) {
+        return getCoordinates()[(int)coordinate.value()];
+    }
+    public AudioPanningInfo setCoordinate(AudioChannelCoordinate coordinate, float value) {
+        float[] coords = getCoordinates();
+        coords[(int)coordinate.value()] = value;
+        setCoordinates(coords);
+        return this;
+    }
+    public AudioPanningInfo setCoordinates(float x, float y, float z) {
+        float[] coords = new float[] {x, y, z};
+        setCoordinates(coords);
+        return this;
+    }
     /*<members>*/
-    @StructMember(0) public native int getMPanningMode();
-    @StructMember(0) public native AudioPanningInfo setMPanningMode(int mPanningMode);
-    @StructMember(1) public native int getMCoordinateFlags();
-    @StructMember(1) public native AudioPanningInfo setMCoordinateFlags(int mCoordinateFlags);
-    @StructMember(2) public native @Array({3}) FloatBuffer getMCoordinates();
-    @StructMember(2) public native AudioPanningInfo setMCoordinates(@Array({3}) FloatBuffer mCoordinates);
-    @StructMember(3) public native float getMGainScale();
-    @StructMember(3) public native AudioPanningInfo setMGainScale(float mGainScale);
-    @StructMember(4) public native AudioChannelLayout getMOutputChannelMap();
-    @StructMember(4) public native AudioPanningInfo setMOutputChannelMap(AudioChannelLayout mOutputChannelMap);
+    @StructMember(0) public native AudioPanningMode getPanningMode();
+    @StructMember(0) public native AudioPanningInfo setPanningMode(AudioPanningMode panningMode);
+    @StructMember(1) public native AudioChannelFlags getCoordinateFlags();
+    @StructMember(1) public native AudioPanningInfo setCoordinateFlags(AudioChannelFlags coordinateFlags);
+    @StructMember(2) public native @Array({3}) float[] getCoordinates();
+    @StructMember(2) public native AudioPanningInfo setCoordinates(@Array({3}) float[] coordinates);
+    @StructMember(3) public native float getGainScale();
+    @StructMember(3) public native AudioPanningInfo setGainScale(float gainScale);
+    @StructMember(4) public native AudioChannelLayout getOutputChannelMap();
+    @StructMember(4) public native AudioPanningInfo setOutputChannelMap(AudioChannelLayout outputChannelMap);
     /*</members>*/
     /*<methods>*//*</methods>*/
 }

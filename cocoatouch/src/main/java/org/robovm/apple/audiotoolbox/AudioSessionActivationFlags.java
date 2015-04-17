@@ -33,25 +33,17 @@ import org.robovm.apple.opengles.*;
 import org.robovm.apple.audiounit.*;
 import org.robovm.apple.coreaudio.*;
 import org.robovm.apple.coremedia.*;
+import org.robovm.apple.coremidi.*;
 /*</imports>*/
 
 /*<javadoc>*/
 
 /*</javadoc>*/
-/*<annotations>*/@Marshaler(ValuedEnum.AsMachineSizedUIntMarshaler.class)/*</annotations>*/
-public enum /*<name>*/AudioSessionError/*</name>*/ implements ValuedEnum {
+/*<annotations>*//*</annotations>*/
+public final class /*<name>*/AudioSessionActivationFlags/*</name>*/ extends Bits</*<name>*/AudioSessionActivationFlags/*</name>*/> {
     /*<values>*/
-    No(0L),
-    NotInitialized(560557673L),
-    AlreadyInitialized(1768843636L),
-    Initialization(1768843583L),
-    UnsupportedProperty(1886681407L),
-    BadPropertySize(561211770L),
-    NotActive(560030580L),
-    NoHardware(1852794999L),
-    NoCategorySet(1063477620L),
-    IncompatibleCategory(560161140L),
-    Unspecified(2003329396L);
+    public static final AudioSessionActivationFlags None = new AudioSessionActivationFlags(0L);
+    public static final AudioSessionActivationFlags NotifyOthersOnDeactivation = new AudioSessionActivationFlags(1L);
     /*</values>*/
 
     /*<bind>*/
@@ -59,17 +51,17 @@ public enum /*<name>*/AudioSessionError/*</name>*/ implements ValuedEnum {
     /*<constants>*//*</constants>*/
     /*<methods>*//*</methods>*/
 
-    private final long n;
+    private static final /*<name>*/AudioSessionActivationFlags/*</name>*/[] values = _values(/*<name>*/AudioSessionActivationFlags/*</name>*/.class);
 
-    private /*<name>*/AudioSessionError/*</name>*/(long n) { this.n = n; }
-    public long value() { return n; }
-    public static /*<name>*/AudioSessionError/*</name>*/ valueOf(long n) {
-        for (/*<name>*/AudioSessionError/*</name>*/ v : values()) {
-            if (v.n == n) {
-                return v;
-            }
-        }
-        throw new IllegalArgumentException("No constant with value " + n + " found in " 
-            + /*<name>*/AudioSessionError/*</name>*/.class.getName());
+    public /*<name>*/AudioSessionActivationFlags/*</name>*/(long value) { super(value); }
+    private /*<name>*/AudioSessionActivationFlags/*</name>*/(long value, long mask) { super(value, mask); }
+    protected /*<name>*/AudioSessionActivationFlags/*</name>*/ wrap(long value, long mask) {
+        return new /*<name>*/AudioSessionActivationFlags/*</name>*/(value, mask);
+    }
+    protected /*<name>*/AudioSessionActivationFlags/*</name>*/[] _values() {
+        return values;
+    }
+    public static /*<name>*/AudioSessionActivationFlags/*</name>*/[] values() {
+        return values.clone();
     }
 }

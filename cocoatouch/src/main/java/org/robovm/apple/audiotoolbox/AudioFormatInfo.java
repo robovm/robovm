@@ -33,6 +33,7 @@ import org.robovm.apple.opengles.*;
 import org.robovm.apple.audiounit.*;
 import org.robovm.apple.coreaudio.*;
 import org.robovm.apple.coremedia.*;
+import org.robovm.apple.coremidi.*;
 /*</imports>*/
 
 /*<javadoc>*/
@@ -49,20 +50,20 @@ import org.robovm.apple.coremedia.*;
     /*<constants>*//*</constants>*/
     /*<constructors>*/
     public AudioFormatInfo() {}
-    public AudioFormatInfo(AudioStreamBasicDescription mASBD, VoidPtr mMagicCookie, int mMagicCookieSize) {
-        this.setMASBD(mASBD);
-        this.setMMagicCookie(mMagicCookie);
-        this.setMMagicCookieSize(mMagicCookieSize);
+    public AudioFormatInfo(AudioStreamBasicDescription ASBD, VoidPtr magicCookie, int magicCookieSize) {
+        this.setASBD(ASBD);
+        this.setMagicCookie(magicCookie);
+        this.setMagicCookieSize(magicCookieSize);
     }
     /*</constructors>*/
     /*<properties>*//*</properties>*/
     /*<members>*/
-    @StructMember(0) public native @ByVal AudioStreamBasicDescription getMASBD();
-    @StructMember(0) public native AudioFormatInfo setMASBD(@ByVal AudioStreamBasicDescription mASBD);
-    @StructMember(1) public native VoidPtr getMMagicCookie();
-    @StructMember(1) public native AudioFormatInfo setMMagicCookie(VoidPtr mMagicCookie);
-    @StructMember(2) public native int getMMagicCookieSize();
-    @StructMember(2) public native AudioFormatInfo setMMagicCookieSize(int mMagicCookieSize);
+    @StructMember(0) public native @ByVal AudioStreamBasicDescription getASBD();
+    @StructMember(0) public native AudioFormatInfo setASBD(@ByVal AudioStreamBasicDescription ASBD);
+    @StructMember(1) public native VoidPtr getMagicCookie();
+    @StructMember(1) public native AudioFormatInfo setMagicCookie(VoidPtr magicCookie);
+    @StructMember(2) public native int getMagicCookieSize();
+    @StructMember(2) public native AudioFormatInfo setMagicCookieSize(int magicCookieSize);
     /*</members>*/
     /*<methods>*//*</methods>*/
 }

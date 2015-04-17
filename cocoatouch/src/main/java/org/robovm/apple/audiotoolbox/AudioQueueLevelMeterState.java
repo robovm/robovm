@@ -33,6 +33,7 @@ import org.robovm.apple.opengles.*;
 import org.robovm.apple.audiounit.*;
 import org.robovm.apple.coreaudio.*;
 import org.robovm.apple.coremedia.*;
+import org.robovm.apple.coremidi.*;
 /*</imports>*/
 
 /*<javadoc>*/
@@ -49,17 +50,17 @@ import org.robovm.apple.coremedia.*;
     /*<constants>*//*</constants>*/
     /*<constructors>*/
     public AudioQueueLevelMeterState() {}
-    public AudioQueueLevelMeterState(float mAveragePower, float mPeakPower) {
-        this.setMAveragePower(mAveragePower);
-        this.setMPeakPower(mPeakPower);
+    public AudioQueueLevelMeterState(float averagePower, float peakPower) {
+        this.setAveragePower(averagePower);
+        this.setPeakPower(peakPower);
     }
     /*</constructors>*/
     /*<properties>*//*</properties>*/
     /*<members>*/
-    @StructMember(0) public native float getMAveragePower();
-    @StructMember(0) public native AudioQueueLevelMeterState setMAveragePower(float mAveragePower);
-    @StructMember(1) public native float getMPeakPower();
-    @StructMember(1) public native AudioQueueLevelMeterState setMPeakPower(float mPeakPower);
+    @StructMember(0) public native float getAveragePower();
+    @StructMember(0) public native AudioQueueLevelMeterState setAveragePower(float averagePower);
+    @StructMember(1) public native float getPeakPower();
+    @StructMember(1) public native AudioQueueLevelMeterState setPeakPower(float peakPower);
     /*</members>*/
     /*<methods>*//*</methods>*/
 }

@@ -33,20 +33,31 @@ import org.robovm.apple.opengles.*;
 import org.robovm.apple.audiounit.*;
 import org.robovm.apple.coreaudio.*;
 import org.robovm.apple.coremedia.*;
+import org.robovm.apple.coremidi.*;
 /*</imports>*/
 
 /*<javadoc>*/
 
 /*</javadoc>*/
 /*<annotations>*//*</annotations>*/
-public enum /*<name>*/AudioServicesError/*</name>*/ implements ValuedEnum {
+public enum /*<name>*/AudioFileErrorCode/*</name>*/ implements ValuedEnum {
     /*<values>*/
-    No(0L),
+    Unspecified(2003334207L),
+    UnsupportedFileType(1954115647L),
+    UnsupportedDataFormat(1718449215L),
     UnsupportedProperty(1886681407L),
     BadPropertySize(561211770L),
-    BadSpecifierSize(561213539L),
-    SystemSoundUnspecified(-1500L),
-    SystemSoundClientTimedOut(-1501L);
+    Permissions(1886547263L),
+    NotOptimized(1869640813L),
+    InvalidChunk(1667787583L),
+    DoesNotAllow64BitDataSize(1868981823L),
+    InvalidPacketOffset(1885563711L),
+    InvalidFile(1685348671L),
+    OperationNotSupported(1869627199L),
+    NotOpen(-38L),
+    EndOfFile(-39L),
+    Position(-40L),
+    FileNotFound(-43L);
     /*</values>*/
 
     /*<bind>*/
@@ -56,15 +67,15 @@ public enum /*<name>*/AudioServicesError/*</name>*/ implements ValuedEnum {
 
     private final long n;
 
-    private /*<name>*/AudioServicesError/*</name>*/(long n) { this.n = n; }
+    private /*<name>*/AudioFileErrorCode/*</name>*/(long n) { this.n = n; }
     public long value() { return n; }
-    public static /*<name>*/AudioServicesError/*</name>*/ valueOf(long n) {
-        for (/*<name>*/AudioServicesError/*</name>*/ v : values()) {
+    public static /*<name>*/AudioFileErrorCode/*</name>*/ valueOf(long n) {
+        for (/*<name>*/AudioFileErrorCode/*</name>*/ v : values()) {
             if (v.n == n) {
                 return v;
             }
         }
         throw new IllegalArgumentException("No constant with value " + n + " found in " 
-            + /*<name>*/AudioServicesError/*</name>*/.class.getName());
+            + /*<name>*/AudioFileErrorCode/*</name>*/.class.getName());
     }
 }

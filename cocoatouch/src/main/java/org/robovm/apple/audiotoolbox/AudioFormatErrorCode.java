@@ -33,25 +33,21 @@ import org.robovm.apple.opengles.*;
 import org.robovm.apple.audiounit.*;
 import org.robovm.apple.coreaudio.*;
 import org.robovm.apple.coremedia.*;
+import org.robovm.apple.coremidi.*;
 /*</imports>*/
 
 /*<javadoc>*/
 
 /*</javadoc>*/
-/*<annotations>*//*</annotations>*/
-public enum /*<name>*/AudioConverterError/*</name>*/ implements ValuedEnum {
-	No(0L),
+/*<annotations>*/@Marshaler(ValuedEnum.AsMachineSizedUIntMarshaler.class)/*</annotations>*/
+public enum /*<name>*/AudioFormatErrorCode/*</name>*/ implements ValuedEnum {
     /*<values>*/
-    FormatNotSupported(1718449215L),
-    OperationNotSupported(1869627199L),
-    PropertyNotSupported(1886547824L),
-    InvalidInputSize(1768846202L),
-    InvalidOutputSize(1869902714L),
-    UnspecifiedError(2003329396L),
-    BadPropertySizeError(561211770L),
-    RequiresPacketDescriptionsError(561015652L),
-    InputSampleRateOutOfRange(560558962L),
-    OutputSampleRateOutOfRange(560952178L);
+    Unspecified(2003329396L),
+    UnsupportedProperty(1886547824L),
+    BadPropertySize(561211770L),
+    BadSpecifierSize(561213539L),
+    UnsupportedDataFormat(1718449215L),
+    UnknownFormat(560360820L);
     /*</values>*/
 
     /*<bind>*/
@@ -61,15 +57,15 @@ public enum /*<name>*/AudioConverterError/*</name>*/ implements ValuedEnum {
 
     private final long n;
 
-    private /*<name>*/AudioConverterError/*</name>*/(long n) { this.n = n; }
+    private /*<name>*/AudioFormatErrorCode/*</name>*/(long n) { this.n = n; }
     public long value() { return n; }
-    public static /*<name>*/AudioConverterError/*</name>*/ valueOf(long n) {
-        for (/*<name>*/AudioConverterError/*</name>*/ v : values()) {
+    public static /*<name>*/AudioFormatErrorCode/*</name>*/ valueOf(long n) {
+        for (/*<name>*/AudioFormatErrorCode/*</name>*/ v : values()) {
             if (v.n == n) {
                 return v;
             }
         }
         throw new IllegalArgumentException("No constant with value " + n + " found in " 
-            + /*<name>*/AudioConverterError/*</name>*/.class.getName());
+            + /*<name>*/AudioFormatErrorCode/*</name>*/.class.getName());
     }
 }

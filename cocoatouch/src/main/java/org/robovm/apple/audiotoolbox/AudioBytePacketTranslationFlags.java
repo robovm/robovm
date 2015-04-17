@@ -33,20 +33,17 @@ import org.robovm.apple.opengles.*;
 import org.robovm.apple.audiounit.*;
 import org.robovm.apple.coreaudio.*;
 import org.robovm.apple.coremedia.*;
+import org.robovm.apple.coremidi.*;
 /*</imports>*/
 
 /*<javadoc>*/
 
 /*</javadoc>*/
-/*<annotations>*/@Marshaler(ValuedEnum.AsMachineSizedUIntMarshaler.class)/*</annotations>*/
-public enum /*<name>*/AudioFormatError/*</name>*/ implements ValuedEnum {
+/*<annotations>*//*</annotations>*/
+public final class /*<name>*/AudioBytePacketTranslationFlags/*</name>*/ extends Bits</*<name>*/AudioBytePacketTranslationFlags/*</name>*/> {
     /*<values>*/
-    Unspecified(2003329396L),
-    UnsupportedProperty(1886547824L),
-    BadPropertySize(561211770L),
-    BadSpecifierSize(561213539L),
-    UnsupportedDataFormat(1718449215L),
-    UnknownFormat(560360820L);
+    public static final AudioBytePacketTranslationFlags None = new AudioBytePacketTranslationFlags(0L);
+    public static final AudioBytePacketTranslationFlags IsEstimate = new AudioBytePacketTranslationFlags(1L);
     /*</values>*/
 
     /*<bind>*/
@@ -54,17 +51,17 @@ public enum /*<name>*/AudioFormatError/*</name>*/ implements ValuedEnum {
     /*<constants>*//*</constants>*/
     /*<methods>*//*</methods>*/
 
-    private final long n;
+    private static final /*<name>*/AudioBytePacketTranslationFlags/*</name>*/[] values = _values(/*<name>*/AudioBytePacketTranslationFlags/*</name>*/.class);
 
-    private /*<name>*/AudioFormatError/*</name>*/(long n) { this.n = n; }
-    public long value() { return n; }
-    public static /*<name>*/AudioFormatError/*</name>*/ valueOf(long n) {
-        for (/*<name>*/AudioFormatError/*</name>*/ v : values()) {
-            if (v.n == n) {
-                return v;
-            }
-        }
-        throw new IllegalArgumentException("No constant with value " + n + " found in " 
-            + /*<name>*/AudioFormatError/*</name>*/.class.getName());
+    public /*<name>*/AudioBytePacketTranslationFlags/*</name>*/(long value) { super(value); }
+    private /*<name>*/AudioBytePacketTranslationFlags/*</name>*/(long value, long mask) { super(value, mask); }
+    protected /*<name>*/AudioBytePacketTranslationFlags/*</name>*/ wrap(long value, long mask) {
+        return new /*<name>*/AudioBytePacketTranslationFlags/*</name>*/(value, mask);
+    }
+    protected /*<name>*/AudioBytePacketTranslationFlags/*</name>*/[] _values() {
+        return values;
+    }
+    public static /*<name>*/AudioBytePacketTranslationFlags/*</name>*/[] values() {
+        return values.clone();
     }
 }

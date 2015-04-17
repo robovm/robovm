@@ -33,6 +33,7 @@ import org.robovm.apple.opengles.*;
 import org.robovm.apple.audiounit.*;
 import org.robovm.apple.coreaudio.*;
 import org.robovm.apple.coremedia.*;
+import org.robovm.apple.coremidi.*;
 /*</imports>*/
 
 /*<javadoc>*/
@@ -49,17 +50,25 @@ import org.robovm.apple.coremedia.*;
     /*<constants>*//*</constants>*/
     /*<constructors>*/
     public MIDIRawData() {}
-    public MIDIRawData(int length, ByteBuffer data) {
-        this.setLength(length);
-        this.setData(data);
-    }
+    
     /*</constructors>*/
     /*<properties>*//*</properties>*/
+    public byte[] getData() {
+        return getData0().toByteArray(getLength0());
+    }
+    public ByteBuffer getDataAsByteBuffer() {
+        return getData0().asByteBuffer(getLength0());
+    }
+    public MIDIRawData setData(byte[] data) {
+        setData0(VM.getArrayValuesAddress(data));
+        setLength0(data.length);
+        return this;
+    }
     /*<members>*/
-    @StructMember(0) public native int getLength();
-    @StructMember(0) public native MIDIRawData setLength(int length);
-    @StructMember(1) public native @Array({1}) ByteBuffer getData();
-    @StructMember(1) public native MIDIRawData setData(@Array({1}) ByteBuffer data);
+    @StructMember(0) protected native int getLength0();
+    @StructMember(0) protected native MIDIRawData setLength0(int length0);
     /*</members>*/
+    @StructMember(1) protected native BytePtr getData0();
+    @StructMember(1) protected native MIDIRawData setData0(@Pointer long data0);
     /*<methods>*//*</methods>*/
 }

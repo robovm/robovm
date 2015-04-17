@@ -33,39 +33,16 @@ import org.robovm.apple.opengles.*;
 import org.robovm.apple.audiounit.*;
 import org.robovm.apple.coreaudio.*;
 import org.robovm.apple.coremedia.*;
+import org.robovm.apple.coremidi.*;
 /*</imports>*/
 
 /*<javadoc>*/
 
 /*</javadoc>*/
 /*<annotations>*//*</annotations>*/
-public enum /*<name>*/AudioQueueError/*</name>*/ implements ValuedEnum {
-	No(0L),
+public enum /*<name>*/AudioFileMarkerType/*</name>*/ implements ValuedEnum {
     /*<values>*/
-    InvalidBuffer(-66687L),
-    BufferEmpty(-66686L),
-    DisposalPending(-66685L),
-    InvalidProperty(-66684L),
-    InvalidPropertySize(-66683L),
-    InvalidParameter(-66682L),
-    CannotStart(-66681L),
-    InvalidDevice(-66680L),
-    BufferInQueue(-66679L),
-    InvalidRunState(-66678L),
-    InvalidQueueType(-66677L),
-    Permissions(-66676L),
-    InvalidPropertyValue(-66675L),
-    PrimeTimedOut(-66674L),
-    CodecNotFound(-66673L),
-    InvalidCodecAccess(-66672L),
-    QueueInvalidated(-66671L),
-    TooManyTaps(-66670L),
-    InvalidTapContext(-66669L),
-    RecordUnderrun(-66668L),
-    InvalidTapType(-66667L),
-    BufferEnqueuedTwice(-66666L),
-    EnqueueDuringReset(-66632L),
-    InvalidOfflineMode(-66626L);
+    Generic(0L);
     /*</values>*/
 
     /*<bind>*/
@@ -75,15 +52,15 @@ public enum /*<name>*/AudioQueueError/*</name>*/ implements ValuedEnum {
 
     private final long n;
 
-    private /*<name>*/AudioQueueError/*</name>*/(long n) { this.n = n; }
+    private /*<name>*/AudioFileMarkerType/*</name>*/(long n) { this.n = n; }
     public long value() { return n; }
-    public static /*<name>*/AudioQueueError/*</name>*/ valueOf(long n) {
-        for (/*<name>*/AudioQueueError/*</name>*/ v : values()) {
+    public static /*<name>*/AudioFileMarkerType/*</name>*/ valueOf(long n) {
+        for (/*<name>*/AudioFileMarkerType/*</name>*/ v : values()) {
             if (v.n == n) {
                 return v;
             }
         }
         throw new IllegalArgumentException("No constant with value " + n + " found in " 
-            + /*<name>*/AudioQueueError/*</name>*/.class.getName());
+            + /*<name>*/AudioFileMarkerType/*</name>*/.class.getName());
     }
 }

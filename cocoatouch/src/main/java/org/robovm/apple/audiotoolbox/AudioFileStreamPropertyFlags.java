@@ -38,28 +38,30 @@ import org.robovm.apple.coremedia.*;
 /*<javadoc>*/
 
 /*</javadoc>*/
-/*<annotations>*//*</annotations>*/
-/*<visibility>*/public/*</visibility>*/ class /*<name>*/AudioFileTypeAndFormatID/*</name>*/ 
-    extends /*<extends>*/Struct<AudioFileTypeAndFormatID>/*</extends>*/ 
-    /*<implements>*//*</implements>*/ {
+/*<annotations>*/@Marshaler(Bits.AsMachineSizedIntMarshaler.class)/*</annotations>*/
+public final class /*<name>*/AudioFileStreamPropertyFlags/*</name>*/ extends Bits</*<name>*/AudioFileStreamPropertyFlags/*</name>*/> {
+    /*<values>*/
+    public static final AudioFileStreamPropertyFlags None = new AudioFileStreamPropertyFlags(0L);
+    public static final AudioFileStreamPropertyFlags PropertyIsCached = new AudioFileStreamPropertyFlags(1L);
+    public static final AudioFileStreamPropertyFlags CacheProperty = new AudioFileStreamPropertyFlags(2L);
+    /*</values>*/
 
-    /*<ptr>*/public static class AudioFileTypeAndFormatIDPtr extends Ptr<AudioFileTypeAndFormatID, AudioFileTypeAndFormatIDPtr> {}/*</ptr>*/
     /*<bind>*/
     /*</bind>*/
     /*<constants>*//*</constants>*/
-    /*<constructors>*/
-    public AudioFileTypeAndFormatID() {}
-    public AudioFileTypeAndFormatID(int mFileType, int mFormatID) {
-        this.setMFileType(mFileType);
-        this.setMFormatID(mFormatID);
-    }
-    /*</constructors>*/
-    /*<properties>*//*</properties>*/
-    /*<members>*/
-    @StructMember(0) public native int getMFileType();
-    @StructMember(0) public native AudioFileTypeAndFormatID setMFileType(int mFileType);
-    @StructMember(1) public native int getMFormatID();
-    @StructMember(1) public native AudioFileTypeAndFormatID setMFormatID(int mFormatID);
-    /*</members>*/
     /*<methods>*//*</methods>*/
+
+    private static final /*<name>*/AudioFileStreamPropertyFlags/*</name>*/[] values = _values(/*<name>*/AudioFileStreamPropertyFlags/*</name>*/.class);
+
+    public /*<name>*/AudioFileStreamPropertyFlags/*</name>*/(long value) { super(value); }
+    private /*<name>*/AudioFileStreamPropertyFlags/*</name>*/(long value, long mask) { super(value, mask); }
+    protected /*<name>*/AudioFileStreamPropertyFlags/*</name>*/ wrap(long value, long mask) {
+        return new /*<name>*/AudioFileStreamPropertyFlags/*</name>*/(value, mask);
+    }
+    protected /*<name>*/AudioFileStreamPropertyFlags/*</name>*/[] _values() {
+        return values;
+    }
+    public static /*<name>*/AudioFileStreamPropertyFlags/*</name>*/[] values() {
+        return values.clone();
+    }
 }

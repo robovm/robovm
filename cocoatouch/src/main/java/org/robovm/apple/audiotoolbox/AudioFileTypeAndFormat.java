@@ -33,30 +33,34 @@ import org.robovm.apple.opengles.*;
 import org.robovm.apple.audiounit.*;
 import org.robovm.apple.coreaudio.*;
 import org.robovm.apple.coremedia.*;
+import org.robovm.apple.coremidi.*;
 /*</imports>*/
 
 /*<javadoc>*/
 
 /*</javadoc>*/
 /*<annotations>*//*</annotations>*/
-/*<visibility>*/public/*</visibility>*/ class /*<name>*/CAFInfoStrings/*</name>*/ 
-    extends /*<extends>*/Struct<CAFInfoStrings>/*</extends>*/ 
+/*<visibility>*/public/*</visibility>*/ class /*<name>*/AudioFileTypeAndFormat/*</name>*/ 
+    extends /*<extends>*/Struct<AudioFileTypeAndFormat>/*</extends>*/ 
     /*<implements>*//*</implements>*/ {
 
-    /*<ptr>*/public static class CAFInfoStringsPtr extends Ptr<CAFInfoStrings, CAFInfoStringsPtr> {}/*</ptr>*/
+    /*<ptr>*/public static class AudioFileTypeAndFormatPtr extends Ptr<AudioFileTypeAndFormat, AudioFileTypeAndFormatPtr> {}/*</ptr>*/
     /*<bind>*/
     /*</bind>*/
     /*<constants>*//*</constants>*/
     /*<constructors>*/
-    public CAFInfoStrings() {}
-    public CAFInfoStrings(int mNumEntries) {
-        this.setMNumEntries(mNumEntries);
+    public AudioFileTypeAndFormat() {}
+    public AudioFileTypeAndFormat(AudioFileType fileType, AudioFormat format) {
+        this.setFileType(fileType);
+        this.setFormat(format);
     }
     /*</constructors>*/
     /*<properties>*//*</properties>*/
     /*<members>*/
-    @StructMember(0) public native int getMNumEntries();
-    @StructMember(0) public native CAFInfoStrings setMNumEntries(int mNumEntries);
+    @StructMember(0) public native AudioFileType getFileType();
+    @StructMember(0) public native AudioFileTypeAndFormat setFileType(AudioFileType fileType);
+    @StructMember(1) public native AudioFormat getFormat();
+    @StructMember(1) public native AudioFileTypeAndFormat setFormat(AudioFormat format);
     /*</members>*/
     /*<methods>*//*</methods>*/
 }

@@ -33,6 +33,7 @@ import org.robovm.apple.opengles.*;
 import org.robovm.apple.audiounit.*;
 import org.robovm.apple.coreaudio.*;
 import org.robovm.apple.coremedia.*;
+import org.robovm.apple.coremidi.*;
 /*</imports>*/
 
 /*<javadoc>*/
@@ -49,32 +50,32 @@ import org.robovm.apple.coremedia.*;
     /*<constants>*//*</constants>*/
     /*<constructors>*/
     public CAFAudioDescription() {}
-    public CAFAudioDescription(double mSampleRate, int mFormatID, int mFormatFlags, int mBytesPerPacket, int mFramesPerPacket, int mChannelsPerFrame, int mBitsPerChannel) {
-        this.setMSampleRate(mSampleRate);
-        this.setMFormatID(mFormatID);
-        this.setMFormatFlags(mFormatFlags);
-        this.setMBytesPerPacket(mBytesPerPacket);
-        this.setMFramesPerPacket(mFramesPerPacket);
-        this.setMChannelsPerFrame(mChannelsPerFrame);
-        this.setMBitsPerChannel(mBitsPerChannel);
+    public CAFAudioDescription(double sampleRate, AudioFormat format, CAFFormatFlags formatFlags, int bytesPerPacket, int framesPerPacket, int channelsPerFrame, int bitsPerChannel) {
+        this.setSampleRate(sampleRate);
+        this.setFormat(format);
+        this.setFormatFlags(formatFlags);
+        this.setBytesPerPacket(bytesPerPacket);
+        this.setFramesPerPacket(framesPerPacket);
+        this.setChannelsPerFrame(channelsPerFrame);
+        this.setBitsPerChannel(bitsPerChannel);
     }
     /*</constructors>*/
     /*<properties>*//*</properties>*/
     /*<members>*/
-    @StructMember(0) public native double getMSampleRate();
-    @StructMember(0) public native CAFAudioDescription setMSampleRate(double mSampleRate);
-    @StructMember(1) public native int getMFormatID();
-    @StructMember(1) public native CAFAudioDescription setMFormatID(int mFormatID);
-    @StructMember(2) public native int getMFormatFlags();
-    @StructMember(2) public native CAFAudioDescription setMFormatFlags(int mFormatFlags);
-    @StructMember(3) public native int getMBytesPerPacket();
-    @StructMember(3) public native CAFAudioDescription setMBytesPerPacket(int mBytesPerPacket);
-    @StructMember(4) public native int getMFramesPerPacket();
-    @StructMember(4) public native CAFAudioDescription setMFramesPerPacket(int mFramesPerPacket);
-    @StructMember(5) public native int getMChannelsPerFrame();
-    @StructMember(5) public native CAFAudioDescription setMChannelsPerFrame(int mChannelsPerFrame);
-    @StructMember(6) public native int getMBitsPerChannel();
-    @StructMember(6) public native CAFAudioDescription setMBitsPerChannel(int mBitsPerChannel);
+    @StructMember(0) public native double getSampleRate();
+    @StructMember(0) public native CAFAudioDescription setSampleRate(double sampleRate);
+    @StructMember(1) public native AudioFormat getFormat();
+    @StructMember(1) public native CAFAudioDescription setFormat(AudioFormat format);
+    @StructMember(2) public native CAFFormatFlags getFormatFlags();
+    @StructMember(2) public native CAFAudioDescription setFormatFlags(CAFFormatFlags formatFlags);
+    @StructMember(3) public native int getBytesPerPacket();
+    @StructMember(3) public native CAFAudioDescription setBytesPerPacket(int bytesPerPacket);
+    @StructMember(4) public native int getFramesPerPacket();
+    @StructMember(4) public native CAFAudioDescription setFramesPerPacket(int framesPerPacket);
+    @StructMember(5) public native int getChannelsPerFrame();
+    @StructMember(5) public native CAFAudioDescription setChannelsPerFrame(int channelsPerFrame);
+    @StructMember(6) public native int getBitsPerChannel();
+    @StructMember(6) public native CAFAudioDescription setBitsPerChannel(int bitsPerChannel);
     /*</members>*/
     /*<methods>*//*</methods>*/
 }

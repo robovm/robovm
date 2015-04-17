@@ -33,26 +33,21 @@ import org.robovm.apple.opengles.*;
 import org.robovm.apple.audiounit.*;
 import org.robovm.apple.coreaudio.*;
 import org.robovm.apple.coremedia.*;
+import org.robovm.apple.coremidi.*;
 /*</imports>*/
 
 /*<javadoc>*/
 
 /*</javadoc>*/
 /*<annotations>*//*</annotations>*/
-public enum /*<name>*/ExtAudioFileError/*</name>*/ implements ValuedEnum {
+public enum /*<name>*/AudioServicesErrorCode/*</name>*/ implements ValuedEnum {
     /*<values>*/
-    CodecUnavailableInputConsumed(-66559L),
-    CodecUnavailableInputNotConsumed(-66560L),
-    InvalidProperty(-66561L),
-    InvalidPropertySize(-66562L),
-    NonPCMClientFormat(-66563L),
-    InvalidChannelMap(-66564L),
-    InvalidOperationOrder(-66565L),
-    InvalidDataFormat(-66566L),
-    MaxPacketSizeUnknown(-66567L),
-    InvalidSeek(-66568L),
-    AsyncWriteTooLarge(-66569L),
-    AsyncWriteBufferOverflow(-66570L);
+    No(0L),
+    UnsupportedProperty(1886681407L),
+    BadPropertySize(561211770L),
+    BadSpecifierSize(561213539L),
+    SystemSoundUnspecified(-1500L),
+    SystemSoundClientTimedOut(-1501L);
     /*</values>*/
 
     /*<bind>*/
@@ -62,15 +57,15 @@ public enum /*<name>*/ExtAudioFileError/*</name>*/ implements ValuedEnum {
 
     private final long n;
 
-    private /*<name>*/ExtAudioFileError/*</name>*/(long n) { this.n = n; }
+    private /*<name>*/AudioServicesErrorCode/*</name>*/(long n) { this.n = n; }
     public long value() { return n; }
-    public static /*<name>*/ExtAudioFileError/*</name>*/ valueOf(long n) {
-        for (/*<name>*/ExtAudioFileError/*</name>*/ v : values()) {
+    public static /*<name>*/AudioServicesErrorCode/*</name>*/ valueOf(long n) {
+        for (/*<name>*/AudioServicesErrorCode/*</name>*/ v : values()) {
             if (v.n == n) {
                 return v;
             }
         }
         throw new IllegalArgumentException("No constant with value " + n + " found in " 
-            + /*<name>*/ExtAudioFileError/*</name>*/.class.getName());
+            + /*<name>*/AudioServicesErrorCode/*</name>*/.class.getName());
     }
 }

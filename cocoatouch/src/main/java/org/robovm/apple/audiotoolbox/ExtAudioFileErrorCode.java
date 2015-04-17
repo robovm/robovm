@@ -30,25 +30,48 @@ import org.robovm.apple.foundation.*;
 import org.robovm.apple.corefoundation.*;
 import org.robovm.apple.coregraphics.*;
 import org.robovm.apple.opengles.*;
+import org.robovm.apple.audiounit.*;
 import org.robovm.apple.coreaudio.*;
 import org.robovm.apple.coremedia.*;
+import org.robovm.apple.coremidi.*;
 /*</imports>*/
 
 /*<javadoc>*/
+
 /*</javadoc>*/
 /*<annotations>*//*</annotations>*/
-/*<visibility>*/public/*</visibility>*/ class /*<name>*/MIDIEndpoint/*</name>*/ 
-    extends /*<extends>*/NativeObject/*</extends>*/ 
-    /*<implements>*//*</implements>*/ {
+public enum /*<name>*/ExtAudioFileErrorCode/*</name>*/ implements ValuedEnum {
+    /*<values>*/
+    CodecUnavailableInputConsumed(-66559L),
+    CodecUnavailableInputNotConsumed(-66560L),
+    InvalidProperty(-66561L),
+    InvalidPropertySize(-66562L),
+    NonPCMClientFormat(-66563L),
+    InvalidChannelMap(-66564L),
+    InvalidOperationOrder(-66565L),
+    InvalidDataFormat(-66566L),
+    MaxPacketSizeUnknown(-66567L),
+    InvalidSeek(-66568L),
+    AsyncWriteTooLarge(-66569L),
+    AsyncWriteBufferOverflow(-66570L);
+    /*</values>*/
 
-    /*<ptr>*/public static class MIDIEndpointPtr extends Ptr<MIDIEndpoint, MIDIEndpointPtr> {}/*</ptr>*/
     /*<bind>*/
     /*</bind>*/
     /*<constants>*//*</constants>*/
-    /*<constructors>*/
-    protected MIDIEndpoint() {}
-    /*</constructors>*/
-    /*<properties>*//*</properties>*/
-    /*<members>*//*</members>*/
     /*<methods>*//*</methods>*/
+
+    private final long n;
+
+    private /*<name>*/ExtAudioFileErrorCode/*</name>*/(long n) { this.n = n; }
+    public long value() { return n; }
+    public static /*<name>*/ExtAudioFileErrorCode/*</name>*/ valueOf(long n) {
+        for (/*<name>*/ExtAudioFileErrorCode/*</name>*/ v : values()) {
+            if (v.n == n) {
+                return v;
+            }
+        }
+        throw new IllegalArgumentException("No constant with value " + n + " found in " 
+            + /*<name>*/ExtAudioFileErrorCode/*</name>*/.class.getName());
+    }
 }

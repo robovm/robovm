@@ -33,6 +33,7 @@ import org.robovm.apple.opengles.*;
 import org.robovm.apple.audiounit.*;
 import org.robovm.apple.coreaudio.*;
 import org.robovm.apple.coremedia.*;
+import org.robovm.apple.coremidi.*;
 /*</imports>*/
 
 /*<javadoc>*/
@@ -49,17 +50,17 @@ import org.robovm.apple.coremedia.*;
     /*<constants>*//*</constants>*/
     /*<constructors>*/
     public AudioQueueParameterEvent() {}
-    public AudioQueueParameterEvent(int mID, float mValue) {
-        this.setMID(mID);
-        this.setMValue(mValue);
+    public AudioQueueParameterEvent(int ID, float value) {
+        this.setID(ID);
+        this.setValue(value);
     }
     /*</constructors>*/
     /*<properties>*//*</properties>*/
     /*<members>*/
-    @StructMember(0) public native int getMID();
-    @StructMember(0) public native AudioQueueParameterEvent setMID(int mID);
-    @StructMember(1) public native float getMValue();
-    @StructMember(1) public native AudioQueueParameterEvent setMValue(float mValue);
+    @StructMember(0) public native int getID();
+    @StructMember(0) public native AudioQueueParameterEvent setID(int ID);
+    @StructMember(1) public native float getValue();
+    @StructMember(1) public native AudioQueueParameterEvent setValue(float value);
     /*</members>*/
     /*<methods>*//*</methods>*/
 }

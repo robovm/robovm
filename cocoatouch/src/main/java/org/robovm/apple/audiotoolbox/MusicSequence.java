@@ -33,6 +33,7 @@ import org.robovm.apple.opengles.*;
 import org.robovm.apple.audiounit.*;
 import org.robovm.apple.coreaudio.*;
 import org.robovm.apple.coremedia.*;
+import org.robovm.apple.coremidi.*;
 /*</imports>*/
 
 /*<javadoc>*/
@@ -43,6 +44,24 @@ import org.robovm.apple.coremedia.*;
     /*<implements>*//*</implements>*/ {
 
     /*<ptr>*/public static class MusicSequencePtr extends Ptr<MusicSequence, MusicSequencePtr> {}/*</ptr>*/
+    
+    public interface UserCallback {
+        void invoke(MusicSequence sequence, MusicTrack track, double eventTime, MusicEventUserData eventData,
+                double startSliceBeat, double endSliceBeat);
+    }
+    
+    private static java.util.concurrent.atomic.AtomicLong callbackId = new java.util.concurrent.atomic.AtomicLong();
+    private static final LongMap<UserCallback> userCallbacks = new LongMap<>();
+    private static final java.lang.reflect.Method cbUser;
+    
+    static {
+        try {
+            cbUser = MusicSequence.class.getDeclaredMethod("cbUser", Long.TYPE, MusicSequence.class, MusicTrack.class, 
+                    Double.TYPE, MusicEventUserData.class, Double.TYPE, Double.TYPE);
+        } catch (Throwable e) {
+            throw new Error(e);
+        }
+    }
     /*<bind>*/static { Bro.bind(MusicSequence.class); }/*</bind>*/
     /*<constants>*//*</constants>*/
     /*<constructors>*/
@@ -50,126 +69,365 @@ import org.robovm.apple.coremedia.*;
     /*</constructors>*/
     /*<properties>*//*</properties>*/
     /*<members>*//*</members>*/
+    @Callback
+    private static void cbUser(@Pointer long clientData, MusicSequence sequence, MusicTrack track, double eventTime, MusicEventUserData eventData, 
+                double startSliceBeat, double endSliceBeat) {
+        synchronized (userCallbacks) {
+            userCallbacks.get(clientData).invoke(sequence, track, eventTime, eventData, startSliceBeat, endSliceBeat);
+        }
+    }
+    
+    private long cid;
+    
+    /**
+     * @throws OSStatusException 
+     * @since Available in iOS 5.0 and later.
+     */
+    public static MusicSequence create() throws OSStatusException {
+        MusicSequence.MusicSequencePtr ptr = new MusicSequence.MusicSequencePtr();
+        OSStatus status = create0(ptr);
+        OSStatusException.throwIfNecessary(status);
+        
+        MusicSequence result = ptr.get();
+        result.cid = callbackId.getAndIncrement();
+        return result;
+    }
+    /**
+     * @throws OSStatusException 
+     * @since Available in iOS 5.0 and later.
+     */
+    public void dispose() throws OSStatusException {
+        OSStatus status = dispose0();
+        if (OSStatusException.throwIfNecessary(status)) {
+            synchronized (userCallbacks) {
+                userCallbacks.remove(cid);
+            }
+        }
+    }
+    /**
+     * @throws OSStatusException 
+     * @since Available in iOS 5.0 and later.
+     */
+    public MusicTrack newTrack() throws OSStatusException {
+        MusicTrack.MusicTrackPtr ptr = new MusicTrack.MusicTrackPtr();
+        OSStatus status = newTrack0(ptr);
+        OSStatusException.throwIfNecessary(status);
+        return ptr.get();
+    }
+    /**
+     * @throws OSStatusException 
+     * @since Available in iOS 5.0 and later.
+     */
+    public void disposeTrack(MusicTrack track) throws OSStatusException {
+        OSStatus status = disposeTrack0(track);
+        OSStatusException.throwIfNecessary(status);
+    }
+    /**
+     * @throws OSStatusException 
+     * @since Available in iOS 5.0 and later.
+     */
+    public int getTrackCount() throws OSStatusException {
+        IntPtr ptr = new IntPtr();
+        OSStatus status = getTrackCount0(ptr);
+        OSStatusException.throwIfNecessary(status);
+        return ptr.get();
+    }
+    /**
+     * @throws OSStatusException 
+     * @since Available in iOS 5.0 and later.
+     */
+    public MusicTrack getIndTrack(int trackIndex) throws OSStatusException {
+        MusicTrack.MusicTrackPtr ptr = new MusicTrack.MusicTrackPtr();
+        OSStatus status = getIndTrack0(trackIndex, ptr);
+        OSStatusException.throwIfNecessary(status);
+        return ptr.get();
+    }
+    /**
+     * @throws OSStatusException 
+     * @since Available in iOS 5.0 and later.
+     */
+    public int getTrackIndex(MusicTrack track) throws OSStatusException {
+        IntPtr ptr = new IntPtr();
+        OSStatus status = getTrackIndex0(track, ptr);
+        OSStatusException.throwIfNecessary(status);
+        return ptr.get();
+    }
+    /**
+     * @throws OSStatusException 
+     * @since Available in iOS 5.0 and later.
+     */
+    public MusicTrack getTempoTrack() throws OSStatusException {
+        MusicTrack.MusicTrackPtr ptr = new MusicTrack.MusicTrackPtr();
+        OSStatus status = getTempoTrack0(ptr);
+        OSStatusException.throwIfNecessary(status);
+        return ptr.get();
+    }
+    /**
+     * @throws OSStatusException 
+     * @since Available in iOS 5.0 and later.
+     */
+    public void setAUGraph(AUGraph graph) throws OSStatusException {
+        OSStatus status = setAUGraph0(graph);
+        OSStatusException.throwIfNecessary(status);
+    }
+    /**
+     * @throws OSStatusException 
+     * @since Available in iOS 5.0 and later.
+     */
+    public AUGraph getAUGraph() throws OSStatusException {
+        AUGraph.AUGraphPtr ptr = new AUGraph.AUGraphPtr();
+        OSStatus status = getAUGraph0(ptr);
+        OSStatusException.throwIfNecessary(status);
+        return ptr.get();
+    }
+    /**
+     * @throws OSStatusException 
+     * @since Available in iOS 5.0 and later.
+     */
+    public void setMIDIEndpoint(MIDIEndpoint endpoint) throws OSStatusException {
+        OSStatus status = setMIDIEndpoint0(endpoint);
+        OSStatusException.throwIfNecessary(status);
+    }
+    /**
+     * @throws OSStatusException 
+     * @since Available in iOS 5.0 and later.
+     */
+    public void setSequenceType(MusicSequenceType type) throws OSStatusException {
+        OSStatus status = setSequenceType0(type);
+        OSStatusException.throwIfNecessary(status);
+    }
+    /**
+     * @throws OSStatusException 
+     * @since Available in iOS 5.0 and later.
+     */
+    public MusicSequenceType getSequenceType() throws OSStatusException {
+        IntPtr ptr = new IntPtr();
+        OSStatus status = getSequenceType0(ptr);
+        OSStatusException.throwIfNecessary(status);
+        return MusicSequenceType.valueOf(ptr.get());
+    }
+    /**
+     * @throws OSStatusException 
+     * @since Available in iOS 5.0 and later.
+     */
+    public void loadFile(NSURL fileRef, MusicSequenceFileType fileTypeHint, MusicSequenceLoadFlags flags) throws OSStatusException {
+        OSStatus status = loadFile0(fileRef, fileTypeHint, flags);
+        OSStatusException.throwIfNecessary(status);
+    }
+    /**
+     * @throws OSStatusException 
+     * @since Available in iOS 5.0 and later.
+     */
+    public void loadFileData(NSData data, MusicSequenceFileType fileTypeHint, MusicSequenceLoadFlags flags) throws OSStatusException {
+        OSStatus status = loadFileData0(data, fileTypeHint, flags);
+        OSStatusException.throwIfNecessary(status);
+    }
+    /**
+     * @throws OSStatusException 
+     * @since Available in iOS 5.0 and later.
+     */
+    public void createFile(NSURL fileRef, MusicSequenceFileType fileType, MusicSequenceFileFlags flags, short resolution) throws OSStatusException {
+        OSStatus status = createFile0(fileRef, fileType, flags, resolution);
+        OSStatusException.throwIfNecessary(status);
+    }
+    /**
+     * @throws OSStatusException 
+     * @since Available in iOS 5.0 and later.
+     */
+    public NSData createFileData(MusicSequenceFileType fileType, MusicSequenceFileFlags flags, short resolution) throws OSStatusException {
+        NSData.NSDataPtr ptr = new NSData.NSDataPtr();
+        OSStatus status = createFileData0(fileType, flags, resolution, ptr);
+        OSStatusException.throwIfNecessary(status);
+        return ptr.get();
+    }
+    /**
+     * @throws OSStatusException 
+     * @since Available in iOS 5.0 and later.
+     */
+    public void reverse() throws OSStatusException {
+        OSStatus status = reverse0();
+        OSStatusException.throwIfNecessary(status);
+    }
+    /**
+     * @throws OSStatusException 
+     * @since Available in iOS 5.0 and later.
+     */
+    public double getSecondsForBeats(double beats) throws OSStatusException {
+        DoublePtr ptr = new DoublePtr();
+        OSStatus status = getSecondsForBeats0(beats, ptr);
+        OSStatusException.throwIfNecessary(status);
+        return ptr.get();
+    }
+    /**
+     * @throws OSStatusException 
+     * @since Available in iOS 5.0 and later.
+     */
+    public double getBeatsForSeconds(double seconds) throws OSStatusException {
+        DoublePtr ptr = new DoublePtr();
+        OSStatus status = getBeatsForSeconds0(seconds, ptr);
+        OSStatusException.throwIfNecessary(status);
+        return ptr.get();
+    }
+    /**
+     * @throws OSStatusException 
+     * @since Available in iOS 5.0 and later.
+     */
+    public void setUserCallback(UserCallback callback) throws OSStatusException {
+        if (callback == null) {
+            synchronized (userCallbacks) {
+                userCallbacks.remove(cid);
+            }
+            OSStatus status = setUserCallback0(null, cid);
+            OSStatusException.throwIfNecessary(status);
+        } else {
+            OSStatus status = setUserCallback0(new FunctionPtr(cbUser), cid);
+            if (OSStatusException.throwIfNecessary(status)) {
+                synchronized (userCallbacks) {
+                    userCallbacks.put(cid, callback);
+                }
+            }
+        }
+    }
+    /**
+     * @throws OSStatusException 
+     * @since Available in iOS 5.0 and later.
+     */
+    public CABarBeatTime convertBeatsToBarBeatTime(double beats, int subbeatDivisor) throws OSStatusException {
+        CABarBeatTime.CABarBeatTimePtr ptr = new CABarBeatTime.CABarBeatTimePtr();
+        OSStatus status = convertBeatsToBarBeatTime0(beats, subbeatDivisor, ptr);
+        OSStatusException.throwIfNecessary(status);
+        return ptr.get();
+    }
+    /**
+     * @throws OSStatusException 
+     * @since Available in iOS 5.0 and later.
+     */
+    public double convertBarBeatTimeToBeats(CABarBeatTime barBeatTime) throws OSStatusException {
+        DoublePtr ptr = new DoublePtr();
+        OSStatus status = convertBarBeatTimeToBeats0(barBeatTime, ptr);
+        OSStatusException.throwIfNecessary(status);
+        return ptr.get();
+    }
     /*<methods>*/
     /**
      * @since Available in iOS 5.0 and later.
      */
     @Bridge(symbol="NewMusicSequence", optional=true)
-    public static native OSStatus create(MusicSequence.MusicSequencePtr outSequence);
+    protected static native OSStatus create0(MusicSequence.MusicSequencePtr outSequence);
     /**
      * @since Available in iOS 5.0 and later.
      */
     @Bridge(symbol="DisposeMusicSequence", optional=true)
-    public native OSStatus dispose();
+    protected native OSStatus dispose0();
     /**
      * @since Available in iOS 5.0 and later.
      */
     @Bridge(symbol="MusicSequenceNewTrack", optional=true)
-    public native OSStatus newTrack(MusicTrack.MusicTrackPtr outTrack);
+    protected native OSStatus newTrack0(MusicTrack.MusicTrackPtr outTrack);
     /**
      * @since Available in iOS 5.0 and later.
      */
     @Bridge(symbol="MusicSequenceDisposeTrack", optional=true)
-    public native OSStatus disposeTrack(MusicTrack inTrack);
+    protected native OSStatus disposeTrack0(MusicTrack inTrack);
     /**
      * @since Available in iOS 5.0 and later.
      */
     @Bridge(symbol="MusicSequenceGetTrackCount", optional=true)
-    public native OSStatus getTrackCount(IntPtr outNumberOfTracks);
+    protected native OSStatus getTrackCount0(IntPtr outNumberOfTracks);
     /**
      * @since Available in iOS 5.0 and later.
      */
     @Bridge(symbol="MusicSequenceGetIndTrack", optional=true)
-    public native OSStatus getIndTrack(int inTrackIndex, MusicTrack.MusicTrackPtr outTrack);
+    protected native OSStatus getIndTrack0(int inTrackIndex, MusicTrack.MusicTrackPtr outTrack);
     /**
      * @since Available in iOS 5.0 and later.
      */
     @Bridge(symbol="MusicSequenceGetTrackIndex", optional=true)
-    public native OSStatus getTrackIndex(MusicTrack inTrack, IntPtr outTrackIndex);
+    protected native OSStatus getTrackIndex0(MusicTrack inTrack, IntPtr outTrackIndex);
     /**
      * @since Available in iOS 5.0 and later.
      */
     @Bridge(symbol="MusicSequenceGetTempoTrack", optional=true)
-    public native OSStatus getTempoTrack(MusicTrack.MusicTrackPtr outTrack);
+    protected native OSStatus getTempoTrack0(MusicTrack.MusicTrackPtr outTrack);
     /**
      * @since Available in iOS 5.0 and later.
      */
     @Bridge(symbol="MusicSequenceSetAUGraph", optional=true)
-    public native OSStatus setAUGraph(AUGraph inGraph);
+    protected native OSStatus setAUGraph0(AUGraph inGraph);
     /**
      * @since Available in iOS 5.0 and later.
      */
     @Bridge(symbol="MusicSequenceGetAUGraph", optional=true)
-    public native OSStatus getAUGraph(AUGraph.AUGraphPtr outGraph);
+    protected native OSStatus getAUGraph0(AUGraph.AUGraphPtr outGraph);
     /**
      * @since Available in iOS 5.0 and later.
      */
     @Bridge(symbol="MusicSequenceSetMIDIEndpoint", optional=true)
-    public native OSStatus setMIDIEndpoint(int inEndpoint);
+    protected native OSStatus setMIDIEndpoint0(MIDIEndpoint inEndpoint);
     /**
      * @since Available in iOS 5.0 and later.
      */
     @Bridge(symbol="MusicSequenceSetSequenceType", optional=true)
-    public native OSStatus setSequenceType(MusicSequenceType inType);
+    protected native OSStatus setSequenceType0(MusicSequenceType inType);
     /**
      * @since Available in iOS 5.0 and later.
      */
     @Bridge(symbol="MusicSequenceGetSequenceType", optional=true)
-    public native OSStatus getSequenceType(IntPtr outType);
+    protected native OSStatus getSequenceType0(IntPtr outType);
     /**
      * @since Available in iOS 5.0 and later.
      */
     @Bridge(symbol="MusicSequenceFileLoad", optional=true)
-    public native OSStatus fileLoad(NSURL inFileRef, int inFileTypeHint, int inFlags);
+    protected native OSStatus loadFile0(NSURL inFileRef, MusicSequenceFileType inFileTypeHint, MusicSequenceLoadFlags inFlags);
     /**
      * @since Available in iOS 5.0 and later.
      */
     @Bridge(symbol="MusicSequenceFileLoadData", optional=true)
-    public native OSStatus fileLoadData(NSData inData, int inFileTypeHint, int inFlags);
+    protected native OSStatus loadFileData0(NSData inData, MusicSequenceFileType inFileTypeHint, MusicSequenceLoadFlags inFlags);
     /**
      * @since Available in iOS 5.0 and later.
      */
     @Bridge(symbol="MusicSequenceFileCreate", optional=true)
-    public native OSStatus fileCreate(NSURL inFileRef, int inFileType, MusicSequenceFileFlags inFlags, short inResolution);
+    protected native OSStatus createFile0(NSURL inFileRef, MusicSequenceFileType inFileType, MusicSequenceFileFlags inFlags, short inResolution);
     /**
      * @since Available in iOS 5.0 and later.
      */
     @Bridge(symbol="MusicSequenceFileCreateData", optional=true)
-    public native OSStatus fileCreateData(int inFileType, MusicSequenceFileFlags inFlags, short inResolution, NSData outData);
+    protected native OSStatus createFileData0(MusicSequenceFileType inFileType, MusicSequenceFileFlags inFlags, short inResolution, NSData.NSDataPtr outData);
     /**
      * @since Available in iOS 5.0 and later.
      */
     @Bridge(symbol="MusicSequenceReverse", optional=true)
-    public native OSStatus reverse();
+    protected native OSStatus reverse0();
     /**
      * @since Available in iOS 5.0 and later.
      */
     @Bridge(symbol="MusicSequenceGetSecondsForBeats", optional=true)
-    public native OSStatus getSecondsForBeats(double inBeats, DoublePtr outSeconds);
+    protected native OSStatus getSecondsForBeats0(double inBeats, DoublePtr outSeconds);
     /**
      * @since Available in iOS 5.0 and later.
      */
     @Bridge(symbol="MusicSequenceGetBeatsForSeconds", optional=true)
-    public native OSStatus getBeatsForSeconds(double inSeconds, DoublePtr outBeats);
+    protected native OSStatus getBeatsForSeconds0(double inSeconds, DoublePtr outBeats);
     /**
      * @since Available in iOS 5.0 and later.
      */
     @Bridge(symbol="MusicSequenceSetUserCallback", optional=true)
-    public native OSStatus setUserCallback(FunctionPtr inCallback, VoidPtr inClientData);
+    public native OSStatus setUserCallback0(FunctionPtr inCallback, @Pointer long inClientData);
     /**
      * @since Available in iOS 5.0 and later.
      */
     @Bridge(symbol="MusicSequenceBeatsToBarBeatTime", optional=true)
-    public native OSStatus beatsToBarBeatTime(double inBeats, int inSubbeatDivisor, CABarBeatTime outBarBeatTime);
+    protected native OSStatus convertBeatsToBarBeatTime0(double inBeats, int inSubbeatDivisor, CABarBeatTime.CABarBeatTimePtr outBarBeatTime);
     /**
      * @since Available in iOS 5.0 and later.
      */
     @Bridge(symbol="MusicSequenceBarBeatTimeToBeats", optional=true)
-    public native OSStatus barBeatTimeToBeats(CABarBeatTime inBarBeatTime, DoublePtr outBeats);
+    protected native OSStatus convertBarBeatTimeToBeats0(CABarBeatTime inBarBeatTime, DoublePtr outBeats);
     /**
      * @since Available in iOS 5.0 and later.
      */
     @Bridge(symbol="MusicSequenceGetInfoDictionary", optional=true)
-    public native NSDictionary<?, ?> getInfoDictionary();
+    public native AudioFileInfoDictionary getInfoDictionary();
     /*</methods>*/
 }

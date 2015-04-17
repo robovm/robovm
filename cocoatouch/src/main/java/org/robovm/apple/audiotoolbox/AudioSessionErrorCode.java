@@ -33,39 +33,44 @@ import org.robovm.apple.opengles.*;
 import org.robovm.apple.audiounit.*;
 import org.robovm.apple.coreaudio.*;
 import org.robovm.apple.coremedia.*;
+import org.robovm.apple.coremidi.*;
 /*</imports>*/
 
 /*<javadoc>*/
 
 /*</javadoc>*/
-/*<annotations>*//*</annotations>*/
-/*<visibility>*/public/*</visibility>*/ class /*<name>*/ParameterEvent/*</name>*/ 
-    extends /*<extends>*/Struct<ParameterEvent>/*</extends>*/ 
-    /*<implements>*//*</implements>*/ {
+/*<annotations>*/@Marshaler(ValuedEnum.AsMachineSizedUIntMarshaler.class)/*</annotations>*/
+public enum /*<name>*/AudioSessionErrorCode/*</name>*/ implements ValuedEnum {
+    /*<values>*/
+    No(0L),
+    NotInitialized(560557673L),
+    AlreadyInitialized(1768843636L),
+    Initialization(1768843583L),
+    UnsupportedProperty(1886681407L),
+    BadPropertySize(561211770L),
+    NotActive(560030580L),
+    NoHardware(1852794999L),
+    NoCategorySet(1063477620L),
+    IncompatibleCategory(560161140L),
+    Unspecified(2003329396L);
+    /*</values>*/
 
-    /*<ptr>*/public static class ParameterEventPtr extends Ptr<ParameterEvent, ParameterEventPtr> {}/*</ptr>*/
     /*<bind>*/
     /*</bind>*/
     /*<constants>*//*</constants>*/
-    /*<constructors>*/
-    public ParameterEvent() {}
-    public ParameterEvent(int parameterID, int scope, int element, float value) {
-        this.setParameterID(parameterID);
-        this.setScope(scope);
-        this.setElement(element);
-        this.setValue(value);
-    }
-    /*</constructors>*/
-    /*<properties>*//*</properties>*/
-    /*<members>*/
-    @StructMember(0) public native int getParameterID();
-    @StructMember(0) public native ParameterEvent setParameterID(int parameterID);
-    @StructMember(1) public native int getScope();
-    @StructMember(1) public native ParameterEvent setScope(int scope);
-    @StructMember(2) public native int getElement();
-    @StructMember(2) public native ParameterEvent setElement(int element);
-    @StructMember(3) public native float getValue();
-    @StructMember(3) public native ParameterEvent setValue(float value);
-    /*</members>*/
     /*<methods>*//*</methods>*/
+
+    private final long n;
+
+    private /*<name>*/AudioSessionErrorCode/*</name>*/(long n) { this.n = n; }
+    public long value() { return n; }
+    public static /*<name>*/AudioSessionErrorCode/*</name>*/ valueOf(long n) {
+        for (/*<name>*/AudioSessionErrorCode/*</name>*/ v : values()) {
+            if (v.n == n) {
+                return v;
+            }
+        }
+        throw new IllegalArgumentException("No constant with value " + n + " found in " 
+            + /*<name>*/AudioSessionErrorCode/*</name>*/.class.getName());
+    }
 }

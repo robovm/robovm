@@ -33,39 +33,40 @@ import org.robovm.apple.opengles.*;
 import org.robovm.apple.audiounit.*;
 import org.robovm.apple.coreaudio.*;
 import org.robovm.apple.coremedia.*;
+import org.robovm.apple.coremidi.*;
 /*</imports>*/
 
 /*<javadoc>*/
 
 /*</javadoc>*/
 /*<annotations>*//*</annotations>*/
-/*<visibility>*/public/*</visibility>*/ class /*<name>*/MusicDeviceNoteParams/*</name>*/ 
-    extends /*<extends>*/Struct<MusicDeviceNoteParams>/*</extends>*/ 
+/*<visibility>*/public/*</visibility>*/ class /*<name>*/AUParameterEvent/*</name>*/ 
+    extends /*<extends>*/Struct<AUParameterEvent>/*</extends>*/ 
     /*<implements>*//*</implements>*/ {
 
-    /*<ptr>*/public static class MusicDeviceNoteParamsPtr extends Ptr<MusicDeviceNoteParams, MusicDeviceNoteParamsPtr> {}/*</ptr>*/
+    /*<ptr>*/public static class AUParameterEventPtr extends Ptr<AUParameterEvent, AUParameterEventPtr> {}/*</ptr>*/
     /*<bind>*/
     /*</bind>*/
     /*<constants>*//*</constants>*/
     /*<constructors>*/
-    public MusicDeviceNoteParams() {}
-    public MusicDeviceNoteParams(int argCount, float mPitch, float mVelocity, NoteParamsControlValue mControls) {
-        this.setArgCount(argCount);
-        this.setMPitch(mPitch);
-        this.setMVelocity(mVelocity);
-        this.setMControls(mControls);
+    public AUParameterEvent() {}
+    public AUParameterEvent(AUParameterID parameterID, AUScope scope, int element, float value) {
+        this.setParameterID(parameterID);
+        this.setScope(scope);
+        this.setElement(element);
+        this.setValue(value);
     }
     /*</constructors>*/
     /*<properties>*//*</properties>*/
     /*<members>*/
-    @StructMember(0) public native int getArgCount();
-    @StructMember(0) public native MusicDeviceNoteParams setArgCount(int argCount);
-    @StructMember(1) public native float getMPitch();
-    @StructMember(1) public native MusicDeviceNoteParams setMPitch(float mPitch);
-    @StructMember(2) public native float getMVelocity();
-    @StructMember(2) public native MusicDeviceNoteParams setMVelocity(float mVelocity);
-    @StructMember(3) public native @Array({1}) NoteParamsControlValue getMControls();
-    @StructMember(3) public native MusicDeviceNoteParams setMControls(@Array({1}) NoteParamsControlValue mControls);
+    @StructMember(0) public native AUParameterID getParameterID();
+    @StructMember(0) public native AUParameterEvent setParameterID(AUParameterID parameterID);
+    @StructMember(1) public native AUScope getScope();
+    @StructMember(1) public native AUParameterEvent setScope(AUScope scope);
+    @StructMember(2) public native int getElement();
+    @StructMember(2) public native AUParameterEvent setElement(int element);
+    @StructMember(3) public native float getValue();
+    @StructMember(3) public native AUParameterEvent setValue(float value);
     /*</members>*/
     /*<methods>*//*</methods>*/
 }

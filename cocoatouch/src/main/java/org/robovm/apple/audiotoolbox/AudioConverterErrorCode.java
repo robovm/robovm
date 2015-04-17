@@ -33,24 +33,27 @@ import org.robovm.apple.opengles.*;
 import org.robovm.apple.audiounit.*;
 import org.robovm.apple.coreaudio.*;
 import org.robovm.apple.coremedia.*;
+import org.robovm.apple.coremidi.*;
 /*</imports>*/
 
 /*<javadoc>*/
 
 /*</javadoc>*/
 /*<annotations>*//*</annotations>*/
-public enum /*<name>*/MusicPlayerError/*</name>*/ implements ValuedEnum {
+public enum /*<name>*/AudioConverterErrorCode/*</name>*/ implements ValuedEnum {
     /*<values>*/
-    InvalidSequenceType(-10846L),
-    TrackIndexError(-10859L),
-    TrackNotFound(-10858L),
-    EndOfTrack(-10857L),
-    StartOfTrack(-10856L),
-    IllegalTrackDestination(-10855L),
-    NoSequence(-10854L),
-    InvalidEventType(-10853L),
-    InvalidPlayerState(-10852L),
-    CannotDoInCurrentContext(-10863L);
+    FormatNotSupported(1718449215L),
+    OperationNotSupported(1869627199L),
+    PropertyNotSupported(1886547824L),
+    InvalidInputSize(1768846202L),
+    InvalidOutputSize(1869902714L),
+    UnspecifiedError(2003329396L),
+    BadPropertySizeError(561211770L),
+    RequiresPacketDescriptionsError(561015652L),
+    InputSampleRateOutOfRange(560558962L),
+    OutputSampleRateOutOfRange(560952178L),
+    HardwareInUse(1752656245L),
+    NoHardwarePermission(1885696621L);
     /*</values>*/
 
     /*<bind>*/
@@ -60,15 +63,15 @@ public enum /*<name>*/MusicPlayerError/*</name>*/ implements ValuedEnum {
 
     private final long n;
 
-    private /*<name>*/MusicPlayerError/*</name>*/(long n) { this.n = n; }
+    private /*<name>*/AudioConverterErrorCode/*</name>*/(long n) { this.n = n; }
     public long value() { return n; }
-    public static /*<name>*/MusicPlayerError/*</name>*/ valueOf(long n) {
-        for (/*<name>*/MusicPlayerError/*</name>*/ v : values()) {
+    public static /*<name>*/AudioConverterErrorCode/*</name>*/ valueOf(long n) {
+        for (/*<name>*/AudioConverterErrorCode/*</name>*/ v : values()) {
             if (v.n == n) {
                 return v;
             }
         }
         throw new IllegalArgumentException("No constant with value " + n + " found in " 
-            + /*<name>*/MusicPlayerError/*</name>*/.class.getName());
+            + /*<name>*/AudioConverterErrorCode/*</name>*/.class.getName());
     }
 }

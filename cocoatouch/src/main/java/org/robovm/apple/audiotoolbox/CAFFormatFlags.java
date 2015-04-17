@@ -33,19 +33,18 @@ import org.robovm.apple.opengles.*;
 import org.robovm.apple.audiounit.*;
 import org.robovm.apple.coreaudio.*;
 import org.robovm.apple.coremedia.*;
+import org.robovm.apple.coremidi.*;
 /*</imports>*/
 
 /*<javadoc>*/
 
 /*</javadoc>*/
 /*<annotations>*/@Marshaler(Bits.AsMachineSizedIntMarshaler.class)/*</annotations>*/
-public final class /*<name>*/AudioFileStreamFlags/*</name>*/ extends Bits</*<name>*/AudioFileStreamFlags/*</name>*/> {
+public final class /*<name>*/CAFFormatFlags/*</name>*/ extends Bits</*<name>*/CAFFormatFlags/*</name>*/> {
     /*<values>*/
-    public static final AudioFileStreamFlags None = new AudioFileStreamFlags(0L);
-    public static final AudioFileStreamFlags PropertyFlag_PropertyIsCached = new AudioFileStreamFlags(1L);
-    public static final AudioFileStreamFlags PropertyFlag_CacheProperty = new AudioFileStreamFlags(2L);
-    public static final AudioFileStreamFlags ParseFlag_Discontinuity = new AudioFileStreamFlags(1L);
-    public static final AudioFileStreamFlags SeekFlag_OffsetIsEstimated = new AudioFileStreamFlags(1L);
+    public static final CAFFormatFlags None = new CAFFormatFlags(0L);
+    public static final CAFFormatFlags LinearPCMIsFloat = new CAFFormatFlags(1L);
+    public static final CAFFormatFlags LinearPCMIsLittleEndian = new CAFFormatFlags(2L);
     /*</values>*/
 
     /*<bind>*/
@@ -53,17 +52,17 @@ public final class /*<name>*/AudioFileStreamFlags/*</name>*/ extends Bits</*<nam
     /*<constants>*//*</constants>*/
     /*<methods>*//*</methods>*/
 
-    private static final /*<name>*/AudioFileStreamFlags/*</name>*/[] values = _values(/*<name>*/AudioFileStreamFlags/*</name>*/.class);
+    private static final /*<name>*/CAFFormatFlags/*</name>*/[] values = _values(/*<name>*/CAFFormatFlags/*</name>*/.class);
 
-    public /*<name>*/AudioFileStreamFlags/*</name>*/(long value) { super(value); }
-    private /*<name>*/AudioFileStreamFlags/*</name>*/(long value, long mask) { super(value, mask); }
-    protected /*<name>*/AudioFileStreamFlags/*</name>*/ wrap(long value, long mask) {
-        return new /*<name>*/AudioFileStreamFlags/*</name>*/(value, mask);
+    public /*<name>*/CAFFormatFlags/*</name>*/(long value) { super(value); }
+    private /*<name>*/CAFFormatFlags/*</name>*/(long value, long mask) { super(value, mask); }
+    protected /*<name>*/CAFFormatFlags/*</name>*/ wrap(long value, long mask) {
+        return new /*<name>*/CAFFormatFlags/*</name>*/(value, mask);
     }
-    protected /*<name>*/AudioFileStreamFlags/*</name>*/[] _values() {
+    protected /*<name>*/CAFFormatFlags/*</name>*/[] _values() {
         return values;
     }
-    public static /*<name>*/AudioFileStreamFlags/*</name>*/[] values() {
+    public static /*<name>*/CAFFormatFlags/*</name>*/[] values() {
         return values.clone();
     }
 }

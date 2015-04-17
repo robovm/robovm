@@ -33,31 +33,39 @@ import org.robovm.apple.opengles.*;
 import org.robovm.apple.audiounit.*;
 import org.robovm.apple.coreaudio.*;
 import org.robovm.apple.coremedia.*;
+import org.robovm.apple.coremidi.*;
 /*</imports>*/
 
 /*<javadoc>*/
 
 /*</javadoc>*/
 /*<annotations>*//*</annotations>*/
-public enum /*<name>*/AudioFileError/*</name>*/ implements ValuedEnum {
-	No(0L),
+public enum /*<name>*/AudioQueueErrorCode/*</name>*/ implements ValuedEnum {
     /*<values>*/
-    Unspecified(2003334207L),
-    UnsupportedFileType(1954115647L),
-    UnsupportedDataFormat(1718449215L),
-    UnsupportedProperty(1886681407L),
-    BadPropertySize(561211770L),
-    Permissions(1886547263L),
-    NotOptimized(1869640813L),
-    InvalidChunk(1667787583L),
-    DoesNotAllow64BitDataSize(1868981823L),
-    InvalidPacketOffset(1885563711L),
-    InvalidFile(1685348671L),
-    OperationNotSupported(1869627199L),
-    NotOpen(-38L),
-    EndOfFile(-39L),
-    Position(-40L),
-    FileNotFound(-43L);
+    InvalidBuffer(-66687L),
+    BufferEmpty(-66686L),
+    DisposalPending(-66685L),
+    InvalidProperty(-66684L),
+    InvalidPropertySize(-66683L),
+    InvalidParameter(-66682L),
+    CannotStart(-66681L),
+    InvalidDevice(-66680L),
+    BufferInQueue(-66679L),
+    InvalidRunState(-66678L),
+    InvalidQueueType(-66677L),
+    Permissions(-66676L),
+    InvalidPropertyValue(-66675L),
+    PrimeTimedOut(-66674L),
+    CodecNotFound(-66673L),
+    InvalidCodecAccess(-66672L),
+    QueueInvalidated(-66671L),
+    TooManyTaps(-66670L),
+    InvalidTapContext(-66669L),
+    RecordUnderrun(-66668L),
+    InvalidTapType(-66667L),
+    BufferEnqueuedTwice(-66666L),
+    EnqueueDuringReset(-66632L),
+    InvalidOfflineMode(-66626L);
     /*</values>*/
 
     /*<bind>*/
@@ -67,15 +75,15 @@ public enum /*<name>*/AudioFileError/*</name>*/ implements ValuedEnum {
 
     private final long n;
 
-    private /*<name>*/AudioFileError/*</name>*/(long n) { this.n = n; }
+    private /*<name>*/AudioQueueErrorCode/*</name>*/(long n) { this.n = n; }
     public long value() { return n; }
-    public static /*<name>*/AudioFileError/*</name>*/ valueOf(long n) {
-        for (/*<name>*/AudioFileError/*</name>*/ v : values()) {
+    public static /*<name>*/AudioQueueErrorCode/*</name>*/ valueOf(long n) {
+        for (/*<name>*/AudioQueueErrorCode/*</name>*/ v : values()) {
             if (v.n == n) {
                 return v;
             }
         }
         throw new IllegalArgumentException("No constant with value " + n + " found in " 
-            + /*<name>*/AudioFileError/*</name>*/.class.getName());
+            + /*<name>*/AudioQueueErrorCode/*</name>*/.class.getName());
     }
 }

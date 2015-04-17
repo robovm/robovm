@@ -33,17 +33,25 @@ import org.robovm.apple.opengles.*;
 import org.robovm.apple.audiounit.*;
 import org.robovm.apple.coreaudio.*;
 import org.robovm.apple.coremedia.*;
+import org.robovm.apple.coremidi.*;
 /*</imports>*/
 
 /*<javadoc>*/
 
 /*</javadoc>*/
-/*<annotations>*/@Marshaler(Bits.AsMachineSizedIntMarshaler.class)/*</annotations>*/
-public final class /*<name>*/CAFLinearPCMFormatFlags/*</name>*/ extends Bits</*<name>*/CAFLinearPCMFormatFlags/*</name>*/> {
+/*<annotations>*//*</annotations>*/
+public enum /*<name>*/MusicPlayerErrorCode/*</name>*/ implements ValuedEnum {
     /*<values>*/
-    public static final CAFLinearPCMFormatFlags None = new CAFLinearPCMFormatFlags(0L);
-    public static final CAFLinearPCMFormatFlags Float = new CAFLinearPCMFormatFlags(1L);
-    public static final CAFLinearPCMFormatFlags LittleEndian = new CAFLinearPCMFormatFlags(2L);
+    InvalidSequenceType(-10846L),
+    TrackIndexError(-10859L),
+    TrackNotFound(-10858L),
+    EndOfTrack(-10857L),
+    StartOfTrack(-10856L),
+    IllegalTrackDestination(-10855L),
+    NoSequence(-10854L),
+    InvalidEventType(-10853L),
+    InvalidPlayerState(-10852L),
+    CannotDoInCurrentContext(-10863L);
     /*</values>*/
 
     /*<bind>*/
@@ -51,17 +59,17 @@ public final class /*<name>*/CAFLinearPCMFormatFlags/*</name>*/ extends Bits</*<
     /*<constants>*//*</constants>*/
     /*<methods>*//*</methods>*/
 
-    private static final /*<name>*/CAFLinearPCMFormatFlags/*</name>*/[] values = _values(/*<name>*/CAFLinearPCMFormatFlags/*</name>*/.class);
+    private final long n;
 
-    public /*<name>*/CAFLinearPCMFormatFlags/*</name>*/(long value) { super(value); }
-    private /*<name>*/CAFLinearPCMFormatFlags/*</name>*/(long value, long mask) { super(value, mask); }
-    protected /*<name>*/CAFLinearPCMFormatFlags/*</name>*/ wrap(long value, long mask) {
-        return new /*<name>*/CAFLinearPCMFormatFlags/*</name>*/(value, mask);
-    }
-    protected /*<name>*/CAFLinearPCMFormatFlags/*</name>*/[] _values() {
-        return values;
-    }
-    public static /*<name>*/CAFLinearPCMFormatFlags/*</name>*/[] values() {
-        return values.clone();
+    private /*<name>*/MusicPlayerErrorCode/*</name>*/(long n) { this.n = n; }
+    public long value() { return n; }
+    public static /*<name>*/MusicPlayerErrorCode/*</name>*/ valueOf(long n) {
+        for (/*<name>*/MusicPlayerErrorCode/*</name>*/ v : values()) {
+            if (v.n == n) {
+                return v;
+            }
+        }
+        throw new IllegalArgumentException("No constant with value " + n + " found in " 
+            + /*<name>*/MusicPlayerErrorCode/*</name>*/.class.getName());
     }
 }

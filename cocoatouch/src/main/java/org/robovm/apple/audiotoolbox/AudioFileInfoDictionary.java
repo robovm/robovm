@@ -20,8 +20,10 @@ import org.robovm.apple.corefoundation.CFDictionaryWrapper;
 import org.robovm.apple.corefoundation.CFString;
 import org.robovm.apple.corefoundation.CFType;
 import org.robovm.rt.bro.NativeObject;
+import org.robovm.rt.bro.annotation.Marshaler;
 import org.robovm.rt.bro.annotation.MarshalsPointer;
 
+@Marshaler(AudioFileInfoDictionary.Marshaler.class)
 public class AudioFileInfoDictionary extends CFDictionaryWrapper {
 
     public static class Marshaler {

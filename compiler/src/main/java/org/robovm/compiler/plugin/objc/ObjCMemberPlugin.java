@@ -88,8 +88,7 @@ public class ObjCMemberPlugin extends AbstractCompilerPlugin {
     public static final String OBJC_OBJECT = "org.robovm.objc.ObjCObject";
     public static final String OBJC_RUNTIME = "org.robovm.objc.ObjCRuntime";
     public static final String OBJC_EXTENSIONS = "org.robovm.objc.ObjCExtensions";
-    public static final String UI_RESPONDER = "org.robovm.apple.uikit.UIResponder";
-    public static final String UI_STORYBOARD_SEGUE = "org.robovm.apple.uikit.UIStoryboardSegue";
+    public static final String NS_OBJECT = "org.robovm.apple.foundation.NSObject";
     public static final String UI_EVENT = "org.robovm.apple.uikit.UIEvent";
     public static final String NS_ARRAY = "org.robovm.apple.foundation.NSArray";
 
@@ -103,8 +102,7 @@ public class ObjCMemberPlugin extends AbstractCompilerPlugin {
     private SootClass org_robovm_objc_Selector = null;
     private SootClass java_lang_String = null;
     private SootClass java_lang_Class = null;
-    private SootClass org_robovm_apple_uikit_UIResponder = null;
-    private SootClass org_robovm_apple_uikit_UIStoryboardSegue = null;
+    private SootClass org_robovm_apple_foundation_NSObject = null;
     private SootClass org_robovm_apple_uikit_UIEvent = null;
     private SootClass org_robovm_apple_foundation_NSArray = null;
     private SootMethodRef org_robovm_objc_Selector_register = null;
@@ -309,8 +307,7 @@ public class ObjCMemberPlugin extends AbstractCompilerPlugin {
         org_robovm_objc_ObjCSuper = r.makeClassRef(OBJC_SUPER);
         org_robovm_objc_ObjCRuntime = r.makeClassRef(OBJC_RUNTIME);
         org_robovm_objc_Selector = r.makeClassRef(SELECTOR);
-        org_robovm_apple_uikit_UIResponder = r.makeClassRef(UI_RESPONDER);
-        org_robovm_apple_uikit_UIStoryboardSegue = r.makeClassRef(UI_STORYBOARD_SEGUE);
+        org_robovm_apple_foundation_NSObject = r.makeClassRef(NS_OBJECT);
         org_robovm_apple_uikit_UIEvent = r.makeClassRef(UI_EVENT);
         org_robovm_apple_foundation_NSArray = r.makeClassRef(NS_ARRAY);
         SootClass java_lang_Object = r.makeClassRef("java.lang.Object");
@@ -383,14 +380,9 @@ public class ObjCMemberPlugin extends AbstractCompilerPlugin {
         return isAssignable(cls, org_robovm_objc_ObjCExtensions);
     }
 
-    private boolean isUIResponder(Type type) {
+    private boolean isNSObject(Type type) {
         return (type instanceof RefType)
-                && isAssignable(((RefType) type).getSootClass(), org_robovm_apple_uikit_UIResponder);
-    }
-
-    private boolean isUIStoryboardSegue(Type type) {
-        return (type instanceof RefType)
-                && isAssignable(((RefType) type).getSootClass(), org_robovm_apple_uikit_UIStoryboardSegue);
+                && isAssignable(((RefType) type).getSootClass(), org_robovm_apple_foundation_NSObject);
     }
 
     private boolean isUIEvent(Type type) {
@@ -479,12 +471,12 @@ public class ObjCMemberPlugin extends AbstractCompilerPlugin {
             Type param1 = paramCount > 0 ? method.getParameterType(0) : null;
             Type param2 = paramCount > 1 ? method.getParameterType(1) : null;
             if (method.getReturnType() != VoidType.v() || paramCount > 2
-                    || (param1 != null && (!isUIResponder(param1) && !isUIStoryboardSegue(param1)))
-                    || (param2 != null && (!isUIEvent(param2) || isUIStoryboardSegue(param1)))) {
+                    || (param1 != null && (!isNSObject(param1) && !isNSObject(param1)))
+                    || (param2 != null && (!isUIEvent(param2) || isNSObject(param1)))) {
                 throw new CompilerException("Objective-C @IBAction method "
                         + method + " does not have a supported signature. @IBAction methods"
-                        + " must return void and either take no arguments, 1 argument of type UIResponder"
-                        + " or UIStoryboardSegue, or 2 arguments of types UIResponder and UIEvent.");
+                        + " must return void and either take no arguments, 1 argument of type NSObject"
+                        + ", or 2 arguments of types NSObject and UIEvent.");
             }
 
             transformObjCMethod(annotation, sootClass, method, selectors, overridables, extensions);

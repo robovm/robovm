@@ -50,7 +50,7 @@ import org.robovm.apple.dispatch.*;
     /*<constructors>*/
     public NSTimer() {}
     protected NSTimer(SkipInit skipInit) { super(skipInit); }
-    public NSTimer(NSDate date, double ti, NSObject t, Selector s, NSObject ui, boolean rep) { super((SkipInit) null); initObject(init(date, ti, t, s, ui, rep)); }
+    public NSTimer(NSDate fireDate, double timeInterval, NSObject target, Selector selector, NSObject userInfo, boolean repeats) { super((SkipInit) null); initObject(init(fireDate, timeInterval, target, selector, userInfo, repeats)); }
     /*</constructors>*/
     /*<properties>*/
     @Property(selector = "fireDate")
@@ -77,18 +77,18 @@ import org.robovm.apple.dispatch.*;
     /*<members>*//*</members>*/
     /*<methods>*/
     @Method(selector = "initWithFireDate:interval:target:selector:userInfo:repeats:")
-    protected native @Pointer long init(NSDate date, double ti, NSObject t, Selector s, NSObject ui, boolean rep);
+    protected native @Pointer long init(NSDate fireDate, double timeInterval, NSObject target, Selector selector, NSObject userInfo, boolean repeats);
     @Method(selector = "fire")
     public native void fire();
     @Method(selector = "invalidate")
     public native void invalidate();
     @Method(selector = "timerWithTimeInterval:invocation:repeats:")
-    public static native NSTimer create(double ti, NSInvocation invocation, boolean yesOrNo);
+    public static native NSTimer create(double timeInterval, NSInvocation invocation, boolean repeats);
     @Method(selector = "scheduledTimerWithTimeInterval:invocation:repeats:")
-    public static native NSTimer createScheduled(double ti, NSInvocation invocation, boolean yesOrNo);
+    public static native NSTimer createScheduled(double timeInterval, NSInvocation invocation, boolean repeats);
     @Method(selector = "timerWithTimeInterval:target:selector:userInfo:repeats:")
-    public static native NSTimer create(double ti, NSObject aTarget, Selector aSelector, NSObject userInfo, boolean yesOrNo);
+    public static native NSTimer create(double timeInterval, NSObject target, Selector selector, NSObject userInfo, boolean repeats);
     @Method(selector = "scheduledTimerWithTimeInterval:target:selector:userInfo:repeats:")
-    public static native NSTimer createScheduled(double ti, NSObject aTarget, Selector aSelector, NSObject userInfo, boolean yesOrNo);
+    public static native NSTimer createScheduled(double timeInterval, NSObject target, Selector selector, NSObject userInfo, boolean repeats);
     /*</methods>*/
 }

@@ -2909,6 +2909,9 @@ classes:
                 name: dismissModalViewController
             '-dismissViewControllerAnimated:completion:':
                 name: dismissViewController
+                parameters:
+                    flag:
+                        name: animated
             '-performSegueWithIdentifier:sender:':
                 name: performSegue
             '-transitionFromViewController:toViewController:duration:options:animations:completion:':
@@ -2952,6 +2955,9 @@ classes:
                 trim_after_first_colon: true
             '-presentViewController:animated:completion:':
                 trim_after_first_colon: true
+                parameters:
+                    flag:
+                        name: animated
             '-setEditing:animated:':
                 trim_after_first_colon: true
             '-setToolbarItems:animated:':

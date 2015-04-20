@@ -41,8 +41,8 @@ import org.robovm.apple.foundation.*;
         void invoke(CFSocket socket, CFSocketCallBackType callBackType, CFData address, VoidPtr data);
     }
     
-    private static java.util.concurrent.atomic.AtomicLong refconId = new java.util.concurrent.atomic.AtomicLong();
-    private static Map<Long, CFSocketCallback> callbacks = new HashMap<Long, CFSocketCallback>();
+    private static final java.util.concurrent.atomic.AtomicLong refconId = new java.util.concurrent.atomic.AtomicLong();
+    private static final LongMap<CFSocketCallback> callbacks = new LongMap<>();
     private static final java.lang.reflect.Method cbInvoke;
     
     static {

@@ -40,7 +40,7 @@ import org.robovm.apple.coremidi.MIDIPort.MIDIPortPtr;
 
     /*<ptr>*/public static class MIDIClientPtr extends Ptr<MIDIClient, MIDIClientPtr> {}/*</ptr>*/
     private static java.util.concurrent.atomic.AtomicLong refconId = new java.util.concurrent.atomic.AtomicLong();
-    private static Map<Long, MIDINotifyProc> notifyProcs = new HashMap<Long, MIDINotifyProc>();
+    private static LongMap<MIDINotifyProc> notifyProcs = new LongMap<>();
     private static final java.lang.reflect.Method cbNotifyProc;
     
     static {

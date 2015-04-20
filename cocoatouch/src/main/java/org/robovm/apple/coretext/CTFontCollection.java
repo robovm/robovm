@@ -45,7 +45,7 @@ import org.robovm.apple.coregraphics.*;
     }
     
     private static java.util.concurrent.atomic.AtomicLong refconId = new java.util.concurrent.atomic.AtomicLong();
-    private static Map<Long, SortCallback> sortCallbacks = new HashMap<>();
+    private static LongMap<SortCallback> sortCallbacks = new LongMap<>();
     private static final java.lang.reflect.Method cbSort;
     
     static {

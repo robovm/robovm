@@ -66,7 +66,7 @@ import org.robovm.apple.audiotoolbox.*;
     }
 
     private static java.util.concurrent.atomic.AtomicLong storageId = new java.util.concurrent.atomic.AtomicLong();
-    private static final Map<Long, Callbacks> callbacks = new HashMap<>();
+    private static final LongMap<Callbacks> callbacks = new LongMap<>();
     private static final java.lang.reflect.Method cbInit;
     private static final java.lang.reflect.Method cbFinalize;
     private static final java.lang.reflect.Method cbPrepare;

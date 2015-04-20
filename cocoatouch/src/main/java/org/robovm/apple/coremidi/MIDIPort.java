@@ -41,7 +41,7 @@ import org.robovm.apple.coremidi.MIDIEndpoint.MIDIEndpointPtr;
     /*<ptr>*/public static class MIDIPortPtr extends Ptr<MIDIPort, MIDIPortPtr> {}/*</ptr>*/
     private static java.util.concurrent.atomic.AtomicLong refconId = new java.util.concurrent.atomic.AtomicLong();
     protected long localRefconId;
-    private static Map<Long, MIDIReadProc> readProcs = new HashMap<Long, MIDIReadProc>();
+    private static LongMap<MIDIReadProc> readProcs = new LongMap<>();
     private static final java.lang.reflect.Method cbReadProc;
     
     static {

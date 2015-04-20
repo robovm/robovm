@@ -92,7 +92,7 @@ import org.robovm.apple.metal.*;
     }
     
     private static java.util.concurrent.atomic.AtomicLong refconId = new java.util.concurrent.atomic.AtomicLong();
-    private static Map<Long, FillExtendedPixelsCallback> callbacks = new HashMap<>();
+    private static LongMap<FillExtendedPixelsCallback> callbacks = new LongMap<>();
     private static final java.lang.reflect.Method cbFillExtendedPixels;
     
     static {

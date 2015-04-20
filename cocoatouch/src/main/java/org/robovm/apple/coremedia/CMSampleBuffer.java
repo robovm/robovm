@@ -139,9 +139,9 @@ import org.robovm.apple.audiotoolbox.*;
     
     private static java.util.concurrent.atomic.AtomicLong refconId = new java.util.concurrent.atomic.AtomicLong();
     private long localRefconId;
-    private static Map<Long, InvalidateCallback> invalidateCallbacks = new HashMap<Long, InvalidateCallback>();
-    private static Map<Long, MakeDataReadyCallback> makeDataReadyCallbacks = new HashMap<Long, MakeDataReadyCallback>();
-    private static Map<Long, ForEachCallback> forEachCallbacks = new HashMap<Long, ForEachCallback>();
+    private static final LongMap<InvalidateCallback> invalidateCallbacks = new LongMap<>();
+    private static final LongMap<MakeDataReadyCallback> makeDataReadyCallbacks = new LongMap<>();
+    private static final LongMap<ForEachCallback> forEachCallbacks = new LongMap<>();
     private static final java.lang.reflect.Method cbInvalidate;
     private static final java.lang.reflect.Method cbMakeDataReady;
     private static final java.lang.reflect.Method cbForEach;

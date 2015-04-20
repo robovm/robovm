@@ -43,7 +43,7 @@ import org.robovm.apple.uikit.*;
     }
     
     private static java.util.concurrent.atomic.AtomicLong releaseInfo = new java.util.concurrent.atomic.AtomicLong();
-    private static Map<Long, ReleaseDataCallback> callbacks = new HashMap<>();
+    private static final LongMap<ReleaseDataCallback> callbacks = new LongMap<>();
     private static final java.lang.reflect.Method cbReleaseData;
     
     static {

@@ -44,8 +44,8 @@ import org.robovm.apple.foundation.*;
         void invalidate(CFMessagePort port);
     }
     
-    private static java.util.concurrent.atomic.AtomicLong refconId = new java.util.concurrent.atomic.AtomicLong();
-    private static final Map<Long, MessagePortCallback> portCallbacks = new HashMap<>();
+    private static final java.util.concurrent.atomic.AtomicLong refconId = new java.util.concurrent.atomic.AtomicLong();
+    private static final LongMap<MessagePortCallback> portCallbacks = new LongMap<>();
     private static final java.lang.reflect.Method cbPort;
     private static final java.lang.reflect.Method cbInvalidate;
     

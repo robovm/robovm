@@ -41,7 +41,7 @@ import org.robovm.apple.foundation.*;
         void invoke(CFNotificationCenter center, CFType observer, String name, CFType object, NSDictionary<NSString, ?> userInfo);
     }
     
-    private static final Map<Long, NotificationCallback> callbacks = new HashMap<>();
+    private static final LongMap<NotificationCallback> callbacks = new LongMap<>();
     private static final java.lang.reflect.Method cbNotification;
     
     static {

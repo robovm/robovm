@@ -42,7 +42,7 @@ import org.robovm.apple.coregraphics.*;
     /*<ptr>*//*</ptr>*/
     
     private static java.util.concurrent.atomic.AtomicLong refconId = new java.util.concurrent.atomic.AtomicLong();
-    private static Map<Long, CTRunDelegate> runCallbacks = new HashMap<Long, CTRunDelegate>();
+    private static LongMap<CTRunDelegate> runCallbacks = new LongMap<>();
     
     private static final java.lang.reflect.Method cbGetAscent;
     private static final java.lang.reflect.Method cbGetDescent;

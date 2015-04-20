@@ -37,10 +37,10 @@ import org.robovm.apple.uikit.*;
 
 /*</javadoc>*/
 /*<annotations>*//*</annotations>*/
-public enum /*<name>*/AULowShelfParam/*</name>*/ implements AUParameterID {
+public enum /*<name>*/AUParameterBandpass/*</name>*/ implements AUParameterType {
     /*<values>*/
-    CutoffFrequency(0L),
-    Gain(1L);
+    CenterFrequency(0L),
+    Bandwidth(1L);
     /*</values>*/
 
     /*<bind>*/
@@ -50,15 +50,15 @@ public enum /*<name>*/AULowShelfParam/*</name>*/ implements AUParameterID {
 
     private final long n;
 
-    private /*<name>*/AULowShelfParam/*</name>*/(long n) { this.n = n; }
+    private /*<name>*/AUParameterBandpass/*</name>*/(long n) { this.n = n; }
     public long value() { return n; }
-    public static /*<name>*/AULowShelfParam/*</name>*/ valueOf(long n) {
-        for (/*<name>*/AULowShelfParam/*</name>*/ v : values()) {
+    public static /*<name>*/AUParameterBandpass/*</name>*/ valueOf(long n) {
+        for (/*<name>*/AUParameterBandpass/*</name>*/ v : values()) {
             if (v.n == n) {
                 return v;
             }
         }
         throw new IllegalArgumentException("No constant with value " + n + " found in " 
-            + /*<name>*/AULowShelfParam/*</name>*/.class.getName());
+            + /*<name>*/AUParameterBandpass/*</name>*/.class.getName());
     }
 }

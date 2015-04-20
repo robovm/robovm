@@ -37,12 +37,11 @@ import org.robovm.apple.uikit.*;
 
 /*</javadoc>*/
 /*<annotations>*//*</annotations>*/
-public enum /*<name>*/AUSamplerParam/*</name>*/ implements AUParameterID {
+public enum /*<name>*/AUParameterPeakLimiter/*</name>*/ implements AUParameterType {
     /*<values>*/
-    Gain(900L),
-    CoarseTuning(901L),
-    FineTuning(902L),
-    Pan(903L);
+    AttackTime(0L),
+    DecayTime(1L),
+    PreGain(2L);
     /*</values>*/
 
     /*<bind>*/
@@ -52,15 +51,15 @@ public enum /*<name>*/AUSamplerParam/*</name>*/ implements AUParameterID {
 
     private final long n;
 
-    private /*<name>*/AUSamplerParam/*</name>*/(long n) { this.n = n; }
+    private /*<name>*/AUParameterPeakLimiter/*</name>*/(long n) { this.n = n; }
     public long value() { return n; }
-    public static /*<name>*/AUSamplerParam/*</name>*/ valueOf(long n) {
-        for (/*<name>*/AUSamplerParam/*</name>*/ v : values()) {
+    public static /*<name>*/AUParameterPeakLimiter/*</name>*/ valueOf(long n) {
+        for (/*<name>*/AUParameterPeakLimiter/*</name>*/ v : values()) {
             if (v.n == n) {
                 return v;
             }
         }
         throw new IllegalArgumentException("No constant with value " + n + " found in " 
-            + /*<name>*/AUSamplerParam/*</name>*/.class.getName());
+            + /*<name>*/AUParameterPeakLimiter/*</name>*/.class.getName());
     }
 }

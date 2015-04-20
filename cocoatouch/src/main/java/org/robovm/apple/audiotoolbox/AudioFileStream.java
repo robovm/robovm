@@ -19,6 +19,7 @@ package org.robovm.apple.audiotoolbox;
 import java.io.*;
 import java.nio.*;
 import java.util.*;
+
 import org.robovm.objc.*;
 import org.robovm.objc.annotation.*;
 import org.robovm.objc.block.*;
@@ -193,6 +194,12 @@ import org.robovm.apple.coremidi.*;
     public void setProperty(AudioFileStreamProperty id, double value) throws OSStatusException {
         setProperty(id, new DoublePtr(value));
     }
+    
+    /* Convenience methods for getting/setting properties */
+    public AudioStreamBasicDescription getDataFormat() throws OSStatusException {
+        return getProperty(AudioFileStreamProperty.DataFormat, AudioStreamBasicDescription.class);
+    }
+    /* End: Convenience methods for getting/setting properties */
     
     /**
      * @throws OSStatusException 

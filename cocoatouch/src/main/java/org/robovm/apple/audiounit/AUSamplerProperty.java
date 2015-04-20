@@ -37,7 +37,7 @@ import org.robovm.apple.uikit.*;
 
 /*</javadoc>*/
 /*<annotations>*//*</annotations>*/
-public enum /*<name>*/AUSamplerProperty/*</name>*/ implements AUPropertyID {
+public enum /*<name>*/AUSamplerProperty/*</name>*/ implements AUPropertyType {
     /*<values>*/
     Instrument(4102L),
     AudioFiles(4101L);

@@ -37,18 +37,10 @@ import org.robovm.apple.uikit.*;
 
 /*</javadoc>*/
 /*<annotations>*//*</annotations>*/
-public enum /*<name>*/AUDynamicsProcessorParam/*</name>*/ implements AUParameterID {
+public enum /*<name>*/AUTypeGenerator/*</name>*/ implements AUSubType {
     /*<values>*/
-    Threshold(0L),
-    HeadRoom(1L),
-    ExpansionRatio(2L),
-    ExpansionThreshold(3L),
-    AttackTime(4L),
-    ReleaseTime(5L),
-    MasterGain(6L),
-    CompressionAmount(1000L),
-    InputAmplitude(2000L),
-    OutputAmplitude(3000L);
+    ScheduledSoundPlayer(1936945260L),
+    AudioFilePlayer(1634103404L);
     /*</values>*/
 
     /*<bind>*/
@@ -58,15 +50,15 @@ public enum /*<name>*/AUDynamicsProcessorParam/*</name>*/ implements AUParameter
 
     private final long n;
 
-    private /*<name>*/AUDynamicsProcessorParam/*</name>*/(long n) { this.n = n; }
+    private /*<name>*/AUTypeGenerator/*</name>*/(long n) { this.n = n; }
     public long value() { return n; }
-    public static /*<name>*/AUDynamicsProcessorParam/*</name>*/ valueOf(long n) {
-        for (/*<name>*/AUDynamicsProcessorParam/*</name>*/ v : values()) {
+    public static /*<name>*/AUTypeGenerator/*</name>*/ valueOf(long n) {
+        for (/*<name>*/AUTypeGenerator/*</name>*/ v : values()) {
             if (v.n == n) {
                 return v;
             }
         }
         throw new IllegalArgumentException("No constant with value " + n + " found in " 
-            + /*<name>*/AUDynamicsProcessorParam/*</name>*/.class.getName());
+            + /*<name>*/AUTypeGenerator/*</name>*/.class.getName());
     }
 }

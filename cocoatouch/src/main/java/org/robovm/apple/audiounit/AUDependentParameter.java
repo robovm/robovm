@@ -47,17 +47,17 @@ import org.robovm.apple.uikit.*;
     /*<constants>*//*</constants>*/
     /*<constructors>*/
     public AUDependentParameter() {}
-    public AUDependentParameter(AUScope scope, AUParameterID parameterID) {
+    public AUDependentParameter(AUScope scope, AUParameterType type) {
         this.setScope(scope);
-        this.setParameterID(parameterID);
+        this.setType(type);
     }
     /*</constructors>*/
     /*<properties>*//*</properties>*/
     /*<members>*/
     @StructMember(0) public native AUScope getScope();
     @StructMember(0) public native AUDependentParameter setScope(AUScope scope);
-    @StructMember(1) public native AUParameterID getParameterID();
-    @StructMember(1) public native AUDependentParameter setParameterID(AUParameterID parameterID);
+    @StructMember(1) public native AUParameterType getType();
+    @StructMember(1) public native AUDependentParameter setType(AUParameterType type);
     /*</members>*/
     /*<methods>*//*</methods>*/
 }

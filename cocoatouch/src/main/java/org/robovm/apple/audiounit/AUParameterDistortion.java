@@ -37,7 +37,7 @@ import org.robovm.apple.uikit.*;
 
 /*</javadoc>*/
 /*<annotations>*//*</annotations>*/
-public enum /*<name>*/AUDistortionParam/*</name>*/ implements AUParameterID {
+public enum /*<name>*/AUParameterDistortion/*</name>*/ implements AUParameterType {
     /*<values>*/
     Delay(0L),
     Decay(1L),
@@ -64,15 +64,15 @@ public enum /*<name>*/AUDistortionParam/*</name>*/ implements AUParameterID {
 
     private final long n;
 
-    private /*<name>*/AUDistortionParam/*</name>*/(long n) { this.n = n; }
+    private /*<name>*/AUParameterDistortion/*</name>*/(long n) { this.n = n; }
     public long value() { return n; }
-    public static /*<name>*/AUDistortionParam/*</name>*/ valueOf(long n) {
-        for (/*<name>*/AUDistortionParam/*</name>*/ v : values()) {
+    public static /*<name>*/AUParameterDistortion/*</name>*/ valueOf(long n) {
+        for (/*<name>*/AUParameterDistortion/*</name>*/ v : values()) {
             if (v.n == n) {
                 return v;
             }
         }
         throw new IllegalArgumentException("No constant with value " + n + " found in " 
-            + /*<name>*/AUDistortionParam/*</name>*/.class.getName());
+            + /*<name>*/AUParameterDistortion/*</name>*/.class.getName());
     }
 }

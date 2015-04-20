@@ -19,6 +19,7 @@ package org.robovm.apple.audiotoolbox;
 import java.io.*;
 import java.nio.*;
 import java.util.*;
+
 import org.robovm.objc.*;
 import org.robovm.objc.annotation.*;
 import org.robovm.objc.block.*;
@@ -99,6 +100,13 @@ import org.robovm.apple.coremidi.*;
         }
     }
     
+    /**
+     * @throws OSStatusException 
+     * @since Available in iOS 2.0 and later.
+     */
+    public static AudioQueue createOutput(AudioStreamBasicDescription format, OutputCallback callback) throws OSStatusException {
+        return createOutput(format, callback, NSRunLoop.getMain(), NSRunLoopMode.Default);
+    }
     /**
      * @throws OSStatusException 
      * @since Available in iOS 2.0 and later.
@@ -214,6 +222,13 @@ import org.robovm.apple.coremidi.*;
         OSStatus status = enqueueBuffer0(buffer, packetDescs.length, packetDescsPtr, trimFramesAtStart, trimFramesAtEnd, paramValues.length, paramValuesPtr, startTime, ptr);
         OSStatusException.throwIfNecessary(status);
         return ptr.get();
+    }
+    /**
+     * @throws OSStatusException 
+     * @since Available in iOS 2.0 and later.
+     */
+    public void start() throws OSStatusException {
+        start(null);
     }
     /**
      * @throws OSStatusException 
@@ -340,6 +355,15 @@ import org.robovm.apple.coremidi.*;
     public void setProperty(AudioQueueProperty id, double value) throws OSStatusException {
         setProperty(id, new DoublePtr(value));
     }
+    
+    /* Convenience methods for getting/setting properties */
+    public boolean isRunning() throws OSStatusException {
+        int result = getPropertyAsInt(AudioQueueProperty.IsRunning);
+        return result != 0;
+    }
+    
+    /* End: Convenience methods for getting/setting properties */
+    
     /**
      * @since Available in iOS 2.0 and later.
      */

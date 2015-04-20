@@ -37,15 +37,12 @@ import org.robovm.apple.uikit.*;
 
 /*</javadoc>*/
 /*<annotations>*//*</annotations>*/
-public enum /*<name>*/AUMultiChannelMixerParam/*</name>*/ implements AUParameterID {
+public enum /*<name>*/AUParameterSampler/*</name>*/ implements AUParameterType {
     /*<values>*/
-    Volume(0L),
-    Enable(1L),
-    Pan(2L),
-    PreAveragePower(1000L),
-    PrePeakHoldLevel(2000L),
-    PostAveragePower(3000L),
-    PostPeakHoldLevel(4000L);
+    Gain(900L),
+    CoarseTuning(901L),
+    FineTuning(902L),
+    Pan(903L);
     /*</values>*/
 
     /*<bind>*/
@@ -55,15 +52,15 @@ public enum /*<name>*/AUMultiChannelMixerParam/*</name>*/ implements AUParameter
 
     private final long n;
 
-    private /*<name>*/AUMultiChannelMixerParam/*</name>*/(long n) { this.n = n; }
+    private /*<name>*/AUParameterSampler/*</name>*/(long n) { this.n = n; }
     public long value() { return n; }
-    public static /*<name>*/AUMultiChannelMixerParam/*</name>*/ valueOf(long n) {
-        for (/*<name>*/AUMultiChannelMixerParam/*</name>*/ v : values()) {
+    public static /*<name>*/AUParameterSampler/*</name>*/ valueOf(long n) {
+        for (/*<name>*/AUParameterSampler/*</name>*/ v : values()) {
             if (v.n == n) {
                 return v;
             }
         }
         throw new IllegalArgumentException("No constant with value " + n + " found in " 
-            + /*<name>*/AUMultiChannelMixerParam/*</name>*/.class.getName());
+            + /*<name>*/AUParameterSampler/*</name>*/.class.getName());
     }
 }

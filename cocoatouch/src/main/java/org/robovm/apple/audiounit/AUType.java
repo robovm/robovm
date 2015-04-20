@@ -62,7 +62,7 @@ public enum /*<name>*/AUType/*</name>*/ implements ValuedEnum {
 
     private final long n;
 
-    private /*<name>*/AUType/*</name>*/(long n) { this.n = n; }
+    private AUType(long n) { this.n = n; }
     public long value() { return n; }
     public static /*<name>*/AUType/*</name>*/ valueOf(long n) {
         for (/*<name>*/AUType/*</name>*/ v : values()) {

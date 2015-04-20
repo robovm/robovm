@@ -37,10 +37,15 @@ import org.robovm.apple.uikit.*;
 
 /*</javadoc>*/
 /*<annotations>*//*</annotations>*/
-public enum /*<name>*/AUVarispeedParam/*</name>*/ implements AUParameterID {
+public enum /*<name>*/AUParameterMultiChannelMixer/*</name>*/ implements AUParameterType {
     /*<values>*/
-    Rate(0L),
-    Cents(1L);
+    Volume(0L),
+    Enable(1L),
+    Pan(2L),
+    PreAveragePower(1000L),
+    PrePeakHoldLevel(2000L),
+    PostAveragePower(3000L),
+    PostPeakHoldLevel(4000L);
     /*</values>*/
 
     /*<bind>*/
@@ -50,15 +55,15 @@ public enum /*<name>*/AUVarispeedParam/*</name>*/ implements AUParameterID {
 
     private final long n;
 
-    private /*<name>*/AUVarispeedParam/*</name>*/(long n) { this.n = n; }
+    private /*<name>*/AUParameterMultiChannelMixer/*</name>*/(long n) { this.n = n; }
     public long value() { return n; }
-    public static /*<name>*/AUVarispeedParam/*</name>*/ valueOf(long n) {
-        for (/*<name>*/AUVarispeedParam/*</name>*/ v : values()) {
+    public static /*<name>*/AUParameterMultiChannelMixer/*</name>*/ valueOf(long n) {
+        for (/*<name>*/AUParameterMultiChannelMixer/*</name>*/ v : values()) {
             if (v.n == n) {
                 return v;
             }
         }
         throw new IllegalArgumentException("No constant with value " + n + " found in " 
-            + /*<name>*/AUVarispeedParam/*</name>*/.class.getName());
+            + /*<name>*/AUParameterMultiChannelMixer/*</name>*/.class.getName());
     }
 }

@@ -37,12 +37,18 @@ import org.robovm.apple.uikit.*;
 
 /*</javadoc>*/
 /*<annotations>*//*</annotations>*/
-public enum /*<name>*/AUNewTimePitchParam/*</name>*/ implements AUParameterID {
+public enum /*<name>*/AUParameterMatrixMixer/*</name>*/ implements AUParameterType {
     /*<values>*/
-    Rate(0L),
-    Pitch(1L),
-    Overlap(4L),
-    EnablePeakLocking(6L);
+    Volume(0L),
+    Enable(1L),
+    PreAveragePower(1000L),
+    PrePeakHoldLevel(2000L),
+    PostAveragePower(3000L),
+    PostPeakHoldLevel(4000L),
+    PreAveragePowerLinear(5000L),
+    PrePeakHoldLevelLinear(6000L),
+    PostAveragePowerLinear(7000L),
+    PostPeakHoldLevelLinear(8000L);
     /*</values>*/
 
     /*<bind>*/
@@ -52,15 +58,15 @@ public enum /*<name>*/AUNewTimePitchParam/*</name>*/ implements AUParameterID {
 
     private final long n;
 
-    private /*<name>*/AUNewTimePitchParam/*</name>*/(long n) { this.n = n; }
+    private /*<name>*/AUParameterMatrixMixer/*</name>*/(long n) { this.n = n; }
     public long value() { return n; }
-    public static /*<name>*/AUNewTimePitchParam/*</name>*/ valueOf(long n) {
-        for (/*<name>*/AUNewTimePitchParam/*</name>*/ v : values()) {
+    public static /*<name>*/AUParameterMatrixMixer/*</name>*/ valueOf(long n) {
+        for (/*<name>*/AUParameterMatrixMixer/*</name>*/ v : values()) {
             if (v.n == n) {
                 return v;
             }
         }
         throw new IllegalArgumentException("No constant with value " + n + " found in " 
-            + /*<name>*/AUNewTimePitchParam/*</name>*/.class.getName());
+            + /*<name>*/AUParameterMatrixMixer/*</name>*/.class.getName());
     }
 }

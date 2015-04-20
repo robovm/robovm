@@ -37,33 +37,28 @@ import org.robovm.apple.uikit.*;
 
 /*</javadoc>*/
 /*<annotations>*//*</annotations>*/
-/*<visibility>*/public/*</visibility>*/ class /*<name>*/AUParameter/*</name>*/ 
-    extends /*<extends>*/Struct<AUParameter>/*</extends>*/ 
-    /*<implements>*//*</implements>*/ {
+public enum /*<name>*/AUTypeMusicDevice/*</name>*/ implements AUSubType {
+    /*<values>*/
+    Sampler(1935764848L),
+    MIDISynth(1836284270L);
+    /*</values>*/
 
-    /*<ptr>*/public static class AUParameterPtr extends Ptr<AUParameter, AUParameterPtr> {}/*</ptr>*/
     /*<bind>*/
     /*</bind>*/
     /*<constants>*//*</constants>*/
-    /*<constructors>*/
-    public AUParameter() {}
-    public AUParameter(AudioUnit audioUnit, AUParameterType type, AUScope scope, int element) {
-        this.setAudioUnit(audioUnit);
-        this.setType(type);
-        this.setScope(scope);
-        this.setElement(element);
-    }
-    /*</constructors>*/
-    /*<properties>*//*</properties>*/
-    /*<members>*/
-    @StructMember(0) public native AudioUnit getAudioUnit();
-    @StructMember(0) public native AUParameter setAudioUnit(AudioUnit audioUnit);
-    @StructMember(1) public native AUParameterType getType();
-    @StructMember(1) public native AUParameter setType(AUParameterType type);
-    @StructMember(2) public native AUScope getScope();
-    @StructMember(2) public native AUParameter setScope(AUScope scope);
-    @StructMember(3) public native int getElement();
-    @StructMember(3) public native AUParameter setElement(int element);
-    /*</members>*/
     /*<methods>*//*</methods>*/
+
+    private final long n;
+
+    private AUTypeMusicDevice(long n) { this.n = n; }
+    public long value() { return n; }
+    public static /*<name>*/AUTypeMusicDevice/*</name>*/ valueOf(long n) {
+        for (/*<name>*/AUTypeMusicDevice/*</name>*/ v : values()) {
+            if (v.n == n) {
+                return v;
+            }
+        }
+        throw new IllegalArgumentException("No constant with value " + n + " found in " 
+            + /*<name>*/AUTypeMusicDevice/*</name>*/.class.getName());
+    }
 }

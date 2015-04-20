@@ -37,15 +37,11 @@ import org.robovm.apple.uikit.*;
 
 /*</javadoc>*/
 /*<annotations>*//*</annotations>*/
-public enum /*<name>*/AUReverb2Param/*</name>*/ implements AUParameterID {
+public enum /*<name>*/AUTypeOutput/*</name>*/ implements AUSubType {
     /*<values>*/
-    DryWetMix(0L),
-    Gain(1L),
-    MinDelayTime(2L),
-    MaxDelayTime(3L),
-    DecayTimeAt0Hz(4L),
-    DecayTimeAtNyquist(5L),
-    RandomizeReflections(6L);
+    GenericOutput(1734700658L),
+    RemoteIO(1919512419L),
+    VoiceProcessingIO(1987078511L);
     /*</values>*/
 
     /*<bind>*/
@@ -55,15 +51,15 @@ public enum /*<name>*/AUReverb2Param/*</name>*/ implements AUParameterID {
 
     private final long n;
 
-    private /*<name>*/AUReverb2Param/*</name>*/(long n) { this.n = n; }
+    private /*<name>*/AUTypeOutput/*</name>*/(long n) { this.n = n; }
     public long value() { return n; }
-    public static /*<name>*/AUReverb2Param/*</name>*/ valueOf(long n) {
-        for (/*<name>*/AUReverb2Param/*</name>*/ v : values()) {
+    public static /*<name>*/AUTypeOutput/*</name>*/ valueOf(long n) {
+        for (/*<name>*/AUTypeOutput/*</name>*/ v : values()) {
             if (v.n == n) {
                 return v;
             }
         }
         throw new IllegalArgumentException("No constant with value " + n + " found in " 
-            + /*<name>*/AUReverb2Param/*</name>*/.class.getName());
+            + /*<name>*/AUTypeOutput/*</name>*/.class.getName());
     }
 }

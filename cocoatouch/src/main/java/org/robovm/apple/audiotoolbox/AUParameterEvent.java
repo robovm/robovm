@@ -50,7 +50,7 @@ import org.robovm.apple.coremidi.*;
     /*<constants>*//*</constants>*/
     /*<constructors>*/
     public AUParameterEvent() {}
-    public AUParameterEvent(AUParameterID parameterID, AUScope scope, int element, float value) {
+    public AUParameterEvent(AUParameterType parameterID, AUScope scope, int element, float value) {
         this.setParameterID(parameterID);
         this.setScope(scope);
         this.setElement(element);
@@ -59,8 +59,8 @@ import org.robovm.apple.coremidi.*;
     /*</constructors>*/
     /*<properties>*//*</properties>*/
     /*<members>*/
-    @StructMember(0) public native AUParameterID getParameterID();
-    @StructMember(0) public native AUParameterEvent setParameterID(AUParameterID parameterID);
+    @StructMember(0) public native AUParameterType getParameterID();
+    @StructMember(0) public native AUParameterEvent setParameterID(AUParameterType parameterID);
     @StructMember(1) public native AUScope getScope();
     @StructMember(1) public native AUParameterEvent setScope(AUScope scope);
     @StructMember(2) public native int getElement();

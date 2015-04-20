@@ -37,30 +37,12 @@ import org.robovm.apple.uikit.*;
 
 /*</javadoc>*/
 /*<annotations>*//*</annotations>*/
-public enum /*<name>*/AUMIDIParam/*</name>*/ implements AUParameterID {
+public enum /*<name>*/AUTypeMixer/*</name>*/ implements AUSubType {
     /*<values>*/
-    Volume(7L),
-    Sustain(64L),
-    Sostenuto(66L),
-    AllNotesOff(123L),
-    ModWheel(1L),
-    PitchBend(224L),
-    AllSoundOff(120L),
-    ResetAllControllers(121L),
-    Pan(10L),
-    Foot(4L),
-    ChannelPressure(208L),
-    KeyPressure(160L),
-    Expression(11L),
-    DataEntry(6L),
-    Volume_LSB(39L),
-    ModWheel_LSB(33L),
-    Pan_LSB(42L),
-    Foot_LSB(36L),
-    Expression_LSB(43L),
-    DataEntry_LSB(38L),
-    KeyPressure_FirstKey(256L),
-    KeyPressure_LastKey(383L);
+    MultiChannelMixer(1835232632L),
+    MatrixMixer(1836608888L),
+    SpatialMixer(862217581L),
+    AU3DMixerEmbedded(862217581L);
     /*</values>*/
 
     /*<bind>*/
@@ -70,15 +52,15 @@ public enum /*<name>*/AUMIDIParam/*</name>*/ implements AUParameterID {
 
     private final long n;
 
-    private /*<name>*/AUMIDIParam/*</name>*/(long n) { this.n = n; }
+    private /*<name>*/AUTypeMixer/*</name>*/(long n) { this.n = n; }
     public long value() { return n; }
-    public static /*<name>*/AUMIDIParam/*</name>*/ valueOf(long n) {
-        for (/*<name>*/AUMIDIParam/*</name>*/ v : values()) {
+    public static /*<name>*/AUTypeMixer/*</name>*/ valueOf(long n) {
+        for (/*<name>*/AUTypeMixer/*</name>*/ v : values()) {
             if (v.n == n) {
                 return v;
             }
         }
         throw new IllegalArgumentException("No constant with value " + n + " found in " 
-            + /*<name>*/AUMIDIParam/*</name>*/.class.getName());
+            + /*<name>*/AUTypeMixer/*</name>*/.class.getName());
     }
 }

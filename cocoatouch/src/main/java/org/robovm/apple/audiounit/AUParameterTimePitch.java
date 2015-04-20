@@ -37,14 +37,9 @@ import org.robovm.apple.uikit.*;
 
 /*</javadoc>*/
 /*<annotations>*//*</annotations>*/
-public enum /*<name>*/AUNBandEQParam/*</name>*/ implements AUParameterID {
+public enum /*<name>*/AUParameterTimePitch/*</name>*/ implements AUParameterType {
     /*<values>*/
-    GlobalGain(0L),
-    BypassBand(1000L),
-    FilterType(2000L),
-    Frequency(3000L),
-    Gain(4000L),
-    Bandwidth(5000L);
+    Rate(0L);
     /*</values>*/
 
     /*<bind>*/
@@ -54,15 +49,15 @@ public enum /*<name>*/AUNBandEQParam/*</name>*/ implements AUParameterID {
 
     private final long n;
 
-    private /*<name>*/AUNBandEQParam/*</name>*/(long n) { this.n = n; }
+    private /*<name>*/AUParameterTimePitch/*</name>*/(long n) { this.n = n; }
     public long value() { return n; }
-    public static /*<name>*/AUNBandEQParam/*</name>*/ valueOf(long n) {
-        for (/*<name>*/AUNBandEQParam/*</name>*/ v : values()) {
+    public static /*<name>*/AUParameterTimePitch/*</name>*/ valueOf(long n) {
+        for (/*<name>*/AUParameterTimePitch/*</name>*/ v : values()) {
             if (v.n == n) {
                 return v;
             }
         }
         throw new IllegalArgumentException("No constant with value " + n + " found in " 
-            + /*<name>*/AUNBandEQParam/*</name>*/.class.getName());
+            + /*<name>*/AUParameterTimePitch/*</name>*/.class.getName());
     }
 }

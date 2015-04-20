@@ -18,8 +18,9 @@ package org.robovm.apple.audiounit;
 import org.robovm.apple.coreaudio.AudioBufferList;
 import org.robovm.apple.coreaudio.AudioTimeStamp;
 import org.robovm.apple.corefoundation.OSStatus;
+import org.robovm.apple.corefoundation.OSStatusException;
 
 public interface AURenderCallback {
-    OSStatus onRender(AUMutableRenderActionFlags actionFlags, AudioTimeStamp timeStamp, 
-            int busNumber, int numberFrames, AudioBufferList data);
+    void onRender(AUMutableRenderActionFlags actionFlags, AudioTimeStamp timeStamp, 
+            int busNumber, int numberFrames, AudioBufferList data) throws OSStatusException;
 }

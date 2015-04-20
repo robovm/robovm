@@ -37,18 +37,10 @@ import org.robovm.apple.uikit.*;
 
 /*</javadoc>*/
 /*<annotations>*//*</annotations>*/
-public enum /*<name>*/AUMatrixMixerParam/*</name>*/ implements AUParameterID {
+public enum /*<name>*/AUParameterVarispeed/*</name>*/ implements AUParameterType {
     /*<values>*/
-    Volume(0L),
-    Enable(1L),
-    PreAveragePower(1000L),
-    PrePeakHoldLevel(2000L),
-    PostAveragePower(3000L),
-    PostPeakHoldLevel(4000L),
-    PreAveragePowerLinear(5000L),
-    PrePeakHoldLevelLinear(6000L),
-    PostAveragePowerLinear(7000L),
-    PostPeakHoldLevelLinear(8000L);
+    Rate(0L),
+    Cents(1L);
     /*</values>*/
 
     /*<bind>*/
@@ -58,15 +50,15 @@ public enum /*<name>*/AUMatrixMixerParam/*</name>*/ implements AUParameterID {
 
     private final long n;
 
-    private /*<name>*/AUMatrixMixerParam/*</name>*/(long n) { this.n = n; }
+    private /*<name>*/AUParameterVarispeed/*</name>*/(long n) { this.n = n; }
     public long value() { return n; }
-    public static /*<name>*/AUMatrixMixerParam/*</name>*/ valueOf(long n) {
-        for (/*<name>*/AUMatrixMixerParam/*</name>*/ v : values()) {
+    public static /*<name>*/AUParameterVarispeed/*</name>*/ valueOf(long n) {
+        for (/*<name>*/AUParameterVarispeed/*</name>*/ v : values()) {
             if (v.n == n) {
                 return v;
             }
         }
         throw new IllegalArgumentException("No constant with value " + n + " found in " 
-            + /*<name>*/AUMatrixMixerParam/*</name>*/.class.getName());
+            + /*<name>*/AUParameterVarispeed/*</name>*/.class.getName());
     }
 }

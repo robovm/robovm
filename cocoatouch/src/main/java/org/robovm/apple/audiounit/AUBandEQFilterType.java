@@ -37,33 +37,37 @@ import org.robovm.apple.uikit.*;
 
 /*</javadoc>*/
 /*<annotations>*//*</annotations>*/
-/*<visibility>*/public/*</visibility>*/ class /*<name>*/AUParameter/*</name>*/ 
-    extends /*<extends>*/Struct<AUParameter>/*</extends>*/ 
-    /*<implements>*//*</implements>*/ {
+public enum /*<name>*/AUBandEQFilterType/*</name>*/ implements ValuedEnum {
+    /*<values>*/
+    Parametric(0L),
+    _2ndOrderButterworthLowPass(1L),
+    _2ndOrderButterworthHighPass(2L),
+    ResonantLowPass(3L),
+    ResonantHighPass(4L),
+    BandPass(5L),
+    BandStop(6L),
+    LowShelf(7L),
+    HighShelf(8L),
+    ResonantLowShelf(9L),
+    ResonantHighShelf(10L);
+    /*</values>*/
 
-    /*<ptr>*/public static class AUParameterPtr extends Ptr<AUParameter, AUParameterPtr> {}/*</ptr>*/
     /*<bind>*/
     /*</bind>*/
     /*<constants>*//*</constants>*/
-    /*<constructors>*/
-    public AUParameter() {}
-    public AUParameter(AudioUnit audioUnit, AUParameterType type, AUScope scope, int element) {
-        this.setAudioUnit(audioUnit);
-        this.setType(type);
-        this.setScope(scope);
-        this.setElement(element);
-    }
-    /*</constructors>*/
-    /*<properties>*//*</properties>*/
-    /*<members>*/
-    @StructMember(0) public native AudioUnit getAudioUnit();
-    @StructMember(0) public native AUParameter setAudioUnit(AudioUnit audioUnit);
-    @StructMember(1) public native AUParameterType getType();
-    @StructMember(1) public native AUParameter setType(AUParameterType type);
-    @StructMember(2) public native AUScope getScope();
-    @StructMember(2) public native AUParameter setScope(AUScope scope);
-    @StructMember(3) public native int getElement();
-    @StructMember(3) public native AUParameter setElement(int element);
-    /*</members>*/
     /*<methods>*//*</methods>*/
+
+    private final long n;
+
+    private /*<name>*/AUBandEQFilterType/*</name>*/(long n) { this.n = n; }
+    public long value() { return n; }
+    public static /*<name>*/AUBandEQFilterType/*</name>*/ valueOf(long n) {
+        for (/*<name>*/AUBandEQFilterType/*</name>*/ v : values()) {
+            if (v.n == n) {
+                return v;
+            }
+        }
+        throw new IllegalArgumentException("No constant with value " + n + " found in " 
+            + /*<name>*/AUBandEQFilterType/*</name>*/.class.getName());
+    }
 }

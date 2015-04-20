@@ -67,7 +67,13 @@ import org.robovm.apple.coremidi.*;
     @Callback
     private static OSStatus cbRender(@Pointer long refCon, AUMutableRenderActionFlags actionFlags, AudioTimeStamp timeStamp, int busNumber, int numberFrames, AudioBufferList data) {
         synchronized (renderCallbacks) {
-            return renderCallbacks.get(refCon).onRender(actionFlags, timeStamp, busNumber, numberFrames, data);
+            OSStatus status = OSStatus.NO_ERR;
+            try {
+                renderCallbacks.get(refCon).onRender(actionFlags, timeStamp, busNumber, numberFrames, data);
+            } catch (OSStatusException e) {
+                status = e.getStatus();
+            }
+            return status;
         }
     }
     

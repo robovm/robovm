@@ -37,9 +37,10 @@ import org.robovm.apple.uikit.*;
 
 /*</javadoc>*/
 /*<annotations>*//*</annotations>*/
-public enum /*<name>*/AUTimePitchParam/*</name>*/ implements AUParameterID {
+public enum /*<name>*/AUParameterHighShelf/*</name>*/ implements AUParameterType {
     /*<values>*/
-    Rate(0L);
+    CutOffFrequency(0L),
+    Gain(1L);
     /*</values>*/
 
     /*<bind>*/
@@ -49,15 +50,15 @@ public enum /*<name>*/AUTimePitchParam/*</name>*/ implements AUParameterID {
 
     private final long n;
 
-    private /*<name>*/AUTimePitchParam/*</name>*/(long n) { this.n = n; }
+    private /*<name>*/AUParameterHighShelf/*</name>*/(long n) { this.n = n; }
     public long value() { return n; }
-    public static /*<name>*/AUTimePitchParam/*</name>*/ valueOf(long n) {
-        for (/*<name>*/AUTimePitchParam/*</name>*/ v : values()) {
+    public static /*<name>*/AUParameterHighShelf/*</name>*/ valueOf(long n) {
+        for (/*<name>*/AUParameterHighShelf/*</name>*/ v : values()) {
             if (v.n == n) {
                 return v;
             }
         }
         throw new IllegalArgumentException("No constant with value " + n + " found in " 
-            + /*<name>*/AUTimePitchParam/*</name>*/.class.getName());
+            + /*<name>*/AUParameterHighShelf/*</name>*/.class.getName());
     }
 }

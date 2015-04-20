@@ -23,42 +23,42 @@ enums:
     AUType: {first: kAudioUnitType_Output}
     AUType2: {first: kAudioUnitType_RemoteEffect, prefix: kAudioUnitType_, merge_with: AUType}
     AUManufacturer: {first: kAudioUnitManufacturer_Apple, prefix: kAudioUnitManufacturer_}
-    AUSubType: {first: kAudioUnitSubType_GenericOutput}
-    AUSubType2: {first: kAudioUnitSubType_Sampler, merge_with: AUSubType}
-    AUSubType3: {first: kAudioUnitSubType_AUConverter, merge_with: AUSubType}
-    AUSubType4: {first: kAudioUnitSubType_PeakLimiter, merge_with: AUSubType}
-    AUSubType5: {first: kAudioUnitSubType_MultiChannelMixer, merge_with: AUSubType}
-    AUSubType6: {first: kAudioUnitSubType_ScheduledSoundPlayer, merge_with: AUSubType}
+    AUTypeOutput: {first: kAudioUnitSubType_GenericOutput}
+    AUTypeMusicDevice: {first: kAudioUnitSubType_Sampler}
+    AUTypeConverter: {first: kAudioUnitSubType_AUConverter}
+    AUTypeEffect: {first: kAudioUnitSubType_PeakLimiter}
+    AUTypeMixer: {first: kAudioUnitSubType_MultiChannelMixer}
+    AUTypeGenerator: {first: kAudioUnitSubType_ScheduledSoundPlayer}
     AURenderActionFlags: {first: kAudioUnitRenderAction_PreRender, bits: true, prefix: kAudioUnitRenderAction_, kAudioOfflineUnitRenderAction_(.*): 'Offline#{g[0]}'}
     AUErrorCode: {first: kAudioUnitErr_InvalidProperty}
     AUParameterEventType: {first: kParameterEvent_Immediate, marshaler: ValuedEnum.AsUnsignedIntMarshaler}
     AUSelector: {first: kAudioUnitRange, suffix: Select, ignore: kAudioUnitRange}
     AUOutputSelector: {first: kAudioOutputUnitRange, suffix: Select, ignore: kAudioOutputUnitRange}
-    AUMIDIParam: {first: kAUGroupParameterID_Volume}
-    AUSpatialMixerParam: {first: kSpatialMixerParam_Azimuth}
-    AUReverbParam: {first: kReverbParam_FilterFrequency}
-    AUMultiChannelMixerParam: {first: kMultiChannelMixerParam_Volume}
-    AUMatrixMixerParam: {first: kMatrixMixerParam_Volume}
-    AUOutputParam: {first: kHALOutputParam_Volume, prefix: kHALOutputParam_}
-    AUTimePitchParam: {first: kTimePitchParam_Rate, prefix: kTimePitchParam_}
-    AUNewTimePitchParam: {first: kNewTimePitchParam_Rate}
-    AUSamplerParam: {first: kAUSamplerParam_Gain}
-    AUBandpassParam: {first: kBandpassParam_CenterFrequency}
-    AUHipassParam: {first: kHipassParam_CutoffFrequency}
-    AULowpassParam: {first: kLowPassParam_CutoffFrequency}
-    AUHighShelfParam: {first: kHighShelfParam_CutOffFrequency}
-    AULowShelfParam: {first: kAULowShelfParam_CutoffFrequency}
-    AUParametricEQParam: {first: kParametricEQParam_CenterFreq}
-    AUPeakLimiterParam: {first: kLimiterParam_AttackTime}
-    AUDynamicsProcessorParam: {first: kDynamicsProcessorParam_Threshold}
-    AUVarispeedParam: {first: kVarispeedParam_PlaybackRate}
-    AUDistortionParam: {first: kDistortionParam_Delay}
-    AUDelayParam: {first: kDelayParam_WetDryMix}
-    AUNBandEQParam: {first: kAUNBandEQParam_GlobalGain}
-    AUNBandEQFilterType: {first: kAUNBandEQFilterType_Parametric, prefix: kAUNBandEQFilterType_, ignore: kNumAUNBandEQFilterTypes}
-    AURoundTripAACParam: {first: kRoundTripAACParam_Format}
-    AURandomParam: {first: kRandomParam_BoundA}
-    AUReverb2Param: {first: kReverb2Param_DryWetMix}
+    AUParameterMIDI: {first: kAUGroupParameterID_Volume}
+    AUParameterSpatialMixer: {first: kSpatialMixerParam_Azimuth}
+    AUParameterReverb: {first: kReverbParam_FilterFrequency}
+    AUParameterMultiChannelMixer: {first: kMultiChannelMixerParam_Volume}
+    AUParameterMatrixMixer: {first: kMatrixMixerParam_Volume}
+    AUParameterOutput: {first: kHALOutputParam_Volume, prefix: kHALOutputParam_}
+    AUParameterTimePitch: {first: kTimePitchParam_Rate, prefix: kTimePitchParam_}
+    AUParameterNewTimePitch: {first: kNewTimePitchParam_Rate}
+    AUParameterSampler: {first: kAUSamplerParam_Gain}
+    AUParameterBandpass: {first: kBandpassParam_CenterFrequency}
+    AUParameterHipass: {first: kHipassParam_CutoffFrequency}
+    AUParameterLowpass: {first: kLowPassParam_CutoffFrequency}
+    AUParameterHighShelf: {first: kHighShelfParam_CutOffFrequency}
+    AUParameterLowShelf: {first: kAULowShelfParam_CutoffFrequency}
+    AUParameterParametricEQ: {first: kParametricEQParam_CenterFreq}
+    AUParameterPeakLimiter: {first: kLimiterParam_AttackTime}
+    AUParameterDynamicsProcessor: {first: kDynamicsProcessorParam_Threshold}
+    AUParameterVarispeed: {first: kVarispeedParam_PlaybackRate}
+    AUParameterDistortion: {first: kDistortionParam_Delay}
+    AUParameterDelay: {first: kDelayParam_WetDryMix}
+    AUParameterBandEQ: {first: kAUNBandEQParam_GlobalGain}
+    AUBandEQFilterType: {first: kAUNBandEQFilterType_Parametric, prefix: kAUNBandEQFilterType_, ignore: kNumAUNBandEQFilterTypes}
+    AUParameterRoundTripAAC: {first: kRoundTripAACParam_Format}
+    AUParameterRandom: {first: kRandomParam_BoundA}
+    AUParameterReverb2: {first: kReverb2Param_DryWetMix}
     AUScope: {first: kAudioUnitScope_Global}
     AUGenericProperty: {first: kAudioUnitProperty_ClassInfo}
     AUGenericProperty2: {first: kAudioUnitProperty_RemoteControlEventListener, merge_with: AUGenericProperty}
@@ -132,8 +132,8 @@ classes:
         mAudioUnit:
             name: audioUnit
         mParameterID:
-            name: parameterID
-            type: AUParameterID
+            name: type
+            type: AUParameterType
         mScope:
             name: scope
             type: AUScope
@@ -145,7 +145,7 @@ classes:
             name: audioUnit
         mPropertyID:
             name: propertyID
-            type: AUPropertyID
+            type: AUPropertyType
         mScope:
             name: scope
             type: AUScope
@@ -175,8 +175,8 @@ classes:
             name: scope
             type: AUScope
         mParameterID:
-            name: parameterID
-            type: AUParameterID
+            name: type
+            type: AUParameterType
     AUInputSamplesInOutputCallbackStruct: # DONE
         userData:
             type: '@Pointer long'
@@ -297,12 +297,16 @@ functions:
     # AudioComponentInstance
     AudioComponentInstanceNew:
         class: AudioComponentInstance
-        name: create
+        name: create0
         visibility: protected
     AudioComponentInstance(CanDo):
         class: AudioComponentInstance
         name: '#{g[0]}'
         visibility: ''
+    AudioComponentInstance(Dispose):
+        class: AudioComponentInstance
+        name: '#{g[0]}0'
+        visibility: protected
     AudioComponentInstance(.*):
         class: AudioComponentInstance
         name: '#{g[0]}'
@@ -338,178 +342,69 @@ functions:
         name: '#{g[0]}'
 
     # AudioUnit
-    AudioUnit(GetPropertyInfo):
-        class: AudioUnit
-        name: '#{g[0]}'
-        visibility: private
-        parameters:
-            inID:
-                name: id
-                type: AUPropertyID
-            inScope:
-                name: scope
-                type: AUScope
-            inElement:
-                name: element
-    AudioUnit(GetProperty):
-        class: AudioUnit
-        name: '#{g[0]}'
-        visibility: protected
-        parameters:
-            inID:
-                name: id
-                type: AUPropertyID
-            inScope:
-                name: scope
-                type: AUScope
-            inElement:
-                name: element
-    AudioUnit(SetProperty):
-        class: AudioUnit
-        name: '#{g[0]}'
-        visibility: protected
-        parameters:
-            inID:
-                name: id
-                type: AUPropertyID
-            inScope:
-                name: scope
-                type: AUScope
-            inElement:
-                name: element
-            inDataSize:
-                name: dataSize
-    AudioUnit(AddPropertyListener):
-        class: AudioUnit
-        name: '#{g[0]}'
-        visibility: protected
-        parameters:
-            inID:
-                name: id
-                type: AUPropertyID
-            inProc:
-                name: proc
-            inProcUserData:
-                name: procUserData
-                type: '@Pointer long'
     AudioUnit(RemovePropertyListener)WithUserData:
         class: AudioUnit
-        name: '#{g[0]}'
+        name: '#{g[0]}0'
         visibility: protected
         parameters:
             inID:
-                name: id
-                type: AUPropertyID
-            inProc:
-                name: proc
-            inProcUserData:
-                name: procUserData
-                type: '@Pointer long'
-    AudioUnit(AddRenderNotify):
-        class: AudioUnit
-        name: '#{g[0]}'
-        visibility: protected
-        parameters:
-            inProc:
-                name: proc
-            inProcUserData:
-                name: procUserData
-                type: '@Pointer long'
-    AudioUnit(RemoveRenderNotify):
-        class: AudioUnit
-        name: '#{g[0]}'
-        visibility: protected
-        parameters:
-            inProc:
-                name: proc
-            inProcUserData:
-                name: procUserData
-                type: '@Pointer long'
-    AudioUnit(GetParameter):
-        class: AudioUnit
-        name: '#{g[0]}'
-        visibility: protected
-        parameters:
-            inID:
-                name: id
-                type: AUPropertyID
+                type: AUPropertyType
             inScope:
-                name: scope
                 type: AUScope
-            inElement:
-                name: element
-    AudioUnit(SetParameter):
+            inProcUserData:
+                type: '@Pointer long'
+    AudioUnit(.*Property.*):
         class: AudioUnit
-        name: '#{g[0]}'
+        name: '#{g[0]}0'
+        visibility: protected
         parameters:
             inID:
-                name: id
-                type: AUPropertyID
+                type: AUPropertyType
             inScope:
-                name: scope
                 type: AUScope
-            inElement:
-                name: element
-            inValue:
-                name: value
-            inBufferOffsetInFrames:
-                name: bufferOffsetInFrames
-    AudioUnit(Render):
+            inProcUserData:
+                type: '@Pointer long'
+    AudioUnit(AddRenderNotify|RemoveRenderNotify):
         class: AudioUnit
-        name: '#{g[0]}'
+        name: '#{g[0]}0'
+        visibility: protected
         parameters:
-            ioActionFlags:
-                name: actionFlags
-                type: AUMutableRenderActionFlags
-            inTimeStamp:
-                name: timeStamp
-            inOutputBusNumber:
-                name: outputBusNumber
-            inNumberFrames:
-                name: numberFrames
-            ioData:
-                name: data
-    AudioUnit(Process):
+            inProcUserData:
+                type: '@Pointer long'
+    AudioUnit(.*Parameter):
         class: AudioUnit
-        name: '#{g[0]}'
+        name: '#{g[0]}0'
+        visibility: protected
         parameters:
-            ioActionFlags:
-                name: actionFlags
-                type: AUMutableRenderActionFlags
-            inTimeStamp:
-                name: timeStamp
-            inNumberFrames:
-                name: numberFrames
-            ioData:
-                name: data
-    AudioUnit(ProcessMultiple):
+            inID:
+                type: AUParameterType
+            inScope:
+                type: AUScope
+    AudioUnit(Render|Process|ProcessMultiple):
         class: AudioUnit
-        name: '#{g[0]}'
+        name: '#{g[0]}0'
         visibility: protected
         parameters:
             ioActionFlags:
                 name: actionFlags
                 type: AUMutableRenderActionFlags
-            inTimeStamp:
-                name: timeStamp
-            inNumberFrames:
-                name: numberFrames
     AudioOutputUnit(Publish):
         class: AudioUnit
-        name: '#{g[0]}'
-        visibility: private
+        name: publishOutput0 # TODO move into separate AudioOutputUnit class
+        visibility: protected
     AudioOutputUnit(GetHostIcon):
         class: AudioUnit
-        name: getOutputHostIcon
+        name: getOutputHostIcon # TODO move into separate AudioOutputUnit class
     AudioOutputUnit(Start|Stop):
         class: AudioUnit
-        name: '#{g[0]}Output'
+        name: '#{g[0]}Output0'
+        visibility: protected
     AudioUnit(Reset):
         class: AudioUnit
-        name: '#{g[0]}'
+        name: '#{g[0]}0'
+        visibility: protected
         parameters:
             inScope:
-                name: scope
                 type: AUScope
     AudioUnit(ScheduleParameters):
         class: AudioUnit
@@ -517,7 +412,8 @@ functions:
         exclude: true # TODO
     AudioUnit(.*):
         class: AudioUnit
-        name: '#{g[0]}'
+        name: '#{g[0]}0'
+        visibility: protected
 
     # MusicDevice
     MusicDeviceMIDIEvent:

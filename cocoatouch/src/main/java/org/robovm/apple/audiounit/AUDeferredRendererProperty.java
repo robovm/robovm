@@ -37,7 +37,7 @@ import org.robovm.apple.uikit.*;
 
 /*</javadoc>*/
 /*<annotations>*//*</annotations>*/
-public enum /*<name>*/AUDeferredRendererProperty/*</name>*/ implements AUPropertyID {
+public enum /*<name>*/AUDeferredRendererProperty/*</name>*/ implements AUPropertyType {
     /*<values>*/
     PullSize(3320L),
     ExtraLatency(3321L),

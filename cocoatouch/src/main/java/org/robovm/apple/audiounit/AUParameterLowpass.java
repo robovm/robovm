@@ -37,10 +37,10 @@ import org.robovm.apple.uikit.*;
 
 /*</javadoc>*/
 /*<annotations>*//*</annotations>*/
-public enum /*<name>*/AUHighShelfParam/*</name>*/ implements AUParameterID {
+public enum /*<name>*/AUParameterLowpass/*</name>*/ implements AUParameterType {
     /*<values>*/
-    CutOffFrequency(0L),
-    Gain(1L);
+    CutoffFrequency(0L),
+    Resonance(1L);
     /*</values>*/
 
     /*<bind>*/
@@ -50,15 +50,15 @@ public enum /*<name>*/AUHighShelfParam/*</name>*/ implements AUParameterID {
 
     private final long n;
 
-    private /*<name>*/AUHighShelfParam/*</name>*/(long n) { this.n = n; }
+    private /*<name>*/AUParameterLowpass/*</name>*/(long n) { this.n = n; }
     public long value() { return n; }
-    public static /*<name>*/AUHighShelfParam/*</name>*/ valueOf(long n) {
-        for (/*<name>*/AUHighShelfParam/*</name>*/ v : values()) {
+    public static /*<name>*/AUParameterLowpass/*</name>*/ valueOf(long n) {
+        for (/*<name>*/AUParameterLowpass/*</name>*/ v : values()) {
             if (v.n == n) {
                 return v;
             }
         }
         throw new IllegalArgumentException("No constant with value " + n + " found in " 
-            + /*<name>*/AUHighShelfParam/*</name>*/.class.getName());
+            + /*<name>*/AUParameterLowpass/*</name>*/.class.getName());
     }
 }

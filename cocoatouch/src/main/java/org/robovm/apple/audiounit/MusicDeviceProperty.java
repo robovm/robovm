@@ -37,7 +37,7 @@ import org.robovm.apple.uikit.*;
 
 /*</javadoc>*/
 /*<annotations>*//*</annotations>*/
-public enum /*<name>*/MusicDeviceProperty/*</name>*/ implements AUPropertyID {
+public enum /*<name>*/MusicDeviceProperty/*</name>*/ implements AUPropertyType {
     /*<values>*/
     InstrumentName(1001L),
     InstrumentNumber(1004L),

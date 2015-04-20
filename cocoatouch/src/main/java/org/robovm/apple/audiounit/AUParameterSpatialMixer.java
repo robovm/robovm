@@ -37,11 +37,20 @@ import org.robovm.apple.uikit.*;
 
 /*</javadoc>*/
 /*<annotations>*//*</annotations>*/
-public enum /*<name>*/AURandomParam/*</name>*/ implements AUParameterID {
+public enum /*<name>*/AUParameterSpatialMixer/*</name>*/ implements AUParameterType {
     /*<values>*/
-    BoundA(0L),
-    BoundB(1L),
-    Curve(2L);
+    Azimuth(0L),
+    Elevation(1L),
+    Distance(2L),
+    Gain(3L),
+    PlaybackRate(4L),
+    Enable(5L),
+    MinGain(6L),
+    MaxGain(7L),
+    ReverbBlend(8L),
+    GlobalReverbGain(9L),
+    OcclusionAttenuation(10L),
+    ObstructionAttenuation(11L);
     /*</values>*/
 
     /*<bind>*/
@@ -51,15 +60,15 @@ public enum /*<name>*/AURandomParam/*</name>*/ implements AUParameterID {
 
     private final long n;
 
-    private /*<name>*/AURandomParam/*</name>*/(long n) { this.n = n; }
+    private /*<name>*/AUParameterSpatialMixer/*</name>*/(long n) { this.n = n; }
     public long value() { return n; }
-    public static /*<name>*/AURandomParam/*</name>*/ valueOf(long n) {
-        for (/*<name>*/AURandomParam/*</name>*/ v : values()) {
+    public static /*<name>*/AUParameterSpatialMixer/*</name>*/ valueOf(long n) {
+        for (/*<name>*/AUParameterSpatialMixer/*</name>*/ v : values()) {
             if (v.n == n) {
                 return v;
             }
         }
         throw new IllegalArgumentException("No constant with value " + n + " found in " 
-            + /*<name>*/AURandomParam/*</name>*/.class.getName());
+            + /*<name>*/AUParameterSpatialMixer/*</name>*/.class.getName());
     }
 }

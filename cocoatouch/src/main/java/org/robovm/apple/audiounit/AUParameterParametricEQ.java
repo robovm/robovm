@@ -37,10 +37,11 @@ import org.robovm.apple.uikit.*;
 
 /*</javadoc>*/
 /*<annotations>*//*</annotations>*/
-public enum /*<name>*/AUBandpassParam/*</name>*/ implements AUParameterID {
+public enum /*<name>*/AUParameterParametricEQ/*</name>*/ implements AUParameterType {
     /*<values>*/
-    CenterFrequency(0L),
-    Bandwidth(1L);
+    CenterFreq(0L),
+    Q(1L),
+    Gain(2L);
     /*</values>*/
 
     /*<bind>*/
@@ -50,15 +51,15 @@ public enum /*<name>*/AUBandpassParam/*</name>*/ implements AUParameterID {
 
     private final long n;
 
-    private /*<name>*/AUBandpassParam/*</name>*/(long n) { this.n = n; }
+    private /*<name>*/AUParameterParametricEQ/*</name>*/(long n) { this.n = n; }
     public long value() { return n; }
-    public static /*<name>*/AUBandpassParam/*</name>*/ valueOf(long n) {
-        for (/*<name>*/AUBandpassParam/*</name>*/ v : values()) {
+    public static /*<name>*/AUParameterParametricEQ/*</name>*/ valueOf(long n) {
+        for (/*<name>*/AUParameterParametricEQ/*</name>*/ v : values()) {
             if (v.n == n) {
                 return v;
             }
         }
         throw new IllegalArgumentException("No constant with value " + n + " found in " 
-            + /*<name>*/AUBandpassParam/*</name>*/.class.getName());
+            + /*<name>*/AUParameterParametricEQ/*</name>*/.class.getName());
     }
 }

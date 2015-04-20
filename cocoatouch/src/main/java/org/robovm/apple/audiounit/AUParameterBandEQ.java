@@ -37,11 +37,14 @@ import org.robovm.apple.uikit.*;
 
 /*</javadoc>*/
 /*<annotations>*//*</annotations>*/
-public enum /*<name>*/AUPeakLimiterParam/*</name>*/ implements AUParameterID {
+public enum /*<name>*/AUParameterBandEQ/*</name>*/ implements AUParameterType {
     /*<values>*/
-    AttackTime(0L),
-    DecayTime(1L),
-    PreGain(2L);
+    GlobalGain(0L),
+    BypassBand(1000L),
+    FilterType(2000L),
+    Frequency(3000L),
+    Gain(4000L),
+    Bandwidth(5000L);
     /*</values>*/
 
     /*<bind>*/
@@ -51,15 +54,15 @@ public enum /*<name>*/AUPeakLimiterParam/*</name>*/ implements AUParameterID {
 
     private final long n;
 
-    private /*<name>*/AUPeakLimiterParam/*</name>*/(long n) { this.n = n; }
+    private /*<name>*/AUParameterBandEQ/*</name>*/(long n) { this.n = n; }
     public long value() { return n; }
-    public static /*<name>*/AUPeakLimiterParam/*</name>*/ valueOf(long n) {
-        for (/*<name>*/AUPeakLimiterParam/*</name>*/ v : values()) {
+    public static /*<name>*/AUParameterBandEQ/*</name>*/ valueOf(long n) {
+        for (/*<name>*/AUParameterBandEQ/*</name>*/ v : values()) {
             if (v.n == n) {
                 return v;
             }
         }
         throw new IllegalArgumentException("No constant with value " + n + " found in " 
-            + /*<name>*/AUPeakLimiterParam/*</name>*/.class.getName());
+            + /*<name>*/AUParameterBandEQ/*</name>*/.class.getName());
     }
 }

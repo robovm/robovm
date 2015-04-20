@@ -37,10 +37,11 @@ import org.robovm.apple.uikit.*;
 
 /*</javadoc>*/
 /*<annotations>*//*</annotations>*/
-public enum /*<name>*/AULowpassParam/*</name>*/ implements AUParameterID {
+public enum /*<name>*/AUParameterRoundTripAAC/*</name>*/ implements AUParameterType {
     /*<values>*/
-    CutoffFrequency(0L),
-    Resonance(1L);
+    Format(0L),
+    EncodingStrategy(1L),
+    RateOrQuality(2L);
     /*</values>*/
 
     /*<bind>*/
@@ -50,15 +51,15 @@ public enum /*<name>*/AULowpassParam/*</name>*/ implements AUParameterID {
 
     private final long n;
 
-    private /*<name>*/AULowpassParam/*</name>*/(long n) { this.n = n; }
+    private /*<name>*/AUParameterRoundTripAAC/*</name>*/(long n) { this.n = n; }
     public long value() { return n; }
-    public static /*<name>*/AULowpassParam/*</name>*/ valueOf(long n) {
-        for (/*<name>*/AULowpassParam/*</name>*/ v : values()) {
+    public static /*<name>*/AUParameterRoundTripAAC/*</name>*/ valueOf(long n) {
+        for (/*<name>*/AUParameterRoundTripAAC/*</name>*/ v : values()) {
             if (v.n == n) {
                 return v;
             }
         }
         throw new IllegalArgumentException("No constant with value " + n + " found in " 
-            + /*<name>*/AULowpassParam/*</name>*/.class.getName());
+            + /*<name>*/AUParameterRoundTripAAC/*</name>*/.class.getName());
     }
 }

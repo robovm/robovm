@@ -37,11 +37,9 @@ import org.robovm.apple.uikit.*;
 
 /*</javadoc>*/
 /*<annotations>*//*</annotations>*/
-public enum /*<name>*/AURoundTripAACParam/*</name>*/ implements AUParameterID {
+public enum /*<name>*/AUParameterOutput/*</name>*/ implements AUParameterType {
     /*<values>*/
-    Format(0L),
-    EncodingStrategy(1L),
-    RateOrQuality(2L);
+    Volume(14L);
     /*</values>*/
 
     /*<bind>*/
@@ -51,15 +49,15 @@ public enum /*<name>*/AURoundTripAACParam/*</name>*/ implements AUParameterID {
 
     private final long n;
 
-    private /*<name>*/AURoundTripAACParam/*</name>*/(long n) { this.n = n; }
+    private /*<name>*/AUParameterOutput/*</name>*/(long n) { this.n = n; }
     public long value() { return n; }
-    public static /*<name>*/AURoundTripAACParam/*</name>*/ valueOf(long n) {
-        for (/*<name>*/AURoundTripAACParam/*</name>*/ v : values()) {
+    public static /*<name>*/AUParameterOutput/*</name>*/ valueOf(long n) {
+        for (/*<name>*/AUParameterOutput/*</name>*/ v : values()) {
             if (v.n == n) {
                 return v;
             }
         }
         throw new IllegalArgumentException("No constant with value " + n + " found in " 
-            + /*<name>*/AURoundTripAACParam/*</name>*/.class.getName());
+            + /*<name>*/AUParameterOutput/*</name>*/.class.getName());
     }
 }

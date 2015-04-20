@@ -37,9 +37,17 @@ import org.robovm.apple.uikit.*;
 
 /*</javadoc>*/
 /*<annotations>*//*</annotations>*/
-public enum /*<name>*/AUOutputParam/*</name>*/ implements AUParameterID {
+public enum /*<name>*/AUTypeConverter/*</name>*/ implements AUSubType {
     /*<values>*/
-    Volume(14L);
+    AUConverter(1668247158L),
+    Varispeed(1986097769L),
+    DeferredRenderer(1684366962L),
+    Splitter(1936747636L),
+    Merger(1835364967L),
+    NewTimePitch(1853191280L),
+    AUiPodTimeOther(1768977519L),
+    RoundTripAAC(1918984547L),
+    AUiPodTime(1768977517L);
     /*</values>*/
 
     /*<bind>*/
@@ -49,15 +57,15 @@ public enum /*<name>*/AUOutputParam/*</name>*/ implements AUParameterID {
 
     private final long n;
 
-    private /*<name>*/AUOutputParam/*</name>*/(long n) { this.n = n; }
+    private /*<name>*/AUTypeConverter/*</name>*/(long n) { this.n = n; }
     public long value() { return n; }
-    public static /*<name>*/AUOutputParam/*</name>*/ valueOf(long n) {
-        for (/*<name>*/AUOutputParam/*</name>*/ v : values()) {
+    public static /*<name>*/AUTypeConverter/*</name>*/ valueOf(long n) {
+        for (/*<name>*/AUTypeConverter/*</name>*/ v : values()) {
             if (v.n == n) {
                 return v;
             }
         }
         throw new IllegalArgumentException("No constant with value " + n + " found in " 
-            + /*<name>*/AUOutputParam/*</name>*/.class.getName());
+            + /*<name>*/AUTypeConverter/*</name>*/.class.getName());
     }
 }

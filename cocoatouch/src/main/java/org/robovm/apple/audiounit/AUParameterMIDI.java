@@ -37,12 +37,30 @@ import org.robovm.apple.uikit.*;
 
 /*</javadoc>*/
 /*<annotations>*//*</annotations>*/
-public enum /*<name>*/AUDelayParam/*</name>*/ implements AUParameterID {
+public enum /*<name>*/AUParameterMIDI/*</name>*/ implements AUParameterType {
     /*<values>*/
-    WetDryMix(0L),
-    DelayTime(1L),
-    Feedback(2L),
-    LopassCutoff(3L);
+    Volume(7L),
+    Sustain(64L),
+    Sostenuto(66L),
+    AllNotesOff(123L),
+    ModWheel(1L),
+    PitchBend(224L),
+    AllSoundOff(120L),
+    ResetAllControllers(121L),
+    Pan(10L),
+    Foot(4L),
+    ChannelPressure(208L),
+    KeyPressure(160L),
+    Expression(11L),
+    DataEntry(6L),
+    Volume_LSB(39L),
+    ModWheel_LSB(33L),
+    Pan_LSB(42L),
+    Foot_LSB(36L),
+    Expression_LSB(43L),
+    DataEntry_LSB(38L),
+    KeyPressure_FirstKey(256L),
+    KeyPressure_LastKey(383L);
     /*</values>*/
 
     /*<bind>*/
@@ -52,15 +70,15 @@ public enum /*<name>*/AUDelayParam/*</name>*/ implements AUParameterID {
 
     private final long n;
 
-    private /*<name>*/AUDelayParam/*</name>*/(long n) { this.n = n; }
+    private /*<name>*/AUParameterMIDI/*</name>*/(long n) { this.n = n; }
     public long value() { return n; }
-    public static /*<name>*/AUDelayParam/*</name>*/ valueOf(long n) {
-        for (/*<name>*/AUDelayParam/*</name>*/ v : values()) {
+    public static /*<name>*/AUParameterMIDI/*</name>*/ valueOf(long n) {
+        for (/*<name>*/AUParameterMIDI/*</name>*/ v : values()) {
             if (v.n == n) {
                 return v;
             }
         }
         throw new IllegalArgumentException("No constant with value " + n + " found in " 
-            + /*<name>*/AUDelayParam/*</name>*/.class.getName());
+            + /*<name>*/AUParameterMIDI/*</name>*/.class.getName());
     }
 }

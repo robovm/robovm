@@ -37,13 +37,12 @@ import org.robovm.apple.uikit.*;
 
 /*</javadoc>*/
 /*<annotations>*//*</annotations>*/
-public enum /*<name>*/AUReverbParam/*</name>*/ implements AUParameterID {
+public enum /*<name>*/AUParameterDelay/*</name>*/ implements AUParameterType {
     /*<values>*/
-    Frequency(14L),
-    Bandwidth(15L),
-    Gain(16L),
-    Type(17L),
-    Enable(18L);
+    WetDryMix(0L),
+    DelayTime(1L),
+    Feedback(2L),
+    LopassCutoff(3L);
     /*</values>*/
 
     /*<bind>*/
@@ -53,15 +52,15 @@ public enum /*<name>*/AUReverbParam/*</name>*/ implements AUParameterID {
 
     private final long n;
 
-    private /*<name>*/AUReverbParam/*</name>*/(long n) { this.n = n; }
+    private /*<name>*/AUParameterDelay/*</name>*/(long n) { this.n = n; }
     public long value() { return n; }
-    public static /*<name>*/AUReverbParam/*</name>*/ valueOf(long n) {
-        for (/*<name>*/AUReverbParam/*</name>*/ v : values()) {
+    public static /*<name>*/AUParameterDelay/*</name>*/ valueOf(long n) {
+        for (/*<name>*/AUParameterDelay/*</name>*/ v : values()) {
             if (v.n == n) {
                 return v;
             }
         }
         throw new IllegalArgumentException("No constant with value " + n + " found in " 
-            + /*<name>*/AUReverbParam/*</name>*/.class.getName());
+            + /*<name>*/AUParameterDelay/*</name>*/.class.getName());
     }
 }

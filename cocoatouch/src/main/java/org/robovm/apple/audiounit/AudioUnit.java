@@ -19,7 +19,6 @@ package org.robovm.apple.audiounit;
 import java.io.*;
 import java.nio.*;
 import java.util.*;
-
 import org.robovm.objc.*;
 import org.robovm.objc.annotation.*;
 import org.robovm.objc.block.*;
@@ -62,7 +61,7 @@ import org.robovm.apple.uikit.*;
     
     static {
         try {
-            cbPropertyChanged = AudioUnit.class.getDeclaredMethod("cbPropertyChanged", Long.TYPE, AudioUnit.class, AUPropertyID.class, AUScope.class, Integer.TYPE);
+            cbPropertyChanged = AudioUnit.class.getDeclaredMethod("cbPropertyChanged", Long.TYPE, AudioUnit.class, AUPropertyType.class, AUScope.class, Integer.TYPE);
             cbRender = AudioUnit.class.getDeclaredMethod("cbRender", Long.TYPE, AUMutableRenderActionFlags.class, AudioTimeStamp.class, Integer.TYPE, Integer.TYPE, AudioBufferList.class);
             cbHostGetBeatAndTempo = AudioUnit.class.getDeclaredMethod("cbHostGetBeatAndTempo", Long.TYPE, DoublePtr.class, DoublePtr.class);
             cbHostGetMusicalTimeLocation = AudioUnit.class.getDeclaredMethod("cbHostGetMusicalTimeLocation", Long.TYPE, IntPtr.class, FloatPtr.class, IntPtr.class, DoublePtr.class);
@@ -83,7 +82,7 @@ import org.robovm.apple.uikit.*;
     /*<properties>*//*</properties>*/
     /*<members>*//*</members>*/
     @Callback
-    private static void cbPropertyChanged(@Pointer long refCon, AudioUnit unit, AUPropertyID id, AUScope scope, int element) {
+    private static void cbPropertyChanged(@Pointer long refCon, AudioUnit unit, AUPropertyType id, AUScope scope, int element) {
         synchronized (propertyListeners) {
             propertyListeners.get(refCon).onChange(unit, id, scope, element);
         }
@@ -91,7 +90,13 @@ import org.robovm.apple.uikit.*;
     @Callback
     private static OSStatus cbRender(@Pointer long refCon, AUMutableRenderActionFlags actionFlags, AudioTimeStamp timeStamp, int busNumber, int numberFrames, AudioBufferList data) {
         synchronized (renderCallbacks) {
-            return renderCallbacks.get(refCon).onRender(actionFlags, timeStamp, busNumber, numberFrames, data);
+            OSStatus status = OSStatus.NO_ERR;
+            try {
+                renderCallbacks.get(refCon).onRender(actionFlags, timeStamp, busNumber, numberFrames, data);
+            } catch (OSStatusException e) {
+                status = e.getStatus();
+            }
+            return status;
         }
     }
     @Callback
@@ -141,9 +146,10 @@ import org.robovm.apple.uikit.*;
     }
     
     /**
+     * @throws OSStatusException 
      * @since Available in iOS 2.0 and later.
      */
-    public static AudioUnit create(AudioComponent component) {
+    public static AudioUnit create(AudioComponent component) throws OSStatusException {
         AudioComponentInstance result = AudioComponentInstance.create(component);
         if (result != null) {
             return result.as(AudioUnit.class);
@@ -153,114 +159,167 @@ import org.robovm.apple.uikit.*;
     /**
      * @since Available in iOS 3.0 and later.
      */
-    public boolean canDo(AUSelector inSelectorID) {
-        return super.canDo((short) inSelectorID.value());
+    public boolean canDo(AUSelector selector) {
+        return super.canDo((short) selector.value());
     }
     /**
      * @since Available in iOS 3.0 and later.
      */
-    public boolean canDo(AUOutputSelector inSelectorID) {
-        return super.canDo((short) inSelectorID.value());
+    public boolean canDo(AUOutputSelector selector) {
+        return super.canDo((short) selector.value());
     }
+    
     /**
+     * @throws OSStatusException 
      * @since Available in iOS 2.0 and later.
      */
-    public int getPropertySize(AUPropertyID id, AUScope scope, int element) {
+    public void initialize() throws OSStatusException {
+        OSStatus status = initialize0();
+        OSStatusException.throwIfNecessary(status);
+    }
+    /**
+     * @throws OSStatusException 
+     * @since Available in iOS 2.0 and later.
+     */
+    public void uninitialize() throws OSStatusException {
+        OSStatus status = uninitialize0();
+        OSStatusException.throwIfNecessary(status);
+    }
+    /**
+     * @throws OSStatusException 
+     * @since Available in iOS 2.0 and later.
+     */
+    public int getPropertySize(AUPropertyType type, AUScope scope) throws OSStatusException {
+        return getPropertySize(type, scope, 0);
+    }
+    /**
+     * @throws OSStatusException 
+     * @since Available in iOS 2.0 and later.
+     */
+    public int getPropertySize(AUPropertyType type, AUScope scope, int element) throws OSStatusException {
         IntPtr ptr = new IntPtr();
-        getPropertyInfo(id, scope, element, ptr, null);
+        OSStatus status = getPropertyInfo0(type, scope, element, ptr, null);
+        OSStatusException.throwIfNecessary(status);
         return ptr.get();
     }
     /**
+     * @throws OSStatusException 
      * @since Available in iOS 2.0 and later.
      */
-    public boolean isPropertyWritable(AUPropertyID id, AUScope scope, int element) {
+    public boolean isPropertyWritable(AUPropertyType type, AUScope scope) throws OSStatusException {
+        return isPropertyWritable(type, scope, 0);
+    }
+    /**
+     * @throws OSStatusException 
+     * @since Available in iOS 2.0 and later.
+     */
+    public boolean isPropertyWritable(AUPropertyType type, AUScope scope, int element) throws OSStatusException {
         BooleanPtr ptr = new BooleanPtr();
-        getPropertyInfo(id, scope, element, null, ptr);
+        OSStatus status = getPropertyInfo0(type, scope, element, null, ptr);
+        OSStatusException.throwIfNecessary(status);
         return ptr.get();
     }
     /**
+     * @throws OSStatusException 
      * @since Available in iOS 2.0 and later.
      */
-    public <T extends Struct<T>> T getProperty(AUPropertyID id, AUScope scope, int element, Class<T> type) {
-        T data = Struct.allocate(type);
+    public <T extends Struct<T>> T getProperty(AUPropertyType type, Class<T> returnType, AUScope scope) throws OSStatusException {
+        return getProperty(type, returnType, scope, 0);
+    }
+    /**
+     * @throws OSStatusException 
+     * @since Available in iOS 2.0 and later.
+     */
+    public <T extends Struct<T>> T getProperty(AUPropertyType type, Class<T> returnType, AUScope scope, int element) throws OSStatusException {
+        T data = Struct.allocate(returnType);
         IntPtr dataSize = new IntPtr(Struct.sizeOf(data));
-        getProperty(id, scope, element, data.as(VoidPtr.class), dataSize);
+        OSStatus status = getProperty0(type, scope, element, data.as(VoidPtr.class), dataSize);
+        OSStatusException.throwIfNecessary(status);
         return data;
     }
     /**
+     * @throws OSStatusException 
      * @since Available in iOS 2.0 and later.
      */
-    public <T extends Struct<T>> OSStatus setProperty(AUPropertyID id, AUScope scope, int element, Struct<T> data) {
-        return setProperty(id, scope, element, data == null ? null : data.as(VoidPtr.class), data == null ? 0 : Struct.sizeOf(data));
+    public <T extends Struct<T>> void setProperty(AUPropertyType type, Struct<T> data, AUScope scope) throws OSStatusException {
+        setProperty(type, data, scope, 0);
+    }
+    /**
+     * @throws OSStatusException 
+     * @since Available in iOS 2.0 and later.
+     */
+    public <T extends Struct<T>> void setProperty(AUPropertyType type, Struct<T> data, AUScope scope, int element) throws OSStatusException {
+        OSStatus status = setProperty0(type, scope, element, data == null ? null : data.as(VoidPtr.class), data == null ? 0 : Struct.sizeOf(data));
+        OSStatusException.throwIfNecessary(status);
     }
     
-    public int getPropertyAsInt(AUPropertyID id, AUScope scope, int element) {
-        IntPtr ptr = getProperty(id, scope, element, IntPtr.class);
+    public int getPropertyAsInt(AUPropertyType type, AUScope scope) throws OSStatusException {
+        IntPtr ptr = getProperty(type, IntPtr.class, scope);
         return ptr.get();
     }
-    public long getPropertyAsLong(AUPropertyID id, AUScope scope, int element) {
-        LongPtr ptr = getProperty(id, scope, element, LongPtr.class);
+    public long getPropertyAsLong(AUPropertyType type, AUScope scope) throws OSStatusException {
+        LongPtr ptr = getProperty(type, LongPtr.class, scope);
         return ptr.get();
     }
-    public float getPropertyAsFloat(AUPropertyID id, AUScope scope, int element) {
-        FloatPtr ptr = getProperty(id, scope, element, FloatPtr.class);
+    public float getPropertyAsFloat(AUPropertyType type, AUScope scope) throws OSStatusException {
+        FloatPtr ptr = getProperty(type, FloatPtr.class, scope);
         return ptr.get();
     }
-    public double getPropertyAsDouble(AUPropertyID id, AUScope scope, int element) {
-        DoublePtr ptr = getProperty(id, scope, element, DoublePtr.class);
+    public double getPropertyAsDouble(AUPropertyType type, AUScope scope) throws OSStatusException {
+        DoublePtr ptr = getProperty(type, DoublePtr.class, scope);
         return ptr.get();
     }
-    public OSStatus setProperty(AUPropertyID id, AUScope scope, int element, int value) {
-        return setProperty(id, scope, element, new IntPtr(value));
+    public void setProperty(AUPropertyType type, int value, AUScope scope) throws OSStatusException {
+        setProperty(type, new IntPtr(value), scope);
     }
-    public OSStatus setProperty(AUPropertyID id, AUScope scope, int element, long value) {
-        return setProperty(id, scope, element, new LongPtr(value));
+    public void setProperty(AUPropertyType type, long value, AUScope scope) throws OSStatusException {
+        setProperty(type, new LongPtr(value), scope);
     }
-    public OSStatus setProperty(AUPropertyID id, AUScope scope, int element, float value) {
-        return setProperty(id, scope, element, new FloatPtr(value));
+    public void setProperty(AUPropertyType type,  float value, AUScope scope) throws OSStatusException {
+        setProperty(type, new FloatPtr(value), scope);
     }
-    public OSStatus setProperty(AUPropertyID id, AUScope scope, int element, double value) {
-        return setProperty(id, scope, element, new DoublePtr(value));
+    public void setProperty(AUPropertyType type, double value, AUScope scope) throws OSStatusException {
+        setProperty(type, new DoublePtr(value), scope);
     }
     
-    
-    public AudioStreamBasicDescription getStreamFormat(AUScope scope, int element) {
-        return getProperty(AUGenericProperty.StreamFormat, scope, element, AudioStreamBasicDescription.class);
+    /* Convenience methods for getting/setting properties */
+    public int getMaxFramesPerSlice(AUScope scope) throws OSStatusException {
+        return getPropertyAsInt(AUGenericProperty.MaximumFramesPerSlice, scope);
     }
-    public OSStatus setStreamFormat(AUScope scope, int element, AudioStreamBasicDescription streamFormat) {
-        return setProperty(AUGenericProperty.StreamFormat, scope, element, streamFormat);
-    }
-    public OSStatus makeConnection(AUScope scope, int element, AUConnection connection) {
-        return setProperty(AUGenericProperty.MakeConnection, scope, element, connection);
+    public void setMaxFramesPerSlice(int maxFramesPerSlice, AUScope scope) throws OSStatusException {
+        setProperty(AUGenericProperty.MaximumFramesPerSlice, maxFramesPerSlice, scope);
     }
     
-    public OSStatus setRenderCallback(AUScope scope, int element, AURenderCallback callback) {
+    public AudioStreamBasicDescription getStreamFormat(AUScope scope) throws OSStatusException {
+        return getProperty(AUGenericProperty.StreamFormat, AudioStreamBasicDescription.class, scope);
+    }
+    public void setStreamFormat(AudioStreamBasicDescription streamFormat, AUScope scope) throws OSStatusException {
+        setProperty(AUGenericProperty.StreamFormat, streamFormat, scope);
+    }
+    public void makeConnection(AUConnection connection, AUScope scope) throws OSStatusException {
+        setProperty(AUGenericProperty.MakeConnection, connection, scope);
+    }
+    public void setRenderCallback(AURenderCallback callback, AUScope scope) throws OSStatusException {
         long cid = callbackId.getAndIncrement();
         
         AURenderCallbackStruct struct = new AURenderCallbackStruct(new FunctionPtr(cbRender), cid);
-        OSStatus result = setProperty(AUGenericProperty.SetRenderCallback, scope, element, struct);
-        if (result.equals(0)) {
-            synchronized (renderCallbacks) {
-                renderCallbacks.put(cid, callback);
-            }
+        setProperty(AUGenericProperty.SetRenderCallback, struct, scope);
+        synchronized (renderCallbacks) {
+            renderCallbacks.put(cid, callback);
         }
-        return result;
     }
-    public OSStatus setHostCallback(AUScope scope, int element, AUHostCallback callback) {
+    public void setHostCallback(AUHostCallback callback, AUScope scope) throws OSStatusException {
         long cid = callbackId.getAndIncrement();
         
         AUHostCallbackInfo struct = new AUHostCallbackInfo(cid, new FunctionPtr(cbHostGetBeatAndTempo), 
                 new FunctionPtr(cbHostGetMusicalTimeLocation), new FunctionPtr(cbHostGetTransportState), new FunctionPtr(cbHostGetTransportState2));
-        OSStatus result = setProperty(AUGenericProperty.HostCallbacks, scope, element, struct);
-        if (result.equals(0)) {
-            synchronized (hostCallbacks) {
-                hostCallbacks.put(cid, callback);
-            }
+        setProperty(AUGenericProperty.HostCallbacks, struct, scope);
+        synchronized (hostCallbacks) {
+            hostCallbacks.put(cid, callback);
         }
-        return result;
     }
-    public AUInputSamplesInOutputCallback getInputSamplesInOutputCallback(AUScope scope, int element) {
-        AUInputSamplesInOutputCallbackStruct struct = getProperty(AUGenericProperty.InputSamplesInOutput, scope, element, AUInputSamplesInOutputCallbackStruct.class);
+    public AUInputSamplesInOutputCallback getInputSamplesInOutputCallback(AUScope scope) throws OSStatusException {
+        AUInputSamplesInOutputCallbackStruct struct = getProperty(AUGenericProperty.InputSamplesInOutput, AUInputSamplesInOutputCallbackStruct.class, scope);
         AUInputSamplesInOutputCallback result = null;
         if (struct != null) {
             synchronized (isioCallbacks) {
@@ -269,26 +328,23 @@ import org.robovm.apple.uikit.*;
         }
         return result;
     }
-    public OSStatus setInputSamplesInOutputCallback(AUScope scope, int element, AUInputSamplesInOutputCallback callback) {
+    public void setInputSamplesInOutputCallback(AUInputSamplesInOutputCallback callback, AUScope scope) throws OSStatusException {
         long cid = callbackId.getAndIncrement();
         
         AUInputSamplesInOutputCallbackStruct struct = new AUInputSamplesInOutputCallbackStruct(new FunctionPtr(cbInputSamplesInOutput), cid);
-        OSStatus result = setProperty(AUGenericProperty.InputSamplesInOutput, scope, element, struct);
-        if (result.equals(0)) {
-            synchronized (isioCallbacks) {
-                isioCallbacks.put(cid, callback);
-            }
+        setProperty(AUGenericProperty.InputSamplesInOutput, struct, scope);
+        synchronized (isioCallbacks) {
+            isioCallbacks.put(cid, callback);
         }
-        return result;
     }
-    public OSStatus scheduleAudioSlice(AUScope scope, int element, AUScheduledAudioSlice slice) {
-        return setProperty(AUScheduledSoundPlayerProperty.ScheduleAudioSlice, scope, element, slice);
+    public void scheduleAudioSlice(AUScheduledAudioSlice slice, AUScope scope) throws OSStatusException {
+        setProperty(AUScheduledSoundPlayerProperty.ScheduleAudioSlice, slice, scope);
     }
-    public OSStatus scheduleAudioFileRegion(AUScope scope, int element, AUScheduledAudioFileRegion region) {
-        return setProperty(AUAudioFilePlayerProperty.ScheduledFileRegion, scope, element, region);
+    public void scheduleAudioFileRegion(AUScheduledAudioFileRegion region, AUScope scope) throws OSStatusException {
+        setProperty(AUAudioFilePlayerProperty.ScheduledFileRegion, region, scope);
     }
-    public AUOutputMIDICallback getMIDICallbacks(AUScope scope, int element) {
-        AUOutputMIDICallbacksStruct struct = getProperty(AUOutputProperty.MIDICallbacks, scope, element, AUOutputMIDICallbacksStruct.class);
+    public AUOutputMIDICallback getMIDICallbacks(AUScope scope) throws OSStatusException {
+        AUOutputMIDICallbacksStruct struct = getProperty(AUOutputProperty.MIDICallbacks, AUOutputMIDICallbacksStruct.class, scope);
         AUOutputMIDICallback result = null;
         if (struct != null) {
             synchronized (midiCallbacks) {
@@ -297,13 +353,12 @@ import org.robovm.apple.uikit.*;
         }
         return result;
     }
-    public OSStatus setMIDICallbacks(AUScope scope, int element, AUOutputMIDICallback callback) {
-        OSStatus result = null;
+    public void setMIDICallbacks(AUOutputMIDICallback callback, AUScope scope) throws OSStatusException {
         AUOutputMIDICallbacksStruct struct = null;
         if (callback == null) {
-            struct = getProperty(AUOutputProperty.MIDICallbacks, scope, element, AUOutputMIDICallbacksStruct.class);
+            struct = getProperty(AUOutputProperty.MIDICallbacks, AUOutputMIDICallbacksStruct.class, scope);
             if (struct != null) {
-                setProperty(AUOutputProperty.MIDICallbacks, scope, element, null);
+                setProperty(AUOutputProperty.MIDICallbacks, null, scope);
                 synchronized (midiCallbacks) {
                     midiCallbacks.remove(struct.getUserData());
                 }
@@ -312,167 +367,238 @@ import org.robovm.apple.uikit.*;
             long cid = callbackId.getAndIncrement();
             
             struct = new AUOutputMIDICallbacksStruct(cid, new FunctionPtr(cbMIDIEvent), new FunctionPtr(cbMIDISysEx));
-            result = setProperty(AUOutputProperty.MIDICallbacks, scope, element, struct);
-            if (result.equals(0)) {
-                synchronized (midiCallbacks) {
-                    midiCallbacks.put(cid, callback);
-                }
+            setProperty(AUOutputProperty.MIDICallbacks, struct, scope);
+            synchronized (midiCallbacks) {
+                midiCallbacks.put(cid, callback);
             }
         }
-        return result;
     }
+    /* End: Convenience methods for getting/setting properties */
     
     /**
+     * @throws OSStatusException 
      * @since Available in iOS 2.0 and later.
      */
-    public OSStatus addPropertyListener(AUPropertyID id, AUPropertyListener listener) {
+    public void addPropertyListener(AUPropertyType id, AUPropertyListener listener) throws OSStatusException {
         long cid = callbackId.getAndIncrement();
         
-        OSStatus result = addPropertyListener(id, new FunctionPtr(cbPropertyChanged), cid);
-        if (result.equals(0)) {
+        OSStatus status = addPropertyListener0(id, new FunctionPtr(cbPropertyChanged), cid);
+        if (OSStatusException.throwIfNecessary(status)) {
             synchronized (propertyListeners) {
                 propertyListeners.put(cid, listener);
             }
         }
-        return result;
     }
     /**
+     * @throws OSStatusException 
      * @since Available in iOS 2.0 and later.
      */
-    public OSStatus removePropertyListener(AUPropertyID id, AUPropertyListener listener) {
+    public void removePropertyListener(AUPropertyType id, AUPropertyListener listener) throws OSStatusException {
         synchronized (propertyListeners) {
             for (Iterator<LongMap.Entry<AUPropertyListener>> it = propertyListeners.entries().iterator(); it.hasNext();) {
                 LongMap.Entry<AUPropertyListener> entry = it.next();
                 if (entry.value == listener) {
-                    return removePropertyListener(id, new FunctionPtr(cbPropertyChanged), entry.key);
+                    OSStatus status = removePropertyListener0(id, new FunctionPtr(cbPropertyChanged), entry.key);
+                    OSStatusException.throwIfNecessary(status);
                 }
             }
         }
-        return null;
     }
     /**
+     * @throws OSStatusException 
      * @since Available in iOS 2.0 and later.
      */
-    public OSStatus addRenderNotify(AURenderCallback callback) {
+    public void addRenderNotify(AURenderCallback callback) throws OSStatusException {
         long cid = callbackId.getAndIncrement();
         
-        OSStatus result = addRenderNotify(new FunctionPtr(cbRender), cid);
-        if (result.equals(0)) {
+        OSStatus status = addRenderNotify0(new FunctionPtr(cbRender), cid);
+        if (OSStatusException.throwIfNecessary(status)) {
             synchronized (renderCallbacks) {
                 renderCallbacks.put(cid, callback);
             }
         }
-        return result;
     }
     /**
+     * @throws OSStatusException 
      * @since Available in iOS 2.0 and later.
      */
-    public OSStatus removeRenderNotify(AURenderCallback callback) {
+    public void removeRenderNotify(AURenderCallback callback) throws OSStatusException {
         synchronized (renderCallbacks) {
             for (Iterator<LongMap.Entry<AURenderCallback>> it = renderCallbacks.entries().iterator(); it.hasNext();) {
                 LongMap.Entry<AURenderCallback> entry = it.next();
                 if (entry.value == callback) {
-                    return removeRenderNotify(new FunctionPtr(cbRender), entry.key);
+                    OSStatus status = removeRenderNotify0(new FunctionPtr(cbRender), entry.key);
+                    OSStatusException.throwIfNecessary(status);
                 }
             }
         }
-        return null;
     }
     /**
+     * @throws OSStatusException 
      * @since Available in iOS 2.0 and later.
      */
-    public float getParameter(AUPropertyID id, AUScope scope, int element) {
+    public float getParameter(AUParameterType type, AUScope scope) throws OSStatusException {
+        return getParameter(type, scope, 0);
+    }
+    /**
+     * @throws OSStatusException 
+     * @since Available in iOS 2.0 and later.
+     */
+    public float getParameter(AUParameterType type, AUScope scope, int element) throws OSStatusException {
         FloatPtr ptr = new FloatPtr();
-        getParameter(id, scope, element, ptr);
+        OSStatus status = getParameter0(type, scope, element, ptr);
+        OSStatusException.throwIfNecessary(status);
         return ptr.get();
     }
     /**
+     * @throws OSStatusException 
+     * @since Available in iOS 2.0 and later.
+     */
+    public void setParameter(AUParameterType type, float value, AUScope scope) throws OSStatusException {
+        setParameter(type, value, scope, 0, 0);
+    }
+    /**
+     * @throws OSStatusException 
+     * @since Available in iOS 2.0 and later.
+     */
+    public void setParameter(AUParameterType type, float value, AUScope scope, int element, int bufferOffsetInFrames) throws OSStatusException {
+        OSStatus status = setParameter0(type, scope, element, value, bufferOffsetInFrames);
+        OSStatusException.throwIfNecessary(status);
+    }
+    /**
+     * @throws OSStatusException 
+     * @since Available in iOS 2.0 and later.
+     */
+    public void render(AUMutableRenderActionFlags actionFlags, AudioTimeStamp timeStamp, int outputBusNumber, int numberFrames, AudioBufferList data) throws OSStatusException {
+        OSStatus status = render0(actionFlags, timeStamp, outputBusNumber, numberFrames, data);
+        OSStatusException.throwIfNecessary(status);
+    }
+    /**
+     * @throws OSStatusException 
+     * @since Available in iOS 6.0 and later.
+     */
+    public void process(AUMutableRenderActionFlags actionFlags, AudioTimeStamp timeStamp, int numberFrames, AudioBufferList data) throws OSStatusException {
+        OSStatus status = process0(actionFlags, timeStamp, numberFrames, data);
+        OSStatusException.throwIfNecessary(status);
+    }
+//    /**
+//     * @since Available in iOS 6.0 and later.
+//     */
+//    @Bridge(symbol="AudioUnitProcessMultiple", optional=true) TODO
+//    protected native OSStatus processMultiple0(AUMutableRenderActionFlags actionFlags, AudioTimeStamp inTimeStamp, int inNumberFrames, int inNumberInputBufferLists, AudioBufferList.AudioBufferListPtr inInputBufferLists, int inNumberOutputBufferLists, AudioBufferList.AudioBufferListPtr ioOutputBufferLists);
+    /**
+     * @throws OSStatusException 
+     * @since Available in iOS 2.0 and later.
+     */
+    public void reset(AUScope scope, int element) throws OSStatusException {
+        OSStatus status = reset0(scope, element);
+        OSStatusException.throwIfNecessary(status);
+    }
+    /**
+     * @throws OSStatusException 
      * @since Available in iOS 7.0 and later.
      */
-    private OSStatus publish(AudioComponentDescription desc, String name, int version) {
-        return publish(desc, name, version, this);
+    public void publishOutput(AudioComponentDescription desc, String name, int version) throws OSStatusException {
+        OSStatus status = publishOutput0(desc, name, version, this);
+        OSStatusException.throwIfNecessary(status);
+    }
+    /**
+     * @throws OSStatusException 
+     * @since Available in iOS 2.0 and later.
+     */
+    public void startOutput() throws OSStatusException {
+        OSStatus status = startOutput0();
+        OSStatusException.throwIfNecessary(status);
+    }
+    /**
+     * @throws OSStatusException 
+     * @since Available in iOS 2.0 and later.
+     */
+    public void stopOutput() throws OSStatusException {
+        OSStatus status = stopOutput0();
+        OSStatusException.throwIfNecessary(status);
     }
     /*<methods>*/
     /**
      * @since Available in iOS 2.0 and later.
      */
     @Bridge(symbol="AudioUnitInitialize", optional=true)
-    public native OSStatus initialize();
+    protected native OSStatus initialize0();
     /**
      * @since Available in iOS 2.0 and later.
      */
     @Bridge(symbol="AudioUnitUninitialize", optional=true)
-    public native OSStatus uninitialize();
+    protected native OSStatus uninitialize0();
     /**
      * @since Available in iOS 2.0 and later.
      */
     @Bridge(symbol="AudioUnitGetPropertyInfo", optional=true)
-    private native OSStatus getPropertyInfo(AUPropertyID id, AUScope scope, int element, IntPtr outDataSize, BooleanPtr outWritable);
+    protected native OSStatus getPropertyInfo0(AUPropertyType inID, AUScope inScope, int inElement, IntPtr outDataSize, BooleanPtr outWritable);
     /**
      * @since Available in iOS 2.0 and later.
      */
     @Bridge(symbol="AudioUnitGetProperty", optional=true)
-    protected native OSStatus getProperty(AUPropertyID id, AUScope scope, int element, VoidPtr outData, IntPtr ioDataSize);
+    protected native OSStatus getProperty0(AUPropertyType inID, AUScope inScope, int inElement, VoidPtr outData, IntPtr ioDataSize);
     /**
      * @since Available in iOS 2.0 and later.
      */
     @Bridge(symbol="AudioUnitSetProperty", optional=true)
-    protected native OSStatus setProperty(AUPropertyID id, AUScope scope, int element, VoidPtr inData, int dataSize);
+    protected native OSStatus setProperty0(AUPropertyType inID, AUScope inScope, int inElement, VoidPtr inData, int inDataSize);
     /**
      * @since Available in iOS 2.0 and later.
      */
     @Bridge(symbol="AudioUnitAddPropertyListener", optional=true)
-    protected native OSStatus addPropertyListener(AUPropertyID id, FunctionPtr proc, @Pointer long procUserData);
+    protected native OSStatus addPropertyListener0(AUPropertyType inID, FunctionPtr inProc, @Pointer long inProcUserData);
     /**
      * @since Available in iOS 2.0 and later.
      */
     @Bridge(symbol="AudioUnitRemovePropertyListenerWithUserData", optional=true)
-    protected native OSStatus removePropertyListener(AUPropertyID id, FunctionPtr proc, @Pointer long procUserData);
+    protected native OSStatus removePropertyListener0(AUPropertyType inID, FunctionPtr inProc, @Pointer long inProcUserData);
     /**
      * @since Available in iOS 2.0 and later.
      */
     @Bridge(symbol="AudioUnitAddRenderNotify", optional=true)
-    protected native OSStatus addRenderNotify(FunctionPtr proc, @Pointer long procUserData);
+    protected native OSStatus addRenderNotify0(FunctionPtr inProc, @Pointer long inProcUserData);
     /**
      * @since Available in iOS 2.0 and later.
      */
     @Bridge(symbol="AudioUnitRemoveRenderNotify", optional=true)
-    protected native OSStatus removeRenderNotify(FunctionPtr proc, @Pointer long procUserData);
+    protected native OSStatus removeRenderNotify0(FunctionPtr inProc, @Pointer long inProcUserData);
     /**
      * @since Available in iOS 2.0 and later.
      */
     @Bridge(symbol="AudioUnitGetParameter", optional=true)
-    protected native OSStatus getParameter(AUPropertyID id, AUScope scope, int element, FloatPtr outValue);
+    protected native OSStatus getParameter0(AUParameterType inID, AUScope inScope, int inElement, FloatPtr outValue);
     /**
      * @since Available in iOS 2.0 and later.
      */
     @Bridge(symbol="AudioUnitSetParameter", optional=true)
-    public native OSStatus setParameter(AUPropertyID id, AUScope scope, int element, float value, int bufferOffsetInFrames);
+    protected native OSStatus setParameter0(AUParameterType inID, AUScope inScope, int inElement, float inValue, int inBufferOffsetInFrames);
     /**
      * @since Available in iOS 2.0 and later.
      */
     @Bridge(symbol="AudioUnitRender", optional=true)
-    public native OSStatus render(AUMutableRenderActionFlags actionFlags, AudioTimeStamp timeStamp, int outputBusNumber, int numberFrames, AudioBufferList data);
+    protected native OSStatus render0(AUMutableRenderActionFlags actionFlags, AudioTimeStamp inTimeStamp, int inOutputBusNumber, int inNumberFrames, AudioBufferList ioData);
     /**
      * @since Available in iOS 6.0 and later.
      */
     @Bridge(symbol="AudioUnitProcess", optional=true)
-    public native OSStatus process(AUMutableRenderActionFlags actionFlags, AudioTimeStamp timeStamp, int numberFrames, AudioBufferList data);
+    protected native OSStatus process0(AUMutableRenderActionFlags actionFlags, AudioTimeStamp inTimeStamp, int inNumberFrames, AudioBufferList ioData);
     /**
      * @since Available in iOS 6.0 and later.
      */
     @Bridge(symbol="AudioUnitProcessMultiple", optional=true)
-    protected native OSStatus processMultiple(AUMutableRenderActionFlags actionFlags, AudioTimeStamp timeStamp, int numberFrames, int inNumberInputBufferLists, AudioBufferList.AudioBufferListPtr inInputBufferLists, int inNumberOutputBufferLists, AudioBufferList.AudioBufferListPtr ioOutputBufferLists);
+    protected native OSStatus processMultiple0(AUMutableRenderActionFlags actionFlags, AudioTimeStamp inTimeStamp, int inNumberFrames, int inNumberInputBufferLists, AudioBufferList.AudioBufferListPtr inInputBufferLists, int inNumberOutputBufferLists, AudioBufferList.AudioBufferListPtr ioOutputBufferLists);
     /**
      * @since Available in iOS 2.0 and later.
      */
     @Bridge(symbol="AudioUnitReset", optional=true)
-    public native OSStatus reset(AUScope scope, int inElement);
+    protected native OSStatus reset0(AUScope inScope, int inElement);
     /**
      * @since Available in iOS 7.0 and later.
      */
     @Bridge(symbol="AudioOutputUnitPublish", optional=true)
-    private static native OSStatus publish(AudioComponentDescription inDesc, String inName, int inVersion, AudioUnit inOutputUnit);
+    protected static native OSStatus publishOutput0(AudioComponentDescription inDesc, String inName, int inVersion, AudioUnit inOutputUnit);
     /**
      * @since Available in iOS 7.0 and later.
      */
@@ -482,11 +608,11 @@ import org.robovm.apple.uikit.*;
      * @since Available in iOS 2.0 and later.
      */
     @Bridge(symbol="AudioOutputUnitStart", optional=true)
-    public native OSStatus startOutput();
+    protected native OSStatus startOutput0();
     /**
      * @since Available in iOS 2.0 and later.
      */
     @Bridge(symbol="AudioOutputUnitStop", optional=true)
-    public native OSStatus stopOutput();
+    protected native OSStatus stopOutput0();
     /*</methods>*/
 }

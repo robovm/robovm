@@ -37,11 +37,11 @@ import org.robovm.apple.uikit.*;
 
 /*</javadoc>*/
 /*<annotations>*//*</annotations>*/
-public enum /*<name>*/AUParametricEQParam/*</name>*/ implements AUParameterID {
+public enum /*<name>*/AUParameterRandom/*</name>*/ implements AUParameterType {
     /*<values>*/
-    CenterFreq(0L),
-    Q(1L),
-    Gain(2L);
+    BoundA(0L),
+    BoundB(1L),
+    Curve(2L);
     /*</values>*/
 
     /*<bind>*/
@@ -51,15 +51,15 @@ public enum /*<name>*/AUParametricEQParam/*</name>*/ implements AUParameterID {
 
     private final long n;
 
-    private /*<name>*/AUParametricEQParam/*</name>*/(long n) { this.n = n; }
+    private /*<name>*/AUParameterRandom/*</name>*/(long n) { this.n = n; }
     public long value() { return n; }
-    public static /*<name>*/AUParametricEQParam/*</name>*/ valueOf(long n) {
-        for (/*<name>*/AUParametricEQParam/*</name>*/ v : values()) {
+    public static /*<name>*/AUParameterRandom/*</name>*/ valueOf(long n) {
+        for (/*<name>*/AUParameterRandom/*</name>*/ v : values()) {
             if (v.n == n) {
                 return v;
             }
         }
         throw new IllegalArgumentException("No constant with value " + n + " found in " 
-            + /*<name>*/AUParametricEQParam/*</name>*/.class.getName());
+            + /*<name>*/AUParameterRandom/*</name>*/.class.getName());
     }
 }

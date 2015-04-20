@@ -17,6 +17,6 @@ package org.robovm.apple.audiounit;
 
 import org.robovm.rt.bro.ValuedEnum;
 
-public interface AUParameterID extends ValuedEnum {
+public interface AUPropertyType extends ValuedEnum {
 
 }

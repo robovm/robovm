@@ -37,7 +37,7 @@ import org.robovm.apple.uikit.*;
 
 /*</javadoc>*/
 /*<annotations>*//*</annotations>*/
-public enum /*<name>*/AUOutputProperty/*</name>*/ implements AUPropertyID {
+public enum /*<name>*/AUOutputProperty/*</name>*/ implements AUPropertyType {
     /*<values>*/
     CurrentDevice(2000L),
     ChannelMap(2002L),

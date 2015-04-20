@@ -37,10 +37,22 @@ import org.robovm.apple.uikit.*;
 
 /*</javadoc>*/
 /*<annotations>*//*</annotations>*/
-public enum /*<name>*/AUHipassParam/*</name>*/ implements AUParameterID {
+public enum /*<name>*/AUTypeEffect/*</name>*/ implements AUSubType {
     /*<values>*/
-    CutoffFrequency(0L),
-    Resonance(1L);
+    PeakLimiter(1819112562L),
+    DynamicsProcessor(1684237680L),
+    LowPassFilter(1819304307L),
+    HighPassFilter(1752195443L),
+    BandPassFilter(1651532147L),
+    HighShelfFilter(1752393830L),
+    LowShelfFilter(1819502694L),
+    ParametricEQ(1886217585L),
+    Distortion(1684632436L),
+    Delay(1684368505L),
+    SampleDelay(1935961209L),
+    Reverb2(1920361010L),
+    AUiPodEQ(1768973681L),
+    NBandEQ(1851942257L);
     /*</values>*/
 
     /*<bind>*/
@@ -50,15 +62,15 @@ public enum /*<name>*/AUHipassParam/*</name>*/ implements AUParameterID {
 
     private final long n;
 
-    private /*<name>*/AUHipassParam/*</name>*/(long n) { this.n = n; }
+    private /*<name>*/AUTypeEffect/*</name>*/(long n) { this.n = n; }
     public long value() { return n; }
-    public static /*<name>*/AUHipassParam/*</name>*/ valueOf(long n) {
-        for (/*<name>*/AUHipassParam/*</name>*/ v : values()) {
+    public static /*<name>*/AUTypeEffect/*</name>*/ valueOf(long n) {
+        for (/*<name>*/AUTypeEffect/*</name>*/ v : values()) {
             if (v.n == n) {
                 return v;
             }
         }
         throw new IllegalArgumentException("No constant with value " + n + " found in " 
-            + /*<name>*/AUHipassParam/*</name>*/.class.getName());
+            + /*<name>*/AUTypeEffect/*</name>*/.class.getName());
     }
 }

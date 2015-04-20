@@ -68,7 +68,7 @@ import org.robovm.apple.coremidi.*;
     static {
         try {
             cbPropertyChanged = AudioQueue.class.getDeclaredMethod("cbPropertyChanged", Long.TYPE, AudioQueue.class, AudioQueueProperty.class);
-            cbInput = AudioQueue.class.getDeclaredMethod("cbInput", Long.TYPE, AudioQueue.class, AudioQueueBuffer.class, AudioTimeStamp.class, Integer.class, AudioStreamPacketDescription.class);
+            cbInput = AudioQueue.class.getDeclaredMethod("cbInput", Long.TYPE, AudioQueue.class, AudioQueueBuffer.class, AudioTimeStamp.class, Integer.TYPE, AudioStreamPacketDescription.class);
             cbOutput = AudioQueue.class.getDeclaredMethod("cbOutput", Long.TYPE, AudioQueue.class, AudioQueueBuffer.class);
         } catch (Throwable e) {
             throw new Error(e);

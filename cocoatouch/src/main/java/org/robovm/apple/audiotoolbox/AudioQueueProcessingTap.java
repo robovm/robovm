@@ -87,11 +87,11 @@ import org.robovm.apple.coremidi.*;
     protected static AudioQueueProcessingTap create(AudioQueue audioQueue, ProcessingTapCallback callback, AudioQueueProcessingTapFlags flags) throws OSStatusException {
         AudioQueueProcessingTap.AudioQueueProcessingTapPtr ptr = new AudioQueueProcessingTap.AudioQueueProcessingTapPtr();
         IntPtr maxFramesPtr = new IntPtr();
-        AudioStreamBasicDescription.AudioStreamBasicDescriptionPtr processingFormatPtr = new AudioStreamBasicDescription.AudioStreamBasicDescriptionPtr();
+        AudioStreamBasicDescription processingFormat = new AudioStreamBasicDescription();
         
         long cid = callbackId.getAndIncrement();
         
-        OSStatus status = create0(audioQueue, new FunctionPtr(cbProcess), cid, flags, maxFramesPtr, processingFormatPtr, ptr);
+        OSStatus status = create0(audioQueue, new FunctionPtr(cbProcess), cid, flags, maxFramesPtr, processingFormat, ptr);
         if (OSStatusException.throwIfNecessary(status)) {
             synchronized (callbacks) {
                 callbacks.put(cid, callback);
@@ -99,7 +99,7 @@ import org.robovm.apple.coremidi.*;
             
             AudioQueueProcessingTap result = ptr.get();
             result.maxProcessingFrames = maxFramesPtr.get();
-            result.processingFormat = processingFormatPtr.get();
+            result.processingFormat = processingFormat;
             return result;
         }
         return null;
@@ -160,7 +160,7 @@ import org.robovm.apple.coremidi.*;
      * @since Available in iOS 6.0 and later.
      */
     @Bridge(symbol="AudioQueueProcessingTapNew", optional=true)
-    protected static native OSStatus create0(AudioQueue inAQ, FunctionPtr inCallback, @Pointer long inClientData, AudioQueueProcessingTapFlags inFlags, IntPtr outMaxFrames, AudioStreamBasicDescription.AudioStreamBasicDescriptionPtr outProcessingFormat, AudioQueueProcessingTap.AudioQueueProcessingTapPtr outAQTap);
+    protected static native OSStatus create0(AudioQueue inAQ, FunctionPtr inCallback, @Pointer long inClientData, AudioQueueProcessingTapFlags inFlags, IntPtr outMaxFrames, AudioStreamBasicDescription outProcessingFormat, AudioQueueProcessingTap.AudioQueueProcessingTapPtr outAQTap);
     /**
      * @since Available in iOS 6.0 and later.
      */

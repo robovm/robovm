@@ -750,7 +750,7 @@ functions:
             inFlags:
                 type: AudioQueueProcessingTapFlags
             outProcessingFormat:
-                type: AudioStreamBasicDescription.AudioStreamBasicDescriptionPtr
+                type: AudioStreamBasicDescription
     AudioQueueProcessingTap(.*):
         class: AudioQueueProcessingTap
         name: '#{g[0]}0'

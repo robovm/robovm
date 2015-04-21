@@ -43,6 +43,32 @@ function(merge_static_lib_object_files lib)
         COMMAND rm -f $<TARGET_FILE:${lib}>
         COMMAND ar rcs $<TARGET_FILE:${lib}> ${CMAKE_CURRENT_BINARY_DIR}/merged.o
       )
+
+    else()
+      # Linux
+      set(EMULATION_MODE elf_i386)
+      if(64_BIT)
+        set(EMULATION_MODE elf_x86_64)
+      endif()
+      message(STATUS "Format ${FORMAT}")
+
+      foreach(sym ${exported_symbols})
+        list(APPEND exported_symbols_args "-G")
+        list(APPEND exported_symbols_args "${sym}")
+      endforeach()
+
+      string(REPLACE ";" ", " exported_symbols_joined "${exported_symbols}")
+      string(REPLACE ";" " " exported_symbols_args_joined "${exported_symbols_args}")
+      add_custom_command(TARGET ${lib}
+        COMMAND echo Merging object files in $<TARGET_FILE:${lib}> with exported symbols: ${exported_symbols_joined}
+        COMMAND echo ld -m ${EMULATION_MODE} -r --whole-archive $<TARGET_FILE:${lib}> -o ${CMAKE_CURRENT_BINARY_DIR}/tmp.o
+        COMMAND ld -m ${EMULATION_MODE} -r --whole-archive $<TARGET_FILE:${lib}> -o ${CMAKE_CURRENT_BINARY_DIR}/tmp.o
+        COMMAND echo objcopy -w ${exported_symbols_args} ${CMAKE_CURRENT_BINARY_DIR}/tmp.o ${CMAKE_CURRENT_BINARY_DIR}/merged.o
+        COMMAND objcopy -w ${exported_symbols_args} ${CMAKE_CURRENT_BINARY_DIR}/tmp.o ${CMAKE_CURRENT_BINARY_DIR}/merged.o
+        COMMAND rm -f $<TARGET_FILE:${lib}>
+        COMMAND ar rcs $<TARGET_FILE:${lib}> ${CMAKE_CURRENT_BINARY_DIR}/merged.o
+      )
+
     endif()
 
   endif()

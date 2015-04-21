@@ -1,6 +1,6 @@
 package: org.robovm.apple.audiounit
 include: [foundation.yaml, audiotoolbox.yaml, corefoundation.yaml, coreaudio.yaml, uikit.yaml]
-library: AudioUnit
+library: AudioToolbox
 framework: AudioUnit
 clang_args: ['-x', 'objective-c']
 headers:

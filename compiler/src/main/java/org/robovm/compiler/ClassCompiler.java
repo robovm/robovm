@@ -753,7 +753,7 @@ public class ClassCompiler {
                 
                 createLookupFunction(method);
             }
-            if (method.isStatic()) {
+            if (method.isStatic() && !method.isPrivate() && !name.equals("<clinit>")) {
                 String fnName = method.isSynchronized() 
                         ? Symbols.synchronizedWrapperSymbol(method) 
                         : Symbols.methodSymbol(method);

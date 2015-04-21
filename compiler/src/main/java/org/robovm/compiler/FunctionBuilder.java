@@ -227,6 +227,6 @@ public class FunctionBuilder {
     
     public static Function callback(SootMethod method, FunctionType functionType) {
         return new FunctionBuilder(callbackSymbol(method), functionType)
-                .linkage(external).attribs(noinline, optsize).build();
+                .linkage(internal).attribs(noinline, optsize).build();
     }
 }

@@ -30,6 +30,8 @@ import java.util.TreeSet;
 
 import org.robovm.compiler.Annotations.Visibility;
 import org.robovm.compiler.CompilerException;
+import org.robovm.compiler.MarshalerLookup.MarshalSite;
+import org.robovm.compiler.MarshalerLookup.MarshalerMethod;
 import org.robovm.compiler.ModuleBuilder;
 import org.robovm.compiler.clazz.Clazz;
 import org.robovm.compiler.config.Config;
@@ -38,9 +40,13 @@ import org.robovm.compiler.plugin.CompilerPlugin;
 
 import soot.Body;
 import soot.BooleanType;
+import soot.DoubleType;
+import soot.FloatType;
 import soot.Local;
+import soot.LongType;
 import soot.Modifier;
 import soot.PatchingChain;
+import soot.PrimType;
 import soot.RefLikeType;
 import soot.RefType;
 import soot.Scene;
@@ -89,6 +95,9 @@ public class ObjCMemberPlugin extends AbstractCompilerPlugin {
     public static final String OBJC_RUNTIME = "org.robovm.objc.ObjCRuntime";
     public static final String OBJC_EXTENSIONS = "org.robovm.objc.ObjCExtensions";
     public static final String NS_OBJECT = "org.robovm.apple.foundation.NSObject";
+    public static final String NS_OBJECT$MARSHALER = "org.robovm.apple.foundation.NSObject$Marshaler";
+    public static final String NS_STRING$AS_STRING_MARSHALER = "org.robovm.apple.foundation.NSString$AsStringMarshaler";
+    public static final String $M = "org.robovm.objc.$M";
     public static final String UI_EVENT = "org.robovm.apple.uikit.UIEvent";
     public static final String NS_ARRAY = "org.robovm.apple.foundation.NSArray";
 
@@ -103,15 +112,18 @@ public class ObjCMemberPlugin extends AbstractCompilerPlugin {
     private SootClass java_lang_String = null;
     private SootClass java_lang_Class = null;
     private SootClass org_robovm_apple_foundation_NSObject = null;
+    private SootClass org_robovm_objc_$M = null;
     private SootClass org_robovm_apple_uikit_UIEvent = null;
     private SootClass org_robovm_apple_foundation_NSArray = null;
-    private SootMethodRef org_robovm_objc_Selector_register = null;
+    private SootClass org_robovm_apple_foundation_NSObject$Marshaler = null;
+    private SootClass org_robovm_apple_foundation_NSString$AsStringMarshaler = null;
     private SootMethodRef org_robovm_objc_ObjCObject_getSuper = null;
     private SootFieldRef org_robovm_objc_ObjCObject_customClass = null;
     private SootMethodRef org_robovm_objc_ObjCClass_getByType = null;
     private SootMethodRef org_robovm_objc_ObjCRuntime_bind = null;
     private SootMethodRef org_robovm_objc_ObjCObject_updateStrongRef = null;
     private SootMethodRef org_robovm_objc_ObjCExtensions_updateStrongRef = null;
+    private SootMethodRef org_robovm_objc_Selector_register = null;
 
     static SootMethod getOrCreateStaticInitializer(SootClass sootClass) {
         for (SootMethod m : sootClass.getMethods()) {
@@ -308,6 +320,9 @@ public class ObjCMemberPlugin extends AbstractCompilerPlugin {
         org_robovm_objc_ObjCRuntime = r.makeClassRef(OBJC_RUNTIME);
         org_robovm_objc_Selector = r.makeClassRef(SELECTOR);
         org_robovm_apple_foundation_NSObject = r.makeClassRef(NS_OBJECT);
+        org_robovm_apple_foundation_NSObject$Marshaler = r.makeClassRef(NS_OBJECT$MARSHALER);
+        org_robovm_apple_foundation_NSString$AsStringMarshaler = r.makeClassRef(NS_STRING$AS_STRING_MARSHALER);
+        org_robovm_objc_$M = r.makeClassRef($M);
         org_robovm_apple_uikit_UIEvent = r.makeClassRef(UI_EVENT);
         org_robovm_apple_foundation_NSArray = r.makeClassRef(NS_ARRAY);
         SootClass java_lang_Object = r.makeClassRef("java.lang.Object");
@@ -390,9 +405,48 @@ public class ObjCMemberPlugin extends AbstractCompilerPlugin {
                 && isAssignable(((RefType) type).getSootClass(), org_robovm_apple_uikit_UIEvent);
     }
 
+    private boolean isSelector(Type type) {
+        return (type instanceof RefType)
+                && isAssignable(((RefType) type).getSootClass(), org_robovm_objc_Selector);
+    }
+
     private boolean isNSArray(Type type) {
         return (type instanceof RefType)
                 && isAssignable(((RefType) type).getSootClass(), org_robovm_apple_foundation_NSArray);
+    }
+
+    private boolean isNSObject$Marshaler_toNative(SootMethod method) {
+        return method.getDeclaringClass().getType().equals(org_robovm_apple_foundation_NSObject$Marshaler.getType())
+                && method.getName().equals("toNative") && method.getParameterCount() == 2
+                && method.getParameterType(0).equals(org_robovm_apple_foundation_NSObject.getType())
+                && method.getParameterType(1).equals(LongType.v())
+                && method.getReturnType().equals(LongType.v());
+    }
+
+    private boolean isNSObject$Marshaler_toObject(SootMethod method) {
+        return method.getDeclaringClass().getType().equals(org_robovm_apple_foundation_NSObject$Marshaler.getType())
+                && method.getName().equals("toObject") && method.getParameterCount() == 3
+                && method.getParameterType(0).equals(java_lang_Class.getType())
+                && method.getParameterType(1).equals(LongType.v())
+                && method.getParameterType(2).equals(LongType.v())
+                && method.getReturnType().equals(org_robovm_apple_foundation_NSObject.getType());
+    }
+
+    private boolean isNSString$AsStringMarshaler_toNative(SootMethod method) {
+        return method.getDeclaringClass().getType().equals(org_robovm_apple_foundation_NSString$AsStringMarshaler.getType())
+                && method.getName().equals("toNative") && method.getParameterCount() == 2
+                && method.getParameterType(0).equals(java_lang_String.getType())
+                && method.getParameterType(1).equals(LongType.v())
+                && method.getReturnType().equals(LongType.v());
+    }
+
+    private boolean isNSString$AsStringMarshaler_toObject(SootMethod method) {
+        return method.getDeclaringClass().getType().equals(org_robovm_apple_foundation_NSString$AsStringMarshaler.getType())
+                && method.getName().equals("toObject") && method.getParameterCount() == 3
+                && method.getParameterType(0).equals(java_lang_Class.getType())
+                && method.getParameterType(1).equals(LongType.v())
+                && method.getParameterType(2).equals(LongType.v())
+                && method.getReturnType().equals(java_lang_String.getType());
     }
 
     private boolean isCustomClass(SootClass cls) {
@@ -756,20 +810,255 @@ public class ObjCMemberPlugin extends AbstractCompilerPlugin {
                 + "beans property getter method naming convention.");
     }
 
+    /**
+     * Takes a method returned by
+     * {@link #getMsgSendMethod(String, SootMethod, boolean)} and returns a
+     * {@link SootMethodRef} to it or to a matching method in the {@code $M}
+     * class.
+     */
+    private SootMethodRef getGenericMsgSendReplacementMethod(SootMethod method) {
+        if (method.getParameterCount() == 2) {
+            if (isNSObject(method.getParameterType(0)) && isSelector(method.getParameterType(1))) {
+                /*
+                 * This is a no args ObjC method (only takes self and a
+                 * selector). If it doesn't use any special marshaler for self
+                 * and it returns a primitive, an NSObject using the default
+                 * marshaler or a String marshaled from an NSString we can
+                 * replace it with a call to $M.
+                 */
+                MarshalerMethod param0MarshalerMethod = config.getMarshalerLookup().findMarshalerMethod(
+                        new MarshalSite(method, 0));
+                if (isNSObject$Marshaler_toNative(param0MarshalerMethod.getMethod())) {
+                    // self uses the default marshaler
+                    List<Type> paramTypes = Arrays.<Type> asList(org_robovm_apple_foundation_NSObject.getType(),
+                            org_robovm_objc_Selector.getType());
+                    if (method.getReturnType() == VoidType.v() || method.getReturnType() instanceof PrimType) {
+                        // Primitive return type or void
+                        String prefix = getPrimitiveReturnTypeModifier(method);
+                        return Scene.v().makeMethodRef(org_robovm_objc_$M, prefix + "_objc_msgSend", 
+                                paramTypes, method.getReturnType(), true);
+                    } else if (isNSObject(method.getReturnType())) {
+                        MarshalerMethod retMarshalerMethod = config.getMarshalerLookup().findMarshalerMethod(
+                                new MarshalSite(method));
+                        if (isNSObject$Marshaler_toObject(retMarshalerMethod.getMethod())) {
+                            // Returns NSObject using the default marshaler
+                            return Scene.v().makeMethodRef(org_robovm_objc_$M, "object_objc_msgSend",
+                                    paramTypes, org_robovm_apple_foundation_NSObject.getType(), true);
+                        }
+                    } else if (method.getReturnType().equals(java_lang_String.getType())) {
+                        MarshalerMethod retMarshalerMethod = config.getMarshalerLookup().findMarshalerMethod(
+                                new MarshalSite(method));
+                        if (isNSString$AsStringMarshaler_toObject(retMarshalerMethod.getMethod())) {
+                            // Returns String marshaled using NSSring$AsStringMarshaler
+                            return Scene.v().makeMethodRef(org_robovm_objc_$M, "string_objc_msgSend",
+                                    paramTypes, method.getReturnType(), true);
+                        }
+                    }
+                }
+            }
+        } else if (method.getParameterCount() == 3 && method.getReturnType() == VoidType.v()) {
+            if (isNSObject(method.getParameterType(0)) && isSelector(method.getParameterType(1))) {
+                /*
+                 * This is a 1 arg ObjC method with no return type (void) (takes
+                 * self, a selector and a third arg). If it doesn't use any
+                 * special marshaler for self and the third arg is a primitive,
+                 * an NSObject using the default marshaler or a String marshaled
+                 * from an NSString we can replace it with a call to $M.
+                 */
+                MarshalerMethod param0MarshalerMethod = config.getMarshalerLookup().findMarshalerMethod(
+                        new MarshalSite(method, 0));
+                if (isNSObject$Marshaler_toNative(param0MarshalerMethod.getMethod())) {
+                    // self uses the default marshaler
+                    List<Type> paramTypes = Arrays.<Type> asList(org_robovm_apple_foundation_NSObject.getType(),
+                            org_robovm_objc_Selector.getType(), method.getParameterType(2));
+                    if (method.getParameterType(2) instanceof PrimType) {
+                        // Arg is a primitive
+                        String suffix = getPrimitiveParameterTypeModifier(method, 2);
+                        return Scene.v().makeMethodRef(org_robovm_objc_$M, "objc_msgSend_" + suffix,
+                                paramTypes, method.getReturnType(), true);
+                    } else if (isNSObject(method.getParameterType(2))) {
+                        MarshalerMethod param2MarshalerMethod = config.getMarshalerLookup().findMarshalerMethod(
+                                new MarshalSite(method, 2));
+                        if (isNSObject$Marshaler_toNative(param2MarshalerMethod.getMethod())) {
+                            // Arg is an NSObject using the default marshaler
+                            paramTypes = Arrays.<Type> asList(org_robovm_apple_foundation_NSObject.getType(),
+                                    org_robovm_objc_Selector.getType(), org_robovm_apple_foundation_NSObject.getType());
+                            return Scene.v().makeMethodRef(org_robovm_objc_$M, "objc_msgSend_object",
+                                    paramTypes, method.getReturnType(), true);
+                        }
+                    } else if (method.getParameterType(2).equals(java_lang_String.getType())) {
+                        MarshalerMethod param2MarshalerMethod = config.getMarshalerLookup().findMarshalerMethod(
+                                new MarshalSite(method, 2));
+                        if (isNSString$AsStringMarshaler_toNative(param2MarshalerMethod.getMethod())) {
+                            //  Arg is a String marshaled using NSSring@AsStringMarshaler
+                            return Scene.v().makeMethodRef(org_robovm_objc_$M, "objc_msgSend_string",
+                                    paramTypes, method.getReturnType(), true);
+                        }
+                    }
+                }
+            }
+        }
+        return method.makeRef();
+    }
+    
+    /**
+     * Takes a method returned by
+     * {@link #getMsgSendSuperMethod(String, SootMethod)} and returns a
+     * {@link SootMethodRef} to it or to a matching method in the {@code $M}
+     * class.
+     */
+    private SootMethodRef getGenericMsgSendSuperReplacementMethod(SootMethod method) {
+        if (method.getParameterCount() == 2) {
+            /*
+             * This is a no args ObjC method (only takes super and a selector).
+             * If it returns a primitive, an NSObject using the default
+             * marshaler or a String marshaled from an NSString we can replace
+             * it with a call to $M.
+             */
+            if (method.getParameterType(0).equals(org_robovm_objc_ObjCSuper.getType()) && isSelector(method.getParameterType(1))) {
+                if (method.getReturnType() == VoidType.v() || method.getReturnType() instanceof PrimType) {
+                    // Primitive return type or void
+                    String prefix = getPrimitiveReturnTypeModifier(method);
+                    return Scene.v().makeMethodRef(org_robovm_objc_$M, prefix + "_objc_msgSendSuper",
+                            method.getParameterTypes(), method.getReturnType(), true);
+                } else if (isNSObject(method.getReturnType())) {
+                    MarshalerMethod retMarshalerMethod = config.getMarshalerLookup().findMarshalerMethod(
+                            new MarshalSite(method));
+                    if (isNSObject$Marshaler_toObject(retMarshalerMethod.getMethod())) {
+                        // Returns NSObject using the default marshaler
+                        return Scene.v().makeMethodRef(org_robovm_objc_$M, "object_objc_msgSendSuper",
+                                method.getParameterTypes(), org_robovm_apple_foundation_NSObject.getType(), true);
+                    }
+                } else if (method.getReturnType().equals(java_lang_String.getType())) {
+                    MarshalerMethod retMarshalerMethod = config.getMarshalerLookup().findMarshalerMethod(
+                            new MarshalSite(method));
+                    if (isNSString$AsStringMarshaler_toObject(retMarshalerMethod.getMethod())) {
+                        // Returns String marshaled using NSSring$AsStringMarshaler
+                        return Scene.v().makeMethodRef(org_robovm_objc_$M, "string_objc_msgSendSuper",
+                                method.getParameterTypes(), method.getReturnType(), true);
+                    }
+                }
+            }
+        } else if (method.getParameterCount() == 3 && method.getReturnType() == VoidType.v()) {
+            if (method.getParameterType(0).equals(org_robovm_objc_ObjCSuper.getType()) && isSelector(method.getParameterType(1))) {
+                /*
+                 * This is a 1 arg ObjC method with no return type (void) (takes
+                 * super, a selector and a third arg). If the third arg is a
+                 * primitive, an NSObject using the default marshaler or a
+                 * String marshaled from an NSString we can replace it with a
+                 * call to $M.
+                 */
+                if (method.getParameterType(2) instanceof PrimType) {
+                    // Arg is a primitive
+                    String suffix = getPrimitiveParameterTypeModifier(method, 2);
+                    return Scene.v().makeMethodRef(org_robovm_objc_$M, "objc_msgSendSuper_" + suffix,
+                            method.getParameterTypes(), method.getReturnType(), true);
+                } else if (isNSObject(method.getParameterType(2))) {
+                    MarshalerMethod param2MarshalerMethod = config.getMarshalerLookup().findMarshalerMethod(
+                            new MarshalSite(method, 2));
+                    if (isNSObject$Marshaler_toNative(param2MarshalerMethod.getMethod())) {
+                        // Arg is an NSObject using the default marshaler
+                        List<Type> paramTypes = Arrays.<Type> asList(org_robovm_objc_ObjCSuper.getType(),
+                                org_robovm_objc_Selector.getType(), org_robovm_apple_foundation_NSObject.getType());
+                        return Scene.v().makeMethodRef(org_robovm_objc_$M, "objc_msgSendSuper_object",
+                                paramTypes, method.getReturnType(), true);
+                    }
+                } else if (method.getParameterType(2).equals(java_lang_String.getType())) {
+                    MarshalerMethod param2MarshalerMethod = config.getMarshalerLookup().findMarshalerMethod(
+                            new MarshalSite(method, 2));
+                    if (isNSString$AsStringMarshaler_toNative(param2MarshalerMethod.getMethod())) {
+                        //  Arg is a String marshaled using NSSring@AsStringMarshaler
+                        return Scene.v().makeMethodRef(org_robovm_objc_$M, "objc_msgSendSuper_string",
+                                method.getParameterTypes(), method.getReturnType(), true);
+                    }
+                }
+            }
+        }
+        return method.makeRef();
+    }
+
+    private String getPrimitiveReturnTypeModifier(SootMethod method) {
+        String mod = method.getReturnType().toString();
+        if (method.getReturnType() == LongType.v() && hasPointerAnnotation(method)) {
+            mod = "ptr";
+        } else if ((method.getReturnType() == FloatType.v() || method.getReturnType() == DoubleType.v())
+                && hasMachineSizedFloatAnnotation(method)) {
+            mod = "m" + mod;
+        } else if (method.getReturnType() == LongType.v() && hasMachineSizedSIntAnnotation(method)) {
+            mod = "msint";
+        } else if (method.getReturnType() == LongType.v() && hasMachineSizedUIntAnnotation(method)) {
+            mod = "muint";
+        }
+        return mod;
+    }
+
+    private String getPrimitiveParameterTypeModifier(SootMethod method, int paramIdx) {
+        String mod = method.getParameterType(paramIdx).toString();
+        if (method.getParameterType(paramIdx) == LongType.v() && hasPointerAnnotation(method, paramIdx)) {
+            mod = "ptr";
+        } else if ((method.getParameterType(paramIdx) == FloatType.v() || method.getParameterType(paramIdx) == DoubleType.v())
+                && hasMachineSizedFloatAnnotation(method, paramIdx)) {
+            mod = "m" + mod;
+        } else if (method.getParameterType(paramIdx) == LongType.v() && hasMachineSizedSIntAnnotation(method, paramIdx)) {
+            mod = "msint";
+        } else if (method.getParameterType(paramIdx) == LongType.v() && hasMachineSizedUIntAnnotation(method, paramIdx)) {
+            mod = "muint";
+        }
+        return mod;
+    }
+
     private void createBridge(SootClass sootClass, SootMethod method, String selectorName,
             boolean strongRefSetter, boolean extensions) {
 
         Jimple j = Jimple.v();
 
+        boolean usingGenericInstanceMethod = false;
+        
         SootMethod msgSendMethod = getMsgSendMethod(selectorName, method, extensions);
+        /*
+         * Add the method even if we might remove it later to make marshaler
+         * lookup on the method work as expected.
+         */
         sootClass.addMethod(msgSendMethod);
         addBridgeAnnotation(msgSendMethod);
+        SootMethodRef msgSendMethodRef = getGenericMsgSendReplacementMethod(msgSendMethod);
+        if (!msgSendMethodRef.declaringClass().getType().equals(msgSendMethod.getDeclaringClass().getType())) {
+            /*
+             * There's a generic objc_msgSend method we can use. Remove
+             * msgSendMethod from the class.
+             */
+            sootClass.removeMethod(msgSendMethod);
+            
+            /*
+             * Can we use a generic <name>_instance method from $M? If we can we
+             * won't have to make a call to objc_msgSendSuper.
+             */
+            if (!method.isStatic()) {
+                // Yes!
+                msgSendMethodRef = Scene.v().makeMethodRef(msgSendMethodRef.declaringClass(),
+                        msgSendMethodRef.name() + "_instance", msgSendMethodRef.parameterTypes(),
+                        msgSendMethodRef.returnType(), true);
+                usingGenericInstanceMethod = true;
+            }
+        }
 
-        SootMethod msgSendSuperMethod = null;
-        if (!extensions && !method.isStatic()) {
-            msgSendSuperMethod = getMsgSendSuperMethod(selectorName, method);
+        SootMethodRef msgSendSuperMethodRef = null;
+        if (!usingGenericInstanceMethod && !extensions && !method.isStatic()) {
+            SootMethod msgSendSuperMethod = getMsgSendSuperMethod(selectorName, method);
+            /*
+             * Add the method even if we might remove it later to make marshaler
+             * lookup on the method work as expected.
+             */
             sootClass.addMethod(msgSendSuperMethod);
             addBridgeAnnotation(msgSendSuperMethod);
+            msgSendSuperMethodRef = getGenericMsgSendSuperReplacementMethod(msgSendSuperMethod);
+            if (!msgSendSuperMethodRef.declaringClass().getType().equals(msgSendSuperMethod.getDeclaringClass().getType())) {
+                /*
+                 * There's a generic objc_msgSendSuper method we can use. Remove
+                 * msgSendSuperMethod from the class.
+                 */
+                sootClass.removeMethod(msgSendSuperMethod);
+            }
         }
 
         method.setModifiers(method.getModifiers() & ~NATIVE);
@@ -865,7 +1154,7 @@ public class ObjCMemberPlugin extends AbstractCompilerPlugin {
         args.addFirst(sel);
 
         Local customClass = null;
-        if (!extensions && !Modifier.isFinal(sootClass.getModifiers()) && !method.isStatic()) {
+        if (!usingGenericInstanceMethod && !extensions && !Modifier.isFinal(sootClass.getModifiers()) && !method.isStatic()) {
             customClass = j.newLocal("$customClass", BooleanType.v());
             body.getLocals().add(customClass);
             units.add(
@@ -880,13 +1169,23 @@ public class ObjCMemberPlugin extends AbstractCompilerPlugin {
 
         Local ret = null;
         if (method.getReturnType() != VoidType.v()) {
-            ret = j.newLocal("$ret", method.getReturnType());
+            ret = j.newLocal("$ret", msgSendMethodRef.returnType());
             body.getLocals().add(ret);
+        }
+        Local castRet = null;
+        if (!msgSendMethodRef.returnType().equals(method.getReturnType())) {
+            /*
+             * We're calling a generic method in $M which returns an NSObject.
+             * We need to cast that to the return type declared by the method
+             * being generated.
+             */
+            castRet = j.newLocal("$castRet", method.getReturnType());
+            body.getLocals().add(castRet);
         }
 
         StaticInvokeExpr invokeMsgSendExpr =
                 j.newStaticInvokeExpr(
-                        msgSendMethod.makeRef(),
+                        msgSendMethodRef,
                         l(thiz != null ? thiz : objCClass, args));
         Stmt invokeMsgSendStmt = ret == null
                 ? j.newInvokeStmt(invokeMsgSendExpr)
@@ -912,7 +1211,7 @@ public class ObjCMemberPlugin extends AbstractCompilerPlugin {
                     );
             StaticInvokeExpr invokeMsgSendSuperExpr =
                     j.newStaticInvokeExpr(
-                            msgSendSuperMethod.makeRef(),
+                            msgSendSuperMethodRef,
                             l(zuper, args));
             units.add(
                     ret == null
@@ -920,7 +1219,12 @@ public class ObjCMemberPlugin extends AbstractCompilerPlugin {
                             : j.newAssignStmt(ret, invokeMsgSendSuperExpr)
                     );
             if (ret != null) {
-                units.add(j.newReturnStmt(ret));
+                if (castRet != null) {
+                    units.add(j.newAssignStmt(castRet, j.newCastExpr(ret, castRet.getType())));
+                    units.add(j.newReturnStmt(castRet));
+                } else {
+                    units.add(j.newReturnStmt(ret));
+                }
             } else {
                 units.add(j.newReturnVoidStmt());
             }
@@ -928,7 +1232,12 @@ public class ObjCMemberPlugin extends AbstractCompilerPlugin {
 
         units.add(invokeMsgSendStmt);
         if (ret != null) {
-            units.add(j.newReturnStmt(ret));
+            if (castRet != null) {
+                units.add(j.newAssignStmt(castRet, j.newCastExpr(ret, castRet.getType())));
+                units.add(j.newReturnStmt(castRet));
+            } else {
+                units.add(j.newReturnStmt(ret));
+            }
         } else {
             units.add(j.newReturnVoidStmt());
         }

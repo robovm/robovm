@@ -212,7 +212,7 @@ public class FunctionBuilder {
     }
     
     public static Function method(SootMethod method) {
-        return new FunctionBuilder(methodSymbol(method), getFunctionType(method)).linkage(external)
+        return new FunctionBuilder(methodSymbol(method), getFunctionType(method)).linkage(method.isPrivate() ? internal : external)
                 .attribs(noinline, optsize).build();
     }
     

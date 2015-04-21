@@ -16,7 +16,6 @@
  */
 package org.robovm.compiler;
 
-import static org.robovm.compiler.Mangler.*;
 import static org.robovm.compiler.Types.*;
 import static org.robovm.compiler.llvm.Type.*;
 
@@ -33,6 +32,7 @@ import org.robovm.compiler.llvm.Constant;
 import org.robovm.compiler.llvm.FloatingPointConstant;
 import org.robovm.compiler.llvm.Global;
 import org.robovm.compiler.llvm.IntegerConstant;
+import org.robovm.compiler.llvm.Linkage;
 import org.robovm.compiler.llvm.PackedStructureConstant;
 import org.robovm.compiler.llvm.PackedStructureType;
 import org.robovm.compiler.llvm.StructureConstant;
@@ -100,7 +100,7 @@ public class AttributesEncoder {
         encodeAttributes(sootClass);
         Constant classAttributes = encodeAttributes(sootClass);
         if (classAttributes != null) {
-            Global g = new Global(Symbols.classAttributesSymbol(sootClass), classAttributes, true);
+            Global g = new Global(Symbols.classAttributesSymbol(sootClass), Linkage._private, classAttributes, true);
             mb.addGlobal(g);
             this.classAttributes = g;
         }
@@ -108,7 +108,7 @@ public class AttributesEncoder {
         for (SootField field : sootClass.getFields()) {
             Constant fieldAttributes = encodeAttributes(field);
             if (fieldAttributes != null) {
-                Global g = new Global(Symbols.fieldAttributesSymbol(field), fieldAttributes, true);
+                Global g = new Global(Symbols.fieldAttributesSymbol(field), Linkage._private, fieldAttributes, true);
                 mb.addGlobal(g);
                 this.fieldAttributes.put(field, g);
             }
@@ -117,7 +117,7 @@ public class AttributesEncoder {
         for (SootMethod method : sootClass.getMethods()) {
             Constant methodAttributes = encodeAttributes(method);
             if (methodAttributes != null) {
-                Global g = new Global(Symbols.methodAttributesSymbol(method), methodAttributes, true);
+                Global g = new Global(Symbols.methodAttributesSymbol(method), Linkage._private, methodAttributes, true);
                 mb.addGlobal(g);
                 this.methodAttributes.put(method, g);
             }

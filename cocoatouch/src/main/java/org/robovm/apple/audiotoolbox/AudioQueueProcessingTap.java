@@ -56,7 +56,7 @@ import org.robovm.apple.coremidi.*;
     
     static {
         try {
-            cbProcess = AudioQueueProcessingTap.class.getDeclaredMethod("cbProcess", Long.TYPE, AudioQueueProcessingTap.class, Integer.class, AudioTimeStamp.class, 
+            cbProcess = AudioQueueProcessingTap.class.getDeclaredMethod("cbProcess", Long.TYPE, AudioQueueProcessingTap.class, Integer.TYPE, AudioTimeStamp.class, 
                     AudioQueueProcessingTapFlags.class, IntPtr.class, AudioBufferList.class);
         } catch (Throwable e) {
             throw new Error(e);

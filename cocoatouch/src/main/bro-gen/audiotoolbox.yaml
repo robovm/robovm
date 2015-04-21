@@ -571,7 +571,7 @@ classes:
     ParameterEvent: # DONE
         name: AUParameterEvent
         parameterID:
-            type: AUParameterID
+            type: AUParameterType
         scope:
             type: AUScope   
 
@@ -785,12 +785,21 @@ functions:
         name: '#{g[0]}0'
         visibility: protected
         parameters:
+            inBuffer:
+                type: '@Pointer long'
             inPacketDescs:
                 type: AudioStreamPacketDescription.AudioStreamPacketDescriptionPtr
             inParamValues:
                 type: AudioQueueParameterEvent.AudioQueueParameterEventPtr
             outActualStartTime:
                 type: AudioTimeStamp.AudioTimeStampPtr
+    AudioQueue(FreeBuffer):
+        class: AudioQueue
+        name: '#{g[0]}0'
+        visibility: protected
+        parameters:
+            inBuffer:
+                type: '@Pointer long'
     AudioQueue(GetCurrentTime):
         class: AudioQueue
         name: '#{g[0]}0'

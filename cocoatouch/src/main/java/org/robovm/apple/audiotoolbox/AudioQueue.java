@@ -19,7 +19,6 @@ package org.robovm.apple.audiotoolbox;
 import java.io.*;
 import java.nio.*;
 import java.util.*;
-
 import org.robovm.objc.*;
 import org.robovm.objc.annotation.*;
 import org.robovm.objc.block.*;
@@ -48,10 +47,10 @@ import org.robovm.apple.coremidi.*;
         void onChange(AudioQueue queue, AudioQueueProperty id);
     }
     public interface InputCallback {
-        void onInput(AudioQueue queue, AudioQueueBuffer buffer, AudioTimeStamp startTime, AudioStreamPacketDescription[] packetDescs);
+        void onInput(AudioQueue queue, long buffer, AudioTimeStamp startTime, AudioStreamPacketDescription[] packetDescs);
     }
     public interface OutputCallback {
-        void onOutput(AudioQueue queue, AudioQueueBuffer buffer);
+        void onOutput(AudioQueue queue, long buffer);
     }
     
     /*<ptr>*/public static class AudioQueuePtr extends Ptr<AudioQueue, AudioQueuePtr> {}/*</ptr>*/
@@ -68,8 +67,8 @@ import org.robovm.apple.coremidi.*;
     static {
         try {
             cbPropertyChanged = AudioQueue.class.getDeclaredMethod("cbPropertyChanged", Long.TYPE, AudioQueue.class, AudioQueueProperty.class);
-            cbInput = AudioQueue.class.getDeclaredMethod("cbInput", Long.TYPE, AudioQueue.class, AudioQueueBuffer.class, AudioTimeStamp.class, Integer.TYPE, AudioStreamPacketDescription.class);
-            cbOutput = AudioQueue.class.getDeclaredMethod("cbOutput", Long.TYPE, AudioQueue.class, AudioQueueBuffer.class);
+            cbInput = AudioQueue.class.getDeclaredMethod("cbInput", Long.TYPE, AudioQueue.class, Long.TYPE, AudioTimeStamp.class, Integer.TYPE, AudioStreamPacketDescription.class);
+            cbOutput = AudioQueue.class.getDeclaredMethod("cbOutput", Long.TYPE, AudioQueue.class, Long.TYPE);
         } catch (Throwable e) {
             throw new Error(e);
         }
@@ -88,13 +87,13 @@ import org.robovm.apple.coremidi.*;
         }
     }
     @Callback
-    private static void cbInput(@Pointer long userData, AudioQueue queue, AudioQueueBuffer buffer, AudioTimeStamp startTime, int numberPacketDescs, AudioStreamPacketDescription packetDescs) {
+    private static void cbInput(@Pointer long userData, AudioQueue queue, @Pointer long buffer, AudioTimeStamp startTime, int numberPacketDescs, AudioStreamPacketDescription packetDescs) {
         synchronized (inputCallbacks) {
             inputCallbacks.get(userData).onInput(queue, buffer, startTime, packetDescs.toArray(numberPacketDescs));
         }
     }
     @Callback
-    private static void cbOutput(@Pointer long userData, AudioQueue queue, AudioQueueBuffer buffer) {
+    private static void cbOutput(@Pointer long userData, AudioQueue queue, @Pointer long buffer) {
         synchronized (outputCallbacks) {
             outputCallbacks.get(userData).onOutput(queue, buffer);
         }
@@ -201,6 +200,13 @@ import org.robovm.apple.coremidi.*;
      * @since Available in iOS 2.0 and later.
      */
     public void freeBuffer(AudioQueueBuffer buffer) throws OSStatusException {
+        freeBuffer(buffer.getHandle());
+    }
+    /**
+     * @throws OSStatusException 
+     * @since Available in iOS 2.0 and later.
+     */
+    public void freeBuffer(long buffer) throws OSStatusException {
         OSStatus status = freeBuffer0(buffer);
         OSStatusException.throwIfNecessary(status);
     }
@@ -209,6 +215,13 @@ import org.robovm.apple.coremidi.*;
      * @since Available in iOS 2.0 and later.
      */
     public void enqueueBuffer(AudioQueueBuffer buffer, AudioStreamPacketDescription[] packetDescs) throws OSStatusException {
+        enqueueBuffer(buffer.getHandle(), packetDescs);
+    }
+    /**
+     * @throws OSStatusException 
+     * @since Available in iOS 2.0 and later.
+     */
+    public void enqueueBuffer(long buffer, AudioStreamPacketDescription[] packetDescs) throws OSStatusException {
         AudioStreamPacketDescription.AudioStreamPacketDescriptionPtr ptr = new AudioStreamPacketDescription.AudioStreamPacketDescriptionPtr();
         ptr.set(packetDescs);
         OSStatus status = enqueueBuffer0(buffer, packetDescs.length, ptr);
@@ -219,6 +232,13 @@ import org.robovm.apple.coremidi.*;
      * @since Available in iOS 2.0 and later.
      */
     public AudioTimeStamp enqueueBuffer(AudioQueueBuffer buffer, AudioStreamPacketDescription[] packetDescs, int trimFramesAtStart, int trimFramesAtEnd, AudioQueueParameterEvent[] paramValues, AudioTimeStamp startTime) throws OSStatusException {
+        return enqueueBuffer(buffer.getHandle(), packetDescs, trimFramesAtStart, trimFramesAtEnd, paramValues, startTime);
+    }   
+    /**
+     * @throws OSStatusException 
+     * @since Available in iOS 2.0 and later.
+     */
+    public AudioTimeStamp enqueueBuffer(long buffer, AudioStreamPacketDescription[] packetDescs, int trimFramesAtStart, int trimFramesAtEnd, AudioQueueParameterEvent[] paramValues, AudioTimeStamp startTime) throws OSStatusException {
         AudioTimeStamp.AudioTimeStampPtr ptr = new AudioTimeStamp.AudioTimeStampPtr();
         
         AudioStreamPacketDescription.AudioStreamPacketDescriptionPtr packetDescsPtr = new AudioStreamPacketDescription.AudioStreamPacketDescriptionPtr();
@@ -511,17 +531,17 @@ import org.robovm.apple.coremidi.*;
      * @since Available in iOS 2.0 and later.
      */
     @Bridge(symbol="AudioQueueFreeBuffer", optional=true)
-    protected native OSStatus freeBuffer0(AudioQueueBuffer inBuffer);
+    protected native OSStatus freeBuffer0(@Pointer long inBuffer);
     /**
      * @since Available in iOS 2.0 and later.
      */
     @Bridge(symbol="AudioQueueEnqueueBuffer", optional=true)
-    protected native OSStatus enqueueBuffer0(AudioQueueBuffer inBuffer, int inNumPacketDescs, AudioStreamPacketDescription.AudioStreamPacketDescriptionPtr inPacketDescs);
+    protected native OSStatus enqueueBuffer0(@Pointer long inBuffer, int inNumPacketDescs, AudioStreamPacketDescription.AudioStreamPacketDescriptionPtr inPacketDescs);
     /**
      * @since Available in iOS 2.0 and later.
      */
     @Bridge(symbol="AudioQueueEnqueueBufferWithParameters", optional=true)
-    protected native OSStatus enqueueBuffer0(AudioQueueBuffer inBuffer, int inNumPacketDescs, AudioStreamPacketDescription.AudioStreamPacketDescriptionPtr inPacketDescs, int inTrimFramesAtStart, int inTrimFramesAtEnd, int inNumParamValues, AudioQueueParameterEvent.AudioQueueParameterEventPtr inParamValues, AudioTimeStamp inStartTime, AudioTimeStamp.AudioTimeStampPtr outActualStartTime);
+    protected native OSStatus enqueueBuffer0(@Pointer long inBuffer, int inNumPacketDescs, AudioStreamPacketDescription.AudioStreamPacketDescriptionPtr inPacketDescs, int inTrimFramesAtStart, int inTrimFramesAtEnd, int inNumParamValues, AudioQueueParameterEvent.AudioQueueParameterEventPtr inParamValues, AudioTimeStamp inStartTime, AudioTimeStamp.AudioTimeStampPtr outActualStartTime);
     /**
      * @since Available in iOS 2.0 and later.
      */

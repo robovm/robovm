@@ -19,6 +19,7 @@ package org.robovm.apple.audiotoolbox;
 import java.io.*;
 import java.nio.*;
 import java.util.*;
+
 import org.robovm.objc.*;
 import org.robovm.objc.annotation.*;
 import org.robovm.objc.block.*;
@@ -52,7 +53,16 @@ import org.robovm.apple.coremidi.*;
     public AudioQueueBuffer() {}
     
     /*</constructors>*/
+    public AudioQueueBuffer(long handle) {
+        super(handle);
+    }
+    
     /*<properties>*//*</properties>*/
+    public AudioQueueBuffer setAudioData(long dataPointer, int length) {
+        setData0(dataPointer);
+        setAudioDataByteSize(length);
+        return this;
+    }
     public AudioQueueBuffer setAudioData(byte[] data) {
         setArrayAudioData(data, data.length);
         return this;
@@ -61,23 +71,11 @@ import org.robovm.apple.coremidi.*;
         setArrayAudioData(data, data.length);
         return this;
     }
-    public AudioQueueBuffer setAudioData(char[] data) {
-        setArrayAudioData(data, data.length);
-        return this;
-    }
     public AudioQueueBuffer setAudioData(int[] data) {
         setArrayAudioData(data, data.length);
         return this;
     }
-    public AudioQueueBuffer setAudioData(long[] data) {
-        setArrayAudioData(data, data.length);
-        return this;
-    }
     public AudioQueueBuffer setAudioData(float[] data) {
-        setArrayAudioData(data, data.length);
-        return this;
-    }
-    public AudioQueueBuffer setAudioData(double[] data) {
         setArrayAudioData(data, data.length);
         return this;
     }
@@ -94,53 +92,43 @@ import org.robovm.apple.coremidi.*;
     
     @SuppressWarnings("unchecked")
     public <T extends Buffer> T getAudioDataAsBuffer(Class<T> bufferType) {
-        VoidPtr ptr = getDataPointer();
+        long dataPointer = getDataPointer();
         if (bufferType == ByteBuffer.class) {
-            return (T) ptr.as(BytePtr.class).asByteBuffer(getAudioDataByteSize());
-        } else if (bufferType == CharBuffer.class) {
-            return (T) ptr.as(CharPtr.class).asCharBuffer(getAudioDataByteSize());
+            return (T) VM.newDirectByteBuffer(dataPointer, getAudioDataByteSize());
         } else if (bufferType == ShortBuffer.class) {
-            return (T) ptr.as(ShortPtr.class).asShortBuffer(getAudioDataByteSize());
+            return (T) VM.newDirectByteBuffer(dataPointer, getAudioDataByteSize() << 1).order(ByteOrder.nativeOrder()).asShortBuffer();
         } else if (bufferType == IntBuffer.class) {
-            return (T) ptr.as(IntPtr.class).asIntBuffer(getAudioDataByteSize());
-        } else if (bufferType == LongBuffer.class) {
-            return (T) ptr.as(LongPtr.class).asLongBuffer(getAudioDataByteSize());
+            return (T) VM.newDirectByteBuffer(dataPointer, getAudioDataByteSize() << 2).order(ByteOrder.nativeOrder()).asIntBuffer();
         } else if (bufferType == FloatBuffer.class) {
-            return (T) ptr.as(FloatPtr.class).asFloatBuffer(getAudioDataByteSize());
-        } else if (bufferType == DoubleBuffer.class) {
-            return (T) ptr.as(DoublePtr.class).asDoubleBuffer(getAudioDataByteSize());
+            return (T) VM.newDirectByteBuffer(dataPointer, getAudioDataByteSize() << 2).order(ByteOrder.nativeOrder()).asFloatBuffer();
         } else {
             throw new UnsupportedOperationException("Buffer type not supported: " + bufferType);
         }
     }
 
     public byte[] getAudioDataAsByteArray() {
-        BytePtr ptr = getDataPointer().as(BytePtr.class);
-        return ptr.toByteArray(getAudioDataByteSize());
+        int length = getAudioDataByteSize();
+        byte[] data = new byte[length];
+        getAudioDataAsBuffer(ByteBuffer.class).get(data, 0, length);
+        return data;
     }
     public short[] getAudioDataAsShortArray() {
-        ShortPtr ptr = getDataPointer().as(ShortPtr.class);
-        return ptr.toShortArray(getAudioDataByteSize());
-    }
-    public char[] getAudioDataAsCharArray() {
-        CharPtr ptr = getDataPointer().as(CharPtr.class);
-        return ptr.toCharArray(getAudioDataByteSize());
+        int length = getAudioDataByteSize();
+        short[] data = new short[length];
+        getAudioDataAsBuffer(ShortBuffer.class).get(data, 0, length);
+        return data;
     }
     public int[] getAudioDataAsIntArray() {
-        IntPtr ptr = getDataPointer().as(IntPtr.class);
-        return ptr.toIntArray(getAudioDataByteSize());
-    }
-    public long[] getAudioDataAsLongArray() {
-        LongPtr ptr = getDataPointer().as(LongPtr.class);
-        return ptr.toLongArray(getAudioDataByteSize());
+        int length = getAudioDataByteSize();
+        int[] data = new int[length];
+        getAudioDataAsBuffer(IntBuffer.class).get(data, 0, length);
+        return data;
     }
     public float[] getAudioDataAsFloatArray() {
-        FloatPtr ptr = getDataPointer().as(FloatPtr.class);
-        return ptr.toFloatArray(getAudioDataByteSize());
-    }
-    public double[] getAudioDataAsDoubleArray() {
-        DoublePtr ptr = getDataPointer().as(DoublePtr.class);
-        return ptr.toDoubleArray(getAudioDataByteSize());
+        int length = getAudioDataByteSize();
+        float[] data = new float[length];
+        getAudioDataAsBuffer(FloatBuffer.class).get(data, 0, length);
+        return data;
     }
     
     public int getPacketDescriptionCount() {
@@ -186,7 +174,7 @@ import org.robovm.apple.coremidi.*;
     @StructMember(0) public native int getAudioDataBytesCapacity();
     @StructMember(4) public native int getPacketDescriptionCapacity();
 
-    @StructMember(1) protected native VoidPtr getDataPointer();
+    @StructMember(1) public native @Pointer long getDataPointer();
     @StructMember(1) protected native AudioQueueBuffer setData0(@Pointer long audioData);
     /*<methods>*//*</methods>*/
 }

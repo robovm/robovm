@@ -49,24 +49,34 @@ import org.robovm.apple.uikit.*;
     /*<properties>*//*</properties>*/
     /*<members>*//*</members>*/
     /**
+     * @throws OSStatusException 
      * @since Available in iOS 2.0 and later.
      */
-    public static AudioComponentInstance create(AudioComponent component) {
+    public static AudioComponentInstance create(AudioComponent component) throws OSStatusException {
         AudioComponentInstance.AudioComponentInstancePtr ptr = new AudioComponentInstance.AudioComponentInstancePtr();
-        create(component, ptr);
+        OSStatus status = create0(component, ptr);
+        OSStatusException.throwIfNecessary(status);
         return ptr.get();
+    }
+    /**
+     * @throws OSStatusException 
+     * @since Available in iOS 2.0 and later.
+     */
+    public void dispose() throws OSStatusException {
+        OSStatus status = dispose0();
+        OSStatusException.throwIfNecessary(status);
     }
     /*<methods>*/
     /**
      * @since Available in iOS 2.0 and later.
      */
     @Bridge(symbol="AudioComponentInstanceNew", optional=true)
-    protected static native OSStatus create(AudioComponent inComponent, AudioComponentInstance.AudioComponentInstancePtr outInstance);
+    protected static native OSStatus create0(AudioComponent inComponent, AudioComponentInstance.AudioComponentInstancePtr outInstance);
     /**
      * @since Available in iOS 2.0 and later.
      */
     @Bridge(symbol="AudioComponentInstanceDispose", optional=true)
-    public native OSStatus dispose();
+    protected native OSStatus dispose0();
     /**
      * @since Available in iOS 2.0 and later.
      */

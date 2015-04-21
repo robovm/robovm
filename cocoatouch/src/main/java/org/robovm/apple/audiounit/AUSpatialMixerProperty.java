@@ -37,7 +37,7 @@ import org.robovm.apple.uikit.*;
 
 /*</javadoc>*/
 /*<annotations>*//*</annotations>*/
-public enum /*<name>*/AUSpatialMixerProperty/*</name>*/ implements AUPropertyID {
+public enum /*<name>*/AUSpatialMixerProperty/*</name>*/ implements AUPropertyType {
     /*<values>*/
     ReverbRoomType(10L),
     UsesInternalReverb(1005L),

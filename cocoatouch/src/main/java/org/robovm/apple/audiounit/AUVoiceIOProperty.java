@@ -37,7 +37,7 @@ import org.robovm.apple.uikit.*;
 
 /*</javadoc>*/
 /*<annotations>*//*</annotations>*/
-public enum /*<name>*/AUVoiceIOProperty/*</name>*/ implements AUPropertyID {
+public enum /*<name>*/AUVoiceIOProperty/*</name>*/ implements AUPropertyType {
     /*<values>*/
     BypassVoiceProcessing(2100L),
     VoiceProcessingEnableAGC(2101L),

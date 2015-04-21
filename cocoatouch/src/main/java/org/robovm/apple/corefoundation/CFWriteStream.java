@@ -44,7 +44,7 @@ import org.robovm.apple.coreservices.CFSocketStreamProperty;
     }
     
     private static java.util.concurrent.atomic.AtomicLong refconId = new java.util.concurrent.atomic.AtomicLong();
-    private static final Map<Long, ClientCallback> clientCallbacks = new HashMap<>();
+    private static final LongMap<ClientCallback> clientCallbacks = new LongMap<>();
     private static final java.lang.reflect.Method cbClient;
     
     static {

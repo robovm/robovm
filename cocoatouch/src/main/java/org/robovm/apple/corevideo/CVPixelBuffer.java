@@ -52,8 +52,8 @@ import org.robovm.apple.metal.*;
     
     private static java.util.concurrent.atomic.AtomicLong refconId = new java.util.concurrent.atomic.AtomicLong();
     private long localRefconId;
-    private static Map<Long, ReleaseBytesCallback> releaseBytesCallbacks = new HashMap<Long, ReleaseBytesCallback>();
-    private static Map<Long, ReleasePlanarBytesCallback> releasePlanarBytesCallbacks = new HashMap<Long, ReleasePlanarBytesCallback>();
+    private static LongMap<ReleaseBytesCallback> releaseBytesCallbacks = new LongMap<>();
+    private static LongMap<ReleasePlanarBytesCallback> releasePlanarBytesCallbacks = new LongMap<>();
     private static final java.lang.reflect.Method cbReleaseBytes;
     private static final java.lang.reflect.Method cbReleasePlanarBytes;
     

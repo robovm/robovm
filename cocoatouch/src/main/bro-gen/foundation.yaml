@@ -3052,14 +3052,55 @@ classes:
         methods:
             '-initWithFireDate:interval:target:selector:userInfo:repeats:':
                 name: init
+                parameters:
+                    date:
+                        name: fireDate
+                    ti:
+                        name: timeInterval
+                    t:
+                        name: target
+                    s:
+                        name: selector
+                    ui:
+                        name: userInfo
+                    rep:
+                        name: repeats
             '+timerWithTimeInterval:invocation:repeats:':
                 name: create
+                parameters:
+                    ti:
+                        name: timeInterval
+                    yesOrNo:
+                        name: repeats
             '+scheduledTimerWithTimeInterval:invocation:repeats:':
                 name: createScheduled
+                parameters:
+                    ti:
+                        name: timeInterval
+                    yesOrNo:
+                        name: repeats
             '+timerWithTimeInterval:target:selector:userInfo:repeats:':
                 name: create
+                parameters:
+                    ti:
+                        name: timeInterval
+                    aTarget:
+                        name: target
+                    aSelector:
+                        name: selector
+                    yesOrNo:
+                        name: repeats
             '+scheduledTimerWithTimeInterval:target:selector:userInfo:repeats:':
                 name: createScheduled
+                parameters:
+                    ti:
+                        name: timeInterval
+                    aTarget:
+                        name: target
+                    aSelector:
+                        name: selector
+                    yesOrNo:
+                        name: repeats
     NSTimeZone: # DONE
         properties:
             'description':

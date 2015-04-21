@@ -37,7 +37,7 @@ import org.robovm.apple.uikit.*;
 
 /*</javadoc>*/
 /*<annotations>*//*</annotations>*/
-public enum /*<name>*/AUMixerProperty/*</name>*/ implements AUPropertyID {
+public enum /*<name>*/AUMixerProperty/*</name>*/ implements AUPropertyType {
     /*<values>*/
     MeteringMode(3007L),
     MatrixLevels(3006L),

@@ -46,7 +46,7 @@ import org.robovm.apple.dispatch.*;
     
     private static java.util.concurrent.atomic.AtomicLong refconId = new java.util.concurrent.atomic.AtomicLong();
     private long localRefconId;
-    private static Map<Long, ClientCallback> callbacks = new HashMap<Long, ClientCallback>();
+    private static LongMap<ClientCallback> callbacks = new LongMap<>();
     private static final java.lang.reflect.Method cbInvoke;
     
     static {

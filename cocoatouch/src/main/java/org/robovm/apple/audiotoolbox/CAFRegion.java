@@ -33,6 +33,7 @@ import org.robovm.apple.opengles.*;
 import org.robovm.apple.audiounit.*;
 import org.robovm.apple.coreaudio.*;
 import org.robovm.apple.coremedia.*;
+import org.robovm.apple.coremidi.*;
 /*</imports>*/
 
 /*<javadoc>*/
@@ -49,23 +50,52 @@ import org.robovm.apple.coremedia.*;
     /*<constants>*//*</constants>*/
     /*<constructors>*/
     public CAFRegion() {}
-    public CAFRegion(int mRegionID, int mFlags, int mNumberMarkers, CAFMarker mMarkers) {
-        this.setMRegionID(mRegionID);
-        this.setMFlags(mFlags);
-        this.setMNumberMarkers(mNumberMarkers);
-        this.setMMarkers(mMarkers);
+    public CAFRegion(int regionID, CAFRegionFlags flags) {
+        this.setRegionID(regionID);
+        this.setFlags(flags);
     }
     /*</constructors>*/
     /*<properties>*//*</properties>*/
+    public int getMarkerCount() {
+        return getNumberMarkers();
+    }
+    
+    public CAFMarker getMarker(int index) {
+        if (index >= getMarkerCount()) {
+            throw new ArrayIndexOutOfBoundsException(index);
+        }
+        return getMarkers0().next(index).get();
+    }
+    public CAFRegion setMarker(int index, CAFMarker value) {
+        if (index >= getMarkerCount()) {
+            throw new ArrayIndexOutOfBoundsException(index);
+        }
+        getMarkers0().next(index).set(value);
+        return this;
+    }
+    public CAFMarker[] getMarkers() {
+        int count = getMarkerCount();
+        CAFMarker[] array = new CAFMarker[count];
+        CAFMarker.CAFMarkerPtr ptr = getMarkers0();
+        for (int i = 0; i < count; i++) {
+            array[i] = ptr.next(i).get();
+        }
+        return array;
+    }
+    public CAFRegion setMarkers(CAFMarker[] markers) {
+        this.setNumberMarkers(markers.length);
+        getMarkers0().set(markers);
+        return this;
+    }
     /*<members>*/
-    @StructMember(0) public native int getMRegionID();
-    @StructMember(0) public native CAFRegion setMRegionID(int mRegionID);
-    @StructMember(1) public native int getMFlags();
-    @StructMember(1) public native CAFRegion setMFlags(int mFlags);
-    @StructMember(2) public native int getMNumberMarkers();
-    @StructMember(2) public native CAFRegion setMNumberMarkers(int mNumberMarkers);
-    @StructMember(3) public native @Array({1}) CAFMarker getMMarkers();
-    @StructMember(3) public native CAFRegion setMMarkers(@Array({1}) CAFMarker mMarkers);
+    @StructMember(0) public native int getRegionID();
+    @StructMember(0) public native CAFRegion setRegionID(int regionID);
+    @StructMember(1) public native CAFRegionFlags getFlags();
+    @StructMember(1) public native CAFRegion setFlags(CAFRegionFlags flags);
+    @StructMember(2) protected native int getNumberMarkers();
+    @StructMember(2) protected native CAFRegion setNumberMarkers(int numberMarkers);
+    @StructMember(3) protected native CAFMarker.CAFMarkerPtr getMarkers0();
+    @StructMember(3) protected native CAFRegion setMarkers0(CAFMarker.CAFMarkerPtr markers0);
     /*</members>*/
     /*<methods>*//*</methods>*/
 }

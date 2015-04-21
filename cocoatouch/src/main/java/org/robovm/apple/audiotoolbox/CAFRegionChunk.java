@@ -33,6 +33,7 @@ import org.robovm.apple.opengles.*;
 import org.robovm.apple.audiounit.*;
 import org.robovm.apple.coreaudio.*;
 import org.robovm.apple.coremedia.*;
+import org.robovm.apple.coremidi.*;
 /*</imports>*/
 
 /*<javadoc>*/
@@ -49,20 +50,49 @@ import org.robovm.apple.coremedia.*;
     /*<constants>*//*</constants>*/
     /*<constructors>*/
     public CAFRegionChunk() {}
-    public CAFRegionChunk(int mSMPTE_TimeType, int mNumberRegions, CAFRegion mRegions) {
-        this.setMSMPTE_TimeType(mSMPTE_TimeType);
-        this.setMNumberRegions(mNumberRegions);
-        this.setMRegions(mRegions);
+    public CAFRegionChunk(CAFSMPTETimeType SMPTETimeType) {
+        this.setSMPTETimeType(SMPTETimeType);
     }
     /*</constructors>*/
     /*<properties>*//*</properties>*/
+    public int getRegionCount() {
+        return getNumberRegions();
+    }
+    
+    public CAFRegion getRegion(int index) {
+        if (index >= getRegionCount()) {
+            throw new ArrayIndexOutOfBoundsException(index);
+        }
+        return getRegions0().next(index).get();
+    }
+    public CAFRegionChunk setRegion(int index, CAFRegion value) {
+        if (index >= getRegionCount()) {
+            throw new ArrayIndexOutOfBoundsException(index);
+        }
+        getRegions0().next(index).set(value);
+        return this;
+    }
+    public CAFRegion[] getRegions() {
+        int count = getRegionCount();
+        CAFRegion[] array = new CAFRegion[count];
+        CAFRegion.CAFRegionPtr ptr = getRegions0();
+        for (int i = 0; i < count; i++) {
+            array[i] = ptr.next(i).get();
+        }
+        return array;
+    }
+    public CAFRegionChunk setRegions(CAFRegion[] regions) {
+        this.setNumberRegions(regions.length);
+        getRegions0().set(regions);
+        return this;
+    }
     /*<members>*/
-    @StructMember(0) public native int getMSMPTE_TimeType();
-    @StructMember(0) public native CAFRegionChunk setMSMPTE_TimeType(int mSMPTE_TimeType);
-    @StructMember(1) public native int getMNumberRegions();
-    @StructMember(1) public native CAFRegionChunk setMNumberRegions(int mNumberRegions);
-    @StructMember(2) public native @Array({1}) CAFRegion getMRegions();
-    @StructMember(2) public native CAFRegionChunk setMRegions(@Array({1}) CAFRegion mRegions);
+    @StructMember(0) public native CAFSMPTETimeType getSMPTETimeType();
+    @StructMember(0) public native CAFRegionChunk setSMPTETimeType(CAFSMPTETimeType SMPTETimeType);
+    @StructMember(1) protected native int getNumberRegions();
+    @StructMember(1) protected native CAFRegionChunk setNumberRegions(int numberRegions);
+    @StructMember(2) protected native CAFRegion.CAFRegionPtr getRegions0();
+    @StructMember(2) protected native CAFRegionChunk setRegions0(CAFRegion.CAFRegionPtr regions0);
     /*</members>*/
     /*<methods>*//*</methods>*/
 }

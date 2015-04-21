@@ -44,7 +44,7 @@ import org.robovm.apple.uikit.*;
     
     private static java.util.concurrent.atomic.AtomicLong infoId = new java.util.concurrent.atomic.AtomicLong();
     private static final java.lang.reflect.Method cbOperator;
-    private static final Map<Long, OperatorCallback> callbacks = new HashMap<>();
+    private static final LongMap<OperatorCallback> callbacks = new LongMap<>();
     
     static {
         try {

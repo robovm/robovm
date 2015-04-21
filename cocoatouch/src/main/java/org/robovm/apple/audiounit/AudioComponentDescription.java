@@ -56,6 +56,33 @@ import org.robovm.apple.uikit.*;
     }
     /*</constructors>*/
     /*<properties>*//*</properties>*/
+    public static AudioComponentDescription create(AUType type) {
+        return new AudioComponentDescription(type, null, AUManufacturer.Apple, AudioComponentFlags.None, 0);
+    }
+    public static AudioComponentDescription create(AUType type, AUSubType subType) {
+        return new AudioComponentDescription(type, subType, AUManufacturer.Apple, AudioComponentFlags.None, 0);
+    }
+    public static AudioComponentDescription createOutput(AUTypeOutput type) {
+        return new AudioComponentDescription(AUType.Output, type, AUManufacturer.Apple, AudioComponentFlags.None, 0);
+    }
+    public static AudioComponentDescription createMusicDevice(AUTypeMusicDevice type) {
+        return new AudioComponentDescription(AUType.MusicDevice, type, AUManufacturer.Apple, AudioComponentFlags.None, 0);
+    }
+    public static AudioComponentDescription createConverter(AUTypeConverter type) {
+        return new AudioComponentDescription(AUType.FormatConverter, type, AUManufacturer.Apple, AudioComponentFlags.None, 0);
+    }
+    public static AudioComponentDescription createEffect(AUTypeEffect type) {
+        return new AudioComponentDescription(AUType.Effect, type, AUManufacturer.Apple, AudioComponentFlags.None, 0);
+    }
+    public static AudioComponentDescription createMixer(AUTypeMixer type) {
+        return new AudioComponentDescription(AUType.Mixer, type, AUManufacturer.Apple, AudioComponentFlags.None, 0);
+    }
+    public static AudioComponentDescription createPanner() {
+        return new AudioComponentDescription(AUType.Mixer, null, AUManufacturer.Apple, AudioComponentFlags.None, 0);
+    }
+    public static AudioComponentDescription createGenerator(AUTypeGenerator type) {
+        return new AudioComponentDescription(AUType.Generator, type, AUManufacturer.Apple, AudioComponentFlags.None, 0);
+    }
     /*<members>*/
     @StructMember(0) public native AUType getComponentType();
     @StructMember(0) public native AudioComponentDescription setComponentType(AUType componentType);

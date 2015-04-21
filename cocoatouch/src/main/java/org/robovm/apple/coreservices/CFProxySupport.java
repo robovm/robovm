@@ -43,9 +43,9 @@ import org.robovm.apple.corefoundation.*;
         void invoke(List<CFProxy> proxyList, NSError error);
     }
     
-    private static java.util.concurrent.atomic.AtomicLong refconId = new java.util.concurrent.atomic.AtomicLong();
+    private static final java.util.concurrent.atomic.AtomicLong refconId = new java.util.concurrent.atomic.AtomicLong();
     private long localRefconId;
-    private static Map<Long, AutoConfigurationClientCallback> callbacks = new HashMap<Long, AutoConfigurationClientCallback>();
+    private static final LongMap<AutoConfigurationClientCallback> callbacks = new LongMap<>();
     private static final java.lang.reflect.Method cbInvoke;
     
     static {

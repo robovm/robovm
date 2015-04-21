@@ -37,7 +37,7 @@ import org.robovm.apple.uikit.*;
 
 /*</javadoc>*/
 /*<annotations>*//*</annotations>*/
-public enum /*<name>*/AUNBandEQProperty/*</name>*/ implements AUPropertyID {
+public enum /*<name>*/AUNBandEQProperty/*</name>*/ implements AUPropertyType {
     /*<values>*/
     NumberOfBands(2200L),
     MaxNumberOfBands(2201L),

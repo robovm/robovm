@@ -16,5 +16,5 @@
 package org.robovm.apple.audiounit;
 
 public interface AUPropertyListener {
-    void onChange(AudioUnit unit, AUPropertyID id, AUScope scope, int element);
+    void onChange(AudioUnit unit, AUPropertyType id, AUScope scope, int element);
 }

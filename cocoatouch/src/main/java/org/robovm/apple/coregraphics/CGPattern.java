@@ -47,7 +47,7 @@ import org.robovm.apple.uikit.*;
     /*<bind>*/static { Bro.bind(CGPattern.class); }/*</bind>*/
     
     private static java.util.concurrent.atomic.AtomicLong infoId = new java.util.concurrent.atomic.AtomicLong();
-    private static Map<Long, DrawPattern> infos = new HashMap<Long, DrawPattern>();
+    private static final LongMap<DrawPattern> infos = new LongMap<>();
     private static final java.lang.reflect.Method cbDrawPattern;
     private static final java.lang.reflect.Method cbReleaseInfo;
     

@@ -19,6 +19,7 @@ package org.robovm.apple.addressbook;
 import java.io.*;
 import java.nio.*;
 import java.util.*;
+
 import org.robovm.objc.*;
 import org.robovm.objc.annotation.*;
 import org.robovm.objc.block.*;
@@ -46,8 +47,8 @@ import org.robovm.apple.corefoundation.*;
         void externalChange(ABAddressBook addressBook, NSDictionary<?, ?> info);
     }
     
-    private static java.util.concurrent.atomic.AtomicLong changeCallbackId = new java.util.concurrent.atomic.AtomicLong();
-    private static Map<Long, ExternalChangeCallback> externalChangeCallbacks = new HashMap<Long, ExternalChangeCallback>();
+    private static final java.util.concurrent.atomic.AtomicLong changeCallbackId = new java.util.concurrent.atomic.AtomicLong();
+    private static final LongMap<ExternalChangeCallback> externalChangeCallbacks = new LongMap<>();
     private static final java.lang.reflect.Method cbExternalChange;
     
     static {
@@ -81,9 +82,9 @@ import org.robovm.apple.corefoundation.*;
     public void unregisterExternalChangeCallback(ExternalChangeCallback callback) {
         long refconId = 0;
         synchronized (externalChangeCallbacks) {
-            for (Map.Entry<Long, ExternalChangeCallback> entry : externalChangeCallbacks.entrySet()) {
-                if (entry.getValue() == callback) {
-                    refconId = entry.getKey();
+            for (LongMap.Entry<ExternalChangeCallback> entry : externalChangeCallbacks.entries()) {
+                if (entry.value == callback) {
+                    refconId = entry.key;
                     externalChangeCallbacks.remove(refconId);
                     break;
                 }

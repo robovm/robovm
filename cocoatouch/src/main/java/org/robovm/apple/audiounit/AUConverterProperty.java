@@ -37,7 +37,7 @@ import org.robovm.apple.uikit.*;
 
 /*</javadoc>*/
 /*<annotations>*//*</annotations>*/
-public enum /*<name>*/AUConverterProperty/*</name>*/ implements AUPropertyID {
+public enum /*<name>*/AUConverterProperty/*</name>*/ implements AUPropertyType {
     /*<values>*/
     SampleRateConverterComplexity(3014L);
     /*</values>*/

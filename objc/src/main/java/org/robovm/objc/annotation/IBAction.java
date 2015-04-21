@@ -23,10 +23,9 @@ import java.lang.annotation.Target;
 /**
  * Used to mark a class method as an Objective-C method compliant with a Xcode
  * interface builder action. The method must have exactly zero, one or two
- * arguments, with the first argument (if any) being of type {@code UIResponder}
+ * arguments, with the first argument (if any) being of type {@code NSObject}
  * or any subtype, and the second argument (if any) being of type
- * {@code UIEvent}. For single argument variants, the argument may also be of
- * type {@code UIStoryboardSegue} or any subtype.
+ * {@code UIEvent}.
  */
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.METHOD)

@@ -37,7 +37,7 @@ import org.robovm.apple.uikit.*;
 
 /*</javadoc>*/
 /*<annotations>*//*</annotations>*/
-public enum /*<name>*/AUAudioFilePlayerProperty/*</name>*/ implements AUPropertyID {
+public enum /*<name>*/AUAudioFilePlayerProperty/*</name>*/ implements AUPropertyType {
     /*<values>*/
     ScheduledFileIDs(3310L),
     ScheduledFileRegion(3311L),

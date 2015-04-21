@@ -117,7 +117,7 @@ import org.robovm.apple.foundation.*;
         }
     }
 
-    private static final Map<Long, Class<? extends CFType>> allCFTypeClasses = new HashMap<>();
+    private static final LongMap<Class<? extends CFType>> allCFTypeClasses = new LongMap<>();
     private static final int ABSTRACT = 0x00000400;
     
     static {

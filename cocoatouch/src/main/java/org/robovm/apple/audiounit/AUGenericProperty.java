@@ -37,7 +37,7 @@ import org.robovm.apple.uikit.*;
 
 /*</javadoc>*/
 /*<annotations>*//*</annotations>*/
-public enum /*<name>*/AUGenericProperty/*</name>*/ implements AUPropertyID {
+public enum /*<name>*/AUGenericProperty/*</name>*/ implements AUPropertyType {
     /*<values>*/
     ClassInfo(0L),
     MakeConnection(1L),

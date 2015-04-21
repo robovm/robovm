@@ -47,7 +47,7 @@ import org.robovm.apple.uikit.*;
     /*<constants>*//*</constants>*/
     /*<constructors>*/
     public AUProperty() {}
-    public AUProperty(AudioUnit audioUnit, AUPropertyID propertyID, AUScope scope, int element) {
+    public AUProperty(AudioUnit audioUnit, AUPropertyType propertyID, AUScope scope, int element) {
         this.setAudioUnit(audioUnit);
         this.setPropertyID(propertyID);
         this.setScope(scope);
@@ -58,8 +58,8 @@ import org.robovm.apple.uikit.*;
     /*<members>*/
     @StructMember(0) public native AudioUnit getAudioUnit();
     @StructMember(0) public native AUProperty setAudioUnit(AudioUnit audioUnit);
-    @StructMember(1) public native AUPropertyID getPropertyID();
-    @StructMember(1) public native AUProperty setPropertyID(AUPropertyID propertyID);
+    @StructMember(1) public native AUPropertyType getPropertyID();
+    @StructMember(1) public native AUProperty setPropertyID(AUPropertyType propertyID);
     @StructMember(2) public native AUScope getScope();
     @StructMember(2) public native AUProperty setScope(AUScope scope);
     @StructMember(3) public native int getElement();

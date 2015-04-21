@@ -37,7 +37,7 @@ import org.robovm.apple.uikit.*;
 
 /*</javadoc>*/
 /*<annotations>*//*</annotations>*/
-public enum /*<name>*/AUScheduledSoundPlayerProperty/*</name>*/ implements AUPropertyID {
+public enum /*<name>*/AUScheduledSoundPlayerProperty/*</name>*/ implements AUPropertyType {
     /*<values>*/
     ScheduleAudioSlice(3300L),
     ScheduleStartTimeStamp(3301L),

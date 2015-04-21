@@ -49,7 +49,7 @@ import org.robovm.apple.corelocation.*;
     
     private static java.util.concurrent.atomic.AtomicLong id = new java.util.concurrent.atomic.AtomicLong();
     private static final Selector didFinishSaving = Selector.register("image:didFinishSavingWithError:contextInfo:");
-    private static final Map<Long, CallbackWrapper> callbacks = new HashMap<>();
+    private static final LongMap<CallbackWrapper> callbacks = new LongMap<>();
     private static class CallbackWrapper extends NSObject {
         private final VoidBlock2<UIImage, NSError> callback;
         private CallbackWrapper(VoidBlock2<UIImage, NSError> callback, long contextInfo) {

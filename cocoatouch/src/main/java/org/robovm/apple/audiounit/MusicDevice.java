@@ -48,9 +48,10 @@ import org.robovm.apple.uikit.*;
     /*<properties>*//*</properties>*/
     /*<members>*//*</members>*/
     /**
+     * @throws OSStatusException 
      * @since Available in iOS 5.0 and later.
      */
-    public static MusicDevice create(AudioComponent component) {
+    public static MusicDevice create(AudioComponent component) throws OSStatusException {
         AudioComponentInstance result = AudioComponentInstance.create(component);
         if (result != null) {
             return result.as(MusicDevice.class);

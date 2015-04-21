@@ -37,7 +37,7 @@ import org.robovm.apple.uikit.*;
 
 /*</javadoc>*/
 /*<annotations>*//*</annotations>*/
-public enum /*<name>*/AUMIDISynthProperty/*</name>*/ implements AUPropertyID {
+public enum /*<name>*/AUMIDISynthProperty/*</name>*/ implements AUPropertyType {
     /*<values>*/
     EnablePreload(4119L);
     /*</values>*/

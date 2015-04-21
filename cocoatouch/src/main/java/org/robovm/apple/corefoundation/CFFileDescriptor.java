@@ -41,8 +41,8 @@ import org.robovm.apple.foundation.*;
         void invoke(CFFileDescriptor fileDescriptor, CFFileDescriptorCallBackType callBackTypes);
     }
     
-    private static java.util.concurrent.atomic.AtomicLong refconId = new java.util.concurrent.atomic.AtomicLong();
-    private static Map<Long, CFFileDescriptorCallback> callbacks = new HashMap<Long, CFFileDescriptorCallback>();
+    private static final java.util.concurrent.atomic.AtomicLong refconId = new java.util.concurrent.atomic.AtomicLong();
+    private static final LongMap<CFFileDescriptorCallback> callbacks = new LongMap<>();
     private static final java.lang.reflect.Method cbInvoke;
     
     static {

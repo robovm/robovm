@@ -47,9 +47,9 @@ import org.robovm.apple.uikit.*;
     /*<constants>*//*</constants>*/
     /*<constructors>*/
     public AUParameter() {}
-    public AUParameter(AudioUnit audioUnit, AUParameterID parameterID, AUScope scope, int element) {
+    public AUParameter(AudioUnit audioUnit, AUParameterType type, AUScope scope, int element) {
         this.setAudioUnit(audioUnit);
-        this.setParameterID(parameterID);
+        this.setType(type);
         this.setScope(scope);
         this.setElement(element);
     }
@@ -58,8 +58,8 @@ import org.robovm.apple.uikit.*;
     /*<members>*/
     @StructMember(0) public native AudioUnit getAudioUnit();
     @StructMember(0) public native AUParameter setAudioUnit(AudioUnit audioUnit);
-    @StructMember(1) public native AUParameterID getParameterID();
-    @StructMember(1) public native AUParameter setParameterID(AUParameterID parameterID);
+    @StructMember(1) public native AUParameterType getType();
+    @StructMember(1) public native AUParameter setType(AUParameterType type);
     @StructMember(2) public native AUScope getScope();
     @StructMember(2) public native AUParameter setScope(AUScope scope);
     @StructMember(3) public native int getElement();

@@ -52,7 +52,7 @@ import org.robovm.apple.corelocation.*;
     /*<ptr>*/public static class UIMenuItemPtr extends Ptr<UIMenuItem, UIMenuItemPtr> {}/*</ptr>*/
     /*<bind>*/static { ObjCRuntime.bind(UIMenuItem.class); }/*</bind>*/
     /*<constants>*//*</constants>*/
-    static final Map<Long, UIMenuItem> items = new HashMap<>();
+    static final LongMap<UIMenuItem> items = new LongMap<>();
     
     private OnActionListener actionListener;
     

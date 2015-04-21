@@ -60,11 +60,11 @@ import org.robovm.apple.audiotoolbox.*;
     
     private static java.util.concurrent.atomic.AtomicLong refconId = new java.util.concurrent.atomic.AtomicLong();
     private static java.util.concurrent.atomic.AtomicLong triggerId = new java.util.concurrent.atomic.AtomicLong();
-    private static Map<Long, CMBufferQueueCallbacks> bufferQueueCallbacks = new HashMap<Long, CMBufferQueueCallbacks>();
-    private static Map<Long, ResetCallback> resetCallbacks = new HashMap<Long, ResetCallback>();
-    private static Map<Long, TriggerCallback> triggerCallbacks = new HashMap<Long, TriggerCallback>();
-    private static Map<Long, ValidationCallback> validationCallbacks = new HashMap<Long, ValidationCallback>();
-    private static Map<Long, ForEachCallback> forEachCallbacks = new HashMap<Long, ForEachCallback>();
+    private static final LongMap<CMBufferQueueCallbacks> bufferQueueCallbacks = new LongMap<>();
+    private static final LongMap<ResetCallback> resetCallbacks = new LongMap<>();
+    private static final LongMap<TriggerCallback> triggerCallbacks = new LongMap<>();
+    private static final LongMap<ValidationCallback> validationCallbacks = new LongMap<>();
+    private static final LongMap<ForEachCallback> forEachCallbacks = new LongMap<>();
     private static final java.lang.reflect.Method cbGetDecodeTimeStamp;
     private static final java.lang.reflect.Method cbGetPresentationTimeStamp;
     private static final java.lang.reflect.Method cbGetDuration;

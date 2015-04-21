@@ -54,7 +54,7 @@ import org.robovm.apple.uikit.*;
     /*<constants>*//*</constants>*/
     
     private static java.util.concurrent.atomic.AtomicLong infoId = new java.util.concurrent.atomic.AtomicLong();
-    private static Map<Long, Info> infos = new HashMap<Long, Info>();
+    private static final LongMap<Info> infos = new LongMap<>();
     private static final java.lang.reflect.Method cbEvaluate;
     private static final java.lang.reflect.Method cbReleaseInfo;
     

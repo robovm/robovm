@@ -102,7 +102,9 @@ import org.robovm.apple.coremidi.*;
     @Deprecated
     public static void initialize(NSRunLoop runLoop, String runLoopMode, InterruptionListener interruptionListener) throws OSStatusException {
         if (interruptionListener == null) {
-            throw new NullPointerException("interruptionListener");
+            OSStatus status = initialize0(runLoop, runLoopMode, null, 0);
+            OSStatusException.throwIfNecessary(status);
+            return;
         }
         long cid = callbackId.getAndIncrement();
         

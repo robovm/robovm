@@ -469,6 +469,13 @@ import org.robovm.apple.uikit.*;
      * @throws OSStatusException 
      * @since Available in iOS 2.0 and later.
      */
+    public void render(AURenderActionFlags actionFlags, AudioTimeStamp timeStamp, int outputBusNumber, int numberFrames, AudioBufferList data) throws OSStatusException {
+        render(new AUMutableRenderActionFlags(actionFlags), timeStamp, outputBusNumber, numberFrames, data);
+    }
+    /**
+     * @throws OSStatusException 
+     * @since Available in iOS 2.0 and later.
+     */
     public void render(AUMutableRenderActionFlags actionFlags, AudioTimeStamp timeStamp, int outputBusNumber, int numberFrames, AudioBufferList data) throws OSStatusException {
         OSStatus status = render0(actionFlags, timeStamp, outputBusNumber, numberFrames, data);
         OSStatusException.throwIfNecessary(status);

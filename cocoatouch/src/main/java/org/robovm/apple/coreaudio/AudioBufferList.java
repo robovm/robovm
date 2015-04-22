@@ -57,11 +57,14 @@ import org.robovm.apple.corefoundation.*;
         }
         return getBuffers0().next(index).get();
     }
-    public AudioBufferList setBuffer(int index, AudioBuffer value) {
+    public AudioBufferList setBuffer(int index, AudioBuffer buffer) {
+        return setBuffer(index, buffer.getHandle());
+    }
+    public AudioBufferList setBuffer(int index, long handle) {
         if (index >= getBufferCount()) {
             throw new ArrayIndexOutOfBoundsException(index);
         }
-        getBuffers0().next(index).set(value);
+        getBuffers0().next(index).set(handle);
         return this;
     }
     public AudioBuffer[] getBuffers() {

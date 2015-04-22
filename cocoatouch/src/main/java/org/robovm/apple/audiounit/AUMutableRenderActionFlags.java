@@ -19,18 +19,24 @@ import org.robovm.rt.bro.Struct;
 import org.robovm.rt.bro.annotation.StructMember;
 
 public final class AUMutableRenderActionFlags extends Struct<AUMutableRenderActionFlags> {
-    
+
+    public AUMutableRenderActionFlags() {}
+
+    public AUMutableRenderActionFlags(AURenderActionFlags flags) {
+        set(flags);
+    }
+
     public AURenderActionFlags get() {
         return new AURenderActionFlags(getValue());
     }
-    
+
     public void set(AURenderActionFlags flags) {
-        setValue((int)flags.value());
+        setValue((int) flags.value());
     }
-    
+
     @StructMember(0)
     private native int getValue();
-    
+
     @StructMember(0)
     private native void setValue(int value);
 }

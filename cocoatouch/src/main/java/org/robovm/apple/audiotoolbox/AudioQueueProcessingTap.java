@@ -44,7 +44,7 @@ import org.robovm.apple.coremidi.*;
     /*<implements>*//*</implements>*/ {
     
     public interface ProcessingTapCallback {
-        int process(AudioQueueProcessingTap aqTap, int numberFrames, AudioTimeStamp timeStamp, AudioQueueProcessingTapFlags flags, AudioBufferList data);
+        int process(AudioQueueProcessingTap aqTap, int numberFrames, AudioTimeStamp timeStamp, AudioQueueProcessingTapMutableFlags flags, AudioBufferList data);
     }
     
     /*<ptr>*/public static class AudioQueueProcessingTapPtr extends Ptr<AudioQueueProcessingTap, AudioQueueProcessingTapPtr> {}/*</ptr>*/
@@ -57,7 +57,7 @@ import org.robovm.apple.coremidi.*;
     static {
         try {
             cbProcess = AudioQueueProcessingTap.class.getDeclaredMethod("cbProcess", Long.TYPE, AudioQueueProcessingTap.class, Integer.TYPE, AudioTimeStamp.class, 
-                    AudioQueueProcessingTapFlags.class, IntPtr.class, AudioBufferList.class);
+                    AudioQueueProcessingTapMutableFlags.class, IntPtr.class, AudioBufferList.class);
         } catch (Throwable e) {
             throw new Error(e);
         }
@@ -70,7 +70,7 @@ import org.robovm.apple.coremidi.*;
     /*<properties>*//*</properties>*/
     /*<members>*//*</members>*/
     @Callback
-    private static void cbProcess(@Pointer long clientData, AudioQueueProcessingTap aqTap, int numberFrames, AudioTimeStamp timeStamp, AudioQueueProcessingTapFlags flags, IntPtr outNumberFrames, AudioBufferList data) {
+    private static void cbProcess(@Pointer long clientData, AudioQueueProcessingTap aqTap, int numberFrames, AudioTimeStamp timeStamp, AudioQueueProcessingTapMutableFlags flags, IntPtr outNumberFrames, AudioBufferList data) {
         synchronized (callbacks) {
             int outFrames = callbacks.get(clientData).process(aqTap, numberFrames, timeStamp, flags, data);
             outNumberFrames.set(outFrames);

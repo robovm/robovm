@@ -222,9 +222,12 @@ import org.robovm.apple.coremidi.*;
      * @since Available in iOS 2.0 and later.
      */
     public void enqueueBuffer(long buffer, AudioStreamPacketDescription[] packetDescs) throws OSStatusException {
-        AudioStreamPacketDescription.AudioStreamPacketDescriptionPtr ptr = new AudioStreamPacketDescription.AudioStreamPacketDescriptionPtr();
-        ptr.set(packetDescs);
-        OSStatus status = enqueueBuffer0(buffer, packetDescs.length, ptr);
+        AudioStreamPacketDescription.AudioStreamPacketDescriptionPtr ptr = null;
+        if (packetDescs != null) {
+            ptr = new AudioStreamPacketDescription.AudioStreamPacketDescriptionPtr();
+            ptr.set(packetDescs);
+        }
+        OSStatus status = enqueueBuffer0(buffer, packetDescs != null ? packetDescs.length : 0, ptr);
         OSStatusException.throwIfNecessary(status);
     }
     /**

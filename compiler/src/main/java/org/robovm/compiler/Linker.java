@@ -32,6 +32,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -284,6 +285,16 @@ public class Linker {
 
         buildTypeInfos(typeInfos);
 
+        Set<String> checkcasts = new HashSet<>();
+        Set<String> instanceofs = new HashSet<>();
+        Set<String> invokes = new HashSet<>();
+        for (Clazz clazz : linkClasses) {
+            ClazzInfo ci = clazz.getClazzInfo();
+            checkcasts.addAll(ci.getCheckcasts());
+            instanceofs.addAll(ci.getInstanceofs());
+            invokes.addAll(ci.getInvokes());
+        }
+
         for (Clazz clazz : linkClasses) {
             int mbIdx = rnd.nextInt(mbs.length - 1) + 1;
             ClazzInfo ci = clazz.getClazzInfo();
@@ -327,15 +338,20 @@ public class Linker {
                         if (!name.equals("<clinit>") && !name.equals("<init>")
                                 && !mi.isPrivate() && !mi.isStatic() && !mi.isFinal() && !mi.isAbstract()) {
 
-                            mbs[mbIdx].addFunction(createLookup(mbs[mbIdx], ci, mi));
+                            if (invokes.contains(clazz.getInternalName() + "." + name + mi.getDesc())) {
+                                mbs[mbIdx].addFunction(createLookup(mbs[mbIdx], ci, mi));
+                            }
                         }
-
                     }
                 }
             }
 
-            mbs[mbIdx].addFunction(createCheckcast(mbs[mbIdx], clazz, typeInfo));
-            mbs[mbIdx].addFunction(createInstanceof(mbs[mbIdx], clazz, typeInfo));
+            if (checkcasts.contains(clazz.getInternalName())) {
+                mbs[mbIdx].addFunction(createCheckcast(mbs[mbIdx], clazz, typeInfo));
+            }
+            if (instanceofs.contains(clazz.getInternalName())) {
+                mbs[mbIdx].addFunction(createInstanceof(mbs[mbIdx], clazz, typeInfo));
+            }
         }
 
         List<File> objectFiles = new ArrayList<File>();
@@ -428,6 +444,11 @@ public class Linker {
                     passManager.addAlwaysInlinerPass();
                     passManager.addPromoteMemoryToRegisterPass();
                     passManager.run(module);
+                }
+
+                if (config.isDumpIntermediates()) {
+                    File linkerBc = new File(config.getTmpDir(), "linker" + num + ".bc");
+                    module.writeBitcode(linkerBc);
                 }
 
                 String triple = config.getTriple();

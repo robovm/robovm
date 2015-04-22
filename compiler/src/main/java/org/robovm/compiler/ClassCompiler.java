@@ -21,13 +21,11 @@ import static org.robovm.compiler.Functions.*;
 import static org.robovm.compiler.Types.*;
 import static org.robovm.compiler.llvm.Type.*;
 
-import java.io.BufferedOutputStream;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -85,8 +83,12 @@ import org.robovm.compiler.llvm.Value;
 import org.robovm.compiler.llvm.Variable;
 import org.robovm.compiler.llvm.VariableRef;
 import org.robovm.compiler.plugin.CompilerPlugin;
+import org.robovm.compiler.trampoline.Checkcast;
 import org.robovm.compiler.trampoline.FieldAccessor;
+import org.robovm.compiler.trampoline.Instanceof;
 import org.robovm.compiler.trampoline.Invoke;
+import org.robovm.compiler.trampoline.Invokeinterface;
+import org.robovm.compiler.trampoline.Invokevirtual;
 import org.robovm.compiler.trampoline.Trampoline;
 import org.robovm.compiler.util.io.HfsCompressor;
 import org.robovm.llvm.Context;
@@ -843,6 +845,14 @@ public class ClassCompiler {
                 for (String desc : getParameterDescriptors(methodDesc)) {
                     addDependencyIfNeeded(clazz, desc);
                 }
+            }
+
+            if (t instanceof Checkcast) {
+                ci.addCheckcast(t.getTarget());
+            } else if (t instanceof Instanceof) {
+                ci.addInstanceof(t.getTarget());
+            } else if (t instanceof Invokevirtual || t instanceof Invokeinterface) {
+                ci.addInvoke(t.getTarget() + "." + ((Invoke) t).getMethodName() + ((Invoke) t).getMethodDesc());
             }
         }
         clazz.saveClazzInfo();

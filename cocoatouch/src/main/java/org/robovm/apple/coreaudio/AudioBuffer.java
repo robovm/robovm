@@ -19,6 +19,7 @@ package org.robovm.apple.coreaudio;
 import java.io.*;
 import java.nio.*;
 import java.util.*;
+
 import org.robovm.objc.*;
 import org.robovm.objc.annotation.*;
 import org.robovm.objc.block.*;
@@ -29,7 +30,6 @@ import org.robovm.rt.bro.ptr.*;
 import org.robovm.apple.foundation.*;
 import org.robovm.apple.corefoundation.*;
 /*</imports>*/
-import org.robovm.rt.bro.BufferMarshalers.BufferMarshaler;
 
 /*<javadoc>*/
 
@@ -44,8 +44,16 @@ import org.robovm.rt.bro.BufferMarshalers.BufferMarshaler;
     /*</bind>*/
     /*<constants>*//*</constants>*/
     /*<constructors>*//*</constructors>*/
-    /*<properties>*//*</properties>*/
+    public AudioBuffer(long handle) {
+        super(handle);
+    }
     
+    /*<properties>*//*</properties>*/
+    public AudioBuffer setData(long dataPointer, int length) {
+        setData0(dataPointer);
+        setDataByteSize(length);
+        return this;
+    }
     public AudioBuffer setData(byte[] data) {
         setArrayData(data, data.length);
         return this;
@@ -54,15 +62,7 @@ import org.robovm.rt.bro.BufferMarshalers.BufferMarshaler;
         setArrayData(data, data.length);
         return this;
     }
-    public AudioBuffer setData(char[] data) {
-        setArrayData(data, data.length);
-        return this;
-    }
     public AudioBuffer setData(int[] data) {
-        setArrayData(data, data.length);
-        return this;
-    }
-    public AudioBuffer setData(long[] data) {
         setArrayData(data, data.length);
         return this;
     }
@@ -70,13 +70,9 @@ import org.robovm.rt.bro.BufferMarshalers.BufferMarshaler;
         setArrayData(data, data.length);
         return this;
     }
-    public AudioBuffer setData(double[] data) {
-        setArrayData(data, data.length);
-        return this;
-    }
     public AudioBuffer setData(Buffer data) {
         setDataByteSize(data.capacity());
-        setData0(BufferMarshaler.toNative(data, 0));
+        setData0(BufferMarshalers.BufferMarshaler.toNative(data, 0));
         return this;
     }
     private AudioBuffer setArrayData(Object array, int length) {
@@ -87,53 +83,43 @@ import org.robovm.rt.bro.BufferMarshalers.BufferMarshaler;
     
     @SuppressWarnings("unchecked")
     public <T extends Buffer> T getDataAsBuffer(Class<T> bufferType) {
-        VoidPtr ptr = getDataPointer();
+        long dataPointer = getDataPointer();
         if (bufferType == ByteBuffer.class) {
-            return (T) ptr.as(BytePtr.class).asByteBuffer(getDataByteSize());
-        } else if (bufferType == CharBuffer.class) {
-            return (T) ptr.as(CharPtr.class).asCharBuffer(getDataByteSize());
+            return (T) VM.newDirectByteBuffer(dataPointer, getDataByteSize());
         } else if (bufferType == ShortBuffer.class) {
-            return (T) ptr.as(ShortPtr.class).asShortBuffer(getDataByteSize());
+            return (T) VM.newDirectByteBuffer(dataPointer, getDataByteSize() << 1).order(ByteOrder.nativeOrder()).asShortBuffer();
         } else if (bufferType == IntBuffer.class) {
-            return (T) ptr.as(IntPtr.class).asIntBuffer(getDataByteSize());
-        } else if (bufferType == LongBuffer.class) {
-            return (T) ptr.as(LongPtr.class).asLongBuffer(getDataByteSize());
+            return (T) VM.newDirectByteBuffer(dataPointer, getDataByteSize() << 2).order(ByteOrder.nativeOrder()).asIntBuffer();
         } else if (bufferType == FloatBuffer.class) {
-            return (T) ptr.as(FloatPtr.class).asFloatBuffer(getDataByteSize());
-        } else if (bufferType == DoubleBuffer.class) {
-            return (T) ptr.as(DoublePtr.class).asDoubleBuffer(getDataByteSize());
+            return (T) VM.newDirectByteBuffer(dataPointer, getDataByteSize() << 2).order(ByteOrder.nativeOrder()).asFloatBuffer();
         } else {
             throw new UnsupportedOperationException("Buffer type not supported: " + bufferType);
         }
     }
 
     public byte[] getDataAsByteArray() {
-        BytePtr ptr = getDataPointer().as(BytePtr.class);
-        return ptr.toByteArray(getDataByteSize());
+        int length = getDataByteSize();
+        byte[] data = new byte[length];
+        getDataAsBuffer(ByteBuffer.class).get(data, 0, length);
+        return data;
     }
     public short[] getDataAsShortArray() {
-        ShortPtr ptr = getDataPointer().as(ShortPtr.class);
-        return ptr.toShortArray(getDataByteSize());
-    }
-    public char[] getDataAsCharArray() {
-        CharPtr ptr = getDataPointer().as(CharPtr.class);
-        return ptr.toCharArray(getDataByteSize());
+        int length = getDataByteSize();
+        short[] data = new short[length];
+        getDataAsBuffer(ShortBuffer.class).get(data, 0, length);
+        return data;
     }
     public int[] getDataAsIntArray() {
-        IntPtr ptr = getDataPointer().as(IntPtr.class);
-        return ptr.toIntArray(getDataByteSize());
-    }
-    public long[] getDataAsLongArray() {
-        LongPtr ptr = getDataPointer().as(LongPtr.class);
-        return ptr.toLongArray(getDataByteSize());
+        int length = getDataByteSize();
+        int[] data = new int[length];
+        getDataAsBuffer(IntBuffer.class).get(data, 0, length);
+        return data;
     }
     public float[] getDataAsFloatArray() {
-        FloatPtr ptr = getDataPointer().as(FloatPtr.class);
-        return ptr.toFloatArray(getDataByteSize());
-    }
-    public double[] getDataAsDoubleArray() {
-        DoublePtr ptr = getDataPointer().as(DoublePtr.class);
-        return ptr.toDoubleArray(getDataByteSize());
+        int length = getDataByteSize();
+        float[] data = new float[length];
+        getDataAsBuffer(FloatBuffer.class).get(data, 0, length);
+        return data;
     }
     /*<members>*/
     @StructMember(0) public native int getNumberChannels();
@@ -141,7 +127,7 @@ import org.robovm.rt.bro.BufferMarshalers.BufferMarshaler;
     @StructMember(1) private native int getDataByteSize();
     @StructMember(1) private native AudioBuffer setDataByteSize(int dataByteSize);
     /*</members>*/
-    @StructMember(2) public native VoidPtr getDataPointer();
+    @StructMember(2) public native @Pointer long getDataPointer();
     @StructMember(2) private native AudioBuffer setData0(@Pointer long data);
     /*<methods>*//*</methods>*/
 }

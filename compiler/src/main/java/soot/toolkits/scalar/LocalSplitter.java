@@ -255,14 +255,16 @@ public class LocalSplitter extends BodyTransformer
                 continue;
             }
             List<ValueBox> mergedWeb = new ArrayList<>(web1);
-            Set<LocalVariable> lvs1 = findLocalVariables(web1, local1, boxToUnit, body);
+            Set<LocalVariable> lvs1 = findLocalVariables(web1, local1, null, boxToUnit, body);
+            String expectedType = lvs1.isEmpty()? null: lvs1.iterator().next().getDescriptor();
+
             for (Iterator<List> it2 = websCopy.iterator(); it2.hasNext();) {
                 List<ValueBox> web2 = it2.next();
                 Local local2 = (Local) web2.get(0).getValue();
                 if (!local1.equals(local2)) {
                     continue;
                 }
-                Set<LocalVariable> lvs2 = findLocalVariables(web2, local2, boxToUnit, body);
+                Set<LocalVariable> lvs2 = findLocalVariables(web2, local2, expectedType, boxToUnit, body);
                 if (!lvs1.isEmpty() && lvs1.equals(lvs2)) {
                     mergedWeb.addAll(web2);
                     it2.remove();
@@ -277,15 +279,41 @@ public class LocalSplitter extends BodyTransformer
     /**
      * RoboVM note: Added in RoboVM.
      */
-    private Set<LocalVariable> findLocalVariables(List<ValueBox> web, Local local, Map<ValueBox, Unit> boxToUnit, Body body) {
+    private Set<LocalVariable> findLocalVariables(List<ValueBox> web, Local local, String expectedTypeDescriptor, Map<ValueBox, Unit> boxToUnit, Body body) {
         Set<LocalVariable> lvs = new HashSet<>();
         if (local.getIndex() != -1) {
+            boolean incompatibleType = false;
+            String firstType = null;
             for (ValueBox box : web) {
                 LocalVariable lv = findLocalVariable(body, local.getIndex(), boxToUnit.get(box));
                 if (lv != null) {
                     lvs.add(lv);
+                    // does this local have a compatible type with the other web?
+                    // if not we'll return an empty set and the webs don't get merged
+                    if (expectedTypeDescriptor != null && lv.getDescriptor().equals(expectedTypeDescriptor)) {
+                        incompatibleType = true;
+                    }
+
+                    // are the types of this web's locals consistent?
+                    // if not we'll return an empty set and the
+                    // webs don't get merged, see #920
+                    if (firstType == null) {
+                        firstType = lv.getDescriptor();
+                    } else if (!firstType.equals(lv.getDescriptor())) {
+                        incompatibleType = true;
+                    }
                 }
             }
+
+            // if we encountered incompatible types, either
+            // between the webs or inside the web, we
+            // return an empty set so the webs don't get
+            // merged
+            if (incompatibleType) {
+                lvs.clear();
+                return lvs;
+            }
+
             if (lvs.size() > 1) {
                 // Verify that all LocalVariables refer to a variable with the same name.
                 String name = null;

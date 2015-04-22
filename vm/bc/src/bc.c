@@ -687,6 +687,24 @@ void _bcThrowUnsatisfiedLinkError(Env* env, char* msg) {
     LEAVEV;
 }
 
+void _bcThrowUnsatisfiedLinkErrorBridgeNotBound(Env* env, const char* className,
+                                                const char* methodName, const char* methodDesc) {
+    ENTER;
+    rvmThrowNewf(env, java_lang_UnsatisfiedLinkError,
+                 "@Bridge method %s.%s%s not bound",
+                 className, methodName, methodDesc);
+    LEAVEV;
+}
+
+void _bcThrowUnsatisfiedLinkErrorOptionalBridgeNotBound(Env* env, const char* className,
+                                                const char* methodName, const char* methodDesc) {
+    ENTER;
+    rvmThrowNewf(env, java_lang_UnsatisfiedLinkError,
+                 "Optional @Bridge method %s.%s%s not bound",
+                 className, methodName, methodDesc);
+    LEAVEV;
+}
+
 void _bcThrowNoClassDefFoundError(Env* env, char* msg) {
     ENTER;
     rvmThrowNoClassDefFoundError(env, msg);

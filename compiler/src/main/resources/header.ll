@@ -71,6 +71,8 @@ declare void @_bcThrowNullPointerException(%Env*) noreturn
 declare void @_bcThrowArrayIndexOutOfBoundsException(%Env*, i32, i32) noreturn
 declare void @_bcThrowArithmeticException(%Env*) noreturn
 declare void @_bcThrowUnsatisfiedLinkError(%Env*, i8*) noreturn
+declare void @_bcThrowUnsatisfiedLinkErrorBridgeNotBound(%Env*, i8*, i8*, i8*) noreturn
+declare void @_bcThrowUnsatisfiedLinkErrorOptionalBridgeNotBound(%Env*, i8*, i8*, i8*) noreturn
 declare void @_bcThrowNoClassDefFoundError(%Env*, i8*) noreturn
 declare void @_bcThrowNoSuchFieldError(%Env*, i8*) noreturn
 declare void @_bcThrowNoSuchMethodError(%Env*, i8*) noreturn

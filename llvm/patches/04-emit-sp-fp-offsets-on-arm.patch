@@ -11,7 +11,7 @@ index 97ef12c..e175480 100644
 +  if (MMI->getModule()->getNamedValue("robovm.emitSpFpOffsets")) {
 +    bool InTextSeciton = false;
 +    for (const Function &F : *(MMI->getModule())) {
-+      if (F.isDeclaration() || !F.hasExternalLinkage())
++      if (F.isDeclaration())
 +        continue;
 +
 +      MCSymbol *Offset = OutContext.LookupSymbol(Twine("l_") + F.getName() + ".spfpoffset");

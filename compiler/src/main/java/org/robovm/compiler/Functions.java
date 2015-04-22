@@ -56,6 +56,8 @@ public class Functions {
     public static final FunctionRef BC_THROW = new FunctionRef("_bcThrow", new FunctionType(VOID, ENV_PTR, OBJECT_PTR));
     public static final FunctionRef BC_THROW_IF_EXCEPTION_OCCURRED = new FunctionRef("_bcThrowIfExceptionOccurred", new FunctionType(VOID, ENV_PTR));
     public static final FunctionRef BC_THROW_UNSATISIFED_LINK_ERROR = new FunctionRef("_bcThrowUnsatisfiedLinkError", new FunctionType(VOID, ENV_PTR, I8_PTR));
+    public static final FunctionRef BC_THROW_UNSATISIFED_LINK_ERROR_BRIDGE_NOT_BOUND = new FunctionRef("_bcThrowUnsatisfiedLinkErrorBridgeNotBound", new FunctionType(VOID, ENV_PTR, I8_PTR, I8_PTR, I8_PTR));
+    public static final FunctionRef BC_THROW_UNSATISIFED_LINK_ERROR_OPTIONAL_BRIDGE_NOT_BOUND = new FunctionRef("_bcThrowUnsatisfiedLinkErrorOptionalBridgeNotBound", new FunctionType(VOID, ENV_PTR, I8_PTR, I8_PTR, I8_PTR));
     public static final FunctionRef BC_THROW_NO_CLASS_DEF_FOUND_ERROR = new FunctionRef("_bcThrowNoClassDefFoundError", new FunctionType(VOID, ENV_PTR, I8_PTR));
     public static final FunctionRef BC_THROW_NO_SUCH_FIELD_ERROR = new FunctionRef("_bcThrowNoSuchFieldError", new FunctionType(VOID, ENV_PTR, I8_PTR));
     public static final FunctionRef BC_THROW_NO_SUCH_METHOD_ERROR = new FunctionRef("_bcThrowNoSuchMethodError", new FunctionType(VOID, ENV_PTR, I8_PTR));

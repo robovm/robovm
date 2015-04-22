@@ -17,7 +17,6 @@ package org.robovm.apple.audiounit;
 
 import org.robovm.apple.coreaudio.AudioBufferList;
 import org.robovm.apple.coreaudio.AudioTimeStamp;
-import org.robovm.apple.corefoundation.OSStatus;
 import org.robovm.apple.corefoundation.OSStatusException;
 
 public interface AURenderCallback {

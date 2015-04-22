@@ -260,10 +260,10 @@ public class BridgeMethodCompiler extends BroMethodCompiler {
             fn.add(new Icmp(nullCheck, Condition.eq, targetFn.ref(), new NullConstant(I8_PTR)));
             fn.add(new Br(nullCheck.ref(), fn.newBasicBlockRef(nullLabel), fn.newBasicBlockRef(notNullLabel)));
             fn.newBasicBlock(nullLabel);
-            call(fn, BC_THROW_UNSATISIFED_LINK_ERROR, env,
-                    moduleBuilder.getString(String.format((optional ? "Optional " : "")
-                            + "@Bridge method %s.%s%s not bound", className,
-                            method.getName(), getDescriptor(method))));
+            call(fn, optional ? BC_THROW_UNSATISIFED_LINK_ERROR_OPTIONAL_BRIDGE_NOT_BOUND
+                    : BC_THROW_UNSATISIFED_LINK_ERROR_BRIDGE_NOT_BOUND, env,
+                    moduleBuilder.getString(className), moduleBuilder.getString(method.getName()),
+                    moduleBuilder.getString(getDescriptor(method)));
             fn.add(new Unreachable());
             fn.newBasicBlock(notNullLabel);
         } else {

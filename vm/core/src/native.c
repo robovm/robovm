@@ -19,12 +19,44 @@
 extern struct JNINativeInterface_ jni;
 extern struct JNIInvokeInterface_ javaVM;
 
+static Class* java_lang_reflect_Constructor = NULL;
+static Class* java_lang_reflect_Method = NULL;
+static Class* java_lang_reflect_Field = NULL;
+static InstanceField* java_lang_reflect_Constructor_method = NULL;
+static InstanceField* java_lang_reflect_Method_method = NULL;
+static InstanceField* java_lang_reflect_Field_field = NULL;
+static Method* java_lang_reflect_Constructor_init = NULL;
+static Method* java_lang_reflect_Method_init = NULL;
+static Method* java_lang_reflect_Field_init = NULL;
+
 void rvmInitJavaVM(VM* vm) {
     vm->javaVM = &javaVM;
 }
 
 void rvmInitJNIEnv(Env* env) {
     env->jni = &jni;
+}
+
+jboolean rvmInitJNI(Env* env) {
+    java_lang_reflect_Constructor = rvmFindClassUsingLoader(env, "java/lang/reflect/Constructor", NULL);
+    assert(java_lang_reflect_Constructor != NULL);
+    java_lang_reflect_Constructor_method = rvmGetInstanceField(env, java_lang_reflect_Constructor, "method", "J");
+    assert(java_lang_reflect_Constructor_method != NULL);
+    java_lang_reflect_Method = rvmFindClassUsingLoader(env, "java/lang/reflect/Method", NULL);
+    assert(java_lang_reflect_Method != NULL);
+    java_lang_reflect_Method_method = rvmGetInstanceField(env, java_lang_reflect_Method, "method", "J");
+    assert(java_lang_reflect_Method_method != NULL);
+    java_lang_reflect_Field = rvmFindClassUsingLoader(env, "java/lang/reflect/Field", NULL);
+    assert(java_lang_reflect_Field != NULL);
+    java_lang_reflect_Field_field = rvmGetInstanceField(env, java_lang_reflect_Field, "field", "J");
+    assert(java_lang_reflect_Field_field != NULL);
+    java_lang_reflect_Constructor_init = rvmGetInstanceMethod(env, java_lang_reflect_Constructor, "<init>", "(J)V");
+    assert(java_lang_reflect_Constructor_init != NULL);
+    java_lang_reflect_Method_init = rvmGetInstanceMethod(env, java_lang_reflect_Method, "<init>", "(J)V");
+    assert(java_lang_reflect_Method_init != NULL);
+    java_lang_reflect_Field_init = rvmGetInstanceMethod(env, java_lang_reflect_Field, "<init>", "(J)V");
+    assert(java_lang_reflect_Field_init != NULL);
+    return TRUE;
 }
 
 static void throwUnsupportedOperationException(Env* env, char* msg) {
@@ -76,6 +108,7 @@ static jint GetVersion(JNIEnv* env) {
 }
 
 static jclass DefineClass(JNIEnv* env, const char* name, jobject loader, const jbyte* buf, jsize len) {
+    // RoboVM does not support dynamic class generation.
     throwUnsupportedOperationException((Env*) env, "DefineClass");
     return NULL;
 }
@@ -95,18 +128,29 @@ static jclass FindClass(JNIEnv* env, const char* name) {
 }
 
 static jmethodID FromReflectedMethod(JNIEnv* env, jobject method) {
-    throwUnsupportedOperationException((Env*) env, "FromReflectedMethod");
+    if (((Object*) method)->clazz == java_lang_reflect_Constructor) {
+        return (jmethodID) rvmGetLongInstanceFieldValue((Env*) env, (Object*) method, java_lang_reflect_Constructor_method);
+    }
+    if (((Object*) method)->clazz == java_lang_reflect_Method) {
+        return (jmethodID) rvmGetLongInstanceFieldValue((Env*) env, (Object*) method, java_lang_reflect_Method_method);
+    }
     return NULL;
 }
 
 static jfieldID FromReflectedField(JNIEnv* env, jobject field) {
-    throwUnsupportedOperationException((Env*) env, "FromReflectedField");
-    return NULL;
+    return (jfieldID) rvmGetLongInstanceFieldValue((Env*) env, (Object*) field, java_lang_reflect_Field_field);
 }
 
 static jobject ToReflectedMethod(JNIEnv* env, jclass cls, jmethodID methodID, jboolean isStatic) {
-    throwUnsupportedOperationException((Env*) env, "ToReflectedMethod");
-    return NULL;
+    Method* method = (Method*) methodID;
+    if (((Class*) cls) != method->clazz || (METHOD_IS_STATIC(method) ? TRUE : FALSE) != isStatic) {
+        return NULL;
+    }
+    if (!strcmp("<init>", method->name)) {
+        return (jobject) rvmNewObject((Env*) env, java_lang_reflect_Constructor, java_lang_reflect_Constructor_init, PTR_TO_LONG(method));
+    } else {
+        return (jobject) rvmNewObject((Env*) env, java_lang_reflect_Method, java_lang_reflect_Method_init, PTR_TO_LONG(method));
+    }
 }
 
 static jweak NewWeakGlobalRef(JNIEnv* env, jobject obj) {
@@ -155,8 +199,11 @@ static jboolean IsAssignableFrom(JNIEnv* env, jclass sub, jclass sup) {
 }
 
 static jobject ToReflectedField(JNIEnv* env, jclass cls, jfieldID fieldID, jboolean isStatic) {
-    throwUnsupportedOperationException((Env*) env, "ToReflectedField");
-    return NULL;
+    Field* field = (Field*) fieldID;
+    if (((Class*) cls) != field->clazz || (FIELD_IS_STATIC(field) ? TRUE : FALSE) != isStatic) {
+        return NULL;
+    }
+    return (jobject) rvmNewObject((Env*) env, java_lang_reflect_Field, java_lang_reflect_Field_init, PTR_TO_LONG(field));
 }
 
 static jint Throw(JNIEnv* env, jthrowable obj) {

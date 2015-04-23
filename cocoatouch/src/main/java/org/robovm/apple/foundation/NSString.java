@@ -135,13 +135,13 @@ import org.robovm.apple.coretext.CTAttributedStringAttributes;
         return VM.newStringNoCopy(chars, 0, len);
     }
     
+    @Bridge protected static native @MachineSizedUInt long length(@Pointer long handle, Selector sel);
+    @Bridge protected static native void getCharacters(@Pointer long handle, Selector sel, @Pointer long buffer, @ByVal NSRange aRange);
+
     public static String getLocalizedString(String key) {
         return NSBundle.getMainBundle().getLocalizedString(key, "", null);
     }
     
-    @Bridge protected static native @MachineSizedUInt long length(@Pointer long handle, Selector sel);
-    @Bridge protected static native void getCharacters(@Pointer long handle, Selector sel, @Pointer long buffer, @ByVal NSRange aRange);
-
     /* UIKit extensions */
     /**
      * @since Available in iOS 2.0 and later.
@@ -446,6 +446,73 @@ import org.robovm.apple.coretext.CTAttributedStringAttributes;
             throw new NSErrorException(err.get());
         }
         return result;
+    }
+    
+    /* Convenience methods */
+    private static final Selector sel_hasPrefix$ = Selector.register("hasPrefix:");
+    @Bridge protected static native String hasPrefix(@Pointer long handle, Selector sel, String prefix);
+    public static String hasPrefix(String str, String prefix) {
+        long handle = create(getChars(str), str.length());
+        return hasPrefix(handle, sel_hasPrefix$, prefix);
+    }
+    
+    private static final Selector sel_hasSuffix$ = Selector.register("hasSuffix:");
+    @Bridge protected static native String hasSuffix(@Pointer long handle, Selector sel, String suffix);
+    public static String hasSuffix(String str, String suffix) {
+        long handle = create(getChars(str), str.length());
+        return hasSuffix(handle, sel_hasSuffix$, suffix);
+    }
+    
+    private static final Selector sel_dataUsingEncoding$allowLossyConversion$ = Selector.register("dataUsingEncoding:allowLossyConversion:");
+    @Bridge protected static native NSData toData(@Pointer long handle, Selector sel, NSStringEncoding encoding, boolean lossy);
+    public static NSData toData(String str, NSStringEncoding encoding, boolean lossy) {
+        long handle = create(getChars(str), str.length());
+        return toData(handle, sel_dataUsingEncoding$allowLossyConversion$, encoding, lossy);
+    }
+    
+    private static final Selector sel_dataUsingEncoding$ = Selector.register("dataUsingEncoding:");
+    @Bridge protected static native NSData toData(@Pointer long handle, Selector sel, NSStringEncoding encoding);
+    public static NSData toData(String str, NSStringEncoding encoding) {
+        long handle = create(getChars(str), str.length());
+        return toData(handle, sel_dataUsingEncoding$, encoding);
+    }
+    
+    private static final Selector sel_stringByAppendingPathComponent$ = Selector.register("stringByAppendingPathComponent:");
+    @Bridge protected static native String appendPathComponent(@Pointer long handle, Selector sel, String component);
+    public static String appendPathComponent(String str, String component) {
+        long handle = create(getChars(str), str.length());
+        return appendPathComponent(handle, sel_stringByAppendingPathComponent$, component);
+    }
+    
+    private static final Selector sel_stringByAppendingPathExtension$ = Selector.register("stringByAppendingPathExtension:");
+    @Bridge protected static native String appendPathExtension(@Pointer long handle, Selector sel, String extension);
+    public static String appendPathExtension(String str, String extension) {
+        long handle = create(getChars(str), str.length());
+        return appendPathExtension(handle, sel_stringByAppendingPathExtension$, extension);
+    }
+    
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
+    private static final Selector sel_stringByAddingPercentEncodingWithAllowedCharacters$ = Selector.register("stringByAddingPercentEncodingWithAllowedCharacters:");
+    @Bridge protected static native String addPercentEncoding(@Pointer long handle, Selector sel, NSCharacterSet allowedCharacters);
+    public static String addPercentEncoding(String str, NSCharacterSet allowedCharacters) {
+        long handle = create(getChars(str), str.length());
+        return addPercentEncoding(handle, sel_stringByAddingPercentEncodingWithAllowedCharacters$, allowedCharacters);
+    }
+    
+    private static final Selector sel_stringByAddingPercentEscapesUsingEncoding$ = Selector.register("stringByAddingPercentEscapesUsingEncoding:");
+    @Bridge protected static native String addPercentEscapes(@Pointer long handle, Selector sel, NSStringEncoding encoding);
+    public static String addPercentEscapes(String str, NSStringEncoding encoding) {
+        long handle = create(getChars(str), str.length());
+        return addPercentEscapes(handle, sel_stringByAddingPercentEscapesUsingEncoding$, encoding);
+    }
+    
+    private static final Selector sel_stringByReplacingPercentEscapesUsingEncoding$ = Selector.register("stringByReplacingPercentEscapesUsingEncoding:");
+    @Bridge protected static native String replacePercentEscapes(@Pointer long handle, Selector sel, NSStringEncoding encoding);
+    public static String replacePercentEscapes(String str, NSStringEncoding encoding) {
+        long handle = create(getChars(str), str.length());
+        return replacePercentEscapes(handle, sel_stringByReplacingPercentEscapesUsingEncoding$, encoding);
     }
     /*<methods>*/
     @Method(selector = "characterAtIndex:")

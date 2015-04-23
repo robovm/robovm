@@ -18,6 +18,7 @@
 
 extern void rvmInitJavaVM(VM* vm);
 extern void rvmInitJNIEnv(Env* env);
+extern jboolean rvmInitJNI(Env* env);
 
 #endif
 

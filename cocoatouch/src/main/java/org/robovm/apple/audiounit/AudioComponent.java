@@ -19,6 +19,7 @@ package org.robovm.apple.audiounit;
 import java.io.*;
 import java.nio.*;
 import java.util.*;
+
 import org.robovm.objc.*;
 import org.robovm.objc.annotation.*;
 import org.robovm.objc.block.*;
@@ -63,30 +64,35 @@ import org.robovm.apple.uikit.*;
     /*<properties>*//*</properties>*/
     /*<members>*//*</members>*/
     /**
+     * @throws OSStatusException 
      * @since Available in iOS 2.0 and later.
      */
-    public String getName() {
+    public String getName() throws OSStatusException {
         CFString.CFStringPtr ptr = new CFString.CFStringPtr();
-        getName(ptr);
-        if (ptr.get() != null) {
+        OSStatus status = getName0(ptr);
+        if (OSStatusException.throwIfNecessary(status)) {
             return ptr.get().toString();
         }
         return null;
     }
     /**
+     * @throws OSStatusException 
      * @since Available in iOS 2.0 and later.
      */
-    public AudioComponentDescription getDescription() {
+    public AudioComponentDescription getDescription() throws OSStatusException {
         AudioComponentDescription.AudioComponentDescriptionPtr ptr = new AudioComponentDescription.AudioComponentDescriptionPtr();
-        getDescription(ptr);
+        OSStatus status = getDescription0(ptr);
+        OSStatusException.throwIfNecessary(status);
         return ptr.get();
     }
     /**
+     * @throws OSStatusException 
      * @since Available in iOS 2.0 and later.
      */
-    public int getVersion() {
+    public int getVersion() throws OSStatusException {
         IntPtr ptr = new IntPtr();
-        getVersion(ptr);
+        OSStatus status = getVersion0(ptr);
+        OSStatusException.throwIfNecessary(status);
         return ptr.get();
     }
     /*<methods>*/
@@ -110,17 +116,17 @@ import org.robovm.apple.uikit.*;
      * @since Available in iOS 2.0 and later.
      */
     @Bridge(symbol="AudioComponentCopyName", optional=true)
-    private native OSStatus getName(CFString.CFStringPtr outName);
+    protected native OSStatus getName0(CFString.CFStringPtr outName);
     /**
      * @since Available in iOS 2.0 and later.
      */
     @Bridge(symbol="AudioComponentGetDescription", optional=true)
-    private native OSStatus getDescription(AudioComponentDescription.AudioComponentDescriptionPtr desc);
+    protected native OSStatus getDescription0(AudioComponentDescription.AudioComponentDescriptionPtr desc);
     /**
      * @since Available in iOS 2.0 and later.
      */
     @Bridge(symbol="AudioComponentGetVersion", optional=true)
-    private native OSStatus getVersion(IntPtr outVersion);
+    protected native OSStatus getVersion0(IntPtr outVersion);
     /**
      * @since Available in iOS 7.0 and later.
      */

@@ -40,6 +40,7 @@ public enum /*<name>*/SecPadding/*</name>*/ implements ValuedEnum {
     None(0L),
     PKCS1(1L),
     OAEP(2L),
+    SigRaw(16384L),
     PKCS1MD2(32768L),
     PKCS1MD5(32769L),
     PKCS1SHA1(32770L),

@@ -318,23 +318,23 @@ functions:
         static: true
     AudioComponentCopy(Name):
         class: AudioComponent
-        name: 'get#{g[0]}'
-        visibility: private
+        name: 'get#{g[0]}0'
+        visibility: protected
         parameters:
             outName:
                 type: CFString.CFStringPtr
     AudioComponent(GetDescription):
         class: AudioComponent
-        name: '#{g[0]}'
-        visibility: private
+        name: '#{g[0]}0'
+        visibility: protected
         parameters:
             outDesc:
                 name: desc
                 type: AudioComponentDescription.AudioComponentDescriptionPtr
     AudioComponent(GetVersion):
         class: AudioComponent
-        name: '#{g[0]}'
-        visibility: private
+        name: '#{g[0]}0'
+        visibility: protected
     AudioComponent(Register):
         exclude: true
     AudioComponent(.*):
@@ -418,7 +418,8 @@ functions:
     # MusicDevice
     MusicDeviceMIDIEvent:
         class: MusicDevice
-        name: midiEvent
+        name: midiEvent0
+        visibility: protected
         parameters:
             inStatus:
                 name: status
@@ -430,7 +431,7 @@ functions:
                 name: offsetSampleFrame
     MusicDevice(SysEx):
         class: MusicDevice
-        name: '#{g[0]}'
+        name: '#{g[0]}0'
         visibility: protected
         parameters:
             inData:
@@ -440,11 +441,12 @@ functions:
                 name: length
     MusicDevice(StartNote):
         class: MusicDevice
-        name: '#{g[0]}'
+        name: '#{g[0]}0'
         visibility: protected
     MusicDevice(StopNote):
         class: MusicDevice
-        name: '#{g[0]}'
+        name: '#{g[0]}0'
+        visibility: protected
         parameters:
             inGroupID:
                 name: groupID
@@ -454,7 +456,8 @@ functions:
                 name: offsetSampleFrame
     MusicDevice(.*):
         class: MusicDevice
-        name: '#{g[0]}'
+        name: '#{g[0]}0'
+        visibility: protected
 
     # Make sure we don't miss any functions if new ones are introduced in a later version
     (k?AU.*):

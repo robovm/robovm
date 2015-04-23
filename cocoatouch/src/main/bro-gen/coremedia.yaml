@@ -20,17 +20,18 @@ private_typedefs:
     '__CFDictionary *': 'NSDictionary<?, ?>'
     '__CFArray *': NSArray<?>
     '__CFRunLoopTimer *': NSTimer
+    '__CFRunLoop *': NSRunLoop
 
 enums:
     CMAttachmentMode: { first: kCMAttachmentMode_ShouldNotPropagate, prefix: kCMAttachmentMode_, marshaler: ValuedEnum.AsMachineSizedUIntMarshaler }
-    CMClockError: { first: kCMClockError_MissingRequiredParameter, prefix: kCMClockError_ }
-    CMTimebaseError: { first: kCMTimebaseError_MissingRequiredParameter, prefix: kCMTimebaseError_ }
-    CMSyncError: { first: kCMSyncError_MissingRequiredParameter, prefix: kCMSyncError_ }
-    CMBlockBufferError: { first: kCMBlockBufferNoErr, prefix: kCMBlockBuffer, suffix: Err }
+    CMClockErrorCode: { first: kCMClockError_MissingRequiredParameter, prefix: kCMClockError_ }
+    CMTimebaseErrorCode: { first: kCMTimebaseError_MissingRequiredParameter, prefix: kCMTimebaseError_ }
+    CMSyncErrorCode: { first: kCMSyncError_MissingRequiredParameter, prefix: kCMSyncError_ }
+    CMBlockBufferErrorCode: { first: kCMBlockBufferNoErr, prefix: kCMBlockBuffer, suffix: Err }
     CMBlockBufferFlags: { first: kCMBlockBufferAssureMemoryNowFlag, prefix: kCMBlockBuffer, suffix: Flag, bits: true, marshaler: Bits.AsMachineSizedIntMarshaler }
-    CMBufferQueueError: { first: kCMBufferQueueError_AllocationFailed, prefix: kCMBufferQueueError_ }
+    CMBufferQueueErrorCode: { first: kCMBufferQueueError_AllocationFailed, prefix: kCMBufferQueueError_ }
     CMBufferQueueTriggerCondition: { first: kCMBufferQueueTrigger_WhenDurationBecomesLessThan, prefix: kCMBufferQueueTrigger_ }
-    CMFormatDescriptionError: { first: kCMFormatDescriptionError_InvalidParameter, prefix: kCMFormatDescriptionError_ }
+    CMFormatDescriptionErrorCode: { first: kCMFormatDescriptionError_InvalidParameter, prefix: kCMFormatDescriptionError_ }
     CMMediaType: { first: kCMMediaType_Video, prefix: kCMMediaType_, marshaler: ValuedEnum.AsMachineSizedUIntMarshaler }
     CMAudioCodecType: { first: kCMAudioCodecType_AAC_LCProtected, prefix: kCMAudioCodecType_, marshaler: ValuedEnum.AsMachineSizedUIntMarshaler }
     CMAudioFormatDescriptionMask: { first: kCMAudioFormatDescriptionMask_StreamBasicDescription, prefix: kCMAudioFormatDescriptionMask_, bits: true, marshaler: Bits.AsMachineSizedIntMarshaler }
@@ -46,14 +47,14 @@ enums:
     CMTimeCodeFormatType: { first: kCMTimeCodeFormatType_TimeCode32, prefix: kCMTimeCodeFormatType_, marshaler: ValuedEnum.AsMachineSizedUIntMarshaler }
     CMTimeCodeFlags: { first: kCMTimeCodeFlag_DropFrame, prefix: kCMTimeCodeFlag_, bits: true, marshaler: Bits.AsMachineSizedIntMarshaler }
     CMMetadataFormatType: { first: kCMMetadataFormatType_ICY, prefix: kCMMetadataFormatType_, marshaler: ValuedEnum.AsMachineSizedUIntMarshaler }
-    CMSampleBufferError: { first: kCMSampleBufferError_AllocationFailed, prefix: kCMSampleBufferError_ }
+    CMSampleBufferErrorCode: { first: kCMSampleBufferError_AllocationFailed, prefix: kCMSampleBufferError_ }
     CMSampleBufferFlags: { first: kCMSampleBufferFlag_AudioBufferList_Assure16ByteAlignment, prefix: kCMSampleBufferFlag_, bits: true, marshaler: Bits.AsMachineSizedIntMarshaler }
-    CMSimpleQueueError: { first: kCMSimpleQueueError_AllocationFailed, prefix: kCMSimpleQueueError_ }
+    CMSimpleQueueErrorCode: { first: kCMSimpleQueueError_AllocationFailed, prefix: kCMSimpleQueueError_ }
     CMTimeFlags: { first: kCMTimeFlags_Valid, prefix: kCMTimeFlags_, bits: true, marshaler: Bits.AsMachineSizedIntMarshaler }
     CMTimeRoundingMethod: { first: kCMTimeRoundingMethod_RoundHalfAwayFromZero, prefix: kCMTimeRoundingMethod_, marshaler: ValuedEnum.AsMachineSizedUIntMarshaler }
-    CMFormatDescriptionBridgeError: { first: kCMFormatDescriptionBridgeError_InvalidParameter }
-    CMMetadataIdentifierError: { first: kCMMetadataIdentifierError_AllocationFailed }
-    CMMetadataDataTypeRegistryError: { first: kCMMetadataDataTypeRegistryError_AllocationFailed }
+    CMFormatDescriptionBridgeErrorCode: { first: kCMFormatDescriptionBridgeError_InvalidParameter }
+    CMMetadataIdentifierErrorCode: { first: kCMMetadataIdentifierError_AllocationFailed }
+    CMMetadataDataTypeRegistryErrorCode: { first: kCMMetadataDataTypeRegistryError_AllocationFailed }
 
 classes:
     # Opaque Types
@@ -195,14 +196,14 @@ functions:
     # CMAudioFormatDescription
     CMAudioFormatDescription(Create):
         class: CMAudioFormatDescription
-        name: '#{g[0]}'
-        visibility: private
+        name: '#{g[0]}0'
+        visibility: protected
         parameters:
             extensions:
                 type: 'NSDictionary<NSString, ?>'
     CMAudioFormatDescription(CreateSummary):
         class: CMAudioFormatDescription
-        name: '#{g[0]}'
+        name: '#{g[0]}0'
         visibility: private
         parameters:
             formatDescriptionArray:
@@ -210,22 +211,22 @@ functions:
                 marshaler: CFType.AsListMarshaler
     CMAudioFormatDescription(GetChannelLayout|GetFormatList|GetMagicCookie):
         class: CMAudioFormatDescription
-        name: '#{g[0]}'
+        name: '#{g[0]}0'
         visibility: private
     CMAudioFormatDescriptionEqual:
         class: CMAudioFormatDescription
-        name: equalsTo
+        name: equalsTo0
         visibility: private
     CMAudioFormatDescription(Create.*):
         class: CMAudioFormatDescription
-        name: '#{g[0]}'
+        name: '#{g[0]}0'
         visibility: private
         parameters:
             soundDescriptionFlavor:
                 type: CMSoundDescriptionFlavor
     CMAudioFormatDescription(CopyAsBigEndianSoundDescriptionBlockBuffer):
         class: CMAudioFormatDescription
-        name: '#{g[0]}'
+        name: '#{g[0]}0'
         visibility: private
         parameters:
             soundDescriptionFlavor:
@@ -237,31 +238,30 @@ functions:
     # CMBlockBuffer
     CMBlockBuffer(Create).*:
         class: CMBlockBuffer
-        name: '#{g[0]}'
-        visibility: private
+        name: '#{g[0]}0'
+        visibility: protected
         parameters:
             flags:
                 type: CMBlockBufferFlags
     CMBlockBuffer(AppendMemoryBlock|CMBlockBufferAppendBufferReference):
         class: CMBlockBuffer
-        name: '#{g[0]}'
+        name: '#{g[0]}0'
+        visibility: protected
         parameters:
             flags:
                 type: CMBlockBufferFlags
     CMBlockBuffer(AccessDataBytes|ReplaceDataBytes|FillDataBytes|):
         class: CMBlockBuffer
-        name: '#{g[0]}'
-        visibility: private
+        name: '#{g[0]}0'
+        visibility: protected
         static: true
-    CMBlockBuffer(Get.*): 
-        class: CMBlockBuffer
-        name: '#{g[0]}'
-    CMBlockBuffer(Is.*):
+    CMBlockBuffer(GetDataLength|IsRangeContiguous|IsEmpty):
         class: CMBlockBuffer
         name: '#{g[0]}'
     CMBlockBuffer(.*):
         class: CMBlockBuffer
-        name: '#{g[0]}'
+        name: '#{g[0]}0'
+        visibility: protected
 
     # CMBufferQueue
     CMBufferQueue(GetCallbacks.*):
@@ -270,36 +270,37 @@ functions:
         exclude: true
     CMBufferQueue(Create):
         class: CMBufferQueue
-        name: '#{g[0]}'
-        visibility: private
-    CMBufferQueue(Enqueue|MarkEndOfData|Reset|RemoveTrigger):
+        name: '#{g[0]}0'
+        visibility: protected
+    CMBufferQueue(Enqueue|MarkEndOfData|Reset|RemoveTrigger|TestTrigger):
         class: CMBufferQueue
-        name: '#{g[0]}'
+        name: '#{g[0]}0'
+        visibility: protected
     CMBufferQueue(Reset)WithCallback:
         class: CMBufferQueue
-        name: '#{g[0]}'
-        visibility: private
+        name: '#{g[0]}0'
+        visibility: protected
         parameters:
             refcon:
                 type: '@Pointer long'
     CMBufferQueue(InstallTrigger).*:
         class: CMBufferQueue
-        name: '#{g[0]}'
-        visibility: private
+        name: '#{g[0]}0'
+        visibility: protected
         parameters:
             triggerRefcon:
                 type: '@Pointer long'
     CMBufferQueue(CallForEachBuffer):
         class: CMBufferQueue
-        name: '#{g[0]}'
-        visibility: private
+        name: '#{g[0]}0'
+        visibility: protected
         parameters:
             refcon:
                 type: '@Pointer long'
     CMBufferQueue(SetValidationCallback):
         class: CMBufferQueue
-        name: '#{g[0]}'
-        visibility: private
+        name: '#{g[0]}0'
+        visibility: protected
         parameters:
             validationRefCon:
                 type: '@Pointer long'
@@ -319,7 +320,7 @@ functions:
         name: createHostTimeFromSystemUnits
     CMClock(GetAnchorTime):
         class: CMClock
-        name: '#{g[0]}'
+        name: '#{g[0]}0'
         visibility: protected
         parameters:
             outClockTime:
@@ -331,14 +332,14 @@ functions:
         name: '#{g[0]}'
     CMAudioClockCreate:
         class: CMClock
-        name: createAudioClock
-        visibility: private
+        name: createAudioClock0
+        visibility: protected
 
-    # CMSync
+    # CMClockOrTimebase
     CMSync(GetRelativeRateAndAnchorTime):
         class: CMClockOrTimebase
-        name: '#{g[0]}'
-        visibility: private
+        name: '#{g[0]}0'
+        visibility: protected
         parameters:
             ofClockOrTimebase:
                 type: CMClockOrTimebase
@@ -385,14 +386,14 @@ functions:
     # CMClosedCaptionFormatDescription
     CMClosedCaptionFormatDescription(CreateFromBigEndian.*):
         class: CMClosedCaptionFormatDescription
-        name: '#{g[0]}'
+        name: '#{g[0]}0'
         visibility: private
         parameters:
             closedCaptionFormatDescriptionOut:
                 type: CMClosedCaptionFormatDescription.CMClosedCaptionFormatDescriptionPtr
     CMClosedCaptionFormatDescription(CopyAsBigEndianClosedCaptionDescriptionBlockBuffer):
         class: CMClosedCaptionFormatDescription
-        name: '#{g[0]}'
+        name: '#{g[0]}0'
         visibility: private
         parameters:
             closedCaptionFormatDescription:
@@ -401,7 +402,7 @@ functions:
     # CMFormatDescription
     CMFormatDescription(Create):
         class: CMFormatDescription
-        name: '#{g[0]}'
+        name: '#{g[0]}0'
         visibility: protected
         parameters:
             extensions:
@@ -412,7 +413,7 @@ functions:
         return_type: CFDictionary
     CMFormatDescriptionEqualIgnoringExtensionKeys:
         class: CMFormatDescription
-        name: equalsTo
+        name: equalsTo0
         visibility: private
     CMFormatDescriptionEqual.*:
         class: CMFormatDescription
@@ -424,26 +425,26 @@ functions:
     # CMMetadata
     CMMetadata(CreateIdentifier)ForKeyAndKeySpace:
         class: CMMetadataIdentifier
-        name: '#{g[0]}'
-        visibility: private
+        name: '#{g[0]}0'
+        visibility: protected
         parameters:
             identifierOut:
                 type: CFString.CFStringPtr
     CMMetadata(CreateKey)FromIdentifier:
         class: CMMetadataIdentifier
-        name: '#{g[0]}'
-        visibility: private
+        name: '#{g[0]}0'
+        visibility: protected
     CMMetadata(CreateKey)FromIdentifierAsCFData:
         class: CMMetadataIdentifier
-        name: '#{g[0]}AsData'
-        visibility: private
+        name: '#{g[0]}AsData0'
+        visibility: protected
         parameters:
             keyOut:
                 type: NSData.NSDataPtr
     CMMetadata(CreateKeySpace)FromIdentifier:
         class: CMMetadataIdentifier
-        name: '#{g[0]}'
-        visibility: private
+        name: '#{g[0]}0'
+        visibility: protected
         parameters:
             keySpaceOut:
                 type: CFString.CFStringPtr
@@ -451,7 +452,8 @@ functions:
     # CMMetadataDataType
     CMMetadataDataTypeRegistry(RegisterDataType):
         class: CMMetadataDataType
-        name: '#{g[0]}'
+        name: '#{g[0]}0'
+        visibility: protected
         parameters:
             conformingDataTypes:
                 type: List<String>
@@ -486,7 +488,7 @@ functions:
     # CMMetadataFormatDescription
     CMMetadataFormatDescription(CreateWithKeys):
         class: CMMetadataFormatDescription
-        name: '#{g[0]}'
+        name: '#{g[0]}0'
         visibility: private
         parameters:
             keys:
@@ -496,7 +498,7 @@ functions:
                 type: CMMetadataFormatDescription.CMMetadataFormatDescriptionPtr
     CMMetadataFormatDescription(Create)WithMetadataFormatDescriptionAndMetadataSpecifications:
         class: CMMetadataFormatDescription
-        name: '#{g[0]}'
+        name: '#{g[0]}0'
         visibility: private
         parameters:
             srcDesc:
@@ -508,7 +510,7 @@ functions:
                 type: CMMetadataFormatDescription.CMMetadataFormatDescriptionPtr
     CMMetadataFormatDescription(CreateWithMetadataSpecifications):
         class: CMMetadataFormatDescription
-        name: '#{g[0]}'
+        name: '#{g[0]}0'
         visibility: private
         parameters:
             metadataSpecifications:
@@ -518,7 +520,7 @@ functions:
                 type: CMMetadataFormatDescription.CMMetadataFormatDescriptionPtr
     CMMetadataFormatDescription(CreateByMerging)MetadataFormatDescriptions:
         class: CMMetadataFormatDescription
-        name: '#{g[0]}FormatDescriptions'
+        name: '#{g[0]}FormatDescriptions0'
         visibility: private
         parameters:
             srcDesc1:
@@ -544,14 +546,14 @@ functions:
                 type: CMMetadataFormatDescription
     CMMetadataFormatDescription(CreateFromBigEndian.*):
         class: CMMetadataFormatDescription
-        name: '#{g[0]}'
+        name: '#{g[0]}0'
         visibility: private
         parameters:
             metadataFormatDescriptionOut:
                 type: CMMetadataFormatDescription.CMMetadataFormatDescriptionPtr
     CMMetadataFormatDescription(CopyAsBigEndianMetadataDescriptionBlockBuffer):
         class: CMMetadataFormatDescription
-        name: '#{g[0]}'
+        name: '#{g[0]}0'
         visibility: private
     CMMetadataFormatDescription(.*):
         class: CMMetadataFormatDescription
@@ -572,7 +574,7 @@ functions:
     # CMMuxedFormatDescription
     CMMuxedFormatDescription(Create):
         class: CMMuxedFormatDescription
-        name: '#{g[0]}'
+        name: '#{g[0]}0'
         visibility: private
         parameters:
             extensions:
@@ -586,68 +588,76 @@ functions:
     # CMSampleBuffer
     CMSampleBuffer(Create.*):
         class: CMSampleBuffer
-        name: '#{g[0]}'
-        visibility: private
+        name: '#{g[0]}0'
+        visibility: protected
         parameters:
             makeDataReadyRefcon:
                 type: '@Pointer long'
     CMAudioSampleBufferCreate.*:
         class: CMSampleBuffer
-        name: createAudioSampleBuffer
-        visibility: private
+        name: createAudioSampleBuffer0
+        visibility: protected
         parameters:
             makeDataReadyRefcon:
                 type: '@Pointer long'
     CMSampleBufferCopySampleBufferForRange:
         class: CMSampleBuffer
-        name: createForRange
+        name: createForRange0
         visibility: protected
     CMSampleBufferSetDataBufferFromAudioBufferList:
         class: CMSampleBuffer
-        name: setAudioBufferList
+        name: setAudioBufferList0
+        visibility: protected
         parameters:
             flags:
                 type: CMSampleBufferFlags
     CMSampleBuffer(GetAudioBufferList)WithRetainedBlockBuffer:
         class: CMSampleBuffer
-        name: '#{g[0]}'
-        visibility: private
+        name: '#{g[0]}0'
+        visibility: protected
         parameters:
             flags:
                 type: CMSampleBufferFlags
     CMSampleBuffer(GetAudioStreamPacketDescriptions):
         class: CMSampleBuffer
-        name: '#{g[0]}'
-        visibility: private
+        name: '#{g[0]}0'
+        visibility: protected
     CMSampleBufferDataIsReady:
         class: CMSampleBuffer
         name: isDataReady
     CMSampleBuffer(SetDataFailed):
         class: CMSampleBuffer
-        name: '#{g[0]}'
+        name: '#{g[0]}0'
+        visibility: protected
     CMSampleBuffer(HasDataFailed):
         class: CMSampleBuffer
-        name: '#{g[0]}'
-        visibility: private
+        name: '#{g[0]}0'
+        visibility: protected
+    CMSampleBuffer(SetDataBuffer):
+        class: CMSampleBuffer
+        name: '#{g[0]}0'
+        visibility: protected
     CMSampleBufferGetAudioStreamPacketDescriptionsPtr:
         exclude: true
     CMSampleBuffer(CopyPCMDataIntoAudioBufferList|SetDataReady|MakeDataReady|TrackDataReadiness|Invalidate|SetOutputPresentationTimeStamp):
         class: CMSampleBuffer
-        name: '#{g[0]}'
+        name: '#{g[0]}0'
+        visibility: protected
     CMSampleBuffer(SetInvalidateHandler):
         class: CMSampleBuffer
-        name: '#{g[0]}'
+        name: '#{g[0]}0'
+        visibility: protected
         parameters:
             invalidateHandler:
                 type: '@Block VoidBlock1<CMSampleBuffer>'
     CMSampleBuffer(SetInvalidateCallback):
         class: CMSampleBuffer
-        name: '#{g[0]}'
-        visibility: private
+        name: '#{g[0]}0'
+        visibility: protected
     CMSampleBuffer(GetSampleTimingInfoArray|GetOutputSampleTimingInfoArray|GetSampleTimingInfo|GetSampleSizeArray):
         class: CMSampleBuffer
-        name: '#{g[0]}'
-        visibility: private
+        name: '#{g[0]}0'
+        visibility: protected
     CMSampleBuffer(GetSampleAttachments)Array:
         class: CMSampleBuffer
         name: '#{g[0]}'
@@ -655,23 +665,25 @@ functions:
         return_marshaler: CMSampleAttachment.AsListMarshaler
     CMSampleBuffer(CallForEachSample):
         class: CMSampleBuffer
-        name: '#{g[0]}'
-        visibility: private
+        name: '#{g[0]}0'
+        visibility: protected
         parameters:
             refcon:
                 type: '@Pointer long'
     CMSampleBuffer(HasDataFailed):
         class: CMSampleBuffer
-        name: '#{g[0]}'
+        name: '#{g[0]}0'
+        visibility: protected
         parameters:
             statusOut:
                 type: IntPtr
     CMSampleBufferCallBlockForEachSample:
         class: CMSampleBuffer
-        name: callForEachSample
+        name: callForEachSample0
+        visibility: protected
         parameters:
             handler:
-                type: '@Block Block2<CMSampleBuffer, Long, CMSampleBufferError>'
+                type: '@Block Block2<CMSampleBuffer, Long, OSStatus>'
     CMSampleBuffer(.*):
         class: CMSampleBuffer
         name: '#{g[0]}'
@@ -679,11 +691,15 @@ functions:
     # CMSimpleQueue
     CMSimpleQueue(Create):
         class: CMSimpleQueue
-        name: create
-        visibility: private
+        name: create0
+        visibility: protected
     CMSimpleQueue(Dequeue|GetHead):
         class: CMSimpleQueue
         name: '#{g[0]}'
+    CMSimpleQueue(Enqueue|Reset):
+        class: CMSimpleQueue
+        name: '#{g[0]}0'
+        visibility: protected
     CMSimpleQueue(.*):
         class: CMSimpleQueue
         name: '#{g[0]}'
@@ -691,8 +707,8 @@ functions:
     # CMTextFormatDescription
     CMTextFormatDescription(GetDefaultTextBox):
         class: CMTextFormatDescription
-        name: '#{g[0]}'
-        visibility: private
+        name: '#{g[0]}0'
+        visibility: protected
         parameters:
             desc:
                 type: CMTextFormatDescription
@@ -700,8 +716,8 @@ functions:
                 type: CGRect.CGRectPtr
     CMTextFormatDescription(GetFontName):
         class: CMTextFormatDescription
-        name: '#{g[0]}'
-        visibility: private
+        name: '#{g[0]}0'
+        visibility: protected
         parameters:
             desc:
                 type: CMTextFormatDescription
@@ -709,18 +725,18 @@ functions:
                 type: CFString.CFStringPtr
     CMTextFormatDescription(Get.*):
         class: CMTextFormatDescription
-        name: '#{g[0]}'
-        visibility: private
+        name: '#{g[0]}0'
+        visibility: protected
         parameters:
             desc:
                 type: CMTextFormatDescription
     CMTextFormatDescription(Create.*):
         class: CMTextFormatDescription
-        name: '#{g[0]}'
+        name: '#{g[0]}0'
         visibility: private
     CMTextFormatDescription(CopyAsBigEndianTextDescriptionBlockBuffer):
         class: CMTextFormatDescription
-        name: '#{g[0]}'
+        name: '#{g[0]}0'
         visibility: private
     CMTextFormatDescription(.*):
         class: CMTextFormatDescription
@@ -729,7 +745,7 @@ functions:
     # CMTimeCodeFormatDescription
     CMTimeCodeFormatDescription(Create):
         class: CMTimeCodeFormatDescription
-        name: '#{g[0]}'
+        name: '#{g[0]}0'
         visibility: private
         parameters:
             tcFlags:
@@ -742,24 +758,20 @@ functions:
         return_type: CMTimeCodeFlags
     CMTimeCodeFormatDescription(CreateFromBigEndian.*):
         class: CMTimeCodeFormatDescription
-        name: '#{g[0]}'
+        name: '#{g[0]}0'
         visibility: private
     CMTimeCodeFormatDescription(CopyAsBigEndianTimeCodeDescriptionBlockBuffer):
         class: CMTimeCodeFormatDescription
-        name: '#{g[0]}'
+        name: '#{g[0]}0'
         visibility: private
     CMTimeCodeFormatDescription(.*):
         class: CMTimeCodeFormatDescription
         name: '#{g[0]}'
 
     # CMTimebase
-    CMTimebaseCreateWithMasterClock:
+    CMTimebase(Create)With.*:
         class: CMTimebase
-        name: create
-        visibility: protected
-    CMTimebaseCreateWithMasterTimebase:
-        class: CMTimebase
-        name: create
+        name: '#{g[0]}0'
         visibility: protected
     CMTimebase(GetTime)WithTimeScale:
         class: CMTimebase
@@ -775,7 +787,8 @@ functions:
         name: '#{g[0]}'
     CMTimebase(.*):
         class: CMTimebase
-        name: '#{g[0]}'
+        name: '#{g[0]}0'
+        visibility: protected
 
     # CMTimeRange
     CMTimeRangeMake.*:
@@ -828,18 +841,18 @@ functions:
         exclude: true
     CMVideoFormatDescription(CreateFromBigEndian.*):
         class: CMVideoFormatDescription
-        name: '#{g[0]}'
+        name: '#{g[0]}0'
         visibility: private
     CMVideoFormatDescription(Create).*:
         class: CMVideoFormatDescription
-        name: '#{g[0]}'
+        name: '#{g[0]}0'
         visibility: private
         parameters:
             extensions:
                 type: CMVideoFormatDescriptionExtension
     CMVideoFormatDescription(CopyAsBigEndianImageDescriptionBlockBuffer):
         class: CMVideoFormatDescription
-        name: '#{g[0]}'
+        name: '#{g[0]}0'
         visibility: private
     CMVideoFormatDescription(.*):
         class: CMVideoFormatDescription

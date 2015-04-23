@@ -123,67 +123,77 @@ import org.robovm.apple.audiotoolbox.*;
     }
     
     /**
+     * @throws OSStatusException 
      * @since Available in iOS 8.0 and later.
      */
-    public static String createIdentifier(CFType key, CMMetadataKeySpace keySpace) {
+    public static String createIdentifier(CFType key, CMMetadataKeySpace keySpace) throws OSStatusException {
         if (keySpace == null) throw new NullPointerException("keySpace");
         return createIdentifier(key, keySpace.value().toString());
     }
     /**
+     * @throws OSStatusException 
      * @since Available in iOS 8.0 and later.
      */
-    public static String createIdentifier(CFType key, String keySpace) {
+    public static String createIdentifier(CFType key, String keySpace) throws OSStatusException {
         CFString.CFStringPtr ptr = new CFString.CFStringPtr();
-        createIdentifier(null, key, keySpace, ptr);
-        if (ptr.get() != null) {
+        OSStatus status = createIdentifier0(null, key, keySpace, ptr);
+        if (OSStatusException.throwIfNecessary(status)) {
             return ptr.get().toString();
         }
         return null;
     }
     /**
+     * @throws OSStatusException 
      * @since Available in iOS 8.0 and later.
      */
-    public static CFType createKey(CMMetadataIdentifier identifier) {
+    public static CFType createKey(CMMetadataIdentifier identifier) throws OSStatusException {
         if (identifier == null) throw new NullPointerException("identifier");
         return createKey(identifier.value().toString());
     }
     /**
+     * @throws OSStatusException 
      * @since Available in iOS 8.0 and later.
      */
-    public static CFType createKey(String identifier) {
+    public static CFType createKey(String identifier) throws OSStatusException {
         CFType.CFTypePtr ptr = new CFType.CFTypePtr();
-        createKey(null, identifier, ptr);
+        OSStatus status = createKey0(null, identifier, ptr);
+        OSStatusException.throwIfNecessary(status);
         return ptr.get();
     }
     /**
+     * @throws OSStatusException 
      * @since Available in iOS 8.0 and later.
      */
-    public static NSData createKeyAsData(CMMetadataIdentifier identifier) {
+    public static NSData createKeyAsData(CMMetadataIdentifier identifier) throws OSStatusException {
         if (identifier == null) throw new NullPointerException("identifier");
         return createKeyAsData(identifier.value().toString());
     }
     /**
+     * @throws OSStatusException 
      * @since Available in iOS 8.0 and later.
      */
-    public static NSData createKeyAsData(String identifier) {
+    public static NSData createKeyAsData(String identifier) throws OSStatusException {
         NSData.NSDataPtr ptr = new NSData.NSDataPtr();
-        createKeyAsData(null, identifier, ptr);
+        OSStatus status = createKeyAsData0(null, identifier, ptr);
+        OSStatusException.throwIfNecessary(status);
         return ptr.get();
     }
     /**
+     * @throws OSStatusException 
      * @since Available in iOS 8.0 and later.
      */
-    public String createKeySpace(CMMetadataIdentifier identifier) {
+    public String createKeySpace(CMMetadataIdentifier identifier) throws OSStatusException {
         if (identifier == null) throw new NullPointerException("identifier");
         return createKeySpace(identifier.value().toString());
     }
     /**
+     * @throws OSStatusException 
      * @since Available in iOS 8.0 and later.
      */
-    public String createKeySpace(String identifier) {
+    public String createKeySpace(String identifier) throws OSStatusException {
         CFString.CFStringPtr ptr = new CFString.CFStringPtr();
-        createKeySpace(null, identifier, ptr);
-        if (ptr.get() != null) {
+        OSStatus status = createKeySpace0(null, identifier, ptr);
+        if (OSStatusException.throwIfNecessary(status)) {
             return ptr.get().toString();
         }
         return null;
@@ -195,22 +205,22 @@ import org.robovm.apple.audiotoolbox.*;
      * @since Available in iOS 8.0 and later.
      */
     @Bridge(symbol="CMMetadataCreateIdentifierForKeyAndKeySpace", optional=true)
-    private static native OSStatus createIdentifier(CFAllocator allocator, CFType key, String keySpace, CFString.CFStringPtr identifierOut);
+    protected static native OSStatus createIdentifier0(CFAllocator allocator, CFType key, String keySpace, CFString.CFStringPtr identifierOut);
     /**
      * @since Available in iOS 8.0 and later.
      */
     @Bridge(symbol="CMMetadataCreateKeyFromIdentifier", optional=true)
-    private static native OSStatus createKey(CFAllocator allocator, String identifier, CFType.CFTypePtr keyOut);
+    protected static native OSStatus createKey0(CFAllocator allocator, String identifier, CFType.CFTypePtr keyOut);
     /**
      * @since Available in iOS 8.0 and later.
      */
     @Bridge(symbol="CMMetadataCreateKeyFromIdentifierAsCFData", optional=true)
-    private static native OSStatus createKeyAsData(CFAllocator allocator, String identifier, NSData.NSDataPtr keyOut);
+    protected static native OSStatus createKeyAsData0(CFAllocator allocator, String identifier, NSData.NSDataPtr keyOut);
     /**
      * @since Available in iOS 8.0 and later.
      */
     @Bridge(symbol="CMMetadataCreateKeySpaceFromIdentifier", optional=true)
-    private static native OSStatus createKeySpace(CFAllocator allocator, String identifier, CFString.CFStringPtr keySpaceOut);
+    protected static native OSStatus createKeySpace0(CFAllocator allocator, String identifier, CFString.CFStringPtr keySpaceOut);
     /*</methods>*/
     
     /*<annotations>*/@Library("CoreMedia")/*</annotations>*/

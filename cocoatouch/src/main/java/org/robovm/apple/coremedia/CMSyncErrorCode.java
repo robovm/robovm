@@ -40,13 +40,12 @@ import org.robovm.apple.audiotoolbox.*;
 
 /*</javadoc>*/
 /*<annotations>*//*</annotations>*/
-public enum /*<name>*/CMClockError/*</name>*/ implements ValuedEnum {
-    No(0L),
+public enum /*<name>*/CMSyncErrorCode/*</name>*/ implements ValuedEnum {
     /*<values>*/
-    MissingRequiredParameter(-12745L),
-    InvalidParameter(-12746L),
-    AllocationFailed(-12747L),
-    UnsupportedOperation(-12756L);
+    MissingRequiredParameter(-12752L),
+    InvalidParameter(-12753L),
+    AllocationFailed(-12754L),
+    RateMustBeNonZero(-12755L);
     /*</values>*/
 
     /*<bind>*/
@@ -56,15 +55,15 @@ public enum /*<name>*/CMClockError/*</name>*/ implements ValuedEnum {
 
     private final long n;
 
-    private /*<name>*/CMClockError/*</name>*/(long n) { this.n = n; }
+    private /*<name>*/CMSyncErrorCode/*</name>*/(long n) { this.n = n; }
     public long value() { return n; }
-    public static /*<name>*/CMClockError/*</name>*/ valueOf(long n) {
-        for (/*<name>*/CMClockError/*</name>*/ v : values()) {
+    public static /*<name>*/CMSyncErrorCode/*</name>*/ valueOf(long n) {
+        for (/*<name>*/CMSyncErrorCode/*</name>*/ v : values()) {
             if (v.n == n) {
                 return v;
             }
         }
         throw new IllegalArgumentException("No constant with value " + n + " found in " 
-            + /*<name>*/CMClockError/*</name>*/.class.getName());
+            + /*<name>*/CMSyncErrorCode/*</name>*/.class.getName());
     }
 }

@@ -49,41 +49,46 @@ import org.robovm.apple.audiotoolbox.*;
     /*<constructors>*//*</constructors>*/
     /*<properties>*//*</properties>*/
     /*<members>*//*</members>*/
-    public static CMClosedCaptionFormatDescription create(CMMediaType mediaType, CMClosedCaptionFormatType formatType, NSDictionary<NSString, ?> extensions) {
+    public static CMClosedCaptionFormatDescription create(CMMediaType mediaType, CMClosedCaptionFormatType formatType, NSDictionary<NSString, ?> extensions) throws OSStatusException {
         CMFormatDescriptionPtr ptr = new CMFormatDescriptionPtr();
-        create(null, mediaType, (int)formatType.value(), extensions.as(CFDictionary.class), ptr);
-        if (ptr.get() != null) {
+        OSStatus status = create0(null, mediaType, (int)formatType.value(), extensions.as(CFDictionary.class), ptr);
+        if (OSStatusException.throwIfNecessary(status)) {
             return ptr.get().as(CMClosedCaptionFormatDescription.class);
         }
         return null;
     }
-    
     public CMClosedCaptionFormatType getFormatType() {
         return CMClosedCaptionFormatType.valueOf(getMediaSubType());
     }
     
     /**
+     * @throws OSStatusException 
      * @since Available in iOS 8.0 and later.
      */
-    public static CMClosedCaptionFormatDescription createFromBigEndianClosedCaptionDescriptionData(BytePtr closedCaptionDescriptionData, @MachineSizedUInt long closedCaptionDescriptionSize, String closedCaptionDescriptionFlavor) {
+    public static CMClosedCaptionFormatDescription createFromBigEndianClosedCaptionDescriptionData(BytePtr closedCaptionDescriptionData, @MachineSizedUInt long closedCaptionDescriptionSize, String closedCaptionDescriptionFlavor) throws OSStatusException {
         CMClosedCaptionFormatDescription.CMClosedCaptionFormatDescriptionPtr ptr = new CMClosedCaptionFormatDescription.CMClosedCaptionFormatDescriptionPtr();
-        createFromBigEndianClosedCaptionDescriptionData(null, closedCaptionDescriptionData, closedCaptionDescriptionSize, closedCaptionDescriptionFlavor, ptr);
+        OSStatus status = createFromBigEndianClosedCaptionDescriptionData0(null, closedCaptionDescriptionData, closedCaptionDescriptionSize, closedCaptionDescriptionFlavor, ptr);
+        OSStatusException.throwIfNecessary(status);
         return ptr.get();
     }
     /**
+     * @throws OSStatusException 
      * @since Available in iOS 8.0 and later.
      */
-    public static CMClosedCaptionFormatDescription createFromBigEndianClosedCaptionDescriptionBlockBuffer(CMBlockBuffer closedCaptionDescriptionBlockBuffer, String closedCaptionDescriptionFlavor) {
+    public static CMClosedCaptionFormatDescription createFromBigEndianClosedCaptionDescriptionBlockBuffer(CMBlockBuffer closedCaptionDescriptionBlockBuffer, String closedCaptionDescriptionFlavor) throws OSStatusException {
         CMClosedCaptionFormatDescription.CMClosedCaptionFormatDescriptionPtr ptr = new CMClosedCaptionFormatDescription.CMClosedCaptionFormatDescriptionPtr();
-        createFromBigEndianClosedCaptionDescriptionBlockBuffer(null, closedCaptionDescriptionBlockBuffer, closedCaptionDescriptionFlavor, ptr);
+        OSStatus status = createFromBigEndianClosedCaptionDescriptionBlockBuffer0(null, closedCaptionDescriptionBlockBuffer, closedCaptionDescriptionFlavor, ptr);
+        OSStatusException.throwIfNecessary(status);
         return ptr.get();
     }
     /**
+     * @throws OSStatusException 
      * @since Available in iOS 8.0 and later.
      */
-    public CMBlockBuffer copyAsBigEndianClosedCaptionDescriptionBlockBuffer(String closedCaptionDescriptionFlavor) {
+    public CMBlockBuffer copyAsBigEndianClosedCaptionDescriptionBlockBuffer(String closedCaptionDescriptionFlavor) throws OSStatusException {
         CMBlockBuffer.CMBlockBufferPtr ptr = new CMBlockBuffer.CMBlockBufferPtr();
-        copyAsBigEndianClosedCaptionDescriptionBlockBuffer(null, this, closedCaptionDescriptionFlavor, ptr);
+        OSStatus status = copyAsBigEndianClosedCaptionDescriptionBlockBuffer0(null, this, closedCaptionDescriptionFlavor, ptr);
+        OSStatusException.throwIfNecessary(status);
         return ptr.get();
     }
     /*<methods>*/
@@ -91,16 +96,16 @@ import org.robovm.apple.audiotoolbox.*;
      * @since Available in iOS 8.0 and later.
      */
     @Bridge(symbol="CMClosedCaptionFormatDescriptionCreateFromBigEndianClosedCaptionDescriptionData", optional=true)
-    private static native OSStatus createFromBigEndianClosedCaptionDescriptionData(CFAllocator allocator, BytePtr closedCaptionDescriptionData, @MachineSizedUInt long closedCaptionDescriptionSize, String closedCaptionDescriptionFlavor, CMClosedCaptionFormatDescription.CMClosedCaptionFormatDescriptionPtr closedCaptionFormatDescriptionOut);
+    private static native OSStatus createFromBigEndianClosedCaptionDescriptionData0(CFAllocator allocator, BytePtr closedCaptionDescriptionData, @MachineSizedUInt long closedCaptionDescriptionSize, String closedCaptionDescriptionFlavor, CMClosedCaptionFormatDescription.CMClosedCaptionFormatDescriptionPtr closedCaptionFormatDescriptionOut);
     /**
      * @since Available in iOS 8.0 and later.
      */
     @Bridge(symbol="CMClosedCaptionFormatDescriptionCreateFromBigEndianClosedCaptionDescriptionBlockBuffer", optional=true)
-    private static native OSStatus createFromBigEndianClosedCaptionDescriptionBlockBuffer(CFAllocator allocator, CMBlockBuffer closedCaptionDescriptionBlockBuffer, String closedCaptionDescriptionFlavor, CMClosedCaptionFormatDescription.CMClosedCaptionFormatDescriptionPtr closedCaptionFormatDescriptionOut);
+    private static native OSStatus createFromBigEndianClosedCaptionDescriptionBlockBuffer0(CFAllocator allocator, CMBlockBuffer closedCaptionDescriptionBlockBuffer, String closedCaptionDescriptionFlavor, CMClosedCaptionFormatDescription.CMClosedCaptionFormatDescriptionPtr closedCaptionFormatDescriptionOut);
     /**
      * @since Available in iOS 8.0 and later.
      */
     @Bridge(symbol="CMClosedCaptionFormatDescriptionCopyAsBigEndianClosedCaptionDescriptionBlockBuffer", optional=true)
-    private static native OSStatus copyAsBigEndianClosedCaptionDescriptionBlockBuffer(CFAllocator allocator, CMClosedCaptionFormatDescription closedCaptionFormatDescription, String closedCaptionDescriptionFlavor, CMBlockBuffer.CMBlockBufferPtr closedCaptionDescriptionBlockBufferOut);
+    private static native OSStatus copyAsBigEndianClosedCaptionDescriptionBlockBuffer0(CFAllocator allocator, CMClosedCaptionFormatDescription closedCaptionFormatDescription, String closedCaptionDescriptionFlavor, CMBlockBuffer.CMBlockBufferPtr closedCaptionDescriptionBlockBufferOut);
     /*</methods>*/
 }

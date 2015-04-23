@@ -40,15 +40,25 @@ import org.robovm.apple.audiotoolbox.*;
 
 /*</javadoc>*/
 /*<annotations>*//*</annotations>*/
-public enum /*<name>*/CMMetadataDataTypeRegistryError/*</name>*/ implements ValuedEnum {
-	No(0L),
+public enum /*<name>*/CMSampleBufferErrorCode/*</name>*/ implements ValuedEnum {
     /*<values>*/
-    AllocationFailed(-16310L),
-    RequiredParameterMissing(-16311L),
-    BadDataTypeIdentifier(-16312L),
-    DataTypeAlreadyRegistered(-16313L),
-    RequiresConformingBaseType(-16314L),
-    MultipleConformingBaseTypes(-16315L);
+    AllocationFailed(-12730L),
+    RequiredParameterMissing(-12731L),
+    AlreadyHasDataBuffer(-12732L),
+    BufferNotReady(-12733L),
+    SampleIndexOutOfRange(-12734L),
+    BufferHasNoSampleSizes(-12735L),
+    BufferHasNoSampleTimingInfo(-12736L),
+    ArrayTooSmall(-12737L),
+    InvalidEntryCount(-12738L),
+    CannotSubdivide(-12739L),
+    SampleTimingInfoInvalid(-12740L),
+    InvalidMediaTypeForOperation(-12741L),
+    InvalidSampleData(-12742L),
+    InvalidMediaFormat(-12743L),
+    Invalidated(-12744L),
+    DataFailed(-12745L),
+    DataCanceled(-12746L);
     /*</values>*/
 
     /*<bind>*/
@@ -58,15 +68,15 @@ public enum /*<name>*/CMMetadataDataTypeRegistryError/*</name>*/ implements Valu
 
     private final long n;
 
-    private /*<name>*/CMMetadataDataTypeRegistryError/*</name>*/(long n) { this.n = n; }
+    private /*<name>*/CMSampleBufferErrorCode/*</name>*/(long n) { this.n = n; }
     public long value() { return n; }
-    public static /*<name>*/CMMetadataDataTypeRegistryError/*</name>*/ valueOf(long n) {
-        for (/*<name>*/CMMetadataDataTypeRegistryError/*</name>*/ v : values()) {
+    public static /*<name>*/CMSampleBufferErrorCode/*</name>*/ valueOf(long n) {
+        for (/*<name>*/CMSampleBufferErrorCode/*</name>*/ v : values()) {
             if (v.n == n) {
                 return v;
             }
         }
         throw new IllegalArgumentException("No constant with value " + n + " found in " 
-            + /*<name>*/CMMetadataDataTypeRegistryError/*</name>*/.class.getName());
+            + /*<name>*/CMSampleBufferErrorCode/*</name>*/.class.getName());
     }
 }

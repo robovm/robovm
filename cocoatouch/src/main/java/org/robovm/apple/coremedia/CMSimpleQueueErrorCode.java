@@ -40,15 +40,12 @@ import org.robovm.apple.audiotoolbox.*;
 
 /*</javadoc>*/
 /*<annotations>*//*</annotations>*/
-public enum /*<name>*/CMFormatDescriptionBridgeError/*</name>*/ implements ValuedEnum {
+public enum /*<name>*/CMSimpleQueueErrorCode/*</name>*/ implements ValuedEnum {
     /*<values>*/
-    InvalidParameter(-12712L),
-    AllocationFailed(-12713L),
-    InvalidSerializedSampleDescription(-12714L),
-    InvalidFormatDescription(-12715L),
-    IncompatibleFormatDescription(-12716L),
-    UnsupportedSampleDescriptionFlavor(-12717L),
-    InvalidSlice(-12719L);
+    AllocationFailed(-12770L),
+    RequiredParameterMissing(-12771L),
+    ParameterOutOfRange(-12772L),
+    QueueIsFull(-12773L);
     /*</values>*/
 
     /*<bind>*/
@@ -58,15 +55,15 @@ public enum /*<name>*/CMFormatDescriptionBridgeError/*</name>*/ implements Value
 
     private final long n;
 
-    private /*<name>*/CMFormatDescriptionBridgeError/*</name>*/(long n) { this.n = n; }
+    private /*<name>*/CMSimpleQueueErrorCode/*</name>*/(long n) { this.n = n; }
     public long value() { return n; }
-    public static /*<name>*/CMFormatDescriptionBridgeError/*</name>*/ valueOf(long n) {
-        for (/*<name>*/CMFormatDescriptionBridgeError/*</name>*/ v : values()) {
+    public static /*<name>*/CMSimpleQueueErrorCode/*</name>*/ valueOf(long n) {
+        for (/*<name>*/CMSimpleQueueErrorCode/*</name>*/ v : values()) {
             if (v.n == n) {
                 return v;
             }
         }
         throw new IllegalArgumentException("No constant with value " + n + " found in " 
-            + /*<name>*/CMFormatDescriptionBridgeError/*</name>*/.class.getName());
+            + /*<name>*/CMSimpleQueueErrorCode/*</name>*/.class.getName());
     }
 }

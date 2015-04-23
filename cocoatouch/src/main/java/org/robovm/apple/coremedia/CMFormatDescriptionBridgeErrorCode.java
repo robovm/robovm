@@ -40,13 +40,15 @@ import org.robovm.apple.audiotoolbox.*;
 
 /*</javadoc>*/
 /*<annotations>*//*</annotations>*/
-public enum /*<name>*/CMSyncError/*</name>*/ implements ValuedEnum {
-    No(0L),
+public enum /*<name>*/CMFormatDescriptionBridgeErrorCode/*</name>*/ implements ValuedEnum {
     /*<values>*/
-    MissingRequiredParameter(-12752L),
-    InvalidParameter(-12753L),
-    AllocationFailed(-12754L),
-    RateMustBeNonZero(-12755L);
+    InvalidParameter(-12712L),
+    AllocationFailed(-12713L),
+    InvalidSerializedSampleDescription(-12714L),
+    InvalidFormatDescription(-12715L),
+    IncompatibleFormatDescription(-12716L),
+    UnsupportedSampleDescriptionFlavor(-12717L),
+    InvalidSlice(-12719L);
     /*</values>*/
 
     /*<bind>*/
@@ -56,15 +58,15 @@ public enum /*<name>*/CMSyncError/*</name>*/ implements ValuedEnum {
 
     private final long n;
 
-    private /*<name>*/CMSyncError/*</name>*/(long n) { this.n = n; }
+    private /*<name>*/CMFormatDescriptionBridgeErrorCode/*</name>*/(long n) { this.n = n; }
     public long value() { return n; }
-    public static /*<name>*/CMSyncError/*</name>*/ valueOf(long n) {
-        for (/*<name>*/CMSyncError/*</name>*/ v : values()) {
+    public static /*<name>*/CMFormatDescriptionBridgeErrorCode/*</name>*/ valueOf(long n) {
+        for (/*<name>*/CMFormatDescriptionBridgeErrorCode/*</name>*/ v : values()) {
             if (v.n == n) {
                 return v;
             }
         }
         throw new IllegalArgumentException("No constant with value " + n + " found in " 
-            + /*<name>*/CMSyncError/*</name>*/.class.getName());
+            + /*<name>*/CMFormatDescriptionBridgeErrorCode/*</name>*/.class.getName());
     }
 }

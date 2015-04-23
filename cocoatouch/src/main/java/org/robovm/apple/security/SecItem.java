@@ -46,41 +46,61 @@ import org.robovm.apple.corefoundation.*;
     /*<properties>*//*</properties>*/
     /*<members>*//*</members>*/
     /**
+     * @throws OSStatusException 
      * @since Available in iOS 2.0 and later.
      */
-    public static CFType getMatching(SecQuery query) {
+    public static CFType getMatching(SecQuery query) throws OSStatusException {
         CFType.CFTypePtr ptr = new CFType.CFTypePtr();
-        getMatching(query, ptr);
+        OSStatus status = getMatching0(query, ptr);
+        OSStatusException.throwIfNecessary(status);
         return ptr.get();
     }
     /**
+     * @throws OSStatusException 
      * @since Available in iOS 2.0 and later.
      */
-    public static CFType add(SecAttributes attributes) {
+    public static CFType add(SecAttributes attributes) throws OSStatusException {
         CFType.CFTypePtr ptr = new CFType.CFTypePtr();
-        add(attributes, ptr);
+        OSStatus status = add0(attributes, ptr);
+        OSStatusException.throwIfNecessary(status);
         return ptr.get();
+    }
+    /**
+     * @throws OSStatusException 
+     * @since Available in iOS 2.0 and later.
+     */
+    public static void update(SecQuery query, SecAttributes attributesToUpdate) throws OSStatusException {
+        OSStatus status = update0(query, attributesToUpdate);
+        OSStatusException.throwIfNecessary(status);
+    }
+    /**
+     * @throws OSStatusException 
+     * @since Available in iOS 2.0 and later.
+     */
+    public static void delete(SecQuery query) throws OSStatusException {
+        OSStatus status = delete0(query);
+        OSStatusException.throwIfNecessary(status);
     }
     /*<methods>*/
     /**
      * @since Available in iOS 2.0 and later.
      */
     @Bridge(symbol="SecItemCopyMatching", optional=true)
-    protected static native OSStatus getMatching(SecQuery query, CFType.CFTypePtr result);
+    protected static native OSStatus getMatching0(SecQuery query, CFType.CFTypePtr result);
     /**
      * @since Available in iOS 2.0 and later.
      */
     @Bridge(symbol="SecItemAdd", optional=true)
-    protected static native OSStatus add(SecAttributes attributes, CFType.CFTypePtr result);
+    protected static native OSStatus add0(SecAttributes attributes, CFType.CFTypePtr result);
     /**
      * @since Available in iOS 2.0 and later.
      */
     @Bridge(symbol="SecItemUpdate", optional=true)
-    public static native OSStatus update(SecQuery query, SecAttributes attributesToUpdate);
+    protected static native OSStatus update0(SecQuery query, SecAttributes attributesToUpdate);
     /**
      * @since Available in iOS 2.0 and later.
      */
     @Bridge(symbol="SecItemDelete", optional=true)
-    public static native OSStatus delete(SecQuery query);
+    protected static native OSStatus delete0(SecQuery query);
     /*</methods>*/
 }

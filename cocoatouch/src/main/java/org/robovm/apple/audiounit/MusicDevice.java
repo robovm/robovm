@@ -65,39 +65,60 @@ import org.robovm.apple.uikit.*;
         return super.canDo((short) inSelectorID.value());
     }
     /**
+     * @throws OSStatusException 
      * @since Available in iOS 5.0 and later.
      */
-    public OSStatus sysEx(byte[] data) {
-        return sysEx(VM.getArrayValuesAddress(data), data.length);
+    public void midiEvent(int status, int data1, int data2, int offsetSampleFrame) throws OSStatusException {
+        OSStatus s = midiEvent0(status, data1, data2, offsetSampleFrame);
+        OSStatusException.throwIfNecessary(s);
+    }
+
+    /**
+     * @throws OSStatusException 
+     * @since Available in iOS 5.0 and later.
+     */
+    public void sysEx(byte[] data) throws OSStatusException {
+        OSStatus status = sysEx0(VM.getArrayValuesAddress(data), data.length);
+        OSStatusException.throwIfNecessary(status);
     }
     /**
+     * @throws OSStatusException 
      * @since Available in iOS 5.0 and later.
      */
-    public int startNote(int groupID, int offsetSampleFrame, MusicDeviceNoteParams params) {
+    public int startNote(int groupID, int offsetSampleFrame, MusicDeviceNoteParams params) throws OSStatusException {
         IntPtr result = new IntPtr();
-        startNote(0xFFFFFFFF, groupID, result, offsetSampleFrame, params);
+        OSStatus status = startNote0(0xFFFFFFFF, groupID, result, offsetSampleFrame, params);
+        OSStatusException.throwIfNecessary(status);
         return result.get();
+    }
+    /**
+     * @throws OSStatusException 
+     * @since Available in iOS 5.0 and later.
+     */
+    public void stopNote(int groupID, int noteInstanceID, int offsetSampleFrame) throws OSStatusException {
+        OSStatus status = stopNote0(groupID, noteInstanceID, offsetSampleFrame);
+        OSStatusException.throwIfNecessary(status);
     }
     /*<methods>*/
     /**
      * @since Available in iOS 5.0 and later.
      */
     @Bridge(symbol="MusicDeviceMIDIEvent", optional=true)
-    public native OSStatus midiEvent(int status, int data1, int data2, int offsetSampleFrame);
+    protected native OSStatus midiEvent0(int status, int data1, int data2, int offsetSampleFrame);
     /**
      * @since Available in iOS 5.0 and later.
      */
     @Bridge(symbol="MusicDeviceSysEx", optional=true)
-    protected native OSStatus sysEx(@Pointer long data, int length);
+    protected native OSStatus sysEx0(@Pointer long data, int length);
     /**
      * @since Available in iOS 5.0 and later.
      */
     @Bridge(symbol="MusicDeviceStartNote", optional=true)
-    protected native OSStatus startNote(int inInstrument, int inGroupID, IntPtr outNoteInstanceID, int inOffsetSampleFrame, MusicDeviceNoteParams inParams);
+    protected native OSStatus startNote0(int inInstrument, int inGroupID, IntPtr outNoteInstanceID, int inOffsetSampleFrame, MusicDeviceNoteParams inParams);
     /**
      * @since Available in iOS 5.0 and later.
      */
     @Bridge(symbol="MusicDeviceStopNote", optional=true)
-    public native OSStatus stopNote(int groupID, int noteInstanceID, int offsetSampleFrame);
+    protected native OSStatus stopNote0(int groupID, int noteInstanceID, int offsetSampleFrame);
     /*</methods>*/
 }

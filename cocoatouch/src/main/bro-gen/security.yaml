@@ -91,7 +91,7 @@ functions:
     # SecIdentity
     SecIdentityCopy(.*):
         class: SecIdentity
-        name: 'get#{g[0]}'
+        name: 'get#{g[0]}0'
         visibility: protected
     SecIdentity(.*):
         class: SecIdentity
@@ -100,7 +100,7 @@ functions:
     # SecImportExport
     SecPKCS12Import:
         class: SecImportExport
-        name: importPKCS12
+        name: importPKCS120
         visibility: protected
         parameters:
             options:
@@ -111,21 +111,22 @@ functions:
     # SecItem
     SecItemCopy(Matching):
         class: SecItem
-        name: 'get#{g[0]}'
+        name: 'get#{g[0]}0'
         visibility: protected
         parameters:
             query:
                 type: SecQuery
     SecItem(Add):
         class: SecItem
-        name: '#{g[0]}'
+        name: '#{g[0]}0'
         visibility: protected
         parameters:
             attributes:
                 type: SecAttributes
     SecItem(Update|Delete):
         class: SecItem
-        name: '#{g[0]}'
+        name: '#{g[0]}0'
+        visibility: protected
         parameters:
             query:
                 type: SecQuery
@@ -138,20 +139,21 @@ functions:
     # SecKey
     SecKey(GeneratePair):
         class: SecKey
-        name: '#{g[0]}'
+        name: '#{g[0]}0'
+        visibility: protected
         parameters:
             parameters:
                 type: SecKeyParameters
     SecKey(RawSign):
         class: SecKey
-        name: '#{g[0]}'
+        name: '#{g[0]}0'
         visibility: protected
         parameters:
             dataToSign:
                 type: '@Pointer long'
     SecKey(RawVerify):
         class: SecKey
-        name: '#{g[0]}'
+        name: '#{g[0]}0'
         visibility: protected
         parameters:
             signedData:
@@ -160,14 +162,14 @@ functions:
                 type: '@Pointer long'
     SecKey(Encrypt):
         class: SecKey
-        name: '#{g[0]}'
+        name: '#{g[0]}0'
         visibility: protected
         parameters:
             plainText:
                 type: '@Pointer long'
     SecKey(Decrypt):
         class: SecKey
-        name: '#{g[0]}'
+        name: '#{g[0]}0'
         visibility: protected
         parameters:
             cipherText:
@@ -230,33 +232,34 @@ functions:
     # SecTrust
     SecTrust(Create)WithCertificates:
         class: SecTrust
-        name: '#{g[0]}'
+        name: '#{g[0]}0'
         visibility: protected
     SecTrust(SetPolicies):
         class: SecTrust
-        name: '#{g[0]}'
+        name: '#{g[0]}0'
         visibility: protected
     SecTrustCopy(Policies):
         class: SecTrust
-        name: 'get#{g[0]}'
+        name: 'get#{g[0]}0'
         visibility: protected
         parameters:
             policies:
                 type: CFArray.CFArrayPtr
     SecTrustGet(NetworkFetchAllowed):
         class: SecTrust
-        name: 'is#{g[0]}'
+        name: 'is#{g[0]}0'
         visibility: protected
     SecTrust(SetAnchorCertificates):
         class: SecTrust
-        name: '#{g[0]}'
+        name: '#{g[0]}0'
+        visibility: protected
         parameters:
             anchorCertificates:
                 type: List<SecCertificate>
                 marshaler: CFArray.AsListMarshaler
     SecTrustCopy(CustomAnchorCertificates):
         class: SecTrust
-        name: 'get#{g[0]}'
+        name: 'get#{g[0]}0'
         visibility: protected
         parameters:
             anchors:
@@ -280,21 +283,9 @@ functions:
     SecTrust(GetCertificate)AtIndex:
         class: SecTrust
         name: '#{g[0]}'
-    SecTrust(Evaluate):
+    SecTrust(Evaluate|EvaluateAsync|GetTrustResult|SetOCSPResponse|SetVerifyDate|SetAnchorCertificatesOnly|SetAnchorCertificates|SetNetworkFetchAllowed):
         class: SecTrust
-        name: '#{g[0]}'
-        visibility: protected
-    SecTrust(EvaluateAsync):
-        class: SecTrust
-        name: '#{g[0]}'
-        visibility: protected
-    SecTrust(GetTrustResult):
-        class: SecTrust
-        name: '#{g[0]}'
-        visibility: protected
-    SecTrust(SetOCSPResponse):
-        class: SecTrust
-        name: '#{g[0]}'
+        name: '#{g[0]}0'
         visibility: protected
     SecTrust(.*):
         class: SecTrust
@@ -309,94 +300,98 @@ functions:
         name: getClassTypeID
     SSL(Create)Context:
         class: SSLContext
-        name: '#{g[0]}'
+        name: '#{g[0]}0'
         return_marshaler: CFType.NoRetainMarshaler
+        visibility: protected
     SSLClose:
         class: SSLContext
-        name: closeContext
+        name: closeContext0
+        visibility: protected
     SSL(GetSessionOption|GetSessionState|GetMaxDatagramRecordSize|GetBufferedReadSize|GetDatagramWriteSize):
         class: SSLContext
-        name: '#{g[0]}'
+        name: '#{g[0]}0'
         visibility: protected
     SSL(SetIOFuncs):
         class: SSLContext
-        name: setIOFunctions
-        visibility: private
+        name: setIOFunctions0
+        visibility: protected
     SSLSetProtocolVersionMin:
         class: SSLContext
-        name: setMinProtocolVersion
+        name: setMinProtocolVersion0
+        visibility: protected
     SSLGetProtocolVersionMin:
         class: SSLContext
-        name: getMinProtocolVersion
+        name: getMinProtocolVersion0
         visibility: protected
     SSLSetProtocolVersionMax:
         class: SSLContext
-        name: setMaxProtocolVersion
+        name: setMaxProtocolVersion0
+        visibility: protected
     SSLGetProtocolVersionMax:
         class: SSLContext
-        name: getMaxProtocolVersion
+        name: getMaxProtocolVersion0
         visibility: protected
     SSL(SetCertificate|SetEncryptionCertificate):
         class: SSLContext
-        name: '#{g[0]}'
+        name: '#{g[0]}0'
         visibility: protected
         parameters:
             certRefs:
                 type: CFArray
     SSL(GetPeerDomainNameLength|GetPeerDomainName|GetNegotiatedProtocolVersion|GetClientCertificateState):
         class: SSLContext
-        name: '#{g[0]}'
+        name: '#{g[0]}0'
         visibility: protected
     SSL(GetNumberSupportedCiphers|GetSupportedCiphers|GetNumberEnabledCiphers|GetEnabledCiphers|GetNegotiatedCipher):
         class: SSLContext
-        name: '#{g[0]}'
+        name: '#{g[0]}0'
         visibility: protected
     SSL(SetEnabledCiphers):
         class: SSLContext
-        name: '#{g[0]}'
+        name: '#{g[0]}0'
         visibility: protected
         parameters:
             ciphers:
                 type: '@Pointer long'
     SSL(Write):
         class: SSLContext
-        name: '#{g[0]}'
+        name: '#{g[0]}0'
         visibility: protected
         parameters:
             data:
                 type: '@Pointer long'
     SSL(Read):
         class: SSLContext
-        name: '#{g[0]}'
+        name: '#{g[0]}0'
         visibility: protected
         parameters:
             data:
                 type: BytePtr
     SSL(GetConnection):
         class: SSLContext
-        name: '#{g[0]}'
+        name: '#{g[0]}0'
         visibility: protected
     SSLCopy(PeerTrust):
         class: SSLContext
-        name: 'get#{g[0]}'
+        name: 'get#{g[0]}0'
         visibility: protected
     SSL(AddDistinguishedName):
         class: SSLContext
-        name: '#{g[0]}'
+        name: '#{g[0]}0'
         visibility: protected
         parameters:
             derDN:
                 type: '@Pointer long'
     SSLCopy(DistinguishedNames):
         class: SSLContext
-        name: 'get#{g[0]}'
+        name: 'get#{g[0]}0'
         visibility: protected
         parameters:
             names:
                 type: NSArray.NSArrayPtr<NSData>
     SSL(SetPeerID|SetPeerDomainName):
         class: SSLContext
-        name: '#{g[0]}'
+        name: '#{g[0]}0'
         visibility: protected
         parameters:
             peerID:
@@ -405,21 +400,22 @@ functions:
                 type: '@Pointer long'
     SSL(GetPeerID):
         class: SSLContext
-        name: '#{g[0]}'
+        name: '#{g[0]}0'
         visibility: protected
         parameters:
             peerID:
                 type: BytePtr.BytePtrPtr
     SSL(SetDatagramHelloCookie):
         class: SSLContext
-        name: '#{g[0]}'
+        name: '#{g[0]}0'
         visibility: protected
         parameters:
             cookie:
                 type: '@Pointer long'    
     SSL(.*):
         class: SSLContext
-        name: '#{g[0]}'
+        name: '#{g[0]}0'
+        visibility: protected
 
 values:
     # SecImportExport 

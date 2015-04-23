@@ -222,6 +222,7 @@ static jthrowable ExceptionOccurred(JNIEnv* env) {
 static void ExceptionDescribe(JNIEnv* env) {
     // TODO: Implement me properly
     Object* e = rvmExceptionOccurred((Env*) env);
+    if (!e) return;
     rvmExceptionPrintStackTrace((Env*) env, e, stderr);
 }
 

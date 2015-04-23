@@ -84,7 +84,7 @@ classes:
             '+filterArrayFromSerializedXMP:inputImageExtent:error:':
                 name: deserializeFromXMP
                 return_type: NSArray<CIFilter>
-                visibility: protected # throws NSErrorException
+                throws: NSErrorException
             '+filterWithName:withInputParameters:':
                 name: create
                 parameters:

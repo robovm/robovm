@@ -126,24 +126,6 @@ import org.robovm.apple.imageio.*;
     private static native CIFilter create(ObjCClass __self__, Selector __cmd__, String name, NSObject key0, NSObject value0, NSObject key1, NSObject value1, NSObject key2, NSObject value2, 
         NSObject key3, NSObject value3, NSObject key4, NSObject value4, NSObject key5, NSObject value5, NSObject key6, NSObject value6, NSObject key7,
         NSObject value7, NSObject key8, NSObject value8, NSObject key9, NSObject value9);
-    
-    
-    /**
-     * 
-     * @param xmpData
-     * @param extent
-     * @return
-     * @since Available in iOS 6.0 and later.
-     * @throws NSErrorException
-     */
-    public static NSArray<CIFilter> deserializeFromXMP(NSData xmpData, @ByVal CGRect extent) throws NSErrorException {
-        NSError.NSErrorPtr err = new NSError.NSErrorPtr();
-        NSArray<CIFilter> result = deserializeFromXMP(xmpData, extent, err);
-        if (err.get() != null) {
-            throw new NSErrorException(err.get());
-        }
-        return result;
-    }
     /*<methods>*/
     /**
      * @since Available in iOS 5.0 and later.
@@ -177,8 +159,17 @@ import org.robovm.apple.imageio.*;
     /**
      * @since Available in iOS 6.0 and later.
      */
+    public static NSArray<CIFilter> deserializeFromXMP(NSData xmpData, @ByVal CGRect extent) throws NSErrorException {
+       NSError.NSErrorPtr ptr = new NSError.NSErrorPtr();
+       NSArray<CIFilter> result = deserializeFromXMP(xmpData, extent, ptr);
+       if (ptr.get() != null) { throw new NSErrorException(ptr.get()); }
+       return result;
+    }
+    /**
+     * @since Available in iOS 6.0 and later.
+     */
     @Method(selector = "filterArrayFromSerializedXMP:inputImageExtent:error:")
-    protected static native NSArray<CIFilter> deserializeFromXMP(NSData xmpData, @ByVal CGRect extent, NSError.NSErrorPtr outError);
+    private static native NSArray<CIFilter> deserializeFromXMP(NSData xmpData, @ByVal CGRect extent, NSError.NSErrorPtr outError);
     @Method(selector = "encodeWithCoder:")
     public native void encode(NSCoder aCoder);
     /*</methods>*/

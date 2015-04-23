@@ -82,26 +82,20 @@ import org.robovm.apple.audiounit.*;
     public native AVAudioSessionDataSourceDescription getPreferredDataSource();
     /*</properties>*/
     /*<members>*//*</members>*/
-    /**
-     * 
-     * @param dataSource
-     * @return
-     * @throws NSErrorException
-     * @since Available in iOS 7.0 and later.
-     */
-    public boolean setPreferredDataSource(AVAudioSessionDataSourceDescription dataSource) throws NSErrorException {
-        NSError.NSErrorPtr err = new NSError.NSErrorPtr();
-        boolean result = setPreferredDataSource(dataSource, err);
-        if (err.get() != null) {
-            throw new NSErrorException(err.get());
-        }
-        return result;
-    }
     /*<methods>*/
     /**
      * @since Available in iOS 7.0 and later.
      */
+    public boolean setPreferredDataSource(AVAudioSessionDataSourceDescription dataSource) throws NSErrorException {
+       NSError.NSErrorPtr ptr = new NSError.NSErrorPtr();
+       boolean result = setPreferredDataSource(dataSource, ptr);
+       if (ptr.get() != null) { throw new NSErrorException(ptr.get()); }
+       return result;
+    }
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
     @Method(selector = "setPreferredDataSource:error:")
-    protected native boolean setPreferredDataSource(AVAudioSessionDataSourceDescription dataSource, NSError.NSErrorPtr outError);
+    private native boolean setPreferredDataSource(AVAudioSessionDataSourceDescription dataSource, NSError.NSErrorPtr outError);
     /*</methods>*/
 }

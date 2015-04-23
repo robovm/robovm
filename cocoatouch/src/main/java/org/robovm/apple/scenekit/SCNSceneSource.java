@@ -62,20 +62,6 @@ import org.robovm.apple.opengles.*;
     public native NSData getData();
     /*</properties>*/
     /*<members>*//*</members>*/
-    /**
-     * 
-     * @param options
-     * @return
-     * @throws NSErrorException
-     */
-    public SCNScene newScene(SCNSceneSourceOptions options) throws NSErrorException {
-        NSError.NSErrorPtr err = new NSError.NSErrorPtr();
-        SCNScene result = newScene(options, err);
-        if (err.get() != null) {
-            throw new NSErrorException(err.get());
-        }
-        return result;
-    }
     
     /* Convenience methods */
     @SuppressWarnings("unchecked")
@@ -111,8 +97,14 @@ import org.robovm.apple.opengles.*;
     protected native @Pointer long init(NSData data, SCNSceneSourceOptions options);
     @Method(selector = "sceneWithOptions:statusHandler:")
     public native SCNScene newScene(SCNSceneSourceOptions options, @Block VoidBlock4<Float, SCNSceneSourceStatus, NSError, BooleanPtr> statusHandler);
+    public SCNScene newScene(SCNSceneSourceOptions options) throws NSErrorException {
+       NSError.NSErrorPtr ptr = new NSError.NSErrorPtr();
+       SCNScene result = newScene(options, ptr);
+       if (ptr.get() != null) { throw new NSErrorException(ptr.get()); }
+       return result;
+    }
     @Method(selector = "sceneWithOptions:error:")
-    protected native SCNScene newScene(SCNSceneSourceOptions options, NSError.NSErrorPtr error);
+    private native SCNScene newScene(SCNSceneSourceOptions options, NSError.NSErrorPtr error);
     @Method(selector = "propertyForKey:")
     public native NSObject getProperty(SCNSceneSourceProperty key);
     @Method(selector = "entryWithIdentifier:withClass:")

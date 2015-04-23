@@ -561,7 +561,7 @@ classes:
                         type: SCNSceneSourceOptions
             '+sceneWithURL:options:error:':
                 name: create
-                visibility: protected # throws NSErrorException
+                throws: NSErrorException
                 parameters:
                     options:
                         type: SCNSceneSourceOptions
@@ -590,7 +590,7 @@ classes:
                         type: '@Block VoidBlock4<Float, SCNSceneSourceStatus, NSError, BooleanPtr>'
             '-sceneWithOptions:error:':
                 name: newScene
-                visibility: protected # throws NSErrorException
+                throws: NSErrorException
                 parameters:
                     options:
                         type: SCNSceneSourceOptions

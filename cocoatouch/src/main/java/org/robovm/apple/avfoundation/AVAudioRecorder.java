@@ -55,15 +55,14 @@ import org.robovm.apple.audiounit.*;
     /*<constructors>*/
     public AVAudioRecorder() {}
     protected AVAudioRecorder(SkipInit skipInit) { super(skipInit); }
-    /*</constructors>*/
     public AVAudioRecorder(NSURL url, AVAudioSettings settings) throws NSErrorException {
-        super((SkipInit)null);
-        NSError.NSErrorPtr err = new NSError.NSErrorPtr();
-        initObject(init(url, settings, err));
-        if (err.get() != null) {
-            throw new NSErrorException(err.get());
-        }
+       super((SkipInit) null);
+       NSError.NSErrorPtr ptr = new NSError.NSErrorPtr();
+       long handle = init(url, settings, ptr);
+       if (ptr.get() != null) { throw new NSErrorException(ptr.get()); }
+       initObject(handle);
     }
+    /*</constructors>*/
     /*<properties>*/
     @Property(selector = "isRecording")
     public native boolean isRecording();
@@ -100,7 +99,7 @@ import org.robovm.apple.audiounit.*;
     /*<members>*//*</members>*/
     /*<methods>*/
     @Method(selector = "initWithURL:settings:error:")
-    protected native @Pointer long init(NSURL url, AVAudioSettings settings, NSError.NSErrorPtr outError);
+    private native @Pointer long init(NSURL url, AVAudioSettings settings, NSError.NSErrorPtr outError);
     @Method(selector = "prepareToRecord")
     public native boolean prepareToRecord();
     @Method(selector = "record")

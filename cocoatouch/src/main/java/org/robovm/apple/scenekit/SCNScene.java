@@ -123,21 +123,6 @@ import org.robovm.apple.opengles.*;
     public void setAttribute(SCNSceneAttribute key, NSObject attribute) {
         setAttribute(attribute, key);
     }
-    /**
-     * 
-     * @param url
-     * @param options
-     * @return
-     * @throws NSErrorException
-     */
-    public static SCNScene create(NSURL url, SCNSceneSourceOptions options) throws NSErrorException {
-        NSError.NSErrorPtr err = new NSError.NSErrorPtr();
-        SCNScene result = create(url, options, err);
-        if (err.get() != null) {
-            throw new NSErrorException(err.get());
-        }
-        return result;
-    }
     
     /* Convenience methods */
     public double getStartTime() {
@@ -201,8 +186,14 @@ import org.robovm.apple.opengles.*;
      */
     @Method(selector = "sceneNamed:inDirectory:options:")
     public static native SCNScene create(String name, String directory, SCNSceneSourceOptions options);
+    public static SCNScene create(NSURL url, SCNSceneSourceOptions options) throws NSErrorException {
+       NSError.NSErrorPtr ptr = new NSError.NSErrorPtr();
+       SCNScene result = create(url, options, ptr);
+       if (ptr.get() != null) { throw new NSErrorException(ptr.get()); }
+       return result;
+    }
     @Method(selector = "sceneWithURL:options:error:")
-    protected static native SCNScene create(NSURL url, SCNSceneSourceOptions options, NSError.NSErrorPtr error);
+    private static native SCNScene create(NSURL url, SCNSceneSourceOptions options, NSError.NSErrorPtr error);
     @Method(selector = "addParticleSystem:withTransform:")
     public native void addParticleSystem(SCNParticleSystem system, @ByVal SCNMatrix4 transform);
     @Method(selector = "removeAllParticleSystems")

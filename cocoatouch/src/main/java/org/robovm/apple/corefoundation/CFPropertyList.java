@@ -19,6 +19,7 @@ package org.robovm.apple.corefoundation;
 import java.io.*;
 import java.nio.*;
 import java.util.*;
+
 import org.robovm.objc.*;
 import org.robovm.objc.annotation.*;
 import org.robovm.objc.block.*;
@@ -71,15 +72,17 @@ import org.robovm.apple.foundation.*;
         return create(allocator, stream, streamLength, options, null);
     }
     /**
+     * @throws NSErrorException 
      * @since Available in iOS 4.0 and later.
      */
-    public CFData asData(CFPropertyListFormat format, @MachineSizedUInt long options) {
+    public CFData asData(CFPropertyListFormat format, @MachineSizedUInt long options) throws NSErrorException {
         return asData(null, this, format, options);
     }
     /**
+     * @throws NSErrorException 
      * @since Available in iOS 4.0 and later.
      */
-    public CFData asData(CFAllocator allocator, CFPropertyListFormat format, @MachineSizedUInt long options) {
+    public CFData asData(CFAllocator allocator, CFPropertyListFormat format, @MachineSizedUInt long options) throws NSErrorException {
         return asData(allocator, this, format, options);
     }
     /*<methods>*/

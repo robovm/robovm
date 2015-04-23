@@ -55,20 +55,14 @@ import org.robovm.apple.audiounit.*;
     /*<constructors>*/
     public AVAssetReader() {}
     protected AVAssetReader(SkipInit skipInit) { super(skipInit); }
-    /*</constructors>*/
-    /**
-     * 
-     * @param asset
-     * @throws NSErrorException
-     */
     public AVAssetReader(AVAsset asset) throws NSErrorException {
-        super((SkipInit)null);
-        NSError.NSErrorPtr err = new NSError.NSErrorPtr();
-        initObject(init(asset, err));
-        if (err.get() != null) {
-            throw new NSErrorException(err.get());
-        }
+       super((SkipInit) null);
+       NSError.NSErrorPtr ptr = new NSError.NSErrorPtr();
+       long handle = init(asset, ptr);
+       if (ptr.get() != null) { throw new NSErrorException(ptr.get()); }
+       initObject(handle);
     }
+    /*</constructors>*/
     /*<properties>*/
     @Property(selector = "asset")
     public native AVAsset getAsset();
@@ -84,23 +78,9 @@ import org.robovm.apple.audiounit.*;
     public native NSArray<AVAssetReaderOutput> getOutputs();
     /*</properties>*/
     /*<members>*//*</members>*/
-    /**
-     * 
-     * @param asset
-     * @return
-     * @throws NSErrorException
-     */
-    public static AVAssetReader create(AVAsset asset) throws NSErrorException {
-        NSError.NSErrorPtr err = new NSError.NSErrorPtr();
-        AVAssetReader result = create(asset, err);
-        if (err.get() != null) {
-            throw new NSErrorException(err.get());
-        }
-        return result;
-    }
     /*<methods>*/
     @Method(selector = "initWithAsset:error:")
-    protected native @Pointer long init(AVAsset asset, NSError.NSErrorPtr outError);
+    private native @Pointer long init(AVAsset asset, NSError.NSErrorPtr outError);
     @Method(selector = "canAddOutput:")
     public native boolean canAddOutput(AVAssetReaderOutput output);
     @Method(selector = "addOutput:")
@@ -109,7 +89,13 @@ import org.robovm.apple.audiounit.*;
     public native boolean startReading();
     @Method(selector = "cancelReading")
     public native void cancelReading();
+    public static AVAssetReader create(AVAsset asset) throws NSErrorException {
+       NSError.NSErrorPtr ptr = new NSError.NSErrorPtr();
+       AVAssetReader result = create(asset, ptr);
+       if (ptr.get() != null) { throw new NSErrorException(ptr.get()); }
+       return result;
+    }
     @Method(selector = "assetReaderWithAsset:error:")
-    protected static native AVAssetReader create(AVAsset asset, NSError.NSErrorPtr outError);
+    private static native AVAssetReader create(AVAsset asset, NSError.NSErrorPtr outError);
     /*</methods>*/
 }

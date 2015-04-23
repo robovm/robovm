@@ -100,27 +100,21 @@ import org.robovm.apple.audiounit.*;
     public native AVMetadataKeySpace getKeySpace();
     /*</properties>*/
     /*<members>*//*</members>*/
-    /**
-     * 
-     * @param key
-     * @return
-     * @throws NSErrorException
-     * @since Available in iOS 4.2 and later.
-     */
-    public AVKeyValueStatus getStatusOfValue(AVMetadataKey key) throws NSErrorException {
-        NSError.NSErrorPtr err = new NSError.NSErrorPtr();
-        AVKeyValueStatus result = getStatusOfValue(key, err);
-        if (err.get() != null) {
-            throw new NSErrorException(err.get());
-        }
-        return result;
-    }
     /*<methods>*/
     /**
      * @since Available in iOS 4.2 and later.
      */
+    public AVKeyValueStatus getStatusOfValue(AVMetadataKey key) throws NSErrorException {
+       NSError.NSErrorPtr ptr = new NSError.NSErrorPtr();
+       AVKeyValueStatus result = getStatusOfValue(key, ptr);
+       if (ptr.get() != null) { throw new NSErrorException(ptr.get()); }
+       return result;
+    }
+    /**
+     * @since Available in iOS 4.2 and later.
+     */
     @Method(selector = "statusOfValueForKey:error:")
-    protected native AVKeyValueStatus getStatusOfValue(AVMetadataKey key, NSError.NSErrorPtr outError);
+    private native AVKeyValueStatus getStatusOfValue(AVMetadataKey key, NSError.NSErrorPtr outError);
     /**
      * @since Available in iOS 4.2 and later.
      */

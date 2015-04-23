@@ -306,34 +306,34 @@ protocols:
                 name: newSamplerState
             '-newLibraryWithFile:error:':
                 trim_after_first_colon: true
-                visibility: protected # throws NSErrorException
+                throws: NSErrorException
             '-newLibraryWithData:error:':
                 trim_after_first_colon: true
-                visibility: protected # throws NSErrorException
+                throws: NSErrorException
                 parameters:
                     data:
                         type: DispatchData
             '-newLibraryWithSource:options:error:':
                 trim_after_first_colon: true
-                visibility: protected # throws NSErrorException
+                throws: NSErrorException
             '-newLibraryWithSource:options:completionHandler:':
                 trim_after_first_colon: true
             '-newRenderPipelineStateWithDescriptor:error:':
                 name: newRenderPipelineState
-                visibility: protected # throws NSErrorException
+                throws: NSErrorException
             '-newRenderPipelineStateWithDescriptor:options:reflection:error:':
                 name: newRenderPipelineState
-                visibility: protected # throws NSErrorException
+                throws: NSErrorException
             '-newRenderPipelineStateWithDescriptor:completionHandler:':
                 name: newRenderPipelineState
             '-newRenderPipelineStateWithDescriptor:options:completionHandler:':
                 name: newRenderPipelineState
             '-newComputePipelineStateWithFunction:error:':
                 name: newComputePipelineState
-                visibility: protected # throws NSErrorException
+                throws: NSErrorException
             '-newComputePipelineStateWithFunction:options:reflection:error:':
                 name: newComputePipelineState
-                visibility: protected # throws NSErrorException
+                throws: NSErrorException
             '-newComputePipelineStateWithFunction:completionHandler:':
                 name: newComputePipelineState
             '-newComputePipelineStateWithFunction:options:completionHandler:':

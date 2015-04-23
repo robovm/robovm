@@ -100,10 +100,10 @@ classes:
                 name: getCalendar
             '-saveCalendar:commit:error:':
                 trim_after_first_colon: true
-                visibility: protected # throws NSErrorException
+                throws: NSErrorException
             '-removeCalendar:commit:error:':
                 trim_after_first_colon: true
-                visibility: protected # throws NSErrorException
+                throws: NSErrorException
             '-calendarItemWithIdentifier:':
                 name: getCalendarItem
             '-calendarItemsWithExternalIdentifier:':
@@ -111,16 +111,16 @@ classes:
                 return_type: NSArray<EKCalendarItem>
             '-saveEvent:span:error:':
                 trim_after_first_colon: true
-                visibility: protected # throws NSErrorException
+                throws: NSErrorException
             '-removeEvent:span:error:':
                 trim_after_first_colon: true
-                visibility: protected # throws NSErrorException
+                throws: NSErrorException
             '-saveEvent:span:commit:error:':
                 trim_after_first_colon: true
-                visibility: protected # throws NSErrorException
+                throws: NSErrorException
             '-removeEvent:span:commit:error:':
                 trim_after_first_colon: true
-                visibility: protected # throws NSErrorException
+                throws: NSErrorException
             '-eventWithIdentifier:':
                 name: getEvent
             '-eventsMatchingPredicate:':
@@ -138,10 +138,10 @@ classes:
                         type: NSArray<EKCalendar>
             '-saveReminder:commit:error:':
                 trim_after_first_colon: true
-                visibility: protected # throws NSErrorException
+                throws: NSErrorException
             '-removeReminder:commit:error:':
                 trim_after_first_colon: true
-                visibility: protected # throws NSErrorException
+                throws: NSErrorException
             '-fetchRemindersMatchingPredicate:completion:':
                 name: fetchReminders
                 parameters:
@@ -166,7 +166,7 @@ classes:
                         type: NSArray<EKCalendar>
             '-commit:':
                 trim_after_first_colon: true
-                visibility: protected # throws NSErrorException
+                throws: NSErrorException
             '+authorizationStatusForEntityType:':
                 name: getAuthorizationStatusForEntityType
     EKObject: {} # DONE

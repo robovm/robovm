@@ -45,7 +45,7 @@ classes:
         methods:
             '-initWithData:error:':
                 name: init
-                constructor: false
+                throws: NSErrorException
             '-localizedValueForFieldKey:':
                 name: getLocalizedValue
     PKPassLibrary: # DONE

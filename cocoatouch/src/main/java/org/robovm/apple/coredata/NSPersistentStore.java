@@ -74,61 +74,37 @@ import org.robovm.apple.foundation.*;
     public native void setMetadata(NSPersistentStoreMetadata v);
     /*</properties>*/
     /*<members>*//*</members>*/
-    /**
-     * 
-     * @return
-     * @throws NSErrorException
-     */
-    public boolean loadMetadata() throws NSErrorException {
-        NSError.NSErrorPtr err = new NSError.NSErrorPtr();
-        boolean result = loadMetadata(err);
-        if (err.get() != null) {
-            throw new NSErrorException(err.get());
-        }
-        return result;
-    }
-    /**
-     * 
-     * @param url
-     * @return
-     * @throws NSErrorException
-     */
-    public static NSPersistentStoreMetadata getMetadataForPersistentStore(NSURL url) throws NSErrorException {
-        NSError.NSErrorPtr err = new NSError.NSErrorPtr();
-        NSPersistentStoreMetadata result = getMetadataForPersistentStore(url, err);
-        if (err.get() != null) {
-            throw new NSErrorException(err.get());
-        }
-        return result;
-    }
-    /**
-     * 
-     * @param url
-     * @param metadata
-     * @return
-     * @throws NSErrorException
-     */
-    public static boolean setMetadataForPersistentStore(NSURL url, NSPersistentStoreMetadata metadata) throws NSErrorException {
-        NSError.NSErrorPtr err = new NSError.NSErrorPtr();
-        boolean result = setMetadataForPersistentStore(metadata, url, err);
-        if (err.get() != null) {
-            throw new NSErrorException(err.get());
-        }
-        return result;
-    }
     /*<methods>*/
     @Method(selector = "initWithPersistentStoreCoordinator:configurationName:URL:options:")
     protected native @Pointer long init(NSPersistentStoreCoordinator root, String name, NSURL url, NSPersistentStoreOptions options);
+    public boolean loadMetadata() throws NSErrorException {
+       NSError.NSErrorPtr ptr = new NSError.NSErrorPtr();
+       boolean result = loadMetadata(ptr);
+       if (ptr.get() != null) { throw new NSErrorException(ptr.get()); }
+       return result;
+    }
     @Method(selector = "loadMetadata:")
-    protected native boolean loadMetadata(NSError.NSErrorPtr error);
+    private native boolean loadMetadata(NSError.NSErrorPtr error);
     @Method(selector = "didAddToPersistentStoreCoordinator:")
     public native void didAddToPersistentStoreCoordinator(NSPersistentStoreCoordinator coordinator);
     @Method(selector = "willRemoveFromPersistentStoreCoordinator:")
     public native void willRemoveFromPersistentStoreCoordinator(NSPersistentStoreCoordinator coordinator);
+    public static NSPersistentStoreMetadata getMetadataForPersistentStore(NSURL url) throws NSErrorException {
+       NSError.NSErrorPtr ptr = new NSError.NSErrorPtr();
+       NSPersistentStoreMetadata result = getMetadataForPersistentStore(url, ptr);
+       if (ptr.get() != null) { throw new NSErrorException(ptr.get()); }
+       return result;
+    }
     @Method(selector = "metadataForPersistentStoreWithURL:error:")
-    protected static native NSPersistentStoreMetadata getMetadataForPersistentStore(NSURL url, NSError.NSErrorPtr error);
+    private static native NSPersistentStoreMetadata getMetadataForPersistentStore(NSURL url, NSError.NSErrorPtr error);
+    public static boolean setMetadataForPersistentStore(NSPersistentStoreMetadata metadata, NSURL url) throws NSErrorException {
+       NSError.NSErrorPtr ptr = new NSError.NSErrorPtr();
+       boolean result = setMetadataForPersistentStore(metadata, url, ptr);
+       if (ptr.get() != null) { throw new NSErrorException(ptr.get()); }
+       return result;
+    }
     @Method(selector = "setMetadata:forPersistentStoreWithURL:error:")
-    protected static native boolean setMetadataForPersistentStore(NSPersistentStoreMetadata metadata, NSURL url, NSError.NSErrorPtr error);
+    private static native boolean setMetadataForPersistentStore(NSPersistentStoreMetadata metadata, NSURL url, NSError.NSErrorPtr error);
     /**
      * @since Available in iOS 3.0 and later.
      */

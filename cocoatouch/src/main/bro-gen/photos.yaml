@@ -314,7 +314,7 @@ classes:
                 trim_after_first_colon: true
             '-performChangesAndWait:error:':
                 trim_after_first_colon: true
-                visibility: protected # throws NSErrorException
+                throws: NSErrorException
             '-registerChangeObserver:':
                 trim_after_first_colon: true
             '-unregisterChangeObserver:':

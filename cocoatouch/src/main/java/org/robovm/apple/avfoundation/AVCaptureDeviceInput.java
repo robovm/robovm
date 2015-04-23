@@ -55,43 +55,29 @@ import org.robovm.apple.audiounit.*;
     /*<constructors>*/
     public AVCaptureDeviceInput() {}
     protected AVCaptureDeviceInput(SkipInit skipInit) { super(skipInit); }
-    /*</constructors>*/
-    /**
-     * 
-     * @param device
-     * @throws NSErrorException
-     */
     public AVCaptureDeviceInput(AVCaptureDevice device) throws NSErrorException {
-       super((SkipInit)null);
-       NSError.NSErrorPtr err = new NSError.NSErrorPtr();
-       initObject(init(device, err));
-       if (err.get() != null) {
-           throw new NSErrorException(err.get());
-       }
+       super((SkipInit) null);
+       NSError.NSErrorPtr ptr = new NSError.NSErrorPtr();
+       long handle = init(device, ptr);
+       if (ptr.get() != null) { throw new NSErrorException(ptr.get()); }
+       initObject(handle);
     }
+    /*</constructors>*/
     /*<properties>*/
     @Property(selector = "device")
     public native AVCaptureDevice getDevice();
     /*</properties>*/
     /*<members>*//*</members>*/
-    /**
-     * 
-     * @param device
-     * @return
-     * @throws NSErrorException
-     */
-    public static AVCaptureDeviceInput create(AVCaptureDevice device) throws NSErrorException {
-        NSError.NSErrorPtr err = new NSError.NSErrorPtr();
-        AVCaptureDeviceInput result = create(device, err);
-        if (err.get() != null) {
-            throw new NSErrorException(err.get());
-        }
-        return result;
-    }
     /*<methods>*/
     @Method(selector = "initWithDevice:error:")
-    protected native @Pointer long init(AVCaptureDevice device, NSError.NSErrorPtr outError);
+    private native @Pointer long init(AVCaptureDevice device, NSError.NSErrorPtr outError);
+    public static AVCaptureDeviceInput create(AVCaptureDevice device) throws NSErrorException {
+       NSError.NSErrorPtr ptr = new NSError.NSErrorPtr();
+       AVCaptureDeviceInput result = create(device, ptr);
+       if (ptr.get() != null) { throw new NSErrorException(ptr.get()); }
+       return result;
+    }
     @Method(selector = "deviceInputWithDevice:error:")
-    protected static native AVCaptureDeviceInput create(AVCaptureDevice device, NSError.NSErrorPtr outError);
+    private static native AVCaptureDeviceInput create(AVCaptureDevice device, NSError.NSErrorPtr outError);
     /*</methods>*/
 }

@@ -51,127 +51,62 @@ import org.robovm.apple.foundation.NSError.NSErrorPtr;
     
     /*</properties>*/
     /*<members>*//*</members>*/
-    /**
-     * 
-     * @param mapping
-     * @param manager
-     * @return
-     * @throws NSErrorException
-     */
-    public boolean beginEntityMapping(NSEntityMapping mapping, NSMigrationManager manager) throws NSErrorException {
-        NSError.NSErrorPtr err = new NSError.NSErrorPtr();
-        boolean result = beginEntityMapping(mapping, manager, err);
-        if (err.get() != null) {
-            throw new NSErrorException(err.get());
-        }
-        return result;
-    }
-    /**
-     * 
-     * @param sInstance
-     * @param mapping
-     * @param manager
-     * @return
-     * @throws NSErrorException
-     */
-    public boolean createDestinationInstances(NSManagedObject sInstance, NSEntityMapping mapping, NSMigrationManager manager) throws NSErrorException {
-        NSError.NSErrorPtr err = new NSError.NSErrorPtr();
-        boolean result = createDestinationInstances(sInstance, mapping, manager, err);
-        if (err.get() != null) {
-            throw new NSErrorException(err.get());
-        }
-        return result;
-    }
-    /**
-     * 
-     * @param mapping
-     * @param manager
-     * @return
-     * @throws NSErrorException
-     */
-    public boolean endInstanceCreation(NSEntityMapping mapping, NSMigrationManager manager) throws NSErrorException {
-        NSError.NSErrorPtr err = new NSError.NSErrorPtr();
-        boolean result = endInstanceCreation(mapping, manager, err);
-        if (err.get() != null) {
-            throw new NSErrorException(err.get());
-        }
-        return result;
-    }
-    /**
-     * 
-     * @param dInstance
-     * @param mapping
-     * @param manager
-     * @return
-     * @throws NSErrorException
-     */
-    public boolean createRelationships(NSManagedObject dInstance, NSEntityMapping mapping, NSMigrationManager manager) throws NSErrorException {
-        NSError.NSErrorPtr err = new NSError.NSErrorPtr();
-        boolean result = createRelationships(dInstance, mapping, manager, err);
-        if (err.get() != null) {
-            throw new NSErrorException(err.get());
-        }
-        return result;
-    }
-    /**
-     * 
-     * @param mapping
-     * @param manager
-     * @return
-     * @throws NSErrorException
-     */
-    public boolean endRelationshipCreation(NSEntityMapping mapping, NSMigrationManager manager) throws NSErrorException {
-        NSError.NSErrorPtr err = new NSError.NSErrorPtr();
-        boolean result = endRelationshipCreation(mapping, manager, err);
-        if (err.get() != null) {
-            throw new NSErrorException(err.get());
-        }
-        return result;
-    }
-    /**
-     * 
-     * @param mapping
-     * @param manager
-     * @return
-     * @throws NSErrorException
-     */
-    public boolean performCustomValidation(NSEntityMapping mapping, NSMigrationManager manager) throws NSErrorException {
-        NSError.NSErrorPtr err = new NSError.NSErrorPtr();
-        boolean result = performCustomValidation(mapping, manager, err);
-        if (err.get() != null) {
-            throw new NSErrorException(err.get());
-        }
-        return result;
-    }
-    /**
-     * 
-     * @param mapping
-     * @param manager
-     * @return
-     * @throws NSErrorException
-     */
-    public boolean endEntityMapping(NSEntityMapping mapping, NSMigrationManager manager) throws NSErrorException {
-        NSError.NSErrorPtr err = new NSError.NSErrorPtr();
-        boolean result = endEntityMapping(mapping, manager, err);
-        if (err.get() != null) {
-            throw new NSErrorException(err.get());
-        }
-        return result;
-    }
     /*<methods>*/
+    public boolean beginEntityMapping(NSEntityMapping mapping, NSMigrationManager manager) throws NSErrorException {
+       NSError.NSErrorPtr ptr = new NSError.NSErrorPtr();
+       boolean result = beginEntityMapping(mapping, manager, ptr);
+       if (ptr.get() != null) { throw new NSErrorException(ptr.get()); }
+       return result;
+    }
     @Method(selector = "beginEntityMapping:manager:error:")
-    protected native boolean beginEntityMapping(NSEntityMapping mapping, NSMigrationManager manager, NSError.NSErrorPtr error);
+    private native boolean beginEntityMapping(NSEntityMapping mapping, NSMigrationManager manager, NSError.NSErrorPtr error);
+    public boolean createDestinationInstances(NSManagedObject sInstance, NSEntityMapping mapping, NSMigrationManager manager) throws NSErrorException {
+       NSError.NSErrorPtr ptr = new NSError.NSErrorPtr();
+       boolean result = createDestinationInstances(sInstance, mapping, manager, ptr);
+       if (ptr.get() != null) { throw new NSErrorException(ptr.get()); }
+       return result;
+    }
     @Method(selector = "createDestinationInstancesForSourceInstance:entityMapping:manager:error:")
-    protected native boolean createDestinationInstances(NSManagedObject sInstance, NSEntityMapping mapping, NSMigrationManager manager, NSError.NSErrorPtr error);
+    private native boolean createDestinationInstances(NSManagedObject sInstance, NSEntityMapping mapping, NSMigrationManager manager, NSError.NSErrorPtr error);
+    public boolean endInstanceCreation(NSEntityMapping mapping, NSMigrationManager manager) throws NSErrorException {
+       NSError.NSErrorPtr ptr = new NSError.NSErrorPtr();
+       boolean result = endInstanceCreation(mapping, manager, ptr);
+       if (ptr.get() != null) { throw new NSErrorException(ptr.get()); }
+       return result;
+    }
     @Method(selector = "endInstanceCreationForEntityMapping:manager:error:")
-    protected native boolean endInstanceCreation(NSEntityMapping mapping, NSMigrationManager manager, NSError.NSErrorPtr error);
+    private native boolean endInstanceCreation(NSEntityMapping mapping, NSMigrationManager manager, NSError.NSErrorPtr error);
+    public boolean createRelationships(NSManagedObject dInstance, NSEntityMapping mapping, NSMigrationManager manager) throws NSErrorException {
+       NSError.NSErrorPtr ptr = new NSError.NSErrorPtr();
+       boolean result = createRelationships(dInstance, mapping, manager, ptr);
+       if (ptr.get() != null) { throw new NSErrorException(ptr.get()); }
+       return result;
+    }
     @Method(selector = "createRelationshipsForDestinationInstance:entityMapping:manager:error:")
-    protected native boolean createRelationships(NSManagedObject dInstance, NSEntityMapping mapping, NSMigrationManager manager, NSError.NSErrorPtr error);
+    private native boolean createRelationships(NSManagedObject dInstance, NSEntityMapping mapping, NSMigrationManager manager, NSError.NSErrorPtr error);
+    public boolean endRelationshipCreation(NSEntityMapping mapping, NSMigrationManager manager) throws NSErrorException {
+       NSError.NSErrorPtr ptr = new NSError.NSErrorPtr();
+       boolean result = endRelationshipCreation(mapping, manager, ptr);
+       if (ptr.get() != null) { throw new NSErrorException(ptr.get()); }
+       return result;
+    }
     @Method(selector = "endRelationshipCreationForEntityMapping:manager:error:")
-    protected native boolean endRelationshipCreation(NSEntityMapping mapping, NSMigrationManager manager, NSError.NSErrorPtr error);
+    private native boolean endRelationshipCreation(NSEntityMapping mapping, NSMigrationManager manager, NSError.NSErrorPtr error);
+    public boolean performCustomValidation(NSEntityMapping mapping, NSMigrationManager manager) throws NSErrorException {
+       NSError.NSErrorPtr ptr = new NSError.NSErrorPtr();
+       boolean result = performCustomValidation(mapping, manager, ptr);
+       if (ptr.get() != null) { throw new NSErrorException(ptr.get()); }
+       return result;
+    }
     @Method(selector = "performCustomValidationForEntityMapping:manager:error:")
-    protected native boolean performCustomValidation(NSEntityMapping mapping, NSMigrationManager manager, NSError.NSErrorPtr error);
+    private native boolean performCustomValidation(NSEntityMapping mapping, NSMigrationManager manager, NSError.NSErrorPtr error);
+    public boolean endEntityMapping(NSEntityMapping mapping, NSMigrationManager manager) throws NSErrorException {
+       NSError.NSErrorPtr ptr = new NSError.NSErrorPtr();
+       boolean result = endEntityMapping(mapping, manager, ptr);
+       if (ptr.get() != null) { throw new NSErrorException(ptr.get()); }
+       return result;
+    }
     @Method(selector = "endEntityMapping:manager:error:")
-    protected native boolean endEntityMapping(NSEntityMapping mapping, NSMigrationManager manager, NSError.NSErrorPtr error);
+    private native boolean endEntityMapping(NSEntityMapping mapping, NSMigrationManager manager, NSError.NSErrorPtr error);
     /*</methods>*/
 }

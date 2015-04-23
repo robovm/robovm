@@ -405,49 +405,10 @@ import org.robovm.apple.coretext.CTAttributedStringAttributes;
         }
         return NSStringExtensions.getBoundingRect(this, size, options, attributes.getDictionary().as(NSDictionary.class), context);
     }
-
-    /**
-     * 
-     * @param url
-     * @param enc
-     * @return
-     * @throws NSErrorException
-     */
-    public static String readURL(NSURL url, NSStringEncoding enc) throws NSErrorException {
-        NSError.NSErrorPtr err = new NSError.NSErrorPtr();
-        String result = readURL(url, enc, err); 
-        if (err.get() != null) {
-            throw new NSErrorException(err.get());
-        }
-        return result;
-    }
     
-    /**
-     * 
-     * @param path
-     * @param enc
-     * @return
-     * @throws NSErrorException
-     */
     public static String readFile(File path, NSStringEncoding enc) throws NSErrorException {
         return readFile(path.getAbsolutePath(), enc);
     }
-    /**
-     * 
-     * @param path
-     * @param enc
-     * @return
-     * @throws NSErrorException
-     */
-    public static String readFile(String path, NSStringEncoding enc) throws NSErrorException {
-        NSError.NSErrorPtr err = new NSError.NSErrorPtr();
-        String result = readFile(path, enc, err);
-        if (err.get() != null) {
-            throw new NSErrorException(err.get());
-        }
-        return result;
-    }
-    
     /* Convenience methods */
     private static final Selector sel_hasPrefix$ = Selector.register("hasPrefix:");
     @Bridge protected static native String hasPrefix(@Pointer long handle, Selector sel, String prefix);
@@ -529,16 +490,40 @@ import org.robovm.apple.coretext.CTAttributedStringAttributes;
     public native NSData toData(NSStringEncoding encoding);
     @Method(selector = "initWithCharacters:length:")
     protected native @Pointer long init(@Pointer long characters, @MachineSizedUInt long length);
+    public boolean writeURL(NSURL url, boolean useAuxiliaryFile, NSStringEncoding enc) throws NSErrorException {
+       NSError.NSErrorPtr ptr = new NSError.NSErrorPtr();
+       boolean result = writeURL(url, useAuxiliaryFile, enc, ptr);
+       if (ptr.get() != null) { throw new NSErrorException(ptr.get()); }
+       return result;
+    }
     @Method(selector = "writeToURL:atomically:encoding:error:")
-    protected native boolean writeURL(NSURL url, boolean useAuxiliaryFile, NSStringEncoding enc, NSError.NSErrorPtr error);
+    private native boolean writeURL(NSURL url, boolean useAuxiliaryFile, NSStringEncoding enc, NSError.NSErrorPtr error);
+    public boolean writeFile(String path, boolean useAuxiliaryFile, NSStringEncoding enc) throws NSErrorException {
+       NSError.NSErrorPtr ptr = new NSError.NSErrorPtr();
+       boolean result = writeFile(path, useAuxiliaryFile, enc, ptr);
+       if (ptr.get() != null) { throw new NSErrorException(ptr.get()); }
+       return result;
+    }
     @Method(selector = "writeToFile:atomically:encoding:error:")
-    protected native boolean writeFile(String path, boolean useAuxiliaryFile, NSStringEncoding enc, NSError.NSErrorPtr error);
+    private native boolean writeFile(String path, boolean useAuxiliaryFile, NSStringEncoding enc, NSError.NSErrorPtr error);
     @Method(selector = "stringWithCharacters:length:")
     protected static native @Pointer long create(@Pointer long characters, @MachineSizedUInt long length);
+    public static String readURL(NSURL url, NSStringEncoding enc) throws NSErrorException {
+       NSError.NSErrorPtr ptr = new NSError.NSErrorPtr();
+       String result = readURL(url, enc, ptr);
+       if (ptr.get() != null) { throw new NSErrorException(ptr.get()); }
+       return result;
+    }
     @Method(selector = "stringWithContentsOfURL:encoding:error:")
-    protected static native String readURL(NSURL url, NSStringEncoding enc, NSError.NSErrorPtr error);
+    private static native String readURL(NSURL url, NSStringEncoding enc, NSError.NSErrorPtr error);
+    public static String readFile(String path, NSStringEncoding enc) throws NSErrorException {
+       NSError.NSErrorPtr ptr = new NSError.NSErrorPtr();
+       String result = readFile(path, enc, ptr);
+       if (ptr.get() != null) { throw new NSErrorException(ptr.get()); }
+       return result;
+    }
     @Method(selector = "stringWithContentsOfFile:encoding:error:")
-    protected static native String readFile(String path, NSStringEncoding enc, NSError.NSErrorPtr error);
+    private static native String readFile(String path, NSStringEncoding enc, NSError.NSErrorPtr error);
     @Method(selector = "stringByAppendingPathComponent:")
     public native String appendPathComponent(String str);
     @Method(selector = "stringByAppendingPathExtension:")

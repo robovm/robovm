@@ -98,22 +98,6 @@ import org.robovm.apple.audiounit.*;
     public native void setRedirect(NSURLRequest v);
     /*</properties>*/
     /*<members>*//*</members>*/
-    /**
-     * 
-     * @param appIdentifier
-     * @param contentIdentifier
-     * @param options
-     * @return
-     * @throws NSErrorException
-     */
-    public NSData getStreamingContentKeyRequestData(NSData appIdentifier, NSData contentIdentifier, NSDictionary<NSString, ?> options) throws NSErrorException {
-        NSError.NSErrorPtr err = new NSError.NSErrorPtr();
-        NSData result = getStreamingContentKeyRequestData(appIdentifier, contentIdentifier, options, err);
-        if (err.get() != null) {
-            throw new NSErrorException(err.get());
-        }
-        return result;
-    }
     /*<methods>*/
     /**
      * @since Available in iOS 7.0 and later.
@@ -122,8 +106,14 @@ import org.robovm.apple.audiounit.*;
     public native void finishLoading();
     @Method(selector = "finishLoadingWithError:")
     public native void finishLoading(NSError error);
+    public NSData getStreamingContentKeyRequestData(NSData appIdentifier, NSData contentIdentifier, NSDictionary<NSString, ?> options) throws NSErrorException {
+       NSError.NSErrorPtr ptr = new NSError.NSErrorPtr();
+       NSData result = getStreamingContentKeyRequestData(appIdentifier, contentIdentifier, options, ptr);
+       if (ptr.get() != null) { throw new NSErrorException(ptr.get()); }
+       return result;
+    }
     @Method(selector = "streamingContentKeyRequestDataForApp:contentIdentifier:options:error:")
-    protected native NSData getStreamingContentKeyRequestData(NSData appIdentifier, NSData contentIdentifier, NSDictionary<NSString, ?> options, NSError.NSErrorPtr outError);
+    private native NSData getStreamingContentKeyRequestData(NSData appIdentifier, NSData contentIdentifier, NSDictionary<NSString, ?> options, NSError.NSErrorPtr outError);
     /**
      * @since Available in iOS 6.0 and later.
      * @deprecated Deprecated in iOS 7.0.

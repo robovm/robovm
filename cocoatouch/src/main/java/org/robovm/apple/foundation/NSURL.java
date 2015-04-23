@@ -49,12 +49,25 @@ import org.robovm.apple.foundation.NSError.NSErrorPtr;
     /*<bind>*/static { ObjCRuntime.bind(NSURL.class); }/*</bind>*/
     /*<constants>*//*</constants>*/
     public NSURL(NSURLScheme scheme, String host, String path) { super((SkipInit) null); initObject(init(scheme.value(), host, path)); }
+    public NSURL(NSData bookmarkData, NSURLBookmarkResolutionOptions options, NSURL relativeURL) throws NSErrorException {
+        this(bookmarkData, options, relativeURL, new BooleanPtr());
+    }
     /*<constructors>*/
     public NSURL() {}
     protected NSURL(SkipInit skipInit) { super(skipInit); }
     public NSURL(String scheme, String host, String path) { super((SkipInit) null); initObject(init(scheme, host, path)); }
     public NSURL(String URLString) { super((SkipInit) null); initObject(init(URLString)); }
     public NSURL(String URLString, NSURL baseURL) { super((SkipInit) null); initObject(init(URLString, baseURL)); }
+    /**
+     * @since Available in iOS 4.0 and later.
+     */
+    public NSURL(NSData bookmarkData, NSURLBookmarkResolutionOptions options, NSURL relativeURL, BooleanPtr isStale) throws NSErrorException {
+       super((SkipInit) null);
+       NSError.NSErrorPtr ptr = new NSError.NSErrorPtr();
+       long handle = init(bookmarkData, options, relativeURL, isStale, ptr);
+       if (ptr.get() != null) { throw new NSErrorException(ptr.get()); }
+       initObject(handle);
+    }
     /*</constructors>*/
     
     public NSURL(File file) {
@@ -70,23 +83,6 @@ import org.robovm.apple.foundation.NSError.NSErrorPtr;
     }
     public NSURL(java.net.URI uri) {
         this(uri.toString());
-    }
-    /**
-     * 
-     * @param bookmarkData
-     * @param options
-     * @param relativeURL
-     * @param isStale
-     * @since Available in iOS 4.0 and later.
-     * @throws NSErrorException
-     */
-    public NSURL(NSData bookmarkData, NSURLBookmarkResolutionOptions options, NSURL relativeURL, BooleanPtr isStale) throws NSErrorException {
-        super((SkipInit) null);
-        NSError.NSErrorPtr err = new NSError.NSErrorPtr();
-        initObject(init(bookmarkData, options, relativeURL, isStale, err));
-        if (err.get() != null) {
-            throw new NSErrorException(err.get());
-        }
     }
 
     /*<properties>*/
@@ -209,15 +205,17 @@ import org.robovm.apple.foundation.NSError.NSErrorPtr;
     public NSObject getResourceValue(NSURLUbiquitousItemProperty property) throws NSErrorException {
         return getResourceValue(property.value());
     }
-    private NSObject getResourceValue(NSString key) {
+    /**
+     * @since Available in iOS 4.0 and later.
+     * @throws NSErrorException
+     */
+    private NSObject getResourceValue(NSString key) throws NSErrorException {
         NSObjectPtr value = new NSObjectPtr();
         NSError.NSErrorPtr err = new NSError.NSErrorPtr();
-        
         getResourceValue(value, key, err);
         if (err.get() != null) {
             throw new NSErrorException(err.get());
         }
-        
         return value.get();
     }
     
@@ -330,103 +328,6 @@ import org.robovm.apple.foundation.NSError.NSErrorPtr;
         }
         return null;
     }
-
-    /**
-     * @since Available in iOS 4.0 and later.
-     * @throws NSErrorException
-     */
-    public boolean checkResourceIsReachable() throws NSErrorException {
-        NSError.NSErrorPtr err = new NSError.NSErrorPtr();
-        boolean result = checkResourceIsReachable(err);
-        if (err.get() != null) {
-            throw new NSErrorException(err.get());
-        }
-        return result;
-    }
-    /**
-     * @since Available in iOS 4.0 and later.
-     * @throws NSErrorException
-     */
-    public NSURLProperties getResourceValues(@org.robovm.rt.bro.annotation.Marshaler(NSURLProperty.AsListMarshaler.class) List<NSURLProperty> keys) throws NSErrorException {
-        NSError.NSErrorPtr err = new NSError.NSErrorPtr();
-        NSURLProperties result = getResourceValues(keys, err);
-        if (err.get() != null) {
-            throw new NSErrorException(err.get());
-        }
-        return result;
-    }
-    /**
-     * @since Available in iOS 4.0 and later.
-     * @throws NSErrorException
-     */
-    public boolean setResourceValues(NSURLProperties keyedValues) throws NSErrorException {
-        NSError.NSErrorPtr err = new NSError.NSErrorPtr();
-        boolean result = setResourceValues(keyedValues, err);
-        if (err.get() != null) {
-            throw new NSErrorException(err.get());
-        }
-        return result;
-    }
-    /**
-     * @since Available in iOS 4.0 and later.
-     * @throws NSErrorException
-     */
-    public NSData toBookmarkData(NSURLBookmarkCreationOptions options, @org.robovm.rt.bro.annotation.Marshaler(NSURLProperty.AsListMarshaler.class) List<NSURLProperty> keys, NSURL relativeURL) throws NSErrorException {
-        NSError.NSErrorPtr err = new NSError.NSErrorPtr();
-        NSData result = toBookmarkData(options, keys, relativeURL, err);
-        if (err.get() != null) {
-            throw new NSErrorException(err.get());
-        }
-        return result;
-    }
-    /**
-     * @since Available in iOS 4.0 and later.
-     * @throws NSErrorException
-     */
-    public static boolean writeBookmarkData(NSData bookmarkData, NSURL bookmarkFileURL, NSURLBookmarkCreationOptions options) throws NSErrorException {
-        NSError.NSErrorPtr err = new NSError.NSErrorPtr();
-        boolean result = writeBookmarkData(bookmarkData, bookmarkFileURL, options, err);
-        if (err.get() != null) {
-            throw new NSErrorException(err.get());
-        }
-        return result;
-    }
-    /**
-     * @since Available in iOS 4.0 and later.
-     * @throws NSErrorException
-     */
-    public static NSData createBookmarkData(NSURL bookmarkFileURL) throws NSErrorException {
-        NSError.NSErrorPtr err = new NSError.NSErrorPtr();
-        NSData result = createBookmarkData(bookmarkFileURL, err);
-        if (err.get() != null) {
-            throw new NSErrorException(err.get());
-        }
-        return result;
-    }
-    /**
-     * @since Available in iOS 8.0 and later.
-     * @throws NSErrorException
-     */
-    public NSURLProperties getPromisedItemResourceValues(@org.robovm.rt.bro.annotation.Marshaler(NSURLProperty.AsListMarshaler.class) List<NSURLProperty> keys) throws NSErrorException {
-        NSError.NSErrorPtr err = new NSError.NSErrorPtr();
-        NSURLProperties result = getPromisedItemResourceValues(keys, err);
-        if (err.get() != null) {
-            throw new NSErrorException(err.get());
-        }
-        return result;
-    }
-    /**
-     * @since Available in iOS 8.0 and later.
-     * @throws NSErrorException
-     */
-    public boolean isPromisedItemReachable() throws NSErrorException {
-        NSError.NSErrorPtr err = new NSError.NSErrorPtr();
-        boolean result = isPromisedItemReachable(err);
-        if (err.get() != null) {
-            throw new NSErrorException(err.get());
-        }
-        return result;
-    }
     /*<methods>*/
     @Method(selector = "initWithScheme:host:path:")
     protected native @Pointer long init(String scheme, String host, String path);
@@ -444,8 +345,17 @@ import org.robovm.apple.foundation.NSError.NSErrorPtr;
     /**
      * @since Available in iOS 4.0 and later.
      */
+    public boolean checkResourceIsReachable() throws NSErrorException {
+       NSError.NSErrorPtr ptr = new NSError.NSErrorPtr();
+       boolean result = checkResourceIsReachable(ptr);
+       if (ptr.get() != null) { throw new NSErrorException(ptr.get()); }
+       return result;
+    }
+    /**
+     * @since Available in iOS 4.0 and later.
+     */
     @Method(selector = "checkResourceIsReachableAndReturnError:")
-    protected native boolean checkResourceIsReachable(NSError.NSErrorPtr error);
+    private native boolean checkResourceIsReachable(NSError.NSErrorPtr error);
     /**
      * @since Available in iOS 4.0 and later.
      */
@@ -464,18 +374,45 @@ import org.robovm.apple.foundation.NSError.NSErrorPtr;
     /**
      * @since Available in iOS 4.0 and later.
      */
+    public NSURLProperties getResourceValues(@org.robovm.rt.bro.annotation.Marshaler(NSURLProperty.AsListMarshaler.class) List<NSURLProperty> keys) throws NSErrorException {
+       NSError.NSErrorPtr ptr = new NSError.NSErrorPtr();
+       NSURLProperties result = getResourceValues(keys, ptr);
+       if (ptr.get() != null) { throw new NSErrorException(ptr.get()); }
+       return result;
+    }
+    /**
+     * @since Available in iOS 4.0 and later.
+     */
     @Method(selector = "resourceValuesForKeys:error:")
-    protected native NSURLProperties getResourceValues(@org.robovm.rt.bro.annotation.Marshaler(NSURLProperty.AsListMarshaler.class) List<NSURLProperty> keys, NSError.NSErrorPtr error);
+    private native NSURLProperties getResourceValues(@org.robovm.rt.bro.annotation.Marshaler(NSURLProperty.AsListMarshaler.class) List<NSURLProperty> keys, NSError.NSErrorPtr error);
+    /**
+     * @since Available in iOS 4.0 and later.
+     */
+    public boolean setResourceValue(NSObject value, NSString key) throws NSErrorException {
+       NSError.NSErrorPtr ptr = new NSError.NSErrorPtr();
+       boolean result = setResourceValue(value, key, ptr);
+       if (ptr.get() != null) { throw new NSErrorException(ptr.get()); }
+       return result;
+    }
     /**
      * @since Available in iOS 4.0 and later.
      */
     @Method(selector = "setResourceValue:forKey:error:")
-    protected native boolean setResourceValue(NSObject value, NSString key, NSError.NSErrorPtr error);
+    private native boolean setResourceValue(NSObject value, NSString key, NSError.NSErrorPtr error);
+    /**
+     * @since Available in iOS 4.0 and later.
+     */
+    public boolean setResourceValues(NSURLProperties keyedValues) throws NSErrorException {
+       NSError.NSErrorPtr ptr = new NSError.NSErrorPtr();
+       boolean result = setResourceValues(keyedValues, ptr);
+       if (ptr.get() != null) { throw new NSErrorException(ptr.get()); }
+       return result;
+    }
     /**
      * @since Available in iOS 4.0 and later.
      */
     @Method(selector = "setResourceValues:error:")
-    protected native boolean setResourceValues(NSURLProperties keyedValues, NSError.NSErrorPtr error);
+    private native boolean setResourceValues(NSURLProperties keyedValues, NSError.NSErrorPtr error);
     /**
      * @since Available in iOS 7.0 and later.
      */
@@ -494,13 +431,22 @@ import org.robovm.apple.foundation.NSError.NSErrorPtr;
     /**
      * @since Available in iOS 4.0 and later.
      */
+    public NSData toBookmarkData(NSURLBookmarkCreationOptions options, @org.robovm.rt.bro.annotation.Marshaler(NSURLProperty.AsListMarshaler.class) List<NSURLProperty> keys, NSURL relativeURL) throws NSErrorException {
+       NSError.NSErrorPtr ptr = new NSError.NSErrorPtr();
+       NSData result = toBookmarkData(options, keys, relativeURL, ptr);
+       if (ptr.get() != null) { throw new NSErrorException(ptr.get()); }
+       return result;
+    }
+    /**
+     * @since Available in iOS 4.0 and later.
+     */
     @Method(selector = "bookmarkDataWithOptions:includingResourceValuesForKeys:relativeToURL:error:")
-    protected native NSData toBookmarkData(NSURLBookmarkCreationOptions options, @org.robovm.rt.bro.annotation.Marshaler(NSURLProperty.AsListMarshaler.class) List<NSURLProperty> keys, NSURL relativeURL, NSError.NSErrorPtr error);
+    private native NSData toBookmarkData(NSURLBookmarkCreationOptions options, @org.robovm.rt.bro.annotation.Marshaler(NSURLProperty.AsListMarshaler.class) List<NSURLProperty> keys, NSURL relativeURL, NSError.NSErrorPtr error);
     /**
      * @since Available in iOS 4.0 and later.
      */
     @Method(selector = "initByResolvingBookmarkData:options:relativeToURL:bookmarkDataIsStale:error:")
-    protected native @Pointer long init(NSData bookmarkData, NSURLBookmarkResolutionOptions options, NSURL relativeURL, BooleanPtr isStale, NSError.NSErrorPtr error);
+    private native @Pointer long init(NSData bookmarkData, NSURLBookmarkResolutionOptions options, NSURL relativeURL, BooleanPtr isStale, NSError.NSErrorPtr error);
     /**
      * @since Available in iOS 8.0 and later.
      */
@@ -519,28 +465,73 @@ import org.robovm.apple.foundation.NSError.NSErrorPtr;
     /**
      * @since Available in iOS 4.0 and later.
      */
+    public static boolean writeBookmarkData(NSData bookmarkData, NSURL bookmarkFileURL, NSURLBookmarkCreationOptions options) throws NSErrorException {
+       NSError.NSErrorPtr ptr = new NSError.NSErrorPtr();
+       boolean result = writeBookmarkData(bookmarkData, bookmarkFileURL, options, ptr);
+       if (ptr.get() != null) { throw new NSErrorException(ptr.get()); }
+       return result;
+    }
+    /**
+     * @since Available in iOS 4.0 and later.
+     */
     @Method(selector = "writeBookmarkData:toURL:options:error:")
-    protected static native boolean writeBookmarkData(NSData bookmarkData, NSURL bookmarkFileURL, NSURLBookmarkCreationOptions options, NSError.NSErrorPtr error);
+    private static native boolean writeBookmarkData(NSData bookmarkData, NSURL bookmarkFileURL, NSURLBookmarkCreationOptions options, NSError.NSErrorPtr error);
+    /**
+     * @since Available in iOS 4.0 and later.
+     */
+    public static NSData createBookmarkData(NSURL bookmarkFileURL) throws NSErrorException {
+       NSError.NSErrorPtr ptr = new NSError.NSErrorPtr();
+       NSData result = createBookmarkData(bookmarkFileURL, ptr);
+       if (ptr.get() != null) { throw new NSErrorException(ptr.get()); }
+       return result;
+    }
     /**
      * @since Available in iOS 4.0 and later.
      */
     @Method(selector = "bookmarkDataWithContentsOfURL:error:")
-    protected static native NSData createBookmarkData(NSURL bookmarkFileURL, NSError.NSErrorPtr error);
+    private static native NSData createBookmarkData(NSURL bookmarkFileURL, NSError.NSErrorPtr error);
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    public boolean getPromisedItemResourceValue(NSObject.NSObjectPtr value, NSString key) throws NSErrorException {
+       NSError.NSErrorPtr ptr = new NSError.NSErrorPtr();
+       boolean result = getPromisedItemResourceValue(value, key, ptr);
+       if (ptr.get() != null) { throw new NSErrorException(ptr.get()); }
+       return result;
+    }
     /**
      * @since Available in iOS 8.0 and later.
      */
     @Method(selector = "getPromisedItemResourceValue:forKey:error:")
-    protected native boolean getPromisedItemResourceValue(NSObject.NSObjectPtr value, NSString key, NSError.NSErrorPtr error);
+    private native boolean getPromisedItemResourceValue(NSObject.NSObjectPtr value, NSString key, NSError.NSErrorPtr error);
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    public NSURLProperties getPromisedItemResourceValues(@org.robovm.rt.bro.annotation.Marshaler(NSURLProperty.AsListMarshaler.class) List<NSURLProperty> keys) throws NSErrorException {
+       NSError.NSErrorPtr ptr = new NSError.NSErrorPtr();
+       NSURLProperties result = getPromisedItemResourceValues(keys, ptr);
+       if (ptr.get() != null) { throw new NSErrorException(ptr.get()); }
+       return result;
+    }
     /**
      * @since Available in iOS 8.0 and later.
      */
     @Method(selector = "promisedItemResourceValuesForKeys:error:")
-    protected native NSURLProperties getPromisedItemResourceValues(@org.robovm.rt.bro.annotation.Marshaler(NSURLProperty.AsListMarshaler.class) List<NSURLProperty> keys, NSError.NSErrorPtr error);
+    private native NSURLProperties getPromisedItemResourceValues(@org.robovm.rt.bro.annotation.Marshaler(NSURLProperty.AsListMarshaler.class) List<NSURLProperty> keys, NSError.NSErrorPtr error);
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    public boolean isPromisedItemReachable() throws NSErrorException {
+       NSError.NSErrorPtr ptr = new NSError.NSErrorPtr();
+       boolean result = isPromisedItemReachable(ptr);
+       if (ptr.get() != null) { throw new NSErrorException(ptr.get()); }
+       return result;
+    }
     /**
      * @since Available in iOS 8.0 and later.
      */
     @Method(selector = "checkPromisedItemIsReachableAndReturnError:")
-    protected native boolean isPromisedItemReachable(NSError.NSErrorPtr error);
+    private native boolean isPromisedItemReachable(NSError.NSErrorPtr error);
     /**
      * @since Available in iOS 4.0 and later.
      */

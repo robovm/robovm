@@ -76,41 +76,25 @@ import org.robovm.apple.uikit.*;
     public native float getInputMeterLevel();
     /*</properties>*/
     /*<members>*//*</members>*/
-    /**
-     * 
-     * @param participantID
-     * @return
-     * @throws NSErrorException
-     */
-    public boolean startVoiceChat(String participantID) throws NSErrorException {
-        NSError.NSErrorPtr err = new NSError.NSErrorPtr();
-        boolean result = startVoiceChat(participantID, err);
-        if (err.get() != null) {
-            throw new NSErrorException(err.get());
-        }
-        return result;
-    }
-    /**
-     * 
-     * @param callID
-     * @return
-     * @throws NSErrorException
-     */
-    public boolean acceptCallID(@MachineSizedSInt long callID) throws NSErrorException {
-        NSError.NSErrorPtr err = new NSError.NSErrorPtr();
-        boolean result = acceptCallID(callID, err);
-        if (err.get() != null) {
-            throw new NSErrorException(err.get());
-        }
-        return result;
-    }
     /*<methods>*/
+    public boolean startVoiceChat(String participantID) throws NSErrorException {
+       NSError.NSErrorPtr ptr = new NSError.NSErrorPtr();
+       boolean result = startVoiceChat(participantID, ptr);
+       if (ptr.get() != null) { throw new NSErrorException(ptr.get()); }
+       return result;
+    }
     @Method(selector = "startVoiceChatWithParticipantID:error:")
-    protected native boolean startVoiceChat(String participantID, NSError.NSErrorPtr error);
+    private native boolean startVoiceChat(String participantID, NSError.NSErrorPtr error);
     @Method(selector = "stopVoiceChatWithParticipantID:")
     public native void stopVoiceChat(String participantID);
+    public boolean acceptCallID(@MachineSizedSInt long callID) throws NSErrorException {
+       NSError.NSErrorPtr ptr = new NSError.NSErrorPtr();
+       boolean result = acceptCallID(callID, ptr);
+       if (ptr.get() != null) { throw new NSErrorException(ptr.get()); }
+       return result;
+    }
     @Method(selector = "acceptCallID:error:")
-    protected native boolean acceptCallID(@MachineSizedSInt long callID, NSError.NSErrorPtr error);
+    private native boolean acceptCallID(@MachineSizedSInt long callID, NSError.NSErrorPtr error);
     @Method(selector = "denyCallID:")
     public native void denyCallID(@MachineSizedSInt long callID);
     @Method(selector = "receivedRealTimeData:fromParticipantID:")

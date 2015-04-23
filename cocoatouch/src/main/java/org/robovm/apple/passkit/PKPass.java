@@ -45,20 +45,14 @@ import org.robovm.apple.addressbook.*;
     /*<constructors>*/
     public PKPass() {}
     protected PKPass(SkipInit skipInit) { super(skipInit); }
-    /*</constructors>*/
-    /**
-     * 
-     * @param data
-     * @throws NSErrorException
-     */
-    public PKPass(NSData data) throws NSErrorException { 
-        super((SkipInit) null);
-        NSError.NSErrorPtr err = new NSError.NSErrorPtr();
-        initObject(init(data, err));
-        if (err.get() != null) {
-            throw new NSErrorException(err.get());
-        }
+    public PKPass(NSData data) throws NSErrorException {
+       super((SkipInit) null);
+       NSError.NSErrorPtr ptr = new NSError.NSErrorPtr();
+       long handle = init(data, ptr);
+       if (ptr.get() != null) { throw new NSErrorException(ptr.get()); }
+       initObject(handle);
     }
+    /*</constructors>*/
     /*<properties>*/
     /**
      * @since Available in iOS 8.0 and later.
@@ -99,7 +93,7 @@ import org.robovm.apple.addressbook.*;
     /*<members>*//*</members>*/
     /*<methods>*/
     @Method(selector = "initWithData:error:")
-    protected native @Pointer long init(NSData data, NSError.NSErrorPtr error);
+    private native @Pointer long init(NSData data, NSError.NSErrorPtr error);
     @Method(selector = "localizedValueForFieldKey:")
     public native NSObject getLocalizedValue(String key);
     /*</methods>*/

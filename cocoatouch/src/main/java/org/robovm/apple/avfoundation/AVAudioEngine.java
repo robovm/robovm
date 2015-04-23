@@ -85,19 +85,6 @@ import org.robovm.apple.audiounit.*;
     public native boolean isRunning();
     /*</properties>*/
     /*<members>*//*</members>*/
-    /**
-     * 
-     * @return
-     * @throws NSErrorException
-     */
-    public boolean start() throws NSErrorException {
-        NSError.NSErrorPtr err = new NSError.NSErrorPtr();
-        boolean result = start(err);
-        if (err.get() != null) {
-            throw new NSErrorException(err.get());
-        }
-        return result;
-    }
     /*<methods>*/
     /**
      * @since Available in iOS 8.0 and later.
@@ -123,8 +110,14 @@ import org.robovm.apple.audiounit.*;
     public native void disconnectNodeOutput(AVAudioNode node);
     @Method(selector = "prepare")
     public native void prepare();
+    public boolean start() throws NSErrorException {
+       NSError.NSErrorPtr ptr = new NSError.NSErrorPtr();
+       boolean result = start(ptr);
+       if (ptr.get() != null) { throw new NSErrorException(ptr.get()); }
+       return result;
+    }
     @Method(selector = "startAndReturnError:")
-    protected native boolean start(NSError.NSErrorPtr outError);
+    private native boolean start(NSError.NSErrorPtr outError);
     @Method(selector = "pause")
     public native void pause();
     @Method(selector = "reset")

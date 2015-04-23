@@ -52,10 +52,10 @@ classes:
                         type: NSPersistentStoreOptions
             '-load:':
                 trim_after_first_colon: true
-                visibility: protected # throws NSErrorException
+                throws: NSErrorException
             '-save:':
                 trim_after_first_colon: true
-                visibility: protected # throws NSErrorException 
+                throws: NSErrorException
             '-newCacheNodeForManagedObject:':
                 name: newCacheNode
                 return_marshaler: NSObject.NoRetainMarshaler
@@ -141,25 +141,25 @@ classes:
         methods:
             '-beginEntityMapping:manager:error:':
                 trim_after_first_colon: true
-                visibility: protected # throws NSErrorException 
+                throws: NSErrorException
             '-createDestinationInstancesForSourceInstance:entityMapping:manager:error:':
                 name: createDestinationInstances
-                visibility: protected # throws NSErrorException 
+                throws: NSErrorException
             '-endInstanceCreationForEntityMapping:manager:error:':
                 name: endInstanceCreation
-                visibility: protected # throws NSErrorException 
+                throws: NSErrorException
             '-createRelationshipsForDestinationInstance:entityMapping:manager:error:':
                 name: createRelationships
-                visibility: protected # throws NSErrorException 
+                throws: NSErrorException
             '-endRelationshipCreationForEntityMapping:manager:error:':
                 name: endRelationshipCreation
-                visibility: protected # throws NSErrorException 
+                throws: NSErrorException
             '-performCustomValidationForEntityMapping:manager:error:':
                 name: performCustomValidation
-                visibility: protected # throws NSErrorException 
+                throws: NSErrorException
             '-endEntityMapping:manager:error:':
                 trim_after_first_colon: true
-                visibility: protected # throws NSErrorException 
+                throws: NSErrorException
     NSExpressionDescription: {} # DONE
     NSFetchedPropertyDescription: {} # DONE
     NSFetchedResultsController: # DONE
@@ -175,7 +175,7 @@ classes:
                 name: init
             '-performFetch:':
                 trim_after_first_colon: true
-                visibility: protected # throws NSErrorException 
+                throws: NSErrorException
             '-objectAtIndexPath:':
                 name: getObjectAtIndexPath
             '-indexPathForObject:':
@@ -303,10 +303,11 @@ classes:
                 return_type: '@org.robovm.rt.bro.annotation.Marshaler(NSDictionary.AsStringMapMarshaler.class) Map<String, NSObject>'
             '-validateValue:forKey:error:':
                 name: validateValue
-                visibility: protected # throws NSErrorException
+                throws: NSErrorException
+                visibility: private # switched arguments
             '-validateFor.*':
                 trim_after_first_colon: true
-                visibility: protected # throws NSErrorException
+                throws: NSErrorException
             '+contextShouldIgnoreUnmodeledPropertyChanges':
                 name: shouldContextIgnoreUnmodeledPropertyChanges
     NSManagedObjectContext: # DONE
@@ -328,17 +329,17 @@ classes:
                 name: getObjectWithId
             '-existingObjectWithID:error:':
                 name: getExistingObjectWithID
-                visibility: protected # throws NSErrorException
+                throws: NSErrorException
             '-executeFetchRequest:error:':
                 trim_after_first_colon: true
-                visibility: protected # throws NSErrorException
+                throws: NSErrorException
                 return_type: NSArray<NSManagedObject>
             '-countForFetchRequest:error:':
                 name: getCountForFetchRequest
-                visibility: protected # throws NSErrorException
+                throws: NSErrorException
             '-executeRequest:error:':
                 trim_after_first_colon: true
-                visibility: protected # throws NSErrorException
+                throws: NSErrorException
             '-insertObject:':
                 trim_after_first_colon: true
             '-deleteObject:':
@@ -353,10 +354,10 @@ classes:
                 name: assignObjectToPersistentStore
             '-save:':
                 trim_after_first_colon: true
-                visibility: protected # throws NSErrorException
+                throws: NSErrorException
             '-obtainPermanentIDsForObjects:error:':
                 name: obtainPermanentIDsForObjects
-                visibility: protected # throws NSErrorException
+                throws: NSErrorException
                 parameters:
                     objects:
                         type: NSArray<NSManagedObject>
@@ -445,7 +446,7 @@ classes:
                         type: NSArray<NSBundle>
             '+inferredMappingModelForSourceModel:destinationModel:error:':
                 name: createInferred
-                visibility: protected # throws NSErrorException
+                throws: NSErrorException
     NSMergeConflict: # DONE
         properties:
             '.*Snapshot':
@@ -464,7 +465,7 @@ classes:
                 name: init
             '-resolveConflicts:error:':
                 trim_after_first_colon: true
-                visibility: protected # throws NSErrorException 
+                throws: NSErrorException
                 parameters:
                     list:
                         type: NSArray<NSMergeConflict>
@@ -474,7 +475,7 @@ classes:
                 name: init
             '-migrateStoreFromURL:type:options:withMappingModel:toDestinationURL:destinationType:destinationOptions:error:':
                 name: migrateStore
-                visibility: protected # throws NSErrorException
+                throws: NSErrorException
                 parameters:
                     sOptions:
                         type: NSPersistentStoreOptions
@@ -514,7 +515,7 @@ classes:
                         type: NSPersistentStoreOptions
             '-loadMetadata:':
                 trim_after_first_colon: true
-                visibility: protected # throws NSErrorException
+                throws: NSErrorException
             '-didAddToPersistentStoreCoordinator:':
                 trim_after_first_colon: true
             '-willRemoveFromPersistentStoreCoordinator:':
@@ -522,10 +523,10 @@ classes:
             '+metadataForPersistentStoreWithURL:error:':
                 name: getMetadataForPersistentStore
                 return_type: NSPersistentStoreMetadata
-                visibility: protected # throws NSErrorException
+                throws: NSErrorException
             '+setMetadata:forPersistentStoreWithURL:error:':
                 name: setMetadataForPersistentStore
-                visibility: protected # throws NSErrorException
+                throws: NSErrorException
                 parameters:
                     metadata:
                         type: NSPersistentStoreMetadata
@@ -548,13 +549,13 @@ classes:
                 name: setURLForPersistentStore
             '-addPersistentStoreWithType:configuration:URL:options:error:':
                 name: addPersistentStore
-                visibility: protected # throws NSErrorException
+                throws: NSErrorException
                 parameters:
                     options:
                         type: NSPersistentStoreOptions
             '-removePersistentStore:error:':
                 trim_after_first_colon: true
-                visibility: protected # throws NSErrorException
+                throws: NSErrorException
             '-setMetadata:forPersistentStore:':
                 name: setMetadataForPersistentStore
                 parameters:
@@ -566,10 +567,10 @@ classes:
                 name: getManagedObjectIDForURIRepresentation
             '-executeRequest:withContext:error:':
                 trim_after_first_colon: true
-                visibility: protected # throws NSErrorException
+                throws: NSErrorException
             '-migratePersistentStore:toURL:options:withType:error:':
                 trim_after_first_colon: true
-                visibility: protected # throws NSErrorException
+                throws: NSErrorException
                 parameters:
                     options:
                         type: NSPersistentStoreOptions
@@ -587,17 +588,17 @@ classes:
                         type: 'Class<? extends NSPersistentStore>'
             '+metadataForPersistentStoreOfType:URL:error:':
                 name: getMetadataForPersistentStoreType
-                visibility: protected # throws NSErrorException
+                throws: NSErrorException
                 return_type: NSPersistentStoreMetadata
             '+setMetadata:forPersistentStoreOfType:URL:error:':
                 name: setMetadataForPersistentStoreType
-                visibility: protected # throws NSErrorException
+                throws: NSErrorException
                 parameters:
                     metadata:
                         type: NSPersistentStoreMetadata
             '+removeUbiquitousContentAndPersistentStoreAtURL:options:error:':
                 name: removeUbiquitousContentAndPersistentStore
-                visibility: protected # throws NSErrorException
+                throws: NSErrorException
                 parameters:
                     options:
                         type: NSPersistentStoreOptions

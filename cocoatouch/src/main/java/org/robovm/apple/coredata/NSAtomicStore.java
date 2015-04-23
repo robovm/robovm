@@ -52,39 +52,25 @@ import org.robovm.apple.foundation.NSError.NSErrorPtr;
     
     /*</properties>*/
     /*<members>*//*</members>*/
-    /**
-     * 
-     * @return
-     * @throws NSErrorException
-     */
-    public boolean load() throws NSErrorException {
-        NSError.NSErrorPtr err = new NSError.NSErrorPtr();
-        boolean result = load(err);
-        if (err.get() != null) {
-            throw new NSErrorException(err.get());
-        }
-        return result;
-    }
-    /**
-     * 
-     * @return
-     * @throws NSErrorException
-     */
-    public boolean save() throws NSErrorException {
-        NSError.NSErrorPtr err = new NSError.NSErrorPtr();
-        boolean result = save(err);
-        if (err.get() != null) {
-            throw new NSErrorException(err.get());
-        }
-        return result;
-    }
     /*<methods>*/
     @Method(selector = "initWithPersistentStoreCoordinator:configurationName:URL:options:")
     protected native @Pointer long init(NSPersistentStoreCoordinator coordinator, String configurationName, NSURL url, NSPersistentStoreOptions options);
+    public boolean load() throws NSErrorException {
+       NSError.NSErrorPtr ptr = new NSError.NSErrorPtr();
+       boolean result = load(ptr);
+       if (ptr.get() != null) { throw new NSErrorException(ptr.get()); }
+       return result;
+    }
     @Method(selector = "load:")
-    protected native boolean load(NSError.NSErrorPtr error);
+    private native boolean load(NSError.NSErrorPtr error);
+    public boolean save() throws NSErrorException {
+       NSError.NSErrorPtr ptr = new NSError.NSErrorPtr();
+       boolean result = save(ptr);
+       if (ptr.get() != null) { throw new NSErrorException(ptr.get()); }
+       return result;
+    }
     @Method(selector = "save:")
-    protected native boolean save(NSError.NSErrorPtr error);
+    private native boolean save(NSError.NSErrorPtr error);
     @Method(selector = "newCacheNodeForManagedObject:")
     public native @org.robovm.rt.bro.annotation.Marshaler(NSObject.NoRetainMarshaler.class) NSAtomicStoreCacheNode newCacheNode(NSManagedObject managedObject);
     @Method(selector = "updateCacheNode:fromManagedObject:")

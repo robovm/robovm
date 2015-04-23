@@ -186,6 +186,7 @@ categories:
         methods:
             '-init.*':
                 name: init
+                throws: NSErrorException
                 visibility: protected
                 return_type: '@Pointer long'
                 parameters:
@@ -197,7 +198,7 @@ categories:
                 name: getBoundingRect
             '-dataFromRange:documentAttributes:error:':
                 name: getData
-                visibility: protected
+                throws: NSErrorException
                 parameters:
                     dict:
                         type: NSAttributedStringDocumentAttributes
@@ -209,7 +210,7 @@ categories:
                 name: draw
             '-fileWrapperFromRange:documentAttributes:error:':
                 name: getFileWrapper
-                visibility: protected
+                throws: NSErrorException
                 parameters:
                     dict:
                         type: NSAttributedStringDocumentAttributes
@@ -240,12 +241,14 @@ categories:
                 name: fixAttributesInRange
             '-readFromData:options:documentAttributes:error:':
                 name: readFromData
+                throws: NSErrorException
                 visibility: protected
                 parameters:
                     opts:
                         type: NSAttributedStringDocumentAttributes
             '-readFromFileURL:options:documentAttributes:error:':
                 name: readFromFileURL
+                throws: NSErrorException
                 visibility: protected
                 parameters:
                     opts:
@@ -355,7 +358,7 @@ classes:
                 name: stopProvidingItem
             '+writePlaceholderAtURL:withMetadata:error:':
                 name: writePlaceholder
-                visibility: protected # throws NSErrorException
+                throws: NSErrorException
                 parameters:
                     metadata:
                         type: NSURLProperties
@@ -1210,7 +1213,7 @@ classes:
             '-fileAttributesToWriteToURL:forSaveOperation:error:':
                 name: getFileAttributesToWrite
                 return_type: NSFileAttributes
-                visibility: protected # throws NSErrorException
+                throws: NSErrorException
             '-fileNameExtensionForType:saveOperation:':
                 name: getFileNameExtension
             '-openWithCompletionHandler:':
@@ -1219,7 +1222,7 @@ classes:
                 name: performAsynchronousFileAccess
             '-readFromURL:error:':
                 name: read
-                visibility: protected # throws NSErrorException
+                throws: NSErrorException
             '-revertToContentsOfURL:completionHandler:':
                 name: revert
             '-saveToURL:forSaveOperation:completionHandler:':
@@ -1228,23 +1231,23 @@ classes:
                 name: updateChangeCount
             '-loadFromContents:ofType:error:':
                 trim_after_first_colon: true
-                visibility: protected # throws NSErrorException
+                throws: NSErrorException
             '-contentsForType:error:':
                 name: getContentsForType
-                visibility: protected # throws NSErrorException
+                throws: NSErrorException
             '-updateChangeCount:':
                 trim_after_first_colon: true
             '-changeCountTokenForSaveOperation:':
                 name: getChangeCountToken
             '-writeContents:andAttributes:safelyToURL:forSaveOperation:error:':
                 trim_after_first_colon: true
-                visibility: protected # throws NSErrorException
+                throws: NSErrorException
                 parameters:
                     additionalFileAttributes:
                         type: NSFileAttributes
             '-writeContents:toURL:forSaveOperation:originalContentsURL:error:':
                 trim_after_first_colon: true
-                visibility: protected # throws NSErrorException
+                throws: NSErrorException
             '-handleError:userInteractionPermitted:':
                 trim_after_first_colon: true
             '-finishedHandlingError:recovered:':
@@ -1666,10 +1669,10 @@ classes:
                 name: getPersistentStoreName
             '-additionalContentForURL:error:':
                 name: getAdditionalContent
-                visibility: protected # throw NSErrorException
+                throws: NSErrorException
             '-configurePersistentStoreCoordinatorForURL:ofType:modelConfiguration:storeOptions:error:':
                 name: configurePersistentStoreCoordinator
-                visibility: protected # throw NSErrorException
+                throws: NSErrorException
                 parameters:
                     storeOptions:
                         type: NSPersistentStoreOptions
@@ -1677,10 +1680,10 @@ classes:
                 name: getPersistentStoreType
             '-readAdditionalContentFromURL:error:':
                 name: readAdditionalContent
-                visibility: protected # throw NSErrorException
+                throws: NSErrorException
             '-writeAdditionalContent:toURL:originalContentsURL:error:':
                 name: writeAdditionalContent
-                visibility: protected # throw NSErrorException
+                throws: NSErrorException
     UIMarkupTextPrintFormatter: # DONE
         methods:
             '-init.*':

@@ -69,23 +69,14 @@ import org.robovm.apple.audiounit.*;
     public native @MachineSizedUInt long getVersion();
     /*</properties>*/
     /*<members>*//*</members>*/
-    
-    /**
-     * 
-     * @param url
-     * @return
-     * @throws NSErrorException
-     */
-    public boolean loadAudioUnitPreset(NSURL url) throws NSErrorException {
-        NSError.NSErrorPtr err = new NSError.NSErrorPtr();
-        boolean result = loadAudioUnitPreset(url, err);
-        if (err.get() != null) {
-            throw new NSErrorException(err.get());
-        }
-        return result;
-    }
     /*<methods>*/
+    public boolean loadAudioUnitPreset(NSURL url) throws NSErrorException {
+       NSError.NSErrorPtr ptr = new NSError.NSErrorPtr();
+       boolean result = loadAudioUnitPreset(url, ptr);
+       if (ptr.get() != null) { throw new NSErrorException(ptr.get()); }
+       return result;
+    }
     @Method(selector = "loadAudioUnitPresetAtURL:error:")
-    protected native boolean loadAudioUnitPreset(NSURL url, NSError.NSErrorPtr error);
+    private native boolean loadAudioUnitPreset(NSURL url, NSError.NSErrorPtr error);
     /*</methods>*/
 }

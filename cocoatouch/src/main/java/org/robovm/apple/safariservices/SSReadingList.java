@@ -50,29 +50,21 @@ import org.robovm.apple.foundation.*;
     
     /*</properties>*/
     /*<members>*//*</members>*/
-    /**
-     * 
-     * @param URL
-     * @param title
-     * @param previewText
-     * @return
-     * @since Available in iOS 7.0 and later.
-     * @throws NSErrorException
-     */
-    public boolean addReadingListItem(NSURL URL, String title, String previewText) throws NSErrorException {
-        NSError.NSErrorPtr err = new NSError.NSErrorPtr();
-        boolean result = addReadingListItem(URL, title, previewText, err);
-        if (err.get() != null) {
-            throw new NSErrorException(err.get());
-        }
-        return result;
-    }
     /*<methods>*/
     /**
      * @since Available in iOS 7.0 and later.
      */
+    public boolean addReadingListItem(NSURL URL, String title, String previewText) throws NSErrorException {
+       NSError.NSErrorPtr ptr = new NSError.NSErrorPtr();
+       boolean result = addReadingListItem(URL, title, previewText, ptr);
+       if (ptr.get() != null) { throw new NSErrorException(ptr.get()); }
+       return result;
+    }
+    /**
+     * @since Available in iOS 7.0 and later.
+     */
     @Method(selector = "addReadingListItemWithURL:title:previewText:error:")
-    protected native boolean addReadingListItem(NSURL URL, String title, String previewText, NSError.NSErrorPtr error);
+    private native boolean addReadingListItem(NSURL URL, String title, String previewText, NSError.NSErrorPtr error);
     @Method(selector = "defaultReadingList")
     public static native SSReadingList getDefaultReadingList();
     @Method(selector = "supportsURL:")

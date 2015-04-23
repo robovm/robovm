@@ -52,7 +52,7 @@ classes:
         methods:
             '-startVPNTunnelAndReturnError:':
                 name: startVPNTunnel
-                visibility: protected # throws NSErrorException
+                throws: NSErrorException
     NEVPNManager: # DONE
         properties:
             'onDemandRules':

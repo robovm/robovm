@@ -49,23 +49,15 @@ import org.robovm.apple.dispatch.*;
     /*<ptr>*/public static class NSDataDetectorPtr extends Ptr<NSDataDetector, NSDataDetectorPtr> {}/*</ptr>*/
     /*<bind>*/static { ObjCRuntime.bind(NSDataDetector.class); }/*</bind>*/
     /*<constants>*//*</constants>*/
-    
-    /**
-     * 
-     * @param checkingTypes
-     * @throws NSErrorException
-     */
-    public NSDataDetector(NSTextCheckingType checkingTypes) throws NSErrorException { 
-        super((SkipInit) null);
-        NSError.NSErrorPtr err = new NSError.NSErrorPtr();
-        initObject(init(checkingTypes, err));
-        if (err.get() != null) {
-            throw new NSErrorException(err.get());
-        }
-    }
-
     /*<constructors>*/
     protected NSDataDetector(SkipInit skipInit) { super(skipInit); }
+    public NSDataDetector(NSTextCheckingType checkingTypes) throws NSErrorException {
+       super((SkipInit) null);
+       NSError.NSErrorPtr ptr = new NSError.NSErrorPtr();
+       long handle = init(checkingTypes, ptr);
+       if (ptr.get() != null) { throw new NSErrorException(ptr.get()); }
+       initObject(handle);
+    }
     /*</constructors>*/
     /*<properties>*/
     @Property(selector = "checkingTypes")
@@ -74,6 +66,6 @@ import org.robovm.apple.dispatch.*;
     /*<members>*//*</members>*/
     /*<methods>*/
     @Method(selector = "initWithTypes:error:")
-    protected native @Pointer long init(NSTextCheckingType checkingTypes, NSError.NSErrorPtr error);
+    private native @Pointer long init(NSTextCheckingType checkingTypes, NSError.NSErrorPtr error);
     /*</methods>*/
 }

@@ -61,48 +61,14 @@ import org.robovm.apple.foundation.NSError.NSErrorPtr;
      * @throws NSErrorException
      */
     public static NSPropertyList getPropertyListFromData(NSData data, NSPropertyListMutabilityOptions opt) throws NSErrorException {
-        NSError.NSErrorPtr err = new NSError.NSErrorPtr();
-        NSPropertyList result = getPropertyListFromData(data, opt, null, err);
-        if (err.get() != null) {
-            throw new NSErrorException(err.get());
-        }
-        return result;
+        return getPropertyListFromData(data, opt, null);
     }
     /**
      * @since Available in iOS 4.0 and later.
      * @throws NSErrorException
      */
     public static NSPropertyList getPropertyListFromStream(NSInputStream stream, NSPropertyListMutabilityOptions opt) throws NSErrorException {
-        NSError.NSErrorPtr err = new NSError.NSErrorPtr();
-        NSPropertyList result = getPropertyListFromStream(stream, opt, null, err);
-        if (err.get() != null) {
-            throw new NSErrorException(err.get());
-        }
-        return result;
-    }
-    /**
-     * @since Available in iOS 4.0 and later.
-     * @throws NSErrorException
-     */
-    public static NSData getDataFromPropertyList(NSPropertyList plist, NSPropertyListFormat format, @MachineSizedUInt long opt) throws NSErrorException {
-        NSError.NSErrorPtr err = new NSError.NSErrorPtr();
-        NSData result = getDataFromPropertyList(plist, format, opt, err);
-        if (err.get() != null) {
-            throw new NSErrorException(err.get());
-        }
-        return result;
-    }
-    /**
-     * @since Available in iOS 4.0 and later.
-     * @throws NSErrorException
-     */
-    public static @MachineSizedSInt long writePropertyListToStream(NSPropertyList plist, NSOutputStream stream, NSPropertyListFormat format, @MachineSizedUInt long opt) throws NSErrorException {
-        NSError.NSErrorPtr err = new NSError.NSErrorPtr();
-        long result = writePropertyListToStream(plist, stream, format, opt, err);
-        if (err.get() != null) {
-            throw new NSErrorException(err.get());
-        }
-        return result;
+        return getPropertyListFromStream(stream, opt, null);
     }
     /*<methods>*/
     @Method(selector = "propertyList:isValidForFormat:")
@@ -110,23 +76,59 @@ import org.robovm.apple.foundation.NSError.NSErrorPtr;
     /**
      * @since Available in iOS 4.0 and later.
      */
+    public static NSData getDataFromPropertyList(NSPropertyList plist, NSPropertyListFormat format, @MachineSizedUInt long opt) throws NSErrorException {
+       NSError.NSErrorPtr ptr = new NSError.NSErrorPtr();
+       NSData result = getDataFromPropertyList(plist, format, opt, ptr);
+       if (ptr.get() != null) { throw new NSErrorException(ptr.get()); }
+       return result;
+    }
+    /**
+     * @since Available in iOS 4.0 and later.
+     */
     @Method(selector = "dataWithPropertyList:format:options:error:")
-    protected static native NSData getDataFromPropertyList(NSPropertyList plist, NSPropertyListFormat format, @MachineSizedUInt long opt, NSError.NSErrorPtr error);
+    private static native NSData getDataFromPropertyList(NSPropertyList plist, NSPropertyListFormat format, @MachineSizedUInt long opt, NSError.NSErrorPtr error);
+    /**
+     * @since Available in iOS 4.0 and later.
+     */
+    public static @MachineSizedSInt long writePropertyListToStream(NSPropertyList plist, NSOutputStream stream, NSPropertyListFormat format, @MachineSizedUInt long opt) throws NSErrorException {
+       NSError.NSErrorPtr ptr = new NSError.NSErrorPtr();
+       long result = writePropertyListToStream(plist, stream, format, opt, ptr);
+       if (ptr.get() != null) { throw new NSErrorException(ptr.get()); }
+       return result;
+    }
     /**
      * @since Available in iOS 4.0 and later.
      */
     @Method(selector = "writePropertyList:toStream:format:options:error:")
-    protected static native @MachineSizedSInt long writePropertyListToStream(NSPropertyList plist, NSOutputStream stream, NSPropertyListFormat format, @MachineSizedUInt long opt, NSError.NSErrorPtr error);
+    private static native @MachineSizedSInt long writePropertyListToStream(NSPropertyList plist, NSOutputStream stream, NSPropertyListFormat format, @MachineSizedUInt long opt, NSError.NSErrorPtr error);
+    /**
+     * @since Available in iOS 4.0 and later.
+     */
+    protected static NSPropertyList getPropertyListFromData(NSData data, NSPropertyListMutabilityOptions opt, MachineSizedUIntPtr format) throws NSErrorException {
+       NSError.NSErrorPtr ptr = new NSError.NSErrorPtr();
+       NSPropertyList result = getPropertyListFromData(data, opt, format, ptr);
+       if (ptr.get() != null) { throw new NSErrorException(ptr.get()); }
+       return result;
+    }
     /**
      * @since Available in iOS 4.0 and later.
      */
     @Method(selector = "propertyListWithData:options:format:error:")
-    protected static native NSPropertyList getPropertyListFromData(NSData data, NSPropertyListMutabilityOptions opt, MachineSizedUIntPtr format, NSError.NSErrorPtr error);
+    private static native NSPropertyList getPropertyListFromData(NSData data, NSPropertyListMutabilityOptions opt, MachineSizedUIntPtr format, NSError.NSErrorPtr error);
+    /**
+     * @since Available in iOS 4.0 and later.
+     */
+    protected static NSPropertyList getPropertyListFromStream(NSInputStream stream, NSPropertyListMutabilityOptions opt, MachineSizedUIntPtr format) throws NSErrorException {
+       NSError.NSErrorPtr ptr = new NSError.NSErrorPtr();
+       NSPropertyList result = getPropertyListFromStream(stream, opt, format, ptr);
+       if (ptr.get() != null) { throw new NSErrorException(ptr.get()); }
+       return result;
+    }
     /**
      * @since Available in iOS 4.0 and later.
      */
     @Method(selector = "propertyListWithStream:options:format:error:")
-    protected static native NSPropertyList getPropertyListFromStream(NSInputStream stream, NSPropertyListMutabilityOptions opt, MachineSizedUIntPtr format, NSError.NSErrorPtr error);
+    private static native NSPropertyList getPropertyListFromStream(NSInputStream stream, NSPropertyListMutabilityOptions opt, MachineSizedUIntPtr format, NSError.NSErrorPtr error);
     /**
      * @since Available in iOS 2.0 and later.
      * @deprecated Deprecated in iOS 8.0.

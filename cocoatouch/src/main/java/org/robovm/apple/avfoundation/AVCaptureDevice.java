@@ -357,19 +357,6 @@ import org.robovm.apple.audiounit.*;
     public native void setVideoHDREnabled(boolean v);
     /*</properties>*/
     /*<members>*//*</members>*/
-    /**
-     * 
-     * @return
-     * @throws NSErrorException
-     */
-    public boolean lockForConfiguration() throws NSErrorException {
-        NSError.NSErrorPtr err = new NSError.NSErrorPtr();
-        boolean result = lockForConfiguration(err);
-        if (err.get() != null) {
-            throw new NSErrorException(err.get());
-        }
-        return result;
-    }
     /*<methods>*/
     /**
      * @since Available in iOS 4.0 and later.
@@ -416,8 +403,14 @@ import org.robovm.apple.audiounit.*;
     
     @Method(selector = "hasMediaType:")
     public native boolean hasMediaType(AVMediaType mediaType);
+    public boolean lockForConfiguration() throws NSErrorException {
+       NSError.NSErrorPtr ptr = new NSError.NSErrorPtr();
+       boolean result = lockForConfiguration(ptr);
+       if (ptr.get() != null) { throw new NSErrorException(ptr.get()); }
+       return result;
+    }
     @Method(selector = "lockForConfiguration:")
-    protected native boolean lockForConfiguration(NSError.NSErrorPtr outError);
+    private native boolean lockForConfiguration(NSError.NSErrorPtr outError);
     @Method(selector = "unlockForConfiguration")
     public native void unlockForConfiguration();
     @Method(selector = "supportsAVCaptureSessionPreset:")
@@ -437,8 +430,17 @@ import org.robovm.apple.audiounit.*;
     /**
      * @since Available in iOS 6.0 and later.
      */
+    public boolean setTorchModeOn(float torchLevel) throws NSErrorException {
+       NSError.NSErrorPtr ptr = new NSError.NSErrorPtr();
+       boolean result = setTorchModeOn(torchLevel, ptr);
+       if (ptr.get() != null) { throw new NSErrorException(ptr.get()); }
+       return result;
+    }
+    /**
+     * @since Available in iOS 6.0 and later.
+     */
     @Method(selector = "setTorchModeOnWithLevel:error:")
-    protected native boolean setTorchModeOn(float torchLevel, NSError.NSErrorPtr outError);
+    private native boolean setTorchModeOn(float torchLevel, NSError.NSErrorPtr outError);
     @Method(selector = "isFocusModeSupported:")
     public native boolean isFocusModeSupported(AVCaptureFocusMode focusMode);
     /**

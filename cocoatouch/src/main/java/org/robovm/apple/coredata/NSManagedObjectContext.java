@@ -160,94 +160,6 @@ import org.robovm.apple.foundation.*;
     private void observeValueForKeyPath(String keyPath, NSObject object, NSKeyValueChangeInfo change, VoidPtr context) {
         observeValue(keyPath, object, change);
     }
-    
-    /**
-     * 
-     * @param objectID
-     * @return
-     * @since Available in iOS 3.0 and later.
-     * @throws NSErrorException
-     */
-    public NSManagedObject getExistingObjectWithID(NSManagedObjectID objectID) throws NSErrorException {
-        NSError.NSErrorPtr err = new NSError.NSErrorPtr();
-        NSManagedObject result = getExistingObjectWithID(objectID, err);
-        if (err.get() != null) {
-            throw new NSErrorException(err.get());
-        }
-        return result;
-    }
-    /**
-     * 
-     * @param request
-     * @return
-     * @throws NSErrorException
-     */
-    public NSArray<NSManagedObject> executeFetchRequest(NSFetchRequest request) throws NSErrorException {
-        NSError.NSErrorPtr err = new NSError.NSErrorPtr();
-        NSArray<NSManagedObject> result = executeFetchRequest(request, err);
-        if (err.get() != null) {
-            throw new NSErrorException(err.get());
-        }
-        return result;
-    }
-    /**
-     * 
-     * @param request
-     * @return
-     * @since Available in iOS 3.0 and later.
-     * @throws NSErrorException
-     */
-    public @MachineSizedUInt long getCountForFetchRequest(NSFetchRequest request) throws NSErrorException {
-        NSError.NSErrorPtr err = new NSError.NSErrorPtr();
-        long result = getCountForFetchRequest(request, err);
-        if (err.get() != null) {
-            throw new NSErrorException(err.get());
-        }
-        return result;
-    }
-    /**
-     * 
-     * @param request
-     * @return
-     * @since Available in iOS 8.0 and later.
-     * @throws NSErrorException
-     */
-    public NSPersistentStoreResult executeRequest(NSPersistentStoreRequest request) throws NSErrorException {
-        NSError.NSErrorPtr err = new NSError.NSErrorPtr();
-        NSPersistentStoreResult result = executeRequest(request, err);
-        if (err.get() != null) {
-            throw new NSErrorException(err.get());
-        }
-        return result;
-    }
-    /**
-     * 
-     * @return
-     * @throws NSErrorException
-     */
-    public boolean save() throws NSErrorException {
-        NSError.NSErrorPtr err = new NSError.NSErrorPtr();
-        boolean result = save(err);
-        if (err.get() != null) {
-            throw new NSErrorException(err.get());
-        }
-        return result;
-    }
-    /**
-     * 
-     * @param objects
-     * @return
-     * @since Available in iOS 3.0 and later.
-     * @throws NSErrorException
-     */
-    public boolean obtainPermanentIDsForObjects(NSArray<NSManagedObject> objects) throws NSErrorException {
-        NSError.NSErrorPtr err = new NSError.NSErrorPtr();
-        boolean result = obtainPermanentIDsForObjects(objects, err);
-        if (err.get() != null) {
-            throw new NSErrorException(err.get());
-        }
-        return result;
-    }
     /*<methods>*/
     /**
      * @since Available in iOS 3.0 and later.
@@ -287,20 +199,53 @@ import org.robovm.apple.foundation.*;
     /**
      * @since Available in iOS 3.0 and later.
      */
+    public NSManagedObject getExistingObjectWithID(NSManagedObjectID objectID) throws NSErrorException {
+       NSError.NSErrorPtr ptr = new NSError.NSErrorPtr();
+       NSManagedObject result = getExistingObjectWithID(objectID, ptr);
+       if (ptr.get() != null) { throw new NSErrorException(ptr.get()); }
+       return result;
+    }
+    /**
+     * @since Available in iOS 3.0 and later.
+     */
     @Method(selector = "existingObjectWithID:error:")
-    protected native NSManagedObject getExistingObjectWithID(NSManagedObjectID objectID, NSError.NSErrorPtr error);
+    private native NSManagedObject getExistingObjectWithID(NSManagedObjectID objectID, NSError.NSErrorPtr error);
+    public NSArray<NSManagedObject> executeFetchRequest(NSFetchRequest request) throws NSErrorException {
+       NSError.NSErrorPtr ptr = new NSError.NSErrorPtr();
+       NSArray<NSManagedObject> result = executeFetchRequest(request, ptr);
+       if (ptr.get() != null) { throw new NSErrorException(ptr.get()); }
+       return result;
+    }
     @Method(selector = "executeFetchRequest:error:")
-    protected native NSArray<NSManagedObject> executeFetchRequest(NSFetchRequest request, NSError.NSErrorPtr error);
+    private native NSArray<NSManagedObject> executeFetchRequest(NSFetchRequest request, NSError.NSErrorPtr error);
+    /**
+     * @since Available in iOS 3.0 and later.
+     */
+    public @MachineSizedUInt long getCountForFetchRequest(NSFetchRequest request) throws NSErrorException {
+       NSError.NSErrorPtr ptr = new NSError.NSErrorPtr();
+       long result = getCountForFetchRequest(request, ptr);
+       if (ptr.get() != null) { throw new NSErrorException(ptr.get()); }
+       return result;
+    }
     /**
      * @since Available in iOS 3.0 and later.
      */
     @Method(selector = "countForFetchRequest:error:")
-    protected native @MachineSizedUInt long getCountForFetchRequest(NSFetchRequest request, NSError.NSErrorPtr error);
+    private native @MachineSizedUInt long getCountForFetchRequest(NSFetchRequest request, NSError.NSErrorPtr error);
+    /**
+     * @since Available in iOS 8.0 and later.
+     */
+    public NSPersistentStoreResult executeRequest(NSPersistentStoreRequest request) throws NSErrorException {
+       NSError.NSErrorPtr ptr = new NSError.NSErrorPtr();
+       NSPersistentStoreResult result = executeRequest(request, ptr);
+       if (ptr.get() != null) { throw new NSErrorException(ptr.get()); }
+       return result;
+    }
     /**
      * @since Available in iOS 8.0 and later.
      */
     @Method(selector = "executeRequest:error:")
-    protected native NSPersistentStoreResult executeRequest(NSPersistentStoreRequest request, NSError.NSErrorPtr error);
+    private native NSPersistentStoreResult executeRequest(NSPersistentStoreRequest request, NSError.NSErrorPtr error);
     @Method(selector = "insertObject:")
     public native void insertObject(NSManagedObject object);
     @Method(selector = "deleteObject:")
@@ -321,8 +266,14 @@ import org.robovm.apple.foundation.*;
     public native void reset();
     @Method(selector = "rollback")
     public native void rollback();
+    public boolean save() throws NSErrorException {
+       NSError.NSErrorPtr ptr = new NSError.NSErrorPtr();
+       boolean result = save(ptr);
+       if (ptr.get() != null) { throw new NSErrorException(ptr.get()); }
+       return result;
+    }
     @Method(selector = "save:")
-    protected native boolean save(NSError.NSErrorPtr error);
+    private native boolean save(NSError.NSErrorPtr error);
     /**
      * @since Available in iOS 3.0 and later.
      * @deprecated Deprecated in iOS 8.0.
@@ -347,8 +298,17 @@ import org.robovm.apple.foundation.*;
     /**
      * @since Available in iOS 3.0 and later.
      */
+    public boolean obtainPermanentIDsForObjects(NSArray<NSManagedObject> objects) throws NSErrorException {
+       NSError.NSErrorPtr ptr = new NSError.NSErrorPtr();
+       boolean result = obtainPermanentIDsForObjects(objects, ptr);
+       if (ptr.get() != null) { throw new NSErrorException(ptr.get()); }
+       return result;
+    }
+    /**
+     * @since Available in iOS 3.0 and later.
+     */
     @Method(selector = "obtainPermanentIDsForObjects:error:")
-    protected native boolean obtainPermanentIDsForObjects(NSArray<NSManagedObject> objects, NSError.NSErrorPtr error);
+    private native boolean obtainPermanentIDsForObjects(NSArray<NSManagedObject> objects, NSError.NSErrorPtr error);
     /**
      * @since Available in iOS 3.0 and later.
      */

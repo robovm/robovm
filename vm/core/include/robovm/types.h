@@ -402,6 +402,13 @@ typedef struct VM {
     jboolean initialized;
 } VM;
 
+typedef struct RefTable {
+    struct RefTable* prev;
+    jint size; // Total size of this table
+    jint count; // Number of references in this table
+    void** entries;
+} RefTable;
+
 typedef struct GatewayFrame {
     /* 
      * Whenever we enter (through a call to a native, bridge or proxy method) or leave (through a call to  _call0 or

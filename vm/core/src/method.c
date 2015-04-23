@@ -125,7 +125,7 @@ jboolean rvmInitMethods(Env* env) {
     if (!empty_java_lang_StackTraceElement_array) {
         return FALSE;
     }
-    if (!rvmAddObjectGCRoot(env, (Object*) empty_java_lang_StackTraceElement_array)) {
+    if (!rvmAddGlobalRef(env, (Object*) empty_java_lang_StackTraceElement_array)) {
         return FALSE;
     }
 

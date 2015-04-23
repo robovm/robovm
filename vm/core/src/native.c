@@ -154,12 +154,13 @@ static jobject ToReflectedMethod(JNIEnv* env, jclass cls, jmethodID methodID, jb
 }
 
 static jweak NewWeakGlobalRef(JNIEnv* env, jobject obj) {
-    throwUnsupportedOperationException((Env*) env, "NewWeakGlobalRef");
-    return NULL;
+    // TODO: Implement this properly
+    return (jweak) (*env)->NewGlobalRef(env, obj);
 }
 
 static void DeleteWeakGlobalRef(JNIEnv* env, jweak obj) {
-    throwUnsupportedOperationException((Env*) env, "DeleteWeakGlobalRef");
+    // TODO: Implement this properly
+    (*env)->DeleteGlobalRef(env, obj);
 }
 
 static jint GetJavaVM(JNIEnv* env, JavaVM** vm) {
@@ -243,10 +244,12 @@ static jobject PopLocalFrame(JNIEnv* env, jobject res) {
 }
 
 static jobject NewGlobalRef(JNIEnv* env, jobject lobj) {
+    rvmAddGlobalRef((Env*) env, (Object*) lobj);
     return lobj;
 }
 
 static void DeleteGlobalRef(JNIEnv* env, jobject gref) {
+    rvmRemoveGlobalRef((Env*) env, (Object*) gref);
 }
 
 static void DeleteLocalRef(JNIEnv* env, jobject obj) {

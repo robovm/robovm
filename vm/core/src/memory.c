@@ -25,8 +25,7 @@
 #define LOG_TAG "core.memory"
 
 #define MIN_HEAP_SIZE (4*1024*1024) // 4MB
-#define OBJECTS_GC_ROOTS_INITIAL_SIZE 2048
-#define INTERNAL_GC_ROOTS_INITIAL_SIZE 1024
+#define GLOBAL_REFS_INITIAL_SIZE 2048
 
 static Class* java_nio_DirectByteBuffer = NULL;
 static Method* java_nio_DirectByteBuffer_init = NULL;
@@ -92,12 +91,10 @@ typedef struct HeapStat {
 static ReferentEntry* referents = NULL;
 static uint32_t referentEntryGCKind;
 
-static Object** objectGCRoots = NULL;
-static jint objectGCRootsCount = 0;
-static jint objectGCRootsSize = 0;
+static RefTable globalRefs = {0};
 
 static Mutex referentsLock;
-static Mutex gcRootsLock;
+static Mutex globalRefsLock;
 
 // The GC kind used when allocating Object arrays
 static uint32_t objectArrayGCKind;
@@ -481,7 +478,7 @@ jboolean initGC(Options* options) {
     if (rvmInitMutex(&referentsLock) != 0) {
         return FALSE;
     }
-    if (rvmInitMutex(&gcRootsLock) != 0) {
+    if (rvmInitMutex(&globalRefsLock) != 0) {
         return FALSE;
     }
 
@@ -910,7 +907,7 @@ jboolean rvmInitMemory(Env* env) {
     criticalOutOfMemoryError = rvmAllocateMemoryForObject(env, java_lang_OutOfMemoryError);
     if (!criticalOutOfMemoryError) return FALSE;
     criticalOutOfMemoryError->clazz = java_lang_OutOfMemoryError;
-    if (!rvmAddObjectGCRoot(env, criticalOutOfMemoryError)) return FALSE;
+    if (!rvmAddGlobalRef(env, criticalOutOfMemoryError)) return FALSE;
 
     return TRUE;
 }
@@ -1063,36 +1060,75 @@ void* rvmAllocateMemoryAtomicUncollectable(Env* env, size_t size) {
     return m;
 }
 
-static jboolean addObjectGCRoot(Env* env, void* ptr, void*** roots, jint* count, jint* size, 
-        jint initialSize) {
+jboolean rvmInitRefTable(Env* env, RefTable* refTable, jint size) {
+    refTable->entries = rvmAllocateMemoryUncollectable(env, size * sizeof(void*));
+    if (!refTable->entries) {
+        return FALSE;
+    }
+    refTable->size = size;
+    return TRUE;
+}
 
-    jint index = *count;
-    if (index >= *size) {
-        jint newSize = *size > 0 ? (*size << 1) : initialSize;
+jboolean rvmAddGlobalRef(Env* env, Object* object) {
+    if (!object) {
+        return TRUE;
+    }
+    rvmLockMutex(&globalRefsLock);
+    if (!globalRefs.entries) {
+        if (!rvmInitRefTable(env, &globalRefs, GLOBAL_REFS_INITIAL_SIZE)) {
+            rvmUnlockMutex(&globalRefsLock);
+            return FALSE;
+        }
+    }
+    jboolean result = rvmAddRef(env, &globalRefs, object);
+    rvmUnlockMutex(&globalRefsLock);
+    return result;
+}
+
+jboolean rvmRemoveGlobalRef(Env* env, Object* object) {
+    if (!object) {
+        return TRUE;
+    }
+    rvmLockMutex(&globalRefsLock);
+    jboolean result = rvmRemoveRef(env, &globalRefs, object);
+    rvmUnlockMutex(&globalRefsLock);
+    return result;
+}
+
+jboolean rvmAddRef(Env* env, RefTable* refTable, Object* object) {
+    jint index = refTable->count;
+    if (index >= refTable->size) {
+        jint newSize = refTable->size << 1;
         void** tmp = rvmAllocateMemoryUncollectable(env, newSize * sizeof(void*));
         if (!tmp) {
             return FALSE;
         }
-        TRACEF("Object GC roots grown from %d to %d total entries", *size, newSize);
-        if (*roots) {
-            memcpy(tmp, *roots, *size * sizeof(void*));
-            rvmFreeMemoryUncollectable(env, *roots);
-        }
-        *roots = tmp;
-        *size = newSize;
+        memcpy(tmp, refTable->entries, refTable->size * sizeof(void*));
+        rvmFreeMemoryUncollectable(env, refTable->entries);
+        refTable->entries = tmp;
+        refTable->size = newSize;
     }
-    (*roots)[index] = ptr;
-    *count = index + 1;
-
+    refTable->entries[index] = object;
+    refTable->count = index + 1;
     return TRUE;
 }
 
-jboolean rvmAddObjectGCRoot(Env* env, Object* object) {
-    rvmLockMutex(&gcRootsLock);
-    jboolean r = addObjectGCRoot(env, object, (void***) &objectGCRoots, &objectGCRootsCount, 
-                    &objectGCRootsSize, OBJECTS_GC_ROOTS_INITIAL_SIZE);
-    rvmUnlockMutex(&gcRootsLock);
-    return r;
+jboolean rvmRemoveRef(Env* env, RefTable* refTable, Object* object) {
+    // FIXME: Inefficient implementation
+    // Find the object from the end of the entries in the table.
+    for (jint i = refTable->count - 1; i >= 0; i--) {
+        if (refTable->entries[i] == object) {
+            refTable->entries[i] = NULL;
+            jint toMove = refTable->count - 1 - i;
+            if (toMove > 0) {
+                memmove(&refTable->entries[i], &refTable->entries[i + 1], toMove * sizeof(void*));
+                refTable->entries[refTable->count - 1] = NULL;
+            }
+            refTable->count--;
+            return TRUE;
+        }
+    }
+    return FALSE;
 }
 
 jboolean rvmIsCriticalOutOfMemoryError(Env* env, Object* throwable) {
